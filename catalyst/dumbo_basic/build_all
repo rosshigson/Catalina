@@ -1,0 +1,45 @@
+#!/bin/bash
+if [[ ! "$CATALINA_DEFINE" == "" ]]; then
+   echo ""
+   echo "ERROR: Environment variable CATALINA_DEFINE is set (to $CATALINA_DEFINE)"
+   echo ""
+   echo "You must undefine this environment variable before using this batch"
+   echo "file, and instead specify the target and options on the command line."
+   echo "";
+   exit
+elif [[ "$1" ==  "" ]] ; then
+   echo ""
+   echo "ERROR: no PLATFORM specified !"
+   echo ""
+   echo "usage: build_all PLATFORM"
+   echo ""
+   echo "   where  PLATFORM is HYDRA, HYBRID, RAMBLADE, TRIBLADEPROP, DRACBLADE,"
+   echo "                      DEMO, CUSTOM or P2_EVAL (P2 only)"
+   echo "   and    OPTIONS are other Catalina options (e.g. CPU_1, HIRES_TV, NTSC)"
+   echo ""
+   echo "note: The required options CLOCK and NO_MOUSE are automatically included"
+   echo "      and should not be specified on the command line"
+   echo ""
+   exit
+else
+   echo ""
+   echo "   ============"
+   echo "   Building xvi"
+   echo "   ============"
+   echo ""
+
+   CATALINA_DEFINE="CLOCK NO_MOUSE $1 $2 $3 $4 $5 $6 $7 $8 $9"; export CATALINA_DEFINE
+
+   platform=$1
+   if [ "${platform:0:2}" != "P2" ]; then 
+
+      rm -fr *.binary
+      catalina -C LARGE dumbo_basic.c tokenizer.c basic.c -o dbasic -lcx -lm
+      unset CATALINA_DEFINE
+   else
+      rm -fr *.bin
+      catalina -p2 -C NATIVE dumbo_basic.c tokenizer.c basic.c -o dbasic -lcx -lm
+      unset CATALINA_DEFINE
+   fi
+
+fi

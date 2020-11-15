@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="P2_serial2_demos">
+		<Project filename="P2_serial2_READ_ME/READ ME.cbp" active="1" />
+		<Project filename="P2_serial2_demo/serial2_demo.cbp" />
+	</Workspace>
+</CodeBlocks_workspace_file>

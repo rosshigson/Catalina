@@ -1,0 +1,67 @@
+{{
+'-------------------------------------------------------------------------------
+'
+' SDCard  - This object is loaded by all target files to include 
+'           a SD support. This plugin can also provide clock support. 
+'           The plugin is loaded depending on the following symbols  
+'           (the logic is in Catalina_Plugin.inc):
+'
+'           SD         - include SD support
+'
+'           libcx      - include SD support
+'           libcix     - include SD support
+'
+'           CLOCK      - include clock support
+'         
+'           If you link with the appropriate floating point library
+'           (i.e. -lcx or -lcix) then loading the SD Card plugin is 
+'           handled automatically. The clock support must still be
+'           included by specifying -C CLOCK in the Catalina command.
+'
+' This object is included by the following target files:
+'
+'   nmm_default.s
+'   cmm_default.s
+'   lmm_default.s
+'
+' Version 3.15 - Initial P2 version 
+'
+'-------------------------------------------------------------------------------
+'
+'    Copyright 2011 Ross Higson
+'
+'    This file is part of the Catalina Target Package.
+'
+'    The Catalina Target Package is free software: you can redistribute 
+'    it and/or modify it under the terms of the GNU Lesser General Public 
+'    License as published by the Free Software Foundation, either version 
+'    3 of the License, or (at your option) any later version.
+'
+'    The Catalina Target Package is distributed in the hope that it will
+'    be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+'    of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+'    See the GNU Lesser General Public License for more details.
+'
+'    You should have received a copy of the GNU Lesser General Public 
+'    License along with the Catalina Target Package.  If not, see 
+'    <http://www.gnu.org/licenses/>.
+'
+'------------------------------------------------------------------------------
+}}
+'
+
+DAT
+
+#if defined(SD)
+
+#include "Catalina_SD_Plugin.spin2"
+
+SD_Service_Table
+  byte SVC_SD_INIT,       1    
+  byte SVC_SD_READ,       2
+  byte SVC_SD_WRITE,      3 
+  byte SVC_SD_BYTEIO,     4 
+  byte SVC_SD_STOPIO,     5 
+  byte 0,                 0
+
+#endif

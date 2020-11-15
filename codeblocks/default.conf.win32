@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocksConfig version="1">
+	<tools>
+		<tool00>
+			<NAME>
+				<str>
+					<![CDATA[Download to Hub RAM]]>
+				</str>
+			</NAME>
+			<COMMAND>
+				<str>
+					<![CDATA[payload.exe]]>
+				</str>
+			</COMMAND>
+			<PARAMS>
+				<str>
+					<![CDATA[${TARGET_OUTPUT_BASENAME}]]>
+				</str>
+			</PARAMS>
+			<WORKINGDIR>
+				<str>
+					<![CDATA[${TARGET_OUTPUT_DIR}]]>
+				</str>
+			</WORKINGDIR>
+			<LAUNCHOPTION int="1" />
+		</tool00>
+		<tool01>
+			<NAME>
+				<str>
+					<![CDATA[Download to Hub RAM and Interact]]>
+				</str>
+			</NAME>
+			<COMMAND>
+				<str>
+					<![CDATA[payload.exe]]>
+				</str>
+			</COMMAND>
+			<PARAMS>
+				<str>
+					<![CDATA[${TARGET_OUTPUT_BASENAME} -i]]>
+				</str>
+			</PARAMS>
+			<WORKINGDIR>
+				<str>
+					<![CDATA[${TARGET_OUTPUT_DIR}]]>
+				</str>
+			</WORKINGDIR>
+			<LAUNCHOPTION int="0" />
+		</tool01>
+		<tool02>
+			<NAME>
+				<str>
+					<![CDATA[Download to HUB Ram and Interact at 230400 baud]]>
+				</str>
+			</NAME>
+			<COMMAND>
+				<str>
+					<![CDATA[payload.exe]]>
+				</str>
+			</COMMAND>
+			<PARAMS>
+				<str>
+					<![CDATA[${TARGET_OUTPUT_BASENAME} -i -z -b230400 -q1]]>
+				</str>
+			</PARAMS>
+			<WORKINGDIR>
+				<str>
+					<![CDATA[${TARGET_OUTPUT_DIR}]]>
+				</str>
+			</WORKINGDIR>
+			<LAUNCHOPTION int="0" />
+		</tool02>
+		<tool03>
+			<NAME>
+				<str>
+					<![CDATA[Download to Hub RAM and debug with BlackBox]]>
+				</str>
+			</NAME>
+			<COMMAND>
+				<str>
+					<![CDATA[payload_blackbox.bat]]>
+				</str>
+			</COMMAND>
+			<PARAMS>
+				<str>
+					<![CDATA[${TARGET_OUTPUT_BASENAME}]]>
+				</str>
+			</PARAMS>
+			<WORKINGDIR>
+				<str>
+					<![CDATA[${TARGET_OUTPUT_DIR}]]>
+				</str>
+			</WORKINGDIR>
+			<LAUNCHOPTION int="2" />
+		</tool03>
+		<tool04>
+			<NAME>
+				<str>
+					<![CDATA[Download to Hub RAM and debug with BlackCat]]>
+				</str>
+			</NAME>
+			<COMMAND>
+				<str>
+					<![CDATA[payload_blackcat.bat]]>
+				</str>
+			</COMMAND>
+			<PARAMS>
+				<str>
+					<![CDATA[${TARGET_OUTPUT_BASENAME}]]>
+				</str>
+			</PARAMS>
+			<WORKINGDIR>
+				<str>
+					<![CDATA[${TARGET_OUTPUT_DIR}]]>
+				</str>
+			</WORKINGDIR>
+			<LAUNCHOPTION int="2" />
+		</tool04>
+		<tool05>
+			<NAME>
+				<str>
+					<![CDATA[Download to EEPROM (.binary)]]>
+				</str>
+			</NAME>
+			<COMMAND>
+				<str>
+					<![CDATA[payload.exe]]>
+				</str>
+			</COMMAND>
+			<PARAMS>
+				<str>
+					<![CDATA[-e ${TARGET_OUTPUT_BASENAME}.binary]]>
+				</str>
+			</PARAMS>
+			<WORKINGDIR>
+				<str>
+					<![CDATA[${TARGET_OUTPUT_DIR}]]>
+				</str>
+			</WORKINGDIR>
+			<LAUNCHOPTION int="1" />
+		</tool05>
+		<tool06>
+			<NAME>
+				<str>
+					<![CDATA[Download to EEPROM (.eeprom)]]>
+				</str>
+			</NAME>
+			<COMMAND>
+				<str>
+					<![CDATA[payload.exe]]>
+				</str>
+			</COMMAND>
+			<PARAMS>
+				<str>
+					<![CDATA[-e ${TARGET_OUTPUT_BASENAME}.eeprom]]>
+				</str>
+			</PARAMS>
+			<WORKINGDIR>
+				<str>
+					<![CDATA[${TARGET_OUTPUT_DIR}]]>
+				</str>
+			</WORKINGDIR>
+			<LAUNCHOPTION int="1" />
+		</tool06>
+		<tool07>
+			<NAME>
+				<str>
+					<![CDATA[---separator---]]>
+				</str>
+			</NAME>
+			<COMMAND>
+				<str>
+					<![CDATA[---separator---]]>
+				</str>
+			</COMMAND>
+			<PARAMS>
+				<str>
+					<![CDATA[]]>
+				</str>
+			</PARAMS>
+			<WORKINGDIR>
+				<str>
+					<![CDATA[]]>
+				</str>
+			</WORKINGDIR>
+			<LAUNCHOPTION int="0" />
+		</tool07>
+		<tool08>
+			<NAME>
+				<str>
+					<![CDATA[Debug with BlackBox (program already loaded)]]>
+				</str>
+			</NAME>
+			<COMMAND>
+				<str>
+					<![CDATA[blackbox.exe]]>
+				</str>
+			</COMMAND>
+			<PARAMS>
+				<str>
+					<![CDATA[${TARGET_OUTPUT_BASENAME}]]>
+				</str>
+			</PARAMS>
+			<WORKINGDIR>
+				<str>
+					<![CDATA[${TARGET_OUTPUT_DIR}]]>
+				</str>
+			</WORKINGDIR>
+			<LAUNCHOPTION int="0" />
+		</tool08>
+		<tool09>
+			<NAME>
+				<str>
+					<![CDATA[Debug with BlackCat (program already loaded)]]>
+				</str>
+			</NAME>
+			<COMMAND>
+				<str>
+					<![CDATA[noload_blackcat.bat]]>
+				</str>
+			</COMMAND>
+			<PARAMS>
+				<str>
+					<![CDATA[${TARGET_OUTPUT_BASENAME}]]>
+				</str>
+			</PARAMS>
+			<WORKINGDIR>
+				<str>
+					<![CDATA[${TARGET_OUTPUT_DIR}]]>
+				</str>
+			</WORKINGDIR>
+			<LAUNCHOPTION int="2" />
+		</tool09>
+		<tool10>
+			<NAME>
+				<str>
+					<![CDATA[---separator---]]>
+				</str>
+			</NAME>
+			<COMMAND>
+				<str>
+					<![CDATA[---separator---]]>
+				</str>
+			</COMMAND>
+			<PARAMS>
+				<str>
+					<![CDATA[]]>
+				</str>
+			</PARAMS>
+			<WORKINGDIR>
+				<str>
+					<![CDATA[]]>
+				</str>
+			</WORKINGDIR>
+			<LAUNCHOPTION int="0" />
+		</tool10>
+		<tool11>
+			<NAME>
+				<str>
+					<![CDATA[Build XMM utilities]]>
+				</str>
+			</NAME>
+			<COMMAND>
+				<str>
+					<![CDATA[build_utilities.bat]]>
+				</str>
+			</COMMAND>
+			<PARAMS>
+				<str>
+					<![CDATA[]]>
+				</str>
+			</PARAMS>
+			<WORKINGDIR>
+				<str>
+					<![CDATA[]]>
+				</str>
+			</WORKINGDIR>
+			<LAUNCHOPTION int="0" />
+		</tool11>
+		<tool12>
+			<NAME>
+				<str>
+					<![CDATA[Download to XMM RAM]]>
+				</str>
+			</NAME>
+			<COMMAND>
+				<str>
+					<![CDATA[payload.exe]]>
+				</str>
+			</COMMAND>
+			<PARAMS>
+				<str>
+					<![CDATA[XMM ${TARGET_OUTPUT_BASENAME}]]>
+				</str>
+			</PARAMS>
+			<WORKINGDIR>
+				<str>
+					<![CDATA[${TARGET_OUTPUT_DIR}]]>
+				</str>
+			</WORKINGDIR>
+			<LAUNCHOPTION int="1" />
+		</tool12>
+		<tool13>
+			<NAME>
+				<str>
+					<![CDATA[Download to XEPROM]]>
+				</str>
+			</NAME>
+			<COMMAND>
+				<str>
+					<![CDATA[payload.exe]]>
+				</str>
+			</COMMAND>
+			<PARAMS>
+				<str>
+					<![CDATA[EEPROM ${TARGET_OUTPUT_BASENAME}]]>
+				</str>
+			</PARAMS>
+			<WORKINGDIR>
+				<str>
+					<![CDATA[${TARGET_OUTPUT_DIR}]]>
+				</str>
+			</WORKINGDIR>
+			<LAUNCHOPTION int="1" />
+		</tool13>
+		<tool14>
+			<NAME>
+				<str>
+					<![CDATA[Download to XMM RAM and interact]]>
+				</str>
+			</NAME>
+			<COMMAND>
+				<str>
+					<![CDATA[payload.exe]]>
+				</str>
+			</COMMAND>
+			<PARAMS>
+				<str>
+					<![CDATA[XMM ${TARGET_OUTPUT_BASENAME} -i]]>
+				</str>
+			</PARAMS>
+			<WORKINGDIR>
+				<str>
+					<![CDATA[${TARGET_OUTPUT_DIR}]]>
+				</str>
+			</WORKINGDIR>
+			<LAUNCHOPTION int="0" />
+		</tool14>
+		<tool15>
+			<NAME>
+				<str>
+					<![CDATA[Download to XEPROM and interact]]>
+				</str>
+			</NAME>
+			<COMMAND>
+				<str>
+					<![CDATA[payload.exe]]>
+				</str>
+			</COMMAND>
+			<PARAMS>
+				<str>
+					<![CDATA[EEPROM ${TARGET_OUTPUT_BASENAME} -i]]>
+				</str>
+			</PARAMS>
+			<WORKINGDIR>
+				<str>
+					<![CDATA[${TARGET_OUTPUT_DIR}]]>
+				</str>
+			</WORKINGDIR>
+			<LAUNCHOPTION int="0" />
+		</tool15>
+		<tool16>
+			<NAME>
+				<str>
+					<![CDATA[Download to XMM RAM and debug with BlackBox]]>
+				</str>
+			</NAME>
+			<COMMAND>
+				<str>
+					<![CDATA[payload_blackbox_xmm.bat]]>
+				</str>
+			</COMMAND>
+			<PARAMS>
+				<str>
+					<![CDATA[${TARGET_OUTPUT_BASENAME}]]>
+				</str>
+			</PARAMS>
+			<WORKINGDIR>
+				<str>
+					<![CDATA[${TARGET_OUTPUT_DIR}]]>
+				</str>
+			</WORKINGDIR>
+			<LAUNCHOPTION int="2" />
+		</tool16>
+		<tool17>
+			<NAME>
+				<str>
+					<![CDATA[Download to XMM RAM and debug with BlackCat]]>
+				</str>
+			</NAME>
+			<COMMAND>
+				<str>
+					<![CDATA[payload_blackcat_xmm.bat]]>
+				</str>
+			</COMMAND>
+			<PARAMS>
+				<str>
+					<![CDATA[${TARGET_OUTPUT_BASENAME}]]>
+				</str>
+			</PARAMS>
+			<WORKINGDIR>
+				<str>
+					<![CDATA[${TARGET_OUTPUT_DIR}]]>
+				</str>
+			</WORKINGDIR>
+			<LAUNCHOPTION int="2" />
+		</tool17>
+		<tool18>
+			<NAME>
+				<str>
+					<![CDATA[---separator---]]>
+				</str>
+			</NAME>
+			<COMMAND>
+				<str>
+					<![CDATA[---separator---]]>
+				</str>
+			</COMMAND>
+			<PARAMS>
+				<str>
+					<![CDATA[]]>
+				</str>
+			</PARAMS>
+			<WORKINGDIR>
+				<str>
+					<![CDATA[]]>
+				</str>
+			</WORKINGDIR>
+			<LAUNCHOPTION int="0" />
+		</tool18>
+		<tool19>
+			<NAME>
+				<str>
+					<![CDATA[Build Catalyst]]>
+				</str>
+			</NAME>
+			<COMMAND>
+				<str>
+					<![CDATA[build_catalyst.bat]]>
+				</str>
+			</COMMAND>
+			<PARAMS>
+				<str>
+					<![CDATA[]]>
+				</str>
+			</PARAMS>
+			<WORKINGDIR>
+				<str>
+					<![CDATA[]]>
+				</str>
+			</WORKINGDIR>
+			<LAUNCHOPTION int="0" />
+		</tool19>
+	</tools>
+	<compiler>
+		<build_progress>
+			<BAR bool="0" />
+			<PERCENTAGE bool="0" />
+		</build_progress>
+		<save_html_build_log>
+			<FULL_COMMAND_LINE bool="1" />
+		</save_html_build_log>
+		<SETTINGS_VERSION>
+			<str>
+				<![CDATA[0.0.3]]>
+			</str>
+		</SETTINGS_VERSION>
+		<INCLUDE_FILE_CWD bool="1" />
+		<INCLUDE_PRJ_CWD bool="1" />
+		<SAVE_HTML_BUILD_LOG bool="1" />
+		<PARALLEL_PROCESSES int="1" />
+		<MAX_REPORTED_ERRORS int="50" />
+		<REBUILD_SEPERATELY bool="0" />
+		<IGNORE_OUTPUT>
+			<astr />
+		</IGNORE_OUTPUT>
+		<DEFAULT_COMPILER>
+			<str>
+				<![CDATA[catalina]]>
+			</str>
+		</DEFAULT_COMPILER>
+		<sets>
+			<catalina>
+				<NAME>
+					<str>
+						<![CDATA[Catalina C Compiler]]>
+					</str>
+				</NAME>
+				<INCLUDE_DIRS>
+					<str>
+						<![CDATA[$(LCCDIR)\include;]]>
+					</str>
+				</INCLUDE_DIRS>
+				<MASTER_PATH>
+					<str>
+						<![CDATA[$(LCCDIR)]]>
+					</str>
+				</MASTER_PATH>
+				<EXTRA_PATHS>
+					<str>
+						<![CDATA[$(LCCDIR)\bin;]]>
+					</str>
+				</EXTRA_PATHS>
+				<custom_variables>
+					<FORMAT>
+						<str>
+							<![CDATA[]]>
+						</str>
+					</FORMAT>
+					<RW_BASE>
+						<str>
+							<![CDATA[]]>
+						</str>
+					</RW_BASE>
+					<PLATFORM>
+						<str>
+							<![CDATA[]]>
+						</str>
+					</PLATFORM>
+					<TARGET>
+						<str>
+							<![CDATA[]]>
+						</str>
+					</TARGET>
+					<XMM>
+						<str>
+							<![CDATA[]]>
+						</str>
+					</XMM>
+					<LCC_OPT>
+						<str>
+							<![CDATA[]]>
+						</str>
+					</LCC_OPT>
+					<RO_BASE>
+						<str>
+							<![CDATA[]]>
+						</str>
+					</RO_BASE>
+					<MEM_SIZE>
+						<str>
+							<![CDATA[]]>
+						</str>
+					</MEM_SIZE>
+				</custom_variables>
+			</catalina>
+		</sets>
+	</compiler>
+</CodeBlocksConfig>

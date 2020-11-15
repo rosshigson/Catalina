@@ -1,0 +1,10 @@
+' test by using a command like "spinpp -D C3 < test.spin2"
+
+' this is a test whether C3 is expanded in a single-quote comment
+{
+ this is a test whether C3 is expanded in a parenthetical comment
+}
+byte "this is a test whether C3 is expanded in a string"
+byte $C3     ' this is a test whether C3 is expanded in a hex constant
+long $ABC321 ' this is a test whether C3 is expanded in a hex constant
+long C3      ' this is a test whether C3 is expanded in a non-hex constant

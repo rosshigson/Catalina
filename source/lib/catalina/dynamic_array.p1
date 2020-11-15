@@ -1,0 +1,25 @@
+/* 
+ * The files included here are created using spinnaker and spinc: 
+ *
+ *    cp dynamic_array.p1 dynamic_array.h
+ *
+ *    spinnaker -p -a -I  Catalina_LMM_dynamic.spin -o LMM_dynamic
+ *    spinc LMM_dynamic.binary > LMM_dynamic.inc
+ *
+ *    spinnaker -p -a -I  Catalina_CMM_dynamic.spin -o CMM_dynamic
+ *    spinc CMM_dynamic.binary > CMM_dynamic.inc
+ *
+ */
+#if defined(__CATALINA_COMPACT)
+
+// Catalina_CMM_dynamic kernel goes here ...
+
+#include "CMM_dynamic.inc"
+
+#else
+
+// Catalina_LMM_dynamic kernel goes here ...
+
+#include "LMM_dynamic.inc"
+
+#endif

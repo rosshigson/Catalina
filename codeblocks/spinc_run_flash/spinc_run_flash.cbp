@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="run_flash" />
+		<Option pch_mode="2" />
+		<Option compiler="catalina" />
+		<Build>
+			<Target title="Release">
+				<Option output="bin/Release/run_flash" prefix_auto="1" extension_auto="0" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="catalina" />
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-CNO_ARGS" />
+			<Add option="-CNO_MOUSE" />
+			<Add option="-CLORES_TV" />
+			<Add option="-CTINY" />
+			<Add option="-Clibci" />
+		</Compiler>
+		<Linker>
+			<Add option="-CNO_ARGS" />
+			<Add option="-CNO_MOUSE" />
+			<Add option="-CLORES_TV" />
+			<Add option="-CTINY" />
+			<Add option="-lci" />
+		</Linker>
+		<ExtraCommands>
+			<Add before="spinnaker -p -a ..\..\demos\spinc\flash.spin -b" />
+			<Add before="spinc_to_file.bat flash.h ..\..\demos\spinc\flash.binary -a -n FLASH" />
+			<Mode after="always" />
+		</ExtraCommands>
+		<Unit filename="../../demos/spinc/run_flash.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../demos/spinc/utilities.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../demos/spinc/utilities.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

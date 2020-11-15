@@ -1,0 +1,26 @@
+<html>
+<head>
+<title>hello_world_lmm build log</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+<body>
+<tt>
+Build started on: <u>24-05-2020 at 14:37.35</u><br />
+Build ended on: <u>24-05-2020 at 14:37.36</u><p />
+<b>-------------- Build: default in hello_world_lmm (compiler: Catalina C Compiler)---------------</b><br />
+catalina.exe -b -CTTY -CTINY -Clibci -CC3 -p1 -R 0x4000     -I"C:\Program Files (x86)\Catalina_4.1\include" -I..\..\demos\multimodel -I"C:\Program Files (x86)\Catalina_4.1" -c ..\..\demos\multimodel\hello_world.c -o .objs\demos\multimodel\hello_world.obj<br />
+Catalina Compiler 4.1<br />
+catalina.exe  -o hello_world.binary .objs\demos\multimodel\hello_world.obj -b -CTTY -CTINY -lci -CC3 -p1<br />
+Catalina Compiler 4.1<br />
+code = 456 bytes<br />
+cnst = 59 bytes<br />
+init = 8 bytes<br />
+data = 4 bytes<br />
+file = 5664 bytes<br />
+Output file is hello_world.binary with size 5.53 KB<br />
+cmd /c spinc -B2 -n LMM -c -l hello_world.binary &gt;hello_world_lmm.inc<br />
+Catalina SpinC 4.1<br />
+<font color="#0000ff">Process terminated with status 0 (0 minute(s), 0 second(s))</font><br />
+<font color="#0000ff">0 error(s), 0 warning(s) (0 minute(s), 0 second(s))</font><br />
+</tt>
+</body>
+</html>

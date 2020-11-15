@@ -1,0 +1,2544 @@
+#
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#
+#    W   W    A    RRRR   N   N   III  N   N  III  N   N   GGG
+#    W   W   A A   R   R  NN  N    I   NN  N   I   NN  N  G   G
+#    W   W  A   A  RRRR   N N N    I   N N N   I   N N N  G
+#    W W W  AAAAA  R R    N  NN    I   N  NN   I   N  NN  G  GG
+#    W W W  A   A  R  R   N   N    I   N   N   I   N   N  G   G
+#     W W   A   A  R   R  N   N   III  N   N  III  N   N   GGG
+#
+# Warning: DO NOT send patches which fix this file.
+# IT IS NOT the original source file.  This file is
+# GENERATED.  If you find a bug in this file, please
+# send me a patch for the the problem source file.
+#
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#
+# @configure_input@
+#
+# The configure script generates 2 files:
+#	1. This Makefile
+#	2. lib/config.h
+# If you change this Makefile, you may also need to
+# change these files.  To see what is configured by the
+# configure script, search for @ in the Makefile.in
+# file.
+#
+# If you wish to reconfigure the installation
+# directories it is RECOMMENDED that you re-run the
+# configure script.
+#
+# Use ``./configure --help'' for a list of options.
+#
+
+#
+# directory containing the source
+#
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+#
+# the name of the install program to use
+#
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+
+#
+# the name of the compiler to use
+#
+CXX = @CXX@
+
+#
+# The compiler flags to use
+#
+CXXFLAGS = @CXXFLAGS@
+
+#
+# The preprocessor flags to use
+#
+CPPFLAGS = @CPPFLAGS@
+
+#
+# The linker flags to use
+#
+LDFLAGS = @LDFLAGS@
+
+#
+# prefix for installation path
+#
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+#
+# where to put the executables
+#
+# On a network, this would only be shared between machines
+# of identical cpu-hw-os flavour.  It can be read-only.
+#
+# The $(DESTDIR) is for packaging.
+#
+bindir = $(DESTDIR)@bindir@
+
+#
+# where to put the manuals
+#
+# On a network, this would be shared between all machines
+# on the network.  It can be read-only.
+#
+# The $(DESTDIR) is for packaging.
+#
+mandir = $(DESTDIR)@mandir@
+
+# define this to silence ./configure warning
+DATAROOTDIR = $(DESTDIR)@datarootdir@
+
+#
+# where to put the supplementary package executables
+#
+# On a network, this would be shared between all
+# machines of identical architecture.  It can be
+# read-only.
+#
+# The $(DESTDIR) is for packaging.
+#
+LIBDIR = $(DESTDIR)@libdir@
+
+#
+# extra libraries required for your system
+#
+LIBS = @LIBS@
+
+#
+# shell to use to run tests and commands
+#
+SH = @SH@
+
+#
+# program used to place index within libraries
+#
+RANLIB = @RANLIB@
+AR = ar
+
+#
+# Set GROFF to the name of the roff command on your
+# system, usually "groff" or "troff" or "nroff"
+#
+GROFF = @GROFF@
+
+#
+# Set SOELIM to the name of the roff proprocessor command
+# on your system, usually "soelim" or "gsoelim"
+#
+SOELIM = @SOELIM@
+
+# -------------------------------------------------------------
+# You should not need to change anything below this line.
+
+#
+# The default target
+#
+the-default-target: all
+
+etc/BUILDING.ps: etc/BUILDING.man etc/version.so
+	$(GROFF) -s -I. -t -man etc/BUILDING.man > $@
+
+etc/Howto.conf: etc/Howto.conf.in ./config.status
+	CONFIG_FILES=$@:etc/Howto.conf.in CONFIG_HEADERS= $(SH) ./config.status
+
+etc/README.ps: etc/README.man etc/new.1.1.so etc/new.1.10.so \
+		etc/new.1.11.so etc/new.1.12.so etc/new.1.13.so \
+		etc/new.1.14.so etc/new.1.15.so etc/new.1.16.so \
+		etc/new.1.17.so etc/new.1.18.so etc/new.1.19.so \
+		etc/new.1.2.so etc/new.1.20.so etc/new.1.21.so \
+		etc/new.1.22.so etc/new.1.23.so etc/new.1.24.so \
+		etc/new.1.25.so etc/new.1.26.so etc/new.1.27.so \
+		etc/new.1.28.so etc/new.1.29.so etc/new.1.3.so \
+		etc/new.1.30.so etc/new.1.31.so etc/new.1.32.so \
+		etc/new.1.33.so etc/new.1.34.so etc/new.1.35.so \
+		etc/new.1.36.so etc/new.1.37.so etc/new.1.38.so \
+		etc/new.1.39.so etc/new.1.4.so etc/new.1.40.so \
+		etc/new.1.41.so etc/new.1.42.so etc/new.1.43.so \
+		etc/new.1.44.so etc/new.1.45.so etc/new.1.46.so \
+		etc/new.1.47.so etc/new.1.5.so etc/new.1.6.so \
+		etc/new.1.7.so etc/new.1.8.so etc/new.1.9.so etc/new.so \
+		etc/version.so 
+	$(GROFF) -s -I. -t -man etc/README.man > $@
+
+etc/change_log.ps: etc/change_log.man etc/new.1.1.so etc/new.1.10.so \
+		etc/new.1.11.so etc/new.1.12.so etc/new.1.13.so \
+		etc/new.1.14.so etc/new.1.15.so etc/new.1.16.so \
+		etc/new.1.17.so etc/new.1.18.so etc/new.1.19.so \
+		etc/new.1.2.so etc/new.1.20.so etc/new.1.21.so \
+		etc/new.1.22.so etc/new.1.23.so etc/new.1.24.so \
+		etc/new.1.25.so etc/new.1.26.so etc/new.1.27.so \
+		etc/new.1.28.so etc/new.1.29.so etc/new.1.3.so \
+		etc/new.1.30.so etc/new.1.31.so etc/new.1.32.so \
+		etc/new.1.33.so etc/new.1.34.so etc/new.1.35.so \
+		etc/new.1.36.so etc/new.1.37.so etc/new.1.38.so \
+		etc/new.1.39.so etc/new.1.4.so etc/new.1.40.so \
+		etc/new.1.41.so etc/new.1.42.so etc/new.1.43.so \
+		etc/new.1.44.so etc/new.1.45.so etc/new.1.46.so \
+		etc/new.1.47.so etc/new.1.5.so etc/new.1.6.so \
+		etc/new.1.7.so etc/new.1.8.so etc/new.1.9.so etc/new.so \
+		etc/version.so 
+	$(GROFF) -s -I. -t -man etc/change_log.man > $@
+
+etc/reference.ps: etc/reference.man etc/BUILDING.man etc/README.man \
+		etc/new-file-format.so etc/new.1.1.so etc/new.1.10.so \
+		etc/new.1.11.so etc/new.1.12.so etc/new.1.13.so \
+		etc/new.1.14.so etc/new.1.15.so etc/new.1.16.so \
+		etc/new.1.17.so etc/new.1.18.so etc/new.1.19.so \
+		etc/new.1.2.so etc/new.1.20.so etc/new.1.21.so \
+		etc/new.1.22.so etc/new.1.23.so etc/new.1.24.so \
+		etc/new.1.25.so etc/new.1.26.so etc/new.1.27.so \
+		etc/new.1.28.so etc/new.1.29.so etc/new.1.3.so \
+		etc/new.1.30.so etc/new.1.31.so etc/new.1.32.so \
+		etc/new.1.33.so etc/new.1.34.so etc/new.1.35.so \
+		etc/new.1.36.so etc/new.1.37.so etc/new.1.38.so \
+		etc/new.1.39.so etc/new.1.4.so etc/new.1.40.so \
+		etc/new.1.41.so etc/new.1.42.so etc/new.1.43.so \
+		etc/new.1.44.so etc/new.1.45.so etc/new.1.46.so \
+		etc/new.1.47.so etc/new.1.5.so etc/new.1.6.so \
+		etc/new.1.7.so etc/new.1.8.so etc/new.1.9.so etc/new.so \
+		etc/ref-index.so etc/ref-parts.so etc/ref-toc.so \
+		etc/version.so man/man1/o_at.so \
+		man/man1/o_ignore_checksums.so man/man1/o_input.so \
+		man/man1/o_multiple.so man/man1/o_sequence.so \
+		man/man1/srec_cat.1 man/man1/srec_cmp.1 \
+		man/man1/srec_examples.1 man/man1/srec_info.1 \
+		man/man1/srec_input.1 man/man1/srec_license.1 \
+		man/man1/z_copyright.so man/man1/z_exit.so \
+		man/man1/z_options.so man/man5/srec_aomf.5 \
+		man/man5/srec_ascii_hex.5 man/man5/srec_atmel_generic.5 \
+		man/man5/srec_binary.5 man/man5/srec_brecord.5 \
+		man/man5/srec_cosmac.5 man/man5/srec_dec_binary.5 \
+		man/man5/srec_emon52.5 man/man5/srec_fairchild.5 \
+		man/man5/srec_fastload.5 \
+		man/man5/srec_formatted_binary.5 man/man5/srec_forth.5 \
+		man/man5/srec_fpc.5 man/man5/srec_intel.5 \
+		man/man5/srec_intel16.5 man/man5/srec_mif.5 \
+		man/man5/srec_mos_tech.5 man/man5/srec_motorola.5 \
+		man/man5/srec_needham.5 man/man5/srec_os65v.5 \
+		man/man5/srec_signetics.5 man/man5/srec_spasm.5 \
+		man/man5/srec_spectrum.5 man/man5/srec_stewie.5 \
+		man/man5/srec_tektronix.5 \
+		man/man5/srec_tektronix_extended.5 \
+		man/man5/srec_ti_tagged.5 man/man5/srec_ti_tagged_16.5 \
+		man/man5/srec_ti_txt.5 man/man5/srec_vmem.5 \
+		man/man5/srec_wilson.5 
+	$(GROFF) -s -I. -t -man etc/reference.man > $@
+
+lib/arglex.o: lib/arglex.cc lib/arglex.h lib/format_printf.h \
+		lib/progname.h lib/quit.h lib/versn_stamp.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/arglex.cc
+	mv arglex.o lib/arglex.o
+
+lib/crc16.o: lib/crc16.cc lib/crc16.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/crc16.cc
+	mv crc16.o lib/crc16.o
+
+lib/crc32.o: lib/crc32.cc lib/crc32.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/crc32.cc
+	mv crc32.o lib/crc32.o
+
+lib/endian.o: lib/endian.cc lib/endian.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/endian.cc
+	mv endian.o lib/endian.o
+
+lib/interval.o: lib/interval.cc lib/interval.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/interval.cc
+	mv interval.o lib/interval.o
+
+lib/interval/coverage.o: lib/interval/coverage.cc lib/interval.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/interval/coverage.cc
+	mv coverage.o lib/interval/coverage.o
+
+lib/interval/flatten.o: lib/interval/flatten.cc lib/interval.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/interval/flatten.cc
+	mv flatten.o lib/interval/flatten.o
+
+lib/pretty_size.o: lib/pretty_size.cc lib/pretty_size.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/pretty_size.cc
+	mv pretty_size.o lib/pretty_size.o
+
+lib/progname.o: lib/progname.cc lib/progname.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/progname.cc
+	mv progname.o lib/progname.o
+
+lib/quit.o: lib/quit.cc lib/format_printf.h lib/quit.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/quit.cc
+	mv quit.o lib/quit.o
+
+lib/quit/exception.o: lib/quit/exception.cc lib/format_printf.h \
+		lib/quit.h lib/quit/exception.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/quit/exception.cc
+	mv exception.o lib/quit/exception.o
+
+lib/quit/normal.o: lib/quit/normal.cc lib/format_printf.h \
+		lib/progname.h lib/quit.h lib/quit/normal.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/quit/normal.cc
+	mv normal.o lib/quit/normal.o
+
+lib/quit/prefix.o: lib/quit/prefix.cc lib/format_printf.h lib/quit.h \
+		lib/quit/prefix.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/quit/prefix.cc
+	mv prefix.o lib/quit/prefix.o
+
+lib/r250.o: lib/r250.cc lib/r250.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/r250.cc
+	mv r250.o lib/r250.o
+
+lib/srec/arglex.o: lib/srec/arglex.cc lib/arglex.h lib/endian.h \
+		lib/format_printf.h lib/srec/arglex.h lib/srec/input.h \
+		lib/srec/input/file.h lib/srec/memory.h \
+		lib/srec/memory/chunk.h lib/srec/memory/walker.h \
+		lib/srec/output.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/arglex.cc
+	mv arglex.o lib/srec/arglex.o
+
+lib/srec/arglex/get_interval.o: lib/srec/arglex/get_interval.cc \
+		lib/arglex.h lib/endian.h lib/format_printf.h \
+		lib/interval.h lib/srec/arglex.h lib/srec/input.h \
+		lib/srec/input/interval.h lib/srec/output.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/arglex/get_interval.cc
+	mv get_interval.o lib/srec/arglex/get_interval.o
+
+lib/srec/arglex/get_interval_small.o: \
+		lib/srec/arglex/get_interval_small.cc lib/arglex.h \
+		lib/endian.h lib/format_printf.h lib/interval.h \
+		lib/pretty_size.h lib/srec/arglex.h lib/srec/input.h \
+		lib/srec/output.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c \
+		lib/srec/arglex/get_interval_small.cc 
+	mv get_interval_small.o lib/srec/arglex/get_interval_small.o
+
+lib/srec/arglex/get_number.o: lib/srec/arglex/get_number.cc \
+		lib/arglex.h lib/endian.h lib/format_printf.h \
+		lib/interval.h lib/srec/arglex.h lib/srec/input.h \
+		lib/srec/input/interval.h lib/srec/output.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/arglex/get_number.cc
+	mv get_number.o lib/srec/arglex/get_number.o
+
+lib/srec/arglex/get_string.o: lib/srec/arglex/get_string.cc \
+		lib/arglex.h lib/endian.h lib/format_printf.h \
+		lib/srec/arglex.h lib/srec/input.h lib/srec/output.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/arglex/get_string.cc
+	mv get_string.o lib/srec/arglex/get_string.o
+
+lib/srec/arglex/input.o: lib/srec/arglex/input.cc lib/arglex.h \
+		lib/crc16.h lib/crc32.h lib/endian.h \
+		lib/format_printf.h lib/interval.h lib/quit.h \
+		lib/srec/arglex.h lib/srec/input.h \
+		lib/srec/input/catenate.h lib/srec/input/file.h \
+		lib/srec/input/file/aomf.h \
+		lib/srec/input/file/ascii_hex.h \
+		lib/srec/input/file/atmel_generic.h \
+		lib/srec/input/file/binary.h \
+		lib/srec/input/file/brecord.h \
+		lib/srec/input/file/cosmac.h \
+		lib/srec/input/file/dec_binary.h \
+		lib/srec/input/file/emon52.h \
+		lib/srec/input/file/fairchild.h \
+		lib/srec/input/file/fastload.h \
+		lib/srec/input/file/formatted_binary.h \
+		lib/srec/input/file/four_packed_code.h \
+		lib/srec/input/file/intel.h \
+		lib/srec/input/file/intel16.h lib/srec/input/file/mif.h \
+		lib/srec/input/file/mos_tech.h \
+		lib/srec/input/file/needham.h \
+		lib/srec/input/file/os65v.h \
+		lib/srec/input/file/signetics.h \
+		lib/srec/input/file/spasm.h \
+		lib/srec/input/file/spectrum.h \
+		lib/srec/input/file/srecord.h \
+		lib/srec/input/file/stewie.h \
+		lib/srec/input/file/tektronix.h \
+		lib/srec/input/file/tektronix_extended.h \
+		lib/srec/input/file/ti_tagged.h \
+		lib/srec/input/file/ti_tagged_16.h \
+		lib/srec/input/file/ti_txt.h lib/srec/input/file/vmem.h \
+		lib/srec/input/file/wilson.h lib/srec/input/filter.h \
+		lib/srec/input/filter/and.h \
+		lib/srec/input/filter/byte_swap.h \
+		lib/srec/input/filter/checksum.h \
+		lib/srec/input/filter/checksum/bitnot.h \
+		lib/srec/input/filter/checksum/negative.h \
+		lib/srec/input/filter/checksum/positive.h \
+		lib/srec/input/filter/crc16.h \
+		lib/srec/input/filter/crc32.h \
+		lib/srec/input/filter/crop.h \
+		lib/srec/input/filter/fill.h \
+		lib/srec/input/filter/interval.h \
+		lib/srec/input/filter/interval/length.h \
+		lib/srec/input/filter/interval/maximum.h \
+		lib/srec/input/filter/interval/minimum.h \
+		lib/srec/input/filter/not.h \
+		lib/srec/input/filter/offset.h \
+		lib/srec/input/filter/or.h \
+		lib/srec/input/filter/random_fill.h \
+		lib/srec/input/filter/sequence.h \
+		lib/srec/input/filter/split.h \
+		lib/srec/input/filter/unfill.h \
+		lib/srec/input/filter/unsplit.h \
+		lib/srec/input/filter/xor.h lib/srec/input/generator.h \
+		lib/srec/input/interval.h lib/srec/memory.h \
+		lib/srec/memory/chunk.h lib/srec/memory/walker.h \
+		lib/srec/output.h lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/arglex/input.cc
+	mv input.o lib/srec/arglex/input.o
+
+lib/srec/arglex/output.o: lib/srec/arglex/output.cc lib/arglex.h \
+		lib/endian.h lib/format_printf.h lib/interval.h \
+		lib/srec/arglex.h lib/srec/input.h lib/srec/output.h \
+		lib/srec/output/file.h lib/srec/output/file/aomf.h \
+		lib/srec/output/file/ascii_hex.h \
+		lib/srec/output/file/asm.h \
+		lib/srec/output/file/atmel_generic.h \
+		lib/srec/output/file/basic.h \
+		lib/srec/output/file/binary.h \
+		lib/srec/output/file/brecord.h lib/srec/output/file/c.h \
+		lib/srec/output/file/cosmac.h \
+		lib/srec/output/file/dec_binary.h \
+		lib/srec/output/file/emon52.h \
+		lib/srec/output/file/fairchild.h \
+		lib/srec/output/file/fastload.h \
+		lib/srec/output/file/formatted_binary.h \
+		lib/srec/output/file/forth.h \
+		lib/srec/output/file/four_packed_code.h \
+		lib/srec/output/file/hexdump.h \
+		lib/srec/output/file/intel.h \
+		lib/srec/output/file/intel16.h \
+		lib/srec/output/file/mif.h \
+		lib/srec/output/file/mos_tech.h \
+		lib/srec/output/file/needham.h \
+		lib/srec/output/file/os65v.h \
+		lib/srec/output/file/signetics.h \
+		lib/srec/output/file/spasm.h \
+		lib/srec/output/file/spectrum.h \
+		lib/srec/output/file/srecord.h \
+		lib/srec/output/file/stewie.h \
+		lib/srec/output/file/tektronix.h \
+		lib/srec/output/file/tektronix_extended.h \
+		lib/srec/output/file/ti_tagged.h \
+		lib/srec/output/file/ti_tagged_16.h \
+		lib/srec/output/file/ti_txt.h \
+		lib/srec/output/file/vhdl.h lib/srec/output/file/vmem.h \
+		lib/srec/output/file/wilson.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/arglex/output.cc
+	mv output.o lib/srec/arglex/output.o
+
+lib/srec/input.o: lib/srec/input.cc lib/endian.h lib/format_printf.h \
+		lib/quit.h lib/quit/prefix.h lib/srec/input.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input.cc
+	mv input.o lib/srec/input.o
+
+lib/srec/input/catenate.o: lib/srec/input/catenate.cc lib/endian.h \
+		lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/catenate.h lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/catenate.cc
+	mv catenate.o lib/srec/input/catenate.o
+
+lib/srec/input/file.o: lib/srec/input/file.cc lib/format_printf.h \
+		lib/srec/input.h lib/srec/input/file.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/file.cc
+	mv file.o lib/srec/input/file.o
+
+lib/srec/input/file/aomf.o: lib/srec/input/file/aomf.cc lib/endian.h \
+		lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/file.h lib/srec/input/file/aomf.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/file/aomf.cc
+	mv aomf.o lib/srec/input/file/aomf.o
+
+lib/srec/input/file/ascii_hex.o: lib/srec/input/file/ascii_hex.cc \
+		lib/endian.h lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/file.h lib/srec/input/file/ascii_hex.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/file/ascii_hex.cc
+	mv ascii_hex.o lib/srec/input/file/ascii_hex.o
+
+lib/srec/input/file/atmel_generic.o: \
+		lib/srec/input/file/atmel_generic.cc lib/endian.h \
+		lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/file.h \
+		lib/srec/input/file/atmel_generic.h lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c \
+		lib/srec/input/file/atmel_generic.cc 
+	mv atmel_generic.o lib/srec/input/file/atmel_generic.o
+
+lib/srec/input/file/binary.o: lib/srec/input/file/binary.cc \
+		lib/endian.h lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/file.h lib/srec/input/file/binary.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/file/binary.cc
+	mv binary.o lib/srec/input/file/binary.o
+
+lib/srec/input/file/brecord.o: lib/srec/input/file/brecord.cc \
+		lib/endian.h lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/file.h lib/srec/input/file/brecord.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/file/brecord.cc
+	mv brecord.o lib/srec/input/file/brecord.o
+
+lib/srec/input/file/cosmac.o: lib/srec/input/file/cosmac.cc \
+		lib/endian.h lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/file.h lib/srec/input/file/cosmac.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/file/cosmac.cc
+	mv cosmac.o lib/srec/input/file/cosmac.o
+
+lib/srec/input/file/dec_binary.o: lib/srec/input/file/dec_binary.cc \
+		lib/endian.h lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/file.h lib/srec/input/file/dec_binary.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/file/dec_binary.cc
+	mv dec_binary.o lib/srec/input/file/dec_binary.o
+
+lib/srec/input/file/emon52.o: lib/srec/input/file/emon52.cc \
+		lib/endian.h lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/file.h lib/srec/input/file/emon52.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/file/emon52.cc
+	mv emon52.o lib/srec/input/file/emon52.o
+
+lib/srec/input/file/fairchild.o: lib/srec/input/file/fairchild.cc \
+		lib/endian.h lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/file.h lib/srec/input/file/fairchild.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/file/fairchild.cc
+	mv fairchild.o lib/srec/input/file/fairchild.o
+
+lib/srec/input/file/fastload.o: lib/srec/input/file/fastload.cc \
+		lib/endian.h lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/file.h lib/srec/input/file/fastload.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/file/fastload.cc
+	mv fastload.o lib/srec/input/file/fastload.o
+
+lib/srec/input/file/formatted_binary.o: \
+		lib/srec/input/file/formatted_binary.cc lib/endian.h \
+		lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/file.h \
+		lib/srec/input/file/formatted_binary.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c \
+		lib/srec/input/file/formatted_binary.cc 
+	mv formatted_binary.o lib/srec/input/file/formatted_binary.o
+
+lib/srec/input/file/four_packed_code.o: \
+		lib/srec/input/file/four_packed_code.cc lib/endian.h \
+		lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/file.h \
+		lib/srec/input/file/four_packed_code.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c \
+		lib/srec/input/file/four_packed_code.cc 
+	mv four_packed_code.o lib/srec/input/file/four_packed_code.o
+
+lib/srec/input/file/guess.o: lib/srec/input/file/guess.cc lib/endian.h \
+		lib/format_printf.h lib/quit.h lib/quit/exception.h \
+		lib/srec/input.h lib/srec/input/file.h \
+		lib/srec/input/file/aomf.h \
+		lib/srec/input/file/ascii_hex.h \
+		lib/srec/input/file/atmel_generic.h \
+		lib/srec/input/file/binary.h \
+		lib/srec/input/file/brecord.h \
+		lib/srec/input/file/dec_binary.h \
+		lib/srec/input/file/emon52.h \
+		lib/srec/input/file/fairchild.h \
+		lib/srec/input/file/fastload.h \
+		lib/srec/input/file/formatted_binary.h \
+		lib/srec/input/file/four_packed_code.h \
+		lib/srec/input/file/intel.h \
+		lib/srec/input/file/intel16.h lib/srec/input/file/mif.h \
+		lib/srec/input/file/mos_tech.h \
+		lib/srec/input/file/needham.h \
+		lib/srec/input/file/os65v.h \
+		lib/srec/input/file/signetics.h \
+		lib/srec/input/file/spasm.h \
+		lib/srec/input/file/spectrum.h \
+		lib/srec/input/file/srecord.h \
+		lib/srec/input/file/stewie.h \
+		lib/srec/input/file/tektronix.h \
+		lib/srec/input/file/tektronix_extended.h \
+		lib/srec/input/file/ti_tagged.h \
+		lib/srec/input/file/ti_txt.h lib/srec/input/file/vmem.h \
+		lib/srec/input/file/wilson.h lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/file/guess.cc
+	mv guess.o lib/srec/input/file/guess.o
+
+lib/srec/input/file/intel.o: lib/srec/input/file/intel.cc lib/endian.h \
+		lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/file.h lib/srec/input/file/intel.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/file/intel.cc
+	mv intel.o lib/srec/input/file/intel.o
+
+lib/srec/input/file/intel16.o: lib/srec/input/file/intel16.cc \
+		lib/endian.h lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/file.h lib/srec/input/file/intel16.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/file/intel16.cc
+	mv intel16.o lib/srec/input/file/intel16.o
+
+lib/srec/input/file/mif.o: lib/srec/input/file/mif.cc lib/endian.h \
+		lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/file.h lib/srec/input/file/mif.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/file/mif.cc
+	mv mif.o lib/srec/input/file/mif.o
+
+lib/srec/input/file/mos_tech.o: lib/srec/input/file/mos_tech.cc \
+		lib/endian.h lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/file.h lib/srec/input/file/mos_tech.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/file/mos_tech.cc
+	mv mos_tech.o lib/srec/input/file/mos_tech.o
+
+lib/srec/input/file/needham.o: lib/srec/input/file/needham.cc \
+		lib/endian.h lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/file.h lib/srec/input/file/needham.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/file/needham.cc
+	mv needham.o lib/srec/input/file/needham.o
+
+lib/srec/input/file/os65v.o: lib/srec/input/file/os65v.cc lib/endian.h \
+		lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/file.h lib/srec/input/file/os65v.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/file/os65v.cc
+	mv os65v.o lib/srec/input/file/os65v.o
+
+lib/srec/input/file/signetics.o: lib/srec/input/file/signetics.cc \
+		lib/endian.h lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/file.h lib/srec/input/file/signetics.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/file/signetics.cc
+	mv signetics.o lib/srec/input/file/signetics.o
+
+lib/srec/input/file/spasm.o: lib/srec/input/file/spasm.cc lib/endian.h \
+		lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/file.h lib/srec/input/file/spasm.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/file/spasm.cc
+	mv spasm.o lib/srec/input/file/spasm.o
+
+lib/srec/input/file/spectrum.o: lib/srec/input/file/spectrum.cc \
+		lib/endian.h lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/file.h lib/srec/input/file/spectrum.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/file/spectrum.cc
+	mv spectrum.o lib/srec/input/file/spectrum.o
+
+lib/srec/input/file/srecord.o: lib/srec/input/file/srecord.cc \
+		lib/arglex.h lib/endian.h lib/format_printf.h \
+		lib/srec/arglex.h lib/srec/input.h \
+		lib/srec/input/file.h lib/srec/input/file/srecord.h \
+		lib/srec/output.h lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/file/srecord.cc
+	mv srecord.o lib/srec/input/file/srecord.o
+
+lib/srec/input/file/stewie.o: lib/srec/input/file/stewie.cc \
+		lib/endian.h lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/file.h lib/srec/input/file/stewie.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/file/stewie.cc
+	mv stewie.o lib/srec/input/file/stewie.o
+
+lib/srec/input/file/tektronix.o: lib/srec/input/file/tektronix.cc \
+		lib/endian.h lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/file.h lib/srec/input/file/tektronix.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/file/tektronix.cc
+	mv tektronix.o lib/srec/input/file/tektronix.o
+
+lib/srec/input/file/tektronix_extended.o: \
+		lib/srec/input/file/tektronix_extended.cc lib/endian.h \
+		lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/file.h \
+		lib/srec/input/file/tektronix_extended.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c \
+		lib/srec/input/file/tektronix_extended.cc 
+	mv tektronix_extended.o lib/srec/input/file/tektronix_extended.o
+
+lib/srec/input/file/ti_tagged.o: lib/srec/input/file/ti_tagged.cc \
+		lib/endian.h lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/file.h lib/srec/input/file/ti_tagged.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/file/ti_tagged.cc
+	mv ti_tagged.o lib/srec/input/file/ti_tagged.o
+
+lib/srec/input/file/ti_tagged_16.o: lib/srec/input/file/ti_tagged_16.cc \
+		lib/endian.h lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/file.h \
+		lib/srec/input/file/ti_tagged_16.h lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c \
+		lib/srec/input/file/ti_tagged_16.cc 
+	mv ti_tagged_16.o lib/srec/input/file/ti_tagged_16.o
+
+lib/srec/input/file/ti_txt.o: lib/srec/input/file/ti_txt.cc \
+		lib/endian.h lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/file.h lib/srec/input/file/ti_txt.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/file/ti_txt.cc
+	mv ti_txt.o lib/srec/input/file/ti_txt.o
+
+lib/srec/input/file/vmem.o: lib/srec/input/file/vmem.cc lib/endian.h \
+		lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/file.h lib/srec/input/file/vmem.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/file/vmem.cc
+	mv vmem.o lib/srec/input/file/vmem.o
+
+lib/srec/input/file/wilson.o: lib/srec/input/file/wilson.cc \
+		lib/endian.h lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/file.h lib/srec/input/file/wilson.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/file/wilson.cc
+	mv wilson.o lib/srec/input/file/wilson.o
+
+lib/srec/input/filter.o: lib/srec/input/filter.cc lib/format_printf.h \
+		lib/srec/input.h lib/srec/input/filter.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/filter.cc
+	mv filter.o lib/srec/input/filter.o
+
+lib/srec/input/filter/and.o: lib/srec/input/filter/and.cc lib/endian.h \
+		lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/filter.h lib/srec/input/filter/and.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/filter/and.cc
+	mv and.o lib/srec/input/filter/and.o
+
+lib/srec/input/filter/byte_swap.o: lib/srec/input/filter/byte_swap.cc \
+		lib/arglex.h lib/endian.h lib/format_printf.h \
+		lib/srec/arglex.h lib/srec/input.h \
+		lib/srec/input/filter.h \
+		lib/srec/input/filter/byte_swap.h lib/srec/output.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c \
+		lib/srec/input/filter/byte_swap.cc 
+	mv byte_swap.o lib/srec/input/filter/byte_swap.o
+
+lib/srec/input/filter/checksum.o: lib/srec/input/filter/checksum.cc \
+		lib/endian.h lib/format_printf.h lib/interval.h \
+		lib/srec/input.h lib/srec/input/filter.h \
+		lib/srec/input/filter/checksum.h lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/filter/checksum.cc
+	mv checksum.o lib/srec/input/filter/checksum.o
+
+lib/srec/input/filter/checksum/bitnot.o: \
+		lib/srec/input/filter/checksum/bitnot.cc lib/endian.h \
+		lib/format_printf.h lib/interval.h lib/srec/input.h \
+		lib/srec/input/filter.h \
+		lib/srec/input/filter/checksum.h \
+		lib/srec/input/filter/checksum/bitnot.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c \
+		lib/srec/input/filter/checksum/bitnot.cc 
+	mv bitnot.o lib/srec/input/filter/checksum/bitnot.o
+
+lib/srec/input/filter/checksum/negative.o: \
+		lib/srec/input/filter/checksum/negative.cc lib/endian.h \
+		lib/format_printf.h lib/interval.h lib/srec/input.h \
+		lib/srec/input/filter.h \
+		lib/srec/input/filter/checksum.h \
+		lib/srec/input/filter/checksum/negative.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c \
+		lib/srec/input/filter/checksum/negative.cc 
+	mv negative.o lib/srec/input/filter/checksum/negative.o
+
+lib/srec/input/filter/checksum/positive.o: \
+		lib/srec/input/filter/checksum/positive.cc lib/endian.h \
+		lib/format_printf.h lib/interval.h lib/srec/input.h \
+		lib/srec/input/filter.h \
+		lib/srec/input/filter/checksum.h \
+		lib/srec/input/filter/checksum/positive.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c \
+		lib/srec/input/filter/checksum/positive.cc 
+	mv positive.o lib/srec/input/filter/checksum/positive.o
+
+lib/srec/input/filter/crc16.o: lib/srec/input/filter/crc16.cc \
+		lib/arglex.h lib/crc16.h lib/endian.h \
+		lib/format_printf.h lib/srec/arglex.h lib/srec/input.h \
+		lib/srec/input/filter.h lib/srec/input/filter/crc16.h \
+		lib/srec/memory.h lib/srec/memory/chunk.h \
+		lib/srec/memory/walker.h lib/srec/memory/walker/crc16.h \
+		lib/srec/output.h lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/filter/crc16.cc
+	mv crc16.o lib/srec/input/filter/crc16.o
+
+lib/srec/input/filter/crc32.o: lib/srec/input/filter/crc32.cc \
+		lib/arglex.h lib/crc32.h lib/endian.h \
+		lib/format_printf.h lib/srec/arglex.h lib/srec/input.h \
+		lib/srec/input/filter.h lib/srec/input/filter/crc32.h \
+		lib/srec/memory.h lib/srec/memory/chunk.h \
+		lib/srec/memory/walker.h lib/srec/memory/walker/crc32.h \
+		lib/srec/output.h lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/filter/crc32.cc
+	mv crc32.o lib/srec/input/filter/crc32.o
+
+lib/srec/input/filter/crop.o: lib/srec/input/filter/crop.cc \
+		lib/endian.h lib/format_printf.h lib/interval.h \
+		lib/srec/input.h lib/srec/input/filter.h \
+		lib/srec/input/filter/crop.h lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/filter/crop.cc
+	mv crop.o lib/srec/input/filter/crop.o
+
+lib/srec/input/filter/fill.o: lib/srec/input/filter/fill.cc \
+		lib/endian.h lib/format_printf.h lib/interval.h \
+		lib/srec/input.h lib/srec/input/filter.h \
+		lib/srec/input/filter/fill.h lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/filter/fill.cc
+	mv fill.o lib/srec/input/filter/fill.o
+
+lib/srec/input/filter/interval.o: lib/srec/input/filter/interval.cc \
+		lib/endian.h lib/format_printf.h lib/interval.h \
+		lib/srec/input.h lib/srec/input/filter.h \
+		lib/srec/input/filter/interval.h lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/filter/interval.cc
+	mv interval.o lib/srec/input/filter/interval.o
+
+lib/srec/input/filter/interval/length.o: \
+		lib/srec/input/filter/interval/length.cc lib/endian.h \
+		lib/format_printf.h lib/interval.h lib/srec/input.h \
+		lib/srec/input/filter.h \
+		lib/srec/input/filter/interval.h \
+		lib/srec/input/filter/interval/length.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c \
+		lib/srec/input/filter/interval/length.cc 
+	mv length.o lib/srec/input/filter/interval/length.o
+
+lib/srec/input/filter/interval/maximum.o: \
+		lib/srec/input/filter/interval/maximum.cc lib/endian.h \
+		lib/format_printf.h lib/interval.h lib/srec/input.h \
+		lib/srec/input/filter.h \
+		lib/srec/input/filter/interval.h \
+		lib/srec/input/filter/interval/maximum.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c \
+		lib/srec/input/filter/interval/maximum.cc 
+	mv maximum.o lib/srec/input/filter/interval/maximum.o
+
+lib/srec/input/filter/interval/minimum.o: \
+		lib/srec/input/filter/interval/minimum.cc lib/endian.h \
+		lib/format_printf.h lib/interval.h lib/srec/input.h \
+		lib/srec/input/filter.h \
+		lib/srec/input/filter/interval.h \
+		lib/srec/input/filter/interval/minimum.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c \
+		lib/srec/input/filter/interval/minimum.cc 
+	mv minimum.o lib/srec/input/filter/interval/minimum.o
+
+lib/srec/input/filter/not.o: lib/srec/input/filter/not.cc lib/endian.h \
+		lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/filter.h lib/srec/input/filter/not.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/filter/not.cc
+	mv not.o lib/srec/input/filter/not.o
+
+lib/srec/input/filter/offset.o: lib/srec/input/filter/offset.cc \
+		lib/endian.h lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/filter.h lib/srec/input/filter/offset.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/filter/offset.cc
+	mv offset.o lib/srec/input/filter/offset.o
+
+lib/srec/input/filter/or.o: lib/srec/input/filter/or.cc lib/endian.h \
+		lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/filter.h lib/srec/input/filter/or.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/filter/or.cc
+	mv or.o lib/srec/input/filter/or.o
+
+lib/srec/input/filter/random_fill.o: \
+		lib/srec/input/filter/random_fill.cc lib/endian.h \
+		lib/format_printf.h lib/interval.h lib/r250.h \
+		lib/srec/input.h lib/srec/input/filter.h \
+		lib/srec/input/filter/random_fill.h lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c \
+		lib/srec/input/filter/random_fill.cc 
+	mv random_fill.o lib/srec/input/filter/random_fill.o
+
+lib/srec/input/filter/sequence.o: lib/srec/input/filter/sequence.cc \
+		lib/endian.h lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/filter.h \
+		lib/srec/input/filter/sequence.h lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/filter/sequence.cc
+	mv sequence.o lib/srec/input/filter/sequence.o
+
+lib/srec/input/filter/split.o: lib/srec/input/filter/split.cc \
+		lib/endian.h lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/filter.h lib/srec/input/filter/split.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/filter/split.cc
+	mv split.o lib/srec/input/filter/split.o
+
+lib/srec/input/filter/unfill.o: lib/srec/input/filter/unfill.cc \
+		lib/endian.h lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/filter.h lib/srec/input/filter/unfill.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/filter/unfill.cc
+	mv unfill.o lib/srec/input/filter/unfill.o
+
+lib/srec/input/filter/unsplit.o: lib/srec/input/filter/unsplit.cc \
+		lib/endian.h lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/filter.h lib/srec/input/filter/unsplit.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/filter/unsplit.cc
+	mv unsplit.o lib/srec/input/filter/unsplit.o
+
+lib/srec/input/filter/xor.o: lib/srec/input/filter/xor.cc lib/endian.h \
+		lib/format_printf.h lib/srec/input.h \
+		lib/srec/input/filter.h lib/srec/input/filter/xor.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/filter/xor.cc
+	mv xor.o lib/srec/input/filter/xor.o
+
+lib/srec/input/generator.o: lib/srec/input/generator.cc lib/arglex.h \
+		lib/endian.h lib/format_printf.h lib/interval.h \
+		lib/srec/arglex.h lib/srec/input.h \
+		lib/srec/input/generator.h \
+		lib/srec/input/generator/constant.h \
+		lib/srec/input/generator/random.h \
+		lib/srec/input/generator/repeat.h lib/srec/output.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/generator.cc
+	mv generator.o lib/srec/input/generator.o
+
+lib/srec/input/generator/constant.o: \
+		lib/srec/input/generator/constant.cc \
+		lib/format_printf.h lib/interval.h lib/srec/input.h \
+		lib/srec/input/generator.h \
+		lib/srec/input/generator/constant.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c \
+		lib/srec/input/generator/constant.cc 
+	mv constant.o lib/srec/input/generator/constant.o
+
+lib/srec/input/generator/random.o: lib/srec/input/generator/random.cc \
+		lib/format_printf.h lib/interval.h lib/r250.h \
+		lib/srec/input.h lib/srec/input/generator.h \
+		lib/srec/input/generator/random.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c \
+		lib/srec/input/generator/random.cc 
+	mv random.o lib/srec/input/generator/random.o
+
+lib/srec/input/generator/repeat.o: lib/srec/input/generator/repeat.cc \
+		lib/format_printf.h lib/interval.h lib/srec/input.h \
+		lib/srec/input/generator.h \
+		lib/srec/input/generator/repeat.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c \
+		lib/srec/input/generator/repeat.cc 
+	mv repeat.o lib/srec/input/generator/repeat.o
+
+lib/srec/input/interval.o: lib/srec/input/interval.cc lib/endian.h \
+		lib/format_printf.h lib/interval.h lib/srec/input.h \
+		lib/srec/input/interval.h lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/input/interval.cc
+	mv interval.o lib/srec/input/interval.o
+
+lib/srec/memory.o: lib/srec/memory.cc lib/endian.h lib/format_printf.h \
+		lib/interval.h lib/srec/input.h lib/srec/memory.h \
+		lib/srec/memory/chunk.h lib/srec/memory/walker.h \
+		lib/srec/memory/walker/compare.h \
+		lib/srec/memory/walker/continuity.h lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/memory.cc
+	mv memory.o lib/srec/memory.o
+
+lib/srec/memory/chunk.o: lib/srec/memory/chunk.cc \
+		lib/srec/memory/chunk.h lib/srec/memory/walker.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/memory/chunk.cc
+	mv chunk.o lib/srec/memory/chunk.o
+
+lib/srec/memory/walker.o: lib/srec/memory/walker.cc \
+		lib/srec/memory/walker.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/memory/walker.cc
+	mv walker.o lib/srec/memory/walker.o
+
+lib/srec/memory/walker/compare.o: lib/srec/memory/walker/compare.cc \
+		lib/format_printf.h lib/interval.h lib/srec/input.h \
+		lib/srec/memory.h lib/srec/memory/chunk.h \
+		lib/srec/memory/walker.h \
+		lib/srec/memory/walker/compare.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/memory/walker/compare.cc
+	mv compare.o lib/srec/memory/walker/compare.o
+
+lib/srec/memory/walker/continuity.o: \
+		lib/srec/memory/walker/continuity.cc \
+		lib/srec/memory/walker.h \
+		lib/srec/memory/walker/continuity.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c \
+		lib/srec/memory/walker/continuity.cc 
+	mv continuity.o lib/srec/memory/walker/continuity.o
+
+lib/srec/memory/walker/crc16.o: lib/srec/memory/walker/crc16.cc \
+		lib/crc16.h lib/format_printf.h \
+		lib/srec/memory/walker.h lib/srec/memory/walker/crc16.h \
+		lib/srec/output.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/memory/walker/crc16.cc
+	mv crc16.o lib/srec/memory/walker/crc16.o
+
+lib/srec/memory/walker/crc32.o: lib/srec/memory/walker/crc32.cc \
+		lib/crc32.h lib/format_printf.h \
+		lib/srec/memory/walker.h lib/srec/memory/walker/crc32.h \
+		lib/srec/output.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/memory/walker/crc32.cc
+	mv crc32.o lib/srec/memory/walker/crc32.o
+
+lib/srec/memory/walker/writer.o: lib/srec/memory/walker/writer.cc \
+		lib/format_printf.h lib/srec/memory/walker.h \
+		lib/srec/memory/walker/writer.h lib/srec/output.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/memory/walker/writer.cc
+	mv writer.o lib/srec/memory/walker/writer.o
+
+lib/srec/output.o: lib/srec/output.cc lib/endian.h lib/format_printf.h \
+		lib/quit.h lib/srec/output.h lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output.cc
+	mv output.o lib/srec/output.o
+
+lib/srec/output/file.o: lib/srec/output/file.cc lib/arglex.h \
+		lib/format_printf.h lib/sizeof.h lib/srec/output.h \
+		lib/srec/output/file.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file.cc
+	mv file.o lib/srec/output/file.o
+
+lib/srec/output/file/aomf.o: lib/srec/output/file/aomf.cc lib/endian.h \
+		lib/format_printf.h lib/srec/output.h \
+		lib/srec/output/file.h lib/srec/output/file/aomf.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/aomf.cc
+	mv aomf.o lib/srec/output/file/aomf.o
+
+lib/srec/output/file/ascii_hex.o: lib/srec/output/file/ascii_hex.cc \
+		lib/endian.h lib/format_printf.h lib/srec/output.h \
+		lib/srec/output/file.h lib/srec/output/file/ascii_hex.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/ascii_hex.cc
+	mv ascii_hex.o lib/srec/output/file/ascii_hex.o
+
+lib/srec/output/file/asm.o: lib/srec/output/file/asm.cc lib/arglex.h \
+		lib/endian.h lib/format_printf.h lib/interval.h \
+		lib/srec/arglex.h lib/srec/input.h lib/srec/output.h \
+		lib/srec/output/file.h lib/srec/output/file/asm.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/asm.cc
+	mv asm.o lib/srec/output/file/asm.o
+
+lib/srec/output/file/atmel_generic.o: \
+		lib/srec/output/file/atmel_generic.cc lib/endian.h \
+		lib/format_printf.h lib/srec/output.h \
+		lib/srec/output/file.h \
+		lib/srec/output/file/atmel_generic.h lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c \
+		lib/srec/output/file/atmel_generic.cc 
+	mv atmel_generic.o lib/srec/output/file/atmel_generic.o
+
+lib/srec/output/file/basic.o: lib/srec/output/file/basic.cc \
+		lib/endian.h lib/format_printf.h lib/interval.h \
+		lib/srec/output.h lib/srec/output/file.h \
+		lib/srec/output/file/basic.h lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/basic.cc
+	mv basic.o lib/srec/output/file/basic.o
+
+lib/srec/output/file/binary.o: lib/srec/output/file/binary.cc \
+		lib/endian.h lib/format_printf.h lib/srec/output.h \
+		lib/srec/output/file.h lib/srec/output/file/binary.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/binary.cc
+	mv binary.o lib/srec/output/file/binary.o
+
+lib/srec/output/file/brecord.o: lib/srec/output/file/brecord.cc \
+		lib/endian.h lib/format_printf.h lib/srec/output.h \
+		lib/srec/output/file.h lib/srec/output/file/brecord.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/brecord.cc
+	mv brecord.o lib/srec/output/file/brecord.o
+
+lib/srec/output/file/c.o: lib/srec/output/file/c.cc lib/arglex.h \
+		lib/endian.h lib/format_printf.h lib/interval.h \
+		lib/srec/arglex.h lib/srec/input.h lib/srec/output.h \
+		lib/srec/output/file.h lib/srec/output/file/c.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/c.cc
+	mv c.o lib/srec/output/file/c.o
+
+lib/srec/output/file/cosmac.o: lib/srec/output/file/cosmac.cc \
+		lib/endian.h lib/format_printf.h lib/srec/output.h \
+		lib/srec/output/file.h lib/srec/output/file/cosmac.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/cosmac.cc
+	mv cosmac.o lib/srec/output/file/cosmac.o
+
+lib/srec/output/file/dec_binary.o: lib/srec/output/file/dec_binary.cc \
+		lib/endian.h lib/format_printf.h lib/srec/output.h \
+		lib/srec/output/file.h \
+		lib/srec/output/file/dec_binary.h lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c \
+		lib/srec/output/file/dec_binary.cc 
+	mv dec_binary.o lib/srec/output/file/dec_binary.o
+
+lib/srec/output/file/emon52.o: lib/srec/output/file/emon52.cc \
+		lib/endian.h lib/format_printf.h lib/srec/output.h \
+		lib/srec/output/file.h lib/srec/output/file/emon52.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/emon52.cc
+	mv emon52.o lib/srec/output/file/emon52.o
+
+lib/srec/output/file/fairchild.o: lib/srec/output/file/fairchild.cc \
+		lib/endian.h lib/format_printf.h lib/srec/output.h \
+		lib/srec/output/file.h lib/srec/output/file/fairchild.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/fairchild.cc
+	mv fairchild.o lib/srec/output/file/fairchild.o
+
+lib/srec/output/file/fastload.o: lib/srec/output/file/fastload.cc \
+		lib/endian.h lib/format_printf.h lib/srec/output.h \
+		lib/srec/output/file.h lib/srec/output/file/fastload.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/fastload.cc
+	mv fastload.o lib/srec/output/file/fastload.o
+
+lib/srec/output/file/formatted_binary.o: \
+		lib/srec/output/file/formatted_binary.cc lib/endian.h \
+		lib/format_printf.h lib/srec/output.h \
+		lib/srec/output/file.h \
+		lib/srec/output/file/formatted_binary.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c \
+		lib/srec/output/file/formatted_binary.cc 
+	mv formatted_binary.o lib/srec/output/file/formatted_binary.o
+
+lib/srec/output/file/forth.o: lib/srec/output/file/forth.cc \
+		lib/arglex.h lib/endian.h lib/format_printf.h \
+		lib/srec/arglex.h lib/srec/input.h lib/srec/output.h \
+		lib/srec/output/file.h lib/srec/output/file/forth.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/forth.cc
+	mv forth.o lib/srec/output/file/forth.o
+
+lib/srec/output/file/four_packed_code.o: \
+		lib/srec/output/file/four_packed_code.cc lib/endian.h \
+		lib/format_printf.h lib/srec/output.h \
+		lib/srec/output/file.h \
+		lib/srec/output/file/four_packed_code.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c \
+		lib/srec/output/file/four_packed_code.cc 
+	mv four_packed_code.o lib/srec/output/file/four_packed_code.o
+
+lib/srec/output/file/hexdump.o: lib/srec/output/file/hexdump.cc \
+		lib/endian.h lib/format_printf.h lib/srec/output.h \
+		lib/srec/output/file.h lib/srec/output/file/hexdump.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/hexdump.cc
+	mv hexdump.o lib/srec/output/file/hexdump.o
+
+lib/srec/output/file/intel.o: lib/srec/output/file/intel.cc \
+		lib/endian.h lib/format_printf.h lib/srec/output.h \
+		lib/srec/output/file.h lib/srec/output/file/intel.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/intel.cc
+	mv intel.o lib/srec/output/file/intel.o
+
+lib/srec/output/file/intel16.o: lib/srec/output/file/intel16.cc \
+		lib/endian.h lib/format_printf.h lib/srec/output.h \
+		lib/srec/output/file.h lib/srec/output/file/intel16.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/intel16.cc
+	mv intel16.o lib/srec/output/file/intel16.o
+
+lib/srec/output/file/line_termination.o: \
+		lib/srec/output/file/line_termination.cc lib/arglex.h \
+		lib/format_printf.h lib/sizeof.h lib/srec/output.h \
+		lib/srec/output/file.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c \
+		lib/srec/output/file/line_termination.cc 
+	mv line_termination.o lib/srec/output/file/line_termination.o
+
+lib/srec/output/file/mif.o: lib/srec/output/file/mif.cc lib/arglex.h \
+		lib/endian.h lib/format_printf.h lib/progname.h \
+		lib/srec/arglex.h lib/srec/input.h lib/srec/output.h \
+		lib/srec/output/file.h lib/srec/output/file/mif.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/mif.cc
+	mv mif.o lib/srec/output/file/mif.o
+
+lib/srec/output/file/mos_tech.o: lib/srec/output/file/mos_tech.cc \
+		lib/endian.h lib/format_printf.h lib/srec/output.h \
+		lib/srec/output/file.h lib/srec/output/file/mos_tech.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/mos_tech.cc
+	mv mos_tech.o lib/srec/output/file/mos_tech.o
+
+lib/srec/output/file/needham.o: lib/srec/output/file/needham.cc \
+		lib/endian.h lib/format_printf.h lib/srec/output.h \
+		lib/srec/output/file.h lib/srec/output/file/needham.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/needham.cc
+	mv needham.o lib/srec/output/file/needham.o
+
+lib/srec/output/file/os65v.o: lib/srec/output/file/os65v.cc \
+		lib/endian.h lib/format_printf.h lib/srec/output.h \
+		lib/srec/output/file.h lib/srec/output/file/os65v.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/os65v.cc
+	mv os65v.o lib/srec/output/file/os65v.o
+
+lib/srec/output/file/signetics.o: lib/srec/output/file/signetics.cc \
+		lib/endian.h lib/format_printf.h lib/srec/output.h \
+		lib/srec/output/file.h lib/srec/output/file/signetics.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/signetics.cc
+	mv signetics.o lib/srec/output/file/signetics.o
+
+lib/srec/output/file/spasm.o: lib/srec/output/file/spasm.cc \
+		lib/endian.h lib/format_printf.h lib/srec/output.h \
+		lib/srec/output/file.h lib/srec/output/file/spasm.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/spasm.cc
+	mv spasm.o lib/srec/output/file/spasm.o
+
+lib/srec/output/file/spectrum.o: lib/srec/output/file/spectrum.cc \
+		lib/endian.h lib/format_printf.h lib/srec/output.h \
+		lib/srec/output/file.h lib/srec/output/file/spectrum.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/spectrum.cc
+	mv spectrum.o lib/srec/output/file/spectrum.o
+
+lib/srec/output/file/srecord.o: lib/srec/output/file/srecord.cc \
+		lib/arglex.h lib/endian.h lib/format_printf.h \
+		lib/srec/arglex.h lib/srec/input.h lib/srec/output.h \
+		lib/srec/output/file.h lib/srec/output/file/srecord.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/srecord.cc
+	mv srecord.o lib/srec/output/file/srecord.o
+
+lib/srec/output/file/stewie.o: lib/srec/output/file/stewie.cc \
+		lib/endian.h lib/format_printf.h lib/srec/output.h \
+		lib/srec/output/file.h lib/srec/output/file/stewie.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/stewie.cc
+	mv stewie.o lib/srec/output/file/stewie.o
+
+lib/srec/output/file/tektronix.o: lib/srec/output/file/tektronix.cc \
+		lib/endian.h lib/format_printf.h lib/srec/output.h \
+		lib/srec/output/file.h lib/srec/output/file/tektronix.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/tektronix.cc
+	mv tektronix.o lib/srec/output/file/tektronix.o
+
+lib/srec/output/file/tektronix_extended.o: \
+		lib/srec/output/file/tektronix_extended.cc lib/endian.h \
+		lib/format_printf.h lib/srec/output.h \
+		lib/srec/output/file.h \
+		lib/srec/output/file/tektronix_extended.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c \
+		lib/srec/output/file/tektronix_extended.cc 
+	mv tektronix_extended.o lib/srec/output/file/tektronix_extended.o
+
+lib/srec/output/file/ti_tagged.o: lib/srec/output/file/ti_tagged.cc \
+		lib/endian.h lib/format_printf.h lib/srec/output.h \
+		lib/srec/output/file.h lib/srec/output/file/ti_tagged.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/ti_tagged.cc
+	mv ti_tagged.o lib/srec/output/file/ti_tagged.o
+
+lib/srec/output/file/ti_tagged_16.o: \
+		lib/srec/output/file/ti_tagged_16.cc lib/endian.h \
+		lib/format_printf.h lib/srec/output.h \
+		lib/srec/output/file.h \
+		lib/srec/output/file/ti_tagged_16.h lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c \
+		lib/srec/output/file/ti_tagged_16.cc 
+	mv ti_tagged_16.o lib/srec/output/file/ti_tagged_16.o
+
+lib/srec/output/file/ti_txt.o: lib/srec/output/file/ti_txt.cc \
+		lib/endian.h lib/format_printf.h lib/srec/output.h \
+		lib/srec/output/file.h lib/srec/output/file/ti_txt.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/ti_txt.cc
+	mv ti_txt.o lib/srec/output/file/ti_txt.o
+
+lib/srec/output/file/vhdl.o: lib/srec/output/file/vhdl.cc lib/arglex.h \
+		lib/endian.h lib/format_printf.h lib/interval.h \
+		lib/progname.h lib/srec/arglex.h lib/srec/input.h \
+		lib/srec/output.h lib/srec/output/file.h \
+		lib/srec/output/file/vhdl.h lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/vhdl.cc
+	mv vhdl.o lib/srec/output/file/vhdl.o
+
+lib/srec/output/file/vmem.o: lib/srec/output/file/vmem.cc lib/arglex.h \
+		lib/endian.h lib/format_printf.h lib/srec/arglex.h \
+		lib/srec/input.h lib/srec/output.h \
+		lib/srec/output/file.h lib/srec/output/file/vmem.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/vmem.cc
+	mv vmem.o lib/srec/output/file/vmem.o
+
+lib/srec/output/file/wilson.o: lib/srec/output/file/wilson.cc \
+		lib/endian.h lib/format_printf.h lib/srec/output.h \
+		lib/srec/output/file.h lib/srec/output/file/wilson.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/output/file/wilson.cc
+	mv wilson.o lib/srec/output/file/wilson.o
+
+lib/srec/record.o: lib/srec/record.cc lib/endian.h lib/srec/record.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/srec/record.cc
+	mv record.o lib/srec/record.o
+
+lib/versn_stamp.o: lib/versn_stamp.cc lib/patchlevel.h lib/versn_stamp.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/versn_stamp.cc
+	mv versn_stamp.o lib/versn_stamp.o
+
+lib/vsnprintf.o: lib/vsnprintf.cc
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c lib/vsnprintf.cc
+	mv vsnprintf.o lib/vsnprintf.o
+
+man/man1/.mandir: man/.mandir
+	-$(INSTALL) -m 0755 -d $(mandir)/man1
+	@-test -d $(mandir)/man1 && touch $@
+	@sleep 1
+
+man/.mandir:
+	-$(INSTALL) -m 0755 -d $(mandir)
+	@-test -d $(mandir) && touch $@
+	@sleep 1
+
+$(mandir)/man1/srec_cat.1: man/man1/srec_cat.1 etc/version.so \
+		man/man1/o_at.so man/man1/o_ignore_checksums.so \
+		man/man1/o_input.so man/man1/o_multiple.so \
+		man/man1/o_sequence.so man/man1/z_copyright.so \
+		man/man1/z_exit.so man/man1/z_options.so \
+		man/man1/.mandir 
+	$(SOELIM) -I. -Iman/man1 man/man1/srec_cat.1 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man1/srec_cmp.1: man/man1/srec_cmp.1 etc/version.so \
+		man/man1/o_at.so man/man1/o_ignore_checksums.so \
+		man/man1/o_input.so man/man1/o_multiple.so \
+		man/man1/o_sequence.so man/man1/z_copyright.so \
+		man/man1/z_exit.so man/man1/z_options.so \
+		man/man1/.mandir 
+	$(SOELIM) -I. -Iman/man1 man/man1/srec_cmp.1 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man1/srec_examples.1: man/man1/srec_examples.1 etc/version.so \
+		man/man1/z_copyright.so man/man1/.mandir 
+	$(SOELIM) -I. -Iman/man1 man/man1/srec_examples.1 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man1/srec_info.1: man/man1/srec_info.1 etc/version.so \
+		man/man1/o_at.so man/man1/o_ignore_checksums.so \
+		man/man1/o_input.so man/man1/o_multiple.so \
+		man/man1/o_sequence.so man/man1/z_copyright.so \
+		man/man1/z_exit.so man/man1/z_options.so \
+		man/man1/.mandir 
+	$(SOELIM) -I. -Iman/man1 man/man1/srec_info.1 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man1/srec_input.1: man/man1/srec_input.1 etc/version.so \
+		man/man1/o_ignore_checksums.so man/man1/z_copyright.so \
+		man/man1/z_options.so man/man1/.mandir 
+	$(SOELIM) -I. -Iman/man1 man/man1/srec_input.1 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man1/srec_license.1: man/man1/srec_license.1  man/man1/.mandir
+	$(SOELIM) -I. -Iman/man1 man/man1/srec_license.1 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+man/man5/.mandir: man/.mandir
+	-$(INSTALL) -m 0755 -d $(mandir)/man5
+	@-test -d $(mandir)/man5 && touch $@
+	@sleep 1
+
+$(mandir)/man5/srec_aomf.5: man/man5/srec_aomf.5 etc/version.so \
+		man/man1/z_copyright.so man/man5/.mandir 
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_aomf.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_ascii_hex.5: man/man5/srec_ascii_hex.5 \
+		etc/version.so man/man1/z_copyright.so man/man5/.mandir 
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_ascii_hex.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_atmel_generic.5: man/man5/srec_atmel_generic.5 \
+		etc/version.so man/man1/z_copyright.so man/man5/.mandir 
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_atmel_generic.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_binary.5: man/man5/srec_binary.5 etc/version.so \
+		man/man1/z_copyright.so man/man5/.mandir 
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_binary.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_brecord.5: man/man5/srec_brecord.5 etc/version.so \
+		man/man1/z_copyright.so man/man5/.mandir 
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_brecord.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_cosmac.5: man/man5/srec_cosmac.5 etc/version.so \
+		man/man1/z_copyright.so man/man5/.mandir 
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_cosmac.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_dec_binary.5: man/man5/srec_dec_binary.5 \
+		etc/version.so man/man1/z_copyright.so man/man5/.mandir 
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_dec_binary.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_emon52.5: man/man5/srec_emon52.5  man/man5/.mandir
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_emon52.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_fairchild.5: man/man5/srec_fairchild.5 \
+		etc/version.so man/man1/z_copyright.so man/man5/.mandir 
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_fairchild.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_fastload.5: man/man5/srec_fastload.5 etc/version.so \
+		man/man1/z_copyright.so man/man5/.mandir 
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_fastload.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_formatted_binary.5: \
+		man/man5/srec_formatted_binary.5 etc/version.so \
+		man/man1/z_copyright.so man/man5/.mandir 
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_formatted_binary.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_forth.5: man/man5/srec_forth.5 etc/version.so \
+		man/man1/z_copyright.so man/man5/.mandir 
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_forth.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_fpc.5: man/man5/srec_fpc.5  man/man5/.mandir
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_fpc.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_intel.5: man/man5/srec_intel.5 etc/version.so \
+		man/man1/z_copyright.so man/man5/.mandir 
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_intel.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_intel16.5: man/man5/srec_intel16.5 etc/version.so \
+		man/man1/z_copyright.so man/man5/.mandir 
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_intel16.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_mif.5: man/man5/srec_mif.5 etc/version.so \
+		man/man1/z_copyright.so man/man5/.mandir 
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_mif.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_mos_tech.5: man/man5/srec_mos_tech.5 etc/version.so \
+		man/man1/z_copyright.so man/man5/.mandir 
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_mos_tech.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_motorola.5: man/man5/srec_motorola.5 etc/version.so \
+		man/man1/z_copyright.so man/man5/.mandir 
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_motorola.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_needham.5: man/man5/srec_needham.5 etc/version.so \
+		man/man1/z_copyright.so man/man5/.mandir 
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_needham.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_os65v.5: man/man5/srec_os65v.5 etc/version.so \
+		man/man1/z_copyright.so man/man5/.mandir 
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_os65v.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_signetics.5: man/man5/srec_signetics.5 \
+		man/man5/.mandir 
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_signetics.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_spasm.5: man/man5/srec_spasm.5 etc/version.so \
+		man/man1/z_copyright.so man/man5/.mandir 
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_spasm.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_spectrum.5: man/man5/srec_spectrum.5 etc/version.so \
+		man/man1/z_copyright.so man/man5/.mandir 
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_spectrum.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_stewie.5: man/man5/srec_stewie.5 etc/version.so \
+		man/man1/z_copyright.so man/man5/.mandir 
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_stewie.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_tektronix.5: man/man5/srec_tektronix.5 \
+		etc/version.so man/man1/z_copyright.so man/man5/.mandir 
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_tektronix.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_tektronix_extended.5: \
+		man/man5/srec_tektronix_extended.5 etc/version.so \
+		man/man1/z_copyright.so man/man5/.mandir 
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_tektronix_extended.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_ti_tagged.5: man/man5/srec_ti_tagged.5 \
+		etc/version.so man/man1/z_copyright.so man/man5/.mandir 
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_ti_tagged.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_ti_tagged_16.5: man/man5/srec_ti_tagged_16.5 \
+		etc/version.so man/man1/z_copyright.so man/man5/.mandir 
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_ti_tagged_16.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_ti_txt.5: man/man5/srec_ti_txt.5 etc/version.so \
+		man/man1/z_copyright.so man/man5/.mandir 
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_ti_txt.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_vmem.5: man/man5/srec_vmem.5 etc/version.so \
+		man/man1/z_copyright.so man/man5/.mandir 
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_vmem.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+$(mandir)/man5/srec_wilson.5: man/man5/srec_wilson.5 etc/version.so \
+		man/man1/z_copyright.so man/man5/.mandir 
+	$(SOELIM) -I. -Iman/man5 man/man5/srec_wilson.5 > tmp
+	$(INSTALL_DATA) tmp $@
+	@rm -f tmp
+
+script/test_prelude: script/test_prelude.in ./config.status
+	CONFIG_FILES=$@:script/test_prelude.in CONFIG_HEADERS= $(SH) \
+		./config.status 
+
+bin/test_prelude: script/test_prelude .bin
+	cp script/test_prelude $@
+	chmod a+rx $@
+
+$(bindir)/$(PROGRAM_PREFIX)test_prelude$(PROGRAM_SUFFIX): \
+		bin/test_prelude .bindir 
+	$(INSTALL_SCRIPT) bin/test_prelude $@
+
+srec_cat/arglex3.o: srec_cat/arglex3.cc lib/arglex.h lib/endian.h \
+		lib/format_printf.h lib/srec/arglex.h lib/srec/input.h \
+		lib/srec/output.h srec_cat/arglex3.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c srec_cat/arglex3.cc
+	mv arglex3.o srec_cat/arglex3.o
+
+srec_cat/main.o: srec_cat/main.cc lib/arglex.h lib/endian.h \
+		lib/format_printf.h lib/srec/arglex.h lib/srec/input.h \
+		lib/srec/input/catenate.h lib/srec/input/file.h \
+		lib/srec/memory.h lib/srec/memory/chunk.h \
+		lib/srec/memory/walker.h \
+		lib/srec/memory/walker/writer.h lib/srec/output.h \
+		lib/srec/output/file.h srec_cat/arglex3.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c srec_cat/main.cc
+	mv main.o srec_cat/main.o
+
+srec_cmp/main.o: srec_cmp/main.cc lib/arglex.h lib/endian.h \
+		lib/format_printf.h lib/srec/arglex.h lib/srec/input.h \
+		lib/srec/input/file.h lib/srec/memory.h \
+		lib/srec/memory/chunk.h lib/srec/memory/walker.h \
+		lib/srec/output.h lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c srec_cmp/main.cc
+	mv main.o srec_cmp/main.o
+
+srec_info/main.o: srec_info/main.cc lib/arglex.h lib/endian.h \
+		lib/format_printf.h lib/interval.h lib/srec/arglex.h \
+		lib/srec/input.h lib/srec/input/file.h \
+		lib/srec/memory.h lib/srec/memory/chunk.h \
+		lib/srec/memory/walker.h lib/srec/output.h \
+		lib/srec/record.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c srec_info/main.cc
+	mv main.o srec_info/main.o
+
+t0001a: test/00/t0001a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0001a.sh
+
+t0002a: test/00/t0002a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0002a.sh
+
+t0003a: test/00/t0003a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0003a.sh
+
+t0004a: test/00/t0004a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0004a.sh
+
+t0005a: test/00/t0005a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0005a.sh
+
+t0006a: test/00/t0006a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0006a.sh
+
+t0007a: test/00/t0007a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0007a.sh
+
+t0008a: test/00/t0008a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0008a.sh
+
+t0009a: test/00/t0009a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0009a.sh
+
+t0010a: test/00/t0010a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0010a.sh
+
+t0011a: test/00/t0011a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0011a.sh
+
+t0012a: test/00/t0012a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0012a.sh
+
+t0013a: test/00/t0013a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0013a.sh
+
+t0014a: test/00/t0014a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0014a.sh
+
+t0015a: test/00/t0015a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0015a.sh
+
+t0016a: test/00/t0016a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0016a.sh
+
+t0017a: test/00/t0017a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0017a.sh
+
+t0018a: test/00/t0018a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0018a.sh
+
+t0019a: test/00/t0019a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0019a.sh
+
+t0020a: test/00/t0020a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0020a.sh
+
+t0021a: test/00/t0021a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0021a.sh
+
+t0022a: test/00/t0022a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0022a.sh
+
+t0023a: test/00/t0023a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0023a.sh
+
+t0024a: test/00/t0024a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0024a.sh
+
+t0025a: test/00/t0025a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0025a.sh
+
+t0026a: test/00/t0026a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0026a.sh
+
+t0027a: test/00/t0027a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0027a.sh
+
+t0028a: test/00/t0028a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0028a.sh
+
+t0029a: test/00/t0029a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0029a.sh
+
+t0030a: test/00/t0030a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0030a.sh
+
+t0031a: test/00/t0031a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0031a.sh
+
+t0032a: test/00/t0032a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0032a.sh
+
+t0033a: test/00/t0033a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0033a.sh
+
+t0034a: test/00/t0034a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0034a.sh
+
+t0035a: test/00/t0035a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0035a.sh
+
+t0036a: test/00/t0036a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0036a.sh
+
+t0037a: test/00/t0037a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0037a.sh
+
+t0038a: test/00/t0038a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0038a.sh
+
+t0039a: test/00/t0039a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0039a.sh
+
+t0040a: test/00/t0040a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0040a.sh
+
+t0050a: test/00/t0050a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0050a.sh
+
+t0051a: test/00/t0051a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0051a.sh
+
+t0052a: test/00/t0052a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0052a.sh
+
+t0053a: test/00/t0053a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0053a.sh
+
+t0055a: test/00/t0055a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0055a.sh
+
+t0056a: test/00/t0056a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0056a.sh
+
+t0057a: test/00/t0057a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0057a.sh
+
+t0058a: test/00/t0058a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0058a.sh
+
+t0059a: test/00/t0059a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0059a.sh
+
+t0060a: test/00/t0060a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0060a.sh
+
+t0061a: test/00/t0061a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0061a.sh
+
+t0062a: test/00/t0062a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0062a.sh
+
+t0063a: test/00/t0063a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0063a.sh
+
+t0065a: test/00/t0065a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0065a.sh
+
+t0066a: test/00/t0066a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0066a.sh
+
+t0067a: test/00/t0067a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0067a.sh
+
+t0068a: test/00/t0068a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0068a.sh
+
+t0069a: test/00/t0069a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0069a.sh
+
+t0070a: test/00/t0070a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0070a.sh
+
+t0071a: test/00/t0071a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0071a.sh
+
+t0072a: test/00/t0072a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0072a.sh
+
+t0073a: test/00/t0073a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0073a.sh
+
+t0075a: test/00/t0075a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0075a.sh
+
+t0076a: test/00/t0076a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0076a.sh
+
+t0077a: test/00/t0077a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0077a.sh
+
+t0078a: test/00/t0078a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0078a.sh
+
+t0079a: test/00/t0079a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0079a.sh
+
+t0080a: test/00/t0080a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0080a.sh
+
+t0081a: test/00/t0081a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0081a.sh
+
+t0082a: test/00/t0082a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0082a.sh
+
+t0083a: test/00/t0083a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0083a.sh
+
+t0085a: test/00/t0085a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0085a.sh
+
+t0086a: test/00/t0086a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0086a.sh
+
+t0087a: test/00/t0087a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0087a.sh
+
+t0088a: test/00/t0088a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0088a.sh
+
+t0089a: test/00/t0089a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0089a.sh
+
+t0090a: test/00/t0090a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0090a.sh
+
+t0091a: test/00/t0091a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0091a.sh
+
+t0092a: test/00/t0092a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0092a.sh
+
+t0093a: test/00/t0093a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0093a.sh
+
+t0095a: test/00/t0095a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0095a.sh
+
+t0096a: test/00/t0096a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0096a.sh
+
+t0097a: test/00/t0097a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0097a.sh
+
+t0098a: test/00/t0098a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0098a.sh
+
+t0099a: test/00/t0099a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/00/t0099a.sh
+
+t0100a: test/01/t0100a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0100a.sh
+
+t0101a: test/01/t0101a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0101a.sh
+
+t0102a: test/01/t0102a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0102a.sh
+
+t0103a: test/01/t0103a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0103a.sh
+
+t0105a: test/01/t0105a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0105a.sh
+
+t0106a: test/01/t0106a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0106a.sh
+
+t0107a: test/01/t0107a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0107a.sh
+
+t0108a: test/01/t0108a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0108a.sh
+
+t0109a: test/01/t0109a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0109a.sh
+
+t0110a: test/01/t0110a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0110a.sh
+
+t0111a: test/01/t0111a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0111a.sh
+
+t0112a: test/01/t0112a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0112a.sh
+
+t0113a: test/01/t0113a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0113a.sh
+
+t0115a: test/01/t0115a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0115a.sh
+
+t0116a: test/01/t0116a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0116a.sh
+
+t0117a: test/01/t0117a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0117a.sh
+
+t0118a: test/01/t0118a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0118a.sh
+
+t0119a: test/01/t0119a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0119a.sh
+
+t0120a: test/01/t0120a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0120a.sh
+
+t0121a: test/01/t0121a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0121a.sh
+
+t0122a: test/01/t0122a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0122a.sh
+
+t0123a: test/01/t0123a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0123a.sh
+
+t0125a: test/01/t0125a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0125a.sh
+
+t0126a: test/01/t0126a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0126a.sh
+
+t0127a: test/01/t0127a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0127a.sh
+
+t0128a: test/01/t0128a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0128a.sh
+
+t0129a: test/01/t0129a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0129a.sh
+
+t0130a: test/01/t0130a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0130a.sh
+
+t0131a: test/01/t0131a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0131a.sh
+
+t0132a: test/01/t0132a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0132a.sh
+
+t0133a: test/01/t0133a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0133a.sh
+
+t0135a: test/01/t0135a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0135a.sh
+
+t0136a: test/01/t0136a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0136a.sh
+
+t0137a: test/01/t0137a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0137a.sh
+
+t0138a: test/01/t0138a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0138a.sh
+
+t0139a: test/01/t0139a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0139a.sh
+
+t0150a: test/01/t0150a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0150a.sh
+
+t0151a: test/01/t0151a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0151a.sh
+
+t0152a: test/01/t0152a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0152a.sh
+
+t0153a: test/01/t0153a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0153a.sh
+
+t0155a: test/01/t0155a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0155a.sh
+
+t0156a: test/01/t0156a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0156a.sh
+
+t0157a: test/01/t0157a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0157a.sh
+
+t0158a: test/01/t0158a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0158a.sh
+
+t0159a: test/01/t0159a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0159a.sh
+
+t0160a: test/01/t0160a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0160a.sh
+
+t0161a: test/01/t0161a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0161a.sh
+
+t0162a: test/01/t0162a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0162a.sh
+
+t0163a: test/01/t0163a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0163a.sh
+
+t0165a: test/01/t0165a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0165a.sh
+
+t0166a: test/01/t0166a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0166a.sh
+
+t0167a: test/01/t0167a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0167a.sh
+
+t0168a: test/01/t0168a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0168a.sh
+
+t0169a: test/01/t0169a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0169a.sh
+
+t0170a: test/01/t0170a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0170a.sh
+
+t0171a: test/01/t0171a.sh all
+	PATH=`pwd`/bin:$$PATH $(SH) test/01/t0171a.sh
+
+test_crc16/main.o: test_crc16/main.cc lib/crc16.h lib/format_printf.h \
+		lib/progname.h lib/quit.h 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -c test_crc16/main.cc
+	mv main.o test_crc16/main.o
+
+lib_obj = lib/arglex.o lib/crc16.o lib/crc32.o lib/endian.o \
+		lib/interval.o lib/interval/coverage.o \
+		lib/interval/flatten.o lib/pretty_size.o lib/progname.o \
+		lib/quit.o lib/quit/exception.o lib/quit/normal.o \
+		lib/quit/prefix.o lib/r250.o lib/srec/arglex.o \
+		lib/srec/arglex/get_interval.o \
+		lib/srec/arglex/get_interval_small.o \
+		lib/srec/arglex/get_number.o \
+		lib/srec/arglex/get_string.o lib/srec/arglex/input.o \
+		lib/srec/arglex/output.o lib/srec/input.o \
+		lib/srec/input/catenate.o lib/srec/input/file.o \
+		lib/srec/input/file/aomf.o \
+		lib/srec/input/file/ascii_hex.o \
+		lib/srec/input/file/atmel_generic.o \
+		lib/srec/input/file/binary.o \
+		lib/srec/input/file/brecord.o \
+		lib/srec/input/file/cosmac.o \
+		lib/srec/input/file/dec_binary.o \
+		lib/srec/input/file/emon52.o \
+		lib/srec/input/file/fairchild.o \
+		lib/srec/input/file/fastload.o \
+		lib/srec/input/file/formatted_binary.o \
+		lib/srec/input/file/four_packed_code.o \
+		lib/srec/input/file/guess.o lib/srec/input/file/intel.o \
+		lib/srec/input/file/intel16.o lib/srec/input/file/mif.o \
+		lib/srec/input/file/mos_tech.o \
+		lib/srec/input/file/needham.o \
+		lib/srec/input/file/os65v.o \
+		lib/srec/input/file/signetics.o \
+		lib/srec/input/file/spasm.o \
+		lib/srec/input/file/spectrum.o \
+		lib/srec/input/file/srecord.o \
+		lib/srec/input/file/stewie.o \
+		lib/srec/input/file/tektronix.o \
+		lib/srec/input/file/tektronix_extended.o \
+		lib/srec/input/file/ti_tagged.o \
+		lib/srec/input/file/ti_tagged_16.o \
+		lib/srec/input/file/ti_txt.o lib/srec/input/file/vmem.o \
+		lib/srec/input/file/wilson.o lib/srec/input/filter.o \
+		lib/srec/input/filter/and.o \
+		lib/srec/input/filter/byte_swap.o \
+		lib/srec/input/filter/checksum.o \
+		lib/srec/input/filter/checksum/bitnot.o \
+		lib/srec/input/filter/checksum/negative.o \
+		lib/srec/input/filter/checksum/positive.o \
+		lib/srec/input/filter/crc16.o \
+		lib/srec/input/filter/crc32.o \
+		lib/srec/input/filter/crop.o \
+		lib/srec/input/filter/fill.o \
+		lib/srec/input/filter/interval.o \
+		lib/srec/input/filter/interval/length.o \
+		lib/srec/input/filter/interval/maximum.o \
+		lib/srec/input/filter/interval/minimum.o \
+		lib/srec/input/filter/not.o \
+		lib/srec/input/filter/offset.o \
+		lib/srec/input/filter/or.o \
+		lib/srec/input/filter/random_fill.o \
+		lib/srec/input/filter/sequence.o \
+		lib/srec/input/filter/split.o \
+		lib/srec/input/filter/unfill.o \
+		lib/srec/input/filter/unsplit.o \
+		lib/srec/input/filter/xor.o lib/srec/input/generator.o \
+		lib/srec/input/generator/constant.o \
+		lib/srec/input/generator/random.o \
+		lib/srec/input/generator/repeat.o \
+		lib/srec/input/interval.o lib/srec/memory.o \
+		lib/srec/memory/chunk.o lib/srec/memory/walker.o \
+		lib/srec/memory/walker/compare.o \
+		lib/srec/memory/walker/continuity.o \
+		lib/srec/memory/walker/crc16.o \
+		lib/srec/memory/walker/crc32.o \
+		lib/srec/memory/walker/writer.o lib/srec/output.o \
+		lib/srec/output/file.o lib/srec/output/file/aomf.o \
+		lib/srec/output/file/ascii_hex.o \
+		lib/srec/output/file/asm.o \
+		lib/srec/output/file/atmel_generic.o \
+		lib/srec/output/file/basic.o \
+		lib/srec/output/file/binary.o \
+		lib/srec/output/file/brecord.o lib/srec/output/file/c.o \
+		lib/srec/output/file/cosmac.o \
+		lib/srec/output/file/dec_binary.o \
+		lib/srec/output/file/emon52.o \
+		lib/srec/output/file/fairchild.o \
+		lib/srec/output/file/fastload.o \
+		lib/srec/output/file/formatted_binary.o \
+		lib/srec/output/file/forth.o \
+		lib/srec/output/file/four_packed_code.o \
+		lib/srec/output/file/hexdump.o \
+		lib/srec/output/file/intel.o \
+		lib/srec/output/file/intel16.o \
+		lib/srec/output/file/line_termination.o \
+		lib/srec/output/file/mif.o \
+		lib/srec/output/file/mos_tech.o \
+		lib/srec/output/file/needham.o \
+		lib/srec/output/file/os65v.o \
+		lib/srec/output/file/signetics.o \
+		lib/srec/output/file/spasm.o \
+		lib/srec/output/file/spectrum.o \
+		lib/srec/output/file/srecord.o \
+		lib/srec/output/file/stewie.o \
+		lib/srec/output/file/tektronix.o \
+		lib/srec/output/file/tektronix_extended.o \
+		lib/srec/output/file/ti_tagged.o \
+		lib/srec/output/file/ti_tagged_16.o \
+		lib/srec/output/file/ti_txt.o \
+		lib/srec/output/file/vhdl.o lib/srec/output/file/vmem.o \
+		lib/srec/output/file/wilson.o lib/srec/record.o \
+		lib/versn_stamp.o lib/vsnprintf.o 
+
+lib/libsrecord.a: $(lib_obj)
+	rm -f $@
+	$(AR) qc $@ $(lib_obj)
+	$(RANLIB) $@
+
+srec_cat_obj = srec_cat/arglex3.o srec_cat/main.o
+
+bin/srec_cat: $(srec_cat_obj) lib/libsrecord.a .bin
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $@ $(srec_cat_obj) \
+		lib/libsrecord.a $(LIBS) 
+
+$(bindir)/srec_cat: bin/srec_cat .bindir
+	$(INSTALL_PROGRAM) bin/srec_cat $@
+
+srec_cmp_obj = srec_cmp/main.o
+
+bin/srec_cmp: $(srec_cmp_obj) lib/libsrecord.a .bin
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $@ $(srec_cmp_obj) \
+		lib/libsrecord.a $(LIBS) 
+
+$(bindir)/srec_cmp: bin/srec_cmp .bindir
+	$(INSTALL_PROGRAM) bin/srec_cmp $@
+
+srec_info_obj = srec_info/main.o
+
+bin/srec_info: $(srec_info_obj) lib/libsrecord.a .bin
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $@ $(srec_info_obj) \
+		lib/libsrecord.a $(LIBS) 
+
+$(bindir)/srec_info: bin/srec_info .bindir
+	$(INSTALL_PROGRAM) bin/srec_info $@
+
+test_crc16_obj = test_crc16/main.o
+
+bin/test_crc16: $(test_crc16_obj) lib/libsrecord.a .bin
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $@ $(test_crc16_obj) \
+		lib/libsrecord.a $(LIBS) 
+
+$(bindir)/test_crc16: bin/test_crc16 .bindir
+	$(INSTALL_PROGRAM) bin/test_crc16 $@
+
+all: all-bin all-doc
+all-bin: bin/srec_cat bin/srec_cmp bin/srec_info bin/test_crc16 \
+		bin/test_prelude 
+all-doc: etc/BUILDING.ps etc/README.ps etc/change_log.ps \
+		etc/reference.ps 
+
+.bin:
+	-mkdir bin
+	-chmod 0755 bin
+	@-test -d bin && touch $@
+	@sleep 1
+
+.bindir:
+	-$(INSTALL) -m 0755 -d $(bindir)
+	@-test -d $(bindir) && touch $@
+	@sleep 1
+
+check: sure
+
+sure: t0001a \
+	t0002a \
+	t0003a \
+	t0004a \
+	t0005a \
+	t0006a \
+	t0007a \
+	t0008a \
+	t0009a \
+	t0010a \
+	t0011a \
+	t0012a \
+	t0013a \
+	t0014a \
+	t0015a \
+	t0016a \
+	t0017a \
+	t0018a \
+	t0019a \
+	t0020a \
+	t0021a \
+	t0022a \
+	t0023a \
+	t0024a \
+	t0025a \
+	t0026a \
+	t0027a \
+	t0028a \
+	t0029a \
+	t0030a \
+	t0031a \
+	t0032a \
+	t0033a \
+	t0034a \
+	t0035a \
+	t0036a \
+	t0037a \
+	t0038a \
+	t0039a \
+	t0040a \
+	t0050a \
+	t0051a \
+	t0052a \
+	t0053a \
+	t0055a \
+	t0056a \
+	t0057a \
+	t0058a \
+	t0059a \
+	t0060a \
+	t0061a \
+	t0062a \
+	t0063a \
+	t0065a \
+	t0066a \
+	t0067a \
+	t0068a \
+	t0069a \
+	t0070a \
+	t0071a \
+	t0072a \
+	t0073a \
+	t0075a \
+	t0076a \
+	t0077a \
+	t0078a \
+	t0079a \
+	t0080a \
+	t0081a \
+	t0082a \
+	t0083a \
+	t0085a \
+	t0086a \
+	t0087a \
+	t0088a \
+	t0089a \
+	t0090a \
+	t0091a \
+	t0092a \
+	t0093a \
+	t0095a \
+	t0096a \
+	t0097a \
+	t0098a \
+	t0099a \
+	t0100a \
+	t0101a \
+	t0102a \
+	t0103a \
+	t0105a \
+	t0106a \
+	t0107a \
+	t0108a \
+	t0109a \
+	t0110a \
+	t0111a \
+	t0112a \
+	t0113a \
+	t0115a \
+	t0116a \
+	t0117a \
+	t0118a \
+	t0119a \
+	t0120a \
+	t0121a \
+	t0122a \
+	t0123a \
+	t0125a \
+	t0126a \
+	t0127a \
+	t0128a \
+	t0129a \
+	t0130a \
+	t0131a \
+	t0132a \
+	t0133a \
+	t0135a \
+	t0136a \
+	t0137a \
+	t0138a \
+	t0139a \
+	t0150a \
+	t0151a \
+	t0152a \
+	t0153a \
+	t0155a \
+	t0156a \
+	t0157a \
+	t0158a \
+	t0159a \
+	t0160a \
+	t0161a \
+	t0162a \
+	t0163a \
+	t0165a \
+	t0166a \
+	t0167a \
+	t0168a \
+	t0169a \
+	t0170a \
+	t0171a
+	@echo Passed All Tests
+
+clean-obj:
+	rm -f .bin
+	rm -f .bindir
+	rm -f bin/test_prelude
+	rm -f core
+	rm -f lib/arglex.o
+	rm -f lib/crc16.o
+	rm -f lib/crc32.o
+	rm -f lib/endian.o
+	rm -f lib/interval.o
+	rm -f lib/interval/coverage.o
+	rm -f lib/interval/flatten.o
+	rm -f lib/libsrecord.a
+	rm -f lib/pretty_size.o
+	rm -f lib/progname.o
+	rm -f lib/quit.o
+	rm -f lib/quit/exception.o
+	rm -f lib/quit/normal.o
+	rm -f lib/quit/prefix.o
+	rm -f lib/r250.o
+	rm -f lib/srec/arglex.o
+	rm -f lib/srec/arglex/get_interval.o
+	rm -f lib/srec/arglex/get_interval_small.o
+	rm -f lib/srec/arglex/get_number.o
+	rm -f lib/srec/arglex/get_string.o
+	rm -f lib/srec/arglex/input.o
+	rm -f lib/srec/arglex/output.o
+	rm -f lib/srec/input.o
+	rm -f lib/srec/input/catenate.o
+	rm -f lib/srec/input/file.o
+	rm -f lib/srec/input/file/aomf.o
+	rm -f lib/srec/input/file/ascii_hex.o
+	rm -f lib/srec/input/file/atmel_generic.o
+	rm -f lib/srec/input/file/binary.o
+	rm -f lib/srec/input/file/brecord.o
+	rm -f lib/srec/input/file/cosmac.o
+	rm -f lib/srec/input/file/dec_binary.o
+	rm -f lib/srec/input/file/emon52.o
+	rm -f lib/srec/input/file/fairchild.o
+	rm -f lib/srec/input/file/fastload.o
+	rm -f lib/srec/input/file/formatted_binary.o
+	rm -f lib/srec/input/file/four_packed_code.o
+	rm -f lib/srec/input/file/guess.o
+	rm -f lib/srec/input/file/intel.o
+	rm -f lib/srec/input/file/intel16.o
+	rm -f lib/srec/input/file/mif.o
+	rm -f lib/srec/input/file/mos_tech.o
+	rm -f lib/srec/input/file/needham.o
+	rm -f lib/srec/input/file/os65v.o
+	rm -f lib/srec/input/file/signetics.o
+	rm -f lib/srec/input/file/spasm.o
+	rm -f lib/srec/input/file/spectrum.o
+	rm -f lib/srec/input/file/srecord.o
+	rm -f lib/srec/input/file/stewie.o
+	rm -f lib/srec/input/file/tektronix.o
+	rm -f lib/srec/input/file/tektronix_extended.o
+	rm -f lib/srec/input/file/ti_tagged.o
+	rm -f lib/srec/input/file/ti_tagged_16.o
+	rm -f lib/srec/input/file/ti_txt.o
+	rm -f lib/srec/input/file/vmem.o
+	rm -f lib/srec/input/file/wilson.o
+	rm -f lib/srec/input/filter.o
+	rm -f lib/srec/input/filter/and.o
+	rm -f lib/srec/input/filter/byte_swap.o
+	rm -f lib/srec/input/filter/checksum.o
+	rm -f lib/srec/input/filter/checksum/bitnot.o
+	rm -f lib/srec/input/filter/checksum/negative.o
+	rm -f lib/srec/input/filter/checksum/positive.o
+	rm -f lib/srec/input/filter/crc16.o
+	rm -f lib/srec/input/filter/crc32.o
+	rm -f lib/srec/input/filter/crop.o
+	rm -f lib/srec/input/filter/fill.o
+	rm -f lib/srec/input/filter/interval.o
+	rm -f lib/srec/input/filter/interval/length.o
+	rm -f lib/srec/input/filter/interval/maximum.o
+	rm -f lib/srec/input/filter/interval/minimum.o
+	rm -f lib/srec/input/filter/not.o
+	rm -f lib/srec/input/filter/offset.o
+	rm -f lib/srec/input/filter/or.o
+	rm -f lib/srec/input/filter/random_fill.o
+	rm -f lib/srec/input/filter/sequence.o
+	rm -f lib/srec/input/filter/split.o
+	rm -f lib/srec/input/filter/unfill.o
+	rm -f lib/srec/input/filter/unsplit.o
+	rm -f lib/srec/input/filter/xor.o
+	rm -f lib/srec/input/generator.o
+	rm -f lib/srec/input/generator/constant.o
+	rm -f lib/srec/input/generator/random.o
+	rm -f lib/srec/input/generator/repeat.o
+	rm -f lib/srec/input/interval.o
+	rm -f lib/srec/memory.o
+	rm -f lib/srec/memory/chunk.o
+	rm -f lib/srec/memory/walker.o
+	rm -f lib/srec/memory/walker/compare.o
+	rm -f lib/srec/memory/walker/continuity.o
+	rm -f lib/srec/memory/walker/crc16.o
+	rm -f lib/srec/memory/walker/crc32.o
+	rm -f lib/srec/memory/walker/writer.o
+	rm -f lib/srec/output.o
+	rm -f lib/srec/output/file.o
+	rm -f lib/srec/output/file/aomf.o
+	rm -f lib/srec/output/file/ascii_hex.o
+	rm -f lib/srec/output/file/asm.o
+	rm -f lib/srec/output/file/atmel_generic.o
+	rm -f lib/srec/output/file/basic.o
+	rm -f lib/srec/output/file/binary.o
+	rm -f lib/srec/output/file/brecord.o
+	rm -f lib/srec/output/file/c.o
+	rm -f lib/srec/output/file/cosmac.o
+	rm -f lib/srec/output/file/dec_binary.o
+	rm -f lib/srec/output/file/emon52.o
+	rm -f lib/srec/output/file/fairchild.o
+	rm -f lib/srec/output/file/fastload.o
+	rm -f lib/srec/output/file/formatted_binary.o
+	rm -f lib/srec/output/file/forth.o
+	rm -f lib/srec/output/file/four_packed_code.o
+	rm -f lib/srec/output/file/hexdump.o
+	rm -f lib/srec/output/file/intel.o
+	rm -f lib/srec/output/file/intel16.o
+	rm -f lib/srec/output/file/line_termination.o
+	rm -f lib/srec/output/file/mif.o
+	rm -f lib/srec/output/file/mos_tech.o
+	rm -f lib/srec/output/file/needham.o
+	rm -f lib/srec/output/file/os65v.o
+	rm -f lib/srec/output/file/signetics.o
+	rm -f lib/srec/output/file/spasm.o
+	rm -f lib/srec/output/file/spectrum.o
+	rm -f lib/srec/output/file/srecord.o
+	rm -f lib/srec/output/file/stewie.o
+	rm -f lib/srec/output/file/tektronix.o
+	rm -f lib/srec/output/file/tektronix_extended.o
+	rm -f lib/srec/output/file/ti_tagged.o
+	rm -f lib/srec/output/file/ti_tagged_16.o
+	rm -f lib/srec/output/file/ti_txt.o
+	rm -f lib/srec/output/file/vhdl.o
+	rm -f lib/srec/output/file/vmem.o
+	rm -f lib/srec/output/file/wilson.o
+	rm -f lib/srec/record.o
+	rm -f lib/versn_stamp.o
+	rm -f lib/vsnprintf.o
+	rm -f man/.mandir
+	rm -f man/man1/.mandir
+	rm -f man/man5/.mandir
+	rm -f srec_cat/arglex3.o
+	rm -f srec_cat/main.o
+	rm -f srec_cmp/main.o
+	rm -f srec_info/main.o
+	rm -f test_crc16/main.o
+	rm -f y.output
+	rm -f y.tab.c
+	rm -f y.tab.h
+
+clean: clean-obj
+	rm -f bin/srec_cat
+	rm -f bin/srec_cmp
+	rm -f bin/srec_info
+	rm -f bin/test_crc16
+	rm -f bin/test_prelude
+	rm -f etc/BUILDING.ps
+	rm -f etc/README.ps
+	rm -f etc/change_log.ps
+	rm -f etc/reference.ps
+
+distclean: clean
+	rm -f Makefile
+	rm -f config.cache
+	rm -f config.log
+	rm -f config.status
+	rm -f etc/Howto.conf
+	rm -f lib/config.h
+	rm -f script/test_prelude
+
+install-bin: $(bindir)/srec_cat $(bindir)/srec_cmp $(bindir)/srec_info
+
+install-man: $(mandir)/man1/srec_cat.1 $(mandir)/man1/srec_cmp.1 \
+		$(mandir)/man1/srec_examples.1 \
+		$(mandir)/man1/srec_info.1 $(mandir)/man1/srec_input.1 \
+		$(mandir)/man1/srec_license.1 \
+		$(mandir)/man5/srec_aomf.5 \
+		$(mandir)/man5/srec_ascii_hex.5 \
+		$(mandir)/man5/srec_atmel_generic.5 \
+		$(mandir)/man5/srec_binary.5 \
+		$(mandir)/man5/srec_brecord.5 \
+		$(mandir)/man5/srec_cosmac.5 \
+		$(mandir)/man5/srec_dec_binary.5 \
+		$(mandir)/man5/srec_emon52.5 \
+		$(mandir)/man5/srec_fairchild.5 \
+		$(mandir)/man5/srec_fastload.5 \
+		$(mandir)/man5/srec_formatted_binary.5 \
+		$(mandir)/man5/srec_forth.5 $(mandir)/man5/srec_fpc.5 \
+		$(mandir)/man5/srec_intel.5 \
+		$(mandir)/man5/srec_intel16.5 $(mandir)/man5/srec_mif.5 \
+		$(mandir)/man5/srec_mos_tech.5 \
+		$(mandir)/man5/srec_motorola.5 \
+		$(mandir)/man5/srec_needham.5 \
+		$(mandir)/man5/srec_os65v.5 \
+		$(mandir)/man5/srec_signetics.5 \
+		$(mandir)/man5/srec_spasm.5 \
+		$(mandir)/man5/srec_spectrum.5 \
+		$(mandir)/man5/srec_stewie.5 \
+		$(mandir)/man5/srec_tektronix.5 \
+		$(mandir)/man5/srec_tektronix_extended.5 \
+		$(mandir)/man5/srec_ti_tagged.5 \
+		$(mandir)/man5/srec_ti_tagged_16.5 \
+		$(mandir)/man5/srec_ti_txt.5 $(mandir)/man5/srec_vmem.5 \
+		$(mandir)/man5/srec_wilson.5 
+
+install: install-bin install-man

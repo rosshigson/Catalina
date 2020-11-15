@@ -1,0 +1,25 @@
+/* 
+ * The files included here are created using spinnaker and spinc: 
+ *
+ *    cp threaded_kernel_array.p1 threaded_kernel_array.h
+ *
+ *    spinnaker -p -a -I  Catalina_LMM_threaded_dynamic.spin -o LMM_threaded_dynamic
+ *    spinc LMM_threaded_dynamic.binary > LMM_threaded_dynamic.inc
+ *
+ *    spinnaker -p -a -I  Catalina_CMM_threaded_dynamic.spin -o CMM_threaded_dynamic
+ *    spinc CMM_threaded_dynamic.binary > CMM_threaded_dynamic.inc
+ *
+ */
+#if defined(__CATALINA_COMPACT)
+
+// Catalina_CMM_threaded_dynamic kernel goes here ...
+
+#include "CMM_threaded_dynamic.inc"
+
+#else
+
+// Catalina_LMM_threaded_dynamic kernel goes here ...
+
+#include "LMM_threaded_dynamic.inc"
+
+#endif

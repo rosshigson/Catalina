@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="test_maximum_threads" />
+		<Option pch_mode="2" />
+		<Option compiler="catalina" />
+		<Build>
+			<Target title="Release">
+				<Option output="bin\Release\test_maximum_threads" prefix_auto="1" extension_auto="0" />
+				<Option object_output="obj\Release\" />
+				<Option type="1" />
+				<Option compiler="catalina" />
+				<Linker>
+					<Add option="-lthreads" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-CNO_FLOAT" />
+			<Add option="-CNTSC" />
+			<Add option="-CNO_MOUSE" />
+			<Add option="-CLORES_TV" />
+			<Add option="-CTINY" />
+			<Add option="-Clibthreads" />
+		</Compiler>
+		<Linker>
+			<Add option="-CNO_FLOAT" />
+			<Add option="-CNTSC" />
+			<Add option="-CNO_MOUSE" />
+			<Add option="-CLORES_TV" />
+			<Add option="-CTINY" />
+			<Add option="-lci" />
+		</Linker>
+		<Unit filename="..\..\demos\multithread\test_maximum_threads.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

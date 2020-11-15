@@ -1,0 +1,1668 @@
+' Catalina Code
+
+DAT ' code segment
+'
+' LCC 4.2 for Parallax Propeller
+' (Catalina v3.15 Code Generator by Ross Higson)
+'
+
+' Catalina Export get_object_address
+
+ alignl ' align long
+C_get_object_address ' <symbol:get_object_address>
+ PRIMITIVE(#NEWF)
+ sub SP, #4
+ PRIMITIVE(#PSHM)
+ long $d00000 ' save registers
+ mov r23, r2 ' reg var <- reg arg
+ mov r22, ##@C_h_type ' reg <- addrg
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ cmps r22,  #4 wcz
+ if_ae jmp #\C_get_object_address_6 ' GEI4
+ mov r22, #9 ' reg <- coni
+ mov r20, r23 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ #ifndef NO_INTERRUPTS
+  stalli
+ #endif
+ qmul r22, r20 ' MULI4
+ getqx r0
+ #ifndef NO_INTERRUPTS
+  allowi
+ #endif
+ mov r20, ##@C_h_objects_offset ' reg <- addrg
+ rdword r20, r20 ' reg <- CVUI4 INDIRU2 reg
+ adds r20, #62 ' ADDI4 coni
+ mov r22, r0
+ subs r22, #9 ' SUBI4 coni
+ adds r22, r20 ' ADDI/P (2)
+ mov RI, FP
+ sub RI, #-(-4)
+ wrlong r22, RI ' ASGNI4 addrli reg
+ jmp #\@C_get_object_address_7 ' JUMPV addrg
+C_get_object_address_6
+ mov r22, #14 ' reg <- coni
+ mov r20, r23 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ #ifndef NO_INTERRUPTS
+  stalli
+ #endif
+ qmul r22, r20 ' MULI4
+ getqx r0
+ #ifndef NO_INTERRUPTS
+  allowi
+ #endif
+ mov r20, ##@C_h_objects_offset ' reg <- addrg
+ rdword r20, r20 ' reg <- CVUI4 INDIRU2 reg
+ adds r20, #126 ' ADDI4 coni
+ mov r22, r0
+ subs r22, #14 ' SUBI4 coni
+ adds r22, r20 ' ADDI/P (2)
+ mov RI, FP
+ sub RI, #-(-4)
+ wrlong r22, RI ' ASGNI4 addrli reg
+C_get_object_address_7
+ mov r22, FP
+ sub r22, #-(-4) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRI4 reg
+ mov r0, r22 ' CVUI
+ and r0, cviu_m2 ' zero extend
+' C_get_object_address_5 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ add SP, #4 ' framesize
+ PRIMITIVE(#RETF)
+
+
+' Catalina Export z_insert_obj
+
+ alignl ' align long
+C_z_insert_obj ' <symbol:z_insert_obj>
+ PRIMITIVE(#NEWF)
+ sub SP, #8
+ PRIMITIVE(#PSHM)
+ long $e80000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ mov r22, r23 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ cmps r22,  #0 wz
+ if_nz jmp #\C_z_insert_obj_9 ' NEI4
+ mov r2, ##@C_z_insert_obj_11_L000012 ' reg ARG ADDRG
+ mov r3, #11 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_report_strictz_error
+ add SP, #4 ' CALL addrg
+C_z_insert_obj_9
+ mov r22, r21 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ cmps r22,  #0 wz
+ if_nz jmp #\C_z_insert_obj_13 ' NEI4
+ mov r2, ##@C_z_insert_obj_15_L000016 ' reg ARG ADDRG
+ mov r3, #12 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_report_strictz_error
+ add SP, #4 ' CALL addrg
+C_z_insert_obj_13
+ mov r2, r23 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_get_object_address ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov RI, FP
+ sub RI, #-(-4)
+ wrword r22, RI ' ASGNU2 addrli reg
+ mov r2, r21 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_get_object_address ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov r19, r22 ' CVI, CVU or LOAD
+ mov r2, r23 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_z_remove_obj ' CALL addrg
+ mov r2, r21 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov r3, #0 ' reg ARG coni
+ mov r22, FP
+ sub r22, #-(-4) ' reg <- addrli
+ rdword r4, r22 ' reg <- CVUI4 INDIRU2 reg
+ mov BC, #12 ' arg size, rpsize = 12, spsize = 12
+ sub SP, #8 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_scds1_5fa8f449_write_object_L000004
+ add SP, #8 ' CALL addrg
+ mov r2, #2 ' reg ARG coni
+ mov r3, r19 ' CVUI
+ and r3, cviu_m2 ' zero extend
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_scds_5fa8f449_read_object_L000003
+ add SP, #4 ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov RI, FP
+ sub RI, #-(-8)
+ wrword r22, RI ' ASGNU2 addrli reg
+ mov r2, r23 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov r3, #2 ' reg ARG coni
+ mov r4, r19 ' CVUI
+ and r4, cviu_m2 ' zero extend
+ mov BC, #12 ' arg size, rpsize = 12, spsize = 12
+ sub SP, #8 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_scds1_5fa8f449_write_object_L000004
+ add SP, #8 ' CALL addrg
+ mov r22, FP
+ sub r22, #-(-8) ' reg <- addrli
+ rdword r22, r22 ' reg <- CVUI4 INDIRU2 reg
+ cmps r22,  #0 wz
+ if_z jmp #\C_z_insert_obj_17 ' EQI4
+ mov r22, FP
+ sub r22, #-(-8) ' reg <- addrli
+ rdword r2, r22 ' reg <- CVUI4 INDIRU2 reg
+ mov r3, #1 ' reg ARG coni
+ mov r22, FP
+ sub r22, #-(-4) ' reg <- addrli
+ rdword r4, r22 ' reg <- CVUI4 INDIRU2 reg
+ mov BC, #12 ' arg size, rpsize = 12, spsize = 12
+ sub SP, #8 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_scds1_5fa8f449_write_object_L000004
+ add SP, #8 ' CALL addrg
+C_z_insert_obj_17
+' C_z_insert_obj_8 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ add SP, #8 ' framesize
+ PRIMITIVE(#RETF)
+
+
+' Catalina Export z_remove_obj
+
+ alignl ' align long
+C_z_remove_obj ' <symbol:z_remove_obj>
+ PRIMITIVE(#NEWF)
+ sub SP, #8
+ PRIMITIVE(#PSHM)
+ long $fa0000 ' save registers
+ mov r23, r2 ' reg var <- reg arg
+ mov r22, r23 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ cmps r22,  #0 wz
+ if_nz jmp #\C_z_remove_obj_20 ' NEI4
+ mov r2, ##@C_z_remove_obj_22_L000023 ' reg ARG ADDRG
+ mov r3, #13 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_report_strictz_error
+ add SP, #4 ' CALL addrg
+C_z_remove_obj_20
+ mov r2, r23 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_get_object_address ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov r17, r22 ' CVI, CVU or LOAD
+ mov r2, #0 ' reg ARG coni
+ mov r3, r17 ' CVUI
+ and r3, cviu_m2 ' zero extend
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_scds_5fa8f449_read_object_L000003
+ add SP, #4 ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov RI, FP
+ sub RI, #-(-8)
+ wrword r22, RI ' ASGNU2 addrli reg
+ and r22, cviu_m2 ' zero extend
+ cmps r22,  #0 wz
+ if_nz jmp #\C_z_remove_obj_24 ' NEI4
+ jmp #\@C_z_remove_obj_19 ' JUMPV addrg
+C_z_remove_obj_24
+ mov r22, FP
+ sub r22, #-(-8) ' reg <- addrli
+ rdword r2, r22 ' reg <- CVUI4 INDIRU2 reg
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_get_object_address ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov RI, FP
+ sub RI, #-(-4)
+ wrword r22, RI ' ASGNU2 addrli reg
+ mov r2, #2 ' reg ARG coni
+ mov r22, FP
+ sub r22, #-(-4) ' reg <- addrli
+ rdword r3, r22 ' reg <- CVUI4 INDIRU2 reg
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_scds_5fa8f449_read_object_L000003
+ add SP, #4 ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov r21, r22 ' CVI, CVU or LOAD
+ mov r22, r21 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ mov r20, r23 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ cmps r22, r20 wz
+ if_nz jmp #\C_z_remove_obj_26 ' NEI4
+ mov r2, #1 ' reg ARG coni
+ mov r3, r17 ' CVUI
+ and r3, cviu_m2 ' zero extend
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_scds_5fa8f449_read_object_L000003
+ add SP, #4 ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov r2, r22 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov r3, #2 ' reg ARG coni
+ mov r22, FP
+ sub r22, #-(-4) ' reg <- addrli
+ rdword r4, r22 ' reg <- CVUI4 INDIRU2 reg
+ mov BC, #12 ' arg size, rpsize = 12, spsize = 12
+ sub SP, #8 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_scds1_5fa8f449_write_object_L000004
+ add SP, #8 ' CALL addrg
+ jmp #\@C_z_remove_obj_27 ' JUMPV addrg
+C_z_remove_obj_26
+C_z_remove_obj_28
+ mov r2, r21 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_get_object_address ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov r19, r22 ' CVI, CVU or LOAD
+ mov r2, #1 ' reg ARG coni
+ mov r3, r19 ' CVUI
+ and r3, cviu_m2 ' zero extend
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_scds_5fa8f449_read_object_L000003
+ add SP, #4 ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov r21, r22 ' CVI, CVU or LOAD
+' C_z_remove_obj_29 ' (symbol refcount = 0)
+ mov r22, r21 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ mov r20, r23 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ cmps r22, r20 wz
+ if_nz jmp #\C_z_remove_obj_28 ' NEI4
+ mov r2, #1 ' reg ARG coni
+ mov r3, r17 ' CVUI
+ and r3, cviu_m2 ' zero extend
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_scds_5fa8f449_read_object_L000003
+ add SP, #4 ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov r2, r22 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov r3, #1 ' reg ARG coni
+ mov r4, r19 ' CVUI
+ and r4, cviu_m2 ' zero extend
+ mov BC, #12 ' arg size, rpsize = 12, spsize = 12
+ sub SP, #8 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_scds1_5fa8f449_write_object_L000004
+ add SP, #8 ' CALL addrg
+C_z_remove_obj_27
+ mov r22, #0 ' reg <- coni
+ mov r2, r22 ' CVI, CVU or LOAD
+ mov r3, r22 ' CVI, CVU or LOAD
+ mov r4, r17 ' CVUI
+ and r4, cviu_m2 ' zero extend
+ mov BC, #12 ' arg size, rpsize = 12, spsize = 12
+ sub SP, #8 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_scds1_5fa8f449_write_object_L000004
+ add SP, #8 ' CALL addrg
+ mov r2, #0 ' reg ARG coni
+ mov r3, #1 ' reg ARG coni
+ mov r4, r17 ' CVUI
+ and r4, cviu_m2 ' zero extend
+ mov BC, #12 ' arg size, rpsize = 12, spsize = 12
+ sub SP, #8 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_scds1_5fa8f449_write_object_L000004
+ add SP, #8 ' CALL addrg
+C_z_remove_obj_19
+ PRIMITIVE(#POPM) ' restore registers
+ add SP, #8 ' framesize
+ PRIMITIVE(#RETF)
+
+
+' Catalina Export z_get_parent
+
+ alignl ' align long
+C_z_get_parent ' <symbol:z_get_parent>
+ PRIMITIVE(#PSHM)
+ long $c00000 ' save registers
+ mov r23, r2 ' reg var <- reg arg
+ mov r22, r23 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ cmps r22,  #0 wz
+ if_nz jmp #\C_z_get_parent_32 ' NEI4
+ mov r2, ##@C_z_get_parent_34_L000035 ' reg ARG ADDRG
+ mov r3, #3 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_report_strictz_error
+ add SP, #4 ' CALL addrg
+ mov r2, #0 ' reg ARG coni
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_store_operand ' CALL addrg
+ jmp #\@C_z_get_parent_31 ' JUMPV addrg
+C_z_get_parent_32
+ mov r2, r23 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_get_object_address ' CALL addrg
+ mov r2, #0 ' reg ARG coni
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov r3, r22 ' CVUI
+ and r3, cviu_m2 ' zero extend
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_scds_5fa8f449_read_object_L000003
+ add SP, #4 ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov r2, r22 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_store_operand ' CALL addrg
+C_z_get_parent_31
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Export z_get_child
+
+ alignl ' align long
+C_z_get_child ' <symbol:z_get_child>
+ PRIMITIVE(#PSHM)
+ long $e80000 ' save registers
+ mov r23, r2 ' reg var <- reg arg
+ mov r22, r23 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ cmps r22,  #0 wz
+ if_nz jmp #\C_z_get_child_37 ' NEI4
+ mov r2, ##@C_z_get_child_39_L000040 ' reg ARG ADDRG
+ mov r3, #2 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_report_strictz_error
+ add SP, #4 ' CALL addrg
+ mov r2, #0 ' reg ARG coni
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_store_operand ' CALL addrg
+ mov r2, #0 ' reg ARG coni
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_conditional_jump ' CALL addrg
+ jmp #\@C_z_get_child_36 ' JUMPV addrg
+C_z_get_child_37
+ mov r2, r23 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_get_object_address ' CALL addrg
+ mov r2, #2 ' reg ARG coni
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov r3, r22 ' CVUI
+ and r3, cviu_m2 ' zero extend
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_scds_5fa8f449_read_object_L000003
+ add SP, #4 ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov r21, r22 ' CVI, CVU or LOAD
+ mov r2, r21 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_store_operand ' CALL addrg
+ mov r22, r21 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ cmps r22,  #0 wz
+ if_z jmp #\C_z_get_child_42 ' EQI4
+ mov r19, #1 ' reg <- coni
+ jmp #\@C_z_get_child_43 ' JUMPV addrg
+C_z_get_child_42
+ mov r19, #0 ' reg <- coni
+C_z_get_child_43
+ mov r2, r19 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_conditional_jump ' CALL addrg
+C_z_get_child_36
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Export z_get_sibling
+
+ alignl ' align long
+C_z_get_sibling ' <symbol:z_get_sibling>
+ PRIMITIVE(#PSHM)
+ long $e80000 ' save registers
+ mov r23, r2 ' reg var <- reg arg
+ mov r22, r23 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ cmps r22,  #0 wz
+ if_nz jmp #\C_z_get_sibling_45 ' NEI4
+ mov r2, ##@C_z_get_sibling_47_L000048 ' reg ARG ADDRG
+ mov r3, #4 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_report_strictz_error
+ add SP, #4 ' CALL addrg
+ mov r2, #0 ' reg ARG coni
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_store_operand ' CALL addrg
+ mov r2, #0 ' reg ARG coni
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_conditional_jump ' CALL addrg
+ jmp #\@C_z_get_sibling_44 ' JUMPV addrg
+C_z_get_sibling_45
+ mov r2, r23 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_get_object_address ' CALL addrg
+ mov r2, #1 ' reg ARG coni
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov r3, r22 ' CVUI
+ and r3, cviu_m2 ' zero extend
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_scds_5fa8f449_read_object_L000003
+ add SP, #4 ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov r21, r22 ' CVI, CVU or LOAD
+ mov r2, r21 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_store_operand ' CALL addrg
+ mov r22, r21 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ cmps r22,  #0 wz
+ if_z jmp #\C_z_get_sibling_50 ' EQI4
+ mov r19, #1 ' reg <- coni
+ jmp #\@C_z_get_sibling_51 ' JUMPV addrg
+C_z_get_sibling_50
+ mov r19, #0 ' reg <- coni
+C_z_get_sibling_51
+ mov r2, r19 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_conditional_jump ' CALL addrg
+C_z_get_sibling_44
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Export z_jin
+
+ alignl ' align long
+C_z_jin ' <symbol:z_jin>
+ PRIMITIVE(#PSHM)
+ long $f80000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ mov r22, r23 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ cmps r22,  #0 wz
+ if_nz jmp #\C_z_jin_53 ' NEI4
+ mov r2, ##@C_z_jin_55_L000056 ' reg ARG ADDRG
+ mov r3, #1 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_report_strictz_error
+ add SP, #4 ' CALL addrg
+ mov r22, r21 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ cmps r22,  #0 wz
+ if_nz jmp #\C_z_jin_58 ' NEI4
+ mov r19, #1 ' reg <- coni
+ jmp #\@C_z_jin_59 ' JUMPV addrg
+C_z_jin_58
+ mov r19, #0 ' reg <- coni
+C_z_jin_59
+ mov r2, r19 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_conditional_jump ' CALL addrg
+ jmp #\@C_z_jin_52 ' JUMPV addrg
+C_z_jin_53
+ mov r2, r23 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_get_object_address ' CALL addrg
+ mov r2, #0 ' reg ARG coni
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov r3, r22 ' CVUI
+ and r3, cviu_m2 ' zero extend
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_scds_5fa8f449_read_object_L000003
+ add SP, #4 ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ and r22, cviu_m2 ' zero extend
+ mov r20, r21 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ cmps r22, r20 wz
+ if_nz jmp #\C_z_jin_61 ' NEI4
+ mov r19, #1 ' reg <- coni
+ jmp #\@C_z_jin_62 ' JUMPV addrg
+C_z_jin_61
+ mov r19, #0 ' reg <- coni
+C_z_jin_62
+ mov r2, r19 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_conditional_jump ' CALL addrg
+C_z_jin_52
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Export z_test_attr
+
+ alignl ' align long
+C_z_test_attr ' <symbol:z_test_attr>
+ PRIMITIVE(#NEWF)
+ sub SP, #8
+ PRIMITIVE(#PSHM)
+ long $f40000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ mov r22, r23 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ cmps r22,  #0 wz
+ if_nz jmp #\C_z_test_attr_66 ' NEI4
+ mov r2, ##@C_z_test_attr_68_L000069 ' reg ARG ADDRG
+ mov r3, #10 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_report_strictz_error
+ add SP, #4 ' CALL addrg
+ mov r2, #0 ' reg ARG coni
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_conditional_jump ' CALL addrg
+ jmp #\@C_z_test_attr_63 ' JUMPV addrg
+C_z_test_attr_66
+ mov r2, r23 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_get_object_address ' CALL addrg
+ mov r20, r21 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ mov r22, r0 ' CVI, CVU or LOAD
+ and r22, cviu_m2 ' zero extend
+ mov r18, r20
+ sar r18, #3 ' RSHI4 coni
+ adds r22, r18 ' ADDI/P (1)
+ mov RI, FP
+ sub RI, #-(-4)
+ wrword r22, RI ' ASGNU2 addrli reg
+ mov r22, FP
+ sub r22, #-(-4) ' reg <- addrli
+ rdword r22, r22 ' reg <- CVUI4 INDIRU2 reg
+ mov r18, ##@C_datap
+ rdlong r18, r18 ' reg <- INDIRP4 addrg
+ adds r22, r18 ' ADDI/P (1)
+ rdbyte r22, r22 ' reg <- INDIRU1 reg
+ mov RI, FP
+ sub RI, #-(-8)
+ wrbyte r22, RI ' ASGNU1 addrli reg
+ mov r22, #7 ' reg <- coni
+ mov r18, FP
+ sub r18, #-(-8) ' reg <- addrli
+ rdbyte r18, r18 ' reg <- CVUI4 INDIRU1 reg
+ and r20, #7 ' BANDI4 coni
+ subs r22, r20 ' SUBI/P (1)
+ mov RI, r18
+ sar RI, r22
+ mov r22, RI ' RSHI (2)
+ mov r2, r22
+ and r2, #1 ' BANDI4 coni
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_conditional_jump ' CALL addrg
+C_z_test_attr_63
+ PRIMITIVE(#POPM) ' restore registers
+ add SP, #8 ' framesize
+ PRIMITIVE(#RETF)
+
+
+' Catalina Export z_set_attr
+
+ alignl ' align long
+C_z_set_attr ' <symbol:z_set_attr>
+ PRIMITIVE(#PSHM)
+ long $ff4000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ mov r22, r23 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ cmps r22,  #0 wz
+ if_nz jmp #\C_z_set_attr_73 ' NEI4
+ mov r2, ##@C_z_set_attr_75_L000076 ' reg ARG ADDRG
+ mov r3, #9 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_report_strictz_error
+ add SP, #4 ' CALL addrg
+ jmp #\@C_z_set_attr_70 ' JUMPV addrg
+C_z_set_attr_73
+ mov r2, r23 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_get_object_address ' CALL addrg
+ mov r20, r21 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ mov r22, r0 ' CVI, CVU or LOAD
+ and r22, cviu_m2 ' zero extend
+ mov r18, r20
+ sar r18, #3 ' RSHI4 coni
+ adds r22, r18 ' ADDI/P (1)
+ mov r19, r22 ' CVI, CVU or LOAD
+ mov r22, r19 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ mov r18, ##@C_datap
+ rdlong r18, r18 ' reg <- INDIRP4 addrg
+ adds r22, r18 ' ADDI/P (1)
+ rdbyte r17, r22 ' reg <- INDIRU1 reg
+ mov r18, #7 ' reg <- coni
+ mov r16, r17 ' CVUI
+ and r16, cviu_m1 ' zero extend
+ mov r14, #1 ' reg <- coni
+ and r20, #7 ' BANDI4 coni
+ subs r20, r18
+ neg r20, r20 ' SUBI/P (2)
+ mov RI, r14
+ shl RI, r20
+ mov r20, RI ' SHLI/U (2)
+ and r20, cviu_m1 ' zero extend
+ or r20, r16 ' BORI/U (2)
+ mov r17, r20 ' CVI, CVU or LOAD
+ wrbyte r17, r22 ' ASGNU1 reg reg
+C_z_set_attr_70
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Export z_clear_attr
+
+ alignl ' align long
+C_z_clear_attr ' <symbol:z_clear_attr>
+ PRIMITIVE(#PSHM)
+ long $ff4000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ mov r22, r23 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ cmps r22,  #0 wz
+ if_nz jmp #\C_z_clear_attr_80 ' NEI4
+ mov r2, ##@C_z_clear_attr_82_L000083 ' reg ARG ADDRG
+ mov r3, #8 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_report_strictz_error
+ add SP, #4 ' CALL addrg
+ jmp #\@C_z_clear_attr_77 ' JUMPV addrg
+C_z_clear_attr_80
+ mov r2, r23 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_get_object_address ' CALL addrg
+ mov r20, r21 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ mov r22, r0 ' CVI, CVU or LOAD
+ and r22, cviu_m2 ' zero extend
+ mov r18, r20
+ sar r18, #3 ' RSHI4 coni
+ adds r22, r18 ' ADDI/P (1)
+ mov r19, r22 ' CVI, CVU or LOAD
+ mov r22, r19 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ mov r18, ##@C_datap
+ rdlong r18, r18 ' reg <- INDIRP4 addrg
+ adds r22, r18 ' ADDI/P (1)
+ rdbyte r17, r22 ' reg <- INDIRU1 reg
+ mov r18, #7 ' reg <- coni
+ mov r16, r17 ' CVUI
+ and r16, cviu_m1 ' zero extend
+ mov r14, #1 ' reg <- coni
+ and r20, #7 ' BANDI4 coni
+ subs r20, r18
+ neg r20, r20 ' SUBI/P (2)
+ mov RI, r14
+ shl RI, r20
+ mov r20, RI ' SHLI/U (2)
+ xor r20, all_1s ' BCOMI4
+ and r20, cviu_m1 ' zero extend
+ and r20, r16 ' BANDI/U (2)
+ mov r17, r20 ' CVI, CVU or LOAD
+ wrbyte r17, r22 ' ASGNU1 reg reg
+C_z_clear_attr_77
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+ alignl ' align long
+C_scds_5fa8f449_read_object_L000003 ' <symbol:read_object>
+ PRIMITIVE(#NEWF)
+ sub SP, #4
+ PRIMITIVE(#PSHM)
+ long $540000 ' save registers
+ mov r22, ##@C_h_type ' reg <- addrg
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ cmps r22,  #4 wcz
+ if_ae jmp #\C_scds_5fa8f449_read_object_L000003_85 ' GEI4
+ cmps r2,  #0 wz
+ if_nz jmp #\C_scds_5fa8f449_read_object_L000003_87 ' NEI4
+ mov r22, r3 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ adds r22, #4 ' ADDI4 coni
+ mov r20, ##@C_datap
+ rdlong r20, r20 ' reg <- INDIRP4 addrg
+ adds r22, r20 ' ADDI/P (1)
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ mov RI, FP
+ sub RI, #-(-4)
+ wrword r22, RI ' ASGNU2 addrli reg
+ jmp #\@C_scds_5fa8f449_read_object_L000003_86 ' JUMPV addrg
+C_scds_5fa8f449_read_object_L000003_87
+ cmps r2,  #1 wz
+ if_nz jmp #\C_scds_5fa8f449_read_object_L000003_89 ' NEI4
+ mov r22, r3 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ adds r22, #5 ' ADDI4 coni
+ mov r20, ##@C_datap
+ rdlong r20, r20 ' reg <- INDIRP4 addrg
+ adds r22, r20 ' ADDI/P (1)
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ mov RI, FP
+ sub RI, #-(-4)
+ wrword r22, RI ' ASGNU2 addrli reg
+ jmp #\@C_scds_5fa8f449_read_object_L000003_86 ' JUMPV addrg
+C_scds_5fa8f449_read_object_L000003_89
+ mov r22, r3 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ adds r22, #6 ' ADDI4 coni
+ mov r20, ##@C_datap
+ rdlong r20, r20 ' reg <- INDIRP4 addrg
+ adds r22, r20 ' ADDI/P (1)
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ mov RI, FP
+ sub RI, #-(-4)
+ wrword r22, RI ' ASGNU2 addrli reg
+ jmp #\@C_scds_5fa8f449_read_object_L000003_86 ' JUMPV addrg
+C_scds_5fa8f449_read_object_L000003_85
+ cmps r2,  #0 wz
+ if_nz jmp #\C_scds_5fa8f449_read_object_L000003_91 ' NEI4
+ mov r22, r3 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ adds r22, #6 ' ADDI4 coni
+ mov r20, ##@C_datap
+ rdlong r20, r20 ' reg <- INDIRP4 addrg
+ mov r18, r22 ' ADDI/P
+ adds r18, r20 ' ADDI/P (3)
+ rdbyte r18, r18 ' reg <- CVUI4 INDIRU1 reg
+ and r18, cviu_m2 ' zero extend
+ shl r18, #8 ' LSHI4 coni
+ adds r22, #1 ' ADDI4 coni
+ adds r22, r20 ' ADDI/P (1)
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ and r22, cviu_m2 ' zero extend
+ adds r22, r18 ' ADDI/P (2)
+ mov RI, FP
+ sub RI, #-(-4)
+ wrword r22, RI ' ASGNU2 addrli reg
+ jmp #\@C_scds_5fa8f449_read_object_L000003_92 ' JUMPV addrg
+C_scds_5fa8f449_read_object_L000003_91
+ cmps r2,  #1 wz
+ if_nz jmp #\C_scds_5fa8f449_read_object_L000003_93 ' NEI4
+ mov r22, r3 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ adds r22, #8 ' ADDI4 coni
+ mov r20, ##@C_datap
+ rdlong r20, r20 ' reg <- INDIRP4 addrg
+ mov r18, r22 ' ADDI/P
+ adds r18, r20 ' ADDI/P (3)
+ rdbyte r18, r18 ' reg <- CVUI4 INDIRU1 reg
+ and r18, cviu_m2 ' zero extend
+ shl r18, #8 ' LSHI4 coni
+ adds r22, #1 ' ADDI4 coni
+ adds r22, r20 ' ADDI/P (1)
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ and r22, cviu_m2 ' zero extend
+ adds r22, r18 ' ADDI/P (2)
+ mov RI, FP
+ sub RI, #-(-4)
+ wrword r22, RI ' ASGNU2 addrli reg
+ jmp #\@C_scds_5fa8f449_read_object_L000003_94 ' JUMPV addrg
+C_scds_5fa8f449_read_object_L000003_93
+ mov r22, r3 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ adds r22, #10 ' ADDI4 coni
+ mov r20, ##@C_datap
+ rdlong r20, r20 ' reg <- INDIRP4 addrg
+ mov r18, r22 ' ADDI/P
+ adds r18, r20 ' ADDI/P (3)
+ rdbyte r18, r18 ' reg <- CVUI4 INDIRU1 reg
+ and r18, cviu_m2 ' zero extend
+ shl r18, #8 ' LSHI4 coni
+ adds r22, #1 ' ADDI4 coni
+ adds r22, r20 ' ADDI/P (1)
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ and r22, cviu_m2 ' zero extend
+ adds r22, r18 ' ADDI/P (2)
+ mov RI, FP
+ sub RI, #-(-4)
+ wrword r22, RI ' ASGNU2 addrli reg
+C_scds_5fa8f449_read_object_L000003_94
+C_scds_5fa8f449_read_object_L000003_92
+C_scds_5fa8f449_read_object_L000003_86
+ mov r22, FP
+ sub r22, #-(-4) ' reg <- addrli
+ rdword r0, r22 ' reg <- CVUI4 INDIRU2 reg
+' C_scds_5fa8f449_read_object_L000003_84 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ add SP, #4 ' framesize
+ PRIMITIVE(#RETF)
+
+
+ alignl ' align long
+C_scds1_5fa8f449_write_object_L000004 ' <symbol:write_object>
+ PRIMITIVE(#PSHM)
+ long $540000 ' save registers
+ mov r22, ##@C_h_type ' reg <- addrg
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ cmps r22,  #4 wcz
+ if_ae jmp #\C_scds1_5fa8f449_write_object_L000004_96 ' GEI4
+ cmps r3,  #0 wz
+ if_nz jmp #\C_scds1_5fa8f449_write_object_L000004_98 ' NEI4
+ mov r22, r4 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ adds r22, #4 ' ADDI4 coni
+ mov r20, ##@C_datap
+ rdlong r20, r20 ' reg <- INDIRP4 addrg
+ adds r22, r20 ' ADDI/P (1)
+ mov r20, r2 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ wrbyte r20, r22 ' ASGNU1 reg reg
+ jmp #\@C_scds1_5fa8f449_write_object_L000004_97 ' JUMPV addrg
+C_scds1_5fa8f449_write_object_L000004_98
+ cmps r3,  #1 wz
+ if_nz jmp #\C_scds1_5fa8f449_write_object_L000004_100 ' NEI4
+ mov r22, r4 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ adds r22, #5 ' ADDI4 coni
+ mov r20, ##@C_datap
+ rdlong r20, r20 ' reg <- INDIRP4 addrg
+ adds r22, r20 ' ADDI/P (1)
+ mov r20, r2 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ wrbyte r20, r22 ' ASGNU1 reg reg
+ jmp #\@C_scds1_5fa8f449_write_object_L000004_97 ' JUMPV addrg
+C_scds1_5fa8f449_write_object_L000004_100
+ mov r22, r4 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ adds r22, #6 ' ADDI4 coni
+ mov r20, ##@C_datap
+ rdlong r20, r20 ' reg <- INDIRP4 addrg
+ adds r22, r20 ' ADDI/P (1)
+ mov r20, r2 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ wrbyte r20, r22 ' ASGNU1 reg reg
+ jmp #\@C_scds1_5fa8f449_write_object_L000004_97 ' JUMPV addrg
+C_scds1_5fa8f449_write_object_L000004_96
+ cmps r3,  #0 wz
+ if_nz jmp #\C_scds1_5fa8f449_write_object_L000004_102 ' NEI4
+ mov r22, r4 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ adds r22, #6 ' ADDI4 coni
+ mov r20, ##@C_datap
+ rdlong r20, r20 ' reg <- INDIRP4 addrg
+ adds r22, r20 ' ADDI/P (1)
+ mov r20, r2 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ sar r20, #8 ' RSHI4 coni
+ wrbyte r20, r22 ' ASGNU1 reg reg
+ mov r22, r4 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ adds r22, #6 ' ADDI4 coni
+ adds r22, #1 ' ADDI4 coni
+ mov r20, ##@C_datap
+ rdlong r20, r20 ' reg <- INDIRP4 addrg
+ adds r22, r20 ' ADDI/P (1)
+ mov r20, r2 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ and r20, #255 ' BANDI4 coni
+ wrbyte r20, r22 ' ASGNU1 reg reg
+ jmp #\@C_scds1_5fa8f449_write_object_L000004_103 ' JUMPV addrg
+C_scds1_5fa8f449_write_object_L000004_102
+ cmps r3,  #1 wz
+ if_nz jmp #\C_scds1_5fa8f449_write_object_L000004_104 ' NEI4
+ mov r22, #8 ' reg <- coni
+ mov r20, r4 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ adds r20, #8 ' ADDI4 coni
+ mov r18, ##@C_datap
+ rdlong r18, r18 ' reg <- INDIRP4 addrg
+ adds r20, r18 ' ADDI/P (1)
+ mov r18, r2 ' CVUI
+ and r18, cviu_m2 ' zero extend
+ mov RI, r18
+ sar RI, r22
+ mov r22, RI ' RSHI (2)
+ wrbyte r22, r20 ' ASGNU1 reg reg
+ mov r22, r4 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ adds r22, #8 ' ADDI4 coni
+ adds r22, #1 ' ADDI4 coni
+ mov r20, ##@C_datap
+ rdlong r20, r20 ' reg <- INDIRP4 addrg
+ adds r22, r20 ' ADDI/P (1)
+ mov r20, r2 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ and r20, #255 ' BANDI4 coni
+ wrbyte r20, r22 ' ASGNU1 reg reg
+ jmp #\@C_scds1_5fa8f449_write_object_L000004_105 ' JUMPV addrg
+C_scds1_5fa8f449_write_object_L000004_104
+ mov r22, r4 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ adds r22, #10 ' ADDI4 coni
+ mov r20, ##@C_datap
+ rdlong r20, r20 ' reg <- INDIRP4 addrg
+ adds r22, r20 ' ADDI/P (1)
+ mov r20, r2 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ sar r20, #8 ' RSHI4 coni
+ wrbyte r20, r22 ' ASGNU1 reg reg
+ mov r22, r4 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ adds r22, #10 ' ADDI4 coni
+ adds r22, #1 ' ADDI4 coni
+ mov r20, ##@C_datap
+ rdlong r20, r20 ' reg <- INDIRP4 addrg
+ adds r22, r20 ' ADDI/P (1)
+ mov r20, r2 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ and r20, #255 ' BANDI4 coni
+ wrbyte r20, r22 ' ASGNU1 reg reg
+C_scds1_5fa8f449_write_object_L000004_105
+C_scds1_5fa8f449_write_object_L000004_103
+C_scds1_5fa8f449_write_object_L000004_97
+' C_scds1_5fa8f449_write_object_L000004_95 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Import store_operand
+
+' Catalina Import conditional_jump
+
+' Catalina Import report_strictz_error
+
+' Catalina Import datap
+
+' Catalina Import h_objects_offset
+
+' Catalina Import h_type
+
+' Catalina Import __bad_assertion
+
+' Catalina Cnst
+
+DAT ' const data segment
+
+ alignl ' align long
+C_z_clear_attr_82_L000083 ' <symbol:82>
+ byte 64
+ byte 99
+ byte 108
+ byte 101
+ byte 97
+ byte 114
+ byte 95
+ byte 97
+ byte 116
+ byte 116
+ byte 114
+ byte 32
+ byte 99
+ byte 97
+ byte 108
+ byte 108
+ byte 101
+ byte 100
+ byte 32
+ byte 119
+ byte 105
+ byte 116
+ byte 104
+ byte 32
+ byte 111
+ byte 98
+ byte 106
+ byte 101
+ byte 99
+ byte 116
+ byte 32
+ byte 48
+ byte 0
+
+ alignl ' align long
+C_z_clear_attr_78_L000079 ' <symbol:78>
+ byte 65
+ byte 115
+ byte 115
+ byte 101
+ byte 114
+ byte 116
+ byte 105
+ byte 111
+ byte 110
+ byte 32
+ byte 34
+ byte 79
+ byte 51
+ byte 95
+ byte 65
+ byte 84
+ byte 84
+ byte 82
+ byte 73
+ byte 66
+ byte 85
+ byte 84
+ byte 69
+ byte 83
+ byte 32
+ byte 61
+ byte 61
+ byte 32
+ byte 79
+ byte 52
+ byte 95
+ byte 65
+ byte 84
+ byte 84
+ byte 82
+ byte 73
+ byte 66
+ byte 85
+ byte 84
+ byte 69
+ byte 83
+ byte 34
+ byte 32
+ byte 102
+ byte 97
+ byte 105
+ byte 108
+ byte 101
+ byte 100
+ byte 44
+ byte 32
+ byte 102
+ byte 105
+ byte 108
+ byte 101
+ byte 32
+ byte 34
+ byte 111
+ byte 98
+ byte 106
+ byte 101
+ byte 99
+ byte 116
+ byte 46
+ byte 99
+ byte 34
+ byte 44
+ byte 32
+ byte 108
+ byte 105
+ byte 110
+ byte 101
+ byte 32
+ byte 51
+ byte 55
+ byte 55
+ byte 10
+ byte 0
+
+ alignl ' align long
+C_z_set_attr_75_L000076 ' <symbol:75>
+ byte 64
+ byte 115
+ byte 101
+ byte 116
+ byte 95
+ byte 97
+ byte 116
+ byte 116
+ byte 114
+ byte 32
+ byte 99
+ byte 97
+ byte 108
+ byte 108
+ byte 101
+ byte 100
+ byte 32
+ byte 119
+ byte 105
+ byte 116
+ byte 104
+ byte 32
+ byte 111
+ byte 98
+ byte 106
+ byte 101
+ byte 99
+ byte 116
+ byte 32
+ byte 48
+ byte 0
+
+ alignl ' align long
+C_z_set_attr_71_L000072 ' <symbol:71>
+ byte 65
+ byte 115
+ byte 115
+ byte 101
+ byte 114
+ byte 116
+ byte 105
+ byte 111
+ byte 110
+ byte 32
+ byte 34
+ byte 79
+ byte 51
+ byte 95
+ byte 65
+ byte 84
+ byte 84
+ byte 82
+ byte 73
+ byte 66
+ byte 85
+ byte 84
+ byte 69
+ byte 83
+ byte 32
+ byte 61
+ byte 61
+ byte 32
+ byte 79
+ byte 52
+ byte 95
+ byte 65
+ byte 84
+ byte 84
+ byte 82
+ byte 73
+ byte 66
+ byte 85
+ byte 84
+ byte 69
+ byte 83
+ byte 34
+ byte 32
+ byte 102
+ byte 97
+ byte 105
+ byte 108
+ byte 101
+ byte 100
+ byte 44
+ byte 32
+ byte 102
+ byte 105
+ byte 108
+ byte 101
+ byte 32
+ byte 34
+ byte 111
+ byte 98
+ byte 106
+ byte 101
+ byte 99
+ byte 116
+ byte 46
+ byte 99
+ byte 34
+ byte 44
+ byte 32
+ byte 108
+ byte 105
+ byte 110
+ byte 101
+ byte 32
+ byte 51
+ byte 51
+ byte 55
+ byte 10
+ byte 0
+
+ alignl ' align long
+C_z_test_attr_68_L000069 ' <symbol:68>
+ byte 64
+ byte 116
+ byte 101
+ byte 115
+ byte 116
+ byte 95
+ byte 97
+ byte 116
+ byte 116
+ byte 114
+ byte 32
+ byte 99
+ byte 97
+ byte 108
+ byte 108
+ byte 101
+ byte 100
+ byte 32
+ byte 119
+ byte 105
+ byte 116
+ byte 104
+ byte 32
+ byte 111
+ byte 98
+ byte 106
+ byte 101
+ byte 99
+ byte 116
+ byte 32
+ byte 48
+ byte 0
+
+ alignl ' align long
+C_z_test_attr_64_L000065 ' <symbol:64>
+ byte 65
+ byte 115
+ byte 115
+ byte 101
+ byte 114
+ byte 116
+ byte 105
+ byte 111
+ byte 110
+ byte 32
+ byte 34
+ byte 79
+ byte 51
+ byte 95
+ byte 65
+ byte 84
+ byte 84
+ byte 82
+ byte 73
+ byte 66
+ byte 85
+ byte 84
+ byte 69
+ byte 83
+ byte 32
+ byte 61
+ byte 61
+ byte 32
+ byte 79
+ byte 52
+ byte 95
+ byte 65
+ byte 84
+ byte 84
+ byte 82
+ byte 73
+ byte 66
+ byte 85
+ byte 84
+ byte 69
+ byte 83
+ byte 34
+ byte 32
+ byte 102
+ byte 97
+ byte 105
+ byte 108
+ byte 101
+ byte 100
+ byte 44
+ byte 32
+ byte 102
+ byte 105
+ byte 108
+ byte 101
+ byte 32
+ byte 34
+ byte 111
+ byte 98
+ byte 106
+ byte 101
+ byte 99
+ byte 116
+ byte 46
+ byte 99
+ byte 34
+ byte 44
+ byte 32
+ byte 108
+ byte 105
+ byte 110
+ byte 101
+ byte 32
+ byte 51
+ byte 48
+ byte 48
+ byte 10
+ byte 0
+
+ alignl ' align long
+C_z_jin_55_L000056 ' <symbol:55>
+ byte 64
+ byte 106
+ byte 105
+ byte 110
+ byte 32
+ byte 99
+ byte 97
+ byte 108
+ byte 108
+ byte 101
+ byte 100
+ byte 32
+ byte 119
+ byte 105
+ byte 116
+ byte 104
+ byte 32
+ byte 111
+ byte 98
+ byte 106
+ byte 101
+ byte 99
+ byte 116
+ byte 32
+ byte 48
+ byte 0
+
+ alignl ' align long
+C_z_get_sibling_47_L000048 ' <symbol:47>
+ byte 64
+ byte 103
+ byte 101
+ byte 116
+ byte 95
+ byte 115
+ byte 105
+ byte 98
+ byte 108
+ byte 105
+ byte 110
+ byte 103
+ byte 32
+ byte 99
+ byte 97
+ byte 108
+ byte 108
+ byte 101
+ byte 100
+ byte 32
+ byte 119
+ byte 105
+ byte 116
+ byte 104
+ byte 32
+ byte 111
+ byte 98
+ byte 106
+ byte 101
+ byte 99
+ byte 116
+ byte 32
+ byte 48
+ byte 0
+
+ alignl ' align long
+C_z_get_child_39_L000040 ' <symbol:39>
+ byte 64
+ byte 103
+ byte 101
+ byte 116
+ byte 95
+ byte 99
+ byte 104
+ byte 105
+ byte 108
+ byte 100
+ byte 32
+ byte 99
+ byte 97
+ byte 108
+ byte 108
+ byte 101
+ byte 100
+ byte 32
+ byte 119
+ byte 105
+ byte 116
+ byte 104
+ byte 32
+ byte 111
+ byte 98
+ byte 106
+ byte 101
+ byte 99
+ byte 116
+ byte 32
+ byte 48
+ byte 0
+
+ alignl ' align long
+C_z_get_parent_34_L000035 ' <symbol:34>
+ byte 64
+ byte 103
+ byte 101
+ byte 116
+ byte 95
+ byte 112
+ byte 97
+ byte 114
+ byte 101
+ byte 110
+ byte 116
+ byte 32
+ byte 99
+ byte 97
+ byte 108
+ byte 108
+ byte 101
+ byte 100
+ byte 32
+ byte 119
+ byte 105
+ byte 116
+ byte 104
+ byte 32
+ byte 111
+ byte 98
+ byte 106
+ byte 101
+ byte 99
+ byte 116
+ byte 32
+ byte 48
+ byte 0
+
+ alignl ' align long
+C_z_remove_obj_22_L000023 ' <symbol:22>
+ byte 64
+ byte 114
+ byte 101
+ byte 109
+ byte 111
+ byte 118
+ byte 101
+ byte 95
+ byte 111
+ byte 98
+ byte 106
+ byte 32
+ byte 99
+ byte 97
+ byte 108
+ byte 108
+ byte 101
+ byte 100
+ byte 32
+ byte 119
+ byte 105
+ byte 116
+ byte 104
+ byte 32
+ byte 111
+ byte 98
+ byte 106
+ byte 101
+ byte 99
+ byte 116
+ byte 32
+ byte 48
+ byte 0
+
+ alignl ' align long
+C_z_insert_obj_15_L000016 ' <symbol:15>
+ byte 64
+ byte 105
+ byte 110
+ byte 115
+ byte 101
+ byte 114
+ byte 116
+ byte 95
+ byte 111
+ byte 98
+ byte 106
+ byte 32
+ byte 99
+ byte 97
+ byte 108
+ byte 108
+ byte 101
+ byte 100
+ byte 32
+ byte 109
+ byte 111
+ byte 118
+ byte 105
+ byte 110
+ byte 103
+ byte 32
+ byte 105
+ byte 110
+ byte 116
+ byte 111
+ byte 32
+ byte 111
+ byte 98
+ byte 106
+ byte 101
+ byte 99
+ byte 116
+ byte 32
+ byte 48
+ byte 0
+
+ alignl ' align long
+C_z_insert_obj_11_L000012 ' <symbol:11>
+ byte 64
+ byte 105
+ byte 110
+ byte 115
+ byte 101
+ byte 114
+ byte 116
+ byte 95
+ byte 111
+ byte 98
+ byte 106
+ byte 32
+ byte 99
+ byte 97
+ byte 108
+ byte 108
+ byte 101
+ byte 100
+ byte 32
+ byte 109
+ byte 111
+ byte 118
+ byte 105
+ byte 110
+ byte 103
+ byte 32
+ byte 111
+ byte 98
+ byte 106
+ byte 101
+ byte 99
+ byte 116
+ byte 32
+ byte 48
+ byte 0
+
+' Catalina Code
+
+DAT ' code segment
+' end

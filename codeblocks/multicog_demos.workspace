@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="multicog_demos">
+		<Project filename="multicog_READ_ME/READ ME.cbp" active="1" />
+		<Project filename="multicog_dynamic_kernel/multicog_dynamic_kernel.cbp" />
+		<Project filename="multicog_dining_philosophers/multicog_dining_philosophers.cbp" />
+		<Project filename="multicog_multiple_cogs/multicog_multiple_cogs.cbp" />
+	</Workspace>
+</CodeBlocks_workspace_file>

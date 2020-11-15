@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="multithread_demos">
+		<Project filename="multithread_READ_ME/READ ME.cbp" active="1" />
+		<Project filename="multithread_dining_philosophers/multithread_dining_philosophers.cbp" />
+		<Project filename="multithread_dynamic_kernel/multithread_dynamic_kernel.cbp" />
+		<Project filename="multithread_maximum_threads/multithread_maximum_threads.cbp" />
+		<Project filename="multithread_multiple_threads/multithread_multiple_threads.cbp" />
+		<Project filename="multithread_thread_arguments/multithread_thread_arguments.cbp" />
+		<Project filename="multithread_thread_affinity/multithread_thread_affinity.cbp" />
+		<Project filename="multithread_thread_operations/multithread_thread_operations.cbp" />
+	</Workspace>
+</CodeBlocks_workspace_file>

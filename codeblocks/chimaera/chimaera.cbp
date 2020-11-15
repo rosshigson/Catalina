@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="chimaera" />
+		<Option pch_mode="2" />
+		<Option compiler="catalina" />
+		<Build>
+			<Target title="default">
+				<Option output="chimaera.binary" prefix_auto="1" extension_auto="0" />
+				<Option type="1" />
+				<Option compiler="catalina" />
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-b" />
+			<Add option="-CNO_MOUSE" />
+			<Add option="-CLARGE" />
+			<Add option="-Clibm" />
+			<Add option="-Clibcx" />
+		</Compiler>
+		<Linker>
+			<Add option="-b" />
+			<Add option="-CNO_MOUSE" />
+			<Add option="-CLARGE" />
+			<Add option="-lm" />
+			<Add option="-lcx" />
+		</Linker>
+		<Unit filename="../../demos/chimaera.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../demos/chimaera.h" />
+		<Extensions>
+			<code_completion />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

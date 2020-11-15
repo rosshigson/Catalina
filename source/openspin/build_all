@@ -1,0 +1,5 @@
+#!/bin/bash -login
+make clean
+make
+cp spinnaker ../../bin/spinnaker
+

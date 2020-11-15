@@ -1,0 +1,5 @@
+#
+# To build Catalina under linux, set the environment variable LCCDIR to the
+# deirectory where you unpacked the Catalina source, and then use the 
+# script file "build_all"
+#

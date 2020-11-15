@@ -1,0 +1,4 @@
+#
+# To build the library under Linux, set the environment variable LCCDIR
+# to where Catalina is installed, then use the script "build_all"
+#

@@ -1,0 +1,853 @@
+' Catalina Code
+
+DAT ' code segment
+'
+' LCC 4.2 for Parallax Propeller
+' (Catalina v2.5 Code Generator by Ross Higson)
+'
+
+' Catalina Init
+
+DAT ' initialized data segment
+
+' Catalina Export CMM_array
+
+ long ' align long
+C_C_M_M__array ' <symbol:CMM_array>
+ long $9001
+ long $a0fc0080
+ long $c7c0000
+ long $10018801
+ long $1001
+ long $d440dc6
+ long $b809
+ long $40f0
+ long $d885d0c2
+ long $4010233
+ long $b809c648
+ long $40d8
+ long $d885d0c2
+ long $4010233
+ long $20aac648
+ long $d885d0c2
+ long $4010183
+ long $b809c648
+ long $40d4
+ long $d885d0c2
+ long $4010233
+ long $c648
+ long $10163
+ long $10003
+ long $3c000003
+ long $17400003
+ long $310dc6
+ long $d58238b6
+ long $adae55ae
+ long $d360031
+ long $8ac45a8
+ long $d885d0fc
+ long $40102c3
+ long $d80c648
+ long $1801
+ long $17c00003
+ long $d440dc6
+ long $55aed582
+ long $d2aadae
+ long $8ac45a8
+ long $d885d0fa
+ long $40102c3
+ long $d80c648
+ long $1a01
+ long $17800003
+ long $d440dc6
+ long $b859
+ long $ffffff
+ long $50ac08aa
+ long $d88588ee
+ long $4010033
+ long $d80c648
+ long $1a01
+ long $a0a
+ long $6120794d
+ long $6d756772
+ long $20746e65
+ long $756c6176
+ long $73692065
+ long $20
+ long $6c6c6548
+ long $77202c6f
+ long $646c726f
+ long $72662820
+ long $43206d6f
+ long $6c617461
+ long $21616e69
+ long $a29
+ long $0
+
+' Catalina Export start_CMM
+
+' Catalina Code
+
+DAT ' code segment
+
+ long ' align long
+C_start_C_M_M_ ' <symbol:start_CMM>
+ jmp #PSHM
+ long $e00000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ mov r2, #100 ' reg ARG coni
+ mov r3, #0 ' reg ARG coni
+ jmp #LODL
+ long $4114
+ mov r4, RI ' reg ARG con
+ mov BC, #12 ' arg size, rpsize = 12, spsize = 12
+ sub SP, #8 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_memset
+ add SP, #8 ' CALL addrg
+ mov r2, #276 ' reg ARG coni
+ jmp #LODL
+ long @C_C_M_M__array
+ mov r3, RI ' reg ARG ADDRG
+ jmp #LODL
+ long $4000
+ mov r4, RI ' reg ARG con
+ mov BC, #12 ' arg size, rpsize = 12, spsize = 12
+ sub SP, #8 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_memcpy
+ add SP, #8 ' CALL addrg
+ mov r2, r21 ' CVI, CVU or LOAD
+ mov r3, r23 ' CVI, CVU or LOAD
+ jmp #LODL
+ long 16744
+ mov r4, RI ' reg ARG con
+ jmp #LODL
+ long 16404
+ mov r5, RI ' reg ARG con
+ mov BC, #16 ' arg size, rpsize = 16, spsize = 16
+ sub SP, #12 ' stack space for reg ARGs
+ jmp #CALA
+ long @C__cogstart_C_M_M__cog
+ add SP, #12 ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+' C_start_C_M_M__1 ' (symbol refcount = 0)
+ jmp #POPM ' restore registers
+ jmp #RETN
+
+
+' Catalina Init
+
+DAT ' initialized data segment
+
+' Catalina Export LMM_array
+
+ long ' align long
+C_L_M_M__array ' <symbol:LMM_array>
+ long $a0fc6680
+ long $c7c6600
+ long $5c7c0019
+ long $5c7c000c
+ long $5c7c000c
+ long $a0bc9436
+ long $a0bc9035
+ long $5c7c0003
+ long $41c0
+ long $a0bc6a2e
+ long $a0fc6c01
+ long $a0fc5e08
+ long $84fc5804
+ long $5c7c000b
+ long $4110
+ long $80fc5804
+ long $5c7c0003
+ long $41a8
+ long $a0bc6a2e
+ long $a0fc6c01
+ long $a0fc5e08
+ long $84fc5804
+ long $5c7c000b
+ long $4110
+ long $80fc5804
+ long $8bc6a48
+ long $a0fc6c01
+ long $a0fc5e08
+ long $84fc5804
+ long $5c7c000b
+ long $40b4
+ long $80fc5804
+ long $5c7c0003
+ long $41a4
+ long $a0bc6a2e
+ long $a0fc6c01
+ long $a0fc5e08
+ long $84fc5804
+ long $5c7c000b
+ long $4110
+ long $80fc5804
+ long $5c7c000e
+ long $40a4
+ long $5c7c000e
+ long $4000
+ long $5c7c0009
+ long $5c7c0022
+ long $d00000
+ long $a0bc9436
+ long $a0bc5c2d
+ long $80fc5c0c
+ long $83c6a2e
+ long $a0bc924a
+ long $60fc9201
+ long $2cfc9217
+ long $a0bc8e2d
+ long $80fc8e0c
+ long $80bc9247
+ long $a0bc6a49
+ long $a0fc6c1e
+ long $a0fc5e08
+ long $84fc5804
+ long $5c7c000b
+ long $415c
+ long $80fc5804
+ long $a0bc9233
+ long $5c7c0023
+ long $5c7c000a
+ long $5c7c0022
+ long $f00000
+ long $a0bc9436
+ long $a0bc9035
+ long $a0bc924a
+ long $60fc9201
+ long $2cfc9217
+ long $a0bc8e48
+ long $80bc9247
+ long $a0bc6a49
+ long $a0fc6c1d
+ long $a0fc5e08
+ long $84fc5804
+ long $5c7c000b
+ long $415c
+ long $80fc5804
+ long $a0bc9233
+ long $5c7c0023
+ long $5c7c000c
+ long $5c7c0022
+ long $e00000
+ long $a0bc9436
+ long $a0bc9035
+ long $5c7c0003
+ long $ffffff
+ long $a0bc922e
+ long $a0bc6a48
+ long $60bc6a49
+ long $a4bc6c4a
+ long $a0fc5e08
+ long $84fc5804
+ long $5c7c000b
+ long $4008
+ long $80fc5804
+ long $a0bc9233
+ long $5c7c0023
+ long $5c7c000c
+ long $a0a
+ long $6120794d
+ long $6d756772
+ long $20746e65
+ long $756c6176
+ long $73692065
+ long $20
+ long $6c6c6548
+ long $77202c6f
+ long $646c726f
+ long $72662820
+ long $43206d6f
+ long $6c617461
+ long $21616e69
+ long $a29
+ long $0
+
+' Catalina Export start_LMM
+
+' Catalina Code
+
+DAT ' code segment
+
+ long ' align long
+C_start_L_M_M_ ' <symbol:start_LMM>
+ jmp #PSHM
+ long $e00000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ mov r2, #100 ' reg ARG coni
+ mov r3, #0 ' reg ARG coni
+ jmp #LODL
+ long $41e4
+ mov r4, RI ' reg ARG con
+ mov BC, #12 ' arg size, rpsize = 12, spsize = 12
+ sub SP, #8 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_memset
+ add SP, #8 ' CALL addrg
+ mov r2, #484 ' reg ARG coni
+ jmp #LODL
+ long @C_L_M_M__array
+ mov r3, RI ' reg ARG ADDRG
+ jmp #LODL
+ long $4000
+ mov r4, RI ' reg ARG con
+ mov BC, #12 ' arg size, rpsize = 12, spsize = 12
+ sub SP, #8 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_memcpy
+ add SP, #8 ' CALL addrg
+ mov r2, r21 ' CVI, CVU or LOAD
+ mov r3, r23 ' CVI, CVU or LOAD
+ jmp #LODL
+ long 16952
+ mov r4, RI ' reg ARG con
+ jmp #LODL
+ long 16404
+ mov r5, RI ' reg ARG con
+ mov BC, #16 ' arg size, rpsize = 16, spsize = 16
+ sub SP, #12 ' stack space for reg ARGs
+ jmp #CALA
+ long @C__cogstart_L_M_M__cog
+ add SP, #12 ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+' C_start_L_M_M__2 ' (symbol refcount = 0)
+ jmp #POPM ' restore registers
+ jmp #RETN
+
+
+' Catalina Export main
+
+ long ' align long
+C_main ' <symbol:main>
+ sub SP, #8
+ mov BC, #8
+ jmp #NEWF
+ sub SP, #4
+#ifndef NO_ARGS
+ jmp #CALA
+ long @C_arg_setup
+#endif
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ jmp #LODL
+ long @C_main_4_L000005
+ mov r2, RI ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_printf ' CALL addrg
+ jmp #LODL
+ long @C_main_6_L000007
+ mov r2, RI ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_printf ' CALL addrg
+ jmp #LODL
+ long @C_main_8_L000009
+ mov r2, RI ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_printf ' CALL addrg
+ jmp #LODL
+ long @C_main_10_L000011
+ mov r2, RI ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_printf ' CALL addrg
+ jmp #LODL
+ long @C_main_12_L000013
+ mov r2, RI ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_printf ' CALL addrg
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C__clockfreq ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ jmp #LODL
+ long 1000
+ mov r20, RI ' reg <- con
+ mov r0, r22 ' setup r0/r1 (2)
+ mov r1, r20 ' setup r0/r1 (2)
+ jmp #DIVU ' DIVU
+ mov r22, r0 ' CVI, CVU or LOAD
+ jmp #LODL
+ long 1000
+ mov r20, RI ' reg <- con
+ mov r0, r20 ' setup r0/r1 (2)
+ mov r1, r22 ' setup r0/r1 (2)
+ jmp #MULT ' MULT(I/U)
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C__cnt ' CALL addrg
+ mov r20, r0 ' CVI, CVU or LOAD
+ mov r2, r22 ' ADDU
+ add r2, r20 ' ADDU (3)
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C__waitcnt ' CALL addrg
+ jmp #LODL
+ long @C_main_14_L000015
+ mov r2, RI ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_printf ' CALL addrg
+ mov r22, #1 ' reg <- coni
+ jmp #LODF
+ long -4
+ wrlong r22, RI ' ASGNI4 addrl reg
+ mov r2, #8 ' reg ARG coni
+ mov r3, FP
+ sub r3, #-(-4) ' reg ARG ADDRLi
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_start_C_M_M_
+ add SP, #4 ' CALL addrg
+ mov r19, r0 ' CVI, CVU or LOAD
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C__clockfreq ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ jmp #LODL
+ long 1000
+ mov r20, RI ' reg <- con
+ mov r0, r22 ' setup r0/r1 (2)
+ mov r1, r20 ' setup r0/r1 (2)
+ jmp #DIVU ' DIVU
+ mov r22, r0 ' CVI, CVU or LOAD
+ jmp #LODL
+ long 1000
+ mov r20, RI ' reg <- con
+ mov r0, r20 ' setup r0/r1 (2)
+ mov r1, r22 ' setup r0/r1 (2)
+ jmp #MULT ' MULT(I/U)
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C__cnt ' CALL addrg
+ mov r20, r0 ' CVI, CVU or LOAD
+ mov r2, r22 ' ADDU
+ add r2, r20 ' ADDU (3)
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C__waitcnt ' CALL addrg
+ jmp #LODL
+ long @C_main_16_L000017
+ mov r2, RI ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_printf ' CALL addrg
+ mov r2, r19 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C__cogstop ' CALL addrg
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C__clockfreq ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ jmp #LODL
+ long 1000
+ mov r20, RI ' reg <- con
+ mov r0, r22 ' setup r0/r1 (2)
+ mov r1, r20 ' setup r0/r1 (2)
+ jmp #DIVU ' DIVU
+ mov r22, r0 ' CVI, CVU or LOAD
+ jmp #LODL
+ long 1000
+ mov r20, RI ' reg <- con
+ mov r0, r20 ' setup r0/r1 (2)
+ mov r1, r22 ' setup r0/r1 (2)
+ jmp #MULT ' MULT(I/U)
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C__cnt ' CALL addrg
+ mov r20, r0 ' CVI, CVU or LOAD
+ mov r2, r22 ' ADDU
+ add r2, r20 ' ADDU (3)
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C__waitcnt ' CALL addrg
+ jmp #LODL
+ long @C_main_18_L000019
+ mov r2, RI ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_printf ' CALL addrg
+ mov r22, #2 ' reg <- coni
+ jmp #LODF
+ long -4
+ wrlong r22, RI ' ASGNI4 addrl reg
+ mov r2, r19 ' CVI, CVU or LOAD
+ mov r3, FP
+ sub r3, #-(-4) ' reg ARG ADDRLi
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_start_L_M_M_
+ add SP, #4 ' CALL addrg
+ mov r19, r0 ' CVI, CVU or LOAD
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C__clockfreq ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ jmp #LODL
+ long 1000
+ mov r20, RI ' reg <- con
+ mov r0, r22 ' setup r0/r1 (2)
+ mov r1, r20 ' setup r0/r1 (2)
+ jmp #DIVU ' DIVU
+ mov r22, r0 ' CVI, CVU or LOAD
+ jmp #LODL
+ long 1000
+ mov r20, RI ' reg <- con
+ mov r0, r20 ' setup r0/r1 (2)
+ mov r1, r22 ' setup r0/r1 (2)
+ jmp #MULT ' MULT(I/U)
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C__cnt ' CALL addrg
+ mov r20, r0 ' CVI, CVU or LOAD
+ mov r2, r22 ' ADDU
+ add r2, r20 ' ADDU (3)
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C__waitcnt ' CALL addrg
+ jmp #LODL
+ long @C_main_16_L000017
+ mov r2, RI ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_printf ' CALL addrg
+ mov r2, r19 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C__cogstop ' CALL addrg
+ jmp #LODL
+ long @C_main_20_L000021
+ mov r2, RI ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_printf ' CALL addrg
+C_main_22
+' C_main_23 ' (symbol refcount = 0)
+ jmp #JMPA
+ long @C_main_22 ' JUMPV addrg
+' C_main_3 ' (symbol refcount = 0)
+#ifndef NO_EXIT
+ jmp #JMPA
+ long @C__exit
+#endif
+
+' Catalina Import printf
+
+' Catalina Import memcpy
+
+' Catalina Import memset
+
+' Catalina Import _cnt
+
+' Catalina Import _waitcnt
+
+' Catalina Import _cogstart_LMM_cog
+
+' Catalina Import _cogstart_CMM_cog
+
+' Catalina Import _cogstop
+
+' Catalina Import _clockfreq
+
+' Catalina Cnst
+
+DAT ' const data segment
+
+ long ' align long
+C_main_20_L000021 ' <symbol:20>
+ byte 68
+ byte 111
+ byte 110
+ byte 101
+ byte 33
+ byte 10
+ byte 0
+
+ long ' align long
+C_main_18_L000019 ' <symbol:18>
+ byte 83
+ byte 116
+ byte 97
+ byte 114
+ byte 116
+ byte 105
+ byte 110
+ byte 103
+ byte 32
+ byte 104
+ byte 101
+ byte 108
+ byte 108
+ byte 111
+ byte 95
+ byte 119
+ byte 111
+ byte 114
+ byte 108
+ byte 100
+ byte 32
+ byte 97
+ byte 115
+ byte 32
+ byte 76
+ byte 77
+ byte 77
+ byte 32
+ byte 46
+ byte 46
+ byte 46
+ byte 10
+ byte 10
+ byte 0
+
+ long ' align long
+C_main_16_L000017 ' <symbol:16>
+ byte 83
+ byte 116
+ byte 111
+ byte 112
+ byte 112
+ byte 105
+ byte 110
+ byte 103
+ byte 32
+ byte 104
+ byte 101
+ byte 108
+ byte 108
+ byte 111
+ byte 95
+ byte 119
+ byte 111
+ byte 114
+ byte 108
+ byte 100
+ byte 10
+ byte 0
+
+ long ' align long
+C_main_14_L000015 ' <symbol:14>
+ byte 83
+ byte 116
+ byte 97
+ byte 114
+ byte 116
+ byte 105
+ byte 110
+ byte 103
+ byte 32
+ byte 104
+ byte 101
+ byte 108
+ byte 108
+ byte 111
+ byte 95
+ byte 119
+ byte 111
+ byte 114
+ byte 108
+ byte 100
+ byte 32
+ byte 97
+ byte 115
+ byte 32
+ byte 67
+ byte 77
+ byte 77
+ byte 32
+ byte 46
+ byte 46
+ byte 46
+ byte 10
+ byte 10
+ byte 0
+
+ long ' align long
+C_main_12_L000013 ' <symbol:12>
+ byte 10
+ byte 10
+ byte 0
+
+ long ' align long
+C_main_10_L000011 ' <symbol:10>
+ byte 114
+ byte 117
+ byte 110
+ byte 32
+ byte 102
+ byte 105
+ byte 114
+ byte 115
+ byte 116
+ byte 32
+ byte 97
+ byte 115
+ byte 32
+ byte 67
+ byte 77
+ byte 77
+ byte 32
+ byte 116
+ byte 104
+ byte 101
+ byte 110
+ byte 32
+ byte 97
+ byte 115
+ byte 32
+ byte 76
+ byte 77
+ byte 77
+ byte 0
+
+ long ' align long
+C_main_8_L000009 ' <symbol:8>
+ byte 97
+ byte 110
+ byte 32
+ byte 97
+ byte 114
+ byte 103
+ byte 117
+ byte 109
+ byte 101
+ byte 110
+ byte 116
+ byte 46
+ byte 32
+ byte 84
+ byte 104
+ byte 101
+ byte 32
+ byte 112
+ byte 114
+ byte 111
+ byte 103
+ byte 114
+ byte 97
+ byte 109
+ byte 32
+ byte 105
+ byte 115
+ byte 32
+ byte 99
+ byte 111
+ byte 109
+ byte 112
+ byte 105
+ byte 108
+ byte 101
+ byte 100
+ byte 32
+ byte 116
+ byte 111
+ byte 10
+ byte 0
+
+ long ' align long
+C_main_6_L000007 ' <symbol:6>
+ byte 97
+ byte 32
+ byte 115
+ byte 105
+ byte 109
+ byte 112
+ byte 108
+ byte 101
+ byte 32
+ byte 112
+ byte 114
+ byte 111
+ byte 103
+ byte 114
+ byte 97
+ byte 109
+ byte 32
+ byte 116
+ byte 104
+ byte 97
+ byte 116
+ byte 32
+ byte 97
+ byte 99
+ byte 99
+ byte 101
+ byte 112
+ byte 116
+ byte 115
+ byte 32
+ byte 97
+ byte 110
+ byte 32
+ byte 105
+ byte 110
+ byte 116
+ byte 32
+ byte 97
+ byte 115
+ byte 10
+ byte 0
+
+ long ' align long
+C_main_4_L000005 ' <symbol:4>
+ byte 84
+ byte 104
+ byte 105
+ byte 115
+ byte 32
+ byte 112
+ byte 114
+ byte 111
+ byte 103
+ byte 114
+ byte 97
+ byte 109
+ byte 32
+ byte 100
+ byte 121
+ byte 110
+ byte 97
+ byte 109
+ byte 105
+ byte 99
+ byte 97
+ byte 108
+ byte 108
+ byte 121
+ byte 32
+ byte 108
+ byte 111
+ byte 97
+ byte 100
+ byte 115
+ byte 32
+ byte 97
+ byte 110
+ byte 100
+ byte 32
+ byte 114
+ byte 117
+ byte 110
+ byte 115
+ byte 10
+ byte 0
+
+' Catalina Code
+
+DAT ' code segment
+' end

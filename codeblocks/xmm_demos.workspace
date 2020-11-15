@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="xmm_demos">
+		<Project filename="xmm_READ_ME/READ ME.cbp" active="1" />
+		<Project filename="small_lisp_xmm/small_lisp_xmm.cbp" />
+		<Project filename="startrek_xmm/startrek_xmm.cbp" />
+	</Workspace>
+</CodeBlocks_workspace_file>

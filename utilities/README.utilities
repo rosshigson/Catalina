@@ -1,0 +1,25 @@
+In this folder are some useful utilities, and also the Extended Addressing
+modification for the HX512 card for the Hydra and Hybrid - this must be
+programmed into the HX512 to enable the full 512Kb to be addressed by Catalina.
+
+To build the utilities, use the 'build_all' batch file provided. When running 
+this file, the platform for which the utilities are to be built must be 
+explicitly specified - e.g. HYDRA, HYBRID, MORPHEUS, TRIBLADEPROP or DEMO. 
+
+For example:
+
+   build_all TRIBLADEPROP
+
+On the Hydra, Hybrid or Demo platform, only the Generic_SD_Loader program is
+built (the other utilities are only for multi-CPU platforms). 
+
+On the TriBladeProp, the Generic SD Loader program is built for Blade #2, and 
+various other utilities are built for resetting and loading programs into 
+Blades #1 and #3 from Blade #2. See the README.TriBladeProp file in the target 
+directory for more detail on using these utilities.
+
+On the Morpheus, the Generic SD Loader program is built for Cpu #1, and various
+other utilities are built for resetting and loading programs into Cpu #2 from 
+Cpu #1. See the README.Morpheus file in the target directory for more detail 
+on using these utilities.
+

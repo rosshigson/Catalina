@@ -1,0 +1,24 @@
+include ../Makefile.inc
+
+all:	abort.s abs.s atof.s atoi.s atol.s bsearch.s div.s \
+	atexit.s exit.s getenv.s labs.s ldiv.s malloc.s mblen.s \
+	mbstowcs.s mbtowc.s qsort.s rand.s strtod.s strtol.s \
+	modf.s system.s wcstombs.s wctomb.s strfmt.s strto.s \
+	strtoi.s strtou.s malloc.c \
+
+
+clean:
+	rm -f abort.s abs.s atof.s atoi.s atol.s bsearch.s div.s \
+		atexit.s exit.s getenv.s labs.s ldiv.s malloc.s mblen.s \
+		mbstowcs.s mbtowc.s qsort.s rand.s strtod.s strtol.s \
+		modf.s system.s wcstombs.s wctomb.s strfmt.s strto.s \
+		strtoi.s strtou.s malloc.c OLIST
+
+malloc/malloc.c:
+	-(cd malloc; make)
+
+malloc.c: malloc/malloc.c
+	-cp malloc/malloc.c malloc.c
+
+distr:	malloc.c
+

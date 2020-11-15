@@ -1,0 +1,10 @@
+#!/bin/bash -login
+echo ""
+if [[ "$CATALINA_DEFINE" == "" ]]  ; then echo "CATALINA_DEFINE  = [default]" ; else echo "CATALINA_DEFINE  = $CATALINA_DEFINE" ; fi
+if [[ "$CATALINA_INCLUDE" == "" ]] ; then echo "CATALINA_INCLUDE = [default]" ; else echo "CATALINA_INCLUDE = $CATALINA_INCLUDE" ; fi
+if [[ "$CATALINA_LIBRARY" == "" ]] ; then echo "CATALINA_LIBRARY = [default]" ; else echo "CATALINA_LIBRARY = $CATALINA_LIBRARY" ; fi
+if [[ "$CATALINA_TARGET" == ""  ]] ; then echo "CATALINA_TARGET  = [default]" ; else echo "CATALINA_TARGET  = $CATALINA_TARGET" ; fi
+if [[ "$CATALINA_LCCOPT" == ""  ]] ; then echo "CATALINA_LCCOPT  = [default]" ; else echo "CATALINA_LCCOPT  = $CATALINA_LCCOPT" ; fi
+if [[ "$CATALINA_TEMPDIR" == "" ]] ; then echo "CATALINA_TEMPDIR = [default]" ; else echo "CATALINA_TEMPDIR = $CATALINA_TEMPDIR" ; fi
+if [[ "$LCCDIR" == ""           ]] ; then echo "LCCDIR           = [default]" ; else echo "LCCDIR           = $LCCDIR" ; fi
+echo ""

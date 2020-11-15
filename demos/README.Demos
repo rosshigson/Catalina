@@ -1,0 +1,122 @@
+
+Catalina Demo Programs
+======================
+
+Since Catalina was developed on the Hydra Game Console, it seems fitting
+that the first Catalina demo should be a game!
+
+I found a version of Othello (also known as Reversi) on the internet, and 
+modified it slighly to use the Catalina HMI functions (e.g. t_string, t_char, 
+k_wait etc) in place of the original stdio functions (printf, scanf, etc) - 
+this was done in order to save space. The compiled game takes about 16k using 
+a hi-res TV driver and keyboard driver. The game can be compiled using the 
+command:
+
+   catalina othello.c -lc
+
+The resulting binary can be loaded using the Payload loader:
+
+   payload othello.binary
+
+If you are lucky enough to own a Hydra, you should be able to execute the
+pre-compiled versions of the program contained in this directory. If you have
+a different Propeller platform you will need to first make sure the target 
+directory is correctly configured for your Propeller Platform (see the 
+documentation for more details) and then recompile the demos - there is 
+a batch file provided to help with this. 
+
+Note that the original (unmodified) version of the game is also available, 
+and this version can also be compiled with Catalina. It is in a file called 
+reversi.c, and is identical to the version of the program available from
+http://www.java2s.com/Code/C/String/REVERSIAnOthellotypegame.htm. If we use
+a similar command to that shown above, then this version would compile to an
+executable too large for the Propeller since it uses the standard C library. 
+However, if we also use a smaller 'tiny' library (which replaces some parts 
+of the stdio C library with smaller equivalents) then the original version 
+can also be be compiled and run. To compile it, use the command:
+
+   catalina reversi.c -lc -ltiny 
+
+Catalina comes with support for several debuggers. BlackBox and BlackCat are
+source level debuggers which are described externsively elsewhere. Catalina 
+also support the Propeller On-Chip Debugger (POD) which is an assembly level 
+debugger. To demonstrate the POD debugger, there is a version of the 
+traditional C program 'hello_world' compiled using the special 'pod' target
+that enables support for POD. This target which is included in the 
+target directory. The command used to compile this debug demo was:
+
+catalina hello_world.c -lci -ltiny -tpod -o hello_debug -C HYDRA -C NO_MOUSE
+
+The easiest way to start the debug demo is to use the Prop Terminal program 
+(not included, but available from http://insonix.ch/propeller/prop_term.html) 
+to load the demo. You can then single step through the Catalina LMM Kernel - 
+or press Ctrl+L in POD and you can single step though the LMM program code.
+
+The other demo programs are used to illustrate various aspects of the Catalina
+compiler. Many don't do anything useful except perhaps demonstrate some HMI 
+features - e.g. the 'test_terminal' demo program uses the screen, keyboard 
+and mouse all together. There are also several versions of the traditional
+'hello_world' program.
+
+There is a 'build_all.bat' script that can be used to build all the demo 
+programs, and a similar build_all script for use under Linux.
+
+The easiest way to use these programs is to first set the Catalina environment
+variable CATALINA_DEFINE to your propeller platform. For example, if you have
+a Hybrid and are running under Windows, use commands such as:
+
+   set CATALINA_DEFINE=HYBRID
+   build_all
+
+Under Linux, the equivalent would be:
+
+   CATALNA_DEFINE="HYBRID"
+   ./build_all
+
+The above commands are for the bash shell - the exact commands may differ on
+other shells.
+
+For more details on environment variables and supported platforms, see the
+Catalina documentation.
+   
+The programs 'test_math_1' and 'test_math_2' are slightly different versions
+of a simple floating point test program - 'test_math_1' uses various 't_' HMI
+functions, and 'test_math_2' uses the normal stdio 'printf' function. Compare 
+the size of the executables - the 't_' HMI functions offer a much smaller and 
+faster altenative to using 'printf' for programs that don't require the full 
+'printf' capabilities - but the ouptut of t_float is slightly less accurate 
+than the ouput of printf. 
+
+This difference in execution sizes is even more starkly illustrated by the 
+two simple programs 'hello_world_1' and 'hello_world_2'.
+
+The program 'test_math_3' is designed to illustrate the effect of different 
+floating point plugins - we compile the program using three different maths
+libraries which load different combinations of the floating point A and B 
+plugins as follows:
+
+   catalina test_math_3.c -lc -lm  -o test_math_3_lm
+   catalina test_math_3.c -lc -lma -o test_math_3_lma
+   catalina test_math_3.c -lc -lmb -o test_math_3_lmb
+
+Compare the sizes and execution times of the three different executables. 
+The 'test_math_3_lmb' version is both smallest and fastest - but the cost 
+of this speed is that it has to dedicate two cogs to floating point support, 
+compared to one cog for the 'test_math_3_lma' version and no cogs at all for 
+the 'test_math_3_lm' version.
+
+The 'test_leds.c' demo is one of two that don't load any HMI drivers - such 
+programs are normally compiled with all HMI plugins disabled - e.g.:
+
+   catalina test_leds.c -lc -C NO_HMI 
+
+This program just flashes the Hydra (or Hybrid) debug LED. But even excluding 
+the kernel overhead, it still takes about 50 longs to do in C what can be 
+done in about 10 longs in non-LMM PASM - Oh well!. 
+
+The program 'test_coginit.c' also runs a program to flash the debug LED, but 
+it uses the 'coginit' function to load a PASM program to do so instead of 
+doing it directly in C.
+
+see the file README.XMM_Demos for details on the XMM demo programs, and the
+file README.SD_Demos for details on some SD card demo programs.

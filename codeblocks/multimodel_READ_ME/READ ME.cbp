@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="READ ME" />
+		<Option pch_mode="2" />
+		<Option compiler="catalina" />
+		<Option show_notes="1">
+			<notes>
+				<![CDATA[The READ ME project in this workspace exists only to display the following information:
+
+The projects in this workspace have the project dependencies, additional linker options, and pre- and post- build steps required to invoke the "spinc" utulity and to copy the resulting include files into the correct locations. This is required to build a mult-model example. 
+
+The upshot of all this is that if you just rebuild the workspace, all the projects will build correctly, and then you can download and run the "run_as_lmm" or "run_as_cmm" projects. The "hello_world_lmm" and "hello_world_cmm" projects are not intended to be run directly. 
+
+The pre- and post- build steps will only work on Windows, and would require re-writing for Linux.
+
+The projects in this folder do not specify a specific Propeller platform, which means they will use the configuration specified for the CUSTOM platform (which is the default). The CUSTOM platform is suitable for most Propellers with a 5Mhz crystal (such as the Parallax QuickStart board), but if this program requires any special devices - such as a TV output or an SD Card - then it will not run correctly.
+
+If you have another of the supported platform then you should explicitly specify the platform to compile the projects correctly. You can do this in one of two ways:
+
+1. If you only have a single Propeller platform and plan to compile all projects for that platform, then you can set it ONCE in the global Compiler Settings and it will apply to all the projects.
+
+2. If you have multiple Propeller platforms then it is better to set the platform for EACH project in the project Build Options.
+
+
+
+]]>
+			</notes>
+		</Option>
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/READ ME" prefix_auto="1" extension_auto="1" />
+				<Option type="0" />
+				<Option compiler="catalina" />
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-CTINY" />
+		</Compiler>
+		<Linker>
+			<Add option="-lc" />
+			<Add option="-CTINY" />
+		</Linker>
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

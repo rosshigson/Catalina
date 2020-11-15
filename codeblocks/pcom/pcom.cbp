@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="pcom" />
+		<Option pch_mode="2" />
+		<Option compiler="catalina" />
+		<Build>
+			<Target title="Release">
+				<Option output="..\..\catalyst\bin\pcom" prefix_auto="1" extension_auto="0" />
+				<Option object_output="obj\Release\" />
+				<Option type="1" />
+				<Option compiler="catalina" />
+			</Target>
+			<Environment>
+				<Variable name="MEM_SIZE" value="512k" />
+			</Environment>
+		</Build>
+		<Compiler>
+			<Add option="-CLARGE" />
+		</Compiler>
+		<Linker>
+			<Add option="-M$(MEM_SIZE)" />
+			<Add option="-CLARGE" />
+			<Add option="-lma" />
+			<Add option="-lcx" />
+		</Linker>
+		<Unit filename="..\..\catalyst\pascal\p5_c\catalina_pcom.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\pascal\ptoc\io.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\pascal\ptoc\io.h" />
+		<Unit filename="..\..\catalyst\pascal\ptoc\paslib.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\pascal\ptoc\paslib.h" />
+		<Unit filename="..\..\catalyst\pascal\ptoc\set.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\pascal\ptoc\set.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

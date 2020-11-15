@@ -1,0 +1,29 @@
+A=.a
+O=.o
+E=.exe
+CC=gcc
+CPP=c++
+CFLAGS= -D WIN32_PATHS
+LDFLAGS=
+LD=$(CC)
+AR=ar ruv
+RANLIB=ranlib
+DIFF=diff
+RM=rm -f
+
+BINDIR="..//..//bin//"
+
+what:
+	-@echo make all p2asm
+
+all::	p2asm$E
+
+p2asm$E:	p2asm.c symsubs.c strsubs.c p2asmsym.h strsubs.h symsubs.h
+	$(CC) $(CFLAGS) -o $@ p2asm.c symsubs.c strsubs.c
+
+clean::
+	$(RM) p2asm$E
+
+install:
+	cp p2asm$E $(BINDIR)p2asm$E
+

@@ -1,0 +1,9 @@
+The C89 library can now be built under Linux, Cygwin or Windows.
+
+Currently, two different versions of the libarary are build - one for the old
+memory model (16 Mb code space, 32Kb data, heap and stack space), and one for 
+the new 'large' memory model (16mb code, data and heap space, 32kb stack space).
+
+See the individual platform NOTES files for details.
+
+

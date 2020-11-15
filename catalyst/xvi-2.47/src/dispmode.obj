@@ -1,0 +1,629 @@
+' Catalina Code
+
+DAT ' code segment
+'
+' LCC 4.2 for Parallax Propeller
+' (Catalina v3.15 Code Generator by Ross Higson)
+'
+
+' Catalina Init
+
+DAT ' initialized data segment
+
+ alignl ' align long
+C_s9mk_5fa8f425_sccsid_L000001 ' <symbol:sccsid>
+ long @C_s9mk1_5fa8f425_2_L000003
+
+' Catalina Export disp_init
+
+' Catalina Code
+
+DAT ' code segment
+
+ alignl ' align long
+C_disp_init ' <symbol:disp_init>
+ PRIMITIVE(#PSHM)
+ long $fa0000 ' save registers
+ mov r23, r5 ' reg var <- reg arg
+ mov r21, r4 ' reg var <- reg arg
+ mov r19, r3 ' reg var <- reg arg
+ mov r17, r2 ' reg var <- reg arg
+ mov r22, #5 ' reg <- coni
+ wrlong r22, ##@C_S_tate ' ASGNI4 addrg reg
+ wrlong r21, ##@C_s9mk2_5fa8f425_disp_func_L000018 ' ASGNP4 addrg reg
+ mov r22, r19 ' CVI, CVU or LOAD
+ mov r20, r23
+ adds r20, #24 ' ADDP4 coni
+ rdlong r20, r20 ' reg <- INDIRU4 reg
+ cmp r22, r20 wcz 
+ if_be jmp #\C_disp_init_23 ' LEU4
+ mov r22, r23
+ adds r22, #24 ' ADDP4 coni
+ rdlong r22, r22 ' reg <- INDIRU4 reg
+ mov r19, r22 ' CVI, CVU or LOAD
+C_disp_init_23
+ wrlong r19, ##@C_s9mk3_5fa8f425_disp_colwidth_L000019 ' ASGNI4 addrg reg
+ mov r22, r19 ' CVI, CVU or LOAD
+ mov r20, r23
+ adds r20, #24 ' ADDP4 coni
+ rdlong r20, r20 ' reg <- INDIRU4 reg
+ #ifndef NO_INTERRUPTS
+  stalli
+ #endif
+ qdiv r20, r22 ' DIVU4
+ getqx r0
+ #ifndef NO_INTERRUPTS
+  allowi
+ #endif
+ mov r20, r0 ' CVI, CVU or LOAD
+ #ifndef NO_INTERRUPTS
+  stalli
+ #endif
+ qmul r20, r22 ' MULU4
+ getqx r0
+ #ifndef NO_INTERRUPTS
+  allowi
+ #endif
+ mov r22, r0 ' CVI, CVU or LOAD
+ wrlong r22, ##@C_s9mk4_5fa8f425_disp_maxcol_L000020 ' ASGNI4 addrg reg
+ wrlong r17, ##@C_s9mk5_5fa8f425_disp_listmode_L000021 ' ASGNI4 addrg reg
+ mov r2, #0 ' reg ARG coni
+ mov r3, r23 ' CVI, CVU or LOAD
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_disp_screen
+ add SP, #4 ' CALL addrg
+' C_disp_init_22 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Init
+
+DAT ' initialized data segment
+
+ alignl ' align long
+C_disp_screen_finished_L000027 ' <symbol:finished>
+ long 0
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+ alignl ' align long
+C_disp_screen_line_L000046 ' <symbol:line>
+ byte 0[4]
+
+' Catalina Export disp_screen
+
+' Catalina Code
+
+DAT ' code segment
+
+ alignl ' align long
+C_disp_screen ' <symbol:disp_screen>
+ PRIMITIVE(#NEWF)
+ sub SP, #4
+ PRIMITIVE(#PSHM)
+ long $faaa00 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ mov r22, r23
+ adds r22, #16 ' ADDP4 coni
+ rdlong r19, r22 ' reg <- INDIRP4 reg
+ mov r22, #0 ' reg <- coni
+ mov r20, ##@C_disp_screen_finished_L000027
+ rdlong r20, r20 ' reg <- INDIRI4 addrg
+ cmps r20, r22 wz
+ if_nz jmp #\C_disp_screen_30 ' NEI4
+ mov r20, ##@C_kbdintr ' reg <- addrg
+ rdbyte r20, r20 ' reg <- CVUI4 INDIRU1 reg
+ cmps r20, r22 wz
+ if_z jmp #\C_disp_screen_28 ' EQI4
+C_disp_screen_30
+ mov r2, r23 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_move_window_to_cursor ' CALL addrg
+ mov r2, #1 ' reg ARG coni
+ mov r3, r23 ' CVI, CVU or LOAD
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_redraw_all
+ add SP, #4 ' CALL addrg
+ mov r22, #0 ' reg <- coni
+ wrlong r22, ##@C_S_tate ' ASGNI4 addrg reg
+ mov r22, ##@C_disp_screen_finished_L000027
+ rdlong r22, r22 ' reg <- INDIRI4 addrg
+ cmps r22,  #0 wz
+ if_z jmp #\C_disp_screen_31 ' EQI4
+ cmps r21,  #58 wz
+ if_nz jmp #\C_disp_screen_31 ' NEI4
+ mov r2, ##@C_disp_screen_33_L000034 ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_stuff ' CALL addrg
+C_disp_screen_31
+ mov r22, #0 ' reg <- coni
+ wrlong r22, ##@C_disp_screen_finished_L000027 ' ASGNI4 addrg reg
+ mov r20, ##@C_kbdintr ' reg <- addrg
+ rdbyte r20, r20 ' reg <- CVUI4 INDIRU1 reg
+ cmps r20, r22 wz
+ if_z jmp #\C_disp_screen_35 ' EQI4
+ mov r22, #1 ' reg <- coni
+ wrlong r22, ##@C_imessage ' ASGNI4 addrg reg
+C_disp_screen_35
+ mov r0, #1 ' reg <- coni
+ jmp #\@C_disp_screen_25 ' JUMPV addrg
+C_disp_screen_28
+ mov r2, r19 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_xvC_lear ' CALL addrg
+ mov r15, #0 ' reg <- coni
+ jmp #\@C_disp_screen_40 ' JUMPV addrg
+C_disp_screen_37
+ mov r17, #0 ' reg <- coni
+ jmp #\@C_disp_screen_44 ' JUMPV addrg
+C_disp_screen_41
+ mov r22, ##@C_disp_screen_line_L000046 ' reg <- addrg
+ rdlong r22, r22 ' reg <- INDIRP4 reg
+ cmp r22,  #0 wz
+ if_nz jmp #\C_disp_screen_47  ' NEU4
+ mov r22, ##@C_s9mk2_5fa8f425_disp_func_L000018
+ rdlong r22, r22 ' reg <- INDIRP4 addrg
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ mov RI, r22
+ PRIMITIVE(#CALI) ' CALL indirect
+ wrlong r0, ##@C_disp_screen_line_L000046 ' ASGNP4 addrg reg
+ mov r22, r0 ' CVI, CVU or LOAD
+ cmp r22,  #0 wz
+ if_nz jmp #\C_disp_screen_47  ' NEU4
+ mov r2, ##@C_disp_screen_49_L000050 ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_prompt ' CALL addrg
+ mov r22, #1 ' reg <- coni
+ wrlong r22, ##@C_disp_screen_finished_L000027 ' ASGNI4 addrg reg
+ mov r0, #0 ' reg <- coni
+ jmp #\@C_disp_screen_25 ' JUMPV addrg
+C_disp_screen_47
+ mov r13, #0 ' reg <- coni
+ jmp #\@C_disp_screen_54 ' JUMPV addrg
+C_disp_screen_51
+ mov r22, ##@C_s9mk5_5fa8f425_disp_listmode_L000021
+ rdlong r22, r22 ' reg <- INDIRI4 addrg
+ cmps r22,  #0 wz
+ if_z jmp #\C_disp_screen_56 ' EQI4
+ mov r9, ##-1 ' reg <- con
+ jmp #\@C_disp_screen_57 ' JUMPV addrg
+C_disp_screen_56
+ mov r9, r13 ' CVI, CVU or LOAD
+C_disp_screen_57
+ mov r2, r9 ' CVI, CVU or LOAD
+ mov r3, FP
+ sub r3, #-(-4) ' reg ARG ADDRLi
+ mov r22, ##@C_disp_screen_line_L000046
+ rdlong r22, r22 ' reg <- INDIRP4 addrg
+ rdbyte r4, r22 ' reg <- CVUI4 INDIRU1 reg
+ mov BC, #12 ' arg size, rpsize = 12, spsize = 12
+ sub SP, #8 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_vischar
+ add SP, #8 ' CALL addrg
+ mov r11, r0 ' CVI, CVU or LOAD
+ mov r22, r13 ' CVI, CVU or LOAD
+ add r22, r11 ' ADDU (1)
+ mov r13, r22 ' CVI, CVU or LOAD
+ mov r20, ##@C_s9mk3_5fa8f425_disp_colwidth_L000019
+ rdlong r20, r20 ' reg <- INDIRI4 addrg
+ cmps r22, r20 wcz
+ if_a jmp #\C_disp_screen_53 ' GTI4
+ mov RI, FP
+ sub RI, #-(-4)
+ rdlong r2, RI ' reg ARG INDIR ADDRLi
+ mov r22, r15 ' ADDI/P
+ adds r22, r13 ' ADDI/P (3)
+ sub r22, r11 ' SUBU (1)
+ mov r3, r22 ' CVI, CVU or LOAD
+ mov r4, r17 ' CVI, CVU or LOAD
+ mov r5, r19 ' CVI, CVU or LOAD
+ mov r22, r19
+ adds r22, #72 ' ADDP4 coni
+ rdlong r22, r22 ' reg <- INDIRP4 reg
+ mov BC, #16 ' arg size, rpsize = 16, spsize = 16
+ sub SP, #12 ' stack space for reg ARGs
+ mov RI, r22
+ PRIMITIVE(#CALI)
+ add SP, #12 ' CALL indirect
+' C_disp_screen_59 ' (symbol refcount = 0)
+' C_disp_screen_52 ' (symbol refcount = 0)
+ mov r22, ##@C_disp_screen_line_L000046 ' reg <- addrg
+ rdlong r22, r22 ' reg <- INDIRP4 reg
+ adds r22, #1 ' ADDP4 coni
+ wrlong r22, ##@C_disp_screen_line_L000046 ' ASGNP4 addrg reg
+C_disp_screen_54
+ mov r22, ##@C_disp_screen_line_L000046
+ rdlong r22, r22 ' reg <- INDIRP4 addrg
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ cmps r22,  #0 wz
+ if_nz jmp #\C_disp_screen_51 ' NEI4
+C_disp_screen_53
+ mov r22, ##@C_disp_screen_line_L000046
+ rdlong r22, r22 ' reg <- INDIRP4 addrg
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ cmps r22,  #0 wz
+ if_nz jmp #\C_disp_screen_60 ' NEI4
+ mov r22, ##@C_s9mk5_5fa8f425_disp_listmode_L000021
+ rdlong r22, r22 ' reg <- INDIRI4 addrg
+ cmps r22,  #0 wz
+ if_z jmp #\C_disp_screen_62 ' EQI4
+ mov r22, ##@C_s9mk3_5fa8f425_disp_colwidth_L000019
+ rdlong r22, r22 ' reg <- INDIRI4 addrg
+ cmps r13, r22 wcz
+ if_ae jmp #\C_disp_screen_42 ' GEI4
+ mov r2, #36 ' reg ARG coni
+ mov r3, r15 ' ADDI/P
+ adds r3, r13 ' ADDI/P (3)
+ mov r4, r17 ' CVI, CVU or LOAD
+ mov r5, r19 ' CVI, CVU or LOAD
+ mov r22, r19
+ adds r22, #76 ' ADDP4 coni
+ rdlong r22, r22 ' reg <- INDIRP4 reg
+ mov BC, #16 ' arg size, rpsize = 16, spsize = 16
+ sub SP, #12 ' stack space for reg ARGs
+ mov RI, r22
+ PRIMITIVE(#CALI)
+ add SP, #12 ' CALL indirect
+' C_disp_screen_65 ' (symbol refcount = 0)
+C_disp_screen_62
+ mov r22, ##0 ' reg <- con
+ wrlong r22, ##@C_disp_screen_line_L000046 ' ASGNP4 addrg reg
+C_disp_screen_60
+C_disp_screen_42
+ adds r17, #1 ' ADDI4 coni
+C_disp_screen_44
+ mov r22, r17 ' CVI, CVU or LOAD
+ mov r20, r19
+ adds r20, #4 ' ADDP4 coni
+ rdlong r20, r20 ' reg <- INDIRU4 reg
+ sub r20, #1 ' SUBU4 coni
+ cmp r22, r20 wcz 
+ if_b jmp #\C_disp_screen_41 ' LTU4
+' C_disp_screen_38 ' (symbol refcount = 0)
+ mov r22, ##@C_s9mk3_5fa8f425_disp_colwidth_L000019
+ rdlong r22, r22 ' reg <- INDIRI4 addrg
+ adds r15, r22 ' ADDI/P (1)
+C_disp_screen_40
+ mov r22, ##@C_s9mk4_5fa8f425_disp_maxcol_L000020
+ rdlong r22, r22 ' reg <- INDIRI4 addrg
+ cmps r15, r22 wcz
+ if_b jmp #\C_disp_screen_37 ' LTI4
+ mov r2, ##@C_disp_screen_66_L000067 ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_prompt ' CALL addrg
+ mov r0, #0 ' reg <- coni
+C_disp_screen_25
+ PRIMITIVE(#POPM) ' restore registers
+ add SP, #4 ' framesize
+ PRIMITIVE(#RETF)
+
+
+' Catalina Export prompt
+
+ alignl ' align long
+C_prompt ' <symbol:prompt>
+ PRIMITIVE(#PSHM)
+ long $e80000 ' save registers
+ mov r23, r2 ' reg var <- reg arg
+ mov r22, ##@C_curwin
+ rdlong r22, r22 ' reg <- INDIRP4 addrg
+ adds r22, #16 ' ADDP4 coni
+ rdlong r21, r22 ' reg <- INDIRP4 reg
+ mov r22, r21
+ adds r22, #4 ' ADDP4 coni
+ rdlong r22, r22 ' reg <- INDIRU4 reg
+ sub r22, #1 ' SUBU4 coni
+ mov r19, r22 ' CVI, CVU or LOAD
+ mov r2, #0 ' reg ARG coni
+ mov r3, r19 ' CVI, CVU or LOAD
+ mov r4, r21 ' CVI, CVU or LOAD
+ mov r22, r21
+ adds r22, #64 ' ADDP4 coni
+ rdlong r22, r22 ' reg <- INDIRP4 reg
+ mov BC, #12 ' arg size, rpsize = 12, spsize = 12
+ sub SP, #8 ' stack space for reg ARGs
+ mov RI, r22
+ PRIMITIVE(#CALI)
+ add SP, #8 ' CALL indirect
+ mov r22, r21
+ adds r22, #28 ' ADDP4 coni
+ rdlong r2, r22 ' reg <- INDIRI4 reg
+ mov r3, r21 ' CVI, CVU or LOAD
+ mov r22, r21
+ adds r22, #80 ' ADDP4 coni
+ rdlong r22, r22 ' reg <- INDIRP4 reg
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ mov RI, r22
+ PRIMITIVE(#CALI)
+ add SP, #4 ' CALL indirect
+ mov r2, r23 ' CVI, CVU or LOAD
+ mov r3, #0 ' reg ARG coni
+ mov r4, r19 ' CVI, CVU or LOAD
+ mov r5, r21 ' CVI, CVU or LOAD
+ mov r22, r21
+ adds r22, #72 ' ADDP4 coni
+ rdlong r22, r22 ' reg <- INDIRP4 reg
+ mov BC, #16 ' arg size, rpsize = 16, spsize = 16
+ sub SP, #12 ' stack space for reg ARGs
+ mov RI, r22
+ PRIMITIVE(#CALI)
+ add SP, #12 ' CALL indirect
+ mov r22, r21
+ adds r22, #24 ' ADDP4 coni
+ rdlong r2, r22 ' reg <- INDIRI4 reg
+ mov r3, r21 ' CVI, CVU or LOAD
+ mov r22, r21
+ adds r22, #80 ' ADDP4 coni
+ rdlong r22, r22 ' reg <- INDIRP4 reg
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ mov RI, r22
+ PRIMITIVE(#CALI)
+ add SP, #4 ' CALL indirect
+ mov r2, r23 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_strlen ' CALL addrg
+ mov r2, r0 ' CVI, CVU or LOAD
+ mov r3, r19 ' CVI, CVU or LOAD
+ mov r4, r21 ' CVI, CVU or LOAD
+ mov r22, r21
+ adds r22, #64 ' ADDP4 coni
+ rdlong r22, r22 ' reg <- INDIRP4 reg
+ mov BC, #12 ' arg size, rpsize = 12, spsize = 12
+ sub SP, #8 ' stack space for reg ARGs
+ mov RI, r22
+ PRIMITIVE(#CALI)
+ add SP, #8 ' CALL indirect
+ mov r2, r21 ' CVI, CVU or LOAD
+ mov r22, r21
+ adds r22, #92 ' ADDP4 coni
+ rdlong r22, r22 ' reg <- INDIRP4 reg
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ mov RI, r22
+ PRIMITIVE(#CALI) ' CALL indirect
+' C_prompt_68 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+ alignl ' align long
+C_s9mk5_5fa8f425_disp_listmode_L000021 ' <symbol:disp_listmode>
+ byte 0[4]
+
+ alignl ' align long
+C_s9mk4_5fa8f425_disp_maxcol_L000020 ' <symbol:disp_maxcol>
+ byte 0[4]
+
+ alignl ' align long
+C_s9mk3_5fa8f425_disp_colwidth_L000019 ' <symbol:disp_colwidth>
+ byte 0[4]
+
+ alignl ' align long
+C_s9mk2_5fa8f425_disp_func_L000018 ' <symbol:disp_func>
+ byte 0[4]
+
+' Catalina Code
+
+DAT ' code segment
+
+' Catalina Import xvClear
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Code
+
+DAT ' code segment
+
+' Catalina Import redraw_all
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Code
+
+DAT ' code segment
+
+' Catalina Import move_window_to_cursor
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Code
+
+DAT ' code segment
+
+' Catalina Import stuff
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Code
+
+DAT ' code segment
+
+' Catalina Import vischar
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Code
+
+DAT ' code segment
+
+' Catalina Import imessage
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Code
+
+DAT ' code segment
+
+' Catalina Import kbdintr
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Code
+
+DAT ' code segment
+
+' Catalina Import curwin
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Code
+
+DAT ' code segment
+
+' Catalina Import State
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Code
+
+DAT ' code segment
+
+' Catalina Import strlen
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Cnst
+
+DAT ' const data segment
+
+ alignl ' align long
+C_disp_screen_66_L000067 ' <symbol:66>
+ byte 91
+ byte 77
+ byte 111
+ byte 114
+ byte 101
+ byte 93
+ byte 32
+ byte 0
+
+ alignl ' align long
+C_disp_screen_49_L000050 ' <symbol:49>
+ byte 91
+ byte 72
+ byte 105
+ byte 116
+ byte 32
+ byte 114
+ byte 101
+ byte 116
+ byte 117
+ byte 114
+ byte 110
+ byte 32
+ byte 116
+ byte 111
+ byte 32
+ byte 99
+ byte 111
+ byte 110
+ byte 116
+ byte 105
+ byte 110
+ byte 117
+ byte 101
+ byte 93
+ byte 32
+ byte 0
+
+ alignl ' align long
+C_disp_screen_33_L000034 ' <symbol:33>
+ byte 58
+ byte 0
+
+ alignl ' align long
+C_s9mk1_5fa8f425_2_L000003 ' <symbol:2>
+ byte 64
+ byte 40
+ byte 35
+ byte 41
+ byte 100
+ byte 105
+ byte 115
+ byte 112
+ byte 109
+ byte 111
+ byte 100
+ byte 101
+ byte 46
+ byte 99
+ byte 9
+ byte 49
+ byte 46
+ byte 56
+ byte 32
+ byte 40
+ byte 67
+ byte 104
+ byte 114
+ byte 105
+ byte 115
+ byte 32
+ byte 38
+ byte 32
+ byte 74
+ byte 111
+ byte 104
+ byte 110
+ byte 32
+ byte 68
+ byte 111
+ byte 119
+ byte 110
+ byte 101
+ byte 121
+ byte 41
+ byte 32
+ byte 54
+ byte 47
+ byte 50
+ byte 50
+ byte 47
+ byte 57
+ byte 51
+ byte 0
+
+' Catalina Code
+
+DAT ' code segment
+' end

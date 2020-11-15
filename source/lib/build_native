@@ -1,0 +1,6 @@
+#!/bin/bash -login
+#
+source ../../use_catalina
+
+make clean
+make -B all NATIVE=TRUE  PROPELLER_2=TRUE

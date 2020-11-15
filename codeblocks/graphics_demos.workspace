@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="graphics_demos">
+		<Project filename="graphics_READ_ME/READ ME.cbp" active="1" />
+		<Project filename="graphics_demo/graphics_demo.cbp" />
+		<Project filename="graphics_demo_2/graphics_demo_2.cbp" />
+		<Project filename="graphics_demo_5/graphics_demo_5.cbp" />
+	</Workspace>
+</CodeBlocks_workspace_file>

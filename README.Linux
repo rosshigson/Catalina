@@ -1,0 +1,184 @@
+                A NOTE ON BUILDING CATALINA UNDER LINUX
+                =======================================
+
+Catalina can be built under linux with a just a few commands, provided all
+the required packages have been installed (at least gcc-c++, flex, bison, 
+libtool and unzip). 
+
+Catalina can be built anywhere, without requiring root permission.
+
+Catalina can also be installed anywhere (but installing it to its default
+location of /opt/catalina probably still requires root permission).
+
+However, currrently Code::Blocks will only work correctly without manual
+reconfiguration if Catalina is installed in the default location (i.e. in 
+/opt/catalina), because the auto-detection of Code::Blocks has
+some issues (see the note on Code::Blocks below).
+
+To build Catalina, unpack the zip file, and then do the following (assuming 
+you unpacked the zip file to Catalina_4.0):
+
+   cd Catalina_4.0
+   LCCDIR=$PWD
+   export LCCDIR
+   source use_catalina
+   cd source
+   ./build_all
+
+Note that to build Catalina you may need to install one or more of the 
+following packages:
+
+   flex
+   bison
+   libncurse-dev
+   libboost-all-dev
+   libtool-bin
+
+There may be additional packages required to build Code::Blocks:
+
+   g++-multilib
+   libx11-dev
+   gtk+-2.0
+   wxGTK-2.8.12 (this may meed to be built from source)
+
+To compile Code::Blocks from source (version 17.12) follow the directions here:
+
+   http://wiki.codeblocks.org/index.php/Installing_Code::Blocks_from_source_on_Linux
+
+To use Catalina, set the LCCDIR environment variable to wherever you have
+installed Catalina - this can be done in your profile - and then execute
+the following command in any command shell:
+
+   source $LCCDIR/use_catalina
+
+Now you are ready to use Catalina!
+
+
+                 A NOTE ON USING CODE::BLOCKS UNDER LINUX
+                 ========================================
+
+Please note that the various Code::Blocks workspaces can be used for either
+a Propeller 1 or a Proeller 2 platform, provided you specify the correct build
+options. By default, most of them build for the Propeller 1, and you will 
+explicitly need to specify that you have a Propeller 2.
+
+Also, be aware that if you build programs for both the Propeller 1 and the
+Propeller 2, you can confuse payload as to which one it should load. If, for
+instance, you change your build options build a ".bin" program for the 
+Propeller 2, but there is still a ".binary" file in the release directory 
+from previously building the same program for the Propeller 1, then payload 
+may still load the ".binary" file (or vice versa!).
+
+Also, it is worth noting that the payload loader can make use of environment 
+variables, which will assist in the use of the Code::Blocks "Tools" menu. For
+instance, if you are using a p2 and compile your programs to use the default
+TTY serial HMI at 230400 baud, it is worth considering setting the following
+in your environment, such as in your ~/.bashrc file:
+
+   export PAYLOAD_BAUD=230400
+
+This baud rate will then be used by all the tools in the Tools menu. Note that
+you may need to log out and back in again for any such change to take effect.
+
+Also, please note that there is a bug in the way Code::Blocks sets up Catalina
+as the default compiler under Linux. Code::Blocks will add incorrect search 
+paths. This can be corrected manually (described below) or by installing the 
+"default.conf" file contained in the zip file:
+
+   codeblocks/codeblocks_17.12_Src.zip
+
+That is the recommended way to fix this problem, as it also sets up the Tools
+menu to show the Catalina tools. However, if you want to fix the problem 
+manually, set the Catalina C Compiler as your default compiler in Code::Blocks
+(either in the startup dialog or using the "Settings-> Compiler" menu entry)
+and then use the "Settings->Compiler" menu item to display the settings for 
+Catalina. Check the "Search directories" tab. If there are any entries there
+at all (e.g. it may have "/opt/catalina/include" for the Compiler
+and a similar entry for the Linker) then they need to be deleted. There should
+be no Search directories at all by default.
+
+
+           A NOTE ON ACCESSING USB SERIAL PORTS UNDER LINUX
+           ================================================
+
+Linux has stricter permissions than Windows, incluidng permission to use the
+serial ports. To give user <username> permanent access to the serial ports, the user needs to be added to the 'dialout' user group. This can be done using the 
+following command:
+
+   sudo usermod -a -G dialout <username>
+
+NOTE: you will have to log out and log back in for this command to take effect.
+
+To find out the name of the last USB serial device just plugged in:
+
+   dmesg | grep tty
+
+Note that in payload, you can refer to the port by name or number. To find out
+the port number associated with a specific name, run payload and use the -d 
+option:
+
+   payload -d
+
+Then (for example) if this shows that /dev/ttyUSB0 is port 17, the following 
+would be equivalent:
+
+   payload -z -p /dev/ttyUSB0 program.bin
+
+   payload -z -p 17 program.bin
+
+(Note that for the P2, the -z option may assist in correctly detecting the 
+the Propeller).
+
+
+                A NOTE ON BUILDING CODE::BLOCKS UNDER LINUX
+                ===========================================
+
+Basically, don't do it :(
+
+A precompiled version of Code::Blocks is provided in the Catalina codeblocks 
+subdirectory (as codeblocks-17.12_Linux.tar.gz). This version of Code::Blocks
+was built as a 64 bit application on Ubuntu 16.04. So first, try unzipping that
+file to /opt, then execute the command:
+
+   /opt/codeblocks-17.12/bin/codeblocks
+
+If the precompiled binaries don't work for you, then rebuilding from source 
+is your only option. Here are some hints as to how to rebuild it.
+
+First, be warned that Code::Blocks can be a beast to build from source, and
+there currently seems to be only one combination of wxWidgets, Code::Blocks
+and gcc (or mingw-gcc on Windows) that actually compiles and works on multiple 
+platforms. Also, note that Code::Blocks no longer seems to be able to compile
+its own source, so ignore any instructions you see for a "self-hosting" build
+process, and instead use the command line build process described below.
+
+Basically, the instructions you need to follow are here: 
+
+   http://wiki.codeblocks.org/index.php/Installing_Code::Blocks_from_source_on_Linux#Code::Blocks_installation
+
+Here are the key points:
+
+1. Only wxGTK2.8.12 currently works on all platforms, so this is the version
+   recommended. If you have a later version installed (or even a different
+   flavour of the same version) then you may try and use it, but it may not
+   be successful. If not, you will generally need to download, compile and 
+   install wxWidgets 2.8.12 manually. 
+
+2. You may also need to install the package 'wx-common' if it is not already
+   installed. You don't need a specific version - just install the latest.
+
+3. The source code changes required to support Catalina, are contained in the 
+   file codeblocks-17.12_Src.zip file in the Catalina codeblocks subdirectory. 
+   Copy all the files in this zip file over the source files for Code::Blocks
+   (which must be version 17.12), and then execute the Code::Blocks build 
+   commands, but add the '--prefix' option when configuring. For example:
+
+      ./bootstrap
+      ./configure --prefix=/opt/codeblocks2-17.12
+      make
+      sudo make install
+
+4. Good luck!
+
+
+

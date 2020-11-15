@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="test_serial2" />
+		<Option pch_mode="2" />
+		<Option compiler="catalina" />
+		<Build>
+			<Target title="Release">
+				<Option output="bin/Release/test_serial2" prefix_auto="1" extension_auto="0" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="catalina" />
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-CNO_INTERLACE" />
+			<Add option="-CNTSC" />
+			<Add option="-CNO_KEYBOARD" />
+			<Add option="-CNO_MOUSE" />
+			<Add option="-CNO_HMI" />
+			<Add option="-CTINY" />
+			<Add option="-Clibci" />
+			<Add option="-CP2_EVAL" />
+			<Add option="-p2" />
+		</Compiler>
+		<Linker>
+			<Add option="-CNO_INTERLACE" />
+			<Add option="-CNTSC" />
+			<Add option="-CNO_KEYBOARD" />
+			<Add option="-CNO_MOUSE" />
+			<Add option="-CNO_HMI" />
+			<Add option="-CTINY" />
+			<Add option="-lci" />
+			<Add option="-CP2_EVAL" />
+			<Add option="-p2" />
+			<Add option="-lserial2" />
+		</Linker>
+		<Unit filename="../../demos/serial2/test_serial2.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

@@ -1,0 +1,288 @@
+' Catalina Code
+
+DAT ' code segment
+'
+' LCC 4.2 for Parallax Propeller
+' (Catalina v3.15 Code Generator by Ross Higson)
+'
+
+' Catalina Init
+
+DAT ' initialized data segment
+
+ alignl ' align long
+C_scuk_5fa8f427_sccsid_L000001 ' <symbol:sccsid>
+ long @C_scuk1_5fa8f427_2_L000003
+
+' Catalina Export inc
+
+' Catalina Code
+
+DAT ' code segment
+
+ alignl ' align long
+C_inc ' <symbol:inc>
+ PRIMITIVE(#PSHM)
+ long $f00000 ' save registers
+ mov r22, r2
+ adds r22, #4 ' ADDP4 coni
+ rdlong r22, r22 ' reg <- INDIRI4 reg
+ rdlong r20, r2 ' reg <- INDIRP4 reg
+ adds r20, #8 ' ADDP4 coni
+ rdlong r20, r20 ' reg <- INDIRP4 reg
+ mov r23, r22 ' ADDI/P
+ adds r23, r20 ' ADDI/P (3)
+ rdbyte r22, r23 ' reg <- CVUI4 INDIRU1 reg
+ cmps r22,  #0 wz
+ if_z jmp #\C_inc_19 ' EQI4
+ mov r22, r2
+ adds r22, #4 ' ADDP4 coni
+ rdlong r20, r22 ' reg <- INDIRI4 reg
+ adds r20, #1 ' ADDI4 coni
+ wrlong r20, r22 ' ASGNI4 reg reg
+ mov r22, r23
+ adds r22, #1 ' ADDP4 coni
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ cmps r22,  #0 wz
+ if_z jmp #\C_inc_22 ' EQI4
+ mov r21, #0 ' reg <- coni
+ jmp #\@C_inc_23 ' JUMPV addrg
+C_inc_22
+ mov r21, #2 ' reg <- coni
+C_inc_23
+ mov r0, r21 ' CVI, CVU or LOAD
+ jmp #\@C_inc_18 ' JUMPV addrg
+C_inc_19
+ rdlong r22, r2 ' reg <- INDIRP4 reg
+ adds r22, #4 ' ADDP4 coni
+ rdlong r22, r22 ' reg <- INDIRP4 reg
+ adds r22, #16 ' ADDP4 coni
+ rdlong r22, r22 ' reg <- INDIRU4 reg
+ mov r20, ##$ffffffff ' reg <- con
+ cmp r22, r20 wz
+ if_z jmp #\C_inc_24 ' EQU4
+ mov r22, r2
+ adds r22, #4 ' ADDP4 coni
+ mov r20, #0 ' reg <- coni
+ wrlong r20, r22 ' ASGNI4 reg reg
+ rdlong r22, r2 ' reg <- INDIRP4 reg
+ adds r22, #4 ' ADDP4 coni
+ rdlong r22, r22 ' reg <- INDIRP4 reg
+ wrlong r22, r2 ' ASGNP4 reg reg
+ mov r0, #1 ' reg <- coni
+ jmp #\@C_inc_18 ' JUMPV addrg
+C_inc_24
+ mov r0, ##-1 ' RET con
+C_inc_18
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Export dec
+
+ alignl ' align long
+C_dec ' <symbol:dec>
+ PRIMITIVE(#PSHM)
+ long $d00000 ' save registers
+ mov r23, r2 ' reg var <- reg arg
+ mov r22, r23
+ adds r22, #4 ' ADDP4 coni
+ rdlong r22, r22 ' reg <- INDIRI4 reg
+ cmps r22,  #0 wcz
+ if_be jmp #\C_dec_27 ' LEI4
+ mov r22, r23
+ adds r22, #4 ' ADDP4 coni
+ rdlong r20, r22 ' reg <- INDIRI4 reg
+ subs r20, #1 ' SUBI4 coni
+ wrlong r20, r22 ' ASGNI4 reg reg
+ mov r0, #0 ' reg <- coni
+ jmp #\@C_dec_26 ' JUMPV addrg
+C_dec_27
+ rdlong r22, r23 ' reg <- INDIRP4 reg
+ rdlong r22, r22 ' reg <- INDIRP4 reg
+ adds r22, #16 ' ADDP4 coni
+ rdlong r22, r22 ' reg <- INDIRU4 reg
+ cmp r22,  #0 wz
+ if_z jmp #\C_dec_29 ' EQU4
+ rdlong r22, r23 ' reg <- INDIRP4 reg
+ rdlong r22, r22 ' reg <- INDIRP4 reg
+ wrlong r22, r23 ' ASGNP4 reg reg
+ rdlong r22, r23 ' reg <- INDIRP4 reg
+ adds r22, #8 ' ADDP4 coni
+ rdlong r2, r22 ' reg <- INDIRP4 reg
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_strlen ' CALL addrg
+ mov r20, r23
+ adds r20, #4 ' ADDP4 coni
+ mov r22, r0 ' CVI, CVU or LOAD
+ wrlong r22, r20 ' ASGNI4 reg reg
+ mov r0, #1 ' reg <- coni
+ jmp #\@C_dec_26 ' JUMPV addrg
+C_dec_29
+ mov r0, ##-1 ' RET con
+C_dec_26
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Export pswap
+
+ alignl ' align long
+C_pswap ' <symbol:pswap>
+ PRIMITIVE(#NEWF)
+ sub SP, #8
+ mov r0, FP
+ sub r0, #-(-8) ' reg <- addrli
+ mov r1, r3 ' CVI, CVU or LOAD
+ PRIMITIVE(#CPYB)
+ long 8 ' ASGNB
+ mov r0, r3 ' CVI, CVU or LOAD
+ mov r1, r2 ' CVI, CVU or LOAD
+ PRIMITIVE(#CPYB)
+ long 8 ' ASGNB
+ mov r0, r2 ' CVI, CVU or LOAD
+ mov r1, FP
+ sub r1, #-(-8) ' reg <- addrli
+ PRIMITIVE(#CPYB)
+ long 8 ' ASGNB
+' C_pswap_31 ' (symbol refcount = 0)
+ add SP, #8 ' framesize
+ PRIMITIVE(#RETF)
+
+
+' Catalina Export lt
+
+ alignl ' align long
+C_lt ' <symbol:lt>
+ PRIMITIVE(#PSHM)
+ long $d00000 ' save registers
+ rdlong r22, r3 ' reg <- INDIRP4 reg
+ rdlong r20, r2 ' reg <- INDIRP4 reg
+ cmp r22, r20 wz
+ if_z jmp #\C_lt_33 ' EQU4
+ rdlong r22, r3 ' reg <- INDIRP4 reg
+ adds r22, #16 ' ADDP4 coni
+ rdlong r22, r22 ' reg <- INDIRU4 reg
+ rdlong r20, r2 ' reg <- INDIRP4 reg
+ adds r20, #16 ' ADDP4 coni
+ rdlong r20, r20 ' reg <- INDIRU4 reg
+ cmp r22, r20 wcz 
+ if_ae jmp #\C_lt_36 ' GEU4
+ mov r23, #1 ' reg <- coni
+ jmp #\@C_lt_37 ' JUMPV addrg
+C_lt_36
+ mov r23, #0 ' reg <- coni
+C_lt_37
+ mov r0, r23 ' CVI, CVU or LOAD
+ jmp #\@C_lt_32 ' JUMPV addrg
+C_lt_33
+ mov r22, r3
+ adds r22, #4 ' ADDP4 coni
+ rdlong r22, r22 ' reg <- INDIRI4 reg
+ mov r20, r2
+ adds r20, #4 ' ADDP4 coni
+ rdlong r20, r20 ' reg <- INDIRI4 reg
+ cmps r22, r20 wcz
+ if_ae jmp #\C_lt_39 ' GEI4
+ mov r23, #1 ' reg <- coni
+ jmp #\@C_lt_40 ' JUMPV addrg
+C_lt_39
+ mov r23, #0 ' reg <- coni
+C_lt_40
+ mov r0, r23 ' CVI, CVU or LOAD
+C_lt_32
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Export eq
+
+ alignl ' align long
+C_eq ' <symbol:eq>
+ PRIMITIVE(#PSHM)
+ long $d00000 ' save registers
+ rdlong r22, r3 ' reg <- INDIRP4 reg
+ rdlong r20, r2 ' reg <- INDIRP4 reg
+ cmp r22, r20 wz
+ if_nz jmp #\C_eq_43  ' NEU4
+ mov r22, r3
+ adds r22, #4 ' ADDP4 coni
+ rdlong r22, r22 ' reg <- INDIRI4 reg
+ mov r20, r2
+ adds r20, #4 ' ADDP4 coni
+ rdlong r20, r20 ' reg <- INDIRI4 reg
+ cmps r22, r20 wz
+ if_nz jmp #\C_eq_43 ' NEI4
+ mov r23, #1 ' reg <- coni
+ jmp #\@C_eq_44 ' JUMPV addrg
+C_eq_43
+ mov r23, #0 ' reg <- coni
+C_eq_44
+ mov r0, r23 ' CVI, CVU or LOAD
+' C_eq_41 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Import strlen
+
+' Catalina Cnst
+
+DAT ' const data segment
+
+ alignl ' align long
+C_scuk1_5fa8f427_2_L000003 ' <symbol:2>
+ byte 64
+ byte 40
+ byte 35
+ byte 41
+ byte 112
+ byte 116
+ byte 114
+ byte 102
+ byte 117
+ byte 110
+ byte 99
+ byte 46
+ byte 99
+ byte 9
+ byte 50
+ byte 46
+ byte 52
+ byte 32
+ byte 40
+ byte 67
+ byte 104
+ byte 114
+ byte 105
+ byte 115
+ byte 32
+ byte 38
+ byte 32
+ byte 74
+ byte 111
+ byte 104
+ byte 110
+ byte 32
+ byte 68
+ byte 111
+ byte 119
+ byte 110
+ byte 101
+ byte 121
+ byte 41
+ byte 32
+ byte 52
+ byte 47
+ byte 50
+ byte 55
+ byte 47
+ byte 57
+ byte 51
+ byte 0
+
+' Catalina Code
+
+DAT ' code segment
+' end

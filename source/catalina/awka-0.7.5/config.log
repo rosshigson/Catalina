@@ -1,0 +1,182 @@
+This file contains any messages produced by compilers while
+running configure, to aid debugging if configure makes a mistake.
+
+configure:548: checking for gcc
+configure:576: checking whether we are using GNU C
+configure:597: checking how to run the C preprocessor
+configure:618: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:681: checking for log in -lm
+configure:700: gcc -o conftest -O   conftest.c -lm   1>&5
+configure:693:6: warning: conflicting types for built-in function 'log' [-Wbuiltin-declaration-mismatch]
+ char log();
+      ^~~
+configure:778: checking checking for inline
+configure:787: gcc -c -O  conftest.c 1>&5
+configure:857: checking for gawk
+configure:896: checking for ash
+configure:896: checking for sh
+configure:935: checking for byacc
+configure:935: checking for bison
+configure:970: checking for ar
+configure:1004: checking for ranlib
+configure:1041: gcc -c -O  conftest.c 1>&5
+configure: In function 'this':
+configure:1035:21: error: '__CYGWIN32__' undeclared (first use in this function); did you mean '__LINE__'?
+ int this() { return __CYGWIN32__; }
+                     ^~~~~~~~~~~~
+                     __LINE__
+configure:1035:21: note: each undeclared identifier is reported only once for each function it appears in
+configure: failed program was:
+#line 1034 "configure"
+#include "confdefs.h"
+int this() { return __CYGWIN32__; } 
+int main() {
+return this();
+; return 0; }
+configure:1061: gcc -c -O  conftest.c 1>&5
+configure: In function 'this':
+configure:1055:21: error: '__DJGPP__' undeclared (first use in this function); did you mean '__DATE__'?
+ int this() { return __DJGPP__; }
+                     ^~~~~~~~~
+                     __DATE__
+configure:1055:21: note: each undeclared identifier is reported only once for each function it appears in
+configure: failed program was:
+#line 1054 "configure"
+#include "confdefs.h"
+int this() { return __DJGPP__; } 
+int main() {
+return this();
+; return 0; }
+configure:1077: checking for cmp
+configure:1107: checking compiler supports void*
+configure:1117: gcc -c -O  conftest.c 1>&5
+configure:1130: checking compiler groks prototypes
+configure:1139: gcc -c -O  conftest.c 1>&5
+configure:1152: checking for working const
+configure:1206: gcc -c -O  conftest.c 1>&5
+configure:1231: checking for stddef.h
+configure:1241: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1273: gcc -c -O  conftest.c 1>&5
+configure:1343: checking for fcntl.h
+configure:1353: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1381: checking for errno.h
+configure:1391: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1419: checking for time.h
+configure:1429: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1457: checking for stdarg.h
+configure:1467: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1495: checking for netdb.h
+configure:1505: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1533: checking for netinet/in.h
+configure:1543: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1571: checking for sys/socket.h
+configure:1581: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1609: checking for unistd.h
+configure:1619: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1646: checking for memcpy
+configure:1674: gcc -o conftest -O   conftest.c  -lm 1>&5
+configure:1658:6: warning: conflicting types for built-in function 'memcpy' [-Wbuiltin-declaration-mismatch]
+ char memcpy();
+      ^~~~~~
+configure:1699: checking for strchr
+configure:1727: gcc -o conftest -O   conftest.c  -lm 1>&5
+configure:1711:6: warning: conflicting types for built-in function 'strchr' [-Wbuiltin-declaration-mismatch]
+ char strchr();
+      ^~~~~~
+configure:1752: checking for strstr
+configure:1780: gcc -o conftest -O   conftest.c  -lm 1>&5
+configure:1764:6: warning: conflicting types for built-in function 'strstr' [-Wbuiltin-declaration-mismatch]
+ char strstr();
+      ^~~~~~
+configure:1805: checking for strerror
+configure:1833: gcc -o conftest -O   conftest.c  -lm 1>&5
+configure:1858: checking for vfprintf
+configure:1886: gcc -o conftest -O   conftest.c  -lm 1>&5
+configure:1870:6: warning: conflicting types for built-in function 'vfprintf' [-Wbuiltin-declaration-mismatch]
+ char vfprintf();
+      ^~~~~~~~
+configure:1911: checking for fmod
+configure:1939: gcc -o conftest -O   conftest.c  -lm 1>&5
+configure:1923:6: warning: conflicting types for built-in function 'fmod' [-Wbuiltin-declaration-mismatch]
+ char fmod();
+      ^~~~
+configure:1964: checking for matherr
+configure:1992: gcc -o conftest -O   conftest.c  -lm 1>&5
+/tmp/ccZo7JSa.o: In function `main':
+conftest.c:(.text+0xa): undefined reference to `matherr'
+collect2: error: ld returned 1 exit status
+configure: failed program was:
+#line 1969 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char matherr(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char matherr();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_matherr) || defined (__stub___matherr)
+choke me
+#else
+matherr();
+#endif
+
+; return 0; }
+configure:2054: checking for limits.h
+configure:2064: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:2220: checking for gethostbyname
+configure:2248: gcc -o conftest -O   conftest.c  -lm 1>&5
+configure:2318: checking for connect
+configure:2346: gcc -o conftest -O   conftest.c  -lm 1>&5
+configure:2415: checking where to find the socket library calls
+configure:2430: checking whether time.h and sys/time.h may both be included
+configure:2444: gcc -c -O  conftest.c 1>&5
+configure:2465: checking whether struct tm is in sys/time.h or time.h
+configure:2478: gcc -c -O  conftest.c 1>&5
+configure:2499: checking for tm_zone in struct tm
+configure:2512: gcc -c -O  conftest.c 1>&5
+configure:2569: checking for time
+configure:2597: gcc -o conftest -O   conftest.c  -lm 1>&5
+configure:2622: checking for mktime
+configure:2650: gcc -o conftest -O   conftest.c  -lm 1>&5
+configure:2675: checking for asctime
+configure:2703: gcc -o conftest -O   conftest.c  -lm 1>&5
+configure:2728: checking for localtime
+configure:2756: gcc -o conftest -O   conftest.c  -lm 1>&5
+configure:2781: checking for gmtime
+configure:2809: gcc -o conftest -O   conftest.c  -lm 1>&5
+configure:2834: checking for .exe extension
+configure:2843: gcc -c -O  conftest.c 1>&5
+configure: In function 'this':
+configure:2837:21: error: '__CYGWIN32__' undeclared (first use in this function); did you mean '__LINE__'?
+ int this() { return __CYGWIN32__; }
+                     ^~~~~~~~~~~~
+                     __LINE__
+configure:2837:21: note: each undeclared identifier is reported only once for each function it appears in
+configure: failed program was:
+#line 2836 "configure"
+#include "confdefs.h"
+int this() { return __CYGWIN32__; } 
+int main() {
+return this();
+; return 0; }
+configure:2865: gcc -c -O  conftest.c 1>&5
+configure: In function 'this':
+configure:2859:21: error: '__DJGPP__' undeclared (first use in this function); did you mean '__DATE__'?
+ int this() { return __DJGPP__; }
+                     ^~~~~~~~~
+                     __DATE__
+configure:2859:21: note: each undeclared identifier is reported only once for each function it appears in
+configure: failed program was:
+#line 2858 "configure"
+#include "confdefs.h"
+int this() { return __DJGPP__; } 
+int main() {
+return this();
+; return 0; }

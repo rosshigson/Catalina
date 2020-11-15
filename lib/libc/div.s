@@ -1,0 +1,89 @@
+' Catalina Code
+
+DAT ' code segment
+'
+' LCC 4.2 for Parallax Propeller
+' (Catalina v2.5 Code Generator by Ross Higson)
+'
+
+' Catalina Export div
+
+ long ' align long
+C_div ' <symbol:div>
+ jmp #NEWF
+ sub SP, #8
+ jmp #PSHM
+ long $fa8000 ' save registers
+ mov r23, r4 ' reg var <- reg arg
+ mov r21, r3 ' reg var <- reg arg
+ mov r19, r2 ' reg var <- reg arg
+ mov r0, r21 ' setup r0/r1 (2)
+ mov r1, r19 ' setup r0/r1 (2)
+ jmp #DIVS ' DIVI
+ mov r22, r0 ' CVI, CVU or LOAD
+ jmp #LODF
+ long -8
+ wrlong r22, RI ' ASGNI4 addrl reg
+ mov r0, r21 ' setup r0/r1 (2)
+ mov r1, r19 ' setup r0/r1 (2)
+ jmp #DIVS ' DIVI
+ jmp #LODF
+ long -4
+ wrlong r1, RI ' ASGNI4 addrl reg
+ mov r22, #0 ' reg <- coni
+ mov r20, FP
+ sub r20, #-(-4) ' reg <- addrli
+ rdlong r20, r20 ' reg <- INDIRI4 reg
+ cmps r20, r22 wz
+ jmp #BR_Z
+ long @C_div_6 ' EQI4
+ cmps r21, r22 wz,wc
+ jmp #BRBE
+ long @C_div_12 ' LEI4
+ mov r17, #1 ' reg <- coni
+ jmp #JMPA
+ long @C_div_13 ' JUMPV addrg
+C_div_12
+ mov r17, #0 ' reg <- coni
+C_div_13
+ mov r22, FP
+ sub r22, #-(-4) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRI4 reg
+ cmps r22,  #0 wz,wc
+ jmp #BRBE
+ long @C_div_14 ' LEI4
+ mov r15, #1 ' reg <- coni
+ jmp #JMPA
+ long @C_div_15 ' JUMPV addrg
+C_div_14
+ mov r15, #0 ' reg <- coni
+C_div_15
+ cmps r17, r15 wz
+ jmp #BR_Z
+ long @C_div_6 ' EQI4
+ mov r22, FP
+ sub r22, #-(-8) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRI4 reg
+ adds r22, #1 ' ADDI4 coni
+ jmp #LODF
+ long -8
+ wrlong r22, RI ' ASGNI4 addrl reg
+ mov r22, FP
+ sub r22, #-(-4) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRI4 reg
+ subs r22, r19 ' SUBI/P (1)
+ jmp #LODF
+ long -4
+ wrlong r22, RI ' ASGNI4 addrl reg
+C_div_6
+ mov r0, r23 ' CVI, CVU or LOAD
+ mov r1, FP
+ sub r1, #-(-8) ' reg <- addrli
+ jmp #CPYB
+ long 8 ' ASGNB
+' C_div_3 ' (symbol refcount = 0)
+ jmp #POPM ' restore registers
+ add SP, #8 ' framesize
+ jmp #RETF
+
+' end

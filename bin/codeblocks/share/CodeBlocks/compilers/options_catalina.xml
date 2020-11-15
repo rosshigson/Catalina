@@ -1,0 +1,773 @@
+﻿<?xml version="1.0"?>
+<!DOCTYPE CodeBlocks_compiler_options>
+<CodeBlocks_compiler_options>
+    <if platform="windows">
+       <Program name="C"         value="catalina.exe"/>
+       <Program name="CPP"       value="catalina.exe"/>
+       <Program name="LD"        value="catalina.exe"/>
+       <Program name="DBGconfig" value="gdb_debugger:Default"/>
+       <Program name="LIB"       value="catalina.exe"/>
+       <Program name="WINDRES"   value=""/>
+       <Program name="MAKE"      value="make.exe"/>
+    </if>
+    <else>
+        <Program name="C"         value="catalina"/>
+        <Program name="CPP"       value="catalina"/>
+        <Program name="LD"        value="catalina"/>
+        <Program name="DBGconfig" value=""/>
+        <Program name="LIB"       value="catalina"/>
+        <Program name="WINDRES"   value=""/>
+        <Program name="MAKE"      value="make"/>
+    </else>
+
+    <Switch name="includeDirs"             value="-I"/>
+    <Switch name="libDirs"                 value="-L"/>
+    <Switch name="linkLibs"                value="-I"/>
+    <Switch name="defines"                 value="-D"/>
+    <Switch name="genericSwitch"           value="-"/>
+    <Switch name="objectExtension"         value="obj"/>
+    <Switch name="needDependencies"        value="true"/>
+    <Switch name="forceCompilerUseQuotes"  value="false"/>
+    <Switch name="forceLinkerUseQuotes"    value="false"/>
+    <Switch name="logging"                 value="default"/>
+    <Switch name="libPrefix"               value=""/>
+    <Switch name="libExtension"            value="lib"/>
+    <Switch name="linkerNeedsLibPrefix"    value="false"/>
+    <Switch name="linkerNeedsLibExtension" value="true"/>
+
+    <Category name="Propeller Hardware Version (default is Propeller 1)">
+        <Option name="Propeller 1"
+                option="-p1"
+                additionalLibs="-p1"
+                supersedes="-p2"/>
+        <Option name="Propeller 2"
+                option="-p2"
+                additionalLibs="-p2"
+                supersedes="-p1"/>
+    </Category>
+
+    <Category name="Platform Selection (default is CUSTOM)">
+       <Option name="ARDUINO SHIELD COMPATIBLE (ASC)"
+                option="-CASC"
+                additionalLibs="-CASC"
+                checkAgainst="-CCPU_1 -CCPU_2 -CCPU_3"
+                checkMessage="This platform does not have multiple CPUs - CPU will be deselected"
+                supersedes="-CHYDRA -CHYBRID -CDEMO -CTRIBLADEPROP -CMORPHEUS -CC3 -CDRACBLADE -CRAMBLADE -CRAMBLADE3 -CCUSTOM -CPP -CQUICKSTART -CCPU_1 -CCPU_2 -CCPU_3 -CP2_EVAL -CP2D2 -p2"/>
+        <Option name="CREDIT CARD COMPUTER (C3)"
+                option="-CC3"
+                additionalLibs="-CC3"
+                checkAgainst="-CCPU_1 -CCPU_2 -CCPU_3"
+                checkMessage="This platform does not have multiple CPUs - CPU will be deselected"
+                supersedes="-CHYDRA -CHYBRID -CDEMO -CTRIBLADEPROP -CMORPHEUS -CDRACBLADE -CRAMBLADE -CRAMBLADE3 -CASC -CCUSTOM -CPP -CQUICKSTART -CCPU_1 -CCPU_2 -CCPU_3 -CP2_EVAL -CP2D2 -p2"/>
+        <Option name="CUSTOM (configure in CUSTOM_DEF.inc etc (p1) or Catalina_platforms.inc (p2))"
+                option="-CCUSTOM"
+                additionalLibs="-CCUSTOM"
+                supersedes="-CHYDRA -CHYBRID -CDEMO -CTRIBLADEPROP -CMORPHEUS -CC3 -CDRACBLADE -CRAMBLADE -CRAMBLADE3 -CASC -CPP -CQUICKSTART -CP2_EVAL -CP2D2"/>
+        <Option name="DEMO"
+                option="-CDEMO"
+                additionalLibs="-CDEMO"
+                checkAgainst="-CCPU_1 -CCPU_2 -CCPU_3"
+                checkMessage="This platform does not have multiple CPUs - CPU will be deselected"
+                supersedes="-CHYDRA -CHYBRID -CTRIBLADEPROP -CMORPHEUS -CC3 -CDRACBLADE -CRAMBLADE -CRAMBLADE3 -CASC -CCUSTOM -CPP -CQUICKSTART -CCPU_1 -CCPU_2 -CCPU_3 -CP2_EVAL -CP2D2 -p2"/>
+        <Option name="DRACBLADE"
+                option="-CDRACBLADE"
+                additionalLibs="-CDRACBLADE"
+                checkAgainst="-CCPU_1 -CCPU_2 -CCPU_3"
+                checkMessage="This platform does not have multiple CPUs - CPU will be deselected"
+                supersedes="-CHYDRA -CHYBRID -CDEMO -CTRIBLADEPROP -CMORPHEUS -CC3 -CRAMBLADE -CRAMBLADE3 -CASC -CCUSTOM -CPP -CQUICKSTART -CCPU_1 -CCPU_2 -CCPU_ -CP2_EVAL -CP2D2 -p2"/>
+        <Option name="HYDRA"
+                option="-CHYDRA"
+                additionalLibs="-CHYDRA"
+                checkAgainst="-CCPU_1 -CCPU_2 -CCPU_3"
+                checkMessage="This platform does not have multiple CPUs - CPU will be deselected"
+                supersedes="-CHYBRID -CDEMO -CTRIBLADEPROP -CMORPHEUS -CC3 -CDRACBLADE -CRAMBLADE -CRAMBLADE3 -CASC -CCUSTOM -CPP -CQUICKSTART -CCPU_1 -CCPU_2 -CCPU_3 -CP2_EVAL -CP2D2 -p2"/>
+        <Option name="HYBRID"
+                option="-CHYBRID"
+                additionalLibs="-CHYBRID"
+                checkAgainst="-CCPU_1 -CCPU_2 -CCPU_3"
+                checkMessage="This platform does not have multiple CPUs - CPU will be deselected"
+                supersedes="-CHYDRA -CDEMO -CTRIBLADEPROP -CMORPHEUS -CC3 -CDRACBLADE -CRAMBLADE -CRAMBLADE3 -CASC -CCUSTOM -CPP -CQUICKSTART -CCPU_1 -CCPU_2 -CCPU_3 -CP2_EVAL -CP2D2 -p2"/>
+        <Option name="MORPHEUS (must also specify CPU)"
+                option="-CMORPHEUS"
+                additionalLibs="-CMORPHEUS"
+                supersedes="-CHYDRA -CHYBRID -CDEMO -CTRIBLADEPROP -CC3 -CCDRACBLADE -CRAMBLADE -CRAMBLADE3 -CASC -CCUSTOM -CPP -CQUICKSTART -CP2_EVAL -CP2D2 -p2"/>
+        <Option name="PROPELLER PLATFORM"
+                option="-CPP"
+                additionalLibs="-CPP"
+                checkAgainst="-CCPU_1 -CCPU_2 -CCPU_3"
+                checkMessage="This platform does not have multiple CPUs - CPU will be deselected"
+                supersedes="-CHYDRA -CHYBRID -CDEMO -CTRIBLADEPROP -CC3 -CCDRACBLADE -CRAMBLADE -CRAMBLADE3 -CASC -CCUSTOM -CMORPHEUS -CQUICKSTART -CCPU_1 -CCPU_2 -CCPU_3 -CP2_EVAL -CP2D2 -p2"/>
+        <Option name="QUICKSTART"
+                option="-CQUICKSTART"
+                additionalLibs="-CQUICKSTART"
+                checkAgainst="-CCPU_1 -CCPU_2 -CCPU_3"
+                checkMessage="This platform does not have multiple CPUs - CPU will be deselected"
+                supersedes="-CHYDRA -CHYBRID -CDEMO -CTRIBLADEPROP -CC3 -CCDRACBLADE -CRAMBLADE -CRAMBLADE3 -CASC -CCUSTOM -CMORPHEUS -CPP -CCPU_1 -CCPU_2 -CCPU_3 -CP2_EVAL -CP2D2 -p2"/>
+        <Option name="RAMBLADE"
+                option="-CRAMBLADE"
+                additionalLibs="-CRAMBLADE"
+                checkAgainst="-CCPU_1 -CCPU_2 -CCPU_3"
+                checkMessage="This platform does not have multiple CPUs - CPU will be deselected"
+                supersedes="-CHYDRA -CHYBRID -CDEMO -CTRIBLADEPROP -CMORPHEUS -CC3 -CDRACBLADE -CRAMBLADE3 -CASC -CCUSTOM -CPP -CQUICKSTART -CCPU_1 -CCPU_2 -CCPU_3 -CP2_EVAL -CP2D2 -p2"/>
+        <Option name="RAMBLADE 3"
+                option="-CRAMBLADE3"
+                additionalLibs="-CRAMBLADE3"
+                checkAgainst="-CCPU_1 -CCPU_2 -CCPU_3"
+                checkMessage="This platform does not have multiple CPUs - CPU will be deselected"
+                supersedes="-CHYDRA -CHYBRID -CDEMO -CTRIBLADEPROP -CMORPHEUS -CC3 -CDRACBLADE -CRAMBLADE -CASC -CCUSTOM -CPP -CQUICKSTART -CCPU_1 -CCPU_2 -CCPU_3 -CP2_EVAL -CP2D2 -p2"/>
+        <Option name="TRIBLADEPROP (must also specify CPU)"
+                option="-CTRIBLADEPROP"
+                additionalLibs="-CTRIBLADEPROP"
+                supersedes="-CHYDRA -CHYBRID -CDEMO -CMORPHEUS -CC3 -CDRACBLADE -CRAMBLADE -CRAMBLADE3 -CASC -CCUSTOM -CPP -CQUICKSTART -CP2_EVAL -CP2D2 -p2"/>
+        <Option name="Other (specify in PLATFORM custom variable))"
+                option="-C$(PLATFORM)"
+                additionalLibs="-C$(PLATFORM)"
+                supersedes="-CHYDRA -CHYBRID -CDEMO -CTRIBLADEPROP -CMORPHEUS -CC3 -CDRACBLADE -CRAMBLADE -CRAMBLADE3 -CASC -CCUSTOM -CPP -CQUICKSTART -CP2_EVAL -CP2D2 -p2"/>
+       <Option name="P2_EVAL (Propeller 2)"
+                option="-CP2_EVAL"
+                additionalLibs="-CP2_EVAL"
+                checkAgainst="-CCPU_1 -CCPU_2 -CCPU_3"
+                checkMessage="This platform does not have multiple CPUs - CPU will be deselected"
+                supersedes="-CHYDRA -CHYBRID -CDEMO -CTRIBLADEPROP -CMORPHEUS -CC3 -CDRACBLADE -CRAMBLADE -CRAMBLADE3 -CCUSTOM -CPP -CQUICKSTART -CCPU_1 -CCPU_2 -CCPU_3 -CP2D2 -p1"/>
+       <Option name="P2D2 (Propeller 2)"
+                option="-CP2D2"
+                additionalLibs="-CP2D2"
+                checkAgainst="-CCPU_1 -CCPU_2 -CCPU_3"
+                checkMessage="This platform does not have multiple CPUs - CPU will be deselected"
+                supersedes="-CHYDRA -CHYBRID -CDEMO -CTRIBLADEPROP -CMORPHEUS -CC3 -CDRACBLADE -CRAMBLADE -CRAMBLADE3 -CCUSTOM -CPP -CQUICKSTART -CCPU_1 -CCPU_2 -CCPU_3 -CP2_EVAL -p1"/>
+    </Category>
+
+    <Category name="XMM Add-on Board Selection (default is none)">
+        <Option name="XEPROM"
+                option="-CXEPROM"
+                additionalLibs="-CXEPROM"
+                supersedes="-CSUPERQUAD -CPMC -CRP2 -CHX512 -CRAMPAGE"/>
+        <Option name="RAMPAGE"
+                option="-CRAMPAGE"
+                additionalLibs="-CRAMPAGE"
+                supersedes="-CSUPERQUAD -CPMC -CRP2 -CHX512 -CXEPROM"/>
+        <Option name="RAMPAGE 2"
+                option="-CRP2"
+                additionalLibs="-CRP2"
+                supersedes="-CSUPERQUAD -CRAMPAGE -CPMC -CHX512 -CXEPROM"/>
+        <Option name="SUPERQUAD"
+                option="-CSUPERQUAD"
+                additionalLibs="-CSUPERQUAD"
+                supersedes="-CRAMPAGE -CPMC -CRP2 -CHX512 -CXEPROM"/>
+        <Option name="HYDRA XTREME (HX512)"
+                option="-CHX512"
+                additionalLibs="-CHX512"
+                supersedes="-CSUPERQUAD -CRAMPAGE -CPMC -CRP2 -CXEPROM"/>
+        <Option name="PROPELLER MEMORY CARD"
+                option="-CPMC"
+                additionalLibs="-CPMC"
+                supersedes="-CSUPERQUAD -CRAMPAGE -CRP2 -CHX512 -CXEPROM"/>
+        <Option name="Other (specify in XMM custom variable))"
+                option="-C$(XMM)"
+                additionalLibs="-C$(XMM)"
+                supersedes="-CSUPERQUAD -CRAMPAGE -CRP2 -CHX512 -CPMC -CXEPROM"/>
+    </Category>
+
+    <Category name="CPU Selection (only required for multi-CPU platforms)">
+        <Option name="CPU 1"
+                option="-CCPU_1"
+                additionalLibs="-CCPU_1"
+                supersedes="-CCPU_2 -CCPU_3"
+                checkAgainst="-CHYDRA -CHYBRID -CDEMO -CC3 -CDRACBLADE -CRAMBLADE -CRAMBLADE3 -CASC -CPP -CQUICKSTART"
+                checkMessage="The selected platform does not have multiple CPUs"/>
+        <Option name="CPU 2"
+                option="-CCPU_2"
+                additionalLibs="-CCPU_2"
+                supersedes="-CCPU_1 -CCPU_3"
+                checkAgainst="-CHYDRA -CHYBRID -CDEMO -CC3 -CDRACBLADE -CRAMBLADE -CRAMBLADE3 -CASC -CPP -CQUICKSTART"
+                checkMessage="The selected platform does not have multiple CPUs"/>
+        <Option name="CPU 3"
+                option="-CCPU_3"
+                additionalLibs="-CCPU_3"
+                supersedes="-CCPU_1 -CCPU_2"
+                checkAgainst="-CHYDRA -CHYBRID -CDEMO -CC3 -CDRACBLADE -CRAMBLADE -CRAMBLADE3 -CASC -CPP -CQUICKSTART"
+                checkMessage="The selected platform does not have multiple CPUs"/>
+    </Category>
+
+    <Category name="C Library Selection (default is libc)">
+        <Option name="libc (standard C library - stdin/stdout/stderr only)"
+                option="-Clibc"
+                additionalLibs="-lc"
+                supersedes="-Clibci -Clibcx -Clibcix"/>
+        <Option name="libci (integer-only C library - stdin/stdout/stderr only)"
+                option="-Clibci"
+                additionalLibs="-lci"
+                supersedes="-Clibc -Clibcx -Clibcix"/>
+        <Option name="libcx (extended C library - full file system support)"
+                option="-Clibcx"
+                additionalLibs="-lcx"
+                supersedes="-Clibc -Clibci -Clibcix"/>
+        <Option name="libcix (integer-only extended C library - full file system support)"
+                option="-Clibcix"
+                additionalLibs="-lcix"
+                supersedes="-Clibc -Clibci -Clibcx "/>
+    </Category>
+
+    <Category name="Other Library Selection (default is none)">
+        <Option name="libm (maths library implemented in C - uses no extra cogs)"
+                option="-Clibm"
+                additionalLibs="-lm"
+                checkAgainst="-CNO_FLOAT"
+                checkMessage="The NO_FLOAT option is selected - it will de deselected"
+                supersedes="-Clibma -Clibmb -Clibmc -CNO_FLOAT"/>
+        <Option name="libma (maths library implemented in one dedicated PASM cog)"
+                option="-Clibma"
+                additionalLibs="-lma"
+                checkAgainst="-CNO_FLOAT"
+                checkMessage="The NO_FLOAT option is selected - it will de deselected"
+                supersedes="-Clibm -Clibmb -Clibmc -CNO_FLOAT"/>
+        <Option name="libmb (maths library implemented in two dedicated PASM cogs)"
+                option="-Clibmb"
+                additionalLibs="-lmb"
+                checkAgainst="-CNO_FLOAT"
+                checkMessage="The NO_FLOAT option is selected - it will de deselected"
+                supersedes="-Clibm -Clibma -Clibmc -CNO_FLOAT"/>
+        <Option name="libmc (CORDIC maths library implemented in one cog - Propeller 2 only)"
+                option="-Clibmc"
+                additionalLibs="-lmc"
+                checkAgainst="-CNO_FLOAT"
+                checkMessage="The NO_FLOAT option is selected - it will de deselected"
+                supersedes="-Clibm -Clibma -Clibmb -CNO_FLOAT"/>
+        <Option name="libgraphics (graphics library)"
+                option="-Clibgraphics"
+                additionalLibs="-Clibgraphics"
+                supersedes="-Clibvgraphics"/>
+        <Option name="libvgraphics (virtual graphics library)"
+                option="-Clibvgraphics"
+                additionalLibs="-lvgraphics"
+                supersedes="-Clibgraphics"/>
+        <Option name="libsound (sound library)"
+                option="-Clibsound"
+                additionalLibs="-lsound"/>
+        <Option name="libspi (I2C/SPI library)"
+                option="-Clibspi"
+                additionalLibs="-lspi"/>
+        <Option name="libserial2 (2 port serial library)"
+                option="-Clibserial2"
+                additionalLibs="-lserial2"/>
+        <Option name="libserial4 (4 port serial library)"
+                option="-Clibserial4"
+                additionalLibs="-lserial4"/>
+        <Option name="libtty (serial library - 32 byte buffer)"
+                option="-Clibtty"
+                supersedes="-Clibtty256"
+                additionalLibs="-ltty"/>
+        <Option name="libtty256 (serial library - 256 byte buffer)"
+                option="-Clibtty256"
+                supersedes="-Clibtty"
+                additionalLibs="-ltty256"/>
+        <Option name="libthreads (thread library)"
+                option="-Clibthreads"
+                additionalLibs="-lthreads"/>
+        <Option name="libinterrupts (interrupts library)"
+                option="-Clibinterrupts"
+                additionalLibs="-linterrupts"/>
+        <Option name="libtiny (tiny I/O library)"
+                option="-Clibtiny"
+                additionalLibs="-ltiny"/>
+    </Category>
+
+    <Category name="Memory Model, Size and Cache Options (default is TINY, no cache)">
+        <Option name="TINY (code, data and stack in Hub RAM)"
+                option="-CTINY"
+                additionalLibs="-CTINY"
+                supersedes="-CCOMPACT -CSMALL -CLARGE -CNATIVE -CCACHED_1K -CCACHED_2K -CCACHED_4K -CCACHED_8K"/>
+        <Option name="COMPACT (code, data and stack in Hub RAM)"
+                option="-CCOMPACT"
+                additionalLibs="-CCOMPACT"
+                supersedes="-CTINY -CSMALL -CLARGE -CNATIVE -CCACHED_1K -CCACHED_2K -CCACHED_4K -CCACHED_8K"/>
+        <Option name="SMALL (code in XMM RAM, data and stack in Hub RAM"
+                option="-CSMALL"
+                additionalLibs="-CSMALL"
+                supersedes="-CTINY -CCOMPACT -CLARGE -CNATIVE"
+                checkAgainst="-Clibthreads"
+                checkMessage="Threading is not yet supported in the SMALL memory model"/>
+        <Option name="LARGE (code and data in XMM RAM, stack in Hub RAM)"
+                option="-CLARGE"
+                additionalLibs="-CLARGE"
+                supersedes="-CTINY -CCOMPACT -CSMALL -CNATIVE"
+                checkAgainst="-Clibthreads"
+                checkMessage="Threading is not yet supported in the LARGE memory model"/>
+        <Option name="NATIVE (code, data and stack in Hub RAM)"
+                option="-CNATIVE"
+                additionalLibs="-CNATIVE"
+                supersedes="-CTINY -CCOMPACT -CSMALL"/>
+        <Option name="1K Cache"
+                option="-CCACHED_1K"
+                additionalLibs="-CCACHED_1K"
+                supersedes="-CCACHED_2K -CCACHED_4K -CCACHED_8K"
+                checkAgainst="-CTINY -CCOMPACT"
+                checkMessage="Cache is not used for the TINY or COMPACT memory model"/>
+        <Option name="2K Cache"
+                option="-CCACHED_2K"
+                additionalLibs="-CCACHED_2K"
+                supersedes="-CCACHED_1K -CCACHED_4K -CCACHED_8K"
+                checkAgainst="-CTINY -CCOMPACT"
+                checkMessage="Cache is not used for the TINY or COMPACT memory model"/>
+        <Option name="4K Cache"
+                option="-CCACHED_4K"
+                additionalLibs="-CCACHED_4K"
+                supersedes="-CCACHED_1K -CCACHED_2K -CCACHED_8K"
+                checkAgainst="-CTINY -CCOMPACT"
+                checkMessage="Cache is not used for the TINY or COMPACT memory model"/>
+        <Option name="8K Cache"
+                option="-CCACHED_8K"
+                additionalLibs="-CCACHED_8K"
+                supersedes="-CCACHED_1K -CCACHED_2K -CCACHED_4K"
+                checkAgainst="-CTINY -CCOMPACT"
+                checkMessage="Cache is not used for the TINY or COMPACT memory model"/>
+        <Option name="Set memory size (specify in MEM_SIZE custom variable)"
+                option="-M$(MEM_SIZE)"
+                additionalLibs="-M$(MEM_SIZE)"/>
+        <Option name="Set read-only base address (specify in RO_BASE custom variable)"
+                option="-R$(RO_BASE)"
+                additionalLibs="-R$(RO_BASE)"/>
+        <Option name="Set read-write base address (specify in RW_BASE custom variable)"
+                option="-P$(RW_BASE)"
+                additionalLibs="-P$(RW_BASE)"/>
+    </Category>
+
+    <Category name="Special Load Options (default is no special loader)">
+        <Option name="SD Card Loader"
+                option="-CSDCARD"
+                additionalLibs="-CSDCARD"
+                supersedes="-CEEPROM -CFLASH"/>
+        <Option name="FLASH Loader"
+                option="-CFLASH"
+                additionalLibs="-CFLASH"
+                supersedes="-CEEPROM -CSDCARD"/>
+        <Option name="EEPROM Loader"
+                option="-CEEPROM"
+                additionalLibs="-CEEPROM"
+                supersedes="-CFLASH -CSDCARD"/>
+    </Category>
+
+    <Category name="HMI Plugin Selection (default is platform dependent)">
+        <Option name="VGA (Low Resolution)"
+                option="-CLORES_VGA"
+                additionalLibs="-CCLORES_VGA"
+                supersedes="-CHIRES_VGA -CLORES_TV -CHIRES_TV -CPC -CPROPTERMINAL -CTTY -CVT100 -CNO_HMI"/>
+        <Option name="VGA (High Resolution)"
+                option="-CHIRES_VGA"
+                additionalLibs="-CHIRES_VGA"
+                supersedes="-CLORES_VGA -CLORES_TV -CHIRES_TV -CPC -CPROPTERMINAL -CTTY -CVT100 -CNO_HMI"/>
+        <Option name="TV (Low Resolution)"
+                option="-CLORES_TV"
+                additionalLibs="-CLORES_TV"
+                supersedes="-CHIRES_VGA -CLORES_VGA -CHIRES_TV -CPC -CPROPTERMINAL -CTTY -CVT100 -CNO_HMI"/>
+        <Option name="TV (High Resolution)"
+                option="-CHIRES_TV"
+                additionalLibs="-CHIRES_TV"
+                supersedes="-CHIRES_VGA -CLORES_VGA -CLORES_TV -CPC -CPROPTERMINAL -CTTY -CVT100 -CNO_HMI"/>
+        <Option name="PC (Serial Terminal)"
+                option="-CPC"
+                additionalLibs="-CPC"
+                supersedes="-CHIRES_VGA -CLORES_VGA -CHIRES_TV -CLORES_TV -CPROPTERMINAL -CTTY -CVT100 -CNO_HMI"/>
+        <Option name="PROPTERMINAL (Prop Terminal)"
+                option="-CPROPTERMINAL"
+                additionalLibs="-CPROPTERMINAL"
+                supersedes="-CHIRES_VGA -CLORES_VGA -CHIRES_TV -CLORES_TV -CPC -CTTY -CVT100 -CNO_HMI"/>
+        <Option name="TTY (Serial Terminal)"
+                option="-CTTY"
+                additionalLibs="-CTTY"
+                supersedes="-CHIRES_VGA -CLORES_VGA -CHIRES_TV -CLORES_TV -CPC -CPROPTERMINAL -CVT100 -CNO_HMI"/>
+        <Option name="TTY VT100 (Serial Terminal)"
+                option="-CTTY -CVT100"
+                additionalLibs="-CTTY -CVT100"
+                supersedes="-CHIRES_VGA -CLORES_VGA -CHIRES_TV -CLORES_TV -CPC -CPROPTERMINAL -CNO_HMI"/>
+        <Option name="No HMI Plugin (keyboard/mouse driver may still be loaded for graphics)"
+                option="-CNO_HMI"
+                additionalLibs="-CNO_HMI"
+                supersedes="-CHIRES_VGA -CLORES_VGA -CHIRES_TV -CLORES_TV -CPC -CPROPTERMINAL -CTTY -CVT100"/>
+    </Category>
+
+    <Category name="HMI and Graphics Driver Related Options (default is none)">
+        <Option name="Disable Mouse Driver"
+                option="-CNO_MOUSE"
+                additionalLibs="-CNO_MOUSE"/>
+        <Option name="Disable Keyboard Driver"
+                option="-CNO_KEYBOARD"
+                additionalLibs="-CNO_KEYBOARD"/>
+        <Option name="Disable Screen Driver"
+                option="-CNO_SCREEN"
+                additionalLibs="-CNO_SCREEN"/>
+        <Option name="NTSC (TV drivers only)"
+                option="-CNTSC"
+                additionalLibs="-CNTSC"/>
+        <Option name="Non Interlaced (TV drivers only)"
+                option="-CNO_INTERLACE"
+                additionalLibs="-CNO_INTERLACE"/>
+        <Option name="Enable automatic CR on LF (on output)"
+                option="-CCR_ON_LF"
+                additionalLibs="-CCR_ON_LF"/>
+        <Option name="Disable automatic CR to LF translation (on input)"
+                option="-CNO_CR_TO_LF"
+                additionalLibs="-CNO_CR_TO_LF"/>
+        <Option name="Non-ANSI driver behviour (legacy - not recommended)"
+                option="-CNON_ANSI_HMI"
+                additionalLibs="-CNON_ANSI_HMI"/>
+        <Option name="Double Buffer (Graphics drivers only)"
+                option="-CDOUBLE_BUFFER"
+                additionalLibs="-CDOUBLE_BUFFER"/>
+        <Option name="VGA 640 x 480 (Graphics drivers only)"
+                option="-CVGA_640"
+                additionalLibs="-CVGA_640"
+                supersedes="-CVGA_800 -CVGA_1024 -CVGA_1152"/>
+        <Option name="VGA 800 x 600 (Graphics drivers only)"
+                option="-CVGA_800"
+                additionalLibs="-CVGA_800"
+                supersedes="-CVGA_640 -CVGA_1024 -CVGA_1152"/>
+        <Option name="VGA 1024 x 768 (Graphics drivers only)"
+                option="-CVGA_1024"
+                additionalLibs="-CVGA_1024"
+                supersedes="-CVGA_640 -CVGA_800 -CVGA_1152"/>
+        <Option name="VGA 1152 x 864 (Graphics drivers only)"
+                option="-CVGA_1152"
+                additionalLibs="-CVGA_1152"
+                supersedes="-CVGA_640 -CVGA_800 -CVGA_1024"/>
+        <Option name="VGA 2 COLOR (Graphics drivers only)"
+                option="-CVGA_2_COLOR"
+                additionalLibs="-CVGA_2_COLOR"
+                supersedes="-CVGA_4_COLOR"/>
+        <Option name="VGA 4 COLOR (Graphics drivers only)"
+                option="-CVGA_4_COLOR"
+                additionalLibs="-CVGA_4_COLOR"
+                supersedes="-CVGA_2_COLOR"/>
+    </Category>
+
+    <Category name="Proxy Driver Selection (default is none)">
+        <Option name="Proxy Screen driver"
+                option="-CPROXY_SCREEN"
+                additionalLibs="-CPROXY_SCREEN"/>
+        <Option name="Proxy Keyboard driver"
+                option="-CPROXY_KEYBOARD"
+                additionalLibs="-CPROXY_KEYBOARD"/>
+        <Option name="Proxy Mouse driver"
+                option="-CPROXY_MOUSE"
+                additionalLibs="-CPROXY_MOUSE"/>
+        <Option name="Proxy SD Card driver"
+                option="-CPROXY_SD"
+                additionalLibs="-CPROXY_SD"/>
+    </Category>
+
+    <Category name="Debugging and Optimization Options (default is none)">
+        <Option name="Generate complete debug information (recommended)"
+                option="-g3"
+                additionalLibs="-g3"
+                supersedes="-g"
+                checkAgainst="-O1 -O2 -O3 -O4 -O5"
+                checkMessage="Debugging optimized programs is not recommended"/>
+        <Option name="Generate minimal debug information (not recommended)"
+                option="-g"
+                additionalLibs="-g"
+                supersedes="-g3"
+                checkAgainst="-O1 -O2 -O3 -O4 -O5"
+                checkMessage="Debugging optimized programs is not recommended"/>
+        <Option name="Optimization level 1"
+                option="-O1"
+                additionalLibs="-O1"
+                supersedes="-O2 -O3 -O4 -O5"
+                checkAgainst="-g -g3"
+                checkMessage="Optimization is not recommended when debugging"/>
+        <Option name="Optimization level 2"
+                option="-O2"
+                additionalLibs="-O2"
+                supersedes="-O1 -O3 -O4 -O5"
+                checkAgainst="-g -g3"
+                checkMessage="Optimization is not recommended when debugging"/>
+        <Option name="Optimization level 3"
+                option="-O3"
+                additionalLibs="-O3"
+                supersedes="-O1 -O2 -O4 -O5"
+                checkAgainst="-g -g3"
+                checkMessage="Optimization is not recommended when debugging"/>
+        <Option name="Optimization level 4"
+                option="-O4"
+                additionalLibs="-O4"
+                supersedes="-O1 -O2 -O3 -O5"
+                checkAgainst="-g -g3"
+                checkMessage="Optimization is not recommended when debugging"/>
+        <Option name="Optimization level 5"
+                option="-O5"
+                additionalLibs="-O5"
+                supersedes="-O1 -O2 -O3 -O4"
+                checkAgainst="-g -g3"
+                checkMessage="Optimization is not recommended when debugging"/>
+    </Category>
+
+    <Category name="Listing and Output Options (default is none)">
+        <Option name="Generate Listing"
+                option="-y"
+                additionalLibs="-y"
+                checkAgainst="-p2"
+                checkMessage="Listings are always produced when compiling for the P2"/>
+        <Option name="Generate .BINARY (Propeller 1) or .BIN (Propeller 2) output format"
+                option="-b"
+                additionalLibs="-b"
+                supersedes="-e"
+                checkAgainst="-e"
+                checkMessage="When changing output format, you should check the output filename in Project->Properties->Build Targets is correct"/>
+        <Option name="Generate .EEPROM output format"
+                option="-e"
+                additionalLibs="-e"
+                supersedes="-b"
+                checkAgainst="-b"
+                checkMessage="When changing output format, you should check the output filename in Project->Properties->Build Targets is correct"/>
+        <Option name="Generate other output format (specify in FORMAT custom variable - e.g. INTEL)"
+                option="-F$(FORMAT)"
+                additionalLibs="-F$(FORMAT)"/>
+        <Option name="Verbose output (Catalina)"
+                option="-v"
+                additionalLibs="-v"/>
+        <Option name="Very Verbose output (Catalina)"
+                option="-v -v"
+                additionalLibs="-v -v"/>
+        <Option name="Verbose output (LCC)"
+                option="-W-v"
+                additionalLibs="-W-v"/>
+        <Option name="Disable output of file size statistics"
+                option="-k"
+                additionalLibs="-k"/>
+        <Option name="Diagnostic output (very verbose!)"
+                option="-d"
+                additionalLibs="-d"/>
+        <Option name="Do not delete intermediate files"
+                option="-u"
+                additionalLibs="-u"/>
+    </Category>
+
+    <Category name="Miscellaneous Plugins and Options (default is none)">
+        <Option name="Clock plugin"
+                option="-CCLOCK"
+                additionalLibs="-CCLOCK"/>
+        <Option name="Gamepad plugin"
+                option="-CGAMEPAD"
+                additionalLibs="-CGAMEPAD"/>
+        <Option name="Disable reboot on exit from main()"
+                option="-CDISABLE_REBOOT"
+                additionalLibs="-CDISABLE_REBOOT"/>
+        <Option name="Force inclusion of SD Card plugin (normally included automatically)"
+                option="-CSD"
+                additionalLibs="-CSD"/>
+        <Option name="Disable Floating Point support"
+                option="-CNO_FLOAT"
+                checkAgainst="-Clibm -Clibma -Clibmb"
+                checkMessage="A floating point library option is selected - it will be deselected"
+                additionalLibs="-CNO_FLOAT"
+                supersedes="-Clibm -Clibma -Clibmb"/>
+        <Option name="Disable command-line argument processing"
+                option="-CNO_ARGS"
+                additionalLibs="-CNO_ARGS"/>
+        <Option name="Disable main function exit processing (if main() never exits)"
+                option="-CNO_EXIT"
+                additionalLibs="-CNO_EXIT"/>
+        <Option name="LCC Options (specify in LCC_OPT custom variable - no spaces allowed)"
+                option="-W$(LCC_OPT)"
+                additionalLibs="-W$(LCC_OPT)"/>
+        <Option name="Use a different target (specify path in TARGET custom variable)"
+                option="-T$(TARGET)"
+                additionalLibs="-T$(TARGET)"/>
+        <Option name="Warn about non-ANSI usage (LCC)"
+                option="-W-A"
+                additionalLibs=""/>
+        <Option name="Suppress all warnings (LCC)"
+                option="-W-w"
+                additionalLibs=""/>
+    </Category>
+
+
+    <Command name="CompileObject"
+             value="$compiler $options $includes -c $file -o $object"/>
+    <Command name="GenDependencies"
+             value=""/>
+    <Command name="CompileResource"
+             value=""/>
+    <Command name="LinkExe"
+             value="$linker $libdirs -o $exe_output $link_objects $link_options $libs"/>
+    <Command name="LinkConsoleExe"
+             value="$linker $libdirs -o $exe_output $link_objects $link_options $libs"/>
+    <Command name="LinkDynamic"
+             value="$linker $libdirs -o $exe_output $link_objects $link_options $libs"/>
+    <Command name="LinkStatic"
+             value="$linker $libdirs -o $exe_output $link_objects $link_options $libs"/>
+    <Command name="LinkNative"
+             value="$linker $libdirs -o $exe_output $link_objects $link_options $libs"/>
+    <Common name="cmds"/>
+
+    <RegEx name="Preprocessor error (Catalina)"
+           type="error"
+           msg="3"
+           file="1"
+           line="2">
+        <![CDATA[cpp:[ ]*(]]>
+    </RegEx>
+    <RegEx name="LCC Can't Find (Catalina)"
+           type="error"
+           msg="2"
+           file="1">
+        <![CDATA[lcc:[ ]*can't find[ ]*['`](]]>
+    </RegEx>
+    <RegEx name="LCC Compiler error (Catalina)"
+           type="error"
+           msg="3"
+           file="1"
+           line="2">
+        <![CDATA[lcc:[ ]*(]]>
+    </RegEx>
+    <RegEx name="Symbol undefined (Catalina)"
+           type="error"
+           msg="2"
+           file="3">
+        <![CDATA[([ ]*)([0-9a-zA-Z_]*[ ]*undefined)(.*)]]>
+    </RegEx>
+    <RegEx name="Symbol redefined (Catalina)"
+           type="error"
+           msg="2"
+           file="3">
+        <![CDATA["([ ]*)([0-9a-zA-Z_]*[ ]*redefined)(.*)]]>
+    </RegEx>
+    <RegEx name="Too Many Libraries (Catalina)"
+           type="error"
+           msg="2">
+        <![CDATA[([ ]*)(too many libraries specified)]]>
+    </RegEx>
+    <RegEx name="Too Many Input Files (Catalina)"
+           type="error"
+           msg="2">
+        <![CDATA[([ ]*)(too many input files specified)]]>
+    </RegEx>
+    <RegEx name="Too Many Symbols (Catalina)"
+           type="error"
+           msg="2">
+        <![CDATA[([ ]*)(too many symbols)]]>
+    </RegEx>
+    <RegEx name="Too Many [un]defines (Catalina)"
+           type="error"
+           msg="2">
+        <![CDATA[([ ]*)(too many [u]*[n]*defines - option -[DU] ignored)]]>
+    </RegEx>
+    <RegEx name="Missing Argument (Catalina)"
+           type="error"
+           msg="2">
+        <![CDATA[([ ]*)(option -[BDFUIlLMPRotWwxz] requires an argument)]]>
+    </RegEx>
+    <RegEx name="Unrecognized Switch (Catalina)"
+           type="error"
+           msg="2">
+        <![CDATA[([ ]*)(unrecognized switch): .*)]]>
+    </RegEx>
+    <RegEx name="Cannot Open File (Catalina)"
+           type="error"
+           msg="2"
+           file="3">
+        <![CDATA[([ ]*)(cannot open) (.*)]]>
+    </RegEx>
+    <RegEx name="Output Error (Catalina)"
+           type="error"
+           msg="1">
+        <![CDATA[(formatted output file may be corrupt)]]>
+    </RegEx>
+    <RegEx name="OpenSpin Plugin Error (Catalina)"
+           type="error"
+           msg="3"
+           file="1"
+           line="2">
+        <![CDATA[([][{}() \t#%$~[:alnum:]&_:+/\\.-]+):([0-9]+): error: #error:(.*)]]>
+    </RegEx>
+    <RegEx name="Homespun Plugin Error (Catalina)"
+           type="error"
+           msg="3">
+        <![CDATA[([ ]*)(ERROR : )(.*)]]>
+    </RegEx>
+    <RegEx name="Unknown Option (Catalina)"
+           type="error"
+           msg="2">
+        <![CDATA[([ ]*)(Unknown option: .*)]]>
+    </RegEx>
+    <RegEx name="Image Size (Catalina)"
+           type="error"
+           msg="2">
+        <![CDATA[([ ]*)(Compiled image exceeds[ ]*[0-9]*[ ]*bytes)]]>
+    </RegEx>
+    <RegEx name="Symbol already defined (Catalina)"
+           type="error"
+           msg="1">
+        <![CDATA[(Item has already been added. Key in dictionary: '[0-9a-zA-Z_]*')(.*)]]>
+    </RegEx>
+    <RegEx name="Too Big (Catalina)"
+           type="error"
+           msg="2">
+        <![CDATA[([ ]*)(Too big by[ ]*[0-9]*[ ]*longs)]]>
+    </RegEx>
+    <RegEx name="Homespun Error (Catalina)"
+           type="error"
+           msg="2">
+        <![CDATA[([Ee]rror[ ]*:[ ]*)(.*)]]>
+    </RegEx>
+    <RegEx name="OpenSpin Error Type 1 (Catalina)"
+           type="error"
+           msg="4"
+           file="1"
+           line="2">
+        <![CDATA[([][{}() \t#%$~[:alnum:]&_:+/\\.-]+)\\(([0-9]+):([0-9]+)\\) : error :[ ](.*)]]>
+    </RegEx>
+    <RegEx name="Openspin Error Type 2 (Catalina)"
+           type="error"
+           msg="3"
+           file="1"
+           line="2">
+        <![CDATA[([][{}() \t#%$~[:alnum:]&_:+/\\.-]+):([0-9]+): error:(.*)]]>
+    </RegEx>
+    <RegEx name="Preprocessor warning"
+           type="warning"
+           msg="3"
+           file="1"
+           line="2">
+        <![CDATA[([][{}() \t#%$~[:alnum:]&_:+/\\.-]+):([0-9]+):([0-9]+):[ ]([Ww]arning:[ ].*)]]>
+    </RegEx>
+    <RegEx name="Preprocessor error"
+           type="error"
+           msg="3"
+           file="1"
+           line="2">
+        <![CDATA[([][{}() \t#%$~[:alnum:]&_:+/\\.-]+):([0-9]+):[0-9]+:[ ](.*)]]>
+    </RegEx>
+    <RegEx name="Compiler warning"
+           type="warning"
+           msg="3"
+           file="1"
+           line="2">
+        <![CDATA[([][{}() \t#%$~[:alnum:]&_:+/\\.-]+):([0-9]+):[ ]([Ww]arning:[ ].*)]]>
+    </RegEx>
+    <RegEx name="Compiler error"
+           type="error"
+           msg="3"
+           file="1"
+           line="2">
+        <![CDATA[([][{}() \t#%$~[:alnum:]&_:+/\\.-]+):([0-9]+):[ ](.*)]]>
+    </RegEx>
+    <RegEx name="Linker error"
+           type="error"
+           msg="3"
+           file="1"
+           line="2">
+        <![CDATA[([][{}() \t#%$~[:alnum:]&_:+/\\.-]+):([0-9]+):[0-9]+:[ ](.*)]]>
+    </RegEx>
+    <RegEx name="Undefined reference"
+           type="error"
+           msg="2"
+           file="1">
+        <![CDATA[([][{}() \t#%$~[:alnum:]&_:+/\\.-]+):[ ](undefined reference.*)]]>
+    </RegEx>
+    <RegEx name="General warning"
+           type="warning"
+           msg="2"
+           file="1">
+        <![CDATA[([Ww]arning:[ ].*)]]>
+    </RegEx>
+</CodeBlocks_compiler_options>

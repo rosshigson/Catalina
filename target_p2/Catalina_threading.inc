@@ -1,0 +1,23 @@
+' Catalina thread set up ...
+
+DAT
+ 
+' Thread initialization code ...
+
+INITIALIZE_THREAD
+#ifndef NATIVE
+       sub     SP,#8     ' reserve space ...
+       mov     xfer,SP   ' .. for xfer block at top of stack
+#endif
+       sub     SP,#2     ' top of stack will be first thread block
+       mov     t1,#100   ' set ticks ...
+       wrword  t1,SP     ' ... to 100
+       cogid   t1        ' set up ...
+       shl     t1,#8     ' ...
+       sub     SP,#2     ' ...
+       wrword  t1,SP     ' ... affinity & flags
+       sub     SP,#33*4  ' point to begining of thread block
+       wrlong  SP,SP     ' make thread block point to itself
+ _ret_ mov     TP,SP     ' make thread block the current thread
+
+

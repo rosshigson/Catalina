@@ -1,0 +1,311 @@
+#!/bin/bash -login
+#set -x
+#
+# This script tries to clean up generated files in the 
+# target directory - it should be run as root
+#
+echo ""
+#
+TMP_LCCDIR=$LCCDIR
+if [[ "$TMP_LCCDIR" == "" ]]; then
+   TMP_LCCDIR=/opt/catalina	
+fi
+#
+if [[ ! -e $TMP_LCCDIR/bin/catalina_env ]]; then
+   echo ""
+   echo "ERROR: Catalina does not appear to be installed in $TMP_LCCDIR"
+   echo "";
+   echo "Set the environment variable LCCDIR to where Catalina is installed.";
+   echo "";
+   exit
+fi   
+#
+if [[ ! "$CATALINA_TARGET" == "" ]] ; then 
+   echo "Cleaning $CATALINA_TARGET"
+   echo ""
+   pushd $CATALINA_TARGET
+elif [[ ! "$TMP_LCCDIR" == "" ]] ; then
+   echo "Cleaning $TMP_LCCDIR/target"
+   echo ""
+   pushd $TMP_LCCDIR/target
+fi
+#
+# cleanup generated output files ...
+#
+rm -f Catalina.spin
+#
+popd
+#
+if [[ ! ("$1" == "all" || "$1" == "ALL") ]] ; then 
+   exit
+fi
+#
+pushd $TMP_LCCDIR/bin
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/demos
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/demos/dosfs
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/demos/globbing
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom
+rm -f *.lst
+rm -f *.debug
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/demos/spinc
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/demos/sieve
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/demos/debug
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/demos/minimal
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/demos/graphics
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/demos/vgraphics
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/demos/multicog
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/demos/multithread
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/demos/multimodel
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/demos/interrupts
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/demos/serial4
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/demos/serial2
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/demos/tty
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/demos/tty256
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/demos/spi
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/demos/sound
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/demos/p2
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/demos/parallelize
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/utilities
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/validation
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/catalyst/bin
+rm -f *.bin
+rm -f *.*
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/catalyst/core
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/catalyst/demo
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/catalyst/dumbo_basic
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/catalyst/jzip
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/catalyst/lua-5.1.4/src
+rm -f *.bin
+rm -f liblua/*.*
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/catalyst/pascal/p5_c
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/catalyst/sst
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+pushd $TMP_LCCDIR/catalyst/xvi-2.47/src
+rm -f *.bin
+rm -f *.binary
+rm -f *.eeprom 
+rm -f *.lst 
+rm -f *.debug 
+rm -f *.dbg
+popd
+echo ""
+echo "Done!"
+echo ""

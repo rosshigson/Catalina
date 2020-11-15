@@ -1,0 +1,3 @@
+10 PRINT
+20 PRINT "Hello! from Dumbo BASIC"
+30 END

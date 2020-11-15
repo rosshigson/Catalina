@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="xvi" />
+		<Option pch_mode="2" />
+		<Option compiler="catalina" />
+		<Build>
+			<Target title="Release">
+				<Option output="..\..\catalyst\bin\vi" prefix_auto="1" extension_auto="0" />
+				<Option object_output="obj\Release\" />
+				<Option type="1" />
+				<Option compiler="catalina" />
+			</Target>
+			<Environment>
+				<Variable name="MEM_SIZE" value="512K" />
+			</Environment>
+		</Build>
+		<Compiler>
+			<Add option="-CNO_FLOAT" />
+			<Add option="-CCLOCK" />
+			<Add option="-CNO_MOUSE" />
+			<Add option="-CLARGE" />
+			<Add option="-W-w" />
+			<Add option="-DPOSIX" />
+			<Add option="-DCATALINA" />
+		</Compiler>
+		<Linker>
+			<Add option="-CNO_FLOAT" />
+			<Add option="-CCLOCK" />
+			<Add option="-CNO_MOUSE" />
+			<Add option="-M$(MEM_SIZE)" />
+			<Add option="-CLARGE" />
+			<Add option="-lcx" />
+		</Linker>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\alloc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\altstack.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\ascii.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\ascii.h" />
+		<Unit filename="..\..\catalyst\xvi-2.47\src\buffers.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\catalina.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\catalina.h" />
+		<Unit filename="..\..\catalyst\xvi-2.47\src\change.h" />
+		<Unit filename="..\..\catalyst\xvi-2.47\src\cmd.h" />
+		<Unit filename="..\..\catalyst\xvi-2.47\src\cmdline.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\cmdmode.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\cmdtab.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\cursor.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\defmain.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\defscr.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\dispmode.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\edit.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\events.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\ex_cmds1.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\ex_cmds2.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\fileio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\find.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\flexbuf.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\map.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\mark.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\misccmds.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\mouse.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\movement.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\normal.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\param.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\param.h" />
+		<Unit filename="..\..\catalyst\xvi-2.47\src\pipe.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\preserve.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\ptrfunc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\ptrfunc.h" />
+		<Unit filename="..\..\catalyst\xvi-2.47\src\regexp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\regexp.h" />
+		<Unit filename="..\..\catalyst\xvi-2.47\src\regmagic.h" />
+		<Unit filename="..\..\catalyst\xvi-2.47\src\screen.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\search.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\startup.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\status.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\tags.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\targets.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\undo.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\update.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\version.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\vi_cmds.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\vi_ops.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\virtscr.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\virtscr.h" />
+		<Unit filename="..\..\catalyst\xvi-2.47\src\windows.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\catalyst\xvi-2.47\src\xvi.h" />
+		<Unit filename="..\..\catalyst\xvi-2.47\src\yankput.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

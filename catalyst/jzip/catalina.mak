@@ -1,0 +1,35 @@
+# Catalina C makefile for the ZIP Infocom interpreter
+
+.SUFFIXES: .c .obj .h .binary
+
+CFLAGS = -DLOUSY_RANDOM 
+LDFLAGS = -C CLOCK -C NO_MOUSE
+
+UNAME := $(shell uname -s)
+
+ifeq ($(UNAME), Linux)
+CC= catalina -C LARGE
+LD= catalina -C LARGE
+else
+CC= catalina.exe -C LARGE
+LD= catalina.exe -C LARGE
+endif
+
+LIBS = -lcx
+RM = rm -f
+
+INC = ztypes.h
+OBJS = control.obj extern.obj fileio.obj input.obj interpre.obj \
+	math.obj memory.obj object.obj operand.obj osdepend.obj license.obj\
+	property.obj quetzal.obj screen.obj text.obj variable.obj getopt.obj \
+	dumbio.obj catalina_jzip.obj
+
+jzip.binary: $(OBJS)
+	$(LD) $(LDFLAGS) -o $* $(OBJS) $(LIBS)
+
+.c.obj:
+	$(CC) $(CFLAGS) -c $< -o $(*F).obj
+
+clean:
+	$(RM) *.obj
+	$(RM) *.binary

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="catalyst_demos">
+		<Project filename="catalyst_READ_ME/READ ME.cbp" active="1" />
+		<Project filename="xvi/xvi.cbp" />
+		<Project filename="dbasic/dbasic.cbp" />
+		<Project filename="jzip/jzip.cbp" />
+		<Project filename="sst/sst.cbp" />
+		<Project filename="pcom/pcom.cbp" />
+		<Project filename="pint/pint.cbp" />
+		<Project filename="lua/lua.cbp" />
+		<Project filename="luac/luac.cbp" />
+	</Workspace>
+</CodeBlocks_workspace_file>

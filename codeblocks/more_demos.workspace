@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="more_demos">
+		<Project filename="more_demos_README/README.cbp" active="1" />
+		<Project filename="globbing/globbing.cbp" />
+		<Project filename="sumeria/sumeria.cbp" />
+		<Project filename="chimaera/chimaera.cbp" />
+		<Project filename="spi_demo/spi_demo.cbp" />
+		<Project filename="tty_demo/tty_demo.cbp" />
+	</Workspace>
+</CodeBlocks_workspace_file>

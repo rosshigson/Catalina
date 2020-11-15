@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="READ ME" />
+		<Option pch_mode="2" />
+		<Option compiler="catalina" />
+		<Option show_notes="1">
+			<notes>
+				<![CDATA[The READ ME project in this workspace exists only to display the following information:
+
+The projects in this folder are specific to the P2, and are currently built specifically for the P2_EVAL board, using a serial interface at 230400 baud. To use payload to load them, select the option "Download to HUB RAM and Interact at 23400 baud" from the Tools menu.
+
+
+]]>
+			</notes>
+		</Option>
+		<Build>
+			<Target title="Release">
+				<Option output="bin/Release/READ ME" prefix_auto="1" extension_auto="0" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="catalina" />
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-CTINY" />
+		</Compiler>
+		<Linker>
+			<Add option="-lc" />
+			<Add option="-CTINY" />
+		</Linker>
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

@@ -1,0 +1,94 @@
+{{
+'-------------------------------------------------------------------------------
+'
+' NMM_default - NMM target for Catalina programs. 
+'
+' This target uses the NMM Kernel.
+'
+' This target can be used for programs to be loaded serially, from EEPROM, or
+' from SDCARD.
+'
+' Version 3.15 - Initial version.
+'                 
+'-------------------------------------------------------------------------------
+'
+'    Copyright 2011 Ross Higson
+'
+'    This file is part of the Catalina Target Package.
+'
+'    The Catalina Target Package is free software: you can redistribute 
+'    it and/or modify it under the terms of the GNU Lesser General Public 
+'    License as published by the Free Software Foundation, either version 
+'    3 of the License, or (at your option) any later version.
+'
+'    The Catalina Target Package is distributed in the hope that it will
+'    be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+'    of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+'    See the GNU Lesser General Public License for more details.
+'
+'    You should have received a copy of the GNU Lesser General Public 
+'    License along with the Catalina Target Package.  If not, see 
+'    <http://www.gnu.org/licenses/>.
+'
+'------------------------------------------------------------------------------
+}}
+
+' this symbol tells the optimizer we are compiling the top level target
+
+#define CATALINA_TOPLEVEL
+
+' the following file contains common #defines:
+
+#include "Catalina_defines.inc"
+
+' The following file is generated during the compilation process
+
+#include "Catalina.spin2"
+
+#if !defined(NO_PLUGINS)
+
+' The following file must be included for HMI support
+
+#include "HMI.spin2"
+
+' The following file must be included for Floating Point support
+
+#include "Float.spin2"
+
+' The following file must be included for Real-Time Clock support
+
+#include "Clock.spin2"
+
+' The following file must be included for SD Card support
+
+#include "SDCard.spin2"
+
+' The following file must be included for 2 Port Serial support
+
+#include "Serial2.spin2"
+
+#endif
+
+' Catalina Data
+
+DAT ' unitialized data segment
+
+#ifdef SBRK_AFTER_PLUGINS
+
+' sbrkinit is used by sbrk - it must be after all variables and data
+
+' !!! sbrkinit should not be here, it should be in nmm_progend.s, but it 
+' !!! can be moved here by defining SBRK_AFTER_PLUGINS if having it in the
+' !!! correct place causes problems with plugins that need access to their
+' !!! hub image after being loaded.
+
+ orgh
+ alignl ' align long
+:malign
+ ' this code ensures that sbrkinit is NOT aligned on a boundary of
+ ' $XXXXXXXX0C or $XXXXXXXX00, which causes memory allocation to fail
+  long 0[((((@:malign+$20)&$FFFFFFE0) - @:malign)>>2)+1]
+sbrkinit  ' heap starts here
+
+#endif
+

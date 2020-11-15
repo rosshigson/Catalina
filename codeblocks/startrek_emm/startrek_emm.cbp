@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="startrek_emm" />
+		<Option pch_mode="2" />
+		<Option compiler="catalina" />
+		<Build>
+			<Target title="Release">
+				<Option output="bin\Release\startrek_emm" prefix_auto="1" extension_auto="0" />
+				<Option object_output="obj\Release\" />
+				<Option type="1" />
+				<Option compiler="catalina" />
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-CEEPROM" />
+			<Add option="-CSMALL" />
+		</Compiler>
+		<Linker>
+			<Add option="-e" />
+			<Add option="-CEEPROM" />
+			<Add option="-CSMALL" />
+			<Add option="-lma" />
+			<Add option="-lc" />
+		</Linker>
+		<Unit filename="..\..\demos\startrek.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

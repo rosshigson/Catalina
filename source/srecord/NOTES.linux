@@ -1,0 +1,8 @@
+#
+# Note - under linux, Catalina now uses version 1.55 of srecord.
+#
+# To build srecord, set the environment variable LCCDIR to the directory
+# where Catalina is installed, and sue the "build_all" script.
+#
+# NOTE: you may get some errors from groff - these are to do with the
+# generation of the documentation - the executables should build correctly.

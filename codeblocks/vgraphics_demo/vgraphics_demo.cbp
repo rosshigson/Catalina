@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="vgraphics_demo" />
+		<Option pch_mode="2" />
+		<Option compiler="catalina" />
+		<Build>
+			<Target title="Release">
+				<Option output="bin\Release\vgraphics_demo" prefix_auto="1" extension_auto="0" />
+				<Option object_output="obj\Release\" />
+				<Option type="1" />
+				<Option compiler="catalina" />
+				<Compiler>
+					<Add option="-Clibvgraphics" />
+				</Compiler>
+				<Linker>
+					<Add option="-lvgraphics" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-CNO_EXIT" />
+			<Add option="-CNO_ARGS" />
+			<Add option="-CNO_FLOAT" />
+			<Add option="-O3" />
+			<Add option="-CVGA_640" />
+			<Add option="-CDOUBLE_BUFFER" />
+			<Add option="-CNO_HMI" />
+			<Add option="-CNO_KEYBOARD" />
+			<Add option="-CCOMPACT" />
+			<Add option="-CHYDRA" />
+		</Compiler>
+		<Linker>
+			<Add option="-CNO_EXIT" />
+			<Add option="-CNO_ARGS" />
+			<Add option="-CNO_FLOAT" />
+			<Add option="-O3" />
+			<Add option="-CVGA_640" />
+			<Add option="-CDOUBLE_BUFFER" />
+			<Add option="-CNO_HMI" />
+			<Add option="-CNO_KEYBOARD" />
+			<Add option="-CCOMPACT" />
+			<Add option="-lci" />
+			<Add option="-CHYDRA" />
+		</Linker>
+		<Unit filename="..\..\demos\vgraphics\graphics_demo.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

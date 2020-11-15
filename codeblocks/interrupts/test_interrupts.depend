@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1560483904 source:c:\program files (x86)\catalina_3.15.2\demos\interrupts\test_interrupts.c
+	<catalina_interrupts.h>
+	<catalina_hmi.h>
+

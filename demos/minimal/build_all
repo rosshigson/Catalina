@@ -1,0 +1,61 @@
+#!//bin/bash
+#
+TMP_LCCDIR=$LCCDIR
+if [[ "$TMP_LCCDIR" == "" ]] ; then
+   TMP_LCCDIR=/opt/catalina
+fi
+#
+if [[ ! -e "$TMP_LCCDIR/bin/catalina_env" ]] ; then
+   clear
+   echo ""
+   echo "ERROR: Catalina does not appear to be installed in $TMP_LCCDIR"
+   echo "";
+   echo "Set the environment variable LCCDIR to where Catalina is installed.";
+   echo "";
+   exit
+fi
+echo ""
+echo "   ================================================================== "
+echo "                          *** PLEASE NOTE ***  "
+echo "    These programs use the 'minimal' target, which is pre-configured  "
+echo "    for the QuickStart platform. If you have another platform, you    "
+echo "    must edit Custom_DEF.inc in the 'minimal' target directory.       "
+echo "   ================================================================== "
+echo ""
+
+if [[ ! "$CATALINA_DEFINE" == "" ]]; then
+   echo ""
+   echo "ERROR: Environment variable CATALINA_DEFINE is set (to $CATALINA_DEFINE)"
+   echo ""
+   echo "You must undefine this environment variable before using this"
+   echo "batch file, and instead specify the target on the command line."
+   echo "";
+else
+   CATALINA_DEFINE="PLUGIN $1 $2 $3 $4 $5 $6 $7 $8 $9"; export CATALINA_DEFINE
+   CATALINA_TARGET=$TMP_LCCDIR/minimal; export CATALINA_TARGET
+   catalina_env
+   rm -fr *.binary
+
+   echo ""
+   echo "   ========================="
+   echo "   Building simple_test demo"
+   echo "   ========================="
+   echo ""
+
+   catalina -lc simple_test.c generic_plugin.c utilities.c
+   
+   echo ""
+   echo "   =========================="
+   echo "   Building complex_test demo"
+   echo "   =========================="
+   echo ""
+
+   source build_pasm_tmp_var $CATALINA_DEFINE
+   spinnaker -p -a "$CATALINA_TARGET/Catalina_Plugin.spin" -b -o catalina_plugin $TMP_VAR
+   spinc catalina_plugin.binary > plugin_array.h
+   dos2unix plugin_array.h
+   rm catalina_plugin.binary
+   catalina -lc complex_test.c generic_plugin.c utilities.c
+
+   unset CATALINA_DEFINE
+fi

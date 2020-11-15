@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="spacewar" />
+		<Option pch_mode="2" />
+		<Option compiler="catalina" />
+		<Build>
+			<Target title="Release">
+				<Option output="bin\Release\spacewar" prefix_auto="1" extension_auto="0" />
+				<Option object_output="obj\Release\" />
+				<Option type="1" />
+				<Option compiler="catalina" />
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-CNO_EXIT" />
+			<Add option="-CNO_ARGS" />
+			<Add option="-CNO_FLOAT" />
+			<Add option="-CGAMEPAD" />
+			<Add option="-O3" />
+			<Add option="-CVGA_1024" />
+			<Add option="-CDOUBLE_BUFFER" />
+			<Add option="-CNO_HMI" />
+			<Add option="-CNO_KEYBOARD" />
+			<Add option="-CNO_MOUSE" />
+			<Add option="-CCOMPACT" />
+			<Add option="-Clibvgraphics" />
+			<Add option="-CHYDRA" />
+		</Compiler>
+		<Linker>
+			<Add option="-CNO_EXIT" />
+			<Add option="-CNO_ARGS" />
+			<Add option="-CNO_FLOAT" />
+			<Add option="-CGAMEPAD" />
+			<Add option="-b" />
+			<Add option="-O3" />
+			<Add option="-CVGA_1024" />
+			<Add option="-CDOUBLE_BUFFER" />
+			<Add option="-CNO_HMI" />
+			<Add option="-CNO_KEYBOARD" />
+			<Add option="-CNO_MOUSE" />
+			<Add option="-CCOMPACT" />
+			<Add option="-lvgraphics" />
+			<Add option="-lci" />
+			<Add option="-CHYDRA" />
+		</Linker>
+		<Unit filename="..\..\demos\vgraphics\spacewar.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

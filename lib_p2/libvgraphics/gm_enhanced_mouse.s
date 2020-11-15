@@ -1,0 +1,380 @@
+' Catalina Code
+
+DAT ' code segment
+'
+' LCC 4.2 for Parallax Propeller
+' (Catalina v3.15 Code Generator by Ross Higson)
+'
+
+' Catalina Export gm_bound_limits
+
+ alignl ' align long
+C_gm_bound_limits ' <symbol:gm_bound_limits>
+ PRIMITIVE(#NEWF)
+ PRIMITIVE(#PSHM)
+ long $400000 ' save registers
+ mov r22, FP
+ add r22, #8 ' reg <- addrfi
+ rdlong r22, r22 ' reg <- INDIRI4 reg
+ PRIMITIVE(#LODL)
+ long @C_s2bs_5f5d7bed_m_min_L000001
+ wrlong r22, RI ' ASGNI4 addrg reg
+ PRIMITIVE(#LODL)
+ long @C_s2bs1_5f5d7bed_m_max_L000002
+ wrlong r4, RI ' ASGNI4 addrg reg
+ mov r22, FP
+ add r22, #12 ' reg <- addrfi
+ rdlong r22, r22 ' reg <- INDIRI4 reg
+ PRIMITIVE(#LODL)
+ long @C_s2bs_5f5d7bed_m_min_L000001+4
+ wrlong r22, RI ' ASGNI4 addrg reg
+ PRIMITIVE(#LODL)
+ long @C_s2bs1_5f5d7bed_m_max_L000002+4
+ wrlong r3, RI ' ASGNI4 addrg reg
+ PRIMITIVE(#LODL)
+ long @C_s2bs_5f5d7bed_m_min_L000001+8
+ wrlong r5, RI ' ASGNI4 addrg reg
+ PRIMITIVE(#LODL)
+ long @C_s2bs1_5f5d7bed_m_max_L000002+8
+ wrlong r2, RI ' ASGNI4 addrg reg
+' C_gm_bound_limits_5 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETF)
+
+
+' Catalina Export gm_bound_scales
+
+ alignl ' align long
+C_gm_bound_scales ' <symbol:gm_bound_scales>
+ PRIMITIVE(#LODL)
+ long @C_s2bs2_5f5d7bed_m_div_L000003
+ wrlong r4, RI ' ASGNI4 addrg reg
+ PRIMITIVE(#LODL)
+ long @C_s2bs2_5f5d7bed_m_div_L000003+4
+ wrlong r3, RI ' ASGNI4 addrg reg
+ PRIMITIVE(#LODL)
+ long @C_s2bs2_5f5d7bed_m_div_L000003+8
+ wrlong r2, RI ' ASGNI4 addrg reg
+' C_gm_bound_scales_10 ' (symbol refcount = 0)
+ PRIMITIVE(#RETN)
+
+
+' Catalina Export gm_abs
+
+ alignl ' align long
+C_gm_abs ' <symbol:gm_abs>
+ cmps r2,  #0 wcz
+ PRIMITIVE(#BRAE)
+ long @C_gm_abs_14 ' GEI4
+ neg r0, r2 ' NEGI4
+ PRIMITIVE(#JMPA)
+ long @C_gm_abs_13 ' JUMPV addrg
+C_gm_abs_14
+ mov r0, r2 ' CVI, CVU or LOAD
+C_gm_abs_13
+ PRIMITIVE(#RETN)
+
+
+' Catalina Export gm_bound_preset
+
+ alignl ' align long
+C_gm_bound_preset ' <symbol:gm_bound_preset>
+ PRIMITIVE(#NEWF)
+ sub SP, #12
+ PRIMITIVE(#PSHM)
+ long $fe8000 ' save registers
+ mov r23, r4 ' reg var <- reg arg
+ mov r21, r3 ' reg var <- reg arg
+ mov r19, r2 ' reg var <- reg arg
+ PRIMITIVE(#LODF)
+ long -12
+ wrlong r23, RI ' ASGNI4 addrl reg
+ PRIMITIVE(#LODF)
+ long -8
+ wrlong r21, RI ' ASGNI4 addrl reg
+ PRIMITIVE(#LODF)
+ long -4
+ wrlong r19, RI ' ASGNI4 addrl reg
+ mov r17, #0 ' reg <- coni
+C_gm_bound_preset_19
+ mov r22, r17
+ shl r22, #2 ' LSHI4 coni
+ PRIMITIVE(#LODL)
+ long @C_s2bs2_5f5d7bed_m_div_L000003
+ mov r20, RI ' reg <- addrg
+ adds r22, r20 ' ADDI/P (1)
+ rdlong r2, r22 ' reg <- INDIRI4 reg
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_m_abs ' CALL addrg
+ mov r15, r0 ' CVI, CVU or LOAD
+ mov r22, r17
+ shl r22, #2 ' LSHI4 coni
+ mov r20, FP
+ sub r20, #-(-12) ' reg <- addrli
+ adds r20, r22 ' ADDI/P (2)
+ rdlong r20, r20 ' reg <- INDIRI4 reg
+ PRIMITIVE(#LODL)
+ long @C_s2bs_5f5d7bed_m_min_L000001
+ mov r18, RI ' reg <- addrg
+ adds r18, r22 ' ADDI/P (2)
+ rdlong r18, r18 ' reg <- INDIRI4 reg
+ subs r20, r18 ' SUBI/P (1)
+ mov r0, r20 ' setup r0/r1 (2)
+ mov r1, r15 ' setup r0/r1 (2)
+ PRIMITIVE(#MULT) ' MULT(I/U)
+ PRIMITIVE(#LODL)
+ long @C_s2bs3_5f5d7bed_m_acc_L000004
+ mov r18, RI ' reg <- addrg
+ adds r22, r18 ' ADDI/P (1)
+ mov r20, r0 ' ADDI/P
+ adds r20, r15 ' ADDI/P (3)
+ sar r20, #1 ' RSHI4 coni
+ wrlong r20, r22 ' ASGNI4 reg reg
+' C_gm_bound_preset_20 ' (symbol refcount = 0)
+ adds r17, #1 ' ADDI4 coni
+ cmps r17,  #3 wcz
+ PRIMITIVE(#BR_B)
+ long @C_gm_bound_preset_19 ' LTI4
+' C_gm_bound_preset_16 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ add SP, #12 ' framesize
+ PRIMITIVE(#RETF)
+
+
+' Catalina Export gm_limit
+
+ alignl ' align long
+C_gm_limit ' <symbol:gm_limit>
+ PRIMITIVE(#PSHM)
+ long $fd0000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ mov r19, #0 ' reg <- coni
+ cmps r21,  #0 wcz
+ PRIMITIVE(#BRAE)
+ long @C_gm_limit_24 ' GEI4
+ mov r0, #0 ' RET coni
+ PRIMITIVE(#JMPA)
+ long @C_gm_limit_23 ' JUMPV addrg
+C_gm_limit_24
+ mov r22, r23
+ shl r22, #2 ' LSHI4 coni
+ PRIMITIVE(#LODL)
+ long @C_s2bs2_5f5d7bed_m_div_L000003
+ mov r20, RI ' reg <- addrg
+ adds r20, r22 ' ADDI/P (2)
+ rdlong r2, r20 ' reg <- INDIRI4 reg
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_m_abs ' CALL addrg
+ mov r20, r0 ' CVI, CVU or LOAD
+ PRIMITIVE(#LODL)
+ long @C_s2bs1_5f5d7bed_m_max_L000002
+ mov r18, RI ' reg <- addrg
+ adds r18, r22 ' ADDI/P (2)
+ rdlong r18, r18 ' reg <- INDIRI4 reg
+ PRIMITIVE(#LODL)
+ long @C_s2bs_5f5d7bed_m_min_L000001
+ mov r16, RI ' reg <- addrg
+ adds r22, r16 ' ADDI/P (1)
+ rdlong r22, r22 ' reg <- INDIRI4 reg
+ subs r22, r18
+ neg r22, r22 ' SUBI/P (2)
+ adds r22, #1 ' ADDI4 coni
+ mov r0, r22 ' setup r0/r1 (2)
+ mov r1, r20 ' setup r0/r1 (2)
+ PRIMITIVE(#MULT) ' MULT(I/U)
+ mov r19, r0
+ subs r19, #1 ' SUBI4 coni
+ cmps r21, r19 wcz
+ PRIMITIVE(#BRBE)
+ long @C_gm_limit_26 ' LEI4
+ mov r0, r19 ' CVI, CVU or LOAD
+ PRIMITIVE(#JMPA)
+ long @C_gm_limit_23 ' JUMPV addrg
+C_gm_limit_26
+ mov r0, r21 ' CVI, CVU or LOAD
+C_gm_limit_23
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Export gm_bound
+
+ alignl ' align long
+C_gm_bound ' <symbol:gm_bound>
+ PRIMITIVE(#PSHM)
+ long $fc0000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ mov r22, r23
+ shl r22, #2 ' LSHI4 coni
+ PRIMITIVE(#LODL)
+ long @C_s2bs2_5f5d7bed_m_div_L000003
+ mov r20, RI ' reg <- addrg
+ adds r22, r20 ' ADDI/P (1)
+ rdlong r19, r22 ' reg <- INDIRI4 reg
+ cmps r19,  #0 wcz
+ PRIMITIVE(#BRAE)
+ long @C_gm_bound_29 ' GEI4
+ mov r22, r23
+ shl r22, #2 ' LSHI4 coni
+ PRIMITIVE(#LODL)
+ long @C_s2bs3_5f5d7bed_m_acc_L000004
+ mov r20, RI ' reg <- addrg
+ adds r22, r20 ' ADDI/P (1)
+ rdlong r20, r22 ' reg <- INDIRI4 reg
+ mov r2, r20 ' SUBI/P
+ subs r2, r21 ' SUBI/P (3)
+ mov r3, r23 ' CVI, CVU or LOAD
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_m_limit
+ add SP, #4 ' CALL addrg
+ wrlong r0, r22 ' ASGNI4 reg reg
+ PRIMITIVE(#JMPA)
+ long @C_gm_bound_30 ' JUMPV addrg
+C_gm_bound_29
+ mov r22, r23
+ shl r22, #2 ' LSHI4 coni
+ PRIMITIVE(#LODL)
+ long @C_s2bs3_5f5d7bed_m_acc_L000004
+ mov r20, RI ' reg <- addrg
+ adds r22, r20 ' ADDI/P (1)
+ rdlong r20, r22 ' reg <- INDIRI4 reg
+ mov r2, r20 ' ADDI/P
+ adds r2, r21 ' ADDI/P (3)
+ mov r3, r23 ' CVI, CVU or LOAD
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_m_limit
+ add SP, #4 ' CALL addrg
+ wrlong r0, r22 ' ASGNI4 reg reg
+C_gm_bound_30
+ mov r2, r19 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_m_abs ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov r20, r23
+ shl r20, #2 ' LSHI4 coni
+ PRIMITIVE(#LODL)
+ long @C_s2bs3_5f5d7bed_m_acc_L000004
+ mov r18, RI ' reg <- addrg
+ adds r18, r20 ' ADDI/P (2)
+ rdlong r18, r18 ' reg <- INDIRI4 reg
+ mov r0, r18 ' setup r0/r1 (2)
+ mov r1, r22 ' setup r0/r1 (2)
+ PRIMITIVE(#DIVS) ' DIVI
+ mov r22, r0 ' CVI, CVU or LOAD
+ PRIMITIVE(#LODL)
+ long @C_s2bs_5f5d7bed_m_min_L000001
+ mov r18, RI ' reg <- addrg
+ adds r20, r18 ' ADDI/P (1)
+ rdlong r20, r20 ' reg <- INDIRI4 reg
+ mov r0, r20 ' ADDI/P
+ adds r0, r22 ' ADDI/P (3)
+' C_gm_bound_28 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Export gm_bound_x
+
+ alignl ' align long
+C_gm_bound_x ' <symbol:gm_bound_x>
+ PRIMITIVE(#PSHM)
+ long $400000 ' save registers
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ PRIMITIVE(#CALA)
+ long @C_gm_delta_x ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov r2, r22 ' CVI, CVU or LOAD
+ mov r3, #0 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_m_bound
+ add SP, #4 ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+' C_gm_bound_x_31 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Export gm_bound_y
+
+ alignl ' align long
+C_gm_bound_y ' <symbol:gm_bound_y>
+ PRIMITIVE(#PSHM)
+ long $400000 ' save registers
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ PRIMITIVE(#CALA)
+ long @C_gm_delta_y ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov r2, r22 ' CVI, CVU or LOAD
+ mov r3, #1 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_m_bound
+ add SP, #4 ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+' C_gm_bound_y_32 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Import m_bound
+
+' Catalina Import m_limit
+
+' Catalina Import m_abs
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+ alignl ' align long
+C_s2bs3_5f5d7bed_m_acc_L000004 ' <symbol:m_acc>
+ byte 0[12]
+
+ alignl ' align long
+C_s2bs2_5f5d7bed_m_div_L000003 ' <symbol:m_div>
+ byte 0[12]
+
+ alignl ' align long
+C_s2bs1_5f5d7bed_m_max_L000002 ' <symbol:m_max>
+ byte 0[12]
+
+ alignl ' align long
+C_s2bs_5f5d7bed_m_min_L000001 ' <symbol:m_min>
+ byte 0[12]
+
+' Catalina Code
+
+DAT ' code segment
+
+' Catalina Import gm_delta_y
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Code
+
+DAT ' code segment
+
+' Catalina Import gm_delta_x
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Code
+
+DAT ' code segment
+' end

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="P2 demos">
+		<Project filename="P2_demos_READ_ME/READ ME.cbp" active="1" />
+		<Project filename="P2_hello_world/hello_world.cbp" />
+		<Project filename="P2_othello/othello.cbp" />
+		<Project filename="P2_sumeria/sumeria.cbp" />
+		<Project filename="P2_chimaera/chimaera.cbp" />
+		<Project filename="P2_startrek/startrek.cbp" />
+	</Workspace>
+</CodeBlocks_workspace_file>

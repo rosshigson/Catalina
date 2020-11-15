@@ -1,0 +1,35 @@
+Catalina Code Optimizer
+=======================
+
+SINGLE USER SOURCE CODE LICENSE AGREEMENT
+
+IMPORTANT - READ CAREFULLY
+
+The license(s) granted herein are being granted pursuant to the purchase by you (the "Licensee") of certain software products to be used by Licensee, and, if applicable, by employees, subcontractors or other agents of the Licensee in performing services for Licensee on Licensee premises (such employees, subcontractors and agents collectively referred to herein as "Employees").
+
+By opening and installing the software package, or exercising your rights to make and use copies of the Software (as may be provided for below), the Licensee agrees to be bound by, and to require each of its Employees to be bound by, this License Agreement (the "Agreement"). If you do not agree to the terms of this Agreement, then DO NOT install or use the software product. If you would like specific rights not granted in this Agreement, please contact Ross Higson (ross@thevastydeep.com) for more information.
+
+SOFTWARE PRODUCT LICENSE
+
+The Licensee and each individual Employee who views, links to, or in any way utilizes (via electronic media or otherwise) the Software (i.e. each User), must have his or her own license to use the Software and may only use the Software on a single computer (typically one personal computer) in accordance with the terms and conditions set forth herein.
+
+OWNERSHIP RIGHTS
+
+The enclosed software, including, but not limited to, one or more of the following: source code, object code, dynamic link libraries, static libraries, header files, sample programs, utility programs, make files and scripts, together with the accompanying documentation (collectively known as the "Software") is owned by Ross Higson and is protected by copyright laws and international treaties. Therefore, you must treat the Software like any copyrighted material (e.g., a book or musical recording) except that you may make a reasonable number of copies of the Software solely for backup purposes. However, you may make an unlimited number of copies (either in hardcopy or electronic form) of any Documentation included with the software, provided that such copies shall be used solely for internal purposes and shall not be republished or distributed to any third party.
+
+NOT WITH STANDING ANY PROVISIONS IN THIS AGREEMENT TO THE CONTRARY, YOU MAY NOT
+
+1. Use, copy, modify, merge or compile all or any portion of the source code, object code or executable form of the Software except as expressly provided in this agreement.
+2. Make telecommunication transmittals of the Software.
+3. Distribute any portion of the Software or any derivative of any portion of the Software in a software development product or otherwise in competition with Ross Higson's distribution of the Software;
+4. Decompile, disassemble or reverse engineer any object code or executable form of any portion of the Software;
+5. Rent or lease the Software;
+6. Disclose any source code of the Software to any person or entity;
+
+THE SOFTWARE AND ACCOMPANYING WRITTEN MATERIALS (INCLUDING INSTRUCTIONS FOR USE) ARE PROVIDED "AS IS". ROSS HIGSON DOES NOT WARRANT, GUARANTEE OR MAKE ANY REPRESENTATIONS REGARDING THE USE, OR THE RESULTS OF USE, OF THE SOFTWARE OR WRITTEN MATERIALS IN TERMS OF CORRECTNESS, ACCURACY, RELIABILITY, CURRENT, OR OTHERWISE. YOU ASSUME THE ENTIRE RISK AS TO THE RESULTS AND PERFORMANCE OF THE SOFTWARE.
+
+Ross Higson does not warrant that the Software will meet your requirements, that operation of the Software will be uninterrupted or error-free, or that all Software errors will be corrected. Ross Higson is not responsible for problems caused by changes in the operating characteristics of computer hardware or computer operating systems which are made after the installation of the Software nor for problems in the interaction of the Software with any other software. Ross Higson will have no responsibility to replace or refund the license fee for media damaged by accident, abuse or misapplication.
+
+THIS SOFTWARE IS INTENDED FOR COMMERCIAL, INSTITUTIONAL, AND INDUSTRIAL USERS. THE ABOVE WARRANTIES ARE EXCLUSIVE AND IN LIEU OF ALL OTHER WARRANTIES, WHETHER EXPRESSED OR IMPLIED, INCLUDING THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. NO ORAL OR WRITTEN INFORMATION OR ADVICE GIVEN BY ROSS HIGSON, OR ANY DISTRIBUTORS, DEALERS OR AGENTS SHALL INCREASE THE SCOPE OF THE ABOVE WARRANTIES OR CREATE ANY NEW WARRANTIES. NEITHER ROSS HIGSON NOR ANYONE ELSE WHO HAS BEEN INVOLVED IN THE CREATION, PRODUCTION OR DELIVERY OF THE SOFTWARE SHALL BE LIABLE FOR ANY DIRECT, INDIRECT, CONSEQUENTIAL OR INCIDENTAL DAMAGES (INCLUDING DAMAGES FOR LOSS OF BUSINESS PROFITS, BUSINESS LOSSES, BUSINESS INTERRUPTION, LOSS OF DATA, AND THE LIKE) ARISING OUT OF THE USE OR INABILITY TO USE THE SOFTWARE, OR ANY OTHER CLAIM BY ANY PARTY EVEN IF ROSS HIGSON HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. IN THE EVENT ROSS HIGSON IS LIABLE FOR ANY DAMAGES, ROSS HIGSON'S LIABILITY FOR DAMAGES SHALL BE LIMITED TO THE AMOUNT PAID FOR THE SOFTWARE UNDER THE TERMS AND CONDITIONS OF THIS AGREEMENT.
+
+

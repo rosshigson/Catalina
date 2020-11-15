@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="sound_demo" />
+		<Option pch_mode="2" />
+		<Option compiler="catalina" />
+		<Build>
+			<Target title="default">
+				<Option output="sound_demo.binary" prefix_auto="1" extension_auto="0" />
+				<Option type="1" />
+				<Option compiler="catalina" />
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-CNO_FLOAT" />
+			<Add option="-b" />
+			<Add option="-CNO_MOUSE" />
+			<Add option="-CHIRES_TV" />
+			<Add option="-CCOMPACT" />
+			<Add option="-Clibsound" />
+			<Add option="-Clibci" />
+		</Compiler>
+		<Linker>
+			<Add option="-CNO_FLOAT" />
+			<Add option="-b" />
+			<Add option="-CNO_MOUSE" />
+			<Add option="-CHIRES_TV" />
+			<Add option="-CCOMPACT" />
+			<Add option="-lsound" />
+			<Add option="-lci" />
+		</Linker>
+		<Unit filename="../../demos/sound/sound_demo.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

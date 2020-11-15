@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="sound_demos">
+		<Project filename="sound_README/README/README.cbp" active="1" />
+		<Project filename="sound_spacewar/sound_spacewar.cbp" />
+		<Project filename="sound_demo/sound_demo.cbp" />
+	</Workspace>
+</CodeBlocks_workspace_file>

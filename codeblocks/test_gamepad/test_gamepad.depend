@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1352614564 source:c:\program files (x86)\catalina_3.17\demos\test_gamepad.c
+	<catalina_hmi.h>
+	<catalina_gamepad.h>
+

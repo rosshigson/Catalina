@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="vgraphics_READ_ME" />
+		<Option pch_mode="2" />
+		<Option compiler="catalina" />
+		<Option show_notes="1">
+			<notes>
+				<![CDATA[The READ ME project in this workspace exists only to display the following information:
+
+The projects in this folder specify the HYDRA platform, which means they will probably not work on other Propeller platforms until the build options are modified.
+
+If you have another of the supported platform then you should explicitly specify the platform to compile the projects correctly. 
+
+If you have an unsupported platform, then you should edit the CUSTOM definition files (e.g. Custom_DEF.inc, Custom_CFG.inc) to suit your platform, and then select the CUSTOM platform.
+
+Note that these demos all require a VGA device.]]>
+			</notes>
+		</Option>
+		<Build>
+			<Target title="Release">
+				<Option output="bin\Release\vgraphics_READ_ME" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Release\" />
+				<Option type="1" />
+				<Option compiler="catalina" />
+				<Compiler>
+					<Add option="-O3" />
+				</Compiler>
+				<Linker>
+					<Add option="-O3" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-W-A" />
+		</Compiler>
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

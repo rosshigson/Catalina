@@ -1,0 +1,9 @@
+#!/bin/bash
+UNAME=`uname -s`
+if [[ $UNAME == "Linux" ]] ; then
+   catbind -i -e *.s -o catalina.index
+elif [[ $UNAME == "Darwin" ]] ; then
+   catbind -i -e *.s -o catalina.index
+else
+   catbind.exe -i -e *.s -o catalina.index
+fi

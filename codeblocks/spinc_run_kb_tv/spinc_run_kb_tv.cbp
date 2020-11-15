@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="run_kb_tv" />
+		<Option pch_mode="2" />
+		<Option compiler="catalina" />
+		<Build>
+			<Target title="Release">
+				<Option output="bin/Release/run_kb_tv" prefix_auto="1" extension_auto="0" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="catalina" />
+				<Compiler>
+					<Add option="-CNO_HMI" />
+				</Compiler>
+				<Linker>
+					<Add option="-CNO_HMI" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-CTINY" />
+			<Add option="-Clibci" />
+		</Compiler>
+		<Linker>
+			<Add option="-CTINY" />
+			<Add option="-lci" />
+		</Linker>
+		<ExtraCommands>
+			<Add before="spinnaker -p -a ..\..\demos\spinc\KB_TV.spin -b" />
+			<Add before="spinc_to_file.bat kb_tv.c ..\..\demos\spinc\KB_TV.binary -c -n KB_TV -s 200" />
+			<Mode after="always" />
+		</ExtraCommands>
+		<Unit filename="../../demos/spinc/run_kb_tv.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../demos/spinc/utilities.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../demos/spinc/utilities.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

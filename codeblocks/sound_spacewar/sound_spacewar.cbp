@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="sound_spacewar" />
+		<Option pch_mode="2" />
+		<Option compiler="catalina" />
+		<Build>
+			<Target title="default">
+				<Option output="sound_spacewar.binary" prefix_auto="1" extension_auto="0" />
+				<Option type="1" />
+				<Option compiler="catalina" />
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-CNO_EXIT" />
+			<Add option="-CNO_ARGS" />
+			<Add option="-CNO_FLOAT" />
+			<Add option="-CGAMEPAD" />
+			<Add option="-b" />
+			<Add option="-O5" />
+			<Add option="-CVGA_640" />
+			<Add option="-CDOUBLE_BUFFER" />
+			<Add option="-CNO_KEYBOARD" />
+			<Add option="-CNO_MOUSE" />
+			<Add option="-CNO_HMI" />
+			<Add option="-CCOMPACT" />
+			<Add option="-Clibsound" />
+			<Add option="-Clibvgraphics" />
+			<Add option="-Clibci" />
+		</Compiler>
+		<Linker>
+			<Add option="-CNO_EXIT" />
+			<Add option="-CNO_ARGS" />
+			<Add option="-CNO_FLOAT" />
+			<Add option="-CGAMEPAD" />
+			<Add option="-b" />
+			<Add option="-O5" />
+			<Add option="-CVGA_640" />
+			<Add option="-CDOUBLE_BUFFER" />
+			<Add option="-CNO_KEYBOARD" />
+			<Add option="-CNO_MOUSE" />
+			<Add option="-CNO_HMI" />
+			<Add option="-CCOMPACT" />
+			<Add option="-lsound" />
+			<Add option="-lvgraphics" />
+			<Add option="-lci" />
+		</Linker>
+		<Unit filename="../../demos/sound/spacewar.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

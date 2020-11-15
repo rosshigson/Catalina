@@ -1,0 +1,13 @@
+****************************** DO TO FILE FOR P5 *******************************
+
+This file contains issues to be corrected in the P5 projects.
+
+1. Add array, record and function result variables to the various scalar tests
+   in iso7185pat.
+
+2. And input file and testing to iso7185pat.
+
+3. Run the BSI tests and feedback missed tests into the ISO7185 tests.
+
+4. Create word document describing P5 changes and end with a full instruction
+   description.

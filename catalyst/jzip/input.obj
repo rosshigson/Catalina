@@ -1,0 +1,1388 @@
+' Catalina Code
+
+DAT ' code segment
+'
+' LCC 4.2 for Parallax Propeller
+' (Catalina v3.15 Code Generator by Ross Higson)
+'
+
+' Catalina Init
+
+DAT ' initialized data segment
+
+ alignl ' align long
+C_scn0_5fa8f449_separators_L000003 ' <symbol:separators>
+ long @C_scn01_5fa8f449_4_L000005
+
+ alignl ' align long
+C_scn02_5fa8f449_dictionary_offset_L000006 ' <symbol:dictionary_offset>
+ word $0
+
+ alignl ' align long
+C_scn03_5fa8f449_dictionary_size_L000007 ' <symbol:dictionary_size>
+ word 0
+
+ alignl ' align long
+C_scn04_5fa8f449_entry_size_L000008 ' <symbol:entry_size>
+ long $0
+
+' Catalina Export z_read_char
+
+' Catalina Code
+
+DAT ' code segment
+
+ alignl ' align long
+C_z_read_char ' <symbol:z_read_char>
+ PRIMITIVE(#NEWF)
+ sub SP, #4
+ PRIMITIVE(#PSHM)
+ long $f80000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ cmps r23,  #3 wcz
+ if_ae jmp #\C_z_read_char_13 ' GEI4
+ mov r22, r21
+ adds r22, #4 ' ADDP4 coni
+ mov r20, #0 ' reg <- coni
+ wrword r20, r22 ' ASGNU2 reg reg
+C_z_read_char_13
+ cmps r23,  #2 wcz
+ if_ae jmp #\C_z_read_char_15 ' GEI4
+ mov r22, r21
+ adds r22, #2 ' ADDP4 coni
+ mov r20, #0 ' reg <- coni
+ wrword r20, r22 ' ASGNU2 reg reg
+C_z_read_char_15
+ mov r2, #0 ' reg ARG coni
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_flush_buffer ' CALL addrg
+ mov r22, #0 ' reg <- coni
+ wrlong r22, ##@C_lines_written ' ASGNI4 addrg reg
+ rdword r22, r21 ' reg <- CVUI4 INDIRU2 reg
+ cmps r22,  #1 wz
+ if_z jmp #\C_z_read_char_17 ' EQI4
+ mov r19, #0 ' reg <- coni
+ jmp #\@C_z_read_char_18 ' JUMPV addrg
+C_z_read_char_17
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ PRIMITIVE(#CALA)
+ long @C_playback_key ' CALL addrg
+ mov r19, r0 ' CVI, CVU or LOAD
+ mov r20, ##-1 ' reg <- con
+ cmps r0, r20 wz
+ if_nz jmp #\C_z_read_char_19 ' NEI4
+ mov r22, r21
+ adds r22, #4 ' ADDP4 coni
+ rdword r22, r22 ' reg <- INDIRU2 reg
+ mov RI, FP
+ sub RI, #-(-4)
+ wrword r22, RI ' ASGNU2 addrli reg
+ mov r22, #0 ' reg <- coni
+ mov RI, FP
+ sub RI, #-(-2)
+ wrword r22, RI ' ASGNU2 addrli reg
+C_z_read_char_22
+ mov r2, #0 ' reg ARG coni
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_flush_buffer ' CALL addrg
+ mov r22, r21
+ adds r22, #2 ' ADDP4 coni
+ rdword r2, r22 ' reg <- CVUI4 INDIRU2 reg
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_input_character ' CALL addrg
+ mov r19, r0 ' CVI, CVU or LOAD
+' C_z_read_char_23 ' (symbol refcount = 0)
+ mov r22, ##-1 ' reg <- con
+ cmps r19, r22 wz
+ if_nz jmp #\C_z_read_char_25 ' NEI4
+ mov r2, ##8192 ' reg ARG con
+ mov r3, FP
+ sub r3, #-(-4) ' reg ARG ADDRLi
+ mov r4, #1 ' reg ARG coni
+ mov BC, #12 ' arg size, rpsize = 12, spsize = 12
+ sub SP, #8 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_z_call
+ add SP, #8 ' CALL addrg
+ cmps r0,  #0 wz
+ if_z jmp #\C_z_read_char_22 ' EQI4
+C_z_read_char_25
+ mov r22, ##-1 ' reg <- con
+ cmps r19, r22 wz
+ if_nz jmp #\C_z_read_char_26 ' NEI4
+ mov r19, #0 ' reg <- coni
+ jmp #\@C_z_read_char_27 ' JUMPV addrg
+C_z_read_char_26
+ mov r2, r19 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_record_key ' CALL addrg
+C_z_read_char_27
+C_z_read_char_19
+C_z_read_char_18
+ mov r22, r19 ' CVI, CVU or LOAD
+ mov r2, r22 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_store_operand ' CALL addrg
+' C_z_read_char_12 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ add SP, #4 ' framesize
+ PRIMITIVE(#RETF)
+
+
+' Catalina Export z_sread_aread
+
+ alignl ' align long
+C_z_sread_aread ' <symbol:z_sread_aread>
+ PRIMITIVE(#NEWF)
+ sub SP, #8
+ PRIMITIVE(#PSHM)
+ long $faaa80 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ cmps r23,  #4 wcz
+ if_ae jmp #\C_z_sread_aread_29 ' GEI4
+ mov r22, r21
+ adds r22, #6 ' ADDP4 coni
+ mov r20, #0 ' reg <- coni
+ wrword r20, r22 ' ASGNU2 reg reg
+C_z_sread_aread_29
+ cmps r23,  #3 wcz
+ if_ae jmp #\C_z_sread_aread_31 ' GEI4
+ mov r22, r21
+ adds r22, #4 ' ADDP4 coni
+ mov r20, #0 ' reg <- coni
+ wrword r20, r22 ' ASGNU2 reg reg
+C_z_sread_aread_31
+ cmps r23,  #2 wcz
+ if_ae jmp #\C_z_sread_aread_33 ' GEI4
+ mov r22, r21
+ adds r22, #2 ' ADDP4 coni
+ mov r20, #0 ' reg <- coni
+ wrword r20, r22 ' ASGNU2 reg reg
+C_z_sread_aread_33
+ mov r22, ##@C_h_type ' reg <- addrg
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ cmps r22,  #4 wcz
+ if_ae jmp #\C_z_sread_aread_35 ' GEI4
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ PRIMITIVE(#CALA)
+ long @C_z_show_status ' CALL addrg
+C_z_sread_aread_35
+ mov r2, #1 ' reg ARG coni
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_flush_buffer ' CALL addrg
+ mov r22, #0 ' reg <- coni
+ wrlong r22, ##@C_lines_written ' ASGNI4 addrg reg
+ rdword r22, r21 ' reg <- CVUI4 INDIRU2 reg
+ mov r20, ##@C_datap
+ rdlong r20, r20 ' reg <- INDIRP4 addrg
+ mov r15, r22 ' ADDI/P
+ adds r15, r20 ' ADDI/P (3)
+ mov r22, ##@C_h_type ' reg <- addrg
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ cmps r22,  #4 wcz
+ if_be jmp #\C_z_sread_aread_38 ' LEI4
+ mov r22, r15
+ adds r22, #1 ' ADDP4 coni
+ rdbyte r11, r22 ' reg <- CVUI4 INDIRU1 reg
+ jmp #\@C_z_sread_aread_39 ' JUMPV addrg
+C_z_sread_aread_38
+ mov r11, #0 ' reg <- coni
+C_z_sread_aread_39
+ mov RI, FP
+ sub RI, #-(-4)
+ wrlong r11, RI ' ASGNI4 addrli reg
+ mov r22, r21
+ adds r22, #6 ' ADDP4 coni
+ rdword r2, r22 ' reg <- CVUI4 INDIRU2 reg
+ mov r22, r21
+ adds r22, #4 ' ADDP4 coni
+ rdword r3, r22 ' reg <- CVUI4 INDIRU2 reg
+ mov r4, r15 ' CVI, CVU or LOAD
+ mov BC, #12 ' arg size, rpsize = 12, spsize = 12
+ sub SP, #8 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_get_line
+ add SP, #8 ' CALL addrg
+ mov RI, FP
+ sub RI, #-(-8)
+ wrlong r0, RI ' ASGNI4 addrli reg
+ mov r22, ##@C_h_type ' reg <- addrg
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ cmps r22,  #4 wcz
+ if_be jmp #\C_z_sread_aread_41 ' LEI4
+ mov r9, r15
+ adds r9, #2 ' ADDP4 coni
+ jmp #\@C_z_sread_aread_42 ' JUMPV addrg
+C_z_sread_aread_41
+ mov r9, r15
+ adds r9, #1 ' ADDP4 coni
+C_z_sread_aread_42
+ mov r2, r9 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_script_line ' CALL addrg
+ mov r22, ##@C_h_type ' reg <- addrg
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ cmps r22,  #4 wcz
+ if_be jmp #\C_z_sread_aread_44 ' LEI4
+ mov r7, r15
+ adds r7, #2 ' ADDP4 coni
+ jmp #\@C_z_sread_aread_45 ' JUMPV addrg
+C_z_sread_aread_44
+ mov r7, r15
+ adds r7, #1 ' ADDP4 coni
+C_z_sread_aread_45
+ mov r2, r7 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_record_line ' CALL addrg
+ mov r22, ##@C_h_type ' reg <- addrg
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ cmps r22,  #4 wcz
+ if_be jmp #\C_z_sread_aread_46 ' LEI4
+ mov r17, r15
+ adds r17, #2 ' ADDP4 coni
+ mov r22, r15
+ adds r22, #1 ' ADDP4 coni
+ rdbyte r13, r22 ' reg <- CVUI4 INDIRU1 reg
+ jmp #\@C_z_sread_aread_47 ' JUMPV addrg
+C_z_sread_aread_46
+ mov r17, r15
+ adds r17, #1 ' ADDP4 coni
+ mov r2, r17 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_strlen ' CALL addrg
+ mov r13, r0 ' CVI, CVU or LOAD
+C_z_sread_aread_47
+ mov r22, FP
+ sub r22, #-(-4) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRI4 reg
+ cmps r13, r22 wcz
+ if_be jmp #\C_z_sread_aread_48 ' LEI4
+ mov r22, FP
+ sub r22, #-(-4) ' reg <- addrli
+ rdlong r19, r22 ' reg <- INDIRI4 reg
+ jmp #\@C_z_sread_aread_53 ' JUMPV addrg
+C_z_sread_aread_50
+ mov r22, r19 ' ADDI/P
+ adds r22, r17 ' ADDI/P (3)
+ rdbyte r2, r22 ' reg <- CVUI4 INDIRU1 reg
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_tolower ' CALL addrg
+ mov r20, r0 ' CVI, CVU or LOAD
+ wrbyte r20, r22 ' ASGNU1 reg reg
+' C_z_sread_aread_51 ' (symbol refcount = 0)
+ adds r19, #1 ' ADDI4 coni
+C_z_sread_aread_53
+ cmps r19, r13 wcz
+ if_b jmp #\C_z_sread_aread_50 ' LTI4
+C_z_sread_aread_48
+ mov r22, r21
+ adds r22, #2 ' ADDP4 coni
+ rdword r22, r22 ' reg <- CVUI4 INDIRU2 reg
+ cmps r22,  #0 wz
+ if_z jmp #\C_z_sread_aread_54 ' EQI4
+ mov r2, #0 ' reg ARG coni
+ mov r22, ##@C_h_words_offset ' reg <- addrg
+ rdword r3, r22 ' reg <- CVUI4 INDIRU2 reg
+ mov r22, r21
+ adds r22, #2 ' ADDP4 coni
+ rdword r4, r22 ' reg <- CVUI4 INDIRU2 reg
+ rdword r5, r21 ' reg <- CVUI4 INDIRU2 reg
+ mov BC, #16 ' arg size, rpsize = 16, spsize = 16
+ sub SP, #12 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_scn05_5fa8f449_tokenise_line_L000009
+ add SP, #12 ' CALL addrg
+C_z_sread_aread_54
+ mov r22, ##@C_h_type ' reg <- addrg
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ cmps r22,  #4 wcz
+ if_be jmp #\C_z_sread_aread_56 ' LEI4
+ mov r22, FP
+ sub r22, #-(-8) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRI4 reg
+ mov r2, r22 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_store_operand ' CALL addrg
+C_z_sread_aread_56
+' C_z_sread_aread_28 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ add SP, #8 ' framesize
+ PRIMITIVE(#RETF)
+
+
+' Catalina Export get_line
+
+ alignl ' align long
+C_get_line ' <symbol:get_line>
+ PRIMITIVE(#NEWF)
+ sub SP, #8
+ PRIMITIVE(#PSHM)
+ long $faaa00 ' save registers
+ mov r23, r4 ' reg var <- reg arg
+ mov r21, r3 ' reg var <- reg arg
+ mov r19, r2 ' reg var <- reg arg
+ mov r22, ##@C_screen_cols
+ rdlong r22, r22 ' reg <- INDIRI4 addrg
+ cmps r22,  #127 wcz
+ if_be jmp #\C_get_line_60 ' LEI4
+ mov r9, #127 ' reg <- coni
+ jmp #\@C_get_line_61 ' JUMPV addrg
+C_get_line_60
+ mov r9, ##@C_screen_cols
+ rdlong r9, r9 ' reg <- INDIRI4 addrg
+C_get_line_61
+ mov r13, r9 ' CVI, CVU or LOAD
+ mov r22, ##@C_right_margin
+ rdlong r22, r22 ' reg <- INDIRI4 addrg
+ adds r22, #1 ' ADDI4 coni
+ subs r13, r22 ' SUBI/P (1)
+ rdbyte r22, r23 ' reg <- CVUI4 INDIRU1 reg
+ cmps r22, r13 wcz
+ if_a jmp #\C_get_line_62 ' GTI4
+ rdbyte r13, r23 ' reg <- CVUI4 INDIRU1 reg
+C_get_line_62
+ mov r22, ##@C_h_type ' reg <- addrg
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ cmps r22,  #4 wcz
+ if_be jmp #\C_get_line_64 ' LEI4
+ mov r22, r23
+ adds r22, #1 ' ADDP4 coni
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ mov RI, FP
+ sub RI, #-(-4)
+ wrlong r22, RI ' ASGNI4 addrli reg
+ mov r11, r23
+ adds r11, #2 ' ADDP4 coni
+ jmp #\@C_get_line_65 ' JUMPV addrg
+C_get_line_64
+ mov r22, #0 ' reg <- coni
+ mov RI, FP
+ sub RI, #-(-4)
+ wrlong r22, RI ' ASGNI4 addrli reg
+ mov r11, r23
+ adds r11, #1 ' ADDP4 coni
+C_get_line_65
+ mov r2, FP
+ sub r2, #-(-4) ' reg ARG ADDRLi
+ mov r3, r11 ' CVI, CVU or LOAD
+ mov r4, r13 ' CVI, CVU or LOAD
+ mov BC, #12 ' arg size, rpsize = 12, spsize = 12
+ sub SP, #8 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_playback_line
+ add SP, #8 ' CALL addrg
+ mov r17, r0 ' CVI, CVU or LOAD
+ mov r22, ##-1 ' reg <- con
+ cmps r17, r22 wz
+ if_nz jmp #\C_get_line_66 ' NEI4
+ mov RI, FP
+ sub RI, #-(-8)
+ wrword r19, RI ' ASGNU2 addrli reg
+ mov r22, #0 ' reg <- coni
+ mov RI, FP
+ sub RI, #-(-6)
+ wrword r22, RI ' ASGNU2 addrli reg
+C_get_line_69
+ mov r2, FP
+ sub r2, #-(-4) ' reg ARG ADDRLi
+ mov r3, r21 ' CVUI
+ and r3, cviu_m2 ' zero extend
+ mov r4, r11 ' CVI, CVU or LOAD
+ mov r5, r13 ' CVI, CVU or LOAD
+ mov BC, #16 ' arg size, rpsize = 16, spsize = 16
+ sub SP, #12 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_input_line
+ add SP, #12 ' CALL addrg
+ mov r17, r0 ' CVI, CVU or LOAD
+ mov r15, #0 ' reg <- coni
+' C_get_line_70 ' (symbol refcount = 0)
+ mov r22, ##-1 ' reg <- con
+ cmps r17, r22 wz
+ if_nz jmp #\C_get_line_72 ' NEI4
+ mov r2, ##8192 ' reg ARG con
+ mov r3, FP
+ sub r3, #-(-8) ' reg ARG ADDRLi
+ mov r4, #1 ' reg ARG coni
+ mov BC, #12 ' arg size, rpsize = 12, spsize = 12
+ sub SP, #8 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_z_call
+ add SP, #8 ' CALL addrg
+ mov r15, r0 ' CVI, CVU or LOAD
+ cmps r0,  #0 wz
+ if_z jmp #\C_get_line_69 ' EQI4
+C_get_line_72
+ cmps r15,  #0 wz
+ if_z jmp #\C_get_line_73 ' EQI4
+ mov r22, #0 ' reg <- coni
+ mov RI, FP
+ sub RI, #-(-4)
+ wrlong r22, RI ' ASGNI4 addrli reg
+C_get_line_73
+C_get_line_66
+ mov r22, ##@C_h_type ' reg <- addrg
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ cmps r22,  #4 wcz
+ if_be jmp #\C_get_line_75 ' LEI4
+ mov r22, r23
+ adds r22, #1 ' ADDP4 coni
+ mov r20, FP
+ sub r20, #-(-4) ' reg <- addrli
+ rdlong r20, r20 ' reg <- INDIRI4 reg
+ wrbyte r20, r22 ' ASGNU1 reg reg
+ jmp #\@C_get_line_76 ' JUMPV addrg
+C_get_line_75
+ mov r22, FP
+ sub r22, #-(-4) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRI4 reg
+ adds r22, r11 ' ADDI/P (1)
+ mov r20, #0 ' reg <- coni
+ wrbyte r20, r22 ' ASGNU1 reg reg
+C_get_line_76
+ mov r0, r17 ' CVI, CVU or LOAD
+' C_get_line_58 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ add SP, #8 ' framesize
+ PRIMITIVE(#RETF)
+
+
+ alignl ' align long
+C_scn05_5fa8f449_tokenise_line_L000009 ' <symbol:tokenise_line>
+ PRIMITIVE(#NEWF)
+ sub SP, #56
+ PRIMITIVE(#PSHM)
+ long $ffea80 ' save registers
+ mov r23, r5 ' reg var <- reg arg
+ mov r21, r4 ' reg var <- reg arg
+ mov r19, r3 ' reg var <- reg arg
+ mov r17, r2 ' reg var <- reg arg
+ mov r22, #0 ' reg <- coni
+ mov RI, FP
+ sub RI, #-(-32)
+ wrlong r22, RI ' ASGNI4 addrli reg
+ mov r22, ##@C_datap
+ rdlong r22, r22 ' reg <- INDIRP4 addrg
+ mov r20, r23 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ adds r20, r22 ' ADDI/P (1)
+ mov RI, FP
+ sub RI, #-(-40)
+ wrlong r20, RI ' ASGNP4 addrli reg
+ mov r20, r21 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ adds r22, r20 ' ADDI/P (2)
+ mov RI, FP
+ sub RI, #-(-36)
+ wrlong r22, RI ' ASGNP4 addrli reg
+ mov r22, ##@C_h_type ' reg <- addrg
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ cmps r22,  #4 wcz
+ if_be jmp #\C_scn05_5fa8f449_tokenise_line_L000009_78 ' LEI4
+ mov r22, FP
+ sub r22, #-(-40) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRP4 reg
+ mov r20, r22
+ adds r20, #1 ' ADDP4 coni
+ rdbyte r20, r20 ' reg <- CVUI4 INDIRU1 reg
+ mov RI, FP
+ sub RI, #-(-52)
+ wrlong r20, RI ' ASGNI4 addrli reg
+ mov r20, FP
+ sub r20, #-(-52) ' reg <- addrli
+ rdlong r20, r20 ' reg <- INDIRI4 reg
+ adds r22, #2 ' ADDP4 coni
+ mov r9, r20 ' ADDI/P
+ adds r9, r22 ' ADDI/P (3)
+ jmp #\@C_scn05_5fa8f449_tokenise_line_L000009_79 ' JUMPV addrg
+C_scn05_5fa8f449_tokenise_line_L000009_78
+ mov r22, FP
+ sub r22, #-(-40) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRP4 reg
+ mov r2, r22
+ adds r2, #1 ' ADDP4 coni
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_strlen ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov RI, FP
+ sub RI, #-(-52)
+ wrlong r22, RI ' ASGNI4 addrli reg
+ mov r22, FP
+ sub r22, #-(-52) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRI4 reg
+ mov r20, FP
+ sub r20, #-(-40) ' reg <- addrli
+ rdlong r20, r20 ' reg <- INDIRP4 reg
+ adds r20, #1 ' ADDP4 coni
+ mov r9, r22 ' ADDI/P
+ adds r9, r20 ' ADDI/P (3)
+C_scn05_5fa8f449_tokenise_line_L000009_79
+ mov r22, #0 ' reg <- coni
+ mov RI, FP
+ sub RI, #-(-28)
+ wrlong r22, RI ' ASGNI4 addrli reg
+ mov r22, ##@C_h_type ' reg <- addrg
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ cmps r22,  #4 wcz
+ if_be jmp #\C_scn05_5fa8f449_tokenise_line_L000009_81 ' LEI4
+ mov r22, FP
+ sub r22, #-(-40) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRP4 reg
+ adds r22, #2 ' ADDP4 coni
+ mov RI, FP
+ sub RI, #-(-56)
+ wrlong r22, RI ' ASGNP4 addrli reg
+ jmp #\@C_scn05_5fa8f449_tokenise_line_L000009_82 ' JUMPV addrg
+C_scn05_5fa8f449_tokenise_line_L000009_81
+ mov r22, FP
+ sub r22, #-(-40) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRP4 reg
+ adds r22, #1 ' ADDP4 coni
+ mov RI, FP
+ sub RI, #-(-56)
+ wrlong r22, RI ' ASGNP4 addrli reg
+C_scn05_5fa8f449_tokenise_line_L000009_82
+ mov r22, FP
+ sub r22, #-(-56) ' reg <- addrli
+ rdlong r13, r22 ' reg <- INDIRP4 reg
+ mov r22, FP
+ sub r22, #-(-36) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRP4 reg
+ mov r7, r22
+ adds r7, #2 ' ADDP4 coni
+ mov r22, r19 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ mov r20, r22
+ adds r20, #1 ' ADDI4 coni
+ mov r19, r20 ' CVI, CVU or LOAD
+ mov r20, ##@C_datap
+ rdlong r20, r20 ' reg <- INDIRP4 addrg
+ adds r22, r20 ' ADDI/P (1)
+ rdbyte r11, r22 ' reg <- CVUI4 INDIRU1 reg
+ mov r15, #0 ' reg <- coni
+ jmp #\@C_scn05_5fa8f449_tokenise_line_L000009_86 ' JUMPV addrg
+C_scn05_5fa8f449_tokenise_line_L000009_83
+ mov r22, r19 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ mov r20, r22
+ adds r20, #1 ' ADDI4 coni
+ mov r19, r20 ' CVI, CVU or LOAD
+ mov r20, FP
+ sub r20, #-(-20) ' reg <- addrli
+ adds r20, r15 ' ADDI/P (2)
+ mov r18, ##@C_datap
+ rdlong r18, r18 ' reg <- INDIRP4 addrg
+ adds r22, r18 ' ADDI/P (1)
+ rdbyte r22, r22 ' reg <- INDIRU1 reg
+ wrbyte r22, r20 ' ASGNU1 reg reg
+' C_scn05_5fa8f449_tokenise_line_L000009_84 ' (symbol refcount = 0)
+ adds r15, #1 ' ADDI4 coni
+C_scn05_5fa8f449_tokenise_line_L000009_86
+ cmps r15, r11 wcz
+ if_b jmp #\C_scn05_5fa8f449_tokenise_line_L000009_83 ' LTI4
+ mov r22, FP
+ sub r22, #-(-20) ' reg <- addrli
+ adds r22, r15 ' ADDI/P (2)
+ mov r20, #0 ' reg <- coni
+ wrbyte r20, r22 ' ASGNU1 reg reg
+ mov r22, r19 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ mov r20, r22
+ adds r20, #1 ' ADDI4 coni
+ mov r19, r20 ' CVI, CVU or LOAD
+ mov r20, ##@C_datap
+ rdlong r20, r20 ' reg <- INDIRP4 addrg
+ adds r22, r20 ' ADDI/P (1)
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ wrlong r22, ##@C_scn04_5fa8f449_entry_size_L000008 ' ASGNU4 addrg reg
+ mov r22, ##@C_scn03_5fa8f449_dictionary_size_L000007 ' reg <- addrg
+ mov r18, r19 ' CVUI
+ and r18, cviu_m2 ' zero extend
+ mov r16, r18 ' ADDI/P
+ adds r16, r20 ' ADDI/P (3)
+ rdbyte r16, r16 ' reg <- CVUI4 INDIRU1 reg
+ and r16, cviu_m2 ' zero extend
+ shl r16, #8 ' LSHI4 coni
+ mov r14, r18
+ adds r14, #1 ' ADDI4 coni
+ adds r20, r14 ' ADDI/P (2)
+ rdbyte r20, r20 ' reg <- CVUI4 INDIRU1 reg
+ and r20, cviu_m2 ' zero extend
+ adds r20, r16 ' ADDI/P (2)
+ and r20, cviu_m2 ' zero extend
+ wrword r20, ##@C_scn03_5fa8f449_dictionary_size_L000007 ' ASGNI2 addrg reg
+ mov r20, r18
+ adds r20, #2 ' ADDI4 coni
+ wrword r20, ##@C_scn02_5fa8f449_dictionary_offset_L000006 ' ASGNU2 addrg reg
+ rdword r22, r22 ' reg <- INDIRI2 reg
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ cmps r22,  #0 wcz
+ if_be jmp #\C_scn05_5fa8f449_tokenise_line_L000009_87 ' LEI4
+ mov r22, ##@C_scn03_5fa8f449_dictionary_size_L000007
+ rdword r22, r22 ' reg <- INDIRI2 addrg
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ mov r20, #2 ' reg <- coni
+ mov r0, r22 ' setup r0/r1 (2)
+ mov r1, r20 ' setup r0/r1 (2)
+ PRIMITIVE(#DIVS) ' DIVI
+ mov RI, FP
+ sub RI, #-(-48)
+ wrlong r0, RI ' ASGNI4 addrli reg
+ mov r22, #1 ' reg <- coni
+ mov RI, FP
+ sub RI, #-(-32)
+ wrlong r22, RI ' ASGNI4 addrli reg
+C_scn05_5fa8f449_tokenise_line_L000009_89
+ mov r22, FP
+ sub r22, #-(-32) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRI4 reg
+ shl r22, #1 ' LSHI4 coni
+ mov RI, FP
+ sub RI, #-(-32)
+ wrlong r22, RI ' ASGNI4 addrli reg
+' C_scn05_5fa8f449_tokenise_line_L000009_90 ' (symbol refcount = 0)
+ mov r22, FP
+ sub r22, #-(-48) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRI4 reg
+ mov r20, #2 ' reg <- coni
+ mov r0, r22 ' setup r0/r1 (2)
+ mov r1, r20 ' setup r0/r1 (2)
+ PRIMITIVE(#DIVS) ' DIVI
+ mov RI, FP
+ sub RI, #-(-48)
+ wrlong r0, RI ' ASGNI4 addrli reg
+ cmps r0,  #0 wz
+ if_nz jmp #\C_scn05_5fa8f449_tokenise_line_L000009_89 ' NEI4
+C_scn05_5fa8f449_tokenise_line_L000009_87
+C_scn05_5fa8f449_tokenise_line_L000009_92
+ mov r2, FP
+ sub r2, #-(-20) ' reg ARG ADDRLi
+ mov r3, FP
+ sub r3, #-(-4) ' reg ARG ADDRLi
+ mov r4, FP
+ sub r4, #-(-24) ' reg ARG ADDRLi
+ mov r5, r9 ' CVI, CVU or LOAD
+ sub SP, #16 ' stack space for reg ARGs
+ mov RI, r13
+ wrlong RI, --PTRA ' stack ARG
+ mov BC, #20 ' arg size, rpsize = 0, spsize = 20
+ add SP, #4 ' correct for new kernel !!! 
+ PRIMITIVE(#CALA)
+ long @C_scn06_5fa8f449_next_token_L000010
+ add SP, #16 ' CALL addrg
+ mov r13, r0 ' CVI, CVU or LOAD
+ mov r22, FP
+ sub r22, #-(-4) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRI4 reg
+ cmps r22,  #0 wz
+ if_z jmp #\C_scn05_5fa8f449_tokenise_line_L000009_95 ' EQI4
+ mov r22, FP
+ sub r22, #-(-28) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRI4 reg
+ mov r20, FP
+ sub r20, #-(-36) ' reg <- addrli
+ rdlong r20, r20 ' reg <- INDIRP4 reg
+ rdbyte r20, r20 ' reg <- CVUI4 INDIRU1 reg
+ cmps r22, r20 wcz
+ if_a jmp #\C_scn05_5fa8f449_tokenise_line_L000009_97 ' GTI4
+ mov RI, FP
+ sub RI, #-(-32)
+ rdlong r2, RI ' reg ARG INDIR ADDRLi
+ mov RI, FP
+ sub RI, #-(-24)
+ rdlong r3, RI ' reg ARG INDIR ADDRLi
+ mov RI, FP
+ sub RI, #-(-4)
+ rdlong r4, RI ' reg ARG INDIR ADDRLi
+ mov BC, #12 ' arg size, rpsize = 12, spsize = 12
+ sub SP, #8 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_scn07_5fa8f449_find_word_L000011
+ add SP, #8 ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov RI, FP
+ sub RI, #-(-44)
+ wrword r22, RI ' ASGNU2 addrli reg
+ mov r22, #0 ' reg <- coni
+ mov r20, FP
+ sub r20, #-(-44) ' reg <- addrli
+ rdword r20, r20 ' reg <- CVUI4 INDIRU2 reg
+ cmps r20, r22 wz
+ if_nz jmp #\C_scn05_5fa8f449_tokenise_line_L000009_101 ' NEI4
+ mov r20, r17 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ cmps r20, r22 wz
+ if_nz jmp #\C_scn05_5fa8f449_tokenise_line_L000009_99 ' NEI4
+C_scn05_5fa8f449_tokenise_line_L000009_101
+ mov r22, FP
+ sub r22, #-(-44) ' reg <- addrli
+ rdword r22, r22 ' reg <- CVUI4 INDIRU2 reg
+ sar r22, #8 ' RSHI4 coni
+ wrbyte r22, r7 ' ASGNU1 reg reg
+ mov r22, r7
+ adds r22, #1 ' ADDP4 coni
+ mov r20, FP
+ sub r20, #-(-44) ' reg <- addrli
+ rdword r20, r20 ' reg <- CVUI4 INDIRU2 reg
+ and r20, #255 ' BANDI4 coni
+ wrbyte r20, r22 ' ASGNU1 reg reg
+C_scn05_5fa8f449_tokenise_line_L000009_99
+ mov r22, r7
+ adds r22, #2 ' ADDP4 coni
+ mov r20, FP
+ sub r20, #-(-4) ' reg <- addrli
+ rdlong r20, r20 ' reg <- INDIRI4 reg
+ wrbyte r20, r22 ' ASGNU1 reg reg
+ mov r22, r7
+ adds r22, #3 ' ADDP4 coni
+ mov r20, FP
+ sub r20, #-(-24) ' reg <- addrli
+ rdlong r20, r20 ' reg <- INDIRP4 reg
+ mov r18, FP
+ sub r18, #-(-40) ' reg <- addrli
+ rdlong r18, r18 ' reg <- INDIRP4 reg
+ sub r20, r18 ' SUBU (1)
+ wrbyte r20, r22 ' ASGNU1 reg reg
+ adds r7, #4 ' ADDP4 coni
+ mov r22, FP
+ sub r22, #-(-28) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRI4 reg
+ adds r22, #1 ' ADDI4 coni
+ mov RI, FP
+ sub RI, #-(-28)
+ wrlong r22, RI ' ASGNI4 addrli reg
+ jmp #\@C_scn05_5fa8f449_tokenise_line_L000009_98 ' JUMPV addrg
+C_scn05_5fa8f449_tokenise_line_L000009_97
+ mov r2, ##@C_scn05_5fa8f449_tokenise_line_L000009_102_L000103 ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_output_string ' CALL addrg
+ mov RI, FP
+ sub RI, #-(-24)
+ rdlong r2, RI ' reg ARG INDIR ADDRLi
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_output_line ' CALL addrg
+C_scn05_5fa8f449_tokenise_line_L000009_98
+C_scn05_5fa8f449_tokenise_line_L000009_95
+' C_scn05_5fa8f449_tokenise_line_L000009_93 ' (symbol refcount = 0)
+ mov r22, FP
+ sub r22, #-(-4) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRI4 reg
+ cmps r22,  #0 wz
+ if_nz jmp #\C_scn05_5fa8f449_tokenise_line_L000009_92 ' NEI4
+ mov r22, FP
+ sub r22, #-(-36) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRP4 reg
+ adds r22, #1 ' ADDP4 coni
+ mov r20, FP
+ sub r20, #-(-28) ' reg <- addrli
+ rdlong r20, r20 ' reg <- INDIRI4 reg
+ wrbyte r20, r22 ' ASGNU1 reg reg
+' C_scn05_5fa8f449_tokenise_line_L000009_77 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ add SP, #56 ' framesize
+ PRIMITIVE(#RETF)
+
+
+ alignl ' align long
+C_scn06_5fa8f449_next_token_L000010 ' <symbol:next_token>
+ PRIMITIVE(#NEWF)
+ PRIMITIVE(#PSHM)
+ long $d00000 ' save registers
+ mov r22, #0 ' reg <- coni
+ wrlong r22, r3 ' ASGNI4 reg reg
+ jmp #\@C_scn06_5fa8f449_next_token_L000010_108 ' JUMPV addrg
+C_scn06_5fa8f449_next_token_L000010_105
+ mov r23, #0 ' reg <- coni
+ jmp #\@C_scn06_5fa8f449_next_token_L000010_112 ' JUMPV addrg
+C_scn06_5fa8f449_next_token_L000010_109
+' C_scn06_5fa8f449_next_token_L000010_110 ' (symbol refcount = 0)
+ adds r23, #1 ' ADDI4 coni
+C_scn06_5fa8f449_next_token_L000010_112
+ mov r22, r23 ' ADDI/P
+ adds r22, r2 ' ADDI/P (3)
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ cmps r22,  #0 wz
+ if_z jmp #\C_scn06_5fa8f449_next_token_L000010_113 ' EQI4
+ mov r20, FP
+ add r20, #8 ' reg <- addrfi
+ rdlong r20, r20 ' reg <- INDIRP4 reg
+ rdbyte r20, r20 ' reg <- CVUI4 INDIRU1 reg
+ cmps r20, r22 wz
+ if_nz jmp #\C_scn06_5fa8f449_next_token_L000010_109 ' NEI4
+C_scn06_5fa8f449_next_token_L000010_113
+ mov r22, r23 ' ADDI/P
+ adds r22, r2 ' ADDI/P (3)
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ cmps r22,  #0 wz
+ if_z jmp #\C_scn06_5fa8f449_next_token_L000010_114 ' EQI4
+ rdlong r22, r3 ' reg <- INDIRI4 reg
+ cmps r22,  #0 wz
+ if_z jmp #\C_scn06_5fa8f449_next_token_L000010_116 ' EQI4
+ mov r22, FP
+ add r22, #8 ' reg <- addrfi
+ rdlong r0, r22 ' reg <- INDIRP4 reg
+ jmp #\@C_scn06_5fa8f449_next_token_L000010_104 ' JUMPV addrg
+C_scn06_5fa8f449_next_token_L000010_116
+ rdlong r22, r3 ' reg <- INDIRI4 reg
+ adds r22, #1 ' ADDI4 coni
+ wrlong r22, r3 ' ASGNI4 reg reg
+ mov r22, FP
+ add r22, #8 ' reg <- addrfi
+ rdlong r22, r22 ' reg <- INDIRP4 reg
+ wrlong r22, r4 ' ASGNP4 reg reg
+ mov r22, FP
+ add r22, #8 ' reg <- addrfi
+ rdlong r22, r22 ' reg <- INDIRP4 reg
+ adds r22, #1 ' ADDP4 coni
+ mov RI, FP
+ add RI,#8
+ wrlong r22, RI ' ASGNP4 addrfi reg
+ mov r0, r22 ' CVI, CVU or LOAD
+ jmp #\@C_scn06_5fa8f449_next_token_L000010_104 ' JUMPV addrg
+C_scn06_5fa8f449_next_token_L000010_114
+ mov r23, #0 ' reg <- coni
+ jmp #\@C_scn06_5fa8f449_next_token_L000010_121 ' JUMPV addrg
+C_scn06_5fa8f449_next_token_L000010_118
+' C_scn06_5fa8f449_next_token_L000010_119 ' (symbol refcount = 0)
+ adds r23, #1 ' ADDI4 coni
+C_scn06_5fa8f449_next_token_L000010_121
+ mov r22, ##@C_scn0_5fa8f449_separators_L000003
+ rdlong r22, r22 ' reg <- INDIRP4 addrg
+ adds r22, r23 ' ADDI/P (2)
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ cmps r22,  #0 wz
+ if_z jmp #\C_scn06_5fa8f449_next_token_L000010_122 ' EQI4
+ mov r20, FP
+ add r20, #8 ' reg <- addrfi
+ rdlong r20, r20 ' reg <- INDIRP4 reg
+ rdbyte r20, r20 ' reg <- CVUI4 INDIRU1 reg
+ cmps r20, r22 wz
+ if_nz jmp #\C_scn06_5fa8f449_next_token_L000010_118 ' NEI4
+C_scn06_5fa8f449_next_token_L000010_122
+ mov r22, ##@C_scn0_5fa8f449_separators_L000003
+ rdlong r22, r22 ' reg <- INDIRP4 addrg
+ adds r22, r23 ' ADDI/P (2)
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ cmps r22,  #0 wz
+ if_z jmp #\C_scn06_5fa8f449_next_token_L000010_123 ' EQI4
+ rdlong r22, r3 ' reg <- INDIRI4 reg
+ cmps r22,  #0 wz
+ if_z jmp #\C_scn06_5fa8f449_next_token_L000010_124 ' EQI4
+ mov r22, FP
+ add r22, #8 ' reg <- addrfi
+ rdlong r22, r22 ' reg <- INDIRP4 reg
+ adds r22, #1 ' ADDP4 coni
+ mov RI, FP
+ add RI,#8
+ wrlong r22, RI ' ASGNP4 addrfi reg
+ mov r0, r22 ' CVI, CVU or LOAD
+ jmp #\@C_scn06_5fa8f449_next_token_L000010_104 ' JUMPV addrg
+C_scn06_5fa8f449_next_token_L000010_123
+ rdlong r22, r3 ' reg <- INDIRI4 reg
+ cmps r22,  #0 wz
+ if_nz jmp #\C_scn06_5fa8f449_next_token_L000010_127 ' NEI4
+ mov r22, FP
+ add r22, #8 ' reg <- addrfi
+ rdlong r22, r22 ' reg <- INDIRP4 reg
+ wrlong r22, r4 ' ASGNP4 reg reg
+C_scn06_5fa8f449_next_token_L000010_127
+ rdlong r22, r3 ' reg <- INDIRI4 reg
+ adds r22, #1 ' ADDI4 coni
+ wrlong r22, r3 ' ASGNI4 reg reg
+C_scn06_5fa8f449_next_token_L000010_124
+' C_scn06_5fa8f449_next_token_L000010_106 ' (symbol refcount = 0)
+ mov r22, FP
+ add r22, #8 ' reg <- addrfi
+ rdlong r22, r22 ' reg <- INDIRP4 reg
+ adds r22, #1 ' ADDP4 coni
+ mov RI, FP
+ add RI,#8
+ wrlong r22, RI ' ASGNP4 addrfi reg
+C_scn06_5fa8f449_next_token_L000010_108
+ mov r22, FP
+ add r22, #8 ' reg <- addrfi
+ rdlong r22, r22 ' reg <- INDIRP4 reg
+ mov r20, r5 ' CVI, CVU or LOAD
+ cmp r22, r20 wcz 
+ if_b jmp #\C_scn06_5fa8f449_next_token_L000010_105 ' LTU4
+ mov r22, FP
+ add r22, #8 ' reg <- addrfi
+ rdlong r0, r22 ' reg <- INDIRP4 reg
+C_scn06_5fa8f449_next_token_L000010_104
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETF)
+
+
+ alignl ' align long
+C_scn07_5fa8f449_find_word_L000011 ' <symbol:find_word>
+ PRIMITIVE(#NEWF)
+ sub SP, #8
+ PRIMITIVE(#PSHM)
+ long $ffe000 ' save registers
+ mov r23, r4 ' reg var <- reg arg
+ mov r21, r3 ' reg var <- reg arg
+ mov r19, r2 ' reg var <- reg arg
+ mov r22, ##@C_scn03_5fa8f449_dictionary_size_L000007
+ rdword r22, r22 ' reg <- INDIRI2 addrg
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ cmps r22,  #0 wz
+ if_nz jmp #\C_scn07_5fa8f449_find_word_L000011_130 ' NEI4
+ mov r0, #0 ' reg <- coni
+ jmp #\@C_scn07_5fa8f449_find_word_L000011_129 ' JUMPV addrg
+C_scn07_5fa8f449_find_word_L000011_130
+ mov r2, FP
+ sub r2, #-(-8) ' reg ARG ADDRLi
+ mov r3, r21 ' CVI, CVU or LOAD
+ mov r4, r23 ' CVI, CVU or LOAD
+ mov BC, #12 ' arg size, rpsize = 12, spsize = 12
+ sub SP, #8 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_encode_text
+ add SP, #8 ' CALL addrg
+ mov r15, r19
+ subs r15, #1 ' SUBI4 coni
+ mov r22, ##@C_scn03_5fa8f449_dictionary_size_L000007
+ rdword r22, r22 ' reg <- INDIRI2 addrg
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ cmps r22,  #0 wcz
+ if_be jmp #\C_scn07_5fa8f449_find_word_L000011_132 ' LEI4
+ jmp #\@C_scn07_5fa8f449_find_word_L000011_135 ' JUMPV addrg
+C_scn07_5fa8f449_find_word_L000011_134
+ mov r22, #2 ' reg <- coni
+ mov r0, r19 ' setup r0/r1 (2)
+ mov r1, r22 ' setup r0/r1 (2)
+ PRIMITIVE(#DIVS) ' DIVI
+ mov r19, r0 ' CVI, CVU or LOAD
+ mov r22, ##@C_scn03_5fa8f449_dictionary_size_L000007
+ rdword r22, r22 ' reg <- INDIRI2 addrg
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ subs r22, #1 ' SUBI4 coni
+ cmps r15, r22 wcz
+ if_be jmp #\C_scn07_5fa8f449_find_word_L000011_137 ' LEI4
+ mov r22, ##@C_scn03_5fa8f449_dictionary_size_L000007
+ rdword r22, r22 ' reg <- INDIRI2 addrg
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ mov r15, r22
+ subs r15, #1 ' SUBI4 coni
+C_scn07_5fa8f449_find_word_L000011_137
+ mov r22, r15 ' CVI, CVU or LOAD
+ mov r20, ##@C_scn04_5fa8f449_entry_size_L000008
+ rdlong r20, r20 ' reg <- INDIRU4 addrg
+ #ifndef NO_INTERRUPTS
+  stalli
+ #endif
+ qmul r22, r20 ' MULU4
+ getqx r0
+ #ifndef NO_INTERRUPTS
+  allowi
+ #endif
+ mov r20, ##@C_scn02_5fa8f449_dictionary_offset_L000006 ' reg <- addrg
+ rdword r20, r20 ' reg <- CVUI4 INDIRU2 reg
+ mov r22, r20 ' ADDU
+ add r22, r0 ' ADDU (3)
+ mov r17, r22 ' CVI, CVU or LOAD
+ mov r22, ##@C_datap
+ rdlong r22, r22 ' reg <- INDIRP4 addrg
+ mov r20, FP
+ sub r20, #-(-8) ' reg <- addrli
+ rdword r20, r20 ' reg <- INDIRI2 reg
+ shl r20, #16
+ sar r20, #16 ' sign extend
+ mov r18, r17 ' ADDI/P
+ adds r18, r22 ' ADDI/P (3)
+ rdbyte r18, r18 ' reg <- CVUI4 INDIRU1 reg
+ and r18, cviu_m2 ' zero extend
+ shl r18, #8 ' LSHI4 coni
+ mov r16, r17
+ adds r16, #1 ' ADDI4 coni
+ adds r16, r22 ' ADDI/P (1)
+ rdbyte r16, r16 ' reg <- CVUI4 INDIRU1 reg
+ and r16, cviu_m2 ' zero extend
+ adds r18, r16 ' ADDI/P (1)
+ and r18, cviu_m2 ' zero extend
+ shl r18, #16
+ sar r18, #16 ' sign extend
+ subs r20, r18 ' SUBI/P (1)
+ mov r13, r20 ' CVI, CVU or LOAD
+ mov r18, #0 ' reg <- coni
+ cmps r20, r18 wz
+ if_nz jmp #\C_scn07_5fa8f449_find_word_L000011_139 ' NEI4
+ mov r20, r17
+ adds r20, #2 ' ADDI4 coni
+ mov r16, FP
+ sub r16, #-(-6) ' reg <- addrli
+ rdword r16, r16 ' reg <- INDIRI2 reg
+ shl r16, #16
+ sar r16, #16 ' sign extend
+ mov r14, r20 ' ADDI/P
+ adds r14, r22 ' ADDI/P (3)
+ rdbyte r14, r14 ' reg <- CVUI4 INDIRU1 reg
+ and r14, cviu_m2 ' zero extend
+ shl r14, #8 ' LSHI4 coni
+ adds r20, #1 ' ADDI4 coni
+ adds r20, r22 ' ADDI/P (1)
+ rdbyte r20, r20 ' reg <- CVUI4 INDIRU1 reg
+ and r20, cviu_m2 ' zero extend
+ adds r20, r14 ' ADDI/P (2)
+ and r20, cviu_m2 ' zero extend
+ shl r20, #16
+ sar r20, #16 ' sign extend
+ subs r20, r16
+ neg r20, r20 ' SUBI/P (2)
+ mov r13, r20 ' CVI, CVU or LOAD
+ cmps r20, r18 wz
+ if_nz jmp #\C_scn07_5fa8f449_find_word_L000011_139 ' NEI4
+ mov r20, ##@C_h_type ' reg <- addrg
+ rdbyte r20, r20 ' reg <- CVUI4 INDIRU1 reg
+ cmps r20,  #4 wcz
+ if_b jmp #\C_scn07_5fa8f449_find_word_L000011_143 ' LTI4
+ mov r20, r17
+ adds r20, #4 ' ADDI4 coni
+ mov r16, FP
+ sub r16, #-(-4) ' reg <- addrli
+ rdword r16, r16 ' reg <- INDIRI2 reg
+ shl r16, #16
+ sar r16, #16 ' sign extend
+ mov r14, r20 ' ADDI/P
+ adds r14, r22 ' ADDI/P (3)
+ rdbyte r14, r14 ' reg <- CVUI4 INDIRU1 reg
+ and r14, cviu_m2 ' zero extend
+ shl r14, #8 ' LSHI4 coni
+ adds r20, #1 ' ADDI4 coni
+ adds r22, r20 ' ADDI/P (2)
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ and r22, cviu_m2 ' zero extend
+ adds r22, r14 ' ADDI/P (2)
+ and r22, cviu_m2 ' zero extend
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ subs r22, r16
+ neg r22, r22 ' SUBI/P (2)
+ mov r13, r22 ' CVI, CVU or LOAD
+ cmps r22, r18 wz
+ if_nz jmp #\C_scn07_5fa8f449_find_word_L000011_139 ' NEI4
+C_scn07_5fa8f449_find_word_L000011_143
+ mov r22, r17 ' CVI, CVU or LOAD
+ mov r0, r22 ' CVUI
+ and r0, cviu_m2 ' zero extend
+ jmp #\@C_scn07_5fa8f449_find_word_L000011_129 ' JUMPV addrg
+C_scn07_5fa8f449_find_word_L000011_139
+ cmps r13,  #0 wcz
+ if_be jmp #\C_scn07_5fa8f449_find_word_L000011_144 ' LEI4
+ adds r15, r19 ' ADDI/P (1)
+ mov r22, ##@C_scn03_5fa8f449_dictionary_size_L000007
+ rdword r22, r22 ' reg <- INDIRI2 addrg
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ cmps r15, r22 wcz
+ if_b jmp #\C_scn07_5fa8f449_find_word_L000011_145 ' LTI4
+ mov r22, ##@C_scn03_5fa8f449_dictionary_size_L000007
+ rdword r22, r22 ' reg <- INDIRI2 addrg
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ mov r15, r22
+ subs r15, #1 ' SUBI4 coni
+ jmp #\@C_scn07_5fa8f449_find_word_L000011_145 ' JUMPV addrg
+C_scn07_5fa8f449_find_word_L000011_144
+ subs r15, r19 ' SUBI/P (1)
+ cmps r15,  #0 wcz
+ if_ae jmp #\C_scn07_5fa8f449_find_word_L000011_148 ' GEI4
+ mov r15, #0 ' reg <- coni
+C_scn07_5fa8f449_find_word_L000011_148
+C_scn07_5fa8f449_find_word_L000011_145
+C_scn07_5fa8f449_find_word_L000011_135
+ cmps r19,  #0 wz
+ if_nz jmp #\C_scn07_5fa8f449_find_word_L000011_134 ' NEI4
+ jmp #\@C_scn07_5fa8f449_find_word_L000011_133 ' JUMPV addrg
+C_scn07_5fa8f449_find_word_L000011_132
+ mov r15, #0 ' reg <- coni
+ jmp #\@C_scn07_5fa8f449_find_word_L000011_153 ' JUMPV addrg
+C_scn07_5fa8f449_find_word_L000011_150
+ mov r22, r15 ' CVI, CVU or LOAD
+ mov r20, ##@C_scn04_5fa8f449_entry_size_L000008
+ rdlong r20, r20 ' reg <- INDIRU4 addrg
+ #ifndef NO_INTERRUPTS
+  stalli
+ #endif
+ qmul r22, r20 ' MULU4
+ getqx r0
+ #ifndef NO_INTERRUPTS
+  allowi
+ #endif
+ mov r20, ##@C_scn02_5fa8f449_dictionary_offset_L000006 ' reg <- addrg
+ rdword r20, r20 ' reg <- CVUI4 INDIRU2 reg
+ mov r22, r20 ' ADDU
+ add r22, r0 ' ADDU (3)
+ mov r17, r22 ' CVI, CVU or LOAD
+ mov r22, ##@C_datap
+ rdlong r22, r22 ' reg <- INDIRP4 addrg
+ mov r20, FP
+ sub r20, #-(-8) ' reg <- addrli
+ rdword r20, r20 ' reg <- INDIRI2 reg
+ shl r20, #16
+ sar r20, #16 ' sign extend
+ mov r18, r17 ' ADDI/P
+ adds r18, r22 ' ADDI/P (3)
+ rdbyte r18, r18 ' reg <- CVUI4 INDIRU1 reg
+ and r18, cviu_m2 ' zero extend
+ shl r18, #8 ' LSHI4 coni
+ mov r16, r17
+ adds r16, #1 ' ADDI4 coni
+ adds r16, r22 ' ADDI/P (1)
+ rdbyte r16, r16 ' reg <- CVUI4 INDIRU1 reg
+ and r16, cviu_m2 ' zero extend
+ adds r18, r16 ' ADDI/P (1)
+ and r18, cviu_m2 ' zero extend
+ shl r18, #16
+ sar r18, #16 ' sign extend
+ subs r20, r18 ' SUBI/P (1)
+ mov r13, r20 ' CVI, CVU or LOAD
+ mov r18, #0 ' reg <- coni
+ cmps r20, r18 wz
+ if_nz jmp #\C_scn07_5fa8f449_find_word_L000011_154 ' NEI4
+ mov r20, r17
+ adds r20, #2 ' ADDI4 coni
+ mov r16, FP
+ sub r16, #-(-6) ' reg <- addrli
+ rdword r16, r16 ' reg <- INDIRI2 reg
+ shl r16, #16
+ sar r16, #16 ' sign extend
+ mov r14, r20 ' ADDI/P
+ adds r14, r22 ' ADDI/P (3)
+ rdbyte r14, r14 ' reg <- CVUI4 INDIRU1 reg
+ and r14, cviu_m2 ' zero extend
+ shl r14, #8 ' LSHI4 coni
+ adds r20, #1 ' ADDI4 coni
+ adds r20, r22 ' ADDI/P (1)
+ rdbyte r20, r20 ' reg <- CVUI4 INDIRU1 reg
+ and r20, cviu_m2 ' zero extend
+ adds r20, r14 ' ADDI/P (2)
+ and r20, cviu_m2 ' zero extend
+ shl r20, #16
+ sar r20, #16 ' sign extend
+ subs r20, r16
+ neg r20, r20 ' SUBI/P (2)
+ mov r13, r20 ' CVI, CVU or LOAD
+ cmps r20, r18 wz
+ if_nz jmp #\C_scn07_5fa8f449_find_word_L000011_154 ' NEI4
+ mov r20, ##@C_h_type ' reg <- addrg
+ rdbyte r20, r20 ' reg <- CVUI4 INDIRU1 reg
+ cmps r20,  #4 wcz
+ if_b jmp #\C_scn07_5fa8f449_find_word_L000011_158 ' LTI4
+ mov r20, r17
+ adds r20, #4 ' ADDI4 coni
+ mov r16, FP
+ sub r16, #-(-4) ' reg <- addrli
+ rdword r16, r16 ' reg <- INDIRI2 reg
+ shl r16, #16
+ sar r16, #16 ' sign extend
+ mov r14, r20 ' ADDI/P
+ adds r14, r22 ' ADDI/P (3)
+ rdbyte r14, r14 ' reg <- CVUI4 INDIRU1 reg
+ and r14, cviu_m2 ' zero extend
+ shl r14, #8 ' LSHI4 coni
+ adds r20, #1 ' ADDI4 coni
+ adds r22, r20 ' ADDI/P (2)
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ and r22, cviu_m2 ' zero extend
+ adds r22, r14 ' ADDI/P (2)
+ and r22, cviu_m2 ' zero extend
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ subs r22, r16
+ neg r22, r22 ' SUBI/P (2)
+ mov r13, r22 ' CVI, CVU or LOAD
+ cmps r22, r18 wz
+ if_nz jmp #\C_scn07_5fa8f449_find_word_L000011_154 ' NEI4
+C_scn07_5fa8f449_find_word_L000011_158
+ mov r22, r17 ' CVI, CVU or LOAD
+ mov r0, r22 ' CVUI
+ and r0, cviu_m2 ' zero extend
+ jmp #\@C_scn07_5fa8f449_find_word_L000011_129 ' JUMPV addrg
+C_scn07_5fa8f449_find_word_L000011_154
+' C_scn07_5fa8f449_find_word_L000011_151 ' (symbol refcount = 0)
+ adds r15, #1 ' ADDI4 coni
+C_scn07_5fa8f449_find_word_L000011_153
+ mov r22, ##@C_scn03_5fa8f449_dictionary_size_L000007
+ rdword r22, r22 ' reg <- INDIRI2 addrg
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ neg r22, r22 ' NEGI4
+ cmps r15, r22 wcz
+ if_b jmp #\C_scn07_5fa8f449_find_word_L000011_150 ' LTI4
+C_scn07_5fa8f449_find_word_L000011_133
+ mov r0, #0 ' reg <- coni
+C_scn07_5fa8f449_find_word_L000011_129
+ PRIMITIVE(#POPM) ' restore registers
+ add SP, #8 ' framesize
+ PRIMITIVE(#RETF)
+
+
+' Catalina Export z_tokenise
+
+ alignl ' align long
+C_z_tokenise ' <symbol:z_tokenise>
+ PRIMITIVE(#PSHM)
+ long $f00000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ cmps r23,  #4 wcz
+ if_ae jmp #\C_z_tokenise_160 ' GEI4
+ mov r22, r21
+ adds r22, #6 ' ADDP4 coni
+ mov r20, #0 ' reg <- coni
+ wrword r20, r22 ' ASGNU2 reg reg
+C_z_tokenise_160
+ cmps r23,  #3 wcz
+ if_ae jmp #\C_z_tokenise_162 ' GEI4
+ mov r22, r21
+ adds r22, #4 ' ADDP4 coni
+ mov r20, ##@C_h_words_offset
+ rdword r20, r20 ' reg <- INDIRU2 addrg
+ wrword r20, r22 ' ASGNU2 reg reg
+C_z_tokenise_162
+ mov r22, r21
+ adds r22, #6 ' ADDP4 coni
+ rdword r2, r22 ' reg <- CVUI4 INDIRU2 reg
+ mov r22, r21
+ adds r22, #4 ' ADDP4 coni
+ rdword r3, r22 ' reg <- CVUI4 INDIRU2 reg
+ mov r22, r21
+ adds r22, #2 ' ADDP4 coni
+ rdword r4, r22 ' reg <- CVUI4 INDIRU2 reg
+ rdword r5, r21 ' reg <- CVUI4 INDIRU2 reg
+ mov BC, #16 ' arg size, rpsize = 16, spsize = 16
+ sub SP, #12 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_scn05_5fa8f449_tokenise_line_L000009
+ add SP, #12 ' CALL addrg
+' C_z_tokenise_159 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Import flush_buffer
+
+' Catalina Import encode_text
+
+' Catalina Import input_line
+
+' Catalina Import input_character
+
+' Catalina Import output_line
+
+' Catalina Import output_string
+
+' Catalina Import z_show_status
+
+' Catalina Import store_operand
+
+' Catalina Import script_line
+
+' Catalina Import record_line
+
+' Catalina Import record_key
+
+' Catalina Import playback_line
+
+' Catalina Import playback_key
+
+' Catalina Import z_call
+
+' Catalina Import lines_written
+
+' Catalina Import right_margin
+
+' Catalina Import screen_cols
+
+' Catalina Import datap
+
+' Catalina Import h_words_offset
+
+' Catalina Import h_type
+
+' Catalina Import strlen
+
+' Catalina Import tolower
+
+' Catalina Cnst
+
+DAT ' const data segment
+
+ alignl ' align long
+C_scn05_5fa8f449_tokenise_line_L000009_102_L000103 ' <symbol:102>
+ byte 84
+ byte 111
+ byte 111
+ byte 32
+ byte 109
+ byte 97
+ byte 110
+ byte 121
+ byte 32
+ byte 119
+ byte 111
+ byte 114
+ byte 100
+ byte 115
+ byte 32
+ byte 116
+ byte 121
+ byte 112
+ byte 101
+ byte 100
+ byte 44
+ byte 32
+ byte 100
+ byte 105
+ byte 115
+ byte 99
+ byte 97
+ byte 114
+ byte 100
+ byte 105
+ byte 110
+ byte 103
+ byte 58
+ byte 32
+ byte 0
+
+ alignl ' align long
+C_scn01_5fa8f449_4_L000005 ' <symbol:4>
+ byte 32
+ byte 9
+ byte 10
+ byte 12
+ byte 46
+ byte 44
+ byte 63
+ byte 0
+
+' Catalina Code
+
+DAT ' code segment
+' end
