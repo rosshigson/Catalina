@@ -19,7 +19,11 @@ void *cgi_bitmap_base(int double_buffer) {
    int y_tiles = cgi_y_tiles();
    unsigned long addr;
 
-   addr = (_cgi_data() & 0xFFFF);
+#ifdef __CATALINA_P2
+   addr = (_cgi_data() & 0xFFFFFF) + 4; // 24 bit address
+#else
+   addr = (_cgi_data() & 0xFFFF);   // 16 bit address
+#endif
 
    if (double_buffer) {
       return (void *)(addr + ((x_tiles * y_tiles) * 16 * 16 * 2) / 8);

@@ -23,7 +23,12 @@ void *cgi_color_data(int double_buffer) {
    unsigned long addr;
    unsigned long offs = ((x_tiles * y_tiles) * 16 * 16 * 2) / 8;
 
-   addr = (_cgi_data() & 0xFFFF) + offs + (x_tiles * y_tiles * 2);
+#ifdef __CATALINA_P2
+   addr = (_cgi_data() & 0xFFFFFF) + 4; // 24 bit address
+#else
+   addr = (_cgi_data() & 0xFFFF);   // 16 bit address
+#endif
+   addr += offs + (x_tiles * y_tiles * 2);
 
    if (double_buffer) {
       return (void *)(addr + offs);

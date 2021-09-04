@@ -253,14 +253,15 @@ C_spi_writeW_ait_28
  long I32_CALA + (@C__clockfreq)<<S32 ' CALL addrg
  word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  alignl ' align long
- long I32_MOVI + (r20)<<D32 +(50)<<S32 ' reg <- conli
+ long I32_LODS + (r20)<<D32S + ((50)&$7FFFF)<<S32 ' reg <- cons
  word I16A_MOV + (r0)<<D16A + (r22)<<S16A ' setup r0/r1 (2)
  word I16A_MOV + (r1)<<D16A + (r20)<<S16A ' setup r0/r1 (2)
- word I16B_DIVU ' DIVU
+ word I16B_DIVS ' DIVI
  alignl ' align long
  long I32_MOV + (r20)<<D32 + (CNT)<<S32 ' reg <- INDIRU4 addrg special
  word I16A_SUB + (r20)<<D16A + (r21)<<S16A ' SUBU (1)
- word I16A_CMP + (r20)<<D16A + (r0)<<S16A
+ word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
+ word I16A_CMP + (r20)<<D16A + (r22)<<S16A
  alignl ' align long
  long I32_BRBE + (@C_spi_writeW_ait_31)<<S32 ' LEU4 reg reg
  alignl ' align long
@@ -284,9 +285,9 @@ C_spi_writeW_ait_25
  word I16B_POPM + $80<<S16B ' restore registers, do not pop frame, do return
  alignl ' align long
 
-' Catalina Import _locknew
-
 ' Catalina Import _clockfreq
+
+' Catalina Import _locknew
 
 ' Catalina Import _locate_plugin
 

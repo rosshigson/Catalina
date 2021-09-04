@@ -42,9 +42,9 @@ C_s2_rxtime_2
  mov r18, RI ' reg <- con
  mov r0, r20 ' setup r0/r1 (2)
  mov r1, r18 ' setup r0/r1 (2)
- PRIMITIVE(#DIVU) ' DIVU
- mov r20, r0 ' CVI, CVU or LOAD
+ PRIMITIVE(#DIVS) ' DIVI
  sub r22, r17 ' SUBU (1)
+ mov r20, r0 ' CVI, CVU or LOAD
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r20 ' setup r0/r1 (2)
  PRIMITIVE(#DIVU) ' DIVU
@@ -65,9 +65,9 @@ C_s2_rxtime_4
  PRIMITIVE(#RETN)
 
 
-' Catalina Import _cnt
-
 ' Catalina Import _clockfreq
+
+' Catalina Import _cnt
 
 ' Catalina Import s2_rxcheck
 ' end

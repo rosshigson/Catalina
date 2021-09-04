@@ -80,17 +80,12 @@ C__coginit_S_pin_cog ' <symbol:_coginit_Spin_cog>
  long @C__clockfreq ' CALL addrg
  mov r20, r0 ' CVI, CVU or LOAD
  mov r18, #20 ' reg <- coni
- #ifndef NO_INTERRUPTS
-  stalli
- #endif
- qdiv r20, r18 ' DIVU4
- getqx r0
- #ifndef NO_INTERRUPTS
-  allowi
- #endif
+ mov r0, r20 ' setup r0/r1 (2)
+ mov r1, r18 ' setup r0/r1 (2)
+ PRIMITIVE(#DIVS) ' DIVI
  mov r20, r0 ' CVI, CVU or LOAD
- mov r2, r22 ' ADDU
- add r2, r20 ' ADDU (3)
+ mov r2, r22 ' ADDI/P
+ adds r2, r20 ' ADDI/P (3)
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C__waitcnt ' CALL addrg
@@ -101,11 +96,11 @@ C__coginit_S_pin_cog ' <symbol:_coginit_Spin_cog>
  PRIMITIVE(#RETF)
 
 
+' Catalina Import _clockfreq
+
 ' Catalina Import _cnt
 
 ' Catalina Import _waitcnt
 
 ' Catalina Import _coginit
-
-' Catalina Import _clockfreq
 ' end

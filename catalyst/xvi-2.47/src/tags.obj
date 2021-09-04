@@ -11,15 +11,15 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_saao_5fa8f427_sccsid_L000001 ' <symbol:sccsid>
- long @C_saao1_5fa8f427_2_L000003
+C_sfuc_6132d4cb_sccsid_L000001 ' <symbol:sccsid>
+ long @C_sfuc1_6132d4cb_2_L000003
 
  alignl ' align long
-C_saao2_5fa8f427_hashtable_L000018 ' <symbol:hashtable>
+C_sfuc2_6132d4cb_hashtable_L000018 ' <symbol:hashtable>
  long $0
 
  alignl ' align long
-C_saao3_5fa8f427_hashtabsize_L000019 ' <symbol:hashtabsize>
+C_sfuc3_6132d4cb_hashtabsize_L000019 ' <symbol:hashtabsize>
  long 1009
 
 ' Catalina Export tagInit
@@ -34,14 +34,14 @@ C_tagI_nit ' <symbol:tagInit>
  sub SP, ##512
  PRIMITIVE(#PSHM)
  long $fa8000 ' save registers
- mov r22, ##@C_saao2_5fa8f427_hashtable_L000018
+ mov r22, ##@C_sfuc2_6132d4cb_hashtable_L000018
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  if_z jmp #\C_tagI_nit_23 ' EQU4
  jmp #\@C_tagI_nit_22 ' JUMPV addrg
 C_tagI_nit_23
  mov r2, #4 ' reg ARG coni
- mov r22, ##@C_saao3_5fa8f427_hashtabsize_L000019
+ mov r22, ##@C_sfuc3_6132d4cb_hashtabsize_L000019
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  mov r3, r22 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -49,8 +49,8 @@ C_tagI_nit_23
  PRIMITIVE(#CALA)
  long @C_calloc
  add SP, #4 ' CALL addrg
- wrlong r0, ##@C_saao2_5fa8f427_hashtable_L000018 ' ASGNP4 addrg reg
- mov r22, ##@C_saao2_5fa8f427_hashtable_L000018
+ wrlong r0, ##@C_sfuc2_6132d4cb_hashtable_L000018 ' ASGNP4 addrg reg
+ mov r22, ##@C_sfuc2_6132d4cb_hashtable_L000018
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  if_nz jmp #\C_tagI_nit_25  ' NEU4
@@ -116,7 +116,7 @@ C_tagI_nit_46
 ' reg ARG ADDRL
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_saao4_5fa8f427_E_nterT_ag_L000020 ' CALL addrg
+ long @C_sfuc4_6132d4cb_E_nterT_ag_L000020 ' CALL addrg
 C_tagI_nit_40
  jmp #\@C_tagI_nit_39 ' JUMPV addrg
 C_tagI_nit_41
@@ -741,16 +741,16 @@ C_exT_ag_74
 
 
  alignl ' align long
-C_saao4_5fa8f427_E_nterT_ag_L000020 ' <symbol:EnterTag>
+C_sfuc4_6132d4cb_E_nterT_ag_L000020 ' <symbol:EnterTag>
  PRIMITIVE(#PSHM)
  long $fea000 ' save registers
  mov r23, r2 ' reg var <- reg arg
  mov r13, ##@C_params+1392+12
  rdlong r13, r13 ' reg <- INDIRI4 addrg
  cmps r13,  #0 wz
- if_nz jmp #\C_saao4_5fa8f427_E_nterT_ag_L000020_124 ' NEI4
+ if_nz jmp #\C_sfuc4_6132d4cb_E_nterT_ag_L000020_124 ' NEI4
  mov r13, ##2147483647 ' reg <- con
-C_saao4_5fa8f427_E_nterT_ag_L000020_124
+C_sfuc4_6132d4cb_E_nterT_ag_L000020_124
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
@@ -765,9 +765,9 @@ C_saao4_5fa8f427_E_nterT_ag_L000020_124
  mov r21, r0 ' CVI, CVU or LOAD
  mov r22, r21 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_saao4_5fa8f427_E_nterT_ag_L000020_126  ' NEU4
- jmp #\@C_saao4_5fa8f427_E_nterT_ag_L000020_121 ' JUMPV addrg
-C_saao4_5fa8f427_E_nterT_ag_L000020_126
+ if_nz jmp #\C_sfuc4_6132d4cb_E_nterT_ag_L000020_126  ' NEU4
+ jmp #\@C_sfuc4_6132d4cb_E_nterT_ag_L000020_121 ' JUMPV addrg
+C_sfuc4_6132d4cb_E_nterT_ag_L000020_126
  mov r22, r21
  adds r22, #4 ' ADDP4 coni
  mov r20, r21
@@ -798,13 +798,13 @@ C_saao4_5fa8f427_E_nterT_ag_L000020_126
  adds r22, #8 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg
  cmp r22,  #0 wz
- if_nz jmp #\C_saao4_5fa8f427_E_nterT_ag_L000020_128  ' NEU4
+ if_nz jmp #\C_sfuc4_6132d4cb_E_nterT_ag_L000020_128  ' NEU4
  mov r22, r21
  adds r22, #8 ' ADDP4 coni
- mov r20, ##@C_saao4_5fa8f427_E_nterT_ag_L000020_130_L000131 ' reg <- addrg
+ mov r20, ##@C_sfuc4_6132d4cb_E_nterT_ag_L000020_130_L000131 ' reg <- addrg
  wrlong r20, r22 ' ASGNP4 reg reg
- jmp #\@C_saao4_5fa8f427_E_nterT_ag_L000020_129 ' JUMPV addrg
-C_saao4_5fa8f427_E_nterT_ag_L000020_128
+ jmp #\@C_sfuc4_6132d4cb_E_nterT_ag_L000020_129 ' JUMPV addrg
+C_sfuc4_6132d4cb_E_nterT_ag_L000020_128
  mov r22, r21
  adds r22, #8 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -813,27 +813,27 @@ C_saao4_5fa8f427_E_nterT_ag_L000020_128
  rdlong r20, r20 ' reg <- INDIRP4 reg
  adds r20, r13 ' ADDI/P (2)
  cmp r22, r20 wcz 
- if_be jmp #\C_saao4_5fa8f427_E_nterT_ag_L000020_132 ' LEU4
+ if_be jmp #\C_sfuc4_6132d4cb_E_nterT_ag_L000020_132 ' LEU4
  mov r22, r21
  adds r22, #4 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg
  adds r22, r13 ' ADDI/P (2)
  mov r20, #0 ' reg <- coni
  wrbyte r20, r22 ' ASGNU1 reg reg
- jmp #\@C_saao4_5fa8f427_E_nterT_ag_L000020_133 ' JUMPV addrg
-C_saao4_5fa8f427_E_nterT_ag_L000020_132
+ jmp #\@C_sfuc4_6132d4cb_E_nterT_ag_L000020_133 ' JUMPV addrg
+C_sfuc4_6132d4cb_E_nterT_ag_L000020_132
  mov r22, r21
  adds r22, #8 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg
  mov r20, #0 ' reg <- coni
  wrbyte r20, r22 ' ASGNU1 reg reg
-C_saao4_5fa8f427_E_nterT_ag_L000020_133
+C_sfuc4_6132d4cb_E_nterT_ag_L000020_133
  mov r22, r21
  adds r22, #8 ' ADDP4 coni
  rdlong r20, r22 ' reg <- INDIRP4 reg
  adds r20, #1 ' ADDP4 coni
  wrlong r20, r22 ' ASGNP4 reg reg
-C_saao4_5fa8f427_E_nterT_ag_L000020_129
+C_sfuc4_6132d4cb_E_nterT_ag_L000020_129
  mov r2, #9 ' reg ARG coni
  mov r22, r21
  adds r22, #8 ' ADDP4 coni
@@ -850,13 +850,13 @@ C_saao4_5fa8f427_E_nterT_ag_L000020_129
  adds r22, #12 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg
  cmp r22,  #0 wz
- if_nz jmp #\C_saao4_5fa8f427_E_nterT_ag_L000020_134  ' NEU4
+ if_nz jmp #\C_sfuc4_6132d4cb_E_nterT_ag_L000020_134  ' NEU4
  mov r22, r21
  adds r22, #12 ' ADDP4 coni
- mov r20, ##@C_saao4_5fa8f427_E_nterT_ag_L000020_136_L000137 ' reg <- addrg
+ mov r20, ##@C_sfuc4_6132d4cb_E_nterT_ag_L000020_136_L000137 ' reg <- addrg
  wrlong r20, r22 ' ASGNP4 reg reg
- jmp #\@C_saao4_5fa8f427_E_nterT_ag_L000020_135 ' JUMPV addrg
-C_saao4_5fa8f427_E_nterT_ag_L000020_134
+ jmp #\@C_sfuc4_6132d4cb_E_nterT_ag_L000020_135 ' JUMPV addrg
+C_sfuc4_6132d4cb_E_nterT_ag_L000020_134
  mov r22, r21
  adds r22, #12 ' ADDP4 coni
  rdlong r20, r22 ' reg <- INDIRP4 reg
@@ -865,23 +865,23 @@ C_saao4_5fa8f427_E_nterT_ag_L000020_134
  wrlong r18, r22 ' ASGNP4 reg reg
  mov r22, #0 ' reg <- coni
  wrbyte r22, r20 ' ASGNU1 reg reg
-C_saao4_5fa8f427_E_nterT_ag_L000020_135
+C_sfuc4_6132d4cb_E_nterT_ag_L000020_135
  mov r15, #0 ' reg <- coni
  mov r22, r21
  adds r22, #4 ' ADDP4 coni
  rdlong r17, r22 ' reg <- INDIRP4 reg
- jmp #\@C_saao4_5fa8f427_E_nterT_ag_L000020_141 ' JUMPV addrg
-C_saao4_5fa8f427_E_nterT_ag_L000020_138
+ jmp #\@C_sfuc4_6132d4cb_E_nterT_ag_L000020_141 ' JUMPV addrg
+C_sfuc4_6132d4cb_E_nterT_ag_L000020_138
  shl r15, #1 ' LSHU4 coni
  rdbyte r22, r17 ' reg <- CVUI4 INDIRU1 reg
  xor r15, r22 ' BXORI/U (1)
-' C_saao4_5fa8f427_E_nterT_ag_L000020_139 ' (symbol refcount = 0)
+' C_sfuc4_6132d4cb_E_nterT_ag_L000020_139 ' (symbol refcount = 0)
  adds r17, #1 ' ADDP4 coni
-C_saao4_5fa8f427_E_nterT_ag_L000020_141
+C_sfuc4_6132d4cb_E_nterT_ag_L000020_141
  rdbyte r22, r17 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #0 wz
- if_nz jmp #\C_saao4_5fa8f427_E_nterT_ag_L000020_138 ' NEI4
- mov r22, ##@C_saao3_5fa8f427_hashtabsize_L000019
+ if_nz jmp #\C_sfuc4_6132d4cb_E_nterT_ag_L000020_138 ' NEI4
+ mov r22, ##@C_sfuc3_6132d4cb_hashtabsize_L000019
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  #ifndef NO_INTERRUPTS
   stalli
@@ -893,14 +893,14 @@ C_saao4_5fa8f427_E_nterT_ag_L000020_141
  #endif
  mov r22, r1
  shl r22, #2 ' LSHU4 coni
- mov r20, ##@C_saao2_5fa8f427_hashtable_L000018
+ mov r20, ##@C_sfuc2_6132d4cb_hashtable_L000018
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  mov r19, r22 ' ADDI/P
  adds r19, r20 ' ADDI/P (3)
  rdlong r22, r19 ' reg <- INDIRP4 reg
  wrlong r22, r21 ' ASGNP4 reg reg
  wrlong r21, r19 ' ASGNP4 reg reg
-C_saao4_5fa8f427_E_nterT_ag_L000020_121
+C_sfuc4_6132d4cb_E_nterT_ag_L000020_121
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
@@ -914,14 +914,14 @@ C_tagL_ookup ' <symbol:tagLookup>
  mov r23, r4 ' reg var <- reg arg
  mov r21, r3 ' reg var <- reg arg
  mov r19, r2 ' reg var <- reg arg
- mov r22, ##@C_saao2_5fa8f427_hashtable_L000018
+ mov r22, ##@C_sfuc2_6132d4cb_hashtable_L000018
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  if_nz jmp #\C_tagL_ookup_143  ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
  long @C_tagI_nit ' CALL addrg
- mov r22, ##@C_saao2_5fa8f427_hashtable_L000018
+ mov r22, ##@C_sfuc2_6132d4cb_hashtable_L000018
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  if_nz jmp #\C_tagL_ookup_145  ' NEU4
@@ -1040,7 +1040,7 @@ C_tagL_ookup_178
  cmps r22,  #95 wz
  if_z jmp #\C_tagL_ookup_172 ' EQI4
 C_tagL_ookup_177
- mov r22, ##@C_saao3_5fa8f427_hashtabsize_L000019
+ mov r22, ##@C_sfuc3_6132d4cb_hashtabsize_L000019
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  #ifndef NO_INTERRUPTS
   stalli
@@ -1052,7 +1052,7 @@ C_tagL_ookup_177
  #endif
  mov r22, r1
  shl r22, #2 ' LSHU4 coni
- mov r20, ##@C_saao2_5fa8f427_hashtable_L000018
+ mov r20, ##@C_sfuc2_6132d4cb_hashtable_L000018
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r17, r22 ' reg <- INDIRP4 reg
@@ -1095,53 +1095,53 @@ C_tagL_ookup_142
 
 
  alignl ' align long
-C_saao5_5fa8f427_tagF_ree_L000021 ' <symbol:tagFree>
+C_sfuc5_6132d4cb_tagF_ree_L000021 ' <symbol:tagFree>
  PRIMITIVE(#PSHM)
  long $f80000 ' save registers
- mov r22, ##@C_saao2_5fa8f427_hashtable_L000018
+ mov r22, ##@C_sfuc2_6132d4cb_hashtable_L000018
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
- if_nz jmp #\C_saao5_5fa8f427_tagF_ree_L000021_186  ' NEU4
- jmp #\@C_saao5_5fa8f427_tagF_ree_L000021_185 ' JUMPV addrg
-C_saao5_5fa8f427_tagF_ree_L000021_186
+ if_nz jmp #\C_sfuc5_6132d4cb_tagF_ree_L000021_186  ' NEU4
+ jmp #\@C_sfuc5_6132d4cb_tagF_ree_L000021_185 ' JUMPV addrg
+C_sfuc5_6132d4cb_tagF_ree_L000021_186
  mov r23, #0 ' reg <- coni
- jmp #\@C_saao5_5fa8f427_tagF_ree_L000021_191 ' JUMPV addrg
-C_saao5_5fa8f427_tagF_ree_L000021_188
+ jmp #\@C_sfuc5_6132d4cb_tagF_ree_L000021_191 ' JUMPV addrg
+C_sfuc5_6132d4cb_tagF_ree_L000021_188
  mov r22, r23
  shl r22, #2 ' LSHI4 coni
- mov r20, ##@C_saao2_5fa8f427_hashtable_L000018
+ mov r20, ##@C_sfuc2_6132d4cb_hashtable_L000018
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r21, r22 ' reg <- INDIRP4 reg
- jmp #\@C_saao5_5fa8f427_tagF_ree_L000021_195 ' JUMPV addrg
-C_saao5_5fa8f427_tagF_ree_L000021_192
+ jmp #\@C_sfuc5_6132d4cb_tagF_ree_L000021_195 ' JUMPV addrg
+C_sfuc5_6132d4cb_tagF_ree_L000021_192
  mov r19, r21 ' CVI, CVU or LOAD
  rdlong r21, r21 ' reg <- INDIRP4 reg
  mov r2, r19 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_free ' CALL addrg
-' C_saao5_5fa8f427_tagF_ree_L000021_193 ' (symbol refcount = 0)
-C_saao5_5fa8f427_tagF_ree_L000021_195
+' C_sfuc5_6132d4cb_tagF_ree_L000021_193 ' (symbol refcount = 0)
+C_sfuc5_6132d4cb_tagF_ree_L000021_195
  mov r22, r21 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_saao5_5fa8f427_tagF_ree_L000021_192  ' NEU4
-' C_saao5_5fa8f427_tagF_ree_L000021_189 ' (symbol refcount = 0)
+ if_nz jmp #\C_sfuc5_6132d4cb_tagF_ree_L000021_192  ' NEU4
+' C_sfuc5_6132d4cb_tagF_ree_L000021_189 ' (symbol refcount = 0)
  adds r23, #1 ' ADDI4 coni
-C_saao5_5fa8f427_tagF_ree_L000021_191
- mov r22, ##@C_saao3_5fa8f427_hashtabsize_L000019
+C_sfuc5_6132d4cb_tagF_ree_L000021_191
+ mov r22, ##@C_sfuc3_6132d4cb_hashtabsize_L000019
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r23, r22 wcz
- if_b jmp #\C_saao5_5fa8f427_tagF_ree_L000021_188 ' LTI4
- mov r2, ##@C_saao2_5fa8f427_hashtable_L000018
+ if_b jmp #\C_sfuc5_6132d4cb_tagF_ree_L000021_188 ' LTI4
+ mov r2, ##@C_sfuc2_6132d4cb_hashtable_L000018
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_free ' CALL addrg
  mov r22, ##0 ' reg <- con
- wrlong r22, ##@C_saao2_5fa8f427_hashtable_L000018 ' ASGNP4 addrg reg
-C_saao5_5fa8f427_tagF_ree_L000021_185
+ wrlong r22, ##@C_sfuc2_6132d4cb_hashtable_L000018 ' ASGNP4 addrg reg
+C_sfuc5_6132d4cb_tagF_ree_L000021_185
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
@@ -1157,7 +1157,7 @@ C_tagS_etP_aram ' <symbol:tagSetParam>
  mov r19, r2 ' reg var <- reg arg
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
- long @C_saao5_5fa8f427_tagF_ree_L000021 ' CALL addrg
+ long @C_sfuc5_6132d4cb_tagF_ree_L000021 ' CALL addrg
  mov r0, #1 ' reg <- coni
 ' C_tagS_etP_aram_196 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
@@ -1235,12 +1235,12 @@ C_tagS_etP_aram ' <symbol:tagSetParam>
 DAT ' const data segment
 
  alignl ' align long
-C_saao4_5fa8f427_E_nterT_ag_L000020_136_L000137 ' <symbol:136>
+C_sfuc4_6132d4cb_E_nterT_ag_L000020_136_L000137 ' <symbol:136>
  byte 48
  byte 0
 
  alignl ' align long
-C_saao4_5fa8f427_E_nterT_ag_L000020_130_L000131 ' <symbol:130>
+C_sfuc4_6132d4cb_E_nterT_ag_L000020_130_L000131 ' <symbol:130>
  byte 78
  byte 111
  byte 32
@@ -1333,7 +1333,7 @@ C_tagI_nit_35_L000036 ' <symbol:35>
  byte 0
 
  alignl ' align long
-C_saao1_5fa8f427_2_L000003 ' <symbol:2>
+C_sfuc1_6132d4cb_2_L000003 ' <symbol:2>
  byte 64
  byte 40
  byte 35

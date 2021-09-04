@@ -74,10 +74,10 @@ C__coginit_S_pin ' <symbol:_coginit_Spin>
  word I16A_MOVI + (r18)<<D16A + (20)<<S16A ' reg <- coni
  word I16A_MOV + (r0)<<D16A + (r20)<<S16A ' setup r0/r1 (2)
  word I16A_MOV + (r1)<<D16A + (r18)<<S16A ' setup r0/r1 (2)
- word I16B_DIVU ' DIVU
+ word I16B_DIVS ' DIVI
  word I16A_MOV + (r20)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
- word I16A_MOV + (r2)<<D16A + (r22)<<S16A ' ADDU
- word I16A_ADD + (r2)<<D16A + (r20)<<S16A ' ADDU (3)
+ word I16A_MOV + (r2)<<D16A + (r22)<<S16A ' ADDI/P
+ word I16A_ADDS + (r2)<<D16A + (r20)<<S16A ' ADDI/P (3)
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
  alignl ' align long
  long I32_CALA + (@C__waitcnt)<<S32 ' CALL addrg
@@ -87,11 +87,11 @@ C__coginit_S_pin ' <symbol:_coginit_Spin>
  word I16B_POPM + 4<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
+' Catalina Import _clockfreq
+
 ' Catalina Import _cnt
 
 ' Catalina Import _waitcnt
 
 ' Catalina Import _coginit
-
-' Catalina Import _clockfreq
 ' end

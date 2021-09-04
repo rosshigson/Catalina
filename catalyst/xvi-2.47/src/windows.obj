@@ -11,8 +11,8 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_sblg_5fa8f427_sccsid_L000001 ' <symbol:sccsid>
- long @C_sblg1_5fa8f427_2_L000003
+C_sjco_6132d4cb_sccsid_L000001 ' <symbol:sccsid>
+ long @C_sjco1_6132d4cb_2_L000003
 
 ' Catalina Export xvInitWindow
 
@@ -31,7 +31,7 @@ C_xvI_nitW_indow ' <symbol:xvInitWindow>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_sblg4_5fa8f427_add_window_L000020
+ long @C_sjco4_6132d4cb_add_window_L000020
  add SP, #4 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  mov r22, r21 ' CVI, CVU or LOAD
@@ -51,7 +51,7 @@ C_xvI_nitW_indow_23
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_sblg2_5fa8f427_alloc_window_L000018 ' CALL addrg
+ long @C_sjco2_6132d4cb_alloc_window_L000018 ' CALL addrg
  cmps r0,  #0 wz
  if_nz jmp #\C_xvI_nitW_indow_25 ' NEI4
  mov r2, r21 ' CVI, CVU or LOAD
@@ -70,7 +70,7 @@ C_xvI_nitW_indow_25
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_sblg3_5fa8f427_dealloc_window_L000019 ' CALL addrg
+ long @C_sjco3_6132d4cb_dealloc_window_L000019 ' CALL addrg
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
@@ -159,7 +159,7 @@ C_xvO_penW_indow_34
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_sblg4_5fa8f427_add_window_L000020
+ long @C_sjco4_6132d4cb_add_window_L000020
  add SP, #4 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
  mov r22, r19 ' CVI, CVU or LOAD
@@ -189,7 +189,7 @@ C_xvO_penW_indow_38
  mov r2, r19 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_sblg2_5fa8f427_alloc_window_L000018 ' CALL addrg
+ long @C_sjco2_6132d4cb_alloc_window_L000018 ' CALL addrg
  cmps r0,  #0 wz
  if_nz jmp #\C_xvO_penW_indow_42 ' NEI4
  mov r2, ##@C_xvO_penW_indow_44_L000045 ' reg ARG ADDRG
@@ -364,11 +364,11 @@ C_xvC_loseW_indow_54
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_sblg3_5fa8f427_dealloc_window_L000019 ' CALL addrg
+ long @C_sjco3_6132d4cb_dealloc_window_L000019 ' CALL addrg
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_sblg5_5fa8f427_delete_window_L000021 ' CALL addrg
+ long @C_sjco5_6132d4cb_delete_window_L000021 ' CALL addrg
  mov r0, r17 ' CVI, CVU or LOAD
 C_xvC_loseW_indow_48
  PRIMITIVE(#POPM) ' restore registers
@@ -1262,7 +1262,7 @@ C_xvU_pdateA_llB_ufferW_indows_179
 
 
  alignl ' align long
-C_sblg2_5fa8f427_alloc_window_L000018 ' <symbol:alloc_window>
+C_sjco2_6132d4cb_alloc_window_L000018 ' <symbol:alloc_window>
  PRIMITIVE(#PSHM)
  long $f00000 ' save registers
  mov r23, r2 ' reg var <- reg arg
@@ -1283,10 +1283,10 @@ C_sblg2_5fa8f427_alloc_window_L000018 ' <symbol:alloc_window>
  wrlong r0, r23 ' ASGNP4 reg reg
  rdlong r22, r23 ' reg <- INDIRP4 reg
  cmp r22,  #0 wz
- if_nz jmp #\C_sblg2_5fa8f427_alloc_window_L000018_182  ' NEU4
+ if_nz jmp #\C_sjco2_6132d4cb_alloc_window_L000018_182  ' NEU4
  mov r0, #0 ' reg <- coni
- jmp #\@C_sblg2_5fa8f427_alloc_window_L000018_181 ' JUMPV addrg
-C_sblg2_5fa8f427_alloc_window_L000018_182
+ jmp #\@C_sjco2_6132d4cb_alloc_window_L000018_181 ' JUMPV addrg
+C_sjco2_6132d4cb_alloc_window_L000018_182
  mov r2, r21 ' CVI, CVU or LOAD
  mov r22, r21
  adds r22, #84 ' ADDP4 coni
@@ -1316,10 +1316,10 @@ C_sblg2_5fa8f427_alloc_window_L000018_182
  adds r22, #92 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg
  cmp r22,  #0 wz
- if_nz jmp #\C_sblg2_5fa8f427_alloc_window_L000018_184  ' NEU4
+ if_nz jmp #\C_sjco2_6132d4cb_alloc_window_L000018_184  ' NEU4
  mov r0, #0 ' reg <- coni
- jmp #\@C_sblg2_5fa8f427_alloc_window_L000018_181 ' JUMPV addrg
-C_sblg2_5fa8f427_alloc_window_L000018_184
+ jmp #\@C_sjco2_6132d4cb_alloc_window_L000018_181 ' JUMPV addrg
+C_sjco2_6132d4cb_alloc_window_L000018_184
  mov r22, r23
  adds r22, #92 ' ADDP4 coni
  rdlong r2, r22 ' reg <- INDIRP4 reg
@@ -1327,13 +1327,13 @@ C_sblg2_5fa8f427_alloc_window_L000018_184
  PRIMITIVE(#CALA)
  long @C_xvI_nitialiseC_md ' CALL addrg
  mov r0, #1 ' reg <- coni
-C_sblg2_5fa8f427_alloc_window_L000018_181
+C_sjco2_6132d4cb_alloc_window_L000018_181
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
 
  alignl ' align long
-C_sblg3_5fa8f427_dealloc_window_L000019 ' <symbol:dealloc_window>
+C_sjco3_6132d4cb_dealloc_window_L000019 ' <symbol:dealloc_window>
  PRIMITIVE(#PSHM)
  long $c00000 ' save registers
  mov r23, r2 ' reg var <- reg arg
@@ -1352,13 +1352,13 @@ C_sblg3_5fa8f427_dealloc_window_L000019 ' <symbol:dealloc_window>
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_flexdelete ' CALL addrg
-' C_sblg3_5fa8f427_dealloc_window_L000019_186 ' (symbol refcount = 0)
+' C_sjco3_6132d4cb_dealloc_window_L000019_186 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
 
  alignl ' align long
-C_sblg4_5fa8f427_add_window_L000020 ' <symbol:add_window>
+C_sjco4_6132d4cb_add_window_L000020 ' <symbol:add_window>
  PRIMITIVE(#PSHM)
  long $e80000 ' save registers
  mov r23, r3 ' reg var <- reg arg
@@ -1370,24 +1370,24 @@ C_sblg4_5fa8f427_add_window_L000020 ' <symbol:add_window>
  mov r19, r0 ' CVI, CVU or LOAD
  mov r22, r19 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sblg4_5fa8f427_add_window_L000020_188  ' NEU4
+ if_nz jmp #\C_sjco4_6132d4cb_add_window_L000020_188  ' NEU4
  mov r0, ##0 ' RET con
- jmp #\@C_sblg4_5fa8f427_add_window_L000020_187 ' JUMPV addrg
-C_sblg4_5fa8f427_add_window_L000020_188
+ jmp #\@C_sjco4_6132d4cb_add_window_L000020_187 ' JUMPV addrg
+C_sjco4_6132d4cb_add_window_L000020_188
  mov r22, r23 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_z jmp #\C_sblg4_5fa8f427_add_window_L000020_190 ' EQU4
+ if_z jmp #\C_sjco4_6132d4cb_add_window_L000020_190 ' EQU4
  mov r22, r23
  adds r22, #80 ' ADDP4 coni
  wrlong r19, r22 ' ASGNP4 reg reg
-C_sblg4_5fa8f427_add_window_L000020_190
+C_sjco4_6132d4cb_add_window_L000020_190
  mov r22, r21 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_z jmp #\C_sblg4_5fa8f427_add_window_L000020_192 ' EQU4
+ if_z jmp #\C_sjco4_6132d4cb_add_window_L000020_192 ' EQU4
  mov r22, r21
  adds r22, #76 ' ADDP4 coni
  wrlong r19, r22 ' ASGNP4 reg reg
-C_sblg4_5fa8f427_add_window_L000020_192
+C_sjco4_6132d4cb_add_window_L000020_192
  mov r22, r19
  adds r22, #76 ' ADDP4 coni
  wrlong r23, r22 ' ASGNP4 reg reg
@@ -1395,26 +1395,26 @@ C_sblg4_5fa8f427_add_window_L000020_192
  adds r22, #80 ' ADDP4 coni
  wrlong r21, r22 ' ASGNP4 reg reg
  mov r0, r19 ' CVI, CVU or LOAD
-C_sblg4_5fa8f427_add_window_L000020_187
+C_sjco4_6132d4cb_add_window_L000020_187
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
 
  alignl ' align long
-C_sblg5_5fa8f427_delete_window_L000021 ' <symbol:delete_window>
+C_sjco5_6132d4cb_delete_window_L000021 ' <symbol:delete_window>
  PRIMITIVE(#PSHM)
  long $d00000 ' save registers
  mov r23, r2 ' reg var <- reg arg
  mov r22, r23 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sblg5_5fa8f427_delete_window_L000021_195  ' NEU4
- jmp #\@C_sblg5_5fa8f427_delete_window_L000021_194 ' JUMPV addrg
-C_sblg5_5fa8f427_delete_window_L000021_195
+ if_nz jmp #\C_sjco5_6132d4cb_delete_window_L000021_195  ' NEU4
+ jmp #\@C_sjco5_6132d4cb_delete_window_L000021_194 ' JUMPV addrg
+C_sjco5_6132d4cb_delete_window_L000021_195
  mov r22, r23
  adds r22, #80 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg
  cmp r22,  #0 wz
- if_z jmp #\C_sblg5_5fa8f427_delete_window_L000021_197 ' EQU4
+ if_z jmp #\C_sjco5_6132d4cb_delete_window_L000021_197 ' EQU4
  mov r22, r23
  adds r22, #80 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -1423,12 +1423,12 @@ C_sblg5_5fa8f427_delete_window_L000021_195
  adds r20, #76 ' ADDP4 coni
  rdlong r20, r20 ' reg <- INDIRP4 reg
  wrlong r20, r22 ' ASGNP4 reg reg
-C_sblg5_5fa8f427_delete_window_L000021_197
+C_sjco5_6132d4cb_delete_window_L000021_197
  mov r22, r23
  adds r22, #76 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg
  cmp r22,  #0 wz
- if_z jmp #\C_sblg5_5fa8f427_delete_window_L000021_199 ' EQU4
+ if_z jmp #\C_sjco5_6132d4cb_delete_window_L000021_199 ' EQU4
  mov r22, r23
  adds r22, #76 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -1437,7 +1437,7 @@ C_sblg5_5fa8f427_delete_window_L000021_197
  adds r20, #80 ' ADDP4 coni
  rdlong r20, r20 ' reg <- INDIRP4 reg
  wrlong r20, r22 ' ASGNP4 reg reg
-C_sblg5_5fa8f427_delete_window_L000021_199
+C_sjco5_6132d4cb_delete_window_L000021_199
  mov r22, r23
  adds r22, #4 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -1449,7 +1449,7 @@ C_sblg5_5fa8f427_delete_window_L000021_199
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_free ' CALL addrg
-C_sblg5_5fa8f427_delete_window_L000021_194
+C_sjco5_6132d4cb_delete_window_L000021_194
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
@@ -1749,7 +1749,7 @@ C_xvO_penW_indow_36_L000037 ' <symbol:36>
  byte 0
 
  alignl ' align long
-C_sblg1_5fa8f427_2_L000003 ' <symbol:2>
+C_sjco1_6132d4cb_2_L000003 ' <symbol:2>
  byte 64
  byte 40
  byte 35

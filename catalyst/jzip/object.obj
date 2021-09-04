@@ -137,7 +137,7 @@ C_z_insert_obj_13
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_scds1_5fa8f449_write_object_L000004
+ long @C_s68o1_6132d4ec_write_object_L000004
  add SP, #8 ' CALL addrg
  mov r2, #2 ' reg ARG coni
  mov r3, r19 ' CVUI
@@ -145,7 +145,7 @@ C_z_insert_obj_13
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_scds_5fa8f449_read_object_L000003
+ long @C_s68o_6132d4ec_read_object_L000003
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov RI, FP
@@ -159,7 +159,7 @@ C_z_insert_obj_13
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_scds1_5fa8f449_write_object_L000004
+ long @C_s68o1_6132d4ec_write_object_L000004
  add SP, #8 ' CALL addrg
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
@@ -176,7 +176,7 @@ C_z_insert_obj_13
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_scds1_5fa8f449_write_object_L000004
+ long @C_s68o1_6132d4ec_write_object_L000004
  add SP, #8 ' CALL addrg
 C_z_insert_obj_17
 ' C_z_insert_obj_8 ' (symbol refcount = 0)
@@ -219,7 +219,7 @@ C_z_remove_obj_20
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_scds_5fa8f449_read_object_L000003
+ long @C_s68o_6132d4ec_read_object_L000003
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov RI, FP
@@ -247,7 +247,7 @@ C_z_remove_obj_24
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_scds_5fa8f449_read_object_L000003
+ long @C_s68o_6132d4ec_read_object_L000003
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r21, r22 ' CVI, CVU or LOAD
@@ -263,7 +263,7 @@ C_z_remove_obj_24
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_scds_5fa8f449_read_object_L000003
+ long @C_s68o_6132d4ec_read_object_L000003
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r2, r22 ' CVUI
@@ -275,7 +275,7 @@ C_z_remove_obj_24
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_scds1_5fa8f449_write_object_L000004
+ long @C_s68o1_6132d4ec_write_object_L000004
  add SP, #8 ' CALL addrg
  jmp #\@C_z_remove_obj_27 ' JUMPV addrg
 C_z_remove_obj_26
@@ -293,7 +293,7 @@ C_z_remove_obj_28
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_scds_5fa8f449_read_object_L000003
+ long @C_s68o_6132d4ec_read_object_L000003
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r21, r22 ' CVI, CVU or LOAD
@@ -310,7 +310,7 @@ C_z_remove_obj_28
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_scds_5fa8f449_read_object_L000003
+ long @C_s68o_6132d4ec_read_object_L000003
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r2, r22 ' CVUI
@@ -321,7 +321,7 @@ C_z_remove_obj_28
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_scds1_5fa8f449_write_object_L000004
+ long @C_s68o1_6132d4ec_write_object_L000004
  add SP, #8 ' CALL addrg
 C_z_remove_obj_27
  mov r22, #0 ' reg <- coni
@@ -332,7 +332,7 @@ C_z_remove_obj_27
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_scds1_5fa8f449_write_object_L000004
+ long @C_s68o1_6132d4ec_write_object_L000004
  add SP, #8 ' CALL addrg
  mov r2, #0 ' reg ARG coni
  mov r3, #1 ' reg ARG coni
@@ -341,7 +341,7 @@ C_z_remove_obj_27
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_scds1_5fa8f449_write_object_L000004
+ long @C_s68o1_6132d4ec_write_object_L000004
  add SP, #8 ' CALL addrg
 C_z_remove_obj_19
  PRIMITIVE(#POPM) ' restore registers
@@ -385,7 +385,7 @@ C_z_get_parent_32
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_scds_5fa8f449_read_object_L000003
+ long @C_s68o_6132d4ec_read_object_L000003
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r2, r22 ' CVUI
@@ -438,7 +438,7 @@ C_z_get_child_37
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_scds_5fa8f449_read_object_L000003
+ long @C_s68o_6132d4ec_read_object_L000003
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r21, r22 ' CVI, CVU or LOAD
@@ -505,7 +505,7 @@ C_z_get_sibling_45
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_scds_5fa8f449_read_object_L000003
+ long @C_s68o_6132d4ec_read_object_L000003
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r21, r22 ' CVI, CVU or LOAD
@@ -578,7 +578,7 @@ C_z_jin_53
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_scds_5fa8f449_read_object_L000003
+ long @C_s68o_6132d4ec_read_object_L000003
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  and r22, cviu_m2 ' zero extend
@@ -792,7 +792,7 @@ C_z_clear_attr_77
 
 
  alignl ' align long
-C_scds_5fa8f449_read_object_L000003 ' <symbol:read_object>
+C_s68o_6132d4ec_read_object_L000003 ' <symbol:read_object>
  PRIMITIVE(#NEWF)
  sub SP, #4
  PRIMITIVE(#PSHM)
@@ -800,9 +800,9 @@ C_scds_5fa8f449_read_object_L000003 ' <symbol:read_object>
  mov r22, ##@C_h_type ' reg <- addrg
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #4 wcz
- if_ae jmp #\C_scds_5fa8f449_read_object_L000003_85 ' GEI4
+ if_ae jmp #\C_s68o_6132d4ec_read_object_L000003_85 ' GEI4
  cmps r2,  #0 wz
- if_nz jmp #\C_scds_5fa8f449_read_object_L000003_87 ' NEI4
+ if_nz jmp #\C_s68o_6132d4ec_read_object_L000003_87 ' NEI4
  mov r22, r3 ' CVUI
  and r22, cviu_m2 ' zero extend
  adds r22, #4 ' ADDI4 coni
@@ -813,10 +813,10 @@ C_scds_5fa8f449_read_object_L000003 ' <symbol:read_object>
  mov RI, FP
  sub RI, #-(-4)
  wrword r22, RI ' ASGNU2 addrli reg
- jmp #\@C_scds_5fa8f449_read_object_L000003_86 ' JUMPV addrg
-C_scds_5fa8f449_read_object_L000003_87
+ jmp #\@C_s68o_6132d4ec_read_object_L000003_86 ' JUMPV addrg
+C_s68o_6132d4ec_read_object_L000003_87
  cmps r2,  #1 wz
- if_nz jmp #\C_scds_5fa8f449_read_object_L000003_89 ' NEI4
+ if_nz jmp #\C_s68o_6132d4ec_read_object_L000003_89 ' NEI4
  mov r22, r3 ' CVUI
  and r22, cviu_m2 ' zero extend
  adds r22, #5 ' ADDI4 coni
@@ -827,8 +827,8 @@ C_scds_5fa8f449_read_object_L000003_87
  mov RI, FP
  sub RI, #-(-4)
  wrword r22, RI ' ASGNU2 addrli reg
- jmp #\@C_scds_5fa8f449_read_object_L000003_86 ' JUMPV addrg
-C_scds_5fa8f449_read_object_L000003_89
+ jmp #\@C_s68o_6132d4ec_read_object_L000003_86 ' JUMPV addrg
+C_s68o_6132d4ec_read_object_L000003_89
  mov r22, r3 ' CVUI
  and r22, cviu_m2 ' zero extend
  adds r22, #6 ' ADDI4 coni
@@ -839,10 +839,10 @@ C_scds_5fa8f449_read_object_L000003_89
  mov RI, FP
  sub RI, #-(-4)
  wrword r22, RI ' ASGNU2 addrli reg
- jmp #\@C_scds_5fa8f449_read_object_L000003_86 ' JUMPV addrg
-C_scds_5fa8f449_read_object_L000003_85
+ jmp #\@C_s68o_6132d4ec_read_object_L000003_86 ' JUMPV addrg
+C_s68o_6132d4ec_read_object_L000003_85
  cmps r2,  #0 wz
- if_nz jmp #\C_scds_5fa8f449_read_object_L000003_91 ' NEI4
+ if_nz jmp #\C_s68o_6132d4ec_read_object_L000003_91 ' NEI4
  mov r22, r3 ' CVUI
  and r22, cviu_m2 ' zero extend
  adds r22, #6 ' ADDI4 coni
@@ -861,10 +861,10 @@ C_scds_5fa8f449_read_object_L000003_85
  mov RI, FP
  sub RI, #-(-4)
  wrword r22, RI ' ASGNU2 addrli reg
- jmp #\@C_scds_5fa8f449_read_object_L000003_92 ' JUMPV addrg
-C_scds_5fa8f449_read_object_L000003_91
+ jmp #\@C_s68o_6132d4ec_read_object_L000003_92 ' JUMPV addrg
+C_s68o_6132d4ec_read_object_L000003_91
  cmps r2,  #1 wz
- if_nz jmp #\C_scds_5fa8f449_read_object_L000003_93 ' NEI4
+ if_nz jmp #\C_s68o_6132d4ec_read_object_L000003_93 ' NEI4
  mov r22, r3 ' CVUI
  and r22, cviu_m2 ' zero extend
  adds r22, #8 ' ADDI4 coni
@@ -883,8 +883,8 @@ C_scds_5fa8f449_read_object_L000003_91
  mov RI, FP
  sub RI, #-(-4)
  wrword r22, RI ' ASGNU2 addrli reg
- jmp #\@C_scds_5fa8f449_read_object_L000003_94 ' JUMPV addrg
-C_scds_5fa8f449_read_object_L000003_93
+ jmp #\@C_s68o_6132d4ec_read_object_L000003_94 ' JUMPV addrg
+C_s68o_6132d4ec_read_object_L000003_93
  mov r22, r3 ' CVUI
  and r22, cviu_m2 ' zero extend
  adds r22, #10 ' ADDI4 coni
@@ -903,28 +903,28 @@ C_scds_5fa8f449_read_object_L000003_93
  mov RI, FP
  sub RI, #-(-4)
  wrword r22, RI ' ASGNU2 addrli reg
-C_scds_5fa8f449_read_object_L000003_94
-C_scds_5fa8f449_read_object_L000003_92
-C_scds_5fa8f449_read_object_L000003_86
+C_s68o_6132d4ec_read_object_L000003_94
+C_s68o_6132d4ec_read_object_L000003_92
+C_s68o_6132d4ec_read_object_L000003_86
  mov r22, FP
  sub r22, #-(-4) ' reg <- addrli
  rdword r0, r22 ' reg <- CVUI4 INDIRU2 reg
-' C_scds_5fa8f449_read_object_L000003_84 ' (symbol refcount = 0)
+' C_s68o_6132d4ec_read_object_L000003_84 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  add SP, #4 ' framesize
  PRIMITIVE(#RETF)
 
 
  alignl ' align long
-C_scds1_5fa8f449_write_object_L000004 ' <symbol:write_object>
+C_s68o1_6132d4ec_write_object_L000004 ' <symbol:write_object>
  PRIMITIVE(#PSHM)
  long $540000 ' save registers
  mov r22, ##@C_h_type ' reg <- addrg
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #4 wcz
- if_ae jmp #\C_scds1_5fa8f449_write_object_L000004_96 ' GEI4
+ if_ae jmp #\C_s68o1_6132d4ec_write_object_L000004_96 ' GEI4
  cmps r3,  #0 wz
- if_nz jmp #\C_scds1_5fa8f449_write_object_L000004_98 ' NEI4
+ if_nz jmp #\C_s68o1_6132d4ec_write_object_L000004_98 ' NEI4
  mov r22, r4 ' CVUI
  and r22, cviu_m2 ' zero extend
  adds r22, #4 ' ADDI4 coni
@@ -934,10 +934,10 @@ C_scds1_5fa8f449_write_object_L000004 ' <symbol:write_object>
  mov r20, r2 ' CVUI
  and r20, cviu_m2 ' zero extend
  wrbyte r20, r22 ' ASGNU1 reg reg
- jmp #\@C_scds1_5fa8f449_write_object_L000004_97 ' JUMPV addrg
-C_scds1_5fa8f449_write_object_L000004_98
+ jmp #\@C_s68o1_6132d4ec_write_object_L000004_97 ' JUMPV addrg
+C_s68o1_6132d4ec_write_object_L000004_98
  cmps r3,  #1 wz
- if_nz jmp #\C_scds1_5fa8f449_write_object_L000004_100 ' NEI4
+ if_nz jmp #\C_s68o1_6132d4ec_write_object_L000004_100 ' NEI4
  mov r22, r4 ' CVUI
  and r22, cviu_m2 ' zero extend
  adds r22, #5 ' ADDI4 coni
@@ -947,8 +947,8 @@ C_scds1_5fa8f449_write_object_L000004_98
  mov r20, r2 ' CVUI
  and r20, cviu_m2 ' zero extend
  wrbyte r20, r22 ' ASGNU1 reg reg
- jmp #\@C_scds1_5fa8f449_write_object_L000004_97 ' JUMPV addrg
-C_scds1_5fa8f449_write_object_L000004_100
+ jmp #\@C_s68o1_6132d4ec_write_object_L000004_97 ' JUMPV addrg
+C_s68o1_6132d4ec_write_object_L000004_100
  mov r22, r4 ' CVUI
  and r22, cviu_m2 ' zero extend
  adds r22, #6 ' ADDI4 coni
@@ -958,10 +958,10 @@ C_scds1_5fa8f449_write_object_L000004_100
  mov r20, r2 ' CVUI
  and r20, cviu_m2 ' zero extend
  wrbyte r20, r22 ' ASGNU1 reg reg
- jmp #\@C_scds1_5fa8f449_write_object_L000004_97 ' JUMPV addrg
-C_scds1_5fa8f449_write_object_L000004_96
+ jmp #\@C_s68o1_6132d4ec_write_object_L000004_97 ' JUMPV addrg
+C_s68o1_6132d4ec_write_object_L000004_96
  cmps r3,  #0 wz
- if_nz jmp #\C_scds1_5fa8f449_write_object_L000004_102 ' NEI4
+ if_nz jmp #\C_s68o1_6132d4ec_write_object_L000004_102 ' NEI4
  mov r22, r4 ' CVUI
  and r22, cviu_m2 ' zero extend
  adds r22, #6 ' ADDI4 coni
@@ -983,10 +983,10 @@ C_scds1_5fa8f449_write_object_L000004_96
  and r20, cviu_m2 ' zero extend
  and r20, #255 ' BANDI4 coni
  wrbyte r20, r22 ' ASGNU1 reg reg
- jmp #\@C_scds1_5fa8f449_write_object_L000004_103 ' JUMPV addrg
-C_scds1_5fa8f449_write_object_L000004_102
+ jmp #\@C_s68o1_6132d4ec_write_object_L000004_103 ' JUMPV addrg
+C_s68o1_6132d4ec_write_object_L000004_102
  cmps r3,  #1 wz
- if_nz jmp #\C_scds1_5fa8f449_write_object_L000004_104 ' NEI4
+ if_nz jmp #\C_s68o1_6132d4ec_write_object_L000004_104 ' NEI4
  mov r22, #8 ' reg <- coni
  mov r20, r4 ' CVUI
  and r20, cviu_m2 ' zero extend
@@ -1011,8 +1011,8 @@ C_scds1_5fa8f449_write_object_L000004_102
  and r20, cviu_m2 ' zero extend
  and r20, #255 ' BANDI4 coni
  wrbyte r20, r22 ' ASGNU1 reg reg
- jmp #\@C_scds1_5fa8f449_write_object_L000004_105 ' JUMPV addrg
-C_scds1_5fa8f449_write_object_L000004_104
+ jmp #\@C_s68o1_6132d4ec_write_object_L000004_105 ' JUMPV addrg
+C_s68o1_6132d4ec_write_object_L000004_104
  mov r22, r4 ' CVUI
  and r22, cviu_m2 ' zero extend
  adds r22, #10 ' ADDI4 coni
@@ -1034,10 +1034,10 @@ C_scds1_5fa8f449_write_object_L000004_104
  and r20, cviu_m2 ' zero extend
  and r20, #255 ' BANDI4 coni
  wrbyte r20, r22 ' ASGNU1 reg reg
-C_scds1_5fa8f449_write_object_L000004_105
-C_scds1_5fa8f449_write_object_L000004_103
-C_scds1_5fa8f449_write_object_L000004_97
-' C_scds1_5fa8f449_write_object_L000004_95 ' (symbol refcount = 0)
+C_s68o1_6132d4ec_write_object_L000004_105
+C_s68o1_6132d4ec_write_object_L000004_103
+C_s68o1_6132d4ec_write_object_L000004_97
+' C_s68o1_6132d4ec_write_object_L000004_95 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 

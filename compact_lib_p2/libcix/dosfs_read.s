@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_sha4_5f5d7d10_wait100ms_L000003 ' <symbol:wait100ms>
+C_sb2o_6132d1b7_wait100ms_L000003 ' <symbol:wait100ms>
  alignl ' align long
  long I32_PSHM + $540000<<S32 ' save registers
  alignl ' align long
@@ -19,14 +19,14 @@ C_sha4_5f5d7d10_wait100ms_L000003 ' <symbol:wait100ms>
  word I16A_MOVI + (r18)<<D16A + (10)<<S16A ' reg <- coni
  word I16A_MOV + (r0)<<D16A + (r20)<<S16A ' setup r0/r1 (2)
  word I16A_MOV + (r1)<<D16A + (r18)<<S16A ' setup r0/r1 (2)
- word I16B_DIVU ' DIVU
+ word I16B_DIVS ' DIVI
  word I16A_MOV + (r20)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
- word I16A_MOV + (r2)<<D16A + (r22)<<S16A ' ADDU
- word I16A_ADD + (r2)<<D16A + (r20)<<S16A ' ADDU (3)
+ word I16A_MOV + (r2)<<D16A + (r22)<<S16A ' ADDI/P
+ word I16A_ADDS + (r2)<<D16A + (r20)<<S16A ' ADDI/P (3)
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
  alignl ' align long
  long I32_CALA + (@C__waitcnt)<<S32 ' CALL addrg
-' C_sha4_5f5d7d10_wait100ms_L000003_4 ' (symbol refcount = 0)
+' C_sb2o_6132d1b7_wait100ms_L000003_4 ' (symbol refcount = 0)
  word I16B_POPM + $80<<S16B ' restore registers, do not pop frame, do return
  alignl ' align long
 
@@ -58,7 +58,7 @@ C_D_F_S__R_eadS_ector_6
  alignl ' align long
 C_D_F_S__R_eadS_ector_10
  alignl ' align long
- long I32_CALA + (@C_sha4_5f5d7d10_wait100ms_L000003)<<S32 ' CALL addrg
+ long I32_CALA + (@C_sb2o_6132d1b7_wait100ms_L000003)<<S32 ' CALL addrg
 ' C_D_F_S__R_eadS_ector_7 ' (symbol refcount = 0)
  word I16A_ADDSI + (r15)<<D16A + (1)<<S16A ' ADDI4 reg coni
  word I16A_CMPSI + (r15)<<D16A + (10)<<S16A
@@ -71,11 +71,11 @@ C_D_F_S__R_eadS_ector_8
  word I16B_POPM + $80<<S16B ' restore registers, do not pop frame, do return
  alignl ' align long
 
-' Catalina Import sd_sectread
+' Catalina Import _clockfreq
 
 ' Catalina Import _cnt
 
 ' Catalina Import _waitcnt
 
-' Catalina Import _clockfreq
+' Catalina Import sd_sectread
 ' end

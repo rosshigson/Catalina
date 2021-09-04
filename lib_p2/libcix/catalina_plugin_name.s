@@ -15,13 +15,13 @@ C__plugin_name ' <symbol:_plugin_name>
  cmps r2,  #0 wcz
  PRIMITIVE(#BR_B)
  long @C__plugin_name_3 ' LTI4
- cmps r2,  #24 wcz
+ cmps r2,  #25 wcz
  PRIMITIVE(#BR_A)
- long @C__plugin_name_85 ' GTI4
+ long @C__plugin_name_88 ' GTI4
  mov r22, r2
  shl r22, #2 ' LSHI4 coni
  PRIMITIVE(#LODL)
- long @C__plugin_name_86_L000088
+ long @C__plugin_name_89_L000091
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong RI, r22
@@ -32,7 +32,7 @@ C__plugin_name ' <symbol:_plugin_name>
 DAT ' const data segment
 
  alignl ' align long
-C__plugin_name_86_L000088 ' <symbol:86>
+C__plugin_name_89_L000091 ' <symbol:89>
  long @C__plugin_name_5
  long @C__plugin_name_8
  long @C__plugin_name_11
@@ -58,14 +58,15 @@ C__plugin_name_86_L000088 ' <symbol:86>
  long @C__plugin_name_71
  long @C__plugin_name_74
  long @C__plugin_name_77
+ long @C__plugin_name_80
 
 ' Catalina Code
 
 DAT ' code segment
-C__plugin_name_85
+C__plugin_name_88
  cmps r2,  #255 wz
  PRIMITIVE(#BR_Z)
- long @C__plugin_name_80 ' EQI4
+ long @C__plugin_name_83 ' EQI4
  PRIMITIVE(#JMPA)
  long @C__plugin_name_3 ' JUMPV addrg
 C__plugin_name_5
@@ -224,9 +225,15 @@ C__plugin_name_80
  mov r0, RI ' reg <- addrg
  PRIMITIVE(#JMPA)
  long @C__plugin_name_2 ' JUMPV addrg
+C__plugin_name_83
+ PRIMITIVE(#LODL)
+ long @C__plugin_name_84_L000085
+ mov r0, RI ' reg <- addrg
+ PRIMITIVE(#JMPA)
+ long @C__plugin_name_2 ' JUMPV addrg
 C__plugin_name_3
  PRIMITIVE(#LODL)
- long @C__plugin_name_83_L000084
+ long @C__plugin_name_86_L000087
  mov r0, RI ' reg <- addrg
 C__plugin_name_2
  PRIMITIVE(#POPM) ' restore registers
@@ -238,7 +245,7 @@ C__plugin_name_2
 DAT ' const data segment
 
  alignl ' align long
-C__plugin_name_83_L000084 ' <symbol:83>
+C__plugin_name_86_L000087 ' <symbol:86>
  byte 85
  byte 110
  byte 107
@@ -249,11 +256,30 @@ C__plugin_name_83_L000084 ' <symbol:83>
  byte 0
 
  alignl ' align long
-C__plugin_name_81_L000082 ' <symbol:81>
+C__plugin_name_84_L000085 ' <symbol:84>
  byte 78
  byte 111
  byte 110
  byte 101
+ byte 0
+
+ alignl ' align long
+C__plugin_name_81_L000082 ' <symbol:81>
+ byte 56
+ byte 32
+ byte 80
+ byte 111
+ byte 114
+ byte 116
+ byte 32
+ byte 83
+ byte 101
+ byte 114
+ byte 105
+ byte 97
+ byte 108
+ byte 32
+ byte 65
  byte 0
 
  alignl ' align long

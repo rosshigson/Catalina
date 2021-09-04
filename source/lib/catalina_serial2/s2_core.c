@@ -151,7 +151,7 @@ static int s2_txcount(port) {
 // returns       -1 if no byte or bad port, otherwise byte received
 //
 int s2_rxcheck(unsigned port) {
-   int rxbyte;
+   int rxbyte = 0;
 
    if (mailbox == 0) {
       initialize();
@@ -161,9 +161,9 @@ int s2_rxcheck(unsigned port) {
    }
 
    ACQUIRE(lock);
-   rxbyte = s2_read(0, CMD_CHECK, port);
+   rxbyte = s2_read(&rxbyte, CMD_CHECK, port);
    RELEASE(lock);
-
+   
    return rxbyte;
 }
 
@@ -171,6 +171,8 @@ int s2_rxcheck(unsigned port) {
 // s2_rxflush - wait till buffer empty
 //
 int s2_rxflush(unsigned port) {
+   int rxbyte = 0;
+
    if (mailbox == 0) {
       initialize();
    }
@@ -179,7 +181,7 @@ int s2_rxflush(unsigned port) {
    }
 
    ACQUIRE(lock);
-   while (s2_read(0, CMD_CHECK, port) >= 0) { };
+   while (s2_read(&rxbyte, CMD_CHECK, port) >= 0) { };
    RELEASE(lock);
 
    return 0;    
@@ -191,7 +193,7 @@ int s2_rxflush(unsigned port) {
 // returns    recived byte
 //
 int s2_rx(unsigned port) {
-   int rxbyte;
+   int rxbyte = 0;
 
    if (mailbox == 0) {
       initialize();
@@ -201,7 +203,7 @@ int s2_rx(unsigned port) {
    }
 
    ACQUIRE(lock)
-   rxbyte = s2_read(&rxbyte, 1, port);
+   s2_read(&rxbyte, 1, port);
    RELEASE(lock);
 
    return rxbyte;

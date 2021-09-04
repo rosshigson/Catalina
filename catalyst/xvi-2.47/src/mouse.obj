@@ -11,15 +11,15 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_sc3k_5fa8f426_sccsid_L000001 ' <symbol:sccsid>
- long @C_sc3k1_5fa8f426_2_L000003
+C_sirk_6132d4ca_sccsid_L000001 ' <symbol:sccsid>
+ long @C_sirk1_6132d4ca_2_L000003
 
 ' Catalina Code
 
 DAT ' code segment
 
  alignl ' align long
-C_sc3k2_5fa8f426_findline_L000018 ' <symbol:findline>
+C_sirk2_6132d4ca_findline_L000018 ' <symbol:findline>
  PRIMITIVE(#PSHM)
  long $faa800 ' save registers
  mov r23, r4 ' reg var <- reg arg
@@ -36,7 +36,7 @@ C_sc3k2_5fa8f426_findline_L000018 ' <symbol:findline>
  adds r22, #32 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRU4 reg
  mov r13, r22 ' CVI, CVU or LOAD
-C_sc3k2_5fa8f426_findline_L000018_20
+C_sirk2_6132d4ca_findline_L000018_20
  mov r2, r15 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -48,10 +48,10 @@ C_sc3k2_5fa8f426_findline_L000018_20
  mov r11, r17 ' ADDI/P
  adds r11, r22 ' ADDI/P (3)
  cmps r21, r17 wcz
- if_b jmp #\C_sc3k2_5fa8f426_findline_L000018_29 ' LTI4
+ if_b jmp #\C_sirk2_6132d4ca_findline_L000018_29 ' LTI4
  cmps r21, r11 wcz
- if_b jmp #\C_sc3k2_5fa8f426_findline_L000018_30 ' LTI4
-C_sc3k2_5fa8f426_findline_L000018_29
+ if_b jmp #\C_sirk2_6132d4ca_findline_L000018_30 ' LTI4
+C_sirk2_6132d4ca_findline_L000018_29
  mov r22, r15
  adds r22, #4 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -61,26 +61,26 @@ C_sc3k2_5fa8f426_findline_L000018_29
  adds r20, #8 ' ADDP4 coni
  rdlong r20, r20 ' reg <- INDIRP4 reg
  cmp r22, r20 wz
- if_z jmp #\C_sc3k2_5fa8f426_findline_L000018_30 ' EQU4
+ if_z jmp #\C_sirk2_6132d4ca_findline_L000018_30 ' EQU4
  cmps r11, r13 wcz
- if_b jmp #\C_sc3k2_5fa8f426_findline_L000018_26 ' LTI4
-C_sc3k2_5fa8f426_findline_L000018_30
+ if_b jmp #\C_sirk2_6132d4ca_findline_L000018_26 ' LTI4
+C_sirk2_6132d4ca_findline_L000018_30
  wrlong r17, r19 ' ASGNI4 reg reg
  mov r0, r15 ' CVI, CVU or LOAD
- jmp #\@C_sc3k2_5fa8f426_findline_L000018_19 ' JUMPV addrg
-C_sc3k2_5fa8f426_findline_L000018_26
+ jmp #\@C_sirk2_6132d4ca_findline_L000018_19 ' JUMPV addrg
+C_sirk2_6132d4ca_findline_L000018_26
  mov r17, r11 ' CVI, CVU or LOAD
  mov r22, r15
  adds r22, #4 ' ADDP4 coni
  rdlong r15, r22 ' reg <- INDIRP4 reg
- jmp #\@C_sc3k2_5fa8f426_findline_L000018_20 ' JUMPV addrg
-C_sc3k2_5fa8f426_findline_L000018_19
+ jmp #\@C_sirk2_6132d4ca_findline_L000018_20 ' JUMPV addrg
+C_sirk2_6132d4ca_findline_L000018_19
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
 
  alignl ' align long
-C_sc3k3_5fa8f426_setcursor_L000031 ' <symbol:setcursor>
+C_sirk3_6132d4ca_setcursor_L000031 ' <symbol:setcursor>
  PRIMITIVE(#NEWF)
  sub SP, #12
  PRIMITIVE(#PSHM)
@@ -95,7 +95,7 @@ C_sc3k3_5fa8f426_setcursor_L000031 ' <symbol:setcursor>
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_sc3k2_5fa8f426_findline_L000018
+ long @C_sirk2_6132d4ca_findline_L000018
  add SP, #8 ' CALL addrg
  mov RI, FP
  sub RI, #-(-12)
@@ -145,33 +145,33 @@ C_sc3k3_5fa8f426_setcursor_L000031 ' <symbol:setcursor>
  PRIMITIVE(#CALA)
  long @C_xvM_oveT_oC_olumn
  add SP, #4 ' CALL addrg
-' C_sc3k3_5fa8f426_setcursor_L000031_32 ' (symbol refcount = 0)
+' C_sirk3_6132d4ca_setcursor_L000031_32 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  add SP, #12 ' framesize
  PRIMITIVE(#RETF)
 
 
  alignl ' align long
-C_sc3k4_5fa8f426_findwin_L000033 ' <symbol:findwin>
+C_sirk4_6132d4ca_findwin_L000033 ' <symbol:findwin>
  PRIMITIVE(#PSHM)
  long $f00000 ' save registers
  mov r23, r2 ' reg var <- reg arg
  mov r21, ##@C_curwin
  rdlong r21, r21 ' reg <- INDIRP4 addrg
-C_sc3k4_5fa8f426_findwin_L000033_35
+C_sirk4_6132d4ca_findwin_L000033_35
  mov r20, r21
  adds r20, #28 ' ADDP4 coni
  rdlong r20, r20 ' reg <- INDIRU4 reg
  cmp r20, r23 wcz 
- if_a jmp #\C_sc3k4_5fa8f426_findwin_L000033_39 ' GTU4
+ if_a jmp #\C_sirk4_6132d4ca_findwin_L000033_39 ' GTU4
  mov r20, r21
  adds r20, #32 ' ADDP4 coni
  rdlong r20, r20 ' reg <- INDIRU4 reg
  cmp r23, r20 wcz 
- if_a jmp #\C_sc3k4_5fa8f426_findwin_L000033_39 ' GTU4
+ if_a jmp #\C_sirk4_6132d4ca_findwin_L000033_39 ' GTU4
  mov r0, r21 ' CVI, CVU or LOAD
- jmp #\@C_sc3k4_5fa8f426_findwin_L000033_34 ' JUMPV addrg
-C_sc3k4_5fa8f426_findwin_L000033_39
+ jmp #\@C_sirk4_6132d4ca_findwin_L000033_34 ' JUMPV addrg
+C_sirk4_6132d4ca_findwin_L000033_39
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
@@ -181,9 +181,9 @@ C_sc3k4_5fa8f426_findwin_L000033_39
  mov r20, ##@C_curwin
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  cmp r22, r20 wz
- if_nz jmp #\C_sc3k4_5fa8f426_findwin_L000033_35  ' NEU4
+ if_nz jmp #\C_sirk4_6132d4ca_findwin_L000033_35  ' NEU4
  mov r0, ##0 ' RET con
-C_sc3k4_5fa8f426_findwin_L000033_34
+C_sirk4_6132d4ca_findwin_L000033_34
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
@@ -219,7 +219,7 @@ C_mousedrag ' <symbol:mousedrag>
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_sc3k4_5fa8f426_findwin_L000033 ' CALL addrg
+ long @C_sirk4_6132d4ca_findwin_L000033 ' CALL addrg
  mov RI, FP
  sub RI, #-(-4)
  wrlong r0, RI ' ASGNP4 addrli reg
@@ -310,7 +310,7 @@ C_mouseclick_51
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_sc3k4_5fa8f426_findwin_L000033 ' CALL addrg
+ long @C_sirk4_6132d4ca_findwin_L000033 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
  mov r22, r0 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
@@ -349,7 +349,7 @@ C_mouseclick_57
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_sc3k3_5fa8f426_setcursor_L000031
+ long @C_sirk3_6132d4ca_setcursor_L000031
  add SP, #8 ' CALL addrg
  mov r22, r19
  adds r22, #20 ' ADDP4 coni
@@ -432,7 +432,7 @@ C_mousemove_66
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_sc3k4_5fa8f426_findwin_L000033 ' CALL addrg
+ long @C_sirk4_6132d4ca_findwin_L000033 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  mov r22, r0 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
@@ -511,7 +511,7 @@ C_mousemove_65
 DAT ' const data segment
 
  alignl ' align long
-C_sc3k1_5fa8f426_2_L000003 ' <symbol:2>
+C_sirk1_6132d4ca_2_L000003 ' <symbol:2>
  byte 64
  byte 40
  byte 35

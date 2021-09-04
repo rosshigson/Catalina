@@ -15,7 +15,7 @@ DAT ' initialized data segment
  alignl ' align long
 C_L_M_M__dynamic_array ' <symbol:LMM_dynamic_array>
  long $fd900164
- long $fd900d1c
+ long $fd900d68
  long $fd9001cc
  long $fd9001d0
  long $fd9001d8
@@ -574,22 +574,38 @@ C_L_M_M__dynamic_array ' <symbol:LMM_dynamic_array>
  long $fd64002d
  long $f6646601
  long $fd9fffec
+ long $f0646802
+ long $ff0003df
+ long $f10469b0
+ long $fb006a34
+ long $ff007fff
+ long $f5046bff
+ long $f0646c18
+ long $f5406a36
+ long $fc606a34
+ long $c606635
+ long $fac06c35
+ long $fc406c33
+ long $f1046601
+ long $f1046a01
+ long $fb6c69fb
+ long $fd64002d
  long $fd606e28
  long $fcf06636
- long $fd9ff4b0
+ long $fd9ff470
  long $fd606828
  long $fd406635
- long $fd9ff4a4
+ long $fd9ff464
  long $fd70681a
  long $fd60661a
- long $fd9ff498
- long $fb645df6
- long $fb645df8
- long $fd9fffe8
- long $0
- long $0
- long $0
- long $0
+ long $fd9ff458
+ long $fd606828
+ long $fd106635
+ long $fd9ff44c
+ long $fb645df3
+ long $fb645df5
+ long $fb645df7
+ long $fd9fffe4
 
 ' Catalina Export LMM_LUT_LIBRARY_array
 
@@ -659,18 +675,38 @@ C_L_M_M__L_U_T__L_I_B_R_A_R_Y__array ' <symbol:LMM_LUT_LIBRARY_array>
  long $fd64002d
  long $f6646601
  long $fd9fffec
+ long $f0646802
+ long $ff0003df
+ long $f10469b0
+ long $fb006a34
+ long $ff007fff
+ long $f5046bff
+ long $f0646c18
+ long $f5406a36
+ long $fc606a34
+ long $c606635
+ long $fac06c35
+ long $fc406c33
+ long $f1046601
+ long $f1046a01
+ long $fb6c69fb
+ long $fd64002d
  long $fd606e28
  long $fcf06636
- long $fd9ff4b0
+ long $fd9ff470
  long $fd606828
  long $fd406635
- long $fd9ff4a4
+ long $fd9ff464
  long $fd70681a
  long $fd60661a
- long $fd9ff498
- long $fb645df6
- long $fb645df8
- long $fd9fffe8
+ long $fd9ff458
+ long $fd606828
+ long $fd106635
+ long $fd9ff44c
+ long $fb645df3
+ long $fb645df5
+ long $fb645df7
+ long $fd9fffe4
 
 ' Catalina Export _cogstart_LMM_cog
 
@@ -698,7 +734,7 @@ C__cogstart_L_M_M__cog ' <symbol:_cogstart_LMM_cog>
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_WRLONG + (r21)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl ' align long
- long I32_MOVI + (r22)<<D32 +(76)<<S32 ' reg <- conli
+ long I32_MOVI + (r22)<<D32 +(96)<<S32 ' reg <- conli
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  word I16B_LODL + (r22)<<D16B
@@ -734,10 +770,10 @@ C__cogstart_L_M_M__cog ' <symbol:_cogstart_LMM_cog>
  word I16A_MOVI + (r18)<<D16A + (20)<<S16A ' reg <- coni
  word I16A_MOV + (r0)<<D16A + (r20)<<S16A ' setup r0/r1 (2)
  word I16A_MOV + (r1)<<D16A + (r18)<<S16A ' setup r0/r1 (2)
- word I16B_DIVU ' DIVU
+ word I16B_DIVS ' DIVI
  word I16A_MOV + (r20)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
- word I16A_MOV + (r2)<<D16A + (r22)<<S16A ' ADDU
- word I16A_ADD + (r2)<<D16A + (r20)<<S16A ' ADDU (3)
+ word I16A_MOV + (r2)<<D16A + (r22)<<S16A ' ADDI/P
+ word I16A_ADDS + (r2)<<D16A + (r20)<<S16A ' ADDI/P (3)
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
  alignl ' align long
  long I32_CALA + (@C__waitcnt)<<S32 ' CALL addrg
@@ -746,13 +782,13 @@ C__cogstart_L_M_M__cog ' <symbol:_cogstart_LMM_cog>
  word I16B_POPM + 6<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
-' Catalina Import _registry
+' Catalina Import _clockfreq
 
 ' Catalina Import _cnt
 
 ' Catalina Import _waitcnt
 
-' Catalina Import _coginit
+' Catalina Import _registry
 
-' Catalina Import _clockfreq
+' Catalina Import _coginit
 ' end

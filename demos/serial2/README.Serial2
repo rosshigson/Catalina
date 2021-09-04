@@ -12,7 +12,7 @@ loaded automatically.
 
 There is only one C program in this folder (test_serial2.c). To build the 
 programs, use the "build_all" command, specifying the platform for which you 
-want to build (P2_EVAL etc).
+want to build (P2_EVAL etc) and the memory model to use.
 
 For example:
 
@@ -22,20 +22,17 @@ or
 
 The following programs are built: 
 
-   serial1.binary - a compiled version of the C demo program that uses only 
-                    the serial driver.
+   test1.bin - a compiled version of the C demo program that uses only 
+               the serial driver.
 
-   serial2.binary - a compiled version of the C demo program that also uses 
-                    multithreading, and simulatenously uses stdio via the 
-                    TV HMI (note that this program will not build if you 
-                    choose to build an XMM version of the demo since the
-                    multithreading kernel is not yet supported for XMM, and 
-                    also that you must have a TV output on your Propeller
-                    to run the resulting program program).
+   test2.bin - a compiled version of the C demo program that also uses 
+               multithreading, and simulatenously uses stdio via the 
+               VGA HMI
 
-All the test programs test only one of the possible 2 serial ports. To 
-configure the serial port (e.g. the pins and baud rate) edit the file 
-"Catalina_platforms.inc" in the Catalina target_p2 directory.
+All the test programs test only one of the possible 2 serial ports. To test
+the other port, modify the PORT in the source code. To configure the serial 
+port (e.g. the pins and baud rate) edit the file "Catalina_platforms.inc" in 
+the Catalina target_p2 directory.
 
 NOTES ON THE libserial2 LIBRARY:
 ================================

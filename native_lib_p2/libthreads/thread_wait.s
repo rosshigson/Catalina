@@ -20,17 +20,13 @@ C__thread_wait ' <symbol:_thread_wait>
  long @C__clockfreq ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r20, ##1000 ' reg <- con
- #ifndef NO_INTERRUPTS
-  stalli
- #endif
- qdiv r22, r20 ' DIVU4
- getqx r0
- #ifndef NO_INTERRUPTS
-  allowi
- #endif
+ mov r0, r22 ' setup r0/r1 (2)
+ mov r1, r20 ' setup r0/r1 (2)
+ PRIMITIVE(#DIVS) ' DIVI
+ mov r22, r0 ' CVI, CVU or LOAD
  mov RI, FP
  sub RI, #-(-4)
- wrlong r0, RI ' ASGNU4 addrli reg
+ wrlong r22, RI ' ASGNU4 addrli reg
  cmp r23,  #0 wz
  if_nz jmp #\C__thread_wait_2  ' NEU4
  jmp #\@C__thread_wait_1 ' JUMPV addrg
@@ -91,9 +87,9 @@ C__thread_wait_1
  PRIMITIVE(#RETF)
 
 
-' Catalina Import _thread_yield
-
 ' Catalina Import _cnt
 
 ' Catalina Import _clockfreq
+
+' Catalina Import _thread_yield
 ' end

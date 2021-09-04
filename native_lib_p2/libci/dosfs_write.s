@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_s6lc_5f5d7d61_wait100ms_L000003 ' <symbol:wait100ms>
+C_sirc_6132d1f4_wait100ms_L000003 ' <symbol:wait100ms>
  PRIMITIVE(#PSHM)
  long $540000 ' save registers
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
@@ -19,21 +19,16 @@ C_s6lc_5f5d7d61_wait100ms_L000003 ' <symbol:wait100ms>
  long @C__clockfreq ' CALL addrg
  mov r20, r0 ' CVI, CVU or LOAD
  mov r18, #10 ' reg <- coni
- #ifndef NO_INTERRUPTS
-  stalli
- #endif
- qdiv r20, r18 ' DIVU4
- getqx r0
- #ifndef NO_INTERRUPTS
-  allowi
- #endif
+ mov r0, r20 ' setup r0/r1 (2)
+ mov r1, r18 ' setup r0/r1 (2)
+ PRIMITIVE(#DIVS) ' DIVI
  mov r20, r0 ' CVI, CVU or LOAD
- mov r2, r22 ' ADDU
- add r2, r20 ' ADDU (3)
+ mov r2, r22 ' ADDI/P
+ adds r2, r20 ' ADDI/P (3)
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C__waitcnt ' CALL addrg
-' C_s6lc_5f5d7d61_wait100ms_L000003_4 ' (symbol refcount = 0)
+' C_sirc_6132d1f4_wait100ms_L000003_4 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
@@ -64,7 +59,7 @@ C_D_F_S__W_riteS_ector_6
 C_D_F_S__W_riteS_ector_10
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
- long @C_s6lc_5f5d7d61_wait100ms_L000003 ' CALL addrg
+ long @C_sirc_6132d1f4_wait100ms_L000003 ' CALL addrg
 ' C_D_F_S__W_riteS_ector_7 ' (symbol refcount = 0)
  adds r15, #1 ' ADDI4 coni
  cmps r15,  #10 wcz
@@ -76,11 +71,11 @@ C_D_F_S__W_riteS_ector_8
  PRIMITIVE(#RETN)
 
 
-' Catalina Import sd_sectwrite
+' Catalina Import _clockfreq
 
 ' Catalina Import _cnt
 
 ' Catalina Import _waitcnt
 
-' Catalina Import _clockfreq
+' Catalina Import sd_sectwrite
 ' end

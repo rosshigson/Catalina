@@ -53,12 +53,24 @@ echo    BUILDING SERIAL4 DEMOS
 echo    ======================
 echo.
 
+set platform=%1
+if "%platform:~0,2%"=="P2" goto build_p2
+
+goto done
+
 catalina -lci -lserial4 test_serial4.c -o serial1 -C NO_HMI
 catalina -lci -lserial4 -lthreads test_serial4.c -o serial2 -C TV 
 
 call build_pasm_tmp_var %1 %2 %3 %4 %5 %6 %7 %8 %9 
 spinnaker -p -a -I "%TMP_LCCDIR%\target" test_serial4.spin -b -o serial3 -D S4_SPIN %TMP_VAR%
 
+goto done
+
+:build_p2
+echo.
+echo   ERROR: The 4 Port Serial driver is not supported on the Propeller 2.
+echo.
+ 
 :done
 @echo off
 set TMP_LCCDIR=

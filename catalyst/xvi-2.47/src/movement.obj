@@ -11,8 +11,8 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_sc9k_5fa8f426_sccsid_L000001 ' <symbol:sccsid>
- long @C_sc9k1_5fa8f426_2_L000003
+C_sjk0_6132d4ca_sccsid_L000001 ' <symbol:sccsid>
+ long @C_sjk01_6132d4ca_2_L000003
 
 ' Catalina Export shiftdown
 
@@ -606,7 +606,7 @@ C_move_cursor_89
 
 
  alignl ' align long
-C_sc9k2_5fa8f426_jump_L000091 ' <symbol:jump>
+C_sjk02_6132d4ca_jump_L000091 ' <symbol:jump>
  PRIMITIVE(#PSHM)
  long $faa800 ' save registers
  mov r23, r4 ' reg var <- reg arg
@@ -635,8 +635,8 @@ C_sc9k2_5fa8f426_jump_L000091 ' <symbol:jump>
  sub r22, #1 ' SUBU4 coni
  mov r15, r22 ' CVI, CVU or LOAD
  mov r17, #0 ' reg <- coni
- jmp #\@C_sc9k2_5fa8f426_jump_L000091_96 ' JUMPV addrg
-C_sc9k2_5fa8f426_jump_L000091_93
+ jmp #\@C_sjk02_6132d4ca_jump_L000091_96 ' JUMPV addrg
+C_sjk02_6132d4ca_jump_L000091_93
  rdlong r13, r13 ' reg <- INDIRP4 reg
  mov r2, r13 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
@@ -650,24 +650,24 @@ C_sc9k2_5fa8f426_jump_L000091_93
  add r22, r20 ' ADDU (2)
  mov r17, r22 ' CVI, CVU or LOAD
  cmps r17, r15 wcz
- if_b jmp #\C_sc9k2_5fa8f426_jump_L000091_97 ' LTI4
+ if_b jmp #\C_sjk02_6132d4ca_jump_L000091_97 ' LTI4
  cmps r17, r15 wcz
- if_be jmp #\C_sc9k2_5fa8f426_jump_L000091_95 ' LEI4
+ if_be jmp #\C_sjk02_6132d4ca_jump_L000091_95 ' LEI4
  mov r22, r13
  adds r22, #4 ' ADDP4 coni
  rdlong r13, r22 ' reg <- INDIRP4 reg
- jmp #\@C_sc9k2_5fa8f426_jump_L000091_95 ' JUMPV addrg
-C_sc9k2_5fa8f426_jump_L000091_97
-' C_sc9k2_5fa8f426_jump_L000091_94 ' (symbol refcount = 0)
-C_sc9k2_5fa8f426_jump_L000091_96
+ jmp #\@C_sjk02_6132d4ca_jump_L000091_95 ' JUMPV addrg
+C_sjk02_6132d4ca_jump_L000091_97
+' C_sjk02_6132d4ca_jump_L000091_94 ' (symbol refcount = 0)
+C_sjk02_6132d4ca_jump_L000091_96
  cmps r17, r19 wcz
- if_ae jmp #\C_sc9k2_5fa8f426_jump_L000091_101 ' GEI4
+ if_ae jmp #\C_sjk02_6132d4ca_jump_L000091_101 ' GEI4
  mov r22, r13 ' CVI, CVU or LOAD
  mov r20, r11 ' CVI, CVU or LOAD
  cmp r22, r20 wz
- if_nz jmp #\C_sc9k2_5fa8f426_jump_L000091_93  ' NEU4
-C_sc9k2_5fa8f426_jump_L000091_101
-C_sc9k2_5fa8f426_jump_L000091_95
+ if_nz jmp #\C_sjk02_6132d4ca_jump_L000091_93  ' NEU4
+C_sjk02_6132d4ca_jump_L000091_101
+C_sjk02_6132d4ca_jump_L000091_95
  mov r22, r23
  adds r22, #8 ' ADDP4 coni
  wrlong r13, r22 ' ASGNP4 reg reg
@@ -684,7 +684,7 @@ C_sc9k2_5fa8f426_jump_L000091_95
  PRIMITIVE(#CALA)
  long @C_show_file_info
  add SP, #4 ' CALL addrg
-' C_sc9k2_5fa8f426_jump_L000091_92 ' (symbol refcount = 0)
+' C_sjk02_6132d4ca_jump_L000091_92 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
@@ -893,7 +893,7 @@ C_move_window_to_cursor_118
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_sc9k2_5fa8f426_jump_L000091
+ long @C_sjk02_6132d4ca_jump_L000091
  add SP, #8 ' CALL addrg
  jmp #\@C_move_window_to_cursor_106 ' JUMPV addrg
 C_move_window_to_cursor_107
@@ -1098,7 +1098,7 @@ C_move_window_to_cursor_143
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_sc9k2_5fa8f426_jump_L000091
+ long @C_sjk02_6132d4ca_jump_L000091
  add SP, #8 ' CALL addrg
  jmp #\@C_move_window_to_cursor_133 ' JUMPV addrg
 C_move_window_to_cursor_132
@@ -1334,7 +1334,7 @@ C_move_cursor_to_window_170
 DAT ' const data segment
 
  alignl ' align long
-C_sc9k1_5fa8f426_2_L000003 ' <symbol:2>
+C_sjk01_6132d4ca_2_L000003 ' <symbol:2>
  byte 64
  byte 40
  byte 35

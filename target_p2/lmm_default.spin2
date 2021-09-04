@@ -71,6 +71,10 @@
 
 #include "Serial2.spin2"
 
+' The following file must be included for Multi Port Serial support
+
+#include "Serial8.spin2"
+
 #endif
 
 ' Catalina Data

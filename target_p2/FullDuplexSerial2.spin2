@@ -924,7 +924,7 @@ rx2_isr		rdpin	rx2_i_char,		rx2_pin			'get received chr
 		incmod	rx2_i_address, 		rx2_lut_btop		'rx2_i_char = head+1 mod 
 		cmp	rx2_i_address, 		rx2_tail 	wz	'hitting tail is bad
 	if_z	reti2							'and return if buffer full - we lost a char - exit
-		shr	rx2_i_char,		#32-8			'shift char to lsb justify
+'		shr	rx2_i_char,		#32-8			'shift char to lsb justify
   		mov	rx2_i_byte_index, 	rx2_head		'take last two bits of head
 		and	rx2_i_byte_index, 	#%11			'now index 0 to 3
 		mov	rx2_i_address,		rx2_head		'adjust to buffer start (I need the long containing the byte)

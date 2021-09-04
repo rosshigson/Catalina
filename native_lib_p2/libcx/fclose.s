@@ -135,6 +135,8 @@ C_fclose_3
  PRIMITIVE(#RETN)
 
 
+' Catalina Import _locknew
+
 ' Catalina Import _close
 
 ' Catalina Import __iobuff
@@ -146,8 +148,6 @@ C_fclose_3
 ' Catalina Import _release_lock
 
 ' Catalina Import _acquire_lock
-
-' Catalina Import _locknew
 
 ' Catalina Import fflush
 

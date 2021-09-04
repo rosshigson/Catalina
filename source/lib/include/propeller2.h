@@ -28,7 +28,9 @@ extern volatile uint32_t _INB;
  * common definitions
  */
 
+#ifndef ANY_COG
 #define ANY_COG 0x10
+#endif
 
 /*
  * common types
@@ -122,6 +124,10 @@ uint32_t  _rnd(void);
 uint32_t  _rev(uint32_t val);   /* like Spin reverse operator */
 int       _encod(uint32_t val); /* Spin encode operator */
 uint32_t  _isqrt(uint32_t val); /* Spin integer square root */
+
+/* Divide the 64-bit product of 'mult1' and 'mult2' by 'divisor', 
+ * return quotient (unsigned operation) */
+uint32_t  _muldiv64(uint32_t mult1, uint32_t mult2, uint32_t divisor); 
 
 /* counter related functions */
 uint32_t  _cnt(void);

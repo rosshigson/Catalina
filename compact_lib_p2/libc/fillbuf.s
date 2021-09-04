@@ -422,6 +422,8 @@ C___fillbuf_3
  word I16B_POPM + $80<<S16B ' restore registers, do not pop frame, do return
  alignl ' align long
 
+' Catalina Import _locknew
+
 ' Catalina Import _read
 
 ' Catalina Import __iostdb
@@ -435,8 +437,6 @@ C___fillbuf_3
 ' Catalina Import _release_lock
 
 ' Catalina Import _acquire_lock
-
-' Catalina Import _locknew
 
 ' Catalina Import fflush
 

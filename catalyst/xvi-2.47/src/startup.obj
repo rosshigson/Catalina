@@ -11,8 +11,8 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_sclk_5fa8f427_sccsid_L000001 ' <symbol:sccsid>
- long @C_sclk1_5fa8f427_2_L000003
+C_setg_6132d4cb_sccsid_L000001 ' <symbol:sccsid>
+ long @C_setg1_6132d4cb_2_L000003
 
 ' Catalina Export State
 
@@ -312,7 +312,7 @@ C_xvi_startup_62
  if_z jmp #\C_xvi_startup_63 ' EQI4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
- long @C_sclk2_5fa8f427_usage_L000018 ' CALL addrg
+ long @C_setg2_6132d4cb_usage_L000018 ' CALL addrg
  mov r0, ##0 ' RET con
  jmp #\@C_xvi_startup_19 ' JUMPV addrg
 C_xvi_startup_63
@@ -350,7 +350,7 @@ C_xvi_startup_65
 C_xvi_startup_67
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
- long @C_sclk2_5fa8f427_usage_L000018 ' CALL addrg
+ long @C_setg2_6132d4cb_usage_L000018 ' CALL addrg
  mov r0, ##0 ' RET con
  jmp #\@C_xvi_startup_19 ' JUMPV addrg
 C_xvi_startup_69
@@ -379,7 +379,7 @@ C_xvi_startup_70
 C_xvi_startup_72
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
- long @C_sclk2_5fa8f427_usage_L000018 ' CALL addrg
+ long @C_setg2_6132d4cb_usage_L000018 ' CALL addrg
  mov r0, ##0 ' RET con
  jmp #\@C_xvi_startup_19 ' JUMPV addrg
 C_xvi_startup_73
@@ -402,7 +402,7 @@ C_xvi_startup_71
 C_xvi_startup_59
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
- long @C_sclk2_5fa8f427_usage_L000018 ' CALL addrg
+ long @C_setg2_6132d4cb_usage_L000018 ' CALL addrg
  mov r0, ##0 ' RET con
  jmp #\@C_xvi_startup_19 ' JUMPV addrg
 C_xvi_startup_57
@@ -412,7 +412,7 @@ C_xvi_startup_57
  if_b jmp #\C_xvi_startup_74 ' LTI4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
- long @C_sclk2_5fa8f427_usage_L000018 ' CALL addrg
+ long @C_setg2_6132d4cb_usage_L000018 ' CALL addrg
  mov r0, ##0 ' RET con
  jmp #\@C_xvi_startup_19 ' JUMPV addrg
 C_xvi_startup_74
@@ -474,7 +474,7 @@ C_xvi_startup_78
 C_xvi_startup_80
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
- long @C_sclk2_5fa8f427_usage_L000018 ' CALL addrg
+ long @C_setg2_6132d4cb_usage_L000018 ' CALL addrg
  mov r0, ##0 ' RET con
  jmp #\@C_xvi_startup_19 ' JUMPV addrg
 C_xvi_startup_81
@@ -518,7 +518,7 @@ C_xvi_startup_85
  if_ae jmp #\C_xvi_startup_84 ' GEI4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
- long @C_sclk2_5fa8f427_usage_L000018 ' CALL addrg
+ long @C_setg2_6132d4cb_usage_L000018 ' CALL addrg
  mov r0, ##0 ' RET con
  jmp #\@C_xvi_startup_19 ' JUMPV addrg
 C_xvi_startup_83
@@ -777,36 +777,36 @@ C_xvi_startup_19
 
 
  alignl ' align long
-C_sclk2_5fa8f427_usage_L000018 ' <symbol:usage>
- mov r2, ##@C_sclk2_5fa8f427_usage_L000018_110_L000111 ' reg ARG ADDRG
+C_setg2_6132d4cb_usage_L000018 ' <symbol:usage>
+ mov r2, ##@C_setg2_6132d4cb_usage_L000018_110_L000111 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_startup_error ' CALL addrg
- mov r2, ##@C_sclk2_5fa8f427_usage_L000018_112_L000113 ' reg ARG ADDRG
+ mov r2, ##@C_setg2_6132d4cb_usage_L000018_112_L000113 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_startup_error ' CALL addrg
- mov r2, ##@C_sclk2_5fa8f427_usage_L000018_114_L000115 ' reg ARG ADDRG
+ mov r2, ##@C_setg2_6132d4cb_usage_L000018_114_L000115 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_startup_error ' CALL addrg
- mov r2, ##@C_sclk2_5fa8f427_usage_L000018_116_L000117 ' reg ARG ADDRG
+ mov r2, ##@C_setg2_6132d4cb_usage_L000018_116_L000117 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_startup_error ' CALL addrg
- mov r2, ##@C_sclk2_5fa8f427_usage_L000018_118_L000119 ' reg ARG ADDRG
+ mov r2, ##@C_setg2_6132d4cb_usage_L000018_118_L000119 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_startup_error ' CALL addrg
- mov r2, ##@C_sclk2_5fa8f427_usage_L000018_120_L000121 ' reg ARG ADDRG
+ mov r2, ##@C_setg2_6132d4cb_usage_L000018_120_L000121 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_startup_error ' CALL addrg
- mov r2, ##@C_sclk2_5fa8f427_usage_L000018_122_L000123 ' reg ARG ADDRG
+ mov r2, ##@C_setg2_6132d4cb_usage_L000018_122_L000123 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_startup_error ' CALL addrg
-' C_sclk2_5fa8f427_usage_L000018_109 ' (symbol refcount = 0)
+' C_setg2_6132d4cb_usage_L000018_109 ' (symbol refcount = 0)
  PRIMITIVE(#RETN)
 
 
@@ -943,7 +943,7 @@ DAT ' uninitialized data segment
 DAT ' const data segment
 
  alignl ' align long
-C_sclk2_5fa8f427_usage_L000018_122_L000123 ' <symbol:122>
+C_setg2_6132d4cb_usage_L000018_122_L000123 ' <symbol:122>
  byte 32
  byte 32
  byte 32
@@ -973,7 +973,7 @@ C_sclk2_5fa8f427_usage_L000018_122_L000123 ' <symbol:122>
  byte 0
 
  alignl ' align long
-C_sclk2_5fa8f427_usage_L000018_120_L000121 ' <symbol:120>
+C_setg2_6132d4cb_usage_L000018_120_L000121 ' <symbol:120>
  byte 32
  byte 32
  byte 32
@@ -1009,7 +1009,7 @@ C_sclk2_5fa8f427_usage_L000018_120_L000121 ' <symbol:120>
  byte 0
 
  alignl ' align long
-C_sclk2_5fa8f427_usage_L000018_118_L000119 ' <symbol:118>
+C_setg2_6132d4cb_usage_L000018_118_L000119 ' <symbol:118>
  byte 10
  byte 79
  byte 112
@@ -1027,7 +1027,7 @@ C_sclk2_5fa8f427_usage_L000018_118_L000119 ' <symbol:118>
  byte 0
 
  alignl ' align long
-C_sclk2_5fa8f427_usage_L000018_116_L000117 ' <symbol:116>
+C_setg2_6132d4cb_usage_L000018_116_L000117 ' <symbol:116>
  byte 32
  byte 32
  byte 32
@@ -1066,7 +1066,7 @@ C_sclk2_5fa8f427_usage_L000018_116_L000117 ' <symbol:116>
  byte 0
 
  alignl ' align long
-C_sclk2_5fa8f427_usage_L000018_114_L000115 ' <symbol:114>
+C_setg2_6132d4cb_usage_L000018_114_L000115 ' <symbol:114>
  byte 32
  byte 32
  byte 32
@@ -1105,7 +1105,7 @@ C_sclk2_5fa8f427_usage_L000018_114_L000115 ' <symbol:114>
  byte 0
 
  alignl ' align long
-C_sclk2_5fa8f427_usage_L000018_112_L000113 ' <symbol:112>
+C_setg2_6132d4cb_usage_L000018_112_L000113 ' <symbol:112>
  byte 32
  byte 32
  byte 32
@@ -1139,7 +1139,7 @@ C_sclk2_5fa8f427_usage_L000018_112_L000113 ' <symbol:112>
  byte 0
 
  alignl ' align long
-C_sclk2_5fa8f427_usage_L000018_110_L000111 ' <symbol:110>
+C_setg2_6132d4cb_usage_L000018_110_L000111 ' <symbol:110>
  byte 85
  byte 115
  byte 97
@@ -1222,7 +1222,7 @@ C_xvi_startup_22_L000023 ' <symbol:22>
  byte 0
 
  alignl ' align long
-C_sclk1_5fa8f427_2_L000003 ' <symbol:2>
+C_setg1_6132d4cb_2_L000003 ' <symbol:2>
  byte 64
  byte 40
  byte 35

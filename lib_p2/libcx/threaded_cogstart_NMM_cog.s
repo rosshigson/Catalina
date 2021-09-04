@@ -584,11 +584,27 @@ C_N_M_M__threaded_dynamic_array ' <symbol:NMM_threaded_dynamic_array>
  long $fd64002d
  long $f6642c01
  long $fd9fffec
+ long $f0642e02
+ long $ff0003df
+ long $f1042fb0
+ long $fb003017
+ long $ff007fff
+ long $f50431ff
+ long $f0643218
+ long $f5403019
+ long $fc603017
+ long $c602c18
+ long $fac03218
+ long $fc403216
+ long $f1042c01
+ long $f1043001
+ long $fb6c2ffb
+ long $fd64002d
  long $fd604224
  long $f43bd5e9
  long $5d73d206
  long $1403d5e9
- long $bd800340
+ long $bd800350
  long $fd604024
  long $fd64002d
  long $fd604224
@@ -600,7 +616,7 @@ C_N_M_M__threaded_dynamic_array ' <symbol:NMM_threaded_dynamic_array>
  long $f43bd5e9
  long $5d702e06
  long $1403d5e9
- long $bd80034c
+ long $bd80035c
  long $fd604024
  long $fd64002d
  long $fd604224
@@ -683,11 +699,27 @@ C_N_M_M__L_U_T__L_I_B_R_A_R_Y__array ' <symbol:NMM_LUT_LIBRARY_array>
  long $fd64002d
  long $f6642c01
  long $fd9fffec
+ long $f0642e02
+ long $ff0003df
+ long $f1042fb0
+ long $fb003017
+ long $ff007fff
+ long $f50431ff
+ long $f0643218
+ long $f5403019
+ long $fc603017
+ long $c602c18
+ long $fac03218
+ long $fc403216
+ long $f1042c01
+ long $f1043001
+ long $fb6c2ffb
+ long $fd64002d
  long $fd604224
  long $f43bd5e9
  long $5d73d206
  long $1403d5e9
- long $bd800340
+ long $bd800350
  long $fd604024
  long $fd64002d
  long $fd604224
@@ -699,7 +731,7 @@ C_N_M_M__L_U_T__L_I_B_R_A_R_Y__array ' <symbol:NMM_LUT_LIBRARY_array>
  long $f43bd5e9
  long $5d702e06
  long $1403d5e9
- long $bd80034c
+ long $bd80035c
  long $fd604024
  long $fd64002d
  long $fd604224
@@ -737,7 +769,7 @@ C__threaded_cogstart_N_M_M__cog ' <symbol:_threaded_cogstart_NMM_cog>
  PRIMITIVE(#LODF)
  long -24
  wrlong r21, RI ' ASGNU4 addrl reg
- mov r22, #88 ' reg <- coni
+ mov r22, #104 ' reg <- coni
  PRIMITIVE(#LODF)
  long -20
  wrlong r22, RI ' ASGNU4 addrl reg
@@ -788,10 +820,10 @@ C__threaded_cogstart_N_M_M__cog ' <symbol:_threaded_cogstart_NMM_cog>
  mov r18, #20 ' reg <- coni
  mov r0, r20 ' setup r0/r1 (2)
  mov r1, r18 ' setup r0/r1 (2)
- PRIMITIVE(#DIVU) ' DIVU
+ PRIMITIVE(#DIVS) ' DIVI
  mov r20, r0 ' CVI, CVU or LOAD
- mov r2, r22 ' ADDU
- add r2, r20 ' ADDU (3)
+ mov r2, r22 ' ADDI/P
+ adds r2, r20 ' ADDI/P (3)
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C__waitcnt ' CALL addrg
@@ -802,13 +834,13 @@ C__threaded_cogstart_N_M_M__cog ' <symbol:_threaded_cogstart_NMM_cog>
  PRIMITIVE(#RETF)
 
 
-' Catalina Import _registry
+' Catalina Import _clockfreq
 
 ' Catalina Import _cnt
 
 ' Catalina Import _waitcnt
 
-' Catalina Import _coginit
+' Catalina Import _registry
 
-' Catalina Import _clockfreq
+' Catalina Import _coginit
 ' end

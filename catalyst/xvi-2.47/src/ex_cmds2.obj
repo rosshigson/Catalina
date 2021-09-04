@@ -11,8 +11,8 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_sb10_5fa8f426_sccsid_L000001 ' <symbol:sccsid>
- long @C_sb101_5fa8f426_2_L000003
+C_slg0_6132d4ca_sccsid_L000001 ' <symbol:sccsid>
+ long @C_slg01_6132d4ca_2_L000003
 
 ' Catalina Export exShellCommand
 
@@ -41,7 +41,7 @@ C_exS_hellC_ommand ' <symbol:exShellCommand>
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_sb102_5fa8f426_W_arnU_nS_aved_L000018 ' CALL addrg
+ long @C_slg02_6132d4ca_W_arnU_nS_aved_L000018 ' CALL addrg
  mov r2, ##@C___iotab+24 ' reg ARG ADDRG
  mov r3, r21 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -144,7 +144,7 @@ C_exI_nteractiveS_hell_43
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_sb102_5fa8f426_W_arnU_nS_aved_L000018 ' CALL addrg
+ long @C_slg02_6132d4ca_W_arnU_nS_aved_L000018 ' CALL addrg
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
@@ -977,22 +977,22 @@ C_exJ_oin_167
 
 
  alignl ' align long
-C_sb102_5fa8f426_W_arnU_nS_aved_L000018 ' <symbol:WarnUnSaved>
+C_slg02_6132d4ca_W_arnU_nS_aved_L000018 ' <symbol:WarnUnSaved>
  PRIMITIVE(#PSHM)
  long $c00000 ' save registers
  mov r23, r2 ' reg var <- reg arg
  mov r22, ##@C_params+1584+12
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz
- if_z jmp #\C_sb102_5fa8f426_W_arnU_nS_aved_L000018_189 ' EQI4
+ if_z jmp #\C_slg02_6132d4ca_W_arnU_nS_aved_L000018_189 ' EQI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_xvC_hangesN_otS_aved ' CALL addrg
  cmps r0,  #0 wz
- if_z jmp #\C_sb102_5fa8f426_W_arnU_nS_aved_L000018_189 ' EQI4
+ if_z jmp #\C_slg02_6132d4ca_W_arnU_nS_aved_L000018_189 ' EQI4
  mov r2, ##@C___iotab+24 ' reg ARG ADDRG
- mov r3, ##@C_sb102_5fa8f426_W_arnU_nS_aved_L000018_193_L000194 ' reg ARG ADDRG
+ mov r3, ##@C_slg02_6132d4ca_W_arnU_nS_aved_L000018_193_L000194 ' reg ARG ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
@@ -1002,8 +1002,8 @@ C_sb102_5fa8f426_W_arnU_nS_aved_L000018 ' <symbol:WarnUnSaved>
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_fflush ' CALL addrg
-C_sb102_5fa8f426_W_arnU_nS_aved_L000018_189
-' C_sb102_5fa8f426_W_arnU_nS_aved_L000018_188 ' (symbol refcount = 0)
+C_slg02_6132d4ca_W_arnU_nS_aved_L000018_189
+' C_slg02_6132d4ca_W_arnU_nS_aved_L000018_188 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
@@ -1107,7 +1107,7 @@ C_sb102_5fa8f426_W_arnU_nS_aved_L000018_189
 DAT ' const data segment
 
  alignl ' align long
-C_sb102_5fa8f426_W_arnU_nS_aved_L000018_193_L000194 ' <symbol:193>
+C_slg02_6132d4ca_W_arnU_nS_aved_L000018_193_L000194 ' <symbol:193>
  byte 91
  byte 78
  byte 111
@@ -1514,7 +1514,7 @@ C_exS_hellC_ommand_22_L000023 ' <symbol:22>
  byte 0
 
  alignl ' align long
-C_sb101_5fa8f426_2_L000003 ' <symbol:2>
+C_slg01_6132d4ca_2_L000003 ' <symbol:2>
  byte 64
  byte 40
  byte 35

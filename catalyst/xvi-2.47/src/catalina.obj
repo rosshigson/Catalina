@@ -11,11 +11,11 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_saug_5fa8f428_sccsid_L000001 ' <symbol:sccsid>
- long @C_saug1_5fa8f428_2_L000003
+C_si6k_6132d4cb_sccsid_L000001 ' <symbol:sccsid>
+ long @C_si6k1_6132d4cb_2_L000003
 
  alignl ' align long
-C_saug2_5fa8f428_S_P_A_C_E_S__L000019 ' <symbol:SPACES>
+C_si6k2_6132d4cb_S_P_A_C_E_S__L000019 ' <symbol:SPACES>
  byte 32
  byte 32
  byte 32
@@ -83,7 +83,7 @@ C_catch_signals ' <symbol:catch_signals>
 DAT ' initialized data segment
 
  alignl ' align long
-C_saug6_5fa8f428_rootdir_L000026 ' <symbol:rootdir>
+C_si6k6_6132d4cb_rootdir_L000026 ' <symbol:rootdir>
  byte 92
  byte 0
 
@@ -131,17 +131,12 @@ C_inchar_34
  long @C__clockfreq ' CALL addrg
  mov r20, r0 ' CVI, CVU or LOAD
  mov r18, ##1000 ' reg <- con
- #ifndef NO_INTERRUPTS
-  stalli
- #endif
- qdiv r20, r18 ' DIVU4
- getqx r0
- #ifndef NO_INTERRUPTS
-  allowi
- #endif
+ mov r0, r20 ' setup r0/r1 (2)
+ mov r1, r18 ' setup r0/r1 (2)
+ PRIMITIVE(#DIVS) ' DIVI
  mov r20, r0 ' CVI, CVU or LOAD
- mov r2, r22 ' ADDU
- add r2, r20 ' ADDU (3)
+ mov r2, r22 ' ADDI/P
+ adds r2, r20 ' ADDI/P (3)
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C__waitcnt ' CALL addrg
@@ -631,17 +626,12 @@ C_tty_goto ' <symbol:tty_goto>
  long @C__clockfreq ' CALL addrg
  mov r20, r0 ' CVI, CVU or LOAD
  mov r18, ##3000 ' reg <- con
- #ifndef NO_INTERRUPTS
-  stalli
- #endif
- qdiv r20, r18 ' DIVU4
- getqx r0
- #ifndef NO_INTERRUPTS
-  allowi
- #endif
+ mov r0, r20 ' setup r0/r1 (2)
+ mov r1, r18 ' setup r0/r1 (2)
+ PRIMITIVE(#DIVS) ' DIVI
  mov r20, r0 ' CVI, CVU or LOAD
- mov r2, r22 ' ADDU
- add r2, r20 ' ADDU (3)
+ mov r2, r22 ' ADDI/P
+ adds r2, r20 ' ADDI/P (3)
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C__waitcnt ' CALL addrg
@@ -669,8 +659,8 @@ C_sleep_111
  PRIMITIVE(#CALA)
  long @C__clockfreq ' CALL addrg
  mov r20, r0 ' CVI, CVU or LOAD
- mov r2, r22 ' ADDU
- add r2, r20 ' ADDU (3)
+ mov r2, r22 ' ADDI/P
+ adds r2, r20 ' ADDI/P (3)
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C__waitcnt ' CALL addrg
@@ -700,17 +690,12 @@ C_W_ait200ms ' <symbol:Wait200ms>
  long @C__clockfreq ' CALL addrg
  mov r20, r0 ' CVI, CVU or LOAD
  mov r18, #5 ' reg <- coni
- #ifndef NO_INTERRUPTS
-  stalli
- #endif
- qdiv r20, r18 ' DIVU4
- getqx r0
- #ifndef NO_INTERRUPTS
-  allowi
- #endif
+ mov r0, r20 ' setup r0/r1 (2)
+ mov r1, r18 ' setup r0/r1 (2)
+ PRIMITIVE(#DIVS) ' DIVI
  mov r20, r0 ' CVI, CVU or LOAD
- mov r2, r22 ' ADDU
- add r2, r20 ' ADDU (3)
+ mov r2, r22 ' ADDI/P
+ adds r2, r20 ' ADDI/P (3)
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C__waitcnt ' CALL addrg
@@ -734,7 +719,7 @@ C_tempfname ' <symbol:tempfname>
  PRIMITIVE(#PSHM)
  long $c00000 ' save registers
  mov r23, r2 ' reg var <- reg arg
- mov r2, ##@C_saug4_5fa8f428_tmpbuff_L000024 ' reg ARG ADDRG
+ mov r2, ##@C_si6k4_6132d4cb_tmpbuff_L000024 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_tmpnam ' CALL addrg
@@ -756,7 +741,7 @@ C_getcwd ' <symbol:getcwd>
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_puts ' CALL addrg
- mov r0, ##@C_saug6_5fa8f428_rootdir_L000026 ' reg <- addrg
+ mov r0, ##@C_si6k6_6132d4cb_rootdir_L000026 ' reg <- addrg
 ' C_getcwd_118 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
@@ -859,31 +844,9 @@ C_sys_pipe ' <symbol:sys_pipe>
  PRIMITIVE(#RETN)
 
 
-' Catalina Data
-
-DAT ' uninitialized data segment
-
- alignl ' align long
-C_saug5_5fa8f428_logscreen_L000025 ' <symbol:logscreen>
- byte 0[4]
-
- alignl ' align long
-C_saug4_5fa8f428_tmpbuff_L000024 ' <symbol:tmpbuff>
- byte 0[21]
-
-' Catalina Code
-
-DAT ' code segment
+' Catalina Import _clockfreq
 
 ' Catalina Import _cnt
-
-' Catalina Data
-
-DAT ' uninitialized data segment
-
-' Catalina Code
-
-DAT ' code segment
 
 ' Catalina Import _waitcnt
 
@@ -891,15 +854,13 @@ DAT ' code segment
 
 DAT ' uninitialized data segment
 
-' Catalina Code
+ alignl ' align long
+C_si6k5_6132d4cb_logscreen_L000025 ' <symbol:logscreen>
+ byte 0[4]
 
-DAT ' code segment
-
-' Catalina Import _clockfreq
-
-' Catalina Data
-
-DAT ' uninitialized data segment
+ alignl ' align long
+C_si6k4_6132d4cb_tmpbuff_L000024 ' <symbol:tmpbuff>
+ byte 0[21]
 
 ' Catalina Code
 
@@ -1315,7 +1276,7 @@ C_erase_line_83_L000084 ' <symbol:83>
  byte 0
 
  alignl ' align long
-C_saug3_5fa8f428_22_L000023 ' <symbol:22>
+C_si6k3_6132d4cb_22_L000023 ' <symbol:22>
  byte 47
  byte 116
  byte 109
@@ -1324,7 +1285,7 @@ C_saug3_5fa8f428_22_L000023 ' <symbol:22>
  byte 0
 
  alignl ' align long
-C_saug1_5fa8f428_2_L000003 ' <symbol:2>
+C_si6k1_6132d4cb_2_L000003 ' <symbol:2>
  byte 64
  byte 40
  byte 35

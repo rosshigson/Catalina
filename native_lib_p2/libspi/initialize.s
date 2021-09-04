@@ -226,17 +226,13 @@ C_spi_writeW_ait_28
  long @C__clockfreq ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r20, #50 ' reg <- coni
- #ifndef NO_INTERRUPTS
-  stalli
- #endif
- qdiv r22, r20 ' DIVU4
- getqx r0
- #ifndef NO_INTERRUPTS
-  allowi
- #endif
+ mov r0, r22 ' setup r0/r1 (2)
+ mov r1, r20 ' setup r0/r1 (2)
+ PRIMITIVE(#DIVS) ' DIVI
  mov r20, CNT ' reg <- INDIRU4 addrg special
  sub r20, r21 ' SUBU (1)
- cmp r20, r0 wcz 
+ mov r22, r0 ' CVI, CVU or LOAD
+ cmp r20, r22 wcz 
  if_be jmp #\C_spi_writeW_ait_31 ' LEU4
  mov r0, ##-1 ' RET con
  jmp #\@C_spi_writeW_ait_25 ' JUMPV addrg
@@ -254,9 +250,9 @@ C_spi_writeW_ait_25
  PRIMITIVE(#RETN)
 
 
-' Catalina Import _locknew
-
 ' Catalina Import _clockfreq
+
+' Catalina Import _locknew
 
 ' Catalina Import _locate_plugin
 

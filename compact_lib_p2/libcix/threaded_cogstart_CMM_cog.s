@@ -132,7 +132,7 @@ C_C_M_M__threaded_dynamic_array ' <symbol:CMM_threaded_dynamic_array>
  long $f1043004
  long $fd604024
  long $fb6fc801
- long $fda00340
+ long $fda00350
  long $fb004a18
  long $f6004e25
  long $f5044e01
@@ -574,6 +574,22 @@ C_C_M_M__threaded_dynamic_array ' <symbol:CMM_threaded_dynamic_array>
  long $fd64002d
  long $f6640001
  long $fd9fffec
+ long $f0640202
+ long $ff0003df
+ long $f10403b0
+ long $fb000401
+ long $ff007fff
+ long $f50405ff
+ long $f0640618
+ long $f5400403
+ long $fc600401
+ long $c600002
+ long $fac00602
+ long $fc400600
+ long $f1040001
+ long $f1040401
+ long $fb6c03fb
+ long $fd64002d
  long $f607c864
  long $f587ca01
  long $f5e7ca02
@@ -634,14 +650,14 @@ C_C_M_M__threaded_dynamic_array ' <symbol:CMM_threaded_dynamic_array>
  long $f20851e6
  long $ad900008
  long $fdbfff40
- long $fd9ff3dc
+ long $fd9ff39c
  long $fdbfff98
- long $fd9ff3d4
+ long $fd9ff394
  long $fd604224
  long $f43bd5e7
  long $5d73ce06
  long $1403d5e7
- long $bd80037f
+ long $bd80038f
  long $fd604024
  long $fd64002d
  long $fd604224
@@ -653,7 +669,7 @@ C_C_M_M__threaded_dynamic_array ' <symbol:CMM_threaded_dynamic_array>
  long $f43bd5e7
  long $5d700206
  long $1403d5e7
- long $bd80038b
+ long $bd80039b
  long $fd604024
  long $fd64002d
  long $fd604224
@@ -731,6 +747,22 @@ C_C_M_M__L_U_T__L_I_B_R_A_R_Y__array ' <symbol:CMM_LUT_LIBRARY_array>
  long $fd64002d
  long $f6640001
  long $fd9fffec
+ long $f0640202
+ long $ff0003df
+ long $f10403b0
+ long $fb000401
+ long $ff007fff
+ long $f50405ff
+ long $f0640618
+ long $f5400403
+ long $fc600401
+ long $c600002
+ long $fac00602
+ long $fc400600
+ long $f1040001
+ long $f1040401
+ long $fb6c03fb
+ long $fd64002d
  long $f607c864
  long $f587ca01
  long $f5e7ca02
@@ -791,14 +823,14 @@ C_C_M_M__L_U_T__L_I_B_R_A_R_Y__array ' <symbol:CMM_LUT_LIBRARY_array>
  long $f20851e6
  long $ad900008
  long $fdbfff40
- long $fd9ff3dc
+ long $fd9ff39c
  long $fdbfff98
- long $fd9ff3d4
+ long $fd9ff394
  long $fd604224
  long $f43bd5e7
  long $5d73ce06
  long $1403d5e7
- long $bd80037f
+ long $bd80038f
  long $fd604024
  long $fd64002d
  long $fd604224
@@ -810,7 +842,7 @@ C_C_M_M__L_U_T__L_I_B_R_A_R_Y__array ' <symbol:CMM_LUT_LIBRARY_array>
  long $f43bd5e7
  long $5d700206
  long $1403d5e7
- long $bd80038b
+ long $bd80039b
  long $fd604024
  long $fd64002d
  long $fd604224
@@ -845,7 +877,7 @@ C__threaded_cogstart_C_M_M__cog ' <symbol:_threaded_cogstart_CMM_cog>
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_WRLONG + (r21)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl ' align long
- long I32_MOVI + (r22)<<D32 +(151)<<S32 ' reg <- conli
+ long I32_MOVI + (r22)<<D32 +(167)<<S32 ' reg <- conli
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  word I16B_LODL + (r22)<<D16B
@@ -887,10 +919,10 @@ C__threaded_cogstart_C_M_M__cog ' <symbol:_threaded_cogstart_CMM_cog>
  word I16A_MOVI + (r18)<<D16A + (20)<<S16A ' reg <- coni
  word I16A_MOV + (r0)<<D16A + (r20)<<S16A ' setup r0/r1 (2)
  word I16A_MOV + (r1)<<D16A + (r18)<<S16A ' setup r0/r1 (2)
- word I16B_DIVU ' DIVU
+ word I16B_DIVS ' DIVI
  word I16A_MOV + (r20)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
- word I16A_MOV + (r2)<<D16A + (r22)<<S16A ' ADDU
- word I16A_ADD + (r2)<<D16A + (r20)<<S16A ' ADDU (3)
+ word I16A_MOV + (r2)<<D16A + (r22)<<S16A ' ADDI/P
+ word I16A_ADDS + (r2)<<D16A + (r20)<<S16A ' ADDI/P (3)
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
  alignl ' align long
  long I32_CALA + (@C__waitcnt)<<S32 ' CALL addrg
@@ -899,13 +931,13 @@ C__threaded_cogstart_C_M_M__cog ' <symbol:_threaded_cogstart_CMM_cog>
  word I16B_POPM + 8<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
-' Catalina Import _registry
+' Catalina Import _clockfreq
 
 ' Catalina Import _cnt
 
 ' Catalina Import _waitcnt
 
-' Catalina Import _coginit
+' Catalina Import _registry
 
-' Catalina Import _clockfreq
+' Catalina Import _coginit
 ' end

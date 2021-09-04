@@ -1579,7 +1579,7 @@ C_save_quetzal_3
 
 
  alignl ' align long
-C_s7i81_5fa8f449_read_word_L000159 ' <symbol:read_word>
+C_sfq81_6132d4ec_read_word_L000159 ' <symbol:read_word>
  PRIMITIVE(#NEWF)
  sub SP, #8
  PRIMITIVE(#PSHM)
@@ -1595,10 +1595,10 @@ C_s7i81_5fa8f449_read_word_L000159 ' <symbol:read_word>
  wrlong r0, RI ' ASGNI4 addrli reg
  mov r20, ##-1 ' reg <- con
  cmps r0, r20 wz
- if_nz jmp #\C_s7i81_5fa8f449_read_word_L000159_161 ' NEI4
+ if_nz jmp #\C_sfq81_6132d4ec_read_word_L000159_161 ' NEI4
  mov r0, #0 ' reg <- coni
- jmp #\@C_s7i81_5fa8f449_read_word_L000159_160 ' JUMPV addrg
-C_s7i81_5fa8f449_read_word_L000159_161
+ jmp #\@C_sfq81_6132d4ec_read_word_L000159_160 ' JUMPV addrg
+C_sfq81_6132d4ec_read_word_L000159_161
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
@@ -1608,10 +1608,10 @@ C_s7i81_5fa8f449_read_word_L000159_161
  wrlong r0, RI ' ASGNI4 addrli reg
  mov r20, ##-1 ' reg <- con
  cmps r0, r20 wz
- if_nz jmp #\C_s7i81_5fa8f449_read_word_L000159_163 ' NEI4
+ if_nz jmp #\C_sfq81_6132d4ec_read_word_L000159_163 ' NEI4
  mov r0, #0 ' reg <- coni
- jmp #\@C_s7i81_5fa8f449_read_word_L000159_160 ' JUMPV addrg
-C_s7i81_5fa8f449_read_word_L000159_163
+ jmp #\@C_sfq81_6132d4ec_read_word_L000159_160 ' JUMPV addrg
+C_sfq81_6132d4ec_read_word_L000159_163
  mov r22, FP
  sub r22, #-(-4) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
@@ -1623,14 +1623,14 @@ C_s7i81_5fa8f449_read_word_L000159_163
  or r22, r20 ' BORI/U (1)
  wrword r22, r21 ' ASGNU2 reg reg
  mov r0, #1 ' reg <- coni
-C_s7i81_5fa8f449_read_word_L000159_160
+C_sfq81_6132d4ec_read_word_L000159_160
  PRIMITIVE(#POPM) ' restore registers
  add SP, #8 ' framesize
  PRIMITIVE(#RETF)
 
 
  alignl ' align long
-C_s7i82_5fa8f449_read_long_L000165 ' <symbol:read_long>
+C_sfq82_6132d4ec_read_long_L000165 ' <symbol:read_long>
  PRIMITIVE(#NEWF)
  sub SP, #16
  PRIMITIVE(#PSHM)
@@ -1646,10 +1646,10 @@ C_s7i82_5fa8f449_read_long_L000165 ' <symbol:read_long>
  wrlong r0, RI ' ASGNI4 addrli reg
  mov r20, ##-1 ' reg <- con
  cmps r0, r20 wz
- if_nz jmp #\C_s7i82_5fa8f449_read_long_L000165_167 ' NEI4
+ if_nz jmp #\C_sfq82_6132d4ec_read_long_L000165_167 ' NEI4
  mov r0, #0 ' reg <- coni
- jmp #\@C_s7i82_5fa8f449_read_long_L000165_166 ' JUMPV addrg
-C_s7i82_5fa8f449_read_long_L000165_167
+ jmp #\@C_sfq82_6132d4ec_read_long_L000165_166 ' JUMPV addrg
+C_sfq82_6132d4ec_read_long_L000165_167
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
@@ -1659,10 +1659,10 @@ C_s7i82_5fa8f449_read_long_L000165_167
  wrlong r0, RI ' ASGNI4 addrli reg
  mov r20, ##-1 ' reg <- con
  cmps r0, r20 wz
- if_nz jmp #\C_s7i82_5fa8f449_read_long_L000165_169 ' NEI4
+ if_nz jmp #\C_sfq82_6132d4ec_read_long_L000165_169 ' NEI4
  mov r0, #0 ' reg <- coni
- jmp #\@C_s7i82_5fa8f449_read_long_L000165_166 ' JUMPV addrg
-C_s7i82_5fa8f449_read_long_L000165_169
+ jmp #\@C_sfq82_6132d4ec_read_long_L000165_166 ' JUMPV addrg
+C_sfq82_6132d4ec_read_long_L000165_169
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
@@ -1672,10 +1672,10 @@ C_s7i82_5fa8f449_read_long_L000165_169
  wrlong r0, RI ' ASGNI4 addrli reg
  mov r20, ##-1 ' reg <- con
  cmps r0, r20 wz
- if_nz jmp #\C_s7i82_5fa8f449_read_long_L000165_171 ' NEI4
+ if_nz jmp #\C_sfq82_6132d4ec_read_long_L000165_171 ' NEI4
  mov r0, #0 ' reg <- coni
- jmp #\@C_s7i82_5fa8f449_read_long_L000165_166 ' JUMPV addrg
-C_s7i82_5fa8f449_read_long_L000165_171
+ jmp #\@C_sfq82_6132d4ec_read_long_L000165_166 ' JUMPV addrg
+C_sfq82_6132d4ec_read_long_L000165_171
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
@@ -1685,10 +1685,10 @@ C_s7i82_5fa8f449_read_long_L000165_171
  wrlong r0, RI ' ASGNI4 addrli reg
  mov r20, ##-1 ' reg <- con
  cmps r0, r20 wz
- if_nz jmp #\C_s7i82_5fa8f449_read_long_L000165_173 ' NEI4
+ if_nz jmp #\C_sfq82_6132d4ec_read_long_L000165_173 ' NEI4
  mov r0, #0 ' reg <- coni
- jmp #\@C_s7i82_5fa8f449_read_long_L000165_166 ' JUMPV addrg
-C_s7i82_5fa8f449_read_long_L000165_173
+ jmp #\@C_sfq82_6132d4ec_read_long_L000165_166 ' JUMPV addrg
+C_sfq82_6132d4ec_read_long_L000165_173
  mov r22, FP
  sub r22, #-(-4) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
@@ -1709,7 +1709,7 @@ C_s7i82_5fa8f449_read_long_L000165_173
  or r22, r20 ' BORI/U (1)
  wrlong r22, r21 ' ASGNU4 reg reg
  mov r0, #1 ' reg <- coni
-C_s7i82_5fa8f449_read_long_L000165_166
+C_sfq82_6132d4ec_read_long_L000165_166
  PRIMITIVE(#POPM) ' restore registers
  add SP, #16 ' framesize
  PRIMITIVE(#RETF)
@@ -1733,7 +1733,7 @@ C_restore_quetzal ' <symbol:restore_quetzal>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s7i82_5fa8f449_read_long_L000165
+ long @C_sfq82_6132d4ec_read_long_L000165
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
@@ -1744,7 +1744,7 @@ C_restore_quetzal ' <symbol:restore_quetzal>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s7i82_5fa8f449_read_long_L000165
+ long @C_sfq82_6132d4ec_read_long_L000165
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
  if_nz jmp #\C_restore_quetzal_176 ' NEI4
@@ -1758,7 +1758,7 @@ C_restore_quetzal_176
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s7i82_5fa8f449_read_long_L000165
+ long @C_sfq82_6132d4ec_read_long_L000165
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
  if_nz jmp #\C_restore_quetzal_179 ' NEI4
@@ -1821,7 +1821,7 @@ C_restore_quetzal_192
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s7i82_5fa8f449_read_long_L000165
+ long @C_sfq82_6132d4ec_read_long_L000165
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
@@ -1832,7 +1832,7 @@ C_restore_quetzal_192
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s7i82_5fa8f449_read_long_L000165
+ long @C_sfq82_6132d4ec_read_long_L000165
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
  if_nz jmp #\C_restore_quetzal_194 ' NEI4
@@ -1943,7 +1943,7 @@ C_restore_quetzal_202
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s7i81_5fa8f449_read_word_L000159
+ long @C_sfq81_6132d4ec_read_word_L000159
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
  if_nz jmp #\C_restore_quetzal_206 ' NEI4
@@ -2008,7 +2008,7 @@ C_restore_quetzal_214
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s7i81_5fa8f449_read_word_L000159
+ long @C_sfq81_6132d4ec_read_word_L000159
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
  if_nz jmp #\C_restore_quetzal_219 ' NEI4
@@ -2175,7 +2175,7 @@ C_restore_quetzal_249
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s7i81_5fa8f449_read_word_L000159
+ long @C_sfq81_6132d4ec_read_word_L000159
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
  if_nz jmp #\C_restore_quetzal_252 ' NEI4
@@ -2220,7 +2220,7 @@ C_restore_quetzal_256
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s7i81_5fa8f449_read_word_L000159
+ long @C_sfq81_6132d4ec_read_word_L000159
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
  if_nz jmp #\C_restore_quetzal_260 ' NEI4
@@ -2287,7 +2287,7 @@ C_restore_quetzal_268
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s7i82_5fa8f449_read_long_L000165
+ long @C_sfq82_6132d4ec_read_long_L000165
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
  if_nz jmp #\C_restore_quetzal_272 ' NEI4
@@ -2512,7 +2512,7 @@ C_restore_quetzal_290
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s7i81_5fa8f449_read_word_L000159
+ long @C_sfq81_6132d4ec_read_word_L000159
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
  if_nz jmp #\C_restore_quetzal_294 ' NEI4
@@ -2571,7 +2571,7 @@ C_restore_quetzal_302
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s7i81_5fa8f449_read_word_L000159
+ long @C_sfq81_6132d4ec_read_word_L000159
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
  if_nz jmp #\C_restore_quetzal_306 ' NEI4

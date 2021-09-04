@@ -6,9 +6,9 @@ s4_rx s4_core.s 256 export
 s4_tx s4_core.s 290 export
 s4_txflush s4_core.s 394 export
 s4_txcheck s4_core.s 456 export
-_release_lock s4_core.s 530 import
-_acquire_lock s4_core.s 532 import
-_locknew s4_core.s 534 import
+_locknew s4_core.s 530 import
+_release_lock s4_core.s 532 import
+_acquire_lock s4_core.s 534 import
 _locate_plugin s4_core.s 536 import
 _registry s4_core.s 538 import
 s4_decl s4_decl.s 9 export
@@ -24,9 +24,9 @@ s4_tx s4_ihex.s 40 import
 s4_padchar s4_padchar.s 9 export
 s4_tx s4_padchar.s 40 import
 s4_rxtime s4_rxtime.s 9 export
-_cnt s4_rxtime.s 71 import
-_clockfreq s4_rxtime.s 73 import
-s4_rxcheck s4_rxtime.s 75 import
+_clockfreq s4_rxtime.s 66 import
+_cnt s4_rxtime.s 68 import
+s4_rxcheck s4_rxtime.s 70 import
 s4_str s4_str.s 9 export
 s4_tx s4_str.s 41 import
 s4_strterm s4_strterm.s 9 export

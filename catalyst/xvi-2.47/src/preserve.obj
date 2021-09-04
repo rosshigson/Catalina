@@ -11,17 +11,17 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_s9vc_5fa8f427_sccsid_L000001 ' <symbol:sccsid>
- long @C_s9vc1_5fa8f427_2_L000003
+C_sbsg_6132d4ca_sccsid_L000001 ' <symbol:sccsid>
+ long @C_sbsg1_6132d4ca_2_L000003
 
 ' Catalina Export psv_strings
 
  alignl ' align long
 C_psv_strings ' <symbol:psv_strings>
- long @C_s9vc2_5fa8f427_18_L000019
- long @C_s9vc3_5fa8f427_20_L000021
- long @C_s9vc4_5fa8f427_22_L000023
- long @C_s9vc5_5fa8f427_24_L000025
+ long @C_sbsg2_6132d4ca_18_L000019
+ long @C_sbsg3_6132d4ca_20_L000021
+ long @C_sbsg4_6132d4ca_22_L000023
+ long @C_sbsg5_6132d4ca_24_L000025
  long $0
 
 ' Catalina Code
@@ -29,7 +29,7 @@ C_psv_strings ' <symbol:psv_strings>
 DAT ' code segment
 
  alignl ' align long
-C_s9vc6_5fa8f427_psvfile_L000026 ' <symbol:psvfile>
+C_sbsg6_6132d4ca_psvfile_L000026 ' <symbol:psvfile>
  PRIMITIVE(#NEWF)
  sub SP, #4
  PRIMITIVE(#PSHM)
@@ -42,7 +42,7 @@ C_s9vc6_5fa8f427_psvfile_L000026 ' <symbol:psvfile>
  adds r22, #16 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg
  cmp r22,  #0 wz
- if_nz jmp #\C_s9vc6_5fa8f427_psvfile_L000026_28  ' NEU4
+ if_nz jmp #\C_sbsg6_6132d4ca_psvfile_L000026_28  ' NEU4
  mov r22, r21
  adds r22, #12 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -53,12 +53,12 @@ C_s9vc6_5fa8f427_psvfile_L000026 ' <symbol:psvfile>
  sub r22, #-(-4) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRP4 reg
  cmp r22,  #0 wz
- if_nz jmp #\C_s9vc6_5fa8f427_psvfile_L000026_30  ' NEU4
- mov RI, ##@C_s9vc6_5fa8f427_psvfile_L000026_32_L000033
+ if_nz jmp #\C_sbsg6_6132d4ca_psvfile_L000026_30  ' NEU4
+ mov RI, ##@C_sbsg6_6132d4ca_psvfile_L000026_32_L000033
  mov BC, FP
  sub BC, #-(-4)
  wrlong RI, BC ' ASGNP4 addrli addrg
-C_s9vc6_5fa8f427_psvfile_L000026_30
+C_sbsg6_6132d4ca_psvfile_L000026_30
  mov RI, FP
  sub RI, #-(-4)
  rdlong r2, RI ' reg ARG INDIR ADDRLi
@@ -72,8 +72,8 @@ C_s9vc6_5fa8f427_psvfile_L000026_30
  adds r22, #16 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg
  cmp r22,  #0 wz
- if_nz jmp #\C_s9vc6_5fa8f427_psvfile_L000026_34  ' NEU4
- mov r2, ##@C_s9vc6_5fa8f427_psvfile_L000026_36_L000037 ' reg ARG ADDRG
+ if_nz jmp #\C_sbsg6_6132d4ca_psvfile_L000026_34  ' NEU4
+ mov r2, ##@C_sbsg6_6132d4ca_psvfile_L000026_36_L000037 ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -81,10 +81,10 @@ C_s9vc6_5fa8f427_psvfile_L000026_30
  long @C_show_error
  add SP, #4 ' CALL addrg
  mov r0, ##0 ' RET con
- jmp #\@C_s9vc6_5fa8f427_psvfile_L000026_27 ' JUMPV addrg
-C_s9vc6_5fa8f427_psvfile_L000026_34
-C_s9vc6_5fa8f427_psvfile_L000026_28
- mov r2, ##@C_s9vc6_5fa8f427_psvfile_L000026_38_L000039 ' reg ARG ADDRG
+ jmp #\@C_sbsg6_6132d4ca_psvfile_L000026_27 ' JUMPV addrg
+C_sbsg6_6132d4ca_psvfile_L000026_34
+C_sbsg6_6132d4ca_psvfile_L000026_28
+ mov r2, ##@C_sbsg6_6132d4ca_psvfile_L000026_38_L000039 ' reg ARG ADDRG
  mov r22, r21
  adds r22, #16 ' ADDP4 coni
  rdlong r3, r22 ' reg <- INDIRP4 reg
@@ -96,27 +96,27 @@ C_s9vc6_5fa8f427_psvfile_L000026_28
  mov r19, r0 ' CVI, CVU or LOAD
  mov r22, r19 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_s9vc6_5fa8f427_psvfile_L000026_40  ' NEU4
+ if_nz jmp #\C_sbsg6_6132d4ca_psvfile_L000026_40  ' NEU4
  mov r22, r21
  adds r22, #16 ' ADDP4 coni
  rdlong r2, r22 ' reg <- INDIRP4 reg
- mov r3, ##@C_s9vc6_5fa8f427_psvfile_L000026_42_L000043 ' reg ARG ADDRG
+ mov r3, ##@C_sbsg6_6132d4ca_psvfile_L000026_42_L000043 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
  long @C_show_error
  add SP, #8 ' CALL addrg
-C_s9vc6_5fa8f427_psvfile_L000026_40
+C_sbsg6_6132d4ca_psvfile_L000026_40
  mov r0, r19 ' CVI, CVU or LOAD
-C_s9vc6_5fa8f427_psvfile_L000026_27
+C_sbsg6_6132d4ca_psvfile_L000026_27
  PRIMITIVE(#POPM) ' restore registers
  add SP, #4 ' framesize
  PRIMITIVE(#RETF)
 
 
  alignl ' align long
-C_s9vcb_5fa8f427_putbuf_L000044 ' <symbol:putbuf>
+C_sbsgb_6132d4ca_putbuf_L000044 ' <symbol:putbuf>
  PRIMITIVE(#NEWF)
  sub SP, #8
  PRIMITIVE(#PSHM)
@@ -141,13 +141,13 @@ C_s9vcb_5fa8f427_putbuf_L000044 ' <symbol:putbuf>
  long @C_put_file
  add SP, #20 ' CALL addrg
  cmps r0,  #0 wz
- if_nz jmp #\C_s9vcb_5fa8f427_putbuf_L000044_46 ' NEI4
+ if_nz jmp #\C_sbsgb_6132d4ca_putbuf_L000044_46 ' NEI4
  mov r22, r23
  adds r22, #4 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg
  adds r22, #16 ' ADDP4 coni
  rdlong r2, r22 ' reg <- INDIRP4 reg
- mov r3, ##@C_s9vcb_5fa8f427_putbuf_L000044_48_L000049 ' reg ARG ADDRG
+ mov r3, ##@C_sbsgb_6132d4ca_putbuf_L000044_48_L000049 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -155,10 +155,10 @@ C_s9vcb_5fa8f427_putbuf_L000044 ' <symbol:putbuf>
  long @C_show_error
  add SP, #8 ' CALL addrg
  mov r0, #0 ' reg <- coni
- jmp #\@C_s9vcb_5fa8f427_putbuf_L000044_45 ' JUMPV addrg
-C_s9vcb_5fa8f427_putbuf_L000044_46
+ jmp #\@C_sbsgb_6132d4ca_putbuf_L000044_45 ' JUMPV addrg
+C_sbsgb_6132d4ca_putbuf_L000044_46
  mov r0, #1 ' reg <- coni
-C_s9vcb_5fa8f427_putbuf_L000044_45
+C_sbsgb_6132d4ca_putbuf_L000044_45
  PRIMITIVE(#POPM) ' restore registers
  add SP, #8 ' framesize
  PRIMITIVE(#RETF)
@@ -212,7 +212,7 @@ C_preservebuf_51
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_s9vc6_5fa8f427_psvfile_L000026 ' CALL addrg
+ long @C_sbsg6_6132d4ca_psvfile_L000026 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  mov r22, r21 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
@@ -225,7 +225,7 @@ C_preservebuf_58
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s9vcb_5fa8f427_putbuf_L000044
+ long @C_sbsgb_6132d4ca_putbuf_L000044
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
 C_preservebuf_50
@@ -293,7 +293,7 @@ C_exP_reserveA_llB_uffers_66
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_s9vc6_5fa8f427_psvfile_L000026 ' CALL addrg
+ long @C_sbsg6_6132d4ca_psvfile_L000026 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
  mov r22, r19 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
@@ -303,7 +303,7 @@ C_exP_reserveA_llB_uffers_66
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s9vcb_5fa8f427_putbuf_L000044
+ long @C_sbsgb_6132d4ca_putbuf_L000044
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
  if_nz jmp #\C_exP_reserveA_llB_uffers_72 ' NEI4
@@ -357,7 +357,7 @@ C_exP_reserveA_llB_uffers_69
 DAT ' const data segment
 
  alignl ' align long
-C_s9vcb_5fa8f427_putbuf_L000044_48_L000049 ' <symbol:48>
+C_sbsgb_6132d4ca_putbuf_L000044_48_L000049 ' <symbol:48>
  byte 69
  byte 114
  byte 114
@@ -391,7 +391,7 @@ C_s9vcb_5fa8f427_putbuf_L000044_48_L000049 ' <symbol:48>
  byte 0
 
  alignl ' align long
-C_s9vc6_5fa8f427_psvfile_L000026_42_L000043 ' <symbol:42>
+C_sbsg6_6132d4ca_psvfile_L000026_42_L000043 ' <symbol:42>
  byte 67
  byte 97
  byte 110
@@ -422,13 +422,13 @@ C_s9vc6_5fa8f427_psvfile_L000026_42_L000043 ' <symbol:42>
  byte 0
 
  alignl ' align long
-C_s9vc6_5fa8f427_psvfile_L000026_38_L000039 ' <symbol:38>
+C_sbsg6_6132d4ca_psvfile_L000026_38_L000039 ' <symbol:38>
  byte 119
  byte 98
  byte 0
 
  alignl ' align long
-C_s9vc6_5fa8f427_psvfile_L000026_36_L000037 ' <symbol:36>
+C_sbsg6_6132d4ca_psvfile_L000026_36_L000037 ' <symbol:36>
  byte 67
  byte 97
  byte 110
@@ -467,7 +467,7 @@ C_s9vc6_5fa8f427_psvfile_L000026_36_L000037 ' <symbol:36>
  byte 0
 
  alignl ' align long
-C_s9vc6_5fa8f427_psvfile_L000026_32_L000033 ' <symbol:32>
+C_sbsg6_6132d4ca_psvfile_L000026_32_L000033 ' <symbol:32>
  byte 117
  byte 110
  byte 110
@@ -478,7 +478,7 @@ C_s9vc6_5fa8f427_psvfile_L000026_32_L000033 ' <symbol:32>
  byte 0
 
  alignl ' align long
-C_s9vc5_5fa8f427_24_L000025 ' <symbol:24>
+C_sbsg5_6132d4ca_24_L000025 ' <symbol:24>
  byte 112
  byte 97
  byte 114
@@ -490,7 +490,7 @@ C_s9vc5_5fa8f427_24_L000025 ' <symbol:24>
  byte 0
 
  alignl ' align long
-C_s9vc4_5fa8f427_22_L000023 ' <symbol:22>
+C_sbsg4_6132d4ca_22_L000023 ' <symbol:22>
  byte 115
  byte 97
  byte 102
@@ -498,7 +498,7 @@ C_s9vc4_5fa8f427_22_L000023 ' <symbol:22>
  byte 0
 
  alignl ' align long
-C_s9vc3_5fa8f427_20_L000021 ' <symbol:20>
+C_sbsg3_6132d4ca_20_L000021 ' <symbol:20>
  byte 115
  byte 116
  byte 97
@@ -510,7 +510,7 @@ C_s9vc3_5fa8f427_20_L000021 ' <symbol:20>
  byte 0
 
  alignl ' align long
-C_s9vc2_5fa8f427_18_L000019 ' <symbol:18>
+C_sbsg2_6132d4ca_18_L000019 ' <symbol:18>
  byte 117
  byte 110
  byte 115
@@ -520,7 +520,7 @@ C_s9vc2_5fa8f427_18_L000019 ' <symbol:18>
  byte 0
 
  alignl ' align long
-C_s9vc1_5fa8f427_2_L000003 ' <symbol:2>
+C_sbsg1_6132d4ca_2_L000003 ' <symbol:2>
  byte 64
  byte 40
  byte 35

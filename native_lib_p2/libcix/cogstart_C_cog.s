@@ -584,6 +584,22 @@ C_N_M_M__dynamic_array ' <symbol:NMM_dynamic_array>
  long $fd64002d
  long $f6642c01
  long $fd9fffec
+ long $f0642e02
+ long $ff0003df
+ long $f1042fb0
+ long $fb003017
+ long $ff007fff
+ long $f50431ff
+ long $f0643218
+ long $f5403019
+ long $fc603017
+ long $c602c18
+ long $fac03218
+ long $fc403216
+ long $f1042c01
+ long $f1043001
+ long $fb6c2ffb
+ long $fd64002d
  long $0
  long $0
  long $0
@@ -659,6 +675,22 @@ C_N_M_M__L_U_T__L_I_B_R_A_R_Y__array ' <symbol:NMM_LUT_LIBRARY_array>
  long $fd64002d
  long $f6642c01
  long $fd9fffec
+ long $f0642e02
+ long $ff0003df
+ long $f1042fb0
+ long $fb003017
+ long $ff007fff
+ long $f50431ff
+ long $f0643218
+ long $f5403019
+ long $fc603017
+ long $c602c18
+ long $fac03218
+ long $fc403216
+ long $f1042c01
+ long $f1043001
+ long $fb6c2ffb
+ long $fd64002d
 
 ' Catalina Export _cogstart_C_cog
 
@@ -694,7 +726,7 @@ C__cogstart_C__cog ' <symbol:_cogstart_C_cog>
  mov RI, FP
  sub RI, #-(-16)
  wrlong r22, RI ' ASGNU4 addrli reg
- mov r22, #64 ' reg <- coni
+ mov r22, #80 ' reg <- coni
  mov RI, FP
  sub RI, #-(-12)
  wrlong r22, RI ' ASGNU4 addrli reg
@@ -731,17 +763,12 @@ C__cogstart_C__cog ' <symbol:_cogstart_C_cog>
  long @C__clockfreq ' CALL addrg
  mov r20, r0 ' CVI, CVU or LOAD
  mov r18, #20 ' reg <- coni
- #ifndef NO_INTERRUPTS
-  stalli
- #endif
- qdiv r20, r18 ' DIVU4
- getqx r0
- #ifndef NO_INTERRUPTS
-  allowi
- #endif
+ mov r0, r20 ' setup r0/r1 (2)
+ mov r1, r18 ' setup r0/r1 (2)
+ PRIMITIVE(#DIVS) ' DIVI
  mov r20, r0 ' CVI, CVU or LOAD
- mov r2, r22 ' ADDU
- add r2, r20 ' ADDU (3)
+ mov r2, r22 ' ADDI/P
+ adds r2, r20 ' ADDI/P (3)
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C__waitcnt ' CALL addrg
@@ -752,13 +779,13 @@ C__cogstart_C__cog ' <symbol:_cogstart_C_cog>
  PRIMITIVE(#RETF)
 
 
-' Catalina Import _registry
+' Catalina Import _clockfreq
 
 ' Catalina Import _cnt
 
 ' Catalina Import _waitcnt
 
-' Catalina Import _coginit
+' Catalina Import _registry
 
-' Catalina Import _clockfreq
+' Catalina Import _coginit
 ' end

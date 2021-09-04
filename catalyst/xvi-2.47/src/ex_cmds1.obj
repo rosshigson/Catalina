@@ -11,11 +11,11 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_s9vk_5fa8f426_sccsid_L000001 ' <symbol:sccsid>
- long @C_s9vk1_5fa8f426_2_L000003
+C_sk9c_6132d4ca_sccsid_L000001 ' <symbol:sccsid>
+ long @C_sk9c1_6132d4ca_2_L000003
 
  alignl ' align long
-C_s9vk5_5fa8f426_nowrtmsg_L000021 ' <symbol:nowrtmsg>
+C_sk9c5_6132d4ca_nowrtmsg_L000021 ' <symbol:nowrtmsg>
  byte 78
  byte 111
  byte 32
@@ -65,7 +65,7 @@ C_s9vk5_5fa8f426_nowrtmsg_L000021 ' <symbol:nowrtmsg>
  byte 0
 
  alignl ' align long
-C_s9vk6_5fa8f426_nowrtbufs_L000022 ' <symbol:nowrtbufs>
+C_sk9c6_6132d4ca_nowrtbufs_L000022 ' <symbol:nowrtbufs>
  byte 83
  byte 111
  byte 109
@@ -140,7 +140,7 @@ C_exQ_uit_25
  long @C_xvC_hangesN_otS_aved ' CALL addrg
  cmps r0,  #0 wz
  if_z jmp #\C_exQ_uit_27 ' EQI4
- mov r2, ##@C_s9vk6_5fa8f426_nowrtbufs_L000022 ' reg ARG ADDRG
+ mov r2, ##@C_sk9c6_6132d4ca_nowrtbufs_L000022 ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -155,7 +155,7 @@ C_exQ_uit_25
 C_exQ_uit_27
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
- long @C_s9vk7_5fa8f426_more_files_L000023 ' CALL addrg
+ long @C_sk9c7_6132d4ca_more_files_L000023 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
  if_nz jmp #\C_exQ_uit_30 ' NEI4
@@ -440,7 +440,7 @@ C_exC_loseW_indow ' <symbol:exCloseWindow>
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #2 wcz
  if_ae jmp #\C_exC_loseW_indow_50 ' GEI4
- mov r2, ##@C_s9vk5_5fa8f426_nowrtmsg_L000021 ' reg ARG ADDRG
+ mov r2, ##@C_sk9c5_6132d4ca_nowrtmsg_L000021 ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -459,7 +459,7 @@ C_exC_loseW_indow_50
  if_nz jmp #\C_exC_loseW_indow_52  ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
- long @C_s9vk7_5fa8f426_more_files_L000023 ' CALL addrg
+ long @C_sk9c7_6132d4ca_more_files_L000023 ' CALL addrg
  cmps r0,  #0 wz
  if_z jmp #\C_exC_loseW_indow_54 ' EQI4
  jmp #\@C_exC_loseW_indow_49 ' JUMPV addrg
@@ -673,7 +673,7 @@ C_exE_ditF_ile ' <symbol:exEditFile>
  and r22, #1 ' BANDU4 coni
  cmp r22,  #0 wz
  if_z jmp #\C_exE_ditF_ile_72 ' EQU4
- mov r2, ##@C_s9vk5_5fa8f426_nowrtmsg_L000021 ' reg ARG ADDRG
+ mov r2, ##@C_sk9c5_6132d4ca_nowrtmsg_L000021 ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -1112,7 +1112,7 @@ C_exE_ditF_ile_71
 DAT ' uninitialized data segment
 
  alignl ' align long
-C_s9vkh_5fa8f426_show_arg_L000140_fb_L000143 ' <symbol:fb>
+C_sk9ch_6132d4ca_show_arg_L000140_fb_L000143 ' <symbol:fb>
  byte 0[16]
 
 ' Catalina Code
@@ -1120,69 +1120,69 @@ C_s9vkh_5fa8f426_show_arg_L000140_fb_L000143 ' <symbol:fb>
 DAT ' code segment
 
  alignl ' align long
-C_s9vkh_5fa8f426_show_arg_L000140 ' <symbol:show_arg>
+C_sk9ch_6132d4ca_show_arg_L000140 ' <symbol:show_arg>
  PRIMITIVE(#PSHM)
  long $f40000 ' save registers
- mov r22, ##@C_s9vkg_5fa8f426_curr_arg_L000139
+ mov r22, ##@C_sk9cg_6132d4ca_curr_arg_L000139
  rdlong r22, r22 ' reg <- INDIRI4 addrg
- mov r20, ##@C_s9vk3_5fa8f426_numfiles_L000019
+ mov r20, ##@C_sk9c3_6132d4ca_numfiles_L000019
  rdlong r20, r20 ' reg <- INDIRI4 addrg
  cmps r22, r20 wcz
- if_b jmp #\C_s9vkh_5fa8f426_show_arg_L000140_144 ' LTI4
+ if_b jmp #\C_sk9ch_6132d4ca_show_arg_L000140_144 ' LTI4
  mov r0, ##0 ' RET con
- jmp #\@C_s9vkh_5fa8f426_show_arg_L000140_141 ' JUMPV addrg
-C_s9vkh_5fa8f426_show_arg_L000140_144
+ jmp #\@C_sk9ch_6132d4ca_show_arg_L000140_141 ' JUMPV addrg
+C_sk9ch_6132d4ca_show_arg_L000140_144
  mov r22, #0 ' reg <- coni
- wrlong r22, ##@C_s9vkh_5fa8f426_show_arg_L000140_fb_L000143+12 ' ASGNU4 addrg reg
- mov r22, ##@C_s9vkg_5fa8f426_curr_arg_L000139
+ wrlong r22, ##@C_sk9ch_6132d4ca_show_arg_L000140_fb_L000143+12 ' ASGNU4 addrg reg
+ mov r22, ##@C_sk9cg_6132d4ca_curr_arg_L000139
  rdlong r22, r22 ' reg <- INDIRI4 addrg
- mov r20, ##@C_s9vk4_5fa8f426_curfile_L000020
+ mov r20, ##@C_sk9c4_6132d4ca_curfile_L000020
  rdlong r20, r20 ' reg <- INDIRI4 addrg
  cmps r22, r20 wz
- if_nz jmp #\C_s9vkh_5fa8f426_show_arg_L000140_151 ' NEI4
+ if_nz jmp #\C_sk9ch_6132d4ca_show_arg_L000140_151 ' NEI4
  mov r23, #93 ' reg <- coni
- jmp #\@C_s9vkh_5fa8f426_show_arg_L000140_152 ' JUMPV addrg
-C_s9vkh_5fa8f426_show_arg_L000140_151
+ jmp #\@C_sk9ch_6132d4ca_show_arg_L000140_152 ' JUMPV addrg
+C_sk9ch_6132d4ca_show_arg_L000140_151
  mov r23, #32 ' reg <- coni
-C_s9vkh_5fa8f426_show_arg_L000140_152
+C_sk9ch_6132d4ca_show_arg_L000140_152
  mov r2, r23 ' CVI, CVU or LOAD
- mov r22, ##@C_s9vkg_5fa8f426_curr_arg_L000139
+ mov r22, ##@C_sk9cg_6132d4ca_curr_arg_L000139
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  mov r20, r22
  shl r20, #2 ' LSHI4 coni
- mov r18, ##@C_s9vk2_5fa8f426_files_L000018
+ mov r18, ##@C_sk9c2_6132d4ca_files_L000018
  rdlong r18, r18 ' reg <- INDIRP4 addrg
  adds r20, r18 ' ADDI/P (1)
  rdlong r3, r20 ' reg <- INDIRP4 reg
- mov r20, ##@C_s9vk4_5fa8f426_curfile_L000020
+ mov r20, ##@C_sk9c4_6132d4ca_curfile_L000020
  rdlong r20, r20 ' reg <- INDIRI4 addrg
  cmps r22, r20 wz
- if_nz jmp #\C_s9vkh_5fa8f426_show_arg_L000140_153 ' NEI4
+ if_nz jmp #\C_sk9ch_6132d4ca_show_arg_L000140_153 ' NEI4
  mov r21, #91 ' reg <- coni
- jmp #\@C_s9vkh_5fa8f426_show_arg_L000140_154 ' JUMPV addrg
-C_s9vkh_5fa8f426_show_arg_L000140_153
+ jmp #\@C_sk9ch_6132d4ca_show_arg_L000140_154 ' JUMPV addrg
+C_sk9ch_6132d4ca_show_arg_L000140_153
  mov r21, #32 ' reg <- coni
-C_s9vkh_5fa8f426_show_arg_L000140_154
+C_sk9ch_6132d4ca_show_arg_L000140_154
  mov r4, r21 ' CVI, CVU or LOAD
- mov r5, ##@C_s9vkh_5fa8f426_show_arg_L000140_147_L000148 ' reg ARG ADDRG
+ mov r5, ##@C_sk9ch_6132d4ca_show_arg_L000140_147_L000148 ' reg ARG ADDRG
  sub SP, #16 ' stack space for reg ARGs
- mov RI, ##@C_s9vkh_5fa8f426_show_arg_L000140_fb_L000143
+ mov RI, ##@C_sk9ch_6132d4ca_show_arg_L000140_fb_L000143
  wrlong RI, --PTRA ' stack ARG ADDRG
  mov BC, #20 ' arg size, rpsize = 0, spsize = 20
  add SP, #4 ' correct for new kernel !!! 
  PRIMITIVE(#CALA)
  long @C_lformat
  add SP, #16 ' CALL addrg
- mov r22, ##@C_s9vkg_5fa8f426_curr_arg_L000139 ' reg <- addrg
+ mov r22, ##@C_sk9cg_6132d4ca_curr_arg_L000139 ' reg <- addrg
  rdlong r22, r22 ' reg <- INDIRI4 reg
  adds r22, #1 ' ADDI4 coni
- wrlong r22, ##@C_s9vkg_5fa8f426_curr_arg_L000139 ' ASGNI4 addrg reg
- mov r2, ##@C_s9vkh_5fa8f426_show_arg_L000140_fb_L000143 ' reg ARG ADDRG
+ wrlong r22, ##@C_sk9cg_6132d4ca_curr_arg_L000139 ' ASGNI4 addrg reg
+ mov r2, ##@C_sk9ch_6132d4ca_show_arg_L000140_fb_L000143 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_flexgetstr ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
-C_s9vkh_5fa8f426_show_arg_L000140_141
+C_sk9ch_6132d4ca_show_arg_L000140_141
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
@@ -1196,7 +1196,7 @@ C_exA_rgs ' <symbol:exArgs>
  PRIMITIVE(#PSHM)
  long $faa800 ' save registers
  mov r23, r2 ' reg var <- reg arg
- mov r22, ##@C_s9vk3_5fa8f426_numfiles_L000019
+ mov r22, ##@C_sk9c3_6132d4ca_numfiles_L000019
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz
  if_nz jmp #\C_exA_rgs_156 ' NEI4
@@ -1230,7 +1230,7 @@ C_exA_rgs_156
 C_exA_rgs_162
  mov r22, r21
  shl r22, #2 ' LSHI4 coni
- mov r20, ##@C_s9vk2_5fa8f426_files_L000018
+ mov r20, ##@C_sk9c2_6132d4ca_files_L000018
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -1282,7 +1282,7 @@ C_exA_rgs_178
  long @C_flexaddch
  add SP, #4 ' CALL addrg
 C_exA_rgs_179
- mov r22, ##@C_s9vk4_5fa8f426_curfile_L000020
+ mov r22, ##@C_sk9c4_6132d4ca_curfile_L000020
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r21, r22 wz
  if_nz jmp #\C_exA_rgs_181 ' NEI4
@@ -1304,7 +1304,7 @@ C_exA_rgs_181
  PRIMITIVE(#CALA)
  long @C_lformat
  add SP, #8 ' CALL addrg
- mov r22, ##@C_s9vk4_5fa8f426_curfile_L000020
+ mov r22, ##@C_sk9c4_6132d4ca_curfile_L000020
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r21, r22 wz
  if_nz jmp #\C_exA_rgs_183 ' NEI4
@@ -1322,7 +1322,7 @@ C_exA_rgs_166
 ' C_exA_rgs_163 ' (symbol refcount = 0)
  adds r21, #1 ' ADDI4 coni
 C_exA_rgs_165
- mov r22, ##@C_s9vk3_5fa8f426_numfiles_L000019
+ mov r22, ##@C_sk9c3_6132d4ca_numfiles_L000019
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r21, r22 wcz
  if_b jmp #\C_exA_rgs_162 ' LTI4
@@ -1366,10 +1366,10 @@ C_exA_rgs_193
  jmp #\@C_exA_rgs_186 ' JUMPV addrg
 C_exA_rgs_185
  mov r22, #0 ' reg <- coni
- wrlong r22, ##@C_s9vkg_5fa8f426_curr_arg_L000139 ' ASGNI4 addrg reg
+ wrlong r22, ##@C_sk9cg_6132d4ca_curr_arg_L000139 ' ASGNI4 addrg reg
  mov r2, r22 ' CVI, CVU or LOAD
  mov r3, r19 ' CVI, CVU or LOAD
- mov r4, ##@C_s9vkh_5fa8f426_show_arg_L000140 ' reg ARG ADDRG
+ mov r4, ##@C_sk9ch_6132d4ca_show_arg_L000140 ' reg ARG ADDRG
  mov r5, r23 ' CVI, CVU or LOAD
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
@@ -1417,7 +1417,7 @@ C_exN_ext ' <symbol:exNext>
  and r22, #1 ' BANDU4 coni
  cmp r22,  #0 wz
  if_z jmp #\C_exN_ext_197 ' EQU4
- mov r2, ##@C_s9vk5_5fa8f426_nowrtmsg_L000021 ' reg ARG ADDRG
+ mov r2, ##@C_sk9c5_6132d4ca_nowrtmsg_L000021 ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -1426,7 +1426,7 @@ C_exN_ext ' <symbol:exNext>
  add SP, #4 ' CALL addrg
  jmp #\@C_exN_ext_194 ' JUMPV addrg
 C_exN_ext_197
- mov r22, ##@C_s9vk3_5fa8f426_numfiles_L000019
+ mov r22, ##@C_sk9c3_6132d4ca_numfiles_L000019
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz
  if_nz jmp #\C_exN_ext_199 ' NEI4
@@ -1436,8 +1436,8 @@ C_exN_ext_197
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_alloc ' CALL addrg
- wrlong r0, ##@C_s9vk2_5fa8f426_files_L000018 ' ASGNP4 addrg reg
- mov r22, ##@C_s9vk2_5fa8f426_files_L000018
+ wrlong r0, ##@C_sk9c2_6132d4ca_files_L000018 ' ASGNP4 addrg reg
+ mov r22, ##@C_sk9c2_6132d4ca_files_L000018
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  if_nz jmp #\C_exN_ext_200  ' NEU4
@@ -1448,7 +1448,7 @@ C_exN_ext_199
 C_exN_ext_203
  mov r22, r15
  shl r22, #2 ' LSHI4 coni
- mov r20, ##@C_s9vk2_5fa8f426_files_L000018
+ mov r20, ##@C_sk9c2_6132d4ca_files_L000018
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
@@ -1458,31 +1458,31 @@ C_exN_ext_203
 ' C_exN_ext_204 ' (symbol refcount = 0)
  adds r15, #1 ' ADDI4 coni
 C_exN_ext_206
- mov r22, ##@C_s9vk3_5fa8f426_numfiles_L000019
+ mov r22, ##@C_sk9c3_6132d4ca_numfiles_L000019
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r15, r22 wcz
  if_b jmp #\C_exN_ext_203 ' LTI4
- mov r22, ##@C_s9vk3_5fa8f426_numfiles_L000019
+ mov r22, ##@C_sk9c3_6132d4ca_numfiles_L000019
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r21, r22 wz
  if_z jmp #\C_exN_ext_207 ' EQI4
  mov r22, r21 ' CVI, CVU or LOAD
  mov r2, r22
  shl r2, #2 ' LSHU4 coni
- mov r22, ##@C_s9vk2_5fa8f426_files_L000018 ' reg <- addrg
+ mov r22, ##@C_sk9c2_6132d4ca_files_L000018 ' reg <- addrg
  rdlong r3, r22 ' reg <- INDIRP4 reg
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
  long @C_realloc
  add SP, #4 ' CALL addrg
- wrlong r0, ##@C_s9vk2_5fa8f426_files_L000018 ' ASGNP4 addrg reg
- mov r22, ##@C_s9vk2_5fa8f426_files_L000018
+ wrlong r0, ##@C_sk9c2_6132d4ca_files_L000018 ' ASGNP4 addrg reg
+ mov r22, ##@C_sk9c2_6132d4ca_files_L000018
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  if_nz jmp #\C_exN_ext_209  ' NEU4
  mov r22, #0 ' reg <- coni
- wrlong r22, ##@C_s9vk3_5fa8f426_numfiles_L000019 ' ASGNI4 addrg reg
+ wrlong r22, ##@C_sk9c3_6132d4ca_numfiles_L000019 ' ASGNI4 addrg reg
  jmp #\@C_exN_ext_194 ' JUMPV addrg
 C_exN_ext_209
 C_exN_ext_207
@@ -1498,13 +1498,13 @@ C_exN_ext_211
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_strsave ' CALL addrg
- mov r18, ##@C_s9vk2_5fa8f426_files_L000018
+ mov r18, ##@C_sk9c2_6132d4ca_files_L000018
  rdlong r18, r18 ' reg <- INDIRP4 addrg
  adds r22, r18 ' ADDI/P (1)
  wrlong r0, r22 ' ASGNP4 reg reg
  mov r22, r15
  shl r22, #2 ' LSHI4 coni
- mov r20, ##@C_s9vk2_5fa8f426_files_L000018
+ mov r20, ##@C_sk9c2_6132d4ca_files_L000018
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -1514,7 +1514,7 @@ C_exN_ext_211
 C_exN_ext_217
  mov r22, r15
  shl r22, #2 ' LSHI4 coni
- mov r20, ##@C_s9vk2_5fa8f426_files_L000018
+ mov r20, ##@C_sk9c2_6132d4ca_files_L000018
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
@@ -1527,16 +1527,16 @@ C_exN_ext_218
  mov r15, r22 ' CVI, CVU or LOAD
  cmps r22,  #0 wcz
  if_ae jmp #\C_exN_ext_217 ' GEI4
- mov r2, ##@C_s9vk2_5fa8f426_files_L000018
+ mov r2, ##@C_sk9c2_6132d4ca_files_L000018
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_free ' CALL addrg
  mov r22, ##0 ' reg <- con
- wrlong r22, ##@C_s9vk2_5fa8f426_files_L000018 ' ASGNP4 addrg reg
+ wrlong r22, ##@C_sk9c2_6132d4ca_files_L000018 ' ASGNP4 addrg reg
  mov r22, #0 ' reg <- coni
- wrlong r22, ##@C_s9vk3_5fa8f426_numfiles_L000019 ' ASGNI4 addrg reg
+ wrlong r22, ##@C_sk9c3_6132d4ca_numfiles_L000019 ' ASGNI4 addrg reg
  jmp #\@C_exN_ext_194 ' JUMPV addrg
 C_exN_ext_215
 ' C_exN_ext_212 ' (symbol refcount = 0)
@@ -1544,15 +1544,15 @@ C_exN_ext_215
 C_exN_ext_214
  cmps r15, r21 wcz
  if_b jmp #\C_exN_ext_211 ' LTI4
- wrlong r21, ##@C_s9vk3_5fa8f426_numfiles_L000019 ' ASGNI4 addrg reg
+ wrlong r21, ##@C_sk9c3_6132d4ca_numfiles_L000019 ' ASGNI4 addrg reg
  mov r22, #0 ' reg <- coni
- wrlong r22, ##@C_s9vk4_5fa8f426_curfile_L000020 ' ASGNI4 addrg reg
+ wrlong r22, ##@C_sk9c4_6132d4ca_curfile_L000020 ' ASGNI4 addrg reg
  mov r22, ##@C_echo ' reg <- addrg
  rdlong r22, r22 ' reg <- INDIRU4 reg
  mov r20, ##$fffffff1 ' reg <- con
  and r22, r20 ' BANDI/U (1)
  wrlong r22, ##@C_echo ' ASGNU4 addrg reg
- mov r22, ##@C_s9vk2_5fa8f426_files_L000018
+ mov r22, ##@C_sk9c2_6132d4ca_files_L000018
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  rdlong r2, r22 ' reg <- INDIRP4 reg
  mov r3, r17 ' CVI, CVU or LOAD
@@ -1598,9 +1598,9 @@ C_exN_ext_224
  mov r20, r23 ' CVI, CVU or LOAD
  cmp r22, r20 wz
  if_nz jmp #\C_exN_ext_224  ' NEU4
- mov r22, ##@C_s9vk3_5fa8f426_numfiles_L000019
+ mov r22, ##@C_sk9c3_6132d4ca_numfiles_L000019
  rdlong r22, r22 ' reg <- INDIRI4 addrg
- mov r20, ##@C_s9vk4_5fa8f426_curfile_L000020
+ mov r20, ##@C_sk9c4_6132d4ca_curfile_L000020
  rdlong r20, r20 ' reg <- INDIRI4 addrg
  mov r11, r22 ' SUBI/P
  subs r11, r20 ' SUBI/P (3)
@@ -1687,12 +1687,12 @@ C_exN_ext_244
  mov RI, FP
  sub RI, #-(-8)
  rdlong r2, RI ' reg ARG INDIR ADDRLi
- mov r22, ##@C_s9vk4_5fa8f426_curfile_L000020 ' reg <- addrg
+ mov r22, ##@C_sk9c4_6132d4ca_curfile_L000020 ' reg <- addrg
  rdlong r22, r22 ' reg <- INDIRI4 reg
  adds r22, #1 ' ADDI4 coni
- wrlong r22, ##@C_s9vk4_5fa8f426_curfile_L000020 ' ASGNI4 addrg reg
+ wrlong r22, ##@C_sk9c4_6132d4ca_curfile_L000020 ' ASGNI4 addrg reg
  shl r22, #2 ' LSHI4 coni
- mov r20, ##@C_s9vk2_5fa8f426_files_L000018
+ mov r20, ##@C_sk9c2_6132d4ca_files_L000018
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r3, r22 ' reg <- INDIRP4 reg
@@ -1722,10 +1722,10 @@ C_exN_ext_245
  long @C_move_window_to_cursor ' CALL addrg
  cmps r7,  #0 wz
  if_nz jmp #\C_exN_ext_249 ' NEI4
- mov r22, ##@C_s9vk4_5fa8f426_curfile_L000020 ' reg <- addrg
+ mov r22, ##@C_sk9c4_6132d4ca_curfile_L000020 ' reg <- addrg
  rdlong r22, r22 ' reg <- INDIRI4 reg
  subs r22, #1 ' SUBI4 coni
- wrlong r22, ##@C_s9vk4_5fa8f426_curfile_L000020 ' ASGNI4 addrg reg
+ wrlong r22, ##@C_sk9c4_6132d4ca_curfile_L000020 ' ASGNI4 addrg reg
  jmp #\@C_exN_ext_239 ' JUMPV addrg
 C_exN_ext_249
  mov r2, r11 ' CVI, CVU or LOAD
@@ -1733,10 +1733,10 @@ C_exN_ext_249
  PRIMITIVE(#CALA)
  long @C_xvE_qualiseW_indows ' CALL addrg
 C_exN_ext_238
- mov r22, ##@C_s9vk4_5fa8f426_curfile_L000020
+ mov r22, ##@C_sk9c4_6132d4ca_curfile_L000020
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  adds r22, #1 ' ADDI4 coni
- mov r20, ##@C_s9vk3_5fa8f426_numfiles_L000019
+ mov r20, ##@C_sk9c3_6132d4ca_numfiles_L000019
  rdlong r20, r20 ' reg <- INDIRI4 addrg
  cmps r22, r20 wcz
  if_ae jmp #\C_exN_ext_251 ' GEI4
@@ -1765,10 +1765,10 @@ C_exN_ext_239
  add SP, #4 ' CALL addrg
  jmp #\@C_exN_ext_196 ' JUMPV addrg
 C_exN_ext_195
- mov r22, ##@C_s9vk4_5fa8f426_curfile_L000020
+ mov r22, ##@C_sk9c4_6132d4ca_curfile_L000020
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  adds r22, #1 ' ADDI4 coni
- mov r20, ##@C_s9vk3_5fa8f426_numfiles_L000019
+ mov r20, ##@C_sk9c3_6132d4ca_numfiles_L000019
  rdlong r20, r20 ' reg <- INDIRI4 addrg
  cmps r22, r20 wcz
  if_ae jmp #\C_exN_ext_252 ' GEI4
@@ -1782,7 +1782,7 @@ C_exN_ext_195
  and r22, #1 ' BANDU4 coni
  cmp r22,  #0 wz
  if_z jmp #\C_exN_ext_254 ' EQU4
- mov r2, ##@C_s9vk5_5fa8f426_nowrtmsg_L000021 ' reg ARG ADDRG
+ mov r2, ##@C_sk9c5_6132d4ca_nowrtmsg_L000021 ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -1796,12 +1796,12 @@ C_exN_ext_254
  mov r20, ##$fffffff1 ' reg <- con
  and r22, r20 ' BANDI/U (1)
  wrlong r22, ##@C_echo ' ASGNU4 addrg reg
- mov r22, ##@C_s9vk4_5fa8f426_curfile_L000020 ' reg <- addrg
+ mov r22, ##@C_sk9c4_6132d4ca_curfile_L000020 ' reg <- addrg
  rdlong r22, r22 ' reg <- INDIRI4 reg
  adds r22, #1 ' ADDI4 coni
- wrlong r22, ##@C_s9vk4_5fa8f426_curfile_L000020 ' ASGNI4 addrg reg
+ wrlong r22, ##@C_sk9c4_6132d4ca_curfile_L000020 ' ASGNI4 addrg reg
  shl r22, #2 ' LSHI4 coni
- mov r20, ##@C_s9vk2_5fa8f426_files_L000018
+ mov r20, ##@C_sk9c2_6132d4ca_files_L000018
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
@@ -1853,14 +1853,14 @@ C_exR_ewind ' <symbol:exRewind>
  long $f00000 ' save registers
  mov r23, r3 ' reg var <- reg arg
  mov r21, r2 ' reg var <- reg arg
- mov r22, ##@C_s9vk3_5fa8f426_numfiles_L000019
+ mov r22, ##@C_sk9c3_6132d4ca_numfiles_L000019
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #1 wcz
  if_a jmp #\C_exR_ewind_259 ' GTI4
  jmp #\@C_exR_ewind_258 ' JUMPV addrg
 C_exR_ewind_259
  mov r22, #0 ' reg <- coni
- wrlong r22, ##@C_s9vk4_5fa8f426_curfile_L000020 ' ASGNI4 addrg reg
+ wrlong r22, ##@C_sk9c4_6132d4ca_curfile_L000020 ' ASGNI4 addrg reg
  mov r22, ##@C_echo ' reg <- addrg
  rdlong r22, r22 ' reg <- INDIRU4 reg
  mov RI, FP
@@ -1869,7 +1869,7 @@ C_exR_ewind_259
  mov r20, ##$fffffff1 ' reg <- con
  and r22, r20 ' BANDI/U (1)
  wrlong r22, ##@C_echo ' ASGNU4 addrg reg
- mov r22, ##@C_s9vk2_5fa8f426_files_L000018
+ mov r22, ##@C_sk9c2_6132d4ca_files_L000018
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  rdlong r2, r22 ' reg <- INDIRP4 reg
  mov r3, r21 ' CVI, CVU or LOAD
@@ -2612,28 +2612,28 @@ C_exC_ompareW_indows_312
 
 
  alignl ' align long
-C_s9vk7_5fa8f426_more_files_L000023 ' <symbol:more_files>
+C_sk9c7_6132d4ca_more_files_L000023 ' <symbol:more_files>
  PRIMITIVE(#PSHM)
  long $f00000 ' save registers
- mov r22, ##@C_s9vk3_5fa8f426_numfiles_L000019
+ mov r22, ##@C_sk9c3_6132d4ca_numfiles_L000019
  rdlong r22, r22 ' reg <- INDIRI4 addrg
- mov r20, ##@C_s9vk4_5fa8f426_curfile_L000020
+ mov r20, ##@C_sk9c4_6132d4ca_curfile_L000020
  rdlong r20, r20 ' reg <- INDIRI4 addrg
  adds r20, #1 ' ADDI4 coni
  mov r23, r22 ' SUBI/P
  subs r23, r20 ' SUBI/P (3)
  cmps r23,  #0 wcz
- if_be jmp #\C_s9vk7_5fa8f426_more_files_L000023_337 ' LEI4
+ if_be jmp #\C_sk9c7_6132d4ca_more_files_L000023_337 ' LEI4
  cmps r23,  #1 wcz
- if_be jmp #\C_s9vk7_5fa8f426_more_files_L000023_344 ' LEI4
- mov r21, ##@C_s9vk7_5fa8f426_more_files_L000023_341_L000342 ' reg <- addrg
- jmp #\@C_s9vk7_5fa8f426_more_files_L000023_345 ' JUMPV addrg
-C_s9vk7_5fa8f426_more_files_L000023_344
+ if_be jmp #\C_sk9c7_6132d4ca_more_files_L000023_344 ' LEI4
+ mov r21, ##@C_sk9c7_6132d4ca_more_files_L000023_341_L000342 ' reg <- addrg
+ jmp #\@C_sk9c7_6132d4ca_more_files_L000023_345 ' JUMPV addrg
+C_sk9c7_6132d4ca_more_files_L000023_344
  mov r21, ##@C_exE_ditF_ile_109_L000110 ' reg <- addrg
-C_s9vk7_5fa8f426_more_files_L000023_345
+C_sk9c7_6132d4ca_more_files_L000023_345
  mov r2, r21 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
- mov r4, ##@C_s9vk7_5fa8f426_more_files_L000023_339_L000340 ' reg ARG ADDRG
+ mov r4, ##@C_sk9c7_6132d4ca_more_files_L000023_339_L000340 ' reg ARG ADDRG
  mov r5, ##@C_curwin
  rdlong r5, r5
  ' reg ARG INDIR ADDRG
@@ -2643,10 +2643,10 @@ C_s9vk7_5fa8f426_more_files_L000023_345
  long @C_show_error
  add SP, #12 ' CALL addrg
  mov r0, #1 ' reg <- coni
- jmp #\@C_s9vk7_5fa8f426_more_files_L000023_336 ' JUMPV addrg
-C_s9vk7_5fa8f426_more_files_L000023_337
+ jmp #\@C_sk9c7_6132d4ca_more_files_L000023_336 ' JUMPV addrg
+C_sk9c7_6132d4ca_more_files_L000023_337
  mov r0, #0 ' reg <- coni
-C_s9vk7_5fa8f426_more_files_L000023_336
+C_sk9c7_6132d4ca_more_files_L000023_336
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
@@ -2656,19 +2656,19 @@ C_s9vk7_5fa8f426_more_files_L000023_336
 DAT ' uninitialized data segment
 
  alignl ' align long
-C_s9vkg_5fa8f426_curr_arg_L000139 ' <symbol:curr_arg>
+C_sk9cg_6132d4ca_curr_arg_L000139 ' <symbol:curr_arg>
  byte 0[4]
 
  alignl ' align long
-C_s9vk4_5fa8f426_curfile_L000020 ' <symbol:curfile>
+C_sk9c4_6132d4ca_curfile_L000020 ' <symbol:curfile>
  byte 0[4]
 
  alignl ' align long
-C_s9vk3_5fa8f426_numfiles_L000019 ' <symbol:numfiles>
+C_sk9c3_6132d4ca_numfiles_L000019 ' <symbol:numfiles>
  byte 0[4]
 
  alignl ' align long
-C_s9vk2_5fa8f426_files_L000018 ' <symbol:files>
+C_sk9c2_6132d4ca_files_L000018 ' <symbol:files>
  byte 0[4]
 
 ' Catalina Code
@@ -3246,12 +3246,12 @@ DAT ' uninitialized data segment
 DAT ' const data segment
 
  alignl ' align long
-C_s9vk7_5fa8f426_more_files_L000023_341_L000342 ' <symbol:341>
+C_sk9c7_6132d4ca_more_files_L000023_341_L000342 ' <symbol:341>
  byte 115
  byte 0
 
  alignl ' align long
-C_s9vk7_5fa8f426_more_files_L000023_339_L000340 ' <symbol:339>
+C_sk9c7_6132d4ca_more_files_L000023_339_L000340 ' <symbol:339>
  byte 37
  byte 100
  byte 32
@@ -3414,7 +3414,7 @@ C_exA_rgs_158_L000159 ' <symbol:158>
  byte 0
 
  alignl ' align long
-C_s9vkh_5fa8f426_show_arg_L000140_147_L000148 ' <symbol:147>
+C_sk9ch_6132d4ca_show_arg_L000140_147_L000148 ' <symbol:147>
  byte 37
  byte 99
  byte 37
@@ -3535,7 +3535,7 @@ C_exN_ewB_uffer_43_L000044 ' <symbol:43>
  byte 0
 
  alignl ' align long
-C_s9vk1_5fa8f426_2_L000003 ' <symbol:2>
+C_sk9c1_6132d4ca_2_L000003 ' <symbol:2>
  byte 37
  byte 87
  byte 37

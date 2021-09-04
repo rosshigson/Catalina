@@ -11,8 +11,8 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_s9mk_5fa8f425_sccsid_L000001 ' <symbol:sccsid>
- long @C_s9mk1_5fa8f425_2_L000003
+C_sdss_6132d4ca_sccsid_L000001 ' <symbol:sccsid>
+ long @C_sdss1_6132d4ca_2_L000003
 
 ' Catalina Export disp_init
 
@@ -30,7 +30,7 @@ C_disp_init ' <symbol:disp_init>
  mov r17, r2 ' reg var <- reg arg
  mov r22, #5 ' reg <- coni
  wrlong r22, ##@C_S_tate ' ASGNI4 addrg reg
- wrlong r21, ##@C_s9mk2_5fa8f425_disp_func_L000018 ' ASGNP4 addrg reg
+ wrlong r21, ##@C_sdss2_6132d4ca_disp_func_L000018 ' ASGNP4 addrg reg
  mov r22, r19 ' CVI, CVU or LOAD
  mov r20, r23
  adds r20, #24 ' ADDP4 coni
@@ -42,7 +42,7 @@ C_disp_init ' <symbol:disp_init>
  rdlong r22, r22 ' reg <- INDIRU4 reg
  mov r19, r22 ' CVI, CVU or LOAD
 C_disp_init_23
- wrlong r19, ##@C_s9mk3_5fa8f425_disp_colwidth_L000019 ' ASGNI4 addrg reg
+ wrlong r19, ##@C_sdss3_6132d4ca_disp_colwidth_L000019 ' ASGNI4 addrg reg
  mov r22, r19 ' CVI, CVU or LOAD
  mov r20, r23
  adds r20, #24 ' ADDP4 coni
@@ -65,8 +65,8 @@ C_disp_init_23
   allowi
  #endif
  mov r22, r0 ' CVI, CVU or LOAD
- wrlong r22, ##@C_s9mk4_5fa8f425_disp_maxcol_L000020 ' ASGNI4 addrg reg
- wrlong r17, ##@C_s9mk5_5fa8f425_disp_listmode_L000021 ' ASGNI4 addrg reg
+ wrlong r22, ##@C_sdss4_6132d4ca_disp_maxcol_L000020 ' ASGNI4 addrg reg
+ wrlong r17, ##@C_sdss5_6132d4ca_disp_listmode_L000021 ' ASGNI4 addrg reg
  mov r2, #0 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -172,7 +172,7 @@ C_disp_screen_41
  rdlong r22, r22 ' reg <- INDIRP4 reg
  cmp r22,  #0 wz
  if_nz jmp #\C_disp_screen_47  ' NEU4
- mov r22, ##@C_s9mk2_5fa8f425_disp_func_L000018
+ mov r22, ##@C_sdss2_6132d4ca_disp_func_L000018
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  mov RI, r22
@@ -193,7 +193,7 @@ C_disp_screen_47
  mov r13, #0 ' reg <- coni
  jmp #\@C_disp_screen_54 ' JUMPV addrg
 C_disp_screen_51
- mov r22, ##@C_s9mk5_5fa8f425_disp_listmode_L000021
+ mov r22, ##@C_sdss5_6132d4ca_disp_listmode_L000021
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz
  if_z jmp #\C_disp_screen_56 ' EQI4
@@ -217,7 +217,7 @@ C_disp_screen_57
  mov r22, r13 ' CVI, CVU or LOAD
  add r22, r11 ' ADDU (1)
  mov r13, r22 ' CVI, CVU or LOAD
- mov r20, ##@C_s9mk3_5fa8f425_disp_colwidth_L000019
+ mov r20, ##@C_sdss3_6132d4ca_disp_colwidth_L000019
  rdlong r20, r20 ' reg <- INDIRI4 addrg
  cmps r22, r20 wcz
  if_a jmp #\C_disp_screen_53 ' GTI4
@@ -256,11 +256,11 @@ C_disp_screen_53
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #0 wz
  if_nz jmp #\C_disp_screen_60 ' NEI4
- mov r22, ##@C_s9mk5_5fa8f425_disp_listmode_L000021
+ mov r22, ##@C_sdss5_6132d4ca_disp_listmode_L000021
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz
  if_z jmp #\C_disp_screen_62 ' EQI4
- mov r22, ##@C_s9mk3_5fa8f425_disp_colwidth_L000019
+ mov r22, ##@C_sdss3_6132d4ca_disp_colwidth_L000019
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r13, r22 wcz
  if_ae jmp #\C_disp_screen_42 ' GEI4
@@ -293,11 +293,11 @@ C_disp_screen_44
  cmp r22, r20 wcz 
  if_b jmp #\C_disp_screen_41 ' LTU4
 ' C_disp_screen_38 ' (symbol refcount = 0)
- mov r22, ##@C_s9mk3_5fa8f425_disp_colwidth_L000019
+ mov r22, ##@C_sdss3_6132d4ca_disp_colwidth_L000019
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  adds r15, r22 ' ADDI/P (1)
 C_disp_screen_40
- mov r22, ##@C_s9mk4_5fa8f425_disp_maxcol_L000020
+ mov r22, ##@C_sdss4_6132d4ca_disp_maxcol_L000020
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r15, r22 wcz
  if_b jmp #\C_disp_screen_37 ' LTI4
@@ -407,19 +407,19 @@ C_prompt ' <symbol:prompt>
 DAT ' uninitialized data segment
 
  alignl ' align long
-C_s9mk5_5fa8f425_disp_listmode_L000021 ' <symbol:disp_listmode>
+C_sdss5_6132d4ca_disp_listmode_L000021 ' <symbol:disp_listmode>
  byte 0[4]
 
  alignl ' align long
-C_s9mk4_5fa8f425_disp_maxcol_L000020 ' <symbol:disp_maxcol>
+C_sdss4_6132d4ca_disp_maxcol_L000020 ' <symbol:disp_maxcol>
  byte 0[4]
 
  alignl ' align long
-C_s9mk3_5fa8f425_disp_colwidth_L000019 ' <symbol:disp_colwidth>
+C_sdss3_6132d4ca_disp_colwidth_L000019 ' <symbol:disp_colwidth>
  byte 0[4]
 
  alignl ' align long
-C_s9mk2_5fa8f425_disp_func_L000018 ' <symbol:disp_func>
+C_sdss2_6132d4ca_disp_func_L000018 ' <symbol:disp_func>
  byte 0[4]
 
 ' Catalina Code
@@ -572,7 +572,7 @@ C_disp_screen_33_L000034 ' <symbol:33>
  byte 0
 
  alignl ' align long
-C_s9mk1_5fa8f425_2_L000003 ' <symbol:2>
+C_sdss1_6132d4ca_2_L000003 ' <symbol:2>
  byte 64
  byte 40
  byte 35

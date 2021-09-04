@@ -11,8 +11,8 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_scuk_5fa8f427_sccsid_L000001 ' <symbol:sccsid>
- long @C_scuk1_5fa8f427_2_L000003
+C_slgk_6132d4ca_sccsid_L000001 ' <symbol:sccsid>
+ long @C_slgk1_6132d4ca_2_L000003
 
 ' Catalina Export inc
 
@@ -232,7 +232,7 @@ C_eq_44
 DAT ' const data segment
 
  alignl ' align long
-C_scuk1_5fa8f427_2_L000003 ' <symbol:2>
+C_slgk1_6132d4ca_2_L000003 ' <symbol:2>
  byte 64
  byte 40
  byte 35

@@ -30,6 +30,7 @@ char *_plugin_name(int type) {
       case LMM_FLC  : return "Float_C";
       case LMM_S2A  : return "2 Port Serial A";
       case LMM_S2B  : return "2 Port Serial B";
+      case LMM_S8A  : return "8 Port Serial A";
       case LMM_NUL  : return "None";
       default       : return "Unknown";
    }

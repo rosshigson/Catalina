@@ -11,15 +11,15 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_s90o_5fa8f449_gfp_L000003 ' <symbol:gfp>
+C_saho_6132d4ec_gfp_L000003 ' <symbol:gfp>
  long $0
 
  alignl ' align long
-C_s90o1_5fa8f449_sfp_L000004 ' <symbol:sfp>
+C_saho1_6132d4ec_sfp_L000004 ' <symbol:sfp>
  long $0
 
  alignl ' align long
-C_s90o2_5fa8f449_rfp_L000005 ' <symbol:rfp>
+C_saho2_6132d4ec_rfp_L000005 ' <symbol:rfp>
  long $0
 
 ' Catalina Export save_name
@@ -87,22 +87,22 @@ C_auxilary_name ' <symbol:auxilary_name>
  byte 0[1270]
 
  alignl ' align long
-C_s90o5_5fa8f449_undo_valid_L000008 ' <symbol:undo_valid>
+C_saho5_6132d4ec_undo_valid_L000008 ' <symbol:undo_valid>
  long 0
 
  alignl ' align long
-C_s90o7_5fa8f449_script_file_valid_L000010 ' <symbol:script_file_valid>
+C_saho7_6132d4ec_script_file_valid_L000010 ' <symbol:script_file_valid>
  long 0
 
  alignl ' align long
-C_s90o8_5fa8f449_story_offset_L000011 ' <symbol:story_offset>
+C_saho8_6132d4ec_story_offset_L000011 ' <symbol:story_offset>
  long 0
 
 ' Catalina Export magic
 
  alignl ' align long
 C_magic ' <symbol:magic>
- long @C_s90o9_5fa8f449_12_L000013
+ long @C_saho9_6132d4ec_12_L000013
 
 ' Catalina Export analyze_exefile
 
@@ -114,14 +114,14 @@ DAT ' code segment
 C_analyze_exefile ' <symbol:analyze_exefile>
  PRIMITIVE(#PSHM)
  long $f00000 ' save registers
- mov r22, ##@C_s90o8_5fa8f449_story_offset_L000011
+ mov r22, ##@C_saho8_6132d4ec_story_offset_L000011
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
  if_be jmp #\C_analyze_exefile_16 ' LEI4
  mov r0, #0 ' reg <- coni
  jmp #\@C_analyze_exefile_15 ' JUMPV addrg
 C_analyze_exefile_16
- mov r2, ##@C_s90o_5fa8f449_gfp_L000003
+ mov r2, ##@C_saho_6132d4ec_gfp_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -152,7 +152,7 @@ C_analyze_exefile_21
  mov r21, r22 ' CVI, CVU or LOAD
  cmps r22,  #16 wz
  if_nz jmp #\C_analyze_exefile_25 ' NEI4
- mov r2, ##@C_s90o_5fa8f449_gfp_L000003
+ mov r2, ##@C_saho_6132d4ec_gfp_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -163,43 +163,43 @@ C_analyze_exefile_21
  mov r0, #0 ' reg <- coni
  jmp #\@C_analyze_exefile_15 ' JUMPV addrg
 C_analyze_exefile_27
- mov r2, ##@C_s90o_5fa8f449_gfp_L000003
+ mov r2, ##@C_saho_6132d4ec_gfp_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_getc ' CALL addrg
- wrlong r0, ##@C_s90o8_5fa8f449_story_offset_L000011 ' ASGNI4 addrg reg
- mov r2, ##@C_s90o_5fa8f449_gfp_L000003
+ wrlong r0, ##@C_saho8_6132d4ec_story_offset_L000011 ' ASGNI4 addrg reg
+ mov r2, ##@C_saho_6132d4ec_gfp_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_getc ' CALL addrg
- mov r20, ##@C_s90o8_5fa8f449_story_offset_L000011 ' reg <- addrg
+ mov r20, ##@C_saho8_6132d4ec_story_offset_L000011 ' reg <- addrg
  rdlong r20, r20 ' reg <- INDIRI4 reg
  mov r22, r0
  shl r22, #8 ' LSHI4 coni
  adds r22, r20 ' ADDI/P (2)
- wrlong r22, ##@C_s90o8_5fa8f449_story_offset_L000011 ' ASGNI4 addrg reg
- mov r2, ##@C_s90o_5fa8f449_gfp_L000003
+ wrlong r22, ##@C_saho8_6132d4ec_story_offset_L000011 ' ASGNI4 addrg reg
+ mov r2, ##@C_saho_6132d4ec_gfp_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_getc ' CALL addrg
- mov r20, ##@C_s90o8_5fa8f449_story_offset_L000011 ' reg <- addrg
+ mov r20, ##@C_saho8_6132d4ec_story_offset_L000011 ' reg <- addrg
  rdlong r20, r20 ' reg <- INDIRI4 reg
  mov r22, r0
  shl r22, #16 ' LSHI4 coni
  adds r22, r20 ' ADDI/P (2)
- wrlong r22, ##@C_s90o8_5fa8f449_story_offset_L000011 ' ASGNI4 addrg reg
+ wrlong r22, ##@C_saho8_6132d4ec_story_offset_L000011 ' ASGNI4 addrg reg
  mov r0, #1 ' reg <- coni
  jmp #\@C_analyze_exefile_15 ' JUMPV addrg
 C_analyze_exefile_25
 C_analyze_exefile_22
 C_analyze_exefile_19
- mov r2, ##@C_s90o_5fa8f449_gfp_L000003
+ mov r2, ##@C_saho_6132d4ec_gfp_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -382,7 +382,7 @@ C_open_story ' <symbol:open_story>
  cmps r22,  #0 wz
  if_z jmp #\C_open_story_43 ' EQI4
  mov r22, #0 ' reg <- coni
- wrlong r22, ##@C_s90o8_5fa8f449_story_offset_L000011 ' ASGNI4 addrg reg
+ wrlong r22, ##@C_saho8_6132d4ec_story_offset_L000011 ' ASGNI4 addrg reg
  jmp #\@C_open_story_44 ' JUMPV addrg
 C_open_story_43
  mov r22, ##@C_magic
@@ -399,7 +399,7 @@ C_open_story_43
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  shl r22, #16 ' LSHI4 coni
  adds r22, r20 ' ADDI/P (2)
- wrlong r22, ##@C_s90o8_5fa8f449_story_offset_L000011 ' ASGNI4 addrg reg
+ wrlong r22, ##@C_saho8_6132d4ec_story_offset_L000011 ' ASGNI4 addrg reg
 C_open_story_44
  mov r2, r23 ' CVI, CVU or LOAD
  mov r3, FP
@@ -419,7 +419,7 @@ C_open_story_44
  PRIMITIVE(#CALA)
  long @C_fopen
  add SP, #4 ' CALL addrg
- wrlong r0, ##@C_s90o_5fa8f449_gfp_L000003 ' ASGNP4 addrg reg
+ wrlong r0, ##@C_saho_6132d4ec_gfp_L000003 ' ASGNP4 addrg reg
  mov r22, r0 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
  if_z jmp #\C_open_story_45 ' EQU4
@@ -525,7 +525,7 @@ C_open_story_65
  PRIMITIVE(#CALA)
  long @C_fopen
  add SP, #4 ' CALL addrg
- wrlong r0, ##@C_s90o_5fa8f449_gfp_L000003 ' ASGNP4 addrg reg
+ wrlong r0, ##@C_saho_6132d4ec_gfp_L000003 ' ASGNP4 addrg reg
  mov r22, r0 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
  if_z jmp #\C_open_story_70 ' EQU4
@@ -573,11 +573,11 @@ C_open_story_42
 C_close_story ' <symbol:close_story>
  PRIMITIVE(#PSHM)
  long $400000 ' save registers
- mov r22, ##@C_s90o_5fa8f449_gfp_L000003
+ mov r22, ##@C_saho_6132d4ec_gfp_L000003
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  if_z jmp #\C_close_story_74 ' EQU4
- mov r2, ##@C_s90o_5fa8f449_gfp_L000003
+ mov r2, ##@C_saho_6132d4ec_gfp_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -595,7 +595,7 @@ C_close_story_74
 C_get_story_size ' <symbol:get_story_size>
  PRIMITIVE(#PSHM)
  long $d00000 ' save registers
- mov r2, ##@C_s90o_5fa8f449_gfp_L000003
+ mov r2, ##@C_saho_6132d4ec_gfp_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -607,7 +607,7 @@ C_get_story_size_77
 ' C_get_story_size_78 ' (symbol refcount = 0)
  add r23, #1 ' ADDU4 coni
 C_get_story_size_80
- mov r2, ##@C_s90o_5fa8f449_gfp_L000003
+ mov r2, ##@C_saho_6132d4ec_gfp_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -616,7 +616,7 @@ C_get_story_size_80
  mov r20, ##-1 ' reg <- con
  cmps r0, r20 wz
  if_nz jmp #\C_get_story_size_77 ' NEI4
- mov r2, ##@C_s90o_5fa8f449_gfp_L000003
+ mov r2, ##@C_saho_6132d4ec_gfp_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -654,13 +654,13 @@ C_read_page ' <symbol:read_page>
  mov r23, r3 ' reg var <- reg arg
  mov r21, r2 ' reg var <- reg arg
  mov r2, #0 ' reg ARG coni
- mov r22, ##@C_s90o8_5fa8f449_story_offset_L000011
+ mov r22, ##@C_saho8_6132d4ec_story_offset_L000011
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  mov r20, r23
  shl r20, #9 ' LSHI4 coni
  mov r3, r22 ' ADDI/P
  adds r3, r20 ' ADDI/P (3)
- mov r4, ##@C_s90o_5fa8f449_gfp_L000003
+ mov r4, ##@C_saho_6132d4ec_gfp_L000003
  rdlong r4, r4
  ' reg ARG INDIR ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -668,7 +668,7 @@ C_read_page ' <symbol:read_page>
  PRIMITIVE(#CALA)
  long @C_fseek
  add SP, #8 ' CALL addrg
- mov r2, ##@C_s90o_5fa8f449_gfp_L000003
+ mov r2, ##@C_saho_6132d4ec_gfp_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov r3, #1 ' reg ARG coni
@@ -715,13 +715,13 @@ C_read_page ' <symbol:read_page>
  cmp r22, r20 wz
  if_nz jmp #\C_read_page_84  ' NEU4
  mov r2, #0 ' reg ARG coni
- mov r22, ##@C_s90o8_5fa8f449_story_offset_L000011
+ mov r22, ##@C_saho8_6132d4ec_story_offset_L000011
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  mov r20, r23
  shl r20, #9 ' LSHI4 coni
  mov r3, r22 ' ADDI/P
  adds r3, r20 ' ADDI/P (3)
- mov r4, ##@C_s90o_5fa8f449_gfp_L000003
+ mov r4, ##@C_saho_6132d4ec_gfp_L000003
  rdlong r4, r4
  ' reg ARG INDIR ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -729,7 +729,7 @@ C_read_page ' <symbol:read_page>
  PRIMITIVE(#CALA)
  long @C_fseek
  add SP, #8 ' CALL addrg
- mov r2, ##@C_s90o_5fa8f449_gfp_L000003
+ mov r2, ##@C_saho_6132d4ec_gfp_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov r3, #1 ' reg ARG coni
@@ -1087,7 +1087,7 @@ C_z_verify_166
 
 
  alignl ' align long
-C_s90o1h_5fa8f449_get_default_name_L000167 ' <symbol:get_default_name>
+C_saho1h_6132d4ec_get_default_name_L000167 ' <symbol:get_default_name>
  PRIMITIVE(#PSHM)
  long $fa8000 ' save registers
  mov r23, r3 ' reg var <- reg arg
@@ -1095,7 +1095,7 @@ C_s90o1h_5fa8f449_get_default_name_L000167 ' <symbol:get_default_name>
  mov r22, r21 ' CVUI
  and r22, cviu_m2 ' zero extend
  cmps r22,  #0 wz
- if_z jmp #\C_s90o1h_5fa8f449_get_default_name_L000167_169 ' EQI4
+ if_z jmp #\C_saho1h_6132d4ec_get_default_name_L000167_169 ' EQI4
  mov r22, r21 ' CVUI
  and r22, cviu_m2 ' zero extend
  mov r20, ##@C_datap
@@ -1103,8 +1103,8 @@ C_s90o1h_5fa8f449_get_default_name_L000167 ' <symbol:get_default_name>
  adds r22, r20 ' ADDI/P (1)
  rdbyte r15, r22 ' reg <- INDIRU1 reg
  mov r19, #0 ' reg <- coni
- jmp #\@C_s90o1h_5fa8f449_get_default_name_L000167_174 ' JUMPV addrg
-C_s90o1h_5fa8f449_get_default_name_L000167_171
+ jmp #\@C_saho1h_6132d4ec_get_default_name_L000167_174 ' JUMPV addrg
+C_saho1h_6132d4ec_get_default_name_L000167_171
  mov r22, r21 ' CVUI
  and r22, cviu_m2 ' zero extend
  adds r22, #1 ' ADDI4 coni
@@ -1118,13 +1118,13 @@ C_s90o1h_5fa8f449_get_default_name_L000167_171
  mov r22, r19 ' ADDI/P
  adds r22, r23 ' ADDI/P (3)
  wrbyte r17, r22 ' ASGNU1 reg reg
-' C_s90o1h_5fa8f449_get_default_name_L000167_172 ' (symbol refcount = 0)
+' C_saho1h_6132d4ec_get_default_name_L000167_172 ' (symbol refcount = 0)
  add r19, #1 ' ADDU4 coni
-C_s90o1h_5fa8f449_get_default_name_L000167_174
+C_saho1h_6132d4ec_get_default_name_L000167_174
  mov r22, r15 ' CVUI
  and r22, cviu_m1 ' zero extend
  cmp r19, r22 wcz 
- if_b jmp #\C_s90o1h_5fa8f449_get_default_name_L000167_171 ' LTU4
+ if_b jmp #\C_saho1h_6132d4ec_get_default_name_L000167_171 ' LTU4
  mov r22, r19 ' ADDI/P
  adds r22, r23 ' ADDI/P (3)
  mov r20, #0 ' reg <- coni
@@ -1138,7 +1138,7 @@ C_s90o1h_5fa8f449_get_default_name_L000167_174
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_s90o1h_5fa8f449_get_default_name_L000167_170  ' NEU4
+ if_nz jmp #\C_saho1h_6132d4ec_get_default_name_L000167_170  ' NEU4
  mov r2, ##@C_set_names_38_L000039 ' reg ARG ADDRG
  mov r3, r19 ' ADDI/P
  adds r3, r23 ' ADDI/P (3)
@@ -1147,8 +1147,8 @@ C_s90o1h_5fa8f449_get_default_name_L000167_174
  PRIMITIVE(#CALA)
  long @C_strcpy
  add SP, #4 ' CALL addrg
- jmp #\@C_s90o1h_5fa8f449_get_default_name_L000167_170 ' JUMPV addrg
-C_s90o1h_5fa8f449_get_default_name_L000167_169
+ jmp #\@C_saho1h_6132d4ec_get_default_name_L000167_170 ' JUMPV addrg
+C_saho1h_6132d4ec_get_default_name_L000167_169
  mov r2, ##@C_auxilary_name ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1156,8 +1156,8 @@ C_s90o1h_5fa8f449_get_default_name_L000167_169
  PRIMITIVE(#CALA)
  long @C_strcpy
  add SP, #4 ' CALL addrg
-C_s90o1h_5fa8f449_get_default_name_L000167_170
-' C_s90o1h_5fa8f449_get_default_name_L000167_168 ' (symbol refcount = 0)
+C_saho1h_6132d4ec_get_default_name_L000167_170
+' C_saho1h_6132d4ec_get_default_name_L000167_168 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
@@ -1185,7 +1185,7 @@ C_z_save ' <symbol:z_save>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s90o1h_5fa8f449_get_default_name_L000167
+ long @C_saho1h_6132d4ec_get_default_name_L000167
  add SP, #4 ' CALL addrg
  mov r2, #7 ' reg ARG coni
  mov r3, FP
@@ -1289,7 +1289,7 @@ C_z_save_178
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s90oa_5fa8f449_save_restore_L000014
+ long @C_sahoa_6132d4ec_save_restore_L000014
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
  if_nz jmp #\C_z_save_194 ' NEI4
@@ -1377,7 +1377,7 @@ C_z_restore ' <symbol:z_restore>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s90o1h_5fa8f449_get_default_name_L000167
+ long @C_saho1h_6132d4ec_get_default_name_L000167
  add SP, #4 ' CALL addrg
  mov r2, #8 ' reg ARG coni
  mov r3, FP
@@ -1480,7 +1480,7 @@ C_z_restore_205
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s90oa_5fa8f449_save_restore_L000014
+ long @C_sahoa_6132d4ec_save_restore_L000014
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
  if_nz jmp #\C_z_restore_219 ' NEI4
@@ -1572,10 +1572,10 @@ C_z_save_undo ' <symbol:z_save_undo>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s90oa_5fa8f449_save_restore_L000014
+ long @C_sahoa_6132d4ec_save_restore_L000014
  add SP, #4 ' CALL addrg
  mov r22, #1 ' reg <- coni
- wrlong r22, ##@C_s90o5_5fa8f449_undo_valid_L000008 ' ASGNI4 addrg reg
+ wrlong r22, ##@C_saho5_6132d4ec_undo_valid_L000008 ' ASGNI4 addrg reg
  mov r2, r22 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
@@ -1604,7 +1604,7 @@ C_z_restore_undo ' <symbol:z_restore_undo>
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  if_z jmp #\C_z_restore_undo_235 ' EQU4
- mov r22, ##@C_s90o5_5fa8f449_undo_valid_L000008
+ mov r22, ##@C_saho5_6132d4ec_undo_valid_L000008
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #1 wz
  if_nz jmp #\C_z_restore_undo_237 ' NEI4
@@ -1613,7 +1613,7 @@ C_z_restore_undo ' <symbol:z_restore_undo>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s90oa_5fa8f449_save_restore_L000014
+ long @C_sahoa_6132d4ec_save_restore_L000014
  add SP, #4 ' CALL addrg
  mov r2, #2 ' reg ARG coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -1640,7 +1640,7 @@ C_z_restore_undo_236
 
 
  alignl ' align long
-C_s90oa_5fa8f449_save_restore_L000014 ' <symbol:save_restore>
+C_sahoa_6132d4ec_save_restore_L000014 ' <symbol:save_restore>
  PRIMITIVE(#NEWF)
  sub SP, #4
  PRIMITIVE(#PSHM)
@@ -1654,17 +1654,17 @@ C_s90oa_5fa8f449_save_restore_L000014 ' <symbol:save_restore>
  wrlong r22, RI ' ASGNI4 addrli reg
  mov r19, #0 ' reg <- coni
  cmps r21,  #1 wz
- if_z jmp #\C_s90oa_5fa8f449_save_restore_L000014_242 ' EQI4
+ if_z jmp #\C_sahoa_6132d4ec_save_restore_L000014_242 ' EQI4
  cmps r21,  #0 wz
- if_nz jmp #\C_s90oa_5fa8f449_save_restore_L000014_240 ' NEI4
-C_s90oa_5fa8f449_save_restore_L000014_242
+ if_nz jmp #\C_sahoa_6132d4ec_save_restore_L000014_240 ' NEI4
+C_sahoa_6132d4ec_save_restore_L000014_242
  cmps r21,  #1 wz
- if_nz jmp #\C_s90oa_5fa8f449_save_restore_L000014_246 ' NEI4
+ if_nz jmp #\C_sahoa_6132d4ec_save_restore_L000014_246 ' NEI4
  mov r15, ##@C_z_save_185_L000186 ' reg <- addrg
- jmp #\@C_s90oa_5fa8f449_save_restore_L000014_247 ' JUMPV addrg
-C_s90oa_5fa8f449_save_restore_L000014_246
+ jmp #\@C_sahoa_6132d4ec_save_restore_L000014_247 ' JUMPV addrg
+C_sahoa_6132d4ec_save_restore_L000014_246
  mov r15, ##@C_open_story_47_L000048 ' reg <- addrg
-C_s90oa_5fa8f449_save_restore_L000014_247
+C_sahoa_6132d4ec_save_restore_L000014_247
  mov r2, r15 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1675,14 +1675,14 @@ C_s90oa_5fa8f449_save_restore_L000014_247
  mov r17, r0 ' CVI, CVU or LOAD
  mov r22, r0 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_s90oa_5fa8f449_save_restore_L000014_243  ' NEU4
- mov r2, ##@C_s90oa_5fa8f449_save_restore_L000014_248_L000249 ' reg ARG ADDRG
+ if_nz jmp #\C_sahoa_6132d4ec_save_restore_L000014_243  ' NEU4
+ mov r2, ##@C_sahoa_6132d4ec_save_restore_L000014_248_L000249 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_output_line ' CALL addrg
  mov r0, #1 ' reg <- coni
- jmp #\@C_s90oa_5fa8f449_save_restore_L000014_239 ' JUMPV addrg
-C_s90oa_5fa8f449_save_restore_L000014_243
+ jmp #\@C_sahoa_6132d4ec_save_restore_L000014_239 ' JUMPV addrg
+C_sahoa_6132d4ec_save_restore_L000014_243
  mov r22, ##@C_datap
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  mov r20, r22
@@ -1729,10 +1729,10 @@ C_s90oa_5fa8f449_save_restore_L000014_243
  and r22, cviu_m2 ' zero extend
  and r22, #255 ' BANDI4 coni
  wrbyte r22, r20 ' ASGNU1 reg reg
-C_s90oa_5fa8f449_save_restore_L000014_240
+C_sahoa_6132d4ec_save_restore_L000014_240
  cmps r21,  #1 wz
- if_nz jmp #\C_s90oa_5fa8f449_save_restore_L000014_250 ' NEI4
- mov r2, ##@C_s90o_5fa8f449_gfp_L000003
+ if_nz jmp #\C_sahoa_6132d4ec_save_restore_L000014_250 ' NEI4
+ mov r2, ##@C_saho_6132d4ec_gfp_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov r3, r17 ' CVI, CVU or LOAD
@@ -1743,18 +1743,18 @@ C_s90oa_5fa8f449_save_restore_L000014_240
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_nz jmp #\C_s90oa_5fa8f449_save_restore_L000014_253 ' NEI4
+ if_nz jmp #\C_sahoa_6132d4ec_save_restore_L000014_253 ' NEI4
  mov r15, #1 ' reg <- coni
- jmp #\@C_s90oa_5fa8f449_save_restore_L000014_254 ' JUMPV addrg
-C_s90oa_5fa8f449_save_restore_L000014_253
+ jmp #\@C_sahoa_6132d4ec_save_restore_L000014_254 ' JUMPV addrg
+C_sahoa_6132d4ec_save_restore_L000014_253
  mov r15, #0 ' reg <- coni
-C_s90oa_5fa8f449_save_restore_L000014_254
+C_sahoa_6132d4ec_save_restore_L000014_254
  mov r19, r15 ' CVI, CVU or LOAD
- jmp #\@C_s90oa_5fa8f449_save_restore_L000014_251 ' JUMPV addrg
-C_s90oa_5fa8f449_save_restore_L000014_250
+ jmp #\@C_sahoa_6132d4ec_save_restore_L000014_251 ' JUMPV addrg
+C_sahoa_6132d4ec_save_restore_L000014_250
  cmps r21,  #0 wz
- if_nz jmp #\C_s90oa_5fa8f449_save_restore_L000014_255 ' NEI4
- mov r2, ##@C_s90o_5fa8f449_gfp_L000003
+ if_nz jmp #\C_sahoa_6132d4ec_save_restore_L000014_255 ' NEI4
+ mov r2, ##@C_saho_6132d4ec_gfp_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov r3, r17 ' CVI, CVU or LOAD
@@ -1765,15 +1765,15 @@ C_s90oa_5fa8f449_save_restore_L000014_250
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_nz jmp #\C_s90oa_5fa8f449_save_restore_L000014_258 ' NEI4
+ if_nz jmp #\C_sahoa_6132d4ec_save_restore_L000014_258 ' NEI4
  mov r15, #1 ' reg <- coni
- jmp #\@C_s90oa_5fa8f449_save_restore_L000014_259 ' JUMPV addrg
-C_s90oa_5fa8f449_save_restore_L000014_258
+ jmp #\@C_sahoa_6132d4ec_save_restore_L000014_259 ' JUMPV addrg
+C_sahoa_6132d4ec_save_restore_L000014_258
  mov r15, #0 ' reg <- coni
-C_s90oa_5fa8f449_save_restore_L000014_259
+C_sahoa_6132d4ec_save_restore_L000014_259
  mov r19, r15 ' CVI, CVU or LOAD
- jmp #\@C_s90oa_5fa8f449_save_restore_L000014_256 ' JUMPV addrg
-C_s90oa_5fa8f449_save_restore_L000014_255
+ jmp #\@C_sahoa_6132d4ec_save_restore_L000014_256 ' JUMPV addrg
+C_sahoa_6132d4ec_save_restore_L000014_255
  mov r22, ##@C_sp ' reg <- addrg
  rdword r22, r22 ' reg <- CVUI4 INDIRU2 reg
  subs r22, #1 ' SUBI4 coni
@@ -1824,26 +1824,26 @@ C_s90oa_5fa8f449_save_restore_L000014_255
  rdword r22, r22 ' reg <- INDIRU2 addrg
  wrword r22, ##@C_stack ' ASGNU2 addrg reg
  cmps r21,  #5 wz
- if_nz jmp #\C_s90oa_5fa8f449_save_restore_L000014_260 ' NEI4
+ if_nz jmp #\C_sahoa_6132d4ec_save_restore_L000014_260 ' NEI4
  mov r2, ##2048 ' reg ARG con
  mov r3, ##@C_stack ' reg ARG ADDRG
- mov r4, ##@C_s90o6_5fa8f449_undo_stack_L000009 ' reg ARG ADDRG
+ mov r4, ##@C_saho6_6132d4ec_undo_stack_L000009 ' reg ARG ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
  long @C_memmove
  add SP, #8 ' CALL addrg
- jmp #\@C_s90oa_5fa8f449_save_restore_L000014_261 ' JUMPV addrg
-C_s90oa_5fa8f449_save_restore_L000014_260
+ jmp #\@C_sahoa_6132d4ec_save_restore_L000014_261 ' JUMPV addrg
+C_sahoa_6132d4ec_save_restore_L000014_260
  mov r2, ##2048 ' reg ARG con
- mov r3, ##@C_s90o6_5fa8f449_undo_stack_L000009 ' reg ARG ADDRG
+ mov r3, ##@C_saho6_6132d4ec_undo_stack_L000009 ' reg ARG ADDRG
  mov r4, ##@C_stack ' reg ARG ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
  long @C_memmove
  add SP, #8 ' CALL addrg
-C_s90oa_5fa8f449_save_restore_L000014_261
+C_sahoa_6132d4ec_save_restore_L000014_261
  mov r22, ##@C_sp ' reg <- addrg
  mov r20, ##@C_stack ' reg <- addrg
  rdword r18, r20 ' reg <- INDIRU2 reg
@@ -1858,12 +1858,12 @@ C_s90oa_5fa8f449_save_restore_L000014_261
  mov r20, ##@C_h_version ' reg <- addrg
  rdword r20, r20 ' reg <- CVUI4 INDIRU2 reg
  cmps r22, r20 wz
- if_z jmp #\C_s90oa_5fa8f449_save_restore_L000014_262 ' EQI4
- mov r2, ##@C_s90oa_5fa8f449_save_restore_L000014_264_L000265 ' reg ARG ADDRG
+ if_z jmp #\C_sahoa_6132d4ec_save_restore_L000014_262 ' EQI4
+ mov r2, ##@C_sahoa_6132d4ec_save_restore_L000014_264_L000265 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_fatal ' CALL addrg
-C_s90oa_5fa8f449_save_restore_L000014_262
+C_sahoa_6132d4ec_save_restore_L000014_262
  mov r22, ##@C_sp ' reg <- addrg
  rdword r20, r22 ' reg <- CVUI4 INDIRU2 reg
  mov r18, r20
@@ -1895,7 +1895,7 @@ C_s90oa_5fa8f449_save_restore_L000014_262
  add r22, r20 ' ADDU (2)
  wrlong r22, ##@C_pc ' ASGNU4 addrg reg
  cmps r21,  #5 wz
- if_nz jmp #\C_s90oa_5fa8f449_save_restore_L000014_266 ' NEI4
+ if_nz jmp #\C_sahoa_6132d4ec_save_restore_L000014_266 ' NEI4
  mov r22, ##@C_h_restart_size ' reg <- addrg
  rdword r22, r22 ' reg <- CVUI4 INDIRU2 reg
  mov r2, r22 ' CVI, CVU or LOAD
@@ -1910,8 +1910,8 @@ C_s90oa_5fa8f449_save_restore_L000014_262
  PRIMITIVE(#CALA)
  long @C_memmove
  add SP, #8 ' CALL addrg
- jmp #\@C_s90oa_5fa8f449_save_restore_L000014_267 ' JUMPV addrg
-C_s90oa_5fa8f449_save_restore_L000014_266
+ jmp #\@C_sahoa_6132d4ec_save_restore_L000014_267 ' JUMPV addrg
+C_sahoa_6132d4ec_save_restore_L000014_266
  mov r22, ##@C_h_restart_size ' reg <- addrg
  rdword r22, r22 ' reg <- CVUI4 INDIRU2 reg
  mov r2, r22 ' CVI, CVU or LOAD
@@ -1926,11 +1926,11 @@ C_s90oa_5fa8f449_save_restore_L000014_266
  PRIMITIVE(#CALA)
  long @C_memmove
  add SP, #8 ' CALL addrg
-C_s90oa_5fa8f449_save_restore_L000014_267
-C_s90oa_5fa8f449_save_restore_L000014_256
-C_s90oa_5fa8f449_save_restore_L000014_251
+C_sahoa_6132d4ec_save_restore_L000014_267
+C_sahoa_6132d4ec_save_restore_L000014_256
+C_sahoa_6132d4ec_save_restore_L000014_251
  cmps r21,  #1 wz
- if_nz jmp #\C_s90oa_5fa8f449_save_restore_L000014_268 ' NEI4
+ if_nz jmp #\C_sahoa_6132d4ec_save_restore_L000014_268 ' NEI4
  mov r2, r17 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
@@ -1939,7 +1939,7 @@ C_s90oa_5fa8f449_save_restore_L000014_251
  sub r22, #-(-4) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #0 wz
- if_z jmp #\C_s90oa_5fa8f449_save_restore_L000014_269 ' EQI4
+ if_z jmp #\C_sahoa_6132d4ec_save_restore_L000014_269 ' EQI4
  mov r22, ##@C_datap
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  mov r20, r22
@@ -1973,10 +1973,10 @@ C_s90oa_5fa8f449_save_restore_L000014_251
  and r22, cviu_m2 ' zero extend
  and r22, #255 ' BANDI4 coni
  wrbyte r22, r20 ' ASGNU1 reg reg
- jmp #\@C_s90oa_5fa8f449_save_restore_L000014_269 ' JUMPV addrg
-C_s90oa_5fa8f449_save_restore_L000014_268
+ jmp #\@C_sahoa_6132d4ec_save_restore_L000014_269 ' JUMPV addrg
+C_sahoa_6132d4ec_save_restore_L000014_268
  cmps r21,  #0 wz
- if_nz jmp #\C_s90oa_5fa8f449_save_restore_L000014_272 ' NEI4
+ if_nz jmp #\C_sahoa_6132d4ec_save_restore_L000014_272 ' NEI4
  mov r2, r17 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
@@ -1990,13 +1990,13 @@ C_s90oa_5fa8f449_save_restore_L000014_268
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_restart_interp ' CALL addrg
-C_s90oa_5fa8f449_save_restore_L000014_272
-C_s90oa_5fa8f449_save_restore_L000014_269
+C_sahoa_6132d4ec_save_restore_L000014_272
+C_sahoa_6132d4ec_save_restore_L000014_269
  cmps r19,  #0 wz
- if_z jmp #\C_s90oa_5fa8f449_save_restore_L000014_274 ' EQI4
+ if_z jmp #\C_sahoa_6132d4ec_save_restore_L000014_274 ' EQI4
  cmps r21,  #1 wz
- if_nz jmp #\C_s90oa_5fa8f449_save_restore_L000014_276 ' NEI4
- mov r2, ##@C_s90oa_5fa8f449_save_restore_L000014_278_L000279 ' reg ARG ADDRG
+ if_nz jmp #\C_sahoa_6132d4ec_save_restore_L000014_276 ' NEI4
+ mov r2, ##@C_sahoa_6132d4ec_save_restore_L000014_278_L000279 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_output_line ' CALL addrg
@@ -2004,16 +2004,16 @@ C_s90oa_5fa8f449_save_restore_L000014_269
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_remove ' CALL addrg
- jmp #\@C_s90oa_5fa8f449_save_restore_L000014_277 ' JUMPV addrg
-C_s90oa_5fa8f449_save_restore_L000014_276
- mov r2, ##@C_s90oa_5fa8f449_save_restore_L000014_280_L000281 ' reg ARG ADDRG
+ jmp #\@C_sahoa_6132d4ec_save_restore_L000014_277 ' JUMPV addrg
+C_sahoa_6132d4ec_save_restore_L000014_276
+ mov r2, ##@C_sahoa_6132d4ec_save_restore_L000014_280_L000281 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_fatal ' CALL addrg
-C_s90oa_5fa8f449_save_restore_L000014_277
-C_s90oa_5fa8f449_save_restore_L000014_274
+C_sahoa_6132d4ec_save_restore_L000014_277
+C_sahoa_6132d4ec_save_restore_L000014_274
  mov r0, r19 ' CVI, CVU or LOAD
-C_s90oa_5fa8f449_save_restore_L000014_239
+C_sahoa_6132d4ec_save_restore_L000014_239
  PRIMITIVE(#POPM) ' restore registers
  add SP, #4 ' framesize
  PRIMITIVE(#RETF)
@@ -2031,7 +2031,7 @@ C_open_script ' <symbol:open_script>
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz
  if_nz jmp #\C_open_script_283 ' NEI4
- mov r22, ##@C_s90o7_5fa8f449_script_file_valid_L000010
+ mov r22, ##@C_saho7_6132d4ec_script_file_valid_L000010
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #1 wz
  if_nz jmp #\C_open_script_285 ' NEI4
@@ -2042,8 +2042,8 @@ C_open_script ' <symbol:open_script>
  PRIMITIVE(#CALA)
  long @C_fopen
  add SP, #4 ' CALL addrg
- wrlong r0, ##@C_s90o1_5fa8f449_sfp_L000004 ' ASGNP4 addrg reg
- mov r22, ##@C_s90o1_5fa8f449_sfp_L000004
+ wrlong r0, ##@C_saho1_6132d4ec_sfp_L000004 ' ASGNP4 addrg reg
+ mov r22, ##@C_saho1_6132d4ec_sfp_L000004
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  if_z jmp #\C_open_script_289 ' EQU4
@@ -2078,13 +2078,13 @@ C_open_script_285
  PRIMITIVE(#CALA)
  long @C_fopen
  add SP, #4 ' CALL addrg
- wrlong r0, ##@C_s90o1_5fa8f449_sfp_L000004 ' ASGNP4 addrg reg
- mov r22, ##@C_s90o1_5fa8f449_sfp_L000004
+ wrlong r0, ##@C_saho1_6132d4ec_sfp_L000004 ' ASGNP4 addrg reg
+ mov r22, ##@C_saho1_6132d4ec_sfp_L000004
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  if_z jmp #\C_open_script_297 ' EQU4
  mov r22, #1 ' reg <- coni
- wrlong r22, ##@C_s90o7_5fa8f449_script_file_valid_L000010 ' ASGNI4 addrg reg
+ wrlong r22, ##@C_saho7_6132d4ec_script_file_valid_L000010 ' ASGNI4 addrg reg
  mov r2, FP
  adds r2, ##(-1280)
 ' reg ARG ADDRL
@@ -2197,7 +2197,7 @@ C_flush_script ' <symbol:flush_script>
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #1 wz
  if_nz jmp #\C_flush_script_304 ' NEI4
- mov r2, ##@C_s90o1_5fa8f449_sfp_L000004
+ mov r2, ##@C_saho1_6132d4ec_sfp_L000004
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -2219,7 +2219,7 @@ C_close_script ' <symbol:close_script>
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #1 wz
  if_nz jmp #\C_close_script_307 ' NEI4
- mov r2, ##@C_s90o1_5fa8f449_sfp_L000004
+ mov r2, ##@C_saho1_6132d4ec_sfp_L000004
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -2378,7 +2378,7 @@ C_script_char_314
  cmp r22,  #95 wcz 
  if_ae jmp #\C_script_char_316 ' GEU4
 C_script_char_318
- mov r2, ##@C_s90o1_5fa8f449_sfp_L000004
+ mov r2, ##@C_saho1_6132d4ec_sfp_L000004
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
@@ -2494,8 +2494,8 @@ C_open_record_326
  PRIMITIVE(#CALA)
  long @C_fopen
  add SP, #4 ' CALL addrg
- wrlong r0, ##@C_s90o2_5fa8f449_rfp_L000005 ' ASGNP4 addrg reg
- mov r22, ##@C_s90o2_5fa8f449_rfp_L000005
+ wrlong r0, ##@C_saho2_6132d4ec_rfp_L000005 ' ASGNP4 addrg reg
+ mov r22, ##@C_saho2_6132d4ec_rfp_L000005
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  if_z jmp #\C_open_record_333 ' EQU4
@@ -2542,7 +2542,7 @@ C_record_line ' <symbol:record_line>
  if_nz jmp #\C_record_line_338 ' NEI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov r3, ##@C_record_line_340_L000341 ' reg ARG ADDRG
- mov r4, ##@C_s90o2_5fa8f449_rfp_L000005
+ mov r4, ##@C_saho2_6132d4ec_rfp_L000005
  rdlong r4, r4
  ' reg ARG INDIR ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -2573,7 +2573,7 @@ C_record_key ' <symbol:record_key>
  if_nz jmp #\C_record_key_343 ' NEI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov r3, ##@C_record_key_345_L000346 ' reg ARG ADDRG
- mov r4, ##@C_s90o2_5fa8f449_rfp_L000005
+ mov r4, ##@C_saho2_6132d4ec_rfp_L000005
  rdlong r4, r4
  ' reg ARG INDIR ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -2593,18 +2593,18 @@ C_record_key_343
 C_close_record ' <symbol:close_record>
  PRIMITIVE(#PSHM)
  long $400000 ' save registers
- mov r22, ##@C_s90o2_5fa8f449_rfp_L000005
+ mov r22, ##@C_saho2_6132d4ec_rfp_L000005
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  if_z jmp #\C_close_record_348 ' EQU4
- mov r2, ##@C_s90o2_5fa8f449_rfp_L000005
+ mov r2, ##@C_saho2_6132d4ec_rfp_L000005
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_fclose ' CALL addrg
  mov r22, ##0 ' reg <- con
- wrlong r22, ##@C_s90o2_5fa8f449_rfp_L000005 ' ASGNP4 addrg reg
+ wrlong r22, ##@C_saho2_6132d4ec_rfp_L000005 ' ASGNP4 addrg reg
  mov r22, ##@C_recording
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #1 wz
@@ -2681,8 +2681,8 @@ C_z_input_stream_353
  PRIMITIVE(#CALA)
  long @C_fopen
  add SP, #4 ' CALL addrg
- wrlong r0, ##@C_s90o2_5fa8f449_rfp_L000005 ' ASGNP4 addrg reg
- mov r22, ##@C_s90o2_5fa8f449_rfp_L000005
+ wrlong r0, ##@C_saho2_6132d4ec_rfp_L000005 ' ASGNP4 addrg reg
+ mov r22, ##@C_saho2_6132d4ec_rfp_L000005
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  if_z jmp #\C_z_input_stream_362 ' EQU4
@@ -2735,7 +2735,7 @@ C_playback_line_369
  mov r0, ##-1 ' RET con
  jmp #\@C_playback_line_366 ' JUMPV addrg
 C_playback_line_367
- mov r2, ##@C_s90o2_5fa8f449_rfp_L000005
+ mov r2, ##@C_saho2_6132d4ec_rfp_L000005
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
@@ -2815,7 +2815,7 @@ C_playback_key_375
  mov r2, FP
  sub r2, #-(-4) ' reg ARG ADDRLi
  mov r3, ##@C_playback_key_380_L000381 ' reg ARG ADDRG
- mov r4, ##@C_s90o2_5fa8f449_rfp_L000005
+ mov r4, ##@C_saho2_6132d4ec_rfp_L000005
  rdlong r4, r4
  ' reg ARG INDIR ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -2848,15 +2848,15 @@ C_playback_key_374
 DAT ' uninitialized data segment
 
  alignl ' align long
-C_s90o6_5fa8f449_undo_stack_L000009 ' <symbol:undo_stack>
+C_saho6_6132d4ec_undo_stack_L000009 ' <symbol:undo_stack>
  byte 0[2048]
 
  alignl ' align long
-C_s90o4_5fa8f449_rfpbuffer_L000007 ' <symbol:rfpbuffer>
+C_saho4_6132d4ec_rfpbuffer_L000007 ' <symbol:rfpbuffer>
  byte 0[512]
 
  alignl ' align long
-C_s90o3_5fa8f449_sfpbuffer_L000006 ' <symbol:sfpbuffer>
+C_saho3_6132d4ec_sfpbuffer_L000006 ' <symbol:sfpbuffer>
  byte 0[512]
 
 ' Catalina Code
@@ -3667,7 +3667,7 @@ C_open_script_287_L000288 ' <symbol:287>
  byte 0
 
  alignl ' align long
-C_s90oa_5fa8f449_save_restore_L000014_280_L000281 ' <symbol:280>
+C_sahoa_6132d4ec_save_restore_L000014_280_L000281 ' <symbol:280>
  byte 115
  byte 97
  byte 118
@@ -3713,7 +3713,7 @@ C_s90oa_5fa8f449_save_restore_L000014_280_L000281 ' <symbol:280>
  byte 0
 
  alignl ' align long
-C_s90oa_5fa8f449_save_restore_L000014_278_L000279 ' <symbol:278>
+C_sahoa_6132d4ec_save_restore_L000014_278_L000279 ' <symbol:278>
  byte 87
  byte 114
  byte 105
@@ -3742,7 +3742,7 @@ C_s90oa_5fa8f449_save_restore_L000014_278_L000279 ' <symbol:278>
  byte 0
 
  alignl ' align long
-C_s90oa_5fa8f449_save_restore_L000014_264_L000265 ' <symbol:264>
+C_sahoa_6132d4ec_save_restore_L000014_264_L000265 ' <symbol:264>
  byte 115
  byte 97
  byte 118
@@ -3783,7 +3783,7 @@ C_s90oa_5fa8f449_save_restore_L000014_264_L000265 ' <symbol:264>
  byte 0
 
  alignl ' align long
-C_s90oa_5fa8f449_save_restore_L000014_248_L000249 ' <symbol:248>
+C_sahoa_6132d4ec_save_restore_L000014_248_L000249 ' <symbol:248>
  byte 67
  byte 97
  byte 110
@@ -4252,7 +4252,7 @@ C_set_names_32_L000033 ' <symbol:32>
  byte 0
 
  alignl ' align long
-C_s90o9_5fa8f449_12_L000013 ' <symbol:12>
+C_saho9_6132d4ec_12_L000013 ' <symbol:12>
  byte 74
  byte 90
  byte 105

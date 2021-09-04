@@ -7,18 +7,18 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_s6dk_5f5d7be0_s_prnt_L000001 ' <symbol:s_prnt>
+C_sdac_6132d0d0_s_prnt_L000001 ' <symbol:s_prnt>
  PRIMITIVE(#PSHM)
  long $500000 ' save registers
  PRIMITIVE(#JMPA)
- long @C_s6dk_5f5d7be0_s_prnt_L000001_4 ' JUMPV addrg
-C_s6dk_5f5d7be0_s_prnt_L000001_3
+ long @C_sdac_6132d0d0_s_prnt_L000001_4 ' JUMPV addrg
+C_sdac_6132d0d0_s_prnt_L000001_3
  cmp r4,  #0 wz
  PRIMITIVE(#BRNZ)
- long @C_s6dk_5f5d7be0_s_prnt_L000001_6 ' NEU4
+ long @C_sdac_6132d0d0_s_prnt_L000001_6 ' NEU4
  PRIMITIVE(#JMPA)
- long @C_s6dk_5f5d7be0_s_prnt_L000001_5 ' JUMPV addrg
-C_s6dk_5f5d7be0_s_prnt_L000001_6
+ long @C_sdac_6132d0d0_s_prnt_L000001_5 ' JUMPV addrg
+C_sdac_6132d0d0_s_prnt_L000001_6
  mov r22, r5 ' CVI, CVU or LOAD
  mov r5, r22
  adds r5, #1 ' ADDP4 coni
@@ -29,29 +29,29 @@ C_s6dk_5f5d7be0_s_prnt_L000001_6
  wrbyte r20, r22 ' ASGNU1 reg reg
  sub r4, #1 ' SUBU4 coni
  subs r2, #1 ' SUBI4 coni
-C_s6dk_5f5d7be0_s_prnt_L000001_4
+C_sdac_6132d0d0_s_prnt_L000001_4
  mov r22, #0 ' reg <- coni
  cmps r2, r22 wcz
  PRIMITIVE(#BR_A)
- long @C_s6dk_5f5d7be0_s_prnt_L000001_3 ' GTI4
+ long @C_sdac_6132d0d0_s_prnt_L000001_3 ' GTI4
  cmps r2, r22 wcz
  PRIMITIVE(#BRAE)
- long @C_s6dk_5f5d7be0_s_prnt_L000001_8 ' GEI4
+ long @C_sdac_6132d0d0_s_prnt_L000001_8 ' GEI4
  rdbyte r20, r3 ' reg <- INDIRU1 reg
  and r20, cviu_m1 ' zero extend
  cmps r20, r22 wz
  PRIMITIVE(#BRNZ)
- long @C_s6dk_5f5d7be0_s_prnt_L000001_3 ' NEI4
-C_s6dk_5f5d7be0_s_prnt_L000001_8
-C_s6dk_5f5d7be0_s_prnt_L000001_5
+ long @C_sdac_6132d0d0_s_prnt_L000001_3 ' NEI4
+C_sdac_6132d0d0_s_prnt_L000001_8
+C_sdac_6132d0d0_s_prnt_L000001_5
  mov r0, r5 ' CVI, CVU or LOAD
-' C_s6dk_5f5d7be0_s_prnt_L000001_2 ' (symbol refcount = 0)
+' C_sdac_6132d0d0_s_prnt_L000001_2 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
 
  alignl ' align long
-C_s6dk1_5f5d7be0_u_prnt_L000009 ' <symbol:u_prnt>
+C_sdac1_6132d0d0_u_prnt_L000009 ' <symbol:u_prnt>
  PRIMITIVE(#NEWF)
  sub SP, #4
  PRIMITIVE(#PSHM)
@@ -78,38 +78,38 @@ C_s6dk1_5f5d7be0_u_prnt_L000009 ' <symbol:u_prnt>
  mov r20, #0 ' reg <- coni
  cmps r22, r20 wcz
  PRIMITIVE(#BR_A)
- long @C_s6dk1_5f5d7be0_u_prnt_L000009_13 ' GTI4
+ long @C_sdac1_6132d0d0_u_prnt_L000009_13 ' GTI4
  cmps r17, r20 wcz
  PRIMITIVE(#BRAE)
- long @C_s6dk1_5f5d7be0_u_prnt_L000009_11 ' GEI4
+ long @C_sdac1_6132d0d0_u_prnt_L000009_11 ' GEI4
  cmp r19,  #0 wz
  PRIMITIVE(#BR_Z)
- long @C_s6dk1_5f5d7be0_u_prnt_L000009_11 ' EQU4
-C_s6dk1_5f5d7be0_u_prnt_L000009_13
+ long @C_sdac1_6132d0d0_u_prnt_L000009_11 ' EQU4
+C_sdac1_6132d0d0_u_prnt_L000009_13
  mov r2, r17 ' CVI, CVU or LOAD
  mov r3, r19 ' CVI, CVU or LOAD
  cmp r21,  #0 wz
  PRIMITIVE(#BR_Z)
- long @C_s6dk1_5f5d7be0_u_prnt_L000009_15 ' EQU4
+ long @C_sdac1_6132d0d0_u_prnt_L000009_15 ' EQU4
  mov r15, r21
  sub r15, #1 ' SUBU4 coni
  PRIMITIVE(#JMPA)
- long @C_s6dk1_5f5d7be0_u_prnt_L000009_16 ' JUMPV addrg
-C_s6dk1_5f5d7be0_u_prnt_L000009_15
+ long @C_sdac1_6132d0d0_u_prnt_L000009_16 ' JUMPV addrg
+C_sdac1_6132d0d0_u_prnt_L000009_15
  mov r15, #0 ' reg <- coni
-C_s6dk1_5f5d7be0_u_prnt_L000009_16
+C_sdac1_6132d0d0_u_prnt_L000009_16
  mov r4, r15 ' CVI, CVU or LOAD
  mov r5, r23 ' CVI, CVU or LOAD
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s6dk1_5f5d7be0_u_prnt_L000009
+ long @C_sdac1_6132d0d0_u_prnt_L000009
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
-C_s6dk1_5f5d7be0_u_prnt_L000009_11
+C_sdac1_6132d0d0_u_prnt_L000009_11
  cmp r21,  #0 wz
  PRIMITIVE(#BR_Z)
- long @C_s6dk1_5f5d7be0_u_prnt_L000009_17 ' EQU4
+ long @C_sdac1_6132d0d0_u_prnt_L000009_17 ' EQU4
  mov r22, r23 ' CVI, CVU or LOAD
  mov r23, r22
  adds r23, #1 ' ADDP4 coni
@@ -118,9 +118,9 @@ C_s6dk1_5f5d7be0_u_prnt_L000009_11
  rdlong r20, r20 ' reg <- INDIRI4 reg
  adds r20, #48 ' ADDI4 coni
  wrbyte r20, r22 ' ASGNU1 reg reg
-C_s6dk1_5f5d7be0_u_prnt_L000009_17
+C_sdac1_6132d0d0_u_prnt_L000009_17
  mov r0, r23 ' CVI, CVU or LOAD
-' C_s6dk1_5f5d7be0_u_prnt_L000009_10 ' (symbol refcount = 0)
+' C_sdac1_6132d0d0_u_prnt_L000009_10 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  add SP, #4 ' framesize
  PRIMITIVE(#RETF)
@@ -314,7 +314,7 @@ C_strftime_36
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s6dk_5f5d7be0_s_prnt_L000001
+ long @C_sdac_6132d0d0_s_prnt_L000001
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -341,7 +341,7 @@ C_strftime_37
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s6dk_5f5d7be0_s_prnt_L000001
+ long @C_sdac_6132d0d0_s_prnt_L000001
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -366,7 +366,7 @@ C_strftime_38
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s6dk_5f5d7be0_s_prnt_L000001
+ long @C_sdac_6132d0d0_s_prnt_L000001
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -393,7 +393,7 @@ C_strftime_39
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s6dk_5f5d7be0_s_prnt_L000001
+ long @C_sdac_6132d0d0_s_prnt_L000001
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -438,7 +438,7 @@ C_strftime_45
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s6dk1_5f5d7be0_u_prnt_L000009
+ long @C_sdac1_6132d0d0_u_prnt_L000009
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -458,7 +458,7 @@ C_strftime_46
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s6dk1_5f5d7be0_u_prnt_L000009
+ long @C_sdac1_6132d0d0_u_prnt_L000009
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -485,7 +485,7 @@ C_strftime_47
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s6dk1_5f5d7be0_u_prnt_L000009
+ long @C_sdac1_6132d0d0_u_prnt_L000009
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -506,7 +506,7 @@ C_strftime_48
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s6dk1_5f5d7be0_u_prnt_L000009
+ long @C_sdac1_6132d0d0_u_prnt_L000009
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -527,7 +527,7 @@ C_strftime_49
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s6dk1_5f5d7be0_u_prnt_L000009
+ long @C_sdac1_6132d0d0_u_prnt_L000009
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -547,7 +547,7 @@ C_strftime_50
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s6dk1_5f5d7be0_u_prnt_L000009
+ long @C_sdac1_6132d0d0_u_prnt_L000009
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -580,7 +580,7 @@ C_strftime_58
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s6dk_5f5d7be0_s_prnt_L000001
+ long @C_sdac_6132d0d0_s_prnt_L000001
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -598,7 +598,7 @@ C_strftime_59
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s6dk1_5f5d7be0_u_prnt_L000009
+ long @C_sdac1_6132d0d0_u_prnt_L000009
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -628,7 +628,7 @@ C_strftime_60
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s6dk1_5f5d7be0_u_prnt_L000009
+ long @C_sdac1_6132d0d0_u_prnt_L000009
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -648,7 +648,7 @@ C_strftime_61
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s6dk1_5f5d7be0_u_prnt_L000009
+ long @C_sdac1_6132d0d0_u_prnt_L000009
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -683,7 +683,7 @@ C_strftime_62
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s6dk1_5f5d7be0_u_prnt_L000009
+ long @C_sdac1_6132d0d0_u_prnt_L000009
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -758,7 +758,7 @@ C_strftime_73
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s6dk1_5f5d7be0_u_prnt_L000009
+ long @C_sdac1_6132d0d0_u_prnt_L000009
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -784,7 +784,7 @@ C_strftime_74
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s6dk1_5f5d7be0_u_prnt_L000009
+ long @C_sdac1_6132d0d0_u_prnt_L000009
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -821,7 +821,7 @@ C_strftime_78
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s6dk_5f5d7be0_s_prnt_L000001
+ long @C_sdac_6132d0d0_s_prnt_L000001
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD

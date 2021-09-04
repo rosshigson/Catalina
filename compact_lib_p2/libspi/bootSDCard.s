@@ -180,6 +180,10 @@ C_spi_bootS_D_C_ard_2
  word I16B_POPM + $80<<S16B ' restore registers, do not pop frame, do return
  alignl ' align long
 
+' Catalina Import _lockret
+
+' Catalina Import _cogstop
+
 ' Catalina Import _initialize_spi
 
 ' Catalina Import _spi_lock
@@ -191,10 +195,6 @@ C_spi_bootS_D_C_ard_2
 ' Catalina Import _release_lock
 
 ' Catalina Import _acquire_lock
-
-' Catalina Import _lockret
-
-' Catalina Import _cogstop
 
 ' Catalina Import _cogid
 

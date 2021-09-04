@@ -11,8 +11,8 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_s4k4_5fa8f425_sccsid_L000001 ' <symbol:sccsid>
- long @C_s4k41_5fa8f425_2_L000003
+C_sl6o_6132d4c9_sccsid_L000001 ' <symbol:sccsid>
+ long @C_sl6o1_6132d4c9_2_L000003
 
 ' Catalina Export new_buffer
 
@@ -38,7 +38,7 @@ C_new_buffer_20
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_s4k42_5fa8f425_setup_buffer_L000018 ' CALL addrg
+ long @C_sl6o2_6132d4c9_setup_buffer_L000018 ' CALL addrg
  cmps r0,  #0 wz
  if_nz jmp #\C_new_buffer_22 ' NEI4
  mov r2, r23 ' CVI, CVU or LOAD
@@ -109,7 +109,7 @@ C_clear_buffer ' <symbol:clear_buffer>
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_s4k42_5fa8f425_setup_buffer_L000018 ' CALL addrg
+ long @C_sl6o2_6132d4c9_setup_buffer_L000018 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
 ' C_clear_buffer_27 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
@@ -117,7 +117,7 @@ C_clear_buffer ' <symbol:clear_buffer>
 
 
  alignl ' align long
-C_s4k42_5fa8f425_setup_buffer_L000018 ' <symbol:setup_buffer>
+C_sl6o2_6132d4c9_setup_buffer_L000018 ' <symbol:setup_buffer>
  PRIMITIVE(#PSHM)
  long $d00000 ' save registers
  mov r23, r2 ' reg var <- reg arg
@@ -143,21 +143,21 @@ C_s4k42_5fa8f425_setup_buffer_L000018 ' <symbol:setup_buffer>
  mov r22, #0 ' reg <- coni
  rdlong r20, r23 ' reg <- INDIRP4 reg
  cmp r20, r22 wz
- if_z jmp #\C_s4k42_5fa8f425_setup_buffer_L000018_32 ' EQU4
+ if_z jmp #\C_sl6o2_6132d4c9_setup_buffer_L000018_32 ' EQU4
  mov r20, r23
  adds r20, #4 ' ADDP4 coni
  rdlong r20, r20 ' reg <- INDIRP4 reg
  cmp r20, r22 wz
- if_z jmp #\C_s4k42_5fa8f425_setup_buffer_L000018_32 ' EQU4
+ if_z jmp #\C_sl6o2_6132d4c9_setup_buffer_L000018_32 ' EQU4
  mov r20, r23
  adds r20, #8 ' ADDP4 coni
  rdlong r20, r20 ' reg <- INDIRP4 reg
  cmp r20, r22 wz
- if_nz jmp #\C_s4k42_5fa8f425_setup_buffer_L000018_29  ' NEU4
-C_s4k42_5fa8f425_setup_buffer_L000018_32
+ if_nz jmp #\C_sl6o2_6132d4c9_setup_buffer_L000018_29  ' NEU4
+C_sl6o2_6132d4c9_setup_buffer_L000018_32
  mov r0, #0 ' reg <- coni
- jmp #\@C_s4k42_5fa8f425_setup_buffer_L000018_28 ' JUMPV addrg
-C_s4k42_5fa8f425_setup_buffer_L000018_29
+ jmp #\@C_sl6o2_6132d4c9_setup_buffer_L000018_28 ' JUMPV addrg
+C_sl6o2_6132d4c9_setup_buffer_L000018_29
  rdlong r22, r23 ' reg <- INDIRP4 reg
  adds r22, #4 ' ADDP4 coni
  mov r20, r23
@@ -199,15 +199,15 @@ C_s4k42_5fa8f425_setup_buffer_L000018_29
  mov r22, ##@C_params+336+12
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz
- if_nz jmp #\C_s4k42_5fa8f425_setup_buffer_L000018_33 ' NEI4
+ if_nz jmp #\C_sl6o2_6132d4c9_setup_buffer_L000018_33 ' NEI4
  mov r22, r23
  adds r22, #20 ' ADDP4 coni
  rdlong r20, r22 ' reg <- INDIRU4 reg
  or r20, #4 ' BORU4 coni
  wrlong r20, r22 ' ASGNU4 reg reg
-C_s4k42_5fa8f425_setup_buffer_L000018_33
+C_sl6o2_6132d4c9_setup_buffer_L000018_33
  mov r0, #1 ' reg <- coni
-C_s4k42_5fa8f425_setup_buffer_L000018_28
+C_sl6o2_6132d4c9_setup_buffer_L000018_28
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
@@ -233,7 +233,7 @@ C_s4k42_5fa8f425_setup_buffer_L000018_28
 DAT ' const data segment
 
  alignl ' align long
-C_s4k41_5fa8f425_2_L000003 ' <symbol:2>
+C_sl6o1_6132d4c9_2_L000003 ' <symbol:2>
  byte 64
  byte 40
  byte 35

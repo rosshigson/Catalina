@@ -11,8 +11,8 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_s7lc_5fa8f426_sccsid_L000001 ' <symbol:sccsid>
- long @C_s7lc1_5fa8f426_2_L000003
+C_sghc_6132d4ca_sccsid_L000001 ' <symbol:sccsid>
+ long @C_sghc1_6132d4ca_2_L000003
 
 ' Catalina Data
 
@@ -317,13 +317,13 @@ C_xvi_handle_event_68_L000070 ' <symbol:68>
 
 DAT ' code segment
 C_xvi_handle_event_63
- mov r15, ##@C_s7lc2_5fa8f426_n_proc_L000018 ' reg <- addrg
+ mov r15, ##@C_sghc2_6132d4ca_n_proc_L000018 ' reg <- addrg
  jmp #\@C_xvi_handle_event_61 ' JUMPV addrg
 C_xvi_handle_event_64
- mov r15, ##@C_s7lc3_5fa8f426_c_proc_L000019 ' reg <- addrg
+ mov r15, ##@C_sghc3_6132d4ca_c_proc_L000019 ' reg <- addrg
  jmp #\@C_xvi_handle_event_61 ' JUMPV addrg
 C_xvi_handle_event_65
- mov r15, ##@C_s7lc4_5fa8f426_d_proc_L000020 ' reg <- addrg
+ mov r15, ##@C_sghc4_6132d4ca_d_proc_L000020 ' reg <- addrg
  jmp #\@C_xvi_handle_event_61 ' JUMPV addrg
 C_xvi_handle_event_66
  mov r15, ##@C_i_proc ' reg <- addrg
@@ -483,7 +483,7 @@ C_xvi_handle_event_21
 
 
  alignl ' align long
-C_s7lc2_5fa8f426_n_proc_L000018 ' <symbol:n_proc>
+C_sghc2_6132d4ca_n_proc_L000018 ' <symbol:n_proc>
  PRIMITIVE(#NEWF)
  sub SP, #8
  PRIMITIVE(#PSHM)
@@ -508,14 +508,14 @@ C_s7lc2_5fa8f426_n_proc_L000018 ' <symbol:n_proc>
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r0, r22 ' reg <- INDIRI4 reg
-' C_s7lc2_5fa8f426_n_proc_L000018_103 ' (symbol refcount = 0)
+' C_sghc2_6132d4ca_n_proc_L000018_103 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  add SP, #8 ' framesize
  PRIMITIVE(#RETF)
 
 
  alignl ' align long
-C_s7lc3_5fa8f426_c_proc_L000019 ' <symbol:c_proc>
+C_sghc3_6132d4ca_c_proc_L000019 ' <symbol:c_proc>
  PRIMITIVE(#NEWF)
  sub SP, #12
  PRIMITIVE(#PSHM)
@@ -536,13 +536,13 @@ C_s7lc3_5fa8f426_c_proc_L000019 ' <symbol:c_proc>
  add SP, #4 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  cmps r21,  #0 wz
- if_z jmp #\C_s7lc3_5fa8f426_c_proc_L000019_110 ' EQI4
+ if_z jmp #\C_sghc3_6132d4ca_c_proc_L000019_110 ' EQI4
  cmps r21,  #1 wz
- if_z jmp #\C_s7lc3_5fa8f426_c_proc_L000019_109 ' EQI4
+ if_z jmp #\C_sghc3_6132d4ca_c_proc_L000019_109 ' EQI4
  cmps r21,  #2 wz
- if_z jmp #\C_s7lc3_5fa8f426_c_proc_L000019_108 ' EQI4
- jmp #\@C_s7lc3_5fa8f426_c_proc_L000019_105 ' JUMPV addrg
-C_s7lc3_5fa8f426_c_proc_L000019_108
+ if_z jmp #\C_sghc3_6132d4ca_c_proc_L000019_108 ' EQI4
+ jmp #\@C_sghc3_6132d4ca_c_proc_L000019_105 ' JUMPV addrg
+C_sghc3_6132d4ca_c_proc_L000019_108
  mov r2, #1 ' reg ARG coni
  mov r3, ##@C_curwin
  rdlong r3, r3
@@ -556,14 +556,14 @@ C_s7lc3_5fa8f426_c_proc_L000019_108
  mov RI, FP
  sub RI, #-(-4)
  wrlong r22, RI ' ASGNI4 addrli reg
- jmp #\@C_s7lc3_5fa8f426_c_proc_L000019_106 ' JUMPV addrg
-C_s7lc3_5fa8f426_c_proc_L000019_109
+ jmp #\@C_sghc3_6132d4ca_c_proc_L000019_106 ' JUMPV addrg
+C_sghc3_6132d4ca_c_proc_L000019_109
  mov r22, #0 ' reg <- coni
  mov RI, FP
  sub RI, #-(-4)
  wrlong r22, RI ' ASGNI4 addrli reg
- jmp #\@C_s7lc3_5fa8f426_c_proc_L000019_106 ' JUMPV addrg
-C_s7lc3_5fa8f426_c_proc_L000019_110
+ jmp #\@C_sghc3_6132d4ca_c_proc_L000019_106 ' JUMPV addrg
+C_sghc3_6132d4ca_c_proc_L000019_110
  mov r2, ##@C_curwin
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
@@ -588,24 +588,24 @@ C_s7lc3_5fa8f426_c_proc_L000019_110
  rdbyte r19, r22 ' reg <- CVUI4 INDIRU1 reg
  mov r22, #47 ' reg <- coni
  cmps r19, r22 wz
- if_z jmp #\C_s7lc3_5fa8f426_c_proc_L000019_114 ' EQI4
+ if_z jmp #\C_sghc3_6132d4ca_c_proc_L000019_114 ' EQI4
  cmps r19, r22 wcz
- if_a jmp #\C_s7lc3_5fa8f426_c_proc_L000019_118 ' GTI4
-' C_s7lc3_5fa8f426_c_proc_L000019_117 ' (symbol refcount = 0)
+ if_a jmp #\C_sghc3_6132d4ca_c_proc_L000019_118 ' GTI4
+' C_sghc3_6132d4ca_c_proc_L000019_117 ' (symbol refcount = 0)
  cmps r19,  #33 wz
- if_z jmp #\C_s7lc3_5fa8f426_c_proc_L000019_115 ' EQI4
- jmp #\@C_s7lc3_5fa8f426_c_proc_L000019_111 ' JUMPV addrg
-C_s7lc3_5fa8f426_c_proc_L000019_118
+ if_z jmp #\C_sghc3_6132d4ca_c_proc_L000019_115 ' EQI4
+ jmp #\@C_sghc3_6132d4ca_c_proc_L000019_111 ' JUMPV addrg
+C_sghc3_6132d4ca_c_proc_L000019_118
  mov r22, #58 ' reg <- coni
  cmps r19, r22 wz
- if_z jmp #\C_s7lc3_5fa8f426_c_proc_L000019_116 ' EQI4
+ if_z jmp #\C_sghc3_6132d4ca_c_proc_L000019_116 ' EQI4
  cmps r19, r22 wcz
- if_b jmp #\C_s7lc3_5fa8f426_c_proc_L000019_111 ' LTI4
-' C_s7lc3_5fa8f426_c_proc_L000019_119 ' (symbol refcount = 0)
+ if_b jmp #\C_sghc3_6132d4ca_c_proc_L000019_111 ' LTI4
+' C_sghc3_6132d4ca_c_proc_L000019_119 ' (symbol refcount = 0)
  cmps r19,  #63 wz
- if_z jmp #\C_s7lc3_5fa8f426_c_proc_L000019_114 ' EQI4
- jmp #\@C_s7lc3_5fa8f426_c_proc_L000019_111 ' JUMPV addrg
-C_s7lc3_5fa8f426_c_proc_L000019_114
+ if_z jmp #\C_sghc3_6132d4ca_c_proc_L000019_114 ' EQI4
+ jmp #\@C_sghc3_6132d4ca_c_proc_L000019_111 ' JUMPV addrg
+C_sghc3_6132d4ca_c_proc_L000019_114
  mov r22, FP
  sub r22, #-(-12) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -617,8 +617,8 @@ C_s7lc3_5fa8f426_c_proc_L000019_114
  PRIMITIVE(#CALA)
  long @C_xvP_rocessS_earch
  add SP, #4 ' CALL addrg
- jmp #\@C_s7lc3_5fa8f426_c_proc_L000019_112 ' JUMPV addrg
-C_s7lc3_5fa8f426_c_proc_L000019_115
+ jmp #\@C_sghc3_6132d4ca_c_proc_L000019_112 ' JUMPV addrg
+C_sghc3_6132d4ca_c_proc_L000019_115
  mov r22, FP
  sub r22, #-(-12) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -632,8 +632,8 @@ C_s7lc3_5fa8f426_c_proc_L000019_115
  PRIMITIVE(#CALA)
  long @C_do_pipe
  add SP, #4 ' CALL addrg
- jmp #\@C_s7lc3_5fa8f426_c_proc_L000019_112 ' JUMPV addrg
-C_s7lc3_5fa8f426_c_proc_L000019_116
+ jmp #\@C_sghc3_6132d4ca_c_proc_L000019_112 ' JUMPV addrg
+C_sghc3_6132d4ca_c_proc_L000019_116
  mov r22, #1 ' reg <- coni
  mov r2, r22 ' CVI, CVU or LOAD
  mov r22, FP
@@ -646,13 +646,13 @@ C_s7lc3_5fa8f426_c_proc_L000019_116
  PRIMITIVE(#CALA)
  long @C_exC_ommand
  add SP, #4 ' CALL addrg
-C_s7lc3_5fa8f426_c_proc_L000019_111
-C_s7lc3_5fa8f426_c_proc_L000019_112
+C_sghc3_6132d4ca_c_proc_L000019_111
+C_sghc3_6132d4ca_c_proc_L000019_112
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRP4 reg
  cmp r22,  #0 wz
- if_z jmp #\C_s7lc3_5fa8f426_c_proc_L000019_120 ' EQU4
+ if_z jmp #\C_sghc3_6132d4ca_c_proc_L000019_120 ' EQU4
  mov r2, #1 ' reg ARG coni
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
@@ -670,30 +670,30 @@ C_s7lc3_5fa8f426_c_proc_L000019_112
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_free ' CALL addrg
-C_s7lc3_5fa8f426_c_proc_L000019_120
-C_s7lc3_5fa8f426_c_proc_L000019_105
-C_s7lc3_5fa8f426_c_proc_L000019_106
+C_sghc3_6132d4ca_c_proc_L000019_120
+C_sghc3_6132d4ca_c_proc_L000019_105
+C_sghc3_6132d4ca_c_proc_L000019_106
  mov r22, FP
  sub r22, #-(-4) ' reg <- addrli
  rdlong r0, r22 ' reg <- INDIRI4 reg
-' C_s7lc3_5fa8f426_c_proc_L000019_104 ' (symbol refcount = 0)
+' C_sghc3_6132d4ca_c_proc_L000019_104 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  add SP, #12 ' framesize
  PRIMITIVE(#RETF)
 
 
  alignl ' align long
-C_s7lc4_5fa8f426_d_proc_L000020 ' <symbol:d_proc>
+C_sghc4_6132d4ca_d_proc_L000020 ' <symbol:d_proc>
  PRIMITIVE(#PSHM)
  long $c00000 ' save registers
  mov r23, r2 ' reg var <- reg arg
  cmps r23,  #3 wz
- if_nz jmp #\C_s7lc4_5fa8f426_d_proc_L000020_123 ' NEI4
+ if_nz jmp #\C_sghc4_6132d4ca_d_proc_L000020_123 ' NEI4
  mov r22, #1 ' reg <- coni
  wrbyte r22, ##@C_kbdintr ' ASGNU1 addrg reg
  and r22, cviu_m1 ' zero extend
  wrlong r22, ##@C_imessage ' ASGNI4 addrg reg
-C_s7lc4_5fa8f426_d_proc_L000020_123
+C_sghc4_6132d4ca_d_proc_L000020_123
  mov r2, r23 ' CVI, CVU or LOAD
  mov r3, ##@C_curwin
  rdlong r3, r3
@@ -704,7 +704,7 @@ C_s7lc4_5fa8f426_d_proc_L000020_123
  long @C_disp_screen
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
-' C_s7lc4_5fa8f426_d_proc_L000020_122 ' (symbol refcount = 0)
+' C_sghc4_6132d4ca_d_proc_L000020_122 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
@@ -891,7 +891,7 @@ C_xvi_handle_event_37_L000038 ' <symbol:37>
  byte 0
 
  alignl ' align long
-C_s7lc1_5fa8f426_2_L000003 ' <symbol:2>
+C_sghc1_6132d4ca_2_L000003 ' <symbol:2>
  byte 64
  byte 40
  byte 35

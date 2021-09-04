@@ -1,6 +1,10 @@
 #include <catalina_serial2.h>
 #include <catalina_plugin.h>
-#include <propeller.h>
+#include <propeller2.h>
+
+#ifdef __CATALINA_libthreads
+#include <catalina_threads.h>
+#endif
 
 /*
  * Simple test program for the 2 Port serial plugin. This program only tests 
@@ -8,21 +12,21 @@
  *
  * NOTE:
  *
- * By default, the 2 port serial plugin only enables one port (port 0) on 
- * propeller pins 63 & 62. This means you cannot also use the TTY HMI option 
- * (which uses the same pins). If TTY is the default HMI option for your 
- * Propeller platform, you must disable it when compiling this program by 
- * choosing another option, or by defining the target symbol NO_HMI - for 
- * example:
+ * By default, the 8 port serial plugin enables port 0 on propeller pins 
+ * 63 & 62 and port 1 on pins 52 & 50. This means you cannot use the TTY HMI 
+ * option or the debugger (which by default use these same pins). If TTY is 
+ * the default HMI option for your Propeller platform, you must disable it 
+ * when compiling this program by defining the target symbol NO_HMI.
+ * For example:
  *
  *   catalina test_serial2.c -p2 -lci -lserial2 -C NO_HMI
  *
- * However, if your platform also has a TV or VGA display connected, you 
+ * However, if your platform also has a VGA display connected, you 
  * can use multithreading to also use the stdio functions on that HMI. 
- * For example, to use the TV HMI option in addition to the 2 port serial 
+ * For example, to use the VGA HMI option in addition to the 2 port serial 
  * plugin, compile this program with a command such as:
  *
- *   catalina test_serial2.c -p2 -lci -lserial2 -lthreads -C TV
+ *   catalina test_serial2.c -p2 -lci -lserial2 -lthreads -C LORES_VGA
  */
 
 #define PORT 0
@@ -88,6 +92,10 @@ void main() {
    // and then start the thread ...
 
    long stack[STACK_SIZE];
+
+   // assign a lock to avoid context switch contention 
+   _thread_set_lock(_locknew());
+
    // start a thread to interact with the normal HMI
    _thread_start(&function, &stack[STACK_SIZE], 0, NULL);
 

@@ -19,6 +19,7 @@ ifeq ($(COMPACT),TRUE)
 	cp rev_compact.e rev.s
 	cp encod_compact.e encod.s
 	cp isqrt_compact.e isqrt.s
+	cp muldiv64_compact.e muldiv64.s
 	cp waitx_compact.e waitx.s
 	cp dirl_compact.e dirl.s
 	cp dirh_compact.e dirh.s
@@ -53,6 +54,7 @@ else
 	$(SPINPP) $(SPINPPFLAGS) rev.e > rev.s
 	$(SPINPP) $(SPINPPFLAGS) encod.e > encod.s
 	$(SPINPP) $(SPINPPFLAGS) isqrt.e > isqrt.s
+	$(SPINPP) $(SPINPPFLAGS) muldiv64.e > muldiv64.s
 	$(SPINPP) $(SPINPPFLAGS) waitx.e > waitx.s
 	$(SPINPP) $(SPINPPFLAGS) dirl.e > dirl.s
 	$(SPINPP) $(SPINPPFLAGS) dirh.e > dirh.s
@@ -90,6 +92,7 @@ clean:
 	rev.s \
 	encod.s \
 	isqrt.s \
+	muldiv64.s \
 	waitx.s \
 	dirl.s \
 	dirh.s \

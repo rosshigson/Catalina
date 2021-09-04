@@ -33,15 +33,29 @@ do_cnthl
         getct   r0
         jmp     #LMM_Loop
 
+' do_div64 - cannot be executed via LMM because rdlongs interrupt the setq
+ ' on entry r0 = lower 32 bits of dividend
+ '          r1 = upper 32 bits of dividend
+ '          r2 = divisor
+ ' on exit  r0 = quotient
+
+do_div64
+        setq    r1       ' set upper 32 bits of product to q register
+        qdiv    r0, r2   ' divide 64 bit product by 32 bit divisor
+        jmp     #LMM_loop
+
 ' special - perform a special operation that cannot be performed via LMM
 '    RI contains 1 => do_initcog
 '                2 => do_rotxy
 '                3 => do_cnthl
+'                4 => do_div64
 
 special
         djz     RI, #do_initcog
         djz     RI, #do_rotxy
-        jmp     #do_cnthl
+        djz     RI, #do_cnthl
+        jmp     #do_div64
 
 #endif
+
 

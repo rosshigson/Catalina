@@ -11,8 +11,8 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_sal4_5fa8f425_sccsid_L000001 ' <symbol:sccsid>
- long @C_sal41_5fa8f425_2_L000003
+C_sbbc_6132d4c9_sccsid_L000001 ' <symbol:sccsid>
+ long @C_sbbc1_6132d4c9_2_L000003
 
 ' Catalina Export alt_file_name
 
@@ -24,18 +24,18 @@ DAT ' code segment
 C_alt_file_name ' <symbol:alt_file_name>
  PRIMITIVE(#PSHM)
  long $d00000 ' save registers
- mov r22, ##@C_sal43_5fa8f425_n_elements_L000019
+ mov r22, ##@C_sbbc3_6132d4c9_n_elements_L000019
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz
  if_nz jmp #\C_alt_file_name_22 ' NEI4
  mov r0, ##0 ' RET con
  jmp #\@C_alt_file_name_21 ' JUMPV addrg
 C_alt_file_name_22
- mov r22, ##@C_sal44_5fa8f425_top_L000020
+ mov r22, ##@C_sbbc4_6132d4c9_top_L000020
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
  if_be jmp #\C_alt_file_name_25 ' LEI4
- mov r22, ##@C_sal44_5fa8f425_top_L000020
+ mov r22, ##@C_sbbc4_6132d4c9_top_L000020
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  subs r22, #1 ' SUBI4 coni
  mov r23, r22 ' CVI, CVU or LOAD
@@ -45,7 +45,7 @@ C_alt_file_name_25
 C_alt_file_name_26
  mov r22, r23
  shl r22, #3 ' LSHU4 coni
- mov r20, ##@C_sal42_5fa8f425_stack_L000018 ' reg <- addrg
+ mov r20, ##@C_sbbc2_6132d4c9_stack_L000018 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r0, r22 ' reg <- INDIRP4 reg
 C_alt_file_name_21
@@ -61,10 +61,10 @@ C_push_alternate ' <symbol:push_alternate>
  long $fa0000 ' save registers
  mov r23, r3 ' reg var <- reg arg
  mov r21, r2 ' reg var <- reg arg
- mov r22, ##@C_sal44_5fa8f425_top_L000020
+ mov r22, ##@C_sbbc4_6132d4c9_top_L000020
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  shl r22, #3 ' LSHI4 coni
- mov r20, ##@C_sal42_5fa8f425_stack_L000018 ' reg <- addrg
+ mov r20, ##@C_sbbc2_6132d4c9_stack_L000018 ' reg <- addrg
  mov r19, r22 ' ADDI/P
  adds r19, r20 ' ADDI/P (3)
  mov r2, r23 ' CVI, CVU or LOAD
@@ -78,11 +78,11 @@ C_push_alternate ' <symbol:push_alternate>
  mov r22, r19
  adds r22, #4 ' ADDP4 coni
  wrlong r21, r22 ' ASGNI4 reg reg
- mov r22, ##@C_sal44_5fa8f425_top_L000020 ' reg <- addrg
+ mov r22, ##@C_sbbc4_6132d4c9_top_L000020 ' reg <- addrg
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmp r22,  #31 wcz 
  if_ae jmp #\C_push_alternate_31 ' GEU4
- mov r22, ##@C_sal44_5fa8f425_top_L000020
+ mov r22, ##@C_sbbc4_6132d4c9_top_L000020
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  mov r17, r22
  adds r17, #1 ' ADDI4 coni
@@ -90,15 +90,15 @@ C_push_alternate ' <symbol:push_alternate>
 C_push_alternate_31
  mov r17, #0 ' reg <- coni
 C_push_alternate_32
- wrlong r17, ##@C_sal44_5fa8f425_top_L000020 ' ASGNI4 addrg reg
- mov r22, ##@C_sal43_5fa8f425_n_elements_L000019
+ wrlong r17, ##@C_sbbc4_6132d4c9_top_L000020 ' ASGNI4 addrg reg
+ mov r22, ##@C_sbbc3_6132d4c9_n_elements_L000019
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmp r22,  #32 wcz 
  if_ae jmp #\C_push_alternate_33 ' GEU4
- mov r22, ##@C_sal43_5fa8f425_n_elements_L000019 ' reg <- addrg
+ mov r22, ##@C_sbbc3_6132d4c9_n_elements_L000019 ' reg <- addrg
  rdlong r22, r22 ' reg <- INDIRI4 reg
  adds r22, #1 ' ADDI4 coni
- wrlong r22, ##@C_sal43_5fa8f425_n_elements_L000019 ' ASGNI4 addrg reg
+ wrlong r22, ##@C_sbbc3_6132d4c9_n_elements_L000019 ' ASGNI4 addrg reg
 C_push_alternate_33
 C_push_alternate_28
 ' C_push_alternate_27 ' (symbol refcount = 0)
@@ -112,22 +112,22 @@ C_push_alternate_28
 C_pop_alternate ' <symbol:pop_alternate>
  PRIMITIVE(#PSHM)
  long $f00000 ' save registers
- mov r22, ##@C_sal43_5fa8f425_n_elements_L000019
+ mov r22, ##@C_sbbc3_6132d4c9_n_elements_L000019
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz
  if_nz jmp #\C_pop_alternate_36 ' NEI4
  mov r0, ##0 ' RET con
  jmp #\@C_pop_alternate_35 ' JUMPV addrg
 C_pop_alternate_36
- mov r22, ##@C_sal43_5fa8f425_n_elements_L000019 ' reg <- addrg
+ mov r22, ##@C_sbbc3_6132d4c9_n_elements_L000019 ' reg <- addrg
  rdlong r22, r22 ' reg <- INDIRI4 reg
  subs r22, #1 ' SUBI4 coni
- wrlong r22, ##@C_sal43_5fa8f425_n_elements_L000019 ' ASGNI4 addrg reg
- mov r22, ##@C_sal44_5fa8f425_top_L000020 ' reg <- addrg
+ wrlong r22, ##@C_sbbc3_6132d4c9_n_elements_L000019 ' ASGNI4 addrg reg
+ mov r22, ##@C_sbbc4_6132d4c9_top_L000020 ' reg <- addrg
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #0 wcz
  if_be jmp #\C_pop_alternate_39 ' LEI4
- mov r22, ##@C_sal44_5fa8f425_top_L000020
+ mov r22, ##@C_sbbc4_6132d4c9_top_L000020
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  subs r22, #1 ' SUBI4 coni
  mov r21, r22 ' CVI, CVU or LOAD
@@ -136,11 +136,11 @@ C_pop_alternate_39
  mov r21, #31 ' reg <- coni
 C_pop_alternate_40
  mov r22, r21 ' CVI, CVU or LOAD
- wrlong r22, ##@C_sal44_5fa8f425_top_L000020 ' ASGNI4 addrg reg
- mov r22, ##@C_sal44_5fa8f425_top_L000020
+ wrlong r22, ##@C_sbbc4_6132d4c9_top_L000020 ' ASGNI4 addrg reg
+ mov r22, ##@C_sbbc4_6132d4c9_top_L000020
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  shl r22, #3 ' LSHI4 coni
- mov r20, ##@C_sal42_5fa8f425_stack_L000018 ' reg <- addrg
+ mov r20, ##@C_sbbc2_6132d4c9_stack_L000018 ' reg <- addrg
  mov r23, r22 ' ADDI/P
  adds r23, r20 ' ADDI/P (3)
  mov r22, r23
@@ -158,15 +158,15 @@ C_pop_alternate_35
 DAT ' uninitialized data segment
 
  alignl ' align long
-C_sal44_5fa8f425_top_L000020 ' <symbol:top>
+C_sbbc4_6132d4c9_top_L000020 ' <symbol:top>
  byte 0[4]
 
  alignl ' align long
-C_sal43_5fa8f425_n_elements_L000019 ' <symbol:n_elements>
+C_sbbc3_6132d4c9_n_elements_L000019 ' <symbol:n_elements>
  byte 0[4]
 
  alignl ' align long
-C_sal42_5fa8f425_stack_L000018 ' <symbol:stack>
+C_sbbc2_6132d4c9_stack_L000018 ' <symbol:stack>
  byte 0[256]
 
 ' Catalina Code
@@ -184,7 +184,7 @@ DAT ' uninitialized data segment
 DAT ' const data segment
 
  alignl ' align long
-C_sal41_5fa8f425_2_L000003 ' <symbol:2>
+C_sbbc1_6132d4c9_2_L000003 ' <symbol:2>
  byte 64
  byte 40
  byte 35

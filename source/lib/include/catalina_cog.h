@@ -51,25 +51,34 @@
 #endif
 
 
+#ifndef __CATALINA_P2
+// on the Propeller 2, these are defined in propeller2.h
 extern unsigned _clockfreq();  // return current frequency - e.g. 80000000
 extern unsigned _clockmode();  // return current mode - e.g. XTAL_1 + PLL16X
+#endif
+
 extern _clockinit(unsigned mode, unsigned freq); // set mode and freq
 
 
 /*
  * Cog control constants and functions
  */
+#ifndef ANY_COG
 #ifdef __CATALINA_P2
 #define ANY_COG 0x10 /* may be used in _coginit instead of a cog number */
 #else
 #define ANY_COG 0x8  /* may be used in _coginit instead of a cog number */
+#endif
 #endif
 
 extern int _cogid();
 
 extern int _coginit(int par, int addr, int cogid);
 
+#ifndef __CATALINA_P2
+// on the Propeller 2, this is defined in propeller2.h
 extern int _cogstop(int cogid);
+#endif
 
 extern int _coginit_C(void func(void), unsigned long *stack);
 
@@ -119,9 +128,12 @@ extern int _coginit_Spin_cog(void *code, void *data, void *stack, int start, int
 /*
  * Lock management constants and functions
  */
+#ifndef __CATALINA_P2
+// on the Propeller 2, these are defined in propeller2.h
 extern int _locknew();
 
 extern int _lockret(int lockid);
+#endif
 
 extern int _lockset(int lockid);
 
@@ -154,10 +166,13 @@ extern void _release_lock(int lock);
  * NOTE: _waitpeqb and _waitpneb are not implemented on the current propeller
  */
 
-#define _INA 0 /* use in _waitpeq, _waitpne */
-#define _INB 1 /* use in _waitpeq, _waitpne */
+#define _WAIT_INA 0 /* use in _waitpeq, _waitpne */
+#define _WAIT_INB 1 /* use in _waitpeq, _waitpne */
 
+#ifndef __CATALINA_P2
+// on the Propeller 2, this is defined in propeller2.h
 extern int _waitcnt(unsigned count);
+#endif
 
 extern int _waitcnt2(unsigned count, unsigned increment);
 
@@ -181,7 +196,10 @@ extern int _waitpne(unsigned mask, unsigned result, int a_or_b);
  * NOTE: _inb, _dirb and _outb (or INB, DIRB, OUTB) are not implemented on 
  *       the propeller v1
  */
+#ifndef __CATALINA_P2
+// on the Propeller 2, this is defined in propeller2.h
 extern unsigned _cnt();
+#endif
 
 extern unsigned _ina();
 extern unsigned _inb();

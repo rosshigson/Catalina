@@ -44,7 +44,7 @@ C_random ' <symbol:random>
 
 ' Catalina Import rand
 
-' Catalina Import srand
-
 ' Catalina Import _cnt
+
+' Catalina Import srand
 ' end

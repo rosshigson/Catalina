@@ -7,21 +7,21 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_s9jg_5f5d7bdc___testsigset_L000001 ' <symbol:__testsigset>
+C_seug_6132d0ce___testsigset_L000001 ' <symbol:__testsigset>
  PRIMITIVE(#PSHM)
  long $800000 ' save registers
  mov r23, #0 ' reg <- coni
  cmps r23,  #0 wz
  PRIMITIVE(#BR_Z)
- long @C_s9jg_5f5d7bdc___testsigset_L000001_4 ' EQI4
+ long @C_seug_6132d0ce___testsigset_L000001_4 ' EQI4
  cmps r23,  #1 wz
  PRIMITIVE(#BR_Z)
- long @C_s9jg_5f5d7bdc___testsigset_L000001_4 ' EQI4
+ long @C_seug_6132d0ce___testsigset_L000001_4 ' EQI4
  PRIMITIVE(#JMPA)
- long @C_s9jg_5f5d7bdc___testsigset_L000001_3 ' JUMPV addrg
-C_s9jg_5f5d7bdc___testsigset_L000001_3
-C_s9jg_5f5d7bdc___testsigset_L000001_4
-' C_s9jg_5f5d7bdc___testsigset_L000001_2 ' (symbol refcount = 0)
+ long @C_seug_6132d0ce___testsigset_L000001_3 ' JUMPV addrg
+C_seug_6132d0ce___testsigset_L000001_3
+C_seug_6132d0ce___testsigset_L000001_4
+' C_seug_6132d0ce___testsigset_L000001_2 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 

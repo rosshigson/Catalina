@@ -574,6 +574,22 @@ C_C_M_M__dynamic_array ' <symbol:CMM_dynamic_array>
  long $fd64002d
  long $f6640001
  long $fd9fffec
+ long $f0640202
+ long $ff0003df
+ long $f10403b0
+ long $fb000401
+ long $ff007fff
+ long $f50405ff
+ long $f0640618
+ long $f5400403
+ long $fc600401
+ long $c600002
+ long $fac00602
+ long $fc400600
+ long $f1040001
+ long $f1040401
+ long $fb6c03fb
+ long $fd64002d
 
 ' Catalina Export CMM_LUT_LIBRARY_array
 
@@ -643,6 +659,22 @@ C_C_M_M__L_U_T__L_I_B_R_A_R_Y__array ' <symbol:CMM_LUT_LIBRARY_array>
  long $fd64002d
  long $f6640001
  long $fd9fffec
+ long $f0640202
+ long $ff0003df
+ long $f10403b0
+ long $fb000401
+ long $ff007fff
+ long $f50405ff
+ long $f0640618
+ long $f5400403
+ long $fc600401
+ long $c600002
+ long $fac00602
+ long $fc400600
+ long $f1040001
+ long $f1040401
+ long $fb6c03fb
+ long $fd64002d
 
 ' Catalina Export _cogstart_CMM_cog
 
@@ -673,7 +705,7 @@ C__cogstart_C_M_M__cog ' <symbol:_cogstart_CMM_cog>
  PRIMITIVE(#LODF)
  long -16
  wrlong r21, RI ' ASGNU4 addrl reg
- mov r22, #64 ' reg <- coni
+ mov r22, #80 ' reg <- coni
  PRIMITIVE(#LODF)
  long -12
  wrlong r22, RI ' ASGNU4 addrl reg
@@ -716,10 +748,10 @@ C__cogstart_C_M_M__cog ' <symbol:_cogstart_CMM_cog>
  mov r18, #20 ' reg <- coni
  mov r0, r20 ' setup r0/r1 (2)
  mov r1, r18 ' setup r0/r1 (2)
- PRIMITIVE(#DIVU) ' DIVU
+ PRIMITIVE(#DIVS) ' DIVI
  mov r20, r0 ' CVI, CVU or LOAD
- mov r2, r22 ' ADDU
- add r2, r20 ' ADDU (3)
+ mov r2, r22 ' ADDI/P
+ adds r2, r20 ' ADDI/P (3)
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C__waitcnt ' CALL addrg
@@ -730,13 +762,13 @@ C__cogstart_C_M_M__cog ' <symbol:_cogstart_CMM_cog>
  PRIMITIVE(#RETF)
 
 
-' Catalina Import _registry
+' Catalina Import _clockfreq
 
 ' Catalina Import _cnt
 
 ' Catalina Import _waitcnt
 
-' Catalina Import _coginit
+' Catalina Import _registry
 
-' Catalina Import _clockfreq
+' Catalina Import _coginit
 ' end

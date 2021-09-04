@@ -24,10 +24,11 @@ C__thread_wait ' <symbol:_thread_wait>
  mov r20, RI ' reg <- con
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r20 ' setup r0/r1 (2)
- PRIMITIVE(#DIVU) ' DIVU
+ PRIMITIVE(#DIVS) ' DIVI
+ mov r22, r0 ' CVI, CVU or LOAD
  PRIMITIVE(#LODF)
  long -4
- wrlong r0, RI ' ASGNU4 addrl reg
+ wrlong r22, RI ' ASGNU4 addrl reg
  cmp r23,  #0 wz
  PRIMITIVE(#BRNZ)
  long @C__thread_wait_2 ' NEU4
@@ -92,9 +93,9 @@ C__thread_wait_1
  PRIMITIVE(#RETF)
 
 
-' Catalina Import _thread_yield
-
 ' Catalina Import _cnt
 
 ' Catalina Import _clockfreq
+
+' Catalina Import _thread_yield
 ' end

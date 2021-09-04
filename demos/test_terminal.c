@@ -20,7 +20,7 @@
 #include <catalina_hmi.h>
 #include <catalina_cog.h>
 
-#ifdef __CATALINA_PROPELLER_2
+#ifdef __CATALINA_P2
 #define msleep(msec) _waitx((msec)*(_clockfreq()/1000))
 #else
 #define msleep(msec) _waitcnt(_cnt() + ((msec)*(_clockfreq()/1000)));

@@ -328,6 +328,8 @@ C___fillbuf_3
  PRIMITIVE(#RETN)
 
 
+' Catalina Import _locknew
+
 ' Catalina Import _read
 
 ' Catalina Import __iostdb
@@ -341,8 +343,6 @@ C___fillbuf_3
 ' Catalina Import _release_lock
 
 ' Catalina Import _acquire_lock
-
-' Catalina Import _locknew
 
 ' Catalina Import fflush
 

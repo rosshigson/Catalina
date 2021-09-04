@@ -163,7 +163,7 @@ C_redirected_main ' <symbol:redirected_main>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_sagg5_5fa8f44a_configure_L000036
+ long @C_sjnc5_6132d4ec_configure_L000036
  add SP, #4 ' CALL addrg
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
@@ -208,7 +208,7 @@ C_redirected_main ' <symbol:redirected_main>
 
 
  alignl ' align long
-C_sagg5_5fa8f44a_configure_L000036 ' <symbol:configure>
+C_sjnc5_6132d4ec_configure_L000036 ' <symbol:configure>
  PRIMITIVE(#NEWF)
  sub SP, ##516
  PRIMITIVE(#PSHM)
@@ -235,10 +235,10 @@ C_sagg5_5fa8f44a_configure_L000036 ' <symbol:configure>
  mov r22, ##@C_h_type ' reg <- addrg
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #77 wz
- if_z jmp #\C_sagg5_5fa8f44a_configure_L000036_45 ' EQI4
+ if_z jmp #\C_sjnc5_6132d4ec_configure_L000036_45 ' EQI4
  cmps r22,  #90 wz
- if_nz jmp #\C_sagg5_5fa8f44a_configure_L000036_43 ' NEI4
-C_sagg5_5fa8f44a_configure_L000036_45
+ if_nz jmp #\C_sjnc5_6132d4ec_configure_L000036_43 ' NEI4
+C_sjnc5_6132d4ec_configure_L000036_45
  mov r22, ##@C_datap
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  adds r22, #1 ' ADDP4 coni
@@ -249,30 +249,30 @@ C_sagg5_5fa8f44a_configure_L000036_45
  mov r22, ##@C_h_type ' reg <- addrg
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #77 wz
- if_nz jmp #\C_sagg5_5fa8f44a_configure_L000036_49 ' NEI4
+ if_nz jmp #\C_sjnc5_6132d4ec_configure_L000036_49 ' NEI4
  mov r22, ##-516
  adds r22, FP
  ' reg <- addrl
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #90 wz
- if_z jmp #\C_sagg5_5fa8f44a_configure_L000036_48 ' EQI4
-C_sagg5_5fa8f44a_configure_L000036_49
+ if_z jmp #\C_sjnc5_6132d4ec_configure_L000036_48 ' EQI4
+C_sjnc5_6132d4ec_configure_L000036_49
  mov r22, ##@C_h_type ' reg <- addrg
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #90 wz
- if_nz jmp #\C_sagg5_5fa8f44a_configure_L000036_46 ' NEI4
+ if_nz jmp #\C_sjnc5_6132d4ec_configure_L000036_46 ' NEI4
  mov r22, ##-516
  adds r22, FP
  ' reg <- addrl
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #77 wz
- if_nz jmp #\C_sagg5_5fa8f44a_configure_L000036_46 ' NEI4
-C_sagg5_5fa8f44a_configure_L000036_48
+ if_nz jmp #\C_sjnc5_6132d4ec_configure_L000036_46 ' NEI4
+C_sjnc5_6132d4ec_configure_L000036_48
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
  long @C_analyze_exefile ' CALL addrg
  cmps r0,  #0 wz
- if_z jmp #\C_sagg5_5fa8f44a_configure_L000036_50 ' EQI4
+ if_z jmp #\C_sjnc5_6132d4ec_configure_L000036_50 ' EQI4
  mov r2, FP
  adds r2, ##(-512)
 ' reg ARG ADDRL
@@ -286,9 +286,9 @@ C_sagg5_5fa8f44a_configure_L000036_48
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  rdbyte r22, r22 ' reg <- INDIRU1 reg
  wrbyte r22, ##@C_h_type ' ASGNU1 addrg reg
-C_sagg5_5fa8f44a_configure_L000036_50
-C_sagg5_5fa8f44a_configure_L000036_46
-C_sagg5_5fa8f44a_configure_L000036_43
+C_sjnc5_6132d4ec_configure_L000036_50
+C_sjnc5_6132d4ec_configure_L000036_46
+C_sjnc5_6132d4ec_configure_L000036_43
  mov r22, ##@C_h_type ' reg <- addrg
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  wrlong r22, ##@C_G_L_O_B_A_L_V_E_R_ ' ASGNI4 addrg reg
@@ -297,28 +297,28 @@ C_sagg5_5fa8f44a_configure_L000036_43
  mov r20, r23 ' CVUI
  and r20, cviu_m1 ' zero extend
  cmps r22, r20 wcz
- if_b jmp #\C_sagg5_5fa8f44a_configure_L000036_55 ' LTI4
+ if_b jmp #\C_sjnc5_6132d4ec_configure_L000036_55 ' LTI4
  mov r20, r21 ' CVUI
  and r20, cviu_m1 ' zero extend
  cmps r22, r20 wcz
- if_a jmp #\C_sagg5_5fa8f44a_configure_L000036_55 ' GTI4
+ if_a jmp #\C_sjnc5_6132d4ec_configure_L000036_55 ' GTI4
  mov r22, ##@C_datap
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  adds r22, #1 ' ADDP4 coni
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  and r22, #1 ' BANDI4 coni
  cmps r22,  #0 wz
- if_z jmp #\C_sagg5_5fa8f44a_configure_L000036_52 ' EQI4
-C_sagg5_5fa8f44a_configure_L000036_55
- mov r2, ##@C_sagg5_5fa8f44a_configure_L000036_56_L000057 ' reg ARG ADDRG
+ if_z jmp #\C_sjnc5_6132d4ec_configure_L000036_52 ' EQI4
+C_sjnc5_6132d4ec_configure_L000036_55
+ mov r2, ##@C_sjnc5_6132d4ec_configure_L000036_56_L000057 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_fatal ' CALL addrg
-C_sagg5_5fa8f44a_configure_L000036_52
+C_sjnc5_6132d4ec_configure_L000036_52
  mov r22, ##@C_h_type ' reg <- addrg
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #4 wcz
- if_ae jmp #\C_sagg5_5fa8f44a_configure_L000036_58 ' GEI4
+ if_ae jmp #\C_sjnc5_6132d4ec_configure_L000036_58 ' GEI4
  mov r22, #2 ' reg <- coni
  wrlong r22, ##@C_story_scaler ' ASGNI4 addrg reg
  mov r22, #1 ' reg <- coni
@@ -327,12 +327,12 @@ C_sagg5_5fa8f44a_configure_L000036_52
  wrlong r22, ##@C_property_mask ' ASGNI4 addrg reg
  mov r22, #224 ' reg <- coni
  wrlong r22, ##@C_property_size_mask ' ASGNI4 addrg reg
- jmp #\@C_sagg5_5fa8f44a_configure_L000036_59 ' JUMPV addrg
-C_sagg5_5fa8f44a_configure_L000036_58
+ jmp #\@C_sjnc5_6132d4ec_configure_L000036_59 ' JUMPV addrg
+C_sjnc5_6132d4ec_configure_L000036_58
  mov r22, ##@C_h_type ' reg <- addrg
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #8 wcz
- if_ae jmp #\C_sagg5_5fa8f44a_configure_L000036_60 ' GEI4
+ if_ae jmp #\C_sjnc5_6132d4ec_configure_L000036_60 ' GEI4
  mov r22, #4 ' reg <- coni
  wrlong r22, ##@C_story_scaler ' ASGNI4 addrg reg
  mov r22, #2 ' reg <- coni
@@ -340,8 +340,8 @@ C_sagg5_5fa8f44a_configure_L000036_58
  mov r22, #63 ' reg <- coni
  wrlong r22, ##@C_property_mask ' ASGNI4 addrg reg
  wrlong r22, ##@C_property_size_mask ' ASGNI4 addrg reg
- jmp #\@C_sagg5_5fa8f44a_configure_L000036_61 ' JUMPV addrg
-C_sagg5_5fa8f44a_configure_L000036_60
+ jmp #\@C_sjnc5_6132d4ec_configure_L000036_61 ' JUMPV addrg
+C_sjnc5_6132d4ec_configure_L000036_60
  mov r22, #8 ' reg <- coni
  wrlong r22, ##@C_story_scaler ' ASGNI4 addrg reg
  mov r22, #3 ' reg <- coni
@@ -349,8 +349,8 @@ C_sagg5_5fa8f44a_configure_L000036_60
  mov r22, #63 ' reg <- coni
  wrlong r22, ##@C_property_mask ' ASGNI4 addrg reg
  wrlong r22, ##@C_property_size_mask ' ASGNI4 addrg reg
-C_sagg5_5fa8f44a_configure_L000036_61
-C_sagg5_5fa8f44a_configure_L000036_59
+C_sjnc5_6132d4ec_configure_L000036_61
+C_sjnc5_6132d4ec_configure_L000036_59
  mov r22, ##@C_datap
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  mov r20, r22
@@ -469,13 +469,13 @@ C_sagg5_5fa8f44a_configure_L000036_59
  wrword r22, ##@C_h_file_size ' ASGNU2 addrg reg
  rdword r22, r20 ' reg <- CVUI4 INDIRU2 reg
  cmps r22,  #0 wz
- if_nz jmp #\C_sagg5_5fa8f44a_configure_L000036_62 ' NEI4
+ if_nz jmp #\C_sjnc5_6132d4ec_configure_L000036_62 ' NEI4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
  long @C_get_story_size ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  wrword r22, ##@C_h_file_size ' ASGNU2 addrg reg
-C_sagg5_5fa8f44a_configure_L000036_62
+C_sjnc5_6132d4ec_configure_L000036_62
  mov r22, ##@C_datap
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  mov r20, r22
@@ -502,7 +502,7 @@ C_sagg5_5fa8f44a_configure_L000036_62
  mov r22, ##@C_h_type ' reg <- addrg
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #5 wcz
- if_b jmp #\C_sagg5_5fa8f44a_configure_L000036_64 ' LTI4
+ if_b jmp #\C_sjnc5_6132d4ec_configure_L000036_64 ' LTI4
  mov r22, ##@C_datap
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  mov r20, r22
@@ -515,10 +515,10 @@ C_sagg5_5fa8f44a_configure_L000036_62
  and r22, cviu_m2 ' zero extend
  adds r22, r20 ' ADDI/P (2)
  wrword r22, ##@C_h_unicode_table ' ASGNU2 addrg reg
-C_sagg5_5fa8f44a_configure_L000036_64
+C_sjnc5_6132d4ec_configure_L000036_64
  mov r22, ##0 ' reg <- con
  wrlong r22, ##@C_datap ' ASGNP4 addrg reg
-' C_sagg5_5fa8f44a_configure_L000036_42 ' (symbol refcount = 0)
+' C_sjnc5_6132d4ec_configure_L000036_42 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  add SP, ##516 ' framesize
  PRIMITIVE(#RETF)
@@ -611,7 +611,7 @@ C_sagg5_5fa8f44a_configure_L000036_64
 DAT ' const data segment
 
  alignl ' align long
-C_sagg5_5fa8f44a_configure_L000036_56_L000057 ' <symbol:56>
+C_sjnc5_6132d4ec_configure_L000036_56_L000057 ' <symbol:56>
  byte 87
  byte 114
  byte 111

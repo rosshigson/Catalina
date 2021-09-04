@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_scc0_5fa8f449_get_property_addr_L000003 ' <symbol:get_property_addr>
+C_sblg_6132d4ec_get_property_addr_L000003 ' <symbol:get_property_addr>
  PRIMITIVE(#NEWF)
  sub SP, #4
  PRIMITIVE(#PSHM)
@@ -23,12 +23,12 @@ C_scc0_5fa8f449_get_property_addr_L000003 ' <symbol:get_property_addr>
  mov r22, ##@C_h_type ' reg <- addrg
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #3 wcz
- if_a jmp #\C_scc0_5fa8f449_get_property_addr_L000003_6 ' GTI4
+ if_a jmp #\C_sblg_6132d4ec_get_property_addr_L000003_6 ' GTI4
  mov r17, #7 ' reg <- coni
- jmp #\@C_scc0_5fa8f449_get_property_addr_L000003_7 ' JUMPV addrg
-C_scc0_5fa8f449_get_property_addr_L000003_6
+ jmp #\@C_sblg_6132d4ec_get_property_addr_L000003_7 ' JUMPV addrg
+C_sblg_6132d4ec_get_property_addr_L000003_6
  mov r17, #12 ' reg <- coni
-C_scc0_5fa8f449_get_property_addr_L000003_7
+C_sblg_6132d4ec_get_property_addr_L000003_7
  mov r22, r21 ' CVUI
  and r22, cviu_m2 ' zero extend
  adds r22, r17 ' ADDI/P (1)
@@ -63,14 +63,14 @@ C_scc0_5fa8f449_get_property_addr_L000003_7
  adds r22, #1 ' ADDI4 coni
  mov r0, r22 ' CVUI
  and r0, cviu_m2 ' zero extend
-' C_scc0_5fa8f449_get_property_addr_L000003_4 ' (symbol refcount = 0)
+' C_sblg_6132d4ec_get_property_addr_L000003_4 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  add SP, #4 ' framesize
  PRIMITIVE(#RETF)
 
 
  alignl ' align long
-C_scc01_5fa8f449_get_next_property_L000008 ' <symbol:get_next_property>
+C_sblg1_6132d4ec_get_next_property_L000008 ' <symbol:get_next_property>
  PRIMITIVE(#PSHM)
  long $d00000 ' save registers
  mov r22, r2 ' CVUI
@@ -84,24 +84,24 @@ C_scc01_5fa8f449_get_next_property_L000008 ' <symbol:get_next_property>
  mov r22, ##@C_h_type ' reg <- addrg
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #3 wcz
- if_a jmp #\C_scc01_5fa8f449_get_next_property_L000008_10 ' GTI4
+ if_a jmp #\C_sblg1_6132d4ec_get_next_property_L000008_10 ' GTI4
  mov r22, r23 ' CVUI
  and r22, cviu_m1 ' zero extend
  sar r22, #5 ' RSHI4 coni
  mov r23, r22 ' CVI, CVU or LOAD
- jmp #\@C_scc01_5fa8f449_get_next_property_L000008_11 ' JUMPV addrg
-C_scc01_5fa8f449_get_next_property_L000008_10
+ jmp #\@C_sblg1_6132d4ec_get_next_property_L000008_11 ' JUMPV addrg
+C_sblg1_6132d4ec_get_next_property_L000008_10
  mov r22, r23 ' CVUI
  and r22, cviu_m1 ' zero extend
  and r22, #128 ' BANDI4 coni
  cmps r22,  #0 wz
- if_nz jmp #\C_scc01_5fa8f449_get_next_property_L000008_12 ' NEI4
+ if_nz jmp #\C_sblg1_6132d4ec_get_next_property_L000008_12 ' NEI4
  mov r22, r23 ' CVUI
  and r22, cviu_m1 ' zero extend
  sar r22, #6 ' RSHI4 coni
  mov r23, r22 ' CVI, CVU or LOAD
- jmp #\@C_scc01_5fa8f449_get_next_property_L000008_13 ' JUMPV addrg
-C_scc01_5fa8f449_get_next_property_L000008_12
+ jmp #\@C_sblg1_6132d4ec_get_next_property_L000008_13 ' JUMPV addrg
+C_sblg1_6132d4ec_get_next_property_L000008_12
  mov r22, r2 ' CVUI
  and r22, cviu_m2 ' zero extend
  mov r20, ##@C_datap
@@ -117,11 +117,11 @@ C_scc01_5fa8f449_get_next_property_L000008_12
  mov r22, r23 ' CVUI
  and r22, cviu_m1 ' zero extend
  cmps r22,  #0 wz
- if_nz jmp #\C_scc01_5fa8f449_get_next_property_L000008_14 ' NEI4
+ if_nz jmp #\C_sblg1_6132d4ec_get_next_property_L000008_14 ' NEI4
  mov r23, #64 ' reg <- coni
-C_scc01_5fa8f449_get_next_property_L000008_14
-C_scc01_5fa8f449_get_next_property_L000008_13
-C_scc01_5fa8f449_get_next_property_L000008_11
+C_sblg1_6132d4ec_get_next_property_L000008_14
+C_sblg1_6132d4ec_get_next_property_L000008_13
+C_sblg1_6132d4ec_get_next_property_L000008_11
  mov r22, r2 ' CVUI
  and r22, cviu_m2 ' zero extend
  mov r20, r23 ' CVUI
@@ -130,7 +130,7 @@ C_scc01_5fa8f449_get_next_property_L000008_11
  adds r22, #1 ' ADDI4 coni
  mov r0, r22 ' CVUI
  and r0, cviu_m2 ' zero extend
-' C_scc01_5fa8f449_get_next_property_L000008_9 ' (symbol refcount = 0)
+' C_sblg1_6132d4ec_get_next_property_L000008_9 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
@@ -166,7 +166,7 @@ C_z_get_prop_17
  and r2, cviu_m2 ' zero extend
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_scc0_5fa8f449_get_property_addr_L000003 ' CALL addrg
+ long @C_sblg_6132d4ec_get_property_addr_L000003 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r19, r22 ' CVI, CVU or LOAD
 C_z_get_prop_21
@@ -193,7 +193,7 @@ C_z_get_prop_25
  and r2, cviu_m2 ' zero extend
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_scc01_5fa8f449_get_next_property_L000008 ' CALL addrg
+ long @C_sblg1_6132d4ec_get_next_property_L000008 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r19, r22 ' CVI, CVU or LOAD
  jmp #\@C_z_get_prop_21 ' JUMPV addrg
@@ -333,7 +333,7 @@ C_z_put_prop_34
  and r2, cviu_m2 ' zero extend
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_scc0_5fa8f449_get_property_addr_L000003 ' CALL addrg
+ long @C_sblg_6132d4ec_get_property_addr_L000003 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r17, r22 ' CVI, CVU or LOAD
 C_z_put_prop_38
@@ -359,7 +359,7 @@ C_z_put_prop_42
  and r2, cviu_m2 ' zero extend
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_scc01_5fa8f449_get_next_property_L000008 ' CALL addrg
+ long @C_sblg1_6132d4ec_get_next_property_L000008 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r17, r22 ' CVI, CVU or LOAD
  jmp #\@C_z_put_prop_38 ' JUMPV addrg
@@ -466,7 +466,7 @@ C_z_get_next_prop_53
  and r2, cviu_m2 ' zero extend
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_scc0_5fa8f449_get_property_addr_L000003 ' CALL addrg
+ long @C_sblg_6132d4ec_get_property_addr_L000003 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r19, r22 ' CVI, CVU or LOAD
  mov r22, r21 ' CVUI
@@ -483,7 +483,7 @@ C_z_get_next_prop_59
  mov r2, r22 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_scc01_5fa8f449_get_next_property_L000008 ' CALL addrg
+ long @C_sblg1_6132d4ec_get_next_property_L000008 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r19, r22 ' CVI, CVU or LOAD
 ' C_z_get_next_prop_60 ' (symbol refcount = 0)
@@ -565,7 +565,7 @@ C_z_get_prop_addr_67
  and r2, cviu_m2 ' zero extend
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_scc0_5fa8f449_get_property_addr_L000003 ' CALL addrg
+ long @C_sblg_6132d4ec_get_property_addr_L000003 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r19, r22 ' CVI, CVU or LOAD
 C_z_get_prop_addr_71
@@ -592,7 +592,7 @@ C_z_get_prop_addr_75
  and r2, cviu_m2 ' zero extend
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_scc01_5fa8f449_get_next_property_L000008 ' CALL addrg
+ long @C_sblg1_6132d4ec_get_next_property_L000008 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r19, r22 ' CVI, CVU or LOAD
  jmp #\@C_z_get_prop_addr_71 ' JUMPV addrg

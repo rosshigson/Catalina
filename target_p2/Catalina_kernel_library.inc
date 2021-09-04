@@ -31,11 +31,11 @@ signed_d32
 ' do_plugin - call a plugin
 '
 ' On entry:
-'       R3 = code:
+'       r3 = code:
 '            - cog id if >= 128 (i.e. $80 + cog id)
 '            - plugin type if < 128 (i.e. 0 .. 127)
 '            - service id if < 0
-'       R2 = data (optional pointer)
+'       r2 = data (optional pointer)
 '
 ' NOTES: Locks are currently only supported when invoking via a service id.
 '        When using service id, the data should only use the lower 24 bits.
@@ -105,6 +105,46 @@ clr_lock
 plugerr 
         neg     r0,#1           ' plugin error (e.g. not registered)
         jmp     #clr_lock       ' done - clear lock if required
+
+' do_register - register a plugin
+'
+' On entry:
+'
+'        r0 - initial value to write to request block
+'        r1 - cog to register (lost)
+'        r3 - plugin type to register (lost)
+
+do_register
+        shl     r1, #2          ' register ...
+        add     r1, ##REGISTRY  ' ... plugin ...
+        rdlong  r2, r1          ' ...
+        and     r2, ##$00FFFFFF ' ... as ...
+        shl     r3, #24         ' ...
+        or      r2, r3          ' ...
+        wrlong  r2, r1          ' ... plugin type
+  _ret_ wrlong  r0, r2          ' save in request block
+
+'
+' do_copy
+'
+' On entry:
+'
+'       r0 - dst addr
+'       r1 - number of bytes to copy
+'       r2 - src addr
+'
+' On exit:
+'
+'       r0 incremented by r1 (i.e. number of bytes)
+'       r3 lost
+
+do_copy
+       rdbyte  r3, r2           '
+       wrbyte  r3, r0                 
+       add     r0, #1
+       add     r2, #1
+       djnz    r1, #do_copy     ' 
+       ret
 
 #endif
 

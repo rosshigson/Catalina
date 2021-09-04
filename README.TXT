@@ -1,4 +1,4 @@
-Catalina release 4.6 is a full release. You can install this over an existing
+Catalina release 4.7 is a full release. You can install this over an existing
 version of Catalina, but it is recommended that you instead uninstall any
 previous Catalina release before installing, or install this release to a 
 different location. 
@@ -14,31 +14,40 @@ The following changes have been made since the previous release of Catalina.
 If you have not used a previous release of Catalina, you can ignore the
 following list:
 
-RELEASE 4.6
+RELEASE 4.7
 
-1. The Catalina Parallelizer is now an integral component of Catalina. To
-   invoke the parallelizer, use the -Z option in any Catalina command. Note
-   that this option is positional - it will enable parallelizing all C source
-   files in the command after it appears. You can also use -z (i.e. with a 
-   lower case z) to stop parallelizing source files. This means the
-   Parallelizer can now easily be used in Code::Blocks or Geany IDEs.
+1. p2_asm now enables the -v33 option to p2asm by default. This enables the
+   latest PASM assembly code, and would nearly always be what you want to do. 
+   To revert to the previous behaviour, edit the file p2_asm.bat.
 
-2. Added the demos\parallelize subdirectory, with documents and examples that
-   demonstrate the Parallelizer.
+2. Dumbo basic updated to version 1.0, which implements much more of the
+   original GWBASIC syntax. See the README.TXT file in the catalyst\dumbo
+   directory for more details.
 
-3. Added the option of named exclusive code segments to the Parallelizer - all
-   segments with the same name will all use the same lock, which means only
-   one worker can be in ANY of the exclusive zones that specify that name. The
-   name is optional, and _region will be used if no other name is specified.
+3. Added the 8 port serial driver. This driver is only supported on the
+   Propeller 2. It supports up to 8 serial ports on the Propeller 2. See 
+   the Catalina Propeller 2 Reference Manual for more details.
 
-4. Added more error checking to the Parallelizer, and reformatted the error 
-   messages to use the same format as the compiler. Also, the line numbers will
-   now generally refer to the input C source file, not the output C source.
+4. Fixed a bug in the 2 port serial driver that meant the second port would
+   not receive characters correctly.
 
-5. Added support for other C compilers and thread libraries to the 
-   Parallelizer - a complete example is provided in the demos/parallelize
-   subdirectory - see the file custom_threads.h in that directory for more 
-   details.
+5. Fixed a bug in the serial2 and serial4 demo programs which meant they may 
+   not have worked if they were compiled with threading enabled.
+
+6. The build_all scripts in all the serial demo directories (i.e. serial2, 
+   serial4 & serial8) will now only build the demos for the correct propeller. 
+   The serial2 and serial8 libraries are only supported on the Propeller 2, 
+   and serial4 is only supported on the Propeller 1.
+
+7. Modified the catalina_cog.h include file to fix a name collision with
+   propeller2.h. On the Propeller 2, library functions that are defined
+   in propeller2.h are now not also defined in catalina_cog.h
+
+8. Added smartpins.h to define the smartpins modes for the Propeller 2.
+
+9. Added an implementation of _muldiv64(), to match the SPIN MULDIV64 function.
+
+
 
 
 

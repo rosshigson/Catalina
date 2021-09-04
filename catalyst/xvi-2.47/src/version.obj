@@ -11,12 +11,12 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_sckg_5fa8f427_sccsid_L000001 ' <symbol:sccsid>
- long @C_sckg1_5fa8f427_2_L000003
+C_sl4c_6132d4cb_sccsid_L000001 ' <symbol:sccsid>
+ long @C_sl4c1_6132d4cb_2_L000003
 
  alignl ' align long
-C_sckg2_5fa8f427_copyright_L000004 ' <symbol:copyright>
- long @C_sckg3_5fa8f427_5_L000006
+C_sl4c2_6132d4cb_copyright_L000004 ' <symbol:copyright>
+ long @C_sl4c3_6132d4cb_5_L000006
 
 ' Catalina Export Version
 
@@ -31,17 +31,17 @@ C_V_ersion ' <symbol:Version>
  byte 52
  byte 55
  byte 32
- byte 78
- byte 111
- byte 118
+ byte 83
+ byte 101
+ byte 112
  byte 32
  byte 48
- byte 57
+ byte 52
  byte 32
  byte 50
  byte 48
  byte 50
- byte 48
+ byte 49
  byte 0
 
 ' Catalina Cnst
@@ -49,7 +49,7 @@ C_V_ersion ' <symbol:Version>
 DAT ' const data segment
 
  alignl ' align long
-C_sckg3_5fa8f427_5_L000006 ' <symbol:5>
+C_sl4c3_6132d4cb_5_L000006 ' <symbol:5>
  byte 64
  byte 40
  byte 35
@@ -95,7 +95,7 @@ C_sckg3_5fa8f427_5_L000006 ' <symbol:5>
  byte 0
 
  alignl ' align long
-C_sckg1_5fa8f427_2_L000003 ' <symbol:2>
+C_sl4c1_6132d4cb_2_L000003 ' <symbol:2>
  byte 64
  byte 40
  byte 35

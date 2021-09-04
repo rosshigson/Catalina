@@ -38,6 +38,7 @@ extern long _sys_plugin(long code, long param);
 #define LMM_FLC 22
 #define LMM_S2A 23
 #define LMM_S2B 24
+#define LMM_S8A 25
 
 #define LMM_NUL 255
 

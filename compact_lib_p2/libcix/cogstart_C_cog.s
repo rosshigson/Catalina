@@ -574,6 +574,22 @@ C_C_M_M__dynamic_array ' <symbol:CMM_dynamic_array>
  long $fd64002d
  long $f6640001
  long $fd9fffec
+ long $f0640202
+ long $ff0003df
+ long $f10403b0
+ long $fb000401
+ long $ff007fff
+ long $f50405ff
+ long $f0640618
+ long $f5400403
+ long $fc600401
+ long $c600002
+ long $fac00602
+ long $fc400600
+ long $f1040001
+ long $f1040401
+ long $fb6c03fb
+ long $fd64002d
 
 ' Catalina Export CMM_LUT_LIBRARY_array
 
@@ -643,6 +659,22 @@ C_C_M_M__L_U_T__L_I_B_R_A_R_Y__array ' <symbol:CMM_LUT_LIBRARY_array>
  long $fd64002d
  long $f6640001
  long $fd9fffec
+ long $f0640202
+ long $ff0003df
+ long $f10403b0
+ long $fb000401
+ long $ff007fff
+ long $f50405ff
+ long $f0640618
+ long $f5400403
+ long $fc600401
+ long $c600002
+ long $fac00602
+ long $fc400600
+ long $f1040001
+ long $f1040401
+ long $fb6c03fb
+ long $fd64002d
 
 ' Catalina Export _cogstart_C_cog
 
@@ -674,7 +706,7 @@ C__cogstart_C__cog ' <symbol:_cogstart_C_cog>
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl ' align long
- long I32_MOVI + (r22)<<D32 +(64)<<S32 ' reg <- conli
+ long I32_MOVI + (r22)<<D32 +(80)<<S32 ' reg <- conli
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  word I16B_LODL + (r22)<<D16B
@@ -710,10 +742,10 @@ C__cogstart_C__cog ' <symbol:_cogstart_C_cog>
  word I16A_MOVI + (r18)<<D16A + (20)<<S16A ' reg <- coni
  word I16A_MOV + (r0)<<D16A + (r20)<<S16A ' setup r0/r1 (2)
  word I16A_MOV + (r1)<<D16A + (r18)<<S16A ' setup r0/r1 (2)
- word I16B_DIVU ' DIVU
+ word I16B_DIVS ' DIVI
  word I16A_MOV + (r20)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
- word I16A_MOV + (r2)<<D16A + (r22)<<S16A ' ADDU
- word I16A_ADD + (r2)<<D16A + (r20)<<S16A ' ADDU (3)
+ word I16A_MOV + (r2)<<D16A + (r22)<<S16A ' ADDI/P
+ word I16A_ADDS + (r2)<<D16A + (r20)<<S16A ' ADDI/P (3)
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
  alignl ' align long
  long I32_CALA + (@C__waitcnt)<<S32 ' CALL addrg
@@ -722,13 +754,13 @@ C__cogstart_C__cog ' <symbol:_cogstart_C_cog>
  word I16B_POPM + 6<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
-' Catalina Import _registry
+' Catalina Import _clockfreq
 
 ' Catalina Import _cnt
 
 ' Catalina Import _waitcnt
 
-' Catalina Import _coginit
+' Catalina Import _registry
 
-' Catalina Import _clockfreq
+' Catalina Import _coginit
 ' end

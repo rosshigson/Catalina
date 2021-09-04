@@ -11,8 +11,8 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_s68s_5fa8f427_sccsid_L000001 ' <symbol:sccsid>
- long @C_s68s1_5fa8f427_2_L000003
+C_snc_6132d4cb_sccsid_L000001 ' <symbol:sccsid>
+ long @C_snc1_6132d4cb_2_L000003
 
 ' Catalina Export xvOpShift
 
@@ -61,7 +61,7 @@ C_xvO_pS_hift ' <symbol:xvOpShift>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s68s2_5fa8f427_format_redo_L000018
+ long @C_snc2_6132d4cb_format_redo_L000018
  add SP, #4 ' CALL addrg
 ' C_xvO_pS_hift_19 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
@@ -329,7 +329,7 @@ C_xvO_pD_elete_29
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s68s2_5fa8f427_format_redo_L000018
+ long @C_snc2_6132d4cb_format_redo_L000018
  add SP, #4 ' CALL addrg
  mov r2, ##@C_curbuf
  rdlong r2, r2
@@ -546,7 +546,7 @@ C_xvO_pC_hange_45
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s68s2_5fa8f427_format_redo_L000018
+ long @C_snc2_6132d4cb_format_redo_L000018
  add SP, #4 ' CALL addrg
  mov r22, #0 ' reg <- coni
  mov r2, r22 ' CVI, CVU or LOAD
@@ -626,7 +626,7 @@ C_xvO_pY_ank_66
 
 
  alignl ' align long
-C_s68s2_5fa8f427_format_redo_L000018 ' <symbol:format_redo>
+C_snc2_6132d4cb_format_redo_L000018 ' <symbol:format_redo>
  PRIMITIVE(#PSHM)
  long $e00000 ' save registers
  mov r23, r3 ' reg var <- reg arg
@@ -637,7 +637,7 @@ C_s68s2_5fa8f427_format_redo_L000018 ' <symbol:format_redo>
  adds r22, #36 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #0 wz
- if_z jmp #\C_s68s2_5fa8f427_format_redo_L000018_70 ' EQI4
+ if_z jmp #\C_snc2_6132d4cb_format_redo_L000018_70 ' EQI4
  mov r22, r21
  adds r22, #32 ' ADDP4 coni
  rdlong r2, r22 ' reg <- INDIRI4 reg
@@ -649,7 +649,7 @@ C_s68s2_5fa8f427_format_redo_L000018 ' <symbol:format_redo>
  rdlong r4, r22 ' reg <- INDIRI4 reg
  mov r5, r23 ' CVI, CVU or LOAD
  sub SP, #16 ' stack space for reg ARGs
- mov RI, ##@C_s68s2_5fa8f427_format_redo_L000018_73_L000074
+ mov RI, ##@C_snc2_6132d4cb_format_redo_L000018_73_L000074
  wrlong RI, --PTRA ' stack ARG ADDRG
  mov RI, ##@C_R_edo+4
  wrlong RI, --PTRA ' stack ARG ADDRG
@@ -658,8 +658,8 @@ C_s68s2_5fa8f427_format_redo_L000018 ' <symbol:format_redo>
  PRIMITIVE(#CALA)
  long @C_lformat
  add SP, #20 ' CALL addrg
- jmp #\@C_s68s2_5fa8f427_format_redo_L000018_71 ' JUMPV addrg
-C_s68s2_5fa8f427_format_redo_L000018_70
+ jmp #\@C_snc2_6132d4cb_format_redo_L000018_71 ' JUMPV addrg
+C_snc2_6132d4cb_format_redo_L000018_70
  mov r22, r21
  adds r22, #32 ' ADDP4 coni
  rdlong r2, r22 ' reg <- INDIRI4 reg
@@ -667,7 +667,7 @@ C_s68s2_5fa8f427_format_redo_L000018_70
  adds r22, #28 ' ADDP4 coni
  rdlong r3, r22 ' reg <- INDIRI4 reg
  mov r4, r23 ' CVI, CVU or LOAD
- mov r5, ##@C_s68s2_5fa8f427_format_redo_L000018_76_L000077 ' reg ARG ADDRG
+ mov r5, ##@C_snc2_6132d4cb_format_redo_L000018_76_L000077 ' reg ARG ADDRG
  sub SP, #16 ' stack space for reg ARGs
  mov RI, ##@C_R_edo+4
  wrlong RI, --PTRA ' stack ARG ADDRG
@@ -676,8 +676,8 @@ C_s68s2_5fa8f427_format_redo_L000018_70
  PRIMITIVE(#CALA)
  long @C_lformat
  add SP, #16 ' CALL addrg
-C_s68s2_5fa8f427_format_redo_L000018_71
-' C_s68s2_5fa8f427_format_redo_L000018_67 ' (symbol refcount = 0)
+C_snc2_6132d4cb_format_redo_L000018_71
+' C_snc2_6132d4cb_format_redo_L000018_67 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
@@ -731,7 +731,7 @@ C_s68s2_5fa8f427_format_redo_L000018_71
 DAT ' const data segment
 
  alignl ' align long
-C_s68s2_5fa8f427_format_redo_L000018_76_L000077 ' <symbol:76>
+C_snc2_6132d4cb_format_redo_L000018_76_L000077 ' <symbol:76>
  byte 37
  byte 99
  byte 37
@@ -741,7 +741,7 @@ C_s68s2_5fa8f427_format_redo_L000018_76_L000077 ' <symbol:76>
  byte 0
 
  alignl ' align long
-C_s68s2_5fa8f427_format_redo_L000018_73_L000074 ' <symbol:73>
+C_snc2_6132d4cb_format_redo_L000018_73_L000074 ' <symbol:73>
  byte 37
  byte 99
  byte 37
@@ -856,7 +856,7 @@ C_xvO_pD_elete_26_L000027 ' <symbol:26>
  byte 0
 
  alignl ' align long
-C_s68s1_5fa8f427_2_L000003 ' <symbol:2>
+C_snc1_6132d4cb_2_L000003 ' <symbol:2>
  byte 64
  byte 40
  byte 35

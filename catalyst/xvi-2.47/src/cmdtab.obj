@@ -11,8 +11,8 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_s2do_5fa8f425_sccsid_L000001 ' <symbol:sccsid>
- long @C_s2do1_5fa8f425_2_L000003
+C_s85k_6132d4ca_sccsid_L000001 ' <symbol:sccsid>
+ long @C_s85k1_6132d4ca_2_L000003
 
 ' Catalina Export cmd_types
 
@@ -595,7 +595,7 @@ DAT ' initialized data segment
 DAT ' const data segment
 
  alignl ' align long
-C_s2do1_5fa8f425_2_L000003 ' <symbol:2>
+C_s85k1_6132d4ca_2_L000003 ' <symbol:2>
  byte 64
  byte 40
  byte 35

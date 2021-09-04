@@ -11,11 +11,11 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_s7cc_5fa8f425_sccsid_L000001 ' <symbol:sccsid>
- long @C_s7cc1_5fa8f425_2_L000003
+C_slrs_6132d4ca_sccsid_L000001 ' <symbol:sccsid>
+ long @C_slrs1_6132d4ca_2_L000003
 
  alignl ' align long
-C_s7cc3_5fa8f425_inpos_L000019 ' <symbol:inpos>
+C_slrs3_6132d4ca_inpos_L000019 ' <symbol:inpos>
  long $0
 
 ' Catalina Export cmd_init
@@ -30,7 +30,7 @@ C_cmd_init ' <symbol:cmd_init>
  long $f00000 ' save registers
  mov r23, r3 ' reg var <- reg arg
  mov r21, r2 ' reg var <- reg arg
- mov r22, ##@C_s7cc3_5fa8f425_inpos_L000019
+ mov r22, ##@C_slrs3_6132d4ca_inpos_L000019
  rdlong r22, r22 ' reg <- INDIRU4 addrg
  cmp r22,  #0 wz
  if_z jmp #\C_cmd_init_22 ' EQU4
@@ -58,28 +58,28 @@ C_cmd_init_22
  long @C_flexaddch
  add SP, #4 ' CALL addrg
  mov r22, r21 ' CVI, CVU or LOAD
- wrbyte r22, ##@C_s7cc2_5fa8f425_inbuf_L000018 ' ASGNU1 addrg reg
+ wrbyte r22, ##@C_slrs2_6132d4ca_inbuf_L000018 ' ASGNU1 addrg reg
  mov r22, #1 ' reg <- coni
- wrlong r22, ##@C_s7cc3_5fa8f425_inpos_L000019 ' ASGNU4 addrg reg
+ wrlong r22, ##@C_slrs3_6132d4ca_inpos_L000019 ' ASGNU4 addrg reg
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_update_cline ' CALL addrg
  mov r22, #0 ' reg <- coni
- wrbyte r22, ##@C_s7cc4_5fa8f425_colposn_L000020 ' ASGNU1 addrg reg
+ wrbyte r22, ##@C_slrs4_6132d4ca_colposn_L000020 ' ASGNU1 addrg reg
 C_cmd_init_21
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
 
  alignl ' align long
-C_s7cc6_5fa8f425_common_prefix_L000026 ' <symbol:common_prefix>
+C_slrs6_6132d4ca_common_prefix_L000026 ' <symbol:common_prefix>
  PRIMITIVE(#NEWF)
  sub SP, #8
  PRIMITIVE(#PSHM)
  long $fa8000 ' save registers
  mov r23, r2 ' reg var <- reg arg
- mov r2, ##@C_s7cc6_5fa8f425_common_prefix_L000026_28_L000029 ' reg ARG ADDRG
+ mov r2, ##@C_slrs6_6132d4ca_common_prefix_L000026_28_L000029 ' reg ARG ADDRG
  mov r3, FP
  sub r3, #-(-8) ' reg ARG ADDRLi
  mov r4, FP
@@ -94,10 +94,10 @@ C_s7cc6_5fa8f425_common_prefix_L000026 ' <symbol:common_prefix>
  sub r22, #-(-4) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #1 wcz
- if_be jmp #\C_s7cc6_5fa8f425_common_prefix_L000026_30 ' LEI4
+ if_be jmp #\C_slrs6_6132d4ca_common_prefix_L000026_30 ' LEI4
  mov r21, #1 ' reg <- coni
- jmp #\@C_s7cc6_5fa8f425_common_prefix_L000026_35 ' JUMPV addrg
-C_s7cc6_5fa8f425_common_prefix_L000026_32
+ jmp #\@C_slrs6_6132d4ca_common_prefix_L000026_35 ' JUMPV addrg
+C_slrs6_6132d4ca_common_prefix_L000026_32
  mov r19, r23 ' CVI, CVU or LOAD
  mov r22, r21
  shl r22, #2 ' LSHI4 coni
@@ -106,10 +106,10 @@ C_s7cc6_5fa8f425_common_prefix_L000026_32
  rdlong r20, r20 ' reg <- INDIRP4 reg
  adds r22, r20 ' ADDI/P (1)
  rdlong r17, r22 ' reg <- INDIRP4 reg
- jmp #\@C_s7cc6_5fa8f425_common_prefix_L000026_37 ' JUMPV addrg
-C_s7cc6_5fa8f425_common_prefix_L000026_36
+ jmp #\@C_slrs6_6132d4ca_common_prefix_L000026_37 ' JUMPV addrg
+C_slrs6_6132d4ca_common_prefix_L000026_36
  adds r19, #1 ' ADDP4 coni
-C_s7cc6_5fa8f425_common_prefix_L000026_37
+C_slrs6_6132d4ca_common_prefix_L000026_37
  rdbyte r22, r19 ' reg <- CVUI4 INDIRU1 reg
  mov r15, r22 ' CVI, CVU or LOAD
  mov r20, r17 ' CVI, CVU or LOAD
@@ -117,21 +117,21 @@ C_s7cc6_5fa8f425_common_prefix_L000026_37
  adds r17, #1 ' ADDP4 coni
  rdbyte r20, r20 ' reg <- CVUI4 INDIRU1 reg
  cmps r22, r20 wz
- if_nz jmp #\C_s7cc6_5fa8f425_common_prefix_L000026_39 ' NEI4
+ if_nz jmp #\C_slrs6_6132d4ca_common_prefix_L000026_39 ' NEI4
  cmps r15,  #0 wz
- if_nz jmp #\C_s7cc6_5fa8f425_common_prefix_L000026_36 ' NEI4
-C_s7cc6_5fa8f425_common_prefix_L000026_39
+ if_nz jmp #\C_slrs6_6132d4ca_common_prefix_L000026_36 ' NEI4
+C_slrs6_6132d4ca_common_prefix_L000026_39
  mov r22, #0 ' reg <- coni
  wrbyte r22, r19 ' ASGNU1 reg reg
-' C_s7cc6_5fa8f425_common_prefix_L000026_33 ' (symbol refcount = 0)
+' C_slrs6_6132d4ca_common_prefix_L000026_33 ' (symbol refcount = 0)
  adds r21, #1 ' ADDI4 coni
-C_s7cc6_5fa8f425_common_prefix_L000026_35
+C_slrs6_6132d4ca_common_prefix_L000026_35
  mov r22, FP
  sub r22, #-(-4) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r21, r22 wcz
- if_b jmp #\C_s7cc6_5fa8f425_common_prefix_L000026_32 ' LTI4
-C_s7cc6_5fa8f425_common_prefix_L000026_30
+ if_b jmp #\C_slrs6_6132d4ca_common_prefix_L000026_32 ' LTI4
+C_slrs6_6132d4ca_common_prefix_L000026_30
  mov RI, FP
  sub RI, #-(-8)
  rdlong r2, RI ' reg ARG INDIR ADDRLi
@@ -141,7 +141,7 @@ C_s7cc6_5fa8f425_common_prefix_L000026_30
  mov r22, FP
  sub r22, #-(-4) ' reg <- addrli
  rdlong r0, r22 ' reg <- INDIRI4 reg
-' C_s7cc6_5fa8f425_common_prefix_L000026_27 ' (symbol refcount = 0)
+' C_slrs6_6132d4ca_common_prefix_L000026_27 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  add SP, #8 ' framesize
  PRIMITIVE(#RETF)
@@ -226,14 +226,14 @@ C_cmd_input_47
  mov r0, r22 ' CVI, CVU or LOAD
  jmp #\@C_cmd_input_40 ' JUMPV addrg
 C_cmd_input_48
- mov r22, ##@C_s7cc3_5fa8f425_inpos_L000019
+ mov r22, ##@C_slrs3_6132d4ca_inpos_L000019
  rdlong r22, r22 ' reg <- INDIRU4 addrg
- mov r20, ##@C_s7cc2_5fa8f425_inbuf_L000018 ' reg <- addrg
+ mov r20, ##@C_slrs2_6132d4ca_inbuf_L000018 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  mov r20, #0 ' reg <- coni
  wrbyte r20, r22 ' ASGNU1 reg reg
  mov r22, #0 ' reg <- coni
- wrlong r22, ##@C_s7cc3_5fa8f425_inpos_L000019 ' ASGNU4 addrg reg
+ wrlong r22, ##@C_slrs3_6132d4ca_inpos_L000019 ' ASGNU4 addrg reg
  mov r22, #0 ' reg <- coni
  wrlong r22, ##@C_S_tate ' ASGNI4 addrg reg
  mov r2, r23 ' CVI, CVU or LOAD
@@ -258,28 +258,28 @@ C_cmd_input_64
  jmp #\@C_cmd_input_50 ' JUMPV addrg
 C_cmd_input_52
  mov r21, #8 ' reg <- coni
- mov r22, ##@C_s7cc3_5fa8f425_inpos_L000019 ' reg <- addrg
+ mov r22, ##@C_slrs3_6132d4ca_inpos_L000019 ' reg <- addrg
  rdlong r22, r22 ' reg <- INDIRU4 reg
  sub r22, #1 ' SUBU4 coni
- wrlong r22, ##@C_s7cc3_5fa8f425_inpos_L000019 ' ASGNU4 addrg reg
- mov r20, ##@C_s7cc2_5fa8f425_inbuf_L000018 ' reg <- addrg
+ wrlong r22, ##@C_slrs3_6132d4ca_inpos_L000019 ' ASGNU4 addrg reg
+ mov r20, ##@C_slrs2_6132d4ca_inbuf_L000018 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  mov r20, #0 ' reg <- coni
  wrbyte r20, r22 ' ASGNU1 reg reg
  jmp #\@C_cmd_input_51 ' JUMPV addrg
 C_cmd_input_54
- mov r22, ##@C_s7cc3_5fa8f425_inpos_L000019 ' reg <- addrg
+ mov r22, ##@C_slrs3_6132d4ca_inpos_L000019 ' reg <- addrg
  rdlong r22, r22 ' reg <- INDIRU4 reg
  sub r22, #1 ' SUBU4 coni
- wrlong r22, ##@C_s7cc3_5fa8f425_inpos_L000019 ' ASGNU4 addrg reg
+ wrlong r22, ##@C_slrs3_6132d4ca_inpos_L000019 ' ASGNU4 addrg reg
 C_cmd_input_55
- mov r22, ##@C_s7cc3_5fa8f425_inpos_L000019
+ mov r22, ##@C_slrs3_6132d4ca_inpos_L000019
  rdlong r22, r22 ' reg <- INDIRU4 addrg
  mov r20, #1 ' reg <- coni
  cmp r22, r20 wcz 
  if_be jmp #\C_cmd_input_57 ' LEU4
  sub r22, #1 ' SUBU4 coni
- mov r20, ##@C_s7cc2_5fa8f425_inbuf_L000018 ' reg <- addrg
+ mov r20, ##@C_slrs2_6132d4ca_inbuf_L000018 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  mov RI, FP
@@ -295,18 +295,18 @@ C_cmd_input_55
 C_cmd_input_57
  jmp #\@C_cmd_input_59 ' JUMPV addrg
 C_cmd_input_58
- mov r22, ##@C_s7cc3_5fa8f425_inpos_L000019 ' reg <- addrg
+ mov r22, ##@C_slrs3_6132d4ca_inpos_L000019 ' reg <- addrg
  rdlong r22, r22 ' reg <- INDIRU4 reg
  sub r22, #1 ' SUBU4 coni
- wrlong r22, ##@C_s7cc3_5fa8f425_inpos_L000019 ' ASGNU4 addrg reg
+ wrlong r22, ##@C_slrs3_6132d4ca_inpos_L000019 ' ASGNU4 addrg reg
 C_cmd_input_59
- mov r22, ##@C_s7cc3_5fa8f425_inpos_L000019
+ mov r22, ##@C_slrs3_6132d4ca_inpos_L000019
  rdlong r22, r22 ' reg <- INDIRU4 addrg
  mov r20, #1 ' reg <- coni
  cmp r22, r20 wcz 
  if_be jmp #\C_cmd_input_62 ' LEU4
  sub r22, #1 ' SUBU4 coni
- mov r20, ##@C_s7cc2_5fa8f425_inbuf_L000018 ' reg <- addrg
+ mov r20, ##@C_slrs2_6132d4ca_inbuf_L000018 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  mov RI, FP
@@ -320,18 +320,18 @@ C_cmd_input_59
  cmps r22,  #9 wz
  if_nz jmp #\C_cmd_input_58 ' NEI4
 C_cmd_input_62
- mov r22, ##@C_s7cc3_5fa8f425_inpos_L000019
+ mov r22, ##@C_slrs3_6132d4ca_inpos_L000019
  rdlong r22, r22 ' reg <- INDIRU4 addrg
- mov r20, ##@C_s7cc2_5fa8f425_inbuf_L000018 ' reg <- addrg
+ mov r20, ##@C_slrs2_6132d4ca_inbuf_L000018 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  mov r20, #0 ' reg <- coni
  wrbyte r20, r22 ' ASGNU1 reg reg
 C_cmd_input_50
 C_cmd_input_51
- mov r22, ##@C_s7cc3_5fa8f425_inpos_L000019
+ mov r22, ##@C_slrs3_6132d4ca_inpos_L000019
  rdlong r22, r22 ' reg <- INDIRU4 addrg
  sub r22, #1 ' SUBU4 coni
- mov r20, ##@C_s7cc4_5fa8f425_colposn_L000020 ' reg <- addrg
+ mov r20, ##@C_slrs4_6132d4ca_colposn_L000020 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  adds r22, #1 ' ADDI4 coni
@@ -381,7 +381,7 @@ C_cmd_input_71
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_update_cline ' CALL addrg
- mov r22, ##@C_s7cc3_5fa8f425_inpos_L000019
+ mov r22, ##@C_slrs3_6132d4ca_inpos_L000019
  rdlong r22, r22 ' reg <- INDIRU4 addrg
  cmp r22,  #0 wz
  if_nz jmp #\C_cmd_input_72  ' NEU4
@@ -393,14 +393,14 @@ C_cmd_input_72
  mov r0, #1 ' reg <- coni
  jmp #\@C_cmd_input_40 ' JUMPV addrg
 C_cmd_input_74
- mov r22, ##@C_s7cc3_5fa8f425_inpos_L000019
+ mov r22, ##@C_slrs3_6132d4ca_inpos_L000019
  rdlong r22, r22 ' reg <- INDIRU4 addrg
- mov r20, ##@C_s7cc2_5fa8f425_inbuf_L000018 ' reg <- addrg
+ mov r20, ##@C_slrs2_6132d4ca_inbuf_L000018 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  mov r20, #0 ' reg <- coni
  wrbyte r20, r22 ' ASGNU1 reg reg
  mov r2, #32 ' reg ARG coni
- mov r3, ##@C_s7cc2_5fa8f425_inbuf_L000018 ' reg ARG ADDRG
+ mov r3, ##@C_slrs2_6132d4ca_inbuf_L000018 ' reg ARG ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
@@ -446,17 +446,17 @@ C_cmd_input_75
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #0 wz
  if_z jmp #\C_cmd_input_78 ' EQI4
- mov r22, ##@C_s7cc3_5fa8f425_inpos_L000019 ' reg <- addrg
+ mov r22, ##@C_slrs3_6132d4ca_inpos_L000019 ' reg <- addrg
  mov r20, FP
  sub r20, #-(-8) ' reg <- addrli
  rdlong r20, r20 ' reg <- INDIRP4 reg
- mov r18, ##@C_s7cc2_5fa8f425_inbuf_L000018 ' reg <- addrg
+ mov r18, ##@C_slrs2_6132d4ca_inbuf_L000018 ' reg <- addrg
  sub r20, r18 ' SUBU (1)
  subs r20, #1 ' SUBI4 coni
- wrlong r20, ##@C_s7cc3_5fa8f425_inpos_L000019 ' ASGNU4 addrg reg
+ wrlong r20, ##@C_slrs3_6132d4ca_inpos_L000019 ' ASGNU4 addrg reg
  rdlong r22, r22 ' reg <- INDIRU4 reg
  sub r22, #1 ' SUBU4 coni
- mov r20, ##@C_s7cc4_5fa8f425_colposn_L000020 ' reg <- addrg
+ mov r20, ##@C_slrs4_6132d4ca_colposn_L000020 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  adds r22, #1 ' ADDI4 coni
@@ -507,7 +507,7 @@ C_cmd_input_86
  rdlong r2, RI ' reg ARG INDIR ADDRLi
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_s7cc6_5fa8f425_common_prefix_L000026 ' CALL addrg
+ long @C_slrs6_6132d4ca_common_prefix_L000026 ' CALL addrg
  cmps r0,  #1 wcz
  if_be jmp #\C_cmd_input_87 ' LEI4
  mov r2, r23 ' CVI, CVU or LOAD
@@ -535,14 +535,14 @@ C_cmd_input_79
  jmp #\@C_cmd_input_40 ' JUMPV addrg
 C_cmd_input_91
  mov r22, #1 ' reg <- coni
- wrlong r22, ##@C_s7cc3_5fa8f425_inpos_L000019 ' ASGNU4 addrg reg
+ wrlong r22, ##@C_slrs3_6132d4ca_inpos_L000019 ' ASGNU4 addrg reg
  mov r22, #0 ' reg <- coni
- wrbyte r22, ##@C_s7cc2_5fa8f425_inbuf_L000018+1 ' ASGNU1 addrg reg
+ wrbyte r22, ##@C_slrs2_6132d4ca_inbuf_L000018+1 ' ASGNU1 addrg reg
  mov r22, r23
  adds r22, #48 ' ADDP4 coni
  mov r20, #0 ' reg <- coni
  wrlong r20, r22 ' ASGNU4 reg reg
- mov r22, ##@C_s7cc2_5fa8f425_inbuf_L000018 ' reg <- addrg
+ mov r22, ##@C_slrs2_6132d4ca_inbuf_L000018 ' reg <- addrg
  rdbyte r2, r22 ' reg <- CVUI4 INDIRU1 reg
  mov r3, r23
  adds r3, #36 ' ADDP4 coni
@@ -561,7 +561,7 @@ C_cmd_input_46
 C_cmd_input_43
  mov r22, #0 ' reg <- coni
  wrlong r22, ##@C_cmd_input_literal_next_L000042 ' ASGNI4 addrg reg
- mov r22, ##@C_s7cc3_5fa8f425_inpos_L000019
+ mov r22, ##@C_slrs3_6132d4ca_inpos_L000019
  rdlong r22, r22 ' reg <- INDIRU4 addrg
  cmp r22,  #79 wcz 
  if_b jmp #\C_cmd_input_100 ' LTU4
@@ -571,10 +571,10 @@ C_cmd_input_43
  long @C_beep ' CALL addrg
  jmp #\@C_cmd_input_101 ' JUMPV addrg
 C_cmd_input_100
- mov r22, ##@C_s7cc3_5fa8f425_inpos_L000019
+ mov r22, ##@C_slrs3_6132d4ca_inpos_L000019
  rdlong r22, r22 ' reg <- INDIRU4 addrg
  sub r22, #1 ' SUBU4 coni
- mov r20, ##@C_s7cc4_5fa8f425_colposn_L000020 ' reg <- addrg
+ mov r20, ##@C_slrs4_6132d4ca_colposn_L000020 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  mov RI, FP
@@ -614,9 +614,9 @@ C_cmd_input_100
  long @C_beep ' CALL addrg
  jmp #\@C_cmd_input_103 ' JUMPV addrg
 C_cmd_input_102
- mov r22, ##@C_s7cc3_5fa8f425_inpos_L000019
+ mov r22, ##@C_slrs3_6132d4ca_inpos_L000019
  rdlong r22, r22 ' reg <- INDIRU4 addrg
- mov r20, ##@C_s7cc4_5fa8f425_colposn_L000020 ' reg <- addrg
+ mov r20, ##@C_slrs4_6132d4ca_colposn_L000020 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  mov r20, FP
  sub r20, #-(-8) ' reg <- addrli
@@ -626,12 +626,12 @@ C_cmd_input_102
  rdlong r18, r18 ' reg <- INDIRU4 reg
  add r20, r18 ' ADDU (1)
  wrbyte r20, r22 ' ASGNU1 reg reg
- mov r22, ##@C_s7cc3_5fa8f425_inpos_L000019 ' reg <- addrg
+ mov r22, ##@C_slrs3_6132d4ca_inpos_L000019 ' reg <- addrg
  rdlong r22, r22 ' reg <- INDIRU4 reg
  mov r20, r22
  add r20, #1 ' ADDU4 coni
- wrlong r20, ##@C_s7cc3_5fa8f425_inpos_L000019 ' ASGNU4 addrg reg
- mov r20, ##@C_s7cc2_5fa8f425_inbuf_L000018 ' reg <- addrg
+ wrlong r20, ##@C_slrs3_6132d4ca_inpos_L000019 ' ASGNU4 addrg reg
+ mov r20, ##@C_slrs2_6132d4ca_inbuf_L000018 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  mov r20, r21 ' CVI, CVU or LOAD
  wrbyte r20, r22 ' ASGNU1 reg reg
@@ -663,7 +663,7 @@ C_cmd_input_40
 
  alignl ' align long
 C_get_cmd ' <symbol:get_cmd>
- mov r0, ##@C_s7cc2_5fa8f425_inbuf_L000018 ' reg <- addrg
+ mov r0, ##@C_slrs2_6132d4ca_inbuf_L000018 ' reg <- addrg
 ' C_get_cmd_106 ' (symbol refcount = 0)
  PRIMITIVE(#RETN)
 
@@ -673,11 +673,11 @@ C_get_cmd ' <symbol:get_cmd>
 DAT ' uninitialized data segment
 
  alignl ' align long
-C_s7cc4_5fa8f425_colposn_L000020 ' <symbol:colposn>
+C_slrs4_6132d4ca_colposn_L000020 ' <symbol:colposn>
  byte 0[80]
 
  alignl ' align long
-C_s7cc2_5fa8f425_inbuf_L000018 ' <symbol:inbuf>
+C_slrs2_6132d4ca_inbuf_L000018 ' <symbol:inbuf>
  byte 0[80]
 
 ' Catalina Code
@@ -818,7 +818,7 @@ C_cmd_input_89_L000090 ' <symbol:89>
  byte 0
 
  alignl ' align long
-C_s7cc6_5fa8f425_common_prefix_L000026_28_L000029 ' <symbol:28>
+C_slrs6_6132d4ca_common_prefix_L000026_28_L000029 ' <symbol:28>
  byte 32
  byte 0
 
@@ -877,7 +877,7 @@ C_cmd_init_24_L000025 ' <symbol:24>
  byte 0
 
  alignl ' align long
-C_s7cc1_5fa8f425_2_L000003 ' <symbol:2>
+C_slrs1_6132d4ca_2_L000003 ' <symbol:2>
  byte 64
  byte 40
  byte 35

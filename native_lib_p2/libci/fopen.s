@@ -244,6 +244,8 @@ C_fopen_3
  PRIMITIVE(#RETF)
 
 
+' Catalina Import _locknew
+
 ' Catalina Import _close
 
 ' Catalina Import _creat
@@ -255,8 +257,6 @@ C_fopen_3
 ' Catalina Import _release_lock
 
 ' Catalina Import _acquire_lock
-
-' Catalina Import _locknew
 
 ' Catalina Import __iotab
 ' end

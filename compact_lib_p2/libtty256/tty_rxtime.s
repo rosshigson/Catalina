@@ -32,14 +32,13 @@ C_tty_rxtime_2
  alignl ' align long
  long I32_CALA + (@C__clockfreq)<<S32 ' CALL addrg
  word I16A_MOV + (r20)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
- word I16B_LODL + (r18)<<D16B
  alignl ' align long
- long 1000 ' reg <- con
+ long I32_LODS + (r18)<<D32S + ((1000)&$7FFFF)<<S32 ' reg <- cons
  word I16A_MOV + (r0)<<D16A + (r20)<<S16A ' setup r0/r1 (2)
  word I16A_MOV + (r1)<<D16A + (r18)<<S16A ' setup r0/r1 (2)
- word I16B_DIVU ' DIVU
- word I16A_MOV + (r20)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
+ word I16B_DIVS ' DIVI
  word I16A_SUB + (r22)<<D16A + (r19)<<S16A ' SUBU (1)
+ word I16A_MOV + (r20)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r0)<<D16A + (r22)<<S16A ' setup r0/r1 (2)
  word I16A_MOV + (r1)<<D16A + (r20)<<S16A ' setup r0/r1 (2)
  word I16B_DIVU ' DIVU
@@ -63,9 +62,9 @@ C_tty_rxtime_4
  word I16B_POPM + $80<<S16B ' restore registers, do not pop frame, do return
  alignl ' align long
 
-' Catalina Import _cnt
-
 ' Catalina Import _clockfreq
+
+' Catalina Import _cnt
 
 ' Catalina Import tty_rxcheck
 ' end

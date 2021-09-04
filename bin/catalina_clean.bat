@@ -229,7 +229,6 @@ del /f /q *.dbg
 popd
 pushd %TMP_LCCDIR%\catalyst\bin
 del /f /q *.bin
-del /f /q *.*
 del /f /q *.binary
 del /f /q *.eeprom 
 del /f /q *.lst 

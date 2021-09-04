@@ -11,8 +11,8 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_sbtc_5fa8f425_sccsid_L000001 ' <symbol:sccsid>
- long @C_sbtc1_5fa8f425_2_L000003
+C_sb2o_6132d4ca_sccsid_L000001 ' <symbol:sccsid>
+ long @C_sb2o1_6132d4ca_2_L000003
 
 ' Catalina Export cursupdate
 
@@ -53,14 +53,14 @@ C_cursupdate ' <symbol:cursupdate>
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_sbtc2_5fa8f425_calc_position_in_line_L000018 ' CALL addrg
+ long @C_sb2o2_6132d4ca_calc_position_in_line_L000018 ' CALL addrg
 ' C_cursupdate_19 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
 
  alignl ' align long
-C_sbtc2_5fa8f425_calc_position_in_line_L000018 ' <symbol:calc_position_in_line>
+C_sb2o2_6132d4ca_calc_position_in_line_L000018 ' <symbol:calc_position_in_line>
  PRIMITIVE(#NEWF)
  sub SP, #4
  PRIMITIVE(#PSHM)
@@ -76,18 +76,18 @@ C_sbtc2_5fa8f425_calc_position_in_line_L000018 ' <symbol:calc_position_in_line>
  mov r22, ##@C_params+744+12
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz
- if_z jmp #\C_sbtc2_5fa8f425_calc_position_in_line_L000018_24 ' EQI4
+ if_z jmp #\C_sb2o2_6132d4ca_calc_position_in_line_L000018_24 ' EQI4
  mov r7, #8 ' reg <- coni
- jmp #\@C_sbtc2_5fa8f425_calc_position_in_line_L000018_25 ' JUMPV addrg
-C_sbtc2_5fa8f425_calc_position_in_line_L000018_24
+ jmp #\@C_sb2o2_6132d4ca_calc_position_in_line_L000018_25 ' JUMPV addrg
+C_sb2o2_6132d4ca_calc_position_in_line_L000018_24
  mov r7, #0 ' reg <- coni
-C_sbtc2_5fa8f425_calc_position_in_line_L000018_25
+C_sb2o2_6132d4ca_calc_position_in_line_L000018_25
  mov r17, r7 ' CVI, CVU or LOAD
  mov r22, #0 ' reg <- coni
  mov r15, r22 ' CVI, CVU or LOAD
  mov r21, r22 ' CVI, CVU or LOAD
- jmp #\@C_sbtc2_5fa8f425_calc_position_in_line_L000018_29 ' JUMPV addrg
-C_sbtc2_5fa8f425_calc_position_in_line_L000018_26
+ jmp #\@C_sb2o2_6132d4ca_calc_position_in_line_L000018_29 ' JUMPV addrg
+C_sb2o2_6132d4ca_calc_position_in_line_L000018_26
  mov r22, r17 ' CVI, CVU or LOAD
  add r22, r15 ' ADDU (1)
  mov r17, r22 ' CVI, CVU or LOAD
@@ -106,46 +106,46 @@ C_sbtc2_5fa8f425_calc_position_in_line_L000018_26
  long @C_vischar
  add SP, #8 ' CALL addrg
  mov r15, r0 ' CVI, CVU or LOAD
-' C_sbtc2_5fa8f425_calc_position_in_line_L000018_27 ' (symbol refcount = 0)
-C_sbtc2_5fa8f425_calc_position_in_line_L000018_29
+' C_sb2o2_6132d4ca_calc_position_in_line_L000018_27 ' (symbol refcount = 0)
+C_sb2o2_6132d4ca_calc_position_in_line_L000018_29
  cmps r21, r13 wcz
- if_be jmp #\C_sbtc2_5fa8f425_calc_position_in_line_L000018_26 ' LEI4
+ if_be jmp #\C_sb2o2_6132d4ca_calc_position_in_line_L000018_26 ' LEI4
  mov r22, ##@C_S_tate
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #2 wz
- if_z jmp #\C_sbtc2_5fa8f425_calc_position_in_line_L000018_30 ' EQI4
+ if_z jmp #\C_sb2o2_6132d4ca_calc_position_in_line_L000018_30 ' EQI4
  cmps r11,  #9 wz
- if_nz jmp #\C_sbtc2_5fa8f425_calc_position_in_line_L000018_30 ' NEI4
+ if_nz jmp #\C_sb2o2_6132d4ca_calc_position_in_line_L000018_30 ' NEI4
  mov r22, #0 ' reg <- coni
  mov r20, ##@C_params+600+12
  rdlong r20, r20 ' reg <- INDIRI4 addrg
  cmps r20, r22 wz
- if_nz jmp #\C_sbtc2_5fa8f425_calc_position_in_line_L000018_30 ' NEI4
+ if_nz jmp #\C_sb2o2_6132d4ca_calc_position_in_line_L000018_30 ' NEI4
  mov r20, ##@C_params+1320+12
  rdlong r20, r20 ' reg <- INDIRI4 addrg
  cmps r20, r22 wz
- if_z jmp #\C_sbtc2_5fa8f425_calc_position_in_line_L000018_30 ' EQI4
+ if_z jmp #\C_sb2o2_6132d4ca_calc_position_in_line_L000018_30 ' EQI4
  mov r22, r17 ' CVI, CVU or LOAD
  mov r20, r15
  sub r20, #1 ' SUBU4 coni
  add r22, r20 ' ADDU (1)
  mov r17, r22 ' CVI, CVU or LOAD
-C_sbtc2_5fa8f425_calc_position_in_line_L000018_30
+C_sb2o2_6132d4ca_calc_position_in_line_L000018_30
  mov r22, ##@C_params+744+12
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz
- if_z jmp #\C_sbtc2_5fa8f425_calc_position_in_line_L000018_39 ' EQI4
+ if_z jmp #\C_sb2o2_6132d4ca_calc_position_in_line_L000018_39 ' EQI4
  mov r22, #8 ' reg <- coni
  mov RI, FP
  sub RI, #-(-4)
  wrlong r22, RI ' ASGNI4 addrli reg
- jmp #\@C_sbtc2_5fa8f425_calc_position_in_line_L000018_40 ' JUMPV addrg
-C_sbtc2_5fa8f425_calc_position_in_line_L000018_39
+ jmp #\@C_sb2o2_6132d4ca_calc_position_in_line_L000018_40 ' JUMPV addrg
+C_sb2o2_6132d4ca_calc_position_in_line_L000018_39
  mov r22, #0 ' reg <- coni
  mov RI, FP
  sub RI, #-(-4)
  wrlong r22, RI ' ASGNI4 addrli reg
-C_sbtc2_5fa8f425_calc_position_in_line_L000018_40
+C_sb2o2_6132d4ca_calc_position_in_line_L000018_40
  mov r22, r23
  adds r22, #60 ' ADDP4 coni
  mov r20, FP
@@ -154,8 +154,8 @@ C_sbtc2_5fa8f425_calc_position_in_line_L000018_40
  subs r20, r17
  neg r20, r20 ' SUBI/P (2)
  wrlong r20, r22 ' ASGNI4 reg reg
- jmp #\@C_sbtc2_5fa8f425_calc_position_in_line_L000018_42 ' JUMPV addrg
-C_sbtc2_5fa8f425_calc_position_in_line_L000018_41
+ jmp #\@C_sb2o2_6132d4ca_calc_position_in_line_L000018_42 ' JUMPV addrg
+C_sb2o2_6132d4ca_calc_position_in_line_L000018_41
  mov r22, r23
  adds r22, #52 ' ADDP4 coni
  rdlong r20, r22 ' reg <- INDIRI4 reg
@@ -167,13 +167,13 @@ C_sbtc2_5fa8f425_calc_position_in_line_L000018_41
  rdlong r20, r20 ' reg <- INDIRU4 reg
  sub r22, r20 ' SUBU (1)
  mov r17, r22 ' CVI, CVU or LOAD
-C_sbtc2_5fa8f425_calc_position_in_line_L000018_42
+C_sb2o2_6132d4ca_calc_position_in_line_L000018_42
  mov r22, r17 ' CVI, CVU or LOAD
  mov r20, r23
  adds r20, #24 ' ADDP4 coni
  rdlong r20, r20 ' reg <- INDIRU4 reg
  cmp r22, r20 wcz 
- if_ae jmp #\C_sbtc2_5fa8f425_calc_position_in_line_L000018_41 ' GEU4
+ if_ae jmp #\C_sb2o2_6132d4ca_calc_position_in_line_L000018_41 ' GEU4
  mov r22, r23
  adds r22, #56 ' ADDP4 coni
  wrlong r17, r22 ' ASGNI4 reg reg
@@ -185,7 +185,7 @@ C_sbtc2_5fa8f425_calc_position_in_line_L000018_42
  rdlong r20, r20 ' reg <- INDIRU4 reg
  sub r20, #1 ' SUBU4 coni
  cmp r22, r20 wcz 
- if_b jmp #\C_sbtc2_5fa8f425_calc_position_in_line_L000018_44 ' LTU4
+ if_b jmp #\C_sb2o2_6132d4ca_calc_position_in_line_L000018_44 ' LTU4
  mov r22, r23
  adds r22, #52 ' ADDP4 coni
  mov r20, r23
@@ -193,12 +193,12 @@ C_sbtc2_5fa8f425_calc_position_in_line_L000018_42
  rdlong r20, r20 ' reg <- INDIRU4 reg
  sub r20, #2 ' SUBU4 coni
  wrlong r20, r22 ' ASGNI4 reg reg
-C_sbtc2_5fa8f425_calc_position_in_line_L000018_44
+C_sb2o2_6132d4ca_calc_position_in_line_L000018_44
  mov r22, r23
  adds r22, #68 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #0 wz
- if_z jmp #\C_sbtc2_5fa8f425_calc_position_in_line_L000018_46 ' EQI4
+ if_z jmp #\C_sb2o2_6132d4ca_calc_position_in_line_L000018_46 ' EQI4
  mov r22, r23
  adds r22, #64 ' ADDP4 coni
  mov r20, r23
@@ -209,8 +209,8 @@ C_sbtc2_5fa8f425_calc_position_in_line_L000018_44
  adds r22, #68 ' ADDP4 coni
  mov r20, #0 ' reg <- coni
  wrlong r20, r22 ' ASGNI4 reg reg
-C_sbtc2_5fa8f425_calc_position_in_line_L000018_46
-' C_sbtc2_5fa8f425_calc_position_in_line_L000018_20 ' (symbol refcount = 0)
+C_sb2o2_6132d4ca_calc_position_in_line_L000018_46
+' C_sb2o2_6132d4ca_calc_position_in_line_L000018_20 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  add SP, #4 ' framesize
  PRIMITIVE(#RETF)
@@ -231,7 +231,7 @@ C_sbtc2_5fa8f425_calc_position_in_line_L000018_46
 DAT ' const data segment
 
  alignl ' align long
-C_sbtc1_5fa8f425_2_L000003 ' <symbol:2>
+C_sb2o1_6132d4ca_2_L000003 ' <symbol:2>
  byte 64
  byte 40
  byte 35

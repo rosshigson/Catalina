@@ -45,7 +45,11 @@ DAT ' code segment
 '
 C__rand_reverse
  mov r0, r2
+#ifdef P2
+ fge r0, #1 
+#else
  min r0, #1 
+#endif
  mov r1, #32
  mov BC, #%10111
  ror BC, #1

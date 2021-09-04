@@ -584,11 +584,27 @@ C_N_M_M__threaded_dynamic_array ' <symbol:NMM_threaded_dynamic_array>
  long $fd64002d
  long $f6642c01
  long $fd9fffec
+ long $f0642e02
+ long $ff0003df
+ long $f1042fb0
+ long $fb003017
+ long $ff007fff
+ long $f50431ff
+ long $f0643218
+ long $f5403019
+ long $fc603017
+ long $c602c18
+ long $fac03218
+ long $fc403216
+ long $f1042c01
+ long $f1043001
+ long $fb6c2ffb
+ long $fd64002d
  long $fd604224
  long $f43bd5e9
  long $5d73d206
  long $1403d5e9
- long $bd800340
+ long $bd800350
  long $fd604024
  long $fd64002d
  long $fd604224
@@ -600,7 +616,7 @@ C_N_M_M__threaded_dynamic_array ' <symbol:NMM_threaded_dynamic_array>
  long $f43bd5e9
  long $5d702e06
  long $1403d5e9
- long $bd80034c
+ long $bd80035c
  long $fd604024
  long $fd64002d
  long $fd604224
@@ -683,11 +699,27 @@ C_N_M_M__L_U_T__L_I_B_R_A_R_Y__array ' <symbol:NMM_LUT_LIBRARY_array>
  long $fd64002d
  long $f6642c01
  long $fd9fffec
+ long $f0642e02
+ long $ff0003df
+ long $f1042fb0
+ long $fb003017
+ long $ff007fff
+ long $f50431ff
+ long $f0643218
+ long $f5403019
+ long $fc603017
+ long $c602c18
+ long $fac03218
+ long $fc403216
+ long $f1042c01
+ long $f1043001
+ long $fb6c2ffb
+ long $fd64002d
  long $fd604224
  long $f43bd5e9
  long $5d73d206
  long $1403d5e9
- long $bd800340
+ long $bd800350
  long $fd604024
  long $fd64002d
  long $fd604224
@@ -699,7 +731,7 @@ C_N_M_M__L_U_T__L_I_B_R_A_R_Y__array ' <symbol:NMM_LUT_LIBRARY_array>
  long $f43bd5e9
  long $5d702e06
  long $1403d5e9
- long $bd80034c
+ long $bd80035c
  long $fd604024
  long $fd64002d
  long $fd604224
@@ -736,7 +768,7 @@ C__threadstart_N_M_M__cog ' <symbol:_threadstart_NMM_cog>
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_WRLONG + (r23)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl ' align long
- long I32_MOVI + (r22)<<D32 +(88)<<S32 ' reg <- conli
+ long I32_MOVI + (r22)<<D32 +(104)<<S32 ' reg <- conli
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  word I16B_LODL + (r22)<<D16B

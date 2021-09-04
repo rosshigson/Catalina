@@ -53,8 +53,18 @@ echo    BUILDING SERIAL2 DEMOS
 echo    ======================
 echo.
 
-catalina -p2 -lci -lserial2 test_serial2.c -o serial1 -C NO_HMI
-rem catalina -p2 -lci -lserial2 -lthreads test_serial2.c -o serial2 -C TV 
+set platform=%1
+if "%platform:~0,2%"=="P2" goto build_p2
+
+echo.
+echo   ERROR: The 2 Port Serial driver is not supported on the Propeller 1.
+echo.
+ 
+goto done
+
+:build_p2
+catalina -p2 -lci -lserial2 test_serial2.c -o test1 -C NO_HMI
+catalina -p2 -lci -lserial2 -lthreads test_serial2.c -o test2 -C LORES_VGA 
 
 :done
 @echo off

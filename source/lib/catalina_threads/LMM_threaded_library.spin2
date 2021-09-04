@@ -111,11 +111,11 @@ signed_d32
 ' do_plugin - call a plugin
 '
 ' On entry:
-'       R3 = code:
+'       r3 = code:
 '            - cog id if >= 128 (i.e. $80 + cog id)
 '            - plugin type if < 128 (i.e. 0 .. 127)
 '            - service id if < 0
-'       R2 = data (optional pointer)
+'       r2 = data (optional pointer)
 '
 ' NOTES: Locks are currently only supported when invoking via a service id.
 '        When using service id, the data should only use the lower 24 bits.
@@ -186,6 +186,46 @@ plugerr
         neg     r0,#1           ' plugin error (e.g. not registered)
         jmp     #clr_lock       ' done - clear lock if required
 
+' do_register - register a plugin
+'
+' On entry:
+'
+'        r0 - initial value to write to request block
+'        r1 - cog to register (lost)
+'        r3 - plugin type to register (lost)
+
+do_register
+        shl     r1, #2          ' register ...
+        add     r1, ##REGISTRY  ' ... plugin ...
+        rdlong  r2, r1          ' ...
+        and     r2, ##$00FFFFFF ' ... as ...
+        shl     r3, #24         ' ...
+        or      r2, r3          ' ...
+        wrlong  r2, r1          ' ... plugin type
+  _ret_ wrlong  r0, r2          ' save in request block
+
+'
+' do_copy
+'
+' On entry:
+'
+'       r0 - dst addr
+'       r1 - number of bytes to copy
+'       r2 - src addr
+'
+' On exit:
+'
+'       r0 incremented by r1 (i.e. number of bytes)
+'       r3 lost
+
+do_copy
+       rdbyte  r3, r2           '
+       wrbyte  r3, r0
+       add     r0, #1
+       add     r2, #1
+       djnz    r1, #do_copy     '
+       ret
+
 
 
 '#line 49 "../../../target_p2/Catalina_LMM_library.spin2"
@@ -226,15 +266,29 @@ do_cnthl
         getct   r0
         jmp     #LMM_Loop
 
+' do_div64 - cannot be executed via LMM because rdlongs interrupt the setq
+ ' on entry r0 = lower 32 bits of dividend
+ '          r1 = upper 32 bits of dividend
+ '          r2 = divisor
+ ' on exit  r0 = quotient
+
+do_div64
+        setq    r1       ' set upper 32 bits of product to q register
+        qdiv    r0, r2   ' divide 64 bit product by 32 bit divisor
+        jmp     #LMM_loop
+
 ' special - perform a special operation that cannot be performed via LMM
 '    RI contains 1 => do_initcog
 '                2 => do_rotxy
 '                3 => do_cnthl
+'                4 => do_div64
 
 special
         djz     RI, #do_initcog
         djz     RI, #do_rotxy
-        jmp     #do_cnthl
+        djz     RI, #do_cnthl
+        jmp     #do_div64
+
 
 
 
@@ -625,6 +679,186 @@ CON
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 '---------------- default constants (same as P2_EVAL) -------------------------
 
 ' clock configuration constants
@@ -689,6 +923,66 @@ _TX2_PIN   = 52
 _RX2_MODE  = %0000_0000_000_0000000000000_00_11111_0 ' async rx mode, true input, input  enabled for smart input
 _TX2_MODE  = %0000_0000_000_0000000000000_01_11110_0 ' async tx mode, true output, output enabled for smart output
 _BAUDRATE2 = _BAUDRATE
+
+' Multi Port Serial constants
+
+' NOTE Multi Port 1 and 2 use the 2 Port Serial constants defined above for pins and baud rate (but not mode) -
+' This is done so that by default the Multi Port Serial plugin behaves the same way as the 2 Port Serial plugin.
+' To disable thiis "auto-configuration" behaviour, set the pins to -1 (or anything outside the range 0 .. 63).
+' All such ports will have to be manually configured in the C program (see the s8_openport() function).
+
+'    rxmode = %0xx1 = invert rx              (same for txmode)
+'             %0x1x = invert tx
+'             %01xx = open-drain/open-source tx
+
+_RX1_MULTI_PIN  = _RX1_PIN
+_TX1_MULTI_PIN  = _TX1_PIN
+_RX1_MULTI_BAUD = _BAUDRATE
+_TX1_MULTI_BAUD = _BAUDRATE
+_RX1_MULTI_MODE = %0000
+_TX1_MULTI_MODE = %0000
+_RX2_MULTI_PIN  = _RX2_PIN
+_TX2_MULTI_PIN  = _TX2_PIN
+_RX2_MULTI_BAUD = _BAUDRATE
+_TX2_MULTI_BAUD = _BAUDRATE
+_RX2_MULTI_MODE = %0000
+_TX2_MULTI_MODE = %0000
+_RX3_MULTI_PIN  = -1
+_TX3_MULTI_PIN  = -1
+_RX3_MULTI_BAUD = _BAUDRATE
+_TX3_MULTI_BAUD = _BAUDRATE
+_RX3_MULTI_MODE = %0000
+_TX3_MULTI_MODE = %0000
+_RX4_MULTI_PIN  = -1
+_TX4_MULTI_PIN  = -1
+_RX4_MULTI_BAUD = _BAUDRATE
+_TX4_MULTI_BAUD = _BAUDRATE
+_RX4_MULTI_MODE = %0000
+_TX4_MULTI_MODE = %0000
+_RX5_MULTI_PIN  = -1
+_TX5_MULTI_PIN  = -1
+_RX5_MULTI_BAUD = _BAUDRATE
+_TX5_MULTI_BAUD = _BAUDRATE
+_RX5_MULTI_MODE = %0000
+_TX5_MULTI_MODE = %0000
+_RX6_MULTI_PIN  = -1
+_TX6_MULTI_PIN  = -1
+_RX6_MULTI_BAUD = _BAUDRATE
+_TX6_MULTI_BAUD = _BAUDRATE
+_RX6_MULTI_MODE = %0000
+_TX6_MULTI_MODE = %0000
+_RX7_MULTI_PIN  = -1
+_TX7_MULTI_PIN  = -1
+_RX7_MULTI_BAUD = _BAUDRATE
+_TX7_MULTI_BAUD = _BAUDRATE
+_RX7_MULTI_MODE = %0000
+_TX7_MULTI_MODE = %0000
+_RX8_MULTI_PIN  = -1
+_TX8_MULTI_PIN  = -1
+_RX8_MULTI_BAUD = _BAUDRATE
+_TX8_MULTI_BAUD = _BAUDRATE
+_RX8_MULTI_MODE = %0000
+_TX8_MULTI_MODE = %0000
 
 ' VGA constants
 
@@ -760,7 +1054,7 @@ LMM_PRX = 13      ' Proxy Driver
 LMM_GAM = 14      ' Gamepad Driver
 LMM_SND = 15      ' Sound Driver
 LMM_ADC = 16      ' ADC Driver
-LMM_S4  = 17      ' 4 Port Serial Driver
+LMM_S4  = 17      ' 4 Port Serial Driver (Propeller 1 only)
 LMM_TTY = 18      ' Full Duplex Serial Driver
 LMM_VGI = 19      ' Virtual Graphics Plugin
 LMM_VDB = 20      ' Virtual Double Buffer Support Driver
@@ -768,6 +1062,7 @@ LMM_SPI = 21      ' SPI Support Driver
 LMM_FLC = 22      ' Floating Point Library C (Propeller 2 only)
 LMM_S2A = 23      ' 2 Port Serial Driver A (Propeller 2 only)
 LMM_S2B = 24      ' 2 Port Serial Driver B (Propeller 2 only)
+LMM_S8A = 25      ' 8 Port Serial Driver A (Propeler 2 only)
 LMM_NUL = 255     ' No plugin
 '
 ' Notes on the Registry definitions.
@@ -1856,12 +2151,66 @@ DEBUG_VECTORS
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 '#line 777 "../../../target_p2/Catalina_LMM_threaded_dynamic.spin2"
 
 '#line 1 "../../../target_p2/Catalina_LMM_kernel_library.inc"
 ' Catalina kernel functions that are specific to the LMM kernels ...
 
 ' avoid including the kernel library functions twice ...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

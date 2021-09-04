@@ -33,9 +33,9 @@ else
 endif
 
 
-DIRLIST = assert locale stdio time stdlib math ctype setjmp signal string errno catalina catalina_math catalina_io catalina_threads catalina_p2 catalina_interrupts catalina_graphics catalina_vgraphics catalina_tiny catalina_spi catalina_serial4 catalina_serial2 catalina_sound catalina_tty catalina_tty256
+DIRLIST = assert locale stdio time stdlib math ctype setjmp signal string errno catalina catalina_math catalina_io catalina_threads catalina_p2 catalina_interrupts catalina_graphics catalina_vgraphics catalina_tiny catalina_spi catalina_serial4 catalina_serial2 catalina_serial8 catalina_sound catalina_tty catalina_tty256
 
-all: assert ctype errno locale math setjmp signal stdlib string time catalina catalina_math catalina_threads catalina_p2 catalina_interrupts catalina_graphics catalina_vgraphics catalina_tiny catalina_spi catalina_serial4 catalina_serial2 catalina_sound catalina_tty catalina_tty256 libc libci libcx libcix libm libma libmb libmc libthreads libinterrupts libgraphics libvgraphics libtiny libspi libserial4 libserial2 libsound libtty libtty256 install
+all: assert ctype errno locale math setjmp signal stdlib string time catalina catalina_math catalina_threads catalina_p2 catalina_interrupts catalina_graphics catalina_vgraphics catalina_tiny catalina_spi catalina_serial4 catalina_serial2 catalina_serial8 catalina_sound catalina_tty catalina_tty256 libc libci libcx libcix libm libma libmb libmc libthreads libinterrupts libgraphics libvgraphics libtiny libspi libserial4 libserial2 libserial8 libsound libtty libtty256 install
 
 clean:
 	$(MAKE) -C assert clean
@@ -61,6 +61,7 @@ clean:
 	$(MAKE) -C catalina_spi clean
 	$(MAKE) -C catalina_serial4 clean
 	$(MAKE) -C catalina_serial2 clean
+	$(MAKE) -C catalina_serial8 clean
 	$(MAKE) -C catalina_sound clean
 	$(MAKE) -C catalina_tty clean
 	$(MAKE) -C catalina_tty256 clean
@@ -80,6 +81,7 @@ clean:
 	$(MAKE) -C libspi clean
 	$(MAKE) -C libserial4 clean
 	$(MAKE) -C libserial2 clean
+	$(MAKE) -C libserial8 clean
 	$(MAKE) -C libsound clean
 	$(MAKE) -C libtty clean
 	$(MAKE) -C libtty256 clean
@@ -102,6 +104,7 @@ install:
 	cp -r libspi $(CATALINA_BASE)/$(LIB)
 	cp -r libserial4 $(CATALINA_BASE)/$(LIB)
 	cp -r libserial2 $(CATALINA_BASE)/$(LIB)
+	cp -r libserial8 $(CATALINA_BASE)/$(LIB)
 	cp -r libsound $(CATALINA_BASE)/$(LIB)
 	cp -r libtty $(CATALINA_BASE)/$(LIB)
 	cp -r libtty256 $(CATALINA_BASE)/$(LIB)
@@ -174,6 +177,9 @@ catalina_serial4:	ALWAYSRUN
 
 catalina_serial2:	ALWAYSRUN
 	$(MAKE) -C catalina_serial2 all
+
+catalina_serial8:	ALWAYSRUN
+	$(MAKE) -C catalina_serial8 all
 
 catalina_sound:	ALWAYSRUN
 	$(MAKE) -C catalina_sound all
@@ -271,6 +277,9 @@ libserial4:	ALWAYSRUN
 
 libserial2:	ALWAYSRUN
 	$(MAKE) -C libserial2 all
+
+libserial8:	ALWAYSRUN
+	$(MAKE) -C libserial8 all
 
 libsound:	ALWAYSRUN
 	$(MAKE) -C libsound all

@@ -137,7 +137,7 @@ INITIALIZE_PLUGINS
 
 #if defined(NEED_FLOAT_A)
  mov     r6, #%10000
- setq    ##REGISTRY             ' start ...
+ setq    ##REGISTRY              ' start ...
  coginit r6, ##@FLOAT_A_START wc ' ... Float_A plugin
  mov     r0, ##@Float_A_Service_Table
  call    #.register_services
@@ -145,7 +145,7 @@ INITIALIZE_PLUGINS
 
 #if defined(NEED_FLOAT_B)
  mov     r6, #%10000
- setq    ##REGISTRY             ' start ...
+ setq    ##REGISTRY              ' start ...
  coginit r6, ##@FLOAT_B_START wc ' ... Float_B plugin
  mov     r0, ##@Float_B_Service_Table
  call    #.register_services
@@ -153,7 +153,7 @@ INITIALIZE_PLUGINS
 
 #if defined(NEED_FLOAT_C)
  mov     r6, #%10000
- setq    ##REGISTRY             ' start ...
+ setq    ##REGISTRY              ' start ...
  coginit r6, ##@FLOAT_C_START wc ' ... Float_C plugin
  mov     r0, ##@Float_C_Service_Table
  call    #.register_services
@@ -161,7 +161,7 @@ INITIALIZE_PLUGINS
 
 #if defined(SD)
  mov     r6, #%10000
- setq    ##REGISTRY             ' start ...
+ setq    ##REGISTRY              ' start ...
  coginit r6, ##@SD_START wc      ' ... SD plugin (which may also be CLOCK)
  mov     r0, ##@SD_Service_Table
  call    #.register_services     ' register SD services
@@ -171,7 +171,7 @@ INITIALIZE_PLUGINS
  call    #.register_services     ' register RTC services
  mov     r0, r6                  ' point ...
  shl     r0, #2                  ' ... to ...
- add     r0, ##REGISTRY         ' RTC registry entry
+ add     r0, ##REGISTRY          ' RTC registry entry
 .wait_for_clock
  rdlong  r1, r0                  ' wait ...
  mov     r2, r1                  ' ... till ...
@@ -189,13 +189,13 @@ INITIALIZE_PLUGINS
 
 #if defined(CLOCK)
  mov     r6, #%10000
- setq    ##REGISTRY             ' start ...
+ setq    ##REGISTRY              ' start ...
  coginit r6, ##@CLOCK_START wc   ' ... Real-Time Clock
  mov     r0, ##@Clock_Service_Table
  call    #.register_services     ' register RTC services
  mov     r0, r6                  ' point ...
  shl     r0, #2                  ' ... to ...
- add     r0, ##REGISTRY         ' RTC registry entry
+ add     r0, ##REGISTRY          ' RTC registry entry
 .wait_for_clock
  rdlong  r1, r0                  ' wait ...
  mov     r2, r1                  ' ... till ...
@@ -214,7 +214,7 @@ INITIALIZE_PLUGINS
 #if defined(libserial2)
  rdlong  r0, ##FREE_MEM
  sub     r0, ##S2_BLOCK_SIZE    ' allocate S2 mailbox (min 32 bytes)
- andn    r0, #$3                 ' FREE_MEM should always be long aligned
+ andn    r0, #$3                ' FREE_MEM should always be long aligned
  wrlong  r0, ##FREE_MEM
  wrlong  #0, r0                 ' zero first long of S2 mailbox
  mov     r6, ##@Serial2_Init    ' save S2 mailbox address ...
@@ -225,13 +225,25 @@ INITIALIZE_PLUGINS
 .wait_for_serial2
  rdlong  r2, r0 wz              ' wait till ...
  if_z    jmp #.wait_for_serial2 ' ... plugin started
- shl     r1, #2                 ' register ...
- add     r1, ##REGISTRY         ' ... plugin ...
- rdlong  r2, r1                 ' ...
- and     r2, ##$00FFFFFF        ' ... as ...
- or      r2, ##LMM_S2A<<24       ' ...
- wrlong  r2, r1                 ' ... S2
- wrlong  r0, r2                 ' save mailbox address in request block
+ mov     r3, #LMM_S2A
+ call    #do_register           ' register plugin
+
+#endif
+
+#if defined(libserial8)
+ rdlong  r0, ##FREE_MEM
+ sub     r0, ##S8_BLOCK_SIZE    ' allocate S8 control block
+ andn    r0, #$3                ' FREE_MEM should always be long aligned
+ wrlong  r0, ##FREE_MEM
+ mov     r2, ##@Serial8_Init    ' point to initialization parameters
+ mov     r1, ##S8_BLOCK_SIZE    ' copy initialization parameters ...
+ call    #do_copy
+ sub     r0, ##S8_BLOCK_SIZE    ' restore S8 control block address
+ mov     r1, #%10000            ' start ...
+ setq    r0                     ' ...
+ coginit r1, ##@uart_start wc   ' ... S8 plugin
+ mov     r3, #LMM_S8A
+ call    #do_register
 
 #endif
 

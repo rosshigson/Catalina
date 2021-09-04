@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_s6jc_5fa8f449_halt_L000003 ' <symbol:halt>
+C_sc8_6132d4ec_halt_L000003 ' <symbol:halt>
  long 0
 
 ' Catalina Export interpret
@@ -1402,7 +1402,7 @@ C_interpret_198
  jmp #\@C_interpret_187 ' JUMPV addrg
 C_interpret_199
  mov r22, #1 ' reg <- coni
- wrlong r22, ##@C_s6jc_5fa8f449_halt_L000003 ' ASGNI4 addrg reg
+ wrlong r22, ##@C_sc8_6132d4ec_halt_L000003 ' ASGNI4 addrg reg
  jmp #\@C_interpret_187 ' JUMPV addrg
 C_interpret_200
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
@@ -1439,7 +1439,7 @@ C_interpret_8
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #1 wz
  if_nz jmp #\C_interpret_209 ' NEI4
- mov r22, ##@C_s6jc_5fa8f449_halt_L000003
+ mov r22, ##@C_sc8_6132d4ec_halt_L000003
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz
  if_z jmp #\C_interpret_5 ' EQI4

@@ -145,6 +145,10 @@ C_spi_bootS_D_C_ard_2
  PRIMITIVE(#RETN)
 
 
+' Catalina Import _lockret
+
+' Catalina Import _cogstop
+
 ' Catalina Import _initialize_spi
 
 ' Catalina Import _spi_lock
@@ -156,10 +160,6 @@ C_spi_bootS_D_C_ard_2
 ' Catalina Import _release_lock
 
 ' Catalina Import _acquire_lock
-
-' Catalina Import _lockret
-
-' Catalina Import _cogstop
 
 ' Catalina Import _cogid
 

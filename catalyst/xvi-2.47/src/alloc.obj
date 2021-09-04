@@ -11,11 +11,11 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_s20k_5fa8f425_sccsid_L000001 ' <symbol:sccsid>
- long @C_s20k1_5fa8f425_2_L000003
+C_sk50_6132d4c9_sccsid_L000001 ' <symbol:sccsid>
+ long @C_sk501_6132d4c9_2_L000003
 
  alignl ' align long
-C_s20k2_5fa8f425_reuselist_L000023 ' <symbol:reuselist>
+C_sk502_6132d4c9_reuselist_L000023 ' <symbol:reuselist>
  long $0
 
 ' Catalina Export chfree
@@ -28,56 +28,56 @@ DAT ' code segment
 C_chfree ' <symbol:chfree>
  PRIMITIVE(#PSHM)
  long $400000 ' save registers
- mov r22, ##@C_s20k2_5fa8f425_reuselist_L000023
+ mov r22, ##@C_sk502_6132d4c9_reuselist_L000023
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  wrlong r22, r2 ' ASGNP4 reg reg
- wrlong r2, ##@C_s20k2_5fa8f425_reuselist_L000023 ' ASGNP4 addrg reg
+ wrlong r2, ##@C_sk502_6132d4c9_reuselist_L000023 ' ASGNP4 addrg reg
 ' C_chfree_24 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
 
  alignl ' align long
-C_s20k3_5fa8f425_usemem_L000025 ' <symbol:usemem>
+C_sk503_6132d4c9_usemem_L000025 ' <symbol:usemem>
  PRIMITIVE(#PSHM)
  long $f00000 ' save registers
  mov r22, r2 ' CVI, CVU or LOAD
  cmp r22,  #24 wcz 
- if_b jmp #\C_s20k3_5fa8f425_usemem_L000025_27 ' LTU4
+ if_b jmp #\C_sk503_6132d4c9_usemem_L000025_27 ' LTU4
  mov r21, r3 ' CVI, CVU or LOAD
-C_s20k3_5fa8f425_usemem_L000025_29
+C_sk503_6132d4c9_usemem_L000025_29
  mov r23, r21 ' CVI, CVU or LOAD
  mov r22, r23
  adds r22, #24 ' ADDP4 coni
  mov r21, r22 ' CVI, CVU or LOAD
  wrlong r22, r23 ' ASGNP4 reg reg
-' C_s20k3_5fa8f425_usemem_L000025_30 ' (symbol refcount = 0)
+' C_sk503_6132d4c9_usemem_L000025_30 ' (symbol refcount = 0)
  mov r22, #24 ' reg <- coni
  mov r20, r2 ' CVI, CVU or LOAD
  sub r20, #24 ' SUBU4 coni
  mov r2, r20 ' CVI, CVU or LOAD
  cmp r20, r22 wcz 
- if_ae jmp #\C_s20k3_5fa8f425_usemem_L000025_29 ' GEU4
- mov r22, ##@C_s20k2_5fa8f425_reuselist_L000023
+ if_ae jmp #\C_sk503_6132d4c9_usemem_L000025_29 ' GEU4
+ mov r22, ##@C_sk502_6132d4c9_reuselist_L000023
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  wrlong r22, r23 ' ASGNP4 reg reg
- wrlong r3, ##@C_s20k2_5fa8f425_reuselist_L000023 ' ASGNP4 addrg reg
-C_s20k3_5fa8f425_usemem_L000025_27
-' C_s20k3_5fa8f425_usemem_L000025_26 ' (symbol refcount = 0)
+ wrlong r3, ##@C_sk502_6132d4c9_reuselist_L000023 ' ASGNP4 addrg reg
+C_sk503_6132d4c9_usemem_L000025_27
+' C_sk503_6132d4c9_usemem_L000025_26 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
 
  alignl ' align long
-C_s20k4_5fa8f425_ralloc_L000032 ' <symbol:ralloc>
+C_sk504_6132d4c9_ralloc_L000032 ' <symbol:ralloc>
  PRIMITIVE(#NEWF)
  sub SP, #4
  PRIMITIVE(#PSHM)
  long $500000 ' save registers
- mov r22, ##@C_s20k2_5fa8f425_reuselist_L000023
+ mov r22, ##@C_sk502_6132d4c9_reuselist_L000023
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
- if_nz jmp #\C_s20k4_5fa8f425_ralloc_L000032_34  ' NEU4
+ if_nz jmp #\C_sk504_6132d4c9_ralloc_L000032_34  ' NEU4
  mov r2, #384 ' reg ARG coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
@@ -87,7 +87,7 @@ C_s20k4_5fa8f425_ralloc_L000032 ' <symbol:ralloc>
  wrlong r0, RI ' ASGNP4 addrli reg
  mov r22, r0 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_z jmp #\C_s20k4_5fa8f425_ralloc_L000032_36 ' EQU4
+ if_z jmp #\C_sk504_6132d4c9_ralloc_L000032_36 ' EQU4
  mov r2, #384 ' reg ARG coni
  mov RI, FP
  sub RI, #-(-4)
@@ -95,15 +95,15 @@ C_s20k4_5fa8f425_ralloc_L000032 ' <symbol:ralloc>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s20k3_5fa8f425_usemem_L000025
+ long @C_sk503_6132d4c9_usemem_L000025
  add SP, #4 ' CALL addrg
-C_s20k4_5fa8f425_ralloc_L000032_36
-C_s20k4_5fa8f425_ralloc_L000032_34
- mov r22, ##@C_s20k2_5fa8f425_reuselist_L000023
+C_sk504_6132d4c9_ralloc_L000032_36
+C_sk504_6132d4c9_ralloc_L000032_34
+ mov r22, ##@C_sk502_6132d4c9_reuselist_L000023
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
- if_z jmp #\C_s20k4_5fa8f425_ralloc_L000032_38 ' EQU4
- mov r22, ##@C_s20k2_5fa8f425_reuselist_L000023 ' reg <- addrg
+ if_z jmp #\C_sk504_6132d4c9_ralloc_L000032_38 ' EQU4
+ mov r22, ##@C_sk502_6132d4c9_reuselist_L000023 ' reg <- addrg
  rdlong r22, r22 ' reg <- INDIRP4 reg
  mov RI, FP
  sub RI, #-(-4)
@@ -112,16 +112,16 @@ C_s20k4_5fa8f425_ralloc_L000032_34
  sub r22, #-(-4) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRP4 reg
  rdlong r20, r22 ' reg <- INDIRP4 reg
- wrlong r20, ##@C_s20k2_5fa8f425_reuselist_L000023 ' ASGNP4 addrg reg
+ wrlong r20, ##@C_sk502_6132d4c9_reuselist_L000023 ' ASGNP4 addrg reg
  mov r0, r22 ' CVI, CVU or LOAD
- jmp #\@C_s20k4_5fa8f425_ralloc_L000032_33 ' JUMPV addrg
-C_s20k4_5fa8f425_ralloc_L000032_38
+ jmp #\@C_sk504_6132d4c9_ralloc_L000032_33 ' JUMPV addrg
+C_sk504_6132d4c9_ralloc_L000032_38
  mov r2, #24 ' reg ARG coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_alloc ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
-C_s20k4_5fa8f425_ralloc_L000032_33
+C_sk504_6132d4c9_ralloc_L000032_33
  PRIMITIVE(#POPM) ' restore registers
  add SP, #4 ' framesize
  PRIMITIVE(#RETF)
@@ -135,7 +135,7 @@ C_challoc ' <symbol:challoc>
  long $400000 ' save registers
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
- long @C_s20k4_5fa8f425_ralloc_L000032 ' CALL addrg
+ long @C_sk504_6132d4c9_ralloc_L000032 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
 ' C_challoc_40 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
@@ -254,7 +254,7 @@ C_newline_54
 C_newline_55
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
- long @C_s20k4_5fa8f425_ralloc_L000032 ' CALL addrg
+ long @C_sk504_6132d4c9_ralloc_L000032 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  mov r22, r0 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
@@ -552,10 +552,10 @@ C_throw_95
  mov r22, r23
  adds r22, #4 ' ADDP4 coni
  rdlong r21, r22 ' reg <- INDIRP4 reg
- mov r22, ##@C_s20k2_5fa8f425_reuselist_L000023
+ mov r22, ##@C_sk502_6132d4c9_reuselist_L000023
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  wrlong r22, r23 ' ASGNP4 reg reg
- wrlong r23, ##@C_s20k2_5fa8f425_reuselist_L000023 ' ASGNP4 addrg reg
+ wrlong r23, ##@C_sk502_6132d4c9_reuselist_L000023 ' ASGNP4 addrg reg
  mov r23, r21 ' CVI, CVU or LOAD
 C_throw_93
  mov r22, r23 ' CVI, CVU or LOAD
@@ -611,7 +611,7 @@ C_alloc_46_L000047 ' <symbol:46>
  byte 0
 
  alignl ' align long
-C_s20k1_5fa8f425_2_L000003 ' <symbol:2>
+C_sk501_6132d4c9_2_L000003 ' <symbol:2>
  byte 64
  byte 40
  byte 35

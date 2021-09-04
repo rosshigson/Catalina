@@ -572,7 +572,7 @@ void g_setup(int x_org, int y_org, int double_buffer) {
    *arg_ptr++ = y_tiles;
    *arg_ptr++ = x_org;
    *arg_ptr++ = y_org;
-#if defined(__CATALINA_TINY) || defined(__CATALINA_COMPACT)
+#if defined(__CATALINA_TINY) || defined(__CATALINA_COMPACT) || defined(__CATALINA_P2)
    // passing the font pointer during setup is a special for Catalina
    *arg_ptr++ = (long)font; 
 #else

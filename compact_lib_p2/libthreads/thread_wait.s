@@ -18,14 +18,14 @@ C__thread_wait ' <symbol:_thread_wait>
  alignl ' align long
  long I32_CALA + (@C__clockfreq)<<S32 ' CALL addrg
  word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
- word I16B_LODL + (r20)<<D16B
  alignl ' align long
- long 1000 ' reg <- con
+ long I32_LODS + (r20)<<D32S + ((1000)&$7FFFF)<<S32 ' reg <- cons
  word I16A_MOV + (r0)<<D16A + (r22)<<S16A ' setup r0/r1 (2)
  word I16A_MOV + (r1)<<D16A + (r20)<<S16A ' setup r0/r1 (2)
- word I16B_DIVU ' DIVU
+ word I16B_DIVS ' DIVI
+ word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16B_LODF + ((-4)&$1FF)<<S16B
- word I16A_WRLONG + (r0)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
+ word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  word I16A_CMPI + (r23)<<D16A + (0)<<S16A
  alignl ' align long
  long I32_BRNZ + (@C__thread_wait_2)<<S32 ' NEU4 reg coni
@@ -90,9 +90,9 @@ C__thread_wait_1
  word I16B_POPM + 1<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
-' Catalina Import _thread_yield
-
 ' Catalina Import _cnt
 
 ' Catalina Import _clockfreq
+
+' Catalina Import _thread_yield
 ' end

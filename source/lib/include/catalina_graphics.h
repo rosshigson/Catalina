@@ -47,6 +47,7 @@ struct g_var {
    short BASES[32];        
 #if defined (__CATALINA_TINY)
 #elif defined (__CATALINA_COMPACT)
+#elif defined (__CATALINA_P2)
 #else
    short FONT[FONT_WORDS]; // only required when using XMM
 #endif   

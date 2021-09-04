@@ -309,25 +309,25 @@ C_z_set_cursor_33
 
 
  alignl ' align long
-C_sb101_5fa8f44a_pad_line_L000036 ' <symbol:pad_line>
+C_s9v41_6132d4ec_pad_line_L000036 ' <symbol:pad_line>
  PRIMITIVE(#PSHM)
  long $a00000 ' save registers
  mov r23, r2 ' reg var <- reg arg
  mov r21, ##@C_status_pos
  rdlong r21, r21 ' reg <- INDIRI4 addrg
- jmp #\@C_sb101_5fa8f44a_pad_line_L000036_41 ' JUMPV addrg
-C_sb101_5fa8f44a_pad_line_L000036_38
+ jmp #\@C_s9v41_6132d4ec_pad_line_L000036_41 ' JUMPV addrg
+C_s9v41_6132d4ec_pad_line_L000036_38
  mov r2, #32 ' reg ARG coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_write_char ' CALL addrg
-' C_sb101_5fa8f44a_pad_line_L000036_39 ' (symbol refcount = 0)
+' C_s9v41_6132d4ec_pad_line_L000036_39 ' (symbol refcount = 0)
  adds r21, #1 ' ADDI4 coni
-C_sb101_5fa8f44a_pad_line_L000036_41
+C_s9v41_6132d4ec_pad_line_L000036_41
  cmps r21, r23 wcz
- if_b jmp #\C_sb101_5fa8f44a_pad_line_L000036_38 ' LTI4
+ if_b jmp #\C_s9v41_6132d4ec_pad_line_L000036_38 ' LTI4
  wrlong r23, ##@C_status_pos ' ASGNI4 addrg reg
-' C_sb101_5fa8f44a_pad_line_L000036_37 ' (symbol refcount = 0)
+' C_s9v41_6132d4ec_pad_line_L000036_37 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
@@ -367,7 +367,7 @@ C_z_show_status ' <symbol:z_show_status>
  mov r2, #1 ' reg ARG coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_sb101_5fa8f44a_pad_line_L000036 ' CALL addrg
+ long @C_s9v41_6132d4ec_pad_line_L000036 ' CALL addrg
  mov r22, r21
  shl r22, #2 ' LSHI4 coni
  mov r20, FP
@@ -431,7 +431,7 @@ C_z_show_status_43
  subs r2, #21 ' SUBI4 coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_sb101_5fa8f44a_pad_line_L000036 ' CALL addrg
+ long @C_s9v41_6132d4ec_pad_line_L000036 ' CALL addrg
  mov r22, r21
  shl r22, #2 ' LSHI4 coni
  mov r20, FP
@@ -494,7 +494,7 @@ C_z_show_status_45
  subs r2, #31 ' SUBI4 coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_sb101_5fa8f44a_pad_line_L000036 ' CALL addrg
+ long @C_s9v41_6132d4ec_pad_line_L000036 ' CALL addrg
  mov r22, r21
  shl r22, #2 ' LSHI4 coni
  mov r20, FP
@@ -546,7 +546,7 @@ C_z_show_status_45
  subs r2, #15 ' SUBI4 coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_sb101_5fa8f44a_pad_line_L000036 ' CALL addrg
+ long @C_s9v41_6132d4ec_pad_line_L000036 ' CALL addrg
  mov r22, r21
  shl r22, #2 ' LSHI4 coni
  mov r20, FP
@@ -598,7 +598,7 @@ C_z_show_status_46
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_sb101_5fa8f44a_pad_line_L000036 ' CALL addrg
+ long @C_s9v41_6132d4ec_pad_line_L000036 ' CALL addrg
  mov r2, #0 ' reg ARG coni
  mov r22, ##$fffffffd ' reg <- con
  mov r3, r22 ' CVUI
@@ -699,7 +699,7 @@ C_blank_status_line ' <symbol:blank_status_line>
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_sb101_5fa8f44a_pad_line_L000036 ' CALL addrg
+ long @C_s9v41_6132d4ec_pad_line_L000036 ' CALL addrg
  mov r22, ##@C_status_pos
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  mov r20, ##@C_status_line

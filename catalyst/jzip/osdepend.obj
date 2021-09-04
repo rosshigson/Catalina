@@ -19,12 +19,12 @@ C_process_arguments ' <symbol:process_arguments>
  mov r13, #0 ' reg <- coni
  mov r15, #0 ' reg <- coni
  mov r22, #0 ' reg <- coni
- wrlong r22, ##@C_sad8_5fa8f449_strictz_report_mode_L000003 ' ASGNI4 addrg reg
+ wrlong r22, ##@C_sjpc_6132d4ec_strictz_report_mode_L000003 ' ASGNI4 addrg reg
  mov r19, r22 ' CVI, CVU or LOAD
 C_process_arguments_6
  mov r22, r19
  shl r22, #2 ' LSHI4 coni
- mov r20, ##@C_sad81_5fa8f449_strictz_error_count_L000004 ' reg <- addrg
+ mov r20, ##@C_sjpc1_6132d4ec_strictz_error_count_L000004 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  mov r20, #0 ' reg <- coni
  wrlong r20, r22 ' ASGNI4 reg reg
@@ -287,8 +287,8 @@ C_process_arguments_85
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_atoi ' CALL addrg
- wrlong r0, ##@C_sad8_5fa8f449_strictz_report_mode_L000003 ' ASGNI4 addrg reg
- mov r22, ##@C_sad8_5fa8f449_strictz_report_mode_L000003
+ wrlong r0, ##@C_sjpc_6132d4ec_strictz_report_mode_L000003 ' ASGNI4 addrg reg
+ mov r22, ##@C_sjpc_6132d4ec_strictz_report_mode_L000003
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
  if_b jmp #\C_process_arguments_88 ' LTI4
@@ -911,7 +911,7 @@ C_report_strictz_error ' <symbol:report_strictz_error>
 C_report_strictz_error_246
  jmp #\@C_report_strictz_error_241 ' JUMPV addrg
 C_report_strictz_error_244
- mov r22, ##@C_sad8_5fa8f449_strictz_report_mode_L000003
+ mov r22, ##@C_sjpc_6132d4ec_strictz_report_mode_L000003
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #3 wz
  if_nz jmp #\C_report_strictz_error_247 ' NEI4
@@ -936,7 +936,7 @@ C_report_strictz_error_244
 C_report_strictz_error_247
  mov r22, r23
  shl r22, #2 ' LSHI4 coni
- mov r20, ##@C_sad81_5fa8f449_strictz_error_count_L000004 ' reg <- addrg
+ mov r20, ##@C_sjpc1_6132d4ec_strictz_error_count_L000004 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #0 wz
@@ -951,12 +951,12 @@ C_report_strictz_error_253
  wrlong r19, RI ' ASGNI4 addrli reg
  mov r22, r23
  shl r22, #2 ' LSHI4 coni
- mov r20, ##@C_sad81_5fa8f449_strictz_error_count_L000004 ' reg <- addrg
+ mov r20, ##@C_sjpc1_6132d4ec_strictz_error_count_L000004 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r20, r22 ' reg <- INDIRI4 reg
  adds r20, #1 ' ADDI4 coni
  wrlong r20, r22 ' ASGNI4 reg reg
- mov r22, ##@C_sad8_5fa8f449_strictz_report_mode_L000003
+ mov r22, ##@C_sjpc_6132d4ec_strictz_report_mode_L000003
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #2 wz
  if_z jmp #\C_report_strictz_error_256 ' EQI4
@@ -985,7 +985,7 @@ C_report_strictz_error_256
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C_write_string ' CALL addrg
- mov r22, ##@C_sad8_5fa8f449_strictz_report_mode_L000003
+ mov r22, ##@C_sjpc_6132d4ec_strictz_report_mode_L000003
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #1 wz
  if_nz jmp #\C_report_strictz_error_259 ' NEI4
@@ -997,7 +997,7 @@ C_report_strictz_error_256
 C_report_strictz_error_259
  mov r22, r23
  shl r22, #2 ' LSHI4 coni
- mov r20, ##@C_sad81_5fa8f449_strictz_error_count_L000004 ' reg <- addrg
+ mov r20, ##@C_sjpc1_6132d4ec_strictz_error_count_L000004 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRI4 reg
  mov r3, ##@C_report_strictz_error_263_L000264 ' reg ARG ADDRG
@@ -1086,11 +1086,11 @@ C_codes_to_text ' <symbol:codes_to_text>
 DAT ' uninitialized data segment
 
  alignl ' align long
-C_sad81_5fa8f449_strictz_error_count_L000004 ' <symbol:strictz_error_count>
+C_sjpc1_6132d4ec_strictz_error_count_L000004 ' <symbol:strictz_error_count>
  byte 0[68]
 
  alignl ' align long
-C_sad8_5fa8f449_strictz_report_mode_L000003 ' <symbol:strictz_report_mode>
+C_sjpc_6132d4ec_strictz_report_mode_L000003 ' <symbol:strictz_report_mode>
  byte 0[4]
 
 ' Catalina Code

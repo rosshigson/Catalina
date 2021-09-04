@@ -1,6 +1,6 @@
 /******************************************************************
  *                           Dumbo BASIC                          *
- *                           version 0.5                          *
+ *                           version 1.0                          *
  *                         by Ross Higson                         *
  *                                                                *
  *                     (very loosely) based on                    *

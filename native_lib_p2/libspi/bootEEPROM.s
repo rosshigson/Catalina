@@ -161,6 +161,10 @@ C_spi_bootE_E_P_R_O_M__2
  PRIMITIVE(#RETN)
 
 
+' Catalina Import _lockret
+
+' Catalina Import _cogstop
+
 ' Catalina Import _initialize_spi
 
 ' Catalina Import _spi_lock
@@ -172,10 +176,6 @@ C_spi_bootE_E_P_R_O_M__2
 ' Catalina Import _release_lock
 
 ' Catalina Import _acquire_lock
-
-' Catalina Import _lockret
-
-' Catalina Import _cogstop
 
 ' Catalina Import _cogid
 

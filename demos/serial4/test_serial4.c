@@ -2,6 +2,10 @@
 #include <catalina_plugin.h>
 #include <propeller.h>
 
+#ifdef __CATALINA_libthreads
+#include <catalina_threads.h>
+#endif
+
 /*
  * Simple test program for the 4 Port serial plugin. This program only tests 
  * one port at a time (as defined by PORT, below).
@@ -91,6 +95,10 @@ void main() {
    // and then start the thread ...
 
    long stack[STACK_SIZE];
+
+   // assign a lock to avoid context switch contention 
+   _thread_set_lock(_locknew());
+
    // start a thread to interact with the normal HMI
    _thread_start(&function, &stack[STACK_SIZE], 0, NULL);
 

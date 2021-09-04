@@ -7,18 +7,18 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_sgh4_5f5d7d33___testsigset_L000001 ' <symbol:__testsigset>
+C_s5m8_6132d1d2___testsigset_L000001 ' <symbol:__testsigset>
  PRIMITIVE(#PSHM)
  long $800000 ' save registers
  mov r23, #0 ' reg <- coni
  cmps r23,  #0 wz
- if_z jmp #\C_sgh4_5f5d7d33___testsigset_L000001_4 ' EQI4
+ if_z jmp #\C_s5m8_6132d1d2___testsigset_L000001_4 ' EQI4
  cmps r23,  #1 wz
- if_z jmp #\C_sgh4_5f5d7d33___testsigset_L000001_4 ' EQI4
- jmp #\@C_sgh4_5f5d7d33___testsigset_L000001_3 ' JUMPV addrg
-C_sgh4_5f5d7d33___testsigset_L000001_3
-C_sgh4_5f5d7d33___testsigset_L000001_4
-' C_sgh4_5f5d7d33___testsigset_L000001_2 ' (symbol refcount = 0)
+ if_z jmp #\C_s5m8_6132d1d2___testsigset_L000001_4 ' EQI4
+ jmp #\@C_s5m8_6132d1d2___testsigset_L000001_3 ' JUMPV addrg
+C_s5m8_6132d1d2___testsigset_L000001_3
+C_s5m8_6132d1d2___testsigset_L000001_4
+' C_s5m8_6132d1d2___testsigset_L000001_2 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 

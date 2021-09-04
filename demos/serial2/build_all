@@ -76,8 +76,17 @@ echo "   BUILDING SERIAL2 DEMOS"
 echo "   ======================"
 echo ""
 
-catalina -p2 -lci -lserial2 test_serial2.c -o serial1 -C NO_HMI
-# catalina -p2 -lci -lserial2 -lthreads test_serial2.c -o serial2 -C TV 
+platform=$1
+if [ "${platform:0:2}" != "P2" ]; then 
+
+   echo "ERROR: The 2 Port Serial driver is not supported on the Propeller 1."
+
+else
+
+   catalina -p2 -lci -lserial2 test_serial2.c -o test1 -C NO_HMI
+   catalina -p2 -lci -lserial2 -lthreads test_serial2.c -o test2 -C LORES_VGA 
+
+fi
 
 unset CATALINA_DEFINE
 echo ""

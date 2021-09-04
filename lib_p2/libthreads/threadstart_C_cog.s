@@ -15,7 +15,7 @@ DAT ' initialized data segment
  alignl ' align long
 C_L_M_M__threaded_dynamic_array ' <symbol:LMM_threaded_dynamic_array>
  long $fd900164
- long $fd900d1c
+ long $fd900d68
  long $fd9001cc
  long $fd9001d0
  long $fd9001d8
@@ -574,23 +574,43 @@ C_L_M_M__threaded_dynamic_array ' <symbol:LMM_threaded_dynamic_array>
  long $fd64002d
  long $f6646601
  long $fd9fffec
+ long $f0646802
+ long $ff0003df
+ long $f10469b0
+ long $fb006a34
+ long $ff007fff
+ long $f5046bff
+ long $f0646c18
+ long $f5406a36
+ long $fc606a34
+ long $c606635
+ long $fac06c35
+ long $fc406c33
+ long $f1046601
+ long $f1046a01
+ long $fb6c69fb
+ long $fd64002d
  long $fd606e28
  long $fcf06636
- long $fd9ff4b0
+ long $fd9ff470
  long $fd606828
  long $fd406635
- long $fd9ff4a4
+ long $fd9ff464
  long $fd70681a
  long $fd60661a
- long $fd9ff498
- long $fb645df6
- long $fb645df8
- long $fd9fffe8
+ long $fd9ff458
+ long $fd606828
+ long $fd106635
+ long $fd9ff44c
+ long $fb645df3
+ long $fb645df5
+ long $fb645df7
+ long $fd9fffe4
  long $fd604224
  long $f43bd5e9
  long $5d73d206
  long $1403d5e9
- long $bd80034c
+ long $bd800360
  long $fd604024
  long $fd64002d
  long $fd604224
@@ -602,7 +622,7 @@ C_L_M_M__threaded_dynamic_array ' <symbol:LMM_threaded_dynamic_array>
  long $f43bd5e9
  long $5d706806
  long $1403d5e9
- long $bd800358
+ long $bd80036c
  long $fd604024
  long $fd64002d
  long $fd604224
@@ -610,10 +630,6 @@ C_L_M_M__threaded_dynamic_array ' <symbol:LMM_threaded_dynamic_array>
  long $f403d5e9
  long $fd604024
  long $fd64002d
- long $0
- long $0
- long $0
- long $0
 
 ' Catalina Export LMM_LUT_LIBRARY_array
 
@@ -683,23 +699,43 @@ C_L_M_M__L_U_T__L_I_B_R_A_R_Y__array ' <symbol:LMM_LUT_LIBRARY_array>
  long $fd64002d
  long $f6646601
  long $fd9fffec
+ long $f0646802
+ long $ff0003df
+ long $f10469b0
+ long $fb006a34
+ long $ff007fff
+ long $f5046bff
+ long $f0646c18
+ long $f5406a36
+ long $fc606a34
+ long $c606635
+ long $fac06c35
+ long $fc406c33
+ long $f1046601
+ long $f1046a01
+ long $fb6c69fb
+ long $fd64002d
  long $fd606e28
  long $fcf06636
- long $fd9ff4b0
+ long $fd9ff470
  long $fd606828
  long $fd406635
- long $fd9ff4a4
+ long $fd9ff464
  long $fd70681a
  long $fd60661a
- long $fd9ff498
- long $fb645df6
- long $fb645df8
- long $fd9fffe8
+ long $fd9ff458
+ long $fd606828
+ long $fd106635
+ long $fd9ff44c
+ long $fb645df3
+ long $fb645df5
+ long $fb645df7
+ long $fd9fffe4
  long $fd604224
  long $f43bd5e9
  long $5d73d206
  long $1403d5e9
- long $bd80034c
+ long $bd800360
  long $fd604024
  long $fd64002d
  long $fd604224
@@ -711,7 +747,7 @@ C_L_M_M__L_U_T__L_I_B_R_A_R_Y__array ' <symbol:LMM_LUT_LIBRARY_array>
  long $f43bd5e9
  long $5d706806
  long $1403d5e9
- long $bd800358
+ long $bd80036c
  long $fd604024
  long $fd64002d
  long $fd604224
@@ -754,7 +790,7 @@ C__threadstart_C__cog ' <symbol:_threadstart_C_cog>
  PRIMITIVE(#LODF)
  long -24
  wrlong r22, RI ' ASGNU4 addrl reg
- mov r22, #100 ' reg <- coni
+ mov r22, #120 ' reg <- coni
  PRIMITIVE(#LODF)
  long -20
  wrlong r22, RI ' ASGNU4 addrl reg

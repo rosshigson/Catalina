@@ -6,9 +6,9 @@ tty_rx tty_core.s 227 export
 tty_tx tty_core.s 254 export
 tty_txflush tty_core.s 335 export
 tty_txcheck tty_core.s 387 export
-_release_lock tty_core.s 451 import
-_acquire_lock tty_core.s 453 import
-_locknew tty_core.s 455 import
+_locknew tty_core.s 451 import
+_release_lock tty_core.s 453 import
+_acquire_lock tty_core.s 455 import
 _locate_plugin tty_core.s 457 import
 _registry tty_core.s 459 import
 tty_decl tty_decl.s 9 export
@@ -24,9 +24,9 @@ tty_tx tty_ihex.s 35 import
 tty_padchar tty_padchar.s 9 export
 tty_tx tty_padchar.s 36 import
 tty_rxtime tty_rxtime.s 9 export
-_cnt tty_rxtime.s 69 import
-_clockfreq tty_rxtime.s 71 import
-tty_rxcheck tty_rxtime.s 73 import
+_clockfreq tty_rxtime.s 64 import
+_cnt tty_rxtime.s 66 import
+tty_rxcheck tty_rxtime.s 68 import
 tty_str tty_str.s 9 export
 tty_tx tty_str.s 37 import
 tty_strterm tty_strterm.s 9 export

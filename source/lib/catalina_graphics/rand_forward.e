@@ -45,7 +45,11 @@ DAT ' code segment
 '
 C__rand_forward
  mov r0, r2
- min r0, #1
+#ifdef P2
+ fge r0, #1 
+#else
+ min r0, #1 
+#endif
  mov r1, #32
  mov BC, #%10111
 :C__rand_forward_rndlp test r0, BC wc

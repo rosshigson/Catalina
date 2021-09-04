@@ -7,18 +7,18 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_sh58_5f5d7c0b_do_write_L000003 ' <symbol:do_write>
+C_sauk_6132d0f0_do_write_L000003 ' <symbol:do_write>
  PRIMITIVE(#PSHM)
  long $ea8000 ' save registers
  mov r23, r4 ' reg var <- reg arg
  mov r21, r3 ' reg var <- reg arg
  mov r19, r2 ' reg var <- reg arg
  PRIMITIVE(#JMPA)
- long @C_sh58_5f5d7c0b_do_write_L000003_6 ' JUMPV addrg
-C_sh58_5f5d7c0b_do_write_L000003_5
+ long @C_sauk_6132d0f0_do_write_L000003_6 ' JUMPV addrg
+C_sauk_6132d0f0_do_write_L000003_5
  subs r19, r17 ' SUBI/P (1)
  adds r21, r17 ' ADDI/P (2)
-C_sh58_5f5d7c0b_do_write_L000003_6
+C_sauk_6132d0f0_do_write_L000003_6
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r21 ' CVI, CVU or LOAD
  mov r4, r23 ' CVI, CVU or LOAD
@@ -30,28 +30,28 @@ C_sh58_5f5d7c0b_do_write_L000003_6
  mov r17, r0 ' CVI, CVU or LOAD
  cmps r0,  #0 wcz
  PRIMITIVE(#BRBE)
- long @C_sh58_5f5d7c0b_do_write_L000003_8 ' LEI4
+ long @C_sauk_6132d0f0_do_write_L000003_8 ' LEI4
  cmps r17, r19 wcz
  PRIMITIVE(#BR_B)
- long @C_sh58_5f5d7c0b_do_write_L000003_5 ' LTI4
-C_sh58_5f5d7c0b_do_write_L000003_8
+ long @C_sauk_6132d0f0_do_write_L000003_5 ' LTI4
+C_sauk_6132d0f0_do_write_L000003_8
  cmps r17,  #0 wcz
  PRIMITIVE(#BRBE)
- long @C_sh58_5f5d7c0b_do_write_L000003_10 ' LEI4
+ long @C_sauk_6132d0f0_do_write_L000003_10 ' LEI4
  mov r15, #1 ' reg <- coni
  PRIMITIVE(#JMPA)
- long @C_sh58_5f5d7c0b_do_write_L000003_11 ' JUMPV addrg
-C_sh58_5f5d7c0b_do_write_L000003_10
+ long @C_sauk_6132d0f0_do_write_L000003_11 ' JUMPV addrg
+C_sauk_6132d0f0_do_write_L000003_10
  mov r15, #0 ' reg <- coni
-C_sh58_5f5d7c0b_do_write_L000003_11
+C_sauk_6132d0f0_do_write_L000003_11
  mov r0, r15 ' CVI, CVU or LOAD
-' C_sh58_5f5d7c0b_do_write_L000003_4 ' (symbol refcount = 0)
+' C_sauk_6132d0f0_do_write_L000003_4 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
 
  alignl ' align long
-C_sh581_5f5d7c0b_get_buf_L000012 ' <symbol:get_buf>
+C_sauk1_6132d0f0_get_buf_L000012 ' <symbol:get_buf>
  PRIMITIVE(#NEWF)
  sub SP, #4
  PRIMITIVE(#PSHM)
@@ -64,14 +64,14 @@ C_sh581_5f5d7c0b_get_buf_L000012 ' <symbol:get_buf>
  mov r20, RI ' reg <- con
  cmps r22, r20 wz
  PRIMITIVE(#BRNZ)
- long @C_sh581_5f5d7c0b_get_buf_L000012_14 ' NEI4
+ long @C_sauk1_6132d0f0_get_buf_L000012_14 ' NEI4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
  long @C__locknew ' CALL addrg
  PRIMITIVE(#LODL)
  long @C___iolock
  wrlong r0, RI ' ASGNI4 addrg reg
-C_sh581_5f5d7c0b_get_buf_L000012_14
+C_sauk1_6132d0f0_get_buf_L000012_14
  PRIMITIVE(#LODI)
  long @C___iolock
  mov r22, RI ' reg <- INDIRI4 addrg
@@ -80,13 +80,13 @@ C_sh581_5f5d7c0b_get_buf_L000012_14
  mov r20, RI ' reg <- con
  cmps r22, r20 wz
  PRIMITIVE(#BRNZ)
- long @C_sh581_5f5d7c0b_get_buf_L000012_16 ' NEI4
+ long @C_sauk1_6132d0f0_get_buf_L000012_16 ' NEI4
  PRIMITIVE(#LODL)
  long 0
  mov r0, RI ' reg <- con
  PRIMITIVE(#JMPA)
- long @C_sh581_5f5d7c0b_get_buf_L000012_13 ' JUMPV addrg
-C_sh581_5f5d7c0b_get_buf_L000012_16
+ long @C_sauk1_6132d0f0_get_buf_L000012_13 ' JUMPV addrg
+C_sauk1_6132d0f0_get_buf_L000012_16
  PRIMITIVE(#LODI)
  long @C___iolock
  mov r2, RI ' reg ARG INDIR ADDRG
@@ -98,7 +98,7 @@ C_sh581_5f5d7c0b_get_buf_L000012_16
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz
  PRIMITIVE(#BRNZ)
- long @C_sh581_5f5d7c0b_get_buf_L000012_18 ' NEI4
+ long @C_sauk1_6132d0f0_get_buf_L000012_18 ' NEI4
  PRIMITIVE(#LODL)
  long @C___iobuff
  mov BC, FP
@@ -109,15 +109,15 @@ C_sh581_5f5d7c0b_get_buf_L000012_16
  long @C___ioused
  wrlong r22, RI ' ASGNI4 addrg reg
  PRIMITIVE(#JMPA)
- long @C_sh581_5f5d7c0b_get_buf_L000012_19 ' JUMPV addrg
-C_sh581_5f5d7c0b_get_buf_L000012_18
+ long @C_sauk1_6132d0f0_get_buf_L000012_19 ' JUMPV addrg
+C_sauk1_6132d0f0_get_buf_L000012_18
  PRIMITIVE(#LODL)
  long 0
  mov r22, RI ' reg <- con
  PRIMITIVE(#LODF)
  long -4
  wrlong r22, RI ' ASGNP4 addrl reg
-C_sh581_5f5d7c0b_get_buf_L000012_19
+C_sauk1_6132d0f0_get_buf_L000012_19
  PRIMITIVE(#LODI)
  long @C___iolock
  mov r2, RI ' reg ARG INDIR ADDRG
@@ -127,7 +127,7 @@ C_sh581_5f5d7c0b_get_buf_L000012_19
  mov r22, FP
  sub r22, #-(-4) ' reg <- addrli
  rdlong r0, r22 ' reg <- INDIRP4 reg
-C_sh581_5f5d7c0b_get_buf_L000012_13
+C_sauk1_6132d0f0_get_buf_L000012_13
  PRIMITIVE(#POPM) ' restore registers
  add SP, #4 ' framesize
  PRIMITIVE(#RETF)
@@ -326,7 +326,7 @@ C___flushbuf_33
 C___flushbuf_41
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
- long @C_sh581_5f5d7c0b_get_buf_L000012 ' CALL addrg
+ long @C_sauk1_6132d0f0_get_buf_L000012 ' CALL addrg
  mov r20, r21
  adds r20, #16 ' ADDP4 coni
  wrlong r0, r20 ' ASGNP4 reg reg
@@ -554,7 +554,7 @@ C___flushbuf_62
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_sh58_5f5d7c0b_do_write_L000003
+ long @C_sauk_6132d0f0_do_write_L000003
  add SP, #8 ' CALL addrg
  cmps r0,  #0 wz
  PRIMITIVE(#BRNZ)
@@ -648,7 +648,7 @@ C___flushbuf_70
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_sh58_5f5d7c0b_do_write_L000003
+ long @C_sauk_6132d0f0_do_write_L000003
  add SP, #8 ' CALL addrg
  cmps r0,  #0 wz
  PRIMITIVE(#BRNZ)
@@ -685,6 +685,8 @@ C___flushbuf_20
  PRIMITIVE(#RETF)
 
 
+' Catalina Import _locknew
+
 ' Catalina Import _clean
 
 ' Catalina Import _isatty
@@ -706,8 +708,6 @@ C___flushbuf_20
 ' Catalina Import _release_lock
 
 ' Catalina Import _acquire_lock
-
-' Catalina Import _locknew
 
 ' Catalina Import __iotab
 ' end

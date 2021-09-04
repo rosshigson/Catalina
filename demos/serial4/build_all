@@ -76,11 +76,20 @@ echo "   BUILDING SERIAL4 DEMOS"
 echo "   ======================"
 echo ""
 
-catalina -lci -lserial4 test_serial4.c -o serial1 -C NO_HMI
-catalina -lci -lserial4 -lthreads test_serial4.c -o serial2 -C TV 
+platform=$1
+if [ "${platform:0:2}" != "P2" ]; then 
 
-build_pasm_tmp_var $1 $2 $3 $4 $5 $6 $7 $8 $9 
-spinnaker -p -a -I "$TMP_LCCDIR/target" test_serial4.spin -b -o serial3 -D S4_SPIN $TMP_VAR
+   catalina -lci -lserial4 test_serial4.c -o serial1 -C NO_HMI
+   catalina -lci -lserial4 -lthreads test_serial4.c -o serial2 -C TV 
+
+   build_pasm_tmp_var $1 $2 $3 $4 $5 $6 $7 $8 $9 
+   spinnaker -p -a -I "$TMP_LCCDIR/target" test_serial4.spin -b -o serial3 -D S4_SPIN $TMP_VAR
+
+else
+
+   echo "ERROR: The 4 Port Serial driver is not supported on the Propeller 2."
+
+fi
 
 unset CATALINA_DEFINE
 echo ""

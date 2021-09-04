@@ -58,7 +58,7 @@ LMM_PRX = 13      ' Proxy Driver
 LMM_GAM = 14      ' Gamepad Driver
 LMM_SND = 15      ' Sound Driver
 LMM_ADC = 16      ' ADC Driver
-LMM_S4  = 17      ' 4 Port Serial Driver
+LMM_S4  = 17      ' 4 Port Serial Driver (Propeller 1 only)
 LMM_TTY = 18      ' Full Duplex Serial Driver
 LMM_VGI = 19      ' Virtual Graphics Plugin
 LMM_VDB = 20      ' Virtual Double Buffer Support Driver
@@ -66,6 +66,7 @@ LMM_SPI = 21      ' SPI Support Driver
 LMM_FLC = 22      ' Floating Point Library C (Propeller 2 only)
 LMM_S2A = 23      ' 2 Port Serial Driver A (Propeller 2 only)
 LMM_S2B = 24      ' 2 Port Serial Driver B (Propeller 2 only)
+LMM_S8A = 25      ' 8 Port Serial Driver A (Propeler 2 only)
 LMM_NUL = 255     ' No plugin
 '
 ' Notes on the Registry definitions. 

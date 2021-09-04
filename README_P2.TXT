@@ -1,7 +1,7 @@
-Catalina 4.3 - Combined Propeller 1 and Propeller 2 Support
+Catalina 4.7 - Combined Propeller 1 and Propeller 2 Support
 ===========================================================
 
-Version 4.3 of Catalina provides full support the existing Propeller 1 (P1)
+Version 4.7 of Catalina provides full support the existing Propeller 1 (P1)
 chip, as well as the new Propeller 2 (P2) chip.
 
 The Propeller 1 support is largely unchanged from previous releases other

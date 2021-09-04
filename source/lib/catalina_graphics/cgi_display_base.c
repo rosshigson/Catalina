@@ -13,5 +13,9 @@ extern unsigned long _cgi_data();
 //   ((x_tiles * y_tiles) * 16 * 16 * 2) / 8) bytes.
 //
 void *cgi_display_base() {
-   return (void *)((_cgi_data() & 0xFFFF));
+#ifdef __CATALINA_P2
+   return (void *)((_cgi_data() & 0xFFFFFF) + 4); // 24 bit address
+#else
+   return (void *)((_cgi_data() & 0xFFFF));   // 16 bit address
+#endif
 }
