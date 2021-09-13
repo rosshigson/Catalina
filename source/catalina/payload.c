@@ -49,8 +49,7 @@
 //
 // Version 3.5 - Correct bugs in reset_time and interfile_delay defaults.
 //               Add option for 'chunking' the lfsr check (default is enabled).
-//               To disable chunking use -l, to disable lfsr use -j (if 
-//               ALLOW_LFSR_DISABLE is defined).
+//               To disable chunking use -l, to disable lfsr use -j. 
 //
 // Version 3.5.1 - Add interactive terminal option (use -i to enable).
 //
@@ -181,6 +180,14 @@
 //
 // Version 4.6  - Just update version number.
 //
+// Version 4.7  - Add -o to override propeller version detection (required
+//                on Propeller 2 to program FLASH without needing a switch
+//                setting on the P2_EVAL board). This required enabling the
+//                -j option (lfsr disable). Also fix port number reported
+//                in diagnostic ouptut.
+//
+// Version 4.8  - Just update version number.
+//
 //-----------------------------------------------------------------------------
 // Payload is part of Catalina.
 //
@@ -222,7 +229,7 @@
 #include "lua-5.1.4/src/lauxlib.h"
 #endif
 
-#define VERSION            "4.6"
+#define VERSION            "4.8"
 
 #define DEFAULT_LCC_ENV    "LCCDIR" // used to locate binary files if not in current directory
 
@@ -327,9 +334,7 @@ static int    eeprom = 0;
 static int    interactive = 0;
 static int    version = 0;
 static int    suppress = 0;
-#ifdef ALLOW_LFSR_DISABLE
 static int    lfsr_check = 1;
-#endif
 static int    lfsr_chunking = 1;
 static int    cpu = DEFAULT_CPU;
 static int    my_baudrate = DEFAULT_BAUDRATE;
@@ -351,6 +356,7 @@ static int    term_rows = 0;
 static int    default_cols = VT100_COLS;
 static int    default_rows = VT100_ROWS;
 static int    diagnose = 0;
+static int    override = 0;
 static int    file_count = 0;                  
 static char * file_name[MAX_FILES];
 
@@ -553,25 +559,34 @@ int prop_connect(int port) {
   SetDTR(port);
   mdelay(reset_time);
   ClrDTR(port);
-  mdelay(95);
+  if (override == 2) {
+     // on the P2 we make this configurable, so we can catch the 100ms serial window
+     mdelay(reset_time);
+  }
+  else {
+     // the P1 requires this
+     mdelay(95);
+  }
 
-  if (!SendByte(port, 0xf9)) {  // calibration pulse
-     return -1;
+  if (override != 2) {
+     if (!SendByte(port, 0xf9)) {  // calibration pulse
+        return -1;
+     }
   }
 
   ClearInput(port);
 
   // Connect to the prop
-  for (i = 0; i < sizeof(lfsr_data)/2; i++) {
-    lfsr_data[i] |= 0xfe;
+  if (override != 2) {
+     for (i = 0; i < sizeof(lfsr_data)/2; i++) {
+       lfsr_data[i] |= 0xfe;
+     }
+     if (!SendBuf(port, lfsr_data, sizeof(lfsr_data)/2)) {
+        return -1;
+     } 
   }
-  if (!SendBuf(port, lfsr_data, sizeof(lfsr_data)/2)) {
-     return -1;
-  } 
 
-#ifdef ALLOW_LFSR_DISABLE  
-  if (lfsr_check) {
-#endif     
+  if (lfsr_check && (override != 2)) {
 
      if (lfsr_chunking) {
 
@@ -681,9 +696,8 @@ int prop_connect(int port) {
           i++;
         }
      }
-#ifdef ALLOW_LFSR_DISABLE
   }
-  else {
+  else if (override != 2) {
 
      for (i = 0; i < sizeof(lfsr_data)/2; i++) {
        lfsr_data[i] = 0xf9;
@@ -696,23 +710,30 @@ int prop_connect(int port) {
      ClearInput(port);
 
   }
-#endif  
 
   // version bit
 
   version = 0;
-  for (i=0; i<8; i++) {
-    SendByte(port, 0xf9);
-    version >>= 1;
-    received = ReceiveByte(port);
-    if (received < 0) {
-       if (verbose) {
-          fprintf(stderr, "Error: no version received\n");
+
+  if (override == 2) {
+     return prop_connect_2(port);
+  }
+  else {
+     for (i=0; i<8; i++) {
+       SendByte(port, 0xf9);
+       version >>= 1;
+       received = ReceiveByte(port);
+       if (received < 0) {
+          if (verbose) {
+             fprintf(stderr, "Error: no version received\n");
+          }
+          if (override != 1) {
+             // see if it is a Propeller 2
+             return prop_connect_2(port);
+          }
        }
-       // see if it is a Propeller 2
-       return prop_connect_2(port);
-    }
-    version |= (received == 0xff) ? 0x80 : 0;
+       version |= (received == 0xff) ? 0x80 : 0;
+     }
   }
 
   return version;
@@ -1308,10 +1329,10 @@ int prop_open(int port, int my_baudrate, int my_timeout, int verbose) {
   result = OpenComport(port, my_baudrate, my_timeout, verbose);
   if (diagnose) {
      if (result == 0) {
-        fprintf(stderr, "opened port %d\n", port);
+        fprintf(stderr, "opened port %d\n", port + 1);
      }
      else {
-        fprintf(stderr, "error %d opening port %d\n", result, port);
+        fprintf(stderr, "error %d opening port %d\n", result, port + 1);
      }
   }
   // flush input
@@ -1432,14 +1453,13 @@ void help(char *my_name) {
    fprintf(stderr, "          -f msec   set interfile delay in milliseconds (default is %d)\n", INTERFILE_DELAY);
    fprintf(stderr, "          -g c,r    set terminal columns and rows - default is %d,%d\n", default_cols, default_rows);
    fprintf(stderr, "          -i        interactive mode - act as terminal after load\n");
-#ifdef ALLOW_LFSR_DISABLE   
    fprintf(stderr, "          -j        disable lfsr check altogether\n");
-#endif   
    fprintf(stderr, "          -k msec   set interpage delay in milliseconds (default is %d)\n", INTERPAGE_DELAY);
    fprintf(stderr, "          -l        use old style lfsr check (slower) \n");
    fprintf(stderr, "          -L name   execute the named Lua script after opening the port\n");
    fprintf(stderr, "          -m max    set max_attempts (default is %d)\n", MAX_ATTEMPTS);
    fprintf(stderr, "          -n msec   set sync timeout in milliseconds (default is %d)\n", DEFAULT_SYNCTIME);
+   fprintf(stderr, "          -o vers   override Propeller version detection (vers 1 = P1, 2 = P2)\n");
    fprintf(stderr, "          -p port   use port for downloads (just first download if -s used)\n");
    fprintf(stderr, "          -q mode   line mode (1=ignore CR,2=ignore LF,4=LF to CR,8=CR to LF)\n");
    fprintf(stderr, "          -r msec   set reset delay in milliseconds (default is %d)\n", RESET_DELAY);
@@ -1655,14 +1675,12 @@ int decode_arguments (int argc, char *argv[]) {
                      fprintf(stderr, "interactive mode is incompatible with Lua script\n");
                   }
                   break;
-#ifdef ALLOW_LFSR_DISABLE                  
                case 'j':
                   lfsr_check = 0;
                   if (verbose) {
                      fprintf(stderr, "lfsr check is disabled\n");
                   }
                   break;
-#endif                  
                case 'k':
                   if (strlen(argv[i]) == 2) {
                      // use next arg
@@ -1776,6 +1794,31 @@ int decode_arguments (int argc, char *argv[]) {
                      if (verbose) {
                         fprintf(stderr, "using sync timeout %d\n", synctime);
                      }
+                  }
+                  break;
+               case 'o':
+                  if (strlen(argv[i]) == 2) {
+                     // use next arg
+                     if (argc > 0) {
+                        sscanf(argv[++i], "%d", &override);
+                        argc--;
+                     }
+                     else {
+                        fprintf(stderr, "Option -o requires a parameter\n");
+                        code = -1;
+                        break;
+                     }
+                  }
+                  else {
+                     // use remainder of this arg
+                     sscanf(&argv[i][2], "%d", &override);
+                  }
+                  if ((override != 1) && (override != 2)) {
+                     fprintf(stderr, "Error: override version must be 1 or 2");
+                     code = -1;
+                  }
+                  if (verbose) {
+                     fprintf(stderr, "overriding Propeller version detection, assuming P%1d\n", override);
                   }
                   break;
                case 'p':
@@ -2392,7 +2435,12 @@ int main(int argc, char* argv[]) {
             port++;
          }
          if (res != 0) {
-            fprintf(stderr, "No Propeller found on any port\n");
+            if (override > 0) {
+               fprintf(stderr, "No Propeller %d found on any port\n", override);
+            }
+            else {
+               fprintf(stderr, "No Propeller found on any port\n");
+            }
             exit(1);
          }
       }
@@ -2417,7 +2465,12 @@ int main(int argc, char* argv[]) {
                   }
                }
                else {
-                  fprintf(stderr, "No Propeller found on port %s\n", ShortportName(port));
+                  if (override > 0) {
+                     fprintf(stderr, "No Propeller %d found on port %s\n", override, ShortportName(port));
+                  }
+                  else {
+                     fprintf(stderr, "No Propeller found on port %s\n", ShortportName(port));
+                  }
                   prop_close(port);
                   exit(1);
                }

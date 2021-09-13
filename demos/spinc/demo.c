@@ -1,7 +1,7 @@
 /* 
  * Created from TV_Text_Half_Height_Demo.binary with option -c
  * 
- * by Spin to C Array Converter, version 3.10
+ * by Spin to C Array Converter, version 4.7
  */
 
 #define DEMO_CLOCKFREQ  80000000

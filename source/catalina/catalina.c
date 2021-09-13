@@ -157,9 +157,12 @@
  *
  * Version 3.13 - Just update version number.
  *
- * Version 3.15 - Add P2 support. LMM mode only. 
+ * Version 3.15 - Add P2 support. LMM and NATIVE mode only. 
  *                Propeller 2 indicated by -p2 flag. 
  *                Add p2asm support.
+ *                The NATIVE layout is unique to the Propeller 2:
+ *
+ *               -x11    <==> -C NATIVE
  *
  * Version 3.16 - Option '-k' now also suppresses banners
  *
@@ -195,6 +198,15 @@
  *              - implement the -u command-line option, to prevent the
  *                deletion of parallelizer files. This option is also passed 
  *                on to LCC.
+ *
+ * Version 4.7  - On the P2, NATIVE is now the default memory layout. To
+ *                reinstate the previous default of LMM, you have to either
+ *                specify -C TINY or use the option -x0
+ *
+ * Version 4.8  - Updated to fix a bug introduced when making NATIVE the
+ *                default memory layout, which defined the symbols for
+ *                NATIVE even if another layout was selected.
+ *
  */
 
 /*--------------------------------------------------------------------------
@@ -222,7 +234,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define VERSION            "4.6"
+#define VERSION            "4.8"
 
 #define MAX_LINELEN        4096
 
@@ -349,7 +361,7 @@ void help(char *my_name) {
    fprintf(stderr, "          -v         verbose (output information messages)\n");
    fprintf(stderr, "          -v -v      very verbose (more information messages)\n");
    fprintf(stderr, "          -W option  option to pass directly to LCC\n");
-   fprintf(stderr, "          -x layout  use specified memory layout (layout = 0 .. 6, 8 .. 10)\n");
+   fprintf(stderr, "          -x layout  use specified memory layout (layout = 0 .. 6, 8 .. 11)\n");
    fprintf(stderr, "          -y         generate listing file\n");
    fprintf(stderr, "          -z         don't invoke the parallelizer on input files that follow\n");
    fprintf(stderr, "          -Z         invoke the parallelizer on input files that follow\n\n");
@@ -628,7 +640,7 @@ int pass_symbol_to_compiler(char *symbol, int *code) {
    }
    else if (strcmp (symbol, "TINY") == 0) {
       pass = 0; // don't pass this symbol yet - we do it later
-      if ((layout == 2)||(layout == 5)) {
+      if ((layout == 2)||(layout == 5)||(layout == 11)) {
          if (verbose) {
             fprintf(stderr, "TINY implies -x0\n");
          }
@@ -679,7 +691,7 @@ int pass_symbol_to_compiler(char *symbol, int *code) {
    }
    else if (strcmp (symbol, "COMPACT") == 0) {
       pass = 0; // don't pass this symbol yet - we do it later
-      if (layout == 0) {
+      if ((layout == 0)||(layout == 11)) {
          if (verbose) {
             fprintf(stderr, "COMPACT implies -x8\n");
          }
@@ -704,12 +716,10 @@ int pass_symbol_to_compiler(char *symbol, int *code) {
    }
    else if (strcmp (symbol, "NATIVE") == 0) {
       pass = 0; // don't pass this symbol yet - we do it later
-      if (layout != 11) {
-         if (verbose) {
-            fprintf(stderr, "NATIVE implies -x11\n");
-         }
-         layout = 11;
+      if (verbose) {
+         fprintf(stderr, "NATIVE implies -x11\n");
       }
+      layout = 11;
    }
    return pass;
    
@@ -1129,6 +1139,13 @@ int decode_arguments (int argc, char *argv[]) {
                   if (prop_vers == 2) {
                      // The P2 requires the use of p2asm as the assembler
                      assembler = 2;
+                     if (layout == 0) {
+                        layout = 11;
+                        if (verbose) {
+                           banner();
+                           fprintf(stderr, "option -p2 implies -x11\n");
+                        }
+                     }
                   }
                   break;
 
@@ -1541,15 +1558,6 @@ int decode_arguments (int argc, char *argv[]) {
                         }
                         safecat(lcc_cmd, "-D__CATALINA_SDCARD -Wl-CSDCARD ", MAX_LINELEN);
                         sdcard = 1;
-                     }
-                  }
-                  if (layout == 11) {
-                     if (!sdcard) {
-                        if (verbose) {
-                           banner();
-                           fprintf(stderr, "option -x11 implies -C NATIVE\n");
-                        }
-                        safecat(lcc_cmd, "-D__CATALINA_NATIVE -Wl-CNATIVE ", MAX_LINELEN);
                      }
                   }
                   break;

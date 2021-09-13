@@ -1,8 +1,10 @@
                 A NOTE ON BUILDING CATALINA UNDER LINUX
                 =======================================
 
-Catalina can be built under linux with a just a few commands, provided all
-the required packages have been installed (at least gcc-c++, flex, bison, 
+Catalina is provided with binaries suitable for use with Ubuntu 18, and these
+binaries may work under other variants of Linux. If not, Catalina can be built
+from source under linux with a just a few commands, provided all the required 
+packages have been installed (currently, at least gcc-c++, flex, bison, 
 libtool and unzip). 
 
 Catalina can be built anywhere, without requiring root permission.
@@ -10,15 +12,10 @@ Catalina can be built anywhere, without requiring root permission.
 Catalina can also be installed anywhere (but installing it to its default
 location of /opt/catalina probably still requires root permission).
 
-However, currrently Code::Blocks will only work correctly without manual
-reconfiguration if Catalina is installed in the default location (i.e. in 
-/opt/catalina), because the auto-detection of Code::Blocks has
-some issues (see the note on Code::Blocks below).
-
 To build Catalina, unpack the zip file, and then do the following (assuming 
-you unpacked the zip file to Catalina_4.0):
+you unpacked the tarball to Catalina_4.7):
 
-   cd Catalina_4.0
+   cd Catalina_4.7
    LCCDIR=$PWD
    export LCCDIR
    source use_catalina
@@ -34,17 +31,6 @@ following packages:
    libboost-all-dev
    libtool-bin
 
-There may be additional packages required to build Code::Blocks:
-
-   g++-multilib
-   libx11-dev
-   gtk+-2.0
-   wxGTK-2.8.12 (this may meed to be built from source)
-
-To compile Code::Blocks from source (version 17.12) follow the directions here:
-
-   http://wiki.codeblocks.org/index.php/Installing_Code::Blocks_from_source_on_Linux
-
 To use Catalina, set the LCCDIR environment variable to wherever you have
 installed Catalina - this can be done in your profile - and then execute
 the following command in any command shell:
@@ -54,13 +40,57 @@ the following command in any command shell:
 Now you are ready to use Catalina!
 
 
+           A NOTE ON ACCESSING USB SERIAL PORTS UNDER LINUX
+           ================================================
+
+Linux has stricter permissions than Windows, including permission to use the
+serial ports. To give user <username> permanent access to the serial ports, the user needs to be added to the 'dialout' user group. This can be done using the 
+following command:
+
+   sudo usermod -a -G dialout <username>
+
+NOTE: you will have to log out and log back in for this command to take effect.
+
+To find out the name of the last USB serial device just plugged in:
+
+   dmesg | grep tty
+
+Note that in payload, you can refer to the port by name or number. To find out
+the port number associated with a specific name, run payload and use the -d 
+option:
+
+   payload -d
+
+Then (for example) if this shows that /dev/ttyUSB0 is port 17, the following 
+would be equivalent:
+
+   payload -z -p /dev/ttyUSB0 program.bin
+
+   payload -z -p 17 program.bin
+
+(Note that for the P2, the -z option may assist in correctly detecting the 
+the Propeller).
+
+
                  A NOTE ON USING CODE::BLOCKS UNDER LINUX
                  ========================================
 
+As from Catalina 4.7, Code::Blocks will not be supported on Linux, and 
+precompiled Code::Blocks binaries will no longer be provided. However, the 
+source modifications to Code::Blocks required to support Catalina, and also  
+the Code::Blocks example workspaces will continue to be provided for anyone 
+who wishes to compile Code::Blocks for themselves. The required version of
+Code::Blocks is version 17.12.
+
+Also, note that currrently Code::Blocks will only work correctly without 
+manual reconfiguration if Catalina is installed in the expected location 
+(i.e. in /opt/catalina), because the auto-detection of Code::Blocks has
+some issues.
+
 Please note that the various Code::Blocks workspaces can be used for either
-a Propeller 1 or a Proeller 2 platform, provided you specify the correct build
-options. By default, most of them build for the Propeller 1, and you will 
-explicitly need to specify that you have a Propeller 2.
+a Propeller 1 or a Propeller 2 platform, provided you specify the correct 
+build options. By default, most of them build for the Propeller 1, and you 
+will explicitly need to specify that you have a Propeller 2.
 
 Also, be aware that if you build programs for both the Propeller 1 and the
 Propeller 2, you can confuse payload as to which one it should load. If, for
@@ -98,55 +128,25 @@ and a similar entry for the Linker) then they need to be deleted. There should
 be no Search directories at all by default.
 
 
-           A NOTE ON ACCESSING USB SERIAL PORTS UNDER LINUX
-           ================================================
+               A NOTE ON BUILDING CODE::BLOCKS UNDER LINUX
+               ===========================================
 
-Linux has stricter permissions than Windows, incluidng permission to use the
-serial ports. To give user <username> permanent access to the serial ports, the user needs to be added to the 'dialout' user group. This can be done using the 
-following command:
+There are additional packages required to build Code::Blocks from source.
+These currently include:
 
-   sudo usermod -a -G dialout <username>
+   g++-multilib
+   libx11-dev
+   gtk+-2.0
+   wxGTK-2.8.12 (this may meed to be built from source)
 
-NOTE: you will have to log out and log back in for this command to take effect.
+To compile Code::Blocks from source (version 17.12) follow the directions here:
 
-To find out the name of the last USB serial device just plugged in:
+   http://wiki.codeblocks.org/index.php/Installing_Code::Blocks_from_source_on_Linux
 
-   dmesg | grep tty
-
-Note that in payload, you can refer to the port by name or number. To find out
-the port number associated with a specific name, run payload and use the -d 
-option:
-
-   payload -d
-
-Then (for example) if this shows that /dev/ttyUSB0 is port 17, the following 
-would be equivalent:
-
-   payload -z -p /dev/ttyUSB0 program.bin
-
-   payload -z -p 17 program.bin
-
-(Note that for the P2, the -z option may assist in correctly detecting the 
-the Propeller).
-
-
-                A NOTE ON BUILDING CODE::BLOCKS UNDER LINUX
-                ===========================================
-
-Basically, don't do it :(
-
-A precompiled version of Code::Blocks is provided in the Catalina codeblocks 
-subdirectory (as codeblocks-17.12_Linux.tar.gz). This version of Code::Blocks
-was built as a 64 bit application on Ubuntu 16.04. So first, try unzipping that
-file to /opt, then execute the command:
-
-   /opt/codeblocks-17.12/bin/codeblocks
-
-If the precompiled binaries don't work for you, then rebuilding from source 
-is your only option. Here are some hints as to how to rebuild it.
+Here are some hints as to how to build it.
 
 First, be warned that Code::Blocks can be a beast to build from source, and
-there currently seems to be only one combination of wxWidgets, Code::Blocks
+there no longer seems to be any combinations of wxWidgets, Code::Blocks
 and gcc (or mingw-gcc on Windows) that actually compiles and works on multiple 
 platforms. Also, note that Code::Blocks no longer seems to be able to compile
 its own source, so ignore any instructions you see for a "self-hosting" build
@@ -158,11 +158,11 @@ Basically, the instructions you need to follow are here:
 
 Here are the key points:
 
-1. Only wxGTK2.8.12 currently works on all platforms, so this is the version
+1. wxGTK2.8.12 currently works on most platforms, so this is the version
    recommended. If you have a later version installed (or even a different
    flavour of the same version) then you may try and use it, but it may not
    be successful. If not, you will generally need to download, compile and 
-   install wxWidgets 2.8.12 manually. 
+   install wxGTK 2.8.12 manually. 
 
 2. You may also need to install the package 'wx-common' if it is not already
    installed. You don't need a specific version - just install the latest.

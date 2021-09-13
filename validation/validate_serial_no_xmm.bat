@@ -345,559 +345,711 @@ echo    VALIDATING P2
 echo    =============
 echo.
 
-call compile_and_run_p2 %1 test_suite -ltiny -lc 
+call compile_and_run_p2 %1 test_suite -ltiny -lc -C TINY
 call compile_and_run_p2 %1 test_suite -ltiny -lc -C NATIVE
 call compile_and_run_p2 %1 test_suite -ltiny -lc -C COMPACT
 
-call compile_and_run_p2 %1 test_suite -lc 
+call compile_and_run_p2 %1 test_suite -lc -C TINY
 call compile_and_run_p2 %1 test_suite -lc -C NATIVE
 call compile_and_run_p2 %1 test_suite -lc -C COMPACT
 
-call compile_and_run_p2 %1 test_suite -lci 
+call compile_and_run_p2 %1 test_suite -lci -C TINY
 call compile_and_run_p2 %1 test_suite -lci -C NATIVE
 call compile_and_run_p2 %1 test_suite -lci -C COMPACT
 
-call compile_and_run_p2 %1 test_suite -lcix 
+call compile_and_run_p2 %1 test_suite -lcix -C TINY
 call compile_and_run_p2 %1 test_suite -lcix -C NATIVE
 call compile_and_run_p2 %1 test_suite -lcix -C COMPACT
 
-call compile_and_run_p2 %1 test_suite -lcx 
+call compile_and_run_p2 %1 test_suite -lcx -C TINY
 call compile_and_run_p2 %1 test_suite -lcx -C NATIVE
 call compile_and_run_p2 %1 test_suite -lcx -C COMPACT
 
-call compile_and_run_p2 %1 test_suite -O1 -lc 
+call compile_and_run_p2 %1 test_suite -O1 -lc -C TINY
 call compile_and_run_p2 %1 test_suite -O1 -lc -C NATIVE
 call compile_and_run_p2 %1 test_suite -O1 -lc -C COMPACT
 
-call compile_and_run_p2 %1 test_suite -O2 -lc 
+call compile_and_run_p2 %1 test_suite -O2 -lc -C TINY
 call compile_and_run_p2 %1 test_suite -O2 -lc -C NATIVE
 call compile_and_run_p2 %1 test_suite -O2 -lc -C COMPACT
 
-call compile_and_run_p2 %1 test_suite -O3 -lc 
+call compile_and_run_p2 %1 test_suite -O3 -lc -C TINY
 call compile_and_run_p2 %1 test_suite -O3 -lc -C NATIVE
 call compile_and_run_p2 %1 test_suite -O3 -lc -C COMPACT
 
-call compile_and_run_p2 %1 test_suite -O4 -lc 
+call compile_and_run_p2 %1 test_suite -O4 -lc -C TINY
 call compile_and_run_p2 %1 test_suite -O4 -lc -C NATIVE
 call compile_and_run_p2 %1 test_suite -O4 -lc -C COMPACT
 
-call compile_and_run_p2 %1 test_suite -O5 -lc 
+call compile_and_run_p2 %1 test_suite -O5 -lc -C TINY
 call compile_and_run_p2 %1 test_suite -O5 -lc -C NATIVE
 call compile_and_run_p2 %1 test_suite -O5 -lc -C COMPACT
 
-call compile_and_run_p2 %1 test_suite -O1 -lci 
+call compile_and_run_p2 %1 test_suite -O1 -lci -C TINY
 call compile_and_run_p2 %1 test_suite -O1 -lci -C NATIVE
 call compile_and_run_p2 %1 test_suite -O1 -lci -C COMPACT
 
-call compile_and_run_p2 %1 test_suite -O2 -lci 
+call compile_and_run_p2 %1 test_suite -O2 -lci -C TINY
 call compile_and_run_p2 %1 test_suite -O2 -lci -C NATIVE
 call compile_and_run_p2 %1 test_suite -O2 -lci -C COMPACT
 
-call compile_and_run_p2 %1 test_suite -O3 -lci 
+call compile_and_run_p2 %1 test_suite -O3 -lci -C TINY
 call compile_and_run_p2 %1 test_suite -O3 -lci -C NATIVE
 call compile_and_run_p2 %1 test_suite -O3 -lci -C COMPACT
 
-call compile_and_run_p2 %1 test_suite -O4 -lci 
+call compile_and_run_p2 %1 test_suite -O4 -lci -C TINY
 call compile_and_run_p2 %1 test_suite -O4 -lci -C NATIVE
 call compile_and_run_p2 %1 test_suite -O4 -lci -C COMPACT
 
-call compile_and_run_p2 %1 test_suite -O5 -lci 
+call compile_and_run_p2 %1 test_suite -O5 -lci -C TINY
 call compile_and_run_p2 %1 test_suite -O5 -lci -C NATIVE
 call compile_and_run_p2 %1 test_suite -O5 -lci -C COMPACT
 
-call compile_and_run_p2 %1 test_suite -O1 -lcx 
+call compile_and_run_p2 %1 test_suite -O1 -lcx -C TINY
 call compile_and_run_p2 %1 test_suite -O1 -lcx -C NATIVE
 call compile_and_run_p2 %1 test_suite -O1 -lcx -C COMPACT
 
-call compile_and_run_p2 %1 test_suite -O2 -lcx 
+call compile_and_run_p2 %1 test_suite -O2 -lcx -C TINY
 call compile_and_run_p2 %1 test_suite -O2 -lcx -C NATIVE
 call compile_and_run_p2 %1 test_suite -O2 -lcx -C COMPACT
 
-call compile_and_run_p2 %1 test_suite -O3 -lcx 
+call compile_and_run_p2 %1 test_suite -O3 -lcx -C TINY
 call compile_and_run_p2 %1 test_suite -O3 -lcx -C NATIVE
 call compile_and_run_p2 %1 test_suite -O3 -lcx -C COMPACT
 
-call compile_and_run_p2 %1 test_suite -O4 -lcx 
+call compile_and_run_p2 %1 test_suite -O4 -lcx -C TINY
 call compile_and_run_p2 %1 test_suite -O4 -lcx -C NATIVE
 call compile_and_run_p2 %1 test_suite -O4 -lcx -C COMPACT
 
-call compile_and_run_p2 %1 test_suite -O5 -lcx 
+call compile_and_run_p2 %1 test_suite -O5 -lcx -C TINY
 call compile_and_run_p2 %1 test_suite -O5 -lcx -C NATIVE
 call compile_and_run_p2 %1 test_suite -O5 -lcx -C COMPACT
 
-call compile_and_run_p2 %1 test_suite -O1 -lcix 
+call compile_and_run_p2 %1 test_suite -O1 -lcix -C TINY
 call compile_and_run_p2 %1 test_suite -O1 -lcix -C NATIVE
 call compile_and_run_p2 %1 test_suite -O1 -lcix -C COMPACT
 
-call compile_and_run_p2 %1 test_suite -O2 -lcix 
+call compile_and_run_p2 %1 test_suite -O2 -lcix -C TINY
 call compile_and_run_p2 %1 test_suite -O2 -lcix -C NATIVE
 call compile_and_run_p2 %1 test_suite -O2 -lcix -C COMPACT
 
-call compile_and_run_p2 %1 test_suite -O3 -lcix 
+call compile_and_run_p2 %1 test_suite -O3 -lcix -C TINY
 call compile_and_run_p2 %1 test_suite -O3 -lcix -C NATIVE
 call compile_and_run_p2 %1 test_suite -O3 -lcix -C COMPACT
 
-call compile_and_run_p2 %1 test_suite -O4 -lcix 
+call compile_and_run_p2 %1 test_suite -O4 -lcix -C TINY
 call compile_and_run_p2 %1 test_suite -O4 -lcix -C NATIVE
 call compile_and_run_p2 %1 test_suite -O4 -lcix -C COMPACT
 
-call compile_and_run_p2 %1 test_suite -O5 -lcix 
+call compile_and_run_p2 %1 test_suite -O5 -lcix -C TINY
 call compile_and_run_p2 %1 test_suite -O5 -lcix -C NATIVE
 call compile_and_run_p2 %1 test_suite -O5 -lcix -C COMPACT
 
 
 
-call compile_and_run_p2 %1 test_multiple_cogs -ltiny -lc -lm 
+call compile_and_run_p2 %1 test_multiple_cogs -ltiny -lc -lm -C TINY
 call compile_and_run_p2 %1 test_multiple_cogs -ltiny -lc -lm -C NATIVE
 call compile_and_run_p2 %1 test_multiple_cogs -ltiny -lc -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_multiple_cogs -lc -lm
+call compile_and_run_p2 %1 test_multiple_cogs -lc -lm-C TINY
 call compile_and_run_p2 %1 test_multiple_cogs -lc -lm -C NATIVE
 call compile_and_run_p2 %1 test_multiple_cogs -lc -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_multiple_cogs -lci 
+call compile_and_run_p2 %1 test_multiple_cogs -lci -C TINY
 call compile_and_run_p2 %1 test_multiple_cogs -lci -C NATIVE
 call compile_and_run_p2 %1 test_multiple_cogs -lci -C COMPACT
 
-call compile_and_run_p2 %1 test_multiple_cogs -lcix 
+call compile_and_run_p2 %1 test_multiple_cogs -lcix -C TINY
 call compile_and_run_p2 %1 test_multiple_cogs -lcix -C NATIVE
 call compile_and_run_p2 %1 test_multiple_cogs -lcix -C COMPACT
 
-call compile_and_run_p2 %1 test_multiple_cogs -lcx -lm 
+call compile_and_run_p2 %1 test_multiple_cogs -lcx -lm -C TINY
 call compile_and_run_p2 %1 test_multiple_cogs -lcx -lm -C NATIVE
 call compile_and_run_p2 %1 test_multiple_cogs -lcx -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_multiple_cogs -O1 -lc -lm 
+call compile_and_run_p2 %1 test_multiple_cogs -O1 -lc -lm -C TINY
 call compile_and_run_p2 %1 test_multiple_cogs -O1 -lc -lm -C NATIVE
 call compile_and_run_p2 %1 test_multiple_cogs -O1 -lc -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_multiple_cogs -O2 -lc -lm 
+call compile_and_run_p2 %1 test_multiple_cogs -O2 -lc -lm -C TINY
 call compile_and_run_p2 %1 test_multiple_cogs -O2 -lc -lm -C NATIVE
 call compile_and_run_p2 %1 test_multiple_cogs -O2 -lc -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_multiple_cogs -O3 -lc -lm 
+call compile_and_run_p2 %1 test_multiple_cogs -O3 -lc -lm -C TINY
 call compile_and_run_p2 %1 test_multiple_cogs -O3 -lc -lm -C NATIVE
 call compile_and_run_p2 %1 test_multiple_cogs -O3 -lc -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_multiple_cogs -O4 -lc -lm 
+call compile_and_run_p2 %1 test_multiple_cogs -O4 -lc -lm -C TINY
 call compile_and_run_p2 %1 test_multiple_cogs -O4 -lc -lm -C NATIVE
 call compile_and_run_p2 %1 test_multiple_cogs -O4 -lc -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_multiple_cogs -O5 -lc -lm 
+call compile_and_run_p2 %1 test_multiple_cogs -O5 -lc -lm -C TINY
 call compile_and_run_p2 %1 test_multiple_cogs -O5 -lc -lm -C NATIVE
 call compile_and_run_p2 %1 test_multiple_cogs -O5 -lc -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_multiple_cogs -O1 -lci 
+call compile_and_run_p2 %1 test_multiple_cogs -O1 -lci -C TINY
 call compile_and_run_p2 %1 test_multiple_cogs -O1 -lci -C NATIVE
 call compile_and_run_p2 %1 test_multiple_cogs -O1 -lci -C COMPACT
 
-call compile_and_run_p2 %1 test_multiple_cogs -O2 -lci 
+call compile_and_run_p2 %1 test_multiple_cogs -O2 -lci -C TINY
 call compile_and_run_p2 %1 test_multiple_cogs -O2 -lci -C NATIVE
 call compile_and_run_p2 %1 test_multiple_cogs -O2 -lci -C COMPACT
 
-call compile_and_run_p2 %1 test_multiple_cogs -O3 -lci 
+call compile_and_run_p2 %1 test_multiple_cogs -O3 -lci -C TINY
 call compile_and_run_p2 %1 test_multiple_cogs -O3 -lci -C NATIVE
 call compile_and_run_p2 %1 test_multiple_cogs -O3 -lci -C COMPACT
 
-call compile_and_run_p2 %1 test_multiple_cogs -O4 -lci 
+call compile_and_run_p2 %1 test_multiple_cogs -O4 -lci -C TINY
 call compile_and_run_p2 %1 test_multiple_cogs -O4 -lci -C NATIVE
 call compile_and_run_p2 %1 test_multiple_cogs -O4 -lci -C COMPACT
 
-call compile_and_run_p2 %1 test_multiple_cogs -O5 -lci 
+call compile_and_run_p2 %1 test_multiple_cogs -O5 -lci -C TINY
 call compile_and_run_p2 %1 test_multiple_cogs -O5 -lci -C NATIVE
 call compile_and_run_p2 %1 test_multiple_cogs -O5 -lci -C COMPACT
 
-call compile_and_run_p2 %1 test_multiple_cogs -O1 -lcx -lm  
+call compile_and_run_p2 %1 test_multiple_cogs -O1 -lcx -lm  -C TINY
 call compile_and_run_p2 %1 test_multiple_cogs -O1 -lcx -lm  -C NATIVE
 call compile_and_run_p2 %1 test_multiple_cogs -O1 -lcx -lm  -C COMPACT
 
-call compile_and_run_p2 %1 test_multiple_cogs -O2 -lcx -lm  
+call compile_and_run_p2 %1 test_multiple_cogs -O2 -lcx -lm  -C TINY
 call compile_and_run_p2 %1 test_multiple_cogs -O2 -lcx -lm  -C NATIVE
 call compile_and_run_p2 %1 test_multiple_cogs -O2 -lcx -lm  -C COMPACT
 
-call compile_and_run_p2 %1 test_multiple_cogs -O3 -lcx -lm  
+call compile_and_run_p2 %1 test_multiple_cogs -O3 -lcx -lm  -C TINY
 call compile_and_run_p2 %1 test_multiple_cogs -O3 -lcx -lm  -C NATIVE
 call compile_and_run_p2 %1 test_multiple_cogs -O3 -lcx -lm  -C COMPACT
 
-call compile_and_run_p2 %1 test_multiple_cogs -O4 -lcx -lm  
+call compile_and_run_p2 %1 test_multiple_cogs -O4 -lcx -lm  -C TINY
 call compile_and_run_p2 %1 test_multiple_cogs -O4 -lcx -lm  -C NATIVE
 call compile_and_run_p2 %1 test_multiple_cogs -O4 -lcx -lm  -C COMPACT
 
-call compile_and_run_p2 %1 test_multiple_cogs -O5 -lcx -lm  
+call compile_and_run_p2 %1 test_multiple_cogs -O5 -lcx -lm  -C TINY
 call compile_and_run_p2 %1 test_multiple_cogs -O5 -lcx -lm  -C NATIVE
 call compile_and_run_p2 %1 test_multiple_cogs -O5 -lcx -lm  -C COMPACT
 
-call compile_and_run_p2 %1 test_multiple_cogs -O1 -lcix 
+call compile_and_run_p2 %1 test_multiple_cogs -O1 -lcix -C TINY
 call compile_and_run_p2 %1 test_multiple_cogs -O1 -lcix -C NATIVE
 call compile_and_run_p2 %1 test_multiple_cogs -O1 -lcix -C COMPACT
 
-call compile_and_run_p2 %1 test_multiple_cogs -O2 -lcix 
+call compile_and_run_p2 %1 test_multiple_cogs -O2 -lcix -C TINY
 call compile_and_run_p2 %1 test_multiple_cogs -O2 -lcix -C NATIVE
 call compile_and_run_p2 %1 test_multiple_cogs -O2 -lcix -C COMPACT
 
-call compile_and_run_p2 %1 test_multiple_cogs -O3 -lcix 
+call compile_and_run_p2 %1 test_multiple_cogs -O3 -lcix -C TINY
 call compile_and_run_p2 %1 test_multiple_cogs -O3 -lcix -C NATIVE
 call compile_and_run_p2 %1 test_multiple_cogs -O3 -lcix -C COMPACT
 
-call compile_and_run_p2 %1 test_multiple_cogs -O4 -lcix 
+call compile_and_run_p2 %1 test_multiple_cogs -O4 -lcix -C TINY
 call compile_and_run_p2 %1 test_multiple_cogs -O4 -lcix -C NATIVE
 call compile_and_run_p2 %1 test_multiple_cogs -O4 -lcix -C COMPACT
 
-call compile_and_run_p2 %1 test_multiple_cogs -O5 -lcix 
+call compile_and_run_p2 %1 test_multiple_cogs -O5 -lcix -C TINY
 call compile_and_run_p2 %1 test_multiple_cogs -O5 -lcix -C NATIVE
 call compile_and_run_p2 %1 test_multiple_cogs -O5 -lcix -C COMPACT
 
 
 
-call compile_and_run_p2 %1 test_threads -lthreads -ltiny -lc -lm 
+call compile_and_run_p2 %1 test_threads -lthreads -ltiny -lc -lm -C TINY
 call compile_and_run_p2 %1 test_threads -lthreads -ltiny -lc -lm -C NATIVE
 call compile_and_run_p2 %1 test_threads -lthreads -ltiny -lc -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_threads -lthreads -lc -lm 
+call compile_and_run_p2 %1 test_threads -lthreads -lc -lm -C TINY
 call compile_and_run_p2 %1 test_threads -lthreads -lc -lm -C NATIVE
 call compile_and_run_p2 %1 test_threads -lthreads -lc -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_threads -lthreads -lci 
+call compile_and_run_p2 %1 test_threads -lthreads -lci -C TINY
 call compile_and_run_p2 %1 test_threads -lthreads -lci -C NATIVE
 call compile_and_run_p2 %1 test_threads -lthreads -lci -C COMPACT
 
-call compile_and_run_p2 %1 test_threads -lthreads -lcix 
+call compile_and_run_p2 %1 test_threads -lthreads -lcix -C TINY
 call compile_and_run_p2 %1 test_threads -lthreads -lcix -C NATIVE
 call compile_and_run_p2 %1 test_threads -lthreads -lcix -C COMPACT
 
-call compile_and_run_p2 %1 test_threads -lthreads -lcx -lm 
+call compile_and_run_p2 %1 test_threads -lthreads -lcx -lm -C TINY
 call compile_and_run_p2 %1 test_threads -lthreads -lcx -lm -C NATIVE
 call compile_and_run_p2 %1 test_threads -lthreads -lcx -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_threads -lthreads -O1 -lc -lm 
+call compile_and_run_p2 %1 test_threads -lthreads -O1 -lc -lm -C TINY
 call compile_and_run_p2 %1 test_threads -lthreads -O1 -lc -lm -C NATIVE
 call compile_and_run_p2 %1 test_threads -lthreads -O1 -lc -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_threads -lthreads -O2 -lc -lm 
+call compile_and_run_p2 %1 test_threads -lthreads -O2 -lc -lm -C TINY
 call compile_and_run_p2 %1 test_threads -lthreads -O2 -lc -lm -C NATIVE
 call compile_and_run_p2 %1 test_threads -lthreads -O2 -lc -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_threads -lthreads -O3 -lc -lm 
+call compile_and_run_p2 %1 test_threads -lthreads -O3 -lc -lm -C TINY
 call compile_and_run_p2 %1 test_threads -lthreads -O3 -lc -lm -C NATIVE
 call compile_and_run_p2 %1 test_threads -lthreads -O3 -lc -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_threads -lthreads -O4 -lc -lm 
+call compile_and_run_p2 %1 test_threads -lthreads -O4 -lc -lm -C TINY
 call compile_and_run_p2 %1 test_threads -lthreads -O4 -lc -lm -C NATIVE
 call compile_and_run_p2 %1 test_threads -lthreads -O4 -lc -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_threads -lthreads -O5 -lc -lm 
+call compile_and_run_p2 %1 test_threads -lthreads -O5 -lc -lm -C TINY
 call compile_and_run_p2 %1 test_threads -lthreads -O5 -lc -lm -C NATIVE
 call compile_and_run_p2 %1 test_threads -lthreads -O5 -lc -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_threads -lthreads -O1 -lci 
+call compile_and_run_p2 %1 test_threads -lthreads -O1 -lci -C TINY
 call compile_and_run_p2 %1 test_threads -lthreads -O1 -lci -C NATIVE
 call compile_and_run_p2 %1 test_threads -lthreads -O1 -lci -C COMPACT
 
-call compile_and_run_p2 %1 test_threads -lthreads -O2 -lci 
+call compile_and_run_p2 %1 test_threads -lthreads -O2 -lci -C TINY
 call compile_and_run_p2 %1 test_threads -lthreads -O2 -lci -C NATIVE
 call compile_and_run_p2 %1 test_threads -lthreads -O2 -lci -C COMPACT
 
-call compile_and_run_p2 %1 test_threads -lthreads -O3 -lci 
+call compile_and_run_p2 %1 test_threads -lthreads -O3 -lci -C TINY
 call compile_and_run_p2 %1 test_threads -lthreads -O3 -lci -C NATIVE
 call compile_and_run_p2 %1 test_threads -lthreads -O3 -lci -C COMPACT
 
-call compile_and_run_p2 %1 test_threads -lthreads -O4 -lci 
+call compile_and_run_p2 %1 test_threads -lthreads -O4 -lci -C TINY
 call compile_and_run_p2 %1 test_threads -lthreads -O4 -lci -C NATIVE
 call compile_and_run_p2 %1 test_threads -lthreads -O4 -lci -C COMPACT
 
-call compile_and_run_p2 %1 test_threads -lthreads -O5 -lci 
+call compile_and_run_p2 %1 test_threads -lthreads -O5 -lci -C TINY
 call compile_and_run_p2 %1 test_threads -lthreads -O5 -lci -C NATIVE
 call compile_and_run_p2 %1 test_threads -lthreads -O5 -lci -C COMPACT
 
-call compile_and_run_p2 %1 test_threads -lthreads -O1 -lcx -lm 
+call compile_and_run_p2 %1 test_threads -lthreads -O1 -lcx -lm -C TINY
 call compile_and_run_p2 %1 test_threads -lthreads -O1 -lcx -lm -C NATIVE
 call compile_and_run_p2 %1 test_threads -lthreads -O1 -lcx -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_threads -lthreads -O2 -lcx -lm 
+call compile_and_run_p2 %1 test_threads -lthreads -O2 -lcx -lm -C TINY
 call compile_and_run_p2 %1 test_threads -lthreads -O2 -lcx -lm -C NATIVE
 call compile_and_run_p2 %1 test_threads -lthreads -O2 -lcx -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_threads -lthreads -O3 -lcx -lm 
+call compile_and_run_p2 %1 test_threads -lthreads -O3 -lcx -lm -C TINY
 call compile_and_run_p2 %1 test_threads -lthreads -O3 -lcx -lm -C NATIVE
 call compile_and_run_p2 %1 test_threads -lthreads -O3 -lcx -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_threads -lthreads -O4 -lcx -lm 
+call compile_and_run_p2 %1 test_threads -lthreads -O4 -lcx -lm -C TINY
 call compile_and_run_p2 %1 test_threads -lthreads -O4 -lcx -lm -C NATIVE
 call compile_and_run_p2 %1 test_threads -lthreads -O4 -lcx -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_threads -lthreads -O5 -lcx -lm 
+call compile_and_run_p2 %1 test_threads -lthreads -O5 -lcx -lm -C TINY
 call compile_and_run_p2 %1 test_threads -lthreads -O5 -lcx -lm -C NATIVE
 call compile_and_run_p2 %1 test_threads -lthreads -O5 -lcx -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_threads -lthreads -O1 -lcix 
+call compile_and_run_p2 %1 test_threads -lthreads -O1 -lcix -C TINY
 call compile_and_run_p2 %1 test_threads -lthreads -O1 -lcix -C NATIVE
 call compile_and_run_p2 %1 test_threads -lthreads -O1 -lcix -C COMPACT
 
-call compile_and_run_p2 %1 test_threads -lthreads -O2 -lcix 
+call compile_and_run_p2 %1 test_threads -lthreads -O2 -lcix -C TINY
 call compile_and_run_p2 %1 test_threads -lthreads -O2 -lcix -C NATIVE
 call compile_and_run_p2 %1 test_threads -lthreads -O2 -lcix -C COMPACT
 
-call compile_and_run_p2 %1 test_threads -lthreads -O3 -lcix 
+call compile_and_run_p2 %1 test_threads -lthreads -O3 -lcix -C TINY
 call compile_and_run_p2 %1 test_threads -lthreads -O3 -lcix -C NATIVE
 call compile_and_run_p2 %1 test_threads -lthreads -O3 -lcix -C COMPACT
 
-call compile_and_run_p2 %1 test_threads -lthreads -O4 -lcix 
+call compile_and_run_p2 %1 test_threads -lthreads -O4 -lcix -C TINY
 call compile_and_run_p2 %1 test_threads -lthreads -O4 -lcix -C NATIVE
 call compile_and_run_p2 %1 test_threads -lthreads -O4 -lcix -C COMPACT
 
-call compile_and_run_p2 %1 test_threads -lthreads -O5 -lcix 
+call compile_and_run_p2 %1 test_threads -lthreads -O5 -lcix -C TINY
 call compile_and_run_p2 %1 test_threads -lthreads -O5 -lcix -C NATIVE
 call compile_and_run_p2 %1 test_threads -lthreads -O5 -lcix -C COMPACT
 
 
 
-call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -ltiny -lc -lm 
+call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -ltiny -lc -lm -C TINY
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -ltiny -lc -lm -C NATIVE
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -ltiny -lc -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -lc -lm 
+call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -lc -lm -C TINY
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -lc -lm -C NATIVE
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -lc -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -lci 
+call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -lci -C TINY
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -lci -C NATIVE
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -lci -C COMPACT
 
-call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -lcix 
+call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -lcix -C TINY
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -lcix -C NATIVE
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -lcix -C COMPACT
 
-call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -lcx -lm 
+call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -lcx -lm -C TINY
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -lcx -lm -C NATIVE
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -lcx -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O1 -lc -lm 
+call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O1 -lc -lm -C TINY
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O1 -lc -lm -C NATIVE
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O1 -lc -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O2 -lc -lm 
+call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O2 -lc -lm -C TINY
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O2 -lc -lm -C NATIVE
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O2 -lc -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O3 -lc -lm 
+call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O3 -lc -lm -C TINY
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O3 -lc -lm -C NATIVE
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O3 -lc -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O4 -lc -lm 
+call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O4 -lc -lm -C TINY
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O4 -lc -lm -C NATIVE
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O4 -lc -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O5 -lc -lm 
+call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O5 -lc -lm -C TINY
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O5 -lc -lm -C NATIVE
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O5 -lc -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O1 -lci 
+call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O1 -lci -C TINY
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O1 -lci -C NATIVE
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O1 -lci -C COMPACT
 
-call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O2 -lci 
+call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O2 -lci -C TINY
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O2 -lci -C NATIVE
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O2 -lci -C COMPACT
 
-call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O3 -lci 
+call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O3 -lci -C TINY
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O3 -lci -C NATIVE
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O3 -lci -C COMPACT
 
-call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O4 -lci 
+call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O4 -lci -C TINY
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O4 -lci -C NATIVE
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O4 -lci -C COMPACT
 
-call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O5 -lci 
+call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O5 -lci -C TINY
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O5 -lci -C NATIVE
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O5 -lci -C COMPACT
 
-call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O1 -lcx -lm 
+call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O1 -lcx -lm -C TINY
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O1 -lcx -lm -C NATIVE
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O1 -lcx -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O2 -lcx -lm 
+call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O2 -lcx -lm -C TINY
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O2 -lcx -lm -C NATIVE
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O2 -lcx -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O3 -lcx -lm 
+call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O3 -lcx -lm -C TINY
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O3 -lcx -lm -C NATIVE
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O3 -lcx -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O4 -lcx -lm 
+call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O4 -lcx -lm -C TINY
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O4 -lcx -lm -C NATIVE
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O4 -lcx -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O5 -lcx -lm 
+call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O5 -lcx -lm -C TINY
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O5 -lcx -lm -C NATIVE
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O5 -lcx -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O1 -lcix 
+call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O1 -lcix -C TINY
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O1 -lcix -C NATIVE
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O1 -lcix -C COMPACT
 
-call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O2 -lcix 
+call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O2 -lcix -C TINY
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O2 -lcix -C NATIVE
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O2 -lcix -C COMPACT
 
-call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O3 -lcix 
+call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O3 -lcix -C TINY
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O3 -lcix -C NATIVE
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O3 -lcix -C COMPACT
 
-call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O4 -lcix 
+call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O4 -lcix -C TINY
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O4 -lcix -C NATIVE
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O4 -lcix -C COMPACT
 
-call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O5 -lcix 
+call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O5 -lcix -C TINY
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O5 -lcix -C NATIVE
 call compile_and_run_p2 %1 test_interrupts -linterrupts -lthreads -O5 -lcix -C COMPACT
 
 
 
-call compile_and_run_p2 %1 test_float -lc -lm 
+call compile_and_run_p2 %1 test_float -lc -lm -C TINY
 call compile_and_run_p2 %1 test_float -lc -lm -C COMPACT
 call compile_and_run_p2 %1 test_float -lc -lm -C NATIVE
 
-call compile_and_run_p2 %1 test_float -lcx -lm 
+call compile_and_run_p2 %1 test_float -lcx -lm -C TINY
 call compile_and_run_p2 %1 test_float -lcx -lm -C COMPACT
 call compile_and_run_p2 %1 test_float -lcx -lm -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O1 -lc -lm 
+call compile_and_run_p2 %1 test_float -O1 -lc -lm -C TINY
 call compile_and_run_p2 %1 test_float -O1 -lc -lm -C COMPACT
 call compile_and_run_p2 %1 test_float -O1 -lc -lm -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O2 -lc -lm 
+call compile_and_run_p2 %1 test_float -O2 -lc -lm -C TINY
 call compile_and_run_p2 %1 test_float -O2 -lc -lm -C COMPACT
 call compile_and_run_p2 %1 test_float -O2 -lc -lm -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O3 -lc -lm 
+call compile_and_run_p2 %1 test_float -O3 -lc -lm -C TINY
 call compile_and_run_p2 %1 test_float -O3 -lc -lm -C COMPACT
 call compile_and_run_p2 %1 test_float -O3 -lc -lm -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O4 -lc -lm 
+call compile_and_run_p2 %1 test_float -O4 -lc -lm -C TINY
 call compile_and_run_p2 %1 test_float -O4 -lc -lm -C COMPACT
 call compile_and_run_p2 %1 test_float -O4 -lc -lm -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O5 -lc -lm 
+call compile_and_run_p2 %1 test_float -O5 -lc -lm -C TINY
 call compile_and_run_p2 %1 test_float -O5 -lc -lm -C COMPACT
 call compile_and_run_p2 %1 test_float -O5 -lc -lm -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O1 -lcx -lm 
+call compile_and_run_p2 %1 test_float -O1 -lcx -lm -C TINY
 call compile_and_run_p2 %1 test_float -O1 -lcx -lm -C COMPACT
 call compile_and_run_p2 %1 test_float -O1 -lcx -lm -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O2 -lcx -lm 
+call compile_and_run_p2 %1 test_float -O2 -lcx -lm -C TINY
 call compile_and_run_p2 %1 test_float -O2 -lcx -lm -C COMPACT
 call compile_and_run_p2 %1 test_float -O2 -lcx -lm -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O3 -lcx -lm 
+call compile_and_run_p2 %1 test_float -O3 -lcx -lm -C TINY
 call compile_and_run_p2 %1 test_float -O3 -lcx -lm -C COMPACT
 call compile_and_run_p2 %1 test_float -O3 -lcx -lm -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O4 -lcx -lm 
+call compile_and_run_p2 %1 test_float -O4 -lcx -lm -C TINY
 call compile_and_run_p2 %1 test_float -O4 -lcx -lm -C COMPACT
 call compile_and_run_p2 %1 test_float -O4 -lcx -lm -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O5 -lcx -lm 
+call compile_and_run_p2 %1 test_float -O5 -lcx -lm -C TINY
 call compile_and_run_p2 %1 test_float -O5 -lcx -lm -C COMPACT
 call compile_and_run_p2 %1 test_float -O5 -lcx -lm -C NATIVE
 
 
-call compile_and_run_p2 %1 test_float -lc -lma 
+call compile_and_run_p2 %1 test_float -lc -lma -C TINY
 call compile_and_run_p2 %1 test_float -lc -lma -C COMPACT
 call compile_and_run_p2 %1 test_float -lc -lma -C NATIVE
 
-call compile_and_run_p2 %1 test_float -lcx -lma 
+call compile_and_run_p2 %1 test_float -lcx -lma -C TINY
 call compile_and_run_p2 %1 test_float -lcx -lma -C COMPACT
 call compile_and_run_p2 %1 test_float -lcx -lma -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O1 -lc -lma 
+call compile_and_run_p2 %1 test_float -O1 -lc -lma -C TINY
 call compile_and_run_p2 %1 test_float -O1 -lc -lma -C COMPACT
 call compile_and_run_p2 %1 test_float -O1 -lc -lma -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O2 -lc -lma 
+call compile_and_run_p2 %1 test_float -O2 -lc -lma -C TINY
 call compile_and_run_p2 %1 test_float -O2 -lc -lma -C COMPACT
 call compile_and_run_p2 %1 test_float -O2 -lc -lma -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O3 -lc -lma 
+call compile_and_run_p2 %1 test_float -O3 -lc -lma -C TINY
 call compile_and_run_p2 %1 test_float -O3 -lc -lma -C COMPACT
 call compile_and_run_p2 %1 test_float -O3 -lc -lma -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O4 -lc -lma 
+call compile_and_run_p2 %1 test_float -O4 -lc -lma -C TINY
 call compile_and_run_p2 %1 test_float -O4 -lc -lma -C COMPACT
 call compile_and_run_p2 %1 test_float -O4 -lc -lma -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O5 -lc -lma 
+call compile_and_run_p2 %1 test_float -O5 -lc -lma -C TINY
 call compile_and_run_p2 %1 test_float -O5 -lc -lma -C COMPACT
 call compile_and_run_p2 %1 test_float -O5 -lc -lma -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O1 -lcx -lma 
+call compile_and_run_p2 %1 test_float -O1 -lcx -lma -C TINY
 call compile_and_run_p2 %1 test_float -O1 -lcx -lma -C COMPACT
 call compile_and_run_p2 %1 test_float -O1 -lcx -lma -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O2 -lcx -lma 
+call compile_and_run_p2 %1 test_float -O2 -lcx -lma -C TINY
 call compile_and_run_p2 %1 test_float -O2 -lcx -lma -C COMPACT
 call compile_and_run_p2 %1 test_float -O2 -lcx -lma -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O3 -lcx -lma 
+call compile_and_run_p2 %1 test_float -O3 -lcx -lma -C TINY
 call compile_and_run_p2 %1 test_float -O3 -lcx -lma -C COMPACT
 call compile_and_run_p2 %1 test_float -O3 -lcx -lma -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O4 -lcx -lma 
+call compile_and_run_p2 %1 test_float -O4 -lcx -lma -C TINY
 call compile_and_run_p2 %1 test_float -O4 -lcx -lma -C COMPACT
 call compile_and_run_p2 %1 test_float -O4 -lcx -lma -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O5 -lcx -lma 
+call compile_and_run_p2 %1 test_float -O5 -lcx -lma -C TINY
 call compile_and_run_p2 %1 test_float -O5 -lcx -lma -C COMPACT
 call compile_and_run_p2 %1 test_float -O5 -lcx -lma -C NATIVE
 
 
-call compile_and_run_p2 %1 test_float -lc -lmb 
+call compile_and_run_p2 %1 test_float -lc -lmb -C TINY
 call compile_and_run_p2 %1 test_float -lc -lmb -C COMPACT
 call compile_and_run_p2 %1 test_float -lc -lmb -C NATIVE
 
-call compile_and_run_p2 %1 test_float -lcx -lmb 
+call compile_and_run_p2 %1 test_float -lcx -lmb -C TINY
 call compile_and_run_p2 %1 test_float -lcx -lmb -C COMPACT
 call compile_and_run_p2 %1 test_float -lcx -lmb -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O1 -lc -lmb 
+call compile_and_run_p2 %1 test_float -O1 -lc -lmb -C TINY
 call compile_and_run_p2 %1 test_float -O1 -lc -lmb -C COMPACT
 call compile_and_run_p2 %1 test_float -O1 -lc -lmb -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O2 -lc -lmb 
+call compile_and_run_p2 %1 test_float -O2 -lc -lmb -C TINY
 call compile_and_run_p2 %1 test_float -O2 -lc -lmb -C COMPACT
 call compile_and_run_p2 %1 test_float -O2 -lc -lmb -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O3 -lc -lmb 
+call compile_and_run_p2 %1 test_float -O3 -lc -lmb -C TINY
 call compile_and_run_p2 %1 test_float -O3 -lc -lmb -C COMPACT
 call compile_and_run_p2 %1 test_float -O3 -lc -lmb -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O4 -lc -lmb 
+call compile_and_run_p2 %1 test_float -O4 -lc -lmb -C TINY
 call compile_and_run_p2 %1 test_float -O4 -lc -lmb -C COMPACT
 call compile_and_run_p2 %1 test_float -O4 -lc -lmb -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O5 -lc -lmb 
+call compile_and_run_p2 %1 test_float -O5 -lc -lmb -C TINY
 call compile_and_run_p2 %1 test_float -O5 -lc -lmb -C COMPACT
 call compile_and_run_p2 %1 test_float -O5 -lc -lmb -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O1 -lcx -lmb 
+call compile_and_run_p2 %1 test_float -O1 -lcx -lmb -C TINY
 call compile_and_run_p2 %1 test_float -O1 -lcx -lmb -C COMPACT
 call compile_and_run_p2 %1 test_float -O1 -lcx -lmb -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O2 -lcx -lmb 
+call compile_and_run_p2 %1 test_float -O2 -lcx -lmb -C TINY
 call compile_and_run_p2 %1 test_float -O2 -lcx -lmb -C COMPACT
 call compile_and_run_p2 %1 test_float -O2 -lcx -lmb -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O3 -lcx -lmb 
+call compile_and_run_p2 %1 test_float -O3 -lcx -lmb -C TINY
 call compile_and_run_p2 %1 test_float -O3 -lcx -lmb -C COMPACT
 call compile_and_run_p2 %1 test_float -O3 -lcx -lmb -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O4 -lcx -lmb 
+call compile_and_run_p2 %1 test_float -O4 -lcx -lmb -C TINY
 call compile_and_run_p2 %1 test_float -O4 -lcx -lmb -C COMPACT
 call compile_and_run_p2 %1 test_float -O4 -lcx -lmb -C NATIVE
 
-call compile_and_run_p2 %1 test_float -O5 -lcx -lmb 
+call compile_and_run_p2 %1 test_float -O5 -lcx -lmb -C TINY
 call compile_and_run_p2 %1 test_float -O5 -lcx -lmb -C COMPACT
 call compile_and_run_p2 %1 test_float -O5 -lcx -lmb -C NATIVE
+
+
+
+call compile_and_run_p2 %1 test_float -lc -lmc -C TINY
+call compile_and_run_p2 %1 test_float -lc -lmc -C COMPACT
+call compile_and_run_p2 %1 test_float -lc -lmc -C NATIVE
+
+call compile_and_run_p2 %1 test_float -lcx -lmc -C TINY
+call compile_and_run_p2 %1 test_float -lcx -lmc -C COMPACT
+call compile_and_run_p2 %1 test_float -lcx -lmc -C NATIVE
+
+call compile_and_run_p2 %1 test_float -O1 -lc -lmc -C TINY
+call compile_and_run_p2 %1 test_float -O1 -lc -lmc -C COMPACT
+call compile_and_run_p2 %1 test_float -O1 -lc -lmc -C NATIVE
+
+call compile_and_run_p2 %1 test_float -O2 -lc -lmc -C TINY
+call compile_and_run_p2 %1 test_float -O2 -lc -lmc -C COMPACT
+call compile_and_run_p2 %1 test_float -O2 -lc -lmc -C NATIVE
+
+call compile_and_run_p2 %1 test_float -O3 -lc -lmc -C TINY
+call compile_and_run_p2 %1 test_float -O3 -lc -lmc -C COMPACT
+call compile_and_run_p2 %1 test_float -O3 -lc -lmc -C NATIVE
+
+call compile_and_run_p2 %1 test_float -O4 -lc -lmc -C TINY
+call compile_and_run_p2 %1 test_float -O4 -lc -lmc -C COMPACT
+call compile_and_run_p2 %1 test_float -O4 -lc -lmc -C NATIVE
+
+call compile_and_run_p2 %1 test_float -O5 -lc -lmc -C TINY
+call compile_and_run_p2 %1 test_float -O5 -lc -lmc -C COMPACT
+call compile_and_run_p2 %1 test_float -O5 -lc -lmc -C NATIVE
+
+call compile_and_run_p2 %1 test_float -O1 -lcx -lmc -C TINY
+call compile_and_run_p2 %1 test_float -O1 -lcx -lmc -C COMPACT
+call compile_and_run_p2 %1 test_float -O1 -lcx -lmc -C NATIVE
+
+call compile_and_run_p2 %1 test_float -O2 -lcx -lmc -C TINY
+call compile_and_run_p2 %1 test_float -O2 -lcx -lmc -C COMPACT
+call compile_and_run_p2 %1 test_float -O2 -lcx -lmc -C NATIVE
+
+call compile_and_run_p2 %1 test_float -O3 -lcx -lmc -C TINY
+call compile_and_run_p2 %1 test_float -O3 -lcx -lmc -C COMPACT
+call compile_and_run_p2 %1 test_float -O3 -lcx -lmc -C NATIVE
+
+call compile_and_run_p2 %1 test_float -O4 -lcx -lmc -C TINY
+call compile_and_run_p2 %1 test_float -O4 -lcx -lmc -C COMPACT
+call compile_and_run_p2 %1 test_float -O4 -lcx -lmc -C NATIVE
+
+call compile_and_run_p2 %1 test_float -O5 -lcx -lmc -C TINY
+call compile_and_run_p2 %1 test_float -O5 -lcx -lmc -C COMPACT
+call compile_and_run_p2 %1 test_float -O5 -lcx -lmc -C NATIVE
+
+
+
+call compile_and_run_p2 %1 test_dosfs -C SD -ltiny -lc -lm -C TINY 
+call compile_and_run_p2 %1 test_dosfs -C SD -ltiny -lc -lm -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -ltiny -lc -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -lc -lm -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -lc -lm -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -lc -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -lci -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -lci -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -lci -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -lcix -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -lcix -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -lcix -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -lcx -lm -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -lcx -lm -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -lcx -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O1 -lc -lm -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O1 -lc -lm -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -O1 -lc -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O2 -lc -lm -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O2 -lc -lm -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -O2 -lc -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O3 -lc -lm -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O3 -lc -lm -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -O3 -lc -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O4 -lc -lm -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O4 -lc -lm -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -O4 -lc -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O5 -lc -lm -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O5 -lc -lm -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -O5 -lc -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O1 -lci -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O1 -lci -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -O1 -lci -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O2 -lci -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O2 -lci -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -O2 -lci -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O3 -lci -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O3 -lci -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -O3 -lci -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O4 -lci -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O4 -lci -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -O4 -lci -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O5 -lci -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O5 -lci -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -O5 -lci -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O1 -lcx -lm -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O1 -lcx -lm -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -O1 -lcx -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O2 -lcx -lm -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O2 -lcx -lm -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -O2 -lcx -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O3 -lcx -lm -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O3 -lcx -lm -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -O3 -lcx -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O4 -lcx -lm -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O4 -lcx -lm -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -O4 -lcx -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O5 -lcx -lm -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O5 -lcx -lm -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -O5 -lcx -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O1 -lcix -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O1 -lcix -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -O1 -lcix -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O2 -lcix -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O2 -lcix -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -O2 -lcix -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O3 -lcix -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O3 -lcix -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -O3 -lcix -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O4 -lcix -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O4 -lcix -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -O4 -lcix -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O5 -lcix -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O5 -lcix -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -O5 -lcix -C COMPACT
 
 
 goto done

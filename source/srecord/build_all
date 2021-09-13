@@ -15,8 +15,8 @@ if [[ ! -e "$TMP_LCCDIR/bin/catalina_env" ]] ; then
    exit
 fi
 # 
-cd srecord-1.55
-./configure
+cd srecord-1.64
+./configure --without-gcrypt
 make
 cp bin/srec_cat $TMP_LCCDIR/bin
 cp bin/srec_cmp $TMP_LCCDIR/bin

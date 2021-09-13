@@ -34,6 +34,10 @@ set CATALINA_DEFINE=%1 %2 %3 %4 %5 %6 %7 %8 %9
 
 del /q /f *.binary
 
+set platform=%1
+if "%platform:~0,2%"=="P2" goto build_pasm
+
+
 @echo.
 @echo    ===================
 @echo    Building SPIN demos
@@ -93,17 +97,32 @@ catalina -lc -I. -C NO_HMI test_spinc.c
 
 catalina -lc -C NO_HMI test_pasm.c flash_led.obj
 
+:build_pasm
 @echo.
 @echo    ==========================
 @echo    Building INLINE PASM demos
 @echo    ==========================
 @echo.
 
-catalina -lci -y -C NO_HMI test_inline_pasm.c 
+set platform=%1
+if "%platform:~0,2%"=="P2" goto build_p2
+
+catalina -lci -y -C NO_HMI test_inline_pasm_1.c 
 catalina -lci -y -C NO_HMI test_inline_pasm_2.c 
+catalina -lci -y -C TTY test_inline_pasm_3.c 
+catalina -lci -y -C TTY test_inline_pasm_4.c 
 
 call unset CATALINA_DEFINE
 goto done
+
+:build_p2
+
+catalina -lci -y -p2 -C TTY test_inline_pasm_3.c 
+catalina -lci -y -p2 -C TTY test_inline_pasm_4.c 
+
+call unset CATALINA_DEFINE
+goto done
+
 
 :define_error
 @echo.

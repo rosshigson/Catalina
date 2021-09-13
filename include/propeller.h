@@ -41,7 +41,7 @@ extern volatile unsigned VSCL;
 /*
  * declare PASM as external function
  */
-extern void PASM(const char *code);
+extern int PASM(const char *code);
 
 //
 // COGID : get the current cog id

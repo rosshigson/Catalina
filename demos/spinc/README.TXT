@@ -4,8 +4,23 @@ This README file covers two different but related topics:
 
 - USING PASM WITH CATALINA
 
-There are several options for both of these. Each is described separately, in
-the sections below. 
+There are several options available for doing both of these. Each is described 
+separately, in the sections below. 
+
+There are several demo programs provided, all of which can be built using the 
+'build_all' batch file provided. However, note that some programs will only
+build on the Propeller 1, and some will only build in COMPACT mode or not. 
+In particular, the SPIN demos are not currently supported on the Propeller
+2, only the inline PASM demos.
+
+E.g:
+
+   build_all C3
+
+   build_all P2_EVAL
+
+   build_all P2_EVAL COMPACT
+
 
 1. USING SPIN WITH CATALINA
 ===========================
@@ -35,11 +50,6 @@ is built into the Propeller ROM, or a modified spin interpreter can be provided
 
 Although all Spin programs must execute in Hub RAM, Catalina can execute Spin 
 programs even if the Catalina program itself is executing from XMM RAM.
-
-There are several demo programs provided, all of which can be built using the 
-'build_all' batch file provided. E.g:
-
-   build_all C3
 
 The example Catalina programs that run Spin programs which this command will 
 build are as follows. Note - make sure to load and execute the "run_xxx.binary"
@@ -269,6 +279,7 @@ simply type:
 
   payload test_pasm
 
+
 USE THE PASM FUNCTION TO INCLUDE PASM STATEMENTS INLINE IN A C PROGRAM
 ======================================================================
 
@@ -276,7 +287,7 @@ Catalina defines a PASM function that can be used for including PASM code
 inline with C code. The prototype for this function (defined in propeller.h) 
 is:
 
-   extern void PASM(const char *code);
+   extern int PASM(const char *code);
 
 However, there is no actual PASM function body. Instead, when it sees a call
 to this function, the compiler inserts the string literal given as argument
@@ -286,13 +297,23 @@ following program will toggle the Propeller's P0 output every 500 milliseconds:
 
    #include <propeller.h>
    void main() {  
-      PASM("or dira, #1");      // set bit 0 as output
+      PASM(" or dira, #1");      // set bit 0 as output
       while(1) {
          msleep(500);
-         PASM("xor outa, #1");  // toggle bit 0
+         PASM(" xor outa, #1");  // toggle bit 0
       }
    }
 
-See the examples "test_inline_pasm.c" and "test_inline_pasm_2.c" for more
-details. Note that you may need to modify the pins used in these programs
-to suit your platform.
+Any value in r0 will be available to the calling C program as the result of 
+the PASM call. For example:
+
+   i = PASM("mov r0, #1"); // this will set i to 1
+
+Otherwise, the result of the PASM call should be ignored.
+
+See the examples "test_inline_pasm_1.c", "test_inline_pasm_2.c", 
+"test_inline_pasm_3.c" and test_inline_pasm_4.c for more examples. 
+
+Note that you may need to modify the pins used in some of these programs to 
+suit your platform, and that some of these programs will only work in certain
+memory models or on certain types of Propeller (i.e. 1 or 2).

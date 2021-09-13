@@ -129,23 +129,23 @@ echo "   VALIDATING P2 "
 echo "   =============="
 echo ""
 
-compile_and_debug_p2 $1 test_suite -ltiny -lc 
+compile_and_debug_p2 $1 test_suite -ltiny -lc -C TINY
 compile_and_debug_p2 $1 test_suite -ltiny -lc -C NATIVE
 compile_and_debug_p2 $1 test_suite -ltiny -lc -C COMPACT
 
-compile_and_debug_p2 $1 test_suite -lc 
+compile_and_debug_p2 $1 test_suite -lc -C TINY
 compile_and_debug_p2 $1 test_suite -lc -C NATIVE
 compile_and_debug_p2 $1 test_suite -lc -C COMPACT
 
-compile_and_debug_p2 $1 test_suite -lci 
+compile_and_debug_p2 $1 test_suite -lci -C TINY
 compile_and_debug_p2 $1 test_suite -lci -C NATIVE
 compile_and_debug_p2 $1 test_suite -lci -C COMPACT
 
-compile_and_debug_p2 $1 test_suite -lcix 
+compile_and_debug_p2 $1 test_suite -lcix -C TINY
 compile_and_debug_p2 $1 test_suite -lcix -C NATIVE
 compile_and_debug_p2 $1 test_suite -lcix -C COMPACT
 
-compile_and_debug_p2 $1 test_suite -lcx 
+compile_and_debug_p2 $1 test_suite -lcx -C TINY
 compile_and_debug_p2 $1 test_suite -lcx -C NATIVE
 compile_and_debug_p2 $1 test_suite -lcx -C COMPACT
 

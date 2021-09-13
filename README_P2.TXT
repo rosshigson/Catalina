@@ -97,15 +97,40 @@ commands (unless it is overridden on the command line):
 
    set PAYLOAD_BAUD=230400
 
-There is also a a payload-based utility that can program the Flash RAM on the 
+There is also a a payload-based utility that can program the FLASH RAM on the 
 P2_EVAL board:
 
-   flash_payload othello.bin -z -b230400
+   flash_payload program.bin [ other payload options ]
 
-Note that you must have any SD card removed, and the FLASH microswitch set to
-OFF to load a program to FLASH, but then set the FLASH microswitch to ON to
-run it (this may also require a re-boot).
+e.g:
 
+   flash_payload othello.bin -b230400 -z -i
+
+Note that you must have the microswitches on the P2_EVAL PCB set correctly to 
+program the FLASH. Here is one way to do it: 
+
+   FLASH set to ON
+   P59^  set to ON 
+   P59v  set to OFF
+
+Then, execute the flash_payload command, and once all the LEDs have gone out 
+(which indicates the FLASH programming has completed) set the P59^ microswitch
+to OFF and reset the P2 to execute the loaded program from FLASH.
+
+Another way to do this is possible, which does not require microswitch changes.
+However, this method only works if you override payload's normal autodection
+of whether it is talking to a Propeller 1 or a Propeller 2 using the -o option.
+Set the microswitches as follows:
+
+   FLASH set to ON
+   P59^  set to OFF 
+   P59v  set to OFF
+
+Now, by executing the flash_payload command with the -o2 option, you can load 
+the FLASH RAM and then execute the program from FLASH in one command without 
+needing to change any of the microswiches. For example:
+
+   flash_payload othello.bin -b230400 -o2 -i
 
 But the best way to demonstrate Catalina on the P2 is to use the Catalyst 
 program. Catalyst is like an SD-card based operating system for the P2. A 

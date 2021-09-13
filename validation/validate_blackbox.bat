@@ -105,23 +105,23 @@ echo    VALIDATING P2
 echo    =============
 echo.
 
-call compile_and_debug_p2 %1 test_suite -ltiny -lc 
+call compile_and_debug_p2 %1 test_suite -ltiny -lc -C TINY
 call compile_and_debug_p2 %1 test_suite -ltiny -lc -C NATIVE
 call compile_and_debug_p2 %1 test_suite -ltiny -lc -C COMPACT
 
-call compile_and_debug_p2 %1 test_suite -lc 
+call compile_and_debug_p2 %1 test_suite -lc -C TINY
 call compile_and_debug_p2 %1 test_suite -lc -C NATIVE
 call compile_and_debug_p2 %1 test_suite -lc -C COMPACT
 
-call compile_and_debug_p2 %1 test_suite -lci 
+call compile_and_debug_p2 %1 test_suite -lci -C TINY
 call compile_and_debug_p2 %1 test_suite -lci -C NATIVE
 call compile_and_debug_p2 %1 test_suite -lci -C COMPACT
 
-call compile_and_debug_p2 %1 test_suite -lcix 
+call compile_and_debug_p2 %1 test_suite -lcix -C TINY
 call compile_and_debug_p2 %1 test_suite -lcix -C NATIVE
 call compile_and_debug_p2 %1 test_suite -lcix -C COMPACT
 
-call compile_and_debug_p2 %1 test_suite -lcx 
+call compile_and_debug_p2 %1 test_suite -lcx -C TINY
 call compile_and_debug_p2 %1 test_suite -lcx -C NATIVE
 call compile_and_debug_p2 %1 test_suite -lcx -C COMPACT
 

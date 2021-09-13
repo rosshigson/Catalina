@@ -4,6 +4,10 @@
  *
  * Version 4.6 - initial version, to coincide with Catalina 4.6
  *
+ * Version 4.7 - Just update version number.
+ *
+ * Version 4.8 - Just update version number.
+ *
  */
 
 #include <ctype.h>
@@ -14,7 +18,7 @@
 
 #define DO_EXECUTE         1 // 0 for debugging (output only, no execute)
 
-#define VERSION            "4.6" 
+#define VERSION            "4.8" 
 
 #ifdef WIN32_PATHS         /* define this on the command line for Windows */
 #define PATH_SEP           "\\"

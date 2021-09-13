@@ -117,7 +117,7 @@ void initialize_pragma_fn( a_VARARG *va ) {
    }
 
    #ifndef NO_BANNER
-   fprintf(stderr, "Catalina Parallelizer 4.6\n");
+   fprintf(stderr, "Catalina Parallelizer 4.8\n");
    #endif
 
    worker[0].name    = "__main";

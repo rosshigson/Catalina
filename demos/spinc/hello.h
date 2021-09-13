@@ -1,7 +1,7 @@
 /* 
  * Created from hello.binary with option -a
  * 
- * by Spin to C Array Converter, version 3.10
+ * by Spin to C Array Converter, version 4.7
  */
 
 #define HELLO_CLOCKFREQ  12000000
