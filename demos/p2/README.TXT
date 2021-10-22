@@ -6,26 +6,26 @@ they are generally intended to be functionally equivalent to the Propeller 1
 functions of the same names (where the Propeller 1 supports the functionality).
 
 To build the demo programs, use the 'build_all' scripts, specifying the
-platform and HMI options. For example:
+platform and (optionally) the memory model and HMI options. For example:
 
-   build_all P2_EVAL NATIVE
+   build_all P2_EVAL
 or
    build_all P2_EVAL COMPACT
 or
-   build_all P2_EVAL TINY
+   build_all P2_EVAL TINY LORES_VGA
 
 This will build two test programs:
 
-   test_p2_clock.bin       - clock tests
-   test_p2_smartpins.bin   - smartpin tests
-   test_p2.bin             - miscellanous tests
+   test_p2_clock       - clock tests
+   test_p2_smartpins   - smartpin tests
+   test_p2             - miscellanous tests
 
 To build a program manually that uses the functions in "propeller2.h", just 
 include the header (i.e. "#include <propeller2.h>"), and then compile as 
 normal - the functions are included in all the variants of the standard C 
 libraries (i.e. -lc, -lci, -lcx, -lcix). For example:
 
-   catalina -p2 -lc my_program.c -C P2_EVAL -C NATIVE
+   catalina -p2 -lc my_program.c -C P2_EVAL
 
 See the "propeller2.h" header file for descriptions of the functions.
 

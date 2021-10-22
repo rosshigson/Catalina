@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "debug_test.h"
+#include "debug_example.h"
 
 void test_1(char *str) {
    printf(str);

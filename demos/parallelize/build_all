@@ -11,22 +11,21 @@ if [[ ! -e "$TMP_LCCDIR/bin/catalina_env" ]] ; then
    echo ""
    echo "ERROR: Catalina does not appear to be installed in $TMP_LCCDIR"
    echo "";
-   echo "Set the environment variable LCCDIR to where Catalina is installed.";
+   echo "  Set the environment variable LCCDIR to where Catalina is installed.";
    echo "";
    exit
 fi
 #
 if [[ "$1" != "" ]]; then
-
+   TMP_PARAMS=`echo $1 $2 $3 $4 $5 $6 $7 $8 $9`
    if [[ "$CATALINA_DEFINE" != "" ]]; then
-
-      if [[ "$CATALINA_DEFINE" != "$1 $2 $3 $4 $5 $6 $7 $8 $9" ]]; then
+      if [[ "$CATALINA_DEFINE" != "$TMP_PARAMS" ]]; then
 
          echo ""
          echo "ERROR: Command line options conflict with CATALINA_DEFINE"
          echo ""
-         echo "   The Environment variable CATALINA_DEFINE is set to $CATALINA_DEFINE"
-         echo "   The Command line options specified are $1 $2 $3 $4 $5 $6 $7 $8 $9"
+         echo "   CATALINA_DEFINE is set to $CATALINA_DEFINE"
+         echo "   Command line options were $TMP_PARAMS"
          echo ""
          echo "   Either set CATALINA_DEFINE to null using the following command:"
          echo ""
@@ -34,25 +33,26 @@ if [[ "$1" != "" ]]; then
          echo ""
          echo "   or do not specify any command line parameters"
          echo ""
+	 exit
 
       else
 
          echo ""
          echo "NOTE: Environment variable CATALINA_DEFINE is set to $CATALINA_DEFINE"
          echo ""
-         echo "All programs will be built using these options. If these options conflict" 
-         echo "with any options specified in this file, the results may be unexpected." 
+         echo "  All programs will be built using these options. If these conflict" 
+         echo "  with options specified in this file, the results may be unexpected." 
          
       fi
 
    else
 
       echo ""
-      echo "NOTE: Environment variable CATALINA_DEFINE will be set to $1 $2 $3 $4 $5 $6 $7 $8 $9"
+      echo "NOTE: All programs will be built with options $TMP_PARAMS"
       echo ""
-      echo "All programs will be built using these options. If these options conflict"
-      echo "with any options specified in this file, the results may be unexpected."
-      CATALINA_DEFINE="$1 $2 $3 $4 $5 $6 $7 $8 $9"; export CATALINA_DEFINE
+      echo "  If these options conflict with options specified in the Makefile,"
+      echo "  the results may be unexpected."
+      CATALINA_DEFINE=$TMP_PARAMS; export CATALINA_DEFINE
 
    fi
 
@@ -63,114 +63,31 @@ else
       echo ""
       echo "NOTE: Environment variable CATALINA_DEFINE is set to $CATALINA_DEFINE"
       echo ""
-      echo "All programs will be built using these options. If these options conflict" 
-      echo "with any options specified in this file, the results may be unexpected." 
+      echo "  All programs will be built using these options. If these conflict" 
+      echo "  with options specified in this file, the results may be unexpected." 
   
    else     
 
       echo ""
       echo "NOTE: Environment variable CATALINA_DEFINE is not set"
       echo ""
-      echo "All programs will be built for the default target (CUSTOM)" 
+      echo "  All programs will be built for the default target" 
 
    fi
 
 fi
 
-echo "";
-
-platform=$1
-if [ "${platform:0:2}" != "P2" ]; then 
-
-   #   =================
-   #   BUILDING P1 DEMOS
-   #   =================
-
-catalina -lci -ltiny -O5 -C NO_FLOAT -C NO_ARGS test_1.c -o test_1_s
-catalina -lci -lthreads -ltiny -O5 -C NO_FLOAT -C NO_ARGS -Z test_1.c -o test_1_p
-
-catalina -lci -ltiny -O5 -C NO_FLOAT -C NO_ARGS test_2.c -o test_2_s
-catalina -lci -lthreads -ltiny -O5 -C NO_FLOAT -C NO_ARGS -Z test_2.c -o test_2_p
-
-catalina -lci -ltiny -O5 -C NO_FLOAT -C NO_ARGS test_3.c -o test_3_s
-catalina -lci -lthreads -ltiny -O5 -C NO_FLOAT -C NO_ARGS -Z test_3.c -o test_3_p
-
-catalina -lci -ltiny -O5 -C NO_FLOAT -C NO_ARGS test_4.c -o test_4_s
-catalina -lci -lthreads -ltiny -O5 -C NO_FLOAT -C NO_ARGS -Z test_4.c -o test_4_p
-
-catalina -lci -ltiny -O5 -C NO_FLOAT -C NO_ARGS test_5.c -o test_5_s
-catalina -lci -lthreads -ltiny -O5 -C NO_FLOAT -C NO_ARGS -Z test_5.c -o test_5_p
-
-catalina -lci -ltiny -O5 -C NO_FLOAT -C NO_ARGS test_6a.c test_6b.c test_6c.c -o test_6_s
-catalina -lci -lthreads -ltiny -O5 -C NO_FLOAT -C NO_ARGS -Z test_6a.c test_6b.c test_6c.c -o test_6_p
-
-catalina -lci -ltiny -O5 -C NO_FLOAT -C NO_ARGS test_7.c -o test_7_s
-catalina -lci -lthreads -ltiny -O5 -C NO_FLOAT -C NO_ARGS -Z test_7.c -o test_7_p
-
-catalina -lci -ltiny -O5 -C NO_FLOAT -C NO_ARGS test_8.c -o test_8_s
-catalina -lci -lthreads -ltiny -O5 -C NO_FLOAT -C NO_ARGS -Z test_8.c -o test_8_p
-
-catalina -lci -ltiny -O5 -C NO_FLOAT -C NO_ARGS test_9.c -o test_9_s
-catalina -lci -lthreads -ltiny -O5 -C NO_FLOAT -C NO_ARGS -Z test_9.c -o test_9_p
-
-catalina -lci -ltiny -O5 -C NO_FLOAT -C NO_ARGS test_10.c -o test_10_s
-catalina -lci -lthreads -ltiny -O5 -C NO_FLOAT -C NO_ARGS -Z test_10.c -o test_10_p
-
-catalina -lci -ltiny -O5 -C NO_FLOAT -C NO_ARGS sieve.c -o sieve_s
-catalina -lci -lthreads -ltiny -O5 -C NO_FLOAT -C NO_ARGS -Z sieve.c -o sieve_p
-
-catalina -lci -ltiny -O5 -C NO_FLOAT -C NO_ARGS -D PROPELLER -D”printf=t_printf” fftbench.c -o fftbench_s
-catalina -lci -lthreads -ltiny -O5 -C NO_FLOAT -C NO_ARGS -D PROPELLER -D”printf=t_printf” -Z fftbench.c -o fftbench_p
-
-else
-
-   #   =================
-   #   BUILDING P2 DEMOS
-   #   =================
-   #
-
-catalina -p2 -lci -ltiny -O5 -C NO_FLOAT -C NO_ARGS test_1.c -o test_1_s
-catalina -p2 -lci -lthreads -ltiny -O5 -C NO_FLOAT -C NO_ARGS -Z test_1.c -o test_1_p
-
-catalina -p2 -lci -ltiny -O5 -C NO_FLOAT -C NO_ARGS test_2.c -o test_2_s
-catalina -p2 -lci -lthreads -ltiny -O5 -C NO_FLOAT -C NO_ARGS -Z test_2.c -o test_2_p
-
-catalina -p2 -lci -ltiny -O5 -C NO_FLOAT -C NO_ARGS test_3.c -o test_3_s
-catalina -p2 -lci -lthreads -ltiny -O5 -C NO_FLOAT -C NO_ARGS -Z test_3.c -o test_3_p
-
-catalina -p2 -lci -ltiny -O5 -C NO_FLOAT -C NO_ARGS test_4.c -o test_4_s
-catalina -p2 -lci -lthreads -ltiny -O5 -C NO_FLOAT -C NO_ARGS -Z test_4.c -o test_4_p
-
-catalina -p2 -lci -ltiny -O5 -C NO_FLOAT -C NO_ARGS test_5.c -o test_5_s
-catalina -p2 -lci -lthreads -ltiny -O5 -C NO_FLOAT -C NO_ARGS -Z test_5.c -o test_5_p
-
-catalina -p2 -lci -ltiny -O5 -C NO_FLOAT -C NO_ARGS test_6a.c test_6b.c test_6c.c -o test_6_s
-catalina -p2 -lci -lthreads -ltiny -O5 -C NO_FLOAT -C NO_ARGS -Z test_6a.c test_6b.c test_6c.c -o test_6_p
-
-catalina -p2 -lci -ltiny -O5 -C NO_FLOAT -C NO_ARGS test_7.c -o test_7_s
-catalina -p2 -lci -lthreads -ltiny -O5 -C NO_FLOAT -C NO_ARGS -Z test_7.c -o test_7_p
-
-catalina -p2 -lci -ltiny -O5 -C NO_FLOAT -C NO_ARGS test_8.c -o test_8_s
-catalina -p2 -lci -lthreads -ltiny -O5 -C NO_FLOAT -C NO_ARGS -Z test_8.c -o test_8_p
-
-catalina -p2 -lci -ltiny -O5 -C NO_FLOAT -C NO_ARGS test_9.c -o test_9_s
-catalina -p2 -lci -lthreads -ltiny -O5 -C NO_FLOAT -C NO_ARGS -Z test_9.c -o test_9_p
-
-catalina -p2 -lci -ltiny -O5 -C NO_FLOAT -C NO_ARGS test_10.c -o test_10_s
-catalina -p2 -lci -lthreads -ltiny -O5 -C NO_FLOAT -C NO_ARGS -Z test_10.c -o test_10_p
-
-catalina -p2 -lci -ltiny -O5 -C NO_FLOAT -C NO_ARGS sieve.c -o sieve_s
-catalina -p2 -lci -lthreads -ltiny -O5 -C NO_FLOAT -C NO_ARGS -Z sieve.c -o sieve_p
-
-catalina -p2 -lci -ltiny -O5 -C NO_FLOAT -C NO_ARGS -D __P2__ fftbench.c -o fftbench_s
-catalina -p2 -lci -lthreads -ltiny -O5 -C NO_FLOAT -C NO_ARGS -D __P2__ -Z fftbench.c -o fftbench_p
-
-fi
-
-unset CATALINA_DEFINE
 echo ""
-echo "   ===="
-echo "   Done"
-echo "   ===="
+echo "=============="
+echo "Building Demos"
+echo "=============="
+echo ""
+
+make -B all
+
+echo ""
+echo "===="
+echo "Done"
+echo "===="
 echo ""
 

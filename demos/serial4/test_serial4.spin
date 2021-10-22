@@ -8,7 +8,7 @@
 
   Compile with a command like:
 
-    Homespun -L "C:\Program Files\Catalina\target" -D S4_SPIN test_s4.spin
+    spinnaker -L "C:\Program Files (x86)\Catalina\target" -D S4_SPIN test_s4.spin
 }
 CON
   _clkmode  = Common#CLOCKMODE

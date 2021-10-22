@@ -2978,7 +2978,7 @@ awka_getline(int inst, int *earliest, char *context)
 
     case 0: /* FILENAME input */
       pipe = 0;
-      r3 = (char *) malloc(30);
+      r3 = (char *) malloc(40);
       strcpy(r3, "awka_gets(a_bivar[a_FILENAME])");
       prev = inst-2;
       p = (* progcode[prev].func)(prev, &prev, &c1);

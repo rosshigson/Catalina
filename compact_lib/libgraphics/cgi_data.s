@@ -12,7 +12,15 @@ DAT ' code segment
 
 C__cgi_data
  alignl ' align long
+#ifdef P2
+#ifdef NATIVE
+ long I32_LODI + CGI_DATA<<S32
+#else
  long I32_LODI + $7E44<<S32 ' !!! NOTE: Must Match Catalina_Common !!!
+#endif
+#else
+ long I32_LODI + $7E44<<S32 ' !!! NOTE: Must Match Catalina_Common !!!
+#endif
  word I16A_MOV + r0<<D16A + RI<<S16A
  word I16B_RETN
 

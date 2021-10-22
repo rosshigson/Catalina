@@ -56,13 +56,14 @@ C_cgi_screen_data ' <symbol:cgi_screen_data>
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
  long @C__cgi_data ' CALL addrg
- mov r20, ##$ffff ' reg <- con
+ mov r20, ##$ffffff ' reg <- con
  mov r22, r0 ' BANDI/U
  and r22, r20 ' BANDI/U (3)
  mov r20, FP
  sub r20, #-(-4) ' reg <- addrli
  rdlong r20, r20 ' reg <- INDIRU4 reg
  add r22, r20 ' ADDU (1)
+ add r22, #4 ' ADDU4 coni
  mov RI, FP
  sub RI, #-(-16)
  wrlong r22, RI ' ASGNU4 addrli reg

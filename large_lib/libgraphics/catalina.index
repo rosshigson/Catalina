@@ -3,9 +3,9 @@ _cgi_data cgi_bitmap_base.s 80 import
 cgi_y_tiles cgi_bitmap_base.s 82 import
 cgi_x_tiles cgi_bitmap_base.s 84 import
 cgi_color_data cgi_color_data.s 9 export
-_cgi_data cgi_color_data.s 86 import
-cgi_y_tiles cgi_color_data.s 88 import
-cgi_x_tiles cgi_color_data.s 90 import
+_cgi_data cgi_color_data.s 78 import
+cgi_y_tiles cgi_color_data.s 80 import
+cgi_x_tiles cgi_color_data.s 82 import
 _cgi_data cgi_data.s 21 export
 cgi_display_base cgi_display_base.s 9 export
 _cgi_data cgi_display_base.s 29 import

@@ -35,9 +35,13 @@
 
 void main(int argc, char *argv[]) {
 
-   // note that we assume LMM code is larger than CMM code,
-   // so we reserve the size required for the LMM code here
-   char RESERVED_SPACE[LMM_RUNTIME_SIZE];
+   // Note that we assume LMM code is larger than CMM code,
+   // so we reserve the size required for the LMM code here.
+   // Also, note that we round up the reserved space to the
+   // next 128 byte boundary (to allow for small changes in 
+   // the code size).
+   #define ROUND 128
+   char RESERVED_SPACE[ROUND*((LMM_RUNTIME_SIZE + ROUND - 1)/ROUND)];
 
    int arg;
    int cog;

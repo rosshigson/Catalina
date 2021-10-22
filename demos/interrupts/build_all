@@ -81,19 +81,7 @@ echo "   BUILDING INTERRUPT DEMOS"
 echo "   ========================"
 echo ""
 
-platform=$1
-
-if [ "${platform:0:2}" != "P2" ]; then 
-echo ""
-echo " ERROR: These programs require a Propeller 2"
-echo ""
-
-else
-
-   catalina -p2 -lci -linterrupts test_interrupts.c -C NO_MOUSE -C NO_FP 
-   catalina -p2 -lci -linterrupts -lthreads test_threads_and_interrupts.c -C NO_MOUSE -C NO_FP 
-
-fi
+make clean all
 
 unset CATALINA_DEFINE
 echo ""

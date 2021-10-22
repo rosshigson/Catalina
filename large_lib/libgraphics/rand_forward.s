@@ -46,7 +46,11 @@ DAT ' code segment
 '
 C__rand_forward
  mov r0, r2
+
+
+
  min r0, #1
+
  mov r1, #32
  mov BC, #%10111
 :C__rand_forward_rndlp test r0, BC wc

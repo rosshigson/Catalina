@@ -156,10 +156,10 @@ echo ""
 echo -n "Enter other options: "
 read -e OPTIONS
 
-if [[ -e ~/catalyst/build_all ]] ; then
-   pushd ~/catalyst
+if [[ -e ~/demos/catalyst/build_all ]] ; then
+   pushd ~/demos/catalyst
 else
-   pushd "$TMP_LCCDIR/catalyst"
+   pushd "$TMP_LCCDIR/demos/catalyst"
 fi
 
 if [[ "$PLATFORM" == "MORPHEUS" ]] ; then

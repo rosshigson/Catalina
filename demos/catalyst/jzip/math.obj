@@ -1,0 +1,839 @@
+' Catalina Code
+
+DAT ' code segment
+'
+' LCC 4.2 for Parallax Propeller
+' (Catalina v3.15 Code Generator by Ross Higson)
+'
+
+' Catalina Export z_add
+
+ alignl ' align long
+C_z_add ' <symbol:z_add>
+ PRIMITIVE(#PSHM)
+ long $f00000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ mov r22, r23 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ mov r20, r21 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ adds r22, r20 ' ADDI/P (1)
+ mov r2, r22 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_store_operand ' CALL addrg
+' C_z_add_3 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Export z_sub
+
+ alignl ' align long
+C_z_sub ' <symbol:z_sub>
+ PRIMITIVE(#PSHM)
+ long $f00000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ mov r22, r23 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ mov r20, r21 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ subs r22, r20 ' SUBI/P (1)
+ mov r2, r22 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_store_operand ' CALL addrg
+' C_z_sub_4 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Export z_mul
+
+ alignl ' align long
+C_z_mul ' <symbol:z_mul>
+ PRIMITIVE(#PSHM)
+ long $f00000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ mov r22, r23 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ mov r20, r21 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ shl r20, #16
+ sar r20, #16 ' sign extend
+ #ifndef NO_INTERRUPTS
+  stalli
+ #endif
+ qmul r22, r20 ' MULI4
+ getqx r0
+ #ifndef NO_INTERRUPTS
+  allowi
+ #endif
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov r2, r22 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_store_operand ' CALL addrg
+' C_z_mul_5 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Export z_div
+
+ alignl ' align long
+C_z_div ' <symbol:z_div>
+ PRIMITIVE(#NEWF)
+ sub SP, #4
+ PRIMITIVE(#PSHM)
+ long $fa0000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ mov r22, r23 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ mov r17, r22 ' CVI, CVU or LOAD
+ mov r22, r21 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ mov r19, r22 ' CVI, CVU or LOAD
+ mov r22, r19 ' CVII
+ mov r22, r19 ' CVII
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ cmps r22,  #0 wcz
+ if_ae jmp #\C_z_div_7 ' GEI4
+ mov r22, r17 ' CVII
+ mov r22, r17 ' CVII
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ neg r22, r22 ' NEGI4
+ mov r17, r22 ' CVI, CVU or LOAD
+ mov r22, r19 ' CVII
+ mov r22, r19 ' CVII
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ neg r22, r22 ' NEGI4
+ mov r19, r22 ' CVI, CVU or LOAD
+C_z_div_7
+ mov r22, r19 ' CVII
+ mov r22, r19 ' CVII
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ cmps r22,  #0 wz
+ if_nz jmp #\C_z_div_9 ' NEI4
+ mov r2, ##@C_z_div_11_L000012 ' reg ARG ADDRG
+ mov r3, #15 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_report_strictz_error
+ add SP, #4 ' CALL addrg
+ mov r22, ##32767 ' reg <- con
+ mov RI, FP
+ sub RI, #-(-4)
+ wrword r22, RI ' ASGNI2 addrli reg
+ jmp #\@C_z_div_10 ' JUMPV addrg
+C_z_div_9
+ mov r22, r17 ' CVII
+ mov r22, r17 ' CVII
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ cmps r22,  #0 wcz
+ if_b jmp #\C_z_div_13 ' LTI4
+ mov r22, r17 ' CVII
+ mov r22, r17 ' CVII
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ mov r20, r19 ' CVII
+ mov r20, r19 ' CVII
+ shl r20, #16
+ sar r20, #16 ' sign extend
+ mov r0, r22 ' setup r0/r1 (2)
+ mov r1, r20 ' setup r0/r1 (2)
+ PRIMITIVE(#DIVS) ' DIVI
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov RI, FP
+ sub RI, #-(-4)
+ wrword r22, RI ' ASGNI2 addrli reg
+ jmp #\@C_z_div_14 ' JUMPV addrg
+C_z_div_13
+ mov r22, r17 ' CVII
+ mov r22, r17 ' CVII
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ neg r22, r22 ' NEGI4
+ mov r20, r19 ' CVII
+ mov r20, r19 ' CVII
+ shl r20, #16
+ sar r20, #16 ' sign extend
+ mov r0, r22 ' setup r0/r1 (2)
+ mov r1, r20 ' setup r0/r1 (2)
+ PRIMITIVE(#DIVS) ' DIVI
+ neg r22, r0 ' NEGI4
+ mov RI, FP
+ sub RI, #-(-4)
+ wrword r22, RI ' ASGNI2 addrli reg
+C_z_div_14
+C_z_div_10
+ mov r22, FP
+ sub r22, #-(-4) ' reg <- addrli
+ rdword r22, r22 ' reg <- INDIRI2 reg
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ mov r2, r22 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_store_operand ' CALL addrg
+' C_z_div_6 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ add SP, #4 ' framesize
+ PRIMITIVE(#RETF)
+
+
+' Catalina Export z_mod
+
+ alignl ' align long
+C_z_mod ' <symbol:z_mod>
+ PRIMITIVE(#NEWF)
+ sub SP, #4
+ PRIMITIVE(#PSHM)
+ long $fa0000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ mov r22, r23 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ mov r17, r22 ' CVI, CVU or LOAD
+ mov r22, r21 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ mov r19, r22 ' CVI, CVU or LOAD
+ mov r22, r19 ' CVII
+ mov r22, r19 ' CVII
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ cmps r22,  #0 wcz
+ if_ae jmp #\C_z_mod_16 ' GEI4
+ mov r22, r19 ' CVII
+ mov r22, r19 ' CVII
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ neg r22, r22 ' NEGI4
+ mov r19, r22 ' CVI, CVU or LOAD
+C_z_mod_16
+ mov r22, r19 ' CVII
+ mov r22, r19 ' CVII
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ cmps r22,  #0 wz
+ if_nz jmp #\C_z_mod_18 ' NEI4
+ mov r2, ##@C_z_mod_20_L000021 ' reg ARG ADDRG
+ mov r3, #15 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ PRIMITIVE(#CALA)
+ long @C_report_strictz_error
+ add SP, #4 ' CALL addrg
+ mov r22, #0 ' reg <- coni
+ mov RI, FP
+ sub RI, #-(-4)
+ wrword r22, RI ' ASGNI2 addrli reg
+C_z_mod_18
+ mov r22, r17 ' CVII
+ mov r22, r17 ' CVII
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ cmps r22,  #0 wcz
+ if_b jmp #\C_z_mod_22 ' LTI4
+ mov r22, r17 ' CVII
+ mov r22, r17 ' CVII
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ mov r20, r19 ' CVII
+ mov r20, r19 ' CVII
+ shl r20, #16
+ sar r20, #16 ' sign extend
+ mov r0, r22 ' setup r0/r1 (2)
+ mov r1, r20 ' setup r0/r1 (2)
+ PRIMITIVE(#DIVS) ' DIVI
+ mov r22, r1 ' CVI, CVU or LOAD
+ mov RI, FP
+ sub RI, #-(-4)
+ wrword r22, RI ' ASGNI2 addrli reg
+ jmp #\@C_z_mod_23 ' JUMPV addrg
+C_z_mod_22
+ mov r22, r17 ' CVII
+ mov r22, r17 ' CVII
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ neg r22, r22 ' NEGI4
+ mov r20, r19 ' CVII
+ mov r20, r19 ' CVII
+ shl r20, #16
+ sar r20, #16 ' sign extend
+ mov r0, r22 ' setup r0/r1 (2)
+ mov r1, r20 ' setup r0/r1 (2)
+ PRIMITIVE(#DIVS) ' DIVI
+ neg r22, r1 ' NEGI4
+ mov RI, FP
+ sub RI, #-(-4)
+ wrword r22, RI ' ASGNI2 addrli reg
+C_z_mod_23
+ mov r22, FP
+ sub r22, #-(-4) ' reg <- addrli
+ rdword r22, r22 ' reg <- INDIRI2 reg
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ mov r2, r22 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_store_operand ' CALL addrg
+' C_z_mod_15 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ add SP, #4 ' framesize
+ PRIMITIVE(#RETF)
+
+
+' Catalina Export z_log_shift
+
+ alignl ' align long
+C_z_log_shift ' <symbol:z_log_shift>
+ PRIMITIVE(#PSHM)
+ long $f00000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ mov r22, r21 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ cmps r22,  #0 wcz
+ if_be jmp #\C_z_log_shift_25 ' LEI4
+ mov r22, r23 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ mov r20, r21 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ shl r20, #16
+ sar r20, #16 ' sign extend
+ shl r22, r20 ' LSHI/U (1)
+ mov r2, r22 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_store_operand ' CALL addrg
+ jmp #\@C_z_log_shift_26 ' JUMPV addrg
+C_z_log_shift_25
+ mov r22, r23 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ mov r20, r21 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ shl r20, #16
+ sar r20, #16 ' sign extend
+ neg r20, r20 ' NEGI4
+ sar r22, r20 ' RSHI (1)
+ mov r2, r22 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_store_operand ' CALL addrg
+C_z_log_shift_26
+' C_z_log_shift_24 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Export z_art_shift
+
+ alignl ' align long
+C_z_art_shift ' <symbol:z_art_shift>
+ PRIMITIVE(#PSHM)
+ long $f00000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ mov r22, r21 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ cmps r22,  #0 wcz
+ if_be jmp #\C_z_art_shift_28 ' LEI4
+ mov r22, r23 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ mov r20, r21 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ shl r20, #16
+ sar r20, #16 ' sign extend
+ shl r22, r20 ' LSHI/U (1)
+ mov r2, r22 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_store_operand ' CALL addrg
+ jmp #\@C_z_art_shift_29 ' JUMPV addrg
+C_z_art_shift_28
+ mov r22, r23 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ mov r20, r21 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ shl r20, #16
+ sar r20, #16 ' sign extend
+ neg r20, r20 ' NEGI4
+ sar r22, r20 ' RSHI (1)
+ mov r2, r22 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_store_operand ' CALL addrg
+C_z_art_shift_29
+' C_z_art_shift_27 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Export z_or
+
+ alignl ' align long
+C_z_or ' <symbol:z_or>
+ PRIMITIVE(#PSHM)
+ long $f00000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ mov r22, r23 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ mov r20, r21 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ or r22, r20 ' BORI/U (1)
+ mov r2, r22 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_store_operand ' CALL addrg
+' C_z_or_30 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Export z_not
+
+ alignl ' align long
+C_z_not ' <symbol:z_not>
+ PRIMITIVE(#PSHM)
+ long $c00000 ' save registers
+ mov r23, r2 ' reg var <- reg arg
+ mov r22, r23 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ xor r22, all_1s ' BCOMI4
+ mov r2, r22 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_store_operand ' CALL addrg
+' C_z_not_31 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Export z_and
+
+ alignl ' align long
+C_z_and ' <symbol:z_and>
+ PRIMITIVE(#PSHM)
+ long $f00000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ mov r22, r23 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ mov r20, r21 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ and r22, r20 ' BANDI/U (1)
+ mov r2, r22 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_store_operand ' CALL addrg
+' C_z_and_32 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Export z_random
+
+ alignl ' align long
+C_z_random ' <symbol:z_random>
+ PRIMITIVE(#PSHM)
+ long $d00000 ' save registers
+ mov r23, r2 ' reg var <- reg arg
+ mov r22, r23 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ cmps r22,  #0 wz
+ if_nz jmp #\C_z_random_34 ' NEI4
+ mov r2, #0 ' reg ARG coni
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_store_operand ' CALL addrg
+ jmp #\@C_z_random_35 ' JUMPV addrg
+C_z_random_34
+ mov r22, r23 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ mov r20, ##32768 ' reg <- con
+ and r22, r20 ' BANDI/U (1)
+ cmps r22,  #0 wz
+ if_z jmp #\C_z_random_36 ' EQI4
+ mov r2, r23 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_abs ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov r2, r22 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_srand ' CALL addrg
+ mov r2, #0 ' reg ARG coni
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_store_operand ' CALL addrg
+ jmp #\@C_z_random_37 ' JUMPV addrg
+C_z_random_36
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ PRIMITIVE(#CALA)
+ long @C_rand ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov r20, r23 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ mov r0, r22 ' setup r0/r1 (2)
+ mov r1, r20 ' setup r0/r1 (2)
+ PRIMITIVE(#DIVS) ' DIVI
+ mov r22, r1
+ adds r22, #1 ' ADDI4 coni
+ mov r2, r22 ' CVUI
+ and r2, cviu_m2 ' zero extend
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_store_operand ' CALL addrg
+C_z_random_37
+C_z_random_35
+' C_z_random_33 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Export z_test
+
+ alignl ' align long
+C_z_test ' <symbol:z_test>
+ PRIMITIVE(#PSHM)
+ long $f80000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ mov r22, r23 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ xor r22, all_1s ' BCOMI4
+ mov r20, r21 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ and r22, r20 ' BANDI/U (1)
+ cmps r22,  #0 wz
+ if_nz jmp #\C_z_test_40 ' NEI4
+ mov r19, #1 ' reg <- coni
+ jmp #\@C_z_test_41 ' JUMPV addrg
+C_z_test_40
+ mov r19, #0 ' reg <- coni
+C_z_test_41
+ mov r2, r19 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_conditional_jump ' CALL addrg
+' C_z_test_38 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Export z_jz
+
+ alignl ' align long
+C_z_jz ' <symbol:z_jz>
+ PRIMITIVE(#PSHM)
+ long $e00000 ' save registers
+ mov r23, r2 ' reg var <- reg arg
+ mov r22, r23 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ cmps r22,  #0 wz
+ if_nz jmp #\C_z_jz_44 ' NEI4
+ mov r21, #1 ' reg <- coni
+ jmp #\@C_z_jz_45 ' JUMPV addrg
+C_z_jz_44
+ mov r21, #0 ' reg <- coni
+C_z_jz_45
+ mov r2, r21 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_conditional_jump ' CALL addrg
+' C_z_jz_42 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Export z_je
+
+ alignl ' align long
+C_z_je ' <symbol:z_je>
+ PRIMITIVE(#PSHM)
+ long $f80000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ mov r19, #1 ' reg <- coni
+ jmp #\@C_z_je_50 ' JUMPV addrg
+C_z_je_47
+ rdword r22, r21 ' reg <- CVUI4 INDIRU2 reg
+ mov r20, r19
+ shl r20, #1 ' LSHI4 coni
+ adds r20, r21 ' ADDI/P (1)
+ rdword r20, r20 ' reg <- CVUI4 INDIRU2 reg
+ cmps r22, r20 wz
+ if_nz jmp #\C_z_je_51 ' NEI4
+ mov r2, #1 ' reg ARG coni
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_conditional_jump ' CALL addrg
+ jmp #\@C_z_je_46 ' JUMPV addrg
+C_z_je_51
+' C_z_je_48 ' (symbol refcount = 0)
+ adds r19, #1 ' ADDI4 coni
+C_z_je_50
+ cmps r19, r23 wcz
+ if_b jmp #\C_z_je_47 ' LTI4
+ mov r2, #0 ' reg ARG coni
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_conditional_jump ' CALL addrg
+C_z_je_46
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Export z_jl
+
+ alignl ' align long
+C_z_jl ' <symbol:z_jl>
+ PRIMITIVE(#PSHM)
+ long $f80000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ mov r22, r23 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ mov r20, r21 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ shl r20, #16
+ sar r20, #16 ' sign extend
+ cmps r22, r20 wcz
+ if_ae jmp #\C_z_jl_55 ' GEI4
+ mov r19, #1 ' reg <- coni
+ jmp #\@C_z_jl_56 ' JUMPV addrg
+C_z_jl_55
+ mov r19, #0 ' reg <- coni
+C_z_jl_56
+ mov r2, r19 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_conditional_jump ' CALL addrg
+' C_z_jl_53 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Export z_jg
+
+ alignl ' align long
+C_z_jg ' <symbol:z_jg>
+ PRIMITIVE(#PSHM)
+ long $f80000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ mov r22, r23 ' CVUI
+ and r22, cviu_m2 ' zero extend
+ shl r22, #16
+ sar r22, #16 ' sign extend
+ mov r20, r21 ' CVUI
+ and r20, cviu_m2 ' zero extend
+ shl r20, #16
+ sar r20, #16 ' sign extend
+ cmps r22, r20 wcz
+ if_be jmp #\C_z_jg_59 ' LEI4
+ mov r19, #1 ' reg <- coni
+ jmp #\@C_z_jg_60 ' JUMPV addrg
+C_z_jg_59
+ mov r19, #0 ' reg <- coni
+C_z_jg_60
+ mov r2, r19 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ PRIMITIVE(#CALA)
+ long @C_conditional_jump ' CALL addrg
+' C_z_jg_57 ' (symbol refcount = 0)
+ PRIMITIVE(#POPM) ' restore registers
+ PRIMITIVE(#RETN)
+
+
+' Catalina Import store_operand
+
+' Catalina Import conditional_jump
+
+' Catalina Import report_strictz_error
+
+' Catalina Import abs
+
+' Catalina Import srand
+
+' Catalina Import rand
+
+' Catalina Cnst
+
+DAT ' const data segment
+
+ alignl ' align long
+C_z_mod_20_L000021 ' <symbol:20>
+ byte 64
+ byte 109
+ byte 111
+ byte 100
+ byte 32
+ byte 97
+ byte 116
+ byte 116
+ byte 101
+ byte 109
+ byte 112
+ byte 116
+ byte 101
+ byte 100
+ byte 32
+ byte 119
+ byte 105
+ byte 116
+ byte 104
+ byte 32
+ byte 97
+ byte 32
+ byte 100
+ byte 105
+ byte 118
+ byte 105
+ byte 115
+ byte 111
+ byte 114
+ byte 32
+ byte 111
+ byte 102
+ byte 32
+ byte 122
+ byte 101
+ byte 114
+ byte 111
+ byte 46
+ byte 32
+ byte 32
+ byte 82
+ byte 101
+ byte 115
+ byte 117
+ byte 108
+ byte 116
+ byte 32
+ byte 115
+ byte 101
+ byte 116
+ byte 32
+ byte 116
+ byte 111
+ byte 32
+ byte 48
+ byte 46
+ byte 0
+
+ alignl ' align long
+C_z_div_11_L000012 ' <symbol:11>
+ byte 64
+ byte 100
+ byte 105
+ byte 118
+ byte 32
+ byte 97
+ byte 116
+ byte 116
+ byte 101
+ byte 109
+ byte 112
+ byte 116
+ byte 101
+ byte 100
+ byte 32
+ byte 119
+ byte 105
+ byte 116
+ byte 104
+ byte 32
+ byte 97
+ byte 32
+ byte 100
+ byte 105
+ byte 118
+ byte 105
+ byte 115
+ byte 111
+ byte 114
+ byte 32
+ byte 111
+ byte 102
+ byte 32
+ byte 122
+ byte 101
+ byte 114
+ byte 111
+ byte 46
+ byte 32
+ byte 32
+ byte 82
+ byte 101
+ byte 115
+ byte 117
+ byte 108
+ byte 116
+ byte 32
+ byte 115
+ byte 101
+ byte 116
+ byte 32
+ byte 116
+ byte 111
+ byte 32
+ byte 51
+ byte 50
+ byte 55
+ byte 54
+ byte 55
+ byte 32
+ byte 40
+ byte 48
+ byte 120
+ byte 55
+ byte 102
+ byte 102
+ byte 102
+ byte 41
+ byte 46
+ byte 0
+
+' Catalina Code
+
+DAT ' code segment
+' end

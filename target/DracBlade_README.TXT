@@ -61,21 +61,21 @@ with them. Also note that Catalyst can currently only support a cache size up
 to 4K. So if you plan to use Catalysyt, you should compile it using commands 
 similar to the following:
 
-   cd "C:\Program Files\Catalina\catalyst"
+   cd "c:\Program Files (x86)\Catalina\catalyst"
    build_all DRACBLADE CACHED_2K
 
 Then all the programs you intend to load with catalyst should also be compiled
 with a 2K cache, such as:
 
-   cd "C:\Program Files\Catalina\demos"
+   cd "c:\Program Files (x86)\Catalina\demos"
    catalina hello_world.c -lci -C DRACBLADE -C CACHED_2K
 
 However, if you instead plan to use the payload XMM loader, you could compile
 programs with an 8k cache:
 
-   cd "C:\Program Files\Catalina\utilities"
+   cd "c:\Program Files (x86)\Catalina\utilities"
    build_all DRACBLADE CACHED_8K
-   cd "C:\Program Files\Catalina\demos"
+   cd "c:\Program Files (x86)\Catalina\demos"
    catalina hello_world.c -lci -C DRACBLADE -C CACHED_8K
 
 Just be aware that you cannot use loaders compiled with one cache size to load

@@ -173,11 +173,11 @@ entry
         ' calculate rw offset
 
         mov    rw_offs,ro_size                  ' calculate r/w offset ...
-        add    rw_offs,page_size                ' ... allowing for prologue ...
-        sub    rw_offs,#1                       ' ... and round up ...
+        add    rw_offs,page_size                ' ... round ...
+        sub    rw_offs,#1                       ' ... up ...
         shr    rw_offs,#Common#FLIST_LOG2       ' ... to ...
         shl    rw_offs,#Common#FLIST_LOG2       ' ... next sector ...
-        add    rw_offs,page_size                ' (????)
+        add    rw_offs,page_size                ' ... and allow for prologue
 
         ' calculate r/w source address
 
@@ -192,11 +192,12 @@ entry
 '
 ' The following code implements XMM layouts 3 & 4 only.
 '
-' XMM Layout 3:
+' XMM Layout 3 (LARGE):
 '   [INIT,DATA,CODE,CNST] => [CODE,CNST] in SPI FLASH & [INIT,DATA] in SPI RAM
+'   
 '
-' XMM Layout 4:
-'   [INIT,DATA,CODE,CNST] => [CODE] in SPI FLASH & [CNST,INIT,DATA] in HUB RAM
+' XMM Layout 4 (SMALL):
+'   [CNST,INIT,DATA,CODE] => [CODE] in SPI FLASH & [CNST,INIT,DATA] in HUB RAM
 '
         cmp    layout,#3 wz                     ' is it layout 3?
   if_z  jmp    #load_spi                        ' yes - load it

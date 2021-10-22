@@ -2,43 +2,56 @@
                 =======================================
 
 Catalina is provided with binaries suitable for use with Ubuntu 18, and these
-binaries may work under other variants of Linux. If not, Catalina can be built
-from source under linux with a just a few commands, provided all the required 
-packages have been installed (currently, at least gcc-c++, flex, bison, 
-libtool and unzip). 
+binaries may work under other Linux distributions. If not, Catalina can be 
+built from source under Linux with a just a few commands, provided all the 
+required packages have been installed. 
 
-Catalina can be built anywhere, without requiring root permission.
+You can install Catalina anywhere, but some scripts and utilities assume it
+is installed in /opt/catalina. Doing so may require root permissions. After 
+unpacking the distribution, there is a script in the catalina/bin directory 
+that may have to be manually executed once to set up the correct permissions 
+( and note that this script itself may need to have execute permission added 
+manually). This script is:
 
-Catalina can also be installed anywhere (but installing it to its default
-location of /opt/catalina probably still requires root permission).
+   Set_Linux_Permissions
 
-To build Catalina, unpack the zip file, and then do the following (assuming 
-you unpacked the tarball to Catalina_4.7):
+To use Catalina, open a command window, and execute the folowing command from 
+a bash shell (assuming you installed it to /opt/catalina):
 
-   cd Catalina_4.7
+   LCCDIR=/opt/catalina
+   export LCCDIR
+   source $LCCDIR/use_catalina
+
+This will set up the LCCDIR environment variable and add the Catalina binary
+directories to your path. You may want to add these commands to your profile 
+so you don't need to execute them every time you open a command window. 
+
+Now you should be ready to go. Check out the document "Getting Started with 
+Catalina" and the other documents in the catalina/documents directory.
+
+If Catalina does not work "out of the box" on yor distribution, you may need 
+to rebuild it from source. Catalina can be built anywhere, without requiring 
+root permission.
+
+To build Catalina, unpack the distribution file, and then do the following:
+
+   cd catalina
    LCCDIR=$PWD
    export LCCDIR
-   source use_catalina
+   source $LCCDIR/use_catalina
    cd source
    ./build_all
 
 Note that to build Catalina you may need to install one or more of the 
 following packages:
 
+   g++
    flex
    bison
    libncurse-dev
    libboost-all-dev
    libtool-bin
-
-To use Catalina, set the LCCDIR environment variable to wherever you have
-installed Catalina - this can be done in your profile - and then execute
-the following command in any command shell:
-
-   source $LCCDIR/use_catalina
-
-Now you are ready to use Catalina!
-
+   unzip
 
            A NOTE ON ACCESSING USB SERIAL PORTS UNDER LINUX
            ================================================

@@ -27,15 +27,15 @@ C__clean ' <symbol:_clean>
 DAT ' code segment
 
  alignl ' align long
-C_s77o_6132d0ce__calls_L000003 ' <symbol:_calls>
+C_sdfk_616ac862__calls_L000003 ' <symbol:_calls>
  PRIMITIVE(#PSHM)
  long $d00000 ' save registers
  PRIMITIVE(#LODI)
  long @C___funccnt
  mov r23, RI ' reg <- INDIRI4 addrg
  PRIMITIVE(#JMPA)
- long @C_s77o_6132d0ce__calls_L000003_6 ' JUMPV addrg
-C_s77o_6132d0ce__calls_L000003_5
+ long @C_sdfk_616ac862__calls_L000003_6 ' JUMPV addrg
+C_sdfk_616ac862__calls_L000003_5
  mov r22, r23
  shl r22, #2 ' LSHI4 coni
  PRIMITIVE(#LODL)
@@ -46,14 +46,14 @@ C_s77o_6132d0ce__calls_L000003_5
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  mov RI, r22
  PRIMITIVE(#CALI) ' CALL indirect
-C_s77o_6132d0ce__calls_L000003_6
+C_sdfk_616ac862__calls_L000003_6
  mov r22, r23
  subs r22, #1 ' SUBI4 coni
  mov r23, r22 ' CVI, CVU or LOAD
  cmps r22,  #0 wcz
  PRIMITIVE(#BRAE)
- long @C_s77o_6132d0ce__calls_L000003_5 ' GEI4
-' C_s77o_6132d0ce__calls_L000003_4 ' (symbol refcount = 0)
+ long @C_sdfk_616ac862__calls_L000003_5 ' GEI4
+' C_sdfk_616ac862__calls_L000003_4 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
@@ -67,7 +67,7 @@ C_exit ' <symbol:exit>
  mov r23, r2 ' reg var <- reg arg
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
- long @C_s77o_6132d0ce__calls_L000003 ' CALL addrg
+ long @C_sdfk_616ac862__calls_L000003 ' CALL addrg
  PRIMITIVE(#LODI)
  long @C__clean
  mov r22, RI ' reg <- INDIRP4 addrg

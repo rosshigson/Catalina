@@ -1,8 +1,8 @@
 This README file covers two different but related topics:
 
-- USING SPIN WITH CATALINA
+- USING SPIN PROGRAMS WITH CATALINA
 
-- USING PASM WITH CATALINA
+- USING PASM PROGRAMS WITH CATALINA
 
 There are several options available for doing both of these. Each is described 
 separately, in the sections below. 
@@ -10,8 +10,7 @@ separately, in the sections below.
 There are several demo programs provided, all of which can be built using the 
 'build_all' batch file provided. However, note that some programs will only
 build on the Propeller 1, and some will only build in COMPACT mode or not. 
-In particular, the SPIN demos are not currently supported on the Propeller
-2, only the inline PASM demos.
+In particular, the SPIN demos are not currently supported on the Propeller 2.
 
 E.g:
 
@@ -22,8 +21,8 @@ E.g:
    build_all P2_EVAL COMPACT
 
 
-1. USING SPIN WITH CATALINA
-===========================
+1. USING SPIN PROGRAMS WITH CATALINA
+====================================
 
 While it is not possible to directly call Spin methods from Catalina C or to
 call Catalina C functions from Spin, it is possible to run C and Spin programs 
@@ -56,46 +55,46 @@ build are as follows. Note - make sure to load and execute the "run_xxx.binary"
 programs (which are the Catalina programs) and not the "xxx.binary" programs
 (which are the original Spin programs!).
 
-   run_flash.binary - demontrates a simple Spin program (flash.spin) which 
-                      flashes a LED at the rate of 1Hz. Note that you will
-                      need to modify the LED_PIN number in the Spin program 
-                      if you have a Propeller platform other than a C3. This
-                      program in interesting because as well as flashing the
-                      LED via the Spin program, the C program also prints "on!" 
-                      or "off!" ont the screen - this is done by the C program
-                      reading the current value of the LED output from the Spin 
-                      program's VAR array, and shows the basic mechanism for
-                      having Spin and C programs interacting.
+   run_flash - demontrates a simple Spin program (flash.spin) which 
+               flashes a LED at the rate of 1Hz. Note that you will
+               need to modify the LED_PIN number in the Spin program 
+               if you have a Propeller platform other than a C3. This
+               program in interesting because as well as flashing the
+               LED via the Spin program, the C program also prints "on!" 
+               or "off!" ont the screen - this is done by the C program
+               reading the current value of the LED output from the Spin 
+               program's VAR array, and shows the basic mechanism for
+               having Spin and C programs interacting.
 
-   run_hello.binary - demonstrates a Spin program (hello.spin) that makes
-                     use of whatever HMI plugin has been loaded by Catalina.
-                     Also uses the file "Catalina_HMI.spin" which provides
-                     wrapper functions for all Catalina HMI functions.
+   run_hello - demonstrates a Spin program (hello.spin) that makes
+               use of whatever HMI plugin has been loaded by Catalina.
+               Also uses the file "Catalina_HMI.spin" which provides
+               wrapper functions for all Catalina HMI functions.
 
-   run_demo.binary  - runs the demo program for Bagger's 40*30 TV driver. This
-                     demo is interesting because while the TV driver demo is
-                     running, Catalina is running using serial HMI drivers.
-                     Note that you will need to modify the pin numbers in the
-                     file TV_Text_Half_Height_Demo.spin if you are not using
-                     a C3. To see the serial output, use payload's interactive
-                     mode:
+   run_demo  - runs the demo program for Bagger's 40*30 TV driver. This
+               demo is interesting because while the TV driver demo is
+               running, Catalina is running using serial HMI drivers.
+               Note that you will need to modify the pin numbers in the
+               file TV_Text_Half_Height_Demo.spin if you are not using
+               a C3. To see the serial output, use payload's interactive
+               mode:
 
-                        payload -i run_demo
+                 payload -i run_demo
 
-   run_kb_tv.binary  - run a simple terminal program that accepts keystrokes
-                     and echoes them on the terminal, translating any numeric
-                     keys to strings. This is interesting because it is using
-                     standard OBEX drivers for HMI functions instead of the
-                     normal Catalina HMI functions. Note that you will need to
-                     modify the pin numbers in the file HMI.spin if you are
-                     not using a C3. 
+   run_kb_tv  - run a simple terminal program that accepts keystrokes
+                and echoes them on the terminal, translating any numeric
+                keys to strings. This is interesting because it is using
+                standard OBEX drivers for HMI functions instead of the
+                normal Catalina HMI functions. Note that you will need to
+                modify the pin numbers in the file HMI.spin if you are
+                not using a C3. 
 
-   run_tiny_hmi.binary - same as above, but uses the spinc -t option instead
-                     of -c, to produce a slightly smaller binary suitable only 
-                     for compiling in TINY mode (the run_hmi.binary program 
-                     could be compiled to run in SMALL or LARGE mode). Note 
-                     that you will need to modify the pin numbers in the file 
-                     TINY_HMI.spin if you are not using a C3.
+   run_tiny_hmi - same as above, but uses the spinc -t option instead
+                  of -c, to produce a slightly smaller binary suitable only 
+                  for compiling in TINY mode (the run_hmi.binary program 
+                  could be compiled to run in SMALL or LARGE mode). Note 
+                  that you will need to modify the pin numbers in the file 
+                  TINY_HMI.spin if you are not using a C3.
 
    run_PNut.binary - same as run_flash.binary (above), but uses a custom Spin
                      interpreter (actually, it uses the PNut interpreter).
@@ -106,8 +105,8 @@ For details on the many new spinc options, execute the command
 
 
 
-2. USING PASM WITH CATALINA
-===========================
+2. USING PASM PROGRAMS WITH CATALINA
+====================================
 
 The Catalina compiler generally conforms to the ANSI C standard. Unfortunately,
 this standard does not include the "asm" keyword (or function) that is often
@@ -130,7 +129,7 @@ used to do this:
 4. Write a subroutine in LMM PASM and call it from the C program in the same 
    way that any C function is called. 
 
-5. Use the non-standard "PASM" function to include PASM instructions inline
+5. Use the non-standard "PASM()" function to include PASM instructions inline
    in a C program.
 
 Each of these techniques is described in more detail below.
@@ -268,9 +267,10 @@ E.g:
 
 This batch file executes the following catalina command:
 
+  copy flash_led.pasm flash_led.obj
   catalina -lc test_pasm.c flash_led.obj 
 
-The file flash_led.obj is the LMM PASM program - giving it the 'obj' extension
+The file flash_led.pasm is the LMM PASM program - giving it the 'obj' extension
 tells catalina that it is not a C file that needs to be compiled, it is a PASM 
 file that is ready to be bound. In fact, all catalina 'obj' files are LMM PASM
 programs and can be viewed with any text editor. Examine both flash_led.obj
@@ -280,40 +280,8 @@ simply type:
   payload test_pasm
 
 
-USE THE PASM FUNCTION TO INCLUDE PASM STATEMENTS INLINE IN A C PROGRAM
-======================================================================
+USE THE PASM() FUNCTION TO INCLUDE PASM STATEMENTS INLINE IN A C PROGRAM
+========================================================================
 
-Catalina defines a PASM function that can be used for including PASM code
-inline with C code. The prototype for this function (defined in propeller.h) 
-is:
-
-   extern int PASM(const char *code);
-
-However, there is no actual PASM function body. Instead, when it sees a call
-to this function, the compiler inserts the string literal given as argument
-(it must be a constant string - it cannot be a variable) into the assembly 
-language output, to be compiled by the PASM compiler. For example, the 
-following program will toggle the Propeller's P0 output every 500 milliseconds:
-
-   #include <propeller.h>
-   void main() {  
-      PASM(" or dira, #1");      // set bit 0 as output
-      while(1) {
-         msleep(500);
-         PASM(" xor outa, #1");  // toggle bit 0
-      }
-   }
-
-Any value in r0 will be available to the calling C program as the result of 
-the PASM call. For example:
-
-   i = PASM("mov r0, #1"); // this will set i to 1
-
-Otherwise, the result of the PASM call should be ignored.
-
-See the examples "test_inline_pasm_1.c", "test_inline_pasm_2.c", 
-"test_inline_pasm_3.c" and test_inline_pasm_4.c for more examples. 
-
-Note that you may need to modify the pins used in some of these programs to 
-suit your platform, and that some of these programs will only work in certain
-memory models or on certain types of Propeller (i.e. 1 or 2).
+This technique has its own README and examples in the demos\inline_pasm
+directory. See the README.TXT file in that directory for details.

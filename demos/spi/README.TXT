@@ -1,6 +1,8 @@
 This directory contains a demo program for the Catalina implementation of
 Mike Green's SPI/I2C driver (sdspiFemto). 
 
+This driver is supported only on the Propeller 1.
+
 The plugin itself (like other plugins) is in the catalina target directory,
 and the wrapper functions needed to access it are in a library called 
 "libspi". To use the plugin, all you need to do is link your program with this
@@ -20,8 +22,8 @@ or
 
 The following programs are built: 
 
-   test_spi.binary - a compiled version of the C demo program that uses 
-                     the spi driver.
+   test_spi - a compiled version of the C demo program that uses 
+              the spi driver.
 
 NOTES ON THE libspi LIBRARY:
 ============================

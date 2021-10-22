@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_s3cg_6132d0dc_charT_oI_nt_L000001 ' <symbol:charToInt>
+C_s5ro_616ac870_charT_oI_nt_L000001 ' <symbol:charToInt>
  PRIMITIVE(#PSHM)
  long $400000 ' save registers
  mov r22, r2 ' CVUI
@@ -18,25 +18,25 @@ C_s3cg_6132d0dc_charT_oI_nt_L000001 ' <symbol:charToInt>
  and r22, cviu_m1 ' zero extend
  cmps r22,  #10 wcz
  PRIMITIVE(#BR_B)
- long @C_s3cg_6132d0dc_charT_oI_nt_L000001_3 ' LTI4
+ long @C_s5ro_616ac870_charT_oI_nt_L000001_3 ' LTI4
  mov r22, r2 ' CVUI
  and r22, cviu_m1 ' zero extend
  subs r22, #7 ' SUBI4 coni
  mov r2, r22 ' CVI, CVU or LOAD
-C_s3cg_6132d0dc_charT_oI_nt_L000001_3
+C_s5ro_616ac870_charT_oI_nt_L000001_3
  mov r22, r2 ' CVUI
  and r22, cviu_m1 ' zero extend
  cmps r22,  #15 wcz
  PRIMITIVE(#BRBE)
- long @C_s3cg_6132d0dc_charT_oI_nt_L000001_5 ' LEI4
+ long @C_s5ro_616ac870_charT_oI_nt_L000001_5 ' LEI4
  mov r22, r2 ' CVUI
  and r22, cviu_m1 ' zero extend
  subs r22, #32 ' SUBI4 coni
  mov r2, r22 ' CVI, CVU or LOAD
-C_s3cg_6132d0dc_charT_oI_nt_L000001_5
+C_s5ro_616ac870_charT_oI_nt_L000001_5
  mov r0, r2 ' CVUI
  and r0, cviu_m1 ' zero extend
-' C_s3cg_6132d0dc_charT_oI_nt_L000001_2 ' (symbol refcount = 0)
+' C_s5ro_616ac870_charT_oI_nt_L000001_2 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
@@ -149,7 +149,7 @@ C__scanf_getll_19
  and r2, cviu_m1 ' zero extend
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
- long @C_s3cg_6132d0dc_charT_oI_nt_L000001 ' CALL addrg
+ long @C_s5ro_616ac870_charT_oI_nt_L000001 ' CALL addrg
  mov r20, r0 ' CVI, CVU or LOAD
  mov r13, r22 ' ADDU
  add r13, r20 ' ADDU (3)

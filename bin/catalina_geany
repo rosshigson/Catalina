@@ -17,4 +17,19 @@ if [[ ! -e "$TMP_LCCDIR/bin/catalina_env" ]] ; then
 fi   
 
 source "$TMP_LCCDIR"/use_catalina
-"$TMP_LCCDIR"/catalina_geany/bin/geany
+
+if [[ ! -e "/opt/catalina_geany/bin/geany" ]] ; then
+   # this is where catalina_geany should be installed ...
+   if [[ -e "$1.geany" ]] ; then
+      /opt/catalina_geany/bin/geany $1.geany $2 $3 $4 $5 $6 $7 $8 $9
+   else
+      /opt/catalina_geany/bin/geany $1 $2 $3 $4 $5 $6 $7 $8 $9
+   fi
+else
+   # but this may work ...
+   if [[ -e "$1.geany" ]] ; then
+      "$TMP_LCCDIR"/catalina_geany/bin/geany $1.geany $2 $3 $4 $5 $6 $7 $8 $9
+   else
+      "$TMP_LCCDIR"/catalina_geany/bin/geany $1 $2 $3 $4 $5 $6 $7 $8 $9
+   fi
+fi

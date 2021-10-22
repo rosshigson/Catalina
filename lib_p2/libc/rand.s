@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_sip0_6132d0ce_next_L000003 ' <symbol:next>
+C_s8vk_616ac862_next_L000003 ' <symbol:next>
  long $1
 
 ' Catalina Export rand
@@ -25,7 +25,7 @@ C_rand ' <symbol:rand>
  PRIMITIVE(#PSHM)
  long $540000 ' save registers
  PRIMITIVE(#LODL)
- long @C_sip0_6132d0ce_next_L000003
+ long @C_s8vk_616ac862_next_L000003
  mov r22, RI ' reg <- addrg
  PRIMITIVE(#LODL)
  long $41c64e6d
@@ -40,7 +40,7 @@ C_rand ' <symbol:rand>
  mov r20, r0 ' ADDU
  add r20, r18 ' ADDU (3)
  PRIMITIVE(#LODL)
- long @C_sip0_6132d0ce_next_L000003
+ long @C_s8vk_616ac862_next_L000003
  wrlong r20, RI ' ASGNU4 addrg reg
  rdlong r22, r22 ' reg <- INDIRU4 reg
  shr r22, #16 ' RSHU4 coni
@@ -59,7 +59,7 @@ C_rand ' <symbol:rand>
  alignl ' align long
 C_srand ' <symbol:srand>
  PRIMITIVE(#LODL)
- long @C_sip0_6132d0ce_next_L000003
+ long @C_s8vk_616ac862_next_L000003
  wrlong r2, RI ' ASGNU4 addrg reg
 ' C_srand_5 ' (symbol refcount = 0)
  PRIMITIVE(#RETN)

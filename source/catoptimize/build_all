@@ -1,0 +1,39 @@
+#!/bin/bash
+#
+# build LMM/XMM optimizer
+#
+./CompileOptimizer catopt_0
+./CompileOptimizer catopt_1
+./CompileOptimizer catopt_2
+./CompileOptimizer catopt_3
+./CompileOptimizer catopt_4
+./CompileOptimizer catopt_5
+./CompileOptimizer catopt_6
+./CompileOptimizer catopt_7
+./CompileOptimizer catopt_8
+./CompileOptimizer catopt_9
+./CompileOptimizer catopt_10
+./CompileOptimizer catopt_11
+./CompileOptimizer catopt_12
+./CompileOptimizer catopt_13
+gcc -o catoptimize catoptimize.c
+
+#
+# build CMM optimizer
+#
+./CompileOptimizer cmmopt_0
+./CompileOptimizer cmmopt_1
+./CompileOptimizer cmmopt_2
+./CompileOptimizer cmmopt_3
+./CompileOptimizer cmmopt_4
+./CompileOptimizer cmmopt_5
+./CompileOptimizer cmmopt_6
+./CompileOptimizer cmmopt_7
+./CompileOptimizer cmmopt_8
+./CompileOptimizer cmmopt_9
+./CompileOptimizer cmmopt_10
+./CompileOptimizer cmmopt_11
+./CompileOptimizer cmmopt_12
+./CompileOptimizer cmmopt_13
+./CompileOptimizer cmmopt_14
+gcc -o cmmoptimize cmmoptimize.c

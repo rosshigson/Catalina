@@ -1,0 +1,1507 @@
+' Catalina Code
+
+DAT ' code segment
+'
+' LCC 4.2 (LARGE) for Parallax Propeller
+' (Catalina v2.5 Code Generator by Ross Higson)
+'
+
+' Catalina Init
+
+DAT ' initialized data segment
+
+ long ' align long
+C_sq0_616acaa8_sccsid_L000001 ' <symbol:sccsid>
+ long @C_sq01_616acaa8_2_L000003
+
+' Catalina Export State
+
+ long ' align long
+C_S_tate ' <symbol:State>
+ long 0
+
+' Catalina Export xvi_startup
+
+' Catalina Code
+
+DAT ' code segment
+
+ long ' align long
+C_xvi_startup ' <symbol:xvi_startup>
+ jmp #NEWF
+ sub SP, #28
+ jmp #PSHM
+ long $feaa80 ' save registers
+ mov r23, r5 ' reg var <- reg arg
+ mov r21, r4 ' reg var <- reg arg
+ mov r19, r3 ' reg var <- reg arg
+ mov r17, r2 ' reg var <- reg arg
+ jmp #LODL
+ long 0
+ mov r22, RI ' reg <- con
+ mov RI, FP
+ sub RI, #-(-8)
+ wrlong r22, RI ' ASGNP4 addrli reg
+ jmp #LODL
+ long 0
+ mov r7, RI ' reg <- con
+ jmp #LODL
+ long -1
+ mov r22, RI ' reg <- con
+ mov RI, FP
+ sub RI, #-(-4)
+ wrlong r22, RI ' ASGNI4 addrli reg
+ mov r13, #0 ' reg <- coni
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C_new_buffer ' CALL addrg
+ jmp #LODL
+ long @C_curbuf
+ mov BC, r0
+ jmp #WLNG ' ASGNP4 addrg reg
+ jmp #LODI
+ long @C_curbuf
+ mov r22, RI ' reg <- INDIRP4 addrg
+ cmp r22,  #0 wz
+ jmp #BRNZ
+ long @C_xvi_startup_20 ' NEU4
+ jmp #LODL
+ long @C_xvi_startup_22_L000023
+ mov r2, RI ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_startup_error ' CALL addrg
+ jmp #LODL
+ long 0
+ mov r0, RI ' reg <- con
+ jmp #JMPA
+ long @C_xvi_startup_19 ' JUMPV addrg
+C_xvi_startup_20
+ mov r2, r23 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_xvI_nitW_indow ' CALL addrg
+ jmp #LODL
+ long @C_curwin
+ mov BC, r0
+ jmp #WLNG ' ASGNP4 addrg reg
+ jmp #LODI
+ long @C_curwin
+ mov r22, RI ' reg <- INDIRP4 addrg
+ cmp r22,  #0 wz
+ jmp #BRNZ
+ long @C_xvi_startup_24 ' NEU4
+ jmp #LODL
+ long @C_xvi_startup_22_L000023
+ mov r2, RI ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_startup_error ' CALL addrg
+ jmp #LODL
+ long 0
+ mov r0, RI ' reg <- con
+ jmp #JMPA
+ long @C_xvi_startup_19 ' JUMPV addrg
+C_xvi_startup_24
+ jmp #LODI
+ long @C_curbuf
+ mov r2, RI ' reg ARG INDIR ADDRG
+ jmp #LODI
+ long @C_curwin
+ mov r3, RI ' reg ARG INDIR ADDRG
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_xvM_apW_indowO_ntoB_uffer
+ add SP, #4 ' CALL addrg
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C_init_params ' CALL addrg
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C_init_yankput ' CALL addrg
+ jmp #LODI
+ long @C_curwin
+ mov r2, RI ' reg ARG INDIR ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_init_sline ' CALL addrg
+ mov r22, r17 ' CVI, CVU or LOAD
+ cmp r22,  #0 wz
+ jmp #BR_Z
+ long @C_xvi_startup_26 ' EQU4
+ mov r2, r17 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_strsave ' CALL addrg
+ mov r9, r0 ' CVI, CVU or LOAD
+ jmp #JMPA
+ long @C_xvi_startup_27 ' JUMPV addrg
+C_xvi_startup_26
+ jmp #LODL
+ long 0
+ mov r9, RI ' reg <- con
+C_xvi_startup_27
+ jmp #LODL
+ long @C_xvi_startup_28_L000029
+ mov r2, RI ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_getenv ' CALL addrg
+ mov RI, FP
+ sub RI, #-(-12)
+ wrlong r0, RI ' ASGNP4 addrli reg
+ mov r22, FP
+ sub r22, #-(-12) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRP4 regl
+ cmp r22,  #0 wz
+ jmp #BR_Z
+ long @C_xvi_startup_30 ' EQU4
+ mov RI, FP
+ sub RI, #-(-12)
+ rdlong r2, RI ' reg ARG INDIR ADDRLi
+ mov r3, #47 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_set_param
+ add SP, #4 ' CALL addrg
+C_xvi_startup_30
+ mov r22, r9 ' CVI, CVU or LOAD
+ cmp r22,  #0 wz
+ jmp #BR_Z
+ long @C_xvi_startup_32 ' EQU4
+ mov r22, #0 ' reg <- coni
+ mov RI, FP
+ sub RI, #-(-16)
+ wrlong r22, RI ' ASGNI4 addrli reg
+ mov RI, FP
+ sub RI, #-(-12)
+ wrlong r9, RI ' ASGNP4 addrli reg
+ jmp #JMPA
+ long @C_xvi_startup_37 ' JUMPV addrg
+C_xvi_startup_34
+ mov r22, FP
+ sub r22, #-(-12) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRP4 regl
+ mov r20, r22
+ adds r20, #1 ' ADDP4 coni
+ mov RI, FP
+ sub RI, #-(-12)
+ wrlong r20, RI ' ASGNP4 addrli reg
+ mov RI, r22
+ jmp #RBYT
+ mov r22, BC ' reg <- INDIRU1 reg
+ and r22, cviu_m1 ' zero extend
+ mov RI, FP
+ sub RI, #-(-20)
+ wrlong r22, RI ' ASGNI4 addrli reg
+ mov r22, FP
+ sub r22, #-(-20) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRI4 regl
+ mov r20, #92 ' reg <- coni
+ cmps r22, r20 wz
+ jmp #BR_Z
+ long @C_xvi_startup_41 ' EQI4
+ cmps r22, r20 wz,wc
+ jmp #BR_A
+ long @C_xvi_startup_50 ' GTI4
+' C_xvi_startup_49 ' (symbol refcount = 0)
+ mov r22, FP
+ sub r22, #-(-20) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRI4 regl
+ cmps r22,  #10 wz
+ jmp #BR_Z
+ long @C_xvi_startup_42 ' EQI4
+ jmp #JMPA
+ long @C_xvi_startup_38 ' JUMPV addrg
+C_xvi_startup_50
+ mov r22, FP
+ sub r22, #-(-20) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRI4 regl
+ cmps r22,  #124 wz
+ jmp #BR_Z
+ long @C_xvi_startup_42 ' EQI4
+ jmp #JMPA
+ long @C_xvi_startup_38 ' JUMPV addrg
+C_xvi_startup_41
+ mov r22, #1 ' reg <- coni
+ mov RI, FP
+ sub RI, #-(-16)
+ wrlong r22, RI ' ASGNI4 addrli reg
+ jmp #JMPA
+ long @C_xvi_startup_35 ' JUMPV addrg
+C_xvi_startup_42
+ mov r22, FP
+ sub r22, #-(-16) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRI4 regl
+ cmps r22,  #0 wz
+ jmp #BR_Z
+ long @C_xvi_startup_43 ' EQI4
+ jmp #LODL
+ long -1
+ mov r22, RI ' reg <- con
+ mov r20, FP
+ sub r20, #-(-12) ' reg <- addrli
+ rdlong r20, r20 ' reg <- INDIRP4 regl
+ adds r20, r22 ' ADDI/P (1)
+ mov RI, FP
+ sub RI, #-(-12)
+ wrlong r20, RI ' ASGNP4 addrli reg
+ mov RI, FP
+ sub RI, #-(-24)
+ wrlong r20, RI ' ASGNP4 addrli reg
+ adds r22, r20 ' ADDI/P (2)
+ mov RI, FP
+ sub RI, #-(-28)
+ wrlong r22, RI ' ASGNP4 addrli reg
+C_xvi_startup_45
+' C_xvi_startup_46 ' (symbol refcount = 0)
+' C_xvi_startup_48 ' (symbol refcount = 0)
+ mov r22, FP
+ sub r22, #-(-28) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRP4 regl
+ mov r20, r22
+ adds r20, #1 ' ADDP4 coni
+ mov RI, FP
+ sub RI, #-(-28)
+ wrlong r20, RI ' ASGNP4 addrli reg
+ mov r20, FP
+ sub r20, #-(-24) ' reg <- addrli
+ rdlong r20, r20 ' reg <- INDIRP4 regl
+ mov r18, r20
+ adds r18, #1 ' ADDP4 coni
+ mov RI, FP
+ sub RI, #-(-24)
+ wrlong r18, RI ' ASGNP4 addrli reg
+ mov RI, r20
+ jmp #RBYT
+ mov r20, BC ' reg <- INDIRU1 reg
+ mov RI, r22
+ mov BC, r20
+ jmp #WBYT ' ASGNU1 reg reg
+ mov r22, r20 ' CVUI
+ and r22, cviu_m1 ' zero extend
+ cmps r22,  #0 wz
+ jmp #BRNZ
+ long @C_xvi_startup_45 ' NEI4
+ jmp #JMPA
+ long @C_xvi_startup_44 ' JUMPV addrg
+C_xvi_startup_43
+ mov r22, FP
+ sub r22, #-(-12) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRP4 regl
+ jmp #LODL
+ long -1
+ mov r20, RI ' reg <- con
+ adds r22, r20 ' ADDI/P (1)
+ mov r20, #0 ' reg <- coni
+ mov RI, r22
+ mov BC, r20
+ jmp #WBYT ' ASGNU1 reg reg
+ mov r2, #0 ' reg ARG coni
+ mov r3, r9 ' CVI, CVU or LOAD
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_exC_ommand
+ add SP, #4 ' CALL addrg
+ mov r22, FP
+ sub r22, #-(-12) ' reg <- addrli
+ rdlong r9, r22 ' reg <- INDIRP4 regl
+C_xvi_startup_44
+C_xvi_startup_38
+ mov r22, #0 ' reg <- coni
+ mov RI, FP
+ sub RI, #-(-16)
+ wrlong r22, RI ' ASGNI4 addrli reg
+C_xvi_startup_35
+C_xvi_startup_37
+ mov r22, FP
+ sub r22, #-(-12) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRP4 regl
+ mov RI, r22
+ jmp #RBYT
+ mov r22, BC ' reg <- INDIRU1 reg
+ and r22, cviu_m1 ' zero extend
+ cmps r22,  #0 wz
+ jmp #BRNZ
+ long @C_xvi_startup_34 ' NEI4
+ mov r22, FP
+ sub r22, #-(-12) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRP4 regl
+ mov r20, r9 ' CVI, CVU or LOAD
+ cmp r22, r20 wz,wc 
+ jmp #BRBE
+ long @C_xvi_startup_51 ' LEU4
+ mov r2, #0 ' reg ARG coni
+ mov r3, r9 ' CVI, CVU or LOAD
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_exC_ommand
+ add SP, #4 ' CALL addrg
+C_xvi_startup_51
+C_xvi_startup_32
+ mov r15, #1 ' reg <- coni
+ jmp #JMPA
+ long @C_xvi_startup_56 ' JUMPV addrg
+C_xvi_startup_53
+ mov r22, r15
+ shl r22, #2 ' LSHI4 coni
+ adds r22, r19 ' ADDI/P (1)
+ mov RI, r22
+ jmp #RLNG
+ mov r22, BC ' reg <- INDIRP4 reg
+ mov RI, r22
+ jmp #RBYT
+ mov r22, BC ' reg <- INDIRU1 reg
+ and r22, cviu_m1 ' zero extend
+ cmps r22,  #45 wz
+ jmp #BRNZ
+ long @C_xvi_startup_57 ' NEI4
+ mov r22, r15
+ shl r22, #2 ' LSHI4 coni
+ adds r22, r19 ' ADDI/P (1)
+ mov RI, r22
+ jmp #RLNG
+ mov r22, BC ' reg <- INDIRP4 reg
+ adds r22, #1 ' ADDP4 coni
+ mov RI, r22
+ jmp #RBYT
+ mov r22, BC ' reg <- INDIRU1 reg
+ and r22, cviu_m1 ' zero extend
+ mov RI, FP
+ sub RI, #-(-12)
+ wrlong r22, RI ' ASGNI4 addrli reg
+ mov r22, FP
+ sub r22, #-(-12) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRI4 regl
+ cmps r22,  #115 wz
+ jmp #BR_Z
+ long @C_xvi_startup_69 ' EQI4
+ cmps r22,  #116 wz
+ jmp #BR_Z
+ long @C_xvi_startup_62 ' EQI4
+ jmp #JMPA
+ long @C_xvi_startup_59 ' JUMPV addrg
+C_xvi_startup_62
+ cmps r13,  #0 wz
+ jmp #BR_Z
+ long @C_xvi_startup_63 ' EQI4
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C_sq02_616acaa8_usage_L000018 ' CALL addrg
+ jmp #LODL
+ long 0
+ mov r0, RI ' reg <- con
+ jmp #JMPA
+ long @C_xvi_startup_19 ' JUMPV addrg
+C_xvi_startup_63
+ mov r22, r15
+ shl r22, #2 ' LSHI4 coni
+ adds r22, r19 ' ADDI/P (1)
+ mov RI, r22
+ jmp #RLNG
+ mov r22, BC ' reg <- INDIRP4 reg
+ adds r22, #2 ' ADDP4 coni
+ mov RI, r22
+ jmp #RBYT
+ mov r22, BC ' reg <- INDIRU1 reg
+ and r22, cviu_m1 ' zero extend
+ cmps r22,  #0 wz
+ jmp #BR_Z
+ long @C_xvi_startup_65 ' EQI4
+ mov r22, r15
+ shl r22, #2 ' LSHI4 coni
+ adds r22, r19 ' ADDI/P (1)
+ mov RI, r22
+ jmp #RLNG
+ mov r22, BC ' reg <- INDIRP4 reg
+ adds r22, #2 ' ADDP4 coni
+ mov RI, FP
+ sub RI, #-(-8)
+ wrlong r22, RI ' ASGNP4 addrli reg
+ jmp #JMPA
+ long @C_xvi_startup_58 ' JUMPV addrg
+C_xvi_startup_65
+ mov r22, r21
+ subs r22, #1 ' SUBI4 coni
+ cmps r15, r22 wz,wc
+ jmp #BRAE
+ long @C_xvi_startup_67 ' GEI4
+ adds r15, #1 ' ADDI4 coni
+ mov r22, r15
+ shl r22, #2 ' LSHI4 coni
+ adds r22, r19 ' ADDI/P (1)
+ mov RI, r22
+ jmp #RLNG
+ mov r22, BC ' reg <- INDIRP4 reg
+ mov RI, FP
+ sub RI, #-(-8)
+ wrlong r22, RI ' ASGNP4 addrli reg
+ jmp #JMPA
+ long @C_xvi_startup_58 ' JUMPV addrg
+C_xvi_startup_67
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C_sq02_616acaa8_usage_L000018 ' CALL addrg
+ jmp #LODL
+ long 0
+ mov r0, RI ' reg <- con
+ jmp #JMPA
+ long @C_xvi_startup_19 ' JUMPV addrg
+C_xvi_startup_69
+ mov r22, r15
+ shl r22, #2 ' LSHI4 coni
+ adds r22, r19 ' ADDI/P (1)
+ mov RI, r22
+ jmp #RLNG
+ mov r22, BC ' reg <- INDIRP4 reg
+ adds r22, #2 ' ADDP4 coni
+ mov RI, r22
+ jmp #RBYT
+ mov r22, BC ' reg <- INDIRU1 reg
+ and r22, cviu_m1 ' zero extend
+ cmps r22,  #0 wz
+ jmp #BR_Z
+ long @C_xvi_startup_70 ' EQI4
+ mov r22, r15
+ shl r22, #2 ' LSHI4 coni
+ adds r22, r19 ' ADDI/P (1)
+ mov RI, r22
+ jmp #RLNG
+ mov r20, BC ' reg <- INDIRP4 reg
+ adds r20, #2 ' ADDP4 coni
+ mov RI, r22
+ mov BC, r20
+ jmp #WLNG ' ASGNP4 reg reg
+ jmp #JMPA
+ long @C_xvi_startup_71 ' JUMPV addrg
+C_xvi_startup_70
+ mov r22, r21
+ subs r22, #1 ' SUBI4 coni
+ cmps r15, r22 wz,wc
+ jmp #BRAE
+ long @C_xvi_startup_72 ' GEI4
+ adds r15, #1 ' ADDI4 coni
+ jmp #JMPA
+ long @C_xvi_startup_73 ' JUMPV addrg
+C_xvi_startup_72
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C_sq02_616acaa8_usage_L000018 ' CALL addrg
+ jmp #LODL
+ long 0
+ mov r0, RI ' reg <- con
+ jmp #JMPA
+ long @C_xvi_startup_19 ' JUMPV addrg
+C_xvi_startup_73
+C_xvi_startup_71
+ mov r2, #0 ' reg ARG coni
+ mov r22, r15
+ shl r22, #2 ' LSHI4 coni
+ mov r3, r22 ' ADDI/P
+ adds r3, r19 ' ADDI/P (3)
+ mov r4, #1 ' reg ARG coni
+ jmp #LODI
+ long @C_curwin
+ mov r5, RI ' reg ARG INDIR ADDRG
+ mov BC, #16 ' arg size, rpsize = 16, spsize = 16
+ sub SP, #12 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_exS_et
+ add SP, #12 ' CALL addrg
+ jmp #JMPA
+ long @C_xvi_startup_58 ' JUMPV addrg
+C_xvi_startup_59
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C_sq02_616acaa8_usage_L000018 ' CALL addrg
+ jmp #LODL
+ long 0
+ mov r0, RI ' reg <- con
+ jmp #JMPA
+ long @C_xvi_startup_19 ' JUMPV addrg
+C_xvi_startup_57
+ mov r22, r21
+ subs r22, #1 ' SUBI4 coni
+ cmps r15, r22 wz,wc
+ jmp #BR_B
+ long @C_xvi_startup_74 ' LTI4
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C_sq02_616acaa8_usage_L000018 ' CALL addrg
+ jmp #LODL
+ long 0
+ mov r0, RI ' reg <- con
+ jmp #JMPA
+ long @C_xvi_startup_19 ' JUMPV addrg
+C_xvi_startup_74
+ mov r22, r15
+ shl r22, #2 ' LSHI4 coni
+ adds r22, r19 ' ADDI/P (1)
+ mov RI, r22
+ jmp #RLNG
+ mov r22, BC ' reg <- INDIRP4 reg
+ adds r22, #1 ' ADDP4 coni
+ mov RI, r22
+ jmp #RBYT
+ mov r22, BC ' reg <- INDIRU1 reg
+ mov RI, FP
+ sub RI, #-(-12)
+ wrbyte r22, RI ' ASGNU1 addrli reg
+ mov r22, FP
+ sub r22, #-(-12) ' reg <- addrli
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ cmps r22,  #47 wz
+ jmp #BRNZ
+ long @C_xvi_startup_76 ' NEI4
+ mov r22, r15
+ shl r22, #2 ' LSHI4 coni
+ adds r22, r19 ' ADDI/P (1)
+ mov RI, r22
+ jmp #RLNG
+ mov r22, BC ' reg <- INDIRP4 reg
+ mov r7, r22
+ adds r7, #2 ' ADDP4 coni
+ jmp #JMPA
+ long @C_xvi_startup_77 ' JUMPV addrg
+C_xvi_startup_76
+ mov r22, FP
+ sub r22, #-(-12) ' reg <- addrli
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ mov r20, r22 ' CVI, CVU or LOAD
+ cmp r20,  #128 wz,wc 
+ jmp #BRAE
+ long @C_xvi_startup_78 ' GEU4
+ subs r22, #48 ' SUBI4 coni
+ cmp r22,  #10 wz,wc 
+ jmp #BRAE
+ long @C_xvi_startup_78 ' GEU4
+ mov r22, r15
+ shl r22, #2 ' LSHI4 coni
+ adds r22, r19 ' ADDI/P (1)
+ mov RI, r22
+ jmp #RLNG
+ mov r22, BC ' reg <- INDIRP4 reg
+ mov r2, r22
+ adds r2, #1 ' ADDP4 coni
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_atol ' CALL addrg
+ mov RI, FP
+ sub RI, #-(-4)
+ wrlong r0, RI ' ASGNI4 addrli reg
+ jmp #JMPA
+ long @C_xvi_startup_79 ' JUMPV addrg
+C_xvi_startup_78
+ mov r22, FP
+ sub r22, #-(-12) ' reg <- addrli
+ rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
+ cmps r22,  #0 wz
+ jmp #BRNZ
+ long @C_xvi_startup_80 ' NEI4
+ mov r22, #0 ' reg <- coni
+ mov RI, FP
+ sub RI, #-(-4)
+ wrlong r22, RI ' ASGNI4 addrli reg
+ jmp #JMPA
+ long @C_xvi_startup_81 ' JUMPV addrg
+C_xvi_startup_80
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C_sq02_616acaa8_usage_L000018 ' CALL addrg
+ jmp #LODL
+ long 0
+ mov r0, RI ' reg <- con
+ jmp #JMPA
+ long @C_xvi_startup_19 ' JUMPV addrg
+C_xvi_startup_81
+C_xvi_startup_79
+C_xvi_startup_77
+ mov r22, #1 ' reg <- coni
+ adds r15, #1 ' ADDI4 coni
+ mov r20, r15
+ shl r20, #2 ' LSHI4 coni
+ mov r11, r20 ' ADDI/P
+ adds r11, r19 ' ADDI/P (3)
+ mov r13, r22 ' CVI, CVU or LOAD
+C_xvi_startup_58
+' C_xvi_startup_54 ' (symbol refcount = 0)
+ adds r15, #1 ' ADDI4 coni
+C_xvi_startup_56
+ cmps r15, r21 wz,wc
+ jmp #BRAE
+ long @C_xvi_startup_82 ' GEI4
+ mov r22, r15
+ shl r22, #2 ' LSHI4 coni
+ adds r22, r19 ' ADDI/P (1)
+ mov RI, r22
+ jmp #RLNG
+ mov r22, BC ' reg <- INDIRP4 reg
+ mov RI, r22
+ jmp #RBYT
+ mov r22, BC ' reg <- INDIRU1 reg
+ and r22, cviu_m1 ' zero extend
+ cmps r22,  #45 wz
+ jmp #BR_Z
+ long @C_xvi_startup_53 ' EQI4
+ cmps r22,  #43 wz
+ jmp #BR_Z
+ long @C_xvi_startup_53 ' EQI4
+C_xvi_startup_82
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C_tagI_nit ' CALL addrg
+ cmps r13,  #0 wz
+ jmp #BRNZ
+ long @C_xvi_startup_85 ' NEI4
+ mov r22, FP
+ sub r22, #-(-8) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRP4 regl
+ cmp r22,  #0 wz
+ jmp #BR_Z
+ long @C_xvi_startup_83 ' EQU4
+C_xvi_startup_85
+ cmps r15, r21 wz,wc
+ jmp #BRAE
+ long @C_xvi_startup_84 ' GEI4
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C_sq02_616acaa8_usage_L000018 ' CALL addrg
+ jmp #LODL
+ long 0
+ mov r0, RI ' reg <- con
+ jmp #JMPA
+ long @C_xvi_startup_19 ' JUMPV addrg
+C_xvi_startup_83
+ mov r13, r21 ' SUBI/P
+ subs r13, r15 ' SUBI/P (3)
+ cmps r13,  #0 wz,wc
+ jmp #BRBE
+ long @C_xvi_startup_88 ' LEI4
+ mov r22, r15
+ shl r22, #2 ' LSHI4 coni
+ mov r11, r22 ' ADDI/P
+ adds r11, r19 ' ADDI/P (3)
+C_xvi_startup_88
+C_xvi_startup_84
+ mov r2, #0 ' reg ARG coni
+ jmp #LODI
+ long @C_curbuf
+ mov r22, RI ' reg <- INDIRP4 addrg
+ adds r22, #4 ' ADDP4 coni
+ mov RI, r22
+ jmp #RLNG
+ mov r3, BC ' reg <- INDIRP4 reg
+ jmp #LODI
+ long @C_curwin
+ mov r4, RI ' reg ARG INDIR ADDRG
+ mov BC, #12 ' arg size, rpsize = 12, spsize = 12
+ sub SP, #8 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_move_cursor
+ add SP, #8 ' CALL addrg
+ jmp #LODI
+ long @C_curwin
+ mov r22, RI ' reg <- INDIRP4 addrg
+ adds r22, #56 ' ADDP4 coni
+ mov r20, #0 ' reg <- coni
+ mov RI, r22
+ mov BC, r20
+ jmp #WLNG ' ASGNI4 reg reg
+ jmp #LODI
+ long @C_curwin
+ mov r22, RI ' reg <- INDIRP4 addrg
+ adds r22, #52 ' ADDP4 coni
+ mov r20, #0 ' reg <- coni
+ mov RI, r22
+ mov BC, r20
+ jmp #WLNG ' ASGNI4 reg reg
+ jmp #LODI
+ long @C_curwin
+ mov r22, RI ' reg <- INDIRP4 addrg
+ adds r22, #16 ' ADDP4 coni
+ mov RI, r22
+ jmp #RLNG
+ mov r2, BC ' reg <- INDIRP4 reg
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_xvC_lear ' CALL addrg
+ cmps r13,  #0 wz
+ jmp #BR_Z
+ long @C_xvi_startup_90 ' EQI4
+ mov r22, FP
+ sub r22, #-(-4) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRI4 regl
+ cmps r22,  #0 wz,wc
+ jmp #BRAE
+ long @C_xvi_startup_92 ' GEI4
+ mov r22, r7 ' CVI, CVU or LOAD
+ cmp r22,  #0 wz
+ jmp #BRNZ
+ long @C_xvi_startup_92 ' NEU4
+ mov r22, #137 ' reg <- coni
+ jmp #LODL
+ long @C_echo
+ mov BC, r22
+ jmp #WLNG ' ASGNU4 addrg reg
+C_xvi_startup_92
+ mov r2, #0 ' reg ARG coni
+ mov r3, r11 ' CVI, CVU or LOAD
+ mov r4, r13 ' CVI, CVU or LOAD
+ jmp #LODI
+ long @C_curwin
+ mov r5, RI ' reg ARG INDIR ADDRG
+ mov BC, #16 ' arg size, rpsize = 16, spsize = 16
+ sub SP, #12 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_exN_ext
+ add SP, #12 ' CALL addrg
+ mov r22, r7 ' CVI, CVU or LOAD
+ cmp r22,  #0 wz
+ jmp #BR_Z
+ long @C_xvi_startup_94 ' EQU4
+ mov r22, #233 ' reg <- coni
+ jmp #LODL
+ long @C_echo
+ mov BC, r22
+ jmp #WLNG ' ASGNU4 addrg reg
+ mov r2, #47 ' reg ARG coni
+ mov r3, r7 ' CVI, CVU or LOAD
+ jmp #LODI
+ long @C_curwin
+ mov r4, RI ' reg ARG INDIR ADDRG
+ mov BC, #12 ' arg size, rpsize = 12, spsize = 12
+ sub SP, #8 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_xvD_oS_earch
+ add SP, #8 ' CALL addrg
+ mov RI, FP
+ sub RI, #-(-12)
+ wrlong r0, RI ' ASGNP4 addrli reg
+ mov r22, FP
+ sub r22, #-(-12) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRP4 regl
+ cmp r22,  #0 wz
+ jmp #BR_Z
+ long @C_xvi_startup_91 ' EQU4
+ jmp #LODI
+ long @C_curwin
+ mov r2, RI ' reg ARG INDIR ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_setpcmark ' CALL addrg
+ mov r22, FP
+ sub r22, #-(-12) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRP4 regl
+ mov r20, r22
+ adds r20, #4 ' ADDP4 coni
+ mov RI, r20
+ jmp #RLNG
+ mov r2, BC ' reg <- INDIRI4 reg
+ mov RI, r22
+ jmp #RLNG
+ mov r3, BC ' reg <- INDIRP4 reg
+ jmp #LODI
+ long @C_curwin
+ mov r4, RI ' reg ARG INDIR ADDRG
+ mov BC, #12 ' arg size, rpsize = 12, spsize = 12
+ sub SP, #8 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_move_cursor
+ add SP, #8 ' CALL addrg
+ jmp #LODI
+ long @C_curwin
+ mov r22, RI ' reg <- INDIRP4 addrg
+ adds r22, #68 ' ADDP4 coni
+ mov r20, #1 ' reg <- coni
+ mov RI, r22
+ mov BC, r20
+ jmp #WLNG ' ASGNI4 reg reg
+ jmp #JMPA
+ long @C_xvi_startup_91 ' JUMPV addrg
+C_xvi_startup_94
+ mov r22, FP
+ sub r22, #-(-4) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRI4 regl
+ cmps r22,  #0 wz,wc
+ jmp #BR_B
+ long @C_xvi_startup_91 ' LTI4
+ mov r22, #137 ' reg <- coni
+ jmp #LODL
+ long @C_echo
+ mov BC, r22
+ jmp #WLNG ' ASGNU4 addrg reg
+ mov r22, FP
+ sub r22, #-(-4) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRI4 regl
+ cmps r22,  #0 wz,wc
+ jmp #BRBE
+ long @C_xvi_startup_101 ' LEI4
+ mov r22, FP
+ sub r22, #-(-4) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRI4 regl
+ mov RI, FP
+ sub RI, #-(-12)
+ wrlong r22, RI ' ASGNU4 addrli reg
+ jmp #JMPA
+ long @C_xvi_startup_102 ' JUMPV addrg
+C_xvi_startup_101
+ jmp #LODL
+ long $ffffffff
+ mov r22, RI ' reg <- con
+ mov RI, FP
+ sub RI, #-(-12)
+ wrlong r22, RI ' ASGNU4 addrli reg
+C_xvi_startup_102
+ mov r22, FP
+ sub r22, #-(-12) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRU4 regl
+ mov r2, r22 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_xvM_oveT_oL_ineN_umber ' CALL addrg
+ jmp #JMPA
+ long @C_xvi_startup_91 ' JUMPV addrg
+C_xvi_startup_90
+ mov r22, FP
+ sub r22, #-(-8) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRP4 regl
+ cmp r22,  #0 wz
+ jmp #BR_Z
+ long @C_xvi_startup_103 ' EQU4
+ mov r22, #233 ' reg <- coni
+ jmp #LODL
+ long @C_echo
+ mov BC, r22
+ jmp #WLNG ' ASGNU4 addrg reg
+ mov r22, #0 ' reg <- coni
+ mov r2, r22 ' CVI, CVU or LOAD
+ mov r3, #1 ' reg ARG coni
+ mov r4, r22 ' CVI, CVU or LOAD
+ mov RI, FP
+ sub RI, #-(-8)
+ rdlong r5, RI ' reg ARG INDIR ADDRLi
+ sub SP, #16 ' stack space for reg ARGs
+ jmp #PSHA
+ long @C_curwin ' stack ARG INDIR ADDRG
+ mov BC, #20 ' arg size, rpsize = 0, spsize = 20
+ add SP, #4 ' correct for new kernel !!! 
+ jmp #CALA
+ long @C_exT_ag
+ add SP, #16 ' CALL addrg
+ cmps r0,  #0 wz
+ jmp #BRNZ
+ long @C_xvi_startup_104 ' NEI4
+ mov r2, #2 ' reg ARG coni
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_sleep ' CALL addrg
+ mov r2, #1 ' reg ARG coni
+ jmp #LODI
+ long @C_curwin
+ mov r3, RI ' reg ARG INDIR ADDRG
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_show_file_info
+ add SP, #4 ' CALL addrg
+ jmp #JMPA
+ long @C_xvi_startup_104 ' JUMPV addrg
+C_xvi_startup_103
+ mov r22, #137 ' reg <- coni
+ jmp #LODL
+ long @C_echo
+ mov BC, r22
+ jmp #WLNG ' ASGNU4 addrg reg
+ mov r2, #1 ' reg ARG coni
+ jmp #LODI
+ long @C_curwin
+ mov r3, RI ' reg ARG INDIR ADDRG
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_show_file_info
+ add SP, #4 ' CALL addrg
+C_xvi_startup_104
+C_xvi_startup_91
+ jmp #LODI
+ long @C_curwin
+ mov r2, RI ' reg ARG INDIR ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_setpcmark ' CALL addrg
+ mov r22, #129 ' reg <- coni
+ jmp #LODL
+ long @C_echo
+ mov BC, r22
+ jmp #WLNG ' ASGNU4 addrg reg
+ jmp #LODI
+ long @C_curwin
+ mov r2, RI ' reg ARG INDIR ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_move_window_to_cursor ' CALL addrg
+ mov r2, #0 ' reg ARG coni
+ jmp #LODI
+ long @C_curwin
+ mov r3, RI ' reg ARG INDIR ADDRG
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_redraw_all
+ add SP, #4 ' CALL addrg
+ jmp #LODI
+ long @C_curwin
+ mov r2, RI ' reg ARG INDIR ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_cursupdate ' CALL addrg
+ jmp #LODI
+ long @C_curwin
+ mov r2, RI ' reg ARG INDIR ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_wind_goto ' CALL addrg
+ jmp #LODL
+ long $ffff
+ mov r22, RI ' reg <- con
+ jmp #LODL
+ long @C_echo
+ mov BC, r22
+ jmp #WLNG ' ASGNU4 addrg reg
+ mov r22, r9 ' CVI, CVU or LOAD
+ cmp r22,  #0 wz
+ jmp #BR_Z
+ long @C_xvi_startup_107 ' EQU4
+ mov r2, r9 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_free ' CALL addrg
+C_xvi_startup_107
+ jmp #LODI
+ long @C_curwin
+ mov r0, RI ' reg <- INDIRP4 addrg
+C_xvi_startup_19
+ jmp #POPM ' restore registers
+ add SP, #28 ' framesize
+ jmp #RETF
+
+
+ long ' align long
+C_sq02_616acaa8_usage_L000018 ' <symbol:usage>
+ jmp #LODL
+ long @C_sq02_616acaa8_usage_L000018_110_L000111
+ mov r2, RI ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_startup_error ' CALL addrg
+ jmp #LODL
+ long @C_sq02_616acaa8_usage_L000018_112_L000113
+ mov r2, RI ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_startup_error ' CALL addrg
+ jmp #LODL
+ long @C_sq02_616acaa8_usage_L000018_114_L000115
+ mov r2, RI ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_startup_error ' CALL addrg
+ jmp #LODL
+ long @C_sq02_616acaa8_usage_L000018_116_L000117
+ mov r2, RI ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_startup_error ' CALL addrg
+ jmp #LODL
+ long @C_sq02_616acaa8_usage_L000018_118_L000119
+ mov r2, RI ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_startup_error ' CALL addrg
+ jmp #LODL
+ long @C_sq02_616acaa8_usage_L000018_120_L000121
+ mov r2, RI ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_startup_error ' CALL addrg
+ jmp #LODL
+ long @C_sq02_616acaa8_usage_L000018_122_L000123
+ mov r2, RI ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_startup_error ' CALL addrg
+' C_sq02_616acaa8_usage_L000018_109 ' (symbol refcount = 0)
+ jmp #RETN
+
+
+' Catalina Import init_yankput
+
+' Catalina Import xvMapWindowOntoBuffer
+
+' Catalina Import xvInitWindow
+
+' Catalina Import xvClear
+
+' Catalina Import exTag
+
+' Catalina Import tagInit
+
+' Catalina Import show_file_info
+
+' Catalina Import init_sline
+
+' Catalina Import startup_error
+
+' Catalina Import wind_goto
+
+' Catalina Import redraw_all
+
+' Catalina Import set_param
+
+' Catalina Import exSet
+
+' Catalina Import init_params
+
+' Catalina Import move_window_to_cursor
+
+' Catalina Import move_cursor
+
+' Catalina Import xvMoveToLineNumber
+
+' Catalina Import setpcmark
+
+' Catalina Import xvDoSearch
+
+' Catalina Import exNext
+
+' Catalina Import cursupdate
+
+' Catalina Import exCommand
+
+' Catalina Import new_buffer
+
+' Catalina Import strsave
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Export echo
+
+ long ' align long
+C_echo ' <symbol:echo>
+ byte 0[4]
+
+' Catalina Export imessage
+
+ long ' align long
+C_imessage ' <symbol:imessage>
+ byte 0[4]
+
+' Catalina Export kbdintr
+
+ long ' align long
+C_kbdintr ' <symbol:kbdintr>
+ byte 0[1]
+
+' Catalina Export indentchars
+
+ long ' align long
+C_indentchars ' <symbol:indentchars>
+ byte 0[4]
+
+' Catalina Export curwin
+
+ long ' align long
+C_curwin ' <symbol:curwin>
+ byte 0[4]
+
+' Catalina Export curbuf
+
+ long ' align long
+C_curbuf ' <symbol:curbuf>
+ byte 0[4]
+
+' Catalina Code
+
+DAT ' code segment
+
+' Catalina Import sleep
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Code
+
+DAT ' code segment
+
+' Catalina Import getenv
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Code
+
+DAT ' code segment
+
+' Catalina Import free
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Code
+
+DAT ' code segment
+
+' Catalina Import atol
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Cnst
+
+DAT ' const data segment
+
+ long ' align long
+C_sq02_616acaa8_usage_L000018_122_L000123 ' <symbol:122>
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 45
+ byte 115
+ byte 32
+ byte 112
+ byte 97
+ byte 114
+ byte 97
+ byte 109
+ byte 101
+ byte 116
+ byte 101
+ byte 114
+ byte 61
+ byte 118
+ byte 97
+ byte 108
+ byte 117
+ byte 101
+ byte 10
+ byte 0
+
+ long ' align long
+C_sq02_616acaa8_usage_L000018_120_L000121 ' <symbol:120>
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 45
+ byte 115
+ byte 32
+ byte 91
+ byte 110
+ byte 111
+ byte 93
+ byte 98
+ byte 111
+ byte 111
+ byte 108
+ byte 101
+ byte 97
+ byte 110
+ byte 45
+ byte 112
+ byte 97
+ byte 114
+ byte 97
+ byte 109
+ byte 101
+ byte 116
+ byte 101
+ byte 114
+ byte 10
+ byte 0
+
+ long ' align long
+C_sq02_616acaa8_usage_L000018_118_L000119 ' <symbol:118>
+ byte 10
+ byte 79
+ byte 112
+ byte 116
+ byte 105
+ byte 111
+ byte 110
+ byte 115
+ byte 32
+ byte 97
+ byte 114
+ byte 101
+ byte 58
+ byte 10
+ byte 0
+
+ long ' align long
+C_sq02_616acaa8_usage_L000018_116_L000117 ' <symbol:116>
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 120
+ byte 118
+ byte 105
+ byte 32
+ byte 123
+ byte 32
+ byte 111
+ byte 112
+ byte 116
+ byte 105
+ byte 111
+ byte 110
+ byte 115
+ byte 32
+ byte 125
+ byte 32
+ byte 43
+ byte 47
+ byte 112
+ byte 97
+ byte 116
+ byte 32
+ byte 32
+ byte 102
+ byte 105
+ byte 108
+ byte 101
+ byte 10
+ byte 0
+
+ long ' align long
+C_sq02_616acaa8_usage_L000018_114_L000115 ' <symbol:114>
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 120
+ byte 118
+ byte 105
+ byte 32
+ byte 123
+ byte 32
+ byte 111
+ byte 112
+ byte 116
+ byte 105
+ byte 111
+ byte 110
+ byte 115
+ byte 32
+ byte 125
+ byte 32
+ byte 43
+ byte 91
+ byte 110
+ byte 117
+ byte 109
+ byte 93
+ byte 32
+ byte 102
+ byte 105
+ byte 108
+ byte 101
+ byte 10
+ byte 0
+
+ long ' align long
+C_sq02_616acaa8_usage_L000018_112_L000113 ' <symbol:112>
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 120
+ byte 118
+ byte 105
+ byte 32
+ byte 123
+ byte 32
+ byte 111
+ byte 112
+ byte 116
+ byte 105
+ byte 111
+ byte 110
+ byte 115
+ byte 32
+ byte 125
+ byte 32
+ byte 45
+ byte 116
+ byte 32
+ byte 116
+ byte 97
+ byte 103
+ byte 10
+ byte 0
+
+ long ' align long
+C_sq02_616acaa8_usage_L000018_110_L000111 ' <symbol:110>
+ byte 85
+ byte 115
+ byte 97
+ byte 103
+ byte 101
+ byte 58
+ byte 32
+ byte 120
+ byte 118
+ byte 105
+ byte 32
+ byte 123
+ byte 32
+ byte 111
+ byte 112
+ byte 116
+ byte 105
+ byte 111
+ byte 110
+ byte 115
+ byte 32
+ byte 125
+ byte 32
+ byte 91
+ byte 32
+ byte 102
+ byte 105
+ byte 108
+ byte 101
+ byte 32
+ byte 46
+ byte 46
+ byte 46
+ byte 32
+ byte 93
+ byte 10
+ byte 0
+
+ long ' align long
+C_xvi_startup_28_L000029 ' <symbol:28>
+ byte 83
+ byte 72
+ byte 69
+ byte 76
+ byte 76
+ byte 0
+
+ long ' align long
+C_xvi_startup_22_L000023 ' <symbol:22>
+ byte 67
+ byte 97
+ byte 110
+ byte 39
+ byte 116
+ byte 32
+ byte 97
+ byte 108
+ byte 108
+ byte 111
+ byte 99
+ byte 97
+ byte 116
+ byte 101
+ byte 32
+ byte 98
+ byte 117
+ byte 102
+ byte 102
+ byte 101
+ byte 114
+ byte 32
+ byte 109
+ byte 101
+ byte 109
+ byte 111
+ byte 114
+ byte 121
+ byte 46
+ byte 10
+ byte 0
+
+ long ' align long
+C_sq01_616acaa8_2_L000003 ' <symbol:2>
+ byte 64
+ byte 40
+ byte 35
+ byte 41
+ byte 115
+ byte 116
+ byte 97
+ byte 114
+ byte 116
+ byte 117
+ byte 112
+ byte 46
+ byte 99
+ byte 9
+ byte 50
+ byte 46
+ byte 49
+ byte 56
+ byte 32
+ byte 40
+ byte 67
+ byte 104
+ byte 114
+ byte 105
+ byte 115
+ byte 32
+ byte 38
+ byte 32
+ byte 74
+ byte 111
+ byte 104
+ byte 110
+ byte 32
+ byte 68
+ byte 111
+ byte 119
+ byte 110
+ byte 101
+ byte 121
+ byte 41
+ byte 32
+ byte 56
+ byte 47
+ byte 49
+ byte 50
+ byte 47
+ byte 57
+ byte 52
+ byte 0
+
+' Catalina Code
+
+DAT ' code segment
+' end

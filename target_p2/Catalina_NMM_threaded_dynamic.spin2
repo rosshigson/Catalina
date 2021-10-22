@@ -377,7 +377,6 @@ plugin
 
 NMM_isr
         stalli
-        mov     t4,#1           ' flag to update ct3 before returning
         bith    lockbits,lock wcz    ' have we acquired ...              
  if_nz  locktry lock wc              ' ... both intra-cog and inter-cog locks?
  if_nc_and_nz  bitl lockbits,lock    ' true = if_c_and_nz, false = if_nc_or_z
@@ -414,19 +413,18 @@ NMM_switch
         mov     FP,Save_FP      ' restore FP
         mov     PA,Save_PA      ' restore PA
         mov     iret3,Save_PC   ' restore PC and flags
-NMM_unlock
-        lockrel lock                 ' release inter-cog lock
-        bitl    lockbits,lock        ' release intra-cog lock
-NMM_resume
-        tjz     t4,#NMM_resume2
         mov     t1,TP           ' up date ticks ...
         add     t1,#33*4+2      ' ... with ticks ...
         rdword  ticks,t1        ' ... for current thread ...
         and     t1,##%11111111111111
         add     ticks,#1
         shl     ticks,#14       ' ... corrected for faster P2!
-        addct3  ct3,ticks       ' update ct3 target for next interrupt
-NMM_resume2
+NMM_unlock
+        lockrel lock                 ' release inter-cog lock
+        bitl    lockbits,lock        ' release intra-cog lock
+NMM_resume
+        cmp     ticks, #0 wz
+  if_nz addct3  ct3,ticks       ' update ct3 target for next interrupt
         allowi
         reti3                   ' resume execution
 NMM_affine
@@ -447,7 +445,7 @@ NMM_affine
         jmp     #NMM_switch     ' now switch to next thread
 NMM_force
         stalli
-        mov     t4,#0           ' flag to not update ct3
+        mov     ticks, #0
         mov     iret3,PA        ' set up return address as if from interrupt
         rdlong  t2, TP          ' load next thread pointer
         rdlong  t1, req wz      ' is there an affinity request oustanding?

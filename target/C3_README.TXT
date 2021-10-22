@@ -76,31 +76,31 @@ with them. Also note that Catalyst can currently only support a cache size up
 to 4K. So if you plan to use Catalyst, you should compile it using commands 
 similar to the following:
 
-   cd "C:\Program Files\Catalina\catalyst"
+   cd "c:\Program Files (x86)\Catalina\catalyst"
    build_all C3 CACHED_4K
 
 or
 
-   cd "C:\Program Files\Catalina\catalyst"
+   cd "c:\Program Files (x86)\Catalina\catalyst"
    build_all C3 CACHED_4K FLASH
 
 Then all the XMM programs you intend to load with catalyst should also be 
 compiled with a 4K cache, such as:
 
-   cd "C:\Program Files\Catalina\demos"
+   cd "c:\Program Files (x86)\Catalina\demos"
    catalina hello_world.c -lci -C C3 -C LARGE -C CACHED_4K
 
 or
 
-   cd "C:\Program Files\Catalina\demos"
+   cd "c:\Program Files (x86)\Catalina\demos"
    catalina hello_world.c -lci -C C3 -C LARGE -C CACHED_4K -C FLASH
 
 However, if you instead plan to always use the payload XMM loader to load your
 programs, you could instead compile programs with an 8k cache:
 
-   cd "C:\Program Files\Catalina\utilities"
+   cd "c:\Program Files (x86)\Catalina\utilities"
    build_all C3 CACHED_8K
-   cd "C:\Program Files\Catalina\demos"
+   cd "c:\Program Files (x86)\Catalina\demos"
    catalina hello_world.c -lci -C C3 -C CACHED_8K
 
 Just be aware that you cannot use loaders compiled with one cache size to load
@@ -117,7 +117,7 @@ to stop for a few seconds while the FLASH is erased. Because of the time this
 takes, the payload loader should be used with a longer timeout (e.g. 1000ms)
 when loading xmm programs compiled with -C FLASH. For example:
 
-   cd "C:\Program Files\Catalina\utilities"
+   cd "c:\Program Files (x86)\Catalina\utilities"
    build_all C3 CACHED FLASH
    cd ..\demos
    catalina hello_world.c -lci -C C3 -C LARGE -C CACHED -C FLASH

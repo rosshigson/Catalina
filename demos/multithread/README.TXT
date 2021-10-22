@@ -4,13 +4,15 @@ programs using multiple threads.
 To build these programs, use the 'build_all' scripts, specifying the
 platform and HMI options. For example:
 
+   build_all C3 TTY
+or
    build_all HYBRID
 or
    build_all TRIBLADEPROP CPU_2 PC VT100
 or
    build_all HYDRA COMPACT
 or
-   build_all P2_EVAL NATIVE
+   build_all P2_EVAL
 
 Note that currently Catalina can only support LMM and CMM programs runnning
 multiple threads. XMM support may be added in future, but there is currently

@@ -19,17 +19,18 @@ The following files are provided:
 
 To build the demo program, use the "build_all" command, specifying the 
 platform for which you want to build (e.g. HYDRA, HYBRID, TRIBLADEPROP CPU_1 
-etc).
+etc). On the Propeller 1, you will probably also need to specify the SMALL 
+or LARGE memory model
 
 For example:
 
-   build_all HYBRID
+   build_all HYBRID LARGE
 or
-   build_all RAMBLADE3
+   build_all RAMBLADE3 SMALL
 or
-   build_all TRIBLADEPROP CPU_2
+   build_all C3 LARGE FLASH CACHED_1K
 or
-   build_all C3 FLASH CACHED_1K
+   build_all P2_EVAL
 
 The following programs are built: 
 

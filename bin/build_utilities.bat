@@ -22,7 +22,7 @@ goto error
 
 :setup_lccdir
 set TMP_LCCDIR=%LCCDIR%
-if "%TMP_LCCDIR%"=="" set TMP_LCCDIR=C:\Program Files\Catalina
+if "%TMP_LCCDIR%"=="" set TMP_LCCDIR=C:\Program Files (x86)\Catalina
 if EXIST "%TMP_LCCDIR%\bin\catalina_env.bat" goto found_catalina
 cls
 @echo.
@@ -59,6 +59,10 @@ set DEFAULT_XMM=
 @echo size.
 @echo.
 @echo You can re-run this program any time if you need to change options. 
+@echo.
+@echo NOTE: You need to execute this utility as an administrator, or else
+@echo ====  have write permissions to Catalina's bin directory to install
+@echo       the binaries produced by this utility.
 @echo.
 SET/P PAUSE="Press ENTER to begin ..."
 cls

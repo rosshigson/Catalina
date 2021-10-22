@@ -229,6 +229,12 @@
  *
  * Version 4.8  - Just update version number.
  *
+ * Version 4.9  - Remove -F and -B command line options.
+ *
+ *              - Pass the target name to the Catalina Optimizer.
+ *
+ * Version 4.9.1 - Just update version number.
+ *
  */
 
 /*--------------------------------------------------------------------------
@@ -265,7 +271,7 @@
 
 #define COMPILE_IN_PLACE   1 /* 0 = compile in target, 1 = compile locally */
 
-#define VERSION            "4.8"
+#define VERSION            "4.9.1"
 
 #define MAX_FILES          500
 #define MAX_LIBS           500
@@ -277,7 +283,7 @@
 
 #ifdef WIN32_PATHS         /* define this on the command line for Windows */
 #define DEFAULT_SEP        "\\"
-#define DEFAULT_LCCDIR     "C:\\Program Files\\Catalina\\" // must match default used by LCC
+#define DEFAULT_LCCDIR     "C:\\Program Files (x86)\\Catalina\\" // must match default used by LCC
 #define MULT_PATH_SEP      ";"
 
 #else
@@ -344,9 +350,10 @@
 #define QUIET_P2           ""
 #define INC_LIB_OPT_P2    " -I "      /* note - space before and after */
 
-#define ASSEMBLE_OPT_LMM   "catoptimize "
-#define ASSEMBLE_OPT_NMM   "catoptimize "
-#define ASSEMBLE_OPT_CMM   "cmmoptimize "
+#define ASSEMBLE_OPT_LMM   "catoptimize " /* note space after */
+#define ASSEMBLE_OPT_NMM   "catoptimize " /* note space after */
+#define ASSEMBLE_OPT_CMM   "cmmoptimize " /* note space after */
+#define TARGET_OPT         "-T "     /* note space after */
 #define P2_OPT             "-p2 "    /* note space after */
 #define SUPPRESS_OPT       "-k "     /* note space after */
 #define DEFAULT_EMM_MEM    "32768"
@@ -452,8 +459,6 @@ static char *path_separator;
 
 static char *output_format;
 
-static int byte_swap = 0;
-
 static int debug_level = 0; // generate debug output (any level)
 
 static char assemble_command[MAX_LINELEN + 1] = ASSEMBLE_OS;
@@ -482,12 +487,10 @@ void help(char *my_name) {
    fprintf(stderr, "          -a        no assembly (output bound source files only)\n");
    fprintf(stderr, "          -as       use spinnaker as assembler (default)\n");
    fprintf(stderr, "          -ap       use p2asm as assembler\n");
-   fprintf(stderr, "          -B width  endian byte swap 'width' bytes in output format (e.g. -S4)\n");
    fprintf(stderr, "          -C symbol #define Catalina 'symbol' before assembling\n");
    fprintf(stderr, "          -d        output diagnostic messages (-d -d for even more messages)\n");
    fprintf(stderr, "          -e        generate export list from input files\n");
    fprintf(stderr, "          -f        force (continue even if errors occur)\n");
-   fprintf(stderr, "          -F format use 'format' as the output format (e.g. -FIntel_Hex_16)\n");
    fprintf(stderr, "          -i        generate import list from input files\n");
    fprintf(stderr, "          -k        kill (suppress) statistics output\n");
    fprintf(stderr, "          -L path   path to libraries (default is '%s')\n", def_lib_path);
@@ -703,28 +706,6 @@ int decode_arguments (int argc, char *argv[]) {
                   }
                   break;
 
-               case 'B':
-                  if (strlen(argv[i]) == 2) {
-                     // use next arg
-                     if (argc > 0) {
-                        sscanf(argv[++i], "%d", &byte_swap);
-                     }
-                     else {
-                        fprintf(stderr, "option -B requires an argument\n");
-                        code = -1;
-                        break;
-                     }
-                     argc--;
-                  }
-                  else {
-                     // use remainder of this arg
-                     sscanf(&argv[i][2], "%d", &byte_swap);
-                  }
-                  if (verbose > 1) {
-                     fprintf(stderr, "byte swap width %d\n", byte_swap);
-                  }
-                  break;
-
                case 'g':
                   if (strlen(argv[i]) == 2) {
                      debug_level = 1;
@@ -883,28 +864,6 @@ int decode_arguments (int argc, char *argv[]) {
                   suppress = 1;
                   if (verbose) {
                      fprintf(stderr, "suppress statistics\n");
-                  }
-                  break;
-
-               case 'F':
-                  if (strlen(argv[i]) == 2) {
-                     // use next arg
-                     if (argc > 0) {
-                        output_format = strdup(argv[++i]);
-                     }
-                     else {
-                        fprintf(stderr, "option -F requires an argument\n");
-                        code = -1;
-                        break;
-                     }
-                     argc--;
-                  }
-                  else {
-                     // use remainder of this arg
-                     output_format = strdup(&argv[i][2]);
-                  }
-                  if (verbose) {
-                     fprintf(stderr, "output format = %s\n", output_format);
                   }
                   break;
 
@@ -1305,10 +1264,14 @@ int decode_arguments (int argc, char *argv[]) {
    }
    if (olevel > 0) {
       safecpy(assemble_command, assemble_opt, MAX_LINELEN);
+      safecat(assemble_command, TARGET_OPT, MAX_LINELEN);
+      safecat(assemble_command, "\"", MAX_LINELEN);
+      safecat(assemble_command, target_path, MAX_LINELEN);
+      safecat(assemble_command, "\" ", MAX_LINELEN);
       if (prop_vers == 2) {
-	 if (verbose > 1) {
+         if (verbose > 1) {
             fprintf(stderr, "using p2 optimizer\n");
-	 }
+         }
          safecat(assemble_command, P2_OPT, MAX_LINELEN);
       }
       if (suppress != 0) {
@@ -1316,6 +1279,9 @@ int decode_arguments (int argc, char *argv[]) {
       }
       sprintf(optnum, "-O%d ", olevel);
       safecat(assemble_command, optnum, MAX_LINELEN);
+      if (verbose > 1) {
+         fprintf(stderr, "optimizing assemble command = %s\n", assemble_command);
+      }
    }
    return code;
 
@@ -3030,30 +2996,6 @@ void do_assemble(char *fullname) {
             if (verbose > 1) {
                fprintf(stderr, "blackcat command returned result %d\n", result);
                fprintf(stderr, "blackcat output file may be corrupt\n");
-            }
-         }
-      }
-      if (output_format != NULL) {
-         fprintf(stderr, "producing output format %s\n", output_format);
-         safecat(reformat, output_name, MAX_LINELEN);
-         safecat(reformat, " -binary", MAX_LINELEN);
-         if (byte_swap != 0) {
-            safecat(reformat, " -byte-swap ", MAX_LINELEN);
-            sprintf(number_string, "%d", byte_swap);
-            safecat(reformat, number_string, MAX_LINELEN);
-         }
-         safecat(reformat, " -output ", MAX_LINELEN);
-         sprintf(path_sfx, ".%s", output_format);
-         pathcat(reformat, fullname, path_sfx, MAX_LINELEN);
-         safecat(reformat, " -", MAX_LINELEN);
-         safecat(reformat, output_format, MAX_LINELEN);
-         if (verbose > 1) {
-            fprintf(stderr, "format command = %s\n", reformat);
-         }
-         if ((result = system(reformat)) != 0) {
-            if (verbose > 1) {
-               fprintf(stderr, "format command returned result %d\n", result);
-               fprintf(stderr, "formatted output file may be corrupt\n");
             }
          }
       }

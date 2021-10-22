@@ -1,29 +1,30 @@
 Minimal Catalina Target Package
 ===============================
 
-This directory contains a much simplified target package that supports only 
-the Catalina LMM TINY memory model. It is intended to be used to understand 
-how Catalina programs are built, and also as an example to assist people who 
-wish to develop their own Catalina targets or plugins.
+This directory contains a much simplified Propeller 1 target package that 
+supports only the Catalina LMM TINY memory model. It is intended to be used 
+to understand how Catalina programs are built, and also as an example to 
+assist people who wish to develop their own Catalina targets or plugins.
 
 There are some demo programs that use this minimal target package in the
-directory c:\Program Files\Catalina\demoes\minimal. To compile them, use
-the build_all batch file. For example:
+directory demos\minimal subdirectory. To compile them, use the build_all 
+batch file. For example, from a Catalina Command Line on Windows, you
+might say:
 
-   cd c:\Program Files\Catalina\demos\minimal
+   cd %LCCDIR%\demos\minimal
    build_all
 
 You can also use this target directory simply by adding -T <directory> to a 
 normal Catalina command, such as:
 
-   cd c:\Program Files\Catalina\demos
-   catalina -T "C:\Program Files\Catalina\minimal" -lc test_leds.c 
+   cd %LCCDIR%\Catalina\demos
+   catalina -T "%LCCDIR%\minimal" -lc test_leds.c 
 
 However, if you intend using it for multiple commands, it is easier to set
 the CATALINA_TARGET environment variable. To do this, within a command 
 window under Windows, type:
 
-   set CATALINA_TARGET=C:\Program Files\Catalina\minimal
+   set CATALINA_TARGET=%LCCDIR%\minimal
 
 NOTE: Do not use quotes when specifying the target in the above command!
 
@@ -41,10 +42,10 @@ You should see something like this:
    CATALINA_DEFINE  = [default]
    CATALINA_INCLUDE = [default]
    CATALINA_LIBRARY = [default]
-   CATALINA_TARGET  = C:\Program Files\Catalina\minimal
+   CATALINA_TARGET  = "C:\Program Files (x86)\Catalina\minimal"
    CATALINA_LCCOPT  = [default]
    CATALINA_TEMPDIR = [default]
-   LCCDIR           = [default]
+   LCCDIR           = "C:\Program Files (x86)\Catalina"
 
 
 The files in this directory are a fully functional target, but are 

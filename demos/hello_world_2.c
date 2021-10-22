@@ -1,9 +1,6 @@
-#include <stdio.h>
+#include <catalina_hmi.h>
 
-int main (void) {
-	printf("Hello, world (from Catalina!)\n");
-
-   while (1); // Prop reboots on exit from main!
-
-   return 0;
+void main(void) {
+   t_printf("Hello, world!\n");
+   while (1); // Propeller may reboot on exit from main, so don't exit
 }

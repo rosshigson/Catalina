@@ -46,7 +46,11 @@ DAT ' code segment
 '
 C__rand_reverse
  mov r0, r2
+
+
+
  min r0, #1
+
  mov r1, #32
  mov BC, #%10111
  ror BC, #1

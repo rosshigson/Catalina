@@ -23,7 +23,7 @@ C__vdb_cog ' <symbol:_vdb_cog>
  long -1
 
  alignl ' align long
-C_sj2s_6132d1de_font_L000004 ' <symbol:font>
+C_sau8_616ac962_font_L000004 ' <symbol:font>
  word $9d62
  word $112a
  word $b0e9
@@ -580,7 +580,7 @@ C_g_setup_58
  shl r22, #1 ' LSHI4 coni
  mov r20, ##@C_G__V_A_R_+364 ' reg <- addrg
  adds r20, r22 ' ADDI/P (2)
- mov r18, ##@C_sj2s_6132d1de_font_L000004 ' reg <- addrg
+ mov r18, ##@C_sau8_616ac962_font_L000004 ' reg <- addrg
  adds r22, r18 ' ADDI/P (1)
  rdword r22, r22 ' reg <- CVUI4 INDIRU2 reg
  wrword r22, r20 ' ASGNI2 reg reg

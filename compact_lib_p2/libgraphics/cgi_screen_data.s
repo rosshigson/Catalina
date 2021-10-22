@@ -45,12 +45,13 @@ C_cgi_screen_data ' <symbol:cgi_screen_data>
  long I32_CALA + (@C__cgi_data)<<S32 ' CALL addrg
  word I16B_LODL + (r20)<<D16B
  alignl ' align long
- long $ffff ' reg <- con
+ long $ffffff ' reg <- con
  word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' BANDI/U
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (3)
  word I16B_LODF + ((-4)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_ADD + (r22)<<D16A + (r20)<<S16A ' ADDU (1)
+ word I16A_ADDI + (r22)<<D16A + (4)<<S16A ' ADDU4 reg coni
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  word I16A_CMPSI + (r23)<<D16A + (0)<<S16A

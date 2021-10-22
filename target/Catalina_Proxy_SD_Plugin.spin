@@ -199,7 +199,7 @@ read_response
         if_b  jmp       #init_retry             ' ... retry                    
               call      #SIO_ReadByte           ' read ...
               mov       rslt,r0 wz,wc           ' ... result
-        if_ae  jmp      #done_ok               
+        if_ae jmp       #done_ok               
 init_retry
               lockclr   p_lock                  ' release exclusive access to proxy
               jmp       #initialize             ' keep trying until we initialize ok
@@ -217,6 +217,7 @@ done_ok
               mov       r0,#89                  ' Y
               call      #SIO_WriteByte
 #endif
+              mov       rslt,#0                 ' return good result
 done
               lockclr   p_lock                  ' release exclusive access to proxy
               wrlong    rslt,rsltptr            ' set result 

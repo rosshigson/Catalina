@@ -117,7 +117,7 @@ void initialize_pragma_fn( a_VARARG *va ) {
    }
 
    #ifndef NO_BANNER
-   fprintf(stderr, "Catalina Parallelizer 4.8\n");
+   fprintf(stderr, "Catalina Parallelizer 4.9\n");
    #endif
 
    worker[0].name    = "__main";
@@ -630,7 +630,7 @@ void emit_worker_code(char *name, int line_no, char *file) {
       printf("#ifdef _GET_ID_FUNCTION\n");
       printf("   int id = _GET_ID_FUNCTION(\"%s\");\n", name);
       printf("#else\n");
-      printf("   int id = (int)argc;\n", name);
+      printf("   int id = (int)argc;\n");
       printf("#endif\n");
       if ((strlen(worker[i].input) > 0) 
       &&  (strcmp(worker[i].input, "void") != 0)) {

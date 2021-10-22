@@ -76,25 +76,18 @@ if [[ ! -e $TMP_LCCDIR/bin/catalina_env ]]; then
 fi   
 
 echo ""
-echo "   ========================="
-echo "   BUILDING PROPELLER2 DEMOS"
-echo "   ========================="
+echo "   ========================"
+echo "   BUILDING INTERRUPT DEMOS"
+echo "   ========================"
 echo ""
 
-platform=$1
+# do Linux specific builds ...
 
-if [ "${platform:0:2}" != "P2" ]; then 
 echo ""
-echo " ERROR: These programs require a Propeller 2"
-echo ""
+p2_asm flash.pasm
+bindump flash.bin -c -p 0x > flash.inc
 
-else
-   p2_asm flash.pasm
-   bindump flash.bin -c -p 0x > flash.inc
-   catalina -p2 -lci test_p2.c utilities.c  
-   catalina -p2 -lci test_p2_smartpins.c  
-   catalina -p2 -lci test_p2_clock.c  
-fi
+make clean all
 
 unset CATALINA_DEFINE
 echo ""

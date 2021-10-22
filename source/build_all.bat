@@ -4,7 +4,7 @@ rem
 rem check LCCDIR is set
 rem 
 set TMP_LCCDIR=%LCCDIR%
-if "%TMP_LCCDIR%"=="" set TMP_LCCDIR=C:\Program Files\Catalina
+if "%TMP_LCCDIR%"=="" set TMP_LCCDIR=C:\Program Files (x86)\Catalina
 if EXIST "%TMP_LCCDIR%\bin\catalina_env.bat" goto found_catalina
 echo.
 echo   ERROR: Catalina does not appear to be installed in %TMP_LCCDIR%
@@ -19,6 +19,9 @@ call ..\use_catalina
 
 cd catalina
 call build_all
+cd ..\catoptimize
+call build_all
+call copy_all
 cd ..\p2asm_src
 call build_all
 cd ..\lcc
@@ -26,8 +29,6 @@ call build_all
 cd ..\openspin
 call build_all
 cd ..\lib
-call build_all
-cd ..\srecord
 call build_all
 cd ..
 

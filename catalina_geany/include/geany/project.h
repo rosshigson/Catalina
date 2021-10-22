@@ -87,6 +87,8 @@ gboolean project_load_file(const gchar *locale_file_name);
 
 gboolean project_load_file_with_session(const gchar *locale_file_name);
 
+gchar *project_get_project_name(void);
+
 gchar *project_get_base_path(void);
 
 gchar *project_get_options(void);

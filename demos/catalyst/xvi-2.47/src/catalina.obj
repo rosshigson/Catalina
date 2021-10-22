@@ -1,0 +1,1437 @@
+' Catalina Code
+
+DAT ' code segment
+'
+' LCC 4.2 (LARGE) for Parallax Propeller
+' (Catalina v2.5 Code Generator by Ross Higson)
+'
+
+' Catalina Init
+
+DAT ' initialized data segment
+
+ long ' align long
+C_sbic_616acaa8_sccsid_L000001 ' <symbol:sccsid>
+ long @C_sbic1_616acaa8_2_L000003
+
+ long ' align long
+C_sbic2_616acaa8_S_P_A_C_E_S__L000019 ' <symbol:SPACES>
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 32
+ byte 0
+
+' Catalina Export ignore_signals
+
+' Catalina Code
+
+DAT ' code segment
+
+ long ' align long
+C_ignore_signals ' <symbol:ignore_signals>
+' C_ignore_signals_20 ' (symbol refcount = 0)
+ jmp #RETN
+
+
+' Catalina Export catch_signals
+
+ long ' align long
+C_catch_signals ' <symbol:catch_signals>
+' C_catch_signals_21 ' (symbol refcount = 0)
+ jmp #RETN
+
+
+' Catalina Init
+
+DAT ' initialized data segment
+
+ long ' align long
+C_sbic6_616acaa8_rootdir_L000026 ' <symbol:rootdir>
+ byte 92
+ byte 0
+
+' Catalina Export inchar
+
+' Catalina Code
+
+DAT ' code segment
+
+ long ' align long
+C_inchar ' <symbol:inchar>
+ jmp #PSHM
+ long $fe0000 ' save registers
+ mov r23, r2 ' reg var <- reg arg
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C_k_wait ' CALL addrg
+ mov r19, r0
+ and r19, #255 ' BANDI4 coni
+ cmps r19,  #27 wz
+ jmp #BRNZ
+ long @C_inchar_28 ' NEI4
+ mov r22, #0 ' reg <- coni
+ mov r17, r22 ' CVI, CVU or LOAD
+ mov r21, r22 ' CVI, CVU or LOAD
+C_inchar_30
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C_k_ready ' CALL addrg
+ cmps r0,  #0 wz
+ jmp #BR_Z
+ long @C_inchar_34 ' EQI4
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C_k_wait ' CALL addrg
+ mov r19, r0
+ and r19, #255 ' BANDI4 coni
+ mov r17, #1 ' reg <- coni
+ jmp #JMPA
+ long @C_inchar_32 ' JUMPV addrg
+C_inchar_34
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C__cnt ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C__clockfreq ' CALL addrg
+ mov r20, r0 ' CVI, CVU or LOAD
+ jmp #LODL
+ long 1000
+ mov r18, RI ' reg <- con
+ mov r0, r20 ' setup r0/r1 (2)
+ mov r1, r18 ' setup r0/r1 (2)
+ jmp #DIVU ' DIVU
+ mov r20, r0 ' CVI, CVU or LOAD
+ mov r2, r22 ' ADDU
+ add r2, r20 ' ADDU (3)
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C__waitcnt ' CALL addrg
+' C_inchar_31 ' (symbol refcount = 0)
+ adds r21, #1 ' ADDI4 coni
+ cmps r21,  #100 wz,wc
+ jmp #BR_B
+ long @C_inchar_30 ' LTI4
+C_inchar_32
+ cmps r17,  #0 wz
+ jmp #BR_Z
+ long @C_inchar_36 ' EQI4
+ cmps r19,  #91 wz
+ jmp #BRNZ
+ long @C_inchar_38 ' NEI4
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C_k_wait ' CALL addrg
+ mov r19, r0
+ and r19, #255 ' BANDI4 coni
+ cmps r19,  #65 wz,wc
+ jmp #BR_B
+ long @C_inchar_39 ' LTI4
+ cmps r19,  #68 wz,wc
+ jmp #BR_A
+ long @C_inchar_47 ' GTI4
+ mov r22, r19
+ shl r22, #2 ' LSHI4 coni
+ jmp #LODL
+ long @C_inchar_48_L000050-260
+ mov r20, RI ' reg <- addrg
+ adds r22, r20 ' ADDI/P (1)
+ mov RI, r22
+ jmp #RLNG
+ mov RI, BC
+ jmp #JMPI ' JUMPV reg
+
+' Catalina Cnst
+
+DAT ' const data segment
+
+ long ' align long
+C_inchar_48_L000050 ' <symbol:48>
+ long @C_inchar_44
+ long @C_inchar_45
+ long @C_inchar_43
+ long @C_inchar_42
+
+' Catalina Code
+
+DAT ' code segment
+C_inchar_47
+ cmps r19,  #80 wz
+ jmp #BR_Z
+ long @C_inchar_46 ' EQI4
+ jmp #JMPA
+ long @C_inchar_39 ' JUMPV addrg
+C_inchar_42
+ mov r19, #134 ' reg <- coni
+ jmp #JMPA
+ long @C_inchar_39 ' JUMPV addrg
+C_inchar_43
+ mov r19, #135 ' reg <- coni
+ jmp #JMPA
+ long @C_inchar_39 ' JUMPV addrg
+C_inchar_44
+ mov r19, #132 ' reg <- coni
+ jmp #JMPA
+ long @C_inchar_39 ' JUMPV addrg
+C_inchar_45
+ mov r19, #133 ' reg <- coni
+ jmp #JMPA
+ long @C_inchar_39 ' JUMPV addrg
+C_inchar_46
+ mov r19, #128 ' reg <- coni
+ jmp #JMPA
+ long @C_inchar_39 ' JUMPV addrg
+C_inchar_38
+ cmps r19,  #79 wz
+ jmp #BRNZ
+ long @C_inchar_52 ' NEI4
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C_k_wait ' CALL addrg
+ mov r19, r0
+ and r19, #255 ' BANDI4 coni
+ mov r22, #80 ' reg <- coni
+ cmps r19, r22 wz
+ jmp #BR_Z
+ long @C_inchar_68 ' EQI4
+ cmps r19, r22 wz,wc
+ jmp #BR_A
+ long @C_inchar_70 ' GTI4
+' C_inchar_69 ' (symbol refcount = 0)
+ cmps r19,  #65 wz,wc
+ jmp #BR_B
+ long @C_inchar_55 ' LTI4
+ cmps r19,  #68 wz,wc
+ jmp #BR_A
+ long @C_inchar_55 ' GTI4
+ mov r22, r19
+ shl r22, #2 ' LSHI4 coni
+ jmp #LODL
+ long @C_inchar_71_L000073-260
+ mov r20, RI ' reg <- addrg
+ adds r22, r20 ' ADDI/P (1)
+ mov RI, r22
+ jmp #RLNG
+ mov RI, BC
+ jmp #JMPI ' JUMPV reg
+
+' Catalina Cnst
+
+DAT ' const data segment
+
+ long ' align long
+C_inchar_71_L000073 ' <symbol:71>
+ long @C_inchar_58
+ long @C_inchar_59
+ long @C_inchar_57
+ long @C_inchar_56
+
+' Catalina Code
+
+DAT ' code segment
+C_inchar_70
+ cmps r19,  #113 wz,wc
+ jmp #BR_B
+ long @C_inchar_55 ' LTI4
+ cmps r19,  #121 wz,wc
+ jmp #BR_A
+ long @C_inchar_55 ' GTI4
+ mov r22, r19
+ shl r22, #2 ' LSHI4 coni
+ jmp #LODL
+ long @C_inchar_75_L000077-452
+ mov r20, RI ' reg <- addrg
+ adds r22, r20 ' ADDI/P (1)
+ mov RI, r22
+ jmp #RLNG
+ mov RI, BC
+ jmp #JMPI ' JUMPV reg
+
+' Catalina Cnst
+
+DAT ' const data segment
+
+ long ' align long
+C_inchar_75_L000077 ' <symbol:75>
+ long @C_inchar_65
+ long @C_inchar_63
+ long @C_inchar_67
+ long @C_inchar_60
+ long @C_inchar_55
+ long @C_inchar_61
+ long @C_inchar_64
+ long @C_inchar_62
+ long @C_inchar_66
+
+' Catalina Code
+
+DAT ' code segment
+C_inchar_56
+ mov r19, #134 ' reg <- coni
+ jmp #JMPA
+ long @C_inchar_55 ' JUMPV addrg
+C_inchar_57
+ mov r19, #135 ' reg <- coni
+ jmp #JMPA
+ long @C_inchar_55 ' JUMPV addrg
+C_inchar_58
+ mov r19, #132 ' reg <- coni
+ jmp #JMPA
+ long @C_inchar_55 ' JUMPV addrg
+C_inchar_59
+ mov r19, #133 ' reg <- coni
+ jmp #JMPA
+ long @C_inchar_55 ' JUMPV addrg
+C_inchar_60
+ mov r19, #134 ' reg <- coni
+ jmp #JMPA
+ long @C_inchar_55 ' JUMPV addrg
+C_inchar_61
+ mov r19, #135 ' reg <- coni
+ jmp #JMPA
+ long @C_inchar_55 ' JUMPV addrg
+C_inchar_62
+ mov r19, #132 ' reg <- coni
+ jmp #JMPA
+ long @C_inchar_55 ' JUMPV addrg
+C_inchar_63
+ mov r19, #133 ' reg <- coni
+ jmp #JMPA
+ long @C_inchar_55 ' JUMPV addrg
+C_inchar_64
+ mov r19, #131 ' reg <- coni
+ jmp #JMPA
+ long @C_inchar_55 ' JUMPV addrg
+C_inchar_65
+ mov r19, #139 ' reg <- coni
+ jmp #JMPA
+ long @C_inchar_55 ' JUMPV addrg
+C_inchar_66
+ mov r19, #138 ' reg <- coni
+ jmp #JMPA
+ long @C_inchar_55 ' JUMPV addrg
+C_inchar_67
+ mov r19, #137 ' reg <- coni
+ jmp #JMPA
+ long @C_inchar_55 ' JUMPV addrg
+C_inchar_68
+ mov r19, #128 ' reg <- coni
+C_inchar_55
+C_inchar_52
+C_inchar_39
+C_inchar_36
+C_inchar_28
+ mov r0, r19 ' CVI, CVU or LOAD
+' C_inchar_27 ' (symbol refcount = 0)
+ jmp #POPM ' restore registers
+ jmp #RETN
+
+
+' Catalina Export outchar
+
+ long ' align long
+C_outchar ' <symbol:outchar>
+ jmp #PSHM
+ long $c00000 ' save registers
+ mov r23, r2 ' reg var <- reg arg
+ mov r22, r23 ' CVUI
+ and r22, cviu_m1 ' zero extend
+ mov r2, r22 ' CVI, CVU or LOAD
+ mov r3, #1 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_t_char
+ add SP, #4 ' CALL addrg
+' C_outchar_79 ' (symbol refcount = 0)
+ jmp #POPM ' restore registers
+ jmp #RETN
+
+
+' Catalina Export outstr
+
+ long ' align long
+C_outstr ' <symbol:outstr>
+ jmp #PSHM
+ long $800000 ' save registers
+ mov r23, r2 ' reg var <- reg arg
+ mov r2, r23 ' CVI, CVU or LOAD
+ mov r3, #1 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_t_string
+ add SP, #4 ' CALL addrg
+' C_outstr_80 ' (symbol refcount = 0)
+ jmp #POPM ' restore registers
+ jmp #RETN
+
+
+' Catalina Export alert
+
+ long ' align long
+C_alert ' <symbol:alert>
+' C_alert_81 ' (symbol refcount = 0)
+ jmp #RETN
+
+
+' Catalina Export erase_line
+
+ long ' align long
+C_erase_line ' <symbol:erase_line>
+ jmp #NEWF
+ sub SP, #8
+ jmp #PSHM
+ long $c00000 ' save registers
+ mov r2, #1 ' reg ARG coni
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_t_getpos ' CALL addrg
+ mov r23, r0 ' CVI, CVU or LOAD
+ mov r22, r23
+ and r22, #255 ' BANDI4 coni
+ mov RI, FP
+ sub RI, #-(-4)
+ wrlong r22, RI ' ASGNI4 addrli reg
+ mov r22, r23
+ sar r22, #8 ' RSHI4 coni
+ and r22, #255 ' BANDI4 coni
+ mov RI, FP
+ sub RI, #-(-8)
+ wrlong r22, RI ' ASGNI4 addrli reg
+ mov r2, #27 ' reg ARG coni
+ mov r3, #1 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_t_char
+ add SP, #4 ' CALL addrg
+ jmp #LODL
+ long @C_erase_line_83_L000084
+ mov r2, RI ' reg ARG ADDRG
+ mov r3, #1 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_t_string
+ add SP, #4 ' CALL addrg
+' C_erase_line_82 ' (symbol refcount = 0)
+ jmp #POPM ' restore registers
+ add SP, #8 ' framesize
+ jmp #RETF
+
+
+' Catalina Export erase_display
+
+ long ' align long
+C_erase_display ' <symbol:erase_display>
+ mov r2, #27 ' reg ARG coni
+ mov r3, #1 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_t_char
+ add SP, #4 ' CALL addrg
+ jmp #LODL
+ long @C_erase_display_86_L000087
+ mov r2, RI ' reg ARG ADDRG
+ mov r3, #1 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_t_string
+ add SP, #4 ' CALL addrg
+' C_erase_display_85 ' (symbol refcount = 0)
+ jmp #RETN
+
+
+' Catalina Export insert_line
+
+ long ' align long
+C_insert_line ' <symbol:insert_line>
+ jmp #LODL
+ long @C_insert_line_89_L000090
+ mov r2, RI ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_puts ' CALL addrg
+' C_insert_line_88 ' (symbol refcount = 0)
+ jmp #RETN
+
+
+' Catalina Export delete_line
+
+ long ' align long
+C_delete_line ' <symbol:delete_line>
+ jmp #LODL
+ long @C_delete_line_92_L000093
+ mov r2, RI ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_puts ' CALL addrg
+' C_delete_line_91 ' (symbol refcount = 0)
+ jmp #RETN
+
+
+' Catalina Export invis_cursor
+
+ long ' align long
+C_invis_cursor ' <symbol:invis_cursor>
+ mov r2, #27 ' reg ARG coni
+ mov r3, #1 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_t_char
+ add SP, #4 ' CALL addrg
+ jmp #LODL
+ long @C_invis_cursor_95_L000096
+ mov r2, RI ' reg ARG ADDRG
+ mov r3, #1 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_t_string
+ add SP, #4 ' CALL addrg
+' C_invis_cursor_94 ' (symbol refcount = 0)
+ jmp #RETN
+
+
+' Catalina Export vis_cursor
+
+ long ' align long
+C_vis_cursor ' <symbol:vis_cursor>
+ mov r2, #27 ' reg ARG coni
+ mov r3, #1 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_t_char
+ add SP, #4 ' CALL addrg
+ jmp #LODL
+ long @C_vis_cursor_98_L000099
+ mov r2, RI ' reg ARG ADDRG
+ mov r3, #1 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_t_string
+ add SP, #4 ' CALL addrg
+' C_vis_cursor_97 ' (symbol refcount = 0)
+ jmp #RETN
+
+
+' Catalina Export can_write
+
+ long ' align long
+C_can_write ' <symbol:can_write>
+ mov r0, #1 ' reg <- coni
+' C_can_write_100 ' (symbol refcount = 0)
+ jmp #RETN
+
+
+' Catalina Export sys_init
+
+ long ' align long
+C_sys_init ' <symbol:sys_init>
+ jmp #PSHM
+ long $400000 ' save registers
+ mov r22, #24 ' reg <- coni
+ jmp #LODL
+ long @C_R_ows
+ mov BC, r22
+ jmp #WLNG ' ASGNI4 addrg reg
+ mov r22, #80 ' reg <- coni
+ jmp #LODL
+ long @C_C_olumns
+ mov BC, r22
+ jmp #WLNG ' ASGNI4 addrg reg
+ mov r2, #27 ' reg ARG coni
+ mov r3, #1 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_t_char
+ add SP, #4 ' CALL addrg
+ jmp #LODL
+ long @C_sys_init_102_L000103
+ mov r2, RI ' reg ARG ADDRG
+ mov r3, #1 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_t_string
+ add SP, #4 ' CALL addrg
+' C_sys_init_101 ' (symbol refcount = 0)
+ jmp #POPM ' restore registers
+ jmp #RETN
+
+
+' Catalina Export sys_startv
+
+ long ' align long
+C_sys_startv ' <symbol:sys_startv>
+' C_sys_startv_104 ' (symbol refcount = 0)
+ jmp #RETN
+
+
+' Catalina Export sys_endv
+
+ long ' align long
+C_sys_endv ' <symbol:sys_endv>
+' C_sys_endv_105 ' (symbol refcount = 0)
+ jmp #RETN
+
+
+' Catalina Export sys_exit
+
+ long ' align long
+C_sys_exit ' <symbol:sys_exit>
+ jmp #PSHM
+ long $800000 ' save registers
+ mov r23, r2 ' reg var <- reg arg
+ mov r2, #0 ' reg ARG coni
+ mov r3, #25 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_tty_goto
+ add SP, #4 ' CALL addrg
+ mov r2, #10 ' reg ARG coni
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_outchar ' CALL addrg
+ mov r2, r23 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_exit ' CALL addrg
+' C_sys_exit_106 ' (symbol refcount = 0)
+ jmp #POPM ' restore registers
+ jmp #RETN
+
+
+' Catalina Export tty_goto
+
+ long ' align long
+C_tty_goto ' <symbol:tty_goto>
+ jmp #NEWF
+ sub SP, #12
+ jmp #PSHM
+ long $a00000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ mov r2, r21
+ adds r2, #1 ' ADDI4 coni
+ mov r3, r23
+ adds r3, #1 ' ADDI4 coni
+ jmp #LODL
+ long @C_tty_goto_108_L000109
+ mov r4, RI ' reg ARG ADDRG
+ mov r5, FP
+ sub r5, #-(-12) ' reg ARG ADDRLi
+ mov BC, #16 ' arg size, rpsize = 16, spsize = 16
+ sub SP, #12 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_sprintf
+ add SP, #12 ' CALL addrg
+ mov r2, #27 ' reg ARG coni
+ mov r3, #1 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_t_char
+ add SP, #4 ' CALL addrg
+ mov r2, FP
+ sub r2, #-(-12) ' reg ARG ADDRLi
+ mov r3, #1 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_t_string
+ add SP, #4 ' CALL addrg
+' C_tty_goto_107 ' (symbol refcount = 0)
+ jmp #POPM ' restore registers
+ add SP, #12 ' framesize
+ jmp #RETF
+
+
+' Catalina Export sleep
+
+ long ' align long
+C_sleep ' <symbol:sleep>
+ jmp #PSHM
+ long $f00000 ' save registers
+ mov r23, r2 ' reg var <- reg arg
+ mov r21, #0 ' reg <- coni
+ jmp #JMPA
+ long @C_sleep_114 ' JUMPV addrg
+C_sleep_111
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C__cnt ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C__clockfreq ' CALL addrg
+ mov r20, r0 ' CVI, CVU or LOAD
+ mov r2, r22 ' ADDU
+ add r2, r20 ' ADDU (3)
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C__waitcnt ' CALL addrg
+' C_sleep_112 ' (symbol refcount = 0)
+ adds r21, #1 ' ADDI4 coni
+C_sleep_114
+ mov r22, r21 ' CVI, CVU or LOAD
+ cmp r22, r23 wz,wc 
+ jmp #BR_B
+ long @C_sleep_111' LTU4
+' C_sleep_110 ' (symbol refcount = 0)
+ jmp #POPM ' restore registers
+ jmp #RETN
+
+
+' Catalina Export Wait200ms
+
+ long ' align long
+C_W_ait200ms ' <symbol:Wait200ms>
+ jmp #PSHM
+ long $540000 ' save registers
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C__cnt ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ jmp #CALA
+ long @C__clockfreq ' CALL addrg
+ mov r20, r0 ' CVI, CVU or LOAD
+ mov r18, #5 ' reg <- coni
+ mov r0, r20 ' setup r0/r1 (2)
+ mov r1, r18 ' setup r0/r1 (2)
+ jmp #DIVU ' DIVU
+ mov r20, r0 ' CVI, CVU or LOAD
+ mov r2, r22 ' ADDU
+ add r2, r20 ' ADDU (3)
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C__waitcnt ' CALL addrg
+' C_W_ait200ms_115 ' (symbol refcount = 0)
+ jmp #POPM ' restore registers
+ jmp #RETN
+
+
+' Catalina Export set_colour
+
+ long ' align long
+C_set_colour ' <symbol:set_colour>
+' C_set_colour_116 ' (symbol refcount = 0)
+ jmp #RETN
+
+
+' Catalina Export tempfname
+
+ long ' align long
+C_tempfname ' <symbol:tempfname>
+ jmp #PSHM
+ long $c00000 ' save registers
+ mov r23, r2 ' reg var <- reg arg
+ jmp #LODL
+ long @C_sbic4_616acaa8_tmpbuff_L000024
+ mov r2, RI ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_tmpnam ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+' C_tempfname_117 ' (symbol refcount = 0)
+ jmp #POPM ' restore registers
+ jmp #RETN
+
+
+' Catalina Export getcwd
+
+ long ' align long
+C_getcwd ' <symbol:getcwd>
+ jmp #PSHM
+ long $a00000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ jmp #LODL
+ long @C_getcwd_119_L000120
+ mov r2, RI ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_puts ' CALL addrg
+ jmp #LODL
+ long @C_sbic6_616acaa8_rootdir_L000026
+ mov r0, RI ' reg <- addrg
+' C_getcwd_118 ' (symbol refcount = 0)
+ jmp #POPM ' restore registers
+ jmp #RETN
+
+
+' Catalina Export chdir
+
+ long ' align long
+C_chdir ' <symbol:chdir>
+ jmp #PSHM
+ long $800000 ' save registers
+ mov r23, r2 ' reg var <- reg arg
+ jmp #LODL
+ long @C_chdir_122_L000123
+ mov r2, RI ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_puts ' CALL addrg
+ mov r0, #1 ' reg <- coni
+' C_chdir_121 ' (symbol refcount = 0)
+ jmp #POPM ' restore registers
+ jmp #RETN
+
+
+' Catalina Export exists
+
+ long ' align long
+C_exists ' <symbol:exists>
+ mov r0, #0 ' reg <- coni
+' C_exists_124 ' (symbol refcount = 0)
+ jmp #RETN
+
+
+' Catalina Export cat_scroll
+
+ long ' align long
+C_cat_scroll ' <symbol:cat_scroll>
+ jmp #PSHM
+ long $a80000 ' save registers
+ mov r23, r4 ' reg var <- reg arg
+ mov r21, r3 ' reg var <- reg arg
+ mov r19, r2 ' reg var <- reg arg
+ jmp #LODL
+ long @C_cat_scroll_126_L000127
+ mov r2, RI ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_puts ' CALL addrg
+' C_cat_scroll_125 ' (symbol refcount = 0)
+ jmp #POPM ' restore registers
+ jmp #RETN
+
+
+' Catalina Export call_system
+
+ long ' align long
+C_call_system ' <symbol:call_system>
+ jmp #PSHM
+ long $800000 ' save registers
+ mov r23, r2 ' reg var <- reg arg
+ jmp #LODL
+ long @C_call_system_129_L000130
+ mov r2, RI ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_puts ' CALL addrg
+ jmp #LODL
+ long -1
+ mov r0, RI ' reg <- con
+' C_call_system_128 ' (symbol refcount = 0)
+ jmp #POPM ' restore registers
+ jmp #RETN
+
+
+' Catalina Export call_shell
+
+ long ' align long
+C_call_shell ' <symbol:call_shell>
+ jmp #PSHM
+ long $800000 ' save registers
+ mov r23, r2 ' reg var <- reg arg
+ jmp #LODL
+ long @C_call_shell_132_L000133
+ mov r2, RI ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_puts ' CALL addrg
+ jmp #LODL
+ long -1
+ mov r0, RI ' reg <- con
+' C_call_shell_131 ' (symbol refcount = 0)
+ jmp #POPM ' restore registers
+ jmp #RETN
+
+
+' Catalina Export sys_pipe
+
+ long ' align long
+C_sys_pipe ' <symbol:sys_pipe>
+ jmp #PSHM
+ long $a80000 ' save registers
+ mov r23, r4 ' reg var <- reg arg
+ mov r21, r3 ' reg var <- reg arg
+ mov r19, r2 ' reg var <- reg arg
+ jmp #LODL
+ long @C_sys_pipe_135_L000136
+ mov r2, RI ' reg ARG ADDRG
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_puts ' CALL addrg
+ jmp #LODL
+ long -1
+ mov r0, RI ' reg <- con
+' C_sys_pipe_134 ' (symbol refcount = 0)
+ jmp #POPM ' restore registers
+ jmp #RETN
+
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+ long ' align long
+C_sbic5_616acaa8_logscreen_L000025 ' <symbol:logscreen>
+ byte 0[4]
+
+ long ' align long
+C_sbic4_616acaa8_tmpbuff_L000024 ' <symbol:tmpbuff>
+ byte 0[21]
+
+' Catalina Code
+
+DAT ' code segment
+
+' Catalina Import _cnt
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Code
+
+DAT ' code segment
+
+' Catalina Import _waitcnt
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Code
+
+DAT ' code segment
+
+' Catalina Import _clockfreq
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Code
+
+DAT ' code segment
+
+' Catalina Import t_getpos
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Code
+
+DAT ' code segment
+
+' Catalina Import t_string
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Code
+
+DAT ' code segment
+
+' Catalina Import t_char
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Code
+
+DAT ' code segment
+
+' Catalina Import k_ready
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Code
+
+DAT ' code segment
+
+' Catalina Import k_wait
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Export SIG_terminate
+
+ long ' align long
+C_S_I_G__terminate ' <symbol:SIG_terminate>
+ byte 0[1]
+
+' Catalina Export SIG_user_disconnected
+
+ long ' align long
+C_S_I_G__user_disconnected ' <symbol:SIG_user_disconnected>
+ byte 0[1]
+
+' Catalina Export SIG_suspend_request
+
+ long ' align long
+C_S_I_G__suspend_request ' <symbol:SIG_suspend_request>
+ byte 0[1]
+
+' Catalina Export Columns
+
+ long ' align long
+C_C_olumns ' <symbol:Columns>
+ byte 0[4]
+
+' Catalina Export Rows
+
+ long ' align long
+C_R_ows ' <symbol:Rows>
+ byte 0[4]
+
+' Catalina Code
+
+DAT ' code segment
+
+' Catalina Import exit
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Code
+
+DAT ' code segment
+
+' Catalina Import puts
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Code
+
+DAT ' code segment
+
+' Catalina Import sprintf
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Code
+
+DAT ' code segment
+
+' Catalina Import tmpnam
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Cnst
+
+DAT ' const data segment
+
+ long ' align long
+C_sys_pipe_135_L000136 ' <symbol:135>
+ byte 80
+ byte 105
+ byte 112
+ byte 101
+ byte 115
+ byte 32
+ byte 110
+ byte 111
+ byte 116
+ byte 32
+ byte 105
+ byte 109
+ byte 112
+ byte 108
+ byte 101
+ byte 109
+ byte 101
+ byte 110
+ byte 116
+ byte 101
+ byte 100
+ byte 33
+ byte 0
+
+ long ' align long
+C_call_shell_132_L000133 ' <symbol:132>
+ byte 115
+ byte 104
+ byte 101
+ byte 108
+ byte 108
+ byte 32
+ byte 99
+ byte 111
+ byte 109
+ byte 109
+ byte 97
+ byte 110
+ byte 100
+ byte 32
+ byte 110
+ byte 111
+ byte 116
+ byte 32
+ byte 105
+ byte 109
+ byte 112
+ byte 108
+ byte 101
+ byte 109
+ byte 101
+ byte 110
+ byte 116
+ byte 101
+ byte 100
+ byte 33
+ byte 0
+
+ long ' align long
+C_call_system_129_L000130 ' <symbol:129>
+ byte 115
+ byte 121
+ byte 115
+ byte 116
+ byte 101
+ byte 109
+ byte 32
+ byte 99
+ byte 111
+ byte 109
+ byte 109
+ byte 97
+ byte 110
+ byte 100
+ byte 32
+ byte 110
+ byte 111
+ byte 116
+ byte 32
+ byte 105
+ byte 109
+ byte 112
+ byte 108
+ byte 101
+ byte 109
+ byte 101
+ byte 110
+ byte 116
+ byte 101
+ byte 100
+ byte 33
+ byte 0
+
+ long ' align long
+C_cat_scroll_126_L000127 ' <symbol:126>
+ byte 115
+ byte 99
+ byte 114
+ byte 111
+ byte 108
+ byte 108
+ byte 105
+ byte 110
+ byte 103
+ byte 32
+ byte 110
+ byte 111
+ byte 116
+ byte 32
+ byte 105
+ byte 109
+ byte 112
+ byte 108
+ byte 101
+ byte 109
+ byte 101
+ byte 110
+ byte 116
+ byte 101
+ byte 100
+ byte 33
+ byte 0
+
+ long ' align long
+C_chdir_122_L000123 ' <symbol:122>
+ byte 99
+ byte 104
+ byte 100
+ byte 105
+ byte 114
+ byte 32
+ byte 110
+ byte 111
+ byte 116
+ byte 32
+ byte 105
+ byte 109
+ byte 112
+ byte 108
+ byte 101
+ byte 109
+ byte 101
+ byte 110
+ byte 116
+ byte 101
+ byte 100
+ byte 33
+ byte 0
+
+ long ' align long
+C_getcwd_119_L000120 ' <symbol:119>
+ byte 103
+ byte 101
+ byte 116
+ byte 99
+ byte 119
+ byte 100
+ byte 32
+ byte 110
+ byte 111
+ byte 116
+ byte 32
+ byte 105
+ byte 109
+ byte 112
+ byte 108
+ byte 101
+ byte 109
+ byte 101
+ byte 110
+ byte 116
+ byte 101
+ byte 100
+ byte 33
+ byte 0
+
+ long ' align long
+C_tty_goto_108_L000109 ' <symbol:108>
+ byte 91
+ byte 37
+ byte 100
+ byte 59
+ byte 37
+ byte 100
+ byte 72
+ byte 0
+
+ long ' align long
+C_sys_init_102_L000103 ' <symbol:102>
+ byte 99
+ byte 0
+
+ long ' align long
+C_vis_cursor_98_L000099 ' <symbol:98>
+ byte 91
+ byte 63
+ byte 50
+ byte 53
+ byte 104
+ byte 0
+
+ long ' align long
+C_invis_cursor_95_L000096 ' <symbol:95>
+ byte 91
+ byte 63
+ byte 50
+ byte 53
+ byte 108
+ byte 0
+
+ long ' align long
+C_delete_line_92_L000093 ' <symbol:92>
+ byte 100
+ byte 101
+ byte 108
+ byte 101
+ byte 116
+ byte 101
+ byte 32
+ byte 108
+ byte 105
+ byte 110
+ byte 101
+ byte 32
+ byte 110
+ byte 111
+ byte 116
+ byte 32
+ byte 105
+ byte 109
+ byte 112
+ byte 108
+ byte 101
+ byte 109
+ byte 101
+ byte 110
+ byte 116
+ byte 101
+ byte 100
+ byte 33
+ byte 0
+
+ long ' align long
+C_insert_line_89_L000090 ' <symbol:89>
+ byte 105
+ byte 110
+ byte 115
+ byte 101
+ byte 114
+ byte 116
+ byte 32
+ byte 108
+ byte 105
+ byte 110
+ byte 101
+ byte 32
+ byte 110
+ byte 111
+ byte 116
+ byte 32
+ byte 105
+ byte 109
+ byte 112
+ byte 108
+ byte 101
+ byte 109
+ byte 101
+ byte 110
+ byte 116
+ byte 101
+ byte 100
+ byte 33
+ byte 0
+
+ long ' align long
+C_erase_display_86_L000087 ' <symbol:86>
+ byte 91
+ byte 50
+ byte 74
+ byte 0
+
+ long ' align long
+C_erase_line_83_L000084 ' <symbol:83>
+ byte 91
+ byte 75
+ byte 0
+
+ long ' align long
+C_sbic3_616acaa8_22_L000023 ' <symbol:22>
+ byte 47
+ byte 116
+ byte 109
+ byte 112
+ byte 47
+ byte 0
+
+ long ' align long
+C_sbic1_616acaa8_2_L000003 ' <symbol:2>
+ byte 64
+ byte 40
+ byte 35
+ byte 41
+ byte 99
+ byte 97
+ byte 116
+ byte 97
+ byte 108
+ byte 105
+ byte 110
+ byte 97
+ byte 46
+ byte 99
+ byte 32
+ byte 49
+ byte 46
+ byte 48
+ byte 32
+ byte 40
+ byte 82
+ byte 111
+ byte 115
+ byte 115
+ byte 32
+ byte 72
+ byte 105
+ byte 103
+ byte 115
+ byte 111
+ byte 110
+ byte 41
+ byte 32
+ byte 50
+ byte 48
+ byte 47
+ byte 49
+ byte 50
+ byte 47
+ byte 50
+ byte 48
+ byte 48
+ byte 57
+ byte 0
+
+' Catalina Code
+
+DAT ' code segment
+' end

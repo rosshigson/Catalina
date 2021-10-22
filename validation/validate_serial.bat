@@ -40,7 +40,7 @@ goto have_parameters
 
 :have_parameters
 set TMP_LCCDIR=%LCCDIR%
-if "%TMP_LCCDIR%"=="" set TMP_LCCDIR=C:\Program Files\Catalina
+if "%TMP_LCCDIR%"=="" set TMP_LCCDIR=C:\Program Files (x86)\Catalina
 if EXIST "%TMP_LCCDIR%\bin\catalina_env.bat" goto found_catalina
 echo.
 echo   ERROR: Catalina does not appear to be installed in %TMP_LCCDIR%
@@ -845,7 +845,7 @@ call compile_and_run_p2 %1 test_multiple_cogs -ltiny -lc -lm -C TINY
 call compile_and_run_p2 %1 test_multiple_cogs -ltiny -lc -lm -C NATIVE
 call compile_and_run_p2 %1 test_multiple_cogs -ltiny -lc -lm -C COMPACT
 
-call compile_and_run_p2 %1 test_multiple_cogs -lc -lm-C TINY
+call compile_and_run_p2 %1 test_multiple_cogs -lc -lm -C TINY
 call compile_and_run_p2 %1 test_multiple_cogs -lc -lm -C NATIVE
 call compile_and_run_p2 %1 test_multiple_cogs -lc -lm -C COMPACT
 

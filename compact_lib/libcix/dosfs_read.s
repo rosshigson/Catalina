@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_si3o_6132d175_wait100ms_L000003 ' <symbol:wait100ms>
+C_scss_616ac902_wait100ms_L000003 ' <symbol:wait100ms>
  alignl ' align long
  long I32_PSHM + $540000<<S32 ' save registers
  alignl ' align long
@@ -26,7 +26,7 @@ C_si3o_6132d175_wait100ms_L000003 ' <symbol:wait100ms>
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
  alignl ' align long
  long I32_CALA + (@C__waitcnt)<<S32 ' CALL addrg
-' C_si3o_6132d175_wait100ms_L000003_4 ' (symbol refcount = 0)
+' C_scss_616ac902_wait100ms_L000003_4 ' (symbol refcount = 0)
  word I16B_POPM + $80<<S16B ' restore registers, do not pop frame, do return
  alignl ' align long
 
@@ -58,7 +58,7 @@ C_D_F_S__R_eadS_ector_6
  alignl ' align long
 C_D_F_S__R_eadS_ector_10
  alignl ' align long
- long I32_CALA + (@C_si3o_6132d175_wait100ms_L000003)<<S32 ' CALL addrg
+ long I32_CALA + (@C_scss_616ac902_wait100ms_L000003)<<S32 ' CALL addrg
 ' C_D_F_S__R_eadS_ector_7 ' (symbol refcount = 0)
  word I16A_ADDSI + (r15)<<D16A + (1)<<S16A ' ADDI4 reg coni
  word I16A_CMPSI + (r15)<<D16A + (10)<<S16A

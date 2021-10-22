@@ -1,12 +1,12 @@
 Notes on using Catalina under Windows 7 (& Vista)
 =================================================
 
-1. Even though Catalina is a 32 bit program, it can be installed in the usual
-   location (i.e. C:\Program Files\Catalina) on 64 bit versions of Windows 7.
-   If you install it elsewhere (e.g. "C:\Program Files (X86) Catalina") then
-   you will have to set the LCCDIR environment variable:
+1. Even though Catalina is a 32 bit program, it expects to be installed on 
+   a 64 bit versions of Windows.  If you install it anywhere other than
+   "C:\Program Files (X86) Catalina") then you will have to set the LCCDIR 
+   environment variable accordingly. For example, on Windows 7 you might say:
 
-      set LCCDIR=C:\Program Files (X86)\Catalina
+      set LCCDIR=C:\Program Files\Catalina
 
    Note - do not use quotes in this command!
 

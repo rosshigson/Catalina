@@ -1,7 +1,7 @@
 /* 
  * Created from catalina_plugin.binary
  * 
- * by Spin to C Array Converter, version 3.10
+ * by Spin to C Array Converter, version 4.9
  */
 
 #define catalina_plugin_CLOCKFREQ  12000000

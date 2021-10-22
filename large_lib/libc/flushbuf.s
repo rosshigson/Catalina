@@ -7,18 +7,18 @@ DAT ' code segment
 '
 
  long ' align long
-C_si6o_6132d12a_do_write_L000003 ' <symbol:do_write>
+C_s3kk_616ac8bd_do_write_L000003 ' <symbol:do_write>
  jmp #PSHM
  long $ea8000 ' save registers
  mov r23, r4 ' reg var <- reg arg
  mov r21, r3 ' reg var <- reg arg
  mov r19, r2 ' reg var <- reg arg
  jmp #JMPA
- long @C_si6o_6132d12a_do_write_L000003_6 ' JUMPV addrg
-C_si6o_6132d12a_do_write_L000003_5
+ long @C_s3kk_616ac8bd_do_write_L000003_6 ' JUMPV addrg
+C_s3kk_616ac8bd_do_write_L000003_5
  subs r19, r17 ' SUBI/P (1)
  adds r21, r17 ' ADDI/P (2)
-C_si6o_6132d12a_do_write_L000003_6
+C_s3kk_616ac8bd_do_write_L000003_6
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r21 ' CVI, CVU or LOAD
  mov r4, r23 ' CVI, CVU or LOAD
@@ -30,28 +30,28 @@ C_si6o_6132d12a_do_write_L000003_6
  mov r17, r0 ' CVI, CVU or LOAD
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_si6o_6132d12a_do_write_L000003_8 ' LEI4
+ long @C_s3kk_616ac8bd_do_write_L000003_8 ' LEI4
  cmps r17, r19 wz,wc
  jmp #BR_B
- long @C_si6o_6132d12a_do_write_L000003_5 ' LTI4
-C_si6o_6132d12a_do_write_L000003_8
+ long @C_s3kk_616ac8bd_do_write_L000003_5 ' LTI4
+C_s3kk_616ac8bd_do_write_L000003_8
  cmps r17,  #0 wz,wc
  jmp #BRBE
- long @C_si6o_6132d12a_do_write_L000003_10 ' LEI4
+ long @C_s3kk_616ac8bd_do_write_L000003_10 ' LEI4
  mov r15, #1 ' reg <- coni
  jmp #JMPA
- long @C_si6o_6132d12a_do_write_L000003_11 ' JUMPV addrg
-C_si6o_6132d12a_do_write_L000003_10
+ long @C_s3kk_616ac8bd_do_write_L000003_11 ' JUMPV addrg
+C_s3kk_616ac8bd_do_write_L000003_10
  mov r15, #0 ' reg <- coni
-C_si6o_6132d12a_do_write_L000003_11
+C_s3kk_616ac8bd_do_write_L000003_11
  mov r0, r15 ' CVI, CVU or LOAD
-' C_si6o_6132d12a_do_write_L000003_4 ' (symbol refcount = 0)
+' C_s3kk_616ac8bd_do_write_L000003_4 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETN
 
 
  long ' align long
-C_si6o1_6132d12a_get_buf_L000012 ' <symbol:get_buf>
+C_s3kk1_616ac8bd_get_buf_L000012 ' <symbol:get_buf>
  jmp #NEWF
  sub SP, #4
  jmp #PSHM
@@ -64,7 +64,7 @@ C_si6o1_6132d12a_get_buf_L000012 ' <symbol:get_buf>
  mov r20, RI ' reg <- con
  cmps r22, r20 wz
  jmp #BRNZ
- long @C_si6o1_6132d12a_get_buf_L000012_14 ' NEI4
+ long @C_s3kk1_616ac8bd_get_buf_L000012_14 ' NEI4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
  long @C__locknew ' CALL addrg
@@ -72,7 +72,7 @@ C_si6o1_6132d12a_get_buf_L000012 ' <symbol:get_buf>
  long @C___iolock
  mov BC, r0
  jmp #WLNG ' ASGNI4 addrg reg
-C_si6o1_6132d12a_get_buf_L000012_14
+C_s3kk1_616ac8bd_get_buf_L000012_14
  jmp #LODI
  long @C___iolock
  mov r22, RI ' reg <- INDIRI4 addrg
@@ -81,13 +81,13 @@ C_si6o1_6132d12a_get_buf_L000012_14
  mov r20, RI ' reg <- con
  cmps r22, r20 wz
  jmp #BRNZ
- long @C_si6o1_6132d12a_get_buf_L000012_16 ' NEI4
+ long @C_s3kk1_616ac8bd_get_buf_L000012_16 ' NEI4
  jmp #LODL
  long 0
  mov r0, RI ' reg <- con
  jmp #JMPA
- long @C_si6o1_6132d12a_get_buf_L000012_13 ' JUMPV addrg
-C_si6o1_6132d12a_get_buf_L000012_16
+ long @C_s3kk1_616ac8bd_get_buf_L000012_13 ' JUMPV addrg
+C_s3kk1_616ac8bd_get_buf_L000012_16
  jmp #LODI
  long @C___iolock
  mov r2, RI ' reg ARG INDIR ADDRG
@@ -99,7 +99,7 @@ C_si6o1_6132d12a_get_buf_L000012_16
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_si6o1_6132d12a_get_buf_L000012_18 ' NEI4
+ long @C_s3kk1_616ac8bd_get_buf_L000012_18 ' NEI4
  jmp #LODL
  long @C___iobuff
  mov r22, RI ' reg <- addrg
@@ -112,15 +112,15 @@ C_si6o1_6132d12a_get_buf_L000012_16
  mov BC, r22
  jmp #WLNG ' ASGNI4 addrg reg
  jmp #JMPA
- long @C_si6o1_6132d12a_get_buf_L000012_19 ' JUMPV addrg
-C_si6o1_6132d12a_get_buf_L000012_18
+ long @C_s3kk1_616ac8bd_get_buf_L000012_19 ' JUMPV addrg
+C_s3kk1_616ac8bd_get_buf_L000012_18
  jmp #LODL
  long 0
  mov r22, RI ' reg <- con
  mov RI, FP
  sub RI, #-(-4)
  wrlong r22, RI ' ASGNP4 addrli reg
-C_si6o1_6132d12a_get_buf_L000012_19
+C_s3kk1_616ac8bd_get_buf_L000012_19
  jmp #LODI
  long @C___iolock
  mov r2, RI ' reg ARG INDIR ADDRG
@@ -130,7 +130,7 @@ C_si6o1_6132d12a_get_buf_L000012_19
  mov r22, FP
  sub r22, #-(-4) ' reg <- addrli
  rdlong r0, r22 ' reg <- INDIRP4 regl
-C_si6o1_6132d12a_get_buf_L000012_13
+C_s3kk1_616ac8bd_get_buf_L000012_13
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
@@ -380,7 +380,7 @@ C___flushbuf_33
 C___flushbuf_41
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
- long @C_si6o1_6132d12a_get_buf_L000012 ' CALL addrg
+ long @C_s3kk1_616ac8bd_get_buf_L000012 ' CALL addrg
  mov r20, r21
  adds r20, #16 ' ADDP4 coni
  mov RI, r20
@@ -680,7 +680,7 @@ C___flushbuf_62
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_si6o_6132d12a_do_write_L000003
+ long @C_s3kk_616ac8bd_do_write_L000003
  add SP, #8 ' CALL addrg
  cmps r0,  #0 wz
  jmp #BRNZ
@@ -802,7 +802,7 @@ C___flushbuf_70
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_si6o_6132d12a_do_write_L000003
+ long @C_s3kk_616ac8bd_do_write_L000003
  add SP, #8 ' CALL addrg
  cmps r0,  #0 wz
  jmp #BRNZ

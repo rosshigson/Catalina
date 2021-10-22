@@ -11,9 +11,9 @@ DAT ' code segment
  alignl ' align long
 C_cgi_color_data ' <symbol:cgi_color_data>
  PRIMITIVE(#NEWF)
- sub SP, #8
+ sub SP, #4
  PRIMITIVE(#PSHM)
- long $fc0000 ' save registers
+ long $fa0000 ' save registers
  mov r23, r2 ' reg var <- reg arg
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
@@ -46,7 +46,11 @@ C_cgi_color_data ' <symbol:cgi_color_data>
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
  long @C__cgi_data ' CALL addrg
- mov r22, r0 ' CVI, CVU or LOAD
+ mov r20, ##$ffffff ' reg <- con
+ mov r22, r0 ' BANDI/U
+ and r22, r20 ' BANDI/U (3)
+ mov r17, r22
+ add r17, #4 ' ADDU4 coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -55,37 +59,26 @@ C_cgi_color_data ' <symbol:cgi_color_data>
  #ifndef NO_INTERRUPTS
   allowi
  #endif
- mov r18, ##$ffff ' reg <- con
- and r22, r18 ' BANDI/U (1)
- mov r18, FP
- sub r18, #-(-4) ' reg <- addrli
- rdlong r18, r18 ' reg <- INDIRU4 reg
- add r22, r18 ' ADDU (1)
- mov r20, r0
- shl r20, #1 ' LSHI4 coni
- add r22, r20 ' ADDU (1)
- mov RI, FP
- sub RI, #-(-8)
- wrlong r22, RI ' ASGNU4 addrli reg
- cmps r23,  #0 wz
- if_z jmp #\C_cgi_color_data_2 ' EQI4
- mov r22, FP
- sub r22, #-(-8) ' reg <- addrli
- rdlong r22, r22 ' reg <- INDIRU4 reg
  mov r20, FP
  sub r20, #-(-4) ' reg <- addrli
  rdlong r20, r20 ' reg <- INDIRU4 reg
- add r22, r20 ' ADDU (1)
+ mov r22, r0
+ shl r22, #1 ' LSHI4 coni
+ add r22, r20 ' ADDU (2)
+ add r17, r22 ' ADDU (1)
+ cmps r23,  #0 wz
+ if_z jmp #\C_cgi_color_data_2 ' EQI4
+ mov r22, FP
+ sub r22, #-(-4) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRU4 reg
+ add r22, r17 ' ADDU (2)
  mov r0, r22 ' CVI, CVU or LOAD
  jmp #\@C_cgi_color_data_1 ' JUMPV addrg
 C_cgi_color_data_2
- mov r22, FP
- sub r22, #-(-8) ' reg <- addrli
- rdlong r22, r22 ' reg <- INDIRU4 reg
- mov r0, r22 ' CVI, CVU or LOAD
+ mov r0, r17 ' CVI, CVU or LOAD
 C_cgi_color_data_1
  PRIMITIVE(#POPM) ' restore registers
- add SP, #8 ' framesize
+ add SP, #4 ' framesize
  PRIMITIVE(#RETF)
 
 

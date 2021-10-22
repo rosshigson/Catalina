@@ -10,18 +10,28 @@ DAT ' code segment
 
  alignl ' align long
 C_cgi_y_tiles ' <symbol:cgi_y_tiles>
+ PRIMITIVE(#NEWF)
+ sub SP, #4
  PRIMITIVE(#PSHM)
  long $400000 ' save registers
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
  long @C__cgi_data ' CALL addrg
- mov r22, r0
- shr r22, #16 ' RSHU4 coni
- and r22, #255 ' BANDU4 coni
- mov r0, r22 ' CVI, CVU or LOAD
+ mov r22, r0 ' CVI, CVU or LOAD
+ adds r22, #1 ' ADDP4 coni
+ PRIMITIVE(#LODF)
+ long -4
+ wrlong r22, RI ' ASGNP4 addrl reg
+ mov r22, FP
+ sub r22, #-(-4) ' reg <- addrli
+ rdlong r22, r22 ' reg <- INDIRP4 reg
+ rdbyte r22, r22 ' reg <- INDIRU1 reg
+ mov r0, r22 ' CVUI
+ and r0, cviu_m1 ' zero extend
 ' C_cgi_y_tiles_1 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
- PRIMITIVE(#RETN)
+ add SP, #4 ' framesize
+ PRIMITIVE(#RETF)
 
 
 ' Catalina Import _cgi_data

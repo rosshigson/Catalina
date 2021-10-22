@@ -8854,7 +8854,7 @@ _Options:</property>
                   <object class="GtkEntry" id="entry_project_dialog_loader">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="tooltip_text" translatable="yes">Special loader to use (e.g. SRAM, FLASH, XMM, EEPROM). For normal Hub RAM load, leave blank.</property>
+                    <property name="tooltip_text" translatable="yes">Special loader to use - Propeller 1 only (e.g. SRAM, FLASH, XMM, EEPROM). For normal Hub RAM load, leave blank.</property>
                     <property name="invisible_char">•</property>
                     <property name="invisible_char_set">True</property>
                     <property name="primary_icon_activatable">False</property>

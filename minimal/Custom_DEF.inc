@@ -1,6 +1,5 @@
 '
-' The Custom board supports only serial comms HMI options, such as the PC
-' and PROPTERMINAL options (the default is PC). 
+' The Custom board in the minimal target supports no HMI option. 
 '
 ' It assumes a 5Mhz crystal is installed. 
 '

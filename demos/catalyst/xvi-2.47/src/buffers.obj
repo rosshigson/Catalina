@@ -1,0 +1,361 @@
+' Catalina Code
+
+DAT ' code segment
+'
+' LCC 4.2 (LARGE) for Parallax Propeller
+' (Catalina v2.5 Code Generator by Ross Higson)
+'
+
+' Catalina Init
+
+DAT ' initialized data segment
+
+ long ' align long
+C_s3ls_616acaa6_sccsid_L000001 ' <symbol:sccsid>
+ long @C_s3ls1_616acaa6_2_L000003
+
+' Catalina Export new_buffer
+
+' Catalina Code
+
+DAT ' code segment
+
+ long ' align long
+C_new_buffer ' <symbol:new_buffer>
+ jmp #PSHM
+ long $d00000 ' save registers
+ mov r2, #168 ' reg ARG coni
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_alloc ' CALL addrg
+ mov r23, r0 ' CVI, CVU or LOAD
+ mov r22, r23 ' CVI, CVU or LOAD
+ cmp r22,  #0 wz
+ jmp #BRNZ
+ long @C_new_buffer_20 ' NEU4
+ jmp #LODL
+ long 0
+ mov r0, RI ' reg <- con
+ jmp #JMPA
+ long @C_new_buffer_19 ' JUMPV addrg
+C_new_buffer_20
+ mov r2, r23 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_s3ls2_616acaa6_setup_buffer_L000018 ' CALL addrg
+ cmps r0,  #0 wz
+ jmp #BRNZ
+ long @C_new_buffer_22 ' NEI4
+ mov r2, r23 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_free ' CALL addrg
+ jmp #LODL
+ long 0
+ mov r0, RI ' reg <- con
+ jmp #JMPA
+ long @C_new_buffer_19 ' JUMPV addrg
+C_new_buffer_22
+ mov r22, r23
+ adds r22, #12 ' ADDP4 coni
+ jmp #LODL
+ long 0
+ mov r20, RI ' reg <- con
+ mov RI, r22
+ mov BC, r20
+ jmp #WLNG ' ASGNP4 reg reg
+ mov r22, r23
+ adds r22, #16 ' ADDP4 coni
+ jmp #LODL
+ long 0
+ mov r20, RI ' reg <- con
+ mov RI, r22
+ mov BC, r20
+ jmp #WLNG ' ASGNP4 reg reg
+ mov r22, r23
+ adds r22, #24 ' ADDP4 coni
+ mov r20, #0 ' reg <- coni
+ mov RI, r22
+ mov BC, r20
+ jmp #WLNG ' ASGNI4 reg reg
+ mov r0, r23 ' CVI, CVU or LOAD
+C_new_buffer_19
+ jmp #POPM ' restore registers
+ jmp #RETN
+
+
+' Catalina Export free_buffer
+
+ long ' align long
+C_free_buffer ' <symbol:free_buffer>
+ jmp #PSHM
+ long $c00000 ' save registers
+ mov r23, r2 ' reg var <- reg arg
+ mov r22, r23 ' CVI, CVU or LOAD
+ cmp r22,  #0 wz
+ jmp #BRNZ
+ long @C_free_buffer_25 ' NEU4
+ jmp #JMPA
+ long @C_free_buffer_24 ' JUMPV addrg
+C_free_buffer_25
+ mov RI, r23
+ jmp #RLNG
+ mov r2, BC ' reg <- INDIRP4 reg
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_throw ' CALL addrg
+ mov r2, r23 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_free_undo ' CALL addrg
+ mov r2, r23 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_free ' CALL addrg
+C_free_buffer_24
+ jmp #POPM ' restore registers
+ jmp #RETN
+
+
+' Catalina Export clear_buffer
+
+ long ' align long
+C_clear_buffer ' <symbol:clear_buffer>
+ jmp #PSHM
+ long $c00000 ' save registers
+ mov r23, r2 ' reg var <- reg arg
+ mov RI, r23
+ jmp #RLNG
+ mov r2, BC ' reg <- INDIRP4 reg
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_throw ' CALL addrg
+ mov r2, r23 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_s3ls2_616acaa6_setup_buffer_L000018 ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+' C_clear_buffer_27 ' (symbol refcount = 0)
+ jmp #POPM ' restore registers
+ jmp #RETN
+
+
+ long ' align long
+C_s3ls2_616acaa6_setup_buffer_L000018 ' <symbol:setup_buffer>
+ jmp #PSHM
+ long $d00000 ' save registers
+ mov r23, r2 ' reg var <- reg arg
+ mov r2, #0 ' reg ARG coni
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_newline ' CALL addrg
+ mov RI, r23
+ mov BC, r0
+ jmp #WLNG ' ASGNP4 reg reg
+ mov r2, #1 ' reg ARG coni
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_newline ' CALL addrg
+ mov r20, r23
+ adds r20, #4 ' ADDP4 coni
+ mov RI, r20
+ mov BC, r0
+ jmp #WLNG ' ASGNP4 reg reg
+ mov r2, #0 ' reg ARG coni
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_newline ' CALL addrg
+ mov r20, r23
+ adds r20, #8 ' ADDP4 coni
+ mov RI, r20
+ mov BC, r0
+ jmp #WLNG ' ASGNP4 reg reg
+ mov r22, #0 ' reg <- coni
+ mov RI, r23
+ jmp #RLNG
+ mov r20, BC ' reg <- INDIRP4 reg
+ cmp r20, r22 wz
+ jmp #BR_Z
+ long @C_s3ls2_616acaa6_setup_buffer_L000018_32 ' EQU4
+ mov r20, r23
+ adds r20, #4 ' ADDP4 coni
+ mov RI, r20
+ jmp #RLNG
+ mov r20, BC ' reg <- INDIRP4 reg
+ cmp r20, r22 wz
+ jmp #BR_Z
+ long @C_s3ls2_616acaa6_setup_buffer_L000018_32 ' EQU4
+ mov r20, r23
+ adds r20, #8 ' ADDP4 coni
+ mov RI, r20
+ jmp #RLNG
+ mov r20, BC ' reg <- INDIRP4 reg
+ cmp r20, r22 wz
+ jmp #BRNZ
+ long @C_s3ls2_616acaa6_setup_buffer_L000018_29 ' NEU4
+C_s3ls2_616acaa6_setup_buffer_L000018_32
+ mov r0, #0 ' reg <- coni
+ jmp #JMPA
+ long @C_s3ls2_616acaa6_setup_buffer_L000018_28 ' JUMPV addrg
+C_s3ls2_616acaa6_setup_buffer_L000018_29
+ mov RI, r23
+ jmp #RLNG
+ mov r22, BC ' reg <- INDIRP4 reg
+ adds r22, #4 ' ADDP4 coni
+ mov r20, r23
+ adds r20, #4 ' ADDP4 coni
+ mov RI, r20
+ jmp #RLNG
+ mov r20, BC ' reg <- INDIRP4 reg
+ mov RI, r22
+ mov BC, r20
+ jmp #WLNG ' ASGNP4 reg reg
+ mov r22, r23
+ adds r22, #4 ' ADDP4 coni
+ mov RI, r22
+ jmp #RLNG
+ mov r22, BC ' reg <- INDIRP4 reg
+ mov RI, r23
+ jmp #RLNG
+ mov r20, BC ' reg <- INDIRP4 reg
+ mov RI, r22
+ mov BC, r20
+ jmp #WLNG ' ASGNP4 reg reg
+ mov r22, r23
+ adds r22, #4 ' ADDP4 coni
+ mov RI, r22
+ jmp #RLNG
+ mov r22, BC ' reg <- INDIRP4 reg
+ adds r22, #4 ' ADDP4 coni
+ mov r20, r23
+ adds r20, #8 ' ADDP4 coni
+ mov RI, r20
+ jmp #RLNG
+ mov r20, BC ' reg <- INDIRP4 reg
+ mov RI, r22
+ mov BC, r20
+ jmp #WLNG ' ASGNP4 reg reg
+ mov r22, r23
+ adds r22, #8 ' ADDP4 coni
+ mov RI, r22
+ jmp #RLNG
+ mov r22, BC ' reg <- INDIRP4 reg
+ mov r20, r23
+ adds r20, #4 ' ADDP4 coni
+ mov RI, r20
+ jmp #RLNG
+ mov r20, BC ' reg <- INDIRP4 reg
+ mov RI, r22
+ mov BC, r20
+ jmp #WLNG ' ASGNP4 reg reg
+ mov r2, r23 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_init_marks ' CALL addrg
+ mov r2, r23 ' CVI, CVU or LOAD
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ jmp #CALA
+ long @C_init_undo ' CALL addrg
+ mov r22, r23
+ adds r22, #20 ' ADDP4 coni
+ mov r20, #0 ' reg <- coni
+ mov RI, r22
+ mov BC, r20
+ jmp #WLNG ' ASGNU4 reg reg
+ jmp #LODI
+ long @C_params+336+12
+ mov r22, RI ' reg <- INDIRI4 addrg
+ cmps r22,  #0 wz
+ jmp #BRNZ
+ long @C_s3ls2_616acaa6_setup_buffer_L000018_33 ' NEI4
+ mov r22, r23
+ adds r22, #20 ' ADDP4 coni
+ mov RI, r22
+ jmp #RLNG
+ mov r20, BC ' reg <- INDIRU4 reg
+ or r20, #4 ' BORU4 coni
+ mov RI, r22
+ mov BC, r20
+ jmp #WLNG ' ASGNU4 reg reg
+C_s3ls2_616acaa6_setup_buffer_L000018_33
+ mov r0, #1 ' reg <- coni
+C_s3ls2_616acaa6_setup_buffer_L000018_28
+ jmp #POPM ' restore registers
+ jmp #RETN
+
+
+' Catalina Import free_undo
+
+' Catalina Import init_undo
+
+' Catalina Import init_marks
+
+' Catalina Import throw
+
+' Catalina Import newline
+
+' Catalina Import alloc
+
+' Catalina Import params
+
+' Catalina Import free
+
+' Catalina Cnst
+
+DAT ' const data segment
+
+ long ' align long
+C_s3ls1_616acaa6_2_L000003 ' <symbol:2>
+ byte 64
+ byte 40
+ byte 35
+ byte 41
+ byte 98
+ byte 117
+ byte 102
+ byte 102
+ byte 101
+ byte 114
+ byte 115
+ byte 46
+ byte 99
+ byte 9
+ byte 50
+ byte 46
+ byte 52
+ byte 32
+ byte 40
+ byte 67
+ byte 104
+ byte 114
+ byte 105
+ byte 115
+ byte 32
+ byte 38
+ byte 32
+ byte 74
+ byte 111
+ byte 104
+ byte 110
+ byte 32
+ byte 68
+ byte 111
+ byte 119
+ byte 110
+ byte 101
+ byte 121
+ byte 41
+ byte 32
+ byte 56
+ byte 47
+ byte 49
+ byte 50
+ byte 47
+ byte 57
+ byte 52
+ byte 0
+
+' Catalina Code
+
+DAT ' code segment
+' end

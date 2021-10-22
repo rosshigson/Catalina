@@ -10,10 +10,11 @@
  *                                                                           *
  *      parallelize custom_demo.c -o parallel_demo.c                         *
  *                                                                           *
- *   Then compile the parallel version of the program using GCC, including   *
- *   the file "custom_threads.c", using a command such as:                   *
+ *   Then compile the parallel version of the program using the Propeller    *
+ *   version of GCC, including the file "custom_threads.c", using a command  *
+ *   such as:                                                                *
  *                                                                           *
- *      gcc -lpthread _REENTRANT -D CUSTOM_THREADS -D LOCAL_THREADS -D \     *
+ *      gcc -lpthread -D _REENTRANT -D CUSTOM_THREADS -D LOCAL_THREADS -D \  *
  *          parallel_demo.c custom_threads.c                                 *
  *                                                                           *
  *   Defining the _REENTRANT flag is necessary to use reentrant versions of  *

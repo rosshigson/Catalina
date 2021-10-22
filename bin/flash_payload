@@ -30,7 +30,7 @@ if [ "$FILE_NAME" != "" ]; then
 
    bindump $FILE_NAME -p " long $" >flash_program.inc
    p2_asm "$TMP_LCCDIR/target_p2/Flash_loader_1.2_mod2.spin2" -I . -o tmp_flash
-   payload tmp_flash.bin $2 $3 $4 $5 $6 $7 $8 $9
+   payload -o2 tmp_flash.bin $2 $3 $4 $5 $6 $7 $8 $9
 
    rm -f tmp_flash.*
    rm -f flash_program.inc

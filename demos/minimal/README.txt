@@ -1,7 +1,5 @@
 This directory contains demo programs intended to be built using the special
-"minimal" target directory. You must have the minimal target installed to build 
-the files in this directory. The LCCDIR environment variable is assumed to be
-set to where Catalina is installed.
+"minimal" target directory for the Propeller 1.
 
 The minimal target directory is a minimalist target directory intended to 
 aid in the understanding of Catalina targets and plugins. The main purpose

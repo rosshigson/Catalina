@@ -4,7 +4,7 @@ rem This script tries to clean up generated files in the
 rem target directory - it should be run as Administrator
 rem
 set TMP_LCCDIR=%LCCDIR%
-if "%TMP_LCCDIR%"=="" set TMP_LCCDIR=C:\Program Files\Catalina
+if "%TMP_LCCDIR%"=="" set TMP_LCCDIR=C:\Program Files (x86)\Catalina
 if EXIST "%TMP_LCCDIR%\bin\catalina_env.bat" goto found_catalina
 echo.
 echo   ERROR: Catalina does not appear to be installed in %TMP_LCCDIR%
