@@ -97,11 +97,11 @@ FT_05_LB=
 FT_05_CM=
 FT_05_WD=
 NF_00_LB=_Make
-NF_00_CM=make CATALINA_OPTIONS="%o" 
-NF_00_WD=
+NF_00_CM=make "%n" CATALINA_OPTIONS="%o" 
+NF_00_WD=%p
 NF_01_LB=Make (Custom _Target...)
 NF_01_CM=make CATALINA_OPTIONS="%o" 
-NF_01_WD=
+NF_01_WD=%p
 NF_02_LB=
 NF_02_CM=
 NF_02_WD=

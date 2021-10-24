@@ -7,3 +7,4 @@ if "%CATALINA_TARGET%"==""  (echo CATALINA_TARGET  = [default]) ELSE (echo CATAL
 if "%CATALINA_LCCOPT%"==""  (echo CATALINA_LCCOPT  = [default]) ELSE (echo CATALINA_LCCOPT  = "%CATALINA_LCCOPT%")
 if "%CATALINA_TEMPDIR%"=="" (echo CATALINA_TEMPDIR = [default]) ELSE (echo CATALINA_TEMPDIR = "%CATALINA_TEMPDIR%")
 if "%LCCDIR%"==""           (echo LCCDIR           = [default]) ELSE (echo LCCDIR           = "%LCCDIR%")
+echo.

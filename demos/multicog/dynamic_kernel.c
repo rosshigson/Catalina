@@ -15,7 +15,7 @@
 /*
  * set USE_COGSTART to 1 to test _cogstart_C, rather than _coginit_C
  */
-#define USE_COGSTART 0
+#define USE_COGSTART 1
 
 /*
  * define the pin to use for output (pin 1 is a LED on the Hybrid or Hydra)
@@ -39,7 +39,11 @@
  * (cycles the output pin at a frequency of 1Hz).
  *
  */
+#if USE_COGSTART
+void function(void *not_used) {
+#else
 void function(void) {
+#endif
    unsigned mask   = OUTPUT_MASK;
    unsigned on_off = OUTPUT_MASK;
 

@@ -4,10 +4,10 @@ echo    ===================
 echo    SETTING UP CATALINA
 echo    ===================
 echo.
-if "%LCCDIR%" == "" goto default_lccdir
-PATH=%LCCDIR%\bin;%PATH%
+if "%LCCDIR%" == "" goto default_dir
+PATH=%LCCDIR%\bin;%PATH%;%LCCDIR%\GnuWin32\bin;
 goto done
-:default_lccdir
-PATH=C:\Program Files\Catalina\bin;%PATH%
+:default_dir
+PATH=%CD%\bin;%PATH%;%CD%\GnuWin32\bin;
 :done
 call catalina_env.bat

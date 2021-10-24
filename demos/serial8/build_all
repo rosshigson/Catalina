@@ -30,6 +30,11 @@ if [[ "$1" != "" ]]; then
 
    else
 
+      echo ""
+      echo "NOTE: Environment variable CATALINA_DEFINE will be set to $1 $2 $3 $4 $5 $6 $7 $8 $9"
+      echo ""
+      echo "All programs will be built using these options. If these options conflict"
+      echo "with any options specified in this file, the results may be unexpected."
       CATALINA_DEFINE="$1 $2 $3 $4 $5 $6 $7 $8 $9"; export CATALINA_DEFINE
 
    fi
@@ -71,23 +76,12 @@ if [[ ! -e $TMP_LCCDIR/bin/catalina_env ]]; then
 fi   
 
 echo ""
-echo "   ======================"
-echo "   BUILDING SERIALX DEMOS"
-echo "   ======================"
+echo "   ========================"
+echo "   BUILDING INTERRUPT DEMOS"
+echo "   ========================"
 echo ""
 
-platform=$1
-if [ "${platform:0:2}" != "P2" ]; then 
-
-echo "ERROR: The Multi Port Serial driver is not supported on the Propeller 1."
-
-else
-
-   catalina -p2 -lci -lserial8 test_serial81.c -o test1 -C NO_HMI
-   catalina -p2 -lci -lserial8 test_serial82.c -o test2 -C NO_HMI
-   catalina -p2 -lci -lserial8 -lthreads test_serial81.c -o test3 -C LORES_VGA
-
-fi
+make clean all
 
 unset CATALINA_DEFINE
 echo ""

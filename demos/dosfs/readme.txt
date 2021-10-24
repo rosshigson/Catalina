@@ -14,12 +14,11 @@ assumed to be a Propeller 2 platform if it begins with P2 (e.g. P2_EVAL).
 The remaining parameters can be used to specify additional build options.
 
 Note that the test program is quite large, so on the Propeller 1 it would 
-normally be built in LARGE mode, and on the Propeller 2 it would normally
-be built in NATIVE mode. But it can be built in other modes (e.g. COMPACT). 
+normally be built in LARGE mode.  
 
 For example:
 
-   build_all P2_EVAL NATIVE TTY CR_ON_LF
+   build_all P2_EVAL TTY CR_ON_LF
    build_all QUICKSTART PMC LARGE CACHED_1K HIRES_VGA
    build_all C3 SMALL TTY
 

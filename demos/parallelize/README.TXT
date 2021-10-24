@@ -14,7 +14,7 @@ For example:
 or
    build_all TRIBLADEPROP CPU_2 PC VT100
 or
-   build_all P2_EVAL TTY NATIVE
+   build_all P2_EVAL 
 
 There are ten "test" programs - test_1.c to test_10.c - designed to illustrate
 the use of various propeller pragmas, and two "real" programs - sieve.c and 

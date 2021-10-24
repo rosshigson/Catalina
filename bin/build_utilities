@@ -55,6 +55,10 @@ echo "size."
 echo ""
 echo "You can re-run this program any time if you need to change options."
 echo ""
+echo "NOTE: You need to execute this utility as an administrator, or else"
+echo "====  have write permissions to Catalina's bin directory to install"
+echo "      the binaries produced by this utility."
+echo ""
 echo -n "Press ENTER to begin ..."
 read -e PAUSE
 cls

@@ -7,9 +7,9 @@
 --    payload -i hello_world -b230400
 -- 
 -- Then, in another command window, load and run the blackbox debugger with
--- this script. For example (if your debug comm port is port 17):
+-- this script. For example:
 --
---    blackbox hello_world -p17  -L hello_world_debug.lua
+--    blackbox hello_world -L hello_world_debug.lua
 --
 -- NOTE: In this test script, we do not consume all the output from the
 -- debugger after each command. This is ok, but if we let the internal
@@ -63,7 +63,7 @@
 print ("\nStarting Lua script\n");
 
 -- check we are stopped at main function
-str1 = "int main (void)";
+str1 = "void main()";
 str2 = wait_for(str1, 1000);
 if (str1 == str2) then
    print("Stopped at main function\n");
@@ -73,7 +73,7 @@ end
 
 -- read a cog location and extract the returned value
 send("r r0\n");
-str1 = "cog location 0x033 = ";
+str1 = "cog location ";
 str2 = wait_for(str1, 1000);
 if (str1 == str2) then
    r0 = receive(10, 1000);
@@ -81,7 +81,6 @@ if (str1 == str2) then
 else
    error("\nCannot read r0\n");
 end
-str = wait_for("\n", 1000);
 
 -- execute one line
 send("n\n");
@@ -96,7 +95,8 @@ send("r r0 5\n");
 
 -- we can get Lua to ask for input, and then execute it as a command - 
 -- we can even put this in a simple interactive command loop ...
-print("\nEntering interactive mode (q to quit) ...\n");
+print("\nEntering interactive mode (q to quit)\n");
+print("\nEntering any BlackBox command ... \n");
 repeat
   io.write("Lua> ");
   str=io.read();

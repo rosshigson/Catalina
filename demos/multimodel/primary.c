@@ -46,10 +46,14 @@
 
 void main(int argc, char *argv[]) {
 
-   // allocate Hub RAM areas for the subsidiary programs to run. By
+   // Allocate Hub RAM areas for the subsidiary programs to run. By
    // allocating them here, we guarantee they will always be in Hub RAM.
-   char SUB1_RESERVED_SPACE[SUB1_RUNTIME_SIZE];
-   char SUB2_RESERVED_SPACE[SUB2_RUNTIME_SIZE];
+   // Also, note that we round up the reserved space to the
+   // next 128 byte boundary (to allow for small changes in 
+   // the code size).
+   #define ROUND 128
+   char SUB1_RESERVED_SPACE[ROUND*((SUB1_RUNTIME_SIZE + ROUND - 1)/ROUND)];
+   char SUB2_RESERVED_SPACE[ROUND*((SUB2_RUNTIME_SIZE + ROUND - 1)/ROUND)];
 
    // allocate shared variables to use with each subsidiary program. By 
    // allocating them here, we guarantee they will always be in Hub RAM.
@@ -64,7 +68,7 @@ void main(int argc, char *argv[]) {
    // check the address of the compiled subsidiary CMM program
    if (SUB1_CODE_ADDRESS != (int)&SUB1_RESERVED_SPACE) {
        t_printf("Error: Subsidiary 1 not compiled to run\n");
-       t_printf("at addr 0x%X - edit build_all script\n",  
+       t_printf("at addr 0x%X - edit build_all script and/or Makefile\n",  
               &SUB1_RESERVED_SPACE); 
        while (1);
    }
@@ -72,7 +76,7 @@ void main(int argc, char *argv[]) {
    // check the address of the compiled subsidiary LMM program
    if (SUB2_CODE_ADDRESS != (int)&SUB2_RESERVED_SPACE) {
        t_printf("Error: Subsidiary 2 not compiled to run\n");
-       t_printf("at addr 0x%X - edit build_all script\n",  
+       t_printf("at addr 0x%X - edit build_all script and/or Makefile\n",  
               &SUB2_RESERVED_SPACE); 
        while (1);
    }

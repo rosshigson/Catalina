@@ -1,0 +1,2577 @@
+                   '#line 1 "../../../target_p2/Catalina_CMM_library.spin2"
+                   '
+                   ' This file exists to allow the CMM LUT library code to be compiled and
+                   ' then turned into a blob suitable for loading as part of dynamically
+                   ' loading a program. This is required because with Multi-Model support,
+                   ' the kernel being loaded may require a different LUT library to the
+                   ' kernel doing the loading.
+                   '
+                   ' Compile this library and convert it to a blob using commands similar
+                   ' to the following:
+                   '
+                   '    p2_asm -I ..\..\target_p2 ..\..\target_p2\Catalina_CMM_library.spin2 -o cmm
+                   '    spinc -p2 -B2 -n CMM_LUT_LIBRARY cmm.bin >CMM_library.inc
+                   '
+                   ' The resulting binary is not a true Catalina 1 binary - it is intended
+                   ' only to allow the LUT library to be extracted using the spinc command.
+                   '
+                   
+                   CON
+                   
+                   '#line 1 "../../../target_p2/Catalina_reserved.inc"
+                   '------------------------- START OF RESERVED HUB ------------------------------
+                   DAT
+                   
+01000                      orgh  $1000
+                   
+01000     fd801038 RESERVED jmp  #\NON_RESERVED  ' Lower 20 bits = address of non-reserved hub
+01004     0aba9500 CLKFREQ  long _CLOCKFREQ      ' initial clock frequency (not updated)
+01008     010c470b CLKMODE  long _CLOCKMODE      ' initial clock mode (not updated)
+0100c     00038400 BAUDRATE long _BAUDRATE       ' initial baud rate (not updated)
+                   
+                   ' seglayout specifies the layout of the segments
+                   
+01010              seglayout                     ' $1010 - if this changes, change catbind.c
+01010     00000008         long  SEGMENT_LAYOUT
+                   
+                   ' segtable contains the start address of each of the segments
+                   
+01014              segtable
+01014     00001c00         long  @Catalina_Code
+01018     00001e9c         long  @Catalina_Cnst
+0101c     00001e9c         long  @Catalina_Init
+01020     00001e9c         long  @Catalina_Data
+01024     00001e9c         long  @Catalina_Ends
+01028     00001c00         long  @Catalina_RO_Base
+0102c     00001e9c         long  @Catalina_RW_Base
+01030     00001e9c         long  @Catalina_RO_Ends
+01034     00001e9c         long  @Catalina_RW_Ends
+                   
+01038              NON_RESERVED
+                   '--------------------------- END OF RESERVED HUB ------------------------------
+                   '#line 21 "../../../target_p2/Catalina_CMM_library.spin2"
+                   
+                   CON
+                   
+                   SEGMENT_LAYOUT=8 ' CMM memory layout 0 (Code, Cnst, Init, Data)
+                   
+                   DAT
+                   
+                   ' Common Kernel library functions. This code is loaded and started by all
+                   ' kernels (static and dynamic) and must fit in the area $300 - $3FF ...
+                   
+01c00 300           orgf $300
+                   
+01c00 300          Catalina_RO_Base
+01c00 300          Catalina_Code
+                   
+01c00 300          LUT_LIBRARY
+                   
+                   ' include any necessary kernel library functions. This code is loaded and
+                   ' executed from the LUT RAM ...
+                   
+                   '#line 1 "../../../target_p2/Catalina_kernel_library.inc"
+                   ' Catalina kernel library functions ...
+                   
+                   ' avoid including the kernel library functions twice ...
+                   
+                   
+                   
+                   
+                   DAT
+                   
+                   ' unsigned_d32 - 32 bit unsigned division
+                   
+01c00 300          unsigned_d32
+01c00 300 fd100001          qdiv   r0,r1
+01c04 301 fd600018          getqx  r0
+01c08 302 0d600219   _ret_  getqy  r1
+                   
+                   ' signed_d32 - 32 bit signed division
+                   
+01c0c 303          signed_d32
+01c0c 303 f6005201          mov    t3,r1           ' save sign for later
+01c10 304 f6005400          mov    t4,r0
+01c14 305 f6400201          abs    r1,r1
+01c18 306 f6400000          abs    r0,r0
+01c1c 307 f560522a          xor    t3,t4
+01c20 308 fda00300          call   #\unsigned_d32  ' perform unsigned division
+01c24 309 f610542a          mov    t4,t4 WC        ' get bit #31 into carry
+01c28 30a f6800201          negc   r1,r1           ' adjust the sign of the remainder
+01c2c 30b f6105229          mov    t3,t3 WC        ' get bit #31 into carry
+01c30 30c 06800000   _ret_  negc   r0,r0           ' adjust the sign of the result
+                   
+                   ' do_plugin - call a plugin
+                   '
+                   ' On entry:
+                   '       r3 = code:
+                   '            - cog id if >= 128 (i.e. $80 + cog id)
+                   '            - plugin type if < 128 (i.e. 0 .. 127)
+                   '            - service id if < 0
+                   '       r2 = data (optional pointer)
+                   '
+                   ' NOTES: Locks are currently only supported when invoking via a service id.
+                   '        When using service id, the data should only use the lower 24 bits.
+                   '
+                   ' On exit:
+                   '       R0 = result
+                   
+01c34 30d          do_plugin
+01c34 30d f6045408         mov     t4,#8           ' t4 stores lock - default to none required
+01c38 30e f6100003         mov     r0,r3 wc        ' get plugin type or cog id or service id
+01c3c 30f cd90003c  if_b   jmp     #psvc           ' if < 0, code is a service id
+01c40 310 f7cc0080         test    r0,#$80 wz      ' if bit 7 set ...
+01c44 311 5d900074  if_nz  jmp     #pcog           ' code is a cog id ...
+01c48 312          ptype                           ' ... otherwize it's a plugin type
+01c48 312 f6004e55         mov     t1,reg          ' point to registry
+01c4c 313 f6045000         mov     t2,#0           ' start at cog id 0
+01c50 314          plgt1
+01c50 314 f21c5008         cmp     t2,#8 wcz       ' run out of cogs?
+01c54 315 3d9000a0  if_ae  jmp     #plugerr        ' yes - no such plugin
+01c58 316 fb005227         rdlong  t3,t1           ' no - check cog's plugin type
+01c5c 317 f0445218         shr     t3,#24          ' is it ...
+01c60 318 f2085200         cmp     t3,r0 wz        ' ... the plugin type what we wanted?
+01c64 319 ad90000c  if_z   jmp     #plgt2          ' yes - invoke plugin at this cog id
+01c68 31a 51045001  if_nz  add     t2,#1           ' no - try ...
+01c6c 31b 51044e04  if_nz  add     t1,#4           ' ... next ...
+01c70 31c 5d9fffdc  if_nz  jmp     #plgt1          ' ... cog id
+01c74 31d          plgt2
+01c74 31d f6000028         mov     r0,t2           ' use the cog where we found the plugin
+01c78 31e fd900040         jmp     #pcog           ' invoke plugin (via the cog id)
+01c7c 31f          psvc
+01c7c 31f f0640001         shl     r0,#1           ' read entry ...
+01c80 320 f1000055         add     r0,reg          ' ... from ...
+01c84 321 fae00000         rdword  r0,r0           ' ... the service registry
+01c88 322 f6004e00         mov     t1,r0           ' save in t1 and extract ...
+01c8c 323 f044000c         shr     r0,#12          ' ... cog number to r0
+01c90 324 f6005027         mov     t2,t1           ' save in t2 and extract ...
+01c94 325 f06c4e18         shl     t1,#24 wz       ' ... request code to t1 (top 8 bits) ...
+01c98 326 ad90005c  if_z   jmp     #plugerr        ' ... or throw error if request code is zero
+01c9c 327 f6005428         mov     t4,t2           ' extract ...
+01ca0 328 f0445408         shr     t4,#8           ' ... lock number to t4
+01ca4 329 f7cc5408         test    t4,#8 wz        ' are we required to use a lock?
+01ca8 32a 5d900008  if_nz  jmp     #no_lock        ' no - just make the request
+01cac 32b          set_lock
+01cac 32b fd705406         locktry t4 wc           ' yes - loop ...
+01cb0 32c 3d9ffff8  if_nc  jmp     #set_lock       ' ... until we have set the lock
+01cb4 32d          no_lock
+01cb4 32d f5200422         andn    r2,top8         ' combine data ...
+01cb8 32e f5400427         or      r2,t1           ' ... with request code
+01cbc 32f          pcog
+01cbc 32f f5040007         and     r0,#7           ' mask off cog id to 0 .. 7
+01cc0 330 f0640002         shl     r0,#2           ' point to ...
+01cc4 331 f1000055         add     r0,reg          ' ... registry entry for the cog
+01cc8 332 fb000000         rdlong  r0,r0           ' get request block from registry
+01ccc 333 f7c80022         test    r0,top8 wz      ' is a plugin registered in this cog?
+01cd0 334 ad900024  if_z   jmp     #plugerr        ' no - throw error
+01cd4 335 f5200022         andn    r0,top8         ' yes - write ...
+01cd8 336 fc600400         wrlong  r2,r0           ' ... request
+01cdc 337          ploop
+01cdc 337 fb080600         rdlong  r3,r0   wz      ' wait till ...
+01ce0 338 5d9ffff8  if_nz  jmp     #ploop          ' ... request completed
+01ce4 339 f1040004         add     r0,#4           ' get ...
+01ce8 33a fb000000         rdlong  r0,r0           ' ... result
+01cec 33b          clr_lock
+01cec 33b f7cc5408         test    t4,#8 wz        ' did we set a lock?
+01cf0 33c ad605407  if_z   lockrel t4              ' yes - release the lock we set
+01cf4 33d fd64002d         ret
+01cf8 33e          plugerr
+01cf8 33e f6640001         neg     r0,#1           ' plugin error (e.g. not registered)
+01cfc 33f fd9fffec         jmp     #clr_lock       ' done - clear lock if required
+                   
+                   ' do_register - register a plugin
+                   '
+                   ' On entry:
+                   '
+                   '        r0 - initial value to write to request block
+                   '        r1 - cog to register (lost)
+                   '        r3 - plugin type to register (lost)
+                   
+01d00 340          do_register
+01d00 340 f0640202         shl     r1, #2          ' register ...
+01d04 341 ff0003df         add     r1, ##REGISTRY  ' ... plugin ...
+01d08 342 f10403b0 
+01d0c 343 fb000401         rdlong  r2, r1          ' ...
+01d10 344 ff007fff         and     r2, ##$00FFFFFF ' ... as ...
+01d14 345 f50405ff 
+01d18 346 f0640618         shl     r3, #24         ' ...
+01d1c 347 f5400403         or      r2, r3          ' ...
+01d20 348 fc600401         wrlong  r2, r1          ' ... plugin type
+01d24 349 0c600002   _ret_ wrlong  r0, r2          ' save in request block
+                   
+                   '
+                   ' do_copy
+                   '
+                   ' On entry:
+                   '
+                   '       r0 - dst addr
+                   '       r1 - number of bytes to copy
+                   '       r2 - src addr
+                   '
+                   ' On exit:
+                   '
+                   '       r0 incremented by r1 (i.e. number of bytes)
+                   '       r3 lost
+                   
+01d28 34a          do_copy
+01d28 34a fac00602        rdbyte  r3, r2           '
+01d2c 34b fc400600        wrbyte  r3, r0
+01d30 34c f1040001        add     r0, #1
+01d34 34d f1040401        add     r2, #1
+01d38 34e fb6c03fb        djnz    r1, #do_copy     '
+01d3c 34f fd64002d        ret
+                   
+                   
+                   
+                   '#line 42 "../../../target_p2/Catalina_CMM_library.spin2"
+                   
+                   '#line 1 "../../../target_p2/Catalina_CMM_kernel_library.inc"
+                   ' Catalina kernel functions that are specific to the CMM kernels ...
+                   
+                   ' avoid including the kernel library functions twice ...
+                   
+                   
+                   
+                   
+                   DAT
+                   
+                   
+                   
+                   '
+                   ' context_switch - perform a context switch if we can acquire the locks
+                   '
+01d40 350          context_switch
+01d40 350 f607c864         mov     ticks, #100      ' in case we cannot get lock, set ticks before retry
+01d44 351 f587ca01         muxc    flags, #1        ' save C ...
+01d48 352 f5e7ca02         muxnz   flags, #2        ' ... and Z flags
+01d4c 353 f43bd5e7         bith    lockbits,lock wcz    ' have we acquired ...
+01d50 354 5d73ce06  if_nz  locktry lock wc              ' ... both ...
+01d54 355 1403d5e7  if_nc_and_nz  bitl lockbits,lock    ' ... locks?
+01d58 356 bd90007c  if_nc_or_z  jmp  #CMM_resume    ' no - cannot switch, so restore C & Z and resume
+01d5c 357 fb0051e6         rdlong  t2, TP           ' yes - load next thread block pointer
+01d60 358 fb084e54         rdlong  t1, req wz       ' is there an affinity request oustanding?
+01d64 359 5d900074  if_nz  jmp     #CMM_affine      ' yes - service it
+01d68 35a f20851e6         cmp     t2, TP wz        ' no - is there only one thread executing?
+01d6c 35b ad900060  if_z   jmp     #CMM_unlock      ' yes - restore C & Z flags, unlock and resume
+                   
+01d70 35c          CMM_switch
+01d70 35c f6005228         mov     t3, t2           ' no - get ...
+01d74 35d f1045285         add     t3, #33*4+1      ' ... affinity byte
+01d78 35e fac04e29         rdbyte  t1, t3           ' ... of proposed next thread
+01d7c 35f f7cc4ee0         test    t1, #%11100000 wz ' affinity stop, or thread terminated or completed?
+01d80 360 ad900010   if_z  jmp     #:next           ' no - switch to next thread
+01d84 361 f5444e80         or      t1, #%10000000   ' yes - make sure ...
+01d88 362 fc404e29         wrbyte  t1, t3           ' ... thread terminated bit of next thread is set
+01d8c 363 fb005028         rdlong  t2, t2           ' remove next thread ...
+01d90 364 fc6051e6         wrlong  t2, TP           ' ... from the executing thread list
+01d94 365 f6004fe6 :next   mov     t1, TP           ' point to ...
+01d98 366 f1044e04         add     t1, #4           ' ... current thread register save area
+01d9c 367 fd643e28         setq    #32-1            ' save 32 registers ...
+01da0 368 fc600027         wrlong  r0, t1           ' ... to register save area
+01da4 369 f1044e80         add     t1, #32*4        ' point to flag save area
+01da8 36a fc43ca27         wrbyte  flags, t1        ' save C & Z flags
+01dac 36b f603cc28         mov     TP, t2           ' set TP to next thread block
+01db0 36c f1045004         add     t2, #4           ' point to the thread register save area
+01db4 36d fd643e28         setq    #32-1            ' load 32 registers ...
+01db8 36e fb000028         rdlong  r0, t2           ' ... from register save area
+01dbc 36f f1045080         add     t2, #32*4        ' point to flag save area
+01dc0 370 fac3ca28         rdbyte  flags, t2        ' load C & Z flags
+01dc4 371 f1045002         add     t2, #2           ' load ...
+01dc8 372 faebc828         rdword  ticks, t2 wz     ' ... tick count assigned to this thread ...
+01dcc 373 a607c864  if_z   mov     ticks, #100      ' ... (use default tick count if zero)
+                   
+01dd0 374          CMM_unlock
+01dd0 374 fd63ce07         lockrel lock                 ' release inter-cog lock
+01dd4 375 f403d5e7         bitl    lockbits,lock        ' release intra-cog lock
+                   
+01dd8 376          CMM_resume
+01dd8 376 005fca01  _ret_  shr     flags, #1 wcz    ' restore Z & C flags and return
+                   
+01ddc 377          CMM_affine
+01ddc 377 f20851e6         cmp     t2, TP wz        ' is there only one thread executing?
+01de0 378 5b005228  if_nz  rdlong  t3, t2           ' no - get next thread of next thread ...
+01de4 379 5c605227  if_nz  wrlong  t3, t1           ' ... and make it next thread of new thread
+01de8 37a ac605027  if_z   wrlong  t2, t1           ' yes - make new thread next thread of current thread
+01dec 37b fc604e28         wrlong  t1, t2           ' make current thread next thread of new thread
+01df0 37c f6045485         mov     t4, #33*4+1      ' update ...
+01df4 37d f1005427         add     t4, t1           ' ...
+01df8 37e fac0562a         rdbyte  t5, t4           ' ...
+01dfc 37f fd604e01         cogid   t1               ' ...
+01e00 380 f5245607         andn    t5, #%111        ' ...
+01e04 381 f5405627         or      t5, t1           ' ...
+01e08 382 fc40562a         wrbyte  t5, t4           ' ... thread affinity
+01e0c 383 f6045400         mov     t4, #0           ' zero ...
+01e10 384 fc605454         wrlong  t4, req          ' ... request block
+01e14 385 fd9fff58         jmp     #CMM_switch      ' now switch to next thread
+                   
+                   '
+                   ' CMM_force : force a context switch (assumes we have acquired the locks!)
+                   '
+01e18 386          CMM_force
+01e18 386 f587ca01         muxc    flags, #1        ' save C ...
+01e1c 387 f5e7ca02         muxnz   flags, #2        ' ... and Z flags
+01e20 388 fb0051e6         rdlong  t2, TP           ' load next thread block pointer
+01e24 389 f20851e6         cmp     t2, TP wz        ' is there only one thread executing?
+01e28 38a ad900008  if_z   jmp     #:unlock         ' yes - unlock, restore C & Z and resume
+01e2c 38b fdbfff40         call    #CMM_switch      ' no - perform context switch ...
+01e30 38c fd9ff39c         jmp     #read_next       ' ... and resume
+01e34 38d          :unlock
+01e34 38d fdbfff98         call    #CMM_unlock      ' unlock, restore C & Z ...
+01e38 38e fd9ff394         jmp     #read_next       ' ... and resume
+                   
+                   
+                   
+                   
+                   
+                   '#line 44 "../../../target_p2/Catalina_CMM_library.spin2"
+                   
+                   
+                   '#line 1 "../../../target_p2/Catalina_thread_library.inc"
+                   ' Catalina thread library functions ...
+                   
+                   ' avoid including the thread library functions twice ...
+                   
+                   
+                   
+                   
+                   DAT
+                   
+                   ' GET_KERNEL_LOCK : do not return until we get kernel lock (specified in lock)
+                   
+01e3c 38f          GET_KERNEL_LOCK
+01e3c 38f fd604224         stalli
+01e40 390 f43bd5e7         bith    lockbits,lock wcz    ' have we acquired ...
+01e44 391 5d73ce06  if_nz  locktry lock wc              ' ... both intra-cog and inter-cog locks?
+01e48 392 1403d5e7  if_nc_and_nz  bitl lockbits,lock    ' true = if_c_and_nz, false = if_nc_or_z
+01e4c 393 bd80038f  if_nc_or_z    jmp #\GET_KERNEL_LOCK
+01e50 394 fd604024         allowi
+01e54 395 fd64002d         ret
+                   
+                   ' REL_KERNEL_LOCK : release the kernel lock (specified in lock)
+                   
+01e58 396          REL_KERNEL_LOCK
+01e58 396 fd604224         stalli
+01e5c 397 fd63ce07         lockrel lock                 ' release inter-cog lock
+01e60 398 f403d5e7         bitl    lockbits,lock        ' release intra-cog lock
+01e64 399 fd604024 	allowi
+01e68 39a fd64002d         ret
+                   
+                   ' GET_POOL_LOCK : do not return until we get pool lock (specified in r1)
+                   
+01e6c 39b          GET_POOL_LOCK
+01e6c 39b fd604224         stalli
+01e70 39c f43bd5e7         bith    lockbits,lock wcz    ' have we acquired ...
+01e74 39d 5d700206  if_nz  locktry r1 wc                ' ... both intra-cog and inter-cog locks?
+01e78 39e 1403d5e7  if_nc_and_nz  bitl lockbits,lock    ' true = if_c_and_nz, false = if_nc_or_z
+01e7c 39f bd80039b  if_nc_or_z    jmp #\GET_POOL_LOCK
+01e80 3a0 fd604024         allowi
+01e84 3a1 fd64002d         ret
+                   
+                   ' REL_POOL_LOCK : release the pool lock (specified in r1)
+                   
+01e88 3a2          REL_POOL_LOCK
+01e88 3a2 fd604224         stalli
+01e8c 3a3 fd600207         lockrel r1                   ' release inter-cog lock
+01e90 3a4 f403d5e7         bitl    lockbits,lock        ' release intra-cog lock
+01e94 3a5 fd604024 	allowi
+01e98 3a6 fd64002d         ret
+                   
+                   
+                   
+                   '#line 47 "../../../target_p2/Catalina_CMM_library.spin2"
+                   
+                   
+01e9c 3a7          LUT_LIBRARY_END
+                   
+01e9c 3a7           fit $400
+                   
+01e9c 3a7          Catalina_Cnst
+01e9c 3a7          Catalina_RO_Ends
+01e9c 3a7          Catalina_RW_Base
+01e9c 3a7          Catalina_Init
+01e9c 3a7          Catalina_Data
+01e9c 3a7          Catalina_RW_Ends
+01e9c 3a7          Catalina_Ends
+                   
+                   ' Include the appropriate CMM Kernel (to define offsets etc) ...
+                   
+                   
+                   '#line 1 "../../../target_p2/Catalina_CMM_threaded_dynamic.spin2"
+                   {{
+                   '------------------------------------------------------------------------------
+                   ' Catalina_CMM_Threaded - Implements a dynamically loadable multi-threaded
+                   '                         Compact Memory Model intended for use by the
+                   '                         Catalina Code Generator backend for LCC
+                   '
+                   ' Version 3.7  - initial version - by Ross Higson
+                   ' Version 3.13 - combine floating point operations, and add relative jumps
+                   ' Version 3.15 - Modified for 1 .
+                   '
+                   '------------------------------------------------------------------------------
+                   '
+                   '    Copyright 2012 Ross Higson
+                   '
+                   '    This file is part of the Catalina Target Package.
+                   '
+                   '    The Catalina Target Package is free software: you can redistribute
+                   '    it and/or modify it under the terms of the GNU Lesser General Public
+                   '    License as published by the Free Software Foundation, either version
+                   '    3 of the License, or (at your option) any later version.
+                   '
+                   '    The Catalina Target Package is distributed in the hope that it will
+                   '    be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+                   '    of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+                   '    See the GNU Lesser General Public License for more details.
+                   '
+                   '    You should have received a copy of the GNU Lesser General Public
+                   '    License along with the Catalina Target Package.  If not, see
+                   '    <http:
+                   '
+                   '------------------------------------------------------------------------------
+                   }}
+                   
+                   '--------------------- Start of CMM Kernel ------------------------------------
+                   
+                   CON
+                   
+                   '#line 1 "../../../target_p2/Catalina_constants.inc"
+                   '--------------------------- START OF CONSTANTS -------------------------------
+                   
+                   
+                   
+                   ' stop multiple inclusions of constants ...
+                   
+                   
+                   
+                   '#line 1 "../../../target_p2/Catalina_platforms.inc"
+                   
+                   
+                   ' stop multiple inclusions of platform constants ...
+                   
+                   
+                   
+                   
+                   '--------------------------- START OF PLATFORM CONSTANTS ---------------------
+                   '
+                   CON
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   '---------------- default constants (same as P2_EVAL) -------------------------
+                   
+                   ' clock configuration constants
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   _XTALFREQ = 20_000_000  ' crystal frequency
+                   _XDIV     = 4           '\ crystal divider             to give 5.0MHz
+                   _XMUL     = 72          '| crystal / div * mul         to give 360MHz
+                   _XDIVP    = 2           '/ crystal / div * mul / divp  to give 180MHz
+                   _XOSC     = %10         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
+                   _XSEL     = %11         ' %00=rcfast, %01=rcslow, %10=XI, %11=PLL
+                   _XPLL     = 1           ' 0= PLL off, 1=PLL on
+                   
+                   
+                   ' serial constants
+                   
+                   _RX_PIN    = 63
+                   _TX_PIN    = 62
+                   _BAUDRATE  = 230400
+                   
+                   ' BlackCat Debugger I/O constants
+                   
+                   
+                   
+                   
+                   _BLACKCAT_MODE    = %0000
+                   _BLACKCAT_BAUD    = 115200
+                   _BLACKCAT_SIZE    = 5*4   ' 5 longs
+                   
+                   ' SD Card constants
+                   
+                   _SD_CK     = 61         'pin SD Card clock
+                   _SD_CS     = 60         'pin SD Card select
+                   _SD_DI     = 59         'pin SD Card MOSI
+                   _SD_DO     = 58         'pin SD Card MISO
+                   
+                   ' 2 Port Serial constants
+                   
+                   _RX1_PIN   = _RX_PIN
+                   _TX1_PIN   = _TX_PIN
+                   _RX1_MODE  = %0000_0000_000_0000000000000_00_11111_0 ' async rx mode, true input, input  enabled for smart input
+                   _TX1_MODE  = %0000_0000_000_0000000000000_01_11110_0 ' async tx mode, true output, output enabled for smart output
+                   _BAUDRATE1 = _BAUDRATE
+                   _RX2_PIN   = 50
+                   _TX2_PIN   = 52
+                   _RX2_MODE  = %0000_0000_000_0000000000000_00_11111_0 ' async rx mode, true input, input  enabled for smart input
+                   _TX2_MODE  = %0000_0000_000_0000000000000_01_11110_0 ' async tx mode, true output, output enabled for smart output
+                   _BAUDRATE2 = _BAUDRATE
+                   
+                   ' Multi Port Serial constants
+                   
+                   ' NOTE Multi Port 1 and 2 use the 2 Port Serial constants defined above for pins and baud rate (but not mode) -
+                   ' This is done so that by default the Multi Port Serial plugin behaves the same way as the 2 Port Serial plugin.
+                   ' To disable thiis "auto-configuration" behaviour, set the pins to -1 (or anything outside the range 0 .. 63).
+                   ' All such ports will have to be manually configured in the C program (see the s8_openport() function).
+                   
+                   '    rxmode = %0xx1 = invert rx              (same for txmode)
+                   '             %0x1x = invert tx
+                   '             %01xx = open-drain/open-source tx
+                   
+                   _RX1_MULTI_PIN  = _RX1_PIN
+                   _TX1_MULTI_PIN  = _TX1_PIN
+                   _RX1_MULTI_BAUD = _BAUDRATE
+                   _TX1_MULTI_BAUD = _BAUDRATE
+                   _RX1_MULTI_MODE = %0000
+                   _TX1_MULTI_MODE = %0000
+                   _RX2_MULTI_PIN  = _RX2_PIN
+                   _TX2_MULTI_PIN  = _TX2_PIN
+                   _RX2_MULTI_BAUD = _BAUDRATE
+                   _TX2_MULTI_BAUD = _BAUDRATE
+                   _RX2_MULTI_MODE = %0000
+                   _TX2_MULTI_MODE = %0000
+                   _RX3_MULTI_PIN  = -1
+                   _TX3_MULTI_PIN  = -1
+                   _RX3_MULTI_BAUD = _BAUDRATE
+                   _TX3_MULTI_BAUD = _BAUDRATE
+                   _RX3_MULTI_MODE = %0000
+                   _TX3_MULTI_MODE = %0000
+                   _RX4_MULTI_PIN  = -1
+                   _TX4_MULTI_PIN  = -1
+                   _RX4_MULTI_BAUD = _BAUDRATE
+                   _TX4_MULTI_BAUD = _BAUDRATE
+                   _RX4_MULTI_MODE = %0000
+                   _TX4_MULTI_MODE = %0000
+                   _RX5_MULTI_PIN  = -1
+                   _TX5_MULTI_PIN  = -1
+                   _RX5_MULTI_BAUD = _BAUDRATE
+                   _TX5_MULTI_BAUD = _BAUDRATE
+                   _RX5_MULTI_MODE = %0000
+                   _TX5_MULTI_MODE = %0000
+                   _RX6_MULTI_PIN  = -1
+                   _TX6_MULTI_PIN  = -1
+                   _RX6_MULTI_BAUD = _BAUDRATE
+                   _TX6_MULTI_BAUD = _BAUDRATE
+                   _RX6_MULTI_MODE = %0000
+                   _TX6_MULTI_MODE = %0000
+                   _RX7_MULTI_PIN  = -1
+                   _TX7_MULTI_PIN  = -1
+                   _RX7_MULTI_BAUD = _BAUDRATE
+                   _TX7_MULTI_BAUD = _BAUDRATE
+                   _RX7_MULTI_MODE = %0000
+                   _TX7_MULTI_MODE = %0000
+                   _RX8_MULTI_PIN  = -1
+                   _TX8_MULTI_PIN  = -1
+                   _RX8_MULTI_BAUD = _BAUDRATE
+                   _TX8_MULTI_BAUD = _BAUDRATE
+                   _RX8_MULTI_MODE = %0000
+                   _TX8_MULTI_MODE = %0000
+                   
+                   ' VGA constants
+                   
+                   _VGA_BASE_PIN = 32
+                   
+                   ' USB constants
+                   
+                   _USB_BASE_PIN = 40
+                   
+                   ' miscellaneous constants
+                   
+                   _DEBUG_PIN = 56
+                   
+                   
+                   
+                   '--------------------------- END OF PLATFORM CONSTANTS -----------------------
+                   
+                   
+                   
+                   '#line 10 "../../../target_p2/Catalina_constants.inc"
+                   
+                   CON
+                   '
+                   ' Platform-independent clock configuration constants
+                   '
+                   _XPPPP    = ((_XDIVP>>1) + 15) & $F  ' 1->15, 2->0, 4->1, 6->2...30->14
+                   
+                   ' %0000_000e_dddddd_mmmmmmmmmm_pppp_cc_ss  ' set clock oscillator mode
+                   
+                   ' initial clock mode => enable crystal+PLL, stay in 20MHz+
+                   
+                   _CLOCKINIT  = _XPLL<<24 + (_XDIV-1)<<18 + (_XMUL-1)<<8 + _XPPPP<<4 + _XOSC<<2 + %00
+                   
+                   ' wait time => 10ms (@ 20Mhz) for crystal+PLL to stabilize
+                   
+                   _CLOCKWAIT  = 20000000/100
+                   
+                   ' final clock mode => switch to PLL
+                   
+                   _CLOCKMODE  = _XPLL<<24 + (_XDIV-1)<<18 + (_XMUL-1)<<8 + _XPPPP<<4 + _XOSC<<2 +_XSEL
+                   
+                   ' final clock frequency
+                   
+                   _CLOCKFREQ  = _XTALFREQ / _XDIV * _XMUL / _XDIVP
+                   
+                   '
+                   ' Plugin types - the Catalina Kernel generally attempts to locate plugins
+                   ' by type, not by the cog they happen to be running on. Values up to 127
+                   ' and the value 255 are reserved.
+                   '
+                   ' User plugin types should be in the range 128 .. 254. Note that the LMM
+                   ' prefix is historical - the same definitions are used for all program
+                   ' types (LMM, EMM, SMM, XMM etc).
+                   '
+                   LMM_VMM = 0       ' main LMM (single threaded)
+                   LMM_HMI = 1       ' HMI Drivers (Kbd/Mouse/Screen)
+                   LMM_LIB = 2       ' Utility library
+                   LMM_FLA = 3       ' Floating Point Library A
+                   LMM_FLB = 4       ' Floating Point Library B
+                   LMM_RTC = 5       ' Real-Time Clock
+                   LMM_FIL = 6       ' File System
+                   LMM_SIO = 7       ' Serial I/O
+                   LMM_DUM = 8       ' Dummy Plugin
+                   LMM_CGI = 9       ' Graphics Plugin
+                   LMM_KBD = 10      ' Keyboard Driver
+                   LMM_SCR = 11      ' Screen Driver
+                   LMM_MOU = 12      ' Mouse Driver
+                   LMM_PRX = 13      ' Proxy Driver
+                   LMM_GAM = 14      ' Gamepad Driver
+                   LMM_SND = 15      ' Sound Driver
+                   LMM_ADC = 16      ' ADC Driver
+                   LMM_S4  = 17      ' 4 Port Serial Driver (Propeller 1 only)
+                   LMM_TTY = 18      ' Full Duplex Serial Driver
+                   LMM_VGI = 19      ' Virtual Graphics Plugin
+                   LMM_VDB = 20      ' Virtual Double Buffer Support Driver
+                   LMM_SPI = 21      ' SPI Support Driver
+                   LMM_FLC = 22      ' Floating Point Library C (Propeller 2 only)
+                   LMM_S2A = 23      ' 2 Port Serial Driver A (Propeller 2 only)
+                   LMM_S2B = 24      ' 2 Port Serial Driver B (Propeller 2 only)
+                   LMM_S8A = 25      ' 8 Port Serial Driver A (Propeler 2 only)
+                   LMM_NUL = 255     ' No plugin
+                   '
+                   ' Notes on the Registry definitions.
+                   '
+                   ' The Catalina registry provides a place where all plugins can be found,
+                   ' and a request block for sending requests to each plugin. The registry
+                   ' location must be known to all plugins. To use the registry, each plugin
+                   ' finds its own cog number, and then registers by putting its plugin type
+                   ' in the top 8 bits of the long at
+                   '    long[REGISTRY][cog]
+                   ' The bottom 24 bits of that long point to the request block the plugin
+                   ' must use to receive requests and return results. A request block of
+                   ' two longs is automatically created for each plugin, but plugins that
+                   ' need more are free to allocate their own. However, all request blocks
+                   ' must be at least two longs - the first long is the request, which may
+                   ' be a 'short' request (if the request and all its parameters can fit
+                   ' into a single long, or the address of a 'long' parameter block that
+                   ' is allocated elsewhere in Hub RAM. Note that all requests are plugin
+                   ' specific, and each plugin only typically knows how to interpret its
+                   ' own requests. When complete, the plugin zeroes the first long of the
+                   ' request block, and may either return the result in the second long
+                   ' of the request block (typical for ' short' requests, but also used
+                   ' for some 'long' requests), or in the 'long' parameter block.
+                   ' Below the cog-oriented registry is a service-oriented registry. Each
+                   ' Service is allocated a word, and services go from 1 to SVC_MAX (i.e.
+                   ' there is no service 0). The details of the service can be found in
+                   ' the word at
+                   '    word[REGISTRY][-service]
+                   ' The top 4 bits of the word are the cog number (top bit of the 4 bits
+                   ' set if not used), the next lower 4 bits are a lock number (top bit of
+                   ' the 4 set if not required) and the lower 8 bits are the request number
+                   ' to send to the cog to request the service.
+                   '
+                   ' Predefined Service Numbers (and the internal plugin types and requests):
+                   '
+                   SVC_FLOAT_ADD    = 1  ' LMM_FLA 1
+                   SVC_FLOAT_SUB    = 2  ' LMM_FLA 2
+                   SVC_FLOAT_MUL    = 3  ' LMM_FLA 3
+                   SVC_FLOAT_DIV    = 4  ' LMM_FLA 4
+                   SVC_FLOAT_FLOAT  = 5  ' LMM_FLA 5
+                   SVC_FLOAT_TRUNC  = 6  ' LMM_FLA 6
+                   SVC_FLOAT_RND    = 7  ' LMM_FLA 7
+                   SVC_FLOAT_SQR    = 8  ' LMM_FLA 8
+                   SVC_FLOAT_CMP    = 9  ' LMM_FLA 9
+                   SVC_K_PRESENT    = 10 ' LMM_HMI 1
+                   SVC_K_GET        = 11 ' LMM_HMI 2
+                   SVC_K_WAIT       = 12 ' LMM_HMI 3
+                   SVC_K_NEW        = 13 ' LMM_HMI 4
+                   SVC_K_READY      = 14 ' LMM_HMI 5
+                   SVC_K_CLEAR      = 15 ' LMM_HMI 6
+                   SVC_K_STATE      = 16 ' LMM_HMI 7
+                   SVC_M_PRESENT    = 17 ' LMM_HMI 11
+                   SVC_M_BUTTON     = 18 ' LMM_HMI 12
+                   SVC_M_BUTTONS    = 19 ' LMM_HMI 13
+                   SVC_M_ABS_X      = 20 ' LMM_HMI 14
+                   SVC_M_ABS_Y      = 21 ' LMM_HMI 15
+                   SVC_M_ABS_Z      = 22 ' LMM_HMI 16
+                   SVC_M_DELTA_X    = 23 ' LMM_HMI 17
+                   SVC_M_DELTA_Y    = 24 ' LMM_HMI 18
+                   SVC_M_DELTA_Z    = 25 ' LMM_HMI 19
+                   SVC_M_RESET      = 26 ' LMM_HMI 20
+                   SVC_T_GEOMETRY   = 27 ' LMM_HMI 21
+                   SVC_T_CHAR       = 28 ' LMM_HMI 22
+                   SVC_T_STRING     = 29 ' LMM_HMI 23
+                   SVC_T_INT        = 30 ' LMM_HMI 24
+                   SVC_T_UNSIGNED   = 31 ' LMM_HMI 25
+                   SVC_T_HEX        = 32 ' LMM_HMI 26
+                   SVC_T_BIN        = 33 ' LMM_HMI 27
+                   SVC_T_SETPOS     = 34 ' LMM_HMI 28
+                   SVC_T_GETPOS     = 35 ' LMM_HMI 29
+                   SVC_T_MODE       = 36 ' LMM_HMI 30
+                   SVC_T_SCROLL     = 37 ' LMM_HMI 31
+                   SVC_T_COLOR      = 38 ' LMM_HMI 32
+                   SVC_SD_INIT      = 39 ' LMM_FIL 1
+                   SVC_SD_READ      = 40 ' LMM_FIL 2
+                   SVC_SD_WRITE     = 41 ' LMM_FIL 3
+                   SVC_SD_BYTEIO    = 42 ' LMM_FIL 4
+                   SVC_SD_STOPIO    = 43 ' LMM_FIL 5
+                   SVC_RTC_DEBUG    = 44 ' LMM_RTC 10 or RTC_FIL 10
+                   SVC_RTC_SETFREQ  = 45 ' LMM_RTC 6 or RTC_FIL 6
+                   SVC_RTC_GETCLOCK = 46 ' LMM_RTC 7 or RTC_FIL 7
+                   SVC_RTC_SETTIME  = 47 ' LMM_RTC 8 or RTC_FIL 8
+                   SVC_RTC_GETTIME  = 48 ' LMM_RTC 9 or RTC_FIL 9
+                   SVC_FLOAT_SIN    = 49 ' LMM_FLA 10
+                   SVC_FLOAT_COS    = 50 ' LMM_FLA 11
+                   SVC_FLOAT_TAN    = 51 ' LMM_FLA 12
+                   SVC_FLOAT_LOG    = 52 ' LMM_FLA 13
+                   SVC_FLOAT_LOG10  = 53 ' LMM_FLA 14
+                   SVC_FLOAT_EXP    = 54 ' LMM_FLA 15
+                   SVC_FLOAT_EXP10  = 55 ' LMM_FLA 16
+                   SVC_FLOAT_POW    = 56 ' LMM_FLA 17
+                   SVC_FLOAT_FRAC   = 57 ' LMM_FLA 18
+                   SVC_FLOAT_FMOD   = 58 ' LMM_FLB 19
+                   SVC_FLOAT_ASIN   = 59 ' LMM_FLB 20
+                   SVC_FLOAT_ACOS   = 60 ' LMM_FLB 21
+                   SVC_FLOAT_ATAN   = 61 ' LMM_FLB 22
+                   SVC_FLOAT_ATAN2  = 62 ' LMM_FLB 23
+                   SVC_FLOAT_FLOOR  = 63 ' LMM_FLB 24
+                   SVC_FLOAT_CEIL   = 64 ' LMM_FLB 25
+                   SVC_T_COLOR_FG   = 65 ' LMM_HMI 33
+                   SVC_T_COLOR_BG   = 66 ' LMM_HMI 34
+                   '
+                   SVC_RESERVED     = 80 ' Services 1..80 reserved for Catalina
+                   
+                   ' Floating point constants
+                   
+                   pi = 3.141592654
+                   
+                   FAddCmd       = 1 << 24       ' Implemented in Float32_A and Float32_B
+                   FSubCmd       = 2 << 24       ' Implemented in Float32_A and Float32_B
+                   FMulCmd       = 3 << 24       ' Implemented in Float32_A and Float32_B
+                   FDivCmd       = 4 << 24       ' Implemented in Float32_A and Float32_B
+                   FFloatCmd     = 5 << 24       ' Implemented in Float32_A and Float32_B
+                   FTruncCmd     = 6 << 24       ' Implemented in Float32_A and Float32_B
+                   FRoundCmd     = 7 << 24       ' Implemented in Float32_A and Float32_B
+                   FSqrCmd       = 8 << 24       ' Implemented in Float32_A and Float32_B
+                   FCmpCmd       = 9 << 24       ' Implemented in Float32_A and Float32_B
+                   
+                   SinCmd        = 10 << 24      ' Implemented in Float32_A
+                   CosCmd        = 11 << 24      ' Implemented in Float32_A
+                   TanCmd        = 12 << 24      ' Implemented in Float32_A
+                   LogCmd        = 13 << 24      ' Implemented in Float32_A
+                   Log10Cmd      = 14 << 24      ' Implemented in Float32_A
+                   ExpCmd        = 15 << 24      ' Implemented in Float32_A
+                   Exp10Cmd      = 16 << 24      ' Implemented in Float32_A
+                   PowCmd        = 17 << 24      ' Implemented in Float32_A
+                   FracCmd       = 18 << 24      ' Implemented in Float32_A
+                   
+                   FModCmd       = 19 << 24      ' Implemented in Float32_B
+                   ASinCmd       = 20 << 24      ' Implemented in Float32_B
+                   ACosCmd       = 21 << 24      ' Implemented in Float32_B
+                   ATanCmd       = 22 << 24      ' Implemented in Float32_B
+                   ATan2Cmd      = 23 << 24      ' Implemented in Float32_B
+                   FloorCmd      = 24 << 24      ' Implemented in Float32_B
+                   CeilCmd       = 25 << 24      ' Implemented in Float32_B
+                   
+                   SignFlag      = $1
+                   ZeroFlag      = $2
+                   NaNFlag       = $8
+                   
+                   ' CogStore constants
+                   
+                   MAX_LONGS  = 300                ' store up to 300 LONGS (1200 chars)
+                   
+                   CMD_READ   = $1000_0000         ' copy Hub to Cog (address in lower 24 bits)
+                                                   ' COGSTORE set to zero when complete
+                   
+                   CMD_WRITE  = $2000_0000         ' copy Cog to Hub (address in lower 24 bits)
+                                                   ' COGSTORE set to zero when complete
+                   
+                   CMD_SIZE   = $3000_0000         ' return size of stored data (in LONGs) - set
+                                                   ' lower 24 bits to $FFFFFF on call - lower 24
+                                                   ' bits (set to size when complete)
+                   
+                   CMD_SETUP  = $4000_0000         ' setup argc and argv array with the stored
+                                                   ' data (set to zero when complete)
+                   
+                   CMD_STOP   = $5000_0000         ' stop the CogStore cog.
+                   
+                   CMD_RESPONSE = $FEED_FACE       ' COGSTORE set to this on any other command
+                   
+                   STORE_COG    = 7                ' Catalina CogStore will use this cog
+                   LAST_COG     = 6                ' Last cog to be restarted is 6
+                   QUOTE_CHAR = $22
+                   
+                   '------------------------------- HUB CONSTANTS -------------------------------
+                   '
+                   CON
+                   '
+                   ' Maximum number of cogs (note that this 1 may not have them all!)
+                   '
+                   MAX_COGS   = 16
+                   
+                   ' HUB RAM Definitions
+                   '
+                   '   (make sure these are the same in all targets)
+                   '
+                   ' Size of Service array (if this changes, the Hub Layout below must change
+                   ' as well):
+                   '
+                   SVC_MAX    = 96                ' must be a multiple of 2
+                   '
+                   ' Size of ARGV array (if this changes, the Hub Layout below must change
+                   '  as well):
+                   '
+                   ARGV_MAX   = 24                ' maximum size (LONGs) of argv array
+                   '
+                   ' Base Address for all hub programs (on the 1 this is genrally zero)
+                   '
+                   BASE_ADDR  = $00000
+                   '
+                   ' Useable Hub RAM (The 1 has 512Kb but the top 16Kb hold a copy of the boot ROM)
+                   '
+                   HUB_SIZE   = $7C000            ' the last 16K contain a copy of the boot ROM.
+                   '
+                   FREE_MEM   = HUB_SIZE-4                               ' $7BFFC the FREE_MEM pointer
+                   '
+                   ' <<< ALLOCATE OTHER RESERVED HUB LOCATIONS DOWN FROM HERE >>>
+                   '
+                   COGSTORE        = FREE_MEM - 4                        ' $7BFF8 CHECK Catalyst_Arguments.spin
+                   XMM_CACHE_RSP   = COGSTORE - 4                        ' $7BFF4
+                   XMM_CACHE_CMD   = XMM_CACHE_RSP - 4                   ' $7BFF0
+                   REGISTRY        = XMM_CACHE_CMD - MAX_COGS*4          ' $7BFB0 CHECK registry.e
+                   REQUESTS        = REGISTRY - 2*SVC_MAX - MAX_COGS*4*2 ' $7BE70 CHECK request_status.e
+                   ARGV_0          = REQUESTS - ARGV_MAX*4               ' $7BE10 CHECK Catalyst_Arguments.spin2
+                   ARGV_ADDR       = ARGV_0 - 4                          ' $7BE0C CHECK Catalyst_Arguments.spin2
+                   ARGC_ADDR       = ARGV_ADDR - 4                       ' $7BE08 CHECK Catalyst_Arguments.spin2, blackbox_comms.c, catalina_default.s, catalina_blackcat.s (all targets)
+                   DEBUG_FLAG      = ARGC_ADDR - 16                      ' $7BDF8 CHECK blackbox_comms.c, BlackCat_DebugCog.spin2 & catalina_blackcat.s (all targets)
+                   DEBUG_IN        = DEBUG_FLAG - 4                      ' $7BDF4 CHECK blackbox_comms.c, BlackCat_DebugCog.spin2 & catalina_blackcat.s (all targets)
+                   DEBUG_OUT       = DEBUG_IN - 4                        ' $7BDF0 CHECK blackbox_comms.c, BlackCat_DebugCog.spin2 & catalina_blackcat.s (all targets)
+                   DEBUG_ADDR      = DEBUG_OUT - 4                       ' $7BDEC CHECK blackbox_comms.c, BlackCat_DebugCog.spin2 & catalina_blackcat.s (all targets)
+                   DEBUG_BREAK     = DEBUG_ADDR - 4                      ' $7BDE8 CHECK blackbox_comms.c, BlackCat_DebugCog.spin2 & catalina_blackcat.s (all targets)
+                   PROXY_XFER      = DEBUG_BREAK - 4                     ' $7BDE4
+                   CGI_DATA        = PROXY_XFER - 4                      ' $7BDE0 CHECK cgi_data.e
+                   '
+                   HUB_TOP         = CGI_DATA                            ' used to initialize FREE_MEM
+                   '
+                   ' For loading programs from SD card, the key decision is how large a program
+                   ' we want to be able to load, because the larger the program, the more Hub RAM
+                   ' space it takes to store the cluster list for it. The following calculations
+                   ' determine how much Hub RAM space to allocate for a particular load size,
+                   ' assuming FAT32 is in use and we have a cluster size of 32768 (note that
+                   ' smaller clusters will result in correspondingly smaller load sizes):
+                   '
+                   MAX_LOAD_SIZE  = 4194304                       ' we want 4MB loads (2^22 bytes)
+                                                                  ' (if this is changed, check catalyst.h
+                                                                  ' and Catalina_SD_Loader.spin)
+                   MAX_CLUS_SIZE  = 32768                         ' assumed cluster size (2^15 bytes)
+                   MAX_FLIST_SIZE = MAX_LOAD_SIZE/MAX_CLUS_SIZE   ' number of entries in cluster list (2^7)
+                   '
+                   FLIST_LOG2     = 9                             ' LOG (Base 2) of sector size
+                   FLIST_SSIZ     = 1<<FLIST_LOG2                 ' size of sector
+                   '
+                   ' Now resume defining Loadtime Hub Layout (note overlap with registry!!!):
+                   '
+                   FLIST_ADDRESS  = ARGC_ADDR - (4*MAX_FLIST_SIZE)     ' $7BC08 check catalyst.h
+                   FLIST_BUFF     = FLIST_ADDRESS - FLIST_SSIZ         ' $7BA08 check catalyst.h
+                   FLIST_SIOB     = FLIST_BUFF - 68                    ' $7B9C4 check catalyst.h
+                   FLIST_XFER     = FLIST_SIOB - 12                    ' $7B9B8 check catalyst.h
+                   FLIST_SECT     = FLIST_XFER - 4                     ' $7B9B4 check catalyst.h
+                   FLIST_SHFT     = FLIST_SECT - 4                     ' $7B9B0 check catalyst.h
+                   FLIST_FSIZ     = FLIST_SHFT - 4                     ' $7B9AC check catalyst.h
+                   FLIST_PSTK     = FLIST_FSIZ - 4                     ' $7B9A8 check catalyst.h
+                   FLIST_PREG     = FLIST_PSTK - 4                     ' $7B9A4 check catalyst.h
+                   
+                   
+                   '--------------------------- END OF CONSTANTS ---------------------------------
+                   
+                   
+                   
+                   '#line 39 "../../../target_p2/Catalina_CMM_threaded_dynamic.spin2"
+                   
+                   ' The symbol FCACHE_PRIMITIVE adds code to implement FCACHE - this can be done
+                   ' outside the kernel, but including it in the kenel is more efficient - but it
+                   ' adds 9 longs to the kernel:
+                   
+                   
+                   
+                   ' The symbol UNROLL_LMM_LOOP does just what it says - but it adds extra
+                   ' longs to the CMM kernel. The default is to unroll 2 times if this is not
+                   ' defined, or to unroll 4 times if it is defined :
+                   
+                   '#define UNROLL_LMM_LOOP
+                   
+                   ' The symbol EXTERNAL_FLT_CMP forces the flt_cmp operation to the external
+                   ' FLOAT32_A plugin. This is because the CMM kernel is slightly too large to
+                   ' fit it in (until we manage to save 5 or so longs):
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   ' instruction operand shifts
+                   
+                   S16A = 1  ' must match catalina_compact.inc
+                   D16A = 6  ' must match catalina_compact.inc
+                   S16B = 2  ' must match catalina_compact.inc
+                   D16B = 2  ' must match catalina_compact.inc
+                   S32  = 2  ' must match catalina_compact.inc
+                   D32  = 11 ' must match catalina_compact.inc
+                   D32S = 21 ' must match catalina_compact.inc
+                   
+                   ' NO_INTERRUPTS - if defined, we can the use SKIPF because this code will not
+                   '                 be used in an interrupt service routine. Can be defined here
+                   '                 or on the command-line (i.e. -C NO_INTERRUPTS)
+                   
+                   '#ifndef NO_INTERRUPTS
+                   '#define NO_INTERRUPTS
+                   '#endif
+                   
+                   '--------------------- Start of CMM Kernel ------------------------------------
+                   
+                   DAT
+01e9c 000                   org     0
+                   
+                   ' the first $52 longs must be in the same place in all CMM kernels, to
+                   ' allow for the separate compilation of code that uses these locations
+                   
+01e9c 000 fd900154 r0       jmp     #cmm_init      '$00
+01ea0 001 00000000 r1       long    0              '$01
+01ea4 002 00000000 r2       long    0              '$02
+01ea8 003 00000000 r3       long    0              '$03
+                   
+01eac 004          _Thread_init
+01eac 004 fb040761 r4       rdlong  r3,PTRA++      '$04 load argc
+01eb0 005 fb040561 r5       rdlong  r2,PTRA++      '$05 load argv
+01eb4 006 fb040161 r6       rdlong  r0,PTRA++      '$06 load return address
+01eb8 007 f184320c r7       sub     SP,#12         '$07 allow space for spilled arguments
+01ebc 008 fc600019 r8       wrlong  r0,SP          '$08  set up return address
+01ec0 009 f6040000 r9       mov     r0,#0          '$09 zero ...
+01ec4 00a fc600054 r10      wrlong  r0,req         '$0a ... our request block
+01ec8 00b f1843208 r11      sub     SP,#8          '$0b reserve space ...
+01ecc 00c f6005a19 r12      mov     xfer,SP        '$0c .. for xfer block at top of stack
+01ed0 00d f1843204 r13      sub     SP,#4          '$0d top of stack will be first thread block
+01ed4 00e fd604e01 r14      cogid   t1             '$0e set up ...
+01ed8 00f f0644e08 r15      shl     t1,#8          '$0f ... affinity, flags ...
+01edc 010 fc604e19 r16      wrlong  t1,SP          '$10 ... and set ticks to zero
+01ee0 011 f1843284 r17      sub     SP,#33*4       '$11 point to begining of thread block
+01ee4 012 fc603219 r18      wrlong  SP,SP          '$12 make thread block point to itself
+01ee8 013 f603cc19 r19      mov     TP,SP          '$13 make thread block the current thread
+01eec 014 fd64002d r20      ret                    '$14
+                   
+01ef0 015 00000000 r21      long    0              '$15
+01ef4 016 00000000 r22      long    0              '$16
+01ef8 017 00000000 r23      long    0              '$17
+                   
+01efc 018 00000000 PC       long    0              '$18 ' set up during initialization
+01f00 019 00000000 SP       long    0              '$19 ' set up during initialization
+01f04 01a 00000000 FP       long    0              '$1a
+01f08 01b 00000000 RI       long    0              '$1b
+01f0c 01c 00000000 BC       long    0              '$1c
+01f10 01d 00000000 Save_PC  long    0              '$1d
+                   
+01f14 01e 00000000 DBG1     long    0              '$1e ' Debugger opAddr
+01f18 01f 00000000 DBG2     long    0              '$1f ' Debugger temp
+                   
+01f1c 020 000000ff low8     long   $0000_00FF      '$20
+01f20 021 0000ffff low16    long   $0000_FFFF      '$21
+01f24 022 ff000000 top8     long   $FF00_0000      '$22
+01f28 023 0003ffff low18    long   $0003_FFFF      '$23
+01f2c 024 00003e1f sd_mask  long   %000000_0000_0000_000011111_000011111 '$24
+01f30 025          INST_OFF                        ' must match INST_OFF in catalina_compact.inc
+01f30 025 00000000 inst     long   $0000_0000      '$25
+01f34 026 00000200 dlsb     long   1<<9            '$26
+                   
+                   ' NOTE - the initial values below are used only during kernel initialization
+                   
+01f38 027 00000000 t1       long   $0000_0000      '$27
+01f3c 028 00000000 t2       long   $0000_0000      '$28
+01f40 029 00000000 t3       long   $0000_0000      '$29
+01f44 02a 00000000 t4       long   $0000_0000      '$2a
+                   
+01f48 02b 00000000 t5       long   $0000_0000      '$2b
+01f4c 02c 00000000 t6       long   $0000_0000      '$2c
+                   
+01f50 02d 00000000 xfer     long   $0000_0000      '$2d set up during initialization
+                   
+01f54 02e 00000000 ct1     long  0                 '$2e
+01f58 02f 00000000 ct2     long  0                 '$2f
+01f5c 030 00000000 ct3     long  0                 '$30
+                   
+01f60 031          table_16a
+01f60 031 00000000 X16A_NOP     nop                '$31
+01f64 032 f6000000 X16A_MOV     mov    0,0         '$32
+01f68 033 fac00000 X16A_RDBYTE  rdbyte 0,0         '$33
+01f6c 034 fae00000 X16A_RDWORD  rdword 0,0         '$34
+01f70 035 fb000000 X16A_RDLONG  rdlong 0,0         '$35
+01f74 036 fc400000 X16A_WRBYTE  wrbyte 0,0         '$36
+01f78 037 fc500000 X16A_WRWORD  wrword 0,0         '$37
+01f7c 038 fc600000 X16A_WRLONG  wrlong 0,0         '$38
+01f80 039 f1000000 X16A_ADD     add    0,0         '$39
+01f84 03a f1400000 X16A_ADDS    adds   0,0         '$3a
+01f88 03b f5000000 X16A_AND     and    0,0         '$3b
+01f8c 03c f5400000 X16A_OR      or     0,0         '$3c
+01f90 03d f5600000 X16A_XOR     xor    0,0         '$3d
+01f94 03e f1800000 X16A_SUB     sub    0,0         '$3e
+01f98 03f f1c00000 X16A_SUBS    subs   0,0         '$3f
+01f9c 040 f2180000 X16A_CMP     cmp    0,0 wcz     '$41
+01fa0 041 f2580000 X16A_CMPS    cmps   0,0 wcz     '$40
+01fa4 042 f6600000 X16A_NEG     neg    0,0         '$42
+01fa8 043 f0600000 X16A_SHL     shl    0,0         '$43
+01fac 044 f0400000 X16A_SHR     shr    0,0         '$44
+01fb0 045 f0c00000 X16A_SAR     sar    0,0         '$45
+01fb4 046 f0640000 X16A_SHLI    shl    0,#0        '$46
+01fb8 047 f0440000 X16A_SHRI    shr    0,#0        '$47
+01fbc 048 f0c40000 X16A_SARI    sar    0,#0        '$48
+01fc0 049 f1040000 X16A_ADDI    add    0,#0        '$49
+01fc4 04a f1840000 X16A_SUBI    sub    0,#0        '$4a
+01fc8 04b f6040000 X16A_MOVI    mov    0,#0        '$4b
+01fcc 04c f1440000 X16A_ADDSI   adds   0,#0        '$4c
+01fd0 04d f1c40000 X16A_SUBSI   subs   0,#0        '$4d
+01fd4 04e f21c0000 X16A_CMPI    cmp    0,#0 wcz    '$4e
+01fd8 04f f25c0000 X16A_CMPSI   cmps   0,#0 wcz    '$4f
+01fdc 050 f6640000 X16A_NEGI    neg    0,#0        '$50
+                   
+01fe0 051 00040000 immi_bit long   %0000_0000000_001_000000000_000000000 '$52
+01fe4 052 80000000 bit31    long   $8000_0000      '$52
+01fe8 053 ffffffff all_1s   long   $FFFF_FFFF      '$53
+                   
+01fec 054 00000000 req      long   0               '$54 ' request block address
+01ff0 055 00000000 reg      long   0               '$55 ' registry address
+                   
+01ff4 056          X16B_BRKP                       ' execute break (when debug overlay loaded)
+01ff4 056          FC_START                        ' must match FC_START in catalina_compact.inc
+                   
+                   ' cmm_init : initialize VM - note that this code may be overlaid by
+                   '            debug code or FCACHE code once initialization is complete.
+                   '            It must be kept the same length as the main kernel.
+                   
+01ff4 056          DEBUG_OVERLAY
+01ff4 056          cmm_init
+01ff4 056 fb04ab61         rdlong  reg,PTRA++      '$56  1 load registry address (used later)
+01ff8 057 fd600401         cogid   r2              '$57  2 register ...
+01ffc 058 f0640402         shl     r2,#2           '$58  3 ... ourselves ...
+02000 059 f1000455         add     r2,reg          '$59  4 ... as ...
+02004 05a fb00a802         rdlong  req,r2          '$5a  5 ... a ...
+02008 05b f520a822         andn    req,top8        '$5b  6 ... new ...
+0200c 05c fc60a802         wrlong  req,r2          '$5c  7  kernel
+02010 05d fb043161         rdlong  PC,PTRA++       '$5d  8 load initial PC
+02014 05e fb043361         rdlong  SP,PTRA++       '$5e  9 load initial SP
+02018 05f fb040161         rdlong  r0,PTRA++       '$5f 10 load initial LUT library size (-1)
+0201c 060 fb040361         rdlong  r1,PTRA++       '$60 11 load initial LUT library address
+02020 061 fd600029         setq2   r0              '$61 12 copy lut library ...
+02024 062 fb020001         rdlong  $100,r1         '$62 13 ... to LUT RAM, starting at $100
+02028 063 fdbffe80         call    #_Thread_init   '$63 14 set up initial thread
+0202c 064 fd90003c         jmp     #read_next      '$64 15 we can now start executing CMM code
+02030 065 00000000         nop                     '$65 16
+02034 066 00000000         nop                     '$66 17
+02038 067 00000000         nop                     '$67 18
+0203c 068 00000000         nop                     '$68 19
+02040 069 00000000         nop                     '$69 20
+02044 06a 00000000         nop                     '$6a 21
+02048 06b 00000000         nop                     '$6b 22
+0204c 06c 00000000         nop                     '$6c 23
+02050 06d 00000000         nop                     '$6e 24
+02054 06e 00000000         nop                     '$6e 25
+                   
+02058 06f          pasm_16
+02058 06f 00000000          long   0-0             '$6f execute generated instruction
+0205c 070          done_16
+0205c 070 f0444a10          shr    inst,#16        '$70 decode ...
+02060 071 fb9c4a06          tjnz   inst,#decode    '$71 ... another instruction ?
+02064 072          FC_INLINE                       ' must match FC_INLINE in catalina_compact.inc
+02064 072          done_32
+02064 072 fd604224          stalli                 '$72
+02068 073 f1043004          add    PC,#4           '$73 no - increment PC
+                   
+0206c 074          EXEC_STOP                       ' must match EXEC_STOP in catalina_compact.inc
+                   '
+                   ' check whether we should context switch (and switch if so)
+                   '
+0206c 074          read_next
+0206c 074 fd604024          allowi                 '$74
+02070 075 fb6fc801          djnz   ticks,#no_swap  ' if ticks not yet zero, don't context switch
+02074 076 fda00350          call   #\context_switch
+02078 077          no_swap
+02078 077 fb004a18          rdlong inst,PC         ' fall through to ...
+0207c 078          decode
+0207c 078 f6004e25          mov    t1,inst         ' test ...
+02080 079 f5044e01          and    t1,#1           ' ... instruction ...
+02084 07a fb944e23          tjz    t1,#decode_16a  ' ... type ...
+02088 07b f6004e25          mov    t1,inst         ' ... to ...
+0208c 07c f5044e02          and    t1,#2           ' ... determine ...
+02090 07d fb944e2d          tjz    t1,#decode_16b  ' ... how to decode
+02094 07e          decode_32
+02094 07e f6004e25          mov    t1,inst         ' extract ...
+02098 07f f0444e1a          shr    t1,#26          ' ... 6 bit opcode
+0209c 080 f1044e85          add    t1,#table_32
+020a0 081 f6005025          mov    t2,inst         ' extract ...
+020a4 082 f0445002          shr    t2,#S32         ' ... 24 bits ...
+020a8 083 f5205022          andn   t2,top8         ' ... of src (or src & dst)
+020ac 084 fd604e2c          jmp    t1
+020b0 085          table_32
+020b0 085 fd900308          jmp    #X32_JMPA
+020b4 086 fd9002f8          jmp    #X32_CALA
+020b8 087 fd900308          jmp    #X32_LODI
+020bc 088 fd900318          jmp    #X32_PSHA
+020c0 089 fd900308          jmp    #X32_PSHF
+020c4 08a fd900320          jmp    #X32_PSHM
+020c8 08b fd900354          jmp    #X32_BR_Z
+020cc 08c fd900348          jmp    #X32_BRNZ
+020d0 08d fd900354          jmp    #X32_BRAE
+020d4 08e fd900354          jmp    #X32_BR_A
+020d8 08f fd900358          jmp    #X32_BRBE
+020dc 090 fd900358          jmp    #X32_BR_B
+020e0 091 fd900390          jmp    #X32_PSHB
+020e4 092 fd9001e8          jmp    #X32_CPYB
+020e8 093 fd9003e8          jmp    #X32_LODA
+020ec 094 fd900408          jmp    #X32_NEWF
+020f0 095 fd90042c          jmp    #X32_RETF
+020f4 096 fd900440          jmp    #X32_LODF
+020f8 097 fd900390          jmp    #X32_MOV
+020fc 098 fd900394          jmp    #X32_MOVI
+02100 099 fd9003a4          jmp    #X32_SPILL
+02104 09a fd9003bc          jmp    #X32_CPREP
+02108 09b fd9003d0          jmp    #X32_LODS
+                   
+0210c 09c f0000000 pasm_32  long   %1111_0000000_000_000000000_000000000
+02110 09d fd9fff50          jmp    #done_32
+                   
+                   
+                   ' decode 16 bit instruction (set a)
+                   
+02114 09e          decode_16a
+02114 09e f6005025          mov    t2,inst         ' from instruction ....
+02118 09f f0445001          shr    t2,#S16A        ' ... extract ...
+0211c 0a0 f9b8de28          sets   pasm_16,t2      ' ... src
+02120 0a1 f0445005          shr    t2,#D16A-S16A   ' ... and ...
+02124 0a2 f9b0de28          setd   pasm_16,t2      ' ... dst
+02128 0a3 f0445005          shr    t2,#11-D16A     ' extract 5 bits ...
+0212c 0a4 f504501f          and    t2,#$1F         ' ... of op code
+02130 0a5 f1045031          add    t2,#table_16a   ' calculate addr of instruction template
+02134 0a6 f9b95228          sets   set_inst,t2     ' put addr in setup instruction
+02138 0a7 f500de24          and    pasm_16,sd_mask ' mask src & dst to 5 bits each
+0213c 0a8 00000000 	 nop                    ' 1 requires this!!!
+02140 0a9 f540de00 set_inst or     pasm_16,0-0     ' put instruction in place
+02144 0aa fd9fff10          jmp    #pasm_16        ' execute instruction
+                   
+                   
+                   ' decode 16 bit instructions (set b)
+                   
+02148 0ab          decode_16b
+02148 0ab f6004e25          mov    t1,inst         ' extract ...
+0214c 0ac f0444e0b          shr    t1,#11          ' ... 5 bits ...
+02150 0ad f5044e1f          and    t1,#$1f         ' ... of op code
+02154 0ae f1044eb0          add    t1,#table_16b   ' calculate jump
+02158 0af fd604e2c          jmp    t1              ' execute primitive
+0215c 0b0          table_16b
+0215c 0b0 fd9001f0          jmp    #X16B_LODF      '
+02160 0b1 fd9003b0          jmp    #X16B_RETF      '
+02164 0b2 fd9003c4          jmp    #X16B_RETN      '
+02168 0b3 fd900064          jmp    #X16B_POPM      '
+0216c 0b4 fd9000bc          jmp    #X16B_JMPI      '
+02170 0b5 fd900238          jmp    #X16B_CALI      '
+02174 0b6 fd9000a8          jmp    #X16B_PSHL      '
+02178 0b7 fd9000b8          jmp    #X16B_DIVS      '
+0217c 0b8 fd9000bc          jmp    #X16B_DIVU      '
+02180 0b9 fd9000c0          jmp    #X16B_MULT      '
+02184 0ba fd900108          jmp    #X16B_FLTP      ' was #X16B_FADD      '
+02188 0bb fd9002bc          jmp    #X16B_RJ_Z      ' was #X16B_FSUB      '
+0218c 0bc fd9002b0          jmp    #X16B_RJNZ      ' was #X16B_FMUL      '
+02190 0bd fd9002bc          jmp    #X16B_RJAE      ' was #X16B_FDIV      '
+02194 0be fd9002bc          jmp    #X16B_RJ_A      ' was #X16B_FCMP      '
+02198 0bf fd9002c0          jmp    #X16B_RJBE      ' was #X16B_FLIN      '
+0219c 0c0 fd9002c0          jmp    #X16B_RJ_B      ' was #X16B_INFL      '
+021a0 0c1 fd9000ac          jmp    #X16B_SYSP      '
+021a4 0c2 fd9000cc          jmp    #X16B_EXEC      '
+021a8 0c3 fd900190          jmp    #X16B_SIGN      '
+021ac 0c4 fd900194          jmp    #X16B_CPL       '
+021b0 0c5 fd900174          jmp    #X16B_TRN1      '
+021b4 0c6 fd900178          jmp    #X16B_TRN2      '
+021b8 0c7 fd900140          jmp    #X16B_LODL      '
+021bc 0c8 fd9ffe34          jmp    #X16B_BRKP      '
+021c0 0c9 fd9001a4          jmp    #X16B_FCACHE    '
+021c4 0ca fd900090          jmp    #X16B_PASM      '
+021c8 0cb fd9001c4          jmp    #X16B_CPREP     '
+021cc 0cc fd900294          jmp    #X16B_JMPR      '
+                   
+021d0 0cd          X16B_POPM
+021d0 0cd fb003619          rdlong RI,SP           ' load ...
+021d4 0ce f1043204          add    SP,#4           ' ... register specification to pop
+021d8 0cf f6045017          mov    t2, #r23        ' start with ...
+021dc 0d0 f0643608          shl    RI,#(32-24)     ' ... r23
+021e0 0d1          pop_nxt
+021e0 0d1 f07c3601          shl    RI,#1 wcz       ' load rX?
+021e4 0d2 c98c5000    if_c  altd   t2
+021e8 0d3 cb000019    if_c  rdlong 0-0,SP          ' ... load ...
+021ec 0d4 c1043204    if_c  add    SP,#4           ' ... the register
+021f0 0d5 ad900008    if_z  jmp   #pop_done
+021f4 0d6 f1845001          sub    t2,#1           ' point to previous register
+021f8 0d7 fd9fffe4          jmp    #pop_nxt        ' continue till all registers popped
+021fc 0d8 f6005025 pop_done mov    t2,inst         ' extract ...
+02200 0d9 f50c51fc          and    t2,#$1FC wz     ' ... frame size (7 bits, multiple of 4)
+02204 0da f7c84adf          test   inst,frm_bit wz ' pop frame ?
+02208 0db ad900314    if_z  jmp    #X32_RETF       ' yes - pop frame (and execute implied return)
+0220c 0dc f7c84ae0          test   inst,ret_bit wz ' no - return ?
+02210 0dd ad900318    if_z  jmp    #X16B_RETN      ' yes
+02214 0de fd9ffe44          jmp    #done_16        ' no - just carry on executing instructions
+                   
+02218 0df 00000200 frm_bit  long   1<<(7+S16B)     ' bit to test for frame pop (pop if zero)
+0221c 0e0 00000400 ret_bit  long   1<<(8+S16B)     ' bit to test for return (return if zero)
+                   
+02220 0e1          X16B_PSHL
+02220 0e1 f1843204          sub    SP,#4           ' decrement SP
+02224 0e2 fc603619          wrlong RI,SP           ' save value on stack
+02228 0e3 fd9ffe30          jmp    #done_16
+0222c 0e4          X16B_JMPI
+0222c 0e4 f600301b          mov    PC,RI
+02230 0e5 fd9ffe38          jmp    #read_next
+                   
+                   'X16B_DIVS - Signed 32 bit division
+                   '        Divisor  : r1
+                   '        Dividend : r0
+                   '        Result   :
+                   '           Quotient in r0
+                   '           Remainder in r1
+                   
+02234 0e6          X16B_DIVS
+02234 0e6 fda00303          call   #\signed_d32     ' perform signed division
+02238 0e7 fd9ffe20          jmp    #done_16
+                   
+                   'X16B_DIVU - unsigned 32 bit division
+                   '        Divisor  : r1
+                   '        Dividend : r0
+                   '        Result   :
+                   '           Quotient in r0
+                   '           Remainder in r1
+                   
+0223c 0e8          X16B_DIVU
+0223c 0e8 fda00300         call    #\unsigned_d32   ' perform unsigned division
+02240 0e9 fd9ffe18         jmp     #done_16
+                   
+                   ' X16B_MULT - multiplication
+                   '        r0 : 1st operand (32 bit)
+                   '        r1 : 2nd operand (32 bit)
+                   '        Result :
+                   '           Product in r0 (<= 32 bit)
+                   '
+02244 0ea          X16B_MULT
+02244 0ea fd000001          qmul   r0,r1
+02248 0eb fd600018          getqx  r0
+0224c 0ec fd9ffe0c          jmp    #done_16
+                   '
+                   '
+                   ' X16B_SYSP - call a plugin
+                   ' On entry:
+                   '        R3 = code:
+                   '            - cog id if >= 128 (i.e. $80 + cog id)
+                   '            - plugin type if < 128 (i.e. 0 .. 127)
+                   '            - service id if < 0
+                   '        R2 = data (optional pointer)
+                   '
+                   ' NOTES: Locks are currently only supported when invoking via a service id.
+                   '        When using service id, the data should only use the lower 24 bits.
+                   '
+                   ' On exit:
+                   '        R0 = result
+                   '
+02250 0ed          X16B_SYSP
+02250 0ed fda0030d          call    #\do_plugin    ' do_plugin does all the work
+02254 0ee fd9ffe04          jmp     #done_16
+                   
+                   '
+                   ' X16B_PASM - Execute one long (starting at next long boundary) as an instruction.
+                   '
+02258 0ef          X16B_PASM
+02258 0ef f5243003          andn   PC,#3           ' align PC to long
+0225c 0f0 f1043004          add    PC,#4           ' point to next long
+02260 0f1 fb01e818          rdlong exec1a,PC       ' fetch the instruction
+02264 0f2 f1043004          add    PC,#4           ' point to next long
+02268 0f3 00000000 	 nop                    ' 1 requires this!!!
+0226c 0f4 00000000 exec1a   long   0-0
+02270 0f5 fd800074          jmp    #\EXEC_STOP      ' done
+                   '
+                   ' X16B_EXEC - Execute multiple longs (starting at next long boundary) as instructions.
+                   '            To exit, execute the instruction "jmp #EXEC_STOP"
+02274 0f6          X16B_EXEC
+02274 0f6 f5243003          andn   PC,#3           ' align PC to long
+02278 0f7 f1043004          add    PC,#4           ' point to next long
+0227c 0f8          exec_loop
+0227c 0f8 fb01f618          rdlong exec1b,PC
+02280 0f9 f1043004          add    PC,#4           ' point to next long
+02284 0fa 00000000 	 nop                    ' 1 requires this!!!
+02288 0fb 00000000 exec1b   long   0-0
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+0228c 0fc fd9fffec          jmp    #exec_loop
+                   '
+                   '------------------------------------------------------------------------------
+                   ' Float32 Assembly language routines
+                   '------------------------------------------------------------------------------
+                   '
+                   '------------------------------------------------------------------------------
+                   ' X16B_FLTP - invoke the floating point plugin
+                   '
+                   ' input:   t1          service to request
+                   '          r0          32-bit floating point value
+                   '          r1          32-bit floating point value
+                   ' output:  r0          32-bit floating point result
+                   '------------------------------------------------------------------------------
+                   '
+02290 0fd          X16B_FLTP
+02290 0fd f6005602          mov     t5,r2          ' save r2
+02294 0fe f6005803          mov     t6,r3          ' save r3
+02298 0ff f6000625          mov     r3,inst        ' get floating point ...
+0229c 100 f0440602          shr     r3,#S16B       ' ... operation ...
+022a0 101 f504061f          and     r3,#$1f        ' ... code
+                   
+                   
+                   
+                   
+022a4 102 f6600603          neg     r3,r3          ' negate it (to call a service)
+                   
+022a8 103 f600042d          mov     r2,xfer        ' r2 = data is address of xfer block
+022ac 104 f6004e2d          mov     t1,xfer        ' write ...
+022b0 105 fc600027          wrlong  r0,t1          ' ... first argument to xfer block
+022b4 106 f1044e04          add     t1,#4          ' write ...
+022b8 107 fc600227          wrlong  r1,t1          ' ... second argument to xfer block
+022bc 108 fda0030d          call    #\do_plugin    ' request the service
+022c0 109 f600042b          mov     r2,t5          ' restore r2
+022c4 10a f600062c          mov     r3,t6          ' restore r3
+022c8 10b f25c0000          cmps    r0,#0 wcz      ' set C & Z flags according to result
+022cc 10c fd9ffd8c          jmp     #done_16
+                   
+                   '
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   '
+                   ' X32_CPYB - copy a structure (size in bytes at the PC)
+                   '           from the address in R1 to the address in R0
+                   '
+022d0 10d          X32_CPYB
+022d0 10d f1045003          add    t2,#3           ' round up the count ...
+022d4 10e f5245003          andn   t2,#3           ' ... to be a multiple of 4
+022d8 10f f6004e01          mov    t1,r1           ' source is in r1
+022dc 110 f6005400          mov    t4,r0           ' destination is in r0
+                                                   ' fall through to ...
+022e0 111          copy_longs
+022e0 111 fb945160          tjz    t2,#done_32     ' no more to copy
+022e4 112 fb005227          rdlong t3,t1           ' read from src to t3
+022e8 113 fc60522a          wrlong t3,t4           ' write t3 to dst
+022ec 114 f1044e04          add    t1,#4           ' increment source
+022f0 115 f1045404          add    t4,#4           ' increment destination
+022f4 116 f1845004          sub    t2,#4           ' decrement count ...
+022f8 117 fd9fffe4          jmp    #copy_longs     ' ... and keep copying
+                   '
+022fc 118          X16B_LODL
+022fc 118 f1043004          add    PC,#4           ' point to next long
+02300 119 fb003618          rdlong RI,PC           ' read the long
+02304 11a f5243003          andn   PC,#3           ' align PC to long boundary
+02308 11b f600de32          mov    pasm_16,X16A_MOV ' set up 'mov' instruction
+0230c 11c f604521b          mov    t3,#RI          ' set up src
+02310 11d          X16B_set_src_dst
+02310 11d f6005025          mov    t2,inst         ' set up ...
+02314 11e f0445002          shr    t2,#D16B        ' ...
+02318 11f f50451ff          and    t2,#$1FF        ' ...
+0231c 120 f9b0de28          setd   pasm_16,t2      ' ... dst ...
+02320 121 f9b8de29          sets   pasm_16,t3      ' and src
+02324 122 fd9ffd30          jmp    #pasm_16
+02328 123          X16B_TRN1
+02328 123 f6045220          mov    t3,#low8
+0232c 124 fd900004          jmp    #X16B_set_and
+02330 125          X16B_TRN2
+02330 125 f6045221          mov    t3,#low16
+02334 126          X16B_set_and
+02334 126 f600de3b          mov    pasm_16,X16A_AND ' set up 'and' instruction
+02338 127 fd9fffd4          jmp    #X16B_set_src_dst
+0233c 128          X16B_SIGN
+0233c 128 f6045252          mov    t3,#bit31
+02340 129 fd900004          jmp    #X16B_set_xor
+02344 12a          X16B_CPL
+02344 12a f6045253          mov    t3,#all_1s
+02348 12b          X16B_set_xor
+02348 12b f600de3d          mov    pasm_16,X16A_XOR ' set up 'xor' instruction
+0234c 12c fd9fffc0          jmp    #X16B_set_src_dst
+                   '
+02350 12d          X16B_LODF
+02350 12d f6005025          mov    t2,inst         ' 9 bit src
+02354 12e f0645015          shl    t2,#(32-S16B-9) ' sign ...
+02358 12f f0c45017          sar    t2,#(32-9)      ' ... extend
+0235c 130 f600361a          mov    RI,FP
+02360 131 f1403628          adds   RI,t2
+02364 132 fd9ffcf4          jmp    #done_16
+                   '
+02368 133          X16B_FCACHE
+                   
+02368 133 f6004e25          mov    t1,inst         ' set up ...
+0236c 134 f0444e02          shr    t1,#S16B        ' ... instruction count ...
+02370 135 f5044fff          and    t1,#$1FF        ' ... in t1
+02374 136 f9b67256          setd   finst,#FC_START ' start at FCACHE cog addr
+02378 137 00000000 	 nop                    ' 1 requires this!!!
+0237c 138          floop
+0237c 138 f1043004          add    PC,#4           ' point to next long
+02380 139          finst
+02380 139 fb000018          rdlong 0-0,PC          ' load inst to FCACHE
+02384 13a f1027226          add    finst,dlsb      ' next cog addr
+02388 13b fb6c4ffc          djnz   t1,#floop       ' continue until all inst loaded
+0238c 13c fd9ffc64          jmp    #FC_START       ' start execution of FCACHE
+                   
+                   '
+02390 13d          X16B_CPREP
+02390 13d f6003825          mov    BC,inst         ' put ...
+02394 13e f0443804          shr    BC,#4-(S16B-2)  ' ... upper 5 bits of src ...
+02398 13f f504387c          and    BC,#$7C         ' ... (multiplied by 4) into BC
+0239c 140 f6005025          mov    t2,inst         ' subtract lower 4 bits of src ...
+                   '         shr    t2,#S16B-2     ' ... (eliminating shift - not required!) ...
+023a0 141 f504503c          and    t2,#$3C         ' ... (mutltiplied by 4) ...
+023a4 142 f1803228          sub    SP,t2           ' ... from SP
+023a8 143 fd9ffcb0          jmp    #done_16
+                   
+023ac 144          X16B_CALI
+023ac 144 f600501b          mov    t2,RI           ' fall through to ...
+023b0 145          X32_CALA
+023b0 145 f1043004          add    PC,#4           ' increment PC (this is return address)
+023b4 146 f1843208          sub    SP,#8           ' save ...
+023b8 147 fc603019          wrlong PC,SP           ' ... PC
+                                                   ' fall through to ...
+023bc 148          X32_JMPA
+023bc 148 f6003028          mov    PC,t2
+023c0 149 fd9ffca8          jmp    #read_next
+023c4 14a          X32_LODI
+023c4 14a fb003628          rdlong RI,t2
+023c8 14b fd9ffc98          jmp    #done_32
+023cc 14c          X32_PSHF
+023cc 14c f0645008          shl    t2,#8           ' sign ...
+023d0 14d f0c45008          sar    t2,#8           ' ... extend
+023d4 14e f140501a          adds   t2,FP
+                                                   ' fall through to ...
+023d8 14f          X32_PSHA
+023d8 14f fb003628          rdlong RI,t2
+023dc 150 f1843204          sub    SP,#4
+023e0 151 fc603619          wrlong RI,SP
+023e4 152 fd9ffc7c          jmp    #done_32
+023e8 153          X32_PSHM
+023e8 153 f6004e28          mov    t1,t2           ' save register specification for later
+023ec 154 f6045206          mov    t3, #r6         ' start with ...
+023f0 155 f0445006          shr    t2,#6           ' ... r6
+023f4 156          push_nxt
+023f4 156 f05c5001          shr    t2,#1 wcz       ' save rX?
+023f8 157 c1843204    if_c  sub    SP,#4           ' yes - save ...
+023fc 158 c98c5200    if_c  altd   t3
+02400 159 cc600019    if_c  wrlong 0-0,SP          ' ... register
+02404 15a f1045201          add    t3,#1           ' point to next register
+02408 15b 5d9fffe8    if_nz jmp    #push_nxt       ' continue till all registers checked
+0240c 15c f1843204          sub    SP,#4           ' save ...
+02410 15d fc604e19          wrlong t1,SP           ' .... register specification
+02414 15e fd9ffc4c          jmp    #done_32
+                   '
+02418 15f          X32_BRNZ
+02418 15f 5d9fffa0    if_nz jmp    #X32_JMPA
+0241c 160 fd9ffc44          jmp    #done_32
+02420 161          X32_BR_Z
+02420 161 ad9fff98    if_z  jmp    #X32_JMPA
+02424 162 fd9ffc3c          jmp    #done_32
+02428 163          X32_BRAE
+02428 163 3d9fff90    if_ae jmp    #X32_JMPA
+0242c 164          X32_BR_A
+0242c 164 1d9fff8c    if_a  jmp    #X32_JMPA
+02430 165 fd9ffc30          jmp    #done_32
+02434 166          X32_BRBE
+02434 166 ed9fff84    if_be jmp    #X32_JMPA
+02438 167          X32_BR_B
+02438 167 cd9fff80    if_b  jmp    #X32_JMPA
+0243c 168 fd9ffc24          jmp    #done_32
+                   '
+02440 169          X16B_RJNZ
+02440 169 5d900020    if_nz jmp    #X16B_JMPR
+02444 16a fd9ffc14          jmp    #done_16
+02448 16b          X16B_RJ_Z
+02448 16b ad900018    if_z  jmp    #X16B_JMPR
+0244c 16c fd9ffc0c          jmp    #done_16
+02450 16d          X16B_RJAE
+02450 16d 3d900010    if_ae jmp    #X16B_JMPR
+02454 16e          X16B_RJ_A
+02454 16e 1d90000c    if_a  jmp    #X16B_JMPR
+02458 16f fd9ffc00          jmp    #done_16
+0245c 170          X16B_RJBE
+0245c 170 ed900004    if_be jmp    #X16B_JMPR
+02460 171          X16B_RJ_B
+02460 171 3d9ffbf8    if_ae jmp    #done_16
+02464 172          X16B_JMPR
+02464 172 f0644a15          shl    inst,#(32-S16B-9) ' sign ...
+02468 173 f0c44a17          sar    inst,#(32-9)      ' ... extend
+0246c 174 f1003025          add    PC,inst         ' add relative jump to PC
+02470 175 fd9ffbf8          jmp    #read_next
+                   '
+                   ' X32_PSHB - push a structure (size in bytes at the PC) pointed to by R0
+                   '          onto the stack, decrementing the SP. Note that the source
+                   '          and destination data MUST be long aligned - but this is true
+                   '          for all normal structures.
+                   '
+02474 176          X32_PSHB
+02474 176 f1045003          add    t2,#3           ' round up the count ...
+02478 177 f5245003          andn   t2,#3           ' ... to be a multiple of 4
+0247c 178 f1803228          sub    SP,t2           ' decrement SP by rounded up size
+02480 179 f6004e00          mov    t1,r0           ' source is in r0
+02484 17a f6005419          mov    t4,SP           ' destination is SP
+02488 17b fd9ffe54          jmp    #copy_longs     ' do the copy
+                   '
+0248c 17c          X32_MOV
+0248c 17c f5213851          andn   pasm_32,immi_bit ' clear immediate bit
+02490 17d fd900004          jmp    #X32_MOVx
+02494 17e          X32_MOVI
+02494 17e f5413851          or     pasm_32,immi_bit ' set immediate bit
+02498 17f          X32_MOVx
+02498 17f f9ad38c0          setr   pasm_32,#%0110000_00 ' mov
+0249c 180          X32_SD
+0249c 180 f5213823          andn   pasm_32,low18   ' clear out old src & dst
+024a0 181 f5413828          or     pasm_32,t2      ' include 9 bits src and 9 bits dst
+024a4 182 fd9ffc64          jmp    #pasm_32
+024a8 183          X32_SPILL
+024a8 183 f1843804          sub    BC,#4
+024ac 184 f218381b          cmp    BC,RI wcz
+024b0 185 cd9ffbb0    if_b  jmp    #done_32
+024b4 186 f5213851          andn   pasm_32,immi_bit ' clear immediate bit
+024b8 187 f544501c          or     t2,#BC          ' set src to BC (dst is ok, src should be zero)
+024bc 188 f9ad398c          setr   pasm_32,#%1100011_00 ' wrlong
+024c0 189 fd9fffd8          jmp    #X32_SD
+024c4 18a          X32_CPREP
+024c4 18a f6003828          mov    BC,t2           ' put upper 9 bits of src (i.e. dst)
+024c8 18b f0443809          shr    BC,#9           ' ... in BC
+024cc 18c f50451ff          and    t2,#$1FF        ' subtract lower 9 bits of src ...
+024d0 18d fd900038          jmp    #X32_SUBSP      ' ... from SP
+024d4 18e          X32_LODA
+024d4 18e f6003628          mov    RI,t2
+024d8 18f fd9ffb88          jmp    #done_32
+024dc 190          X32_LODS
+024dc 190 f6004e28          mov    t1,t2           ' set ...
+024e0 191 f0444e13          shr    t1,#19          ' ... dst register ...
+024e4 192 f9b32a27          setd   X32_LODd,t1     ' ... in move instruction
+024e8 193 f064500d          shl    t2,#13          ' extract ...
+024ec 194 f0c4500d          sar    t2,#13          ' src (sign extended immediate)
+024f0 195 f6000028 X32_LODd mov    0-0,t2          ' mov src to dst
+024f4 196 fd9ffb6c          jmp    #done_32
+024f8 197          X32_NEWF
+024f8 197 f1843204          sub    SP,#4           ' decrement the stack pointer
+024fc 198 fc603419          wrlong FP,SP           ' save FP to stack
+02500 199 f6003419          mov    FP,SP           ' set up new FP
+02504 19a f1043808          add    BC,#8           ' calculate what SP was ...
+02508 19b f100381a          add    BC,FP           ' ... before arguments were pushed
+0250c 19c          X32_SUBSP
+0250c 19c f1803228          sub    SP,t2           ' allocate frame
+02510 19d fd9ffb50          jmp    #done_32
+02514 19e          X16B_RETF
+02514 19e f6005025          mov    t2,inst         ' extract 9 bit ...
+02518 19f f0445002          shr    t2,#S16B        ' ...
+0251c 1a0 f50451ff          and    t2,#$1FF        ' ... src, and fall through to X32_RETF
+02520 1a1          X32_RETF
+02520 1a1 f1003228          add    SP,t2           ' deallocate frame
+02524 1a2 fb003419          rdlong FP,SP           ' restore previous FP
+02528 1a3 f1043204          add    SP,#4           ' increment the SP
+0252c 1a4          FC_RETURN                       ' must match FC_RETURN in Catalina_Compact.inc
+0252c 1a4          X16B_RETN
+0252c 1a4 fb003019          rdlong PC,SP           ' read the PC
+02530 1a5 f1043208          add    SP,#8           ' increment the SP
+02534 1a6 fd9ffb34          jmp    #read_next
+02538 1a7          X32_LODF
+02538 1a7 f0645008          shl    t2,#8           ' sign ...
+0253c 1a8 f0c45008          sar    t2,#8           ' ... extend
+02540 1a9 f600361a          mov    RI,FP
+02544 1aa f1403628          adds   RI,t2
+02548 1ab fd9ffb18          jmp    #done_32
+                   
+                   '-------------------------- Multi-Threading Support ----------------------------
+                   
+                   ' These must be in the same place in all the threaded kernels of the
+                   ' same 'flavor' (i.e. CMM, LMM, NMM etc).
+                   
+0254c 1ac                   fit    $1e4
+0262c 1e4                   orgf   $1e4
+                   
+0262c 1e4 00000064 ticks    long    100            ' time till next thread swap (~10 milliseconds)
+02630 1e5 00000000 flags    long    0              ' used for storing flags
+02634 1e6 00000000 TP       long    0              ' current thread pointer
+02638 1e7 00000007 lock     long    7              ' lock to use for context switching (default 7)
+                   
+                   '-------------------------- end Multi-Threading Support ------------------------
+                   
+                   ' initcog & lockbits must be in the same place in all CMM kernels
+                   
+0263c 1e8                   fit    $1e8
+0263c 1e8                   orgf   $1e8
+                   
+                   ' initcog (cannot be executed using CMM because rdlongs interrupt the setq)
+                   '    r4 points to data block (REGISTRY, PC, SP)
+                   '    r0 contains cog id (or ANY_COG)
+                   '    r3 contains pointer to code to load into cog
+                   
+0263c 1e8          initcog
+0263c 1e8 fd600828          setq r4                ' this will end up in PTRA of new cog
+02640 1e9 0cf00003   _ret_  coginit r0,r3 wc
+                   
+02644 1ea 00000000 lockbits long   0               ' lockbits used to simulate P1-style locks
+                   
+                   ' The last 5 longs are reserved for debug overlay vectors (or debug LED)
+                   
+02648 1eb                   fit    $1eb
+02648 1eb                   orgf   $1eb
+02648 1eb          DEBUG_VECTORS
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+02648 1eb 0007bde8          long   DEBUG_BREAK
+0264c 1ec 0007bdec          long   DEBUG_ADDR
+02650 1ed 0007bdf0          long   DEBUG_OUT
+02654 1ee 0007bdf4          long   DEBUG_IN
+02658 1ef 0007bdf8          long   DEBUG_FLAG
+                   
+0265c 1f0                   fit    $1f0
+                   
+                   '------------------------- END OF KERNEL --------------------------------------
+                   
+0265c 300                   org $300
+                   
+                   ' Common Kernel library functions. This code is included only to get the LUT
+                   ' offsets correct in the dynamically loaded kernel. The actual LUT code is
+                   ' loaded into LUT from elsewhere. There must be a better way to do this, but I
+                   ' can't think of one at the moment :(
+                   
+                   '#line 1 "../../../target_p2/Catalina_kernel_library.inc"
+                   ' Catalina kernel library functions ...
+                   
+                   ' avoid including the kernel library functions twice ...
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   '#line 830 "../../../target_p2/Catalina_CMM_threaded_dynamic.spin2"
+                   
+                   '#line 1 "../../../target_p2/Catalina_CMM_kernel_library.inc"
+                   ' Catalina kernel functions that are specific to the CMM kernels ...
+                   
+                   ' avoid including the kernel library functions twice ...
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   '#line 832 "../../../target_p2/Catalina_CMM_threaded_dynamic.spin2"
+                   
+                   '#line 1 "../../../target_p2/Catalina_thread_library.inc"
+                   ' Catalina thread library functions ...
+                   
+                   ' avoid including the thread library functions twice ...
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   '#line 834 "../../../target_p2/Catalina_CMM_threaded_dynamic.spin2"
+                   
+                   '#line 65 "../../../target_p2/Catalina_CMM_library.spin2"
+                   
+                   
+                   
+                   CON
+                   
+                   

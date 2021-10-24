@@ -24,9 +24,17 @@ DAT ' code segment
 
 C_g_limit
  mov r0, r4
- cmps r0, r2 wc,wz
+
+ cmps r0, r2 wcz
+
+
+
  if_a mov r0, r2
- cmps r0, r3 wc,wz
+
+ cmps r0, r3 wcz
+
+
+
  if_b mov r0, r3
  PRIMITIVE(#RETN)
 ' end

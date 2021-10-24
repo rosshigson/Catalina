@@ -94,8 +94,8 @@ else
 
 ifeq ($(PROPELLER_2),TRUE)
 
-CCFLAGS = -S -p2
-SPINPPFLAGS = -D P2
+CCFLAGS = -S -p2 -C TINY
+SPINPPFLAGS = -D P2 -D TINY
 
 else
 

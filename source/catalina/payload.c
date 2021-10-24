@@ -188,6 +188,8 @@
 //
 // Version 4.8  - Just update version number.
 //
+// Version 4.9  - Just update version number.
+//
 //-----------------------------------------------------------------------------
 // Payload is part of Catalina.
 //
@@ -229,7 +231,7 @@
 #include "lua-5.1.4/src/lauxlib.h"
 #endif
 
-#define VERSION            "4.8"
+#define VERSION            "4.9"
 
 #define DEFAULT_LCC_ENV    "LCCDIR" // used to locate binary files if not in current directory
 
@@ -242,7 +244,7 @@
 
 #ifdef WIN32_PATHS         /* define this on the command line for Windows */
 #define DEFAULT_SEP        "\\"
-#define DEFAULT_LCCDIR     "C:\\Program Files\\Catalina" // must match default used by LCC
+#define DEFAULT_LCCDIR     "C:\\Program Files (x86)\\Catalina" // must match default used by LCC
 #else
 #define DEFAULT_SEP        "/"
 #define DEFAULT_LCCDIR     "/opt/catalina" // must match default used by LCC

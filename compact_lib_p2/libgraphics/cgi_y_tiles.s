@@ -11,17 +11,22 @@ DAT ' code segment
  alignl ' align long
 C_cgi_y_tiles ' <symbol:cgi_y_tiles>
  alignl ' align long
- long I32_PSHM + $500000<<S32 ' save registers
+ long I32_NEWF + 4<<S32
+ alignl ' align long
+ long I32_PSHM + $400000<<S32 ' save registers
  alignl ' align long
  long I32_CALA + (@C__cgi_data)<<S32 ' CALL addrg
- word I16A_MOV + (r22)<<D16A + (r0)<<S16A
- word I16A_SHRI + (r22)<<D16A + (16)<<S16A ' SHRU4 reg coni
- alignl ' align long
- long I32_MOVI + (r20)<<D32 +(255)<<S32 ' reg <- conli
- word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
- word I16A_MOV + (r0)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
+ word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
+ word I16A_ADDSI + (r22)<<D16A + (1)<<S16A ' ADDP4 reg coni
+ word I16B_LODF + ((-4)&$1FF)<<S16B
+ word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
+ word I16B_LODF + ((-4)&$1FF)<<S16B
+ word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
+ word I16A_RDBYTE + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU1 reg
+ word I16A_MOV + (r0)<<D16A + (r22)<<S16A ' CVUI
+ word I16B_TRN1 + (r0)<<D16B ' zero extend
 ' C_cgi_y_tiles_1 ' (symbol refcount = 0)
- word I16B_POPM + $80<<S16B ' restore registers, do not pop frame, do return
+ word I16B_POPM + 1<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
 ' Catalina Import _cgi_data

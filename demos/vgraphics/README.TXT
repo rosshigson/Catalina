@@ -1,0 +1,68 @@
+This directory contains a C version of the standard Parallax Graphics Demo, a
+version of the Spacewar video game for two players, and a simple demo program,
+all written in C to use the Catalina VGA virtual graphics library - this 
+library contains virtual graphics functions intended for use on VGA monitors.
+
+The virtual graphics library is supported only on the Propeller 1. 
+
+The virtual graphics library is highly compatible with the Parallax graphics 
+functions intended for use on TV displays.
+
+The catalina_4 program simply displays some spinning triangles and text.
+
+The graphics_demo program is the same program as that in the graphics demo
+folder, modified slightly to use the virtual graphics functions instead of
+the Parallax graphics functions.
+
+The spacewar game is a faithful rendering of the original Spin game into C. 
+The Spin version was developed by Eric Moyer, and supported only low resolution
+TV display. This version uses the Catalina virtual graphics driver to allow a
+high resolution VGA display. The spacewar program can also be built with
+sound effects - for this, see the "demos\sounds" subdirectory.
+
+To build the program, use the "build_all" command, specifying the platform for
+which you want to build (C3, HYDRA, HYBRID, TRIBLADEPROP CPU_1 etc) and also 
+any optional symbols - e.g. the screen resolution (VGA_480, VGA_800, VGA_1024) 
+or color depth (VGA_2_COLOR, VGA_4_COLOR) or input option (GAMEPAD, NO_GAMEPAD,
+NO_KEYBOARD). 
+
+For example:
+
+   build_all HYDRA
+or
+   build_all C3 NO_GAMEPAD VGA_800 VGA_4_COLOR
+or
+   build_all HYDRA GAMEPAD NO_KEYBOARD  
+or 
+   build_all HYDRA VGA_4_COLOR
+ 
+The default screen resolution is 640x480 and the default color depth is 2. The 
+batch file enables double buffering for the spacewar and graphics_demo (for 
+smoother graphics) and the default input options are to enable both the 
+keyboard and the software gamepad. If you do not want to use the keyboard, 
+specify NO_KEYBOARD. If you do not want to use the software gamepad (or your 
+platform does not have any gamepads) specify NO_GAMEPAD. If you want 
+to use the Catalina gamepad driver instead of the software gamepad, specify 
+GAMEPAD (Catalina supports both the software gamepad as implemented in the 
+original game, and the more efficient Catalina gamepad driver).
+
+Note that not all resolutions will support all color depths - the VGA_4_COLOR 
+option is only supported in conjunction with VGA_640 and VGA_800.
+
+Here is the recommended command for the spacewar game (the other programs may
+work better in lower resolutions):
+
+For the HYDRA:
+
+  build_all HYDRA GAMEPAD VGA_1024 NO_KEYBOARD
+
+For the C3:
+
+  build_all C3 VGA_1024 NO_GAMEPAD
+
+It is characteristic of the virtual graphics driver that if there is not enough
+Hub RAM available to display the whole screen at the selected resolution or 
+color depth, then parts of the screen may be left blank, or flicker - if this 
+occurs then you must either reduce the size of your program (to free up more 
+Hub RAM for the virtual graphics), or reduce the resolution or the color depth.
+The graphics_demo program is particularly prone to this if run in 4 color mode.

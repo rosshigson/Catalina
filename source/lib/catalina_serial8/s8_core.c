@@ -47,25 +47,6 @@ static char txrxbuff[S8_MAX_PORTS * (RX_BUFF_SIZE + TX_BUFF_SIZE)];
 #define long_tx_end(port)      ((uint32_t *)(s8base+44+(32*(port))))
 
 /*
- * pinclear - emulate SPIN pinclear function
- */
-static void pinclear(int pinfield) {
-   _dirl(pinfield);
-   _wrpin(pinfield, 0);
-}
-
-/*
- * pinstart - emulate SPIN pinstart function
- */
-static void pinstart(int pinfield, uint32_t mode, uint32_t  xval, uint32_t  yval) {
-   _dirl(pinfield);
-   _wrpin(pinfield, mode);
-   _wxpin(pinfield, xval);
-   _wypin(pinfield, yval);
-   _dirh(pinfield);
-}
-
-/*
  * pinconfig - configure smartpin for rx (dirn = 0) or tx (dirn = 1)
  */
 static void pinconfig(int pin, uint32_t baud, uint32_t mode, int dirn) {
@@ -100,7 +81,7 @@ static void pinconfig(int pin, uint32_t baud, uint32_t mode, int dirn) {
    baudcfg = _muldiv64(_clockfreq(), 0x10000, baud) & 0xFFFFFC00; // set bit timing
    baudcfg |= (8-1); // set bits (8)
    // start smartpin
-   pinstart(pin, spmode, baudcfg, 0); 
+   _pinstart(pin, spmode, baudcfg, 0); 
 
 }
 
@@ -213,7 +194,7 @@ void s8_closeport(unsigned port) {
       if ((pin & (1<<7)) != 0) {
          pin &= 0x3f;
          //s8_rxflush(port);
-         pinclear(pin);
+         _pinclear(pin);
          *byte_p_ctl(p) = 0;
       }
       // disable tx 
@@ -222,7 +203,7 @@ void s8_closeport(unsigned port) {
       if ((pin & (1<<7)) != 0) {
          pin &= 0x3f;
          //s8_txflush(port);
-         pinclear(pin);
+         _pinclear(pin);
          *byte_p_ctl(p) = 0;
       }
    }

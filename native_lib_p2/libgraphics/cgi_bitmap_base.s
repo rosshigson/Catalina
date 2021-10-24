@@ -30,9 +30,10 @@ C_cgi_bitmap_base ' <symbol:cgi_bitmap_base>
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
  long @C__cgi_data ' CALL addrg
- mov r20, ##$ffff ' reg <- con
+ mov r20, ##$ffffff ' reg <- con
  mov r22, r0 ' BANDI/U
  and r22, r20 ' BANDI/U (3)
+ add r22, #4 ' ADDU4 coni
  mov RI, FP
  sub RI, #-(-4)
  wrlong r22, RI ' ASGNU4 addrli reg

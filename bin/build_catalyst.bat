@@ -1,7 +1,7 @@
 @echo off
 
 set TMP_LCCDIR=%LCCDIR%
-if "%TMP_LCCDIR%"=="" set TMP_LCCDIR=C:\Program Files\Catalina
+if "%TMP_LCCDIR%"=="" set TMP_LCCDIR=C:\Program Files (x86)\Catalina
 if EXIST "%TMP_LCCDIR%\bin\catalina_env.bat" goto found_catalina
 echo.
 echo   ERROR: Catalina does not appear to be installed in %TMP_LCCDIR%
@@ -126,13 +126,13 @@ if "%TMP_FLASH%"=="Y" set FLASH=FLASH
 SET CACHE=
 if NOT "%TMP_CACHE%"=="" set CACHE=CACHED_%TMP_CACHE%K
 
-if exist "%USERPROFILE%\catalyst\build_all.bat" goto user_build
+if exist "%USERPROFILE%\demos\catalyst\build_all.bat" goto user_build
 
-pushd "%TMP_LCCDIR%\catalyst"
+pushd "%TMP_LCCDIR%\demos\catalyst"
 goto select_options
 
 :user_build
-pushd "%USERPROFILE%\catalyst"
+pushd "%USERPROFILE%\demos\catalyst"
 
 :select_options
 @echo.

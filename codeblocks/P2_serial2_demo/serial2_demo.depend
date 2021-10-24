@@ -1,7 +1,0 @@
-# depslib dependency file v1.0
-1572150558 source:c:\program files (x86)\catalina_4.0\demos\serial2\test_serial2.c
-	<catalina_serial2.h>
-	<catalina_plugin.h>
-	<propeller.h>
-	<catalina_threads.h>
-

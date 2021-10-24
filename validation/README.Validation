@@ -224,3 +224,8 @@ should be set to:
       P59 /\     On
       P59 \/     Off
 
+NOTE: Compiling the DOFS test programs on platforms with limited XMM RAM may 
+give false failures for some combinations of options which result in the 
+program size exceeding the avaialable XMM RAM - for example, the C3 has only 
+64kb of SRAM. but compiling this program with some combinations of options 
+means the program size exceeds 64kb and therefore the program fails to load.

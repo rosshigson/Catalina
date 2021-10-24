@@ -21,16 +21,8 @@ echo ""
 echo "Cleaning Catalyst directories ..."
 echo ""
 #
-pushd $TMP_LCCDIR/catalyst/bin
-rm -f *.bin
-rm -f *.*
-rm -f *.binary
-rm -f *.eeprom 
-rm -f *.lst 
-rm -f *.debug 
-rm -f *.dbg
-popd
-pushd $TMP_LCCDIR/catalyst/core
+rm -f "$TMP_LCCDIR/demos/catalyst/bin/"*
+pushd $TMP_LCCDIR/demos/catalyst/core
 rm -f *.bin
 rm -f *.binary
 rm -f *.eeprom 
@@ -38,7 +30,7 @@ rm -f *.lst
 rm -f *.debug 
 rm -f *.dbg
 popd
-pushd $TMP_LCCDIR/catalyst/demo
+pushd $TMP_LCCDIR/demos/catalyst/demo
 rm -f *.bin
 rm -f *.binary
 rm -f *.eeprom 
@@ -46,7 +38,7 @@ rm -f *.lst
 rm -f *.debug 
 rm -f *.dbg
 popd
-pushd $TMP_LCCDIR/catalyst/dumbo_basic
+pushd $TMP_LCCDIR/demos/catalyst/dumbo_basic
 rm -f *.bin
 rm -f *.binary
 rm -f *.eeprom 
@@ -54,7 +46,7 @@ rm -f *.lst
 rm -f *.debug 
 rm -f *.dbg
 popd
-pushd $TMP_LCCDIR/catalyst/jzip
+pushd $TMP_LCCDIR/demos/catalyst/jzip
 rm -f *.bin
 rm -f *.binary
 rm -f *.eeprom 
@@ -62,7 +54,7 @@ rm -f *.lst
 rm -f *.debug 
 rm -f *.dbg
 popd
-pushd $TMP_LCCDIR/catalyst/lua-5.1.4/src
+pushd $TMP_LCCDIR/demos/catalyst/lua-5.1.4/src
 rm -f *.bin
 rm -f liblua/*.*
 rm -f *.binary
@@ -71,7 +63,7 @@ rm -f *.lst
 rm -f *.debug 
 rm -f *.dbg
 popd
-pushd $TMP_LCCDIR/catalyst/pascal/p5_c
+pushd $TMP_LCCDIR/demos/catalyst/pascal/p5_c
 rm -f *.bin
 rm -f *.binary
 rm -f *.eeprom 
@@ -79,7 +71,7 @@ rm -f *.lst
 rm -f *.debug 
 rm -f *.dbg
 popd
-pushd $TMP_LCCDIR/catalyst/sst
+pushd $TMP_LCCDIR/demos/catalyst/sst
 rm -f *.bin
 rm -f *.binary
 rm -f *.eeprom 
@@ -87,7 +79,7 @@ rm -f *.lst
 rm -f *.debug 
 rm -f *.dbg
 popd
-pushd $TMP_LCCDIR/catalyst/xvi-2.47/src
+pushd $TMP_LCCDIR/demos/catalyst/xvi-2.47/src
 rm -f *.bin
 rm -f *.binary
 rm -f *.eeprom 

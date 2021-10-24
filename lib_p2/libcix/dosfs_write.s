@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_s214_6132d0f8_wait100ms_L000003 ' <symbol:wait100ms>
+C_s7fk_6174ad1a_wait100ms_L000003 ' <symbol:wait100ms>
  PRIMITIVE(#PSHM)
  long $540000 ' save registers
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
@@ -28,7 +28,7 @@ C_s214_6132d0f8_wait100ms_L000003 ' <symbol:wait100ms>
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
  long @C__waitcnt ' CALL addrg
-' C_s214_6132d0f8_wait100ms_L000003_4 ' (symbol refcount = 0)
+' C_s7fk_6174ad1a_wait100ms_L000003_4 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
@@ -61,7 +61,7 @@ C_D_F_S__W_riteS_ector_6
 C_D_F_S__W_riteS_ector_10
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
- long @C_s214_6132d0f8_wait100ms_L000003 ' CALL addrg
+ long @C_s7fk_6174ad1a_wait100ms_L000003 ' CALL addrg
 ' C_D_F_S__W_riteS_ector_7 ' (symbol refcount = 0)
  adds r15, #1 ' ADDI4 coni
  cmps r15,  #10 wcz

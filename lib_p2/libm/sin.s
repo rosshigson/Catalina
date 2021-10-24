@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_s6gs_6132d0cd_sinus_L000001_r_L000004 ' <symbol:r>
+C_sf58_6174acf0_sinus_L000001_r_L000004 ' <symbol:r>
  long $be2aaaab ' float
  long $3c088889 ' float
  long $b9500d01 ' float
@@ -26,7 +26,7 @@ C_s6gs_6132d0cd_sinus_L000001_r_L000004 ' <symbol:r>
 DAT ' code segment
 
  alignl ' align long
-C_s6gs_6132d0cd_sinus_L000001 ' <symbol:sinus>
+C_sf58_6174acf0_sinus_L000001 ' <symbol:sinus>
  PRIMITIVE(#NEWF)
  sub SP, #12
  PRIMITIVE(#PSHM)
@@ -40,34 +40,34 @@ C_s6gs_6132d0cd_sinus_L000001 ' <symbol:sinus>
  long @C___I_sN_an ' CALL addrg
  cmps r0,  #0 wz
  PRIMITIVE(#BR_Z)
- long @C_s6gs_6132d0cd_sinus_L000001_5 ' EQI4
+ long @C_sf58_6174acf0_sinus_L000001_5 ' EQI4
  mov r22, #33 ' reg <- coni
  PRIMITIVE(#LODL)
  long @C_errno
  wrlong r22, RI ' ASGNI4 addrg reg
  mov r0, r23 ' CVI, CVU or LOAD
  PRIMITIVE(#JMPA)
- long @C_s6gs_6132d0cd_sinus_L000001_2 ' JUMPV addrg
-C_s6gs_6132d0cd_sinus_L000001_5
+ long @C_sf58_6174acf0_sinus_L000001_2 ' JUMPV addrg
+C_sf58_6174acf0_sinus_L000001_5
  PRIMITIVE(#LODI)
- long @C_s6gs_6132d0cd_sinus_L000001_9_L000010
+ long @C_sf58_6174acf0_sinus_L000001_9_L000010
  mov r22, RI ' reg <- INDIRF4 addrg
  mov r0, r23 ' setup r0/r1 (2)
  mov r1, r22 ' setup r0/r1 (2)
  PRIMITIVE(#FCMP)
  PRIMITIVE(#BRAE)
- long @C_s6gs_6132d0cd_sinus_L000001_7 ' GEF4
+ long @C_sf58_6174acf0_sinus_L000001_7 ' GEF4
  xor r23, Bit31 ' NEGF4
  PRIMITIVE(#LODL)
  long -1
  mov r19, RI ' reg <- con
-C_s6gs_6132d0cd_sinus_L000001_7
+C_sf58_6174acf0_sinus_L000001_7
  cmps r21,  #0 wz
  PRIMITIVE(#BR_Z)
- long @C_s6gs_6132d0cd_sinus_L000001_11 ' EQI4
+ long @C_sf58_6174acf0_sinus_L000001_11 ' EQI4
  mov r19, #1 ' reg <- coni
  PRIMITIVE(#LODI)
- long @C_s6gs_6132d0cd_sinus_L000001_13_L000014
+ long @C_sf58_6174acf0_sinus_L000001_13_L000014
  mov r22, RI ' reg <- INDIRF4 addrg
  mov r0, r23 ' setup r0/r1 (2)
  mov r1, r22 ' setup r0/r1 (2)
@@ -76,14 +76,14 @@ C_s6gs_6132d0cd_sinus_L000001_7
  long -4
  wrlong r0, RI ' ASGNF4 addrl reg
  PRIMITIVE(#JMPA)
- long @C_s6gs_6132d0cd_sinus_L000001_12 ' JUMPV addrg
-C_s6gs_6132d0cd_sinus_L000001_11
+ long @C_sf58_6174acf0_sinus_L000001_12 ' JUMPV addrg
+C_sf58_6174acf0_sinus_L000001_11
  PRIMITIVE(#LODF)
  long -4
  wrlong r23, RI ' ASGNF4 addrl reg
-C_s6gs_6132d0cd_sinus_L000001_12
+C_sf58_6174acf0_sinus_L000001_12
  PRIMITIVE(#LODI)
- long @C_s6gs_6132d0cd_sinus_L000001_15_L000016
+ long @C_sf58_6174acf0_sinus_L000001_15_L000016
  mov r22, RI ' reg <- INDIRF4 addrg
  mov r20, FP
  sub r20, #-(-4) ' reg <- addrli
@@ -92,7 +92,7 @@ C_s6gs_6132d0cd_sinus_L000001_12
  mov r1, r20 ' setup r0/r1 (2)
  PRIMITIVE(#FMUL) ' MULF4
  PRIMITIVE(#LODI)
- long @C_s6gs_6132d0cd_sinus_L000001_17_L000018
+ long @C_sf58_6174acf0_sinus_L000001_17_L000018
  mov r22, RI ' reg <- INDIRF4 addrg
  mov r1, r22 ' setup r0/r1 (2)
  PRIMITIVE(#FADD) ' ADDF4
@@ -103,19 +103,19 @@ C_s6gs_6132d0cd_sinus_L000001_12
  sub r22, #-(-4) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRF4 reg
  PRIMITIVE(#LODI)
- long @C_s6gs_6132d0cd_sinus_L000001_21_L000022
+ long @C_sf58_6174acf0_sinus_L000001_21_L000022
  mov r20, RI ' reg <- INDIRF4 addrg
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r20 ' setup r0/r1 (2)
  PRIMITIVE(#FCMP)
  PRIMITIVE(#BR_B)
- long @C_s6gs_6132d0cd_sinus_L000001_19 ' LTF4
+ long @C_sf58_6174acf0_sinus_L000001_19 ' LTF4
  PRIMITIVE(#LODI)
- long @C_s6gs_6132d0cd_sinus_L000001_9_L000010
+ long @C_sf58_6174acf0_sinus_L000001_9_L000010
  mov r0, RI ' reg <- INDIRF4 addrg
  PRIMITIVE(#JMPA)
- long @C_s6gs_6132d0cd_sinus_L000001_2 ' JUMPV addrg
-C_s6gs_6132d0cd_sinus_L000001_19
+ long @C_sf58_6174acf0_sinus_L000001_2 ' JUMPV addrg
+C_sf58_6174acf0_sinus_L000001_19
  mov r2, FP
  sub r2, #-(-4) ' reg ARG ADDRLi
  mov RI, FP
@@ -129,7 +129,7 @@ C_s6gs_6132d0cd_sinus_L000001_19
  mov r2, FP
  sub r2, #-(-8) ' reg ARG ADDRLi
  PRIMITIVE(#LODI)
- long @C_s6gs_6132d0cd_sinus_L000001_17_L000018
+ long @C_sf58_6174acf0_sinus_L000001_17_L000018
  mov r22, RI ' reg <- INDIRF4 addrg
  mov r20, FP
  sub r20, #-(-4) ' reg <- addrli
@@ -145,23 +145,23 @@ C_s6gs_6132d0cd_sinus_L000001_19
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  PRIMITIVE(#LODI)
- long @C_s6gs_6132d0cd_sinus_L000001_9_L000010
+ long @C_sf58_6174acf0_sinus_L000001_9_L000010
  mov r20, RI ' reg <- INDIRF4 addrg
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r20 ' setup r0/r1 (2)
  PRIMITIVE(#FCMP)
  PRIMITIVE(#BR_Z)
- long @C_s6gs_6132d0cd_sinus_L000001_23 ' EQF4
+ long @C_sf58_6174acf0_sinus_L000001_23 ' EQF4
  neg r19, r19 ' NEGI4
-C_s6gs_6132d0cd_sinus_L000001_23
+C_sf58_6174acf0_sinus_L000001_23
  cmps r21,  #0 wz
  PRIMITIVE(#BR_Z)
- long @C_s6gs_6132d0cd_sinus_L000001_25 ' EQI4
+ long @C_sf58_6174acf0_sinus_L000001_25 ' EQI4
  mov r22, FP
  sub r22, #-(-4) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRF4 reg
  PRIMITIVE(#LODI)
- long @C_s6gs_6132d0cd_sinus_L000001_17_L000018
+ long @C_sf58_6174acf0_sinus_L000001_17_L000018
  mov r20, RI ' reg <- INDIRF4 addrg
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r20 ' setup r0/r1 (2)
@@ -169,7 +169,7 @@ C_s6gs_6132d0cd_sinus_L000001_23
  PRIMITIVE(#LODF)
  long -4
  wrlong r0, RI ' ASGNF4 addrl reg
-C_s6gs_6132d0cd_sinus_L000001_25
+C_sf58_6174acf0_sinus_L000001_25
  mov r2, FP
  sub r2, #-(-8) ' reg ARG ADDRLi
  mov r3, r23 ' CVI, CVU or LOAD
@@ -188,7 +188,7 @@ C_s6gs_6132d0cd_sinus_L000001_25
  sub r20, #-(-8) ' reg <- addrli
  rdlong r20, r20 ' reg <- INDIRF4 reg
  PRIMITIVE(#LODI)
- long @C_s6gs_6132d0cd_sinus_L000001_27_L000028
+ long @C_sf58_6174acf0_sinus_L000001_27_L000028
  mov r18, RI ' reg <- INDIRF4 addrg
  mov r0, r18 ' setup r0/r1 (2)
  mov r1, r22 ' setup r0/r1 (2)
@@ -205,7 +205,7 @@ C_s6gs_6132d0cd_sinus_L000001_25
  PRIMITIVE(#FADD) ' ADDF4
  mov r23, r0 ' CVI, CVU or LOAD
  PRIMITIVE(#LODI)
- long @C_s6gs_6132d0cd_sinus_L000001_29_L000030
+ long @C_sf58_6174acf0_sinus_L000001_29_L000030
  mov r20, RI ' reg <- INDIRF4 addrg
  mov r0, r20 ' setup r0/r1 (2)
  mov r1, r22 ' setup r0/r1 (2)
@@ -215,16 +215,16 @@ C_s6gs_6132d0cd_sinus_L000001_25
  PRIMITIVE(#FSUB) ' SUBF4
  mov r23, r0 ' CVI, CVU or LOAD
  PRIMITIVE(#LODI)
- long @C_s6gs_6132d0cd_sinus_L000001_9_L000010
+ long @C_sf58_6174acf0_sinus_L000001_9_L000010
  mov r22, RI ' reg <- INDIRF4 addrg
  mov r0, r23 ' setup r0/r1 (2)
  mov r1, r22 ' setup r0/r1 (2)
  PRIMITIVE(#FCMP)
  PRIMITIVE(#BRAE)
- long @C_s6gs_6132d0cd_sinus_L000001_31 ' GEF4
+ long @C_sf58_6174acf0_sinus_L000001_31 ' GEF4
  neg r19, r19 ' NEGI4
  xor r23, Bit31 ' NEGF4
-C_s6gs_6132d0cd_sinus_L000001_31
+C_sf58_6174acf0_sinus_L000001_31
  mov r0, r23 ' setup r0/r1 (2)
  mov r1, r23 ' setup r0/r1 (2)
  PRIMITIVE(#FMUL) ' MULF4
@@ -241,55 +241,55 @@ C_s6gs_6132d0cd_sinus_L000001_31
  long -8
  wrlong r0, RI ' ASGNF4 addrl reg
  PRIMITIVE(#LODI)
- long @C_s6gs_6132d0cd_sinus_L000001_r_L000004+4+4+4+4+4+4+4
+ long @C_sf58_6174acf0_sinus_L000001_r_L000004+4+4+4+4+4+4+4
  mov r20, RI ' reg <- INDIRF4 addrg
  mov r0, r20 ' setup r0/r1 (2)
  mov r1, r22 ' setup r0/r1 (2)
  PRIMITIVE(#FMUL) ' MULF4
  PRIMITIVE(#LODI)
- long @C_s6gs_6132d0cd_sinus_L000001_r_L000004+4+4+4+4+4+4
+ long @C_sf58_6174acf0_sinus_L000001_r_L000004+4+4+4+4+4+4
  mov r20, RI ' reg <- INDIRF4 addrg
  mov r1, r20 ' setup r0/r1 (2)
  PRIMITIVE(#FADD) ' ADDF4
  mov r1, r22 ' setup r0/r1 (2)
  PRIMITIVE(#FMUL) ' MULF4
  PRIMITIVE(#LODI)
- long @C_s6gs_6132d0cd_sinus_L000001_r_L000004+4+4+4+4+4
+ long @C_sf58_6174acf0_sinus_L000001_r_L000004+4+4+4+4+4
  mov r20, RI ' reg <- INDIRF4 addrg
  mov r1, r20 ' setup r0/r1 (2)
  PRIMITIVE(#FADD) ' ADDF4
  mov r1, r22 ' setup r0/r1 (2)
  PRIMITIVE(#FMUL) ' MULF4
  PRIMITIVE(#LODI)
- long @C_s6gs_6132d0cd_sinus_L000001_r_L000004+4+4+4+4
+ long @C_sf58_6174acf0_sinus_L000001_r_L000004+4+4+4+4
  mov r20, RI ' reg <- INDIRF4 addrg
  mov r1, r20 ' setup r0/r1 (2)
  PRIMITIVE(#FADD) ' ADDF4
  mov r1, r22 ' setup r0/r1 (2)
  PRIMITIVE(#FMUL) ' MULF4
  PRIMITIVE(#LODI)
- long @C_s6gs_6132d0cd_sinus_L000001_r_L000004+4+4+4
+ long @C_sf58_6174acf0_sinus_L000001_r_L000004+4+4+4
  mov r20, RI ' reg <- INDIRF4 addrg
  mov r1, r20 ' setup r0/r1 (2)
  PRIMITIVE(#FADD) ' ADDF4
  mov r1, r22 ' setup r0/r1 (2)
  PRIMITIVE(#FMUL) ' MULF4
  PRIMITIVE(#LODI)
- long @C_s6gs_6132d0cd_sinus_L000001_r_L000004+4+4
+ long @C_sf58_6174acf0_sinus_L000001_r_L000004+4+4
  mov r20, RI ' reg <- INDIRF4 addrg
  mov r1, r20 ' setup r0/r1 (2)
  PRIMITIVE(#FADD) ' ADDF4
  mov r1, r22 ' setup r0/r1 (2)
  PRIMITIVE(#FMUL) ' MULF4
  PRIMITIVE(#LODI)
- long @C_s6gs_6132d0cd_sinus_L000001_r_L000004+4
+ long @C_sf58_6174acf0_sinus_L000001_r_L000004+4
  mov r20, RI ' reg <- INDIRF4 addrg
  mov r1, r20 ' setup r0/r1 (2)
  PRIMITIVE(#FADD) ' ADDF4
  mov r1, r22 ' setup r0/r1 (2)
  PRIMITIVE(#FMUL) ' MULF4
  PRIMITIVE(#LODI)
- long @C_s6gs_6132d0cd_sinus_L000001_r_L000004
+ long @C_sf58_6174acf0_sinus_L000001_r_L000004
  mov r22, RI ' reg <- INDIRF4 addrg
  mov r1, r22 ' setup r0/r1 (2)
  PRIMITIVE(#FADD) ' ADDF4
@@ -308,16 +308,16 @@ C_s6gs_6132d0cd_sinus_L000001_31
  mov r22, RI ' reg <- con
  cmps r19, r22 wz
  PRIMITIVE(#BRNZ)
- long @C_s6gs_6132d0cd_sinus_L000001_62 ' NEI4
+ long @C_sf58_6174acf0_sinus_L000001_62 ' NEI4
  mov r17, r23
  xor r17, Bit31 ' NEGF4
  PRIMITIVE(#JMPA)
- long @C_s6gs_6132d0cd_sinus_L000001_63 ' JUMPV addrg
-C_s6gs_6132d0cd_sinus_L000001_62
+ long @C_sf58_6174acf0_sinus_L000001_63 ' JUMPV addrg
+C_sf58_6174acf0_sinus_L000001_62
  mov r17, r23 ' CVI, CVU or LOAD
-C_s6gs_6132d0cd_sinus_L000001_63
+C_sf58_6174acf0_sinus_L000001_63
  mov r0, r17 ' CVI, CVU or LOAD
-C_s6gs_6132d0cd_sinus_L000001_2
+C_sf58_6174acf0_sinus_L000001_2
  PRIMITIVE(#POPM) ' restore registers
  add SP, #12 ' framesize
  PRIMITIVE(#RETF)
@@ -335,7 +335,7 @@ C_sin ' <symbol:sin>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s6gs_6132d0cd_sinus_L000001
+ long @C_sf58_6174acf0_sinus_L000001
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
 ' C_sin_64 ' (symbol refcount = 0)
@@ -351,7 +351,7 @@ C_cos ' <symbol:cos>
  long $c00000 ' save registers
  mov r23, r2 ' reg var <- reg arg
  PRIMITIVE(#LODI)
- long @C_s6gs_6132d0cd_sinus_L000001_9_L000010
+ long @C_sf58_6174acf0_sinus_L000001_9_L000010
  mov r22, RI ' reg <- INDIRF4 addrg
  mov r0, r23 ' setup r0/r1 (2)
  mov r1, r22 ' setup r0/r1 (2)
@@ -365,7 +365,7 @@ C_cos_66
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s6gs_6132d0cd_sinus_L000001
+ long @C_sf58_6174acf0_sinus_L000001
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
 ' C_cos_65 ' (symbol refcount = 0)
@@ -384,31 +384,31 @@ C_cos_66
 DAT ' const data segment
 
  alignl ' align long
-C_s6gs_6132d0cd_sinus_L000001_29_L000030 ' <symbol:29>
+C_sf58_6174acf0_sinus_L000001_29_L000030 ' <symbol:29>
  long $b715777a ' float
 
  alignl ' align long
-C_s6gs_6132d0cd_sinus_L000001_27_L000028 ' <symbol:27>
+C_sf58_6174acf0_sinus_L000001_27_L000028 ' <symbol:27>
  long $40491000 ' float
 
  alignl ' align long
-C_s6gs_6132d0cd_sinus_L000001_21_L000022 ' <symbol:21>
+C_sf58_6174acf0_sinus_L000001_21_L000022 ' <symbol:21>
  long $7ea2f983 ' float
 
  alignl ' align long
-C_s6gs_6132d0cd_sinus_L000001_17_L000018 ' <symbol:17>
+C_sf58_6174acf0_sinus_L000001_17_L000018 ' <symbol:17>
  long $3f000000 ' float
 
  alignl ' align long
-C_s6gs_6132d0cd_sinus_L000001_15_L000016 ' <symbol:15>
+C_sf58_6174acf0_sinus_L000001_15_L000016 ' <symbol:15>
  long $3ea2f983 ' float
 
  alignl ' align long
-C_s6gs_6132d0cd_sinus_L000001_13_L000014 ' <symbol:13>
+C_sf58_6174acf0_sinus_L000001_13_L000014 ' <symbol:13>
  long $3fc90fdb ' float
 
  alignl ' align long
-C_s6gs_6132d0cd_sinus_L000001_9_L000010 ' <symbol:9>
+C_sf58_6174acf0_sinus_L000001_9_L000010 ' <symbol:9>
  long $0 ' float
 
 ' Catalina Code

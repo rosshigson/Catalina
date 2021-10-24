@@ -1,0 +1,644 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><script src="Chaitin,%20The%20Unknowable%20Chapter%205_files/analytics.js" type="text/javascript"></script>
+<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app12.us.archive.org';v.server_ms=216;archive_analytics.send_pageview({});});</script>
+<script type="text/javascript" src="Chaitin,%20The%20Unknowable%20Chapter%205_files/bundle-playback.js" charset="utf-8"></script>
+<script type="text/javascript" src="Chaitin,%20The%20Unknowable%20Chapter%205_files/wombat.js" charset="utf-8"></script>
+<script type="text/javascript">
+  __wm.init("https://web.archive.org/web");
+  __wm.wombat("http://www.umcs.maine.edu/~chaitin/unknowable/ch5.html","20110520024640","https://web.archive.org/","web","/_static/",
+	      "1305859600");
+</script>
+<link rel="stylesheet" type="text/css" href="Chaitin,%20The%20Unknowable%20Chapter%205_files/banner-styles.css">
+<link rel="stylesheet" type="text/css" href="Chaitin,%20The%20Unknowable%20Chapter%205_files/iconochive.css">
+<!-- End Wayback Rewrite JS Include -->
+
+<title>Chaitin, The Unknowable</title>
+</head>
+<body><!-- BEGIN WAYBACK TOOLBAR INSERT -->
+<style type="text/css">
+body {
+  margin-top:0 !important;
+  padding-top:0 !important;
+  /*min-width:800px !important;*/
+}
+</style>
+<script>__wm.rw(0);</script>
+<div id="wm-ipp-base" style="display: block; direction: ltr;" lang="en">
+</div><div id="wm-ipp-print">The Wayback Machine - https://web.archive.org/web/20110520024640/http://www.umcs.maine.edu/~chaitin/unknowable/ch5.html</div>
+<div id="donato" style="position:relative;width:100%;">
+  <div id="donato-base">
+    <iframe id="donato-if" src="Chaitin,%20The%20Unknowable%20Chapter%205_files/donate.htm" scrolling="no" style="width:100%; height:100%" frameborder="0">
+    </iframe>
+  </div>
+</div><script type="text/javascript">
+__wm.bt(650,27,25,2,"web","http://www.umcs.maine.edu/~chaitin/unknowable/ch5.html","20110520024640",1996,"/_static/",["/_static/css/banner-styles.css?v=omkqRugM","/_static/css/iconochive.css?v=qtvMKcIJ"], "False");
+  __wm.rw(1);
+</script>
+<!-- END WAYBACK TOOLBAR INSERT -->
+<h1>V. My Proof that You Can't Show that a LISP Expression is Elegant</h1>
+<hr>
+<h2>Synopsis</h2>
+<i>
+Discusses a LISP run showing why you can't prove that a LISP expression
+is elegant if the LISP complexity of the axioms is
+substantially less than the size of the expression that you're trying
+to prove is elegant.  More precisely, we show that
+a formal axiomatic system of LISP complexity N
+cannot enable you to prove that any S-expression more
+than N + 356 characters in size is elegant.
+</i>
+<p>
+</p><hr>
+<h2>Discussion</h2>
+In <a href="https://web.archive.org/web/20110520024640/http://www.umcs.maine.edu/~chaitin/unknowable/ch3.html">Chapter III</a> we saw how Gödel constructs an assertion that says
+that it itself is unprovable.  In <a href="https://web.archive.org/web/20110520024640/http://www.umcs.maine.edu/~chaitin/unknowable/ch4.html">Chapter IV</a> we saw how Turing can use
+any solution to the halting problem to construct a program that halts
+iff it doesn't.  Now let's start to work with program-size complexity.
+Let's do some warm-up exercises using LISP 
+complexity, just to get in a ``program-size'' mood.
+<p>
+Recall that the size of an S-expression is defined to be the number of
+characters needed to write it in standard form, i.e.,  with a single blank
+separating successive elements of each list.
+</p><p>
+So I'll measure the LISP complexity <i>H</i>(<i>X</i>) of an S-expression <i>X</i> by the
+size in characters |<i>Y</i>| of the smallest expression <i>Y</i> with value <i>X</i>.
+Given an S-expression <i>X</i>, I'll use <i>X</i>* to denote a minimal-size LISP
+expression for <i>X</i>, i.e., one with the property that its value is <i>X</i> and
+its size |<i>X</i>*| is the complexity <i>H</i>(<i>X</i>) of <i>X</i>.
+</p><p>
+And, as I said in <a href="https://web.archive.org/web/20110520024640/http://www.umcs.maine.edu/~chaitin/unknowable/ch1.html">Chapter I,</a> 
+we call a LISP expression <i>elegant</i> if it has the property that no
+smaller expression has the same value.  Thus
+the size of an elegant expression is precisely equal to the complexity of its
+value.
+</p><p>
+Okay, here are two exercises for you to think about.  The answers are
+<a href="#answers">at the end of this chapter.</a> 
+</p><p>
+<b>First exercise.</b>
+First of all, I'd like you to show that
+the complexity <i>H</i>((<i>X Y</i>)) of a pair (<i>X Y</i>) of objects is bounded by a
+constant <i>c</i> added to the sum <i>H</i>(<i>X</i>) + <i>H</i>(<i>Y</i>) 
+of the individual complexities.
+In other words, try to see why
+</p><p></p><center>
+<i>H</i>((<i>X Y</i>)) ≤ <i>H</i>(<i>X</i>) + <i>H</i>(<i>Y</i>) + c
+</center><p>
+and how big <i>c</i> is.
+</p><p>
+<i>Hint.</i> If you are given elegant expressions for <i>X</i> and <i>Y</i>, how
+can you combine them into an expression for the pair (<i>X Y</i>)?  And how will the
+sizes of these three expressions compare with each other? 
+In other words,  how many characters <i>c</i>
+do you need to add to stitch elegant expressions 
+for <i>X</i> and <i>Y</i> together into an expression
+for the pair (<i>X Y</i>)?
+</p><p>
+<b>Second exercise.</b>
+For the second exercise, I'd like you to think about the complexity of
+an elegant LISP expression <i>E</i>. Can you show that its complexity is
+nearly equal to its size in characters?  I.e., can you bound the
+absolute value of the difference between the size of <i>E</i>, |<i>E</i>|, and the
+complexity of <i>E</i>, <i>H</i>(<i>E</i>)?
+</p><p>
+Okay, if you can do these two warm-up exercises, I hope you begin
+to have some feeling for why elegant expressions are interesting.
+We can now go ahead and see why a formal axiomatic system <i>A</i> can't prove
+that a LISP expression <i>E</i> is elegant if <i>E</i> is substantially larger than
+the LISP implementation of the proof-checking algorithm for the formal
+axiomatic system <i>A</i>.
+</p><p>
+What's the proof-checking algorithm for <i>A</i>?  
+Recall that it's defined in <a href="https://web.archive.org/web/20110520024640/http://www.umcs.maine.edu/~chaitin/unknowable/ch3.html">Chapter III</a>
+to be a LISP function (valid-proof? <i>X</i>) that returns nil if <i>X</i> is
+not a valid proof and that returns the theorem that was demonstrated
+if <i>X</i> is a valid proof.  And the idea of my proof is that I will
+construct an expression <i>B</i> (for Berry) that searches through all
+possible proofs <i>X</i> until <i>X</i> proves an assertion
+(is-elegant <i>E</i>) in which <i>E</i>'s size is larger than <i>B</i>'s size.  Then <i>B</i>
+returns <i>E</i>'s value as <i>B</i>'s value, which, if it actually happened, would
+contradict the definition of elegance.  Why?  Because <i>B</i> is too small to produce <i>E</i>'s
+value because <i>E</i> is an elegant expression 
+that's larger than <i>B</i>.
+</p><p>
+Okay, that's the idea.  But to simplify matters, let's imagine that
+all possible proofs <i>X</i> are in a numbered list, so there's a first
+S-expression <i>X</i>, a second one, etc. And let's give the proof-checking
+algorithm valid-proof? the number for the proof <i>X</i> instead of 
+giving it <i>X</i> directly.  So in
+this chapter our formal axiomatic system <i>A</i> is implemented in LISP as a
+one-argument function (fas <i>N</i>) that returns nil if the <i>N</i>th
+proof is invalid, and that returns the theorem that was
+demonstrated if the <i>N</i>th proof is valid.  Let's also
+allow the formal axiomatic system to give up and stop running by
+returning ``stop'', which means that there are no more valid proofs.
+I.e., there are no valid proofs for larger <i>N</i>.  Okay?
+</p><p>
+So now we can think of our formal axiomatic system abstractly as a
+numbered list of theorems, that may either be finite or infinite, and
+in which there may be blanks, i.e., places in the list with no theorem.
+And we'll just look at (fas 1), (fas 2), etc. searching for a
+theorem of the form (is-elegant <i>E</i>) in which <i>E</i> is larger than the size
+of the LISP expression <i>B</i> that is doing the search.  If <i>B</i> finds
+such an elegant expression <i>E</i>, then <i>B</i> stops searching and returns the
+value of <i>E</i>. (Of course, this should never happen, not if <i>E</i> is <b>really</b>
+elegant!).  
+</p><p> 
+So here is the Berry paradox expression <i>B</i> that does
+this:
+</p><pre>define expression
+       let (fas n) if = n 1 '(is-elegant x)
+                   if = n 2  nil
+                   if = n 3 '(is-elegant yyy)
+                   [else]    stop
+ 
+       let (loop n)
+           let theorem [be] display (fas n)
+           if = nil theorem [then] (loop + n 1)
+           if = stop theorem [then] fas-has-stopped
+           if = is-elegant car theorem
+              if &gt; display size cadr theorem 
+                   display + 356 size fas
+                 [return] eval cadr theorem
+              [else] (loop + n 1)
+           [else] (loop + n 1)
+ 
+       (loop 1)
+</pre>
+And I've put a simple formal axiomatic system in it, one that
+``proves'' that x and yyy are elegant, and then stops.  The constant
+356 that enables <i>B</i> to know its own size 
+was inserted in <i>B</i> by hand, because it turns out that
+<i>B</i> is exactly 356 characters larger than the
+lambda expression for the one-argument 
+function fas.  
+I.e., the size of <i>B</i> is exactly 356 more than the complexity of
+our formal axiomatic system. 
+You can easily check that 356 is correct. Because as <i>B</i>
+loops through (fas 1), (fas 2), etc., it displays each
+theorem that it finds, and if the theorem is of the form (is-elegant
+<i>E</i>), <i>B</i> also displays the size of <i>E</i> and the size of <i>B</i>. 
+So you frequently get to see what <i>B</i> thinks its own size is.
+After displaying these two numbers, <i>B</i> compares them.
+If the size of <i>E</i> is less than or equal to the
+size of <i>B</i>, then <i>B</i> keeps looping.  Otherwise, <i>B</i> evaluates <i>E</i> and 
+returns that value as its own.
+<p>
+Note that the way you do a loop in LISP is by having a function (loop
+<i>N</i>) which takes care of the <i>N</i>th iteration of the loop.  So during the <i>N</i>th go
+round, to continue looping you just call (loop + <i>N</i> 1), which starts
+the <i>N</i>+1st iteration of the loop.
+</p><p>
+Now we'll run the proof of my incompleteness theorem on 
+each of four different formal axiomatic systems.
+In each case the drill is like
+this.  First we (re)define ``expression'' to be the paradoxical Berry
+expression <i>B</i>.  <i>B</i> contains a list of theorems given by fas of <i>N</i>.
+Then we size the
+expression <i>B</i> so that we can see if it knows its own size. 
+Then we evaluate the expression <i>B</i>,
+i.e., we run my proof.  <i>B</i> will loop through all the theorems, displaying them
+and examining those of the form (is-elegant <i>E</i>).  
+And either <i>B</i> will eventually run out of
+theorems and stop, or it will find an elegant expression <i>E</i> larger than
+<i>B</i>, and will return the value of <i>E</i>.
+</p><p>
+So there are four runs to show how this works.  In the first run, the
+expressions that are proved to be elegant are very small, much too
+small to matter.
+</p><p>
+In the second run, we use exponentiation to construct a large
+``elegant'' expression <i>E</i> = 1000... that's a number that is exactly <b>one character bigger</b>
+than <i>B</i>. Of course, that's a lie, <i>E</i>'s not really elegant!  But <i>B</i>
+doesn't know that.
+</p><p>
+In the third run, we use exponentiation again, but this time to construct a large
+``elegant'' expression <i>E</i> = 1000... that's <b>exactly the same size</b> as <i>B</i>. This
+is to show that <i>B</i> knows what it's doing.  This time the elegant
+expression <i>E</i> is <b>not</b> large enough.
+</p><p>
+And in the fourth run, we have an ``elegant'' expression <i>E</i> =  (− 1000... 1)
+with 600 0's.  So <i>B</i> thinks that <i>E</i>'s big enough, <i>B</i> evaluates <i>E</i>, and 
+<i>B</i>
+returns
+999...  as <i>B</i>'s value. (And this proves that <i>E</i> was not really elegant.)
+</p><p>
+So you see my proof in action four times.  You actually see
+the machinery working!
+</p><p>
+</p><hr>
+<h2>My Proof in LISP</h2>
+<pre>LISP Interpreter Run
+
+[[[[[
+
+ Show that a formal axiomatic system (fas) can only prove 
+ that finitely many LISP expressions are elegant.  
+ (An expression is elegant if no smaller expression has 
+ the same value.)
+
+ More precisely, show that a fas of LISP complexity N can't 
+ prove that a LISP expression X is elegant if X's size is 
+ greater than N + 356.
+
+ (fas N) returns the theorem proved by the Nth proof 
+ (Nth S-expression) in the fas, or nil if the proof is 
+ invalid, or stop to stop everything.
+
+]]]]]
+
+[
+ This expression searches for an elegant expression 
+ that is larger than it is and returns the value of 
+ that expression as its own value.
+]
+
+define expression  [Formal Axiomatic System #1]
+       let (fas n) if = n 1 '(is-elegant x)
+                   if = n 2  nil
+                   if = n 3 '(is-elegant yyy)
+                   [else]    stop 
+
+       let (loop n)
+           let theorem [be] display (fas n)
+           if = nil theorem [then] (loop + n 1)
+           if = stop theorem [then] fas-has-stopped
+           if = is-elegant car theorem
+              if &gt; display size cadr theorem 
+                   display + 356 size fas
+                 [return] eval cadr theorem
+              [else] (loop + n 1)
+           [else] (loop + n 1)
+
+       (loop 1)
+
+define      expression
+value       ((' (lambda (fas) ((' (lambda (loop) (loop 1))) ('
+             (lambda (n) ((' (lambda (theorem) (if (= nil theo
+            rem) (loop (+ n 1)) (if (= stop theorem) fas-has-s
+            topped (if (= is-elegant (car theorem)) (if (&gt; (di
+            splay (size (car (cdr theorem)))) (display (+ 356 
+            (size fas)))) (eval (car (cdr theorem))) (loop (+ 
+            n 1))) (loop (+ n 1))))))) (display (fas n))))))))
+             (' (lambda (n) (if (= n 1) (' (is-elegant x)) (if
+             (= n 2) nil (if (= n 3) (' (is-elegant yyy)) stop
+            ))))))
+
+
+[Show that this expression knows its own size.]
+
+size expression
+
+expression  (size expression)
+value       456
+
+  
+[
+ Run #1.
+
+ Here it doesn't find an elegant expression 
+ larger than it is:
+]
+
+eval expression
+
+expression  (eval expression)
+display     (is-elegant x)
+display     1
+display     456
+display     ()
+display     (is-elegant yyy)
+display     3
+display     456
+display     stop
+value       fas-has-stopped
+
+
+define expression  [Formal Axiomatic System #2]
+       let (fas n) if = n 1 '(is-elegant x)
+                   if = n 2  nil
+                   if = n 3 '(is-elegant yyy)
+                   if = n 4  cons is-elegant 
+                             cons ^ 10 509     [&lt;=====]
+                                  nil
+                   [else]    stop 
+
+       let (loop n)
+           let theorem [be] display (fas n)
+           if = nil theorem [then] (loop + n 1)
+           if = stop theorem [then] fas-has-stopped
+           if = is-elegant car theorem
+              if &gt; display size cadr theorem 
+                   display + 356 size fas
+                 [return] eval cadr theorem
+              [else] (loop + n 1)
+           [else] (loop + n 1)
+
+       (loop 1)
+
+define      expression
+value       ((' (lambda (fas) ((' (lambda (loop) (loop 1))) ('
+             (lambda (n) ((' (lambda (theorem) (if (= nil theo
+            rem) (loop (+ n 1)) (if (= stop theorem) fas-has-s
+            topped (if (= is-elegant (car theorem)) (if (&gt; (di
+            splay (size (car (cdr theorem)))) (display (+ 356 
+            (size fas)))) (eval (car (cdr theorem))) (loop (+ 
+            n 1))) (loop (+ n 1))))))) (display (fas n))))))))
+             (' (lambda (n) (if (= n 1) (' (is-elegant x)) (if
+             (= n 2) nil (if (= n 3) (' (is-elegant yyy)) (if 
+            (= n 4) (cons is-elegant (cons (^ 10 509) nil)) st
+            op)))))))
+
+
+[Show that this expression knows its own size.]
+
+size expression
+
+expression  (size expression)
+value       509
+
+
+[
+ Run #2.
+
+ Here it finds an elegant expression 
+ exactly one character larger than it is: 
+]
+
+eval expression
+
+expression  (eval expression)
+display     (is-elegant x)
+display     1
+display     509
+display     ()
+display     (is-elegant yyy)
+display     3
+display     509
+display     (is-elegant 10000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            0000000000000000000000)
+display     510
+display     509
+value       10000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            0000000000
+
+
+define expression  [Formal Axiomatic System #3]
+       let (fas n) if = n 1 '(is-elegant x)
+                   if = n 2  nil
+                   if = n 3 '(is-elegant yyy)
+                   if = n 4  cons is-elegant  
+                             cons ^ 10 508     [&lt;=====]
+                                  nil
+                   [else]    stop 
+
+       let (loop n)
+           let theorem [be] display (fas n)
+           if = nil theorem [then] (loop + n 1)
+           if = stop theorem [then] fas-has-stopped
+           if = is-elegant car theorem
+              if &gt; display size cadr theorem  
+                   display + 356 size fas
+                 [return] eval cadr theorem
+              [else] (loop + n 1)
+           [else] (loop + n 1)
+
+       (loop 1)
+
+define      expression
+value       ((' (lambda (fas) ((' (lambda (loop) (loop 1))) ('
+             (lambda (n) ((' (lambda (theorem) (if (= nil theo
+            rem) (loop (+ n 1)) (if (= stop theorem) fas-has-s
+            topped (if (= is-elegant (car theorem)) (if (&gt; (di
+            splay (size (car (cdr theorem)))) (display (+ 356 
+            (size fas)))) (eval (car (cdr theorem))) (loop (+ 
+            n 1))) (loop (+ n 1))))))) (display (fas n))))))))
+             (' (lambda (n) (if (= n 1) (' (is-elegant x)) (if
+             (= n 2) nil (if (= n 3) (' (is-elegant yyy)) (if 
+            (= n 4) (cons is-elegant (cons (^ 10 508) nil)) st
+            op)))))))
+
+
+[Show that this expression knows its own size.]
+
+size expression
+
+expression  (size expression)
+value       509
+
+
+[
+ Run #3.
+
+ Here it finds an elegant expression 
+ exactly the same size as it is: 
+]
+
+eval expression
+
+expression  (eval expression)
+display     (is-elegant x)
+display     1
+display     509
+display     ()
+display     (is-elegant yyy)
+display     3
+display     509
+display     (is-elegant 10000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            000000000000000000000)
+display     509
+display     509
+display     stop
+value       fas-has-stopped
+
+
+define expression  [Formal Axiomatic System #4]
+       let (fas n) if = n 1 '(is-elegant x)
+                   if = n 2  nil
+                   if = n 3 '(is-elegant yyy)
+                   if = n 4  cons is-elegant 
+                             cons cons "- 
+                                  cons ^ 10 600  [&lt;=====]
+                                  cons 1 
+                                       nil 
+                                  nil
+                   [else]    stop 
+
+       let (loop n)
+           let theorem [be] display (fas n)
+           if = nil theorem [then] (loop + n 1)
+           if = stop theorem [then] fas-has-stopped
+           if = is-elegant car theorem
+              if &gt; display size cadr theorem 
+                   display + 356 size fas
+                 [return] eval cadr theorem
+              [else] (loop + n 1)
+           [else] (loop + n 1)
+
+       (loop 1)
+
+define      expression
+value       ((' (lambda (fas) ((' (lambda (loop) (loop 1))) ('
+             (lambda (n) ((' (lambda (theorem) (if (= nil theo
+            rem) (loop (+ n 1)) (if (= stop theorem) fas-has-s
+            topped (if (= is-elegant (car theorem)) (if (&gt; (di
+            splay (size (car (cdr theorem)))) (display (+ 356 
+            (size fas)))) (eval (car (cdr theorem))) (loop (+ 
+            n 1))) (loop (+ n 1))))))) (display (fas n))))))))
+             (' (lambda (n) (if (= n 1) (' (is-elegant x)) (if
+             (= n 2) nil (if (= n 3) (' (is-elegant yyy)) (if 
+            (= n 4) (cons is-elegant (cons (cons - (cons (^ 10
+             600) (cons 1 nil))) nil)) stop)))))))
+
+
+[Show that this expression knows its own size.]
+
+size expression
+
+expression  (size expression)
+value       538
+
+
+[
+ Run #4.
+
+ Here it finds an elegant expression 
+ much larger than it is, and evaluates it: 
+]
+
+eval expression
+
+expression  (eval expression)
+display     (is-elegant x)
+display     1
+display     538
+display     ()
+display     (is-elegant yyy)
+display     3
+display     538
+display     (is-elegant (- 10000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            00000000000000000000000000000000000000000000000000
+            0000000000000000 1))
+display     607
+display     538
+value       99999999999999999999999999999999999999999999999999
+            99999999999999999999999999999999999999999999999999
+            99999999999999999999999999999999999999999999999999
+            99999999999999999999999999999999999999999999999999
+            99999999999999999999999999999999999999999999999999
+            99999999999999999999999999999999999999999999999999
+            99999999999999999999999999999999999999999999999999
+            99999999999999999999999999999999999999999999999999
+            99999999999999999999999999999999999999999999999999
+            99999999999999999999999999999999999999999999999999
+            99999999999999999999999999999999999999999999999999
+            99999999999999999999999999999999999999999999999999
+
+End of LISP Run
+
+Elapsed time is 0 seconds.
+</pre>
+<p>
+</p><hr>
+<a name="answers">
+<h2>Subadditivity of LISP complexity</h2>
+<i>Theorem:</i>
+<p></p><center>
+<i>H</i>((<i>X Y</i>)) ≤ <i>H</i>(<i>X</i>) + <i>H</i>(<i>Y</i>) + 19
+</center><p>
+<i>Proof:</i> Consider this S-expression
+</p><p></p><center>
+(cons <i>X</i>* (cons <i>Y</i>* nil))
+</center><p>
+Here <i>X</i>* is an elegant expression for <i>X</i>,
+and  <i>Y</i>* is an elegant expression for <i>Y</i>.
+The size of the above S-expression is
+<i>H</i>(<i>X</i>) + <i>H</i>(<i>Y</i>) + 19
+and its value is the pair (<i>X Y</i>).
+Crucial point:  in my LISP there are no side-effects!
+So the evaluations of <i>X</i>*
+and <i>Y</i>* cannot interfere with each other.
+Hence the values of <i>X</i>*
+and <i>Y</i>* in this expression are exactly the same as
+if they were evaluated stand-alone, i.e., separately.
+</p><p>
+</p><hr>
+<h2>What is the complexity of an elegant expression?</h2>
+Consider an elegant LISP expression <i>E</i>.
+What's <i>E</i>'s LISP program-size complexity <i>H</i>(<i>E</i>)?
+Well, it's almost the same as <i>E</i>'s size |<i>E</i>|.
+<p>
+<i>Proof:</i>
+(' <i>E</i>) has value <i>E</i>, therefore <i>H</i>(<i>E</i>) ≤ |<i>E</i>| + 4.
+On the other hand, consider an elegant expression <i>E</i>* for <i>E</i>.
+By definition, the value of <i>E</i>* is <i>E</i> and
+|<i>E</i>*| = <i>H</i>(<i>E</i>).
+Then (eval <i>E</i>*) yields the value of <i>E</i>,
+so |(eval <i>E</i>*)| = 7 + <i>H</i>(<i>E</i>) ≥ |<i>E</i>|,
+and therefore <i>H</i>(<i>E</i>) ≥ |<i>E</i>| − 7.
+Thus |<i>H</i>(<i>E</i>) − |<i>E</i>|| ≤ 7.
+</p><p>
+</p><hr>
+
+
+
+</a></body></html>
+<!--
+     FILE ARCHIVED ON 02:46:40 May 20, 2011 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 07:09:18 Sep 23, 2021.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+-->
+<!--
+playback timings (ms):
+  LoadShardBlock: 116.166 (3)
+  captures_list: 160.771
+  CDXLines.iter: 20.779 (3)
+  exclusion.robots: 0.252
+  esindex: 0.012
+  exclusion.robots.policy: 0.242
+  PetaboxLoader3.datanode: 124.987 (4)
+  load_resource: 42.76
+  cdx.remote: 0.075
+  PetaboxLoader3.resolve: 24.675
+-->

@@ -1,7 +1,7 @@
 /* 
  * Created from TINY_HMI.binary with option -c
  * 
- * by Spin to C Array Converter, version 4.7
+ * by Spin to C Array Converter, version 4.9
  */
 
 #define TINY_HMI_CLOCKFREQ  12000000

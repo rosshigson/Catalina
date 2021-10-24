@@ -58,8 +58,7 @@ void main(int argc, char *argv[]) {
 
    printf("Starting dining_philosophers as CMM ...\n\n");
    printf("(it will be stopped in 10 seconds)\n\n");
-   arg = 1;
-   cog = start_CMM(&arg, ANY_COG);
+   cog = start_CMM(NULL, ANY_COG);
    msleep(10000);
    
    printf("\nStopping dining_philosophers\n\n");
@@ -68,22 +67,22 @@ void main(int argc, char *argv[]) {
    
    printf("Starting dining_philosophers as LMM ...\n\n");
    printf("(it will be stopped in 10 seconds)\n\n");
-   arg = 2;
-   cog = start_LMM(&arg, cog);
+   cog = start_LMM(NULL, ANY_COG);
    msleep(10000);
    
    printf("\nStopping dining_philosophers\n\n");
    _cogstop(cog);
+   msleep(1000);
 
 #ifdef __CATALINA_P2
    printf("Starting dining_philosophers as NMM ...\n\n");
    printf("(it will be stopped in 10 seconds)\n\n");
-   arg = 3;
-   cog = start_NMM(&arg, cog);
+   cog = start_NMM(NULL, ANY_COG);
    msleep(10000);
    
    printf("\nStopping dining_philosophers\n\n");
    _cogstop(cog);
+   msleep(1000);
 #endif
 
    printf("Done!\n");

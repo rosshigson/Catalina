@@ -868,7 +868,7 @@ compile_and_run_p2 $1 test_multiple_cogs -ltiny -lc -lm -C TINY
 compile_and_run_p2 $1 test_multiple_cogs -ltiny -lc -lm -C NATIVE
 compile_and_run_p2 $1 test_multiple_cogs -ltiny -lc -lm -C COMPACT
 
-compile_and_run_p2 $1 test_multiple_cogs -lc -lm-C TINY
+compile_and_run_p2 $1 test_multiple_cogs -lc -lm -C TINY
 compile_and_run_p2 $1 test_multiple_cogs -lc -lm -C NATIVE
 compile_and_run_p2 $1 test_multiple_cogs -lc -lm -C COMPACT
 

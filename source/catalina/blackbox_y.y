@@ -2570,6 +2570,9 @@ struct node *find_type(int src, char *type) {
    p = s->s.typedefs;
    while (p != NULL) {
      if (p->type == typedef_t) {
+        if (strcmp(p->t.type, "<array>") == 0) {
+           return NULL;
+        }
         if (strcmp(p->t.type, type) == 0) {
            return p;
         }

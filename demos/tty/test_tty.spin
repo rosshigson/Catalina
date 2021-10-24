@@ -8,7 +8,7 @@
 
   Compile with a command like:
 
-    Homespun -L "C:\Program Files\Catalina\target" -D TTY_SPIN test_tty.spin
+    spinnaker -L "C:\Program Files (x86)\Catalina\target" -D TTY_SPIN test_tty.spin
 }
 CON
 

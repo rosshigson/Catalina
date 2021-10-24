@@ -207,6 +207,19 @@
  *                default memory layout, which defined the symbols for
  *                NATIVE even if another layout was selected.
  *
+ * Version 4.9  - Updated to fix a bug in the order of options which meant
+ *                that the layout (e.g. -C COMPACT) was being ignored if it 
+ *                was specified before -p2 was specified.
+ *
+ *                Remove -F and -B command line options.
+ *
+ *                Since the NATIVE memory layout is only supported on a 
+ *                Propeller 2, defining the Catalina symbol NATIVE now 
+ *                also implies -p2.
+ *
+ * Version 4.9.1  Just update version number.
+ *
+ * Version 4.9.2  Just update version number.
  */
 
 /*--------------------------------------------------------------------------
@@ -234,13 +247,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define VERSION            "4.8"
+#define VERSION            "4.9.2"
 
 #define MAX_LINELEN        4096
 
 #ifdef WIN32_PATHS         /* define this on the command line for Windows */
 #define DEFAULT_SEP        "\\"
-#define DEFAULT_LCCDIR     "C:\\Program Files\\Catalina" // must match default used by LCC
+#define DEFAULT_LCCDIR     "C:\\Program Files (x86)\\Catalina" // must match default used by LCC
 #define MULT_PATH_SEP      ";"
 #else
 #define DEFAULT_SEP        "/"
@@ -282,11 +295,10 @@ static int comp_only = 0; // 0 => -c not specified, 1 => -c specified
 static int asm_only  = 0; // 0 => -S not specified, 1 => -S specified
 
 static int format    = 0; // 0 => default, 1 => binary, 2 => eeprom
-static int layout    = 0; // 0 .. 6 for LMM, 8..10 for compact 
+static int layout    = -1;// 0 .. 6 for LMM, 8..10 for compact 
 static int memory    = 0; // max size in bytes 
 static int readonly  = 0; // offset of read-only segments
 static int readwrite = 0; // offset of read-write segments
-static int byte_swap = 0; // size of byte swap
 static int prop_vers = 1; // propeller hardware version
 static int listing   = 0; // generate listing
 static int glevel    = 0; // debug level
@@ -336,12 +348,10 @@ void help(char *my_name) {
    fprintf(stderr, "options:  -? or -h   print this help (and exit)\n");
    fprintf(stderr, "          -b         generate a binary output file (this is the default)\n");
    fprintf(stderr, "          -c         compile only (do not bind)\n");
-   fprintf(stderr, "          -B width   byte swap (used with -F, width = 2, 4, 8)\n");
    fprintf(stderr, "          -d         output diagnostic messages\n");
    fprintf(stderr, "          -C symbol  define a Catalina symbol (e.g. -C HYDRA)\n");
    fprintf(stderr, "          -D symbol  define a symbol (e.g. -D printf=tiny_printf)\n");
    fprintf(stderr, "          -e         generate an eeprom output file\n");
-   fprintf(stderr, "          -F format  convert output to another format (e.g. -F Intel)\n");
    fprintf(stderr, "          -g[level]  generate debugging information (default level = 1)\n");
    fprintf(stderr, "          -I path    path to include files (default '%s')\n", def_inc_path);
    fprintf(stderr, "          -k         kill (suppress) banners and statistics output\n");
@@ -583,7 +593,7 @@ int pass_symbol_to_compiler(char *symbol, int *code) {
    int pass = 1;
 
    if (strcmp (symbol, "EEPROM") == 0) {
-      if ((layout == 0)||(layout == 1)) {
+      if ((layout < 0)||(layout == 1)) {
          if (verbose) {
             fprintf(stderr, "EEPROM implies -x1\n");
          }
@@ -595,7 +605,7 @@ int pass_symbol_to_compiler(char *symbol, int *code) {
          }
          layout = 9;
       }
-      else if ((layout == 2)||(layout==5)) {
+      else if ((layout == 2)||(layout == 5)) {
          // we detect this later (in the target)
       }
       else {
@@ -604,13 +614,13 @@ int pass_symbol_to_compiler(char *symbol, int *code) {
       }
    }
    else if (strcmp (symbol, "FLASH") == 0) {
-      if ((layout==0)||(layout==3)||(layout==5)) {
+      if ((layout < 0)||(layout == 3)||(layout == 5)) {
          if (verbose) {
             fprintf(stderr, "FLASH implies -x3\n");
          }
          layout = 3;
       }
-      else if ((layout==2)||(layout==4)) {
+      else if ((layout == 2)||(layout == 4)) {
          if (verbose) {
             fprintf(stderr, "FLASH implies -x4\n");
          }
@@ -621,7 +631,7 @@ int pass_symbol_to_compiler(char *symbol, int *code) {
       }
    }
    else if (strcmp (symbol, "SDCARD") == 0) {
-      if ((layout == 0)||(layout==6)) {
+      if ((layout < 0)||(layout == 6)) {
          if (verbose) {
             fprintf(stderr, "SDCARD implies -x6\n");
          }
@@ -640,20 +650,20 @@ int pass_symbol_to_compiler(char *symbol, int *code) {
    }
    else if (strcmp (symbol, "TINY") == 0) {
       pass = 0; // don't pass this symbol yet - we do it later
-      if ((layout == 2)||(layout == 5)||(layout == 11)) {
+      if ((layout < 0)||(layout == 2)||(layout == 5)||(layout == 11)) {
          if (verbose) {
             fprintf(stderr, "TINY implies -x0\n");
          }
          layout = 0;
       }
-      else if ((layout == 3)||(layout==4)) {
+      else if ((layout == 3)||(layout == 4)) {
          fprintf(stderr, "TINY is incompatible with current layout\n");
          *code = -1;
       }
    }
    else if (strcmp (symbol, "SMALL") == 0) {
       pass = 0; // don't pass this symbol yet - we do it later
-      if ((layout == 0)||(layout==1)||(layout == 2)||(layout == 5)) {
+      if ((layout < 0)||(layout==1)||(layout == 2)||(layout == 5)) {
          if (verbose) {
             fprintf(stderr, "SMALL implies -x2\n");
          }
@@ -672,7 +682,7 @@ int pass_symbol_to_compiler(char *symbol, int *code) {
    }
    else if (strcmp (symbol, "LARGE") == 0) {
       pass = 0; // don't pass this symbol yet - we do it later
-      if ((layout == 0)||(layout==1)||(layout == 2)||(layout==5)) {
+      if ((layout < 0)||(layout==1)||(layout == 2)||(layout==5)) {
          if (verbose) {
             fprintf(stderr, "LARGE implies -x5\n");
          }
@@ -691,7 +701,7 @@ int pass_symbol_to_compiler(char *symbol, int *code) {
    }
    else if (strcmp (symbol, "COMPACT") == 0) {
       pass = 0; // don't pass this symbol yet - we do it later
-      if ((layout == 0)||(layout == 11)) {
+      if ((layout < 0)||(layout == 11)) {
          if (verbose) {
             fprintf(stderr, "COMPACT implies -x8\n");
          }
@@ -716,10 +726,20 @@ int pass_symbol_to_compiler(char *symbol, int *code) {
    }
    else if (strcmp (symbol, "NATIVE") == 0) {
       pass = 0; // don't pass this symbol yet - we do it later
-      if (verbose) {
-         fprintf(stderr, "NATIVE implies -x11\n");
+      if (layout != 11) {
+         if (verbose) {
+            fprintf(stderr, "NATIVE implies -x11\n");
+         }
+         layout = 11;
       }
-      layout = 11;
+      if (prop_vers != 2) {
+         if (verbose) {
+            fprintf(stderr, "NATIVE implies -p2\n");
+         }
+         prop_vers = 2;
+         // The P2 requires the use of p2asm as the assembler
+         assembler = 2;
+      }
    }
    return pass;
    
@@ -781,30 +801,6 @@ int decode_arguments (int argc, char *argv[]) {
                   if (verbose) {
                      banner();
                      fprintf(stderr, "binary output format selected\n");
-                  }
-                  break;
-
-               case 'B':
-                  if (strlen(argv[i]) == 2) {
-                     // use next arg
-                     if (argc > 0) {
-                        sscanf(argv[++i], "%d", &byte_swap);
-                        argc--;
-                     }
-                     else {
-                        banner();
-                        fprintf(stderr, "option -B requires an argument\n");
-                        code = -1;
-                        break;
-                     }
-                  }
-                  else {
-                     // use remainder of this arg
-                     sscanf(&argv[i][2], "%d", &byte_swap);
-                  }
-                  if (verbose) {
-                     banner();
-                     fprintf(stderr, "byte swap width = %d\n", byte_swap);
                   }
                   break;
 
@@ -909,38 +905,6 @@ int decode_arguments (int argc, char *argv[]) {
                   if (verbose) {
                      banner();
                      fprintf(stderr, "eeprom output format selected\n");
-                  }
-                  break;
-
-               case 'F':
-                  if (strlen(argv[i]) == 2) {
-                     if (argc > 0) {
-                        // use next arg
-                        safecat(lcc_cmd, "-Wl-F", MAX_LINELEN);
-                        safecat(lcc_cmd, argv[++i], MAX_LINELEN);
-                        safecat(lcc_cmd, " ", MAX_LINELEN);
-                        if (verbose) {
-                           banner();
-                           fprintf(stderr, "output format = %s\n", argv[i]);
-                        }
-                        argc--;
-                     }
-                     else {
-                        banner();
-                        fprintf(stderr, "option -F requires an argument\n");
-                        code = -1;
-                        break;
-                     }
-                  }
-                  else {
-                     // use remainder of this arg
-                     safecat(lcc_cmd, "-Wl", MAX_LINELEN);
-                     safecat(lcc_cmd, argv[i], MAX_LINELEN);
-                     safecat(lcc_cmd, " ", MAX_LINELEN);
-                     if (verbose) {
-                        banner();
-                        fprintf(stderr, "output format = %s\n", &argv[i][2]);
-                     }
                   }
                   break;
 
@@ -1139,7 +1103,7 @@ int decode_arguments (int argc, char *argv[]) {
                   if (prop_vers == 2) {
                      // The P2 requires the use of p2asm as the assembler
                      assembler = 2;
-                     if (layout == 0) {
+                     if (layout < 0) {
                         layout = 11;
                         if (verbose) {
                            banner();
@@ -1495,9 +1459,9 @@ int decode_arguments (int argc, char *argv[]) {
                      banner();
                      fprintf(stderr, "memory layout %d\n", layout);
                   }
-                  if ((layout < 0) || (layout == 7) || (layout > 11)) {
+                  if ((layout == 7) || (layout > 11)) {
                      banner();
-                     fprintf(stderr, "unknown memory layout - using layout 0\n");
+                     fprintf(stderr, "unknown memory layout %d - using layout 0\n", layout);
                      layout = 0;
                   }
                   if (layout == 1) {
@@ -1703,12 +1667,6 @@ int decode_arguments (int argc, char *argv[]) {
          safecat(lcc_cmd, "-Wl-d ", MAX_LINELEN);
       }
    }
-   if (assembler == 1) {
-      safecat(lcc_cmd, "-D__CATALINA_OPENSPIN__ -Wl-COPENSPIN__ -Wl-as ", MAX_LINELEN);
-   }
-   if (assembler == 2) {
-      safecat(lcc_cmd, "-D__CATALINA_P2PASM__ -Wl-CP2PASM__ -Wl-ap ", MAX_LINELEN);
-   }
    if (format == 1) {
       safecat(lcc_cmd, "-Wl-w-b ", MAX_LINELEN);
    }
@@ -1725,10 +1683,6 @@ int decode_arguments (int argc, char *argv[]) {
    }
    if (readwrite > 0) {
       sprintf(option, "-Wl-P%d ", readwrite);
-      safecat(lcc_cmd, option, MAX_LINELEN);
-   }
-   if (byte_swap > 0) {
-      sprintf(option, "-Wl-B%d ", byte_swap);
       safecat(lcc_cmd, option, MAX_LINELEN);
    }
    if (listing == 1) {
@@ -1800,6 +1754,35 @@ int main(int argc, char *argv[]) {
       fprintf(stderr, "result of decoding arguments = %d\n", result);
    }
 
+   // get any Spin symbols defined by the environment variables
+   safecpy(temp_env, getenv(DEFAULT_DEF_ENV), MAX_LINELEN);
+   define = strtok(temp_env, " :;,");
+   while (define != NULL) {
+      // Note that we define the Spin symbol both for LCC and also for the
+      // binder, but for LCC we preceed the symbol with "__CATALINA_"
+      // to avoid colliding with any user symbols
+      if (pass_symbol_to_compiler(define, &result)) {
+         safecat(lcc_cmd, "-D__CATALINA_", MAX_LINELEN);
+         safecat(lcc_cmd, define, MAX_LINELEN);
+         safecat(lcc_cmd, " -Wl-C", MAX_LINELEN);
+         safecat(lcc_cmd, define, MAX_LINELEN);
+         safecat(lcc_cmd, " ", MAX_LINELEN);
+         if (verbose) {
+            fprintf(stderr, "define symbol %s\n", define);
+         }
+      }
+      define = strtok(NULL, " :;,");
+   }
+   if (diagnose) {
+      fprintf(stderr, "result of decoding %s = %d\n", DEFAULT_DEF_ENV, result);
+   }
+   if (result < 0) {
+      if (diagnose) {
+         fprintf(stderr, "%s exiting\n", argv[0]);
+      }
+      exit(result);
+   }
+
    // if the paths have not been set from the environment 
    // or on the command line, then use the defaults
 
@@ -1848,38 +1831,22 @@ int main(int argc, char *argv[]) {
       safecat(lcc_cmd, " ", MAX_LINELEN);
    }
 
-   // get any Spin symbols defined by the environment variables
-   safecpy(temp_env, getenv(DEFAULT_DEF_ENV), MAX_LINELEN);
-   define = strtok(temp_env, " :;,");
-   while (define != NULL) {
-      // Note that we define the Spin symbol both for LCC and also for the
-      // binder, but for LCC we preceed the symbol with "__CATALINA_"
-      // to avoid colliding with any user symbols
-      if (pass_symbol_to_compiler(define, &result)) {
-         safecat(lcc_cmd, "-D__CATALINA_", MAX_LINELEN);
-         safecat(lcc_cmd, define, MAX_LINELEN);
-         safecat(lcc_cmd, " -Wl-C", MAX_LINELEN);
-         safecat(lcc_cmd, define, MAX_LINELEN);
-         safecat(lcc_cmd, " ", MAX_LINELEN);
-         if (verbose) {
-            fprintf(stderr, "define symbol %s\n", define);
-         }
-      }
-      define = strtok(NULL, " :;,");
-   }
-   if (diagnose) {
-      fprintf(stderr, "result of decoding %s = %d\n", DEFAULT_DEF_ENV, result);
-   }
-   if (result < 0) {
-      if (diagnose) {
-         fprintf(stderr, "%s exiting\n", argv[0]);
-      }
-      exit(result);
-   }
-
    // specify layout and library path
+   if (layout < 0) {
+      // no layout specified - use layout 0
+      layout = 0;
+   }
    sprintf(option, "-Wl-x%d ", layout);
    safecat(lcc_cmd, option, MAX_LINELEN);
+
+   // specify assembler
+   if (assembler == 1) {
+      safecat(lcc_cmd, "-D__CATALINA_OPENSPIN__ -Wl-COPENSPIN__ -Wl-as ", MAX_LINELEN);
+   }
+   if (assembler == 2) {
+      safecat(lcc_cmd, "-D__CATALINA_P2PASM__ -Wl-CP2PASM__ -Wl-ap ", MAX_LINELEN);
+   }
+
    if (layout == 11) {
       if (prop_vers == 1) {
          // Propeller 1
@@ -1992,6 +1959,7 @@ int main(int argc, char *argv[]) {
       exit(-1);
    }
 
+   temp_env[0]='\0';
    safecpy(temp_env, getenv(DEFAULT_INC_ENV), MAX_LINELEN);
    if (diagnose && strlen(temp_env) > 0) {
       fprintf(stderr, "%s = %s\n", DEFAULT_INC_ENV, temp_env);

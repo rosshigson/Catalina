@@ -32,7 +32,7 @@ do not occupy Hub RAM until they are executed.
 To build these demo programs, use the 'build_all' script, specifying the
 platform and HMI options. For example:
 
-   build_all C3 TTY
+   build_all C3 TTY CACHED_1K
 or
    build_all TRIBLADEPROP CPU_2 PC VT100
 or
@@ -76,7 +76,7 @@ script. The cache must be used, and the cache size must be specified as 1K,
 because these are the options used in the build_all script. Then run the 
 programs using a payload command such as:
 
-   payload -i XMM run_small
+   payload -i XMM hello_lmm
 
 In each case, the primary program executes the secondary program twice - 
 first as a CMM program, then as an LMM program. 
@@ -109,12 +109,12 @@ where global data is normally in XMM RAM. The secondary programs are then
 compiled to run in this space. These secondary programs are the same 
 "hello_world.c" programs used in the previous demo.
 
-The build_all script compiles the secondary programs at Hub RAM addresses 
-that should be suitable for all platforms when using the TTY HMI option, but 
-the program itself will check this, and print a message if the secondary
-programs needs to be recompiled to run at a different address. In this case, 
-make a note of the correct address and edit the build_all script (called 
-build_all.bat on Windows) appropriately.
+The build_all script and/or Makefiles compile the secondary programs at Hub 
+RAM addresses that should be suitable for all platforms when using the TTY HMI 
+option, but the program itself will check this, and print a message if the 
+secondary programs needs to be recompiled to run at a different address. In 
+this case, make a note of the correct address and edit the build_all script 
+(called build_all.bat on Windows) or Makefile appropriately.
 
 The build_all builds this second example as an LMM program (P1) or as an
 NMM program (P2), but it could be built as other models - such as an XMM 
@@ -183,7 +183,7 @@ that should be suitable for all platforms when using the TTY HMI option, but
 the program itself will check this, and print a message if either secondary
 program needs to be recompiled to run at a different address. In this case, 
 make a note of the correct address and edit the build_all script (called 
-build_all.bat on Windows) appropriately.
+build_all.bat on Windows) and/or Makefile appropriately.
 
 Because it uses floating point, when compiled as an XMM program, this 
 program also demonstrates the sharing of another plugin in addition to
@@ -256,5 +256,4 @@ because these are the options used in the build_all script. Then run the
 programs using a payload command such as:
 
    payload -i XMM run_xmm
-
 

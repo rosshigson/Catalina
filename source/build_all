@@ -23,6 +23,9 @@ source ../use_catalina
 #
 cd catalina
 ./build_all
+cd ../catoptimize
+./build_all
+./copy_all
 cd ../p2asm_src
 ./build_all
 cd ../lcc
@@ -30,8 +33,6 @@ cd ../lcc
 cd ../openspin
 ./build_all
 cd ../lib
-./build_all
-cd ../srecord
 ./build_all
 cd ..
 #

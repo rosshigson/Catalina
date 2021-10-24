@@ -46,6 +46,8 @@
  *
  * Version 4.8  - Just update version number.
  *
+ * Version 4.9  - Just update version number.
+ *
  * ----------------------------------------------------------------------------
  * @file spinc.h
  * Defines data structures and API for spinc converter
@@ -70,7 +72,7 @@
 #define P2_PC_OFFSET_LMM    0x00AC
 #define P2_PC_OFFSET_NMM    0x00B8
 
-#define VERSION       "4.8"
+#define VERSION       "4.9"
 
 #define MAX_FILES     10
 #define MAX_LINELEN   1000

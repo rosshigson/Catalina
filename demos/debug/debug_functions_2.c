@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "debug_test.h"
+#include "debug_example.h"
 
 int non_static_int;
 static int static_int;

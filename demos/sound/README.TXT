@@ -6,6 +6,8 @@ plugin is based on the SPIN driver written by Nick Sabalausky, and this driver
 is known to work on a wide variety of Propeller platforms including the HYDRA 
 and the C3.
 
+The soound plugin is not supported on the Propeller 2.
+
 You can compile the demo programs using the build_all script provided. 
 
 For example:

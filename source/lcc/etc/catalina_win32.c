@@ -6,7 +6,7 @@
 static char rcsid[] = "$Id: catalina_win32.c,v 1.00 2009/03/28 18:00:13 rjh Exp $";
 
 #ifndef LCCDIR
-#define LCCDIR "C:\\Program Files\\Catalina"
+#define LCCDIR "C:\\Program Files (x86)\\Catalina"
 #endif
 
 char *suffixes[] = { ".c;.C", ".i;.I", ".s;.S", ".obj;.OBJ", ".out", 0 };

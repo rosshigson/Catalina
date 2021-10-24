@@ -9,9 +9,11 @@ make!). On such platforms, you should also specify the NO_MOUSE option to
 the build_all script, to prevent the mouse driver from loading and affecting
 the use of this port for debugging. For example:
 
-  build_all HYDRA NO_MOUSE 
+  build_all HYDRA NO_MOUSE
+or
+  build_all P2_EVAL 
 
-The example in this dicrectory is further described in the tutorial document 
+The example in this directory is further described in the tutorial document 
 "Getting Started with BlackBox".
 
 

@@ -1,15 +1,31 @@
 #!/bin/bash
+#set -x
+#
+TMP_LCCDIR=$LCCDIR
+if [[ "$TMP_LCCDIR" == "" ]] ; then
+   TMP_LCCDIR=/opt/catalina
+fi
+#
+if [[ ! -e "$TMP_LCCDIR/bin/catalina_env" ]] ; then
+   clear
+   echo ""
+   echo "ERROR: Catalina does not appear to be installed in $TMP_LCCDIR"
+   echo "";
+   echo "  Set the environment variable LCCDIR to where Catalina is installed.";
+   echo "";
+   exit
+fi
+#
 if [[ "$1" != "" ]]; then
-
+   TMP_PARAMS=`echo $1 $2 $3 $4 $5 $6 $7 $8 $9`
    if [[ "$CATALINA_DEFINE" != "" ]]; then
-
-      if [[ "$CATALINA_DEFINE" != "$1 $2 $3 $4 $5 $6 $7 $8 $9" ]]; then
+      if [[ "$CATALINA_DEFINE" != "$TMP_PARAMS" ]]; then
 
          echo ""
          echo "ERROR: Command line options conflict with CATALINA_DEFINE"
          echo ""
-         echo "   The Environment variable CATALINA_DEFINE is set to $CATALINA_DEFINE"
-         echo "   The Command line options specified are $1 $2 $3 $4 $5 $6 $7 $8 $9"
+         echo "   CATALINA_DEFINE is set to $CATALINA_DEFINE"
+         echo "   Command line options were $TMP_PARAMS"
          echo ""
          echo "   Either set CATALINA_DEFINE to null using the following command:"
          echo ""
@@ -17,20 +33,26 @@ if [[ "$1" != "" ]]; then
          echo ""
          echo "   or do not specify any command line parameters"
          echo ""
+	 exit
 
       else
 
          echo ""
          echo "NOTE: Environment variable CATALINA_DEFINE is set to $CATALINA_DEFINE"
          echo ""
-         echo "All programs will be built using these options. If these options conflict" 
-         echo "with any options specified in this file, the results may be unexpected." 
+         echo "  All programs will be built using these options. If these conflict" 
+         echo "  with options specified in this file, the results may be unexpected." 
          
       fi
 
    else
 
-      CATALINA_DEFINE="$1 $2 $3 $4 $5 $6 $7 $8 $9"; export CATALINA_DEFINE
+      echo ""
+      echo "NOTE: All programs will be built with options $TMP_PARAMS"
+      echo ""
+      echo "  If these options conflict with options specified in the Makefile,"
+      echo "  the results may be unexpected."
+      CATALINA_DEFINE=$TMP_PARAMS; export CATALINA_DEFINE
 
    fi
 
@@ -41,51 +63,37 @@ else
       echo ""
       echo "NOTE: Environment variable CATALINA_DEFINE is set to $CATALINA_DEFINE"
       echo ""
-      echo "All programs will be built using these options. If these options conflict" 
-      echo "with any options specified in this file, the results may be unexpected." 
+      echo "  All programs will be built using these options. If these conflict" 
+      echo "  with options specified in this file, the results may be unexpected." 
   
    else     
 
       echo ""
       echo "NOTE: Environment variable CATALINA_DEFINE is not set"
       echo ""
-      echo "All programs will be built for the default target (CUSTOM)" 
+      echo "  All programs will be built for the default target" 
 
    fi
 
 fi
 
-#
-TMP_LCCDIR=$LCCDIR
-if [[ "$TMP_LCCDIR" == "" ]]; then
-   TMP_LCCDIR=/opt/catalina	
-fi
-#
-if [[ ! -e $TMP_LCCDIR/bin/catalina_env ]]; then
-   echo ""
-   echo "ERROR: Catalina does not appear to be installed in $TMP_LCCDIR"
-   echo "";
-   echo "Set the environment variable LCCDIR to where Catalina is installed.";
-   echo "";
-   exit
-fi   
-
 echo ""
-echo "   =================="
-echo "   BUILDING TTY DEMOS"
-echo "   =================="
+echo "=============="
+echo "Building Demos"
+echo "=============="
 echo ""
 
-catalina -lci -ltty test_tty.c -o tty1 -C NO_HMI
-catalina -lci -ltty -lthreads test_tty.c -o tty2 -C TV 
+make -B all
 
-build_pasm_tmp_var $1 $2 $3 $4 $5 $6 $7 $8 $9 
-spinnaker -p -a -I "$TMP_LCCDIR/target" test_tty.spin -b -o tty3 -D TTY_SPIN $TMP_VAR
+# do Linux specific builds ...
 
-unset CATALINA_DEFINE
 echo ""
-echo "   ===="
-echo "   Done"
-echo "   ===="
+build_pasm_tmp_var $CATALINA_DEFINE 
+spinnaker -p -a -I "$TMP_LCCDIR/target" test_tty.spin -b -o test_tty_3 -D TTY_SPIN $TMP_VAR
+
+echo ""
+echo "===="
+echo "Done"
+echo "===="
 echo ""
 

@@ -1,7 +1,7 @@
 @echo off
 
 set TMP_LCCDIR=%LCCDIR%
-if "%TMP_LCCDIR%"=="" set TMP_LCCDIR=C:\Program Files\Catalina
+if "%TMP_LCCDIR%"=="" set TMP_LCCDIR=C:\Program Files (x86)\Catalina
 if EXIST "%TMP_LCCDIR%\bin\catalina_env.bat" goto found_catalina
 echo.
 echo   ERROR: Catalina does not appear to be installed in %TMP_LCCDIR%
@@ -33,7 +33,7 @@ goto done
 :found_file
 bindump %file_name% -p " long $" >flash_program.inc
 call p2_asm "%TMP_LCCDIR%\target_p2\Flash_Loader_1.2_mod2.spin2" -o tmp_flash
-payload tmp_flash.bin %2 %3 %4 %5 %6 %7 %8 %9
+payload -o2 tmp_flash.bin %2 %3 %4 %5 %6 %7 %8 %9
 
 :done
 del /q flash_program.inc 2>nul:

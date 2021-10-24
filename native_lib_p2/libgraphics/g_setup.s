@@ -17,14 +17,14 @@ C__cgi_cog ' <symbol:_cgi_cog>
  long -1
 
  alignl ' align long
-C_sdf8_6132d1dd_colors_L000004 ' <symbol:colors>
+C_ser4_6174adec_colors_L000004 ' <symbol:colors>
  long $0
  long $55555555
  long $aaaaaaaa
  long $ffffffff
 
  alignl ' align long
-C_sdf81_6132d1dd_font_L000005 ' <symbol:font>
+C_ser41_6174adec_font_L000005 ' <symbol:font>
  word $9d62
  word $112a
  word $b0e9
@@ -355,7 +355,7 @@ C_g_setup ' <symbol:g_setup>
  mov r22, r0
  adds r22, #128 ' ADDI4 coni
  wrlong r22, ##@C__cgi_cog ' ASGNI4 addrg reg
- mov r13, #0 ' reg <- coni
+ mov r15, #0 ' reg <- coni
  jmp #\@C_g_setup_11 ' JUMPV addrg
 C_g_setup_8
  mov r22, r9
@@ -363,12 +363,12 @@ C_g_setup_8
  #ifndef NO_INTERRUPTS
   stalli
  #endif
- qmul r13, r22 ' MULI4
+ qmul r15, r22 ' MULI4
  getqx r0
  #ifndef NO_INTERRUPTS
   allowi
  #endif
- mov r20, r13
+ mov r20, r15
  shl r20, #1 ' LSHI4 coni
  mov r18, ##@C_G__V_A_R_+116 ' reg <- addrg
  adds r20, r18 ' ADDI/P (1)
@@ -376,7 +376,7 @@ C_g_setup_8
  add r22, r7 ' ADDU (2)
  wrword r22, r20 ' ASGNI2 reg reg
 ' C_g_setup_9 ' (symbol refcount = 0)
- adds r13, #1 ' ADDI4 coni
+ adds r15, #1 ' ADDI4 coni
 C_g_setup_11
  mov r22, r11
  subs r22, #1 ' SUBI4 coni
@@ -397,7 +397,7 @@ C_g_setup_15
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
- cmps r13, r22 wcz
+ cmps r15, r22 wcz
  if_be jmp #\C_g_setup_8 ' LEI4
  wrlong r11, ##@C_G__V_A_R_ ' ASGNI4 addrg reg
  wrlong r9, ##@C_G__V_A_R_+4 ' ASGNI4 addrg reg
@@ -436,24 +436,24 @@ C_g_setup_15
  mov r21, r22
  subs r21, #1 ' SUBI4 coni
  mov r22, ##@C_G__V_A_R_+116 ' reg <- addrg
- mov r13, r22 ' CVI, CVU or LOAD
+ mov r15, r22 ' CVI, CVU or LOAD
  mov r22, ##@C_G__V_A_R_+36 ' reg <- addrg
  mov RI, FP
  sub RI, #-(-4)
  wrlong r22, RI ' ASGNI4 addrli reg
- mov r15, #0 ' reg <- coni
+ mov r13, #0 ' reg <- coni
 C_g_setup_26
- mov r22, r15
+ mov r22, r13
  shl r22, #2 ' LSHI4 coni
  mov r20, ##@C_G__V_A_R_+68 ' reg <- addrg
  adds r20, r22 ' ADDI/P (2)
- mov r18, ##@C_sdf8_6132d1dd_colors_L000004 ' reg <- addrg
+ mov r18, ##@C_ser4_6174adec_colors_L000004 ' reg <- addrg
  adds r22, r18 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRU4 reg
  wrlong r22, r20 ' ASGNI4 reg reg
 ' C_g_setup_27 ' (symbol refcount = 0)
- adds r15, #1 ' ADDI4 coni
- cmps r15,  #4 wcz
+ adds r13, #1 ' ADDI4 coni
+ cmps r13,  #4 wcz
  if_b jmp #\C_g_setup_26 ' LTI4
  mov r22, r17 ' CVI, CVU or LOAD
  mov r17, r22
@@ -471,29 +471,15 @@ C_g_setup_26
  mov r17, r22
  adds r17, #4 ' ADDP4 coni
  wrlong r21, r22 ' ASGNI4 reg reg
- mov r15, #0 ' reg <- coni
-C_g_setup_31
- mov r22, r15
- shl r22, #1 ' LSHI4 coni
- mov r20, ##@C_G__V_A_R_+180 ' reg <- addrg
- adds r20, r22 ' ADDI/P (2)
- mov r18, ##@C_sdf81_6132d1dd_font_L000005 ' reg <- addrg
- adds r22, r18 ' ADDI/P (1)
- rdword r22, r22 ' reg <- CVUI4 INDIRU2 reg
- wrword r22, r20 ' ASGNI2 reg reg
-' C_g_setup_32 ' (symbol refcount = 0)
- adds r15, #1 ' ADDI4 coni
- cmps r15,  #287 wcz
- if_b jmp #\C_g_setup_31 ' LTI4
  mov r22, r17 ' CVI, CVU or LOAD
  mov r17, r22
  adds r17, #4 ' ADDP4 coni
- mov r20, ##@C_G__V_A_R_+180 ' reg <- addrg
+ mov r20, ##@C_ser41_6174adec_font_L000005 ' reg <- addrg
  wrlong r20, r22 ' ASGNI4 reg reg
  mov r22, r17 ' CVI, CVU or LOAD
  mov r17, r22
  adds r17, #4 ' ADDP4 coni
- wrlong r13, r22 ' ASGNI4 reg reg
+ wrlong r15, r22 ' ASGNI4 reg reg
  mov r22, FP
  sub r22, #-(-4) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
@@ -578,7 +564,7 @@ DAT ' uninitialized data segment
 
  alignl ' align long
 C_G__V_A_R_ ' <symbol:G_VAR>
- byte 0[756]
+ byte 0[180]
 
 ' Catalina Code
 

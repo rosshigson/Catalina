@@ -137,6 +137,9 @@ counter64_t _cnthl();  /* fetch both together */
 void      _waitcnt(uint32_t tick);
 
 void      _waitx(uint32_t delay);
+void      _waitus(uint32_t usecs);
+void      _waitms(uint32_t msecs);
+void      _waitsec(uint32_t secs);
 
 /* regular pin I/O */
 void      _dirl(int pin);
@@ -156,10 +159,18 @@ void      _wypin(int pin, uint32_t val);
 void      _akpin(int pin);
 uint32_t  _rdpin(int pin);
 uint32_t  _rqpin(int pin);
+void      _pinstart(int pin, uint32_t mode, uint32_t xval, uint32_t yval);
+void      _pinclear(int pin);
 
 /* access to previously set clock mode and frequency */
 extern uint32_t _clockfreq(void);
 extern uint32_t _clockmode(void);
+
+/* include definitions required by spin2cpp (if requested) */
+#ifdef __SPIN2CPP__
+#include <spin2cpp.h>
+#endif
+
 
 #endif
 

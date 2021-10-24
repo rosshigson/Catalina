@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
-<CodeBlocks_workspace_file>
-	<Workspace title="vgraphics_demos">
-		<Project filename="vgraphics_READ_ME/vgraphics_READ_ME.cbp" active="1" />
-		<Project filename="vgraphics_demo/vgraphics_demo.cbp" />
-		<Project filename="spacewar/spacewar.cbp" />
-		<Project filename="catalina_4/catalina_4.cbp" />
-	</Workspace>
-</CodeBlocks_workspace_file>

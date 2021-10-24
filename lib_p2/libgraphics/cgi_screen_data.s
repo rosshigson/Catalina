@@ -52,7 +52,7 @@ C_cgi_screen_data ' <symbol:cgi_screen_data>
  PRIMITIVE(#CALA)
  long @C__cgi_data ' CALL addrg
  PRIMITIVE(#LODL)
- long $ffff
+ long $ffffff
  mov r20, RI ' reg <- con
  mov r22, r0 ' BANDI/U
  and r22, r20 ' BANDI/U (3)
@@ -60,6 +60,7 @@ C_cgi_screen_data ' <symbol:cgi_screen_data>
  sub r20, #-(-4) ' reg <- addrli
  rdlong r20, r20 ' reg <- INDIRU4 reg
  add r22, r20 ' ADDU (1)
+ add r22, #4 ' ADDU4 coni
  PRIMITIVE(#LODF)
  long -16
  wrlong r22, RI ' ASGNU4 addrl reg

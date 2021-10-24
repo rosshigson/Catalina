@@ -686,7 +686,9 @@ XMM_WriteMult_ret
 '
 #ifdef NEED_XMM_WRITEPAGE
 '
+#ifndef NEED_XMM_INCADDR
 #define NEED_XMM_INCADDR
+#endif
 '
 ' XMM_WritePage : Write bytes from Hub RAM to XMM RAM
 ' On entry:
@@ -716,7 +718,9 @@ XMM_WritePage_ret
 '
 #ifdef NEED_XMM_READPAGE
 '
+#ifndef NEED_XMM_INCADDR
 #define NEED_XMM_INCADDR
+#endif
 '              
 ' XMM_ReadPage : Read bytes from XMM RAM to Hub RAM.
 ' On Entry: 

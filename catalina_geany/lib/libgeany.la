@@ -17,7 +17,7 @@ old_library=''
 inherited_linker_flags=' -pthread'
 
 # Libraries that this one depends upon.
-dependency_libs=' -L/mingw32/lib -L/mingw32/lib/../lib -lgtk-win32-2.0 -lgdk-win32-2.0 -limm32 -lpangocairo-1.0 -lpangoft2-1.0 -lpangowin32-1.0 -lpango-1.0 -lfribidi -lthai -ldatrie -latk-1.0 -lcairo -lpixman-1 -lfontconfig -liconv -lexpat -lfreetype -lbz2 -lharfbuzz -lusp10 -lgdi32 -lrpcrt4 -ldwrite -lgraphite2 -lbrotlidec -lbrotlicommon -lpng16 -lgdk_pixbuf-2.0 -lgio-2.0 -ldnsapi -liphlpapi -lz -lgobject-2.0 -lffi -lgmodule-2.0 -lgthread-2.0 -lglib-2.0 -lws2_32 -lwinmm -lshlwapi -lpcre -lintl -lole32 -lwsock32 -lcomdlg32'
+dependency_libs=' -L/mingw32/lib -lgtk-win32-2.0 -lgdk-win32-2.0 -limm32 -lpangowin32-1.0 -lpangocairo-1.0 -lpango-1.0 -lharfbuzz -lgdi32 -lmsimg32 -latk-1.0 -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lgmodule-2.0 -lgthread-2.0 -lglib-2.0 -lintl -lole32 -lwsock32 -lcomdlg32'
 
 # Names of additional weak libraries provided by this library
 weak_library_names=''
