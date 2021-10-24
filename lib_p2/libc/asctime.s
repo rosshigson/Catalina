@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_s95k_616ac864_two_digits_L000001 ' <symbol:two_digits>
+C_sh24_6174acf3_two_digits_L000001 ' <symbol:two_digits>
  PRIMITIVE(#PSHM)
  long $f80000 ' save registers
  mov r23, r4 ' reg var <- reg arg
@@ -26,15 +26,15 @@ C_s95k_616ac864_two_digits_L000001 ' <symbol:two_digits>
  wrbyte r22, r23 ' ASGNU1 reg reg
  cmps r19,  #0 wz
  PRIMITIVE(#BRNZ)
- long @C_s95k_616ac864_two_digits_L000001_3 ' NEI4
+ long @C_sh24_6174acf3_two_digits_L000001_3 ' NEI4
  rdbyte r22, r23 ' reg <- INDIRU1 reg
  and r22, cviu_m1 ' zero extend
  cmps r22,  #48 wz
  PRIMITIVE(#BRNZ)
- long @C_s95k_616ac864_two_digits_L000001_3 ' NEI4
+ long @C_sh24_6174acf3_two_digits_L000001_3 ' NEI4
  mov r22, #32 ' reg <- coni
  wrbyte r22, r23 ' ASGNU1 reg reg
-C_s95k_616ac864_two_digits_L000001_3
+C_sh24_6174acf3_two_digits_L000001_3
  adds r23, #1 ' ADDP4 coni
  mov r22, r23 ' CVI, CVU or LOAD
  mov r23, r22
@@ -50,13 +50,13 @@ C_s95k_616ac864_two_digits_L000001_3
  adds r22, #1 ' ADDP4 coni
  mov r23, r22 ' CVI, CVU or LOAD
  mov r0, r22 ' CVI, CVU or LOAD
-' C_s95k_616ac864_two_digits_L000001_2 ' (symbol refcount = 0)
+' C_sh24_6174acf3_two_digits_L000001_2 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
 
  alignl ' align long
-C_s95k1_616ac864_four_digits_L000005 ' <symbol:four_digits>
+C_sh241_6174acf3_four_digits_L000005 ' <symbol:four_digits>
  PRIMITIVE(#PSHM)
  long $f00000 ' save registers
  mov r23, r3 ' reg var <- reg arg
@@ -126,7 +126,7 @@ C_s95k1_616ac864_four_digits_L000005 ' <symbol:four_digits>
  adds r22, #1 ' ADDP4 coni
  mov r23, r22 ' CVI, CVU or LOAD
  mov r0, r22 ' CVI, CVU or LOAD
-' C_s95k1_616ac864_four_digits_L000005_6 ' (symbol refcount = 0)
+' C_sh241_6174acf3_four_digits_L000005_6 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
@@ -228,7 +228,7 @@ C_asctime_16
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s95k_616ac864_two_digits_L000001
+ long @C_sh24_6174acf3_two_digits_L000001
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r2, #1 ' reg ARG coni
@@ -239,7 +239,7 @@ C_asctime_16
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s95k_616ac864_two_digits_L000001
+ long @C_sh24_6174acf3_two_digits_L000001
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r2, #1 ' reg ARG coni
@@ -250,7 +250,7 @@ C_asctime_16
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s95k_616ac864_two_digits_L000001
+ long @C_sh24_6174acf3_two_digits_L000001
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r2, #1 ' reg ARG coni
@@ -259,7 +259,7 @@ C_asctime_16
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s95k_616ac864_two_digits_L000001
+ long @C_sh24_6174acf3_two_digits_L000001
  add SP, #8 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  mov r22, r23
@@ -274,7 +274,7 @@ C_asctime_16
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s95k1_616ac864_four_digits_L000005
+ long @C_sh241_6174acf3_four_digits_L000005
  add SP, #4 ' CALL addrg
  PRIMITIVE(#LODL)
  long @C_asctime_buf_L000009

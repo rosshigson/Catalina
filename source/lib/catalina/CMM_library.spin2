@@ -989,7 +989,7 @@ _XTALFREQ = 20_000_000  ' crystal frequency
 _XDIV     = 4           '\ crystal divider             to give 5.0MHz
 _XMUL     = 72          '| crystal / div * mul         to give 360MHz
 _XDIVP    = 2           '/ crystal / div * mul / divp  to give 180MHz
-_XOSC     = %01         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
+_XOSC     = %10         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
 _XSEL     = %11         ' %00=rcfast, %01=rcslow, %10=XI, %11=PLL
 _XPLL     = 1           ' 0= PLL off, 1=PLL on
 

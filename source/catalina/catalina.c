@@ -218,6 +218,8 @@
  *                also implies -p2.
  *
  * Version 4.9.1  Just update version number.
+ *
+ * Version 4.9.2  Just update version number.
  */
 
 /*--------------------------------------------------------------------------
@@ -245,7 +247,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define VERSION            "4.9.1"
+#define VERSION            "4.9.2"
 
 #define MAX_LINELEN        4096
 

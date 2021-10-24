@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
-<CodeBlocks_workspace_file>
-	<Workspace title="serial4_demos">
-		<Project filename="serial4_READ_ME/READ ME.cbp" active="1" />
-      <Project filename="serial4_demo/serial4_demo.cbp" />
-	</Workspace>
-</CodeBlocks_workspace_file>

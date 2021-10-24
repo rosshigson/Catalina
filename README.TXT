@@ -1,4 +1,4 @@
-Catalina release 4.9.1 is a full release. You can install this over an 
+Catalina release 4.9.2 is a full release. You can install this over an 
 existing version of Catalina, but it is recommended that you instead 
 uninstall any previous Catalina release before installing, or install 
 this release to a different location. 
@@ -18,6 +18,35 @@ If you prefer using an Integrated Development Environment, start with:
  
   "Getting Started with the Catalina Geany IDE"
  
+RELEASE 4.9.2
+
+New Functionality
+-----------------
+
+1. Added _waitsec(), _waitms() and _waitus() to the Propeller 1 and Propeller 
+   2 libraries. Added _waitx() to the Propeller 1 library (as a synonym for 
+   WAIT().
+
+2. Added _pinstart() and _pinclear() to the Propeller 2 libraries. 
+
+3. Added a new include file (spin2cpp.h), which is included by propeller.h
+   and propeller2.h if the symbol __SPIN2CPP__ is defined. This allows for
+   symbols assumed to exist by the spin2cpp utility to be defined if they
+   don't already exist (e.g. due to name differences between C compilers).
+
+4. The default for the CC field of the clock mode setting for the P2_EVAL, 
+   P2_CUSTOM and default P2 platform is now %10 (15pf) and not %01 (OSC).
+   It is still %01 for the P2_EDGE.
+
+5. Updated Catalina's version of p2asm to version 0.018. Minor bug fixes and 
+   inclusion of "encod" keyword. Thanks to Dave Hein.
+
+Other Changes
+-------------
+
+1. Updated the Makefiles in the demos folder to add -p2 to the command line
+   options if making a file with a ".bin" extension.
+
 RELEASE 4.9.1
 
 New Functionality

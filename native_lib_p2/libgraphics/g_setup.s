@@ -17,14 +17,14 @@ C__cgi_cog ' <symbol:_cgi_cog>
  long -1
 
  alignl ' align long
-C_s5v8_616ac961_colors_L000004 ' <symbol:colors>
+C_ser4_6174adec_colors_L000004 ' <symbol:colors>
  long $0
  long $55555555
  long $aaaaaaaa
  long $ffffffff
 
  alignl ' align long
-C_s5v81_616ac961_font_L000005 ' <symbol:font>
+C_ser41_6174adec_font_L000005 ' <symbol:font>
  word $9d62
  word $112a
  word $b0e9
@@ -447,7 +447,7 @@ C_g_setup_26
  shl r22, #2 ' LSHI4 coni
  mov r20, ##@C_G__V_A_R_+68 ' reg <- addrg
  adds r20, r22 ' ADDI/P (2)
- mov r18, ##@C_s5v8_616ac961_colors_L000004 ' reg <- addrg
+ mov r18, ##@C_ser4_6174adec_colors_L000004 ' reg <- addrg
  adds r22, r18 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRU4 reg
  wrlong r22, r20 ' ASGNI4 reg reg
@@ -474,7 +474,7 @@ C_g_setup_26
  mov r22, r17 ' CVI, CVU or LOAD
  mov r17, r22
  adds r17, #4 ' ADDP4 coni
- mov r20, ##@C_s5v81_616ac961_font_L000005 ' reg <- addrg
+ mov r20, ##@C_ser41_6174adec_font_L000005 ' reg <- addrg
  wrlong r20, r22 ' ASGNI4 reg reg
  mov r22, r17 ' CVI, CVU or LOAD
  mov r17, r22

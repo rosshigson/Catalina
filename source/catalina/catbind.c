@@ -235,6 +235,8 @@
  *
  * Version 4.9.1 - Just update version number.
  *
+ * Version 4.9.2 - Just update version number.
+ *
  */
 
 /*--------------------------------------------------------------------------
@@ -271,7 +273,7 @@
 
 #define COMPILE_IN_PLACE   1 /* 0 = compile in target, 1 = compile locally */
 
-#define VERSION            "4.9.1"
+#define VERSION            "4.9.2"
 
 #define MAX_FILES          500
 #define MAX_LIBS           500

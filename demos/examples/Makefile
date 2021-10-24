@@ -63,7 +63,7 @@ CC=catalina
 
 %.bin : %.c
 	-@catalina_env
-	$(CC) $(CFLAGS) -o $@ $<
+	$(CC) $(CFLAGS) -p2 -o $@ $<
 
 #
 # Named Targets
@@ -480,6 +480,14 @@ ex_registry : ex_registry$B
 
 # add this to the 'all' target
 all :: ex_registry
+
+# =============
+
+.PHONY : ex_waitx
+ex_waitx : ex_waitx$B
+
+# add this to the 'all' target
+all :: ex_waitx
 
 #
 # Clean Target (should not be first target!)

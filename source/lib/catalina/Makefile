@@ -63,7 +63,10 @@ all:	dynamic_array.h \
 	coginit_C.s \
 	coginit_C_cog.s \
 	coginit_Spin.s \
-	coginit_Spin_cog.s
+	coginit_Spin_cog.s \
+	waitsec.s \
+	waitms.s \
+	waitus.s
 ifeq ($(COMPACT),TRUE)
 	cp waitvid_compact.e waitvid.s
 	cp waitcnt_compact.e waitcnt.s
@@ -232,8 +235,8 @@ clean:
 	frqa.s frqb.s ctra.s ctrb.s phsa.s phsb.s vcfg.s vscl.s \
 	clockfreq.s clockmode.s clockinit.s \
 	registry.s register_plugin.s unregister_plugin.s \
-	locate_plugin.s request_status.s 
-
+	locate_plugin.s request_status.s \
+	waitsec.s waitms.s waitus.s
 
 dynamic_array.h:
 ifeq ($(PROPELLER_2),TRUE)

@@ -10,7 +10,7 @@
 '
 ' It is intended to use the P2-ES accessory boards (i.e. the A/V board for
 ' VGA and the Host Serial board for USB ports). It is configured by setting
-' the following values in Catalin_Plugins.inc
+' the following values in Catalina_Platforms.inc
 '
 '    _VGA_PIN_BASE : base pin to use for VGA
 '    _USB_PIN_BASE : base pin to use for USB ports

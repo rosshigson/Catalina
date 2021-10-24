@@ -19,7 +19,7 @@ _XTALFREQ = 20_000_000  ' crystal frequency
 _XDIV     = 2           '\ crystal divider             to give 10.0MHz
 _XMUL     = 26          '| crystal / div * mul         to give 260MHz
 _XDIVP    = 1           '/ crystal / div * mul / divp  to give 260MHz
-_XOSC     = %01         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
+_XOSC     = %10         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
 _XSEL     = %11         ' %00=rcfast, %01=rcslow, %10=XI, %11=PLL
 _XPLL     = 1           ' 0= PLL off, 1=PLL on
 #elif defined (MHZ_200)
@@ -27,7 +27,7 @@ _XTALFREQ = 20_000_000  ' crystal frequency
 _XDIV     = 2           '\ crystal divider             to give 10.0MHz
 _XMUL     = 20          '| crystal / div * mul         to give 200MHz
 _XDIVP    = 1           '/ crystal / div * mul / divp  to give 200MHz
-_XOSC     = %01         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
+_XOSC     = %10         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
 _XSEL     = %11         ' %00=rcfast, %01=rcslow, %10=XI, %11=PLL
 _XPLL     = 1           ' 0= PLL off, 1=PLL on
 #else
@@ -35,7 +35,7 @@ _XTALFREQ = 20_000_000  ' crystal frequency
 _XDIV     = 4           '\ crystal divider             to give 5.0MHz
 _XMUL     = 72          '| crystal / div * mul         to give 360MHz
 _XDIVP    = 2           '/ crystal / div * mul / divp  to give 180MHz
-_XOSC     = %01         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
+_XOSC     = %10         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
 _XSEL     = %11         ' %00=rcfast, %01=rcslow, %10=XI, %11=PLL
 _XPLL     = 1           ' 0= PLL off, 1=PLL on
 #endif
@@ -436,7 +436,7 @@ _XTALFREQ = 20_000_000  ' crystal frequency
 _XDIV     = 2           '\ crystal divider             to give 10.0MHz
 _XMUL     = 26          '| crystal / div * mul         to give 260MHz
 _XDIVP    = 1           '/ crystal / div * mul / divp  to give 260MHz
-_XOSC     = %01         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
+_XOSC     = %10         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
 _XSEL     = %11         ' %00=rcfast, %01=rcslow, %10=XI, %11=PLL
 _XPLL     = 1           ' 0= PLL off, 1=PLL on
 #elif defined (MHZ_200)
@@ -444,7 +444,7 @@ _XTALFREQ = 20_000_000  ' crystal frequency
 _XDIV     = 2           '\ crystal divider             to give 10.0MHz
 _XMUL     = 20          '| crystal / div * mul         to give 200MHz
 _XDIVP    = 1           '/ crystal / div * mul / divp  to give 200MHz
-_XOSC     = %01         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
+_XOSC     = %10         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
 _XSEL     = %11         ' %00=rcfast, %01=rcslow, %10=XI, %11=PLL
 _XPLL     = 1           ' 0= PLL off, 1=PLL on
 #else
@@ -452,7 +452,7 @@ _XTALFREQ = 20_000_000  ' crystal frequency
 _XDIV     = 4           '\ crystal divider             to give 5.0MHz
 _XMUL     = 72          '| crystal / div * mul         to give 360MHz
 _XDIVP    = 2           '/ crystal / div * mul / divp  to give 180MHz
-_XOSC     = %01         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
+_XOSC     = %10         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
 _XSEL     = %11         ' %00=rcfast, %01=rcslow, %10=XI, %11=PLL
 _XPLL     = 1           ' 0= PLL off, 1=PLL on
 #endif
@@ -579,7 +579,7 @@ _XTALFREQ = 20_000_000  ' crystal frequency
 _XDIV     = 2           '\ crystal divider             to give 10.0MHz
 _XMUL     = 26          '| crystal / div * mul         to give 260MHz
 _XDIVP    = 1           '/ crystal / div * mul / divp  to give 260MHz
-_XOSC     = %01         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
+_XOSC     = %10         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
 _XSEL     = %11         ' %00=rcfast, %01=rcslow, %10=XI, %11=PLL
 _XPLL     = 1           ' 0= PLL off, 1=PLL on
 #elif defined (MHZ_200)
@@ -587,7 +587,7 @@ _XTALFREQ = 20_000_000  ' crystal frequency
 _XDIV     = 2           '\ crystal divider             to give 10.0MHz
 _XMUL     = 20          '| crystal / div * mul         to give 200MHz
 _XDIVP    = 1           '/ crystal / div * mul / divp  to give 200MHz
-_XOSC     = %01         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
+_XOSC     = %10         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
 _XSEL     = %11         ' %00=rcfast, %01=rcslow, %10=XI, %11=PLL
 _XPLL     = 1           ' 0= PLL off, 1=PLL on
 #else
@@ -595,7 +595,7 @@ _XTALFREQ = 20_000_000  ' crystal frequency
 _XDIV     = 4           '\ crystal divider             to give 5.0MHz
 _XMUL     = 72          '| crystal / div * mul         to give 360MHz
 _XDIVP    = 2           '/ crystal / div * mul / divp  to give 180MHz
-_XOSC     = %01         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
+_XOSC     = %10         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
 _XSEL     = %11         ' %00=rcfast, %01=rcslow, %10=XI, %11=PLL
 _XPLL     = 1           ' 0= PLL off, 1=PLL on
 #endif

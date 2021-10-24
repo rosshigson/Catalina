@@ -17,7 +17,7 @@ C_itoa ' <symbol:itoa>
  word I16A_MOV + (r23)<<D16A + (r2)<<S16A ' reg var <- reg arg
  word I16B_LODL + (r19)<<D16B
  alignl ' align long
- long @C_s2ko_616ac8f2_itoa_buf_L000001+12-1 ' reg <- addrg
+ long @C_s5co_6174ad7d_itoa_buf_L000001+12-1 ' reg <- addrg
  word I16A_MOVI + (r22)<<D16A + (0)<<S16A ' reg <- coni
  word I16B_LODF + ((-4)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNI4 addrl16 reg
@@ -83,7 +83,7 @@ C_itoa_10
  alignl ' align long
 
  alignl ' align long
-C_s2ko1_616ac8f2_N_anO_rI_nf_L000012 ' <symbol:NanOrInf>
+C_s5co1_6174ad7d_N_anO_rI_nf_L000012 ' <symbol:NanOrInf>
  alignl ' align long
  long I32_NEWF + 4<<S32
  alignl ' align long
@@ -100,7 +100,7 @@ C_s2ko1_616ac8f2_N_anO_rI_nf_L000012 ' <symbol:NanOrInf>
  word I16A_AND + (r20)<<D16A + (r22)<<S16A ' BANDI/U (1)
  word I16A_CMP + (r20)<<D16A + (r22)<<S16A
  alignl ' align long
- long I32_BRNZ + (@C_s2ko1_616ac8f2_N_anO_rI_nf_L000012_14)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_s5co1_6174ad7d_N_anO_rI_nf_L000012_14)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-4)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16B_LODL + (r20)<<D16B
@@ -109,7 +109,7 @@ C_s2ko1_616ac8f2_N_anO_rI_nf_L000012 ' <symbol:NanOrInf>
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl ' align long
- long I32_BRNZ + (@C_s2ko1_616ac8f2_N_anO_rI_nf_L000012_16)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_s5co1_6174ad7d_N_anO_rI_nf_L000012_16)<<S32 ' NEU4 reg coni
  word I16B_LODF + ((-4)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16B_LODL + (r20)<<D16B
@@ -118,7 +118,7 @@ C_s2ko1_616ac8f2_N_anO_rI_nf_L000012 ' <symbol:NanOrInf>
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl ' align long
- long I32_BR_Z + (@C_s2ko1_616ac8f2_N_anO_rI_nf_L000012_18)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_s5co1_6174ad7d_N_anO_rI_nf_L000012_18)<<S32 ' EQU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r21)<<D16A + (r22)<<S16A
  word I16A_ADDSI + (r21)<<D16A + (1)<<S16A ' ADDP4 reg coni
@@ -126,10 +126,10 @@ C_s2ko1_616ac8f2_N_anO_rI_nf_L000012 ' <symbol:NanOrInf>
  long I32_MOVI + (r20)<<D32 +(45)<<S32 ' reg <- conli
  word I16A_WRBYTE + (r20)<<D16A + (r22)<<S16A ' ASGNU1 reg reg
  alignl ' align long
-C_s2ko1_616ac8f2_N_anO_rI_nf_L000012_18
+C_s5co1_6174ad7d_N_anO_rI_nf_L000012_18
  word I16B_LODL + (r2)<<D16B
  alignl ' align long
- long @C_s2ko1_616ac8f2_N_anO_rI_nf_L000012_20_L000021 ' reg ARG ADDRG
+ long @C_s5co1_6174ad7d_N_anO_rI_nf_L000012_20_L000021 ' reg ARG ADDRG
  word I16A_MOV + (r3)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 33<<S16B ' arg size, rpsize = 8, spsize = 8
  alignl ' align long
@@ -138,9 +138,9 @@ C_s2ko1_616ac8f2_N_anO_rI_nf_L000012_18
  word I16A_MOV + (r0)<<D16A + (r21)<<S16A
  word I16A_ADDSI + (r0)<<D16A + (3)<<S16A ' ADDP4 reg coni
  alignl ' align long
- long I32_JMPA + (@C_s2ko1_616ac8f2_N_anO_rI_nf_L000012_13)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_s5co1_6174ad7d_N_anO_rI_nf_L000012_13)<<S32 ' JUMPV addrg
  alignl ' align long
-C_s2ko1_616ac8f2_N_anO_rI_nf_L000012_16
+C_s5co1_6174ad7d_N_anO_rI_nf_L000012_16
  word I16B_LODF + ((-4)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16B_LODL + (r20)<<D16B
@@ -149,7 +149,7 @@ C_s2ko1_616ac8f2_N_anO_rI_nf_L000012_16
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl ' align long
- long I32_BR_Z + (@C_s2ko1_616ac8f2_N_anO_rI_nf_L000012_22)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_s5co1_6174ad7d_N_anO_rI_nf_L000012_22)<<S32 ' EQU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r21)<<D16A + (r22)<<S16A
  word I16A_ADDSI + (r21)<<D16A + (1)<<S16A ' ADDP4 reg coni
@@ -157,10 +157,10 @@ C_s2ko1_616ac8f2_N_anO_rI_nf_L000012_16
  long I32_MOVI + (r20)<<D32 +(45)<<S32 ' reg <- conli
  word I16A_WRBYTE + (r20)<<D16A + (r22)<<S16A ' ASGNU1 reg reg
  alignl ' align long
-C_s2ko1_616ac8f2_N_anO_rI_nf_L000012_22
+C_s5co1_6174ad7d_N_anO_rI_nf_L000012_22
  word I16B_LODL + (r2)<<D16B
  alignl ' align long
- long @C_s2ko1_616ac8f2_N_anO_rI_nf_L000012_24_L000025 ' reg ARG ADDRG
+ long @C_s5co1_6174ad7d_N_anO_rI_nf_L000012_24_L000025 ' reg ARG ADDRG
  word I16A_MOV + (r3)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 33<<S16B ' arg size, rpsize = 8, spsize = 8
  alignl ' align long
@@ -169,14 +169,14 @@ C_s2ko1_616ac8f2_N_anO_rI_nf_L000012_22
  word I16A_MOV + (r0)<<D16A + (r21)<<S16A
  word I16A_ADDSI + (r0)<<D16A + (3)<<S16A ' ADDP4 reg coni
  alignl ' align long
- long I32_JMPA + (@C_s2ko1_616ac8f2_N_anO_rI_nf_L000012_13)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_s5co1_6174ad7d_N_anO_rI_nf_L000012_13)<<S32 ' JUMPV addrg
  alignl ' align long
-C_s2ko1_616ac8f2_N_anO_rI_nf_L000012_14
+C_s5co1_6174ad7d_N_anO_rI_nf_L000012_14
  word I16B_LODL + R0<<D16B
  alignl ' align long
  long 0 ' RET con
  alignl ' align long
-C_s2ko1_616ac8f2_N_anO_rI_nf_L000012_13
+C_s5co1_6174ad7d_N_anO_rI_nf_L000012_13
  word I16B_POPM + 1<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
@@ -202,7 +202,7 @@ C_t_float_27
  word I16A_MOV + (r3)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 33<<S16B ' arg size, rpsize = 8, spsize = 8
  alignl ' align long
- long I32_CALA + (@C_s2ko1_616ac8f2_N_anO_rI_nf_L000012)<<S32
+ long I32_CALA + (@C_s5co1_6174ad7d_N_anO_rI_nf_L000012)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
@@ -502,7 +502,7 @@ C_t_float_26
 DAT ' uninitialized data segment
 
  alignl ' align long
-C_s2ko_616ac8f2_itoa_buf_L000001 ' <symbol:itoa_buf>
+C_s5co_6174ad7d_itoa_buf_L000001 ' <symbol:itoa_buf>
  byte 0[12]
 
 ' Catalina Code
@@ -591,14 +591,14 @@ C_t_float_33_L000034 ' <symbol:33>
  long $0 ' float
 
  alignl ' align long
-C_s2ko1_616ac8f2_N_anO_rI_nf_L000012_24_L000025 ' <symbol:24>
+C_s5co1_6174ad7d_N_anO_rI_nf_L000012_24_L000025 ' <symbol:24>
  byte 110
  byte 97
  byte 110
  byte 0
 
  alignl ' align long
-C_s2ko1_616ac8f2_N_anO_rI_nf_L000012_20_L000021 ' <symbol:20>
+C_s5co1_6174ad7d_N_anO_rI_nf_L000012_20_L000021 ' <symbol:20>
  byte 105
  byte 110
  byte 102

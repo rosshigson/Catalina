@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  long ' align long
-C_s35g_616ac8a7_next_L000003 ' <symbol:next>
+C_sfh8_6174ad34_next_L000003 ' <symbol:next>
  long $1
 
 ' Catalina Export rand
@@ -28,7 +28,7 @@ C_rand ' <symbol:rand>
  long $41c64e6d
  mov r22, RI ' reg <- con
  jmp #LODI
- long @C_s35g_616ac8a7_next_L000003
+ long @C_sfh8_6174ad34_next_L000003
  mov r20, RI ' reg <- INDIRU4 addrg
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r20 ' setup r0/r1 (2)
@@ -39,11 +39,11 @@ C_rand ' <symbol:rand>
  mov r22, r0 ' ADDU
  add r22, r20 ' ADDU (3)
  jmp #LODL
- long @C_s35g_616ac8a7_next_L000003
+ long @C_sfh8_6174ad34_next_L000003
  mov BC, r22
  jmp #WLNG ' ASGNU4 addrg reg
  jmp #LODI
- long @C_s35g_616ac8a7_next_L000003
+ long @C_sfh8_6174ad34_next_L000003
  mov r22, RI ' reg <- INDIRU4 addrg
  shr r22, #16 ' RSHU4 coni
  jmp #LODL
@@ -61,7 +61,7 @@ C_rand ' <symbol:rand>
  long ' align long
 C_srand ' <symbol:srand>
  jmp #LODL
- long @C_s35g_616ac8a7_next_L000003
+ long @C_sfh8_6174ad34_next_L000003
  mov BC, r2
  jmp #WLNG ' ASGNU4 addrg reg
 ' C_srand_5 ' (symbol refcount = 0)

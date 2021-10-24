@@ -74,7 +74,7 @@ CC=catalina
 
 %.bin : %.c
 	-@catalina_env
-	$(CC) $(CFLAGS) -o $@ $<
+	$(CC) $(CFLAGS) -p2 -o $@ $<
 
 #
 # Test for P1 

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
-<CodeBlocks_workspace_file>
-	<Workspace title="emm_demos">
-		<Project filename="emm_READ_ME/READ ME.cbp" active="1" />
-		<Project filename="hello_world_emm/hello_world_emm.cbp"/>
-		<Project filename="small_lisp_emm/small_lisp_emm.cbp" />
-		<Project filename="startrek_emm/startrek_emm.cbp" />
-	</Workspace>
-</CodeBlocks_workspace_file>

@@ -1,1 +1,0 @@
-build_sst_proxy TRIBLADEPROP

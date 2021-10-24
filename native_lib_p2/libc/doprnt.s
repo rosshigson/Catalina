@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_s40s_616ac96f_gnum_L000001 ' <symbol:gnum>
+C_sgks_6174adf9_gnum_L000001 ' <symbol:gnum>
  PRIMITIVE(#PSHM)
  long $fa8000 ' save registers
  mov r23, r4 ' reg var <- reg arg
@@ -15,7 +15,7 @@ C_s40s_616ac96f_gnum_L000001 ' <symbol:gnum>
  mov r19, r2 ' reg var <- reg arg
  rdbyte r22, r23 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #42 wz
- if_nz jmp #\C_s40s_616ac96f_gnum_L000001_3 ' NEI4
+ if_nz jmp #\C_sgks_6174adf9_gnum_L000001_3 ' NEI4
  rdlong r22, r19 ' reg <- INDIRP4 reg
  adds r22, #4 ' ADDP4 coni
  wrlong r22, r19 ' ASGNP4 reg reg
@@ -24,11 +24,11 @@ C_s40s_616ac96f_gnum_L000001 ' <symbol:gnum>
  rdlong r22, r22 ' reg <- INDIRI4 reg
  wrlong r22, r21 ' ASGNI4 reg reg
  adds r23, #1 ' ADDP4 coni
- jmp #\@C_s40s_616ac96f_gnum_L000001_4 ' JUMPV addrg
-C_s40s_616ac96f_gnum_L000001_3
+ jmp #\@C_sgks_6174adf9_gnum_L000001_4 ' JUMPV addrg
+C_sgks_6174adf9_gnum_L000001_3
  mov r17, #0 ' reg <- coni
- jmp #\@C_s40s_616ac96f_gnum_L000001_6 ' JUMPV addrg
-C_s40s_616ac96f_gnum_L000001_5
+ jmp #\@C_sgks_6174adf9_gnum_L000001_6 ' JUMPV addrg
+C_sgks_6174adf9_gnum_L000001_5
  mov r22, #10 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
@@ -41,25 +41,25 @@ C_s40s_616ac96f_gnum_L000001_5
  mov r17, r0 ' ADDI/P
  adds r17, r15 ' ADDI/P (3)
  adds r23, #1 ' ADDP4 coni
-C_s40s_616ac96f_gnum_L000001_6
+C_sgks_6174adf9_gnum_L000001_6
  rdbyte r22, r23 ' reg <- CVUI4 INDIRU1 reg
  subs r22, #48 ' SUBI4 coni
  mov r15, r22 ' CVI, CVU or LOAD
  cmps r22,  #0 wcz
- if_b jmp #\C_s40s_616ac96f_gnum_L000001_8 ' LTI4
+ if_b jmp #\C_sgks_6174adf9_gnum_L000001_8 ' LTI4
  cmps r15,  #9 wcz
- if_be jmp #\C_s40s_616ac96f_gnum_L000001_5 ' LEI4
-C_s40s_616ac96f_gnum_L000001_8
+ if_be jmp #\C_sgks_6174adf9_gnum_L000001_5 ' LEI4
+C_sgks_6174adf9_gnum_L000001_8
  wrlong r17, r21 ' ASGNI4 reg reg
-C_s40s_616ac96f_gnum_L000001_4
+C_sgks_6174adf9_gnum_L000001_4
  mov r0, r23 ' CVI, CVU or LOAD
-' C_s40s_616ac96f_gnum_L000001_2 ' (symbol refcount = 0)
+' C_sgks_6174adf9_gnum_L000001_2 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  PRIMITIVE(#RETN)
 
 
  alignl ' align long
-C_s40s1_616ac96f_o_print_L000009 ' <symbol:o_print>
+C_sgks1_6174adf9_o_print_L000009 ' <symbol:o_print>
  PRIMITIVE(#NEWF)
  sub SP, #12
  PRIMITIVE(#PSHM)
@@ -76,16 +76,16 @@ C_s40s1_616ac96f_o_print_L000009 ' <symbol:o_print>
  and r13, #96 ' BANDI4 coni
  mov r22, #32 ' reg <- coni
  cmps r13, r22 wz
- if_z jmp #\C_s40s1_616ac96f_o_print_L000009_14 ' EQI4
+ if_z jmp #\C_sgks1_6174adf9_o_print_L000009_14 ' EQI4
  cmps r13, r22 wcz
- if_b jmp #\C_s40s1_616ac96f_o_print_L000009_11 ' LTI4
-' C_s40s1_616ac96f_o_print_L000009_22 ' (symbol refcount = 0)
+ if_b jmp #\C_sgks1_6174adf9_o_print_L000009_11 ' LTI4
+' C_sgks1_6174adf9_o_print_L000009_22 ' (symbol refcount = 0)
  cmps r13,  #64 wz
- if_z jmp #\C_s40s1_616ac96f_o_print_L000009_17 ' EQI4
- jmp #\@C_s40s1_616ac96f_o_print_L000009_11 ' JUMPV addrg
-C_s40s1_616ac96f_o_print_L000009_14
+ if_z jmp #\C_sgks1_6174adf9_o_print_L000009_17 ' EQI4
+ jmp #\@C_sgks1_6174adf9_o_print_L000009_11 ' JUMPV addrg
+C_sgks1_6174adf9_o_print_L000009_14
  cmps r17,  #0 wz
- if_z jmp #\C_s40s1_616ac96f_o_print_L000009_15 ' EQI4
+ if_z jmp #\C_sgks1_6174adf9_o_print_L000009_15 ' EQI4
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -100,8 +100,8 @@ C_s40s1_616ac96f_o_print_L000009_14
  mov RI, FP
  sub RI, #-(-8)
  wrlong r22, RI ' ASGNI4 addrli reg
- jmp #\@C_s40s1_616ac96f_o_print_L000009_12 ' JUMPV addrg
-C_s40s1_616ac96f_o_print_L000009_15
+ jmp #\@C_sgks1_6174adf9_o_print_L000009_12 ' JUMPV addrg
+C_sgks1_6174adf9_o_print_L000009_15
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -115,10 +115,10 @@ C_s40s1_616ac96f_o_print_L000009_15
  mov RI, FP
  sub RI, #-(-4)
  wrlong r22, RI ' ASGNU4 addrli reg
- jmp #\@C_s40s1_616ac96f_o_print_L000009_12 ' JUMPV addrg
-C_s40s1_616ac96f_o_print_L000009_17
+ jmp #\@C_sgks1_6174adf9_o_print_L000009_12 ' JUMPV addrg
+C_sgks1_6174adf9_o_print_L000009_17
  cmps r17,  #0 wz
- if_z jmp #\C_s40s1_616ac96f_o_print_L000009_18 ' EQI4
+ if_z jmp #\C_sgks1_6174adf9_o_print_L000009_18 ' EQI4
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -131,8 +131,8 @@ C_s40s1_616ac96f_o_print_L000009_17
  mov RI, FP
  sub RI, #-(-8)
  wrlong r22, RI ' ASGNI4 addrli reg
- jmp #\@C_s40s1_616ac96f_o_print_L000009_12 ' JUMPV addrg
-C_s40s1_616ac96f_o_print_L000009_18
+ jmp #\@C_sgks1_6174adf9_o_print_L000009_12 ' JUMPV addrg
+C_sgks1_6174adf9_o_print_L000009_18
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -145,10 +145,10 @@ C_s40s1_616ac96f_o_print_L000009_18
  mov RI, FP
  sub RI, #-(-4)
  wrlong r22, RI ' ASGNU4 addrli reg
- jmp #\@C_s40s1_616ac96f_o_print_L000009_12 ' JUMPV addrg
-C_s40s1_616ac96f_o_print_L000009_11
+ jmp #\@C_sgks1_6174adf9_o_print_L000009_12 ' JUMPV addrg
+C_sgks1_6174adf9_o_print_L000009_11
  cmps r17,  #0 wz
- if_z jmp #\C_s40s1_616ac96f_o_print_L000009_20 ' EQI4
+ if_z jmp #\C_sgks1_6174adf9_o_print_L000009_20 ' EQI4
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -161,8 +161,8 @@ C_s40s1_616ac96f_o_print_L000009_11
  mov RI, FP
  sub RI, #-(-8)
  wrlong r22, RI ' ASGNI4 addrli reg
- jmp #\@C_s40s1_616ac96f_o_print_L000009_12 ' JUMPV addrg
-C_s40s1_616ac96f_o_print_L000009_20
+ jmp #\@C_sgks1_6174adf9_o_print_L000009_12 ' JUMPV addrg
+C_sgks1_6174adf9_o_print_L000009_20
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -175,14 +175,14 @@ C_s40s1_616ac96f_o_print_L000009_20
  mov RI, FP
  sub RI, #-(-4)
  wrlong r22, RI ' ASGNU4 addrli reg
-C_s40s1_616ac96f_o_print_L000009_12
+C_sgks1_6174adf9_o_print_L000009_12
  cmps r17,  #0 wz
- if_z jmp #\C_s40s1_616ac96f_o_print_L000009_23 ' EQI4
+ if_z jmp #\C_sgks1_6174adf9_o_print_L000009_23 ' EQI4
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #0 wcz
- if_ae jmp #\C_s40s1_616ac96f_o_print_L000009_25 ' GEI4
+ if_ae jmp #\C_sgks1_6174adf9_o_print_L000009_25 ' GEI4
  mov r22, r23 ' CVI, CVU or LOAD
  mov r23, r22
  adds r23, #1 ' ADDP4 coni
@@ -195,86 +195,86 @@ C_s40s1_616ac96f_o_print_L000009_12
  mov RI, FP
  sub RI, #-(-8)
  wrlong r22, RI ' ASGNI4 addrli reg
- jmp #\@C_s40s1_616ac96f_o_print_L000009_26 ' JUMPV addrg
-C_s40s1_616ac96f_o_print_L000009_25
+ jmp #\@C_sgks1_6174adf9_o_print_L000009_26 ' JUMPV addrg
+C_sgks1_6174adf9_o_print_L000009_25
  mov r22, FP
  add r22, #12 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 reg
  and r22, #2 ' BANDI4 coni
  cmps r22,  #0 wz
- if_z jmp #\C_s40s1_616ac96f_o_print_L000009_27 ' EQI4
+ if_z jmp #\C_sgks1_6174adf9_o_print_L000009_27 ' EQI4
  mov r22, r23 ' CVI, CVU or LOAD
  mov r23, r22
  adds r23, #1 ' ADDP4 coni
  mov r20, #43 ' reg <- coni
  wrbyte r20, r22 ' ASGNU1 reg reg
- jmp #\@C_s40s1_616ac96f_o_print_L000009_28 ' JUMPV addrg
-C_s40s1_616ac96f_o_print_L000009_27
+ jmp #\@C_sgks1_6174adf9_o_print_L000009_28 ' JUMPV addrg
+C_sgks1_6174adf9_o_print_L000009_27
  mov r22, FP
  add r22, #12 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 reg
  and r22, #4 ' BANDI4 coni
  cmps r22,  #0 wz
- if_z jmp #\C_s40s1_616ac96f_o_print_L000009_29 ' EQI4
+ if_z jmp #\C_sgks1_6174adf9_o_print_L000009_29 ' EQI4
  mov r22, r23 ' CVI, CVU or LOAD
  mov r23, r22
  adds r23, #1 ' ADDP4 coni
  mov r20, #32 ' reg <- coni
  wrbyte r20, r22 ' ASGNU1 reg reg
-C_s40s1_616ac96f_o_print_L000009_29
-C_s40s1_616ac96f_o_print_L000009_28
-C_s40s1_616ac96f_o_print_L000009_26
+C_sgks1_6174adf9_o_print_L000009_29
+C_sgks1_6174adf9_o_print_L000009_28
+C_sgks1_6174adf9_o_print_L000009_26
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
  mov RI, FP
  sub RI, #-(-4)
  wrlong r22, RI ' ASGNU4 addrli reg
-C_s40s1_616ac96f_o_print_L000009_23
+C_sgks1_6174adf9_o_print_L000009_23
  mov r22, FP
  add r22, #12 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 reg
  and r22, #8 ' BANDI4 coni
  cmps r22,  #0 wz
- if_z jmp #\C_s40s1_616ac96f_o_print_L000009_31 ' EQI4
+ if_z jmp #\C_sgks1_6174adf9_o_print_L000009_31 ' EQI4
  mov r22, r21 ' CVUI
  and r22, cviu_m1 ' zero extend
  cmps r22,  #111 wz
- if_nz jmp #\C_s40s1_616ac96f_o_print_L000009_31 ' NEI4
+ if_nz jmp #\C_sgks1_6174adf9_o_print_L000009_31 ' NEI4
  mov r22, r23 ' CVI, CVU or LOAD
  mov r23, r22
  adds r23, #1 ' ADDP4 coni
  mov r20, #48 ' reg <- coni
  wrbyte r20, r22 ' ASGNU1 reg reg
-C_s40s1_616ac96f_o_print_L000009_31
+C_sgks1_6174adf9_o_print_L000009_31
  mov r22, FP
  sub r22, #-(-4) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRU4 reg
  cmp r22,  #0 wz
- if_nz jmp #\C_s40s1_616ac96f_o_print_L000009_33  ' NEU4
+ if_nz jmp #\C_sgks1_6174adf9_o_print_L000009_33  ' NEU4
  cmps r19,  #0 wz
- if_nz jmp #\C_s40s1_616ac96f_o_print_L000009_34 ' NEI4
+ if_nz jmp #\C_sgks1_6174adf9_o_print_L000009_34 ' NEI4
  mov r0, r23 ' CVI, CVU or LOAD
- jmp #\@C_s40s1_616ac96f_o_print_L000009_10 ' JUMPV addrg
-C_s40s1_616ac96f_o_print_L000009_33
+ jmp #\@C_sgks1_6174adf9_o_print_L000009_10 ' JUMPV addrg
+C_sgks1_6174adf9_o_print_L000009_33
  mov r22, FP
  add r22, #12 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 reg
  and r22, #8 ' BANDI4 coni
  cmps r22,  #0 wz
- if_z jmp #\C_s40s1_616ac96f_o_print_L000009_40 ' EQI4
+ if_z jmp #\C_sgks1_6174adf9_o_print_L000009_40 ' EQI4
  mov r22, r21 ' CVUI
  and r22, cviu_m1 ' zero extend
  cmps r22,  #120 wz
- if_z jmp #\C_s40s1_616ac96f_o_print_L000009_39 ' EQI4
+ if_z jmp #\C_sgks1_6174adf9_o_print_L000009_39 ' EQI4
  cmps r22,  #88 wz
- if_z jmp #\C_s40s1_616ac96f_o_print_L000009_39 ' EQI4
-C_s40s1_616ac96f_o_print_L000009_40
+ if_z jmp #\C_sgks1_6174adf9_o_print_L000009_39 ' EQI4
+C_sgks1_6174adf9_o_print_L000009_40
  mov r22, r21 ' CVUI
  and r22, cviu_m1 ' zero extend
  cmps r22,  #112 wz
- if_nz jmp #\C_s40s1_616ac96f_o_print_L000009_37 ' NEI4
-C_s40s1_616ac96f_o_print_L000009_39
+ if_nz jmp #\C_sgks1_6174adf9_o_print_L000009_37 ' NEI4
+C_sgks1_6174adf9_o_print_L000009_39
  mov r22, r23 ' CVI, CVU or LOAD
  mov r23, r22
  adds r23, #1 ' ADDP4 coni
@@ -286,74 +286,74 @@ C_s40s1_616ac96f_o_print_L000009_39
  mov r20, r21 ' CVUI
  and r20, cviu_m1 ' zero extend
  cmps r20,  #88 wz
- if_nz jmp #\C_s40s1_616ac96f_o_print_L000009_42 ' NEI4
+ if_nz jmp #\C_sgks1_6174adf9_o_print_L000009_42 ' NEI4
  mov r11, #88 ' reg <- coni
- jmp #\@C_s40s1_616ac96f_o_print_L000009_43 ' JUMPV addrg
-C_s40s1_616ac96f_o_print_L000009_42
+ jmp #\@C_sgks1_6174adf9_o_print_L000009_43 ' JUMPV addrg
+C_sgks1_6174adf9_o_print_L000009_42
  mov r11, #120 ' reg <- coni
-C_s40s1_616ac96f_o_print_L000009_43
+C_sgks1_6174adf9_o_print_L000009_43
  mov r20, r11 ' CVI, CVU or LOAD
  wrbyte r20, r22 ' ASGNU1 reg reg
-C_s40s1_616ac96f_o_print_L000009_37
-C_s40s1_616ac96f_o_print_L000009_34
+C_sgks1_6174adf9_o_print_L000009_37
+C_sgks1_6174adf9_o_print_L000009_34
  mov r11, r21 ' CVUI
  and r11, cviu_m1 ' zero extend
  mov r22, #105 ' reg <- coni
  cmps r11, r22 wz
- if_z jmp #\C_s40s1_616ac96f_o_print_L000009_49 ' EQI4
+ if_z jmp #\C_sgks1_6174adf9_o_print_L000009_49 ' EQI4
  cmps r11, r22 wcz
- if_a jmp #\C_s40s1_616ac96f_o_print_L000009_52 ' GTI4
-' C_s40s1_616ac96f_o_print_L000009_51 ' (symbol refcount = 0)
+ if_a jmp #\C_sgks1_6174adf9_o_print_L000009_52 ' GTI4
+' C_sgks1_6174adf9_o_print_L000009_51 ' (symbol refcount = 0)
  mov r22, #88 ' reg <- coni
  cmps r11, r22 wz
- if_z jmp #\C_s40s1_616ac96f_o_print_L000009_50 ' EQI4
+ if_z jmp #\C_sgks1_6174adf9_o_print_L000009_50 ' EQI4
  cmps r11, r22 wcz
- if_b jmp #\C_s40s1_616ac96f_o_print_L000009_44 ' LTI4
-' C_s40s1_616ac96f_o_print_L000009_53 ' (symbol refcount = 0)
+ if_b jmp #\C_sgks1_6174adf9_o_print_L000009_44 ' LTI4
+' C_sgks1_6174adf9_o_print_L000009_53 ' (symbol refcount = 0)
  cmps r11,  #98 wz
- if_z jmp #\C_s40s1_616ac96f_o_print_L000009_47 ' EQI4
+ if_z jmp #\C_sgks1_6174adf9_o_print_L000009_47 ' EQI4
  cmps r11,  #100 wz
- if_z jmp #\C_s40s1_616ac96f_o_print_L000009_49 ' EQI4
- jmp #\@C_s40s1_616ac96f_o_print_L000009_44 ' JUMPV addrg
-C_s40s1_616ac96f_o_print_L000009_52
+ if_z jmp #\C_sgks1_6174adf9_o_print_L000009_49 ' EQI4
+ jmp #\@C_sgks1_6174adf9_o_print_L000009_44 ' JUMPV addrg
+C_sgks1_6174adf9_o_print_L000009_52
  mov r22, #111 ' reg <- coni
  cmps r11, r22 wz
- if_z jmp #\C_s40s1_616ac96f_o_print_L000009_48 ' EQI4
+ if_z jmp #\C_sgks1_6174adf9_o_print_L000009_48 ' EQI4
  cmps r11,  #112 wz
- if_z jmp #\C_s40s1_616ac96f_o_print_L000009_50 ' EQI4
+ if_z jmp #\C_sgks1_6174adf9_o_print_L000009_50 ' EQI4
  cmps r11, r22 wcz
- if_b jmp #\C_s40s1_616ac96f_o_print_L000009_44 ' LTI4
-' C_s40s1_616ac96f_o_print_L000009_54 ' (symbol refcount = 0)
+ if_b jmp #\C_sgks1_6174adf9_o_print_L000009_44 ' LTI4
+' C_sgks1_6174adf9_o_print_L000009_54 ' (symbol refcount = 0)
  cmps r11,  #117 wz
- if_z jmp #\C_s40s1_616ac96f_o_print_L000009_49 ' EQI4
+ if_z jmp #\C_sgks1_6174adf9_o_print_L000009_49 ' EQI4
  cmps r11,  #120 wz
- if_z jmp #\C_s40s1_616ac96f_o_print_L000009_50 ' EQI4
- jmp #\@C_s40s1_616ac96f_o_print_L000009_44 ' JUMPV addrg
-C_s40s1_616ac96f_o_print_L000009_47
+ if_z jmp #\C_sgks1_6174adf9_o_print_L000009_50 ' EQI4
+ jmp #\@C_sgks1_6174adf9_o_print_L000009_44 ' JUMPV addrg
+C_sgks1_6174adf9_o_print_L000009_47
  mov r22, #2 ' reg <- coni
  mov RI, FP
  sub RI, #-(-12)
  wrlong r22, RI ' ASGNI4 addrli reg
- jmp #\@C_s40s1_616ac96f_o_print_L000009_45 ' JUMPV addrg
-C_s40s1_616ac96f_o_print_L000009_48
+ jmp #\@C_sgks1_6174adf9_o_print_L000009_45 ' JUMPV addrg
+C_sgks1_6174adf9_o_print_L000009_48
  mov r22, #8 ' reg <- coni
  mov RI, FP
  sub RI, #-(-12)
  wrlong r22, RI ' ASGNI4 addrli reg
- jmp #\@C_s40s1_616ac96f_o_print_L000009_45 ' JUMPV addrg
-C_s40s1_616ac96f_o_print_L000009_49
+ jmp #\@C_sgks1_6174adf9_o_print_L000009_45 ' JUMPV addrg
+C_sgks1_6174adf9_o_print_L000009_49
  mov r22, #10 ' reg <- coni
  mov RI, FP
  sub RI, #-(-12)
  wrlong r22, RI ' ASGNI4 addrli reg
- jmp #\@C_s40s1_616ac96f_o_print_L000009_45 ' JUMPV addrg
-C_s40s1_616ac96f_o_print_L000009_50
+ jmp #\@C_sgks1_6174adf9_o_print_L000009_45 ' JUMPV addrg
+C_sgks1_6174adf9_o_print_L000009_50
  mov r22, #16 ' reg <- coni
  mov RI, FP
  sub RI, #-(-12)
  wrlong r22, RI ' ASGNI4 addrli reg
-C_s40s1_616ac96f_o_print_L000009_44
-C_s40s1_616ac96f_o_print_L000009_45
+C_sgks1_6174adf9_o_print_L000009_44
+C_sgks1_6174adf9_o_print_L000009_45
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov RI, FP
@@ -371,9 +371,9 @@ C_s40s1_616ac96f_o_print_L000009_45
  mov r22, r21 ' CVUI
  and r22, cviu_m1 ' zero extend
  cmps r22,  #88 wz
- if_nz jmp #\C_s40s1_616ac96f_o_print_L000009_55 ' NEI4
- jmp #\@C_s40s1_616ac96f_o_print_L000009_58 ' JUMPV addrg
-C_s40s1_616ac96f_o_print_L000009_57
+ if_nz jmp #\C_sgks1_6174adf9_o_print_L000009_55 ' NEI4
+ jmp #\@C_sgks1_6174adf9_o_print_L000009_58 ' JUMPV addrg
+C_sgks1_6174adf9_o_print_L000009_57
  rdbyte r2, r15 ' reg <- CVUI4 INDIRU1 reg
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
@@ -381,14 +381,14 @@ C_s40s1_616ac96f_o_print_L000009_57
  mov r22, r0 ' CVI, CVU or LOAD
  wrbyte r22, r15 ' ASGNU1 reg reg
  adds r15, #1 ' ADDP4 coni
-C_s40s1_616ac96f_o_print_L000009_58
+C_sgks1_6174adf9_o_print_L000009_58
  mov r22, r15 ' CVI, CVU or LOAD
  mov r20, r23 ' CVI, CVU or LOAD
  cmp r22, r20 wz
- if_nz jmp #\C_s40s1_616ac96f_o_print_L000009_57  ' NEU4
-C_s40s1_616ac96f_o_print_L000009_55
+ if_nz jmp #\C_sgks1_6174adf9_o_print_L000009_57  ' NEU4
+C_sgks1_6174adf9_o_print_L000009_55
  mov r0, r23 ' CVI, CVU or LOAD
-C_s40s1_616ac96f_o_print_L000009_10
+C_sgks1_6174adf9_o_print_L000009_10
  PRIMITIVE(#POPM) ' restore registers
  add SP, #12 ' framesize
  PRIMITIVE(#RETF)
@@ -515,7 +515,7 @@ C__doprnt_72
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s40s_616ac96f_gnum_L000001
+ long @C_sgks_6174adf9_gnum_L000001
  add SP, #8 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -541,7 +541,7 @@ C__doprnt_83
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  PRIMITIVE(#CALA)
- long @C_s40s_616ac96f_gnum_L000001
+ long @C_sgks_6174adf9_gnum_L000001
  add SP, #8 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, FP
@@ -888,7 +888,7 @@ C__doprnt_131
  mov BC, #24 ' arg size, rpsize = 0, spsize = 24
  add SP, #4 ' correct for new kernel !!! 
  PRIMITIVE(#CALA)
- long @C_s40s1_616ac96f_o_print_L000009
+ long @C_sgks1_6174adf9_o_print_L000009
  add SP, #20 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
  jmp #\@C__doprnt_106 ' JUMPV addrg
@@ -927,7 +927,7 @@ C__doprnt_136
  mov BC, #24 ' arg size, rpsize = 0, spsize = 24
  add SP, #4 ' correct for new kernel !!! 
  PRIMITIVE(#CALA)
- long @C_s40s1_616ac96f_o_print_L000009
+ long @C_sgks1_6174adf9_o_print_L000009
  add SP, #20 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
  jmp #\@C__doprnt_106 ' JUMPV addrg

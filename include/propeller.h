@@ -120,15 +120,31 @@ extern int PASM(const char *code);
 #define WAIT(ticks) _waitcnt((ticks) + _cnt())
 
 //
+// wait functions
+//
+#ifndef __CATALINA_P2
+// on the Propeller 1, there is no _waitx() - just use WAIT
+#define   _waitx(delay) WAIT(delay)
+#endif
+void      _waitus(uint32_t usecs);
+void      _waitms(uint32_t msecs);
+void      _waitsec(uint32_t secs);
+
+//
 // msleep(ticks) : wait for the specified number of milliseconds
 //
-#define msleep(millisecs) WAIT((millisecs)*(_clockfreq()/1000))
+#define msleep(millisecs) _waitms(millisecs)
 
 //
 // sleep(ticks) : wait for the specified number of seconds
 //
-#define sleep(seconds) WAIT((seconds)*_clockfreq())
+#define sleep(seconds) _waitsec(seconds)
 
-
+//
+// include definitions required by spin2cpp (if requested)
+//
+#ifdef __SPIN2CPP__
+#include <spin2cpp.h>
+#endif
 
 #endif

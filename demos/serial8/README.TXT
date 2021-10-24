@@ -19,7 +19,7 @@ For example:
 
    build_all P2_EVAL
 or
-   build_all P2_EDGE NATIVE
+   build_all P2_EDGE COMPACT
 
 The following programs are built: 
 

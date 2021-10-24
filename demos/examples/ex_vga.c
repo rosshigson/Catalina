@@ -7,12 +7,12 @@
  *                                                                            *
  * For example, on the Propeller 1:                                           *
  *                                                                            *
- *    catalina -lci -C HYDRA -C HIRES_VGA test_vga.c                          *
+ *   catalina -lci -C HYDRA -C HIRES_VGA ex_vga.c                             *
  *                                                                            *
  * For example, on the Propeller 2:                                           *
  *                                                                            *
- *    catalina -p2 -lci -C P2_EVAL -C HIRES_VGA -C COLOR_8 test_vga.c         *
- *    catalina -p2 -lci -C P2_EVAL -C LORES_VGA -C COLOR_8 test_vga.c         *
+ *   catalina -p2 -lci -C P2_EVAL -C LORES_VGA -C COLOR_8 ex_vga.c            *
+ *   catalina -p2 -lci -C P2_EVAL -C HIRES_VGA -C COLOR_8 -C MHZ_260 ex_vga.c *
  *                                                                            *
  ******************************************************************************/
 #include <catalina_hmi.h>
