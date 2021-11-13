@@ -1,0 +1,55 @@
+/* 
+ * Created from LMM_library.bin
+ * 
+ * by Spin to C Array Converter, version 4.9
+ */
+
+#define LMM_LUT_LIBRARY_CLOCKFREQ  180000000
+#define LMM_LUT_LIBRARY_CLOCKMODE  0x010C470B
+
+#define LMM_LUT_LIBRARY_ARRAY_TYPE 2 // array contains C blob
+
+#define LMM_LUT_LIBRARY_LAYOUT         0
+
+#define LMM_LUT_LIBRARY_BLOB_SIZE      0x180 // bytes
+#define LMM_LUT_LIBRARY_STACK_SIZE     0x50 // bytes
+#define LMM_LUT_LIBRARY_PROGRAM_SIZE   0x180 // bytes
+#define LMM_LUT_LIBRARY_RUNTIME_SIZE   0x1e0 // bytes
+
+#define LMM_LUT_LIBRARY_INIT_PC        0x0
+#define LMM_LUT_LIBRARY_INIT_SP        0x1dd0
+
+#define LMM_LUT_LIBRARY_CODE_ADDRESS   0x1c00
+#define LMM_LUT_LIBRARY_CNST_ADDRESS   0x1d80
+#define LMM_LUT_LIBRARY_INIT_ADDRESS   0x1d80
+#define LMM_LUT_LIBRARY_DATA_ADDRESS   0x1d80
+
+#define LMM_LUT_LIBRARY_FILE_NAME      "LMM_library.bin"
+
+unsigned long LMM_LUT_LIBRARY_array[] =
+{
+    0xfd106634, 0xfd606618, 0x0d606819, 0xf600aa34, 
+    0xf600ac33, 0xf6406834, 0xf6406633, 0xf560aa56, 
+    0xfda00300, 0xf610ac56, 0xf6806834, 0xf610aa55, 
+    0x06806633, 0xf604ac08, 0xf6106636, 0xcd90003c, 
+    0xf7cc6680, 0x5d900074, 0xf600a652, 0xf604a800, 
+    0xf21ca808, 0x3d9000a0, 0xfb00aa53, 0xf044aa18, 
+    0xf208aa33, 0xad90000c, 0x5104a801, 0x5104a604, 
+    0x5d9fffdc, 0xf6006654, 0xfd900040, 0xf0646601, 
+    0xf1006652, 0xfae06633, 0xf600a633, 0xf044660c, 
+    0xf600a853, 0xf06ca618, 0xad90005c, 0xf600ac54, 
+    0xf044ac08, 0xf7ccac08, 0x5d900008, 0xfd70ac06, 
+    0x3d9ffff8, 0xf5206a4f, 0xf5406a53, 0xf5046607, 
+    0xf0646602, 0xf1006652, 0xfb006633, 0xf7c8664f, 
+    0xad900024, 0xf520664f, 0xfc606a33, 0xfb086c33, 
+    0x5d9ffff8, 0xf1046604, 0xfb006633, 0xf7ccac08, 
+    0xad60ac07, 0xfd64002d, 0xf6646601, 0xfd9fffec, 
+    0xf0646802, 0xff0003df, 0xf10469b0, 0xfb006a34, 
+    0xff007fff, 0xf5046bff, 0xf0646c18, 0xf5406a36, 
+    0xfc606a34, 0x0c606635, 0xfac06c35, 0xfc406c33, 
+    0xf1046601, 0xf1046a01, 0xfb6c69fb, 0xfd64002d, 
+    0xfd606e28, 0xfcf06636, 0xfd9ff470, 0xfd606828, 
+    0xfd406635, 0xfd9ff464, 0xfd70681a, 0xfd60661a, 
+    0xfd9ff458, 0xfd606828, 0xfd106635, 0xfd9ff44c, 
+    0xfb645df3, 0xfb645df5, 0xfb645df7, 0xfd9fffe4
+};

@@ -1,4 +1,4 @@
-Catalina release 4.9.2 is a full release. You can install this over an 
+Catalina release 4.9.3 is a full release. You can install this over an 
 existing version of Catalina, but it is recommended that you instead 
 uninstall any previous Catalina release before installing, or install 
 this release to a different location. 
@@ -17,7 +17,126 @@ If you prefer using a command line, start with
 If you prefer using an Integrated Development Environment, start with:
  
   "Getting Started with the Catalina Geany IDE"
+
+RELEASE 4.9.3
+
+New Functionality
+-----------------
  
+1. You can now define complex Catalina symbol definitions on the command 
+   line to assign a symbol a value (i.e. in addition to simply defining the 
+   symbol itself). This is currently supported only on the Propeller 2 - the
+   Propeller 1 still only supports simply defining such symbols. You must put 
+   the complex symbol definition in double quotes, such as:
+   
+      -C "name=value"
+   
+   Note that defining complex C symbols was already supported using similar
+   syntax (but using the -D command-line option).  
+   
+2. You can now request a specific clock frequency, or specify arbitrary clock 
+   parameters on the command line. This is normally done using the -f, -F 
+   and -E command line options. This is supported on the Propeller 2 only -
+   on the Propeller 1 you must still set the initial clock parameters in the 
+   appropriate <platform>_DEF.inc file (e.g. C3_DEF.inc for the C3 platform).
+
+   The meaning of the new command-line options are as follows:
+   
+      -f requested frequency for which to calculate clock parameters
+      -F xtal (XI) frequency to use in frequency calculation (default 20Mhz)
+      -E error limit for frequency calculation (default 100khz)
+   
+   In most cases, you just use the -f option by itself. Note that 'm' and 'k' 
+   suffix chars (case insensitive) are supported by these options, and mean 
+   to multiply the value specified by 1,000,000 or 1,000 respectively. This
+   means you can say things like:
+
+      -f 260Mhz
+   or
+      -f 123456kHz
+
+   for example:
+
+      catalina hello_world.c -p2 -lc -f300Mhz
+   
+   Specifying a frequency via -f causes Catalina to calculate the clock 
+   parameters required to achieve it, and defines three Catalina symbols if 
+   it is possible to achieve the specified frequency within the error limit. 
+   These symbols are:
+   
+      _CLOCK_XDIV : XI divider (1..64)
+      _CLOCK_MULT : XI multiplier (1..1024)
+      _CLOCK_DIVP : VCO divider (1, or even numbers from 2 to 30)
+   
+   These can also be defined manually, but they will only be used if all 
+   three are defined. The following clock parameters can also be defined:
+
+      _CLOCK_XTAL : XI frequency                   
+      _CLOCK_OSC  : 0=OFF, 1=OSC, 2=15pF, 3=30pF               
+      _CLOCK_SEL  : 0=rcfast, 1=rcslow, 2=XI, 3=PLL
+      _CLOCK_PLL  : 0=PLL off, 1=PLL on
+                   
+   To manually specify these parameters, use complex symbol definitions, which
+   means you need to enclose them in double quotes - e.g:
+
+      -C "_CLOCK_SEL=2"
+   or
+      -C "_CLOCK_XTAL=25000000"
+   or
+      -C "_CLOCK_XDIV=1" -C "_CLOCK_MULT=9" -C "_CLOCK_DIVP=1"
+
+   Note that the following two command-line options have the same effect:
+
+      -C "_CLOCK_XTAL=25000000"
+   and
+      -F 25Mhz
+
+   but that the "25Mhz" notation is not supported by the -C option. This means
+   you CANNOT also say:
+
+      -C "_CLOCK_XTAL=25Mhz"    <-- WRONG!
+
+   The symbols MHZ_260 and MHZ_220 remain supported, but are now translated 
+   internally into -f 260MHz and -f 220MHz options, which will have the same 
+   effect. 
+
+   If conflicting clock parameters are specified, the last one on the command 
+   line will be used. If no clock parameters are specified, or the requested
+   frequency cannot be achieved, the default clock parameters defined for the
+   platform in "catalina_platforms.inc" will be used.
+
+3. The Catalina parallelizer has had a bug fixed by adding new options that 
+   allow better control of the locks used to control access to exclusive code
+   segments - they can now be local (i.e. local to the file in which they are 
+   used) or global (i.e. used across multiple files). This is done by adding a 
+   "lock" and "extern" option to the exclusive and shared pragmas (this is
+   demonstrated in a slightly updated test_6 in the demos\parallelize 
+   directory). See the document "Parallel Processing with Catalina" for
+   more details.
+
+Other Changes
+-------------
+
+1. Improved the timing of interrupts and the use of the ticks value in the 
+   NATIVE version of the multi-threaded kernel for the Propeller 2. Now,
+   interrupts occur about every millisecond irrespective of the value of the 
+   ticks value of the thread. This makes threaded programs more responsive,
+   timing operations more accurate, and means that thread changes take effect
+   sooner - for instance, changing the ticks value will take effect after 
+   about a millisecond, not at the next context switch, which may only occur
+   several seconds later.
+
+2. The _lockclr() function now correctly returns the previous state of the 
+   lock on the Propeller 2 (it already did so on the Propeller 1).
+
+3. Fixed a bug in test_inline_pasm_2.c demo program which meant it would not 
+   work in COMPACT mode.
+
+5. Fixed bugs in various thread functions, which may have led to multithreaded
+   programs deadlocking on the Propeller 2.
+
+6. Various minor improvements to the multithread demo programs.
+
 RELEASE 4.9.2
 
 New Functionality

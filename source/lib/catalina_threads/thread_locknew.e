@@ -15,7 +15,7 @@
 ' int _thread_locknew(void *pool);
 '    allocate a new lock from the pool
 ' on entry:
-'    r2 = pointer to pool (size + 1) bytes
+'    r2 = pointer to pool (size + 5) bytes
 ' on exit:
 '    r0 = lock on success (1 .. size), -1 on failure
 '
@@ -87,7 +87,7 @@ C__thread_locknew
  neg r0, #1             ' return -1 on error
 :thr_lnew_done 
 #ifdef P2
- call #REL_POOL_LOCK    ' release pool lock
+ call #\REL_POOL_LOCK    ' release pool lock
 #else
  lockclr r1             ' release pool lock
 #endif

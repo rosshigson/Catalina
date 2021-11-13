@@ -16,8 +16,8 @@
 
 void main() {
 
-#ifdef _CATALINA_COMPACT
-   PASM(" word I16B_PASM\n alignl")
+#ifdef __CATALINA_COMPACT
+   PASM(" word I16B_PASM\n alignl");
 #endif  
    PASM(" or dira, #1");      // set bit 0 as output (DEBUG LED on Hydra)
    
@@ -25,8 +25,8 @@ void main() {
 
       msleep(500);
 
-#ifdef _CATALINA_COMPACT
-      PASM(" word I16B_PASM\n alignl")
+#ifdef __CATALINA_COMPACT
+      PASM(" word I16B_PASM\n alignl");
 #endif  
       PASM(" xor outa, #1");  // toggle bit 0 (DEBUG LED on Hydra)
 

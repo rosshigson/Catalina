@@ -625,6 +625,48 @@ CON
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 '---------------- default constants (same as P2_EVAL) -------------------------
 
 ' clock configuration constants
@@ -632,26 +674,38 @@ CON
 
 
 
+_XTALFREQ = 20_000_000  ' default crystal frequency
+
+
+' NOTE: _CLOCK_XDIV, _CLOCK_MULT and _CLOCK_DIVP must all be defined,
+'       otherwise the default values will be used - this is normally
+'       accomplished using the -f, -F & -E command-line options. The
+'       final clock frequency will be _XTALFREQ / _XDIV * _XMUL / _XDIVP
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-_XTALFREQ = 20_000_000  ' crystal frequency
 _XDIV     = 4           '\ crystal divider             to give 5.0MHz
 _XMUL     = 72          '| crystal / div * mul         to give 360MHz
 _XDIVP    = 2           '/ crystal / div * mul / divp  to give 180MHz
+
+
+
+
+
 _XOSC     = %10         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
+
+
+
+
 _XSEL     = %11         ' %00=rcfast, %01=rcslow, %10=XI, %11=PLL
+
+
+
+
+
 _XPLL     = 1           ' 0= PLL off, 1=PLL on
 
 
@@ -1412,8 +1466,12 @@ plugin
 
 '-------------------------- Multi-Threading Support ----------------------------
 
+' NMM_isr - check whether we should context switch (and switch if so)
+
 NMM_isr
         stalli
+        getct   ct3
+        addct3  ct3,##180000    ' interrupt every millisec (nominal)
         bith    lockbits,lock wcz    ' have we acquired ...
  if_nz  locktry lock wc              ' ... both intra-cog and inter-cog locks?
  if_nc_and_nz  bitl lockbits,lock    ' true = if_c_and_nz, false = if_nc_or_z
@@ -1424,8 +1482,9 @@ NMM_isr
  if_nz  jmp     #NMM_affine     ' yes - service it
         cmp     t2, TP wz       ' no - is there only one thread executing?
  if_z   jmp     #NMM_unlock     ' yes - unlock and resume
+        djnz    ticks, #NMM_unlock ' no - time to switch?
 NMM_switch
-        mov     t3, t2          ' no - get ...
+        mov     t3, t2          ' yes - get ...
         add     t3, #33*4+1     ' ... affinity byte
         rdbyte  t1, t3          ' ... of proposed next thread
         test    t1, #%11100000 wz ' affinity stop, or thread terminated or completed?
@@ -1453,15 +1512,12 @@ NMM_switch
         mov     t1,TP           ' up date ticks ...
         add     t1,#33*4+2      ' ... with ticks ...
         rdword  ticks,t1        ' ... for current thread ...
-        and     t1,##%11111111111111
-        add     ticks,#1
-        shl     ticks,#14       ' ... corrected for faster 1 !
+        and     t1,##%11111111111111 ' ticks is lower 14 bits
+        add     ticks,#1        ' ensure ticks is not zero
 NMM_unlock
         lockrel lock                 ' release inter-cog lock
         bitl    lockbits,lock        ' release intra-cog lock
 NMM_resume
-        cmp     ticks, #0 wz
-  if_nz addct3  ct3,ticks       ' update ct3 target for next interrupt
         allowi
         reti3                   ' resume execution
 NMM_affine
@@ -1481,15 +1537,15 @@ NMM_affine
         wrlong  t3, req         ' ... request block
         jmp     #NMM_switch     ' now switch to next thread
 NMM_force
-        stalli
-        mov     ticks, #0
+        stalli                  ' disable interrupts
         mov     iret3,PA        ' set up return address as if from interrupt
-        rdlong  t2, TP          ' load next thread pointer
-        rdlong  t1, req wz      ' is there an affinity request oustanding?
+        rdlong  t2, TP wz       ' is there a next thread block pointer?
+ if_z   jmp     #NMM_unlock     ' no - unlock and resume
+        rdlong  t1, req wz      ' yes - is there an affinity request oustanding?
  if_nz  jmp     #NMM_affine     ' yes - service it
-        cmp     t2, TP wz       ' is there only one thread executing?
+        cmp     t2, TP wz       ' no - is there only one thread executing?
  if_nz  jmp     #NMM_switch     ' no - perform context switch
-        jmp     #NMM_unlock     ' yes - unlock, restore C & Z amd resume
+        jmp     #NMM_unlock     ' yes - unlock, restore C & Z and resume
 
 '--------------------- End of NMM Kernel --------------------------------------
 
@@ -1823,9 +1879,9 @@ manB                    long    0
          fit    $1e7
          orgf   $1e7
 
-ticks    long   100<<14         ' time between context switches (~10 ms)
+ticks    long   180000          ' time between context switches (initial value)
 TP       long   0               ' current thread pointer
-lock     long   7               ' lock to use for context switching (default 7)
+lock     long   15              ' lock to use for context switching (default 15)
 lockbits long   0               ' lockbits used to simulate P1-style locks
 
 ' last 5 longs are reserved for debug overlay vectors (or debug LED)
@@ -2018,7 +2074,7 @@ do_copy
 
 
 
-'#line 834 "../../../target_p2/Catalina_NMM_threaded_dynamic.spin2"
+'#line 836 "../../../target_p2/Catalina_NMM_threaded_dynamic.spin2"
 
 '#line 1 "../../../target_p2/Catalina_NMM_kernel_library.inc"
 ' Catalina kernel functions that are specific to the NMM kernels ...
@@ -2035,7 +2091,7 @@ DAT
 
 
 
-'#line 836 "../../../target_p2/Catalina_NMM_threaded_dynamic.spin2"
+'#line 838 "../../../target_p2/Catalina_NMM_threaded_dynamic.spin2"
 
 '#line 1 "../../../target_p2/Catalina_thread_library.inc"
 ' Catalina thread library functions ...
@@ -2047,6 +2103,29 @@ DAT
 
 DAT
 
+' REL_AND_YIELD - release kernel lock, and give up the CPU to another task
+
+REL_AND_YIELD
+        stalli            ' disable interrupts
+        lockrel lock           ' release inter-cog lock
+        bitl    lockbits,lock  ' release intra-cog lock
+        mov     ticks,#1  ' indicate that we are finished processing
+        allowi            ' enable interrupts
+        trgint3           ' trigger a context switch interrupt
+        ret               ' return when we get scheduled again
+
+' TRY_KERNEL_LOCK : try to get kernel lock (specified in lock) - return with
+'                   carry set if successful
+
+TRY_KERNEL_LOCK
+        stalli
+        bith    lockbits,lock wcz    ' have we acquired ...
+ if_nz  locktry lock wc              ' ... both intra-cog and inter-cog locks?
+ if_nc_and_nz  bitl lockbits,lock    ' true = if_c_and_nz, false = if_nc_or_z
+        allowi
+        modc    _c_and_nz wc         ' return c set if c_and_nz
+        ret
+
 ' GET_KERNEL_LOCK : do not return until we get kernel lock (specified in lock)
 
 GET_KERNEL_LOCK
@@ -2054,8 +2133,8 @@ GET_KERNEL_LOCK
         bith    lockbits,lock wcz    ' have we acquired ...
  if_nz  locktry lock wc              ' ... both intra-cog and inter-cog locks?
  if_nc_and_nz  bitl lockbits,lock    ' true = if_c_and_nz, false = if_nc_or_z
- if_nc_or_z    jmp #\GET_KERNEL_LOCK
         allowi
+ if_nc_or_z    jmp #\GET_KERNEL_LOCK
         ret
 
 ' REL_KERNEL_LOCK : release the kernel lock (specified in lock)
@@ -2064,18 +2143,30 @@ REL_KERNEL_LOCK
         stalli
         lockrel lock                 ' release inter-cog lock
         bitl    lockbits,lock        ' release intra-cog lock
-	allowi
+        allowi
+        ret
+
+' TRY_POOL_LOCK : try to get pool lock (specified in lock) - return with
+'                 carry set if successful
+
+TRY_POOL_LOCK
+        stalli
+        bith    lockbits,r1 wcz    ' have we acquired ...
+ if_nz  locktry r1 wc              ' ... both intra-cog and inter-cog locks?
+ if_nc_and_nz  bitl lockbits,r1    ' true = if_c_and_nz, false = if_nc_or_z
+        allowi
+        modc    _c_and_nz wc         ' return c set if c_and_nz
         ret
 
 ' GET_POOL_LOCK : do not return until we get pool lock (specified in r1)
 
 GET_POOL_LOCK
         stalli
-        bith    lockbits,lock wcz    ' have we acquired ...
+        bith    lockbits,r1 wcz      ' have we acquired ...
  if_nz  locktry r1 wc                ' ... both intra-cog and inter-cog locks?
- if_nc_and_nz  bitl lockbits,lock    ' true = if_c_and_nz, false = if_nc_or_z
- if_nc_or_z    jmp #\GET_POOL_LOCK
+ if_nc_and_nz  bitl lockbits,r1      ' true = if_c_and_nz, false = if_nc_or_z
         allowi
+ if_nc_or_z    jmp #\GET_POOL_LOCK
         ret
 
 ' REL_POOL_LOCK : release the pool lock (specified in r1)
@@ -2083,10 +2174,10 @@ GET_POOL_LOCK
 REL_POOL_LOCK
         stalli
         lockrel r1                   ' release inter-cog lock
-        bitl    lockbits,lock        ' release intra-cog lock
-	allowi
+        bitl    lockbits,r1          ' release intra-cog lock
+        allowi
         ret
 
 
 
-'#line 838 "../../../target_p2/Catalina_NMM_threaded_dynamic.spin2"
+'#line 840 "../../../target_p2/Catalina_NMM_threaded_dynamic.spin2"

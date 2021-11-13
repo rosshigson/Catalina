@@ -101,7 +101,7 @@ C__thread_halt
 
 
 
- PRIMITIVE(#BR_B)
+ PRIMITIVE(#JMPA)
  long @C__thread_halt   ' if we get here, try again
 
  PRIMITIVE(#RETN)       ' optimizer needs this

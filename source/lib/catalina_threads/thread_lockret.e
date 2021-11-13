@@ -16,7 +16,7 @@
 '    return a lock to the pool
 ' on entry:
 '    r2 = lock id
-'    r3 = pointer to pool (size + 1) bytes
+'    r3 = pointer to pool (size + 5) bytes
 ' on exit:
 '    r0 = 0 on success, -1 on failure
 '

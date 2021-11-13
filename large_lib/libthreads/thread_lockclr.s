@@ -17,7 +17,7 @@
 '    clear a lock, and return the previous value
 ' on entry:
 '    r2 = lock id
-'    r3 = pointer to pool (size + 1) bytes
+'    r3 = pointer to pool (size + 5) bytes
 ' on exit:
 '    r0 = previous value of lock (0 or 1), or -1 on error
 '

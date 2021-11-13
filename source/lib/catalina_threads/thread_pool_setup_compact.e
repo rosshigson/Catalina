@@ -33,15 +33,19 @@ C__thread_pool_setup
  alignl ' align long
  word I16B_PASM
  alignl ' align long
-   call #GET_POOL_LOCK                      ' get pool lock
+   call #\TRY_POOL_LOCK                      ' did we get pool lock?
+ alignl ' align long
+ long I32_BR_B + @:thr_psetup_locked<<S32    ' yes - return
+ long I32_CALA + @C__thread_yield<<S32       ' no - yield ...
+ long I32_JMPA + @C__thread_pool_setup<<S32  ' ... and then try again
 #else
  alignl ' align long
-:thr_psetup_lock
  word I16B_PASM
  alignl ' align long
-   lockset r1 wc
+   lockset r1 wc                             ' did we get pool lock?
  alignl ' align long
- long I32_BR_B + @:thr_psetup_lock<<S32 ' loop till we get a lock on the pool
+ long I32_BR_B + @C__thread_pool_setup<<S32  ' no - try again
 #endif
+:thr_psetup_locked
  word I16B_RETN
 '

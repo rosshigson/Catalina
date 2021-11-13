@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  long ' align long
-C_sd7g_6174acb7_next_L000003 ' <symbol:next>
+C_shdc_6188be17_next_L000003 ' <symbol:next>
  long $1
 
 ' Catalina Export rand
@@ -25,7 +25,7 @@ C_rand ' <symbol:rand>
  jmp #PSHM
  long $540000 ' save registers
  jmp #LODL
- long @C_sd7g_6174acb7_next_L000003
+ long @C_shdc_6188be17_next_L000003
  mov r22, RI ' reg <- addrg
  jmp #LODL
  long $41c64e6d
@@ -40,7 +40,7 @@ C_rand ' <symbol:rand>
  mov r20, r0 ' ADDU
  add r20, r18 ' ADDU (3)
  jmp #LODL
- long @C_sd7g_6174acb7_next_L000003
+ long @C_shdc_6188be17_next_L000003
  wrlong r20, RI ' ASGNU4 addrg reg
  rdlong r22, r22 ' reg <- INDIRU4 reg
  shr r22, #16 ' RSHU4 coni
@@ -59,7 +59,7 @@ C_rand ' <symbol:rand>
  long ' align long
 C_srand ' <symbol:srand>
  jmp #LODL
- long @C_sd7g_6174acb7_next_L000003
+ long @C_shdc_6188be17_next_L000003
  wrlong r2, RI ' ASGNU4 addrg reg
 ' C_srand_5 ' (symbol refcount = 0)
  jmp #RETN

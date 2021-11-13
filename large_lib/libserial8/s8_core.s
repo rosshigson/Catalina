@@ -11,11 +11,11 @@ DAT ' code segment
 DAT ' initialized data segment
 
  long ' align long
-C_skfs_6174ad41_s8base_L000002 ' <symbol:s8base>
+C_seao_6188bebd_s8base_L000002 ' <symbol:s8base>
  long $0
 
  long ' align long
-C_skfs1_6174ad41_lock_L000003 ' <symbol:lock>
+C_seao1_6188bebd_lock_L000003 ' <symbol:lock>
  long -1
 
 ' Catalina Code
@@ -23,7 +23,7 @@ C_skfs1_6174ad41_lock_L000003 ' <symbol:lock>
 DAT ' code segment
 
  long ' align long
-C_skfs3_6174ad41_pinconfig_L000005 ' <symbol:pinconfig>
+C_seao3_6188bebd_pinconfig_L000005 ' <symbol:pinconfig>
  jmp #NEWF
  sub SP, #4
  jmp #PSHM
@@ -34,7 +34,7 @@ C_skfs3_6174ad41_pinconfig_L000005 ' <symbol:pinconfig>
  mov r17, r2 ' reg var <- reg arg
  cmps r17,  #0 wz
  jmp #BRNZ
- long @C_skfs3_6174ad41_pinconfig_L000005_7 ' NEI4
+ long @C_seao3_6188bebd_pinconfig_L000005_7 ' NEI4
  mov r22, #62 ' reg <- coni
  mov RI, FP
  sub RI, #-(-4)
@@ -43,7 +43,7 @@ C_skfs3_6174ad41_pinconfig_L000005 ' <symbol:pinconfig>
  and r22, #1 ' BANDU4 coni
  cmp r22,  #0 wz
  jmp #BR_Z
- long @C_skfs3_6174ad41_pinconfig_L000005_8 ' EQU4
+ long @C_seao3_6188bebd_pinconfig_L000005_8 ' EQU4
  mov r22, FP
  sub r22, #-(-4) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRU4 regl
@@ -55,8 +55,8 @@ C_skfs3_6174ad41_pinconfig_L000005 ' <symbol:pinconfig>
  sub RI, #-(-4)
  wrlong r22, RI ' ASGNU4 addrli reg
  jmp #JMPA
- long @C_skfs3_6174ad41_pinconfig_L000005_8 ' JUMPV addrg
-C_skfs3_6174ad41_pinconfig_L000005_7
+ long @C_seao3_6188bebd_pinconfig_L000005_8 ' JUMPV addrg
+C_seao3_6188bebd_pinconfig_L000005_7
  mov r22, #124 ' reg <- coni
  mov RI, FP
  sub RI, #-(-4)
@@ -67,14 +67,14 @@ C_skfs3_6174ad41_pinconfig_L000005_7
  and r13, #3 ' BANDU4 coni
  cmps r13,  #0 wz,wc
  jmp #BR_B
- long @C_skfs3_6174ad41_pinconfig_L000005_11 ' LTI4
+ long @C_seao3_6188bebd_pinconfig_L000005_11 ' LTI4
  cmps r13,  #3 wz,wc
  jmp #BR_A
- long @C_skfs3_6174ad41_pinconfig_L000005_11 ' GTI4
+ long @C_seao3_6188bebd_pinconfig_L000005_11 ' GTI4
  mov r22, r13
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_skfs3_6174ad41_pinconfig_L000005_18_L000020
+ long @C_seao3_6188bebd_pinconfig_L000005_18_L000020
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  mov RI, r22
@@ -87,16 +87,16 @@ C_skfs3_6174ad41_pinconfig_L000005_7
 DAT ' const data segment
 
  long ' align long
-C_skfs3_6174ad41_pinconfig_L000005_18_L000020 ' <symbol:18>
- long @C_skfs3_6174ad41_pinconfig_L000005_12
- long @C_skfs3_6174ad41_pinconfig_L000005_15
- long @C_skfs3_6174ad41_pinconfig_L000005_16
- long @C_skfs3_6174ad41_pinconfig_L000005_17
+C_seao3_6188bebd_pinconfig_L000005_18_L000020 ' <symbol:18>
+ long @C_seao3_6188bebd_pinconfig_L000005_12
+ long @C_seao3_6188bebd_pinconfig_L000005_15
+ long @C_seao3_6188bebd_pinconfig_L000005_16
+ long @C_seao3_6188bebd_pinconfig_L000005_17
 
 ' Catalina Code
 
 DAT ' code segment
-C_skfs3_6174ad41_pinconfig_L000005_15
+C_seao3_6188bebd_pinconfig_L000005_15
  mov r22, FP
  sub r22, #-(-4) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRU4 regl
@@ -108,8 +108,8 @@ C_skfs3_6174ad41_pinconfig_L000005_15
  sub RI, #-(-4)
  wrlong r22, RI ' ASGNU4 addrli reg
  jmp #JMPA
- long @C_skfs3_6174ad41_pinconfig_L000005_12 ' JUMPV addrg
-C_skfs3_6174ad41_pinconfig_L000005_16
+ long @C_seao3_6188bebd_pinconfig_L000005_12 ' JUMPV addrg
+C_seao3_6188bebd_pinconfig_L000005_16
  mov r22, FP
  sub r22, #-(-4) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRU4 regl
@@ -121,8 +121,8 @@ C_skfs3_6174ad41_pinconfig_L000005_16
  sub RI, #-(-4)
  wrlong r22, RI ' ASGNU4 addrli reg
  jmp #JMPA
- long @C_skfs3_6174ad41_pinconfig_L000005_12 ' JUMPV addrg
-C_skfs3_6174ad41_pinconfig_L000005_17
+ long @C_seao3_6188bebd_pinconfig_L000005_12 ' JUMPV addrg
+C_seao3_6188bebd_pinconfig_L000005_17
  mov r22, FP
  sub r22, #-(-4) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRU4 regl
@@ -133,9 +133,9 @@ C_skfs3_6174ad41_pinconfig_L000005_17
  mov RI, FP
  sub RI, #-(-4)
  wrlong r22, RI ' ASGNU4 addrli reg
-C_skfs3_6174ad41_pinconfig_L000005_11
-C_skfs3_6174ad41_pinconfig_L000005_12
-C_skfs3_6174ad41_pinconfig_L000005_8
+C_seao3_6188bebd_pinconfig_L000005_11
+C_seao3_6188bebd_pinconfig_L000005_12
+C_seao3_6188bebd_pinconfig_L000005_8
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
  long @C__clockfreq ' CALL addrg
@@ -168,14 +168,14 @@ C_skfs3_6174ad41_pinconfig_L000005_8
  jmp #CALA
  long @C__pinstart
  add SP, #12 ' CALL addrg
-' C_skfs3_6174ad41_pinconfig_L000005_6 ' (symbol refcount = 0)
+' C_seao3_6188bebd_pinconfig_L000005_6 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
 
 
  long ' align long
-C_skfs6_6174ad41_p_config_L000021 ' <symbol:p_config>
+C_seao6_6188bebd_p_config_L000021 ' <symbol:p_config>
  jmp #NEWF
  jmp #PSHM
  long $500000 ' save registers
@@ -183,7 +183,7 @@ C_skfs6_6174ad41_p_config_L000021 ' <symbol:p_config>
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 regl
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  mov r20, #0 ' reg <- coni
@@ -195,7 +195,7 @@ C_skfs6_6174ad41_p_config_L000021 ' <symbol:p_config>
  rdlong r22, r22 ' reg <- INDIRI4 regl
  shl r22, #4 ' LSHI4 coni
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r20, #16 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
@@ -207,7 +207,7 @@ C_skfs6_6174ad41_p_config_L000021 ' <symbol:p_config>
  rdlong r22, r22 ' reg <- INDIRI4 regl
  shl r22, #4 ' LSHI4 coni
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r20, #20 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
@@ -219,7 +219,7 @@ C_skfs6_6174ad41_p_config_L000021 ' <symbol:p_config>
  rdlong r22, r22 ' reg <- INDIRI4 regl
  shl r22, #4 ' LSHI4 coni
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r20, #24 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
@@ -231,7 +231,7 @@ C_skfs6_6174ad41_p_config_L000021 ' <symbol:p_config>
  rdlong r22, r22 ' reg <- INDIRI4 regl
  shl r22, #4 ' LSHI4 coni
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r20, #28 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
@@ -242,7 +242,7 @@ C_skfs6_6174ad41_p_config_L000021 ' <symbol:p_config>
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 regl
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  mov r20, FP
@@ -251,38 +251,38 @@ C_skfs6_6174ad41_p_config_L000021 ' <symbol:p_config>
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
-' C_skfs6_6174ad41_p_config_L000021_22 ' (symbol refcount = 0)
+' C_seao6_6188bebd_p_config_L000021_22 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  long ' align long
-C_skfs7_6174ad41_autoinitialize_L000023 ' <symbol:autoinitialize>
+C_seao7_6188bebd_autoinitialize_L000023 ' <symbol:autoinitialize>
  jmp #PSHM
  long $fea800 ' save registers
  jmp #LODL
- long @C_skfs2_6174ad41_txrxbuff_L000004
+ long @C_seao2_6188bebd_txrxbuff_L000004
  mov r22, RI ' reg <- addrg
  mov r19, r22 ' CVI, CVU or LOAD
  jmp #LODL
- long @C_skfs2_6174ad41_txrxbuff_L000004
+ long @C_seao2_6188bebd_txrxbuff_L000004
  mov r22, RI ' reg <- addrg
  mov r17, r22
  add r17, #64 ' ADDU4 coni
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r22, RI ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  jmp #BR_Z
- long @C_skfs7_6174ad41_autoinitialize_L000023_25 ' EQU4
+ long @C_seao7_6188bebd_autoinitialize_L000023_25 ' EQU4
  mov r15, #0 ' reg <- coni
-C_skfs7_6174ad41_autoinitialize_L000023_27
+C_seao7_6188bebd_autoinitialize_L000023_27
  mov r21, r15
  shl r21, #1 ' LSHI4 coni
  mov r22, r21
  shl r22, #4 ' LSHI4 coni
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r20, #16 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
@@ -292,14 +292,14 @@ C_skfs7_6174ad41_autoinitialize_L000023_27
  mov r23, r22 ' CVI, CVU or LOAD
  cmps r23,  #0 wz,wc
  jmp #BR_B
- long @C_skfs7_6174ad41_autoinitialize_L000023_31 ' LTI4
+ long @C_seao7_6188bebd_autoinitialize_L000023_31 ' LTI4
  cmps r23,  #63 wz,wc
  jmp #BR_A
- long @C_skfs7_6174ad41_autoinitialize_L000023_31 ' GTI4
+ long @C_seao7_6188bebd_autoinitialize_L000023_31 ' GTI4
  mov r22, r21
  shl r22, #4 ' LSHI4 coni
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r20, RI ' reg <- INDIRP4 addrg
  mov r18, r20
  adds r18, #20 ' ADDP4 coni
@@ -319,7 +319,7 @@ C_skfs7_6174ad41_autoinitialize_L000023_27
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_skfs3_6174ad41_pinconfig_L000005
+ long @C_seao3_6188bebd_pinconfig_L000005
  add SP, #12 ' CALL addrg
  mov r2, r19
  add r2, #64 ' ADDU4 coni
@@ -336,14 +336,14 @@ C_skfs7_6174ad41_autoinitialize_L000023_27
  mov BC, #24 ' arg size, rpsize = 0, spsize = 24
  add SP, #4 ' correct for new kernel !!! 
  jmp #CALA
- long @C_skfs6_6174ad41_p_config_L000021
+ long @C_seao6_6188bebd_p_config_L000021
  add SP, #20 ' CALL addrg
-C_skfs7_6174ad41_autoinitialize_L000023_31
+C_seao7_6188bebd_autoinitialize_L000023_31
  adds r21, #1 ' ADDI4 coni
  mov r22, r21
  shl r22, #4 ' LSHI4 coni
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r20, #16 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
@@ -353,14 +353,14 @@ C_skfs7_6174ad41_autoinitialize_L000023_31
  mov r23, r22 ' CVI, CVU or LOAD
  cmps r23,  #0 wz,wc
  jmp #BR_B
- long @C_skfs7_6174ad41_autoinitialize_L000023_33 ' LTI4
+ long @C_seao7_6188bebd_autoinitialize_L000023_33 ' LTI4
  cmps r23,  #63 wz,wc
  jmp #BR_A
- long @C_skfs7_6174ad41_autoinitialize_L000023_33 ' GTI4
+ long @C_seao7_6188bebd_autoinitialize_L000023_33 ' GTI4
  mov r22, r21
  shl r22, #4 ' LSHI4 coni
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r20, RI ' reg <- INDIRP4 addrg
  mov r18, r20
  adds r18, #20 ' ADDP4 coni
@@ -380,7 +380,7 @@ C_skfs7_6174ad41_autoinitialize_L000023_31
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_skfs3_6174ad41_pinconfig_L000005
+ long @C_seao3_6188bebd_pinconfig_L000005
  add SP, #12 ' CALL addrg
  mov r2, r17
  add r2, #64 ' ADDU4 coni
@@ -397,34 +397,34 @@ C_skfs7_6174ad41_autoinitialize_L000023_31
  mov BC, #24 ' arg size, rpsize = 0, spsize = 24
  add SP, #4 ' correct for new kernel !!! 
  jmp #CALA
- long @C_skfs6_6174ad41_p_config_L000021
+ long @C_seao6_6188bebd_p_config_L000021
  add SP, #20 ' CALL addrg
-C_skfs7_6174ad41_autoinitialize_L000023_33
+C_seao7_6188bebd_autoinitialize_L000023_33
  add r19, #128 ' ADDU4 coni
  add r17, #128 ' ADDU4 coni
-' C_skfs7_6174ad41_autoinitialize_L000023_28 ' (symbol refcount = 0)
+' C_seao7_6188bebd_autoinitialize_L000023_28 ' (symbol refcount = 0)
  adds r15, #1 ' ADDI4 coni
  cmps r15,  #8 wz,wc
  jmp #BR_B
- long @C_skfs7_6174ad41_autoinitialize_L000023_27 ' LTI4
-C_skfs7_6174ad41_autoinitialize_L000023_25
-' C_skfs7_6174ad41_autoinitialize_L000023_24 ' (symbol refcount = 0)
+ long @C_seao7_6188bebd_autoinitialize_L000023_27 ' LTI4
+C_seao7_6188bebd_autoinitialize_L000023_25
+' C_seao7_6188bebd_autoinitialize_L000023_24 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETN
 
 
  long ' align long
-C_skfs8_6174ad41_initialize_L000035 ' <symbol:initialize>
+C_seao8_6188bebd_initialize_L000035 ' <symbol:initialize>
  jmp #NEWF
  sub SP, #8
  jmp #PSHM
  long $540000 ' save registers
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r22, RI ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  jmp #BRNZ
- long @C_skfs8_6174ad41_initialize_L000035_37 ' NEU4
+ long @C_seao8_6188bebd_initialize_L000035_37 ' NEU4
  mov r2, #25 ' reg ARG coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -437,7 +437,7 @@ C_skfs8_6174ad41_initialize_L000035 ' <symbol:initialize>
  rdlong r22, r22 ' reg <- INDIRI4 regl
  cmps r22,  #0 wz,wc
  jmp #BR_B
- long @C_skfs8_6174ad41_initialize_L000035_39 ' LTI4
+ long @C_seao8_6188bebd_initialize_L000035_39 ' LTI4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
  long @C__registry ' CALL addrg
@@ -465,38 +465,38 @@ C_skfs8_6174ad41_initialize_L000035 ' <symbol:initialize>
  rdlong r22, r22 ' reg <- INDIRU4 regl
  and r20, r22 ' BANDI/U (2)
  jmp #LODL
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov BC, r20
  jmp #WLNG ' ASGNP4 addrg reg
  shr r22, #24 ' RSHU4 coni
  jmp #LODL
- long @C_skfs1_6174ad41_lock_L000003
+ long @C_seao1_6188bebd_lock_L000003
  mov BC, r22
  jmp #WLNG ' ASGNI4 addrg reg
  jmp #LODI
- long @C_skfs1_6174ad41_lock_L000003
+ long @C_seao1_6188bebd_lock_L000003
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_skfs8_6174ad41_initialize_L000035_41 ' NEI4
+ long @C_seao8_6188bebd_initialize_L000035_41 ' NEI4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
  long @C__locknew ' CALL addrg
  jmp #LODL
- long @C_skfs1_6174ad41_lock_L000003
+ long @C_seao1_6188bebd_lock_L000003
  mov BC, r0
  jmp #WLNG ' ASGNI4 addrg reg
  jmp #LODI
- long @C_skfs1_6174ad41_lock_L000003
+ long @C_seao1_6188bebd_lock_L000003
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz,wc
  jmp #BR_B
- long @C_skfs8_6174ad41_initialize_L000035_42 ' LTI4
+ long @C_seao8_6188bebd_initialize_L000035_42 ' LTI4
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRU4 regl
  jmp #LODI
- long @C_skfs1_6174ad41_lock_L000003
+ long @C_seao1_6188bebd_lock_L000003
  mov r20, RI ' reg <- INDIRI4 addrg
  adds r20, #1 ' ADDI4 coni
  shl r20, #24 ' LSHI4 coni
@@ -527,23 +527,23 @@ C_skfs8_6174ad41_initialize_L000035 ' <symbol:initialize>
  mov BC, r20
  jmp #WLNG ' ASGNU4 reg reg
  jmp #JMPA
- long @C_skfs8_6174ad41_initialize_L000035_42 ' JUMPV addrg
-C_skfs8_6174ad41_initialize_L000035_41
+ long @C_seao8_6188bebd_initialize_L000035_42 ' JUMPV addrg
+C_seao8_6188bebd_initialize_L000035_41
  jmp #LODI
- long @C_skfs1_6174ad41_lock_L000003
+ long @C_seao1_6188bebd_lock_L000003
  mov r22, RI ' reg <- INDIRI4 addrg
  subs r22, #1 ' SUBI4 coni
  jmp #LODL
- long @C_skfs1_6174ad41_lock_L000003
+ long @C_seao1_6188bebd_lock_L000003
  mov BC, r22
  jmp #WLNG ' ASGNI4 addrg reg
-C_skfs8_6174ad41_initialize_L000035_42
+C_seao8_6188bebd_initialize_L000035_42
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
- long @C_skfs7_6174ad41_autoinitialize_L000023 ' CALL addrg
-C_skfs8_6174ad41_initialize_L000035_39
-C_skfs8_6174ad41_initialize_L000035_37
-' C_skfs8_6174ad41_initialize_L000035_36 ' (symbol refcount = 0)
+ long @C_seao7_6188bebd_autoinitialize_L000023 ' CALL addrg
+C_seao8_6188bebd_initialize_L000035_39
+C_seao8_6188bebd_initialize_L000035_37
+' C_seao8_6188bebd_initialize_L000035_36 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #8 ' framesize
  jmp #RETF
@@ -559,14 +559,14 @@ C_s8_closeport ' <symbol:s8_closeport>
  long $f00000 ' save registers
  mov r23, r2 ' reg var <- reg arg
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r22, RI ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  jmp #BRNZ
  long @C_s8_closeport_46 ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
- long @C_skfs8_6174ad41_initialize_L000035 ' CALL addrg
+ long @C_seao8_6188bebd_initialize_L000035 ' CALL addrg
 C_s8_closeport_46
  cmp r23,  #8 wz,wc 
  jmp #BRAE
@@ -580,7 +580,7 @@ C_s8_closeport_46
  sub r22, #-(-4) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 regl
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  mov RI, r22
@@ -602,7 +602,7 @@ C_s8_closeport_46
  sub r22, #-(-4) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 regl
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  mov r20, #0 ' reg <- coni
@@ -621,7 +621,7 @@ C_s8_closeport_50
  sub r22, #-(-4) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 regl
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  mov RI, r22
@@ -643,7 +643,7 @@ C_s8_closeport_50
  sub r22, #-(-4) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 regl
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  mov r20, #0 ' reg <- coni
@@ -671,14 +671,14 @@ C_s8_openport ' <symbol:s8_openport>
  mov r19, r3 ' reg var <- reg arg
  mov r17, r2 ' reg var <- reg arg
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r22, RI ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  jmp #BRNZ
  long @C_s8_openport_55 ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
- long @C_skfs8_6174ad41_initialize_L000035 ' CALL addrg
+ long @C_seao8_6188bebd_initialize_L000035 ' CALL addrg
 C_s8_openport_55
  mov r22, FP
  add r22, #8 ' reg <- addrfi
@@ -719,7 +719,7 @@ C_s8_openport_55
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_skfs3_6174ad41_pinconfig_L000005
+ long @C_seao3_6188bebd_pinconfig_L000005
  add SP, #12 ' CALL addrg
  mov r2, r23 ' CVI, CVU or LOAD
  mov r22, FP
@@ -740,7 +740,7 @@ C_s8_openport_55
  mov BC, #24 ' arg size, rpsize = 0, spsize = 24
  add SP, #4 ' correct for new kernel !!! 
  jmp #CALA
- long @C_skfs6_6174ad41_p_config_L000021
+ long @C_seao6_6188bebd_p_config_L000021
  add SP, #20 ' CALL addrg
 C_s8_openport_59
  mov r22, FP
@@ -764,7 +764,7 @@ C_s8_openport_59
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_skfs3_6174ad41_pinconfig_L000005
+ long @C_seao3_6188bebd_pinconfig_L000005
  add SP, #12 ' CALL addrg
  mov r2, r17 ' CVI, CVU or LOAD
  mov r3, r19 ' CVI, CVU or LOAD
@@ -780,7 +780,7 @@ C_s8_openport_59
  mov BC, #24 ' arg size, rpsize = 0, spsize = 24
  add SP, #4 ' correct for new kernel !!! 
  jmp #CALA
- long @C_skfs6_6174ad41_p_config_L000021
+ long @C_seao6_6188bebd_p_config_L000021
  add SP, #20 ' CALL addrg
 C_s8_openport_61
 C_s8_openport_57
@@ -798,14 +798,14 @@ C_s8_rxflush ' <symbol:s8_rxflush>
  long $c00000 ' save registers
  mov r23, r2 ' reg var <- reg arg
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r22, RI ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  jmp #BRNZ
  long @C_s8_rxflush_64 ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
- long @C_skfs8_6174ad41_initialize_L000035 ' CALL addrg
+ long @C_seao8_6188bebd_initialize_L000035 ' CALL addrg
 C_s8_rxflush_64
  cmp r23,  #8 wz,wc 
  jmp #BR_B
@@ -840,14 +840,14 @@ C_s8_rxcheck ' <symbol:s8_rxcheck>
  long $f40000 ' save registers
  mov r23, r2 ' reg var <- reg arg
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r22, RI ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  jmp #BRNZ
  long @C_s8_rxcheck_72 ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
- long @C_skfs8_6174ad41_initialize_L000035 ' CALL addrg
+ long @C_seao8_6188bebd_initialize_L000035 ' CALL addrg
 C_s8_rxcheck_72
  cmp r23,  #8 wz,wc 
  jmp #BR_B
@@ -859,7 +859,7 @@ C_s8_rxcheck_72
  long @C_s8_rxcheck_71 ' JUMPV addrg
 C_s8_rxcheck_74
  jmp #LODI
- long @C_skfs1_6174ad41_lock_L000003
+ long @C_seao1_6188bebd_lock_L000003
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz,wc
  jmp #BR_B
@@ -867,7 +867,7 @@ C_s8_rxcheck_74
 C_s8_rxcheck_78
 ' C_s8_rxcheck_79 ' (symbol refcount = 0)
  jmp #LODI
- long @C_skfs1_6174ad41_lock_L000003
+ long @C_seao1_6188bebd_lock_L000003
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -879,7 +879,7 @@ C_s8_rxcheck_76
  mov r22, r23
  shl r22, #5 ' LSHU4 coni
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r20, RI ' reg <- INDIRP4 addrg
  mov r18, r20
  adds r18, #20 ' ADDP4 coni
@@ -898,7 +898,7 @@ C_s8_rxcheck_76
  mov r22, r23
  shl r22, #5 ' LSHU4 coni
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r20, RI ' reg <- INDIRP4 addrg
  mov r18, r20
  adds r18, #20 ' ADDP4 coni
@@ -928,7 +928,7 @@ C_s8_rxcheck_76
  mov r22, r23
  shl r22, #5 ' LSHU4 coni
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r20, #24 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
@@ -940,7 +940,7 @@ C_s8_rxcheck_83
  mov r22, r23
  shl r22, #5 ' LSHU4 coni
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r20, #20 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
@@ -959,13 +959,13 @@ C_s8_rxcheck_81
  wrlong r22, RI ' ASGNI4 addrli reg
 C_s8_rxcheck_82
  jmp #LODI
- long @C_skfs1_6174ad41_lock_L000003
+ long @C_seao1_6188bebd_lock_L000003
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz,wc
  jmp #BR_B
  long @C_s8_rxcheck_85 ' LTI4
  jmp #LODI
- long @C_skfs1_6174ad41_lock_L000003
+ long @C_seao1_6188bebd_lock_L000003
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -988,14 +988,14 @@ C_s8_rx ' <symbol:s8_rx>
  long $e00000 ' save registers
  mov r23, r2 ' reg var <- reg arg
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r22, RI ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  jmp #BRNZ
  long @C_s8_rx_88 ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
- long @C_skfs8_6174ad41_initialize_L000035 ' CALL addrg
+ long @C_seao8_6188bebd_initialize_L000035 ' CALL addrg
 C_s8_rx_88
  cmp r23,  #8 wz,wc 
  jmp #BR_B
@@ -1030,14 +1030,14 @@ C_s8_tx ' <symbol:s8_tx>
  mov r23, r3 ' reg var <- reg arg
  mov r21, r2 ' reg var <- reg arg
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r22, RI ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  jmp #BRNZ
  long @C_s8_tx_96 ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
- long @C_skfs8_6174ad41_initialize_L000035 ' CALL addrg
+ long @C_seao8_6188bebd_initialize_L000035 ' CALL addrg
 C_s8_tx_96
  cmp r23,  #8 wz,wc 
  jmp #BR_B
@@ -1051,7 +1051,7 @@ C_s8_tx_98
  mov r22, r23
  shl r22, #5 ' LSHU4 coni
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r20, RI ' reg <- INDIRP4 addrg
  mov r18, r20
  adds r18, #44 ' ADDP4 coni
@@ -1069,7 +1069,7 @@ C_s8_tx_98
  mov r22, RI ' SUBU (2)
  mov r17, r22 ' CVI, CVU or LOAD
  jmp #LODI
- long @C_skfs1_6174ad41_lock_L000003
+ long @C_seao1_6188bebd_lock_L000003
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz,wc
  jmp #BR_B
@@ -1077,7 +1077,7 @@ C_s8_tx_98
 C_s8_tx_102
 ' C_s8_tx_103 ' (symbol refcount = 0)
  jmp #LODI
- long @C_skfs1_6174ad41_lock_L000003
+ long @C_seao1_6188bebd_lock_L000003
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -1090,7 +1090,7 @@ C_s8_tx_105
  mov r22, r23
  shl r22, #5 ' LSHU4 coni
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r20, RI ' reg <- INDIRP4 addrg
  mov r18, r20
  adds r18, #32 ' ADDP4 coni
@@ -1121,7 +1121,7 @@ C_s8_tx_108
  mov r22, r23
  shl r22, #5 ' LSHU4 coni
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r20, #32 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
@@ -1140,7 +1140,7 @@ C_s8_tx_108
  mov r20, r23
  shl r20, #5 ' LSHU4 coni
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r18, RI ' reg <- INDIRP4 addrg
  adds r18, #44 ' ADDP4 coni
  adds r20, r18 ' ADDI/P (1)
@@ -1153,7 +1153,7 @@ C_s8_tx_108
  mov r22, r23
  shl r22, #5 ' LSHU4 coni
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r20, #40 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
@@ -1165,7 +1165,7 @@ C_s8_tx_110
  mov r22, r23
  shl r22, #5 ' LSHU4 coni
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r20, #32 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
@@ -1174,13 +1174,13 @@ C_s8_tx_110
  mov BC, r20
  jmp #WLNG ' ASGNU4 reg reg
  jmp #LODI
- long @C_skfs1_6174ad41_lock_L000003
+ long @C_seao1_6188bebd_lock_L000003
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz,wc
  jmp #BR_B
  long @C_s8_tx_112 ' LTI4
  jmp #LODI
- long @C_skfs1_6174ad41_lock_L000003
+ long @C_seao1_6188bebd_lock_L000003
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -1200,14 +1200,14 @@ C_s8_txflush ' <symbol:s8_txflush>
  long $d40000 ' save registers
  mov r23, r2 ' reg var <- reg arg
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r22, RI ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  jmp #BRNZ
  long @C_s8_txflush_115 ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
- long @C_skfs8_6174ad41_initialize_L000035 ' CALL addrg
+ long @C_seao8_6188bebd_initialize_L000035 ' CALL addrg
 C_s8_txflush_115
  cmp r23,  #8 wz,wc 
  jmp #BR_B
@@ -1219,7 +1219,7 @@ C_s8_txflush_115
  long @C_s8_txflush_114 ' JUMPV addrg
 C_s8_txflush_117
  jmp #LODI
- long @C_skfs1_6174ad41_lock_L000003
+ long @C_seao1_6188bebd_lock_L000003
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz,wc
  jmp #BR_B
@@ -1227,7 +1227,7 @@ C_s8_txflush_117
 C_s8_txflush_121
 ' C_s8_txflush_122 ' (symbol refcount = 0)
  jmp #LODI
- long @C_skfs1_6174ad41_lock_L000003
+ long @C_seao1_6188bebd_lock_L000003
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -1240,7 +1240,7 @@ C_s8_txflush_125
  mov r22, r23
  shl r22, #5 ' LSHU4 coni
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r20, RI ' reg <- INDIRP4 addrg
  mov r18, r20
  adds r18, #36 ' ADDP4 coni
@@ -1257,13 +1257,13 @@ C_s8_txflush_125
  jmp #BRNZ
  long @C_s8_txflush_124 ' NEU4
  jmp #LODI
- long @C_skfs1_6174ad41_lock_L000003
+ long @C_seao1_6188bebd_lock_L000003
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz,wc
  jmp #BR_B
  long @C_s8_txflush_127 ' LTI4
  jmp #LODI
- long @C_skfs1_6174ad41_lock_L000003
+ long @C_seao1_6188bebd_lock_L000003
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -1310,14 +1310,14 @@ C_s8_txcheck ' <symbol:s8_txcheck>
  long $f50000 ' save registers
  mov r23, r2 ' reg var <- reg arg
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r22, RI ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  jmp #BRNZ
  long @C_s8_txcheck_130 ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
- long @C_skfs8_6174ad41_initialize_L000035 ' CALL addrg
+ long @C_seao8_6188bebd_initialize_L000035 ' CALL addrg
 C_s8_txcheck_130
  cmp r23,  #8 wz,wc 
  jmp #BR_B
@@ -1329,7 +1329,7 @@ C_s8_txcheck_130
  long @C_s8_txcheck_129 ' JUMPV addrg
 C_s8_txcheck_132
  jmp #LODI
- long @C_skfs1_6174ad41_lock_L000003
+ long @C_seao1_6188bebd_lock_L000003
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz,wc
  jmp #BR_B
@@ -1337,7 +1337,7 @@ C_s8_txcheck_132
 C_s8_txcheck_136
 ' C_s8_txcheck_137 ' (symbol refcount = 0)
  jmp #LODI
- long @C_skfs1_6174ad41_lock_L000003
+ long @C_seao1_6188bebd_lock_L000003
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -1349,7 +1349,7 @@ C_s8_txcheck_134
  mov r22, r23
  shl r22, #5 ' LSHU4 coni
  jmp #LODI
- long @C_skfs_6174ad41_s8base_L000002
+ long @C_seao_6188bebd_s8base_L000002
  mov r20, RI ' reg <- INDIRP4 addrg
  mov r18, r20
  adds r18, #44 ' ADDP4 coni
@@ -1391,13 +1391,13 @@ C_s8_txcheck_134
  adds r21, r22 ' ADDI/P (1)
 C_s8_txcheck_139
  jmp #LODI
- long @C_skfs1_6174ad41_lock_L000003
+ long @C_seao1_6188bebd_lock_L000003
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz,wc
  jmp #BR_B
  long @C_s8_txcheck_141 ' LTI4
  jmp #LODI
- long @C_skfs1_6174ad41_lock_L000003
+ long @C_seao1_6188bebd_lock_L000003
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -1425,7 +1425,7 @@ C_s8_txcheck_129
 DAT ' uninitialized data segment
 
  long ' align long
-C_skfs2_6174ad41_txrxbuff_L000004 ' <symbol:txrxbuff>
+C_seao2_6188bebd_txrxbuff_L000004 ' <symbol:txrxbuff>
  byte 0[1024]
 
 ' Catalina Code

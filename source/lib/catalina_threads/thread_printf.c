@@ -6,7 +6,9 @@ int _thread_printf(void *pool, int lock, char *str, ...) {
    va_list ap;
    int retval;
 
-   do { } while (!_thread_lockset(pool, lock));
+   while (_thread_lockset(pool, lock) == 0) {
+     _thread_yield();
+   }
 
    va_start (ap, str);           /* Initialize the argument list. */
    retval = t_vprintf (str, ap);

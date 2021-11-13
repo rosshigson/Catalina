@@ -220,7 +220,45 @@
  * Version 4.9.1  Just update version number.
  *
  * Version 4.9.2  Just update version number.
- */
+ *
+ * Version 4.9.3  Add -f, -F and -E command line option (Propeller 2 only):
+ *                
+ *                   -f requested frequency for which to calculate values
+ *                   -F external xtal (XI) frequency
+ *                   -E error limit for frequency calculation
+ *                
+ *                Note that 'm' and 'k' suffix chars mean multiply value by
+ *                1,000,000 and 1,000 respectively - i.e. you can say 
+ *                -f260Mhz, -f123456kHz, -F25m or -E100k
+ *                
+ *                Allow complex Catalina symbol definitions on the command 
+ *                line, such as:
+ *                
+ *                   -C "name=value"
+ *                
+ *                (Note that complex C symbols were already supported via -D).  
+ *                
+ *                Specifying a frequency defines three Catalina symbols:
+ *                
+ *                   _CLOCK_XDIV - XI divider (1..64)
+ *                   _CLOCK_MULT - XI multiplier (1..1024)
+ *                   _CLOCK_DIVP - VCO divider (1, or even numbers up to 30)
+ *                
+ *                These can also be defined manually, but are only used if all
+ *                three are defined. The following Catalina symbols can be 
+ *                defined individually:
+ *                                
+ *                   _CLOCK_OSC - 0=OFF, 1=OSC, 2=15pF, 3=30pF               
+ *                   _CLOCK_SEL - 0=rcfast, 1=rcslow, 2=XI, 3=PLL
+ *                   _CLOCK_PLL - 0=PLL off, 1=PLL on
+ *                                
+ *                Specifying complex symbols and clock symbols on the command 
+ *                line is only supported on the P2.
+ *
+ *                The symbols MHZ_260 and MHZ_220 remain supported, but are
+ *                now translated into -f260MHz and -f220MHz.                
+ *
+ */                  
 
 /*--------------------------------------------------------------------------
     This file is part of Catalina.
@@ -245,9 +283,11 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
+#include <math.h>
 
-#define VERSION            "4.9.2"
+#define VERSION            "4.9.3"
 
 #define MAX_LINELEN        4096
 
@@ -308,6 +348,22 @@ static int bannered  = 0; // banner has been output
 static int parallel  = 0; // invoke the parallelizer on the input files
 static int untidy    = 0; // untidy (i.e. no cleanup) mode
 
+/* clock calculation parameters */
+static int reqd_freq = 0; // required clock frequency (no default)
+static int reqd_xtal = 0; // required xtal frequency (no default)
+static int xtal_freq = 20000000; // default xtal frequency
+static int err_freq  = 100000; // default frequency error (default 100k)
+
+/* clock calculation result variables */
+static uint32_t result_divd = 0;
+static uint32_t result_mult = 0;
+static uint32_t result_post = 0;
+static uint32_t result_pppp = 0;
+static uint32_t result_Fpfd = 0;
+static uint32_t result_Fvco = 0;
+static uint32_t result_Fout = 0;
+static uint32_t result_err  = 0;
+
 static int flash = 0;   // -C FLASH appended
 static int sdcard = 0;  // -C SDCARD appended
 static int eeprom = 0;  // -C EEPROM appended
@@ -352,6 +408,9 @@ void help(char *my_name) {
    fprintf(stderr, "          -C symbol  define a Catalina symbol (e.g. -C HYDRA)\n");
    fprintf(stderr, "          -D symbol  define a symbol (e.g. -D printf=tiny_printf)\n");
    fprintf(stderr, "          -e         generate an eeprom output file\n");
+   fprintf(stderr, "          -E         allowable frequency error (default is 100k\n");
+   fprintf(stderr, "          -f freq    required clock frequency (see also -F & -E\n");
+   fprintf(stderr, "          -F freq    crystal frequency (default is 20M)\n");
    fprintf(stderr, "          -g[level]  generate debugging information (default level = 1)\n");
    fprintf(stderr, "          -I path    path to include files (default '%s')\n", def_inc_path);
    fprintf(stderr, "          -k         kill (suppress) banners and statistics output\n");
@@ -452,7 +511,110 @@ int remove_unquoted(char *filename) {
    }
    return remove(unquoted_filename);
 }
+
+/*
+ * add the definition of a Catalina symbol to the lcc command line,
+ * quoting as necessary. Note that we add it as both a Catalina
+ * symbol and as a C symbol (prefixed with "__CATALINA_"). The
+ * value can be the null string. Note that quoting only works 
+ * on the P2, where we use p2_asm as our assembler. On the P1
+ * the value should always be the null string.
+ */
+void catalina_symboldef(char *name, char *value) {
+   if ((value == NULL) || (strcmp(value, "") == 0)) {
+      // simple symbol - no need to quote it (works on P1 or P2)
+      safecat(lcc_cmd, "-D__CATALINA_", MAX_LINELEN);
+      safecat(lcc_cmd, name, MAX_LINELEN);
+      safecat(lcc_cmd, value, MAX_LINELEN);
+      safecat(lcc_cmd, " -Wl-C", MAX_LINELEN);
+      safecat(lcc_cmd, name, MAX_LINELEN);
+      safecat(lcc_cmd, value, MAX_LINELEN);
+      safecat(lcc_cmd, " ", MAX_LINELEN);
+   }
+   else {
+      // complex symbol - must quote it (works on P2 only!)
+      safecat(lcc_cmd, "-D\"__CATALINA_", MAX_LINELEN);
+      safecat(lcc_cmd, name, MAX_LINELEN);
+      safecat(lcc_cmd, value, MAX_LINELEN);
+      safecat(lcc_cmd, "\" ", MAX_LINELEN);
+      safecat(lcc_cmd, "-Wl-C\"", MAX_LINELEN);
+      safecat(lcc_cmd, name, MAX_LINELEN);
+      safecat(lcc_cmd, value, MAX_LINELEN);
+      safecat(lcc_cmd, "\" ", MAX_LINELEN);
+   }
+}
+/*
+ * calc_freq - calculate values to use for clock frequency. Leaves results
+ *             in the static result variables, which will be left as 0
+ *             if the frequency calculation does not succeed. This is a 
+ *             C version of Chip's original SimpleBAsic code.
+ */
+void calc_freq(uint32_t xinfreq, uint32_t clkfreq, uint32_t errfreq) {
+
+   uint32_t pppp;
+   uint32_t post;
+   uint32_t divd;
+   uint32_t error = errfreq;
+
+   double Fpfd;
+   double mult;
+   double Fvco;
+   double Fout;
+   double err;
+
+   for (pppp = 0; pppp <= 15; pppp++) {
+     if (pppp == 0) {
+       post = 1;
+     }
+     else {
+        post = pppp * 2;
+     }
+     for (divd = 64; divd >= 1; divd--) {
+        Fpfd = round((double)xinfreq / (double)divd);
+        mult = round((double)clkfreq * ((double)post * (double)divd) / (double)xinfreq);
+        Fvco = round((double)xinfreq * (double)mult / (double)divd);
+        Fout = round((double)Fvco / (double)post);
+        err = fabs(Fout - (double)clkfreq);
+        if ((err <= error) 
+        &&  (Fpfd >= 250000) 
+        &&  (mult <= 1024) 
+        &&  (Fvco >= 99e6) 
+        &&  ((Fvco <= 201e6) || (Fvco <= (clkfreq + errfreq)))) {
+           result_divd = divd;
+           result_mult = mult;
+           result_post = post;
+           result_pppp = (pppp-1) & 15; //%1111 = /1, %0000..%1110 = /2..30
+           result_Fpfd = Fpfd;
+           result_Fvco = Fvco;
+           result_Fout = Fout;
+           result_err  = err;
+        }
+     }
+   } 
+
+   if (diagnose) {
+      printf("XINFREQ:   %9u (XI Input Frequency)\n", xtal_freq);
+      printf("CLKFREQ:   %9u (PLL Goal Frequency)\n", reqd_freq);
+      printf("ERRFREQ:   %9u (Allowable Error)\n\n", err_freq);
+      /* 
+      printf("Divd: %4u D field = %4u\n", result_divd,  result_divd-1);
+      printf("Mult: %4u M field = %4u\n", result_mult, result_mult-1);
+      printf("Post: %4u P field = %4u\n\n", result_post, result_pppp);
    
+      //printf("setclk(%1_");
+      //printf(right(bin(result_divd-1),6); "_");
+      //printf(right(bin(result_mult-1),10); "_");
+      //printf(right(bin(result_pppp),4); "_10_11, "; clkfreq; ")"
+   
+      printf("Fpfd:  %u\n", result_Fpfd);
+      printf("Fvco:  %u\n\n", result_Fvco);
+   
+      printf("Fout:  %u\n", result_Fout);
+      printf("Error: %d\n\n", result_Fout - clkfreq);
+      */
+   }
+}
+
 /*
  * ajust the name of the last file in dst, adding the PARALLELIZE_SUFFIX 
  * (e.g. from xxx.c, to xxx_p.c) taking into account that it may not have
@@ -741,8 +903,40 @@ int pass_symbol_to_compiler(char *symbol, int *code) {
          assembler = 2;
       }
    }
+   else if (strcmp (symbol, "MHZ_260") == 0) {
+      pass = 0; // don't pass this symbol 
+      reqd_freq = 260000000;
+   }
+   else if (strcmp (symbol, "MHZ_220") == 0) {
+      pass = 0; // don't pass this symbol 
+      reqd_freq = 220000000;
+   }
    return pass;
    
+}
+
+/*
+ * return a pointer to the value of the argument to the command-line option,
+ * with the specified index, or NULL if there is no value, incrementing the 
+ * index, and also decrementing argc if we consume a second command-line 
+ * argument.
+ */
+char *get_option_argument(int *index, int *argc, char *argv[]) {
+   if (strlen(argv[*index]) == 2) {
+      if ((*argc) > 0) {
+         (*index)++;
+         // use next arg
+         (*argc)--;
+         return argv[*index];
+      }
+      else {
+         return NULL;
+      }
+   }
+   else {
+      // use remainder of this arg
+      return &argv[*index][2];
+   }
 }
 
 /*
@@ -757,6 +951,7 @@ int decode_arguments (int argc, char *argv[]) {
    int    i = 0;
    int    len = 0;
    char   modifier;
+   char * arg;
 
    if (argc == 1) {
       if (strlen(argv[0]) == 0) {
@@ -821,82 +1016,38 @@ int decode_arguments (int argc, char *argv[]) {
                   break;
 
                case 'C':
-                  if (strlen(argv[i]) == 2) {
-                     if (argc > 0) {
-                        i++;
-                        // use next arg
-                        // Note that we define the symbol both for LCC and also for the 
-                        // binder, but for LCC we prefix it with "__CATALINA_" to avoid
-                        // colliding with user symbols
-                        if (pass_symbol_to_compiler(argv[i], &code)) {
-                           safecat(lcc_cmd, "-D__CATALINA_", MAX_LINELEN);
-                           safecat(lcc_cmd, argv[i], MAX_LINELEN);
-                           safecat(lcc_cmd, " -Wl-C", MAX_LINELEN);
-                           safecat(lcc_cmd, argv[i], MAX_LINELEN);
-                           safecat(lcc_cmd, " ", MAX_LINELEN);
-                           if (verbose) {
-                              banner();
-                              fprintf(stderr, "define Catalina symbol %s\n", argv[i]);
-                           }
-                        }
-                        argc--;
-                     }
-                     else {
-                        banner();
-                        fprintf(stderr, "option -C requires an argument\n");
-                        code = -1;
-                        break;
-                     }
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     banner();
+                     fprintf(stderr, "option -C requires an argument\n");
+                     code = -1;
                   }
                   else {
-                     // use remainder of this arg
-                     // Note that we define the symbol both for LCC and also for the 
-                     // binder, but for LCC we prefix it with "__CATALINA_" to avoid
-                     // colliding with user symbols
-                     if (pass_symbol_to_compiler(&argv[i][2], &code)) {
-                        safecat(lcc_cmd, "-D__CATALINA_", MAX_LINELEN);
-                        safecat(lcc_cmd, &argv[i][2], MAX_LINELEN);
-                        safecat(lcc_cmd, " -Wl-C", MAX_LINELEN);
-                        safecat(lcc_cmd, &argv[i][2], MAX_LINELEN);
-                        safecat(lcc_cmd, " ", MAX_LINELEN);
+                     if (pass_symbol_to_compiler(arg, &code)) {
+                        catalina_symboldef(arg, "");
                         if (verbose) {
                            banner();
-                           fprintf(stderr, "define Catalina symbol %s\n", &argv[i][2]);
+                           fprintf(stderr, "define Catalina symbol %s\n", arg);
                         }
                      }
                   }
                   break;
 
                case 'D':
-                  if (strlen(argv[i]) == 2) {
-                     if (argc > 0) {
-                        i++;
-                        // use next arg
-                           safecat(lcc_cmd, " -D", MAX_LINELEN);
-                           safecat(lcc_cmd, argv[i], MAX_LINELEN);
-                           safecat(lcc_cmd, " ", MAX_LINELEN);
-                           if (verbose) {
-                              banner();
-                              fprintf(stderr, "define symbol %s\n", argv[i]);
-                           }
-                        argc--;
-                     }
-                     else {
-                        banner();
-                        fprintf(stderr, "option -D requires an argument\n");
-                        code = -1;
-                        break;
-                     }
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     banner();
+                     fprintf(stderr, "option -D requires an argument\n");
+                     code = -1;
                   }
                   else {
-                     // use remainder of this arg
-                        safecat(lcc_cmd, " -D", MAX_LINELEN);
-                        safecat(lcc_cmd, &argv[i][2], MAX_LINELEN);
-                        safecat(lcc_cmd, " ", MAX_LINELEN);
-                        if (verbose) {
-                           banner();
-                           fprintf(stderr, "define symbol %s\n", &argv[i][2]);
-                        }
+                     safecat(lcc_cmd, " -D", MAX_LINELEN);
+                     safecat(lcc_cmd, arg, MAX_LINELEN);
+                     safecat(lcc_cmd, " ", MAX_LINELEN);
+                     if (verbose) {
+                        banner();
+                        fprintf(stderr, "define symbol %s\n", arg);
+                     }
                   }
                   break;
 
@@ -908,33 +1059,172 @@ int decode_arguments (int argc, char *argv[]) {
                   }
                   break;
 
+               case 'E':
+                  modifier = 0;
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     banner();
+                     fprintf(stderr, "option -E requires an argument\n");
+                     code = -1;
+                  }
+                  else {
+                     if ((arg[0] == '$')) {
+                        // hex parameter (such as $ABCD)
+                        sscanf(&arg[1], "%x", &err_freq);
+                     }
+                     else if ((arg[0] == '0')
+                     && ((arg[1] == 'x')||(arg[1] == 'X'))) {
+                        // hex parameter (such as 0xFFFF or 0XA000)
+                        sscanf(&arg[2], "%x", &err_freq);
+                     }
+                     else {
+                        // decimal parameter, perhaps with modifier
+                        // (such as 4k or 16m)
+                        sscanf(arg, "%d%c", &err_freq, &modifier);
+                     }
+                  }
+                  if (tolower(modifier) == 'k') {
+                     if (err_freq < 4294000) {
+                        err_freq *= 1000;
+                     }
+                     else {
+                        banner();
+                        fprintf(stderr, "error frequency too large\n");
+                        code = -1;
+                     }
+                  }
+                  else if (tolower(modifier) == 'm') {
+                     if (err_freq < 4294) {
+                        err_freq *= 1000 * 1000;
+                     }
+                     else {
+                        banner();
+                        fprintf(stderr, "error frequency too large\n");
+                        code = -1;
+                     }
+                  }
+                  if (verbose) {
+                     banner();
+                     fprintf(stderr, "err_freq = %d\n", err_freq);
+                  }
+                  break;
+
+               case 'f':
+                  modifier = 0;
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     banner();
+                     fprintf(stderr, "option -E requires an argument\n");
+                     code = -1;
+                  }
+                  else {
+                     if ((arg[0] == '$')) {
+                        // hex parameter (such as $ABCD)
+                        sscanf(&arg[1], "%x", &reqd_freq);
+                     }
+                     else if ((arg[0] == '0')
+                     && ((arg[1] == 'x')||(arg[1] == 'X'))) {
+                        // hex parameter (such as 0xFFFF or 0XA000)
+                        sscanf(&arg[2], "%x", &reqd_freq);
+                     }
+                     else {
+                        // decimal parameter, perhaps with modifier
+                        // (such as 4k or 16m)
+                        sscanf(arg, "%d%c", &reqd_freq, &modifier);
+                     }
+                  }
+                  if (tolower(modifier) == 'k') {
+                     if (reqd_freq < 4294000) {
+                        reqd_freq *= 1000;
+                     }
+                     else {
+                        banner();
+                        fprintf(stderr, "required frequency too large\n");
+                        code = -1;
+                     }
+                  }
+                  else if (tolower(modifier) == 'm') {
+                     if (reqd_freq < 4294) {
+                        reqd_freq *= 1000 * 1000;
+                     }
+                     else {
+                        banner();
+                        fprintf(stderr, "required frequency too large\n");
+                        code = -1;
+                     }
+                  }
+                  if (verbose) {
+                     banner();
+                     fprintf(stderr, "reqd_freq = %d\n", reqd_freq);
+                  }
+                  break;
+
+               case 'F':
+                  modifier = 0;
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     banner();
+                     fprintf(stderr, "option -F requires an argument\n");
+                     code = -1;
+                  }
+                  else {
+                     if ((arg[0] == '$')) {
+                        // hex parameter (such as $ABCD)
+                        sscanf(&arg[1], "%x", &reqd_xtal);
+                     }
+                     else if ((arg[0] == '0')
+                     && ((arg[1] == 'x')||(arg[1] == 'X'))) {
+                        // hex parameter (such as 0xFFFF or 0XA000)
+                        sscanf(&arg[2], "%x", &reqd_xtal);
+                     }
+                     else {
+                        // decimal parameter, perhaps with modifier
+                        // (such as 4k or 16m)
+                        sscanf(arg, "%d%c", &reqd_xtal, &modifier);
+                     }
+                  }
+                  if (tolower(modifier) == 'k') {
+                     if (reqd_xtal < 4294000) {
+                        reqd_xtal *= 1000;
+                     }
+                     else {
+                        banner();
+                        fprintf(stderr, "xtal frequency too large\n");
+                        code = -1;
+                     }
+                  }
+                  else if (tolower(modifier) == 'm') {
+                     if (reqd_xtal < 4294) {
+                        reqd_xtal *= 1000 * 1000;
+                     }
+                     else {
+                        banner();
+                        fprintf(stderr, "xtal frequency too large\n");
+                        code = -1;
+                     }
+                  }
+                  if (verbose) {
+                     banner();
+                     fprintf(stderr, "reqd_xtal = %d\n", reqd_xtal);
+                  }
+                  xtal_freq = reqd_xtal;
+                  break;
+
                case 'I':
                   if (strlen(inc_path) != 0) {
                      safecat(inc_path, MULT_PATH_SEP, MAX_LINELEN);
                   }
-                  if (strlen(argv[i]) == 2) {
-                     if (argc > 0) {
-                        // use next arg
-                        safecat(inc_path, argv[++i], MAX_LINELEN);
-                        if (verbose) {
-                           banner();
-                           fprintf(stderr, "adding include path %s\n", argv[i]);
-                        }
-                        argc--;
-                     }
-                     else {
-                        banner();
-                        fprintf(stderr, "option -I requires an argument\n");
-                        code = -1;
-                        break;
-                     }
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     banner();
+                     fprintf(stderr, "option -I requires an argument\n");
+                     code = -1;
                   }
                   else {
-                     // use remainder of this arg
-                     safecat(inc_path, &argv[i][2], MAX_LINELEN);
+                     safecat(inc_path, arg, MAX_LINELEN);
                      if (verbose) {
                         banner();
-                        fprintf(stderr, "adding include path %s\n", &argv[i][2]);
+                        fprintf(stderr, "adding include path %s\n", arg);
                      }
                   }
                   break;
@@ -948,67 +1238,36 @@ int decode_arguments (int argc, char *argv[]) {
                   break;
 
                case 'l':
-                  if (strlen(argv[i]) == 2) {
-                     if (argc > 0) {
-                        // use next arg
-                        safecat(lcc_cmd, "-l", MAX_LINELEN);
-                        safecat(lcc_cmd, argv[++i], MAX_LINELEN);
-                        safecat(lcc_cmd, " ", MAX_LINELEN);
-                        // Now define a library symbol for LCC and the binder
-                        safecat(lcc_cmd, "-D__CATALINA_lib", MAX_LINELEN);
-                        safecat(lcc_cmd, argv[i], MAX_LINELEN);
-                        safecat(lcc_cmd, " -Wl-Clib", MAX_LINELEN);
-                        safecat(lcc_cmd, argv[i], MAX_LINELEN);
-                        safecat(lcc_cmd, " ", MAX_LINELEN);
-                        if (verbose) {
-                           banner();
-                           fprintf(stderr, "search library lib%s\n", argv[i]);
-                        }
-                        argc--;
-                     }
-                     else {
-                        banner();
-                        fprintf(stderr, "option -l requires an argument\n");
-                        code = -1;
-                        break;
-                     }
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     banner();
+                     fprintf(stderr, "option -l requires an argument\n");
+                     code = -1;
                   }
                   else {
-                     // use remainder of this arg
-                     safecat(lcc_cmd, argv[i], MAX_LINELEN);
+                     char libstr[MAX_LINELEN] = "";
+                     safecat(lcc_cmd, "-l", MAX_LINELEN);
+                     safecat(lcc_cmd, arg, MAX_LINELEN);
                      safecat(lcc_cmd, " ", MAX_LINELEN);
                      // Now define a library symbol for LCC and the binder
-                     safecat(lcc_cmd, "-D__CATALINA_lib", MAX_LINELEN);
-                     safecat(lcc_cmd, &argv[i][2], MAX_LINELEN);
-                     safecat(lcc_cmd, " -Wl-Clib", MAX_LINELEN);
-                     safecat(lcc_cmd, &argv[i][2], MAX_LINELEN);
-                     safecat(lcc_cmd, " ", MAX_LINELEN);
+                     sprintf(libstr,"lib%s", arg);
+                     catalina_symboldef(libstr, "");
                      if (verbose) {
                         banner();
-                        fprintf(stderr, "search library lib%s\n", &argv[i][2]);
+                        fprintf(stderr, "search library lib%s\n", arg);
                      }
                   }
                   break;
 
                case 'L':
-                  if (strlen(argv[i]) == 2) {
-                     if (argc > 0) {
-                        // use next arg
-                        safecpy(lib_path, argv[++i], MAX_LINELEN);
-                        argc--;
-                     }
-                     else {
-                        banner();
-                        fprintf(stderr, "option -L requires an argument\n");
-                        code = -1;
-                        break;
-                     }
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     banner();
+                     fprintf(stderr, "option -L requires an argument\n");
+                     code = -1;
                   }
                   else {
-                     // use remainder of this arg
-                     safecpy(lib_path, &argv[i][2], MAX_LINELEN);
-                  }
-                  if (verbose) {
+                     safecpy(lib_path, arg, MAX_LINELEN);
                      banner();
                      fprintf(stderr, "setting library path = %s\n", lib_path);
                   }
@@ -1016,50 +1275,27 @@ int decode_arguments (int argc, char *argv[]) {
 
                case 'M':
                   modifier = 0;
-                  if (strlen(argv[i]) == 2) {
-                     // use next arg
-                     if (argc > 0) {
-                        i++;
-                        if ((argv[i][0] == '$')) {
-                           // hex parameter (such as $ABCD)
-                           sscanf(&argv[i][1], "%x", &memory);
-                        }
-                        else if ((argv[i][0] == '0')
-                        && ((argv[i][1] == 'x')||(argv[i][1] == 'X'))) {
-                           // hex parameter (such as 0xFFFF or 0XA000)
-                           sscanf(&argv[i][2], "%x", &memory);
-                        }
-                        else {
-                           // decimal parameter, perhaps with modifier
-                           // (such as 4k or 16m)
-                           sscanf(argv[i], "%d%c", &memory, &modifier);
-                        }
-                     }
-                     else {
-                        banner();
-                        fprintf(stderr, "option -M requires an argument\n");
-                        code = -1;
-                        break;
-                     }
-                     argc--;
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     banner();
+                     fprintf(stderr, "option -M requires an argument\n");
+                     code = -1;
                   }
                   else {
-                     // use remainder of this arg
-                     if ((argv[i][1] == '$')) {
+                     if ((arg[0] == '$')) {
                         // hex parameter (such as $ABCD)
-                        sscanf(&argv[i][2], "%x", &memory);
+                        sscanf(&arg[1], "%x", &memory);
                      }
-                     else if ((argv[i][1] == '0')
-                     && ((argv[i][2] == 'x')||(argv[i][2] == 'X'))) {
+                     else if ((arg[0] == '0')
+                     && ((arg[1] == 'x')||(arg[1] == 'X'))) {
                         // hex parameter (such as 0xFFFF or 0XA000)
-                        sscanf(&argv[i][3], "%x", &memory);
+                        sscanf(&arg[2], "%x", &memory);
                      }
                      else {
                         // decimal parameter, perhaps with modifier
                         // (such as 4k or 16m)
-                        sscanf(argv[i], "%d%c", &memory, &modifier);
+                        sscanf(arg, "%d%c", &memory, &modifier);
                      }
-                     sscanf(&argv[i][2], "%d%c", &memory, &modifier);
                   }
                   if (tolower(modifier) == 'k') {
                      memory *= 1024;
@@ -1074,22 +1310,14 @@ int decode_arguments (int argc, char *argv[]) {
                   break;
 
                case 'p':
-                  if (strlen(argv[i]) == 2) {
-                     // use next arg
-                     if (argc > 0) {
-                        sscanf(argv[++i], "%d", &prop_vers);
-                        argc--;
-                     }
-                     else {
-                        banner();
-                        fprintf(stderr, "option -p requires an argument\n");
-                        code = -1;
-                        break;
-                     }
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     banner();
+                     fprintf(stderr, "option -p requires an argument\n");
+                     code = -1;
                   }
                   else {
-                     // use remainder of this arg
-                     sscanf(&argv[i][2], "%d", &prop_vers);
+                     sscanf(arg, "%d", &prop_vers);
                   }
                   if (verbose) {
                      banner();
@@ -1115,48 +1343,26 @@ int decode_arguments (int argc, char *argv[]) {
 
                case 'P':
                   modifier = 0;
-                  if (strlen(argv[i]) == 2) {
-                     // use next arg
-                     if (argc > 0) {
-                        i++;
-                        if ((argv[i][0] == '$')) {
-                           // hex parameter (such as $ABCD)
-                           sscanf(&argv[i][1], "%x", &readwrite);
-                        }
-                        else if ((argv[i][0] == '0')
-                        && ((argv[i][1] == 'x')||(argv[i][1] == 'X'))) {
-                           // hex parameter (such as 0xFFFF or 0XA000)
-                           sscanf(&argv[i][2], "%x", &readwrite);
-                        }
-                        else {
-                           // decimal parameter, perhaps with modifier
-                           // (such as 4k or 16m)
-                           sscanf(argv[i], "%d%c", &readwrite, &modifier);
-                        }
-                     }
-                     else {
-                        banner();
-                        fprintf(stderr, "option -P requires an argument\n");
-                        code = -1;
-                        break;
-                     }
-                     argc--;
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     banner();
+                     fprintf(stderr, "option -P requires an argument\n");
+                     code = -1;
                   }
                   else {
-                     // use remainder of this arg
-                     if ((argv[i][2] == '$')) {
+                     if ((arg[0] == '$')) {
                         // hex parameter (such as $ABCD)
-                        sscanf(&argv[i][3], "%x", &readwrite);
+                        sscanf(&arg[1], "%x", &readwrite);
                      }
-                     else if ((argv[i][2] == '0')
-                     && ((argv[i][3] == 'x')||(argv[i][3] == 'X'))) {
+                     else if ((arg[0] == '0')
+                     && ((arg[1] == 'x')||(arg[1] == 'X'))) {
                         // hex parameter (such as 0xFFFF or 0XA000)
-                        sscanf(&argv[i][4], "%x", &readwrite);
+                        sscanf(&arg[2], "%x", &readwrite);
                      }
                      else {
                         // decimal parameter, perhaps with modifier
                         // (such as 4k or 16m)
-                        sscanf(&argv[i][2], "%d%c", &readwrite, &modifier);
+                        sscanf(arg, "%d%c", &readwrite, &modifier);
                      }
                   }
                   if (tolower(modifier) == 'k') {
@@ -1173,48 +1379,26 @@ int decode_arguments (int argc, char *argv[]) {
 
                case 'R':
                   modifier = 0;
-                  if (strlen(argv[i]) == 2) {
-                     // use next arg
-                     if (argc > 0) {
-                        i++;
-                        if ((argv[i][0] == '$')) {
-                           // hex parameter (such as $ABCD)
-                           sscanf(&argv[i][1], "%x", &readonly);
-                        }
-                        else if ((argv[i][0] == '0')
-                        && ((argv[i][1] == 'x')||(argv[i][1] == 'X'))) {
-                           // hex parameter (such as 0xFFFF or 0XA000)
-                           sscanf(&argv[i][2], "%x", &readonly);
-                        }
-                        else {
-                           // decimal parameter, perhaps with modifier
-                           // (such as 4k or 16m)
-                           sscanf(argv[i], "%d%c", &readonly, &modifier);
-                        }
-                     }
-                     else {
-                        banner();
-                        fprintf(stderr, "option -R requires an argument\n");
-                        code = -1;
-                        break;
-                     }
-                     argc--;
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     banner();
+                     fprintf(stderr, "option -R requires an argument\n");
+                     code = -1;
                   }
                   else {
-                     // use remainder of this arg
-                     if ((argv[i][2] == '$')) {
+                     if ((arg[0] == '$')) {
                         // hex parameter (such as $ABCD)
-                        sscanf(&argv[i][3], "%x", &readonly);
+                        sscanf(&arg[1], "%x", &readonly);
                      }
-                     else if ((argv[i][2] == '0')
-                     && ((argv[i][3] == 'x')||(argv[i][3] == 'X'))) {
+                     else if ((arg[0] == '0')
+                     && ((arg[1] == 'x')||(arg[1] == 'X'))) {
                         // hex parameter (such as 0xFFFF or 0XA000)
-                        sscanf(&argv[i][4], "%x", &readonly);
+                        sscanf(&arg[2], "%x", &readonly);
                      }
                      else {
                         // decimal parameter, perhaps with modifier
                         // (such as 4k or 16m)
-                        sscanf(&argv[i][2], "%d%c", &readonly, &modifier);
+                        sscanf(arg, "%d%c", &readonly, &modifier);
                      }
                   }
                   if (tolower(modifier) == 'k') {
@@ -1232,24 +1416,15 @@ int decode_arguments (int argc, char *argv[]) {
                case 'o':
                   output_named = 1;
                   output_override = 1;
-                  if (strlen(argv[i]) == 2) {
-                     if (argc > 0) {
-                        // use next arg
-                        safecpy(out_name,"", MAX_LINELEN);
-                        pathcat(out_name, argv[++i], NULL, MAX_LINELEN);
-                        argc--;
-                     }
-                     else {
-                        banner();
-                        fprintf(stderr, "option -o requires an argument\n");
-                        code = -1;
-                        break;
-                     }
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     banner();
+                     fprintf(stderr, "option -o requires an argument\n");
+                     code = -1;
                   }
                   else {
-                     // use remainder of this arg
                      safecpy(out_name,"", MAX_LINELEN);
-                     pathcat(out_name, &argv[i][2], NULL, MAX_LINELEN);
+                     pathcat(out_name, arg, NULL, MAX_LINELEN);
                   }
                   if (verbose) {
                      banner();
@@ -1264,6 +1439,7 @@ int decode_arguments (int argc, char *argv[]) {
                   }
                   listing = 1;
                   if (strlen(argv[i]) == 2) {
+                     // no optimization level - assume 1
                      olevel = 1;
                   }
                   else {
@@ -1272,6 +1448,9 @@ int decode_arguments (int argc, char *argv[]) {
                   }
                   if ((olevel < 0) || (olevel > 9)) {
                      olevel = 1; // olevel must be 0 to 9
+                  }
+                  if (verbose) {
+                     fprintf(stderr, "optimization level %d\n", olevel);
                   }
                   optnum[0] = '0' + olevel;
                   optnum[1] = ' ';
@@ -1295,22 +1474,14 @@ int decode_arguments (int argc, char *argv[]) {
                      fprintf(stderr, "option -t will override current target (%s)\n", tgt_name);
                   }
                   target_named = 1;
-                  if (strlen(argv[i]) == 2) {
-                     if (argc > 0) {
-                        // use next arg
-                        safecpy(tgt_name, argv[++i], MAX_LINELEN);
-                        argc--;
-                     }
-                     else {
-                        banner();
-                        fprintf(stderr, "option -t requires an argument\n");
-                        code = -1;
-                        break;
-                     }
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     banner();
+                     fprintf(stderr, "option -t requires an argument\n");
+                     code = -1;
                   }
                   else {
-                     // use remainder of this arg
-                     safecpy(tgt_name, &argv[i][2], MAX_LINELEN);
+                     safecpy(tgt_name, arg, MAX_LINELEN);
                   }
                   if (verbose) {
                      banner();
@@ -1319,22 +1490,14 @@ int decode_arguments (int argc, char *argv[]) {
                   break;
 
                case 'T':
-                  if (strlen(argv[i]) == 2) {
-                     if (argc > 0) {
-                        // use next arg
-                        safecpy(tgt_path, argv[++i], MAX_LINELEN);
-                        argc--;
-                     }
-                     else {
-                        banner();
-                        fprintf(stderr, "option -T require an argument\n");
-                        code = -1;
-                        break;
-                     }
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     banner();
+                     fprintf(stderr, "option -T requires an argument\n");
+                     code = -1;
                   }
                   else {
-                     // use remainder of this arg
-                     safecpy(tgt_path, &argv[i][2], MAX_LINELEN);
+                     safecpy(tgt_path, arg, MAX_LINELEN);
                   }
                   if (verbose) {
                      banner();
@@ -1343,43 +1506,24 @@ int decode_arguments (int argc, char *argv[]) {
                   break;
 
                case 'U':
-                  if (strlen(argv[i]) == 2) {
-                     if (argc > 0) {
-                        // use next arg
-                        // Note that we undefine the symbol both for LCC and also for the 
-                        // binder, but for LCC we prefix it with "__CATALINA_" to avoid
-                        // colliding with user symbols
-                        safecat(lcc_cmd, "-U__CATALINA_", MAX_LINELEN);
-                        safecat(lcc_cmd, argv[++i], MAX_LINELEN);
-                        safecat(lcc_cmd, " -Wl-U", MAX_LINELEN);
-                        safecat(lcc_cmd, argv[i], MAX_LINELEN);
-                        safecat(lcc_cmd, " ", MAX_LINELEN);
-                        if (verbose) {
-                           banner();
-                           fprintf(stderr, "undefine symbol %s\n", argv[i]);
-                        }
-                        argc--;
-                     }
-                     else {
-                        banner();
-                        fprintf(stderr, "option -U requires an argument\n");
-                        code = -1;
-                        break;
-                     }
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     banner();
+                     fprintf(stderr, "option -U requires an argument\n");
+                     code = -1;
                   }
                   else {
-                     // use remainder of this arg
                      // Note that we undefine the symbol both for LCC and also for the 
                      // binder, but for LCC we prefix it with "__CATALINA_" to avoid
                      // colliding with user symbols
                      safecat(lcc_cmd, "-U__CATALINA_", MAX_LINELEN);
-                     safecat(lcc_cmd, &argv[i][2], MAX_LINELEN);
+                     safecat(lcc_cmd, arg, MAX_LINELEN);
                      safecat(lcc_cmd, " -Wl-U", MAX_LINELEN);
-                     safecat(lcc_cmd, &argv[i][2], MAX_LINELEN);
+                     safecat(lcc_cmd, arg, MAX_LINELEN);
                      safecat(lcc_cmd, " ", MAX_LINELEN);
                      if (verbose) {
                         banner();
-                        fprintf(stderr, "undefine symbol %s\n", &argv[i][2]);
+                        fprintf(stderr, "undefine symbol %s\n", arg);
                      }
                   }
                   break;
@@ -1408,52 +1552,31 @@ int decode_arguments (int argc, char *argv[]) {
                   break;
 
                case 'W':
-                  if (strlen(argv[i]) == 2) {
-                     if (argc > 0) {
-                        // use next arg
-                        safecat(lcc_cmd, argv[++i], MAX_LINELEN);
-                        safecat(lcc_cmd, " ", MAX_LINELEN);
-                        if (verbose) {
-                           banner();
-                           fprintf(stderr, "passing option %s\n", argv[i]);
-                        }
-                        argc--;
-                     }
-                     else {
-                        banner();
-                        fprintf(stderr, "option -W requires an argument\n");
-                        code = -1;
-                        break;
-                     }
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     banner();
+                     fprintf(stderr, "option -W requires an argument\n");
+                     code = -1;
                   }
                   else {
-                     // use remainder of this arg
-                     safecat(lcc_cmd, &argv[i][2], MAX_LINELEN);
+                     safecat(lcc_cmd, arg, MAX_LINELEN);
                      safecat(lcc_cmd, " ", MAX_LINELEN);
                      if (verbose) {
                         banner();
-                        fprintf(stderr, "passing option %s\n", &argv[i][2]);
+                        fprintf(stderr, "passing option %s\n", arg);
                      }
                   }
                   break;
 
                case 'x':
-                  if (strlen(argv[i]) == 2) {
-                     if (argc > 0) {
-                        // use next arg
-                        sscanf(argv[++i], "%d", &layout);
-                        argc--;
-                     }
-                     else {
-                        banner();
-                        fprintf(stderr, "option -x requires an argument\n");
-                        code = -1;
-                        break;
-                     }
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     banner();
+                     fprintf(stderr, "option -x requires an argument\n");
+                     code = -1;
                   }
                   else {
-                     // use remainder of this arg
-                     sscanf(&argv[i][2], "%d", &layout);
+                     sscanf(arg, "%d", &layout);
                   }
                   if (verbose) {
                      banner();
@@ -1470,7 +1593,7 @@ int decode_arguments (int argc, char *argv[]) {
                            banner();
                            fprintf(stderr, "option -x1 implies -C EEPROM\n");
                         }
-                        safecat(lcc_cmd, "-D__CATALINA_EEPROM -Wl-CEEPROM ", MAX_LINELEN);
+                        catalina_symboldef("EEPROM", "");
                         eeprom = 1;
                      }
                   }
@@ -1480,7 +1603,7 @@ int decode_arguments (int argc, char *argv[]) {
                            banner();
                            fprintf(stderr, "option -x3 implies -C FLASH\n");
                         }
-                        safecat(lcc_cmd, "-D__CATALINA_FLASH -Wl-CFLASH ", MAX_LINELEN);
+                        catalina_symboldef("FLASH", "");
                         flash = 1;
                      }
                   }
@@ -1490,7 +1613,7 @@ int decode_arguments (int argc, char *argv[]) {
                            banner();
                            fprintf(stderr, "option -x4 implies -C FLASH\n");
                         }
-                        safecat(lcc_cmd, "-D__CATALINA_FLASH -Wl-CFLASH ", MAX_LINELEN);
+                        catalina_symboldef("FLASH", "");
                         flash = 1;
                      }
                   }
@@ -1500,7 +1623,7 @@ int decode_arguments (int argc, char *argv[]) {
                            banner();
                            fprintf(stderr, "option -x6 implies -C SDCARD\n");
                         }
-                        safecat(lcc_cmd, "-D__CATALINA_SDCARD -Wl-CSDCARD ", MAX_LINELEN);
+                        catalina_symboldef("SDCARD", "");
                         sdcard = 1;
                      }
                   }
@@ -1510,7 +1633,7 @@ int decode_arguments (int argc, char *argv[]) {
                            banner();
                            fprintf(stderr, "option -x9 implies -C EEPROM\n");
                         }
-                        safecat(lcc_cmd, "-D__CATALINA_EEPROM -Wl-CEEPROM ", MAX_LINELEN);
+                        catalina_symboldef("EEPROM", "");
                         eeprom = 1;
                      }
                   }
@@ -1520,7 +1643,7 @@ int decode_arguments (int argc, char *argv[]) {
                            banner();
                            fprintf(stderr, "option -x10 implies -C SDCARD\n");
                         }
-                        safecat(lcc_cmd, "-D__CATALINA_SDCARD -Wl-CSDCARD ", MAX_LINELEN);
+                        catalina_symboldef("SDCARD", "");
                         sdcard = 1;
                      }
                   }
@@ -1542,6 +1665,9 @@ int decode_arguments (int argc, char *argv[]) {
                   if ((glevel <= 0) || (glevel > 9)) {
                      glevel = 1; // glevel must be 1 to 9
                   }
+                  if (verbose) {
+                     fprintf(stderr, "debugging level %d\n", glevel);
+                  }
                   optnum[0] = '0' + glevel;
                   optnum[1] = ' ';
                   optnum[2] = '\0';
@@ -1550,7 +1676,7 @@ int decode_arguments (int argc, char *argv[]) {
                   safecat(lcc_cmd, optnum, MAX_LINELEN);
                   safecat(lcc_cmd, " -Wf-g", MAX_LINELEN);
                   safecat(lcc_cmd, optnum, MAX_LINELEN);
-                  safecat(lcc_cmd, " -D__CATALINA_BLACKBOX -Wl-CBLACKBOX ", MAX_LINELEN);
+                  catalina_symboldef("BLACKBOX", "");
                   if (target_named) {
                      banner();
                      fprintf(stderr, "option -g will NOT override current target (%s)\n", tgt_name);
@@ -1745,6 +1871,56 @@ int main(int argc, char *argv[]) {
    // decode the arguments (which may override the default paths)
    result = decode_arguments(argc, argv);
 
+   // calculate clock frequency if requested (via -f)
+   if (reqd_freq != 0) {
+      if (prop_vers != 2) {
+         fprintf(stderr, "Clock setting (via -f, -F & -E) is only supported on the Propeller 2\n");
+      }
+      else {
+         calc_freq(xtal_freq, reqd_freq, err_freq);
+         if  (result_Fout == 0) {
+            fprintf(stderr, "Required frequency not possible within error limit - defaults will be used\n");
+         }
+      }
+   }
+
+   // output the xtal frequency if we used it to calculate clock parameters, 
+   // or it was specified separately on the command line
+   if ((result_Fout != 0) || (reqd_xtal != 0)) {
+      char clockstr[12] = "";
+
+      // note that while we check reqd_extal, we actually send xtal_freq
+      sprintf(clockstr, "=%u", xtal_freq);
+      if (verbose) {
+         printf("_CLOCK_XTAL = %s\n",clockstr); 
+      }
+      catalina_symboldef("_CLOCK_XTAL", clockstr);
+   }
+
+   // output the three clock parameters if we calculated them
+   if (result_Fout != 0) {
+      char clockstr[12] = "";
+
+      sprintf(clockstr, "=%u", result_divd);
+      if (verbose) {
+         printf("_CLOCK_XDIV = %s\n",clockstr); 
+      }
+      catalina_symboldef("_CLOCK_XDIV", clockstr);
+      
+      sprintf(clockstr, "=%u", result_mult);
+      if (verbose) {
+         printf("_CLOCK_MULT = %s\n",clockstr); 
+      }
+      catalina_symboldef("_CLOCK_MULT", clockstr);
+      
+      sprintf(clockstr, "=%u", result_post);
+      if (verbose) {
+         printf("_CLOCK_DIVP = %s\n",clockstr); 
+      }
+      catalina_symboldef("_CLOCK_DIVP", clockstr);
+      
+   }
+
    // print banner now if not suppressed and not already printed
    if (suppress == 0) {
       banner();
@@ -1762,11 +1938,7 @@ int main(int argc, char *argv[]) {
       // binder, but for LCC we preceed the symbol with "__CATALINA_"
       // to avoid colliding with any user symbols
       if (pass_symbol_to_compiler(define, &result)) {
-         safecat(lcc_cmd, "-D__CATALINA_", MAX_LINELEN);
-         safecat(lcc_cmd, define, MAX_LINELEN);
-         safecat(lcc_cmd, " -Wl-C", MAX_LINELEN);
-         safecat(lcc_cmd, define, MAX_LINELEN);
-         safecat(lcc_cmd, " ", MAX_LINELEN);
+         catalina_symboldef(define, "");
          if (verbose) {
             fprintf(stderr, "define symbol %s\n", define);
          }
@@ -1841,16 +2013,19 @@ int main(int argc, char *argv[]) {
 
    // specify assembler
    if (assembler == 1) {
-      safecat(lcc_cmd, "-D__CATALINA_OPENSPIN__ -Wl-COPENSPIN__ -Wl-as ", MAX_LINELEN);
+      catalina_symboldef("OPENSPIN__", "");
+      safecat(lcc_cmd, "-Wl-as ", MAX_LINELEN);
    }
    if (assembler == 2) {
-      safecat(lcc_cmd, "-D__CATALINA_P2PASM__ -Wl-CP2PASM__ -Wl-ap ", MAX_LINELEN);
+      catalina_symboldef("P2PASM__", "");
+      safecat(lcc_cmd, "-Wl-ap ", MAX_LINELEN);
    }
 
    if (layout == 11) {
       if (prop_vers == 1) {
          // Propeller 1
-         safecat(lcc_cmd, "-target=catalina_native/win32 -Wl-CNATIVE -D__CATALINA_NATIVE ", MAX_LINELEN);
+         safecat(lcc_cmd, "-target=catalina_native/win32 ", MAX_LINELEN);
+         catalina_symboldef("NATIVE", "");
          if ((asm_only == 0) && (comp_only == 0)) {
             safecat(lcc_cmd, "-L", MAX_LINELEN);
             pathcat(lcc_cmd, lib_path, NULL, MAX_LINELEN);
@@ -1861,7 +2036,9 @@ int main(int argc, char *argv[]) {
       }
       else {
          // Propeller 2
-         safecat(lcc_cmd, "-target=catalina_native_p2/win32 -Wl-p2 -Wl-CNATIVE -D__CATALINA_NATIVE -D__CATALINA_P2 -Wl-CP2 ", MAX_LINELEN);
+         safecat(lcc_cmd, "-target=catalina_native_p2/win32 -Wl-p2 ", MAX_LINELEN);
+         catalina_symboldef("NATIVE", "");
+         catalina_symboldef("P2", "");
          if ((asm_only == 0) && (comp_only == 0)) {
             safecat(lcc_cmd, "-L", MAX_LINELEN);
             pathcat(lcc_cmd, lib_path, NULL, MAX_LINELEN);
@@ -1876,7 +2053,7 @@ int main(int argc, char *argv[]) {
       // use normal model code generator, and indicate LMM (TINY)
       if (prop_vers == 1) {
          // Propeller 1
-         safecat(lcc_cmd, "-Wl-CTINY -D__CATALINA_TINY ", MAX_LINELEN);
+         catalina_symboldef("TINY", "");
          if ((asm_only == 0) && (comp_only == 0)) {
             safecat(lcc_cmd, "-L", MAX_LINELEN);
             pathcat(lcc_cmd, lib_path, NULL, MAX_LINELEN);
@@ -1887,7 +2064,9 @@ int main(int argc, char *argv[]) {
       }
       else {
          // Propeller 2
-         safecat(lcc_cmd, "-target=catalina_p2/win32 -Wl-p2 -Wl-CTINY -D__CATALINA_TINY -D__CATALINA_P2 -Wl-CP2 ", MAX_LINELEN);
+         safecat(lcc_cmd, "-target=catalina_p2/win32 -Wl-p2 ", MAX_LINELEN);
+         catalina_symboldef("TINY", "");
+         catalina_symboldef("P2", "");
          if ((asm_only == 0) && (comp_only == 0)) {
             safecat(lcc_cmd, "-L", MAX_LINELEN);
             pathcat(lcc_cmd, lib_path, NULL, MAX_LINELEN);
@@ -1900,7 +2079,7 @@ int main(int argc, char *argv[]) {
    }
    else if ((layout == 2) || (layout == 4)) {
       // use normal model code generator, but indicate XMM (SMALL)
-      safecat(lcc_cmd, "-Wl-CSMALL -D__CATALINA_SMALL ", MAX_LINELEN);
+      catalina_symboldef("SMALL", "");
       if (prop_vers == 2) {
          fprintf(stderr, "NOT IMPLEMENTED FOR THE P2 YET!!");
          exit(-1);
@@ -1915,7 +2094,8 @@ int main(int argc, char *argv[]) {
    }
    else if ((layout == 3) || (layout == 5)) {
       // use large model code generator, and indicate XMM (LARGE)
-      safecat(lcc_cmd, "-target=catalina_large/win32 -Wl-CLARGE -D__CATALINA_LARGE ", MAX_LINELEN);
+      safecat(lcc_cmd, "-target=catalina_large/win32 ", MAX_LINELEN);
+      catalina_symboldef("LARGE", "");
       if (prop_vers == 2) {
          fprintf(stderr, "NOT IMPLEMENTED FOR THE P2 YET!!");
          exit(-1);
@@ -1932,7 +2112,8 @@ int main(int argc, char *argv[]) {
       // use compact code generator, and indicate CMM (COMPACT)
       if (prop_vers == 1) {
          // Propeller 1
-         safecat(lcc_cmd, "-target=catalina_compact/win32 -Wl-CCOMPACT -D__CATALINA_COMPACT ", MAX_LINELEN);
+         safecat(lcc_cmd, "-target=catalina_compact/win32 ", MAX_LINELEN);
+         catalina_symboldef("COMPACT", "");
          if ((asm_only == 0) && (comp_only == 0)) {
             safecat(lcc_cmd, "-L", MAX_LINELEN);
             pathcat(lcc_cmd, lib_path, NULL, MAX_LINELEN);
@@ -1943,7 +2124,9 @@ int main(int argc, char *argv[]) {
       }
       else {
          // Propeller 2
-         safecat(lcc_cmd, "-target=catalina_compact/win32 -Wl-p2 -Wl-CCOMPACT -D__CATALINA_COMPACT -D__CATALINA_P2 -Wl-CP2 ", MAX_LINELEN);
+         safecat(lcc_cmd, "-target=catalina_compact/win32 -Wl-p2 ", MAX_LINELEN);
+         catalina_symboldef("COMPACT", "");
+         catalina_symboldef("P2", "");
          if ((asm_only == 0) && (comp_only == 0)) {
             safecat(lcc_cmd, "-L", MAX_LINELEN);
             pathcat(lcc_cmd, lib_path, NULL, MAX_LINELEN);

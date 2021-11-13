@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  long ' align long
-C_sjfo_6174acda_wait100ms_L000003 ' <symbol:wait100ms>
+C_sd1s_6188be3f_wait100ms_L000003 ' <symbol:wait100ms>
  jmp #PSHM
  long $540000 ' save registers
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
@@ -28,7 +28,7 @@ C_sjfo_6174acda_wait100ms_L000003 ' <symbol:wait100ms>
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C__waitcnt ' CALL addrg
-' C_sjfo_6174acda_wait100ms_L000003_4 ' (symbol refcount = 0)
+' C_sd1s_6188be3f_wait100ms_L000003_4 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETN
 
@@ -61,7 +61,7 @@ C_D_F_S__W_riteS_ector_6
 C_D_F_S__W_riteS_ector_10
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
- long @C_sjfo_6174acda_wait100ms_L000003 ' CALL addrg
+ long @C_sd1s_6188be3f_wait100ms_L000003 ' CALL addrg
 ' C_D_F_S__W_riteS_ector_7 ' (symbol refcount = 0)
  adds r15, #1 ' ADDI4 coni
  cmps r15,  #10 wz,wc

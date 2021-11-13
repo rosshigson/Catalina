@@ -26,6 +26,8 @@ C__lockset
 
 
 
+
+
              lockset r2 wc
  if_c        mov     r0, #0
  if_nc       mov     r0, #1

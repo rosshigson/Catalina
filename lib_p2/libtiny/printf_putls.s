@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_sk3c_6174acfe_digits_L000001 ' <symbol:digits>
+C_sgvo_6188be6b_digits_L000001 ' <symbol:digits>
  byte 48
  byte 49
  byte 50
@@ -86,7 +86,7 @@ C__printf_putls_7
  mov r17, r22 ' ADDI/P
  adds r17, r20 ' ADDI/P (3)
  PRIMITIVE(#LODL)
- long @C_sk3c_6174acfe_digits_L000001
+ long @C_sgvo_6188be6b_digits_L000001
  mov r20, RI ' reg <- addrg
  adds r20, r15 ' ADDI/P (2)
  rdbyte r20, r20 ' reg <- INDIRU1 reg

@@ -131,7 +131,7 @@ C__thread_affinity_change_1
  alignl ' align long
  word I16B_PASM
  alignl ' align long
-   call #REL_KERNEL_LOCK                      ' release kernel lock
+   call #REL_KERNEL_LOCK                ' release kernel lock
 #else
  alignl ' align long
  word I16B_PASM

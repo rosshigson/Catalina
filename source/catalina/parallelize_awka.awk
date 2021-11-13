@@ -662,6 +662,15 @@ BEGIN {
    $1 = "";
    $2 = "";
    $3 = "";
+   excl_opt="";
+   if ($4 == "lock") {
+      $4 = "";
+      excl_opt = "lock";
+   }
+   else if ($4  == "extern") {
+      $4 = "";
+      excl_opt = "extern";
+   }
    n = get_pragma_options(trim($0));
    if (n == 0) {
       name = "_region";
@@ -686,7 +695,7 @@ BEGIN {
    }
 
    if (!known_exclusion(name)) {
-      define_exclusion(name, FILENAME, line_no);
+      define_exclusion(name, FILENAME, line_no, excl_opt);
    }
    if (collecting) {
        # add to worker segment
@@ -709,6 +718,15 @@ BEGIN {
    $1 = "";
    $2 = "";
    $3 = "";
+   excl_opt="";
+   if ($4 == "lock") {
+      $4 = "";
+      excl_opt = "lock";
+   }
+   else if ($4  == "extern") {
+      $4 = "";
+      excl_opt = "extern";
+   }
    n = get_pragma_options(trim($0));
    if (n == 0) {
       name = "_region";
@@ -726,7 +744,7 @@ BEGIN {
 
    exclusive = 0;
    if (!known_exclusion(name)) {
-      define_exclusion(name, FILENAME, line_no);
+      define_exclusion(name, FILENAME, line_no, excl_opt);
    }
    if (collecting) {
        # add to worker segment

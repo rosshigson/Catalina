@@ -607,11 +607,25 @@ C_L_M_M__threaded_dynamic_array ' <symbol:LMM_threaded_dynamic_array>
  long $fb645df7
  long $fd9fffe4
  long $fd604224
+ long $fd63d207
+ long $f403d5e9
+ long $f607cc01
+ long $fd604024
+ long $fd604824
+ long $fd64002d
+ long $fd604224
  long $f43bd5e9
  long $5d73d206
  long $1403d5e9
- long $bd800360
  long $fd604024
+ long $fd74806f
+ long $fd64002d
+ long $fd604224
+ long $f43bd5e9
+ long $5d73d206
+ long $1403d5e9
+ long $fd604024
+ long $bd80036e
  long $fd64002d
  long $fd604224
  long $fd63d207
@@ -619,17 +633,27 @@ C_L_M_M__threaded_dynamic_array ' <symbol:LMM_threaded_dynamic_array>
  long $fd604024
  long $fd64002d
  long $fd604224
- long $f43bd5e9
+ long $f43bd434
  long $5d706806
- long $1403d5e9
- long $bd80036c
+ long $1403d434
  long $fd604024
+ long $fd74806f
+ long $fd64002d
+ long $fd604224
+ long $f43bd434
+ long $5d706806
+ long $1403d434
+ long $fd604024
+ long $bd800381
  long $fd64002d
  long $fd604224
  long $fd606807
- long $f403d5e9
+ long $f403d434
  long $fd604024
  long $fd64002d
+ long $0
+ long $0
+ long $0
 
 ' Catalina Export LMM_LUT_LIBRARY_array
 
@@ -732,11 +756,25 @@ C_L_M_M__L_U_T__L_I_B_R_A_R_Y__array ' <symbol:LMM_LUT_LIBRARY_array>
  long $fb645df7
  long $fd9fffe4
  long $fd604224
+ long $fd63d207
+ long $f403d5e9
+ long $f607cc01
+ long $fd604024
+ long $fd604824
+ long $fd64002d
+ long $fd604224
  long $f43bd5e9
  long $5d73d206
  long $1403d5e9
- long $bd800360
  long $fd604024
+ long $fd74806f
+ long $fd64002d
+ long $fd604224
+ long $f43bd5e9
+ long $5d73d206
+ long $1403d5e9
+ long $fd604024
+ long $bd80036e
  long $fd64002d
  long $fd604224
  long $fd63d207
@@ -744,15 +782,22 @@ C_L_M_M__L_U_T__L_I_B_R_A_R_Y__array ' <symbol:LMM_LUT_LIBRARY_array>
  long $fd604024
  long $fd64002d
  long $fd604224
- long $f43bd5e9
+ long $f43bd434
  long $5d706806
- long $1403d5e9
- long $bd80036c
+ long $1403d434
  long $fd604024
+ long $fd74806f
+ long $fd64002d
+ long $fd604224
+ long $f43bd434
+ long $5d706806
+ long $1403d434
+ long $fd604024
+ long $bd800381
  long $fd64002d
  long $fd604224
  long $fd606807
- long $f403d5e9
+ long $f403d434
  long $fd604024
  long $fd64002d
 
@@ -784,7 +829,7 @@ C__threadstart_L_M_M__cog ' <symbol:_threadstart_LMM_cog>
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_WRLONG + (r23)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl ' align long
- long I32_MOVI + (r22)<<D32 +(120)<<S32 ' reg <- conli
+ long I32_MOVI + (r22)<<D32 +(141)<<S32 ' reg <- conli
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  word I16B_LODL + (r22)<<D16B

@@ -1,0 +1,51 @@
+/* 
+ * Created from NMM_library.bin
+ * 
+ * by Spin to C Array Converter, version 4.9
+ */
+
+#define NMM_LUT_LIBRARY_CLOCKFREQ  180000000
+#define NMM_LUT_LIBRARY_CLOCKMODE  0x010C470B
+
+#define NMM_LUT_LIBRARY_ARRAY_TYPE 2 // array contains C blob
+
+#define NMM_LUT_LIBRARY_LAYOUT         11
+
+#define NMM_LUT_LIBRARY_BLOB_SIZE      0x140 // bytes
+#define NMM_LUT_LIBRARY_STACK_SIZE     0x50 // bytes
+#define NMM_LUT_LIBRARY_PROGRAM_SIZE   0x140 // bytes
+#define NMM_LUT_LIBRARY_RUNTIME_SIZE   0x1a0 // bytes
+
+#define NMM_LUT_LIBRARY_INIT_PC        0x0
+#define NMM_LUT_LIBRARY_INIT_SP        0x1d90
+
+#define NMM_LUT_LIBRARY_CODE_ADDRESS   0x1c00
+#define NMM_LUT_LIBRARY_CNST_ADDRESS   0x1d40
+#define NMM_LUT_LIBRARY_INIT_ADDRESS   0x1d40
+#define NMM_LUT_LIBRARY_DATA_ADDRESS   0x1d40
+
+#define NMM_LUT_LIBRARY_FILE_NAME      "NMM_library.bin"
+
+unsigned long NMM_LUT_LIBRARY_array[] =
+{
+    0xfd102c17, 0xfd602c18, 0x0d602e19, 0xf6007817, 
+    0xf6007a16, 0xf6402e17, 0xf6402c16, 0xf560783d, 
+    0xfda00300, 0xf6107a3d, 0xf6802e17, 0xf610783c, 
+    0x06802c16, 0xf6047a08, 0xf6102c19, 0xcd90003c, 
+    0xf7cc2c80, 0x5d900074, 0xf6007439, 0xf6047600, 
+    0xf21c7608, 0x3d9000a0, 0xfb00783a, 0xf0447818, 
+    0xf2087816, 0xad90000c, 0x51047601, 0x51047404, 
+    0x5d9fffdc, 0xf6002c3b, 0xfd900040, 0xf0642c01, 
+    0xf1002c39, 0xfae02c16, 0xf6007416, 0xf0442c0c, 
+    0xf600763a, 0xf06c7418, 0xad90005c, 0xf6007a3b, 
+    0xf0447a08, 0xf7cc7a08, 0x5d900008, 0xfd707a06, 
+    0x3d9ffff8, 0xf5203036, 0xf540303a, 0xf5042c07, 
+    0xf0642c02, 0xf1002c39, 0xfb002c16, 0xf7c82c36, 
+    0xad900024, 0xf5202c36, 0xfc603016, 0xfb083216, 
+    0x5d9ffff8, 0xf1042c04, 0xfb002c16, 0xf7cc7a08, 
+    0xad607a07, 0xfd64002d, 0xf6642c01, 0xfd9fffec, 
+    0xf0642e02, 0xff0003df, 0xf1042fb0, 0xfb003017, 
+    0xff007fff, 0xf50431ff, 0xf0643218, 0xf5403019, 
+    0xfc603017, 0x0c602c18, 0xfac03218, 0xfc403216, 
+    0xf1042c01, 0xf1043001, 0xfb6c2ffb, 0xfd64002d
+};

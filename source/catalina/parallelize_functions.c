@@ -80,6 +80,8 @@ struct known_factory {
 struct known_exclusion {
    char *name;
    int  emitted;
+   int  lock;
+   int  ext;
 };
 
 static int factory_count = 0;
@@ -380,7 +382,15 @@ void emit_prologue(void) {
       printf("}\n\n");
       for (j = 0; j < exclusion_count; j++) {
          if (exclusion[j].name != NULL) {
-            printf("static int _exclusion_%s = -1;\n\n", exclusion[j].name);
+            if (exclusion[j].lock) {
+               printf("int _exclusion_%s = -1;\n\n", exclusion[j].name);
+            }
+            else if (exclusion[j].ext) {
+               printf("extern int _exclusion_%s;\n\n", exclusion[j].name);
+            }
+            else {
+               printf("static int _exclusion_%s = -1;\n\n", exclusion[j].name);
+            }
             printf("static void _exclusive_%s(void) {\n", exclusion[j].name);
             printf("   if (_exclusion_%s < 0) {\n", exclusion[j].name);
             printf("      _exclusion_%s = _LOCKNEW();\n", exclusion[j].name);
@@ -1479,11 +1489,13 @@ a_VAR * define_exclusion_fn( a_VARARG *va ) {
    char *cogs;
    char *file;
    char *line_no;
+   char *opt;
    int i;
 
    name    = awka_gets(va->var[0]);
    file    = awka_gets(va->var[1]);
    line_no = awka_gets(va->var[2]);
+   opt     = awka_gets(va->var[3]);
 
 #if DEBUG      
    printf("checking %s\n", name);
@@ -1509,6 +1521,8 @@ a_VAR * define_exclusion_fn( a_VARARG *va ) {
 #endif
       exclusion[exclusion_count].name    = strdup(name);
       exclusion[exclusion_count].emitted = 0;
+      exclusion[exclusion_count].lock    = (strcmp(opt,"lock")==0);
+      exclusion[exclusion_count].ext     = (strcmp(opt,"extern")==0);
       exclusion_count++;      
       ret->dval = (float)0;
    }

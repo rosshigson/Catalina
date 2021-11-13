@@ -244,7 +244,7 @@ int main(int argc, char *argv[]) {
                retries = 0;
                while (request && (retries++ < MAX_RETRIES)) {
                   // nothing to do, so yield
-                  _thread_yield();
+                  _thread_wait(1);
                };
                if (retries >= MAX_RETRIES) {
                   _thread_printf(pool, hmi_lock, 
@@ -262,7 +262,7 @@ int main(int argc, char *argv[]) {
                while ((_thread_affinity(thread[i]) & 0x0000C000) == 0 
                &&     (retries++ < MAX_RETRIES)) {
                   // nothing to do, so yield
-                  _thread_yield();
+                  _thread_wait(1);
                };
                if (retries >= MAX_RETRIES) {
                   _thread_printf(pool, hmi_lock, 
@@ -288,7 +288,7 @@ int main(int argc, char *argv[]) {
                   while (((_thread_affinity(thread[i]) & 0x0000C000) == 0) 
                   &&     (retries++ < MAX_RETRIES)) {
                      // nothing to do, so yield
-                     _thread_yield();
+                     _thread_wait(1);
                   };
                   if (retries >= MAX_RETRIES) {
                      _thread_printf(pool, hmi_lock, 
@@ -321,7 +321,7 @@ int main(int argc, char *argv[]) {
                retries = 0;
                while (request && (retries++ < MAX_RETRIES)) {
                   // nothing to do, so yield
-                  _thread_yield();
+                  _thread_wait(1);
                };
                if (retries >= MAX_RETRIES) {
                   _thread_printf(pool, hmi_lock, 
@@ -336,6 +336,7 @@ int main(int argc, char *argv[]) {
 
          }   
          _thread_printf(pool, hmi_lock, "\n", i);
+         _thread_wait(1);
       }
    }
 

@@ -25,7 +25,7 @@
 /*
  * define stack size for threads:
  */
-#define STACK_SIZE 100
+#define STACK_SIZE (MIN_THREAD_STACK_SIZE + 100)
 
 /*
  * define the maximum number of Philosophers we can have:
@@ -52,7 +52,6 @@
 #ifndef NUM_COURSES
 #define NUM_COURSES 20
 #endif
-
 
 struct Customer {
    char *name;  // customer's name
@@ -99,7 +98,9 @@ static int Dinner_Bell = 0;                 // set this to 1 to start dinner
  * Pick_Up - pick up a fork (a fork is modelled by a thread lock)
  */
 void Pick_Up(int fork) {
-   do { } while (!_thread_lockset(Pool, Fork[fork]));
+   while (_thread_lockset(Pool, Fork[fork]) == 0) {
+     _thread_yield();
+   }
 }
 
 
@@ -183,8 +184,15 @@ int main(void) {
    for (i = 0; i < NUM_PHILOSOPHERS; i++) {
       Seat[i] = _thread_start(&Diner, &stacks[STACK_SIZE * (i + 1)], i, NULL);
       Fork[i] = _thread_locknew(Pool);
+      if (Fork[i] < 0) {
+         _thread_printf(Pool, HMI_Lock, "Only %d Forks!\n\n", i - 1);
+         _thread_printf(Pool, HMI_Lock, 
+             "\nPROGRAM WILL NOT EXECUTE CORRECTLY\n\n");
+         break;
+      }
    }
-   _thread_printf(Pool, HMI_Lock, "Table set for %d diners\n\n", NUM_PHILOSOPHERS);
+   _thread_printf(Pool, HMI_Lock, 
+       "Table set for %d diners\n\n", NUM_PHILOSOPHERS);
 
    // now start dinner
    Dinner_Bell = 1;

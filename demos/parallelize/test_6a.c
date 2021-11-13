@@ -4,7 +4,7 @@
  *
  * In this program the workers themselves are defined in separate files. In
  * such cases, we must always use our own lock, which is defined in a
- * different file.
+ * different file. So in this file, we declare it as "extern".
  */
 
 #pragma propeller extern my_lock

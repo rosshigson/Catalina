@@ -24,8 +24,13 @@ C__thread_printf ' <symbol:_thread_printf>
  alignl ' align long
  long I32_SPILL + r5<<D32 ' spill reg (varadic)
  alignl ' align long
+ long I32_JMPA + (@C__thread_printf_4)<<S32 ' JUMPV addrg
+ alignl ' align long
 C__thread_printf_3
-' C__thread_printf_4 ' (symbol refcount = 0)
+ alignl ' align long
+ long I32_CALA + (@C__thread_yield)<<S32 ' CALL addrg
+ alignl ' align long
+C__thread_printf_4
  word I16B_LODF + ((12)&$1FF)<<S16B
  word I16A_RDLONG + (r2)<<D16A + RI<<S16A ' reg ARG INDIR ADDRFi
  word I16B_LODF + ((8)&$1FF)<<S16B
@@ -70,4 +75,6 @@ C__thread_printf_3
 ' Catalina Import _thread_lockset
 
 ' Catalina Import _thread_lockclr
+
+' Catalina Import _thread_yield
 ' end

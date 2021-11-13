@@ -1,0 +1,51 @@
+/* 
+ * Created from CMM_library.bin
+ * 
+ * by Spin to C Array Converter, version 4.9
+ */
+
+#define CMM_LUT_LIBRARY_CLOCKFREQ  180000000
+#define CMM_LUT_LIBRARY_CLOCKMODE  0x010C470B
+
+#define CMM_LUT_LIBRARY_ARRAY_TYPE 2 // array contains C blob
+
+#define CMM_LUT_LIBRARY_LAYOUT         8
+
+#define CMM_LUT_LIBRARY_BLOB_SIZE      0x140 // bytes
+#define CMM_LUT_LIBRARY_STACK_SIZE     0x50 // bytes
+#define CMM_LUT_LIBRARY_PROGRAM_SIZE   0x140 // bytes
+#define CMM_LUT_LIBRARY_RUNTIME_SIZE   0x1a0 // bytes
+
+#define CMM_LUT_LIBRARY_INIT_PC        0x0
+#define CMM_LUT_LIBRARY_INIT_SP        0x1d90
+
+#define CMM_LUT_LIBRARY_CODE_ADDRESS   0x1c00
+#define CMM_LUT_LIBRARY_CNST_ADDRESS   0x1d40
+#define CMM_LUT_LIBRARY_INIT_ADDRESS   0x1d40
+#define CMM_LUT_LIBRARY_DATA_ADDRESS   0x1d40
+
+#define CMM_LUT_LIBRARY_FILE_NAME      "CMM_library.bin"
+
+unsigned long CMM_LUT_LIBRARY_array[] =
+{
+    0xfd100001, 0xfd600018, 0x0d600219, 0xf6005201, 
+    0xf6005400, 0xf6400201, 0xf6400000, 0xf560522a, 
+    0xfda00300, 0xf610542a, 0xf6800201, 0xf6105229, 
+    0x06800000, 0xf6045408, 0xf6100003, 0xcd90003c, 
+    0xf7cc0080, 0x5d900074, 0xf6004e55, 0xf6045000, 
+    0xf21c5008, 0x3d9000a0, 0xfb005227, 0xf0445218, 
+    0xf2085200, 0xad90000c, 0x51045001, 0x51044e04, 
+    0x5d9fffdc, 0xf6000028, 0xfd900040, 0xf0640001, 
+    0xf1000055, 0xfae00000, 0xf6004e00, 0xf044000c, 
+    0xf6005027, 0xf06c4e18, 0xad90005c, 0xf6005428, 
+    0xf0445408, 0xf7cc5408, 0x5d900008, 0xfd705406, 
+    0x3d9ffff8, 0xf5200422, 0xf5400427, 0xf5040007, 
+    0xf0640002, 0xf1000055, 0xfb000000, 0xf7c80022, 
+    0xad900024, 0xf5200022, 0xfc600400, 0xfb080600, 
+    0x5d9ffff8, 0xf1040004, 0xfb000000, 0xf7cc5408, 
+    0xad605407, 0xfd64002d, 0xf6640001, 0xfd9fffec, 
+    0xf0640202, 0xff0003df, 0xf10403b0, 0xfb000401, 
+    0xff007fff, 0xf50405ff, 0xf0640618, 0xf5400403, 
+    0xfc600401, 0x0c600002, 0xfac00602, 0xfc400600, 
+    0xf1040001, 0xf1040401, 0xfb6c03fb, 0xfd64002d
+};

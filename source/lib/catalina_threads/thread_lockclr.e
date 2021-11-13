@@ -16,7 +16,7 @@
 '    clear a lock, and return the previous value
 ' on entry:
 '    r2 = lock id
-'    r3 = pointer to pool (size + 1) bytes
+'    r3 = pointer to pool (size + 5) bytes
 ' on exit:
 '    r0 = previous value of lock (0 or 1), or -1 on error
 '
@@ -86,7 +86,7 @@ C__thread_lockclr
  neg r0, #1             ' return -1 on error
 :thr_lclr_done 
 #ifdef P2
- call #REL_POOL_LOCK        ' release pool lock
+ call #\REL_POOL_LOCK        ' release pool lock
 #else
  lockclr r1             ' release pool lock
 #endif

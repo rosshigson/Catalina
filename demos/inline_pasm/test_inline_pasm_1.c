@@ -40,7 +40,7 @@
  *         To execute a SINGLE inline PASM instruction, you can also use
  *         "word I16B_PASM". For example:
  *
- *            PASM(" word I16B_EXEC\n mov R0,#1");
+ *            PASM(" word I16B_PASM\n alignl\n mov R0,#1");
  *
  * Note 4: If you intend to use the optimizer, be aware that it may not
  *         "see" references to variables used only within the inline PASM, 

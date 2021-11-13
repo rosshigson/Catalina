@@ -19,13 +19,15 @@ DAT ' code segment
 
 C__lockclr
 #ifdef P2
+ stalli
  lockrel r2
- bitl lockbits, r2
+ bitl lockbits, r2 wcz
+ allowi
 #else
  lockclr r2 wc
+#endif
  if_c mov r0, #1
  if_nc mov r0, #0
-#endif
  PRIMITIVE(#RETN)
 ' end
 

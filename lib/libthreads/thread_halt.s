@@ -101,7 +101,7 @@ C__thread_halt_1
 
 
 
- jmp #BR_B
+ jmp #JMPA
  long @C__thread_halt   ' if we get here, try again
 
  jmp #RETN       ' optimizer needs this

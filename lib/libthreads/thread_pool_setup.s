@@ -16,7 +16,7 @@
 ' _thread_pool_setup
 '    internal common pool setup routine
 ' on entry:
-'    r3 = pointer to pool (size + 1) bytes
+'    r3 = pointer to pool (size + 5) bytes
 ' on exit:
 '    r1 = lock to use for pool (pool is locked)
 '    r3 = pointer to pool
@@ -27,6 +27,7 @@
 DAT ' code segment
 
 ' Catalina Import _thread_id
+' Catalina Import _thread_yield
 
 ' Catalina Export _thread_pool_setup
 
@@ -51,10 +52,25 @@ C__thread_pool_setup
 
 
 
-:thr_psetup_lock
- lockset r1 wc
- jmp #BR_B
- long @:thr_psetup_lock ' loop till we get a lock on the pool
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ lockset r1 wc                 ' did we get pool lock?
+ jmp #BR_B
+ long @C__thread_pool_setup    ' no - try again
+
+:thr_psetup_locked
  jmp #RETN
 ' end

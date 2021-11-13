@@ -4,7 +4,7 @@
 ' int _thread_locknew(void *pool);
 '    allocate a new lock from the pool
 ' on entry:
-'    r2 = pointer to pool (size + 1) bytes
+'    r2 = pointer to pool (size + 5) bytes
 ' on exit:
 '    r0 = lock on success (1 .. size), -1 on failure
 '

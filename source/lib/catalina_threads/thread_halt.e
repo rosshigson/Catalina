@@ -98,9 +98,9 @@ C__thread_halt_1
  jmp #LMM_force         ' force a context switch immediately
 #endif
 #if defined(P2) && defined(NATIVE)
- if_b jmp #@C__thread_halt ' if we get here, try again 
+ jmp #@C__thread_halt   ' if we get here, try again 
 #else
- PRIMITIVE(#BR_B)
+ PRIMITIVE(#JMPA)
  long @C__thread_halt   ' if we get here, try again
 #endif
  PRIMITIVE(#RETN)       ' optimizer needs this

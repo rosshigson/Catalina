@@ -28,11 +28,11 @@ DAT ' code segment
 
 C__thread_yield
 
- call #GET_KERNEL_LOCK  ' get kernel lock
+ call #TRY_KERNEL_LOCK  ' if we get kernel lock ...
 
 
 
- calld PA, #\LMM_force  ' force a context switch immediately
+ if_c jmp #\LMM_force     ' ... force a context switch immediately
 
 
 

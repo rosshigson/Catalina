@@ -13,12 +13,13 @@
 ' LMM PASM implementations of fundamental multi-threading lock operations
 '
 ' int _thread_lockset(void *pool, int lockid);
-'    set a lock, and return the previous value
+'    set a lock, and return 1 on success, 0 on failure
 ' on entry:
 '    r2 = lock id
-'    r3 = pointer to pool (size + 1) bytes
+'    r3 = pointer to pool (size + 5) bytes
 ' on exit:
-'    r0 = previous value of lock (0 or 1), or -1 on error
+'    r0 = NOT previous value of lock - i.e. 1 if we locked it, 0 if it was
+'         already locked, or -1 on error
 '
 ' Catalina Code
 
@@ -87,7 +88,7 @@ C__thread_lockset
  neg r0, #1             ' return -1 on error
 :thr_lset_done 
 #ifdef P2
- call #REL_POOL_LOCK    ' release pool lock
+ call #\REL_POOL_LOCK    ' release pool lock
 #else
  lockclr r1             ' release pool lock
 #endif

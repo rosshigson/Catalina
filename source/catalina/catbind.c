@@ -237,6 +237,12 @@
  *
  * Version 4.9.2 - Just update version number.
  *
+ * Version 4.9.3 - Allow complex symbol definitions on the command line, 
+ *                 such as:
+ *
+ *                    -D "name=value".
+ *
+ *                 This is only supported when using p2_asm as the assembler.
  */
 
 /*--------------------------------------------------------------------------
@@ -273,7 +279,7 @@
 
 #define COMPILE_IN_PLACE   1 /* 0 = compile in target, 1 = compile locally */
 
-#define VERSION            "4.9.2"
+#define VERSION            "4.9.3"
 
 #define MAX_FILES          500
 #define MAX_LIBS           500
@@ -493,6 +499,7 @@ void help(char *my_name) {
    fprintf(stderr, "          -d        output diagnostic messages (-d -d for even more messages)\n");
    fprintf(stderr, "          -e        generate export list from input files\n");
    fprintf(stderr, "          -f        force (continue even if errors occur)\n");
+   fprintf(stderr, "          -g[level] generate debuging output (default level = 1)\n");
    fprintf(stderr, "          -i        generate import list from input files\n");
    fprintf(stderr, "          -k        kill (suppress) statistics output\n");
    fprintf(stderr, "          -L path   path to libraries (default is '%s')\n", def_lib_path);
@@ -576,6 +583,30 @@ void pathcat(char *dst, const char *src, const char *sfx, size_t max) {
 
 
 /*
+ * return a pointer to the value of the argument to the command-line option,
+ * with the specified index, or NULL if there is no value, incrementing the 
+ * index, and also decrementing argc if we consume a second command-line 
+ * argument.
+ */
+char *get_option_argument(int *index, int *argc, char *argv[]) {
+   if (strlen(argv[*index]) == 2) {
+      if ((*argc) > 0) {
+         (*index)++;
+         // use next arg
+         (*argc)--;
+         return argv[*index];
+      }
+      else {
+         return NULL;
+      }
+   }
+   else {
+      // use remainder of this arg
+      return &argv[*index][2];
+   }
+}
+
+/*
  * decode arguments, building file and library list - return -1 if
  * there is no further processing to do
  */
@@ -585,8 +616,8 @@ int decode_arguments (int argc, char *argv[]) {
    int    code = 0;
    int    i = 0;
    char   modifier;
-   char   memstr[20];
    char   optnum[20];
+   char * arg;
 
    if (argc == 1) {
       if (strlen(argv[0]) == 0) {
@@ -641,7 +672,7 @@ int decode_arguments (int argc, char *argv[]) {
                case 'e':
                   export = 1;
                   if (verbose) {
-                     fprintf(stderr, "note: option -i implies -a (no assembly)\n");
+                     fprintf(stderr, "note: option -e implies -a (no assembly)\n");
                   }
                   assemble = 0;
                   if (lib_count > 0) {
@@ -654,21 +685,13 @@ int decode_arguments (int argc, char *argv[]) {
                   break;
 
                case 'L':
-                  if (strlen(argv[i]) == 2) {
-                     // use next arg
-                     if (argc > 0) {
-                        library_path = strdup(argv[++i]);
-                     }
-                     else {
-                        fprintf(stderr, "option -L requires an argument\n");
-                        code = -1;
-                        break;
-                     }
-                     argc--;
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     fprintf(stderr, "option -L requires an argument\n");
+                     code = -1;
                   }
                   else {
-                     // use remainder of this arg
-                     library_path = strdup(&argv[i][2]);
+                     library_path = strdup(arg);
                   }
                   if (verbose > 1) {
                      fprintf(stderr, "library path = %s\n", library_path);
@@ -681,24 +704,14 @@ int decode_arguments (int argc, char *argv[]) {
                      code = -1; // force exit
                   }
                   if (lib_count < MAX_LIBS) {
-                     if (strlen(argv[i]) == 2) {
-                        // use next arg - prefix with "lib"
-                        if (argc > 0) {
-                           safecpy(libname, "lib", MAX_LINELEN + 3);
-                           safecat(libname, argv[++i], MAX_LINELEN + 3);
-                           input_lib[lib_count++] = strdup(libname);
-                        }
-                        else {
-                           fprintf(stderr, "option -l requires an argument\n");
-                           code = -1;
-                           break;
-                        }
-                        argc--;
+                     arg = get_option_argument(&i, &argc, argv);
+                     if (arg == NULL) {
+                        fprintf(stderr, "option -l requires an argument\n");
+                        code = -1;
                      }
                      else {
-                        // use remainder of this arg - prefix with "lib"
                         safecpy(libname, "lib", MAX_LINELEN + 3);
-                        safecat(libname, &argv[i][2], MAX_LINELEN + 3);
+                        safecat(libname, arg, MAX_LINELEN + 3);
                         input_lib[lib_count++] = strdup(libname);
                      }
                   }
@@ -722,21 +735,13 @@ int decode_arguments (int argc, char *argv[]) {
                   break;
 
                case 'x':
-                  if (strlen(argv[i]) == 2) {
-                     // use next arg
-                     if (argc > 0) {
-                        sscanf(argv[++i], "%d", &layout);
-                     }
-                     else {
-                        fprintf(stderr, "option -x requires an argument\n");
-                        code = -1;
-                        break;
-                     }
-                     argc--;
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     fprintf(stderr, "option -x requires an argument\n");
+                     code = -1;
                   }
                   else {
-                     // use remainder of this arg
-                     sscanf(&argv[i][2], "%d", &layout);
+                     sscanf(arg, "%d", &layout);
                   }
                   if (verbose > 1) {
                      fprintf(stderr, "memory layout %d\n", layout);
@@ -827,21 +832,13 @@ int decode_arguments (int argc, char *argv[]) {
                   break;
 
                case 'o':
-                  if (strlen(argv[i]) == 2) {
-                     // use next arg
-                     if (argc > 0) {
-                        result_file = strdup(argv[++i]);
-                     }
-                     else {
-                        fprintf(stderr, "option -o requires an argument\n");
-                        code = -1;
-                        break;
-                     }
-                     argc--;
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     fprintf(stderr, "option -o requires an argument\n");
+                     code = -1;
                   }
                   else {
-                     // use remainder of this arg
-                     result_file = strdup(&argv[i][2]);
+                     result_file = strdup(arg);
                   }
                   if (verbose) {
                      fprintf(stderr, "output file = %s\n", result_file);
@@ -850,7 +847,7 @@ int decode_arguments (int argc, char *argv[]) {
 
                case 'O':
                   if (strlen(argv[i]) == 2) {
-                     // use next arg
+                     // no optimizaton level - assume level 1
                      olevel = 1;
                   }
                   else {
@@ -872,49 +869,26 @@ int decode_arguments (int argc, char *argv[]) {
                case 'M':
                   memory = 1;
                   modifier = 0;
-                  if (strlen(argv[i]) == 2) {
-                     // use next arg
-                     if (argc > 0) {
-                        i++;
-                        if ((argv[i][0] == '$')) {
-                           // hex parameter (such as $ABCD)
-                           sscanf(&argv[i][1], "%x", &memsize);
-                        }
-                        else if ((argv[i][0] == '0')
-                        && ((argv[i][1] == 'x')||(argv[i][1] == 'X'))) {
-                           // hex parameter (such as 0xFFFF or 0XA000)
-                           sscanf(&argv[i][2], "%x", &memsize);
-                        }
-                        else {
-                           // decimal parameter, perhaps with modifier
-                           // (such as 4k or 16m)
-                           sscanf(argv[i], "%d%c", &memsize, &modifier);
-                        }
-                     }
-                     else {
-                        fprintf(stderr, "option -M requires an argument\n");
-                        code = -1;
-                        break;
-                     }
-                     argc--;
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     fprintf(stderr, "option -M requires an argument\n");
+                     code = -1;
                   }
                   else {
-                     // use remainder of this arg
-                     if ((argv[i][1] == '$')) {
+                     if ((arg[0] == '$')) {
                         // hex parameter (such as $ABCD)
-                        sscanf(&argv[i][2], "%x", &memsize);
+                        sscanf(&arg[1], "%x", &memsize);
                      }
-                     else if ((argv[i][1] == '0')
-                     && ((argv[i][2] == 'x')||(argv[i][2] == 'X'))) {
+                     else if ((arg[0] == '0')
+                     && ((arg[1] == 'x')||(arg[1] == 'X'))) {
                         // hex parameter (such as 0xFFFF or 0XA000)
-                        sscanf(&argv[i][3], "%x", &memsize);
+                        sscanf(&arg[2], "%x", &memsize);
                      }
                      else {
                         // decimal parameter, perhaps with modifier
                         // (such as 4k or 16m)
-                        sscanf(argv[i], "%d%c", &memsize, &modifier);
+                        sscanf(arg, "%d%c", &memsize, &modifier);
                      }
-                     sscanf(&argv[i][2], "%d%c", &memsize, &modifier);
                   }
                   if (tolower(modifier) == 'k') {
                      memsize *= 1024;
@@ -928,21 +902,13 @@ int decode_arguments (int argc, char *argv[]) {
                   break;
 
                case 'p':
-                  if (strlen(argv[i]) == 2) {
-                     // use next arg
-                     if (argc > 0) {
-                        sscanf(argv[++i], "%d", &prop_vers);
-                        argc--;
-                     }
-                     else {
-                        fprintf(stderr, "option -p requires an argument\n");
-                        code = -1;
-                        break;
-                     }
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     fprintf(stderr, "option -p requires an argument\n");
+                     code = -1;
                   }
                   else {
-                     // use remainder of this arg
-                     sscanf(&argv[i][2], "%d", &prop_vers);
+                     sscanf(arg, "%d", &prop_vers);
                   }
                   if (verbose) {
                      fprintf(stderr, "propeller hardware version = %d\n", prop_vers);
@@ -955,47 +921,25 @@ int decode_arguments (int argc, char *argv[]) {
 
                case 'P':
                   modifier = 0;
-                  if (strlen(argv[i]) == 2) {
-                     // use next arg
-                     if (argc > 0) {
-                        i++;
-                        if ((argv[i][0] == '$')) {
-                           // hex parameter (such as $ABCD)
-                           sscanf(&argv[i][1], "%x", &readwrite);
-                        }
-                        else if ((argv[i][0] == '0')
-                        && ((argv[i][1] == 'x')||(argv[i][1] == 'X'))) {
-                           // hex parameter (such as 0xFFFF or 0XA000)
-                           sscanf(&argv[i][2], "%x", &readwrite);
-                        }
-                        else {
-                           // decimal parameter, perhaps with modifier
-                           // (such as 4k or 16m)
-                           sscanf(argv[i], "%d%c", &readwrite, &modifier);
-                        }
-                     }
-                     else {
-                        fprintf(stderr, "option -P requires an argument\n");
-                        code = -1;
-                        break;
-                     }
-                     argc--;
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     fprintf(stderr, "option -P requires an argument\n");
+                     code = -1;
                   }
                   else {
-                     // use remainder of this arg
-                     if ((argv[i][2] == '$')) {
+                     if ((arg[0] == '$')) {
                         // hex parameter (such as $ABCD)
-                        sscanf(&argv[i][3], "%x", &readwrite);
+                        sscanf(&arg[1], "%x", &readwrite);
                      }
-                     else if ((argv[i][2] == '0')
-                     && ((argv[i][3] == 'x')||(argv[i][3] == 'X'))) {
+                     else if ((arg[0] == '0')
+                     && ((arg[1] == 'x')||(arg[1] == 'X'))) {
                         // hex parameter (such as 0xFFFF or 0XA000)
-                        sscanf(&argv[i][4], "%x", &readwrite);
+                        sscanf(&arg[2], "%x", &readwrite);
                      }
                      else {
                         // decimal parameter, perhaps with modifier
                         // (such as 4k or 16m)
-                        sscanf(&argv[i][2], "%d%c", &readwrite, &modifier);
+                        sscanf(arg, "%d%c", &readwrite, &modifier);
                      }
                   }
                   if (tolower(modifier) == 'k') {
@@ -1011,47 +955,25 @@ int decode_arguments (int argc, char *argv[]) {
 
                case 'R':
                   modifier = 0;
-                  if (strlen(argv[i]) == 2) {
-                     // use next arg
-                     if (argc > 0) {
-                        i++;
-                        if ((argv[i][0] == '$')) {
-                           // hex parameter (such as $ABCD)
-                           sscanf(&argv[i][1], "%x", &readonly);
-                        }
-                        else if ((argv[i][0] == '0')
-                        && ((argv[i][1] == 'x')||(argv[i][1] == 'X'))) {
-                           // hex parameter (such as 0xFFFF or 0XA000)
-                           sscanf(&argv[i][2], "%x", &readonly);
-                        }
-                        else {
-                           // decimal parameter, perhaps with modifier
-                           // (such as 4k or 16m)
-                           sscanf(argv[i], "%d%c", &readonly, &modifier);
-                        }
-                     }
-                     else {
-                        fprintf(stderr, "option -R requires an argument\n");
-                        code = -1;
-                        break;
-                     }
-                     argc--;
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     fprintf(stderr, "option -R requires an argument\n");
+                     code = -1;
                   }
                   else {
-                     // use remainder of this arg
-                     if ((argv[i][2] == '$')) {
+                     if ((arg[0] == '$')) {
                         // hex parameter (such as $ABCD)
-                        sscanf(&argv[i][3], "%x", &readonly);
+                        sscanf(&arg[1], "%x", &readonly);
                      }
-                     else if ((argv[i][2] == '0')
-                     && ((argv[i][3] == 'x')||(argv[i][3] == 'X'))) {
+                     else if ((arg[0] == '0')
+                     && ((arg[1] == 'x')||(arg[1] == 'X'))) {
                         // hex parameter (such as 0xFFFF or 0XA000)
-                        sscanf(&argv[i][4], "%x", &readonly);
+                        sscanf(&arg[2], "%x", &readonly);
                      }
                      else {
                         // decimal parameter, perhaps with modifier
                         // (such as 4k or 16m)
-                        sscanf(&argv[i][2], "%d%c", &readonly, &modifier);
+                        sscanf(arg, "%d%c", &readonly, &modifier);
                      }
                   }
                   if (tolower(modifier) == 'k') {
@@ -1066,21 +988,13 @@ int decode_arguments (int argc, char *argv[]) {
                   break;
 
                case 'T':
-                  if (strlen(argv[i]) == 2) {
-                     // use next arg
-                     if (argc > 0) {
-                        target_path = strdup(argv[++i]);
-                     }
-                     else {
-                        fprintf(stderr, "option -T requires an argument\n");
-                        code = -1;
-                        break;
-                     }
-                     argc--;
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     fprintf(stderr, "option -T requires an argument\n");
+                     code = -1;
                   }
                   else {
-                     // use remainder of this arg
-                     target_path = strdup(&argv[i][2]);
+                     target_path = strdup(arg);
                   }
                   if (verbose > 1) {
                      fprintf(stderr, "target path = %s\n", target_path);
@@ -1088,21 +1002,13 @@ int decode_arguments (int argc, char *argv[]) {
                   break;
 
                case 'C':
-                  if (strlen(argv[i]) == 2) {
-                     // use next arg
-                     if (argc > 0) {
-                        symbol = strdup(argv[++i]);
-                     }
-                     else {
-                        fprintf(stderr, "option -C requires an argument\n");
-                        code = -1;
-                        break;
-                     }
-                     argc--;
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     fprintf(stderr, "option -C requires an argument\n");
+                     code = -1;
                   }
                   else {
-                     // use remainder of this arg
-                     symbol = strdup(&argv[i][2]);
+                     symbol = strdup(arg);
                   }
                   if (define_count < MAX_DEFINES) {
                      define_symbol[define_count++] = symbol;
@@ -1116,21 +1022,13 @@ int decode_arguments (int argc, char *argv[]) {
                   break;
 
                case 'U':
-                  if (strlen(argv[i]) == 2) {
-                     // use next arg
-                     if (argc > 0) {
-                        symbol = strdup(argv[++i]);
-                     }
-                     else {
-                        fprintf(stderr, "option -U requires an argument\n");
-                        code = -1;
-                        break;
-                     }
-                     argc--;
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     fprintf(stderr, "option -U requires an argument\n");
+                     code = -1;
                   }
                   else {
-                     // use remainder of this arg
-                     symbol = strdup(&argv[i][2]);
+                     symbol = strdup(arg);
                   }
                   if (undefine_count < MAX_DEFINES) {
                      undefine_symbol[undefine_count++] = symbol;
@@ -1144,21 +1042,13 @@ int decode_arguments (int argc, char *argv[]) {
                   break;
 
                case 't':
-                  if (strlen(argv[i]) == 2) {
-                     // use next arg
-                     if (argc > 0) {
-                        target = strdup(argv[++i]);
-                     }
-                     else {
-                        fprintf(stderr, "option -t requires an argument\n");
-                        code = -1;
-                        break;
-                     }
-                     argc--;
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     fprintf(stderr, "option -t requires an argument\n");
+                     code = -1;
                   }
                   else {
-                     // use remainder of this arg
-                     target = strdup(&argv[i][2]);
+                     target = strdup(arg);
                   }
                   if (verbose) {
                      fprintf(stderr, "target name = %s\n", target);
@@ -1182,35 +1072,19 @@ int decode_arguments (int argc, char *argv[]) {
                   break;
 
                case 'w':
-                  if (strlen(argv[i]) == 2) {
-                     // use next arg
-                     if (argc > 0) {
-                        safecat(assemble_options, argv[++i], MAX_LINELEN);
-                        safecat(assemble_options, " ", MAX_LINELEN);
-                        // check for eeprom or binary requests
-                        if (strcmp(&argv[i][2], "-e") == 0) {
-                           format = 1; // eeprom
-                        }
-                        else if (strcmp(&argv[i][2], "-b") == 0) {
-                           format = 0; // binary
-                        }
-                     }
-                     else {
-                        fprintf(stderr, "option -w requires an argument\n");
-                        code = -1;
-                        break;
-                     }
-                     argc--;
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     fprintf(stderr, "option -w requires an argument\n");
+                     code = -1;
                   }
                   else {
-                     // use remainder of this arg
-                     safecat(assemble_options, &argv[i][2], MAX_LINELEN);
+                     safecat(assemble_options, arg, MAX_LINELEN);
                      safecat(assemble_options, " ", MAX_LINELEN);
                      // check for eeprom or binary requests
-                     if (strcmp(&argv[i][2], "-e") == 0) {
+                     if (strcmp(&arg[2], "-e") == 0) {
                         format = 1; // eeprom
                      }
-                     else if (strcmp(&argv[i][2], "-b") == 0) {
+                     else if (strcmp(&arg[2], "-b") == 0) {
                         format = 0; // binary
                      }
                   }
@@ -1220,21 +1094,13 @@ int decode_arguments (int argc, char *argv[]) {
                   break;
 
                case 'z':
-                  if (strlen(argv[i]) == 2) {
-                     // use next arg
-                     if (argc > 0) {
-                        path_separator = strdup(argv[++i]);
-                     }
-                     else {
-                        fprintf(stderr, "option -z requires an argument\n");
-                        code = -1;
-                        break;
-                     }
-                     argc--;
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     fprintf(stderr, "option -z requires an argument\n");
+                     code = -1;
                   }
                   else {
-                     // use remainder of this arg
-                     path_separator = strdup(&argv[i][2]);
+                     path_separator = strdup(arg);
                   }
                   if (verbose) {
                      fprintf(stderr, "path separator = %s\n", path_separator);
@@ -1845,7 +1711,16 @@ void command_defines(char *to_string, int size) {
             fprintf(stderr, "defined %s\n", define_symbol[i]);
          }
          safecat(to_string, CMD_DEFINE_STRING, size);
-         safecat(to_string, define_symbol[i], size);
+         if ((strchr(define_symbol[i], '=') != NULL) || (strchr(define_symbol[i], ' ') != NULL)) {
+            // complex symbol definition - must quote it (only works on P2)
+            safecat(to_string, "\"", size);
+            safecat(to_string, define_symbol[i], size);
+            safecat(to_string, "\"", size);
+         }
+         else {
+            // simple symbol definition (works on P1 or P2)
+            safecat(to_string, define_symbol[i], size);
+         }
          safecat(to_string, " ", size);
       }
       else {

@@ -83,7 +83,9 @@ static int Dinner_Bell = 0;                 // set this to 1 to start dinner
  * Pick_Up - pick up a fork (a fork is modelled by a thread lock)
  */
 void Pick_Up(int fork) {
-   do { } while (!_thread_lockset(Pool, Fork[fork]));
+   while (_thread_lockset(Pool, Fork[fork]) == 0) {
+     _thread_yield();
+   }
 }
 
 

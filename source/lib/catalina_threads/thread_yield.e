@@ -27,11 +27,11 @@ DAT ' code segment
 
 C__thread_yield
 #ifdef P2
- call #GET_KERNEL_LOCK  ' get kernel lock
+ call #TRY_KERNEL_LOCK  ' if we get kernel lock ...
 #ifdef NATIVE
- calld PA, #\NMM_force  ' force a context switch immediately
+ if_c calld PA, #\NMM_force  ' ... release kernel lock and force a context switch
 #else
- calld PA, #\LMM_force  ' force a context switch immediately
+ if_c jmp #\LMM_force     ' ... force a context switch immediately
 #endif
 #else
  lockset lock wc        ' if we get a lock ...

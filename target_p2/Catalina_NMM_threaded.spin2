@@ -302,7 +302,7 @@ copy_longs
 ' also calculate what SP (PTRA) was before data was pushed and save it in BC
 '
 new_fp
-       stalli               ' disable interrupts
+       stalli
        wrlong PTRB,--PTRA   ' save FP (PTRB) to stack
        mov    PTRB,PTRA     ' set up new FP (PTRB)
        add    BC,#8         ' calculate what SP (PTRA) was ...
@@ -334,8 +334,8 @@ f_cali
        stalli               ' disable interrupts
        sub    PTRA,#8       ' decrement the SP (PTRA)
        wrlong PA,PTRA       ' save current PC to stack
-       allowi
-       jmp RI
+       allowi               ' enable interrupts
+       jmp    RI            ' execute next instruction
 
 'fd_32s - Signed 32 bit division
 '         Divisor --> r1
@@ -373,9 +373,11 @@ plugin
                  
 NMM_isr
         stalli
+        getct   ct3
+        addct3  ct3,##180000    ' interrupt every millisec (nominal)
         bith    lockbits,lock wcz    ' have we acquired ...              
  if_nz  locktry lock wc              ' ... both intra-cog and inter-cog locks?
- if_nc_and_nz  bitl lockbits,lock    ' true = if_c_and_z, false = if_nc_or_nz
+ if_nc_and_nz  bitl lockbits,lock    ' true = if_c_and_nz, false = if_nc_or_z
  if_nc_or_z  jmp #NMM_resume    ' no - cannot switch - restore C & Z and resume
         rdlong  t2, TP wz       ' yes - is there a next thread block pointer?
  if_z   jmp     #NMM_unlock     ' no - unlock and resume
@@ -383,8 +385,9 @@ NMM_isr
  if_nz  jmp     #NMM_affine     ' yes - service it         
         cmp     t2, TP wz       ' no - is there only one thread executing?
  if_z   jmp     #NMM_unlock     ' yes - unlock and resume
+        djnz    ticks, #NMM_unlock ' no - time to switch?
 NMM_switch
-        mov     t3, t2          ' no - get ...
+        mov     t3, t2          ' yes - get ...
         add     t3, #33*4+1     ' ... affinity byte 
         rdbyte  t1, t3          ' ... of proposed next thread
         test    t1, #%11100000 wz ' affinity stop, or thread terminated or completed?
@@ -412,15 +415,12 @@ NMM_switch
         mov     t1,TP           ' up date ticks ...
         add     t1,#33*4+2      ' ... with ticks ...
         rdword  ticks,t1        ' ... for current thread ...
-        and     t1,##%11111111111111
-        add     ticks,#1
-        shl     ticks,#14       ' ... corrected for faster P2!
+        and     t1,##%11111111111111 ' ticks is lower 14 bits
+        add     ticks,#1        ' ensure ticks is not zero
 NMM_unlock
         lockrel lock                 ' release inter-cog lock
         bitl    lockbits,lock        ' release intra-cog lock
 NMM_resume
-        cmp     ticks, #0 wz
-  if_nz addct3  ct3,ticks       ' update ct3 target for next interrupt
         allowi
         reti3                   ' resume execution
 NMM_affine
@@ -440,15 +440,15 @@ NMM_affine
         wrlong  t3, req         ' ... request block
         jmp     #NMM_switch     ' now switch to next thread
 NMM_force
-        stalli
-        mov     ticks, #0
+        stalli                  ' disable interrupts
         mov     iret3,PA        ' set up return address as if from interrupt
-        rdlong  t2, TP          ' load next thread pointer
-        rdlong  t1, req wz      ' is there an affinity request oustanding?
+        rdlong  t2, TP wz       ' is there a next thread block pointer?
+ if_z   jmp     #NMM_unlock     ' no - unlock and resume
+        rdlong  t1, req wz      ' yes - is there an affinity request oustanding?
  if_nz  jmp     #NMM_affine     ' yes - service it         
-        cmp     t2, TP wz       ' is there only one thread executing?
+        cmp     t2, TP wz       ' no - is there only one thread executing?
  if_nz  jmp     #NMM_switch     ' no - perform context switch
-        jmp     #NMM_unlock     ' yes - unlock, restore C & Z amd resume
+        jmp     #NMM_unlock     ' yes - unlock, restore C & Z and resume
 
 '--------------------- End of NMM Kernel --------------------------------------
 
@@ -782,9 +782,9 @@ manB                    long    0
          fit    $1e7
          orgf   $1e7
 
-ticks    long   100<<14         ' time between context switches (~10 ms)
+ticks    long   180000          ' time between context switches (initial value)
 TP       long   0               ' current thread pointer
-lock     long   7               ' lock to use for context switching (default 7)
+lock     long   15              ' lock to use for context switching (default 15)
 lockbits long   0               ' lockbits used to simulate P1-style locks
 
 ' last 5 longs are reserved for debug overlay vectors (or debug LED)

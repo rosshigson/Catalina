@@ -11,11 +11,11 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_si8c_6174ade2_maxE_xponent_L000003 ' <symbol:maxExponent>
+C_s3p0_6188bf7f_maxE_xponent_L000003 ' <symbol:maxExponent>
  long 511
 
  alignl ' align long
-C_si8c1_6174ade2_powersO_f10_L000004 ' <symbol:powersOf10>
+C_s3p01_6188bf7f_powersO_f10_L000004 ' <symbol:powersOf10>
  long $41200000 ' float
  long $42c80000 ' float
  long $461c4000 ' float
@@ -322,18 +322,18 @@ C_strtod_58
  sub RI, #-(-4)
  wrlong r22, RI ' ASGNI4 addrli reg
 C_strtod_59
- mov r22, ##@C_si8c_6174ade2_maxE_xponent_L000003
+ mov r22, ##@C_s3p0_6188bf7f_maxE_xponent_L000003
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r15, r22 wcz
  if_be jmp #\C_strtod_60 ' LEI4
- mov r15, ##@C_si8c_6174ade2_maxE_xponent_L000003
+ mov r15, ##@C_s3p0_6188bf7f_maxE_xponent_L000003
  rdlong r15, r15 ' reg <- INDIRI4 addrg
  mov r22, #34 ' reg <- coni
  wrlong r22, ##@C_errno ' ASGNI4 addrg reg
 C_strtod_60
  mov r7, ##@C_strtod_62_L000063
  rdlong r7, r7 ' reg <- INDIRF4 addrg
- mov r11, ##@C_si8c1_6174ade2_powersO_f10_L000004 ' reg <- addrg
+ mov r11, ##@C_s3p01_6188bf7f_powersO_f10_L000004 ' reg <- addrg
  jmp #\@C_strtod_67 ' JUMPV addrg
 C_strtod_64
  mov r22, r15

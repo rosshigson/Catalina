@@ -435,8 +435,10 @@ DEFAULT_BG = 4     ' NAVY (for consistency between modes, use only 0 .. 7)
 
 #if defined(VGA_1024) || defined (HIRES_VGA)
 
-#if !defined(MHZ_200) && !defined(MHZ_260)
-#error Clock must be 200Mhz or 260Mhz to use HiRes VGA (use -C MHZ_260 or -C MHZ_200)
+#if !defined (MHZ_260) 
+#if !defined (_CLOCK_XTAL) || !defined(_CLOCK_XDIV) || !defined(_CLOCK_MULT) || !defined (_CLOCK_DIVP) || ((((_CLOCK_XTAL / _CLOCK_XDIV) * _CLOCK_MULT) / _CLOCK_DIVP) < 260000000)
+#error Clock must be 260Mhz or higher to use HiRes VGA (e.g. use -f260Mhz or -C MHZ_260) 
+#endif
 #endif
 
 ' VGA_1024 : 128 cols x 48 rows

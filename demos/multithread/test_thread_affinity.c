@@ -27,10 +27,11 @@
 /*
  * define how many threads we want per kernel:
  */
-#define NUM_THREADS 5 // 10 is too many for some modes!
+#define NUM_THREADS 5 // 10 is too many for some modes on the Propeller 1!
 
 /*
- * define how many thread locks we want (we only really need 1):
+ * define how many thread locks we want (we only need 1 to protect
+ * our HMI functions):
  */
 #define NUM_LOCKS 1
 
@@ -38,7 +39,6 @@
  * define the stack size for each kernel cog and each thread:
  */
 #define STACK_SIZE (MIN_THREAD_STACK_SIZE + 100)
-
 
 /*
  * global variables that all multi-threaded cogs will share ...
@@ -64,19 +64,31 @@ static int kernel_lock;
  * a pool of thread locks - note that the pool must be 5 bytes larger than
  * the actual number of locks required (MIN_THREAD_POOL_SIZE = 5):
  */
-static char pool[MIN_THREAD_POOL_SIZE + NUM_LOCKS]; 
+static char Pool[MIN_THREAD_POOL_SIZE + NUM_LOCKS]; 
 
 /*
  * The particular thread lock (out of the pool above) that we will use to 
  * protect our HMI functions:
  */
-static int hmi_lock;
+static int HMI_Lock;
 
 /*
  * cogs running multithreading kernels notify the threads that they are
  * available by putting a 1 in this array:
  */
 static int kernel[8] = { 0 };
+
+/*
+ * On the P2 Eval, flash some LEDs
+ */
+#ifdef __CATALINA_P2_EVAL
+void drive_led(int led) {
+#ifdef __CATALINA_COMPACT
+   PASM(" word I16B_PASM\n alignl");
+#endif  
+   PASM(" drvnot r2");
+}
+#endif
 
 
 /*
@@ -90,13 +102,14 @@ int thread_function(int argc, char *argv[]) {
    void *me = _thread_id();
    int old_cog;
    int new_cog;
+   int rnd;
 
    // get our initial cog 
    old_cog = _cogid();
 
    // print where we were started
-   _thread_printf(pool, hmi_lock, "Thread %d (%s) started on cog %d\n",
-                  argc, argv[0], old_cog);
+   _thread_printf(Pool, HMI_Lock, 
+       "Thread %d (%s) started on cog %d\n", argc, argv[0], old_cog);
 
 
    // wait until we are told to start switching
@@ -108,7 +121,7 @@ int thread_function(int argc, char *argv[]) {
 
       // wait a random time (to mix things up a little, but 
       // not go so fast that we can't read the messages!)
-      _thread_wait(200*random(5));
+      _thread_wait(random(100));
 
       // get our current cog
       old_cog = _cogid();
@@ -120,22 +133,39 @@ int thread_function(int argc, char *argv[]) {
       } while (kernel[new_cog] == 0);
 
       // 50% of the time, move ourselves to the new kernel
-      if (random(100) > 50) {
+      rnd = random(100);
+      if ((rnd > 50) && (new_cog != _cogid())) {
+         _thread_printf(
+             Pool, HMI_Lock, 
+             "Thread %d (%s) moving from cog %d to cog %d\n",
+             argc, argv[0], old_cog, new_cog);
          _thread_affinity_change (me, new_cog);
-      }
       
-      // get our new new cog
-      new_cog = _cogid();
-
-      // print a message if we moved
-      if ((new_cog != old_cog)) {
-         _thread_printf(pool, hmi_lock, 
-                        "Thread %d (%s) moved from cog %d to cog %d\n",
-                        argc, argv[0], old_cog, new_cog);
+        // get our new new cog
+        new_cog = _cogid();
+  
+        // print a message about whether we moved (note that sometimes
+        // not moving is not an error - it may be that two cogs tried
+        // to move to the same destination cog before that cog had a chance 
+        // to execute and perform the move, in which case only the first 
+        // move will succeed).
+        if ((new_cog != old_cog)) {
+           _thread_printf(
+               Pool, HMI_Lock, 
+               "Thread %d (%s) moved from cog %d to cog %d\n",
+               argc, argv[0], old_cog, new_cog);
+        }
+        else {
+           _thread_printf(
+               Pool, HMI_Lock, 
+               "Thread %d (%s) FAILED to move from cog %d\n",
+               argc, argv[0], old_cog);
+        }
       }
    }
    return 0;
 }
+
 
 /*
  * cog_function : this function will be run as the first thread of a new 
@@ -159,9 +189,9 @@ int cog_function(int argc, char *argv[]) {
    _thread_set_lock(kernel_lock);
 
    // announce ourselves 
-   _thread_printf(pool, hmi_lock, 
-                 "Multi-threading kernel (%s) started on cog %d\n",
-                 argv[0], cog);
+   _thread_printf(
+       Pool, HMI_Lock, 
+       "Multi-threading kernel (%s) started on cog %d\n", argv[0], cog);
 
    // indicate we are available to run threads
    kernel[cog] = 1;
@@ -175,10 +205,10 @@ int cog_function(int argc, char *argv[]) {
    for (i = 0; i < NUM_THREADS; i++) {
       thread = _thread_start(&thread_function, 
                              &thread_stack[STACK_SIZE * (i + 1)], 
-                             (cog+1)*NUM_THREADS + i + 10, 
+                             (cog+1)*10 + i, 
                              message);
       if (thread == 0) {
-         _thread_printf(pool, hmi_lock, "Failed to start thread\n");
+         _thread_printf(Pool, HMI_Lock, "Failed to start thread\n");
       }
    }
 
@@ -188,10 +218,15 @@ int cog_function(int argc, char *argv[]) {
    // other tasks if required.
    while (1) {
       _thread_yield();
+#ifdef __CATALINA_P2_EVAL      
+      _thread_wait(500);
+      drive_led(57 + cog - 3);
+#endif      
    }
 
    return 0;
 }
+
 
 /*
  * main : Start NUM_KERNELS additional kernels, and then start NUM_THREADS 
@@ -216,13 +251,13 @@ int main(int argc, char *argv[]) {
    _thread_set_lock(kernel_lock);
    
    // initialize a pool of thread locks
-   _thread_init_lock_pool (pool, NUM_LOCKS, _locknew());
+   _thread_init_lock_pool (Pool, NUM_LOCKS, _locknew());
 
    // assign a thread lock to avoid plugin contention
-   hmi_lock = _thread_locknew(pool);
+   HMI_Lock = _thread_locknew(Pool);
 
    // a delay here is used to introduce some randomness
-   _thread_printf(pool, hmi_lock, "\nPress a key to start kernels\n");
+   _thread_printf(Pool, HMI_Lock, "\nPress a key to start kernels\n");
    k_wait();
    randomize();
 
@@ -232,15 +267,14 @@ int main(int argc, char *argv[]) {
                         &kernel_stack[(STACK_SIZE*NUM_THREADS + 100)*(i + 1)], 
                         i, message);
       if (cog < 0) {
-         _thread_printf(pool, hmi_lock, "Failed to start kernel\n");
+         _thread_printf(Pool, HMI_Lock, "Failed to start kernel\n");
       }
    }
 
    // announce ourselves
    cog = _cogid();
-   _thread_printf(pool, hmi_lock, 
-                  "Multi-threading kernel also running on cog %d\n", 
-                  cog);
+   _thread_printf(Pool, HMI_Lock, 
+         "Multi-threading kernel also running on cog %d\n", cog);
 
    // declare ourselves available to run threads
    kernel[cog] = 1;
@@ -248,7 +282,7 @@ int main(int argc, char *argv[]) {
    _thread_wait(1000);
 
    // now start the threads on all the kernels
-   _thread_printf(pool, hmi_lock, "\nPress a key to start all threads\n");
+   _thread_printf(Pool, HMI_Lock, "\nPress a key to start all threads\n");
    k_wait();
 
    start_threads = 1;
@@ -257,17 +291,17 @@ int main(int argc, char *argv[]) {
    for (i = 0; i < NUM_THREADS; i++) {
       thread = _thread_start(&thread_function, 
                              &thread_stack[STACK_SIZE * (i + 1)], 
-                             (cog+1)*NUM_THREADS + i + 10, 
+                             (cog+1)*10 + i, 
                              message);
       if (thread == 0) {
-         _thread_printf(pool, hmi_lock, "Failed to start thread\n");
+         _thread_printf(Pool, HMI_Lock, "Failed to start thread\n");
       }
    }
 
    _thread_wait(1000);
 
    // now allow all the threads to switch between kernels
-   _thread_printf(pool, hmi_lock, "\nPress a key to start thread switching\n");
+   _thread_printf(Pool, HMI_Lock, "\nPress a key to start switching\n");
    k_wait();
 
    start_switching = 1;
@@ -278,6 +312,10 @@ int main(int argc, char *argv[]) {
    // other tasks if required.
    while (1) {
       _thread_yield();
+#ifdef __CATALINA_P2_EVAL      
+      _thread_wait(500);
+      drive_led(56);
+#endif
    }
 
    return 0;

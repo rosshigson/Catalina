@@ -22,7 +22,7 @@ C_strtol ' <symbol:strtol>
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_sjsk_6174ad34_string2long_L000003
+ long @C_sg80_6188bead_string2long_L000003
  add SP, #12 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
 ' C_strtol_4 ' (symbol refcount = 0)
@@ -46,7 +46,7 @@ C_strtoul ' <symbol:strtoul>
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_sjsk_6174ad34_string2long_L000003
+ long @C_sg80_6188bead_string2long_L000003
  add SP, #12 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
 ' C_strtoul_5 ' (symbol refcount = 0)
@@ -55,7 +55,7 @@ C_strtoul ' <symbol:strtoul>
 
 
  long ' align long
-C_sjsk_6174ad34_string2long_L000003 ' <symbol:string2long>
+C_sg80_6188bead_string2long_L000003 ' <symbol:string2long>
  jmp #NEWF
  sub SP, #12
  jmp #PSHM
@@ -73,15 +73,15 @@ C_sjsk_6174ad34_string2long_L000003 ' <symbol:string2long>
  mov r22, r21 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
  jmp #BR_Z
- long @C_sjsk_6174ad34_string2long_L000003_10 ' EQU4
+ long @C_sg80_6188bead_string2long_L000003_10 ' EQU4
  mov RI, r21
  mov BC, r23
  jmp #WLNG ' ASGNP4 reg reg
  jmp #JMPA
- long @C_sjsk_6174ad34_string2long_L000003_10 ' JUMPV addrg
-C_sjsk_6174ad34_string2long_L000003_9
+ long @C_sg80_6188bead_string2long_L000003_10 ' JUMPV addrg
+C_sg80_6188bead_string2long_L000003_9
  adds r23, #1 ' ADDP4 coni
-C_sjsk_6174ad34_string2long_L000003_10
+C_sg80_6188bead_string2long_L000003_10
  mov RI, r23
  jmp #RBYT
  mov r22, BC ' reg <- INDIRU1 reg
@@ -97,7 +97,7 @@ C_sjsk_6174ad34_string2long_L000003_10
  and r22, #8 ' BANDI4 coni
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_sjsk_6174ad34_string2long_L000003_9 ' NEI4
+ long @C_sg80_6188bead_string2long_L000003_9 ' NEI4
  mov RI, r23
  jmp #RBYT
  mov r22, BC ' reg <- INDIRU1 reg
@@ -105,33 +105,33 @@ C_sjsk_6174ad34_string2long_L000003_10
  and r11, cviu_m1 ' zero extend
  cmps r11,  #45 wz
  jmp #BR_Z
- long @C_sjsk_6174ad34_string2long_L000003_15 ' EQI4
+ long @C_sg80_6188bead_string2long_L000003_15 ' EQI4
  cmps r11,  #43 wz
  jmp #BRNZ
- long @C_sjsk_6174ad34_string2long_L000003_13 ' NEI4
-C_sjsk_6174ad34_string2long_L000003_15
+ long @C_sg80_6188bead_string2long_L000003_13 ' NEI4
+C_sg80_6188bead_string2long_L000003_15
  cmps r11,  #45 wz
  jmp #BRNZ
- long @C_sjsk_6174ad34_string2long_L000003_16 ' NEI4
+ long @C_sg80_6188bead_string2long_L000003_16 ' NEI4
  jmp #LODL
  long -1
  mov r7, RI ' reg <- con
-C_sjsk_6174ad34_string2long_L000003_16
+C_sg80_6188bead_string2long_L000003_16
  adds r23, #1 ' ADDP4 coni
-C_sjsk_6174ad34_string2long_L000003_13
+C_sg80_6188bead_string2long_L000003_13
  mov RI, FP
  sub RI, #-(-4)
  wrlong r23, RI ' ASGNP4 addrli reg
  cmps r19,  #0 wz
  jmp #BRNZ
- long @C_sjsk_6174ad34_string2long_L000003_18 ' NEI4
+ long @C_sg80_6188bead_string2long_L000003_18 ' NEI4
  mov RI, r23
  jmp #RBYT
  mov r22, BC ' reg <- INDIRU1 reg
  and r22, cviu_m1 ' zero extend
  cmps r22,  #48 wz
  jmp #BRNZ
- long @C_sjsk_6174ad34_string2long_L000003_20 ' NEI4
+ long @C_sg80_6188bead_string2long_L000003_20 ' NEI4
  mov r22, r23
  adds r22, #1 ' ADDP4 coni
  mov r23, r22 ' CVI, CVU or LOAD
@@ -141,38 +141,38 @@ C_sjsk_6174ad34_string2long_L000003_13
  and r22, cviu_m1 ' zero extend
  cmps r22,  #120 wz
  jmp #BR_Z
- long @C_sjsk_6174ad34_string2long_L000003_24 ' EQI4
+ long @C_sg80_6188bead_string2long_L000003_24 ' EQI4
  mov RI, r23
  jmp #RBYT
  mov r22, BC ' reg <- INDIRU1 reg
  and r22, cviu_m1 ' zero extend
  cmps r22,  #88 wz
  jmp #BRNZ
- long @C_sjsk_6174ad34_string2long_L000003_22 ' NEI4
-C_sjsk_6174ad34_string2long_L000003_24
+ long @C_sg80_6188bead_string2long_L000003_22 ' NEI4
+C_sg80_6188bead_string2long_L000003_24
  mov r19, #16 ' reg <- coni
  adds r23, #1 ' ADDP4 coni
  jmp #JMPA
- long @C_sjsk_6174ad34_string2long_L000003_29 ' JUMPV addrg
-C_sjsk_6174ad34_string2long_L000003_22
+ long @C_sg80_6188bead_string2long_L000003_29 ' JUMPV addrg
+C_sg80_6188bead_string2long_L000003_22
  mov r19, #8 ' reg <- coni
  jmp #JMPA
- long @C_sjsk_6174ad34_string2long_L000003_29 ' JUMPV addrg
-C_sjsk_6174ad34_string2long_L000003_20
+ long @C_sg80_6188bead_string2long_L000003_29 ' JUMPV addrg
+C_sg80_6188bead_string2long_L000003_20
  mov r19, #10 ' reg <- coni
  jmp #JMPA
- long @C_sjsk_6174ad34_string2long_L000003_29 ' JUMPV addrg
-C_sjsk_6174ad34_string2long_L000003_18
+ long @C_sg80_6188bead_string2long_L000003_29 ' JUMPV addrg
+C_sg80_6188bead_string2long_L000003_18
  cmps r19,  #16 wz
  jmp #BRNZ
- long @C_sjsk_6174ad34_string2long_L000003_29 ' NEI4
+ long @C_sg80_6188bead_string2long_L000003_29 ' NEI4
  mov RI, r23
  jmp #RBYT
  mov r22, BC ' reg <- INDIRU1 reg
  and r22, cviu_m1 ' zero extend
  cmps r22,  #48 wz
  jmp #BRNZ
- long @C_sjsk_6174ad34_string2long_L000003_29 ' NEI4
+ long @C_sg80_6188bead_string2long_L000003_29 ' NEI4
  mov r22, r23
  adds r22, #1 ' ADDP4 coni
  mov r23, r22 ' CVI, CVU or LOAD
@@ -182,22 +182,22 @@ C_sjsk_6174ad34_string2long_L000003_18
  and r22, cviu_m1 ' zero extend
  cmps r22,  #120 wz
  jmp #BR_Z
- long @C_sjsk_6174ad34_string2long_L000003_27 ' EQI4
+ long @C_sg80_6188bead_string2long_L000003_27 ' EQI4
  mov RI, r23
  jmp #RBYT
  mov r22, BC ' reg <- INDIRU1 reg
  and r22, cviu_m1 ' zero extend
  cmps r22,  #88 wz
  jmp #BRNZ
- long @C_sjsk_6174ad34_string2long_L000003_29 ' NEI4
-C_sjsk_6174ad34_string2long_L000003_27
+ long @C_sg80_6188bead_string2long_L000003_29 ' NEI4
+C_sg80_6188bead_string2long_L000003_27
  adds r23, #1 ' ADDP4 coni
  jmp #JMPA
- long @C_sjsk_6174ad34_string2long_L000003_29 ' JUMPV addrg
-C_sjsk_6174ad34_string2long_L000003_28
+ long @C_sg80_6188bead_string2long_L000003_29 ' JUMPV addrg
+C_sg80_6188bead_string2long_L000003_28
  cmps r9,  #0 wz
  jmp #BRNZ
- long @C_sjsk_6174ad34_string2long_L000003_32 ' NEI4
+ long @C_sg80_6188bead_string2long_L000003_32 ' NEI4
  jmp #LODL
  long @C___ctype+1
  mov r22, RI ' reg <- addrg
@@ -209,45 +209,45 @@ C_sjsk_6174ad34_string2long_L000003_28
  and r22, #3 ' BANDI4 coni
  cmps r22,  #0 wz
  jmp #BR_Z
- long @C_sjsk_6174ad34_string2long_L000003_34 ' EQI4
+ long @C_sg80_6188bead_string2long_L000003_34 ' EQI4
  mov r22, r11
  subs r22, #65 ' SUBI4 coni
  cmp r22,  #26 wz,wc 
  jmp #BRAE
- long @C_sjsk_6174ad34_string2long_L000003_38 ' GEU4
+ long @C_sg80_6188bead_string2long_L000003_38 ' GEU4
  mov r22, r11
  subs r22, #65 ' SUBI4 coni
  mov RI, FP
  sub RI, #-(-12)
  wrlong r22, RI ' ASGNI4 addrli reg
  jmp #JMPA
- long @C_sjsk_6174ad34_string2long_L000003_39 ' JUMPV addrg
-C_sjsk_6174ad34_string2long_L000003_38
+ long @C_sg80_6188bead_string2long_L000003_39 ' JUMPV addrg
+C_sg80_6188bead_string2long_L000003_38
  mov r22, r11
  subs r22, #97 ' SUBI4 coni
  mov RI, FP
  sub RI, #-(-12)
  wrlong r22, RI ' ASGNI4 addrli reg
-C_sjsk_6174ad34_string2long_L000003_39
+C_sg80_6188bead_string2long_L000003_39
  mov r22, FP
  sub r22, #-(-12) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 regl
  adds r22, #10 ' ADDI4 coni
  mov r15, r22 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sjsk_6174ad34_string2long_L000003_35 ' JUMPV addrg
-C_sjsk_6174ad34_string2long_L000003_34
+ long @C_sg80_6188bead_string2long_L000003_35 ' JUMPV addrg
+C_sg80_6188bead_string2long_L000003_34
  mov r22, r11
  subs r22, #48 ' SUBI4 coni
  mov r15, r22 ' CVI, CVU or LOAD
-C_sjsk_6174ad34_string2long_L000003_35
+C_sg80_6188bead_string2long_L000003_35
  mov r22, r19 ' CVI, CVU or LOAD
  cmp r15, r22 wz,wc 
  jmp #BR_B
- long @C_sjsk_6174ad34_string2long_L000003_40' LTU4
+ long @C_sg80_6188bead_string2long_L000003_40' LTU4
  jmp #JMPA
- long @C_sjsk_6174ad34_string2long_L000003_30 ' JUMPV addrg
-C_sjsk_6174ad34_string2long_L000003_40
+ long @C_sg80_6188bead_string2long_L000003_30 ' JUMPV addrg
+C_sg80_6188bead_string2long_L000003_40
  jmp #LODL
  long $ffffffff
  mov r22, RI ' reg <- con
@@ -258,21 +258,21 @@ C_sjsk_6174ad34_string2long_L000003_40
  jmp #DIVU ' DIVU
  cmp r13, r0 wz,wc 
  jmp #BRBE
- long @C_sjsk_6174ad34_string2long_L000003_42 ' LEU4
+ long @C_sg80_6188bead_string2long_L000003_42 ' LEU4
  adds r9, #1 ' ADDI4 coni
  jmp #JMPA
- long @C_sjsk_6174ad34_string2long_L000003_43 ' JUMPV addrg
-C_sjsk_6174ad34_string2long_L000003_42
+ long @C_sg80_6188bead_string2long_L000003_43 ' JUMPV addrg
+C_sg80_6188bead_string2long_L000003_42
  mov r22, r19 ' CVI, CVU or LOAD
  mov r0, r13 ' setup r0/r1 (2)
  mov r1, r22 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r13, r0 ' ADDU
  add r13, r15 ' ADDU (3)
-C_sjsk_6174ad34_string2long_L000003_43
-C_sjsk_6174ad34_string2long_L000003_32
+C_sg80_6188bead_string2long_L000003_43
+C_sg80_6188bead_string2long_L000003_32
  adds r23, #1 ' ADDP4 coni
-C_sjsk_6174ad34_string2long_L000003_29
+C_sg80_6188bead_string2long_L000003_29
  mov RI, r23
  jmp #RBYT
  mov r22, BC ' reg <- INDIRU1 reg
@@ -281,7 +281,7 @@ C_sjsk_6174ad34_string2long_L000003_29
  subs r22, #48 ' SUBI4 coni
  cmp r22,  #10 wz,wc 
  jmp #BR_B
- long @C_sjsk_6174ad34_string2long_L000003_28' LTU4
+ long @C_sg80_6188bead_string2long_L000003_28' LTU4
  jmp #LODL
  long @C___ctype+1
  mov r22, RI ' reg <- addrg
@@ -293,19 +293,19 @@ C_sjsk_6174ad34_string2long_L000003_29
  and r22, #3 ' BANDI4 coni
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_sjsk_6174ad34_string2long_L000003_28 ' NEI4
-C_sjsk_6174ad34_string2long_L000003_30
+ long @C_sg80_6188bead_string2long_L000003_28 ' NEI4
+C_sg80_6188bead_string2long_L000003_30
  mov r22, r21 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
  jmp #BR_Z
- long @C_sjsk_6174ad34_string2long_L000003_44 ' EQU4
+ long @C_sg80_6188bead_string2long_L000003_44 ' EQU4
  mov r22, FP
  sub r22, #-(-4) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRP4 regl
  mov r20, r23 ' CVI, CVU or LOAD
  cmp r22, r20 wz
  jmp #BRNZ
- long @C_sjsk_6174ad34_string2long_L000003_46 ' NEU4
+ long @C_sg80_6188bead_string2long_L000003_46 ' NEU4
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -313,46 +313,46 @@ C_sjsk_6174ad34_string2long_L000003_30
  mov BC, r22
  jmp #WLNG ' ASGNP4 reg reg
  jmp #JMPA
- long @C_sjsk_6174ad34_string2long_L000003_47 ' JUMPV addrg
-C_sjsk_6174ad34_string2long_L000003_46
+ long @C_sg80_6188bead_string2long_L000003_47 ' JUMPV addrg
+C_sg80_6188bead_string2long_L000003_46
  mov RI, r21
  mov BC, r23
  jmp #WLNG ' ASGNP4 reg reg
-C_sjsk_6174ad34_string2long_L000003_47
-C_sjsk_6174ad34_string2long_L000003_44
+C_sg80_6188bead_string2long_L000003_47
+C_sg80_6188bead_string2long_L000003_44
  cmps r9,  #0 wz
  jmp #BRNZ
- long @C_sjsk_6174ad34_string2long_L000003_48 ' NEI4
+ long @C_sg80_6188bead_string2long_L000003_48 ' NEI4
  mov r22, #0 ' reg <- coni
  cmps r17, r22 wz
  jmp #BR_Z
- long @C_sjsk_6174ad34_string2long_L000003_50 ' EQI4
+ long @C_sg80_6188bead_string2long_L000003_50 ' EQI4
  cmps r7, r22 wz,wc
  jmp #BRAE
- long @C_sjsk_6174ad34_string2long_L000003_53 ' GEI4
+ long @C_sg80_6188bead_string2long_L000003_53 ' GEI4
  jmp #LODL
  long $80000000
  mov r22, RI ' reg <- con
  cmp r13, r22 wz,wc 
  jmp #BR_A
- long @C_sjsk_6174ad34_string2long_L000003_52 ' GTU4
-C_sjsk_6174ad34_string2long_L000003_53
+ long @C_sg80_6188bead_string2long_L000003_52 ' GTU4
+C_sg80_6188bead_string2long_L000003_53
  cmps r7,  #0 wz,wc
  jmp #BRBE
- long @C_sjsk_6174ad34_string2long_L000003_50 ' LEI4
+ long @C_sg80_6188bead_string2long_L000003_50 ' LEI4
  jmp #LODL
  long $7fffffff
  mov r22, RI ' reg <- con
  cmp r13, r22 wz,wc 
  jmp #BRBE
- long @C_sjsk_6174ad34_string2long_L000003_50 ' LEU4
-C_sjsk_6174ad34_string2long_L000003_52
+ long @C_sg80_6188bead_string2long_L000003_50 ' LEU4
+C_sg80_6188bead_string2long_L000003_52
  adds r9, #1 ' ADDI4 coni
-C_sjsk_6174ad34_string2long_L000003_50
-C_sjsk_6174ad34_string2long_L000003_48
+C_sg80_6188bead_string2long_L000003_50
+C_sg80_6188bead_string2long_L000003_48
  cmps r9,  #0 wz
  jmp #BR_Z
- long @C_sjsk_6174ad34_string2long_L000003_54 ' EQI4
+ long @C_sg80_6188bead_string2long_L000003_54 ' EQI4
  mov r22, #34 ' reg <- coni
  jmp #LODL
  long @C_errno
@@ -360,34 +360,34 @@ C_sjsk_6174ad34_string2long_L000003_48
  jmp #WLNG ' ASGNI4 addrg reg
  cmps r17,  #0 wz
  jmp #BR_Z
- long @C_sjsk_6174ad34_string2long_L000003_56 ' EQI4
+ long @C_sg80_6188bead_string2long_L000003_56 ' EQI4
  cmps r7,  #0 wz,wc
  jmp #BRAE
- long @C_sjsk_6174ad34_string2long_L000003_58 ' GEI4
+ long @C_sg80_6188bead_string2long_L000003_58 ' GEI4
  jmp #LODL
  long $80000000
  mov r0, RI ' reg <- con
  jmp #JMPA
- long @C_sjsk_6174ad34_string2long_L000003_6 ' JUMPV addrg
-C_sjsk_6174ad34_string2long_L000003_58
+ long @C_sg80_6188bead_string2long_L000003_6 ' JUMPV addrg
+C_sg80_6188bead_string2long_L000003_58
  jmp #LODL
  long $7fffffff
  mov r0, RI ' reg <- con
  jmp #JMPA
- long @C_sjsk_6174ad34_string2long_L000003_6 ' JUMPV addrg
-C_sjsk_6174ad34_string2long_L000003_56
+ long @C_sg80_6188bead_string2long_L000003_6 ' JUMPV addrg
+C_sg80_6188bead_string2long_L000003_56
  jmp #LODL
  long $ffffffff
  mov r0, RI ' reg <- con
  jmp #JMPA
- long @C_sjsk_6174ad34_string2long_L000003_6 ' JUMPV addrg
-C_sjsk_6174ad34_string2long_L000003_54
+ long @C_sg80_6188bead_string2long_L000003_6 ' JUMPV addrg
+C_sg80_6188bead_string2long_L000003_54
  mov r22, r7 ' CVI, CVU or LOAD
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r13 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r22, r0 ' CVI, CVU or LOAD
-C_sjsk_6174ad34_string2long_L000003_6
+C_sg80_6188bead_string2long_L000003_6
  jmp #POPM ' restore registers
  add SP, #12 ' framesize
  jmp #RETF

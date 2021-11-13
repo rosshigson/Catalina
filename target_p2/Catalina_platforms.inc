@@ -14,34 +14,43 @@ CON
 
 ' clock configuration constants
 
-#if defined (MHZ_260)
-_XTALFREQ = 20_000_000  ' crystal frequency
-_XDIV     = 2           '\ crystal divider             to give 10.0MHz
-_XMUL     = 26          '| crystal / div * mul         to give 260MHz
-_XDIVP    = 1           '/ crystal / div * mul / divp  to give 260MHz
-_XOSC     = %10         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
-_XSEL     = %11         ' %00=rcfast, %01=rcslow, %10=XI, %11=PLL
-_XPLL     = 1           ' 0= PLL off, 1=PLL on
-#elif defined (MHZ_200)
-_XTALFREQ = 20_000_000  ' crystal frequency
-_XDIV     = 2           '\ crystal divider             to give 10.0MHz
-_XMUL     = 20          '| crystal / div * mul         to give 200MHz
-_XDIVP    = 1           '/ crystal / div * mul / divp  to give 200MHz
-_XOSC     = %10         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
-_XSEL     = %11         ' %00=rcfast, %01=rcslow, %10=XI, %11=PLL
-_XPLL     = 1           ' 0= PLL off, 1=PLL on
+#if defined(_CLOCK_XTAL)
+_XTALFREQ = _CLOCK_XTAL ' required crystal frequency
 #else
-_XTALFREQ = 20_000_000  ' crystal frequency
+_XTALFREQ = 20_000_000  ' default crystal frequency
+#endif
+
+' NOTE: _CLOCK_XDIV, _CLOCK_MULT and _CLOCK_DIVP must all be defined,
+'       otherwise the default values will be used - this is normally 
+'       accomplished using the -f, -F & -E command-line options. The
+'       final clock frequency will be _XTALFREQ / _XDIV * _XMUL / _XDIVP
+
+#if defined(_CLOCK_XDIV) && defined(_CLOCK_MULT) && defined(_CLOCK_DIVP)
+_XDIV     = _CLOCK_XDIV
+_XMUL     = _CLOCK_MULT
+_XDIVP    = _CLOCK_DIVP
+#else
 _XDIV     = 4           '\ crystal divider             to give 5.0MHz
 _XMUL     = 72          '| crystal / div * mul         to give 360MHz
 _XDIVP    = 2           '/ crystal / div * mul / divp  to give 180MHz
-_XOSC     = %10         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
-_XSEL     = %11         ' %00=rcfast, %01=rcslow, %10=XI, %11=PLL
-_XPLL     = 1           ' 0= PLL off, 1=PLL on
 #endif
 
-'NOTE: The final clock frequency is actually set in Catalina_Constants.inc
-'      as _XTALFREQ / _XDIV * _XMUL / _XDIVP - i.e. in this case 180Mhz
+#if defined(_CLOCK_OSC)
+_XOSC     = _CLOCK_OSC
+#else
+_XOSC     = %10         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
+#endif
+#if defined(_CLOCK_SEL)
+_XSEL     = _CLOCK_SEL
+#else
+_XSEL     = %11         ' %00=rcfast, %01=rcslow, %10=XI, %11=PLL
+#endif
+
+#if defined(_CLOCK_PLL)
+_XPLL     = _CLOCK_PLL
+#else
+_XPLL     = 1           ' 0= PLL off, 1=PLL on
+#endif
 
 ' serial constants
 
@@ -150,32 +159,44 @@ _USB_BASE_PIN = 40
 
 _DEBUG_PIN = 56
 
-#elif defined (P2_EDGE)
+#elif defined(P2_EDGE)
 '----------------------------- P2_EDGE constants -----------------------------
 
-#if defined (MHZ_260)
-_XTALFREQ = 20_000_000  ' crystal frequency
-_XDIV     = 2           '\ crystal divider             to give 10.0MHz
-_XMUL     = 26          '| crystal / div * mul         to give 260MHz
-_XDIVP    = 1           '/ crystal / div * mul / divp  to give 260MHz
-_XOSC     = %01         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
-_XSEL     = %11         ' %00=rcfast, %01=rcslow, %10=XI, %11=PLL
-_XPLL     = 1           ' 0= PLL off, 1=PLL on
-#elif defined (MHZ_200)
-_XTALFREQ = 20_000_000  ' crystal frequency
-_XDIV     = 2           '\ crystal divider             to give 10.0MHz
-_XMUL     = 20          '| crystal / div * mul         to give 200MHz
-_XDIVP    = 1           '/ crystal / div * mul / divp  to give 200MHz
-_XOSC     = %01         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
-_XSEL     = %11         ' %00=rcfast, %01=rcslow, %10=XI, %11=PLL
-_XPLL     = 1           ' 0= PLL off, 1=PLL on
+#if defined(_CLOCK_XTAL)
+_XTALFREQ = _CLOCK_XTAL ' required crystal frequency
 #else
-_XTALFREQ = 20_000_000  ' crystal frequency
+_XTALFREQ = 20_000_000  ' default crystal frequency
+#endif
+
+' NOTE: _CLOCK_XDIV, _CLOCK_MULT and _CLOCK_DIVP must all be defined,
+'       otherwise the default values will be used - this is normally 
+'       accomplished using the -f, -F & -E command-line options. The
+'       final clock frequency will be _XTALFREQ / _XDIV * _XMUL / _XDIVP
+
+#if defined(_CLOCK_XDIV) && defined(_CLOCK_MULT) && defined(_CLOCK_DIVP)
+_XDIV     = _CLOCK_XDIV
+_XMUL     = _CLOCK_MULT
+_XDIVP    = _CLOCK_DIVP
+#else
 _XDIV     = 4           '\ crystal divider             to give 5.0MHz
 _XMUL     = 72          '| crystal / div * mul         to give 360MHz
 _XDIVP    = 2           '/ crystal / div * mul / divp  to give 180MHz
+#endif
+
+#if defined(_CLOCK_OSC)
+_XOSC     = _CLOCK_OSC
+#else
 _XOSC     = %01         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
+#endif
+#if defined(_CLOCK_SEL)
+_XSEL     = _CLOCK_SEL
+#else
 _XSEL     = %11         ' %00=rcfast, %01=rcslow, %10=XI, %11=PLL
+#endif
+
+#if defined(_CLOCK_PLL)
+_XPLL     = _CLOCK_PLL
+#else
 _XPLL     = 1           ' 0= PLL off, 1=PLL on
 #endif
 
@@ -287,34 +308,46 @@ _USB_BASE_PIN = 40
 
 _DEBUG_PIN = 56
 
-#elif defined (P2D2)
+#elif defined(P2D2)
 '----------------------------- P2D2 constants -----------------------------
 
 #error "platform P2D2 not supported yet - see Catalina_platforms.inc!"
 
-#if defined (MHZ_260)
-_XTALFREQ = 20_000_000  ' crystal frequency
-_XDIV     = 2           '\ crystal divider             to give 10.0MHz
-_XMUL     = 26          '| crystal / div * mul         to give 260MHz
-_XDIVP    = 1           '/ crystal / div * mul / divp  to give 260MHz
-_XOSC     = %01         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
-_XSEL     = %11         ' %00=rcfast, %01=rcslow, %10=XI, %11=PLL
-_XPLL     = 1           ' 0= PLL off, 1=PLL on
-#elif defined (MHZ_200)
-_XTALFREQ = 20_000_000  ' crystal frequency
-_XDIV     = 2           '\ crystal divider             to give 10.0MHz
-_XMUL     = 20          '| crystal / div * mul         to give 200MHz
-_XDIVP    = 1           '/ crystal / div * mul / divp  to give 200MHz
-_XOSC     = %01         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
-_XSEL     = %11         ' %00=rcfast, %01=rcslow, %10=XI, %11=PLL
-_XPLL     = 1           ' 0= PLL off, 1=PLL on
+#if defined(_CLOCK_XTAL)
+_XTALFREQ = _CLOCK_XTAL ' required crystal frequency
 #else
-_XTALFREQ = 20_000_000  ' crystal frequency
+_XTALFREQ = 20_000_000  ' default crystal frequency
+#endif
+
+' NOTE: _CLOCK_XDIV, _CLOCK_MULT and _CLOCK_DIVP must all be defined,
+'       otherwise the default values will be used - this is normally 
+'       accomplished using the -f, -F & -E command-line options. The
+'       final clock frequency will be _XTALFREQ / _XDIV * _XMUL / _XDIVP
+
+#if defined(_CLOCK_XDIV) && defined(_CLOCK_MULT) && defined(_CLOCK_DIVP)
+_XDIV     = _CLOCK_XDIV
+_XMUL     = _CLOCK_MULT
+_XDIVP    = _CLOCK_DIVP
+#else
 _XDIV     = 4           '\ crystal divider             to give 5.0MHz
 _XMUL     = 72          '| crystal / div * mul         to give 360MHz
 _XDIVP    = 2           '/ crystal / div * mul / divp  to give 180MHz
+#endif
+
+#if defined(_CLOCK_OSC)
+_XOSC     = _CLOCK_OSC
+#else
 _XOSC     = %01         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
+#endif
+#if defined(_CLOCK_SEL)
+_XSEL     = _CLOCK_SEL
+#else
 _XSEL     = %11         ' %00=rcfast, %01=rcslow, %10=XI, %11=PLL
+#endif
+
+#if defined(_CLOCK_PLL)
+_XPLL     = _CLOCK_PLL
+#else
 _XPLL     = 1           ' 0= PLL off, 1=PLL on
 #endif
 
@@ -426,39 +459,48 @@ _USB_BASE_PIN = 40
 
 _DEBUG_PIN = 56
 
-#elif defined(P2_CUSTOM) || defined (CUSTOM)
+#elif defined(P2_CUSTOM) || defined(CUSTOM)
 '------------------------------- P2_CUSTOM constants ---------------------------
 
 ' clock configuration constants
 
-#if defined (MHZ_260)
-_XTALFREQ = 20_000_000  ' crystal frequency
-_XDIV     = 2           '\ crystal divider             to give 10.0MHz
-_XMUL     = 26          '| crystal / div * mul         to give 260MHz
-_XDIVP    = 1           '/ crystal / div * mul / divp  to give 260MHz
-_XOSC     = %10         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
-_XSEL     = %11         ' %00=rcfast, %01=rcslow, %10=XI, %11=PLL
-_XPLL     = 1           ' 0= PLL off, 1=PLL on
-#elif defined (MHZ_200)
-_XTALFREQ = 20_000_000  ' crystal frequency
-_XDIV     = 2           '\ crystal divider             to give 10.0MHz
-_XMUL     = 20          '| crystal / div * mul         to give 200MHz
-_XDIVP    = 1           '/ crystal / div * mul / divp  to give 200MHz
-_XOSC     = %10         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
-_XSEL     = %11         ' %00=rcfast, %01=rcslow, %10=XI, %11=PLL
-_XPLL     = 1           ' 0= PLL off, 1=PLL on
+#if defined(_CLOCK_XTAL)
+_XTALFREQ = _CLOCK_XTAL ' required crystal frequency
 #else
-_XTALFREQ = 20_000_000  ' crystal frequency
+_XTALFREQ = 20_000_000  ' default crystal frequency
+#endif
+
+' NOTE: _CLOCK_XDIV, _CLOCK_MULT and _CLOCK_DIVP must all be defined,
+'       otherwise the default values will be used - this is normally 
+'       accomplished using the -f, -F & -E command-line options. The
+'       final clock frequency will be _XTALFREQ / _XDIV * _XMUL / _XDIVP
+
+#if defined(_CLOCK_XDIV) && defined(_CLOCK_MULT) && defined(_CLOCK_DIVP)
+_XDIV     = _CLOCK_XDIV
+_XMUL     = _CLOCK_MULT
+_XDIVP    = _CLOCK_DIVP
+#else
 _XDIV     = 4           '\ crystal divider             to give 5.0MHz
 _XMUL     = 72          '| crystal / div * mul         to give 360MHz
 _XDIVP    = 2           '/ crystal / div * mul / divp  to give 180MHz
-_XOSC     = %10         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
-_XSEL     = %11         ' %00=rcfast, %01=rcslow, %10=XI, %11=PLL
-_XPLL     = 1           ' 0= PLL off, 1=PLL on
 #endif
 
-'NOTE: The final clock frequency is actually set in Catalina_Constants.inc
-'      as _XTALFREQ / _XDIV * _XMUL / _XDIVP - i.e. in this case 180Mhz
+#if defined(_CLOCK_OSC)
+_XOSC     = _CLOCK_OSC
+#else
+_XOSC     = %10         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
+#endif
+#if defined(_CLOCK_SEL)
+_XSEL     = _CLOCK_SEL
+#else
+_XSEL     = %11         ' %00=rcfast, %01=rcslow, %10=XI, %11=PLL
+#endif
+
+#if defined(_CLOCK_PLL)
+_XPLL     = _CLOCK_PLL
+#else
+_XPLL     = 1           ' 0= PLL off, 1=PLL on
+#endif
 
 ' serial constants
 
@@ -574,29 +616,41 @@ _DEBUG_PIN = 56
 
 ' clock configuration constants
 
-#if defined (MHZ_260)
-_XTALFREQ = 20_000_000  ' crystal frequency
-_XDIV     = 2           '\ crystal divider             to give 10.0MHz
-_XMUL     = 26          '| crystal / div * mul         to give 260MHz
-_XDIVP    = 1           '/ crystal / div * mul / divp  to give 260MHz
-_XOSC     = %10         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
-_XSEL     = %11         ' %00=rcfast, %01=rcslow, %10=XI, %11=PLL
-_XPLL     = 1           ' 0= PLL off, 1=PLL on
-#elif defined (MHZ_200)
-_XTALFREQ = 20_000_000  ' crystal frequency
-_XDIV     = 2           '\ crystal divider             to give 10.0MHz
-_XMUL     = 20          '| crystal / div * mul         to give 200MHz
-_XDIVP    = 1           '/ crystal / div * mul / divp  to give 200MHz
-_XOSC     = %10         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
-_XSEL     = %11         ' %00=rcfast, %01=rcslow, %10=XI, %11=PLL
-_XPLL     = 1           ' 0= PLL off, 1=PLL on
+#if defined(_CLOCK_XTAL)
+_XTALFREQ = _CLOCK_XTAL ' required crystal frequency
 #else
-_XTALFREQ = 20_000_000  ' crystal frequency
+_XTALFREQ = 20_000_000  ' default crystal frequency
+#endif
+
+' NOTE: _CLOCK_XDIV, _CLOCK_MULT and _CLOCK_DIVP must all be defined,
+'       otherwise the default values will be used - this is normally 
+'       accomplished using the -f, -F & -E command-line options. The
+'       final clock frequency will be _XTALFREQ / _XDIV * _XMUL / _XDIVP
+
+#if defined(_CLOCK_XDIV) && defined(_CLOCK_MULT) && defined(_CLOCK_DIVP)
+_XDIV     = _CLOCK_XDIV
+_XMUL     = _CLOCK_MULT
+_XDIVP    = _CLOCK_DIVP
+#else
 _XDIV     = 4           '\ crystal divider             to give 5.0MHz
 _XMUL     = 72          '| crystal / div * mul         to give 360MHz
 _XDIVP    = 2           '/ crystal / div * mul / divp  to give 180MHz
+#endif
+
+#if defined(_CLOCK_OSC)
+_XOSC     = _CLOCK_OSC
+#else
 _XOSC     = %10         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
+#endif
+#if defined(_CLOCK_SEL)
+_XSEL     = _CLOCK_SEL
+#else
 _XSEL     = %11         ' %00=rcfast, %01=rcslow, %10=XI, %11=PLL
+#endif
+
+#if defined(_CLOCK_PLL)
+_XPLL     = _CLOCK_PLL
+#else
 _XPLL     = 1           ' 0= PLL off, 1=PLL on
 #endif
 

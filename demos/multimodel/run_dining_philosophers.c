@@ -44,47 +44,45 @@ void main(int argc, char *argv[]) {
    int arg;
    int cog;
 
-   printf("This program dynamically loads and runs\n");
-   printf("a simple program that accepts an int as\n");
-   printf("an argument. The program is compiled to\n");
+   printf("This program dynamically loads and runs a\n");
+   printf("simple program. The program is compiled to\n");
    printf("run first as CMM then as LMM");
 #ifdef __CATALINA_P2
    printf(" then as NMM");
 #endif
    printf("\n\n");
 
-
    msleep(1000);
 
-   printf("Starting dining_philosophers as CMM ...\n\n");
-   printf("(it will be stopped in 10 seconds)\n\n");
-   cog = start_CMM(NULL, ANY_COG);
-   msleep(10000);
-   
-   printf("\nStopping dining_philosophers\n\n");
-   _cogstop(cog);
-   msleep(1000);
-   
-   printf("Starting dining_philosophers as LMM ...\n\n");
-   printf("(it will be stopped in 10 seconds)\n\n");
-   cog = start_LMM(NULL, ANY_COG);
-   msleep(10000);
-   
-   printf("\nStopping dining_philosophers\n\n");
-   _cogstop(cog);
-   msleep(1000);
-
+   while (1) {
+      printf("Starting dining_philosophers as CMM ...\n\n");
+      printf("(it will be stopped in 10 seconds)\n\n");
+      cog = start_CMM(NULL, ANY_COG);
+      msleep(10000);
+ 
+      printf("\nStopping dining_philosophers\n\n");
+      _cogstop(cog);
+      msleep(1000);
+ 
+      printf("Starting dining_philosophers as LMM ...\n\n");
+      printf("(it will be stopped in 10 seconds)\n\n");
+      cog = start_LMM(NULL, ANY_COG);
+      msleep(10000);
+ 
+      printf("\nStopping dining_philosophers\n\n");
+      _cogstop(cog);
+      msleep(1000);
+ 
 #ifdef __CATALINA_P2
-   printf("Starting dining_philosophers as NMM ...\n\n");
-   printf("(it will be stopped in 10 seconds)\n\n");
-   cog = start_NMM(NULL, ANY_COG);
-   msleep(10000);
-   
-   printf("\nStopping dining_philosophers\n\n");
-   _cogstop(cog);
-   msleep(1000);
+      printf("Starting dining_philosophers as NMM ...\n\n");
+      printf("(it will be stopped in 10 seconds)\n\n");
+      cog = start_NMM(NULL, ANY_COG);
+      msleep(10000);
+ 
+      printf("\nStopping dining_philosophers\n\n");
+      _cogstop(cog);
+      msleep(1000);
 #endif
 
-   printf("Done!\n");
-   while (1) { };
+   };
 }

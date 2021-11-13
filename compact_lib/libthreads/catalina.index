@@ -61,9 +61,10 @@ thread_setup thread_misc.s 287 export
 _thread_id thread_pool_setup.s 17 import
 _thread_pool_setup thread_pool_setup.s 19 export
 _thread_printf thread_printf.s 9 export
-t_vprintf thread_printf.s 68 import
-_thread_lockset thread_printf.s 70 import
-_thread_lockclr thread_printf.s 72 import
+t_vprintf thread_printf.s 73 import
+_thread_lockset thread_printf.s 75 import
+_thread_lockclr thread_printf.s 77 import
+_thread_yield thread_printf.s 79 import
 _thread_id thread_start.s 19 import
 _unlocked_check thread_start.s 21 import
 _thread_halt thread_start.s 23 import

@@ -28,8 +28,13 @@ C__thread_printf ' <symbol:_thread_printf>
  sub BC, #4
  cmp BC, RI wcz
  if_ae wrlong r5, BC ' spill reg (varadic)
+ PRIMITIVE(#JMPA)
+ long @C__thread_printf_4 ' JUMPV addrg
 C__thread_printf_3
-' C__thread_printf_4 ' (symbol refcount = 0)
+ mov BC, #0 ' arg size, rpsize = 0, spsize = 0
+ PRIMITIVE(#CALA)
+ long @C__thread_yield ' CALL addrg
+C__thread_printf_4
  mov RI, FP
  add RI, #12
  rdlong r2, RI ' reg ARG INDIR ADDRFi
@@ -88,4 +93,6 @@ C__thread_printf_3
 ' Catalina Import _thread_lockset
 
 ' Catalina Import _thread_lockclr
+
+' Catalina Import _thread_yield
 ' end

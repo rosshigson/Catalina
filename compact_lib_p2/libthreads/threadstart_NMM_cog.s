@@ -24,13 +24,13 @@ C_N_M_M__threaded_dynamic_array ' <symbol:NMM_threaded_dynamic_array>
  long $fd90027c
  long $fd90028c
  long $fd900294
- long $fd9003c4
- long $fd9003bc
- long $fd900414
- long $fd90045c
- long $fd9004fc
- long $fd900484
- long $fd9004b4
+ long $fd9003c8
+ long $fd9003c0
+ long $fd900418
+ long $fd900460
+ long $fd900500
+ long $fd900488
+ long $fd9004b8
  long $fd90015c
  long $fd900190
  long $fd900130
@@ -193,6 +193,9 @@ C_N_M_M__threaded_dynamic_array ' <symbol:NMM_threaded_dynamic_array>
  long $fda0030d
  long $fd9ffed4
  long $fd604224
+ long $fd60801a
+ long $ff00015f
+ long $fa748120
  long $f43bd5e9
  long $5d73d206
  long $1403d5e9
@@ -200,9 +203,10 @@ C_N_M_M__threaded_dynamic_array ' <symbol:NMM_threaded_dynamic_array>
  long $fb0877e8
  long $ad900090
  long $fb087438
- long $5d9000a0
+ long $5d900098
  long $f20877e8
  long $ad900080
+ long $fb6fce1f
  long $f600783b
  long $f1047885
  long $fac0743c
@@ -234,11 +238,8 @@ C_N_M_M__threaded_dynamic_array ' <symbol:NMM_threaded_dynamic_array>
  long $ff00001f
  long $f50475ff
  long $f107ce01
- long $f067ce0e
  long $fd63d207
  long $f403d5e9
- long $f20fce00
- long $5a7081e7
  long $fd604024
  long $fb3bfff1
  long $f20877e8
@@ -255,99 +256,99 @@ C_N_M_M__threaded_dynamic_array ' <symbol:NMM_threaded_dynamic_array>
  long $fc407a3c
  long $f6047800
  long $fc607838
- long $fd9fff2c
+ long $fd9fff38
  long $fd604224
- long $f607ce00
  long $f603e3f6
- long $fb0077e8
+ long $fb0877e8
+ long $ad9fffa4
  long $fb087438
  long $5d9fffac
  long $f20877e8
- long $5d9fff0c
- long $fd9fff88
+ long $5d9fff18
+ long $fd9fff90
  long $f5602e32
  long $fd604224
  long $fdb00184
- long $ed9ffda0
- long $f7cf4e01
- long $566353a9
- long $f7cf5401
- long $566359ac
- long $f60075a8
- long $f18075ab
+ long $ed9ffd9c
+ long $f7cf5001
+ long $566355aa
+ long $f7cf5601
+ long $56635bad
+ long $f60075a9
+ long $f18075ac
  long $f640743a
  long $f324741f
- long $f25b51ab
- long $10c3583a
- long $40c3523a
- long $460351ab
- long $f10353ac
- long $f2575200
- long $c5474e01
- long $35274e01
- long $f64353a9
+ long $f25b53ac
+ long $10c35a3a
+ long $40c3543a
+ long $460353ac
+ long $f10355ad
+ long $f2575400
+ long $c5475001
+ long $35275001
+ long $f64355aa
  long $fdb001e0
- long $fd9ffd54
+ long $fd9ffd50
  long $fd604224
  long $fdb0012c
  long $3d900024
- long $f20f50ff
+ long $f20f52ff
  long $ad900008
- long $f20f56ff
- long $5d9ffd38
- long $f6002da3
- long $f5634faa
- long $f7cf4e01
+ long $f20f58ff
+ long $5d9ffd34
+ long $f6002da4
+ long $f56351ab
+ long $f7cf5001
  long $55402c32
- long $fd9ffd24
- long $f5634faa
- long $f10351ab
- long $fd0353ac
+ long $fd9ffd20
+ long $f56351ab
+ long $f10353ac
+ long $fd0355ad
  long $fd607419
  long $f0647403
- long $f603523a
+ long $f603543a
  long $fd9fffac
  long $fd604224
  long $fdb000e0
- long $e6002da2
- long $ed9ffcf8
- long $f5634faa
- long $f18351ab
- long $f0475201
- long $fd635228
- long $fd1801ac
- long $fd635218
- long $f0475202
+ long $e6002da3
+ long $ed9ffcf4
+ long $f56351ab
+ long $f18353ac
+ long $f0475401
+ long $fd635428
+ long $fd1801ad
+ long $fd635418
+ long $f0475402
  long $fd9fff7c
  long $fd604224
- long $f6034e16
+ long $f6035016
  long $f6042c00
- long $f64b53a7
- long $ad9ffcc4
- long $f0474e1f
- long $f607501f
- long $f0775201
- long $31875001
+ long $f64b55a8
+ long $ad9ffcc0
+ long $f047501f
+ long $f607521f
+ long $f0775401
+ long $31875201
  long $3d9ffff4
- long $f0875201
- long $f0475202
+ long $f0875401
+ long $f0475402
  long $fd9fff48
  long $fd604224
  long $f6047400
  long $fdb000a8
- long $cd9ffc94
- long $f0675202
+ long $cd9ffc90
+ long $f0675402
  long $f6042c00
- long $f66351a8
- long $f10f501e
- long $f2575020
- long $bd9ffc7c
- long $f04353a8
- long $f103523a
- long $f0475201
- long $f7cf4e01
- long $f3e02da9
- long $fd9ffc64
+ long $f66353a9
+ long $f10f521e
+ long $f2575220
+ long $bd9ffc78
+ long $f04355a9
+ long $f103543a
+ long $f0475401
+ long $f7cf5001
+ long $f3e02daa
+ long $fd9ffc60
  long $fd604224
  long $f6007416
  long $f5607417
@@ -356,82 +357,82 @@ C_N_M_M__threaded_dynamic_array ' <symbol:NMM_threaded_dynamic_array>
  long $f6007416
  long $f5407417
  long $f5387432
- long $ad9ffc40
+ long $ad9ffc3c
  long $f7d02c32
- long $fd9ffc38
+ long $fd9ffc34
  long $f7c82c32
  long $5d900008
  long $f2182c17
- long $fd9ffc28
+ long $fd9ffc24
  long $f2182e16
- long $fd9ffc20
+ long $fd9ffc1c
  long $f6007416
  long $f6002c17
  long $fdb00024
  long $f6002e16
- long $f60355a7
  long $f60357a8
  long $f60359a9
+ long $f6035baa
  long $f6002c3a
  long $fdb0000c
- long $37cf5408
+ long $37cf5608
  long $1d75e06f
- long $20f5800
- long $f6034e16
- long $f0474e1f
- long $f6035216
- long $f50353a5
+ long $20f5a00
  long $f6035016
- long $f0675001
- long $f04f5018
- long $ad900014
- long $f20f50ff
- long $5d90003c
- long $f6002da2
- long $f5474e08
- long $fd90003c
- long $f6007ba9
- long $f5487ba8
- long $5d90000c
- long $f5474e02
- long $f6675096
- long $fd900024
- long $f0675207
- long $f7cb53a6
- long $5d900014
+ long $f047501f
+ long $f6035416
+ long $f50355a6
+ long $f6035216
  long $f0675201
- long $f1875001
+ long $f04f5218
+ long $ad900014
+ long $f20f52ff
+ long $5d90003c
+ long $f6002da3
+ long $f5475008
+ long $fd90003c
+ long $f6007baa
+ long $f5487ba9
+ long $5d90000c
+ long $f5475002
+ long $f6675296
+ long $fd900024
+ long $f0675407
+ long $f7cb55a7
+ long $5d900014
+ long $f0675401
+ long $f1875201
  long $fd9fffec
- long $f0675206
- long $f54353a6
- long $f187507f
- long $f7d74e08
- long $20f5200
- long $f20f5200
- long $a6075000
+ long $f0675406
+ long $f54355a7
+ long $f187527f
+ long $f7d75008
+ long $20f5400
+ long $f20f5400
+ long $a6075200
  long $ad900040
- long $f0775201
- long $31875001
+ long $f0775401
+ long $31875201
  long $3d9ffff4
- long $f1075002
- long $f1175300
- long $c1075001
- long $f107507f
- long $f34351a4
- long $f36750ff
- long $f2575001
+ long $f1075202
+ long $f1175500
+ long $c1075201
+ long $f107527f
+ long $f34353a5
+ long $f36752ff
+ long $f2575201
  long $3d900014
- long $f5475201
- long $f0075201
- long $f66351a8
- long $f04353a8
- long $f6075000
- long $f6002da9
+ long $f5475401
+ long $f0075401
+ long $f66353a9
+ long $f04355a9
+ long $f6075200
+ long $f6002daa
  long $f0442c09
- long $f0675017
- long $f5402da8
- long $f0674e1f
- long $5402da7
+ long $f0675217
+ long $f5402da9
+ long $f067501f
+ long $5402da8
  long $7fffffff
  long $7f800000
  long $ffffffe9
@@ -500,10 +501,9 @@ C_N_M_M__threaded_dynamic_array ' <symbol:NMM_threaded_dynamic_array>
  long $0
  long $0
  long $0
+ long $2bf20
  long $0
- long $190000
- long $0
- long $7
+ long $f
  long $0
  long $7bde8
  long $7bdec
@@ -601,11 +601,25 @@ C_N_M_M__threaded_dynamic_array ' <symbol:NMM_threaded_dynamic_array>
  long $fb6c2ffb
  long $fd64002d
  long $fd604224
+ long $fd63d207
+ long $f403d5e9
+ long $f607ce01
+ long $fd604024
+ long $fd604824
+ long $fd64002d
+ long $fd604224
  long $f43bd5e9
  long $5d73d206
  long $1403d5e9
- long $bd800350
  long $fd604024
+ long $fd74806f
+ long $fd64002d
+ long $fd604224
+ long $f43bd5e9
+ long $5d73d206
+ long $1403d5e9
+ long $fd604024
+ long $bd80035e
  long $fd64002d
  long $fd604224
  long $fd63d207
@@ -613,22 +627,24 @@ C_N_M_M__threaded_dynamic_array ' <symbol:NMM_threaded_dynamic_array>
  long $fd604024
  long $fd64002d
  long $fd604224
- long $f43bd5e9
+ long $f43bd417
  long $5d702e06
- long $1403d5e9
- long $bd80035c
+ long $1403d417
  long $fd604024
+ long $fd74806f
+ long $fd64002d
+ long $fd604224
+ long $f43bd417
+ long $5d702e06
+ long $1403d417
+ long $fd604024
+ long $bd800371
  long $fd64002d
  long $fd604224
  long $fd602e07
- long $f403d5e9
+ long $f403d417
  long $fd604024
  long $fd64002d
- long $0
- long $0
- long $0
- long $0
- long $0
  long $0
 
 ' Catalina Export NMM_LUT_LIBRARY_array
@@ -716,11 +732,25 @@ C_N_M_M__L_U_T__L_I_B_R_A_R_Y__array ' <symbol:NMM_LUT_LIBRARY_array>
  long $fb6c2ffb
  long $fd64002d
  long $fd604224
+ long $fd63d207
+ long $f403d5e9
+ long $f607ce01
+ long $fd604024
+ long $fd604824
+ long $fd64002d
+ long $fd604224
  long $f43bd5e9
  long $5d73d206
  long $1403d5e9
- long $bd800350
  long $fd604024
+ long $fd74806f
+ long $fd64002d
+ long $fd604224
+ long $f43bd5e9
+ long $5d73d206
+ long $1403d5e9
+ long $fd604024
+ long $bd80035e
  long $fd64002d
  long $fd604224
  long $fd63d207
@@ -728,15 +758,22 @@ C_N_M_M__L_U_T__L_I_B_R_A_R_Y__array ' <symbol:NMM_LUT_LIBRARY_array>
  long $fd604024
  long $fd64002d
  long $fd604224
- long $f43bd5e9
+ long $f43bd417
  long $5d702e06
- long $1403d5e9
- long $bd80035c
+ long $1403d417
  long $fd604024
+ long $fd74806f
+ long $fd64002d
+ long $fd604224
+ long $f43bd417
+ long $5d702e06
+ long $1403d417
+ long $fd604024
+ long $bd800371
  long $fd64002d
  long $fd604224
  long $fd602e07
- long $f403d5e9
+ long $f403d417
  long $fd604024
  long $fd64002d
 
@@ -768,7 +805,7 @@ C__threadstart_N_M_M__cog ' <symbol:_threadstart_NMM_cog>
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_WRLONG + (r23)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl ' align long
- long I32_MOVI + (r22)<<D32 +(104)<<S32 ' reg <- conli
+ long I32_MOVI + (r22)<<D32 +(125)<<S32 ' reg <- conli
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  word I16B_LODL + (r22)<<D16B
