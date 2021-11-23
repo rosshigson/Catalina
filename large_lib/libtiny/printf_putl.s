@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  long ' align long
-C_sa7g_6188bebb_digits_L000001 ' <symbol:digits>
+C_se98_619c562e_digits_L000001 ' <symbol:digits>
  byte 48
  byte 49
  byte 50
@@ -104,7 +104,7 @@ C__printf_putl_7
  mov r13, r22 ' ADDI/P
  adds r13, r20 ' ADDI/P (3)
  jmp #LODL
- long @C_sa7g_6188bebb_digits_L000001
+ long @C_se98_619c562e_digits_L000001
  mov r20, RI ' reg <- addrg
  adds r20, r11 ' ADDI/P (2)
  mov RI, r20

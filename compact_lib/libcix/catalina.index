@@ -139,7 +139,7 @@ _short_service catalina_hmi_m_present.s 26 import
 m_reset catalina_hmi_m_reset.s 9 export
 _short_service catalina_hmi_m_reset.s 26 import
 t_bin catalina_hmi_t_bin.s 9 export
-t_char catalina_hmi_t_bin.s 54 import
+t_char catalina_hmi_t_bin.s 56 import
 t_char catalina_hmi_t_char.s 9 export
 _short_service catalina_hmi_t_char.s 32 import
 t_color catalina_hmi_t_color.s 9 export

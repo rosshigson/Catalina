@@ -61,6 +61,13 @@
  *                to be used with different target packages when
  *                specified on the catalina command line and not 
  *                using the CATALINA_TARGET environment variable.
+ *
+ * Version 4.9.4 - Allow complex symbol definitions on the command line, 
+ *                such as:
+ *
+ *                   -D "name=value".
+ *
+ *                This is only supported when using p2_asm as the assembler.
  */
 
 #include <ctype.h>
@@ -72,7 +79,7 @@
 
 #define DO_EXECUTE         1 // 0 for debugging (output only, no execute)
 
-#define VERSION            "4.9" 
+#define VERSION            "4.9.4" 
 
 #ifdef WIN32_PATHS         /* define this on the command line for Windows */
 #define PATH_SEP           "\\"
@@ -702,7 +709,16 @@ void command_defines(char *to_string, int size) {
       }
       if (defined) {
          safecat(to_string, CMD_DEFINE_STRING, size);
-         safecat(to_string, define_symbol[i], size);
+         if ((strchr(define_symbol[i], '=') != NULL) || (strchr(define_symbol[i], ' ') != NULL)) {
+            // complex symbol definition - must quote it (only works on P2)
+            safecat(to_string, "\"", size);
+            safecat(to_string, define_symbol[i], size);
+            safecat(to_string, "\"", size);
+         }
+         else {
+            // simple symbol definition (works on P1 or P2)
+            safecat(to_string, define_symbol[i], size);
+         }
          safecat(to_string, " ", size);
       }
    }

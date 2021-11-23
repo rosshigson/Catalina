@@ -258,6 +258,14 @@
  *                The symbols MHZ_260 and MHZ_220 remain supported, but are
  *                now translated into -f260MHz and -f220MHz.                
  *
+ * Version 4.9.4  Allow baud rate setting on the command line (P2 only), 
+ *                either using the -B command line option, or by defining 
+ *                the symbol _BAUDRATE - for example, the following are 
+ *                equivalent:
+ *                
+ *                   -B 9600
+ *                   -C "_BAUDRATE=9600"
+ *
  */                  
 
 /*--------------------------------------------------------------------------
@@ -287,7 +295,7 @@
 #include <string.h>
 #include <math.h>
 
-#define VERSION            "4.9.3"
+#define VERSION            "4.9.4"
 
 #define MAX_LINELEN        4096
 
@@ -349,6 +357,7 @@ static int parallel  = 0; // invoke the parallelizer on the input files
 static int untidy    = 0; // untidy (i.e. no cleanup) mode
 
 /* clock calculation parameters */
+static int baud_rate = 0; // baud rate (no default)
 static int reqd_freq = 0; // required clock frequency (no default)
 static int reqd_xtal = 0; // required xtal frequency (no default)
 static int xtal_freq = 20000000; // default xtal frequency
@@ -403,6 +412,7 @@ void help(char *my_name) {
    fprintf(stderr, "\nusage: %s [option | file] ...\n\n", my_name);
    fprintf(stderr, "options:  -? or -h   print this help (and exit)\n");
    fprintf(stderr, "          -b         generate a binary output file (this is the default)\n");
+   fprintf(stderr, "          -B baud    baud rate to use for serial interfaces (P2 only)\n");
    fprintf(stderr, "          -c         compile only (do not bind)\n");
    fprintf(stderr, "          -d         output diagnostic messages\n");
    fprintf(stderr, "          -C symbol  define a Catalina symbol (e.g. -C HYDRA)\n");
@@ -996,6 +1006,22 @@ int decode_arguments (int argc, char *argv[]) {
                   if (verbose) {
                      banner();
                      fprintf(stderr, "binary output format selected\n");
+                  }
+                  break;
+
+               case 'B':
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     banner();
+                     fprintf(stderr, "option -B requires an argument\n");
+                     code = -1;
+                  }
+                  else {
+                     sscanf(arg, "%d", &baud_rate);
+                  }
+                  if (verbose) {
+                     banner();
+                     fprintf(stderr, "baud_rate = %d\n", baud_rate);
                   }
                   break;
 
@@ -1919,6 +1945,18 @@ int main(int argc, char *argv[]) {
       }
       catalina_symboldef("_CLOCK_DIVP", clockstr);
       
+   }
+
+   // pass baud rate if requested (via -B)
+   if (baud_rate != 0) {
+      if (prop_vers != 2) {
+         fprintf(stderr, "Baud Rate setting (via -B) is only supported on the Propeller 2\n");
+      }
+      else {
+         char baudstr[12] = "";
+         sprintf(baudstr, "=%u", baud_rate);
+         catalina_symboldef("_BAUDRATE", baudstr);
+      }
    }
 
    // print banner now if not suppressed and not already printed

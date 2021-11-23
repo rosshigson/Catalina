@@ -106,6 +106,7 @@ while [[ "$PLATFORM" ==  "" ]] ; do
       && "$PLATFORM" != "PP" 
       && "$PLATFORM" != "C3" 
       && "$PLATFORM" != "P2_EVAL" 
+      && "$PLATFORM" != "P2_EDGE" 
       && "$PLATFORM" != "P2D2" 
       && "$PLATFORM" != "QUICKSTART" ]] ; then
       echo ""
@@ -114,7 +115,7 @@ while [[ "$PLATFORM" ==  "" ]] ; do
    fi
 done
 
-if [[ "$PLATFORM" == "P2_EVAL" || "$PLATFORM" == "P2D2" ]] ; then
+if [[ "$PLATFORM" == "P2_EVAL" || "$PLATFORM" == "P2_EDGE" || "$PLATFORM" == "P2D2" ]] ; then
    clear
    echo ""
    echo "ERROR: The platform you have specified does not currently have"

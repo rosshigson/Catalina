@@ -23,7 +23,7 @@ int test_2(int i) {
 
    t_string(1,"Test 2 : Printing integers: ");
    for (j = 0; j < i; j++) {
-      t_integer(1, j + 1);
+      t_unsigned(1, j + 1);
       if (j < i - 1) {
          t_char(1, ',');
       }
@@ -55,6 +55,9 @@ int test_4() {
    t_string(1, " Key = ");
    k = k_get();
    t_hex(1, k);
+   t_string(1, " hex, ");
+   t_bin(1, k);
+   t_string(1, " bin ");
    t_string(1, "\n");
    return k;
 }

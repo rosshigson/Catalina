@@ -19,7 +19,7 @@ C_t_bin ' <symbol:t_bin>
 C_t_bin_3
  word I16B_LODL + (r22)<<D16B
  alignl ' align long
- long $8000000 ' reg <- con
+ long $80000000 ' reg <- con
  word I16A_AND + (r22)<<D16A + (r21)<<S16A ' BANDI/U (2)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl ' align long
@@ -43,7 +43,9 @@ C_t_bin_9
  word I16A_SHLI + (r21)<<D16A + (1)<<S16A ' SHLU4 reg coni
 ' C_t_bin_4 ' (symbol refcount = 0)
  word I16A_ADDSI + (r19)<<D16A + (1)<<S16A ' ADDI4 reg coni
- word I16A_CMPSI + (r19)<<D16A + (31)<<S16A
+ alignl ' align long
+ long I32_MOVI + RI<<D32 + (32)<<S32
+ word I16A_CMPS + (r19)<<D16A + RI<<S16A
  alignl ' align long
  long I32_BR_B + (@C_t_bin_3)<<S32 ' LTI4 reg coni
  word I16A_MOVI + R0<<D16A + (0)<<S16A ' RET coni

@@ -923,6 +923,18 @@ CON
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 '---------------- default constants (same as P2_EVAL) -------------------------
 
 ' clock configuration constants
@@ -969,7 +981,10 @@ _XPLL     = 1           ' 0= PLL off, 1=PLL on
 
 _RX_PIN    = 63
 _TX_PIN    = 62
+
+
 _BAUDRATE  = 230400
+
 
 ' BlackCat Debugger I/O constants
 

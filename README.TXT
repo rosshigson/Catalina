@@ -1,4 +1,4 @@
-Catalina release 4.9.3 is a full release. You can install this over an 
+Catalina release 4.9.4 is a full release. You can install this over an 
 existing version of Catalina, but it is recommended that you instead 
 uninstall any previous Catalina release before installing, or install 
 this release to a different location. 
@@ -17,6 +17,67 @@ If you prefer using a command line, start with
 If you prefer using an Integrated Development Environment, start with:
  
   "Getting Started with the Catalina Geany IDE"
+
+RELEASE 4.9.4
+
+New Functionality
+-----------------
+ 
+1. Added a new serial HMI option called SIMPLE (supported on the P2 only).
+   This option uses P2 smartpins to implement a very simple serial interface.
+   The advantage of the new HMI option is that it saves a cog over the default
+   serial HMI option (TTY). The disadvantage is that may not support very high 
+   baud rates - but baud rates up to 230400 are supported, which means it is 
+   sufficient for a serial terminal.  To use it, define the symbol SIMPLE on
+   the command line. For example:
+
+      catalina -p2 -lci hello_world.c -C SIMPLE
+      payload -i -b230400 hello_world.bin
+
+2. The serial baud rate can now be specified on the command line, either by
+   using the -B command line option, or by defining the symbol _BAUDRATE 
+   using a complex definition such as -C "_BAUDRATE=xxx". This is supported 
+   on the Propeller 2 only. The payload loader now also accepts -B to specify 
+   the baud rate - i.e. payload now accepts either -b or -B (whereas catalina 
+   only accepts -B since -b already meant something else). For example:
+
+      catalina -p2 -lci -B9600 hello_world.c
+      payload -i -B9600 hello_world.bin
+
+   or
+
+      catalina -p2 -lci -C "_BAUDRATE=9600" hello_world.c
+      payload -i -B9600 hello_world.bin
+
+   If it is not specified on the catalina command line, the default baud rate
+   defined for the platform (in Catalina_platforms.inc in the target_p2 
+   directory) will be used.
+
+Other Changes
+-------------
+ 
+1. Complex symbols had not been implemented in the Catalina Optimizer, which 
+   meant that the optimizer could not be used if the command line contained a 
+   complex definition such as:
+
+      -C "name=value"
+
+2. Payload now allows baud rates down to 300 baud. There was really no reason 
+   payload ever limited the baud rates (it used to impose a minimum of 19200 
+   baud) except that at the lower baud rates the program load times become so
+   long that it was not much use. However, this was before payload could also
+   be used as a serial terminal emulator, and in some cases low baud rates
+   are useful for testing. However, note that the P2 smart pin UARTs use a 
+   16-bit value for baud timing which can limit baud rates - to use baud rates
+   lower than 4800 baud you may need to also specify a lower system clock 
+   frequency. For instance, to use a baud rate of 300 baud, you may need to
+   use a clock speed of 12Mhz or lower:
+
+      catalina -p2 -lci hello_world.c -C SIMPLE -B300 -f12Mhz
+
+3. There was a bug in the Catalina HMI "t_bin()" function, which prints the 32 
+   bit binary representation of its integer or unsigned argument. The value 
+   was effectively being shifted left by 3 bits.
 
 RELEASE 4.9.3
 

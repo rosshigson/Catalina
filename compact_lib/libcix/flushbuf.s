@@ -7,20 +7,20 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_s6qs_6188bf1b_do_write_L000003 ' <symbol:do_write>
+C_s74o_619c5680_do_write_L000003 ' <symbol:do_write>
  alignl ' align long
  long I32_PSHM + $ea8000<<S32 ' save registers
  word I16A_MOV + (r23)<<D16A + (r4)<<S16A ' reg var <- reg arg
  word I16A_MOV + (r21)<<D16A + (r3)<<S16A ' reg var <- reg arg
  word I16A_MOV + (r19)<<D16A + (r2)<<S16A ' reg var <- reg arg
  alignl ' align long
- long I32_JMPA + (@C_s6qs_6188bf1b_do_write_L000003_6)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_s74o_619c5680_do_write_L000003_6)<<S32 ' JUMPV addrg
  alignl ' align long
-C_s6qs_6188bf1b_do_write_L000003_5
+C_s74o_619c5680_do_write_L000003_5
  word I16A_SUBS + (r19)<<D16A + (r17)<<S16A ' SUBI/P (1)
  word I16A_ADDS + (r21)<<D16A + (r17)<<S16A ' ADDI/P (2)
  alignl ' align long
-C_s6qs_6188bf1b_do_write_L000003_6
+C_s74o_619c5680_do_write_L000003_6
  word I16A_MOV + (r2)<<D16A + (r19)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r3)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r4)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
@@ -31,30 +31,30 @@ C_s6qs_6188bf1b_do_write_L000003_6
  word I16A_MOV + (r17)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPSI + (r0)<<D16A + (0)<<S16A
  alignl ' align long
- long I32_BRBE + (@C_s6qs_6188bf1b_do_write_L000003_8)<<S32 ' LEI4 reg coni
+ long I32_BRBE + (@C_s74o_619c5680_do_write_L000003_8)<<S32 ' LEI4 reg coni
  word I16A_CMPS + (r17)<<D16A + (r19)<<S16A
  alignl ' align long
- long I32_BR_B + (@C_s6qs_6188bf1b_do_write_L000003_5)<<S32 ' LTI4 reg reg
+ long I32_BR_B + (@C_s74o_619c5680_do_write_L000003_5)<<S32 ' LTI4 reg reg
  alignl ' align long
-C_s6qs_6188bf1b_do_write_L000003_8
+C_s74o_619c5680_do_write_L000003_8
  word I16A_CMPSI + (r17)<<D16A + (0)<<S16A
  alignl ' align long
- long I32_BRBE + (@C_s6qs_6188bf1b_do_write_L000003_10)<<S32 ' LEI4 reg coni
+ long I32_BRBE + (@C_s74o_619c5680_do_write_L000003_10)<<S32 ' LEI4 reg coni
  word I16A_MOVI + (r15)<<D16A + (1)<<S16A ' reg <- coni
  alignl ' align long
- long I32_JMPA + (@C_s6qs_6188bf1b_do_write_L000003_11)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_s74o_619c5680_do_write_L000003_11)<<S32 ' JUMPV addrg
  alignl ' align long
-C_s6qs_6188bf1b_do_write_L000003_10
+C_s74o_619c5680_do_write_L000003_10
  word I16A_MOVI + (r15)<<D16A + (0)<<S16A ' reg <- coni
  alignl ' align long
-C_s6qs_6188bf1b_do_write_L000003_11
+C_s74o_619c5680_do_write_L000003_11
  word I16A_MOV + (r0)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
-' C_s6qs_6188bf1b_do_write_L000003_4 ' (symbol refcount = 0)
+' C_s74o_619c5680_do_write_L000003_4 ' (symbol refcount = 0)
  word I16B_POPM + $80<<S16B ' restore registers, do not pop frame, do return
  alignl ' align long
 
  alignl ' align long
-C_s6qs1_6188bf1b_get_buf_L000012 ' <symbol:get_buf>
+C_s74o1_619c5680_get_buf_L000012 ' <symbol:get_buf>
  alignl ' align long
  long I32_NEWF + 4<<S32
  alignl ' align long
@@ -65,28 +65,28 @@ C_s6qs1_6188bf1b_get_buf_L000012 ' <symbol:get_buf>
  word I16A_NEGI + (r20)<<D16A + (-(-1)&$1F)<<S16A ' reg <- conn
  word I16A_CMPS + (r22)<<D16A + (r20)<<S16A
  alignl ' align long
- long I32_BRNZ + (@C_s6qs1_6188bf1b_get_buf_L000012_14)<<S32 ' NEI4 reg reg
+ long I32_BRNZ + (@C_s74o1_619c5680_get_buf_L000012_14)<<S32 ' NEI4 reg reg
  alignl ' align long
  long I32_CALA + (@C__locknew)<<S32 ' CALL addrg
  alignl ' align long
  long I32_LODA + (@C___iolock)<<S32
  word I16A_WRLONG + (r0)<<D16A + RI<<S16A ' ASGNI4 addrg reg
  alignl ' align long
-C_s6qs1_6188bf1b_get_buf_L000012_14
+C_s74o1_619c5680_get_buf_L000012_14
  alignl ' align long
  long I32_LODI + (@C___iolock)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrg
  word I16A_NEGI + (r20)<<D16A + (-(-1)&$1F)<<S16A ' reg <- conn
  word I16A_CMPS + (r22)<<D16A + (r20)<<S16A
  alignl ' align long
- long I32_BRNZ + (@C_s6qs1_6188bf1b_get_buf_L000012_16)<<S32 ' NEI4 reg reg
+ long I32_BRNZ + (@C_s74o1_619c5680_get_buf_L000012_16)<<S32 ' NEI4 reg reg
  word I16B_LODL + R0<<D16B
  alignl ' align long
  long 0 ' RET con
  alignl ' align long
- long I32_JMPA + (@C_s6qs1_6188bf1b_get_buf_L000012_13)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_s74o1_619c5680_get_buf_L000012_13)<<S32 ' JUMPV addrg
  alignl ' align long
-C_s6qs1_6188bf1b_get_buf_L000012_16
+C_s74o1_619c5680_get_buf_L000012_16
  alignl ' align long
  long I32_LODI + (@C___iolock)<<S32
  word I16A_MOV + (r2)<<D16A + RI<<S16A ' reg ARG INDIR ADDRG
@@ -98,7 +98,7 @@ C_s6qs1_6188bf1b_get_buf_L000012_16
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrg
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl ' align long
- long I32_BRNZ + (@C_s6qs1_6188bf1b_get_buf_L000012_18)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C_s74o1_619c5680_get_buf_L000012_18)<<S32 ' NEI4 reg coni
  word I16B_LODL + (r22)<<D16B
  alignl ' align long
  long @C___iobuff ' reg <- addrg
@@ -109,16 +109,16 @@ C_s6qs1_6188bf1b_get_buf_L000012_16
  long I32_LODA + (@C___ioused)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNI4 addrg reg
  alignl ' align long
- long I32_JMPA + (@C_s6qs1_6188bf1b_get_buf_L000012_19)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_s74o1_619c5680_get_buf_L000012_19)<<S32 ' JUMPV addrg
  alignl ' align long
-C_s6qs1_6188bf1b_get_buf_L000012_18
+C_s74o1_619c5680_get_buf_L000012_18
  word I16B_LODL + (r22)<<D16B
  alignl ' align long
  long 0 ' reg <- con
  word I16B_LODF + ((-4)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  alignl ' align long
-C_s6qs1_6188bf1b_get_buf_L000012_19
+C_s74o1_619c5680_get_buf_L000012_19
  alignl ' align long
  long I32_LODI + (@C___iolock)<<S32
  word I16A_MOV + (r2)<<D16A + RI<<S16A ' reg ARG INDIR ADDRG
@@ -128,7 +128,7 @@ C_s6qs1_6188bf1b_get_buf_L000012_19
  word I16B_LODF + ((-4)&$1FF)<<S16B
  word I16A_RDLONG + (r0)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  alignl ' align long
-C_s6qs1_6188bf1b_get_buf_L000012_13
+C_s74o1_619c5680_get_buf_L000012_13
  word I16B_POPM + 1<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
@@ -330,7 +330,7 @@ C___flushbuf_33
  alignl ' align long
 C___flushbuf_41
  alignl ' align long
- long I32_CALA + (@C_s6qs1_6188bf1b_get_buf_L000012)<<S32 ' CALL addrg
+ long I32_CALA + (@C_s74o1_619c5680_get_buf_L000012)<<S32 ' CALL addrg
  word I16A_MOV + (r20)<<D16A + (r21)<<S16A
  word I16A_ADDSI + (r20)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16A_WRLONG + (r0)<<D16A + (r20)<<S16A ' ASGNP4 reg reg
@@ -569,7 +569,7 @@ C___flushbuf_62
  word I16A_RDLONG + (r4)<<D16A + (r22)<<S16A ' reg <- INDIRI4 reg
  word I16B_CPREP + 50<<S16B ' arg size, rpsize = 12, spsize = 12
  alignl ' align long
- long I32_CALA + (@C_s6qs_6188bf1b_do_write_L000003)<<S32
+ long I32_CALA + (@C_s74o_619c5680_do_write_L000003)<<S32
  word I16A_ADDI + SP<<D16A + 8<<S16A ' CALL addrg
  word I16A_CMPSI + (r0)<<D16A + (0)<<S16A
  alignl ' align long
@@ -660,7 +660,7 @@ C___flushbuf_70
  word I16A_RDLONG + (r4)<<D16A + (r22)<<S16A ' reg <- INDIRI4 reg
  word I16B_CPREP + 50<<S16B ' arg size, rpsize = 12, spsize = 12
  alignl ' align long
- long I32_CALA + (@C_s6qs_6188bf1b_do_write_L000003)<<S32
+ long I32_CALA + (@C_s74o_619c5680_do_write_L000003)<<S32
  word I16A_ADDI + SP<<D16A + 8<<S16A ' CALL addrg
  word I16A_CMPSI + (r0)<<D16A + (0)<<S16A
  alignl ' align long

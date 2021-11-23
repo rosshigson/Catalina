@@ -111,6 +111,7 @@ if "%PLATFORM%" == "C3" goto ask_xmm
 if "%PLATFORM%" == "PP" goto ask_xmm
 if "%PLATFORM%" == "QUICKSTART" goto ask_xmm
 if "%PLATFORM%" == "P2_EVAL" goto no_utilities
+if "%PLATFORM%" == "P2_EDGE" goto no_utilities
 if "%PLATFORM%" == "P2D2" goto no_utilities
 @echo.
 @echo Invalid Platform selected - try again.

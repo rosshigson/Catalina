@@ -5,7 +5,8 @@
 '       The following symbols can be used ...
 '
 '       NO_HMI - do not load any HMI drivers
-'       TTY    - load a serial driver 
+'       TTY    - load full function Serial driver 
+'       SIMPLE - load Simple Serial driver
 '       VGA    - load a VGA driver, which can be additionaly specified as:
 '                LORES_VGA or VGA_640 (same as just VGA)
 '                HIRES_VGA or VGA_800
@@ -65,13 +66,17 @@ CON
 #endif
 
 ' set default HMI
-#if !defined(TTY) && !defined (VGA) 
+#if !defined(TTY) && !defined(VGA) && !defined(SIMPLE)
 #define TTY
 #endif
 
 #if defined(TTY)
 
 #include "Catalina_HMI_Plugin_TTY.spin2"
+
+#elif defined(SIMPLE)
+
+#include "Catalina_HMI_Plugin_SIMPLE.spin2"
 
 #elif defined(VGA)
 

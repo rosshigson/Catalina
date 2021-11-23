@@ -7,21 +7,21 @@ DAT ' code segment
 '
 
  long ' align long
-C_sk3c_6188beac___testsigset_L000001 ' <symbol:__testsigset>
+C_seo4_619c5622___testsigset_L000001 ' <symbol:__testsigset>
  jmp #PSHM
  long $800000 ' save registers
  mov r23, #0 ' reg <- coni
  cmps r23,  #0 wz
  jmp #BR_Z
- long @C_sk3c_6188beac___testsigset_L000001_4 ' EQI4
+ long @C_seo4_619c5622___testsigset_L000001_4 ' EQI4
  cmps r23,  #1 wz
  jmp #BR_Z
- long @C_sk3c_6188beac___testsigset_L000001_4 ' EQI4
+ long @C_seo4_619c5622___testsigset_L000001_4 ' EQI4
  jmp #JMPA
- long @C_sk3c_6188beac___testsigset_L000001_3 ' JUMPV addrg
-C_sk3c_6188beac___testsigset_L000001_3
-C_sk3c_6188beac___testsigset_L000001_4
-' C_sk3c_6188beac___testsigset_L000001_2 ' (symbol refcount = 0)
+ long @C_seo4_619c5622___testsigset_L000001_3 ' JUMPV addrg
+C_seo4_619c5622___testsigset_L000001_3
+C_seo4_619c5622___testsigset_L000001_4
+' C_seo4_619c5622___testsigset_L000001_2 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETN
 

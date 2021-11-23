@@ -16,7 +16,7 @@ C_itoa ' <symbol:itoa>
  long $f80000 ' save registers
  mov r23, r2 ' reg var <- reg arg
  jmp #LODL
- long @C_sb3s_6188bedb_itoa_buf_L000001+12-1
+ long @C_scc4_619c564a_itoa_buf_L000001+12-1
  mov r19, RI ' reg <- addrg
  mov r22, #0 ' reg <- coni
  mov RI, FP
@@ -91,7 +91,7 @@ C_itoa_10
 
 
  long ' align long
-C_sb3s1_6188bedb_N_anO_rI_nf_L000012 ' <symbol:NanOrInf>
+C_scc41_619c564a_N_anO_rI_nf_L000012 ' <symbol:NanOrInf>
  jmp #NEWF
  sub SP, #4
  jmp #PSHM
@@ -110,7 +110,7 @@ C_sb3s1_6188bedb_N_anO_rI_nf_L000012 ' <symbol:NanOrInf>
  and r20, r22 ' BANDI/U (1)
  cmp r20, r22 wz
  jmp #BRNZ
- long @C_sb3s1_6188bedb_N_anO_rI_nf_L000012_14 ' NEU4
+ long @C_scc41_619c564a_N_anO_rI_nf_L000012_14 ' NEU4
  mov r22, FP
  sub r22, #-(-4) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRU4 regl
@@ -120,7 +120,7 @@ C_sb3s1_6188bedb_N_anO_rI_nf_L000012 ' <symbol:NanOrInf>
  and r22, r20 ' BANDI/U (1)
  cmp r22,  #0 wz
  jmp #BRNZ
- long @C_sb3s1_6188bedb_N_anO_rI_nf_L000012_16 ' NEU4
+ long @C_scc41_619c564a_N_anO_rI_nf_L000012_16 ' NEU4
  mov r22, FP
  sub r22, #-(-4) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRU4 regl
@@ -130,7 +130,7 @@ C_sb3s1_6188bedb_N_anO_rI_nf_L000012 ' <symbol:NanOrInf>
  and r22, r20 ' BANDI/U (1)
  cmp r22,  #0 wz
  jmp #BR_Z
- long @C_sb3s1_6188bedb_N_anO_rI_nf_L000012_18 ' EQU4
+ long @C_scc41_619c564a_N_anO_rI_nf_L000012_18 ' EQU4
  mov r22, r21 ' CVI, CVU or LOAD
  mov r21, r22
  adds r21, #1 ' ADDP4 coni
@@ -138,9 +138,9 @@ C_sb3s1_6188bedb_N_anO_rI_nf_L000012 ' <symbol:NanOrInf>
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
-C_sb3s1_6188bedb_N_anO_rI_nf_L000012_18
+C_scc41_619c564a_N_anO_rI_nf_L000012_18
  jmp #LODL
- long @C_sb3s1_6188bedb_N_anO_rI_nf_L000012_20_L000021
+ long @C_scc41_619c564a_N_anO_rI_nf_L000012_20_L000021
  mov r2, RI ' reg ARG ADDRG
  mov r3, r21 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -151,8 +151,8 @@ C_sb3s1_6188bedb_N_anO_rI_nf_L000012_18
  mov r0, r21
  adds r0, #3 ' ADDP4 coni
  jmp #JMPA
- long @C_sb3s1_6188bedb_N_anO_rI_nf_L000012_13 ' JUMPV addrg
-C_sb3s1_6188bedb_N_anO_rI_nf_L000012_16
+ long @C_scc41_619c564a_N_anO_rI_nf_L000012_13 ' JUMPV addrg
+C_scc41_619c564a_N_anO_rI_nf_L000012_16
  mov r22, FP
  sub r22, #-(-4) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRU4 regl
@@ -162,7 +162,7 @@ C_sb3s1_6188bedb_N_anO_rI_nf_L000012_16
  and r22, r20 ' BANDI/U (1)
  cmp r22,  #0 wz
  jmp #BR_Z
- long @C_sb3s1_6188bedb_N_anO_rI_nf_L000012_22 ' EQU4
+ long @C_scc41_619c564a_N_anO_rI_nf_L000012_22 ' EQU4
  mov r22, r21 ' CVI, CVU or LOAD
  mov r21, r22
  adds r21, #1 ' ADDP4 coni
@@ -170,9 +170,9 @@ C_sb3s1_6188bedb_N_anO_rI_nf_L000012_16
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
-C_sb3s1_6188bedb_N_anO_rI_nf_L000012_22
+C_scc41_619c564a_N_anO_rI_nf_L000012_22
  jmp #LODL
- long @C_sb3s1_6188bedb_N_anO_rI_nf_L000012_24_L000025
+ long @C_scc41_619c564a_N_anO_rI_nf_L000012_24_L000025
  mov r2, RI ' reg ARG ADDRG
  mov r3, r21 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -183,12 +183,12 @@ C_sb3s1_6188bedb_N_anO_rI_nf_L000012_22
  mov r0, r21
  adds r0, #3 ' ADDP4 coni
  jmp #JMPA
- long @C_sb3s1_6188bedb_N_anO_rI_nf_L000012_13 ' JUMPV addrg
-C_sb3s1_6188bedb_N_anO_rI_nf_L000012_14
+ long @C_scc41_619c564a_N_anO_rI_nf_L000012_13 ' JUMPV addrg
+C_scc41_619c564a_N_anO_rI_nf_L000012_14
  jmp #LODL
  long 0
  mov r0, RI ' reg <- con
-C_sb3s1_6188bedb_N_anO_rI_nf_L000012_13
+C_scc41_619c564a_N_anO_rI_nf_L000012_13
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
@@ -216,7 +216,7 @@ C_t_float_27
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_sb3s1_6188bedb_N_anO_rI_nf_L000012
+ long @C_scc41_619c564a_N_anO_rI_nf_L000012
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
@@ -521,7 +521,7 @@ C_t_float_26
 DAT ' uninitialized data segment
 
  long ' align long
-C_sb3s_6188bedb_itoa_buf_L000001 ' <symbol:itoa_buf>
+C_scc4_619c564a_itoa_buf_L000001 ' <symbol:itoa_buf>
  byte 0[12]
 
 ' Catalina Code
@@ -610,14 +610,14 @@ C_t_float_33_L000034 ' <symbol:33>
  long $0 ' float
 
  long ' align long
-C_sb3s1_6188bedb_N_anO_rI_nf_L000012_24_L000025 ' <symbol:24>
+C_scc41_619c564a_N_anO_rI_nf_L000012_24_L000025 ' <symbol:24>
  byte 110
  byte 97
  byte 110
  byte 0
 
  long ' align long
-C_sb3s1_6188bedb_N_anO_rI_nf_L000012_20_L000021 ' <symbol:20>
+C_scc41_619c564a_N_anO_rI_nf_L000012_20_L000021 ' <symbol:20>
  byte 105
  byte 110
  byte 102

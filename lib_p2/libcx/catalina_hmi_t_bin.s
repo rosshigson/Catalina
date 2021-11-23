@@ -17,7 +17,7 @@ C_t_bin ' <symbol:t_bin>
  mov r19, #0 ' reg <- coni
 C_t_bin_3
  PRIMITIVE(#LODL)
- long $8000000
+ long $80000000
  mov r22, RI ' reg <- con
  and r22, r21 ' BANDI/U (2)
  cmp r22,  #0 wz
@@ -39,7 +39,7 @@ C_t_bin_9
  shl r21, #1 ' LSHU4 coni
 ' C_t_bin_4 ' (symbol refcount = 0)
  adds r19, #1 ' ADDI4 coni
- cmps r19,  #31 wcz
+ cmps r19,  #32 wcz
  PRIMITIVE(#BR_B)
  long @C_t_bin_3 ' LTI4
  mov r0, #0 ' RET coni

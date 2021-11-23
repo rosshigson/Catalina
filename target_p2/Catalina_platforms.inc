@@ -56,7 +56,10 @@ _XPLL     = 1           ' 0= PLL off, 1=PLL on
 
 _RX_PIN    = 63
 _TX_PIN    = 62
+
+#ifndef _BAUDRATE
 _BAUDRATE  = 230400
+#endif
 
 ' BlackCat Debugger I/O constants
 
@@ -204,7 +207,10 @@ _XPLL     = 1           ' 0= PLL off, 1=PLL on
 
 _RX_PIN    = 63
 _TX_PIN    = 62
+
+#ifndef _BAUDRATE
 _BAUDRATE  = 230400
+#endif
 
 ' BlackCat Debugger I/O constants
 
@@ -355,7 +361,10 @@ _XPLL     = 1           ' 0= PLL off, 1=PLL on
 
 _RX_PIN    = 63
 _TX_PIN    = 62
+
+#ifndef _BAUDRATE
 _BAUDRATE  = 230400
+#endif
 
 ' BlackCat Debugger I/O constants
 
@@ -506,7 +515,10 @@ _XPLL     = 1           ' 0= PLL off, 1=PLL on
 
 _RX_PIN    = 63
 _TX_PIN    = 62
+
+#ifndef _BAUDRATE
 _BAUDRATE  = 230400
+#endif
 
 ' BlackCat Debugger I/O constants
 
@@ -658,7 +670,10 @@ _XPLL     = 1           ' 0= PLL off, 1=PLL on
 
 _RX_PIN    = 63
 _TX_PIN    = 62
+
+#ifndef _BAUDRATE
 _BAUDRATE  = 230400
+#endif
 
 ' BlackCat Debugger I/O constants
 

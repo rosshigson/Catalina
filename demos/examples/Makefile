@@ -489,6 +489,14 @@ ex_waitx : ex_waitx$B
 # add this to the 'all' target
 all :: ex_waitx
 
+# =============
+
+.PHONY : ex_simple
+ex_simple : ex_simple$B
+
+# add this to the 'all' target
+all :: ex_simple
+
 #
 # Clean Target (should not be first target!)
 # ==========================================

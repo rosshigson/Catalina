@@ -11,11 +11,11 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_sc6s_6188bf90_rxbase_L000002 ' <symbol:rxbase>
+C_siuc_619c56e3_rxbase_L000002 ' <symbol:rxbase>
  long $0
 
  alignl ' align long
-C_sc6s1_6188bf90_lock_L000003 ' <symbol:lock>
+C_siuc1_619c56e3_lock_L000003 ' <symbol:lock>
  long -1
 
 ' Catalina Code
@@ -23,15 +23,15 @@ C_sc6s1_6188bf90_lock_L000003 ' <symbol:lock>
 DAT ' code segment
 
  alignl ' align long
-C_sc6s2_6188bf90_initialize_L000004 ' <symbol:initialize>
+C_siuc2_619c56e3_initialize_L000004 ' <symbol:initialize>
  PRIMITIVE(#NEWF)
  sub SP, #8
  PRIMITIVE(#PSHM)
  long $540000 ' save registers
- mov r22, ##@C_sc6s_6188bf90_rxbase_L000002
+ mov r22, ##@C_siuc_619c56e3_rxbase_L000002
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
- if_nz jmp #\C_sc6s2_6188bf90_initialize_L000004_6  ' NEU4
+ if_nz jmp #\C_siuc2_619c56e3_initialize_L000004_6  ' NEU4
  mov r2, #17 ' reg ARG coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  PRIMITIVE(#CALA)
@@ -43,7 +43,7 @@ C_sc6s2_6188bf90_initialize_L000004 ' <symbol:initialize>
  sub r22, #-(-4) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #0 wcz
- if_b jmp #\C_sc6s2_6188bf90_initialize_L000004_8 ' LTI4
+ if_b jmp #\C_siuc2_619c56e3_initialize_L000004_8 ' LTI4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
  long @C__registry ' CALL addrg
@@ -64,25 +64,25 @@ C_sc6s2_6188bf90_initialize_L000004 ' <symbol:initialize>
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRU4 reg
  and r20, r22 ' BANDI/U (2)
- wrlong r20, ##@C_sc6s_6188bf90_rxbase_L000002 ' ASGNP4 addrg reg
- mov r20, ##@C_sc6s1_6188bf90_lock_L000003 ' reg <- addrg
+ wrlong r20, ##@C_siuc_619c56e3_rxbase_L000002 ' ASGNP4 addrg reg
+ mov r20, ##@C_siuc1_619c56e3_lock_L000003 ' reg <- addrg
  shr r22, #24 ' RSHU4 coni
- wrlong r22, ##@C_sc6s1_6188bf90_lock_L000003 ' ASGNI4 addrg reg
+ wrlong r22, ##@C_siuc1_619c56e3_lock_L000003 ' ASGNI4 addrg reg
  rdlong r22, r20 ' reg <- INDIRI4 reg
  cmps r22,  #0 wz
- if_nz jmp #\C_sc6s2_6188bf90_initialize_L000004_10 ' NEI4
+ if_nz jmp #\C_siuc2_619c56e3_initialize_L000004_10 ' NEI4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
  long @C__locknew ' CALL addrg
- wrlong r0, ##@C_sc6s1_6188bf90_lock_L000003 ' ASGNI4 addrg reg
- mov r22, ##@C_sc6s1_6188bf90_lock_L000003
+ wrlong r0, ##@C_siuc1_619c56e3_lock_L000003 ' ASGNI4 addrg reg
+ mov r22, ##@C_siuc1_619c56e3_lock_L000003
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
- if_b jmp #\C_sc6s2_6188bf90_initialize_L000004_11 ' LTI4
+ if_b jmp #\C_siuc2_619c56e3_initialize_L000004_11 ' LTI4
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRU4 reg
- mov r20, ##@C_sc6s1_6188bf90_lock_L000003
+ mov r20, ##@C_siuc1_619c56e3_lock_L000003
  rdlong r20, r20 ' reg <- INDIRI4 addrg
  adds r20, #1 ' ADDI4 coni
  shl r20, #24 ' LSHI4 coni
@@ -106,16 +106,16 @@ C_sc6s2_6188bf90_initialize_L000004 ' <symbol:initialize>
  sub r20, #-(-8) ' reg <- addrli
  rdlong r20, r20 ' reg <- INDIRU4 reg
  wrlong r20, r22 ' ASGNU4 reg reg
- jmp #\@C_sc6s2_6188bf90_initialize_L000004_11 ' JUMPV addrg
-C_sc6s2_6188bf90_initialize_L000004_10
- mov r22, ##@C_sc6s1_6188bf90_lock_L000003 ' reg <- addrg
+ jmp #\@C_siuc2_619c56e3_initialize_L000004_11 ' JUMPV addrg
+C_siuc2_619c56e3_initialize_L000004_10
+ mov r22, ##@C_siuc1_619c56e3_lock_L000003 ' reg <- addrg
  rdlong r22, r22 ' reg <- INDIRI4 reg
  subs r22, #1 ' SUBI4 coni
- wrlong r22, ##@C_sc6s1_6188bf90_lock_L000003 ' ASGNI4 addrg reg
-C_sc6s2_6188bf90_initialize_L000004_11
-C_sc6s2_6188bf90_initialize_L000004_8
-C_sc6s2_6188bf90_initialize_L000004_6
-' C_sc6s2_6188bf90_initialize_L000004_5 ' (symbol refcount = 0)
+ wrlong r22, ##@C_siuc1_619c56e3_lock_L000003 ' ASGNI4 addrg reg
+C_siuc2_619c56e3_initialize_L000004_11
+C_siuc2_619c56e3_initialize_L000004_8
+C_siuc2_619c56e3_initialize_L000004_6
+' C_siuc2_619c56e3_initialize_L000004_5 ' (symbol refcount = 0)
  PRIMITIVE(#POPM) ' restore registers
  add SP, #8 ' framesize
  PRIMITIVE(#RETF)
@@ -128,13 +128,13 @@ C_s4_rxflush ' <symbol:s4_rxflush>
  PRIMITIVE(#PSHM)
  long $c00000 ' save registers
  mov r23, r2 ' reg var <- reg arg
- mov r22, ##@C_sc6s_6188bf90_rxbase_L000002
+ mov r22, ##@C_siuc_619c56e3_rxbase_L000002
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  if_nz jmp #\C_s4_rxflush_15  ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
- long @C_sc6s2_6188bf90_initialize_L000004 ' CALL addrg
+ long @C_siuc2_619c56e3_initialize_L000004 ' CALL addrg
 C_s4_rxflush_15
  cmp r23,  #3 wcz 
  if_be jmp #\C_s4_rxflush_20 ' LEU4
@@ -163,24 +163,24 @@ C_s4_rxcheck ' <symbol:s4_rxcheck>
  PRIMITIVE(#PSHM)
  long $d54000 ' save registers
  mov r23, r2 ' reg var <- reg arg
- mov r22, ##@C_sc6s_6188bf90_rxbase_L000002
+ mov r22, ##@C_siuc_619c56e3_rxbase_L000002
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  if_nz jmp #\C_s4_rxcheck_23  ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
- long @C_sc6s2_6188bf90_initialize_L000004 ' CALL addrg
+ long @C_siuc2_619c56e3_initialize_L000004 ' CALL addrg
 C_s4_rxcheck_23
  cmp r23,  #3 wcz 
  if_be jmp #\C_s4_rxcheck_25 ' LEU4
  mov r0, ##-1 ' RET con
  jmp #\@C_s4_rxcheck_22 ' JUMPV addrg
 C_s4_rxcheck_25
- mov r22, ##@C_sc6s1_6188bf90_lock_L000003
+ mov r22, ##@C_siuc1_619c56e3_lock_L000003
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
  if_b jmp #\C_s4_rxcheck_27 ' LTI4
- mov r2, ##@C_sc6s1_6188bf90_lock_L000003
+ mov r2, ##@C_siuc1_619c56e3_lock_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -189,7 +189,7 @@ C_s4_rxcheck_25
 C_s4_rxcheck_27
  mov r22, r23
  shl r22, #2 ' LSHU4 coni
- mov r20, ##@C_sc6s_6188bf90_rxbase_L000002
+ mov r20, ##@C_siuc_619c56e3_rxbase_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  mov r18, r20
  adds r18, #16 ' ADDP4 coni
@@ -199,7 +199,7 @@ C_s4_rxcheck_27
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r18, r22 wz
  if_z jmp #\C_s4_rxcheck_29 ' EQI4
- mov r22, ##@C_sc6s_6188bf90_rxbase_L000002
+ mov r22, ##@C_siuc_619c56e3_rxbase_L000002
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  mov r20, r23
  shl r20, #2 ' LSHU4 coni
@@ -233,11 +233,11 @@ C_s4_rxcheck_29
  sub RI, #-(-4)
  wrlong r22, RI ' ASGNI4 addrli reg
 C_s4_rxcheck_30
- mov r22, ##@C_sc6s1_6188bf90_lock_L000003
+ mov r22, ##@C_siuc1_619c56e3_lock_L000003
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
  if_b jmp #\C_s4_rxcheck_31 ' LTI4
- mov r2, ##@C_sc6s1_6188bf90_lock_L000003
+ mov r2, ##@C_siuc1_619c56e3_lock_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -260,13 +260,13 @@ C_s4_rx ' <symbol:s4_rx>
  PRIMITIVE(#PSHM)
  long $e00000 ' save registers
  mov r23, r2 ' reg var <- reg arg
- mov r22, ##@C_sc6s_6188bf90_rxbase_L000002
+ mov r22, ##@C_siuc_619c56e3_rxbase_L000002
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  if_nz jmp #\C_s4_rx_34  ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
- long @C_sc6s2_6188bf90_initialize_L000004 ' CALL addrg
+ long @C_siuc2_619c56e3_initialize_L000004 ' CALL addrg
 C_s4_rx_34
  cmp r23,  #3 wcz 
  if_be jmp #\C_s4_rx_39 ' LEU4
@@ -295,24 +295,24 @@ C_s4_tx ' <symbol:s4_tx>
  long $f50000 ' save registers
  mov r23, r3 ' reg var <- reg arg
  mov r21, r2 ' reg var <- reg arg
- mov r22, ##@C_sc6s_6188bf90_rxbase_L000002
+ mov r22, ##@C_siuc_619c56e3_rxbase_L000002
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  if_nz jmp #\C_s4_tx_42  ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
- long @C_sc6s2_6188bf90_initialize_L000004 ' CALL addrg
+ long @C_siuc2_619c56e3_initialize_L000004 ' CALL addrg
 C_s4_tx_42
  cmp r23,  #3 wcz 
  if_be jmp #\C_s4_tx_44 ' LEU4
  mov r0, ##-1 ' RET con
  jmp #\@C_s4_tx_41 ' JUMPV addrg
 C_s4_tx_44
- mov r22, ##@C_sc6s1_6188bf90_lock_L000003
+ mov r22, ##@C_siuc1_619c56e3_lock_L000003
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
  if_b jmp #\C_s4_tx_49 ' LTI4
- mov r2, ##@C_sc6s1_6188bf90_lock_L000003
+ mov r2, ##@C_siuc1_619c56e3_lock_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -322,7 +322,7 @@ C_s4_tx_48
 C_s4_tx_49
  mov r22, r23
  shl r22, #2 ' LSHU4 coni
- mov r20, ##@C_sc6s_6188bf90_rxbase_L000002
+ mov r20, ##@C_siuc_619c56e3_rxbase_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  mov r18, r20
  adds r18, #48 ' ADDP4 coni
@@ -337,7 +337,7 @@ C_s4_tx_49
  if_z jmp #\C_s4_tx_48 ' EQI4
  mov r22, r23
  shl r22, #2 ' LSHU4 coni
- mov r20, ##@C_sc6s_6188bf90_rxbase_L000002
+ mov r20, ##@C_siuc_619c56e3_rxbase_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  mov r18, r20
  adds r18, #32 ' ADDP4 coni
@@ -351,7 +351,7 @@ C_s4_tx_49
  wrbyte r21, r22 ' ASGNU1 reg reg
  mov r22, r23
  shl r22, #2 ' LSHU4 coni
- mov r20, ##@C_sc6s_6188bf90_rxbase_L000002
+ mov r20, ##@C_siuc_619c56e3_rxbase_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  adds r20, #32 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
@@ -361,7 +361,7 @@ C_s4_tx_49
  wrlong r20, r22 ' ASGNI4 reg reg
  mov r22, r23
  shl r22, #2 ' LSHU4 coni
- mov r20, ##@C_sc6s_6188bf90_rxbase_L000002
+ mov r20, ##@C_siuc_619c56e3_rxbase_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  adds r20, #128 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
@@ -374,11 +374,11 @@ C_s4_tx_49
  PRIMITIVE(#CALA)
  long @C_s4_rx ' CALL addrg
 C_s4_tx_51
- mov r22, ##@C_sc6s1_6188bf90_lock_L000003
+ mov r22, ##@C_siuc1_619c56e3_lock_L000003
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
  if_b jmp #\C_s4_tx_53 ' LTI4
- mov r2, ##@C_sc6s1_6188bf90_lock_L000003
+ mov r2, ##@C_siuc1_619c56e3_lock_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -398,24 +398,24 @@ C_s4_txflush ' <symbol:s4_txflush>
  PRIMITIVE(#PSHM)
  long $d40000 ' save registers
  mov r23, r2 ' reg var <- reg arg
- mov r22, ##@C_sc6s_6188bf90_rxbase_L000002
+ mov r22, ##@C_siuc_619c56e3_rxbase_L000002
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  if_nz jmp #\C_s4_txflush_56  ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
- long @C_sc6s2_6188bf90_initialize_L000004 ' CALL addrg
+ long @C_siuc2_619c56e3_initialize_L000004 ' CALL addrg
 C_s4_txflush_56
  cmp r23,  #3 wcz 
  if_be jmp #\C_s4_txflush_58 ' LEU4
  mov r0, ##-1 ' RET con
  jmp #\@C_s4_txflush_55 ' JUMPV addrg
 C_s4_txflush_58
- mov r22, ##@C_sc6s1_6188bf90_lock_L000003
+ mov r22, ##@C_siuc1_619c56e3_lock_L000003
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
  if_b jmp #\C_s4_txflush_63 ' LTI4
- mov r2, ##@C_sc6s1_6188bf90_lock_L000003
+ mov r2, ##@C_siuc1_619c56e3_lock_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -425,7 +425,7 @@ C_s4_txflush_62
 C_s4_txflush_63
  mov r22, r23
  shl r22, #2 ' LSHU4 coni
- mov r20, ##@C_sc6s_6188bf90_rxbase_L000002
+ mov r20, ##@C_siuc_619c56e3_rxbase_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  mov r18, r20
  adds r18, #48 ' ADDP4 coni
@@ -436,11 +436,11 @@ C_s4_txflush_63
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r18, r22 wz
  if_nz jmp #\C_s4_txflush_62 ' NEI4
- mov r22, ##@C_sc6s1_6188bf90_lock_L000003
+ mov r22, ##@C_siuc1_619c56e3_lock_L000003
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
  if_b jmp #\C_s4_txflush_65 ' LTI4
- mov r2, ##@C_sc6s1_6188bf90_lock_L000003
+ mov r2, ##@C_siuc1_619c56e3_lock_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -462,24 +462,24 @@ C_s4_txcheck ' <symbol:s4_txcheck>
  PRIMITIVE(#PSHM)
  long $d40000 ' save registers
  mov r23, r2 ' reg var <- reg arg
- mov r22, ##@C_sc6s_6188bf90_rxbase_L000002
+ mov r22, ##@C_siuc_619c56e3_rxbase_L000002
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  if_nz jmp #\C_s4_txcheck_68  ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  PRIMITIVE(#CALA)
- long @C_sc6s2_6188bf90_initialize_L000004 ' CALL addrg
+ long @C_siuc2_619c56e3_initialize_L000004 ' CALL addrg
 C_s4_txcheck_68
  cmp r23,  #3 wcz 
  if_be jmp #\C_s4_txcheck_70 ' LEU4
  mov r0, ##-1 ' RET con
  jmp #\@C_s4_txcheck_67 ' JUMPV addrg
 C_s4_txcheck_70
- mov r22, ##@C_sc6s1_6188bf90_lock_L000003
+ mov r22, ##@C_siuc1_619c56e3_lock_L000003
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
  if_b jmp #\C_s4_txcheck_72 ' LTI4
- mov r2, ##@C_sc6s1_6188bf90_lock_L000003
+ mov r2, ##@C_siuc1_619c56e3_lock_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -488,7 +488,7 @@ C_s4_txcheck_70
 C_s4_txcheck_72
  mov r22, r23
  shl r22, #2 ' LSHU4 coni
- mov r20, ##@C_sc6s_6188bf90_rxbase_L000002
+ mov r20, ##@C_siuc_619c56e3_rxbase_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  mov r18, r20
  adds r18, #32 ' ADDP4 coni
@@ -504,11 +504,11 @@ C_s4_txcheck_72
  mov RI, FP
  sub RI, #-(-4)
  wrlong r22, RI ' ASGNI4 addrli reg
- mov r22, ##@C_sc6s1_6188bf90_lock_L000003
+ mov r22, ##@C_siuc1_619c56e3_lock_L000003
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
  if_b jmp #\C_s4_txcheck_74 ' LTI4
- mov r2, ##@C_sc6s1_6188bf90_lock_L000003
+ mov r2, ##@C_siuc1_619c56e3_lock_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4

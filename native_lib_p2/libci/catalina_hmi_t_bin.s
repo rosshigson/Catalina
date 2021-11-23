@@ -16,7 +16,7 @@ C_t_bin ' <symbol:t_bin>
  mov r21, r2 ' reg var <- reg arg
  mov r19, #0 ' reg <- coni
 C_t_bin_3
- mov r22, ##$8000000 ' reg <- con
+ mov r22, ##$80000000 ' reg <- con
  and r22, r21 ' BANDI/U (2)
  cmp r22,  #0 wz
  if_z jmp #\C_t_bin_8 ' EQU4
@@ -35,7 +35,7 @@ C_t_bin_9
  shl r21, #1 ' LSHU4 coni
 ' C_t_bin_4 ' (symbol refcount = 0)
  adds r19, #1 ' ADDI4 coni
- cmps r19,  #31 wcz
+ cmps r19,  #32 wcz
  if_b jmp #\C_t_bin_3 ' LTI4
  mov r0, #0 ' reg <- coni
 ' C_t_bin_2 ' (symbol refcount = 0)

@@ -188,7 +188,9 @@
 //
 // Version 4.8  - Just update version number.
 //
-// Version 4.9  - Just update version number.
+// Version 4.9.4  - Minimum baud rate is now 300 baud.
+//
+//                  Allow -B as a synonym for -b
 //
 //-----------------------------------------------------------------------------
 // Payload is part of Catalina.
@@ -260,7 +262,7 @@
 #define CMD_LOADRUN        1  // load into RAM
 #define CMD_PROGRUN        3  // program into EEPROM
 
-#define MIN_BAUDRATE       19200
+#define MIN_BAUDRATE       300
 #define MAX_BAUDRATE       3000000
 #define DEFAULT_BAUDRATE   115200
 
@@ -1449,6 +1451,7 @@ void help(char *my_name) {
    fprintf(stderr, "options:  -? or -h  print this helpful message and exit (-v for more help)\n");
    fprintf(stderr, "          -a port   find ports automatically, starting from specified port\n");
    fprintf(stderr, "          -b baud   use specified baudrate (default is %d)\n", DEFAULT_BAUDRATE);
+   fprintf(stderr, "          -B baud   same as -b\n");
    fprintf(stderr, "          -c cpu    cpu destination for catalina download (default is %d)\n", DEFAULT_CPU);
    fprintf(stderr, "          -d        diagnostic mode (-d again for more diagnostics)\n");
    fprintf(stderr, "          -e        program the EEPROM with the program loaded\n");
@@ -1548,6 +1551,7 @@ int decode_arguments (int argc, char *argv[]) {
                   }
                   break;
                case 'b':
+               case 'B':
                   if (strlen(argv[i]) == 2) {
                      // use next arg
                      if (argc > 0) {
