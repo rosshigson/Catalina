@@ -1,0 +1,92 @@
+#!/bin/bash
+if [[ "$1" != "" ]]; then
+
+   if [[ "$CATALINA_DEFINE" != "" ]]; then
+
+      if [[ "$CATALINA_DEFINE" != "$1 $2 $3 $4 $5 $6 $7 $8 $9" ]]; then
+
+         echo ""
+         echo "ERROR: Command line options conflict with CATALINA_DEFINE"
+         echo ""
+         echo "   The Environment variable CATALINA_DEFINE is set to $CATALINA_DEFINE"
+         echo "   The Command line options specified are $1 $2 $3 $4 $5 $6 $7 $8 $9"
+         echo ""
+         echo "   Either set CATALINA_DEFINE to null using the following command:"
+         echo ""
+         echo "      unset CATALINA_DEFINE"
+         echo ""
+         echo "   or do not specify any command line parameters"
+         echo ""
+
+      else
+
+         echo ""
+         echo "NOTE: Environment variable CATALINA_DEFINE is set to $CATALINA_DEFINE"
+         echo ""
+         echo "All programs will be built using these options. If these options conflict" 
+         echo "with any options specified in this file, the results may be unexpected." 
+         
+      fi
+
+   else
+
+      echo ""
+      echo "NOTE: Environment variable CATALINA_DEFINE will be set to $1 $2 $3 $4 $5 $6 $7 $8 $9"
+      echo ""
+      echo "All programs will be built using these options. If these options conflict"
+      echo "with any options specified in this file, the results may be unexpected."
+      CATALINA_DEFINE="$1 $2 $3 $4 $5 $6 $7 $8 $9"; export CATALINA_DEFINE
+
+   fi
+
+else
+
+   if [[ "$CATALINA_DEFINE" != "" ]]; then
+
+      echo ""
+      echo "NOTE: Environment variable CATALINA_DEFINE is set to $CATALINA_DEFINE"
+      echo ""
+      echo "All programs will be built using these options. If these options conflict" 
+      echo "with any options specified in this file, the results may be unexpected." 
+  
+   else     
+
+      echo ""
+      echo "NOTE: Environment variable CATALINA_DEFINE is not set"
+      echo ""
+      echo "All programs will be built for the default target (CUSTOM)" 
+
+   fi
+
+fi
+
+#
+TMP_LCCDIR=$LCCDIR
+if [[ "$TMP_LCCDIR" == "" ]]; then
+   TMP_LCCDIR=/opt/catalina	
+fi
+#
+if [[ ! -e $TMP_LCCDIR/bin/catalina_env ]]; then
+   echo ""
+   echo "ERROR: Catalina does not appear to be installed in $TMP_LCCDIR"
+   echo "";
+   echo "Set the environment variable LCCDIR to where Catalina is installed.";
+   echo "";
+   exit
+fi   
+
+echo ""
+echo "   ====================="
+echo "   BUILDING ALLOCA DEMOS"
+echo "   ====================="
+echo ""
+
+make -B all
+
+unset CATALINA_DEFINE
+echo ""
+echo "   ===="
+echo "   Done"
+echo "   ===="
+echo ""
+

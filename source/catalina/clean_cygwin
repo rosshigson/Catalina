@@ -1,0 +1,5 @@
+#!/bin/bash -login
+#set -x
+
+make clean 
+

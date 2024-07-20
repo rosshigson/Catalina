@@ -1,0 +1,4 @@
+#!/bin/bash
+
+rm -f *.bin *.binary *.eeprom *.lst *.inc *.ovl
+rm -f _catapult.cmd primary.c common.h func_1.c func_2.c

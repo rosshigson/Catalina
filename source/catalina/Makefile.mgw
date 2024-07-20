@@ -1,0 +1,108 @@
+A=.a
+O=.o
+E=.exe
+CC=gcc
+CPP=c++
+CFLAGS= -D WIN32_PATHS
+LDFLAGS=
+LD=$(CC)
+AR=ar ruv
+RANLIB=ranlib
+DIFF=diff
+RM=rm -f
+
+BINDIR="..//..//bin//"
+
+LUADIR=lua-5.4.4
+
+what:
+	-@echo make all bcc binbuild binstats catbind catalina payload spinc bindump blackbox catdbgfilegen parallelize parallelize_awka catapult catapult_awka pstrip install
+
+all::	bcc$E binbuild$E binstats$E catbind$E catalina$E payload$E spinc$E bindump$E blackbox$E catdbgfilegen$E parallelize$E parallelize_awka$E catapult$E catapult_awka$E pstrip$E
+
+bcc$E:	bcc.c
+	$(CC) $(CFLAGS) -o $@ bcc.c
+
+binbuild$E:	binbuild.c
+	$(CC) $(CFLAGS) -o $@ binbuild.c
+
+binstats$E:	binstats.c
+	$(CC) $(CFLAGS) -o $@ binstats.c
+
+catbind$E:	catbind.c
+	$(CC) $(CFLAGS) -o $@ catbind.c
+
+catalina$E:	catalina.c
+	$(CC) $(CFLAGS) -o $@ catalina.c
+
+payload$E:	payload.c rs232.h rs232.c base64.c fymodem.h fymodem.c
+	make -C $(LUADIR) mingw
+	$(CC) $(CFLAGS) -o $@ payload.c rs232.c base64.c fymodem.c -lncursesw -L $(LUADIR)\src -llua
+	
+#	$(CC) $(CFLAGS) -o $@ payload.c rs232.c base64.c fymodem.c -lpdcurses -L $(LUADIR)\src -llua
+
+#	$(CC) $(CFLAGS) -o $@ payload.c rs232.c base64.c -lpthread -lpdcurses -lws2_32 -DPTW32_STATIC_LIB
+
+#	$(CC) $(CFLAGS) -o $@ payload.c rs232.c base64.c -lpdcurses -lpthread
+
+spinc$E:	spinc.c spinc.h 
+	$(CC) $(CFLAGS) -o $@ spinc.c 
+
+bindump$E:	bindump.c 
+	$(CC) $(CFLAGS) -o $@ bindump.c 
+
+y.tab.c y.tab.h: blackbox_y.y
+	bison -y -d blackbox_y.y
+
+blackbox_l.c: blackbox_l.l
+	flex -oblackbox_l.c blackbox_l.l
+
+blackbox$E:	y.tab.c y.tab.h blackbox_l.c blackbox_comms.c rs232.c printf.c
+	$(CC) $(CFLAGS) -o $@ y.tab.c blackbox_l.c blackbox_comms.c rs232.c printf.c -L $(LUADIR)\src -llua
+
+catdbgfilegen$E:	catdbgfilegen.h catdbgutilities.h catdbgfilegen.cpp catdbgutilities.cpp stringconverter.h
+	$(CPP) catdbgfilegen.cpp catdbgutilities.cpp -std=c++0x -o catdbgfilegen
+
+parallelize$E:	parallelize.c
+	$(CC) $(CFLAGS) -o $@ parallelize.c
+
+parallelize_awka$E:	parallelize_awka.awk parallelize_functions.c parallelize_functions.h
+	-@echo parallelize_awka must now be made under Cygwin - see Makefile.cygwin
+#	awka.exe -i parallelize_functions.h -f parallelize_awka.awk>parallelize_awka.c
+#	gcc -I. -c parallelize_functions.c
+#	gcc -I. -O2 -s -o parallelize_awka.exe parallelize_awka.c parallelize_functions.o libawka.a
+
+catapult$E:	catapult.c
+	$(CC) $(CFLAGS) -o $@ catapult.c
+
+catapult_awka$E:	catapult_awka.awk catapult_functions.c catapult_functions.h
+	-@echo catapult_awka must now be made under Cygwin - see Makefile.cygwin
+
+pstrip$E:	pstrip.c
+	gcc -I. -O2 -s -o pstrip.exe pstrip.c
+
+clean::
+	make -C $(LUADIR) clean
+	$(RM) bcc$E binbuild$E binstats$E catbind$E catalina$E payload$E spinc$E bindump$E blackbox$E catdbgfilegen$E parallelize$E catapult$E pstrip$E
+	$(RM) y.tab.c y.tab.h blackbox_l.c
+	$(RM) parallelize_awka.c parallelize_functions.o
+	$(RM) catapult_awka.c catapult_functions.o
+	$(RM) pasm_strip.c
+
+install:
+	cp bcc$E $(BINDIR)bcc$E
+	cp binbuild$E $(BINDIR)binbuild$E
+	cp binstats$E $(BINDIR)binstats$E
+	cp catbind$E $(BINDIR)catbind$E
+	cp catalina$E $(BINDIR)catalina$E
+	cp payload$E $(BINDIR)payload$E
+	cp spinc$E $(BINDIR)spinc$E
+	cp bindump$E $(BINDIR)bindump$E
+	cp blackbox$E $(BINDIR)blackbox$E
+	cp catdbgfilegen$E $(BINDIR)/catdbgfilegen$E
+	cp parallelize$E $(BINDIR)/parallelize$E
+	cp parallelize_awka$E $(BINDIR)/parallelize_awka$E
+	cp catapult$E $(BINDIR)/catapult$E
+	cp catapult_awka$E $(BINDIR)/catapult_awka$E
+	cp pstrip$E $(BINDIR)/pstrip$E
+

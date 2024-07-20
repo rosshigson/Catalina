@@ -1,0 +1,73 @@
+1. Install GNAT. Get it from https://www.adacore.com/download
+   I used GNAT Community 2021 edition (the file name for this is 
+   gnat-2021-20210519-x86_64-windows64-bin.exe). You need to install at least
+   the GNAT compiler toolchain and the GNAT Studio IDE. 
+
+   I installed it to C:\GNAT\2021. If you install it elsewhere you will need
+   to modify some of the commands given below accordingly.
+
+2. Install GWindows Get it from https://sourceforge.net/projects/gnavi/files/
+   I used GWindows 13-Nov-2022.exe. 
+
+   I installed it to C:\GNAT\GWindows. If you install it elsewhere you will 
+   need to modify some of the commands given below accordingly.
+
+   NOTE: You must select ANSI during the installation process. 
+
+3. Install win32ada. Get it from https://github.com/AdaCore/win32ada 
+   I used win32ada-23.0.0.zip. 
+
+   I installed it to C:\GNAT\win32ada. If you install it elsewhere you will 
+   need to modify some of the commands given below accordingly.
+
+4. Install The Ada Terminal Emulator. 
+
+   I installed it to C:\GNAT\Terminal. If you install it elsewhere you will 
+   need to modify some of the commands given below accordingly.
+
+5. Open a command window. Copy the win32ada modifications from the Terminal 
+   Emulator to win32ada:
+
+   cd c:\GNAT\Terminal\
+   xcopy /S /Y win32ada ..\win32ada
+
+   NOTE: If you installed GNAT Studio to somewhere other than C:\GNAT\2021
+         then you will need to edit the win32ada\Makefile
+
+6. Open a command window. Ensure the GNAT toolchain is in your path, go to 
+   where you installed win32ada and build and install it. For example:
+
+   cd c:\GNAT\win32ada
+   set PATH=C:\GNAT\2021\bin;%PATH%
+   make build
+   make install
+
+7. Copy the GWindows modifications from the Terminal Emulator to GWindows:
+
+   cd c:\GNAT\Terminal\
+   xcopy /S /Y GWindows ..\GWindows
+
+   NOTE: You do not need to rebuild GWindows.
+
+8. Make sure the GNAT toolchain is in your path, and build each of the
+   Terminal components:
+
+   cd c:\GNAT\Terminal\
+   set PATH=C:\GNAT\2021\bin;%PATH%
+   gnatmake -P emulator\emulator
+   gnatmake -P redirect\redirect
+   gnatmake -P telnet\telnet
+   gnatmake -P demos\demos
+   gnatmake -P comms\comms
+   gnatmake -P term_IO\term_IO
+
+9. To clean the folers, use the following commands (note that
+   this will also delete the binaries from the bin directory!):
+
+   gnatclean -P emulator\emulator
+   gnatclean -P redirect\redirect
+   gnatclean -P telnet\telnet
+   gnatclean -P demos\demos
+   gnatclean -P comms\comms
+   gnatclean -P term_IO\term_IO
+

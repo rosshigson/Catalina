@@ -1,0 +1,213 @@
+' Catalina Code
+
+DAT ' code segment
+'
+' LCC 4.2 for Parallax Propeller
+' (Catalina v3.15 Code Generator by Ross Higson)
+'
+
+' Catalina Cnst
+
+DAT ' const data segment
+
+ alignl ' align long
+C_sjl4_668dd630_loadedlibs_L000002 ' <symbol:loadedlibs>
+ long @C_sjl41_668dd630_3_L000004
+ long @C_luaopen_base
+ long @C_sjl42_668dd630_5_L000006
+ long @C_luaopen_package
+ long @C_sjl43_668dd630_7_L000008
+ long @C_luaopen_coroutine
+ long @C_sjl44_668dd630_9_L000010
+ long @C_luaopen_table
+ long @C_sjl45_668dd630_11_L000012
+ long @C_luaopen_io
+ long @C_sjl46_668dd630_13_L000014
+ long @C_luaopen_os
+ long @C_sjl47_668dd630_15_L000016
+ long @C_luaopen_string
+ long @C_sjl48_668dd630_17_L000018
+ long @C_luaopen_math
+ long @C_sjl49_668dd630_19_L000020
+ long @C_luaopen_threads
+ long @C_sjl4a_668dd630_21_L000022
+ long @C_luaopen_propeller
+ long $0
+ long $0
+
+' Catalina Export luaL_openlibs
+
+' Catalina Code
+
+DAT ' code segment
+
+ alignl ' align long
+C_luaL__openlibs ' <symbol:luaL_openlibs>
+ alignl ' align long
+ long I32_NEWF + 0<<S32
+ alignl ' align long
+ long I32_PSHM + $e00000<<S32 ' save registers
+ word I16A_MOV + (r23)<<D16A + (r2)<<S16A ' reg var <- reg arg
+ word I16B_LODL + (r21)<<D16B
+ alignl ' align long
+ long @C_sjl4_668dd630_loadedlibs_L000002 ' reg <- addrg
+ alignl ' align long
+ long I32_JMPA + (@C_luaL__openlibs_27)<<S32 ' JUMPV addrg
+ alignl ' align long
+C_luaL__openlibs_24
+ word I16A_MOVI + (r2)<<D16A + (1)<<S16A ' reg ARG coni
+ word I16A_MOV + (r22)<<D16A + (r21)<<S16A
+ word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
+ word I16A_RDLONG + (r3)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
+ word I16A_RDLONG + (r4)<<D16A + (r21)<<S16A ' reg <- INDIRP4 reg
+ word I16A_MOV + (r5)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
+ word I16B_CPREP + 67<<S16B ' arg size, rpsize = 16, spsize = 16
+ alignl ' align long
+ long I32_CALA + (@C_luaL__requiref)<<S32
+ word I16A_ADDI + SP<<D16A + 12<<S16A ' CALL addrg
+ alignl ' align long
+ long I32_LODS + (r2)<<D32S + ((-2)&$7FFFF)<<S32 ' reg ARG cons
+ word I16A_MOV + (r3)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
+ word I16B_CPREP + 33<<S16B ' arg size, rpsize = 8, spsize = 8
+ alignl ' align long
+ long I32_CALA + (@C_lua_settop)<<S32
+ word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
+' C_luaL__openlibs_25 ' (symbol refcount = 0)
+ word I16A_ADDSI + (r21)<<D16A + (8)<<S16A ' ADDP4 reg coni
+ alignl ' align long
+C_luaL__openlibs_27
+ word I16A_MOV + (r22)<<D16A + (r21)<<S16A
+ word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
+ word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
+ word I16A_CMPI + (r22)<<D16A + (0)<<S16A
+ alignl ' align long
+ long I32_BRNZ + (@C_luaL__openlibs_24)<<S32 ' NEU4 reg coni
+' C_luaL__openlibs_23 ' (symbol refcount = 0)
+ word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
+ alignl ' align long
+
+' Catalina Import luaopen_threads
+
+' Catalina Import luaopen_propeller
+
+' Catalina Import luaL_requiref
+
+' Catalina Import luaopen_package
+
+' Catalina Import luaopen_math
+
+' Catalina Import luaopen_string
+
+' Catalina Import luaopen_os
+
+' Catalina Import luaopen_io
+
+' Catalina Import luaopen_table
+
+' Catalina Import luaopen_coroutine
+
+' Catalina Import luaopen_base
+
+' Catalina Import lua_settop
+
+' Catalina Cnst
+
+DAT ' const data segment
+
+ alignl ' align long
+C_sjl4a_668dd630_21_L000022 ' <symbol:21>
+ byte 112
+ byte 114
+ byte 111
+ byte 112
+ byte 101
+ byte 108
+ byte 108
+ byte 101
+ byte 114
+ byte 0
+
+ alignl ' align long
+C_sjl49_668dd630_19_L000020 ' <symbol:19>
+ byte 116
+ byte 104
+ byte 114
+ byte 101
+ byte 97
+ byte 100
+ byte 115
+ byte 0
+
+ alignl ' align long
+C_sjl48_668dd630_17_L000018 ' <symbol:17>
+ byte 109
+ byte 97
+ byte 116
+ byte 104
+ byte 0
+
+ alignl ' align long
+C_sjl47_668dd630_15_L000016 ' <symbol:15>
+ byte 115
+ byte 116
+ byte 114
+ byte 105
+ byte 110
+ byte 103
+ byte 0
+
+ alignl ' align long
+C_sjl46_668dd630_13_L000014 ' <symbol:13>
+ byte 111
+ byte 115
+ byte 0
+
+ alignl ' align long
+C_sjl45_668dd630_11_L000012 ' <symbol:11>
+ byte 105
+ byte 111
+ byte 0
+
+ alignl ' align long
+C_sjl44_668dd630_9_L000010 ' <symbol:9>
+ byte 116
+ byte 97
+ byte 98
+ byte 108
+ byte 101
+ byte 0
+
+ alignl ' align long
+C_sjl43_668dd630_7_L000008 ' <symbol:7>
+ byte 99
+ byte 111
+ byte 114
+ byte 111
+ byte 117
+ byte 116
+ byte 105
+ byte 110
+ byte 101
+ byte 0
+
+ alignl ' align long
+C_sjl42_668dd630_5_L000006 ' <symbol:5>
+ byte 112
+ byte 97
+ byte 99
+ byte 107
+ byte 97
+ byte 103
+ byte 101
+ byte 0
+
+ alignl ' align long
+C_sjl41_668dd630_3_L000004 ' <symbol:3>
+ byte 95
+ byte 71
+ byte 0
+
+' Catalina Code
+
+DAT ' code segment
+' end

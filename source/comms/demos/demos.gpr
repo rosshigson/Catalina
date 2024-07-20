@@ -1,0 +1,53 @@
+with "..\term_IO\term_io.gpr";
+with "..\emulator\emulator.gpr";
+
+project Demos is
+
+   for Exec_Dir use "..\bin";
+   for Main use ("hello_world", "demo_cursors", "demo_multiple", "demo_emulator", "demo_regions", "demo_term_io", "minimal", "snake");
+
+   package Naming is
+      for Specification_Suffix ("c") use ".h";
+      for Implementation_Suffix ("c") use ".c";
+      for Specification_Suffix ("c++") use ".hh";
+      for Implementation_Suffix ("c++") use ".cpp";
+      for Specification_Suffix ("changelog") use "changelog";
+      for Specification_Suffix ("project file") use ".gpr";
+      for Specification_Suffix ("python") use ".py";
+   end Naming;
+
+   package Compiler is
+      for Default_Switches ("ada") use (
+         "-Os", "-g",
+         "-fipa-cp-clone", "-fgcse-after-reload",
+         "-funroll-loops", "-fpeel-loops", "-funswitch-loops",
+         "-ftracer", "-fweb", "-ftree-vectorize",
+         "-frename-registers", "-ffunction-sections",
+         "-gnatyaknpr",  --  Style: check all casings: a:attribute, k:keywords, n:package Standard identifiers, p:pragma, r:identifier references
+         "-gnatybfhiu",  --  Style: check b:no blanks at end of lines, f:no ff/vtabs, h: no htabs, i:if-then layout, u:no unnecessary blank lines
+         "-gnatybfhiu",  --  Style: check b:no blanks at end of lines, f:no ff/vtabs, h: no htabs, i:if-then layout, u:no unnecessary blank lines
+         "-gnatyO",      --  Style: check that overriding subprograms are explicitly marked as such.
+         "-gnatyx",      --  Style: check x:no extra parens
+         "-gnatye",      --  Style: check e:end/exit labels present
+         "-gnatytC",     --  Style: check t:token separation rules, c:comment format (one space)
+         "-gnatwa");
+   end Compiler;
+
+   package Linker is
+      --  Get the Windows Visual Styles switched on through manifest.xml:
+      --  for Default_Switches ("ada") use ("contrib/test/visual_styles.rbj");   --   Binary file is different for 32 and 64 bit platforms.
+   end Linker;
+
+   package Binder is
+      --  -Es: Store tracebacks in exception occurrences, and enable symbolic tracebacks
+      for Default_Switches ("ada") use ("-Es");
+   end Binder;
+
+   package Builder is
+      --   "If -j0 is used, then the maximum number of simultaneous compilation
+      --    jobs is the number of core processors on the platform."
+      for Default_Switches ("ada") use ("-j0");
+   end Builder;
+
+end Demos;
+

@@ -1,0 +1,50 @@
+This directory contains a copy of the Gnat Examples Directory, modified to use
+the Terminal Emulator package Term_IO in place of Text_IO. 
+
+See the Ada Terminal Emulator Reference Guide for more details.
+
+--------------------------------------------------------------------------------
+The remainder of this file is the original Gnat Examples Directory README:
+--------------------------------------------------------------------------------
+This is the Gnat Examples Directory. Our goal is to provide the gnat user some
+pieces of code that are easy to understand, easy to modify and to play with,
+and which demonstrate either :
+    - some classic Ada features
+    - some new Ada 95 features
+    - some good pedagogical programming exercises
+If you are insterested in sharing your own programs with the Gnat community,
+please tune them with the latest Gnat version and send it with appropriate
+documentation (and bug reports) to report@gnat.com.
+
+On unix systems -- a simple "make" should build and execute theses programs.
+
+1- simple_io
+
+  provides (extremely) basic Input-Output facilities with a text_io-like
+  syntax. A "Hello World" program is used as main unit.
+
+  Note: this uses the s-io.ads/adb package and the file a-cio.c which has
+  already been compiled as part of the GNAT Run Time Library therefore that
+  do not need to be compiled again or mentioned on the gnatbl command. To
+  examine these sources look in the RTL source directory (see gnat-intro
+  for details).
+
+2- text_io_example
+  trivial demonstration of a use of text_io.
+
+3- use_of_import
+  trivial example of calling a C function from an Ada program.
+
+4- tgef - a simple test of the GEF (Generic Elementary Functions) package
+   of the Ada Numerics annex. The example produces a classical Sin wave.
+
+5- tef - similar to tgef except here we use the Elementary_Functions package
+   which is not generic and therefore requires no instantiation. It is defined
+   for type Float.  The example produces three overlayed graphs of Sin, Cos and
+   Arctan.
+
+6- instruments
+
+  A very simple simulation of car dashboard instruments. Demonstrates
+  simple type extension, dispatching and child unit. 2 main programs are
+  provided, demo1 and demo2. 

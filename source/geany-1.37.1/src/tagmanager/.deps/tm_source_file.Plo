@@ -1,0 +1,473 @@
+tm_source_file.lo: tm_source_file.c C:/msys64/mingw32/include/stdio.h \
+ C:/msys64/mingw32/include/corecrt_stdio_config.h \
+ C:/msys64/mingw32/include/corecrt.h C:/msys64/mingw32/include/_mingw.h \
+ C:/msys64/mingw32/include/_mingw_mac.h \
+ C:/msys64/mingw32/include/_mingw_secapi.h \
+ C:/msys64/mingw32/include/vadefs.h \
+ C:/msys64/mingw32/include/sdks/_mingw_ddk.h \
+ C:/msys64/mingw32/include/_mingw_off_t.h \
+ C:/msys64/mingw32/include/swprintf.inl \
+ C:/msys64/mingw32/include/sec_api/stdio_s.h \
+ C:/msys64/mingw32/lib/gcc/i686-w64-mingw32/13.2.0/include/limits.h \
+ C:/msys64/mingw32/lib/gcc/i686-w64-mingw32/13.2.0/include/syslimits.h \
+ C:/msys64/mingw32/include/limits.h C:/msys64/mingw32/include/crtdefs.h \
+ C:/msys64/mingw32/include/stdlib.h \
+ C:/msys64/mingw32/include/corecrt_wstdlib.h \
+ C:/msys64/mingw32/include/sec_api/stdlib_s.h \
+ C:/msys64/mingw32/include/malloc.h \
+ C:/msys64/mingw32/lib/gcc/i686-w64-mingw32/13.2.0/include/mm_malloc.h \
+ C:/msys64/mingw32/include/errno.h C:/msys64/mingw32/include/string.h \
+ C:/msys64/mingw32/include/sec_api/string_s.h \
+ C:/msys64/mingw32/include/ctype.h C:/msys64/mingw32/include/sys/stat.h \
+ C:/msys64/mingw32/include/io.h C:/msys64/mingw32/include/sys/types.h \
+ C:/msys64/mingw32/include/_mingw_stat64.h \
+ C:/msys64/mingw32/include/unistd.h C:/msys64/mingw32/include/process.h \
+ C:/msys64/mingw32/include/corecrt_startup.h \
+ C:/msys64/mingw32/include/getopt.h \
+ C:/msys64/mingw32/include/pthread_unistd.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gstdio.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gprintf.h \
+ C:/msys64/mingw32/include/glib-2.0/glib.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/galloca.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gtypes.h \
+ C:/msys64/mingw32/lib/glib-2.0/include/glibconfig.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gmacros.h \
+ C:/msys64/mingw32/lib/gcc/i686-w64-mingw32/13.2.0/include/stddef.h \
+ C:/msys64/mingw32/include/stddef.h \
+ C:/msys64/mingw32/lib/gcc/i686-w64-mingw32/13.2.0/include/float.h \
+ C:/msys64/mingw32/include/float.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gversionmacros.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/glib-visibility.h \
+ C:/msys64/mingw32/include/time.h C:/msys64/mingw32/include/sys/timeb.h \
+ C:/msys64/mingw32/include/sec_api/sys/timeb_s.h \
+ C:/msys64/mingw32/include/_timeval.h \
+ C:/msys64/mingw32/include/pthread_time.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/garray.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gasyncqueue.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gthread.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gatomic.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/glib-typeof.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gerror.h \
+ C:/msys64/mingw32/lib/gcc/i686-w64-mingw32/13.2.0/include/stdarg.h \
+ C:/msys64/mingw32/include/stdarg.h \
+ C:/msys64/mingw32/include/_mingw_stdarg.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gquark.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gutils.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gbacktrace.h \
+ C:/msys64/mingw32/include/signal.h \
+ C:/msys64/mingw32/include/pthread_signal.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gbase64.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gbitlock.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gbookmarkfile.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gdatetime.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gtimezone.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gbytes.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gcharset.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gchecksum.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gconvert.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gdataset.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gdate.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gdir.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/genviron.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gfileutils.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/ggettext.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/ghash.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/glist.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gmem.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gnode.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/ghmac.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gchecksum.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/ghook.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/ghostutils.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/giochannel.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gmain.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gpoll.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gslist.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gstring.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gunicode.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gstrfuncs.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gkeyfile.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gmappedfile.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gmarkup.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gmessages.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gvariant.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gvarianttype.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/goption.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gpathbuf.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gpattern.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gprimes.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gqsort.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gqueue.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/grand.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/grcbox.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/grefcount.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/grefstring.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gmem.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gmacros.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gregex.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gscanner.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gsequence.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gshell.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gslice.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gspawn.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gstringchunk.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gstrvbuilder.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gtestutils.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gthreadpool.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gtimer.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gtrashstack.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gtree.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/guri.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/guuid.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gversion.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/gwin32.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/deprecated/gallocator.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/deprecated/gcache.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/deprecated/gcompletion.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/deprecated/gmain.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/deprecated/grel.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/deprecated/gthread.h \
+ C:/msys64/mingw32/include/glib-2.0/glib/glib-autocleanups.h \
+ C:/msys64/mingw32/include/windows.h \
+ C:/msys64/mingw32/include/sdkddkver.h C:/msys64/mingw32/include/excpt.h \
+ C:/msys64/mingw32/include/windef.h \
+ C:/msys64/mingw32/include/winapifamily.h \
+ C:/msys64/mingw32/include/minwindef.h \
+ C:/msys64/mingw32/include/specstrings.h C:/msys64/mingw32/include/sal.h \
+ C:/msys64/mingw32/include/concurrencysal.h \
+ C:/msys64/mingw32/include/driverspecs.h \
+ C:/msys64/mingw32/include/winnt.h \
+ C:/msys64/mingw32/include/_mingw_unicode.h \
+ C:/msys64/mingw32/include/apiset.h \
+ C:/msys64/mingw32/include/psdk_inc/intrin-impl.h \
+ C:/msys64/mingw32/include/basetsd.h C:/msys64/mingw32/include/guiddef.h \
+ C:/msys64/mingw32/lib/gcc/i686-w64-mingw32/13.2.0/include/emmintrin.h \
+ C:/msys64/mingw32/lib/gcc/i686-w64-mingw32/13.2.0/include/xmmintrin.h \
+ C:/msys64/mingw32/lib/gcc/i686-w64-mingw32/13.2.0/include/mmintrin.h \
+ C:/msys64/mingw32/include/pshpack4.h C:/msys64/mingw32/include/poppack.h \
+ C:/msys64/mingw32/include/pshpack4.h \
+ C:/msys64/mingw32/include/pshpack2.h C:/msys64/mingw32/include/poppack.h \
+ C:/msys64/mingw32/include/pshpack2.h \
+ C:/msys64/mingw32/include/pshpack8.h \
+ C:/msys64/mingw32/include/pshpack8.h \
+ C:/msys64/mingw32/include/ktmtypes.h C:/msys64/mingw32/include/winbase.h \
+ C:/msys64/mingw32/include/apisetcconv.h \
+ C:/msys64/mingw32/include/minwinbase.h \
+ C:/msys64/mingw32/include/bemapiset.h \
+ C:/msys64/mingw32/include/debugapi.h \
+ C:/msys64/mingw32/include/errhandlingapi.h \
+ C:/msys64/mingw32/include/fibersapi.h \
+ C:/msys64/mingw32/include/fileapi.h \
+ C:/msys64/mingw32/include/handleapi.h \
+ C:/msys64/mingw32/include/heapapi.h C:/msys64/mingw32/include/ioapiset.h \
+ C:/msys64/mingw32/include/interlockedapi.h \
+ C:/msys64/mingw32/include/jobapi.h \
+ C:/msys64/mingw32/include/libloaderapi.h \
+ C:/msys64/mingw32/include/memoryapi.h \
+ C:/msys64/mingw32/include/namedpipeapi.h \
+ C:/msys64/mingw32/include/namespaceapi.h \
+ C:/msys64/mingw32/include/processenv.h \
+ C:/msys64/mingw32/include/processthreadsapi.h \
+ C:/msys64/mingw32/include/processtopologyapi.h \
+ C:/msys64/mingw32/include/profileapi.h \
+ C:/msys64/mingw32/include/realtimeapiset.h \
+ C:/msys64/mingw32/include/securityappcontainer.h \
+ C:/msys64/mingw32/include/securitybaseapi.h \
+ C:/msys64/mingw32/include/synchapi.h \
+ C:/msys64/mingw32/include/sysinfoapi.h \
+ C:/msys64/mingw32/include/systemtopologyapi.h \
+ C:/msys64/mingw32/include/threadpoolapiset.h \
+ C:/msys64/mingw32/include/threadpoollegacyapiset.h \
+ C:/msys64/mingw32/include/utilapiset.h \
+ C:/msys64/mingw32/include/wow64apiset.h \
+ C:/msys64/mingw32/include/winerror.h \
+ C:/msys64/mingw32/include/fltwinerror.h \
+ C:/msys64/mingw32/include/timezoneapi.h \
+ C:/msys64/mingw32/include/wingdi.h C:/msys64/mingw32/include/pshpack1.h \
+ C:/msys64/mingw32/include/winuser.h C:/msys64/mingw32/include/tvout.h \
+ C:/msys64/mingw32/include/winnls.h \
+ C:/msys64/mingw32/include/datetimeapi.h \
+ C:/msys64/mingw32/include/stringapiset.h \
+ C:/msys64/mingw32/include/wincon.h C:/msys64/mingw32/include/winver.h \
+ C:/msys64/mingw32/include/winreg.h C:/msys64/mingw32/include/reason.h \
+ C:/msys64/mingw32/include/winnetwk.h C:/msys64/mingw32/include/wnnc.h \
+ C:/msys64/mingw32/include/virtdisk.h \
+ C:/msys64/mingw32/include/stralign.h \
+ C:/msys64/mingw32/include/sec_api/stralign_s.h \
+ C:/msys64/mingw32/include/winsvc.h C:/msys64/mingw32/include/mcx.h \
+ C:/msys64/mingw32/include/imm.h tm_source_file.h \
+ C:/msys64/mingw32/include/glib-2.0/glib-object.h \
+ C:/msys64/mingw32/include/glib-2.0/gobject/gbinding.h \
+ C:/msys64/mingw32/include/glib-2.0/gobject/gobject.h \
+ C:/msys64/mingw32/include/glib-2.0/gobject/gtype.h \
+ C:/msys64/mingw32/include/glib-2.0/gobject/gobject-visibility.h \
+ C:/msys64/mingw32/include/glib-2.0/gobject/gvalue.h \
+ C:/msys64/mingw32/include/glib-2.0/gobject/gparam.h \
+ C:/msys64/mingw32/include/glib-2.0/gobject/gclosure.h \
+ C:/msys64/mingw32/include/glib-2.0/gobject/gsignal.h \
+ C:/msys64/mingw32/include/glib-2.0/gobject/gmarshal.h \
+ C:/msys64/mingw32/include/glib-2.0/gobject/gboxed.h \
+ C:/msys64/mingw32/include/glib-2.0/gobject/glib-types.h \
+ C:/msys64/mingw32/include/glib-2.0/gobject/gbindinggroup.h \
+ C:/msys64/mingw32/include/glib-2.0/gobject/genums.h \
+ C:/msys64/mingw32/include/glib-2.0/gobject/glib-enumtypes.h \
+ C:/msys64/mingw32/include/glib-2.0/gobject/gparamspecs.h \
+ C:/msys64/mingw32/include/glib-2.0/gobject/gsignalgroup.h \
+ C:/msys64/mingw32/include/glib-2.0/gobject/gsourceclosure.h \
+ C:/msys64/mingw32/include/glib-2.0/gobject/gtypemodule.h \
+ C:/msys64/mingw32/include/glib-2.0/gobject/gtypeplugin.h \
+ C:/msys64/mingw32/include/glib-2.0/gobject/gvaluearray.h \
+ C:/msys64/mingw32/include/glib-2.0/gobject/gvaluetypes.h \
+ C:/msys64/mingw32/include/glib-2.0/gobject/gobject-autocleanups.h \
+ tm_parser.h tm_tag.h ../../ctags/main/ctags-api.h \
+ ../../ctags/main/general.h ../../config.h ../../ctags/main/gcc-attr.h \
+ C:/msys64/mingw32/lib/gcc/i686-w64-mingw32/13.2.0/include/stdbool.h
+C:/msys64/mingw32/include/stdio.h:
+C:/msys64/mingw32/include/corecrt_stdio_config.h:
+C:/msys64/mingw32/include/corecrt.h:
+C:/msys64/mingw32/include/_mingw.h:
+C:/msys64/mingw32/include/_mingw_mac.h:
+C:/msys64/mingw32/include/_mingw_secapi.h:
+C:/msys64/mingw32/include/vadefs.h:
+C:/msys64/mingw32/include/sdks/_mingw_ddk.h:
+C:/msys64/mingw32/include/_mingw_off_t.h:
+C:/msys64/mingw32/include/swprintf.inl:
+C:/msys64/mingw32/include/sec_api/stdio_s.h:
+C:/msys64/mingw32/lib/gcc/i686-w64-mingw32/13.2.0/include/limits.h:
+C:/msys64/mingw32/lib/gcc/i686-w64-mingw32/13.2.0/include/syslimits.h:
+C:/msys64/mingw32/include/limits.h:
+C:/msys64/mingw32/include/crtdefs.h:
+C:/msys64/mingw32/include/stdlib.h:
+C:/msys64/mingw32/include/corecrt_wstdlib.h:
+C:/msys64/mingw32/include/sec_api/stdlib_s.h:
+C:/msys64/mingw32/include/malloc.h:
+C:/msys64/mingw32/lib/gcc/i686-w64-mingw32/13.2.0/include/mm_malloc.h:
+C:/msys64/mingw32/include/errno.h:
+C:/msys64/mingw32/include/string.h:
+C:/msys64/mingw32/include/sec_api/string_s.h:
+C:/msys64/mingw32/include/ctype.h:
+C:/msys64/mingw32/include/sys/stat.h:
+C:/msys64/mingw32/include/io.h:
+C:/msys64/mingw32/include/sys/types.h:
+C:/msys64/mingw32/include/_mingw_stat64.h:
+C:/msys64/mingw32/include/unistd.h:
+C:/msys64/mingw32/include/process.h:
+C:/msys64/mingw32/include/corecrt_startup.h:
+C:/msys64/mingw32/include/getopt.h:
+C:/msys64/mingw32/include/pthread_unistd.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gstdio.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gprintf.h:
+C:/msys64/mingw32/include/glib-2.0/glib.h:
+C:/msys64/mingw32/include/glib-2.0/glib/galloca.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gtypes.h:
+C:/msys64/mingw32/lib/glib-2.0/include/glibconfig.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gmacros.h:
+C:/msys64/mingw32/lib/gcc/i686-w64-mingw32/13.2.0/include/stddef.h:
+C:/msys64/mingw32/include/stddef.h:
+C:/msys64/mingw32/lib/gcc/i686-w64-mingw32/13.2.0/include/float.h:
+C:/msys64/mingw32/include/float.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gversionmacros.h:
+C:/msys64/mingw32/include/glib-2.0/glib/glib-visibility.h:
+C:/msys64/mingw32/include/time.h:
+C:/msys64/mingw32/include/sys/timeb.h:
+C:/msys64/mingw32/include/sec_api/sys/timeb_s.h:
+C:/msys64/mingw32/include/_timeval.h:
+C:/msys64/mingw32/include/pthread_time.h:
+C:/msys64/mingw32/include/glib-2.0/glib/garray.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gasyncqueue.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gthread.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gatomic.h:
+C:/msys64/mingw32/include/glib-2.0/glib/glib-typeof.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gerror.h:
+C:/msys64/mingw32/lib/gcc/i686-w64-mingw32/13.2.0/include/stdarg.h:
+C:/msys64/mingw32/include/stdarg.h:
+C:/msys64/mingw32/include/_mingw_stdarg.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gquark.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gutils.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gbacktrace.h:
+C:/msys64/mingw32/include/signal.h:
+C:/msys64/mingw32/include/pthread_signal.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gbase64.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gbitlock.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gbookmarkfile.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gdatetime.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gtimezone.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gbytes.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gcharset.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gchecksum.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gconvert.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gdataset.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gdate.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gdir.h:
+C:/msys64/mingw32/include/glib-2.0/glib/genviron.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gfileutils.h:
+C:/msys64/mingw32/include/glib-2.0/glib/ggettext.h:
+C:/msys64/mingw32/include/glib-2.0/glib/ghash.h:
+C:/msys64/mingw32/include/glib-2.0/glib/glist.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gmem.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gnode.h:
+C:/msys64/mingw32/include/glib-2.0/glib/ghmac.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gchecksum.h:
+C:/msys64/mingw32/include/glib-2.0/glib/ghook.h:
+C:/msys64/mingw32/include/glib-2.0/glib/ghostutils.h:
+C:/msys64/mingw32/include/glib-2.0/glib/giochannel.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gmain.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gpoll.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gslist.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gstring.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gunicode.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gstrfuncs.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gkeyfile.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gmappedfile.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gmarkup.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gmessages.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gvariant.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gvarianttype.h:
+C:/msys64/mingw32/include/glib-2.0/glib/goption.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gpathbuf.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gpattern.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gprimes.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gqsort.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gqueue.h:
+C:/msys64/mingw32/include/glib-2.0/glib/grand.h:
+C:/msys64/mingw32/include/glib-2.0/glib/grcbox.h:
+C:/msys64/mingw32/include/glib-2.0/glib/grefcount.h:
+C:/msys64/mingw32/include/glib-2.0/glib/grefstring.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gmem.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gmacros.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gregex.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gscanner.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gsequence.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gshell.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gslice.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gspawn.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gstringchunk.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gstrvbuilder.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gtestutils.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gthreadpool.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gtimer.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gtrashstack.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gtree.h:
+C:/msys64/mingw32/include/glib-2.0/glib/guri.h:
+C:/msys64/mingw32/include/glib-2.0/glib/guuid.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gversion.h:
+C:/msys64/mingw32/include/glib-2.0/glib/gwin32.h:
+C:/msys64/mingw32/include/glib-2.0/glib/deprecated/gallocator.h:
+C:/msys64/mingw32/include/glib-2.0/glib/deprecated/gcache.h:
+C:/msys64/mingw32/include/glib-2.0/glib/deprecated/gcompletion.h:
+C:/msys64/mingw32/include/glib-2.0/glib/deprecated/gmain.h:
+C:/msys64/mingw32/include/glib-2.0/glib/deprecated/grel.h:
+C:/msys64/mingw32/include/glib-2.0/glib/deprecated/gthread.h:
+C:/msys64/mingw32/include/glib-2.0/glib/glib-autocleanups.h:
+C:/msys64/mingw32/include/windows.h:
+C:/msys64/mingw32/include/sdkddkver.h:
+C:/msys64/mingw32/include/excpt.h:
+C:/msys64/mingw32/include/windef.h:
+C:/msys64/mingw32/include/winapifamily.h:
+C:/msys64/mingw32/include/minwindef.h:
+C:/msys64/mingw32/include/specstrings.h:
+C:/msys64/mingw32/include/sal.h:
+C:/msys64/mingw32/include/concurrencysal.h:
+C:/msys64/mingw32/include/driverspecs.h:
+C:/msys64/mingw32/include/winnt.h:
+C:/msys64/mingw32/include/_mingw_unicode.h:
+C:/msys64/mingw32/include/apiset.h:
+C:/msys64/mingw32/include/psdk_inc/intrin-impl.h:
+C:/msys64/mingw32/include/basetsd.h:
+C:/msys64/mingw32/include/guiddef.h:
+C:/msys64/mingw32/lib/gcc/i686-w64-mingw32/13.2.0/include/emmintrin.h:
+C:/msys64/mingw32/lib/gcc/i686-w64-mingw32/13.2.0/include/xmmintrin.h:
+C:/msys64/mingw32/lib/gcc/i686-w64-mingw32/13.2.0/include/mmintrin.h:
+C:/msys64/mingw32/include/pshpack4.h:
+C:/msys64/mingw32/include/poppack.h:
+C:/msys64/mingw32/include/pshpack4.h:
+C:/msys64/mingw32/include/pshpack2.h:
+C:/msys64/mingw32/include/poppack.h:
+C:/msys64/mingw32/include/pshpack2.h:
+C:/msys64/mingw32/include/pshpack8.h:
+C:/msys64/mingw32/include/pshpack8.h:
+C:/msys64/mingw32/include/ktmtypes.h:
+C:/msys64/mingw32/include/winbase.h:
+C:/msys64/mingw32/include/apisetcconv.h:
+C:/msys64/mingw32/include/minwinbase.h:
+C:/msys64/mingw32/include/bemapiset.h:
+C:/msys64/mingw32/include/debugapi.h:
+C:/msys64/mingw32/include/errhandlingapi.h:
+C:/msys64/mingw32/include/fibersapi.h:
+C:/msys64/mingw32/include/fileapi.h:
+C:/msys64/mingw32/include/handleapi.h:
+C:/msys64/mingw32/include/heapapi.h:
+C:/msys64/mingw32/include/ioapiset.h:
+C:/msys64/mingw32/include/interlockedapi.h:
+C:/msys64/mingw32/include/jobapi.h:
+C:/msys64/mingw32/include/libloaderapi.h:
+C:/msys64/mingw32/include/memoryapi.h:
+C:/msys64/mingw32/include/namedpipeapi.h:
+C:/msys64/mingw32/include/namespaceapi.h:
+C:/msys64/mingw32/include/processenv.h:
+C:/msys64/mingw32/include/processthreadsapi.h:
+C:/msys64/mingw32/include/processtopologyapi.h:
+C:/msys64/mingw32/include/profileapi.h:
+C:/msys64/mingw32/include/realtimeapiset.h:
+C:/msys64/mingw32/include/securityappcontainer.h:
+C:/msys64/mingw32/include/securitybaseapi.h:
+C:/msys64/mingw32/include/synchapi.h:
+C:/msys64/mingw32/include/sysinfoapi.h:
+C:/msys64/mingw32/include/systemtopologyapi.h:
+C:/msys64/mingw32/include/threadpoolapiset.h:
+C:/msys64/mingw32/include/threadpoollegacyapiset.h:
+C:/msys64/mingw32/include/utilapiset.h:
+C:/msys64/mingw32/include/wow64apiset.h:
+C:/msys64/mingw32/include/winerror.h:
+C:/msys64/mingw32/include/fltwinerror.h:
+C:/msys64/mingw32/include/timezoneapi.h:
+C:/msys64/mingw32/include/wingdi.h:
+C:/msys64/mingw32/include/pshpack1.h:
+C:/msys64/mingw32/include/winuser.h:
+C:/msys64/mingw32/include/tvout.h:
+C:/msys64/mingw32/include/winnls.h:
+C:/msys64/mingw32/include/datetimeapi.h:
+C:/msys64/mingw32/include/stringapiset.h:
+C:/msys64/mingw32/include/wincon.h:
+C:/msys64/mingw32/include/winver.h:
+C:/msys64/mingw32/include/winreg.h:
+C:/msys64/mingw32/include/reason.h:
+C:/msys64/mingw32/include/winnetwk.h:
+C:/msys64/mingw32/include/wnnc.h:
+C:/msys64/mingw32/include/virtdisk.h:
+C:/msys64/mingw32/include/stralign.h:
+C:/msys64/mingw32/include/sec_api/stralign_s.h:
+C:/msys64/mingw32/include/winsvc.h:
+C:/msys64/mingw32/include/mcx.h:
+C:/msys64/mingw32/include/imm.h:
+tm_source_file.h:
+C:/msys64/mingw32/include/glib-2.0/glib-object.h:
+C:/msys64/mingw32/include/glib-2.0/gobject/gbinding.h:
+C:/msys64/mingw32/include/glib-2.0/gobject/gobject.h:
+C:/msys64/mingw32/include/glib-2.0/gobject/gtype.h:
+C:/msys64/mingw32/include/glib-2.0/gobject/gobject-visibility.h:
+C:/msys64/mingw32/include/glib-2.0/gobject/gvalue.h:
+C:/msys64/mingw32/include/glib-2.0/gobject/gparam.h:
+C:/msys64/mingw32/include/glib-2.0/gobject/gclosure.h:
+C:/msys64/mingw32/include/glib-2.0/gobject/gsignal.h:
+C:/msys64/mingw32/include/glib-2.0/gobject/gmarshal.h:
+C:/msys64/mingw32/include/glib-2.0/gobject/gboxed.h:
+C:/msys64/mingw32/include/glib-2.0/gobject/glib-types.h:
+C:/msys64/mingw32/include/glib-2.0/gobject/gbindinggroup.h:
+C:/msys64/mingw32/include/glib-2.0/gobject/genums.h:
+C:/msys64/mingw32/include/glib-2.0/gobject/glib-enumtypes.h:
+C:/msys64/mingw32/include/glib-2.0/gobject/gparamspecs.h:
+C:/msys64/mingw32/include/glib-2.0/gobject/gsignalgroup.h:
+C:/msys64/mingw32/include/glib-2.0/gobject/gsourceclosure.h:
+C:/msys64/mingw32/include/glib-2.0/gobject/gtypemodule.h:
+C:/msys64/mingw32/include/glib-2.0/gobject/gtypeplugin.h:
+C:/msys64/mingw32/include/glib-2.0/gobject/gvaluearray.h:
+C:/msys64/mingw32/include/glib-2.0/gobject/gvaluetypes.h:
+C:/msys64/mingw32/include/glib-2.0/gobject/gobject-autocleanups.h:
+tm_parser.h:
+tm_tag.h:
+../../ctags/main/ctags-api.h:
+../../ctags/main/general.h:
+../../config.h:
+../../ctags/main/gcc-attr.h:
+C:/msys64/mingw32/lib/gcc/i686-w64-mingw32/13.2.0/include/stdbool.h:

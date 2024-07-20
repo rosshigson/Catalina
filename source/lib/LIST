@@ -1,0 +1,13 @@
+headers
+assert
+locale
+misc
+stdio
+time
+stdlib
+math
+ctype
+setjmp
+signal
+string
+errno

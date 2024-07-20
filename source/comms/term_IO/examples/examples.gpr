@@ -1,0 +1,16 @@
+with "..\term_io.gpr";
+with "..\..\emulator\emulator.gpr";
+
+project Examples is
+
+   for Source_Dirs use (".");
+   for Object_Dir use ".";
+   for Main use ("hello", "text_io_example", "text_io_example2", "tgef", "tef", "demo1", "demo2", "diners");
+   for Languages use ("Ada");
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-g", "-gnatE");
+   end Compiler;
+
+end Examples;
+

@@ -1,0 +1,50 @@
+#!/bin/bash
+if [[ ! -e $1 ]]; then
+   echo ""
+   echo "ERROR: invalid destination specified !"
+   echo ""
+   echo "usage: copy_all X:"
+   echo ""
+   echo "   where X: is the drive you use to read/write SD cards"
+   echo ""
+   echo "or:    copy_all dir/"
+   echo ""        
+   echo "   where dir is the directory you want to copy to"
+   echo ""
+   exit
+fi
+
+if [ -f catalyst.bin ]; then
+
+   cp catalyst.bin $1catalyst.bin
+   cp catalyst.bin $1_BOOT_P2.BIX
+   cp mv.bin $1mv.bin
+   cp cp.bin $1cp.bin
+   cp ls.bin $1ls.bin
+   cp rm.bin $1rm.bin
+   cp cat.bin $1cat.bin
+   cp help.bin $1help.bin
+   cp rmdir.bin $1rmdir.bin
+   cp mkdir.bin $1mkdir.bin
+   cp set.bin $1set.bin
+   cp exec.lua $1exec.lua
+   cp if.lua $1if.lua
+   cp attrib.lua $1attrib.lua
+   cp find.lua $1find.lua
+   cp freq.lua $1freq.lua
+   cp wild.lua $1wild.lua
+   cp loop $1loop
+
+else
+
+   cp catalyst.binary $1catalyst.bin
+   cp mv.binary $1mv.bin
+   cp cp.binary $1cp.bin
+   cp ls.binary $1ls.bin
+   cp rm.binary $1rm.bin
+   cp cat.binary $1cat.bin
+   cp help.binary $1help.bin
+   cp rmdir.binary $1rmdir.bin
+   cp mkdir.binary $1mkdir.bin
+
+fi

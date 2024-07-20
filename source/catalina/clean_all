@@ -1,0 +1,4 @@
+#!/bin/bash -login
+
+make clean LCCDIR=$LCCDIR
+

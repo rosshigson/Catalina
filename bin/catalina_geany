@@ -1,0 +1,35 @@
+#!/bin/bash -login
+#
+
+TMP_LCCDIR=$LCCDIR
+if [[ "$TMP_LCCDIR" == "" ]] ; then
+   TMP_LCCDIR=/opt/catalina	
+fi
+#
+if [[ ! -e "$TMP_LCCDIR/bin/catalina_env" ]] ; then
+   clear
+   echo ""
+   echo "ERROR: Catalina does not appear to be installed in $TMP_LCCDIR"
+   echo "";
+   echo "Set the environment variable LCCDIR to where Catalina is installed.";
+   echo "";
+   exit
+fi   
+
+source "$TMP_LCCDIR"/use_catalina
+
+if [[ -e "/opt/catalina_geany/bin/geany" ]] ; then
+   # this is where catalina_geany should be installed ...
+   if [[ -e "$1.geany" ]] ; then
+      /opt/catalina_geany/bin/geany $1.geany $2 $3 $4 $5 $6 $7 $8 $9
+   else
+      /opt/catalina_geany/bin/geany $1 $2 $3 $4 $5 $6 $7 $8 $9
+   fi
+else
+   # but this may work ...
+   if [[ -e "$1.geany" ]] ; then
+      "$TMP_LCCDIR"/catalina_geany/bin/geany $1.geany $2 $3 $4 $5 $6 $7 $8 $9
+   else
+      "$TMP_LCCDIR"/catalina_geany/bin/geany $1 $2 $3 $4 $5 $6 $7 $8 $9
+   fi
+fi

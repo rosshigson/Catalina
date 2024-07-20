@@ -1,0 +1,141 @@
+#!/bin/bash
+#set -x
+#
+TMP_LCCDIR=$LCCDIR
+if [[ "$TMP_LCCDIR" == "" ]] ; then
+   TMP_LCCDIR=/opt/catalina
+fi
+#
+if [[ ! -e "$TMP_LCCDIR/bin/catalina_env" ]] ; then
+   clear
+   echo ""
+   echo "ERROR: Catalina does not appear to be installed in $TMP_LCCDIR"
+   echo "";
+   echo "  Set the environment variable LCCDIR to where Catalina is installed.";
+   echo "";
+   exit
+fi
+#
+if [[ "$1" != "" ]]; then
+   TMP_PARAMS=`echo $1 $2 $3 $4 $5 $6 $7 $8 $9`
+   if [[ "$CATALINA_DEFINE" != "" ]]; then
+      if [[ "$CATALINA_DEFINE" != "$TMP_PARAMS" ]]; then
+
+         echo ""
+         echo "ERROR: Command line options conflict with CATALINA_DEFINE"
+         echo ""
+         echo "   CATALINA_DEFINE is set to $CATALINA_DEFINE"
+         echo "   Command line options were $TMP_PARAMS"
+         echo ""
+         echo "   Either set CATALINA_DEFINE to null using the following command:"
+         echo ""
+         echo "      unset CATALINA_DEFINE"
+         echo ""
+         echo "   or do not specify any command line parameters"
+         echo ""
+	 exit
+
+      else
+
+         echo ""
+         echo "NOTE: Environment variable CATALINA_DEFINE is set to $CATALINA_DEFINE"
+         echo ""
+         echo "  All programs will be built using these options. If these conflict" 
+         echo "  with options specified in this file, the results may be unexpected." 
+         
+      fi
+
+   else
+
+      echo ""
+      echo "NOTE: All programs will be built with options $TMP_PARAMS"
+      echo ""
+      echo "  If these options conflict with options specified in the Makefile,"
+      echo "  the results may be unexpected."
+      CATALINA_DEFINE=$TMP_PARAMS; export CATALINA_DEFINE
+
+   fi
+
+else
+
+   if [[ "$CATALINA_DEFINE" != "" ]]; then
+
+      echo ""
+      echo "NOTE: Environment variable CATALINA_DEFINE is set to $CATALINA_DEFINE"
+      echo ""
+      echo "  All programs will be built using these options. If these conflict" 
+      echo "  with options specified in this file, the results may be unexpected." 
+  
+   else     
+
+      echo ""
+      echo "NOTE: Environment variable CATALINA_DEFINE is not set"
+      echo ""
+      echo "  All programs will be built for the default target" 
+
+   fi
+
+fi
+
+echo ""
+echo "================="
+echo "Building Catalyst"
+echo "================="
+echo ""
+
+# do Linux specific builds ...
+
+source build_pasm_tmp_var CATALYST $CATALINA_DEFINE
+
+platform=$1
+if [ "${platform:0:2}" != "P2" ] && [ "${CATALINA_DEFINE:0:2}" != "P2" ]; then 
+
+   cp "$TMP_LCCDIR/target/p1/Catalina_CogStore.spin" .
+   spinnaker -q -p -a Catalina_CogStore.spin  -I "$TMP_LCCDIR/target/p1" -b $TMP_VAR
+   spinc Catalina_CogStore.binary -n COGSTORE > cogstore_array.h
+   rm -f Catalina_CogStore.spin Catalina_CogStore.binary
+
+   cp  "$TMP_LCCDIR/target/p1/Catalina_XMM_SD_Loader.spin" .
+   spinnaker -q -p -a Catalina_XMM_SD_Loader.spin  -I "$TMP_LCCDIR/target/p1" -b $TMP_VAR
+   spinc Catalina_XMM_SD_Loader.binary -n LOADER > loader_array.h
+   rm -f Catalina_XMM_SD_Loader.spin Catalina_XMM_SD_Loader.binary
+
+   cp "$TMP_LCCDIR/target/p1/Catalina_SIO_Plugin.spin" .
+   spinnaker -q -p -a Catalina_SIO_Plugin.spin  -I "$TMP_LCCDIR/target/p1" -b $TMP_VAR
+   spinc Catalina_SIO_Plugin.binary -n SIO > sio_array.h
+   rm -f Catalina_SIO_Plugin.spin Catalina_SIO_Plugin.binary 
+
+   cp "$TMP_LCCDIR/target/p1/Catalina_SPI_Cache.spin" .
+   spinnaker -q -p -a Catalina_SPI_Cache.spin  -I "$TMP_LCCDIR/target/p1" -b $TMP_VAR
+   spinc Catalina_SPI_Cache.binary -n CACHE > cache_array.h
+   rm -f Catalina_SPI_Cache.spin Catalina_SPI_Cache.binary
+
+else
+
+   cp "$TMP_LCCDIR/target/p2/cogstore.t" .
+   p2_asm cogstore.t  -I "$TMP_LCCDIR/target/p2" $TMP_VAR
+   bindump -c -p "   0x" cogstore.bin > cogstore_array_p2.inc
+   rm -f cogstore.t cogstore.lst cogstore.bin 
+
+   cp  "$TMP_LCCDIR/target/p2/sdload.t" .
+   p2_asm sdload.t  -I "$TMP_LCCDIR/target/p2" $TMP_VAR
+   bindump -c -p "   0x" sdload.bin > loader_array_p2.inc
+   rm -f sdload.t sdload.lst sdload.bin
+
+   cp  "$TMP_LCCDIR/target/p2/cogcache.t" .
+   p2_asm cogcache.t  -I "$TMP_LCCDIR/target/p2" $TMP_VAR
+   bindump -c -p "   0x" cogcache.bin > cache_array_p2.inc
+   rm -f cogcache.t cogcache.lst cogcache.bin
+
+fi
+
+# do common builds
+
+make -B all
+
+echo ""
+echo "===="
+echo "Done"
+echo "===="
+echo ""
+

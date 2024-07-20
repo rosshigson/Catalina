@@ -1,0 +1,4 @@
+#!/bin/bash
+#set -x
+
+bash gtk-bundle-from-msys2.sh -c -2

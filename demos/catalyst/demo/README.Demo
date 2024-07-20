@@ -1,0 +1,50 @@
+This folder contains a simple demo of processing Catalyst command line 
+arguments from an ordinary SPIN or SPIN2 program as well as from a C program. 
+
+The Propeller 1 demo SPIN file (Demo.spin) is configured for the C3 using
+a TV HMI driver. You will need to adjust the clock speed, pin numbers and 
+drivers to suit your own platform.
+
+The Propeller 2 demo SPIN2 file (Demo.spin2) is configured to use a serial
+interface on pins 62 & 63 at 230400 baud. This is suitable for use on a P2 
+EVAL or EDGE board. 
+
+Compile the Propeller 1 demo program with a SPIN compiler, or the Propeller 2
+demo program with a SPIN2 compiler. For example, both will compile using the 
+Parallax Propeller Tool (tested with version 2.7.0). 
+
+To compile the Propeller 1 demo using spinnaker you can compile it with a 
+command like:
+
+   spinnaker demo.spin -b
+   
+Then write the resulting binary (demo.binary) to the root directory of a FAT16 
+SD Card (you need to use an MSDOS 8.3 formate filename, so call it something 
+like DEMO.BIN). Then from Catalyst, you can execute a command like:
+
+   demo "hello, world!!!" this is Catalyst
+
+For comparison, there is also a C version (demo.c) which can be compiled for
+the Propeller 1 using using a command like:
+
+   catalina -lci demo.c -o c_demo
+
+or for the Propeller 2 using a command like:
+
+   catalina -p2 -lci demo.c -o c_demo
+
+The resulting binary (c_demo.binary if compiled for the Propeller 1, or 
+c_demo.bin if compiled for the Propeller 2) should be copied to the root 
+directory of a FAT16 SD Card (call it something like C_DEMO.SPIN). 
+
+Then from Catalyst you can execute a command like:
+
+   c_demo "hello, world!!!" this is Catalyst 
+
+Note that if you run both demo and c_demo but give them no arguments, you will
+see that argc is 0 (i.e. zero) for demo, but 1 for c_demo. This is because
+Catalyst does not start the CogStore if the program to be executed is given 
+no arguments - but while this is fine for SPIN/SPIN2 programs, it can cause
+problems with C programs, which sometimes expect argc will have at least the
+value 1. So if a Catalina C program finds CogStore is not running on startup,
+it creates one "null" argument.

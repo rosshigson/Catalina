@@ -1,0 +1,8 @@
+The version of GWindows used with this version of the Ada Terminal Emulator
+was GWindows release, 13-Nov-2022 [revision 459]. You must obtain that
+specific release from https://sourceforge.net/projects/gnavi/files
+
+Rather than distributng the whole of GWindows, this folder contains only
+those files that need to be modified to use that release. Install that
+release of GWindows and then copy these files over the corresponding
+gwindows\framework files.

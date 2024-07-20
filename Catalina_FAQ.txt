@@ -1,0 +1,86 @@
+This is the beginning of what will be an ongoing list of "Frequently Asked 
+Questions" concerning Catalina, Payload & BlackBox.
+
+================================================================================
+Q: I'm using Payload. Why do I get the following error message:
+
+   Warning: no sync received for addr 00008000
+
+A: Most likely, you are trying to load a program into SPI FLASH (e.g. for the 
+   C3) that was compiled using the -x3 or -x4 opiton - but you have forgotten 
+   to include -t 8000. Paload is timing out while the FLASH erase operation
+   is being performed.
+
+================================================================================
+
+Q: I'm using Payload. Why do I get the following error message:
+ 
+   Warning: no sync received for addr 00000000
+
+A: You are loading an XMM program on the Hydra or Hybrid, and have forgotten 
+   that the XMM program must be loaded into a different port using the special 
+   mouse port loader. Add a "-s n" parameter to Payload, where n is the USB
+   port connected to the mouse port on the Propeller.
+
+================================================================================
+
+Q: I'm using Catalina. Why do I get the following error message:
+
+   Item has already been added. Key in dictionary: "XXX" Key being added: "XXX"
+
+A1: You have command line options set in CATALINA_DEFINE, or one of the other
+    environment variables. Try "catalina_env" to see what parameters are set.
+
+A2: You have defined a symbol on the command line that is already defined
+    elsewhere on the same command line, or which is defined within one of
+    the files being compiled.
+
+================================================================================
+
+Q: Why do I got large numbers of symbols reported as being redefined?
+
+A: You are including multiple libraries containing the same symbols in the
+   compile command, or the including same library twice.
+
+================================================================================
+
+Q: I compiled a symbol with -C but it is not defined in my C program! Why not?
+
+A: Catalina uses -C to define SPIN symbols for use in the target files. To 
+   define the C symbol XXX on the command line use -D XXX
+
+   Also note that when you define the SPIN symbol XXX, Catalina automatically 
+   defines a C symbol __Catalina_XXX - this is very useful if you need to 
+   get access to the target configuration in your C programs.
+
+================================================================================
+
+Q: Why can an SMM program only be 31kb? 
+
+A: When loading programs serially from SD, at least 512 bytes must be used for
+   a sector buffer. That, and the need to store other housekeeping data means
+   that the last 1k must be used during the load process itself.
+
+================================================================================
+
+Q: I am using Catalina. Why am I seeing the following error message:
+
+   Index was outside the bounds of the array.
+
+A: You are using -P or -Q command line option, but the address specified is 
+   too low - this is resulting in a array of fill bytes being generated with
+   a negative size.
+
+================================================================================
+
+Q: Why are files left lying about with the same name as my program, but with
+   no extension (e.g. when compiling "othello.c" you may find a file called 
+   "othello" left in the directory).
+
+A: If the Catalina bind process fails (e.g. there are undefined symbols) the 
+   results of the bind are left in this file for inspection. The file will
+   have the base name of the output file (which is by default the name of the
+   file being compiled with no extension). If you do not need this file to
+   help determine the error, then you can safely delete it.
+
+================================================================================

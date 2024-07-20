@@ -1,0 +1,1305 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><script src="Chaitin,%20The%20Unknowable%20Chapter%201_files/analytics.js" type="text/javascript"></script>
+<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app213.us.archive.org';v.server_ms=1003;archive_analytics.send_pageview({});});</script>
+<script type="text/javascript" src="Chaitin,%20The%20Unknowable%20Chapter%201_files/bundle-playback.js" charset="utf-8"></script>
+<script type="text/javascript" src="Chaitin,%20The%20Unknowable%20Chapter%201_files/wombat.js" charset="utf-8"></script>
+<script type="text/javascript">
+  __wm.init("https://web.archive.org/web");
+  __wm.wombat("http://www.umcs.maine.edu/~chaitin/unknowable/ch1.html","20110520024346","https://web.archive.org/","web","/_static/",
+	      "1305859426");
+</script>
+<link rel="stylesheet" type="text/css" href="Chaitin,%20The%20Unknowable%20Chapter%201_files/banner-styles.css">
+<link rel="stylesheet" type="text/css" href="Chaitin,%20The%20Unknowable%20Chapter%201_files/iconochive.css">
+<!-- End Wayback Rewrite JS Include -->
+
+<title>Chaitin, The Unknowable</title>
+</head>
+<body><!-- BEGIN WAYBACK TOOLBAR INSERT -->
+<style type="text/css">
+body {
+  margin-top:0 !important;
+  padding-top:0 !important;
+  /*min-width:800px !important;*/
+}
+</style>
+<script>__wm.rw(0);</script>
+<div id="wm-ipp-base" style="display: block; direction: ltr;" lang="en">
+</div><div id="wm-ipp-print">The Wayback Machine - https://web.archive.org/web/20110520024346/http://www.umcs.maine.edu/~chaitin/unknowable/ch1.html</div>
+<div id="donato" style="position:relative;width:100%;">
+  <div id="donato-base">
+    <iframe id="donato-if" src="Chaitin,%20The%20Unknowable%20Chapter%201_files/donate.htm" scrolling="no" style="width:100%; height:100%" frameborder="0">
+    </iframe>
+  </div>
+</div><script type="text/javascript">
+__wm.bt(650,27,25,2,"web","http://www.umcs.maine.edu/~chaitin/unknowable/ch1.html","20110520024346",1996,"/_static/",["/_static/css/banner-styles.css?v=omkqRugM","/_static/css/iconochive.css?v=qtvMKcIJ"], "False");
+  __wm.rw(1);
+</script>
+<!-- END WAYBACK TOOLBAR INSERT -->
+<h1>I.  A Hundred Years of Controversy Regarding the Foundations of
+Mathematics</h1>
+<small>
+[Based on a lecture on ``Cien años de controversia sobre los
+fundamentos de las matemáticas'' given at several institutions
+during two visits to Buenos Aires in 1998.]
+</small>
+<p>
+</p><hr>
+<h2>Synopsis</h2>
+<i>
+<p>
+What is metamathematics?  Cantor's theory of infinite sets.  Russell
+on the paradoxes.  Hilbert on formal systems.  Gödel's
+incompleteness theorem.  Turing on uncomputability.  My work on
+randomness &amp; complexity.  Is mathematics quasi-empirical?... The
+computer &amp; programming languages were invented by logicians as the
+unexpected by-product of their unsuccessful effort to formalize
+reasoning completely.  Formalism failed for reasoning, but it
+succeeded brilliantly for computation.  In practice, programming
+requires more precision than proving theorems!... Each step Gödel
+⇒ Turing ⇒ Chaitin makes incompleteness seem more natural, more
+pervasive, more ubiquitous—and much more dangerous!
+</p></i><p><i>
+</i>
+</p><hr>
+<h2>What is Metamathematics?</h2>
+In this century there have been many conceptual revolutions.  In
+physics the two big revolutions this century were relativity theory
+and quantum mechanics: Einstein's theory of space, time and
+gravitation, and the theory of what goes on inside the atom.  These
+were very revolutionary revolutions, dramatic &amp; drastic changes of
+viewpoint, paradigm shifts, &amp; very controversial.  They provoked much
+anguish and heartache, and they marked a generational shift between
+so-called classical physics and modern physics.
+<p>
+Independently an earlier revolution, the statistical viewpoint, has
+continued, and now almost all physics, classical or modern, is
+statistical.  And we are at the beginning of yet another conceptual
+shift in physics, the emphasis on chaos and complexity, where we
+realize that everyday objects, a dripping faucet, a compound pendulum,
+the weather, can behave in a very complicated and unpredictable
+fashion.
+</p><p>
+What's not much known by outsiders is that the world of pure
+mathematics hasn't been spared, it's not immune.  We've had our crises
+too.  Outsiders may think that mathematics is static, eternal,
+perfect, but in fact this century has been marked by a great deal of
+anguish, hand-wringing, heartache and controversy regarding the
+foundations of mathematics, regarding its most basic tenets, regarding
+the nature of mathematics and what is a valid proof, regarding what
+kinds of mathematical objects exist and how mathematics should be
+done.
+</p><p>
+In fact, there is a new field of mathematics called
+<i>metamathematics,</i> in which you attempt to use mathematical
+methods to discuss what mathematics can and cannot achieve, and to
+determine what is the power and what are the limitations of
+mathematical reasoning.  In metamathematics, mathematicians examine
+mathematics itself through a mathematical microscope.  It's like the
+self-analysis that psychiatrists are supposed to perform on
+themselves.  It's mathematics looking at itself in the mirror, asking
+what it can do and what it can't do.
+</p><p>
+In this book I'm going to tell you the story of this century's
+controversies regarding the foundations of mathematics.  I'm going to
+tell you why the field of metamathematics was invented, and to
+summarize what it has achieved, and the light that it sheds—or
+doesn't—on the fundamental nature of the mathematical enterprise.
+I'm going to tell you the extent to which metamathematics clarifies
+how mathematics works, and how different it is or isn't from physics
+and other empirical sciences.  I and a few others feel passionately
+about this.
+</p><p>
+It may seem tortured, it may seem defeatist for mathematicians to
+question the ability of mathematics, to question the worth of their
+craft.  In fact, it's been an extraordinary adventure for a few of us.
+It would be a disaster if most mathematicians were filled with
+self-doubt and questioned the basis for their own discipline.
+Fortunately they don't.  But a few of us have been able to believe in
+and simultaneously question mathematics.  We've been able to stand
+within and without at the same time, and to pull off the trick of
+using mathematical methods to clarify the power of mathematical
+methods.  It's a little bit like standing on one leg and tying
+yourself in a knot!
+</p><p>
+And it has been a surprisingly dramatic story.  Metamathematics was
+promoted, mostly by Hilbert, as a way of confirming the power of
+mathematics, as a way of perfecting the axiomatic method, as a way of
+eliminating all doubts.  But this metamathematical endeavor exploded
+in mathematicians' faces, because, to everyone's surprise, this turned
+out to be impossible to do.  Instead it led to the discovery by
+Gödel, Turing and myself of metamathematical results,
+incompleteness theorems, that place severe limits on the power of
+mathematical reasoning and on the power of the axiomatic method.
+</p><p>
+So in a sense, metamathematics was a fiasco, it only served to deepen
+the crisis that it was intended to resolve.  But this self-examination
+<b>did</b> have wonderful and totally unexpected consequences in an
+area far removed from its original goals.  It played a big role in the
+development of the most successful technology of our age, the
+computer, which after all is just a mathematical machine, a machine
+for doing mathematics.  As E.T. Bell put it, the attempt to soar above
+mathematics ended in the bowels of a computer!
+</p><p>
+So metamathematics did not succeed in shoring up the foundations of
+mathematics.  Instead it led to the discovery in the first half of
+this century of dramatic incompleteness theorems.  And it also led to
+the discovery of fundamental new concepts, computability &amp;
+uncomputability, complexity &amp; randomness, which in the second half of
+this century have developed into rich new fields of mathematics.
+</p><p>
+That's the story I'm going to tell you about here, and it's one in
+which I'm personally involved, in which I'm a major participant.
+So this will not be a disinterested historian's objective account.
+This will be a very biased and personal account by someone who was
+there, fighting in the trenches, shedding blood over this, lying awake
+in bed at night without being able to sleep because of all of this!!
+</p><p>
+What provoked all this?  Well, a number of things.  But I think it's
+fair to say that more than anything else, the crisis in the
+foundations of mathematics in this century was set off by G. Cantor's
+theory of infinite sets.  Actually this goes back to the end of the
+previous century, because Cantor developed his theory in the latter
+decades of the 19th century.  So let me start by telling you about
+that.
+</p><p>
+</p><hr>
+<h2>Cantor's Theory of Infinite Sets</h2>
+So how did Cantor create so much trouble!?  Well, with the simplicity
+of genius, he considered the so-called <b>natural numbers</b>
+(non-negative integers):
+<p></p><center>
+0, 1, 2, 3, 4, 5, ...
+</center><p>
+And he asked himself, ``Why don't we add another number after all of
+these?  Let's call it ω!''  That's the lowercase Greek
+letter omega, the last letter of the Greek alphabet.  So now we've got
+this:
+</p><p></p><center>
+0, 1, 2, ... ω
+</center><p>
+But of course we won't stop here. The next number will be
+ω+1, then comes ω+2, etc. So now we've got all
+this:
+</p><p></p><center>
+0, 1, 2, ... ω, ω+1, ω+2, ...
+</center><p>
+And what comes after ω+1, ω+2, ω+3,
+... ? Well, says Cantor, obviously 2ω, two times
+ω!
+</p><p></p><center>
+0, 1, 2, ...
+ω, ω+1, ω+2, ...
+2ω
+</center><p>
+Then we continue as before with 2ω+1, 2ω+2, etc.
+Then what comes?  Well, it's 3ω.
+</p><p></p><center>
+0, 1, 2, ...
+ω, ω+1, ω+2, ...
+2ω ...
+3ω
+</center><p>
+So, skipping a little, we continue with 4ω, 5ω,
+etc. Well, what comes after all of that?  Says Cantor, it's
+ω squared!
+</p><p></p><center>
+0, 1, 2, ...
+ω, ω+1, ω+2, ...
+2ω ...
+3ω ...
+ω<sup>2</sup>
+</center><p>
+Then we eventually have ω cubed, ω to the fourth
+power, etc.
+</p><p></p><center>
+0, 1, 2, ...
+ω, ω+1, ω+2, ...
+2ω ...
+3ω ...
+ω<sup>2</sup> ...
+ω<sup>3</sup> ...
+ω<sup>4</sup> ...
+</center><p>
+Then what?  Well, says Cantor, it's ω raised to the power
+ω!
+</p><p></p><center>
+0, 1, 2, ...
+ω, ω+1, ω+2, ...
+2ω ...
+ω<sup>2</sup> ...
+ω<sup>3</sup> ...
+ω<sup>ω</sup> ...
+</center><p>
+Then a fair distance later, we have this:
+</p><p></p><center>
+0, 1, 2, ...
+ω, ω+1, ω+2, ...
+2ω ...
+ω<sup>2</sup> ...
+ω<sup>ω</sup> ...
+ω<sup>ω<sup>ω</sup></sup> ...
+</center><p>
+Then much later we start having trouble naming things, because we have
+ω raised to the ω an infinite number of times.
+This is called <i>epsilon</i> nought.
+</p><p></p><center>
+ε<sub>0</sub> =
+ω<sup>ω<sup>ω<sup>...</sup></sup></sup>
+</center><p>
+It's the smallest solution of the equation
+</p><p></p><center>
+ω<sup>ε</sup> =
+ε.
+</center><p>
+</p><p>
+Well, you can see that this is strong stuff!  And as disturbing as it
+is, it's only half of what Cantor did.  He also created another set of
+infinite numbers, the <b>cardinal</b> numbers, which are harder to
+understand.  I've shown you Cantor's <b>ordinal</b> numbers, which
+indicate positions in infinite lists.  Cantor's cardinal numbers
+measure the size of infinite sets.  A set is just a collection of
+things, and there's a rule for determining if something is in the set
+or not. [<i>Note for experts:</i> To simplify matters, I'm assuming
+the generalized continuum hypothesis.]
+</p><p>
+Cantor's first infinite cardinal is <i>aleph</i> nought
+</p><p></p><center>
+ℵ<sub>0</sub>
+</center><p>
+which measures the size of the set of natural numbers (non-negative
+integers).  ℵ is the first letter of the Hebrew alphabet.
+Then comes
+ℵ one
+</p><p></p><center>
+ℵ<sub>1</sub>
+</center><p>
+which measures the size of the set of all subsets of the natural
+numbers, which turns out to be the same as the size of the set of all
+real numbers, numbers like π = 3.1415926... Then comes
+ℵ two
+</p><p></p><center>
+ℵ<sub>2</sub>
+</center><p>
+which measures the size of the set of all subsets of the set of all
+subsets of the natural numbers.  Continuing in this manner, you get
+</p><p></p><center>
+ℵ<sub>3</sub>,
+ℵ<sub>4</sub>,
+ℵ<sub>5</sub>, ...
+</center><p>
+Then you take the union of the set of natural numbers with the set of
+all its subsets, with the set of all the subsets of the set of all its
+subsets, etc., etc. How big is this set?  Well, its size is
+</p><p></p><center>
+ℵ<sub>ω</sub>
+</center><p>
+Proceeding in this manner, we get bigger and bigger cardinal numbers,
+and you'll notice that the subscripts of Cantor's <b>cardinal</b>
+numbers are precisely all of Cantor's <b>ordinal</b> numbers!  So,
+far, far away in never-never land, is a <b>very</b> big cardinal
+number
+</p><p></p><center>
+ℵ<sub>ε<sub>0</sub></sub>
+</center><p>
+that's used to measure the size of very big sets indeed!
+</p><p>
+So you see, Cantor invented his ordinal numbers to have names for his
+cardinal numbers, to have names for how big infinite sets can be.
+</p><p>
+Well, you can see that this is an outstanding feat of the imagination,
+but is it mathematics?  Do these things really exist?  The reactions
+of Cantor's contemporaries were extreme: they either <b>liked</b> it
+very much or they <b>disliked</b> it very much!  ``No one shall expel
+us from the paradise which Cantor has created for us!''  exclaimed
+David Hilbert, an outstanding German mathematician.  On the other
+hand, an equally distinguished French mathematician, Henri
+Poincaré, declared that ``Later generations will regard set
+theory as a disease from which one has recovered!''  Many admired
+Cantor's audacity, and the extreme generality and abstractness he had
+achieved.  But the reaction of many others can be summarized in the
+phrase ``That's not mathematics, it's theology!''  (which was actually
+a reaction to some very non-constructive work of Hilbert's, not to
+Cantor's theory).
+</p><p>
+It didn't help matters that some very disturbing paradoxes began to
+emerge.  These were cases in which apparently valid set-theoretic
+reasoning led to conclusions that were obviously false.  ``Set theory
+isn't sterile, it engenders paradoxes!'' gloated Poincaré.;
+</p><p>
+The most famous, or infamous, of these paradoxes was discovered by the
+English philosopher Bertrand Russell, which Gödel later described
+as the discovery of ``the amazing fact that our logical [and
+mathematical] intuitions are self-contradictory.''  Let me tell you
+how Russell did it.
+</p><p>
+</p><hr>
+<h2>Bertrand Russell on the Paradoxes</h2>
+Bertrand Russell was trying to understand Cantor's theory of sets.
+Cantor had shown that <a href="https://web.archive.org/web/20110520024346/http://www.umcs.maine.edu/~chaitin/unknowable/sets.r#subsets">the set of all subsets
+of a given set</a> is always bigger than the set itself.  This was how
+Cantor went from each one of his infinite cardinals to the next.  But
+what, Russell had the misfortune of asking himself, what 
+about the set of all subsets of the <b>universal</b> set,
+the set which contains everything?  (The universal set is the set with
+the property that when you ask if something is in it, the answer is
+always ``yes.'')  The set of all subsets of the universal set
+<b>can't</b> be bigger than the universal set, for the simple reason
+that the universal set already contains everything!
+<p>
+So why, Russell asked himself, do things fall apart when you apply to
+the universal set Cantor's proof that the set of all subsets of a
+given set is bigger than the original set?  Russell analyzed Cantor's
+proof as it applies to the universal set.  He discovered that in this
+special case the key step in Cantor's proof is to consider <b>the set
+of all sets that are not members of themselves</b>.  The key step in
+the proof is to ask if this set is a member of itself or not.  The
+problem is that neither answer can be correct, because it's a member
+of itself iff (if and only if) it's not a member of itself!
+</p><p>
+Maybe some examples will help.  The set of all thinkable concepts is a
+thinkable concept, and therefore a member of itself, but the set of
+all red cows is not a red cow!
+</p><p>
+It's like the paradox of the village barber who shaves every man in
+the village who doesn't shave himself.  But then who shaves the
+barber?!  He shaves himself iff (if and only if) he doesn't shave
+himself.  Of course, in the case of the barber, there is an easy way
+out.  We either deny the existence of such a barber, for he can't
+apply the rule to himself, or else the barber must be female!  But
+what can be wrong with Russell's set of all sets that are not members
+of themselves?
+</p><p>
+The Russell paradox is closely related to a much older paradox, the
+liar paradox, which is also called the Epimenides paradox and goes
+back to classical Greece.  That's the paradox <b>``This statement is
+false!''</b> It's true iff it's false, and therefore it's neither true
+nor false!
+</p><p>
+Clearly, in both cases the paradox arises in some way from a
+self-reference, but outlawing all self-reference would be throwing out
+the baby with the bath water.  In fact, self-reference will play a
+fundamental role in the work of Gödel, Turing, and my own that
+I'll describe later.  More precisely, Gödel's work is related to
+the liar paradox, and Turing's work is related to the Russell paradox.
+My work is related to another paradox that Russell published, which
+has come to be called the Berry paradox.
+</p><p>
+What's the Berry paradox?  It's the paradox of <b>the first natural
+number that can't be named in less than fourteen words</b>.  The
+problem is that I've just named this number in thirteen words!  (Note
+that the existence of this number follows from the fact that only
+finitely many natural numbers can be named in less than fourteen
+words.)
+</p><p>
+This paradox is named after G.G. Berry, who was a librarian at Oxford
+University's Bodleian library (Russell was at Cambridge University),
+because Russell stated in a footnote that this paradox had been
+suggested to him in a letter from Berry.  Well, the Mexican
+mathematical historian Alejandro Garciadiego has taken the trouble to
+find that letter, and it's a rather different paradox.  Berry's letter
+actually talks about <b>the first ordinal that can't be named in a
+finite number of words</b>.  According to Cantor's theory such an
+ordinal must exist, but we've just named it in a finite number of
+words, which is a contradiction.
+</p><p>
+These details may not seem too interesting to you, but they're
+tremendously interesting to me, because I can see the germ of my work
+in Russell's version of the Berry paradox, but I can't see it at all
+in Berry's original version.
+[Why not?  Well, to repeat, Russell's version is along the lines of
+``the first positive integer that can't be named in less than a
+billion words'' and Berry's version is ``the first transfinite Cantor
+ordinal that can't be named in a finite number of words''.  First of
+all, in the Russell version for the first time we look at <b>precisely
+how long a text it takes to specify something</b> (which is close to
+how large a program it takes to specify it via a computation, which is
+program-size complexity).  The Berry version is just based on the fact
+that there are a countable (ℵ<sub>0</sub>) infinity of English texts, but
+uncountably many transfinite ordinals.  So Russell looks at the exact
+size of a text, while Berry just cares if it's finite or not.
+Second, Russell is looking at the descriptive
+complexity of integers, which are relatively down-to-earth objects
+that you can have on the computer, while Berry is looking at
+<b>extremely big</b> transfinite ordinals, which are much more
+theological objects, they're totally nonconstructive.  In particular,
+Berry's ordinals are <b>much bigger</b> than all the ordinals that I
+showed you in the previous section, which we certainly named in a
+finite number of words... I hope this explanation is helpful!]
+</p><p>
+</p><hr>
+<h2>Hilbert on Formal Systems</h2>
+So you see, Cantor's set theory was tremendously controversial and
+created a terrific uproar.  Poor Cantor ended his life in a mental
+hospital.
+<p>
+What was to be done?  One reaction, or over-reaction, was to advocate
+a retreat to older, safer methods of reasoning.  The Dutch
+mathematician L.E.J. Brouwer advocated abandoning all non-constructive
+mathematics.  He was in favor of more concrete, less ``theological''
+mathematics.
+</p><p>
+For example, sometimes mathematicians prove that something exists by
+showing that the assumption that it doesn't exist leads to a
+contradiction.  This is often referred to in Latin and is called an
+existence proof via <i>reductio ad absurdum</i>, by reduction to an
+absurdity.
+</p><p>
+``Nonsense!'' exclaimed Brouwer.  The only way to prove that
+something exists is to exhibit it or to provide a method for
+calculating it.  One may not actually be able to calculate it, but in
+principle, if one is very patient, it should be possible.
+</p><p>
+And the paradoxes led some other mathematicians to distrust arguments
+in words and flee into formalism.  The paradoxes led to increased
+interest in developing symbolic logic, in using artificial formal
+languages instead of natural languages to do mathematics.  The Italian
+logician G. Peano went particularly far in this direction.  And
+Russell and A.N. Whitehead in their monumental 3-volume <i>Principia
+Mathematica</i>, in attempting to follow Peano's lead, took an entire
+volume to deduce that 1 + 1 is equal to 2!  They broke the argument
+into such tiny steps that a volume of symbols and words was necessary
+to show that 1 + 1 = 2!  
+[They defined numbers in terms of sets, and sets in terms of logic,
+so it took them a long time to get to numbers.]
+A magnificent try, but considered by most
+people to be an unsuccessful one, for a number of reasons.
+</p><p>
+At this point Hilbert enters the scene, with a dramatic proposal
+for a ``final solution.''  What was Hilbert's proposal?  And how
+could it satisfy everyone?
+</p><p>
+Hilbert had a two-pronged proposal to save the day.  First, he said,
+let's go all the way with the axiomatic method and with mathematical
+formalism.  Let's eliminate from mathematics all the uncertainties and
+ambiguities of natural languages and of intuitive reasoning.  Let's
+create an artificial language for doing mathematics in which the rules
+of the game are so precise, so complete, that there is absolutely no
+uncertainty whether a proof is correct.  In fact, he said, it should
+be completely mechanical to check whether a proof obeys the rules,
+because these rules should be completely syntactic or structural, they
+should not depend on the semantics or the meaning of mathematical
+assertions!  In other words—words that Hilbert didn't use, but that
+we can use now—there should be a <b>proof-checking algorithm</b>, a
+computer program for checking whether or not a proof is correct.
+</p><p>
+That was to be the first step, to agree on the axioms—principles
+accepted without proof—and on the rules of inference—methods for
+deducing consequences (theorems) from these axioms—for <b>all</b> of
+mathematics.  And to spell out the rules of the game in excruciatingly
+clear and explicit detail, leaving nothing to the imagination.
+</p><p>
+By the way, why are the axioms accepted without proof?  The
+traditional answer is, because they are self-evident.  I believe that
+a better answer is, because you have to stop somewhere to avoid an
+infinite regress!
+</p><p>
+What was the second prong of Hilbert's proposal?
+</p><p>
+It was that he would include unsafe, non-constructive reasoning in
+his formal axiomatic system for all of mathematics, like existence
+proofs via <i>reductio ad absurdum.</i> But, then, using intuitive,
+informal, safe, constructive reasoning <b>outside</b> the formal
+system, he would prove to Brouwer that the unsafe traditional methods
+of reasoning Hilbert allowed in his formal axiomatic system could
+never lead to trouble!
+</p><p>
+In other words, Hilbert simultaneously envisioned a complete
+formalization of all of mathematics as a way of removing all
+uncertainties, and as a way of convincing his opponents using their
+own methods of reasoning that Hilbert's methods of reasoning could
+never lead to disaster!
+</p><p>
+So Hilbert's program or plan was extremely ambitious.  It may seem mad
+to entomb all of mathematics in a formal system, to cast it in
+concrete.  But Hilbert was just following the axiomatic formal
+tendency in mathematics and taking advantage of all the work on
+symbolic logic, on reducing reasoning to calculation.  And the key
+point is that once a branch of mathematics has been formalized, then
+it becomes a fit subject for <b>metamathematical</b> investigation.
+For then it becomes a combinatorial object, a set of rules for playing
+with combinations of symbols, and we can use mathematical methods to
+study what it can and cannot achieve.
+</p><p>
+This, I think, was the main point of Hilbert's program.  I'm sure he
+didn't think that <b>``mathematics is a meaningless game played with
+marks of ink on paper''</b>; this was a distortion of his views.  I'm
+sure he didn't think that in their normal everyday work mathematicians
+should get involved in the minutiae of symbolic logic, in the tedium
+of spelling out <b>every</b> little step of a proof.  But once a
+branch of mathematics is formalized, once it is desiccated and
+dissected, then you can put it under a mathematical microscope and
+begin to analyze it.
+</p><p>
+This was indeed a magnificent vision!  Formalize all of mathematics.
+Convince his opponents with their own methods of reasoning to accept
+his!  How grand!... The only problem with this fantastic scheme, which
+most mathematicians would probably have been happy to see succeed, is
+that it turned out to be impossible to do.  In fact, in the 1930s
+K. Gödel and A.M. Turing showed that it was impossible to
+formalize all of mathematics.  Why?  Because essentially <b>any</b>
+formal axiomatic system is either inconsistent or incomplete.
+</p><p>
+Inconsistency and incompleteness sound bad, but what exactly do they
+mean?  Well, here are the definitions that I use.
+``<b>Inconsistent</b>'' means proves false theorems, and
+``<b>incomplete</b>'' means doesn't prove all true theorems.  (For
+reasons that seemed pressing at the time, Hilbert, Gödel &amp; Turing
+used somewhat different definitions.  Their definitions are syntactic,
+mine are semantical.)
+</p><p>
+What a catastrophe!  If mathematics can't be formalized, if no finite
+set of axioms will suffice, where does that leave mathematical
+certainty?  What becomes of mathematical truth?  Everything is
+uncertain, everything is left up in the air!
+</p><p>
+Now I'm going to tell you how Gödel and Turing arrived at this
+astonishing conclusion.  Their methods were very different.
+</p><p>
+</p><hr>
+<h2>Gödel's Incompleteness Theorem</h2>
+How did Gödel do it?  Well, the first step, which required a
+tremendous amount of imagination, was to guess that perhaps Hilbert
+was completely wrong, that the conventional view of mathematics might
+be fatally flawed.  John von Neumann, a very brilliant colleague of
+Gödel's, admired him very much for that, for it had never
+occurred to von Neumann that Hilbert could be mistaken!  [My source
+for this information is Ulam's autobiography.]
+<p>
+Gödel began with the liar paradox, <b>``This statement is
+false!''</b> If it's true, then it's false.  If it's false, then it's
+true.  So it can neither be true nor false, which is not allowed in
+mathematics.  As long as we leave it like this, there's not much we
+can do with it.
+</p><p>
+But, Gödel said, let's change things a little.  Let's consider
+<b>``This statement is unprovable!''</b> It's understood that this
+means in a particular formal axiomatic system, from a particular set
+of axioms, using a particular set of rules of inference.  That's the
+context for this statement.
+</p><p>
+Well, there are two possibilities. Either this statement is a theorem,
+is provable, or it isn't provable, it's not a theorem.  Let's consider
+the two cases.
+</p><p>
+What if Gödel's statement is provable?  Well, since it affirms
+that it itself is unprovable, then it's false, it does not correspond
+with reality.  So we're proving a false statement, which is very, very
+bad.  In other words, if this statement is provable, then our formal
+axiomatic system is inconsistent, it contains false theorems.  That's
+very, very bad!  If we can deduce false results, then our theory is
+useless.  So let's assume this can't happen.
+</p><p>
+So, by hypothesis, Gödel's statement is unprovable.  But that's
+not so good either, because then it's a true statement (in the sense
+that it corresponds with reality) that's unprovable.  So our formal
+axiomatic theory is incomplete!
+</p><p>
+So we're in serious trouble either way!  Either our theory proves
+false results, or, the lesser of two evils, it can't prove true
+results!  Either it's inconsistent or incomplete!  <i>Kaput!</i>
+</p><p>
+A technical remark: One of the complications in Gödel's proof is
+that for reasons that are now only of historical interest he used
+different definitions of consistency and completeness than the ones
+that I'm using here.
+</p><p>
+Two other problems: First, what kind of mathematical theory talks
+about whether statements are provable or not?  That's metamathematics,
+not mathematics!  Second, how can a mathematical statement refer to
+itself?!
+</p><p>
+Well, Gödel very cleverly numbers the symbols, the meaningful
+statements (the so-called ``well-formed formulas'', wffs!), and the
+axioms and proofs in a formal axiomatic system.  In this manner he
+converts the assertion that a specific proof establishes a specific
+theorem into an arithmetical assertion.  He converts it into the fact
+that a certain natural number (the Gödel number of the proof) stands in a
+certain very complicated numerical relationship with another natural number
+(the Gödel number of the theorem).  In other words, Gödel
+expresses ``<i>x</i> proves <i>y</i>'' arithmetically.
+</p><p>
+This is very clever, but the basic idea, that a mathematical statement
+can also be considered to be a positive integer, does not seem too
+surprising today.  After all, everything, every character string, is
+expressed numerically in modern computers.  In fact, a string of
+<i>N</i> characters is just an <i>N</i>-digit number base-256, or an
+8<i>N</i>-bit number base-two!  It's just a great big number!  So
+Gödel numbering is a lot easier to understand now than it was in
+the 1930s.
+</p><p>
+But one part of Gödel's proof that isn't easier to understand now
+is the self-reference.  <b>``This statement is unprovable!''</b> How
+can a mathematical statement refer to itself?  This requires major
+cleverness.  The idea is that the statement doesn't refer to itself
+directly, by containing a quoted copy of itself.  It can't!  Instead
+it refers to itself indirectly, by saying that if you carry out a
+certain procedure, if you do a certain calculation, then the result is
+a statement that can't be proved.  And lo and behold, it turns out
+that the statement asserts that it itself is unprovable!  The
+statement refers to itself, it contains itself indirectly, by calculating
+itself.
+</p><p>
+The final result is that Gödel constructs a statement in Peano
+arithmetic that affirms its unprovability.  It's a lot of hard work,
+very hard work!  Peano arithmetic is just the standard formal
+axiomatic theory dealing with the natural numbers 0, 1, 2, ... and
+with addition, multiplication and equality, with plus +, times, and =.
+</p><p>
+But if you read his original 1931 paper with the benefit of hindsight,
+you'll see that Gödel is programming in LISP, he just didn't
+realize that he was doing it.  So later on in this book I'll go
+through the details using LISP, which is my favorite programming
+language for theoretical work.  If you work with LISP instead of Peano
+arithmetic, then things are very easy.  So in <a href="https://web.archive.org/web/20110520024346/http://www.umcs.maine.edu/~chaitin/unknowable/ch3.html">Chapter III</a> I'll show
+you how to construct a <a href="https://web.archive.org/web/20110520024346/http://www.umcs.maine.edu/~chaitin/unknowable/fixedpoint.r">LISP expression that's
+a <b>fixed point</b></a>, i.e., yields itself as its value. Then using
+the same idea I'll put together <a href="https://web.archive.org/web/20110520024346/http://www.umcs.maine.edu/~chaitin/unknowable/godel.r">a statement in LISP
+that asserts that it's unprovable</a>.  That'll be in <a href="https://web.archive.org/web/20110520024346/http://www.umcs.maine.edu/~chaitin/unknowable/ch3.html">Chapter III,</a>
+after we learn LISP in <a href="https://web.archive.org/web/20110520024346/http://www.umcs.maine.edu/~chaitin/unknowable/ch2.html">Chapter II.</a>
+</p><p>
+Now let's get back to Gödel.  What effect did Gödel's
+incompleteness theorem have?  How was it received by his
+contemporaries?  What did Hilbert think?
+</p><p>
+Well, according to Gödel's biographer John Dawson, Hilbert and
+Gödel never discussed it, they never spoke to each other.  The
+story is so dramatic that it resembles fiction.  They were both at a
+meeting in Königsberg in September 1930.  On September 7th
+Gödel off-handedly announced his epic results during a
+round-table discussion.  Only von Neumann immediately grasped their
+significance.  [This announcement is item <i>1931a</i> in volume 1 of
+Gödel's <i>Collected Works.</i> See also Dawson's introductory
+note for <i>1931a</i>.]
+</p><p>
+<i>The very next day,</i> September 8th, Hilbert delivered his famous
+lecture on ``Logic and the understanding of nature.''  As is
+touchingly described by Hilbert's biographer Constance Reid, this was
+the grand finale of Hilbert's career and his last major public
+appearance.  Hilbert's lecture ended with his famous words: ``<i>Wir
+müssen wissen.  Wir werden wissen.</i>'' We must know!  We shall
+know!
+</p><p>
+Hilbert had just retired, and was an extremely distinguished emeritus
+professor, and Gödel was a twenty-something unknown.  They did
+not speak to each other then, or ever.  (Later I was luckier than
+Gödel was with Hilbert, for I at least got to talk with
+Gödel on the phone!  This time I was the twenty-something unknown
+and <b>he</b> was the famous one.  [I tell this story in my lecture
+``The Berry paradox'' published in the first issue of
+<i>Complexity</i> magazine in 1995.])
+</p><p>
+But the general reaction to Gödel, once the message sank in, was
+shock!  How was it possible!?  Where did this leave mathematics?  What
+happens to the absolute certainty that mathematics is supposed to
+provide?  If we can never have all the axioms, then we can never be
+sure of things.  And if we try adding new axioms, since there are no
+guarantees and the new axioms may be false, then math becomes like
+physics, which is tentative and subject to revision!  If the
+fundamental axioms change, then mathematical truth is time dependent,
+not perfect, static and eternal the way we thought!
+</p><p>
+Here is the reaction of the well-known mathematician Hermann Weyl:
+``[W]e are less certain than ever about the ultimate foundations of
+(logic and) mathematics... we have our `crisis'... it directed my
+interests to fields I considered relatively `safe,' and has been a
+constant drain on the enthusiasm and determination with which I
+pursued my research work.''
+</p><p>
+But with time a funny thing happened.  People noticed that in their
+normal everyday work as mathematicians you don't really find results
+that state that they themselves are unprovable.  And so mathematicians
+carried on their work as before, ignoring Gödel.  The places
+where you get into trouble seemed too remote, too strange, too
+atypical to matter.
+</p><p>
+But only five years after Gödel, Turing found a deeper reason for
+incompleteness, a different source of incompleteness.  Turing derived
+incompleteness from uncomputability.  So now let me tell you about
+that.
+</p><p>
+</p><hr>
+<h2>Turing's Halting Problem</h2>
+Turing's remarkable paper of 1936 marks the official beginning of the
+computer era.  Turing was the first computer scientist, and he was not
+just a theoretician.  He worked on <b>everything</b>, computer
+hardware, artificial intelligence, numerical analysis...
+<p>
+The first thing that Turing did in his paper was to invent the
+general-purpose programmable digital computer.  He did it by inventing
+a toy computer, a mathematical model of a computer called the Turing
+machine, not by building actual hardware (though he worked on that
+later).  But it's fair to say that the computer was invented by the
+English mathematician/logician Alan Turing in the 1930s, years before
+they were actually built, in order to help clarify the foundations of
+mathematics.  Of course there were many other sources of invention
+leading to the computer; history is always very complicated.  That
+Turing deserves the credit is as true, or truer, than many other
+historical ``truths.''
+</p><p>
+(One of the complications is that Turing wasn't the only inventor of
+what is now called the Turing machine.  Emil Post came up with similar ideas
+independently, a fact known only to specialists.)
+</p><p>
+How does Turing explain the idea of a digital computer?  Well,
+according to Turing the computer is a very flexible machine, it's soft
+hardware, it's a machine that can simulate any other machine, if it's
+provided with a description of the other machine.  Up to then computing
+machines had to be rewired in order to undertake different tasks, but
+Turing saw clearly that this was unnecessary.
+</p><p>
+Turing's key idea is his notion of a <b>universal</b> digital machine.
+I'll have much more to say about this key notion of ``computational
+universality'' later.  Now let's move on to the next big contribution
+of Turing's 1936 paper, his discussion of the halting problem.
+</p><p>
+What is the halting problem?  Well, now that Turing had invented the
+computer, he immediately asked if there was something that can't be
+done using a computer, something that no computer can do.  And he
+found it right away.  There is no algorithm, no mechanical procedure,
+no computer program that can determine in advance if <b>another</b>
+computer program will ever halt.  The idea is that before running a
+program <i>P</i>, in order to be sure that <i>P</i> will eventually
+stop, it would be nice to be able to give <i>P</i> to a halting
+problem program <i>H</i>.  <i>H</i> decides whether <i>P</i> will halt
+or not.  If <i>H</i> says that <i>P</i> halts, then we run <i>P</i>.
+Otherwise, we don't.
+</p><p>
+Why, you may ask, is there a problem?  Just run the program <i>P</i>
+and see if it halts.  Well yes, it's easy to decide if a program halts
+in a fixed amount of time by running it for that amount of time.  And
+if it does halt, eventually we can discover that.  The problem is how
+to decide that it never halts.  You can run <i>P</i> for a million
+years and give up and decide that it will never halt just five minutes
+before it was going to!
+</p><p>
+(Since there's no time limit the halting problem is a theoretical
+problem, not a practical problem.  But it's also a very concrete,
+down-to-earth problem in a way, because we're just trying to predict
+if a machine will eventually do something, if something eventually
+happens.  So it's almost like a problem in physics!)
+</p><p>
+Well, it would be nice to have a way to avoid running bad programs
+that get stuck in a loop.  But here is Turing's proof that there's no
+way to do it, that it's uncomputable.
+</p><p>
+The proof, which I'll give in detail in <a href="https://web.archive.org/web/20110520024346/http://www.umcs.maine.edu/~chaitin/unknowable/ch4.html">Chapter IV</a> in LISP, will be a
+<i>reductio ad absurdum.</i> Let's assume that we have a way to solve
+the halting problem.  Let's assume that we have a subroutine <i>H</i>
+that can take any program <i>P</i> as input, and that <i>H</i> returns
+``will halt'' or ``never halts'' and always gets it right.
+</p><p>
+Then here's how we get into trouble with this halting problem
+subroutine <i>H.</i> We put together a computer program <i>P</i>
+that's self-referential, that calculates itself.  We'll do this by
+using the same self-reference trick that I use in <a href="https://web.archive.org/web/20110520024346/http://www.umcs.maine.edu/~chaitin/unknowable/ch3.html">Chapter III</a> to prove
+Gödel's theorem.  Once this program <i>P</i> has calculated
+itself, <i>P</i> uses the halting problem subroutine <i>H</i> to
+decide if <i>P</i> halts.  Then, just for the heck of it, <i>P</i>
+does the <b>opposite</b> of what <i>H</i> predicted.  If <i>H</i> said
+that <i>P</i> would halt, then <i>P</i> goes into an infinite loop,
+and if <i>H</i> said that <i>P</i> wouldn't halt, then <i>P</i>
+immediately halts.  And we have a contradiction, which shows that the
+halting problem subroutine <i>H</i> cannot exist.
+</p><p>
+And that's Turing's proof that something very simple is uncomputable.
+The trick is just self-reference—it's like Russell's set of all sets
+that are not members of themselves.  <a href="https://web.archive.org/web/20110520024346/http://www.umcs.maine.edu/~chaitin/unknowable/turing.r">The
+paradoxical program <i>P</i> halts iff it doesn't!</a> And the trick
+that enables <i>P</i> to calculate itself is the same fixed-point
+construction that we'll use in <a href="https://web.archive.org/web/20110520024346/http://www.umcs.maine.edu/~chaitin/unknowable/ch3.html">Chapter III.</a>  It's
+<a href="https://web.archive.org/web/20110520024346/http://www.umcs.maine.edu/~chaitin/unknowable/fixedpoint.r">a LISP expression that gives itself as its
+value.</a>
+</p><p>
+So that's all there is to it, that's Turing's proof of the
+unsolvability of the halting problem!  That's how it's stated, but
+it's really the <b>uncomputability</b> of the halting problem.  And
+from this Turing immediately deduces as a corollary that not only is
+there no way to compute whether an arbitrary program will ever halt,
+there's also no way to use a formal axiomatic system to settle the
+matter.  Why not?
+</p><p>
+Well, let's assume the opposite of what we want to prove and derive a
+contradiction.
+</p><p>
+If we could always <b>prove</b> whether individual programs halt or
+not, that would give us a way to <b>compute</b> whether an arbitrary
+program <i>P</i> eventually halts.  How?  By running through all
+possible proofs in size order and applying Hilbert's proof-checking
+algorithm to each one until we find a proof that <i>P</i> halts or a
+proof that <i>P</i> never will.  We just look through all possible
+proofs in size order, one character long, two, three, etc., until we
+settle the matter!
+</p><p>
+Of course, in practice this would be very, very slow!  But it would
+work in principle, and Turing has shown that it <b>can't</b>.  Hence
+if a formal axiomatic system with a proof-checking algorithm
+<i>à la</i> Hilbert only proves true theorems, then it can't
+settle all instances of the halting problem.  In other words, if it's
+truthful, then the formal axiomatic system must be incomplete.
+</p><p>
+So that's how Turing derives incompleteness from uncomputability.  The
+halting problem is uncomputable, therefore no finite set of axioms
+will do.
+</p><p>
+That's the negative part of Turing's famous paper.  But there's also a
+positive message.  At that same time that Turing shows that any
+formalism for reasoning is incomplete, he exhibits a universal
+formalism for computing: the machine language of Turing machines.  At
+the same time that he gives us a better proof of Gödel's
+incompleteness theorem, he gives us a way out.  Hilbert's mistake was
+to advocate <b>artificial languages <i>for carrying out
+proofs</i></b>.  This doesn't work because of incompleteness, because
+of the fact that every formal axiomatic system is limited in power.
+But that's not the case with <b>artificial languages <i>for expressing
+algorithms</i></b>.  Because <b>computational universality</b>, the
+fact that almost any computer programming language can express all
+possible algorithms, is actually a <b>very</b> important form of
+completeness!  It's the theoretical basis for the entire computer
+industry!
+</p><p>
+Hilbert almost got it right.  He advocated using artificial languages
+to avoid ambiguity, he espoused formalism.  But it's not reasoning,
+it's computation where formalism has triumphed!  Mathematicians today
+still use natural languages to express their proofs.  But when they
+write a computer program they have to be much more careful than when
+they prove a theorem.  As Bill Thurston put it, much more attention to
+detail is required to get a computer program to run properly than in
+writing up a proof for publication.  That's where formalism is
+triumphant, in computing, not in reasoning!
+</p><p>
+Many of the logicians who worked in the first half of this century
+were actually the first inventors of programming languages.
+Gödel uses a scheme for expressing algorithms that is much like
+the high-level language LISP that we'll study in the <a href="https://web.archive.org/web/20110520024346/http://www.umcs.maine.edu/~chaitin/unknowable/ch2.html">next chapter.</a>
+Turing employs a low-level machine language.  Other logicians invented
+other programming formalisms, some of which are still used today, like
+combinators and the lambda calculus.  So Hilbert's project succeeded
+brilliantly, but in formalizing computation, not deduction!
+</p><p>
+Two final comments on Turing's paper.
+</p><p>
+First of all, Wolfram on computational universality.
+</p><p>
+In a massive work in progress tentatively entitled <i>A New Kind of
+Science</i>, the mathematical physicist Stephen Wolfram, the creator
+of <i>Mathematica,</i> has assembled a great deal of experimental
+evidence that almost any combinatorial system that isn't trivial is
+computationally universal.  I believe he refers to this as the
+<b>ubiquity of universality</b>.  I hope Wolfram publishes this soon;
+he's been working on it for a decade.
+</p><p>
+By the way, <i>Mathematica</i> is an extremely high-level language for
+doing mathematics.  It does symbolic and numerical computations very
+well.  I think that Hilbert would have loved <i>Mathematica</i>—I
+know I do—because in a funny way it carries out Hilbert's dream, as
+much of it as was possible.  It's a single formalism that encompasses
+much of mathematics, including a lot of mathematical physics.  It's a
+system that ``knows'' a lot of mathematics.  I would argue that it's a
+substantial artificial intelligence, albeit an inhuman one.  It
+embodies only mathematical intelligence.
+</p><p>
+One final comment on Turing's paper.  There's more in it.  He
+discusses how to do analysis on the computer, how to calculate
+π, roots of equations, etc., etc. This shows that Turing was
+already thinking about numerical analysis.  This is the subject
+dealing with the fact that in mathematics real numbers have infinite
+precision, but in the computer precision is finite.  J.H. Wilkinson, a
+well-known numerical analyst, later worked with Turing.  That's why
+the title of Turing's paper is ``On computable numbers...'' He was
+talking about computing real numbers, numbers like π that go
+on forever digit by digit.
+</p><p>
+In summary, quite a paper!  It showed the completeness (universality)
+of computing formalisms, it showed the incompleteness of deductive
+formalisms, and it helped to start the field of numerical analysis,
+which is practical, and the field of computable analysis, which
+isn't... You can see how creative Turing was....  That's how he made
+such a mess of his life—he was <b>too</b> creative, too original,
+too unconventional, too unworldly.
+</p><p>
+Now let's turn to my work!  Let's take a look at a completely
+different source of incompleteness, randomness.
+</p><p>
+</p><hr>
+<h2>My Work on Randomness &amp; Complexity</h2>
+Okay, this is where I show up on the scene!  I'm ten... I'm a child
+with tremendous curiosity and I'm a sponge—I'm totally unbearable!
+Books are in piles everywhere in my room!  I treasure books that
+emphasize ideas, not technical details, and that are as self-contained
+as possible, for these I can study on my own.  I'm allowed to borrow
+from the adult section of the New York City public library, I'm
+allowed the run of the Columbia University stacks.
+<p>
+Initially I'm interested in physics and astronomy, in fundamental
+physical theory like Einstein's theory, quantum mechanics, and
+cosmology.  But to understand physics you need to know mathematics.
+So I start to study mathematics on my own.  And I discover that
+there's a subject in math just as fundamental, just as mysterious, as
+relativity, the quantum, and cosmology: Gödel's theorem!  As a
+result, I get stuck with Gödel in mathematics, and I never get
+back to physics.
+</p><p>
+So I'm not a physicist, I'm a mathematician, but I love physics, I
+read a lot of physics.  I'm like an armchair mountaineer; I read a lot
+about physics but I don't do any physics myself.
+<a name="APL2">
+[The final result of this interest in physics was my course on
+advanced theoretical physics for computer programmers, which was
+published in 1985 as ``An APL2 gallery of mathematical physics—a
+course outline'' in <i>Proceedings Japan 85 APL Symposium,</i>
+Publication N:GE18-9948-0, IBM Japan, pp. 1-56.  Originally intended as
+a book, this course was the result of a year I spent visiting Gordon
+Lasher in the theoretical physics group at the IBM Watson Research
+Center.  The course, which I gave once or twice at the Watson lab, was
+intended as a way to show the beauty of advanced mathematical physics
+to programmers who felt very comfortable with computers, but who knew no
+advanced math or physics.  The basic equations of physics were
+solved numerically and
+formulated as working models on the computer that produced motion
+pictures.  The first topic I covered was a satellite orbiting the earth
+according to Newton's laws.  Then I redid the satellite orbit as a
+geodesic path in curved space-time according to Einstein.  Next, there
+was a numerical verification of Einstein's field equations at a single
+point near the event horizon of a black hole (this was the only topic
+that didn't produce a motion picture).  Then came an electromagnetic
+wave propagating according to Maxwell's original equations involving
+<i>E</i> and <i>B</i>, and also according to the modern relativistic
+form of Maxwell's vacuum equations in which <i>E</i> and <i>B</i> are
+combined into the 4-vector <i>A</i><sub>μ</sub>.  Next was an
+electron propagating in a one-dimensional world and scattering off of
+a potential in accordance with the time-dependent Schrödinger
+equation.  And last but not least, a simplified version of the same
+calculation using a Feynman path integral (sum over all histories)
+formulation.  The text for the course was Einstein and Infeld's <i>The
+Evolution of Physics;</i> my computer programs were intended as
+mathematical appendices to be sandwiched between the chapters of
+Einstein and Infeld's book... It was a lot of fun, and a great way for
+me to learn physics.  If I were to redo this course now, I'd use
+<i>Mathematica</i> instead of APL2, although APL2 did have the
+advantage of being <b>extremely concise</b> because each primitive
+function is represented by a single special symbol.  In APL2, each
+topic was <b>less than a page of code</b>, showing just how elegant
+the fundamental equations of physics are.  You see, for me
+<b>everything</b> is program-size complexity!  I still have these APL2
+programs on display in my home, beautifully framed together, a
+piece of conceptual art.]
+</a></p><p><a name="APL2">
+I'm also a little stupid.  I don't realize that the controversy over
+the foundations of mathematics is dying down, that it was an older
+generation that's really interested, and that that was mostly before
+the war.  I don't realize that more and more mathematicians are
+shrugging their shoulders about Gödel incompleteness.  I'm
+fascinated by it, I think it <b>has to be</b> relevant, I think it has
+to be important.  I go marching off in a different direction from
+everyone else!
+</a></p><p><a name="APL2">
+I'm also unhappy with Gödel's proof of his theorem.  It seems too
+clever, it seems too tricky, it seems too artificial.  I suspect there
+has to be a deeper reason, that Turing is on the right track, but that
+it goes deeper, much deeper.
+</a></p><p><a name="APL2">
+I want to know if incompleteness only happens in very unusual
+pathological circumstances, or if the tendrils reach everywhere—I
+want to know how bad it is!
+</a></p><p><a name="APL2">
+And I begin to get the idea that maybe I can borrow a mysterious idea
+from physics and use it in metamathematics, the idea of
+<b>randomness</b>!  I begin to suspect that perhaps sometimes the
+reason that mathematicians can't figure out what's going on is because
+<b>nothing</b> is going on, because there is no structure, there is no
+mathematical pattern to be discovered.  Randomness is where reason
+stops, it's a statement that things are accidental, meaningless,
+unpredictable, &amp; happen for no reason.
+</a></p><p><a name="APL2">
+What were my sources of inspiration?  Well, there were many, many!
+Many things caught my eye.
+</a></p><p><a name="APL2">
+When I was a kid the controversies over quantum mechanics of the 1920s
+&amp; 30s were not so distant.  Einstein's claim, apparently wrong, that
+``God doesn't play dice!''  rang loud in my ears.  Maybe God does, and
+in pure mathematics as well as in physics, that's what I began to
+suspect.
+</a></p><p><a name="APL2">
+And I read some nice work using statistical reasoning in elementary
+number theory to study the primes and twin primes.  I read about this
+in an article on ``Mathematical sieves'' by D. Hawkins in
+<i>Scientific American</i> (December 1958, pp. 105-112), and in a
+book by Mark Kac, <i>Statistical Independence in Probability, Analysis
+and Number Theory</i> (Mathematical Association of America, 1959), and
+in an article on ``Heuristic reasoning in the theory of numbers'' by
+G. Polya (<i>American Mathematical Monthly,</i> vol. 66, 1959, pp.
+375-384).
+</a></p><p><a name="APL2">
+And I read E.T. Bell's romantic biographies of great mathematicians,
+which suggest that if you don't have a great idea by the time you're
+eighteen, then it's all over, and I laughed.
+</a></p><p><a name="APL2">
+So here I am, I'm a teenager, I'm learning to program computers and
+I'm running programs, and I begin to dream about inventing a new kind
+of math dealing with the running time and the size of computer
+programs, dealing with computational complexity.  One of my boyhood
+heroes, von Neumann, was always starting new fields, game theory,
+self-reproducing automata, the sky's the limit!
+</a></p><p><a name="APL2">
+</a><a name="fifteen">
+At fifteen I get an idea for defining randomness or lack of structure
+via incompressibility.
+[I still remember the exact moment.  I was in my first year at the
+Bronx High School of Science, and I was trying to pass the entrance
+exam to get into the Columbia University Science Honors Program, a
+weekend and summer science enrichment program for talented children.
+There was an essay question in the entrance exam, asking what
+conclusions could one draw if one found a pin on the moon?  A pin on
+the moon!, I said to myself, that's artificial, not natural.  Why?
+Because it has pattern or structure, because a description of it can
+be greatly compressed into a concise Turing machine program, and it
+<b>therefore</b> cannot be accidental or random.  And I described this
+idea in my answer, passed the exam, and got into the Science Honors
+Program... Recently, discussing this with Stephen Wolfram, it didn't
+seem like such a good answer to me, because <b>any</b> phenomenon on
+the moon that can be explained by scientific theory is <b>also</b>
+compressible in this way, e.g., a crystal.  But it was a good idea
+anyway, even if it didn't answer the question in the exam!]
+Look at all the <i>N</i>-bit strings, and ask what is the size of the
+smallest program that calculates each one.  Then the <i>N</i>-bit
+strings that need the largest programs are the ones without structure
+or pattern.  Why?  Because a concise computer program for calculating
+something is like an elegant theory that explains something, and if
+there is no concise theory, then the object has no explanation, no
+pattern, it's just what it is and that's all; there's nothing
+interesting about it, no unusual features that make it stand out.
+</a></p><p><a name="fifteen">
+And I begin to work on developing this idea.  At eighteen I write </a><a href="https://web.archive.org/web/20110520024346/http://www.umcs.maine.edu/~chaitin/acm66.pdf">my
+first major paper.</a>  At nineteen it appears in the <i>ACM Journal,</i>
+then just about the only theoretical computer science publication in
+the world.
+</p><p>
+That paper is on the size of Turing machine programs, which are
+measured in states, and binary programs, which are measured in bits.
+Then I decide that binary programs should be ``self-delimiting.''
+Cambridge University Press asks me to write <a href="https://web.archive.org/web/20110520024346/http://www.umcs.maine.edu/~chaitin/cup.html">the first book in their
+series on theoretical computer science</a>.  Then <a href="https://web.archive.org/web/20110520024346/http://www.umcs.maine.edu/~chaitin/ps3.html">I look at LISP programs</a>,
+which are measured in characters.  I'm asked to write articles <a href="https://web.archive.org/web/20110520024346/http://www.umcs.maine.edu/~chaitin/sciamer2.html">for
+<i>Scientific American,</i></a> <a href="https://web.archive.org/web/20110520024346/http://www.umcs.maine.edu/~chaitin/paris.html"><i>La Recherche</i></a> &amp; 
+<a href="https://web.archive.org/web/20110520024346/http://www.umcs.maine.edu/~chaitin/ns.html"><i>New Scientist</i>.</a>  
+I'm asked to talk in <a href="https://web.archive.org/web/20110520024346/http://www.umcs.maine.edu/~chaitin/Hans-Christian_Reichel.jpg">Gödel's old classroom</a> in the
+Mathematics Institute at the University of Vienna...
+</p><p>
+And one thing leads to another, and when I look up to catch my breath,
+I have grey hair and I'm in my fifties.  I've made some progress, yes,
+but I'm still trying to develop the same ideas, I'm still trying to
+understand what's really going on!
+</p><p>
+Enough reminiscing!  Let's get down to business!
+</p><p>
+Now the most interesting thing about the idea of <b>program-size
+complexity</b>, of measuring the complexity of something by the size
+of the smallest program for calculating it, is that almost every
+question you ask leads straight to incompleteness.  Wherever you turn,
+you immediately smash into a stone wall.  Incompleteness turns up
+everywhere in this theory!
+</p><p>
+For example, you <b>can't</b> calculate the program-size complexity of
+anything, it's uncomputable.  You can't even prove any lower bounds,
+not if you're interested in the program-size complexity of a specific
+object.  (But you can prove upper bounds on its complexity, by
+exhibiting programs that calculate it.)  And even though <b>most</b>
+bit strings turn out to be random and can't be compressed into small
+programs, you can never be sure that a <b>particular</b> bit string is
+random!
+</p><p>
+My incompleteness results are very different from Gödel's and
+Turing's.  First of all, in my case the connection is with the Berry
+paradox, not with the liar paradox nor the Russell paradox.  And
+Gödel exhibits a <b>specific</b> assertion that's true but
+unprovable.  I can't do that.  I can't exhibit specific true,
+unprovable assertions.  But I <b>can</b> show that there are a lot of
+them out there.  I can show that with overwhelmingly high probability
+you can generate true, unprovable assertions just by tossing a coin.
+</p><p>
+The general flavor of my work is like this.  You compare the
+complexity of the axioms with the complexity of the result you're
+trying to derive, and if the result is more complex than the axioms,
+then you can't get it from those axioms.
+</p><p>
+Now let's get down to the nitty gritty and begin to look at the
+incompleteness result that we'll study in more detail in <a href="https://web.archive.org/web/20110520024346/http://www.umcs.maine.edu/~chaitin/unknowable/ch5.html">Chapter V.</a>
+I've picked it because it's my easiest incompleteness result.  Before
+I can state it we need the following definition.
+</p><p>
+Let's call a program <b>elegant</b> if no smaller program written in
+the same programming language has the same output.  Here we're
+thinking of a specific programming language.  In fact, in <a href="https://web.archive.org/web/20110520024346/http://www.umcs.maine.edu/~chaitin/unknowable/ch5.html">Chapter V</a>
+it'll be LISP.  But in LISP one talks about evaluating expressions
+instead of running programs.  Evaluating an expression yields its
+value, not output.  So if it's LISP we're talking about, we'll say
+that a LISP expression is elegant if no smaller LISP expression has
+the same value.
+</p><p>
+Okay, there have got to be a lot of elegant programs out there,
+infinitely many.  Why?  Because for any computational task, for any
+specific output, there must be at least one elegant program.
+</p><p>
+But what if you want to exhibit an elegant program?  What if you want
+to prove that a specific program is elegant, that no smaller program
+has the same output?
+</p><p>
+Well, it turns out that you can't, it's impossible!  The precise
+result we'll get in <a href="https://web.archive.org/web/20110520024346/http://www.umcs.maine.edu/~chaitin/unknowable/ch5.html">Chapter V</a> is this.  If a formal axiomatic system
+<i>A</i> has LISP program-size complexity <i>N</i>, then you can't use
+<i>A</i> to prove that any LISP expression more than <i>N</i> + 356
+characters long is elegant.
+</p><p>
+So <i>A</i> can only prove that finitely many expressions are elegant!
+</p><p>
+What's the LISP program-size complexity of a formal axiomatic system
+<i>A</i>?  Well, it's the size of a LISP subroutine that looks at a
+proof, sees if it's correct, and either returns an error message or
+the theorem established by the proof.  In other words, it's the size
+in LISP of <i>A</i>'s proof-checking algorithm.
+</p><p>
+How do I prove this incompleteness result?
+</p><p>
+Well, consider the self-referential LISP expression <i>B</i> (for
+Berry) defined to be <b>the value of the first LISP expression larger
+than <i>B</i> that can be proved to be elegant in <i>A</i></b>.
+<a href="https://web.archive.org/web/20110520024346/http://www.umcs.maine.edu/~chaitin/unknowable/chaitin.r">You can easily write this expression <i>B</i> in
+LISP.</a> We'll do that in <a href="https://web.archive.org/web/20110520024346/http://www.umcs.maine.edu/~chaitin/unknowable/ch5.html">Chapter V,</a> and <i>B</i> turns out to be
+<i>N</i> + 356 characters long.  ``First expression that can be proved
+elegant'' means the first you find when you run through all possible
+proofs in <i>A</i> in size order, applying the <i>N</i>-character
+proof-checking algorithm to each in turn.
+</p><p>
+How does this expression <i>B</i> work?  <i>B</i> has a fixed part
+that's 356 characters and a variable part, the proof-checking
+algorithm, that's <i>N</i> characters.  <i>B</i> determines its own
+size, <i>N</i> + 356, by adding 356 to the size of the proof-checking
+algorithm.  Then <i>B</i> uses the proof-checking algorithm to run
+through all possible proofs in <i>A</i> in size order, until it finds
+a proof that an expression <i>E</i> is elegant and <i>E</i>'s size is
+greater than <i>N</i> + 356.  Then <i>B</i> evaluates <i>E</i> and
+returns the value of <i>E</i> as <i>B</i>'s value.
+</p><p>
+Okay, so <i>B</i> has <b>the same value as an elegant expression
+<i>E</i> that's larger than <i>B</i></b>.  But that's impossible,
+because it contradicts the definition of elegance!  The only way out,
+the only way to avoid a contradiction, is if the formal axiomatic
+system <i>A</i> lied and proves false theorems, or if <i>B</i> never
+finds <i>E</i>.  So either <i>A</i> proves false theorems, or <i>A</i>
+never proves that a LISP expression that's more than <i>N</i> + 356
+characters long is elegant!  <i>Q.E.D.</i>
+</p><p>
+Note that we've got self-reference here, but it's rather weak.  The
+self-reference in the paradoxical LISP expression <i>B</i> that proves
+my incompleteness theorem, is that <i>B</i> has to know it's own size.
+You have to put the constant 356 in <i>B</i> by hand, that's how you
+get this to work.
+</p><p>
+Also note that my approach makes incompleteness more natural, because
+you see how what you can do depends on the axioms.  The more complex
+the axioms, the better you can do.  To get more out, you have to put
+more in.  To exhibit large elegant LISP expressions, you're going to
+need to use a very complicated formal axiomatic system.
+</p><p>
+Well, this has been a lot of work!  We've looked at three completely
+different approaches to incompleteness.  It's time to step back and
+think about what it all means.
+</p><p>
+</p><hr>
+<h2>Is Mathematics Quasi-Empirical?</h2>
+[First a caveat.  I'm about to discuss what I think is the
+significance of incompleteness.  But it's possible to argue that the
+incompleteness theorems completely miss the point because mathematics
+isn't about the consequences of rules, it's about creativity and
+imagination.  Consider the imaginary number <i>i,</i> the square root
+of minus one.  This number was impossible, it broke the rule that
+<i>x</i><sup>2</sup> must be positive, but mathematics eventually
+benefited and made more sense <b>with</b> <i>i</i> than without
+<i>i</i>.  So maybe the incompleteness theorems are irrelevant!
+Because they limit formal reasoning, but they say nothing about what
+happens when we change the rules of the game.  As a creative
+mathematician I certainly sympathize with the point of view that the
+imagination to change the rules of the game is more important than
+grinding out the consequences of a given set of rules.  But I don't
+know how to analyze creativity and imagination with my
+metamathematical tools... For the history of <i>i,</i> see
+T. Dantzig, <i>Number—The Language of Science,</i> and
+P.J. Nahin, <i>An Imaginary Tale—The Story of the Square Root of −1.</i>]
+<p>
+What I think it all means is that mathematics is different from
+physics, but it's not <b>that</b> different.  I think that math is
+<b>quasi-empirical</b>.  It's different from physics, but it's more a
+matter of degree than an all or nothing difference.  I don't think
+that mathematicians have a direct pipeline to God's thoughts, to
+absolute truth, while physics must always remain tentative and subject
+to revision.  Yes, math is less tentative than physics, but they're
+both in the same boat, because they're both human activities, and to
+err is human.
+</p><p>
+Now physicists used to love it when I said this, and mathematicians
+either hated it and said I was crazy or pretended not to understand.
+</p><p>
+But a funny thing has happened.  I'm not alone anymore.
+</p><p>
+Now there's a journal called <i>Experimental Mathematics</i>.  At
+Simon Fraser University in Canada there's a <i>Centre for Experimental
+and Constructive Mathematics.</i> And Thomas Tymoczko has published
+an anthology called <i>New Directions in the Philosophy of
+Mathematics</i> with essays by philosophers, mathematicians and
+computer scientists that he says support a quasi-empirical view of
+math.  I'm happy to say that two of my articles are in his book.
+</p><p>
+By the way, the name ``quasi-empirical'' seems to come from Imre
+Lakatos.  He uses it in an essay in Tymoczko's anthology.  I used to
+say that ``perhaps mathematics should be pursued somewhat more in the
+spirit of an experimental science,'' which is a mouthful.  It's much
+better to say ``maybe math is quasi-empirical!''
+</p><p>
+And I've seen computer scientists do some things quasi-empirically.
+They've added <b><i>P</i></b> ≠ <b><i>NP</i></b> as a new
+axiom.  Everyone believes that <b><i>P</i></b> ≠
+<b><i>NP</i></b> based on experimental evidence, 
+but no one can prove it.  And theoreticians working
+on cryptography assume that certain problems are hard, even though no
+one can prove it.  Why?  Simply because no one has been able to find
+an easy way to solve these problems, and no one has been able to break
+encryption schemes that are based on these problems.
+</p><p>
+The computer has expanded mathematical experience so greatly, that in
+order to cope, mathematicians are behaving differently.  They're using
+unproved hypotheses that seem to be true.
+</p><p>
+So maybe Gödel was right after all, maybe incompleteness is a
+serious business.  Maybe the traditional view that math gives absolute
+certainty is false.
+</p><p>
+Enough talking!  Let's do some computer programming!
+[Readers who <b>hate</b> computer programming should skip
+directly to <a href="https://web.archive.org/web/20110520024346/http://www.umcs.maine.edu/~chaitin/unknowable/ch6.html">Chapter VI.</a>]
+</p><p>
+</p><hr>
+
+
+
+</body></html>
+<!--
+     FILE ARCHIVED ON 02:43:46 May 20, 2011 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 07:07:22 Sep 23, 2021.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+-->
+<!--
+playback timings (ms):
+  captures_list: 411.685
+  exclusion.robots: 0.216
+  exclusion.robots.policy: 0.207
+  RedisCDXSource: 20.509
+  esindex: 0.008
+  LoadShardBlock: 370.832 (3)
+  PetaboxLoader3.datanode: 807.078 (4)
+  CDXLines.iter: 17.018 (3)
+  load_resource: 583.138
+  PetaboxLoader3.resolve: 38.603
+-->

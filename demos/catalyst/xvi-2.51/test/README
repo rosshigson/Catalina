@@ -1,0 +1,127 @@
+Test suite for xvi
+==================
+
+In this directory (or the one above) you can "make check" to run
+a series of tests on ../src/xvi.
+
+You can also run a single test from this directory by saying:
+	tests/hanoi
+examining the exit status, "echo $?", to know whether it succeeded or not.
+0 means success, non-zero means failure, with two special exit codes:
+126 means that vi dumped core, while 127 means the test was not runnable.
+
+
+Internals
+---------
+
+The test mechanism uses "expect" coupled with one of two implementations
+of a terminal emulator:
+ - "tkterm" by Don Libes,(*) based on the Tk terminal widget, and
+ - "virterm" by Adrian Mariano, which uses an 80x24 TCL array instead and
+   does not need Tk or the X Window System.
+Both have been significantly bug-fixed and updated for use here.
+
+
+Runtime environment variants
+----------------------------
+
+If you are running under X, it will use "tkterm", which shows what it is doing
+on-screen, but if there is no X server, it uses virterm.
+
+To force use of the non-graphical test harness under X, say:
+	DISPLAY= make check
+or
+	TKTERM=virterm make check
+
+You can also run it using tkterm with a dummy X display by saying:
+	sudo apt-get install xserver-xorg-video-dummy
+	sudo make nox
+This only works as root.
+
+To run other vi clones against this test suite, you can say
+	VI=nvi make check
+or
+	VI="vim -c redraw" make check
+
+The DISPLAY, TKTERM and VI tricks also work when running individual tests
+(see above).
+
+This stuff seems to work with tcl 8.5, but one test, nul-in-command, needs
+tcl 8.6. On Debian, the runes to install the required software are:
+
+    apt-get install expect tclsh tk
+
+and you can omit tk if you'll only be using virterm.
+
+
+Writing new tests
+-----------------
+Each test is an executable file in the directory "tests", and if they need
+data files, those live in the directory "data".
+
+The syntax of a test file is fairly horrible because they are written in
+the fairly horrible language TCL, with its bizarre string quoting rules
+and lame lists represented as strings.
+
+To write a new test, copy the boilerplate from an existing test:
+
+	#!/bin/sh
+	# -*- tcl -*-
+	# The next line is executed by /bin/sh, but not tcl \
+	exec tclsh "$0" ${1+"$@"}
+
+	source scripts/term
+	start_vi
+
+then individual tests follow,  for example to test appending of text:
+
+	test 1 "aabc[esc]"	1 2 [list "abc" "~"]
+
+and at the end of the script you put
+
+	stop_vi
+	exit 0
+
+"scripts/term" is a wrapper that chooses one of the two terminal emulators
+and sets it running, as well as defining a handful of functions useful to
+writing tests. See scripts/term for a list of functions, of which the most
+commonly used is:
+
+	test n "string" row col [list "expected" "screen" "lines" ]
+where
+	n is the test number and the exit status of the script if it fails.
+		It can be from 1 to 120.
+	"string" is what should be send to xvi as if typed by the user.
+	row is the row that the cursor should be on, starting from row 1.
+	col is the column that the cursor should be in, starting at column 0.
+	[list etc] is what the first lines of the screen should look like.
+
+There is also
+
+	ctest n "string" col "command-line"
+
+which matches against the command-line, used when testing : commands and
+matching against the last line of the screen.
+
+The test file should exit with status:
+0	if the test succeeded
+1-120	if the test failed (the number identifies the micro-test that failed)
+123	if xvi dumped core and
+124	if xvi died for some other reason.
+125	if the test is not runnable for some reason (see "git bisect run")
+
+For reliable testing, you need to ensure that the results of any two
+subsequent tests are different, otherwise the second test may succeed
+as soon as it sees the screen resulting from the previous one
+but before xvi has processed any of the new input characters.
+
+Under the hood, these two functions call exp_send to send characters to xvi
+and term_expect to frame the conditions that must be satisfied for a test to
+succeed. By using term_expect natively, you can express test outcomes more
+finely. term_espect takes a series of arbitrarily-complex conditions,
+each with a fragment of script to execute if its condition is satisfied.
+
+See Don Libes' paper "Automation and Testing of Character-Graphic Programs"
+and his book "Exploring Expect", chapter 19, p.448 onwards.
+
+	Martin Guy <martinwguy@gmail.com>, December 2016 - April 2017.

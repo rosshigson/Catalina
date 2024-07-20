@@ -1,0 +1,40 @@
+' Catalina Code
+
+DAT ' code segment
+'
+' LCC 4.2 (LARGE) for Parallax Propeller
+' (Catalina v2.5 Code Generator by Ross Higson)
+'
+
+' Catalina Export strcpy
+
+ alignl ' align long
+C_strcpy ' <symbol:strcpy>
+ jmp #PSHM
+ long $d00000 ' save registers
+ mov r23, r3 ' CVI, CVU or LOAD
+C_strcpy_2
+' C_strcpy_3 ' (symbol refcount = 0)
+ mov r22, r23 ' CVI, CVU or LOAD
+ mov r23, r22
+ adds r23, #1 ' ADDP4 coni
+ mov r20, r2 ' CVI, CVU or LOAD
+ mov r2, r20
+ adds r2, #1 ' ADDP4 coni
+ mov RI, r20
+ jmp #RBYT
+ mov r20, BC ' reg <- INDIRU1 reg
+ mov RI, r22
+ mov BC, r20
+ jmp #WBYT ' ASGNU1 reg reg
+ mov r22, r20 ' CVUI
+ and r22, cviu_m1 ' zero extend
+ cmps r22,  #0 wz
+ jmp #BRNZ
+ long @C_strcpy_2 ' NEI4
+ mov r0, r3 ' CVI, CVU or LOAD
+' C_strcpy_1 ' (symbol refcount = 0)
+ jmp #POPM ' restore registers
+ jmp #RETN
+
+' end

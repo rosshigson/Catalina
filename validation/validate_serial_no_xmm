@@ -1,0 +1,1088 @@
+#!/bin/bash
+if [[ "$1" != "" ]]; then
+
+   if [[ "$CATALINA_DEFINE" != "" ]]; then
+
+      if [[ "$CATALINA_DEFINE" != "$1 $2 $3 $4 $5 $6 $7 $8 $9" ]]; then
+
+         echo ""
+         echo "ERROR: Command line options conflict with CATALINA_DEFINE"
+         echo ""
+         echo "   The Environment variable CATALINA_DEFINE is set to $CATALINA_DEFINE"
+         echo "   The Command line options specified are $1 $2 $3 $4 $5 $6 $7 $8 $9"
+         echo ""
+         echo "   Either set CATALINA_DEFINE to null using the following command:"
+         echo ""
+         echo "      unset CATALINA_DEFINE"
+         echo ""
+         echo "   or do not specify any command line parameters"
+         echo ""
+
+      else
+
+         echo ""
+         echo "NOTE: Environment variable CATALINA_DEFINE is set to $CATALINA_DEFINE"
+         echo ""
+         echo "All programs will be built using these options. If these options conflict" 
+         echo "with any options specified in this file, the results may be unexpected." 
+         
+      fi
+
+   else
+
+      echo ""
+      echo "NOTE: Environment variable CATALINA_DEFINE will be set to $1 $2 $3 $4 $5 $6 $7 $8 $9"
+      echo ""
+      echo "All programs will be built using these options. If these options conflict"
+      echo "with any options specified in this file, the results may be unexpected."
+      CATALINA_DEFINE="$1 $2 $3 $4 $5 $6 $7 $8 $9"; export CATALINA_DEFINE
+
+   fi
+
+else
+
+   if [[ "$CATALINA_DEFINE" != "" ]]; then
+
+      echo ""
+      echo "NOTE: Environment variable CATALINA_DEFINE is set to $CATALINA_DEFINE"
+      echo ""
+      echo "All programs will be built using these options. If these options conflict" 
+      echo "with any options specified in this file, the results may be unexpected." 
+  
+   else     
+
+      echo ""
+      echo "NOTE: Environment variable CATALINA_DEFINE is not set"
+      echo ""
+      echo "All programs will be built for the default target (CUSTOM)" 
+
+   fi
+
+fi
+
+#
+TMP_LCCDIR=$LCCDIR
+if [[ "$TMP_LCCDIR" == "" ]]; then
+   TMP_LCCDIR=/opt/catalina	
+fi
+#
+if [[ ! -e $TMP_LCCDIR/bin/catalina_env ]]; then
+   echo ""
+   echo "ERROR: Catalina does not appear to be installed in $TMP_LCCDIR"
+   echo "";
+   echo "Set the environment variable LCCDIR to where Catalina is installed.";
+   echo "";
+   exit
+fi   
+
+platform=$1
+
+rm -f *.binary
+rm -f *.bin
+if [[ -e results_serial.$1 ]]; then
+   rm -f results_serial.$1
+fi
+
+if [ "${platform:0:2}" != "P2" ] && [ "${CATALINA_DEFINE:0:2}" != "P2" ]; then 
+
+echo ""
+echo "   =============="
+echo "   VALIDATING P1 "
+echo "   =============="
+echo ""
+
+echo ""
+echo "WARNING: ENSURE THE UTILITIES HAVE_BEEN BUILT FOR THE CORRECT PLATFORM!"
+echo ""
+
+compile_and_run_p1       $1 test_suite -ltiny -lc 
+compile_and_run_p1       $1 test_suite -ltiny -lc -C COMPACT
+
+compile_and_run_p1       $1 test_suite -lc 
+compile_and_run_p1       $1 test_suite -lc -C COMPACT
+
+compile_and_run_p1       $1 test_suite -lci 
+compile_and_run_p1       $1 test_suite -lci -C COMPACT
+
+compile_and_run_p1       $1 test_suite -lcix 
+compile_and_run_p1       $1 test_suite -lcix -C COMPACT
+
+compile_and_run_p1       $1 test_suite -lcx 
+compile_and_run_p1       $1 test_suite -lcx -C COMPACT
+
+compile_and_run_p1       $1 test_suite -O1 -lc 
+compile_and_run_p1       $1 test_suite -O1 -lc -C COMPACT
+
+compile_and_run_p1       $1 test_suite -O2 -lc 
+compile_and_run_p1       $1 test_suite -O2 -lc -C COMPACT
+
+compile_and_run_p1       $1 test_suite -O3 -lc 
+compile_and_run_p1       $1 test_suite -O3 -lc -C COMPACT
+
+compile_and_run_p1       $1 test_suite -O4 -lc 
+compile_and_run_p1       $1 test_suite -O4 -lc -C COMPACT
+
+compile_and_run_p1       $1 test_suite -O5 -lc 
+compile_and_run_p1       $1 test_suite -O5 -lc -C COMPACT
+
+compile_and_run_p1       $1 test_suite -O1 -lci 
+compile_and_run_p1       $1 test_suite -O1 -lci -C COMPACT
+
+compile_and_run_p1       $1 test_suite -O2 -lci 
+compile_and_run_p1       $1 test_suite -O2 -lci -C COMPACT
+
+compile_and_run_p1       $1 test_suite -O3 -lci 
+compile_and_run_p1       $1 test_suite -O3 -lci -C COMPACT
+
+compile_and_run_p1       $1 test_suite -O4 -lci 
+compile_and_run_p1       $1 test_suite -O4 -lci -C COMPACT
+
+compile_and_run_p1       $1 test_suite -O5 -lci 
+compile_and_run_p1       $1 test_suite -O5 -lci -C COMPACT
+
+compile_and_run_p1       $1 test_suite -O1 -lcx 
+compile_and_run_p1       $1 test_suite -O1 -lcx -C COMPACT
+
+compile_and_run_p1       $1 test_suite -O2 -lcx 
+compile_and_run_p1       $1 test_suite -O2 -lcx -C COMPACT
+
+compile_and_run_p1       $1 test_suite -O3 -lcx 
+compile_and_run_p1       $1 test_suite -O3 -lcx -C COMPACT
+
+compile_and_run_p1       $1 test_suite -O4 -lcx 
+compile_and_run_p1       $1 test_suite -O4 -lcx -C COMPACT
+
+compile_and_run_p1       $1 test_suite -O5 -lcx 
+compile_and_run_p1       $1 test_suite -O5 -lcx -C COMPACT
+
+compile_and_run_p1       $1 test_suite -O1 -lcix 
+compile_and_run_p1       $1 test_suite -O1 -lcix -C COMPACT
+
+compile_and_run_p1       $1 test_suite -O2 -lcix 
+compile_and_run_p1       $1 test_suite -O2 -lcix -C COMPACT
+
+compile_and_run_p1       $1 test_suite -O3 -lcix 
+compile_and_run_p1       $1 test_suite -O3 -lcix -C COMPACT
+
+compile_and_run_p1       $1 test_suite -O4 -lcix 
+compile_and_run_p1       $1 test_suite -O4 -lcix -C COMPACT
+
+compile_and_run_p1       $1 test_suite -O5 -lcix 
+compile_and_run_p1       $1 test_suite -O5 -lcix -C COMPACT
+
+
+
+compile_and_run_p1       $1 test_multiple_cogs -ltiny -lc -lm 
+compile_and_run_p1       $1 test_multiple_cogs -ltiny -lc -lm -C COMPACT
+
+compile_and_run_p1       $1 test_multiple_cogs -lc -lm
+compile_and_run_p1       $1 test_multiple_cogs -lc -lm -C COMPACT
+
+compile_and_run_p1       $1 test_multiple_cogs -lci 
+compile_and_run_p1       $1 test_multiple_cogs -lci -C COMPACT
+
+compile_and_run_p1       $1 test_multiple_cogs -lcix 
+compile_and_run_p1       $1 test_multiple_cogs -lcix -C COMPACT
+
+compile_and_run_p1       $1 test_multiple_cogs -lcx -lm 
+compile_and_run_p1       $1 test_multiple_cogs -lcx -lm -C COMPACT
+
+compile_and_run_p1       $1 test_multiple_cogs -O1 -lc -lm 
+compile_and_run_p1       $1 test_multiple_cogs -O1 -lc -lm -C COMPACT
+
+compile_and_run_p1       $1 test_multiple_cogs -O2 -lc -lm 
+compile_and_run_p1       $1 test_multiple_cogs -O2 -lc -lm -C COMPACT
+
+compile_and_run_p1       $1 test_multiple_cogs -O3 -lc -lm 
+compile_and_run_p1       $1 test_multiple_cogs -O3 -lc -lm -C COMPACT
+
+compile_and_run_p1       $1 test_multiple_cogs -O4 -lc -lm 
+compile_and_run_p1       $1 test_multiple_cogs -O4 -lc -lm -C COMPACT
+
+compile_and_run_p1       $1 test_multiple_cogs -O5 -lc -lm 
+compile_and_run_p1       $1 test_multiple_cogs -O5 -lc -lm -C COMPACT
+
+compile_and_run_p1       $1 test_multiple_cogs -O1 -lci 
+compile_and_run_p1       $1 test_multiple_cogs -O1 -lci -C COMPACT
+
+compile_and_run_p1       $1 test_multiple_cogs -O2 -lci 
+compile_and_run_p1       $1 test_multiple_cogs -O2 -lci -C COMPACT
+
+compile_and_run_p1       $1 test_multiple_cogs -O3 -lci 
+compile_and_run_p1       $1 test_multiple_cogs -O3 -lci -C COMPACT
+
+compile_and_run_p1       $1 test_multiple_cogs -O4 -lci 
+compile_and_run_p1       $1 test_multiple_cogs -O4 -lci -C COMPACT
+
+compile_and_run_p1       $1 test_multiple_cogs -O5 -lci 
+compile_and_run_p1       $1 test_multiple_cogs -O5 -lci -C COMPACT
+
+compile_and_run_p1       $1 test_multiple_cogs -O1 -lcx -lm  
+compile_and_run_p1       $1 test_multiple_cogs -O1 -lcx -lm  -C COMPACT
+
+compile_and_run_p1       $1 test_multiple_cogs -O2 -lcx -lm  
+compile_and_run_p1       $1 test_multiple_cogs -O2 -lcx -lm  -C COMPACT
+
+compile_and_run_p1       $1 test_multiple_cogs -O3 -lcx -lm  
+compile_and_run_p1       $1 test_multiple_cogs -O3 -lcx -lm  -C COMPACT
+
+compile_and_run_p1       $1 test_multiple_cogs -O4 -lcx -lm  
+compile_and_run_p1       $1 test_multiple_cogs -O4 -lcx -lm  -C COMPACT
+
+compile_and_run_p1       $1 test_multiple_cogs -O5 -lcx -lm  
+compile_and_run_p1       $1 test_multiple_cogs -O5 -lcx -lm  -C COMPACT
+
+compile_and_run_p1       $1 test_multiple_cogs -O1 -lcix 
+compile_and_run_p1       $1 test_multiple_cogs -O1 -lcix -C COMPACT
+
+compile_and_run_p1       $1 test_multiple_cogs -O2 -lcix 
+compile_and_run_p1       $1 test_multiple_cogs -O2 -lcix -C COMPACT
+
+compile_and_run_p1       $1 test_multiple_cogs -O3 -lcix 
+compile_and_run_p1       $1 test_multiple_cogs -O3 -lcix -C COMPACT
+
+compile_and_run_p1       $1 test_multiple_cogs -O4 -lcix 
+compile_and_run_p1       $1 test_multiple_cogs -O4 -lcix -C COMPACT
+
+compile_and_run_p1       $1 test_multiple_cogs -O5 -lcix 
+compile_and_run_p1       $1 test_multiple_cogs -O5 -lcix -C COMPACT
+
+
+
+compile_and_run_p1       $1 test_threads -lthreads -ltiny -lc -lm 
+compile_and_run_p1       $1 test_threads -lthreads -ltiny -lc -lm -C COMPACT
+
+compile_and_run_p1       $1 test_threads -lthreads -lc -lm 
+compile_and_run_p1       $1 test_threads -lthreads -lc -lm -C COMPACT
+
+compile_and_run_p1       $1 test_threads -lthreads -lci 
+compile_and_run_p1       $1 test_threads -lthreads -lci -C COMPACT
+
+compile_and_run_p1       $1 test_threads -lthreads -lcix 
+compile_and_run_p1       $1 test_threads -lthreads -lcix -C COMPACT
+
+compile_and_run_p1       $1 test_threads -lthreads -lcx -lm 
+compile_and_run_p1       $1 test_threads -lthreads -lcx -lm -C COMPACT
+
+compile_and_run_p1       $1 test_threads -lthreads -O1 -lc -lm 
+compile_and_run_p1       $1 test_threads -lthreads -O1 -lc -lm -C COMPACT
+
+compile_and_run_p1       $1 test_threads -lthreads -O2 -lc -lm 
+compile_and_run_p1       $1 test_threads -lthreads -O2 -lc -lm -C COMPACT
+
+compile_and_run_p1       $1 test_threads -lthreads -O3 -lc -lm 
+compile_and_run_p1       $1 test_threads -lthreads -O3 -lc -lm -C COMPACT
+
+compile_and_run_p1       $1 test_threads -lthreads -O4 -lc -lm 
+compile_and_run_p1       $1 test_threads -lthreads -O4 -lc -lm -C COMPACT
+
+compile_and_run_p1       $1 test_threads -lthreads -O5 -lc -lm 
+compile_and_run_p1       $1 test_threads -lthreads -O5 -lc -lm -C COMPACT
+
+compile_and_run_p1       $1 test_threads -lthreads -O1 -lci 
+compile_and_run_p1       $1 test_threads -lthreads -O1 -lci -C COMPACT
+
+compile_and_run_p1       $1 test_threads -lthreads -O2 -lci 
+compile_and_run_p1       $1 test_threads -lthreads -O2 -lci -C COMPACT
+
+compile_and_run_p1       $1 test_threads -lthreads -O3 -lci 
+compile_and_run_p1       $1 test_threads -lthreads -O3 -lci -C COMPACT
+
+compile_and_run_p1       $1 test_threads -lthreads -O4 -lci 
+compile_and_run_p1       $1 test_threads -lthreads -O4 -lci -C COMPACT
+
+compile_and_run_p1       $1 test_threads -lthreads -O5 -lci 
+compile_and_run_p1       $1 test_threads -lthreads -O5 -lci -C COMPACT
+
+compile_and_run_p1       $1 test_threads -lthreads -O1 -lcx -lm 
+compile_and_run_p1       $1 test_threads -lthreads -O1 -lcx -lm -C COMPACT
+
+compile_and_run_p1       $1 test_threads -lthreads -O2 -lcx -lm 
+compile_and_run_p1       $1 test_threads -lthreads -O2 -lcx -lm -C COMPACT
+
+compile_and_run_p1       $1 test_threads -lthreads -O3 -lcx -lm 
+compile_and_run_p1       $1 test_threads -lthreads -O3 -lcx -lm -C COMPACT
+
+compile_and_run_p1       $1 test_threads -lthreads -O4 -lcx -lm 
+compile_and_run_p1       $1 test_threads -lthreads -O4 -lcx -lm -C COMPACT
+
+compile_and_run_p1       $1 test_threads -lthreads -O5 -lcx -lm 
+compile_and_run_p1       $1 test_threads -lthreads -O5 -lcx -lm -C COMPACT
+
+compile_and_run_p1       $1 test_threads -lthreads -O1 -lcix 
+compile_and_run_p1       $1 test_threads -lthreads -O1 -lcix -C COMPACT
+
+compile_and_run_p1       $1 test_threads -lthreads -O2 -lcix 
+compile_and_run_p1       $1 test_threads -lthreads -O2 -lcix -C COMPACT
+
+compile_and_run_p1       $1 test_threads -lthreads -O3 -lcix 
+compile_and_run_p1       $1 test_threads -lthreads -O3 -lcix -C COMPACT
+
+compile_and_run_p1       $1 test_threads -lthreads -O4 -lcix 
+compile_and_run_p1       $1 test_threads -lthreads -O4 -lcix -C COMPACT
+
+compile_and_run_p1       $1 test_threads -lthreads -O5 -lcix 
+compile_and_run_p1       $1 test_threads -lthreads -O5 -lcix -C COMPACT
+
+
+
+compile_and_run_p1       $1 test_float -lc -lm -C COMPACT
+
+compile_and_run_p1       $1 test_float -O1 -lc -lm -C COMPACT
+
+compile_and_run_p1       $1 test_float -O2 -lc -lm -C COMPACT
+
+compile_and_run_p1       $1 test_float -O3 -lc -lm -C COMPACT
+
+compile_and_run_p1       $1 test_float -O4 -lc -lm -C COMPACT
+
+compile_and_run_p1       $1 test_float -O5 -lc -lm -C COMPACT
+
+compile_and_run_p1       $1 test_float -lc -lma -C COMPACT
+
+compile_and_run_p1       $1 test_float -O1 -lc -lma -C COMPACT
+
+compile_and_run_p1       $1 test_float -O2 -lc -lma -C COMPACT
+
+compile_and_run_p1       $1 test_float -O3 -lc -lma -C COMPACT
+
+compile_and_run_p1       $1 test_float -O4 -lc -lma -C COMPACT
+
+compile_and_run_p1       $1 test_float -O5 -lc -lma -C COMPACT
+
+compile_and_run_p1       $1 test_float -lc -lmb -C COMPACT
+
+compile_and_run_p1       $1 test_float -O1 -lc -lmb -C COMPACT
+
+compile_and_run_p1       $1 test_float -O2 -lc -lmb -C COMPACT
+
+compile_and_run_p1       $1 test_float -O3 -lc -lmb -C COMPACT
+
+compile_and_run_p1       $1 test_float -O4 -lc -lmb -C COMPACT
+
+compile_and_run_p1       $1 test_float -O5 -lc -lmb -C COMPACT
+
+else
+
+echo ""
+echo "   =============="
+echo "   VALIDATING P2 "
+echo "   =============="
+echo ""
+compile_and_run_p2 $1 test_suite -ltiny -lc -C TINY
+compile_and_run_p2 $1 test_suite -ltiny -lc -C NATIVE
+compile_and_run_p2 $1 test_suite -ltiny -lc -C COMPACT
+
+compile_and_run_p2 $1 test_suite -lc -C TINY
+compile_and_run_p2 $1 test_suite -lc -C NATIVE
+compile_and_run_p2 $1 test_suite -lc -C COMPACT
+
+compile_and_run_p2 $1 test_suite -lci -C TINY
+compile_and_run_p2 $1 test_suite -lci -C NATIVE
+compile_and_run_p2 $1 test_suite -lci -C COMPACT
+
+compile_and_run_p2 $1 test_suite -lcix -C TINY
+compile_and_run_p2 $1 test_suite -lcix -C NATIVE
+compile_and_run_p2 $1 test_suite -lcix -C COMPACT
+
+compile_and_run_p2 $1 test_suite -lcx -C TINY
+compile_and_run_p2 $1 test_suite -lcx -C NATIVE
+compile_and_run_p2 $1 test_suite -lcx -C COMPACT
+
+compile_and_run_p2 $1 test_suite -O1 -lc -C TINY
+compile_and_run_p2 $1 test_suite -O1 -lc -C NATIVE
+compile_and_run_p2 $1 test_suite -O1 -lc -C COMPACT
+
+compile_and_run_p2 $1 test_suite -O2 -lc -C TINY
+compile_and_run_p2 $1 test_suite -O2 -lc -C NATIVE
+compile_and_run_p2 $1 test_suite -O2 -lc -C COMPACT
+
+compile_and_run_p2 $1 test_suite -O3 -lc -C TINY
+compile_and_run_p2 $1 test_suite -O3 -lc -C NATIVE
+compile_and_run_p2 $1 test_suite -O3 -lc -C COMPACT
+
+compile_and_run_p2 $1 test_suite -O4 -lc -C TINY
+compile_and_run_p2 $1 test_suite -O4 -lc -C NATIVE
+compile_and_run_p2 $1 test_suite -O4 -lc -C COMPACT
+
+compile_and_run_p2 $1 test_suite -O5 -lc -C TINY
+compile_and_run_p2 $1 test_suite -O5 -lc -C NATIVE
+compile_and_run_p2 $1 test_suite -O5 -lc -C COMPACT
+
+compile_and_run_p2 $1 test_suite -O1 -lci -C TINY
+compile_and_run_p2 $1 test_suite -O1 -lci -C NATIVE
+compile_and_run_p2 $1 test_suite -O1 -lci -C COMPACT
+
+compile_and_run_p2 $1 test_suite -O2 -lci -C TINY
+compile_and_run_p2 $1 test_suite -O2 -lci -C NATIVE
+compile_and_run_p2 $1 test_suite -O2 -lci -C COMPACT
+
+compile_and_run_p2 $1 test_suite -O3 -lci -C TINY
+compile_and_run_p2 $1 test_suite -O3 -lci -C NATIVE
+compile_and_run_p2 $1 test_suite -O3 -lci -C COMPACT
+
+compile_and_run_p2 $1 test_suite -O4 -lci -C TINY
+compile_and_run_p2 $1 test_suite -O4 -lci -C NATIVE
+compile_and_run_p2 $1 test_suite -O4 -lci -C COMPACT
+
+compile_and_run_p2 $1 test_suite -O5 -lci -C TINY
+compile_and_run_p2 $1 test_suite -O5 -lci -C NATIVE
+compile_and_run_p2 $1 test_suite -O5 -lci -C COMPACT
+
+compile_and_run_p2 $1 test_suite -O1 -lcx -C TINY
+compile_and_run_p2 $1 test_suite -O1 -lcx -C NATIVE
+compile_and_run_p2 $1 test_suite -O1 -lcx -C COMPACT
+
+compile_and_run_p2 $1 test_suite -O2 -lcx -C TINY
+compile_and_run_p2 $1 test_suite -O2 -lcx -C NATIVE
+compile_and_run_p2 $1 test_suite -O2 -lcx -C COMPACT
+
+compile_and_run_p2 $1 test_suite -O3 -lcx -C TINY
+compile_and_run_p2 $1 test_suite -O3 -lcx -C NATIVE
+compile_and_run_p2 $1 test_suite -O3 -lcx -C COMPACT
+
+compile_and_run_p2 $1 test_suite -O4 -lcx -C TINY
+compile_and_run_p2 $1 test_suite -O4 -lcx -C NATIVE
+compile_and_run_p2 $1 test_suite -O4 -lcx -C COMPACT
+
+compile_and_run_p2 $1 test_suite -O5 -lcx -C TINY
+compile_and_run_p2 $1 test_suite -O5 -lcx -C NATIVE
+compile_and_run_p2 $1 test_suite -O5 -lcx -C COMPACT
+
+compile_and_run_p2 $1 test_suite -O1 -lcix -C TINY
+compile_and_run_p2 $1 test_suite -O1 -lcix -C NATIVE
+compile_and_run_p2 $1 test_suite -O1 -lcix -C COMPACT
+
+compile_and_run_p2 $1 test_suite -O2 -lcix -C TINY
+compile_and_run_p2 $1 test_suite -O2 -lcix -C NATIVE
+compile_and_run_p2 $1 test_suite -O2 -lcix -C COMPACT
+
+compile_and_run_p2 $1 test_suite -O3 -lcix -C TINY
+compile_and_run_p2 $1 test_suite -O3 -lcix -C NATIVE
+compile_and_run_p2 $1 test_suite -O3 -lcix -C COMPACT
+
+compile_and_run_p2 $1 test_suite -O4 -lcix -C TINY
+compile_and_run_p2 $1 test_suite -O4 -lcix -C NATIVE
+compile_and_run_p2 $1 test_suite -O4 -lcix -C COMPACT
+
+compile_and_run_p2 $1 test_suite -O5 -lcix -C TINY
+compile_and_run_p2 $1 test_suite -O5 -lcix -C NATIVE
+compile_and_run_p2 $1 test_suite -O5 -lcix -C COMPACT
+
+
+
+compile_and_run_p2 $1 test_multiple_cogs -ltiny -lc -lm -C TINY
+compile_and_run_p2 $1 test_multiple_cogs -ltiny -lc -lm -C NATIVE
+compile_and_run_p2 $1 test_multiple_cogs -ltiny -lc -lm -C COMPACT
+
+compile_and_run_p2 $1 test_multiple_cogs -lc -lm-C TINY
+compile_and_run_p2 $1 test_multiple_cogs -lc -lm -C NATIVE
+compile_and_run_p2 $1 test_multiple_cogs -lc -lm -C COMPACT
+
+compile_and_run_p2 $1 test_multiple_cogs -lci -C TINY
+compile_and_run_p2 $1 test_multiple_cogs -lci -C NATIVE
+compile_and_run_p2 $1 test_multiple_cogs -lci -C COMPACT
+
+compile_and_run_p2 $1 test_multiple_cogs -lcix -C TINY
+compile_and_run_p2 $1 test_multiple_cogs -lcix -C NATIVE
+compile_and_run_p2 $1 test_multiple_cogs -lcix -C COMPACT
+
+compile_and_run_p2 $1 test_multiple_cogs -lcx -lm -C TINY
+compile_and_run_p2 $1 test_multiple_cogs -lcx -lm -C NATIVE
+compile_and_run_p2 $1 test_multiple_cogs -lcx -lm -C COMPACT
+
+compile_and_run_p2 $1 test_multiple_cogs -O1 -lc -lm -C TINY
+compile_and_run_p2 $1 test_multiple_cogs -O1 -lc -lm -C NATIVE
+compile_and_run_p2 $1 test_multiple_cogs -O1 -lc -lm -C COMPACT
+
+compile_and_run_p2 $1 test_multiple_cogs -O2 -lc -lm -C TINY
+compile_and_run_p2 $1 test_multiple_cogs -O2 -lc -lm -C NATIVE
+compile_and_run_p2 $1 test_multiple_cogs -O2 -lc -lm -C COMPACT
+
+compile_and_run_p2 $1 test_multiple_cogs -O3 -lc -lm -C TINY
+compile_and_run_p2 $1 test_multiple_cogs -O3 -lc -lm -C NATIVE
+compile_and_run_p2 $1 test_multiple_cogs -O3 -lc -lm -C COMPACT
+
+compile_and_run_p2 $1 test_multiple_cogs -O4 -lc -lm -C TINY
+compile_and_run_p2 $1 test_multiple_cogs -O4 -lc -lm -C NATIVE
+compile_and_run_p2 $1 test_multiple_cogs -O4 -lc -lm -C COMPACT
+
+compile_and_run_p2 $1 test_multiple_cogs -O5 -lc -lm -C TINY
+compile_and_run_p2 $1 test_multiple_cogs -O5 -lc -lm -C NATIVE
+compile_and_run_p2 $1 test_multiple_cogs -O5 -lc -lm -C COMPACT
+
+compile_and_run_p2 $1 test_multiple_cogs -O1 -lci -C TINY
+compile_and_run_p2 $1 test_multiple_cogs -O1 -lci -C NATIVE
+compile_and_run_p2 $1 test_multiple_cogs -O1 -lci -C COMPACT
+
+compile_and_run_p2 $1 test_multiple_cogs -O2 -lci -C TINY
+compile_and_run_p2 $1 test_multiple_cogs -O2 -lci -C NATIVE
+compile_and_run_p2 $1 test_multiple_cogs -O2 -lci -C COMPACT
+
+compile_and_run_p2 $1 test_multiple_cogs -O3 -lci -C TINY
+compile_and_run_p2 $1 test_multiple_cogs -O3 -lci -C NATIVE
+compile_and_run_p2 $1 test_multiple_cogs -O3 -lci -C COMPACT
+
+compile_and_run_p2 $1 test_multiple_cogs -O4 -lci -C TINY
+compile_and_run_p2 $1 test_multiple_cogs -O4 -lci -C NATIVE
+compile_and_run_p2 $1 test_multiple_cogs -O4 -lci -C COMPACT
+
+compile_and_run_p2 $1 test_multiple_cogs -O5 -lci -C TINY
+compile_and_run_p2 $1 test_multiple_cogs -O5 -lci -C NATIVE
+compile_and_run_p2 $1 test_multiple_cogs -O5 -lci -C COMPACT
+
+compile_and_run_p2 $1 test_multiple_cogs -O1 -lcx -lm  -C TINY
+compile_and_run_p2 $1 test_multiple_cogs -O1 -lcx -lm  -C NATIVE
+compile_and_run_p2 $1 test_multiple_cogs -O1 -lcx -lm  -C COMPACT
+
+compile_and_run_p2 $1 test_multiple_cogs -O2 -lcx -lm  -C TINY
+compile_and_run_p2 $1 test_multiple_cogs -O2 -lcx -lm  -C NATIVE
+compile_and_run_p2 $1 test_multiple_cogs -O2 -lcx -lm  -C COMPACT
+
+compile_and_run_p2 $1 test_multiple_cogs -O3 -lcx -lm  -C TINY
+compile_and_run_p2 $1 test_multiple_cogs -O3 -lcx -lm  -C NATIVE
+compile_and_run_p2 $1 test_multiple_cogs -O3 -lcx -lm  -C COMPACT
+
+compile_and_run_p2 $1 test_multiple_cogs -O4 -lcx -lm  -C TINY
+compile_and_run_p2 $1 test_multiple_cogs -O4 -lcx -lm  -C NATIVE
+compile_and_run_p2 $1 test_multiple_cogs -O4 -lcx -lm  -C COMPACT
+
+compile_and_run_p2 $1 test_multiple_cogs -O5 -lcx -lm  -C TINY
+compile_and_run_p2 $1 test_multiple_cogs -O5 -lcx -lm  -C NATIVE
+compile_and_run_p2 $1 test_multiple_cogs -O5 -lcx -lm  -C COMPACT
+
+compile_and_run_p2 $1 test_multiple_cogs -O1 -lcix -C TINY
+compile_and_run_p2 $1 test_multiple_cogs -O1 -lcix -C NATIVE
+compile_and_run_p2 $1 test_multiple_cogs -O1 -lcix -C COMPACT
+
+compile_and_run_p2 $1 test_multiple_cogs -O2 -lcix -C TINY
+compile_and_run_p2 $1 test_multiple_cogs -O2 -lcix -C NATIVE
+compile_and_run_p2 $1 test_multiple_cogs -O2 -lcix -C COMPACT
+
+compile_and_run_p2 $1 test_multiple_cogs -O3 -lcix -C TINY
+compile_and_run_p2 $1 test_multiple_cogs -O3 -lcix -C NATIVE
+compile_and_run_p2 $1 test_multiple_cogs -O3 -lcix -C COMPACT
+
+compile_and_run_p2 $1 test_multiple_cogs -O4 -lcix -C TINY
+compile_and_run_p2 $1 test_multiple_cogs -O4 -lcix -C NATIVE
+compile_and_run_p2 $1 test_multiple_cogs -O4 -lcix -C COMPACT
+
+compile_and_run_p2 $1 test_multiple_cogs -O5 -lcix -C TINY
+compile_and_run_p2 $1 test_multiple_cogs -O5 -lcix -C NATIVE
+compile_and_run_p2 $1 test_multiple_cogs -O5 -lcix -C COMPACT
+
+
+
+compile_and_run_p2 $1 test_threads -lthreads -ltiny -lc -lm -C TINY
+compile_and_run_p2 $1 test_threads -lthreads -ltiny -lc -lm -C NATIVE
+compile_and_run_p2 $1 test_threads -lthreads -ltiny -lc -lm -C COMPACT
+
+compile_and_run_p2 $1 test_threads -lthreads -lc -lm -C TINY
+compile_and_run_p2 $1 test_threads -lthreads -lc -lm -C NATIVE
+compile_and_run_p2 $1 test_threads -lthreads -lc -lm -C COMPACT
+
+compile_and_run_p2 $1 test_threads -lthreads -lci -C TINY
+compile_and_run_p2 $1 test_threads -lthreads -lci -C NATIVE
+compile_and_run_p2 $1 test_threads -lthreads -lci -C COMPACT
+
+compile_and_run_p2 $1 test_threads -lthreads -lcix -C TINY
+compile_and_run_p2 $1 test_threads -lthreads -lcix -C NATIVE
+compile_and_run_p2 $1 test_threads -lthreads -lcix -C COMPACT
+
+compile_and_run_p2 $1 test_threads -lthreads -lcx -lm -C TINY
+compile_and_run_p2 $1 test_threads -lthreads -lcx -lm -C NATIVE
+compile_and_run_p2 $1 test_threads -lthreads -lcx -lm -C COMPACT
+
+compile_and_run_p2 $1 test_threads -lthreads -O1 -lc -lm -C TINY
+compile_and_run_p2 $1 test_threads -lthreads -O1 -lc -lm -C NATIVE
+compile_and_run_p2 $1 test_threads -lthreads -O1 -lc -lm -C COMPACT
+
+compile_and_run_p2 $1 test_threads -lthreads -O2 -lc -lm -C TINY
+compile_and_run_p2 $1 test_threads -lthreads -O2 -lc -lm -C NATIVE
+compile_and_run_p2 $1 test_threads -lthreads -O2 -lc -lm -C COMPACT
+
+compile_and_run_p2 $1 test_threads -lthreads -O3 -lc -lm -C TINY
+compile_and_run_p2 $1 test_threads -lthreads -O3 -lc -lm -C NATIVE
+compile_and_run_p2 $1 test_threads -lthreads -O3 -lc -lm -C COMPACT
+
+compile_and_run_p2 $1 test_threads -lthreads -O4 -lc -lm -C TINY
+compile_and_run_p2 $1 test_threads -lthreads -O4 -lc -lm -C NATIVE
+compile_and_run_p2 $1 test_threads -lthreads -O4 -lc -lm -C COMPACT
+
+compile_and_run_p2 $1 test_threads -lthreads -O5 -lc -lm -C TINY
+compile_and_run_p2 $1 test_threads -lthreads -O5 -lc -lm -C NATIVE
+compile_and_run_p2 $1 test_threads -lthreads -O5 -lc -lm -C COMPACT
+
+compile_and_run_p2 $1 test_threads -lthreads -O1 -lci -C TINY
+compile_and_run_p2 $1 test_threads -lthreads -O1 -lci -C NATIVE
+compile_and_run_p2 $1 test_threads -lthreads -O1 -lci -C COMPACT
+
+compile_and_run_p2 $1 test_threads -lthreads -O2 -lci -C TINY
+compile_and_run_p2 $1 test_threads -lthreads -O2 -lci -C NATIVE
+compile_and_run_p2 $1 test_threads -lthreads -O2 -lci -C COMPACT
+
+compile_and_run_p2 $1 test_threads -lthreads -O3 -lci -C TINY
+compile_and_run_p2 $1 test_threads -lthreads -O3 -lci -C NATIVE
+compile_and_run_p2 $1 test_threads -lthreads -O3 -lci -C COMPACT
+
+compile_and_run_p2 $1 test_threads -lthreads -O4 -lci -C TINY
+compile_and_run_p2 $1 test_threads -lthreads -O4 -lci -C NATIVE
+compile_and_run_p2 $1 test_threads -lthreads -O4 -lci -C COMPACT
+
+compile_and_run_p2 $1 test_threads -lthreads -O5 -lci -C TINY
+compile_and_run_p2 $1 test_threads -lthreads -O5 -lci -C NATIVE
+compile_and_run_p2 $1 test_threads -lthreads -O5 -lci -C COMPACT
+
+compile_and_run_p2 $1 test_threads -lthreads -O1 -lcx -lm -C TINY
+compile_and_run_p2 $1 test_threads -lthreads -O1 -lcx -lm -C NATIVE
+compile_and_run_p2 $1 test_threads -lthreads -O1 -lcx -lm -C COMPACT
+
+compile_and_run_p2 $1 test_threads -lthreads -O2 -lcx -lm -C TINY
+compile_and_run_p2 $1 test_threads -lthreads -O2 -lcx -lm -C NATIVE
+compile_and_run_p2 $1 test_threads -lthreads -O2 -lcx -lm -C COMPACT
+
+compile_and_run_p2 $1 test_threads -lthreads -O3 -lcx -lm -C TINY
+compile_and_run_p2 $1 test_threads -lthreads -O3 -lcx -lm -C NATIVE
+compile_and_run_p2 $1 test_threads -lthreads -O3 -lcx -lm -C COMPACT
+
+compile_and_run_p2 $1 test_threads -lthreads -O4 -lcx -lm -C TINY
+compile_and_run_p2 $1 test_threads -lthreads -O4 -lcx -lm -C NATIVE
+compile_and_run_p2 $1 test_threads -lthreads -O4 -lcx -lm -C COMPACT
+
+compile_and_run_p2 $1 test_threads -lthreads -O5 -lcx -lm -C TINY
+compile_and_run_p2 $1 test_threads -lthreads -O5 -lcx -lm -C NATIVE
+compile_and_run_p2 $1 test_threads -lthreads -O5 -lcx -lm -C COMPACT
+
+compile_and_run_p2 $1 test_threads -lthreads -O1 -lcix -C TINY
+compile_and_run_p2 $1 test_threads -lthreads -O1 -lcix -C NATIVE
+compile_and_run_p2 $1 test_threads -lthreads -O1 -lcix -C COMPACT
+
+compile_and_run_p2 $1 test_threads -lthreads -O2 -lcix -C TINY
+compile_and_run_p2 $1 test_threads -lthreads -O2 -lcix -C NATIVE
+compile_and_run_p2 $1 test_threads -lthreads -O2 -lcix -C COMPACT
+
+compile_and_run_p2 $1 test_threads -lthreads -O3 -lcix -C TINY
+compile_and_run_p2 $1 test_threads -lthreads -O3 -lcix -C NATIVE
+compile_and_run_p2 $1 test_threads -lthreads -O3 -lcix -C COMPACT
+
+compile_and_run_p2 $1 test_threads -lthreads -O4 -lcix -C TINY
+compile_and_run_p2 $1 test_threads -lthreads -O4 -lcix -C NATIVE
+compile_and_run_p2 $1 test_threads -lthreads -O4 -lcix -C COMPACT
+
+compile_and_run_p2 $1 test_threads -lthreads -O5 -lcix -C TINY
+compile_and_run_p2 $1 test_threads -lthreads -O5 -lcix -C NATIVE
+compile_and_run_p2 $1 test_threads -lthreads -O5 -lcix -C COMPACT
+
+
+
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -ltiny -lc -lm -C TINY
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -ltiny -lc -lm -C NATIVE
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -ltiny -lc -lm -C COMPACT
+
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -lc -lm -C TINY
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -lc -lm -C NATIVE
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -lc -lm -C COMPACT
+
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -lci -C TINY
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -lci -C NATIVE
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -lci -C COMPACT
+
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -lcix -C TINY
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -lcix -C NATIVE
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -lcix -C COMPACT
+
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -lcx -lm -C TINY
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -lcx -lm -C NATIVE
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -lcx -lm -C COMPACT
+
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O1 -lc -lm -C TINY
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O1 -lc -lm -C NATIVE
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O1 -lc -lm -C COMPACT
+
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O2 -lc -lm -C TINY
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O2 -lc -lm -C NATIVE
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O2 -lc -lm -C COMPACT
+
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O3 -lc -lm -C TINY
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O3 -lc -lm -C NATIVE
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O3 -lc -lm -C COMPACT
+
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O4 -lc -lm -C TINY
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O4 -lc -lm -C NATIVE
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O4 -lc -lm -C COMPACT
+
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O5 -lc -lm -C TINY
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O5 -lc -lm -C NATIVE
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O5 -lc -lm -C COMPACT
+
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O1 -lci -C TINY
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O1 -lci -C NATIVE
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O1 -lci -C COMPACT
+
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O2 -lci -C TINY
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O2 -lci -C NATIVE
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O2 -lci -C COMPACT
+
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O3 -lci -C TINY
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O3 -lci -C NATIVE
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O3 -lci -C COMPACT
+
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O4 -lci -C TINY
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O4 -lci -C NATIVE
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O4 -lci -C COMPACT
+
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O5 -lci -C TINY
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O5 -lci -C NATIVE
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O5 -lci -C COMPACT
+
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O1 -lcx -lm -C TINY
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O1 -lcx -lm -C NATIVE
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O1 -lcx -lm -C COMPACT
+
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O2 -lcx -lm -C TINY
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O2 -lcx -lm -C NATIVE
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O2 -lcx -lm -C COMPACT
+
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O3 -lcx -lm -C TINY
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O3 -lcx -lm -C NATIVE
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O3 -lcx -lm -C COMPACT
+
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O4 -lcx -lm -C TINY
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O4 -lcx -lm -C NATIVE
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O4 -lcx -lm -C COMPACT
+
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O5 -lcx -lm -C TINY
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O5 -lcx -lm -C NATIVE
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O5 -lcx -lm -C COMPACT
+
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O1 -lcix -C TINY
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O1 -lcix -C NATIVE
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O1 -lcix -C COMPACT
+
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O2 -lcix -C TINY
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O2 -lcix -C NATIVE
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O2 -lcix -C COMPACT
+
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O3 -lcix -C TINY
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O3 -lcix -C NATIVE
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O3 -lcix -C COMPACT
+
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O4 -lcix -C TINY
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O4 -lcix -C NATIVE
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O4 -lcix -C COMPACT
+
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O5 -lcix -C TINY
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O5 -lcix -C NATIVE
+compile_and_run_p2 $1 test_interrupts -lint -lthreads -O5 -lcix -C COMPACT
+
+
+
+compile_and_run_p2 $1 test_float -lc -lm -C TINY
+compile_and_run_p2 $1 test_float -lc -lm -C COMPACT
+compile_and_run_p2 $1 test_float -lc -lm -C NATIVE
+
+compile_and_run_p2 $1 test_float -lcx -lm -C TINY
+compile_and_run_p2 $1 test_float -lcx -lm -C COMPACT
+compile_and_run_p2 $1 test_float -lcx -lm -C NATIVE
+
+compile_and_run_p2 $1 test_float -O1 -lc -lm -C TINY
+compile_and_run_p2 $1 test_float -O1 -lc -lm -C COMPACT
+compile_and_run_p2 $1 test_float -O1 -lc -lm -C NATIVE
+
+compile_and_run_p2 $1 test_float -O2 -lc -lm -C TINY
+compile_and_run_p2 $1 test_float -O2 -lc -lm -C COMPACT
+compile_and_run_p2 $1 test_float -O2 -lc -lm -C NATIVE
+
+compile_and_run_p2 $1 test_float -O3 -lc -lm -C TINY
+compile_and_run_p2 $1 test_float -O3 -lc -lm -C COMPACT
+compile_and_run_p2 $1 test_float -O3 -lc -lm -C NATIVE
+
+compile_and_run_p2 $1 test_float -O4 -lc -lm -C TINY
+compile_and_run_p2 $1 test_float -O4 -lc -lm -C COMPACT
+compile_and_run_p2 $1 test_float -O4 -lc -lm -C NATIVE
+
+compile_and_run_p2 $1 test_float -O5 -lc -lm -C TINY
+compile_and_run_p2 $1 test_float -O5 -lc -lm -C COMPACT
+compile_and_run_p2 $1 test_float -O5 -lc -lm -C NATIVE
+
+compile_and_run_p2 $1 test_float -O1 -lcx -lm -C TINY
+compile_and_run_p2 $1 test_float -O1 -lcx -lm -C COMPACT
+compile_and_run_p2 $1 test_float -O1 -lcx -lm -C NATIVE
+
+compile_and_run_p2 $1 test_float -O2 -lcx -lm -C TINY
+compile_and_run_p2 $1 test_float -O2 -lcx -lm -C COMPACT
+compile_and_run_p2 $1 test_float -O2 -lcx -lm -C NATIVE
+
+compile_and_run_p2 $1 test_float -O3 -lcx -lm -C TINY
+compile_and_run_p2 $1 test_float -O3 -lcx -lm -C COMPACT
+compile_and_run_p2 $1 test_float -O3 -lcx -lm -C NATIVE
+
+compile_and_run_p2 $1 test_float -O4 -lcx -lm -C TINY
+compile_and_run_p2 $1 test_float -O4 -lcx -lm -C COMPACT
+compile_and_run_p2 $1 test_float -O4 -lcx -lm -C NATIVE
+
+compile_and_run_p2 $1 test_float -O5 -lcx -lm -C TINY
+compile_and_run_p2 $1 test_float -O5 -lcx -lm -C COMPACT
+compile_and_run_p2 $1 test_float -O5 -lcx -lm -C NATIVE
+
+
+compile_and_run_p2 $1 test_float -lc -lma -C TINY
+compile_and_run_p2 $1 test_float -lc -lma -C COMPACT
+compile_and_run_p2 $1 test_float -lc -lma -C NATIVE
+
+compile_and_run_p2 $1 test_float -lcx -lma -C TINY
+compile_and_run_p2 $1 test_float -lcx -lma -C COMPACT
+compile_and_run_p2 $1 test_float -lcx -lma -C NATIVE
+
+compile_and_run_p2 $1 test_float -O1 -lc -lma -C TINY
+compile_and_run_p2 $1 test_float -O1 -lc -lma -C COMPACT
+compile_and_run_p2 $1 test_float -O1 -lc -lma -C NATIVE
+
+compile_and_run_p2 $1 test_float -O2 -lc -lma -C TINY
+compile_and_run_p2 $1 test_float -O2 -lc -lma -C COMPACT
+compile_and_run_p2 $1 test_float -O2 -lc -lma -C NATIVE
+
+compile_and_run_p2 $1 test_float -O3 -lc -lma -C TINY
+compile_and_run_p2 $1 test_float -O3 -lc -lma -C COMPACT
+compile_and_run_p2 $1 test_float -O3 -lc -lma -C NATIVE
+
+compile_and_run_p2 $1 test_float -O4 -lc -lma -C TINY
+compile_and_run_p2 $1 test_float -O4 -lc -lma -C COMPACT
+compile_and_run_p2 $1 test_float -O4 -lc -lma -C NATIVE
+
+compile_and_run_p2 $1 test_float -O5 -lc -lma -C TINY
+compile_and_run_p2 $1 test_float -O5 -lc -lma -C COMPACT
+compile_and_run_p2 $1 test_float -O5 -lc -lma -C NATIVE
+
+compile_and_run_p2 $1 test_float -O1 -lcx -lma -C TINY
+compile_and_run_p2 $1 test_float -O1 -lcx -lma -C COMPACT
+compile_and_run_p2 $1 test_float -O1 -lcx -lma -C NATIVE
+
+compile_and_run_p2 $1 test_float -O2 -lcx -lma -C TINY
+compile_and_run_p2 $1 test_float -O2 -lcx -lma -C COMPACT
+compile_and_run_p2 $1 test_float -O2 -lcx -lma -C NATIVE
+
+compile_and_run_p2 $1 test_float -O3 -lcx -lma -C TINY
+compile_and_run_p2 $1 test_float -O3 -lcx -lma -C COMPACT
+compile_and_run_p2 $1 test_float -O3 -lcx -lma -C NATIVE
+
+compile_and_run_p2 $1 test_float -O4 -lcx -lma -C TINY
+compile_and_run_p2 $1 test_float -O4 -lcx -lma -C COMPACT
+compile_and_run_p2 $1 test_float -O4 -lcx -lma -C NATIVE
+
+compile_and_run_p2 $1 test_float -O5 -lcx -lma -C TINY
+compile_and_run_p2 $1 test_float -O5 -lcx -lma -C COMPACT
+compile_and_run_p2 $1 test_float -O5 -lcx -lma -C NATIVE
+
+
+compile_and_run_p2 $1 test_float -lc -lmb -C TINY
+compile_and_run_p2 $1 test_float -lc -lmb -C COMPACT
+compile_and_run_p2 $1 test_float -lc -lmb -C NATIVE
+
+compile_and_run_p2 $1 test_float -lcx -lmb -C TINY
+compile_and_run_p2 $1 test_float -lcx -lmb -C COMPACT
+compile_and_run_p2 $1 test_float -lcx -lmb -C NATIVE
+
+compile_and_run_p2 $1 test_float -O1 -lc -lmb -C TINY
+compile_and_run_p2 $1 test_float -O1 -lc -lmb -C COMPACT
+compile_and_run_p2 $1 test_float -O1 -lc -lmb -C NATIVE
+
+compile_and_run_p2 $1 test_float -O2 -lc -lmb -C TINY
+compile_and_run_p2 $1 test_float -O2 -lc -lmb -C COMPACT
+compile_and_run_p2 $1 test_float -O2 -lc -lmb -C NATIVE
+
+compile_and_run_p2 $1 test_float -O3 -lc -lmb -C TINY
+compile_and_run_p2 $1 test_float -O3 -lc -lmb -C COMPACT
+compile_and_run_p2 $1 test_float -O3 -lc -lmb -C NATIVE
+
+compile_and_run_p2 $1 test_float -O4 -lc -lmb -C TINY
+compile_and_run_p2 $1 test_float -O4 -lc -lmb -C COMPACT
+compile_and_run_p2 $1 test_float -O4 -lc -lmb -C NATIVE
+
+compile_and_run_p2 $1 test_float -O5 -lc -lmb -C TINY
+compile_and_run_p2 $1 test_float -O5 -lc -lmb -C COMPACT
+compile_and_run_p2 $1 test_float -O5 -lc -lmb -C NATIVE
+
+compile_and_run_p2 $1 test_float -O1 -lcx -lmb -C TINY
+compile_and_run_p2 $1 test_float -O1 -lcx -lmb -C COMPACT
+compile_and_run_p2 $1 test_float -O1 -lcx -lmb -C NATIVE
+
+compile_and_run_p2 $1 test_float -O2 -lcx -lmb -C TINY
+compile_and_run_p2 $1 test_float -O2 -lcx -lmb -C COMPACT
+compile_and_run_p2 $1 test_float -O2 -lcx -lmb -C NATIVE
+
+compile_and_run_p2 $1 test_float -O3 -lcx -lmb -C TINY
+compile_and_run_p2 $1 test_float -O3 -lcx -lmb -C COMPACT
+compile_and_run_p2 $1 test_float -O3 -lcx -lmb -C NATIVE
+
+compile_and_run_p2 $1 test_float -O4 -lcx -lmb -C TINY
+compile_and_run_p2 $1 test_float -O4 -lcx -lmb -C COMPACT
+compile_and_run_p2 $1 test_float -O4 -lcx -lmb -C NATIVE
+
+compile_and_run_p2 $1 test_float -O5 -lcx -lmb -C TINY
+compile_and_run_p2 $1 test_float -O5 -lcx -lmb -C COMPACT
+compile_and_run_p2 $1 test_float -O5 -lcx -lmb -C NATIVE
+
+
+
+compile_and_run_p2 $1 test_float -lc -lmc -C TINY
+compile_and_run_p2 $1 test_float -lc -lmc -C COMPACT
+compile_and_run_p2 $1 test_float -lc -lmc -C NATIVE
+
+compile_and_run_p2 $1 test_float -lcx -lmc -C TINY
+compile_and_run_p2 $1 test_float -lcx -lmc -C COMPACT
+compile_and_run_p2 $1 test_float -lcx -lmc -C NATIVE
+
+compile_and_run_p2 $1 test_float -O1 -lc -lmc -C TINY
+compile_and_run_p2 $1 test_float -O1 -lc -lmc -C COMPACT
+compile_and_run_p2 $1 test_float -O1 -lc -lmc -C NATIVE
+
+compile_and_run_p2 $1 test_float -O2 -lc -lmc -C TINY
+compile_and_run_p2 $1 test_float -O2 -lc -lmc -C COMPACT
+compile_and_run_p2 $1 test_float -O2 -lc -lmc -C NATIVE
+
+compile_and_run_p2 $1 test_float -O3 -lc -lmc -C TINY
+compile_and_run_p2 $1 test_float -O3 -lc -lmc -C COMPACT
+compile_and_run_p2 $1 test_float -O3 -lc -lmc -C NATIVE
+
+compile_and_run_p2 $1 test_float -O4 -lc -lmc -C TINY
+compile_and_run_p2 $1 test_float -O4 -lc -lmc -C COMPACT
+compile_and_run_p2 $1 test_float -O4 -lc -lmc -C NATIVE
+
+compile_and_run_p2 $1 test_float -O5 -lc -lmc -C TINY
+compile_and_run_p2 $1 test_float -O5 -lc -lmc -C COMPACT
+compile_and_run_p2 $1 test_float -O5 -lc -lmc -C NATIVE
+
+compile_and_run_p2 $1 test_float -O1 -lcx -lmc -C TINY
+compile_and_run_p2 $1 test_float -O1 -lcx -lmc -C COMPACT
+compile_and_run_p2 $1 test_float -O1 -lcx -lmc -C NATIVE
+
+compile_and_run_p2 $1 test_float -O2 -lcx -lmc -C TINY
+compile_and_run_p2 $1 test_float -O2 -lcx -lmc -C COMPACT
+compile_and_run_p2 $1 test_float -O2 -lcx -lmc -C NATIVE
+
+compile_and_run_p2 $1 test_float -O3 -lcx -lmc -C TINY
+compile_and_run_p2 $1 test_float -O3 -lcx -lmc -C COMPACT
+compile_and_run_p2 $1 test_float -O3 -lcx -lmc -C NATIVE
+
+compile_and_run_p2 $1 test_float -O4 -lcx -lmc -C TINY
+compile_and_run_p2 $1 test_float -O4 -lcx -lmc -C COMPACT
+compile_and_run_p2 $1 test_float -O4 -lcx -lmc -C NATIVE
+
+compile_and_run_p2 $1 test_float -O5 -lcx -lmc -C TINY
+compile_and_run_p2 $1 test_float -O5 -lcx -lmc -C COMPACT
+compile_and_run_p2 $1 test_float -O5 -lcx -lmc -C NATIVE
+
+
+
+compile_and_run_p2 $1 test_dosfs -C SD -ltiny -lc -lm -C TINY 
+compile_and_run_p2 $1 test_dosfs -C SD -ltiny -lc -lm -C NATIVE
+compile_and_run_p2 $1 test_dosfs -C SD -ltiny -lc -lm -C COMPACT
+
+compile_and_run_p2 $1 test_dosfs -C SD -lc -lm -C TINY
+compile_and_run_p2 $1 test_dosfs -C SD -lc -lm -C NATIVE
+compile_and_run_p2 $1 test_dosfs -C SD -lc -lm -C COMPACT
+
+compile_and_run_p2 $1 test_dosfs -C SD -lci -C TINY
+compile_and_run_p2 $1 test_dosfs -C SD -lci -C NATIVE
+compile_and_run_p2 $1 test_dosfs -C SD -lci -C COMPACT
+
+compile_and_run_p2 $1 test_dosfs -C SD -lcix -C TINY
+compile_and_run_p2 $1 test_dosfs -C SD -lcix -C NATIVE
+compile_and_run_p2 $1 test_dosfs -C SD -lcix -C COMPACT
+
+compile_and_run_p2 $1 test_dosfs -C SD -lcx -lm -C TINY
+compile_and_run_p2 $1 test_dosfs -C SD -lcx -lm -C NATIVE
+compile_and_run_p2 $1 test_dosfs -C SD -lcx -lm -C COMPACT
+
+compile_and_run_p2 $1 test_dosfs -C SD -O1 -lc -lm -C TINY
+compile_and_run_p2 $1 test_dosfs -C SD -O1 -lc -lm -C NATIVE
+compile_and_run_p2 $1 test_dosfs -C SD -O1 -lc -lm -C COMPACT
+
+compile_and_run_p2 $1 test_dosfs -C SD -O2 -lc -lm -C TINY
+compile_and_run_p2 $1 test_dosfs -C SD -O2 -lc -lm -C NATIVE
+compile_and_run_p2 $1 test_dosfs -C SD -O2 -lc -lm -C COMPACT
+
+compile_and_run_p2 $1 test_dosfs -C SD -O3 -lc -lm -C TINY
+compile_and_run_p2 $1 test_dosfs -C SD -O3 -lc -lm -C NATIVE
+compile_and_run_p2 $1 test_dosfs -C SD -O3 -lc -lm -C COMPACT
+
+compile_and_run_p2 $1 test_dosfs -C SD -O4 -lc -lm -C TINY
+compile_and_run_p2 $1 test_dosfs -C SD -O4 -lc -lm -C NATIVE
+compile_and_run_p2 $1 test_dosfs -C SD -O4 -lc -lm -C COMPACT
+
+compile_and_run_p2 $1 test_dosfs -C SD -O5 -lc -lm -C TINY
+compile_and_run_p2 $1 test_dosfs -C SD -O5 -lc -lm -C NATIVE
+compile_and_run_p2 $1 test_dosfs -C SD -O5 -lc -lm -C COMPACT
+
+compile_and_run_p2 $1 test_dosfs -C SD -O1 -lci -C TINY
+compile_and_run_p2 $1 test_dosfs -C SD -O1 -lci -C NATIVE
+compile_and_run_p2 $1 test_dosfs -C SD -O1 -lci -C COMPACT
+
+compile_and_run_p2 $1 test_dosfs -C SD -O2 -lci -C TINY
+compile_and_run_p2 $1 test_dosfs -C SD -O2 -lci -C NATIVE
+compile_and_run_p2 $1 test_dosfs -C SD -O2 -lci -C COMPACT
+
+compile_and_run_p2 $1 test_dosfs -C SD -O3 -lci -C TINY
+compile_and_run_p2 $1 test_dosfs -C SD -O3 -lci -C NATIVE
+compile_and_run_p2 $1 test_dosfs -C SD -O3 -lci -C COMPACT
+
+compile_and_run_p2 $1 test_dosfs -C SD -O4 -lci -C TINY
+compile_and_run_p2 $1 test_dosfs -C SD -O4 -lci -C NATIVE
+compile_and_run_p2 $1 test_dosfs -C SD -O4 -lci -C COMPACT
+
+compile_and_run_p2 $1 test_dosfs -C SD -O5 -lci -C TINY
+compile_and_run_p2 $1 test_dosfs -C SD -O5 -lci -C NATIVE
+compile_and_run_p2 $1 test_dosfs -C SD -O5 -lci -C COMPACT
+
+compile_and_run_p2 $1 test_dosfs -C SD -O1 -lcx -lm -C TINY
+compile_and_run_p2 $1 test_dosfs -C SD -O1 -lcx -lm -C NATIVE
+compile_and_run_p2 $1 test_dosfs -C SD -O1 -lcx -lm -C COMPACT
+
+compile_and_run_p2 $1 test_dosfs -C SD -O2 -lcx -lm -C TINY
+compile_and_run_p2 $1 test_dosfs -C SD -O2 -lcx -lm -C NATIVE
+compile_and_run_p2 $1 test_dosfs -C SD -O2 -lcx -lm -C COMPACT
+
+compile_and_run_p2 $1 test_dosfs -C SD -O3 -lcx -lm -C TINY
+compile_and_run_p2 $1 test_dosfs -C SD -O3 -lcx -lm -C NATIVE
+compile_and_run_p2 $1 test_dosfs -C SD -O3 -lcx -lm -C COMPACT
+
+compile_and_run_p2 $1 test_dosfs -C SD -O4 -lcx -lm -C TINY
+compile_and_run_p2 $1 test_dosfs -C SD -O4 -lcx -lm -C NATIVE
+compile_and_run_p2 $1 test_dosfs -C SD -O4 -lcx -lm -C COMPACT
+
+compile_and_run_p2 $1 test_dosfs -C SD -O5 -lcx -lm -C TINY
+compile_and_run_p2 $1 test_dosfs -C SD -O5 -lcx -lm -C NATIVE
+compile_and_run_p2 $1 test_dosfs -C SD -O5 -lcx -lm -C COMPACT
+
+compile_and_run_p2 $1 test_dosfs -C SD -O1 -lcix -C TINY
+compile_and_run_p2 $1 test_dosfs -C SD -O1 -lcix -C NATIVE
+compile_and_run_p2 $1 test_dosfs -C SD -O1 -lcix -C COMPACT
+
+compile_and_run_p2 $1 test_dosfs -C SD -O2 -lcix -C TINY
+compile_and_run_p2 $1 test_dosfs -C SD -O2 -lcix -C NATIVE
+compile_and_run_p2 $1 test_dosfs -C SD -O2 -lcix -C COMPACT
+
+compile_and_run_p2 $1 test_dosfs -C SD -O3 -lcix -C TINY
+compile_and_run_p2 $1 test_dosfs -C SD -O3 -lcix -C NATIVE
+compile_and_run_p2 $1 test_dosfs -C SD -O3 -lcix -C COMPACT
+
+compile_and_run_p2 $1 test_dosfs -C SD -O4 -lcix -C TINY
+compile_and_run_p2 $1 test_dosfs -C SD -O4 -lcix -C NATIVE
+compile_and_run_p2 $1 test_dosfs -C SD -O4 -lcix -C COMPACT
+
+compile_and_run_p2 $1 test_dosfs -C SD -O5 -lcix -C TINY
+compile_and_run_p2 $1 test_dosfs -C SD -O5 -lcix -C NATIVE
+compile_and_run_p2 $1 test_dosfs -C SD -O5 -lcix -C COMPACT
+
+
+
+fi
+
+unset CATALINA_DEFINE
+echo ""
+echo "   ===="
+echo "   Done"
+echo "   ===="
+echo ""
+

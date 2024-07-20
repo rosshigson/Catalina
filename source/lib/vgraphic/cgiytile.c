@@ -1,0 +1,12 @@
+#include <vgraphic.h>
+
+// external function to return data about the CGI Block
+// (stored during setup of CGI plugin)
+extern unsigned long _cgi_data();
+
+
+// Get y_tiles
+//
+int cgi_y_tiles() {
+   return (_cgi_data() >> 16) & 0xFF;
+}

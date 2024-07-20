@@ -1,0 +1,70 @@
+In this folder are some useful utilities, primarily to do with managing
+External Memory (XMM) and multiple CPUs (on those platforms that support
+these).
+
+To build the utilities, use the 'build_utilities' script provided. This
+is an interactive script that will prompt you for the information it needs
+and build the utilities appropriate for your platform. It will (optionally)
+copy these utilities into the Catalina 'bin' directory, or else just leave
+them in the 'utilities' directory. You can manually copy them to another
+directory if you want (e.g. if you use multiple Propeller platforms, you 
+will need to build the utilities specifically for each one).
+
+This directory also contains a RAM Test program, which is built separately
+using the build_ram_test script.
+
+Here are the utilities that may be built by the script:
+
+For the Propeller 1:
+
+   SRAM.binary             A payload utility to load a program into Static RAM.
+
+   FLASH.binary            A payload utility to load a program into Flash RAM.
+
+   XMM.binary              A payload utility to load a program into XMM RAM.
+                           (this is just a copy of SRAM.binary or FLASH.binary)
+
+   EEPROM.binary           A payload utility to load a program into EEPROM
+
+   MOUSE.binary            A payload utility to use a mouse port for a
+                           serial load.
+
+   CPU_X_Boot.binary       A Catalyst utility to enable a serial load to 
+                           another CPU in a multi-CPU system (X = 1, 2 or 3)
+
+   CPU_X_Reset.binary      A Catalyst utility to reset another CPU in a 
+                           multiple CPU system (X = 1, 2 or 3)
+
+For the Propeller 2:
+
+
+   SRAM.bin                A payload utility to load a program into Static RAM.
+                           (currently, only PSRAM is supported).
+
+   XMM.bin                 A payload utility to load a program into XMM RAM.
+                           (this is just a copy of SRAM.bin)
+  
+Platform-specific notes:
+
+On Propeller 2 platforms only PSRAM is currently supported as XMM, such as that
+found on the P2_EDGE board. For other P2 platforms, there are no special
+utilities required. To load the FLASH RAM on the Propeller 2, FLASH.binary is 
+not required - instead there is a script called 'flash_payload'. See the 
+'Catalina Reference Manual (Propeller 2)' for more details on this script.
+ 
+On the Hydra and Hybrid, only the MOUSE.binary progam is built, because these 
+platforms require the mouse port to be used for serial loads of XMM programs. 
+However, this file is also copied to SRAM.binary and XMM.binary. See the 
+'Catalina Reference Manual (Propeller 1)' for more details 
+on using the Mouse port to load programs on these platforms.
+
+This directory also contains the Extended Addressing modification for the 
+HX512 card for the Hydra and Hybrid - this must be programmed into the HX512 
+to enable the full 512Kb to be addressed by Catalina
+
+On the TriBladeProp, the Generic SD Loader program is built for Blade #2, and 
+various other utilities are built for resetting and loading programs into 
+Blades #1 and #3 from Blade #2. See the README.TriBladeProp file in the target 
+directory for more detail on using these utilities, or the TriBladeProp 
+tutorial in 'Getting Started with Catalina'.
+

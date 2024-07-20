@@ -1,0 +1,20 @@
+#!/bin/bash -login
+#
+source ../../use_catalina
+
+unset CATALINA_DEFINE
+
+make clean 
+make -B all 
+make clean
+make -B all PROPELLER_2=TRUE
+make clean 
+make -B all LARGE=TRUE
+make clean 
+make -B all LARGE=TRUE  PROPELLER_2=TRUE
+make clean 
+make -B all COMPACT=TRUE
+make clean
+make -B all COMPACT=TRUE  PROPELLER_2=TRUE
+make clean 
+make -B all NATIVE=TRUE  PROPELLER_2=TRUE

@@ -1,0 +1,8 @@
+#!/bin/bash
+#set -x
+
+if [[ -e Makefile ]] ; then
+  make clean
+fi
+rm -f Catalina.spin Catalina.s
+rm -f *.bin *.binary *.eeprom *.dbg *.debug *.obj *.lst

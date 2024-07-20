@@ -1,0 +1,349 @@
+Catalyst v6.0
+=============
+
+This file contains a quick overview of Catalyst. For more details, see the
+Catalyst Reference Manual.
+
+Catalyst is an enhanced SD-card based program loader. It is mainly intended to
+be used with programs created with the Catalina C compiler, but it can also be 
+used for loading and executing ordinary SPIN/PASM binaries.
+
+Strictly speaking, Catalyst is JUST a program loader - it is not really an
+operating system because it does no resource management - however, it can be
+used to load programs that perform various resource management tasks - it
+even comes with a few - e.g. various utilities for doing SD card management.
+
+However, when Catalyst is used on the P2, or is programmed into EEPROM on the
+P1, and when each loaded program resets the Propeller on termination (as 
+Catalina programs now do), it can provide quite an effective single-user 
+environment for self-hosted program development on the Propeller. Currently 
+supported are Lua, BASIC and PASCAL (and of course PASM/SPIN, using Sphinx)
+on both the Propeller 1 and the Propeller 2. Self-hosted PASM and ANSI C 
+development is also supported, but only on a Propeller 2 with sufficient XMM 
+RAM. See the 'catalina' subdirectory for more details.
+
+Catalyst can be used on single-CPU systems (e.g. the Hydra, Hybrid, RamBlade, 
+DracBlade, or Parallax Demo board) or on multi-CPU systems (e.g. TriBladeProp).
+All it really requires is an SD card. It can be used with a local keyboard and
+TV or Video display, or by using a PC terminal emulator.
+
+Catalyst can be used to load normal SPIN/PASM as well as Catalina C programs. 
+It can be used on any Propeller to load programs into Hub RAM, and on platforms
+with XMM memory it can be used to load Catalina programs up to 16Mb into the 
+XMM RAM.
+
+Any command line parameters entered in Catalyst are automatically passed to
+the loaded program - i.e. the command line will appear in the C program's main
+function as argc and argv parameters. If the same program is loaded by another
+means (e.g. using Parallax Propellent or Catalina Payload) then they will 
+execute normally, but the argv and argc parameters may be a NULL string 
+and zero (respectively). Support for passing arguments when using Catalina 
+Payload may be added in a future release of Payload.
+
+A SPIN object that allows interpreting the Catalyst command line from within 
+the loaded SPIN program is also provided.
+
+Once a program is loaded and executed, Catalyst does not occupy any system 
+resources - i.e. the loaded program has all Propeller resources available to 
+it.
+
+Catalyst provides the following simple built-in commands:
+   CLS  - clear the screen
+   HELP - display some help
+
+As well as built-in commands, Catalyst can execute external commands. When a 
+command (such as 'mv') is entered that does not match an internal command,
+Catalyst will look for it in various places. If Lua scripting is enabled,
+it will first look for it as a text Lua script (mv.lua) and then as a 
+compiled Lua script (mv.lux). It will then look for the file MV.BIN in the 
+root directory of the SD Card, then in the BIN directory (if one exists)
+and execute it if found. Then it will look for variants with various
+extensions depending on whether Catalyst is running on a Propeller 1 (.XMM, 
+.SMM, .LMM) or a Propeller 2 (.BIX). 
+
+Catalyst provides the following external commands. These commands do not 
+require any XMM RAM, and will execute on any Propeller platform:
+
+   MKDIR - make a directory
+   RMDIR - remove a directory
+   MV    - move or rename a file
+   RM    - delete a file
+   CP    - copy files
+   LS    - list files 
+   CAT   - concatenate and print files
+
+NOTES:
+
+When using the local display and keyboard, all commands will pause after each 
+screen full of information has been displayed, and require you to press a key
+to continue.
+
+For CLS to work correctly when using a Serial HMI option (PC, TTY or SIMPLE), 
+Catalyst should be compiled with the VT100 opton, and a VT100 compatible
+terminal emulator (such as payload or PUTTY) must be used. The same is true 
+of the VI.BIN external command.
+
+Whenever the SD Card is inserted, Catalyst must be reset. Otherwise the SD file
+system access will not work correctly.
+
+
+The following demo programs are provided in the catalyst\demo subdirectory:
+
+   DEMO.SPIN  - a demo of how to use the Catalyst command line from SPIN
+   DEMO.SPIN2 - a demo of how to use the Catalyst command line from SPIN2
+   DEMO.C     - a demo of how to use the Catalyst command line from C
+
+See the file README.Demo in that subdirectory for more information.
+
+The following programs demonstrate the possibilities for a fully self-hosted 
+development on the Propeller. However, they are large programs and require 
+either a P2, or a P1 platform with at least 512Kb of XMM RAM:
+
+   VI        - the VI text editor (when using the PC HMI, this requires a 
+               VT100-compatibly terminal emulator, such as PUTTY), or using
+               the "interactive" mode of the payload program loader.
+   DBASIC    - the Dumbo Basic interpreter
+   JZIP      - an Infocom game interpreter
+   PCOM/PINT - Pascal compiler/interpreter
+   SST       - a version of Super Star Trek
+   LUA       - the Lua scripting language
+
+For example, to create, compile and edit a pascal program, enter the following
+commands in Catalyst:
+
+   vi sample.pas               <- start vi, creating the file sample.pas
+   pcom sample.pas sample.p5   <- compile sample.pas using the Pascal P5
+                                  compiler
+   pint sample.p5              <- execute the compiled program using the 
+                                  Pascal P5 interpreter
+
+Or to create and execute a basic program, , enter the following commands in
+ Catalyst:
+
+   vi sample.bas      <- start vi, creating the file sample.bas
+   dbasic sample.bas  <- start Dumbo Basic, executing sample.bas
+
+Or to create and execute a Lua program, , enter the following commands in
+ Catalyst:
+
+   vi sample.lua      <- start vi, creating the file sample.lua
+   lua sample.lua     <- start Lua, executing sample.lua
+
+Or to just have a little fun, , enter the following command in Catalyst:
+
+   jzip -l30 -c40 zork3.dat    <- start the JZIP interpreter using a sreen of
+                                  30 lines and 40 columns, and play Zork III
+
+COMMAND REFERENCE
+=================
+
+mkdir - Make Directory
+======================
+
+Make one or more directories, optionally making each parent directory
+in turn if they do not exist.
+
+syntax:
+   mkdir [options] directory ...
+
+options:
+   -h or -?  print help
+   -d        print diagnostics
+   -p        create parent directories if required
+
+e.g:
+   mkdir a/b/c             <- will make directory c only if a/b exists
+
+   mkdir -p a/b/c          <- will make directories a, then a/b, then a/b/c
+                              if they do not already exist
+
+rmdir - Remove Directory
+========================
+
+Remove one or more directories, optionally removing each parent directory 
+recursively if they are empty.
+
+syntax:
+   rmdir [options] directory ...
+
+options:
+   -h or -?  print help
+   -d        print diagnostics
+   -p        remove parent directories if empty
+
+e.g:
+   rmdir a/b/c             <- will remove directory a/b/c only
+
+   rmdir -p a/b/c          <- will remove directories a/b/c, then a/b, then a
+                              (provided they are empty)
+
+ls - List Files
+===============
+
+list the details of a file or the contents of a directory.
+
+syntax:
+   ls [options] [file_or_directory]
+
+options:
+   -h or -?  print help
+   -d        print diagnostics
+   -l        long format listing
+   -l -l     very long listing format
+   -r        recursively list subdirectories
+
+e.g:
+   ls or ls .              <- list the current (top level) directory
+
+   ls a/b/c                <- list directory a/b/c
+
+If no file or directory is specified, the root directory / is listed.
+
+For arguments that may be interpreted as files or directories, adding a 
+trailing "/" ensures they will be treated as directories. For example:
+
+      ls bin      -- list just the entry "bin" (if it exists)
+      ls bin/     -- list the contents of directory "bin" (if it exists)
+
+rm - Remove File
+================
+
+Remove one or more files, optionally also removing directories (provided they 
+are empty).
+
+syntax:
+   rm [options] file_or_directory ...
+
+options:
+   -h or -?  print help
+   -d        print diagnostics
+   -c        count, but do not remove
+   -i        interactive mode
+   -f        force directory removal
+   -r        recursive remove
+
+e.g:
+   rm a/b.txt
+   rm a.txt b.txt
+
+In interactive mode, this command will prompt before processing each file. 
+Press "y" or "Y" to process the specified file, "a" or "A" to process ALL 
+files without further prompting, or any other key to skip the specified file 
+and continue with the next file.
+
+cp - Copy Files
+===============
+
+Copy one file to another, or one or more files to a directory. If there are 
+only two arguments, and the target does not exist, you must tell cp whether
+the target is supposed to be a file or a directory.
+
+syntax:
+   cp [options] source_file [source_file ...] target_file_or_directory
+
+options:
+   -h or -?  print help
+   -d        print diagnostics
+   -f        force overwrite (if target is read-only)
+   -i        interactive (prompt for each copy)
+   -t        target is a directory
+   -T        target is a file
+
+e.g:
+   cp a.txt b.txt c.txt my_dir
+   cp a.txt b.txt
+
+In interactive mode, this command will prompt before processing each file. 
+Press "y" or "Y" to process the specified file, "a" or "A" to process ALL 
+files without further prompting, or any other key to skip the specfied file 
+and continue with the next file.
+
+mv - Move Files
+===============
+
+Move one file to another, or one or more files to a directory. If there are 
+only two arguments, and the target does not exist, you must tell mv whether
+the target is supposed to be a file or a directory.
+
+NOTE: mv is essentially a cp followed by an rm - with the rm only performed
+if the copy suceeds. This means that there must be enough free space to 
+hold two complete copies of the file. It also means that mv can be quite slow.
+
+syntax:
+   mv [options] source_file [source_file ...] target_file_or_directory
+
+options:
+   -h or -?  print help
+   -d        print diagnostics
+   -f        force overwrite (if target is read-only)
+   -i        interactive (prompt for each move)
+   -t        target is a directory
+   -T        target is a file
+
+e.g:
+   mv a.txt b.txt c.txt my_dir
+   mv a.txt b.txt
+
+In interactive mode, this command will prompt before processing each file. 
+Press "y" or "Y" to process the specified file, "a" or "A" to process ALL 
+files without further prompting, or any other key to skip the specfied file 
+and continue with the next file.
+
+cat - Concatenate and Print files
+=================================
+
+Concatenate and print one or more text files. 
+
+syntax
+   cat [options] source_file ...
+
+options
+   -h or -?  print help
+   -d        print diagnostics
+   -i        interactive (paged)
+
+Wildcard Support
+================
+
+The following commands have wildcard support:
+
+   ls - list files and/or directories
+   rm - delete files or directories
+   cp - copy files
+   mv - move files
+   cat - concatenate and print files
+
+The following wildcard syntax is accepted:
+
+      *    matches zero or more characters
+      ?    matches any single character
+    [set]  matches any character in the set
+    [^set] matches any character NOT in the set
+           where a set is a group of characters or ranges. a range
+           is written as two characters seperated with a hyphen, 
+           so a-z denotes all characters between a to z inclusive.
+    [-set] matches a literal hypen and any character in the set
+    []set] matches a literal close bracket and any character in the set
+    char   matches itself except where char is '*' or '?' or '['
+    \char  matches char, including any pattern character
+
+Some wildcard examples:
+
+   Example:     Matches:
+
+   a*c          ac abc abbc ...
+   a?c          acc abc aXc ...
+   a[a-z]c      aac abc acc ...
+   a[-a-z]c     a-c aac abc ...
+
+Some actual command examples:
+
+   ls *.bin *.dat
+   mv [a-f]*.bin bin
+   rm ???.dat
+   cat *.bas
+
+Note that wildcards can only be used in the file name portion of a
+path, not in the directory portion, so you cannot specify an argument 
+like "/b??/*.*" and expect it to match "bin/*.*"
+

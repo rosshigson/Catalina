@@ -1,0 +1,50 @@
+#!/bin/bash -login
+#
+# This file sets the "execute" permission correctly on all files in
+# a Catalina installation.
+#
+TMP_LCCDIR=$LCCDIR
+if [[ "$TMP_LCCDIR" == "" ]]; then
+   TMP_LCCDIR=/opt/catalina	
+fi
+#
+if [[ ! -e $TMP_LCCDIR/bin/catalina_env ]]; then
+   echo ""
+   echo "ERROR: Catalina does not appear to be installed in $TMP_LCCDIR"
+   echo "";
+   echo "Set the environment variable LCCDIR to where Catalina is installed.";
+   echo "";
+   exit
+fi   
+
+cd $TMP_LCCDIR
+#
+# add read and execute permission on those files and directories that need it:
+#
+# first, any directories ...
+#
+find -type d -name "*" -exec chmod a+rx  "{}" \;
+#
+# then, everything in specific directories (also, make some writable) ...
+#
+chmod -R a+rwx lib
+chmod -R a+rwx include
+chmod -R a+rwx bin
+chmod -R a+rwx demos
+chmod -R a+rwx validation
+chmod -R a+rwx utilities
+chmod -R a+rwx target
+chmod -R a+rwx target/p2
+chmod -R a+rwx target/p1
+chmod -R a+rwx minimal
+chmod -R a+rwx embedded
+chmod -R a+rwx source
+#
+# then, any "build" scripts or other special files ...
+#
+find . -name "build_*" -exec chmod a+x {} \;
+find . -name "validate_*" -exec chmod a+x {} \;
+find . -name "copy_*" -exec chmod a+x {} \;
+find . -name "clean_*" -exec chmod a+x {} \;
+find . -name "configure" -exec chmod a+x {} \;
+find . -name "genfiles" -exec chmod a+x {} \;

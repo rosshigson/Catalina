@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cp ../../../lib/assert.s .
+cp ../../../lib/bbexit.s .
+cp ../../../lib/yynull.s .
+catbind *.s -i -e

@@ -1,0 +1,23 @@
+The P2_EVAL configuration file (P2EVAL.inc) is used when the Catalina 
+symbol P2_EVAL is defined on the Catalina command-line (as -C P2_EVAL) or
+included in the definition of CATALINA_DEFINE.
+
+For example:
+
+   catalina -p2 -lc hello_world.c -C P2_EVAL
+
+or
+
+   set CATALINA_DEFINE=P2_EVAL
+   catalina -p2 -lc hello_world.c
+
+The P2_EVAL configuration file supports all revisions of the Propeller 2 
+Evaluation Board (64000).
+
+The P2_EVAL configuration file includes XMM RAM definitions to suit the 
+Parallax Hyper RAM add-on board. This used as additional RAM storage by 
+linking with the hyper library (i.e. adding -lhyper to the Catalina command 
+line). It can be used as XMM RAM simply by specifying -C LARGE or -C SMALL
+on the command line (-C HYPER can be added but is the default for this
+platform, so this is not usually required) 
+

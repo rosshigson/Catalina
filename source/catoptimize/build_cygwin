@@ -1,0 +1,40 @@
+#!/bin/bash
+#set -x
+
+#
+# build LMM/XMM/NATIVE optimizer
+#
+./CompileOptimizerCygwin catopt_0
+./CompileOptimizerCygwin catopt_1
+./CompileOptimizerCygwin catopt_2
+./CompileOptimizerCygwin catopt_3
+./CompileOptimizerCygwin catopt_4
+./CompileOptimizerCygwin catopt_5
+./CompileOptimizerCygwin catopt_6
+./CompileOptimizerCygwin catopt_7
+./CompileOptimizerCygwin catopt_8
+./CompileOptimizerCygwin catopt_9
+./CompileOptimizerCygwin catopt_10
+./CompileOptimizerCygwin catopt_11
+./CompileOptimizerCygwin catopt_12
+./CompileOptimizerCygwin catopt_13
+
+#
+# build CMM optimizer
+#
+./CompileOptimizerCygwin cmmopt_0
+./CompileOptimizerCygwin cmmopt_1
+./CompileOptimizerCygwin cmmopt_2
+./CompileOptimizerCygwin cmmopt_3
+./CompileOptimizerCygwin cmmopt_4
+./CompileOptimizerCygwin cmmopt_5
+./CompileOptimizerCygwin cmmopt_6
+./CompileOptimizerCygwin cmmopt_7
+./CompileOptimizerCygwin cmmopt_8
+./CompileOptimizerCygwin cmmopt_9
+./CompileOptimizerCygwin cmmopt_10
+./CompileOptimizerCygwin cmmopt_11
+./CompileOptimizerCygwin cmmopt_12
+./CompileOptimizerCygwin cmmopt_13
+./CompileOptimizerCygwin cmmopt_14
+

@@ -1,0 +1,135 @@
+# Copyright (c) 1992,1993 Chris and John Downey
+#***
+#
+# @(#)makefile.cat	2.15 (Ross Higson) 12/24/09
+#
+# program name:
+#	xvi
+# function:
+#	Portable version of UNIX "vi" editor, with extensions.
+# module name:
+#	makefile.p2
+# module function:
+#	Makefile for Catalina using the P2.
+# history:
+#	STEVIE - ST Editor for VI Enthusiasts, Version 3.10
+#	Originally by Tim Thompson (twitch!tjt)
+#	Extensive modifications by Tony Andrews (onecom!wldrdg!tony)
+#	Heavily modified by Chris & John Downey
+#	Catalina version by Ross Higson
+#***
+
+.SUFFIXES: .obj
+
+CFLAGS=
+LDFLAGS=
+
+# P2 if there is a P2 in CATALINA_DEFINES
+ifeq (P2, $(findstring P2, $(CATALINA_DEFINE)))
+	CFLAGS = -p2 
+  LDFLAGS= -p2 
+endif
+
+# P2 if there is a P2 in CATALINA_OPTIONS
+ifeq (P2, $(findstring P2, $(CATALINA_OPTIONS)))
+	CFLAGS = -p2 
+  LDFLAGS= -p2 
+endif
+
+# P2 if there is a -p2 in CATALINA_OPTIONS
+ifeq (-p2, $(findstring -p2, $(CATALINA_OPTIONS)))
+	CFLAGS = -p2 
+  LDFLAGS= -p2 
+endif
+
+# otherwise its a P1
+ifeq ("$(CFLAGS)", "")
+	CFLAGS= -C LARGE
+endif
+ifeq ("$(LDFLAGS)", "")
+	LDFLAGS= -C LARGE
+endif
+
+CFLAGS += -DCATALINA -W-w
+
+ifeq ($(OS), Windows_NT)
+CC=catalina.exe
+LD=catalina.exe
+else
+CC=catalina
+LD=catalina
+endif
+
+RM=-rm -f
+CP=cp -f
+
+# the following options are suitable for any platform - any other
+# options (e.g. HMI) can be specified using CATALINA_DEFINE
+SYSDEFS=	-DPOSIX -CNO_MOUSE -CNO_FP
+DEBUGFLAG=
+OPTFLAG=
+INCDIRS=
+LIBS=	-lcx
+
+CFLAGS  += 	$(SYSDEFS) $(INCDIRS) $(OPTFLAG)
+LDFLAGS +=
+
+LINTFLAGS=	$(SYSDEFS) $(INCDIRS) -ap
+
+MACHSRC=	defmain.c defscr.c catalina.c 
+MACHOBJ=	defmain.obj defscr.obj catalina.obj
+MACHINC=	catalina.h
+
+GENINC=		ascii.h change.h cmd.h param.h ptrfunc.h regexp.h regmagic.h \
+					virtscr.h xvi.h \
+
+GENSRC=		alloc.c altstack.c ascii.c buffers.c \
+		cmdline.c cmdmode.c cmdtab.c cursor.c dispmode.c \
+		edit.c ex_cmds1.c ex_cmds2.c events.c \
+		fileio.c find.c flexbuf.c \
+		map.c mark.c misccmds.c mouse.c movement.c normal.c \
+		param.c pipe.c preserve.c ptrfunc.c regexp.c \
+		screen.c search.c startup.c status.c \
+		tag.c targets.c undo.c update.c \
+		version.c vi_cmds.c vi_ops.c virtscr.c \
+		windows.c yankput.c
+
+GENOBJ=		alloc.obj altstack.obj ascii.obj buffers.obj \
+		cmdline.obj cmdmode.obj cmdtab.obj cursor.obj dispmode.obj \
+		edit.obj ex_cmds1.obj ex_cmds2.obj events.obj \
+		fileio.obj find.obj flexbuf.obj \
+		map.obj mark.obj misccmds.obj mouse.obj movement.obj normal.obj \
+		param.obj pipe.obj preserve.obj ptrfunc.obj regexp.obj \
+		screen.obj search.obj startup.obj status.obj \
+		tag.obj targets.obj undo.obj update.obj \
+		version.obj vi_cmds.obj vi_ops.obj virtscr.obj \
+		windows.obj yankput.obj
+
+all:		xvi
+
+xvi:		$(GENOBJ) $(MACHOBJ)
+		$(CC) $(CFLAGS) -o xvi $(GENOBJ) $(MACHOBJ) $(LIBS) $(LDFLAGS)
+
+.c.obj:		$< $(GENINC) $(MACHINC) param.c
+		$(CC) $(CFLAGS) -c -o $@ $<
+
+sources:
+		sccs check || sccs delget `sccs tell`
+
+lint:
+		lint $(LINTFLAGS) $(GENSRC) $(MACHSRC)
+
+tags:		$(GENSRC) $(MACHSRC)
+		ctags -t $(GENSRC) $(MACHSRC) $(GENINC) $(MACHINC)
+
+clean:
+		$(RM) *.o
+		$(RM) *.obj
+		$(RM) *.lst
+		$(RM) *.bin
+		$(RM) *.binary
+
+install:
+		mv xvi $(HOME)/bin/`arch`/xvi
+
+$(GENOBJ): 	$(GENINC) $(MACHINC)

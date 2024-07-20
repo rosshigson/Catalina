@@ -1,0 +1,38 @@
+#!/bin/bash
+
+TMP_LCCDIR=$LCCDIR
+if [[ "$TMP_LCCDIR" == "" ]]; then
+   TMP_LCCDIR=/opt/catalina	
+fi
+
+if [[ ! -e $TMP_LCCDIR/bin/catalina_env ]]; then
+   echo ""
+   echo "ERROR: Catalina does not appear to be installed in $TMP_LCCDIR"
+   echo "";
+   echo "Set the environment variable LCCDIR to where Catalina is installed.";
+   echo "";
+   exit
+fi   
+
+if [ -f $1 ]; then
+
+   FILE_NAME=$1
+
+fi
+
+if [ -f $1.bin ]; then
+
+   FILE_NAME=$1.bin
+
+fi
+
+if [ "$FILE_NAME" != "" ]; then
+
+   bindump $FILE_NAME -p " long $" >flash_program.inc
+   p2_asm "$TMP_LCCDIR/target/p2/flshload.t" -I . -o tmp_flash
+   payload -o2 tmp_flash.bin $2 $3 $4 $5 $6 $7 $8 $9
+
+   rm -f tmp_flash.*
+   rm -f flash_program.inc
+
+fi

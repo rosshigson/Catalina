@@ -1,0 +1,24 @@
+[MAPPING FILE]
+C:\Users\rossh\AppData\Local\Temp\GNAT-TEMP-000005.TMP
+[TOOLCHAIN VERSION]
+ada
+GNAT 2021
+[MAIN BASE NAME]
+terminal_emulator
+[COMPILER PATH]
+c:\gnat\2021\bin\gcc.exe
+[COMPILER LEADING SWITCHES]
+-c
+-x
+ada
+-gnatA
+[MAIN DEPENDENCY FILE]
+C:\GNAT\terminal\emulator\terminal_emulator.ali
+[DEPENDENCY FILES]
+[BINDING OPTIONS]
+gnatbind_prefix=
+[PROJECT FILES]
+C:\GNAT\terminal\emulator\emulator.gpr
+20221115060844 fffb1b37cb72a5e7c4783c08735b393e
+C:\gnat\2021\share\gpr\win32ada.gpr
+20221115055804 dd92c4d1628a89f31aa817745bc4b302

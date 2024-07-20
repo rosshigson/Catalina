@@ -1,0 +1,111 @@
+This file contains any messages produced by compilers while
+running configure, to aid debugging if configure makes a mistake.
+
+configure:531: checking for gcc
+configure:644: checking whether the C compiler (gcc  ) works
+configure:660: gcc -o conftest    conftest.c  1>&5
+configure:686: checking whether the C compiler (gcc  ) is a cross-compiler
+configure:691: checking whether we are using GNU C
+configure:700: gcc -E conftest.c
+configure:719: checking whether gcc accepts -g
+configure:781: checking for a BSD compatible install
+configure:834: checking how to run the C preprocessor
+configure:855: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:915: checking whether gcc needs -traditional
+configure:922:19: sgtty.h: No such file or directory
+configure:1018: checking return type of signal handlers
+configure:1040: gcc -c -g -O2  conftest.c 1>&5
+configure:1059: checking for ANSI C header files
+configure:1072: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1139: gcc -o conftest -g -O2   conftest.c  1>&5
+configure:1177: checking for fcntl.h
+configure:1187: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1177: checking for ioctl.h
+configure:1187: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1183:19: ioctl.h: No such file or directory
+configure: failed program was:
+#line 1182 "configure"
+#include "confdefs.h"
+#include <ioctl.h>
+configure:1177: checking for sgtty.h
+configure:1187: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1183:19: sgtty.h: No such file or directory
+configure: failed program was:
+#line 1182 "configure"
+#include "confdefs.h"
+#include <sgtty.h>
+configure:1177: checking for stdlib.h
+configure:1187: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1177: checking for string.h
+configure:1187: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1177: checking for sys/filio.h
+configure:1187: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1183:23: sys/filio.h: No such file or directory
+configure: failed program was:
+#line 1182 "configure"
+#include "confdefs.h"
+#include <sys/filio.h>
+configure:1177: checking for sys/ioctl.h
+configure:1187: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1177: checking for termio.h
+configure:1187: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1177: checking for termios.h
+configure:1187: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1177: checking for unistd.h
+configure:1187: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1222: checking for alarm
+configure:1250: gcc -o conftest -g -O2   conftest.c  1>&5
+configure:1222: checking for rdchk
+configure:1250: gcc -o conftest -g -O2   conftest.c  1>&5
+/cygdrive/c/WIN98/TEMP/cc2um4Y0.o(.text+0x16): In function `main':
+/cygdrive/e/terminal/vttest/configure:1244: undefined reference to `_rdchk'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 1227 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char rdchk(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char rdchk();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_rdchk) || defined (__stub___rdchk)
+choke me
+#else
+rdchk();
+#endif
+
+; return 0; }
+configure:1222: checking for tcgetattr
+configure:1250: gcc -o conftest -g -O2   conftest.c  1>&5
+configure:1222: checking for usleep
+configure:1250: gcc -o conftest -g -O2   conftest.c  1>&5
+configure:1278: checking if POSIX VDISABLE symbol should be used
+configure:1328: gcc -o conftest -g -O2   conftest.c  1>&5
+configure:1351: checking if we may use FIONREAD
+configure:1371: gcc -c -g -O2  conftest.c 1>&5
+configure: In function `main':
+configure:1366: error: `FIONREAD' undeclared (first use in this function)
+configure:1366: error: (Each undeclared identifier is reported only once
+configure:1366: error: for each function it appears in.)
+configure: failed program was:
+#line 1357 "configure"
+#include "confdefs.h"
+
+#if HAVE_SYS_FILIO_H
+#  include <sys/filio.h>	/* FIONREAD */
+#endif
+	
+int main() {
+
+long l1;
+ioctl (0, FIONREAD, &l1);
+	
+; return 0; }

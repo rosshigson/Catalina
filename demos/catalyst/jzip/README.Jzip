@@ -1,0 +1,85 @@
+This is JZIP - an Infocom game interpreter from the grand old days of 
+text-based computer games - for Catalina/Catalyst. 
+
+With this interpreter, and suitable game files, you can play all the Infocom
+greats - Zork, Deadline, Suspended, Witness, Hitchhikers Guide to the Galaxy,
+A Mind Forever Voyaging, Starcrossed  ... etc etc ... all on the Propeller!
+
+I have included game files for Zork I, Zork II and Zork III - all downloaded 
+(legally) from http://www.infocom-if.org.
+
+Other Infocom game files can be located on the internet, but they are probably
+illegal. However, if you happen to have a copy of these games, I believe all 
+you need to do is copy the appropriate ".DAT" file from your original disks.
+
+To play these games using the JZIP binaries enclosed, you will need a Propeller
+with an SD Card and 512K SRAM (such as a Hybrid with a HX512 SRAM card and 
+epmoyer's firmware mod, or a TriBladeProp, DracBlade or RamBlade).
+
+I have included the original source, plus a "wrapper" program called 
+"catalina_jzip.c" which allows the entry of a file name for jzip to load
+if no file is specified on the command line.
+
+Note there are NO changes to the original zjip source code required to 
+compile and run JZIP under Catalina - but I have added a couple of progress 
+messages while the game is loading and initializing from the SD Card, since 
+this takes about 30 seconds.
+
+
+BUILDING JZIP
+=============
+
+Building JZIP requires both Catalina and MinGW to be installed. There is a 
+makefile (called Catalina.mak) which can be called directly.
+
+However, the simplest way to build JZIP on most platforms is to use the 
+'build_all' script, specifying the platform any necessary options on the 
+command line:
+
+For example:
+
+   build_all HYBRID
+or
+   build_all DRACBLADE
+
+If you do not want to use the default HMI option for the platform, you can 
+override it on the command line. Also, if you intend to use a VT100-compatible
+PC terminal emulator (such as putty) you should specify the VT100 option - this
+tells jzip what type and size of screen to expect. 
+
+For example, to build vi to use the PC HMI on various platforms:
+
+   build_all DRACBLADE PC VT100
+or
+   build_all RAMBLADE PC VT100
+or
+   build_all TRIBLADEPROP CPU_2 PC VT100
+
+Note that you may need to edit the above batch file if Catalina is not 
+installed in the default location ("C:\Program Files (x86)\Catalina"). 
+
+
+USING JZIP
+==========
+
+To run JZIP the following files to a FAT16 SD card, renaming them to fit
+into 8.3 filenames. The following is recommended:
+
+   jzip.binary   -> JZIP.BIN
+   ZORK1.DAT     -> ZORK1.DAT
+   ZORK2.DAT     -> ZORK2.DAT
+   ZORK3.DAT     -> ZORK3.DAT
+
+A script to do this (copy_all) is provided. 
+
+The JZIP program can be loaded with Catalyst, or with the Catalina Generic SD 
+card loader (both included with Catalina). Morhpeus has special requirements
+for loading the program (see below) but on other platforms just type a command
+like:
+
+  jzip zork1.dat
+
+or just:
+
+  jzip 
+

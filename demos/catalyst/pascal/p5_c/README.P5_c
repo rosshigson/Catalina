@@ -1,0 +1,33 @@
+C version of the P5 Pascal Interpreter/Compiler for Catalyst
+============================================================
+
+This directory contains the results of converting the pascal P5 compiler to C
+using the ptoc program.
+
+There are various bugfixes that need to be applied - to see them, compare the
+pcom_unmodified.c program (which is the result of applying ptoc to the original
+P5 source written in pascal) to the file pcom.c
+
+To build the program, use the script file build_all, specifying the platform
+and any HMI options on the command line. For example:
+
+   build_all RAMBLADE
+or
+   build_all DRACBLADE
+or
+   build_all DRACBLADE PC 
+
+Also, there is a script file copy_all that can be used to copy the binaries
+and the example C programs to an SD card.
+
+Some of the example files (startrek, dbasic) take so long to compile on the 
+Propeller that if all you want to do is try them, it may be better to copy 
+the .p5 (i.e. compiled) versions to the SD card. 
+
+Note that one of the example programs is a basic interpreter - which means you 
+can run a BASIC program in a BASIC interpreter written in Pascal, which is 
+being interpreted by a Pascal interpreter originally written in Pascal that 
+has been converted to C and compiled with Catalina! Of course, it runs so 
+slowly it makes even Dumbo BASIC look lightning fast (it takes about 10 seconds to execute each line) but it DOES run!
+
+

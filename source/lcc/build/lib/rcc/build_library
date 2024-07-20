@@ -1,0 +1,48 @@
+#!/bin/bash
+
+cp ../../../src/alloc.s .
+cp ../../../src/bind.s .
+cp ../../../src/bytecode.s .
+cp ../../../src/dag.s .
+cp ../../../src/decl.s .
+cp ../../../src/enode.s .
+cp ../../../src/error.s .
+cp ../../../src/event.s .
+cp ../../../src/expr.s .
+cp ../../../src/gen.s .
+cp ../../../src/getcwd.s .
+cp ../../../src/init.s .
+cp ../../../src/inits.s .
+cp ../../../src/input.s .
+cp ../../../src/lex.s .
+cp ../../../src/list.s .
+# cp ../../../src/main.s .
+cp ../../../src/null.s .
+cp ../../../src/output.s .
+cp ../../../src/prof.s .
+cp ../../../src/profio.s .
+cp ../../../src/simp.s .
+cp ../../../src/stab.s .
+cp ../../../src/stmt.s .
+cp ../../../src/string.s .
+cp ../../../src/strdup.s .
+cp ../../../src/sym.s .
+cp ../../../src/symbolic.s .
+cp ../../../src/trace.s .
+cp ../../../src/tree.s .
+cp ../../../src/types.s .
+ 
+cp ../../dagcheck.s .
+cp ../../alpha.s .
+cp ../../mips.s .
+cp ../../sparc.s .
+cp ../../x86linux.s .
+cp ../../x86cygwin.s .
+cp ../../x86.s .
+cp ../../catalina.s .
+cp ../../catalina_p2.s .
+cp ../../catalina_p2_native.s .
+cp ../../catalina_large.s .
+cp ../../catalina_compact.s .
+catbind *.s -i -e
+

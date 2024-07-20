@@ -1,0 +1,32 @@
+#!/bin/bash
+echo ""
+echo "NOTE: EDIT THIS PROGRAM TO SUIT YOUR NEEDS, THEN DELETE THIS LINE !!!"
+echo ""
+if [[ "$1" ==  "" ]] ; then
+   echo ""
+   echo "ERROR: no program file specified !"
+   echo ""
+   echo "usage: xmm_payload program_file [ parameters ]"
+   echo ""
+   echo "   e.g.  xmm_payload hello_world.binary -p2"
+   echo ""
+   exit
+else
+   #
+   TMP_LCCDIR=$LCCDIR
+   if [[ "$TMP_LCCDIR" == "" ]]; then
+      TMP_LCCDIR=/opt/catalina	
+   fi
+   #
+   if [[ ! -e $TMP_LCCDIR/bin/catalina_env ]]; then
+      echo ""
+      echo "ERROR: Catalina does not appear to be installed in $TMP_LCCDIR"
+      echo "";
+      echo "Set the environment variable LCCDIR to where Catalina is installed.";
+      echo "";
+      exit
+   fi   
+fi
+
+payload $TMP_LCCDIR/utilities/XMM.binary $1 $2 $3 $4 $5 $6 $7 $8 $9
+

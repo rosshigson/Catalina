@@ -1,0 +1,5 @@
+#!/bin/bash
+./awka -i parallelize_functions.h -f $1.awk> $1.c
+gcc -m32 -I. -c parallelize_functions.c
+gcc -m32 -I. -o $1 $1.c parallelize_functions.o libawka.a
+

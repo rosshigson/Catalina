@@ -1,0 +1,44 @@
+This file describes Catalina's support for PSRAM. However, there is not 
+currently a separate add-on board for PSRAM - the Parallax Hyper RAM board 
+is supported by another set of configuration files (for details of that 
+support, see the file HYPER_README.TXT).
+
+The only hardware currently supported by these PSRAM configuration files is 
+the PSRAM that is included on some Parallax P2 EDGE boards (specifically, the 
+P2-EC32MB). 
+
+The relevant files in the target\p2 directory are:
+
+   psram.t            PSRAM startup code and initialization data.
+   psram.inc          PSRAM XMM access functions.
+   PSRAM_XMM.def      Common PSRAM/HyperRAM definitions for Rogloh's drivers.
+   cogpsram.t         Rogloh's original PSRAM driver, modified for Catalina.
+
+The file "psram.t" contains the initialization data for the PSRAM, but 
+this mostly just uses the definitions (e.g. pin definitions) in the platform 
+configuration files of those platforms that support PSRAM, such as the
+P2_EDGE. See the section in the file P2EDGE.inc titled "PSRAM constants".
+
+Using PSRAM is enabled simply by linking with the psram library. There is
+a Catalina symbol (PSRAM) associated with PSRAM support, but it does not
+normally need to be explicitly specified for the PSRAM internal to the 
+P2_EDGE board.
+
+Catalina supports using 32Mb of PSRAM as storage, but only the first 16Mb of 
+PSRAM can currently be used to execute XMM programs.
+
+There is a demo program in the Catalina demos\examples folder, which can be 
+compiled for a P2_EDGE fitted with PSRAM as follows:
+
+   catalina -p2 -lpsram -lci ex_psram.c -C P2_EDGE 
+
+This program can also be compiled as an XMM program to execute from PSRAM
+simply by adding -C LARGE or -C SMALL on the command line. For example:
+
+   catalina -p2 -lpsram -lci ex_psram.c -C P2_EDGE -C LARGE
+
+To load a program into PSRAM requires that the Catalina XMM load utilities
+be built, using the build_all script. When building, do not specify an 
+XMM add-on board, but answer Y to the question asking whether or not the 
+P2_EDGE has PSRAM or SRAM installed. 
+

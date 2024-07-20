@@ -1,0 +1,36 @@
+Known bugs in xvi 2.51
+======================
+
+* UTF-8 characters are not supported so on recent Linux systems,
+  accented characters display as \303\250.
+
+* If it runs out of RAM, often it is unable to save the file.
+
+* It doesn't recognise multiple commands separated by | on the :command line
+
+* :@ and :* with a line range only execute the ex commands in the named buffer
+  for the last line. They should execute them for each line in the range.
+
+* Undo does not work properly when applied to macros (either @ or :map);
+  it should undo all the changes made by the macro, but in fact only the
+  last command within the macro is undone.
+
+* On Unix, pressing Control-\ makes xvi dump core immediately.
+  Whether it should or not, as that key generates SIGQUIT, is unclear.
+
+* When you try to open more files than will fit on a screen with an odd number
+  of lines (e.g. xvi -s autosplit=100 *.c) all except the first open at line 2.
+
+* :abbreviate and :unabbreviate are not implemented.
+
+* On NetBSD with "make check", all tests seem to succeed but
+  in reality none are run.
+
+* The internal codes for special keys (arrow keys, Home, End etc) are
+  0x80-0x8C, which are the same as some accented characters on MSDOS so,
+  for instance, down arrow inserts an a-grave and a-grave does down-arrow.
+  In visual mode this is harmess because only arrow keys are valid as
+  commands and only accented characters are valid in insert mode but it
+  does mean that you can't use a few accented characters on the command line.
+
+For a complete list of issues, see the files in the folder issues/open/.

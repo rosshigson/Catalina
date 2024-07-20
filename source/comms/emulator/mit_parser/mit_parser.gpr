@@ -1,0 +1,27 @@
+project Mit_Parser is
+
+   for Languages use ("C");
+   for Library_Name use "libMIT.a";
+
+   package Compiler is
+      for Default_Switches ("c") use ("-g", "-Dpascal=");
+      for Default_Switches ("C") use ("-g", "-Dpascal=");
+      for Default_Switches ("C++") use ("-g", "-Dpascal=");
+   end Compiler;
+
+   package Naming is
+      for Specification_Suffix ("c") use ".h";
+      for Implementation_Suffix ("c") use ".c";
+      for Specification_Suffix ("C++") use ".h";
+      for Implementation_Suffix ("C++") use ".c";
+   end Naming;
+
+   package Linker is
+      for Default_Switches ("c") use ("-g");
+   end Linker;
+
+   package Ide is
+   end Ide;
+
+end Mit_Parser;
+

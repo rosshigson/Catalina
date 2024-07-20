@@ -1,0 +1,4 @@
+#!/bin/bash
+
+rm -fr *.lst *.binary *.bin
+

@@ -1,0 +1,27 @@
+A Note on using the Hydra Xtreme HX512 SRAM card
+================================================
+
+The Hydra Xtreme 512K SRAM card can be used as XMM RAM on both the Hybrid and 
+the Hydra. This allows Catalina programs to have code segments up to 512Kb.
+
+However (as shipped) the Xtreme only allows random access of the first 64kb,
+which only allows Catalina programs to have code segments up to 64kb (plus
+data segments of up to 32kb).
+
+To use the full 512Kb as addiitonal program code space, a new set of firmware 
+needs to be programmed into the HX512.
+
+This firmware is included in the utilities directory of this release in a file 
+called 'Extended_Addressing_PLD_V0.1.zip' - this modification was developed by 
+Eric Moyer, and is described in the thread "Extended addressing for Extreme 
+512K" (http://forums.parallax.com/showthread.php?t=95106)
+
+Note that installing this firmware requires a special programming cable - 
+see the HX512 documentation for more details, and also note the errata posted
+in the thread "Building the Lattice ISP Programmer (aka CPLD prgramming cable)
+for the Hydra HX512" (http://forums.parallax.com/showthread.php?t=113554)
+
+For more information on using the Hydra Xtreme as XMM RAM with Catalina, see 
+the file HX512_README.TXT in the target directory.
+
+

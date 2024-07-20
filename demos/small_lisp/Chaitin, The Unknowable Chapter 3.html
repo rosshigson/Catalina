@@ -1,0 +1,367 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><script src="Chaitin,%20The%20Unknowable%20Chapter%203_files/analytics.js" type="text/javascript"></script>
+<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app210.us.archive.org';v.server_ms=356;archive_analytics.send_pageview({});});</script>
+<script type="text/javascript" src="Chaitin,%20The%20Unknowable%20Chapter%203_files/bundle-playback.js" charset="utf-8"></script>
+<script type="text/javascript" src="Chaitin,%20The%20Unknowable%20Chapter%203_files/wombat.js" charset="utf-8"></script>
+<script type="text/javascript">
+  __wm.init("https://web.archive.org/web");
+  __wm.wombat("http://www.umcs.maine.edu/~chaitin/unknowable/ch3.html","20110520024528","https://web.archive.org/","web","/_static/",
+	      "1305859528");
+</script>
+<link rel="stylesheet" type="text/css" href="Chaitin,%20The%20Unknowable%20Chapter%203_files/banner-styles.css">
+<link rel="stylesheet" type="text/css" href="Chaitin,%20The%20Unknowable%20Chapter%203_files/iconochive.css">
+<!-- End Wayback Rewrite JS Include -->
+
+<title>Chaitin, The Unknowable</title>
+</head>
+<body><!-- BEGIN WAYBACK TOOLBAR INSERT -->
+<style type="text/css">
+body {
+  margin-top:0 !important;
+  padding-top:0 !important;
+  /*min-width:800px !important;*/
+}
+</style>
+<script>__wm.rw(0);</script>
+<div id="wm-ipp-base" style="display: block; direction: ltr;" lang="en">
+</div><div id="wm-ipp-print">The Wayback Machine - https://web.archive.org/web/20110520024528/http://www.umcs.maine.edu/~chaitin/unknowable/ch3.html</div>
+<div id="donato" style="position:relative;width:100%;">
+  <div id="donato-base">
+    <iframe id="donato-if" src="Chaitin,%20The%20Unknowable%20Chapter%203_files/donate.htm" scrolling="no" style="width:100%; height:100%" frameborder="0">
+    </iframe>
+  </div>
+</div><script type="text/javascript">
+__wm.bt(650,27,25,2,"web","http://www.umcs.maine.edu/~chaitin/unknowable/ch3.html","20110520024528",1996,"/_static/",["/_static/css/banner-styles.css?v=omkqRugM","/_static/css/iconochive.css?v=qtvMKcIJ"], "False");
+  __wm.rw(1);
+</script>
+<!-- END WAYBACK TOOLBAR INSERT -->
+<h1>III. Gödel's Proof of his Incompleteness Theorem</h1>
+<hr>
+<h2>Synopsis</h2>
+<i>
+Discusses a LISP run exhibiting a fixed point, and a LISP run
+which illustrates Gödel's proof of his incompleteness theorem.
+</i>
+<p>
+</p><hr>
+<h2>Fixed points, self-reference &amp; self-reproduction</h2>
+Okay, let's put LISP to work!  First let me show you the trick at the
+heart of Gödel's and Turing's proofs, the self-reference.
+<p>
+How can we enable a LISP expression to know itself?  Well, it's very
+easy once you've seen the trick!  Consider the LISP function f(x) that
+takes x into (('x)('x)).  In other words, f assumes that its argument
+x is the lambda expression for a one-argument function, and it forms
+the expression that applies x to x. It doesn't evaluate it, it just
+creates it.  It doesn't actually apply x to x, it just creates the
+expression that will do it.
+</p><p>
+You'll note that if we <b>were</b> to evaluate this expression
+(('x)('x)), in it x is simultaneously program and data, active and
+passive.
+</p><p>
+Okay, so let's pick a particular x, use f to make x into (('x)('x)),
+and then run/evaluate the result!  And to which x shall we apply f?
+Why, to f itself!
+</p><p>
+So f applied to f yields what?  It yields f applied to f, which is
+what we started with!!  So f applied to f is a self-reproducing LISP
+expression!
+</p><p>
+You can think of the first f, the one that's used as a function, as
+the organism, and the second f, the one that's copied twice, that's the
+genome. In other words, the first f is an organism, and the second 
+f is its DNA! I think that that's the best way to remember this, by
+thinking it's biology.  Just as in biology, where a organism cannot
+copy itself directly but needs to contain a description of itself, the
+self-reproducing function f cannot copy itself directly (because it
+cannot read itself—and neither can <b>you</b>).  So f needs to be
+given a (passive) copy of itself.  The biological metaphor is quite
+accurate!
+</p><p>
+So in the next section I'll show you a LISP run where this actually
+works.  There's just one complication, which is that what can
+reproduce itself, in LISP just as in real life, depends on the
+environment in which the organism finds itself.
+</p><p>
+(f f) works in an environment that has a definition for f, but that's
+cheating!  What I want is a <b>stand-alone</b> LISP expression that
+reproduces itself.  But f produces a stand-alone version of itself,
+and <b>that</b> is the actual self-reproducing expression.  (f f) is like a
+virus that works only in the right environment (namely in the cell
+that it infects), because it's too simple to work on its own.
+</p><p>
+So, finally, here is the LISP run illustrating all this.  I hope you 
+like it, and that it convinces you that it was worth the effort to learn
+LISP!  After you understand this LISP run, I'll show you Gödel's proof.
+</p><p>
+</p><hr>
+<h2>A LISP Fixed Point</h2>
+<pre>LISP Interpreter Run
+ 
+[[[[[
+ 
+ A LISP expression that evaluates to itself!
+ 
+ Let f(x): x -&gt; (('x)('x))
+ 
+ Then (('f)('f)) is a fixed point.
+ 
+]]]]]
+ 
+[Here is the fixed point done by hand:]
+ 
+(
+'lambda(x) cons cons "' cons x nil
+           cons cons "' cons x nil
+                nil
+ 
+'lambda(x) cons cons "' cons x nil
+           cons cons "' cons x nil
+                nil
+)
+ 
+expression  ((' (lambda (x) (cons (cons ' (cons x nil)) (cons
+            (cons ' (cons x nil)) nil)))) (' (lambda (x) (cons
+             (cons ' (cons x nil)) (cons (cons ' (cons x nil))
+             nil)))))
+value       ((' (lambda (x) (cons (cons ' (cons x nil)) (cons
+            (cons ' (cons x nil)) nil)))) (' (lambda (x) (cons
+             (cons ' (cons x nil)) (cons (cons ' (cons x nil))
+             nil)))))
+ 
+ 
+[Now let's construct the fixed point.]
+ 
+define (f x) let y [be] cons "' cons x nil  [ y is ('x)         ]
+             [return] cons y cons y nil     [ return (('x)('x)) ]
+ 
+define      f
+value       (lambda (x) ((' (lambda (y) (cons y (cons y nil)))
+            ) (cons ' (cons x nil))))
+ 
+ 
+[Here we try f:]
+ 
+(f x)
+ 
+expression  (f x)
+value       ((' x) (' x))
+ 
+ 
+[Here we use f to calculate the fixed point:]
+ 
+(f f)
+ 
+expression  (f f)
+value       ((' (lambda (x) ((' (lambda (y) (cons y (cons y ni
+            l)))) (cons ' (cons x nil))))) (' (lambda (x) (('
+            (lambda (y) (cons y (cons y nil)))) (cons ' (cons
+            x nil))))))
+ 
+ 
+[Here we find the value of the fixed point:]
+ 
+eval (f f)
+ 
+expression  (eval (f f))
+value       ((' (lambda (x) ((' (lambda (y) (cons y (cons y ni
+            l)))) (cons ' (cons x nil))))) (' (lambda (x) (('
+            (lambda (y) (cons y (cons y nil)))) (cons ' (cons
+            x nil))))))
+ 
+ 
+[Here we check that it's a fixed point:]
+ 
+= (f f) eval (f f)
+ 
+expression  (= (f f) (eval (f f)))
+value       true
+ 
+ 
+[Just for emphasis:]
+ 
+= (f f) eval eval eval eval eval eval (f f)
+ 
+expression  (= (f f) (eval (eval (eval (eval (eval (eval (f f)
+            )))))))
+value       true
+ 
+End of LISP Run
+ 
+Elapsed time is 0 seconds.
+</pre>
+<p>
+</p><hr>
+<h2>Metamathematics in LISP</h2>
+Now on to Gödel's proof!
+<p>
+<a href="https://web.archive.org/web/20110520024528/http://www.umcs.maine.edu/~chaitin/unknowable/ch4.html">Turing's proof</a> and <a href="https://web.archive.org/web/20110520024528/http://www.umcs.maine.edu/~chaitin/unknowable/ch5.html">mine</a> 
+do not depend on the inner structure of the
+formal axiomatic system being studied, but Gödel's proof does.
+He needs to get his hands dirty, he needs to lift the hood of the car
+and poke around in the engine!  In fact, what he needs to do is to
+<b>confuse levels</b> and combine the theory and its metatheory.
+That's how he can construct a statement in the theory that says that
+it's unprovable.
+</p><p>
+In Gödel's original proof, he was working in Peano arithmetic,
+which is just a formal axiomatic system for elementary number theory.
+It's the theory for the natural numbers and plus, times, and equal.
+So Gödel used Gödel numbering to <b>arithmetize
+metamathematics</b>, to construct a numerical predicate Dem(p,t) that
+is true iff p is the number of a proof and t is the number of the
+theorem that p proves.
+</p><p>
+Gödel did it, but it was hard work, very hard work!  So instead,
+I'm going to use LISP.  We'll need a way to express metamathematical
+assertions using S-expressions.  We'll need to use S-expressions to
+express proofs and theorems.  We need to construct a LISP function
+(valid-proof? x) that returns the empty list nil if x is not a
+valid proof, and that returns the S-expression for the theorem that
+was demonstrated if x is a valid proof.  I won't actually
+define/program out the LISP function valid-proof?.  I don't want
+to get involved ``in the internal affairs'' of a particular formal
+axiomatic system.  But you can see that it's not difficult.  Why not?
+</p><p>
+Well, that's because Gödel numbers are a difficult way to express
+proofs, but S-expressions are a very natural way to do it.  An
+S-expression is just a symbolic expression with explicit syntax, with
+its structure completely indicated by the parentheses.  And it's easy
+to write proof-checking algorithms using LISP functions.  LISP is a
+natural language in which to express such algorithms.
+</p><p>
+So let's suppose that we have a definition for a LISP function
+(valid-proof? x).  And let's assume that the formal axiomatic
+system that we're studying is one in which you can talk about
+S-expressions and the value of an S-expression.  Then how can we
+construct a LISP expression that asserts that it's unprovable?
+</p><p>
+First of all, how can we state that an S-expression y is unprovable?
+Well, it's just the statement that for all S-expressions x, it is not
+the case that (valid-proof? x) is equal to y. So that's easy to
+do.  So let's call the predicate that affirms this
+is-unprovable.  Then what we need is this: a LISP expression of
+the form (is-unprovable (value-of XXX)), and when you evaluate
+the LISP expression XXX, it gives back this entire expression.
+(value-of might more accurately be called lisp-value-of, just to make
+the point that we are assuming that we can talk about LISP expressions
+and their values in our formal axiomatic system.)
+</p><p>
+So we're almost there, because in order to do this we just need to use
+the fixed-point trick from before in a slightly more complicated
+manner.  Here's how:
+</p><p>
+</p><hr>
+<h2>Gödel's Proof in LISP</h2>
+<pre>LISP Interpreter Run
+
+[[[[[
+
+ A LISP expression that asserts that it itself is unprovable!
+
+ Let g(x): x -&gt; (is-unprovable (value-of (('x)('x))))
+
+ Then (is-unprovable (value-of (('g)('g))))
+ asserts that it itself is not a theorem!
+
+]]]]]
+
+define (g x) 
+   let (L x y) cons x cons y nil [Makes x and y into list.]
+   (L is-unprovable (L value-of (L (L "' x) (L "' x))))
+
+define      g
+value       (lambda (x) ((' (lambda (L) (L is-unprovable (L va
+            lue-of (L (L ' x) (L ' x)))))) (' (lambda (x y) (c
+            ons x (cons y nil))))))
+
+
+[Here we try g:]
+
+(g x)
+
+expression  (g x)
+value       (is-unprovable (value-of ((' x) (' x))))
+
+
+[
+ Here we calculate the LISP expression 
+ that asserts its own unprovability: 
+]
+
+(g g)
+
+expression  (g g)
+value       (is-unprovable (value-of ((' (lambda (x) ((' (lamb
+            da (L) (L is-unprovable (L value-of (L (L ' x) (L 
+            ' x)))))) (' (lambda (x y) (cons x (cons y nil))))
+            ))) (' (lambda (x) ((' (lambda (L) (L is-unprovabl
+            e (L value-of (L (L ' x) (L ' x)))))) (' (lambda (
+            x y) (cons x (cons y nil))))))))))
+
+
+[Here we extract the part that it uses to name itself:]
+
+cadr cadr (g g)
+
+expression  (car (cdr (car (cdr (g g)))))
+value       ((' (lambda (x) ((' (lambda (L) (L is-unprovable (
+            L value-of (L (L ' x) (L ' x)))))) (' (lambda (x y
+            ) (cons x (cons y nil))))))) (' (lambda (x) ((' (l
+            ambda (L) (L is-unprovable (L value-of (L (L ' x) 
+            (L ' x)))))) (' (lambda (x y) (cons x (cons y nil)
+            )))))))
+
+
+[Here we evaluate the name to get back the entire expression:] 
+
+eval cadr cadr (g g)
+
+expression  (eval (car (cdr (car (cdr (g g))))))
+value       (is-unprovable (value-of ((' (lambda (x) ((' (lamb
+            da (L) (L is-unprovable (L value-of (L (L ' x) (L 
+            ' x)))))) (' (lambda (x y) (cons x (cons y nil))))
+            ))) (' (lambda (x) ((' (lambda (L) (L is-unprovabl
+            e (L value-of (L (L ' x) (L ' x)))))) (' (lambda (
+            x y) (cons x (cons y nil))))))))))
+
+
+[Here we check that it worked:]
+
+= (g g) eval cadr cadr (g g)
+
+expression  (= (g g) (eval (car (cdr (car (cdr (g g)))))))
+value       true
+
+End of LISP Run
+
+Elapsed time is 0 seconds.
+</pre>
+<p>
+</p><hr>
+
+
+
+</body></html>
+<!--
+     FILE ARCHIVED ON 02:45:28 May 20, 2011 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 07:08:34 Sep 23, 2021.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+-->
+<!--
+playback timings (ms):
+  captures_list: 249.6
+  exclusion.robots: 0.279
+  exclusion.robots.policy: 0.27
+  RedisCDXSource: 0.926
+  esindex: 0.008
+  LoadShardBlock: 230.245 (3)
+  PetaboxLoader3.datanode: 209.343 (4)
+  CDXLines.iter: 15.503 (3)
+  PetaboxLoader3.resolve: 112.299 (2)
+  load_resource: 102.503
+-->

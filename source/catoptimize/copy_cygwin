@@ -1,0 +1,34 @@
+#!/bin/bash -login
+#set -x
+
+cp catopt_0.exe "$LCCDIR"/bin
+cp catopt_1.exe "$LCCDIR"/bin
+cp catopt_2.exe "$LCCDIR"/bin
+cp catopt_3.exe "$LCCDIR"/bin
+cp catopt_4.exe "$LCCDIR"/bin
+cp catopt_5.exe "$LCCDIR"/bin
+cp catopt_6.exe "$LCCDIR"/bin
+cp catopt_7.exe "$LCCDIR"/bin
+cp catopt_8.exe "$LCCDIR"/bin
+cp catopt_9.exe "$LCCDIR"/bin
+cp catopt_10.exe "$LCCDIR"/bin
+cp catopt_11.exe "$LCCDIR"/bin
+cp catopt_12.exe "$LCCDIR"/bin
+cp catopt_13.exe "$LCCDIR"/bin
+cp cmmopt_0.exe "$LCCDIR"/bin
+cp cmmopt_1.exe "$LCCDIR"/bin
+cp cmmopt_2.exe "$LCCDIR"/bin
+cp cmmopt_3.exe "$LCCDIR"/bin
+cp cmmopt_4.exe "$LCCDIR"/bin
+cp cmmopt_5.exe "$LCCDIR"/bin
+cp cmmopt_6.exe "$LCCDIR"/bin
+cp cmmopt_7.exe "$LCCDIR"/bin
+cp cmmopt_8.exe "$LCCDIR"/bin
+cp cmmopt_9.exe "$LCCDIR"/bin
+cp cmmopt_10.exe "$LCCDIR"/bin
+cp cmmopt_11.exe "$LCCDIR"/bin
+cp cmmopt_12.exe "$LCCDIR"/bin
+cp cmmopt_13.exe "$LCCDIR"/bin
+cp cmmopt_13.exe "$LCCDIR"/bin
+cp cmmopt_14.exe "$LCCDIR"/bin
+

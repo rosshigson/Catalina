@@ -1,0 +1,150 @@
+#!/bin/bash -login
+function usage {
+    echo "Usage: $0 [-I path]* [-D symbol]* [-o output_file] [-l] input_file"
+}
+
+
+case $1 in
+  '' | -h | --h*)
+    usage
+    exit 1
+    ;;
+esac
+
+DEFINES=
+INCLUDES=
+OUTPUT=
+INPUT=
+ERROR=
+LISTING=
+
+for arg 
+do
+
+   if [ "$1" != "" ]; then
+      case $1 in 
+         -I)
+            if [ "$2" != "" ]; then
+               # second arg
+               INCLUDES+=" -I "
+               if [[ "$2" =~ " " ]]; then
+                  INCLUDES+='"'
+                  INCLUDES+=$2
+                  INCLUDES+='"'
+               else
+                  INCLUDES+=$2
+               fi
+               shift
+            else
+               # no second arg
+               echo Missing -I value.
+               ERROR=1
+            fi
+            ;;
+         -D)
+            if [ "$2" != "" ]; then
+               # second arg
+               DEFINES+=" -D "
+               if [[ "$2" =~ " " ]]; then
+                  DEFINES+='"'
+                  DEFINES+=$2
+                  DEFINES+='"'
+                  echo -D values cannot contain spaces.
+                  ERROR=1
+               else
+                  DEFINES+=$2
+               fi
+               shift
+            else
+               # no second arg
+               echo Missing -D value.
+               ERROR=1
+            fi
+            ;;
+         -o)
+            if [ "$2" != "" ]; then
+               if [ "$OUTPUT" == "" ]; then
+                  if [[ "$2" =~ " " ]]; then
+                     OUTPUT+='"'
+                     OUTPUT+=$2
+                     OUTPUT+='"'
+                  else
+                     OUTPUT+=$2
+                  fi
+               else
+                  echo multiple -o values not permitted
+                  ERROR=1
+               fi
+               shift
+            else
+               # no second arg
+               echo Missing -o value
+            fi
+            ;;
+         -b)
+            echo Option -b ignored
+            shift
+            ;;
+         -e)
+            echo Option -e not supported
+            ERROR=1
+            ;;
+         -l)
+            LISTING="-l"
+            ;;
+         *)
+            # file arg
+            if [ "$INPUT" == "" ]; then
+               if [[ "$1" =~ " " ]]; then
+                  INPUT+='"'
+                  INPUT+=$1
+                  INPUT+='"'
+               else
+                  INPUT+=$1
+               fi
+            else
+               echo multiple files names not permitted
+               ERROR=1
+            fi
+            ;;
+      esac
+   fi
+   shift
+done
+
+if [ "$ERROR" != "" ]; then
+    usage
+    exit 1
+fi
+
+if [ "$OUTPUT" == "" ]; then
+   OUTPUT=$INPUT
+fi
+
+if [ -f $INPUT ]; then
+   if [ "$INPUT" != "$OUTPUT" ]; then
+      #echo spp $DEFINES $INCLUDES $INPUT to $OUTPUT
+      #echo p2asm -v33 $OUTPUT
+      #echo rm -f $OUTPUT
+      rm -f $OUTPUT
+      spp $DEFINES $INCLUDES $INPUT > $OUTPUT
+      p2asm -v33 $OUTPUT
+      rm -f $OUTPUT
+   else
+      TEMP=`mktemp`
+      #echo cp -f $INPUT $TEMP
+      #echo spp $DEFINES $INCLUDES $TEMP to $INPUT
+      #echo p2asm -v33 $LISTING $INPUT
+      #echo cp -f $TEMP $INPUT
+      #echo rm -f $TEMP
+      cp -f $INPUT $TEMP
+      spp $DEFINES $INCLUDES $TEMP > $INPUT
+      p2asm -v33 $LISTING $INPUT
+      cp -f $TEMP $INPUT
+      rm -f $TEMP
+   fi
+else
+  echo Input file "$INPUT" not found
+  ERROR=1
+fi
+

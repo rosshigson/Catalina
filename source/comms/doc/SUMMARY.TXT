@@ -1,0 +1,100 @@
+
+Ada Terminal Emulator - Summary
+-------------------------------
+
+The Ada Terminal Emulator package provides a set of terminal emulation 
+capabilities, implemented in Ada 2012, to run under Windows. 
+
+All source code for the terminal emulator is provided under the GNU General 
+Public License. The package was developed using GNAT and GWindows. 
+
+In addition to providing simple "dumb" terminal emulation, the package 
+provides full emulation of DEC VT52/VT100/VT102 compatible terminals, 
+including double height and double width characters, smooth scrolling, 
+special graphics, display controls and national replacement character sets. 
+The emulator also implements a substantial subset of VT220/VT320/VT420, 
+ANSI.SYS and ISO 6429 capabilities.
+
+The package is available at: https://ada-terminal-emulator.sourceforge.io/
+
+The package consists of the following main components:
+
+Terminal_Emulator: 
+------------------
+An Ada package that provides facilities for creating, configuring and 
+interacting with terminal windows from an Ada program. Multiple terminal 
+windows can be created from the same program. Each window implements a 
+completely independent terminal emulator. Each can be separately configured 
+as a simple "dumb" terminal, or emulate full DEC VTxxx capabilities. 
+
+Major features:
+
+Character attributes include italic, bold, underline, strikeout, reversed, 
+and flashing, as well as foreground and background color, using any windows 
+font (not just fixed pitch fonts).
+
+Line attributes include double width and double height characters.
+
+Support for Windows character sets; DEC special graphic character sets; 
+DEC multinational character sets; DEC national replacement character sets 
+and DEC display controls character sets (displays control codes as
+characters).
+
+Support for DEC VTxxx control sequences, ISO 6429 control sequences and 
+ANSI.SYS control sequences. Support for 7 or 8 bit control sequences.
+
+Support for DEC user-definable function keys, numeric and application and 
+editing keypads, and language-specific keyboards.
+
+Separately sizable virtual buffer, screen, view, and scrolling region:
+- Virtual buffer sizes up to 32,767 rows (lines) by 1024 columns (characters).
+- Screen sizes up to 32,727 rows (lines) by 1024 columns (characters).
+- View sizes up to the lesser of the screen size and the display capacity.
+- Rectangular scrolling regions of any size up to the screen size.
+
+Support for smooth (soft) scrolling of the screen or scrolling region.
+
+Support for separate cursors, character attributes and screen colors for 
+input and output operations
+
+Mouse support - select text by character, word, line or rectangular region. 
+Copy and paste between terminal windows and other Windows applications. 
+Resize the screen, the view, or the font size using the mouse. 
+
+File support - load and save virtual buffer to/from text files.
+
+Printer support - printer setup, page setup, print current selection, print 
+entire buffer.
+
+Term_IO: 
+--------
+An Ada package that can be used as a complete and transparent replacement 
+for the standard Ada text-handling package Text_IO. In addition to supporting 
+all the normal file handling capabilities of Text_IO, Term_IO replaces the 
+default files (i.e. standard input, standard output and standard error) with 
+one or more terminal windows. It also allows the creation and manipulation of 
+user-defined terminal windows using only Text_IO syntax. Each terminal window 
+can be configured to either strictly implement the semantics of Text_IO as 
+defined in the Ada 95 Language Reference Manual (LRM), or to implement relaxed
+semantics that allow the user to take advantage of the terminal capabilities 
+in a more intuitive manner.
+
+Redirect: 
+---------
+A stand-alone program that allows existing text based application (including 
+non-Ada applications) to have their standard I/O (i.e. standard input, standard
+output and standard error) redirected through a terminal window - without 
+recompiling or relinking. Redirect supports all the features of the 
+Terminal_Emulator, and adds line editing, command and filename completion and 
+command history. It can be used to create a sophisticated window-based command 
+line interpreter with only a few dozen lines of programming. A complete Ada
+example is included.
+
+Comms: 
+---------
+A stand-alone program that allows the use of a communications port as input 
+and output to a terminal window. This enables a PC to be used as a serial
+terminal. Multiple instances of comms can be started on different serial 
+ports. Comms supports all the features of the Terminal_Emulator.
+
+

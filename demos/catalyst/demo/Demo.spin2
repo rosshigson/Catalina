@@ -1,0 +1,121 @@
+{
+' Demonstration Propeller 2 (SPIN2) program to access the Catalyst command line.
+'
+' There are three main functions provided by Catalyst_Arguments:
+'
+'    init(@buffer)  - initialize the arguments in the buffer
+'    argc           - return the number of arguments.
+'    argv(n)        - return a pointer to argument n.
+'
+' The demo program should be compiled with the Propeller Tool (it has been
+' tested on version 2.7.0) and saved on an SD Card (e.g. as DEMO.BIN) and then
+' invoked from within Catalyst. For example:
+'
+'    demo "hello, world !!!" arg_2 arg_3
+'
+' If this program is started by other any other means, or with no arguments,
+' the result of argc will be zero.
+'
+' This demo assumes a serial HMI, on pins 62 & 63, at 230400 baud.
+'
+}
+
+CON
+  _clkfreq = 180_000_000
+  baud = 230_400
+
+OBJ
+  ser: "SmartSerial.spin2"
+  arg: "Catalyst_Arguments.spin2"
+
+VAR
+  LONG Arguments[arg.MAX_LONGS] ' 1200 bytes
+  BYTE buf[32]
+
+PUB demo() | i, argc
+  ' The following MUST be called before any other function:
+  arg.init(@Arguments)
+
+  ser.start(63, 62, 0, baud)
+
+  print(string("Catalyst SPIN Test Program"))
+  newline()
+  argc := arg.argc()
+  print(string("Argc = "))
+  dec(argc)
+  newline()
+
+  if arg.argc() > 0
+    repeat i from 0 to argc - 1
+      print(string("Argv["))
+      dec(i)
+      print(string("] = "))
+      print(arg.argv(i))
+      newline()
+
+  print(string(13,"Press any key to continue ..."))
+  ser.rx()
+  HUBSET($1000_0000)
+
+
+pub print(s) | c
+  repeat while ((c := byte[s++]) <> 0)
+    ser.tx(c)
+
+pub newline()
+  ser.tx(10)
+
+pub num(val, base, signflag, digitsNeeded) | i, digit, r1, q1
+
+  '' if signflag is nonzero, it indicates we should treat
+  '' val as signed; if it is > 1, it is a character we should
+  '' print for positive numbers (typically "+")
+
+  if (signflag)
+      if (val < 0)
+        signflag := "-"
+        val := -val
+
+  '' make sure we will not overflow our buffer
+  if (digitsNeeded > 32)
+    digitsNeeded := 32
+
+  '' accumulate the digits
+  i := 0
+  repeat
+    if (val < 0)
+      ' synthesize unsigned division from signed
+      ' basically shift val right by 2 to make it positive
+      ' then adjust the result afterwards by the bit we
+      ' shifted out
+      r1 := val&1  ' capture low bit
+      q1 := val>>1 ' divide val by 2
+      digit := r1 + 2*(q1 // base)
+      val := 2*(q1 / base)
+      if (digit >= base)
+        val++
+        digit -= base
+    else
+      digit := val // base
+      val := val / base
+
+    if (digit >= 0 and digit <= 9)
+       digit += "0"
+    else
+       digit := (digit - 10) + "A"
+    buf[i++] := digit
+    --digitsNeeded
+  while (val <> 0 or digitsNeeded > 0) and (i < 32)
+  if (signflag > 1)
+    ser.tx(signflag)
+
+  '' now print the digits in reverse order
+  repeat while (i > 0)
+    ser.tx(buf[--i])
+
+'' print a signed decimal number
+pub dec(val)
+  num(val, 10, 1, 0)
+
+
+

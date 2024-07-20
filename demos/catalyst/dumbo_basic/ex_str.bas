@@ -1,0 +1,6 @@
+10
+20 A$ = STRING$(5, "DEF")
+30 PRINT A$
+40 A$ = STRING$(5, 42)
+50 PRINT A$
+60 END

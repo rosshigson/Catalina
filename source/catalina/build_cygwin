@@ -1,0 +1,4 @@
+#!/bin/bash -login
+#set -x
+
+make -f Makefile.cygwin clean all

@@ -1,0 +1,539 @@
+Release 2.9 (Including Telnet):
+
+- The Comms program now accepts setting the Terminal Emulator 
+  LockScreenAndView option from the command line, using the option:
+
+     /[No]LockScreen
+  
+  Also, it is now disabled by default. Previously, it was enabled by default
+  and had to be disabled via the Options->Advanced menu.
+
+Release 2.8 (Including Telnet):
+
+- The Comms program "paste" functionality has been improved. Previously, 
+  it was easy to paste text that would overflow either the program's own 
+  paste buffer (which was only 256 characters) or else overflow the keyboard
+  buffer in the recipient program. Now, the size of the paste buffer is 
+  configurable, and after sending every group of characters (default is 15, 
+  but this is also configurable), the progam waits until the recipient stops 
+  echoing characters - the program assumes that more than just the pasted 
+  characters will be echoed by the recipient - e.g. in the case of text 
+  editors such as "vi" that use DEC escape sequences, the number of echoed 
+  characters may be much, much larger than the number of character sent, so 
+  the program cannot just check that the character itself has been echoed, 
+  it must wait for some time after each character to see if it has receieved 
+  the last one (if any) before sending more. This time is also configurable. 
+
+  To configure the paste functionality, three new command line options have 
+  been added to the Comms program:
+
+    /PasteSize=nnn
+    /PasteGroup=nnn
+    /PasteDelay=nnn
+
+  PasteSize is the maximum size of the paste buffer. Default is 2048.
+  This represents the largest number of characters that can be pasted in
+  a single paste operation.
+
+  PasteGroup is the maximum number of characters sent in each group when
+  processing the paste operation. The default is 15. If the recipient 
+  program has a smaller keyboard buffer, this number can be reduced to as 
+  low as 1, in which case the program will wait for PasteDelay millisends
+  after each character pasted.
+
+  PasteDelay is the delay in milliseconds to wait after the last character
+  is received after sending each group. Default is 250. At low baud rates,
+  this number can be increased, but if the PasteGroup size is reduced, it
+  may be able to be reduced.
+
+Release 2.7 (Including Telnet):
+
+- The emulator now includes a new menu entry on the Edit menu - Clear Buffer.
+  This entry erases the entire buffer, scrolls to the start of the buffer,
+  and resets the cursor to the home position.
+
+Release 2.6 (Including Telnet):
+
+- Comms now correctly decodes the comm port when it is specified on the
+  command line as "/com=N". Previously, this only worked when N >= 10.
+  It was (and still is) possible to specify it as "/com=comN".
+
+Release 2.5 (Including Telnet):
+
+- Comms has an improved ymodem implementation and dialog box:
+
+  * A ymodem transfer can now be aborted in the middle of a send or 
+    receive operation.
+
+  * The dialog box now responds to Windows messages. This stops Windows 
+    complaining that the application is not responding during a long
+    ymodem transfer.
+
+  * The Abort button now attempts to abort both the local and the remote 
+    ymodem applications if a transfer is in progress. Previously, it 
+    could only abort the remote ymodem application and only while the 
+    local ymodem application was not executing.
+
+  * The Start and Done buttons now check and give an error message if a 
+    ymodem transfer is in progress. Previously, they simply performed their 
+    respective actions, which could lead to a comms program lock up.
+
+  * Opening the dialog box no logner crashes comms if no port has been 
+    opened.
+
+- Release 2.4 included an ftp folder that was not intended to be part of 
+  the Ada Terminal Emulator package. This folder has been removed.
+
+Release 2.4 (Including Telnet):
+
+- reinstated telnet program (now working), updated documents - no
+  changes to any other software.
+
+Release 2.4:
+------------
+
+- Updated source for Ada 2012.
+- Updated project files for GNAT Studio Community 2021.
+- Updated GWindows. Fixed a few minor GWindows issues.
+- Updated win32ada. Added support for more baud rates.
+- Added /IgnoreCR and /IgnoreLF emulator options.
+- Added suport for ports COM10 .. COM99 to Comms demo.
+- Allow /com=COMnn (in addition to /com=nn) in Comms demo.
+- Added YModem support to Comms demo.
+- Do not regenerate MIT Parser files on each build (this doesn't work 
+  under Windows 10 yet, but this is not required unless it is necessary 
+  to modify the VTxxx emulation).
+
+Release 2.3:
+------------
+- Fixed a bug that caused the terminal emulator to crash if both the text 
+  flashing option was disabled (in the advanced options) and the cursor 
+  flashing was disabled.
+
+
+Release 2.2:
+------------
+- Fixed a bug in the resize procedure that could cause the emulator to crash
+  when the virtual buffer was resized.
+
+- Removed calls to FlushFileBuffers from the redirect program. This windows 
+  function never returns under some circumstances, causing the program that
+  called it to lock up.
+
+- Added a parameter ('Force') to the PopInputPos and PopOutputPos functions 
+  to allow the caller to decide whether or not the screen should be moved 
+  if the popped cursor position is no longer on the current screen. The 
+  default is 'Yes' to maintain backward compatibility.
+
+- Added some explanations (to FAQ.doc) as to why redirect may sometimes
+  pause or appear to corrupt its ouptut.
+
+- Some minor source changes to make the emulator compatible with Ada 2005,
+  and specifically the GNAT GPL 2006 compiler. Also, added instructions to 
+  the file Ada_2005.txt about source modifications required to GnatCom and 
+  GWindows to make them compatible with the GNAT GPL 2006 compiler.
+
+- Modified the top level makefile to not automatically do a 'clean' before 
+  building. Now you must explicitly say 'make clean' to force a full rebuild.
+
+
+Release 2.1:
+------------
+
+- Various small changes necessary to compile under GNAT GPL 2005 (i.e. the 
+  Ada 2005 version of the GNAT compiler). Currently, compiling via 'make' 
+  under GNAT GPL requires the use of an additional flag ('ADA05=1'). Also, 
+  note that compiling GWindows and Gnatcom under Ada 05 requires one GWindows
+  module to be modified (source code included) and also some manual tweaks to
+  the file 'makefile.inc'. See the file Ada_05.txt for more details.
+
+- In addition to the normal 'Makefiles', GNAT project files are now included. 
+  This simplifies the build process when using tools such as GPS.
+
+- Documentation updated to reflect that GWindows 1.1 or 1.2 can be used, and
+  that GNAT GPL can be used (with some GWindows modifications - see the file
+  Ada_05.txt). 
+
+- Fixed a minor bug that meant a new line added to the buffer during command 
+  line editing was not always initialized to the correct color. This required
+  a new optional parameter to the GetInputPos and GetOutputPos procedures to
+  indicate whether the input or output style should be used to fill in new
+  blank lines added when the cursor wraps to a new line.
+
+- Updated FAQ to reflect that the Windows 'Show window contents while 
+  dragging' option has to be enabled to see the results of resizing the 
+  terminal window immediately (e.g. to see the font size change dynamically).
+
+- Modified the makefiles so that the MIT parser library is copied into the 
+  emulator directory by the makefile in the mit_parser directory. This allows 
+  the makefile in that directory to be used 'standalone' if the user wants to 
+  use GPS to build the rest of the Ada Terminal Emulator.
+
+
+Release 2.0:
+------------
+
+- Added an option ("/VTKeys") to allow the use of the top row of the numeric
+  keypad as the VTxxx keys PF1 to PF4 (instead of having to use F1 to F4). 
+  This is not only easier for those used to a DEC keyboard, but it becomes 
+  important for VT4xx emulation. On a VT4xxx F1 to F5 sends codes - and it
+  also allows them to be used as user definable keys. The default is still 
+  to use F1 to F4 as PF1 to PF4. This mode only applies to the VTxxx ANSI
+  modes - it does not apply when the ANSI mode is set to PC. Also, it may 
+  not work on some platforms, depending on whether or not the latest 
+  service packs are installed.
+
+- Modified keyboard behaviour to better emulate a VT4xx. For example, F1 to 
+  F5 now send appropriate codes when in VT420 mode (and the /VTKeys option
+  is used), and also Fn and shift-Fn now correctly send different codes.
+
+- Implemented VT4xx rectangular area control sequences (DECCARA, DECRARA, 
+  DECCRA, DECERA, DECFRA, DECSACE, DECSERA).
+
+- Modified screen shift (left/right) and scroll (up/down) behaviour to fill 
+  all new blank character cells appearing on the screen with the current 
+  background color. Previously, new cells were filled with the current 
+  default color (e.g. the initial background color, or the background color 
+  in use when the last "Erase in Display" was processed). One consequence 
+  of this was that it left the end of each new line with the default 
+  color. This only affects cells that are explicitly blanked - cells on 
+  existing lines retain their existing color until a new character is 
+  written to them. This showed up a bug in the "Demo_cursors" program, 
+  which has now been fixed.
+
+- Modified SetBufferColors API procedure (and also the Set All To Colors 
+  menu item) so that as well as setting all the buffer character cells to 
+  the selected colors, it sets the "initial" colors to the selected colors.
+  Previously, these "initial" colors (which are used when processing an SGR 
+  reset or a terminal reset) were set on initialization of each terminal
+  emulator window, and could never be changed thereafter.
+
+- Modified DECALN to set the erasable attribute on the screen cells. This 
+  seems to be assumed by VTTEST.
+
+- Noted (but cannot fix) some strange behaviour under Windows 98 when the
+  terminal emulator is compiled with debug enabled (i.e. make "DEBUG=1").
+  This does not occur when debug is not enabled so it is not a major issue.
+  Refer to the documentation for more detail.
+
+- Made the "diamond" and "centered dot" characters in the bitmapped fonts
+  a bit smaller. Hopefully, they are now more like a real VTxxx terminal.
+
+Release 1.9:
+------------
+
+- Fixed bug in Telnet that meant the "Echo Local" telnet command didn't work.
+
+- Fixed a bug in Telnet that caused a constraint_error if compiled with debug
+  flag (i.e. "make DEBUG=1").
+
+- Modified Makefile.inc to enable optional error messages when using debug
+  flag (i.e. "make DEBUG=1").
+
+- Tidy up : removed unused variables and unit references, add some missing 
+  elaboration pragmas that the Gnat compiler complained about when optional 
+  error messages are enabled (e.g. when using "make DEBUG=1").
+
+Release 1.8:
+------------
+
+- Fixed a bug in redirect that caused corrupt output under Windows 98 (e.g. 
+  when redirecting the "minimal.exe" example program).
+
+- Fixed a bug in the makefile in the GNAT Examples directory.
+
+- Made upper/lower case of source filenames more consistent - i.e. all source
+  file names are all lower case except where the original file is from another 
+  source and is originally in upper or mixed case.
+
+- Minor documentation updates.
+
+Release 1.7:
+------------
+
+- Added options to specify how the screen is redrawn. This can give speed 
+  improvements of up to 30%, but at the expense of quality when drawing
+  italic and bold characters. See the command line option "/Redraw" or
+  the RedrawPrevious and RedrawNext parameters to the SetOtherOptions API
+  procedure. By default, the redraw flags are set for maximum quality, not
+  speed. To maximize speed, use the command line options "/redraw=none"
+
+- Fixed a bug in redirect that meant the program was not correctly detecting
+  when the redirected program issued a prompt indicating that the previous
+  command had completed execution. This could lead to redirect unecessarily
+  delaying the processing of the next command entered.
+
+Release 1.6:
+------------
+
+- Fixed a bug that caused the terminal emulator to crash on parsing some vt420
+  control sequences (e.g. DECCARA, DECRARA). These control sequences are still 
+  not implemented, but they no longer cause the emulator to crash.
+
+- Fixed a bug that could cause the telnet program to lock up under some
+  conditions - it could run out of file descriptors.
+
+- Fixed a bug that caused unecessary updates to the scroll bar positions.
+
+- Minor documentation updates - e.g. program is now known to work with Windows 
+  XP.
+
+- Moved all documentation other than the README.TXT file to a new "doc" 
+  subdirectory.
+
+Release 1.5:
+------------
+
+- Fixed a bug that sometimes caused the cursor to disappear when the cursor
+  was moved and cursor flashing was disabled.
+
+- Fixed a bug that meant checked items in the menu (i.e. current options) 
+  were sometimes not updated when the drop down or context menus were
+  displayed.
+
+- Added a warning about using Win95cmd to build or install this program - 
+  this causes the MIT parser to build incorrectly. The result compiles and
+  links ok, but will not process any ANSI control sequences !.
+
+- Modified the terminal emulator to send the Answerback message when F5 is
+  pressed in VTxxx emulation modes. A real VTxxx sends this message when 
+  CTRL-F5 is sent, but CTRL-F5 is used to simulate F13.
+
+- Made more option settings accessible at run time. No options have changed
+  meaning, but it is now possible to set nearly all the terminal emulator 
+  options that are available via the API by using menus or dialog boxes. 
+  Specifically:
+
+  + Added "Smooth Scrolling" to option menu. This corresponds to the Smooth 
+    option to the SetScrollOptions procedure.
+
+  + Added "Scroll only in Region" option to the advanced option dialog box. 
+    This corresponds to the Region option to the SetScrollOptions procedure.
+
+  + Added "Send DEL on Backspace" option to the advanced option dialog box. 
+    This corresponds to the DeleteOnBS option to the SetScrollOptions 
+    procedure.
+
+  + Added "Display Control Codes as characters" option to the advanced option 
+    dialog box. This corresponds to the DisplayControls option to the 
+    SetOtherOptions procedure. Note that setting this option changes the
+    current character set to DEC_CONTROLS, and resettting it changes the 
+    current character set to DEC_MULTINATIONAL.
+
+- Changed the command line option the Comms program uses for specifying 
+  the com port from "/port" to "/com". This is to avoid potential future 
+  conflict with the "/port" parameter defined by the Telnet program.
+
+- Changed the Comms program to enable the advanced options dialog box by
+  default.
+
+- Added the "/high" command line parameter to the Comms program, similar to
+  that which already exists for the Redirect and Telnet programs.
+
+- Added a Frequently Asked Questions document (FAQ.doc) and a summary of
+  all command line options (OPTIONS.doc). Both also exist as html documents
+  in the "html" subdirectory.
+
+- Modified the Makefile to copy all compiled programs to "bin" subdirectory
+  instead of just a few to the top level "terminal" directory.
+
+Release 1.4:
+------------
+
+- Modified 'bold' text processing to include brightening the text foreground
+  color. Previously, setting the 'bold' text attribute would make the font 
+  bold, but not affect the text color. Now, setting the 'bold' attribute will 
+  both set the font to bold and also set the foreground color brighter. To do 
+  this, the emulator uses a new (and more compatible) color scheme - i.e. the
+  standard colors are no longer full brightness colors. This is similar to the
+  color scheme used by both XTERMs and PC consoles. It also makes the terminal
+  emulator more compatible with ANSI graphics typically used on bulletin board
+  systems. 
+  Note 1: setting and resetting the 'bold' attribute works properly only when 
+  used in conjunction with the standard foreground colors (e.g. when the color
+  is set using an ANSI control sequence) - if a non-standard color is selected
+  (e.g. via the API or via the menu) then setting and resetting the 'bold' 
+  attribute may not result in the original color being restored. The new 
+  standard colors are defined in the file terminal_types.ads. The previous 
+  standard colors are still available for use if required.
+  Note 2: the previous emulator behaviour can be restored by setting the 
+  BRIGHT_ON_BOLD_FG flag to FALSE in the file terminal_types.ads - this must 
+  be done at compile time.
+  
+
+Release 1.3:
+------------
+
+- Added explicit emulator modes for DEC VT101, VT102, VT220 and VT320 terminals
+  (i.e. in addition to the existing VT100 and VT420 modes). Currently, the only 
+  difference between VT100, VT101 and VT102, or between VT220, VT320 and VT420 
+  is the way the emulator responds to the Primary Device Attributes control 
+  sequence - previously, the emulator always responded as a VT100 (even if the
+  current mode was VT420). Now it responds according to the selected mode.
+  
+
+Release 1.2:
+------------
+
+- Fixed a bug in the Terminal Emulator that could crash a program when 
+  resizing or maximizing the terminal window if the sizing mode was set 
+  to view sizing and the new view size ended up larger than the used
+  portion of the virtual buffer.
+
+- Added a new parameter for the Telnet debug option. Now "/debug=data"
+  just prints all data bytes sent and received.
+
+Release 1.1:
+------------
+
+- Fixed a bug in processing cursor positioning control sequences that meant
+  the sequence was ignored if the requested position was greater than the last
+  row or column position on the current screen or region. Now sets the cursor 
+  position to the last row and/or column.
+
+Release 1.0:
+-------------
+
+- Fixed a bug in the Terminal Emulator processing of the ESC [ 2 J control 
+  sequence when the ANSI mode is set to PC - the emulator now correctly sets 
+  the cursor to the home position in this case. This does not apply to the 
+  VTxxx ANSI modes, where the cursor is required to stay in its current 
+  position.
+
+- Fixed a bug in the Terminal Emulator when parsing string options - a space 
+  would be left on the end of non-delimited strings.
+
+- Fixed a bug in Telnet which would cause it to generate an exception and hang 
+  (or possibly even crash) if it received an unknown option during telnet 
+  option negotiation.
+
+- Modified telnet to process BS (or DEL) when typed at the telnet command 
+  level (i.e. at the "telnet>" prompt).
+
+- Modified Telnet so that the sequence LF CR is acceptable as a line terminator
+  - the Telnet protocol says that a CR must be followed by either a NUL or an 
+  LF. However, some telnet implementations do not appear to do this, so when 
+  LF CR was used as an alternative to CR LF, the character following the CR 
+  was being lost.
+
+- Modified Telnet so that the "/mode=" command line option can be used to 
+  override the default mode (which is VT100 for the telnet program). This 
+  allows "/mode=PC" to be specified for telnetting to sites that expect PC 
+  style ANSI control sequences (as opposed to DEC style ANSI control sequences).
+  See also "/CharSet" (below).
+
+- Added a new Terminal Emulator command line option: "/CharSet=[Ansi|Oem]". 
+  This is required to be able to specify the Windows Terminal font. Both the 
+  font name and the character set must be specified in order to correctly 
+  select this font because the Windows Terminal font does not support the 
+  Windows ANSI character set, so Windows substitutes other fonts unless the 
+  OEM character set is explicitly specified along with the font name. The 
+  Windows Terminal font is (paradoxically) the best one to use when telnetting
+  to a site (e.g. a BBS) that expects to be able to use so-called "ANSI
+  Graphics". The CharSet option may not work with fonts other than the 
+  Terminal font. 
+  To correctly emulate a PC (as opposed to a VTxxx terminal) with Telnet, use 
+  a telnet command such as:
+      telnet /mode=PC /fontname=terminal /charset=oem /terminal='ANSI'  <host>
+
+- Modification to ANSI reset processing to prevent an ANSI reset (or changing 
+  the ANSI mode) from disabling the "/displaycontrols" option.
+
+Release 0.9:
+------------
+
+- Massive internal restructuring, but very few visible functionality changes. 
+  Note that it is now necessary to "with" the package Terminal_Types in 
+  addition to the Terminal_Emulator package in order to use the API. Note that 
+  there are many filename changes, since some of the packages that used to be 
+  child units of Terminal_Emulator are not any more, even if the functionality
+  hasn't changed.
+
+- Fixed bug in "SetFontByType", which meant font type was set incorrectly.
+
+- Fixed bug in telnet that caused it to lock up when the telnet "open" command 
+  was issued without parameters (only shows up if telnet is compiled with 
+  optimization on). Also, changed code so that unexpected exceptions are 
+  logged to std output even when the debug flag is set to "None".
+
+- Fixed bug in loading buffer from a file (or pasting a selection) which meant 
+  ANSI control sequences to set row size (e.g. to double width) were sometimes
+  effectively being ignored.
+
+Release 0.8:
+------------
+
+- Fixed a problem compiling telnet under GNAT 3.14
+
+- Fixed a bug when correcting the output cursor after screen resizing.
+
+Release 0.7:
+------------
+- Fixed problem with Line Feed causing a screen scroll when it should not 
+  - i.e. when it was not on the last line of the screen (region inactive) or 
+  of the active region (region active).
+
+- Fixed various Telnet problems, and added more Telnet options and commands.
+
+- When the DEC Display Controls font is in use (e.g. via the "/DisplayControls"
+  command line option), do not add any extra CRs or LFs to the selection (when 
+  copied), or to the buffer (when saved in a file).
+
+- Added the "/DeleteOnBS" command line option to force the BACKSPACE key to 
+  return an ASCII.DEL instead of an ASCII.BS - this is mainly for VTxxx 
+  applications that use the DELETE key as a backspace function.
+
+Release 0.6:
+------------
+- Some optimization on the terminal_emulator-font_maps package.
+
+- Make Comms default to sending page up and down keys sent to host, not 
+  moving view.
+
+- Make Comms default to disable extended keys.
+
+- Add warning about installing when "sh" exists in the current path.
+
+- Fixed problem in GetInputPos and GetOutputPos that occured when wrap was
+  enabled and the current cursor position has not yet been updated due to
+  a wrap which would occur when the next character was output.
+
+- Fixed Bell - ASCII.BEL was not interpreted correctly during ANSI parsing.
+
+- Fixed ANSI Erase control sequences to use correct text attrbutes.
+
+- Added Telnet program to use Telnet protocol with the terminal emulator.
+  This enables the PC to log into a remote host.
+
+Release 0.5:
+------------
+- Fix Comms program to work with Windows NT, which uses blocking I/O.
+
+- Add XON/XOFF options to the Comms program.
+
+- Update documentation to indicate GNAT 3.14 or later can be used.
+
+Release 0.4:
+------------
+- Add more communications options to Comms program.
+
+Release 0.3:
+------------
+- Add soft and hard reset to the menu. Hard reset is the only way to disable
+  the use of the region if this has been enabled by a control sequence.
+
+- Add Comms program to enable use of a serial port with the terminal emulator.
+  This enables a PC to be used as a serial terminal.
+
+Release 0.2:
+------------
+- Fixed bug with printing - control sequence "ESC [ ? 1 i" should mean Print 
+  Cursor Line, but was being interpreted as Start of Guarded Area ("ESC V"). 
+
+- Add support for VT220 printing control sequences, such as Print Screen, 
+  Print Cursor Line, Auto Print, Print Extent, Print Terminator, Print
+  Controller mode.
+
+Release 0.1:
+------------
+Initial beta release.

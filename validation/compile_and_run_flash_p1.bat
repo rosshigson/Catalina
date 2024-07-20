@@ -1,0 +1,7 @@
+@echo VALIDATING: FLASH %1 %2 %3 %4 %5 %6 %7 %8 %9
+@echo VALIDATING: FLASH %1 %2 %3 %4 %5 %6 %7 %8 %9 >>results_serial.%1 2>&1
+@echo PARAMETERS: FLASH %CATALINA_DEFINE% >>results_serial.%1 2>&1
+@echo. >>results_serial.%1 2>&1
+catalina -k -C FLASH %2.c %3 %4 %5 %6 %7 %8 %9 >>results_serial.%1 2>&1
+payload FLASH %2 -y -z -L %2.lua >>results_serial.%1 2>&1
+del %2.binary

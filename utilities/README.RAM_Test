@@ -1,0 +1,26 @@
+This program implements a memory test for the XMM RAM.
+
+To compile it, use the command "build_ram_test", specifying the platform - e.g:
+
+   build_ram_test HYDRA
+
+or
+
+   build_ram_test C3 CACHED_1K FLASH
+
+
+This builds three versions of the program:
+
+   RAM_Test_PC
+   RAM_Test_TV
+   RAM_Test_VGA
+
+The only difference is that one uses a PC terminal emulator for its output, 
+one uses a local TV display, and one uses a local VGA display. 
+
+The PC option is generally the most useful, as results may scroll off the local 
+display too quickly to read - but on the HYDRA and the HYBRID, the serial I/O 
+port cannot be used at the same time as the XMM RAM, so the TV version MUST
+be used on those platforms. The VGA version can be used on the DRACBLADE or 
+the DEMO board. On the TRIBLADEPROP, use the PC version.
+

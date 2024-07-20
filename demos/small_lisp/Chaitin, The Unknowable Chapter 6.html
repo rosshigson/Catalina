@@ -1,0 +1,828 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><script src="Chaitin,%20The%20Unknowable%20Chapter%206_files/analytics.js" type="text/javascript"></script>
+<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app13.us.archive.org';v.server_ms=231;archive_analytics.send_pageview({});});</script>
+<script type="text/javascript" src="Chaitin,%20The%20Unknowable%20Chapter%206_files/bundle-playback.js" charset="utf-8"></script>
+<script type="text/javascript" src="Chaitin,%20The%20Unknowable%20Chapter%206_files/wombat.js" charset="utf-8"></script>
+<script type="text/javascript">
+  __wm.init("https://web.archive.org/web");
+  __wm.wombat("http://www.umcs.maine.edu/~chaitin/unknowable/ch6.html","20110520024506","https://web.archive.org/","web","/_static/",
+	      "1305859506");
+</script>
+<link rel="stylesheet" type="text/css" href="Chaitin,%20The%20Unknowable%20Chapter%206_files/banner-styles.css">
+<link rel="stylesheet" type="text/css" href="Chaitin,%20The%20Unknowable%20Chapter%206_files/iconochive.css">
+<!-- End Wayback Rewrite JS Include -->
+
+<title>Chaitin, The Unknowable</title>
+</head>
+<body><!-- BEGIN WAYBACK TOOLBAR INSERT -->
+<style type="text/css">
+body {
+  margin-top:0 !important;
+  padding-top:0 !important;
+  /*min-width:800px !important;*/
+}
+</style>
+<script>__wm.rw(0);</script>
+<div id="wm-ipp-base" style="display: block; direction: ltr;" lang="en">
+</div><div id="wm-ipp-print">The Wayback Machine - https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/unknowable/ch6.html</div>
+<div id="donato" style="position:relative;width:100%;">
+  <div id="donato-base">
+    <iframe id="donato-if" src="Chaitin,%20The%20Unknowable%20Chapter%206_files/donate.htm" scrolling="no" style="width:100%; height:100%" frameborder="0">
+    </iframe>
+  </div>
+</div><script type="text/javascript">
+__wm.bt(650,27,25,2,"web","http://www.umcs.maine.edu/~chaitin/unknowable/ch6.html","20110520024506",1996,"/_static/",["/_static/css/banner-styles.css?v=omkqRugM","/_static/css/iconochive.css?v=qtvMKcIJ"], "False");
+  __wm.rw(1);
+</script>
+<!-- END WAYBACK TOOLBAR INSERT -->
+<h1>VI.  Information &amp; Randomness: A Survey of Algorithmic Information
+Theory</h1>
+<small>
+[Based on the introductory survey at the beginning of the course on
+``Information &amp; randomness'' that Veronica Becher and I gave at the
+University of Buenos Aires in October 1998.  We then went through each
+proof in the chapters on program-size and on randomness in <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/cup.html">my
+Cambridge book.</a>]
+</small>
+<p>
+</p><hr>
+<h2>Synopsis</h2>
+<i>
+What is AIT (algorithmic information theory)?  History of AIT.  AIT in
+metamathematics.  Why LISP program-size complexity is no good.
+Program-size complexity with binary programs.  Program-size complexity
+with self-delimiting binary programs.  The elegant programs for
+something vs.  all programs; algorithmic probability.  Relative
+complexity, mutual complexity, algorithmic independence.  Randomness
+of finite and infinite bit strings.  Examples: the string of <i>N</i>
+0's, elegant programs, the number of <i>N</i>-bit strings having
+exactly the maximum possible complexity.  The random number Ω, the
+halting probability.  Hilbert's 10th problem.
+</i>
+<p>
+</p><hr>
+<h2>What is AIT?</h2>
+In the <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/unknowable/ch5.html">last chapter</a> I gave one example of my approach to
+incompleteness using program-size complexity, <b>LISP</b> program-size
+complexity.  It's a good example, because it's an easy way to begin to
+see how my approach to incompleteness differs from Gödel's and
+Turing's, and because it's a very straight-forward definition of
+program-size complexity.  It's a good starting point.
+<p>
+In this chapter I'll tell you where my theory goes from there.  LISP
+is only the first step.  To make further progress you need to
+construct a programming language to use to measure the size of
+programs.  I won't give any proofs, but I'll outline the basic ideas.
+I'll give a survey of what you get, of the subject that I call
+<i>algorithmic information theory</i> (AIT), which is concerned with
+program-size complexity, algorithmic information content, and
+algorithmic incompressibility or randomness.  We'll get to my most
+devastating incompleteness theorems, theorems involving the random
+number Ω, the halting probability.
+</p><p>
+The bottom line is that I can show that in some areas of mathematics,
+mathematical truth is completely random, unstructured, patternless and
+incomprehensible.  In fact, by using the work of Y. Matijasevic and J.
+Jones on Hilbert's 10th problem, I can even show that this occurs in
+elementary number theory, in Peano arithmetic.  I exhibit an algebraic
+equation involving only whole numbers (a so-called <i>diophantine</i>
+equation) in which the number of solutions jumps from finite to
+infinite completely at random as you vary a parameter in the equation.
+In fact, this gives us the bits of the random number Ω.
+So we will never be able to know whether or not my equation has a
+finite number of solutions in each particular instance.  More
+precisely, these are irreducible mathematical facts.  They can only be
+deduced by adding them as axioms.  Settling <i>N</i> cases requires
+<i>N</i> bits of axioms.
+</p><p>
+So not only was Hilbert's faith in the axiomatic method wrong, 
+in some cases it was <b>completely</b>
+wrong.  Because to say that some mathematical truths are irreducible
+means that they cannot be compressed into axioms at all, they
+cannot be deduced from any principles simpler than they are.
+</p><p>
+Let me start with a brief outline of the history of my field.  Some
+people have already published their versions of this history.  Here
+I'd like to tell you how it looked from my vantage point.  I'll tell
+how I saw it, how I experienced it.
+</p><p>
+</p><hr>
+<h2>History of AIT</h2>
+My initial formulation of program-size complexity dealt with the size
+of Turing machine programs measured in states.  In fact, in my first
+paper on the subject, I developed <b>two</b> different versions of
+this theory for two different kinds of Turing machines, as well as a
+<b>third</b> theory of program-size using binary programs (that was
+also proposed by Solomonoff and Kolmogorov).  This, <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/acm66.pdf">my first major
+paper</a>, was quite long, almost the size of a book.  I submitted it in
+1965 to the <i>ACM Journal,</i> then the only theoretical computer
+science magazine.  Unfortunately the editor, Martin Davis, asked me to
+shorten it and split it in two.  [One of the things that I cut out to
+save space was the definition of relative complexity and the proofs
+where I used this concept.]  The two parts were published in 1966 and
+1969 in the <i>ACM Journal.</i> These were my first two papers in that
+magazine.
+<p>
+It was very unfortunate that publication of <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/acm69a.pdf">the second half</a> was
+delayed by the editor for three years.  It was also unfortunate that
+the referee, Donald Loveland, <b>immediately</b> sent the entire
+<b>uncut original manuscript</b> to Kolmogorov in Moscow.
+</p><p>
+An <b>earlier</b> piece of work, involving the time and program-size
+complexity of infinite sets, was <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/acm69b.pdf">my <b>third</b> paper</a> in the <i>ACM
+Journal</i> (1969).  <b>Then</b> I turned to the size of programs for
+computing finite binary sequences, i.e., bit strings, and to the
+randomness or incompressibility of individual bit strings, which led
+to my first two papers in the <i>ACM Journal</i>.  So these papers
+were not published in chronological order.
+[<a name="EFMoore">An <b>even earlier</b> piece of work led to my first publication,
+which was not in the <i>ACM Journal.</i> When I was in high school I
+programmed on the computer all the algorithms in E.F. Moore's paper
+``Gedanken-experiments on sequential machines.''  ``Sequential
+machines'' were finite automata, and Moore's paper was in the very
+first book on theoretical computer science, C.E. Shannon and J.
+McCarthy's <i>Automata Studies</i> (Princeton University Press, 1956).
+This led to my first publication, written while I was in high school:
+``An improvement on a theorem of E.F. Moore,'' <i>IEEE Transactions on
+Electronic Computers</i> EC-14 (1965), pp. 466-467.  
+Moore's paper dealt with a toy model of the problem of scientific induction, namely
+the problem of identifying an
+automaton by giving it inputs and looking at the outputs—hence
+the title <i>gedanken</i> or thought experiments.
+And this involves
+a finite automata version of Occam's razor, because it's
+desirable to find the <b>simplest</b> finite automaton—the finite automaton
+with the <b>smallest number of
+states</b>—that explains a series of experiments on a black box.  As I
+said when describing my APL2 physics course, wherever I look, I see
+program-size complexity!
+And as my gedanken-experiment project, my
+APL2 gallery, my Springer book, and this book all illustrate, in
+my opinion <b>the best way to understand something is to program it out</b>
+and see if it works on the computer.]
+</a></p><p><a name="EFMoore">
+Simultaneously there were two other independent inventors of AIT, R.J.
+Solomonoff in Cambridge, Massachusetts, and A.N. Kolmogorov in Moscow.
+Solomonoff was not a mathematician.  He was interested in artificial
+intelligence and in the problem of scientific induction, theory
+building and prediction.  His first paper, in two parts in
+<i>Information &amp; Control,</i> is full of interesting ideas.
+Unfortunately his math isn't very good and he doesn't really succeed
+in doing too much with these ideas.  In particular, he does state that
+program-size complexity quantifies Occam's Razor by providing a
+numerical measure of the degree of simplicity of a scientific theory.
+Occam's Razor states that the simplest theory is best, that ``entities
+should not be multiplied unnecessarily''.  <b>But it does not occur to
+Solomonoff to propose a definition of randomness using program-size
+complexity.</b>
+</a></p><p><a name="EFMoore">
+Kolmogorov and I independently come up with program-size complexity
+and also propose (slightly different) definitions of randomness.
+Roughly speaking, a random string is incompressible, there is no
+simple theory for it, its program-size complexity is as large as
+possible for bit strings having that length.  Unlike Solomonoff,
+Kolmogorov and I <b>are</b> mathematicians.  Kolmogorov is at the end
+of a distinguished career; I'm at the beginning of mine.  I'm also a
+computer programmer, which I think is a big help!... As far as I know,
+Kolmogorov only publishes 3 or 4 pages on program-size complexity, in
+two separate short papers, at least that's all I ever saw.  I publish
+many, many books and papers on AIT. AIT is my life!
+</a></p><p><a name="EFMoore">
+In the initial formulations by Kolmogorov and myself of complexity
+using binary programs, most <i>N</i>-bit strings, the random ones,
+need <i>N</i>-bit programs, or close to it.  <b>Kolmogorov never realizes
+that this theory is fatally flawed, and he never realizes that its
+most fundamental application is not in redoing probability theory, but
+in the new light that it sheds on the incompleteness phenomenon
+discovered by Gödel.</b>
+</a></p><p><a name="EFMoore">
+But a young Swede visiting Kolmogorov in Moscow, P. Martin-Löf,
+realizes that something is wrong, because Kolmogorov's proposal for
+defining <b>infinite</b> random strings turns out to be <b>vacuous</b>.
+Kolmogorov had required infinite random strings to have all prefixes
+be incompressible, but this fails because Martin-Löf notes that
+long runs of 0's and 1's produce logarithmic complexity dips.  (</a><a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/acm69a.pdf">I also
+noticed this problem, and proposed a different complexity-based
+definition of infinite random string, a more permissive one.</a>  This
+leads to the <b>opposite</b> problem, namely that it accepts some
+non-random strings.)  So <b>Martin-Löf abandons program-size
+complexity</b> and proposes a constructive measure-theoretic
+definition of random infinite string.
+[A real number is Martin-Löf random iff it is
+not contained in any constructively covered set of measure zero.]
+</p><p>
+What do I do?  I don't abandon program-size complexity, I stick with
+it.  <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/ieee74b.pdf">I change the definition to use self-delimiting binary programs.</a>
+Then most <i>N</i>-bit strings require <i>N</i> +
+log<sub>2</sub><i>N</i> bit programs.  It's now okay to demand that
+the complexity of each <i>N</i>-bit prefix of an infinite random
+string should never drop below <i>N</i>.  The log<sub>2</sub><i>N</i>
+complexity dips now go from <i>N</i> + log<sub>2</sub><i>N</i> to
+<i>N</i> instead of from <i>N</i> to <i>N</i> −
+log<sub>2</sub><i>N</i>.  (I'll explain this better later.)  And <b>my
+complexity-based definition of randomness now works for <i>both</i>
+finite and infinite strings</b>.  It turns out to be equivalent to
+Martin-Löf's for infinite strings.
+</p><p>
+I'm invited to speak on this, the <b>second</b> major version of AIT,
+at <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/ieee74b.pdf">the opening plenary session</a> of the 1974 IEEE International
+Symposium on Information Theory in Notre Dame, Indiana,
+with several well-known Soviet information-theorists in attendance.
+I publish this new version of AIT in my 1975 <i>ACM Journal</i> paper
+``<a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/acm75.pdf">A theory of program size formally identical to information theory</a>,''
+and later, in more complete form, in my 1987 Cambridge University
+Press monograph <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/cup.html"><i>Algorithmic Information Theory.</i></a>
+</p><p>
+Meanwhile another Russian, L.A. Levin, also realizes that
+self-delimiting programs are necessary, but he doesn't get it all
+right, he doesn't do as good a job.  For example, he doesn't
+realize, as I did, that the definition of relative complexity
+<b>also</b> has to be changed.  (I'll explain this later, but the
+basic idea is that <b>you're not given something for free directly,
+you're given a minimal-size program for it instead</b>.)
+</p><p>
+And to my knowledge, no one else realizes that AIT can be reformulated
+as a theory of the size of real programs in a usable programming
+language, one based on LISP.  But that's not too surprising, because I
+had to <b>invent</b> the programming language and write all the
+software for running it.  That's the <b>third</b> major reformulation
+of AIT, and this time I'm the only one who does it.  It's presented in
+my 1998 Springer-Verlag book <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/lm.html"><i>The Limits of Mathematics.</i></a>
+</p><p>
+Anyway, in my opinion AIT really begins with my 1975 <i>ACM
+Journal</i> paper ``<a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/acm75.pdf">A theory of program size formally identical to
+information theory</a>;'' the rest was the <b>pre-history</b> of the
+field!
+</p><p>
+On the side, just for the fun of it, <b>I also developed three different
+theories of LISP program-size complexity</b>.  These are in <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/ps3.html">the second
+World Scientific collection of my papers</a>, the ``autobiography''
+published in 1992.  I did this work because (a) I like LISP and (b)
+it's nice to look at the size of <b>real</b> programs and (c) because
+these theories work much like one of my original theories that
+measured Turing machine programs in states.  My LISP program-size work
+resurrected <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/acm69a.pdf">one of my first efforts, dealing with what I called
+``bounded-transfer'' Turing machines</a>.  This is a somewhat peculiar
+machine model, but I was fond of these youthful ideas, and hated to
+see them completely disappear in the dust bin of history.  I felt that
+<a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/lisp.pdf">my work on LISP</a> confirmed the validity of some of my youthful
+intuitions about the right way to develop a theory of the size of real
+programs, it was just that I hadn't applied these ideas to the right
+programming language!
+</p><p>
+I also retain an interest in applying program-size complexity measures
+to computing infinite sets.  This part of the theory is much less
+developed than the program-size complexity of computing individual
+finite objects.  I have only <b>one</b> paper on this subject,
+``<a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/sets.pdf">Algorithmic entropy of sets</a>.''  
+It's in <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/ws.html">my first World Scientific
+volume</a>, the one published in 1987, and, in a second edition, in 1990.
+However I <b>do</b> use this to define the complexity of a formal
+axiomatic system as the size of the smallest program for generating
+all of its theorems.  I think that this is a better definition than
+the one I used in <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/unknowable/ch5.html">Chapter V</a> that the complexity of a formal axiomatic
+system is given by the size of the smallest program for its
+proof-checking algorithm.  But of course they are closely related.
+Many interesting open questions remain in the part of the theory
+dealing with infinite computations instead of finite ones.
+</p><h2>AIT in metamathematics</h2>
+<p>
+What I've presented above is a history of AIT proper, not of its
+application to metamathematics and epistemology.  In <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/acm66.pdf">my first <i>ACM
+Journal</i> paper</a> I prove that program-size complexity is
+uncomputable, which I was not the only person to notice.  But I am the
+<b>only</b> person to realize that AIT sheds dramatic new light on the
+incompleteness phenomenon discovered by Gödel, which is not at
+all equivalent to the remark that program-size is uncomputable, a weak
+and abstract observation.  Why is this?  It's because one can begin to
+discuss the information content of axioms and also because in a sense
+a formal axiomatic system amounts to a computation in the limit of
+infinite time, so that saying that something cannot be proven (with
+proofs of <b>any</b> size) is stronger than saying that it cannot be
+computed.  (Technically, what I'm saying amounts to the observation
+that a formal axiomatic system is ``recursively enumerable,''
+not ``recursive.'') [I believe that the current terminology is ``computably
+enumerable'' and ``computable.''  At any rate, the meaning is this.
+The set of theorems of a formal axiomatic system has the property
+that there's an algorithm for generating 
+its elements (in some arbitrary order).  But in general
+there's no algorithm to decide if something is in the
+set of theorems or not. (That's the <i>entscheidungsproblem,</i> the decision problem,
+in the title of Turing's 1936 paper, where he proved that these two ways of
+defining a set are different.)]
+</p><p>
+I realize this at age 22 during a visit to a university in Rio de
+Janeiro in 1970.  It's just before Carnival in Rio and I recall
+learning there the sad news that Bertrand Russell, one of my heroes,
+had died.  I show that a formal axiomatic system cannot establish any
+lower bounds on the program-size complexity of individual objects, not if
+the lower bound is substantially larger than the complexity of the
+axioms themselves.  This marks the beginning of my
+information-theoretic approach to incompleteness.
+</p><p>
+When Jacob Schwartz of the Courant Institute visits Buenos Aires soon
+after, he is astonished to hear my ideas and encourages me to develop
+them.
+[I lived from 1966 to 1975 in Buenos Aires—where I joined IBM in
+1967—and the rest of the time in New York.]
+I later discover that he had been in Moscow discussing AIT.  (I
+realize this when I see an acknowledgement of his participation in a
+survey paper on AIT by A.K. Zvonkin and Levin in <i>Russian
+Mathematical Surveys</i>.)  <b>Schwartz's astonishment shows clearly that
+the essential point had not been grasped by the Moscow school of AIT.</b>
+</p><p>
+I publish this idea in Rio in a research report in 1970, in <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/ams70.pdf">an
+abstract in the <i>AMS Notices</i></a> in 1970, in <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/sigact.pdf">a short paper in the
+<i>ACM SIGACT News</i></a> in 1971, in <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/ieee74.html">an invited paper in the <i>IEEE
+Information Theory Transactions</i></a> in 1974, in <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/acm74.pdf">a long paper in the
+<i>ACM Journal</i></a> in 1974—my <b>fourth</b> <i>ACM Journal</i>
+paper—and <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/sciamer.html">in an article in <i>Scientific American</i></a> in 1975.
+</p><p>
+I send the galley proofs of <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/ieee74.html">my invited paper in the <i>IEEE Information
+Theory Transactions</i></a> to Gödel in early 1974 after
+a phone conversation with him requesting an interview.  He reads my
+paper and in a second conversation grants me an appointment, but this
+never comes to pass due to bad weather and the fact that my visit to
+the U.S.A. is coming to an end.
+</p><p>
+My second major period of metamathematical activity is due to
+an invitation in 1986 from Cambridge University Press to write the
+first book in their series on theoretical computer science.  In their
+letter of invitation they explain that I was picked to be first in
+order to make the point that computer science has deep intellectual
+significance and is not just software engineering.
+</p><p>
+It is then that I realize that I can dress up my random Ω
+number, the halting probability, as a diophantine equation, and that
+there is therefore randomness in arithmetic, in elementary number
+theory.  And I am also able to show that an <i>N</i>-bit formal
+axiomatic system can determine at most <i>N</i> bits of Ω,
+even if the bits are scattered about instead of all at the beginning.
+</p><p>
+My book about this, <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/cup.html"><i>Algorithmic Information Theory,</i></a> is
+published by Cambridge University Press in 1987 and causes a
+commotion.  In 1988 Ian Stewart praises it in a news item in
+<i>Nature</i> entitled ``The ultimate in undecidability.''  Later in
+1988 I'm surprised to find an article with my photograph entitled
+``Une extension spectaculaire du théorème de Gödel:
+l'équation de Chaitin'' (A spectacular extension of
+Gödel's theorem: Chaitin's equation) by Jean-Paul Delahaye in
+<i>La Recherche.</i> I'm asked to write about this <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/sciamer2.html">in <i>Scientific
+American,</i></a> <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/paris.html">in <i>La Recherche,</i></a> and 
+<a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/ns.html">in <i>New Scientist.</i></a>
+</p><p>
+Two of the high points of my career follow.  In 1991 John Casti and
+Hans-Christian Reichel invite me to talk about my work in Gödel's
+old classroom in Vienna.  John announces my visit in a full-page
+article with my photo entitled ``<a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/Nuno_Crato_3.jpg">Gödeliger als Gödel</a>''
+(Out-Gödeling Gödel) in the Vienna newspaper <i>Der
+Standard.</i> And in 1992 I visit Cambridge University, where Russell
+and Turing worked.  The occasion is a high-level meeting on
+reductionism, and my talk is recorded as my paper on ``<a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/unm.html">Randomness in
+arithmetic and the decline and fall of reductionism in pure
+mathematics</a>'' in the book J. Cornwell, <i>Nature's Imagination,</i>
+Oxford University Press, 1995.  This paper, perhaps my most popular,
+is reprinted several times.
+</p><p>
+My third major period of metamathematical activity is started by an
+invitation from George Markowsky to give a course at the University of
+Maine in Orono in 1994.  I realize how to program my theory on the
+computer, and I include in the course a much simpler proof of my
+result about determining bits of Ω.
+[I'm talking about my proof that an <i>N</i>-bit formal axiomatic
+system can determine at most <i>N</i> bits of Ω, even if
+the bits are scattered about instead of all at the beginning.  In my
+course I use the simple Berry-paradox program-size proof in my
+``<a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/iti.pdf">Information-theoretic incompleteness</a>'' paper in <i>Applied
+Mathematics &amp; Computation</i> (1992), instead of the original
+complicated measure-theoretic proof in my Cambridge University Press
+monograph.]
+I refine the course greatly as the result of a second invitation.
+This time I'm invited by Veikko Keränen to give <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/rov.html">a course in
+Rovaniemi, Finland</a>, in May 1996.  It's an amazing experience in every
+possible way.  It never gets dark, and Veikko and I drive to Norway's
+North Cape, the top of Europe.  The final result is my 1998 book
+<a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/lm.html"><i>The Limits of Mathematics,</i></a> actually published at the end of
+1997, which sees the light only because of the enthusiastic support of
+my good friend Cris Calude.
+</p><p>
+Again the results exceed all expectations.  <i>The Limits of
+Mathematics</i> is announced by Springer-Verlag, the world's leading
+math publisher, with these words: ``Capture a piece of mathematics
+history-in-the-making with Gregory Chaitin's New Book <i>The Limits of
+Mathematics.</i>'' The ``energetic lectures'' and ``exuberant style''
+in this book noted by the <i>Library of Science</i> book club, reflect
+both my astonishment at being able to present my strongest
+metamathematical results so simply, and also the encouragement that I
+received from George and Veikko and the exhilarating experience of
+giving my course twice to interested and able audiences in beautiful
+environments.
+</p><p>
+Two delightful consequences are that in 1998 an interview with
+me is <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/gmartin.html">the lead article on the cover</a> of the Sunday magazine of a Buenos
+Aires newspaper <i>Página/12,</i> and I'm also 
+<a href="https://web.archive.org/web/20110520024506/http://primeirasedicoes.expresso.pt/ed1352/r1261.asp">interviewed in
+the Sunday magazine</a> of the Lisbon, Portugal newspaper <i>Expresso.</i>
+These magazine interviews include photographs of me, my home, and my
+Springer book, an amazing experience for a mathematician whose main
+interest is epistemology!
+</p><p>
+It's been a wonderful life.  I never imagined as a child that things
+could go this way, or that it could pass so quickly...
+</p><p>
+My biggest disappointment is that I'm unable to use program-size
+complexity to make mathematics out of Darwin, to prove that life must
+evolve, because it's very hard to make my kind of complexity increase.
+But Wolfram uses the ubiquity of universality to argue that there is
+nothing to explain, and perhaps he's right... I'll describe Wolfram's
+ideas in the <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/unknowable/ch7.html">concluding chapter.</a>
+</p><p>
+This personal story is designed to humanize what would otherwise be
+a dry piece of mathematics, and to show what an adventure discovery
+can be, to show the blood, sweat and tears...
+But now let me quickly outline the mathematics...
+</p><p>
+</p><hr>
+<h2>Why LISP program-size complexity is no good</h2>
+It's easy to understand, it's nice, but it's no good because LISP
+syntax makes LISP programs redundant.  The bits in the program are not
+being used optimally.  Ideally each bit in a program should be equally
+likely to be a 0 or a 1, should convey maximum information.  That's
+not the case with LISP programs.  LISP program-size complexity
+is still a nice theory, but not if the goal is to understand
+incompressibility.
+<p>
+</p><hr>
+<h2>Program-size complexity with binary programs</h2>
+So let's pick a computer <i>U</i> that works like this.  The program
+<i>p</i> will be a bit string that begins with the binary
+representation of the definition of a LISP function.
+[That's 8 bits for each character of LISP.]
+Then there's a special delimiter character to indicate the end of the
+LISP prefix.  Then there's a bit string which is data.  It's a list of
+0's and 1's given to the LISP function defined in the prefix.  I.e.,
+the function in the prefix must be a function with one argument and
+we'll apply it to the list consisting of the remaining bits of the
+program.  And the value of the LISP function is the output
+<i>U</i>(<i>p</i>) produced by running the program <i>p</i>.
+<p>
+Then we define the complexity or algorithmic information content
+<i>H</i>(<i>X</i>) of a LISP S-expression <i>X</i> to be the size in
+bits |<i>p</i>| of the smallest program <i>p</i> that produces <i>X</i>.
+</p><p></p><center>
+   <i>H</i>(<i>X</i>) =
+   <b>min</b><sub><i>U</i>(<i>p</i>) = <i>X</i></sub> |<i>p</i>|
+</center><p>
+</p><p>
+The result of this is that most <i>N</i>-bit strings require programs
+very close to <i>N</i> bits long.  These are the random or
+incompressible <i>N</i>-bit strings.
+</p><p>
+Unfortunately this theory still has some serious problems.  One
+symptom of this is that complexity is not additive.  It is <b>not</b>
+the case that the complexity of a pair is bounded by the sum of the
+individual complexities.  I.e., it's not the case that
+</p><p></p><center>
+<i>H</i>((<i>X Y</i>)) ≤ <i>H</i>(<i>X</i>) + <i>H</i>(<i>Y</i>)
+</center><p>
+In other words, you can't combine subroutines because you can't tell
+where one ends and the other begins.  To solve this, let's make
+programs ``self-delimiting''.
+[This (sub)additivity property played a <b>big</b> role in my
+thinking: (a) because for a programmer it's a very natural requirement
+and (b) because it was valid in my two earlier theories of Turing
+machine program-size complexity measured in states and (c) because in
+fact it had played an absolutely fundamental role in <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/acm69a.pdf">my theory of
+program-size for ``bounded-transfer'' Turing machines</a>.  I had
+regretfully given up additivity in going from my Turing machines
+theories to binary programs.  But I <b>badly wanted additivity
+back!</b> That's why I came up with self-delimiting <b>binary</b>
+programs.  I had already been working with self-delimiting programs
+before... By the way, remember that I showed that LISP complexity is
+additive in <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/unknowable/ch5.html">Chapter V?</a>  That's another reason that I love LISP!]
+</p><p>
+</p><hr>
+<h2>Program-size complexity with self-delimiting binary programs</h2>
+What does self-delimiting mean?  Now the computer <i>U</i> works like
+this.  The LISP prefix of our binary program <i>p</i> is no longer a
+one-argument function that is given as argument the rest of the
+program.  Now the prefix is a LISP expression to be evaluated, and it
+has to request the rest of the program bit by bit, one bit at a time,
+and it explodes if it asks for too many bits.  Bits are requested by
+using a 0-argument LISP primitive function ``read-bit'' that returns a
+0 or 1 or explodes the computation if all bits have been read and
+another one is requested.  And the value of the prefix LISP expression
+is the output <i>U</i>(<i>p</i>) produced by running the program
+<i>p</i>.
+<p>
+The fact that ``read-bit'' does not return an end-of-file condition
+but instead kills the computation is absolutely crucial.  This forces
+the program <i>p</i> to indicate its own size within itself somehow,
+for example, by using a scheme like the length header that's placed at
+the beginning of variable-length records.  Now most <i>N</i>-bit
+strings <i>X</i> have complexity greater than <i>N</i>, because
+programs not only have to indicate the content of each bit in
+<i>X</i>, they also have to indicate how many bits there are in order
+to make the program self-delimiting.
+</p><p>
+The final result is that most <i>N</i>-bit strings <i>X</i> now have
+complexity <i>H</i>(<i>X</i>) very close to <i>N</i> +
+<i>H</i>(<i>N</i>).  That's <i>N</i> plus the size in bits of the
+smallest program to calculate <i>N</i>, which is usually about
+<i>N</i> + log<sub>2</sub><i>N</i>.  So roughly speaking
+</p><p></p><center>
+<i>H</i>(<i>X</i>)
+= |<i>X</i>| + <i>H</i>(|<i>X</i>|)
+≈ |<i>X</i>| + log<sub>2</sub>|<i>X</i>|
+</center><p>
+</p><p>
+And now information <b>is</b> additive: <i>H</i>((<i>X Y</i>)) ≤ 
+<i>H</i>(<i>X</i>) + <i>H</i>(<i>Y</i>) + a constant number of bits
+<i>c</i> required to stitch the two subroutines for <i>X</i> and
+<i>Y</i> together.
+</p><p>
+</p><hr>
+<h2>The elegant programs for something vs. all programs; algorithmic
+probability</h2>
+<p>
+Solomonoff had considered all the programs that produce a given
+output, not just the smallest ones, but he had not been able to get it
+to work.  The sums over all programs that he defined diverged, they
+always gave infinity.
+</p><p>
+Well, with self-delimiting programs everything works like a dream.  In
+addition to the complexity <i>H</i>(<i>X</i>) of a LISP S-expression
+<i>X</i>, which is the size of the smallest program for <i>X</i>, we
+can define a complexity measure that includes <b>all</b> programs for
+<i>X</i>.  That's the probability that a program produced by
+coin tossing produces <i>X</i>.
+</p><p>
+The probability that a program produced by coin tossing produces
+<i>X</i> turns out to be
+</p><p></p><center>
+   <i>P</i>(<i>X</i>) =
+   ∑<sub><i>U</i>(<i>p</i>) = <i>X</i></sub>
+   2<sup>−|<i>p</i>|</sup>
+</center><p>
+I.e., each <i>k</i>-bit program <i>p</i> that produces <i>X</i> adds 2
+to the minus <i>k</i> to the probability <i>P</i>(<i>X</i>) of
+producing <i>X</i>.
+</p><p>
+I'm proud of my theorem in <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/acm75.pdf">my 1975 <i>ACM Journal</i></a> paper that the
+complexity <i>H</i> and the probability <i>P</i> are closely related.
+In fact, the difference between <i>H</i>(<i>X</i>) and
+−log<sub>2</sub> <i>P</i>(<i>X</i>) is bounded.
+</p><p></p><center>
+<i>H</i>(<i>X</i>) =  −log<sub>2</sub> <i>P</i>(<i>X</i>) + <i>O</i>(1)
+</center><p>
+In other words, most of the probability of computing <i>X</i> is
+concentrated on the elegant programs for calculating <i>X</i>.  And
+this shows that the elegant program is essentially unique, i.e., that
+Occam's razor picks out a bounded number of possibilities.  And this
+connection between program size and probability unlocks the door to
+other deep results.  I use it to prove a beautiful decomposition
+theorem.
+</p><p>
+</p><hr>
+<h2>Relative complexity, mutual complexity, algorithmic
+independence</h2>
+Here's the second major result in <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/acm75.pdf">my 1975 paper</a>.  It's this
+decomposition theorem:
+<p></p><center>
+<i>H</i>((<i>X Y</i>)) =
+<i>H</i>(<i>X</i>) + <i>H</i>(<i>Y</i>|<i>X</i>) + <i>O</i>(1)
+</center><p>
+This states that the difference between (the complexity of a pair
+<i>X, Y</i>) and (the sum of the complexity of <i>X</i> plus the
+relative complexity of <i>Y</i> given <i>X</i>) is bounded.  What's
+the relative complexity of <i>Y</i> given <i>X</i>?  It's the size of
+the smallest program to calculate <i>Y</i> if we are given an elegant
+program to calculate <i>X</i> for free.
+</p><p>
+An important corollary concerns the mutual complexity or information
+content <i>H</i>(<i>X</i>:<i>Y</i>).  That's defined to be the extent
+to which the complexity of a pair is less than the sum of the
+individual complexities.
+</p><p></p><center>
+   <i>H</i>(<i>X</i>:<i>Y</i>) =
+   <i>H</i>(<i>X</i>) + <i>H</i>(<i>Y</i>) − <i>H</i>((<i>X Y</i>))
+</center><p>
+Here's my result
+</p><p></p><center>
+<table><tbody><tr><td>
+   <i>H</i>(<i>X</i>:<i>Y</i>)
+</td><td>
+   = <i>H</i>(<i>X</i>) − <i>H</i>(<i>X</i>|<i>Y</i>) + <i>O</i>(1)
+</td></tr><tr><td></td><td>
+   = <i>H</i>(<i>Y</i>) − <i>H</i>(<i>Y</i>|<i>X</i>) + <i>O</i>(1)
+</td></tr>
+</tbody></table>
+</center><p>
+In other words, I show that within a bounded difference the mutual
+complexity or the mutual information content is also the extent to
+which knowing <i>Y</i> helps us to know <i>X</i> and the extent to
+which knowing <i>X</i> helps us to know <i>Y</i>.
+</p><p>
+Finally, there is the important concept of (algorithmic) independence.
+Two objects are independent if the complexity of the pair is equal
+to the sum of the individual complexities:
+</p><p></p><center>
+   <i>H</i>((<i>X Y</i>)) ≈
+   <i>H</i>(<i>X</i>) + <i>H</i>(<i>Y</i>)
+</center><p>
+More precisely, they are independent if their mutual complexity is
+small compared to their individual complexities.  For example, two
+<i>N</i>-bit strings are algorithmically independent if their mutual
+complexity is <i>H</i>(<i>N</i>), i.e., if the only thing
+that they have in common is their size.
+Where can we find such a pair of strings?  That's easy, just take the
+two halves of a random (maximum complexity) 2<i>N</i>-bit string!
+</p><p>
+</p><hr>
+<h2>Randomness of finite and infinite bit strings</h2>
+First of all, I should say that for finite strings randomness is a
+matter of degree, there's no sharp cutoff.  But for infinite strings
+it's black or white, it's either random or nonrandom, there <b>is</b>
+a sharp distinction.
+<p>
+Now what's a finite random string?  Well, the most random <i>N</i>-bit
+strings <i>X</i> have <i>H</i>(<i>X</i>) close to <i>N</i> +
+<i>H</i>(<i>N</i>).  As I said before, <b>most</b> <i>N</i>-bit
+strings have close to this maximum possible complexity, i.e., are
+highly random.  And as the complexity of an <i>N</i>-bit string drops
+below this, the string gets less and less random, and there are fewer
+and fewer such strings.
+[More precisely, the number of <i>N</i>-bit strings <i>X</i> such that
+<i>H</i>(<i>X</i>) &lt; <i>N</i> + <i>H</i>(<i>N</i>) − <i>K</i> is less
+than 2<sup><i>N</i>−<i>K</i>+<i>c</i></sup>.]
+But where should we draw the line?  How low should we let
+<i>H</i>(<i>X</i>) drop before we reject <i>X</i> as random?  Well, as
+I said before, it's a matter of degree.  But if you insist that I
+should provide a sharp cutoff, I can do it.  How?  The answer is
+provided by looking at infinite bit strings, in other words, at real
+numbers in binary notation, with an infinite number of binary digits
+of precision.
+</p><p>
+C.P. Schnorr showed that an infinite bit string <i>X</i> satisfies all
+computable statistical tests of randomness (which is Martin-Löf's
+randomness definition) iff there is a constant <i>c</i> such that
+</p><p></p><center>
+<i>H</i>(<i>X</i><sub><i>N</i></sub>) &gt; <i>N</i> − <i>c</i>
+</center><p>
+where <i>X</i><sub><i>N</i></sub> is the first <i>N</i> bits of
+<i>X</i> (which is <b>my</b> randomness definition).  In fact, I show
+that if this is the case then <i>H</i>(<i>X</i><sub><i>N</i></sub>) −
+<i>N</i> must go to infinity.
+[In <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/cup.html">my Cambridge book</a>, I prove that <b>four</b> randomness definitions
+for infinite bit strings are equivalent, including one by R.M.
+Solovay.]
+[More precisely, a real number is Martin-Löf random iff it is
+not contained in any constructively covered set of measure zero.]
+</p><p>
+So let's draw the cutoff for finite randomness when the complexity of
+an <i>N</i>-bit string drops below <i>N</i>.  Then we can define an
+infinite random string <i>X</i> to be one with the property that almost all
+(all but finitely many) of its prefixes <i>X<sub>N</sub></i> are finite random strings.
+</p><p>
+</p><hr>
+<h2>Examples: the string of <i>N</i> 0's, elegant programs, the number
+of <i>N</i>-bit strings having exactly the maximum possible
+complexity</h2>
+<p>
+Some examples will clear the air.  First, what's the least complex
+<i>N</i>-bit string?  Well, obviously the string of <i>N</i> 0's.  Its
+complexity is within a fixed number of bits of <i>H</i>(<i>N</i>).  In
+other words, to calculate it we only need to know how many bits there
+are, not what they are.
+</p><p>
+Second, consider an <i>N</i>-bit elegant program.  It turns out that its
+complexity is very close to <i>N</i>, within a fixed number of bits.
+So elegant programs are right on the borderline between structure and
+randomness.  They have <b>just</b> enough structure to be
+self-delimiting!
+</p><p>
+Third, consider the <i>N</i>-bit base-two numeral for the number of
+<i>N</i>-bit strings which have exactly the maximum possible
+complexity.  I showed in <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/max.html">a 1993 note in <i>Applied Mathematics &amp;
+Computation</i></a> that this number is itself an <i>N</i>-bit string
+within a fixed number of bits of the maximum possible complexity,
+which is <i>N</i> + <i>H</i>(<i>N</i>).
+</p><p>
+So these are three milestones on the complexity scale from least to
+most random.
+</p><p>
+</p><hr>
+<h2>The random number Ω, the halting probability</h2>
+I've just shown you a natural example, actually an infinite series of
+natural examples, of a highly-random <i>N</i>-bit string.  Now let me
+combine all of these and show you a natural example of a <b>single</b>
+infinite string all of whose initial segments are random, as random as
+possible.
+<p>
+Define the halting probability for my computer <i>U</i> as follows:
+</p><p></p><center>
+   Ω =
+   ∑<sub><i>U</i>(<i>p</i>) halts</sub> 2<sup>−|<i>p</i>|</sup>
+</center><p>
+Since Ω is a probability, we have
+</p><p></p><center>
+   0 &lt; Ω &lt; 1
+</center><p>
+Now let's write Ω in binary, i.e., in base-two notation,
+like this
+</p><p></p><center>
+   Ω = .11010111...
+</center><p>
+whatever it is.  Knowing the first <i>N</i> bits of this real number
+Ω would enable us to solve the halting problem for all
+programs for <i>U</i> up to <i>N</i> bits in size.  Using this fact, I
+show that Ω is an algorithmically incompressible real
+number.  I.e.,
+</p><p></p><center>
+<i>H</i>(Ω<sub><i>N</i></sub>) &gt; <i>N</i> − <i>c</i>
+</center><p>
+where Ω<sub><i>N</i></sub> is the first <i>N</i> bits of
+Ω.  It follows that the bits of Ω satisfy all
+computable statistical tests for randomness.  Separately, I show that
+the bits of Ω are irreducible mathematical facts: it takes
+<i>N</i> bits of axioms to be able to determine <i>N</i> bits of
+Ω.  More precisely, there is a constant <i>c'</i> such that
+it takes <i>N</i> + <i>c'</i> bits of axioms to be able to determine
+<i>N</i> bits of Ω.
+</p><p>
+In <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/rov.html">my 1998 Springer-Verlag book</a>, I actually determine these constants
+<i>c</i> and <i>c'</i>.  <i>c</i> = 8000 and <i>c'</i> = 15328!
+</p><p>
+</p><hr>
+<h2>Hilbert's 10th problem</h2>
+Finally, I use the work of M. Davis, H. Putnam, J. Robinson, Y.
+Matijasevic and J. Jones on Hilbert's 10th problem to encode the bits
+of Ω in a diophantine equation.  My equation is 200 pages
+long and has 20,000 variables <i>X</i><sub>1</sub> to
+<i>X</i><sub>20000</sub> and a parameter <i>K</i>.  The algebraic
+equation
+<p></p><center>
+<i>L</i>(<i>K</i>, <i>X</i><sub>1</sub>, ..., <i>X</i><sub>20000</sub>)
+=
+<i>R</i>(<i>K</i>, <i>X</i><sub>1</sub>, ..., <i>X</i><sub>20000</sub>)
+</center><p>
+has finitely or infinitely many natural number solutions (each
+solution is a 20,000-tuple with the values for <i>X</i><sub>1</sub>,
+..., <i>X</i><sub>20000</sub>) if the <i>K</i>th bit of Ω
+is, respectively, a 0 or a 1.  Therefore determining whether this
+equation has finitely or infinitely many solutions is just as
+difficult as determining bits of Ω.
+[Actually, Hilbert in 1900 had asked a slightly different question.
+He had asked for a method to determine if an arbitrary diophantine
+equation has a solution or not.  I'm interested in whether the number
+of solutions is finite.  <b>No</b> solution is a finite number of
+solutions... Matijasevic showed in 1970 that Hilbert's 10th problem is
+equivalent to the halting problem.  But Hilbert's 10th problem and the
+halting problem <b>do not</b> give randomness.  They're not
+independent, irreducible mathematical facts.  Why not?  Because in
+order to solve <i>N</i> instances of either problem we just need to
+know <b>how many</b> of the <i>N</i> equations have a solution or how
+many of the <i>N</i> programs halt.  And that's much less than
+<i>N</i> bits of information!]
+</p><p>
+I explain the detailed construction of this equation in <a href="https://web.archive.org/web/20110520024506/http://www.umcs.maine.edu/~chaitin/cup.html">my 1987
+Cambridge University Press monograph</a>.  The final version of my
+software for constructing this equation is in <i>Mathematica</i> and
+<i>C</i> and is available from the Los Alamos e-print archives at <a href="https://web.archive.org/web/20110520024506/http://arxiv.org/">http://xxx.lanl.gov</a> as report
+<a href="https://web.archive.org/web/20110520024506/http://arxiv.org/abs/chao-dyn/9312006">chao-dyn/9312006</a>.
+</p><p>
+Phew!  That's a lot of math we've just raced our way through!  The
+intent was to show you that program-size complexity is a serious
+business, that AIT is a serious, ``elegant'' (in the non-technical
+sense) well-developed field of mathematics, and that if I say that
+Ω is random, irreducible mathematical information, I know
+what I'm talking about.
+</p><p>
+Now it's time to wrap things up!
+</p><p>
+</p><hr>
+
+
+
+</body></html>
+<!--
+     FILE ARCHIVED ON 02:45:06 May 20, 2011 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 07:09:40 Sep 23, 2021.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+-->
+<!--
+playback timings (ms):
+  captures_list: 160.624
+  exclusion.robots.policy: 0.373
+  exclusion.robots: 0.388
+  esindex: 0.018
+  CDXLines.iter: 22.604 (3)
+  PetaboxLoader3.resolve: 22.529
+  cdx.remote: 0.125
+  load_resource: 53.181
+  PetaboxLoader3.datanode: 73.948 (4)
+  LoadShardBlock: 69.738 (3)
+-->

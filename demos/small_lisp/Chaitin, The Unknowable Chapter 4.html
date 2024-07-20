@@ -1,0 +1,336 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><script src="Chaitin,%20The%20Unknowable%20Chapter%204_files/analytics.js" type="text/javascript"></script>
+<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app204.us.archive.org';v.server_ms=239;archive_analytics.send_pageview({});});</script>
+<script type="text/javascript" src="Chaitin,%20The%20Unknowable%20Chapter%204_files/bundle-playback.js" charset="utf-8"></script>
+<script type="text/javascript" src="Chaitin,%20The%20Unknowable%20Chapter%204_files/wombat.js" charset="utf-8"></script>
+<script type="text/javascript">
+  __wm.init("https://web.archive.org/web");
+  __wm.wombat("http://www.umcs.maine.edu/~chaitin/unknowable/ch4.html","20110520024517","https://web.archive.org/","web","/_static/",
+	      "1305859517");
+</script>
+<link rel="stylesheet" type="text/css" href="Chaitin,%20The%20Unknowable%20Chapter%204_files/banner-styles.css">
+<link rel="stylesheet" type="text/css" href="Chaitin,%20The%20Unknowable%20Chapter%204_files/iconochive.css">
+<!-- End Wayback Rewrite JS Include -->
+
+<title>Chaitin, The Unknowable</title>
+</head>
+<body><!-- BEGIN WAYBACK TOOLBAR INSERT -->
+<style type="text/css">
+body {
+  margin-top:0 !important;
+  padding-top:0 !important;
+  /*min-width:800px !important;*/
+}
+</style>
+<script>__wm.rw(0);</script>
+<div id="wm-ipp-base" style="display: block; direction: ltr;" lang="en">
+</div><div id="wm-ipp-print">The Wayback Machine - https://web.archive.org/web/20110520024517/http://www.umcs.maine.edu/~chaitin/unknowable/ch4.html</div>
+<div id="donato" style="position:relative;width:100%;">
+  <div id="donato-base">
+    <iframe id="donato-if" src="Chaitin,%20The%20Unknowable%20Chapter%204_files/donate.htm" scrolling="no" style="width:100%; height:100%" frameborder="0">
+    </iframe>
+  </div>
+</div><script type="text/javascript">
+__wm.bt(650,27,25,2,"web","http://www.umcs.maine.edu/~chaitin/unknowable/ch4.html","20110520024517",1996,"/_static/",["/_static/css/banner-styles.css?v=omkqRugM","/_static/css/iconochive.css?v=qtvMKcIJ"], "False");
+  __wm.rw(1);
+</script>
+<!-- END WAYBACK TOOLBAR INSERT -->
+<h1>IV. Turing's Proof of the Unsolvability of the Halting Problem</h1>
+<hr>
+<h2>Synopsis</h2>
+<i>
+Discusses a LISP run that illustrates Turing's proof of the
+unsolvability of the halting problem.
+</i>
+<p>
+</p><hr>
+<h2>Discussion</h2>
+The beauty of Turing's approach to incompleteness based on
+uncomputability, is that we can obtain an incompleteness result without
+knowing <b>anything</b> about the internal structure of the formal
+axiomatic system!  All we need to know is that there is a
+proof-checking algorithm, which is certainly a minimal requirement.
+Because if there is no way to be sure if a proof is correct or not,
+then the formal axiomatic system is not much good.
+<p>
+In my work in <a href="https://web.archive.org/web/20110520024517/http://www.umcs.maine.edu/~chaitin/unknowable/ch5.html">Chapter V,</a> I'll follow Turing's approach and ignore the
+internal structure of the formal axiomatic system.
+</p><p>
+So let's use LISP to put some meat on the discussion in <a href="https://web.archive.org/web/20110520024517/http://www.umcs.maine.edu/~chaitin/unknowable/ch1.html">Chapter I</a> of
+Turing's proof of the unsolvability of the halting problem.  The
+halting problem asks for a way to determine in advance whether a
+program will halt or not.  In the context of LISP, this becomes the
+question of whether a LISP expression has no value because it goes
+into an infinite loop, i.e., because evaluation never completes.  Of
+course, a LISP expression can also fail to have a value because
+something else went wrong, like applying a primitive function to the
+wrong kind of argument.  But we're not going to worry about that;
+we're going to lump together all the different ways a LISP expression
+can fail to have a value.
+[In fact, in my LISP the only way an expression can fail to have a
+value is if it never halts.  That's because I have a very
+permissive LISP that always goes ahead and does <b>something</b>, even
+if it didn't get the kind of arguments that are expected for a
+particular primitive function.  More precisely, all this is true if
+you turn off the part of my LISP that can give an ``out of data''
+error message.  That's part of my LISP that isn't used at all in this
+book.  It's only needed for my course on <i>The Limits of
+Mathematics.</i>]
+</p><p>
+The kind of failure that we have in mind is exemplified by the
+following program which runs forever while displaying all the natural
+numbers.
+</p><pre>  [display N &amp; bump N &amp; loop again]
+   let (loop N) (loop + 1 display N) [calls itself]
+  (loop 0) [start looping with N = 0]
+</pre>
+There is nothing wrong with this LISP expression except for the fact
+that it runs forever.
+<p>
+Here is an interesting exercise for the reader.  Write a LISP
+expression that has a value iff Fermat's last theorem is false.  It
+halts iff there are natural numbers <i>x</i> &gt; 0, <i>y</i> &gt; 0,
+<i>z</i> &gt; 0, <i>n</i> &gt; 2 such that
+</p><p></p><center>
+     <i>x</i><sup><i>n</i></sup>
+   + <i>y</i><sup><i>n</i></sup>
+   = <i>z</i><sup><i>n</i></sup>
+</center><p>
+I.e., it halts iff it finds a counter-example to Fermat's last
+theorem, which states that this equation has no solutions.
+In fact, the natural value to return if you halt is the quadruple
+(<i>x</i> <i>y</i> <i>z</i> <i>n</i>) refuting Fermat.  It took
+three-hundred years for Andrew Wiles to prove Fermat's last theorem
+and settle negatively this one instance of the halting
+problem.  
+[For an elementary account, see S. Singh, Fermat's Enigma—The
+Epic Quest to Solve the World's Greatest Mathematical Problem.]
+So some special cases of the halting problem are extremely
+interesting!
+</p><p>
+A more sophisticated example of an interesting instance of the halting
+problem is the conjecture called the Riemann hypothesis, probably the
+most famous open question in pure mathematics today.  This is a
+conjecture that the distribution of the prime numbers is smooth
+couched as a statement that a certain function ζ(<i>s</i>)
+of a complex variable never assumes the value zero within a certain
+region of the complex plane.  As was the case with Fermat's last
+theorem, if the Riemann hypothesis is false one can refute it by
+finding a counter-example.
+[For more information on expressing the Riemann hypothesis as an instance
+of the halting problem, see Section 2 ``Famous Problems'' in the
+article by M. Davis, Y. Matijasevic and J. Robinson on Hilbert's 10th
+problem in the publication <i>Mathematical Developments Arising from
+Hilbert Problems, Proceedings of Symposia in Pure Mathematics, Volume
+XXVIII</i>, American Mathematical Society, 1976, pp. 323-378.]
+</p><p>
+So here is how we'll show that the halting problem cannot be solved.
+We'll derive a contradiction by assuming that it <b>can</b> be solved,
+i.e., that there's a LISP subroutine (halts? s-exp) that
+returns true or false depending on whether the S-expression s-exp has
+a value.
+</p><p>
+Then using this hypothetical solution to the halting problem, we construct
+a self-referential S-expression the same way that we did in <a href="https://web.archive.org/web/20110520024517/http://www.umcs.maine.edu/~chaitin/unknowable/ch3.html">Chapter
+III.</a>  We'll define ``turing'' to be the lambda expression for a
+function of <i>x</i> that makes <i>x</i> into (('<i>x</i>)('<i>x</i>))
+and then halts iff (('<i>x</i>)('<i>x</i>)) <b>doesn't.</b> I.e., the
+function ``turing'' of <i>x</i> halts iff the function <i>x</i>
+applied to <i>x</i> doesn't halt.  But then applying this function to
+itself yields a contradiction!  Because applying it to itself halts iff
+applying it to itself doesn't halt!
+</p><p>
+Here it is in more detail:
+</p><pre>define (turing x) 
+[Insert supposed halting algorithm here.]
+let (halts? S-exp) ..... [&lt;=============]
+[Form ('x)]
+let y [be] cons "' cons x nil [in]
+[Form (('x)('x))]
+let z [be] display cons y cons y nil [in]
+[If (('x)('x)) has a value, then loop forever, otherwise halt]
+if (halts? z) [then] eval z [loop forever]
+              [else] nil [halt]
+</pre>
+Then giving the function ``turing'' its own definition
+gives us an expression
+<pre>  (turing turing)
+</pre>
+that halts iff it doesn't, which proves that the halting problem
+cannot be solved in LISP (or in any other programming language).
+[A technical point.  The expression (turing turing) cheats a bit; it's
+not a self-contained LISP expression.  But the alternate version of
+itself that it displays so that we can verify that the fixed-point
+machinery worked <b>is</b> self-contained.  It's the displayed
+S-expression which is actually the self-referential LISP expression
+that proves the unsolvability of the halting problem.]
+<p>
+The proof of the pudding is that this expression displays itself,
+which shows that the self-reference works.  It halts if we put in a
+``halts?'' function that always returns ''false''.  And it
+loops forever if we put in a ``halts?'' function that always
+returns ''true''.  The error message ``Storage overflow!''  is due to
+the fact that looping forever overflows the push-down stack used by
+the LISP interpreter to keep track of the work that remains for it to
+do.
+[Even though running (turing turing) shows that it loops forever, it's
+not completely obvious <b>why</b> this works.  (This is what happens
+when the halting problem subroutine predicts that (turing turing) will
+halt.)  ``eval z'' seems like a funny way to make our expression loop
+forever.  Well, this only works at the fixed point, because it reduces
+evaluating (turing turing) to evaluating it all over again, and
+therefore loops endlessly.  In other words, my paradoxical function
+``turing'' of x is only supposed to work when applied to itself.  An
+alternative version that <b>always</b> loops forever would be to
+replace ``eval z'' by ``let (L) [be] (L) [in] (L)'' which is the
+simplest endless loop in my LISP.
+Furthermore, here is a <b>deeper</b> argument that ``eval z'' has
+to loop.  ``eval z'', z = (turing turing) has to loop forever
+because if it returned a value, then we could change it and return
+that as our value, and then (turing turing) is not = to (turing 
+turing), which is a contradiction!]
+</p><p>
+From the unsolvability of the halting problem it is easy to see that
+no truthful formal axiomatic system settles all instances of the
+halting problem.  Because if we could prove all true assertions of the
+form (does-halt <i>x</i>) or (does-not-halt <i>x</i>)
+then we could solve the halting problem by running through all
+possible proofs in size order and applying the proof-checking
+algorithm to each in turn.
+[Simple as this algorithm is, we cannot do it with the toy LISP that
+I've presented here.  Why not?  Because running through all possible
+proofs in size order means generating all possible S-expressions and
+applying the proof-checking algorithm to each in turn.  But the toy
+LISP in this book is not quite up to the task; I haven't provided the
+necessary machinery.  What machinery is needed?  Well, it's
+basically a way to convert bit strings (lists of 0's and 1's) into
+S-expressions.  (This is equivalent to having a way to handle
+character strings and convert them into S-expressions.)  But my LISP
+actually does provide a way to do this, except that I haven't talked
+about it here.  You can do it using the ``read-exp'' primitive function
+together with the ``try'' mechanism that is at the heart of my book
+<i>The Limits of Mathematics.</i> Also, in the next chapter, <a href="https://web.archive.org/web/20110520024517/http://www.umcs.maine.edu/~chaitin/unknowable/ch5.html">Chapter
+V,</a> I'll show how to side-step the issue.  I'll cheat a little
+bit and I'll have the proof-checking function accept as its operand
+not the S-expression for a proof, but the number for an S-expression.
+I.e., I'll suppose that all proofs are numbered and work with the
+numbers instead.  That makes it easy to run through all possible
+proofs.  It enables me to give the flavor of my work in <a href="https://web.archive.org/web/20110520024517/http://www.umcs.maine.edu/~chaitin/unknowable/ch5.html">Chapter V</a>
+while avoiding the technical complications.]
+</p><p>
+In <a href="https://web.archive.org/web/20110520024517/http://www.umcs.maine.edu/~chaitin/unknowable/ch5.html">Chapter V,</a> I'll follow the spirit of Turing's approach, applied to
+the question of whether it's possible to prove that specific LISP
+S-expressions are elegant, i.e., have the property that no smaller
+expression has the same value.  We'll pay absolutely no attention to
+the internal details of the formal axiomatic system that we'll be
+studying, we'll only care about the complexity of its proof-checking
+algorithm.
+</p><p>
+</p><hr>
+<h2>Turing's Proof in LISP</h2>
+<pre>LISP Interpreter Run
+
+[[[[[
+
+ Proof that the halting problem is unsolvable by using
+ it to construct a LISP expression that halts iff it doesn't.
+
+]]]]]
+
+define (turing x) 
+[Insert supposed halting algorithm here.]
+let (halts? S-exp) false [&lt;=============]
+[Form ('x)]
+let y [be] cons "' cons x nil [in]
+[Form (('x)('x))]
+let z [be] display cons y cons y nil [in]
+[If (('x)('x)) has a value, then loop forever, otherwise halt]
+if (halts? z) [then] eval z [loop forever]
+              [else] nil [halt]
+
+define      turing
+value       (lambda (x) ((' (lambda (halts?) ((' (lambda (y) (
+            (' (lambda (z) (if (halts? z) (eval z) nil))) (dis
+            play (cons y (cons y nil)))))) (cons ' (cons x nil
+            ))))) (' (lambda (S-exp) false))))
+
+
+[
+ (turing turing) decides whether it itself has a value, 
+ then does the opposite!
+
+ Here we suppose it doesn't have a value, 
+ so it turns out that it does:
+]
+
+(turing turing)
+
+expression  (turing turing)
+display     ((' (lambda (x) ((' (lambda (halts?) ((' (lambda (
+            y) ((' (lambda (z) (if (halts? z) (eval z) nil))) 
+            (display (cons y (cons y nil)))))) (cons ' (cons x
+             nil))))) (' (lambda (S-exp) false))))) (' (lambda
+             (x) ((' (lambda (halts?) ((' (lambda (y) ((' (lam
+            bda (z) (if (halts? z) (eval z) nil))) (display (c
+            ons y (cons y nil)))))) (cons ' (cons x nil))))) (
+            ' (lambda (S-exp) false))))))
+value       ()
+
+
+define (turing x) 
+[Insert supposed halting algorithm here.]
+let (halts? S-exp) true [&lt;==============]
+[Form ('x)]
+let y [be] cons "' cons x nil [in]
+[Form (('x)('x))]
+let z [be] [[[[display]]]] cons y cons y nil [in]
+[If (('x)('x)) has a value, then loop forever, otherwise halt]
+if (halts? z) [then] eval z [loop forever]
+              [else] nil [halt]
+
+define      turing
+value       (lambda (x) ((' (lambda (halts?) ((' (lambda (y) (
+            (' (lambda (z) (if (halts? z) (eval z) nil))) (con
+            s y (cons y nil))))) (cons ' (cons x nil))))) (' (
+            lambda (S-exp) true))))
+
+
+[
+ And here we suppose it does have a value, 
+ so it turns out that it doesn't.
+
+ It loops forever evaluating itself again and again!
+]
+
+(turing turing) 
+
+expression  (turing turing)
+Storage overflow!
+</pre>
+<p>
+</p><hr>
+
+
+
+</body></html>
+<!--
+     FILE ARCHIVED ON 02:45:17 May 20, 2011 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 07:08:56 Sep 23, 2021.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+-->
+<!--
+playback timings (ms):
+  captures_list: 160.32
+  exclusion.robots: 0.175
+  exclusion.robots.policy: 0.168
+  RedisCDXSource: 15.051
+  esindex: 0.008
+  LoadShardBlock: 127.358 (3)
+  PetaboxLoader3.datanode: 120.533 (4)
+  CDXLines.iter: 14.584 (3)
+  load_resource: 74.125
+  PetaboxLoader3.resolve: 41.462
+-->

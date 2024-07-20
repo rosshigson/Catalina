@@ -1,0 +1,366 @@
+If you don't know how to use vi (or xvi) at all, you should not
+read through this help text; it is intended simply as a reminder
+for those who already know how to use the editor.
+
+To get out of xvi, type the following:
+        :q!
+and then press RETURN.
+The rest of this file contains a summary of xvi commands.
+If you remember the commands ^F (control-F) and ^B (control-B)
+then that will be enough to get you around this help file.
+
+Numeric Prefixes
+================
+
+Most commands can be prefixed with a number, which will alter
+their action. For instance, to go to line 37 of a file, you can
+type
+
+        37G
+
+but beware - the meaning of the prefix varies between commands.
+
+Targets
+=======
+
+Many commands consist of two letters where the first gives the operation
+and the second says where it should affect up to. If the second letter is
+the same as the first (dd, yy, cc etc), it means just the current line,
+or you can use one of the following:
+
+Line-based targets, which affect from the current line to the:
+
+        j + Enter downarrow ^N
+                following one
+        k - uparrow ^P
+                previous one
+        4j      one 4 below it
+        G       end of the file
+        1G      first line of the file
+        _       itself (a synonym for dd, yy, cc etc)
+        H L M   first/middle/last line of screen
+        'x      line with mark x
+
+Character-based targets, which affect from the cursor position to the:
+
+        l rightarrow space
+                character under the cursor only
+        h leftarrow ^H
+                character left of the cursor only
+        0 |     start of the line
+        ^ Home  first non-blank character of the line
+        $ End   end of the line
+        N|      column N of the same line
+        %       matching bracket
+        ( ) { } [ ]
+                start/end of the sentence/paragraph/section
+        `x      cursor position of mark x
+        /patt   next match of the pattern
+        ?patt   previous match of the pattern
+        n       next match of last search pattern
+        N       previous match of last search
+        w       start of the next word (W to include punctuation)
+        b       start of the word under the cursor (and B)
+        e       end of the word under cursor (and E)
+        fx Fx   next/previous occurrence of char x in the same line
+        tx Tx   up to but not including next/previous char x
+        ;       repeat of f F t or T
+        ,       repeat of f F t or T in the opposite direction
+
+Command summary
+===============
+
+Cursor positioning
+==================
+
+        ^F      Move forward one screenful in file
+        PgDown  Same as ^F
+        ^B      Move backward one screenful
+        PgUp    Same as ^B
+        ^D      Scroll down half a screenful
+        ^U      Scroll up half a screenful
+        G       Go to line (defaults to end of file)
+        /re     Go to next occurrence of regular expression 're'
+        ?re     Go to prior occurrence of regular expression 're'
+        n       Repeat last / or ?
+        N       Reverse last / or ?
+        %       Go to the matching (, ), {, }, [, or ]
+        ]]      Start of next function
+        [[      Start of previous function
+        g       Go to next buffer window
+
+Adjusting the screen
+====================
+
+        ^L/^R   Redraw the screen
+        ^E      Scroll window down 1 line
+        ^Y      Scroll window up 1 line
+
+        z<CR>   Redraw, current line at top
+        z-      ... at bottom
+        z.      ... at centre
+
+        ^T      Shrink current window by 1 line
+        ^W      Grow current window by 1 line
+        ^O      Grow current window to maximum size
+
+Character Positioning
+=====================
+
+        ^       First non-white on current line
+        Home    Same as ^
+        0       Beginning of line
+        $       End of line
+        End     Same as $
+        h       Left one character
+        l       Right one character
+        ^H and Left-arrow
+                Same as 'h'
+        space and Right-arrow
+                Same as 'l'
+        fx      Find 'x' forward in current line
+        Fx      Find 'x' backward in current line
+        tx      Go up to 'x' forward in current line
+        Tx      Go up to 'x' backward in current line
+        ;       Repeat last f, F, t, or T
+        ,       Repeat last f, F, t, or T, changing direction
+        |       Go to specified column in current line
+
+Line Positioning
+================
+
+        H       Go to home window line (first line of screen)
+        L       Go to last window line
+        M       Go to middle window line
+        +       Go to next line, at first non-white
+        -       Go to previous line, at first non-white
+        CR ^M   Same as +
+        j       Go down, staying in same column if possible
+        k       Go up, staying in same column if possible
+        ^J ^N Down-arrow
+                Same as j
+        ^P Up-arrow
+                Same as k
+
+Words, sentences, paragraphs
+============================
+
+        w       Go to start of next word
+        b       Go to start of previous word
+        e       Go to end of current word
+        W       As w, but using blanks to delimit words
+        B       As b, but using blanks to delimit words
+        E       As e, but using blanks to delimit words
+        )       Go to start of next sentence (not yet implemented)
+        (       Go to start of previous sentence (not yet implemented)
+        }       Go to start of next paragraph (as marked by nroff macros)
+        {       Go to start of previous paragraph
+
+Marking and Returning
+=====================
+
+        ``      Go to previous context position
+        ''      Go to previous context line
+        mx      Mark current position with letter 'x'
+        `x      Go to mark 'x' at first character in line
+        'x      Go to mark 'x' at first non-blank char in line
+        :ka     Mark current line with letter 'a'
+        :7ka    Mark line 7 with letter 'a'
+
+Insert and Replace Characters
+=============================
+
+        a       Append after cursor
+        i       Insert before cursor
+        Insert  Same as i
+        A       Append at end of current line
+        I       Insert before first non-blank on current line
+        rx      Replace a single character with 'x'
+        R       Enter replace (overwrite) mode
+
+Line operators
+==============
+(T is a target character - see "Targets" above)
+
+        dT      Delete from current line to target
+        cT      Replace from current line to target with following text
+        <T      Reduce indentation (by no of spaces in "shiftwidth" parameter)
+        >T      Increase indentation
+        !T      Pipe line range through specified system command
+
+        :x,ymz  Move lines x to y after line z
+        :x,ytz  Copy lines x to y after line z
+        o       Open a new line below current line
+        O       Open a new line above current line
+
+Miscellaneous operations
+========================
+
+        C       Change rest of line (same as c$)
+        D       Delete rest of line (same as d$)
+        s       Substitute characters
+        S       Same as cc
+        J       Join next line on to end of this line
+        x       Delete character under cursor
+        Delete  Same as x
+        X       Delete character before cursor
+        ~       Change the case of the character under the cursor
+        ^_      Flip the top bit of the character under the cursor
+        F1      Show this help file
+        Help    Same as F1
+        :help   Same as F1
+
+Yank and Put
+============
+
+        yT      yank from cursor to target (see "Targets" above)
+        Y       Yank current line (same as "yy")
+        :y      Yank current line
+        :17y    Yank line 17
+        :3,5y   Yank lines from 3 to 5 inclusive
+
+        p       Put back text last yanked or deleted (see "operators")
+        P       As p, but before current position
+        :put    Put back text (same as 'p')
+        :5put   Put back text after line 5
+        :$put   Put back text at end of buffer
+        :0put   Put back text at start of buffer
+
+        "x      Before any of 'yYdDcC', uses named buffer x to store text.
+                The buffer name may be any ASCII letter, '@' (the default),
+                ':' which normally stores the last colon command executed, or
+                '/' and '?' which normally store the last forward and reverse
+                search patterns. Yanking/deleting/changing to an upper case
+		letter appends the yanked text to the buffer.
+
+        "xp     Inserts contents of yank buffer x after the current position
+
+        @x      Take contents of yank buffer as vi command input
+        @@      Take last yanked or deleted text as input
+        @:      Redo last colon command
+        :@x :*x Execute contents of buffer x as ex commands
+
+Undo and Redo
+=============
+
+        u       Undo last change (or undo an undo)
+        U       Restore current line to how it was when you arrived there
+        .       Repeat last change
+
+Global Editing
+==============
+
+        :s/RE/SUB/      Change 1st RE in current line to SUB
+        :s/RE/SUB/g     Change all RE's in current line to SUB
+        :g/RE/p         Print all lines containing RE
+        :g/RE/d         Delete all lines containing RE
+        :g/RE/s/...     Perform 's' command on all lines containing RE
+        :&              Redo last substitution
+        :~              Substitute last SUB for last RE used
+
+        Any of the above may be preceded by a line range, e.g. 12,15.
+
+        &               Redo last substitution (same as :&)
+
+File and buffer manipulation
+============================
+
+        :w      Write buffer to file
+        :w name Write buffer to file "name"
+        :wq     Write buffer to file and then quit
+        :x      Close window, if last window onto buffer then:
+                        Write buffer if modified, then close buffer
+        ZZ      Same as :x
+        :cl     Close current window, closing buffer if only window onto it
+        :cl!    Close current window, discarding any changes
+        :q      Quit
+        :q!     Quit, discarding any changes
+        :b      Create new buffer and window
+        :b name Create new buffer and window, editing file "name"
+        :split  Create a new screen window onto the current buffer
+        :e name Edit file "name" in current buffer
+        :e!     Re-edit current file, discarding any changes
+        :e #    Edit file which was last closed
+        ^^      (Control-uparrow) Same as :e #
+        :n      Edit the next file in the list of files
+        :n args Specify a new list of files
+        :wn     Write current file and edit next
+        :args   Show list of files being edited
+        :rewind Edit the whole list of files again
+        :f      Show current file and lines
+        ^G      Same as :f
+        :f name Change current file name to "name"
+        :ta tag Find tag entry "tag" and go to it
+        ^]      Same as :ta on the current word under the cursor
+        :cd dir Change current directory
+        :so file
+                Read commands from file
+
+Shells, piping and suspension
+=============================
+
+        :!cmd   Execute the shell command "cmd".
+        !!cmd   Pipe the current line through the shell command "cmd".
+                Similarly: !G from current line to end of file, !'m from
+                current line to mark m, !/foo from current to next "foo",
+                !% from current line to matching bracket, etc.
+        :w !command
+                Pipe the file (or range of lines) into a command
+        :r !command
+                Read lines from a shell command's standard output
+        ^Z      Suspend the editor session (also :suspend); resume with "fg"
+
+Displaying and Setting Parameters
+=================================
+
+        :set            Display parameters which have been set
+        :set all        Display values of all parameters
+        :set name       Set the boolean parameter "name"
+        :set noname     Unset the boolean parameter "name"
+        :set name=value Set a string, numeric or enumerated parameter
+
+Key Mapping
+===========
+
+        :map lhs rhs
+                Causes input of "lhs" to produce input "rhs" instead.
+        :map! lhs rhs
+                Like map, but works in insert mode instead.
+        :map    Display all current maps.
+        :map!   Display all insert-mode maps.
+        :set timeout=<num>
+                Re-set the number of milliseconds that the editor waits
+                for another character to be entered to complete a map.
+                Default value is 200, which is okay for fast typists.
+        :set remap
+                When "remap" is set (as per default), the result of a map
+                is re-processed through the map system, possibly causing
+                infinite recursion.
+
+Command line options
+====================
+
+        -R              Open files in read-only mode
+        -s param=value  Set param to value before starting up
+        -c command      Perform a : command after starting up
+        -t tag          Edit file containing tag
+        +num            Start up editing file at line num.  num can also be
+                        $ for the last line, $-N (or -N) for the last-but-Nth
+        +/pat           Start up editing file at line containing pat
+
+Using the mouse (not implemented on all systems)
+================================================
+
+Click on:                       To achieve this effect:
+
+A window other than             Change current window to the one indicated
+the current one                 by the mouse (can be used instead of 'g')
+
+Top line                        Scroll window downwards (same as '^Y')
+
+Bottom line                     Scroll window upwards (same as '^E')
+
+Any other line (or either       Grow window by 1 line (same as '^W')
+line of a 2-line window)
+
+Status line                     Show current file and lines (same as '^G')

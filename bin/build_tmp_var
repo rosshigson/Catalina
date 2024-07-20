@@ -1,0 +1,34 @@
+#!/bin/bash -login
+#
+# build a string in TMP_VAR consisting of -C $1 -C $2 -C $3 (etc)
+#
+unset TMP_VAR
+if [[ "$1" != "" ]]; then
+TMP_VAR="-C $1"; export TMP_VAR;
+fi
+if [[ "$2" != "" ]]; then
+TMP_VAR="$TMP_VAR -C $2"; export TMP_VAR;
+fi
+if [[ "$3" != "" ]]; then
+TMP_VAR="$TMP_VAR -C $3"; export TMP_VAR;
+fi
+if [[ "$4" != "" ]]; then
+TMP_VAR="$TMP_VAR -C $4"; export TMP_VAR;
+fi
+if [[ "$5" != "" ]]; then
+TMP_VAR="$TMP_VAR -C $5"; export TMP_VAR;
+fi
+if [[ "$6" != "" ]]; then
+TMP_VAR="$TMP_VAR -C $6"; export TMP_VAR;
+fi
+if [[ "$7" != "" ]]; then
+TMP_VAR="$TMP_VAR -C $7"; export TMP_VAR;
+fi
+if [[ "$8" != "" ]]; then
+TMP_VAR="$TMP_VAR -C $8"; export TMP_VAR;
+fi
+if [[ "$9" != "" ]]; then
+TMP_VAR="$TMP_VAR -C $9"; export TMP_VAR;
+fi
+#echo $TMP_VAR;
+

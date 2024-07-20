@@ -1,0 +1,16 @@
+#
+#   ===================
+#   SETTING UP CATALINA
+#   ===================
+echo ""
+echo "I hope you used 'source use_catalina' to execute this!"
+echo ""
+#
+if [[ "$LCCDIR" ==  "" ]] ; then
+   DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+   PATH=.:$DIR/bin:$PATH; export PATH
+else
+   export LCCDIR
+   PATH=.:$LCCDIR/bin:$PATH; export PATH
+fi
+catalina_env

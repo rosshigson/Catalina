@@ -1,0 +1,9 @@
+The current release of win32ada is missing some baud rates needed by the Ada
+Terminal Emulator Comms programs, and the build file assumes that the 'which'
+utility has been installed, but this is not installed by GNAT Studio. Also,
+it seems to incorrectly detect Win64, so the project file has to be manually
+amended for that, and also to specify the build and library types.
+
+After installing win32ada, but before building it, copy these files over the 
+corresponding win32ada files. If you have already built win32da then you will
+to rebuild it.

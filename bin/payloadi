@@ -1,0 +1,55 @@
+#!/bin/bash
+#set -x
+
+# Batch file to decode -g options to get ROWS and COLUMNS, use the "mode"
+# command to set the terminal to the specified size, and invoke "payload"
+# with the -i option in the resulting terminal
+
+# Set default rows and colums ...
+_ROWS=24
+_COLUMNS=80
+
+_OTHER_ARGS=
+_NEXT=
+
+for x in "$@"
+do
+   # Replace commas (in -g arguments) with underscore
+   _TOKEN=${x//,/_}
+   if [[ "$_NEXT" = "Y" ]]
+   then 
+      _COLUMNS=${_TOKEN%_*}
+      _ROWS=${_TOKEN#*_}
+      _NEXT=
+      _TOKEN=
+   fi
+   if [[ "$_TOKEN" = "-g" ]]
+   then
+      _NEXT=Y
+      _TOKEN=
+    else
+      if [[ "${_TOKEN:0:2}" = "-g" ]] 
+      then 
+         _TOKEN=${_TOKEN:2}
+         _COLUMNS=${_TOKEN%_*}
+         _ROWS=${_TOKEN#*_}
+         _TOKEN=
+      fi
+   fi
+   # just collect arguments other than -g 
+   if [[ $_TOKEN =~ " " ]]; then
+      #quote arguments that contain spaces
+      _OTHER_ARGS="$_OTHER_ARGS ${_TOKEN@Q}"
+   else
+      _OTHER_ARGS="$_OTHER_ARGS $_TOKEN"
+   fi
+done
+
+#echo "COLUMNS=$_COLUMNS"
+#echo "ROWS=$_ROWS"
+#echo "OTHER ARGS=$_OTHER_ARGS"
+
+resize -s $_ROWS $_COLUMNS >/dev/null
+payload $_OTHER_ARGS -i -g$_COLUMNS,$_ROWS
+
+

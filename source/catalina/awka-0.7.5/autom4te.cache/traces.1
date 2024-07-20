@@ -1,0 +1,329 @@
+m4trace:configure.in:10: -1- m4_pattern_forbid([^_?A[CHUM]_])
+m4trace:configure.in:10: -1- m4_pattern_forbid([_AC_])
+m4trace:configure.in:10: -1- m4_pattern_forbid([^LIBOBJS$], [do not use LIBOBJS directly, use AC_LIBOBJ (see section `AC_LIBOBJ vs LIBOBJS'])
+m4trace:configure.in:10: -1- m4_pattern_allow([^AS_FLAGS$])
+m4trace:configure.in:10: -1- m4_pattern_forbid([^_?m4_])
+m4trace:configure.in:10: -1- m4_pattern_forbid([^dnl$])
+m4trace:configure.in:10: -1- m4_pattern_forbid([^_?AS_])
+m4trace:configure.in:10: -1- m4_pattern_allow([^SHELL$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^PATH_SEPARATOR$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^PACKAGE_NAME$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^PACKAGE_TARNAME$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^PACKAGE_VERSION$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^PACKAGE_STRING$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^PACKAGE_BUGREPORT$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^PACKAGE_URL$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^exec_prefix$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^prefix$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^program_transform_name$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^bindir$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^sbindir$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^libexecdir$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^datarootdir$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^datadir$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^sysconfdir$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^sharedstatedir$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^localstatedir$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^runstatedir$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^includedir$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^oldincludedir$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^docdir$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^infodir$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^htmldir$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^dvidir$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^pdfdir$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^psdir$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^libdir$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^localedir$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^mandir$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^PACKAGE_NAME$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^PACKAGE_TARNAME$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^PACKAGE_VERSION$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^PACKAGE_STRING$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^PACKAGE_BUGREPORT$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^PACKAGE_URL$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^DEFS$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^ECHO_C$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^ECHO_N$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^ECHO_T$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^LIBS$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^build_alias$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^host_alias$])
+m4trace:configure.in:10: -1- m4_pattern_allow([^target_alias$])
+m4trace:awka.ac.m4:8: -1- AC_DEFUN([AWKA_AC_LIB_SOCKETS], [
+awka_have_sockets=no
+SOCKET_DEFINE=0
+# Check for system-dependent location of socket libraries
+
+SOCKET_LIBS=
+if test "$ISC" = yes; then
+  SOCKET_LIBS="-lnsl_s -linet"
+else
+  # Martyn.Johnson@cl.cam.ac.uk says this is needed for Ultrix, if the X
+  # libraries were built with DECnet support.  And karl@cs.umb.edu says
+  # the Alpha needs dnet_stub (dnet does not exist).
+  #
+  # ADR: Is this needed just for sockets???
+#  AC_CHECK_LIB(dnet, dnet_ntoa, [SOCKET_LIBS="$SOCKET_LIBS -ldnet"])
+#  if test $ac_cv_lib_dnet_ntoa = no; then
+#    AC_CHECK_LIB(dnet_stub, dnet_ntoa,
+#                                                                                                   [SOCKET_LIBS="$SOCKET_LIBS -ldnet_stub"])
+#  fi                
+    
+  # msh@cis.ufl.edu says -lnsl (and -lsocket) are needed for his 386/AT,
+  # to get the SysV transport functions.
+  # chad@anasazi.com says the Pyramid MIS-ES running DC/OSx (SVR4)
+  # needs -lnsl.
+  # The nsl library prevents programs from opening the X display
+  # on Irix 5.2, according to dickey@clark.net.
+  AC_CHECK_FUNC(gethostbyname)
+  if test $ac_cv_func_gethostbyname = no; then
+    AC_CHECK_LIB(nsl, gethostbyname, SOCKET_LIBS="$SOCKET_LIBS -lnsl")
+  fi
+
+  # lieder@skyler.mavd.honeywell.com says without -lsocket,
+  # socket/setsockopt and other routines are undefined under SCO ODT
+  # 2.0.  But -lsocket is broken on IRIX 5.2 (and is not necessary
+  # on later versions), says simon@lia.di.epfl.ch: it contains
+  # gethostby* variants that don't use the nameserver (or something).
+  # -lsocket must be given before -lnsl if both are needed.
+  # We assume that if connect needs -lnsl, so does gethostbyname.
+  AC_CHECK_FUNC(connect)
+  if test $ac_cv_func_connect = no; then
+    AC_CHECK_LIB(socket, connect, SOCKET_LIBS="-lsocket $SOCKET_LIBS"
+                                  awka_have_sockets=yes, ,
+                                           $SOCKET_LIBS)
+  else
+    awka_have_sockets=yes
+  fi
+fi                                                                                           
+if test "${awka_have_sockets}" = "yes"
+then
+        SOCKET_DEFINE=1
+        AC_MSG_CHECKING([where to find the socket library calls])
+        case "${SOCKET_LIBS}" in
+        ?*)     awka_lib_loc="${SOCKET_LIBS}" ;;
+        *)      awka_lib_loc="the standard library" ;;
+        esac
+        AC_MSG_RESULT([${awka_lib_loc}])                                                     
+        AC_DEFINE(HAVE_SOCKETS)
+fi
+echo "X awka_SOCKET_LIBS \"$SOCKET_LIBS\"" >> defines.out
+AC_SUBST(SOCKET_LIBS)dnl
+])
+m4trace:awka.ac.m4:402: -1- AC_DEFUN([PROG_CC_NO_MINUS_G_NONSENSE], [AC_BEFORE([$0], [AC_PROG_CPP])dnl
+AC_CHECK_PROG(CC, gcc, gcc, cc)
+dnl
+AC_MSG_CHECKING(whether we are using GNU C)
+AC_CACHE_VAL(ac_cv_prog_gcc,
+[dnl The semicolon is to pacify NeXT's syntax-checking cpp.
+cat > conftest.c <<EOF
+#ifdef __GNUC__
+  yes;
+#endif
+EOF
+if ${CC-cc} -E conftest.c 2>&AC_FD_CC | egrep yes >/dev/null 2>&1; then
+  ac_cv_prog_gcc=yes
+  GCC=yes
+else
+  ac_cv_prog_gcc=no
+  GCC=no
+fi])dnl
+AC_MSG_RESULT($ac_cv_prog_gcc)
+rm -f conftest*
+])
+m4trace:configure.in:15: -1- m4_pattern_allow([^MANEXT$])
+m4trace:configure.in:15: -1- m4_pattern_allow([^BUILDLIB$])
+m4trace:configure.in:16: -1- m4_pattern_allow([^CC$])
+m4trace:configure.in:16: -2- _m4_warn([obsolete], [The macro `ac_cv_prog_gcc' is obsolete.
+You should run autoupdate.], [../autoconf-2.71/lib/autoconf/c.m4:446: ac_cv_prog_gcc is expanded from...
+awka.ac.m4:402: PROG_CC_NO_MINUS_G_NONSENSE is expanded from...
+configure.in:16: the top level])
+m4trace:configure.in:16: -1- _m4_warn([obsolete], [The macro `AC_FD_CC' is obsolete.
+You should run autoupdate.], [../autoconf-2.71/lib/autoconf/general.m4:399: AC_FD_CC is expanded from...
+../autoconf-2.71/lib/m4sugar/m4sh.m4:692: _AS_IF_ELSE is expanded from...
+../autoconf-2.71/lib/m4sugar/m4sh.m4:699: AS_IF is expanded from...
+../autoconf-2.71/lib/autoconf/general.m4:2249: AC_CACHE_VAL is expanded from...
+awka.ac.m4:402: PROG_CC_NO_MINUS_G_NONSENSE is expanded from...
+configure.in:16: the top level])
+m4trace:configure.in:16: -1- _m4_warn([obsolete], [The macro `ac_cv_prog_gcc' is obsolete.
+You should run autoupdate.], [../autoconf-2.71/lib/autoconf/c.m4:446: ac_cv_prog_gcc is expanded from...
+../autoconf-2.71/lib/m4sugar/m4sh.m4:692: _AS_IF_ELSE is expanded from...
+../autoconf-2.71/lib/m4sugar/m4sh.m4:699: AS_IF is expanded from...
+../autoconf-2.71/lib/autoconf/general.m4:2249: AC_CACHE_VAL is expanded from...
+awka.ac.m4:402: PROG_CC_NO_MINUS_G_NONSENSE is expanded from...
+configure.in:16: the top level])
+m4trace:configure.in:16: -1- _m4_warn([obsolete], [The macro `ac_cv_prog_gcc' is obsolete.
+You should run autoupdate.], [../autoconf-2.71/lib/autoconf/c.m4:446: ac_cv_prog_gcc is expanded from...
+../autoconf-2.71/lib/m4sugar/m4sh.m4:692: _AS_IF_ELSE is expanded from...
+../autoconf-2.71/lib/m4sugar/m4sh.m4:699: AS_IF is expanded from...
+../autoconf-2.71/lib/autoconf/general.m4:2249: AC_CACHE_VAL is expanded from...
+awka.ac.m4:402: PROG_CC_NO_MINUS_G_NONSENSE is expanded from...
+configure.in:16: the top level])
+m4trace:configure.in:16: -2- _m4_warn([obsolete], [The macro `ac_cv_prog_gcc' is obsolete.
+You should run autoupdate.], [../autoconf-2.71/lib/autoconf/c.m4:446: ac_cv_prog_gcc is expanded from...
+awka.ac.m4:402: PROG_CC_NO_MINUS_G_NONSENSE is expanded from...
+configure.in:16: the top level])
+m4trace:configure.in:17: -1- m4_pattern_allow([^CC$])
+m4trace:configure.in:17: -1- m4_pattern_allow([^CFLAGS$])
+m4trace:configure.in:17: -1- m4_pattern_allow([^LDFLAGS$])
+m4trace:configure.in:17: -1- m4_pattern_allow([^LIBS$])
+m4trace:configure.in:17: -1- m4_pattern_allow([^CPPFLAGS$])
+m4trace:configure.in:17: -1- m4_pattern_allow([^CC$])
+m4trace:configure.in:17: -1- m4_pattern_allow([^CC$])
+m4trace:configure.in:17: -1- m4_pattern_allow([^CC$])
+m4trace:configure.in:17: -1- m4_pattern_allow([^CC$])
+m4trace:configure.in:17: -1- m4_pattern_allow([^ac_ct_CC$])
+m4trace:configure.in:17: -1- m4_pattern_allow([^CC$])
+m4trace:configure.in:17: -1- m4_pattern_allow([^EXEEXT$])
+m4trace:configure.in:17: -1- m4_pattern_allow([^OBJEXT$])
+m4trace:configure.in:17: -1- m4_pattern_allow([^CPP$])
+m4trace:configure.in:17: -1- m4_pattern_allow([^CPPFLAGS$])
+m4trace:configure.in:17: -1- m4_pattern_allow([^CPP$])
+m4trace:configure.in:18: -1- m4_pattern_allow([^CFLAGS$])
+m4trace:configure.in:19: -1- m4_pattern_allow([^MATHLIB$])
+m4trace:configure.in:20: -1- _m4_warn([obsolete], [The macro `AC_TRY_COMPILE' is obsolete.
+You should run autoupdate.], [../autoconf-2.71/lib/autoconf/general.m4:2847: AC_TRY_COMPILE is expanded from...
+configure.in:20: the top level])
+m4trace:configure.in:20: -1- _m4_warn([obsolete], [The macro `AC_TRY_COMPILE' is obsolete.
+You should run autoupdate.], [../autoconf-2.71/lib/autoconf/general.m4:2847: AC_TRY_COMPILE is expanded from...
+configure.in:20: the top level])
+m4trace:configure.in:20: -1- _m4_warn([obsolete], [The macro `AC_TRY_COMPILE' is obsolete.
+You should run autoupdate.], [../autoconf-2.71/lib/autoconf/general.m4:2847: AC_TRY_COMPILE is expanded from...
+configure.in:20: the top level])
+m4trace:configure.in:21: -1- m4_pattern_allow([^AWK$])
+m4trace:configure.in:22: -1- m4_pattern_allow([^SH$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^YACC$])
+m4trace:configure.in:24: -1- m4_pattern_allow([^AR$])
+m4trace:configure.in:25: -1- m4_pattern_allow([^RANLIB$])
+m4trace:configure.in:26: -1- _m4_warn([obsolete], [The macro `AC_TRY_COMPILE' is obsolete.
+You should run autoupdate.], [../autoconf-2.71/lib/autoconf/general.m4:2847: AC_TRY_COMPILE is expanded from...
+configure.in:26: the top level])
+m4trace:configure.in:26: -1- _m4_warn([obsolete], [The macro `AC_TRY_COMPILE' is obsolete.
+You should run autoupdate.], [../autoconf-2.71/lib/autoconf/general.m4:2847: AC_TRY_COMPILE is expanded from...
+configure.in:26: the top level])
+m4trace:configure.in:26: -1- m4_pattern_allow([^CMP$])
+m4trace:configure.in:27: -1- _m4_warn([obsolete], [The macro `AC_TRY_COMPILE' is obsolete.
+You should run autoupdate.], [../autoconf-2.71/lib/autoconf/general.m4:2847: AC_TRY_COMPILE is expanded from...
+configure.in:27: the top level])
+m4trace:configure.in:27: -1- _m4_warn([obsolete], [The macro `AC_TRY_COMPILE' is obsolete.
+You should run autoupdate.], [../autoconf-2.71/lib/autoconf/general.m4:2847: AC_TRY_COMPILE is expanded from...
+configure.in:27: the top level])
+m4trace:configure.in:27: -1- m4_pattern_allow([^const$])
+m4trace:configure.in:28: -1- AC_DEFUN([_AC_Header_stdio_h], [m4_divert_text([INIT_PREPARE],
+  [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
+  [" stdio.h ]AS_TR_SH([stdio.h]) AS_TR_CPP([HAVE_stdio.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
+m4trace:configure.in:28: -1- AC_DEFUN([_AC_Header_stdlib_h], [m4_divert_text([INIT_PREPARE],
+  [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
+  [" stdlib.h ]AS_TR_SH([stdlib.h]) AS_TR_CPP([HAVE_stdlib.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
+m4trace:configure.in:28: -1- AC_DEFUN([_AC_Header_string_h], [m4_divert_text([INIT_PREPARE],
+  [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
+  [" string.h ]AS_TR_SH([string.h]) AS_TR_CPP([HAVE_string.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
+m4trace:configure.in:28: -1- AC_DEFUN([_AC_Header_inttypes_h], [m4_divert_text([INIT_PREPARE],
+  [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
+  [" inttypes.h ]AS_TR_SH([inttypes.h]) AS_TR_CPP([HAVE_inttypes.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
+m4trace:configure.in:28: -1- AC_DEFUN([_AC_Header_stdint_h], [m4_divert_text([INIT_PREPARE],
+  [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
+  [" stdint.h ]AS_TR_SH([stdint.h]) AS_TR_CPP([HAVE_stdint.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
+m4trace:configure.in:28: -1- AC_DEFUN([_AC_Header_strings_h], [m4_divert_text([INIT_PREPARE],
+  [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
+  [" strings.h ]AS_TR_SH([strings.h]) AS_TR_CPP([HAVE_strings.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
+m4trace:configure.in:28: -1- AC_DEFUN([_AC_Header_sys_stat_h], [m4_divert_text([INIT_PREPARE],
+  [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
+  [" sys/stat.h ]AS_TR_SH([sys/stat.h]) AS_TR_CPP([HAVE_sys/stat.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
+m4trace:configure.in:28: -1- AC_DEFUN([_AC_Header_sys_types_h], [m4_divert_text([INIT_PREPARE],
+  [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
+  [" sys/types.h ]AS_TR_SH([sys/types.h]) AS_TR_CPP([HAVE_sys/types.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
+m4trace:configure.in:28: -1- AC_DEFUN([_AC_Header_unistd_h], [m4_divert_text([INIT_PREPARE],
+  [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
+  [" unistd.h ]AS_TR_SH([unistd.h]) AS_TR_CPP([HAVE_unistd.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
+m4trace:configure.in:28: -1- m4_pattern_allow([^STDC_HEADERS$])
+m4trace:configure.in:28: -1- _m4_warn([obsolete], [The macro `AC_TRY_COMPILE' is obsolete.
+You should run autoupdate.], [../autoconf-2.71/lib/autoconf/general.m4:2847: AC_TRY_COMPILE is expanded from...
+configure.in:28: the top level])
+m4trace:configure.in:28: -1- _m4_warn([obsolete], [The macro `AC_TRY_COMPILE' is obsolete.
+You should run autoupdate.], [../autoconf-2.71/lib/autoconf/general.m4:2847: AC_TRY_COMPILE is expanded from...
+configure.in:28: the top level])
+m4trace:configure.in:29: -1- _m4_warn([syntax], [AC_CHECK_HEADERS("sys/socket.h"): you should use literals], [../autoconf-2.71/lib/autoconf/headers.m4:217: AC_CHECK_HEADERS is expanded from...
+configure.in:29: the top level])
+m4trace:configure.in:30: -1- _m4_warn([syntax], [AC_CHECK_HEADERS("netinet/in.h"): you should use literals], [../autoconf-2.71/lib/autoconf/headers.m4:217: AC_CHECK_HEADERS is expanded from...
+configure.in:30: the top level])
+m4trace:configure.in:31: -2- m4_pattern_allow([^NO_FCNTL_H$])
+m4trace:configure.in:31: -5- m4_pattern_allow([^NO_$])
+m4trace:configure.in:31: -2- m4_pattern_allow([^NO_ERRNO_H$])
+m4trace:configure.in:31: -5- m4_pattern_allow([^NO_$])
+m4trace:configure.in:31: -2- m4_pattern_allow([^NO_TIME_H$])
+m4trace:configure.in:31: -5- m4_pattern_allow([^NO_$])
+m4trace:configure.in:31: -2- m4_pattern_allow([^NO_STDARG_H$])
+m4trace:configure.in:31: -5- m4_pattern_allow([^NO_$])
+m4trace:configure.in:31: -2- m4_pattern_allow([^NO_NETDB_H$])
+m4trace:configure.in:31: -5- m4_pattern_allow([^NO_$])
+m4trace:configure.in:31: -2- m4_pattern_allow([^NO_UNISTD_H$])
+m4trace:configure.in:31: -5- m4_pattern_allow([^NO_$])
+m4trace:configure.in:31: -2- m4_pattern_allow([^NO_FCNTL_H$])
+m4trace:configure.in:32: -2- m4_pattern_allow([^NO_MEMCPY$])
+m4trace:configure.in:32: -5- m4_pattern_allow([^NO_$])
+m4trace:configure.in:32: -2- m4_pattern_allow([^NO_STRCHR$])
+m4trace:configure.in:32: -5- m4_pattern_allow([^NO_$])
+m4trace:configure.in:32: -2- m4_pattern_allow([^NO_STRSTR$])
+m4trace:configure.in:32: -5- m4_pattern_allow([^NO_$])
+m4trace:configure.in:32: -2- m4_pattern_allow([^NO_STRERROR$])
+m4trace:configure.in:32: -5- m4_pattern_allow([^NO_$])
+m4trace:configure.in:32: -2- m4_pattern_allow([^NO_VFPRINTF$])
+m4trace:configure.in:32: -5- m4_pattern_allow([^NO_$])
+m4trace:configure.in:32: -2- m4_pattern_allow([^NO_FMOD$])
+m4trace:configure.in:32: -5- m4_pattern_allow([^NO_$])
+m4trace:configure.in:32: -2- m4_pattern_allow([^NO_MATHERR$])
+m4trace:configure.in:33: -2- m4_pattern_allow([^NO_FPRINTF_IN_STDIO$])
+m4trace:configure.in:33: -1- m4_pattern_allow([^GREP$])
+m4trace:configure.in:33: -1- m4_pattern_allow([^EGREP$])
+m4trace:configure.in:33: -2- m4_pattern_allow([^NO_SPRINTF_IN_STDIO$])
+m4trace:configure.in:34: -1- _m4_warn([obsolete], [The macro `AC_TRY_RUN' is obsolete.
+You should run autoupdate.], [../autoconf-2.71/lib/autoconf/general.m4:2997: AC_TRY_RUN is expanded from...
+configure.in:34: the top level])
+m4trace:configure.in:34: -1- _m4_warn([cross], [AC_RUN_IFELSE called without default to allow cross compiling], [../autoconf-2.71/lib/autoconf/general.m4:2981: AC_RUN_IFELSE is expanded from...
+../autoconf-2.71/lib/autoconf/general.m4:2997: AC_TRY_RUN is expanded from...
+configure.in:34: the top level])
+m4trace:configure.in:34: -1- _m4_warn([obsolete], [The macro `AC_TRY_RUN' is obsolete.
+You should run autoupdate.], [../autoconf-2.71/lib/autoconf/general.m4:2997: AC_TRY_RUN is expanded from...
+configure.in:34: the top level])
+m4trace:configure.in:34: -1- _m4_warn([cross], [AC_RUN_IFELSE called without default to allow cross compiling], [../autoconf-2.71/lib/autoconf/general.m4:2981: AC_RUN_IFELSE is expanded from...
+../autoconf-2.71/lib/autoconf/general.m4:2997: AC_TRY_RUN is expanded from...
+configure.in:34: the top level])
+m4trace:configure.in:35: -1- m4_pattern_allow([^HAVE_SOCKETS$])
+m4trace:configure.in:35: -1- m4_pattern_allow([^SOCKET_LIBS$])
+m4trace:configure.in:39: -1- _m4_warn([obsolete], [Update your code to rely only on HAVE_SYS_TIME_H,
+then remove this warning and the obsolete code below it.
+All current systems provide time.h; it need not be checked for.
+Not all systems provide sys/time.h, but those that do, all allow
+you to include it and time.h simultaneously.], [])
+m4trace:configure.in:45: -1- AC_DEFUN([_AC_Header_sys_time_h], [m4_divert_text([INIT_PREPARE],
+  [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
+  [" sys/time.h ]AS_TR_SH([sys/time.h]) AS_TR_CPP([HAVE_sys/time.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
+m4trace:configure.in:48: -1- m4_pattern_allow([^TIME_WITH_SYS_TIME$])
+m4trace:configure.in:53: -1- m4_pattern_allow([^TM_IN_SYS_TIME$])
+m4trace:configure.in:54: -1- m4_pattern_allow([^HAVE_STRUCT_TM_TM_ZONE$])
+m4trace:configure.in:54: -1- m4_pattern_allow([^HAVE_TM_ZONE$])
+m4trace:configure.in:54: -1- AC_DEFUN([_AC_UNDECLARED_BUILTIN_c], [_AC_UNDECLARED_BUILTIN])
+m4trace:configure.in:54: -1- m4_pattern_allow([^HAVE_DECL_TZNAME$])
+m4trace:configure.in:54: -1- m4_pattern_allow([^HAVE_TZNAME$])
+m4trace:configure.in:55: -2- m4_pattern_allow([^NO_TIME$])
+m4trace:configure.in:55: -5- m4_pattern_allow([^NO_$])
+m4trace:configure.in:55: -2- m4_pattern_allow([^NO_MKTIME$])
+m4trace:configure.in:55: -5- m4_pattern_allow([^NO_$])
+m4trace:configure.in:55: -2- m4_pattern_allow([^NO_ASCTIME$])
+m4trace:configure.in:55: -5- m4_pattern_allow([^NO_$])
+m4trace:configure.in:55: -2- m4_pattern_allow([^NO_LOCALTIME$])
+m4trace:configure.in:55: -5- m4_pattern_allow([^NO_$])
+m4trace:configure.in:55: -2- m4_pattern_allow([^NO_GMTIME$])
+m4trace:configure.in:56: -1- _m4_warn([obsolete], [The macro `AC_TRY_COMPILE' is obsolete.
+You should run autoupdate.], [../autoconf-2.71/lib/autoconf/general.m4:2847: AC_TRY_COMPILE is expanded from...
+configure.in:56: the top level])
+m4trace:configure.in:56: -1- _m4_warn([obsolete], [The macro `AC_TRY_COMPILE' is obsolete.
+You should run autoupdate.], [../autoconf-2.71/lib/autoconf/general.m4:2847: AC_TRY_COMPILE is expanded from...
+configure.in:56: the top level])
+m4trace:configure.in:56: -1- m4_pattern_allow([^SHARED_LIB$])
+m4trace:configure.in:56: -1- m4_pattern_allow([^SHAREDFLAG$])
+m4trace:configure.in:56: -1- m4_pattern_allow([^EXE$])
+m4trace:configure.in:60: -1- m4_pattern_allow([^LIB@&t@OBJS$])
+m4trace:configure.in:60: -1- m4_pattern_allow([^LTLIBOBJS$])

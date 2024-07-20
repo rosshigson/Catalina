@@ -1,0 +1,9 @@
+#!/bin/bash -login
+echo ""
+echo "Downloading ..."
+echo ""
+payload $@
+echo ""
+echo "Debugging ..."
+echo ""
+blackbox $@

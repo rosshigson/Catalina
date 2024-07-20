@@ -1,0 +1,30 @@
+with "..\emulator\emulator.gpr";
+
+project Redirect is
+
+   for Main use ("redirect");
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-g");
+   end Compiler;
+
+   package Builder is
+      for Executable_Suffix use ".exe";
+      for Executable ("redirect") use "";
+      for Default_Switches ("ada") use ("-g");
+   end Builder;
+
+   package Naming is
+      for Specification_Suffix ("c") use ".h";
+      for Implementation_Suffix ("c") use ".c";
+      for Specification_Suffix ("c++") use ".hh";
+      for Implementation_Suffix ("c++") use ".cpp";
+      for Specification_Suffix ("changelog") use "changelog";
+      for Specification_Suffix ("project file") use ".gpr";
+      for Specification_Suffix ("python") use ".py";
+   end Naming;
+
+   for Exec_Dir use "..\bin";
+
+end Redirect;
+

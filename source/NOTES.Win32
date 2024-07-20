@@ -1,0 +1,8 @@
+#
+# To build Catalina under Windows, set the environment variable LCCDIR to the
+# directory where you unpacked the Catalina source, and then use the 
+# batch file "build_all.bat"
+#
+# Note that it is important that the mingw version of make appears in your PATH
+# variable before the version installed with Catalina. Otherwise you will get 
+# errors when building Lua, which also relies on other mingw utilities.

@@ -1,0 +1,33 @@
+#!/bin/bash
+if [[ ! -e $1 ]]; then
+   echo ""
+   echo "ERROR: invalid destination specified !"
+   echo ""
+   echo "usage: copy_all X:"
+   echo ""
+   echo "   where X: is the drive you use to read/write SD cards"
+   echo ""
+   echo "or:    copy_all dir/"
+   echo ""        
+   echo "   where dir is the directory you want to copy to"
+   echo ""
+   exit
+fi
+
+cp *.pas $1
+cp *.p5 $1
+
+if [ -f pcom.bin ]; then
+  
+   cp pcom.bin $1pcom.bin
+   cp pint.bin $1pint.bin
+
+else
+
+   cp pcom.binary $1pcom.bin
+   cp pint.binary $1pint.bin
+   if [[ -e proxy.binary ]]; then
+      cp proxy.binary $1proxy.bin  
+   fi
+
+fi

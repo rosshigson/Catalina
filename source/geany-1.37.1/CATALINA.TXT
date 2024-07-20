@@ -1,0 +1,70 @@
+These instructions are derived From https://web.archive.org/web/20210302112709/https://wiki.geany.org/howtos/win32/msys2 ...
+
+Open an MSYS2 MINGW32 (NOT MINGW64!!!) bash shell, and execute:
+
+  pacman --needed -Sy bash pacman pacman-mirrors msys2-runtime
+
+Now exit and re-open the MSYS2 MINGW32 bash shell and perform a system update:
+
+  pacman -Su
+
+Restart the MSYS2 MINGW32 bash shell once more, in case `pacman -Su` updated 
+environment related packages.
+
+Next, install the dependencies needed by Geany:
+
+  # toolchain
+  pacman -S mingw-w64-i686-binutils mingw-w64-i686-gcc mingw-w64-i686-gdb
+  # make and Autotools
+  pacman -S make mingw-w64-i686-libtool mingw-w64-i686-pkgconf autoconf
+  pacman -S automake gettext intltool libtool
+  pacman -S mingw-w64-i686-brotli
+  # gtk family
+  pacman -S mingw-w64-i686-gtk2 mingw-w64-i686-gtk3
+  # for building html docs
+  pacman -S mingw-w64-i686-python3 mingw-w64-i686-python-lxml
+  pacman -S mingw-w64-i686-python-docutils
+  # and if you fancy building from git
+  pacman -S git
+  # necessary for GTK bundle and installer steps
+  pacman -S rsync pcre pcre2 librotlicommmon
+  # for GTK bundle creation and release creation
+  pacman -S dos2unix zip unzip mingw-w64-i686-osslsigncode mingw-w64-i686-nsis
+
+NOTE: Make sure you have NOT installed both `gcc` and `mingw-w64-i686-gcc`, 
+or you may get errors when building Geany. 
+
+Next, if the source is in a Windows directory with spaces, create a link to 
+it without spaces. Note that you need to do this from a Windows command 
+shell with Administrator rights. For example, if the source is in: 
+
+   C:\Program Files (x86)\Catalina 6.2
+
+Then execute the commands:
+
+ mkdir C:\catalina
+ cd C:\catalina
+ mklink /D 6.2 "C:\Program Files (x86)\Catalina 6.2"
+
+Next, in the bash shell, go to the geany source directory and build geany (the 
+following assumes the source can be found in in /c/catalina/6.2/source/geany 
+- which may be a link! - and we want to end up with Geany in /c/geany).
+
+  cd /c/catalina/6.2/source/geany
+
+  NOCONFIGURE=1 ./autogen.sh
+
+  ./configure --prefix=/c/geany --enable-gtk2 
+
+  make
+
+  make install
+
+Next, bundle the DLLs and other files needed by Geany. This makes it possible 
+to move the resulting folder anywhere, and execute Geany without having MSYS2 
+or MINGW32 installed:
+
+  cd ../geany-bundle
+  bash gtk-bundle-from-msys2.sh -c -2
+  cp -R * /c/geany
+

@@ -1,0 +1,6 @@
+#
+# To build lcc under Windows, set the environment variable LCCDIR to the
+# deirectory where you unpacked the Catalina source, and then use the 
+# batch file "build_all.bat"
+#
+#

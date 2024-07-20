@@ -1,0 +1,19 @@
+#!/bin/bash -login
+#
+cd catalina
+./clean_all
+cd ../catoptimize
+./clean_all
+cd ../p2asm_src
+./clean_all
+cd ../lcc
+./clean_all
+cd ../openspin
+./clean_all
+cd ../lib
+./clean_all
+cd ..
+#
+echo "Done!"
+#
+

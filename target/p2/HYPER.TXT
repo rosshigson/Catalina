@@ -1,0 +1,57 @@
+.tis file describes Catalina's support for the Parallax HyperFlash & HyperRAM 
+add-on board (specifically, the 64004-ES).
+
+The relevant files in the target\p2 directory are:
+
+   hyper.t            Hyper RAM startup code and initialization data.
+   hyper.inc          Hyper XMM access functions.
+   psram.def          Common PSRAM/HyperRAM definitions for Rogloh's drivers.
+   coghyper.t         Rogloh's original Hyper driver, modified for Catalina.
+
+The file "hyper.t" contains the initialization data for the board, but 
+this mostly just uses the definitions (e.g. base pin definitions) in the 
+platform configuration files of those platforms that support Hyper RAM, such 
+as the P2_EVAL and P2_EDGE. See the section in the files P2EVAL.inc and 
+P2EDGE.inc titled "Hyper Flash / Hyper RAM constants".
+
+The default base pin definitions depend on the board:
+
+   P2_EDGE - base pin is 16
+   P2_EVAL - base pin is 32
+
+Using Hyper RAM is enabled simply by linking with the hyper library. There is
+a Catalina symbol (HYPER) associated with the Hyper RAM add-on board, but it 
+does not normally need to be explicitly specified unless the Hyper RAM is
+also used as XMM RAM on a board that also includes some built-in XMM RAM 
+(see the XMM example below). 
+
+Catalina supports using 16Mb of Hyper RAM and 32Mb of Hyper Flash as storage,
+but only the 16Mb of Hyper RAM can currently be used to execute XMM programs.
+
+There is a demo program in the Catalina demos\examples folder, which can be 
+compiled for a P2_EVAL fitted with the Hyper RAM add-on board as follows:
+
+   catalina -p2 -lhyper -lci ex_hyper.c -C P2_EVAL 
+
+The same program can be compiled for a P2_EDGE fitted with the Hyper RAM 
+add-on board as follows:
+
+   catalina -p2 -lhyper -lci ex_hyper.c -C P2_EDGE 
+
+This program can also be compiled as an XMM program to execute from Hyper RAM
+simply by adding -C LARGE or -C SMALL on the command line. For example:
+
+   catalina -p2 -lpsram -lci ex_psram.c -C P2_EVAL -C LARGE
+
+Note that if this program is compiled as an XMM program for the P2_EDGE, 
+then -C HYPER will need to be added, to tell the P2_EDGE to use Hyper RAM
+rather than PSRAM as XMM RAM, since Catalina cannot currenly use both PSRAM 
+and Hyper RAM in the same program. For example:
+
+  catalina -p2 -lhyper -lci ex_hyper.c -C P2_EDGE -C LARGE -C HYPER
+
+To load a program into Hyper RAM requires that the Catalina XMM load utilities
+be built, using the build_all script. When building, specify HYPER as the 
+XMM add-on board. 
+
+

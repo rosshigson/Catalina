@@ -1,0 +1,93 @@
+#!/bin/bash
+#set -x
+#
+TMP_LCCDIR=$LCCDIR
+if [[ "$TMP_LCCDIR" == "" ]] ; then
+   TMP_LCCDIR=/opt/catalina
+fi
+#
+if [[ ! -e "$TMP_LCCDIR/bin/catalina_env" ]] ; then
+   clear
+   echo ""
+   echo "ERROR: Catalina does not appear to be installed in $TMP_LCCDIR"
+   echo "";
+   echo "  Set the environment variable LCCDIR to where Catalina is installed.";
+   echo "";
+   exit
+fi
+#
+if [[ "$1" != "" ]]; then
+   TMP_PARAMS=`echo $1 $2 $3 $4 $5 $6 $7 $8 $9`
+   if [[ "$CATALINA_DEFINE" != "" ]]; then
+      if [[ "$CATALINA_DEFINE" != "$TMP_PARAMS" ]]; then
+
+         echo ""
+         echo "ERROR: Command line options conflict with CATALINA_DEFINE"
+         echo ""
+         echo "   CATALINA_DEFINE is set to $CATALINA_DEFINE"
+         echo "   Command line options were $TMP_PARAMS"
+         echo ""
+         echo "   Either set CATALINA_DEFINE to null using the following command:"
+         echo ""
+         echo "      unset CATALINA_DEFINE"
+         echo ""
+         echo "   or do not specify any command line parameters"
+         echo ""
+	 exit
+
+      else
+
+         echo ""
+         echo "NOTE: Environment variable CATALINA_DEFINE is set to $CATALINA_DEFINE"
+         echo ""
+         echo "  All programs will be built using these options. If these conflict" 
+         echo "  with options specified in this file, the results may be unexpected." 
+         
+      fi
+
+   else
+
+      echo ""
+      echo "NOTE: All programs will be built with options $TMP_PARAMS"
+      echo ""
+      echo "  If these options conflict with options specified in the Makefile,"
+      echo "  the results may be unexpected."
+      CATALINA_DEFINE=$TMP_PARAMS; export CATALINA_DEFINE
+
+   fi
+
+else
+
+   if [[ "$CATALINA_DEFINE" != "" ]]; then
+
+      echo ""
+      echo "NOTE: Environment variable CATALINA_DEFINE is set to $CATALINA_DEFINE"
+      echo ""
+      echo "  All programs will be built using these options. If these conflict" 
+      echo "  with options specified in this file, the results may be unexpected." 
+  
+   else     
+
+      echo ""
+      echo "NOTE: Environment variable CATALINA_DEFINE is not set"
+      echo ""
+      echo "  All programs will be built for the default target" 
+
+   fi
+
+fi
+
+echo ""
+echo "=============="
+echo "Building Demos"
+echo "=============="
+echo ""
+
+make -B all
+
+echo ""
+echo "===="
+echo "Done"
+echo "===="
+echo ""
+

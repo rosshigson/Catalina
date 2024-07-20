@@ -1,0 +1,2 @@
+del *.lst *.binary *.bin
+

@@ -1,0 +1,58 @@
+Notes on using Catalina under Windows 7 (& Vista)
+=================================================
+
+1. Even though Catalina is a 32 bit program, it expects to be installed on 
+   a 64 bit versions of Windows.  If you install it anywhere other than
+   "C:\Program Files (X86) Catalina") then you will have to set the LCCDIR 
+   environment variable accordingly. For example, on Windows 7 you might say:
+
+      set LCCDIR=C:\Program Files\Catalina
+
+   Note - do not use quotes in this command!
+
+2. Catalina no longer requires write access to the Catalina target directory
+   when compiling C programs, but it will require it to the Catalina bin 
+   directory to build Catalina itself.
+
+   It is now recommended that you copy the catalyst, utilities and demos 
+   subdirectories to your own home directory. The build_catalyst.bat and
+   build_utilities.bat batch files (which are used when using Code::Blocks, 
+   tom implement the "Build XMM utilities" and "Build Catalyst" tools) will 
+   first look for the utilities and catalyst directories in your home 
+   directory, and build there if they are found. If they are not found, the 
+   versions in the installation directories will be built instead (and you 
+   will require write access to these directories).
+
+3. While neither Catalina nor Catalyst itself require MinGW to be installed
+   just to build C programs, building some of the Catalyst demo programs (e.g. 
+   lua, xvi, jzip, etc) DOES require MinGW, because they use the make utility. 
+   Also, building Catalina itself requires MinGW and make. Unfortunately, 
+   Windows 7 does not "play nice" with MinGW. To get MinGW to work correctly 
+   after installation on Windows 7, you may need to modify the security 
+   settings of all files in the MinGW directory to allow "Full Control".
+   Here's how:
+
+   a) In Windows Explorer, right click on the MinGW folder, and select
+      "Properties".
+
+   b) In the "Properties" dialog box, select the "Security" tab, and then
+      press "Edit ..."
+
+   c) In the "Group or user names" pane select "Users", then in the 
+      "Permissions for Users" pane, tick Allow "Full Control" and "Modify".
+
+   d) Press "OK" to close the "Edit" dialog, then "OK" again to close the
+      "Properties" dialog.
+
+4. Also, when using MinGW "make" utility under Windows 7, it is sometimes
+   required to refer to the Catalina executables by their full name (i.e.
+   including the extension). For example, the command "catalina" must be 
+   specified as "catalina.exe".
+
+5. There is a bizarre problem with Windows 7 that sometimes causes the
+   library build to fail. It appears to occur when Windows Explorer is
+   open and has been used recently to display the contents of one of the
+   library directories. It may be caching information that then causes
+   the library build to fail when it needs to overwrite the old library
+   files. In any case, the only solution is to close all instances of
+   Windows Explorer Windows prior to building the library.

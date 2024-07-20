@@ -1,0 +1,10 @@
+This version of Make has been modified to split each functions into its own 
+file - this allows the Catalina binder to only inlcude the minimum necessary
+malloc functions (e.g. if realloc is not used, it is not included).
+
+This version should be functionally equivalent to the previous version, except
+that it exposes as public names some of the internal functions. If this causes
+a name collision in an application program, then either change the names, or
+use the old malloc library - just replace the Makefile in the stdlib directory 
+with old_Makefile, and the malloc subdirectory wih old_malloc, then rebuild
+the library.

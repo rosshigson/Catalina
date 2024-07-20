@@ -1,0 +1,14 @@
+with "..\emulator\emulator.gpr";
+
+project Term_Io is
+
+   package Builder is
+      for Default_Switches ("ada") use ("-g");
+   end Builder;
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-g");
+   end Compiler;
+
+end Term_Io;
+

@@ -1,0 +1,13 @@
+@# use argument 1 if provided, otherwise prompt
+@if _LOOP missing assign _1
+@if _LOOP missing prompt "Number of times to execute? "
+@# do loopy stuff here ...
+@if _LOOP echo
+@# ... end loopy stuff
+@if _LOOP sub 1
+@if _LOOP = 0 skip 2
+@# re-execute this script to loop (note use of "_0"!)
+@exec _0
+@# clean up after ourselves
+@set _LOOP=
+

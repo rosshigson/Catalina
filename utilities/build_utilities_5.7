@@ -1,0 +1,716 @@
+#!/bin/bash -login
+#
+CATALINA_DEFINE=
+
+if [[ "$1" != "" ]] ; then
+   clear
+   echo ""
+   echo "ERROR: This batch file does not accept parameters.It is an interactive"
+   echo "       batch file that will prompt for any required information."
+   echo ""
+   echo "Remove the parameters and re-execute the batch file."
+   echo ""
+   exit
+fi
+
+TMP_LCCDIR=$LCCDIR
+if [[ "$TMP_LCCDIR" == "" ]] ; then
+   TMP_LCCDIR=/opt/catalina	
+fi
+#
+if [[ ! -e "$TMP_LCCDIR/utilities/build_utilities" ]] ; then
+   clear
+   echo ""
+   echo "ERROR: Catalina does not appear to be installed in $TMP_LCCDIR"
+   echo "";
+   echo "Set the environment variable LCCDIR to where Catalina is installed.";
+   echo "";
+   exit
+fi   
+
+CACHE=
+XMM_BOARD=
+TMP_SRAM=
+TMP_FLASH=
+XMM_CACHE=
+FLASH_CACHE=
+DEFAULT_XMM=
+COPY=
+
+clear
+echo ""
+echo "                     ==========================="
+echo "                     Building Catalina Utilities"
+echo "                     ==========================="
+echo ""
+echo "This command will build various Catalina utilities. It is important that"
+echo "the utilities be built with options compatible with those you use when"
+echo "you build your Catalina programs."
+echo ""
+echo "For example, if you intend to compile programs to execute from FLASH RAM,"
+echo "then to load the program you must build the FLASH load utility."
+echo ""
+echo "Similarly, if you if you intend to compile programs to use a specific"
+echo "cache size then you must build the load utilities with the same cache"
+echo "size."
+echo ""
+echo "You can re-run this program any time if you need to change options."
+echo ""
+echo -n "Press ENTER to begin ..."
+read -e PAUSE
+clear
+echo ""
+echo "First, do you want this script to copy the utilities it builds to"
+echo "Catalina's bin directory?"
+echo "" 
+echo "NOTE: To do this, you need to execute this utility as an administrator,"
+echo "====  or else have write permissions to Catalina's bin directory."
+echo "      Otherwise, the utilities will be left in the utilities directory"
+echo "" 
+echo -n "Copy the utilities to Catalina's bin directory? (Y/N): "
+read -e COPY 
+if [[ "$COPY" == "y" ]] ; then
+   COPY=Y
+fi
+clear
+echo ""
+echo "Next, specify your platform. This batch file knows how to build utilities for:"
+echo ""
+echo "       HYDRA"
+echo "       HYBRID"
+echo "       DEMO"
+echo "       TRIBLADEPROP"
+echo "       MORHPEUS"
+echo "       ASC"
+echo "       DRACBLADE"
+echo "       RAMBLADE"
+echo "       RAMBLADE3"
+echo "       C3"
+echo "       PP"
+echo "       QUICKSTART"
+echo "       FLIP"
+echo "       P2_CUSTOM"
+echo "       P2D2"
+echo "       P2_EDGE"
+echo "       P2_EVAL"
+echo ""
+echo "If your platform is not listed above, enter CUSTOM - and you will have to"
+echo "specify various additional details about your platform."
+
+CPU=
+CPU_SUFFIX=
+PLATFORM=
+TMP_FLASH=
+TMP_SRAM=
+
+while [[ "$PLATFORM" ==  "" ]] ; do
+   echo ""
+   echo -n "Enter your platform (in UPPER CASE): "
+   read -e PLATFORM
+
+   if [[ "$PLATFORM" != "HYDRA"
+      && "$PLATFORM" != "HYBRID"  
+      && "$PLATFORM" != "DEMO" 
+      && "$PLATFORM" != "ASC" 
+      && "$PLATFORM" != "FLIP" 
+      && "$PLATFORM" != "CUSTOM" 
+      && "$PLATFORM" != "DRACBLADE" 
+      && "$PLATFORM" != "RAMBLADE" 
+      && "$PLATFORM" != "RAMBLADE3" 
+      && "$PLATFORM" != "TRIBLADEPROP" 
+      && "$PLATFORM" != "PP" 
+      && "$PLATFORM" != "C3" 
+      && "$PLATFORM" != "P2_CUSTOME" 
+      && "$PLATFORM" != "P2D2" 
+      && "$PLATFORM" != "P2_EDGE" 
+      && "$PLATFORM" != "P2_EVAL" 
+      && "$PLATFORM" != "QUICKSTART" ]] ; then
+      echo ""
+      echo "Invalid Platform selected - try again."
+      PLATFORM=
+   fi
+done
+
+if [[ "$PLATFORM" == "P2_CUSTOM" 
+   || "$PLATFORM" == "P2_EVAL"
+   || "$PLATFORM" == "P2D2" ]] ; then
+   clear
+   echo ""
+   echo "NOTE: The platform you have specified does not currently have"
+   echo "===   any supported utilities."
+   echo ""
+   exit
+fi
+
+clear
+echo ""
+echo "Next, specify if you have an XMM add-on board. If your XMM memory is built"
+echo "into your platform (or you have no add-on board) just leave this blank."
+echo "This batch file knows how to build utilities for:"
+echo ""
+echo "       SUPERQUAD"
+echo "       RAMPAGE"
+echo "       HX512"
+echo "       RP2"
+echo "       PMC"
+echo ""
+echo "Note that you do not need to specify the HX512 for the HYDRA or HYBRID - it"
+echo "it assumed automatically. But if you use a different add-on board for these"
+echo "platforms, then you can specify it here."
+
+TMP_XMM_VALID=N
+while [[ "$TMP_XMM_VALID" ==  "N" ]] ; do
+   echo ""
+   echo -n "Enter your XMM add-on board (in UPPER CASE): "
+   read -e XMM_BOARD
+
+   if [[ "$XMM_BOARD" == "SUPERQUAD" 
+      || "$XMM_BOARD" == "RAMPAGE" 
+      || "$XMM_BOARD" == "HX512" 
+      || "$XMM_BOARD" == "RP2" 
+      || "$XMM_BOARD" == "PMC" 
+      || "$XMM_BOARD" == "" ]] ; then
+      TMP_XMM_VALID=Y
+   else
+      echo ""
+      echo "Invalid XMM add-on board selected - try again."
+      XMM_BOARD=
+   fi
+done
+
+if [[ "$PLATFORM" == "TRIBLADEPROP" ]] ; then
+   clear
+   echo ""
+   echo "The $PLATFORM supports multiple CPUs. You must specify which"
+   echo "CPU to build utilities for. To build for multiple CPUs, run"
+   echo "this batch file multiple times, specifying each CPU separately."
+   while [[ "$CPU" == "" ]] ; do
+      echo ""
+      echo -n "Enter the CPU you want to build utilities for (1, 2 or 3): "
+      read -e CPU
+      if [[ "$CPU" != "1" 
+         && "$CPU" != "2"
+         && "$CPU" != "3" ]] ; then
+         CPU=
+         echo ""
+         echo "Invalid CPU selected - try again."
+      fi
+   done
+   CPU_SUFFIX=_$CPU
+   CPU=CPU_$CPU
+
+   clear
+   PROXY_EXTRAS=
+   echo ""
+   echo "If you intend to use the Proxy server utility on this CPU, you must" 
+   echo "specify the plugins to be loaded when executing the server (this" 
+   echo "depends on what devices exist on the server CPU that you want to make"
+   echo "available to your application executing on another CPU (the client)."
+   echo ""
+   echo "By default, all proxiable devices are supported. You typically disable "
+   echo "various plugins by specifying one or more of following options if the"
+   echo "device does not exist on this CPU:"
+   echo "" 
+   echo "   NO_KEYBOARD NO_MOUSE NO_SCREEN NO_SD"
+   echo "" 
+   echo "Specify proxy server options (each separated by a space and in UPPER CASE)"
+   echo -n "or just press ENTER for no options: "
+   read -e PROXY_EXTRAS
+
+fi
+
+if [[ "$XMM_BOARD" == "SUPERQUAD"
+   || "$XMM_BOARD" == "RAMPAGE"   
+   || "$XMM_BOARD" == "RP2"   
+   || "$XMM_BOARD" == "PMC"
+   || "$PLATFORM"  == "C3" ]] ; then
+   TMP_FLASH=Y
+else
+   if [[ "$PLATFORM" != "TRIBLADEPROP" 
+      && "$PLATFORM" != "P2_EDGE" ]] ; then
+      echo ""
+      echo -n "Does your $PLATFORM $CPU $XMM_BOARD have FLASH RAM installed? (Y/N): "
+      read -e TMP_FLASH
+      if [[ "$TMP_FLASH" == "y" ]] ; then
+         TMP_FLASH=Y
+      fi
+   fi
+fi
+
+if [[ "$TMP_FLASH" == "Y" ]] ; then
+   clear
+   echo ""
+   echo "The $PLATFORM $CPU $XMM_BOARD has FLASH RAM that can be used as XMM RAM."
+   echo ""
+   echo "Using FLASH RAM this way requires the cache."
+   echo ""
+   echo "Select the cache size to use."
+   echo ""
+   echo "The cache size can be:"
+   echo ""
+   echo "   1 kilobyte"
+   echo "   2 kilobytes"
+   echo "   4 kilobytes"
+   echo "   8 kilobytes"
+
+   FLASH_CACHE=NOT_SPECIFIED
+
+   while [[ "$FLASH_CACHE" == "NOT_SPECIFIED" ]] ; do
+      echo ""
+      echo -n "Enter the size of the cache (1,2,4 or 8): "
+      read -e FLASH_CACHE
+      if [[ "$FLASH_CACHE" != "1"
+         && "$FLASH_CACHE" != "2"
+         && "$FLASH_CACHE" != "4"
+         && "$FLASH_CACHE" != "8" ]] ; then
+         echo ""
+         echo "Invalid cache size. Try again."
+         FLASH_CACHE=NOT_SPECIFIED
+      fi
+   done
+fi
+
+EXTRAS=
+if [[ "$TMP_FLASH" == "Y" ]] ; then
+   clear
+   echo ""
+   echo "If you intend to use the Flash_Boot utility, you must specify the plugins" 
+   echo "to be loaded when executing the program, since these are not stored in FLASH."
+   echo "If you want the program stored in FLASH to execute on boot, you can program"
+   echo "Flash_Boot into EEPROM, and it will load the plugins you specify here."
+   echo ""
+   echo "Some plugins are specified directly:"
+   echo ""
+   echo "      HIRES_VGA LORES_VGA HIRES_TV LORES_TV"
+   echo "      PC PROPTERMINAL TTY TTY256 SD CLOCK GAMEPAD"
+   echo "" 
+   echo "Other plugins are specified via their support library:"
+   echo "" 
+   echo "      libgraphics libvgraphics libtty libtty256 libsound libma libmb"
+   echo ""
+   echo "You can also disable various plugins by specifying the following options:"
+   echo "" 
+   echo "      NO_HMI NO_KEYBOARD NO_MOUSE NO_SCREEN NO_FLOAT NO_SD"
+   echo "" 
+   echo "Finally, you can configure Flash_Boot by specifying one or more of:"
+   echo ""
+   echo "   WRITE_CHECK ERASE_CHECK CHIP_ERASE"
+   echo ""
+   echo "Specify the Flash_Boot options (each separated by a space and in UPPER CASE)"
+   echo -n "or just press ENTER for no options: "
+   read -e EXTRAS
+fi
+
+if [[ "$PLATFORM" == "CUSTOM" 
+   || "$PLATFORM" == "FLIP" 
+   || "$PLATFORM" == "P2_EDGE" 
+   || "$PLATFORM" == "DEMO" ]] ; then
+   echo ""
+   echo -n "Does your $PLATFORM $CPU $XMM_BOARD have SRAM (other than FLASH) installed? (Y/N): "
+   read -e TMP_SRAM
+   if [[ "$TMP_SRAM" == "y" ]] ; then
+      TMP_SRAM=Y
+   fi
+else
+   if [[ "$XMM_BOARD" == "RAMPAGE" 
+      || "$XMM_BOARD" == "RP2" 
+      || "$XMM_BOARD" == "PMC" ]] ; then
+      TMP_SRAM=Y
+   elif [[ "$PLATFORM" != "ASC" 
+      && "$PLATFORM" != "PP" 
+      && "$PLATFORM $CPU" != "TRIBLADEPROP CPU_3" ]] ; then
+      TMP_SRAM=Y
+   fi
+fi
+
+if [[ "$TMP_SRAM" == "Y" && "$PLATFORM" != "P2_EDGE" ]] ; then
+
+   clear
+   echo ""
+   echo ""
+   echo "The $PLATFORM $CPU $XMM_BOARD has SRAM that can be used as XMM RAM."
+   echo ""
+   echo "When using SRAM this way, you have the option of using the cache."
+   echo ""
+   echo "To do so, select the cache size - or just press ENTER to disable it."
+   echo ""
+   echo "The cache size can be:"
+   echo ""
+   echo "   1 kilobyte"
+   echo "   2 kilobytes"
+   echo "   4 kilobytes"
+   echo "   8 kilobytes"
+   
+   XMM_CACHE=NOT_SPECIFIED
+   
+   while [[ "$XMM_CACHE" ==  "NOT_SPECIFIED" ]] ; do
+      echo ""
+      echo -n "Enter the size of the cache (1,2,4,8 or ENTER for none): "
+      read -e XMM_CACHE
+      if [[ "$XMM_CACHE" != ""
+      && "$XMM_CACHE" != "1"
+      && "$XMM_CACHE" != "2"
+      && "$XMM_CACHE" != "4"
+      && "$XMM_CACHE" != "8" ]] ; then
+         echo ""
+         echo "Invalid cache size. Try again."
+         XMM_CACHE=NOT_SPECIFIED
+      fi
+      if [[ (   "$XMM_BOARD" == "RAMPAGE"
+             || "$XMM_BOARD" == "SUPERQUAD"
+             || "$XMM_BOARD" == "RP2"
+             || "$XMM_BOARD" == "PMC") 
+         && "$XMM_CACHE" == "" ]] ; then
+         echo ""
+         echo "The $PLATFORM $XMM_BOARD requires the cache to be used. Try again."
+         XMM_CACHE=NOT_SPECIFIED
+      fi
+   done
+fi   
+
+if [[ "$TMP_SRAM" != "Y" && "$PLATFORM" == "P2_EDGE" ]] ; then
+   clear
+   echo ""
+   echo "NOTE: The platform you have specified does not currently have"
+   echo "===   any supported utilities."
+   echo ""
+   exit
+fi
+
+
+if [[ "$TMP_SRAM" == "Y" && "$PLATFORM" == "P2_EDGE" ]] ; then
+
+   clear
+   echo ""
+   echo ""
+   echo "The $PLATFORM $CPU $XMM_BOARD has SRAM that can be used as XMM RAM."
+   echo ""
+   echo "When using SRAM this way, you have the option of using the cache."
+   echo ""
+   echo "To do so, select the cache size - or just press ENTER to disable it."
+   echo ""
+   echo "The cache size can be:"
+   echo ""
+   echo "   1 kilobyte"
+   echo "   2 kilobytes"
+   echo "   4 kilobytes"
+   echo "   8 kilobytes"
+   echo "  16 kilobytes"
+   echo "  32 kilobytes"
+   echo "  64 kilobytes"
+   
+   XMM_CACHE=NOT_SPECIFIED
+   
+   while [[ "$XMM_CACHE" ==  "NOT_SPECIFIED" ]] ; do
+      echo ""
+      echo -n "Enter the size of the cache (1,2,4,8,16,32,64 or ENTER for none): "
+      read -e XMM_CACHE
+      if [[ "$XMM_CACHE" != ""
+      && "$XMM_CACHE" != "1"
+      && "$XMM_CACHE" != "2"
+      && "$XMM_CACHE" != "4"
+      && "$XMM_CACHE" != "8"
+      && "$XMM_CACHE" != "16"
+      && "$XMM_CACHE" != "32"
+      && "$XMM_CACHE" != "64" ]] ; then
+         echo ""
+         echo "Invalid cache size. Try again."
+         XMM_CACHE=NOT_SPECIFIED
+      fi
+      if [[ "$XMM_CACHE" == "" ]] ; then
+         echo ""
+         echo "The $PLATFORM $XMM_BOARD requires the cache to be used. Try again."
+         XMM_CACHE=NOT_SPECIFIED
+      fi
+   done
+fi   
+
+if [[ "$TMP_SRAM" == "Y" && "$PLATFORM" == "P2_EDGE" ]] ; then
+
+   echo ""
+   echo "Ready to build utilities for $PLATFORM $CPU $XMM_BOARD- Press ENTER to continue ..."
+   read -e PAUSE
+
+   clear
+
+   if [[ -e "$PWD/build_utilities" ]] ; then
+      pushd "$PWD"
+   elif  [[ -e "$HOME/utilities/build_utilities" ]] ; then
+      pushd "$HOME/utilities"
+   else
+      pushd "$TMP_LCCDIR/utilities"
+   fi
+
+   catalina Catalina_SIO_Loader.c -p2 -lci -lserial2 -lpsram -R0x10000 -C NO_HMI -C $PLATFORM -o SRAM
+   cp -f SRAM.bin XMM.bin
+
+   if [[ "$COPY" == "Y" ]] ; then
+      echo ""
+      echo "Copying binaries ..."
+      echo ""
+      cp -f XMM.bin "$TMP_LCCDIR/bin/XMM.bin"
+      cp -f SRAM.bin "$TMP_LCCDIR/bin/SRAM.bin"
+   fi
+
+   popd 
+
+   echo ""
+   echo "                      ============================"
+   echo "                      Building utilities completed"
+   echo "                      ============================"
+   echo ""
+   if [[ "$COPY" == "Y" ]] ; then
+      echo "The utility programs should have been copied to the Catalina 'bin' directory."
+      echo "If you saw error messages from the copy commands, ensure you have write"
+      echo "permission to the 'bin' directory and then rerun this utility. "
+      echo ""
+   else
+      echo "The utility programs have been built in the utilities directory only."
+      echo "These versions can be copied to any directory containing binaries to"
+      echo "be loaded and will be used in preference to any in Catalina's bin"
+      echo "directory."
+      echo ""
+   fi
+   echo "Other errors may indicate the options you selected are not supported by"
+   echo "your Propeller platform - check the options and then rerun this utility."
+   echo ""
+
+   exit
+
+fi
+
+if [[ "$TMP_FLASH" == "Y" && "$TMP_SRAM" == "Y" ]] ; then
+   clear
+   while [[ "$DEFAULT_XMM" == "" ]] ; do
+      echo ""
+      echo "The $PLATFORM $CPU $XMM_BOARD can use both FLASH and SRAM as XMM. Would you like the"
+      echo -n "default XMM loader to load FLASH or SRAM? (F/S): "
+      read -e DEFAULT_XMM
+      if [[ "$DEFAULT_XMM" == "f" ]] ; then
+         DEFAULT_XMM=F
+      elif [[ "$DEFAULT_XMM" == "s" ]] ; then
+         DEFAULT_XMM=S
+      elif [[ "$DEFAULT_XMM" != "F" && "$DEFAULT_XMM" != "S" ]] ; then
+         echo ""
+         echo "Invalid entry. Try again."
+         DEFAULT_XMM=
+      fi
+   done
+elif [[ "$TMP_FLASH" == "Y" ]] ; then
+         DEFAULT_XMM=F
+elif [[ "$TMP_SRAM" == "Y" ]] ; then
+         DEFAULT_XMM=S
+fi
+
+# all information gathered - start building
+
+echo ""
+echo "Ready to build utilities for $PLATFORM $CPU $XMM_BOARD- Press ENTER to continue ..."
+read -e PAUSE
+
+clear
+
+if [[ "$PLATFORM" == "TRIBLADEPROP" ]] ; then
+
+   if [[ -e "$PWD/build_utilities" ]] ; then
+      pushd "$PWD"
+   elif  [[ -e "$HOME/utilities/build_utilities" ]] ; then
+      pushd "$HOME/utilities"
+   else
+      pushd "$TMP_LCCDIR/utilities"
+   fi
+
+   echo ""
+   echo "Building CPU-specific utilities ..."
+   echo ""
+
+
+   source build_pasm_tmp_var $PLATFORM $CPU $XMM_BOARD $PROXY_EXTRAS
+
+   echo "spinnaker -p -a Generic_Proxy_Server.spin -o Generic_Proxy_Server$CPU_SUFFIX -I "$TMP_LCCDIR/target/p1" -b $TMP_VAR"
+
+   spinnaker -p -a Generic_Proxy_Server.spin -o Generic_Proxy_Server$CPU_SUFFIX -I "$TMP_LCCDIR/target/p1" -b $TMP_VAR
+
+   spinnaker -p -a Generic_SIO_Loader_1.spin -I "$TMP_LCCDIR/target/p1" -b $TMP_VAR 
+   spinnaker -p -a Generic_SIO_Loader_2.spin -I "$TMP_LCCDIR/target/p1" -b $TMP_VAR 
+   spinnaker -p -a Generic_SIO_Loader_3.spin -I "$TMP_LCCDIR/target/p1" -b $TMP_VAR 
+
+   if [[ "$CPU" != "CPU_1" ]] ; then 
+      spinnaker -p -a CPU_1_Boot.spin -o CPU_1_Boot$CPU_SUFFIX -I "$TMP_LCCDIR/target/p1" -b $TMP_VAR
+      spinnaker -p -a CPU_1_Reset.spin -o CPU_1_Reset$CPU_SUFFIX -I "$TMP_LCCDIR/target/p1" -b $TMP_VAR
+      if [[ "$COPY" == "Y" ]] ; then
+         cp -f CPU_1_Boot$CPU_SUFFIX.binary "$TMP_LCCDIR/bin/CPU_1_Boot$CPU_SUFFIX.binary"
+         cp -f CPU_1_Reset$CPU_SUFFIX.binary "$TMP_LCCDIR/bin/CPU_1_Reset$CPU_SUFFIX.binary"
+      fi
+   fi
+   if [[ "$CPU" != "CPU_3" ]] ; then 
+      spinnaker -p -a CPU_3_Boot.spin -o CPU_3_Boot$CPU_SUFFIX -I "$TMP_LCCDIR/target/p1" -b $TMP_VAR
+      spinnaker -p -a CPU_3_Reset.spin -o CPU_3_Reset$CPU_SUFFIX -I "$TMP_LCCDIR/target/p1" -b $TMP_VAR
+      if [[ "$COPY" == "Y" ]] ; then
+         cp -f CPU_3_Boot$CPU_SUFFIX.binary "$TMP_LCCDIR/bin/CPU_3_Boot$CPU_SUFFIX.binary"
+         cp -f CPU_3_Reset$CPU_SUFFIX.binary "$TMP_LCCDIR/bin/CPU_3_Reset$CPU_SUFFIX.binary"
+      fi
+   fi
+
+   popd
+fi
+
+if [[ "$TMP_FLASH" == "Y" ]] ; then 
+   CACHE=
+   if [[ "$FLASH_CACHE" != "" ]] ; then
+      CACHE="CACHED_"
+      CACHE+=$FLASH_CACHE
+      CACHE+="K"
+   fi
+
+   if [[ -e "$PWD/build_utilities" ]] ; then
+      pushd "$PWD"
+   elif  [[ -e "$HOME/utilities/build_utilities" ]] ; then
+      pushd "$HOME/utilities"
+   else
+      pushd "$TMP_LCCDIR/utilities"
+   fi
+
+   echo ""
+   echo "Building FLASH utilities ..."
+   echo ""
+
+   if [[ "$XMM_BOARD" == "SUPERQUAD" ]] ; then
+     source build_pasm_tmp_var $PLATFORM $CPU $XMM_BOARD FLASH $CACHE $EXTRAS SMALL
+   else
+     source build_pasm_tmp_var $PLATFORM $CPU $XMM_BOARD FLASH $CACHE $EXTRAS LARGE
+   fi
+   spinnaker -p -a Payload_XMM_Loader.spin -I "$TMP_LCCDIR/target/p1" -b -o FLASH$CPU_SUFFIX $TMP_VAR
+   spinnaker -p -a "$TMP_LCCDIR/target/p1/xmm_default.spin" -I "$TMP_LCCDIR/target/p1" -b $TMP_VAR -o Flash_Boot$CPU_SUFFIX
+
+   if [[ "$COPY" == "Y" ]] ; then
+      echo ""
+      echo "Copying FLASH binaries ..."
+      echo ""
+      cp -f FLASH$CPU_SUFFIX.binary "$TMP_LCCDIR/bin/FLASH$CPU_SUFFIX.binary"
+      cp -f Flash_Boot$CPU_SUFFIX.binary "$TMP_LCCDIR/bin/Flash_Boot$CPU_SUFFIX.binary"
+   fi
+
+   popd
+
+fi
+
+CACHE=
+if [[ "$XMM_CACHE" != "" ]] ; then
+   CACHE="CACHED_"
+   CACHE+=$XMM_CACHE
+   CACHE+="K"
+fi
+
+if [[ -e "$PWD/build_utilities" ]] ; then
+   pushd "$PWD"
+elif  [[ -e "$HOME/utilities/build_utilities" ]] ; then
+   pushd "$HOME/utilities"
+else
+   pushd "$TMP_LCCDIR/utilities"
+fi
+
+
+echo ""
+echo "Building SRAM utilities ..."
+echo ""
+
+source build_pasm_tmp_var $PLATFORM $CPU $XMM_BOARD $CACHE
+if [[ "$TMP_SRAM" == "Y" ]] ; then 
+   spinnaker -p -a Payload_XMM_Loader.spin -I "$TMP_LCCDIR/target/p1" -b -o SRAM$CPU_SUFFIX $TMP_VAR
+
+   if [[ "$COPY" == "Y" ]] ; then
+      echo ""
+      echo "Copying SRAM binaries ..."
+      echo ""
+      cp -f SRAM$CPU_SUFFIX.binary "$TMP_LCCDIR/bin/SRAM$CPU_SUFFIX.binary"
+   fi   
+fi
+
+echo ""
+echo "Building EEPROM utilities ..."
+echo ""
+
+source build_pasm_tmp_var $PLATFORM $CPU $XMM_BOARD
+spinnaker -p -a Payload_EEPROM_Loader.spin -I "$TMP_LCCDIR/target/p1" -b -o EEPROM$CPU_SUFFIX $TMP_VAR
+
+if [[ "$COPY" == "Y" ]] ; then
+   echo ""
+   echo "Copying EEPROM binaries ..."
+   echo ""
+
+   cp -f EEPROM$CPU_SUFFIX.binary "$TMP_LCCDIR/bin/EEPROM$CPU_SUFFIX.binary"
+
+   if [[ "$DEFAULT_XMM" == "F" ]] ; then
+      cp -f FLASH$CPU_SUFFIX.binary "$TMP_LCCDIR/bin/XMM.binary"
+   fi
+   if [[ "$DEFAULT_XMM" == "S" ]] ; then
+      cp -f SRAM$CPU_SUFFIX.binary "$TMP_LCCDIR/bin/XMM.binary"
+   fi
+fi
+
+popd
+
+
+if [[ -e "$PWD/build_utilities" ]] ; then
+   pushd "$PWD"
+elif  [[ -e "$HOME/utilities/build_utilities" ]] ; then
+   pushd "$HOME/utilities"
+else
+   pushd "$TMP_LCCDIR/utilities"
+fi
+
+if [[ "$PLATFORM" == "HYDRA" ]] ; then
+   echo ""
+   echo "Building Mouse Loader utilities ..."
+   echo ""
+   source build_pasm_tmp_var $PLATFORM $XMM_BOARD $CACHE
+   spinnaker -p -a Mouse_Port_Loader.spin -I "$TMP_LCCDIR/target/p1" -b -o Hydra_Mouse $TMP_VAR
+   cp -f Hydra_Mouse.binary MOUSE.binary
+   cp -f Hydra_Mouse.binary SRAM.binary
+   cp -f Hydra_Mouse.binary XMM.binary
+   if [[ "$COPY" == "Y" ]] ; then
+      cp -f Hydra_Mouse.binary "$TMP_LCCDIR/bin/Hydra_Mouse.binary"
+      cp -f Hydra_Mouse.binary "$TMP_LCCDIR/bin/MOUSE.binary"
+      cp -f Hydra_Mouse.binary "$TMP_LCCDIR/bin/SRAM.binary"
+      cp -f Hydra_Mouse.binary "$TMP_LCCDIR/bin/XMM.binary"
+   fi
+elif [[ "$PLATFORM" == "HYBRID" ]] ; then 
+   echo ""
+   echo "Building Mouse Loader utilities ..."
+   echo ""
+   source build_pasm_tmp_var $PLATFORM $XMM_BOARD $CACHE
+   spinnaker -p -a Mouse_Port_Loader.spin -I "$TMP_LCCDIR/target/p1" -b -o Hybrid_Mouse $TMP_VAR
+   cp -f Hybrid_Mouse.binary MOUSE.binary
+   cp -f Hybrid_Mouse.binary SRAM.binary
+   cp -f Hybrid_Mouse.binary XMM.binary
+   if [[ "$COPY" == "Y" ]] ; then
+      cp -f Hybrid_Mouse.binary "$TMP_LCCDIR/bin/Hybrid_Mouse.binary"
+      cp -f Hybrid_Mouse.binary "$TMP_LCCDIR/bin/MOUSE.binary"
+      cp -f Hybrid_Mouse.binary "$TMP_LCCDIR/bin/SRAM.binary"
+      cp -f Hybrid_Mouse.binary "$TMP_LCCDIR/bin/XMM.binary"
+   fi
+fi
+
+popd
+
+echo ""
+echo "                      ============================"
+echo "                      Building utilities completed"
+echo "                      ============================"
+echo ""
+if [[ "$COPY" == "Y" ]] ; then
+   echo "The utility programs should have been copied to the Catalina 'bin' directory."
+   echo "If you saw error messages from the copy commands, ensure you have write"
+   echo "permission to the 'bin' directory and then rerun this utility. "
+   echo ""
+else
+   echo "The utility programs have been built in the utilities directory only."
+   echo "These versions can be copied to any directory containing binaries to"
+   echo "be loaded and will be used in preference to any in Catalina's bin"
+   echo "directory."
+   echo ""
+fi
+echo "Other errors may indicate the options you selected are not supported by"
+echo "your Propeller platform - check the options and then rerun this utility."
+echo ""

@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<Locations>
+  <Project>
+    <vfs_file>C:\GNAT\Terminal\emulator\emulator.gpr</vfs_file>
+    <file_marker column=" 9" line=" 753" >
+      <vfs_project>C:\GNAT\Terminal\emulator\emulator.gpr</vfs_project>
+      <vfs_file>C:\GNAT\terminal\emulator\fymodem_c.c</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 660" >
+      <vfs_project />
+      <vfs_file>C:\GNAT\terminal\comms\comms.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 49" line=" 325" >
+      <vfs_project>C:\GNAT\Terminal\emulator\emulator.gpr</vfs_project>
+      <vfs_file>C:\GNAT\terminal\emulator\terminal_dialogs.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 13" line=" 44" >
+      <vfs_project>C:\GNAT\Terminal\emulator\emulator.gpr</vfs_project>
+      <vfs_file>C:\GNAT\terminal\emulator\ansi_buffer.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 21" line=" 15" >
+      <vfs_project>C:\GNAT\Terminal\emulator\emulator.gpr</vfs_project>
+      <vfs_file>C:\GNAT\terminal\emulator\fymodem.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 18" >
+      <vfs_project>C:\GNAT\Terminal\emulator\emulator.gpr</vfs_project>
+      <vfs_file>C:\GNAT\Terminal\emulator\emulator.gpr</vfs_file>
+    </file_marker>
+    <file_marker column=" 13" line=" 79" >
+      <vfs_project>C:\GNAT\Terminal\emulator\emulator.gpr</vfs_project>
+      <vfs_file>C:\GNAT\Terminal\emulator\terminal_buffer.adb</vfs_file>
+    </file_marker>
+    <file_marker current="true" column=" 1" line=" 1" >
+      <vfs_project>C:\GNAT\Terminal\emulator\emulator.gpr</vfs_project>
+      <vfs_file>C:\GNAT\Terminal\emulator\sizable_panels.ads</vfs_file>
+    </file_marker>
+  </Project>
+</Locations>

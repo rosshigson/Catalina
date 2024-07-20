@@ -1,0 +1,30 @@
+************************** WHATS NEW IN THIS VERSION ***************************
+
+Welcome to version 0.8
+
+- The version number still bears a 0.x version because it is not fully checked
+out for compliance with the ISO 7185 Pascal standard.
+
+- This version had the "to do" list zeroed out, meaning that as far as I know,
+it has all the requirements for ISO 7185 Pascal taken care of, and all 
+outstanding bugs and issues addressed.
+
+- P5 goes to the BSI tests next. Because the BSI tests are neither available,
+nor distributable because of copyright restrictions, this means that everything
+the BSI tests point out will need to also be addressed in the PAT and PRT tests
+distributed with P5. This is an extensive process. Note that the PRT test does
+not currently exist.
+
+- It is intended that a document will be produced that outlines the changes that
+were required to go from P4 to P5. The idea is that this document, along with
+the "Pascal implementation: The P4 compiler" [Pemberton and daniels] will serve
+as complete documentation for P5.
+
+If you are trying out the P5 compiler, and encounter problems, I would 
+appreciate feedback to:
+
+samiam@moorecad.com
+
+Your validated bugs will be incorporated into the todo.txt file.
+
+********************************************************************************

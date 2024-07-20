@@ -1,0 +1,41 @@
+#!/bin/bash -login
+#set -x
+
+#
+# clean LMM/XMM/Native optimizer
+#
+rm -f catopt_0.exe
+rm -f catopt_1.exe
+rm -f catopt_2.exe
+rm -f catopt_3.exe
+rm -f catopt_4.exe
+rm -f catopt_5.exe
+rm -f catopt_6.exe
+rm -f catopt_7.exe
+rm -f catopt_8.exe
+rm -f catopt_9.exe
+rm -f catopt_10.exe
+rm -f catopt_11.exe
+rm -f catopt_12.exe
+rm -f catopt_13.exe
+rm -f catoptimize.exe
+
+#
+# clean CMM optimizer
+#
+rm -f cmmopt_0.exe
+rm -f cmmopt_1.exe
+rm -f cmmopt_2.exe
+rm -f cmmopt_3.exe
+rm -f cmmopt_4.exe
+rm -f cmmopt_5.exe
+rm -f cmmopt_6.exe
+rm -f cmmopt_7.exe
+rm -f cmmopt_8.exe
+rm -f cmmopt_9.exe
+rm -f cmmopt_10.exe
+rm -f cmmopt_11.exe
+rm -f cmmopt_12.exe
+rm -f cmmopt_13.exe
+rm -f cmmopt_14.exe
+rm -f cmmoptimize.exe

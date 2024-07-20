@@ -1,0 +1,56 @@
+SMM SDCARD Loader
+=================
+
+Catalyst now incorporates the ability to load SMM files. These files can ONLY
+be loaded from the local SD card. The advantage of files compiled as SMM files
+is that the loading is done in two phases - first the drivers are loaded, then
+the C application code. This means C programs can now be up to 31kb in size, 
+without having memory taken up by the kernel or the plugins.
+
+Catalyst now recognizes the following file extensions when loading programs:
+
+   .xmm - use the XMM loader (requires XMM RAM)
+   .smm - use the new SMM loader (program 
+   .lmm - use the normal Parallax-compatible LMM loader 
+   .bin - use the normal Parallax-compatible LMM loader
+
+If a file on the SD CARD has a .smm extension (instead of a .bin extension)
+then the new SMM SDCARD load process is used. A description of this load
+process is given below.
+
+Catalyst (Phase 0 Loader):
+
+1. Cogstore may be started (as cog 7) if there are any command line parameters.
+2. The Cluster List of the file is stored in FLIST ($7F00 - $7FFF).
+3. The Phase 0 low level load program is loaded into cog 0 and started - this 
+   loads up to 31kb of the file into Hub RAM ($0000 - $7C00) via the sector 
+   buffer ($7C00 - $7DFF).
+4. The loaded program (which is the phase 1 loader) is then started by 
+   restarting cog 0 as a normal SPIN interpreter.
+
+Phase 1 Loader:
+
+1. Cogstore may be running - it should be terminated if the NO_ARGS command
+   line option was specified - otherwise this cog should be left running, and
+   will be unavailable for loading device drivers).
+2. The registry is created ($7E9C - $7EFC).
+3. All device drivers are loaded and started. One of the device drivers MUST 
+   be the SD_plugin, since it is needed during the phase 2 load. Note that if
+   CogStore is running, but has no data, it is terminated.
+4. The phase 2 load program is loaded into cog 0 and started.
+
+Phase 2 Loader:
+
+1. 31kb is loaded from the 32kb boundary into Hub RAM using the sector buffer
+   located at $7C00 - $7DFF.
+2. 2kb is loaded from the 64kb boundary of the file into cog 0. The first
+   three sectors are loaded using a PASM function that runs in the top 128 
+   longs. The last sector is loaded using a final loader that executes only 
+   in the last 8 longs. Once the kernel is loaded, the cog is restarted.
+
+Limitations:
+
+- programs must be 31kb or less (less if they use plugins that allocate buffers
+  in Hub RAM).
+- programs that accept arguments must not load cog 7.
+- programs must load the SD_plugin even if they don't need to use it.

@@ -1,0 +1,5 @@
+#!/bin/bash -login
+make clobber LCCDIR=$LCCDIR
+make HOSTFILE=etc/catalina_linux.c LCCDIR=$LCCDIR lcc
+make all LCCDIR=$LCCDIR
+

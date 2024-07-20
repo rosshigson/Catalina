@@ -1,0 +1,44 @@
+with "win32ada";
+with "..\emulator\emulator.gpr";
+
+project Comms is
+
+   for Main use ("comms");
+   for Exec_Dir use "..\bin";
+   for Languages use ("Ada");
+
+   package Naming is
+      for Spec_Suffix ("c") use ".h";
+      for Body_Suffix ("c") use ".c";
+      for Spec_Suffix ("c++") use ".hh";
+      for Body_Suffix ("c++") use ".cpp";
+      for Spec_Suffix ("changelog") use "changelog";
+      for Spec_Suffix ("project file") use ".gpr";
+      for Spec_Suffix ("python") use ".py";
+   end Naming;
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-Os", "-g", "-fipa-cp-clone", "-fgcse-after-reload", "-funroll-loops", "-fpeel-loops", "-funswitch-loops", "-ftracer", "-fweb", "-ftree-vectorize", "-frename-registers", "-ffunction-sections", 
+         "-gnatyaknpr", "-gnatybfhiu", "-gnatybfhiu", "-gnatyO", "-gnatyx", "-gnatye", "-gnatytC", "-gnatwa");
+      for Switches ("c") use ("-g/ -Wall", "-g");
+   end Compiler;
+
+   package Linker is
+      --  Get the Windows Visual Styles switched on through manifest.xml:
+      --  for Default_Switches ("ada") use ("contrib/test/visual_styles.rbj");   --   Binary file is different for 32 and 64 bit platforms.
+      for Switches ("c") use ("-g");
+   end Linker;
+
+   package Binder is
+      --  -Es: Store tracebacks in exception occurrences, and enable symbolic tracebacks
+      for Default_Switches ("ada") use ("-Es");
+   end Binder;
+
+   package Builder is
+      --   "If -j0 is used, then the maximum number of simultaneous compilation
+      --    jobs is the number of core processors on the platform."
+      for Default_Switches ("ada") use ("-j0");
+   end Builder;
+
+end Comms;
+

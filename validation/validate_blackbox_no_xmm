@@ -1,0 +1,151 @@
+#!/bin/bash
+if [[ "$1" != "" ]]; then
+
+   if [[ "$CATALINA_DEFINE" != "" ]]; then
+
+      if [[ "$CATALINA_DEFINE" != "$1 $2 $3 $4 $5 $6 $7 $8 $9" ]]; then
+
+         echo ""
+         echo "ERROR: Command line options conflict with CATALINA_DEFINE"
+         echo ""
+         echo "   The Environment variable CATALINA_DEFINE is set to $CATALINA_DEFINE"
+         echo "   The Command line options specified are $1 $2 $3 $4 $5 $6 $7 $8 $9"
+         echo ""
+         echo "   Either set CATALINA_DEFINE to null using the following command:"
+         echo ""
+         echo "      unset CATALINA_DEFINE"
+         echo ""
+         echo "   or do not specify any command line parameters"
+         echo ""
+
+      else
+
+         echo ""
+         echo "NOTE: Environment variable CATALINA_DEFINE is set to $CATALINA_DEFINE"
+         echo ""
+         echo "All programs will be built using these options. If these options conflict" 
+         echo "with any options specified in this file, the results may be unexpected." 
+         
+      fi
+
+   else
+
+      echo ""
+      echo "NOTE: Environment variable CATALINA_DEFINE will be set to $1 $2 $3 $4 $5 $6 $7 $8 $9"
+      echo ""
+      echo "All programs will be built using these options. If these options conflict"
+      echo "with any options specified in this file, the results may be unexpected."
+      CATALINA_DEFINE="$1 $2 $3 $4 $5 $6 $7 $8 $9"; export CATALINA_DEFINE
+
+   fi
+
+else
+
+   if [[ "$CATALINA_DEFINE" != "" ]]; then
+
+      echo ""
+      echo "NOTE: Environment variable CATALINA_DEFINE is set to $CATALINA_DEFINE"
+      echo ""
+      echo "All programs will be built using these options. If these options conflict" 
+      echo "with any options specified in this file, the results may be unexpected." 
+  
+   else     
+
+      echo ""
+      echo "NOTE: Environment variable CATALINA_DEFINE is not set"
+      echo ""
+      echo "All programs will be built for the default target (CUSTOM)" 
+
+   fi
+
+fi
+
+#
+TMP_LCCDIR=$LCCDIR
+if [[ "$TMP_LCCDIR" == "" ]]; then
+   TMP_LCCDIR=/opt/catalina	
+fi
+#
+if [[ ! -e $TMP_LCCDIR/bin/catalina_env ]]; then
+   echo ""
+   echo "ERROR: Catalina does not appear to be installed in $TMP_LCCDIR"
+   echo "";
+   echo "Set the environment variable LCCDIR to where Catalina is installed.";
+   echo "";
+   exit
+fi   
+
+rm -f *.binary
+rm -f *.bin
+if [[ -e results_blackbox.$1 ]]; then
+   rm -f results_blackbox.$1
+fi
+
+platform=$1
+
+if [ "${platform:0:2}" != "P2" ] && [ "${CATALINA_DEFINE:0:2}" != "P2" ]; then 
+
+echo ""
+echo "   =============="
+echo "   VALIDATING P1 "
+echo "   =============="
+echo ""
+
+echo ""
+echo "WARNING: ENSURE THE UTILITIES HAVE BEEN BUILT FOR THE CORRECT PLATFORM!"
+echo ""
+
+compile_and_debug_p1 $1 test_suite -ltiny -lc 
+compile_and_debug_p1 $1 test_suite -ltiny -lc -C COMPACT
+
+compile_and_debug_p1 $1 test_suite -lc 
+compile_and_debug_p1 $1 test_suite -lc -C COMPACT
+
+compile_and_debug_p1 $1 test_suite -lci 
+compile_and_debug_p1 $1 test_suite -lci -C COMPACT
+
+compile_and_debug_p1 $1 test_suite -lcix 
+compile_and_debug_p1 $1 test_suite -lcix -C COMPACT
+
+compile_and_debug_p1 $1 test_suite -lcx 
+compile_and_debug_p1 $1 test_suite -lcx -C COMPACT
+
+
+else
+
+echo ""
+echo "   =============="
+echo "   VALIDATING P2 "
+echo "   =============="
+echo ""
+
+compile_and_debug_p2 $1 test_suite -ltiny -lc -C TINY
+compile_and_debug_p2 $1 test_suite -ltiny -lc -C NATIVE
+compile_and_debug_p2 $1 test_suite -ltiny -lc -C COMPACT
+
+compile_and_debug_p2 $1 test_suite -lc -C TINY
+compile_and_debug_p2 $1 test_suite -lc -C NATIVE
+compile_and_debug_p2 $1 test_suite -lc -C COMPACT
+
+compile_and_debug_p2 $1 test_suite -lci -C TINY
+compile_and_debug_p2 $1 test_suite -lci -C NATIVE
+compile_and_debug_p2 $1 test_suite -lci -C COMPACT
+
+compile_and_debug_p2 $1 test_suite -lcix -C TINY
+compile_and_debug_p2 $1 test_suite -lcix -C NATIVE
+compile_and_debug_p2 $1 test_suite -lcix -C COMPACT
+
+compile_and_debug_p2 $1 test_suite -lcx -C TINY
+compile_and_debug_p2 $1 test_suite -lcx -C NATIVE
+compile_and_debug_p2 $1 test_suite -lcx -C COMPACT
+
+
+fi
+
+unset CATALINA_DEFINE
+echo ""
+echo "   ===="
+echo "   Done"
+echo "   ===="
+echo ""
+

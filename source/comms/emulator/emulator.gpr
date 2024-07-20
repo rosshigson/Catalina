@@ -1,0 +1,22 @@
+with "win32ada";
+with "..\..\GWindows\gwindows\gwindows";
+
+project Emulator is
+
+   for Object_Dir use ".";
+   for Exec_Dir use ".";
+   for Main use ();
+   for Library_Interface use ("mit_parser\libMIT.a");
+   for Languages use ("Ada", "C");
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-g");
+      for Switches ("c") use ("-g", "-Wall");
+   end Compiler;
+
+   package Builder is
+      for Default_Switches ("ada") use ("-k", "-g");
+   end Builder;
+
+end Emulator;
+

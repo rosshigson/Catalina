@@ -1,0 +1,60 @@
+Notes on using Catalina under Windows 10 & later
+=================================================
+
+1. Even though Catalina is a 32 bit program, it expects to be installed on 
+   a 64 bit versions of Windows.  If you install it anywhere other than
+   "C:\Program Files (X86) Catalina") then you will have to set the LCCDIR 
+   environment variable accordingly. For example, on a 32 bit version of
+   Windows you might say:
+
+      set LCCDIR=C:\Program Files\Catalina
+
+   Note - do not use quotes in this command!
+
+2. Catalina does not requires write access to the Catalina target directories
+   when compiling C programs, but it will require it to the Catalina bin 
+   directory to build Catalina itself, and to the library directories to
+   rebuild the Catalina libraries.
+
+   It is now recommended that you copy the utilities and demos subdirectories 
+   to your own home directory. The build_catalyst.bat and build_utilities.bat 
+   batch files will first look for the utilities and catalyst directories in 
+   your home directory, and build there if they are found. If they are not 
+   found, the versions in the installation directories will be built instead 
+   (and you will require write access to these directories). Also, the 
+   build_utilities script will ask if you want to copies the utilities to 
+   the bin directory, in which case you will also need write permission to 
+   that directory.
+
+3. Windows 10 introduced a change to the Windows console that breaks some
+   console applications, including payload when used in interactive mode.
+
+   There are three solutions:
+
+   (a) Use the external vt100 emulator instead of the internal payload 
+       terminal emulator. For instance, instead of saying
+
+          payload hello_world -i
+
+       You might say
+
+          payload hello_world -I vt100
+
+       However, note that the time taken to start the external terminal
+       emulator means you may miss the initial output of the program.
+       Adding a small delay to program startup may help. 
+
+   (b) Set the Windows "wrap text output on resize" option. To do this, 
+       select Properties from the system menu of any console window and in 
+       the Layout tab, ensure that the option to "Wrap text output on resize"
+       is selected. To make this change permanent, do this in the shortcut 
+       that opens the Catalina Command Line window (you will need to restart
+       any open Catalina Command Line windows).
+
+   (c) Set Windows to use the "legacy console mode". To do this, select 
+       Properties from the system menu of any console window and in the 
+       Options tab, ensure that the option to "Use legacy console" is i
+       selected. To make this change permanent, make this change on the 
+       shortcut that opens the Catalina Command Line window (you will need 
+       to restart any open Catalina Command Line windows).
+

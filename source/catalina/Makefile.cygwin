@@ -1,0 +1,51 @@
+A=.a
+O=.o
+E=.exe
+CC=gcc
+CPP=c++
+CFLAGS= -D WIN32_PATHS
+LDFLAGS=
+LD=$(CC)
+AR=ar ruv
+RANLIB=ranlib
+DIFF=diff
+RM=rm -f
+
+BINDIR="..//..//bin//"
+
+AWKADIR=awka-0.7.5
+
+what:
+	-@echo make all parallelize_awka catapult_awka
+
+all::	parallelize_awka$E catapult_awka$E
+
+parallelize_awka$E:	parallelize_awka.awk parallelize_functions.c parallelize_functions.h
+	make -C $(AWKADIR) all
+	cp $(AWKADIR)/awka/awka$E .
+	cp $(AWKADIR)/lib/libawka.a .
+	cp $(AWKADIR)/lib/libawka.h .
+	./awka.exe -i parallelize_functions.h -f parallelize_awka.awk>parallelize_awka.c
+	gcc -I. -c parallelize_functions.c
+	gcc -I. -O2 -s -o parallelize_awka.exe parallelize_awka.c parallelize_functions.o libawka.a
+
+catapult_awka$E:	catapult_awka.awk catapult_functions.c catapult_functions.h
+	make -C $(AWKADIR) all
+	cp $(AWKADIR)/awka/awka$E .
+	cp $(AWKADIR)/lib/libawka.a .
+	cp $(AWKADIR)/lib/libawka.h .
+	./awka.exe -i catapult_functions.h -f catapult_awka.awk>catapult_awka.c
+	gcc -I. -c catapult_functions.c
+	gcc -I. -O2 -s -o catapult_awka.exe catapult_awka.c catapult_functions.o libawka.a
+
+clean::
+	make -C $(AWKADIR) clean
+	$(RM) parallelize_awka$E
+	$(RM) parallelize_awka.c parallelize_functions.o
+	$(RM) catapult_awka$E
+	$(RM) catapult_awka.c catapult_functions.o
+
+install:
+	cp parallelize_awka$E $(BINDIR)/parallelize_awka$E
+	cp catapult_awka$E $(BINDIR)/catapult_awka$E
+

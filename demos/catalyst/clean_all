@@ -1,0 +1,56 @@
+#!/bin/bash
+
+echo ""
+echo "   ==========================="
+echo "   Cleaning all Catalyst Demos"
+echo "   ==========================="
+echo ""
+
+rm -fr image/*
+
+cd core
+./clean_all
+cd ..
+
+cd fymodem
+./clean_all
+cd ..
+
+cd xvi-2.51
+./clean_all
+cd ..
+
+cd pascal/p5_c
+./clean_all
+cd ../..
+
+cd jzip
+./clean_all
+cd ..
+
+cd dumbo_basic
+./clean_all
+cd ..
+
+cd sst
+./clean_all
+cd ..
+
+cd lua-5.4.4
+./clean_all
+cd ..
+
+cd catalina
+./clean_all
+cd ..
+
+cd time
+./clean_all
+cd ..
+
+echo ""
+echo "===="
+echo "Done"
+echo "===="
+echo ""
+

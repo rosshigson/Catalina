@@ -1,0 +1,13 @@
+#!/bin/bash -login
+#
+unset CATALINA_DEFINE
+export CATALINA_DEFINE=PSRAM
+
+make clean 
+make -B all NATIVE=TRUE PROPELLER_2=TRUE OUTPUT="../.."
+
+make clean 
+make -B all COMPACT=TRUE PROPELLER_2=TRUE OUTPUT="../.."
+
+make clean 
+make -B all LARGE=TRUE PROPELLER_2=TRUE OUTPUT="../.."

@@ -1,0 +1,25 @@
+/* 
+ * The files included here are created using spinnaker and spinc: 
+ *
+ *    cp dynamic_array.p1 dynamic_array.h
+ *
+ *    spinnaker -p -a -I  lmmd.spin -o lmmd
+ *    spinc lmmd.binary > lmmd.inc
+ *
+ *    spinnaker -p -a -I  cmmd.spin -o cmmd
+ *    spinc cmmd.binary > cmmd.inc
+ *
+ */
+#if defined(__CATALINA_COMPACT)
+
+// cmmd kernel goes here ...
+
+#include "cmmd.inc"
+
+#else
+
+// lmmd kernel goes here ...
+
+#include "lmmd.inc"
+
+#endif

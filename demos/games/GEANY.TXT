@@ -1,0 +1,40 @@
+
+                +------------------------------+
+                |  IMPORTANT!  PLEASE READ ME! |
+                +------------------------------+
+
+This file exists to explain some things you need to know about using
+the Geany project files in this folder. These files are slightly 
+different to normal Geany project files - this is required to allow 
+the folder to be moved or copied to a new location and still be usable. 
+It also allows multiple projects to be put in the same folder, and so 
+also serves as a demonstration of some Catalina-specific Geany changes.
+
+This file is opened automatically by all the projects in this folder,
+but once you are familiar with its contents, you can simply close it
+and it will not re-open next time you open that particular project.
+
+The first thing to note is that since this is a TEXT File and not a C
+file, while THIS file is the current file the Catalina commands that
+are usually on the Build menu will not appear. They only appear when a
+C file is the current file, so make sure a file with a '.c' extension
+is selected before attempting to use the Build menu (or the Compile or
+Build toolbar buttons).
+
+The next thing to note is that because there are multiple program files 
+in this directory, you cannot (in general) use the 'Link All' Build
+command, because it will try to link together all compiled C files in
+the folder, and if there is more than one it will result in errors like 
+the C main function being redefined. To build the projects in this 
+folder, use either the 'Build File' command (which builds only the 
+CURRENT file - and all the projects in this folder consist of only a 
+single file) or use the 'Make' command (which builds only the CURRENT 
+project - and the Makefile in this folder knows how to build all the 
+projects in the folder). Being able to pass the project to be built
+to the Makefile is a Catalina-specific extenstion to normal Geany.
+
+The final thing to note is that the Base Directory (accessible via the 
+Project->Properties menu item) is specified in all the projects as './' 
+instead of a specific directory. This is what makes the project files
+in this folder independent of where the folder itself lives, and this
+is another Catalina-specific change to normal Geany.

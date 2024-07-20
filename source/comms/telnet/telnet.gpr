@@ -1,0 +1,22 @@
+with "..\emulator\emulator.gpr";
+with "..\term_IO\term_io.gpr";
+
+project Telnet is
+
+   for Exec_Dir use "..\bin";
+   for Main use ("telnet");
+
+   package Builder is
+      for Executable_Suffix use ".exe";
+      for Executable ("telnet") use "";
+      for Default_Switches ("ada") use ("-k", "-g");
+   end Builder;
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-g", "-gnatwI");
+   end Compiler;
+
+   for Languages use ("Ada", "C");
+
+end Telnet;
+

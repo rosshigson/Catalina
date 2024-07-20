@@ -1,0 +1,8 @@
+#
+# To build lcc under linux, set the environment variable LCCDIR to the
+# deirectory where you unpacked the Catalina source, and then use the 
+# script file "build_all"
+#
+# Note: 
+#  The file etc/catalina_linux.c assumes that the linux directory that
+#  contains the 'mv' command is in /bin - if it is not, edit the file.

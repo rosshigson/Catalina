@@ -1,0 +1,25 @@
+/* 
+ * The files included here are created using spinnaker and spinc: 
+ *
+ *    cp tkarray.p1 tkarray.h
+ *
+ *    spinnaker -p -a -I  lmmtd.spin -o lmmtd
+ *    spinc lmmtd.binary > lmmtd.inc
+ *
+ *    spinnaker -p -a -I  cmmtd.spin -o cmmtd
+ *    spinc cmmtd.binary > cmmtd.inc
+ *
+ */
+#if defined(__CATALINA_COMPACT)
+
+// cmmtd kernel goes here ...
+
+#include "cmmtd.inc"
+
+#else
+
+// lmmtd kernel goes here ...
+
+#include "lmmtd.inc"
+
+#endif

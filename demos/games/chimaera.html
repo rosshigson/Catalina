@@ -1,0 +1,101 @@
+<html>
+<head>
+<style>
+  body {text-align: justify; font-size: 16;}
+  table.main {text-align: justify; font-size: 16;}
+  table.scores {text-align: center;}
+  sup {font-size: 12;}
+</style>
+<title>
+Chimaera Version c1.001</title>
+</head>
+
+<meta name = "Author"
+      lang = "eng"
+      content = "Chris Newall">
+<meta name = "Description"
+      content = "Chimaera Version c1.001">
+
+<body bgcolor="ffffaa" text = #000000 link = #0000FF>
+<h2><center>Chimaera Version c1.001</center></h2>
+<hr>
+<table class=main cellpadding=10><tr><td>
+The Fortran version of the classical Colossal Cave adventure was developed by Willie  Crowther, Don Woods and Gary Palter. This game, enjoyed by many of us in the 1970s, had about 80 locations and numerous puzzles to be solved. If played optimally it could yield 360 points, at which stage "<i>a cheering band of friendly elves carry the conquering adventurer off into the sunset</i>".
+
+<p>Colossal Cave was great fun but it had one major drawback - it was finite; you could eventually achieve a perfect score, become an Adventurer Grandmaster and that was that. It might take many months to achieve perfection, but once you had done it what was left? You could hang around the office enjoying the struggles of Novice Class Adventurers, perhaps dropping the occasion hint to help them on their way or you could get on with real life - such as it is. I decided that it would be fun to try to write an adventure program which resembled real life in its scope and unpredictability. The result, Chimaera, was first conceived in 1983 and implemented in Fortran in January 1984.
+
+<p>A Chimaera is defined by the Concise Oxford Dictionary as:
+
+<blockquote><small>
+<i>n</i> <b>1</b>. (Gk Myth.) Monster with lion's head, goat's body, and serpent's tail. <b>2</b>. Bogy; thing of hybrid character; fanciful conception; hence chimerical (k-) <i>a</i> <b>3</b>. (Biol.) Organism formed by grafting etc. from tissues of different genetic origin. <b>4</b>. (Zool.) Fish of family Chimaeridae. [f. L f. Gk <i>khimaira</i> she-goat, chimera]
+</small></blockquote>
+
+The Chimaera is intended to be '<i>a thing of hybrid character and fanciful conception</i>'. Superficially it resembles Colossal Cave (indeed there has been a little grafting) but it avoids many of the earlier program's limitations and there is no easily definable maximum score. There are limits to the number of objects and creatures to be found, but some of these are virtual and do not even exist until certain conditions have been met. Furthermore it appears to the user that there are an indefinite number of locations; the descriptions and properties of these are determined programmatically. And to add further complexity there are 11 Chimaera adventures to choose from (<i>see below</i>).
+
+<p>For over a decade Chimaera version 1.113 [Fortran] languished in the archives until a meeting with an old and valued friend early in 2002 stimulated me to revisit the program. I decided to recode it in ANSI C and the present program <b>Chimaera version c1.001</b> is the result.
+
+<p>
+<b><font color=ff0000>Concept:</font></b>
+<ul>
+
+<tr><td>
+  <li>The object of the game is to amass as much treasure and other property as possible in the tent at your base camp - which you have to find at some stage. There is no easily calculable maximum score but a scores of more than 1,000 should be achievable.
+
+<tr><td>
+  <li>There are 11 starting points (0-10), Games 1-10 are consistent in that when they are replayed all locations and objects should appear in the same places and sequence each time the game is played. The various creatures encountered will depend on the actual sequence of moves made and may not always appear in the same places or at the same times. The starting point for Game 0 is chosen randomly and the chances that any two such games will behave consistently are correspondingly remote.
+
+<tr><td>
+  <li>Each game begins with the message: "<i>You are standing on a wide grassy plain; far off the snow clad tops of distant mountains gleam in the rays of the rising sun. Isolated trees are dotted about the landscape and groups of animals can dimly be seen moving about some way off.</i>" However, your actual starting point on the plain, the nature of the local terrain, the location and distance of your base camp, and the date and time of day depend on the game number you have selected. You may explore the plain, there are objects to find and various hazards to encounter but the real adventure begins when you venture into the depths, where the really valuable stuff and the main hazards and puzzles are to be found.
+
+<tr><td>
+  <li>Once you move from the starting place most locations and situations are described by computationally generated text, over 20,000 location descriptions can be computed although not all may be accessible to you. This is because the possibilities for moving between adjacent locations are usually limited. Occasionally you may get into a place from which there appears to be no exit, although you will usually be warned if this is likely. If you do get trapped there will usually be a means of escape but it may not be obvious and will be expensive. Objects, creatures and puzzles to be solved will be encountered in an apparently random (though consistent) manner. As with Colossal Cave, you may eventually be able find short cuts between locations.
+
+<tr><td>
+  <li>Games may be saved and subsequently restored. The geography of a restored game will always be the same as the original but some objects may have been moved by the elves whilst the game was in limbo. You are strongly advised to keep maps tracking your movements, with many thousands of possible locations it is easy to get lost completely and if you put something down you may never be able to find it again unless you have a map.
+
+<tr><td>A system of optionally available context-sensitive hints is being developed but is unlikely to be fully functional before version c1.1 is released.
+
+<tr><td>
+  <li>In version c1.001 simple commands are used (as in the Colossal Cave adventure). Your input may be in lower, UPPER or MiXeD case and most commands may be abbreviated to their first four characters. The program uses a fairly small set of commands; some of these may only become available once certain conditions are met and others may disappear after they have been used. A dictionary is not provided and the best way to find out if a word of command is recognised is to type it in and see what happens. The primary purpose of Chimaera is to pose a set of interesting problems, not to entertain the user with a flashy interface. Fancy input parsing to handle 'natural language' input may be introduced in a future version of Chimaera if I can be bothered to get round to it.
+
+</ul>
+</td></tr></table>
+<blockquote>
+Players are graded according to their score when they leave the program. So far very few players have progressed beyond the Apprentice grade.
+
+<p>
+<center>
+<table class=scores border=1 cellpadding=2>
+<tr><th width=100>Score<th width=150>Grade<th width=100>Score<th width=150>Grade
+<tr><td width=100>0-99<td width=150>Rank Amateur
+  <td width=100>100-199<td width=150>Novice
+<tr><td width=100>200-299<td width=150>Apprentice
+  <td width=100>300-399<td width=150>Student
+<tr><td width=100>400-499<td width=150>Graduate
+  <td width=100>500-599<td width=150>Third Class
+<tr><td width=100>600-699<td width=150>Second Class
+  <td width=100>700-799<td width=150>First Class
+<tr><td width=100>800-899<td width=150>Master
+  <td width=100>900-999<td width=150>Grand Master
+<tr><td width=100>1000-<td width=150>Supreme Champion
+</table>
+</center>
+</blockquote>
+
+<p><center><font size=6>Enjoy!</font></center><p>
+
+
+<hr>
+<center>
+  This document is © Chris Newall 2002 and is freely available.<br>
+  It is not for sale or general publication. 
+</center>
+
+<hr>
+<small><address>
+  Chris Newall : Email: chris@rebus.demon.co.uk<br>
+  File created : 6th January 2002<br>
+  Last modified : 8th April 2002
+</address></small>
+</body>
+</html>

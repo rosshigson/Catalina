@@ -1,0 +1,172 @@
+#!/bin/bash -login
+#
+TMP_LCCDIR=$LCCDIR
+if [[ "$TMP_LCCDIR" == "" ]]; then
+   TMP_LCCDIR=/opt/catalina	
+fi
+#
+if [[ ! -e $TMP_LCCDIR/bin/catalina_env ]]; then
+   echo ""
+   echo "ERROR: Catalina does not appear to be installed in $TMP_LCCDIR"
+   echo "";
+   echo "Set the environment variable LCCDIR to where Catalina is installed.";
+   echo "";
+   exit
+fi   
+ 
+TMP_FLASH=
+TMP_CACHE=
+
+clear
+echo ""
+echo "This command will build Catalyst and various utilities. It is important"
+echo "that Catalyst be built with options compatible with those you intend to"
+echo "use when you build your Catalina programs to be run under Catalyst." 
+echo ""
+echo "The most important cases are that if you intend to run programs that use"
+echo "Flash memory as XMM RAM, then you must build Catalyst with Flash support"
+echo "enabled, and if you intend to run programs that use a specific cache size"
+echo "then you must also build Catalyst to use a cache of the same size" 
+echo ""
+echo "First, specify your platform. If your platform is not listed, you must"
+echo "build Catalyst using the 'build_all' script in the Catalyst directory"
+echo "instead of using this script."
+echo ""
+echo "The currently supported platforms are:"
+echo ""
+echo "    HYDRA   HYBRID   DEMO   TRIBLADEPROP"
+echo "    MORHPEUS   DRACBLADE   RAMBLADE"
+echo "    ASC   C3   FLIP   CUSTOM"
+echo "    P2_EVAL   P2_EDGE"
+echo ""
+
+CPU=
+PLATFORM=
+
+while [[ "$PLATFORM" ==  "" ]] ; do
+   echo -n "Enter your platform in UPPER CASE: "
+   read -e PLATFORM
+
+   if [[ "$PLATFORM" !=  "HYDRA"
+   && "$PLATFORM" != "HYBRID"  
+   && "$PLATFORM" != "DEMO" 
+   && "$PLATFORM" != "ASC" 
+   && "$PLATFORM" != "FLIP" 
+   && "$PLATFORM" != "CUSTOM" 
+   && "$PLATFORM" != "DRACBLADE" 
+   && "$PLATFORM" != "RAMBLADE" 
+   && "$PLATFORM" != "TRIBLADEPROP" 
+   && "$PLATFORM" != "C3"
+   && "$PLATFORM" != "P2_EVAL"
+   && "$PLATFORM" != "P2_EDGE" ]] ; then
+      PLATFORM=
+      echo ""
+      echo "Invalid Platform selected - try again."
+   fi
+done
+
+if [[ "$PLATFORM" == "TRIBLADEPROP" ]] ; then
+   clear
+   echo ""
+   echo "The $PLATFORM supports multiple CPUs."
+   while [[ "$CPU" == "" ]] ; do
+      echo ""
+      echo -n "Enter the CPU you want to use (1, 2 or 3): "
+      read -e CPU
+      if [[ "$CPU" != "1" && "$CPU" != "2" && "$CPU" != "3" ]] ; then
+         CPU=
+         echo ""
+         echo "Invalid CPU selected - try again."
+      fi
+   done
+fi
+
+if [[ "$PLATFORM" == "C3" ]] ; then
+   clear
+   echo ""
+   echo "The $PLATFORM has Flash memory which can be used as XMM RAM."
+   echo ""
+   echo -n "Would you like to use the Flash memory as XMM RAM (Y/N): "
+   read -e TMP_FLASH
+   if [[ "$TMP_FLASH" == "y" ]] ; then 
+      TMP_FLASH=Y
+   fi
+fi
+
+if [[ ("$PLATFORM" != "P2_EVAL")
+   && ("$PLATFORM" != "P2_EDGE") ]] ; then
+   clear
+   echo ""
+   echo "If you would like to use the cache, please select the cache size, or just"
+   echo "press ENTER to disable the cache (note the cache is required to use XMM"
+   echo "on some platforms). The cache size can be:"
+   echo ""
+   echo "   1 kilobyte"
+   echo "   2 kilobytes"
+   echo "   4 kilobytes"
+   echo "   8 kilobytes"
+
+   TMP_CACHE=NOT_SPECIFIED
+   
+   while [[ "$TMP_CACHE" ==  "NOT_SPECIFIED" ]] ; do
+      echo ""
+      echo -n "Enter the size of the cache (1,2,4,8 or ENTER for none): "
+      read -e TMP_CACHE
+      if [[ "$TMP_CACHE" != ""
+      && "$TMP_CACHE" != "1"
+      && "$TMP_CACHE" != "2"
+      && "$TMP_CACHE" != "4"
+      && "$TMP_CACHE" != "8" ]] ; then
+         echo ""
+         echo "Invalid cache size. Try again."
+         TMP_CACHE=NOT_SPECIFIED
+      fi
+      if [[ "$TMP_CACHE" == "" ]] ; then
+         if [[ "$PLATFORM" == "C3" ]] ; then
+            if [[ "$TMP_FLASH" == "Y" ]] ; then
+               echo ""
+               echo "The $PLATFORM requires the cache when using Flash memory as XMM. Try again."
+               TMP_CACHE=NOT_SPECIFIED
+            fi
+         fi
+      fi
+   done
+   
+   FLASH=
+   if [[ "$TMP_FLASH" == "Y" ]] ; then 
+      FLASH="FLASH"
+   fi
+   
+   CACHE=
+   if [[ "$TMP_CACHE" != "" ]] ; then
+      CACHE="CACHED_"
+      CACHE+=$TMP_CACHE
+      CACHE+="K"
+   fi
+fi
+
+clear
+echo ""
+echo "If you would like to enter any other options, specify them here,"
+echo "with each option separated by a space. For example TTY CR_ON_LF"
+echo ""
+echo -n "Enter other options: "
+read -e OPTIONS
+
+if [[ -e $PWD/build_catalyst ]] ; then
+   echo "Building Catalyst in current directory"
+   pushd "$PWD"
+elif [[ -e $HOME/demos/catalyst/build_catalyst ]] ; then
+   echo "Building Catalyst in home directory"
+   pushd "$HOME/demos/catalyst"
+else
+   echo "Building Catalyst in installation directory"
+   pushd "$TMP_LCCDIR/demos/catalyst"
+fi
+
+echo ""
+echo "build_all $PLATFORM $FLASH $CACHE $OPTIONS"
+build_all $PLATFORM $FLASH $CACHE $OPTIONS
+
+popd
+

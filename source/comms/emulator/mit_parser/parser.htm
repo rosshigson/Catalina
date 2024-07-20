@@ -1,0 +1,725 @@
+<!doctype html public "-//IETF//DTD HTML//EN">
+<HTML><HEAD>
+<TITLE>Parser For VT420 Terminal Emulators</TITLE>
+<LINK REV="made" HREF="mailto:igorlord@mit.edu">
+<META       NAME="REVISION" CONTENT="pbh">
+<META       NAME="AUTHOR" CONTENT="igorlord">
+<ISINDEX >
+</HEAD><BODY><H1 ALIGN=Center><CENTER>Parser For VT420 Terminal Emulators</CENTER></H1><H3><CENTER><A HREF="ftp://net-dist.mit.edu/pub/dos/for-developers/parser.zip">Download
+
+the source code for the parser</A>
+</CENTER></H3><P><CENTER><HR>
+
+</CENTER><H3><CENTER>Before Using VTParser In Any Applications, Please Read The
+Entire Document</CENTER></H3><P ALIGN=Justify><CENTER><HR>
+
+</CENTER>This software is being provided to you, the LICENSEE,
+by the <A HREF="http://web.mit.edu">Massachusetts Institute of Technology</A>
+
+(M.I.T.) under the
+following license. By obtaining, using and/or copying this software,
+you agree that you have read, understood, and will comply with
+these terms and conditions:<P ALIGN=Justify>
+Permission to use, copy, modify and distribute this software and
+its documentation for any purpose and without fee or royalty is
+hereby granted, provided that you agree to comply with the following
+copyright notice and statements, including the disclaimer, and
+that the same appear on ALL copies of the software and documentation,
+including modifications that you make for internal use or for
+distribution:<P ALIGN=Justify>
+Copyright 1995 by the Massachusetts Institute of Technology. All
+rights reserved.<P ALIGN=Justify>
+THIS SOFTWARE IS PROVIDED "AS IS", AND M.I.T. MAKES
+NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED. By way of
+example, but not limitation, M.I.T. MAKES NO REPRESENTATIONS OR
+WARRANTIES OF MERCHANTABILITY OR FITNESS FOR ANY PARTICULAR PURPOSE
+OR THAT THE USE OF THE LICENSED SOFTWARE OR DOCUMENTATION WILL
+NOT INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS OR
+OTHER RIGHTS.<P ALIGN=Justify>
+The name of the Massachusetts Institute of Technology or M.I.T.
+may NOT be used in advertising or publicity pertaining to distribution
+of the software. Title to copyright in this software and any associated
+
+
+documentation shall at all times remain with M.I.T., and USER
+agrees to preserve same. <HR>
+<UL><LI><A HREF="#Files_Required">Files Required</A> <LI><A HREF="#Compatibility_And_Portability">Compatibility And Portability</A>
+<LI><A HREF="#Functions">Functions</A> <UL><LI><A HREF="#AllocateParser">AllocateParser</A> <LI><A HREF="#DeallocateParser">DeallocateParser</A> <LI><A HREF="#ParseAnsiData">ParseAnsiData</A> <LI><A HREF="#ProcessAnsi">ProcessAnsi</A> <LI><A HREF="#ResetParser">ResetParser</A> <LI><A HREF="#FlushParserBuffer">FlushParserBuffer</A> <LI><A HREF="#SwitchParserMode">SwitchParserMode</A> <LI><A HREF="#ProcessSKIP">ProcessSKIP</A> </UL><LI><A HREF="#PS">PS structure</A>'s <A HREF="#vars">variables</A>
+<UL><LI><A HREF="#ReadWrite">Read/Write</A> <UL><LI><A HREF="#vterrorchar">vterrorchar</A> <LI><A HREF="#dumperror">dumperror</A> <LI><A HREF="#hold">hold</A> </UL><LI><A HREF="#READ_ONLY">Read Only</A> <UL><LI><A HREF="#pendingfunc">pendingfunc</A> <LI><A HREF="#prnctrlmode">prnctrlmode</A> <LI><A HREF="#letCR">letCR</A> <LI><A HREF="#largebuffer">largebuffer</A> <LI><A HREF="#curdcs">curdcs</A> <LI><A HREF="#argcount">argcount</A> </UL></UL><LI><A HREF="#VTTABLE_C">VTTABLE.C</A> <UL><LI><A HREF="#parse_tbl">parse_tbl</A> <LI><A HREF="#flag_tbl">flag_tbl</A> <LI><A HREF="#hextodec">hextodec</A> <LI><A HREF="#keytbl">keytbl</A> <LI><A HREF="#attrtbl">attrtbl</A> <LI><A HREF="#citbl">citbl</A> </UL><LI><A HREF="#Customizing_Sequence_Definitions">Customizing Sequence
+
+Definitions</A>
+<UL><LI><A HREF="#Overview">Overview</A><LI><A HREF="#VTE1_T">VTE152.T</A> <LI><A HREF="#VTE1_T">VTE1ANSI.T</A> <LI><A HREF="#VTE2_T">VTE2.T</A> <LI><A HREF="#VTCSI_T">VTCSI.T</A> <LI><A HREF="#VTDCS_T">VTDCS.T</A> </UL><LI><A HREF="#Writing_DCS_Processing_Functions">Writing DCS-Processing
+
+Functions</A>
+<LI><A HREF="#Processing_Nonstandartd_Commands">Processing Nonstandard
+
+Commands</A>
+<LI><A HREF="#Extra_Compatibility_Scheme">Extra Compatibility Scheme</A>
+<LI><A HREF="#Supported_Nonstandard_Commands">Supported Nonstandard
+
+Commands</A>
+<LI><A HREF="#Debugging_Mode">Debugging Mode</A> <LI><A HREF="#Debug_Shell">Debug Shell</A> <LI><A HREF="#Compiling_Applications">Compiling Applications</A>
+<LI><A HREF="#moreinfo">More Information</A> <LI><A HREF="#comm">Bugs and Comments</A> </UL><P><HR>
+<H2 ALIGN=Center><A NAME="Files_Required">Files Required:</A></H2><P><UL><LI><TT><B>VT420.H</B> ------ The Header To Be Included
+By The Application Program<BR> </TT></UL><OL><LI><TT><B>VTPARSER.C</B> --- Code for the parser's engine</TT><LI><TT><B>VTPARSER.H </B>--- Internal header for the parser</TT><LI><TT><A HREF="#VTTABLE_C"><B>VTTABLE.C</B></A> ---- Dispatch tables for
+the parser</TT><LI><TT><B><A NAME=VTCMND.H>VTCMND.H</A> </B>----- Header defining and briefly
+
+describing VTxxx commands</TT><LI><TT><B><A HREF="#PS">VTPSDEF.H</A> </B>---- Header declaring
+
+ParserStruct</TT><LI><TT><B>VTESCSEQ.C</B> --- Code for including definitions
+of escape sequences</TT><LI><TT><B>VTCONST.H</B> ---- Header defining values for
+the parser constants</TT><LI><TT><B>VTPRNCTL.C </B>--- Definitions for the special
+terminating sequences</TT><LI><TT><B>VTPRNCTL.H</B> --- Declarations for the special
+terminating sequences</TT><LI><TT><A HREF="#Writing_DCS_Processing_Functions"><B>VTDCS.C</B></A>
+------ Code for processing DCS sequences</TT><LI><TT><A HREF="#Writing_DCS_Processing_Functions"><B>VTDCS.H</B></A>
+------ Header for processing DCS sequences</TT><LI><TT><A HREF="#VTE1_T"><B>VTE152.T</B></A> ----- ESC Fc - type
+sequences for VT52</TT><LI><TT><A HREF="#VTE1_T"><B>VTE1ANSI.T</B></A> --- ESC Fc - type
+sequences for VT420 mode</TT><LI><TT><A HREF="#VTE2_T"><B>VTE2.T</B></A> ------- ESC Ic Fc
+- type sequences</TT><LI><TT><A HREF="#VTCSI_T"><B>VTCSI.T</B></A> ------ CSI sequences</TT><LI><TT><A HREF="#VTDCS_T"><B>VTDCS.T</B></A> ------ DCS sequences</TT><LI><TT><B>MAKETBL.BAT</B> -- Batch file for converting
+all .t files into .tbl</TT><LI><TT><B>__FOO__.BAT</B> -- Batch file used internally
+by MAKEDEF.BAT</TT><LI><TT><B>CUTCOM.COM</B> --- Used internally by __FOO__.BAT
+and MAKENAME.BAT</TT><LI><TT><B>SORTSTR.COM</B> -- Used internally by __FOO__.BAT
+and MAKENAME.BAT (like DOS sort.com, but case sensitive).</TT><LI><TT><A HREF="#Debug_Shell"><B>SHELL.C</B></A> ------ A debug/demonstration
+
+
+shell for the parser.</TT><LI><TT><B>MAKENAME.BAT</B> - Batch file for converting
+VTCMND.H into VTDEBUG.TBL</TT><LI><TT><B>CMNDNAME.EXE</B> - Used internally by MAKENAME.BAT</TT></OL><P><HR>
+<H2 ALIGN=Center><A NAME="Compatibility_And_Portability">Compatibility and
+
+Portability of the Parser:</A></H2><P ALIGN=Justify>
+VTPARSER is written completely in ANSI C to guarantee its compatibility
+with different platforms and C compilers. Please, note that the
+program allows using PASCAL-style function calls. For that purpose
+"PASCAL" is defined as "pascal" in VTPARSER.
+For your compiler you might need to change the definition of PASCAL
+or define PASCAL to nothing. You may also want to change the definitions
+of the data types according to the operating system for which
+the code is to be complied. If you decide to redefine the data
+type for your operating system, the only requirement for the size
+of the data-types is to be not smaller than the standard associated
+with the mnemonic allows.<P>
+In order to use this VTParser within your applications, you will
+need to include VT420.H header file. <HR>
+<H2 ALIGN=Center><A NAME="Functions">Functions available to the
+
+application:</A></H2><P><UL><LI><P ALIGN=Justify><A NAME="AllocateParser"><CODE>PS PASCAL AllocateParser(
+
+void
+
+);</CODE></A><BR>
+Before you make any calls to the parser, you will need to call
+
+
+<CODE>AllocateParser</CODE>, which allocates a parser control
+block (parser structure--<A HREF="#PS">PS</A>) and returns a pointer
+to it. Each <CODE>PS</CODE> structure completely defines a parser's
+state and is passed as an argument to every parser-related function.
+Therefore, any number of independent applications can parse the
+data concurrently using the same code, but distinct <CODE>PS</CODE>
+blocks.<LI><P ALIGN=Justify><A NAME="DeallocateParser"><CODE>void PASCAL
+
+DeallocateParser(
+PS ps );</CODE></A><BR>
+After you have finished using the parser, you will need to call
+
+
+<CODE>DeallocateParser</CODE>, which deallocates a parser control
+block (parser structure--<A HREF="#PS">PS</A>) and returns a pointer
+to it. Each <CODE>PS</CODE> structure completely defines a parser's
+state and is passed as an argument to every parser-related function.
+Therefore, any number of independent applications can parse the
+data concurrently using the same code, but distinct <CODE>PS</CODE>
+blocks.<LI><P ALIGN=Justify><A NAME="ParseAnsiData"><CODE>void PASCAL ParseAnsiData(
+
+const
+PS, const LPSESINFO pSesptr, const LPSTR lpData, const PA_INT
+iDataLen );</CODE></A><BR>
+This is the main parser's function. Here, <VAR>pSesptr</VAR> is
+any pointer internal to your program (it will not be processed
+and is passed along to <A HREF="#ProcessAnsi">ProcessAnsi</A>
+function). <VAR>lpData</VAR> is a pointer to a buffer containing
+the data to be parsed, and <VAR>iDataLen</VAR> is the length of
+that buffer. The next time <CODE>ParseAnsiData</CODE> is called,
+it assumes that the new data is the continuation of the previous
+one. The data may end in the middle of an escape sequence. In
+that case, the command associated with the escape sequence will
+be generated after the end of the sequence is found during the
+next time <CODE>ParseAnsiData</CODE> is called.<BR>
+When <CODE>ParseAnsiData</CODE> encounters a character, an ASCII
+command (for example <TT>TAB</TT>, <TT>CR</TT>, <TT>LF</TT>, etc.)
+or successfully parses an escape sequence, it calls function
+
+<A HREF="#ProcessAnsi">ProcessAnsi</A>.<LI><P ALIGN=Justify><A NAME="ProcessAnsi"><CODE>void PASCAL ProcessAnsi(
+
+LPSESINFO
+pSesptr, PA_INT iCode );</CODE></A><BR>
+  This is the function that has to be supplied by the presentation layer
+with which the parser is working.  The parser calls this function to output
+every ASCII character and execute every <A HREF="#VTCMND.H">VT command</A>.
+The arguments to ProcessAnsi are <VAR>pSesptr</VAR> and <VAR>iCode</VAR>.
+Here, <VAR>pSesptr</VAR> is the pointer passed to
+
+<A HREF="#ParseAnsiData">ParseAnsiData</A>.
+If <VAR>iCode</VAR> is greater than 0 and less than 256, it is
+the ASCII code of a character to print or an ASCII function. If
+
+
+<VAR>iCode</VAR> <CODE>&gt;= 256</CODE>, it is a <A HREF="#VTCMND.H">VT
+
+command</A>. All
+the arguments to the VT commands, if required, are stored in the
+
+<A HREF="#PS">PS</A>
+block. <CODE>PS</CODE> is defined as,<BR>
+<CODE><A NAME="PS">PS ps;</A></CODE> <BR>
+and the arguments are stored in an integer <VAR>(PS_INT)</VAR>
+array <VAR>ps-&gt;iArgs</VAR>. The array consists of <VAR>VTPARAMS</VAR>
+(16) elements numbered from 0 to <VAR>VTPARAMS-1</VAR> (15). <EM>Note</EM>:
+
+Neither the contents of <VAR>iArgs</VAR> array nor the contents
+of the buffer or string passed to <CODE>ProcessAnsi</CODE> may
+be modified by the application. The parser is expecting the contents
+of <CODE>PS</CODE> blocks preserved except for <A HREF="#ReadWrite">some
+
+fields</A> mentioned
+below.<LI><P ALIGN=Justify><A NAME="ResetParser"><CODE>void PASCAL ResetParser(
+const
+PS );</CODE></A><BR>
+If you want to reset the parser (cancel a pending escape sequence),
+use <CODE>ResetParser</CODE> function. A call to <CODE>ResetParser</CODE>
+will also cancel printer controller mode and thus reactivate the
+parsing of the data stream.<LI><P ALIGN=Justify><A NAME="FlushParserBuffer"><CODE>void PASCAL
+
+FlushParserBuffer(
+const PS );</CODE></A><BR>
+In order to flush the buffer to the screen (to
+
+<A HREF="#ProcessAnsi">ProcessAnsi</A>)
+and reset the parser, you may use <CODE>FlushParserBuffer</CODE>
+function. <CODE>FlushParserBuffer</CODE> will dump the buffer
+to the screen even if dumping errors is off (see further).<LI><P ALIGN=Justify><A NAME="SwitchParserMode"><CODE>void PASCAL
+
+SwitchParserMode(
+const PS, const int iParserMode );</CODE></A><BR>
+If you want to switch VTxxx mode, use <CODE>SwitchParserMode</CODE>.
+Here <VAR>iParserMode</VAR> is a mode defined in VTCONST.H. If
+
+
+<VAR>iParserMode</VAR> is invalid, it is ignored. The default
+mode for Parser is VT420. Note, the current mode can also be changed
+by an appropriate escape sequence.<LI><P ALIGN=Justify><A NAME="ProcessSKIP"><CODE>void PASCAL ProcessSKIP(
+PS );</CODE></A>
+<BR>
+<CODE>ProcessSKIP</CODE> is a function that allows skipping till
+the end of a <A HREF="#Writing_DCS_Processing_Functions">DCS sequence</A>.
+For more information, look at <A HREF="#curdcs">curdcs</A> variable.</UL><P><HR>
+<H2 ALIGN=Center><A NAME="vars">PS structure's variables available to the
+
+application:</A></H2><H3 ALIGN=Center><A NAME="ReadWrite">The following variables are available
+for READ/WRITE:</A></H3><P><UL><LI><P ALIGN=Justify><A NAME="vterrorchar"><CODE>PA_INT vterrorchar =
+
+168;</CODE></A>
+/* Upside-down question mark */<BR>
+Variable <VAR>vterrorchar</VAR> contains the value for what DEC
+calls an "error character" that is passed as <VAR>iCode</VAR>
+to <A HREF="#ProcessAnsi">ProcessAnsi</A> when an invalid escape
+sequence is received or <TT>SUB</TT> is encountered within an
+escape sequence. (HINT: Since <VAR>vterrorchar</VAR> is a
+
+<CODE>PA_INT</CODE>,
+it does not have to be a character. If you don't want any error
+character displayed, for example, make <VAR>vterrorchar</VAR>
+equal to <CODE>DO__IGNORE</CODE>. Or you can use <CODE>DO_BELL</CODE>
+as your <VAR>vterrorchar</VAR>.)<LI><P ALIGN=Justify><A NAME="dumperror"><CODE>PA_BOOL dumperror =
+
+FALSE;</CODE></A>
+/* Ignore errors. Don't dump them. */<BR>
+Ignoring errors is the specified behavior for VT terminals. However,
+dumping might prove useful for the <A HREF="#Debugging_Mode">debugging</A>
+
+
+purposes.<LI><P ALIGN=Justify><A NAME="hold"><CODE>PA_BOOL hold = FALSE;</CODE></A>
+/* Don't
+hold. Do the parsing. */<BR>
+If <VAR>hold</VAR> is <CODE>TRUE</CODE>, the parser will be repeatedly
+calling <A HREF="#ProcessAnsi">ProcessAnsi</A> with command
+
+<CODE>DO_HOLD</CODE>.
+ It is the responsibility of the code of
+
+<A HREF="#ProcessAnsi">ProcessAnsi</A>
+to reset <VAR>hold</VAR> back to <CODE>FALSE</CODE> to allow parsing
+to continue.</UL><H3 ALIGN=Center>
+</H3><H3 ALIGN=Center><A NAME="READ_ONLY">The following variables are available
+
+for READ ONLY:</A>
+</H3><H4 ALIGN=Justify>Please do NOT modify these variables, or the parser
+may become
+unstable. To change the parser's mode do not modify <VAR>vtmode</VAR>,
+but use <A HREF="#SwitchParserMode">SwitchParserMode</A> instead.<BR>
+</H4><UL><LI><P ALIGN=Justify><A NAME="pendingfunc"><CODE>PA_INT pendingfunc
+=
+NOFUNC;</CODE></A>
+<BR>
+If <VAR>pendingfunc</VAR> is 0, the parser is in the initial state.
+Otherwise, some is pending (not completely received). Use
+
+<A HREF="#ResetParser">ResetParser</A>
+to reset to the initial state.<LI><P ALIGN=Justify><A NAME="prnctrlmode"><CODE>BOOL prnctrlmode =
+
+FALSE;</CODE></A>
+<BR>
+If this variable is <TT>TRUE</TT>, it indicated parser in the
+printer controller mode (or debug mode). In that mode the parser
+dumps every character right to the output stream
+
+(<A HREF="#ProcessAnsi">ProcessAnsi</A>)
+without the processing (except <TT>XON</TT>/<TT>XOFF</TT> and
+the printer controller mode terminating sequences). Use
+
+<A HREF="#ResetParser">ResetParser</A>
+to reset to the initial state.<LI><P ALIGN=Justify><A NAME="letCR"><CODE>BOOL letCR =
+
+FALSE;</CODE></A><BR>
+If this variable is <TT>TRUE</TT>, the parser is waiting for the
+filename for an extended command (see VTCMND.H).<LI><P ALIGN=Justify><A NAME="largebuffer"><CODE>BOOL largebuffer =
+
+FALSE;</CODE></A>
+<BR>
+If this variable is <TT>TRUE</TT>, the parser is using a large
+temporary buffer. When the command it is parsing is completed,
+the buffer will be freed and the normal small buffer will be reallocated.
+Use <A HREF="#ResetParser">ResetParser</A> to quit the parsing
+of the current command, free the extra memory, and reset to the
+initial state.<LI><P ALIGN=Justify><A NAME="curdcs"><CODE>void (PASCAL *curdcs)( PS ) =
+
+NULL;</CODE></A>
+<BR>
+If curdcs is not <TT>NULL</TT>, the parser is processing a
+
+<A HREF="#Writing_DCS_Processing_Functions">DCS-compliant function</A>.
+Use <A HREF="#ResetParser">ResetParser</A> to reset to the initial
+mode. However, if you use <CODE>ResetParser</CODE>,
+
+<CODE>DCS</CODE>-compliant
+functions that usually call <A HREF="#ProcessAnsi">ProcessAnsi</A>
+to announce the termination (normal or abnormal) of the <CODE>DCS</CODE>
+
+
+sequences will NOT announce the <CODE>DCS</CODE> sequence being
+terminated. In order for the
+
+<A HREF="#Writing_DCS_Processing_Functions">DCS-parsing function</A>
+to announce an abnormal termination, use <CODE>PARSER_TERMDCS(
+ps )</CODE> macro. Parameter <VAR>ps</VAR> is the current <CODE>PS</CODE>
+block pointer. If there is no <CODE>DCS</CODE> sequence being
+parsed, <CODE>PARSER_TERMDCS( ps )</CODE> does not have an effect.
+If you want to SKIP the rest of the <CODE>DCS</CODE> sequence
+(till <TT>ST</TT> or any other condition that would terminate
+
+
+<CODE>DCS</CODE> sequence), use <A HREF="#ProcessSKIP">ProcessSKIP</A>
+function.  If there was no <CODE>DCS</CODE> sequence pending,
+the results of <A HREF="#ProcessSKIP">ProcessSKIP</A> are undefined.
+Also, you must run <A HREF="#ResetParser">ResetParser</A> or
+
+<CODE>PARSER_TERMDCS(
+ps )</CODE> BEFORE calling <A HREF="#ProcessSKIP">ProcessSKIP</A>.</UL><P><HR>
+<H2 ALIGN=Center><A NAME="VTTABLE_C">Customizing VTTABLE.C</A></H2><H3><CODE><A NAME="parse_tbl">const PA_INT parse_tbl[];</A></CODE></H3><P ALIGN=Justify>
+The first table defined in VTTABLE.C describes the action the
+parser has to perform when it encounters a corresponding ASCII
+value in the data. The actions, as defined in VTCONST.H, are:<UL><LI><TT>ACT_CHAR -- </TT>immediately return the ASCII code or,
+if within an escape sequence, treat as a part of an escape sequence<LI><TT>ACT_ESC --- </TT>Start of an escape sequence. Treat as
+an <TT>ESCAPE</TT> character.<LI><TT>ACT_CAN --- </TT>Cancel an escape sequence (ignore if
+not within an escape sequence). Treat as an <TT>CAN</TT> character.<LI><TT>ACT_SUB --- C</TT>ancel an escape sequence (ignore if
+not within an escape sequence). Treat as an <TT>SUB</TT> character.<LI><TT>ACT_CSI --- </TT>Start of a control sequence (equivalent
+to <TT>ESC [</TT>). Treat as a <TT>CSI</TT> character.<LI><TT>ACT_DCS --- S</TT>tart of a device control sequence (equivalent
+to <TT>ESC P</TT>). Treat as a
+
+<A HREF="#Writing_DCS_Processing_Functions">DCS</A>
+character.<LI><TT>ACT_ST ---- S</TT>tring terminate. Treat as an <TT>ST</TT>
+character.<LI><TT>ACT_SKIP -- </TT>Skip all data until <TT>ST</TT>, <TT>CAN</TT>,
+
+
+<TT>SUB</TT>, <TT>ESC</TT>, <TT>CSI</TT>, or <TT>DCS</TT> characters.<LI><P ALIGN=Justify>All other actions as assumed to be ANSI commands (including
+
+internal <CODE>D0__IGNORE</CODE>) and are invoked (or ignored
+if it is <CODE>DO__IGNORE</CODE>) even if encountered within an
+escape sequence.</UL><H3><CODE><A NAME="flag_tbl">const PA_USHORT flag_tbl[];</A></CODE></H3><P ALIGN=Justify>
+The second table defined in VTTABLE.C is a flag table. It describes
+characters for <TT>CSI</TT> and <TT>DCS</TT> sequences. These
+constants are defined in VTCONST.H<UL><LI><TT>F_FIN -- </TT>final character<LI><TT>F_NUM -- </TT>a digit<LI><TT>F_ERR -- </TT>error! this cannot normally be passed from
+
+
+<CODE>getNextChar</CODE> function <TT>0x????</TT> flag bit</UL><H3><CODE>const PA_USHORT hextodec[];</CODE></H3><P ALIGN=Justify>
+This is a lookup table for the conversions of hexadecimals to
+decimals. The values are:<UL><LI><TT>0-15 ------ </TT>decimal values<LI><TT>HEXSEP ---- </TT>';' character<LI><TT>HEXERROR -- </TT>not a hexadecimal character</UL><H3><CODE><A NAME="keytbl">const PA_SHORT keytbl[];</A></CODE></H3><P ALIGN=Justify>
+This is a table that correlates the key codes to the actual functional
+key numbers for <CODE>Process_DECUDK</CODE>. Values:<UL><LI><TT>0 --------- </TT>Invalid valid key code<LI><TT>positive -- </TT>Function key number<LI><TT>negative -- </TT>Always-alternate function key number</UL><H3><CODE><A NAME="attrtbl">const PA_SHORT attrtbl[];</A></CODE></H3><P ALIGN=Justify>
+This is a table that related the attributes to their codes. Note,
+
+
+<TT>ATTR_BOLD</TT> is associated with code 1 and code 2. Attributes
+are defined in VTCONST.H<H3><CODE><A NAME="citbl">const PA_SHORT citbl[];</A></CODE></H3><P ALIGN=Justify>
+This table contains the code-types for <CODE>Process_DECRSCI</CODE>.
+The values are:<UL><LI><TT>CI_INT -- </TT>An integer<LI><TT>CI_STR -- </TT>An ASCII string<LI><TT>CI_GXX -- </TT>A special type: <I>Sdesig</I> format</UL><P><HR>
+<H2 ALIGN=Center><A NAME="Customizing_Sequence_Definitions">Customizing Escape,
+Control, And Device Sequence Definitions:<BR></A></H2><H3><CENTER><A NAME="Overview">Overview</A></CENTER></H3><P ALIGN=Justify>
+The parser is using several tables that define most of the VT control
+sequences. Those tables (slightly modified by
+
+
+<TT><A HREF="#Files_Required">MAKETBL.BAT</A></TT>) are included at
+compile-time.  All tables have <TT>.t</TT> extension.  All tables
+are text files that define one escape sequence per line.
+<H3><CENTER>Format of escape sequence definition tables
+</CENTER></H3><P ALIGN=Justify>All tables can contain blank lines
+and comments surrounded by <TT>/*</TT> and <TT>*/</TT> (typical
+c-style comments). Comments must either be on a blank line, or
+come after the last comma in an escape definition. Do <B>not</B> use
+commas in comments. Also, all fields (including numbers, but excluding
+
+
+<B>default</B>s and COMMAND mnemonics) must be right-aligned by columns.
+Please note that every line that contains an escape definition
+MUST end with a comma even if it is the last line of the file.
+For examples see the provided .T files.<H4 ALIGN=Center>Meaning of the individual fields common to all tables:</H4><DL><DT><B>&lt; default &gt;</B><DD><P ALIGN=Justify>This field contains the dafault value for the arguments
+in the corresponding
+command sequence.  Note that since there is only one dafulat value, all arguments
+
+in the command sequence would be set to the same default value if they are
+
+ommitted in the command sequence.  To provide several default values, see
+section on <A HREF="#Processing_Nonstandard_Commands">Processing Nonstandard
+
+Commands</A>.<DT><B>&lt; command &gt;</B><DD><P ALIGN=Justify>This is a VT420 command mnemonic.  The mnemonics can
+be found in
+<TT><B><A HREF="#VTCMND.H">VTCMND.H</A></B></TT>.<DT>
+</DL><H3 ALIGN=Center><A NAME="VTE1_T">VTE1xxxx.T</A><BR></H3><UL><LI><TT>VTE152.T ---- </TT>is used for VT52 mode<LI><TT>VTE1ANSI.T -- </TT>is used for VT420 mode</UL><P ALIGN=Justify>
+These files define escape sequences with the <B>&lt; final character
+
+&gt;</B> coming
+immediately after the <B>escape</B> character.<P ALIGN=Justify><I>The fields are</I>: <B>&lt; final character &gt;, &lt;
+
+default &gt;,
+&lt; command &gt;,</B><P ALIGN=Justify><I>Example</I>: <TT><CODE>'\157', 3, DO_LS3,     /* o
+
+*/</CODE></TT><BR>
+
+<I>Description</I>: <B>command</B> <TT>DO_LS3</TT> is assigned to the
+<B>final character</B> <TT>'\157'</TT> with the <B>default</B> parameter
+being <TT>3</TT>.<BR>
+<I>Will be triggered by</I>: <TT>ESC o 
+</TT><P ALIGN=Justify><B>Note</B>: Since there sequences to do not accept arguments,
+
+<B>default</B> will always be the parameter passed.<BR><H3 ALIGN=Center><A NAME="VTE2_T">VTE2.T</A></H3><P ALIGN=Justify>
+This file defines escape sequences that consist of exactly two
+characters coming after the escape character (<B>&lt; intermediate character
+
+&gt;</B> and
+<B>&lt; final character &gt;</B>).<P ALIGN=Justify><I>The fields are: </I><B>&lt; intermediate character &gt;,
+
+&lt; final
+character &gt;,
+&lt; default &gt;, &lt; command &gt;,</B><P ALIGN=Justify><I>Example</I>: <CODE>'#', '8', 0, DO_DECALN,</CODE><BR>
+
+<I>Description</I>: <B>command</B> <CODE>DO_DECALN</CODE> is assigned to
+the combination of <B>intermediate character</B> <CODE>'#'</CODE>and <B>final
+
+character</B> <TT>'\157'</TT> with the <B>default</B> parameter
+being 0.<BR>
+<I>Will be triggered by</I>: <TT>ESC # 8</TT><P ALIGN=Justify><B>Note</B>: Since there sequences to do not accept arguments,
+
+<B>default</B> will always be the parameter passed.<BR><H3 ALIGN=Center><A NAME="VTCSI_T">VTCSI.T</A></H3><P ALIGN=Justify>
+This file defines <TT>CSI</TT> sequences (sequences that start
+with <TT>CSI</TT> or <TT>ESC [</TT>). <P ALIGN=Justify><I>The fields are: </I><B>&lt; final character &gt;, &lt;
+flag &gt;, &lt;
+arg &gt;,
+&lt; default &gt;, &lt; command &gt;,</B> <P ALIGN=Justify><I>Example 1</I>: 'h', 0x0001,    6,  1,
+
+DO_DECOM,<BR><I>Description</I>: <B>command</B> <CODE>DO_DECOM</CODE> is
+assigned to the combination of <B>flag </B><CODE>'?'</CODE>and <B>final
+
+character</B> <TT>'h'</TT> with <B>arg</B> 6 and <B>(default)</B> parameter
+being 0.<BR><I>Will be triggered by</I>: <TT>CSI ? 6 h </TT>or <TT>CSI 6
+? h</TT><P ALIGN=Justify><I>Example 2</I>: 'q', 0x0100, 1899,  0,
+
+DO_DECELF,<BR><I>Description</I>: <B>command</B> <CODE>DO_DECELF</CODE> is
+
+assigned to the combination of <B>flag </B><CODE>'+'</CODE>and <B>final
+
+character</B> <TT>'q'</TT> that takes groups of 2 arguments (<B>arg</B> =
+1899), each of which, if ommitted, is <B>default</B>ed to 0.<BR><I>Will be
+
+triggered by</I>: <TT>CSI + 1 ; 2 ; 2 ; 0 q </TT>is equivalent to <TT>CSI
++ 1 ; 2 q CSI + 2 q</TT><P><P ALIGN=Justify>
+Here the <B>&lt; final character &gt; </B>is the ASCII code of the final
+
+character. The
+<B>&lt;flag&gt;</B> is a bitwise combination of flags as defined in the second
+
+table in VTTABLE.C.<H4>&lt; arg &gt;:</H4><UL><LI><P ALIGN=Justify>If <VAR><B>arg</B></VAR><CODE> &lt;
+
+PA_MAXARG</CODE> (800):<BR>
+<B>Arg</B> defines the argument for the <B>&lt; command &gt;</B>. If there
+exists <B>arg</B> 0, it is considered to be the default and is used
+if the argument is omitted. The <B>&lt; default &gt;</B> is passed as
+
+<VAR>iArgs[0]</VAR>.
+Note, there maybe many different arguments
+
+(<B><CODE>arg</CODE></B><CODE>s</CODE>) for the
+same <B>&lt; final character &gt;</B> and <B>&lt; flag &gt;</B> as long as
+
+<STRONG>each</STRONG>
+<B>arg</B> &lt; <TT>PA_MAXARGS</TT>. If a command has more than one argument,
+
+<A HREF="#ProcessAnsi">ProcessAnsi</A> is called separately for
+each argument. Unknown arguments are ignored.<LI><P ALIGN=Justify>If <CODE>PA_MAXARG </CODE>(800) <CODE>&lt;
+
+</CODE><VAR><B>arg</B></VAR><CODE> &lt;=
+
+PA_MULTIARG</CODE> (1000),<BR>
+The function accepts <CODE>(PA_PN1(900) -
+
+</CODE><VAR><B>arg</B></VAR><CODE>
++ 1)</CODE> arguments. If any of the arguments are missing or
+0, a default value of<B> &lt; default &gt;</B> is used. It is an error
+if the command contains more arguments than <VAR>arg</VAR>
+specifies. The arguments are passed as <VAR>iArgs</VAR> array
+in <CODE><A HREF="#PS">PS</A></CODE> block. <VAR>iArgs[0]</VAR> corresponds
+to the
+first argument; <VAR>iArgs[1]</VAR>, to the second, and so on.<LI><P ALIGN=Justify>If <CODE>PA_MAXARG (800) ==
+
+</CODE><VAR>arg</VAR>:<BR>
+This is the same as the case above, except the number of the arguments
+is taken to be the <STRONG>maximum</STRONG> number of the arguments
+
+
+(<TT>VTARGS</TT>(16)) the parser can accept. <EM>Hint</EM>: It might be useful
+if you want to fill all the unused arguments in <VAR>iArgs</VAR>
+with the <B>&lt; default &gt;</B> value (otherwise they are undefined).<LI><P ALIGN=Justify>If <VAR>arg</VAR><CODE> &gt; PA_MULTIARG</CODE>
+
+(1000):<BR>
+The function accepts <STRONG>groups</STRONG> of arguments. A group
+contains <CODE>(PA_PN1(900) + PA_MULTIARG(1000) -
+
+</CODE><VAR><B>arg</B></VAR><CODE>
++ 1)</CODE> arguments. The arguments are passed and the <B>&lt; default
+
+&gt;</B> value is used in the same way as before. The command is called
+as many times as there are groups of arguments. Each time <VAR>iArgs[0]</VAR>
+is the first arguments of the group, <VAR>iArgs[1]</VAR> is the
+second, and so on. <EM>Hint</EM>: You may set <VAR><B>arg</B></VAR> to define
+
+groups of one argument. This will allow parsing the strings of
+unlimited number of arguments.<LI><P ALIGN=Justify>If <VAR><B>arg</B></VAR><CODE> &gt; PA_ANNOUNCED</CODE>
+
+(2000):<BR>
+The command is treated exactly as if <VAR><B>arg</B></VAR> was (
+
+
+<VAR><B>arg</B></VAR><CODE> - PA_ANNOUNCED</CODE>(2000) ), except when
+all the arguments of the command have been passed through
+
+<A HREF="#ProcessAnsi">ProcessAnsi</A>, the parser
+generates <CODE>DO_THEEND</CODE> command.<BR></UL><H3 ALIGN=Center><A NAME="VTDCS_T">VTDCS.T</A></H3><P>
+This file defines <TT>DCS</TT> sequences that are processed by
+the <A HREF="#Writing_DCS_Processing_Functions">DCS-processing functions</A>.<P><I>The fields are: </I><B>&lt; final character &gt;, &lt; flag &gt;, &lt;
+
+dcs-processing
+function's name &gt;,</B> <P ALIGN=Justify><I>Example</I>: <CODE>'u', 0x0004,
+
+Process_DECAUPSS,<BR></CODE><I>Description</I>: <B>function</B>
+
+<CODE>Process_DECAUPSS</CODE> is
+to process DCS functions with <B>flag </B><CODE>'!'</CODE>and <B>final
+
+character</B> <TT>'u'</TT>.<BR><I>Will be triggered by</I>: <CODE>DCS !
+
+</CODE>arguments<CODE> u </CODE>arguments-to-DCS<P ALIGN=Justify><EM>Special Note</EM>: <TT>DO__DIRECT</TT> is an internal
+for the parser
+command that
+stands for VT52's Direct Cursor Positioning command. If it is
+present among the escape sequence definitions, it can only be
+in VTE1xxxx.T files. <HR>
+<H2 ALIGN=Center><A NAME="Writing_DCS_Processing_Functions">Writing
+
+DCS-Processing
+
+Functions:</A></H2><P ALIGN=Justify>
+If you will be adding the processing for the new <TT>DCS</TT>
+sequences, you will need to create your function to conform to
+
+
+<CODE>DCS</CODE>-processing protocol.<P ALIGN=Justify>
+Because of the little similarity among the data strings of different
+
+
+<CODE>DCS</CODE> commands, each one requires a separate function
+to be parsed. Here is an overview of the <CODE>DCS</CODE> protocol
+used by this parser. To be know as a <CODE>DCS</CODE>-compliant
+function, the function must:<OL><LI><P ALIGN=Justify>set <VAR>curdcs</VAR> field of <A HREF="#PS">PS</A>
+
+block
+to itself<LI><P ALIGN=Justify>be able to process calls to itself with
+
+<VAR>pendingstate</VAR>
+field of <A HREF="#PS">PS</A> set to <TT>STTERM</TT> and <TT>NONSTTERM</TT>.</OL><P ALIGN=Justify>
+The DCS-complaint functions are called with <VAR>pendingstate</VAR>
+field of <TT>STTERM</TT> when <TT>ST</TT> character has been encountered
+by <CODE>getNextChar</CODE> or <CODE>ProcessESC</CODE>, and
+
+<VAR>pendingstate</VAR>
+field of <TT>NONSTTERM</TT> when the parsing of the <TT>DCS</TT>
+string has to terminate by any other reasons (<TT>CAN</TT>, <TT>SUB</TT>,
+
+
+<TT>CSI</TT> commands, for example). When an <TT>STTERM</TT> call
+is made, the last character in the <CODE>PS</CODE> buffer
+
+<CODE>pendingstr[pendingpos-1]</CODE>
+is <TT>CHAR_ST</TT> no matter whether <TT>ST</TT> has been received
+simply as <TT>ST</TT> or its 7-bit equivalent pair.<P ALIGN=Justify>
+If your <CODE>DCS</CODE>-Processing function is not
+
+<CODE>DCS</CODE>-compliant
+(that is, it does <STRONG>not</STRONG> set <A HREF="#curdcs">curdcs</A>
+to itself), it will <STRONG>not</STRONG> be called when the <CODE>DCS</CODE>
+
+
+string processing will have to terminate (by <TT>STTERM</TT> or
+
+
+<TT>NONSTTERM</TT>). Instead, it will be aborted just as any <CODE>ESC</CODE>
+or <CODE>CSI</CODE>-processing functions would be. This, of course,
+might be the desired behavior.<P ALIGN=Justify>
+In any case, do not forget to add an entry about your function
+to VTDCS.T and build VTDCS.TBL. <HR>
+<H2 ALIGN=Center><A NAME="Processing_Nonstandard_Commands">Processing Unusual
+And Nonstandard Commands:</A><BR></H2><UL><LI><P ALIGN=Justify>If you have to add the processing for a command
+for which
+the standard functionality of the parser is inadequate, you will
+need to modify one or more functions from VTPARSER.C. If the what
+required is some "afterprocessing" (different default
+values for the arguments, for example), the best function to modify
+is <CODE>PAnsi( PS ps )</CODE>. You will see a number of commands
+afterprocessed by <CODE>PAnsi</CODE>. HINT: It is sometimes necessary
+to know whether a parameter is set to the default value because
+it has been received as the default or because it has been missing.
+In those cases you may use a field of <A HREF="#PS">PS structure</A>
+
+
+<VAR>argcount</VAR>. <BR>
+<CODE><A NAME="argcount">PA_USHORT argcount;</A></CODE> <BR>
+that contains the actual number of the parameters in the parsed
+
+
+<CODE>CSI</CODE> or <CODE>DCS</CODE> sequence.<BR>
+<STRONG>Examples:</STRONG> <TT>DO_VTMODE</TT>, <TT>DO_DECRQMANSI</TT>,
+or <TT>DO_DECCARA</TT>.<LI><P ALIGN=Justify>In other to introduce the commands that radically differ
+
+from
+the similar commands, you will may have to patch <CODE>ProcessCSI</CODE>
+or <CODE>ProcessESC</CODE> functions.<BR>
+<STRONG>Example of the patch of
+
+</STRONG><CODE><B>ProcessESC</B></CODE><STRONG>:</STRONG>
+
+
+<TT>DO__DIRECT</TT>.<BR>
+<STRONG>Example of the patch of
+
+</STRONG><CODE><B>ProcessCSI</B></CODE><STRONG>:</STRONG>
+
+
+<TT>DO_PRNCTRL</TT>.</UL><P><HR>
+<H2 ALIGN=Center><A NAME="Extra_Compatibility_Scheme">Extra Compatibility
+
+Scheme:</A></H2><P ALIGN=Justify>
+This parser is written and the .T files are distributed with the
+Extra Compatibility scheme in mind. This scheme means that in
+any VT terminal modes, the parser will understand and correctly
+parse escape sequences particular to the other terminal modes,
+unless they conflict with the mode's native sequences. This is
+meant for the maximum compatibility with the poorly written programs
+the application might have to communicate with. For example, there
+are no <TT>CSI</TT> sequences in the native VT52 mode, and <TT>ESC
+A</TT> is the only way to express "cursor up." However,
+the parser will correctly interpret <TT>CSI A</TT> as "cursor
+up" (ANSI's way of moving cursor up) even in VT52 mode. Conversely,
+<TT>ESC Y</TT> is defined only in VT52 and means as direct cursor
+positioning command. However, if <TT>ESC Y</TT> is encountered
+in VT420 mode, it still will be interpreted as direct cursor positioning,
+even though formal VT420 specification does not define <TT>ESC
+Y</TT> to do anything. <HR>
+<H2 ALIGN=Center><A NAME="Supported_Nonstandard_Commands">Nonstandard Commands
+
+Supported by the Parser:</A></H2><P ALIGN=Justify>
+A few commands understood by this parser are <STRONG>not</STRONG>
+standard VT commands. However, a few terminal programs do use
+them. Theses are the commands that allow the remote host to control
+the file system of the terminal. These commands are <TT>XTRANS</TT>,
+
+
+<TT>XRECEIVE</TT>, <TT>XAPPEND</TT>, and <TT>XSAVE</TT>. In addition
+to these, there are some commands (one command and two terminal
+responses) unique to this parser. They are <TT>XSUPP</TT> (command)
+and <TT>XOK</TT> with <TT>XERROR</TT> (responses). Please, refer
+to VTCMND.H for a detailed description of each command. <HR>
+<H2 ALIGN=Center><A NAME="Debugging_Mode">Compiling in the Debugging Mode:</A></H2><P ALIGN=Justify>
+When the parser is compiled in the debugging mode, it provides
+some additional tests of the integrity of the code and the tables.
+If an error is found, <TT>DO_VERR</TT> command is passed to
+
+<A HREF="#ProcessAnsi">ProcessAnsi</A>
+and <VAR>iArgs[0]</VAR> is set to the error code. A list of error
+codes is found in VTCMND.H. The debugging code is compiled if
+<TT>_DEBUG</TT> or <TT>_PA_DEBUG</TT> symbols are defined. <HR>
+<H2 ALIGN=Center><A NAME="Debug_Shell">Using the Debug Shell (SHELL.C):</A></H2><P ALIGN=Justify>
+SHELL.C is a debugging tool that can be used to test the parser's
+functionality on a known VT420 data stream or to test the VT420
+data stream itself.<P ALIGN=Justify>
+SHELL.C accepts its input from the standard input and outputs
+it to the standard output. Therefore, it can be used with the
+operating system's pipe and redirection of input/output mechanisms.
+To introduce a  <U>hold</U> for a few calls to <CODE>ProcessAnsi</CODE>
+put a character with ASCII code 254 into the data stream. The
+terminating character for SHELL.C is a character with the ASCII
+value of 255. Function <CODE>ProcessAnsi</CODE> prints out a character
+if a character is received or announces that a function is received
+and shows its value, mnemonic, and the contents of <VAR>iArgs</VAR>
+array. <HR>
+<H2 ALIGN=Center><A NAME="Compiling_Applications">Compiling Parser
+
+Applications:</A></H2><P ALIGN=Justify>
+The very first time before you compile VTESCSEQ.C, and every time
+you change any of the .T files, you will need to run MAKETBL.BAT
+to create .TBL files out of the .T files.<P ALIGN=Justify>
+Also, the very first time before you compile SHALL.C, and every
+time you change VTCMND.H file, you will need to run MAKENAME.BAT
+to create VTDEBUG.TBL from VTCMND.H. <HR>
+<P ALIGN=Justify>
+For <A NAME="moreinfo">more information</A> about
+
+<A HREF="http://www.cs.utk.edu/~shuford/terminal_index.html">video terminal
+
+products</A>,
+I would recommend browsing an
+
+<A HREF="http://www.cs.utk.edu/~shuford/terminal_index.html">archive</A>
+
+
+maintained by
+
+<A HREF="http://www.cs.utk.edu/~shuford/send_me_mail.html">Richard Shuford</A>.
+
+
+<HR>
+<ADDRESS><P ALIGN=Justify><A NAME="comm">Please contact</A>
+
+<A HREF="http://web.mit.edu/afs/athena/astaff/project/dcnshtml/dev/home.html">DOS
+
+and Windows Development Group</A>
+( <A HREF="mailto:dosdev@mit.edu">dosdev@mit.edu</A>) with bug
+reports or any comments pertinent to this program. </ADDRESS></BODY></HTML>

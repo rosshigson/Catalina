@@ -1,0 +1,4 @@
+#!/bin/bash
+
+make -C src -f makefile.cat clean
+

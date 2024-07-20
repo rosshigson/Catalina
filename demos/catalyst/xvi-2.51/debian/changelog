@@ -1,0 +1,46 @@
+xvi (2.50-1.2) UNRELEASED; urgency=medium
+
+  * Increase debian/compat and replace deprecated dh_clean -k with dh_prep in debian/rules
+
+ -- Metztli Information Technology <jose@metztli.it>  Tue, 30 Mar 2021 21:58:41 -0700
+
+xvi (2.50-1.1) UNRELEASED; urgency=medium
+
+  * Non-maintainer upload.
+  * Enabled generation of UDEB for Debian-Installer (d-i) 
+
+ -- Metztli Information Technology <jose@metztli-it.com>  Mon, 12 Jun 2017 04:39:05 -0700
+
+xvi (2.50-1) unstable; urgency=low
+
+  * Release 2.50. See RELNOTES-2.50 for a detailed list of changes.
+
+ -- Martin Guy <martinwguy@gmail.com>  Sun, 30 Apr 2017 16:18:16 +0200
+
+xvi (2.49-1) unstable; urgency=low
+
+  * Bug fix release
+    - "Join" commands now join the right number of line and
+      insert and display the right number of spaces
+    - Parse exuberant ctags' extended format for tags file
+    - Allow saving to a writable file in an unwritable directory
+    - Repaint the window when a X Window System terminal window is resized
+    - Fixed one potential infinite loop, one seg fault nd one buffer overflow bugs
+    - Allow compilation with TinyC (tcc) and without -ansi
+    - Get cursor position right after unsuccessful "n" command
+
+ -- Martin Guy <martinwguy@gmail.com>  Thu, 29 Mar 2015 18:26:16 +0200
+
+xvi (2.48-1) unstable; urgency=low
+
+  * Bug fix release
+
+ -- Martin Guy <martinwguy@yahoo.it>  Sat, 13 Oct 2013 13:03:48 +0100
+
+xvi (2.47-1) unstable; urgency=low
+
+  * Initial release
+  * Wrote top level Makefile to implement Debian conventions
+
+ -- Martin Guy <martinwguy@yahoo.it>  Sat,  8 Apr 2006 11:08:58 +0100
+

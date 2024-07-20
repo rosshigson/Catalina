@@ -1,0 +1,40 @@
+main/objpool.lo: main/objpool.c main/general.h ../config.h \
+ main/gcc-attr.h \
+ C:/msys64/mingw32/lib/gcc/i686-w64-mingw32/13.2.0/include/stdbool.h \
+ main/routines.h C:/msys64/mingw32/include/stdio.h \
+ C:/msys64/mingw32/include/corecrt_stdio_config.h \
+ C:/msys64/mingw32/include/corecrt.h C:/msys64/mingw32/include/_mingw.h \
+ C:/msys64/mingw32/include/_mingw_mac.h \
+ C:/msys64/mingw32/include/_mingw_secapi.h \
+ C:/msys64/mingw32/include/vadefs.h \
+ C:/msys64/mingw32/include/sdks/_mingw_ddk.h \
+ C:/msys64/mingw32/include/_mingw_off_t.h \
+ C:/msys64/mingw32/include/swprintf.inl \
+ C:/msys64/mingw32/include/sec_api/stdio_s.h main/mio.h \
+ C:/msys64/mingw32/lib/gcc/i686-w64-mingw32/13.2.0/include/stdarg.h \
+ C:/msys64/mingw32/include/stdarg.h \
+ C:/msys64/mingw32/include/_mingw_stdarg.h main/objpool.h main/ptrarray.h \
+ main/types.h
+main/general.h:
+../config.h:
+main/gcc-attr.h:
+C:/msys64/mingw32/lib/gcc/i686-w64-mingw32/13.2.0/include/stdbool.h:
+main/routines.h:
+C:/msys64/mingw32/include/stdio.h:
+C:/msys64/mingw32/include/corecrt_stdio_config.h:
+C:/msys64/mingw32/include/corecrt.h:
+C:/msys64/mingw32/include/_mingw.h:
+C:/msys64/mingw32/include/_mingw_mac.h:
+C:/msys64/mingw32/include/_mingw_secapi.h:
+C:/msys64/mingw32/include/vadefs.h:
+C:/msys64/mingw32/include/sdks/_mingw_ddk.h:
+C:/msys64/mingw32/include/_mingw_off_t.h:
+C:/msys64/mingw32/include/swprintf.inl:
+C:/msys64/mingw32/include/sec_api/stdio_s.h:
+main/mio.h:
+C:/msys64/mingw32/lib/gcc/i686-w64-mingw32/13.2.0/include/stdarg.h:
+C:/msys64/mingw32/include/stdarg.h:
+C:/msys64/mingw32/include/_mingw_stdarg.h:
+main/objpool.h:
+main/ptrarray.h:
+main/types.h:

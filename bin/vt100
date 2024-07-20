@@ -1,0 +1,16 @@
+#!/bin/bash -login
+#set -x
+#
+if [[ "$1" != "" ]]; then
+   PORT=$1
+else
+   PORT=/dev/ttyUSB0
+fi
+
+if [[ "$2" != "" ]]; then
+   BAUD=$2
+else
+   BAUD=230400
+fi
+
+minicom -D $PORT -b $BAUD -t vt100

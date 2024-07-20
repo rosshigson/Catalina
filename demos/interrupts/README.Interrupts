@@ -1,0 +1,158 @@
+Introduction to Interrupts
+==========================
+
+Catalina can use a C function as an interrupt service function. Such a function 
+must take no arguments, and it must return - but it cannot return a value.
+
+Here is the typedef that defines such a function:
+
+   typedef void (* _interrupt)(void);
+
+
+This typedef is used in the _set_int_x() function, which is used to specify
+which interrupt the function will service. This function is defined in
+the header file "catalina_interrupts.h". You must specify the type of 
+interrupt, the address of the interrupt function, and some stack space 
+to use. There is a separate function for setting up interrupts 1, 2 and 3. 
+
+Note that when specifying stack space, you specify the TOP of the stack - i.e.
+just beyond the last element, not the first element.
+
+For example, to set up interrupt 1 as a counter interrupt using counter 1, and
+which will be serviced by the C function my_interrupt(), you might say 
+something like:
+
+    // declare some stack space
+    long my_int_stack[MIN_INT_STACK_SIZE];
+
+    // set up the interrupt service function
+    _set_int_1(CT1, &my_interrupt, &my_int_stack[MIN_INT_STACK_SIZE]);
+
+Note that interrupts 1, 2 or 3 are available for use in a non-threaded C 
+program, but that if threading is used in a NATIVE C program, interrupt 3 
+is used to implement the thread support, and should not be used in the user
+program. However, interrupt 3 CAN be used in a COMPACT or TINY program.
+
+When in an interrupt service function, all the normal C functionality is 
+available, but threading functions should not be used (because they may block)
+and also some C functions (such as stdio functions) cannot be used becaue they
+are not re-entrant. The Catalina HMI functions defined in "catalina_hmi.h" can 
+be used instead of stdio functions.
+
+
+Fundamental Interrupt Functions
+===============================
+
+The fundamental interrupt library functions are defined in the header file
+"catalina_interrupts.h"
+
+They are as follows:
+
+enum int_src
+============
+An enumeration that can be used to specify the source of a specific interrupt.
+For example, a counter (CT1, CT2, Ct3), a configurable event (SE1, SE2, SE3, 
+SE4) or a pattern (PAT).
+
+void _set_CT1(unsigned long CT1);
+void _set_CT2(unsigned long CT2);
+void _set_CT3(unsigned long CT3);
+==================================
+For counter interrupts, set the initial value of the counter.
+
+void _add_CT1(unsigned long CT1);
+void _add_CT2(unsigned long CT2);
+void _add_CT3(unsigned long CT3);
+==================================
+For counter interrupts, set the value of the counter that will trigger the
+interrupt. This can be used within an interrupt service function to specify
+when the NEXT interrupt should occur.
+
+void _set_PAT(int A_or_B, int EQ_OR_NE, unsigned long MASK, unsigned long MATCH);
+=================================================================================
+For pattern interrupts, set the input conditions that must be met to trigger the 
+interrupt.
+
+void _set_SE1(unsigned long SE1);
+void _set_SE2(unsigned long SE2);
+void _set_SE3(unsigned long SE3);
+void _set_SE4(unsigned long SE3);
+=================================
+For configurable interupts, set the event that will trigger the interrupt. See
+the Propeller 2 documentation for how to define each event.
+
+void _nix_int_1();
+void _nix_int_2();
+void _nix_int_3();
+==================
+Cancel an interrupt.
+
+void _sim_int_1();
+void _sim_int_2();
+void _sim_int_3();
+==================
+Simulate (trigger) an interrupt.
+
+void _set_int_1(enum int_src SRC, _interrupt SVC, void *stack);
+void _set_int_2(enum int_src SRC, _interrupt SVC, void *stack);
+void _set_int_3(enum int_src SRC, _interrupt SVC, void *stack);
+===============================================================
+Set up a C function as an interrupt service function for a specific type of 
+interrupt, and using a specified area of RAM as the stack - note that we 
+must point to the TOP of the stack, not the bottom - i,e, just beyond the 
+last element of the stack, not the first element.
+
+void _clr_int_1();
+void _clr_int_2();
+void _clr_int_3();
+==================
+Clear - i.e. disable - an interrupt.
+
+unsigned long _get_status();
+============================
+Return the interrupt status bits (actually uses GETBRK wcz). Refer to the
+Propeller 2 documentation for how to interpret the return value.
+
+unsigned long _poll_ANY(); 
+unsigned long _poll_CT1(); 
+unsigned long _poll_CT2(); 
+unsigned long _poll_CT3(); 
+unsigned long _poll_SE1(); 
+unsigned long _poll_SE2(); 
+unsigned long _poll_SE3(); 
+unsigned long _poll_SE4(); 
+unsigned long _poll_PAT(); 
+unsigned long _poll_FBW(); 
+unsigned long _poll_XMT(); 
+unsigned long _poll_XFI(); 
+unsigned long _poll_XRO(); 
+unsigned long _poll_XRL(); 
+unsigned long _poll_ATN(); 
+unsigned long _poll_QMT(); 
+==========================
+Poll for an interrupt of type XXX - return 0 if the event has not occurred, 
+or 1 if it has occurred.
+
+unsigned long _wait_ANY(unsigned long timeout);
+unsigned long _wait_CT1(unsigned long timeout);
+unsigned long _wait_CT2(unsigned long timeout);
+unsigned long _wait_CT3(unsigned long timeout);
+unsigned long _wait_SE1(unsigned long timeout);
+unsigned long _wait_SE2(unsigned long timeout);
+unsigned long _wait_SE3(unsigned long timeout);
+unsigned long _wait_SE4(unsigned long timeout);
+unsigned long _wait_PAT(unsigned long timeout);
+unsigned long _wait_FBW(unsigned long timeout);
+unsigned long _wait_XMT(unsigned long timeout);
+unsigned long _wait_XFI(unsigned long timeout);
+unsigned long _wait_XRO(unsigned long timeout);
+unsigned long _wait_XRL(unsigned long timeout);
+unsigned long _wait_ATN(unsigned long timeout);
+===============================================
+Wait for an interrupt of type XXX - return 0 if the timeout occurs, 
+or 1 if the event occurs.
+
+_cog_ATN(unsigned long cogs);
+=============================
+Request the attention of all the cogs whose bits are set in 'cogs'
+

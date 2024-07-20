@@ -1,0 +1,402 @@
+# makefile for building Lua (for Catalina only!)
+# See ../doc/readme.html for installation and customization instructions.
+
+# == CHANGE THE SETTINGS BELOW TO SUIT YOUR ENVIRONMENT =======================
+
+# Your platform. See PLATS for possible values.
+PLAT= catalina
+P2FLAG=
+CLOCK=
+MODEL=
+RAMLIB=
+MYLIBS=
+MYCFLAGS=
+MYLDFLAGS=
+
+# P2 if there is a P2 in CATALINA_DEFINES
+ifeq (P2, $(findstring P2, $(CATALINA_DEFINE)))
+	P2FLAG   = -p2
+endif
+
+# P2 if there is a P2 in CATALINA_OPTIONS
+ifeq (P2, $(findstring P2, $(CATALINA_OPTIONS)))
+	P2FLAG   = -p2
+endif
+
+# P2 if there is a -p2 in CATALINA_OPTIONS
+ifeq (-p2, $(findstring -p2, $(CATALINA_OPTIONS)))
+	P2FLAG   = -p2
+endif
+
+# Check if there is a COMPACT in CATALINA_DEFINES
+ifeq (COMPACT, $(findstring COMPACT, $(CATALINA_DEFINE)))
+	MODEL   = COMPACT
+endif
+
+# Check if there is a COMPACT in CATALINA_OPTIONS
+ifeq (COMPACT, $(findstring COMPACT, $(CATALINA_OPTIONS)))
+	MODEL   = COMPACT
+endif
+
+# Check if there is a NATIVE in CATALINA_DEFINES
+ifeq (NATIVE, $(findstring NATIVE, $(CATALINA_DEFINE)))
+	MODEL   = NATIVE
+endif
+
+# Check if there is a NATIVE in CATALINA_OPTIONS
+ifeq (NATIVE, $(findstring NATIVE, $(CATALINA_OPTIONS)))
+	MODEL   = NATIVE
+endif
+
+# Check if there is a TINY in CATALINA_DEFINES
+ifeq (TINY, $(findstring TINY, $(CATALINA_DEFINE)))
+	MODEL   = TINY
+endif
+
+# Check if there is a TINY in CATALINA_OPTIONS
+ifeq (TINY, $(findstring TINY, $(CATALINA_OPTIONS)))
+	MODEL   = TINY
+endif
+
+# Check if there is a LARGE in CATALINA_DEFINES
+ifeq (LARGE, $(findstring LARGE, $(CATALINA_DEFINE)))
+	MODEL   = LARGE
+endif
+
+# Check if there is a LARGE in CATALINA_OPTIONS
+ifeq (LARGE, $(findstring LARGE, $(CATALINA_OPTIONS)))
+	MODEL   = LARGE
+endif
+
+# Check if there is a SMALL in CATALINA_DEFINES
+ifeq (SMALL, $(findstring SMALL, $(CATALINA_DEFINE)))
+	MODEL   = SMALL
+endif
+
+# Check if there is a SMALL in CATALINA_OPTIONS
+ifeq (SMALL, $(findstring SMALL, $(CATALINA_OPTIONS)))
+	MODEL   = SMALL
+endif
+
+# Check if there is an RTC in CATALINA_DEFINES
+ifeq (RTC, $(findstring RTC, $(CATALINA_DEFINE)))
+	CLOCK   = RTC
+endif
+
+# Check if there is an RTC in CATALINA_OPTIONS
+ifeq (RTC, $(findstring RTC, $(CATALINA_OPTIONS)))
+	CLOCK   = RTC
+endif
+
+#if RTC not specified, use CLOCK
+ifneq ("$(CLOCK)", "RTC")
+  CLOCK   = CLOCK
+endif
+
+# If no model is specified, then On a Propeller 1, use LARGE, 
+# and on a Propeller 2, use COMPACT
+ifeq ("$(MODEL)", "")
+ifeq ("$(P2FLAG)", "")
+	MODEL   = LARGE
+else
+	MODEL   = COMPACT
+endif
+endif
+
+ifeq ("$(MYCFLAGS)", "")
+	MYCFLAGS += $(P2FLAG) -C $(MODEL) -C $(CLOCK) -C NO_MOUSE
+endif
+
+ifeq ("$(MYLDFLAGS)", "")
+	MYLDFLAGS += $(P2FLAG) -C $(MODEL) -C $(CLOCK) -C NO_MOUSE
+endif
+
+
+ifeq ("$(MYLIBS)","")
+ifeq ("$(P2FLAG)", "")
+	MYLIBS    = -lm
+else
+	MYLIBS    = -lmc
+endif
+endif
+
+RM=rm -fr
+CP=cp -f
+MV=mv
+
+CFLAGS= $(MYCFLAGS) -W-w
+
+# note that this enables Lua code storage into PSRAM - it is not the
+# same as enabling XMM mode (SMALL or LARGE), which affects C code
+# and data, which would treat Lua code as data, not code.
+ifeq (ENABLE_PSRAM, $(findstring ENABLE_PSRAM, $(CATALINA_DEFINE)))
+RAMLIB = -lpsram
+endif
+
+# note that this enables Lua code storage into HyperRAM - it is not the
+# same as enabling XMM mode (SMALL or LARGE), which affects C code
+# and data, which would treat Lua code as data, not code.
+ifeq (ENABLE_HYPER, $(findstring ENABLE_HYPER, $(CATALINA_DEFINE)))
+RAMLIB = -lhyper
+endif
+
+LIBS= -lcx -llua $(MYLIBS) $(RAMLIB)
+LIBSX= -lcx -lluax $(MYLIBS) $(RAMLIB)
+
+ifeq ($(OS), Windows_NT)
+CC=catalina.exe
+CB=catbind.exe
+else
+CC=catalina
+CB=catbind
+endif
+
+# == END OF USER SETTINGS -- NO NEED TO CHANGE ANYTHING BELOW THIS LINE =======
+
+PLATS= catalina
+
+LUA_A=	lib\lua
+LUAX_A=	lib\luax
+CORE_O=	lapi.obj lcode.obj lctype.obj ldebug.obj ldo.obj ldump.obj lfunc.obj lgc.obj llex.obj lmem.obj lobject.obj lopcodes.obj lparser.obj lstate.obj lstring.obj ltable.obj ltm.obj lundump.obj lvm.obj lzio.obj
+COREX_O=	lapi.obj lctype.obj ldebug.obj ldo.obj ldump.obj lfunc.obj lgc.obj lmem.obj lobject.obj lopcodes.obj lstate.obj lstring.obj ltable.obj ltm.obj lundump.obj lvm.obj lzio.obj
+LIB_O=	lauxlib.obj lbaselib.obj lcorolib.obj ldblib.obj liolib.obj \
+ lmathlib.obj loadlib.obj loslib.obj lstrlib.obj ltablib.obj lutf8lib.obj \
+ lthreads.obj lthrsch.obj lprop.obj storage.obj glob.obj \
+ cfgets.obj
+BASE_O= $(CORE_O) $(LIB_O) $(MYOBJS)
+BASEX_O= $(COREX_O) $(LIB_O) $(MYOBJS)
+
+LUA_T=	lua
+LUA_O=	lua.obj linit.obj
+
+LUAX_T=	luax
+LUAX_O=	luax.obj linit.obj
+
+LUAXP_T=	luaxp
+
+LUAC_T=	luac
+LUAC_O=	luac.obj
+
+ifneq ("$(P2FLAG)","")
+MLUA_T=	mlua
+MLUA_O=	lua.obj minit.obj
+
+MLUAX_T=	mluax
+MLUAX_O=	luax.obj minit.obj
+
+endif
+
+ALL_A= $(LUA_A) $(LUAX_A)
+
+ifeq ("$(P2FLAG)","")
+ALL_O= $(CORE_O) $(LIB_O) $(LUA_O) $(LUAC_O) $(LUAX_O) linit.obj
+ALL_T= $(LUA_A) $(LUAX_A) $(LUA_T) $(LUAC_T) $(LUAX_T) 
+else
+ifeq (ENABLE_HYPER, $(findstring ENABLE_HYPER, $(CATALINA_DEFINE)))
+ALL_O= $(CORE_O) $(LUAX_O) linit.obj minit.obj
+ALL_T= $(LUAX_A) $(LUAXP_T)
+else
+ifeq (ENABLE_PSRAM, $(findstring ENABLE_PSRAM, $(CATALINA_DEFINE)))
+ALL_O= $(CORE_O) $(LUAX_O) linit.obj minit.obj
+ALL_T= $(LUAX_A) $(LUAXP_T)
+else
+ifeq ("$(MODEL)", "COMPACT")
+ALL_O= $(CORE_O) $(LIB_O) $(LUA_O) $(LUAC_O) $(LUAX_O) linit.obj minit.obj
+ALL_T= $(LUA_A) $(LUAX_A) $(LUA_T) $(LUAC_T) $(LUAX_T) $(MLUA_T) $(MLUAX_T)
+else
+ALL_O= $(CORE_O) $(LIB_O) $(LUA_O) $(LUAC_O) $(LUAX_O) linit.obj
+ALL_T= $(LUA_A) $(LUAX_A) $(LUA_T) $(LUAC_T) $(LUAX_T)
+endif
+endif
+endif
+endif
+
+# Targets start here.
+default: $(PLAT)
+
+all:	$(ALL_T)
+
+o:	$(ALL_O)
+
+a:	$(ALL_A)
+
+$(LUA_A): $(BASE_O)
+	$(RM) $(LUA_A)
+	-mkdir lib
+	$(RM) $(LUA_A)
+	-mkdir $(LUA_A)
+	-$(CB) -i -e $(BASE_O) -o catalina.idx
+	$(CP) $(BASE_O) $(LUA_A)
+	$(MV) catalina.idx $(LUA_A)
+
+$(LUAX_A): $(BASEX_O)
+	$(RM) $(LUAX_A)
+	-mkdir lib
+	$(RM) $(LUAX_A)
+	-mkdir $(LUAX_A)
+	-$(CB) -i -e $(BASEX_O) -o catalina.idx
+	$(CP) $(BASEX_O) $(LUAX_A)
+	$(MV) catalina.idx $(LUAX_A)
+
+$(LUA_T): $(LUA_O) $(LUA_A)
+	$(CC) -o $@ $(MYLDFLAGS) $(LUA_O) $(LIBS) -M1M
+
+$(LUAC_T): $(LUAC_O) $(LUA_A)
+	$(CC) -o $@ $(MYLDFLAGS) $(LUAC_O) $(LIBS) -M1M
+
+$(LUAX_T): $(LUA_O) $(LUAX_O) $(LUAX_A)
+	$(CC) -o $@ $(MYLDFLAGS) $(LUAX_O) $(LIBSX) -M1M
+
+$(LUAXP_T): $(LUA_O) $(LUAX_O) $(LUAX_A)
+	$(CC) -o $@ $(MYLDFLAGS) $(LUAX_O) $(LIBSX) -M1M
+
+ifneq ("$(P2FLAG)","")
+$(MLUA_T): $(MLUA_O) $(LUA_A)
+	$(CC)  -lthreads -o $@ $(MYLDFLAGS) $(MLUA_O) $(COREM_O) $(LIBS) -M1M
+
+$(MLUAX_T): $(MLUAX_O) $(LUAX_A)
+	$(CC) -lthreads -o $@ $(MYLDFLAGS) $(MLUAX_O) $(COREM_O) $(LIBSX) -M1M
+endif
+
+test:
+	./$(LUA_T) -v
+
+clean:
+	$(RM) $(ALL_T) $(ALL_O) $(ALL_A)
+	-$(RM) *.bin 
+	-$(RM) *.binary
+	-$(RM) *.lst
+
+echo:
+	@echo "CATALINA_DEFINE = $(CATALINA_DEFINE)"
+	@echo "PLAT = $(PLAT)"
+	@echo "CC = $(CC)"
+	@echo "P2FLAG = $(P2FLAG)"
+	@echo "CFLAGS = $(CFLAGS)"
+	@echo "RM = $(RM)"
+	@echo "MYLIBS = $(MYLIBS)"
+	@echo "MYCFLAGS = $(MYCFLAGS)"
+	@echo "MYLDFLAGS = $(MYLDFLAGS)"
+	@echo "MYLIBS = $(MYLIBS)"
+
+# Convenience targets for popular platforms.
+ALL= all
+
+help:
+	@echo "Do 'make PLATFORM' where PLATFORM is one of these:"
+	@echo "   $(PLATS)"
+	@echo "See doc/readme.html for complete instructions."
+
+guess:
+	@echo Guessing `$(UNAME)`
+	@$(MAKE) `$(UNAME)`
+
+catalina:
+	$(MAKE) -f Makefile.Catalina.mgw all
+
+# pattern targets
+
+%.binary: %.c $(LUA_A)
+	$(CC) $(CFLAGS) $(LIBS) -M1M -o $@ $<
+
+%.bin: %.c $(LUA_A)
+	$(CC) -p2 $(CFLAGS) $(LIBS) -M1M -o $@ $<
+
+
+# Targets that do not create files (not all makes understand .PHONY).
+.PHONY: all $(PLATS) help test clean default echo
+
+.SUFFIXES: .obj
+
+.c.obj:		$< 
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+minit.obj: linit.c lprefix.h lua.h luaconf.h lualib.h lauxlib.h
+	$(CC) $(CFLAGS) -lthreads -c linit.c -o $@
+
+# Compiler modules may use special flags.
+llex.obj:
+	$(CC) $(CFLAGS) -c llex.c -o $@
+
+lparser.obj:
+	$(CC) $(CFLAGS) -c lparser.c -o $@
+
+lcode.obj:
+	$(CC) $(CFLAGS) -c lcode.c -o $@
+
+# DO NOT DELETE
+
+lapi.obj: lapi.c lprefix.h lua.h luaconf.h lapi.h llimits.h lstate.h \
+ lobject.h ltm.h lzio.h lmem.h ldebug.h ldo.h lfunc.h lgc.h lstring.h \
+ ltable.h lundump.h lvm.h
+lauxlib.obj: lauxlib.c lprefix.h lua.h luaconf.h lauxlib.h
+lbaselib.obj: lbaselib.c lprefix.h lua.h luaconf.h lauxlib.h lualib.h
+lcode.obj: lcode.c lprefix.h lua.h luaconf.h lcode.h llex.h lobject.h \
+ llimits.h lzio.h lmem.h lopcodes.h lparser.h ldebug.h lstate.h ltm.h \
+ ldo.h lgc.h lstring.h ltable.h lvm.h
+lcorolib.obj: lcorolib.c lprefix.h lua.h luaconf.h lauxlib.h lualib.h
+lctype.obj: lctype.c lprefix.h lctype.h lua.h luaconf.h llimits.h
+ldblib.obj: ldblib.c lprefix.h lua.h luaconf.h lauxlib.h lualib.h
+ldebug.obj: ldebug.c lprefix.h lua.h luaconf.h lapi.h llimits.h lstate.h \
+ lobject.h ltm.h lzio.h lmem.h lcode.h llex.h lopcodes.h lparser.h \
+ ldebug.h ldo.h lfunc.h lstring.h lgc.h ltable.h lvm.h
+ldo.obj: ldo.c lprefix.h lua.h luaconf.h lapi.h llimits.h lstate.h \
+ lobject.h ltm.h lzio.h lmem.h ldebug.h ldo.h lfunc.h lgc.h lopcodes.h \
+ lparser.h lstring.h ltable.h lundump.h lvm.h
+ldump.obj: ldump.c lprefix.h lua.h luaconf.h lobject.h llimits.h lstate.h \
+ ltm.h lzio.h lmem.h lundump.h
+lfunc.obj: lfunc.c lprefix.h lua.h luaconf.h ldebug.h lstate.h lobject.h \
+ llimits.h ltm.h lzio.h lmem.h ldo.h lfunc.h lgc.h
+lgc.obj: lgc.c lprefix.h lua.h luaconf.h ldebug.h lstate.h lobject.h \
+ llimits.h ltm.h lzio.h lmem.h ldo.h lfunc.h lgc.h lstring.h ltable.h
+linit.obj: linit.c lprefix.h lua.h luaconf.h lualib.h lauxlib.h
+liolib.obj: liolib.c lprefix.h lua.h luaconf.h lauxlib.h lualib.h
+llex.obj: llex.c lprefix.h lua.h luaconf.h lctype.h llimits.h ldebug.h \
+ lstate.h lobject.h ltm.h lzio.h lmem.h ldo.h lgc.h llex.h lparser.h \
+ lstring.h ltable.h
+lmathlib.obj: lmathlib.c lprefix.h lua.h luaconf.h lauxlib.h lualib.h
+lthreads.obj: lthreads.c lua.h luaconf.h lauxlib.h lualib.h
+lthrsch.obj: lthrsch.c lua.h luaconf.h lauxlib.h lualib.h
+lmem.obj: lmem.c lprefix.h lua.h luaconf.h ldebug.h lstate.h lobject.h \
+ llimits.h ltm.h lzio.h lmem.h ldo.h lgc.h
+loadlib.obj: loadlib.c lprefix.h lua.h luaconf.h lauxlib.h lualib.h
+lobject.obj: lobject.c lprefix.h lua.h luaconf.h lctype.h llimits.h \
+ ldebug.h lstate.h lobject.h ltm.h lzio.h lmem.h ldo.h lstring.h lgc.h \
+ lvm.h
+lopcodes.obj: lopcodes.c lprefix.h lopcodes.h llimits.h lua.h luaconf.h
+loslib.obj: loslib.c lprefix.h lua.h luaconf.h lauxlib.h lualib.h
+lparser.obj: lparser.c lprefix.h lua.h luaconf.h lcode.h llex.h lobject.h \
+ llimits.h lzio.h lmem.h lopcodes.h lparser.h ldebug.h lstate.h ltm.h \
+ ldo.h lfunc.h lstring.h lgc.h ltable.h
+lstate.obj: lstate.c lprefix.h lua.h luaconf.h lapi.h llimits.h lstate.h \
+ lobject.h ltm.h lzio.h lmem.h ldebug.h ldo.h lfunc.h lgc.h llex.h \
+ lstring.h ltable.h
+lstring.obj: lstring.c lprefix.h lua.h luaconf.h ldebug.h lstate.h \
+ lobject.h llimits.h ltm.h lzio.h lmem.h ldo.h lstring.h lgc.h
+lstrlib.obj: lstrlib.c lprefix.h lua.h luaconf.h lauxlib.h lualib.h
+ltable.obj: ltable.c lprefix.h lua.h luaconf.h ldebug.h lstate.h lobject.h \
+ llimits.h ltm.h lzio.h lmem.h ldo.h lgc.h lstring.h ltable.h lvm.h
+ltablib.obj: ltablib.c lprefix.h lua.h luaconf.h lauxlib.h lualib.h
+ltm.obj: ltm.c lprefix.h lua.h luaconf.h ldebug.h lstate.h lobject.h \
+ llimits.h ltm.h lzio.h lmem.h ldo.h lgc.h lstring.h ltable.h lvm.h
+lua.obj: lua.c lprefix.h lua.h luaconf.h lauxlib.h lualib.h
+luac.obj: luac.c lprefix.h lua.h luaconf.h lauxlib.h ldebug.h lstate.h \
+ lobject.h llimits.h ltm.h lzio.h lmem.h lopcodes.h lopnames.h lundump.h
+lundump.obj: lundump.c lprefix.h lua.h luaconf.h ldebug.h lstate.h \
+ lobject.h llimits.h ltm.h lzio.h lmem.h ldo.h lfunc.h lstring.h lgc.h \
+ lundump.h
+lutf8lib.obj: lutf8lib.c lprefix.h lua.h luaconf.h lauxlib.h lualib.h
+lvm.obj: lvm.c lprefix.h lua.h luaconf.h ldebug.h lstate.h lobject.h \
+ llimits.h ltm.h lzio.h lmem.h ldo.h lfunc.h lgc.h lopcodes.h lstring.h \
+ ltable.h lvm.h ljumptab.h
+lzio.obj: lzio.c lprefix.h lua.h luaconf.h llimits.h lmem.h lstate.h \
+ lobject.h ltm.h lzio.h
+
+mlua.obj: lua.c lprefix.h lua.h luaconf.h lauxlib.h lualib.h
+mluax.obj: luax.c lprefix.h lua.h luaconf.h lauxlib.h ldebug.h lstate.h \
+ lobject.h llimits.h ltm.h lzio.h lmem.h lopcodes.h lopnames.h lundump.h
+lprop.obj: lprop.c
+cfgets.obj: cfgets.c
+storage.obj: storage.c
+global.obj: global.c
+# (end of Makefile)

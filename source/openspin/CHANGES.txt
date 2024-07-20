@@ -1,0 +1,47 @@
+1. Added '-a' command line option to specify that alternate "homespun"-like 
+   preprocessor behavior be used:
+
+   - Encountering a #error statement terminates the compilation.
+   - Files included with #include will be found if they exist anywhere 
+     in the include directories specified on the command line.
+   - Symbols defined with no value (or on the command line) will not be
+     used for macro substitution - they can only be used in #ifdef and 
+     #ifndef statements. For example:
+
+     #define FOO
+     #ifndef FOO
+     #error FOO is not defined!  <-- FOO is defined under either set of rules
+     #endif
+     PUB START | FOO,BAR         <-- generates an error if -h is not used
+
+
+2. Added '-M' to specify memory size. The default is 32768, but any size
+   up to 16777216 can be specified. This is commonly used to specify an
+   EEPROM size. DAT, binary and eeprom files can be generated of any size 
+   up to the specified memory size, but if memory sizes larger than 32768 
+   are generated then some programs may be able to use the resulting dat 
+   files, but only Catalina will be able to use the binary and eeprom 
+   files, since it does not depend on the internal file offsets which are 
+   limited in these file formats to 16 bits.
+ 
+3. Added -b and -e to specify whether a binary or eeprom format output file
+   should be created. The default is binary. The size of the output file 
+   when -e is specified (or the maximum size when -b is specified) defaults 
+   to 32k, but this can be overriden by using the '-M' command line switch.
+
+4. Fixed a bug where the preprocessor would lose track of the state of
+   complex #if[n]def statements (e.g. if they contain #include statements).
+
+5. Fixed a bug where the name of the file containing the start of a 
+   #if[n]def statement was incorrectly reported if the statement was not
+   terminated correctly.
+
+6. Fixed a bug that resulted in some source lines being incorrectly detected
+   as comment lines.
+
+7. Fixed a bug that resulted in macro substitution within string constants.
+
+8. Added a listing capability, enabled by specifying '-l'. The listing only
+   contains DAT sections at present - it may be expanded later to include
+   other sections.
+
