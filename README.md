@@ -23,3 +23,4 @@ The main components of Catalina are:
 -  spinnaker   : Propeller 1 Spin compiler and assembler (Windows and Linux)
 -  p2asm       : Propeller 2 assembler (Windows, Linux and Catalyst)
 
+NOTE: The README.TXT file that used to accompany each Catalina release to summarize the changes is now called CHANGES.TXT.
