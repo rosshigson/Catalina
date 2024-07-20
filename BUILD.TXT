@@ -233,11 +233,16 @@ depending on the Linux distribution, other packages may also be required.
 3. Build Catalina
 =================
 
-In a bash shell, go to the direxctory where Catalina is installed. In this 
+In a bash shell, go to the directory where Catalina is installed. In this 
 section, we assume Catalina has been installed in the user's home directory.
 If Catalina is installed elsewhere, modify the commands appropriately:
 
    cd ~/catalina
+
+Manually set the permissions of the following files:
+
+   chmod a+x a+x bin/catalina_env
+   chmod a+x bin/Set_Linux_Permissions
 
 Set up the LCCDIR and PATH environment variables:
 

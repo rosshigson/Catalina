@@ -39,8 +39,8 @@ If you used the Windows installer to install Catalina, the Windows Start Menu sh
 
 If you cloned the Git repository, or downloaded it as a ZIP file and then uncompressed it, then:
 
-- In Windows : Manually open a Windows command shell (i.e. cmd.exe), then **cd** to the Catalina installation folder. Then execute the command **use_catalina** to set up the LCCDIR environment variable. Then you can use Catalina from the command line, or use the command **catalina_geany** to start the Catalina Geany Integrated Deveopment Environment.
+- In Windows : The Github repository includes binaries suitable for Windows 10 or Windows 11. Manually open a Windows command shell (i.e. cmd.exe), then **cd** to the Catalina installation folder. Then execute the command **use_catalina** to set up the LCCDIR environment variable. Then you can use Catalina from the command line, or use the command **catalina_geany** to start the Catalina Geany Integrated Deveopment Environment.
 
-- In Linux : Manually open a Terminal window, then **cd** to the Catalina installation folder. Then execute the command **source use_catalina** to set up the LCCDIR environment variable. Then you can use Catalina from the command line, or use the command **catalina_geany** to start the Catalina Geany Integrated Deveopment Environment.
+- In Linux : You must rebuild Catalina from source. Manually open a Terminal window, then **cd** to the Catalina installation folder. Then follow the instructions in the document **BUILD.TXT** to rebuild Catalina from source. Then you can use Catalina from the command line, or use the command **catalina_geany** to start the Catalina Geany Integrated Deveopment Environment.
 
 See the document "Getting Started with Catalina" in the documents folder for more details.
