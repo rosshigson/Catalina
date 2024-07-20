@@ -22,7 +22,7 @@ New Functionality
    first such pragma) even if there are multiple unrecognised pragmas. This 
    allows primary and secondary programs to use the Catalina parallelizer.
 
-2  Four new demo programs are now included (in demos\catapult) for the
+2. Four new demo programs are now included (in demos\catapult) for the
    Propeller 1 and 2 to demonstrate the use of the Catalina parallelizer 
    with Catapult:
 
