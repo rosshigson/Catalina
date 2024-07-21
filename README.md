@@ -50,8 +50,11 @@ Linux Precompiled Package
 -------------------------
 
 If you downloaded a Linux release package (e.g. **Catalina_7.6.3_Linux.tar.gz**) then the package will contain executables built for a recent Ubuntu release (currently Ubuntu version 23). Simply open a Terminal window, **cd** to the directory where you installed Catalina and enter (note the back quotes):
+
 **export LCCDIR=\`pwd\`**
+
 **source use_catalina**
+
 Then you can either use Catalina directly from the command-line or enter **catalina_geany** to use the Catalina Geany IDE. 
 However, if the pre-built Catalina executables do not work on your Linux installation, refer to the next section on installing it manually.
 
