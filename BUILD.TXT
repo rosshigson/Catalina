@@ -276,9 +276,15 @@ to be identified and installed.
 Catalina can be executed from the location it was built, but it is recommended
 it be installed in /opt/catalina for future use:
 
-   cd $LCCDIR/catalina
+   cd $LCCDIR
    sudo mkdir /opt/catalina
    sudo cp -R --preserve $LCCDIR/* /opt/catalina
+
+To use the version of Catalina installed in /opt/catalina, use the 
+following commands:
+
+   export LCCDIR=/opt/catalina
+   source $LCCDIR/use_catalina
 
 4. Build Geany
 ==============
