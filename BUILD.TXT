@@ -242,7 +242,7 @@ If Catalina is installed elsewhere, modify the commands appropriately:
 
 Manually set the permissions of the following files:
 
-   chmod a+x a+x bin/catalina_env
+   chmod a+x bin/catalina_env
    chmod a+x bin/Set_Linux_Permissions
 
 Set up the LCCDIR and PATH environment variables:
@@ -261,6 +261,7 @@ application:
 
    cd $LCCDIR/source/catalina/awka-0.7.5
    ./configure CFLAGS="-m32"
+   make clean
    make
 
 Now go to the source directory and build Catalina:

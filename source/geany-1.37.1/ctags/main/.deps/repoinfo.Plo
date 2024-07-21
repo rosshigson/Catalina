@@ -1,9 +1,0 @@
-main/repoinfo.lo: main/repoinfo.c main/general.h ../config.h \
- main/gcc-attr.h \
- C:/msys64/mingw32/lib/gcc/i686-w64-mingw32/13.2.0/include/stdbool.h \
- main/ctags.h
-main/general.h:
-../config.h:
-main/gcc-attr.h:
-C:/msys64/mingw32/lib/gcc/i686-w64-mingw32/13.2.0/include/stdbool.h:
-main/ctags.h:

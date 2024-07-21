@@ -1,2 +1,0 @@
-src/DBCS.lo: src/DBCS.cxx src/DBCS.h
-src/DBCS.h:
