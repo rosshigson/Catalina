@@ -216,8 +216,9 @@ may be different, and so some commands will need to be adjusted accordginly.
 1. Install Catalina
 ===================
 
-Install Catalina by unpacking Catalina_6.5_Linux.tar.gz in a suitable
-directory for building, such as the user's home directory.
+Install Catalina by unpacking a compressed Catalina distribution 
+(e.g. Catalina_6.5_Linux.tar.gz) in a suitable directory for building, 
+such as the user's home directory.
 
 2. Install required packages
 ============================
