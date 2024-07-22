@@ -40,11 +40,13 @@ If you used a Windows Installer package (e.g. **Catalina_7.6.3_Setup.exe**) to i
 Windows Manual install
 ----------------------
 
-If you did not use the Windows Setup package but either cloned the Git repository or downloaded it as a compressed file and then uncompressed it, then the distribution includes binaries suitable for Windows 10 or Windows 11, but you must set it up manually. 
+If you did not use the Windows Setup package but either cloned the Git repository or downloaded it as a compressed file and then uncompressed it, then the distribution will includes all sources, but not the Windows binaries. 
+
+If you do not want to rebuild Catalina from source (which is a complex process under Windows) then a separate package of precompiled binaries will be available suitable for Windows 10 or Windows 11 as an asset associated with the Git release. Download the asset and uncompress it into Catalina's **bin** directory.
     
 Open a Windows command shell (i.e. **cmd.exe**), then **cd** to the Catalina installation folder. Then execute the command **use_catalina** to set up the Catalina environment variables and paths. Then you can either use Catalina directly from the command line, or use the command **catalina_geany** to start the Catalina Geany Integrated Deveopment Environment. The Catalina documents are available in the **Documents** folder.
 
-To create Windows Start Menu entries, open a Windows command shell (i.e. **cmd.exe**) with Administrator privileges, then **cd** to the Catalina installation folder. Then execute the command **catalina_shortcuts** optionally specifying the name of the Start Menu entry to create (in quotes). For example: **catalina_shortcuts "Catalina 7.6.3"**
+To create Windows Start Menu entries, open a Windows command shell (i.e. **cmd.exe**) with Administrator privileges, then **cd** to the Catalina installation folder. Then execute the command **catalina_shortcuts** optionally specifying the name of the Start Menu entry to create (in quotes). For example: **catalina_shortcuts "Catalina 7.6.3"**. If you do not specify a name then "Catalina" will be used. Then you can start either a Catalina Command Line or Catalina Geany from the Windows Start Menu. Also, the Start Menu will contain links to the Catalina Documents.
 
 Linux Precompiled Package
 -------------------------
@@ -67,4 +69,5 @@ More Information
 The documents **Getting Started with Catalina** and **Getting Started with the Catalina Geany IDE** for tutorial information on using Catalina.
 
 See the other Catalina documents for more detailed information on various Catalina components.
+
 
