@@ -1,45 +1,52 @@
 This document contains detailed instructions on how to build Catalina
 from source on both Windows and Linux. 
 
-The Catalina Windows binaries were compiled on a 64-bit version of Windows
-10 but should work Windows 8 or later.
+The Catalina Windows binaries are known to compile on a 64-bit version of 
+Windows 10 but should work on Windows 8 or later.
 
-The Catalina Linux binaries were compiled on a 64-bit version of Ubuntu Linux
-18.04, but may work on other Ubuntu distrubutions.
+The Catalina Linux binaries are known to compile on a 64-bit version of 
+Ubuntu Linux 18.04, but may work on other Ubuntu distrubutions.
 
-Note that on Windows it is unlikely you will need to rebuild Catalina, since 
-it does not need to be rebuilt to compile programs, or add new platforms, 
-new plugins or new libraries.
+Note that if you used a Catalina Windows Setup program, or downloaded the 
+binaries associated with a GitHub release, it is unlikely you will ever need 
+to rebuild Catalina, since it does not need to be rebuilt to compile programs,
+or to add new platforms, new plugins, or new libraries.
 
-On Linux it is more likely, since Catalina may need to be rebuilt to suit 
-other Linux distributions.
+On Linux it is more likely you will need to build Catalina from source, since 
+it may need to be rebuilt to suit other Linux distributions.
 
 Windows
 =======
 
-This document assumes you are using Catalina 6.5, and it will be installed
-tp the folder "C:\Program Files x86 \Catalina_6.5" (if either of these 
-changes, some of the commands will need to change accordingly).
+This document assumes you are using Catalina 7.6.3, and will install it using 
+the Windows installation program (Catalina_7.6.3_Setup.exe), so it will end 
+up installed in the folder "C:\Program Files (x86) \Catalina_7.6.3" (if either 
+of these changes, some of the commands will need to change accordingly).
+
+If you instead are cloning or downloading the GitHub repository (i.e. from
+https://github.com/rosshigson/Catalina), Catalina can be installed anywhere - 
+a suitable location would be a folder called "Catalina" in your home directory.
 
 1. Install Catalina
 ===================
 
-Install Catalina by executing Catalina_6.5_Setup.exe and following the 
+Install Catalina by executing Catalina_7.6.3_Setup.exe and following the 
 prompts. Make sure to select the "Install Catalina Source Code" option. 
 (if you have already installed Catalina but did not install the source 
 code, simply run the Setup program again and select this option).
 
 Note that you will need additional permissions to the Catalina installation 
-folders to rebuild Catalina. The Setup program by default only gives the
-permissions required to use Catalina. To do this, select where Catalina was 
-installed in File Explorer, right click on Properties, select the Security 
-tab and give the current user "Full Control". 
+folders to rebuild Catalina in its default installation location. The Setup 
+program by default only gives the permissions required to use Catalina. 
+To do this, select where Catalina was installed in File Explorer, right 
+click on Properties, select the Security tab and give the current user 
+"Full Control". 
 
 2. Install Cygwin
 =================
 
 Some parts of Catalina need to be compiled with Cygwin. The Cygwin DLL
-(cygwin1.dll) which is required to execute these compoents is included 
+(cygwin1.dll) which is required to execute these components is included 
 in the Catalina "bin" directory. But Cygwin itself needs to be installed
 in otder to build these components from source.
 
@@ -104,20 +111,21 @@ installed:
   pacman -Ss gcc 
 
 Next, if the source is in a Windows directory with spaces in the path (which 
-it will be if Catalina is installed to the recommended location) then create 
-a link to it without spaces. Note that you need to do this from a Windows 
-command line window started as Administrator. 
+it will be if Catalina is installed to the usual location - which is usually
+"C:\Program Files (x86)" - then create a link to it without spaces. Note that 
+you need to do this from a Windows command line window started using the 
+"Run as Administrator" option.
 
 For example, if Catalina the source is in: 
 
-   C:\Program Files (x86)\Catalina_6.5
+   C:\Program Files (x86)\Catalina_7.6.3
 
 Then execute the following commands in a Windows Command line window (not 
 an MSYS2 bash shell!):
 
    mkdir C:\catalina
    cd C:\catalina
-   mklink /D 6.5 "C:\Program Files (x86)\Catalina_6.5"
+   mklink /D 7.6.3 "C:\Program Files (x86)\Catalina_7.6.3"
 
 Add the MSYS2 folders to the Windows PATH (e.g. Open Settings, search 
 for "environment variables" and then set the environment variables either 
@@ -152,10 +160,10 @@ to be identified and installed.
 
 Open an MINGW32 MSYS2 bash shell (NOTE: MINGW32, not MINGW64!!!!) using the 
 MSYS2 MINGW32 menu entry, In the bash shell, go to the geany source directory
-and build geany (assuming the source is in /c/catalina/6.5/source/geany 
+and build geany (assuming the source is in /c/catalina/7.6.3/source/geany 
 - which may be a link! - and we want to end up with Geany in /c/geany).
 
-   cd /c/catalina/6.5/source/geany-1.37.1
+   cd /c/catalina/7.6.3/source/geany-1.37.1
 
    NOCONFIGURE=1 ./autogen.sh
 
@@ -179,10 +187,10 @@ having MSYS2 or MINGW32 installed:
 The files in C:\geany (as seen from Windows) or /c/geany (as seen from MSYS2)
 can then be copied into any other location. For instance, it is recommended 
 to overwrite the existing versions in the Catalina distribution (i.e. in 
-"C:\Program Files (x86)\Catalina_6.5\catalina_geany") with the newly built 
+"C:\Program Files (x86)\Catalina_7.6.3\catalina_geany") with the newly built 
 versions. To do that in the bash shell, use the following command:
 
-   cp -R /c/geany/* /c/catalina/6.5/catalina_geany/
+   cp -R /c/geany/* /c/catalina/7.6.3/catalina_geany/
 
 6. Test Catalina and Geany
 ========================== 
@@ -217,8 +225,10 @@ may be different, and so some commands will need to be adjusted accordginly.
 ===================
 
 Install Catalina by unpacking a compressed Catalina distribution 
-(e.g. Catalina_6.5_Linux.tar.gz) in a suitable directory for building, 
-such as the user's home directory.
+(e.g. Catalina_7.6.3_Linux.tar.gz), or cloning or downloading Catalina from
+the GitHub repository (i.e. https://github.com/rosshigson/Catalina) in a 
+suitable directory for building, such as a subdirectory called "Catalina" in 
+your home directory.
 
 2. Install required packages
 ============================
@@ -235,8 +245,8 @@ depending on the Linux distribution, other packages may also be required.
 =================
 
 In a bash shell, go to the directory where Catalina is installed. In this 
-section, we assume Catalina has been installed in the user's home directory.
-If Catalina is installed elsewhere, modify the commands appropriately:
+section, we assume Catalina has been installed in your home directory. If 
+Catalina is installed elsewhere, modify the commands appropriately:
 
    cd ~/catalina
 
@@ -281,7 +291,7 @@ it be installed in /opt/catalina for future use:
    sudo cp -R --preserve $LCCDIR/* /opt/catalina
 
 To use the version of Catalina installed in /opt/catalina, use the 
-following commands:
+following commands to set up Catalina's environment and path:
 
    export LCCDIR=/opt/catalina
    source $LCCDIR/use_catalina
