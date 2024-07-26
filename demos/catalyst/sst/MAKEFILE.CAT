@@ -64,8 +64,15 @@ endif
 CFLAGS += -lcx -C NO_MOUSE -C $(CLOCK)
 
 #set up some common utilities
-RM=-rm -f
-CP=cp -f
+ifeq ($(OS), Windows_NT)
+	MV=move /y
+	RM=-del /q /s
+	CP=copy /y
+else
+	MV=mv
+	RM=-rm -f
+	CP=cp -f
+endif
 
 #set up pattern rules
 %.binary : %.c

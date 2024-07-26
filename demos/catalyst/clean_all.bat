@@ -6,8 +6,13 @@ echo  Cleaning all Catalyst Demos
 echo  ===========================
 echo.
 
-rem del /s /f /q "image\*"
-rm -fr image/*
+del /s /q "image\*"
+IF EXIST image\bin rmdir /s /q "image\bin"
+IF EXIST image\include rmdir /s /q "image\include"
+IF EXIST image\lib rmdir /s /q "image\lib"
+IF EXIST image\target rmdir /s /q "image\target"
+IF EXIST image\tmp rmdir /s /q "image\tmp"
+rem rm -fr image/*
 
 cd core
 call clean_all

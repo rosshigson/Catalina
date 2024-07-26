@@ -120,9 +120,16 @@ else
 endif
 endif
 
-RM=rm -fr
-CP=cp -f
-MV=mv
+ifeq ($(OS), Windows_NT)
+	MV=move /y
+	RM=del /q /s
+	CP=copy /y
+	DEST_CP=dest_cp
+else
+	MV=mv
+	RM=-rm -f
+	CP=cp -f
+endif
 
 CFLAGS= $(MYCFLAGS) -W-w
 
@@ -220,6 +227,25 @@ o:	$(ALL_O)
 
 a:	$(ALL_A)
 
+ifeq ($(OS), Windows_NT)
+$(LUA_A): $(BASE_O)
+	$(RM) $(LUA_A)
+	-mkdir lib
+	$(RM) $(LUA_A)
+	-mkdir $(LUA_A)
+	-$(CB) -i -e $(BASE_O) -o catalina.idx
+	$(DEST_CP) $(LUA_A) $(BASE_O) 
+	$(MV) catalina.idx $(LUA_A)
+
+$(LUAX_A): $(BASEX_O)
+	$(RM) $(LUAX_A)
+	-mkdir lib
+	$(RM) $(LUAX_A)
+	-mkdir $(LUAX_A)
+	-$(CB) -i -e $(BASEX_O) -o catalina.idx
+	$(DEST_CP) $(LUAX_A) $(BASEX_O)
+	$(MV) catalina.idx $(LUAX_A)
+else
 $(LUA_A): $(BASE_O)
 	$(RM) $(LUA_A)
 	-mkdir lib
@@ -237,6 +263,7 @@ $(LUAX_A): $(BASEX_O)
 	-$(CB) -i -e $(BASEX_O) -o catalina.idx
 	$(CP) $(BASEX_O) $(LUAX_A)
 	$(MV) catalina.idx $(LUAX_A)
+endif
 
 $(LUA_T): $(LUA_O) $(LUA_A)
 	$(CC) -o $@ $(MYLDFLAGS) $(LUA_O) $(LIBS) -M1M

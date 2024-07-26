@@ -10,7 +10,7 @@ CFLAGS =
 ifeq ($(OS), Windows_NT)
 	E=.exe
 	MV=move /y
-	RM=del /q /s
+	RM=-del /q /s
 	CP=copy /y
 else
 	E=

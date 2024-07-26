@@ -48,7 +48,7 @@ you can just say:
 or
    build_all C3 FLASH CACHED_1K
 
-This will build two PC executables:
+This will build two PC executables (if gcc is available):
 
    send.exe                 <-- or just 'send' for Linux
    receive.exe              <-- or just 'receive' for Linux

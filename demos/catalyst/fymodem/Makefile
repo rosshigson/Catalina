@@ -42,9 +42,15 @@ else
 	endif
 endif
 
-RM=-rm -fr
-CP=cp -f
-MV=mv
+ifeq ($(OS), Windows_NT)
+	MV=move /y
+	RM=del /q /s
+	CP=copy /y
+else
+	MV=mv
+	RM=-rm -f
+	CP=cp -f
+endif
 
 #
 # Default Rules and Options
@@ -120,7 +126,7 @@ all :: propeller_send
 host_receive : receive$E
 
 receive$E: fymodem.c rs232.c
-	$(GCC) $^ -D YMODEM_RECEIVE -o $@
+	-$(GCC) $^ -D YMODEM_RECEIVE -o $@
 
 # add this to the 'all' target
 all :: host_receive
@@ -131,7 +137,7 @@ all :: host_receive
 host_send : send$E
 
 send$E: fymodem.c rs232.c
-	$(GCC) $^ -D YMODEM_SEND -o $@
+	-$(GCC) $^ -D YMODEM_SEND -o $@
 
 
 # add this to the 'all' target

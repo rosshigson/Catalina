@@ -1,1 +1,2 @@
-del *.bin *.binary *.eeprom *.lst
+@echo off
+del /q /s *.bin *.binary *.eeprom *.lst

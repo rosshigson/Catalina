@@ -41,8 +41,15 @@ CC=catalina
 LD=catalina
 endif
 
-RM=rm -f
-CP=cp -f
+ifeq ($(OS), Windows_NT)
+	MV=move /y
+	RM=-del /q /s
+	CP=copy /y
+else
+	MV=mv
+	RM=-rm -f
+	CP=cp -f
+endif
 
 LIBS = -lcx
 
