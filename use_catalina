@@ -13,4 +13,15 @@ else
    export LCCDIR
    PATH=.:$LCCDIR/bin:$PATH; export PATH
 fi
+if [[ ! -e "$LCCDIR/bin/catalina" ]] ; then
+  echo ""
+  echo "=========================================================================="
+  echo "         IMPORTANT: THIS INSTALLATION OF CATALINA HAS NO BINARIES"
+  echo ""
+  echo "    You should ebuild Catalina from source - for details, see BUILD.TXT"
+  echo ""
+  echo "=========================================================================="
+  echo ""
+fi
+
 catalina_env
