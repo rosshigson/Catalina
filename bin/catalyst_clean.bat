@@ -13,71 +13,39 @@ goto done
 @echo.
 @echo Cleaning Catalyst directories ...
 @echo.
-del /f /q "%TMP_LCCDIR%\demos\catalyst\bin\*.*"
+del /f /q "%TMP_LCCDIR%\demos\catalyst\image\*.*"
+pushd %TMP_LCCDIR%\demos\catalyst\catalina
+call clean_all
+popd
 pushd %TMP_LCCDIR%\demos\catalyst\core
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\catalyst\demo
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\catalyst\dumbo_basic
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
+popd
+pushd %TMP_LCCDIR%\demos\catalyst\fymodem
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\catalyst\jzip
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
-pushd %TMP_LCCDIR%\demos\catalyst\lua-5.1.4\src
-del /f /q liblua\*.*
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+pushd %TMP_LCCDIR%\demos\catalyst\lua-5.4.4\src
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\catalyst\pascal\p5_c
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\catalyst\sst
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
+popd
+pushd %TMP_LCCDIR%\demos\catalyst\time
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\catalyst\xvi-2.51\src
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 :done
 @echo.

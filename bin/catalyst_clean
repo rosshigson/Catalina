@@ -21,71 +21,39 @@ echo ""
 echo "Cleaning Catalyst directories ..."
 echo ""
 #
-rm -f "$TMP_LCCDIR/demos/catalyst/bin/"*
+rm -f "$TMP_LCCDIR/demos/catalyst/image/"*
+pushd $TMP_LCCDIR/demos/catalyst/catalina
+clean_all
+popd
 pushd $TMP_LCCDIR/demos/catalyst/core
-rm -f *.bin
-rm -f *.binary
-rm -f *.eeprom 
-rm -f *.lst 
-rm -f *.debug 
-rm -f *.dbg
+clean_all
 popd
 pushd $TMP_LCCDIR/demos/catalyst/demo
-rm -f *.bin
-rm -f *.binary
-rm -f *.eeprom 
-rm -f *.lst 
-rm -f *.debug 
-rm -f *.dbg
+clean_all
 popd
 pushd $TMP_LCCDIR/demos/catalyst/dumbo_basic
-rm -f *.bin
-rm -f *.binary
-rm -f *.eeprom 
-rm -f *.lst 
-rm -f *.debug 
-rm -f *.dbg
+clean_all
+popd
+pushd $TMP_LCCDIR/demos/catalyst/fymodem
+clean_all
 popd
 pushd $TMP_LCCDIR/demos/catalyst/jzip
-rm -f *.bin
-rm -f *.binary
-rm -f *.eeprom 
-rm -f *.lst 
-rm -f *.debug 
-rm -f *.dbg
+clean_all
 popd
-pushd $TMP_LCCDIR/demos/catalyst/lua-5.1.4/src
-rm -f *.bin
-rm -f liblua/*.*
-rm -f *.binary
-rm -f *.eeprom 
-rm -f *.lst 
-rm -f *.debug 
-rm -f *.dbg
+pushd $TMP_LCCDIR/demos/catalyst/lua-5.4.4/src
+clean_all
 popd
 pushd $TMP_LCCDIR/demos/catalyst/pascal/p5_c
-rm -f *.bin
-rm -f *.binary
-rm -f *.eeprom 
-rm -f *.lst 
-rm -f *.debug 
-rm -f *.dbg
+clean_all
 popd
 pushd $TMP_LCCDIR/demos/catalyst/sst
-rm -f *.bin
-rm -f *.binary
-rm -f *.eeprom 
-rm -f *.lst 
-rm -f *.debug 
-rm -f *.dbg
+clean_all
+popd
+pushd $TMP_LCCDIR/demos/catalyst/time
+clean_all
 popd
 pushd $TMP_LCCDIR/demos/catalyst/xvi-2.51/src
-rm -f *.bin
-rm -f *.binary
-rm -f *.eeprom 
-rm -f *.lst 
-rm -f *.debug 
-rm -f *.dbg
+clean_all
 popd
 echo ""
 echo "... done cleaning"

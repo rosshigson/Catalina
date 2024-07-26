@@ -28,7 +28,7 @@ rem
 rem cleanup generated output files ...
 rem 
 del /f /q p1\Catalina.spin
-del /f /q p2\Catalina.spin
+del /f /q p2\Catalina.s
 rem
 popd
 :check_all
@@ -39,380 +39,137 @@ goto done
 pushd %TMP_LCCDIR%\bin
 del /f /q *.bin
 del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
 popd
 pushd %TMP_LCCDIR%\demos
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
+popd
+pushd %TMP_LCCDIR%\demos\alloca
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\benchmarks
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
+popd
+pushd %TMP_LCCDIR%\demos\catapult
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\debug
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\dosfs
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\examples
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\file_systems
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\games
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\globbing
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\graphics
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
+popd
+pushd %TMP_LCCDIR%\demos\hub_malloc
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\inline_pasm
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\interrupts
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\loader
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
+popd
+pushd %TMP_LCCDIR%\demos\lua
+call clean_all
+popd
+pushd %TMP_LCCDIR%\demos\lut_exec
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\minimal
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\multicog
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\multicpu
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\multimodel
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\multithread
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\p2
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\p2_ram
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\parallelize
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
+popd
+pushd %TMP_LCCDIR%\demos\pasm_pstr
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\pthreads
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
+popd
+pushd %TMP_LCCDIR%\demos\random
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\serial2
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\serial4
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\serial8
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\small_lisp
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\sound
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\spi
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\spinc
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\test_suite
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\tty
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\tty256
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\utilities
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\vgraphics
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\xeprom
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
-popd
-pushd %TMP_LCCDIR%\demos\catalyst\bin
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
-popd
-pushd %TMP_LCCDIR%\demos\catalyst\catalina
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
-popd
-pushd %TMP_LCCDIR%\demos\catalyst\core
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
-popd
-pushd %TMP_LCCDIR%\demos\catalyst\demo
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
-popd
-pushd %TMP_LCCDIR%\demos\catalyst\dumbo_basic
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
-popd
-pushd %TMP_LCCDIR%\demos\catalyst\jzip
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
-popd
-pushd %TMP_LCCDIR%\demos\catalyst\lua-5.4.4\src
-del /f /q liblua\*.*
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
-popd
-pushd %TMP_LCCDIR%\demos\catalyst\pascal\p5_c
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
-popd
-pushd %TMP_LCCDIR%\demos\catalyst\sst
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
-popd
-pushd %TMP_LCCDIR%\demos\catalyst\xvi-2.51\src
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\utilities
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
 pushd %TMP_LCCDIR%\validation
-del /f /q *.bin
-del /f /q *.binary
-del /f /q *.eeprom 
-del /f /q *.lst 
-del /f /q *.debug 
-del /f /q *.dbg
+call clean_all
 popd
+call catalyst_clean
 :done
 @echo.
 @echo Done!
