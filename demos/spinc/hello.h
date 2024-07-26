@@ -1,7 +1,7 @@
 /* 
  * Created from hello.binary with option -a
  * 
- * by Spin to C Array Converter, version 6.0
+ * by Spin to C Array Converter, version 7.6
  */
 
 #define HELLO_CLOCKFREQ  12000000
@@ -11,7 +11,7 @@
 #define HELLO_PROG_SIZE  1724 // bytes
 #define HELLO_PROG_OFF   46 // byte offset in array
 #define HELLO_VAR_SIZE   8 // bytes
-#define HELLO_STACK_SIZE 80 // bytes
+#define HELLO_STACK_SIZE 100 // bytes
 #define HELLO_STACK_OFF  8 // bytes
 
 unsigned char HELLO_array[] =

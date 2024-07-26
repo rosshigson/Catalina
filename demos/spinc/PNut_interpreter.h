@@ -1,7 +1,7 @@
 /* 
  * Created from PNut_interpreter.binary
  * 
- * by Spin to C Array Converter, version 6.0
+ * by Spin to C Array Converter, version 7.6
  */
 
 #define PNut_interpreter_CLOCKFREQ  12000000

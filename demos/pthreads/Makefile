@@ -50,10 +50,18 @@ else
 	CB=catbind
 endif
 
-#set up some common utilities
-RM=-rm -fr
-CP=cp -f
-MV=mv
+# set up options specific to Windows or Linux
+ifeq ($(OS), Windows_NT)
+	E=.exe
+	MV=move /y
+	RM=del /q /s
+	CP=copy /y
+else
+	E=
+	MV=mv
+	RM=-rm -f
+	CP=cp -f
+endif
 
 #
 # Default Rules and Options

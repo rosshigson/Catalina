@@ -25,13 +25,15 @@ endif
 # set up options specific to Windows or Linux
 ifeq ($(OS), Windows_NT)
 	E=.exe
+	MV=move /y
+	RM=del /q /s
+	CP=copy /y
 else
 	E=
+	MV=mv
+	RM=-rm -f
+	CP=cp -f
 endif
-
-#set up some common utilities
-RM=-rm -f
-CP=cp -f
 
 #
 # Default Rules and Options

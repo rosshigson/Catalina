@@ -1,7 +1,7 @@
 /* 
  * Created from flash.binary with option -a
  * 
- * by Spin to C Array Converter, version 6.0
+ * by Spin to C Array Converter, version 7.6
  */
 
 #define FLASH_CLOCKFREQ  80000000
@@ -11,7 +11,7 @@
 #define FLASH_PROG_SIZE  56 // bytes
 #define FLASH_PROG_OFF   8 // byte offset in array
 #define FLASH_VAR_SIZE   8 // bytes
-#define FLASH_STACK_SIZE 80 // bytes
+#define FLASH_STACK_SIZE 100 // bytes
 #define FLASH_STACK_OFF  4 // bytes
 
 unsigned char FLASH_array[] =

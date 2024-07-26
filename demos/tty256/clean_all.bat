@@ -1,2 +1,3 @@
+@echo off
 make clean
 

@@ -29,9 +29,18 @@ else
 	E=
 endif
 
-#set up some common utilities
-RM=-rm -f
-CP=cp -f
+# set up options specific to Windows or Linux
+ifeq ($(OS), Windows_NT)
+	E=.exe
+	MV=move /y
+	RM=del /q /s
+	CP=copy /y
+else
+	E=
+	MV=mv
+	RM=-rm -f
+	CP=cp -f
+endif
 
 # if platform is not explicity specified, extract the first parameter 
 # in CATALINA_DEFINE as platform, otherwise default to CUSTOM
@@ -197,7 +206,7 @@ endif
 test_spinc$B : test_spinc.c flash_led.spin
 	spinnaker -p -a flash_led.spin -b -D $(TMP_PLATFORM) 
 	spinc flash_led.binary > flash_led_array.h
-	dos2unix flash_led_array.h
+	-dos2unix flash_led_array.h
 	catalina -lc -I. -C NO_HMI test_spinc.c -o $@
 
 # =============

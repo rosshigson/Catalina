@@ -1,7 +1,7 @@
 /* 
  * Created from KB_TV.binary with option -c
  * 
- * by Spin to C Array Converter, version 6.0
+ * by Spin to C Array Converter, version 7.6
  */
 
 #define KB_TV_CLOCKFREQ  12000000

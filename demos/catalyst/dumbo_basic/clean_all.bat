@@ -1,2 +1,3 @@
-del *.obj *.lst *.binary *.bin
+@echo off
+del /q /s *.obj *.lst *.binary *.bin
 

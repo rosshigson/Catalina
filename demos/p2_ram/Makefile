@@ -95,13 +95,15 @@ endif
 # set up options specific to Windows or Linux
 ifeq ($(OS), Windows_NT)
 	E=.exe
+	MV=move /y
+	RM=del /q /s
+	CP=copy /y
 else
 	E=
+	MV=mv
+	RM=-rm -f
+	CP=cp -f
 endif
-
-#set up some common utilities
-RM=-rm -f
-CP=cp -f
 
 #
 # Default Rules and Options
@@ -179,15 +181,15 @@ start.bin : start.c csxmml.c csxmms.c csxmmlc.c csxmmsc.c
 	$(SPINPP) -D CACHED -D LARGE -D P2 -D $(PLATFORM) -I "$(LCCDIR)"/target/p2 "$(LCCDIR)"/target/p2/xmmd.t > xmmld.s
 	$(PASM_ASSEMBLER) xmmld.s
 	$(BINDUMP) xmmld.bin -p "   0x" -c > xmmld.inc
-	rm xmmld.bin
+	$(RM) xmmld.bin
 	$(SPINPP) -D CACHED -D SMALL -D P2 -D $(PLATFORM) -I "$(LCCDIR)"/target/p2 "$(LCCDIR)"/target/p2/xmmd.t > xmmsd.s
 	$(PASM_ASSEMBLER) xmmsd.s
 	$(BINDUMP) xmmsd.bin -p "   0x" -c > xmmsd.inc
-	rm xmmsd.bin
+	$(RM) xmmsd.bin
 	$(SPINPP) -D CACHED -D P2 -D $(PLATFORM) -I "$(LCCDIR)"/target/p2 "$(LCCDIR)"/target/p2/xmmlib.t > xmml.s
 	$(PASM_ASSEMBLER) xmml.s
 	spinc -p2 -B2 -n XMM_LUT_LIBRARY xmml.bin >xmml.inc
-	rm xmml.bin
+	$(RM) xmml.bin
 
 	$(CC) $(CFLAGS) -p2 -S csxmml.c csxmms.c csxmmlc.c csxmmsc.c
 	$(CC) $(CFLAGS) -p2 -lcx -lmc -C $(CLOCK) -C CACHED -C NO_ENV csxmmlc.s -o $@ $<

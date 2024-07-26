@@ -1,10 +1,25 @@
 # initialize variables and set common options
 CC = catalina
-RM = rm -fr
+
 P2 =
 CLOCK =
 MODEL =
 CFLAGS =
+
+# set up options specific to Windows or Linux
+ifeq ($(OS), Windows_NT)
+	E=.exe
+	MV=move /y
+	RM=del /q /s
+	CP=copy /y
+else
+	E=
+	MV=mv
+	RM=-rm -f
+	CP=cp -f
+endif
+
+
 # assume P1
 B=.binary
 
