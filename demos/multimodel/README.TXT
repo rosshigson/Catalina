@@ -31,7 +31,7 @@ even occupy XMM RAM until they are executed.
 To build these demo programs, use the 'build_all' script, specifying the
 platform and HMI options. For example:
 
-   build_all C3 TTY CACHED_1K
+   build_all C3 TTY
 or
    build_all TRIBLADEPROP CPU_2 PC VT100
 or
@@ -44,11 +44,11 @@ will build different memory models (and note that some versions of some of
 the programs may not build if your Propeller platform does not have any XMM
 RAM).
 
-Also, note that specifyinf different options, or specifying additional options
-(such as OPTIMIZE) on the command-line will change many of the addresses 
-specified in the Makefile. Generally, the programs will tell you the correct 
-addresses to use when they are executed, but you will need to edit the 
-Makefile appropriately.
+Also, note that specifying different options, or specifying additional options
+(such as OPTIMIZE) on the command-line may change the addresses specified in 
+the Makefile. Generally, the programs will tell you the correct addresses to 
+use when they are executed, but you will need to manually edit the Makefile 
+appropriately.
 
 Demo 1 : Run "Hello World" at a fixed address
 =============================================
@@ -84,7 +84,7 @@ TTY HMI option is used). For example:
 To run the XMM versions, the appropriate XMM utilities must first be built 
 for the platform using the "build_utilities" script. The cache must be used, 
 and the cache size must be specified as 1K, because these are the options 
-used in the build_all script. Then run the programs using a payload command 
+used in the Makefile. Then run the programs using a payload command 
 such as:
 
    payload -i XMM hello_large
@@ -177,8 +177,8 @@ the binary using the payload loader (remember to specify the -i option if the
 TTY HMI option is used) but to run the XMM versions, the appropriate XMM 
 utilities must first be built for the platform using the "build_utilities" 
 script. The cache must be used, and the cache size must be specified as 1K, 
-because these are the options used in the build_all script. Then run the 
-programs using a payload command such as:
+because these are the options used in the Makefile. Then run the programs 
+using a payload command such as:
 
    payload -i XMM primary_large
 
@@ -230,8 +230,8 @@ the binary using the payload loader (remember to specify the -i option if a
 serial HMI option is used) but to run the XMM versions, the appropriate XMM 
 utilities must first be built for the platform using the "build_utilities" 
 script. The cache must be used, and the cache size must be specified as 1K, 
-because these are the options used in the build_all script. Then run the 
-programs using a payload command such as:
+because these are the options used in the Makefile. Then run the programs 
+using a payload command such as:
 
    payload -i XMM run_diners_xmm
 
@@ -262,15 +262,15 @@ On the Propeller 2:
    run_cmm.bin    - run the primary program as a CMM program
    run_lmm.bin    - run the primary program as an LMM program
    run_nmm.bin    - run the primary program as an NMM program
-   run_xmm.bin    - run the primary program as an NMM program
+   run_xmm.bin    - run the primary program as an XMM program
 
 The LMM, CMM & NMM versions of the program can be executed simply by loading
 the binary using the payload loader (remember to specify the -i option if a
 serial HMI option is used) but to run the XMM versions, the appropriate XMM 
 utilities must first be built for the platform using the "build_utilities" 
 script. The cache must be used, and the cache size must be specified as 1K, 
-because these are the options used in the build_all script. Then run the 
-programs using a payload command such as:
+because these are the options used in Makefile. Then run the programs using 
+a payload command such as:
 
    payload -i XMM run_xmm
 
@@ -297,8 +297,8 @@ the binary using the payload loader (remember to specify the -i option if a
 serial HMI option is used) but to run the XMM versions, the appropriate XMM 
 utilities must first be built for the platform using the "build_utilities" 
 script. The cache must be used, and the cache size must be specified as 1K, 
-because these are the options used in the build_all script. Then run the 
-programs using a payload command such as:
+because these are the options used in the Makefile. Then run the programs 
+using a payload command such as:
 
    payload -i XMM run_int_xmm
 
