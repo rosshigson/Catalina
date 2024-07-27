@@ -63,11 +63,12 @@ endif
 
 CFLAGS += -lcx -I../ptoc
 
-#set up some common utilities
+# set up options specific to Windows or Linux
 ifeq ($(OS), Windows_NT)
-	MV=move /y
-	RM=-del /q /s
-	CP=copy /y
+	E=.exe
+	MV=cmd //c move //y
+	RM=-cmd //c del //q //s
+	CP=cmd //c copy //y
 else
 	MV=mv
 	RM=-rm -f

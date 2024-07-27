@@ -27,13 +27,6 @@ else
 	B=.bin
 endif
 
-# set up options specific to Windows or Linux
-ifeq ($(OS), Windows_NT)
-	E=.exe
-else
-	E=
-endif
-
 ifeq ("$(MYCFLAGS)", "")
 ifeq ("$(P2FLAG)", "")
 	MYCFLAGS = -C LARGE
@@ -42,11 +35,14 @@ else
 	endif
 endif
 
+# set up options specific to Windows or Linux
 ifeq ($(OS), Windows_NT)
-	MV=move /y
-	RM=del /q /s
-	CP=copy /y
+	E=.exe
+	MV=cmd //c move //y
+	RM=-cmd //c del //q //s
+	CP=cmd //c copy //y
 else
+	E=
 	MV=mv
 	RM=-rm -f
 	CP=cp -f

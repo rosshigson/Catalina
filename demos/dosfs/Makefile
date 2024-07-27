@@ -26,9 +26,9 @@ endif
 # set up options specific to Windows or Linux
 ifeq ($(OS), Windows_NT)
 	E=.exe
-	MV=move /y
-	RM=del /q /s
-	CP=copy /y
+	MV=cmd //c move //y
+	RM=-cmd //c del //q //s
+	CP=cmd //c copy //y
 else
 	E=
 	MV=mv

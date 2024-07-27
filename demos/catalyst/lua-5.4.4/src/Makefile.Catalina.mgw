@@ -120,11 +120,13 @@ else
 endif
 endif
 
+# set up options specific to Windows or Linux
 ifeq ($(OS), Windows_NT)
-	MV=move /y
-	RM=del /q /s
-	CP=copy /y
-	DEST_CP=dest_cp
+	E=.exe
+	MV=cmd //c move //y
+	RM=-cmd //c del //q //s
+	CP=cmd //c copy //y
+	DEST_CP=cmd //c dest_cp
 else
 	MV=mv
 	RM=-rm -f
