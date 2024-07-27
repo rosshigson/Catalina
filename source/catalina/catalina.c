@@ -370,6 +370,7 @@
  *                 (the default remains as -p1, so there is no specific 
  *                 symbol needed for that case).
  *
+ * Version 7.7  - Just update the version number.
  *
  */                  
 
@@ -400,7 +401,7 @@
 #include <string.h>
 #include <math.h>
 
-#define VERSION            "7.6"
+#define VERSION            "7.7"
 
 #define MAX_LINELEN        4096
 

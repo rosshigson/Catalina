@@ -99,6 +99,8 @@
 --
 -- version 7.6   - just update version number.
 --                  
+-- version 7.7   - just update version number.
+--                  
 require "os"
 require "io"
 require "math"
@@ -106,7 +108,7 @@ require "string"
 require "propeller"
 
 -- configuration parameters and default values
-CATALINA_VERSION = "7.6"
+CATALINA_VERSION = "7.7"
 LCCDIR           = "/";
 CATALINA_TARGET  = LCCDIR .. "target"
 CATALINA_LIBRARY = LCCDIR .. "lib"

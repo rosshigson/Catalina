@@ -1,7 +1,7 @@
 This file contains a summary of changes to Catalina in recent releases. For
 information about installing and using Catalina, see the file README.md 
 
-Catalina release 7.6.3 is a full release. 
+Catalina release 7.7 is a full release. 
 
 WARNING: DO NOT INSTALL THIS RELEASE OVER A PRIOR VERSION OF CATALINA AND
 DO NOT LINK OR COMBINE PROGRAMS COMPILED WITH THIS VERSION WITH CODE (E.G. 
@@ -14,6 +14,46 @@ The following sections list the changes that have been made in releases
 7.0 onwards of Catalina. If you have not used a previous release of Catalina, 
 you can skip the rest of this README and instead go straight to the Catalina 
 tutorial documents.
+
+RELEASE 7.7
+
+New Functionality
+-----------------
+
+1. Catalina's main source of installation information is now the README.md
+   file. The existing README.TXT file is retained as the history of recent 
+   changes, but refers users to README.md for installation and usage 
+   instructions. This is to accommodate GitHub's standard for README files.
+
+2. The 'use_catalina' script now checks for the existence of Catalina 
+   executables (specifically, the binary for catalina itself) and also 
+   whether a version of Gnu 'make' is installed, and issues a warning if 
+   either one is not found.
+
+3. A new 'catalina_shortcuts' script has been added to allow Windows users
+   to create Start Menu entries when Catalina is installed from a source 
+   other than the Windows Setup installer program (e.g. from GitHub).
+
+4. Catalina distributions (other than the Windows Setup installer) no longer 
+   contain binaries for Gnu utility programs. The only Gnu program that is 
+   now required to build Catalina, Catalyst and varoius demo programs is Gnu 
+   'make' - and it is now recommended that this be installed on Windows 
+   using 'winget' - e.g. using the command:
+
+      winget install ezwinports.make
+
+Other Changes
+-------------
+
+1. Fixed some issues in the BUILD.TXT instructions for building Catalina 
+   from source on Linux.
+
+2. Catalina scripts and Makefiles no longer assume that Gnu utilities 
+   (other than 'make') will be available. In particular the Makefiles 
+   now use the standard Windows utilities (del, copy, move etc) when 
+   executed on Windows, and the various Windows clean_all scripts now 
+   either use the updated Makefiles, or the Windows del and rmdir 
+   commands.
 
 RELEASE 7.6.3
 
