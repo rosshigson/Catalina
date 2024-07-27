@@ -1,3 +1,6 @@
+This file contains a summary of changes to Catalina in recent releases. For
+information about installing and using Catalina, see the file README.md 
+
 Catalina release 7.6.3 is a full release. 
 
 WARNING: DO NOT INSTALL THIS RELEASE OVER A PRIOR VERSION OF CATALINA AND
