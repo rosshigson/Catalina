@@ -31,6 +31,7 @@ mkdir "%ALLUSERSPROFILE%\Start Menu\Programs\%menu%"
 
 bin\shortcut /F:"%ALLUSERSPROFILE%\Start Menu\Programs\%menu%\Catalina Command Line.lnk" /A:C /T:"cmd.exe" /P:"/k %catpath%\bin\catalina_cmd.bat" /W:"%catpath%" /I:"%catpath%\Catalina.ico"
 bin\shortcut /F:"%ALLUSERSPROFILE%\Start Menu\Programs\%menu%\Catalina Geany IDE.lnk" /A:C /T:"%catpath%\bin\catalina_geany.bat" /W:"%catpath%" /I:"%catpath%\catalina_geany\geany.ico"
+bin\shortcut /F:"%ALLUSERSPROFILE%\Start Menu\Programs\%menu%\README.md.lnk" /A:C /T:"%catpath%\README.md" /W:"%catpath%"
 bin\shortcut /F:"%ALLUSERSPROFILE%\Start Menu\Programs\%menu%\README.TXT.lnk" /A:C /T:"%catpath%\README.TXT" /W:"%catpath%"
 bin\shortcut /F:"%ALLUSERSPROFILE%\Start Menu\Programs\%menu%\README_P2.TXT.lnk" /A:C /T:"%catpath%\README_P2.TXT" /W:"%catpath%"
 
