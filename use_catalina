@@ -18,10 +18,23 @@ if [[ ! -e "$LCCDIR/bin/catalina" ]] ; then
   echo "=========================================================================="
   echo "         IMPORTANT: THIS INSTALLATION OF CATALINA HAS NO BINARIES"
   echo ""
-  echo "    You should ebuild Catalina from source - for details, see BUILD.TXT"
+  echo "   You should rebuild Catalina from source - for details, see BUILD.TXT"
+  echo ""
+  echo "=========================================================================="
+  echo ""
+fi
+
+which make > /dev/null
+if [[ $? -ne 0 ]] ; then
+  echo ""
+  echo "=========================================================================="
+  echo "    IMPORTANT: THIS INSTALLATION OF CATALINA HAS NO 'MAKE' EXECUTABLE"
+  echo ""
+  echo "         You should use your Linux package manager to install it."
   echo ""
   echo "=========================================================================="
   echo ""
 fi
 
 catalina_env
+
