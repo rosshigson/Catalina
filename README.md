@@ -31,11 +31,13 @@ Setting up Catalina
 
 Windows using Setup
 -------------------
-If you used a Windows Installer package (e.g. **Catalina_7.7_Setup.exe**) to install Catalina, the Windows Start Menu should contain the following shortcuts:
+If you used a Windows Installer package (e.g. **Catalina_7.7_Setup.exe**) to install Catalina and accepted the recommended settings, the Windows Start Menu should contain the following shortcuts:
 
 -   **Catalina Command Line** : Start a Windows command shell (i.e. cmd.exe) in the Catalina directory and set up the Catalina environment variables and paths.
 -   **Catalina Geany** : Start the Catalina version of the Geany Integrated Development Environment.
 -   **Documents** : Contains links to Catalina tutorial and reference documents.
+
+Note that the Windows Installer may offers the option of installing Make and additional GNU utilities. While installing **make** is recommended, this method of doing so is deprecated, and may be removed from future versions of the Windows Installer. See the **Catalina and make** section of this document (below) for details on the recommended way to install **make**.
 
 Windows Manual install
 ----------------------
@@ -72,17 +74,17 @@ If you cloned the Git repository or downloaded it as a compressed file and then 
 Catalina and make
 -----------------
 
-While Catalina does not _require_ **make** to just use the C compiler, it _is_ required to rebuild both Catalina and Catalyst from source, and is also used by various Catalina scripts, such as the **build_all** scripts in the demos directory. 
+While Catalina does not _require_ **make** to just use the C compiler, it _is_ required to rebuild Catalina, Geany and Catalyst from source, and is also used by various Catalina scripts such as the **build_all** scripts in the demos directory. 
 
 The **use_catalina** script will warn if **make** is not installed.
 
 Linux will usually have **make** installed. If it does not, use the appropriate package manager to install it.
 
-Windows does not have a native version of **make**. The GNU version can be installed either by installing Cygwin, MinGW, MSYS2 or GNuWin32, or by executing the following in a Command Line window (requires an active internet connection):
+Windows does not have a native version of **make**. The GNU version can be installed either by installing Cygwin, MinGW, MSYS2 or GNuWin32, but the recommended method is to execute the following in a Command Line window (requires an active internet connection):
 
 **winget install ezwinports.make**
 
-Note that you will have to open a new Command Line window to use it.
+Note that this installation only has to be done once, but that the current Command Line window will have to be closed and a new one opened for the installation to take effect.
 
 More Information
 ----------------
