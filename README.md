@@ -44,7 +44,7 @@ Windows Manual install
 
 If you did not use the Windows Setup package but either cloned the Git repository or downloaded it as a compressed file and then uncompressed it, then the distribution will includes all sources, but not the Windows binaries. 
 
-If you do not want to rebuild Catalina from source (which is a complex process under Windows) then a separate package of precompiled binaries will be available suitable for Windows 10 or Windows 11 as an asset associated with the Git release. Download the asset and uncompress it into Catalina's **bin** directory.
+If you do not want to rebuild Catalina from source (which is a complex process under Windows) then one or more separate packages of precompiled binaries will be available suitable for Windows 10 or Windows 11 as assets associated with the Git release. Download the assets and uncompress them into the relevant directory (e.g. from Catalina_7.7_Windows_binaries.zip into _Catalina\bin_ or from Catalina_7.7_Windows_Geany_binaries.zip into _Catalina\catalina_geany_).
     
 Open a Windows command shell (i.e. **cmd.exe**), then **cd** to the Catalina installation folder. Then execute the command **use_catalina** to set up the Catalina environment variables and paths.
 
@@ -74,7 +74,7 @@ If you cloned the Git repository or downloaded it as a compressed file and then 
 Catalina and make
 -----------------
 
-While Catalina does not _require_ **make** to just use the C compiler, it _is_ required to rebuild Catalina, Geany and Catalyst from source, and is also used by various Catalina scripts such as the **build_all** scripts in the demos directory. 
+While Catalina does not _require_ **make** to just use the C compiler, it _is_ required to rebuild Catalina, Geany and Catalyst from source, and is also used by **catalina_geany**, and also various Catalina scripts such as the **build_all** scripts in the _Catalina\demos_ directories. 
 
 The **use_catalina** script will warn if **make** is not installed.
 
@@ -91,6 +91,4 @@ More Information
 The documents **Getting Started with Catalina** and **Getting Started with the Catalina Geany IDE** for tutorial information on using Catalina.
 
 See the other Catalina documents for more detailed information on various Catalina components.
-
-
 
