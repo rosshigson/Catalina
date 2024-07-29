@@ -1,4 +1,0 @@
-#!/bin/bash
-#set -x
-
-rm -fr ReadMe.Dependencies.Geany.txt share bin etc lib usr
