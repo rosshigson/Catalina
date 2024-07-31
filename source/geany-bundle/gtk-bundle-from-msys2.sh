@@ -36,7 +36,8 @@ libiconv
 bzip2
 libffi
 libpng
-gettext
+gettext-tools
+gettext-runtime
 glib2
 graphite2
 libwinpthread-git

@@ -69,8 +69,9 @@ also work, but earlier versions may not):
 ================
 
 Most of Catalina can be compiled with MSYS2. Download the MSYS2 installer 
-(msys2-x86_64-20230718.exe) from www.msys2.org (Note that only the 64 bit 
-version of MINGW has been tested).
+(most recently tested with msys2-x86_64-20240727.exe, but other versions may
+also work) from www.msys2.org (Note that only the 64 bit version of MINGW has 
+been tested).
 
 Run the MSYS2 installer. 
 
@@ -97,8 +98,9 @@ Use the following pacman commands to install the required packages:
   pacman -S mingw-w64-i686-python3 mingw-w64-i686-python-lxml
   pacman -S mingw-w64-i686-python-docutils
   pacman -S mingw-w64-i686-pcre mingw-w64-i686-pcre2 
-  pacman -S mingw-w64-i686-osslsigncode mingw-w64-i686-nsis
+  pacman -S mingw-w64-i686-nsis
   pacman -S mingw-w64-i686-pdcurses
+  pacman -S mingw-w64-i686-gettext
   pacman -S autoconf automake gettext intltool libtool
   pacman -S rsync dos2unix zip unzip flex bison gawk grep 
   pacman -S make ncurses ncurses-devel
@@ -198,7 +200,7 @@ versions. To do that in the bash shell, use the following command:
 Start Geany and open the "hello_world" project. You can do this from a
 Catalina command-line window:
 
-   cd ~/catalina/demos
+   cd %LCCDIR%\demos
    catalina_geany hello_world
 
 Before building the program, use the Project -> Properties command to check
