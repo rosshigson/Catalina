@@ -105,6 +105,36 @@ int func_no = 0;
 int which_side = _a_RHS;
 int max_base_gc = 1, max_fn_gc = 1, cur_base_gc = 1, cur_fn_gc = 1;
 
+int safe_sprintf_s(char *out, char *fmt, char *s1) {
+   char *copy_s1 = alloca(strlen(s1)+1);
+   strcpy(copy_s1, s1);
+   return sprintf(out, fmt, copy_s1);
+}
+
+int safe_sprintf_ss(char *out, char *fmt, char *s1, char *s2) {
+   char *copy_s1 = alloca(strlen(s1)+1);
+   char *copy_s2 = alloca(strlen(s2)+1);
+   strcpy(copy_s1, s1);
+   strcpy(copy_s2, s2);
+   return sprintf(out, fmt, copy_s1, copy_s2);
+}
+
+int safe_sprintf_sss(char *out, char *fmt, char *s1, char *s2, char *s3) {
+   char *copy_s1 = alloca(strlen(s1)+1);
+   char *copy_s2 = alloca(strlen(s2)+1);
+   char *copy_s3 = alloca(strlen(s3)+1);
+   strcpy(copy_s1, s1);
+   strcpy(copy_s2, s2);
+   strcpy(copy_s3, s3);
+   return sprintf(out, fmt, copy_s1, copy_s2, copy_s3);
+}
+
+int safe_sprintf_sd(char *out, char *fmt, char *s1, int d) {
+   char *copy_s1 = alloca(strlen(s1)+1);
+   strcpy(copy_s1, s1);
+   return sprintf(out, fmt, copy_s1, d);
+}
+
 char *
 codeptr(int inst, int len)
 {
@@ -508,12 +538,12 @@ test_loop(int inst)
     for (j=0; j<progcode[inst].endloop; j++)
     {
       if (i) 
-        sprintf(x, "%s }",x); 
+        safe_sprintf_s(x, "%s }",x); 
       else 
         sprintf(x, "}"); 
       i = 1;
     }
-    sprintf(x, "%s\n", x);
+    safe_sprintf_s(x, "%s\n", x);
     z = code0ptr(inst, strlen(x)+1);
     strcpy(z, x);
     x[0] = '\0';
@@ -521,7 +551,7 @@ test_loop(int inst)
   if (progcode[inst].doloop == TRUE) 
   { 
     if (i) 
-      sprintf(x, "%sdo\n",x); 
+      safe_sprintf_s(x, "%sdo\n",x); 
     else 
       sprintf(x, "do\n"); 
     z = code0ptr(inst, strlen(x)+1);
@@ -533,7 +563,7 @@ test_loop(int inst)
   if (progcode[inst].foreverloop == 1)
   {
     if (i) 
-      sprintf(x, "%swhile (1)\n",x); 
+      safe_sprintf_s(x, "%swhile (1)\n",x); 
     else 
       sprintf(x, "while (1)\n"); 
     z = code0ptr(inst, strlen(x)+1);
@@ -544,7 +574,7 @@ test_loop(int inst)
   else if (progcode[inst].foreverloop == 2)
   {
     if (i) 
-      sprintf(x, "%swhile (1);\n",x); 
+      safe_sprintf_s(x, "%swhile (1);\n",x); 
     else 
       sprintf(x, "while (1);\n"); 
     z = code0ptr(inst, strlen(x)+1);
@@ -605,9 +635,9 @@ awka_buildexpr(char *oper, char *p, char *q, int pprev, int qprev, char c1, char
         else
           sprintf(ret, "awka_getd(%s) %s", q, oper);
         if (assign_op[progcode[pprev].op])
-          sprintf(ret, "%s (%s)", ret, p);
+          safe_sprintf_ss(ret, "%s (%s)", ret, p);
         else
-          sprintf(ret, "%s %s", ret, p);
+          safe_sprintf_ss(ret, "%s %s", ret, p);
       }
       else
       {
@@ -636,9 +666,9 @@ awka_buildexpr(char *oper, char *p, char *q, int pprev, int qprev, char c1, char
       {
         sprintf(ret, "strtod(%s, NULL) %s %s", q, oper, p);
         if (assign_op[progcode[pprev].op])
-          sprintf(ret, "%s (%s)", ret, p);
+          safe_sprintf_ss(ret, "%s (%s)", ret, p);
         else
-          sprintf(ret, "%s %s", ret, p);
+          safe_sprintf_ss(ret, "%s %s", ret, p);
       }
       else
         sprintf(ret, "(strcmp(%s, %s) %s 0)", q, p, oper);
@@ -652,17 +682,17 @@ awka_buildexpr(char *oper, char *p, char *q, int pprev, int qprev, char c1, char
       if (c1 == _VAR)
       {
         if (findvaltype(q) == _VALTYPE_NUM || progcode[pprev].ftype == 1)
-          sprintf(ret, "%s %s %s", ret, oper, getdoublevalue(p));
+          safe_sprintf_sss(ret, "%s %s %s", ret, oper, getdoublevalue(p));
           /* sprintf(ret, "%s %s %s->dval", ret, oper, p); */
         else
-          sprintf(ret, "%s %s awka_getd(%s)", ret, oper, p);
+          safe_sprintf_sss(ret, "%s %s awka_getd(%s)", ret, oper, p);
       }
       else if (c1 == _DBL)
       {
         if (assign_op[progcode[pprev].op])
-          sprintf(ret, "%s %s (%s)", ret, oper, p);
+          safe_sprintf_sss(ret, "%s %s (%s)", ret, oper, p);
         else
-          sprintf(ret, "%s %s %s", ret, oper, p);
+          safe_sprintf_sss(ret, "%s %s %s", ret, oper, p);
       }
       else
         sprintf(ret, "%s %s strtod(%s, NULL)", q, oper, p);
@@ -1238,7 +1268,7 @@ awka_add_asg(int inst, int *earliest, char *context)
   setvaltype(q, _VALTYPE_NUM);
   r2 = buildstr("add_asg", "%s", p, c1, _DBL, inst, inst-1); 
   ret = (char *) realloc(ret, strlen(ret) + strlen(r2) + 2);
-  sprintf(ret, "%s%s",ret,r2);
+  safe_sprintf_ss(ret, "%s%s",ret,r2);
   *context = _DBL;
 
   free(p);
@@ -1600,7 +1630,7 @@ awka_div_asg(int inst, int *earliest, char *context)
   r2 = buildstr("div_asg", "awka_dnotzero(%s)", p, c1, _DBL, inst, inst-1);
 
   ret = (char *) realloc(ret, strlen(ret) + strlen(r2) + 2);
-  sprintf(ret, "%s%s",ret,r2);
+  safe_sprintf_ss(ret, "%s%s",ret,r2);
   *context = _DBL;
 
   free(p);
@@ -1728,9 +1758,9 @@ awka_eq(int inst, int *earliest, char *context)
         else
           sprintf(ret, "%s ==", q);
         if (assign_op[progcode[inst-1].op])
-          sprintf(ret, "%s (%s)", ret, p);
+          safe_sprintf_ss(ret, "%s (%s)", ret, p);
         else
-          sprintf(ret, "%s %s", ret, p);
+          safe_sprintf_ss(ret, "%s %s", ret, p);
       }
       else
       {
@@ -2193,7 +2223,7 @@ awka_mod_asg(int inst, int *earliest, char *context)
   setvaltype(q, _VALTYPE_NUM);
   r2 = buildstr("mod_asg", "%s)", p, c1, _DBL, inst, inst-1);
   ret = (char *) realloc(ret, strlen(ret) + strlen(r2) + 2);
-  sprintf(ret, "%s%s)",ret,r2);
+  safe_sprintf_ss(ret, "%s%s)",ret,r2);
   *context = _DBL;
   free(p);
   free(q);
@@ -2266,7 +2296,7 @@ awka_mul_asg(int inst, int *earliest, char *context)
   r2 = buildstr("mul_asg", "%s", p, c1, _DBL, inst, inst-1);
 
   ret = (char *) realloc(ret, strlen(ret) + strlen(r2) + 2);
-  sprintf(ret, "%s%s",ret,r2);
+  safe_sprintf_ss(ret, "%s%s",ret,r2);
   *context = _DBL;
 
   free(p);
@@ -2392,9 +2422,9 @@ awka_neq(int inst, int *earliest, char *context)
         else
           sprintf(ret, "%s !=", q);
         if (assign_op[progcode[inst-1].op])
-          sprintf(ret, "%s (%s)", ret, p);
+          safe_sprintf_ss(ret, "%s (%s)", ret, p);
         else
-          sprintf(ret, "%s %s", ret, p);
+          safe_sprintf_ss(ret, "%s %s", ret, p);
       }
       else
       {
@@ -2545,7 +2575,7 @@ awka_pop(int inst, int *earliest, char *context)
         strcpy(r2, ";\n");
         strcpy(ret, "}\n");
         for (i=1; i<progcode[inst].endloop; i++)
-          sprintf(ret, "%s}\n",ret);
+          safe_sprintf_s(ret, "%s}\n",ret);
       }
       else
         strcpy(ret, ";\n");
@@ -2794,7 +2824,7 @@ awka_printf(int inst, int *earliest, char *context)
     r2 = buildstr("printf", "%s", p, c1, _STR, inst, inst-2);
     if (strlen(r2) + strlen(ret) >= 300)
       ret = (char *) realloc(ret, strlen(r2) + strlen(ret) + 50 );
-    sprintf(ret, "%s%s, 0",ret, r2);
+    safe_sprintf_ss(ret, "%s%s, 0",ret, r2);
     free(r2);
     free(p);
     *earliest = prev;
@@ -2802,17 +2832,17 @@ awka_printf(int inst, int *earliest, char *context)
     if (j == -1 || j == -2)
     {
       /* file */
-      sprintf(ret, "%s, %d", ret, j+1);
+      safe_sprintf_sd(ret, "%s, %d", ret, j+1);
     }
     else if (j == -6)
     {
       /* coprocess */
-      sprintf(ret, "%s, 2", ret);
+      safe_sprintf_s(ret, "%s, 2", ret);
     }
     else
     {
       /* pipe */
-      sprintf(ret, "%s, 1", ret);
+      safe_sprintf_s(ret, "%s, 1", ret);
     }
 
     if (progcode[prev].op != _PUSHINT)
@@ -2830,7 +2860,7 @@ awka_printf(int inst, int *earliest, char *context)
   else
   {
     /* default output stream (stdout) */
-    sprintf(ret, "%sNULL, 0, 0", ret);
+    safe_sprintf_s(ret, "%sNULL, 0, 0", ret);
     progcode[inst-1].done = TRUE;
     killcode(inst-1);
   }
@@ -2843,26 +2873,26 @@ awka_printf(int inst, int *earliest, char *context)
     switch (j)
     {
       case 0:
-        sprintf(ret, "%s, awka_arg1(a_TEMP, awka_dol0(0)));\n", ret);
+        safe_sprintf_s(ret, "%s, awka_arg1(a_TEMP, awka_dol0(0)));\n", ret);
         dol0_used = 1;
         *earliest = prev;
         return ret;
       case 1:
-        sprintf(ret, "%s, awka_arg1(a_TEMP", ret);
+        safe_sprintf_s(ret, "%s, awka_arg1(a_TEMP", ret);
         break;
       case 2:
-        sprintf(ret, "%s, awka_arg2(a_TEMP", ret);
+        safe_sprintf_s(ret, "%s, awka_arg2(a_TEMP", ret);
         break;
       case 3:
-        sprintf(ret, "%s, awka_arg3(a_TEMP", ret);
+        safe_sprintf_s(ret, "%s, awka_arg3(a_TEMP", ret);
         break;
       default:
-        sprintf(ret, "%s, awka_vararg(a_TEMP", ret);
+        safe_sprintf_s(ret, "%s, awka_vararg(a_TEMP", ret);
         break;
     }
   }
   else
-    sprintf(ret, "%s, awka_vararg(a_TEMP", ret);
+    safe_sprintf_s(ret, "%s, awka_vararg(a_TEMP", ret);
 
   for (i=0; i<j; i++)
   {
@@ -2903,7 +2933,7 @@ awka_printf(int inst, int *earliest, char *context)
   if (j)
   {
     ret = (char *) realloc(ret, strlen(ret) + strlen(r3) + 22 );
-    sprintf(ret, "%s, %s", ret, r3);
+    safe_sprintf_ss(ret, "%s, %s", ret, r3);
     free(r3);
   }
   
@@ -3134,7 +3164,7 @@ awka_split(int inst, int *earliest, char *context)
   free(p);
 
   ret = (char *) realloc(ret, strlen(ret) + strlen(r2) + strlen(r3) + 30);
-  sprintf(ret, "%s, %s, %s, INT_MAX, FALSE)",ret,r2,r3);
+  safe_sprintf_sss(ret, "%s, %s, %s, INT_MAX, FALSE)",ret,r2,r3);
 
   *earliest = prev;
   free(r2);
@@ -3416,7 +3446,7 @@ awka_test(int inst, int *earliest, char *context)
         ret = buildstr("test", "(%s", p, c1, _TRU, inst, prev2);
         free(p);
         ret = (char *) realloc( ret, strlen(ret) + strlen(r2) + 20 );
-        sprintf(ret, "%s %s)",ret, r2);
+        safe_sprintf_ss(ret, "%s %s)",ret, r2);
         free(r2);
         *earliest = prev;
       }
@@ -4148,10 +4178,10 @@ awka_function(int cur, int end)
     sprintf(p, "a_VAR *_lvar[%d];\n\n",lvar_no);
     p = codeptr(cur, (lvar_no * 3) + 40);
     sprintf(p, "static int _type[%d] = {", lvar_no);
-    sprintf(p, "%s%d", p, isarr[0]);
+    safe_sprintf_sd(p, "%s%d", p, isarr[0]);
     for (i=1; i<lvar_no; i++)
-      sprintf(p, "%s, %d", p, isarr[i]);
-    sprintf(p, "%s};\n",p);
+      safe_sprintf_sd(p, "%s, %d", p, isarr[i]);
+    safe_sprintf_s(p, "%s};\n",p);
   }
 
   p = codeptr(cur, 40);

@@ -13,7 +13,7 @@ endif
 A=.a
 O=.o
 E=
-CC=gcc -m32
+CC=gcc
 CPP=c++
 CFLAGS=
 LDFLAGS=

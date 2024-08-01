@@ -79,12 +79,13 @@ parallelize$E:	parallelize.c
 	$(CC) $(CFLAGS) -o $@ parallelize.c
 
 parallelize_awka$E:	parallelize_awka.awk parallelize_functions.c parallelize_functions.h
+	cd $(AWKADIR);./configure;cd ..
 	make -C $(AWKADIR) all
 	cp $(AWKADIR)/awka/awka .
 	cp $(AWKADIR)/lib/libawka.a .
 	cp $(AWKADIR)/lib/libawka.h .
 	./CompileParallelize parallelize_awka
-	$(CC) $(CFLAGS) -m32 -o $@ -I. parallelize_awka.c parallelize_functions.c libawka.a
+	$(CC) $(CFLAGS) -o $@ -I. parallelize_awka.c parallelize_functions.c libawka.a
 
 catapult$E:	catapult.c
 	$(CC) $(CFLAGS) -o $@ catapult.c
@@ -95,7 +96,7 @@ catapult_awka$E:	catapult_awka.awk catapult_functions.c catapult_functions.h
 	cp $(AWKADIR)/lib/libawka.a .
 	cp $(AWKADIR)/lib/libawka.h .
 	./CompileCatapult catapult_awka
-	$(CC) $(CFLAGS) -m32 -o $@ -I. catapult_awka.c catapult_functions.c libawka.a
+	$(CC) $(CFLAGS) -o $@ -I. catapult_awka.c catapult_functions.c libawka.a
 
 #pstrip$E:	pasm_strip.awk 
 #	awka.exe --f pasm_strip.awk>pasm_strip.c
