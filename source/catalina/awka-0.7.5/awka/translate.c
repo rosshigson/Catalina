@@ -4409,7 +4409,9 @@ process_argv(int *argc, char *int_argv)
       }
       p3++;
     }
-    *p4 = '\0';
+    if (p4 != NULL) {
+       *p4 = '\0';
+    }
 
     if (!*p2)
       break;

@@ -20,6 +20,9 @@
 #include <string.h>
 #include <errno.h>
 
+#include "libawka.h"
+#include "garbage.h"
+
 #define _IO_C
 #define _IN_LIBRARY
 #include "libawka.h"
@@ -49,7 +52,9 @@
 #endif /* HAVE_SOCKETS=1 */
 
 #define INVALID_HANDLE (-1)
+#ifndef O_BINARY
 #define O_BINARY 0
+#endif
 
 enum inet_prot { INET_NONE, INET_TCP, INET_UDP, INET_RAW };
 
@@ -994,6 +999,11 @@ _awka_childlist_del(int pid)
 int
 _awka_wait_pid(int pid)
 {
+#if HAVE_FORK == 0
+   // we don't expect this to be called if we don't use fork
+   awka_error("Unexpected call to _awka_wait_pid\n");
+   return -1;
+#else
   struct pid_child *child;
   int exit_value, id;
 
@@ -1024,5 +1034,6 @@ _awka_wait_pid(int pid)
     exit_value = (exit_value & 0xff00) >> 8;
 
   return exit_value;
+#endif
 }
 

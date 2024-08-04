@@ -37,6 +37,8 @@ Install Catalina by executing Catalina_7.7_Setup.exe and following the
 prompts, or cloning or downloading the GitHub repository and associated
 binary assets. 
 
+There is more information on installing Catalina in the document README.md.
+
 If you are using the Windows Setup program, make sure to select the "Install 
 Catalina Source Code" option. If you have already installed Catalina but did
 not install the source code, simply run the Setup program again and select 
@@ -44,111 +46,82 @@ this option.
 
 Note that you will need additional permissions to the Catalina installation 
 folders to rebuild Catalina in its default installation location. The Setup 
-program by default only gives the permissions required to use Catalina, not
-rebuild it. To do this, select where Catalina was installed in File Explorer,
+program by default only gives the permissions required to USE Catalina, not
+BUILD it. To do this, select where Catalina was installed in File Explorer,
 right click on Properties, select the Security tab and give the current user 
 "Full Control". 
 
 No matter where it is installed, rebuilding Catalina's version of Geany from 
 source may also require write permission to the C: drive, to create the 
 temporary folders C:\catalina and C:\geany. These temporary folders can be 
-deleted once the rebuild is complete.
+deleted once the build is complete.
 
-2. Install Cygwin
-=================
-
-Some parts of Catalina need to be compiled with Cygwin. The Cygwin DLL
-(cygwin1.dll) which is required to execute Catalina components built with
-cygwin is included in the Catalina "bin" directory. But Cygwin itself needs 
-to be installed in order to rebuild the components from source.
-
-Download the Cygwin installer (setup-x86_64.exe) from https://www.cygwin.com
-(note that only the 64 bit version of Cygwin has been tested - the older 32
-bit version of Cygwin is deprecated and may not work).
-
-Run the Cygwin installer. The installer will select the base packages you 
-need by default. Manually select the following additional packages to install 
-(the numbers in brackets are the versions known to work. Later versions may 
-also work, but earlier versions may not):
-
-   gcc-g++ (11.4.0-1)
-   autoconf (2.71-2)
-   autogen (5.18.16-1)
-   automake (11-1)
-   make (4.4.1-2)
-
-3. Install MSYS2
+2. Install MSYS2
 ================
 
-Most of Catalina can be compiled with MSYS2. Download the MSYS2 installer 
-(e.g. msys2-x86_64-20230718.exe) from www.msys2.org (Note that only the 64 
-bit version of MINGW has been tested).
+Catalina must be compiled using MSYS2. Download the current MSYS2 installer 
+(e.g. msys2-x86_64-20230718.exe) from www.msys2.org. Note that this installer
+installs both 32 and 64 bit environments, but that the instructions below must
+be executed in a MINGW32 (i.e. 32 bit) environment. Do not use MSYS2 MINGW64 
+or any of the other MSYS2 options.
 
-Run the MSYS2 installer. 
+Execute the MSYS2 installer, and follow its instructions. 
 
-Open an MINGW32 MSYS2 bash shell (NOTE: use a MINGW32 shell, not MINGW64!!!) 
-- e.g. by using the MSYS2 MINGW32 menu entry, Then execute the following 
-command, to ensure some key packages are up to date:
+Open an MSYS2 MINGW32 bash shell (e.g. using the MSYS2 Windows Start menu 
+entry). NOTE: it must be an MSYS MINGW32 bash shell.
 
-  pacman --needed -Sy bash pacman pacman-mirrors msys2-runtime
+Execute the following command, to ensure some key packages are up to date:
 
-Now exit and re-open the MSYS2 MINGW32 bash shell and perform a general 
-system update:
+   pacman --needed -Sy bash pacman pacman-mirrors msys2-runtime
 
-  pacman -Su
+Exit and re-start the MSYS2 MINGW32 bash shell and perform a general system 
+update:
 
-Restart the MSYS2 MINGW32 bash shell once more, in case `pacman -Su` updated 
-environment related packages.
+   pacman -Su
 
-Use the following pacman commands to install the required packages:
+3. Install required packages
+============================
 
-  pacman -S mingw-w64-i686-binutils 
-  pacman -S mingw-w64-i686-gcc 
-  pacman -S mingw-w64-i686-gdb
-  pacman -S mingw-w64-i686-libtool 
-  pacman -S mingw-w64-i686-pkgconf 
-  pacman -S mingw-w64-i686-brotli 
-  pacman -S mingw-w64-i686-gtk2 
-  pacman -S mingw-w64-i686-python3 mingw-w64-i686-python-lxml
-  pacman -S mingw-w64-i686-python-docutils
-  pacman -S mingw-w64-i686-pcre mingw-w64-i686-pcre2 
-  pacman -S mingw-w64-i686-nsis
-  pacman -S mingw-w64-i686-pdcurses
-  pacman -S autoconf automake gettext intltool libtool
-  pacman -S rsync dos2unix zip unzip flex bison gawk grep 
-  pacman -S make ncurses ncurses-devel
+Exit and re-start the MSYS2 MINGW32 bash shell once more, in case pacman 
+updated any environment related packages.
 
-NOTE: Make sure you do NOT have both 'msys\gcc' and 'mingw-w64-i686-gcc' 
-installed, or you may get errors when building Geany. You can check this 
-with the following command, which will list all gcc packages and show which 
-are installed:
+Execute the following commands to install some necessary packages:
 
-  pacman -Ss gcc 
+   pacman -S autoconf automake gettext
+   pacman -S rsync dos2unix zip unzip 
+   pacman -S make flex bison gawk grep 
+   pacman -S ncurses ncurses-devel
+   pacman -S libtool intltool pkg-config 
+
+Execute the following pacman commands to install the packages required to 
+use the 32-bit gcc compiler:
+
+   pacman -S mingw-w64-i686-binutils 
+   pacman -S mingw-w64-i686-gcc 
+   pacman -S mingw-w64-i686-ncurses
+   pacman -S mingw-w64-i686-glib2
 
 Next, if the source is in a Windows directory with spaces in the path (which 
-it will be if Catalina was installed to the default location - usually
+it will be if Catalina was installed to the default location - i.e. usually
 "C:\Program Files (x86)" - then create a link to it without spaces. Note that 
 you need to do this from a Windows command line window started using the 
-"Run as Administrator" option.
+"Run as Administrator" option. 
 
-For example, if Catalina the source is in: 
-
-   C:\Program Files (x86)\Catalina_7.7
-
-Then execute the following commands in a Windows Command line window (not an 
-MSYS2 bash shell!):
+Open a Windows Command Line window (not an MSYS2 MINGW32 bash shell) and 
+execute the following commands:
 
    mkdir C:\catalina
    cd C:\catalina
    mklink /D 7.7 "C:\Program Files (x86)\Catalina_7.7"
 
-Then in MSYS2 you can use the path /c/catalina/7.7 to refer to the Catalina
-installation, and then do not need to worry about spaces in the path name.
+Then in any MSYS2 bash shell you can use the path /c/catalina/7.7 to refer to 
+the Catalina installation, without worrying about spaces in the path name.
 
-Then add the MSYS2 folders to the Windows PATH (e.g. Open Settings, search 
-for "environment variables" and then set the environment variables either 
-for the system, or for a specific account). Assuming MSYS2 is isntalled to
-the default location (c:\msys64), this would mean adding the following paths:
+Then add the MSYS2 folders to the Windows Path (e.g. Open Settings, search 
+for "environment variables" and then set the Path environment variable either 
+for the system, or for a specific user account). Assuming MSYS2 is isntalled 
+to the default location (c:\msys64), this would mean adding the following to 
+the Path:
 
    C:\msys64\mingw32\bin
    C:\msys64\usr\bin
@@ -156,46 +129,53 @@ the default location (c:\msys64), this would mean adding the following paths:
 4. Build Catalina
 =================
 
-Open a Catalina command line, and go to the Catalina sources:
+Open a Catalina Command Line Window (not an MSYS2 MINGW32 bash shell) and 
+build the Catalina binaries using the following commands:
 
    cd %LCCDIR%\source
+   build_binaries
 
-First, build those catalina components that must be built with Cygwin:
+Note that if you want to build both the Catalina binaries and the Catalina 
+libraries, use the following commands instead (NOTE: This can take a long 
+time to complete, and is not usually required on first installation):
 
-   build_cygwin
-
-Next, build the rest of the Catalina components (apart from Geany). Note
-that the Cygwin components must already have been built, or this command 
-will not complete successfully:
-
+   cd %LCCDIR%\source
    build_all
 
-NOTE: The build scripts may generate many warnings, but should generate no
-errors. If they do, it is most likely because of a missing package that needs
-to be identified and installed.
+NOTE: The build scripts may generate warnings, but should generate no errors. 
+If they do, it is most likely because of a missing package that needs to be 
+identified and installed.
 
 5. Build Geany
 ==============
 
-Open an MINGW32 MSYS2 bash shell (NOTE: MINGW32, not MINGW64!!!) using the 
-MSYS2 MINGW32 menu entry, In the bash shell, go to the geany source directory
-and build geany (assuming the source is in /c/catalina/7.7/source/geany 
-- which may be a link! - and we want to end up with Geany in /c/geany).
+Open an MSYS2 MINGW32 bash shell (e.g. using the MSYS2 Windows Start menu 
+entry). NOTE: it must be an MSYS MINGW32 bash shell.
+
+Use the following pacman commands to install some additional 32 bit packages
+required by Geany:
+
+   pacman -S mingw-w64-i686-gtk2 
+   pacman -S mingw-w64-i686-pcre mingw-w64-i686-pcre2 
+   pacman -S mingw-w64-i686-gettext-runtime
+   pacman -S mingw-w64-i686-gettext-tools
+
+Go to the geany source directory and build geany. The following commands 
+assume the Catalina Geany source is in /c/catalina/7.7/source/geany - which 
+may be a link! - and we want to end up with Geany in /c/geany:
 
    cd /c/catalina/7.7/source/geany-1.37.1
-
    NOCONFIGURE=1 ./autogen.sh
-
    ./configure --prefix=/c/geany --enable-gtk2 
-
-   make
+   make clean
+   make all
    make install
 
 Note that on Windows, Geany must be built with gtk2 because gtk3 is not yet 
 correctly implemented in MSYS2.
 
 Next, bundle in the DLLs and other files needed by Geany. This makes it 
-possible to move the resulting folder anywhere, and execute Geany without 
+possible to move the resulting folder anywhere, and to execute Geany without 
 having MSYS2 installed:
 
    cd ../geany-bundle
@@ -252,6 +232,8 @@ the GitHub repository (i.e. https://github.com/rosshigson/Catalina) in a
 suitable directory for building, such as a subdirectory called "catalina" in 
 your home directory.
 
+There is more information on installing Catalina in the document README.md.
+
 2. Install required packages
 ============================
 
@@ -288,14 +270,22 @@ the Set_Linux_Permissions script:
 
    Set_Linux_Permissions
 
-Then go to the source directory and build Catalina:
+Go to the Catalina source directory and build the Catalina binaries using the 
+following commands:
+
+   cd $LCCDIR/source
+   ./build_binaries
+
+Note that if you want to build both the Catalina binaries and the Catalina 
+libraries, use the following commands instead (NOTE: This can take a long 
+time to complete, and is not usually required on first installation):
 
    cd $LCCDIR/source
    ./build_all
 
-NOTE: The build scripts may generate many warnings, but should generate no
-errors. If they do, it is most likely because of a missing package that needs
-to be identified and installed.
+NOTE: The build scripts may generate warnings, but should generate no errors. 
+If they do, it is most likely because of a missing package that needs to be 
+identified and installed.
 
 Catalina can be executed from the location it was built, but it is recommended
 it be installed in /opt/catalina for future use:
@@ -368,7 +358,30 @@ field, you need to add the following option if you have a Propeller 2:
 
 Close the Project Properties dialog and use Build -> Clean command to ensure 
 there are no old versions of the program left in the folder, then use the 
-Build->Build File command to build the program. 
+Build->Build File command to build the program.
+
+NOTE: If you get a message about "cmd.exe" not being found, then Geany is 
+using the Windows version of the file 'filetypes.c' (which contains default
+project build commands for files with a '.c' extension) instead of the Linux 
+version. This can happen if (for example) you cloned or downloaded sources 
+from GitHub (which is set up for Windows). To fix this, locate filetpes.c
+in the Geany data/filedefs folder (not the src folder, which also has a file
+of that name, but it is not the same file) and overwrite it with the version 
+contained in filetypes.c.linux, which should be in the same folder - i.e.
+
+   source/catalina/catalina_geany-1.37.1/data/filedefs/
+
+and also (if it exists) in:
+
+   catalina_geany/data/filedefs/
+
+and also (if you have already installed Geany) in:
+
+   /opt/catalina_geany/share/geany/data/filedefs/
+
+The filetypes.c.linux file is also contained in the compressed archive called
+catalina_geany/catalina_geany_source.zip.
 
 Finally, use the Build -> Download and Interact command to download the program
 to the Propeller and open a terminal window to see the output from it.
+

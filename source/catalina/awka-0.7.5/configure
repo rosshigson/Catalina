@@ -5318,7 +5318,8 @@ if [ "${ac_cv_header_fcntl_h}" = "yes" ]; then echo "#define HAVE_FCNTL_H"; fi;
 sed 's/^X/#define/' defines.out
 cat<<'EOF'
 
-#define HAVE_REAL_PIPES 1
+#define HAVE_FORK 0
+#define HAVE_REAL_PIPES 0
 /* #define NO_BIN_CHARS */
 /* #define MEM_DEBUG */
 #endif /* CONFIG_H */

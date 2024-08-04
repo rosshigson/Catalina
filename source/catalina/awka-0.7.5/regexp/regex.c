@@ -45,6 +45,8 @@
 #endif
 
 # include <string.h>
+#define bcmp memcmp
+#define bcopy(src,dst,n) memmove(dst,src,n)
 
 #define WIDE_CHAR_SUPPORT (HAVE_WCTYPE_H && HAVE_WCHAR_H && HAVE_BTOWC)
 
@@ -102,6 +104,8 @@
 char *malloc ();
 char *realloc ();
 # endif
+
+#     define bzero(s, n)        (memset (s, '\0', n), (s))
 
 /* When used in Emacs's lib-src, we need to get bzero and bcopy somehow.
    If nothing else has been done, use the method below.  */

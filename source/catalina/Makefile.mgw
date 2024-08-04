@@ -15,6 +15,8 @@ BINDIR="..//..//bin//"
 
 LUADIR=lua-5.4.4
 
+AWKADIR=awka-0.7.5
+
 what:
 	-@echo make all bcc binbuild binstats catbind catalina payload spinc bindump blackbox catdbgfilegen parallelize parallelize_awka catapult catapult_awka pstrip install
 
@@ -67,27 +69,36 @@ parallelize$E:	parallelize.c
 	$(CC) $(CFLAGS) -o $@ parallelize.c
 
 parallelize_awka$E:	parallelize_awka.awk parallelize_functions.c parallelize_functions.h
-	-@echo parallelize_awka must now be made under Cygwin - see Makefile.cygwin
-#	awka.exe -i parallelize_functions.h -f parallelize_awka.awk>parallelize_awka.c
-#	gcc -I. -c parallelize_functions.c
-#	gcc -I. -O2 -s -o parallelize_awka.exe parallelize_awka.c parallelize_functions.o libawka.a
+	make -C $(AWKADIR) all
+	cp $(AWKADIR)/awka/awka$E .
+	cp $(AWKADIR)/lib/libawka.a .
+	cp $(AWKADIR)/lib/libawka.h .
+	./CompileParallelize parallelize_awka
+	$(CC) $(CFLAGS) -o $@ -I. parallelize_awka.c parallelize_functions.c libawka.a
 
 catapult$E:	catapult.c
 	$(CC) $(CFLAGS) -o $@ catapult.c
 
 catapult_awka$E:	catapult_awka.awk catapult_functions.c catapult_functions.h
-	-@echo catapult_awka must now be made under Cygwin - see Makefile.cygwin
+	make -C $(AWKADIR) all
+	cp $(AWKADIR)/awka/awka$E .
+	cp $(AWKADIR)/lib/libawka.a .
+	cp $(AWKADIR)/lib/libawka.h .
+	./CompileCatapult catapult_awka
+	$(CC) $(CFLAGS) -o $@ -I. catapult_awka.c catapult_functions.c libawka.a
 
 pstrip$E:	pstrip.c
 	gcc -I. -O2 -s -o pstrip.exe pstrip.c
 
 clean::
 	make -C $(LUADIR) clean
-	$(RM) bcc$E binbuild$E binstats$E catbind$E catalina$E payload$E spinc$E bindump$E blackbox$E catdbgfilegen$E parallelize$E catapult$E pstrip$E
+	make -C $(AWKADIR) clean
+	$(RM) bcc$E binbuild$E binstats$E catbind$E catalina$E payload$E spinc$E bindump$E blackbox$E catdbgfilegen$E pstrip$E
 	$(RM) y.tab.c y.tab.h blackbox_l.c
-	$(RM) parallelize_awka.c parallelize_functions.o
-	$(RM) catapult_awka.c catapult_functions.o
+	$(RM) parallelize$E parallelize_awka$E parallelize_awka.c parallelize_functions.o
+	$(RM) parallelize$E cataplut_awka$E catapult_awka.c catapult_functions.o
 	$(RM) pasm_strip.c
+	$(RM) awka$E libawka.a libawka.h
 
 install:
 	cp bcc$E $(BINDIR)bcc$E

@@ -743,6 +743,7 @@ _awka_arrayinitargv( char **ptr, int argc, char *argv[] )
 void
 _awka_arrayinitenviron( char **ptr, int env_used )
 {
+  //extern char __declspec(dllimport) **environ;
   extern char **environ;
   register char *s, **p = environ, *q;
   char *tmpstr;

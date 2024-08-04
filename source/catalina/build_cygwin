@@ -1,7 +1,0 @@
-#!/bin/bash -login
-#set -x
-
-cd awka-0.7.5
-./configure
-cd ..
-make -f Makefile.cygwin clean all

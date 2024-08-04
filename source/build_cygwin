@@ -1,9 +1,0 @@
-#!/bin/bash
-#set -x
-
-cd catalina
-bash ./build_cygwin
-cd ../catoptimize
-bash ./build_cygwin
-cd ..
-

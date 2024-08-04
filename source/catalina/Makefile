@@ -81,7 +81,7 @@ parallelize$E:	parallelize.c
 parallelize_awka$E:	parallelize_awka.awk parallelize_functions.c parallelize_functions.h
 	cd $(AWKADIR);./configure;cd ..
 	make -C $(AWKADIR) all
-	cp $(AWKADIR)/awka/awka .
+	cp $(AWKADIR)/awka/awka$E .
 	cp $(AWKADIR)/lib/libawka.a .
 	cp $(AWKADIR)/lib/libawka.h .
 	./CompileParallelize parallelize_awka
@@ -92,15 +92,11 @@ catapult$E:	catapult.c
 
 catapult_awka$E:	catapult_awka.awk catapult_functions.c catapult_functions.h
 	make -C $(AWKADIR) all
-	cp $(AWKADIR)/awka/awka .
+	cp $(AWKADIR)/awka/awka$E .
 	cp $(AWKADIR)/lib/libawka.a .
 	cp $(AWKADIR)/lib/libawka.h .
 	./CompileCatapult catapult_awka
 	$(CC) $(CFLAGS) -o $@ -I. catapult_awka.c catapult_functions.c libawka.a
-
-#pstrip$E:	pasm_strip.awk 
-#	awka.exe --f pasm_strip.awk>pasm_strip.c
-#	gcc -I. -O2 -s -o pstrip.exe pasm_strip.c libawka.a
 
 pstrip$E:	pstrip.c
 	gcc -I. -O2 -s -o $@ pstrip.c
@@ -108,10 +104,10 @@ pstrip$E:	pstrip.c
 clean::
 	make -C $(LUADIR) clean
 	make -C $(AWKADIR) clean
-	$(RM) bcc$E binbuild$E binstats$E catbind$E catalina$E payload$E spinc$E bindump$E blackbox$E catdbgfilegen$E parallelize$E parallelize_awka$E catapult$E catapult_awka$E pstrip$E
+	$(RM) bcc$E binbuild$E binstats$E catbind$E catalina$E payload$E spinc$E bindump$E blackbox$E catdbgfilegen$E pstrip$E
 	$(RM) y.tab.c y.tab.h blackbox_l.c
-	$(RM) parallelize_awka.c parallelize_functions.o
-	$(RM) catapult_awka.c catapult_functions.o
+	$(RM) parallelize$E parallelize_awka$E parallelize_awka.c parallelize_functions.o
+	$(RM) catapult$E catapult_awka$E catapult_awka.c catapult_functions.o
 	$(RM) pasm_strip.c
 
 install:

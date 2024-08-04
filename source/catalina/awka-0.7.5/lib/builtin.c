@@ -884,7 +884,9 @@ awka_system( char keep, a_VAR *va )
       fflush(_a_iostream[i].fp);
 
   ptr = awka_gets1(va);
-  /* outvar->dval = (double) system(ptr) / 256; */
+#if USE_FORK == 0
+  outvar->dval = (double) system(ptr) / 256;
+#else
   switch (pid = fork())
   {
     case -1:
@@ -902,6 +904,7 @@ awka_system( char keep, a_VAR *va )
       outvar->dval = _awka_wait_pid(pid);
       break;
   }
+#endif
 
   return(outvar);
 }
