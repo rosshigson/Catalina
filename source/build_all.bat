@@ -20,7 +20,6 @@ call ..\use_catalina
 cd %LCCDIR%\source
 
 cd catalina
-call configure_awka
 call build_all
 cd ..\catoptimize
 call build_all
