@@ -69,6 +69,7 @@ parallelize$E:	parallelize.c
 	$(CC) $(CFLAGS) -o $@ parallelize.c
 
 parallelize_awka$E:	parallelize_awka.awk parallelize_functions.c parallelize_functions.h
+	cd $(AWKADIR);./configure;cd ..
 	make -C $(AWKADIR) all
 	cp $(AWKADIR)/awka/awka$E .
 	cp $(AWKADIR)/lib/libawka.a .
