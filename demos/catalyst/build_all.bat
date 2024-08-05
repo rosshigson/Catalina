@@ -67,8 +67,9 @@ echo  Building all Catalyst Demos
 echo  ===========================
 echo.
 
-call clean_all
-del /f /q "image\*"
+call clean_all >NUL: 2>&1
+del /f /q "image\*" >NUL: 2>&1
+
 copy CATALYST.TXT "image\"
 
 cd core
