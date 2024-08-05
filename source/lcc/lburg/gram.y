@@ -4,6 +4,8 @@
 static char rcsid[] = "$Id: gram.y 355 2007-02-18 22:08:49Z drh $";
 /*lint -e616 -e527 -e652 -esym(552,yynerrs) -esym(563,yynewstate,yyerrlab) */
 static int yylineno = 0;
+int yylex();
+void yyerror(char *fmt, ...);
 %}
 %union {
 	int n;
