@@ -1,7 +1,7 @@
 This file contains a summary of changes to Catalina in recent releases. For
 information about installing and using Catalina, see the file README.md 
 
-Catalina release 7.7 is a full release. 
+Catalina release 7.8 is a full release. 
 
 WARNING: DO NOT INSTALL THIS RELEASE OVER A PRIOR VERSION OF CATALINA AND
 DO NOT LINK OR COMBINE PROGRAMS COMPILED WITH THIS VERSION WITH CODE (E.G. 
@@ -14,6 +14,33 @@ The following sections list the changes that have been made in releases
 7.0 onwards of Catalina. If you have not used a previous release of Catalina, 
 you can skip the rest of this README and instead go straight to the Catalina 
 tutorial documents.
+
+RELEASE 7.8
+
+New Functionality
+-----------------
+
+1. None. This release updates only the build process and packaging, and
+   improves GitHub support.
+
+Other Changes
+-------------
+
+1. Remove binaries from GitHub repository. They will remain in the Windows
+   and Linux source/binary distributions but on GitHub they will exist
+   as binary assets associated with each release.
+
+2. Awka now compiles using 64 bit gcc, on both Windows and Linux.
+
+3. Catalina now compiles using 64 bit gcc on both Windows and Linux.
+   On Linux, Catalina is now built as a 64 bit application, but  on Windows 
+   it is currently still built as a 32 bit application until further testing
+   is completed. This will probably change in the next release.
+
+4. Catalina no longer needs Cygwin to be installed to build under Windows. 
+   Only MINGW MSYS2 is required. However, the Cygwin DLL is still distributed 
+   with Catalina as it is still required by the Comms VT100 terminal emulator 
+   program.
 
 RELEASE 7.7
 
