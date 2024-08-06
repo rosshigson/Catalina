@@ -372,6 +372,8 @@
  *
  * Version 7.7  - Just update the version number.
  *
+ * Version 7.8  - Just update the version number.
+ *
  */                  
 
 /*--------------------------------------------------------------------------
@@ -401,7 +403,7 @@
 #include <string.h>
 #include <math.h>
 
-#define VERSION            "7.7"
+#define VERSION            "7.8"
 
 #define MAX_LINELEN        4096
 

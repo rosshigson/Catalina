@@ -1,10 +1,9 @@
 build_windows_binaries.bat
 build_windows_geany_binaries.bat
 build_p2_demos.bat
-#P2_DEMO.ZIP
-#P2_EDGE_VGA.ZIP
-#P2_EDGE.ZIP
-#P2_EVAL_VGA.ZIP
-#P2_EVAL.ZIP
-
+P2_DEMO.ZIP
+P2_EDGE_VGA.ZIP
+P2_EDGE.ZIP
+P2_EVAL_VGA.ZIP
+P2_EVAL.ZIP
 
