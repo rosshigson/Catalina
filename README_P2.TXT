@@ -35,16 +35,25 @@ you need to know at this point are:
                 to be built using -g, and requires a second serial port). 
 
 In the finest tradtions of C, let's build and run the traditional C
-"Hello, World!" program. First, copy the entire Catalina demos directory to 
-your own user directory and go to that directory. For example, on Windows you 
-might say something like:
+"Hello, World!" program. 
+
+First, if you are using Windows and installed Catalina using the Windows 
+Setup installer, Catalina will probably have been installed in the default 
+Windows Program folder - i.e. into C:\Program Files (x86). Instead of 
+compiling programs  in that location, it is recommended that you copy 
+the entire Catalina demos directory to your own user directory and go 
+to that directory. To do so, open a Catalina Command Line window, and 
+then use commands like:
 
    xcopy /e /i "%LCCDIR%\demos" "%HOMEPATH%\demos\"
    cd "%HOMEPATH%/demos"
 
-On Linux you would say something like:
+If you are using Linux and installed Catalina to the recommended location 
+- i.e. /opt/catalina - then open a Terminal window and use commands like:
 
-   cp -R /opt/catalina/demos ~/demos
+   export LCCDIR=/opt/catalina
+   source $LCCDIR/use_catalina
+   cp -R $LCCDIR/demos ~/demos
    cd ~/demos
 
 Then, to compile your first program, type:
@@ -147,238 +156,8 @@ then execute the program from FLASH with a command like:
 
    flash_payload othello.bin -i
 
-But the best way to demonstrate Catalina on the P2 is to use the Catalyst 
-program. Catalyst is like an SD-card based operating system for the P2. A 
-version of Catalyst and some accompanying example programs already compiled
-for the P2 EVAL board and using a serial HMI is provided in the file 
-"P2_DEMO.ZIP" in the main Catalina directory. This file should also work 
-on other boards with a similar configuration (primarily the SD Card) such 
-as the P2_EDGE board. Just unzip this file, copy all the enclosed files 
-onto an SD Card, insert it into a P2 EVAL or P2_EDGE board and reboot. 
-You can interact with Catalyst using a serial terminal emulator. Catalyst 
-and all its programs are compiled to use 230400 baud and a VT100 compatible 
-terminal emulator.
-
-For instance, you can use the Catalina payload program as your terminal 
-emulator - you will need to specify the baud rate and port to use. For
-instance, if your P2 EVAL board is connected to COM4, you might use the
-following payload command to use the internal terminal emulator:
-
-   payload -p4 -b230400 -i -q1 
-
-Or you can have payload use an external Catalina vt100 emulator:
-
-   payload -p4 -b230400 -Ivt100
-
-Here is what the parameters mean:
-
-   -p4      specifies to use port 4 (i.e. COM4 on Windows). If you are loading
-            a program then payload can autodetect the port to use and also the
-            type of Propeller and suitable baud rate, but if you are just 
-            using the interactive terminal, you need to explicity specify the 
-            port and baud rate.
-   
-   -b230400 means to use 230400 baud.
-
-   -i       means to use the internal interactive terminal emulator, which 
-            is a simple VT100 emulator
-
-   -q1      specifies the line termination handling (in this case, to ignore CR)
-
-   -Ivt100  means to use the external terminal emulator, which is a 
-            complete VTxxx emulator, in this case emulating a vt100
-
-You can also use the Parallax Serial Terminal as your terminal emulator. 
-Catalyst itself and most of the example programs will work correctly, except 
-for the vi text editor (which requires a VT100 compatible terminal emulator).
-
-When using the Parallax Serial Terminal you will need to set the baud rate 
-(e.g. -b230400), the port, and also to ignore line feed characters (not CRs!).
-
-Line termination handling can be a complex issue when you are using C programs
-that originated from multiple sources, and terminal emulators that handle line
-terminations in different ways - this is exacerbated when some of the programs
-were originally DOS programs and some of them were UNIX programs.  As a 
-compromise, all Catalyst programs can be compiled to send both a CR and an LF
-as line terminators, allowing you to select which one to process or ignore 
-depending on which works best in your particular terminal emulator. The
-command used to compile the version of Catalyst in P2_DEMO.ZIP (executed in 
-the "demos/catalyst" subdirectory) was:
-
-   build_all P2_EVAL SIMPLE VT100 CR_ON_LF USE_COLOR OPTIMIZE MHZ_200
-
-If you use payload as your terminal emulator, remember to add the -q1 option
-to ignore the CRs that have been added to the output. If you use putty then
-ensure the "Implict CR in every LF" and "Implicit LF in every CR" options
-are not checked. The Catalina comms terminal emulatore (started via the
-vt100 batch script) should work fine as it is. For the Parallax Serial 
-Terminal, set the options to ignore LFs (and note that the Parallax Serial 
-Terminal is not VT100 compatible, so programs like vi that need VT100 
-emulation will not display correctly).
-
-There is also a version (provided in the file "P2_EVAL_VGA.ZIP") precompiled
-to use the VGA HMI option - it expects a P2_EVAL with A/V (VGA) and Host 
-Serial (USB) accessory boards. The VGA board must be plugged into the header 
-with base pin 0, and the USB board must be plugged into the header with base
-pin 8.
-
-The command used to compile the P2_EVAL_VGA version of Catalyst (executed in
-the "demos/catalyst" subdirectory) was:
-
-   build_all P2_EVAL VGA COLOR_4 OPTIMIZE MHZ_200
-
-The command used to compile the P2_EDGE_VGA version of Catalyst (executed in
-the "demos/catalyst" subdirectory) was:
-
-   build_all P2_EDGE VGA COLOR_4 OPTIMIZE MHZ_200
-
-Finally, for those who have a P2_EDGE with 32Mb of PSRAM or a P2_EVAL with 
-the HyperRAM/HyperFlash add-on board, there are prebuilt versions of Catalyst 
-containing various demo programs compiled to run in XMM RAM. They are compiled
-to use a VT100 serial HMI, or a VGA HMI, with the VGA on base pin 0 and USB 
-on base pin 8.
-
-The XMM programs are:
-
-  xs_lua.bin     \
-  xs_luac.bin    | the Lua interpreter, compiler and execution engine,
-  xs_luax.bin    / compiled to run in XMM SHORT mode.
-
-  xl_lua.bin     \
-  xl_luac.bin    | the Lua interpreter, compiler and execution engine,
-  xl_luax.bin    / compiled to run in XMM LARGE mode.
-
-  xl_vi.bin      - the vi text editor, compiled to run in XMM LARGE mode,
-                   which allows files larger than Hub RAM to be edited.
-                   Note that there is no XMM SMALL verson of vi because 
-                   it would still be limited to editing only files that 
-                   can fit completely in Hub RAM.
-
-The XMM SMALL versions were compiled in the Catalyst lua and vi sub-folders, 
-using the command:
-
-   build_all P2_EDGE SIMPLE VT100 CR_ON_LF USE_COLOR OPTIMIZE MHZ_200 SMALL
-or
-   build_all P2_EDGE VGA COLOR_4 OPTIMIZE MHZ_200 SMALL
-
-The XMM LARGE versions were compiled in the Catalyst lua and vi sub-folders,
-using the command:
-
-   build_all P2_EDGE SIMPLE VT100 CR_ON_LF USE_COLOR OPTIMIZE MHZ_200 LARGE
-or
-   build_all P2_EDGE VGA COLOR_4 OPTIMIZE MHZ_200 LARGE
-
-Also included is a self-hosted version of Catalina, compiled in XMM LARGE
-mode in the catalina sub-folder using similar commands to those above. 
-On the SD Card, the self-hosted version of Catalina is placed in the following
-directories:
-
-   bin          - Catalina executables
-   include      - C include files
-   lib          - C libraries
-   target       - Catalina runtime support files
-   tmp          - a directory used to store temporary files
-
-The executable files in the bin directory will include:
-
-   cpp.bin      - C preprocessor.
-   rcc.bin      - C compiler.
-   bcc.bin      - Catalina binder and library manager.
-   spp.bin      - PASM preprocessor.
-   p2asm.bin    - PASM assembler.
-   pstrip.bin   - a utility to reduce the size of PASM files.
-   catalina.lua - a Lua version of the PC 'catalina' command, which
-                  manages the compilation process.
-   binstats.lua - a Lua program to print statistic information about a binary 
-                  file (code size, data size etc).
-   xl_vi        - The vi text editor for very large files (the normal Catalyst 
-                  vi is fine for editing C source files, but the intermediate
-                  files generated by Catalina can be too large for it, so this
-                  XMM LARGE version is also included.
-
-See the file CATALINA.TXT for more details.
-
-Here is a summary of all the current pre-built versions of Catalyst:
-
-   P2_DEMO.ZIP     - compiled to suit either a P2_EVAL or a P2_EDGE (with or
-                     without PSRAM) using a serial HMI on pins 62 & 63 at 
-                     230400 baud. Built to use a VT100 emulator, or payload 
-                     with the -i and -q1 options. 
-                     Contains no XMM programs.
-
-   P2_EVAL.ZIP     - compiled to suit a P2_EVAL using a serial HMI on pins 
-                     62 & 63 at 230400 baud. Built to use a VT100 emulator, 
-                     or payload with the -i and -q1 options.
-                     Contains XMM programs compiled for a Parallax HyperRAM/
-                     HyperFlash add-on board on base pin 32 
-
-   P2_EDGE.ZIP     - compiled to suit a P2_EDGE with 32 Mb of PSRAM using
-                     a serial HMI on pins 62 & 63 at 230400 baud. Built to 
-                     use a VT100 emulator, or payload with the -i and -q1 
-                     options. 
-                     Contains XMM programs compiled to use the on-board PSRAM.
-
-
-   P2_EVAL_VGA.ZIP - compiled to suit a P2_EVAL using a VGA HMI with VGA 
-                     base pin 0 and USB base pin 8.
-                     Contains XMM programs compiled for a Parallax HyperRAM/
-                     HyperFlash add-on board on base pin 32 
-
-   P2_EDGE_VGA.ZIP - compiled to suit a P2_EDGE with 32Mb of PSRAM using a
-                     VGA HMI with VGA base pin 0 and USB base pin 8 . 
-                     Contains XMM programs compiled for a Parallax HyperRAM/
-                     HyperFlash add-on board on base pin 32 
- 
-Choose the one most approrpriate for you, and the let's get started with 
-Catalyst ...
-
-First of all, note that there is a "Catalyst Reference Manual" that will have
-been installed when you installed Catalina - it contains more details. But 
-here are the highlights ...
-
-First, you should start payload in interactive mode. Then. when you reboot 
-your P2 EVAL board, you should see a prompt like:
-
-   Catalyst 6.5
-   >
-
-Type the command "ls"and press return. You should see something like:
-
-   PROP2        ELIZA   .BAS STARTREK.BAS
-   TREK15  .BAS UT-TREK .BAS CAT     .BIN
-   CATALYST.BIN CP      .BIN DBASIC  .BIN
-   JZIP    .BIN LS      .BIN LUA     .BIN
-   LUAC    .BIN MKDIR   .BIN MV      .BIN
-   PCOM    .BIN PINT    .BIN RM      .BIN
-   RMDIR   .BIN SST     .BIN VI      .BIN
-   _BOOT_P2.BIX ZORK1   .DAT ZORK2   .DAT
-   ZORK3   .DAT FACT    .LUA FIB     .LUA
-   HELLO   .LUA SORT    .LUA SST     .DOC
-   BASICS  .P5  STARTREK.P5  BASICS  .PAS
-   HELLO   .PAS MATCH   .PAS ROMAN   .PAS
-   STARTREK.PAS CATALYST.TXT HELP    .XVI
-
-This confirms that Catalyst is working and the Catalyst programs are loaded
-onto the SD card. The most important things that Catalyst adds to the simple
-program loader implemented on the P2 itself are some simple file management
-commands, and the ability to use command-line arguments when executing 
-programs.
-
-The basic Catalyst commands are unix-like - e.g. cp, ls, rm, rmdir - and work
-as you might expect.
-
-Here are some other commands you can try:
-
-  vi catalyst.txt        - the vi editor (:q! to exit)
-  sst                    - a C version of the Super Star Trek game
-  dbasic eliza.bas       - a friendly therapist who wants to help you
-  dbasic startrek.bas    - a Basic version of the Star Trek game
-  pint startrek.p5       - a Pascal version of the Star Trek game
-  pint basics.p5         - Tiny Basic, written in Pascal and implemented in C!
-  jzip zork1.dat         - lose yourself in the world of Zork
-  lua fact.lua           - generate factorials with the Lua scripting language
-
-For more information, see the Catalyst Reference Manual.
+See the file DEMOS_P2.TXT for information on some pre-built binary demos
+available for the Propeller 2.
 
 So, what's NOT yet working on the P2? Well, the major items are most of the P1
 plugins, most of which don't yet exist for the P2.
