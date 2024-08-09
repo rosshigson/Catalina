@@ -25,6 +25,9 @@ INCDIR = @includedir@
 # where to put the man pages
 MANDIR = @mandir@
 MANEXT = @MANEXT@
+
+datarootdir = @datarootdir@
+
 #######################################
 
 MAKEFILEIN = Makefile.in

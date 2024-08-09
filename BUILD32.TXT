@@ -1,17 +1,13 @@
 This document contains detailed instructions on how to build Catalina from 
-source on both Windows and Linux. These instructions assume Catalina will be
-built as a 64 bit application on both Windows and Linux. 
+source on both Windows and Linux. 
 
-The Catalina Windows binaries (if included in the the distribution) should 
-execute correctly on Windows 8 or later. However, rebuilding Catalina from 
-source under Windows assumes 64 bit Windows version 10 or later. To build 
-Catalina as a 32 bit Windows application (as it was in earlier releases) 
-see BUILD32.TXT
+The Catalina Windows binaries should execute correctly on Windows 8 or later. 
+However, rebuilding Catalina from source under Windows requires Windows 
+version 10 or later.
 
-The Catalina Linux binaries (if included in the distribution) should execute 
-on a 64-bit version of Ubuntu Linux 23.04, but rebuilding Catalina from source
-can be done on Ubuntu 18.04 or later. There are no separate instructions for 
-building Catalina on 32 bit Linux systems.
+The Catalina Linux binaries should execute on a 64-bit version of Ubuntu 
+Linux 23.04, but rebuilding Catalina from source can be done on Ubuntu 18.04 
+or later. 
 
 Note that if you are using Windows, and either used the Catalina Windows Setup
 program, or downloaded the Windows binaries associated with a GitHub release, 
@@ -66,19 +62,19 @@ deleted once the build is complete.
 Catalina must be compiled using MSYS2. Download the current MSYS2 installer 
 (e.g. msys2-x86_64-20230718.exe) from www.msys2.org. Note that this installer
 installs both 32 and 64 bit environments, but that the instructions below must
-be executed in a MINGW64 (i.e. 64 bit) environment. Do not use MSYS2 MINGW32 
+be executed in a MINGW32 (i.e. 32 bit) environment. Do not use MSYS2 MINGW64 
 or any of the other MSYS2 options.
 
 Execute the MSYS2 installer, and follow its instructions. 
 
-Open an MSYS2 MINGW64 bash shell (e.g. using the MSYS2 Windows Start menu 
-entry). NOTE: it must be an MSYS MINGW64 bash shell.
+Open an MSYS2 MINGW32 bash shell (e.g. using the MSYS2 Windows Start menu 
+entry). NOTE: it must be an MSYS MINGW32 bash shell.
 
 Execute the following command, to ensure some key packages are up to date:
 
    pacman --needed -Sy bash pacman pacman-mirrors msys2-runtime
 
-Exit and re-start the MSYS2 MINGW64 bash shell and perform a general system 
+Exit and re-start the MSYS2 MINGW32 bash shell and perform a general system 
 update:
 
    pacman -Su
@@ -86,7 +82,7 @@ update:
 3. Install required packages
 ============================
 
-Exit and re-start the MSYS2 MINGW64 bash shell once more, in case pacman 
+Exit and re-start the MSYS2 MINGW32 bash shell once more, in case pacman 
 updated any environment related packages.
 
 Execute the following commands to install some necessary packages:
@@ -98,12 +94,12 @@ Execute the following commands to install some necessary packages:
    pacman -S libtool intltool pkg-config 
 
 Execute the following pacman commands to install the packages required to 
-use the 64-bit gcc compiler:
+use the 32-bit gcc compiler:
 
-   pacman -S mingw-w64-x86_64-binutils 
-   pacman -S mingw-w64-x86_64-gcc 
-   pacman -S mingw-w64-x86_64-ncurses
-   pacman -S mingw-w64-x86_64-glib2
+   pacman -S mingw-w64-i686-binutils 
+   pacman -S mingw-w64-i686-gcc 
+   pacman -S mingw-w64-i686-ncurses
+   pacman -S mingw-w64-i686-glib2
 
 Next, if the source is in a Windows directory with spaces in the path (which 
 it will be if Catalina was installed to the default location - i.e. usually
@@ -111,7 +107,7 @@ it will be if Catalina was installed to the default location - i.e. usually
 you need to do this from a Windows command line window started using the 
 "Run as Administrator" option. 
 
-Open a Windows Command Line window (not an MSYS2 MINGW64 bash shell) and 
+Open a Windows Command Line window (not an MSYS2 MINGW32 bash shell) and 
 execute the following commands:
 
    mkdir C:\catalina
@@ -127,13 +123,13 @@ for the system, or for a specific user account). Assuming MSYS2 is isntalled
 to the default location (c:\msys64), this would mean adding the following to 
 the Path:
 
-   C:\msys64\mingw64\bin
+   C:\msys64\mingw32\bin
    C:\msys64\usr\bin
 
 4. Build Catalina
 =================
 
-Open a Catalina Command Line Window (not an MSYS2 MINGW64 bash shell) and 
+Open a Catalina Command Line Window (not an MSYS2 MINGW32 bash shell) and 
 build the Catalina binaries using the following commands:
 
    cd %LCCDIR%\source
@@ -153,16 +149,16 @@ identified and installed.
 5. Build Geany
 ==============
 
-Open an MSYS2 MINGW64 bash shell (e.g. using the MSYS2 Windows Start menu 
-entry). NOTE: it must be an MSYS MINGW64 bash shell.
+Open an MSYS2 MINGW32 bash shell (e.g. using the MSYS2 Windows Start menu 
+entry). NOTE: it must be an MSYS MINGW32 bash shell.
 
-Use the following pacman commands to install some additional 64 bit packages
+Use the following pacman commands to install some additional 32 bit packages
 required by Geany:
 
-   pacman -S mingw-w64-x86_64-gtk2 
-   pacman -S mingw-w64-x86_64-pcre mingw-w64-x86_64-pcre2 
-   pacman -S mingw-w64-x86_64-gettext-runtime
-   pacman -S mingw-w64-x86_64-gettext-tools
+   pacman -S mingw-w64-i686-gtk2 
+   pacman -S mingw-w64-i686-pcre mingw-w64-i686-pcre2 
+   pacman -S mingw-w64-i686-gettext-runtime
+   pacman -S mingw-w64-i686-gettext-tools
 
 Go to the geany source directory and build geany. The following commands 
 assume the Catalina Geany source is in /c/catalina/7.7/source/geany - which 

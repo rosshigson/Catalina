@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <ctype.h>
 
 #include "spinc.h"
@@ -514,7 +515,7 @@ static void print_p1_blob_defines(char* p, char* name, long int *hdrlen,  int *d
    SpinObj_st* op = (SpinObj_st*) &sp->code;
    CatalinaP1Hdr_st* cp1;
 
-   *hdrlen = ((long int)op-(long int)sp);
+   *hdrlen = ((intptr_t)op-(intptr_t)sp);
 
    if ((blob_obj < 0) || (blob_obj > op->objcnt)) {
       fprintf(stderr, "\nError: Can't find object '%d'\n", blob_obj);
@@ -626,7 +627,7 @@ static void print_long_array(char* p, char* name)
     int datlen = 0;
     SpinHdr_st* sp = (SpinHdr_st*) p;
     SpinObj_st* op = (SpinObj_st*) &sp->code;
-    long int hdrlen = ((long int)op-(long int)sp);
+    long int hdrlen = ((intptr_t)op-(intptr_t)sp);
     FILE* fp;
 
     if (blob) {
@@ -696,7 +697,7 @@ static void print_byte_array(char* p, char* name)
     int datlen = 0;
     SpinHdr_st* sp = (SpinHdr_st*) p;
     SpinObj_st* op = (SpinObj_st*) &sp->code;
-    long int hdrlen = ((long int)op-(long int)sp);
+    long int hdrlen = ((intptr_t)op-(intptr_t)sp);
     FILE* fp;
 
     if (blob) {
@@ -765,7 +766,7 @@ static void print_spin_defines(char* p, char* name)
     int datlen = 0;
     SpinHdr_st* sp = (SpinHdr_st*) p;
     SpinObj_st* op = (SpinObj_st*) &sp->code;
-    long int hdrlen = ((long int)op-(long int)sp);
+    long int hdrlen = ((intptr_t)op-(intptr_t)sp);
 
     datstart = (int) (hdrlen+(op->objcnt+op->pubcnt)*4);
 
@@ -935,7 +936,7 @@ static char* chopPath(char* name)
 static char* chopExtension(char* name)
 {
     char* p  = strchr(name, '.');
-    long int   ii = (long int)p-(long int)name;
+    long int   ii = (intptr_t)p-(intptr_t)name;
     if (p && ii) name[ii] = '\0';
     return name;
 }

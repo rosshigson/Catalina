@@ -27,6 +27,9 @@ MANEXT = @MANEXT@
 #SHAREDLIB = @SHARED_LIB@
 VERSION = @VERSION@
 BUILDLIB = libawka.a $(SHAREDLIB)
+
+datarootdir = @datarootdir@
+
 #######################################
 
 MAKEFILEIN = Makefile.in
@@ -82,3 +85,4 @@ io.o : libawka.h mem.h
 var.o : libawka.h mem.h garbage.h number.h
 garbage.o : libawka.h mem.h garbage.h
 rexp.o : libawka.h
+

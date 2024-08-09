@@ -38,7 +38,7 @@ static void I(defconst)(int suffix, int size, Value v) {
 		else
 			print("byte %d %u\n", size, v.u);
 		return;
-	case P: print("byte %d %U\n", size, (unsigned long)v.p); return;
+	case P: print("byte %d %U\n", size, (intptr_t)v.p); return;
 	case F:
 		if (size == 4) {
 			float f = v.d;

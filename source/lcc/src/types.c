@@ -66,7 +66,7 @@ static Type xxinit(int op, char *name, Metrics m) {
 	return ty;
 }
 static Type type(int op, Type ty, int size, int align, void *sym) {
-	unsigned h = (op^((unsigned long)ty>>3))
+	unsigned h = (op^((intptr_t)ty>>3))
 &(NELEMS(typetable)-1);
 	struct entry *tn;
 
@@ -139,7 +139,7 @@ void type_init(int argc, char *argv[]) {
 	}
 	pointersym = install(string("T*"), &types, GLOBAL, PERM);
 	pointersym->addressed = IR->ptrmetric.outofline;
-	pointersym->u.limits.max.p = (void*)ones(8*IR->ptrmetric.size);
+	pointersym->u.limits.max.p = (void *)((intptr_t)ones(8*IR->ptrmetric.size));
 	pointersym->u.limits.min.p = 0;
 	voidptype = ptr(voidtype);
 	funcptype = ptr(func(voidtype, NULL, 1));

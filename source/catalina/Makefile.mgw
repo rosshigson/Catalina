@@ -54,7 +54,7 @@ bindump$E:	bindump.c
 	$(CC) $(CFLAGS) -o $@ bindump.c 
 
 y.tab.c y.tab.h: blackbox_y.y
-	bison -y -d blackbox_y.y
+	bison -y -Wno-conflicts-sr -d blackbox_y.y
 
 blackbox_l.c: blackbox_l.l
 	flex -oblackbox_l.c blackbox_l.l

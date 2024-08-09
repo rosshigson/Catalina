@@ -58,5 +58,3 @@ EXE_EXTENSION
 DO_CONFIG_H
 AC_CONFIG_FILES([Makefile lib/Makefile awka/Makefile test/Makefile])
 AC_OUTPUT
-
-

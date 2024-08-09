@@ -1547,7 +1547,7 @@ static void my_stabinit(char *file, int argc, char *argv[]) {
          fprintf(debug_file, ".stabs \"%s/\",0x%x,0,3,%s%s_text0\n", cwd, N_SO, stabprefix, stablabel);
       fprintf(debug_file, ".stabs \"%s\",0x%x,0,3,%s%s_text0\n", file, N_SO, stabprefix, stablabel);
       (*IR->segment)(CODE);
-      printf("%s%s_text0\n\n", stabprefix, stablabel, N_SO);
+      printf("%s%s_text0\n\n", stabprefix, stablabel);
       currentfile = file;
    }
    dbxtype(inttype);
@@ -3741,7 +3741,7 @@ static void defconst(int suffix, int size, Value v) {
    else if (suffix == U && size == 4)
       print(" long $%x\n", (unsigned)v.u);
    else if (suffix == P && size == 4)
-      print(" long $%x\n", (unsigned)v.p);
+      print(" long $%x\n", v.p);
    else if (suffix == F && size == 4) {
       float f = v.d;
       print(" long $%x ' float\n", *(unsigned *)&f);

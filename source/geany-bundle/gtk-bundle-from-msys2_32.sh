@@ -16,8 +16,8 @@
 # before executing the build_all script
 #
 
-ABI=x86_64
-MINGW=mingw64
+ABI=i686
+MINGW=mingw32
 
 use_cache="no"
 make_zip="no"
@@ -27,7 +27,7 @@ run_pi="y"
 UNX_UTILS_URL="https://download.geany.org/contrib/UnxUpdates.zip"
 # path to an installation of a MSYS2 installation in the native architecture matching $ABI
 # leave empty if the script is called already from the same MSYS2 architecture as $ABI
-MSYS2_ABI_PATH="/c/msys64"
+MSYS2_ABI_PATH="/c/msys32"
 
 if [[ "$ABI" != "$MSYSTEM_CARCH" ]] ; then
    echo ""

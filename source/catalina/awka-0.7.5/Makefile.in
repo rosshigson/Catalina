@@ -31,6 +31,9 @@ MANSRCDIR = @mandir@
 MANDIR = $(MANSRCDIR)/man$(MANEXT)
 SHARED_LIB = @SHARED_LIB@
 BUILDLIB = libawka.a $(SHARED_LIB)
+
+datarootdir = @datarootdir@
+
 #######################################
 
 MAKEFILEIN = Makefile.in lib/Makefile.in awka/Makefile.in test/Makefile.in

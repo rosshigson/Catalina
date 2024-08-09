@@ -1,7 +1,9 @@
 This file contains a summary of changes to Catalina in recent releases. For
 information about installing and using Catalina, see the file README.md 
 
-Catalina release 7.8 is a full release. 
+Catalina release 7.8 is a full release.
+
+Catalina release 7.8.1 is only available on GitHub (tag v7.8.1).
 
 WARNING: DO NOT INSTALL THIS RELEASE OVER A PRIOR VERSION OF CATALINA AND
 DO NOT LINK OR COMBINE PROGRAMS COMPILED WITH THIS VERSION WITH CODE (E.G. 
@@ -14,6 +16,28 @@ The following sections list the changes that have been made in releases
 7.0 onwards of Catalina. If you have not used a previous release of Catalina, 
 you can skip the rest of this README and instead go straight to the Catalina 
 tutorial documents.
+
+RELEASE 7.8.1
+
+New Functionality
+-----------------
+
+1. None. This release updates only the build process, to build Catalina 
+   as a 64 bit application on Windows.
+
+Other Changes
+-------------
+
+1. Catalina is now built as a pure 64 bit application on both Windows and
+   Linux. The only changes are those required to eliminate various gcc 
+   warnings, which is sometimes done by simply suppressing them (gcc is a 
+   bit overzealous in its warnings, and sometimes warns about C code which 
+   is correct because gcc does static checks during compilation and does not
+   always correctly account for the actual dynamic program behaviour).
+
+2. The document BUILD.TXT has been updated to include changes required to 
+   allow for building Geany on both 32 and 64 bit Windows (but building it
+   as a 64 bit version is now the default).
 
 RELEASE 7.8
 

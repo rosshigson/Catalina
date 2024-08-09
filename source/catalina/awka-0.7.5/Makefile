@@ -19,7 +19,7 @@ AWK = gawk
 CMP = cmp
 
 # where to put awka
-prefix = /usr/local
+prefix = 
 exec_prefix = ${prefix}
 
 BINDIR = ${exec_prefix}/bin
@@ -27,10 +27,13 @@ LIBDIR = ${exec_prefix}/lib
 INCDIR = ${prefix}/include
 # where to put the man pages
 MANEXT = 1
-MANSRCDIR = ${prefix}/share/man
+MANSRCDIR = ${datarootdir}/man
 MANDIR = $(MANSRCDIR)/man$(MANEXT)
 SHARED_LIB = libawka.so
 BUILDLIB = libawka.a $(SHARED_LIB)
+
+datarootdir = ${prefix}/share
+
 #######################################
 
 MAKEFILEIN = Makefile.in lib/Makefile.in awka/Makefile.in test/Makefile.in

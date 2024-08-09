@@ -15,7 +15,7 @@ O=.o
 E=
 CC=gcc
 CPP=c++
-CFLAGS=
+CFLAGS= -Wno-format-security
 LDFLAGS=
 LD=$(CC)
 AR=ar ruv
@@ -64,7 +64,7 @@ bindump$E:	bindump.c
 	$(CC) $(CFLAGS) -o $@ bindump.c 
 
 y.tab.c y.tab.h: blackbox_y.y
-	bison -y -d blackbox_y.y
+	bison -y -Wno-conflicts-sr -d blackbox_y.y
 
 blackbox_l.c: blackbox_l.l
 	flex -oblackbox_l.c <blackbox_l.l
@@ -79,7 +79,7 @@ parallelize$E:	parallelize.c
 	$(CC) $(CFLAGS) -o $@ parallelize.c
 
 parallelize_awka$E:	parallelize_awka.awk parallelize_functions.c parallelize_functions.h
-	cd $(AWKADIR);./configure;cd ..
+	cd $(AWKADIR);./configure CFLAGS="-Wno-unused-result -Wno-format-security -Wno-format-overflow" ;cd ..	
 	make -C $(AWKADIR) all
 	cp $(AWKADIR)/awka/awka$E .
 	cp $(AWKADIR)/lib/libawka.a .

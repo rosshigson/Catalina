@@ -8,7 +8,7 @@ ifeq ($(OS),Darwin)
 	CFLAGS=-g
 	LDFLAGS=-g
 else
-	CFLAGS=-g -static
+	CFLAGS=-g -static -Wno-format-contains-nul
 	LDFLAGS=-g -static-libgcc
 endif
 
@@ -329,10 +329,3 @@ $B1rcc$E:	$Brcc$E $Blcc$E $Bcpp$E
 		$C -o $@ -B$B $(RCCSRCS)
 $B2rcc$E:	$B1rcc$E
 		$C -o $@ -B$B1 $(RCCSRCS)
-
-install:
-	cp $Brcc$E $(BINDIR)/rcc$E
-	cp $Blcc$E $(BINDIR)/lcc$E
-	cp $Bcpp$E $(BINDIR)/cpp$E
-	cp $Blburg$E $(BINDIR)/lburg$E
-	cp $Bspp$E $(BINDIR)/spp$E

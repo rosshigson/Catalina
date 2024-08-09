@@ -485,7 +485,7 @@ da(start, fp)
              switch (cp->type)
              {
                 case C_RE:
-                    sprintf(tmp1, "0x%lx", (long) cp->ptr);
+                    sprintf(tmp1, "0x%p", cp->ptr);
                     /* sprintf(tmp2, "/%s/", re_uncompile(cp->ptr)); */
                     sprintf(tmp2, "%s", re_uncompile(cp->ptr));
                     if (dump) fprintf(stderr,"%d:\tpushc\t\t%s\t%d\n",minst,tmp2,line);
@@ -538,7 +538,7 @@ da(start, fp)
              }
 
           case _MATCH0:
-             sprintf(tmp1, "0x%lx", (long) p->ptr);
+             sprintf(tmp1, "0x%p", p->ptr);
              sprintf(tmp2, "/%s/", re_uncompile(p->ptr));
              if (dump) fprintf(stderr,"%d:\tmatch0\t\t%s\t%d\n",minst,tmp2,line);
              awka_insertop(op, tmp1, tmp2, minst, file, line);
@@ -546,7 +546,7 @@ da(start, fp)
              break;
 
           case _MATCH1:
-             sprintf(tmp1, "0x%lx", (long) p->ptr);
+             sprintf(tmp1, "0x%p", p->ptr);
              sprintf(tmp2, "/%s/", re_uncompile(p->ptr));
              if (dump) fprintf(stderr,"%d:\tmatch1\t\t%s\t%d\n",minst,tmp2,line);
              awka_insertop(op, tmp1, tmp2, minst, file, line);

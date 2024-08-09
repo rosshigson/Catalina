@@ -1,5 +1,7 @@
 @ECHO OFF
 
+@ECHO building %1
+
 ..\catalina\awka -i cat_functions.h -f %1.awk>%1.c
 
 IF EXIST %1.exe DEL %1.exe

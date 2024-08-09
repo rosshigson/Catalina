@@ -16,15 +16,18 @@ YACC = bison -y
 AWK = gawk
 
 # where to put awka
-prefix = /usr/local
+prefix = 
 exec_prefix = ${prefix}
 
 BINDIR = ${exec_prefix}/bin
 LIBDIR = ${exec_prefix}/lib
 INCDIR = ${prefix}/include
 # where to put the man pages
-MANDIR = ${prefix}/share/man
+MANDIR = ${datarootdir}/man
 MANEXT = 1
+
+datarootdir = ${prefix}/share
+
 #######################################
 
 MAKEFILEIN = Makefile.in

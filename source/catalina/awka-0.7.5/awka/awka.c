@@ -27,7 +27,6 @@
 #include <string.h>
 #include <time.h>
 #include <stdarg.h>
-/* #include <unistd.h> */
 
 #define AWKA_MAIN
 #define TEMPBUFF_GOES_HERE
@@ -36,6 +35,10 @@
 #include "awka.h"
 #include "awka_exe.h"
 #include "mem.h"
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
 char ** _arraylist = NULL;
 int _array_no = 0, _array_allc = 0;

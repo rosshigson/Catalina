@@ -743,8 +743,11 @@ _awka_arrayinitargv( char **ptr, int argc, char *argv[] )
 void
 _awka_arrayinitenviron( char **ptr, int env_used )
 {
-  //extern char __declspec(dllimport) **environ;
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+  extern char __declspec(dllimport) **environ;
+#else
   extern char **environ;
+#endif
   register char *s, **p = environ, *q;
   char *tmpstr;
   int alloc;

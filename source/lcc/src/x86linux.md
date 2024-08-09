@@ -973,7 +973,7 @@ static void defconst(int suffix, int size, Value v) {
         else if (suffix == U && size == 4)
                 print(".long %d\n", (int)v.u);
         else if (suffix == P && size == 4)
-                print(".long %d\n", (int)v.p);
+                print(".long %d\n", (intptr_t)v.p);
         else if (suffix == F && size == 4) {
                 float f = v.d;
                 print(".long %d\n", (int)(*(unsigned *)&f));

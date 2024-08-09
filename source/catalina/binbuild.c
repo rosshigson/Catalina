@@ -308,7 +308,7 @@ int decode_arguments (int argc, char *argv[]) {
                case 'e':
                   format = 1;   /* output eeprom format */
                   if (verbose) {
-                     fprintf(stderr, "using eeprom format\n", diagnose);
+                     fprintf(stderr, "using eeprom format\n");
                   }
                   break;
 

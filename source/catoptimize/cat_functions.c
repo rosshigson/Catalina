@@ -66,7 +66,7 @@ void initialize_phase_2_fn() {
       return;
    }
    while (fgets(line, MAX_LINE, f) != NULL) {
-      sscanf(line, "%s %d", &name, &s);
+      sscanf(line, "%s %d", (char *)&name, &s);
       i = 0;
 
       for (i = 0; i < func_count; i++) {
@@ -306,7 +306,7 @@ void initialize_phase_3_fn() {
    }
    // read in the inlinable functions
    while (fgets(line, MAX_LINE, f) != NULL) {
-      sscanf(line, "%s %d", &name, &s);
+      sscanf(line, "%s %d", (char *)&name, &s);
       i = 0;
 
       for (i = 0; i < func_count; i++) {
@@ -522,7 +522,7 @@ a_VAR * str_to_dec_fn( a_VARARG *va ) {
   }
 
   ret = awka_getdoublevar(FALSE);
-  sscanf(awka_gets(va->var[0]), "%d", &dec);
+  sscanf(awka_gets(va->var[0]), "%ld", &dec);
 #if DEBUG  
   printf("hex value = %X\n", dec);
 #endif  
@@ -539,7 +539,7 @@ a_VAR * str_to_hex_fn( a_VARARG *va ) {
   }
 
   ret = awka_getdoublevar(FALSE);
-  sscanf(awka_gets(va->var[0]), "%X", &hex);
+  sscanf(awka_gets(va->var[0]), "%lX", &hex);
 #if DEBUG  
   printf("hex value = %X\n", hex);
 #endif  
@@ -560,7 +560,7 @@ a_VAR * bytes_to_hex_fn( a_VARARG *va ) {
 
   ret = awka_getdoublevar(FALSE);
   for (i = 3; i >= 0; i--) {
-     sscanf(awka_gets(va->var[i]), "%X", &byte);
+     sscanf(awka_gets(va->var[i]), "%lX", &byte);
 #if DEBUG  
      printf("bytes value = %X\n", byte);
 #endif  
@@ -586,7 +586,7 @@ a_VAR * bytes_to_addr24_fn( a_VARARG *va ) {
 
   ret = awka_getdoublevar(FALSE);
   for (i = 3; i >= 0; i--) {
-     sscanf(awka_gets(va->var[i]), "%X", &byte);
+     sscanf(awka_gets(va->var[i]), "%lX", &byte);
 #if DEBUG  
      printf("bytes value = %X\n", byte);
 #endif  
@@ -629,7 +629,7 @@ a_VAR * str_to_addr24_fn( a_VARARG *va ) {
   }
 
   ret = awka_getdoublevar(FALSE);
-  sscanf(awka_gets(va->var[0]), "%X", &hex);
+  sscanf(awka_gets(va->var[0]), "%lX", &hex);
   hex /= 4;
   hex &= 0xFFFFFF;
 #if DEBUG  
@@ -725,7 +725,7 @@ void initialize_phase_8_fn() {
       return;
    }
    while (fgets(line, MAX_LINE, f) != NULL) {
-      sscanf(line, "%s %d", &name, &s);
+      sscanf(line, "%s %d", (char *)&name, &s);
       i = 0;
 
       for (i = 0; i < func_count; i++) {
@@ -837,7 +837,7 @@ void initialize_phase_9_fn() {
       return;
    }
    while (fgets(line, MAX_LINE, f) != NULL) {
-      sscanf(line, "%s %d", &name, &s);
+      sscanf(line, "%s %d", (char *)&name, &s);
       i = 0;
 
       for (i = 0; i < func_count; i++) {
@@ -899,7 +899,7 @@ void initialize_phase_12_fn() {
    func_count = 3;
 
    while (fgets(line, MAX_LINE, f) != NULL) {
-      sscanf(line, "%s", &name);
+      sscanf(line, "%s", (char *)&name);
       i = 0;
 
       for (i = 0; i < func_count; i++) {
@@ -1062,7 +1062,7 @@ void initialize_phase_13_fn() {
    }
    // read in the requuired functions
    while (fgets(line, MAX_LINE, f) != NULL) {
-      sscanf(line, "%s", &name);
+      sscanf(line, "%s", (char *)&name);
       i = 0;
 
       for (i = 0; i < func_count; i++) {

@@ -2282,7 +2282,7 @@ int decode_arguments (int argc, char *argv[]) {
                   if (strlen(argv[i]) == 2) {
                      // use next arg
                      if (argc > 0) {
-                        sscanf(argv[++i], "%20s", &term_name);
+                        sscanf(argv[++i], "%20s", (char *)&term_name);
                         argc--;
                         interactive = 1;
                         code = 1; // work to do
@@ -2293,7 +2293,7 @@ int decode_arguments (int argc, char *argv[]) {
                   }
                   else {
                      // use remainder of this arg
-                     sscanf(&argv[i][2], "%20s", &term_name);
+                     sscanf(&argv[i][2], "%20s", (char *)&term_name);
                      interactive = 1;
                      code = 1; // work to do
                   }

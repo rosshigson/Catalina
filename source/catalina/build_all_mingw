@@ -1,6 +1,6 @@
 #!/bin/bash -login
 echo ""
-echo " NOTE: This script must be run in an MSYS MINGW32 shell"
+echo " NOTE: This script must be run in an MSYS MINGW64 shell"
 echo ""
 make clean -f Makefile.mgw LCCDIR=$LCCDIR
 make all -f Makefile.mgw LCCDIR=$LCCDIR

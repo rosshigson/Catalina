@@ -1006,6 +1006,7 @@ awka_push(int inst, int *earliest, char *context)
       else
       {
         /* internal variable on lside */
+        ret = (char *) malloc( strlen(progcode[inst].val) + 20 );
         if (!strcmp(progcode[inst].val, "NF"))
         {
           sprintf(ret, "awka_NFget()");
