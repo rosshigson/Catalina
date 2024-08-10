@@ -37,7 +37,7 @@ if [[ "$ABI" != "$MSYSTEM_CARCH" ]] ; then
 fi
 
 echo ""
-echo "building dependencies for 32 bit Geany:"
+echo "building dependencies for 64 bit Geany:"
 echo "ABI=$ABI"
 echo "MINGW=$MINGW"
 echo "MSYS2_ABI_PATH=$MSYS2_ABI_PATH"
