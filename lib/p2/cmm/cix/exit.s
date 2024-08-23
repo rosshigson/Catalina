@@ -27,7 +27,7 @@ C__clean ' <symbol:_clean>
 DAT ' code segment
 
  alignl ' align long
-C_sj44_669507b0__calls_L000003 ' <symbol:_calls>
+C_semo_66c68c83__calls_L000003 ' <symbol:_calls>
  alignl ' align long
  long I32_NEWF + 0<<S32
  alignl ' align long
@@ -36,9 +36,9 @@ C_sj44_669507b0__calls_L000003 ' <symbol:_calls>
  long I32_LODI + (@C___funccnt)<<S32
  word I16A_MOV + (r23)<<D16A + RI<<S16A ' reg <- INDIRI4 addrg
  alignl ' align long
- long I32_JMPA + (@C_sj44_669507b0__calls_L000003_6)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_semo_66c68c83__calls_L000003_6)<<S32 ' JUMPV addrg
  alignl ' align long
-C_sj44_669507b0__calls_L000003_5
+C_semo_66c68c83__calls_L000003_5
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_SHLI + (r22)<<D16A + (2)<<S16A ' SHLI4 reg coni
  word I16B_LODL + (r20)<<D16B
@@ -50,14 +50,14 @@ C_sj44_669507b0__calls_L000003_5
  word I16B_CALI' CALL indirect
  alignl ' align long
  alignl ' align long
-C_sj44_669507b0__calls_L000003_6
+C_semo_66c68c83__calls_L000003_6
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_SUBSI + (r22)<<D16A + (1)<<S16A ' SUBI4 reg coni
  word I16A_MOV + (r23)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl ' align long
- long I32_BRAE + (@C_sj44_669507b0__calls_L000003_5)<<S32 ' GEI4 reg coni
-' C_sj44_669507b0__calls_L000003_4 ' (symbol refcount = 0)
+ long I32_BRAE + (@C_semo_66c68c83__calls_L000003_5)<<S32 ' GEI4 reg coni
+' C_semo_66c68c83__calls_L000003_4 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
@@ -71,7 +71,7 @@ C_exit ' <symbol:exit>
  long I32_PSHM + $c00000<<S32 ' save registers
  word I16A_MOV + (r23)<<D16A + (r2)<<S16A ' reg var <- reg arg
  alignl ' align long
- long I32_CALA + (@C_sj44_669507b0__calls_L000003)<<S32 ' CALL addrg
+ long I32_CALA + (@C_semo_66c68c83__calls_L000003)<<S32 ' CALL addrg
  alignl ' align long
  long I32_LODI + (@C__clean)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg

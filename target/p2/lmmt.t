@@ -14,7 +14,7 @@
 ' Version 3.6 - New smaller image format. 
 '               New smaller division.
 ' Version 3.15 - Modified for P2.
-'
+' Version 7.9  - Fix set up of xfer block.
 '
 ' This file incorporates software derived from:
 '    Float_32A by Cam Thompson, Micromega Corporation, 
@@ -141,15 +141,17 @@ r9      long 0                 '$3c
 
 extra_init
 r10     call #INITIALIZE_THREAD '$3d
-r11     rdlong r3,r14           '$3e
-r12     rdlong r2,r15           '$3f
-r13     ret                     '$40 
-r14     long ARGC_ADDR          '$41 
-r15     long ARGV_ADDR          '$42
+r11     rdlong r3,r14          '$3e
+r12     rdlong r2,r15          '$3f
+r13     ret                    '$40 
+r14     long ARGC_ADDR         '$41 
+r15     long ARGV_ADDR         '$42
 
-r16     long 0                 '$43 
-r17     long 0                 '$44 
-r18     long 0                 '$45 
+setup_xfer
+r16     sub     SP,#8          '$43 reserve space ...
+r17     mov     xfer,SP        '$44 ... for xfer block at top of stack
+r18     jmp     #LMM_Loop      '$45 start executing C code
+ 
 r19     long 0                 '$46
 r20     long 0                 '$47
 r21     long 0                 '$48
@@ -202,7 +204,7 @@ lmm_init
         mov     t1,#0           '$69 16 zero ...
         wrlong  t1,req          '$6a 17 ... our request block
         call    #INITIALIZE_THREAD '$6b 18 set up initial thread
-        jmp     #LMM_Loop       '$6c 19 start executing C code
+        jmp     #setup_xfer     '$6c 19 setup xfer block and execute C code
         long    0               '$6d 20
 #else
         wrlong  t1,t2           '$5a 1 set up free memory pointer
@@ -222,7 +224,7 @@ lmm_init
         rdlong  SP,t2           '$6a 17 set up initial stack pointer
         call    #_C_init        '$6b 18 execute C startup code
         call    #extra_init     '$6c 19 execute additional startup code
-        jmp     #LMM_Loop       '$6d 20 start executing C code
+        jmp     #setup_xfer     '$6d 20 setup xfer block and execute C code
 #endif
 '
 ' LMM_next - increment the PC then execute the instruction pointed to by the new PC

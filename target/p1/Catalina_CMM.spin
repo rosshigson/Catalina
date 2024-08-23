@@ -6,6 +6,7 @@
 '
 ' Version 3.7  - initial version - by Ross Higson
 ' Version 3.13 - combine floating point operations, and add relative jumps
+' Version 7,.9 - Fix set up of xfer block.
 '
 '------------------------------------------------------------------------------
 '
@@ -109,10 +110,7 @@ entry
 r0       jmp     #kernel_init   '$00
 '
 ' Register ourselves by zeroing the upper half of our registry enty, 
-' and then return the address of our request block in t1. Note that
-' we also set up the request block address in xfer, since after
-' initialization we use it as a convenient comms block for sending
-' requests off to the floating point cogs.
+' and then return the address of our request block in t1. 
 '
 ' On Entry:
 '   t1 : points to our registry entry
@@ -122,9 +120,9 @@ Register
 r1       rdword  t2,t1          '$01
 r2       wrlong  t2,t1          '$02
 r3       mov     t1,t2          '$03
-r4       mov     xfer,t1        '$04
 Register_ret
-r5       ret                    '$05
+r4       ret                    '$04
+r5       nop                    '$05
 '
 ' Relocate - move segments as indicated by the BA. We move all Catalina
 '            data (i.e. from BA to BZ) to start at location zero, but do 
@@ -237,16 +235,16 @@ wait
    if_z  jmp     #wait          '$58 6 .. (required to relocate segments)
          add     t1,#4          '$59 7 Load our initial SP ...
          rdlong  SP,t1          '$5a 8 ... from the request block
-         mov     BZ,#(init_BZ-init_B0)<<2+8 '$5b 9 calculate ...
-         add     BZ,BA          '$5c 10 ... pointer to initial BZ
-         mov     PC,BZ          '$5d 11 load ...
-         add     PC,#4          '$5e 12 ... initial  ...
-         rdlong  PC,PC          '$5f 13 ... PC and ...
-         rdlong  BZ,BZ          '$60 14 ... BZ and ...
-         call    #Relocate      '$61 15 ... relocate segments 
-         jmp     #read_next     '$62 16 we can now start executing LMM code
-         nop                    '$63 17
-         nop                    '$64 18
+         sub     SP,#8          '$5b 9 Reserve space ...
+         mov     xfer,SP        '$5c 10 ... for xfer block at top of stack
+         mov     BZ,#(init_BZ-init_B0)<<2+8 '$5d 11 calculate ...
+         add     BZ,BA          '$5e 12 ... pointer to initial BZ
+         mov     PC,BZ          '$5f 13 load ...
+         add     PC,#4          '$60 14 ... initial  ...
+         rdlong  PC,PC          '$61 15 ... PC and ...
+         rdlong  BZ,BZ          '$62 16 ... BZ and ...
+         call    #Relocate      '$63 17 ... relocate segments 
+         jmp     #read_next     '$64 18 we can now start executing LMM code
          nop                    '$65 19
          nop                    '$66 20
          nop                    '$67 21

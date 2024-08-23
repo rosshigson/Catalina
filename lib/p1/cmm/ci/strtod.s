@@ -11,11 +11,11 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_sfe8_66950734_maxE_xponent_L000003 ' <symbol:maxExponent>
+C_sbnc_66c68c23_maxE_xponent_L000003 ' <symbol:maxExponent>
  long 511
 
  alignl ' align long
-C_sfe81_66950734_powersO_f10_L000004 ' <symbol:powersOf10>
+C_sbnc1_66c68c23_powersO_f10_L000004 ' <symbol:powersOf10>
  long $41200000 ' float
  long $42c80000 ' float
  long $461c4000 ' float
@@ -357,13 +357,13 @@ C_strtod_58
  alignl ' align long
 C_strtod_59
  alignl ' align long
- long I32_LODI + (@C_sfe8_66950734_maxE_xponent_L000003)<<S32
+ long I32_LODI + (@C_sbnc_66c68c23_maxE_xponent_L000003)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrg
  word I16A_CMPS + (r19)<<D16A + (r22)<<S16A
  alignl ' align long
  long I32_BRBE + (@C_strtod_60)<<S32 ' LEI4 reg reg
  alignl ' align long
- long I32_LODI + (@C_sfe8_66950734_maxE_xponent_L000003)<<S32
+ long I32_LODI + (@C_sbnc_66c68c23_maxE_xponent_L000003)<<S32
  word I16A_MOV + (r19)<<D16A + RI<<S16A ' reg <- INDIRI4 addrg
  alignl ' align long
  long I32_LODS + (r22)<<D32S + ((34)&$7FFFF)<<S32 ' reg <- cons
@@ -377,7 +377,7 @@ C_strtod_60
  word I16A_MOV + (r11)<<D16A + RI<<S16A ' reg <- INDIRF4 addrg
  word I16B_LODL + (r15)<<D16B
  alignl ' align long
- long @C_sfe81_66950734_powersO_f10_L000004 ' reg <- addrg
+ long @C_sbnc1_66c68c23_powersO_f10_L000004 ' reg <- addrg
  alignl ' align long
  long I32_JMPA + (@C_strtod_67)<<S32 ' JUMPV addrg
  alignl ' align long

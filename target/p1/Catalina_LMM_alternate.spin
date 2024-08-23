@@ -19,7 +19,7 @@
 '             - Tidy up initialization (no longer need to pass stack) 
 ' Version 3.6 - New smaller image format. 
 '               New smaller division.
-'
+' Version 7.9 - Fix set up of xfer block.
 '
 ' This file incorporates software derived from:
 '    Float_32A by Cam Thompson, Micromega Corporation, 
@@ -151,10 +151,7 @@ CS      long 0                 '$32
 '------------------------------------------------------------------------------
 '                          
 ' Register ourselves by zeroing the upper half of our registry enty, 
-' and then return the address of our request block in t1. Note that
-' we also set up the request block address in xfer, since after
-' initialization we use it as a convenient comms block for sending
-' requests off to the floating point cogs.
+' and then return the address of our request block in t1. 
 '
 ' On Entry:
 '   t1 : points to our registry entry
@@ -164,9 +161,9 @@ Register
 r0      rdword  t2,t1          '$33
 r1      wrlong  t2,t1          '$34
 r2      mov     t1,t2          '$35
-r3      mov     xfer,t1        '$36
 Register_ret
-r4      ret                    '$37
+r3      ret                    '$36
+r4      nop                    '$37
 '
 ' Relocate - move segments as indicated by the BA. We move all Catalina
 '            data (i.e. from BA to BZ) to start at location zero, but do 
@@ -182,18 +179,18 @@ r9      mov     t2,#$10        '$3c ' destination is byte 16
 r10     mov     t1,BA          '$3d ' source is BA ...
 r11     add     t1,#$10        '$3e ' ... plus 16 bytes 
 reloc_loop
-r12     tjz    BC,#Relocate_ret'$3f ' no more to copy
-r13     rdlong t3,t1           '$40 ' read from src to t3
-r14     wrlong t3,t2           '$41 ' write t3 to dst
-r15     add    t1,#4           '$42 ' increment source
-r16     add    t2,#4           '$43 ' increment destination
-r17     sub    BC,#4           '$44 ' decrement count ...
-r18     jmp    #reloc_loop     '$45 ' ... and keep copying
+r12     tjz     BC,#setup_xfer '$3f ' no more to copy
+r13     rdlong  t3,t1          '$40 ' read from src to t3
+r14     wrlong  t3,t2          '$41 ' write t3 to dst
+r15     add     t1,#4          '$42 ' increment source
+r16     add     t2,#4          '$43 ' increment destination
+r17     sub     BC,#4          '$44 ' decrement count ...
+r18     jmp     #reloc_loop    '$45 ' ... and keep copying
+setup_xfer
+r19     sub     SP,#8          '$46 ' Reserve space ...
+r20     mov     xfer,SP        '$47 ' ... for xfer block at top of stack
 Relocate_ret
-r19     ret                    '$46
-'
-r20     long 0                 '$47
-r21     long 0                 '$48
+r21     ret                    '$48
 r22     long 0                 '$49
 r23     long 0                 '$4a
 '                             
@@ -228,7 +225,7 @@ wait
         add     PC,#4           '12 ... initial  ...
         rdlong  PC,PC           '13 ... PC and ...
         rdlong  BZ,BZ           '14 ... BZ and ...
-        call    #Relocate       '15 ... relocate segments 
+        call    #Relocate       '15 ... relocate segments and set up xfer block 
         jmp     #LMM_loop       '16 we can now start executing LMM code
         nop                     '17
 '

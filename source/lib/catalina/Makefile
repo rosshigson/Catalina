@@ -13,6 +13,8 @@ all:	darray.h \
 	cslmmc.s \
 	csnmm.s \
 	csnmmc.s \
+	dsptch_c.s \
+	dsptch_l.s \
 	tcscmmc.s \
 	tcslmmc.s \
 	tcsnmmc.s \
@@ -34,6 +36,7 @@ all:	darray.h \
 	plgshort.s \
 	plglong.s \
 	plglong2.s \
+	service.s \
 	svcshort.s \
 	svclong.s \
 	svclong2.s \

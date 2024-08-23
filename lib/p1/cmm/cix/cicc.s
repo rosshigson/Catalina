@@ -111,9 +111,9 @@ C_cmmd_array ' <symbol:cmmd_array>
  long $8bc3200
  long $80fc0004
  long $8bc0400
- long $a0bc5a01
+ long $84fc3208
+ long $a0bc5a19
  long $5c7c0070
- long $0
  long $0
  long $0
  long $0

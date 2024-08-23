@@ -4,6 +4,7 @@ all:
 	cp ../../float/float_a.s .
 	cp ../../float/float_b.s .
 	cp ../../float/fplugin.s .
+	cp ../../float/fservice.s .
 	cp ../../float/lround.s .
 	cp ../../float/ltrunc.s .
 	cp ../../float/fround.s .

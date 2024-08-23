@@ -17,14 +17,14 @@
 #include <plugin.h>
 
 /*
- * display_registry - decode and display the registry
+ * display_registry - decode and display the registry (n cogs)
  */
-void display_registry(void) {
+void display_registry(int n) {
    int i;
    unsigned long  *a_ptr;
    
    i = 0;
-   while (i < COG_MAX) {
+   while (i < n) {
       printf("Registry Entry %2d: ", i);
       // display plugin type
       printf("%3d ", (REGISTERED_TYPE(i)));
@@ -77,7 +77,7 @@ void display_services(void) {
 void main (void) {
    
    printf("\nDisplaying plugin registry ...\n\n");
-   display_registry();
+   display_registry(8);
 
    printf("\nPress any key to display service registry ...\n");
    k_wait();

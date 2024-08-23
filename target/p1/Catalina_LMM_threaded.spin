@@ -693,7 +693,7 @@ fp_service
 '
 LMM_context
         sub     SP,#8           ' reserve space ...
-        mov     xfer,SP         ' .. for xfer block at top of stack
+        mov     xfer,SP         ' ... for xfer block at top of stack
         sub     SP,#Common#THREAD_BLOCK_SIZE*4 ' reserve space at top of stack for thread block
         wrlong  SP,SP           ' make it point to itself
         mov     TP,SP           ' save this as current thread block

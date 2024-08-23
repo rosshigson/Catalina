@@ -25,6 +25,8 @@
 '
 ' Version 3.14 - Add support for executing XMM from EEPROM (XEPROM).
 '
+' Version 7.9  - Fix set up of xfer block.
+'
 '------------------------------------------------------------------------------
 '
 '    Copyright 2009 Ross Higson
@@ -197,37 +199,37 @@ lmm_init
         add     r0,par          '$55 3 ... to my registration addr
         rdword  r1,r0           '$56 4 register ...
         wrlong  r1,r0           '$57 5 ... ourselves
-        mov     xfer,r1         '$58 6
 wait
-        rdlong  BA,r1 wz        '$59 7 Wait till we are given the base address ...
-  if_z  jmp     #wait           '$5a 8 .. (only used during initialization)
-        add     r1,#4           '$5b 9 Load our initial SP ...
-        rdlong  SP,r1           '$5c 10 ... from the request block
-        mov     BZ,#(init_BZ-init_B0)<<2+8 '$5d 11 calculate ... 
-        add     BZ,BA           '$5e 12 ... pointer to initial BZ
-        mov     PC,BZ           '$5f 13 load ...
-        add     PC,#4           '$60 14 ... initial ...
-        rdlong  PC,PC           '$61 15 ... PC and ...
-        rdlong  BZ,BZ           '$62 16 ... BZ and ...
-        call    #XMM_Activate   '$63 17 Initialize XMM hardware
-        rdlong  CS,#$10+(init_PC-init_B0)<<2+8+8 '$64 18 get code segment from RAM
+        rdlong  BA,r1 wz        '$58 6 Wait till we are given the base address ...
+  if_z  jmp     #wait           '$59 7 .. (only used during initialization)
+        add     r1,#4           '$5a 8 Load our initial SP ...
+        rdlong  SP,r1           '$5b 9 ... from the request block
+        sub     SP,#8           '$5c 10 Reserve space ...
+        mov     xfer,SP         '$5d 11 ... for xfer block at top of stack
+        mov     BZ,#(init_BZ-init_B0)<<2+8 '$5e 12 calculate ... 
+        add     BZ,BA           '$5f 13 ... pointer to initial BZ
+        mov     PC,BZ           '$60 14 load ...
+        add     PC,#4           '$61 15 ... initial ...
+        rdlong  PC,PC           '$62 16 ... PC and ...
+        rdlong  BZ,BZ           '$63 17 ... BZ and ...
+        call    #XMM_Activate   '$64 18 Initialize XMM hardware
+        rdlong  CS,#$10+(init_PC-init_B0)<<2+8+8 '$65 19 get code segment from RAM
 #ifdef ADJUST_CS
-        sub     CS,spi_ro       '$65 19
+        sub     CS,spi_ro       '$66 20
+        sub     PC,CS           '$67 21 correct PC for XMM
+        jmp     #LMM_loop       '$68 22 we can now start executing LMM code
+spi_ro  long    Common#XMM_RO_BASE_ADDRESS + $200 - $8000 '$69 23
+#elseifdef XEPROM
+        neg     CS,#$10         '$66 20 correct CS for executing XMM from EEPROM
+        sub     PC,CS           '$67 21 correct PC                     
+        jmp     #LMM_loop       '$68 22 we can now start executing LMM code
+        nop                     '$69 23                     
+#else
         sub     PC,CS           '$66 20 correct PC for XMM
         jmp     #LMM_loop       '$67 21 we can now start executing LMM code
-spi_ro  long    Common#XMM_RO_BASE_ADDRESS + $200 - $8000 '$68 22
-#elseifdef XEPROM
-        neg     CS,#$10         '$65 19 correct CS for executing XMM from EEPROM
-        sub     PC,CS           '$66 20 correct PC                     
-        jmp     #LMM_loop       '$67 21 we can now start executing LMM code
         nop                     '$68 22                     
-#else
-        sub     PC,CS           '$65 19 correct PC for XMM
-        jmp     #LMM_loop       '$66 20 we can now start executing LMM code
-        nop                     '$67 21                     
-        nop                     '$68 22                     
-#endif
         nop                     '$69 23                     
+#endif
         nop                     '$6a 24                     
         nop                     '$6b 25                     
         nop                     '$6c 26                     

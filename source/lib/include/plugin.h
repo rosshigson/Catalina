@@ -58,6 +58,7 @@ extern long _sys_plugin(long code, long param);
 #define LMM_STO 30
 #define LMM_P2P 31
 #define LMM_RND 32
+#define LMM_SVR 33
 
 #define LMM_NUL 255
 

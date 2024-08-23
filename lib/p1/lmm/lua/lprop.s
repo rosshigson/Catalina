@@ -11,79 +11,79 @@ DAT ' code segment
 DAT ' const data segment
 
  alignl ' align long
-C_sg4o14_6695052c_luapropeller_funcs_L000039 ' <symbol:luapropeller_funcs>
- long @C_sg4o15_6695052c_40_L000041
- long @C_sg4o_6695052c_propeller_setenv_L000003
- long @C_sg4o16_6695052c_42_L000043
- long @C_sg4o1_6695052c_propeller_unsetenv_L000004
- long @C_sg4o17_6695052c_44_L000045
- long @C_sg4o2_6695052c_propeller_getpin_L000005
- long @C_sg4o18_6695052c_46_L000047
- long @C_sg4o3_6695052c_propeller_setpin_L000006
- long @C_sg4o19_6695052c_48_L000049
- long @C_sg4o4_6695052c_propeller_togglepin_L000007
- long @C_sg4o1a_6695052c_50_L000051
- long @C_sg4o5_6695052c_propeller_sleep_L000008
- long @C_sg4o1b_6695052c_52_L000053
- long @C_sg4o6_6695052c_propeller_msleep_L000009
- long @C_sg4o1c_6695052c_54_L000055
- long @C_sg4o7_6695052c_propeller_sbrk_L000010
- long @C_sg4o1d_6695052c_56_L000057
- long @C_sg4o8_6695052c_propeller_version_L000011
- long @C_sg4o1e_6695052c_58_L000059
- long @C_sg4o9_6695052c_propeller_mount_L000012
- long @C_sg4o1f_6695052c_60_L000061
- long @C_sg4oa_6695052c_propeller_scan_L000013
- long @C_sg4o1g_6695052c_62_L000063
- long @C_sg4ob_6695052c_propeller_execute_L000014
- long @C_sg4o1h_6695052c_64_L000065
- long @C_sg4oc_6695052c_propeller_k_get_L000015
- long @C_sg4o1i_6695052c_66_L000067
- long @C_sg4od_6695052c_propeller_k_wait_L000016
- long @C_sg4o1j_6695052c_68_L000069
- long @C_sg4oe_6695052c_propeller_k_new_L000017
- long @C_sg4o1k_6695052c_70_L000071
- long @C_sg4of_6695052c_propeller_k_ready_L000018
- long @C_sg4o1l_6695052c_72_L000073
- long @C_sg4og_6695052c_propeller_k_clear_L000019
- long @C_sg4o1m_6695052c_74_L000075
- long @C_sg4oh_6695052c_propeller_m_button_L000020
- long @C_sg4o1n_6695052c_76_L000077
- long @C_sg4oi_6695052c_propeller_m_abs_x_L000021
- long @C_sg4o1o_6695052c_78_L000079
- long @C_sg4oj_6695052c_propeller_m_abs_y_L000022
- long @C_sg4o1p_6695052c_80_L000081
- long @C_sg4ok_6695052c_propeller_m_delta_x_L000023
- long @C_sg4o1q_6695052c_82_L000083
- long @C_sg4ol_6695052c_propeller_m_delta_y_L000024
- long @C_sg4o1r_6695052c_84_L000085
- long @C_sg4om_6695052c_propeller_m_reset_L000025
- long @C_sg4o1s_6695052c_86_L000087
- long @C_sg4on_6695052c_propeller_m_bound_limits_L000026
- long @C_sg4o1t_6695052c_88_L000089
- long @C_sg4oo_6695052c_propeller_m_bound_scales_L000027
- long @C_sg4o1u_6695052c_90_L000091
- long @C_sg4op_6695052c_propeller_m_bound_x_L000028
- long @C_sg4o1v_6695052c_92_L000093
- long @C_sg4oq_6695052c_propeller_m_bound_y_L000029
- long @C_sg4o20_6695052c_94_L000095
- long @C_sg4or_6695052c_propeller_t_geometry_L000030
- long @C_sg4o21_6695052c_96_L000097
- long @C_sg4os_6695052c_propeller_t_char_L000031
- long @C_sg4o22_6695052c_98_L000099
- long @C_sg4ot_6695052c_propeller_t_mode_L000032
- long @C_sg4o23_6695052c_100_L000101
- long @C_sg4ou_6695052c_propeller_t_setpos_L000033
- long @C_sg4o24_6695052c_102_L000103
- long @C_sg4ov_6695052c_propeller_t_getpos_L000034
- long @C_sg4o25_6695052c_104_L000105
- long @C_sg4o10_6695052c_propeller_t_scroll_L000035
- long @C_sg4o26_6695052c_106_L000107
- long @C_sg4o11_6695052c_propeller_t_color_L000036
- long @C_sg4o27_6695052c_108_L000109
- long @C_sg4o12_6695052c_propeller_t_color_fg_L000037
- long @C_sg4o28_6695052c_110_L000111
- long @C_sg4o13_6695052c_propeller_t_color_bg_L000038
+C_skss14_66c68a90_luapropeller_funcs_L000039 ' <symbol:luapropeller_funcs>
+ long @C_skss15_66c68a90_40_L000041
+ long @C_skss_66c68a90_propeller_setenv_L000003
+ long @C_skss16_66c68a90_42_L000043
+ long @C_skss1_66c68a90_propeller_unsetenv_L000004
+ long @C_skss17_66c68a90_44_L000045
+ long @C_skss2_66c68a90_propeller_getpin_L000005
+ long @C_skss18_66c68a90_46_L000047
+ long @C_skss3_66c68a90_propeller_setpin_L000006
+ long @C_skss19_66c68a90_48_L000049
+ long @C_skss4_66c68a90_propeller_togglepin_L000007
+ long @C_skss1a_66c68a90_50_L000051
+ long @C_skss5_66c68a90_propeller_sleep_L000008
+ long @C_skss1b_66c68a90_52_L000053
+ long @C_skss6_66c68a90_propeller_msleep_L000009
+ long @C_skss1c_66c68a90_54_L000055
+ long @C_skss7_66c68a90_propeller_sbrk_L000010
+ long @C_skss1d_66c68a90_56_L000057
+ long @C_skss8_66c68a90_propeller_version_L000011
+ long @C_skss1e_66c68a90_58_L000059
+ long @C_skss9_66c68a90_propeller_mount_L000012
+ long @C_skss1f_66c68a90_60_L000061
+ long @C_skssa_66c68a90_propeller_scan_L000013
+ long @C_skss1g_66c68a90_62_L000063
+ long @C_skssb_66c68a90_propeller_execute_L000014
+ long @C_skss1h_66c68a90_64_L000065
+ long @C_skssc_66c68a90_propeller_k_get_L000015
+ long @C_skss1i_66c68a90_66_L000067
+ long @C_skssd_66c68a90_propeller_k_wait_L000016
+ long @C_skss1j_66c68a90_68_L000069
+ long @C_sksse_66c68a90_propeller_k_new_L000017
+ long @C_skss1k_66c68a90_70_L000071
+ long @C_skssf_66c68a90_propeller_k_ready_L000018
+ long @C_skss1l_66c68a90_72_L000073
+ long @C_skssg_66c68a90_propeller_k_clear_L000019
+ long @C_skss1m_66c68a90_74_L000075
+ long @C_skssh_66c68a90_propeller_m_button_L000020
+ long @C_skss1n_66c68a90_76_L000077
+ long @C_skssi_66c68a90_propeller_m_abs_x_L000021
+ long @C_skss1o_66c68a90_78_L000079
+ long @C_skssj_66c68a90_propeller_m_abs_y_L000022
+ long @C_skss1p_66c68a90_80_L000081
+ long @C_skssk_66c68a90_propeller_m_delta_x_L000023
+ long @C_skss1q_66c68a90_82_L000083
+ long @C_skssl_66c68a90_propeller_m_delta_y_L000024
+ long @C_skss1r_66c68a90_84_L000085
+ long @C_skssm_66c68a90_propeller_m_reset_L000025
+ long @C_skss1s_66c68a90_86_L000087
+ long @C_skssn_66c68a90_propeller_m_bound_limits_L000026
+ long @C_skss1t_66c68a90_88_L000089
+ long @C_sksso_66c68a90_propeller_m_bound_scales_L000027
+ long @C_skss1u_66c68a90_90_L000091
+ long @C_skssp_66c68a90_propeller_m_bound_x_L000028
+ long @C_skss1v_66c68a90_92_L000093
+ long @C_skssq_66c68a90_propeller_m_bound_y_L000029
+ long @C_skss20_66c68a90_94_L000095
+ long @C_skssr_66c68a90_propeller_t_geometry_L000030
+ long @C_skss21_66c68a90_96_L000097
+ long @C_sksss_66c68a90_propeller_t_char_L000031
+ long @C_skss22_66c68a90_98_L000099
+ long @C_sksst_66c68a90_propeller_t_mode_L000032
+ long @C_skss23_66c68a90_100_L000101
+ long @C_skssu_66c68a90_propeller_t_setpos_L000033
+ long @C_skss24_66c68a90_102_L000103
+ long @C_skssv_66c68a90_propeller_t_getpos_L000034
+ long @C_skss25_66c68a90_104_L000105
+ long @C_skss10_66c68a90_propeller_t_scroll_L000035
+ long @C_skss26_66c68a90_106_L000107
+ long @C_skss11_66c68a90_propeller_t_color_L000036
+ long @C_skss27_66c68a90_108_L000109
+ long @C_skss12_66c68a90_propeller_t_color_fg_L000037
+ long @C_skss28_66c68a90_110_L000111
+ long @C_skss13_66c68a90_propeller_t_color_bg_L000038
  long $0
  long $0
 
@@ -92,7 +92,7 @@ C_sg4o14_6695052c_luapropeller_funcs_L000039 ' <symbol:luapropeller_funcs>
 DAT ' code segment
 
  alignl ' align long
-C_sg4o_6695052c_propeller_setenv_L000003 ' <symbol:propeller_setenv>
+C_skss_66c68a90_propeller_setenv_L000003 ' <symbol:propeller_setenv>
  jmp #NEWF
  sub SP, #12
  jmp #PSHM
@@ -157,14 +157,14 @@ C_sg4o_6695052c_propeller_setenv_L000003 ' <symbol:propeller_setenv>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_sg4o_6695052c_propeller_setenv_L000003_112 ' (symbol refcount = 0)
+' C_skss_66c68a90_propeller_setenv_L000003_112 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #12 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_sg4o1_6695052c_propeller_unsetenv_L000004 ' <symbol:propeller_unsetenv>
+C_skss1_66c68a90_propeller_unsetenv_L000004 ' <symbol:propeller_unsetenv>
  jmp #NEWF
  sub SP, #4
  jmp #PSHM
@@ -198,14 +198,14 @@ C_sg4o1_6695052c_propeller_unsetenv_L000004 ' <symbol:propeller_unsetenv>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_sg4o1_6695052c_propeller_unsetenv_L000004_113 ' (symbol refcount = 0)
+' C_skss1_66c68a90_propeller_unsetenv_L000004_113 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_sg4o2_6695052c_propeller_getpin_L000005 ' <symbol:propeller_getpin>
+C_skss2_66c68a90_propeller_getpin_L000005 ' <symbol:propeller_getpin>
  jmp #NEWF
  jmp #PSHM
  long $e00000 ' save registers
@@ -220,13 +220,13 @@ C_sg4o2_6695052c_propeller_getpin_L000005 ' <symbol:propeller_getpin>
  mov r21, r0 ' CVI, CVU or LOAD
  cmps r21,  #0 wz,wc
  jmp #BR_B
- long @C_sg4o2_6695052c_propeller_getpin_L000005_118 ' LTI4
+ long @C_skss2_66c68a90_propeller_getpin_L000005_118 ' LTI4
  cmps r21,  #31 wz,wc
  jmp #BRBE
- long @C_sg4o2_6695052c_propeller_getpin_L000005_117 ' LEI4
-C_sg4o2_6695052c_propeller_getpin_L000005_118
+ long @C_skss2_66c68a90_propeller_getpin_L000005_117 ' LEI4
+C_skss2_66c68a90_propeller_getpin_L000005_118
  jmp #LODL
- long @C_sg4o2_6695052c_propeller_getpin_L000005_115_L000116
+ long @C_skss2_66c68a90_propeller_getpin_L000005_115_L000116
  mov r2, RI ' reg ARG ADDRG
  mov r3, #1 ' reg ARG coni
  mov r4, r23 ' CVI, CVU or LOAD
@@ -235,7 +235,7 @@ C_sg4o2_6695052c_propeller_getpin_L000005_118
  jmp #CALA
  long @C_luaL__argerror
  add SP, #8 ' CALL addrg
-C_sg4o2_6695052c_propeller_getpin_L000005_117
+C_skss2_66c68a90_propeller_getpin_L000005_117
  mov r2, #0 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -256,13 +256,13 @@ C_sg4o2_6695052c_propeller_getpin_L000005_117
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_sg4o2_6695052c_propeller_getpin_L000005_114 ' (symbol refcount = 0)
+' C_skss2_66c68a90_propeller_getpin_L000005_114 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4o3_6695052c_propeller_setpin_L000006 ' <symbol:propeller_setpin>
+C_skss3_66c68a90_propeller_setpin_L000006 ' <symbol:propeller_setpin>
  jmp #NEWF
  jmp #PSHM
  long $e80000 ' save registers
@@ -285,13 +285,13 @@ C_sg4o3_6695052c_propeller_setpin_L000006 ' <symbol:propeller_setpin>
  mov r19, r0 ' CVI, CVU or LOAD
  cmps r21,  #0 wz,wc
  jmp #BR_B
- long @C_sg4o3_6695052c_propeller_setpin_L000006_121 ' LTI4
+ long @C_skss3_66c68a90_propeller_setpin_L000006_121 ' LTI4
  cmps r21,  #31 wz,wc
  jmp #BRBE
- long @C_sg4o3_6695052c_propeller_setpin_L000006_120 ' LEI4
-C_sg4o3_6695052c_propeller_setpin_L000006_121
+ long @C_skss3_66c68a90_propeller_setpin_L000006_120 ' LEI4
+C_skss3_66c68a90_propeller_setpin_L000006_121
  jmp #LODL
- long @C_sg4o2_6695052c_propeller_getpin_L000005_115_L000116
+ long @C_skss2_66c68a90_propeller_getpin_L000005_115_L000116
  mov r2, RI ' reg ARG ADDRG
  mov r3, #1 ' reg ARG coni
  mov r4, r23 ' CVI, CVU or LOAD
@@ -300,15 +300,15 @@ C_sg4o3_6695052c_propeller_setpin_L000006_121
  jmp #CALA
  long @C_luaL__argerror
  add SP, #8 ' CALL addrg
-C_sg4o3_6695052c_propeller_setpin_L000006_120
+C_skss3_66c68a90_propeller_setpin_L000006_120
  cmps r19,  #0 wz
  jmp #BR_Z
- long @C_sg4o3_6695052c_propeller_setpin_L000006_124 ' EQI4
+ long @C_skss3_66c68a90_propeller_setpin_L000006_124 ' EQI4
  cmps r19,  #1 wz
  jmp #BR_Z
- long @C_sg4o3_6695052c_propeller_setpin_L000006_124 ' EQI4
+ long @C_skss3_66c68a90_propeller_setpin_L000006_124 ' EQI4
  jmp #LODL
- long @C_sg4o3_6695052c_propeller_setpin_L000006_122_L000123
+ long @C_skss3_66c68a90_propeller_setpin_L000006_122_L000123
  mov r2, RI ' reg ARG ADDRG
  mov r3, #2 ' reg ARG coni
  mov r4, r23 ' CVI, CVU or LOAD
@@ -317,7 +317,7 @@ C_sg4o3_6695052c_propeller_setpin_L000006_120
  jmp #CALA
  long @C_luaL__argerror
  add SP, #8 ' CALL addrg
-C_sg4o3_6695052c_propeller_setpin_L000006_124
+C_skss3_66c68a90_propeller_setpin_L000006_124
  mov r2, #0 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -333,13 +333,13 @@ C_sg4o3_6695052c_propeller_setpin_L000006_124
  long @C_setpin
  add SP, #4 ' CALL addrg
  mov r0, #0 ' RET coni
-' C_sg4o3_6695052c_propeller_setpin_L000006_119 ' (symbol refcount = 0)
+' C_skss3_66c68a90_propeller_setpin_L000006_119 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4o4_6695052c_propeller_togglepin_L000007 ' <symbol:propeller_togglepin>
+C_skss4_66c68a90_propeller_togglepin_L000007 ' <symbol:propeller_togglepin>
  jmp #NEWF
  jmp #PSHM
  long $e00000 ' save registers
@@ -354,13 +354,13 @@ C_sg4o4_6695052c_propeller_togglepin_L000007 ' <symbol:propeller_togglepin>
  mov r21, r0 ' CVI, CVU or LOAD
  cmps r21,  #0 wz,wc
  jmp #BR_B
- long @C_sg4o4_6695052c_propeller_togglepin_L000007_127 ' LTI4
+ long @C_skss4_66c68a90_propeller_togglepin_L000007_127 ' LTI4
  cmps r21,  #31 wz,wc
  jmp #BRBE
- long @C_sg4o4_6695052c_propeller_togglepin_L000007_126 ' LEI4
-C_sg4o4_6695052c_propeller_togglepin_L000007_127
+ long @C_skss4_66c68a90_propeller_togglepin_L000007_126 ' LEI4
+C_skss4_66c68a90_propeller_togglepin_L000007_127
  jmp #LODL
- long @C_sg4o2_6695052c_propeller_getpin_L000005_115_L000116
+ long @C_skss2_66c68a90_propeller_getpin_L000005_115_L000116
  mov r2, RI ' reg ARG ADDRG
  mov r3, #1 ' reg ARG coni
  mov r4, r23 ' CVI, CVU or LOAD
@@ -369,7 +369,7 @@ C_sg4o4_6695052c_propeller_togglepin_L000007_127
  jmp #CALA
  long @C_luaL__argerror
  add SP, #8 ' CALL addrg
-C_sg4o4_6695052c_propeller_togglepin_L000007_126
+C_skss4_66c68a90_propeller_togglepin_L000007_126
  mov r2, #0 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -382,13 +382,13 @@ C_sg4o4_6695052c_propeller_togglepin_L000007_126
  jmp #CALA
  long @C_togglepin ' CALL addrg
  mov r0, #0 ' RET coni
-' C_sg4o4_6695052c_propeller_togglepin_L000007_125 ' (symbol refcount = 0)
+' C_skss4_66c68a90_propeller_togglepin_L000007_125 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4o5_6695052c_propeller_sleep_L000008 ' <symbol:propeller_sleep>
+C_skss5_66c68a90_propeller_sleep_L000008 ' <symbol:propeller_sleep>
  jmp #NEWF
  jmp #PSHM
  long $e00000 ' save registers
@@ -399,7 +399,7 @@ C_sg4o5_6695052c_propeller_sleep_L000008 ' <symbol:propeller_sleep>
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_sg4o5_6695052c_propeller_sleep_L000008_129 ' LEI4
+ long @C_skss5_66c68a90_propeller_sleep_L000008_129 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -410,9 +410,9 @@ C_sg4o5_6695052c_propeller_sleep_L000008 ' <symbol:propeller_sleep>
  mov r21, r0 ' CVI, CVU or LOAD
  cmps r21,  #0 wz,wc
  jmp #BRAE
- long @C_sg4o5_6695052c_propeller_sleep_L000008_133 ' GEI4
+ long @C_skss5_66c68a90_propeller_sleep_L000008_133 ' GEI4
  jmp #LODL
- long @C_sg4o5_6695052c_propeller_sleep_L000008_131_L000132
+ long @C_skss5_66c68a90_propeller_sleep_L000008_131_L000132
  mov r2, RI ' reg ARG ADDRG
  mov r3, #1 ' reg ARG coni
  mov r4, r23 ' CVI, CVU or LOAD
@@ -421,7 +421,7 @@ C_sg4o5_6695052c_propeller_sleep_L000008 ' <symbol:propeller_sleep>
  jmp #CALA
  long @C_luaL__argerror
  add SP, #8 ' CALL addrg
-C_sg4o5_6695052c_propeller_sleep_L000008_133
+C_skss5_66c68a90_propeller_sleep_L000008_133
  mov r2, #0 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -431,21 +431,21 @@ C_sg4o5_6695052c_propeller_sleep_L000008_133
  add SP, #4 ' CALL addrg
  cmps r21,  #0 wz,wc
  jmp #BRBE
- long @C_sg4o5_6695052c_propeller_sleep_L000008_134 ' LEI4
+ long @C_skss5_66c68a90_propeller_sleep_L000008_134 ' LEI4
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C__waitsec ' CALL addrg
-C_sg4o5_6695052c_propeller_sleep_L000008_134
-C_sg4o5_6695052c_propeller_sleep_L000008_129
+C_skss5_66c68a90_propeller_sleep_L000008_134
+C_skss5_66c68a90_propeller_sleep_L000008_129
  mov r0, #0 ' RET coni
-' C_sg4o5_6695052c_propeller_sleep_L000008_128 ' (symbol refcount = 0)
+' C_skss5_66c68a90_propeller_sleep_L000008_128 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4o6_6695052c_propeller_msleep_L000009 ' <symbol:propeller_msleep>
+C_skss6_66c68a90_propeller_msleep_L000009 ' <symbol:propeller_msleep>
  jmp #NEWF
  jmp #PSHM
  long $e00000 ' save registers
@@ -456,7 +456,7 @@ C_sg4o6_6695052c_propeller_msleep_L000009 ' <symbol:propeller_msleep>
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_sg4o6_6695052c_propeller_msleep_L000009_137 ' LEI4
+ long @C_skss6_66c68a90_propeller_msleep_L000009_137 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -467,9 +467,9 @@ C_sg4o6_6695052c_propeller_msleep_L000009 ' <symbol:propeller_msleep>
  mov r21, r0 ' CVI, CVU or LOAD
  cmps r21,  #0 wz,wc
  jmp #BRAE
- long @C_sg4o6_6695052c_propeller_msleep_L000009_141 ' GEI4
+ long @C_skss6_66c68a90_propeller_msleep_L000009_141 ' GEI4
  jmp #LODL
- long @C_sg4o6_6695052c_propeller_msleep_L000009_139_L000140
+ long @C_skss6_66c68a90_propeller_msleep_L000009_139_L000140
  mov r2, RI ' reg ARG ADDRG
  mov r3, #1 ' reg ARG coni
  mov r4, r23 ' CVI, CVU or LOAD
@@ -478,7 +478,7 @@ C_sg4o6_6695052c_propeller_msleep_L000009 ' <symbol:propeller_msleep>
  jmp #CALA
  long @C_luaL__argerror
  add SP, #8 ' CALL addrg
-C_sg4o6_6695052c_propeller_msleep_L000009_141
+C_skss6_66c68a90_propeller_msleep_L000009_141
  mov r2, #0 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -488,21 +488,21 @@ C_sg4o6_6695052c_propeller_msleep_L000009_141
  add SP, #4 ' CALL addrg
  cmps r21,  #0 wz,wc
  jmp #BRBE
- long @C_sg4o6_6695052c_propeller_msleep_L000009_142 ' LEI4
+ long @C_skss6_66c68a90_propeller_msleep_L000009_142 ' LEI4
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C__waitms ' CALL addrg
-C_sg4o6_6695052c_propeller_msleep_L000009_142
-C_sg4o6_6695052c_propeller_msleep_L000009_137
+C_skss6_66c68a90_propeller_msleep_L000009_142
+C_skss6_66c68a90_propeller_msleep_L000009_137
  mov r0, #0 ' RET coni
-' C_sg4o6_6695052c_propeller_msleep_L000009_136 ' (symbol refcount = 0)
+' C_skss6_66c68a90_propeller_msleep_L000009_136 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4o7_6695052c_propeller_sbrk_L000010 ' <symbol:propeller_sbrk>
+C_skss7_66c68a90_propeller_sbrk_L000010 ' <symbol:propeller_sbrk>
  jmp #NEWF
  jmp #PSHM
  long $e00000 ' save registers
@@ -513,7 +513,7 @@ C_sg4o7_6695052c_propeller_sbrk_L000010 ' <symbol:propeller_sbrk>
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_sg4o7_6695052c_propeller_sbrk_L000010_145 ' LEI4
+ long @C_skss7_66c68a90_propeller_sbrk_L000010_145 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -523,12 +523,12 @@ C_sg4o7_6695052c_propeller_sbrk_L000010 ' <symbol:propeller_sbrk>
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
  jmp #BR_Z
- long @C_sg4o7_6695052c_propeller_sbrk_L000010_147 ' EQI4
+ long @C_skss7_66c68a90_propeller_sbrk_L000010_147 ' EQI4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
  long @C_malloc_defragment ' CALL addrg
-C_sg4o7_6695052c_propeller_sbrk_L000010_147
-C_sg4o7_6695052c_propeller_sbrk_L000010_145
+C_skss7_66c68a90_propeller_sbrk_L000010_147
+C_skss7_66c68a90_propeller_sbrk_L000010_145
  mov r2, #0 ' reg ARG coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -549,13 +549,13 @@ C_sg4o7_6695052c_propeller_sbrk_L000010_145
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_sg4o7_6695052c_propeller_sbrk_L000010_144 ' (symbol refcount = 0)
+' C_skss7_66c68a90_propeller_sbrk_L000010_144 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4o8_6695052c_propeller_version_L000011 ' <symbol:propeller_version>
+C_skss8_66c68a90_propeller_version_L000011 ' <symbol:propeller_version>
  jmp #NEWF
  jmp #PSHM
  long $e00000 ' save registers
@@ -566,7 +566,7 @@ C_sg4o8_6695052c_propeller_version_L000011 ' <symbol:propeller_version>
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_sg4o8_6695052c_propeller_version_L000011_150 ' LEI4
+ long @C_skss8_66c68a90_propeller_version_L000011_150 ' LEI4
  jmp #LODL
  long 0
  mov r2, RI ' reg ARG con
@@ -586,7 +586,7 @@ C_sg4o8_6695052c_propeller_version_L000011 ' <symbol:propeller_version>
  long @C_lua_settop
  add SP, #4 ' CALL addrg
  jmp #LODL
- long @C_sg4o8_6695052c_propeller_version_L000011_154_L000155
+ long @C_skss8_66c68a90_propeller_version_L000011_154_L000155
  mov r2, RI ' reg ARG ADDRG
  mov r3, r21 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -596,7 +596,7 @@ C_sg4o8_6695052c_propeller_version_L000011 ' <symbol:propeller_version>
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
  jmp #BRNZ
- long @C_sg4o8_6695052c_propeller_version_L000011_152 ' NEI4
+ long @C_skss8_66c68a90_propeller_version_L000011_152 ' NEI4
  mov r2, #504 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -605,10 +605,10 @@ C_sg4o8_6695052c_propeller_version_L000011 ' <symbol:propeller_version>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  jmp #JMPA
- long @C_sg4o8_6695052c_propeller_version_L000011_151 ' JUMPV addrg
-C_sg4o8_6695052c_propeller_version_L000011_152
+ long @C_skss8_66c68a90_propeller_version_L000011_151 ' JUMPV addrg
+C_skss8_66c68a90_propeller_version_L000011_152
  jmp #LODL
- long @C_sg4o8_6695052c_propeller_version_L000011_158_L000159
+ long @C_skss8_66c68a90_propeller_version_L000011_158_L000159
  mov r2, RI ' reg ARG ADDRG
  mov r3, r21 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -618,7 +618,7 @@ C_sg4o8_6695052c_propeller_version_L000011_152
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
  jmp #BRNZ
- long @C_sg4o8_6695052c_propeller_version_L000011_156 ' NEI4
+ long @C_skss8_66c68a90_propeller_version_L000011_156 ' NEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -627,8 +627,8 @@ C_sg4o8_6695052c_propeller_version_L000011_152
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  jmp #JMPA
- long @C_sg4o8_6695052c_propeller_version_L000011_151 ' JUMPV addrg
-C_sg4o8_6695052c_propeller_version_L000011_156
+ long @C_skss8_66c68a90_propeller_version_L000011_151 ' JUMPV addrg
+C_skss8_66c68a90_propeller_version_L000011_156
  jmp #LODL
  long 640
  mov r2, RI ' reg ARG con
@@ -639,8 +639,8 @@ C_sg4o8_6695052c_propeller_version_L000011_156
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  jmp #JMPA
- long @C_sg4o8_6695052c_propeller_version_L000011_151 ' JUMPV addrg
-C_sg4o8_6695052c_propeller_version_L000011_150
+ long @C_skss8_66c68a90_propeller_version_L000011_151 ' JUMPV addrg
+C_skss8_66c68a90_propeller_version_L000011_150
  mov r2, #0 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -655,15 +655,15 @@ C_sg4o8_6695052c_propeller_version_L000011_150
  jmp #CALA
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
-C_sg4o8_6695052c_propeller_version_L000011_151
+C_skss8_66c68a90_propeller_version_L000011_151
  mov r0, #1 ' RET coni
-' C_sg4o8_6695052c_propeller_version_L000011_149 ' (symbol refcount = 0)
+' C_skss8_66c68a90_propeller_version_L000011_149 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4o9_6695052c_propeller_mount_L000012 ' <symbol:propeller_mount>
+C_skss9_66c68a90_propeller_mount_L000012 ' <symbol:propeller_mount>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -680,7 +680,7 @@ C_sg4o9_6695052c_propeller_mount_L000012 ' <symbol:propeller_mount>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_sg4o9_6695052c_propeller_mount_L000012_160 ' (symbol refcount = 0)
+' C_skss9_66c68a90_propeller_mount_L000012_160 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -690,21 +690,21 @@ C_sg4o9_6695052c_propeller_mount_L000012 ' <symbol:propeller_mount>
 DAT ' initialized data segment
 
  alignl ' align long
-C_sg4o2f_6695052c_nulldir_L000161 ' <symbol:nulldir>
+C_skss2f_66c68a90_nulldir_L000161 ' <symbol:nulldir>
  byte 47
  byte 0
 
  alignl ' align long
-C_sg4o2g_6695052c_nullpattern_L000162 ' <symbol:nullpattern>
+C_skss2g_66c68a90_nullpattern_L000162 ' <symbol:nullpattern>
  byte 42
  byte 0
 
  alignl ' align long
-C_sg4o2h_6695052c_match_function_L000163 ' <symbol:match_function>
+C_skss2h_66c68a90_match_function_L000163 ' <symbol:match_function>
  long -2
 
  alignl ' align long
-C_sg4o2i_6695052c_match_state_L000164 ' <symbol:match_state>
+C_skss2i_66c68a90_match_state_L000164 ' <symbol:match_state>
  long $0
 
 ' Catalina Code
@@ -712,7 +712,7 @@ C_sg4o2i_6695052c_match_state_L000164 ' <symbol:match_state>
 DAT ' code segment
 
  alignl ' align long
-C_sg4o2j_6695052c_match_callback_L000165 ' <symbol:match_callback>
+C_skss2j_66c68a90_match_callback_L000165 ' <symbol:match_callback>
  jmp #NEWF
  jmp #PSHM
  long $e80000 ' save registers
@@ -720,25 +720,25 @@ C_sg4o2j_6695052c_match_callback_L000165 ' <symbol:match_callback>
  mov r21, r3 ' reg var <- reg arg
  mov r19, r2 ' reg var <- reg arg
  jmp #LODI
- long @C_sg4o2h_6695052c_match_function_L000163
+ long @C_skss2h_66c68a90_match_function_L000163
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz
  jmp #BR_Z
- long @C_sg4o2j_6695052c_match_callback_L000165_167 ' EQI4
+ long @C_skss2j_66c68a90_match_callback_L000165_167 ' EQI4
  jmp #LODI
- long @C_sg4o2i_6695052c_match_state_L000164
+ long @C_skss2i_66c68a90_match_state_L000164
  mov r22, RI ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  jmp #BR_Z
- long @C_sg4o2j_6695052c_match_callback_L000165_167 ' EQU4
+ long @C_skss2j_66c68a90_match_callback_L000165_167 ' EQU4
  jmp #LODI
- long @C_sg4o2h_6695052c_match_function_L000163
+ long @C_skss2h_66c68a90_match_function_L000163
  mov r2, RI ' reg ARG INDIR ADDRG
  jmp #LODL
  long -1001000
  mov r3, RI ' reg ARG con
  jmp #LODI
- long @C_sg4o2i_6695052c_match_state_L000164
+ long @C_skss2i_66c68a90_match_state_L000164
  mov r4, RI ' reg ARG INDIR ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -747,7 +747,7 @@ C_sg4o2j_6695052c_match_callback_L000165 ' <symbol:match_callback>
  add SP, #8 ' CALL addrg
  mov r2, r23 ' CVI, CVU or LOAD
  jmp #LODI
- long @C_sg4o2i_6695052c_match_state_L000164
+ long @C_skss2i_66c68a90_match_state_L000164
  mov r3, RI ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -756,7 +756,7 @@ C_sg4o2j_6695052c_match_callback_L000165 ' <symbol:match_callback>
  add SP, #4 ' CALL addrg
  mov r2, r21 ' CVI, CVU or LOAD
  jmp #LODI
- long @C_sg4o2i_6695052c_match_state_L000164
+ long @C_skss2i_66c68a90_match_state_L000164
  mov r3, RI ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -765,7 +765,7 @@ C_sg4o2j_6695052c_match_callback_L000165 ' <symbol:match_callback>
  add SP, #4 ' CALL addrg
  mov r2, r19 ' CVI, CVU or LOAD
  jmp #LODI
- long @C_sg4o2i_6695052c_match_state_L000164
+ long @C_skss2i_66c68a90_match_state_L000164
  mov r3, RI ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -781,29 +781,29 @@ C_sg4o2j_6695052c_match_callback_L000165 ' <symbol:match_callback>
  mov r5, #3 ' reg ARG coni
  sub SP, #16 ' stack space for reg ARGs
  jmp #PSHA
- long @C_sg4o2i_6695052c_match_state_L000164 ' stack ARG INDIR ADDRG
+ long @C_skss2i_66c68a90_match_state_L000164 ' stack ARG INDIR ADDRG
  mov BC, #20 ' arg size, rpsize = 0, spsize = 20
  add SP, #4 ' correct for new kernel !!! 
  jmp #CALA
  long @C_lua_callk
  add SP, #16 ' CALL addrg
  jmp #JMPA
- long @C_sg4o2j_6695052c_match_callback_L000165_168 ' JUMPV addrg
-C_sg4o2j_6695052c_match_callback_L000165_167
+ long @C_skss2j_66c68a90_match_callback_L000165_168 ' JUMPV addrg
+C_skss2j_66c68a90_match_callback_L000165_167
  jmp #LODL
- long @C_sg4o2j_6695052c_match_callback_L000165_169_L000170
+ long @C_skss2j_66c68a90_match_callback_L000165_169_L000170
  mov r2, RI ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C_printf ' CALL addrg
-C_sg4o2j_6695052c_match_callback_L000165_168
-' C_sg4o2j_6695052c_match_callback_L000165_166 ' (symbol refcount = 0)
+C_skss2j_66c68a90_match_callback_L000165_168
+' C_skss2j_66c68a90_match_callback_L000165_166 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4oa_6695052c_propeller_scan_L000013 ' <symbol:propeller_scan>
+C_skssa_66c68a90_propeller_scan_L000013 ' <symbol:propeller_scan>
  jmp #NEWF
  jmp #PSHM
  long $ea0000 ' save registers
@@ -815,7 +815,7 @@ C_sg4oa_6695052c_propeller_scan_L000013 ' <symbol:propeller_scan>
  mov r21, r0 ' CVI, CVU or LOAD
  cmps r21,  #1 wz,wc
  jmp #BR_B
- long @C_sg4oa_6695052c_propeller_scan_L000013_172 ' LTI4
+ long @C_skssa_66c68a90_propeller_scan_L000013_172 ' LTI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -826,7 +826,7 @@ C_sg4oa_6695052c_propeller_scan_L000013 ' <symbol:propeller_scan>
  mov r22, r0 ' CVI, CVU or LOAD
  cmps r22,  #6 wz
  jmp #BRNZ
- long @C_sg4oa_6695052c_propeller_scan_L000013_176 ' NEI4
+ long @C_skssa_66c68a90_propeller_scan_L000013_176 ' NEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -836,10 +836,10 @@ C_sg4oa_6695052c_propeller_scan_L000013 ' <symbol:propeller_scan>
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
  jmp #BR_Z
- long @C_sg4oa_6695052c_propeller_scan_L000013_174 ' EQI4
-C_sg4oa_6695052c_propeller_scan_L000013_176
+ long @C_skssa_66c68a90_propeller_scan_L000013_174 ' EQI4
+C_skssa_66c68a90_propeller_scan_L000013_176
  jmp #LODL
- long @C_sg4oa_6695052c_propeller_scan_L000013_177_L000178
+ long @C_skssa_66c68a90_propeller_scan_L000013_177_L000178
  mov r2, RI ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -847,11 +847,11 @@ C_sg4oa_6695052c_propeller_scan_L000013_176
  jmp #CALA
  long @C_luaL__error
  add SP, #4 ' CALL addrg
-C_sg4oa_6695052c_propeller_scan_L000013_174
-C_sg4oa_6695052c_propeller_scan_L000013_172
+C_skssa_66c68a90_propeller_scan_L000013_174
+C_skssa_66c68a90_propeller_scan_L000013_172
  cmps r21,  #2 wz,wc
  jmp #BR_B
- long @C_sg4oa_6695052c_propeller_scan_L000013_179 ' LTI4
+ long @C_skssa_66c68a90_propeller_scan_L000013_179 ' LTI4
  jmp #LODL
  long 0
  mov r2, RI ' reg ARG con
@@ -866,15 +866,15 @@ C_sg4oa_6695052c_propeller_scan_L000013_172
  mov r22, r19 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
  jmp #BRNZ
- long @C_sg4oa_6695052c_propeller_scan_L000013_181 ' NEU4
+ long @C_skssa_66c68a90_propeller_scan_L000013_181 ' NEU4
  jmp #LODL
- long @C_sg4o2f_6695052c_nulldir_L000161
+ long @C_skss2f_66c68a90_nulldir_L000161
  mov r19, RI ' reg <- addrg
-C_sg4oa_6695052c_propeller_scan_L000013_181
-C_sg4oa_6695052c_propeller_scan_L000013_179
+C_skssa_66c68a90_propeller_scan_L000013_181
+C_skssa_66c68a90_propeller_scan_L000013_179
  cmps r21,  #3 wz,wc
  jmp #BR_B
- long @C_sg4oa_6695052c_propeller_scan_L000013_183 ' LTI4
+ long @C_skssa_66c68a90_propeller_scan_L000013_183 ' LTI4
  jmp #LODL
  long 0
  mov r2, RI ' reg ARG con
@@ -889,15 +889,15 @@ C_sg4oa_6695052c_propeller_scan_L000013_179
  mov r22, r17 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
  jmp #BRNZ
- long @C_sg4oa_6695052c_propeller_scan_L000013_185 ' NEU4
+ long @C_skssa_66c68a90_propeller_scan_L000013_185 ' NEU4
  jmp #LODL
- long @C_sg4o2g_6695052c_nullpattern_L000162
+ long @C_skss2g_66c68a90_nullpattern_L000162
  mov r17, RI ' reg <- addrg
-C_sg4oa_6695052c_propeller_scan_L000013_185
-C_sg4oa_6695052c_propeller_scan_L000013_183
+C_skssa_66c68a90_propeller_scan_L000013_185
+C_skssa_66c68a90_propeller_scan_L000013_183
  cmps r21,  #0 wz,wc
  jmp #BRBE
- long @C_sg4oa_6695052c_propeller_scan_L000013_187 ' LEI4
+ long @C_skssa_66c68a90_propeller_scan_L000013_187 ' LEI4
  mov r22, r21
  subs r22, #1 ' SUBI4 coni
  neg r22, r22 ' NEGI4
@@ -919,13 +919,13 @@ C_sg4oa_6695052c_propeller_scan_L000013_183
  long @C_luaL__ref
  add SP, #4 ' CALL addrg
  jmp #LODL
- long @C_sg4o2h_6695052c_match_function_L000163
+ long @C_skss2h_66c68a90_match_function_L000163
  wrlong r0, RI ' ASGNI4 addrg reg
  jmp #LODL
- long @C_sg4o2i_6695052c_match_state_L000164
+ long @C_skss2i_66c68a90_match_state_L000164
  wrlong r23, RI ' ASGNP4 addrg reg
  jmp #LODL
- long @C_sg4o2j_6695052c_match_callback_L000165
+ long @C_skss2j_66c68a90_match_callback_L000165
  mov r2, RI ' reg ARG ADDRG
  mov r3, r17 ' CVI, CVU or LOAD
  mov r4, r19 ' CVI, CVU or LOAD
@@ -935,7 +935,7 @@ C_sg4oa_6695052c_propeller_scan_L000013_183
  long @C_doD_ir
  add SP, #8 ' CALL addrg
  jmp #LODI
- long @C_sg4o2h_6695052c_match_function_L000163
+ long @C_skss2h_66c68a90_match_function_L000163
  mov r2, RI ' reg ARG INDIR ADDRG
  jmp #LODL
  long -1001000
@@ -950,23 +950,23 @@ C_sg4oa_6695052c_propeller_scan_L000013_183
  long -2
  mov r22, RI ' reg <- con
  jmp #LODL
- long @C_sg4o2h_6695052c_match_function_L000163
+ long @C_skss2h_66c68a90_match_function_L000163
  wrlong r22, RI ' ASGNI4 addrg reg
  jmp #LODL
  long 0
  mov r22, RI ' reg <- con
  jmp #LODL
- long @C_sg4o2i_6695052c_match_state_L000164
+ long @C_skss2i_66c68a90_match_state_L000164
  wrlong r22, RI ' ASGNP4 addrg reg
-C_sg4oa_6695052c_propeller_scan_L000013_187
+C_skssa_66c68a90_propeller_scan_L000013_187
  mov r0, #0 ' RET coni
-' C_sg4oa_6695052c_propeller_scan_L000013_171 ' (symbol refcount = 0)
+' C_skssa_66c68a90_propeller_scan_L000013_171 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4ob_6695052c_propeller_execute_L000014 ' <symbol:propeller_execute>
+C_skssb_66c68a90_propeller_execute_L000014 ' <symbol:propeller_execute>
  jmp #NEWF
  jmp #PSHM
  long $faa000 ' save registers
@@ -988,13 +988,13 @@ C_sg4ob_6695052c_propeller_execute_L000014 ' <symbol:propeller_execute>
  mov r13, #0 ' reg <- coni
  cmps r21,  #1 wz,wc
  jmp #BRAE
- long @C_sg4ob_6695052c_propeller_execute_L000014_190 ' GEI4
+ long @C_skssb_66c68a90_propeller_execute_L000014_190 ' GEI4
  jmp #LODL
  long -4
  mov r0, RI ' reg <- con
  jmp #JMPA
- long @C_sg4ob_6695052c_propeller_execute_L000014_189 ' JUMPV addrg
-C_sg4ob_6695052c_propeller_execute_L000014_190
+ long @C_skssb_66c68a90_propeller_execute_L000014_189 ' JUMPV addrg
+C_skssb_66c68a90_propeller_execute_L000014_190
  jmp #LODL
  long 0
  mov r2, RI ' reg ARG con
@@ -1008,7 +1008,7 @@ C_sg4ob_6695052c_propeller_execute_L000014_190
  mov r19, r0 ' CVI, CVU or LOAD
  cmps r21,  #2 wz,wc
  jmp #BR_B
- long @C_sg4ob_6695052c_propeller_execute_L000014_192 ' LTI4
+ long @C_skssb_66c68a90_propeller_execute_L000014_192 ' LTI4
  jmp #LODL
  long 0
  mov r2, RI ' reg ARG con
@@ -1020,7 +1020,7 @@ C_sg4ob_6695052c_propeller_execute_L000014_190
  long @C_lua_tolstring
  add SP, #8 ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
-C_sg4ob_6695052c_propeller_execute_L000014_192
+C_skssb_66c68a90_propeller_execute_L000014_192
  mov r2, #0 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1031,27 +1031,27 @@ C_sg4ob_6695052c_propeller_execute_L000014_192
  mov r22, r19 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
  jmp #BRNZ
- long @C_sg4ob_6695052c_propeller_execute_L000014_194 ' NEU4
+ long @C_skssb_66c68a90_propeller_execute_L000014_194 ' NEU4
  jmp #LODL
  long -3
  mov r0, RI ' reg <- con
  jmp #JMPA
- long @C_sg4ob_6695052c_propeller_execute_L000014_189 ' JUMPV addrg
-C_sg4ob_6695052c_propeller_execute_L000014_194
+ long @C_skssb_66c68a90_propeller_execute_L000014_189 ' JUMPV addrg
+C_skssb_66c68a90_propeller_execute_L000014_194
  mov r22, r17 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
  jmp #BRNZ
- long @C_sg4ob_6695052c_propeller_execute_L000014_196 ' NEU4
+ long @C_skssb_66c68a90_propeller_execute_L000014_196 ' NEU4
  jmp #LODL
- long @C_sg4ob_6695052c_propeller_execute_L000014_198_L000199
+ long @C_skssb_66c68a90_propeller_execute_L000014_198_L000199
  mov r17, RI ' reg <- addrg
-C_sg4ob_6695052c_propeller_execute_L000014_196
+C_skssb_66c68a90_propeller_execute_L000014_196
  mov r2, r17 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C_remove ' CALL addrg
  jmp #LODL
- long @C_sg4ob_6695052c_propeller_execute_L000014_200_L000201
+ long @C_skssb_66c68a90_propeller_execute_L000014_200_L000201
  mov r2, RI ' reg ARG ADDRG
  mov r3, r17 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1063,7 +1063,7 @@ C_sg4ob_6695052c_propeller_execute_L000014_196
  mov r22, r15 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
  jmp #BR_Z
- long @C_sg4ob_6695052c_propeller_execute_L000014_202 ' EQU4
+ long @C_skssb_66c68a90_propeller_execute_L000014_202 ' EQU4
  mov r2, r19 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -1081,7 +1081,7 @@ C_sg4ob_6695052c_propeller_execute_L000014_196
  mov r20, r13 ' CVI, CVU or LOAD
  cmp r0, r20 wz
  jmp #BRNZ
- long @C_sg4ob_6695052c_propeller_execute_L000014_204 ' NEU4
+ long @C_skssb_66c68a90_propeller_execute_L000014_204 ' NEU4
  mov r2, r15 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -1094,8 +1094,8 @@ C_sg4ob_6695052c_propeller_execute_L000014_196
  long -4
  mov r0, RI ' reg <- con
  jmp #JMPA
- long @C_sg4ob_6695052c_propeller_execute_L000014_189 ' JUMPV addrg
-C_sg4ob_6695052c_propeller_execute_L000014_204
+ long @C_skssb_66c68a90_propeller_execute_L000014_189 ' JUMPV addrg
+C_skssb_66c68a90_propeller_execute_L000014_204
  mov r2, r15 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -1104,18 +1104,18 @@ C_sg4ob_6695052c_propeller_execute_L000014_204
  long -2
  mov r0, RI ' reg <- con
  jmp #JMPA
- long @C_sg4ob_6695052c_propeller_execute_L000014_189 ' JUMPV addrg
-C_sg4ob_6695052c_propeller_execute_L000014_202
+ long @C_skssb_66c68a90_propeller_execute_L000014_189 ' JUMPV addrg
+C_skssb_66c68a90_propeller_execute_L000014_202
  jmp #LODL
  long -1
  mov r0, RI ' reg <- con
-C_sg4ob_6695052c_propeller_execute_L000014_189
+C_skssb_66c68a90_propeller_execute_L000014_189
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4oc_6695052c_propeller_k_get_L000015 ' <symbol:propeller_k_get>
+C_skssc_66c68a90_propeller_k_get_L000015 ' <symbol:propeller_k_get>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -1132,13 +1132,13 @@ C_sg4oc_6695052c_propeller_k_get_L000015 ' <symbol:propeller_k_get>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_sg4oc_6695052c_propeller_k_get_L000015_206 ' (symbol refcount = 0)
+' C_skssc_66c68a90_propeller_k_get_L000015_206 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4od_6695052c_propeller_k_wait_L000016 ' <symbol:propeller_k_wait>
+C_skssd_66c68a90_propeller_k_wait_L000016 ' <symbol:propeller_k_wait>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -1155,13 +1155,13 @@ C_sg4od_6695052c_propeller_k_wait_L000016 ' <symbol:propeller_k_wait>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_sg4od_6695052c_propeller_k_wait_L000016_207 ' (symbol refcount = 0)
+' C_skssd_66c68a90_propeller_k_wait_L000016_207 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4oe_6695052c_propeller_k_new_L000017 ' <symbol:propeller_k_new>
+C_sksse_66c68a90_propeller_k_new_L000017 ' <symbol:propeller_k_new>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -1178,13 +1178,13 @@ C_sg4oe_6695052c_propeller_k_new_L000017 ' <symbol:propeller_k_new>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_sg4oe_6695052c_propeller_k_new_L000017_208 ' (symbol refcount = 0)
+' C_sksse_66c68a90_propeller_k_new_L000017_208 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4of_6695052c_propeller_k_ready_L000018 ' <symbol:propeller_k_ready>
+C_skssf_66c68a90_propeller_k_ready_L000018 ' <symbol:propeller_k_ready>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -1201,13 +1201,13 @@ C_sg4of_6695052c_propeller_k_ready_L000018 ' <symbol:propeller_k_ready>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_sg4of_6695052c_propeller_k_ready_L000018_209 ' (symbol refcount = 0)
+' C_skssf_66c68a90_propeller_k_ready_L000018_209 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4og_6695052c_propeller_k_clear_L000019 ' <symbol:propeller_k_clear>
+C_skssg_66c68a90_propeller_k_clear_L000019 ' <symbol:propeller_k_clear>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -1224,13 +1224,13 @@ C_sg4og_6695052c_propeller_k_clear_L000019 ' <symbol:propeller_k_clear>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_sg4og_6695052c_propeller_k_clear_L000019_210 ' (symbol refcount = 0)
+' C_skssg_66c68a90_propeller_k_clear_L000019_210 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4oh_6695052c_propeller_m_button_L000020 ' <symbol:propeller_m_button>
+C_skssh_66c68a90_propeller_m_button_L000020 ' <symbol:propeller_m_button>
  jmp #NEWF
  jmp #PSHM
  long $e00000 ' save registers
@@ -1241,7 +1241,7 @@ C_sg4oh_6695052c_propeller_m_button_L000020 ' <symbol:propeller_m_button>
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_sg4oh_6695052c_propeller_m_button_L000020_212 ' LEI4
+ long @C_skssh_66c68a90_propeller_m_button_L000020_212 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1271,16 +1271,16 @@ C_sg4oh_6695052c_propeller_m_button_L000020 ' <symbol:propeller_m_button>
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
  jmp #JMPA
- long @C_sg4oh_6695052c_propeller_m_button_L000020_211 ' JUMPV addrg
-C_sg4oh_6695052c_propeller_m_button_L000020_212
+ long @C_skssh_66c68a90_propeller_m_button_L000020_211 ' JUMPV addrg
+C_skssh_66c68a90_propeller_m_button_L000020_212
  mov r0, #0 ' RET coni
-C_sg4oh_6695052c_propeller_m_button_L000020_211
+C_skssh_66c68a90_propeller_m_button_L000020_211
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4oi_6695052c_propeller_m_abs_x_L000021 ' <symbol:propeller_m_abs_x>
+C_skssi_66c68a90_propeller_m_abs_x_L000021 ' <symbol:propeller_m_abs_x>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -1297,13 +1297,13 @@ C_sg4oi_6695052c_propeller_m_abs_x_L000021 ' <symbol:propeller_m_abs_x>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_sg4oi_6695052c_propeller_m_abs_x_L000021_214 ' (symbol refcount = 0)
+' C_skssi_66c68a90_propeller_m_abs_x_L000021_214 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4oj_6695052c_propeller_m_abs_y_L000022 ' <symbol:propeller_m_abs_y>
+C_skssj_66c68a90_propeller_m_abs_y_L000022 ' <symbol:propeller_m_abs_y>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -1320,13 +1320,13 @@ C_sg4oj_6695052c_propeller_m_abs_y_L000022 ' <symbol:propeller_m_abs_y>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_sg4oj_6695052c_propeller_m_abs_y_L000022_215 ' (symbol refcount = 0)
+' C_skssj_66c68a90_propeller_m_abs_y_L000022_215 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4ok_6695052c_propeller_m_delta_x_L000023 ' <symbol:propeller_m_delta_x>
+C_skssk_66c68a90_propeller_m_delta_x_L000023 ' <symbol:propeller_m_delta_x>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -1343,13 +1343,13 @@ C_sg4ok_6695052c_propeller_m_delta_x_L000023 ' <symbol:propeller_m_delta_x>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_sg4ok_6695052c_propeller_m_delta_x_L000023_216 ' (symbol refcount = 0)
+' C_skssk_66c68a90_propeller_m_delta_x_L000023_216 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4ol_6695052c_propeller_m_delta_y_L000024 ' <symbol:propeller_m_delta_y>
+C_skssl_66c68a90_propeller_m_delta_y_L000024 ' <symbol:propeller_m_delta_y>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -1366,13 +1366,13 @@ C_sg4ol_6695052c_propeller_m_delta_y_L000024 ' <symbol:propeller_m_delta_y>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_sg4ol_6695052c_propeller_m_delta_y_L000024_217 ' (symbol refcount = 0)
+' C_skssl_66c68a90_propeller_m_delta_y_L000024_217 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4om_6695052c_propeller_m_reset_L000025 ' <symbol:propeller_m_reset>
+C_skssm_66c68a90_propeller_m_reset_L000025 ' <symbol:propeller_m_reset>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -1389,13 +1389,13 @@ C_sg4om_6695052c_propeller_m_reset_L000025 ' <symbol:propeller_m_reset>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_sg4om_6695052c_propeller_m_reset_L000025_218 ' (symbol refcount = 0)
+' C_skssm_66c68a90_propeller_m_reset_L000025_218 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4on_6695052c_propeller_m_bound_limits_L000026 ' <symbol:propeller_m_bound_limits>
+C_skssn_66c68a90_propeller_m_bound_limits_L000026 ' <symbol:propeller_m_bound_limits>
  jmp #NEWF
  jmp #PSHM
  long $ea8000 ' save registers
@@ -1406,7 +1406,7 @@ C_sg4on_6695052c_propeller_m_bound_limits_L000026 ' <symbol:propeller_m_bound_li
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_sg4on_6695052c_propeller_m_bound_limits_L000026_220 ' LEI4
+ long @C_skssn_66c68a90_propeller_m_bound_limits_L000026_220 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1471,16 +1471,16 @@ C_sg4on_6695052c_propeller_m_bound_limits_L000026 ' <symbol:propeller_m_bound_li
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
  jmp #JMPA
- long @C_sg4on_6695052c_propeller_m_bound_limits_L000026_219 ' JUMPV addrg
-C_sg4on_6695052c_propeller_m_bound_limits_L000026_220
+ long @C_skssn_66c68a90_propeller_m_bound_limits_L000026_219 ' JUMPV addrg
+C_skssn_66c68a90_propeller_m_bound_limits_L000026_220
  mov r0, #0 ' RET coni
-C_sg4on_6695052c_propeller_m_bound_limits_L000026_219
+C_skssn_66c68a90_propeller_m_bound_limits_L000026_219
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4oo_6695052c_propeller_m_bound_scales_L000027 ' <symbol:propeller_m_bound_scales>
+C_sksso_66c68a90_propeller_m_bound_scales_L000027 ' <symbol:propeller_m_bound_scales>
  jmp #NEWF
  jmp #PSHM
  long $e80000 ' save registers
@@ -1491,7 +1491,7 @@ C_sg4oo_6695052c_propeller_m_bound_scales_L000027 ' <symbol:propeller_m_bound_sc
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_sg4oo_6695052c_propeller_m_bound_scales_L000027_223 ' LEI4
+ long @C_sksso_66c68a90_propeller_m_bound_scales_L000027_223 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1533,16 +1533,16 @@ C_sg4oo_6695052c_propeller_m_bound_scales_L000027 ' <symbol:propeller_m_bound_sc
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
  jmp #JMPA
- long @C_sg4oo_6695052c_propeller_m_bound_scales_L000027_222 ' JUMPV addrg
-C_sg4oo_6695052c_propeller_m_bound_scales_L000027_223
+ long @C_sksso_66c68a90_propeller_m_bound_scales_L000027_222 ' JUMPV addrg
+C_sksso_66c68a90_propeller_m_bound_scales_L000027_223
  mov r0, #0 ' RET coni
-C_sg4oo_6695052c_propeller_m_bound_scales_L000027_222
+C_sksso_66c68a90_propeller_m_bound_scales_L000027_222
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4op_6695052c_propeller_m_bound_x_L000028 ' <symbol:propeller_m_bound_x>
+C_skssp_66c68a90_propeller_m_bound_x_L000028 ' <symbol:propeller_m_bound_x>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -1559,13 +1559,13 @@ C_sg4op_6695052c_propeller_m_bound_x_L000028 ' <symbol:propeller_m_bound_x>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_sg4op_6695052c_propeller_m_bound_x_L000028_225 ' (symbol refcount = 0)
+' C_skssp_66c68a90_propeller_m_bound_x_L000028_225 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4oq_6695052c_propeller_m_bound_y_L000029 ' <symbol:propeller_m_bound_y>
+C_skssq_66c68a90_propeller_m_bound_y_L000029 ' <symbol:propeller_m_bound_y>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -1582,13 +1582,13 @@ C_sg4oq_6695052c_propeller_m_bound_y_L000029 ' <symbol:propeller_m_bound_y>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_sg4oq_6695052c_propeller_m_bound_y_L000029_226 ' (symbol refcount = 0)
+' C_skssq_66c68a90_propeller_m_bound_y_L000029_226 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4or_6695052c_propeller_t_geometry_L000030 ' <symbol:propeller_t_geometry>
+C_skssr_66c68a90_propeller_t_geometry_L000030 ' <symbol:propeller_t_geometry>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -1605,13 +1605,13 @@ C_sg4or_6695052c_propeller_t_geometry_L000030 ' <symbol:propeller_t_geometry>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_sg4or_6695052c_propeller_t_geometry_L000030_227 ' (symbol refcount = 0)
+' C_skssr_66c68a90_propeller_t_geometry_L000030_227 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4os_6695052c_propeller_t_char_L000031 ' <symbol:propeller_t_char>
+C_sksss_66c68a90_propeller_t_char_L000031 ' <symbol:propeller_t_char>
  jmp #NEWF
  jmp #PSHM
  long $e80000 ' save registers
@@ -1622,7 +1622,7 @@ C_sg4os_6695052c_propeller_t_char_L000031 ' <symbol:propeller_t_char>
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_sg4os_6695052c_propeller_t_char_L000031_229 ' LEI4
+ long @C_sksss_66c68a90_propeller_t_char_L000031_229 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1663,16 +1663,16 @@ C_sg4os_6695052c_propeller_t_char_L000031 ' <symbol:propeller_t_char>
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
  jmp #JMPA
- long @C_sg4os_6695052c_propeller_t_char_L000031_228 ' JUMPV addrg
-C_sg4os_6695052c_propeller_t_char_L000031_229
+ long @C_sksss_66c68a90_propeller_t_char_L000031_228 ' JUMPV addrg
+C_sksss_66c68a90_propeller_t_char_L000031_229
  mov r0, #0 ' RET coni
-C_sg4os_6695052c_propeller_t_char_L000031_228
+C_sksss_66c68a90_propeller_t_char_L000031_228
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4ot_6695052c_propeller_t_mode_L000032 ' <symbol:propeller_t_mode>
+C_sksst_66c68a90_propeller_t_mode_L000032 ' <symbol:propeller_t_mode>
  jmp #NEWF
  jmp #PSHM
  long $e80000 ' save registers
@@ -1683,7 +1683,7 @@ C_sg4ot_6695052c_propeller_t_mode_L000032 ' <symbol:propeller_t_mode>
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_sg4ot_6695052c_propeller_t_mode_L000032_232 ' LEI4
+ long @C_sksst_66c68a90_propeller_t_mode_L000032_232 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1724,16 +1724,16 @@ C_sg4ot_6695052c_propeller_t_mode_L000032 ' <symbol:propeller_t_mode>
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
  jmp #JMPA
- long @C_sg4ot_6695052c_propeller_t_mode_L000032_231 ' JUMPV addrg
-C_sg4ot_6695052c_propeller_t_mode_L000032_232
+ long @C_sksst_66c68a90_propeller_t_mode_L000032_231 ' JUMPV addrg
+C_sksst_66c68a90_propeller_t_mode_L000032_232
  mov r0, #0 ' RET coni
-C_sg4ot_6695052c_propeller_t_mode_L000032_231
+C_sksst_66c68a90_propeller_t_mode_L000032_231
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4ou_6695052c_propeller_t_setpos_L000033 ' <symbol:propeller_t_setpos>
+C_skssu_66c68a90_propeller_t_setpos_L000033 ' <symbol:propeller_t_setpos>
  jmp #NEWF
  jmp #PSHM
  long $ea0000 ' save registers
@@ -1744,7 +1744,7 @@ C_sg4ou_6695052c_propeller_t_setpos_L000033 ' <symbol:propeller_t_setpos>
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_sg4ou_6695052c_propeller_t_setpos_L000033_235 ' LEI4
+ long @C_skssu_66c68a90_propeller_t_setpos_L000033_235 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1794,16 +1794,16 @@ C_sg4ou_6695052c_propeller_t_setpos_L000033 ' <symbol:propeller_t_setpos>
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
  jmp #JMPA
- long @C_sg4ou_6695052c_propeller_t_setpos_L000033_234 ' JUMPV addrg
-C_sg4ou_6695052c_propeller_t_setpos_L000033_235
+ long @C_skssu_66c68a90_propeller_t_setpos_L000033_234 ' JUMPV addrg
+C_skssu_66c68a90_propeller_t_setpos_L000033_235
  mov r0, #0 ' RET coni
-C_sg4ou_6695052c_propeller_t_setpos_L000033_234
+C_skssu_66c68a90_propeller_t_setpos_L000033_234
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4ov_6695052c_propeller_t_getpos_L000034 ' <symbol:propeller_t_getpos>
+C_skssv_66c68a90_propeller_t_getpos_L000034 ' <symbol:propeller_t_getpos>
  jmp #NEWF
  jmp #PSHM
  long $e00000 ' save registers
@@ -1814,7 +1814,7 @@ C_sg4ov_6695052c_propeller_t_getpos_L000034 ' <symbol:propeller_t_getpos>
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_sg4ov_6695052c_propeller_t_getpos_L000034_238 ' LEI4
+ long @C_skssv_66c68a90_propeller_t_getpos_L000034_238 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1844,16 +1844,16 @@ C_sg4ov_6695052c_propeller_t_getpos_L000034 ' <symbol:propeller_t_getpos>
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
  jmp #JMPA
- long @C_sg4ov_6695052c_propeller_t_getpos_L000034_237 ' JUMPV addrg
-C_sg4ov_6695052c_propeller_t_getpos_L000034_238
+ long @C_skssv_66c68a90_propeller_t_getpos_L000034_237 ' JUMPV addrg
+C_skssv_66c68a90_propeller_t_getpos_L000034_238
  mov r0, #0 ' RET coni
-C_sg4ov_6695052c_propeller_t_getpos_L000034_237
+C_skssv_66c68a90_propeller_t_getpos_L000034_237
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4o10_6695052c_propeller_t_scroll_L000035 ' <symbol:propeller_t_scroll>
+C_skss10_66c68a90_propeller_t_scroll_L000035 ' <symbol:propeller_t_scroll>
  jmp #NEWF
  jmp #PSHM
  long $ea0000 ' save registers
@@ -1864,7 +1864,7 @@ C_sg4o10_6695052c_propeller_t_scroll_L000035 ' <symbol:propeller_t_scroll>
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_sg4o10_6695052c_propeller_t_scroll_L000035_241 ' LEI4
+ long @C_skss10_66c68a90_propeller_t_scroll_L000035_241 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1914,16 +1914,16 @@ C_sg4o10_6695052c_propeller_t_scroll_L000035 ' <symbol:propeller_t_scroll>
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
  jmp #JMPA
- long @C_sg4o10_6695052c_propeller_t_scroll_L000035_240 ' JUMPV addrg
-C_sg4o10_6695052c_propeller_t_scroll_L000035_241
+ long @C_skss10_66c68a90_propeller_t_scroll_L000035_240 ' JUMPV addrg
+C_skss10_66c68a90_propeller_t_scroll_L000035_241
  mov r0, #0 ' RET coni
-C_sg4o10_6695052c_propeller_t_scroll_L000035_240
+C_skss10_66c68a90_propeller_t_scroll_L000035_240
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4o11_6695052c_propeller_t_color_L000036 ' <symbol:propeller_t_color>
+C_skss11_66c68a90_propeller_t_color_L000036 ' <symbol:propeller_t_color>
  jmp #NEWF
  jmp #PSHM
  long $e80000 ' save registers
@@ -1934,7 +1934,7 @@ C_sg4o11_6695052c_propeller_t_color_L000036 ' <symbol:propeller_t_color>
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_sg4o11_6695052c_propeller_t_color_L000036_244 ' LEI4
+ long @C_skss11_66c68a90_propeller_t_color_L000036_244 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1975,16 +1975,16 @@ C_sg4o11_6695052c_propeller_t_color_L000036 ' <symbol:propeller_t_color>
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
  jmp #JMPA
- long @C_sg4o11_6695052c_propeller_t_color_L000036_243 ' JUMPV addrg
-C_sg4o11_6695052c_propeller_t_color_L000036_244
+ long @C_skss11_66c68a90_propeller_t_color_L000036_243 ' JUMPV addrg
+C_skss11_66c68a90_propeller_t_color_L000036_244
  mov r0, #0 ' RET coni
-C_sg4o11_6695052c_propeller_t_color_L000036_243
+C_skss11_66c68a90_propeller_t_color_L000036_243
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4o12_6695052c_propeller_t_color_fg_L000037 ' <symbol:propeller_t_color_fg>
+C_skss12_66c68a90_propeller_t_color_fg_L000037 ' <symbol:propeller_t_color_fg>
  jmp #NEWF
  jmp #PSHM
  long $e80000 ' save registers
@@ -1995,7 +1995,7 @@ C_sg4o12_6695052c_propeller_t_color_fg_L000037 ' <symbol:propeller_t_color_fg>
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_sg4o12_6695052c_propeller_t_color_fg_L000037_247 ' LEI4
+ long @C_skss12_66c68a90_propeller_t_color_fg_L000037_247 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -2036,16 +2036,16 @@ C_sg4o12_6695052c_propeller_t_color_fg_L000037 ' <symbol:propeller_t_color_fg>
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
  jmp #JMPA
- long @C_sg4o12_6695052c_propeller_t_color_fg_L000037_246 ' JUMPV addrg
-C_sg4o12_6695052c_propeller_t_color_fg_L000037_247
+ long @C_skss12_66c68a90_propeller_t_color_fg_L000037_246 ' JUMPV addrg
+C_skss12_66c68a90_propeller_t_color_fg_L000037_247
  mov r0, #0 ' RET coni
-C_sg4o12_6695052c_propeller_t_color_fg_L000037_246
+C_skss12_66c68a90_propeller_t_color_fg_L000037_246
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sg4o13_6695052c_propeller_t_color_bg_L000038 ' <symbol:propeller_t_color_bg>
+C_skss13_66c68a90_propeller_t_color_bg_L000038 ' <symbol:propeller_t_color_bg>
  jmp #NEWF
  jmp #PSHM
  long $e80000 ' save registers
@@ -2056,7 +2056,7 @@ C_sg4o13_6695052c_propeller_t_color_bg_L000038 ' <symbol:propeller_t_color_bg>
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_sg4o13_6695052c_propeller_t_color_bg_L000038_250 ' LEI4
+ long @C_skss13_66c68a90_propeller_t_color_bg_L000038_250 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -2097,10 +2097,10 @@ C_sg4o13_6695052c_propeller_t_color_bg_L000038 ' <symbol:propeller_t_color_bg>
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
  jmp #JMPA
- long @C_sg4o13_6695052c_propeller_t_color_bg_L000038_249 ' JUMPV addrg
-C_sg4o13_6695052c_propeller_t_color_bg_L000038_250
+ long @C_skss13_66c68a90_propeller_t_color_bg_L000038_249 ' JUMPV addrg
+C_skss13_66c68a90_propeller_t_color_bg_L000038_250
  mov r0, #0 ' RET coni
-C_sg4o13_6695052c_propeller_t_color_bg_L000038_249
+C_skss13_66c68a90_propeller_t_color_bg_L000038_249
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -2133,7 +2133,7 @@ C_luaopen_propeller ' <symbol:luaopen_propeller>
  add SP, #8 ' CALL addrg
  mov r2, #0 ' reg ARG coni
  jmp #LODL
- long @C_sg4o14_6695052c_luapropeller_funcs_L000039
+ long @C_skss14_66c68a90_luapropeller_funcs_L000039
  mov r3, RI ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -2278,12 +2278,12 @@ C_luaopen_propeller_253_L000254 ' <symbol:253>
  long $43fc0000 ' float
 
  alignl ' align long
-C_sg4ob_6695052c_propeller_execute_L000014_200_L000201 ' <symbol:200>
+C_skssb_66c68a90_propeller_execute_L000014_200_L000201 ' <symbol:200>
  byte 119
  byte 0
 
  alignl ' align long
-C_sg4ob_6695052c_propeller_execute_L000014_198_L000199 ' <symbol:198>
+C_skssb_66c68a90_propeller_execute_L000014_198_L000199 ' <symbol:198>
  byte 69
  byte 88
  byte 69
@@ -2299,7 +2299,7 @@ C_sg4ob_6695052c_propeller_execute_L000014_198_L000199 ' <symbol:198>
  byte 0
 
  alignl ' align long
-C_sg4oa_6695052c_propeller_scan_L000013_177_L000178 ' <symbol:177>
+C_skssa_66c68a90_propeller_scan_L000013_177_L000178 ' <symbol:177>
  byte 102
  byte 105
  byte 114
@@ -2340,7 +2340,7 @@ C_sg4oa_6695052c_propeller_scan_L000013_177_L000178 ' <symbol:177>
  byte 0
 
  alignl ' align long
-C_sg4o2j_6695052c_match_callback_L000165_169_L000170 ' <symbol:169>
+C_skss2j_66c68a90_match_callback_L000165_169_L000170 ' <symbol:169>
  byte 110
  byte 111
  byte 32
@@ -2363,7 +2363,7 @@ C_sg4o2j_6695052c_match_callback_L000165_169_L000170 ' <symbol:169>
  byte 0
 
  alignl ' align long
-C_sg4o8_6695052c_propeller_version_L000011_158_L000159 ' <symbol:158>
+C_skss8_66c68a90_propeller_version_L000011_158_L000159 ' <symbol:158>
  byte 104
  byte 97
  byte 114
@@ -2375,14 +2375,14 @@ C_sg4o8_6695052c_propeller_version_L000011_158_L000159 ' <symbol:158>
  byte 0
 
  alignl ' align long
-C_sg4o8_6695052c_propeller_version_L000011_154_L000155 ' <symbol:154>
+C_skss8_66c68a90_propeller_version_L000011_154_L000155 ' <symbol:154>
  byte 108
  byte 117
  byte 97
  byte 0
 
  alignl ' align long
-C_sg4o6_6695052c_propeller_msleep_L000009_139_L000140 ' <symbol:139>
+C_skss6_66c68a90_propeller_msleep_L000009_139_L000140 ' <symbol:139>
  byte 109
  byte 115
  byte 101
@@ -2416,7 +2416,7 @@ C_sg4o6_6695052c_propeller_msleep_L000009_139_L000140 ' <symbol:139>
  byte 0
 
  alignl ' align long
-C_sg4o5_6695052c_propeller_sleep_L000008_131_L000132 ' <symbol:131>
+C_skss5_66c68a90_propeller_sleep_L000008_131_L000132 ' <symbol:131>
  byte 115
  byte 101
  byte 99
@@ -2449,7 +2449,7 @@ C_sg4o5_6695052c_propeller_sleep_L000008_131_L000132 ' <symbol:131>
  byte 0
 
  alignl ' align long
-C_sg4o3_6695052c_propeller_setpin_L000006_122_L000123 ' <symbol:122>
+C_skss3_66c68a90_propeller_setpin_L000006_122_L000123 ' <symbol:122>
  byte 115
  byte 116
  byte 97
@@ -2469,7 +2469,7 @@ C_sg4o3_6695052c_propeller_setpin_L000006_122_L000123 ' <symbol:122>
  byte 0
 
  alignl ' align long
-C_sg4o2_6695052c_propeller_getpin_L000005_115_L000116 ' <symbol:115>
+C_skss2_66c68a90_propeller_getpin_L000005_115_L000116 ' <symbol:115>
  byte 112
  byte 105
  byte 110
@@ -2497,7 +2497,7 @@ C_sg4o2_6695052c_propeller_getpin_L000005_115_L000116 ' <symbol:115>
  byte 0
 
  alignl ' align long
-C_sg4o28_6695052c_110_L000111 ' <symbol:110>
+C_skss28_66c68a90_110_L000111 ' <symbol:110>
  byte 116
  byte 95
  byte 99
@@ -2511,7 +2511,7 @@ C_sg4o28_6695052c_110_L000111 ' <symbol:110>
  byte 0
 
  alignl ' align long
-C_sg4o27_6695052c_108_L000109 ' <symbol:108>
+C_skss27_66c68a90_108_L000109 ' <symbol:108>
  byte 116
  byte 95
  byte 99
@@ -2525,7 +2525,7 @@ C_sg4o27_6695052c_108_L000109 ' <symbol:108>
  byte 0
 
  alignl ' align long
-C_sg4o26_6695052c_106_L000107 ' <symbol:106>
+C_skss26_66c68a90_106_L000107 ' <symbol:106>
  byte 116
  byte 95
  byte 99
@@ -2536,7 +2536,7 @@ C_sg4o26_6695052c_106_L000107 ' <symbol:106>
  byte 0
 
  alignl ' align long
-C_sg4o25_6695052c_104_L000105 ' <symbol:104>
+C_skss25_66c68a90_104_L000105 ' <symbol:104>
  byte 116
  byte 95
  byte 115
@@ -2548,7 +2548,7 @@ C_sg4o25_6695052c_104_L000105 ' <symbol:104>
  byte 0
 
  alignl ' align long
-C_sg4o24_6695052c_102_L000103 ' <symbol:102>
+C_skss24_66c68a90_102_L000103 ' <symbol:102>
  byte 116
  byte 95
  byte 103
@@ -2560,7 +2560,7 @@ C_sg4o24_6695052c_102_L000103 ' <symbol:102>
  byte 0
 
  alignl ' align long
-C_sg4o23_6695052c_100_L000101 ' <symbol:100>
+C_skss23_66c68a90_100_L000101 ' <symbol:100>
  byte 116
  byte 95
  byte 115
@@ -2572,7 +2572,7 @@ C_sg4o23_6695052c_100_L000101 ' <symbol:100>
  byte 0
 
  alignl ' align long
-C_sg4o22_6695052c_98_L000099 ' <symbol:98>
+C_skss22_66c68a90_98_L000099 ' <symbol:98>
  byte 116
  byte 95
  byte 109
@@ -2582,7 +2582,7 @@ C_sg4o22_6695052c_98_L000099 ' <symbol:98>
  byte 0
 
  alignl ' align long
-C_sg4o21_6695052c_96_L000097 ' <symbol:96>
+C_skss21_66c68a90_96_L000097 ' <symbol:96>
  byte 116
  byte 95
  byte 99
@@ -2592,7 +2592,7 @@ C_sg4o21_6695052c_96_L000097 ' <symbol:96>
  byte 0
 
  alignl ' align long
-C_sg4o20_6695052c_94_L000095 ' <symbol:94>
+C_skss20_66c68a90_94_L000095 ' <symbol:94>
  byte 116
  byte 95
  byte 103
@@ -2606,7 +2606,7 @@ C_sg4o20_6695052c_94_L000095 ' <symbol:94>
  byte 0
 
  alignl ' align long
-C_sg4o1v_6695052c_92_L000093 ' <symbol:92>
+C_skss1v_66c68a90_92_L000093 ' <symbol:92>
  byte 109
  byte 95
  byte 98
@@ -2619,7 +2619,7 @@ C_sg4o1v_6695052c_92_L000093 ' <symbol:92>
  byte 0
 
  alignl ' align long
-C_sg4o1u_6695052c_90_L000091 ' <symbol:90>
+C_skss1u_66c68a90_90_L000091 ' <symbol:90>
  byte 109
  byte 95
  byte 98
@@ -2632,7 +2632,7 @@ C_sg4o1u_6695052c_90_L000091 ' <symbol:90>
  byte 0
 
  alignl ' align long
-C_sg4o1t_6695052c_88_L000089 ' <symbol:88>
+C_skss1t_66c68a90_88_L000089 ' <symbol:88>
  byte 109
  byte 95
  byte 98
@@ -2650,7 +2650,7 @@ C_sg4o1t_6695052c_88_L000089 ' <symbol:88>
  byte 0
 
  alignl ' align long
-C_sg4o1s_6695052c_86_L000087 ' <symbol:86>
+C_skss1s_66c68a90_86_L000087 ' <symbol:86>
  byte 109
  byte 95
  byte 98
@@ -2668,7 +2668,7 @@ C_sg4o1s_6695052c_86_L000087 ' <symbol:86>
  byte 0
 
  alignl ' align long
-C_sg4o1r_6695052c_84_L000085 ' <symbol:84>
+C_skss1r_66c68a90_84_L000085 ' <symbol:84>
  byte 109
  byte 95
  byte 114
@@ -2679,7 +2679,7 @@ C_sg4o1r_6695052c_84_L000085 ' <symbol:84>
  byte 0
 
  alignl ' align long
-C_sg4o1q_6695052c_82_L000083 ' <symbol:82>
+C_skss1q_66c68a90_82_L000083 ' <symbol:82>
  byte 109
  byte 95
  byte 100
@@ -2692,7 +2692,7 @@ C_sg4o1q_6695052c_82_L000083 ' <symbol:82>
  byte 0
 
  alignl ' align long
-C_sg4o1p_6695052c_80_L000081 ' <symbol:80>
+C_skss1p_66c68a90_80_L000081 ' <symbol:80>
  byte 109
  byte 95
  byte 100
@@ -2705,7 +2705,7 @@ C_sg4o1p_6695052c_80_L000081 ' <symbol:80>
  byte 0
 
  alignl ' align long
-C_sg4o1o_6695052c_78_L000079 ' <symbol:78>
+C_skss1o_66c68a90_78_L000079 ' <symbol:78>
  byte 109
  byte 95
  byte 97
@@ -2716,7 +2716,7 @@ C_sg4o1o_6695052c_78_L000079 ' <symbol:78>
  byte 0
 
  alignl ' align long
-C_sg4o1n_6695052c_76_L000077 ' <symbol:76>
+C_skss1n_66c68a90_76_L000077 ' <symbol:76>
  byte 109
  byte 95
  byte 97
@@ -2727,7 +2727,7 @@ C_sg4o1n_6695052c_76_L000077 ' <symbol:76>
  byte 0
 
  alignl ' align long
-C_sg4o1m_6695052c_74_L000075 ' <symbol:74>
+C_skss1m_66c68a90_74_L000075 ' <symbol:74>
  byte 109
  byte 95
  byte 98
@@ -2739,7 +2739,7 @@ C_sg4o1m_6695052c_74_L000075 ' <symbol:74>
  byte 0
 
  alignl ' align long
-C_sg4o1l_6695052c_72_L000073 ' <symbol:72>
+C_skss1l_66c68a90_72_L000073 ' <symbol:72>
  byte 107
  byte 95
  byte 99
@@ -2750,7 +2750,7 @@ C_sg4o1l_6695052c_72_L000073 ' <symbol:72>
  byte 0
 
  alignl ' align long
-C_sg4o1k_6695052c_70_L000071 ' <symbol:70>
+C_skss1k_66c68a90_70_L000071 ' <symbol:70>
  byte 107
  byte 95
  byte 114
@@ -2761,7 +2761,7 @@ C_sg4o1k_6695052c_70_L000071 ' <symbol:70>
  byte 0
 
  alignl ' align long
-C_sg4o1j_6695052c_68_L000069 ' <symbol:68>
+C_skss1j_66c68a90_68_L000069 ' <symbol:68>
  byte 107
  byte 95
  byte 110
@@ -2770,7 +2770,7 @@ C_sg4o1j_6695052c_68_L000069 ' <symbol:68>
  byte 0
 
  alignl ' align long
-C_sg4o1i_6695052c_66_L000067 ' <symbol:66>
+C_skss1i_66c68a90_66_L000067 ' <symbol:66>
  byte 107
  byte 95
  byte 119
@@ -2780,7 +2780,7 @@ C_sg4o1i_6695052c_66_L000067 ' <symbol:66>
  byte 0
 
  alignl ' align long
-C_sg4o1h_6695052c_64_L000065 ' <symbol:64>
+C_skss1h_66c68a90_64_L000065 ' <symbol:64>
  byte 107
  byte 95
  byte 103
@@ -2789,7 +2789,7 @@ C_sg4o1h_6695052c_64_L000065 ' <symbol:64>
  byte 0
 
  alignl ' align long
-C_sg4o1g_6695052c_62_L000063 ' <symbol:62>
+C_skss1g_66c68a90_62_L000063 ' <symbol:62>
  byte 101
  byte 120
  byte 101
@@ -2800,7 +2800,7 @@ C_sg4o1g_6695052c_62_L000063 ' <symbol:62>
  byte 0
 
  alignl ' align long
-C_sg4o1f_6695052c_60_L000061 ' <symbol:60>
+C_skss1f_66c68a90_60_L000061 ' <symbol:60>
  byte 115
  byte 99
  byte 97
@@ -2808,7 +2808,7 @@ C_sg4o1f_6695052c_60_L000061 ' <symbol:60>
  byte 0
 
  alignl ' align long
-C_sg4o1e_6695052c_58_L000059 ' <symbol:58>
+C_skss1e_66c68a90_58_L000059 ' <symbol:58>
  byte 109
  byte 111
  byte 117
@@ -2817,7 +2817,7 @@ C_sg4o1e_6695052c_58_L000059 ' <symbol:58>
  byte 0
 
  alignl ' align long
-C_sg4o1d_6695052c_56_L000057 ' <symbol:56>
+C_skss1d_66c68a90_56_L000057 ' <symbol:56>
  byte 118
  byte 101
  byte 114
@@ -2828,7 +2828,7 @@ C_sg4o1d_6695052c_56_L000057 ' <symbol:56>
  byte 0
 
  alignl ' align long
-C_sg4o1c_6695052c_54_L000055 ' <symbol:54>
+C_skss1c_66c68a90_54_L000055 ' <symbol:54>
  byte 115
  byte 98
  byte 114
@@ -2836,7 +2836,7 @@ C_sg4o1c_6695052c_54_L000055 ' <symbol:54>
  byte 0
 
  alignl ' align long
-C_sg4o1b_6695052c_52_L000053 ' <symbol:52>
+C_skss1b_66c68a90_52_L000053 ' <symbol:52>
  byte 109
  byte 115
  byte 108
@@ -2846,7 +2846,7 @@ C_sg4o1b_6695052c_52_L000053 ' <symbol:52>
  byte 0
 
  alignl ' align long
-C_sg4o1a_6695052c_50_L000051 ' <symbol:50>
+C_skss1a_66c68a90_50_L000051 ' <symbol:50>
  byte 115
  byte 108
  byte 101
@@ -2855,7 +2855,7 @@ C_sg4o1a_6695052c_50_L000051 ' <symbol:50>
  byte 0
 
  alignl ' align long
-C_sg4o19_6695052c_48_L000049 ' <symbol:48>
+C_skss19_66c68a90_48_L000049 ' <symbol:48>
  byte 116
  byte 111
  byte 103
@@ -2868,7 +2868,7 @@ C_sg4o19_6695052c_48_L000049 ' <symbol:48>
  byte 0
 
  alignl ' align long
-C_sg4o18_6695052c_46_L000047 ' <symbol:46>
+C_skss18_66c68a90_46_L000047 ' <symbol:46>
  byte 115
  byte 101
  byte 116
@@ -2878,7 +2878,7 @@ C_sg4o18_6695052c_46_L000047 ' <symbol:46>
  byte 0
 
  alignl ' align long
-C_sg4o17_6695052c_44_L000045 ' <symbol:44>
+C_skss17_66c68a90_44_L000045 ' <symbol:44>
  byte 103
  byte 101
  byte 116
@@ -2888,7 +2888,7 @@ C_sg4o17_6695052c_44_L000045 ' <symbol:44>
  byte 0
 
  alignl ' align long
-C_sg4o16_6695052c_42_L000043 ' <symbol:42>
+C_skss16_66c68a90_42_L000043 ' <symbol:42>
  byte 117
  byte 110
  byte 115
@@ -2900,7 +2900,7 @@ C_sg4o16_6695052c_42_L000043 ' <symbol:42>
  byte 0
 
  alignl ' align long
-C_sg4o15_6695052c_40_L000041 ' <symbol:40>
+C_skss15_66c68a90_40_L000041 ' <symbol:40>
  byte 115
  byte 101
  byte 116

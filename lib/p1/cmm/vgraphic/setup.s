@@ -23,7 +23,7 @@ C__vdb_cog ' <symbol:_vdb_cog>
  long -1
 
  alignl ' align long
-C_shho_66950750_font_L000004 ' <symbol:font>
+C_shp0_66c68c38_font_L000004 ' <symbol:font>
  word $9d62
  word $112a
  word $b0e9
@@ -577,7 +577,7 @@ C_g_setup_45
  word I16A_ADDSI + (r15)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16B_LODL + (r20)<<D16B
  alignl ' align long
- long @C_shho_66950750_font_L000004 ' reg <- addrg
+ long @C_shp0_66c68c38_font_L000004 ' reg <- addrg
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNI4 reg reg
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r15)<<D16A + (r22)<<S16A

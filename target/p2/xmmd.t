@@ -28,6 +28,8 @@
 '
 ' Version 5.6  - Modified for Propeller 2. No FLASH or XEPROM support yet.
 '
+' Version 7.9  - Fix set up of xfer block.
+'
 '------------------------------------------------------------------------------
 '
 '    Copyright 2009 Ross Higson
@@ -216,9 +218,9 @@ lmm_init
         nop                     '$6f 22                    
         nop                     '$70 23                    
         nop                     '$71 24                    
-        nop                     '$72 25                    
-        nop                     '$73 26                    
-        jmp     #LMM_loop       '$74 we can now start executing LMM code
+        sub     SP,#8           '$72 25 reserve space ...
+        mov     xfer,SP         '$73 26 ... for xfer block at top of stack
+        jmp     #LMM_loop       '$74    we can now start executing C code
 '
 ' These need to be in fixed locations for the debugger, so we define
 ' them here (instead of in various platform-dependent XMM.inc files)

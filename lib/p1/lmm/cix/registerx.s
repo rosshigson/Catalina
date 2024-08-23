@@ -45,9 +45,12 @@ C__register_plugin
 
 
  and r3, r0
+ mov r1,#0 ' zero ...
+ wrlong r1,r3 ' ... request block of plugin
  shl r2, #24
  or  r3, r2
  wrlong r3, r4
+
  jmp #RETN
 
 ' Catalina Init

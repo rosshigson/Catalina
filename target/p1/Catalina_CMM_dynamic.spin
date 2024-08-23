@@ -7,6 +7,7 @@
 ' Version 3.8  - initial version - by Ross Higson
 ' Version 3.13 - combine floating point operations, and add relative jumps
 ' Version 4.1  - initialize R2 with argument
+' Version 7.9  - Fix set up of xfer block.
 '
 '------------------------------------------------------------------------------
 '
@@ -221,9 +222,9 @@ kernel_init                     '
          rdlong  SP,r0          '$5e 12 load initial SP
          add     r0,#4          '$5f 13 point to initial arg
          rdlong  r2,r0          '$60 14 load initial arg
-         mov     xfer,r1        '$61 15 set up our request block as xfer addr
-         jmp     #read_next     '$62 16 we can now start executing CMM code
-         nop                    '$63 17
+         sub     SP,#8          '$61 15 Reserve space ...
+         mov     xfer,SP        '$62 16 ... for xfer block at top of stack
+         jmp     #read_next     '$63 17 we can now start executing CMM code
          nop                    '$64 18
          nop                    '$65 19
          nop                    '$66 21

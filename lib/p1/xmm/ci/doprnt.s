@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_sfms_66950666_gnum_L000001 ' <symbol:gnum>
+C_s8p0_66c68b83_gnum_L000001 ' <symbol:gnum>
  jmp #PSHM
  long $f00000 ' save registers
  mov RI, r4
@@ -16,7 +16,7 @@ C_sfms_66950666_gnum_L000001 ' <symbol:gnum>
  and r22, cviu_m1 ' zero extend
  cmps r22,  #42 wz
  jmp #BRNZ
- long @C_sfms_66950666_gnum_L000001_3 ' NEI4
+ long @C_s8p0_66c68b83_gnum_L000001_3 ' NEI4
  mov RI, r2
  jmp #RLNG
  mov r22, BC ' reg <- INDIRP4 reg
@@ -36,12 +36,12 @@ C_sfms_66950666_gnum_L000001 ' <symbol:gnum>
  jmp #WLNG ' ASGNI4 reg reg
  adds r4, #1 ' ADDP4 coni
  jmp #JMPA
- long @C_sfms_66950666_gnum_L000001_4 ' JUMPV addrg
-C_sfms_66950666_gnum_L000001_3
+ long @C_s8p0_66c68b83_gnum_L000001_4 ' JUMPV addrg
+C_s8p0_66c68b83_gnum_L000001_3
  mov r23, #0 ' reg <- coni
  jmp #JMPA
- long @C_sfms_66950666_gnum_L000001_6 ' JUMPV addrg
-C_sfms_66950666_gnum_L000001_5
+ long @C_s8p0_66c68b83_gnum_L000001_6 ' JUMPV addrg
+C_s8p0_66c68b83_gnum_L000001_5
  mov r22, #10 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r23 ' setup r0/r1 (2)
@@ -49,7 +49,7 @@ C_sfms_66950666_gnum_L000001_5
  mov r23, r0 ' ADDI/P
  adds r23, r21 ' ADDI/P (3)
  adds r4, #1 ' ADDP4 coni
-C_sfms_66950666_gnum_L000001_6
+C_s8p0_66c68b83_gnum_L000001_6
  mov RI, r4
  jmp #RBYT
  mov r22, BC ' reg <- INDIRU1 reg
@@ -58,23 +58,23 @@ C_sfms_66950666_gnum_L000001_6
  mov r21, r22 ' CVI, CVU or LOAD
  cmps r22,  #0 wz,wc
  jmp #BR_B
- long @C_sfms_66950666_gnum_L000001_8 ' LTI4
+ long @C_s8p0_66c68b83_gnum_L000001_8 ' LTI4
  cmps r21,  #9 wz,wc
  jmp #BRBE
- long @C_sfms_66950666_gnum_L000001_5 ' LEI4
-C_sfms_66950666_gnum_L000001_8
+ long @C_s8p0_66c68b83_gnum_L000001_5 ' LEI4
+C_s8p0_66c68b83_gnum_L000001_8
  mov RI, r3
  mov BC, r23
  jmp #WLNG ' ASGNI4 reg reg
-C_sfms_66950666_gnum_L000001_4
+C_s8p0_66c68b83_gnum_L000001_4
  mov r0, r4 ' CVI, CVU or LOAD
-' C_sfms_66950666_gnum_L000001_2 ' (symbol refcount = 0)
+' C_s8p0_66c68b83_gnum_L000001_2 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETN
 
 
  alignl ' align long
-C_sfms1_66950666_o_print_L000009 ' <symbol:o_print>
+C_s8p01_66c68b83_o_print_L000009 ' <symbol:o_print>
  jmp #NEWF
  sub SP, #12
  jmp #PSHM
@@ -92,20 +92,20 @@ C_sfms1_66950666_o_print_L000009 ' <symbol:o_print>
  mov r22, #32 ' reg <- coni
  cmps r13, r22 wz
  jmp #BR_Z
- long @C_sfms1_66950666_o_print_L000009_14 ' EQI4
+ long @C_s8p01_66c68b83_o_print_L000009_14 ' EQI4
  cmps r13, r22 wz,wc
  jmp #BR_B
- long @C_sfms1_66950666_o_print_L000009_11 ' LTI4
-' C_sfms1_66950666_o_print_L000009_22 ' (symbol refcount = 0)
+ long @C_s8p01_66c68b83_o_print_L000009_11 ' LTI4
+' C_s8p01_66c68b83_o_print_L000009_22 ' (symbol refcount = 0)
  cmps r13,  #64 wz
  jmp #BR_Z
- long @C_sfms1_66950666_o_print_L000009_17 ' EQI4
+ long @C_s8p01_66c68b83_o_print_L000009_17 ' EQI4
  jmp #JMPA
- long @C_sfms1_66950666_o_print_L000009_11 ' JUMPV addrg
-C_sfms1_66950666_o_print_L000009_14
+ long @C_s8p01_66c68b83_o_print_L000009_11 ' JUMPV addrg
+C_s8p01_66c68b83_o_print_L000009_14
  cmps r17,  #0 wz
  jmp #BR_Z
- long @C_sfms1_66950666_o_print_L000009_15 ' EQI4
+ long @C_s8p01_66c68b83_o_print_L000009_15 ' EQI4
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -129,8 +129,8 @@ C_sfms1_66950666_o_print_L000009_14
  sub RI, #-(-12)
  wrlong r22, RI ' ASGNI4 addrli reg
  jmp #JMPA
- long @C_sfms1_66950666_o_print_L000009_12 ' JUMPV addrg
-C_sfms1_66950666_o_print_L000009_15
+ long @C_s8p01_66c68b83_o_print_L000009_12 ' JUMPV addrg
+C_s8p01_66c68b83_o_print_L000009_15
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -153,11 +153,11 @@ C_sfms1_66950666_o_print_L000009_15
  sub RI, #-(-8)
  wrlong r22, RI ' ASGNU4 addrli reg
  jmp #JMPA
- long @C_sfms1_66950666_o_print_L000009_12 ' JUMPV addrg
-C_sfms1_66950666_o_print_L000009_17
+ long @C_s8p01_66c68b83_o_print_L000009_12 ' JUMPV addrg
+C_s8p01_66c68b83_o_print_L000009_17
  cmps r17,  #0 wz
  jmp #BR_Z
- long @C_sfms1_66950666_o_print_L000009_18 ' EQI4
+ long @C_s8p01_66c68b83_o_print_L000009_18 ' EQI4
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -179,8 +179,8 @@ C_sfms1_66950666_o_print_L000009_17
  sub RI, #-(-12)
  wrlong r22, RI ' ASGNI4 addrli reg
  jmp #JMPA
- long @C_sfms1_66950666_o_print_L000009_12 ' JUMPV addrg
-C_sfms1_66950666_o_print_L000009_18
+ long @C_s8p01_66c68b83_o_print_L000009_12 ' JUMPV addrg
+C_s8p01_66c68b83_o_print_L000009_18
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -202,11 +202,11 @@ C_sfms1_66950666_o_print_L000009_18
  sub RI, #-(-8)
  wrlong r22, RI ' ASGNU4 addrli reg
  jmp #JMPA
- long @C_sfms1_66950666_o_print_L000009_12 ' JUMPV addrg
-C_sfms1_66950666_o_print_L000009_11
+ long @C_s8p01_66c68b83_o_print_L000009_12 ' JUMPV addrg
+C_s8p01_66c68b83_o_print_L000009_11
  cmps r17,  #0 wz
  jmp #BR_Z
- long @C_sfms1_66950666_o_print_L000009_20 ' EQI4
+ long @C_s8p01_66c68b83_o_print_L000009_20 ' EQI4
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -228,8 +228,8 @@ C_sfms1_66950666_o_print_L000009_11
  sub RI, #-(-12)
  wrlong r22, RI ' ASGNI4 addrli reg
  jmp #JMPA
- long @C_sfms1_66950666_o_print_L000009_12 ' JUMPV addrg
-C_sfms1_66950666_o_print_L000009_20
+ long @C_s8p01_66c68b83_o_print_L000009_12 ' JUMPV addrg
+C_s8p01_66c68b83_o_print_L000009_20
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -250,16 +250,16 @@ C_sfms1_66950666_o_print_L000009_20
  mov RI, FP
  sub RI, #-(-8)
  wrlong r22, RI ' ASGNU4 addrli reg
-C_sfms1_66950666_o_print_L000009_12
+C_s8p01_66c68b83_o_print_L000009_12
  cmps r17,  #0 wz
  jmp #BR_Z
- long @C_sfms1_66950666_o_print_L000009_23 ' EQI4
+ long @C_s8p01_66c68b83_o_print_L000009_23 ' EQI4
  mov r22, FP
  sub r22, #-(-12) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 regl
  cmps r22,  #0 wz,wc
  jmp #BRAE
- long @C_sfms1_66950666_o_print_L000009_25 ' GEI4
+ long @C_s8p01_66c68b83_o_print_L000009_25 ' GEI4
  mov r22, r23 ' CVI, CVU or LOAD
  mov r23, r22
  adds r23, #1 ' ADDP4 coni
@@ -275,15 +275,15 @@ C_sfms1_66950666_o_print_L000009_12
  sub RI, #-(-12)
  wrlong r22, RI ' ASGNI4 addrli reg
  jmp #JMPA
- long @C_sfms1_66950666_o_print_L000009_26 ' JUMPV addrg
-C_sfms1_66950666_o_print_L000009_25
+ long @C_s8p01_66c68b83_o_print_L000009_26 ' JUMPV addrg
+C_s8p01_66c68b83_o_print_L000009_25
  mov r22, FP
  add r22, #12 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 regl
  and r22, #2 ' BANDI4 coni
  cmps r22,  #0 wz
  jmp #BR_Z
- long @C_sfms1_66950666_o_print_L000009_27 ' EQI4
+ long @C_s8p01_66c68b83_o_print_L000009_27 ' EQI4
  mov r22, r23 ' CVI, CVU or LOAD
  mov r23, r22
  adds r23, #1 ' ADDP4 coni
@@ -292,15 +292,15 @@ C_sfms1_66950666_o_print_L000009_25
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
  jmp #JMPA
- long @C_sfms1_66950666_o_print_L000009_28 ' JUMPV addrg
-C_sfms1_66950666_o_print_L000009_27
+ long @C_s8p01_66c68b83_o_print_L000009_28 ' JUMPV addrg
+C_s8p01_66c68b83_o_print_L000009_27
  mov r22, FP
  add r22, #12 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 regl
  and r22, #4 ' BANDI4 coni
  cmps r22,  #0 wz
  jmp #BR_Z
- long @C_sfms1_66950666_o_print_L000009_29 ' EQI4
+ long @C_s8p01_66c68b83_o_print_L000009_29 ' EQI4
  mov r22, r23 ' CVI, CVU or LOAD
  mov r23, r22
  adds r23, #1 ' ADDP4 coni
@@ -308,28 +308,28 @@ C_sfms1_66950666_o_print_L000009_27
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
-C_sfms1_66950666_o_print_L000009_29
-C_sfms1_66950666_o_print_L000009_28
-C_sfms1_66950666_o_print_L000009_26
+C_s8p01_66c68b83_o_print_L000009_29
+C_s8p01_66c68b83_o_print_L000009_28
+C_s8p01_66c68b83_o_print_L000009_26
  mov r22, FP
  sub r22, #-(-12) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 regl
  mov RI, FP
  sub RI, #-(-8)
  wrlong r22, RI ' ASGNU4 addrli reg
-C_sfms1_66950666_o_print_L000009_23
+C_s8p01_66c68b83_o_print_L000009_23
  mov r22, FP
  add r22, #12 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 regl
  and r22, #8 ' BANDI4 coni
  cmps r22,  #0 wz
  jmp #BR_Z
- long @C_sfms1_66950666_o_print_L000009_31 ' EQI4
+ long @C_s8p01_66c68b83_o_print_L000009_31 ' EQI4
  mov r22, r21 ' CVUI
  and r22, cviu_m1 ' zero extend
  cmps r22,  #111 wz
  jmp #BRNZ
- long @C_sfms1_66950666_o_print_L000009_31 ' NEI4
+ long @C_s8p01_66c68b83_o_print_L000009_31 ' NEI4
  mov r22, r23 ' CVI, CVU or LOAD
  mov r23, r22
  adds r23, #1 ' ADDP4 coni
@@ -337,42 +337,42 @@ C_sfms1_66950666_o_print_L000009_23
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
-C_sfms1_66950666_o_print_L000009_31
+C_s8p01_66c68b83_o_print_L000009_31
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRU4 regl
  cmp r22,  #0 wz
  jmp #BRNZ
- long @C_sfms1_66950666_o_print_L000009_33 ' NEU4
+ long @C_s8p01_66c68b83_o_print_L000009_33 ' NEU4
  cmps r19,  #0 wz
  jmp #BRNZ
- long @C_sfms1_66950666_o_print_L000009_34 ' NEI4
+ long @C_s8p01_66c68b83_o_print_L000009_34 ' NEI4
  mov r0, r23 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sfms1_66950666_o_print_L000009_10 ' JUMPV addrg
-C_sfms1_66950666_o_print_L000009_33
+ long @C_s8p01_66c68b83_o_print_L000009_10 ' JUMPV addrg
+C_s8p01_66c68b83_o_print_L000009_33
  mov r22, FP
  add r22, #12 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 regl
  and r22, #8 ' BANDI4 coni
  cmps r22,  #0 wz
  jmp #BR_Z
- long @C_sfms1_66950666_o_print_L000009_40 ' EQI4
+ long @C_s8p01_66c68b83_o_print_L000009_40 ' EQI4
  mov r22, r21 ' CVUI
  and r22, cviu_m1 ' zero extend
  cmps r22,  #120 wz
  jmp #BR_Z
- long @C_sfms1_66950666_o_print_L000009_39 ' EQI4
+ long @C_s8p01_66c68b83_o_print_L000009_39 ' EQI4
  cmps r22,  #88 wz
  jmp #BR_Z
- long @C_sfms1_66950666_o_print_L000009_39 ' EQI4
-C_sfms1_66950666_o_print_L000009_40
+ long @C_s8p01_66c68b83_o_print_L000009_39 ' EQI4
+C_s8p01_66c68b83_o_print_L000009_40
  mov r22, r21 ' CVUI
  and r22, cviu_m1 ' zero extend
  cmps r22,  #112 wz
  jmp #BRNZ
- long @C_sfms1_66950666_o_print_L000009_37 ' NEI4
-C_sfms1_66950666_o_print_L000009_39
+ long @C_s8p01_66c68b83_o_print_L000009_37 ' NEI4
+C_s8p01_66c68b83_o_print_L000009_39
  mov r22, r23 ' CVI, CVU or LOAD
  mov r23, r22
  adds r23, #1 ' ADDP4 coni
@@ -387,93 +387,93 @@ C_sfms1_66950666_o_print_L000009_39
  and r20, cviu_m1 ' zero extend
  cmps r20,  #88 wz
  jmp #BRNZ
- long @C_sfms1_66950666_o_print_L000009_42 ' NEI4
+ long @C_s8p01_66c68b83_o_print_L000009_42 ' NEI4
  mov r11, #88 ' reg <- coni
  jmp #JMPA
- long @C_sfms1_66950666_o_print_L000009_43 ' JUMPV addrg
-C_sfms1_66950666_o_print_L000009_42
+ long @C_s8p01_66c68b83_o_print_L000009_43 ' JUMPV addrg
+C_s8p01_66c68b83_o_print_L000009_42
  mov r11, #120 ' reg <- coni
-C_sfms1_66950666_o_print_L000009_43
+C_s8p01_66c68b83_o_print_L000009_43
  mov r20, r11 ' CVI, CVU or LOAD
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
-C_sfms1_66950666_o_print_L000009_37
-C_sfms1_66950666_o_print_L000009_34
+C_s8p01_66c68b83_o_print_L000009_37
+C_s8p01_66c68b83_o_print_L000009_34
  mov r11, r21 ' CVUI
  and r11, cviu_m1 ' zero extend
  mov r22, #105 ' reg <- coni
  cmps r11, r22 wz
  jmp #BR_Z
- long @C_sfms1_66950666_o_print_L000009_49 ' EQI4
+ long @C_s8p01_66c68b83_o_print_L000009_49 ' EQI4
  cmps r11, r22 wz,wc
  jmp #BR_A
- long @C_sfms1_66950666_o_print_L000009_52 ' GTI4
-' C_sfms1_66950666_o_print_L000009_51 ' (symbol refcount = 0)
+ long @C_s8p01_66c68b83_o_print_L000009_52 ' GTI4
+' C_s8p01_66c68b83_o_print_L000009_51 ' (symbol refcount = 0)
  mov r22, #88 ' reg <- coni
  cmps r11, r22 wz
  jmp #BR_Z
- long @C_sfms1_66950666_o_print_L000009_50 ' EQI4
+ long @C_s8p01_66c68b83_o_print_L000009_50 ' EQI4
  cmps r11, r22 wz,wc
  jmp #BR_B
- long @C_sfms1_66950666_o_print_L000009_44 ' LTI4
-' C_sfms1_66950666_o_print_L000009_53 ' (symbol refcount = 0)
+ long @C_s8p01_66c68b83_o_print_L000009_44 ' LTI4
+' C_s8p01_66c68b83_o_print_L000009_53 ' (symbol refcount = 0)
  cmps r11,  #98 wz
  jmp #BR_Z
- long @C_sfms1_66950666_o_print_L000009_47 ' EQI4
+ long @C_s8p01_66c68b83_o_print_L000009_47 ' EQI4
  cmps r11,  #100 wz
  jmp #BR_Z
- long @C_sfms1_66950666_o_print_L000009_49 ' EQI4
+ long @C_s8p01_66c68b83_o_print_L000009_49 ' EQI4
  jmp #JMPA
- long @C_sfms1_66950666_o_print_L000009_44 ' JUMPV addrg
-C_sfms1_66950666_o_print_L000009_52
+ long @C_s8p01_66c68b83_o_print_L000009_44 ' JUMPV addrg
+C_s8p01_66c68b83_o_print_L000009_52
  mov r22, #111 ' reg <- coni
  cmps r11, r22 wz
  jmp #BR_Z
- long @C_sfms1_66950666_o_print_L000009_48 ' EQI4
+ long @C_s8p01_66c68b83_o_print_L000009_48 ' EQI4
  cmps r11,  #112 wz
  jmp #BR_Z
- long @C_sfms1_66950666_o_print_L000009_50 ' EQI4
+ long @C_s8p01_66c68b83_o_print_L000009_50 ' EQI4
  cmps r11, r22 wz,wc
  jmp #BR_B
- long @C_sfms1_66950666_o_print_L000009_44 ' LTI4
-' C_sfms1_66950666_o_print_L000009_54 ' (symbol refcount = 0)
+ long @C_s8p01_66c68b83_o_print_L000009_44 ' LTI4
+' C_s8p01_66c68b83_o_print_L000009_54 ' (symbol refcount = 0)
  cmps r11,  #117 wz
  jmp #BR_Z
- long @C_sfms1_66950666_o_print_L000009_49 ' EQI4
+ long @C_s8p01_66c68b83_o_print_L000009_49 ' EQI4
  cmps r11,  #120 wz
  jmp #BR_Z
- long @C_sfms1_66950666_o_print_L000009_50 ' EQI4
+ long @C_s8p01_66c68b83_o_print_L000009_50 ' EQI4
  jmp #JMPA
- long @C_sfms1_66950666_o_print_L000009_44 ' JUMPV addrg
-C_sfms1_66950666_o_print_L000009_47
+ long @C_s8p01_66c68b83_o_print_L000009_44 ' JUMPV addrg
+C_s8p01_66c68b83_o_print_L000009_47
  mov r22, #2 ' reg <- coni
  mov RI, FP
  sub RI, #-(-16)
  wrlong r22, RI ' ASGNI4 addrli reg
  jmp #JMPA
- long @C_sfms1_66950666_o_print_L000009_45 ' JUMPV addrg
-C_sfms1_66950666_o_print_L000009_48
+ long @C_s8p01_66c68b83_o_print_L000009_45 ' JUMPV addrg
+C_s8p01_66c68b83_o_print_L000009_48
  mov r22, #8 ' reg <- coni
  mov RI, FP
  sub RI, #-(-16)
  wrlong r22, RI ' ASGNI4 addrli reg
  jmp #JMPA
- long @C_sfms1_66950666_o_print_L000009_45 ' JUMPV addrg
-C_sfms1_66950666_o_print_L000009_49
+ long @C_s8p01_66c68b83_o_print_L000009_45 ' JUMPV addrg
+C_s8p01_66c68b83_o_print_L000009_49
  mov r22, #10 ' reg <- coni
  mov RI, FP
  sub RI, #-(-16)
  wrlong r22, RI ' ASGNI4 addrli reg
  jmp #JMPA
- long @C_sfms1_66950666_o_print_L000009_45 ' JUMPV addrg
-C_sfms1_66950666_o_print_L000009_50
+ long @C_s8p01_66c68b83_o_print_L000009_45 ' JUMPV addrg
+C_s8p01_66c68b83_o_print_L000009_50
  mov r22, #16 ' reg <- coni
  mov RI, FP
  sub RI, #-(-16)
  wrlong r22, RI ' ASGNI4 addrli reg
-C_sfms1_66950666_o_print_L000009_44
-C_sfms1_66950666_o_print_L000009_45
+C_s8p01_66c68b83_o_print_L000009_44
+C_s8p01_66c68b83_o_print_L000009_45
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov RI, FP
@@ -492,10 +492,10 @@ C_sfms1_66950666_o_print_L000009_45
  and r22, cviu_m1 ' zero extend
  cmps r22,  #88 wz
  jmp #BRNZ
- long @C_sfms1_66950666_o_print_L000009_55 ' NEI4
+ long @C_s8p01_66c68b83_o_print_L000009_55 ' NEI4
  jmp #JMPA
- long @C_sfms1_66950666_o_print_L000009_58 ' JUMPV addrg
-C_sfms1_66950666_o_print_L000009_57
+ long @C_s8p01_66c68b83_o_print_L000009_58 ' JUMPV addrg
+C_s8p01_66c68b83_o_print_L000009_57
  mov RI, r15
  jmp #RBYT
  mov r22, BC ' reg <- INDIRU1 reg
@@ -509,15 +509,15 @@ C_sfms1_66950666_o_print_L000009_57
  mov BC, r22
  jmp #WBYT ' ASGNU1 reg reg
  adds r15, #1 ' ADDP4 coni
-C_sfms1_66950666_o_print_L000009_58
+C_s8p01_66c68b83_o_print_L000009_58
  mov r22, r15 ' CVI, CVU or LOAD
  mov r20, r23 ' CVI, CVU or LOAD
  cmp r22, r20 wz
  jmp #BRNZ
- long @C_sfms1_66950666_o_print_L000009_57 ' NEU4
-C_sfms1_66950666_o_print_L000009_55
+ long @C_s8p01_66c68b83_o_print_L000009_57 ' NEU4
+C_s8p01_66c68b83_o_print_L000009_55
  mov r0, r23 ' CVI, CVU or LOAD
-C_sfms1_66950666_o_print_L000009_10
+C_s8p01_66c68b83_o_print_L000009_10
  jmp #POPM ' restore registers
  add SP, #12 ' framesize
  jmp #RETF
@@ -675,7 +675,7 @@ C__doprnt_72
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_sfms_66950666_gnum_L000001
+ long @C_s8p0_66c68b83_gnum_L000001
  add SP, #8 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -706,7 +706,7 @@ C__doprnt_83
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_sfms_66950666_gnum_L000001
+ long @C_s8p0_66c68b83_gnum_L000001
  add SP, #8 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, FP
@@ -1130,7 +1130,7 @@ C__doprnt_131
  mov BC, #24 ' arg size, rpsize = 0, spsize = 24
  add SP, #4 ' correct for new kernel !!! 
  jmp #CALA
- long @C_sfms1_66950666_o_print_L000009
+ long @C_s8p01_66c68b83_o_print_L000009
  add SP, #20 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
  jmp #JMPA
@@ -1178,7 +1178,7 @@ C__doprnt_136
  mov BC, #24 ' arg size, rpsize = 0, spsize = 24
  add SP, #4 ' correct for new kernel !!! 
  jmp #CALA
- long @C_sfms1_66950666_o_print_L000009
+ long @C_s8p01_66c68b83_o_print_L000009
  add SP, #20 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
  jmp #JMPA

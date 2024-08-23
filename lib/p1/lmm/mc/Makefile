@@ -3,6 +3,7 @@ include ../../Makefile.inc
 all:
 	cp ../../float/float_c.s .
 	cp ../../float/fplugin.s .
+	cp ../../float/fservice.s .
 	cp ../../float/lround.s .
 	cp ../../float/ltrunc.s .
 	cp ../../float/fround.s .

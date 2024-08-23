@@ -16,15 +16,15 @@ C__plugin_name ' <symbol:_plugin_name>
  alignl ' align long
  long I32_BR_B + (@C__plugin_name_3)<<S32 ' LTI4 reg coni
  alignl ' align long
- long I32_MOVI + RI<<D32 + (32)<<S32
+ long I32_MOVI + RI<<D32 + (33)<<S32
  word I16A_CMPS + (r2)<<D16A + RI<<S16A
  alignl ' align long
- long I32_BR_A + (@C__plugin_name_109)<<S32 ' GTI4 reg coni
+ long I32_BR_A + (@C__plugin_name_112)<<S32 ' GTI4 reg coni
  word I16A_MOV + (r22)<<D16A + (r2)<<S16A
  word I16A_SHLI + (r22)<<D16A + (2)<<S16A ' SHLI4 reg coni
  word I16B_LODL + (r20)<<D16B
  alignl ' align long
- long @C__plugin_name_110_L000112 ' reg <- addrg
+ long @C__plugin_name_113_L000115 ' reg <- addrg
  word I16A_ADDS + (r22)<<D16A + (r20)<<S16A ' ADDI/P (1)
  word I16A_RDLONG + RI<<D16A + (r22)<<S16A
  word I16B_JMPI ' JUMPV INDIR reg
@@ -35,7 +35,7 @@ C__plugin_name ' <symbol:_plugin_name>
 DAT ' const data segment
 
  alignl ' align long
-C__plugin_name_110_L000112 ' <symbol:110>
+C__plugin_name_113_L000115 ' <symbol:113>
  long @C__plugin_name_5
  long @C__plugin_name_8
  long @C__plugin_name_11
@@ -69,17 +69,18 @@ C__plugin_name_110_L000112 ' <symbol:110>
  long @C__plugin_name_95
  long @C__plugin_name_98
  long @C__plugin_name_101
+ long @C__plugin_name_104
 
 ' Catalina Code
 
 DAT ' code segment
  alignl ' align long
-C__plugin_name_109
+C__plugin_name_112
  alignl ' align long
  long I32_MOVI + RI<<D32 + (255)<<S32
  word I16A_CMPS + (r2)<<D16A + RI<<S16A
  alignl ' align long
- long I32_BR_Z + (@C__plugin_name_104)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C__plugin_name_107)<<S32 ' EQI4 reg coni
  alignl ' align long
  long I32_JMPA + (@C__plugin_name_3)<<S32 ' JUMPV addrg
  alignl ' align long
@@ -321,10 +322,17 @@ C__plugin_name_104
  alignl ' align long
  long I32_JMPA + (@C__plugin_name_2)<<S32 ' JUMPV addrg
  alignl ' align long
+C__plugin_name_107
+ word I16B_LODL + (r0)<<D16B
+ alignl ' align long
+ long @C__plugin_name_108_L000109 ' reg <- addrg
+ alignl ' align long
+ long I32_JMPA + (@C__plugin_name_2)<<S32 ' JUMPV addrg
+ alignl ' align long
 C__plugin_name_3
  word I16B_LODL + (r0)<<D16B
  alignl ' align long
- long @C__plugin_name_107_L000108 ' reg <- addrg
+ long @C__plugin_name_110_L000111 ' reg <- addrg
  alignl ' align long
 C__plugin_name_2
  word I16B_POPM + $80<<S16B ' restore registers, do not pop frame, do return
@@ -335,7 +343,7 @@ C__plugin_name_2
 DAT ' const data segment
 
  alignl ' align long
-C__plugin_name_107_L000108 ' <symbol:107>
+C__plugin_name_110_L000111 ' <symbol:110>
  byte 85
  byte 110
  byte 107
@@ -346,11 +354,27 @@ C__plugin_name_107_L000108 ' <symbol:107>
  byte 0
 
  alignl ' align long
-C__plugin_name_105_L000106 ' <symbol:105>
+C__plugin_name_108_L000109 ' <symbol:108>
  byte 78
  byte 111
  byte 110
  byte 101
+ byte 0
+
+ alignl ' align long
+C__plugin_name_105_L000106 ' <symbol:105>
+ byte 67
+ byte 47
+ byte 76
+ byte 117
+ byte 97
+ byte 32
+ byte 83
+ byte 101
+ byte 114
+ byte 118
+ byte 101
+ byte 114
  byte 0
 
  alignl ' align long

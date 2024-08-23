@@ -29,6 +29,9 @@ _long_float_request fplugin.s 51 export
 _sys_plugin fplugin.s 88 import
 frexp frexp.s 9 export
 fround fround.s 9 export
+_float_service fservice.s 9 export
+_long_float_service fservice.s 47 export
+_sys_plugin fservice.s 80 import
 ftrunc ftrunc.s 9 export
 __huge_val hugeval.s 9 export
 __IsNan isnan.s 9 export
