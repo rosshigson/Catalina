@@ -32,7 +32,7 @@ typedef struct func_1 {
    int go;
 } func_1_t;
 
-#pragma catapult secondary func_1 mode(CMM) address(0x71AC) stack(1000)
+#pragma catapult secondary func_1 mode(CMM) address(0x71A8) stack(1000)
 
 // any includes or functions required by secondary here ...
 

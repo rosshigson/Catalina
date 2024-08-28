@@ -36,7 +36,7 @@ typedef struct func_1 {
    int go;
 } func_1_t;
 
-#pragma catapult secondary func_1 mode(CMM) address(0x30D0) stack(2000) options (-Z -lthreads)
+#pragma catapult secondary func_1 mode(CMM) address(0x30C4) stack(2000) options (-Z -lthreads)
 
 // any includes or functions required by secondary here ...
 

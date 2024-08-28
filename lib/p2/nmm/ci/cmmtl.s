@@ -823,6 +823,28 @@ _DEBUG_PIN = 56
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 '#line 23 "../../../target/p2/platform.inc"
 
 
@@ -911,12 +933,6 @@ XMM_BASE_ADDRESS = $0008_0000   ' XMM adddressing from $8_0000
 '
 XMM_RW_BASE_ADDRESS = $0008_0000 ' Read-Write Base address
 XMM_RO_BASE_ADDRESS = $0008_0000 ' Read-Only Base address
-'
-' XMM RW & RO Sizes (in bytes):
-'
-XMM_RW_SIZE = $0200_0000         ' Read-Write Size
-XMM_RO_SIZE = $0200_0000         ' Read-Only Size
-
 '
 ' Definitions for XMM CACHE (compatible with jazzed's spisram_cache):
 '
@@ -1279,6 +1295,8 @@ BASE_ADDR  = $00000
 '       in catalyst.h
 '
 HUB_SIZE   = $7C000            ' the last 16K contain a copy of the boot ROM.
+'
+' NOTE: the value of FREE_MEM must match sbrk.le, sbrk.e & sbrk.ce
 '
 FREE_MEM   = HUB_SIZE-4                               ' $7BFFC the FREE_MEM pointer
 '

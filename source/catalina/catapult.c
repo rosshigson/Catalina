@@ -16,6 +16,8 @@
  *
  *               - When a secondary main function ends, unregister the
  *                 kernel before stopping the cog.
+ *
+ * Version 7.9 - just update version number.
  */
 
 #include <ctype.h>
@@ -24,7 +26,7 @@
 #include <string.h>
 #include <sys/stat.h>
 
-#define VERSION            "7.6.3" 
+#define VERSION            "7.9" 
 
 #ifdef WIN32_PATHS         /* define this on the command line for Windows */
 #define PATH_SEP           "\\"

@@ -260,6 +260,17 @@ _DEBUG_PIN = 38
 #endif
 #endif
 
+#if defined(PSRAM)
+XMM_RW_SIZE = $0200_0000         ' 32Mb Read-Write Size
+XMM_RO_SIZE = $0000_0000         ' 32Mb Read-Only Size
+#elif defined(HYPER)
+XMM_RW_SIZE = $0100_0000         ' 16Mb Read-Write Size
+XMM_RO_SIZE = $0200_0000         ' 32Mb Read-Only Size
+#else
+XMM_RW_SIZE = $0000_0000         '  0Mb Read-Write Size
+XMM_RO_SIZE = $0000_0000         '  0Mb Read-Only Size
+#endif
+
 #ifndef CACHED
 #define CACHED
 #endif
@@ -286,6 +297,17 @@ _DEBUG_PIN = 38
 #ifndef libpsram
 #define libpsram
 #endif
+#endif
+
+#if defined(PSRAM)
+XMM_RW_SIZE = $0200_0000         ' 32Mb Read-Write Size
+XMM_RO_SIZE = $0000_0000         ' 32Mb Read-Only Size
+#elif defined(HYPER)
+XMM_RW_SIZE = $0100_0000         ' 16Mb Read-Write Size
+XMM_RO_SIZE = $0200_0000         ' 32Mb Read-Only Size
+#else
+XMM_RW_SIZE = $0000_0000         '  0Mb Read-Write Size
+XMM_RO_SIZE = $0000_0000         '  0Mb Read-Only Size
 #endif
 
 #ifndef CACHED

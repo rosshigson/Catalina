@@ -1,9 +1,7 @@
 This file contains a summary of changes to Catalina in recent releases. For
 information about installing and using Catalina, see the file README.md 
 
-Catalina release 7.8 is a full release.
-
-Catalina release 7.8.1 is only available on GitHub (tag v7.8.1).
+Catalina release 7.9 is a full release.
 
 WARNING: DO NOT INSTALL THIS RELEASE OVER A PRIOR VERSION OF CATALINA AND
 DO NOT LINK OR COMBINE PROGRAMS COMPILED WITH THIS VERSION WITH CODE (E.G. 
@@ -16,6 +14,122 @@ The following sections list the changes that have been made in releases
 7.0 onwards of Catalina. If you have not used a previous release of Catalina, 
 you can skip the rest of this README and instead go straight to the Catalina 
 tutorial documents.
+
+RELEASE 7.9
+
+New Functionality
+-----------------
+
+1. Catalina, catbind and bcc all have a new command line option. The new
+   option (-H) accepts an address parameter and can be used to specify the 
+   maximum address that will be used by the heap. In all memory modes except 
+   LARGE mode, the heap and stack share Hub RAM, with the heap growing upward 
+   from the highest used low Hub address, and the stack growing downward from 
+   the lowest used high hub address. This means they can eventually overlap, 
+   with potentially disastrous consequences. 
+
+   The -H option allows this to be avoided, by limiting the growth of the
+   heap. The program may run out of heap space, but this can be detected
+   (e.g. sbrk() or malloc() will return an error if there is no more space). 
+   The required amount of stack space can be determined by printing the 
+   current stack pointer at various suitable points in the program - below 
+   is a macro that uses inline PASM to do this, and a trivial program that 
+   uses it. This program will work in any memory model on any Propeller:
+
+      // this handy macro returns the current stack pointer 
+      // in any memory model on the P1 or P2 ...
+      #define SP PASM( \
+         "#ifdef COMPACT\n" \
+         "   word I16B_PASM\n" \
+         "#endif\n" \
+         "   alignl\n" \
+         "   mov r0, SP\n")
+
+      void main() {
+          printf("SP=0x%06X\n", SP);
+          while(1);
+      }
+
+   Suppose on a Propeller 1 it was known that the stack could grow down to 
+   0x6000 - then it would be appropriate to specify -H 0x6000 to prevent the 
+   heap ever growing large enough to overwrite the stack. The parameter can 
+   be specified as decimal (including an optional 'k' or 'm' suffix) or as 
+   hexadecimal (using the format $XXXXXX or 0xXXXXXX). For example, to ensure 
+   the heap never grows above 24k, leaving the top 8k for buffers and 
+   stack space, use a command like:
+
+      catalina prog.c -lc -H 24576
+   or
+      catalina prog.c -lc -H 24k
+   or
+      catalina prog.c -lc -H 0x6000
+
+   The -H option can be used on the Propeller 1 or 2. In all modes except
+   LARGE mode the address refers to a Hub address. It can also be used in 
+   LARGE mode, where the heap is in XMM RAM, but the address refers to an
+   XMM RAM address. This could be used (for example) to reserve an upper 
+   area of XMM RAM for other uses, such as for a buffer. However, note that 
+   the start address of the XMM RAM can vary from platform to platform, so 
+   check the XMM_RW_BASE_ADDRESS in the various platform configuration files.
+
+2. New client/server support functions have been added to the libraries, and 
+   several new catapult demos have been added, to demonstrate them - see the
+   document "Getting Started with Catapult" for details. The new demos in the 
+   demos/catapult folder are:
+
+      srv_c_p1.c & svr_c_p2.c  -- demonstrate a C client with a C server.
+      srv_l_p1.c & svr_l_p2.c  -- demonstrate a C client with a Lua server.
+
+   The above demo programs all use the library functions and a dispatcher
+   which enables client/server programs to interact using the functionality 
+   that Catalina uses to interact between C programs and plugins. However, 
+   this is limited to service profiles that match the existing ones used for
+   plugins. If these profiles are not sufficient, new profiles can be created
+   along with a custom dispatcher - a demonstration of this is given in the
+   folder demos/catapult/custom folder, using programs very similar to those 
+   above, but extended to include one new custom service profile.
+
+Other Changes
+-------------
+
+1. An issue first noted in Catalina 7.6.1 was not fixed in all the affected 
+   kernels. In kernels without sufficient space to implement the basic 
+   floating point operations (+, -, *, / etc), an 8 byte data block is used 
+   to transfer information between the kernel and the floating point plugin. 
+   In some kernels this block was not being set up correctly, leading to the 
+   use of the 8 bytes starting at memory location 0 as the data block, which 
+   would overwrite the clock values on the Propeller 1, leading to issues 
+   with some functions that used timers. The specific kernels affected were 
+   the CMM and XMM kernels on the Propeller 1, and the XMM Kernel on the 
+   Propeller 2. 
+
+2. Catalina was not checking if there was sufficient heap space left before 
+   trying to allocate a new block of memory (e.g. via sbrk, malloc, calloc 
+   or realloc). As a result, a program could end up unable to allocate 
+   memory on the heap even though there was plenty of free space once the 
+   heap became too fragmented, because the function intended to defragment 
+   and consolidate the blocks on the free list was not being triggered as 
+   expected. Affected the Propeller 1 and 2.
+
+   This issue affected programs that made a large number of dynamic memory 
+   allocation and deallocation calls for small randomly sized blocks of 
+   memory, because existing free blocks are re-used whenever possible, 
+   breaking them up into smaller and smaller pieces, and allocating 
+   a new block when the existing free blocks could not satisfy a request.
+   
+   The Catalina demo program most affected by this bug was Dumbo Basic,
+   which allocates and then frees a very large number of small blocks when 
+   performing string operations, which meant the heap very quickly ended up 
+   highly fragmented. For example, the 'eliza.bas' program would stop 
+   responding if a long sentence was entered.
+
+   This issue has been fixed by (1) adding automatic detection of the
+   maximum heap size, so that the defragment function is triggered when 
+   heap space is exhausted -  this solves the problem for LARGE mode 
+   programs (e.g. when compiling Dumbo Basic for the P1 in LARGE mode), 
+   and (2) adding a new command line option (-H) which can be used in
+   any mode to specify the maximum heap address to be used (e.g. when 
+   compiling Dumbo Basic in NATIVE mode for the P2).
 
 RELEASE 7.8.1
 

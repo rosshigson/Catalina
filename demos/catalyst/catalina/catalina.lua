@@ -102,7 +102,10 @@
 -- version 7.7   - just update version number.
 --                  
 -- version 7.8   - just update version number.
---                  
+--
+-- version 7.9   - Add -H option to specify heap top (+1), which is passed
+--                 to bcc.
+
 require "os"
 require "io"
 require "math"
@@ -110,7 +113,7 @@ require "string"
 require "propeller"
 
 -- configuration parameters and default values
-CATALINA_VERSION = "7.8"
+CATALINA_VERSION = "7.9"
 LCCDIR           = "/";
 CATALINA_TARGET  = LCCDIR .. "target"
 CATALINA_LIBRARY = LCCDIR .. "lib"
@@ -171,6 +174,7 @@ helped     = nil;
 suppress   = nil;
 rccopt     = nil;
 output     = "";
+heaptop    = 0;
 readwrite  = 0;
 readonly   = 0;
 
@@ -238,6 +242,7 @@ function print_help()
    print("          -E         allowable frequency error (default is 100k");
    print("          -f freq    required clock frequency (see also -F & -E");
    print("          -F freq    crystal frequency (default is 20M)");
+   print("          -H addr    address of top of heap");
    print("          -I path    path to include files (default '" .. IncludePath .. "')");
    print("          -k         kill (suppress) banners and statistics output");
    print("          -l lib     search library lib when binding");
@@ -601,6 +606,14 @@ function decode_arguments()
           val = decimal_or_hex(string.sub(arg[i],3), 1000);
         end
         xtal_freq = tonumber(val);
+      elseif (string.sub(arg[i],1,2) == "-H") then
+        if #arg[i] == 2 then
+          i = i + 1;
+          val = decimal_or_hex(arg[i], 1024);
+        else
+          val = decimal_or_hex(string.sub(arg[i],3), 1024);
+        end
+        heaptop = tonumber(val);
       elseif (string.sub(arg[i],1,2) == "-P") then
         if #arg[i] == 2 then
           i = i + 1;
@@ -1066,6 +1079,9 @@ function generate_bind(cmd)
   if readwrite > 0 then
     bcc = bcc .. '-P' .. readwrite .. ' ';
   end
+  if heaptop > 0 then
+    bcc = bcc .. '-H' .. heaptop .. ' ';
+  end
   for i = 1, Fcount do
     local dir  = "";
     local file = "";
@@ -1356,7 +1372,7 @@ end
 -- Both may have an optional trailing k, K, m or M modifer).
 -- NOTE that the modifier can be 1000 or 1024 - the C version of Catalina
 -- uses 1000 when specifying frequencies (e.g. -f, -e, -E), but 1024 when 
--- specifying memory values (e.g. -P, -R).
+-- specifying memory values (e.g. -P, -R, -H).
 function decimal_or_hex(str, modifier)
   local val = 0;
   local mod = 1;

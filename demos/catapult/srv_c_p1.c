@@ -65,7 +65,7 @@ typedef struct shared_data {
  * The secondary client - calls services provided by the primary server       *
  *                                                                            *
  ******************************************************************************/
-#pragma catapult secondary hub_client(shared_data_t) address(0x61A4) mode(CMM) stack(500)
+#pragma catapult secondary hub_client(shared_data_t) address(0x61A0) mode(CMM) stack(500)
 
 /*
  * define proxy functions, which use Catalina's pre-defined 

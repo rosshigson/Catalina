@@ -85,3 +85,4 @@ io.o : libawka.h mem.h
 var.o : libawka.h mem.h garbage.h number.h
 garbage.o : libawka.h mem.h garbage.h
 rexp.o : libawka.h
+

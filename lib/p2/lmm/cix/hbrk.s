@@ -25,7 +25,7 @@ DAT ' code segment
 '
 ' WARNING - The following code only supports memory models where
 '           the heap is in Hub RAM.
-'           See hbrk_large.e for a large memory model version
+'           See hbrk.le for a large memory model version
 '
 C__hbrk
 

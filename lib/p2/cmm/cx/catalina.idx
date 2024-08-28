@@ -727,9 +727,9 @@ _rqpin rqpin.s 5 export
 rtc_debug rtcdebug.s 9 export
 _long_service rtcdebug.s 30 import
 _sbrk sbrk.s 5 export
-sbrk sbrk.s 75 export
-_memory_lock sbrk.s 77 import
-_memory_unlock sbrk.s 79 import
+sbrk sbrk.s 88 export
+_memory_lock sbrk.s 90 import
+_memory_unlock sbrk.s 92 import
 scanf scanf.s 9 export
 _doscan scanf.s 49 import
 __stdin scanf.s 51 import

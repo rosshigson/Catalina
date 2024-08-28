@@ -13,8 +13,8 @@
  * also be used to pass a pointer to the shared data structure as the         *
  * parameter, which allows for arbitary data to be exchanged between client   *
  * and server, as usual for catapult programs (see func_6). This program      *
- * also incorporates a custom service which accepts to char * parameters and  *
- * returns an int (see func_7). This means it must use its own service        *
+ * also incorporates a custom service which accepts two char * parameters     *
+ * and returns an int (see func_7). This means it must use its own service    *
  * definitions (see service.h) and dispatcher (see dispatch_lua.c).           *
  *                                                                            *
  * This version is for a Propeller 2 P2_EDGE with PSRAM (i.e. a P2-EC32MB),   *
@@ -71,7 +71,7 @@ typedef struct shared_data {
  * The secondary client - calls services provided by the primary server       *
  *                                                                            *
  ******************************************************************************/
-#pragma catapult secondary hub_client(shared_data_t) address(0x76F60) mode(NMM) stack(500)
+#pragma catapult secondary hub_client(shared_data_t) address(0x76F5C) mode(NMM) stack(500)
 
 /*
  * define proxy functions, which use Catalina's pre-defined 

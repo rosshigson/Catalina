@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_sel8_66c68d0f_nmmtd_array_L000001 ' <symbol:nmmtd_array>
+C_s6d8_66cc65ff_nmmtd_array_L000001 ' <symbol:nmmtd_array>
  long $fd900108
  long $fd9001fc
  long $fd900220
@@ -854,7 +854,7 @@ C__threaded_cogstart_N_M_M__cog ' <symbol:_threaded_cogstart_NMM_cog>
  wrlong r22, RI ' ASGNU4 addrli reg
  mov r2, r17 ' CVI, CVU or LOAD
  mov r22, #2 ' reg <- coni
- mov r20, ##@C_sel8_66c68d0f_nmmtd_array_L000001 ' reg <- addrg
+ mov r20, ##@C_s6d8_66cc65ff_nmmtd_array_L000001 ' reg <- addrg
  mov r3, r20 ' RSHI
  sar r3, r22 ' RSHI (3)
  mov r20, FP

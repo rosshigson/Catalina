@@ -26,6 +26,8 @@
  *
  * Version 7.6.3 - When terminating a factory cog, also unregister it.
  *
+ * Version 7.9 - Just update version number.
+ *
  */
 
 #include <ctype.h>
@@ -36,7 +38,7 @@
 
 #define DO_EXECUTE         1 // 0 for debugging (output only, no execute)
 
-#define VERSION            "7.6.3" 
+#define VERSION            "7.9" 
 
 #ifdef WIN32_PATHS         /* define this on the command line for Windows */
 #define PATH_SEP           "\\"

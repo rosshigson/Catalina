@@ -29,7 +29,7 @@ typedef struct func_2 {
    float c;
 } func_2_t;
 
-#pragma catapult secondary func_1 mode(CMM) address(0x6348) stack(1000)
+#pragma catapult secondary func_1 mode(CMM) address(0x6274) stack(1200)
 
 // any includes or functions required by secondary here ...
 
@@ -39,7 +39,7 @@ void func_1(func_1_t *s) {
    s->c  = (s->a + s->b);
 }
  
-#pragma catapult secondary func_2 mode(LMM) address(0x48CC) stack(2500) options(-lthreads)
+#pragma catapult secondary func_2 mode(LMM) address(0x4924) stack(2400) options(-lthreads)
 
 // any includes or functions required by secondary here ...
 

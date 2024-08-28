@@ -40,10 +40,23 @@ C__sbrk_L0
  alignl ' align long
  long I32_BR_B + @C__sbrk_L1<<S32 ' <- err if sbrkval + amount < sbrkbeg
  ' we cannot do this check because in a multi-threaded 
- ' program our stack may be allocated on the heap!
- ' word I16A_CMP + r1<<D16A + SP<<S16A
- ' alignl ' align long
- ' long I32_BR_A + @C__sbrk_L1<<S32 ' err if sbrkval + amount > SP
+ ' program our stack may be allocated on the heap! ...
+ '    word I16A_CMP + r1<<D16A + SP<<S16A
+ '    alignl ' align long
+ '    long I32_BR_A + @C__sbrk_L1<<S32 ' err if sbrkval + amount > SP
+ ' so we do this instead ...
+    long I32_LODI + @sbrkover<<S32
+    word I16A_CMP + r1<<D16A + RI<<S16A
+    alignl ' align long
+    long I32_BRAE + @C__sbrk_L1<<S32 ' <- err if sbrkval + amount >= (contents of sbrkover)
+#ifdef P2
+    long I32_LODI + $7BFFC<<S32 ' <- must match FREE_MEM in constants.inc
+#else
+    long I32_LODI + $7FFC<<S32  ' <- must match FREE_MEM in Catalina_Common.spin
+#endif
+    word I16A_CMP + r1<<D16A + RI<<S16A
+    alignl ' align long
+    long I32_BRAE + @C__sbrk_L1<<S32 ' <- err if sbrkval + amount >= (contents of FREE_MEM)
  alignl ' align long
  long I32_LODA + @sbrkval<<S32
  'word I16A_SUB + r1<<D16A + BA<<S16A

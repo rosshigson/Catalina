@@ -32,6 +32,10 @@
  *
  * version 7.6   - just update version number.
  *
+ * Version 7.9   - Add -H option to specify heap top (+1). HEAP_TOP is used 
+ *                 by _sbrk(), but the actual value used will be the LOWER 
+ *                 of HEAP_TOP and FREE_MEM.
+ *
  */
 
 /*--------------------------------------------------------------------------
@@ -69,7 +73,7 @@
 
 #define COMPILE_IN_PLACE   1 /* 0 = compile in target, 1 = compile locally */
 
-#define VERSION            "7.6"
+#define VERSION            "7.9"
 
 #define MAX_FILES          500
 #define MAX_LIBS           500
@@ -180,6 +184,7 @@ static char *input_lib[MAX_LIBS];
 static int layout = 0;
 static int readonly = 0;
 static int readwrite = 0;
+static int heaptop = 0;
 static char *target = NULL;
 static char *result_file = NULL;
 static char *temp_path = NULL;
@@ -272,6 +277,7 @@ void help(char *my_name) {
    fprintf(stderr, "options:  -? or -h  print this helpful message (and exit)\n");
    fprintf(stderr, "          -d        output diagnostic messages (-d again for more messages)\n");
    fprintf(stderr, "          -e        generate export list from input files\n");
+   fprintf(stderr, "          -H addr   address of top of heap\n");
    fprintf(stderr, "          -i        generate import list from input files\n");
    fprintf(stderr, "          -L path   path to libraries (default is '%s')\n", def_lib_path);
    fprintf(stderr, "          -l name   search library named 'libname' when binding\n");
@@ -420,6 +426,40 @@ int decode_arguments (int argc, char *argv[]) {
                   }
                   else {
                      help(argv[0]);
+                  }
+                  break;
+
+               case 'H':
+                  modifier = 0;
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     fprintf(stderr, "option -H requires an argument\n");
+                     code = -1;
+                  }
+                  else {
+                     if ((arg[0] == '$')) {
+                        // hex parameter (such as $ABCD)
+                        sscanf(&arg[1], "%x", &heaptop);
+                     }
+                     else if ((arg[0] == '0')
+                     && ((arg[1] == 'x')||(arg[1] == 'X'))) {
+                        // hex parameter (such as 0xFFFF or 0XA000)
+                        sscanf(&arg[2], "%x", &heaptop);
+                     }
+                     else {
+                        // decimal parameter, perhaps with modifier
+                        // (such as 4k or 16m)
+                        sscanf(arg, "%d%c", &heaptop, &modifier);
+                     }
+                  }
+                  if (tolower(modifier) == 'k') {
+                     heaptop *= 1024;
+                  }
+                  else if (tolower(modifier) == 'm') {
+                     heaptop *= 1024 * 1024;
+                  }
+                  if (verbose) {
+                     fprintf(stderr, "heaptop address = %d\n", heaptop);
                   }
                   break;
 
@@ -1289,6 +1329,30 @@ void generate_output(const char *fullname) {
                }
                fclose(input);
             }
+         }
+         if (heaptop == 0) {
+            // no heaptop value provided - use a default value
+            if ((layout == 3) || (layout == 5)) {
+               // XMM large - use top of RW XMM RAM as default 
+               // (may be overwritten during initialization)
+               fprintf(result, "\nCON\n\nHEAP_TOP=XMM_RW_BASE_ADDRESS+XMM_RW_SIZE\n\n");
+            }
+            else {
+               if (prop_vers == 1) {
+                  // use $8000 as default
+                  // (may be overwritten during initialization)
+                  fprintf(result, "\nCON\n\nHEAP_TOP=$8000\n\n");
+               }
+               else {
+                  // use HUB_TOP as default
+                  // (may be overwritten during initialization)
+                  fprintf(result, "\nCON\n\nHEAP_TOP=HUB_TOP\n\n");
+               }
+            }
+         }
+         else {
+            // use heap top value provided
+            fprintf(result, "\nCON\n\nHEAP_TOP=$%X\n\n", heaptop);
          }
          switch (layout) {
             case 1:

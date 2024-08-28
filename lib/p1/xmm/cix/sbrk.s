@@ -49,6 +49,11 @@ C__sbrk
  cmp r1, r3 wz,wc
  jmp #BR_B ' <- err if sbrkval + amount < sbrkbeg
  long @C__sbrk_L1
+ jmp #LODI
+ long @sbrkover
+ cmp r1, RI wz,wc
+ jmp #BRAE ' <- err if sbrkval + amount >= (contents of sbrkover)
+ long @C__sbrk_L1
  jmp #LODL
  long @sbrkval
  mov BC, r1

@@ -374,6 +374,10 @@
  *
  * Version 7.8  - Just update the version number.
  *
+ * Version 7.9  - Add -H option to specify heap top (+1), which is passed
+ *                to catbind. HEAP_TOP is used by _sbrk(), but the actual 
+ *                value used will be the LOWER of HEAP_TOP and FREE_MEM.
+ *
  */                  
 
 /*--------------------------------------------------------------------------
@@ -403,7 +407,7 @@
 #include <string.h>
 #include <math.h>
 
-#define VERSION            "7.8"
+#define VERSION            "7.9"
 
 #define MAX_LINELEN        4096
 
@@ -457,6 +461,7 @@ static int layout     = -1;// 0 .. 6 for LMM, 8..10 for compact, 11 for native
 static int memory     = 0; // max size in bytes 
 static int readonly   = 0; // offset of read-only segments
 static int readwrite  = 0; // offset of read-write segments
+static int heaptop    = 0; // address of top of heap (+1)
 static int prop_vers  = 1; // propeller hardware version
 static int listing    = 0; // generate listing
 static int glevel     = 0; // debug level
@@ -534,6 +539,7 @@ void help(char *my_name) {
    fprintf(stderr, "          -f freq    required clock frequency (see also -F & -E\n");
    fprintf(stderr, "          -F freq    crystal frequency (default is 20M)\n");
    fprintf(stderr, "          -g[level]  generate debugging information (default level = 1)\n");
+   fprintf(stderr, "          -H addr    address of top of heap\n");
    fprintf(stderr, "          -I path    path to include files (default '%s')\n", def_inc_path);
    fprintf(stderr, "          -k         kill (suppress) banners and statistics output\n");
    fprintf(stderr, "          -l lib     search library lib when binding\n");
@@ -1449,6 +1455,42 @@ int decode_arguments (int argc, char *argv[]) {
                   xtal_freq = reqd_xtal;
                   break;
 
+               case 'H':
+                  modifier = 0;
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     banner();
+                     fprintf(stderr, "option -H requires an argument\n");
+                     code = -1;
+                  }
+                  else {
+                     if ((arg[0] == '$')) {
+                        // hex parameter (such as $ABCD)
+                        sscanf(&arg[1], "%x", &heaptop);
+                     }
+                     else if ((arg[0] == '0')
+                     && ((arg[1] == 'x')||(arg[1] == 'X'))) {
+                        // hex parameter (such as 0xFFFF or 0XA000)
+                        sscanf(&arg[2], "%x", &heaptop);
+                     }
+                     else {
+                        // decimal parameter, perhaps with modifier
+                        // (such as 4k or 16m)
+                        sscanf(arg, "%d%c", &heaptop, &modifier);
+                     }
+                  }
+                  if (tolower(modifier) == 'k') {
+                     heaptop *= 1024;
+                  }
+                  else if (tolower(modifier) == 'm') {
+                     heaptop *= 1024 * 1024;
+                  }
+                  if (verbose) {
+                     banner();
+                     fprintf(stderr, "heaptop address = %d\n", heaptop);
+                  }
+                  break;
+
                case 'I':
                   if (strlen(inc_path) != 0) {
                      safecat(inc_path, MULT_PATH_SEP, MAX_LINELEN);
@@ -2052,6 +2094,10 @@ int decode_arguments (int argc, char *argv[]) {
    }
    if (readwrite > 0) {
       sprintf(option, "-Wl-P%d ", readwrite);
+      safecat(lcc_cmd, option, MAX_LINELEN);
+   }
+   if (heaptop > 0) {
+      sprintf(option, "-Wl-H%d ", heaptop);
       safecat(lcc_cmd, option, MAX_LINELEN);
    }
    if (listing == 1) {

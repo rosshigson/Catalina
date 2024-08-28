@@ -25,7 +25,7 @@ DAT ' code segment
 '
 ' WARNING - The following code only supports memory models where
 '           the heap is in Hub RAM.
-'           See sbrk_large.e for a large memory model version
+'           See sbrk.le for a large memory model version
 '
 C__sbrk
 
@@ -41,15 +41,44 @@ C__sbrk
  cmp r1, r3 wcz
  if_b jmp #C__sbrk_L1 ' <- err if sbrkval + amount < sbrkbeg
  ' we cannot do this check because in a multi-threaded
- ' program our stack may be allocated on the heap!
- ' cmp r1, PTRA wcz
- ' if_a jmp #C__sbrk_L1 ' err if sbrkval + amount > SP
+ ' program our stack may be allocated on the heap! ...
+ '    cmp r1, PTRA wcz
+ '    ifae jmp #C__sbrk_L1 ' err if sbrkval + amount >= SP
+ ' so we do this instead ...
+    rdlong RI, ##@sbrkover
+    cmp r1, RI wz,wc
+    if_ae jmp #C__sbrk_L1 ' <- err if sbrkval + amount >= (contents of sbrkover)
+    rdlong RI, ##$7BFFC ' must match FREE_MEM in constants.inc
+    cmp r1, RI wz,wc
+    if_ae jmp #C__sbrk_L1 ' <- err if sbrkval + amount >= (contents of FREE_MEM)
  wrlong r1, ##@sbrkval ' sbrkval <- sbrkval + amount
  jmp #C__sbrk_L2
 C__sbrk_L1
  rdlong r0, ##@sbrkerr
 C__sbrk_L2
  calld PA,#RETN
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

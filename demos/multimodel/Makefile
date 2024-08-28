@@ -185,16 +185,16 @@ all :: hello_large
 hello_reserved : hello_reserved$B
 
 hello_reserved.binary : hello_world.c run_reserved.c
-	catalina $(CFLAGS) -lci -C NO_ARGS hello_world.c -R 0x7334 -M64k -C TINY
+	catalina $(CFLAGS) -lci -C NO_ARGS hello_world.c -R 0x7B6C -M64k -C TINY
 	spinc -B2 -n LMM -c -l hello_world.binary >hello_world_lmm.inc
-	catalina $(CFLAGS) -lci -C NO_ARGS hello_world.c -R 0x7334 -M64k -C COMPACT
+	catalina $(CFLAGS) -lci -C NO_ARGS hello_world.c -R 0x7B6C -M64k -C COMPACT
 	spinc -B2 -n CMM -c -l hello_world.binary >hello_world_cmm.inc
 	catalina $(CFLAGS) -lci run_reserved.c -o $@ 
 
 hello_reserved.bin : hello_world.c run_reserved.c
-	catalina $(CFLAGS) -lci  -C NO_ARGS hello_world.c -R 0x7AE70 -C TINY
+	catalina $(CFLAGS) -lci  -C NO_ARGS hello_world.c -R 0x7AE8C -C TINY
 	spinc -p2 -B2 -n LMM -s 120 -c -l hello_world.bin >hello_world_lmm.inc
-	catalina $(CFLAGS) -lci  -C NO_ARGS hello_world.c -R 0x7AE70 -C COMPACT
+	catalina $(CFLAGS) -lci  -C NO_ARGS hello_world.c -R 0x7AE8C -C COMPACT
 	spinc -p2 -B2 -n CMM -s 120 -c -l hello_world.bin >hello_world_cmm.inc
 	catalina $(CFLAGS) -lci run_reserved.c -C NATIVE -o $@ 
 
@@ -207,16 +207,16 @@ all :: hello_reserved
 primary_lmm : primary_lmm$B
 
 primary_lmm.binary : primary.c subsidiary_1.c subsidiary_2.c
-	catalina $(CFLAGS) -lc -lmb -C NO_ARGS subsidiary_1.c -O5 -R 0x6B24 -M64k -C COMPACT
+	catalina $(CFLAGS) -lc -lmb -C NO_ARGS subsidiary_1.c -O5 -R 0x735C -M64k -C COMPACT
 	spinc -B2 -n SUB1 -s 200 -c -l subsidiary_1.binary >subsidiary_1.inc
-	catalina $(CFLAGS) -lc -lmb -C NO_ARGS subsidiary_2.c -O5 -R 0x5A24 -M64k 
+	catalina $(CFLAGS) -lc -lmb -C NO_ARGS subsidiary_2.c -O5 -R 0x625C -M64k 
 	spinc -B2 -n SUB2 -s 200 -c -l subsidiary_2.binary >subsidiary_2.inc
 	catalina $(CFLAGS)  -lc -lmb primary.c -O5 -o $@
 
 primary_lmm.bin : primary.c subsidiary_1.c subsidiary_2.c
-	catalina $(CFLAGS) -lc -lmb -C NO_ARGS subsidiary_1.c -R 0x77460 -C COMPACT
+	catalina $(CFLAGS) -lc -lmb -C NO_ARGS subsidiary_1.c -R 0x7747C -C COMPACT
 	spinc -p2 -B2 -n SUB1 -s 200 -c -l subsidiary_1.bin >subsidiary_1.inc
-	catalina $(CFLAGS) -lc -lmb -C NO_ARGS subsidiary_2.c -R 0x72D60 -C TINY
+	catalina $(CFLAGS) -lc -lmb -C NO_ARGS subsidiary_2.c -R 0x72D7C -C TINY
 	spinc -p2 -B2 -n SUB2 -s 200 -c -l subsidiary_2.bin >subsidiary_2.inc
 	catalina $(CFLAGS) -lc -lmb primary.c -C TINY -o $@
 
@@ -229,16 +229,16 @@ all :: primary_lmm
 primary_cmm : primary_cmm$B
 
 primary_cmm.binary : primary.c subsidiary_1.c subsidiary_2.c
-	catalina $(CFLAGS) -lc -lmb -C NO_ARGS subsidiary_1.c -R 0x68A4 -M64k -C COMPACT
+	catalina $(CFLAGS) -lc -lmb -C NO_ARGS subsidiary_1.c -R 0x70D4 -M64k -C COMPACT
 	spinc -B2 -n SUB1 -s 200 -c -l subsidiary_1.binary >subsidiary_1.inc
-	catalina $(CFLAGS) -lc -lmb -C NO_ARGS subsidiary_2.c -R 0x5224 -M64k 
+	catalina $(CFLAGS) -lc -lmb -C NO_ARGS subsidiary_2.c -R 0x5A54 -M64k 
 	spinc -B2 -n SUB2 -s 200 -c -l subsidiary_2.binary >subsidiary_2.inc
 	catalina $(CFLAGS) -lc -lmb primary.c -C COMPACT -o $@
 
 primary_cmm.bin : primary.c subsidiary_1.c subsidiary_2.c
-	catalina $(CFLAGS) -lc -lmb -C NO_ARGS subsidiary_1.c -R 0x77458 -C COMPACT
+	catalina $(CFLAGS) -lc -lmb -C NO_ARGS subsidiary_1.c -R 0x77474 -C COMPACT
 	spinc -p2 -B2 -n SUB1 -s 200 -c -l subsidiary_1.bin >subsidiary_1.inc
-	catalina $(CFLAGS) -lc -lmb -C NO_ARGS subsidiary_2.c -R 0x72D58 -C TINY
+	catalina $(CFLAGS) -lc -lmb -C NO_ARGS subsidiary_2.c -R 0x72D74 -C TINY
 	spinc -p2 -B2 -n SUB2 -s 200 -c -l subsidiary_2.bin >subsidiary_2.inc
 	catalina $(CFLAGS) -lc -lmb primary.c -C COMPACT -o $@ 
 
@@ -254,9 +254,9 @@ primary_nmm : primary_nmm$B
 primary_nmm.binary :
 
 primary_nmm.bin : primary.c subsidiary_1.c subsidiary_2.c
-	catalina $(CFLAGS) -lc -lmb -C NO_ARGS subsidiary_1.c -R 0x77460  -C COMPACT
+	catalina $(CFLAGS) -lc -lmb -C NO_ARGS subsidiary_1.c -R 0x7747C  -C COMPACT
 	spinc -p2 -B2 -n SUB1 -s 200 -c -l subsidiary_1.bin >subsidiary_1.inc
-	catalina $(CFLAGS) -lc -lmb -C NO_ARGS subsidiary_2.c -R 0x72D60 -C TINY
+	catalina $(CFLAGS) -lc -lmb -C NO_ARGS subsidiary_2.c -R 0x72D7C -C TINY
 	spinc -p2 -B2 -n SUB2 -s 200 -c -l subsidiary_2.bin >subsidiary_2.inc
 	catalina $(CFLAGS) -lc -lmb primary.c -C NATIVE -o $@
 
@@ -269,9 +269,9 @@ all :: primary_nmm
 primary_small : primary_small$B
 
 primary_small.binary : primary.c subsidiary_1.c subsidiary_2.c
-	catalina $(CFLAGS) -lc -lmb -C NO_ARGS subsidiary_1.c -R 0x67A4 -M64k -C COMPACT
+	catalina $(CFLAGS) -lc -lmb -C NO_ARGS subsidiary_1.c -R 0x679C -M64k -C COMPACT
 	spinc -B2 -n SUB1 -s 200 -c -l subsidiary_1.binary >subsidiary_1.inc
-	catalina $(CFLAGS) -lc -lmb -C NO_ARGS subsidiary_2.c -R 0x5124 -M64k 
+	catalina $(CFLAGS) -lc -lmb -C NO_ARGS subsidiary_2.c -R 0x511C -M64k 
 	spinc -B2 -n SUB2 -s 200 -c -l subsidiary_2.binary >subsidiary_2.inc
 	catalina $(CFLAGS) -lc -lmb primary.c -C SMALL -C CACHED_1K -o primary_small
 
@@ -287,9 +287,9 @@ all :: primary_small
 primary_large : primary_large$B
 
 primary_large.binary : primary.c subsidiary_1.c subsidiary_2.c
-	catalina $(CFLAGS) -lc -lmb -C NO_ARGS subsidiary_1.c -R 0x67A4 -M64k -C COMPACT
+	catalina $(CFLAGS) -lc -lmb -C NO_ARGS subsidiary_1.c -R 0x679C -M64k -C COMPACT
 	spinc -B2 -n SUB1 -s 200 -c -l subsidiary_1.binary >subsidiary_1.inc
-	catalina $(CFLAGS) -lc -lmb -C NO_ARGS subsidiary_2.c -R 0x5124 -M64k 
+	catalina $(CFLAGS) -lc -lmb -C NO_ARGS subsidiary_2.c -R 0x511C -M64k 
 	spinc -B2 -n SUB2 -s 200 -c -l subsidiary_2.binary >subsidiary_2.inc
 	catalina $(CFLAGS) -lc -lmb primary.c -C LARGE -C CACHED_1K -o $@
 

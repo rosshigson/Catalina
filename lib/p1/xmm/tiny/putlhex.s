@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_s6r8_66c68b63_digits_L000001 ' <symbol:digits>
+C_si4o_66cc643e_digits_L000001 ' <symbol:digits>
  byte 48
  byte 49
  byte 50
@@ -58,7 +58,7 @@ C_putlhex_5
  mov r20, r23
  and r20, #15 ' BANDU4 coni
  jmp #LODL
- long @C_s6r8_66c68b63_digits_L000001
+ long @C_si4o_66cc643e_digits_L000001
  mov r18, RI ' reg <- addrg
  adds r20, r18 ' ADDI/P (1)
  mov RI, r20

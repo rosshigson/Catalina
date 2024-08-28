@@ -1,6 +1,6 @@
 /******************************************************************
  *                           Dumbo BASIC                          *
- *                           version 1.6                          *
+ *                           version 1.8                          *
  *                         by Ross Higson                         *
  *                                                                *
  *                     (very loosely) based on                    *
@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
 #include <stdarg.h>
 #include <math.h>
@@ -22,6 +23,7 @@
 #ifdef __CATALINA__
 #include <rtc.h>
 #include <hmi.h>
+#include <hmalloc.h>
 #else
 #ifdef _WIN32
 #include <conio.h>
@@ -36,9 +38,11 @@
 #include "tokens.h"
 
 /* debug flags and other general constants */
-#define DEBUG             0
-#define XDEBUG            0
+#define DEBUG             0     /* general debug messages */
+#define XDEBUG            0     /* extra debug messages for IF statement */
+#define MDEBUG            0     /* debug memory allocation calls */
 
+#define USE_HUB_MALLOC    0     /* 0 means malloc use XMM RAM, 1 use Hub RAM */
 #define NEW_GETTOKEN      0     /* 1 means use gettoken changes added in 1.0 */
 
 #define TOKENIZE_ON_LOAD  1     /* tokenize lines as they are loaded */
@@ -445,6 +449,49 @@ static unsigned char *mystrconcat(unsigned char *str, unsigned char *cat);
 static float factorial(float x);
 static long mystrtoll(const char *str, char **end, int base);
 
+#if defined(__CATALINA__) && USE_HUB_MALLOC
+
+#define malloc hub_malloc
+#define realloc hub_realloc
+#define free hub_free
+
+#endif
+
+#if MDEBUG
+
+void *my_malloc(int n) {
+   void *p;
+   p = malloc(n);
+   printf("allocating %p %d\n", p, n);
+   return p;
+}
+
+void *my_realloc(void *p, int n) {
+   void *q;
+   q = realloc(p, n);
+   printf("re-allocating %p to %p %d\n", p, q, n);
+   return q;
+}
+
+void my_free(void *p) {
+  //static int free_count = 0;
+  if (p == NULL) {
+     printf("freeing NULL pointer\n");
+  }
+  else {
+     printf("freeing %p\n", p);
+  }
+  free(p);
+}
+
+#else
+
+#define my_malloc malloc
+#define my_realloc realloc
+#define my_free free
+
+#endif
+
 /*
  * Interpret a BASIC script
  *
@@ -644,7 +691,7 @@ static void tokenize_line(int index) {
    in_call = 0; // set to 1 if within CALL statement
    if (lines[current_indx].tok) {
       // free any existing tokenized version of line
-      free(lines[current_indx].tok);
+      my_free(lines[current_indx].tok);
       lines[current_indx].tok = NULL;
    }
    // generate a new tokenized version of line
@@ -964,7 +1011,7 @@ static int setup(unsigned char *script) {
 
   nlines = linecount(script) + 1; // do not use index 0!!!
   // malloc enough space for one extra line (which will be a null line)
-  lines = malloc((nlines + 1) * sizeof(SOURCE_LINE));
+  lines = my_malloc((nlines + 1) * sizeof(SOURCE_LINE));
   if (!lines) {
      if (fperr) {
          fprintf(fperr, "Out of memory\n");
@@ -1034,7 +1081,7 @@ static int setup(unsigned char *script) {
      if (fperr) {
         fprintf(fperr, "Can't read program\n");
      }
-     free(lines);
+     my_free(lines);
      return -1;
   }
 
@@ -1047,7 +1094,7 @@ static int setup(unsigned char *script) {
               if (fperr) {
                  fprintf(fperr, "duplicate line number %d\n", lastline);
               }
-              free(lines);
+              my_free(lines);
               return -1;
            }
            if (lines[i].no < lastline) {
@@ -1055,7 +1102,7 @@ static int setup(unsigned char *script) {
                  fprintf(fperr, "program lines %d and %d not in order\n", 
                     lastline, lines[i].no);
               }
-              free(lines);
+              my_free(lines);
               return -1;
            }
         }
@@ -1067,6 +1114,7 @@ static int setup(unsigned char *script) {
   for (i = 0; i < nlines; i++) {
      if ((lines[i].no > 0) && (lines[i].tok != NULL)) {
 #if DEBUG
+        printf("line len = %d\n", lines[i].len);
         printf("substituted line = ");
         for (j = 0; j < lines[i].len; j++) {
            printf("%d ", lines[i].tok[j]);
@@ -1172,11 +1220,11 @@ static void cleanup(void)
     if ((variables[i].type == STRID) 
     &&  (variables[i].val.sval != NULL) 
     &&  (variables[i].len == 0)) {
-      free(variables[i].val.sval);
+      my_free(variables[i].val.sval);
     }
   }
   if (variables) {
-    free(variables);
+    my_free(variables);
   }
   variables = NULL;
   nvariables = 0;
@@ -1190,28 +1238,28 @@ static void cleanup(void)
         }
         for (ii = 0; ii < size; ii++) {
           if (dimvariables[i].val.sval[ii] != NULL) {
-            free(dimvariables[i].val.sval[ii]);
+            my_free(dimvariables[i].val.sval[ii]);
           }
         }
-        free(dimvariables[i].val.sval);
+        my_free(dimvariables[i].val.sval);
       }
     }
     else {
        if (dimvariables[i].val.dval != NULL) {
-         free(dimvariables[i].val.dval);
+         my_free(dimvariables[i].val.dval);
        }
     }
   }
 
   if (dimvariables) {
-    free(dimvariables);
+    my_free(dimvariables);
   }
  
   dimvariables = 0;
   ndimvariables = 0;
 
   if (lines) {
-    free(lines);
+    my_free(lines);
   }
 
   lines = 0;
@@ -1918,7 +1966,7 @@ static void do_write(void)
       if (str) {
         sprintf((char *)buff, "\"%s\"", str);
         print_str(buff);
-        free(str);
+        my_free(str);
       }
     }
     else if (token == TAB) {
@@ -2189,7 +2237,7 @@ static void do_print(void)
         print_str(prefix);
         print_str(buff);
         print_str(suffix);
-        free(str);
+        my_free(str);
       }
       no_lf = 0;
     }
@@ -2276,7 +2324,9 @@ static void do_print(void)
   else {
      print_char('\n');
   }
-  free(fmt);
+  if (fmt) {
+     my_free(fmt);
+  }
 }
 
 /*
@@ -2340,7 +2390,7 @@ static void do_let_or_usr(void)
                *lv.val.sval = str_usr(i, stringexpr());
             }
             if (temp) {
-               free(temp);
+               my_free(temp);
             }
          break;
       }
@@ -2372,7 +2422,7 @@ static void do_let_or_usr(void)
                *lv.val.sval = stringexpr();
             }
             if (temp) {
-               free(temp);
+               my_free(temp);
             }
             break;
          default:
@@ -2507,14 +2557,14 @@ static void do_dim(void)
          case STRID:
            i = 0;
            if (dimvar->val.sval[i]) {
-             free(dimvar->val.sval[i]);
+             my_free(dimvar->val.sval[i]);
            }
            dimvar->val.sval[i++] = stringexpr();
      
            while (token == ',' && i < size) {
              match_token(',');
              if (dimvar->val.sval[i]) {
-               free(dimvar->val.sval[i]);
+               my_free(dimvar->val.sval[i]);
              }
              dimvar->val.sval[i++] = stringexpr();
              if (errorflag) {
@@ -3311,8 +3361,8 @@ static void do_open(void) {
               seterror(ERR_SYNTAX);
            }
         }
-        free(str);
-        free(name);
+        my_free(str);
+        my_free(name);
       }
    }
 }
@@ -3541,7 +3591,7 @@ static void do_field(void) {
             if ((indx >= 0) & (indx < nvariables)) {
                //printf("index = %d, name = %s\n", indx, variables[indx].id);
                variables[indx].len = w;
-               free(variables[indx].val.sval);
+               my_free(variables[indx].val.sval);
                variables[indx].val.sval 
                   = (unsigned char *)&FILES[i].buff + total;
                total+= w;
@@ -3634,7 +3684,7 @@ static void do_fileinput(void) {
                 break;
               case STRID:
                 if (*lv.val.sval) {
-                  free(*lv.val.sval);
+                  my_free(*lv.val.sval);
                   *lv.val.sval = 0;
                 }
                 i = 0;
@@ -3715,7 +3765,7 @@ static void do_filelineinput(void) {
             }
           
             if (*lv.val.sval) {
-              free(*lv.val.sval);
+              my_free(*lv.val.sval);
               *lv.val.sval = 0;
             }
           
@@ -3880,7 +3930,7 @@ static void do_fileprint(void) {
                  fwrite_str(FILES[f].file, prefix);
                  fwrite_str(FILES[f].file, buff);
                  fwrite_str(FILES[f].file, suffix);
-                 free(str);
+                 my_free(str);
               }
            }
            else if (token == TAB) {
@@ -3920,7 +3970,7 @@ static void do_fileprint(void) {
             }
          }
          fwrite_char(FILES[f].file, '\n');
-         free(fmt);
+         my_free(fmt);
       }
    }
    else {
@@ -3962,7 +4012,7 @@ static void do_filewrite(void) {
               if (str) {
                 sprintf((char *)buff, "\"%s\"", str);
                 fwrite_str(FILES[f].file, buff);
-                free(str);
+                my_free(str);
               }
             }
             else if (token == TAB) {
@@ -4046,7 +4096,7 @@ static void do_lset(void) {
          }
       }
       if (temp) {
-         free(temp);
+         my_free(temp);
       }
   }
   else {
@@ -4102,7 +4152,7 @@ static void do_rset(void) {
          }
       }
       if (temp) {
-         free(temp);
+         my_free(temp);
       }
   }
   else {
@@ -4760,7 +4810,7 @@ static int do_read(void) {
          temp = *lv.val.sval;
          *lv.val.sval = stringexpr();
          if (temp) {
-            free(temp);
+            my_free(temp);
          }
          break;
        default:
@@ -5634,17 +5684,17 @@ static int do_datestring(void) {
          else {
             //debug("date error\n");
             seterror(ERR_BADDATE);
-            free(str);
+            my_free(str);
             return -1; 
          }
       }
       else {
          //debug("date error\n");
          seterror(ERR_BADDATE);
-         free(str);
+         my_free(str);
          return -1; 
       }
-      free(str);
+      my_free(str);
       return 0;
    }
 }
@@ -5705,17 +5755,17 @@ static int do_timestring(void) {
          else {
             //debug("time error\n");
             seterror(ERR_BADTIME); 
-            free(str);
+            my_free(str);
             return -1; 
          }
       }
       else {
          //debug("time error\n");
          seterror(ERR_BADTIME); 
-         free(str);
+         my_free(str);
          return -1; 
       }
-      free(str);
+      my_free(str);
       return 0;
    }
 }
@@ -6184,7 +6234,7 @@ static void do_input(void)
            print_str((unsigned char *)"? ");
            fflush(stdout);
         }
-        free(prompt);
+        my_free(prompt);
      }
   }
   else {
@@ -6271,7 +6321,7 @@ static void do_input(void)
          break;
        case STRID:
          if (*lv.val.sval) {
-           free(*lv.val.sval);
+           my_free(*lv.val.sval);
            *lv.val.sval = 0;
          }
          // terminate line (or last data item)
@@ -6399,7 +6449,7 @@ static void do_lineinput(void)
          print_str(prompt);
          fflush(stdout);
       }
-      free(prompt);
+      my_free(prompt);
    }
 
    lvalue(&lv);
@@ -6410,7 +6460,7 @@ static void do_lineinput(void)
    }
 
    if (*lv.val.sval) {
-     free(*lv.val.sval);
+     my_free(*lv.val.sval);
      *lv.val.sval = 0;
    }
 
@@ -7201,8 +7251,8 @@ static RVALUE stringfactor(void) {
         answer.val.ival = 0;
     }
   }
-  free(strleft);
-  free(strright);
+  my_free(strleft);
+  my_free(strright);
   return answer;
 }
 
@@ -7505,7 +7555,7 @@ static RVALUE factor(void)
     answer.type = INTID;
     if (str) {
       answer.val.ival = strlen((char *)str);
-      free(str);
+      my_free(str);
     }
     else {
        answer.val.ival = 0;
@@ -7519,7 +7569,7 @@ static RVALUE factor(void)
     answer.type = INTID;
     if (str) {
        answer.val.ival = *str;
-       free(str);
+       my_free(str);
     }
     else {
        answer.val.ival = 0;
@@ -7669,7 +7719,11 @@ static RVALUE factor(void)
        }
        else if (i < 0) {
           answer.type = FLTID;
+#if defined(__CATALINA_RANDOM) || defined(__CATALINA_P2)
           answer.val.dval = (((float)(getrealrand()&0x7FFF))/(RAND_MAX + 1.0));
+#else
+          answer.val.dval = (((float)(rand()&0x7FFF))/(RAND_MAX + 1.0));
+#endif
           last_rnd = answer.val.dval;
           break;
        }
@@ -7696,7 +7750,7 @@ static RVALUE factor(void)
     match_token(')');
     if (str) {
       answer = getstringvalue(str, &len);
-      free(str);
+      my_free(str);
     }
     else {
        answer.type = INTID;
@@ -7712,7 +7766,7 @@ static RVALUE factor(void)
     if (str) {
        getstringvalue(str, &len);
        answer.val.ival = len;
-       free(str);
+       my_free(str);
     }
     else {
        answer.val.ival = 0;
@@ -7746,7 +7800,7 @@ static RVALUE factor(void)
        for (i = 0; i < sizeof(float); i++) {
           c.byte[i] = str[i];
        }
-       free(str);
+       my_free(str);
        answer.type = INTID;
        answer.val.ival = c.ival;
     }
@@ -7760,7 +7814,7 @@ static RVALUE factor(void)
        for (i = 0; i < sizeof(float); i++) {
           c.byte[i] = str[i];
        }
-       free(str);
+       my_free(str);
        answer.type = FLTID;
        answer.val.dval = c.dval;
     }
@@ -7774,7 +7828,7 @@ static RVALUE factor(void)
        for (i = 0; i < sizeof(float); i++) {
           c.byte[i] = str[i];
        }
-       free(str);
+       my_free(str);
        answer.type = FLTID;
        answer.val.dval = c.dval;
     }
@@ -7944,10 +7998,10 @@ static int instr(void) {
 
   if (!str || !substr) {
     if (str) {
-       free(str);
+       my_free(str);
     }
     if (substr) {
-      free(substr);
+      my_free(substr);
     }
     return 0;
   }
@@ -7959,8 +8013,8 @@ static int instr(void) {
     }
   }
 
-  free(str);
-  free(substr);
+  my_free(str);
+  my_free(substr);
 
   return answer;
 }
@@ -8024,7 +8078,7 @@ static unsigned char *evalstringfunction(FUNCTION *func) {
          //debug("evaluating arg %d\n", i);
          switch (func->arg[i].type) {
             case STRID:
-               free(func->arg[i].val.sval); 
+               my_free(func->arg[i].val.sval); 
                func->arg[i].val.sval = stringexpr();
                //debug("arg %s, val = %s\n", func->arg[i].id, func->arg[i].val.sval);
                break;
@@ -8082,7 +8136,7 @@ static RVALUE evalfunction(FUNCTION *func) {
       for (i = 0; i < func->nargs; i++) {
          switch (func->arg[i].type) {
             case STRID:
-               free(func->arg[i].val.sval); 
+               my_free(func->arg[i].val.sval); 
                func->arg[i].val.sval = stringexpr();
                break;
             case FLTID:
@@ -8632,7 +8686,7 @@ static DIMVAR *dimension(unsigned char *id, int ndims, ...)
 
   switch (dv->type) {
     case INTID:
-      itemp = realloc(dv->val.ival, size * sizeof(int));
+      itemp = my_realloc(dv->val.ival, size * sizeof(int));
       if (itemp != NULL) {
         dv->val.ival = itemp;
         for (i = 0; i < size; i++) {
@@ -8645,7 +8699,7 @@ static DIMVAR *dimension(unsigned char *id, int ndims, ...)
       }
       break;
     case FLTID:
-      dtemp = realloc(dv->val.dval, size * sizeof(float));
+      dtemp = my_realloc(dv->val.dval, size * sizeof(float));
       if (dtemp != NULL) {
         dv->val.dval = dtemp;
         for (i = 0; i < size; i++) {
@@ -8661,12 +8715,12 @@ static DIMVAR *dimension(unsigned char *id, int ndims, ...)
       if (dv->val.sval) {
         for (i = size; i < oldsize; i++) {
           if (dv->val.sval[i]) {
-            free(dv->val.sval[i]);
+            my_free(dv->val.sval[i]);
             dv->val.sval[i] = 0;
           }
         }
       }
-      stemp = realloc(dv->val.sval, size * sizeof(char *));
+      stemp = my_realloc(dv->val.sval, size * sizeof(char *));
       if (stemp != NULL) {
         dv->val.sval = stemp;
         for (i = 0; i < size; i++) {
@@ -8676,7 +8730,7 @@ static DIMVAR *dimension(unsigned char *id, int ndims, ...)
       else {
         for (i = 0;i < oldsize; i++) {
           if (dv->val.sval[i]) {
-            free(dv->val.sval[i]);
+            my_free(dv->val.sval[i]);
             dv->val.sval[i] = 0;
           }
         }
@@ -8846,7 +8900,7 @@ static VARIABLE *addinteger(const unsigned char *id)
 {
    VARIABLE *vars;
 
-  vars = realloc(variables, (nvariables + 1) * sizeof(VARIABLE));
+  vars = my_realloc(variables, (nvariables + 1) * sizeof(VARIABLE));
   if (vars != NULL) {
      variables = vars;
      strcpy((char *)variables[nvariables].id, (char *)id);
@@ -8872,7 +8926,7 @@ static VARIABLE *addfloat(const unsigned char *id)
 {
    VARIABLE *vars;
 
-  vars = realloc(variables, (nvariables + 1) * sizeof(VARIABLE));
+  vars = my_realloc(variables, (nvariables + 1) * sizeof(VARIABLE));
   if (vars != NULL) {
      variables = vars;
      strcpy((char *)variables[nvariables].id, (char *)id);
@@ -8898,7 +8952,7 @@ static VARIABLE *addstring(const unsigned char *id)
 {
   VARIABLE *vars;
 
-  vars = realloc(variables, (nvariables + 1) * sizeof(VARIABLE));
+  vars = my_realloc(variables, (nvariables + 1) * sizeof(VARIABLE));
   if (vars) {
      variables = vars;
      strcpy((char *)variables[nvariables].id, (char *)id);
@@ -8925,7 +8979,7 @@ static DIMVAR *adddimvar(const unsigned char *id)
 {
   DIMVAR *vars;
 
-  vars = realloc(dimvariables, (ndimvariables + 1) * sizeof(DIMVAR));
+  vars = my_realloc(dimvariables, (ndimvariables + 1) * sizeof(DIMVAR));
   if (vars != NULL) {
     dimvariables = vars;
     strcpy((char *)dimvariables[ndimvariables].id, (char *)id);
@@ -9148,9 +9202,9 @@ static unsigned char *stringexpr(void)
     right = stringexpr();
     if (right != NULL) {
       temp = mystrconcat(left, right);
-      free(right);
+      my_free(right);
       if (temp != NULL) {
-        free(left);
+        my_free(left);
         left = temp;
       }
       else {
@@ -9642,7 +9696,7 @@ static unsigned char *leftstring(void)
   }
   str[x] = 0;
   answer = mystrdup(str);
-  free(str);
+  my_free(str);
   if (answer == NULL) {
      seterror(ERR_OUTOFMEMORY);
   }
@@ -9677,7 +9731,7 @@ static unsigned char *rightstring(void)
   }
   
   answer = mystrdup( &str[strlen((char *)str) - x] );
-  free(str);
+  my_free(str);
   if (answer == NULL) {
      seterror(ERR_OUTOFMEMORY);
   }
@@ -9713,7 +9767,7 @@ static unsigned char *midstring(void)
   }
 
   if ( x > (int) strlen((char *)str) || len < 1) {
-     free(str);
+     my_free(str);
      answer = mystrdup(nullstr);
      if (answer == NULL) {
         seterror(ERR_OUTOFMEMORY);
@@ -9728,14 +9782,14 @@ static unsigned char *midstring(void)
 
   temp = &str[x-1];
 
-  answer = malloc(len + 1);
+  answer = my_malloc(len + 1);
   if (answer == NULL) {
      seterror(ERR_OUTOFMEMORY);
      return str;
   }
   strncpy((char *)answer, (char *)temp, len);
   answer[len] = 0;
-  free(str);
+  my_free(str);
 
   return answer;
 }
@@ -9776,7 +9830,7 @@ static unsigned char *stringstring(void)
   N = x;
 
   if (N < 1) {
-     free(str);
+     my_free(str);
      answer = mystrdup(nullstr);
      if (answer == NULL) {
         seterror(ERR_OUTOFMEMORY);
@@ -9786,19 +9840,19 @@ static unsigned char *stringstring(void)
 
   if (string_arg) {
      len = strlen((char *)str);
-     answer = malloc( N * len + 1 );
+     answer = my_malloc( N * len + 1 );
      if (answer == NULL) {
-        free(str);
+        my_free(str);
         seterror(ERR_OUTOFMEMORY);
         return 0;
      }
      for (i = 0; i < N; i++) {
         strcpy((char *)answer + len * i, (char *)str);
      }
-     free(str);
+     my_free(str);
   }
   else {
-     answer = malloc( N + 1 );
+     answer = my_malloc( N + 1 );
      if (answer == NULL) {
         seterror(ERR_OUTOFMEMORY);
         return 0;
@@ -10012,7 +10066,7 @@ static unsigned char *stringliteral(void) {
     end = mystrend(str, '"');
     if (end) {
       len = end - str; // including terminating null
-      substr = malloc(len);
+      substr = my_malloc(len);
       if (!substr) {
         seterror(ERR_OUTOFMEMORY);
         return answer;
@@ -10020,8 +10074,8 @@ static unsigned char *stringliteral(void) {
       mystrgrablit(substr, str);
       if (answer) {
         temp = mystrconcat(answer, substr);
-        free(substr);
-        free(answer);
+        my_free(substr);
+        my_free(answer);
         answer = temp;
         if (answer == NULL) {
           seterror(ERR_OUTOFMEMORY);
@@ -10887,7 +10941,7 @@ static int getlineindex(RVALUE *val)
      // get type (and increment str)
      val->type = *str++;
      // long align str
-     str2 = (unsigned char *)((unsigned long)(str + 3) & ~0x3); 
+     str2 = (unsigned char *)((uintptr_t)(str + 3) & ~0x3); 
      val->val = *(UVALUE *)str2;
      len = str2 + sizeof(UVALUE) - str + 1;
 #if DEBUG
@@ -10915,7 +10969,7 @@ static int getvalue(RVALUE *val)
   int overflow;
   long temp;
   int len;
-  long addr;
+  uintptr_t addr;
 
   if ((context == NULL) && (str = lines[current_indx].tok) != NULL) {
      // use tokenized line if there is one, and we are not in
@@ -10932,7 +10986,7 @@ static int getvalue(RVALUE *val)
         }
         else {
            // long align str
-           addr = ((unsigned long)(str + 5) & ~0x3);
+           addr = ((uintptr_t)(str + 5) & ~0x3);
            str2 = (unsigned char *)addr; 
            val->val = *(UVALUE *)str2;
            len = str2 + sizeof(UVALUE) - str;
@@ -11025,14 +11079,14 @@ static int getvalue(RVALUE *val)
 static void putvalue(RVALUE val)
 {
   unsigned char *str, *str2;
-  unsigned long addr;
+  uintptr_t addr;
 
   // we can only do this to tokenized lines
   if ((str = lines[current_indx].tok) != NULL) {
      str += current_offs + 1;
      *str++ = val.type;
      // long align (and zero fill)
-     addr = ((unsigned long)(str + 3) & ~0x3);
+     addr = ((uintptr_t)(str + 3) & ~0x3);
      str2 = (unsigned char *)addr; 
      while (str < str2) {
         *str++ = 0;
@@ -11317,7 +11371,7 @@ static unsigned char *mystrdup(unsigned char *str)
 {
   unsigned char *answer;
 
-  answer = malloc(strlen((char *)str) + 1);
+  answer = my_malloc(strlen((char *)str) + 1);
   if (answer) {
     strcpy((char *)answer, (char *)str);
   }
@@ -11336,7 +11390,7 @@ static unsigned char *mystrndup(unsigned char *str, int n)
   unsigned char *answer;
   int  i;
 
-  answer = malloc(n);
+  answer = my_malloc(n);
   if (answer) {
      for ( i = 0; i < n; i++) {
         answer[i] = str[i];
@@ -11359,7 +11413,7 @@ static unsigned char *mystrconcat(unsigned char *str, unsigned char *cat)
   unsigned char *answer;
 
   len = strlen((char *)str) + strlen((char *)cat);
-  answer = malloc(len + 1);
+  answer = my_malloc(len + 1);
   if (answer)
   {
     strcpy((char *)answer, (char *)str);

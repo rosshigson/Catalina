@@ -323,6 +323,10 @@
  *
  * Version 7.6   - just update version number.
  *
+ * Version 7.9  - Add -H option to specify heap top (+1), which is passed
+ *                to bcc. HEAP_TOP is used by _sbrk(), but the actual value
+ *                used will be the LOWER of HEAP_TOP and FREE_MEM.
+ *
  */
 
 /*--------------------------------------------------------------------------
@@ -358,7 +362,7 @@
 #include <sys/stat.h>
 #endif
 
-#define VERSION            "7.6"
+#define VERSION            "7.9"
 
 #define MAX_FILES          500
 #define MAX_LIBS           500
@@ -498,6 +502,7 @@ static int memory = 0;
 static int memsize = 0;
 static int readonly = 0;
 static int readwrite = 0;
+static int heaptop = 0;
 static int suppress = 0;
 
 static char *target;
@@ -645,6 +650,7 @@ void help(char *my_name) {
    fprintf(stderr, "          -e        generate export list from input files\n");
    fprintf(stderr, "          -f        force (continue even if errors occur)\n");
    fprintf(stderr, "          -g[level] generate debuging output (default level = 1)\n");
+   fprintf(stderr, "          -H addr   address of top of heap\n");
    fprintf(stderr, "          -i        generate import list from input files\n");
    fprintf(stderr, "          -k        kill (suppress) statistics output\n");
    fprintf(stderr, "          -L path   path to libraries (default is '%s')\n", def_lib_path);
@@ -896,6 +902,40 @@ int decode_arguments (int argc, char *argv[]) {
                   }
                   if (diagnose) {
                      fprintf(stderr, "debug level %d\n", debug_level);
+                  }
+                  break;
+
+               case 'H':
+                  modifier = 0;
+                  arg = get_option_argument(&i, &argc, argv);
+                  if (arg == NULL) {
+                     fprintf(stderr, "option -H requires an argument\n");
+                     code = -1;
+                  }
+                  else {
+                     if ((arg[0] == '$')) {
+                        // hex parameter (such as $ABCD)
+                        sscanf(&arg[1], "%x", &heaptop);
+                     }
+                     else if ((arg[0] == '0')
+                     && ((arg[1] == 'x')||(arg[1] == 'X'))) {
+                        // hex parameter (such as 0xFFFF or 0XA000)
+                        sscanf(&arg[2], "%x", &heaptop);
+                     }
+                     else {
+                        // decimal parameter, perhaps with modifier
+                        // (such as 4k or 16m)
+                        sscanf(arg, "%d%c", &heaptop, &modifier);
+                     }
+                  }
+                  if (tolower(modifier) == 'k') {
+                     heaptop *= 1024;
+                  }
+                  else if (tolower(modifier) == 'm') {
+                     heaptop *= 1024 * 1024;
+                  }
+                  if (verbose) {
+                     fprintf(stderr, "heaptop address = %d\n", heaptop);
                   }
                   break;
 
@@ -2085,6 +2125,10 @@ void main (int argc, char *argv[]) {
       }
       if (readwrite > 0) {
          sprintf(option, "-P 0x%X ", readwrite);
+         safecat(bind_options, option, MAX_LINELEN);
+      }
+      if (heaptop > 0) {
+         sprintf(option, "-H 0x%X ", heaptop);
          safecat(bind_options, option, MAX_LINELEN);
       }
       for (i = 0; i < lib_count; i++) {

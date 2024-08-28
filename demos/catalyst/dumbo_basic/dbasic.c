@@ -7,7 +7,7 @@
 
 #define MAX_COMMAND_LEN 80
 
-#define VERSION "Dumbo BASIC v1.7"
+#define VERSION "Dumbo BASIC v1.8"
 /*
  * check for characters valid in DOS 8.3 filenames
  */

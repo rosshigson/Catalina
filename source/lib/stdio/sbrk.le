@@ -48,6 +48,11 @@ C__sbrk
  cmp r1, r3 wz,wc 
  PRIMITIVE(#BR_B) ' <- err if sbrkval + amount < sbrkbeg
  long @C__sbrk_L1
+ PRIMITIVE(#LODI)
+ long @sbrkover
+ cmp r1, RI wz,wc 
+ PRIMITIVE(#BRAE) ' <- err if sbrkval + amount >= (contents of sbrkover)
+ long @C__sbrk_L1
  PRIMITIVE(#LODL)
  long @sbrkval
  mov BC, r1

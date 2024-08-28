@@ -25,19 +25,19 @@ B=.binary
 
 # P2 if there is a P2 in CATALINA_DEFINES
 ifeq (P2, $(findstring P2, $(CATALINA_DEFINE)))
-	CFLAGS = -p2 -C $(CLOCK) -C NO_MOUSE -lmc
+	CFLAGS = -p2 -C $(CLOCK) -C NO_MOUSE -lmc -H0x60000
 	B=.bin
 endif
 
 # P2 if there is a P2 in CATALINA_OPTIONS
 ifeq (P2, $(findstring P2, $(CATALINA_OPTIONS)))
-	CFLAGS = -p2 -C $(CLOCK) -C NO_MOUSE -lmc
+	CFLAGS = -p2 -C $(CLOCK) -C NO_MOUSE -lmc -H0x60000
 	B=.bin
 endif
 
 # P2 if there is a -p2 in CATALINA_OPTIONS
 ifeq (-p2, $(findstring -p2, $(CATALINA_OPTIONS)))
-	CFLAGS = -p2 -C $(CLOCK) -C NO_MOUSE -lmc
+	CFLAGS = -p2 -C $(CLOCK) -C NO_MOUSE -lmc -H0x60000
 	B=.bin
 endif
 

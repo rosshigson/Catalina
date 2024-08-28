@@ -204,6 +204,9 @@ ARGV_MAX        = 24                           ' maximum size (LONGs) of argv ar
 ' Upper HUB RAM Layout:
 '
 HUB_SIZE        = $8000                        ' $8000
+'
+' NOTE: the value of FREE_MEM must match sbrk.le, sbrk.e & sbrk.ce
+'
 FREE_MEM        = HUB_SIZE - 4                 ' $7FFC
 COGSTORE        = FREE_MEM - 4                 ' $7FF8 CHECK Catalyst_Arguments.spin
 XMM_CACHE_RSP   = COGSTORE - 4                 ' $7FF4

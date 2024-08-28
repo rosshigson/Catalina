@@ -68,6 +68,8 @@
  *
  * Version 7.6  - allow hex constants and modifiers for stack size
  *
+ * Version 7.9  - just update version number.
+ *
  * ----------------------------------------------------------------------------
  * @file spinc.h
  * Defines data structures and API for spinc converter
@@ -96,7 +98,7 @@
 
 #define P2_PC_OFFSET_XMM    0x1038 // not currently used
 
-#define VERSION       "7.6"
+#define VERSION       "7.9"
 
 #define MAX_FILES     10
 #define MAX_LINELEN   1000

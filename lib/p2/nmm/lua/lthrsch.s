@@ -43,7 +43,7 @@ C_cond_no_active_lp ' <symbol:cond_no_active_lp>
  long $0
 
  alignl ' align long
-C_s2b0_66c68cfa_workerls_L000005 ' <symbol:workerls>
+C_sfh8_66cc65e7_workerls_L000005 ' <symbol:workerls>
  long $0
 
 ' Catalina Export lpcount
@@ -98,7 +98,7 @@ C_workermain ' <symbol:workermain>
  calld PA,#CALA
  long @C_pthread_mutex_lock ' CALL addrg
  mov r2, ##@C_workermain_8_L000009 ' reg ARG ADDRG
- mov r3, ##@C_s2b0_66c68cfa_workerls_L000005
+ mov r3, ##@C_sfh8_66cc65e7_workerls_L000005
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -107,7 +107,7 @@ C_workermain ' <symbol:workermain>
  long @C_lua_getglobal
  add SP, #4 ' CALL addrg
  mov r2, r17 ' CVI, CVU or LOAD
- mov r3, ##@C_s2b0_66c68cfa_workerls_L000005
+ mov r3, ##@C_sfh8_66cc65e7_workerls_L000005
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -116,7 +116,7 @@ C_workermain ' <symbol:workermain>
  long @C_lua_pushlightuserdata
  add SP, #4 ' CALL addrg
  mov r2, #1 ' reg ARG coni
- mov r3, ##@C_s2b0_66c68cfa_workerls_L000005
+ mov r3, ##@C_sfh8_66cc65e7_workerls_L000005
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -125,7 +125,7 @@ C_workermain ' <symbol:workermain>
  long @C_lua_pushboolean
  add SP, #4 ' CALL addrg
  mov r2, ##-3 ' reg ARG con
- mov r3, ##@C_s2b0_66c68cfa_workerls_L000005
+ mov r3, ##@C_sfh8_66cc65e7_workerls_L000005
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -134,7 +134,7 @@ C_workermain ' <symbol:workermain>
  long @C_lua_rawset
  add SP, #4 ' CALL addrg
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_s2b0_66c68cfa_workerls_L000005
+ mov r3, ##@C_sfh8_66cc65e7_workerls_L000005
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -190,7 +190,7 @@ C_workermain_16
  subs r22, #1 ' SUBI4 coni
  wrlong r22, ##@C_workerscount ' ASGNI4 addrg reg
  mov r2, ##@C_workermain_8_L000009 ' reg ARG ADDRG
- mov r3, ##@C_s2b0_66c68cfa_workerls_L000005
+ mov r3, ##@C_sfh8_66cc65e7_workerls_L000005
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -199,7 +199,7 @@ C_workermain_16
  long @C_lua_getglobal
  add SP, #4 ' CALL addrg
  mov r2, r17 ' CVI, CVU or LOAD
- mov r3, ##@C_s2b0_66c68cfa_workerls_L000005
+ mov r3, ##@C_sfh8_66cc65e7_workerls_L000005
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -207,14 +207,14 @@ C_workermain_16
  calld PA,#CALA
  long @C_lua_pushlightuserdata
  add SP, #4 ' CALL addrg
- mov r2, ##@C_s2b0_66c68cfa_workerls_L000005
+ mov r2, ##@C_sfh8_66cc65e7_workerls_L000005
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
  mov r2, ##-3 ' reg ARG con
- mov r3, ##@C_s2b0_66c68cfa_workerls_L000005
+ mov r3, ##@C_sfh8_66cc65e7_workerls_L000005
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -223,7 +223,7 @@ C_workermain_16
  long @C_lua_rawset
  add SP, #4 ' CALL addrg
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_s2b0_66c68cfa_workerls_L000005
+ mov r3, ##@C_sfh8_66cc65e7_workerls_L000005
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -296,7 +296,7 @@ C_workermain_17
  long @C_luathread_recycle_insert ' CALL addrg
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
- long @C_s2b01_66c68cfa_sched_dec_lpcount_L000006 ' CALL addrg
+ long @C_sfh81_66cc65e7_sched_dec_lpcount_L000006 ' CALL addrg
  jmp #\@C_workermain_20 ' JUMPV addrg
 C_workermain_19
  cmps r19,  #1 wz
@@ -393,7 +393,7 @@ C_workermain_21
  long @C_lua_close ' CALL addrg
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
- long @C_s2b01_66c68cfa_sched_dec_lpcount_L000006 ' CALL addrg
+ long @C_sfh81_66cc65e7_sched_dec_lpcount_L000006 ' CALL addrg
 C_workermain_22
 C_workermain_20
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
@@ -409,7 +409,7 @@ C_workermain_11
 
 
  alignl ' align long
-C_s2b01_66c68cfa_sched_dec_lpcount_L000006 ' <symbol:sched_dec_lpcount>
+C_sfh81_66cc65e7_sched_dec_lpcount_L000006 ' <symbol:sched_dec_lpcount>
  calld PA,#NEWF
  calld PA,#PSHM
  long $500000 ' save registers
@@ -423,17 +423,17 @@ C_s2b01_66c68cfa_sched_dec_lpcount_L000006 ' <symbol:sched_dec_lpcount>
  wrlong r20, ##@C_lpcount ' ASGNI4 addrg reg
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #0 wz
- if_nz jmp #\C_s2b01_66c68cfa_sched_dec_lpcount_L000006_30 ' NEI4
+ if_nz jmp #\C_sfh81_66cc65e7_sched_dec_lpcount_L000006_30 ' NEI4
  mov r2, ##@C_cond_no_active_lp ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_cond_signal ' CALL addrg
-C_s2b01_66c68cfa_sched_dec_lpcount_L000006_30
+C_sfh81_66cc65e7_sched_dec_lpcount_L000006_30
  mov r2, ##@C_mutex_lp_count ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
-' C_s2b01_66c68cfa_sched_dec_lpcount_L000006_29 ' (symbol refcount = 0)
+' C_sfh81_66cc65e7_sched_dec_lpcount_L000006_29 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -538,11 +538,11 @@ C_sched_init ' <symbol:sched_init>
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C_luaL__newstate ' CALL addrg
- wrlong r0, ##@C_s2b0_66c68cfa_workerls_L000005 ' ASGNP4 addrg reg
+ wrlong r0, ##@C_sfh8_66cc65e7_workerls_L000005 ' ASGNP4 addrg reg
  mov r22, #0 ' reg <- coni
  mov r2, r22 ' CVI, CVU or LOAD
  mov r3, r22 ' CVI, CVU or LOAD
- mov r4, ##@C_s2b0_66c68cfa_workerls_L000005
+ mov r4, ##@C_sfh8_66cc65e7_workerls_L000005
  rdlong r4, r4
  ' reg ARG INDIR ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -551,7 +551,7 @@ C_sched_init ' <symbol:sched_init>
  long @C_lua_createtable
  add SP, #8 ' CALL addrg
  mov r2, ##@C_workermain_8_L000009 ' reg ARG ADDRG
- mov r3, ##@C_s2b0_66c68cfa_workerls_L000005
+ mov r3, ##@C_sfh8_66cc65e7_workerls_L000005
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1210,7 +1210,7 @@ C_sched_join_workers ' <symbol:sched_join_workers>
  calld PA,#CALA
  long @C_pthread_mutex_lock ' CALL addrg
  mov r2, ##@C_workermain_8_L000009 ' reg ARG ADDRG
- mov r3, ##@C_s2b0_66c68cfa_workerls_L000005
+ mov r3, ##@C_sfh8_66cc65e7_workerls_L000005
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1218,7 +1218,7 @@ C_sched_join_workers ' <symbol:sched_join_workers>
  calld PA,#CALA
  long @C_lua_getglobal
  add SP, #4 ' CALL addrg
- mov r2, ##@C_s2b0_66c68cfa_workerls_L000005
+ mov r2, ##@C_sfh8_66cc65e7_workerls_L000005
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -1227,7 +1227,7 @@ C_sched_join_workers ' <symbol:sched_join_workers>
  jmp #\@C_sched_join_workers_109 ' JUMPV addrg
 C_sched_join_workers_108
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_s2b0_66c68cfa_workerls_L000005
+ mov r3, ##@C_sfh8_66cc65e7_workerls_L000005
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1258,7 +1258,7 @@ C_sched_join_workers_108
  long @C_lua_rawset
  add SP, #4 ' CALL addrg
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_s2b0_66c68cfa_workerls_L000005
+ mov r3, ##@C_sfh8_66cc65e7_workerls_L000005
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1268,7 +1268,7 @@ C_sched_join_workers_108
  add SP, #4 ' CALL addrg
 C_sched_join_workers_109
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_s2b0_66c68cfa_workerls_L000005
+ mov r3, ##@C_sfh8_66cc65e7_workerls_L000005
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1348,7 +1348,7 @@ C_sched_join_workers_112
  calld PA,#CALA
  long @C_lua_settop
  add SP, #4 ' CALL addrg
- mov r2, ##@C_s2b0_66c68cfa_workerls_L000005
+ mov r2, ##@C_sfh8_66cc65e7_workerls_L000005
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4

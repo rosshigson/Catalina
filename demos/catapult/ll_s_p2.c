@@ -45,7 +45,7 @@ typedef struct func_2 {
    int go;
 } func_2_t;
 
-#pragma catapult secondary func_1 mode(CMM) address(0x6FC58) stack(20000) options (-Z -lthreads)
+#pragma catapult secondary func_1 mode(CMM) address(0x6FC4C) stack(20000) options (-Z -lthreads)
 
 // any includes or functions required by secondary here ...
 
@@ -88,7 +88,7 @@ void func_1(func_1_t *s) {
 
 }
  
-#pragma catapult secondary func_2 mode(LMM) address(0x65CE0) stack(20000) options(-Z -lthreads)
+#pragma catapult secondary func_2 mode(LMM) address(0x65CD0) stack(20000) options(-Z -lthreads)
 
 // any includes or functions required by secondary here ...
 

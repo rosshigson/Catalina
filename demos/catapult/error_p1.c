@@ -36,7 +36,7 @@ typedef struct func_2 {
    float c;
 } func_2_t;
 
-#pragma catapult secondary func_1 mode(COMPACT) address(0x7A18) stack(500)
+#pragma catapult secondary func_1 mode(COMPACT) address(0x7A0C) stack(500)
 
 // includes, definitions or functions specific to this secondary go here ...
 
