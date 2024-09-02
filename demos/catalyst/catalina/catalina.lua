@@ -105,6 +105,9 @@
 --
 -- version 7.9   - Add -H option to specify heap top (+1), which is passed
 --                 to bcc.
+--
+-- version 8.0   - just update version number.
+--
 
 require "os"
 require "io"
@@ -113,7 +116,7 @@ require "string"
 require "propeller"
 
 -- configuration parameters and default values
-CATALINA_VERSION = "7.9"
+CATALINA_VERSION = "8.0"
 LCCDIR           = "/";
 CATALINA_TARGET  = LCCDIR .. "target"
 CATALINA_LIBRARY = LCCDIR .. "lib"

@@ -126,6 +126,9 @@ call build_all %1 %2 %3 %4 %5 %6 %7 %8 %9
 call copy_all "..\image\"
 cd ..
 
+cd ilua
+call copy_all "..\image\"
+cd ..
 
 :done
 rem restore value of CATALINA_DEFINE (note we used a different TMP name!)

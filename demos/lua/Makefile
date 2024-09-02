@@ -124,10 +124,10 @@ endif
 CFLAGS += -C $(MODEL) -C $(CLOCK) -C NO_MOUSE -W-w
 
 ifeq ($(P2), TRUE)
-  LIBS  = -lmc -lcx -llua
+  LIBS  = -lmc -lcx -llua -llinenoise
   LIBSX = -lmc -lcx -lluax
 else
-  LIBS  = -lm -lcx -llua
+  LIBS  = -lm -lcx -llua -llinenoise
   LIBSX = -lm -lcx -lluax
 endif
 
@@ -158,8 +158,8 @@ endif
 .PHONY : lua
 lua : lua$B
 
-lua$B: lua.c linit.c 
-	$(CC) -o $@ $(CFLAGS) $(LIBS) $^ -M1M
+lua$B: lua.c linit.c linenoise.c
+	$(CC) -o $@ $(CFLAGS) $(LIBS) $^ -M1M  -C ENABLE_LINENOISE
 
 # add this to the 'all' target
 all :: lua 
@@ -169,8 +169,8 @@ all :: lua
 .PHONY : luac
 luac : luac$B
 
-luac$B: luac.c linit.c
-	$(CC) -o $@ $(CFLAGS) $(LIBS) $^ -M1M
+luac$B: luac.c linit.c linenoise.c
+	$(CC) -o $@ $(CFLAGS) $(LIBS) $^ -M1M  -C ENABLE_LINENOISE
 
 # add this to the 'all' target
 all :: luac

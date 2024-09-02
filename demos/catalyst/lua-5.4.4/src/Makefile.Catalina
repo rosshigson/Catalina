@@ -114,9 +114,9 @@ endif
 
 ifeq ("$(MYLIBS)","")
 ifeq ("$(P2FLAG)", "")
-	MYLIBS    = -lm
+	MYLIBS    = -lm -llinenoise
 else
-	MYLIBS    = -lmc
+	MYLIBS    = -lmc -llinenoise
 endif
 endif
 
@@ -175,7 +175,7 @@ BASE_O= $(CORE_O) $(LIB_O) $(MYOBJS)
 BASEX_O= $(COREX_O) $(LIB_O) $(MYOBJS)
 
 LUA_T=	lua
-LUA_O=	lua.obj linit.obj
+LUA_O=	lua.obj ninit.obj linenoise.obj
 
 LUAX_T=	luax
 LUAX_O=	luax.obj linit.obj
@@ -201,15 +201,15 @@ ALL_O= $(CORE_O) $(LIB_O) $(LUA_O) $(LUAC_O) $(LUAX_O) linit.obj
 ALL_T= $(LUA_A) $(LUAX_A) $(LUA_T) $(LUAC_T) $(LUAX_T) 
 else
 ifeq (ENABLE_HYPER, $(findstring ENABLE_HYPER, $(CATALINA_DEFINE)))
-ALL_O= $(CORE_O) $(LUAX_O) linit.obj minit.obj
+ALL_O= $(CORE_O) $(LUAX_O) linit.obj ninit.obj minit.obj
 ALL_T= $(LUAX_A) $(LUAXP_T)
 else
 ifeq (ENABLE_PSRAM, $(findstring ENABLE_PSRAM, $(CATALINA_DEFINE)))
-ALL_O= $(CORE_O) $(LUAX_O) linit.obj minit.obj
+ALL_O= $(CORE_O) $(LUAX_O) linit.obj nonit.obj minit.obj
 ALL_T= $(LUAX_A) $(LUAXP_T)
 else
 ifeq ("$(MODEL)", "COMPACT")
-ALL_O= $(CORE_O) $(LIB_O) $(LUA_O) $(LUAC_O) $(LUAX_O) linit.obj minit.obj
+ALL_O= $(CORE_O) $(LIB_O) $(LUA_O) $(LUAC_O) $(LUAX_O) linit.obj ninit.obj minit.obj
 ALL_T= $(LUA_A) $(LUAX_A) $(LUA_T) $(LUAC_T) $(LUAX_T) $(MLUA_T) $(MLUAX_T)
 else
 ALL_O= $(CORE_O) $(LIB_O) $(LUA_O) $(LUAC_O) $(LUAX_O) linit.obj
@@ -247,7 +247,7 @@ $(LUAX_A): $(BASEX_O)
 	$(MV) catalina.idx $(LUAX_A)
 
 $(LUA_T): $(LUA_O) $(LUA_A)
-	$(CC) -o $@ $(MYLDFLAGS) $(LUA_O) $(LIBS) -M1M
+	$(CC) -o $@ $(MYLDFLAGS) $(LUA_O) $(LIBS) -M1M -C ENABLE_LINENOISE
 
 $(LUAC_T): $(LUAC_O) $(LUA_A)
 	$(CC) -o $@ $(MYLDFLAGS) $(LUAC_O) $(LIBS) -M1M
@@ -319,8 +319,13 @@ catalina:
 .c.obj:		$< 
 	$(CC) $(CFLAGS) -c -o $@ $<
 
+#version of linit.obj with threads enabled
 minit.obj: linit.c lprefix.h lua.h luaconf.h lualib.h lauxlib.h
 	$(CC) $(CFLAGS) -lthreads -c linit.c -o $@
+
+#version of linit.obj with linenoise enabled
+ninit.obj: linit.c lprefix.h lua.h luaconf.h lualib.h lauxlib.h
+	$(CC) $(CFLAGS) -C ENABLE_LINENOISE -c linit.c -o $@
 
 # Compiler modules may use special flags.
 llex.obj:

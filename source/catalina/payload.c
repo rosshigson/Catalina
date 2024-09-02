@@ -398,6 +398,19 @@
 //
 // Version 7.0    - Just update version number.
 //
+// Version 8.0    - Update VT100 emulation to move cursor on CR or LF
+//                  even if the characters are otherwise ignored. This
+//                  means that we can better support DOS type programs
+//                  that expect to see a CR rather than an LF, but it
+//                  means that -q2 may need to be specified instead of 
+//                  -q1 for such programs.
+//
+//                - Update Vt100 emulation to generate the ANSI codes
+//                  expected by linenoise. The previous codes were
+//                  those expected by xvi, but xvi can also process
+//                  the ANSI codes, so there should be no noticeable
+//                  differences when using the xvi (i.e. vi) editor.
+//
 //
 //-----------------------------------------------------------------------------
 // Payload is part of Catalina.
@@ -447,7 +460,7 @@
 #include "lua-5.4.4/src/lauxlib.h"
 #endif
 
-#define VERSION            "7.0"
+#define VERSION            "8.0"
 
 #define DEFAULT_LCC_ENV    "LCCDIR" // used to locate binary files if not in current directory
 
@@ -3326,10 +3339,21 @@ void internal_interactive() {
      {
         // simple VT100 emulator
 
-        #define EscO(a) \
+        #define Esc0(a) \
            SendByteWithDelay(term,ESC); \
            SendByteWithDelay(term,'O'); \
            SendByteWithDelay(term,a);
+
+        #define CSI(a) \
+           SendByteWithDelay(term,ESC); \
+           SendByteWithDelay(term,'['); \
+           SendByteWithDelay(term,a);
+
+        #define CSIe(a) \
+           SendByteWithDelay(term,ESC); \
+           SendByteWithDelay(term,'['); \
+           SendByteWithDelay(term,a); \
+           SendByteWithDelay(term,'~');
 
         int ch;
         int r = 0;
@@ -3391,50 +3415,53 @@ void internal_interactive() {
                  eot = 0;
               }
  
+//printw("%s", keyname(ch));
+
               switch (ch) {
 
 #ifdef __PDCURSES__
                  case KEY_A2:
 #endif
                  case KEY_UP:
-                    EscO('A');
+                    CSI('A');
                     break;
 #ifdef __PDCURSES__
                  case KEY_C2:
 #endif
                  case KEY_DOWN:
-                    EscO('B');
+                    CSI('B');
                     break;
 #ifdef __PDCURSES__
                  case KEY_B3:
 #endif
                  case KEY_RIGHT:
-                    EscO('C');
+                    CSI('C');
                     break;
 #ifdef __PDCURSES__
                  case KEY_B1:
 #endif
                  case KEY_LEFT:
-                    EscO('D');
+                    CSI('D');
                     break;
                  case KEY_A1:
                  case KEY_HOME:
-                    EscO('w');
+                    CSIe('1');
                     break;
                  case KEY_C1:
                  case KEY_END:
-                    EscO('q');
+                    CSIe('4');
                     break;
+                 case KEY_F(1):
                  case KEY_HELP:
-                    EscO('p');
+                    Esc0('P');
                     break;
                  case KEY_A3:
                  case KEY_PPAGE:   
-                    EscO('y');
+                    CSIe('5');
                     break;
                  case KEY_C3:
                  case KEY_NPAGE:
-                    EscO('s');
+                    CSIe('6');
                     break;
                  case KEY_DC:
                  case KEY_BACKSPACE:
@@ -3450,6 +3477,7 @@ void internal_interactive() {
            rcvd = 0;
            while (ByteReady(term)) {
               ch = ReceiveByte(term);
+//printw("%s", keyname(ch));
               if (esc == 1) {
                  // already saw ESC
 //printw("<1>");
@@ -3515,6 +3543,17 @@ void internal_interactive() {
                     refresh();
                     esc = 0;
                  }
+                 else if (ch == 'C') {
+//printw("<fwd %d>", 2);
+                    // move cursor forward 2 places
+                   {
+                      int x, y;
+                      getyx(payload_term, y, x);
+                      move(y, x+2);
+                      refresh();
+                      esc = 0;
+                   }
+                 }
                  else if (ch == '5') {
                     r = 25;
                     esc = 5;
@@ -3540,6 +3579,40 @@ void internal_interactive() {
 //printw("%c", ch);
                  if (ch == ';') {
                     esc = 6;
+                 }
+                 else if (ch == 'm') {
+//printw("<color %d>",r);
+//                  // ignore it! 
+                    esc = 0;
+                 }
+                 else if (ch == 'C') {
+//printw("<fwd %d>",r);
+                    // move cursor forward r places
+                   {
+                      int x, y;
+                      getyx(payload_term, y, x);
+                      move(y, x+r);
+                      refresh();
+                      esc = 0;
+                   }
+                 }
+                 else if (ch == 'D') {
+//printw("<fwd %d>",r);
+//printw("<bck %d>",r);
+                    // move cursor backward r places
+                   {
+                      int x, y;
+                      getyx(payload_term, y, x);
+                      move(y, x-r);
+                      refresh();
+                      esc = 0;
+                   }
+                 }
+                 else if ((r == 0) && (ch == 'K')) {
+//printw("<CLREOL>");
+                    clrtoeol(); // erase_line
+                    refresh();
+                    esc = 0;
                  }
                  else if (isdigit(ch)) {
                     r = 10 * r + (ch - '0');
@@ -3641,6 +3714,10 @@ void internal_interactive() {
 //                  // ignore it! 
                     esc = 0;
                  }
+                 else if (ch == ';') {
+//printw("<color %d,%d>",r,c);
+//                  // keep ignoring it! 
+                 }
                  else {
                     addch(ESC);
                     addch('[');
@@ -3726,6 +3803,26 @@ void internal_interactive() {
                        esc = 1;
                     }
                     else {
+                       if (ch == 0x0d) {
+                          // move cursor even if we ignore CR
+                          int x, y;
+                          getyx(payload_term, y, x);
+                          move(y, 0);
+                          rcvd = 1;
+                       }
+                       else if (ch == 0x0a) {
+                          // move cursor even if we ignore LF
+                          int x, y;
+                          getyx(payload_term, y, x);
+                          if (y == LINES-1) {
+                             scroll(payload_term);
+                             move(y, x);
+                          }
+                          else {
+                             move(y+1, x);
+                          }
+                          rcvd = 1;
+                       }
                        if (((ch != 0x0d) || !(mode & 1)) 
                        &&  ((ch != 0x0a) || !(mode & 2))) {
                           rcvd = 1;

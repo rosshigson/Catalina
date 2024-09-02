@@ -41,11 +41,11 @@ endif
 
 ifeq ($(PROPELLER_2),TRUE)
 
-all: assert ctype errno locale math setjmp signal stdlib string time catalina float threads int tiny spi lua libc p2 serial2 serial8 psram hyper libci libcix libcx libm libma libmb libmc libthreads libint libtiny libspi liblua libluax libserial2 libserial8 libpsram libhyper install 
+all: assert ctype errno locale math setjmp signal stdlib string time catalina float threads linenoise int tiny spi lua libc p2 serial2 serial8 psram hyper libci libcix libcx libm libma libmb libmc libthreads liblinenoise libint libtiny libspi liblua libluax libserial2 libserial8 libpsram libhyper install 
 
 else
 
-all: assert ctype errno locale math setjmp signal stdlib string time catalina float threads int tiny spi lua graphics vgraphic serial4 sound tty tty256 libc libci libcix libcx libm libma libmb libmc libthreads libint libtiny libspi liblua libluax libgraphics libvgraphic libserial4 libsound libtty libtty256 install
+all: assert ctype errno locale math setjmp signal stdlib string time catalina float threads linenoise int tiny spi lua graphics vgraphic serial4 sound tty tty256 libc libci libcix libcx libm libma libmb libmc libthreads liblinenoise libint libtiny libspi liblua libluax libgraphics libvgraphic libserial4 libsound libtty libtty256 install
 
 endif
 
@@ -65,6 +65,7 @@ clean:
 	$(MAKE) -C float clean
 	$(MAKE) -C io clean
 	$(MAKE) -C threads clean
+	$(MAKE) -C linenoise clean
 	$(MAKE) -C p2 clean
 	$(MAKE) -C int clean
 	$(MAKE) -C graphics clean
@@ -89,6 +90,7 @@ clean:
 	$(MAKE) -C lib/mb clean
 	$(MAKE) -C lib/mc clean
 	$(MAKE) -C lib/threads clean
+	$(MAKE) -C lib/linenoise clean
 	$(MAKE) -C lib/int clean
 	$(MAKE) -C lib/graphics clean
 	$(MAKE) -C lib/vgraphic clean
@@ -116,6 +118,7 @@ install:
 	-cp -r lib/mb $(OUTPUT)/$(LIB)
 	-cp -r lib/mc $(OUTPUT)/$(LIB)
 	-cp -r lib/threads $(OUTPUT)/$(LIB)
+	-cp -r lib/linenoise $(OUTPUT)/$(LIB)
 	-cp -r lib/int $(OUTPUT)/$(LIB)
 	-cp -r lib/graphics $(OUTPUT)/$(LIB)
 	-cp -r lib/vgraphic $(OUTPUT)/$(LIB)
@@ -176,6 +179,9 @@ io:	ALWAYSRUN
 
 threads:	ALWAYSRUN
 	$(MAKE) -C threads all
+
+linenoise:	ALWAYSRUN
+	$(MAKE) -C linenoise all
 
 int:	ALWAYSRUN
 	$(MAKE) -C int all
@@ -288,6 +294,9 @@ libmc:	ALWAYSRUN
 
 libthreads:	ALWAYSRUN
 	$(MAKE) -C lib/threads all
+
+liblinenoise:	ALWAYSRUN
+	$(MAKE) -C lib/linenoise all
 
 libint:	ALWAYSRUN
 	$(MAKE) -C lib/int all

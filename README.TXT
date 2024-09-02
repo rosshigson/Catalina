@@ -15,6 +15,52 @@ The following sections list the changes that have been made in releases
 you can skip the rest of this README and instead go straight to the Catalina 
 tutorial documents.
 
+RELEASE 8.0
+
+New Functionality
+-----------------
+
+1. On the Propeller 2, Catalyst now incorporates the 'linenoise' command 
+   line library, which provides enhanced command line editing functionality. 
+   This is implemented as various keyboard shortcuts:
+
+      LEFT ARROW (or CTRL B)  : move cursor left
+      RIGHT ARROW (or CTRL F) : move cursor right
+      UP ARROW (or CTRL P)    : previous command in history
+      DOWN ARROW (or CTRL N)  : next command in history
+      HOME (or CTRL A)        : move cursor to start of line
+      END (or CTRL E)         : move cursor to end of line
+      CTRL U                  : clear entire line
+      CTRL K                  : clear from cursor to end of line
+      CTRL L                  : clear screen
+      CTRL W                  : clear previous word
+      CTRL T                  : swap current and previous characters
+      CTRL C                  : exit
+      CTRL D                  : at start of line means exit
+                                (otherwise it means delete)
+      TAB                     : command or file name completion
+
+2. An enhanced Lua REPL (Read Eval Print Loop) based on 'lua-repl' has been 
+   added to Catalyst, which uses the 'linenoise' command line editing library.
+   While the 'linenoise' library is now built into Lua, it is not loaded  
+   by the default interactive program (i.e. 'lua'). This is done to save 
+   space, since that program is primarily now used to execute Lua scripts. 
+   Instead, 'lua-repl' is used to load 'linenoise' and a few other plugins 
+   in a new 'ilua.lua' script. So to start the new interactive Lua from the
+   Catalyst command line, just enter the command 'ilua'. This script provides
+   the same keyboard shortcuts as those described above for Catalyst.
+
+Other Changes
+-------------
+
+1. Payload's interactive mode has had some modifications to make its VT100
+   terminal emulation more closely match a real VT100. One change is in the
+   implemetation of what CR and LF do. For payload to correctly display the 
+   output of programs that send both a CR and LF, it is now recommended that 
+   -q2 be used as the appropriate payload option (i.e. ignore the LF) whereas 
+   previously the recommended option was -q1 (i.e. ignore the CR). Various
+   documents have been updated.
+
 RELEASE 7.9
 
 New Functionality

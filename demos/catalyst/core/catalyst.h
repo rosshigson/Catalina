@@ -4,7 +4,7 @@
  * This section contains user configurable options.
  *
  */
-#define CATALYST_VER "Catalyst 7.9"   // Banner string
+#define CATALYST_VER "Catalyst 8.0"   // Banner string
 #define AUTOFILE     "AUTOEXEC.TXT"   // auto-execution file if AUTOFILE
 #define ONCEFILE     "EXECONCE.TXT"   // auto-execution file if ONCEFILE
 #define MOREFILE     "____MORE.___"   // auto-execution more file if ONCEFILE
@@ -17,6 +17,17 @@
 #define ENV_FILE     "CATALYST.ENV"   // name of environment file
 #define MAX_ENV_LEN  2048             // maximum length of environment string
 #define MAX_PROMPT_LEN  20            // maximum length of prompt
+#define DEFAULT_PROMPT "> "           // default prompt
+
+#ifdef __CATALINA_liblinenoise
+#define HISTORY_FILE "CATALYST.HST"   // default name of history file
+#define MAX_HISTORY_LEN 100           // maximum number of history commands
+#define ENABLE_FILE_COMPLETION 0      // 1 to enable use of completion file
+#define ENABLE_DYNAMIC_COMPLETION 1   // 1 to enable dynamic completion
+#define COMPLETION_FILE "COMPLETE.TXT" // default name of completion file
+#define MAX_COMPLETION_LEN 8192       // maximum length of completion data
+                                      // (seprate for file and dynamic)
+#endif
 
 #define BIN_EXT      ".BIN"
 #define BIX_EXT      ".BIX"

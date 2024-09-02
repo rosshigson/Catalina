@@ -1,4 +1,5 @@
 /*
+
  * Catalyst - an SD card program loader for Catalina
  *
  * P1 & P2 GENERAL NOTES (for P1-SPECIFC and P2-SPECIFIC notes, see below):
@@ -116,6 +117,29 @@
  *      Lua command, or a Lua script to execute on startup. For example:
  *         set LUA_INIT="_PROMPT='Lua> '"
  *         set LUA_INIT="@script.lua"
+ *
+ *    - the 'linenoise' command line editor can be enabled by linking with
+ *      -llinenoise when compiling. This adds a command history and
+ *      some simple command line editing functions:
+ *      
+ *         LEFT ARROW (or CTRL B)  : move cursor left
+ *         RIGHT ARROW (or CTRL F) : move cursor right
+ *         UP ARROW (or CTRL P)    : previous command in history
+ *         DOWN ARROW (or CTRL N)  : next command in history
+ *         HOME (or CTRL A)        : move cursor to start of line
+ *         END (or CTRL E)         : move cursor to end of line
+ *         CTRL U                  : clear entire line
+ *         CTRL K                  : clear from cursor to end of line
+ *         CTRL L                  : clear screen
+ *         CTRL W                  : clear previous word
+ *         CTRL T                  : swap current and previous characters 
+ *         TAB                     : command completion (see below)
+ * 
+ *      Note that the command completion function (if enabled by defining
+ *      ENABLE_FILE_COMPLETION in catalyst.h) reads a file of completion 
+ *      candidates called COMPLETE.TXT. Actually interrogating the SD Card 
+ *      for matching file names is enabled by ENABLE_DYNAMIC_COMPLETION (in
+ *      catalyst.h).
  */
 
 #include <stdint.h>
@@ -127,6 +151,10 @@
 #include <fs.h>
 
 #include "catalyst.h"  // most configuration options now here!
+
+#ifdef __CATALINA_liblinenoise
+#include "linenoise.h"
+#endif
 
 // debugging - note that enabling these options will reduce the size of 
 // loadable programs, since the Cluster List overlaps with the registry
@@ -142,17 +170,19 @@ typedef struct _tagLOADINFO {
 } LOADINFO, *PLOADINFO;
 
 
-uint8_t command[MAX_CMD_LEN + 1];
-uint8_t keyword[MAX_CMD_LEN + 1];
-uint8_t *arguments;
+static VOLINFO vi;
+
+static uint8_t command[MAX_CMD_LEN + 1];
+static uint8_t keyword[MAX_CMD_LEN + 1];
+static uint8_t *arguments;
 
 
-uint32_t fileext;
-uint32_t filelen;
+static uint32_t fileext;
+static uint32_t filelen;
 
-int cpu_to_load;
+static int cpu_to_load;
 
-int file_mode;
+static int file_mode;
 
 static int rows = 0;
 static int cols = 0;
@@ -164,7 +194,21 @@ static char luax[MAX_LUA_LEN + 1] = LUAX_CMD;  // set to default lua cmd
 
 #if defined(__CATALINA_P2) && !defined(__CATALINA_NO_ENV)
 static char environ[MAX_ENV_LEN + 8]; // allow for 2 additional longs
-static char prompt[MAX_PROMPT_LEN + 1] = "> ";  // set to default prompt
+static char prompt[MAX_PROMPT_LEN + 1] = DEFAULT_PROMPT; 
+#endif
+
+#ifdef __CATALINA_liblinenoise
+
+#define DIAGNOSE_COMPLETION 0 // 1 to print diagnostics, 2 for even more
+
+#if ENABLE_FILE_COMPLETION
+char file_data[MAX_COMPLETION_LEN + 1];
+int  file_len;
+#endif
+
+char dynamic_data[MAX_COMPLETION_LEN + 1];
+int  dynamic_len;
+
 #endif
 
 void t_eol() {
@@ -297,16 +341,481 @@ int LoadClusterList (PVOLINFO vi, uint8_t *filename, PLOADINFO li)  {
    return 0;
 }
 
+#ifdef __CATALINA_liblinenoise
+
+#if ENABLE_FILE_COMPLETION || ENABLE_DYNAMIC_COMPLETION
+
+// case insensitive strcmp
+static int strcmp_i(const char *str1, const char *str2) {
+   while ((*str1) && (*str2) && (toupper(*str1) == toupper(*str2))) {
+      str1++;
+      str2++;
+   }
+   return (toupper(*str1) - toupper(*str2));
+}
+
+// case insensitive strncmp
+static int strncmp_i(const char *str1, const char *str2, int len) {
+   int i = 0;
+   if (len <= 0) {
+      return 0;
+   }
+   while ((*str1) && (*str2)
+   &&     (toupper(*str1) == toupper(*str2))
+   &&     (i < len - 1)) {
+      str1++;
+      str2++;
+      i++;
+   }
+   return (toupper(*str1) - toupper(*str2));
+}
+
+#if ENABLE_FILE_COMPLETION
+void initialize_file_data() {
+   FILEINFO fi;
+   int key_file = 0;
+   char *key_start, *key_end;
+
+   file_len = 0;
+   key_file = _open_unmanaged(COMPLETION_FILE, 0, &fi);
+   if (key_file >= 0) {
+      // read a maxmium of MAX_COMPLETION_LEN bytes
+      file_len = _read(key_file, file_data, MAX_COMPLETION_LEN);
+      key_file = _close_unmanaged(key_file);
+   }
+   if (file_len >= 0) {
+      // process each keyword in file_data, terminating it with null
+      key_start = file_data;
+      key_end   = file_data;
+      while (key_end < &file_data[file_len]) {
+         while ((*key_end != '\n') && (*key_end != '\0')) {
+            key_end++;
+         }
+         *key_end = '\0';
+         //t_printf("keyword=%s ", key_start);
+         key_start = key_end + 1;
+         key_end = key_start;
+      }
+   }
+   else {
+      // an error was returned by _read
+      file_len = 0;
+   }
+   file_data[file_len] = '\0';
+}
+#endif
+
+/*
+ * function - called on each file name
+ */
+void function(char *path, char *filename) {
+   int len1;
+   int len2;
+   int i;
+
+   if ((strcmp(filename, ".") == 0) || (strcmp(filename, "..") == 0)) {
+       // do not process "." or ".."
+       return;
+   }
+   if (strlen(path) == 0) {
+#if DIAGNOSE_COMPLETION
+      t_printf("%s\n", filename);
+#endif
+      len1 = strlen(filename);
+      if (dynamic_len + len1 + 1 < MAX_COMPLETION_LEN) {
+         for (i = 0; i <= len1; i++) {
+            dynamic_data[dynamic_len++] = filename[i];
+         }
+      }
+   }
+   else {
+#if DIAGNOSE_COMPLETION
+      t_printf("%s%c%s\n", path, DIR_SEPARATOR, filename);
+#endif
+      len1 = strlen(path);
+      len2 = strlen(filename);
+      if (dynamic_len + len1 + len2 + 2 < MAX_COMPLETION_LEN) {
+         for (i = 0; i < len1; i++) {
+            dynamic_data[dynamic_len++] = path[i];
+         }
+         dynamic_data[dynamic_len++]=DIR_SEPARATOR;
+         for (i = 0; i <= len2; i++) {
+            dynamic_data[dynamic_len++] = filename[i];
+         }
+      }
+   }
+}
+
+// safecpy will never write more than size characters, 
+// and is guaranteed to null terminate its result, so
+// make sure the buffer passed is at least size + 1
+char * safecpy(char *dst, const char *src, size_t size) {
+   dst[size] = '\0';
+   if (src) {
+      return strncpy(dst, src, size - strlen(dst));
+   }
+   return NULL;
+}
+
+// safecat will never write more than size characters, 
+// and is guaranteed to null terminate its result, so
+// make sure the buffer passed is at least size + 1
+char * safecat(char *dst, const char *src, size_t size) {
+   dst[size] = '\0';
+   if (src) {
+      return strncat(dst, src, size - strlen(dst));
+   }
+   return NULL;
+}
+
+/*
+ * format a directory entry name
+ */
+char * formatted_name(uint8_t *name) {
+   static char filename[12+1]; // 8.3 filename plus terminator
+   int i;
+   int j;
+   filename[0] = 0;
+   if (name[0] != 0) {
+      i = 0;
+      j = 0;
+      while (i < 8) {
+         if (name[i] != ' ') {
+            filename[j++] = name[i];
+         }
+         i++;
+      }
+#if 0      
+      if (strncmp((char *)&name[8],"BIN", 3) == 0) {
+         // treat 'BIN' as a special case - do not include the extension!
+         filename[j] = '\0';
+         return filename;
+      }
+      if (strncmp((char *)&name[8],"LUA", 3) == 0) {
+         // treat 'LUA' as a special case - do not include the extension!
+         filename[j] = '\0';
+         return filename;
+      }
+#endif
+      if (strncmp((char *)&name[8],"   ", 3) != 0) {
+         filename[j++] = '.';
+      }
+      i = 8;
+      while (i < 11) {
+         if (name[i] != ' ') {
+            filename[j++] = name[i];
+         }
+         i++;
+      }
+      filename[j] = '\0';
+   }
+   return filename;
+}
+
+
+/*
+ * process a single directory entry
+ */
+void do_direntry(char *path, PDIRENT de, int use_path) {
+   char *filename;
+   int i;
+
+   // get formatted name
+   filename = formatted_name(de->name);
+   if (de->attr & ATTR_VOLUME_ID) {
+      // do not process volume id
+      // function(path, filename);
+      return;  
+   }
+   if (use_path) {
+      // add path and filename
+      function(path, filename);
+   }
+   else {
+      // just add file name
+      function("", filename);
+   }
+}
+
+/*
+ * list a single directory, no recursion
+ */ 
+void do_single_directory(PVOLINFO vi, char *path, char *name, int use_path) {
+   uint8_t scratch[SECTOR_SIZE];
+   DIRINFO di;
+   DIRENT de;
+
+   di.scratch = scratch;
+   if (DFS_OpenDir(vi, (uint8_t *)name, &di) != DFS_OK) {
+#if DIAGNOSE_COMPLETION
+      t_printf("cannot open directory %s\n", name);
+#endif
+      return;
+   }
+
+   while (DFS_GetNext(vi, &di, &de) == DFS_OK) {
+      if (de.name[0] != 0) {
+         do_direntry(path, &de, use_path);
+      }
+   }
+} 
+
+/*
+ * process a directory, first by processing its contents, then by
+ * recursing into any subdirectories (if requested)
+ */ 
+void do_directory(PVOLINFO vi, char *name, int recurse, int use_path) {
+   uint8_t scratch[SECTOR_SIZE];
+   char *dirname;
+   char path[MAX_PATH+1];
+   DIRINFO di;
+   DIRENT de;
+   int count = 0;
+   int len = 0;
+   int i, j;
+   int match = 0;
+
+   safecpy(path, name, MAX_PATH);
+   len = strlen(path);
+
+   // remove any trailing separators
+   if (path[len] == DIR_SEPARATOR) {
+      len--;
+      path[len] = 0;
+   }
+
+   // process this directory
+   do_single_directory(vi, path, name, use_path);
+
+   // now list all subdirectories, if recursive
+   if (recurse) {
+      di.scratch = scratch;
+      if (DFS_OpenDir(vi, (uint8_t *)name, &di) != DFS_OK) {
+#if DIAGNOSE_COMPLETION
+         t_printf("cannot open directory %s\n", name);
+#endif
+         return;
+      }
+
+      while (DFS_GetNext(vi, &di, &de) == DFS_OK) {
+         if (de.name[0] != 0) {
+            if (de.attr & ATTR_DIRECTORY) {
+               dirname = formatted_name(de.name);
+               if (strcmp(dirname, ".") == 0) {
+#if DIAGNOSE_COMPLETION
+                  t_printf("ignoring special entry .\n");
+#endif
+               }
+               else if (strcmp(dirname, "..") == 0) {
+#if DIAGNOSE_COMPLETION
+                  t_printf("ignoring special entry ..\n");
+#endif
+               }
+               else {
+                  path[len] = DIR_SEPARATOR;
+                  path[len + 1] = '\0';
+                  safecat(path, dirname, MAX_PATH);
+                  do_directory(vi, path, 0, use_path);
+                  path[len] = '\0';
+               }
+            }
+         }
+      }
+   }
+} 
+
+void initialize_dynamic_data(PVOLINFO vi, char *dirname, int use_path) {
+   uint8_t scratch[SECTOR_SIZE];
+   int i;
+
+   if ((dirname == NULL) || (strlen(dirname) == 0)) {
+      // process both the root and bin direcotories, not including a path
+      // (becuase these will always be matched by later command processing)
+      do_directory(vi, "", 0, 0);
+      do_directory(vi, "bin", 0, 0);
+   }
+   else if (strcmp(dirname, "/") == 0) {
+      // process the root directory, not recursing into subdirectories,
+      // but including the path
+      do_directory(vi, "", 0, use_path);
+   }
+   else {
+      // process a specific sub-directory, recursing into subdirectories
+      do_directory(vi, dirname, 1, use_path);
+   }
+}
+
+void completion(const char *buf, linenoiseCompletions *lc) {
+   char completed[MAX_CMD_LEN + 1];
+   char *key_start;
+   int  key_len;
+   char *word;
+   char *path;
+   char tmp_path[MAX_CMD_LEN];
+   char *pch;
+   int  i, j;
+
+#if DIAGNOSE_COMPLETION
+   t_printf("buf=%s\n", buf);
+#endif
+
+   // the word we want to match is the last word in buf
+   word = (char *)buf + strlen(buf); 
+   while ((word > buf) && (*(word-1) != ' ')) {
+      word--;
+   }
+
+   // if that word starts with a "/" then remove it because
+   // the data we read from the SD does not, so we will not 
+   // match it with anything on the SD ...
+   if (*word == '/') {
+      word++;
+   }
+
+#if DIAGNOSE_COMPLETION == 2
+   t_printf("word=%s\n", word);
+#endif
+
+#if ENABLE_FILE_COMPLETION
+   key_start = file_data;
+   while (key_start < &file_data[file_len]) {
+      // examine every completion for a match
+      key_len = strlen(key_start);
+      if (*key_start != '#') {
+         // not a comment line
+         if (strncmp_i(word, key_start, strlen(word)) == 0) {
+#if DIAGNOSE_COMPLETION == 2
+            t_printf("candidate=%s, len=%d\n", key_start, key_len);
+#endif
+            // the completion is not just the word, it is buf with
+            // the partial word replaced with the complete word!
+            for (i = 0; i < (word - buf); i++) {
+               completed[i] = buf[i];
+            }
+            for (j = 0; j < key_len; j++) {
+               completed[i+j] = key_start[j];
+            }
+            completed[i+j] = '\0';
+#if DIAGNOSE_COMPLETION == 2
+            t_printf("completion=%s\n", completed);
+#endif
+            linenoiseAddCompletion(lc, completed);
+         }
+      }
+      key_start += key_len + 1;
+   }
+#endif
+
+#if ENABLE_DYNAMIC_COMPLETION
+
+   // discard any existing dynamic data, or we will run out of space
+   dynamic_len = 0;
+
+   // the path we want to match is the last word in buf, 
+   // removing anything back to the last DIR_SEPARATOR.
+   path = word + strlen(word); 
+   while ((path > word) && (*(path-1) != DIR_SEPARATOR)) {
+      path--;
+   }
+
+#if DIAGNOSE_COMPLETION == 2
+   t_printf("path=%s\n", path);
+#endif
+
+   for (i = 0; i < path - word - 1; i++) {
+      tmp_path[i] = word[i];
+   }
+   tmp_path[i] = '\0';
+#if DIAGNOSE_COMPLETION
+   t_printf("from buf '%s' using path '%s'\n", buf, tmp_path);
+#endif
+   initialize_dynamic_data(&vi, tmp_path, 1);
+
+   key_start = dynamic_data;
+   while (key_start < &dynamic_data[dynamic_len]) {
+      // examine every completion for a match
+      key_len = strlen(key_start);
+      if (*key_start != '#') {
+         // not a comment line
+         if (strncmp_i(word, key_start, strlen(word)) == 0) {
+#if DIAGNOSE_COMPLETION == 2
+            t_printf("candidate=%s, len=%d\n", key_start, key_len);
+#endif
+            // the completion is not just the word, it is buf with
+            // the partial word replaced with the complete word!
+            for (i = 0; i < (word - buf); i++) {
+               completed[i] = buf[i];
+            }
+            for (j = 0; j < key_len; j++) {
+               completed[i+j] = key_start[j];
+            }
+            completed[i+j] = '\0';
+#if DIAGNOSE_COMPLETION == 2
+            t_printf("completion=%s\n", completed);
+#endif
+            linenoiseAddCompletion(lc, completed);
+         }
+      }
+      key_start += key_len + 1;
+   }
+#endif
+}
+
+#endif
+
+void ReadCmd() {
+   char *line = NULL;
+   int i;
+
+   k_clear();
+
+   fileext = 0;
+   filelen = 0;
+
+   command[0]='\0';
+   keyword[0]='\0';
+
+   while (line == NULL) {
+      line = linenoise(prompt);
+      if (line != NULL) {
+         if (line[0] != '\0') {
+            //printf("echo: '%s'\n", line);
+            // add to the history
+            linenoiseHistoryAdd(line);
+            //save history on disk
+            linenoiseHistorySave(HISTORY_FILE);
+            break;
+         }
+         else {
+            free(line);
+            line = NULL;
+         }
+      }
+   }
+   for (i = 0; i < MAX_CMD_LEN; i++) {
+      if (line[i] == '\0') break;
+      command[i] = line[i];
+   }
+   command[i]='\0';
+   free(line);
+}
+
+#else
+
 void ReadCmd() {
    int i, j;
    int x, y, x_y;
    uint8_t ch;
 
-   i = 0;
+   k_clear();
+
    fileext = 0;
    filelen = 0;
 
-   k_clear();
+   command[0]='\0';
+   keyword[0]='\0';
+
+   i = 0;
 
    while (i == 0) {
 #if ENABLE_CPU
@@ -377,6 +886,7 @@ void ReadCmd() {
    }
 }
 
+#endif
 
 void ParseCmd() {
    int i = 0;
@@ -438,6 +948,7 @@ int TryExtension(PVOLINFO vi, PLOADINFO li, char *ext) {
 
 
 int BuiltInCommand(PVOLINFO vi, uint8_t *keyword, uint8_t *arguments) {
+
    if (*keyword == '#') {
       // comment line - just ignore it!
       return 1;
@@ -621,6 +1132,9 @@ void initialize_environ() {
      }
      prompt[i] = 0;
   }
+  else {
+     strncpy(prompt, DEFAULT_PROMPT, MAX_PROMPT_LEN);
+  }
   // find the name of the lua and luax executable in environ - if they
   // exits (as LUA and LUAX) copy them to lua and luax and terminate 
   // them with a NULL character.
@@ -648,7 +1162,6 @@ void main() {
    uint8_t sector[SECTOR_SIZE];
    uint32_t pstart, psize;
    uint8_t pactive, ptype;
-   VOLINFO vi;
    FILEINFO fi;
    FILEINFO mi;
    DIRINFO di;
@@ -724,6 +1237,19 @@ void main() {
 
 #endif
 
+#ifdef __CATALINA_liblinenoise
+#if ENABLE_FILE_COMPLETION
+   file_len = 0;
+   initialize_file_data();
+#endif
+#if ENABLE_DYNAMIC_COMPLETION
+   dynamic_len = 0;
+#endif
+#if ENABLE_FILE_COMPLETION || ENABLE_DYNAMIC_COMPLETION
+   linenoiseSetCompletionCallback(completion);
+#endif
+#endif
+   
    while(1) {
 
       loaded = 0;
@@ -855,6 +1381,14 @@ void main() {
 #endif
 
       if (!(once_exec||auto_exec)) {
+
+#ifdef __CATALINA_liblinenoise
+         // load history from file - the history file is a plain 
+         // text file with entries are separated by newlines.
+         linenoiseHistorySetMaxLen(MAX_HISTORY_LEN);
+         linenoiseHistoryLoad(HISTORY_FILE);
+#endif
+
          // display banner and prompt for a command
          t_str(CATALYST_VER);
          t_eol();

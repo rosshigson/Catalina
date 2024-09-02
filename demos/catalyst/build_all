@@ -139,6 +139,10 @@ if [[ "$1" != "SUPERQUAD" ]]; then
   ./copy_all ../image/
   cd ..
 
+  cd ilua
+  ./copy_all ../image/
+  cd ..
+
 fi
 
 echo ""

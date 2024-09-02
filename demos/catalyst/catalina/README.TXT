@@ -10,7 +10,7 @@ compatible teminal emulator, but using one is recommended.
 
 For a Windows terminal emulator, you can use payload with a command like:
 
-   payload -pX -b230400 -i -q1
+   payload -pX -b230400 -i -q2
 
 where X is the port your P2 is connected to. You can also use any other VT100
 compatible terminal emulator, such as Catalina's Comms program, or puTTY, or 

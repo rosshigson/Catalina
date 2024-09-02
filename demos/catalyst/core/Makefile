@@ -5,8 +5,7 @@
 # assume P1
 B=.binary
 
-# verbose is currently REQUIRED - not sure why!
-CFLAGS =
+CFLAGS = -W-w
 
 # P2 if there is a P2 in CATALINA_DEFINES
 ifeq (P2, $(findstring P2, $(CATALINA_DEFINE)))
@@ -128,7 +127,11 @@ endif
 
 #set up default options if none specified
 ifeq ("$(CATALINA_OPTIONS)", "")
+ifeq ($(B), .bin)
+	CFLAGS += -lcix -C NO_MOUSE -C NO_FLOAT
+else
 	CFLAGS += -lcix -ltiny -C NO_MOUSE -C NO_FLOAT
+endif
 else
 	CFLAGS += $(CATALINA_OPTIONS)
 endif
@@ -154,7 +157,10 @@ CC=catalina
 .PHONY : catalyst
 catalyst : catalyst$B
 
-catalyst$B : catalyst.c cogstore.c loader.c sio.c cache.c
+catalyst.bin : catalyst.c cogstore.c loader.c sio.c cache.c 
+	catalina $(CFLAGS) $(CFLAGS_CATALYST) -llinenoise $^ -o $@ -C CATALYST -C NO_ARGS  
+
+catalyst.binary : catalyst.c cogstore.c loader.c sio.c cache.c
 	catalina $(CFLAGS) $(CFLAGS_CATALYST) $^ -o $@ -C CATALYST -C NO_ARGS
 
 # add this to the 'all' target

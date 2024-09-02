@@ -23,7 +23,7 @@ emulator - you will need to specify the baud rate and port to use. For
 instance, if your P2 EVAL board is connected to COM4, you might use the
 following payload command to use the internal terminal emulator:
 
-   payload -p4 -b230400 -i -q1 
+   payload -p4 -b230400 -i -q2 
 
 Or you can have payload use an external Catalina vt100 emulator:
 
@@ -42,7 +42,8 @@ Here is what the parameters mean:
    -i       means to use the internal interactive terminal emulator, which 
             is a simple VT100 emulator
 
-   -q1      specifies the line termination handling (in this case, to ignore CR)
+   -q2      specifies the line termination handling (in this case, to ignore
+            LFs)
 
    -Ivt100  means to use the external terminal emulator, which is a 
             complete VTxxx emulator, in this case emulating a vt100
@@ -66,8 +67,8 @@ the "demos/catalyst" subdirectory) was:
 
    build_all P2_EVAL SIMPLE VT100 CR_ON_LF USE_COLOR OPTIMIZE MHZ_200
 
-If you use payload as your terminal emulator, remember to add the -q1 option
-to ignore the CRs that have been added to the output. If you use putty then
+If you use payload as your terminal emulator, remember to add the -q2 option
+to ignore the LFs that have been added to the output. If you use putty then
 ensure the "Implict CR in every LF" and "Implicit LF in every CR" options
 are not checked. The Catalina comms terminal emulatore (started via the
 vt100 batch script) should work fine as it is. For the Parallax Serial 
@@ -162,18 +163,18 @@ Here is a summary of all the current pre-built versions of Catalyst:
    P2_DEMO.ZIP     - compiled to suit either a P2_EVAL or a P2_EDGE (with or
                      without PSRAM) using a serial HMI on pins 62 & 63 at 
                      230400 baud. Built to use a VT100 emulator, or payload 
-                     with the -i and -q1 options. 
+                     with the -i and -q2 options. 
                      Contains no XMM programs.
 
    P2_EVAL.ZIP     - compiled to suit a P2_EVAL using a serial HMI on pins 
                      62 & 63 at 230400 baud. Built to use a VT100 emulator, 
-                     or payload with the -i and -q1 options.
+                     or payload with the -i and -q2 options.
                      Contains XMM programs compiled for a Parallax HyperRAM/
                      HyperFlash add-on board on base pin 32 
 
    P2_EDGE.ZIP     - compiled to suit a P2_EDGE with 32 Mb of PSRAM using
                      a serial HMI on pins 62 & 63 at 230400 baud. Built to 
-                     use a VT100 emulator, or payload with the -i and -q1 
+                     use a VT100 emulator, or payload with the -i and -q2 
                      options. 
                      Contains XMM programs compiled to use the on-board PSRAM.
 
