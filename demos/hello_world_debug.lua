@@ -1,15 +1,32 @@
 --
--- An example Lua script for debugging "hello_world.c". To use the script, 
--- compile hello_world.c with a debug option, and load it using payload in
--- interactive mode. For example:
+-- An example Lua script for debugging "hello_world.c". To use the script,
+-- either a non-serial HMI has to be used (e.g. -C VGA) or an additional Prop
+-- Plug has to be installed because the debugger requires a dedicated serial
+-- port.
+--
+-- In this example, we will assume that a second Prop Plug has been installed
+-- on pins 18 (RX) & 20 (TX), and that the following values have been set
+-- in the appropriate platform configuration file:
+--
+--    _BLACKCAT_RX_PIN=18
+--    _BLACKCAT_TX_PIN=20
+--
+-- Then in one Catalina command window, compile hello_world.c with a debug 
+-- option (e.g. -g3) and load it using payload in interactive mode. 
+-- For example:
 --
 --    catalina hello_world.c -p2 -lci -g3
---    payload -i hello_world -b230400
+--    payload -i hello_world
 -- 
--- Then, in another command window, load and run the blackbox debugger with
--- this script. For example:
+-- Then, in another Catalina command window, load and run the blackbox 
+-- debugger, and specify this script using the -L option. For example:
 --
 --    blackbox hello_world -L hello_world_debug.lua
+--
+-- The script will execute some commands that produce some output (see the 
+-- script below for details) and then the prompt "Lua>" when it enters 
+-- interactive mode. Enter any Blackbox command. For example, to just 
+-- execute the program, enter g (for "go") or q (for "quit"). 
 --
 -- NOTE: In this test script, we do not consume all the output from the
 -- debugger after each command. This is ok, but if we let the internal
@@ -72,7 +89,7 @@ else
 end
 
 -- read a cog location and extract the returned value
-send("r r0\n");
+send("r r0");
 str1 = "cog location ";
 str2 = wait_for(str1, 1000);
 if (str1 == str2) then
@@ -83,15 +100,15 @@ else
 end
 
 -- execute one line
-send("n\n");
+send("n");
 
 -- read some hub values
 print("\nHub values:\n");
-send("r h 0x0 10\n");
+send("r h 0x0 10");
 
 -- read some cog values
 print("\nCog values:\n");
-send("r r0 5\n");
+send("r r0 5");
 
 -- we can get Lua to ask for input, and then execute it as a command - 
 -- we can even put this in a simple interactive command loop ...
@@ -112,6 +129,6 @@ repeat
 until string.sub(str,1,1) == "q";
 
 -- quit the debugger (note no confirmation is required in script mode)
-send("q\n");
+send("q");
 
 print("\nTerminating Lua script\n");

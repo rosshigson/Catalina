@@ -69,21 +69,34 @@ FLOAT_PIN_MODE   = %0000_0000_000_0000000000000_00_00001_0 'mode bits
 ' serial constants
 ' ================
 
+#if !defined(_RX_PIN)
 _RX_PIN    = 63
-_TX_PIN    = 62
+#endif
 
-#ifndef _BAUDRATE
+#if !defined(_TX_PIN)
+_TX_PIN    = 62
+#endif
+
+#if !defined(_BAUDRATE)
 _BAUDRATE  = 230400
 #endif
 
 ' BlackCat/BlackBox Debugger I/O constants
 ' ========================================
 
-#define _BLACKCAT_RX_PIN  63 
+#if !defined(_BLACKCAT_RX_PIN)
+#define _BLACKCAT_RX_PIN  63
+#endif
+
+#if !defined( _BLACKCAT_TX_PIN)
 #define _BLACKCAT_TX_PIN  62
+#endif
+
+#if !defined(_BLACKCAT_BAUD)
+_BLACKCAT_BAUD    = 115200
+#endif
 
 _BLACKCAT_MODE    = %0000
-_BLACKCAT_BAUD    = 115200
 _BLACKCAT_SIZE    = 5*4   ' 5 longs
 
 ' SD Card constants
