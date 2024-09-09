@@ -22,10 +22,10 @@ mkdir bin
 move /y *.bin bin\
 move /y if.lua bin\
 move /y exec.lua bin\
-move /y freq.lua bin\
-move /y find.lua bin\
-move /y wild.lua bin\
-move /y attrib.lua bin\
+move /y call.lua bin\
+move /y echo.lua bin\
+move /y _save.lua bin\
+move /y _restore.lua bin\
 "%ProgramFiles%"\7-Zip\7z.exe a ..\P2_DEMO.ZIP *
 cd ..
 
@@ -62,6 +62,10 @@ cd image
 move /y *.bin bin\
 move /y if.lua bin\
 move /y exec.lua bin\
+move /y call.lua bin\
+move /y echo.lua bin\
+move /y _save.lua bin\
+move /y _restore.lua bin\
 "%ProgramFiles%"\7-Zip\7z.exe a ..\P2_EVAL.ZIP *
 cd ..
 
@@ -98,6 +102,10 @@ cd image
 move /y *.bin bin\
 move /y if.lua bin\
 move /y exec.lua bin\
+move /y call.lua bin\
+move /y echo.lua bin\
+move /y _save.lua bin\
+move /y _restore.lua bin\
 "%ProgramFiles%"\7-Zip\7z.exe a ..\P2_EVAL_VGA.ZIP *
 cd ..
 
@@ -134,6 +142,10 @@ cd image
 move /y *.bin bin\
 move /y if.lua bin\
 move /y exec.lua bin\
+move /y call.lua bin\
+move /y echo.lua bin\
+move /y _save.lua bin\
+move /y _restore.lua bin\
 "%ProgramFiles%"\7-Zip\7z.exe a ..\P2_EDGE.ZIP *
 cd ..
 
@@ -170,6 +182,10 @@ cd image
 move /y *.bin bin\
 move /y if.lua bin\
 move /y exec.lua bin\
+move /y call.lua bin\
+move /y echo.lua bin\
+move /y _save.lua bin\
+move /y _restore.lua bin\
 "%ProgramFiles%"\7-Zip\7z.exe a ..\P2_EDGE_VGA.ZIP *
 cd ..
 

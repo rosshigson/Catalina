@@ -27,10 +27,10 @@ mkdir bin
 mv -f *.bin bin/
 mv -f if.lua bin/
 mv -f exec.lua bin/
-mv -f freq.lua bin/
-mv -f find.lua bin/
-mv -f wild.lua bin/
-mv -f attrib.lua bin/
+mv -f call.lua bin/
+mv -f echo.lua bin/
+mv -f _save.lua bin/
+mv -f _restore.lua bin/
 zip -r -q ../P2_DEMO.ZIP *
 cd ..
 
@@ -67,6 +67,10 @@ cd image
 mv -f *.bin bin/
 mv -f if.lua bin/
 mv -f exec.lua bin/
+mv -f call.lua bin/
+mv -f echo.lua bin/
+mv -f _save.lua bin/
+mv -f _restore.lua bin/
 zip -r -q ../P2_EVAL.ZIP *
 cd ..
 
@@ -103,6 +107,10 @@ cd image
 mv -f *.bin bin/
 mv -f if.lua bin/
 mv -f exec.lua bin/
+mv -f call.lua bin/
+mv -f echo.lua bin/
+mv -f _save.lua bin/
+mv -f _restore.lua bin/
 zip -r -q ../P2_EVAL_VGA.ZIP *
 cd ..
 
@@ -139,6 +147,10 @@ cd image
 mv -f *.bin bin/
 mv -f if.lua bin/
 mv -f exec.lua bin/
+mv -f call.lua bin/
+mv -f echo.lua bin/
+mv -f _save.lua bin/
+mv -f _restore.lua bin/
 zip -r -q ../P2_EDGE.ZIP *
 cd ..
 
@@ -175,6 +187,10 @@ cd image
 mv -f *.bin bin/
 mv -f if.lua bin/
 mv -f exec.lua bin/
+mv -f call.lua bin/
+mv -f echo.lua bin/
+mv -f _save.lua bin/
+mv -f _restore.lua bin/
 zip -r -q ../P2_EDGE_VGA.ZIP *
 cd ..
 

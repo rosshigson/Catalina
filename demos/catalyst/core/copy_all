@@ -33,6 +33,10 @@ if [ -f catalyst.bin ]; then
    cp find.lua $1find.lua
    cp freq.lua $1freq.lua
    cp wild.lua $1wild.lua
+   cp _save.lua $1_save.lua
+   cp _restore.lua $1_restore.lua
+   cp call.lua $1call.lua
+   cp echo.lua $1echo.lua
    cp loop $1loop
 
 else

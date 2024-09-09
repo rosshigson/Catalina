@@ -49,6 +49,10 @@ copy attrib.lua %1\attrib.lua
 copy find.lua %1\find.lua
 copy freq.lua %1\freq.lua
 copy wild.lua %1\wild.lua
+copy _save.lua %1\_save.lua
+copy _restore.lua %1\_restore.lua
+copy call.lua %1\call.lua
+copy echo.lua %1\echo.lua
 copy loop %1\loop
 @echo off
 goto done
