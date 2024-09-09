@@ -134,12 +134,17 @@ However, you can also choose to put my_func.c in a library (we will call
 it my_lib), and then build my_prog.c using the library. To do so, use the 
 following commands:
 
-   catalina my_func.c -c
-   bcc -i -e my_func.s
+   catalina my_func.c -c -v
+   bcc -i -e my_func.obj
    mkdir lib/my_lib
-   mv my_func.s lib/my_lib
-   mv catalina.idx lib/my_lib
+   mv -f my_func.obj lib/my_lib
+   mv -f catalina.idx lib/my_lib
    catalina my_prog.c -lci -lmy_lib -v
+
+Note that the above commands can be added to a file (e.g. "build") using 
+the vi text editor, and then executed in one command using "exec" - i.e:
+
+   exec build
 
 The -C CR_ON_LF option can be added when using a VT100 terminal emulator, or 
 you can instead adjust the settings of your emulator to implicitly execute a 
