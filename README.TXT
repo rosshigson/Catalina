@@ -1,7 +1,7 @@
 This file contains a summary of changes to Catalina in recent releases. For
 information about installing and using Catalina, see the file README.md 
 
-Catalina release 7.9 is a full release.
+Catalina release X.X is a full release.
 
 WARNING: DO NOT INSTALL THIS RELEASE OVER A PRIOR VERSION OF CATALINA AND
 DO NOT LINK OR COMBINE PROGRAMS COMPILED WITH THIS VERSION WITH CODE (E.G. 
@@ -14,6 +14,78 @@ The following sections list the changes that have been made in releases
 7.0 onwards of Catalina. If you have not used a previous release of Catalina, 
 you can skip the rest of this README and instead go straight to the Catalina 
 tutorial documents.
+
+NOT_RELEASED_YET!
+
+New Functionality
+-----------------
+
+1. The "exec" command (i.e. exec.lua) has been extended to allow parameter 
+   substitution anwyhere in the executed script. Previously, parameter 
+   substitution was performed only when "_n" was specified as an argument to 
+   the exec command itself - this was replaced with the value of the nth 
+   parameter to the current script. This is still supported, but in addition 
+   "%n" can now be specified anywhere in the script and it will be substituted 
+   with the current value of the nth parameter to the current script. In most 
+   cases, "%n" can be used wherever "_n" was used, except where it represents
+   the name of an environment variable and not a parameter, such as in the 
+   name (but not the parameters) of an "if" command. For an example of this,
+   see the "loop2" script in the folder demos/catalyst/core, which is a minor
+   variant of the "loop" script. The "exec" command is available on the
+   Propeller 2 only.
+
+1. A new "call" command has been added (i.e. call.lua) that allows a Catalyst 
+   script to be called from within another Catalyst script, which resumes the
+   original script when the called script terminates. 
+
+   The "call" command can also be used on the command line, where it behaves 
+   effectively the same as the "exec" command - but when used WITHIN a script, 
+   "call" and "exec" behave differently - when "exec" is used, the executed 
+   script REPLACES the current script, whereas when "call" is used, the 
+   currently executing script will be resumed once the called script 
+   terminates. The "exec" command is still the mechanism for looping scripts,
+   as demonstrated in the "loop" script. The "call" command is available on 
+   the Propeller 2 only.
+
+   For example, to execute the Catalyst script "script_2" from within the 
+   script "script_1", passing it the original parameter 1 and "xxx" as 
+   parameters, and then once that completes, call it again with the original
+   parameter 2 and "yyy" as parameters, the script "script_1" might contain 
+   lines like:
+  
+      call script_2 _1 xxx
+      call script_2 _2 yyy
+
+   If "exec" were used instead of "call", the second call to script_2 would 
+   never be executed because the first call would never return.
+
+   Note that calls cannot be nested - i.e. a script can be executed from the 
+   command line that calls other scripts, but those scripts cannot then call
+   further scripts. 
+
+   To support the "call" capability, two additional lua scripts have been 
+   provided (_save.lua and _restore.lua) which can save and restore the 
+   current values of up to 23 parameters in a single environment variable:
+
+      _save    : save parameters _0 .. _22 in a named environment variable 
+                 (_SAVED_PARAMS is the default name)
+
+      _restore : restore parameters _0 .. _22 from a named environment 
+                 variable (_SAVED_PARAMS is the default name)
+
+2. A simple "echo" command has been added (i.e. echo.lua) which just echoes 
+   its arguments. For example:
+
+      echo hello there!
+   or
+      echo %1 %2 %3 etc
+
+Other Changes
+-------------
+
+1. The self-hosted catalina command (i.e. catalina.lua) can now be executed
+   within a script. Previously, doing so would terminate the script. Affected
+   the Propeller 2 only.
 
 RELEASE 8.0
 

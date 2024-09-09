@@ -108,6 +108,10 @@
 --
 -- version 8.0   - just update version number.
 --
+-- version 8.1   - allow catalina to be used as a command within other scripts
+--                 (it uses the same mechanism as is used by "call.lua", but 
+--                 it must be internal to the script).
+--
 
 require "os"
 require "io"
@@ -116,7 +120,7 @@ require "string"
 require "propeller"
 
 -- configuration parameters and default values
-CATALINA_VERSION = "8.0"
+CATALINA_VERSION = "8.1"
 LCCDIR           = "/";
 CATALINA_TARGET  = LCCDIR .. "target"
 CATALINA_LIBRARY = LCCDIR .. "lib"
@@ -161,6 +165,9 @@ PASM_SUFFIX      = ".s"
 TARGET_SUFFIX    = ".t"
 BIN_SUFFIX       = ".bin"
 MAX_ARGS         = 24
+
+ONCE_NAME        = "execonce.txt"
+SAVE_NAME        = "____CALL.___"
 
 -- command line option values
 untidy     = nil;
@@ -1420,6 +1427,68 @@ function decimal_or_hex(str, modifier)
   return val*mod;
 end
 
+-- execute the named script, saving and restoring any current executing script
+function execute_subscript(script)
+  -- first, check if we are already in an executing script
+  local f = io.open(ONCE_NAME);
+  if not f then
+    -- not in a script - we can just execute this new script
+    if untidy then
+      -- copy the script (the copy will be deleted, but not the orginal) 
+      propeller.execute("@cp -k " .. script .. " EXECONCE.TXT")
+    else
+      -- just rename the script so it will be deleted once executed
+      propeller.execute("@mv -k " .. script .. " EXECONCE.TXT")
+    end
+  else
+    -- already in a script - we must save it and restore it
+    io.close(f);
+    -- save current parameters
+    dofile("bin/_save.lua");
+    -- remove any existing SAVE_NAME file
+    os.remove(SAVE_NAME);
+    -- rename the existing ONCE_NAME file to SAVE_NAME
+    os.rename(ONCE_NAME, SAVE_NAME);
+    -- set name of new script in "_0"
+    propeller.setenv("_0", script, 1);
+    -- unset all other parameters
+    for i = 1, 22 do
+      propeller.unsetenv("_" .. i); 
+    end
+    -- copy all lines from file script to ONCE_NAME, adding 
+    -- commands to restore the previous parameters and script
+    local infile  = io.open(script, "r");
+    local outfile = io.open(ONCE_NAME, "w");
+    local line;
+    if not infile then
+      print("ERROR: Cannot open " .. in_name);
+      return
+    else
+    --print("INFILE="..in_name);
+    end
+    if not outfile then
+      print("ERROR: Cannot open " .. out_name);
+      return;
+    else
+    --print("OUTFILE="..out_name);
+    end
+    repeat
+      line = infile:read("L");
+      if line then
+         --print("IN: " .. line);
+         outfile:write(line);
+      end
+    until not line;
+    -- add command to restore parameters
+    outfile:write("@bin/_restore.lua\n");
+    -- add command to restore previously executing script
+    outfile:write("@mv " .. SAVE_NAME .. " " .. ONCE_NAME .. "\n");
+    infile:close();
+    outfile:close();
+    io.stdout:flush();
+  end
+end
+
 -------------------------------------------------------------------------------
 -- main program code starts here!
 --
@@ -1489,14 +1558,8 @@ if Fcount > 0 or Ocount > 0 then
   cmd:close();
   if errors == 0 and not no_exec then
     -- now execute the script
-    print_if_diagnose("executing script ...");
-    if untidy then
-      -- copy the script (the copy will be deleted, but not the orginal) 
-      propeller.execute("@cp -k " .. CATALINA_SCRIPT .. " EXECONCE.TXT")
-    else
-      -- just rename the script so it will be deleted once executed
-      propeller.execute("@mv -k " .. CATALINA_SCRIPT .. " EXECONCE.TXT")
-    end
+    print_if_diagnose("executing subscript ...");
+    execute_subscript(CATALINA_SCRIPT);
   end
 else
   if not helped then
