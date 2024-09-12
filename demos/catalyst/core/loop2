@@ -1,5 +1,5 @@
 @# use argument 1 if provided, otherwise prompt
-@if _LOOP missing assign %1
+@if _LOOP missing assign _1
 @if _LOOP missing prompt "Number of times to execute? "
 @# do loopy stuff here ...
 @if _LOOP echo
