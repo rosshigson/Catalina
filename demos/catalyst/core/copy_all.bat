@@ -54,6 +54,9 @@ copy _restore.lua %1\_restore.lua
 copy call.lua %1\call.lua
 copy echo.lua %1\echo.lua
 copy loop %1\loop
+copy loop2 %1\loop2
+copy script_1 %1\script_1
+copy script_2 %1\script_2
 @echo off
 goto done
    

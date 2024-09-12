@@ -27,14 +27,15 @@ New Functionality
    parameter to the current script. This is still supported, but in addition 
    "%n" can now be specified anywhere in the script and it will be substituted 
    with the current value of the nth parameter to the current script. In most 
-   cases, "%n" can be used wherever "_n" was used, except where it represents
-   the name of an environment variable and not a parameter, such as in the 
-   name (but not the parameters) of an "if" command. For an example of this,
-   see the "loop2" script in the folder demos/catalyst/core, which is a minor
-   variant of the "loop" script. The "exec" command is available on the
-   Propeller 2 only.
+   cases, "%n" can be used wherever "_n" was used, except where "_n" represents
+   the name of an environment variable and not a parameter, such as if it was
+   the name (but not the parameters) of an "if" command. For an example of 
+   this, see the "loop2" script in the folder demos/catalyst/core, which is a 
+   minor variant of the "loop" script. 
 
-1. A new "call" command has been added (i.e. call.lua) that allows a Catalyst 
+   The "exec" command is available on the Propeller 2 only.
+
+2. A new "call" command has been added (i.e. call.lua) that allows a Catalyst 
    script to be called from within another Catalyst script, which resumes the
    original script when the called script terminates. 
 
@@ -43,9 +44,8 @@ New Functionality
    "call" and "exec" behave differently - when "exec" is used, the executed 
    script REPLACES the current script, whereas when "call" is used, the 
    currently executing script will be resumed once the called script 
-   terminates. The "exec" command is still the mechanism for looping scripts,
-   as demonstrated in the "loop" script. The "call" command is available on 
-   the Propeller 2 only.
+   terminates. The "exec" command is still the mechanism to be used for 
+   looping scripts, as demonstrated in the "loop" and "loop2" scripts.
 
    For example, to execute the Catalyst script "script_2" from within the 
    script "script_1", passing it the original parameter 1 and "xxx" as 
@@ -56,12 +56,12 @@ New Functionality
       call script_2 _1 xxx
       call script_2 _2 yyy
 
-   If "exec" were used instead of "call", the second call to script_2 would 
-   never be executed because the first call would never return.
+   If "exec" were used instead of "call", the second invocation of script_2 
+   would never be executed because the first invocation would not return.
 
    Note that calls cannot be nested - i.e. a script can be executed from the 
-   command line that calls other scripts, but those scripts cannot then call
-   further scripts. 
+   command line that calls another script, but that script cannot then call
+   any further scripts. 
 
    To support the "call" capability, two additional lua scripts have been 
    provided (_save.lua and _restore.lua) which can save and restore the 
@@ -73,19 +73,45 @@ New Functionality
       _restore : restore parameters _0 .. _22 from a named environment 
                  variable (_SAVED_PARAMS is the default name)
 
-2. A simple "echo" command has been added (i.e. echo.lua) which just echoes 
+   The "call" command is available on the Propeller 2 only.
+
+3. The self-hosted catalina command (i.e. catalina.lua) can now be executed
+   within a script. Previously, doing so would terminate the script.
+
+4. A simple "echo" command has been added (i.e. echo.lua) which just echoes 
    its arguments. For example:
 
       echo hello there!
    or
       echo %1 %2 %3 etc
 
+5. New functions have been added to the Lua "propeller" module, which are
+   analogous to the corresponding C library functions:
+
+     cogid, clockfreq, clockmode, getcnt, muldiv64, t_string,
+     locknew, lockclr, lockset, lockret, locktry, lockrel
+
+   See the document "Lua on the Propeller 2 with Catalina" for details.
+
+   Note that locktry, lockrel and muldiv64 functions are implemented on the 
+   Propeller 2 only.
+
+6. A new example program (ex13.lua) has been added to demonstrate the use of
+   Propeller locks as another possible synchronization mechanism in the 
+   Multi-Processing version of Lua (i.e. mlua or mluax) See the document 
+   "Lua on the Propeller 2 with Catalina" for details.
+
 Other Changes
 -------------
 
-1. The self-hosted catalina command (i.e. catalina.lua) can now be executed
-   within a script. Previously, doing so would terminate the script. Affected
-   the Propeller 2 only.
+1. The definition of the LOCKNEW macro in prop.h (aka propeller.h) may have
+   led to symbol "lock" being declared undefined because the macro used it 
+   as a parameter to the _locknew() function which is neither required nor 
+   used. Affected the Propeller 1 and Propeller 2.
+
+2. The definition of the _lockrel() function in prop2.h (aka propeller2.h) 
+   was incorrect - it defined the function as returning an int when in fact 
+   it does not return any value. Affected the Propeller 2 only.
 
 RELEASE 8.0
 

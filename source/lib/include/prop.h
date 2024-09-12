@@ -61,7 +61,7 @@ extern int PASM(const char *code);
 //
 // LOCKNEW : get a lock
 //
-#define LOCKNEW _locknew(lock)
+#define LOCKNEW _locknew()
 
 
 //

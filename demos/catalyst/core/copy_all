@@ -38,6 +38,9 @@ if [ -f catalyst.bin ]; then
    cp call.lua $1call.lua
    cp echo.lua $1echo.lua
    cp loop $1loop
+   cp loop2 $1loop2
+   cp script_1 $1script_1
+   cp script_2 $1script_2
 
 else
 

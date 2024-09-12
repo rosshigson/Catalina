@@ -12,7 +12,7 @@
 #endif
 
 /* version number of the "propeller" module */
-#define MODULE_VERSION_NUM 640
+#define MODULE_VERSION_NUM 810
 
 /* housekeeping to cater for different Lua versions */
 #if (LUA_VERSION_NUM == 501)
@@ -34,6 +34,18 @@
  ***********************/
 
 /* propeller function prototypes */
+static int propeller_cogid( lua_State *L );
+static int propeller_locknew( lua_State *L );
+static int propeller_lockclr( lua_State *L );
+static int propeller_lockset( lua_State *L );
+static int propeller_lockret( lua_State *L );
+static int propeller_locktry( lua_State *L );
+static int propeller_lockrel( lua_State *L );
+static int propeller_clkfreq( lua_State *L );
+static int propeller_clkmode( lua_State *L );
+static int propeller_getcnt( lua_State *L );
+static int propeller_muldiv64( lua_State *L );
+static int propeller_t_string( lua_State *L );
 static int propeller_setenv( lua_State *L );
 static int propeller_unsetenv( lua_State *L );
 static int propeller_getpin( lua_State *L );
@@ -77,6 +89,19 @@ LUALIB_API int luaopen_propeller( lua_State *L );
 
 /* luaprop function registration array */
 static const struct luaL_Reg luapropeller_funcs[] = {
+
+  { "cogid",          propeller_cogid },    // p1/p2
+  { "locknew",        propeller_locknew },  // p1/p2
+  { "lockclr",        propeller_lockclr },  // p1/p2
+  { "lockset",        propeller_lockset },  // p1/p2
+  { "lockret",        propeller_lockret },  // p1/p2
+  { "locktry",        propeller_locktry },  // p2 only
+  { "lockrel",        propeller_lockrel },  // p2 only
+  { "clockfreq",      propeller_clkfreq },  // p1/p2
+  { "clockmode",      propeller_clkmode },  // p1/p2 - result p1/p2 dependent
+  { "getcnt",         propeller_getcnt },   // return 1 int on p1, 2 int on p2
+  { "muldiv64",       propeller_muldiv64 }, // p2 only
+  { "t_string",       propeller_t_string }, // p1/p2
 
   { "setenv",         propeller_setenv },
   { "unsetenv",       propeller_unsetenv },
@@ -122,6 +147,140 @@ static const struct luaL_Reg luapropeller_funcs[] = {
 /***********************
  * propeller functions *
  ***********************/
+
+static int propeller_cogid( lua_State *L ) {
+#ifdef __CATALINA__
+  pushint(L, _cogid());
+  return 1;
+#else
+  return 0;
+#endif
+}
+
+static int propeller_locknew( lua_State *L ) {
+#ifdef __CATALINA__
+  pushint(L, _locknew());
+  return 1;
+#else
+  return 0;
+#endif
+}
+
+static int propeller_lockclr( lua_State *L ) {
+#ifdef __CATALINA__
+  int lock = (int) luaL_checkinteger( L, 1);
+  pushint(L, _lockclr(lock));
+  return 1;
+#else
+  return 0;
+#endif
+}
+
+static int propeller_lockset( lua_State *L ) {
+#ifdef __CATALINA__
+  int lock = (int) luaL_checkinteger( L, 1);
+  pushint(L, _lockset(lock));
+  return 1;
+#else
+  return 0;
+#endif
+}
+
+static int propeller_lockret( lua_State *L ) {
+#ifdef __CATALINA__
+  int lock = (int) luaL_checkinteger( L, 1);
+  _lockret(lock);
+  return 0;
+#else
+  return 0;
+#endif
+}
+
+static int propeller_locktry( lua_State *L ) {
+#ifdef __CATALINA__
+  int lock = (int) luaL_checkinteger( L, 1);
+  pushint(L, _locktry(lock));
+  return 1;
+#else
+  return 0;
+#endif
+}
+
+static int propeller_lockrel( lua_State *L ) {
+#ifdef __CATALINA__
+  int lock = (int) luaL_checkinteger( L, 1);
+  _lockrel(lock);
+  return 0;
+#else
+  return 0;
+#endif
+}
+
+static int propeller_clkfreq( lua_State *L ) {
+#ifdef __CATALINA__
+  pushint(L, _clockfreq());
+  return 1;
+#else
+  return 0;
+#endif
+}
+
+static int propeller_clkmode( lua_State *L ) {
+#ifdef __CATALINA__
+  pushint(L, _clockmode());
+  return 1;
+#else
+  return 0;
+#endif
+}
+
+static int propeller_getcnt( lua_State *L ) {
+#ifdef __CATALINA__
+#ifdef __CATALINA_P2
+  counter64_t count64;
+  count64 = _cnthl();
+  pushint(L, count64.low);
+  pushint(L, count64.high);
+#else
+  pushint(L, _cnt());
+  pushint(L, 0);
+#endif
+  return 2;
+#else
+  return 0;
+#endif
+}
+
+static int propeller_muldiv64( lua_State *L ) {
+#ifdef __CATALINA__
+#ifdef __CATALINA_P2
+  int mul1 = (int) luaL_checkinteger( L, 1);
+  int mul2 = (int) luaL_checkinteger( L, 2);
+  int div  = (int) luaL_checkinteger( L, 3);
+  pushint(L, _muldiv64((uint32_t) mul1, (uint32_t) mul2, (uint32_t) div));
+  return 1;
+#else
+  return 0;
+#endif
+#else
+  return 0;
+#endif
+}
+
+static int propeller_t_string( lua_State *L ) {
+#ifdef __CATALINA__
+  if (lua_gettop(L) > 0) {
+     /* validate arguments */
+     register lua_Integer curs = luaL_checkinteger( L, 1 );
+     register const char *value = luaL_checkstring( L, 2 );
+     lua_settop(L, 0);
+     pushint( L, t_string(((unsigned)curs), value) );
+     return 1;
+  }
+#else
+  return 0;
+#endif
+}
 
 static int propeller_setenv( lua_State *L ) {
 #ifdef __CATALINA__

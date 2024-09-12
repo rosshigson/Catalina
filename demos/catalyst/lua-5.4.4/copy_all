@@ -40,6 +40,7 @@ if [ -f src/luax.bin ]; then
    cp test/ex10.lua $1ex10.lua
    cp test/ex11.lua $1ex11.lua
    cp test/ex12.lua $1ex12.lua
+   cp test/ex13.lua $1ex13.lua
    cp src/lua.bin $1lua.bin
    cp src/luax.bin $1luax.bin
    cp src/luac.bin $1luac.bin

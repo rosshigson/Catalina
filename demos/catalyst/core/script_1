@@ -1,0 +1,3 @@
+call script_2 %1 %2
+call script_2 aaa bbb
+call script_2 _1 _2

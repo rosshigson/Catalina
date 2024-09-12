@@ -13,9 +13,9 @@ if not threads then
 end                                                                             
 
 t = threads
--- 12 threads assumes Lua is compiled in COMPACT mode. 
--- If it is compiled in NATIVE mode change count to 6:
-count = 12
+-- 10 threads assumes Lua is compiled in COMPACT mode. 
+-- If it is compiled in NATIVE mode change count to 5:
+count = 10
 -- we only need a small stack
 t.stacksize(2500)
 -- create the workers

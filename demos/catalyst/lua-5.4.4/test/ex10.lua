@@ -30,7 +30,8 @@ function PinToggler(pin, msec)
    end
 end
 
-print("Watch the LEDs!")
+print("Watch the LEDs! (if they are not flashing,");
+print ("adjust the pin constants in the program)");
 
 -- start the threads
 threads.new(PinToggler(pin1, 1000))

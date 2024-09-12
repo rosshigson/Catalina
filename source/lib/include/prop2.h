@@ -107,7 +107,7 @@ int       _locknew(void);
 void      _lockret(int lock);
 
 int       _locktry(int lock);
-int       _lockrel(int lock);
+void      _lockrel(int lock);
 int       _lockchk(int lock);
 
 void      _cogatn(uint32_t mask);

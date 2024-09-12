@@ -54,6 +54,7 @@ copy test\ex9.lua %1ex9.lua
 copy test\ex10.lua %1ex10.lua
 copy test\ex11.lua %1ex11.lua
 copy test\ex12.lua %1ex12.lua
+copy test\ex13.lua %1ex13.lua
 copy src\lua.bin %1lua.bin
 copy src\luax.bin %1luax.bin
 copy src\luac.bin %1luac.bin
