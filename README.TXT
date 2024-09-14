@@ -126,6 +126,13 @@ Other Changes
    was incorrect - it defined the function as returning an int when in fact 
    it does not return any value. Affected the Propeller 2 only.
 
+3. The filename completion function in Catalyst would complete commmands
+   in the BIN directory without including the "/BIN/" prefix. If the intent
+   was just to execute the command this worked ok, but if the intent was to 
+   process the file (e.g. if the command was a Lua script to be edited) then 
+   the completed filename was not correct and the file would not be found. 
+   Affected the Propeller 2 only.
+
 RELEASE 8.0
 
 New Functionality

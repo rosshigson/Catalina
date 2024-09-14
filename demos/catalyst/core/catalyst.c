@@ -629,14 +629,13 @@ void initialize_dynamic_data(PVOLINFO vi, char *dirname, int use_path) {
    int i;
 
    if ((dirname == NULL) || (strlen(dirname) == 0)) {
-      // process both the root and bin direcotories, not including a path
-      // (becuase these will always be matched by later command processing)
-      do_directory(vi, "", 0, 0);
-      do_directory(vi, "bin", 0, 0);
+      // process the root ("") and BIN direcotories
+      do_directory(vi, "", 0, 0); // do not include path for root
+      do_directory(vi, "BIN", 0, 1); // include path for bin
    }
    else if (strcmp(dirname, "/") == 0) {
-      // process the root directory, not recursing into subdirectories,
-      // but including the path
+      // process the root directory, not recursing into subdirectories, 
+      // but including the path (because this was specified!)
       do_directory(vi, "", 0, use_path);
    }
    else {
@@ -738,6 +737,26 @@ void completion(const char *buf, linenoiseCompletions *lc) {
       if (*key_start != '#') {
          // not a comment line
          if (strncmp_i(word, key_start, strlen(word)) == 0) {
+#if DIAGNOSE_COMPLETION == 2
+            t_printf("candidate=%s, len=%d\n", key_start, key_len);
+#endif
+            // the completion is not just the word, it is buf with
+            // the partial word replaced with the complete word!
+            for (i = 0; i < (word - buf); i++) {
+               completed[i] = buf[i];
+            }
+            for (j = 0; j < key_len; j++) {
+               completed[i+j] = key_start[j];
+            }
+            completed[i+j] = '\0';
+#if DIAGNOSE_COMPLETION == 2
+            t_printf("completion=%s\n", completed);
+#endif
+            linenoiseAddCompletion(lc, completed);
+         }
+         // special case - also match if the candidate is "bin/word" ...
+         if ((strncmp_i(key_start, "bin/", 4) == 0)
+         &&  (strncmp_i(word, key_start+4, strlen(word)) == 0)) {
 #if DIAGNOSE_COMPLETION == 2
             t_printf("candidate=%s, len=%d\n", key_start, key_len);
 #endif
