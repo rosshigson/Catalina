@@ -101,6 +101,19 @@ New Functionality
    Multi-Processing version of Lua (i.e. mlua or mluax) See the document 
    "Lua on the Propeller 2 with Catalina" for details.
 
+7. A new example program (args.lua) has been added to demonstrate how a Lua
+   script can process arguments whether executed from the command line, such 
+   as:
+     args one 2.0 3 
+   or
+     lua args.lua one 2.0 3
+
+   Or from within another Lua script, such as:
+     f = loadfile("args.lua");
+     f("one", 2.0, 3);
+   or 
+     loadfile("args.lua")("one", 2.0, 3);
+
 Other Changes
 -------------
 
