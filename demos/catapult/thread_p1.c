@@ -9,7 +9,7 @@
  *                   
  */
 
-#pragma catapult common options(-C C3 -C TTY -lc -lmc)
+#pragma catapult common options(-C C3 -C TTY -C NO_ARGS -lc -lmc)
 
 // any common includes or types here ...
 

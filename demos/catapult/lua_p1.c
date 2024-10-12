@@ -24,7 +24,7 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma catapult common options(-C C3 -C TTY -lma)
+#pragma catapult common options(-C C3 -C TTY -C NO_ARGS -lma)
 
 #include <catapult.h>
 #include <stdlib.h>

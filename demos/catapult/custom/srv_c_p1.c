@@ -37,7 +37,7 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma catapult common options(-W-w -C C3 -C TTY -lc -lma service.c)
+#pragma catapult common options(-W-w -C C3 -C TTY -C NO_ARGS -lc -lma service.c)
 
 #include <catapult.h>
 #include <stdlib.h>
@@ -224,14 +224,14 @@ int func_7(char *c1, char *c2) { // example CHAR_2_SVC
  * are for information only
  */
 svc_list_t my_service_list = {
-   {"func_1", func_1, SHORT_SVC, MY_SVC_1},
-   {"func_2", func_2, LONG_SVC, MY_SVC_2},
-   {"func_3", func_3, LONG_2_SVC, MY_SVC_3},
-   {"func_4", func_4, FLOAT_SVC, MY_SVC_4},
-   {"func_5", func_5, LONG_FLOAT_SVC, MY_SVC_5},
-   {"func_6", func_6, SHARED_SVC, MY_SVC_6},
-   {"func_7", func_7, CHAR_2_SVC, MY_SVC_7},
-   {"", NULL, 0, 0}
+   {"func_1", func_1, SHORT_SVC, MY_SVC_1, 0},
+   {"func_2", func_2, LONG_SVC, MY_SVC_2, 0},
+   {"func_3", func_3, LONG_2_SVC, MY_SVC_3, 0},
+   {"func_4", func_4, FLOAT_SVC, MY_SVC_4, 0},
+   {"func_5", func_5, LONG_FLOAT_SVC, MY_SVC_5, 0},
+   {"func_6", func_6, SHARED_SVC, MY_SVC_6, 0},
+   {"func_7", func_7, CHAR_2_SVC, MY_SVC_7, 0},
+   {"", NULL, 0, 0, 0}
 };
 
 void main() {

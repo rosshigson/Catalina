@@ -24,7 +24,7 @@ To build a C client with a C server:
 
 To build a C client with a Lua server:
 
-   catapult src_l_p1.c
+   catapult srv_l_p1.c
 
 To build the demos for a P2_EDGE with PSRAM (i.e. a P2-EC32MB) and an 8K
 cache, use the following commands:
@@ -35,6 +35,9 @@ To build a C client with a C server:
 
 To build a C client with a Lua server:
 
-   catapult src_l_p2.c
+   catapult srv_l_p2.c
+
+Since these are XMM programs, remember to use 'build_utilities' to build the 
+appropriate loader utilities for use with the payload loader.
 
 See the document "Getting Started With Catapult" for more details.

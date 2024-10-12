@@ -17,7 +17,7 @@
 #include <string.h>
 
 #define NUM_SYMBOLS 256
-#define NUM_USER_SYMBOLS 16384
+#define NUM_USER_SYMBOLS 32768
 #define NUM_TEMP_USER_SYMBOLS 1024
 
 static SymbolTableEntryDataTable symbols[] =

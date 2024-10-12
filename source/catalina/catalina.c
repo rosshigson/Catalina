@@ -378,6 +378,7 @@
  *                to catbind. HEAP_TOP is used by _sbrk(), but the actual 
  *                value used will be the LOWER of HEAP_TOP and FREE_MEM.
  *
+ * version 8.1   - just update version number.
  */                  
 
 /*--------------------------------------------------------------------------
@@ -407,7 +408,7 @@
 #include <string.h>
 #include <math.h>
 
-#define VERSION            "7.9"
+#define VERSION            "8.1"
 
 #define MAX_LINELEN        4096
 

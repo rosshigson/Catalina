@@ -74,7 +74,9 @@ all:	darray.h \
 	getrealrand.s \
 	pins.s \
 	waitums.s \
-	hub_malloc.s
+	hub_malloc.s \
+	aligns.s 
+
 ifeq ($(COMPACT),TRUE)
 	cp waitvid.ce waitvid.s
 	cp waitcnt.ce waitcnt.s

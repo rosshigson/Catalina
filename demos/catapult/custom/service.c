@@ -1,18 +1,24 @@
-#include <stdlib.h>
 #include <plugin.h>
 
 #include "service.h"
 
 /*
- * Char service request (2 parameters):
+ * Char service function (2 parameters):
  */
 int char_service_2 (long svc, char *par1, char *par2) {
-	struct char_param_2 tmp;
+   struct char_param_2 tmp;
    tmp.par1 = par1;
    tmp.par2 = par2;
-	return _sys_plugin (-svc, (long)&tmp);
+   return _sys_plugin(-svc, (long)&tmp);
 }
 
+/*
+ * serial service function:
+ */
+extern long _serial_service(long svc, serial_t *serial) {
+   serial->len_out = 0; // in case we forget!
+   return _sys_plugin(-svc, (long)serial);
+}
 
 /*
  * register services - regeister an array of services, which is terminated

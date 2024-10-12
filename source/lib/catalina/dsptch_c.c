@@ -1,6 +1,10 @@
 #include <service.h>
 
-void _dispatch_C(svc_list_t list) {
+// use _dispatch_C if no background task is required
+#define _dispatch_C(list) _dispatch_C_bg(list, (bg)NULL)
+
+// use _dispatch_C_bg if a background task is required
+void _dispatch_C_bg(svc_list_t list, background bg) {
    request_t *rqst_ptr = REQUEST_BLOCK(_cogid());
    long req;
    int int_id;
@@ -13,8 +17,12 @@ void _dispatch_C(svc_list_t list) {
 
    // wait for request (i.e. non-zero value in request long)
    while ((req = rqst_ptr->request) == 0) {
+      if (bg != NULL) {
+         // call background task
+         (*bg)();
+      }
 #ifdef __CATALINA_lthreads
-     _thread_yield();
+      _thread_yield();
 #endif
    }
    // get the internal id and parameter
@@ -72,6 +80,15 @@ void _dispatch_C(svc_list_t list) {
             result = (*func)(tmp->par1, tmp->par2); 
             // return result
             rqst_ptr->response = result;
+         }
+         break;
+      case SERIAL_SVC :
+         {
+            call_SERIAL_SVC func = (call_SERIAL_SVC)list[int_id-1].addr;
+            // param is serial_t * pointed to by lower 24 bits
+            serial_t *serial  = (serial_t *)(*(long *)(req&0xFFFFFF));
+            // execute function and return result (as int)
+            rqst_ptr->response = (*func)(serial); 
          }
          break;
       default:

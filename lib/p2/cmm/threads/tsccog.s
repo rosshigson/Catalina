@@ -21,11 +21,12 @@ C_cmmtd_array ' <symbol:cmmtd_array>
  long $fb040761
  long $fb040561
  long $fb040361
- long $f6040000
- long $fc600054
  long $f1843208
  long $f6005a19
- long $f1843208
+ long $f1843204
+ long $f6644e01
+ long $fc604e19
+ long $f1843204
  long $fd604e01
  long $f0644e08
  long $fc604e19
@@ -35,7 +36,6 @@ C_cmmtd_array ' <symbol:cmmtd_array>
  long $f184320c
  long $fc600219
  long $fd64002d
- long $0
  long $0
  long $0
  long $0
@@ -113,10 +113,10 @@ C_cmmtd_array ' <symbol:cmmtd_array>
  long $fb040361
  long $fd600029
  long $fb020001
- long $fdbffe80
- long $fd90003c
- long $0
- long $0
+ long $f6040000
+ long $fc600054
+ long $fdbffe78
+ long $fd900034
  long $0
  long $0
  long $0
@@ -128,9 +128,9 @@ C_cmmtd_array ' <symbol:cmmtd_array>
  long $0
  long $f0444a10
  long $fb9c4a06
- long $fd604224
- long $f1043004
  long $fd604024
+ long $f1043004
+ long $fd604224
  long $fb6fc801
  long $fda0036a
  long $fb004a18

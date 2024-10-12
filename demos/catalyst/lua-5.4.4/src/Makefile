@@ -33,7 +33,7 @@ CMCFLAGS=
 PLATS= guess aix bsd c89 freebsd generic linux linux-readline macosx mingw posix solaris
 
 LUA_A=	liblua.a
-CORE_O=	lapi.o lcode.o lctype.o ldebug.o ldo.o ldump.o lfunc.o lgc.o llex.o lmem.o lobject.o lopcodes.o lparser.o lstate.o lstring.o ltable.o ltm.o lundump.o lvm.o lzio.o lprop.o
+CORE_O=	lapi.o lcode.o lctype.o ldebug.o ldo.o ldump.o lfunc.o lgc.o llex.o lmem.o lobject.o lopcodes.o lparser.o lstate.o lstring.o ltable.o ltm.o lundump.o lvm.o lzio.o lprop.o lhmi.o lservice.o lserial2.o
 COREM_O= lthreads.o lthrsch.o 
 LIB_O=	lauxlib.o lbaselib.o lcorolib.o ldblib.o liolib.o lmathlib.o loadlib.o loslib.o lstrlib.o ltablib.o lutf8lib.o  
 BASE_O= $(CORE_O) $(COREM_O) $(LIB_O) $(MYOBJS)

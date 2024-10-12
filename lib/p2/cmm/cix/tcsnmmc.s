@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_sgf4_66cc65a3_nmmtd_array_L000001 ' <symbol:nmmtd_array>
+C_sdqk_670706d9_nmmtd_array_L000001 ' <symbol:nmmtd_array>
  long $fd900108
  long $fd9001fc
  long $fd900220
@@ -41,9 +41,10 @@ C_sgf4_66cc65a3_nmmtd_array_L000001 ' <symbol:nmmtd_array>
  long $0
  long $fb043361
  long $fb043161
- long $f6042c00
- long $fc602c38
- long $f1843408
+ long $f187f004
+ long $f6647401
+ long $fc6075f8
+ long $f187f004
  long $fd607401
  long $f0647408
  long $fc60741a
@@ -58,7 +59,6 @@ C_sgf4_66cc65a3_nmmtd_array_L000001 ' <symbol:nmmtd_array>
  long $fb042d61
  long $fc602c1a
  long $fd64002d
- long $0
  long $0
  long $0
  long $0
@@ -92,11 +92,11 @@ C_sgf4_66cc65a3_nmmtd_array_L000001 ' <symbol:nmmtd_array>
  long $fb043161
  long $fd602c29
  long $fb020018
- long $fdbfff28
+ long $f6042c00
+ long $fc602c38
+ long $fdbfff20
  long $f603f01a
  long $fd602e2c
- long $0
- long $0
  long $0
  long $0
  long $0
@@ -849,7 +849,7 @@ C__threaded_cogstart_N_M_M__cog ' <symbol:_threaded_cogstart_NMM_cog>
  word I16A_MOV + (r2)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
  word I16B_LODL + (r22)<<D16B
  alignl ' align long
- long @C_sgf4_66cc65a3_nmmtd_array_L000001 ' reg <- addrg
+ long @C_sdqk_670706d9_nmmtd_array_L000001 ' reg <- addrg
  word I16A_MOV + (r3)<<D16A + (r22)<<S16A
  word I16A_SARI + (r3)<<D16A + (2)<<S16A ' SHRI4 reg coni
  word I16B_LODF + ((-36)&$1FF)<<S16B

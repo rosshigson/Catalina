@@ -21,6 +21,7 @@
  *
  * version 7.9 - just update version number.
  *
+ * version 8.1 - just update version number.
  */
 
 /*--------------------------------------------------------------------------
@@ -61,7 +62,7 @@
 #define SHORT_LAYOUT_4     1 /* 1 to remove unused bytes when using layout 4 (P1 only) */
 #define SHORT_LAYOUT_5     1 /* 1 to remove unused bytes when using layout 5 (P1 or P2) */
 
-#define VERSION            "7.9"
+#define VERSION            "8.1"
 
 #define MAX_FILES          1
 #define MAX_LINELEN        4096

@@ -71,13 +71,22 @@ void my_dispatch_C(svc_list_t list) {
             rqst_ptr->response = result;
          }
          break;
+      case SERIAL_SVC :
+         {
+            call_SERIAL_SVC func = (call_SERIAL_SVC)list[int_id-1].addr;
+            // param is serial_t * pointed to by lower 24 bits
+            serial_t *serial  = (serial_t *)(*(long *)(req&0xFFFFFF));
+            // execute function and return result (as int)
+            rqst_ptr->response = (*func)(serial); 
+         }
+         break;
       case CHAR_2_SVC :
          {
             call_CHAR_2_SVC func = (call_CHAR_2_SVC)list[int_id-1].addr;
             // param is a pointer to a structure with two parameters
             char_param_2_t *tmp = (char_param_2_t *)(req&0xFFFFFF);
             // execute function and return result
-            rqst_ptr->response = (int)((*func)(tmp->par1, tmp->par2)); 
+            rqst_ptr->response = (*func)(tmp->par1, tmp->par2); 
          }
          break;
       default:

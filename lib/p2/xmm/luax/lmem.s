@@ -235,7 +235,7 @@ C_luaM__free_ ' <symbol:luaM_free_>
 
 
  alignl ' align long
-C_sepo2_66cc64ab_tryagain_L000028 ' <symbol:tryagain>
+C_sdns2_670705fc_tryagain_L000028 ' <symbol:tryagain>
  jmp #NEWF
  jmp #PSHM
  long $fa8000 ' save registers
@@ -258,7 +258,7 @@ C_sepo2_66cc64ab_tryagain_L000028 ' <symbol:tryagain>
  and r20, #15 ' BANDI4 coni
  cmps r20, r22 wz
  jmp #BRNZ
- long @C_sepo2_66cc64ab_tryagain_L000028_30 ' NEI4
+ long @C_sdns2_670705fc_tryagain_L000028_30 ' NEI4
  mov r20, r15
  adds r20, #59 ' ADDP4 coni
  mov RI, r20
@@ -267,7 +267,7 @@ C_sepo2_66cc64ab_tryagain_L000028 ' <symbol:tryagain>
  and r20, cviu_m1 ' zero extend
  cmps r20, r22 wz
  jmp #BRNZ
- long @C_sepo2_66cc64ab_tryagain_L000028_30 ' NEI4
+ long @C_sdns2_670705fc_tryagain_L000028_30 ' NEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -293,12 +293,12 @@ C_sepo2_66cc64ab_tryagain_L000028 ' <symbol:tryagain>
  add SP, #12 ' CALL indirect
  mov r22, r0 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sepo2_66cc64ab_tryagain_L000028_29 ' JUMPV addrg
-C_sepo2_66cc64ab_tryagain_L000028_30
+ long @C_sdns2_670705fc_tryagain_L000028_29 ' JUMPV addrg
+C_sdns2_670705fc_tryagain_L000028_30
  jmp #LODL
  long 0
  mov r0, RI ' reg <- con
-C_sepo2_66cc64ab_tryagain_L000028_29
+C_sdns2_670705fc_tryagain_L000028_29
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -351,7 +351,7 @@ C_luaM__realloc_ ' <symbol:luaM_realloc_>
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_sepo2_66cc64ab_tryagain_L000028
+ long @C_sdns2_670705fc_tryagain_L000028
  add SP, #12 ' CALL addrg
  mov r13, r0 ' CVI, CVU or LOAD
  mov r22, r13 ' CVI, CVU or LOAD
@@ -491,7 +491,7 @@ C_luaM__malloc__41
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_sepo2_66cc64ab_tryagain_L000028
+ long @C_sdns2_670705fc_tryagain_L000028
  add SP, #12 ' CALL addrg
  mov RI, FP
  sub RI, #-(-12)

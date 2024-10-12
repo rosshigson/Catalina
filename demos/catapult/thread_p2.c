@@ -9,7 +9,7 @@
  *                   
  */
 
-#pragma catapult common options(-C P2_EDGE -p2 -lc -lmc)
+#pragma catapult common options(-C P2_EDGE -C NO_ARGS -p2 -lc -lmc)
 
 // any common includes or types here ...
 

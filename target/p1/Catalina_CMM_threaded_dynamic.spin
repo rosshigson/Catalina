@@ -107,20 +107,20 @@ r8       long    0              '$08
 r9       long    0              '$09
 r10      long    0              '$0a
 r11      long    0              '$0b
-r12      long    0              '$0c
-r13      long    0              '$0d
 LMM_context
-r14      sub     SP,#8          '$0e reserve space ...
-r15      mov     xfer,SP        '$0f ... for xfer block at top of stack
-r16      sub     SP,#(Common#THREAD_BLOCK_SIZE-Common#THREAD_AFF_OFF)*4 '$10 top of stack will be first thread block
-r17      cogid   t1             '$11 set up ...
-r18      shl     t1,#8          '$12 ... affinity, flags ...
-r19      wrlong  t1,SP          '$13 ... and set ticks to zero
-r20      sub     SP,#Common#THREAD_AFF_OFF*4 '$14 point to begining of thread block
-r21      wrlong  SP,SP          '$15 make thread block point to itself
-r22      mov     TP,SP          '$16 make thread block the current thread
+r12      sub     SP,#8          '$0c reserve space ...
+r13      mov     xfer,SP        '$0d ... for xfer block at top of stack
+r14      sub     SP,#(Common#THREAD_BLOCK_SIZE-Common#THREAD_EXT_OFF)*4 '$0e  write -1 ...
+r15      neg     t1,#1          '$0f ... to extended information ...
+r16      wrlong  t1,SP          '$10 ... (i.e. we are not a pthread!)
+r17      sub     SP,#Common#THREAD_EXT_OFF*4 '$11 set up ...
+r18      cogid   t1             '$12 ... affinity ...
+r19      shl     t1,#8          '$13 ... flags ...
+r20      wrlong  t1,SP          '$14 ... and set ticks to zero
+r21      sub     SP,#Common#THREAD_AFF_OFF*4 '$15 point to begining of thread block
+r22      wrlong  SP,SP          '$16 make thread block point to itself
+r23      mov     TP,SP          '$17 make thread block the current thread
 LMM_context_ret
-r23      ret                    '$17
 PC       long    0              '$18
 SP       long    0              '$19
 FP       long    0              '$1a

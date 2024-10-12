@@ -446,6 +446,10 @@ CON
 
 
 
+
+
+
+
 ' default is to use P2_CUSTOM constants
 '#line 1 "../../../target/p2/P2CUSTOM.inc"
 '------------------------------- P2_CUSTOM constants ---------------------------
@@ -519,8 +523,13 @@ FLOAT_PIN_MODE   = %0000_0000_000_0000000000000_00_00001_0 'mode bits
 ' serial constants
 ' ================
 
+
 _RX_PIN    = 63
+
+
+
 _TX_PIN    = 62
+
 
 
 _BAUDRATE  = 230400
@@ -532,8 +541,16 @@ _BAUDRATE  = 230400
 
 
 
-_BLACKCAT_MODE    = %0000
+
+
+
+
+
+
 _BLACKCAT_BAUD    = 115200
+
+
+_BLACKCAT_MODE    = %0000
 _BLACKCAT_SIZE    = 5*4   ' 5 longs
 
 ' SD Card constants
@@ -748,7 +765,7 @@ _DEBUG_PIN = 56
 
 
 
-'#line 23 "../../../target/p2/platform.inc"
+'#line 27 "../../../target/p2/platform.inc"
 
 
 '--------------------------- END OF PLATFORM CONSTANTS -----------------------

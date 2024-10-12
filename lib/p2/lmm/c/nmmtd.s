@@ -73,6 +73,10 @@ CON
 
 
 
+
+
+
+
 ' default is to use P2_CUSTOM constants
 '#line 1 "../../../target/p2/P2CUSTOM.inc"
 '------------------------------- P2_CUSTOM constants ---------------------------
@@ -146,8 +150,13 @@ FLOAT_PIN_MODE   = %0000_0000_000_0000000000000_00_00001_0 'mode bits
 ' serial constants
 ' ================
 
+
 _RX_PIN    = 63
+
+
+
 _TX_PIN    = 62
+
 
 
 _BAUDRATE  = 230400
@@ -159,8 +168,16 @@ _BAUDRATE  = 230400
 
 
 
-_BLACKCAT_MODE    = %0000
+
+
+
+
+
+
 _BLACKCAT_BAUD    = 115200
+
+
+_BLACKCAT_MODE    = %0000
 _BLACKCAT_SIZE    = 5*4   ' 5 longs
 
 ' SD Card constants
@@ -375,7 +392,7 @@ _DEBUG_PIN = 56
 
 
 
-'#line 23 "../../../target/p2/platform.inc"
+'#line 27 "../../../target/p2/platform.inc"
 
 
 '--------------------------- END OF PLATFORM CONSTANTS -----------------------
@@ -1003,25 +1020,24 @@ r4      long 0                 '$1a
 _Thread_init
 r5      rdlong  r3,PTRA++      '$1b load argc
 r6      rdlong  r2,PTRA++      '$1c load argv
-r7      mov     r0,#0          '$1d zero ...
-r8      wrlong  r0,req         '$1e ... our request block
-r9      sub     r4,#(THREAD_BLOCK_SIZE-THREAD_AFF_OFF)*4 '$1f top of stack will be first thread block
-r10     cogid   t1             '$20 set up ...
-r11     shl     t1,#8          '$21 ... affinity, flags ...
-r12     wrlong  t1,r4          '$22 ... and set ticks to zero
-r13     sub     r4,#THREAD_AFF_OFF*4 '$23 point to begining of thread block
-r14     wrlong  r4,r4          '$24 make thread block point to itself
-r15     mov     TP,r4          '$25 make thread block the current thread
-r16     mov     ijmp3,#NMM_isr '$26 set int3 vector
-r17     getct   ct3            '$27 set initial ct3 target
-r18     addct3  ct3,ticks      '$28 (interrupt will do nothing till TP set)
-r19     setint3 #3             '$29 set int3 for ct-passed-ct3 event
-r20     sub     r4,#12         '$2a allow space for spilled arguments
-r21     rdlong  r0,PTRA++      '$2b load return address
-r22     wrlong  r0,r4          '$2c set up return address
-r23     ret                    '$2d
-
-Save_PC long  0                '$2e
+r7      sub     SP,#(THREAD_BLOCK_SIZE-THREAD_EXT_OFF)*4 '$1d  write -1 ...
+r8      neg     t1,#1          '$1e ... to extended information ...
+r9      wrlong  t1,SP          '$1f ... (i.e. we are not a pthread!)
+r10     sub     SP,#(THREAD_EXT_OFF-THREAD_AFF_OFF)*4 '$20 set up ...
+r11     cogid   t1             '$21 ... affinity ...
+r12     shl     t1,#8          '$22 ... flags ...
+r13     wrlong  t1,r4          '$23 ... and set ticks to zero
+r14     sub     r4,#THREAD_AFF_OFF*4 '$24 point to begining of thread block
+r15     wrlong  r4,r4          '$25 make thread block point to itself
+r16     mov     TP,r4          '$26 make thread block the current thread
+r17     mov     ijmp3,#NMM_isr '$27 set int3 vector
+r18     getct   ct3            '$28 set initial ct3 target
+r19     addct3  ct3,ticks      '$29 (interrupt will do nothing till TP set)
+r20     setint3 #3             '$2a set int3 for ct-passed-ct3 event
+r21     sub     r4,#12         '$2b allow space for spilled arguments
+r22     rdlong  r0,PTRA++      '$2c load return address
+r23     wrlong  r0,r4          '$2d set up return address
+Save_PC ret                    '$2e
 Save_FP long  0                '$2f
 Save_SP long  0                '$30
 Save_PA long  0                '$31
@@ -1070,11 +1086,11 @@ nmm_init
         rdlong  r2,PTRA++      '$4d 11 load initial LUT library address
         setq2   r0             '$4e 12 copy lut library ...
         rdlong  $100,r2        '$4f 13 ... to LUT RAM, starting at $100
-        call    #_Thread_init  '$50 14 set up initial thread
-        mov     PTRA,r4        '$51 15 set up correct SP
-        jmp     r1             '$52 16 we can now start executing Native code
-        long    0              '$53 17
-        long    0              '$54 18
+        mov     r0,#0          '$50 14 zero ...
+        wrlong  r0,req         '$51 15 ... our request block
+        call    #_Thread_init  '$52 16 set up initial thread
+        mov     PTRA,r4        '$53 17 set up correct SP
+        jmp     r1             '$54 18 we can now start executing Native code
         long    0              '$55 19
         long    0              '$56 20
         long    0              '$57 21
@@ -1920,7 +1936,7 @@ do_loadlut_hub
 
 
 
-'#line 824 "../../../target/p2/nmmtd.t"
+'#line 823 "../../../target/p2/nmmtd.t"
 
 '#line 1 "../../../target/p2/nmmklib.inc"
 ' Catalina kernel functions that are specific to the NMM kernels ...
@@ -1937,7 +1953,7 @@ DAT
 
 
 
-'#line 826 "../../../target/p2/nmmtd.t"
+'#line 825 "../../../target/p2/nmmtd.t"
 
 '#line 1 "../../../target/p2/thlib.inc"
 ' Catalina thread library functions ...
@@ -2004,4 +2020,4 @@ REL_POOL_LOCK
 
 
 
-'#line 828 "../../../target/p2/nmmtd.t"
+'#line 827 "../../../target/p2/nmmtd.t"

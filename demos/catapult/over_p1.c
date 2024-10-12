@@ -7,7 +7,7 @@
  *                   
  */
 
-#pragma catapult common options(-C C3 -C TTY -C FS_OVERLAY -O5 -lcx -lma)
+#pragma catapult common options(-C C3 -C TTY -C FS_OVERLAY -C NO_ARGS -O5 -lcx -lma)
 
 // common includes or definitions should go here ...
 

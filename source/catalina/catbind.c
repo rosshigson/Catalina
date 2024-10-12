@@ -323,10 +323,11 @@
  *
  * Version 7.6   - just update version number.
  *
- * Version 7.9  - Add -H option to specify heap top (+1), which is passed
- *                to bcc. HEAP_TOP is used by _sbrk(), but the actual value
- *                used will be the LOWER of HEAP_TOP and FREE_MEM.
+ * Version 7.9   - Add -H option to specify heap top (+1), which is passed
+ *                 to bcc. HEAP_TOP is used by _sbrk(), but the actual value
+ *                 used will be the LOWER of HEAP_TOP and FREE_MEM.
  *
+ * version 8.1   - just update version number.
  */
 
 /*--------------------------------------------------------------------------
@@ -362,7 +363,7 @@
 #include <sys/stat.h>
 #endif
 
-#define VERSION            "7.9"
+#define VERSION            "8.1"
 
 #define MAX_FILES          500
 #define MAX_LIBS           500

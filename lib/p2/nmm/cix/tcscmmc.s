@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_sfl0_66cc660e_cmmtd_array_L000001 ' <symbol:cmmtd_array>
+C_sbtc_6707073b_cmmtd_array_L000001 ' <symbol:cmmtd_array>
  long $fd900154
  long $0
  long $0
@@ -19,11 +19,12 @@ C_sfl0_66cc660e_cmmtd_array_L000001 ' <symbol:cmmtd_array>
  long $fb040761
  long $fb040561
  long $fb040361
- long $f6040000
- long $fc600054
  long $f1843208
  long $f6005a19
- long $f1843208
+ long $f1843204
+ long $f6644e01
+ long $fc604e19
+ long $f1843204
  long $fd604e01
  long $f0644e08
  long $fc604e19
@@ -33,7 +34,6 @@ C_sfl0_66cc660e_cmmtd_array_L000001 ' <symbol:cmmtd_array>
  long $f184320c
  long $fc600219
  long $fd64002d
- long $0
  long $0
  long $0
  long $0
@@ -111,10 +111,10 @@ C_sfl0_66cc660e_cmmtd_array_L000001 ' <symbol:cmmtd_array>
  long $fb040361
  long $fd600029
  long $fb020001
- long $fdbffe80
- long $fd90003c
- long $0
- long $0
+ long $f6040000
+ long $fc600054
+ long $fdbffe78
+ long $fd900034
  long $0
  long $0
  long $0
@@ -126,9 +126,9 @@ C_sfl0_66cc660e_cmmtd_array_L000001 ' <symbol:cmmtd_array>
  long $0
  long $f0444a10
  long $fb9c4a06
- long $fd604224
- long $f1043004
  long $fd604024
+ long $f1043004
+ long $fd604224
  long $fb6fc801
  long $fda0036a
  long $fb004a18
@@ -976,7 +976,7 @@ C__threaded_cogstart_C_M_M__cog ' <symbol:_threaded_cogstart_CMM_cog>
  wrlong r22, RI ' ASGNU4 addrli reg
  mov r2, r17 ' CVI, CVU or LOAD
  mov r22, #2 ' reg <- coni
- mov r20, ##@C_sfl0_66cc660e_cmmtd_array_L000001 ' reg <- addrg
+ mov r20, ##@C_sbtc_6707073b_cmmtd_array_L000001 ' reg <- addrg
  mov r3, r20 ' RSHI
  sar r3, r22 ' RSHI (3)
  mov r20, FP

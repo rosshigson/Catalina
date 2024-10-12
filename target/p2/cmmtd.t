@@ -97,22 +97,21 @@ _Thread_init
 r4       rdlong  r3,PTRA++      '$04 load argc
 r5       rdlong  r2,PTRA++      '$05 load argv
 r6       rdlong  r1,PTRA++      '$06 load return address
-r7       mov     r0,#0          '$07 zero ...
-r8       wrlong  r0,req         '$08 ... our request block  
-r9       sub     SP,#8          '$09 reserve space ...
-r10      mov     xfer,SP        '$0a ... for xfer block at top of stack
-r11      sub     SP,#(THREAD_BLOCK_SIZE-THREAD_AFF_OFF)*4 '$0b top of stack will be first thread block
-r12      cogid   t1             '$0c set up ...
-r13      shl     t1,#8          '$0d ... affinity, flags ...
-r14      wrlong  t1,SP          '$0e ... and set ticks to zero
-r15      sub     SP,#THREAD_AFF_OFF*4 '$0f point to begining of thread block
-r16      wrlong  SP,SP          '$10 make thread block point to itself
-r17      mov     TP,SP          '$11 make thread block the current thread
-r18      sub     SP,#12         '$12 allow space for spilled arguments
-r19      wrlong  r1,SP          '$13 set up return address
-r20      ret                    '$14
-                                        
-r21      long    0              '$15
+r7       sub     SP,#8          '$07 reserve space ...
+r8       mov     xfer,SP        '$08 ... for xfer block at top of stack
+r9       sub     SP,#(THREAD_BLOCK_SIZE-THREAD_EXT_OFF)*4 '$09  write -1 ...
+r10      neg     t1,#1          '$0a ... to extended information ...
+r11      wrlong  t1,SP          '$0b ... (i.e. we are not a pthread!)
+r12      sub     SP,#(THREAD_EXT_OFF-THREAD_AFF_OFF)*4 '$0c set up ...
+r13      cogid   t1             '$0d ... affinity ...
+r14      shl     t1,#8          '$0e ... flags ...
+r15      wrlong  t1,SP          '$0f ... and set ticks to zero
+r16      sub     SP,#THREAD_AFF_OFF*4 '$10 point to begining of thread block
+r17      wrlong  SP,SP          '$11 make thread block point to itself
+r18      mov     TP,SP          '$12 make thread block the current thread
+r19      sub     SP,#12         '$13 allow space for spilled arguments
+r20      wrlong  r1,SP          '$14 set up return address
+r21      ret                    '$15
 r22      long    0              '$16
 r23      long    0              '$17
 
@@ -214,10 +213,10 @@ cmm_init
         rdlong  r1,PTRA++       '$60 11 load initial LUT library address
         setq2   r0              '$61 12 copy lut library ...
         rdlong  $100,r1         '$62 13 ... to LUT RAM, starting at $100
-        call    #_Thread_init   '$63 14 set up initial thread
-        jmp     #read_next      '$64 15 we can now start executing CMM code
-        nop                     '$65 16 
-        nop                     '$66 17 
+        mov     r0,#0           '$63 14 zero ...
+        wrlong  r0,req          '$64 14 ... our request block  
+        call    #_Thread_init   '$65 16 set up initial thread
+        jmp     #read_next      '$66 17 we can now start executing CMM code
         nop                     '$67 18 
         nop                     '$68 19 
         nop                     '$69 20 
@@ -225,16 +224,17 @@ cmm_init
         nop                     '$6b 22 
         nop                     '$6c 23 
         nop                     '$6d 24 
-        nop                     '$6e 25 
+        nop                     '$6e 25
 
 pasm_16 
          long   0-0             '$6f execute generated instruction 
 done_16
          shr    inst,#16        '$70 decode ...
          tjnz   inst,#decode    '$71 ... another instruction ?
+
 FC_INLINE                       ' must match FC_INLINE in compact.inc
 done_32
-         stalli                 '$72
+         allowi                 '$72
          add    PC,#4           '$73 no - increment PC
 
 EXEC_STOP                       ' must match EXEC_STOP in compact.inc
@@ -242,7 +242,7 @@ EXEC_STOP                       ' must match EXEC_STOP in compact.inc
 ' check whether we should context switch (and switch if so)
 '
 read_next
-         allowi                 '$74
+         stalli                 '$74
          djnz   ticks,#no_swap  ' if ticks not yet zero, don't context switch
          call   #\context_switch
 no_swap

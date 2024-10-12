@@ -6,8 +6,8 @@ DAT
 
 INITIALIZE_THREAD
        sub     SP,#(THREAD_BLOCK_SIZE-THREAD_EXT_OFF)*4 ' top of stack is thread block
-       neg     t1,#1     ' write -1 ...
-       wrlong  t1,SP     ' ... to extended information
+       neg     t1,#1     ' write -1 to be extended information ...
+       wrlong  t1,SP     ' ... (i.e. we are not a pthread!)
        sub     SP,#(THREAD_EXT_OFF-THREAD_AFF_OFF)*4-2  ' point to ticks
        mov     t1,#100   ' set ticks ...
        wrword  t1,SP     ' ... to 100

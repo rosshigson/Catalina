@@ -411,6 +411,7 @@
 //                  the ANSI codes, so there should be no noticeable
 //                  differences when using the xvi (i.e. vi) editor.
 //
+// Version 8.1    - Just update version number.
 //
 //-----------------------------------------------------------------------------
 // Payload is part of Catalina.
@@ -460,7 +461,7 @@
 #include "lua-5.4.4/src/lauxlib.h"
 #endif
 
-#define VERSION            "8.0"
+#define VERSION            "8.1"
 
 #define DEFAULT_LCC_ENV    "LCCDIR" // used to locate binary files if not in current directory
 

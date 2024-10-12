@@ -37,7 +37,7 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma catapult common options(-W-w -p2 -C P2_EDGE -C SIMPLE -lc -lmc service.c)
+#pragma catapult common options(-W-w -p2 -C P2_EDGE -C SIMPLE -C NO_ARGS -lc -lmc service.c)
 
 #include <catapult.h>
 #include <stdlib.h>
@@ -71,7 +71,7 @@ typedef struct shared_data {
  * The secondary client - calls services provided by the primary server       *
  *                                                                            *
  ******************************************************************************/
-#pragma catapult secondary hub_client(shared_data_t) address(0x76F5C) mode(NMM) stack(500)
+#pragma catapult secondary hub_client(shared_data_t) address(0x76EEC) mode(NMM) stack(500)
 
 /*
  * define proxy functions, which use Catalina's pre-defined 
@@ -222,14 +222,14 @@ char *lua_code =
  * their addresses should be NULL
  */
 svc_list_t my_service_list = {
-   {"func_1", NULL, SHORT_SVC, MY_SVC_1},
-   {"func_2", NULL, LONG_SVC, MY_SVC_2},
-   {"func_3", NULL, LONG_2_SVC, MY_SVC_3},
-   {"func_4", NULL, FLOAT_SVC, MY_SVC_4},
-   {"func_5", NULL, LONG_FLOAT_SVC, MY_SVC_5},
-   {"func_6", NULL, SHARED_SVC, MY_SVC_6},
-   {"func_7", NULL, CHAR_2_SVC, MY_SVC_7},
-   {"", NULL, 0, 0}
+   {"func_1", NULL, SHORT_SVC, MY_SVC_1, 0},
+   {"func_2", NULL, LONG_SVC, MY_SVC_2, 0},
+   {"func_3", NULL, LONG_2_SVC, MY_SVC_3, 0},
+   {"func_4", NULL, FLOAT_SVC, MY_SVC_4, 0},
+   {"func_5", NULL, LONG_FLOAT_SVC, MY_SVC_5, 0},
+   {"func_6", NULL, SHARED_SVC, MY_SVC_6, 0},
+   {"func_7", NULL, CHAR_2_SVC, MY_SVC_7, 0},
+   {"", NULL, 0, 0, 0}
 };
 
 /*

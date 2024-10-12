@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_s27c_66cc660e_nmmtd_array_L000001 ' <symbol:nmmtd_array>
+C_s3kg_6707073b_nmmtd_array_L000001 ' <symbol:nmmtd_array>
  long $fd900108
  long $fd9001fc
  long $fd900220
@@ -41,9 +41,10 @@ C_s27c_66cc660e_nmmtd_array_L000001 ' <symbol:nmmtd_array>
  long $0
  long $fb043361
  long $fb043161
- long $f6042c00
- long $fc602c38
- long $f1843408
+ long $f187f004
+ long $f6647401
+ long $fc6075f8
+ long $f187f004
  long $fd607401
  long $f0647408
  long $fc60741a
@@ -58,7 +59,6 @@ C_s27c_66cc660e_nmmtd_array_L000001 ' <symbol:nmmtd_array>
  long $fb042d61
  long $fc602c1a
  long $fd64002d
- long $0
  long $0
  long $0
  long $0
@@ -92,11 +92,11 @@ C_s27c_66cc660e_nmmtd_array_L000001 ' <symbol:nmmtd_array>
  long $fb043161
  long $fd602c29
  long $fb020018
- long $fdbfff28
+ long $f6042c00
+ long $fc602c38
+ long $fdbfff20
  long $f603f01a
  long $fd602e2c
- long $0
- long $0
  long $0
  long $0
  long $0
@@ -854,7 +854,7 @@ C__threaded_cogstart_N_M_M__cog ' <symbol:_threaded_cogstart_NMM_cog>
  wrlong r22, RI ' ASGNU4 addrli reg
  mov r2, r17 ' CVI, CVU or LOAD
  mov r22, #2 ' reg <- coni
- mov r20, ##@C_s27c_66cc660e_nmmtd_array_L000001 ' reg <- addrg
+ mov r20, ##@C_s3kg_6707073b_nmmtd_array_L000001 ' reg <- addrg
  mov r3, r20 ' RSHI
  sar r3, r22 ' RSHI (3)
  mov r20, FP

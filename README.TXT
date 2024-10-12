@@ -20,8 +20,15 @@ NOT_RELEASED_YET!
 New Functionality
 -----------------
 
-1. The "exec" command (i.e. exec.lua) has been extended to allow parameter 
-   substitution anwyhere in the executed script. Previously, parameter 
+1. A new Lua variant has been added - eLua supports client/server programs
+   where the client and server execute on the same Propeller, and it can 
+   be extended by the inclusion of a new serial protocol (ALOHA) to support
+   clients and servers executing on different propellers. Client/server 
+   programs are supported on the Propeller 2 only. See the document 
+   'Aloha from Lua' for full details.
+
+2. The "exec" command (i.e. exec.lua) has been extended to allow parameter 
+   substitution anyyhere in the executed script. Previously, parameter 
    substitution was performed only when "_n" was specified as an argument to 
    the exec command itself - this was replaced with the value of the nth 
    parameter to the current script. This is still supported, but in addition 
@@ -35,7 +42,7 @@ New Functionality
 
    The "exec" command is available on the Propeller 2 only.
 
-2. A new "call" command has been added (i.e. call.lua) that allows a Catalyst 
+3. A new "call" command has been added (i.e. call.lua) that allows a Catalyst 
    script to be called from within another Catalyst script, which resumes the
    original script when the called script terminates. 
 
@@ -75,20 +82,20 @@ New Functionality
 
    The "call" command is available on the Propeller 2 only.
 
-3. The self-hosted catalina command (i.e. catalina.lua) can now be executed
+4. The self-hosted catalina command (i.e. catalina.lua) can now be executed
    within a script. Previously, doing so would terminate the script.
 
-4. A simple "echo" command has been added (i.e. echo.lua) which just echoes 
+5. A simple "echo" command has been added (i.e. echo.lua) which just echoes 
    its arguments. For example:
 
       echo hello there!
    or
       echo %1 %2 %3 etc
 
-5. New functions have been added to the Lua "propeller" module, which are
+6. New functions have been added to the Lua "propeller" module, which are
    analogous to the corresponding C library functions:
 
-     cogid, clockfreq, clockmode, getcnt, muldiv64, t_string,
+     cogid, clockfreq, clockmode, getcnt, muldiv64,
      locknew, lockclr, lockset, lockret, locktry, lockrel
 
    See the document "Lua on the Propeller 2 with Catalina" for details.
@@ -96,12 +103,26 @@ New Functionality
    Note that locktry, lockrel and muldiv64 functions are implemented on the 
    Propeller 2 only.
 
-6. A new example program (ex13.lua) has been added to demonstrate the use of
+7. All the HMI functions (e.g. k_get, k_ready ... t_char, t_geometry ..., 
+   m_buttton, m_reset ...) have been removed from the Lua "propeller"
+   module and put in a separate "hmi" module. Also, t_string was missing
+   and has now been added. If these functions are now undefined and cause
+   runtime errors when called because they are nil, then they should be 
+   renamed - e.g. from "propeller.k_new()" to "hmi.k_new()" etc. 
+   All the Lua examples in the release have been updated accordingly.
+
+8. A new example program (ex13.lua) has been added to demonstrate the use of
    Propeller locks as another possible synchronization mechanism in the 
-   Multi-Processing version of Lua (i.e. mlua or mluax) See the document 
+   Multi-Processing version of Lua (i.e. mlua or mluax). See the document 
    "Lua on the Propeller 2 with Catalina" for details.
 
-7. A new example program (args.lua) has been added to demonstrate how a Lua
+9. The multi-processing example 10 (ex10.lua) has been updated to the LED 
+   numbers appropriate for a P2 EDGE board rather than a P2 Evaluation 
+   board. Also, the example that tries to execute the maximum number of Lua
+   threads (ex8.lua) has had the default reduced to 10  from 12 (which was 
+   not achievable in some cases).
+
+10. A new example program (args.lua) has been added to demonstrate how a Lua
    script can process arguments whether executed from the command line, such 
    as:
      args one 2.0 3 
@@ -114,24 +135,79 @@ New Functionality
    or 
      loadfile("args.lua")("one", 2.0, 3);
 
+11. It is now possible to specify the pins and baud rates to be used for the 
+    default serial port and the blackcat/blackbox port to be specified on 
+    the Catalina command line using the -C command line option - e.g:
+
+      -C _RX_PIN=1
+      -C _TX_PIN=2 
+      -C _BAUDRATE=115200
+      -C _BLACKCAT_RX_PIN=1
+      -C _BLACKCAT_TX_PIN=2 
+      -C _BLACKCAT_BAUD=115200
+
+12. There is a new library function that can be used to align the value of
+    the system break (aka sbrk). If aligning the system break is needed, this
+    function should be called before any memory allocation function (i.e.
+    malloc() etc). The function is:
+
+    /*
+     * _align_sbrk - align sbrk to (1<<align), add offset, and report 
+     *               the final value (using t_printf) if requested.
+     *               For example:
+     *
+     *               _align_sbrk(10,0,0); // align to next 1k boundary
+     */
+    _align_sbrk(int align, int offset, report);
+
+   This is currently used on startup by Lua programs that can experience a 
+   lockup when loading libraries - this appears to be a Lua bug to do with
+   the alignment of the system break. The following code resolve the bug in
+   all currently known instances:
+
+      /* align sbrk to 2k boundary - Lua needs this! */
+      _align_sbrk(11,0,0);
+
 Other Changes
 -------------
 
-1. The definition of the LOCKNEW macro in prop.h (aka propeller.h) may have
+1. The Serial 2 plugin was not being initialized correctly when the first 
+   function called was s2_rxcount(). In such a case the function would never
+   return. The s2_rxcount() function worked correctly as long as it was NOT 
+   the first function called. Affected the Propeller 2 only.
+
+2. The definition of the LOCKNEW macro in prop.h (aka propeller.h) may have
    led to symbol "lock" being declared undefined because the macro used it 
    as a parameter to the _locknew() function which is neither required nor 
    used. Affected the Propeller 1 and Propeller 2.
 
-2. The definition of the _lockrel() function in prop2.h (aka propeller2.h) 
+3. The definition of the _lockrel() function in prop2.h (aka propeller2.h) 
    was incorrect - it defined the function as returning an int when in fact 
    it does not return any value. Affected the Propeller 2 only.
 
-3. The filename completion function in Catalyst would complete commmands
+4. The filename completion function in Catalyst would complete commands
    in the BIN directory without including the "/BIN/" prefix. If the intent
    was just to execute the command this worked ok, but if the intent was to 
    process the file (e.g. if the command was a Lua script to be edited) then 
    the completed filename was not correct and the file would not be found. 
    Affected the Propeller 2 only.
+
+5. The information in the 'Catalina Reference Manual (Propeller 2)' document
+   regarding the configuration of the 2 port and 8 port serial plugins and how
+   this may interact with the TTY and SIMPLE HMI options was out of date and
+   has been updated. Affected the Propeller 2 only.
+
+6. The size of the Openspin symbol table has been doubled (from 16384 symbols
+   to 32768 symbols) as it was possible that some programs exceeded the 
+   original capacity. Affected the Propeller 1 only.
+
+7. Some of the dynamic kernels were not correctly setting up the first thread
+   block, which led to lockups when these kernels were used by programs that
+   used pthreads, including some multi-processing Lua programs. Affected
+   the Propeller 1 and Propeller 2.
+
+8. The Catalina_FAQ.txt document was out of date. It has been removed.
+
 
 RELEASE 8.0
 

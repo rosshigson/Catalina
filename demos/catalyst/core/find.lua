@@ -69,7 +69,7 @@ function search_file(name, attr, size)
             incr = (math.floor((#name + 1 + #l)/80)) + 1
             if line + incr >= (lines - 2) then
                print("Press ESC to exit, or any other key to continue")
-               local k = propeller.k_new();
+               local k = hmi.k_new();
                if (k == 27) then
                  os.exit();
                end
@@ -107,7 +107,7 @@ if propeller.version("module") < 521 then
 end
 
 -- set up number of screen lines (will be 0 for serial HMI)
-lines = propeller.t_geometry()%256
+lines = hmi.t_geometry()%256
 if not lines or lines == 0 then
   lines = 24
 end
@@ -158,10 +158,10 @@ else
 
   propeller.scan(search_file, dir, file);
 
-  if propeller.t_geometry() ~= 0 then
+  if hmi.t_geometry() ~= 0 then
     -- need this if not a serial HMI
     print("Press a key to terminate");
-    propeller.k_new();
+    hmi.k_new();
   end
 
 end

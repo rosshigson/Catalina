@@ -209,6 +209,10 @@ int main(int argc, char* argv[])
  lua_State* L;
  int i=doargs(argc,argv);
  argc-=i; argv+=i;
+#ifdef __CATALINA__
+ /* align sbrk to 2k boundary - Lua needs this! */
+ _align_sbrk(11,0,0);
+#endif   
  if (argc<=0) usage("no input files given");
  L=luaL_newstate();
  if (L==NULL) fatal("cannot create state: not enough memory");

@@ -32,7 +32,7 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma catapult common options(-W-w -C C3 -C TTY -lc -lma)
+#pragma catapult common options(-W-w -C C3 -C TTY -C NO_ARGS -lc -lma)
 
 #include <catapult.h>
 #include <service.h>
@@ -195,13 +195,13 @@ long func_6(shared_data_t *shared) { // example SHARED_SVC
  * are for information only
  */
 svc_list_t my_service_list = {
-   {"func_1", func_1, SHORT_SVC, MY_SVC_1},
-   {"func_2", func_2, LONG_SVC, MY_SVC_2},
-   {"func_3", func_3, LONG_2_SVC, MY_SVC_3},
-   {"func_4", func_4, FLOAT_SVC, MY_SVC_4},
-   {"func_5", func_5, LONG_FLOAT_SVC, MY_SVC_5},
-   {"func_6", func_6, SHARED_SVC, MY_SVC_6},
-   {"", NULL, 0, 0}
+   {"func_1", func_1, SHORT_SVC, MY_SVC_1, 0},
+   {"func_2", func_2, LONG_SVC, MY_SVC_2, 0},
+   {"func_3", func_3, LONG_2_SVC, MY_SVC_3, 0},
+   {"func_4", func_4, FLOAT_SVC, MY_SVC_4, 0},
+   {"func_5", func_5, LONG_FLOAT_SVC, MY_SVC_5, 0},
+   {"func_6", func_6, SHARED_SVC, MY_SVC_6, 0},
+   {"", NULL, 0, 0, 0}
 };
 
 void main() {

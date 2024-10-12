@@ -191,7 +191,20 @@ int s2_rxflush(unsigned port) {
 // s2_rxcount :  returns number of bytes waiting in receive buffer
 //
 int s2_rxcount(unsigned port) {
-   return s2_read(0, CMD_CHARS, port);
+   int rxbyte = 0;
+
+   if (mailbox == 0) {
+      initialize();
+   }
+   if ((mailbox == 0) || (port > 1)) {
+      return -1;
+   }
+
+   ACQUIRE(lock);
+   rxbyte = s2_read(&rxbyte, CMD_CHARS, port);
+   RELEASE(lock);
+   
+   return rxbyte;
 }
 
 //

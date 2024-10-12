@@ -32,6 +32,9 @@ all:
 	cp ../../lua/lthreads.s .
 	cp ../../lua/lthrsch.s .
 	cp ../../lua/lprop.s .
+	cp ../../lua/lhmi.s .
+	cp ../../lua/lservice.s .
+	cp ../../lua/lserial2.s .
 	cp ../../lua/storage.s .
 	cp ../../lua/glob.s .
 	cp ../../lua/cfgets.s .

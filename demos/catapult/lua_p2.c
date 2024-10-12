@@ -24,7 +24,7 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma catapult common options(-p2 -C P2_EDGE -C SIMPLE -lmc)
+#pragma catapult common options(-p2 -C P2_EDGE -C SIMPLE -C NO_ARGS -lmc)
 
 #include <catapult.h>
 #include <stdlib.h>

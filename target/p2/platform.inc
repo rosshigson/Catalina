@@ -13,6 +13,10 @@ CON
 #include "P2EVAL.inc"
 #elif defined(P2_EDGE)
 #include "P2EDGE.inc"
+#elif defined(P2_MASTER)
+#include "P2MASTER.inc"
+#elif defined(P2_SLAVE)
+#include "P2SLAVE.inc"
 #elif defined(P2D2)
 #include "P2D2.inc"
 #elif defined(P2_CUSTOM) || defined(CUSTOM)

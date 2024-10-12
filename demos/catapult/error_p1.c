@@ -6,7 +6,7 @@
  *                   
  */
 
-#pragma catapult common options(-C C3 -C TTY -O5 -lc -lma)
+#pragma catapult common options(-C C3 -C TTY -C NO_ARGS -O5 -lc -lma)
 
 // common includes or definitions should go here ...
 

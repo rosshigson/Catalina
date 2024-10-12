@@ -129,22 +129,21 @@ _Thread_init
 r4       rdlong  r3,PTRA++     '$37 load argc
 r5       rdlong  r2,PTRA++     '$38 load argv
 r6       rdlong  r1,PTRA++     '$39 load return address
-r7       mov     r0,#0         '$3a zero ...
-r8       wrlong  r0,req        '$3b ... our request block  
-r9       sub     SP,#8         '$3c reserve space ...
-r10      mov     xfer,SP       '$3d ... for xfer block at top of stack
-r11      sub     SP,#(THREAD_BLOCK_SIZE-THREAD_AFF_OFF)*4 '$3e top of stack will be first thread block
-r12      cogid   t1            '$3f set up ...
-r13      shl     t1,#8         '$40 ... affinity, flags ...
-r14      wrlong  t1,SP         '$41 ... and set ticks to zero
-r15      sub     SP,#THREAD_AFF_OFF*4 '$42 point to begining of thread block
-r16      wrlong  SP,SP         '$43 make thread block point to itself
-r17      mov     TP,SP         '$44 make thread block the current thread
-r18      sub     SP,#12        '$45 allow space for spilled arguments
-r19      wrlong  r1,SP         '$46 set up return address
-r20      ret                   '$47
-                                        
-r21      long    0             '$48
+r7       sub     SP,#8         '$3a reserve space ...
+r8       mov     xfer,SP       '$3b ... for xfer block at top of stack
+r9       sub     SP,#(THREAD_BLOCK_SIZE-THREAD_EXT_OFF)*4 '$3c  write -1 ...
+r10      neg     t1,#1         '$3d ... to extended information ...
+r11      wrlong  t1,SP         '$3e ... (i.e. we are not a pthread!)
+r12      sub     SP,#(THREAD_EXT_OFF-THREAD_AFF_OFF)*4 '$3f set up ...
+r13      cogid   t1            '$40 ... affinity ...
+r14      shl     t1,#8         '$41 ... flags ...
+r15      wrlong  t1,SP         '$42 ... and set ticks to zero
+r16      sub     SP,#THREAD_AFF_OFF*4 '$43 point to begining of thread block
+r17      wrlong  SP,SP         '$44 make thread block point to itself
+r18      mov     TP,SP         '$45 make thread block the current thread
+r19      sub     SP,#12        '$46 allow space for spilled arguments
+r20      wrlong  r1,SP         '$47 set up return address
+r21      ret                   '$48
 r22      long    0             '$49
 r23      long    0             '$4a
                              
@@ -190,10 +189,10 @@ lmm_init
         rdlong  r1,PTRA++       '$64 11 load initial LUT library address
         setq2   r0              '$65 12 copy lut library ...
         rdlong  $100,r1         '$66 13 ... to LUT RAM, starting at $100
-        call    #_Thread_init   '$67 14 set up initial thread
-        jmp     #LMM_loop       '$68 15 we can now start executing LMM code
-        long    0               '$69 16
-        long    0               '$6a 17
+        mov     r0,#0           '$67 14 zero ...
+        wrlong  r0,req          '$68 15 ... our request block  
+        call    #_Thread_init   '$69 16 set up initial thread
+        jmp     #LMM_loop       '$6a 17 we can now start executing LMM code
         long    0               '$6b 18
         long    0               '$6c 19
         long    0               '$6d 20

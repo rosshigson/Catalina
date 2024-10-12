@@ -4,15 +4,17 @@
 
 #include "lua.h"
 #include "lauxlib.h"
+#include <string.h>
 
 #ifdef __CATALINA__
 #include <prop.h>
 #include <prop2.h>
+#include <plugin.h>
 #include "storage.h"
 #endif
 
 /* version number of the "propeller" module */
-#define MODULE_VERSION_NUM 640
+#define MODULE_VERSION_NUM 810
 
 /* housekeeping to cater for different Lua versions */
 #if (LUA_VERSION_NUM == 501)
@@ -34,6 +36,18 @@
  ***********************/
 
 /* propeller function prototypes */
+static int propeller_cogid( lua_State *L );
+static int propeller_locknew( lua_State *L );
+static int propeller_lockclr( lua_State *L );
+static int propeller_lockset( lua_State *L );
+static int propeller_lockret( lua_State *L );
+static int propeller_locktry( lua_State *L );
+static int propeller_lockrel( lua_State *L );
+static int propeller_clkfreq( lua_State *L );
+static int propeller_clkmode( lua_State *L );
+static int propeller_getcnt( lua_State *L );
+static int propeller_muldiv64( lua_State *L );
+static int propeller_t_string( lua_State *L );
 static int propeller_setenv( lua_State *L );
 static int propeller_unsetenv( lua_State *L );
 static int propeller_getpin( lua_State *L );
@@ -46,38 +60,23 @@ static int propeller_version( lua_State *L );
 static int propeller_mount( lua_State *L );
 static int propeller_scan( lua_State *L );
 static int propeller_execute( lua_State *L );
-static int propeller_k_get( lua_State *L );
-static int propeller_k_wait( lua_State *L );
-static int propeller_k_new( lua_State *L );
-static int propeller_k_ready( lua_State *L );
-static int propeller_k_clear( lua_State *L );
-#ifndef __CATALINA_NO_MOUSE
-static int propeller_m_button( lua_State *L );
-static int propeller_m_abs_x( lua_State *L );
-static int propeller_m_abs_y( lua_State *L );
-static int propeller_m_delta_x( lua_State *L );
-static int propeller_m_delta_y( lua_State *L );
-static int propeller_m_reset( lua_State *L );
-static int propeller_m_bound_limits( lua_State *L );
-static int propeller_m_bound_scales( lua_State *L );
-static int propeller_m_bound_x( lua_State *L );
-static int propeller_m_bound_y( lua_State *L );
-#endif
-static int propeller_t_geometry( lua_State * L );
-static int propeller_t_char( lua_State * L );
-static int propeller_t_mode( lua_State * L );
-static int propeller_t_setpos( lua_State * L );
-static int propeller_t_getpos( lua_State * L );
-static int propeller_t_scroll( lua_State * L );
-static int propeller_t_color( lua_State * L );
-static int propeller_t_color_fg( lua_State * L );
-static int propeller_t_color_bg( lua_State * L );
 
 LUALIB_API int luaopen_propeller( lua_State *L );
 
 /* luaprop function registration array */
 static const struct luaL_Reg luapropeller_funcs[] = {
 
+  { "cogid",          propeller_cogid },    // p1/p2
+  { "locknew",        propeller_locknew },  // p1/p2
+  { "lockclr",        propeller_lockclr },  // p1/p2
+  { "lockset",        propeller_lockset },  // p1/p2
+  { "lockret",        propeller_lockret },  // p1/p2
+  { "locktry",        propeller_locktry },  // p2 only
+  { "lockrel",        propeller_lockrel },  // p2 only
+  { "clockfreq",      propeller_clkfreq },  // p1/p2
+  { "clockmode",      propeller_clkmode },  // p1/p2 - result p1/p2 dependent
+  { "getcnt",         propeller_getcnt },   // return 1 int on p1, 2 int on p2
+  { "muldiv64",       propeller_muldiv64 }, // p2 only
   { "setenv",         propeller_setenv },
   { "unsetenv",       propeller_unsetenv },
   { "getpin",         propeller_getpin },
@@ -90,38 +89,139 @@ static const struct luaL_Reg luapropeller_funcs[] = {
   { "mount",          propeller_mount },
   { "scan",           propeller_scan },
   { "execute",        propeller_execute },
-  { "k_get",          propeller_k_get },
-  { "k_wait",         propeller_k_wait },
-  { "k_new",          propeller_k_new },
-  { "k_ready",        propeller_k_ready },
-  { "k_clear",        propeller_k_clear },
-#ifndef __CATALINA_NO_MOUSE
-  { "m_button",       propeller_m_button },
-  { "m_abs_x",        propeller_m_abs_x },
-  { "m_abs_y",        propeller_m_abs_y },
-  { "m_delta_x",      propeller_m_delta_x },
-  { "m_delta_y",      propeller_m_delta_y },
-  { "m_reset",        propeller_m_reset },
-  { "m_bound_limits", propeller_m_bound_limits },
-  { "m_bound_scales", propeller_m_bound_scales },
-  { "m_bound_x",      propeller_m_bound_x },
-  { "m_bound_y",      propeller_m_bound_y },
-#endif
-  { "t_geometry",     propeller_t_geometry },
-  { "t_char",         propeller_t_char },
-  { "t_mode",         propeller_t_mode },
-  { "t_setpos",       propeller_t_setpos },
-  { "t_getpos",       propeller_t_getpos },
-  { "t_scroll",       propeller_t_scroll },
-  { "t_color",        propeller_t_color },
-  { "t_color_fg",     propeller_t_color_fg },
-  { "t_color_bg",     propeller_t_color_bg },
   { NULL, NULL }
 };
 
 /***********************
  * propeller functions *
  ***********************/
+
+static int propeller_cogid( lua_State *L ) {
+#ifdef __CATALINA__
+  pushint(L, _cogid());
+  return 1;
+#else
+  return 0;
+#endif
+}
+
+static int propeller_locknew( lua_State *L ) {
+#ifdef __CATALINA__
+  pushint(L, _locknew());
+  return 1;
+#else
+  return 0;
+#endif
+}
+
+static int propeller_lockclr( lua_State *L ) {
+#ifdef __CATALINA__
+  int lock = (int) luaL_checkinteger( L, 1);
+  pushint(L, _lockclr(lock));
+  return 1;
+#else
+  return 0;
+#endif
+}
+
+static int propeller_lockset( lua_State *L ) {
+#ifdef __CATALINA__
+  int lock = (int) luaL_checkinteger( L, 1);
+  pushint(L, _lockset(lock));
+  return 1;
+#else
+  return 0;
+#endif
+}
+
+static int propeller_lockret( lua_State *L ) {
+#ifdef __CATALINA__
+  int lock = (int) luaL_checkinteger( L, 1);
+  _lockret(lock);
+  return 0;
+#else
+  return 0;
+#endif
+}
+
+static int propeller_locktry( lua_State *L ) {
+#ifdef __CATALINA__
+#ifdef __CATALINA_P2
+  int lock = (int) luaL_checkinteger( L, 1);
+  pushint(L, _locktry(lock));
+  return 1;
+#else
+  return 0;
+#endif
+#else
+  return 0;
+#endif
+}
+
+static int propeller_lockrel( lua_State *L ) {
+#ifdef __CATALINA__
+#ifdef __CATALINA_P2
+  int lock = (int) luaL_checkinteger( L, 1);
+  _lockrel(lock);
+  return 0;
+#else
+  return 0;
+#endif
+#else
+  return 0;
+#endif
+}
+
+static int propeller_clkfreq( lua_State *L ) {
+#ifdef __CATALINA__
+  pushint(L, _clockfreq());
+  return 1;
+#else
+  return 0;
+#endif
+}
+
+static int propeller_clkmode( lua_State *L ) {
+#ifdef __CATALINA__
+  pushint(L, _clockmode());
+  return 1;
+#else
+  return 0;
+#endif
+}
+
+static int propeller_getcnt( lua_State *L ) {
+#ifdef __CATALINA__
+#ifdef __CATALINA_P2
+  counter64_t count64;
+  count64 = _cnthl();
+  pushint(L, count64.low);
+  pushint(L, count64.high);
+#else
+  pushint(L, _cnt());
+  pushint(L, 0);
+#endif
+  return 2;
+#else
+  return 0;
+#endif
+}
+
+static int propeller_muldiv64( lua_State *L ) {
+#ifdef __CATALINA__
+#ifdef __CATALINA_P2
+  int mul1 = (int) luaL_checkinteger( L, 1);
+  int mul2 = (int) luaL_checkinteger( L, 2);
+  int div  = (int) luaL_checkinteger( L, 3);
+  pushint(L, _muldiv64((uint32_t) mul1, (uint32_t) mul2, (uint32_t) div));
+  return 1;
+#else
+  return 0;
+#endif
+#else
+  return 0;
+#endif
+}
 
 static int propeller_setenv( lua_State *L ) {
 #ifdef __CATALINA__
@@ -445,291 +545,6 @@ static int propeller_k_get( lua_State *L ) {
   return 0;
 #endif
 }
-
-/* k_wait - the Catalina k_wait function */
-static int propeller_k_wait( lua_State *L ) {
-#ifdef __CATALINA__
-  pushint( L, k_wait() );
-  return 1;
-#else
-  return 0;
-#endif
-}
-
-/* k_new - the Catalina k_new function */
-static int propeller_k_new( lua_State *L ) {
-#ifdef __CATALINA__
-  pushint( L, k_new() );
-  return 1;
-#else
-  return 0;
-#endif
-}
-
-/* k_ready - the Catalina k_ready function */
-static int propeller_k_ready( lua_State *L ) {
-#ifdef __CATALINA__
-  pushint( L, k_ready() );
-  return 1;
-#else
-  return 0;
-#endif
-}
-
-/* k_clear - the Catalina k_clear function */
-static int propeller_k_clear( lua_State *L ) {
-#ifdef __CATALINA__
-  pushint( L, k_clear() );
-  return 1;
-#else
-  return 0;
-#endif
-}
-
-#ifndef __CATALINA_NO_MOUSE
-
-/* m_button - the Catalina m_button function */
-static int propeller_m_button( lua_State *L ) {
-#ifdef __CATALINA__
-  if (lua_gettop(L) > 0) {
-     /* validate argument */
-     register lua_Integer b = luaL_checkinteger( L, 1 );
-     lua_settop(L, 0);
-     pushint( L, m_button((unsigned long)b) );
-     return 1;
-  }
-#endif
-  return 0;
-}
-
-/* m_abs_x - the Catalina m_abs_x function */
-static int propeller_m_abs_x( lua_State *L ) {
-#ifdef __CATALINA__
-  pushint( L, m_abs_x() );
-  return 1;
-#else
-  return 0;
-#endif
-}
-
-/* m_abs_y - the Catalina m_abs_y function */
-static int propeller_m_abs_y( lua_State *L ) {
-#ifdef __CATALINA__
-  pushint( L, m_abs_y() );
-  return 1;
-#else
-  return 0;
-#endif
-}
-
-/* m_delta_x - the Catalina m_delta_x function */
-static int propeller_m_delta_x( lua_State *L ) {
-#ifdef __CATALINA__
-  pushint( L, m_delta_x() );
-  return 1;
-#else
-  return 0;
-#endif
-}
-
-/* m_delta_y - the Catalina m_delta_y function */
-static int propeller_m_delta_y( lua_State *L ) {
-#ifdef __CATALINA__
-  pushint( L, m_delta_x() );
-  return 1;
-#else
-  return 0;
-#endif
-}
-
-/* m_reset - the Catalina m_reset function */
-static int propeller_m_reset( lua_State *L ) {
-#ifdef __CATALINA__
-  pushint( L, m_reset() );
-  return 1;
-#else
-  return 0;
-#endif
-}
-
-/* m_bound_limits - the Catalina m_bound_limits function */
-static int propeller_m_bound_limits( lua_State *L ) {
-#ifdef __CATALINA__
-  if (lua_gettop(L) > 0) {
-     /* validate arguments */
-     register lua_Integer xmin = luaL_checkinteger( L, 1 );
-     register lua_Integer ymin = luaL_checkinteger( L, 2 );
-     register lua_Integer xmax = luaL_checkinteger( L, 3 );
-     register lua_Integer ymax = luaL_checkinteger( L, 4 );
-     lua_settop(L, 0);
-     pushint( L, m_bound_limits(xmin, ymin, 0, xmax, ymax, 0) );
-     return 1;
-  }
-#endif
-  return 0;
-}
-
-/* m_bound_scales - the Catalina m_bound_scales function */
-static int propeller_m_bound_scales( lua_State *L ) {
-#ifdef __CATALINA__
-  if (lua_gettop(L) > 0) {
-     /* validate arguments */
-     register lua_Integer xscale = luaL_checkinteger( L, 1 );
-     register lua_Integer yscale = luaL_checkinteger( L, 2 );
-     lua_settop(L, 0);
-     pushint( L, m_bound_scales(xscale, yscale, 0) );
-     return 1;
-  }
-#endif
-  return 0;
-}
-
-/* m_bound_x - the Catalina m_bound_x function */
-static int propeller_m_bound_x( lua_State *L ) {
-#ifdef __CATALINA__
-  pushint( L, m_bound_x() );
-  return 1;
-#else
-  return 0;
-#endif
-}
-
-/* m_bound_y - the Catalina m_bound_y function */
-static int propeller_m_bound_y( lua_State *L ) {
-#ifdef __CATALINA__
-  pushint( L, m_bound_y() );
-  return 1;
-#else
-  return 0;
-#endif
-}
-
-#endif // __CATALINA_NO_MOUSE
-
-/* t_geometry - the Catalina t_geometry function */
-static int propeller_t_geometry( lua_State * L ) {
-#ifdef __CATALINA__
-  pushint( L, t_geometry() );
-  return 1;
-#else
-  return 0;
-#endif
-}
-
-/* t_char - the Catalina t_char function */
-static int propeller_t_char( lua_State * L ) {
-#ifdef __CATALINA__
-  if (lua_gettop(L) > 0) {
-     /* validate arguments */
-     register lua_Integer curs = luaL_checkinteger( L, 1 );
-     register lua_Integer ch = luaL_checkinteger( L, 2 );
-     lua_settop(L, 0);
-     pushint( L, t_char(((unsigned)curs), (unsigned)ch) );
-     return 1;
-  }
-#endif
-  return 0;
-}
-
-/* t_mode - the Catalina t_mode function */
-static int propeller_t_mode( lua_State * L ) {
-#ifdef __CATALINA__
-  if (lua_gettop(L) > 0) {
-     /* validate arguments */
-     register lua_Integer curs = luaL_checkinteger( L, 1 );
-     register lua_Integer mode = luaL_checkinteger( L, 2 );
-     lua_settop(L, 0);
-     pushint( L, t_mode(((unsigned)curs), (unsigned)mode) );
-     return 1;
-  }
-#endif
-}
-
-/* t_setpos - the Catalina t_setpos function */
-static int propeller_t_setpos( lua_State * L ) {
-#ifdef __CATALINA__
-  if (lua_gettop(L) > 0) {
-     /* validate arguments */
-     register lua_Integer curs = luaL_checkinteger( L, 1 );
-     register lua_Integer col = luaL_checkinteger( L, 2 );
-     register lua_Integer row = luaL_checkinteger( L, 3 );
-     lua_settop(L, 0);
-     pushint( L, t_setpos(((unsigned)curs), (unsigned)col, (unsigned)row) );
-     return 1;
-  }
-#endif
-}
-
-/* t_getpos - the Catalina t_getpos function */
-static int propeller_t_getpos( lua_State * L ) {
-#ifdef __CATALINA__
-  if (lua_gettop(L) > 0) {
-     /* validate arguments */
-     register lua_Integer curs = luaL_checkinteger( L, 1 );
-     lua_settop(L, 0);
-     pushint( L, t_getpos((unsigned)curs) );
-     return 1;
-  }
-#endif
-}
-
-/* t_scroll - the Catalina t_scroll function */
-static int propeller_t_scroll( lua_State * L ) {
-#ifdef __CATALINA__
-  if (lua_gettop(L) > 0) {
-     /* validate arguments */
-     register lua_Integer curs = luaL_checkinteger( L, 1 );
-     register lua_Integer first = luaL_checkinteger( L, 2 );
-     register lua_Integer last = luaL_checkinteger( L, 3 );
-     lua_settop(L, 0);
-     pushint( L, t_scroll(((unsigned)curs), (unsigned)first, (unsigned)last) );
-     return 1;
-  }
-#endif
-}
-
-/* t_color - the Catalina t_color function */
-static int propeller_t_color( lua_State * L ) {
-#ifdef __CATALINA__
-  if (lua_gettop(L) > 0) {
-     /* validate arguments */
-     register lua_Integer curs = luaL_checkinteger( L, 1 );
-     register lua_Integer color = luaL_checkinteger( L, 2 );
-     lua_settop(L, 0);
-     pushint( L, t_color(((unsigned)curs), (unsigned)color) );
-     return 1;
-  }
-#endif
-}
-
-/* t_color_fg - the Catalina t_color_bg function */
-static int propeller_t_color_fg( lua_State * L ) {
-#ifdef __CATALINA__
-  if (lua_gettop(L) > 0) {
-     /* validate arguments */
-     register lua_Integer curs = luaL_checkinteger( L, 1 );
-     register lua_Integer color = luaL_checkinteger( L, 2 );
-     lua_settop(L, 0);
-     pushint( L, t_color_fg(((unsigned)curs), (unsigned)color) );
-     return 1;
-  }
-#endif
-}
-
-/* t_color_bg - the Catalina t_color_bg function */
-static int propeller_t_color_bg( lua_State * L ) {
-#ifdef __CATALINA__
-  if (lua_gettop(L) > 0) {
-     /* validate arguments */
-     register lua_Integer curs = luaL_checkinteger( L, 1 );
-     register lua_Integer color = luaL_checkinteger( L, 2 );
-     lua_settop(L, 0);
-     pushint( L, t_color_bg(((unsigned)curs), (unsigned)color) );
-     return 1;
-  }
-#endif
-}
-
 
 /**********************************
  * register structs and functions *

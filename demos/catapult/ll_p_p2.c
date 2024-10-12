@@ -22,7 +22,7 @@
  *
  */
 
-#pragma catapult common options(-C P2_EDGE -C SIMPLE -p2 -lci -C NO_FLOAT)
+#pragma catapult common options(-C P2_EDGE -C SIMPLE -p2 -lci -C NO_ARGS -C NO_FLOAT)
 
 // any common includes or types here ...
 

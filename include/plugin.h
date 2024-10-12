@@ -139,7 +139,6 @@ extern long _sys_plugin(long code, long param);
 #define SVC_T_COLOR_BG   66
 #define SVC_GETTICKS     67
 #define SVC_GETRANDOM    68
-
 #define SVC_RESERVED     80 // 1 .. 80 reserved for Catalina use
 
 #define SVC_MAX          96 // 81 .. 96 available for general use

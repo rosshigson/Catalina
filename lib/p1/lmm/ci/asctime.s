@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_scps_66cc6355_two_digits_L000001 ' <symbol:two_digits>
+C_s7bk_670704c8_two_digits_L000001 ' <symbol:two_digits>
  jmp #PSHM
  long $500000 ' save registers
  mov r22, #10 ' reg <- coni
@@ -21,15 +21,15 @@ C_scps_66cc6355_two_digits_L000001 ' <symbol:two_digits>
  wrbyte r22, r4 ' ASGNU1 reg reg
  cmps r2,  #0 wz
  jmp #BRNZ
- long @C_scps_66cc6355_two_digits_L000001_3 ' NEI4
+ long @C_s7bk_670704c8_two_digits_L000001_3 ' NEI4
  rdbyte r22, r4 ' reg <- INDIRU1 reg
  and r22, cviu_m1 ' zero extend
  cmps r22,  #48 wz
  jmp #BRNZ
- long @C_scps_66cc6355_two_digits_L000001_3 ' NEI4
+ long @C_s7bk_670704c8_two_digits_L000001_3 ' NEI4
  mov r22, #32 ' reg <- coni
  wrbyte r22, r4 ' ASGNU1 reg reg
-C_scps_66cc6355_two_digits_L000001_3
+C_s7bk_670704c8_two_digits_L000001_3
  adds r4, #1 ' ADDP4 coni
  mov r22, r4 ' CVI, CVU or LOAD
  mov r4, r22
@@ -45,13 +45,13 @@ C_scps_66cc6355_two_digits_L000001_3
  adds r22, #1 ' ADDP4 coni
  mov r4, r22 ' CVI, CVU or LOAD
  mov r0, r22 ' CVI, CVU or LOAD
-' C_scps_66cc6355_two_digits_L000001_2 ' (symbol refcount = 0)
+' C_s7bk_670704c8_two_digits_L000001_2 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETN
 
 
  alignl ' align long
-C_scps1_66cc6355_four_digits_L000005 ' <symbol:four_digits>
+C_s7bk1_670704c8_four_digits_L000005 ' <symbol:four_digits>
  jmp #PSHM
  long $500000 ' save registers
  jmp #LODL
@@ -119,7 +119,7 @@ C_scps1_66cc6355_four_digits_L000005 ' <symbol:four_digits>
  adds r22, #1 ' ADDP4 coni
  mov r3, r22 ' CVI, CVU or LOAD
  mov r0, r22 ' CVI, CVU or LOAD
-' C_scps1_66cc6355_four_digits_L000005_6 ' (symbol refcount = 0)
+' C_s7bk1_670704c8_four_digits_L000005_6 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETN
 
@@ -222,7 +222,7 @@ C_asctime_16
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_scps_66cc6355_two_digits_L000001
+ long @C_s7bk_670704c8_two_digits_L000001
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r2, #1 ' reg ARG coni
@@ -233,7 +233,7 @@ C_asctime_16
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_scps_66cc6355_two_digits_L000001
+ long @C_s7bk_670704c8_two_digits_L000001
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r2, #1 ' reg ARG coni
@@ -244,7 +244,7 @@ C_asctime_16
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_scps_66cc6355_two_digits_L000001
+ long @C_s7bk_670704c8_two_digits_L000001
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r2, #1 ' reg ARG coni
@@ -253,7 +253,7 @@ C_asctime_16
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_scps_66cc6355_two_digits_L000001
+ long @C_s7bk_670704c8_two_digits_L000001
  add SP, #8 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  mov r22, r23
@@ -268,7 +268,7 @@ C_asctime_16
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_scps1_66cc6355_four_digits_L000005
+ long @C_s7bk1_670704c8_four_digits_L000005
  add SP, #4 ' CALL addrg
  jmp #LODL
  long @C_asctime_buf_L000009

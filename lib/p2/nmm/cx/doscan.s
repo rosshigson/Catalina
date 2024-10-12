@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_shfs_66cc6627_o_collect_L000003 ' <symbol:o_collect>
+C_sf34_67070750_o_collect_L000003 ' <symbol:o_collect>
  calld PA,#NEWF
  calld PA,#PSHM
  long $faa800 ' save registers
@@ -20,56 +20,56 @@ C_shfs_66cc6627_o_collect_L000003 ' <symbol:o_collect>
  and r11, cviu_m1 ' zero extend
  mov r22, #105 ' reg <- coni
  cmps r11, r22 wz
- if_z jmp #\C_shfs_66cc6627_o_collect_L000003_8 ' EQI4
+ if_z jmp #\C_sf34_67070750_o_collect_L000003_8 ' EQI4
  cmps r11, r22 wcz
- if_a jmp #\C_shfs_66cc6627_o_collect_L000003_13 ' GTI4
-' C_shfs_66cc6627_o_collect_L000003_12 ' (symbol refcount = 0)
+ if_a jmp #\C_sf34_67070750_o_collect_L000003_13 ' GTI4
+' C_sf34_67070750_o_collect_L000003_12 ' (symbol refcount = 0)
  mov r22, #88 ' reg <- coni
  cmps r11, r22 wz
- if_z jmp #\C_shfs_66cc6627_o_collect_L000003_8 ' EQI4
+ if_z jmp #\C_sf34_67070750_o_collect_L000003_8 ' EQI4
  cmps r11, r22 wcz
- if_b jmp #\C_shfs_66cc6627_o_collect_L000003_5 ' LTI4
-' C_shfs_66cc6627_o_collect_L000003_14 ' (symbol refcount = 0)
+ if_b jmp #\C_sf34_67070750_o_collect_L000003_5 ' LTI4
+' C_sf34_67070750_o_collect_L000003_14 ' (symbol refcount = 0)
  cmps r11,  #98 wz
- if_z jmp #\C_shfs_66cc6627_o_collect_L000003_11 ' EQI4
+ if_z jmp #\C_sf34_67070750_o_collect_L000003_11 ' EQI4
  cmps r11,  #100 wz
- if_z jmp #\C_shfs_66cc6627_o_collect_L000003_9 ' EQI4
- jmp #\@C_shfs_66cc6627_o_collect_L000003_5 ' JUMPV addrg
-C_shfs_66cc6627_o_collect_L000003_13
+ if_z jmp #\C_sf34_67070750_o_collect_L000003_9 ' EQI4
+ jmp #\@C_sf34_67070750_o_collect_L000003_5 ' JUMPV addrg
+C_sf34_67070750_o_collect_L000003_13
  mov r22, #111 ' reg <- coni
  cmps r11, r22 wz
- if_z jmp #\C_shfs_66cc6627_o_collect_L000003_10 ' EQI4
+ if_z jmp #\C_sf34_67070750_o_collect_L000003_10 ' EQI4
  cmps r11,  #112 wz
- if_z jmp #\C_shfs_66cc6627_o_collect_L000003_8 ' EQI4
+ if_z jmp #\C_sf34_67070750_o_collect_L000003_8 ' EQI4
  cmps r11, r22 wcz
- if_b jmp #\C_shfs_66cc6627_o_collect_L000003_5 ' LTI4
-' C_shfs_66cc6627_o_collect_L000003_15 ' (symbol refcount = 0)
+ if_b jmp #\C_sf34_67070750_o_collect_L000003_5 ' LTI4
+' C_sf34_67070750_o_collect_L000003_15 ' (symbol refcount = 0)
  cmps r11,  #117 wz
- if_z jmp #\C_shfs_66cc6627_o_collect_L000003_9 ' EQI4
+ if_z jmp #\C_sf34_67070750_o_collect_L000003_9 ' EQI4
  cmps r11,  #120 wz
- if_z jmp #\C_shfs_66cc6627_o_collect_L000003_8 ' EQI4
- jmp #\@C_shfs_66cc6627_o_collect_L000003_5 ' JUMPV addrg
-C_shfs_66cc6627_o_collect_L000003_8
+ if_z jmp #\C_sf34_67070750_o_collect_L000003_8 ' EQI4
+ jmp #\@C_sf34_67070750_o_collect_L000003_5 ' JUMPV addrg
+C_sf34_67070750_o_collect_L000003_8
  mov r13, #16 ' reg <- coni
- jmp #\@C_shfs_66cc6627_o_collect_L000003_6 ' JUMPV addrg
-C_shfs_66cc6627_o_collect_L000003_9
+ jmp #\@C_sf34_67070750_o_collect_L000003_6 ' JUMPV addrg
+C_sf34_67070750_o_collect_L000003_9
  mov r13, #10 ' reg <- coni
- jmp #\@C_shfs_66cc6627_o_collect_L000003_6 ' JUMPV addrg
-C_shfs_66cc6627_o_collect_L000003_10
+ jmp #\@C_sf34_67070750_o_collect_L000003_6 ' JUMPV addrg
+C_sf34_67070750_o_collect_L000003_10
  mov r13, #8 ' reg <- coni
- jmp #\@C_shfs_66cc6627_o_collect_L000003_6 ' JUMPV addrg
-C_shfs_66cc6627_o_collect_L000003_11
+ jmp #\@C_sf34_67070750_o_collect_L000003_6 ' JUMPV addrg
+C_sf34_67070750_o_collect_L000003_11
  mov r13, #2 ' reg <- coni
-C_shfs_66cc6627_o_collect_L000003_5
-C_shfs_66cc6627_o_collect_L000003_6
+C_sf34_67070750_o_collect_L000003_5
+C_sf34_67070750_o_collect_L000003_6
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #45 wz
- if_z jmp #\C_shfs_66cc6627_o_collect_L000003_18 ' EQI4
+ if_z jmp #\C_sf34_67070750_o_collect_L000003_18 ' EQI4
  cmps r22,  #43 wz
- if_nz jmp #\C_shfs_66cc6627_o_collect_L000003_16 ' NEI4
-C_shfs_66cc6627_o_collect_L000003_18
+ if_nz jmp #\C_sf34_67070750_o_collect_L000003_16 ' NEI4
+C_sf34_67070750_o_collect_L000003_18
  mov r22, r15 ' CVI, CVU or LOAD
  mov r15, r22
  adds r15, #1 ' ADDP4 coni
@@ -81,7 +81,7 @@ C_shfs_66cc6627_o_collect_L000003_18
  subs r22, #1 ' SUBI4 coni
  mov r21, r22 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_z jmp #\C_shfs_66cc6627_o_collect_L000003_19 ' EQI4
+ if_z jmp #\C_sf34_67070750_o_collect_L000003_19 ' EQI4
  mov RI, FP
  add RI, #12
  rdlong r2, RI ' reg ARG INDIR ADDRFi
@@ -91,17 +91,17 @@ C_shfs_66cc6627_o_collect_L000003_18
  mov RI, FP
  add RI,#8
  wrlong r0, RI ' ASGNI4 addrfi reg
-C_shfs_66cc6627_o_collect_L000003_19
-C_shfs_66cc6627_o_collect_L000003_16
+C_sf34_67070750_o_collect_L000003_19
+C_sf34_67070750_o_collect_L000003_16
  cmps r21,  #0 wz
- if_z jmp #\C_shfs_66cc6627_o_collect_L000003_21 ' EQI4
+ if_z jmp #\C_sf34_67070750_o_collect_L000003_21 ' EQI4
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #48 wz
- if_nz jmp #\C_shfs_66cc6627_o_collect_L000003_21 ' NEI4
+ if_nz jmp #\C_sf34_67070750_o_collect_L000003_21 ' NEI4
  cmps r13,  #16 wz
- if_nz jmp #\C_shfs_66cc6627_o_collect_L000003_21 ' NEI4
+ if_nz jmp #\C_sf34_67070750_o_collect_L000003_21 ' NEI4
  mov r22, r15 ' CVI, CVU or LOAD
  mov r15, r22
  adds r15, #1 ' ADDP4 coni
@@ -113,7 +113,7 @@ C_shfs_66cc6627_o_collect_L000003_16
  subs r22, #1 ' SUBI4 coni
  mov r21, r22 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_z jmp #\C_shfs_66cc6627_o_collect_L000003_23 ' EQI4
+ if_z jmp #\C_sf34_67070750_o_collect_L000003_23 ' EQI4
  mov RI, FP
  add RI, #12
  rdlong r2, RI ' reg ARG INDIR ADDRFi
@@ -123,23 +123,23 @@ C_shfs_66cc6627_o_collect_L000003_16
  mov RI, FP
  add RI,#8
  wrlong r0, RI ' ASGNI4 addrfi reg
-C_shfs_66cc6627_o_collect_L000003_23
+C_sf34_67070750_o_collect_L000003_23
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #120 wz
- if_z jmp #\C_shfs_66cc6627_o_collect_L000003_25 ' EQI4
+ if_z jmp #\C_sf34_67070750_o_collect_L000003_25 ' EQI4
  cmps r22,  #88 wz
- if_z jmp #\C_shfs_66cc6627_o_collect_L000003_25 ' EQI4
+ if_z jmp #\C_sf34_67070750_o_collect_L000003_25 ' EQI4
  mov r22, r23 ' CVUI
  and r22, cviu_m1 ' zero extend
  cmps r22,  #105 wz
- if_nz jmp #\C_shfs_66cc6627_o_collect_L000003_36 ' NEI4
+ if_nz jmp #\C_sf34_67070750_o_collect_L000003_36 ' NEI4
  mov r13, #8 ' reg <- coni
- jmp #\@C_shfs_66cc6627_o_collect_L000003_36 ' JUMPV addrg
-C_shfs_66cc6627_o_collect_L000003_25
+ jmp #\@C_sf34_67070750_o_collect_L000003_36 ' JUMPV addrg
+C_sf34_67070750_o_collect_L000003_25
  cmps r21,  #0 wz
- if_z jmp #\C_shfs_66cc6627_o_collect_L000003_36 ' EQI4
+ if_z jmp #\C_sf34_67070750_o_collect_L000003_36 ' EQI4
  mov r22, r15 ' CVI, CVU or LOAD
  mov r15, r22
  adds r15, #1 ' ADDP4 coni
@@ -151,7 +151,7 @@ C_shfs_66cc6627_o_collect_L000003_25
  subs r22, #1 ' SUBI4 coni
  mov r21, r22 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_z jmp #\C_shfs_66cc6627_o_collect_L000003_36 ' EQI4
+ if_z jmp #\C_sf34_67070750_o_collect_L000003_36 ' EQI4
  mov RI, FP
  add RI, #12
  rdlong r2, RI ' reg ARG INDIR ADDRFi
@@ -161,26 +161,26 @@ C_shfs_66cc6627_o_collect_L000003_25
  mov RI, FP
  add RI,#8
  wrlong r0, RI ' ASGNI4 addrfi reg
- jmp #\@C_shfs_66cc6627_o_collect_L000003_36 ' JUMPV addrg
-C_shfs_66cc6627_o_collect_L000003_21
+ jmp #\@C_sf34_67070750_o_collect_L000003_36 ' JUMPV addrg
+C_sf34_67070750_o_collect_L000003_21
  mov r22, r23 ' CVUI
  and r22, cviu_m1 ' zero extend
  cmps r22,  #105 wz
- if_nz jmp #\C_shfs_66cc6627_o_collect_L000003_36 ' NEI4
+ if_nz jmp #\C_sf34_67070750_o_collect_L000003_36 ' NEI4
  mov r13, #10 ' reg <- coni
- jmp #\@C_shfs_66cc6627_o_collect_L000003_36 ' JUMPV addrg
-C_shfs_66cc6627_o_collect_L000003_35
+ jmp #\@C_sf34_67070750_o_collect_L000003_36 ' JUMPV addrg
+C_sf34_67070750_o_collect_L000003_35
  cmps r13,  #10 wz
- if_nz jmp #\C_shfs_66cc6627_o_collect_L000003_42 ' NEI4
+ if_nz jmp #\C_sf34_67070750_o_collect_L000003_42 ' NEI4
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 reg
  subs r22, #48 ' SUBI4 coni
  cmp r22,  #10 wcz 
- if_b jmp #\C_shfs_66cc6627_o_collect_L000003_45 ' LTU4
-C_shfs_66cc6627_o_collect_L000003_42
+ if_b jmp #\C_sf34_67070750_o_collect_L000003_45 ' LTU4
+C_sf34_67070750_o_collect_L000003_42
  cmps r13,  #16 wz
- if_nz jmp #\C_shfs_66cc6627_o_collect_L000003_44 ' NEI4
+ if_nz jmp #\C_sf34_67070750_o_collect_L000003_44 ' NEI4
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 reg
@@ -189,32 +189,32 @@ C_shfs_66cc6627_o_collect_L000003_42
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  and r22, #68 ' BANDI4 coni
  cmps r22,  #0 wz
- if_nz jmp #\C_shfs_66cc6627_o_collect_L000003_45 ' NEI4
-C_shfs_66cc6627_o_collect_L000003_44
+ if_nz jmp #\C_sf34_67070750_o_collect_L000003_45 ' NEI4
+C_sf34_67070750_o_collect_L000003_44
  cmps r13,  #8 wz
- if_nz jmp #\C_shfs_66cc6627_o_collect_L000003_47 ' NEI4
+ if_nz jmp #\C_sf34_67070750_o_collect_L000003_47 ' NEI4
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 reg
  mov r20, r22
  subs r20, #48 ' SUBI4 coni
  cmp r20,  #10 wcz 
- if_ae jmp #\C_shfs_66cc6627_o_collect_L000003_47 ' GEU4
+ if_ae jmp #\C_sf34_67070750_o_collect_L000003_47 ' GEU4
  cmps r22,  #56 wcz
- if_b jmp #\C_shfs_66cc6627_o_collect_L000003_45 ' LTI4
-C_shfs_66cc6627_o_collect_L000003_47
+ if_b jmp #\C_sf34_67070750_o_collect_L000003_45 ' LTI4
+C_sf34_67070750_o_collect_L000003_47
  cmps r13,  #2 wz
- if_nz jmp #\C_shfs_66cc6627_o_collect_L000003_37 ' NEI4
+ if_nz jmp #\C_sf34_67070750_o_collect_L000003_37 ' NEI4
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 reg
  mov r20, r22
  subs r20, #48 ' SUBI4 coni
  cmp r20,  #10 wcz 
- if_ae jmp #\C_shfs_66cc6627_o_collect_L000003_37 ' GEU4
+ if_ae jmp #\C_sf34_67070750_o_collect_L000003_37 ' GEU4
  cmps r22,  #50 wcz
- if_ae jmp #\C_shfs_66cc6627_o_collect_L000003_37 ' GEI4
-C_shfs_66cc6627_o_collect_L000003_45
+ if_ae jmp #\C_sf34_67070750_o_collect_L000003_37 ' GEI4
+C_sf34_67070750_o_collect_L000003_45
  mov r22, r15 ' CVI, CVU or LOAD
  mov r15, r22
  adds r15, #1 ' ADDP4 coni
@@ -226,7 +226,7 @@ C_shfs_66cc6627_o_collect_L000003_45
  subs r22, #1 ' SUBI4 coni
  mov r21, r22 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_z jmp #\C_shfs_66cc6627_o_collect_L000003_39 ' EQI4
+ if_z jmp #\C_sf34_67070750_o_collect_L000003_39 ' EQI4
  mov RI, FP
  add RI, #12
  rdlong r2, RI ' reg ARG INDIR ADDRFi
@@ -236,19 +236,19 @@ C_shfs_66cc6627_o_collect_L000003_45
  mov RI, FP
  add RI,#8
  wrlong r0, RI ' ASGNI4 addrfi reg
-C_shfs_66cc6627_o_collect_L000003_39
-C_shfs_66cc6627_o_collect_L000003_36
+C_sf34_67070750_o_collect_L000003_39
+C_sf34_67070750_o_collect_L000003_36
  cmps r21,  #0 wz
- if_nz jmp #\C_shfs_66cc6627_o_collect_L000003_35 ' NEI4
-C_shfs_66cc6627_o_collect_L000003_37
+ if_nz jmp #\C_sf34_67070750_o_collect_L000003_35 ' NEI4
+C_sf34_67070750_o_collect_L000003_37
  cmps r21,  #0 wz
- if_z jmp #\C_shfs_66cc6627_o_collect_L000003_50 ' EQI4
+ if_z jmp #\C_sf34_67070750_o_collect_L000003_50 ' EQI4
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 reg
  mov r20, ##-1 ' reg <- con
  cmps r22, r20 wz
- if_z jmp #\C_shfs_66cc6627_o_collect_L000003_50 ' EQI4
+ if_z jmp #\C_sf34_67070750_o_collect_L000003_50 ' EQI4
  mov RI, FP
  add RI, #12
  rdlong r2, RI ' reg ARG INDIR ADDRFi
@@ -260,26 +260,26 @@ C_shfs_66cc6627_o_collect_L000003_37
  calld PA,#CALA
  long @C_ungetc
  add SP, #4 ' CALL addrg
-C_shfs_66cc6627_o_collect_L000003_50
+C_sf34_67070750_o_collect_L000003_50
  mov r22, r23 ' CVUI
  and r22, cviu_m1 ' zero extend
  cmps r22,  #105 wz
- if_nz jmp #\C_shfs_66cc6627_o_collect_L000003_52 ' NEI4
+ if_nz jmp #\C_sf34_67070750_o_collect_L000003_52 ' NEI4
  mov r13, #0 ' reg <- coni
-C_shfs_66cc6627_o_collect_L000003_52
+C_sf34_67070750_o_collect_L000003_52
  wrlong r13, r19 ' ASGNI4 reg reg
  mov r22, #0 ' reg <- coni
  wrbyte r22, r15 ' ASGNU1 reg reg
  mov r22, ##-1 ' reg <- con
  mov r0, r15 ' ADDI/P
  adds r0, r22 ' ADDI/P (3)
-' C_shfs_66cc6627_o_collect_L000003_4 ' (symbol refcount = 0)
+' C_sf34_67070750_o_collect_L000003_4 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_shfs1_66cc6627_f_collect_L000054 ' <symbol:f_collect>
+C_sf341_67070750_f_collect_L000054 ' <symbol:f_collect>
  calld PA,#NEWF
  calld PA,#PSHM
  long $faa000 ' save registers
@@ -290,10 +290,10 @@ C_shfs1_66cc6627_f_collect_L000054 ' <symbol:f_collect>
  mov r15, r17 ' CVI, CVU or LOAD
  mov r13, #0 ' reg <- coni
  cmps r23,  #45 wz
- if_z jmp #\C_shfs1_66cc6627_f_collect_L000054_58 ' EQI4
+ if_z jmp #\C_sf341_67070750_f_collect_L000054_58 ' EQI4
  cmps r23,  #43 wz
- if_nz jmp #\C_shfs1_66cc6627_f_collect_L000054_62 ' NEI4
-C_shfs1_66cc6627_f_collect_L000054_58
+ if_nz jmp #\C_sf341_67070750_f_collect_L000054_62 ' NEI4
+C_sf341_67070750_f_collect_L000054_58
  mov r22, r15 ' CVI, CVU or LOAD
  mov r15, r22
  adds r15, #1 ' ADDP4 coni
@@ -303,14 +303,14 @@ C_shfs1_66cc6627_f_collect_L000054_58
  subs r22, #1 ' SUBI4 coni
  mov r19, r22 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_z jmp #\C_shfs1_66cc6627_f_collect_L000054_62 ' EQI4
+ if_z jmp #\C_sf341_67070750_f_collect_L000054_62 ' EQI4
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_getc ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
- jmp #\@C_shfs1_66cc6627_f_collect_L000054_62 ' JUMPV addrg
-C_shfs1_66cc6627_f_collect_L000054_61
+ jmp #\@C_sf341_67070750_f_collect_L000054_62 ' JUMPV addrg
+C_sf341_67070750_f_collect_L000054_61
  adds r13, #1 ' ADDI4 coni
  mov r22, r15 ' CVI, CVU or LOAD
  mov r15, r22
@@ -321,25 +321,25 @@ C_shfs1_66cc6627_f_collect_L000054_61
  subs r22, #1 ' SUBI4 coni
  mov r19, r22 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_z jmp #\C_shfs1_66cc6627_f_collect_L000054_64 ' EQI4
+ if_z jmp #\C_sf341_67070750_f_collect_L000054_64 ' EQI4
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_getc ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
-C_shfs1_66cc6627_f_collect_L000054_64
-C_shfs1_66cc6627_f_collect_L000054_62
+C_sf341_67070750_f_collect_L000054_64
+C_sf341_67070750_f_collect_L000054_62
  cmps r19,  #0 wz
- if_z jmp #\C_shfs1_66cc6627_f_collect_L000054_66 ' EQI4
+ if_z jmp #\C_sf341_67070750_f_collect_L000054_66 ' EQI4
  mov r22, r23
  subs r22, #48 ' SUBI4 coni
  cmp r22,  #10 wcz 
- if_b jmp #\C_shfs1_66cc6627_f_collect_L000054_61 ' LTU4
-C_shfs1_66cc6627_f_collect_L000054_66
+ if_b jmp #\C_sf341_67070750_f_collect_L000054_61 ' LTU4
+C_sf341_67070750_f_collect_L000054_66
  cmps r19,  #0 wz
- if_z jmp #\C_shfs1_66cc6627_f_collect_L000054_67 ' EQI4
+ if_z jmp #\C_sf341_67070750_f_collect_L000054_67 ' EQI4
  cmps r23,  #46 wz
- if_nz jmp #\C_shfs1_66cc6627_f_collect_L000054_67 ' NEI4
+ if_nz jmp #\C_sf341_67070750_f_collect_L000054_67 ' NEI4
  mov r22, r15 ' CVI, CVU or LOAD
  mov r15, r22
  adds r15, #1 ' ADDP4 coni
@@ -349,14 +349,14 @@ C_shfs1_66cc6627_f_collect_L000054_66
  subs r22, #1 ' SUBI4 coni
  mov r19, r22 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_z jmp #\C_shfs1_66cc6627_f_collect_L000054_72 ' EQI4
+ if_z jmp #\C_sf341_67070750_f_collect_L000054_72 ' EQI4
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_getc ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
- jmp #\@C_shfs1_66cc6627_f_collect_L000054_72 ' JUMPV addrg
-C_shfs1_66cc6627_f_collect_L000054_71
+ jmp #\@C_sf341_67070750_f_collect_L000054_72 ' JUMPV addrg
+C_sf341_67070750_f_collect_L000054_71
  adds r13, #1 ' ADDI4 coni
  mov r22, r15 ' CVI, CVU or LOAD
  mov r15, r22
@@ -367,29 +367,29 @@ C_shfs1_66cc6627_f_collect_L000054_71
  subs r22, #1 ' SUBI4 coni
  mov r19, r22 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_z jmp #\C_shfs1_66cc6627_f_collect_L000054_74 ' EQI4
+ if_z jmp #\C_sf341_67070750_f_collect_L000054_74 ' EQI4
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_getc ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
-C_shfs1_66cc6627_f_collect_L000054_74
-C_shfs1_66cc6627_f_collect_L000054_72
+C_sf341_67070750_f_collect_L000054_74
+C_sf341_67070750_f_collect_L000054_72
  cmps r19,  #0 wz
- if_z jmp #\C_shfs1_66cc6627_f_collect_L000054_76 ' EQI4
+ if_z jmp #\C_sf341_67070750_f_collect_L000054_76 ' EQI4
  mov r22, r23
  subs r22, #48 ' SUBI4 coni
  cmp r22,  #10 wcz 
- if_b jmp #\C_shfs1_66cc6627_f_collect_L000054_71 ' LTU4
-C_shfs1_66cc6627_f_collect_L000054_76
-C_shfs1_66cc6627_f_collect_L000054_67
+ if_b jmp #\C_sf341_67070750_f_collect_L000054_71 ' LTU4
+C_sf341_67070750_f_collect_L000054_76
+C_sf341_67070750_f_collect_L000054_67
  cmps r13,  #0 wz
- if_nz jmp #\C_shfs1_66cc6627_f_collect_L000054_77 ' NEI4
+ if_nz jmp #\C_sf341_67070750_f_collect_L000054_77 ' NEI4
  cmps r19,  #0 wz
- if_z jmp #\C_shfs1_66cc6627_f_collect_L000054_79 ' EQI4
+ if_z jmp #\C_sf341_67070750_f_collect_L000054_79 ' EQI4
  mov r22, ##-1 ' reg <- con
  cmps r23, r22 wz
- if_z jmp #\C_shfs1_66cc6627_f_collect_L000054_79 ' EQI4
+ if_z jmp #\C_sf341_67070750_f_collect_L000054_79 ' EQI4
  mov r2, r21 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -397,20 +397,20 @@ C_shfs1_66cc6627_f_collect_L000054_67
  calld PA,#CALA
  long @C_ungetc
  add SP, #4 ' CALL addrg
-C_shfs1_66cc6627_f_collect_L000054_79
+C_sf341_67070750_f_collect_L000054_79
  mov r22, ##-1 ' reg <- con
  mov r0, r17 ' ADDI/P
  adds r0, r22 ' ADDI/P (3)
- jmp #\@C_shfs1_66cc6627_f_collect_L000054_55 ' JUMPV addrg
-C_shfs1_66cc6627_f_collect_L000054_77
+ jmp #\@C_sf341_67070750_f_collect_L000054_55 ' JUMPV addrg
+C_sf341_67070750_f_collect_L000054_77
  mov r13, #0 ' reg <- coni
  cmps r19,  #0 wz
- if_z jmp #\C_shfs1_66cc6627_f_collect_L000054_81 ' EQI4
+ if_z jmp #\C_sf341_67070750_f_collect_L000054_81 ' EQI4
  cmps r23,  #101 wz
- if_z jmp #\C_shfs1_66cc6627_f_collect_L000054_83 ' EQI4
+ if_z jmp #\C_sf341_67070750_f_collect_L000054_83 ' EQI4
  cmps r23,  #69 wz
- if_nz jmp #\C_shfs1_66cc6627_f_collect_L000054_81 ' NEI4
-C_shfs1_66cc6627_f_collect_L000054_83
+ if_nz jmp #\C_sf341_67070750_f_collect_L000054_81 ' NEI4
+C_sf341_67070750_f_collect_L000054_83
  mov r22, r15 ' CVI, CVU or LOAD
  mov r15, r22
  adds r15, #1 ' ADDP4 coni
@@ -420,20 +420,20 @@ C_shfs1_66cc6627_f_collect_L000054_83
  subs r22, #1 ' SUBI4 coni
  mov r19, r22 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_z jmp #\C_shfs1_66cc6627_f_collect_L000054_84 ' EQI4
+ if_z jmp #\C_sf341_67070750_f_collect_L000054_84 ' EQI4
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_getc ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
-C_shfs1_66cc6627_f_collect_L000054_84
+C_sf341_67070750_f_collect_L000054_84
  cmps r19,  #0 wz
- if_z jmp #\C_shfs1_66cc6627_f_collect_L000054_92 ' EQI4
+ if_z jmp #\C_sf341_67070750_f_collect_L000054_92 ' EQI4
  cmps r23,  #43 wz
- if_z jmp #\C_shfs1_66cc6627_f_collect_L000054_88 ' EQI4
+ if_z jmp #\C_sf341_67070750_f_collect_L000054_88 ' EQI4
  cmps r23,  #45 wz
- if_nz jmp #\C_shfs1_66cc6627_f_collect_L000054_92 ' NEI4
-C_shfs1_66cc6627_f_collect_L000054_88
+ if_nz jmp #\C_sf341_67070750_f_collect_L000054_92 ' NEI4
+C_sf341_67070750_f_collect_L000054_88
  mov r22, r15 ' CVI, CVU or LOAD
  mov r15, r22
  adds r15, #1 ' ADDP4 coni
@@ -443,14 +443,14 @@ C_shfs1_66cc6627_f_collect_L000054_88
  subs r22, #1 ' SUBI4 coni
  mov r19, r22 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_z jmp #\C_shfs1_66cc6627_f_collect_L000054_92 ' EQI4
+ if_z jmp #\C_sf341_67070750_f_collect_L000054_92 ' EQI4
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_getc ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
- jmp #\@C_shfs1_66cc6627_f_collect_L000054_92 ' JUMPV addrg
-C_shfs1_66cc6627_f_collect_L000054_91
+ jmp #\@C_sf341_67070750_f_collect_L000054_92 ' JUMPV addrg
+C_sf341_67070750_f_collect_L000054_91
  adds r13, #1 ' ADDI4 coni
  mov r22, r15 ' CVI, CVU or LOAD
  mov r15, r22
@@ -461,28 +461,28 @@ C_shfs1_66cc6627_f_collect_L000054_91
  subs r22, #1 ' SUBI4 coni
  mov r19, r22 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_z jmp #\C_shfs1_66cc6627_f_collect_L000054_94 ' EQI4
+ if_z jmp #\C_sf341_67070750_f_collect_L000054_94 ' EQI4
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_getc ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
-C_shfs1_66cc6627_f_collect_L000054_94
-C_shfs1_66cc6627_f_collect_L000054_92
+C_sf341_67070750_f_collect_L000054_94
+C_sf341_67070750_f_collect_L000054_92
  cmps r19,  #0 wz
- if_z jmp #\C_shfs1_66cc6627_f_collect_L000054_96 ' EQI4
+ if_z jmp #\C_sf341_67070750_f_collect_L000054_96 ' EQI4
  mov r22, r23
  subs r22, #48 ' SUBI4 coni
  cmp r22,  #10 wcz 
- if_b jmp #\C_shfs1_66cc6627_f_collect_L000054_91 ' LTU4
-C_shfs1_66cc6627_f_collect_L000054_96
+ if_b jmp #\C_sf341_67070750_f_collect_L000054_91 ' LTU4
+C_sf341_67070750_f_collect_L000054_96
  cmps r13,  #0 wz
- if_nz jmp #\C_shfs1_66cc6627_f_collect_L000054_97 ' NEI4
+ if_nz jmp #\C_sf341_67070750_f_collect_L000054_97 ' NEI4
  cmps r19,  #0 wz
- if_z jmp #\C_shfs1_66cc6627_f_collect_L000054_99 ' EQI4
+ if_z jmp #\C_sf341_67070750_f_collect_L000054_99 ' EQI4
  mov r22, ##-1 ' reg <- con
  cmps r23, r22 wz
- if_z jmp #\C_shfs1_66cc6627_f_collect_L000054_99 ' EQI4
+ if_z jmp #\C_sf341_67070750_f_collect_L000054_99 ' EQI4
  mov r2, r21 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -490,18 +490,18 @@ C_shfs1_66cc6627_f_collect_L000054_96
  calld PA,#CALA
  long @C_ungetc
  add SP, #4 ' CALL addrg
-C_shfs1_66cc6627_f_collect_L000054_99
+C_sf341_67070750_f_collect_L000054_99
  mov r22, ##-1 ' reg <- con
  mov r0, r17 ' ADDI/P
  adds r0, r22 ' ADDI/P (3)
- jmp #\@C_shfs1_66cc6627_f_collect_L000054_55 ' JUMPV addrg
-C_shfs1_66cc6627_f_collect_L000054_97
-C_shfs1_66cc6627_f_collect_L000054_81
+ jmp #\@C_sf341_67070750_f_collect_L000054_55 ' JUMPV addrg
+C_sf341_67070750_f_collect_L000054_97
+C_sf341_67070750_f_collect_L000054_81
  cmps r19,  #0 wz
- if_z jmp #\C_shfs1_66cc6627_f_collect_L000054_101 ' EQI4
+ if_z jmp #\C_sf341_67070750_f_collect_L000054_101 ' EQI4
  mov r22, ##-1 ' reg <- con
  cmps r23, r22 wz
- if_z jmp #\C_shfs1_66cc6627_f_collect_L000054_101 ' EQI4
+ if_z jmp #\C_sf341_67070750_f_collect_L000054_101 ' EQI4
  mov r2, r21 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -509,13 +509,13 @@ C_shfs1_66cc6627_f_collect_L000054_81
  calld PA,#CALA
  long @C_ungetc
  add SP, #4 ' CALL addrg
-C_shfs1_66cc6627_f_collect_L000054_101
+C_sf341_67070750_f_collect_L000054_101
  mov r22, #0 ' reg <- coni
  wrbyte r22, r15 ' ASGNU1 reg reg
  mov r22, ##-1 ' reg <- con
  mov r0, r15 ' ADDI/P
  adds r0, r22 ' ADDI/P (3)
-C_shfs1_66cc6627_f_collect_L000054_55
+C_sf341_67070750_f_collect_L000054_55
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -952,7 +952,7 @@ C__doscan_180
  mov BC, #24 ' arg size, rpsize = 0, spsize = 24
  add SP, #4 ' correct for new kernel !!! 
  calld PA,#CALA
- long @C_shfs_66cc6627_o_collect_L000003
+ long @C_sf34_67070750_o_collect_L000003
  add SP, #20 ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
  mov r20, ##-784
@@ -1488,7 +1488,7 @@ C__doscan_290
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_shfs1_66cc6627_f_collect_L000054
+ long @C_sf341_67070750_f_collect_L000054
  add SP, #12 ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
  mov r20, ##-784

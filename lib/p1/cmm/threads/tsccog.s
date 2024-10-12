@@ -26,18 +26,18 @@ C_cmmtd_array ' <symbol:cmmtd_array>
  long $0
  long $0
  long $0
- long $0
- long $0
  long $84fc3208
  long $a0bc5a19
- long $84fc3208
+ long $84fc3204
+ long $a4fc4e01
+ long $83c4e19
+ long $84fc3288
  long $cfc4e01
  long $2cfc4e08
  long $83c4e19
  long $84fc3284
  long $83c3219
  long $a0be8019
- long $5c7c0000
  long $0
  long $0
  long $0
@@ -118,7 +118,7 @@ C_cmmtd_array ' <symbol:cmmtd_array>
  long $83c0019
  long $a0fc0000
  long $83c0142
- long $5cfc2e0e
+ long $5cfc300c
  long $5c7c0070
  long $0
  long $0

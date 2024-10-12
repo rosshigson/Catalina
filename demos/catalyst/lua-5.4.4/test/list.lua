@@ -49,7 +49,7 @@ function print_entry(name, attr, size)
    line = line + 1
    if line % (lines-2) == 0 then
      print("Press ESC to exit, or any other key to continue")
-     local k = propeller.k_new();
+     local k = hmi.k_new();
      if (k == 27) then
        os.exit();
      end
@@ -83,7 +83,7 @@ end
 line = 0
 
 -- set up number of screen lines
-lines = propeller.t_geometry()%256
+lines = hmi.t_geometry()%256
 if not lines or lines == 0 then
   lines = 24;
 end
@@ -99,9 +99,9 @@ dir, file = decompose(arg[1]);
 -- on any files matching the pattern specified in file (if any)
 propeller.scan(print_entry, dir, file);
 
-if  propeller.t_geometry() ~= 0 then
+if  hmi.t_geometry() ~= 0 then
   -- need this if not a serial HMI
   print("Press a key to terminate");
-  propeller.k_new();
+  hmi.k_new();
 end
 

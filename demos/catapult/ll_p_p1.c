@@ -20,7 +20,7 @@
  *                   
  */
 
-#pragma catapult common options(-C C3 -C TTY -lci -C NO_FLOAT -O5)
+#pragma catapult common options(-C C3 -C TTY -lci -C NO_ARGS -C NO_FLOAT -O5)
 
 // any common includes or types here ...
 

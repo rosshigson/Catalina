@@ -36,6 +36,8 @@
  *                 by _sbrk(), but the actual value used will be the LOWER 
  *                 of HEAP_TOP and FREE_MEM.
  *
+ * version 8.1   - just update version number.
+ *
  */
 
 /*--------------------------------------------------------------------------
@@ -73,7 +75,7 @@
 
 #define COMPILE_IN_PLACE   1 /* 0 = compile in target, 1 = compile locally */
 
-#define VERSION            "7.9"
+#define VERSION            "8.1"
 
 #define MAX_FILES          500
 #define MAX_LIBS           500

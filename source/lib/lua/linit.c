@@ -37,11 +37,18 @@
 #if defined(LUA_PROPELLER)
 #define LUA_PROPELLERLIBNAME	"propeller"
 LUALIB_API int (luaopen_propeller) (lua_State *L);
+#define LUA_HMILIBNAME	"hmi"
+LUALIB_API int (luaopen_hmi) (lua_State *L);
 #endif
 
 #if defined(LUA_THREADS)
 #define LUA_THREADSLIBNAME	"threads"
 LUALIB_API int (luaopen_threads) (lua_State *L);
+#endif
+
+#if defined(__CATALINA_ENABLE_LINENOISE)
+#define LUA_LINENOISELIBNAME	"linenoise"
+LUALIB_API int (luaopen_linenoise) (lua_State *L);
 #endif
 
 /*
@@ -65,6 +72,10 @@ static const luaL_Reg loadedlibs[] = {
 #endif
 #if defined(LUA_PROPELLER)
   {LUA_PROPELLERLIBNAME, luaopen_propeller},
+  {LUA_HMILIBNAME, luaopen_hmi},
+#endif
+#if defined(__CATALINA_ENABLE_LINENOISE)
+  {LUA_LINENOISELIBNAME, luaopen_linenoise},
 #endif
   {NULL, NULL}
 };

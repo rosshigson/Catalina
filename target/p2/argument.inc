@@ -80,6 +80,10 @@ INITIALIZE_ARGUMENTS
 #ifndef NO_ARGS
 
 .cogstore_size
+#if CONST_ARGS
+         mov r0, #MAX_LONGS
+         ret
+#else
          call #.cogstore_valid
          cmp r0, #0 wz
   if_z   ret
@@ -94,6 +98,7 @@ INITIALIZE_ARGUMENTS
   if_nz  ret
          djnz r2, #.size_loop
   _ret_  neg r0, #2
+#endif
 
 .cogstore_setup
          mov r0, #0

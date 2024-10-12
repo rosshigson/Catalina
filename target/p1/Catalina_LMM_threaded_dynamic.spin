@@ -140,30 +140,32 @@ BA      long 0                 '$30
 BZ      long 0                 '$31
 CS      long 0                 '$32
 '
-r0      long 0          '$33
-r1      long 0          '$34
-r2      long 0          '$35
-r3      long 0          '$36
-r4      long 0          '$37
-r5      long 0          '$38
-r6      long 0          '$39
-r7      long 0          '$3a
-r8      long 0          '$3b
-r9      long 0          '$3c
-r10     long 0          '$3d
-r11     long 0          '$3e
-r12     long 0          '$3f
-r13     long 0          '$40
-r14     long 0          '$41
-r15     long 0          '$42
-r16     long 0          '$43
-r17     long 0          '$44
-r18     long 0          '$45
-r19     long 0          '$46
-r20     long 0          '$47
-r21     long 0          '$48
-r22     long 0          '$49
-r23     long 0          '$4a
+r0      long 0                 '$33
+r1      long 0                 '$34
+r2      long 0                 '$35
+r3      long 0                 '$36
+r4      long 0                 '$37
+r5      long 0                 '$38
+r6      long 0                 '$39
+r7      long 0                 '$3a
+LMM_context
+r8      sub     SP,#8          '$3b reserve space ...
+r9      mov     xfer,SP        '$3c ... for xfer block at top of stack
+r10     sub     SP,#(Common#THREAD_BLOCK_SIZE-Common#THREAD_EXT_OFF)*4 '$3d  write -1 ...
+r11     neg     t1,#1          '$3e ... to extended information ...
+r12     wrlong  t1,SP          '$3f ... (i.e. we are not a pthread!)
+r13     sub     SP,#Common#THREAD_EXT_OFF*4 '$40 make thread block ...
+r14     wrlong  SP,SP          '$41 ... point to itself
+r15     mov     TP,SP          '$42 save this as current thread block
+r16     mov     t1,TP          '$43 initialize ...
+r17     add     t1,#Common#THREAD_AFF_OFF*4 '$44... flags ... 
+r18     cogid   t2             '$45 ... and ... 
+r19     shl     t2,#8          '$46 ... set ... 
+r20     wrword  t2,t1          '$47 ... affinity ...
+r21     add     t1,#2          '$48 ... and ...
+r22     wrword  ticks,t1       '$49 ... ticks
+LMM_context_ret
+r23     ret                    '$4a
 '
 Bit31   long  $80000000        '$4b
 all_1s  long  $ffffffff        '$4c
@@ -665,26 +667,6 @@ fp_service
         jmp     #LMM_check
 '       
 '-------------------------- Multi-Threading Support ----------------------------
-'
-' LMM_context - initalize mult-ithreading by creating our first thread block.
-'               Also, since we use our request block for threading, we must
-'               allocate a new xfer block for floating point operations.
-'
-LMM_context
-        sub     SP,#8           ' reserve space ...
-        mov     xfer,SP         ' ... for xfer block at top of stack
-        sub     SP,#Common#THREAD_BLOCK_SIZE*4 ' reserve space at top of stack for thread block
-        wrlong  SP,SP           ' make it point to itself
-        mov     TP,SP           ' save this as current thread block
-        mov     t1,TP           ' initialize ...
-        add     t1,#Common#THREAD_AFF_OFF*4 ' ... flags ... 
-        cogid   t2              ' ... and ... 
-        shl     t2,#8           ' ... set ... 
-        wrword  t2,t1           ' ... affinity ...
-        add     t1,#2           ' ... and ...
-        wrword  ticks,t1        ' ... ticks
-LMM_context_ret
-        ret
 '
 ' LMM_check - check whether we should context switch (and switch if so)
 '                 

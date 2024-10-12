@@ -72,11 +72,12 @@ C_lmmtd_array ' <symbol:lmmtd_array>
  long $fb046d61
  long $fb046b61
  long $fb046961
- long $f6046600
- long $fc60662a
  long $f1845808
  long $f602ba2c
- long $f1845808
+ long $f1845804
+ long $f664a601
+ long $fc60a62c
+ long $f1845804
  long $fd60a601
  long $f064a608
  long $fc60a62c
@@ -86,7 +87,6 @@ C_lmmtd_array ' <symbol:lmmtd_array>
  long $f184580c
  long $fc60682c
  long $fd64002d
- long $0
  long $0
  long $0
  long $80000000
@@ -117,10 +117,10 @@ C_lmmtd_array ' <symbol:lmmtd_array>
  long $fb046961
  long $fd606629
  long $fb020034
- long $fdbfff3c
- long $fd900018
- long $0
- long $0
+ long $f6046600
+ long $fc60662a
+ long $fdbfff34
+ long $fd900010
  long $0
  long $0
  long $0

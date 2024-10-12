@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_s2fg_66cc6408_lmmtd_array_L000001 ' <symbol:lmmtd_array>
+C_s2sc_6707056b_lmmtd_array_L000001 ' <symbol:lmmtd_array>
  long $fd900164
  long $fd900dd0
  long $fd9001cc
@@ -70,11 +70,12 @@ C_s2fg_66cc6408_lmmtd_array_L000001 ' <symbol:lmmtd_array>
  long $fb046d61
  long $fb046b61
  long $fb046961
- long $f6046600
- long $fc60662a
  long $f1845808
  long $f602ba2c
- long $f1845808
+ long $f1845804
+ long $f664a601
+ long $fc60a62c
+ long $f1845804
  long $fd60a601
  long $f064a608
  long $fc60a62c
@@ -84,7 +85,6 @@ C_s2fg_66cc6408_lmmtd_array_L000001 ' <symbol:lmmtd_array>
  long $f184580c
  long $fc60682c
  long $fd64002d
- long $0
  long $0
  long $0
  long $80000000
@@ -115,10 +115,10 @@ C_s2fg_66cc6408_lmmtd_array_L000001 ' <symbol:lmmtd_array>
  long $fb046961
  long $fd606629
  long $fb020034
- long $fdbfff3c
- long $fd900018
- long $0
- long $0
+ long $f6046600
+ long $fc60662a
+ long $fdbfff34
+ long $fd900010
  long $0
  long $0
  long $0
@@ -881,7 +881,7 @@ C__threaded_cogstart_L_M_M__cog ' <symbol:_threaded_cogstart_LMM_cog>
  mov r2, r17 ' CVI, CVU or LOAD
  mov r22, #2 ' reg <- coni
  jmp #LODL
- long @C_s2fg_66cc6408_lmmtd_array_L000001
+ long @C_s2sc_6707056b_lmmtd_array_L000001
  mov r20, RI ' reg <- addrg
  mov r3, r20 ' RSHI
  sar r3, r22 ' RSHI (3)

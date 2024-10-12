@@ -1,7 +1,14 @@
-#include <stdlib.h>
 #include <plugin.h>
 
 #include "service.h"
+
+/*
+ * serial service function:
+ */
+extern long _serial_service(long svc, serial_t *serial) {
+   serial->len_out = 0; // in case we forget!
+   return _sys_plugin(-svc, (long)serial);
+}
 
 /*
  * register services - regeister an array of services, which is terminated
@@ -10,8 +17,8 @@
  * The internal id is the list index + 1. e.g.
  *
  * svc_list_t my_list[] = {
- *    {"float", NULL, SHORT_SVC, SVC_COMP}, // internal index 1
- *    {"", NULL, 0, 0}
+ *    {"name", NULL, SHORT_SVC, SVC_COMP, 0}, // internal index 1
+ *    {"", NULL, 0, 0, 0}
  * };
  *
  * if the lock is specified as NO_LOCK (-1), then no lock is used to protect 

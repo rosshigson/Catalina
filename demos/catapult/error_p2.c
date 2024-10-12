@@ -6,7 +6,7 @@
  *                   
  */
 
-#pragma catapult common options(-C P2_EDGE -p2 -O5 -lc -lma)
+#pragma catapult common options(-C P2_EDGE -C NO_ARGS -p2 -O5 -lc -lma)
 
 // common includes or definitions should go here ...
 
