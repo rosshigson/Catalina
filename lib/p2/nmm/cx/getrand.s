@@ -7,17 +7,17 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_s2l4_6707074a__seed_L000001 ' <symbol:_seed>
+C_sfgc_6709f9e5__seed_L000001 ' <symbol:_seed>
  calld PA,#PSHM
  long $400000 ' save registers
-' loading argument C_s2l4_6707074a__seed_L000001_3_L000004 to PASM eliminated
+' loading argument C_sfgc_6709f9e5__seed_L000001_3_L000004 to PASM eliminated
 'START PASM ... 
 getct r0
 
 '... END PASM
 ' call to PASM eliminated
  mov r22, r0 ' CVI, CVU or LOAD
-' C_s2l4_6707074a__seed_L000001_2 ' (symbol refcount = 0)
+' C_sfgc_6709f9e5__seed_L000001_2 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETN
 
@@ -47,7 +47,7 @@ C_getrand ' <symbol:getrand>
  if_nz jmp #\C_getrand_8 ' NEI4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
- long @C_s2l4_6707074a__seed_L000001 ' CALL addrg
+ long @C_sfgc_6709f9e5__seed_L000001 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r2, r22 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4

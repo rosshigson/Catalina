@@ -106,21 +106,21 @@ r7       long    0              '$07
 r8       long    0              '$08
 r9       long    0              '$09
 r10      long    0              '$0a
-r11      long    0              '$0b
 LMM_context
-r12      sub     SP,#8          '$0c reserve space ...
-r13      mov     xfer,SP        '$0d ... for xfer block at top of stack
-r14      sub     SP,#(Common#THREAD_BLOCK_SIZE-Common#THREAD_EXT_OFF)*4 '$0e  write -1 ...
-r15      neg     t1,#1          '$0f ... to extended information ...
-r16      wrlong  t1,SP          '$10 ... (i.e. we are not a pthread!)
-r17      sub     SP,#Common#THREAD_EXT_OFF*4 '$11 set up ...
-r18      cogid   t1             '$12 ... affinity ...
-r19      shl     t1,#8          '$13 ... flags ...
-r20      wrlong  t1,SP          '$14 ... and set ticks to zero
-r21      sub     SP,#Common#THREAD_AFF_OFF*4 '$15 point to begining of thread block
-r22      wrlong  SP,SP          '$16 make thread block point to itself
-r23      mov     TP,SP          '$17 make thread block the current thread
+r11      sub     SP,#8          '$0b reserve space ...
+r12      mov     xfer,SP        '$0c ... for xfer block at top of stack
+r13      sub     SP,#(Common#THREAD_BLOCK_SIZE-Common#THREAD_EXT_OFF)*4 '$0d  write -1 ...
+r14      neg     t1,#1          '$0e ... to extended information ...
+r15      wrlong  t1,SP          '$0f ... (i.e. we are not a pthread!)
+r16      sub     SP,#(Common#THREAD_EXT_OFF-Common#THREAD_AFF_OFF)*4 '$10 set up ...
+r17      cogid   t1             '$11 ... affinity ...
+r18      shl     t1,#8          '$12 ... flags ...
+r19      wrlong  t1,SP          '$13 ... and set ticks to zero
+r20      sub     SP,#Common#THREAD_AFF_OFF*4 '$14 point to begining of thread block
+r21      wrlong  SP,SP          '$15 make thread block point to itself
+r22      mov     TP,SP          '$16 make thread block the current thread
 LMM_context_ret
+r23      ret                    '$17
 PC       long    0              '$18
 SP       long    0              '$19
 FP       long    0              '$1a
@@ -213,11 +213,11 @@ kernel_init                     '
          rdlong  r2, r0         '$61 15 ... argv
          add     r0, #4         '$62 16 set up ...
          rdlong  r0, r0         '$63 17 read return address
+         call    #LMM_context   '$68 22 initialize threading context  
          sub     SP, #12        '$64 18 allow space for spilled arguments
          wrlong  r0, SP         '$65 19  set up return address
          mov     r0,#0          '$66 20 zero ...
          wrlong  r0,req         '$67 21 ... our request block  
-         call    #LMM_context   '$68 22 initialize threading context  
          jmp     #read_next     '$69 23 we can now start executing CMM code
          nop                    '$6a 24
          nop                    '$6b 25

@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_s2po_6707059d_charT_oI_nt_L000001 ' <symbol:charToInt>
+C_sepc_6709f853_charT_oI_nt_L000001 ' <symbol:charToInt>
  jmp #PSHM
  long $400000 ' save registers
  mov r22, r2 ' CVUI
@@ -18,25 +18,25 @@ C_s2po_6707059d_charT_oI_nt_L000001 ' <symbol:charToInt>
  and r22, cviu_m1 ' zero extend
  cmps r22,  #10 wz,wc
  jmp #BR_B
- long @C_s2po_6707059d_charT_oI_nt_L000001_3 ' LTI4
+ long @C_sepc_6709f853_charT_oI_nt_L000001_3 ' LTI4
  mov r22, r2 ' CVUI
  and r22, cviu_m1 ' zero extend
  subs r22, #7 ' SUBI4 coni
  mov r2, r22 ' CVI, CVU or LOAD
-C_s2po_6707059d_charT_oI_nt_L000001_3
+C_sepc_6709f853_charT_oI_nt_L000001_3
  mov r22, r2 ' CVUI
  and r22, cviu_m1 ' zero extend
  cmps r22,  #15 wz,wc
  jmp #BRBE
- long @C_s2po_6707059d_charT_oI_nt_L000001_5 ' LEI4
+ long @C_sepc_6709f853_charT_oI_nt_L000001_5 ' LEI4
  mov r22, r2 ' CVUI
  and r22, cviu_m1 ' zero extend
  subs r22, #32 ' SUBI4 coni
  mov r2, r22 ' CVI, CVU or LOAD
-C_s2po_6707059d_charT_oI_nt_L000001_5
+C_sepc_6709f853_charT_oI_nt_L000001_5
  mov r0, r2 ' CVUI
  and r0, cviu_m1 ' zero extend
-' C_s2po_6707059d_charT_oI_nt_L000001_2 ' (symbol refcount = 0)
+' C_sepc_6709f853_charT_oI_nt_L000001_2 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETN
 
@@ -148,7 +148,7 @@ C__scanf_getl_19
  and r2, cviu_m1 ' zero extend
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_s2po_6707059d_charT_oI_nt_L000001 ' CALL addrg
+ long @C_sepc_6709f853_charT_oI_nt_L000001 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r20, r21 ' CVI, CVU or LOAD
  mov r0, r20 ' setup r0/r1 (2)

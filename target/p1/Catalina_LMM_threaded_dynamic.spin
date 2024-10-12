@@ -198,10 +198,10 @@ lmm_init
         add     r0,#4           '10 point to initial SP
         rdlong  SP,r0           '11 load initial SP
         add     r0,#4           '12 point to argc/argv/return address
-        call    #LMM_frame      '13 set up initial frame
-        mov     r0,#0           '14 zero ...
-        wrlong  r0,req          '15 ... our request block  
-        call    #LMM_context    '16 initialize threading context  
+        call    #LMM_context    '13 initialize threading context  
+        call    #LMM_frame      '14 set up initial frame
+        mov     r0,#0           '15 zero ...
+        wrlong  r0,req          '16 ... our request block  
         jmp     #LMM_loop       '17 we can now start executing LMM code
 '
 ' LMM_next - increment the PC then execute the instruction pointed to by the new PC

@@ -225,7 +225,7 @@ C_luaM__free_ ' <symbol:luaM_free_>
 
 
  alignl ' align long
-C_sbgc2_67070717_tryagain_L000028 ' <symbol:tryagain>
+C_sih42_6709f9bd_tryagain_L000028 ' <symbol:tryagain>
  calld PA,#NEWF
  calld PA,#PSHM
  long $fa8000 ' save registers
@@ -242,12 +242,12 @@ C_sbgc2_67070717_tryagain_L000028 ' <symbol:tryagain>
  rdbyte r20, r20 ' reg <- CVUI4 INDIRU1 reg
  and r20, #15 ' BANDI4 coni
  cmps r20, r22 wz
- if_nz jmp #\C_sbgc2_67070717_tryagain_L000028_30 ' NEI4
+ if_nz jmp #\C_sih42_6709f9bd_tryagain_L000028_30 ' NEI4
  mov r20, r15
  adds r20, #59 ' ADDP4 coni
  rdbyte r20, r20 ' reg <- CVUI4 INDIRU1 reg
  cmps r20, r22 wz
- if_nz jmp #\C_sbgc2_67070717_tryagain_L000028_30 ' NEI4
+ if_nz jmp #\C_sih42_6709f9bd_tryagain_L000028_30 ' NEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -268,10 +268,10 @@ C_sbgc2_67070717_tryagain_L000028 ' <symbol:tryagain>
  calld PA,#CALI
  add SP, #12 ' CALL indirect
  mov r22, r0 ' CVI, CVU or LOAD
- jmp #\@C_sbgc2_67070717_tryagain_L000028_29 ' JUMPV addrg
-C_sbgc2_67070717_tryagain_L000028_30
+ jmp #\@C_sih42_6709f9bd_tryagain_L000028_29 ' JUMPV addrg
+C_sih42_6709f9bd_tryagain_L000028_30
  mov r0, ##0 ' RET con
-C_sbgc2_67070717_tryagain_L000028_29
+C_sih42_6709f9bd_tryagain_L000028_29
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -316,7 +316,7 @@ C_luaM__realloc_ ' <symbol:luaM_realloc_>
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbgc2_67070717_tryagain_L000028
+ long @C_sih42_6709f9bd_tryagain_L000028
  add SP, #12 ' CALL addrg
  mov r13, r0 ' CVI, CVU or LOAD
  mov r22, r13 ' CVI, CVU or LOAD
@@ -431,7 +431,7 @@ C_luaM__malloc__41
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbgc2_67070717_tryagain_L000028
+ long @C_sih42_6709f9bd_tryagain_L000028
  add SP, #12 ' CALL addrg
  mov RI, FP
  sub RI, #-(-12)
