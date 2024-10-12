@@ -45,7 +45,7 @@ QUIT_SVC   = 89
 
 service_index = {
   [FETCH_SVC]  = "get_row", 
-  [QUIT_SVC]   = "quite"
+  [QUIT_SVC]   = "quit"
 }
 
 -- define proxy calls for the services implemented by the server:
