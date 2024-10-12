@@ -1,5 +1,5 @@
 #!/bin/bash
 
 rm -f *.bin *.binary *.eeprom *.lst *.inc *.ovl 
-rm client.c client.inc server.c
+rm -f client.c client.inc server.c
 rm -f _catapult.cmd common.h 
