@@ -128,7 +128,7 @@ if [ -f $INPUT ]; then
       #echo rm -f $OUTPUT
       rm -f $OUTPUT
       spp $DEFINES $INCLUDES $INPUT > $OUTPUT
-      p2asm -v33 $OUTPUT
+      p2asm -v33 $LISTING $OUTPUT
       rm -f $OUTPUT
    else
       TEMP=`mktemp`
