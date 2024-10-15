@@ -17,25 +17,25 @@ C_m_bound_limits ' <symbol:m_bound_limits>
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 reg
  jmp #LODL
- long @C_sh2k_6709f79f_m_min_L000002
+ long @C_s6h0_670edac8_m_min_L000002
  wrlong r22, RI ' ASGNI4 addrg reg
  jmp #LODL
- long @C_sh2k1_6709f79f_m_max_L000003
+ long @C_s6h01_670edac8_m_max_L000003
  wrlong r4, RI ' ASGNI4 addrg reg
  mov r22, FP
  add r22, #12 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 reg
  jmp #LODL
- long @C_sh2k_6709f79f_m_min_L000002+4
+ long @C_s6h0_670edac8_m_min_L000002+4
  wrlong r22, RI ' ASGNI4 addrg reg
  jmp #LODL
- long @C_sh2k1_6709f79f_m_max_L000003+4
+ long @C_s6h01_670edac8_m_max_L000003+4
  wrlong r3, RI ' ASGNI4 addrg reg
  jmp #LODL
- long @C_sh2k_6709f79f_m_min_L000002+8
+ long @C_s6h0_670edac8_m_min_L000002+8
  wrlong r5, RI ' ASGNI4 addrg reg
  jmp #LODL
- long @C_sh2k1_6709f79f_m_max_L000003+8
+ long @C_s6h01_670edac8_m_max_L000003+8
  wrlong r2, RI ' ASGNI4 addrg reg
 ' C_m_bound_limits_6 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
@@ -47,13 +47,13 @@ C_m_bound_limits ' <symbol:m_bound_limits>
  alignl ' align long
 C_m_bound_scales ' <symbol:m_bound_scales>
  jmp #LODL
- long @C_sh2k2_6709f79f_m_div_L000004
+ long @C_s6h02_670edac8_m_div_L000004
  wrlong r4, RI ' ASGNI4 addrg reg
  jmp #LODL
- long @C_sh2k2_6709f79f_m_div_L000004+4
+ long @C_s6h02_670edac8_m_div_L000004+4
  wrlong r3, RI ' ASGNI4 addrg reg
  jmp #LODL
- long @C_sh2k2_6709f79f_m_div_L000004+8
+ long @C_s6h02_670edac8_m_div_L000004+8
  wrlong r2, RI ' ASGNI4 addrg reg
 ' C_m_bound_scales_11 ' (symbol refcount = 0)
  jmp #RETN
@@ -100,7 +100,7 @@ C_m_bound_preset_20
  mov r22, r17
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_sh2k2_6709f79f_m_div_L000004
+ long @C_s6h02_670edac8_m_div_L000004
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRI4 reg
@@ -111,7 +111,7 @@ C_m_bound_preset_20
  mov r22, r17
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_sh2k3_6709f79f_m_acc_L000005
+ long @C_s6h03_670edac8_m_acc_L000005
  mov r20, RI ' reg <- addrg
  adds r20, r22 ' ADDI/P (2)
  mov r18, FP
@@ -119,7 +119,7 @@ C_m_bound_preset_20
  adds r18, r22 ' ADDI/P (2)
  rdlong r18, r18 ' reg <- INDIRI4 reg
  jmp #LODL
- long @C_sh2k_6709f79f_m_min_L000002
+ long @C_s6h0_670edac8_m_min_L000002
  mov r16, RI ' reg <- addrg
  adds r22, r16 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRI4 reg
@@ -163,7 +163,7 @@ C_m_limit_25
  mov r22, r23
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_sh2k2_6709f79f_m_div_L000004
+ long @C_s6h02_670edac8_m_div_L000004
  mov r20, RI ' reg <- addrg
  adds r20, r22 ' ADDI/P (2)
  rdlong r2, r20 ' reg <- INDIRI4 reg
@@ -172,12 +172,12 @@ C_m_limit_25
  long @C_m_abs ' CALL addrg
  mov r20, r0 ' CVI, CVU or LOAD
  jmp #LODL
- long @C_sh2k1_6709f79f_m_max_L000003
+ long @C_s6h01_670edac8_m_max_L000003
  mov r18, RI ' reg <- addrg
  adds r18, r22 ' ADDI/P (2)
  rdlong r18, r18 ' reg <- INDIRI4 reg
  jmp #LODL
- long @C_sh2k_6709f79f_m_min_L000002
+ long @C_s6h0_670edac8_m_min_L000002
  mov r16, RI ' reg <- addrg
  adds r22, r16 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRI4 reg
@@ -214,7 +214,7 @@ C_m_bound ' <symbol:m_bound>
  mov r22, r23
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_sh2k2_6709f79f_m_div_L000004
+ long @C_s6h02_670edac8_m_div_L000004
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r19, r22 ' reg <- INDIRI4 reg
@@ -224,7 +224,7 @@ C_m_bound ' <symbol:m_bound>
  mov r22, r23
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_sh2k3_6709f79f_m_acc_L000005
+ long @C_s6h03_670edac8_m_acc_L000005
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r20, r22 ' reg <- INDIRI4 reg
@@ -243,7 +243,7 @@ C_m_bound_30
  mov r22, r23
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_sh2k3_6709f79f_m_acc_L000005
+ long @C_s6h03_670edac8_m_acc_L000005
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r20, r22 ' reg <- INDIRI4 reg
@@ -265,12 +265,12 @@ C_m_bound_31
  mov r20, r23
  shl r20, #2 ' LSHI4 coni
  jmp #LODL
- long @C_sh2k_6709f79f_m_min_L000002
+ long @C_s6h0_670edac8_m_min_L000002
  mov r18, RI ' reg <- addrg
  adds r18, r20 ' ADDI/P (2)
  rdlong r18, r18 ' reg <- INDIRI4 reg
  jmp #LODL
- long @C_sh2k3_6709f79f_m_acc_L000005
+ long @C_s6h03_670edac8_m_acc_L000005
  mov r16, RI ' reg <- addrg
  adds r20, r16 ' ADDI/P (1)
  rdlong r20, r20 ' reg <- INDIRI4 reg
@@ -360,19 +360,19 @@ C_m_bound_z ' <symbol:m_bound_z>
 DAT ' uninitialized data segment
 
  alignl ' align long
-C_sh2k3_6709f79f_m_acc_L000005 ' <symbol:m_acc>
+C_s6h03_670edac8_m_acc_L000005 ' <symbol:m_acc>
  byte 0[12]
 
  alignl ' align long
-C_sh2k2_6709f79f_m_div_L000004 ' <symbol:m_div>
+C_s6h02_670edac8_m_div_L000004 ' <symbol:m_div>
  byte 0[12]
 
  alignl ' align long
-C_sh2k1_6709f79f_m_max_L000003 ' <symbol:m_max>
+C_s6h01_670edac8_m_max_L000003 ' <symbol:m_max>
  byte 0[12]
 
  alignl ' align long
-C_sh2k_6709f79f_m_min_L000002 ' <symbol:m_min>
+C_s6h0_670edac8_m_min_L000002 ' <symbol:m_min>
  byte 0[12]
 
 ' Catalina Code

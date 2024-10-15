@@ -16,6 +16,7 @@ local write = io.write
 -- accumulate output to reduce flicker
 function draw_no_flicker()
   local out = "" 
+  local row = ""
   for y = 1, height do
     repeat
       row = get_row(y)
@@ -24,7 +25,6 @@ function draw_no_flicker()
       end
     until row
     out = out .. row
-    collectgarbage()
   end
   write(out)
 end
@@ -32,6 +32,7 @@ end
 -- output universe to screen (if all the cells are ready)
 -- output a line at a time (cursor may flicker)
 function draw()
+  local row = ""
   for y = 1, height do
     repeat
       row = get_row(y)
@@ -40,8 +41,6 @@ function draw()
       end
     until row
     write(row)
-    row=""
-    collectgarbage()
   end
 end
 
@@ -63,14 +62,6 @@ function LIFE(w,h)
     if gen > 2000 then break end
   end
 end
-
--- the following lines force more aggresive garbage collection when memory is 
--- tight - this is required if the default garbage collector runs too slowly 
--- and the program runs out of Hub RAM (due to the large number of string 
--- operations) done in each generation.
-
-pause = 120
-collectgarbage("incremental", pause)
 
 print("... loaded")
 

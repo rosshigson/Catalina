@@ -72,7 +72,7 @@ static const luaL_Reg loadedlibs[] = {
 #endif
 #if defined(__CATALINA_ENABLE_PROPELLER)
   {LUA_PROPELLERLIBNAME, luaopen_propeller},
-  {LUA_PROPELLERLIBNAME, luaopen_hmi},
+  {LUA_HMILIBNAME, luaopen_hmi},
 #endif
   {LUA_SERVICELIBNAME, luaopen_service},
   //{LUA_SERVICELIBNAME, luaopen_serial2},

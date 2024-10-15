@@ -1,7 +1,7 @@
 This file contains a summary of changes to Catalina in recent releases. For
 information about installing and using Catalina, see the file README.md 
 
-Catalina release 8.1 is a full release.
+Catalina release 8.2 is a full release.
 
 WARNING: DO NOT INSTALL THIS RELEASE OVER A PRIOR VERSION OF CATALINA AND
 DO NOT LINK OR COMBINE PROGRAMS COMPILED WITH THIS VERSION WITH CODE (E.G. 
@@ -14,6 +14,32 @@ The following sections list the changes that have been made in releases
 7.0 onwards of Catalina. If you have not used a previous release of Catalina, 
 you can skip the rest of this README and instead go straight to the Catalina 
 tutorial documents.
+
+RELEASE 8.1
+
+New Functionality
+-----------------
+
+1. The default Lua garbage collector has been made more aggressive, to better
+   suit the Hub RAM constraints of the Propeller. The default is now to use 
+   the "incremental" collector with a "pause" of 110, which means it will
+   start a new cycle when the use of memory exceeds 110% of the use after 
+   the previous collection.. Once a program is functioning correctly, in 
+   most instances the settings can be relaxed to improve performance.
+
+Other Changes
+-------------
+
+1. The Lua "hmi" module was not being initialized correctly in some versions
+   of Lua, and it would result in a run-time error complaining that "hmi" was 
+   a nil value. Affected the Propeller 2 only on Windows, Linux and Catalyst.
+
+2. The p2_asm script was not generating a listing when requested using the -l 
+   option. Affected Linux only.
+
+3. Add a note about the need to recompile eLua programs if the address of the
+   secondary needs to be modified to be compiled under Linux. Affected the
+   Propeller 2 on Linux only.
 
 Release 8.1
 
@@ -28,7 +54,7 @@ New Functionality
    'Aloha from Lua' for full details.
 
 2. The "exec" command (i.e. exec.lua) has been extended to allow parameter 
-   substitution anyyhere in the executed script. Previously, parameter 
+   substitution anywhere in the executed script. Previously, parameter 
    substitution was performed only when "_n" was specified as an argument to 
    the exec command itself - this was replaced with the value of the nth 
    parameter to the current script. This is still supported, but in addition 

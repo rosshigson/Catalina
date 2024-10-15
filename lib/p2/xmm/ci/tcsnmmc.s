@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_shps_6709f8c3_nmmtd_array_L000001 ' <symbol:nmmtd_array>
+C_selo_670edbdf_nmmtd_array_L000001 ' <symbol:nmmtd_array>
  long $fd900108
  long $fd9001fc
  long $fd900220
@@ -865,7 +865,7 @@ C__threaded_cogstart_N_M_M__cog_11
  mov r20, RI ' reg <- addrl
  adds r20, r22 ' ADDI/P (2)
  jmp #LODL
- long @C_shps_6709f8c3_nmmtd_array_L000001
+ long @C_selo_670edbdf_nmmtd_array_L000001
  mov r18, RI ' reg <- addrg
  adds r22, r18 ' ADDI/P (1)
  mov RI, r22

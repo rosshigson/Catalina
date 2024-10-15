@@ -108,10 +108,4 @@ function LIFE(w,h)
   end
 end
 
--- the following line is added to force more aggresive garbage collection
--- if memory is tight - this is required on the Propeller 2, or the garbage 
--- collector runs too slowly and we run out of Hub RAM due to the large 
--- number of string concatenations done in each generation.
-collectgarbage("setstepmul", 500)
-
 LIFE(40,20)

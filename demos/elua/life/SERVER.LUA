@@ -148,14 +148,6 @@ function LIFE()
   thisgen.ready = true
 end
 
--- the following lines force more aggresive garbage collection when memory is 
--- tight - this is required if the default garbage collector runs too slowly 
--- and the program runs out of Hub RAM (due to the large number of string 
--- operations) done in each generation. 
-
-pause = 120
-collectgarbage("incremental", pause)
-
 print("... loaded")
 
 -- the LIFE routine sets up the universe - evolution 

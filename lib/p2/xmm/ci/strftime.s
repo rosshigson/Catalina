@@ -7,18 +7,18 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_s5hs_6709f8a1_s_prnt_L000001 ' <symbol:s_prnt>
+C_s8go_670edbbc_s_prnt_L000001 ' <symbol:s_prnt>
  jmp #PSHM
  long $500000 ' save registers
  jmp #JMPA
- long @C_s5hs_6709f8a1_s_prnt_L000001_4 ' JUMPV addrg
-C_s5hs_6709f8a1_s_prnt_L000001_3
+ long @C_s8go_670edbbc_s_prnt_L000001_4 ' JUMPV addrg
+C_s8go_670edbbc_s_prnt_L000001_3
  cmp r4,  #0 wz
  jmp #BRNZ
- long @C_s5hs_6709f8a1_s_prnt_L000001_6 ' NEU4
+ long @C_s8go_670edbbc_s_prnt_L000001_6 ' NEU4
  jmp #JMPA
- long @C_s5hs_6709f8a1_s_prnt_L000001_5 ' JUMPV addrg
-C_s5hs_6709f8a1_s_prnt_L000001_6
+ long @C_s8go_670edbbc_s_prnt_L000001_5 ' JUMPV addrg
+C_s8go_670edbbc_s_prnt_L000001_6
  mov r22, r5 ' CVI, CVU or LOAD
  mov r5, r22
  adds r5, #1 ' ADDP4 coni
@@ -33,31 +33,31 @@ C_s5hs_6709f8a1_s_prnt_L000001_6
  jmp #WBYT ' ASGNU1 reg reg
  sub r4, #1 ' SUBU4 coni
  subs r2, #1 ' SUBI4 coni
-C_s5hs_6709f8a1_s_prnt_L000001_4
+C_s8go_670edbbc_s_prnt_L000001_4
  mov r22, #0 ' reg <- coni
  cmps r2, r22 wz,wc
  jmp #BR_A
- long @C_s5hs_6709f8a1_s_prnt_L000001_3 ' GTI4
+ long @C_s8go_670edbbc_s_prnt_L000001_3 ' GTI4
  cmps r2, r22 wz,wc
  jmp #BRAE
- long @C_s5hs_6709f8a1_s_prnt_L000001_8 ' GEI4
+ long @C_s8go_670edbbc_s_prnt_L000001_8 ' GEI4
  mov RI, r3
  jmp #RBYT
  mov r20, BC ' reg <- INDIRU1 reg
  and r20, cviu_m1 ' zero extend
  cmps r20, r22 wz
  jmp #BRNZ
- long @C_s5hs_6709f8a1_s_prnt_L000001_3 ' NEI4
-C_s5hs_6709f8a1_s_prnt_L000001_8
-C_s5hs_6709f8a1_s_prnt_L000001_5
+ long @C_s8go_670edbbc_s_prnt_L000001_3 ' NEI4
+C_s8go_670edbbc_s_prnt_L000001_8
+C_s8go_670edbbc_s_prnt_L000001_5
  mov r0, r5 ' CVI, CVU or LOAD
-' C_s5hs_6709f8a1_s_prnt_L000001_2 ' (symbol refcount = 0)
+' C_s8go_670edbbc_s_prnt_L000001_2 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETN
 
 
  alignl ' align long
-C_s5hs1_6709f8a1_u_prnt_L000009 ' <symbol:u_prnt>
+C_s8go1_670edbbc_u_prnt_L000009 ' <symbol:u_prnt>
  jmp #NEWF
  sub SP, #4
  jmp #PSHM
@@ -84,38 +84,38 @@ C_s5hs1_6709f8a1_u_prnt_L000009 ' <symbol:u_prnt>
  mov r20, #0 ' reg <- coni
  cmps r22, r20 wz,wc
  jmp #BR_A
- long @C_s5hs1_6709f8a1_u_prnt_L000009_13 ' GTI4
+ long @C_s8go1_670edbbc_u_prnt_L000009_13 ' GTI4
  cmps r17, r20 wz,wc
  jmp #BRAE
- long @C_s5hs1_6709f8a1_u_prnt_L000009_11 ' GEI4
+ long @C_s8go1_670edbbc_u_prnt_L000009_11 ' GEI4
  cmp r19,  #0 wz
  jmp #BR_Z
- long @C_s5hs1_6709f8a1_u_prnt_L000009_11 ' EQU4
-C_s5hs1_6709f8a1_u_prnt_L000009_13
+ long @C_s8go1_670edbbc_u_prnt_L000009_11 ' EQU4
+C_s8go1_670edbbc_u_prnt_L000009_13
  mov r2, r17 ' CVI, CVU or LOAD
  mov r3, r19 ' CVI, CVU or LOAD
  cmp r21,  #0 wz
  jmp #BR_Z
- long @C_s5hs1_6709f8a1_u_prnt_L000009_15 ' EQU4
+ long @C_s8go1_670edbbc_u_prnt_L000009_15 ' EQU4
  mov r15, r21
  sub r15, #1 ' SUBU4 coni
  jmp #JMPA
- long @C_s5hs1_6709f8a1_u_prnt_L000009_16 ' JUMPV addrg
-C_s5hs1_6709f8a1_u_prnt_L000009_15
+ long @C_s8go1_670edbbc_u_prnt_L000009_16 ' JUMPV addrg
+C_s8go1_670edbbc_u_prnt_L000009_15
  mov r15, #0 ' reg <- coni
-C_s5hs1_6709f8a1_u_prnt_L000009_16
+C_s8go1_670edbbc_u_prnt_L000009_16
  mov r4, r15 ' CVI, CVU or LOAD
  mov r5, r23 ' CVI, CVU or LOAD
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_s5hs1_6709f8a1_u_prnt_L000009
+ long @C_s8go1_670edbbc_u_prnt_L000009
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
-C_s5hs1_6709f8a1_u_prnt_L000009_11
+C_s8go1_670edbbc_u_prnt_L000009_11
  cmp r21,  #0 wz
  jmp #BR_Z
- long @C_s5hs1_6709f8a1_u_prnt_L000009_17 ' EQU4
+ long @C_s8go1_670edbbc_u_prnt_L000009_17 ' EQU4
  mov r22, r23 ' CVI, CVU or LOAD
  mov r23, r22
  adds r23, #1 ' ADDP4 coni
@@ -126,9 +126,9 @@ C_s5hs1_6709f8a1_u_prnt_L000009_11
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
-C_s5hs1_6709f8a1_u_prnt_L000009_17
+C_s8go1_670edbbc_u_prnt_L000009_17
  mov r0, r23 ' CVI, CVU or LOAD
-' C_s5hs1_6709f8a1_u_prnt_L000009_10 ' (symbol refcount = 0)
+' C_s8go1_670edbbc_u_prnt_L000009_10 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
@@ -338,7 +338,7 @@ C_strftime_36
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_s5hs_6709f8a1_s_prnt_L000001
+ long @C_s8go_670edbbc_s_prnt_L000001
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -369,7 +369,7 @@ C_strftime_37
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_s5hs_6709f8a1_s_prnt_L000001
+ long @C_s8go_670edbbc_s_prnt_L000001
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -398,7 +398,7 @@ C_strftime_38
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_s5hs_6709f8a1_s_prnt_L000001
+ long @C_s8go_670edbbc_s_prnt_L000001
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -429,7 +429,7 @@ C_strftime_39
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_s5hs_6709f8a1_s_prnt_L000001
+ long @C_s8go_670edbbc_s_prnt_L000001
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -476,7 +476,7 @@ C_strftime_45
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_s5hs1_6709f8a1_u_prnt_L000009
+ long @C_s8go1_670edbbc_u_prnt_L000009
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -498,7 +498,7 @@ C_strftime_46
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_s5hs1_6709f8a1_u_prnt_L000009
+ long @C_s8go1_670edbbc_u_prnt_L000009
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -527,7 +527,7 @@ C_strftime_47
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_s5hs1_6709f8a1_u_prnt_L000009
+ long @C_s8go1_670edbbc_u_prnt_L000009
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -550,7 +550,7 @@ C_strftime_48
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_s5hs1_6709f8a1_u_prnt_L000009
+ long @C_s8go1_670edbbc_u_prnt_L000009
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -573,7 +573,7 @@ C_strftime_49
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_s5hs1_6709f8a1_u_prnt_L000009
+ long @C_s8go1_670edbbc_u_prnt_L000009
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -595,7 +595,7 @@ C_strftime_50
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_s5hs1_6709f8a1_u_prnt_L000009
+ long @C_s8go1_670edbbc_u_prnt_L000009
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -630,7 +630,7 @@ C_strftime_58
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_s5hs_6709f8a1_s_prnt_L000001
+ long @C_s8go_670edbbc_s_prnt_L000001
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -650,7 +650,7 @@ C_strftime_59
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_s5hs1_6709f8a1_u_prnt_L000009
+ long @C_s8go1_670edbbc_u_prnt_L000009
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -683,7 +683,7 @@ C_strftime_60
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_s5hs1_6709f8a1_u_prnt_L000009
+ long @C_s8go1_670edbbc_u_prnt_L000009
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -705,7 +705,7 @@ C_strftime_61
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_s5hs1_6709f8a1_u_prnt_L000009
+ long @C_s8go1_670edbbc_u_prnt_L000009
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -742,7 +742,7 @@ C_strftime_62
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_s5hs1_6709f8a1_u_prnt_L000009
+ long @C_s8go1_670edbbc_u_prnt_L000009
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -818,7 +818,7 @@ C_strftime_73
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_s5hs1_6709f8a1_u_prnt_L000009
+ long @C_s8go1_670edbbc_u_prnt_L000009
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -846,7 +846,7 @@ C_strftime_74
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_s5hs1_6709f8a1_u_prnt_L000009
+ long @C_s8go1_670edbbc_u_prnt_L000009
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD
@@ -887,7 +887,7 @@ C_strftime_78
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_s5hs_6709f8a1_s_prnt_L000001
+ long @C_s8go_670edbbc_s_prnt_L000001
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r23 ' CVI, CVU or LOAD

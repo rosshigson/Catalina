@@ -61,7 +61,6 @@ function _CELLS:draw()
     end
     out=out.."\n"
   end
-  collectgarbage()
   write(out)
 end
 
@@ -109,13 +108,5 @@ function LIFE(w,h)
     --delay()		-- no delay
   end
 end
-
--- the following lines force more aggresive garbage collection when memory is 
--- tight - this is required if the default garbage collector runs too slowly 
--- and the program runs out of Hub RAM (due to the large number of string 
--- operations) done in each generation.
-
-pause=120
-collectgarbage("incremental", pause)
 
 LIFE(40,20)

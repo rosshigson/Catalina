@@ -56,7 +56,7 @@ typedef struct shared_data {
  * The client - calls services provided by the server                         *
  *                                                                            *
  ******************************************************************************/
-#pragma catapult secondary client(shared_data_t) address(0x2CA20) mode(CMM) stack(75000)
+#pragma catapult secondary client(shared_data_t) address(0x2CA10) mode(CMM) stack(75000)
 
 #include <lua.h>
 #include <lualib.h>
@@ -70,8 +70,9 @@ void client(shared_data_t *s) {
    L = luaL_newstate();
    luaL_openlibs(L);
 
-   // put garbage collector in generational mode
-   lua_gc(L, LUA_GCGEN, 0, 0);  
+   // put garbage collector in incremental mode, and make itmore agressive
+   lua_gc(L, LUA_GCINC, 110, 0);
+   lua_gc(L, LUA_GCRESTART);
 
    // load the Lua code 
    if ((result = luaL_loadfile(L, s->client)) == LUA_OK) {

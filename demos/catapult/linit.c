@@ -67,7 +67,7 @@ static const luaL_Reg loadedlibs[] = {
 #endif
 #if defined(LUA_PROPELLER)
   {LUA_PROPELLERLIBNAME, luaopen_propeller},
-  {LUA_PROPELLERLIBNAME, luaopen_hmi},
+  {LUA_HMILIBNAME, luaopen_hmi},
 #endif
   {NULL, NULL}
 };
