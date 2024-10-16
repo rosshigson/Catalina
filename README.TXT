@@ -1,7 +1,7 @@
 This file contains a summary of changes to Catalina in recent releases. For
 information about installing and using Catalina, see the file README.md 
 
-Catalina release 8.2 is a full release.
+Catalina release 8.1.1 is a full release.
 
 WARNING: DO NOT INSTALL THIS RELEASE OVER A PRIOR VERSION OF CATALINA AND
 DO NOT LINK OR COMBINE PROGRAMS COMPILED WITH THIS VERSION WITH CODE (E.G. 
@@ -15,7 +15,7 @@ The following sections list the changes that have been made in releases
 you can skip the rest of this README and instead go straight to the Catalina 
 tutorial documents.
 
-RELEASE 8.1
+RELEASE 8.1.1
 
 New Functionality
 -----------------
