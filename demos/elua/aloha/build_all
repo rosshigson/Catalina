@@ -25,6 +25,6 @@ export CATALINA_DEFINE=P2_SLAVE
 catapult elua.c
 mv elua.bin slave.bin
 catapult eluax.c
-mv eluax.bin slave.bin
+mv eluax.bin slavex.bin
 export CATALINA_DEFINE=
 
