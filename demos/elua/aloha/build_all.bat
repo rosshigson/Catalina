@@ -11,13 +11,13 @@ goto done
 :found_catalina
 set CATALINA_DEFINE=P2_MASTER
 catapult elua.c
-mv elua.bin master.bin
+move /Y elua.bin master.bin
 catapult eluax.c
-mv eluax.bin masterx.bin
+move /Y eluax.bin masterx.bin
 set CATALINA_DEFINE=P2_SLAVE
 catapult elua.c
-mv elua.bin slave.bin
+move /Y elua.bin slave.bin
 catapult eluax.c
-mv eluax.bin slavex.bin
+move /Y eluax.bin slavex.bin
 set CATALINA_DEFINE=
 :done
