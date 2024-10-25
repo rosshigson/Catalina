@@ -21,10 +21,15 @@ catapult elua.c
 mv elua.bin master.bin
 catapult eluax.c
 mv eluax.bin masterx.bin
+catapult eluafx.c
+mv eluafx.bin masterfx.bin
 export CATALINA_DEFINE=P2_SLAVE
 catapult elua.c
 mv elua.bin slave.bin
 catapult eluax.c
 mv eluax.bin slavex.bin
+catapult eluafx.c
+mv eluafx.bin slavefx.bin
+catapult sluafx.c
 export CATALINA_DEFINE=
 

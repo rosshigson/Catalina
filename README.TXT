@@ -1,7 +1,7 @@
 This file contains a summary of changes to Catalina in recent releases. For
 information about installing and using Catalina, see the file README.md 
 
-Catalina release 8.1.1 is a full release.
+Catalina release 8.1.2 is a full release.
 
 WARNING: DO NOT INSTALL THIS RELEASE OVER A PRIOR VERSION OF CATALINA AND
 DO NOT LINK OR COMBINE PROGRAMS COMPILED WITH THIS VERSION WITH CODE (E.G. 
@@ -15,6 +15,38 @@ The following sections list the changes that have been made in releases
 you can skip the rest of this README and instead go straight to the Catalina 
 tutorial documents.
 
+RELEASE 8.1.2
+
+New Functionality
+-----------------
+
+1. The default garbage collection for all Lua programs (including Lua itself,
+   iLua, mLua and eLua) now has a "pause" value of 105, which means it will 
+   start a new cycle when the use of memory exceeds 105% of the use after 
+   the previous collection. This makes the garbage collector even more 
+   aggressive, which reduces the allocation of dynamic memory at the cost
+   of some performance.
+
+2. eLua now has two additional variants that include ALOHA support:
+
+      eluafx  - implements an XMM server and a NATIVE client
+      sluafx  - implements a NATIVE server but no client (and so must
+                be used in conjunction with a remote ALOHA client, which
+                could be elua, eluax, or eluafx)
+
+   The 'Aloha from Lua' document has been updated to describe these variants,
+   which (when used together) allow both the client and the server to execute 
+   entirely in NATIVE mode from Hub RAM, using two different propellers. This 
+   offers the fastest possible client/server execution option, achieving
+   significantly better performance than any single propeller option.
+
+Other Changes
+-------------
+
+1. Fix issues in the build_all scripts in the eLua/ALOHA demo folder (i.e.
+   /demos/elua/aloha/build_all and /demos/elua/aloha/build_all.bat). 
+   Affected both Windows and Linux.
+
 RELEASE 8.1.1
 
 New Functionality
@@ -24,7 +56,7 @@ New Functionality
    suit the Hub RAM constraints of the Propeller. The default is now to use 
    the "incremental" collector with a "pause" of 110, which means it will
    start a new cycle when the use of memory exceeds 110% of the use after 
-   the previous collection.. Once a program is functioning correctly, in 
+   the previous collection. Once a program is functioning correctly, in 
    most instances the settings can be relaxed to improve performance.
 
 Other Changes

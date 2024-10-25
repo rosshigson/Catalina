@@ -14,10 +14,15 @@ catapult elua.c
 move /Y elua.bin master.bin
 catapult eluax.c
 move /Y eluax.bin masterx.bin
+catapult eluafx.c
+move /Y eluafx.bin masterfx.bin
 set CATALINA_DEFINE=P2_SLAVE
 catapult elua.c
 move /Y elua.bin slave.bin
 catapult eluax.c
 move /Y eluax.bin slavex.bin
+catapult eluafx.c
+move /Y eluafx.bin slavefx.bin
+catapult sluafx.c
 set CATALINA_DEFINE=
 :done

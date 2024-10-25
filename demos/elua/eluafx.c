@@ -2,8 +2,8 @@
  *                   A general-purpose Lua Client and Server.                 *
  *                                                                            *
  * This program demonstrates executing a Lua server from XMM RAM that         *
- * provides services to a Lua client executing from Hub RAM compiled          * 
- * as an NMM program for speed.                                               *
+ * dispatches service calls made from a Lua secondary client executing        * 
+ * from Hub RAM and compiled as an NMM program for speed.                     *
  *                                                                            *
  * Set the CATALINA_DEFINE environemnt variable to your platform, and then    *
  * compile this program using Catapult - for example:                         *
@@ -14,7 +14,7 @@
  * This program reads Lua programs from the files specified on the command    *
  * line. If no files are specified, it defaults to loading from the files     *
  * 'client.lux' and 'server.lux'. Both the client and the server must be      *
- * compiled Lua binary files. For example:                                    *
+ * binary files. For example:                                                 *
  *                                                                            *
  *    eluafx client.lux server.lux                                            *
  *                                                                            *
@@ -42,8 +42,9 @@
 
 /*
  * define a type to be used for exchanging data between
- * the primary and secondary functions. Used to pass the 
- * file names and for startup synchronization.
+ * the primary and secondary functions. In this program
+ * it is used to pass the file names and for startup 
+ * synchronization.
  */
 typedef struct shared_data {
    char *client;
@@ -71,10 +72,10 @@ void client(shared_data_t *s) {
    L = luaL_newstate();
    luaL_openlibs(L);
 
-   // put garbage collector in incremental mode, and make itmore agressive
-   lua_gc(L, LUA_GCINC, 110, 0);
-   lua_gc(L, LUA_GCRESTART);
-
+   // put garbage collector in incremental mode, and make it more agressive
+   lua_gc(L, LUA_GCINC, 105, 0);  /* GC in incremental mode */
+   lua_gc(L, LUA_GCRESTART);  /* ensure GC is started */
+   
    // load the Lua code 
    if ((result = luaL_loadfile(L, s->client)) == LUA_OK) {
 
@@ -100,8 +101,8 @@ void client(shared_data_t *s) {
 
 /******************************************************************************
  *                                                                            *
- * The server - executes a Lua dispatcher, dispatching calls to the Lua       *
- * functions offered by the server                                            *
+ * The server - executes a Lua dispatcher, dispatching calls                  *
+ * to the Lua functions specified in Lua_service_list                          *
  *                                                                            *
  ******************************************************************************/
 #pragma catapult primary server binary(eluafx) mode(XMM) options(-lluax)
@@ -111,8 +112,10 @@ void client(shared_data_t *s) {
 #include <lauxlib.h>
 
 /*
- * define a list of services, parameter profiles and service identifiers.
- * initialize it to null - the list will be loaded from the server itself.
+ * define a list of services, parameter profiles and service identifiers
+ * - note that Lua services require only the names of the functions, and
+ * their addresses should be NULL. Initialize the list with a NULL entry,
+ * because we load the actual list from the server itself.
  */
 svc_entry_t Lua_service_list[MAX_SERVICES + 1] = { 
   {"", NULL, 0, 0, 0}
@@ -131,23 +134,25 @@ int main(int argc, char *argv[]) {
    // process command line arguments - note the
    // use of alloca to make sure the strings in 
    // the shared data structure are in Hub RAM.
-   // use default names if not specified.
    if (argc > 2) {
       shared.server = alloca(strlen(argv[2]) + 1);
       strcpy(shared.server, argv[2]);
-   }
-   else {
-      shared.server = alloca(MAX_NAMELEN + 1);
-      strcpy(shared.server, DEFAULT_SERVER);
    }
    if (argc > 1) {
       shared.client = alloca(strlen(argv[1]) + 1);
       strcpy(shared.client, argv[1]);
    }
-   else {
+   // use default names if no arguments specified
+   if (shared.client == NULL) {
       shared.client = alloca(MAX_NAMELEN + 1);
       strcpy(shared.client, DEFAULT_CLIENT);
    }
+   if (shared.server == NULL) {
+      shared.server = alloca(MAX_NAMELEN + 1);
+      strcpy(shared.server, DEFAULT_SERVER);
+   }
+   //t_printf("client = %s\n", shared.client);
+   //t_printf("server = %s\n", shared.server);
 
    // re-register this cog as a server (it will already
    // be registered, but as a kernel, not a server)
@@ -182,7 +187,7 @@ int main(int argc, char *argv[]) {
    // start the client
    shared.start = 1;
 
-   // dispatch calls to the server
+   // dispatch service calls
    while(1) {
       _dispatch_Lua_bg(L, Lua_service_list, DEFAULT_BG);
    }
