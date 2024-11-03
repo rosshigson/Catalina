@@ -24,5 +24,8 @@ move /Y eluax.bin slavex.bin
 catapult eluafx.c
 move /Y eluafx.bin slavefx.bin
 catapult sluafx.c
+catapult sluafix.c
+catapult sluacx.c
+catapult sluacix.c
 set CATALINA_DEFINE=
 :done

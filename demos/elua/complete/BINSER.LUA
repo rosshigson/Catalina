@@ -7,8 +7,8 @@
 --    2. Remove IEE-754 encoding/decoding, which was required to make the
 --       binary format independent of the "endianness" of the source and 
 --       destination. For Catalina, where the source and destination 
---       "endianness" will always be the same, we can just use "pack" and 
---       "unpack" and this makes the code both smaller and faster.
+--       "endianness" will always be the same, we just use "string.pack" 
+--       and "string.unpack", which makes the code both smaller and faster.
 --    3. Detect whether integers and floats are 32 or 64 bit, and make 
 --       the corresponding  binary representations use 4 or 8 bytes.
 --]]
@@ -45,14 +45,19 @@ local loadstring = loadstring or load
 local concat = table.concat
 local char = string.char
 local byte = string.byte
-local pack = string.pack
 local format = string.format
 local sub = string.sub
 local dump = string.dump
-local floor = math.floor
-local frexp = math.frexp
-local unpack = unpack or table.unpack
-local huge = math.huge
+
+if math then
+  floor = math.floor
+else
+  -- if math module not available, simulate 'floor' using 
+  -- floor division and bitwise 'or' to return an integer
+  function floor(x) 
+    return ((x//1) | 0)
+  end
+end
 
 local function pack(...)
     return {...}, select("#", ...)
@@ -67,9 +72,9 @@ local function type_check(x, tp, name)
         format("Expected parameter %q to be of type %q.", name, tp))
 end
 
--- determine whether ints and doubles are 64 bit or 32 bit
-local bit64Dbl = (string.unpack("d", string.pack("d",1e39)) ~= math.huge)
-local bit64Int = (math.maxinteger and math.tointeger(2147483648))
+-- determine whether ints and doubles are 64 bit (otherwise assume 32 bit)
+local bit64Dbl = (#string.pack("d",0)==8)
+local bit64Int = (#string.pack("j",0)==8)
 
 function bigIntSupport(n)
   if bit64Int then
@@ -80,7 +85,7 @@ function bigIntSupport(n)
 end
 
 local isInteger
-if math.type then -- Detect Lua >= 5.3
+if math and math.type then -- Detect Lua >= 5.3
     local mtype = math.type;
     isInteger = function(x)
         return mtype(x) == 'integer'
@@ -103,7 +108,6 @@ local function number_to_str(n)
         end
     end
     if not bit64Dbl then
-       --print("DEBUG packing " .. n);
        return char(203, byte(string.pack("f", n), 1, 4));
     else
        return char(203, byte(string.pack("d", n), 1, 8));
@@ -133,7 +137,6 @@ local function number_from_str(str, index)
         error("Expected number")
     end
     if not bit64Dbl then
-       --print("DEBUG unpacking " .. #str .. " at " .. index);
        n = string.unpack("f", sub(str, index+1, index+4));
        return n, index + 5
     else
@@ -371,7 +374,7 @@ local function newbinser()
             if not name or not deserializers[name] then
                 error(("Cannot deserialize class '%s'"):format(tostring(name)))
             end
-            local ret = deserializers[name](unpack(args))
+            local ret = deserializers[name](table.unpack(args))
             visited[#visited + 1] = ret
             return ret, nextindex
         elseif t == 210 then
@@ -478,7 +481,7 @@ local function newbinser()
             end
         end
         vals[len + 1] = index
-        return unpack(vals, 1, n + 1)
+        return table.unpack(vals, 1, n + 1)
     end
 
     local function readFile(path)
@@ -590,7 +593,7 @@ local function newbinser()
         return function(x)
             local argaccum = {}
             local len = templatepart_serialize(template, argaccum, x, 0)
-            return unpack(argaccum, 1, len)
+            return table.unpack(argaccum, 1, len)
         end, function(...)
             local ret = {}
             local args = {...}

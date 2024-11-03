@@ -48,9 +48,16 @@ local byte = string.byte
 local format = string.format
 local sub = string.sub
 local dump = string.dump
-local floor = math.floor
-local frexp = math.frexp
-local huge = math.huge
+
+if math then
+  floor = math.floor
+else
+  -- if math module not available, simulate 'floor' using 
+  -- floor division and bitwise 'or' to return an integer
+  function floor(x) 
+    return ((x//1) | 0)
+  end
+end
 
 local function pack(...)
     return {...}, select("#", ...)
@@ -65,9 +72,9 @@ local function type_check(x, tp, name)
         format("Expected parameter %q to be of type %q.", name, tp))
 end
 
--- determine whether ints and doubles are 64 bit or 32 bit
-local bit64Dbl = (string.unpack("d", string.pack("d",1e39)) ~= math.huge)
-local bit64Int = (math.maxinteger and math.tointeger(2147483648))
+-- determine whether ints and doubles are 64 bit (otherwise assume 32 bit)
+local bit64Dbl = (#string.pack("d",0)==8)
+local bit64Int = (#string.pack("j",0)==8)
 
 function bigIntSupport(n)
   if bit64Int then
@@ -78,7 +85,7 @@ function bigIntSupport(n)
 end
 
 local isInteger
-if math.type then -- Detect Lua >= 5.3
+if math and math.type then -- Detect Lua >= 5.3
     local mtype = math.type;
     isInteger = function(x)
         return mtype(x) == 'integer'

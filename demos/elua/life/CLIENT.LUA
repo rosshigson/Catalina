@@ -41,6 +41,7 @@ function draw()
       end
     until row
     write(row)
+    collectgarbage()
   end
 end
 

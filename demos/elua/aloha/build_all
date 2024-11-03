@@ -31,5 +31,8 @@ mv eluax.bin slavex.bin
 catapult eluafx.c
 mv eluafx.bin slavefx.bin
 catapult sluafx.c
+catapult sluafix.c
+catapult sluacx.c
+catapult sluacix.c
 export CATALINA_DEFINE=
 
