@@ -37,6 +37,7 @@ bin\shortcut /F:"%ALLUSERSPROFILE%\Start Menu\Programs\%menu%\README_P2.TXT.lnk"
 
 mkdir "%ALLUSERSPROFILE%\Start Menu\Programs\%menu%\Documents"
 
+bin\shortcut /F:"%ALLUSERSPROFILE%\Start Menu\Programs\%menu%\Documents\Aloha from Lua.lnk" /A:C /T:"%catpath%\Documents\Aloha from Lua.pdf" /W:"%catpath%" 
 bin\shortcut /F:"%ALLUSERSPROFILE%\Start Menu\Programs\%menu%\Documents\Catalina BlackBox Reference Manual.lnk" /A:C /T:"%catpath%\Documents\Catalina BlackBox Reference Manual.pdf" /W:"%catpath%" 
 bin\shortcut /F:"%ALLUSERSPROFILE%\Start Menu\Programs\%menu%\Documents\Catalina P1 Command Summary.lnk" /A:C /T:"%catpath%\Documents\Catalina P1 Command Summary.pdf" /W:"%catpath%" 
 bin\shortcut /F:"%ALLUSERSPROFILE%\Start Menu\Programs\%menu%\Documents\Catalina P2 Command Summary.lnk" /A:C /T:"%catpath%\Documents\Catalina P2 Command Summary.pdf" /W:"%catpath%" 
