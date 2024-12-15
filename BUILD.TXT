@@ -1,6 +1,6 @@
 This document contains detailed instructions on how to build Catalina from 
-source on both Windows and Linux. These instructions assume Catalina will be
-built as a 64 bit application on both Windows and Linux. 
+source on Windows, Linux and the Rapberry Pi OS. These instructions assume 
+Catalina will be built as a 64 bit application. 
 
 The Catalina Windows binaries (if included in the the distribution) should 
 execute correctly on Windows 8 or later. However, rebuilding Catalina from 
@@ -10,8 +10,13 @@ see BUILD32.TXT
 
 The Catalina Linux binaries (if included in the distribution) should execute 
 on a 64-bit version of Ubuntu Linux 23.04, but rebuilding Catalina from source
-can be done on Ubuntu 18.04 or later. There are no separate instructions for 
-building Catalina on 32 bit Linux systems.
+can be done on Ubuntu 18.04 or later. 
+
+There are separate instructions for building Catalina from source on the 
+Raspberry Pi OS (which is based on Debian Linux, not Ubiuntu). 
+
+There are no separate instructions for building Catalina on 32 bit Linux 
+systems.
 
 Note that if you are using Windows, and either used the Catalina Windows Setup
 program, or downloaded the Windows binaries associated with a GitHub release, 
@@ -19,8 +24,9 @@ it is unlikely you will ever need to rebuild Catalina, since it does not need
 to be rebuilt to compile programs, to add new platforms, new plugins, or new 
 libraries.
 
-On Linux it is more likely you will need to build Catalina from source, since 
-it may need to be rebuilt to suit other Linux distributions.
+On Linux and the Raspberry Pi OS it is more likely you will need to build 
+Catalina from source, since it will generally need to be rebuilt to suit a 
+specific Linux or Raspberry Pi OS distribution.
 
 Windows
 =======
@@ -395,3 +401,202 @@ catalina_geany/catalina_geany_source.zip.
 Finally, use the Build -> Download and Interact command to download the program
 to the Propeller and open a terminal window to see the output from it.
 
+
+Raspberry Pi OS
+===============
+
+This build procedure has been tested on a Raspberry Pi 3 - it may need changes
+on earlier Pi versions, but it should work on any Pi version 3 or later. 
+
+You will need:
+
+   - A 32Gb SD Card, with
+   - Raspian Pi OS with desktop (64 bit) installed.
+
+1. Install the Pi-Apps utility
+==============================
+
+If the Pi-Apps utility is not installed, then in a Terminal window, execute
+the following command:
+
+   wget -qO- https://raw.githubusercontent.com/Botspot/pi-apps/master/install | bash
+
+2. Install the Github CLI
+=========================
+
+If the Github CLI is not already installed, then:
+
+   Select Start menu item "Accessories -> Pi Apps" 
+
+   Select Pi-Apps menu item "Programming -> GitHub-CLI"
+
+3. Install necessary packages
+=============================
+
+Install the following. Note that some of these may already be installed:
+
+   sudo apt install autoconf automake gettext
+   sudo apt install rsync dos2unix zip unzip 
+   sudo apt install make flex bison gawk grep 
+   sudo apt install libtool intltool pkg-config 
+   sudo apt install libncurses5-dev libncursesw5-dev
+
+4. Clone Catalina from Github
+=============================
+
+Use git to clone the Catalina source repository into a suitable directory, 
+such as your home directory:
+
+   cd ~
+   git clone https://github.com/rosshigson/Catalina.git 
+
+This will create a subdirectory called "Catalina".
+
+5. Set up LCCDIR and paths
+==========================
+
+Change directory to where Catalina as been cloned. For example:
+
+   cd ~/Catalina
+
+Execute the following commnands. Note the use of backquotes (i.e. ` not '):
+
+   export LCCDIR=`pwd`
+   source use_catalina
+
+This may generate a message saying the installation has no binaries. This
+is expected - the Git repository contains only sources, and not binaries.
+
+6. Set permissions
+==================
+
+Ensure the files have the correct permissions by executing the following 
+commands:
+
+   chmod a+x bin/Set_Linux_Permissions
+   bin/Set_Linux_Permissions
+
+7. Build Catalina
+=================
+
+Execute the following commands. This may take 15 minutes, depending on the 
+speed of the Pi and the SD card:
+
+   cd source
+   build_binaries
+
+8. Test Catalina
+================
+
+Ensure the Propeller is plugged into a USB port. The following commands 
+assume a Propeller 2 (for a Propeller 1, omit the -p2 option to "catalina"):
+
+   cd ..\demos
+   catalina -p2 -lci hello_world.c
+   payload -i hello_world
+
+You should see a 'Hello World!" message. 
+
+Note that if the Propeller is not found automatically, try specifying 
+the port manually to payload. For example:
+
+   payload -i hello_world -p /dev/ttyUSB0
+
+Use CTRL-D CTRL-D to exit payload. If you don't intent to use Geany, you
+can stop here. But remember to set up Catalina every time you open a new 
+Terminal window, using commands like:
+
+   cd ~/Catalina
+   export LCCDIR=`pwd`
+   source use_catalina
+
+You can add these commands to your profile so you do not have to enter
+them manually in each new window.
+
+9. Install packages required by Catalina Geany
+==============================================
+
+Install the following. Note that some of these may already be installed:
+
+    sudo apt install libgtk2.0-dev libgtk-3-dev xterm 
+    sudo apt install intltool libtool-bin docutils-common
+    
+10. Build Catalina Geany
+========================
+
+Execute the following commands:
+
+   cd $LCCDIR/source/geany-1.37.1
+   ./autogen.sh
+   ./configure --prefix=/opt/catalina_geany --enable-gtk2
+   make
+   sudo make install
+ 
+Geany needs to be installed into a known location, which is assumed to be
+/opt/catalina_geany. If it is installed elsewhere, some scripts may not work.
+
+There is one file that needs to be manually installed (because the default file
+in the repository is configured for Windows, not Linux):
+
+   sudo cp data/filedefs/filetypes.c.linux /opt/catalina_geany/share/geany/filedefs/filetypes.c
+       
+11. Configure your X defaults
+=============================
+
+If you do not already have an .Xdefaults file, create a file called 
+.Xdefaults in your home directory, containing at least the following:
+
+   xterm*geometry:           80x25
+   xterm*faceName:           terminus:bold:pixelsize=14
+   xterm*dynamicColors:      true
+   xterm*utf8:               2
+   xterm*eightBitInput:      true
+   xterm*saveLines:          512
+   xterm*scrollKey:          true
+   xterm*scrollTtyOutput:    false
+   xterm*scrollBar:          true
+   xterm*rightScrollBar:     true
+   xterm*jumpScroll:         true
+   xterm*multiScroll:        true
+   xterm*toolBar:            false
+
+12. Test Catalina Geany
+=======================
+
+In a Terminal window, go to the directory where Catalina is installed. 
+For example:
+    
+   cd ~/Catalina
+
+Then execute the following commands:
+
+   export LCCDIR=`pwd`
+   source use_catalina
+
+Then go to the demos folder and start Catalina Geany:
+
+    cd demos
+    catalina_geany hello_world
+
+If you have a Propeller 2, then when Geany opens select the menu item 
+"Project -> Properties" and ADD the option -p2 to the Catalina Options 
+listed, so it looks like:
+
+    -lc
+    -C NO_REBOOT
+    -p2
+
+Press OK, then select the menu item "Build -> Build File". Note that you
+must have a C file selected in the source file window for the correct
+build commands (i.e. to build a C program) to appear on the "Build" menu.
+
+The program should build successfully.
+
+Then execute the menu item "Build -> Download and Interact".
+
+An xterm window will open to display the program output. Note that you may 
+(initially) see a message "resize: Time out occurred". This appears to due 
+to a limitation in the Raspberry Pi xterm program, and may be addressed 
+in a future release.
+
+However, you should also (eventually) see the "Hello, World!" Message. 
