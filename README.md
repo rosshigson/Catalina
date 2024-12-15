@@ -5,9 +5,9 @@ Catalina is an ANSI C compiler, plus C libraries and various utilities, for the 
 
 Catalina supports both internal and external memory models on both the Propeller 1 and 2, for program sizes up to 16Mb.
 
-Catalina runs under Windows, Linux and also its own self-hosted development enviroment (**catalyst**).
+Catalina runs under Windows, Linux, the Raspberry Pi OS and also its own self-hosted development enviroment (**Catalyst**).
 
-Catalina supports command-line use (Windows, Linux and Catalyst) and an Integrated Development Environment based on Geany (Windows and Linux).
+Catalina supports command-line use (Windows, Linux, Pi and Catalyst) and an Integrated Development Environment based on Geany (Windows, Linux and Pi).
 
 Catalina supports the Lua scripting language, both stand-alone and embedded.
 
@@ -15,16 +15,16 @@ Catalina supports multi-threaded, multi-processor and multi-model programming. C
 
 The main components of Catalina are:
 
--  **catalina**    : C compiler (Windows, Linux and Catalyst)
+-  **catalina**    : C compiler (Windows, Linux, Pi and Catalyst)
 -  **catalyst**    : SD card based program loader and self-hosted development environment
--  **catalina_geany** : Integrated Development Environment (Windows and Linux)
--  **payload**     : Serial program loader and simple terminal emulator (Windows and Linux)
+-  **catalina_geany** : Integrated Development Environment (Windows Linux, and Pi)
+-  **payload**     : Serial program loader and simple terminal emulator (Windows, Linux and Pi)
 -  **comms**       : Full-featured VT100 terminal emulator (Windows only)
--  **blackbox**    : C source level debugger (Windows and Linux)
--  **catapult**    : Utility for building multi-model C programs (Windows and Linux)
--  **parallelize** : Utility for building multi-processor C programs (Windows and Linux)
--  **spinnaker**   : Propeller 1 Spin compiler and assembler (Windows and Linux)
--  **p2asm**       : Propeller 2 assembler (Windows, Linux and Catalyst)
+-  **blackbox**    : C source level debugger (Windows Linux, and Pi)
+-  **catapult**    : Utility for building multi-model C programs (Windows Linux, and Pi)
+-  **parallelize** : Utility for building multi-processor C programs (Windows Linux, and Pi)
+-  **spinnaker**   : Propeller 1 Spin compiler and assembler (Windows Linux, and Pi)
+-  **p2asm**       : Propeller 2 assembler (Windows Linux, Pi and Catalyst)
 
 Setting up Catalina 
 -------------------
@@ -70,6 +70,11 @@ Then you can either use Catalina directly from the command-line or enter **catal
 Linux Manual Install
 --------------------
 If you cloned the Git repository or downloaded it as a compressed file and then uncompressed it then you must always rebuild Catalina from source. Follow the Linux instructions in the **BUILD.TXT** document in the main Catalina installation folder to build Catalina. This document also contains instructions on setting Catalina up for use.
+
+Raspberry Pi OS Install
+-----------------------
+
+If you cloned the Git repository or downloaded it as a compressed file and then uncompressed it then you must always rebuild Catalina from source. Follow the Raspberry Pi instructions in the **BUILD.TXT** document in the main Catalina installation folder to build Catalina. This document also contains instructions on setting Catalina up for use.
 
 Catalina and make
 -----------------
