@@ -413,24 +413,7 @@ You will need:
    - A 32Gb SD Card, with
    - Raspian Pi OS with desktop (64 bit) installed.
 
-1. Install the Pi-Apps utility
-==============================
-
-If the Pi-Apps utility is not installed, then in a Terminal window, execute
-the following command:
-
-   wget -qO- https://raw.githubusercontent.com/Botspot/pi-apps/master/install | bash
-
-2. Install the Github CLI
-=========================
-
-If the Github CLI is not already installed, then:
-
-   Select Start menu item "Accessories -> Pi Apps" 
-
-   Select Pi-Apps menu item "Programming -> GitHub-CLI"
-
-3. Install necessary packages
+1. Install necessary packages
 =============================
 
 Install the following. Note that some of these may already be installed:
@@ -441,7 +424,7 @@ Install the following. Note that some of these may already be installed:
    sudo apt install libtool intltool pkg-config 
    sudo apt install libncurses5-dev libncursesw5-dev
 
-4. Clone Catalina from Github
+2. Clone Catalina from Github
 =============================
 
 Use git to clone the Catalina source repository into a suitable directory, 
@@ -452,12 +435,21 @@ such as your home directory:
 
 This will create a subdirectory called "Catalina".
 
-5. Set up LCCDIR and paths
-==========================
+3. Set permissions
+==================
 
 Change directory to where Catalina as been cloned. For example:
 
    cd ~/Catalina
+
+Ensure the files have the correct permissions by executing the following 
+commands:
+
+   chmod a+x bin/Set_Linux_Permissions
+   bin/Set_Linux_Permissions
+
+4. Set up LCCDIR and paths
+==========================
 
 Execute the following commnands. Note the use of backquotes (i.e. ` not '):
 
@@ -467,25 +459,16 @@ Execute the following commnands. Note the use of backquotes (i.e. ` not '):
 This may generate a message saying the installation has no binaries. This
 is expected - the Git repository contains only sources, and not binaries.
 
-6. Set permissions
-==================
-
-Ensure the files have the correct permissions by executing the following 
-commands:
-
-   chmod a+x bin/Set_Linux_Permissions
-   bin/Set_Linux_Permissions
-
-7. Build Catalina
+5. Build Catalina
 =================
 
-Execute the following commands. This may take 15 minutes, depending on the 
-speed of the Pi and the SD card:
+Execute the following commands. This may take between 3 and 15 minutes, 
+depending on the speed of the Pi and the SD card:
 
    cd source
    build_binaries
 
-8. Test Catalina
+6. Test Catalina
 ================
 
 Ensure the Propeller is plugged into a USB port. The following commands 
@@ -513,7 +496,7 @@ Terminal window, using commands like:
 You can add these commands to your profile so you do not have to enter
 them manually in each new window.
 
-9. Install packages required by Catalina Geany
+7. Install packages required by Catalina Geany
 ==============================================
 
 Install the following. Note that some of these may already be installed:
@@ -521,17 +504,19 @@ Install the following. Note that some of these may already be installed:
     sudo apt install libgtk2.0-dev libgtk-3-dev xterm 
     sudo apt install intltool libtool-bin docutils-common
     
-10. Build Catalina Geany
-========================
+8. Build Catalina Geany
+=======================
 
-Execute the following commands:
+Execute the following commands. This may take between 5 minutes and an hour,
+depending on the speed of the Pi and the SD card:
+
 
    cd $LCCDIR/source/geany-1.37.1
    ./autogen.sh
    ./configure --prefix=/opt/catalina_geany --enable-gtk2
    make
    sudo make install
- 
+
 Geany needs to be installed into a known location, which is assumed to be
 /opt/catalina_geany. If it is installed elsewhere, some scripts may not work.
 
@@ -540,8 +525,8 @@ in the repository is configured for Windows, not Linux):
 
    sudo cp data/filedefs/filetypes.c.linux /opt/catalina_geany/share/geany/filedefs/filetypes.c
        
-11. Configure your X defaults
-=============================
+9. Configure your X defaults
+============================
 
 If you do not already have an .Xdefaults file, create a file called 
 .Xdefaults in your home directory, containing at least the following:
@@ -560,7 +545,7 @@ If you do not already have an .Xdefaults file, create a file called
    xterm*multiScroll:        true
    xterm*toolBar:            false
 
-12. Test Catalina Geany
+10. Test Catalina Geany
 =======================
 
 In a Terminal window, go to the directory where Catalina is installed. 
