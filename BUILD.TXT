@@ -416,6 +416,8 @@ You will need:
 1. Install necessary packages
 =============================
 
+Open a Terminal Window on the Rapberry Pi.
+
 Install the following. Note that some of these may already be installed:
 
    sudo apt install autoconf automake gettext
