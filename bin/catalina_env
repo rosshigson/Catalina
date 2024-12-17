@@ -1,4 +1,5 @@
-#!/bin/bash -login
+#!/bin/bash
+##!/bin/bash -login
 echo ""
 if [[ "$CATALINA_DEFINE" == "" ]]  ; then echo "CATALINA_DEFINE  = [default]" ; else echo "CATALINA_DEFINE  = $CATALINA_DEFINE" ; fi
 if [[ "$CATALINA_INCLUDE" == "" ]] ; then echo "CATALINA_INCLUDE = [default]" ; else echo "CATALINA_INCLUDE = $CATALINA_INCLUDE" ; fi

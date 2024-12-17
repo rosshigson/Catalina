@@ -1,4 +1,5 @@
-#!/bin/bash -login
+#!/bin/bash
+##!/bin/bash -login
 #
 # build a string in TMP_VAR consisting of -C $1 -C $2 -C $3 (etc)
 #

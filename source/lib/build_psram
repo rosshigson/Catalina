@@ -1,4 +1,5 @@
-#!/bin/bash -login
+#!/bin/bash
+##!/bin/bash -login
 #
 unset CATALINA_DEFINE
 export CATALINA_DEFINE=PSRAM

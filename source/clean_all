@@ -1,4 +1,5 @@
-#!/bin/bash -login
+#!/bin/bash
+##!/bin/bash -login
 #
 cd catalina
 ./clean_all

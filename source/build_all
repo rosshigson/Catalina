@@ -1,4 +1,5 @@
-#!/bin/bash -login
+#!/bin/bash
+##!/bin/bash -login
 #
 # build all the components of Catalina in the correct sequence. Note that
 # this script assumes all the necessary tools (gcc, bison, flex etc) are

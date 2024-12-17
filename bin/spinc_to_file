@@ -1,4 +1,5 @@
-#!/bin/bash -login
+#!/bin/bash
+##!/bin/bash -login
 #
 # This script just calls spinc, but does the redirection using the
 # first parameter as the name of the output file - this is intended

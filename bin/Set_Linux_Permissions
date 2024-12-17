@@ -1,4 +1,5 @@
-#!/bin/bash -login
+#!/bin/bash
+##!/bin/bash -login
 #
 # This file sets the "execute" permission correctly on all files in
 # a Catalina installation.
