@@ -437,21 +437,12 @@ such as your home directory:
 
 This will create a subdirectory called "Catalina".
 
-3. Set permissions
-==================
+3. Set up LCCDIR and paths
+==========================
 
 Change directory to where Catalina as been cloned. For example:
 
    cd ~/Catalina
-
-Ensure the files have the correct permissions by executing the following 
-commands:
-
-   chmod a+x bin/Set_Linux_Permissions
-   bin/Set_Linux_Permissions
-
-4. Set up LCCDIR and paths
-==========================
 
 Execute the following commnands. Note the use of backquotes (i.e. ` not '):
 
@@ -460,6 +451,15 @@ Execute the following commnands. Note the use of backquotes (i.e. ` not '):
 
 This may generate a message saying the installation has no binaries. This
 is expected - the Git repository contains only sources, and not binaries.
+
+4. Set permissions
+==================
+
+Ensure the files have the correct permissions by executing the following 
+commands:
+
+   chmod a+x bin/Set_Linux_Permissions
+   bin/Set_Linux_Permissions
 
 5. Build Catalina
 =================
