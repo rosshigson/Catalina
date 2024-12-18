@@ -1,4 +1,4 @@
-##!/bin/bash
+#!/bin/bash
 ##!/bin/bash -login
 function usage {
     echo "Usage: $0 [-I path]* [-D symbol]* [-o output_file] [-l] input_file"
