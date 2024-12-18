@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Catalina Geany
+Comment=A Customized version of Geany for Catalina
+Exec=/opt/catalina/bin/catalina_geany
+Icon=/opt/catalina/source/geany-1.37.1/icons/geany.ico
+Terminal=false
+Type=Application

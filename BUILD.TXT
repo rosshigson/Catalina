@@ -533,19 +533,30 @@ in the repository is configured for Windows, not Linux):
 If you do not already have an .Xdefaults file, create a file called 
 .Xdefaults in your home directory, containing at least the following:
 
-   xterm*geometry:           80x25
-   xterm*faceName:           terminus:bold:pixelsize=14
+   xterm*vt100.geometry:     80x25
+   xterm*faceName:           DejaVu Sans Mono:pixelsize=14
    xterm*dynamicColors:      true
    xterm*utf8:               2
    xterm*eightBitInput:      true
-   xterm*saveLines:          512
+   xterm*saveLines:          1024
    xterm*scrollKey:          true
    xterm*scrollTtyOutput:    false
    xterm*scrollBar:          true
    xterm*rightScrollBar:     true
    xterm*jumpScroll:         true
    xterm*multiScroll:        true
-   xterm*toolBar:            false
+
+Note: If you modify this file, you have to may have to restart the Pi, or you
+can update the X database using the command:
+
+   xrdb ~/.Xdefaults
+
+If you want to use a font other than "DejaVu Sans Mono", use the following
+command to check what fonts you have installed:
+
+   fc-list | cut -f2 -d: | sort -u
+
+The Mono fonts tend to work best.
 
 10. Test Catalina Geany
 =======================
@@ -587,3 +598,39 @@ to a limitation in the Raspberry Pi xterm program, and may be addressed
 in a future release.
 
 However, you should also (eventually) see the "Hello, World!" Message. 
+
+
+11. Install Catalina in /opt
+============================
+
+Catalina can run from any directory provided the LCCDIR environment variable 
+is set appropriately - but on the Raspberry Pi it is possible to use desktop 
+icons to simplify using Catalina. However, these icons use hardcoded paths, 
+and are configured by default to expect Catalina to be installed in 
+/opt/catalina (note the lower case "c" in this directory name).
+
+To do this, execute the following in a Terminal Window:
+
+   cd ~/Catalina
+   sudo mkdir /opt/catalina
+   sudo cp -R --preserve * /opt/catalina
+
+To use the version of Catalina installed in /opt/catalina rather than the
+one in ~/Catalina, use the following commands to set up Catalina's environment
+and path:
+
+   export LCCDIR=/opt/catalina
+   source $LCCDIR/use_catalina
+
+12 Install Desktop Icons
+========================
+
+With Catalina installed in /opt/catalina and Catalina Geany installed in
+/opt/catalina_geany, the desktop icons provided will work correctly. 
+Simply copy them from the bin directory to your Desktop as follows:
+
+   cp ~/Catalina/bin/*.desktop ~/Desktop
+
+Two icons should appear on your desktop, labelled "Catalina Command Line"
+and "Catalina Geany".
+

@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Catalina Command Line
+Comment=Start Catalina in a Command Line Window
+Exec=/opt/catalina/bin/catalina_cmd
+Icon=/opt/catalina/Catalina.ico
+Terminal=true
+Type=Application
