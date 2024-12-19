@@ -545,6 +545,7 @@ If you do not already have an .Xdefaults file, create a file called
    xterm*rightScrollBar:     true
    xterm*jumpScroll:         true
    xterm*multiScroll:        true
+   xterm*allowWindowOps:     true
 
 Note: If you modify this file, you have to may have to restart the Pi, or you
 can update the X database using the command:
