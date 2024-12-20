@@ -594,12 +594,17 @@ The program should build successfully.
 Then execute the menu item "Build -> Download and Interact".
 
 An xterm window will open to display the program output. Note that you may 
-(initially) see a message "resize: Time out occurred". This appears to due 
-to a limitation in the Raspberry Pi xterm program, and may be addressed 
-in a future release.
+(initially) see a message "resize: Time out occurred".If you do, add the
+following line to your ~/.Xdefaults file:
 
-However, you should also (eventually) see the "Hello, World!" Message. 
+   xterm*allowWindowOps:     true
 
+Then:
+
+   xrdb ~/.Xdefaults
+
+However, even if you see this message you should also (eventually) see 
+the "Hello, World!" Message. 
 
 11. Install Catalina in /opt
 ============================
