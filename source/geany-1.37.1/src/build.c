@@ -1945,9 +1945,10 @@ static RowWidgets *build_add_dialog_row(GeanyDocument *doc, GtkTable *table, gui
 			GTK_FILL | GTK_EXPAND, entry_x_padding, entry_y_padding);
 	}
 	column++;
-	clearicon = gtk_image_new_from_stock(GTK_STOCK_CLEAR, GTK_ICON_SIZE_MENU);
-	clear = gtk_button_new();
-	gtk_button_set_image(GTK_BUTTON(clear), clearicon);
+  clear = gtk_button_new_with_label("reset");
+	//clearicon = gtk_image_new_from_stock(GTK_STOCK_CLEAR, GTK_ICON_SIZE_MENU);
+	//clear = gtk_button_new();
+	//gtk_button_set_image(GTK_BUTTON(clear), clearicon);
 	g_signal_connect(clear, "clicked", G_CALLBACK(on_clear_dialog_row), roww);
 	gtk_table_attach(table, clear, column, column + 1, row, row + 1, GTK_FILL,
 		GTK_FILL | GTK_EXPAND, entry_x_padding, entry_y_padding);
@@ -2042,9 +2043,10 @@ GtkWidget *build_commands_table(GeanyDocument *doc, GeanyBuildSource dst, BuildT
 	}
 	gtk_table_attach(table, fields->fileregex, DC_ENTRIES + 1, DC_CLEAR, row, row + 1, GTK_FILL,
 		GTK_FILL | GTK_EXPAND, entry_x_padding, entry_y_padding);
-	clearicon = gtk_image_new_from_stock(GTK_STOCK_CLEAR, GTK_ICON_SIZE_MENU);
-	clear = gtk_button_new();
-	gtk_button_set_image(GTK_BUTTON(clear), clearicon);
+  clear = gtk_button_new_with_label("reset");
+	//clearicon = gtk_image_new_from_stock(GTK_STOCK_CLEAR, GTK_ICON_SIZE_MENU);
+	//clear = gtk_button_new();
+	//gtk_button_set_image(GTK_BUTTON(clear), clearicon);
 	g_signal_connect_swapped(clear, "clicked",
 		G_CALLBACK(on_clear_dialog_regex_row), (fields->fileregex));
 	gtk_table_attach(table, clear, DC_CLEAR, DC_CLEAR + 1, row, row + 1, GTK_FILL,
@@ -2076,9 +2078,10 @@ GtkWidget *build_commands_table(GeanyDocument *doc, GeanyBuildSource dst, BuildT
 	}
 	gtk_table_attach(table, fields->nonfileregex, DC_ENTRIES + 1, DC_CLEAR, row, row + 1, GTK_FILL,
 		GTK_FILL | GTK_EXPAND, entry_x_padding, entry_y_padding);
-	clearicon = gtk_image_new_from_stock(GTK_STOCK_CLEAR, GTK_ICON_SIZE_MENU);
-	clear = gtk_button_new();
-	gtk_button_set_image(GTK_BUTTON(clear), clearicon);
+  clear = gtk_button_new_with_label("reset");
+	//clearicon = gtk_image_new_from_stock(GTK_STOCK_CLEAR, GTK_ICON_SIZE_MENU);
+	//clear = gtk_button_new();
+	//gtk_button_set_image(GTK_BUTTON(clear), clearicon);
 	g_signal_connect_swapped(clear, "clicked",
 		G_CALLBACK(on_clear_dialog_regex_row), (fields->nonfileregex));
 	gtk_table_attach(table, clear, DC_CLEAR, DC_CLEAR + 1, row, row + 1, GTK_FILL,
