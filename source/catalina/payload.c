@@ -413,6 +413,18 @@
 //
 // Version 8.1    - Just update version number.
 //
+// Version 8.2    - Modified the vt100 emulation to not move the cursor on
+//                  CR or LF (which used to be the case even if the CR or
+//                  LF was to be otherwise ignored). To restore the previous
+//                  behaviour, the -q option has been extended to allow the 
+//                  following option to be added, which can be combined with
+//                  any of the existing options:
+//
+//                     32 = CR or LF moves cursor
+//
+//                  For example, to specify the same behaviour as -q1 did
+//                  in previous versions, use option -q33 in this version.
+//
 //-----------------------------------------------------------------------------
 // Payload is part of Catalina.
 //
@@ -461,7 +473,7 @@
 #include "lua-5.4.4/src/lauxlib.h"
 #endif
 
-#define VERSION            "8.1"
+#define VERSION            "8.2"
 
 #define DEFAULT_LCC_ENV    "LCCDIR" // used to locate binary files if not in current directory
 
@@ -2028,8 +2040,9 @@ void help(char *my_name) {
    fprintf(stderr, "          -n msec   set sync timeout in milliseconds (default is %d)\n", DEFAULT_SYNCTIME);
    fprintf(stderr, "          -o vers   override Propeller version detection (vers 1 = P1, 2 = P2)\n");
    fprintf(stderr, "          -p port   use port for downloads (just first download if -s used)\n");
-   fprintf(stderr, "          -q mode   line mode (1=ignore CR,2=ignore LF,4=CR to LF,8=LF to CR,\n");
-   fprintf(stderr, "                               16=CR to LF on output - modes can be combined!)\n");
+   fprintf(stderr, "          -q mode   line mode (1=ignore CR, 2=ignore LF, 4=CR to LF, 8=LF to CR\n");
+   fprintf(stderr, "                               16=CR to LF on output, 32=CR or LF moves cursor\n");
+   fprintf(stderr, "                               NOTE: modes can be combined, e.g. -q3)\n");
    fprintf(stderr, "          -r msec   set reset delay in milliseconds (default is %d)\n", RESET_DELAY);
    fprintf(stderr, "          -s port   switch to port for second and subsequent downloads\n");
    fprintf(stderr, "          -S msec   set YModem char delay time in milliseconds (default is %d)\n", DEFAULT_SMALL_TIME);
@@ -2559,8 +2572,8 @@ int decode_arguments (int argc, char *argv[]) {
                      // use remainder of this arg
                      sscanf(&argv[i][2], "%d", &mode);
                   }
-                  if ((mode < 0) || (mode > 31)) {
-                     fprintf(stderr, "Error: mode must be in the range 0 to 31\n");
+                  if ((mode < 0) || (mode > 63)) {
+                     fprintf(stderr, "Error: mode must be in the range 0 to 63\n");
                      code = -1;
                   }
                   break;
@@ -3111,7 +3124,7 @@ char config_dialog() {
    WINDOW *dialog;
    char ch;
 
-   dialog = newwin(9,31,7,25);
+   dialog = newwin(10,33,6,24);
    wclear(dialog);
    box(dialog, 0, 0);
    wmove(dialog, 0, 7);
@@ -3119,16 +3132,18 @@ char config_dialog() {
    wrefresh(dialog);
    while (ch != ESC) {
       wmove(dialog, 2, 2);
-      wprintw(dialog, "1 = Ignore CR on Output %s", (on_or_off(mode & 1)));
+      wprintw(dialog, "1 = Ignore CR on Output   %s", (on_or_off(mode & 1)));
       wmove(dialog, 3, 2);
-      wprintw(dialog, "2 = Ignore LF on Output %s", (on_or_off(mode & 2)));
+      wprintw(dialog, "2 = Ignore LF on Output   %s", (on_or_off(mode & 2)));
       wmove(dialog, 4, 2);
-      wprintw(dialog, "3 = CR to LF on Input   %s", (on_or_off(mode & 4)));
+      wprintw(dialog, "3 = CR to LF on Input     %s", (on_or_off(mode & 4)));
       wmove(dialog, 5, 2);
-      wprintw(dialog, "4 = LF to CR on Input   %s", (on_or_off(mode & 8)));
+      wprintw(dialog, "4 = LF to CR on Input     %s", (on_or_off(mode & 8)));
       wmove(dialog, 6, 2);
-      wprintw(dialog, "5 = CR to LF on Output  %s", (on_or_off(mode & 16)));
-      wmove(dialog, 8, 6);
+      wprintw(dialog, "5 = CR to LF on Output    %s", (on_or_off(mode & 16)));
+      wmove(dialog, 7, 2);
+      wprintw(dialog, "6 = CR or LF moves cursor %s", (on_or_off(mode & 32)));
+      wmove(dialog, 9, 7);
       wprintw(dialog, " ESC to CLOSE MENU "); 
       wrefresh(dialog);
       do {
@@ -3140,6 +3155,7 @@ char config_dialog() {
       case '3': mode ^= 4;break;
       case '4': mode ^= 8;break;
       case '5': mode ^= 16;break;
+      case '6': mode ^= 32;break;
       case ESC: break;
       default: break;
       }
@@ -3804,14 +3820,14 @@ void internal_interactive() {
                        esc = 1;
                     }
                     else {
-                       if (ch == 0x0d) {
+                       if ((ch == 0x0d) && (mode & 32)) {
                           // move cursor even if we ignore CR
                           int x, y;
                           getyx(payload_term, y, x);
                           move(y, 0);
                           rcvd = 1;
                        }
-                       else if (ch == 0x0a) {
+                       else if ((ch == 0x0a) && (mode & 32)) {
                           // move cursor even if we ignore LF
                           int x, y;
                           getyx(payload_term, y, x);
