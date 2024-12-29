@@ -48,6 +48,10 @@ endif
 ifeq (LARGE_UTILITIES, $(findstring LARGE_UTILITIES, $(CATALINA_OPTIONS)))
 	LARGE_UTILITIES = YES
 endif
+
+# the Propeller 1 does not support the linenoise library:
+NO_LINENOISE = YES
+
 endif
 
 # see if P2_EDGE is in CATALINA_DEFINE
@@ -82,6 +86,20 @@ ifeq (P2_CUSTOM, $(findstring P2_CUSTOM, $(CATALINA_OPTIONS)))
 	P2_CUSTOM = YES
 endif
 
+
+# see if NO_LINENOISE is in CATALINA_DEFINE
+ifeq (NO_LINENOISE, $(findstring NO_LINENOISE, $(CATALINA_DEFINE)))
+	NO_LINENOISE = YES
+endif
+
+# see if NO_LINENOISE is in CATALINA_OPTIONS
+ifeq (NO_LINENOISE, $(findstring NO_LINENOISE, $(CATALINA_OPTIONS)))
+	NO_LINENOISE = YES
+endif
+
+ifneq ($(NO_LINENOISE), YES)
+	CFLAGS_LINENOISE += -llinenoise
+endif
 
 
 ifeq ($(EEPROM_CATALYST), YES)
@@ -157,8 +175,9 @@ CC=catalina
 .PHONY : catalyst
 catalyst : catalyst$B
 
+
 catalyst.bin : catalyst.c cogstore.c loader.c sio.c cache.c 
-	catalina $(CFLAGS) $(CFLAGS_CATALYST) -llinenoise $^ -o $@ -C CATALYST -C NO_ARGS  
+	catalina $(CFLAGS) $(CFLAGS_CATALYST) $(CFLAGS_LINENOISE) $^ -o $@ -C CATALYST -C NO_ARGS  
 
 catalyst.binary : catalyst.c cogstore.c loader.c sio.c cache.c
 	catalina $(CFLAGS) $(CFLAGS_CATALYST) $^ -o $@ -C CATALYST -C NO_ARGS

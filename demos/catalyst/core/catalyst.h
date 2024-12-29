@@ -43,6 +43,7 @@
 #define LUAX_EXT     ".LUX"
 
 #define WINDOWS_EOL  0                // 1 = Windows style line termination
+                                      // (or define Catalina symbol CR_ON_LF)
 
 #if defined(__CATALINA_PC)||defined(__CATALINA_TTY)||defined(__CATALINA_TTY256)||defined(__CATALINA_SIMPLE)
 #define SERIAL_HMI
