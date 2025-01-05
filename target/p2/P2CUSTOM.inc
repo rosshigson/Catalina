@@ -1,4 +1,4 @@
-'------------------------------- P2_CUSTOM constants ---------------------------
+'----------------------------- P2_CUSTOM constants -----------------------------
 
 ' clock configuration constants
 ' =============================
@@ -27,7 +27,7 @@ _XDIVP    = 1           '/ crystal / div * mul / divp  to give 180MHz
 #if defined(_CLOCK_OSC)
 _XOSC     = _CLOCK_OSC
 #else
-_XOSC     = %10         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
+_XOSC     = %01         ' %00=OFF, %01=OSC, %10=15pF, %11=30pF
 #endif
 #if defined(_CLOCK_SEL)
 _XSEL     = _CLOCK_SEL
@@ -139,8 +139,8 @@ _RX1_MULTI_BAUD = _BAUDRATE
 _TX1_MULTI_BAUD = _BAUDRATE
 _RX1_MULTI_MODE = %0000
 _TX1_MULTI_MODE = %0000
-_RX2_MULTI_PIN  = _RX2_PIN
-_TX2_MULTI_PIN  = _TX2_PIN
+_RX2_MULTI_PIN  = -1
+_TX2_MULTI_PIN  = -1
 _RX2_MULTI_BAUD = _BAUDRATE
 _TX2_MULTI_BAUD = _BAUDRATE
 _RX2_MULTI_MODE = %0000
@@ -196,9 +196,9 @@ _USB_BASE_PIN = 8
 ' =================================
 
 ' Base pin and reset pin mask
-HYPER_BASE_PIN   = 32 ' If you change this, it may be required to change these:
-HYPER_RST_A_MASK = 0 ' 1<<(HYPER_BASE_PIN+15)   ' if HYPER_BASE_PIN < 32
-HYPER_RST_B_MASK = 1<<(HYPER_BASE_PIN+15-32)    ' if HYPER_BASE_PIN >= 32
+HYPER_BASE_PIN   = 16 ' If you change this, it may be required to change these:
+HYPER_RST_A_MASK = 1<<(HYPER_BASE_PIN+15)           ' if HYPER_BASE_PIN < 32
+HYPER_RST_B_MASK = 0' 1 <<(HYPER_BASE_PIN+15-32)    ' if HYPER_BASE_PIN >= 32
 
 ' RAM size (number of address bits)
 HYPER_RAM_SIZE   = 24 ' 16Mb Hyper RAM
@@ -222,10 +222,31 @@ HYPER_LATENCY_FLASH = 16
 HYPER_BURST_FLASH   = $FFF0
 HYPER_DELAY_FLASH   = 8
 
+' PSRAM constants
+' ===============
+
+' P2 EDGE with PSRAM pin mappings (P2-EC32MB)
+PSRAM_DATABUS  = 40
+PSRAM_CLK_PIN  = 56
+PSRAM_CE_PIN   = 57
+
+' number of address bits used in 32MB of PSRAM
+PSRAM_ADDRSIZE = 25   
+
+' 8 microsecond CS low time
+PSRAM_MAX_CS_LOW_USEC = 8
+
+' burst size and delay
+PSRAM_MAXBURST = 512
+PSRAM_DELAY = 8
+
+' optional FLAGS for driver
+PSRAM_OPTIONS = 0
+
 ' miscellaneous constants
 ' =======================
 
-_DEBUG_PIN = 56
+_DEBUG_PIN = 38
 
 ' sanity checks and defaults
 ' ==========================
@@ -236,19 +257,19 @@ _DEBUG_PIN = 56
 #error SBRK_AFTER_PLUGINS DOES NOTHING IN XMM LARGE MODE
 #endif
 
-' use specified XMM RAM (or Hyper RAM by default)
-#if defined(HYPER)
-#ifndef libhyper
-#define libhyper
-#endif
-#elif defined(PSRAM)
+' use specified XMM RAM (or PSRAM by default)
+#if defined(PSRAM)
 #ifndef libpsram
 #define libpsram
 #endif
-#else
-#define HYPER
+#elif defined(HYPER)
 #ifndef libhyper
 #define libhyper
+#endif
+#else
+#define PSRAM
+#ifndef libpsram
+#define libpsram
 #endif
 #endif
 
@@ -277,19 +298,19 @@ XMM_RO_SIZE = $0000_0000         '  0Mb Read-Only Size
 #error SBRK_AFTER_PLUGINS NOT SUPPORTED IN XMM SMALL MODE
 #endif
 
-' use specified XMM RAM (or Hyper RAM by default)
-#if defined(HYPER)
-#ifndef libhyper
-#define libhyper
-#endif
-#elif defined(PSRAM)
+' use specified XMM RAM (or PSRAM by default)
+#if defined(PSRAM)
 #ifndef libpsram
 #define libpsram
 #endif
-#else
-#define HYPER
+#elif defined(HYPER)
 #ifndef libhyper
 #define libhyper
+#endif
+#else
+#define PSRAM
+#ifndef libpsram
+#define libpsram
 #endif
 #endif
 

@@ -146,7 +146,7 @@ pushd "%HOMEPATH%\demos\catalyst"
 :select_options
 @echo.
 @echo If you would like to enter any other options, specify them here, 
-@echo with each option separated by a space. For example TTY CR_ON_LF
+@echo with each option separated by a space. For example TTY VT100
 @echo.
 SET/P OPTIONS="Enter other options: "
 

@@ -379,6 +379,13 @@
  *                value used will be the LOWER of HEAP_TOP and FREE_MEM.
  *
  * version 8.1   - just update version number.
+ *
+ * version 8.2   - just update version number.
+ *
+ * version 8.3   - Defining the Catalina Symbol P2 forced NATIVE mode in
+ *                 all cases, whereas it should only have done so if no
+ *                 other mode had been specified.
+ *
  */                  
 
 /*--------------------------------------------------------------------------
@@ -408,7 +415,7 @@
 #include <string.h>
 #include <math.h>
 
-#define VERSION            "8.1"
+#define VERSION            "8.3"
 
 #define MAX_LINELEN        4096
 
@@ -1077,7 +1084,7 @@ int pass_symbol_to_compiler(char *symbol, int *code) {
    }
    else if (strcmp (symbol, "P2") == 0) {
       pass = 0; // don't pass this symbol yet - we do it later
-      if (layout != 11) {
+      if (layout < 0) {
          if (verbose) {
             fprintf(stderr, "P2 implies -x11\n");
          }

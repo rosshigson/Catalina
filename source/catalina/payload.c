@@ -1,446 +1,464 @@
-//
-// Payload: An LMM/XMM Program Loader for Catalina. This program can be used
-//          to load SPIN or LMM programs. In combination with an XMM loader
-//          it can be also used to load XMM programs. Normal SPIN or LMM
-//          programs are loaded by specifying them as the first (and only) 
-//          file - e.g:
-//
-//             payload  my_SPIN_or_LMM_program.binary
-//
-//          XMM programs must be loaded by specifying an XMM loader program
-//          as the first file, and the program to be loaded as the second
-//          file - e.g:
-//
-//             payload  XMM_LOADER.binary  my_XMM_program.binary
-//           
-// This version by Ross Higson, partly based on biffprop.c by bifferos, which
-// was itself partly based on Loader.py by Remy Blank. 
-//
-// Version 2.4 - Initial release
-//
-// Version 2.5 - Add EEPROM programming option (-e).
-//               Print message on error responses (load, program or verify).  
-//
-// Version 2.6 - Just update version number
-//
-// Version 2.7 - just update version number.
-//
-// Version 2.8 - use timeout value instead of fixed 250 ms when looking for
-//               response, and add -u option to adjust reset time
-//
-// Version 2.9 - just update version number.
-//
-// Version 3.0 - look for files in %LCCDIR%\bin if not found locally - this
-//               means files such as XMM.binary can be placed in the bin
-//               directory and don't need to have the full path specified. 
-//
-//               Make max_attempts configurable (via -m).
-//
-// Version 3.0.3 - Fix bug in getting xmm.binary from bin directory.
-//               Change terminology - "download" instead of "upload"
-//
-// Version 3.1 - just update version number.
-//
-// Version 3.2 - Add Auto-detection of secondary loader port.
-//
-// Version 3.3 - just update version number.
-//
-// Version 3.4 - just update version number.
-//
-// Version 3.5 - Correct bugs in reset_time and interfile_delay defaults.
-//               Add option for 'chunking' the lfsr check (default is enabled).
-//               To disable chunking use -l, to disable lfsr use -j. 
-//
-// Version 3.5.1 - Add interactive terminal option (use -i to enable).
-//
-// Version 3.5.2 - Fix codes for cusror visible/invisible.
-//
-// Version 3.5.3 - Always Use the first port for interactive mode, not the
-//                 port used for second and subsequent downloads.
-//
-//                 Fixed a bug where interactive mode was not started when 
-//                 verbose or diagnose option was also specified.
-//
-// Version 3.6   - Added -q to set line termination mode (i.e. ignore CR 
-//                 and/or LF). For example, when executing programs that use 
-//                 DOS line termination, the option -q1 will cause payload to
-//                 ignore CRs, preventing the lines of output from vanishing
-//                 as soon as they are complete.
-//
-//                 Payload now corrects the addresses of each page before it
-//                 downloads it. This means the address sent to the Propeller
-//                 along with the page always represents the actual address at
-//                 which the page should be stored. This simplifies the load
-//                 process on the Propeller, and makes it easier to change or 
-//                 add new binary formats in future.
-//
-//                 Payload now supports the new (smaller) binary formats.
-//                 
-//                 Payload now skips empty Hub RAM pages - this requires that
-//                 the various loaders zero Hub RAM before the load occurs.
-//
-// Version 3.7 - just update version number.
-//
-// Version 3.8 - just update version number.
-//
-// Version 3.9 - just update version number.
-//
-// Version 3.10 - allow EMM programs to be downloaded. This is intended to be 
-//                used when the new EEPROM primary loader is specified first,
-//                such as:
-//
-//                   catalina program.c -C EEPROM 
-//                   payload EEPROM program
-//
-//                Added "(will retry)" to some warning messages, to indicate
-//                that automatic retry will be attempted.
-//
-// Version 3.11 - extended the -q options. Now the following options ...
-//                   1 = ignore CR
-//                   2 = ignore LF
-//
-//                can be combined with ...
-//                   4 = translate CR to LF
-//                   8 = translate LF to CR
-//
-//                So (for example) ...
-//                   -q6 means ignore LF, but translate CR to LF
-//                   -q9 means ignore CR, but translate LF to CR
-//                
-//                note that combining 3 (i.e. ignore both CR and LF) with either
-//                4 or 8 will have no effect.
-//
-//                Added buffering to improve load times.
-//
-//                Updated version number.
-//
-//  Version 3.11.1 - Fix for OS X, and add ability for port names to be
-//                   specified on command line via the -p and -s command
-//                   line options (e.g. -p /dev/cu.usbserial.12345678).
-//
-//  Version 3.12 - just update version number.
-//
-//  Version 3.13 - Just update version number.
-//
-//  Version 3.14 - Add environment variables and parameters for terminal 
-//                 height or width. The precedence is command-line, then 
-//                 environment variable, then default (80 x 24). 
-//                 The command-line options is -g and accepts rows,cols:
-//                    -g rows,cols
-//                 The variables are:
-//                    PAYLOAD_ROWS
-//                    PAYLOAD_COLS
-//
-//                 e.g:
-//
-//                    set PAYLOAD_ROWS=50
-//                    set PAYLOAD_COLS=120 
-//
-//  Version 3.15 - Initial Propeller 2 version. Note that the P1 and P2
-//                 should both be autodetected, so there is no need for
-//                 a command-line switch. If you have both P1 and P2 chips
-//                 connected, you will have to specify the port to use.
-//
-//                 Added the option to specify the baud rate in the 
-//                 environment variable PAYLOAD_BAUD - e.g:
-//
-//                    set PAYLOAD_BAUD=230400
-//
-//                 Added the possibility of using interactive mode even if
-//                 no files are loaded - in this case the port must be
-//                 explicitly specified (and some of the other options
-//                 are ineffective). For example:
-//
-//                    payload -i -p3 -b 230400
-//
-//  Version 3.16 - Add Lua scripting. The script can be specified on the
-//                 command line via the 'L' option.
-//
-//               - Added the -y option to suppress download progress messages.
-//               
-//               - Added the option to specify the port in the 
-//                 environment variable PAYLOAD_PORT - e.g:
-//
-//                    set PAYLOAD_PORT=17 (Windows or Linux)
-//                    export PAYLOAD_PORT=/dev/ttyUSB0 (Linux)
-//
-// Version 3.18 - accept any Prop2 version string.
-//
-// Version 4.0  - Just update version number.
-//
-// Version 4.1  - Make the default read timout 1000ms on Linux.
-//
-// Version 4.2  - Just update version number.
-//
-// Version 4.3  - Just update version number.
-//
-// Version 4.4  - Just update version number.
-//
-// Version 4.5  - Just update version number.
-//
-// Version 4.6  - Just update version number.
-//
-// Version 4.7  - Add -o to override propeller version detection (required
-//                on Propeller 2 to program FLASH without needing a switch
-//                setting on the P2_EVAL board). This required enabling the
-//                -j option (lfsr disable). Also fix port number reported
-//                in diagnostic ouptut.
-//
-// Version 4.8  - Just update version number.
-//
-// Version 4.9.4  - Minimum baud rate is now 300 baud.
-//
-//                  Allow -B as a synonym for -b
-//
-// Version 4.9.5  - Update Lua to version 5.1.5
-//
-// Version 4.9.6  - Changed EOT processing in interactive mode. Now, one EOT
-//                  is just sent to the application. Two consecutive EOTs are
-//                  required to exit interactive mode. 
-//
-// Version 5.0    - If no baud rate is specified, and the file to be loaded 
-//                  has a ".bin" extension then it is assumed to be a P2 file
-//                  and the default baud rate is set to 230400 baud.
-//
-//                - The translation of outgoing CR to LF has been disabled,
-//                  but mode 16 has been added to restore the original
-//                  behaviour.
-//                  The translation was preventing the use of TAQOZ and the 
-//                  P2 Monitor - the correct mode to use for these is now -q1
-//
-// Version 5.1    - Just update version number.
-//
-// Version 5.3    - Update Lua to version 5.4.4.
-//
-// Version 5.4    - Just update version number.
-//
-// Version 5.5    - Add Menu support. 
-//                  The attention key (if set) now displays a menu. The key
-//                  can be configured using the -A command line option. By 
-//                  default it is CTRL-A (intended to match minicom). This 
-//                  shows a menu that allows the choice of YModem Transfer 
-//                  or Terminal Configuration.
-//
-//                  Added YModem support. 
-//                  Both slow YModem (128 byte blocks) and fast YModem-1K 
-//                  (1024 byte blocks) transfers are supported. The character
-//                  time delay to use for slow (i.e. 128 byte block) transfers
-//                  can be set using the -T command-line option, but is 
-//                  generally not required. Slow transfers are required to
-//                  (but not from) the Propeller 1. The Propeller 2 supports 
-//                  fast transfers n both directions.
-//                  The file names can be up to 64 characters and path names
-//                  are supported (but note Windows uses '\' in path names
-//                  whereas Linux and the Propeller use '/').
-//                  Note that like minicom, payload does not initiate the 
-//                  transfer on the Propeller side - a normal ymodem send or 
-//                  receive command must be issued on the Propeller before 
-//                  CTRL-A is pressed.
-//                  Transfers can be aborted by pressing ESC before they
-//                  are started, but cannot be interrupted once initiated.
-//
-//                  Added Terminal Configuration support. 
-//                  This allows the terminal mode bits to be modified.
-//
-//                  Fixed the help message for the terminal configuration
-//                  modes - it had the description of modes 4 & 8 reversed.
-//
-//              -   Allow Cursor Position Requests (i.e. DEC CUP) to specify 
-//                  numbers larger than the screen, which puts the cursor at 
-//                  the maximum extent - e.g. ESC [ 999 ; 999 H will position
-//                  the cursor at the bottom right of the window.
-//
-//                  Also, respond to Device Status Report (DEC DSR) to 
-//                  retrieve the current cursor position - e.g. ESC [ ? 6 n
-//                  will now respond with ESC [ r ; c R
-//
-//                  Together these two changes allow the size of the terminal
-//                  to be retrieved by programs expecting a VT100 compatible 
-//                  terminal - i.e. use CUP with very large numbers to set
-//                  the position of the cursor to the last position in the 
-//                  window, then use DSR to retrieve that position.
-//
-// Version 5.5.1 -  Payload now interprets either ESC [ ? 6 n or ESC [ 6 n as
-//                  a DEC DSR and responds with a DEC CUP. ESC [ 6 n is what 
-//                  the Catalyst xvi program now uses.
-//
-//               -  Payload now allows a external terminal emulator program
-//                  to be executed in place of the simple internal one. 
-//                  The -i option still enables the internal emulator, but 
-//                  the new -I option (i.e. upper case) calls an external 
-//                  terminal emulator program. The -I option accepts one
-//                  parameter which specifies the command to be used. The 
-//                  port name (not the port number) and baud rate will be
-//                  passed to this program on startup. For example, if the 
-//                  payload command executed was:
-//
-//                     payload program.bin -p11 -b230400 -Ivt100
-//
-//                  Then after loading the program.bin file, the command 
-//                  executed (on Windows) would be:
-//
-//                     vt100 COM11 230400
-//                  
-//                  On Linux, the command would be something like:
-//
-//                     vt100 /dev/ttyUSB0 230400
-//
-//                  A vt100 command script (i.e. on Windows a batch file
-//                  called vt100.bat, or on Linux a shell script called vt100)
-//                  can be used to specify any other required parameters.
-//
-// Version 5.5.2  - Limit the number of restart retries on ymodem_receive, 
-//                  in case the other end has not been started.
-//
-// Version 5.6    - Add new secondary download protocol for Propeller 2. This
-//                  protocol is simpler than the equivalent Propeller 1 
-//                  protocol - it does not decode or re-order the segments, 
-//                  it just checks that the layout is supported (currently 
-//                  only layouts 2 and 5) and then just downloads all sectors 
-//                  in the file in sequence. The receiving program must load 
-//                  the Hub and XMM RAM appropriately. LRC checks and
-//                  retransmission of corrupt sectors are supported. Only 
-//                  loading the default CPU is currently supported.
-//
-// Version 5.7    - Allow a baud rate of 0 (zero) to mean use the default baud
-//                  rate for the detected chip. This is the same as not
-//                  specifying a baud rate at all, but some programs (such
-//                  as Geany) do not allow a baud rate value to be 
-//                  optional, so specifying it as 0 now does the same as
-//                  not specifying it.
-//
-// Version 5.8    - Revised the file extension processing:
-//
-//                  Use the bare filename if an extension is specified, but
-//                  if not, then for the first download try ".binary", 
-//                  ".eeprom", ".bin", ".bix", ".biy" in that order, and 
-//                  then the bare filename if none of these are found.
-//
-//                  For the second and subsequent downloads, use the
-//                  bare filename if an extension is specified, but if not 
-//                  then for a Propeller 1 try ".binary" and ".eeprom" then
-//                  the bare filename. For a Propeller 2 try ".bin", ".bix" 
-//                  and ".biy" then the bare filename. 
-//
-//                  If a version override is specified (i.e. via command line 
-//                  option -o) then only try the extensions appropriate for
-//                  the version (".binary" or ".eeprom" for a Propeller 1,
-//                  or ".bin", ".bix", ".biy" for a Propeller 2). Also, use
-//                  the default baudrate for the override version.
-//
-//                  The local directory is always searched for all extensions
-//                  first, then %LCCDIR%\bin (Windows) or $LCCDIR/bin (Linux) 
-//                  if no matching file is found in the local directory.
-//
-//                - Updated the override version processing. If an override
-//                  version is specified, payload will only detect Propeller
-//                  chips with the specified version, and will not load others.
-//                  This allows (for instance) a Propeller 2 ".bin" file 
-//                  to co-exist in a directory with a Propeller 1 ".binary" 
-//                  file provided the correct override version is specified 
-//                  to each payload command.
-//
-// Version 5.9.1    Ignore the colour escape sequences!
-//
-// Version 5.9.2    Just update version number.
-//
-// Version 5.9.3    Fix VT100 terminal emulation issues:
-//                     ESC [ 2 J       should clear entire screen.
-//                     ESC [ r ; c H   now accepts zero for r and c
-//                     ESC [ c ; c f   now also accepted
-//                     
-// Version 6.0    - Just update version number.
-//
-// Version 6.0.1  - Just update version number.
-//
-// Version 6.1    - Just update version number.
-//
-// Version 6.2    - On Windows, payload now uses ncurses rather than pdcurses 
-//                  by default. This means that the window size cannot be set 
-//                  from within the program. The -g command line option sets 
-//                  the ncurses terminal geometry parameters, but no longer 
-//                  resizes the terminal window, which must be done manually. 
-//                  This was always the case on Linux, so this change makes
-//                  both platforms now behave the same way.
-//
-//                - a delay between characters has been added to payload's
-//                  interactive terminal emulator, since the Propeller 1 TTY
-//                  interface has such a small character buffer (16 chars) 
-//                  it is very easy to overwhelm it by holding a key down.
-//                  This was a particular problem for programs such as the vi 
-//                  editor when the cursor movement keys are held down.
-//
-// Version 6.3    - The inter-character delay introduced in 6.2 was set at
-//                  a fixed 100 ms, but this value caused problems in some 
-//                  cases, so it has been reduced to 25 ms by default, and 
-//                  a new option (-K) has been introduced to set it. 
-//                  A better solution for Propeller 1 programs that have
-//                  trouble keeping up with the shorter delay is to use the 
-//                  TTY256 HMI option instead of the TTY HMI option.
-//
-// Version 6.4    - Just update version number.
-//
-// Version 6.5    - For option -g, accept '_' as well as ',' separating the
-//                  row and columns. For example, both the following will
-//                  specify the same geometry:
-//                     -g 80,40
-//                     -g 80_40
-//
-// Version 6.5.2  - Modify extension processing - do not try to detect if an
-//                  extension is present by looking for "." in the file name
-//                  because it causes problems in Geany, which uses the full
-//                  path name (which may contain a "."). Also, try the base 
-//                  file name BEFORE tryng any extensions. This makes it 
-//                  easier to use payload with Geany but will not affect most
-//                  command-line usage.
-//
-// Version 6.5.3  - Just update version number.
-//
-// Version 7.0    - Just update version number.
-//
-// Version 8.0    - Update VT100 emulation to move cursor on CR or LF
-//                  even if the characters are otherwise ignored. This
-//                  means that we can better support DOS type programs
-//                  that expect to see a CR rather than an LF, but it
-//                  means that -q2 may need to be specified instead of 
-//                  -q1 for such programs.
-//
-//                - Update Vt100 emulation to generate the ANSI codes
-//                  expected by linenoise. The previous codes were
-//                  those expected by xvi, but xvi can also process
-//                  the ANSI codes, so there should be no noticeable
-//                  differences when using the xvi (i.e. vi) editor.
-//
-// Version 8.1    - Just update version number.
-//
-// Version 8.2    - Modified the vt100 emulation to not move the cursor on
-//                  CR or LF (which used to be the case even if the CR or
-//                  LF was to be otherwise ignored). To restore the previous
-//                  behaviour, the -q option has been extended to allow the 
-//                  following option to be added, which can be combined with
-//                  any of the existing options:
-//
-//                     32 = CR or LF moves cursor
-//
-//                  For example, to specify the same behaviour as -q1 did
-//                  in previous versions, use option -q33 in this version.
-//
-//-----------------------------------------------------------------------------
-// Payload is part of Catalina.
-//
-// This program is free software; you can redistribute it and/or modify it
-// under the terms of the GNU General Public License as published by the
-// Free Software Foundation, version 2.
-//
-// This program is distributed in the hope that it will be useful, but 
-// WITHOUT ANY WARRANTY; without even the implied warranty of 
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General 
-// Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software Foundation,
-// Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
-// ----------------------------------------------------------------------------
+/*
+ * Payload: An LMM/XMM Program Loader for Catalina. This program can be used
+ *          to load SPIN or LMM programs. In combination with an XMM loader
+ *          it can be also used to load XMM programs. Normal SPIN or LMM
+ *          programs are loaded by specifying them as the first (and only) 
+ *          file - e.g:
+ *
+ *             payload  my_SPIN_or_LMM_program.binary
+ *
+ *          XMM programs must be loaded by specifying an XMM loader program
+ *          as the first file, and the program to be loaded as the second
+ *          file - e.g:
+ *
+ *             payload  XMM_LOADER.binary  my_XMM_program.binary
+ *           
+ * This version by Ross Higson, partly based on biffprop.c by bifferos, which
+ * was itself partly based on Loader.py by Remy Blank. 
+ *
+ * Version 2.4 - Initial release
+ *
+ * Version 2.5 - Add EEPROM programming option (-e).
+ *               Print message on error responses (load, program or verify).  
+ *
+ * Version 2.6 - Just update version number
+ *
+ * Version 2.7 - just update version number.
+ *
+ * Version 2.8 - use timeout value instead of fixed 250 ms when looking for
+ *               response, and add -u option to adjust reset time
+ *
+ * Version 2.9 - just update version number.
+ *
+ * Version 3.0 - look for files in %LCCDIR%\bin if not found locally - this
+ *               means files such as XMM.binary can be placed in the bin
+ *               directory and don't need to have the full path specified. 
+ *
+ *               Make max_attempts configurable (via -m).
+ *
+ * Version 3.0.3 - Fix bug in getting xmm.binary from bin directory.
+ *               Change terminology - "download" instead of "upload"
+ *
+ * Version 3.1 - just update version number.
+ *
+ * Version 3.2 - Add Auto-detection of secondary loader port.
+ *
+ * Version 3.3 - just update version number.
+ *
+ * Version 3.4 - just update version number.
+ *
+ * Version 3.5 - Correct bugs in reset_time and interfile_delay defaults.
+ *               Add option for 'chunking' the lfsr check (default is enabled).
+ *               To disable chunking use -l, to disable lfsr use -j. 
+ *
+ * Version 3.5.1 - Add interactive terminal option (use -i to enable).
+ *
+ * Version 3.5.2 - Fix codes for cusror visible/invisible.
+ *
+ * Version 3.5.3 - Always Use the first port for interactive mode, not the
+ *                 port used for second and subsequent downloads.
+ *
+ *                 Fixed a bug where interactive mode was not started when 
+ *                 verbose or diagnose option was also specified.
+ *
+ * Version 3.6   - Added -q to set line termination mode (i.e. ignore CR 
+ *                 and/or LF). For example, when executing programs that use 
+ *                 DOS line termination, the option -q1 will cause payload to
+ *                 ignore CRs, preventing the lines of output from vanishing
+ *                 as soon as they are complete.
+ *
+ *                 Payload now corrects the addresses of each page before it
+ *                 downloads it. This means the address sent to the Propeller
+ *                 along with the page always represents the actual address at
+ *                 which the page should be stored. This simplifies the load
+ *                 process on the Propeller, and makes it easier to change or 
+ *                 add new binary formats in future.
+ *
+ *                 Payload now supports the new (smaller) binary formats.
+ *                 
+ *                 Payload now skips empty Hub RAM pages - this requires that
+ *                 the various loaders zero Hub RAM before the load occurs.
+ *
+ * Version 3.7 - just update version number.
+ *
+ * Version 3.8 - just update version number.
+ *
+ * Version 3.9 - just update version number.
+ *
+ * Version 3.10 - allow EMM programs to be downloaded. This is intended to be 
+ *                used when the new EEPROM primary loader is specified first,
+ *                such as:
+ *
+ *                   catalina program.c -C EEPROM 
+ *                   payload EEPROM program
+ *
+ *                Added "(will retry)" to some warning messages, to indicate
+ *                that automatic retry will be attempted.
+ *
+ * Version 3.11 - extended the -q options. Now the following options ...
+ *                   1 = ignore CR
+ *                   2 = ignore LF
+ *
+ *                can be combined with ...
+ *                   4 = translate CR to LF
+ *                   8 = translate LF to CR
+ *
+ *                So (for example) ...
+ *                   -q6 means ignore LF, but translate CR to LF
+ *                   -q9 means ignore CR, but translate LF to CR
+ *                
+ *                note that combining 3 (i.e. ignore both CR and LF) with either
+ *                4 or 8 will have no effect.
+ *
+ *                Added buffering to improve load times.
+ *
+ *                Updated version number.
+ *
+ *  Version 3.11.1 - Fix for OS X, and add ability for port names to be
+ *                   specified on command line via the -p and -s command
+ *                   line options (e.g. -p /dev/cu.usbserial.12345678).
+ *
+ *  Version 3.12 - just update version number.
+ *
+ *  Version 3.13 - Just update version number.
+ *
+ *  Version 3.14 - Add environment variables and parameters for terminal 
+ *                 height or width. The precedence is command-line, then 
+ *                 environment variable, then default (80 x 24). 
+ *                 The command-line options is -g and accepts rows,cols:
+ *                    -g rows,cols
+ *                 The variables are:
+ *                    PAYLOAD_ROWS
+ *                    PAYLOAD_COLS
+ *
+ *                 e.g:
+ *
+ *                    set PAYLOAD_ROWS=50
+ *                    set PAYLOAD_COLS=120 
+ *
+ *  Version 3.15 - Initial Propeller 2 version. Note that the P1 and P2
+ *                 should both be autodetected, so there is no need for
+ *                 a command-line switch. If you have both P1 and P2 chips
+ *                 connected, you will have to specify the port to use.
+ *
+ *                 Added the option to specify the baud rate in the 
+ *                 environment variable PAYLOAD_BAUD - e.g:
+ *
+ *                    set PAYLOAD_BAUD=230400
+ *
+ *                 Added the possibility of using interactive mode even if
+ *                 no files are loaded - in this case the port must be
+ *                 explicitly specified (and some of the other options
+ *                 are ineffective). For example:
+ *
+ *                    payload -i -p3 -b 230400
+ *
+ *  Version 3.16 - Add Lua scripting. The script can be specified on the
+ *                 command line via the 'L' option.
+ *
+ *               - Added the -y option to suppress download progress messages.
+ *               
+ *               - Added the option to specify the port in the 
+ *                 environment variable PAYLOAD_PORT - e.g:
+ *
+ *                    set PAYLOAD_PORT=17 (Windows or Linux)
+ *                    export PAYLOAD_PORT=/dev/ttyUSB0 (Linux)
+ *
+ * Version 3.18 - accept any Prop2 version string.
+ *
+ * Version 4.0  - Just update version number.
+ *
+ * Version 4.1  - Make the default read timout 1000ms on Linux.
+ *
+ * Version 4.2  - Just update version number.
+ *
+ * Version 4.3  - Just update version number.
+ *
+ * Version 4.4  - Just update version number.
+ *
+ * Version 4.5  - Just update version number.
+ *
+ * Version 4.6  - Just update version number.
+ *
+ * Version 4.7  - Add -o to override propeller version detection (required
+ *                on Propeller 2 to program FLASH without needing a switch
+ *                setting on the P2_EVAL board). This required enabling the
+ *                -j option (lfsr disable). Also fix port number reported
+ *                in diagnostic ouptut.
+ *
+ * Version 4.8  - Just update version number.
+ *
+ * Version 4.9.4  - Minimum baud rate is now 300 baud.
+ *
+ *                  Allow -B as a synonym for -b
+ *
+ * Version 4.9.5  - Update Lua to version 5.1.5
+ *
+ * Version 4.9.6  - Changed EOT processing in interactive mode. Now, one EOT
+ *                  is just sent to the application. Two consecutive EOTs are
+ *                  required to exit interactive mode. 
+ *
+ * Version 5.0    - If no baud rate is specified, and the file to be loaded 
+ *                  has a ".bin" extension then it is assumed to be a P2 file
+ *                  and the default baud rate is set to 230400 baud.
+ *
+ *                - The translation of outgoing CR to LF has been disabled,
+ *                  but mode 16 has been added to restore the original
+ *                  behaviour.
+ *                  The translation was preventing the use of TAQOZ and the 
+ *                  P2 Monitor - the correct mode to use for these is now -q1
+ *
+ * Version 5.1    - Just update version number.
+ *
+ * Version 5.3    - Update Lua to version 5.4.4.
+ *
+ * Version 5.4    - Just update version number.
+ *
+ * Version 5.5    - Add Menu support. 
+ *                  The attention key (if set) now displays a menu. The key
+ *                  can be configured using the -A command line option. By 
+ *                  default it is CTRL-A (intended to match minicom). This 
+ *                  shows a menu that allows the choice of YModem Transfer 
+ *                  or Terminal Configuration.
+ *
+ *                  Added YModem support. 
+ *                  Both slow YModem (128 byte blocks) and fast YModem-1K 
+ *                  (1024 byte blocks) transfers are supported. The character
+ *                  time delay to use for slow (i.e. 128 byte block) transfers
+ *                  can be set using the -T command-line option, but is 
+ *                  generally not required. Slow transfers are required to
+ *                  (but not from) the Propeller 1. The Propeller 2 supports 
+ *                  fast transfers n both directions.
+ *                  The file names can be up to 64 characters and path names
+ *                  are supported (but note Windows uses '\' in path names
+ *                  whereas Linux and the Propeller use '/').
+ *                  Note that like minicom, payload does not initiate the 
+ *                  transfer on the Propeller side - a normal ymodem send or 
+ *                  receive command must be issued on the Propeller before 
+ *                  CTRL-A is pressed.
+ *                  Transfers can be aborted by pressing ESC before they
+ *                  are started, but cannot be interrupted once initiated.
+ *
+ *                  Added Terminal Configuration support. 
+ *                  This allows the terminal mode bits to be modified.
+ *
+ *                  Fixed the help message for the terminal configuration
+ *                  modes - it had the description of modes 4 & 8 reversed.
+ *
+ *              -   Allow Cursor Position Requests (i.e. DEC CUP) to specify 
+ *                  numbers larger than the screen, which puts the cursor at 
+ *                  the maximum extent - e.g. ESC [ 999 ; 999 H will position
+ *                  the cursor at the bottom right of the window.
+ *
+ *                  Also, respond to Device Status Report (DEC DSR) to 
+ *                  retrieve the current cursor position - e.g. ESC [ ? 6 n
+ *                  will now respond with ESC [ r ; c R
+ *
+ *                  Together these two changes allow the size of the terminal
+ *                  to be retrieved by programs expecting a VT100 compatible 
+ *                  terminal - i.e. use CUP with very large numbers to set
+ *                  the position of the cursor to the last position in the 
+ *                  window, then use DSR to retrieve that position.
+ *
+ * Version 5.5.1 -  Payload now interprets either ESC [ ? 6 n or ESC [ 6 n as
+ *                  a DEC DSR and responds with a DEC CUP. ESC [ 6 n is what 
+ *                  the Catalyst xvi program now uses.
+ *
+ *               -  Payload now allows a external terminal emulator program
+ *                  to be executed in place of the simple internal one. 
+ *                  The -i option still enables the internal emulator, but 
+ *                  the new -I option (i.e. upper case) calls an external 
+ *                  terminal emulator program. The -I option accepts one
+ *                  parameter which specifies the command to be used. The 
+ *                  port name (not the port number) and baud rate will be
+ *                  passed to this program on startup. For example, if the 
+ *                  payload command executed was:
+ *
+ *                     payload program.bin -p11 -b230400 -Ivt100
+ *
+ *                  Then after loading the program.bin file, the command 
+ *                  executed (on Windows) would be:
+ *
+ *                     vt100 COM11 230400
+ *                  
+ *                  On Linux, the command would be something like:
+ *
+ *                     vt100 /dev/ttyUSB0 230400
+ *
+ *                  A vt100 command script (i.e. on Windows a batch file
+ *                  called vt100.bat, or on Linux a shell script called vt100)
+ *                  can be used to specify any other required parameters.
+ *
+ * Version 5.5.2  - Limit the number of restart retries on ymodem_receive, 
+ *                  in case the other end has not been started.
+ *
+ * Version 5.6    - Add new secondary download protocol for Propeller 2. This
+ *                  protocol is simpler than the equivalent Propeller 1 
+ *                  protocol - it does not decode or re-order the segments, 
+ *                  it just checks that the layout is supported (currently 
+ *                  only layouts 2 and 5) and then just downloads all sectors 
+ *                  in the file in sequence. The receiving program must load 
+ *                  the Hub and XMM RAM appropriately. LRC checks and
+ *                  retransmission of corrupt sectors are supported. Only 
+ *                  loading the default CPU is currently supported.
+ *
+ * Version 5.7    - Allow a baud rate of 0 (zero) to mean use the default baud
+ *                  rate for the detected chip. This is the same as not
+ *                  specifying a baud rate at all, but some programs (such
+ *                  as Geany) do not allow a baud rate value to be 
+ *                  optional, so specifying it as 0 now does the same as
+ *                  not specifying it.
+ *
+ * Version 5.8    - Revised the file extension processing:
+ *
+ *                  Use the bare filename if an extension is specified, but
+ *                  if not, then for the first download try ".binary", 
+ *                  ".eeprom", ".bin", ".bix", ".biy" in that order, and 
+ *                  then the bare filename if none of these are found.
+ *
+ *                  For the second and subsequent downloads, use the
+ *                  bare filename if an extension is specified, but if not 
+ *                  then for a Propeller 1 try ".binary" and ".eeprom" then
+ *                  the bare filename. For a Propeller 2 try ".bin", ".bix" 
+ *                  and ".biy" then the bare filename. 
+ *
+ *                  If a version override is specified (i.e. via command line 
+ *                  option -o) then only try the extensions appropriate for
+ *                  the version (".binary" or ".eeprom" for a Propeller 1,
+ *                  or ".bin", ".bix", ".biy" for a Propeller 2). Also, use
+ *                  the default baudrate for the override version.
+ *
+ *                  The local directory is always searched for all extensions
+ *                  first, then %LCCDIR%\bin (Windows) or $LCCDIR/bin (Linux) 
+ *                  if no matching file is found in the local directory.
+ *
+ *                - Updated the override version processing. If an override
+ *                  version is specified, payload will only detect Propeller
+ *                  chips with the specified version, and will not load others.
+ *                  This allows (for instance) a Propeller 2 ".bin" file 
+ *                  to co-exist in a directory with a Propeller 1 ".binary" 
+ *                  file provided the correct override version is specified 
+ *                  to each payload command.
+ *
+ * Version 5.9.1    Ignore the colour escape sequences!
+ *
+ * Version 5.9.2    Just update version number.
+ *
+ * Version 5.9.3    Fix VT100 terminal emulation issues:
+ *                     ESC [ 2 J       should clear entire screen.
+ *                     ESC [ r ; c H   now accepts zero for r and c
+ *                     ESC [ c ; c f   now also accepted
+ *                     
+ * Version 6.0    - Just update version number.
+ *
+ * Version 6.0.1  - Just update version number.
+ *
+ * Version 6.1    - Just update version number.
+ *
+ * Version 6.2    - On Windows, payload now uses ncurses rather than pdcurses 
+ *                  by default. This means that the window size cannot be set 
+ *                  from within the program. The -g command line option sets 
+ *                  the ncurses terminal geometry parameters, but no longer 
+ *                  resizes the terminal window, which must be done manually. 
+ *                  This was always the case on Linux, so this change makes
+ *                  both platforms now behave the same way.
+ *
+ *                - a delay between characters has been added to payload's
+ *                  interactive terminal emulator, since the Propeller 1 TTY
+ *                  interface has such a small character buffer (16 chars) 
+ *                  it is very easy to overwhelm it by holding a key down.
+ *                  This was a particular problem for programs such as the vi 
+ *                  editor when the cursor movement keys are held down.
+ *
+ * Version 6.3    - The inter-character delay introduced in 6.2 was set at
+ *                  a fixed 100 ms, but this value caused problems in some 
+ *                  cases, so it has been reduced to 25 ms by default, and 
+ *                  a new option (-K) has been introduced to set it. 
+ *                  A better solution for Propeller 1 programs that have
+ *                  trouble keeping up with the shorter delay is to use the 
+ *                  TTY256 HMI option instead of the TTY HMI option.
+ *
+ * Version 6.4    - Just update version number.
+ *
+ * Version 6.5    - For option -g, accept '_' as well as ',' separating the
+ *                  row and columns. For example, both the following will
+ *                  specify the same geometry:
+ *                     -g 80,40
+ *                     -g 80_40
+ *
+ * Version 6.5.2  - Modify extension processing - do not try to detect if an
+ *                  extension is present by looking for "." in the file name
+ *                  because it causes problems in Geany, which uses the full
+ *                  path name (which may contain a "."). Also, try the base 
+ *                  file name BEFORE tryng any extensions. This makes it 
+ *                  easier to use payload with Geany but will not affect most
+ *                  command-line usage.
+ *
+ * Version 6.5.3  - Just update version number.
+ *
+ * Version 7.0    - Just update version number.
+ *
+ * Version 8.0    - Update VT100 emulation to move cursor on CR or LF
+ *                  even if the characters are otherwise ignored. This
+ *                  means that we can better support DOS type programs
+ *                  that expect to see a CR rather than an LF, but it
+ *                  means that -q2 may need to be specified instead of 
+ *                  -q1 for such programs.
+ *
+ *                - Update Vt100 emulation to generate the ANSI codes
+ *                  expected by linenoise. The previous codes were
+ *                  those expected by xvi, but xvi can also process
+ *                  the ANSI codes, so there should be no noticeable
+ *                  differences when using the xvi (i.e. vi) editor.
+ *
+ * Version 8.1    - Just update version number.
+ *
+ * Version 8.2    - Modified the vt100 emulation to not move the cursor on
+ *                  CR or LF (which used to be the case even if the CR or
+ *                  LF was to be otherwise ignored). To restore the previous
+ *                  behaviour, the -q option has been extended to allow the 
+ *                  following option to be added, which can be combined with
+ *                  any of the existing options:
+ *
+ *                     32 = CR or LF moves cursor
+ *
+ *                  For example, to specify the same behaviour as -q1 did
+ *                  in previous versions, use option -q33 in this version.
+ *
+ * Version 8.3  - Modified the -q option, which can now be specified more
+ *                than once on the command line. All the -q options are 
+ *                'or'ed together to determine the final options. So, for 
+ *                example, -q1 -q2 is now the same as -q3.
+ *
+ *                The -q4 and -q8 options were being applies to the output 
+ *                (i.e. writing to the screen) rather than the input (i.e. 
+ *                reading from the keyboard). Now fixed.
+ *
+ *                The description of what -q16 does has changed (but not the
+ *                functionality). It used to say "CR to LF on Output", but
+ *                it now (more correctly) says "Auto CR on LF Output".
+ *
+ *              - the -o option now sets the default baud rate as appropriate
+ *                for the Propeller 1 (115200) or Propeller 2 (230400) unless
+ *                a baud rate is explicitly set.
+ *
+ *-----------------------------------------------------------------------------
+ * Payload is part of Catalina.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation, version 2.
+ *
+ * This program is distributed in the hope that it will be useful, but 
+ * WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General 
+ * Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+ * ----------------------------------------------------------------------------
+ */
 
 #include <unistd.h>
 #include <stdlib.h>
@@ -473,7 +491,7 @@
 #include "lua-5.4.4/src/lauxlib.h"
 #endif
 
-#define VERSION            "8.2"
+#define VERSION            "8.3"
 
 #define DEFAULT_LCC_ENV    "LCCDIR" // used to locate binary files if not in current directory
 
@@ -2041,8 +2059,8 @@ void help(char *my_name) {
    fprintf(stderr, "          -o vers   override Propeller version detection (vers 1 = P1, 2 = P2)\n");
    fprintf(stderr, "          -p port   use port for downloads (just first download if -s used)\n");
    fprintf(stderr, "          -q mode   line mode (1=ignore CR, 2=ignore LF, 4=CR to LF, 8=LF to CR\n");
-   fprintf(stderr, "                               16=CR to LF on output, 32=CR or LF moves cursor\n");
-   fprintf(stderr, "                               NOTE: modes can be combined, e.g. -q3)\n");
+   fprintf(stderr, "                               16=Auto CR on LF Output,32=CR or LF moves cursor\n");
+   fprintf(stderr, "                               NOTE: modes can be combined, e.g. -q3 = -q1 -q2)\n");
    fprintf(stderr, "          -r msec   set reset delay in milliseconds (default is %d)\n", RESET_DELAY);
    fprintf(stderr, "          -s port   switch to port for second and subsequent downloads\n");
    fprintf(stderr, "          -S msec   set YModem char delay time in milliseconds (default is %d)\n", DEFAULT_SMALL_TIME);
@@ -2072,6 +2090,7 @@ int decode_arguments (int argc, char *argv[]) {
    char filename[MAX_LINELEN + 3 + 1];
    char primary_portname[MAX_LINELEN + 3 + 1];
    char second_portname[MAX_LINELEN + 3 + 1];
+   int  more_modes = 0;
 
    while ((code >= 0) && (argc--)) {
       if (diagnose) {
@@ -2500,6 +2519,12 @@ int decode_arguments (int argc, char *argv[]) {
                   if (verbose) {
                      fprintf(stderr, "overriding Propeller version detection, assuming P%1d\n", override);
                   }
+                  // if this is a P2 and we have not overridden the baud rate, 
+                  // set our baud rate to the default for a P2
+                  if ((override == 2) && (use_default_baudrate)) {
+                    my_baudrate = DEFAULT_BAUDRATE_P2;
+                  }
+
                   break;
                case 'p':
                   if (strlen(argv[i]) == 2) {
@@ -2556,10 +2581,11 @@ int decode_arguments (int argc, char *argv[]) {
                   }
                   break;
                case 'q':
+                  more_modes = 0;
                   if (strlen(argv[i]) == 2) {
                      // use next arg
                      if (argc > 0) {
-                        sscanf(argv[++i], "%d", &mode);
+                        sscanf(argv[++i], "%d", &more_modes);
                         argc--;
                      }
                      else {
@@ -2570,12 +2596,13 @@ int decode_arguments (int argc, char *argv[]) {
                   }
                   else {
                      // use remainder of this arg
-                     sscanf(&argv[i][2], "%d", &mode);
+                     sscanf(&argv[i][2], "%d", &more_modes);
                   }
                   if ((mode < 0) || (mode > 63)) {
                      fprintf(stderr, "Error: mode must be in the range 0 to 63\n");
                      code = -1;
                   }
+                  mode |= more_modes;
                   break;
                case 'u':
                   if (strlen(argv[i]) == 2) {
@@ -3140,7 +3167,7 @@ char config_dialog() {
       wmove(dialog, 5, 2);
       wprintw(dialog, "4 = LF to CR on Input     %s", (on_or_off(mode & 8)));
       wmove(dialog, 6, 2);
-      wprintw(dialog, "5 = CR to LF on Output    %s", (on_or_off(mode & 16)));
+      wprintw(dialog, "5 = Auto CR on LF Output  %s", (on_or_off(mode & 16)));
       wmove(dialog, 7, 2);
       wprintw(dialog, "6 = CR or LF moves cursor %s", (on_or_off(mode & 32)));
       wmove(dialog, 9, 7);
@@ -3340,10 +3367,10 @@ void internal_interactive() {
      cbreak();
      noecho();
      if (mode & 16) {
-        nl();   // translate CR to LF on output to Propeller
+        nl();   // Auto CR on LF on output to Propeller
      }
      else {
-        nonl(); // no translation of CR to LF on output to Propeller
+        nonl(); // no Auto CR on LF on output to Propeller
      }
      refresh();
      nodelay(stdscr, TRUE);
@@ -3400,11 +3427,11 @@ void internal_interactive() {
               }
               else if (ch == 'Y') {
                 if (mode & 16) {
-                   nonl(); // turn off CR to LF translation temporarily
+                   nonl(); // turn Auto CR on LF off temporarily
                 }
                 ch = ymodem_dialog();
                 if (mode & 16) {
-                   nl();   // turn CR to LF translation back on
+                   nl();   // turn Auto CR on LF back on
                 }
                 touchwin(payload_term);
                 refresh();
@@ -3485,6 +3512,22 @@ void internal_interactive() {
                  case 127:
                  case 8:
                     SendByteWithDelay(term, 8); // send backspace for BS or DELETE
+                    break;
+                 case 10:
+                    if (mode & 8) {
+                       SendByteWithDelay(term, 13);
+                    }
+                    else {
+                       SendByteWithDelay(term, ch);
+                    }
+                    break;
+                 case 13:
+                    if (mode & 4) {
+                       SendByteWithDelay(term, 10);
+                    }
+                    else {
+                       SendByteWithDelay(term, ch);
+                    }
                     break;
                  default:
                     SendByteWithDelay(term, ch);
@@ -3752,6 +3795,9 @@ void internal_interactive() {
                  else if (ch == '6') {
                     esc = 11;
                  }
+                 else if (ch == '7') {
+                    esc = 12;
+                 }
                  else {
                     addch(ESC);
                     addch('[');
@@ -3813,6 +3859,21 @@ void internal_interactive() {
                     esc = 0;
                  }
               }
+              else if (esc == 12) {
+                 // already saw ESC [ ? 7
+                 if (ch == 'h') {
+                    // this means "wrap" - which is the ncurses default
+                    esc = 0;
+                 }
+                 else {
+                    addch(ESC);
+                    addch('[');
+                    addch('?');
+                    addch('7');
+                    addch(ch);
+                    esc = 0;
+                 }
+              }
               else {
                  if (ch >= 0) {
                     if (ch == ESC) {
@@ -3843,15 +3904,7 @@ void internal_interactive() {
                        if (((ch != 0x0d) || !(mode & 1)) 
                        &&  ((ch != 0x0a) || !(mode & 2))) {
                           rcvd = 1;
-                          if ((ch == 0x0d) && (mode & 4)) {
-                             addch(0x0a);
-                          }
-                          else if ((ch == 0x0a) && (mode & 8)) {
-                             addch(0x0d);
-                          }
-                          else {
-                             addch(ch);
-                          }
+                          addch(ch);
                        }
                     }
                  }

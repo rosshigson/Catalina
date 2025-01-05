@@ -1,10 +1,11 @@
 Notes on using Catalina under Windows 7 (& Vista)
 =================================================
 
-1. Even though Catalina is a 32 bit program, it expects to be installed on 
-   a 64 bit versions of Windows.  If you install it anywhere other than
-   "C:\Program Files (X86) Catalina") then you will have to set the LCCDIR 
-   environment variable accordingly. For example, on Windows 7 you might say:
+1. Even though Catalina can be built as a 32 bit program, it expects to be 
+   installed on a 64 bit versions of Windows.  If you install it anywhere 
+   other than "C:\Program Files (X86) Catalina") then you will have to set 
+   the LCCDIR environment variable accordingly. For example, on Windows 7 
+   you might say:
 
       set LCCDIR=C:\Program Files\Catalina
 
@@ -16,12 +17,11 @@ Notes on using Catalina under Windows 7 (& Vista)
 
    It is now recommended that you copy the catalyst, utilities and demos 
    subdirectories to your own home directory. The build_catalyst.bat and
-   build_utilities.bat batch files (which are used when using Code::Blocks, 
-   tom implement the "Build XMM utilities" and "Build Catalyst" tools) will 
-   first look for the utilities and catalyst directories in your home 
-   directory, and build there if they are found. If they are not found, the 
-   versions in the installation directories will be built instead (and you 
-   will require write access to these directories).
+   build_utilities.bat batch files will first look for the utilities and 
+   catalyst directories in your home directory, and build there if they 
+   are found. If they are not found, the versions in the installation 
+   directories will be built instead (and you will require write access 
+   to these directories).
 
 3. While neither Catalina nor Catalyst itself require MinGW to be installed
    just to build C programs, building some of the Catalyst demo programs (e.g. 

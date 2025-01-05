@@ -37,7 +37,7 @@ or
 or
    build_all P2_EVAL
 or
-   build_all P2_EDGE SIMPLE VT100 CR_ON_LF
+   build_all P2_EDGE SIMPLE VT100
 
 Do not specify a memory model on the command-line. The build_all batch script
 will build different memory models (and note that some versions of some of 

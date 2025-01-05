@@ -1,11 +1,11 @@
 Notes on using Catalina under Windows 10 & later
 =================================================
 
-1. Even though Catalina is a 32 bit program, it expects to be installed on 
-   a 64 bit versions of Windows.  If you install it anywhere other than
-   "C:\Program Files (X86) Catalina") then you will have to set the LCCDIR 
-   environment variable accordingly. For example, on a 32 bit version of
-   Windows you might say:
+1. Even though Catalina can be built as a 32 bit program, it expects to be 
+   installed on a 64 bit versions of Windows.  If you install it anywhere 
+   other than "C:\Program Files (X86) Catalina") then you will have to set 
+   the LCCDIR environment variable accordingly. For example, on a 32 bit 
+   version of Windows you might say:
 
       set LCCDIR=C:\Program Files\Catalina
 
@@ -58,3 +58,5 @@ Notes on using Catalina under Windows 10 & later
        shortcut that opens the Catalina Command Line window (you will need 
        to restart any open Catalina Command Line windows).
 
+Also, to be able to activate the payload menu (which is activated by pressing
+CTRL-A), the Windows "Enable Ctrl key shortcuts" option must be disabled.

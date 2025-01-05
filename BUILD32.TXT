@@ -1,6 +1,17 @@
 This document contains detailed instructions on how to build Catalina from 
 source on both Windows and Linux. 
 
+===============================================================================
+
+                               IMPORTANT NOTE 
+                               ==============
+
+These instructions will build Catalina as a 32 bit application, but doing so
+is now deprecated. See the document BUILD.TXT for instructions on building 
+Catalina as a 64 bit application.
+
+===============================================================================
+
 The Catalina Windows binaries should execute correctly on Windows 8 or later. 
 However, rebuilding Catalina from source under Windows requires Windows 
 version 10 or later.

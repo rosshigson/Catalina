@@ -48,7 +48,12 @@ These variants will be built by the 'build_all' script for the P2_SLAVE
 propeller (they are only built for execution on 'slave' propellers), or 
 they can be built individually using commands such as:
 
+On Windows:
    set CATALINA_DEFINE=P2_SLAVE
+   catapult sluafix.c
+
+On Pi OS or Linux:
+   export CATALINA_DEFINE=P2_SLAVE
    catapult sluafix.c
 
 As an example of the use of these variants, when the client/server version of 

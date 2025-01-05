@@ -1,15 +1,16 @@
 Catalina P2 Pre-built Demos
 ===========================
 
-The best way to demonstrate Catalina on the P2 is to use the Catalyst 
-program. Catalyst is like an SD-card based operating system for the P2. A 
-version of Catalyst and some accompanying example programs already compiled
-for the P2 EVAL or P2 EDGE board and using a serial HMI is provided in the 
-file "P2_DEMO.ZIP", which will be in the main Catalina directory if Catalina
-was installed using a combined binary and source distribution (e.g. for
-Windows Catalina_7.8_Setup.exe or for Linux Catalina_7.8_Linux.tar.gz) or 
-available as a binary asset associated with this release if you cloned or 
-downloaded the sources from GitHub. 
+The best way to demonstrate Catalina on the P2 is to use Catalyst.
+ 
+Catalyst is like an SD-card based operating system for the P1 or P2. 
+A version of Catalyst and some accompanying example programs already 
+compiled for either the P2 EVAL or P2 EDGE board and using a serial HMI 
+is provided in the file P2_DEMO.ZIP, which will be in the main Catalina 
+directory if Catalina was installed using a combined binary and source 
+distribution (e.g. for Windows Catalina_8.3_Setup.exe or for Linux 
+Catalina_8.3_Linux.tar.gz) or available as a binary asset associated with
+this release if you cloned or downloaded the sources from GitHub. 
 
 The P2_DEMO.ZIP file should also work on other boards with a similar 
 configuration (primarily, it needs an SD Card on the same pins). Just unzip 
@@ -19,15 +20,15 @@ Catalyst and all its programs are compiled to use 230400 baud and a VT100
 compatible terminal emulator.
 
 For instance, you can use the Catalina payload program as your terminal 
-emulator - you will need to specify the baud rate and port to use. For
-instance, if your P2 EVAL board is connected to COM4, you might use the
+emulator - you will need to specify the terminal emulator and port to use. 
+For instance, if your P2 EVAL board is connected to COM4, you might use the
 following payload command to use the internal terminal emulator:
 
-   payload -p4 -b230400 -i -q2 
+   payload -p4 -o2 -i
 
-Or you can have payload use an external Catalina vt100 emulator:
+Or you can have payload use the external Comms vt100 emulator:
 
-   payload -p4 -b230400 -Ivt100
+   payload -p4 -o2 -Ivt100
 
 Here is what the parameters mean:
 
@@ -37,72 +38,61 @@ Here is what the parameters mean:
             using the interactive terminal, you need to explicity specify the 
             port and baud rate.
    
-   -b230400 means to use 230400 baud.
+   -o2      means to detect only a Propeller 2, and ignore any Propeller 1 
+            connected (-o1 means the opposite). This also sets the baud
+            rate to 230400 (for a Propeller 2) or 115200 (for a Propeller 1)
+            and look for ".bin" files rather than ".binary". Otherwise all
+            these things would have to be specified separately.
 
    -i       means to use the internal interactive terminal emulator, which 
             is a simple VT100 emulator
 
-   -q2      specifies the line termination handling (in this case, to ignore
-            LFs)
+   -Ivt100  means to use an external terminal emulator, set to emulate
+            a vt100. On Windows this will be Catalina's Comms terminal 
+            emulator. On Linux it will be minicom. To change or configure
+            what this means, see the file bin\vt100.bat (Windows) or 
+            bin/vt100 (Linux).
 
-   -Ivt100  means to use the external terminal emulator, which is a 
-            complete VTxxx emulator, in this case emulating a vt100
+The command used to compile the version of Catalyst in P2_DEMO.ZIP (executed 
+in the "demos/catalyst" subdirectory) was:
 
-You can also use the Parallax Serial Terminal as your terminal emulator. 
+   build_all P2_EDGE SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200
+
+This should work with both payload's simple internal terminal emulator and an 
+external VT100 terminal emulator.
+
+Note that if you want to use the Parallax Serial Terminal as your terminal 
+emulator, you will need to recompile the demo programs to disable the 
+'linenoise' library and also add an automatic CR on LF. You can do this by 
+defining the Catalina symbols NO_LINENOISE and CR_ON_LF. For example, use 
+the following command in the "demos/catalyst" subdirectory:
+
+   build_all P2_EDGE SIMPLE NO_LINENOISE CR_ON_LF OPTIMIZE MHZ_200
+
+When using the Parallax Serial Terminal you will need to manually set the 
+baud rate (to 230400), the port, and also tell it to ignore LF characters 
+(not CRs!).
+
 Catalyst itself and most of the example programs will work correctly, except 
 for the vi text editor (which requires a VT100 compatible terminal emulator).
 
-When using the Parallax Serial Terminal you will need to set the baud rate 
-(e.g. -b230400), the port, and also to ignore line feed characters (not CRs!).
-
-Line termination handling can be a complex issue when you are using C programs
-that originated from multiple sources, and terminal emulators that handle line
-terminations in different ways - this is exacerbated when some of the programs
-were originally DOS programs and some of them were UNIX programs.  As a 
-compromise, all Catalyst programs can be compiled to send both a CR and an LF
-as line terminators, allowing you to select which one to process or ignore 
-depending on which works best in your particular terminal emulator. The
-command used to compile the version of Catalyst in P2_DEMO.ZIP (executed in 
-the "demos/catalyst" subdirectory) was:
-
-   build_all P2_EVAL SIMPLE VT100 CR_ON_LF USE_COLOR OPTIMIZE MHZ_200
-
-If you use payload as your terminal emulator, remember to add the -q2 option
-to ignore the LFs that have been added to the output. If you use putty then
-ensure the "Implict CR in every LF" and "Implicit LF in every CR" options
-are not checked. The Catalina comms terminal emulatore (started via the
-vt100 batch script) should work fine as it is. For the Parallax Serial 
-Terminal, set the options to ignore LFs (and note that the Parallax Serial 
-Terminal is not VT100 compatible, so programs like vi that need VT100 
-emulation will not display correctly).
-
-There is also a version (provided in the file "P2_EVAL_VGA.ZIP") precompiled
-to use the VGA HMI option - it expects a P2_EVAL with A/V (VGA) and Host 
-Serial (USB) accessory boards. The VGA board must be plugged into the header 
-with base pin 0, and the USB board must be plugged into the header with base
-pin 8.
-
-The command used to compile the P2_EVAL_VGA version of Catalyst (executed in
-the "demos/catalyst" subdirectory) was:
-
-   build_all P2_EVAL VGA COLOR_4 OPTIMIZE MHZ_200
-
-The command used to compile the P2_EDGE_VGA version of Catalyst (executed in
-the "demos/catalyst" subdirectory) was:
-
-   build_all P2_EDGE VGA COLOR_4 OPTIMIZE MHZ_200
+There are also version (in files P2_EVAL_VGA.ZIP and P2_EDGE_VGA.ZIP) 
+precompiled to use the VGA HMI option - they expect a P2_EVAL or P2_EDGE 
+with A/V (VGA) and Host Serial (USB) accessory boards. The VGA board must 
+be plugged into the header with base pin 0, and the USB board must be 
+plugged into the header with base pin 8.
 
 Finally, for those who have a P2_EDGE with 32Mb of PSRAM or a P2_EVAL with 
-the HyperRAM/HyperFlash add-on board, there are prebuilt versions of Catalyst 
-containing various demo programs compiled to run in XMM RAM. They are compiled
-to use a VT100 serial HMI, or a VGA HMI, with the VGA on base pin 0 and USB 
-on base pin 8.
+the HyperRAM/HyperFlash add-on board, the prebuilt versions of Catalyst for
+the P2_EDGE and P2_EVAL boards (i.e. P2_EDGE.ZIP, P2_EDGE_VGA.ZIP, P2_EVAL.ZIP
+and P2_EVAL_VGA.ZIP, but not P2_DEMO.ZIP) also contain various demo programs 
+compiled to run in XMM RAM. 
 
-The XMM programs are:
+These XMM programs are:
 
   xs_lua.bin     \
   xs_luac.bin    | the Lua interpreter, compiler and execution engine,
-  xs_luax.bin    / compiled to run in XMM SHORT mode.
+  xs_luax.bin    / compiled to run in XMM SMALL mode.
 
   xl_lua.bin     \
   xl_luac.bin    | the Lua interpreter, compiler and execution engine,
@@ -117,14 +107,14 @@ The XMM programs are:
 The XMM SMALL versions were compiled in the Catalyst lua and vi sub-folders, 
 using the command:
 
-   build_all P2_EDGE SIMPLE VT100 CR_ON_LF USE_COLOR OPTIMIZE MHZ_200 SMALL
+   build_all P2_EDGE SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 SMALL
 or
    build_all P2_EDGE VGA COLOR_4 OPTIMIZE MHZ_200 SMALL
 
 The XMM LARGE versions were compiled in the Catalyst lua and vi sub-folders,
 using the command:
 
-   build_all P2_EDGE SIMPLE VT100 CR_ON_LF USE_COLOR OPTIMIZE MHZ_200 LARGE
+   build_all P2_EDGE SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 LARGE
 or
    build_all P2_EDGE VGA COLOR_4 OPTIMIZE MHZ_200 LARGE
 
@@ -146,6 +136,7 @@ The executable files in the bin directory will include:
    bcc.bin      - Catalina binder and library manager.
    spp.bin      - PASM preprocessor.
    p2asm.bin    - PASM assembler.
+   spinc.bin    - the SpinC utility.
    pstrip.bin   - a utility to reduce the size of PASM files.
    catalina.lua - a Lua version of the PC 'catalina' command, which
                   manages the compilation process.
@@ -162,20 +153,20 @@ Here is a summary of all the current pre-built versions of Catalyst:
 
    P2_DEMO.ZIP     - compiled to suit either a P2_EVAL or a P2_EDGE (with or
                      without PSRAM) using a serial HMI on pins 62 & 63 at 
-                     230400 baud. Built to use a VT100 emulator, or payload 
-                     with the -i and -q2 options. 
+                     230400 baud. Can use an external VT100 emulator, or 
+                     payload's internal terminal emulator. 
                      Contains no XMM programs.
 
    P2_EVAL.ZIP     - compiled to suit a P2_EVAL using a serial HMI on pins 
-                     62 & 63 at 230400 baud. Built to use a VT100 emulator, 
-                     or payload with the -i and -q2 options.
+                     62 & 63 at 230400 baud. Can use an external VT100 
+                     emulator, or payload's internal terminal emulator.
                      Contains XMM programs compiled for a Parallax HyperRAM/
                      HyperFlash add-on board on base pin 32 
 
    P2_EDGE.ZIP     - compiled to suit a P2_EDGE with 32 Mb of PSRAM using
-                     a serial HMI on pins 62 & 63 at 230400 baud. Built to 
-                     use a VT100 emulator, or payload with the -i and -q2 
-                     options. 
+                     a serial HMI on pins 62 & 63 at 230400 baud. Can use 
+                     an external VT100 emulator, or payload's internal 
+                     terminal emulator. 
                      Contains XMM programs compiled to use the on-board PSRAM.
 
 
@@ -199,7 +190,7 @@ here are the highlights ...
 First, you should start payload in interactive mode. Then. when you reboot 
 your P2 EVAL board, you should see a prompt like:
 
-   Catalyst 7.8
+   Catalyst 8.3
    >
 
 Type the command "ls"and press return. You should see something like:

@@ -18,8 +18,8 @@ fi
 
 echo "building P2_DEMO.ZIP ..."
 
-./build_all P2_EVAL SIMPLE VT100 CR_ON_LF USE_COLOR OPTIMIZE MHZ_200
-cat catalina/CATALYST.ENV catalina/P2_EVAL.ENV > image/CATALYST.ENV
+./build_all P2_EDGE SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200
+cat catalina/CATALYST.ENV catalina/P2_EDGE.ENV > image/CATALYST.ENV
 
 rm -f P2_DEMO.ZIP
 cd image
@@ -36,27 +36,27 @@ cd ..
 
 echo "building P2_EVAL.ZIP ..."
 
-./build_all P2_EVAL SIMPLE VT100 CR_ON_LF USE_COLOR OPTIMIZE MHZ_200 RTC
+./build_all P2_EVAL SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 RTC
 
 cd catalina
-./build_all P2_EVAL SIMPLE VT100 CR_ON_LF USE_COLOR OPTIMIZE MHZ_200
+./build_all P2_EVAL SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200
 cat CATALYST.ENV P2_EVAL.ENV > ../image/CATALYST.ENV
 cd ..
 
 cd xvi-2.51
-./build_all P2_EVAL SIMPLE VT100 CR_ON_LF USE_COLOR OPTIMIZE MHZ_200 LARGE
+./build_all P2_EVAL SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 LARGE
 cp src/xvi.bin ../image/xl_vi.bin
 cd ..
 
 cd lua-5.4.4
-./build_all P2_EVAL SIMPLE VT100 CR_ON_LF USE_COLOR OPTIMIZE MHZ_200 SMALL
+./build_all P2_EVAL SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 SMALL
 cp src/lua.bin ../image/xs_lua.bin
 cp src/luac.bin ../image/xs_luac.bin
 cp src/luax.bin ../image/xs_luax.bin
 cd ..
 
 cd lua-5.4.4
-./build_all P2_EVAL SIMPLE VT100 CR_ON_LF USE_COLOR OPTIMIZE MHZ_200 LARGE
+./build_all P2_EVAL SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 LARGE
 cp src/lua.bin ../image/xl_lua.bin
 cp src/luac.bin ../image/xl_luac.bin
 cp src/luax.bin ../image/xl_luax.bin
@@ -116,27 +116,27 @@ cd ..
 
 echo "building P2_EDGE.ZIP ..."
 
-./build_all P2_EDGE SIMPLE VT100 CR_ON_LF USE_COLOR OPTIMIZE MHZ_200 RTC
+./build_all P2_EDGE SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 RTC
 
 cd catalina
-./build_all P2_EDGE SIMPLE VT100 CR_ON_LF USE_COLOR OPTIMIZE MHZ_200
+./build_all P2_EDGE SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200
 cat CATALYST.ENV P2_EDGE.ENV >../image/CATALYST.ENV
 cd ..
 
 cd xvi-2.51
-./build_all P2_EDGE SIMPLE VT100 CR_ON_LF USE_COLOR OPTIMIZE MHZ_200 LARGE
+./build_all P2_EDGE SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 LARGE
 cp src/xvi.bin ../image/xl_vi.bin
 cd ..
 
 cd lua-5.4.4
-./build_all P2_EDGE SIMPLE VT100 CR_ON_LF USE_COLOR OPTIMIZE MHZ_200 SMALL
+./build_all P2_EDGE SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 SMALL
 cp src/lua.bin ../image/xs_lua.bin
 cp src/luac.bin ../image/xs_luac.bin
 cp src/luax.bin ../image/xs_luax.bin
 cd ..
 
 cd lua-5.4.4
-./build_all P2_EDGE SIMPLE VT100 CR_ON_LF USE_COLOR OPTIMIZE MHZ_200 LARGE
+./build_all P2_EDGE SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 LARGE
 cp src/lua.bin ../image/xl_lua.bin
 cp src/luac.bin ../image/xl_luac.bin
 cp src/luax.bin ../image/xl_luax.bin

@@ -121,6 +121,20 @@ ifneq ($(CLOCK), RTC)
   CLOCK = CLOCK
 endif
 
+# see if NO_LINENOISE is in CATALINA_DEFINE
+ifeq (NO_LINENOISE, $(findstring NO_LINENOISE, $(CATALINA_DEFINE)))
+	NO_LINENOISE = YES
+endif
+
+# see if NO_LINENOISE is in CATALINA_OPTIONS
+ifeq (NO_LINENOISE, $(findstring NO_LINENOISE, $(CATALINA_OPTIONS)))
+	NO_LINENOISE = YES
+endif
+
+ifneq ($(NO_LINENOISE), YES)
+	MYCFLAGS_LINENOISE = -C ENABLE_LINENOISE
+endif
+
 CFLAGS += -C $(MODEL) -C $(CLOCK) -C NO_MOUSE -W-w
 
 ifeq ($(P2), TRUE)
@@ -159,7 +173,7 @@ endif
 lua : lua$B
 
 lua$B: lua.c linit.c linenoise.c
-	$(CC) -o $@ $(CFLAGS) $(LIBS) $^ -M1M  -C ENABLE_LINENOISE
+	$(CC) -o $@ $(CFLAGS) $(LIBS) $^ -M1M  $(MYCFLAGS_LINENOISE)
 
 # add this to the 'all' target
 all :: lua 
@@ -170,7 +184,7 @@ all :: lua
 luac : luac$B
 
 luac$B: luac.c linit.c linenoise.c
-	$(CC) -o $@ $(CFLAGS) $(LIBS) $^ -M1M  -C ENABLE_LINENOISE
+	$(CC) -o $@ $(CFLAGS) $(LIBS) $^ -M1M  $(MYCFLAGS_LINENOISE)
 
 # add this to the 'all' target
 all :: luac

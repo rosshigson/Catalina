@@ -328,6 +328,11 @@
  *                 used will be the LOWER of HEAP_TOP and FREE_MEM.
  *
  * version 8.1   - just update version number.
+ *
+ * version 8.2   - just update version number.
+ *
+ * version 8.3   - just update version number.
+ *
  */
 
 /*--------------------------------------------------------------------------
@@ -363,7 +368,7 @@
 #include <sys/stat.h>
 #endif
 
-#define VERSION            "8.1"
+#define VERSION            "8.3"
 
 #define MAX_FILES          500
 #define MAX_LIBS           500

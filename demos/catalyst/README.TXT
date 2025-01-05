@@ -26,7 +26,7 @@ execution of the script, or Catalyst builds ok but fails to execute correctly):
 
    build_all TRIBLADEPROP CPU_2 PC VT100   <-- to use CPU 2 on a TriBladeProp
 
-   build_all C3 FLASH CACHED_1K TTY256 VT100 CR_ON_LF OPTIMIZE 
+   build_all C3 FLASH CACHED_1K TTY256 VT100 OPTIMIZE 
                                            <-- to use FLASH on the C3, 
                                                but see the notes below
 
@@ -36,7 +36,7 @@ execution of the script, or Catalyst builds ok but fails to execute correctly):
 
    build_all P2_EVAL LORES_VGA COLOR_4 MHZ_200  <-- to use VGA & USB keyboard
 
-   build_all P2_EDGE SIMPLE VT100 CR_ON_LF OPTIMIZE MHZ_200  
+   build_all P2_EDGE SIMPLE VT100 OPTIMIZE MHZ_200  
                                            <-- to use VT100 terminal emulator
 
 NOTES:

@@ -24,9 +24,9 @@ compiled on the Propeller - see the 'psram.c' demo program.
 To build the self-hosted version of Catalina, use the build_all script. For 
 example:
 
-   build_all P2_EDGE SIMPLE VT100 CR_ON_LF USE_COLOR OPTIMIZE MHZ_200 
+   build_all P2_EDGE SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 
 or
-   build_all P2_EVAL SIMPLE VT100 CR_ON_LF USE_COLOR OPTIMIZE MHZ_200 
+   build_all P2_EVAL SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 
 
 NOTE: Since it is always required, the LARGE option is added by the build_all
       script automatically. The script also adds the CACHED_64K option. To 
@@ -66,6 +66,7 @@ executable files copied to the bin directory will include:
    rcc.bin      - C compiler.
    bcc.bin      - Catalina binder and library manager.
    spp.bin      - PASM preprocessor.
+   spinc.bin    - Catalina utility to generate a C file from a binary file.
    p2asm.bin    - PASM assembler.
    pstrip.bin   - a utility to reduce the size of PASM files.
    catalina.lua - a Lua version of the PC 'catalina' command, which
@@ -146,10 +147,9 @@ the vi text editor, and then executed in one command using "exec" - i.e:
 
    exec build
 
-The -C CR_ON_LF option can be added when using a VT100 terminal emulator, or 
-you can instead adjust the settings of your emulator to implicitly execute a 
-CR every time it receives an LF. Payload, Comms, PuTTY, and Tera Term all 
-have such a configuration option.
+When using a VT100 terminal other than payload or Comms (e.g. PuTTY, minicom,
+Tera Term etc) you may need to adjust the program configuration options to 
+automatically add a CR when it receives an LF.
 
 NOTE: Catalyst has a limit of 23 arguments that can be specified in a single 
       command, including in a command script. If this number is exceeded when 

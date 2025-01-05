@@ -46,7 +46,7 @@ to that directory. To do so, open a Catalina Command Line window, and
 then use commands like:
 
    xcopy /e /i "%LCCDIR%\demos" "%HOMEPATH%\demos\"
-   cd "%HOMEPATH%/demos"
+   cd "%HOMEPATH%\demos"
 
 If you are using Linux and installed Catalina to the recommended location 
 - i.e. /opt/catalina - then open a Terminal window and use commands like:
@@ -65,11 +65,13 @@ You should see a friendly "Hello, World" message!
 
 The main command-line option you need to know about is '-p2', which specifies 
 to Catalina that you are building a program for the Propeller 2, not the 
-Propeller 1 (which is the default). To specify the P2 EVAL board, you would 
-normally define the Catalina symbol P2_EVAL, but as this is currently the 
-default, it is not strictly necessary. However, there are a few other 
-Catalina symbols you need to know about, which are used to select the 
-memory model to use:
+Propeller 1 (which is the default). The default Propeller 2 platform is
+called P2_CUSTOM. To specify the P2 EDGE board, you would 
+normally define the Catalina symbol P2_EDGE, but P2_CUSTOM is currently the 
+same as P2_EDGE, so it is not strictly necessary unless you modify it. 
+
+However, there are a few other Catalina symbols you will need to know about, 
+which are used to select the memory model to use:
 
    NATIVE  - this model is new for the P2. This is the default model, but
              can be explicitly specified by using the option -x11, or 
@@ -105,12 +107,12 @@ memory model to use:
              can be specified by using the option -x5 or -C LARGE on 
              the command line.
  
-So, for instance, to compile the othello.c program in the "demos/games" 
+So, for instance, to compile the othello.c program in the "demos\games" 
 directory for the P2_EVAL in COMPACT mode, you might use a command like:
 
 On Windows:
 
-   cd "%HOMEPATH%/demos/games"
+   cd "%HOMEPATH%\demos\games"
    catalina othello.c -p2 -lc -C P2_EVAL -C COMPACT
 
 On Linux:
@@ -145,7 +147,8 @@ P2_EVAL board:
    flash_payload program.bin [ other payload options ]
 
 Note that the program name must be the first parameter, and that you must have
-the microswitches on the P2_EVAL PCB set correctly to program the FLASH:
+the microswitches on the P2_EVAL or P2_EDGE PCB set correctly to program the 
+FLASH:
 
    FLASH set to ON
    P59^  set to OFF 
@@ -159,8 +162,8 @@ then execute the program from FLASH with a command like:
 See the file DEMOS_P2.TXT for information on some pre-built binary demos
 available for the Propeller 2.
 
-So, what's NOT yet working on the P2? Well, the major items are most of the P1
-plugins, most of which don't yet exist for the P2.
+So, what's NOT yet working on the P2? Well, the major items are the full range
+of P1 plugins, many of which don't yet exist for the P2.
 
 Here is a more complete list ..
 

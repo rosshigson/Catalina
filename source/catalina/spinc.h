@@ -71,6 +71,12 @@
  * Version 7.9  - just update version number.
  *
  * version 8.1  - just update version number.
+ *
+ * version 8.2  - just update version number.
+ *
+ * version 8.3  - add '-g' option to generate file (required to use SpinC
+ *                in Catalyst).
+ *
  * ----------------------------------------------------------------------------
  * @file spinc.h
  * Defines data structures and API for spinc converter
@@ -99,7 +105,7 @@
 
 #define P2_PC_OFFSET_XMM    0x1038 // not currently used
 
-#define VERSION       "8.1"
+#define VERSION       "8.3"
 
 #define MAX_FILES     10
 #define MAX_LINELEN   1000

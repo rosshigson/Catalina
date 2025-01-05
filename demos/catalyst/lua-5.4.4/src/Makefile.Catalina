@@ -11,6 +11,7 @@ MODEL=
 RAMLIB=
 MYLIBS=
 MYCFLAGS=
+MYCFLAGS_LINENOISE=
 MYLDFLAGS=
 
 # P2 if there is a P2 in CATALINA_DEFINES
@@ -119,6 +120,21 @@ else
 	MYLIBS    = -lmc -llinenoise
 endif
 endif
+
+# see if NO_LINENOISE is in CATALINA_DEFINE
+ifeq (NO_LINENOISE, $(findstring NO_LINENOISE, $(CATALINA_DEFINE)))
+	NO_LINENOISE = YES
+endif
+
+# see if NO_LINENOISE is in CATALINA_OPTIONS
+ifeq (NO_LINENOISE, $(findstring NO_LINENOISE, $(CATALINA_OPTIONS)))
+	NO_LINENOISE = YES
+endif
+
+ifneq ($(NO_LINENOISE), YES)
+	MYCFLAGS_LINENOISE = -C ENABLE_LINENOISE
+endif
+
 
 # set up options specific to Windows or Linux
 ifeq ($(OS), Windows_NT)
@@ -247,7 +263,7 @@ $(LUAX_A): $(BASEX_O)
 	$(MV) catalina.idx $(LUAX_A)
 
 $(LUA_T): $(LUA_O) $(LUA_A)
-	$(CC) -o $@ $(MYLDFLAGS) $(LUA_O) $(LIBS) -M1M -C ENABLE_LINENOISE
+	$(CC) -o $@ $(MYLDFLAGS) $(LUA_O) $(LIBS) -M1M $(CFLAGS_LINENOISE)
 
 $(LUAC_T): $(LUAC_O) $(LUA_A)
 	$(CC) -o $@ $(MYLDFLAGS) $(LUAC_O) $(LIBS) -M1M
@@ -286,6 +302,7 @@ echo:
 	@echo "MYCFLAGS = $(MYCFLAGS)"
 	@echo "MYLDFLAGS = $(MYLDFLAGS)"
 	@echo "MYLIBS = $(MYLIBS)"
+	@echo "MYCFLAGS_LINENOISE = $(MYCFLAGS_LINENOISE)"
 
 # Convenience targets for popular platforms.
 ALL= all
@@ -325,7 +342,7 @@ minit.obj: linit.c lprefix.h lua.h luaconf.h lualib.h lauxlib.h
 
 #version of linit.obj with linenoise enabled
 ninit.obj: linit.c lprefix.h lua.h luaconf.h lualib.h lauxlib.h
-	$(CC) $(CFLAGS) -C ENABLE_LINENOISE -c linit.c -o $@
+	$(CC) $(CFLAGS) $(MYCFLAGS_LINENOISE) -c linit.c -o $@
 
 # Compiler modules may use special flags.
 llex.obj:

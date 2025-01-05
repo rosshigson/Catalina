@@ -112,6 +112,10 @@
 --                 (it uses the same mechanism as is used by "call.lua", but 
 --                 it must be internal to the script).
 --
+-- version 8.2   - just update version number.
+--
+-- version 8.3   - just update version number.
+--
 
 require "os"
 require "io"
@@ -120,7 +124,7 @@ require "string"
 require "propeller"
 
 -- configuration parameters and default values
-CATALINA_VERSION = "8.1"
+CATALINA_VERSION = "8.3"
 LCCDIR           = "/";
 CATALINA_TARGET  = LCCDIR .. "target"
 CATALINA_LIBRARY = LCCDIR .. "lib"

@@ -1,4 +1,4 @@
-#pragma catapult primary server binary(sluafx) mode(NMM) options(-W-w -p2 -O5 -lluax xinit.c dsptch_l.c aloha.c -lcx -lmc -lserial2 -C SIMPLE -C VT100 -C CR_ON_LF -C MHZ_200 -C CLOCK)
+#pragma catapult primary server binary(sluafx) mode(NMM) options(-W-w -p2 -O5 -lluax xinit.c dsptch_l.c aloha.c -lcx -lmc -lserial2 -C SIMPLE -C VT100 -C MHZ_200 -C CLOCK)
 /******************************************************************************
  *        A general-purpose Lua Server (no client) for remote services.       *
  *                                                                            *
@@ -15,7 +15,7 @@
  *                                                                            *
  * This program reads Lua programs from the files specified on the command    *
  * line. If no files are specified, it defaults to loading from the files     *
- * 'server.lux', which must be a compiled Lua binary file. For example:      *
+ * 'server.lux', which must be a compiled Lua binary file. For example:       *
  *                                                                            *
  *    sluafx server.lux                                                       *
  *                                                                            *

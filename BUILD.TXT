@@ -478,7 +478,7 @@ depending on the speed of the Pi and the SD card:
 Ensure the Propeller is plugged into a USB port. The following commands 
 assume a Propeller 2 (for a Propeller 1, omit the -p2 option to "catalina"):
 
-   cd ..\demos
+   cd ../demos
    catalina -p2 -lci hello_world.c
    payload -i hello_world
 

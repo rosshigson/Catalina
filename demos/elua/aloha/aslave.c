@@ -1,4 +1,4 @@
-#pragma catapult primary binary(aslave.bin) options(-p2 -C P2_SLAVE -C SIMPLE -C VT100 -C CR_ON_LF -lci -lserial2 aloha.c)
+#pragma catapult primary binary(aslave.bin) options(-p2 -C P2_SLAVE -C SIMPLE -C VT100 -lci -lserial2 aloha.c)
 
 /*
  * Simple slave program to test the ALOHA client/server protocol. Run it

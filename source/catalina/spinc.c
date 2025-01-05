@@ -1,5 +1,5 @@
 /*
- * spinc - Convert SPIN objects to C arrays. Based on the original program 
+ * spinc - Convert SPIN or C objects to C arrays. Based on the original program 
  *         by Steve Densen (original copyright below). 
  *
  *         Modified by Ross Higson for use with Catalina.
@@ -35,17 +35,29 @@ static int    func_named = 0;
 static int    all_objects = 0;
 static int    gen_function = 0;
 static int    gen_overlay = 0;
+static int    gen_file = 0;
 static int    blob_layout = 0;
 static int    prop_ver = 1;
 static char   func_name[MAX_LINELEN+1];
 static char   array_name[MAX_LINELEN+1];
 static char   overlay_name[MAX_LINELEN+1];
+static char   gen_name[MAX_LINELEN+1];
 static int    stack_size = DEFAULT_STACK_SIZE;
 
 static int    file_count = 0;                  
 static char * file_name[MAX_FILES];
 static char * first_file_name;
 
+static FILE *gf;
+
+#ifdef __CATALINA__
+// strdup replacment (strdup is not ANSI!)
+static char *strdup(const char *s) {
+    char *p = malloc(strlen(s) + 1);
+    if(p) { strcpy(p, s); }
+    return p;
+}
+#endif
 
 // safecpy will never write more than size characters, 
 // and is guaranteed to null terminate its result, so
@@ -102,7 +114,7 @@ void pathcat(char *dst, const char *src, const char *sfx, size_t max) {
 void help(char *my_name) {
    int i;
 
-   fprintf(stderr, "Convert Compiled Spin Programs to C arrays.\n");
+   fprintf(stderr, "Convert Compiled Spin or C Programs to C arrays.\n");
    fprintf(stderr, "\nusage: %s [options] binary_file(s)\n\n", my_name);
    fprintf(stderr, "options:  -? or -h  print this helpful message and exit\n");
    fprintf(stderr, "          -a        include all SPIN objects (default is first only)\n");
@@ -111,6 +123,7 @@ void help(char *my_name) {
    fprintf(stderr, "          -c        generate callable C function that loads from memory\n");
    fprintf(stderr, "          -d        diagnostic mode\n");
    fprintf(stderr, "          -f func   use 'func' for the execution function\n");
+   fprintf(stderr, "          -g file   generate a file (default is to output to stdout)\n");
    fprintf(stderr, "          -l        generate array of longs (default)\n");
    fprintf(stderr, "          -n name   use 'name' for arrays (default is binary file name)\n");
    fprintf(stderr, "          -o name   generate overlay file (into file name) instead of array\n");
@@ -238,7 +251,7 @@ int decode_arguments (int argc, char *argv[]) {
                   diagnose++;   /* increase diagnosis level */
                   verbose = 1;   /* diagnose implies verbose */
                   if (diagnose == 1) {
-                     fprintf(stderr, "Catalina Payload %s\n", VERSION); 
+                     fprintf(stderr, "SpinC %s\n", VERSION); 
                   }
                   fprintf(stderr, "diagnostic level %d\n", diagnose);
                   break;
@@ -265,6 +278,34 @@ int decode_arguments (int argc, char *argv[]) {
                   }
                   if (verbose) {
                      fprintf(stderr, "function name = %s\n", func_name);
+                  }
+                  break;
+
+               case 'g':
+                  gen_file = 1;
+                  if (verbose) {
+                     fprintf(stderr, "A file will be generated\n");
+                  }
+                  if (strlen(argv[i]) == 2) {
+                     if (argc > 0) {
+                        // use next arg
+                        safecpy(gen_name,"", MAX_LINELEN);
+                        pathcat(gen_name, argv[++i], NULL, MAX_LINELEN);
+                        argc--;
+                     }
+                     else {
+                        fprintf(stderr, "option -g requires an argument\n");
+                        code = -1;
+                        break;
+                     }
+                  }
+                  else {
+                     // use remainder of this arg
+                     safecpy(gen_name,"", MAX_LINELEN);
+                     pathcat(gen_name, &argv[i][2], NULL, MAX_LINELEN);
+                  }
+                  if (verbose) {
+                     fprintf(stderr, "generated name = %s\n", gen_name);
                   }
                   break;
 
@@ -533,25 +574,25 @@ static void print_p1_blob_defines(char* p, char* name, long int *hdrlen,  int *d
    }
    *datlen   = cp1->catalina_data - cp1->catalina_code;
    // additional defines for blobs
-   printf("#define %s_LAYOUT         %d\n\n", name, cp1->seglayout);
-   printf("#define %s_BLOB_SIZE      0x%x // bytes\n", name, *datlen);
-   printf("#define %s_STACK_SIZE     0x%x // bytes\n", name, stack_size);
-   printf("#define %s_PROGRAM_SIZE   0x%x // bytes\n", name, cp1->catalina_ends - cp1->catalina_code);
-   printf("#define %s_RUNTIME_SIZE   0x%x // bytes\n\n", name, cp1->catalina_ends - cp1->catalina_code + stack_size + GUARD_SIZE);
-   printf("#define %s_INIT_PC        0x%x\n", name, cp1->init_PC);
-   printf("#define %s_INIT_BZ        0x%x\n", name, cp1->init_BZ);
-   printf("#define %s_INIT_SP        0x%x\n\n", name, cp1->catalina_ends + stack_size);
-   printf("#define %s_CODE_ADDRESS   0x%x\n", name, cp1->catalina_code);
-   printf("#define %s_CNST_ADDRESS   0x%x\n", name, cp1->catalina_cnst);
-   printf("#define %s_INIT_ADDRESS   0x%x\n", name, cp1->catalina_init);
-   printf("#define %s_DATA_ADDRESS   0x%x\n\n", name, cp1->catalina_data);
+   fprintf(gf, "#define %s_LAYOUT         %d\n\n", name, cp1->seglayout);
+   fprintf(gf, "#define %s_BLOB_SIZE      0x%x // bytes\n", name, *datlen);
+   fprintf(gf, "#define %s_STACK_SIZE     0x%x // bytes\n", name, stack_size);
+   fprintf(gf, "#define %s_PROGRAM_SIZE   0x%x // bytes\n", name, cp1->catalina_ends - cp1->catalina_code);
+   fprintf(gf, "#define %s_RUNTIME_SIZE   0x%x // bytes\n\n", name, cp1->catalina_ends - cp1->catalina_code + stack_size + GUARD_SIZE);
+   fprintf(gf, "#define %s_INIT_PC        0x%x\n", name, cp1->init_PC);
+   fprintf(gf, "#define %s_INIT_BZ        0x%x\n", name, cp1->init_BZ);
+   fprintf(gf, "#define %s_INIT_SP        0x%x\n\n", name, cp1->catalina_ends + stack_size);
+   fprintf(gf, "#define %s_CODE_ADDRESS   0x%x\n", name, cp1->catalina_code);
+   fprintf(gf, "#define %s_CNST_ADDRESS   0x%x\n", name, cp1->catalina_cnst);
+   fprintf(gf, "#define %s_INIT_ADDRESS   0x%x\n", name, cp1->catalina_init);
+   fprintf(gf, "#define %s_DATA_ADDRESS   0x%x\n\n", name, cp1->catalina_data);
    if (gen_overlay) {
       // use the overlay name
-      printf("#define %s_FILE_NAME      \"%s\"\n\n", name, overlay_name);
+      fprintf(gf, "#define %s_FILE_NAME      \"%s\"\n\n", name, overlay_name);
    }
    else {
       // if we are not producing an overlay file, use the first file name
-      printf("#define %s_FILE_NAME      \"%s\"\n\n", name, first_file_name);
+      fprintf(gf, "#define %s_FILE_NAME      \"%s\"\n\n", name, first_file_name);
    }
 }
 
@@ -576,42 +617,42 @@ static void print_p2_blob_defines(char* p, char* name, int *datstart, int *datle
    }
    *datlen   = cp2->catalina_data - cp2->catalina_code;
    // additional defines for blobs
-   printf("#define %s_LAYOUT         %d\n\n", name, cp2->seglayout);
-   printf("#define %s_BLOB_SIZE      0x%x // bytes\n", name, *datlen);
-   printf("#define %s_STACK_SIZE     0x%x // bytes\n", name, stack_size);
-   printf("#define %s_PROGRAM_SIZE   0x%x // bytes\n", name, cp2->catalina_ends - cp2->catalina_code);
-   printf("#define %s_RUNTIME_SIZE   0x%x // bytes\n\n", name, cp2->catalina_ends - cp2->catalina_code + stack_size + GUARD_SIZE);
+   fprintf(gf, "#define %s_LAYOUT         %d\n\n", name, cp2->seglayout);
+   fprintf(gf, "#define %s_BLOB_SIZE      0x%x // bytes\n", name, *datlen);
+   fprintf(gf, "#define %s_STACK_SIZE     0x%x // bytes\n", name, stack_size);
+   fprintf(gf, "#define %s_PROGRAM_SIZE   0x%x // bytes\n", name, cp2->catalina_ends - cp2->catalina_code);
+   fprintf(gf, "#define %s_RUNTIME_SIZE   0x%x // bytes\n\n", name, cp2->catalina_ends - cp2->catalina_code + stack_size + GUARD_SIZE);
    if (blob_layout == CMM_LAYOUT) { 
-      printf("#define %s_INIT_PC        0x%x\n", name, *((unsigned int *)(p + P2_PC_OFFSET_CMM)));
+      fprintf(gf, "#define %s_INIT_PC        0x%x\n", name, *((unsigned int *)(p + P2_PC_OFFSET_CMM)));
    }
    else if (blob_layout == LMM_LAYOUT) { 
-      printf("#define %s_INIT_PC        0x%x\n", name, *((unsigned int *)(p + P2_PC_OFFSET_LMM)));
+      fprintf(gf, "#define %s_INIT_PC        0x%x\n", name, *((unsigned int *)(p + P2_PC_OFFSET_LMM)));
    }
    else if (blob_layout == NMM_LAYOUT) { 
-      printf("#define %s_INIT_PC        0x%x\n", name, *((unsigned int *)(p + P2_PC_OFFSET_NMM)));
+      fprintf(gf, "#define %s_INIT_PC        0x%x\n", name, *((unsigned int *)(p + P2_PC_OFFSET_NMM)));
    }
    else if (blob_layout == XMM_SMALL_LAYOUT) { 
-      printf("#define %s_INIT_PC        0x%x\n", name, *((unsigned int *)(p + P2_PC_OFFSET_XMM)));
+      fprintf(gf, "#define %s_INIT_PC        0x%x\n", name, *((unsigned int *)(p + P2_PC_OFFSET_XMM)));
    }
    else if (blob_layout == XMM_LARGE_LAYOUT) { 
-      printf("#define %s_INIT_PC        0x%x\n", name, *((unsigned int *)(p + P2_PC_OFFSET_XMM)));
+      fprintf(gf, "#define %s_INIT_PC        0x%x\n", name, *((unsigned int *)(p + P2_PC_OFFSET_XMM)));
    }
    else {
       fprintf(stderr, "\nError: Layout %d not supported\n", blob_layout);
       exit(1);
    }
-   printf("#define %s_INIT_SP        0x%x\n\n", name, cp2->catalina_ends + stack_size);
-   printf("#define %s_CODE_ADDRESS   0x%x\n", name, cp2->catalina_code);
-   printf("#define %s_CNST_ADDRESS   0x%x\n", name, cp2->catalina_cnst);
-   printf("#define %s_INIT_ADDRESS   0x%x\n", name, cp2->catalina_init);
-   printf("#define %s_DATA_ADDRESS   0x%x\n\n", name, cp2->catalina_data);
+   fprintf(gf, "#define %s_INIT_SP        0x%x\n\n", name, cp2->catalina_ends + stack_size);
+   fprintf(gf, "#define %s_CODE_ADDRESS   0x%x\n", name, cp2->catalina_code);
+   fprintf(gf, "#define %s_CNST_ADDRESS   0x%x\n", name, cp2->catalina_cnst);
+   fprintf(gf, "#define %s_INIT_ADDRESS   0x%x\n", name, cp2->catalina_init);
+   fprintf(gf, "#define %s_DATA_ADDRESS   0x%x\n\n", name, cp2->catalina_data);
    if (gen_overlay) {
       // use the overlay name
-      printf("#define %s_FILE_NAME      \"%s\"\n\n", name, overlay_name);
+      fprintf(gf, "#define %s_FILE_NAME      \"%s\"\n\n", name, overlay_name);
    }
    else {
       // if we are not producing an overlay file, use the first file name
-      printf("#define %s_FILE_NAME      \"%s\"\n\n", name, first_file_name);
+      fprintf(gf, "#define %s_FILE_NAME      \"%s\"\n\n", name, first_file_name);
    }
 }
 
@@ -662,25 +703,25 @@ static void print_long_array(char* p, char* name)
     }
     else {
        // then we need the array!
-       printf("unsigned long %s_array[] =\n{\n    ", name);
+       fprintf(gf, "unsigned long %s_array[] =\n{\n    ", name);
        for (ii = 0; ii < datlen; ii += 4) {
            if (ii && ((ii % 16) == 0)) {
               if (diagnose) {
                  if (prop_ver == 2) {
-                    printf("// 0x%04x",ii+datstart);
+                    fprintf(gf, "// 0x%04x",ii+datstart);
                  }
                  else {
-                    printf("// 0x%04x",ii+datstart-16);
+                    fprintf(gf, "// 0x%04x",ii+datstart-16);
                  }
               }
-              printf("\n    ");
+              fprintf(gf, "\n    ");
            }
-           printf("0x%08x", *(int*)(p+ii+datstart));
+           fprintf(gf, "0x%08x", *(int*)(p+ii+datstart));
            if (ii < datlen - 4) {
-              printf(", ");
+              fprintf(gf, ", ");
            }
        }
-       printf("\n};\n");
+       fprintf(gf, "\n};\n");
     }
 }
 
@@ -732,25 +773,25 @@ static void print_byte_array(char* p, char* name)
     }
     else {
        // then we need the array!
-       printf("unsigned char %s_array[] =\n{\n    ", name);
+       fprintf(gf, "unsigned char %s_array[] =\n{\n    ", name);
        for (ii = 0; ii < datlen; ii++) {
            if (ii && ((ii % 8) == 0)) {
               if (diagnose) {
                  if (prop_ver == 2) {
-                    printf("// 0x%04x",ii+datstart);
+                    fprintf(gf, "// 0x%04x",ii+datstart);
                  }
                  else {
-                    printf("// 0x%04x",ii+datstart-16);
+                    fprintf(gf, "// 0x%04x",ii+datstart-16);
                  }
               }
-              printf("\n    ");
+              fprintf(gf, "\n    ");
            }
-           printf("0x%02x", *(unsigned char*)(p+ii+datstart));
+           fprintf(gf, "0x%02x", *(unsigned char*)(p+ii+datstart));
            if (ii < datlen - 1) {
-              printf(", ");
+              fprintf(gf, ", ");
            }
        }
-       printf("\n};\n");
+       fprintf(gf, "\n};\n");
     }
 }
 
@@ -770,33 +811,33 @@ static void print_spin_defines(char* p, char* name)
 
     datstart = (int) (hdrlen+(op->objcnt+op->pubcnt)*4);
 
-    printf("\n");
+    fprintf(gf, "\n");
     if (prop_ver == 1) {
-       printf("#define %s_CLOCKFREQ  %d\n", name, sp->clkfreq);
-       printf("#define %s_CLOCKMODE  0x%02X\n", name, sp->clkmode);
+       fprintf(gf, "#define %s_CLOCKFREQ  %d\n", name, sp->clkfreq);
+       fprintf(gf, "#define %s_CLOCKMODE  0x%02X\n", name, sp->clkmode);
     }
     else if (prop_ver == 2) {
-       printf("#define %s_CLOCKFREQ  %u\n", name, *((unsigned int *)(p + P2_CLOCKFREQ_OFFSET)));
-       printf("#define %s_CLOCKMODE  0x%08X\n", name, *((unsigned int *)(p + P2_CLOCKMODE_OFFSET)));
+       fprintf(gf, "#define %s_CLOCKFREQ  %u\n", name, *((unsigned int *)(p + P2_CLOCKFREQ_OFFSET)));
+       fprintf(gf, "#define %s_CLOCKMODE  0x%08X\n", name, *((unsigned int *)(p + P2_CLOCKMODE_OFFSET)));
     }
-    printf("\n");
+    fprintf(gf, "\n");
 
     if (blob) {
-       printf("#define %s_ARRAY_TYPE 2 // array contains C blob\n", name);
+       fprintf(gf, "#define %s_ARRAY_TYPE 2 // array contains C blob\n", name);
     }
     else if (all_objects) {
-       printf("#define %s_ARRAY_TYPE 1 // array contains SPIN program\n", name);
-       printf("#define %s_PROG_SIZE  %ld // bytes\n", name, sp->varstart-hdrlen);
-       printf("#define %s_PROG_OFF   %ld // byte offset in array\n", name, sp->pubstart-hdrlen);
-       printf("#define %s_VAR_SIZE   %d // bytes\n", name, sp->stkstart-sp->varstart-8);
-       printf("#define %s_STACK_SIZE %d // bytes\n", name, stack_size);
-       printf("#define %s_STACK_OFF  %d // bytes\n", name, sp->stkbase-sp->stkstart);
+       fprintf(gf, "#define %s_ARRAY_TYPE 1 // array contains SPIN program\n", name);
+       fprintf(gf, "#define %s_PROG_SIZE  %ld // bytes\n", name, sp->varstart-hdrlen);
+       fprintf(gf, "#define %s_PROG_OFF   %ld // byte offset in array\n", name, sp->pubstart-hdrlen);
+       fprintf(gf, "#define %s_VAR_SIZE   %d // bytes\n", name, sp->stkstart-sp->varstart-8);
+       fprintf(gf, "#define %s_STACK_SIZE %d // bytes\n", name, stack_size);
+       fprintf(gf, "#define %s_STACK_OFF  %d // bytes\n", name, sp->stkbase-sp->stkstart);
     }
     else {
-       printf("#define %s_ARRAYTYPE 0 // array contains PASM program\n", name);
-       printf("#define %s_PROG_SIZE  %d // bytes\n", name, sp->pubstart-datstart);
+       fprintf(gf, "#define %s_ARRAYTYPE 0 // array contains PASM program\n", name);
+       fprintf(gf, "#define %s_PROG_SIZE  %d // bytes\n", name, sp->pubstart-datstart);
     }
-    printf("\n");
+    fprintf(gf, "\n");
 }
 
 
@@ -807,98 +848,98 @@ static void print_spin_defines(char* p, char* name)
 static void print_function(char* name)
 {
    if (blob) {
-      printf("\n");
+      fprintf(gf, "\n");
       if (gen_overlay) {
-         printf("// start the blob as a C program from an overlay\n");
-         printf("int start_%s(void* var_addr, int cog) {\n\n", name);
-         printf("   // zero the memory used for data and stack space\n");
-         printf("   memset((void *)%s_DATA_ADDRESS, 0, %s_RUNTIME_SIZE-%s_BLOB_SIZE);\n\n", name, name, name);
-         printf("   // load the blob to the correct location\n");
-         printf("#ifdef __CATALINA_FS_OVERLAY\n");
-         printf("   // use unmanaged file functions to load overlay\n");
-         printf("   _load_overlay_unmanaged(\"%s\", (void *)%s_CODE_ADDRESS, %s_BLOB_SIZE);\n\n", overlay_name, name, name);
-         printf("#else\n");
-         printf("   // use managed file functions to load overlay\n");
-         printf("   _load_overlay(\"%s\", (void *)%s_CODE_ADDRESS, %s_BLOB_SIZE);\n\n", overlay_name, name, name);
-         printf("#endif\n");
+         fprintf(gf, "// start the blob as a C program from an overlay\n");
+         fprintf(gf, "int start_%s(void* var_addr, int cog) {\n\n", name);
+         fprintf(gf, "   // zero the memory used for data and stack space\n");
+         fprintf(gf, "   memset((void *)%s_DATA_ADDRESS, 0, %s_RUNTIME_SIZE-%s_BLOB_SIZE);\n\n", name, name, name);
+         fprintf(gf, "   // load the blob to the correct location\n");
+         fprintf(gf, "#ifdef __CATALINA_FS_OVERLAY\n");
+         fprintf(gf, "   // use unmanaged file functions to load overlay\n");
+         fprintf(gf, "   _load_overlay_unmanaged(\"%s\", (void *)%s_CODE_ADDRESS, %s_BLOB_SIZE);\n\n", overlay_name, name, name);
+         fprintf(gf, "#else\n");
+         fprintf(gf, "   // use managed file functions to load overlay\n");
+         fprintf(gf, "   _load_overlay(\"%s\", (void *)%s_CODE_ADDRESS, %s_BLOB_SIZE);\n\n", overlay_name, name, name);
+         fprintf(gf, "#endif\n");
       }
       else {
-         printf("// start the blob as a C program from an array\n");
-         printf("int start_%s(void* var_addr, int cog) {\n\n", name);
-         printf("   // zero the memory used for data and stack space\n");
-         printf("   memset((void *)%s_DATA_ADDRESS, 0, %s_RUNTIME_SIZE-%s_BLOB_SIZE);\n\n", name, name, name);
-         printf("   // copy the blob to the correct location\n");
-         printf("   memcpy((void *)%s_CODE_ADDRESS, %s_array, %s_BLOB_SIZE);\n\n", name, name, name);
+         fprintf(gf, "// start the blob as a C program from an array\n");
+         fprintf(gf, "int start_%s(void* var_addr, int cog) {\n\n", name);
+         fprintf(gf, "   // zero the memory used for data and stack space\n");
+         fprintf(gf, "   memset((void *)%s_DATA_ADDRESS, 0, %s_RUNTIME_SIZE-%s_BLOB_SIZE);\n\n", name, name, name);
+         fprintf(gf, "   // copy the blob to the correct location\n");
+         fprintf(gf, "   memcpy((void *)%s_CODE_ADDRESS, %s_array, %s_BLOB_SIZE);\n\n", name, name, name);
       }
       if (func_named) {
-         printf("   return %s(%s_INIT_PC, %s_INIT_SP, var_addr, cog);\n\n", func_name, name, name);
+         fprintf(gf, "   return %s(%s_INIT_PC, %s_INIT_SP, var_addr, cog);\n\n", func_name, name, name);
       }
       else {
-         printf("#if (defined(__CATALINA_libthreads) || (defined(COGSTART_THREADED) && !defined(COGSTART_NON_THREADED)))\n\n");
+         fprintf(gf, "#if (defined(__CATALINA_libthreads) || (defined(COGSTART_THREADED) && !defined(COGSTART_NON_THREADED)))\n\n");
          // use threaded start function
-         printf("#if %s_LAYOUT == %d\n", name, CMM_LAYOUT);
-         printf("   return _threaded_cogstart_CMM_cog(%s_INIT_PC, %s_INIT_SP, var_addr, cog);\n", name, name);
+         fprintf(gf, "#if %s_LAYOUT == %d\n", name, CMM_LAYOUT);
+         fprintf(gf, "   return _threaded_cogstart_CMM_cog(%s_INIT_PC, %s_INIT_SP, var_addr, cog);\n", name, name);
          if (prop_ver == 2) {
-            printf("#elif %s_LAYOUT == %d\n", name, NMM_LAYOUT);
-            printf("   return _threaded_cogstart_NMM_cog(%s_INIT_PC, %s_INIT_SP, var_addr, cog);\n", name, name);
+            fprintf(gf, "#elif %s_LAYOUT == %d\n", name, NMM_LAYOUT);
+            fprintf(gf, "   return _threaded_cogstart_NMM_cog(%s_INIT_PC, %s_INIT_SP, var_addr, cog);\n", name, name);
          }
-         printf("#else\n");
-         printf("   return _threaded_cogstart_LMM_cog(%s_INIT_PC, %s_INIT_SP, var_addr, cog);\n", name, name);
-         printf("#endif\n");
-         printf("\n#else\n\n");
+         fprintf(gf, "#else\n");
+         fprintf(gf, "   return _threaded_cogstart_LMM_cog(%s_INIT_PC, %s_INIT_SP, var_addr, cog);\n", name, name);
+         fprintf(gf, "#endif\n");
+         fprintf(gf, "\n#else\n\n");
          // use non-threaded start function
-         printf("#if %s_LAYOUT == %d\n", name, CMM_LAYOUT);
-         printf("   return _cogstart_CMM_cog(%s_INIT_PC, %s_INIT_SP, var_addr, cog);\n", name, name);
+         fprintf(gf, "#if %s_LAYOUT == %d\n", name, CMM_LAYOUT);
+         fprintf(gf, "   return _cogstart_CMM_cog(%s_INIT_PC, %s_INIT_SP, var_addr, cog);\n", name, name);
          if (prop_ver == 2) {
-            printf("#elif %s_LAYOUT == %d\n", name, NMM_LAYOUT);
-            printf("   return _cogstart_NMM_cog(%s_INIT_PC, %s_INIT_SP, var_addr, cog);\n", name, name);
+            fprintf(gf, "#elif %s_LAYOUT == %d\n", name, NMM_LAYOUT);
+            fprintf(gf, "   return _cogstart_NMM_cog(%s_INIT_PC, %s_INIT_SP, var_addr, cog);\n", name, name);
          }
-         printf("#else\n");
-         printf("   return _cogstart_LMM_cog(%s_INIT_PC, %s_INIT_SP, var_addr, cog);\n", name, name);
-         printf("#endif\n");
-         printf("\n#endif\n\n");
+         fprintf(gf, "#else\n");
+         fprintf(gf, "   return _cogstart_LMM_cog(%s_INIT_PC, %s_INIT_SP, var_addr, cog);\n", name, name);
+         fprintf(gf, "#endif\n");
+         fprintf(gf, "\n#endif\n\n");
       }
-      printf("}\n\n");
+      fprintf(gf, "}\n\n");
    }
    else if (tiny_only) {
       // do not need a prog array - only var and stack
-      printf("\n");
-      printf("int start_%s(void *var, void *stack) {\n\n", name);
-      printf("   // zero the memory used as var and stack space\n");
-      printf("   memset(var, 0, %s_VAR_SIZE);\n", name);
-      printf("   memset(stack, 0, %s_STACK_SIZE);\n", name);
-      printf("\n");
-      printf("   // start the Spin program\n");
+      fprintf(gf, "\n");
+      fprintf(gf, "int start_%s(void *var, void *stack) {\n\n", name);
+      fprintf(gf, "   // zero the memory used as var and stack space\n");
+      fprintf(gf, "   memset(var, 0, %s_VAR_SIZE);\n", name);
+      fprintf(gf, "   memset(stack, 0, %s_STACK_SIZE);\n", name);
+      fprintf(gf, "\n");
+      fprintf(gf, "   // start the Spin program\n");
       if (func_named) {
-         printf("   return %s(%s_array, var, stack, %s_PROG_OFF, %s_STACK_OFF);\n", func_name, name, name, name);
+         fprintf(gf, "   return %s(%s_array, var, stack, %s_PROG_OFF, %s_STACK_OFF);\n", func_name, name, name, name);
       }
       else {
-         printf("   return _coginit_Spin(%s_array, var, stack, %s_PROG_OFF, %s_STACK_OFF);\n", name, name, name);
+         fprintf(gf, "   return _coginit_Spin(%s_array, var, stack, %s_PROG_OFF, %s_STACK_OFF);\n", name, name, name);
       }
-      printf("\n");
-      printf("}\n\n");
+      fprintf(gf, "\n");
+      fprintf(gf, "}\n\n");
    }
    else {
       // need a prog array that is in Hub RAM
-      printf("\n");
-      printf("int start_%s(void *prog, void *var, void *stack) {\n\n", name);
-      printf("   // zero the memory used as var and stack space\n");
-      printf("   memset(var, 0, %s_VAR_SIZE);\n", name);
-      printf("   memset(stack, 0, %s_STACK_SIZE);\n", name);
-      printf("\n");
-      printf("   // copy the Spin program to the local array, in case it is\n");
-      printf("   // currently stored in XMM RAM\n");
-      printf("   memcpy(prog, %s_array, %s_PROG_SIZE);\n", name, name);
-      printf("\n");
-      printf("   // start the Spin program\n");
+      fprintf(gf, "\n");
+      fprintf(gf, "int start_%s(void *prog, void *var, void *stack) {\n\n", name);
+      fprintf(gf, "   // zero the memory used as var and stack space\n");
+      fprintf(gf, "   memset(var, 0, %s_VAR_SIZE);\n", name);
+      fprintf(gf, "   memset(stack, 0, %s_STACK_SIZE);\n", name);
+      fprintf(gf, "\n");
+      fprintf(gf, "   // copy the Spin program to the local array, in case it is\n");
+      fprintf(gf, "   // currently stored in XMM RAM\n");
+      fprintf(gf, "   memcpy(prog, %s_array, %s_PROG_SIZE);\n", name, name);
+      fprintf(gf, "\n");
+      fprintf(gf, "   // start the Spin program\n");
       if (func_named) {
-         printf("   return %s(%s_array, var, stack, %s_PROG_OFF, %s_STACK_OFF);\n", func_name, name, name, name);
+         fprintf(gf, "   return %s(%s_array, var, stack, %s_PROG_OFF, %s_STACK_OFF);\n", func_name, name, name, name);
       }
       else {
-         printf("   return _coginit_Spin(%s_array, var, stack, %s_PROG_OFF, %s_STACK_OFF);\n", name, name, name);
+         fprintf(gf, "   return _coginit_Spin(%s_array, var, stack, %s_PROG_OFF, %s_STACK_OFF);\n", name, name, name);
       }
-      printf("\n");
-      printf("}\n\n");
+      fprintf(gf, "\n");
+      fprintf(gf, "}\n\n");
    }
 }
 
@@ -960,6 +1001,16 @@ int main(int argc, char* argv[])
       exit(1);
    }
 
+   if (gen_file) {
+      gf = fopen(gen_name, "wb");
+      if (!gf) {
+          fprintf(stderr, "\nError: Can't open generated file '%s'.\n", gen_name);
+      }
+   }
+   else {
+      gf = stdout;
+   }
+
    for (i = 0; i < file_count; i++) {
 
       spin_ptr = load_binary(file_name[i]);
@@ -969,20 +1020,20 @@ int main(int argc, char* argv[])
                 blob_obj = 2;
              }
           }
-          printf("/* \n");
-          printf(" * Created from %s", file_name[i]);
+          fprintf(gf, "/* \n");
+          fprintf(gf, " * Created from %s", file_name[i]);
           if (gen_function) {
-             printf (" with option -c\n"); 
+             fprintf(gf, " with option -c\n"); 
           }
           else if (all_objects) {
-             printf (" with option -a\n"); 
+             fprintf(gf, " with option -a\n"); 
           }
           else {
-             printf("\n");
+             fprintf(gf, "\n");
           }
-          printf(" * \n");
-          printf(" * by Spin to C Array Converter, version %s\n", VERSION);
-          printf(" */\n");
+          fprintf(gf, " * \n");
+          fprintf(gf, " * by Spin to C Array Converter, version %s\n", VERSION);
+          fprintf(gf, " */\n");
           if (named) {
              safecpy(spin_name, array_name, MAX_LINELEN);
              if (file_count > 1) {
@@ -1005,6 +1056,11 @@ int main(int argc, char* argv[])
           }
       }
    }
+
+   if (gen_file) {
+      fclose(gf);
+   }
+
    return 0;
 }
 

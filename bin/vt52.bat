@@ -11,4 +11,4 @@ if "%BAUD%" == "" (
   SET BAUD=230400
 )
 
-start comms /baudrate=%BAUD% /com=%PORT% /mode=vt52 /settitle="vt52" /fontsize=12 /fgcolor=white /bgcolor=dark_green /sizing=screen /wrap
+start comms /baudrate=%BAUD% /com=%PORT% /mode=vt52 /settitle="vt52" /fontsize=12 /fgcolor=white /bgcolor=dark_green /sizing=screen /wrap /autocronlf

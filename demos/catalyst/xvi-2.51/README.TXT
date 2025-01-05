@@ -42,7 +42,7 @@ with Catalina - i.e. comms.exe does). To enable color in this case, specify
 both the VT100 and USE_COLOR Catalina symbols as parameters to the build_all 
 script. For instance:
 
-  build_all P2_EDGE SIMPLE CR_ON_LF VT100 USE_COLOR
+  build_all P2_EDGE SIMPLE VT100 USE_COLOR
 
 USING VI
 ========

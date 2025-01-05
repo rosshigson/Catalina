@@ -43,6 +43,8 @@ comms.exe
 cpp.exe
 lburg.exe
 lcc.exe
+libintl-8.dll
+libiconv-2.dll
 libgcc_s_dw2-1.dll
 libncursesw6.dll
 libstdc++-6.dll

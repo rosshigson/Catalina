@@ -6,7 +6,7 @@
  * Compile with the hyper library and the extended C library (for file support).
  * For example:
  *
- *   catalina -p2 -lcx -lhyper test.c -C P2_EVAL -C VT100 -C CR_ON_LF -C SIMPLE
+ *   catalina -p2 -lcx -lhyper test.c -C P2_EVAL -C VT100 -C SIMPLE
  *
  * Note that -C SIMPLE should be specified even if this is the default, so
  * the program can change the way line editing works with a serial HMI.

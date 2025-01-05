@@ -18,13 +18,13 @@ normally be built in LARGE mode.
 
 For example:
 
-   build_all P2_EVAL TTY CR_ON_LF
+   build_all P2_EVAL TTY 
    build_all QUICKSTART PMC LARGE CACHED_1K HIRES_VGA
    build_all C3 SMALL TTY
 
 Add the CLOCK symbol to time the file reading and writing. For example:
 
-   build_all P2_EDGE SIMPLE CR_ON_LF CLOCK
+   build_all P2_EDGE SIMPLE CLOCK
 
 Note that to load the program on the Propeller 1, you will have to use the
 normal build_utilities script to build the appropriate loader with options 

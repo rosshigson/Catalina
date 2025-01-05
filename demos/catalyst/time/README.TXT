@@ -48,7 +48,7 @@ script. For example:
 or
    build_all P2_EVAL VGA
 or
-   build_all P2_EDGE OPTIMIZE MHZ_200 VT100 CR_ON_LF
+   build_all P2_EDGE OPTIMIZE MHZ_200 VT100 
 
 These programs will always be built in PROPELLER 2 NATIVE mode. You can 
 include a different memory model on the command line, but it will be ignored. 

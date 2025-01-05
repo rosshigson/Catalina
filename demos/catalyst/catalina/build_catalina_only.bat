@@ -107,6 +107,10 @@ catalina -p2 -L %TMP_LIBPATH% -I ..\..\include %EXTRA_OPTIONS% -l%TMP_PSRAM% -lc
 @echo building pstrip ...
 @echo.
 catalina -p2 -L %TMP_LIBPATH% -I ..\..\include %EXTRA_OPTIONS% -l%TMP_PSRAM% -lcx pstrip.c -y
+@echo building spinc ...
+@echo.
+catalina -p2 -L %TMP_LIBPATH% -I ..\..\include %EXTRA_OPTIONS% -l%TMP_PSRAM% -lcx -lmc spinc.c -y
+@echo.
 cd ..
 
 @echo.
