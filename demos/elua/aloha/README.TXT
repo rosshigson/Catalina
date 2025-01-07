@@ -8,16 +8,63 @@ protocol.
 The ALOHA extensions to eLua are described in the document 'Aloha from Lua'.
 See that document for more details.
 
-Mentioned in that document is a variant of a slave ALOHA server that omits
-the slave client altogether, called sluafx (in the file sluafx.c). This allows
-the server to execute entirely from Hub RAM. 
+Compile them all using by executing the 'build_all' script. Note that this
+builds programs for the P2_MASTER and P2_SLAVE platforms, so (unlike the
+'build_all' script used to build the normal eLua programs) CATALINA_DEFINE 
+should NOT be defined beforehand. For example:
+
+On Windows:
+   unset CATALINA_DEFINE
+   build_all
+
+On Pi OS or Linux:
+   export CATALINA_DEFINE=
+   build_all
+
+This builds the following binaries for P2_MASTER:
+
+   catapult elua.c
+   mv elua.bin master.bin
+
+   catapult eluax.c
+   mv eluax.bin masterx.bin
+
+   catapult eluafx.c
+   mv eluafx.bin masterfx.bin
+
+and the following binaries for P2_SLAVE:
+
+   catapult elua.c
+   mv elua.bin slave.bin
+
+   catapult eluax.c
+   mv eluax.bin slavex.bin
+
+   catapult eluafx.c
+   mv eluafx.bin slavefx.bin
+
+The 'master' programs must be executed on the P2_MASTER propeller and the 
+'slave' programs on the P2_SLAVE propeller. The P2_MASTER propeller should
+execute the 'client' and 'remote' as the server, and the P2_SLAVE propeller
+should execute 'remote' as the client and the 'server'. For example:
+
+On P2_MASTER:
+   masterx client.lux remote.lux
+
+On P2_SLAVE:
+   slavex remote.lux slave.lux
+
+Also, mentioned in the 'Aloha from Lua' document is a variant of a slave 
+ALOHA server that omits the slave client altogether, called sluafx (in the 
+file sluafx.c). This allows the server to execute entirely from Hub RAM if
+a local slave client is not required.
 
 When sluafx is used on the slave propeller in conjunction with masterx or 
 masterfx on the master propeller, it means both the client and server can be 
 executed entirely from Hub RAM, for a significant speed improvement over the 
 same program executed from XMM RAM.
 
-Not mentioned in that document are the other possible variants of an ALOHA 
+Not mentioned in the document are the other possible variants of an ALOHA 
 enabled Lua server without a client that execute entirely from Hub RAM.
 The main purpose of these variants is to maximize the Hub RAM available to 
 the Lua server.
@@ -59,7 +106,8 @@ On Pi OS or Linux:
 As an example of the use of these variants, when the client/server version of 
 the Game of Life (in the folder demos/elua/life) is executed with masterfx and
 sluafx, it can support a universe of up to 80 columns by 30 rows (edit the
-file common.lua and recompile it to change the size of the universe):
+file common.lua and recompile it using 'exec rebuild' on both 'master' and
+'slave' Propellers to change the size of the universe):
 
    On the P2_MASTER:
       masterfx client.lux remote.lux
