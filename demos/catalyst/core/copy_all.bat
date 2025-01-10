@@ -44,6 +44,7 @@ copy rmdir.bin %1\rmdir.bin
 copy mkdir.bin %1\mkdir.bin
 copy set.bin %1\set.bin
 copy exec.lua %1\exec.lua
+copy clua.lua %1\clua.lua
 copy if.lua %1\if.lua
 copy attrib.lua %1\attrib.lua
 copy find.lua %1\find.lua

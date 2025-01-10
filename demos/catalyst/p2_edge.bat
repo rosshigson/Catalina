@@ -44,6 +44,7 @@ cd image
 move /y *.bin bin\
 move /y if.lua bin\
 move /y exec.lua bin\
+move /y clua.lua bin\
 move /y call.lua bin\
 move /y echo.lua bin\
 move /y _save.lua bin\

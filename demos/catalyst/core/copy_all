@@ -28,6 +28,7 @@ if [ -f catalyst.bin ]; then
    cp mkdir.bin $1mkdir.bin
    cp set.bin $1set.bin
    cp exec.lua $1exec.lua
+   cp clua.lua $1clua.lua
    cp if.lua $1if.lua
    cp attrib.lua $1attrib.lua
    cp find.lua $1find.lua

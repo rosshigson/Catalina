@@ -49,6 +49,7 @@ cd image
 mv -f *.bin bin/
 mv -f if.lua bin/
 mv -f exec.lua bin/
+mv -f clua.lua bin/
 mv -f call.lua bin/
 mv -f echo.lua bin/
 mv -f _save.lua bin/
