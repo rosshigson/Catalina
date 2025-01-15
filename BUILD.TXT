@@ -447,6 +447,7 @@ Ensure the files have the correct permissions by executing the following
 commands:
 
    cd ~/Catalina
+   export LCCDIR=`pwd`
    chmod a+x bin/catalina_env
    chmod a+x bin/Set_Linux_Permissions
    bin/Set_Linux_Permissions
@@ -642,3 +643,9 @@ Simply copy them from the bin directory to your Desktop as follows:
 Two icons should appear on your desktop, labelled "Catalina Command Line"
 and "Catalina Geany".
 
+When you click on the "Catalina Command Line" icon, you may see a dialog box
+saying "This text file 'Catalina Command Line' seems to be an executable
+script. What do you want do do with it?" and some options. Just click on 
+"Execute". To prevent this dialog appearing every time, open up the File 
+Manager, select "Edit->Preferences" and check the "Don't ask options on 
+launch executable file" option.
