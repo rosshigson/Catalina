@@ -138,19 +138,14 @@ while true do
   result,event,handle,value = wifi.POLL(0);
   if event == "G" then
     print("GET\n");
-    result,path = wifi.PATH(value);
-    if result == 0 then
-      if path == "/prop" then
-        result = wifi.SEND_DATA(handle, 200, #get_prop, get_prop);
-      elseif path == "/prop/val" then
-        get_prop_val = tostring(prop_val);
-        prop_val = prop_val + 1; -- increment it on each GET
-        result = wifi.SEND_DATA(handle, 200, #get_prop_val, get_prop_val);
-      else
-        print("Uknown GET path\n");
-      end
+    if value == prop_handle then
+      result = wifi.SEND_DATA(handle, 200, #get_prop, get_prop);
+    elseif value == val_handle then
+      get_prop_val = tostring(prop_val);
+      prop_val = prop_val + 1; -- increment it on each GET
+      result = wifi.SEND_DATA(handle, 200, #get_prop_val, get_prop_val);
     else
-      print("PATH failed\n");
+      print("Uknown GET path\n");
     end
   end
 end
