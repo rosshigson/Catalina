@@ -17,6 +17,8 @@ CON
 #include "P2MASTER.inc"
 #elif defined(P2_SLAVE)
 #include "P2SLAVE.inc"
+#elif defined(P2_WIFI)
+#include "P2WIFI.inc"
 #elif defined(P2D2)
 #include "P2D2.inc"
 #elif defined(P2_CUSTOM) || defined(CUSTOM)

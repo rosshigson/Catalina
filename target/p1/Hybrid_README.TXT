@@ -6,7 +6,9 @@ provided by this target package.
 
 Hybrid support is enabled by either adding the option -C HYBRID to each 
 catalina command line, or by adding HYBRID to the CATALINA_DEFINE environment 
-variable.
+variable  - e.g:
+
+   catalina hello_world.c -lc -C HYBRID
 
 The Hybrid has only TV output (i.e. no VGA), and HiRes TV output is the default.
 

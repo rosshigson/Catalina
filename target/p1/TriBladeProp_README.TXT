@@ -6,9 +6,11 @@ provided by this target package.
 
 TriBladeProp support is enabled by either adding the option -C TRIBLADEPROP 
 to each catalina command line, or by adding TRIBLADEPROP to the CATALINA_DEFINE 
-environment variable. In addition, the CPU must be specified by adding the
-option -C CPU_1, -C CPU_2 or -C CPU_3 to the command line, or adding CPU_1,
-CPU_2 or CPU_3 to the CATALINA_DEFINE environment variable.
+environment variable. In addition, the CPU must be specified by adding the 
+option -C CPU_1, -C CPU_2 or -C CPU_3 to the command line, or adding CPU_1, 
+CPU_2 or CPU_3 to the CATALINA_DEFINE environment variable - e.g:
+
+   catalina hello_world.c -lc -C TRIBLADEPROP -C CPU_1
 
 The TriBladeProp is a complex beast since (as the name implies) it has three 
 'blades' - each of which contains a Propeller CPU. Each blade can be used 

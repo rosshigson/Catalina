@@ -6,7 +6,9 @@ by this target package.
 
 ASC support is enabled by either adding the option -C ASC to each 
 catalina command line, or by adding ASC to the CATALINA_DEFINE environment 
-variable.
+variable  - e.g:
+
+   catalina hello_world.c -lc -C ASC
 
 All ASC targets have been configured to use the HIRES_TV HMI option by default.
  

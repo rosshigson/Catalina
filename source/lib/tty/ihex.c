@@ -1,6 +1,6 @@
 #include <tty.h>
 
-void tty_ihex(unsigned value, int digits) {
-   tty_tx('$');
-   tty_hex(value, digits);
+void s_ihex(unsigned value, int digits) {
+   s_tx('$');
+   s_hex(value, digits);
 }

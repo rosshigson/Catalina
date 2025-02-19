@@ -442,6 +442,8 @@
  *                for the Propeller 1 (115200) or Propeller 2 (230400) unless
  *                a baud rate is explicitly set.
  *
+ * version 8.4  - just update version number.
+ *
  *-----------------------------------------------------------------------------
  * Payload is part of Catalina.
  *
@@ -491,7 +493,7 @@
 #include "lua-5.4.4/src/lauxlib.h"
 #endif
 
-#define VERSION            "8.3"
+#define VERSION            "8.4"
 
 #define DEFAULT_LCC_ENV    "LCCDIR" // used to locate binary files if not in current directory
 

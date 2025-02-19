@@ -67,17 +67,17 @@ static void initialize() {
    }
 }
 
-int tty_rxflush() {
+int s_rxflush() {
    if (rxbase == 0) {
       initialize();
    }
 
    // repeat while rxcheck => 0 
-   while (tty_rxcheck() >= 0) {}
+   while (s_rxcheck() >= 0) {}
    return 0;    
 }
 
-int tty_rxcheck() {
+int s_rxcheck() {
    int rxbyte;
 
    if (rxbase == 0) {
@@ -100,7 +100,7 @@ int tty_rxcheck() {
    return rxbyte;
 }
 
-int tty_rx() {
+int s_rx() {
    int rxbyte;
 
    if (rxbase == 0) {
@@ -108,11 +108,11 @@ int tty_rx() {
    }
    //  repeat while (rxbyte := rxcheck) < 0
 
-   while ((rxbyte = tty_rxcheck()) < 0) { }
+   while ((rxbyte = s_rxcheck()) < 0) { }
    return rxbyte;
 }
 
-int tty_tx(char txbyte) {
+int s_tx(char txbyte) {
    if (rxbase == 0) {
       initialize();
    }
@@ -130,14 +130,14 @@ int tty_tx(char txbyte) {
    *long_tx_head = (*long_tx_head + 1) & BUFFMASK;
 
    if (*long_rxtx_mode & TTY_NOECHO) {
-      tty_rx();
+      s_rx();
    }
    RELEASE (lock);
 
    return 0;  
 }
 
-int tty_txflush() {
+int s_txflush() {
    if (rxbase == 0) {
       initialize();
    }
@@ -149,7 +149,7 @@ int tty_txflush() {
    return 0;
 }
 
-int tty_txcheck() {
+int s_txcheck() {
    int txbytes;
 
    if (rxbase == 0) {

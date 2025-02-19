@@ -6,7 +6,9 @@ by this target package.
 
 Demo board support is enabled by either adding the option -C DEMO to each 
 catalina command line, or by adding DEMO to the CATALINA_DEFINE environment 
-variable.
+variable - e.g:
+
+   catalina hello_world.c -lc -C DEMO
 
 The Demo board support is configured to use the HIRES_TV HMI option by default.
  

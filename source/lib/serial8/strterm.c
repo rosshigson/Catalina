@@ -1,6 +1,6 @@
 #include <serial8.h>
 
-void s8_strterm(unsigned port, char *stringptr, char term) {
-   s8_str(port, stringptr);
-   s8_tx(port, term);
+void s_strterm(unsigned port, char *stringptr, char term) {
+   s_str(port, stringptr);
+   s_tx(port, term);
 }

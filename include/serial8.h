@@ -1,5 +1,5 @@
-#ifndef _SERIALX__H
-#define _SERIALX__H
+#ifndef _SERIAL8__H
+#define _SERIAL8__H
 
 /*
  * These definitions are intended to replicate the definitions in the original
@@ -9,9 +9,6 @@
  *
  * If your program depends on the original behaviour, simply simply define
  * the symbol S8_NEWLINE_CR before including this file in your program. 
- *
- * The "s8_" prefix could be removed if required - it is added to reduce the
- * possibility of these names clashing with other C names.
  *
  * Notes specific to this Multi Port implementation:
  *
@@ -24,7 +21,7 @@
  * to be autoinitialized it must have a port number less than S8_MAX_PORTS 
  * and also have pin numbers in the range 0 .. 63.
  *
- * The s8_openport() and s8_closeport() functions have been added so that
+ * The s_openport() and s_closeport() functions have been added so that
  * ports that are not "autoinitialized" (via the Catalina_platforms.inc and
  * Serial8.spin2 in the target/p2 directory) can be manually configured
  * instead (note that these functions deal with ports, not pins as the spin 
@@ -44,6 +41,10 @@
  *   2400      Yes      Yes      Yes       Yes        No        No
  *   4800      Yes      Yes      Yes       Yes       Yes       Yes
  *
+ * If your program depends on the s_newline() and s_strln() generating a 
+ * Carriage Return rather than a New Line, simply simply define the symbol 
+ * S8_NEWLINE_CR before including this file in your program. 
+ *
  */
 
 #if !defined(__CATALINA_P2)
@@ -52,43 +53,43 @@
 
 #define S8_MAX_PORTS 8 // may be up to 8 ports (i.e. 16 pins)
 
-#define S8_FF 12
+#define S8_FF SERIAL_FF
 
-#define S8_CR 13
+#define S8_CR SERIAL_CR
 
-#define S8_NL 10
+#define S8_NL SERIAL_NL
 
-extern int s8_rxflush(unsigned port);
+extern int s_rxflush(unsigned port);
 
-extern int s8_rxcheck(unsigned port);
+extern int s_rxcheck(unsigned port);
 
-extern int s8_rxtime(unsigned port, unsigned ms);
+extern int s_rxtime(unsigned port, unsigned ms);
 
-extern int s8_rxcount(unsigned port);
+extern int s_rxcount(unsigned port);
 
-extern int s8_rx(unsigned port);
+extern int s_rx(unsigned port);
 
-extern int s8_tx(unsigned port, char txbyte);
+extern int s_tx(unsigned port, char txbyte);
 
-extern int s8_txflush(unsigned port);
+extern int s_txflush(unsigned port);
 
-extern int s8_txcheck(unsigned port);
+extern int s_txcheck(unsigned port);
 
-extern int s8_txcount(unsigned port);
+extern int s_txcount(unsigned port);
 
-extern void s8_str(unsigned port, char *stringptr);
+extern void s_str(unsigned port, char *stringptr);
 
-extern void s8_decl(unsigned port, int value, int digits, int flag);
+extern void s_decl(unsigned port, int value, int digits, int flag);
 
-extern void s8_hex(unsigned port, unsigned value, int digits);
+extern void s_hex(unsigned port, unsigned value, int digits);
 
-extern void s8_ihex(unsigned port, unsigned value, int digits);
+extern void s_ihex(unsigned port, unsigned value, int digits);
 
-extern void s8_bin(unsigned port, unsigned value, int digits);
+extern void s_bin(unsigned port, unsigned value, int digits);
 
-extern void s8_ibin(unsigned port, unsigned value, int digits);
+extern void s_ibin(unsigned port, unsigned value, int digits);
 
-extern void s8_padchar(unsigned port, unsigned count, char txbyte);
+extern void s_padchar(unsigned port, unsigned count, char txbyte);
 
 /*
  * There are two methods of initializing ports - they can be configured
@@ -98,7 +99,7 @@ extern void s8_padchar(unsigned port, unsigned count, char txbyte);
  * characters each for each port. Alternatively, the ports can be manually 
  * initialized from C by using the following function:
  */
-extern void s8_openport(unsigned port, unsigned baud, unsigned mode, 
+extern void s_openport(unsigned port, unsigned baud, unsigned mode, 
                         unsigned rx_pin, char *rx_start, char *rx_end,
                         unsigned tx_pin, char *tx_start, char *tx_end);
 /*
@@ -108,31 +109,50 @@ extern void s8_openport(unsigned port, unsigned baud, unsigned mode,
  * it was using will be lost, and new buffers will have to be supplied
  * when it is re-opened.
  */
-extern void s8_closeport(unsigned port);
+extern void s_closeport(unsigned port);
 
 /*
  * The following are methods in the Spin version, but can be
  * implemented as '#defines' in C with the same result:
  */
 
-#define s8_dec(port, value) s8_decl(port,value,10,0)
+#define s_dec(port, value) s_decl(port,value,10,0)
 
-#define s8_decf(port, value, width) s8_decl(port,value,width,1)
+#define s_decf(port, value, width) s_decl(port,value,width,1)
 
-#define s8_decx(port, value, width) s8_decl(port,value,width,2)
+#define s_decx(port, value, width) s_decl(port,value,width,2)
 
-#define s8_putc(port, txbyte) tx(port,txbyte)
+#define s_putc(port, txbyte) tx(port,txbyte)
 
 #ifdef S8_CR_NEWLINE
-#define s8_newline(port) s8_tx(port, S8_CR) // use CR in newling & strln
-#define s8_strln(port, stringptr) s8_strterm(port, stringptr, S8_CR);
+#define s_newline(port) s_tx(port, S8_CR) // use CR in newling & strln
+#define s_strln(port, stringptr) s_strterm(port, stringptr, S8_CR)
 #else
-#define s8_newline(port) s8_tx(port, S8_NL) // use NL in newline & strln
-#define s8_strln(port, stringptr) s8_strterm(port, stringptr, S8_NL);
+#define s_newline(port) s_tx(port, S8_NL) // use NL in newline & strln
+#define s_strln(port, stringptr) s_strterm(port, stringptr, S8_NL)
 #endif
 
-#define s8_cls(port) s8_char(port, S8_FF)
+#define s_cls(port) s_tx(port, S8_FF)
 
-#define s8_getc(port) s8_rxcheck(port)
+#define s_getc(port) s_rxcheck(port)
 
-#endif // _SERIALX__H
+// define the s8_ names of the functions (for backward compatibility):
+
+#define s8_rxflush(port) s_rxflush(port)
+#define s8_rxcheck(port) s_rxcheck(port)
+#define s8_rxtime(port, ms) s_rxtime(port, ms)
+#define s8_rxcount(port) s_rxcount(port)
+#define s8_rx(port) s_rx(port)
+#define s8_tx(port, txbyte) s_tx(port, txbyte)
+#define s8_txflush(port) s_txflush(port)
+#define s8_txcheck(port) s_txcheck(port)
+#define s8_txcount(port) s_txcount(port)
+#define s8_str(port, stringptr) s_str(port, stringptr)
+#define s8_decl(port, value, digits, flag) s_decl(port, value, digits, flag)
+#define s8_hex(port, value, digits) s_hex(port, value, digits)
+#define s8_ihex(port, value, digits) s_ihex(port, value, digits)
+#define s8_bin(port, value, digits) s_bin(port, value, digits)
+#define s8_ibin(port, value, digits) s_ibin(port, value, digits)
+#define s8_padchar(port, value, txbyte) s_padchar(port, count, txbyte)
+
+#endif // _SERIAL8__H

@@ -6,23 +6,23 @@ DAT ' code segment
 ' (Catalina v2.5 Code Generator by Ross Higson)
 '
 
-' Catalina Export tty_str
+' Catalina Export s_str
 
  alignl ' align long
-C_tty_str ' <symbol:tty_str>
+C_s_str ' <symbol:s_str>
  jmp #NEWF
  jmp #PSHM
  long $e00000 ' save registers
  mov r23, r2 ' reg var <- reg arg
  jmp #JMPA
- long @C_tty_str_3 ' JUMPV addrg
-C_tty_str_2
+ long @C_s_str_3 ' JUMPV addrg
+C_s_str_2
  mov r2, r21 ' CVUI
  and r2, cviu_m1 ' zero extend
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_tty_tx ' CALL addrg
-C_tty_str_3
+ long @C_s_tx ' CALL addrg
+C_s_str_3
  mov r22, r23 ' CVI, CVU or LOAD
  mov r23, r22
  adds r23, #1 ' ADDP4 coni
@@ -33,11 +33,11 @@ C_tty_str_3
  and r22, cviu_m1 ' zero extend
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_tty_str_2 ' NEI4
-' C_tty_str_1 ' (symbol refcount = 0)
+ long @C_s_str_2 ' NEI4
+' C_s_str_1 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
-' Catalina Import tty_tx
+' Catalina Import s_tx
 ' end

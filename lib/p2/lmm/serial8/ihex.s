@@ -6,10 +6,10 @@ DAT ' code segment
 ' (Catalina v3.15 Code Generator by Ross Higson)
 '
 
-' Catalina Export s8_ihex
+' Catalina Export s_ihex
 
  alignl ' align long
-C_s8_ihex ' <symbol:s8_ihex>
+C_s_ihex ' <symbol:s_ihex>
  jmp #NEWF
  jmp #PSHM
  long $a80000 ' save registers
@@ -21,7 +21,7 @@ C_s8_ihex ' <symbol:s8_ihex>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_s8_tx
+ long @C_s_tx
  add SP, #4 ' CALL addrg
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r21 ' CVI, CVU or LOAD
@@ -29,14 +29,14 @@ C_s8_ihex ' <symbol:s8_ihex>
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_s8_hex
+ long @C_s_hex
  add SP, #8 ' CALL addrg
-' C_s8_ihex_1 ' (symbol refcount = 0)
+' C_s_ihex_1 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
-' Catalina Import s8_hex
+' Catalina Import s_hex
 
-' Catalina Import s8_tx
+' Catalina Import s_tx
 ' end

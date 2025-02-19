@@ -66,7 +66,7 @@ static void initialize() {
    }
 }
 
-int s4_rxflush(unsigned port) {
+int s_rxflush(unsigned port) {
    if (rxbase == 0) {
       initialize();
    }
@@ -75,11 +75,11 @@ int s4_rxflush(unsigned port) {
    }
 
    // repeat while rxcheck(port) => 0 
-   while (s4_rxcheck(port) >= 0) {}
+   while (s_rxcheck(port) >= 0) {}
    return 0;    
 }
 
-int s4_rxcheck(unsigned port) {
+int s_rxcheck(unsigned port) {
    int rxbyte;
 
    if (rxbase == 0) {
@@ -107,9 +107,9 @@ int s4_rxcheck(unsigned port) {
 }
 
 //
-// s4_rxcount :  returns number of bytes waiting in receive buffer
+// s_rxcount :  returns number of bytes waiting in receive buffer
 //
-int s4_rxcount(unsigned port) {
+int s_rxcount(unsigned port) {
    int rxbytes;
 
    if (rxbase == 0) {
@@ -125,7 +125,7 @@ int s4_rxcount(unsigned port) {
    return rxbytes;
 }
 
-int s4_rx(unsigned port) {
+int s_rx(unsigned port) {
    int rxbyte;
 
    if (rxbase == 0) {
@@ -137,11 +137,11 @@ int s4_rx(unsigned port) {
 
    //  repeat while (rxbyte := rxcheck(port)) < 0
 
-   while ((rxbyte = s4_rxcheck(port)) < 0) { }
+   while ((rxbyte = s_rxcheck(port)) < 0) { }
    return rxbyte;
 }
 
-int s4_tx(unsigned port, char txbyte) {
+int s_tx(unsigned port, char txbyte) {
    if (rxbase == 0) {
       initialize();
    }
@@ -163,14 +163,14 @@ int s4_tx(unsigned port, char txbyte) {
    *long_tx_head(port) = (*long_tx_head(port) + 1) & 0xF;
 
    if (*long_rxtx_mode(port) & S4_NOECHO) {
-      s4_rx(port);
+      s_rx(port);
    }
    RELEASE (lock);
 
    return 0;  
 }
 
-int s4_txflush(unsigned port) {
+int s_txflush(unsigned port) {
    if (rxbase == 0) {
       initialize();
    }
@@ -186,7 +186,7 @@ int s4_txflush(unsigned port) {
    return 0;
 }
 
-int s4_txcheck(unsigned port) {
+int s_txcheck(unsigned port) {
    int txbytes;
 
    if (rxbase == 0) {
@@ -203,9 +203,9 @@ int s4_txcheck(unsigned port) {
 }
 
 //
-// s4_txcount :  returns number of bytes waiting in send buffer
+// s_txcount :  returns number of bytes waiting in send buffer
 //
-int s4_txcount(unsigned port) {
+int s_txcount(unsigned port) {
    int txbytes, txsize;
 
    if (rxbase == 0) {

@@ -6,10 +6,10 @@ DAT ' code segment
 ' (Catalina v3.15 Code Generator by Ross Higson)
 '
 
-' Catalina Export s2_strterm
+' Catalina Export s_strterm
 
  alignl ' align long
-C_s2_strterm ' <symbol:s2_strterm>
+C_s_strterm ' <symbol:s_strterm>
  calld PA,#NEWF
  calld PA,#PSHM
  long $a80000 ' save registers
@@ -21,7 +21,7 @@ C_s2_strterm ' <symbol:s2_strterm>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s2_str
+ long @C_s_str
  add SP, #4 ' CALL addrg
  mov r2, r19 ' CVUI
  and r2, cviu_m1 ' zero extend
@@ -29,14 +29,14 @@ C_s2_strterm ' <symbol:s2_strterm>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s2_tx
+ long @C_s_tx
  add SP, #4 ' CALL addrg
-' C_s2_strterm_1 ' (symbol refcount = 0)
+' C_s_strterm_1 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
-' Catalina Import s2_str
+' Catalina Import s_str
 
-' Catalina Import s2_tx
+' Catalina Import s_tx
 ' end

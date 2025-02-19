@@ -6,10 +6,10 @@ DAT ' code segment
 ' (Catalina v2.5 Code Generator by Ross Higson)
 '
 
-' Catalina Export tty_strterm
+' Catalina Export s_strterm
 
  alignl ' align long
-C_tty_strterm ' <symbol:tty_strterm>
+C_s_strterm ' <symbol:s_strterm>
  jmp #NEWF
  jmp #PSHM
  long $a00000 ' save registers
@@ -18,18 +18,18 @@ C_tty_strterm ' <symbol:tty_strterm>
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_tty_str ' CALL addrg
+ long @C_s_str ' CALL addrg
  mov r2, r21 ' CVUI
  and r2, cviu_m1 ' zero extend
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_tty_tx ' CALL addrg
-' C_tty_strterm_1 ' (symbol refcount = 0)
+ long @C_s_tx ' CALL addrg
+' C_s_strterm_1 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
-' Catalina Import tty_str
+' Catalina Import s_str
 
-' Catalina Import tty_tx
+' Catalina Import s_tx
 ' end

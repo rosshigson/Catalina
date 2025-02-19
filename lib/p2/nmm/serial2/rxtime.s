@@ -6,10 +6,10 @@ DAT ' code segment
 ' (Catalina v3.15 Code Generator by Ross Higson)
 '
 
-' Catalina Export s2_rxtime
+' Catalina Export s_rxtime
 
  alignl ' align long
-C_s2_rxtime ' <symbol:s2_rxtime>
+C_s_rxtime ' <symbol:s_rxtime>
  calld PA,#NEWF
  calld PA,#PSHM
  long $fe0000 ' save registers
@@ -19,15 +19,15 @@ C_s2_rxtime ' <symbol:s2_rxtime>
  calld PA,#CALA
  long @C__cnt ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
- jmp #\@C_s2_rxtime_3 ' JUMPV addrg
-C_s2_rxtime_2
+ jmp #\@C_s_rxtime_3 ' JUMPV addrg
+C_s_rxtime_2
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_s2_rxcheck ' CALL addrg
+ long @C_s_rxcheck ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
  cmps r19,  #0 wcz
- if_ae jmp #\C_s2_rxtime_7 ' GEI4
+ if_ae jmp #\C_s_rxtime_7 ' GEI4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C__cnt ' CALL addrg
@@ -55,15 +55,15 @@ C_s2_rxtime_2
   allowi
  #endif
  cmp r0, r21 wcz 
- if_be jmp #\C_s2_rxtime_5 ' LEU4
-C_s2_rxtime_7
- jmp #\@C_s2_rxtime_4 ' JUMPV addrg
-C_s2_rxtime_5
-C_s2_rxtime_3
- jmp #\@C_s2_rxtime_2 ' JUMPV addrg
-C_s2_rxtime_4
+ if_be jmp #\C_s_rxtime_5 ' LEU4
+C_s_rxtime_7
+ jmp #\@C_s_rxtime_4 ' JUMPV addrg
+C_s_rxtime_5
+C_s_rxtime_3
+ jmp #\@C_s_rxtime_2 ' JUMPV addrg
+C_s_rxtime_4
  mov r0, r19 ' CVI, CVU or LOAD
-' C_s2_rxtime_1 ' (symbol refcount = 0)
+' C_s_rxtime_1 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -72,5 +72,5 @@ C_s2_rxtime_4
 
 ' Catalina Import _clockfreq
 
-' Catalina Import s2_rxcheck
+' Catalina Import s_rxcheck
 ' end

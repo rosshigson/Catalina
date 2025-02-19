@@ -6,10 +6,10 @@ DAT ' code segment
 ' (Catalina v2.5 Code Generator by Ross Higson)
 '
 
-' Catalina Export s4_strterm
+' Catalina Export s_strterm
 
  alignl ' align long
-C_s4_strterm ' <symbol:s4_strterm>
+C_s_strterm ' <symbol:s_strterm>
  jmp #NEWF
  jmp #PSHM
  long $a80000 ' save registers
@@ -21,7 +21,7 @@ C_s4_strterm ' <symbol:s4_strterm>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_s4_str
+ long @C_s_str
  add SP, #4 ' CALL addrg
  mov r2, r19 ' CVUI
  and r2, cviu_m1 ' zero extend
@@ -29,14 +29,14 @@ C_s4_strterm ' <symbol:s4_strterm>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_s4_tx
+ long @C_s_tx
  add SP, #4 ' CALL addrg
-' C_s4_strterm_1 ' (symbol refcount = 0)
+' C_s_strterm_1 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
-' Catalina Import s4_str
+' Catalina Import s_str
 
-' Catalina Import s4_tx
+' Catalina Import s_tx
 ' end

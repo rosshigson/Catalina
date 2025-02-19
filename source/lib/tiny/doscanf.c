@@ -18,7 +18,7 @@
 
 static int isspace(int ch) 
 {
-    return (ch == ' ' || ch == '\t' || ch == '\r' || ch == '\n');
+    return (ch == 0 || ch == ' ' || ch == '\f' || ch == '\v' || ch == '\t' || ch == '\r' || ch == '\n');
 }
 
 static const char* trim(const char* str) 

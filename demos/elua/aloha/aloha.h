@@ -43,23 +43,11 @@
  *
  */
 
+#include <serial.h>
+
 #define DEBUG_ALOHA 0          // 1 to enable debugging
  
-#if defined(__CATALINA_libserial8)
-
-#include <serial8.h>
-#define serial_tx s8_tx
-#define serial_rx s8_rx
-#define serial_rxtime s8_rxtime
-
-#elif defined(__CATALINA_libserial2)
-
-#include <serial2.h>
-#define serial_tx s2_tx
-#define serial_rx s2_rx
-#define serial_rxtime s2_rxtime
-
-#else
+#if !defined(__CATALINA_libserial8) && !defined (__CATALINA_libserial2)
 
 #error aloha requires a serial plugin (-lserial2 or -lserial8)
 

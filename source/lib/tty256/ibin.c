@@ -1,6 +1,6 @@
 #include <tty.h>
 
-void tty_ibin(unsigned value, int digits) {
-   tty_tx('%');
-   tty_bin(value, digits);
+void s_ibin(unsigned value, int digits) {
+   s_tx('%');
+   s_bin(value, digits);
 }

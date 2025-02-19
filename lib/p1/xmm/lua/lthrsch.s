@@ -43,7 +43,7 @@ C_cond_no_active_lp ' <symbol:cond_no_active_lp>
  long $0
 
  alignl ' align long
-C_sn88_670edb73_workerls_L000005 ' <symbol:workerls>
+C_sb2o_67b10fe7_workerls_L000005 ' <symbol:workerls>
  long $0
 
 ' Catalina Export lpcount
@@ -103,7 +103,7 @@ C_workermain ' <symbol:workermain>
  long @C_workermain_8_L000009
  mov r2, RI ' reg ARG ADDRG
  jmp #LODI
- long @C_sn88_670edb73_workerls_L000005
+ long @C_sb2o_67b10fe7_workerls_L000005
  mov r3, RI ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -112,7 +112,7 @@ C_workermain ' <symbol:workermain>
  add SP, #4 ' CALL addrg
  mov r2, r17 ' CVI, CVU or LOAD
  jmp #LODI
- long @C_sn88_670edb73_workerls_L000005
+ long @C_sb2o_67b10fe7_workerls_L000005
  mov r3, RI ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -121,7 +121,7 @@ C_workermain ' <symbol:workermain>
  add SP, #4 ' CALL addrg
  mov r2, #1 ' reg ARG coni
  jmp #LODI
- long @C_sn88_670edb73_workerls_L000005
+ long @C_sb2o_67b10fe7_workerls_L000005
  mov r3, RI ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -132,7 +132,7 @@ C_workermain ' <symbol:workermain>
  long -3
  mov r2, RI ' reg ARG con
  jmp #LODI
- long @C_sn88_670edb73_workerls_L000005
+ long @C_sb2o_67b10fe7_workerls_L000005
  mov r3, RI ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -143,7 +143,7 @@ C_workermain ' <symbol:workermain>
  long -2
  mov r2, RI ' reg ARG con
  jmp #LODI
- long @C_sn88_670edb73_workerls_L000005
+ long @C_sb2o_67b10fe7_workerls_L000005
  mov r3, RI ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -226,7 +226,7 @@ C_workermain_16
  long @C_workermain_8_L000009
  mov r2, RI ' reg ARG ADDRG
  jmp #LODI
- long @C_sn88_670edb73_workerls_L000005
+ long @C_sb2o_67b10fe7_workerls_L000005
  mov r3, RI ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -235,7 +235,7 @@ C_workermain_16
  add SP, #4 ' CALL addrg
  mov r2, r17 ' CVI, CVU or LOAD
  jmp #LODI
- long @C_sn88_670edb73_workerls_L000005
+ long @C_sb2o_67b10fe7_workerls_L000005
  mov r3, RI ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -243,7 +243,7 @@ C_workermain_16
  long @C_lua_pushlightuserdata
  add SP, #4 ' CALL addrg
  jmp #LODI
- long @C_sn88_670edb73_workerls_L000005
+ long @C_sb2o_67b10fe7_workerls_L000005
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -252,7 +252,7 @@ C_workermain_16
  long -3
  mov r2, RI ' reg ARG con
  jmp #LODI
- long @C_sn88_670edb73_workerls_L000005
+ long @C_sb2o_67b10fe7_workerls_L000005
  mov r3, RI ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -263,7 +263,7 @@ C_workermain_16
  long -2
  mov r2, RI ' reg ARG con
  jmp #LODI
- long @C_sn88_670edb73_workerls_L000005
+ long @C_sb2o_67b10fe7_workerls_L000005
  mov r3, RI ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -348,7 +348,7 @@ C_workermain_17
  long @C_luathread_recycle_insert ' CALL addrg
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
- long @C_sn881_670edb73_sched_dec_lpcount_L000006 ' CALL addrg
+ long @C_sb2o1_67b10fe7_sched_dec_lpcount_L000006 ' CALL addrg
  jmp #JMPA
  long @C_workermain_20 ' JUMPV addrg
 C_workermain_19
@@ -466,7 +466,7 @@ C_workermain_21
  long @C_lua_close ' CALL addrg
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
- long @C_sn881_670edb73_sched_dec_lpcount_L000006 ' CALL addrg
+ long @C_sb2o1_67b10fe7_sched_dec_lpcount_L000006 ' CALL addrg
 C_workermain_22
 C_workermain_20
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
@@ -485,7 +485,7 @@ C_workermain_11
 
 
  alignl ' align long
-C_sn881_670edb73_sched_dec_lpcount_L000006 ' <symbol:sched_dec_lpcount>
+C_sb2o1_67b10fe7_sched_dec_lpcount_L000006 ' <symbol:sched_dec_lpcount>
  jmp #NEWF
  jmp #PSHM
  long $400000 ' save registers
@@ -508,21 +508,21 @@ C_sn881_670edb73_sched_dec_lpcount_L000006 ' <symbol:sched_dec_lpcount>
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_sn881_670edb73_sched_dec_lpcount_L000006_30 ' NEI4
+ long @C_sb2o1_67b10fe7_sched_dec_lpcount_L000006_30 ' NEI4
  jmp #LODL
  long @C_cond_no_active_lp
  mov r2, RI ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C_pthread_cond_signal ' CALL addrg
-C_sn881_670edb73_sched_dec_lpcount_L000006_30
+C_sb2o1_67b10fe7_sched_dec_lpcount_L000006_30
  jmp #LODL
  long @C_mutex_lp_count
  mov r2, RI ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C_pthread_mutex_unlock ' CALL addrg
-' C_sn881_670edb73_sched_dec_lpcount_L000006_29 ' (symbol refcount = 0)
+' C_sb2o1_67b10fe7_sched_dec_lpcount_L000006_29 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -655,14 +655,14 @@ C_sched_init ' <symbol:sched_init>
  jmp #CALA
  long @C_luaL__newstate ' CALL addrg
  jmp #LODL
- long @C_sn88_670edb73_workerls_L000005
+ long @C_sb2o_67b10fe7_workerls_L000005
  mov BC, r0
  jmp #WLNG ' ASGNP4 addrg reg
  mov r22, #0 ' reg <- coni
  mov r2, r22 ' CVI, CVU or LOAD
  mov r3, r22 ' CVI, CVU or LOAD
  jmp #LODI
- long @C_sn88_670edb73_workerls_L000005
+ long @C_sb2o_67b10fe7_workerls_L000005
  mov r4, RI ' reg ARG INDIR ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -673,7 +673,7 @@ C_sched_init ' <symbol:sched_init>
  long @C_workermain_8_L000009
  mov r2, RI ' reg ARG ADDRG
  jmp #LODI
- long @C_sn88_670edb73_workerls_L000005
+ long @C_sb2o_67b10fe7_workerls_L000005
  mov r3, RI ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -1503,7 +1503,7 @@ C_sched_join_workers ' <symbol:sched_join_workers>
  long @C_workermain_8_L000009
  mov r2, RI ' reg ARG ADDRG
  jmp #LODI
- long @C_sn88_670edb73_workerls_L000005
+ long @C_sb2o_67b10fe7_workerls_L000005
  mov r3, RI ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -1511,7 +1511,7 @@ C_sched_join_workers ' <symbol:sched_join_workers>
  long @C_lua_getglobal
  add SP, #4 ' CALL addrg
  jmp #LODI
- long @C_sn88_670edb73_workerls_L000005
+ long @C_sb2o_67b10fe7_workerls_L000005
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -1523,7 +1523,7 @@ C_sched_join_workers_108
  long -2
  mov r2, RI ' reg ARG con
  jmp #LODI
- long @C_sn88_670edb73_workerls_L000005
+ long @C_sb2o_67b10fe7_workerls_L000005
  mov r3, RI ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -1558,7 +1558,7 @@ C_sched_join_workers_108
  long -2
  mov r2, RI ' reg ARG con
  jmp #LODI
- long @C_sn88_670edb73_workerls_L000005
+ long @C_sb2o_67b10fe7_workerls_L000005
  mov r3, RI ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -1570,7 +1570,7 @@ C_sched_join_workers_109
  long -2
  mov r2, RI ' reg ARG con
  jmp #LODI
- long @C_sn88_670edb73_workerls_L000005
+ long @C_sb2o_67b10fe7_workerls_L000005
  mov r3, RI ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -1673,7 +1673,7 @@ C_sched_join_workers_112
  long @C_lua_settop
  add SP, #4 ' CALL addrg
  jmp #LODI
- long @C_sn88_670edb73_workerls_L000005
+ long @C_sb2o_67b10fe7_workerls_L000005
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA

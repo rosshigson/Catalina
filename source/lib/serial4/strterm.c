@@ -1,6 +1,6 @@
 #include <serial4.h>
 
-void s4_strterm(unsigned port, char *stringptr, char term) {
-   s4_str(port, stringptr);
-   s4_tx(port, term);
+void s_strterm(unsigned port, char *stringptr, char term) {
+   s_str(port, stringptr);
+   s_tx(port, term);
 }

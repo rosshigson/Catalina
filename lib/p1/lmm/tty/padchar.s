@@ -6,10 +6,10 @@ DAT ' code segment
 ' (Catalina v2.5 Code Generator by Ross Higson)
 '
 
-' Catalina Export tty_padchar
+' Catalina Export s_padchar
 
  alignl ' align long
-C_tty_padchar ' <symbol:tty_padchar>
+C_s_padchar ' <symbol:s_padchar>
  jmp #NEWF
  jmp #PSHM
  long $e80000 ' save registers
@@ -17,24 +17,24 @@ C_tty_padchar ' <symbol:tty_padchar>
  mov r21, r2 ' reg var <- reg arg
  mov r19, #0 ' reg <- coni
  jmp #JMPA
- long @C_tty_padchar_5 ' JUMPV addrg
-C_tty_padchar_2
+ long @C_s_padchar_5 ' JUMPV addrg
+C_s_padchar_2
  mov r2, r21 ' CVUI
  and r2, cviu_m1 ' zero extend
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_tty_tx ' CALL addrg
-' C_tty_padchar_3 ' (symbol refcount = 0)
+ long @C_s_tx ' CALL addrg
+' C_s_padchar_3 ' (symbol refcount = 0)
  adds r19, #1 ' ADDI4 coni
-C_tty_padchar_5
+C_s_padchar_5
  mov r22, r19 ' CVI, CVU or LOAD
  cmp r22, r23 wz,wc 
  jmp #BR_B
- long @C_tty_padchar_2' LTU4
-' C_tty_padchar_1 ' (symbol refcount = 0)
+ long @C_s_padchar_2' LTU4
+' C_s_padchar_1 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
-' Catalina Import tty_tx
+' Catalina Import s_tx
 ' end

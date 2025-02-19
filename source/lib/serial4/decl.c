@@ -1,6 +1,6 @@
 #include <serial4.h>
 
-void s4_decl(unsigned port, int value, int digits, int flag) {
+void s_decl(unsigned port, int value, int digits, int flag) {
    int i = 1000000000;
    int j;
    int result = 0;
@@ -35,7 +35,7 @@ void s4_decl(unsigned port, int value, int digits, int flag) {
    }
    if (value < 0) {
       value = -value;
-      s4_tx(port, '-');
+      s_tx(port, '-');
    }
    if (flag & 3) {
        for (j = 10-digits; j > 0; j--) {
@@ -45,15 +45,15 @@ void s4_decl(unsigned port, int value, int digits, int flag) {
    
    for (j = 0; j < digits; j++) {
      if (value >= i) {
-       s4_tx(port, value / i + '0');
+       s_tx(port, value / i + '0');
        value %= i;
        result = -1;
      }
      else if ((i == 1) || result || (flag & 2)) {
-       s4_tx(port,'0');
+       s_tx(port,'0');
      }
      else if (flag & 1) {
-       s4_tx(port,' ');
+       s_tx(port,' ');
      }
      i /= 10;
    }

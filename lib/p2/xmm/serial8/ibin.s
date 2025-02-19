@@ -6,10 +6,10 @@ DAT ' code segment
 ' (Catalina v2.5 Code Generator by Ross Higson)
 '
 
-' Catalina Export s8_ibin
+' Catalina Export s_ibin
 
  alignl ' align long
-C_s8_ibin ' <symbol:s8_ibin>
+C_s_ibin ' <symbol:s_ibin>
  jmp #NEWF
  jmp #PSHM
  long $a80000 ' save registers
@@ -21,7 +21,7 @@ C_s8_ibin ' <symbol:s8_ibin>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_s8_tx
+ long @C_s_tx
  add SP, #4 ' CALL addrg
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r21 ' CVI, CVU or LOAD
@@ -29,14 +29,14 @@ C_s8_ibin ' <symbol:s8_ibin>
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_s8_bin
+ long @C_s_bin
  add SP, #8 ' CALL addrg
-' C_s8_ibin_1 ' (symbol refcount = 0)
+' C_s_ibin_1 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
-' Catalina Import s8_bin
+' Catalina Import s_bin
 
-' Catalina Import s8_tx
+' Catalina Import s_tx
 ' end

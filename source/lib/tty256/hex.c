@@ -1,6 +1,6 @@
 #include <tty.h>
 
-void tty_hex(unsigned value, int digits) {
+void s_hex(unsigned value, int digits) {
    int i;
    int j;
 
@@ -19,7 +19,7 @@ void tty_hex(unsigned value, int digits) {
       if (i > 9) {
          i += 'A' - 10 - '0';
       }
-      tty_tx(i + '0');
+      s_tx(i + '0');
       value <<= 4;
    }
 }

@@ -8,9 +8,9 @@ _printf_putls doprntfs.s 195 import
 putstr doprntfs.s 197 import
 putchar doprntfs.s 199 import
 isdigit doprntfs.s 201 import
-_doscanf doscanf.s 126 export
-_scanf_getl doscanf.s 422 import
-isdigit doscanf.s 424 import
+_doscanf doscanf.s 135 export
+_scanf_getl doscanf.s 431 import
+isdigit doscanf.s 433 import
 fgetc fgetc.s 9 export
 stdin fgetc.s 29 export
 getchar fgetc.s 39 import

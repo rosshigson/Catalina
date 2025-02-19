@@ -1,6 +1,6 @@
 #include <tty.h>
 
-void tty_decl(int value, int digits, int flag) {
+void s_decl(int value, int digits, int flag) {
    int i = 1000000000;
    int j;
    int result = 0;
@@ -35,7 +35,7 @@ void tty_decl(int value, int digits, int flag) {
    }
    if (value < 0) {
       value = -value;
-      tty_tx('-');
+      s_tx('-');
    }
    if (flag & 3) {
        for (j = 10-digits; j > 0; j--) {
@@ -45,15 +45,15 @@ void tty_decl(int value, int digits, int flag) {
    
    for (j = 0; j < digits; j++) {
      if (value >= i) {
-       tty_tx(value / i + '0');
+       s_tx(value / i + '0');
        value %= i;
        result = -1;
      }
      else if ((i == 1) || result || (flag & 2)) {
-       tty_tx('0');
+       s_tx('0');
      }
      else if (flag & 1) {
-       tty_tx(' ');
+       s_tx(' ');
      }
      i /= 10;
    }

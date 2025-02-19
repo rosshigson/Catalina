@@ -8,7 +8,8 @@ Propeller platform that uses a 5Mhz clock, such as the Parallax QuickStart or
 Demo boards, but are intended to be changed to suit the specific platform used.
 
 Custom support can be enabled by either adding the option -C CUSTOM to each 
-catalina command line:
+catalina command line, or by adding ACTIVITY to the CATALINA_DEFINE 
+environment variable - e.g:
 
    catalina hello_world.c -lc -C CUSTOM
 

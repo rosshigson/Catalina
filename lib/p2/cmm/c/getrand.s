@@ -7,17 +7,17 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_si3g_670edc82__seed_L000001 ' <symbol:_seed>
+C_siak_67b110e2__seed_L000001 ' <symbol:_seed>
  alignl ' align long
  long I32_PSHM + $400000<<S32 ' save registers
-' loading argument C_si3g_670edc82__seed_L000001_3_L000004 to PASM eliminated
+' loading argument C_siak_67b110e2__seed_L000001_3_L000004 to PASM eliminated
 'START PASM ... 
 getct r0
 
 '... END PASM
 ' call to PASM eliminated
  word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
-' C_si3g_670edc82__seed_L000001_2 ' (symbol refcount = 0)
+' C_siak_67b110e2__seed_L000001_2 ' (symbol refcount = 0)
  word I16B_POPM + $80<<S16B ' restore registers, do not pop frame, do return
  alignl ' align long
 
@@ -48,7 +48,7 @@ C_getrand ' <symbol:getrand>
  alignl ' align long
  long I32_BRNZ + (@C_getrand_8)<<S32 ' NEI4 reg coni
  alignl ' align long
- long I32_CALA + (@C_si3g_670edc82__seed_L000001)<<S32 ' CALL addrg
+ long I32_CALA + (@C_siak_67b110e2__seed_L000001)<<S32 ' CALL addrg
  word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r2)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4

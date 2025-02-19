@@ -6,7 +6,9 @@ provided by this target package.
 
 RamBlade support is enabled by either adding the option -C RAMBLADE to each 
 catalina command line, or by adding RAMBLADE to the CATALINA_DEFINE 
-environment variable.
+environment variable  - e.g:
+
+   catalina hello_world.c -lc -C RAMBLADE
 
 The RamBlade has none of the usual external TV, VGA or Keyboard/Mouse drivers,
 but it does support serial I/O, so only the PC and PROPTERMINAL HMI options 

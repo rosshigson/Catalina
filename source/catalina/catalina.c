@@ -386,6 +386,8 @@
  *                 all cases, whereas it should only have done so if no
  *                 other mode had been specified.
  *
+ * version 8.4  - just update version number.
+ *
  */                  
 
 /*--------------------------------------------------------------------------
@@ -415,7 +417,7 @@
 #include <string.h>
 #include <math.h>
 
-#define VERSION            "8.3"
+#define VERSION            "8.4"
 
 #define MAX_LINELEN        4096
 

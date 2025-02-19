@@ -6,10 +6,10 @@ DAT ' code segment
 ' (Catalina v3.15 Code Generator by Ross Higson)
 '
 
-' Catalina Export s2_rxtime
+' Catalina Export s_rxtime
 
  alignl ' align long
-C_s2_rxtime ' <symbol:s2_rxtime>
+C_s_rxtime ' <symbol:s_rxtime>
  alignl ' align long
  long I32_NEWF + 0<<S32
  alignl ' align long
@@ -20,17 +20,17 @@ C_s2_rxtime ' <symbol:s2_rxtime>
  long I32_CALA + (@C__cnt)<<S32 ' CALL addrg
  word I16A_MOV + (r17)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  alignl ' align long
- long I32_JMPA + (@C_s2_rxtime_3)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_s_rxtime_3)<<S32 ' JUMPV addrg
  alignl ' align long
-C_s2_rxtime_2
+C_s_rxtime_2
  word I16A_MOV + (r2)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
  alignl ' align long
- long I32_CALA + (@C_s2_rxcheck)<<S32 ' CALL addrg
+ long I32_CALA + (@C_s_rxcheck)<<S32 ' CALL addrg
  word I16A_MOV + (r19)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPSI + (r19)<<D16A + (0)<<S16A
  alignl ' align long
- long I32_BRAE + (@C_s2_rxtime_7)<<S32 ' GEI4 reg coni
+ long I32_BRAE + (@C_s_rxtime_7)<<S32 ' GEI4 reg coni
  alignl ' align long
  long I32_CALA + (@C__cnt)<<S32 ' CALL addrg
  word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
@@ -49,21 +49,21 @@ C_s2_rxtime_2
  word I16B_DIVU ' DIVU
  word I16A_CMP + (r0)<<D16A + (r21)<<S16A
  alignl ' align long
- long I32_BRBE + (@C_s2_rxtime_5)<<S32 ' LEU4 reg reg
+ long I32_BRBE + (@C_s_rxtime_5)<<S32 ' LEU4 reg reg
  alignl ' align long
-C_s2_rxtime_7
+C_s_rxtime_7
  alignl ' align long
- long I32_JMPA + (@C_s2_rxtime_4)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_s_rxtime_4)<<S32 ' JUMPV addrg
  alignl ' align long
-C_s2_rxtime_5
+C_s_rxtime_5
  alignl ' align long
-C_s2_rxtime_3
+C_s_rxtime_3
  alignl ' align long
- long I32_JMPA + (@C_s2_rxtime_2)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_s_rxtime_2)<<S32 ' JUMPV addrg
  alignl ' align long
-C_s2_rxtime_4
+C_s_rxtime_4
  word I16A_MOV + (r0)<<D16A + (r19)<<S16A ' CVI, CVU or LOAD
-' C_s2_rxtime_1 ' (symbol refcount = 0)
+' C_s_rxtime_1 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
@@ -71,5 +71,5 @@ C_s2_rxtime_4
 
 ' Catalina Import _clockfreq
 
-' Catalina Import s2_rxcheck
+' Catalina Import s_rxcheck
 ' end

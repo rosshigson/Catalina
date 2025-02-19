@@ -32,11 +32,11 @@ endif
 
 ifeq ($(PROPELLER_2),TRUE)
 
-all: assert ctype errno locale math setjmp signal stdlib string time catalina float threads linenoise int tiny spi lua libc p2 serial2 serial8 psram hyper libci libcix libcx libm libma libmb libmc libthreads liblinenoise libint libtiny libspi liblua libluax libserial2 libserial8 libpsram libhyper install 
+all: assert ctype errno locale math setjmp signal stdlib string time catalina float threads linenoise int tiny spi lua libc p2 serial2 serial8 wifi psram hyper libci libcix libcx libm libma libmb libmc libthreads liblinenoise libint libtiny libspi liblua libluax libserial2 libserial8 libwifi libpsram libhyper install 
 
 else
 
-all: assert ctype errno locale math setjmp signal stdlib string time catalina float threads linenoise int tiny spi lua graphics vgraphic serial4 sound tty tty256 libc libci libcix libcx libm libma libmb libmc libthreads liblinenoise libint libtiny libspi liblua libluax libgraphics libvgraphic libserial4 libsound libtty libtty256 install
+all: assert ctype errno locale math setjmp signal stdlib string time catalina float threads linenoise int tiny spi lua graphics vgraphic serial4 wifi sound tty tty256 libc libci libcix libcx libm libma libmb libmc libthreads liblinenoise libint libtiny libspi liblua libluax libgraphics libvgraphic libserial4 libwifi libsound libtty libtty256 install
 
 endif
 
@@ -66,6 +66,7 @@ clean:
 	$(MAKE) -C serial4 clean
 	$(MAKE) -C serial2 clean
 	$(MAKE) -C serial8 clean
+	$(MAKE) -C wifi clean
 	$(MAKE) -C psram clean
 	$(MAKE) -C hyper clean
 	$(MAKE) -C sound clean
@@ -90,6 +91,7 @@ clean:
 	$(MAKE) -C lib\\serial4 clean
 	$(MAKE) -C lib\\serial2 clean
 	$(MAKE) -C lib\\serial8 clean
+	$(MAKE) -C lib\\wifi clean
 	$(MAKE) -C lib\\psram clean
 	$(MAKE) -C lib\\hyper clean
 	$(MAKE) -C lib\\sound clean
@@ -137,6 +139,8 @@ install:
 	-cp -r lib\\serial2 $(OUTPUT)\\$(LIB)
 	-rm -fr $(OUTPUT)\\$(LIB)\\serial8
 	-cp -r lib\\serial8 $(OUTPUT)\\$(LIB)
+	-rm -fr $(OUTPUT)\\$(LIB)\\wifi
+	-cp -r lib\\wifi $(OUTPUT)\\$(LIB)
 	-rm -fr $(OUTPUT)\\$(LIB)\\psram
 	-cp -r lib\\psram $(OUTPUT)\\$(LIB)
 	-rm -fr $(OUTPUT)\\$(LIB)\\hyper
@@ -220,6 +224,9 @@ serial2:	ALWAYSRUN
 
 serial8:	ALWAYSRUN
 	$(MAKE) -C serial8 all
+
+wifi:	ALWAYSRUN
+	$(MAKE) -C wifi all
 
 psram:	ALWAYSRUN
 	$(MAKE) -C psram all
@@ -353,6 +360,9 @@ libserial2:	ALWAYSRUN
 
 libserial8:	ALWAYSRUN
 	$(MAKE) -C lib\\serial8 all
+
+libwifi:	ALWAYSRUN
+	$(MAKE) -C lib\\wifi all
 
 libpsram:	ALWAYSRUN
 	$(MAKE) -C lib\\psram all

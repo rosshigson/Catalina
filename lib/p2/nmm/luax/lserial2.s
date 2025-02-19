@@ -11,37 +11,37 @@ DAT ' code segment
 DAT ' const data segment
 
  alignl ' align long
-C_sna0f_670edcd7_luaserial2_funcs_L000019 ' <symbol:luaserial2_funcs>
- long @C_sna0g_670edcd7_20_L000021
- long @C_sna0_670edcd7_serial2_rxflush_L000004
- long @C_sna0h_670edcd7_22_L000023
- long @C_sna01_670edcd7_serial2_rxcheck_L000005
- long @C_sna0i_670edcd7_24_L000025
- long @C_sna02_670edcd7_serial2_rxtime_L000006
- long @C_sna0j_670edcd7_26_L000027
- long @C_sna03_670edcd7_serial2_rxcount_L000007
- long @C_sna0k_670edcd7_28_L000029
- long @C_sna04_670edcd7_serial2_rx_L000008
- long @C_sna0l_670edcd7_30_L000031
- long @C_sna05_670edcd7_serial2_txflush_L000009
- long @C_sna0m_670edcd7_32_L000033
- long @C_sna06_670edcd7_serial2_txcount_L000010
- long @C_sna0n_670edcd7_34_L000035
- long @C_sna07_670edcd7_serial2_tx_L000011
- long @C_sna0o_670edcd7_36_L000037
- long @C_sna08_670edcd7_serial2_str_L000012
- long @C_sna0p_670edcd7_38_L000039
- long @C_sna09_670edcd7_serial2_decl_L000013
- long @C_sna0q_670edcd7_40_L000041
- long @C_sna0a_670edcd7_serial2_hex_L000014
- long @C_sna0r_670edcd7_42_L000043
- long @C_sna0b_670edcd7_serial2_ihex_L000015
- long @C_sna0s_670edcd7_44_L000045
- long @C_sna0c_670edcd7_serial2_bin_L000016
- long @C_sna0t_670edcd7_46_L000047
- long @C_sna0d_670edcd7_serial2_ibin_L000017
- long @C_sna0u_670edcd7_48_L000049
- long @C_sna0e_670edcd7_serial2_padchar_L000018
+C_sqlgf_67b1112e_luaserial2_funcs_L000019 ' <symbol:luaserial2_funcs>
+ long @C_sqlgg_67b1112e_20_L000021
+ long @C_sqlg_67b1112e_serial2_rxflush_L000004
+ long @C_sqlgh_67b1112e_22_L000023
+ long @C_sqlg1_67b1112e_serial2_rxcheck_L000005
+ long @C_sqlgi_67b1112e_24_L000025
+ long @C_sqlg2_67b1112e_serial2_rxtime_L000006
+ long @C_sqlgj_67b1112e_26_L000027
+ long @C_sqlg3_67b1112e_serial2_rxcount_L000007
+ long @C_sqlgk_67b1112e_28_L000029
+ long @C_sqlg4_67b1112e_serial2_rx_L000008
+ long @C_sqlgl_67b1112e_30_L000031
+ long @C_sqlg5_67b1112e_serial2_txflush_L000009
+ long @C_sqlgm_67b1112e_32_L000033
+ long @C_sqlg6_67b1112e_serial2_txcount_L000010
+ long @C_sqlgn_67b1112e_34_L000035
+ long @C_sqlg7_67b1112e_serial2_tx_L000011
+ long @C_sqlgo_67b1112e_36_L000037
+ long @C_sqlg8_67b1112e_serial2_str_L000012
+ long @C_sqlgp_67b1112e_38_L000039
+ long @C_sqlg9_67b1112e_serial2_decl_L000013
+ long @C_sqlgq_67b1112e_40_L000041
+ long @C_sqlga_67b1112e_serial2_hex_L000014
+ long @C_sqlgr_67b1112e_42_L000043
+ long @C_sqlgb_67b1112e_serial2_ihex_L000015
+ long @C_sqlgs_67b1112e_44_L000045
+ long @C_sqlgc_67b1112e_serial2_bin_L000016
+ long @C_sqlgt_67b1112e_46_L000047
+ long @C_sqlgd_67b1112e_serial2_ibin_L000017
+ long @C_sqlgu_67b1112e_48_L000049
+ long @C_sqlge_67b1112e_serial2_padchar_L000018
  long $0
  long $0
 
@@ -50,7 +50,7 @@ C_sna0f_670edcd7_luaserial2_funcs_L000019 ' <symbol:luaserial2_funcs>
 DAT ' code segment
 
  alignl ' align long
-C_sna0_670edcd7_serial2_rxflush_L000004 ' <symbol:serial2_rxflush>
+C_sqlg_67b1112e_serial2_rxflush_L000004 ' <symbol:serial2_rxflush>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e00000 ' save registers
@@ -66,7 +66,7 @@ C_sna0_670edcd7_serial2_rxflush_L000004 ' <symbol:serial2_rxflush>
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_s2_rxflush ' CALL addrg
+ long @C_s_rxflush ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r2, r22 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
@@ -76,13 +76,13 @@ C_sna0_670edcd7_serial2_rxflush_L000004 ' <symbol:serial2_rxflush>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_sna0_670edcd7_serial2_rxflush_L000004_50 ' (symbol refcount = 0)
+' C_sqlg_67b1112e_serial2_rxflush_L000004_50 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sna01_670edcd7_serial2_rxcheck_L000005 ' <symbol:serial2_rxcheck>
+C_sqlg1_67b1112e_serial2_rxcheck_L000005 ' <symbol:serial2_rxcheck>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e00000 ' save registers
@@ -98,7 +98,7 @@ C_sna01_670edcd7_serial2_rxcheck_L000005 ' <symbol:serial2_rxcheck>
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_s2_rxcheck ' CALL addrg
+ long @C_s_rxcheck ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r2, r22 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
@@ -108,13 +108,13 @@ C_sna01_670edcd7_serial2_rxcheck_L000005 ' <symbol:serial2_rxcheck>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_sna01_670edcd7_serial2_rxcheck_L000005_51 ' (symbol refcount = 0)
+' C_sqlg1_67b1112e_serial2_rxcheck_L000005_51 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sna02_670edcd7_serial2_rxtime_L000006 ' <symbol:serial2_rxtime>
+C_sqlg2_67b1112e_serial2_rxtime_L000006 ' <symbol:serial2_rxtime>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e80000 ' save registers
@@ -140,7 +140,7 @@ C_sna02_670edcd7_serial2_rxtime_L000006 ' <symbol:serial2_rxtime>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s2_rxtime
+ long @C_s_rxtime
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r2, r22 ' CVI, CVU or LOAD
@@ -151,13 +151,13 @@ C_sna02_670edcd7_serial2_rxtime_L000006 ' <symbol:serial2_rxtime>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_sna02_670edcd7_serial2_rxtime_L000006_52 ' (symbol refcount = 0)
+' C_sqlg2_67b1112e_serial2_rxtime_L000006_52 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sna03_670edcd7_serial2_rxcount_L000007 ' <symbol:serial2_rxcount>
+C_sqlg3_67b1112e_serial2_rxcount_L000007 ' <symbol:serial2_rxcount>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e00000 ' save registers
@@ -173,7 +173,7 @@ C_sna03_670edcd7_serial2_rxcount_L000007 ' <symbol:serial2_rxcount>
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_s2_rxcount ' CALL addrg
+ long @C_s_rxcount ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r2, r22 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
@@ -183,13 +183,13 @@ C_sna03_670edcd7_serial2_rxcount_L000007 ' <symbol:serial2_rxcount>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_sna03_670edcd7_serial2_rxcount_L000007_53 ' (symbol refcount = 0)
+' C_sqlg3_67b1112e_serial2_rxcount_L000007_53 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sna04_670edcd7_serial2_rx_L000008 ' <symbol:serial2_rx>
+C_sqlg4_67b1112e_serial2_rx_L000008 ' <symbol:serial2_rx>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e00000 ' save registers
@@ -205,7 +205,7 @@ C_sna04_670edcd7_serial2_rx_L000008 ' <symbol:serial2_rx>
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_s2_rx ' CALL addrg
+ long @C_s_rx ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r2, r22 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
@@ -215,13 +215,13 @@ C_sna04_670edcd7_serial2_rx_L000008 ' <symbol:serial2_rx>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_sna04_670edcd7_serial2_rx_L000008_54 ' (symbol refcount = 0)
+' C_sqlg4_67b1112e_serial2_rx_L000008_54 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sna05_670edcd7_serial2_txflush_L000009 ' <symbol:serial2_txflush>
+C_sqlg5_67b1112e_serial2_txflush_L000009 ' <symbol:serial2_txflush>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e00000 ' save registers
@@ -237,7 +237,7 @@ C_sna05_670edcd7_serial2_txflush_L000009 ' <symbol:serial2_txflush>
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_s2_txflush ' CALL addrg
+ long @C_s_txflush ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r2, r22 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
@@ -247,13 +247,13 @@ C_sna05_670edcd7_serial2_txflush_L000009 ' <symbol:serial2_txflush>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_sna05_670edcd7_serial2_txflush_L000009_55 ' (symbol refcount = 0)
+' C_sqlg5_67b1112e_serial2_txflush_L000009_55 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sna06_670edcd7_serial2_txcount_L000010 ' <symbol:serial2_txcount>
+C_sqlg6_67b1112e_serial2_txcount_L000010 ' <symbol:serial2_txcount>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e00000 ' save registers
@@ -269,7 +269,7 @@ C_sna06_670edcd7_serial2_txcount_L000010 ' <symbol:serial2_txcount>
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_s2_txcount ' CALL addrg
+ long @C_s_txcount ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r2, r22 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
@@ -279,13 +279,13 @@ C_sna06_670edcd7_serial2_txcount_L000010 ' <symbol:serial2_txcount>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_sna06_670edcd7_serial2_txcount_L000010_56 ' (symbol refcount = 0)
+' C_sqlg6_67b1112e_serial2_txcount_L000010_56 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sna07_670edcd7_serial2_tx_L000011 ' <symbol:serial2_tx>
+C_sqlg7_67b1112e_serial2_tx_L000011 ' <symbol:serial2_tx>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e80000 ' save registers
@@ -313,7 +313,7 @@ C_sna07_670edcd7_serial2_tx_L000011 ' <symbol:serial2_tx>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s2_tx
+ long @C_s_tx
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r2, r22 ' CVI, CVU or LOAD
@@ -324,13 +324,13 @@ C_sna07_670edcd7_serial2_tx_L000011 ' <symbol:serial2_tx>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_sna07_670edcd7_serial2_tx_L000011_57 ' (symbol refcount = 0)
+' C_sqlg7_67b1112e_serial2_tx_L000011_57 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sna08_670edcd7_serial2_str_L000012 ' <symbol:serial2_str>
+C_sqlg8_67b1112e_serial2_str_L000012 ' <symbol:serial2_str>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e80000 ' save registers
@@ -357,16 +357,16 @@ C_sna08_670edcd7_serial2_str_L000012 ' <symbol:serial2_str>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s2_str
+ long @C_s_str
  add SP, #4 ' CALL addrg
  mov r0, #0 ' reg <- coni
-' C_sna08_670edcd7_serial2_str_L000012_58 ' (symbol refcount = 0)
+' C_sqlg8_67b1112e_serial2_str_L000012_58 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sna09_670edcd7_serial2_decl_L000013 ' <symbol:serial2_decl>
+C_sqlg9_67b1112e_serial2_decl_L000013 ' <symbol:serial2_decl>
  calld PA,#NEWF
  calld PA,#PSHM
  long $ea8000 ' save registers
@@ -410,16 +410,16 @@ C_sna09_670edcd7_serial2_decl_L000013 ' <symbol:serial2_decl>
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s2_decl
+ long @C_s_decl
  add SP, #12 ' CALL addrg
  mov r0, #0 ' reg <- coni
-' C_sna09_670edcd7_serial2_decl_L000013_59 ' (symbol refcount = 0)
+' C_sqlg9_67b1112e_serial2_decl_L000013_59 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sna0a_670edcd7_serial2_hex_L000014 ' <symbol:serial2_hex>
+C_sqlga_67b1112e_serial2_hex_L000014 ' <symbol:serial2_hex>
  calld PA,#NEWF
  calld PA,#PSHM
  long $ea0000 ' save registers
@@ -454,16 +454,16 @@ C_sna0a_670edcd7_serial2_hex_L000014 ' <symbol:serial2_hex>
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s2_hex
+ long @C_s_hex
  add SP, #8 ' CALL addrg
  mov r0, #0 ' reg <- coni
-' C_sna0a_670edcd7_serial2_hex_L000014_60 ' (symbol refcount = 0)
+' C_sqlga_67b1112e_serial2_hex_L000014_60 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sna0b_670edcd7_serial2_ihex_L000015 ' <symbol:serial2_ihex>
+C_sqlgb_67b1112e_serial2_ihex_L000015 ' <symbol:serial2_ihex>
  calld PA,#NEWF
  calld PA,#PSHM
  long $ea0000 ' save registers
@@ -498,16 +498,16 @@ C_sna0b_670edcd7_serial2_ihex_L000015 ' <symbol:serial2_ihex>
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s2_ihex
+ long @C_s_ihex
  add SP, #8 ' CALL addrg
  mov r0, #0 ' reg <- coni
-' C_sna0b_670edcd7_serial2_ihex_L000015_61 ' (symbol refcount = 0)
+' C_sqlgb_67b1112e_serial2_ihex_L000015_61 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sna0c_670edcd7_serial2_bin_L000016 ' <symbol:serial2_bin>
+C_sqlgc_67b1112e_serial2_bin_L000016 ' <symbol:serial2_bin>
  calld PA,#NEWF
  calld PA,#PSHM
  long $ea0000 ' save registers
@@ -542,16 +542,16 @@ C_sna0c_670edcd7_serial2_bin_L000016 ' <symbol:serial2_bin>
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s2_bin
+ long @C_s_bin
  add SP, #8 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_sna0c_670edcd7_serial2_bin_L000016_62 ' (symbol refcount = 0)
+' C_sqlgc_67b1112e_serial2_bin_L000016_62 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sna0d_670edcd7_serial2_ibin_L000017 ' <symbol:serial2_ibin>
+C_sqlgd_67b1112e_serial2_ibin_L000017 ' <symbol:serial2_ibin>
  calld PA,#NEWF
  calld PA,#PSHM
  long $ea0000 ' save registers
@@ -586,16 +586,16 @@ C_sna0d_670edcd7_serial2_ibin_L000017 ' <symbol:serial2_ibin>
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s2_ibin
+ long @C_s_ibin
  add SP, #8 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_sna0d_670edcd7_serial2_ibin_L000017_63 ' (symbol refcount = 0)
+' C_sqlgd_67b1112e_serial2_ibin_L000017_63 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sna0e_670edcd7_serial2_padchar_L000018 ' <symbol:serial2_padchar>
+C_sqlge_67b1112e_serial2_padchar_L000018 ' <symbol:serial2_padchar>
  calld PA,#NEWF
  calld PA,#PSHM
  long $ea0000 ' save registers
@@ -632,10 +632,10 @@ C_sna0e_670edcd7_serial2_padchar_L000018 ' <symbol:serial2_padchar>
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s2_padchar
+ long @C_s_padchar
  add SP, #8 ' CALL addrg
  mov r0, #0 ' reg <- coni
-' C_sna0e_670edcd7_serial2_padchar_L000018_64 ' (symbol refcount = 0)
+' C_sqlge_67b1112e_serial2_padchar_L000018_64 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -667,7 +667,7 @@ C_luaopen_serial2 ' <symbol:luaopen_serial2>
  long @C_lua_createtable
  add SP, #8 ' CALL addrg
  mov r2, #0 ' reg ARG coni
- mov r3, ##@C_sna0f_670edcd7_luaserial2_funcs_L000019 ' reg ARG ADDRG
+ mov r3, ##@C_sqlgf_67b1112e_luaserial2_funcs_L000019 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -680,35 +680,35 @@ C_luaopen_serial2 ' <symbol:luaopen_serial2>
  calld PA,#RETF
 
 
-' Catalina Import s2_padchar
+' Catalina Import s_padchar
 
-' Catalina Import s2_ibin
+' Catalina Import s_ibin
 
-' Catalina Import s2_bin
+' Catalina Import s_bin
 
-' Catalina Import s2_ihex
+' Catalina Import s_ihex
 
-' Catalina Import s2_hex
+' Catalina Import s_hex
 
-' Catalina Import s2_decl
+' Catalina Import s_decl
 
-' Catalina Import s2_str
+' Catalina Import s_str
 
-' Catalina Import s2_txcount
+' Catalina Import s_txcount
 
-' Catalina Import s2_txflush
+' Catalina Import s_txflush
 
-' Catalina Import s2_tx
+' Catalina Import s_tx
 
-' Catalina Import s2_rx
+' Catalina Import s_rx
 
-' Catalina Import s2_rxcount
+' Catalina Import s_rxcount
 
-' Catalina Import s2_rxtime
+' Catalina Import s_rxtime
 
-' Catalina Import s2_rxcheck
+' Catalina Import s_rxcheck
 
-' Catalina Import s2_rxflush
+' Catalina Import s_rxflush
 
 ' Catalina Import luaL_setfuncs
 
@@ -731,7 +731,7 @@ C_luaopen_serial2_66_L000067 ' <symbol:66>
  long $43fc0000 ' float
 
  alignl ' align long
-C_sna0u_670edcd7_48_L000049 ' <symbol:48>
+C_sqlgu_67b1112e_48_L000049 ' <symbol:48>
  byte 112
  byte 97
  byte 100
@@ -742,7 +742,7 @@ C_sna0u_670edcd7_48_L000049 ' <symbol:48>
  byte 0
 
  alignl ' align long
-C_sna0t_670edcd7_46_L000047 ' <symbol:46>
+C_sqlgt_67b1112e_46_L000047 ' <symbol:46>
  byte 105
  byte 98
  byte 105
@@ -750,14 +750,14 @@ C_sna0t_670edcd7_46_L000047 ' <symbol:46>
  byte 0
 
  alignl ' align long
-C_sna0s_670edcd7_44_L000045 ' <symbol:44>
+C_sqlgs_67b1112e_44_L000045 ' <symbol:44>
  byte 98
  byte 105
  byte 110
  byte 0
 
  alignl ' align long
-C_sna0r_670edcd7_42_L000043 ' <symbol:42>
+C_sqlgr_67b1112e_42_L000043 ' <symbol:42>
  byte 105
  byte 104
  byte 101
@@ -765,14 +765,14 @@ C_sna0r_670edcd7_42_L000043 ' <symbol:42>
  byte 0
 
  alignl ' align long
-C_sna0q_670edcd7_40_L000041 ' <symbol:40>
+C_sqlgq_67b1112e_40_L000041 ' <symbol:40>
  byte 104
  byte 101
  byte 120
  byte 0
 
  alignl ' align long
-C_sna0p_670edcd7_38_L000039 ' <symbol:38>
+C_sqlgp_67b1112e_38_L000039 ' <symbol:38>
  byte 100
  byte 101
  byte 99
@@ -780,20 +780,20 @@ C_sna0p_670edcd7_38_L000039 ' <symbol:38>
  byte 0
 
  alignl ' align long
-C_sna0o_670edcd7_36_L000037 ' <symbol:36>
+C_sqlgo_67b1112e_36_L000037 ' <symbol:36>
  byte 115
  byte 116
  byte 114
  byte 0
 
  alignl ' align long
-C_sna0n_670edcd7_34_L000035 ' <symbol:34>
+C_sqlgn_67b1112e_34_L000035 ' <symbol:34>
  byte 116
  byte 120
  byte 0
 
  alignl ' align long
-C_sna0m_670edcd7_32_L000033 ' <symbol:32>
+C_sqlgm_67b1112e_32_L000033 ' <symbol:32>
  byte 116
  byte 120
  byte 99
@@ -804,7 +804,7 @@ C_sna0m_670edcd7_32_L000033 ' <symbol:32>
  byte 0
 
  alignl ' align long
-C_sna0l_670edcd7_30_L000031 ' <symbol:30>
+C_sqlgl_67b1112e_30_L000031 ' <symbol:30>
  byte 116
  byte 120
  byte 102
@@ -815,13 +815,13 @@ C_sna0l_670edcd7_30_L000031 ' <symbol:30>
  byte 0
 
  alignl ' align long
-C_sna0k_670edcd7_28_L000029 ' <symbol:28>
+C_sqlgk_67b1112e_28_L000029 ' <symbol:28>
  byte 114
  byte 120
  byte 0
 
  alignl ' align long
-C_sna0j_670edcd7_26_L000027 ' <symbol:26>
+C_sqlgj_67b1112e_26_L000027 ' <symbol:26>
  byte 114
  byte 120
  byte 99
@@ -832,7 +832,7 @@ C_sna0j_670edcd7_26_L000027 ' <symbol:26>
  byte 0
 
  alignl ' align long
-C_sna0i_670edcd7_24_L000025 ' <symbol:24>
+C_sqlgi_67b1112e_24_L000025 ' <symbol:24>
  byte 114
  byte 120
  byte 116
@@ -842,7 +842,7 @@ C_sna0i_670edcd7_24_L000025 ' <symbol:24>
  byte 0
 
  alignl ' align long
-C_sna0h_670edcd7_22_L000023 ' <symbol:22>
+C_sqlgh_67b1112e_22_L000023 ' <symbol:22>
  byte 114
  byte 120
  byte 99
@@ -853,7 +853,7 @@ C_sna0h_670edcd7_22_L000023 ' <symbol:22>
  byte 0
 
  alignl ' align long
-C_sna0g_670edcd7_20_L000021 ' <symbol:20>
+C_sqlgg_67b1112e_20_L000021 ' <symbol:20>
  byte 114
  byte 120
  byte 102

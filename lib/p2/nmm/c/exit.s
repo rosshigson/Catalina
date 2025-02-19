@@ -27,14 +27,14 @@ C__clean ' <symbol:_clean>
 DAT ' code segment
 
  alignl ' align long
-C_sk48_670edcc7__calls_L000003 ' <symbol:_calls>
+C_sj78_67b1111e__calls_L000003 ' <symbol:_calls>
  calld PA,#NEWF
  calld PA,#PSHM
  long $d00000 ' save registers
  mov r23, ##@C___funccnt
  rdlong r23, r23 ' reg <- INDIRI4 addrg
- jmp #\@C_sk48_670edcc7__calls_L000003_6 ' JUMPV addrg
-C_sk48_670edcc7__calls_L000003_5
+ jmp #\@C_sj78_67b1111e__calls_L000003_6 ' JUMPV addrg
+C_sj78_67b1111e__calls_L000003_5
  mov r22, r23
  shl r22, #2 ' LSHI4 coni
  mov r20, ##@C___functab ' reg <- addrg
@@ -43,13 +43,13 @@ C_sk48_670edcc7__calls_L000003_5
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  mov RI, r22
  calld PA,#CALI ' CALL indirect
-C_sk48_670edcc7__calls_L000003_6
+C_sj78_67b1111e__calls_L000003_6
  mov r22, r23
  subs r22, #1 ' SUBI4 coni
  mov r23, r22 ' CVI, CVU or LOAD
  cmps r22,  #0 wcz
- if_ae jmp #\C_sk48_670edcc7__calls_L000003_5 ' GEI4
-' C_sk48_670edcc7__calls_L000003_4 ' (symbol refcount = 0)
+ if_ae jmp #\C_sj78_67b1111e__calls_L000003_5 ' GEI4
+' C_sj78_67b1111e__calls_L000003_4 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -64,7 +64,7 @@ C_exit ' <symbol:exit>
  mov r23, r2 ' reg var <- reg arg
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
- long @C_sk48_670edcc7__calls_L000003 ' CALL addrg
+ long @C_sj78_67b1111e__calls_L000003 ' CALL addrg
  mov r22, ##@C__clean
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz

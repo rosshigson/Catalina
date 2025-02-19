@@ -6,10 +6,10 @@ DAT ' code segment
 ' (Catalina v3.15 Code Generator by Ross Higson)
 '
 
-' Catalina Export s2_decl
+' Catalina Export s_decl
 
  alignl ' align long
-C_s2_decl ' <symbol:s2_decl>
+C_s_decl ' <symbol:s_decl>
  calld PA,#NEWF
  calld PA,#PSHM
  long $faa800 ' save registers
@@ -20,49 +20,49 @@ C_s2_decl ' <symbol:s2_decl>
  mov r15, ##1000000000 ' reg <- con
  mov r11, #0 ' reg <- coni
  cmps r19,  #1 wcz
- if_ae jmp #\C_s2_decl_2 ' GEI4
+ if_ae jmp #\C_s_decl_2 ' GEI4
  mov r19, #1 ' reg <- coni
-C_s2_decl_2
+C_s_decl_2
  cmps r19,  #10 wcz
- if_be jmp #\C_s2_decl_4 ' LEI4
+ if_be jmp #\C_s_decl_4 ' LEI4
  mov r19, #10 ' reg <- coni
-C_s2_decl_4
+C_s_decl_4
  cmps r21,  #0 wcz
- if_ae jmp #\C_s2_decl_6 ' GEI4
+ if_ae jmp #\C_s_decl_6 ' GEI4
  neg r21, r21 ' NEGI4
  mov r2, #45 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s2_tx
+ long @C_s_tx
  add SP, #4 ' CALL addrg
-C_s2_decl_6
+C_s_decl_6
  mov r22, r17
  and r22, #3 ' BANDI4 coni
  cmps r22,  #0 wz
- if_z jmp #\C_s2_decl_8 ' EQI4
+ if_z jmp #\C_s_decl_8 ' EQI4
  mov r22, #10 ' reg <- coni
  mov r13, r22 ' SUBI/P
  subs r13, r19 ' SUBI/P (3)
- jmp #\@C_s2_decl_13 ' JUMPV addrg
-C_s2_decl_10
+ jmp #\@C_s_decl_13 ' JUMPV addrg
+C_s_decl_10
  mov r22, #10 ' reg <- coni
  mov r0, r15 ' setup r0/r1 (2)
  mov r1, r22 ' setup r0/r1 (2)
  calld PA,#DIVS ' DIVI
  mov r15, r0 ' CVI, CVU or LOAD
-' C_s2_decl_11 ' (symbol refcount = 0)
+' C_s_decl_11 ' (symbol refcount = 0)
  subs r13, #1 ' SUBI4 coni
-C_s2_decl_13
+C_s_decl_13
  cmps r13,  #0 wcz
- if_a jmp #\C_s2_decl_10 ' GTI4
-C_s2_decl_8
+ if_a jmp #\C_s_decl_10 ' GTI4
+C_s_decl_8
  mov r13, #0 ' reg <- coni
- jmp #\@C_s2_decl_17 ' JUMPV addrg
-C_s2_decl_14
+ jmp #\@C_s_decl_17 ' JUMPV addrg
+C_s_decl_14
  cmps r21, r15 wcz
- if_b jmp #\C_s2_decl_18 ' LTI4
+ if_b jmp #\C_s_decl_18 ' LTI4
  mov r0, r21 ' setup r0/r1 (2)
  mov r1, r15 ' setup r0/r1 (2)
  calld PA,#DIVS ' DIVI
@@ -74,62 +74,62 @@ C_s2_decl_14
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s2_tx
+ long @C_s_tx
  add SP, #4 ' CALL addrg
  mov r0, r21 ' setup r0/r1 (2)
  mov r1, r15 ' setup r0/r1 (2)
  calld PA,#DIVS ' DIVI
  mov r21, r1 ' CVI, CVU or LOAD
  mov r11, ##-1 ' reg <- con
- jmp #\@C_s2_decl_19 ' JUMPV addrg
-C_s2_decl_18
+ jmp #\@C_s_decl_19 ' JUMPV addrg
+C_s_decl_18
  cmps r15,  #1 wz
- if_z jmp #\C_s2_decl_23 ' EQI4
+ if_z jmp #\C_s_decl_23 ' EQI4
  mov r22, #0 ' reg <- coni
  cmps r11, r22 wz
- if_nz jmp #\C_s2_decl_23 ' NEI4
+ if_nz jmp #\C_s_decl_23 ' NEI4
  mov r20, r17
  and r20, #2 ' BANDI4 coni
  cmps r20, r22 wz
- if_z jmp #\C_s2_decl_20 ' EQI4
-C_s2_decl_23
+ if_z jmp #\C_s_decl_20 ' EQI4
+C_s_decl_23
  mov r2, #48 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s2_tx
+ long @C_s_tx
  add SP, #4 ' CALL addrg
- jmp #\@C_s2_decl_21 ' JUMPV addrg
-C_s2_decl_20
+ jmp #\@C_s_decl_21 ' JUMPV addrg
+C_s_decl_20
  mov r22, r17
  and r22, #1 ' BANDI4 coni
  cmps r22,  #0 wz
- if_z jmp #\C_s2_decl_24 ' EQI4
+ if_z jmp #\C_s_decl_24 ' EQI4
  mov r2, #32 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s2_tx
+ long @C_s_tx
  add SP, #4 ' CALL addrg
-C_s2_decl_24
-C_s2_decl_21
-C_s2_decl_19
+C_s_decl_24
+C_s_decl_21
+C_s_decl_19
  mov r22, #10 ' reg <- coni
  mov r0, r15 ' setup r0/r1 (2)
  mov r1, r22 ' setup r0/r1 (2)
  calld PA,#DIVS ' DIVI
  mov r15, r0 ' CVI, CVU or LOAD
-' C_s2_decl_15 ' (symbol refcount = 0)
+' C_s_decl_15 ' (symbol refcount = 0)
  adds r13, #1 ' ADDI4 coni
-C_s2_decl_17
+C_s_decl_17
  cmps r13, r19 wcz
- if_b jmp #\C_s2_decl_14 ' LTI4
-' C_s2_decl_1 ' (symbol refcount = 0)
+ if_b jmp #\C_s_decl_14 ' LTI4
+' C_s_decl_1 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
-' Catalina Import s2_tx
+' Catalina Import s_tx
 ' end

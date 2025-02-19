@@ -6,7 +6,9 @@ Propeller Platform provided by this target package.
 
 Gadget Gangster support is enabled by either adding the option -C PP to each 
 catalina command line, or by adding PP to the CATALINA_DEFINE environment 
-variable.
+variable - e.g:
+
+   catalina hello_world.c -lc -C PP
 
 The PP is assumed to have a 5Mhz clock, and use clock modes xtal1 and pll16x 
 (i.e. and run at 80Mhz) - if this is not correct, change the clock values in 

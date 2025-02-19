@@ -4,14 +4,14 @@
 /*
  * These definitions are intended to replicate the definitions in the original
  * Spin implementaton "FullDuplexSerial4.spin", except for the functions
- * 'newline' and 'strln' - in C programs, NL is usually used as the line 
- * terminator, not CR.
+ * 's_newline()' and 's_strln()' - in C programs, New Line is usually used as 
+ * the line terminator, not Carriage Return.
  *
- * If your program depends on the original behaviour, simply simply define
- * the symbol TTY_NEWLINE_CR before including this file in your program. 
+ * If your program depends on the s_newline() and s_strln() generating a 
+ * Carriage Return rather than a New Line, simply simply define the symbol 
+ * TTY_NEWLINE_CR before including this file in your program. 
  *
- * The "TTY_" prefix could be removed if required - it is added to reduce the
- * possibility of these names clashing with other C names.
+ * NOTE: s_rxcoun()t and s_txcount() are not supported by libtty or libtty256
  *
  */
 
@@ -19,63 +19,81 @@
 #error THE TTY AND TTY256 SERIAL FUNCTIONS REQUIRE A PROPELLER 1 
 #endif
 
-#define TTY_FF 12
+#define TTY_FF SERIAL_FF
 
-#define TTY_CR 13
+#define TTY_CR SERIAL_CR
 
-#define TTY_NL 10
+#define TTY_NL SERIAL_NL
 
-extern int tty_rxflush();
+extern int s_rxflush();
 
-extern int tty_rxcheck();
+extern int s_rxcheck();
 
-extern int tty_rxtime(unsigned ms);
+extern int s_rxtime(unsigned ms);
 
-extern int tty_rx();
+extern int s_rx();
 
-extern int tty_tx(char txbyte);
+extern int s_tx(char txbyte);
 
-extern int tty_txflush();
+extern int s_txflush();
 
-extern int tty_txcheck();
+extern int s_txcheck();
 
-extern void tty_str(char *stringptr);
+extern void s_str(char *stringptr);
 
-extern void tty_decl(int value, int digits, int flag);
+extern void s_decl(int value, int digits, int flag);
 
-extern void tty_hex(unsigned value, int digits);
+extern void s_hex(unsigned value, int digits);
 
-extern void tty_ihex(unsigned value, int digits);
+extern void s_ihex(unsigned value, int digits);
 
-extern void tty_bin(unsigned value, int digits);
+extern void s_bin(unsigned value, int digits);
 
-extern void tty_ibin(unsigned value, int digits);
+extern void s_ibin(unsigned value, int digits);
 
-extern void tty_padchar(unsigned count, char txbyte);
+extern void s_padchar(unsigned count, char txbyte);
 
 /*
  * The following are methods in the Spin version, but can be
  * implemented as '#defines' in C with the same result:
  */
 
-#define tty_dec(value) tty_decl(value,10,0)
+#define s_dec(value) s_decl(value,10,0)
 
-#define tty_decf(value, width) tty_decl(value,width,1)
+#define s_decf(value, width) s_decl(value,width,1)
 
-#define tty_decx(value, width) tty_decl(value,width,2)
+#define s_decx(value, width) s_decl(value,width,2)
 
-#define tty_putc(txbyte) tx(txbyte)
+#define s_putc(txbyte) tx(txbyte)
 
 #ifdef TTY_CR_NEWLINE
-#define tty_newline() tty_tx(TTY_CR) // use CR in newling & strln
-#define tty_strln(stringptr) tty_strterm(stringptr, TTY_CR);
+#define s_newline() s_tx(TTY_CR) // use CR in newling & strln
+#define s_strln(stringptr) s_strterm(stringptr, TTY_CR)
 #else
-#define tty_newline() tty_tx(TTY_NL) // use NL in newline & strln
-#define tty_strln(stringptr) tty_strterm(stringptr, TTY_NL);
+#define s_newline() s_tx(TTY_NL) // use NL in newline & strln
+#define s_strln(stringptr) s_strterm(stringptr, TTY_NL)
 #endif
 
-#define tty_cls() tty_char(TTY_FF)
+#define s_cls() s_tx(TTY_FF)
 
-#define tty_getc() rxcheck()
+#define s_getc() rxcheck()
+
+// define the tty_ names of the functions (for backward compatibility):
+
+#define tty_rxflush() s_rxflush()
+#define tty_rxcheck() s_rxcheck()
+#define tty_rxtime(ms) s_rxtime(ms)
+#define tty_rx() s_rx()
+#define tty_tx(txbyte) s_tx(txbyte)
+#define tty_txflush() s_txflush()
+#define tty_txcheck() s_txcheck()
+#define tty_str(stringptr) s_str(stringptr)
+#define tty_decl(value, digits, flag) s_decl(value, digits, flag)
+#define tty_hex(value, digits) s_hex(value, digits)
+#define tty_ihex(value, digits) s_ihex(value, digits)
+#define tty_bin(value, digits) s_bin(value, digits)
+#define tty_ibin(value, digits) s_ibin(value, digits)
+#define tty_padchar(value, txbyte) s_padchar(count, txbyte)
+
 
 #endif // _TTY__H

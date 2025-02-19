@@ -5,7 +5,10 @@ This file contains notes specific to the support of the C3 platform provided
 by this target package.
 
 C3 support is enabled by either adding the option -C C3 to each catalina 
-command line, or by adding C3 to the CATALINA_DEFINE environment variable.
+command line, or by adding C3 to the CATALINA_DEFINE environment variable 
+- e.g:
+
+   catalina hello_world.c -lc -C C3
 
 The C3 can be configured for VGA or TV output, but HIRES_TV HMI option by 
 default.

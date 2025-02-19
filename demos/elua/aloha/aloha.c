@@ -5,12 +5,12 @@
 // use serial functions that print their data ...
 static int tx(int port, int byte) {
    t_printf("[%x]\n", byte);
-   return serial_tx(port, byte);
+   return s_tx(port, byte);
 }
 
 static int rx(int port) {
    int byte;
-   byte = serial_rx(port);
+   byte = s_rx(port);
    if (byte >= 0) {
       t_printf("[%x]\n", byte);
    }
@@ -22,7 +22,7 @@ static int rx(int port) {
 
 static int rxtime(int port, int ms) {
    int byte;
-   byte = serial_rxtime(port, ms);
+   byte = s_rxtime(port, ms);
    if (byte >= 0) {
       t_printf("[%x]\n", byte);
    }
@@ -35,9 +35,9 @@ static int rxtime(int port, int ms) {
 #else
 
 // use the actual serial functions ...
-#define tx serial_tx
-#define rx serial_rx
-#define rxtime serial_rxtime
+#define tx s_tx
+#define rx s_rx
+#define rxtime s_rxtime
 
 #endif
 

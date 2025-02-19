@@ -1,6 +1,6 @@
 #include <serial2.h>
 
-void s2_hex(unsigned port, unsigned value, int digits) {
+void s_hex(unsigned port, unsigned value, int digits) {
    int i;
    int j;
 
@@ -19,7 +19,7 @@ void s2_hex(unsigned port, unsigned value, int digits) {
       if (i > 9) {
          i += 'A' - 10 - '0';
       }
-      s2_tx(port, i + '0');
+      s_tx(port, i + '0');
       value <<= 4;
    }
 }

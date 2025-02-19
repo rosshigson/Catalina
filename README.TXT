@@ -1,7 +1,7 @@
 This file contains a summary of changes to Catalina in recent releases. For
 information about installing and using Catalina, see the file README.md 
 
-Catalina release 8.3 is a full release.
+Catalina release 8.4 is a full release.
 
 WARNING: DO NOT INSTALL THIS RELEASE OVER A PRIOR VERSION OF CATALINA AND
 DO NOT LINK OR COMBINE PROGRAMS COMPILED WITH THIS VERSION WITH CODE (E.G. 
@@ -15,6 +15,87 @@ The following sections list the changes that have been made in releases
 you can skip the rest of this README and instead go straight to the Catalina 
 tutorial documents. For a complete list of all changes, see the "Catalina 
 Release History" in the documents folder.
+
+RELEASE 8.4
+
+New Functionality
+-----------------
+
+1. Support has been added for the Parallax ESP8266 WiFi module. It will be
+   supported on both the Propeller 1 and 2, but it has only currently been
+   tested on the Propeller 2. A new library (libwifi) has been added, which 
+   can be used by adding -lwifi to the Catalina command. Serial communication
+   with the WiFi module must be done using the 2 or 8 port serial comms module
+   (Propeller 2) or the 4 port serial comms module (Propeller 1). 
+
+   To simplify using the WiFi module on the Propeller 2, a new platform 
+   configuration file has been added (P2WIFI.inc) which is enabled by 
+   defining the Catalina symbol P2_WIFI. It is generally the same as 
+   P2EDGE.inc except that it assumes a WiFi module is installed on pins
+   16 .. 23. So for the Propeller 2 you might use a command like:
+
+      catalina -p2 testwifi.c -lc -lwifi -lserial2 -C P2_WIFI
+
+   On the Propeller 1, the serial4 configuration must be specified in the 
+   file "target/p1/Extras.spin" but there is no specific configuration of 
+   the WiFI module in the Propeller 1 target files - instead, the pins etc 
+   must be specified in the application program when the WiFi module is 
+   initialized.
+
+   So (for example) on the Propeller 1 Activity board, you might use a
+   Catalina command like:
+
+      catalina testwifi.c -lc -lwifi -lserial4 -C ACTIVITY
+
+   Note that on the Propeller 1, if a WiFi program is too large to fit in the 
+   Propeller 1 Hub RAM, you may need to add additional options to optimize 
+   the program (-O5), use COMPACT mode (-C COMPACT), or use the EEPROM load 
+   option (-C EEPROM).
+
+   See the include file "include/wifi.h" and the example programs in the 
+   "demos/wifi" folder, and the "README.TXT" file in that folder for more 
+   details.
+
+2. To accommodate the use of different serial plugins with the WiFi module,
+   the 2, 4 and 8 port serial libraries now all use the same names for their
+   functions - i.e. names like "s_xxxx()" instead of "s2_xxxx()", "s4_xxxx()" 
+   and "s8_xxxx()" (respectively). The previous names can still be used by 
+   including the relevant serial header file (e.g. "include/serial2.h" which
+   now include #defines like defining "s2_tx()" to be "s_tx()") or the new 
+   general-purpose header file "include/serial.h" which detects which serial 
+   plugin and library is in use and includes the relevant serial header file.
+
+3. On the Propeller 2, the default HMI option is now the SIMPLE serial
+   interface, rather than TTY. The reason for this change is that on the 
+   Propeller 2, the TTY HMI actually uses one port of the 2 port serial 
+   plugin, which means that the default HMI option would no longer work 
+   with the WiFi module and the serial2 plugin (it would lead to errors 
+   about multiply defined symbols). To reinstate the previous behaviour, 
+   just explicitly add -C TTY to the catalina command.
+
+   Because a serial comms plugin must be loaded to communicate with the WiFi
+   module, and all the serial comms plugins support at least two ports, the 
+   WiFi programs typically use the first serial port (port 0) to do that, 
+   and the second serial port (port 1) for user interactions. Therefore, it 
+   is common for WiFi programs to not load any HMI plugins at all (specifying
+   -C NO_HMI) and not use any stdio functions at all - this saves both Hub 
+   RAM and cogs.
+
+Other Changes
+-------------
+
+1. The serial header files (tty.h, serial2.h, serial4.h and serial8.h) had
+   some errors which may have resulted in syntax errors during a compilation
+   if some of the definitions were used. Also, using the "cls" functions 
+   (e.g. "s2_cls()" may have resulted in an error about an undefined symbol 
+   (in this case "s2_char()").
+
+2. The tiny I/O library had a bug in the scanf and sscanf functions - if the 
+   last specifier in the format string was %s and the string being scanned did 
+   not have a white space at the end of it (and in particular, if the string 
+   being scanned was terminated by a null) then the scanning did not stop at 
+   the end of the string, and scanf and sscanf typically returned rubbish and
+   may have corrupted memory.
 
 RELEASE 8.3
 

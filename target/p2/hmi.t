@@ -67,7 +67,7 @@ CON
 
 ' set default HMI
 #if !defined(TTY) && !defined(VGA) && !defined(SIMPLE)
-#define TTY
+#define SIMPLE
 #endif
 
 #if defined(TTY)

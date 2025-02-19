@@ -6,7 +6,9 @@ by this target package.
 
 Hydra support is enabled by either adding the option -C HYDRA to each 
 catalina command line, or by adding HYDRA to the CATALINA_DEFINE environment 
-variable.
+variable  - e.g:
+
+   catalina hello_world.c -lc -C HYDRA
 
 The Hydra can be configured for both VGA and TV outputs, but HiRes TV output
 is the default.

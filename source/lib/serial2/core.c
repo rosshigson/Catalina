@@ -59,12 +59,12 @@ static void initialize() {
 }
 
 //
-// s2_wait_rxready :  wait until rxcmd = -1, signalling completion  
+// s_wait_rxready :  wait until rxcmd = -1, signalling completion  
 //                    of last command, or ready for next command
 // 
 // returns           -1 on ready, -2 on timeout
 //
-static int s2_wait_rxready(unsigned port, long timeout) {
+static int s_wait_rxready(unsigned port, long timeout) {
     int result = -2;
 
    if (timeout > 0) {
@@ -88,69 +88,69 @@ static int s2_wait_rxready(unsigned port, long timeout) {
 }
 
 //
-// s2_read_async :  read block of given size from port to hubaddr (doesn't wait)
+// s_read_async :  read block of given size from port to hubaddr (doesn't wait)
 //
-static void s2_read_async(void *hubaddr, int size, int port) {
-   s2_wait_rxready(port, -1);
+static void s_read_async(void *hubaddr, int size, int port) {
+   s_wait_rxready(port, -1);
    *rxpar(port) = (int)hubaddr;
    *rxcmd(port) = size; 
 }
 
 //
-// s2_read : read block of given size to hubaddr (waits until done)
+// s_read : read block of given size to hubaddr (waits until done)
 //
-static int s2_read(void *hubaddr, int size, int port) {
-  s2_read_async(hubaddr, size, port);
-  return s2_wait_rxready(port, -1);
+static int s_read(void *hubaddr, int size, int port) {
+  s_read_async(hubaddr, size, port);
+  return s_wait_rxready(port, -1);
 }
 
 //
-// s2_wait_txready :  waits until tx port cmd = -1, signaling completion of 
+// s_wait_txready :  waits until tx port cmd = -1, signaling completion of 
 //                    last cmd or being ready for next cmd
 //
-static int s2_wait_txready(int port) {
+static int s_wait_txready(int port) {
     do { } while (*txcmd(port) != CMD_READY);
     return *txpar(port);
 }
 
 //
-// s2_write_async : send block from hubaddr of given size (does not wait)
+// s_write_async : send block from hubaddr of given size (does not wait)
 //
-static void s2_write_async(void *hubaddr, int size, int port) {
-   s2_wait_txready(port);
+static void s_write_async(void *hubaddr, int size, int port) {
+   s_wait_txready(port);
    *txpar(port) = (int)hubaddr;
    *txcmd(port) = size;
 }
 
 //
-// s2_write :  send a block from hubaddr of given size (waits until done)
+// s_write :  send a block from hubaddr of given size (waits until done)
 //
-static int s2_write(void *hubaddr, int size, int port) {
-   s2_write_async(hubaddr, size, port);
-   return s2_wait_txready(port);
+static int s_write(void *hubaddr, int size, int port) {
+   s_write_async(hubaddr, size, port);
+   return s_wait_txready(port);
 }
 
 //
-// s2_txsize :  returns size of send buffer in bytes
-static int s2_txsize(port) { 
-   return s2_write(0, CMD_SIZE, port);
+// s_txsize :  returns size of send buffer in bytes
+static int s_txsize(port) { 
+   return s_write(0, CMD_SIZE, port);
 }
 
 //
-// s2_txfree :  returns number of bytes free in send buffer
+// s_txfree :  returns number of bytes free in send buffer
 //
-static int s2_txfree(port) {
-   return s2_write(0, CMD_CHARS, port);
+static int s_txfree(port) {
+   return s_write(0, CMD_CHARS, port);
 }
 
 /******************************* EXTERNAL FUNCTIONS ****************************/
 
 //
-// s2_rxcheck :  check if byte received
+// s_rxcheck :  check if byte received
 // 
 // returns       -1 if no byte or bad port, otherwise byte received
 //
-int s2_rxcheck(unsigned port) {
+int s_rxcheck(unsigned port) {
    int rxbyte = 0;
 
    if (mailbox == 0) {
@@ -161,16 +161,16 @@ int s2_rxcheck(unsigned port) {
    }
 
    ACQUIRE(lock);
-   rxbyte = s2_read(&rxbyte, CMD_CHECK, port);
+   rxbyte = s_read(&rxbyte, CMD_CHECK, port);
    RELEASE(lock);
    
    return rxbyte;
 }
 
 //
-// s2_rxflush - wait till buffer empty
+// s_rxflush - wait till buffer empty
 //
-int s2_rxflush(unsigned port) {
+int s_rxflush(unsigned port) {
    int rxbyte = 0;
 
    if (mailbox == 0) {
@@ -181,16 +181,16 @@ int s2_rxflush(unsigned port) {
    }
 
    ACQUIRE(lock);
-   while (s2_read(&rxbyte, CMD_CHECK, port) >= 0) { };
+   while (s_read(&rxbyte, CMD_CHECK, port) >= 0) { };
    RELEASE(lock);
 
    return 0;    
 }
 
 //
-// s2_rxcount :  returns number of bytes waiting in receive buffer
+// s_rxcount :  returns number of bytes waiting in receive buffer
 //
-int s2_rxcount(unsigned port) {
+int s_rxcount(unsigned port) {
    int rxbyte = 0;
 
    if (mailbox == 0) {
@@ -201,18 +201,18 @@ int s2_rxcount(unsigned port) {
    }
 
    ACQUIRE(lock);
-   rxbyte = s2_read(&rxbyte, CMD_CHARS, port);
+   rxbyte = s_read(&rxbyte, CMD_CHARS, port);
    RELEASE(lock);
    
    return rxbyte;
 }
 
 //
-// s2_rx :    receive a byte (waits until done)
+// s_rx :    receive a byte (waits until done)
 //
 // returns    recived byte
 //
-int s2_rx(unsigned port) {
+int s_rx(unsigned port) {
    int rxbyte = 0;
 
    if (mailbox == 0) {
@@ -223,18 +223,18 @@ int s2_rx(unsigned port) {
    }
 
    ACQUIRE(lock)
-   s2_read(&rxbyte, 1, port);
+   s_read(&rxbyte, 1, port);
    RELEASE(lock);
 
    return rxbyte;
 }
 
 //
-// s2_tx :    send a byte (waits until done)
+// s_tx :    send a byte (waits until done)
 //
 // returns    -1 if bad port
 //
-int s2_tx(unsigned port, char txbyte) {
+int s_tx(unsigned port, char txbyte) {
    if (mailbox == 0) {
       initialize();
    }
@@ -243,18 +243,18 @@ int s2_tx(unsigned port, char txbyte) {
    }
 
    ACQUIRE(lock);
-   s2_write((void *)-1, txbyte, port);
+   s_write((void *)-1, txbyte, port);
    RELEASE(lock);
 
    return 0;  
 }
 
 //
-// s2_txflush :  flush output buffer (waits until done)
+// s_txflush :  flush output buffer (waits until done)
 //
 // returns       -1 if bad port
 //
-int s2_txflush(unsigned port) {
+int s_txflush(unsigned port) {
    int bsize;
 
    if (mailbox == 0) {
@@ -265,19 +265,19 @@ int s2_txflush(unsigned port) {
    }
 
    ACQUIRE(lock);
-   bsize = s2_txsize(port);
-   do { } while (s2_txfree(port) < bsize);
+   bsize = s_txsize(port);
+   do { } while (s_txfree(port) < bsize);
    RELEASE(lock);
 
    return 0;
 }
 
 //
-// s2_txcheck : returns spaces available in tx buffer (-1 if full)
+// s_txcheck : returns spaces available in tx buffer (-1 if full)
 //
 // returns      -1 if no spaces available or bad port
 //
-int s2_txcheck(unsigned port) {
+int s_txcheck(unsigned port) {
    int txbytes;
 
    if (mailbox == 0) {
@@ -288,16 +288,16 @@ int s2_txcheck(unsigned port) {
    }
 
    ACQUIRE(lock);
-   txbytes = s2_write(0, CMD_CHECK, port);
+   txbytes = s_write(0, CMD_CHECK, port);
    RELEASE(lock);
 
    return txbytes;
 }
 
 //
-// s2_txcount :  returns number of bytes waiting in send buffer
+// s_txcount :  returns number of bytes waiting in send buffer
 //
-int s2_txcount(unsigned port) {
+int s_txcount(unsigned port) {
    int txsize, txfree;
 
    if (mailbox == 0) {
@@ -307,8 +307,8 @@ int s2_txcount(unsigned port) {
       return -1;
    }
 
-   txsize = s2_txsize(port);
-   txfree = s2_txfree(port);
+   txsize = s_txsize(port);
+   txfree = s_txfree(port);
    return txsize - txfree;
 }
 

@@ -109,42 +109,67 @@ _SD_CS     = 60         'pin SD Card select
 _SD_DI     = 59         'pin SD Card MOSI
 _SD_DO     = 58         'pin SD Card MISO
 
+' WiFi constants
+' ==============
+
+#if !defined(_WIFI_BASE_PIN)
+_WIFI_BASE_PIN = 56           ' base pin of P2 WX adapter board (64007)
+#endif
+
+_WIFI_DO  = _WIFI_BASE_PIN + 7   ' must match pin used for serial comms
+_WIFI_DI  = _WIFI_BASE_PIN + 6   ' must match pin used for serial comms
+_WIFI_RES = -1 ' _WIFI_BASE_PIN + 0   ' -1 disables module RESET function
+_WIFI_PGM = -1 ' _WIFI_BASE_PIN + 1   ' -1 disables module PGM function
+_WIFI_BRK = _WIFI_DI             ' -1 disables module BREAK function
+
+#if !defined(_WIFI_BAUDRATE)
+_WIFI_BAUDRATE = 230400       ' must match baud rate configured in WiFi board
+#endif
+
 ' 2 Port Serial constants
 ' =======================
 
-_RX1_PIN   = _RX_PIN
-_TX1_PIN   = _TX_PIN
+' NOTE that the ports are numbered 1 and 2 here for consistency with the 
+' names used in the PASM code, but in C the ports are numbered 0 and 1
+
+_RX1_PIN   = _WIFI_DO
+_TX1_PIN   = _WIFI_DI
 _RX1_MODE  = %0000_0000_000_0000000000000_00_11111_0 ' async rx mode, true input, input  enabled for smart input
 _TX1_MODE  = %0000_0000_000_0000000000000_01_11110_0 ' async tx mode, true output, output enabled for smart output
-_BAUDRATE1 = _BAUDRATE
+_BAUDRATE1 = _WIFI_BAUDRATE ' _BAUDRATE
 _RX2_PIN   = -1
 _TX2_PIN   = -1
 _RX2_MODE  = %0000_0000_000_0000000000000_00_11111_0 ' async rx mode, true input, input  enabled for smart input
 _TX2_MODE  = %0000_0000_000_0000000000000_01_11110_0 ' async tx mode, true output, output enabled for smart output
-_BAUDRATE2 = _BAUDRATE
+_BAUDRATE2 = _BAUDRATE ' _WIFI_BAUDRATE
 
 ' Multi Port Serial (aka 8 Port Serial) constants
 ' ===============================================
 
-' NOTE Multi Port 1 and 2 use the 2 Port Serial constants defined above for pins and baud rate (but not mode) -
-' This is done so that by default the Multi Port Serial plugin behaves the same way as the 2 Port Serial plugin. 
-' To disable thiis "auto-configuration" behaviour, set the pins to -1 (or anything outside the range 0 .. 63). 
-' All such ports will have to be manually configured in the C program (see the s8_openport() function).
+' NOTE Multi Port 1 and 2 use the 2 Port Serial constants defined above for
+' pins and baud rate (but not mode) - This is done so that by default the 
+' Multi Port Serial plugin behaves the same way as the 2 Port Serial plugin. 
+' To disable thiis "auto-configuration" behaviour, set the pins to -1 (or 
+' anything outside the range 0 .. 63). All such ports will have to be 
+' manually configured in the C program (see the s8_openport() function).
 
 '    rxmode = %0xx1 = invert rx              (same for txmode)
 '             %0x1x = invert tx
 '             %01xx = open-drain/open-source tx
 
+' NOTE that the ports are numbered 1 to 8 here for compatibility with the 2
+' port serial port numbering, but in C the ports are numbered 0 to 7
+
 _RX1_MULTI_PIN  = _RX1_PIN
 _TX1_MULTI_PIN  = _TX1_PIN
-_RX1_MULTI_BAUD = _BAUDRATE
-_TX1_MULTI_BAUD = _BAUDRATE
+_RX1_MULTI_BAUD = _BAUDRATE1
+_TX1_MULTI_BAUD = _BAUDRATE1
 _RX1_MULTI_MODE = %0000
 _TX1_MULTI_MODE = %0000
 _RX2_MULTI_PIN  = _RX2_PIN
 _TX2_MULTI_PIN  = _TX2_PIN
-_RX2_MULTI_BAUD = _BAUDRATE
-_TX2_MULTI_BAUD = _BAUDRATE
+_RX2_MULTI_BAUD = _BAUDRATE2
+_TX2_MULTI_BAUD = _BAUDRATE2
 _RX2_MULTI_MODE = %0000
 _TX2_MULTI_MODE = %0000
 _RX3_MULTI_PIN  = -1

@@ -6,7 +6,9 @@ provided by this target package.
 
 DracBlade support is enabled by either adding the option -C DRACBLADE to each 
 catalina command line, or by adding DRACBLADE to the CATALINA_DEFINE 
-environment variable.
+environment variable - e.g:
+
+   catalina hello_world.c -lc -C DRACBLADE
 
 The DracBlade can be configured for VGA or TV output (but only one at a time),
 but the HiRes TV option is the default.

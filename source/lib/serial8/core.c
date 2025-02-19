@@ -98,7 +98,7 @@ static void p_config(int p, int ctrl, uint32_t head, uint32_t tail, uint32_t sta
  * in place of the initialization data. Note that only up to S8_MAX_PORTS 
  * ports can be used, and only ports with pins in the range 0 .. 63 will have
  * their pins configured by this autoinitialize function. Other ports will 
- * have to be manually opened using s8_openport() function.
+ * have to be manually opened using s_openport() function.
  */
 static void autoinitialize() {
    int port;
@@ -177,9 +177,9 @@ static void initialize() {
 }
 
 /*
- * s8_closeport - disable a port (both rx and tx pins)
+ * s_closeport - disable a port (both rx and tx pins)
  */
-void s8_closeport(unsigned port) {
+void s_closeport(unsigned port) {
    int p, pin;
 
    if (s8base == 0) {
@@ -191,7 +191,7 @@ void s8_closeport(unsigned port) {
       pin = *byte_p_ctl(p);
       if ((pin & (1<<7)) != 0) {
          pin &= 0x3f;
-         //s8_rxflush(port);
+         //s_rxflush(port);
          _pinclear(pin);
          *byte_p_ctl(p) = 0;
       }
@@ -200,7 +200,7 @@ void s8_closeport(unsigned port) {
       pin = *byte_p_ctl(p);
       if ((pin & (1<<7)) != 0) {
          pin &= 0x3f;
-         //s8_txflush(port);
+         //s_txflush(port);
          _pinclear(pin);
          *byte_p_ctl(p) = 0;
       }
@@ -208,11 +208,11 @@ void s8_closeport(unsigned port) {
 }
 
 /*
- * s8_openport - set up the smartpins and buffers and enable a port 
+ * s_openport - set up the smartpins and buffers and enable a port 
  * (configure both rx and tx pins). Note that the port number must
  * be less than S8_MAX_PORTS or it cannot be opened.
  */
-void s8_openport(unsigned port, unsigned baud, unsigned mode, 
+void s_openport(unsigned port, unsigned baud, unsigned mode, 
                  unsigned rx_pin, char *rx_start, char *rx_end,
                  unsigned tx_pin, char *tx_start, char *tx_end) {
    int p;
@@ -222,7 +222,7 @@ void s8_openport(unsigned port, unsigned baud, unsigned mode,
    }
    if (port < S8_MAX_PORTS) {
       // ensure port is closed
-      s8_closeport(port);
+      s_closeport(port);
 
       // configure rx
       p = port*2; // rx logical pin
@@ -244,7 +244,7 @@ void s8_openport(unsigned port, unsigned baud, unsigned mode,
    }
 }
 
-int s8_rxflush(unsigned port) {
+int s_rxflush(unsigned port) {
    if (s8base == 0) {
       initialize();
    }
@@ -252,11 +252,11 @@ int s8_rxflush(unsigned port) {
       return -1;
    }
 
-   while (s8_rxcheck(port) >= 0) { }
+   while (s_rxcheck(port) >= 0) { }
    return 0;    
 }
 
-int s8_rxcheck(unsigned port) {
+int s_rxcheck(unsigned port) {
    int rxbyte, rxtail;
    char * new;
 
@@ -285,9 +285,9 @@ int s8_rxcheck(unsigned port) {
 }
 
 //
-// s8_rxcount :  returns number of bytes waiting in receive buffer
+// s_rxcount :  returns number of bytes waiting in receive buffer
 //
-int s8_rxcount(unsigned port) {
+int s_rxcount(unsigned port) {
    int rxbytes, rxsize;
 
    ACQUIRE (lock);
@@ -300,7 +300,7 @@ int s8_rxcount(unsigned port) {
    return rxbytes;
 }
 
-int s8_rx(unsigned port) {
+int s_rx(unsigned port) {
    int rxbyte;
 
    if (s8base == 0) {
@@ -310,11 +310,11 @@ int s8_rx(unsigned port) {
       return -1;
    }
 
-   while ((rxbyte = s8_rxcheck(port)) < 0) { }
+   while ((rxbyte = s_rxcheck(port)) < 0) { }
    return rxbyte;
 }
 
-int s8_tx(unsigned port, char txbyte) {
+int s_tx(unsigned port, char txbyte) {
    int txsize, txbytes, txhead;
 
    if (s8base == 0) {
@@ -343,14 +343,14 @@ int s8_tx(unsigned port, char txbyte) {
    *long_tx_head(port) = txhead;
 
    //if (*long_rxtx_mode(port) & S8_NOECHO) {
-   //   s8_rx(port);
+   //   s_rx(port);
    //}
    RELEASE (lock);
 
    return 0;  
 }
 
-int s8_txflush(unsigned port) {
+int s_txflush(unsigned port) {
    if (s8base == 0) {
       initialize();
    }
@@ -365,7 +365,7 @@ int s8_txflush(unsigned port) {
    return 0;
 }
 
-int s8_txcheck(unsigned port) {
+int s_txcheck(unsigned port) {
    int txbytes, txsize;
 
    if (s8base == 0) {
@@ -386,9 +386,9 @@ int s8_txcheck(unsigned port) {
 }
 
 //
-// s8_txcount :  returns number of bytes waiting in send buffer
+// s_txcount :  returns number of bytes waiting in send buffer
 //
-int s8_txcount(unsigned port) {
+int s_txcount(unsigned port) {
    int txbytes, txsize;
 
    if (s8base == 0) {
