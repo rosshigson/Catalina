@@ -22,9 +22,9 @@ TKN_HTTP   = 0xF7;
 TKN_WS     = 0xF6;
 TKN_TCP    = 0xF5;
 
--- print string on USER_PORT
+-- print string without LF
 local function print(str)
-  serial.str(USER_PORT, str);
+  io.write(str);
 end
 
 print("\nSimple Lua HTML Test\n\n");

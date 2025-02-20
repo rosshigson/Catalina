@@ -46,9 +46,9 @@ endif
 ifeq ("$(CATALINA_OPTIONS)", "")
 
 ifeq ("$B", ".binary")
-	CFLAGS += -C ENABLE_WIFI -C NO_HMI
+	CFLAGS += -C ENABLE_WIFI
 else
-	CFLAGS += -C ENABLE_WIFI -C NO_HMI
+	CFLAGS += -C ENABLE_WIFI
 endif
 
 else
@@ -182,7 +182,7 @@ endif
 testwifi : testwifi$B
 
 testwifi$B  : testwifi.c
-	catalina $(CFLAGS) $^ -o $@ $(LIBSW)
+	catalina $(CFLAGS) $^ -o $@ $(LIBSW) -C NO_HMI
 
 # add this to the 'all' target
 all :: testwifi
@@ -193,7 +193,7 @@ all :: testwifi
 testhttp : testhttp$B
 
 testhttp$B  : testhttp.c
-	catalina $(CFLAGS) $^ -o $@ $(LIBSW)
+	catalina $(CFLAGS) $^ -o $@ $(LIBSW) -C NO_HMI
 
 # add this to the 'all' target
 all :: testhttp
@@ -204,7 +204,7 @@ all :: testhttp
 ws_client : ws_client$B
 
 ws_client$B  : ws_client.c
-	catalina $(CFLAGS) $^ -o $@ $(LIBSW)
+	catalina $(CFLAGS) $^ -o $@ $(LIBSW) -C NO_HMI
 
 # add this to the 'all' target
 all :: ws_client
@@ -215,7 +215,7 @@ all :: ws_client
 ws_server : ws_server$B
 
 ws_server$B  : ws_server.c
-	catalina $(CFLAGS) $^ -o $@ $(LIBSW)
+	catalina $(CFLAGS) $^ -o $@ $(LIBSW) -C NO_HMI
 
 # add this to the 'all' target
 all :: ws_server
@@ -226,7 +226,7 @@ all :: ws_server
 ws_ap_client : ws_ap_client$B
 
 ws_ap_client$B  : ws_ap_client.c
-	catalina $(CFLAGS) $^ -o $@ $(LIBSW)
+	catalina $(CFLAGS) $^ -o $@ $(LIBSW) -C NO_HMI
 
 # add this to the 'all' target
 all :: ws_ap_client
@@ -237,7 +237,7 @@ all :: ws_ap_client
 ws_ap_server : ws_ap_server$B
 
 ws_ap_server$B  : ws_ap_server.c
-	catalina $(CFLAGS) $^ -o $@ $(LIBSW)
+	catalina $(CFLAGS) $^ -o $@ $(LIBSW) -C NO_HMI
 
 # add this to the 'all' target
 all :: ws_ap_server
@@ -248,7 +248,7 @@ all :: ws_ap_server
 http_client : http_client$B
 
 http_client$B  : http_client.c
-	catalina $(CFLAGS) $^ -o $@ $(LIBSW)
+	catalina $(CFLAGS) $^ -o $@ $(LIBSW) -C NO_HMI
 
 # add this to the 'all' target
 all :: http_client
@@ -259,7 +259,7 @@ all :: http_client
 http_server : http_server$B
 
 http_server$B  : http_server.c
-	catalina $(CFLAGS) $^ -o $@ $(LIBSW)
+	catalina $(CFLAGS) $^ -o $@ $(LIBSW) -C NO_HMI
 
 # add this to the 'all' target
 all :: http_server
@@ -270,7 +270,7 @@ all :: http_server
 http_ap_client : http_ap_client$B
 
 http_ap_client$B  : http_ap_client.c
-	catalina $(CFLAGS) $^ -o $@ $(LIBSW)
+	catalina $(CFLAGS) $^ -o $@ $(LIBSW) -C NO_HMI
 
 # add this to the 'all' target
 all :: http_ap_client
@@ -281,7 +281,7 @@ all :: http_ap_client
 http_ap_server : http_ap_server$B
 
 http_ap_server$B  : http_ap_server.c
-	catalina $(CFLAGS) $^ -o $@ $(LIBSW)
+	catalina $(CFLAGS) $^ -o $@ $(LIBSW) -C NO_HMI
 
 # add this to the 'all' target
 all :: http_ap_server
@@ -292,7 +292,7 @@ all :: http_ap_server
 tcp_client : tcp_client$B
 
 tcp_client$B  : tcp_client.c
-	catalina $(CFLAGS) $^ -o $@ $(LIBSW)
+	catalina $(CFLAGS) $^ -o $@ $(LIBSW) -C NO_HMI
 
 # add this to the 'all' target
 all :: tcp_client
@@ -303,7 +303,7 @@ all :: tcp_client
 tcp_server : tcp_server$B
 
 tcp_server$B  : tcp_server.c
-	catalina $(CFLAGS) $^ -o $@ $(LIBSW)
+	catalina $(CFLAGS) $^ -o $@ $(LIBSW) -C NO_HMI
 
 # add this to the 'all' target
 all :: tcp_server

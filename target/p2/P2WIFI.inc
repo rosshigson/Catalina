@@ -135,11 +135,19 @@ _TX1_PIN   = _WIFI_DI
 _RX1_MODE  = %0000_0000_000_0000000000000_00_11111_0 ' async rx mode, true input, input  enabled for smart input
 _TX1_MODE  = %0000_0000_000_0000000000000_01_11110_0 ' async tx mode, true output, output enabled for smart output
 _BAUDRATE1 = _WIFI_BAUDRATE ' _BAUDRATE
+
+#if NO_HMI
+' NO_HMI means _RX_PIN & _TX_PIN are available for the second serial port
 _RX2_PIN   = _RX_PIN
 _TX2_PIN   = _TX_PIN
+#else
+' assume _RX_PIN & _TX_PIN are not available for the second serial port
+_RX2_PIN   = -1
+_TX2_PIN   = -1
+#endif
 _RX2_MODE  = %0000_0000_000_0000000000000_00_11111_0 ' async rx mode, true input, input  enabled for smart input
 _TX2_MODE  = %0000_0000_000_0000000000000_01_11110_0 ' async tx mode, true output, output enabled for smart output
-_BAUDRATE2 = _BAUDRATE ' _WIFI_BAUDRATE
+_BAUDRATE2 = _BAUDRATE
 
 ' Multi Port Serial (aka 8 Port Serial) constants
 ' ===============================================

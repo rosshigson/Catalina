@@ -135,9 +135,15 @@ or
 or
    build_all P2_EDGE LARGE CACHED_64K OPTIMIZE
 
-Do NOT specify any HMI options. The programs in this folder do not use 
-the normal HMI, and are compiled with -C NO_HMI to both prevent possible
-contention on the serial ports, and also reduce the number of cogs used.
+Do NOT specify any HMI options. Apart from wlua (and wluax) The programs 
+in this folder do not use the normal HMI or C stdio functions for user 
+interaction. Since they are required to load a multi-port serial plugin, 
+they use the second serial port instead, and are compiled with -C NO_HMI 
+to reduce both the code size and the number of cogs used. While the same 
+can be done for wlua and wluax simply by explicitly adding NO_HMI to the 
+build command, it is easier to debug Lua programs if Lua uses the standard
+I/O functions. If extra cogs or code space is required, wlua and wluax can 
+be compiled with the NO_HMI option AFTER the Lua program has been debugged.
 
 The default is to build the programs in LARGE mode on a Propeller 1, or
 COMPACT mode on a Propeller 2. If the programs are built to use XMM RAM, 
