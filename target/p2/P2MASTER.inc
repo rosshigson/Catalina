@@ -110,23 +110,6 @@ _SD_DO     = 58         'pin SD Card MISO
 ' WiFi constants
 ' ==============
 
-#if !defined(_WIFI_BAUDRATE)
-_WIFI_BAUDRATE = 230400       ' must match baud rate configured in WiFi board
-#endif
-
-#if !defined(_WIFI_BASE_PIN)
-_WIFI_BASE_PIN = 16           ' base pin of P2 WX adapter board (64007)
-#endif
-
-_WIFI_DO  = _WIFI_BASE_PIN + 7   ' must match pin used for serial comms
-_WIFI_DI  = _WIFI_BASE_PIN + 6   ' must match pin used for serial comms
-_WIFI_RES = _WIFI_BASE_PIN + 0   ' -1 disables module RESET function
-_WIFI_PGM = _WIFI_BASE_PIN + 1   ' -1 disables module PGM function
-_WIFI_BRK = _WIFI_DI             ' -1 disables module BREAK function
-
-' WiFi constants
-' ==============
-
 #if !defined(_WIFI_BASE_PIN)
 _WIFI_BASE_PIN = 56           ' base pin of P2 WX adapter board (64007)
 #endif
