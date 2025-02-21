@@ -68,14 +68,13 @@ before starting the correspondong client or attempting to access the server
 via a browser etc. In most cases, the program will indicate what to do 
 (e.g. "Open a browser to "xxx.xxx.xxx.xxx/prop").
 
-Note that all the programs (C and Lua) in this folder are built with the 
--C NO_HMI Catalina option, and instead use a serial plugin to communicate 
-with both the WiFi module and the user. This means that the usual C stdio
-functions (printf() etc) and Lua I/O functions (print() etc) are not 
-available - instead, use the serial comms library functions (s_str() etc). 
-However, the WiFi library does include two stdio-like functions useful 
-for building and decoding strings used to communicate with the adapter
-from C programs:
+Note that all the programs (except for wlua and wluax) in this folder are 
+built with the -C NO_HMI Catalina option, and instead use a serial plugin 
+to communicate with both the WiFi module and the user. This means that the 
+usual C stdio functions (printf() etc) are not available - instead, use 
+the serial comms library functions (s_str() etc). However, the WiFi 
+library does include two stdio-like functions useful for building and 
+decoding strings used to communicate with the adapter from C programs:
 
    isprintf() : an integer version of the stdio sprintf() function.
    isscanf()  : an integer version of the stdio sscanf() function.
@@ -232,7 +231,7 @@ pins. This allows the WiFi software to reset the WiFi module as required.
 
 If a second serial port is available, set USER_PORT in "config.h" to 1.
 Otherwise set USER_PORT to 0 and user messages will appear interspersed
-with WiFi interactions.
+with WiFi interactions. 
 
 A platform configuration file is provided which is suitable for use with a 
 P2_EDGE with the WiFi adaptor installed on pin group 16 (i.e. pins 16 .. 23).
@@ -242,6 +241,10 @@ is defined. For example:
    build_all P2_WIFI
 or
    catalina -p2 testhttp.c -lci -lwifi -lserial2 -C NO_HMI -C P2_WIFI
+
+The P2_WIFI configuration makes the second port available (using pins 62 & 63) 
+if NO_HMI is specified - otherwise, the second serial port is disabled, so 
+that pins 62 & 63 can be used as normal for a serial HMI.
 
 Using One Port (not recommended)
 --------------------------------
