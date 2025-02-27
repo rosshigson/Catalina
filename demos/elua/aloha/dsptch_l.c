@@ -1,28 +1,12 @@
 #include <string.h>
 #include <service.h>
+#include <serial.h>
+#include <lua.h>
 
 #if defined(__CATALINA_libserial8)
-
-#include <serial8.h>
 #define PORTS 8
-#define tx s8_tx
-#define rx s8_rx
-#define rxtime s8_rxtime
-#define rxcheck s8_rxcheck
-#define rxflush s8_rxflush
-#define rxcount s8_rxcount
-
 #elif defined(__CATALINA_libserial2)
-
-#include <serial2.h>
 #define PORTS 2
-#define tx s2_tx
-#define rx s2_rx
-#define rxtime s2_rxtime
-#define rxcheck s2_rxcheck
-#define rxflush s2_rxflush
-#define rxcount s2_rxcount
-
 #else
 #error dispatch_Lua requires a serial plugin (-lserial2 or -lserial8)
 #endif
@@ -76,14 +60,14 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
       for (i = 0; i < PORTS; i++) {
         if (port_in_use[i]) {
            //t_printf("%d ", port);
-           if (rxcount(i) > 0) {
+           if (s_rxcount(i) > 0) {
               port = i;
               //t_printf("message on port %d\n", port);
               break; // we have a message
            }
         }
       }
-   } while (((req = rqst_ptr->request) == 0) & (port == -1));
+   } while (((req = rqst_ptr->request) == 0) && (port == -1));
 
    if (port >= 0) {
       // a character has arrived at the port, so get the message
@@ -118,11 +102,11 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                   // result is a Lua string (may contain embedded zeroes)
                   str = lua_tolstring(L, -1, &len_out);
                   if (str == NULL) {
-                     t_printf("function '%s' should return a string",
+                     t_printf("function '%s' should return a string\n",
                      list[int_id-1].name);
                   }
                   else if (len_out >= REMOTE_MAX) {
-                     t_printf("function '%s' returned too long a string",
+                     t_printf("function '%s' returned too long a string\n",
                      list[int_id-1].name);
                   }
                   else {
@@ -136,22 +120,22 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                }
                else {
                   // function is not a serial or remote service
-                  t_printf("function '%s' cannot be called remotely",
+                  t_printf("function '%s' cannot be called remotely\n",
                   list[int_id-1].name);
                }
             }
             else {
                // no function with that id
-               t_printf("no function with id %d for remote call", int_id);
+               t_printf("no function with id %d for remote call\n", int_id);
             }
          }
          else {
             // zero is an invalid id
-            t_printf("attempt to call service 0 in remote call");
+            t_printf("attempt to call service 0 in remote call\n");
          }
       }
       else {
-         //t_printf("result %d receiving remote call", res);
+         //t_printf("result %d receiving remote call\n", res);
       }
    }
    else {
@@ -178,7 +162,7 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                // retrieve result
                result = lua_tointegerx(L, -1, &isnum);
                if (!isnum) {
-                  t_printf("function '%s' should return a number",
+                  t_printf("function '%s' should return a number\n",
                   list[int_id-1].name);
                }
                // pop returned value
@@ -203,7 +187,7 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                // retrieve result
                result = lua_tointegerx(L, -1, &isnum);
                if (!isnum) {
-                  t_printf("function '%s' should return a number",
+                  t_printf("function '%s' should return a number\n",
                   list[int_id-1].name);
                }
                // pop returned value
@@ -230,7 +214,7 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                // retrieve result
                result = lua_tointegerx(L, -1, &isnum);
                if (!isnum) {
-                  t_printf("function '%s' should return a number",
+                  t_printf("function '%s' should return a number\n",
                   list[int_id-1].name);
                }
                // pop returned value
@@ -258,7 +242,7 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                // retrieve result
                r.f = lua_tonumberx(L, -1, &isnum);
                if (!isnum) {
-                  t_printf("function '%s' should return a number",
+                  t_printf("function '%s' should return a number\n",
                   list[int_id-1].name);
                }
                // pop returned value
@@ -285,7 +269,7 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                // retrieve result
                result = lua_tointegerx(L, -1, &isnum);
                if (!isnum) {
-                  t_printf("function '%s' should return a number",
+                  t_printf("function '%s' should return a number\n",
                   list[int_id-1].name);
                }
                // pop returned value
@@ -312,7 +296,7 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                // retrieve result
                result = lua_tointegerx(L, -1, &isnum);
                if (!isnum) {
-                  t_printf("function '%s' should return a number",
+                  t_printf("function '%s' should return a number\n",
                   list[int_id-1].name);
                }
                // pop returned value
@@ -346,11 +330,11 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                   // result is a Lua string (may contain embedded zeroes)
                   out = lua_tolstring(L, -1, &len);
                   if (out == NULL) {
-                     t_printf("function '%s' should return a string",
+                     t_printf("function '%s' should return a string\n",
                      list[int_id-1].name);
                   }
                   else if (len >= serial->max_out) {
-                     t_printf("function '%s' returned too long a string",
+                     t_printf("function '%s' returned too long a string\n",
                      list[int_id-1].name);
                   }
                   else {
@@ -439,6 +423,7 @@ int add_services(lua_State *L, svc_list_t services, char *name,
                  int port, int svc_type, int max) {
    int num = 0;
    //t_printf("loading %s table\n", name);
+   lua_settop(L, 0);
    // push the table onto the stack
    lua_getglobal(L, name); 
    // make sure it is a table
@@ -487,6 +472,7 @@ int mod_ports(lua_State *L, svc_list_t services, char *name,
    int i;
 
    //t_printf("loading %s table\n", name);
+   lua_settop(L, 0);
    // push the table onto the stack
    lua_getglobal(L, name); 
    // make sure it is a table
@@ -533,7 +519,7 @@ int mod_ports(lua_State *L, svc_list_t services, char *name,
 
 // my_load_Lua_service_list - retrieve the list of Lua services from the 
 // "service_index" table, and the ports any remote services must use from 
-// the "port_0_index" .. "port_n_index" tables (n = 2 or 8, depending on 
+// the "port_0_index" .. "port_n_index" tables (n = 1 or 7, depending on 
 // which serial plugin is in use).
 // All the services in these tables are assumed to be be serial services.
 // The "service_index" table should be the same for all participating
@@ -547,15 +533,16 @@ int my_load_Lua_service_list(lua_State *L, svc_list_t services, int max) {
    char *table = "port_0_index";
 
    // load the "service_index" table into the service list
+   lua_settop(L, 0);
    n = add_services(L, services, "service_index", 0, SERIAL_SVC, max); 
    // modify the ports of services in the "port_n_index" tables 
    for (i = 0; i < ports; i++) {
       if (mod_ports(L, services, table, i, REMOTE_SVC, max) > 0) {
          // check this port for messages
          port_in_use[i] = 1;
-         //rxflush(i);
-         //printf("rxcheck returns %d\n", rxcheck(i));
-         //printf("rxcheck returns %d\n", rxcheck(i));
+         //s_rxflush(i);
+         //printf("s_rxcheck returns %d\n", s_rxcheck(i));
+         //printf("s_rxcheck returns %d\n", s_rxcheck(i));
       }
       else {
          // do not check this port for messages
