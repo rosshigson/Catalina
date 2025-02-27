@@ -186,56 +186,55 @@ void main() {
                      debug_char('\n');
                      {
                         int data_rcvd = 0;
-                        int data_left = value;
+                        int data_left = wifi_DATA_SIZE;
                         int this_size = 0;
-                        while (data_left > 0) {
-                           result = wifi_RECV(handle, wifi_DATA_SIZE, data, &this_size); 
-                           line_feed;
-                           if (result == wifi_Success) {
-                              int i;
-                              char client_IP[32];
-                              int client_port;
-                              i = isscanf(data, "%s %d", client_IP, &client_port);
-                              if (i == 2) {
-                                 debug_str("\nRequest to connect to ");
-                                 debug_str("client IP = ");
-                                 debug_str(client_IP);
-                                 debug_str(", port = ");
-                                 debug_dec(client_port);
-                                 debug_str("\n\n");
-                                 result = wifi_CONNECT(client_IP, client_port, &tcp_handle);
-                                 if (result == wifi_Success) {
-                                    debug_str("CONNECT ok, handle= ");
-                                    debug_dec(tcp_handle);
-                                    debug_str("\n");
-                                    strcpy(data, "WELCOME\n");
-                                    result = wifi_SEND(tcp_handle, strlen(data), data);
-                                    if (result != wifi_Success) {
-                                       debug_str("SEND failed, error = ");
-                                       debug_dec(result);
-                                       debug_char('\n');
-                                    }
-                                 }
-                                 else {
-                                    debug_str("CONNECT failed, error = ");
+                        // we expect < 22 chars (i.e. "xxx.xxx.xxx.xxx yyyyy")
+                        // so we we should only need one RECV
+                        result = wifi_RECV(handle, wifi_DATA_SIZE, data, &this_size); 
+                        line_feed;
+                        if (result == wifi_Success) {
+                           int i;
+                           char client_IP[32];
+                           int client_port;
+                           i = isscanf(data, "%s %d", client_IP, &client_port);
+                           if (i == 2) {
+                              debug_str("\nRequest to connect to ");
+                              debug_str("client IP = ");
+                              debug_str(client_IP);
+                              debug_str(", port = ");
+                              debug_dec(client_port);
+                              debug_str("\n\n");
+                              result = wifi_CONNECT(client_IP, client_port, &tcp_handle);
+                              if (result == wifi_Success) {
+                                 debug_str("CONNECT ok, handle= ");
+                                 debug_dec(tcp_handle);
+                                 debug_str("\n");
+                                 strcpy(data, "WELCOME\n");
+                                 result = wifi_SEND(tcp_handle, strlen(data), data);
+                                 if (result != wifi_Success) {
+                                    debug_str("SEND failed, error = ");
                                     debug_dec(result);
                                     debug_char('\n');
                                  }
                               }
                               else {
-                                 debug_str("\nCannot decode request '");
-                                 for (i = 0; i < this_size; i++) {
-                                    debug_char(data[i]);
-                                 }
-                                 debug_str("'\n");
+                                 debug_str("CONNECT failed, error = ");
+                                 debug_dec(result);
+                                 debug_char('\n');
                               }
                            }
                            else {
-                              debug_str("RECV failed, error = ");
-                              debug_dec(result);
-                              debug_char('\n');
+                              debug_str("\nCannot decode request '");
+                              for (i = 0; i < this_size; i++) {
+                                 debug_char(data[i]);
+                              }
+                              debug_str("'\n");
                            }
-                           data_left -= this_size;
+                        }
+                        else {
+                           debug_str("RECV failed, error = ");
+                           debug_dec(result);
+                           debug_char('\n');
                         }
                      }
                      break;
@@ -321,7 +320,9 @@ void main() {
                }
             }
             else {
-               debug_str("POLL failed\n");
+               debug_str("POLL failed, result = ");
+               debug_dec(result);
+               debug_str("\n");
             }
          }
       }
