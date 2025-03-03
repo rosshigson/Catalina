@@ -35,23 +35,30 @@ getenv(const char *name) {
       if (eaddr != NULL) {
          // on first call, process the environment string
          // by replacing all newlines with null characters. 
-         // We make sure there are three nulls at the end 
+         // We make sure there are two nulls at the end 
          // so that a zero length string signals the end 
          // of the list.
          int i;
+         int terminate = 0;
          tmp = eaddr;
          while (*tmp != '\0') {
-            while (*tmp != '\n') {
-               tmp++;
+            if (*tmp == '\n') {
+               terminate = 1; // env string must be terminated
+               *tmp = '\0';
             }
-            *tmp++ = '\0';
+            else if (*tmp == '\0') {
+               // we are at the end of the environment string,
+               // or it has already been processed
+               break;
+            }
+            tmp++;
          }
-         for (i = 0; i < 3; i++) {
-            *tmp++ = '\0';
-         }
-         tmp = eaddr;
-         while (strlen(tmp) > 0) {
-            tmp += strlen(tmp) + 1;
+         if (terminate) {
+            // we did some processing, so terminate the 
+            // environment string with a null string,
+            // otherwise this has already been done
+            *tmp     = '\0';
+            *(tmp+1) = '\0';
          }
       }
    }
