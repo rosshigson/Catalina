@@ -1,0 +1,58 @@
+#!/bin/bash
+#set -x
+#
+TMP_LCCDIR=$LCCDIR
+if [[ "$TMP_LCCDIR" == "" ]] ; then
+   TMP_LCCDIR=/opt/catalina
+fi
+#
+if [[ ! -e "$TMP_LCCDIR/bin/catalina_env" ]] ; then
+   clear
+   echo ""
+   echo "ERROR: Catalina does not appear to be installed in $TMP_LCCDIR"
+   echo "";
+   echo "  Set the environment variable LCCDIR to where Catalina is installed.";
+   echo "";
+   exit
+fi
+#
+if [[ "$CATALINA_DEFINE" != "" ]]; then
+
+   echo ""
+   echo "ERROR: CATALINA_DEFINE options may conflict with catapult options"
+   echo ""
+   echo "   CATALINA_DEFINE is set to $CATALINA_DEFINE"
+   echo ""
+   echo "   Set CATALINA_DEFINE to null using the following command:"
+   echo ""
+   echo "      unset CATALINA_DEFINE"
+   echo ""
+   exit
+fi
+#
+if [[ "$1" != "" ]]; then
+   echo "ERROR: This script does not support command line parameters"
+   echo ""
+   exit
+fi
+#
+export CATALINA_DEFINE=P2_MASTER
+catapult alua.c
+mv alua.bin master.bin
+catapult aluax.c
+mv aluax.bin masterx.bin
+catapult aluafx.c
+mv aluafx.bin masterfx.bin
+export CATALINA_DEFINE=P2_SLAVE
+catapult alua.c
+mv alua.bin slave.bin
+catapult aluax.c
+mv aluax.bin slavex.bin
+catapult aluafx.c
+mv aluafx.bin slavefx.bin
+catapult sluafx.c
+catapult sluafix.c
+catapult sluacx.c
+catapult sluacix.c
+export CATALINA_DEFINE=
+

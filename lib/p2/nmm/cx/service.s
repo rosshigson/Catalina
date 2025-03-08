@@ -53,7 +53,7 @@ C__register_services_7
  calld PA,#CALA
  long @C__registry ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
- mov r20, #20 ' reg <- coni
+ mov r20, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -86,7 +86,7 @@ C__register_services_7
  wrword r22, r17 ' ASGNU2 reg reg
  adds r19, #1 ' ADDI4 coni
 C__register_services_8
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif

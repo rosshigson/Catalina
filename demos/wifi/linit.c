@@ -41,14 +41,17 @@ LUALIB_API int (luaopen_propeller) (lua_State *L);
 LUALIB_API int (luaopen_hmi) (lua_State *L);
 #endif
 
-#if defined(LUA_THREADS)
+#if defined(__CATALINA_libthreads)
 #define LUA_THREADSLIBNAME	"threads"
 LUALIB_API int (luaopen_threads) (lua_State *L);
 #endif
 
-#if defined(__CATALINA_ENABLE_WIFI)
+#if defined(__CATALINA_libserial2) || defined(__CATALINA_libserial8)
 #define LUA_SERIALLIBNAME	"serial"
 LUALIB_API int (luaopen_serial) (lua_State *L);
+#endif
+
+#if defined(__CATALINA_libwifi)
 #define LUA_WIFILIBNAME	"wifi"
 LUALIB_API int (luaopen_wifi) (lua_State *L);
 #endif
@@ -66,7 +69,7 @@ static const luaL_Reg loadedlibs[] = {
   {LUA_OSLIBNAME, luaopen_os},
   {LUA_STRLIBNAME, luaopen_string},
   {LUA_MATHLIBNAME, luaopen_math},
-#if defined(LUA_THREADS)
+#if defined(__CATALINA_libthreads)
   {LUA_THREADSLIBNAME, luaopen_threads},
 #else
   {LUA_UTF8LIBNAME, luaopen_utf8},
@@ -76,8 +79,10 @@ static const luaL_Reg loadedlibs[] = {
   {LUA_PROPELLERLIBNAME, luaopen_propeller},
   {LUA_HMILIBNAME, luaopen_hmi},
 #endif
-#if defined(__CATALINA_ENABLE_WIFI)
+#if defined(__CATALINA_libserial2) || defined(__CATALINA_libserial8)
   {LUA_SERIALLIBNAME, luaopen_serial},
+#endif
+#if defined(__CATALINA_libwifi)
   {LUA_WIFILIBNAME, luaopen_wifi},
 #endif
   {NULL, NULL}

@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_snrc_67b10f95_strdup_L000005 ' <symbol:strdup>
+C_sfj0_67cacae0_strdup_L000005 ' <symbol:strdup>
  jmp #NEWF
  jmp #PSHM
  long $e00000 ' save registers
@@ -26,7 +26,7 @@ C_snrc_67b10f95_strdup_L000005 ' <symbol:strdup>
  mov r22, r21 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
  jmp #BR_Z
- long @C_snrc_67b10f95_strdup_L000005_7 ' EQU4
+ long @C_sfj0_67cacae0_strdup_L000005_7 ' EQU4
  mov r2, r23 ' CVI, CVU or LOAD
  mov r3, r21 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -34,9 +34,9 @@ C_snrc_67b10f95_strdup_L000005 ' <symbol:strdup>
  jmp #CALA
  long @C_strcpy
  add SP, #4 ' CALL addrg
-C_snrc_67b10f95_strdup_L000005_7
+C_sfj0_67cacae0_strdup_L000005_7
  mov r0, r21 ' CVI, CVU or LOAD
-' C_snrc_67b10f95_strdup_L000005_6 ' (symbol refcount = 0)
+' C_sfj0_67cacae0_strdup_L000005_6 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -139,12 +139,12 @@ C__dispatch_L_ua_bg_11
  cmps r11,  #0 wcz
  jmp #BRBE
  long @C__dispatch_L_ua_bg_19 ' LEI4
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r11 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  adds r22, #8 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRI4 reg
@@ -194,12 +194,12 @@ C__dispatch_L_ua_bg_23
  jmp #LODF
  long -16
  wrlong r22, RI ' ASGNI4 addrl reg
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r11 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  mov r3, r23 ' CVI, CVU or LOAD
@@ -252,12 +252,12 @@ C__dispatch_L_ua_bg_23
  long @C_lua_tolstring
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
- mov r20, #20 ' reg <- coni
+ mov r20, #28 ' reg <- coni
  mov r0, r20 ' setup r0/r1 (2)
  mov r1, r11 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r20, r0
- subs r20, #20 ' SUBI4 coni
+ subs r20, #28 ' SUBI4 coni
  adds r20, r21 ' ADDI/P (1)
  rdlong r2, r20 ' reg <- INDIRP4 reg
  mov r3, r22 ' CVI, CVU or LOAD
@@ -288,12 +288,12 @@ C__dispatch_L_ua_bg_24
  cmps r22,  #0 wz
  jmp #BRNZ
  long @C__dispatch_L_ua_bg_28 ' NEI4
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r11 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  jmp #LODL
@@ -329,12 +329,12 @@ C__dispatch_L_ua_bg_32
  jmp #LODF
  long -16
  wrlong r22, RI ' ASGNI4 addrl reg
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r11 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  mov r3, r23 ' CVI, CVU or LOAD
@@ -387,12 +387,12 @@ C__dispatch_L_ua_bg_32
  long @C_lua_tolstring
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
- mov r20, #20 ' reg <- coni
+ mov r20, #28 ' reg <- coni
  mov r0, r20 ' setup r0/r1 (2)
  mov r1, r11 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r20, r0
- subs r20, #20 ' SUBI4 coni
+ subs r20, #28 ' SUBI4 coni
  adds r20, r21 ' ADDI/P (1)
  rdlong r2, r20 ' reg <- INDIRP4 reg
  mov r3, r22 ' CVI, CVU or LOAD
@@ -423,12 +423,12 @@ C__dispatch_L_ua_bg_33
  cmps r22,  #0 wz
  jmp #BRNZ
  long @C__dispatch_L_ua_bg_35 ' NEI4
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r11 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  jmp #LODL
@@ -463,12 +463,12 @@ C__dispatch_L_ua_bg_37
  jmp #LODF
  long -20
  wrlong r22, RI ' ASGNP4 addrl reg
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r11 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  mov r3, r23 ' CVI, CVU or LOAD
@@ -532,12 +532,12 @@ C__dispatch_L_ua_bg_37
  long @C_lua_tolstring
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
- mov r20, #20 ' reg <- coni
+ mov r20, #28 ' reg <- coni
  mov r0, r20 ' setup r0/r1 (2)
  mov r1, r11 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r20, r0
- subs r20, #20 ' SUBI4 coni
+ subs r20, #28 ' SUBI4 coni
  adds r20, r21 ' ADDI/P (1)
  rdlong r2, r20 ' reg <- INDIRP4 reg
  mov r3, r22 ' CVI, CVU or LOAD
@@ -568,12 +568,12 @@ C__dispatch_L_ua_bg_38
  cmps r22,  #0 wz
  jmp #BRNZ
  long @C__dispatch_L_ua_bg_40 ' NEI4
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r11 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  jmp #LODL
@@ -608,12 +608,12 @@ C__dispatch_L_ua_bg_42
  jmp #LODF
  long -20
  wrlong r22, RI ' ASGNP4 addrl reg
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r11 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  mov r3, r23 ' CVI, CVU or LOAD
@@ -677,12 +677,12 @@ C__dispatch_L_ua_bg_42
  long @C_lua_tolstring
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
- mov r20, #20 ' reg <- coni
+ mov r20, #28 ' reg <- coni
  mov r0, r20 ' setup r0/r1 (2)
  mov r1, r11 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r20, r0
- subs r20, #20 ' SUBI4 coni
+ subs r20, #28 ' SUBI4 coni
  adds r20, r21 ' ADDI/P (1)
  rdlong r2, r20 ' reg <- INDIRP4 reg
  mov r3, r22 ' CVI, CVU or LOAD
@@ -715,12 +715,12 @@ C__dispatch_L_ua_bg_43
  cmps r22,  #0 wz
  jmp #BRNZ
  long @C__dispatch_L_ua_bg_45 ' NEI4
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r11 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  jmp #LODL
@@ -757,12 +757,12 @@ C__dispatch_L_ua_bg_47
  jmp #LODF
  long -20
  wrlong r22, RI ' ASGNP4 addrl reg
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r11 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  mov r3, r23 ' CVI, CVU or LOAD
@@ -826,12 +826,12 @@ C__dispatch_L_ua_bg_47
  long @C_lua_tolstring
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
- mov r20, #20 ' reg <- coni
+ mov r20, #28 ' reg <- coni
  mov r0, r20 ' setup r0/r1 (2)
  mov r1, r11 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r20, r0
- subs r20, #20 ' SUBI4 coni
+ subs r20, #28 ' SUBI4 coni
  adds r20, r21 ' ADDI/P (1)
  rdlong r2, r20 ' reg <- INDIRP4 reg
  mov r3, r22 ' CVI, CVU or LOAD
@@ -862,12 +862,12 @@ C__dispatch_L_ua_bg_48
  cmps r22,  #0 wz
  jmp #BRNZ
  long @C__dispatch_L_ua_bg_50 ' NEI4
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r11 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  jmp #LODL
@@ -902,12 +902,12 @@ C__dispatch_L_ua_bg_52
  jmp #LODF
  long -16
  wrlong r22, RI ' ASGNI4 addrl reg
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r11 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  mov r3, r23 ' CVI, CVU or LOAD
@@ -961,12 +961,12 @@ C__dispatch_L_ua_bg_52
  long @C_lua_tolstring
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
- mov r20, #20 ' reg <- coni
+ mov r20, #28 ' reg <- coni
  mov r0, r20 ' setup r0/r1 (2)
  mov r1, r11 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r20, r0
- subs r20, #20 ' SUBI4 coni
+ subs r20, #28 ' SUBI4 coni
  adds r20, r21 ' ADDI/P (1)
  rdlong r2, r20 ' reg <- INDIRP4 reg
  mov r3, r22 ' CVI, CVU or LOAD
@@ -997,12 +997,12 @@ C__dispatch_L_ua_bg_53
  cmps r22,  #0 wz
  jmp #BRNZ
  long @C__dispatch_L_ua_bg_55 ' NEI4
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r11 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  jmp #LODL
@@ -1038,12 +1038,12 @@ C__dispatch_L_ua_bg_57
  jmp #LODF
  long -20
  wrlong r22, RI ' ASGNP4 addrl reg
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r11 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  mov r3, r23 ' CVI, CVU or LOAD
@@ -1099,12 +1099,12 @@ C__dispatch_L_ua_bg_57
  long @C_lua_tolstring
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
- mov r20, #20 ' reg <- coni
+ mov r20, #28 ' reg <- coni
  mov r0, r20 ' setup r0/r1 (2)
  mov r1, r11 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r20, r0
- subs r20, #20 ' SUBI4 coni
+ subs r20, #28 ' SUBI4 coni
  adds r20, r21 ' ADDI/P (1)
  rdlong r2, r20 ' reg <- INDIRP4 reg
  mov r3, r22 ' CVI, CVU or LOAD
@@ -1137,12 +1137,12 @@ C__dispatch_L_ua_bg_58
  cmp r22,  #0 wz
  jmp #BRNZ
  long @C__dispatch_L_ua_bg_60 ' NEU4
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r11 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  jmp #LODL
@@ -1167,12 +1167,12 @@ C__dispatch_L_ua_bg_60
  cmp r22, r20 wcz 
  jmp #BR_B
  long @C__dispatch_L_ua_bg_64' LTU4
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r11 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  jmp #LODL
@@ -1316,16 +1316,16 @@ C__load_L_ua_service_list_76
  mov r2, r22 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_snrc_67b10f95_strdup_L000005 ' CALL addrg
+ long @C_sfj0_67cacae0_strdup_L000005 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
- mov r20, #20 ' reg <- coni
+ mov r20, #28 ' reg <- coni
  mov r0, r20 ' setup r0/r1 (2)
  mov r1, r17 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r20, r0 ' ADDI/P
  adds r20, r21 ' ADDI/P (3)
  wrlong r22, r20 ' ASGNP4 reg reg
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r17 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
@@ -1336,7 +1336,7 @@ C__load_L_ua_service_list_76
  long 0
  mov r20, RI ' reg <- con
  wrlong r20, r22 ' ASGNP4 reg reg
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r17 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
@@ -1358,7 +1358,7 @@ C__load_L_ua_service_list_76
  long @C_lua_tointegerx
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
- mov r20, #20 ' reg <- coni
+ mov r20, #28 ' reg <- coni
  mov r0, r20 ' setup r0/r1 (2)
  mov r1, r17 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
@@ -1366,7 +1366,7 @@ C__load_L_ua_service_list_76
  adds r20, r21 ' ADDI/P (3)
  adds r20, #12 ' ADDP4 coni
  wrlong r22, r20 ' ASGNI4 reg reg
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r17 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
@@ -1429,16 +1429,16 @@ C__load_L_ua_service_list_75
  mov r2, RI ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_snrc_67b10f95_strdup_L000005 ' CALL addrg
+ long @C_sfj0_67cacae0_strdup_L000005 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
- mov r20, #20 ' reg <- coni
+ mov r20, #28 ' reg <- coni
  mov r0, r20 ' setup r0/r1 (2)
  mov r1, r17 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r20, r0 ' ADDI/P
  adds r20, r21 ' ADDI/P (3)
  wrlong r22, r20 ' ASGNP4 reg reg
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r17 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
@@ -1449,7 +1449,7 @@ C__load_L_ua_service_list_75
  long 0
  mov r20, RI ' reg <- con
  wrlong r20, r22 ' ASGNP4 reg reg
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r17 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
@@ -1458,7 +1458,7 @@ C__load_L_ua_service_list_75
  adds r22, #8 ' ADDP4 coni
  mov r20, #0 ' reg <- coni
  wrlong r20, r22 ' ASGNI4 reg reg
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r17 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
@@ -1467,7 +1467,7 @@ C__load_L_ua_service_list_75
  adds r22, #12 ' ADDP4 coni
  mov r20, #0 ' reg <- coni
  wrlong r20, r22 ' ASGNI4 reg reg
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r17 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)

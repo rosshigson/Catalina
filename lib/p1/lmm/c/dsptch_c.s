@@ -56,12 +56,12 @@ C__dispatch_C__bg_7
  cmps r15,  #0 wz,wc
  jmp #BRBE
  long @C__dispatch_C__bg_11 ' LEI4
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r15 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r23 ' ADDI/P (1)
  adds r22, #8 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRI4 reg
@@ -104,12 +104,12 @@ C__dispatch_C__bg_21_L000023 ' <symbol:21>
 
 DAT ' code segment
 C__dispatch_C__bg_15
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r15 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r23 ' ADDI/P (1)
  adds r22, #4 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -139,12 +139,12 @@ C__dispatch_C__bg_15
  jmp #JMPA
  long @C__dispatch_C__bg_14 ' JUMPV addrg
 C__dispatch_C__bg_16
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r15 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r23 ' ADDI/P (1)
  adds r22, #4 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -175,12 +175,12 @@ C__dispatch_C__bg_16
  jmp #JMPA
  long @C__dispatch_C__bg_14 ' JUMPV addrg
 C__dispatch_C__bg_17
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r15 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r23 ' ADDI/P (1)
  adds r22, #4 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -216,12 +216,12 @@ C__dispatch_C__bg_17
  jmp #JMPA
  long @C__dispatch_C__bg_14 ' JUMPV addrg
 C__dispatch_C__bg_18
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r15 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r23 ' ADDI/P (1)
  adds r22, #4 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -262,12 +262,12 @@ C__dispatch_C__bg_18
  jmp #JMPA
  long @C__dispatch_C__bg_14 ' JUMPV addrg
 C__dispatch_C__bg_19
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r15 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r23 ' ADDI/P (1)
  adds r22, #4 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -308,12 +308,12 @@ C__dispatch_C__bg_19
  jmp #JMPA
  long @C__dispatch_C__bg_14 ' JUMPV addrg
 C__dispatch_C__bg_20
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r15 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r23 ' ADDI/P (1)
  adds r22, #4 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg

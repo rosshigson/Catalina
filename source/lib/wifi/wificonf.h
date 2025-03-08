@@ -2,7 +2,6 @@
 #define _WIFICONF__H
 
 #include <prop.h>
-#include <prop2.h>
 #include <stdint.h>
 #include <string.h>
 #include <serial.h>
@@ -11,7 +10,7 @@
 // general configuration
 
 #define CMD_TIMEOUT   1000     // msecs to wait for a normal command response
-#define CONN_TIMEOUT  1000000  // msecs to wait for a CONNECT tesponse
+#define CONN_TIMEOUT  1000000  // msecs to wait for a CONNECT response
 #define CMD_MAXSIZE   256      // maxmium size of commands sent
 #define WIFI_DEBUG    0        // 1 to enable debugging, 2 for more debugging
 

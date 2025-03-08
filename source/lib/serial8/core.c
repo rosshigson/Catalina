@@ -6,8 +6,8 @@
 static char *s8base = 0;  // initialized on first use
 static long lock    = -1; // initialized on first use
 
-#define S8_BUFF_SIZE 32   // auto-initialized tx and rx size buffer in bytes 
-                          // NOTE: must match S8_BUFF_SIZE in serial8.t
+#define S8_BUFF_SIZE 1024  // auto-initialized tx and rx size buffer in bytes 
+                           // NOTE: must match S8_BUFF_SIZE in serial8.t
 
 #define msleep(millisecs) _waitcnt((millisecs)*(_clockfreq()/1000) + _cnt())
 

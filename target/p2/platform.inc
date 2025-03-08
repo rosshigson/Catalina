@@ -19,6 +19,10 @@ CON
 #include "P2SLAVE.inc"
 #elif defined(P2_WIFI)
 #include "P2WIFI.inc"
+#elif defined(P2_WIFI_MASTER)
+#include "P2WIFI_M.inc"
+#elif defined(P2_WIFI_SLAVE)
+#include "P2WIFI_S.inc"
 #elif defined(P2D2)
 #include "P2D2.inc"
 #elif defined(P2_CUSTOM) || defined(CUSTOM)

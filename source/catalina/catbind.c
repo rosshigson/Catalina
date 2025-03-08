@@ -335,6 +335,8 @@
  *
  * version 8.4   - just update version number.
  *
+ * version 8.5   - just update version number.
+ *
  */
 
 /*--------------------------------------------------------------------------
@@ -370,7 +372,7 @@
 #include <sys/stat.h>
 #endif
 
-#define VERSION            "8.4"
+#define VERSION            "8.5"
 
 #define MAX_FILES          500
 #define MAX_LIBS           500

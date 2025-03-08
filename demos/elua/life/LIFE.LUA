@@ -102,13 +102,13 @@ function LIFE(w,h)
 
   -- create some life
   -- about 1000 generations of fun, then a glider steady-state
-  thisgen:spawn(GLIDER,5,4)
-  thisgen:spawn(EXPLODE,25,10)
-  thisgen:spawn(FISH,4,12)
+  --thisgen:spawn(GLIDER,5,4)
+  --thisgen:spawn(EXPLODE,25,10)
+  --thisgen:spawn(FISH,4,12)
 
   -- in an 80x30 universe it takes aboout 300 generations 
   -- before the glider gun shoots itself
-  --thisgen:spawn(GLIDERGUN,2,2) 
+  thisgen:spawn(GLIDERGUN,2,2) 
 
   -- run until break
   local gen=1

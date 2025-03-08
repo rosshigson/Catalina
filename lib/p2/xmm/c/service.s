@@ -56,7 +56,7 @@ C__register_services_7
  jmp #CALA
  long @C__registry ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
- mov r20, #20 ' reg <- coni
+ mov r20, #28 ' reg <- coni
  mov r0, r20 ' setup r0/r1 (2)
  mov r1, r19 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
@@ -100,7 +100,7 @@ C__register_services_7
  jmp #WWRD ' ASGNU2 reg reg
  adds r19, #1 ' ADDI4 coni
 C__register_services_8
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r19 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)

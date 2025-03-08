@@ -50,7 +50,7 @@ C__dispatch_C__bg_7
  sar r15, #24 ' RSHI4 coni
  cmps r15,  #0 wcz
  if_be jmp #\C__dispatch_C__bg_11 ' LEI4
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -60,7 +60,7 @@ C__dispatch_C__bg_7
   allowi
  #endif
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r23 ' ADDI/P (1)
  adds r22, #8 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRI4 reg
@@ -99,7 +99,7 @@ C__dispatch_C__bg_21_L000023 ' <symbol:21>
 
 DAT ' code segment
 C__dispatch_C__bg_15
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -109,7 +109,7 @@ C__dispatch_C__bg_15
   allowi
  #endif
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r23 ' ADDI/P (1)
  adds r22, #4 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -136,7 +136,7 @@ C__dispatch_C__bg_15
  wrlong r22, r20 ' ASGNU4 reg reg
  jmp #\@C__dispatch_C__bg_14 ' JUMPV addrg
 C__dispatch_C__bg_16
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -146,7 +146,7 @@ C__dispatch_C__bg_16
   allowi
  #endif
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r23 ' ADDI/P (1)
  adds r22, #4 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -174,7 +174,7 @@ C__dispatch_C__bg_16
  wrlong r22, r20 ' ASGNU4 reg reg
  jmp #\@C__dispatch_C__bg_14 ' JUMPV addrg
 C__dispatch_C__bg_17
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -184,7 +184,7 @@ C__dispatch_C__bg_17
   allowi
  #endif
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r23 ' ADDI/P (1)
  adds r22, #4 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -217,7 +217,7 @@ C__dispatch_C__bg_17
  wrlong r22, r20 ' ASGNU4 reg reg
  jmp #\@C__dispatch_C__bg_14 ' JUMPV addrg
 C__dispatch_C__bg_18
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -227,7 +227,7 @@ C__dispatch_C__bg_18
   allowi
  #endif
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r23 ' ADDI/P (1)
  adds r22, #4 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -265,7 +265,7 @@ C__dispatch_C__bg_18
  wrlong r20, r22 ' ASGNU4 reg reg
  jmp #\@C__dispatch_C__bg_14 ' JUMPV addrg
 C__dispatch_C__bg_19
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -275,7 +275,7 @@ C__dispatch_C__bg_19
   allowi
  #endif
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r23 ' ADDI/P (1)
  adds r22, #4 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -313,7 +313,7 @@ C__dispatch_C__bg_19
  wrlong r20, r22 ' ASGNU4 reg reg
  jmp #\@C__dispatch_C__bg_14 ' JUMPV addrg
 C__dispatch_C__bg_20
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -323,7 +323,7 @@ C__dispatch_C__bg_20
   allowi
  #endif
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r23 ' ADDI/P (1)
  adds r22, #4 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg

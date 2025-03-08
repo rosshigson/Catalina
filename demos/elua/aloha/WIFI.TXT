@@ -1,0 +1,49 @@
+IMPORTANT: This WIFI.TXT file discusses only the WiFi RPC extension to eLua.
+For details on the ALOHA serial extension to eLua, see the file README.TXT.
+
+There are several variants of essentially the same eLua client/server program  
+in this folder. 
+
+Compile them all using by using the 'build_rpc' script. This script 
+builds eLua for multiple different platforms, and so no platform should be 
+specified either on the command line or using CATALINA_DEFINE. For example:
+
+   unset CATALINA_DEFINE
+   build_rpc
+
+The script builds the following binaries for P2_WIFI_MASTER:
+
+   catapult rlua.c
+   mv rlua.bin rmaster.bin
+
+   catapult rluax.c
+   mv rluax.bin rmasterx.bin
+
+and the following binaries for P2_WIFI_SLAVE:
+
+   catapult rlua.c
+   mv rlua.bin rslave.bin
+
+   catapult rluax.c
+   mv rluax.bin rslavex.bin
+
+and the following binaries for P2_WIFI:
+
+   catapult rlua.c
+   catapult rluax.c
+   catapult rluax2.c
+
+They can also be compiled individually using Catapult. For example:
+
+On Windows:
+   set CATALINA_DEFINE=P2_WIFI
+   catapult rlua.c
+   catapult rluax.c
+   catapult rluax2.c
+
+On Pi OS or Linux:
+   export CATALINA_DEFINE=P2_WIFI
+   catapult rlua.c
+   catapult rluax.c
+
+For full details on eLua and its variants, see the document 'Aloha from Lua'.

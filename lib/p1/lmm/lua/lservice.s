@@ -11,19 +11,19 @@ DAT ' code segment
 DAT ' const data segment
 
  alignl ' align long
-C_soms6_67b10f42_luaservice_funcs_L000010 ' <symbol:luaservice_funcs>
- long @C_soms7_67b10f42_11_L000012
- long @C_soms_67b10f42_service_short_L000004
- long @C_soms8_67b10f42_13_L000014
- long @C_soms1_67b10f42_service_long_L000005
- long @C_soms9_67b10f42_15_L000016
- long @C_soms2_67b10f42_service_long_2_L000006
- long @C_somsa_67b10f42_17_L000018
- long @C_soms3_67b10f42_service_float_L000007
- long @C_somsb_67b10f42_19_L000020
- long @C_soms4_67b10f42_service_long_float_L000008
- long @C_somsc_67b10f42_21_L000022
- long @C_soms5_67b10f42_service_serial_L000009
+C_s28s6_67caca41_luaservice_funcs_L000010 ' <symbol:luaservice_funcs>
+ long @C_s28s7_67caca41_11_L000012
+ long @C_s28s_67caca41_service_short_L000004
+ long @C_s28s8_67caca41_13_L000014
+ long @C_s28s1_67caca41_service_long_L000005
+ long @C_s28s9_67caca41_15_L000016
+ long @C_s28s2_67caca41_service_long_2_L000006
+ long @C_s28sa_67caca41_17_L000018
+ long @C_s28s3_67caca41_service_float_L000007
+ long @C_s28sb_67caca41_19_L000020
+ long @C_s28s4_67caca41_service_long_float_L000008
+ long @C_s28sc_67caca41_21_L000022
+ long @C_s28s5_67caca41_service_serial_L000009
  long $0
  long $0
 
@@ -32,7 +32,7 @@ C_soms6_67b10f42_luaservice_funcs_L000010 ' <symbol:luaservice_funcs>
 DAT ' code segment
 
  alignl ' align long
-C_soms_67b10f42_service_short_L000004 ' <symbol:service_short>
+C_s28s_67caca41_service_short_L000004 ' <symbol:service_short>
  jmp #NEWF
  jmp #PSHM
  long $e80000 ' save registers
@@ -69,13 +69,13 @@ C_soms_67b10f42_service_short_L000004 ' <symbol:service_short>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_soms_67b10f42_service_short_L000004_23 ' (symbol refcount = 0)
+' C_s28s_67caca41_service_short_L000004_23 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_soms1_67b10f42_service_long_L000005 ' <symbol:service_long>
+C_s28s1_67caca41_service_long_L000005 ' <symbol:service_long>
  jmp #NEWF
  sub SP, #4
  jmp #PSHM
@@ -117,14 +117,14 @@ C_soms1_67b10f42_service_long_L000005 ' <symbol:service_long>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_soms1_67b10f42_service_long_L000005_24 ' (symbol refcount = 0)
+' C_s28s1_67caca41_service_long_L000005_24 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_soms2_67b10f42_service_long_2_L000006 ' <symbol:service_long_2>
+C_s28s2_67caca41_service_long_2_L000006 ' <symbol:service_long_2>
  jmp #NEWF
  jmp #PSHM
  long $ea0000 ' save registers
@@ -170,13 +170,13 @@ C_soms2_67b10f42_service_long_2_L000006 ' <symbol:service_long_2>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_soms2_67b10f42_service_long_2_L000006_25 ' (symbol refcount = 0)
+' C_s28s2_67caca41_service_long_2_L000006_25 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_soms3_67b10f42_service_float_L000007 ' <symbol:service_float>
+C_s28s3_67caca41_service_float_L000007 ' <symbol:service_float>
  jmp #NEWF
  jmp #PSHM
  long $ea0000 ' save registers
@@ -222,13 +222,13 @@ C_soms3_67b10f42_service_float_L000007 ' <symbol:service_float>
  long @C_lua_pushnumber
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_soms3_67b10f42_service_float_L000007_26 ' (symbol refcount = 0)
+' C_s28s3_67caca41_service_float_L000007_26 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_soms4_67b10f42_service_long_float_L000008 ' <symbol:service_long_float>
+C_s28s4_67caca41_service_long_float_L000008 ' <symbol:service_long_float>
  jmp #NEWF
  jmp #PSHM
  long $ea0000 ' save registers
@@ -274,13 +274,13 @@ C_soms4_67b10f42_service_long_float_L000008 ' <symbol:service_long_float>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_soms4_67b10f42_service_long_float_L000008_27 ' (symbol refcount = 0)
+' C_s28s4_67caca41_service_long_float_L000008_27 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_soms5_67b10f42_service_serial_L000009 ' <symbol:service_serial>
+C_s28s5_67caca41_service_serial_L000009 ' <symbol:service_serial>
  jmp #NEWF
  sub SP, #20
  jmp #PSHM
@@ -357,7 +357,7 @@ C_soms5_67b10f42_service_serial_L000009 ' <symbol:service_serial>
  long @C_lua_pushlstring
  add SP, #8 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_soms5_67b10f42_service_serial_L000009_28 ' (symbol refcount = 0)
+' C_s28s5_67caca41_service_serial_L000009_28 ' (symbol refcount = 0)
  mov RI, FP    ' restore SP ... 
  sub RI, #4    ' ... from SP stored in frame ...
  rdlong SP, RI ' ... because alloca was used
@@ -394,7 +394,7 @@ C_luaopen_service ' <symbol:luaopen_service>
  add SP, #8 ' CALL addrg
  mov r2, #0 ' reg ARG coni
  jmp #LODL
- long @C_soms6_67b10f42_luaservice_funcs_L000010
+ long @C_s28s6_67caca41_luaservice_funcs_L000010
  mov r3, RI ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -445,7 +445,7 @@ C_luaopen_service_36_L000037 ' <symbol:36>
  long $43fc0000 ' float
 
  alignl ' align long
-C_somsc_67b10f42_21_L000022 ' <symbol:21>
+C_s28sc_67caca41_21_L000022 ' <symbol:21>
  byte 115
  byte 101
  byte 114
@@ -455,7 +455,7 @@ C_somsc_67b10f42_21_L000022 ' <symbol:21>
  byte 0
 
  alignl ' align long
-C_somsb_67b10f42_19_L000020 ' <symbol:19>
+C_s28sb_67caca41_19_L000020 ' <symbol:19>
  byte 108
  byte 111
  byte 110
@@ -469,7 +469,7 @@ C_somsb_67b10f42_19_L000020 ' <symbol:19>
  byte 0
 
  alignl ' align long
-C_somsa_67b10f42_17_L000018 ' <symbol:17>
+C_s28sa_67caca41_17_L000018 ' <symbol:17>
  byte 102
  byte 108
  byte 111
@@ -478,7 +478,7 @@ C_somsa_67b10f42_17_L000018 ' <symbol:17>
  byte 0
 
  alignl ' align long
-C_soms9_67b10f42_15_L000016 ' <symbol:15>
+C_s28s9_67caca41_15_L000016 ' <symbol:15>
  byte 108
  byte 111
  byte 110
@@ -488,7 +488,7 @@ C_soms9_67b10f42_15_L000016 ' <symbol:15>
  byte 0
 
  alignl ' align long
-C_soms8_67b10f42_13_L000014 ' <symbol:13>
+C_s28s8_67caca41_13_L000014 ' <symbol:13>
  byte 108
  byte 111
  byte 110
@@ -496,7 +496,7 @@ C_soms8_67b10f42_13_L000014 ' <symbol:13>
  byte 0
 
  alignl ' align long
-C_soms7_67b10f42_11_L000012 ' <symbol:11>
+C_s28s7_67caca41_11_L000012 ' <symbol:11>
  byte 115
  byte 104
  byte 111

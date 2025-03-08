@@ -11,13 +11,6 @@ or
    set CATALINA_DEFINE=P2_WIFI
    catalina -p2 -lc hello_world.c
 
-The P2_WIFI configuration file is intended to be modified to suit any
-platform not otherwise supported by Catalina. It is also the default
-configuration file used if no other file is specified by defining an
-appropriate Catalina symbol. By default, P2_WIFI is configured the same
-as the P2_EDGE, but since it is intended to be modified, this should not
-be relied upon, and a specific board should always be specifiesd. 
-
 The P2_WIFI board is configured the same as a P2_EDGE board, but with a WiFi 
 adaptor installed on pin group 16. It can be modified to have the WiFi adaptor
 on another pin group if required - see the file "demos/wifi/README.TXT" for 

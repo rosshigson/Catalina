@@ -44,6 +44,8 @@
  *
  * version 8.4   - just update version number.
  *
+ * version 8.5   - just update version number.
+ *
  */
 
 /*--------------------------------------------------------------------------
@@ -81,7 +83,7 @@
 
 #define COMPILE_IN_PLACE   1 /* 0 = compile in target, 1 = compile locally */
 
-#define VERSION            "8.4"
+#define VERSION            "8.5"
 
 #define MAX_FILES          500
 #define MAX_LIBS           500

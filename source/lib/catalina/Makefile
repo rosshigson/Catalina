@@ -75,7 +75,8 @@ all:	darray.h \
 	pins.s \
 	waitums.s \
 	hub_malloc.s \
-	aligns.s 
+	aligns.s \
+	base64.s
 
 ifeq ($(COMPACT),TRUE)
 	cp waitvid.ce waitvid.s

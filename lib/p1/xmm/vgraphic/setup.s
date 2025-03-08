@@ -23,7 +23,7 @@ C__vdb_cog ' <symbol:_vdb_cog>
  long -1
 
  alignl ' align long
-C_sql8_67b10fea_font_L000004 ' <symbol:font>
+C_sat8_67cacb83_font_L000004 ' <symbol:font>
  word $9d62
  word $112a
  word $b0e9
@@ -680,7 +680,7 @@ C_g_setup_58
  mov r20, RI ' reg <- addrg
  adds r20, r22 ' ADDI/P (2)
  jmp #LODL
- long @C_sql8_67b10fea_font_L000004
+ long @C_sat8_67cacb83_font_L000004
  mov r18, RI ' reg <- addrg
  adds r22, r18 ' ADDI/P (1)
  mov RI, r22

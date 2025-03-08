@@ -1,3 +1,6 @@
+IMPORTANT: This file discusses only the ALOHA serial extension to eLua. For
+details on the WiFi RPC extensions, see the file WIFI.TXT
+
 This folder contains an extension to eLua. ALOHA is a protocol designed to 
 support remote procedure calls between propellers, and can be used from Lua
 by the addition of a custom version of the eLua dispatcher. 
@@ -8,40 +11,34 @@ protocol.
 The ALOHA extensions to eLua are described in the document 'Aloha from Lua'.
 See that document for more details.
 
-Compile them all using by executing the 'build_all' script. Note that this
-builds programs for the P2_MASTER and P2_SLAVE platforms, so (unlike the
-'build_all' script used to build the normal eLua programs) CATALINA_DEFINE 
-should NOT be defined beforehand. For example:
+Compile them all using by executing the 'build_aloha' script. This script 
+builds eLua for multiple different platforms, and so no platform should be 
+specified either on the command line or using CATALINA_DEFINE. For example:
 
-On Windows:
    unset CATALINA_DEFINE
-   build_all
+   build_aloha
 
-On Pi OS or Linux:
-   export CATALINA_DEFINE=
-   build_all
+The script builds the following binaries for P2_MASTER:
 
-This builds the following binaries for P2_MASTER:
+   catapult alua.c
+   mv alua.bin master.bin
 
-   catapult elua.c
-   mv elua.bin master.bin
+   catapult aluax.c
+   mv aluax.bin masterx.bin
 
-   catapult eluax.c
-   mv eluax.bin masterx.bin
-
-   catapult eluafx.c
-   mv eluafx.bin masterfx.bin
+   catapult aluafx.c
+   mv aluafx.bin masterfx.bin
 
 and the following binaries for P2_SLAVE:
 
-   catapult elua.c
-   mv elua.bin slave.bin
+   catapult alua.c
+   mv alua.bin slave.bin
 
-   catapult eluax.c
-   mv eluax.bin slavex.bin
+   catapult aluax.c
+   mv aluax.bin slavex.bin
 
-   catapult eluafx.c
-   mv eluafx.bin slavefx.bin
+   catapult aluafx.c
+   mv aluafx.bin slavefx.bin
 
 The 'master' programs must be executed on the P2_MASTER propeller and the 
 'slave' programs on the P2_SLAVE propeller. The P2_MASTER propeller should
@@ -91,7 +88,7 @@ are also provided - they differ only in Catapult pragma options:
 
    sluacix.c  - As sluafix.c but using COMPACT mode.
 
-These variants will be built by the 'build_all' script for the P2_SLAVE
+These variants will be built by the 'build_aloha' script for the P2_SLAVE
 propeller (they are only built for execution on 'slave' propellers), or 
 they can be built individually using commands such as:
 

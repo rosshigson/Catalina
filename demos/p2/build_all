@@ -76,9 +76,9 @@ if [[ ! -e $TMP_LCCDIR/bin/catalina_env ]]; then
 fi   
 
 echo ""
-echo "   ========================"
-echo "   BUILDING INTERRUPT DEMOS"
-echo "   ========================"
+echo "   =============="
+echo "   BUILDING DEMOS"
+echo "   =============="
 echo ""
 
 # do Linux specific builds ...

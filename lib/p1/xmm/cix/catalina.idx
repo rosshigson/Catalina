@@ -94,6 +94,8 @@ atoi atoi.s 9 export
 __ctype atoi.s 111 import
 atol atol.s 9 export
 __ctype atol.s 111 import
+encode_buff base64.s 293 export
+decode_buff base64.s 520 export
 bsearch bsearch.s 9 export
 catalina_getc cat_getc.s 17 export
 catalina_ungetc cat_getc.s 110 export

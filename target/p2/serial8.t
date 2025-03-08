@@ -45,7 +45,8 @@
 
 CON
 
-S8_BUFF_SIZE  = 32                    ' size in bytes of each Rx and Tx buffer
+S8_BUFF_SIZE  = 1024                  ' size in bytes of each Rx and Tx buffer
+                                      ' (NOTE: must match source/lib/serial8/core.c)
 
 S8_BLOCK_SIZE  = 8 * 2 * S8_BUFF_SIZE ' size of data buffer block to allocate (8 ports)
 

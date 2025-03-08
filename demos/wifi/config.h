@@ -8,8 +8,8 @@
 
 // network configuration
 
-#define SSID          "MyNetwork"      // network name
-#define PASSPHRASE    "TellMeASecret"  // network password
+#define SSID          "Bhundoo"      // network name
+#define PASSPHRASE    "ClydeRiverRetreat"  // network password
 
 // general configuration
 

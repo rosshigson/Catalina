@@ -95,6 +95,8 @@ atoi atoi.s 9 export
 __ctype atoi.s 110 import
 atol atol.s 9 export
 __ctype atol.s 110 import
+encode_buff base64.s 275 export
+decode_buff base64.s 479 export
 bsearch bsearch.s 9 export
 catalina_getc cat_getc.s 17 export
 catalina_ungetc cat_getc.s 99 export
@@ -446,10 +448,10 @@ __stdin getchar.s 30 import
 rtc_getclock getclock.s 9 export
 _long_service getclock.s 29 import
 getenv getenv.s 24 export
-strlen getenv.s 248 import
-strchr getenv.s 250 import
-strncmp getenv.s 252 import
-strcmp getenv.s 254 import
+strlen getenv.s 243 import
+strchr getenv.s 245 import
+strncmp getenv.s 247 import
+strcmp getenv.s 249 import
 _getpid getpid.s 17 export
 _cnt getpid.s 60 import
 srand getpid.s 62 import

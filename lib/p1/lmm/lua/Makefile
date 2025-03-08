@@ -34,7 +34,8 @@ all:
 	cp ../../lua/lprop.s .
 	cp ../../lua/lhmi.s .
 	cp ../../lua/lservice.s .
-	cp ../../lua/lserial2.s .
+	cp ../../lua/lserial.s .
+	cp ../../lua/lwifi.s .
 	cp ../../lua/storage.s .
 	cp ../../lua/glob.s .
 	cp ../../lua/cfgets.s .

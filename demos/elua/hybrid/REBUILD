@@ -1,0 +1,6 @@
+luac -o binser.lux binser.lua
+luac -o common.lux common.lua
+luac -o client.lux client.lua
+luac -o server.lux server.lua
+luac -o remote.lux remote.lua
+luac -o serverbg.lux serverbg.lua

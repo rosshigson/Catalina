@@ -73,8 +73,15 @@ LUALIB_API int (luaopen_threads) (lua_State *L);
 #define LUA_SERVICELIBNAME	"service"
 LUALIB_API int (luaopen_service) (lua_State *L);
 
-#define LUA_SERIAL2LIBNAME	"serial2"
-LUALIB_API int (luaopen_serial2) (lua_State *L);
+#if defined(__CATALINA_libserial2) || defined(__CATALINA_libserial8)
+#define LUA_SERIALLIBNAME	"serial"
+LUALIB_API int (luaopen_serial) (lua_State *L);
+#endif
+
+#if defined(__CATALINA_libwifi)
+#define LUA_WIFILIBNAME	"wifi"
+LUALIB_API int (luaopen_wifi) (lua_State *L);
+#endif
 
 /*
 ** these libs are loaded by lua.c and are readily available to any Lua
@@ -83,15 +90,15 @@ LUALIB_API int (luaopen_serial2) (lua_State *L);
 static const luaL_Reg loadedlibs[] = {
   {LUA_GNAME, luaopen_base},
   {LUA_LOADLIBNAME, luaopen_package},
+  {LUA_COLIBNAME, luaopen_coroutine},
   {LUA_TABLIBNAME, luaopen_table},
   {LUA_IOLIBNAME, luaopen_io},
   {LUA_OSLIBNAME, luaopen_os},
   {LUA_STRLIBNAME, luaopen_string},
   {LUA_MATHLIBNAME, luaopen_math},
+  //{LUA_UTF8LIBNAME, luaopen_utf8},
   //{LUA_DBLIBNAME, luaopen_debug},
 #if defined(__CATALINA_libthreads)
-  {LUA_UTF8LIBNAME, luaopen_utf8},
-  {LUA_COLIBNAME, luaopen_coroutine},
   {LUA_THREADSLIBNAME, luaopen_threads},
 #endif
 #if defined(__CATALINA_ENABLE_PROPELLER)
@@ -101,7 +108,12 @@ static const luaL_Reg loadedlibs[] = {
   {LUA_HMILIBNAME, luaopen_hmi},
 #endif
   {LUA_SERVICELIBNAME, luaopen_service},
-  //{LUA_SERVICELIBNAME, luaopen_serial2},
+#if defined(__CATALINA_libserial2) || defined(__CATALINA_libserial8)
+  {LUA_SERIALLIBNAME, luaopen_serial},
+#endif
+#if defined(__CATALINA_libwifi)
+  {LUA_WIFILIBNAME, luaopen_wifi},
+#endif
   {NULL, NULL}
 };
 

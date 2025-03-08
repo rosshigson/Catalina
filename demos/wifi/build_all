@@ -75,12 +75,6 @@ if [[ ! -e $TMP_LCCDIR/bin/catalina_env ]]; then
    exit
 fi   
 
-echo ""
-echo "   ========================"
-echo "   BUILDING INTERRUPT DEMOS"
-echo "   ========================"
-echo ""
-
 make -B all
 
 unset CATALINA_DEFINE

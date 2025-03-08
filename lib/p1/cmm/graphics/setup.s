@@ -17,14 +17,14 @@ C__cgi_cog ' <symbol:_cgi_cog>
  long -1
 
  alignl ' align long
-C_srf8_67b11090_colors_L000004 ' <symbol:colors>
+C_sipo_67caccab_colors_L000004 ' <symbol:colors>
  long $0
  long $55555555
  long $aaaaaaaa
  long $ffffffff
 
  alignl ' align long
-C_srf81_67b11090_font_L000005 ' <symbol:font>
+C_sipo1_67caccab_font_L000005 ' <symbol:font>
  word $9d62
  word $112a
  word $b0e9
@@ -469,7 +469,7 @@ C_g_setup_26
  word I16A_ADDS + (r20)<<D16A + (r22)<<S16A ' ADDI/P (2)
  word I16B_LODL + (r18)<<D16B
  alignl ' align long
- long @C_srf8_67b11090_colors_L000004 ' reg <- addrg
+ long @C_sipo_67caccab_colors_L000004 ' reg <- addrg
  word I16A_ADDS + (r22)<<D16A + (r18)<<S16A ' ADDI/P (1)
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16A_WRLONG + (r22)<<D16A + (r20)<<S16A ' ASGNI4 reg reg
@@ -499,7 +499,7 @@ C_g_setup_26
  word I16A_ADDSI + (r17)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16B_LODL + (r20)<<D16B
  alignl ' align long
- long @C_srf81_67b11090_font_L000005 ' reg <- addrg
+ long @C_sipo1_67caccab_font_L000005 ' reg <- addrg
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNI4 reg reg
  word I16A_MOV + (r22)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r17)<<D16A + (r22)<<S16A

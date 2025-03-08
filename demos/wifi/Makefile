@@ -43,15 +43,7 @@ endif
 # =========================
 
 #set up default options if none specified
-ifeq ("$(CATALINA_OPTIONS)", "")
-
-ifeq ("$B", ".binary")
-	CFLAGS += -C ENABLE_WIFI
-else
-	CFLAGS += -C ENABLE_WIFI
-endif
-
-else
+ifneq ("$(CATALINA_OPTIONS)", "")
 	CFLAGS += $(CATALINA_OPTIONS)
 endif
 
@@ -313,7 +305,7 @@ all :: tcp_server
 .PHONY : wlua
 wlua : wlua$B
 
-wlua$B: lua.c linit.c lwifi.c lserial.c
+wlua$B: lua.c linit.c 
 	$(CC) -o $@ $(CFLAGS) $(LIBS) $^ -M1M 
 
 # add this to the 'all' target
@@ -324,7 +316,7 @@ all :: wlua
 .PHONY : wluax
 wluax : wluax$B
 
-wluax$B: luax.c linit.c lwifi.c lserial.c
+wluax$B: luax.c linit.c
 	$(CC) -o $@ $(CFLAGS) $(LIBSX) $^ -M1M
 
 # add this to the 'all' target

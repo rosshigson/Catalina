@@ -8,8 +8,15 @@
  * The Propeller WiFi module (32420S) is currently supported on all 
  * Propeller 2 boards via a P2 WX Adapter board (64007).
  *
- * To use the WiFi capabilities on the EX ACtivity board, the following
- * functions must be defined in the application program:
+ * To use the WiFi capabilities on the WX Activity board, the following
+ * functions must be defined in the application program. They must each
+ * return the appropriate pin number that WiFi board is connected to:
+ *
+ *    int wifi_DO_PIN();
+ *    int wifi_DI_PIN();
+ *    int wifi_PGM_PIN();
+ *    int wifi_RES_PIN();
+ *    int wifi_BRK_PIN();
  *
  * To use the WiFi program load capabilities on the Propeller 2, the board 
  * must be plugged into the header on pins 56-63. This means that the pins 

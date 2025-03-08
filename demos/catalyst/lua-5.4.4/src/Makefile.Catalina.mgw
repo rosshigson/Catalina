@@ -186,7 +186,7 @@ CORE_O=	lapi.obj lcode.obj lctype.obj ldebug.obj ldo.obj ldump.obj lfunc.obj lgc
 COREX_O=	lapi.obj lctype.obj ldebug.obj ldo.obj ldump.obj lfunc.obj lgc.obj lmem.obj lobject.obj lopcodes.obj lstate.obj lstring.obj ltable.obj ltm.obj lundump.obj lvm.obj lzio.obj
 LIB_O=	lauxlib.obj lbaselib.obj lcorolib.obj ldblib.obj liolib.obj \
  lmathlib.obj loadlib.obj loslib.obj lstrlib.obj ltablib.obj lutf8lib.obj \
- lthreads.obj lthrsch.obj lprop.obj lhmi.obj lservice.obj lserial.obj storage.obj glob.obj \
+ lthreads.obj lthrsch.obj lprop.obj lhmi.obj lservice.obj lserial.obj lwifi.obj storage.obj glob.obj \
  cfgets.obj
 BASE_O= $(CORE_O) $(LIB_O) $(MYOBJS)
 BASEX_O= $(COREX_O) $(LIB_O) $(MYOBJS)
@@ -449,6 +449,7 @@ lprop.obj: lprop.c
 lhmi.obj: lhmi.c
 lservice.obj: lservice.c
 lserial.obj: lserial.c
+lwifi.obj: lwifi.c
 cfgets.obj: cfgets.c
 storage.obj: storage.c
 global.obj: global.c

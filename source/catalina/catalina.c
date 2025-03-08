@@ -388,6 +388,8 @@
  *
  * version 8.4  - just update version number.
  *
+ * version 8.5  - just update version number.
+ *
  */                  
 
 /*--------------------------------------------------------------------------
@@ -417,7 +419,7 @@
 #include <string.h>
 #include <math.h>
 
-#define VERSION            "8.4"
+#define VERSION            "8.5"
 
 #define MAX_LINELEN        4096
 

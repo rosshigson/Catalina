@@ -76,6 +76,12 @@ CON
 
 
 
+
+
+
+
+
+
 ' default is to use P2_CUSTOM constants
 '#line 1 "../../../target/p2/P2CUSTOM.inc"
 '----------------------------- P2_CUSTOM constants -----------------------------
@@ -210,16 +216,16 @@ _WIFI_BAUDRATE = 230400       ' must match baud rate configured in WiFi board
 ' NOTE that the ports are numbered 1 and 2 here for consistency with the
 ' names used in the PASM code, but in C the ports are numbered 0 and 1
 
-_RX1_PIN   = _WIFI_DO
-_TX1_PIN   = _WIFI_DI
+_RX1_PIN   = _RX_PIN
+_TX1_PIN   = _TX_PIN
 _RX1_MODE  = %0000_0000_000_0000000000000_00_11111_0 ' async rx mode, true input, input  enabled for smart input
 _TX1_MODE  = %0000_0000_000_0000000000000_01_11110_0 ' async tx mode, true output, output enabled for smart output
-_BAUDRATE1 = _WIFI_BAUDRATE ' _BAUDRATE
-_RX2_PIN   = _RX_PIN
-_TX2_PIN   = _TX_PIN
+_BAUDRATE1 = _BAUDRATE
+_RX2_PIN   = -1
+_TX2_PIN   = -1
 _RX2_MODE  = %0000_0000_000_0000000000000_00_11111_0 ' async rx mode, true input, input  enabled for smart input
 _TX2_MODE  = %0000_0000_000_0000000000000_01_11110_0 ' async tx mode, true output, output enabled for smart output
-_BAUDRATE2 = _BAUDRATE ' _WIFI_BAUDRATE
+_BAUDRATE2 = _BAUDRATE
 
 ' Multi Port Serial (aka 8 Port Serial) constants
 ' ===============================================
@@ -240,14 +246,14 @@ _BAUDRATE2 = _BAUDRATE ' _WIFI_BAUDRATE
 
 _RX1_MULTI_PIN  = _RX1_PIN
 _TX1_MULTI_PIN  = _TX1_PIN
-_RX1_MULTI_BAUD = _BAUDRATE1
-_TX1_MULTI_BAUD = _BAUDRATE1
+_RX1_MULTI_BAUD = _BAUDRATE
+_TX1_MULTI_BAUD = _BAUDRATE
 _RX1_MULTI_MODE = %0000
 _TX1_MULTI_MODE = %0000
-_RX2_MULTI_PIN  = _RX2_PIN
-_TX2_MULTI_PIN  = _TX2_PIN
-_RX2_MULTI_BAUD = _BAUDRATE2
-_TX2_MULTI_BAUD = _BAUDRATE2
+_RX2_MULTI_PIN  = -1
+_TX2_MULTI_PIN  = -1
+_RX2_MULTI_BAUD = _BAUDRATE
+_TX2_MULTI_BAUD = _BAUDRATE
 _RX2_MULTI_MODE = %0000
 _TX2_MULTI_MODE = %0000
 _RX3_MULTI_PIN  = -1
@@ -437,7 +443,7 @@ _DEBUG_PIN = 38
 
 
 
-'#line 27 "../../../target/p2/platform.inc"
+'#line 33 "../../../target/p2/platform.inc"
 
 
 '--------------------------- END OF PLATFORM CONSTANTS -----------------------

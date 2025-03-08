@@ -11,7 +11,6 @@
  */
 
 #include <prop.h>
-//#include <prop2.h>
 #include <stdint.h>
 #include <string.h>
 #include <serial.h>
@@ -373,7 +372,7 @@ static int wifi_Read_Response_Data(int *code, int *size, int max, char *data) {
                *code = *size; // size is error code
                if (*code <= wifi_Err_Internal) {
                   // valid error response
-                  return *size;
+                  return *code;
                }
             }
          }
@@ -731,7 +730,6 @@ int wifi_INIT(int DI, int DO, int BRK, int RES, int PGM) {
       wifi_PGM(wifi_pin_pgm);
       s_rxflush(WIFI_PORT);
       wifi_init = 1;
-      //if (wifi_SET("wifi-mode", "STA+AP") == wifi_Success) {
       if (wifi_OK() == wifi_Success) {
          return wifi_Success;
       }
@@ -1146,8 +1144,8 @@ int wifi_SEND_DATA(int handle, int rcode, int total, char *data) {
 
 /*
  * wifi_SET - Change the setting to value. But see also the convenience
- *            functions (defined in wifi.h) which can be used for many common
- *            set requests.
+ *            functions (defined in wifi.h) which can be used for many 
+ *            common set requests.
  *
  * Returns a WiFi Request Status Code (wifi_Err_Unknown if
  * WiFi has not been initialized)

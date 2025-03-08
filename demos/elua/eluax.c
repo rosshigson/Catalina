@@ -24,7 +24,7 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma catapult common options(-W-w -p2 -C CONST_ARGS -C SIMPLE -C VT100 -O5 -C MHZ_200 -C CLOCK -lcx -lmc xinit.c -C ENABLE_PROPELLER)
+#pragma catapult common options(-W-w -p2 -C CONST_ARGS -C SIMPLE -C VT100 -O5 -C MHZ_200 -C CLOCK -lcx -lmc -lluax xinit.c -C ENABLE_PROPELLER)
 
 #include <catapult.h>
 #include <service.h>
@@ -58,7 +58,7 @@ typedef struct shared_data {
  * The client - calls services provided by the server                         *
  *                                                                            *
  ******************************************************************************/
-#pragma catapult secondary client(shared_data_t) address(0x9800) mode(CMM) stack(150000) options(-lluax -lthreads)
+#pragma catapult secondary client(shared_data_t) address(0x9808) mode(CMM) stack(150000) options(-lthreads)
 
 #include <lua.h>
 #include <lualib.h>
@@ -105,7 +105,7 @@ void client(shared_data_t *s) {
  * to the Lua functions specified in Lua_service_list                          *
  *                                                                            *
  ******************************************************************************/
-#pragma catapult primary server binary(eluax) mode(XMM) options(-lluax -C CACHED_64K)
+#pragma catapult primary server binary(eluax) mode(XMM) options(-C CACHED_64K)
 
 #include <lua.h>
 #include <lualib.h>
@@ -118,7 +118,7 @@ void client(shared_data_t *s) {
  * because we load the actual list from the server itself.
  */
 svc_entry_t Lua_service_list[MAX_SERVICES + 1] = { 
-  {"", NULL, 0, 0, 0}
+  {"", NULL, 0, 0, 0, NULL, 0}
 };
 
 int main(int argc, char *argv[]) {
@@ -128,9 +128,6 @@ int main(int argc, char *argv[]) {
    int result;
    lua_State *L;
 
-   // align sbrk to 2k boundary - Lua needs this!
-   _align_sbrk(11,0,0);
-   
    // process command line arguments - note the
    // use of alloca to make sure the strings in 
    // the shared data structure are in Hub RAM.

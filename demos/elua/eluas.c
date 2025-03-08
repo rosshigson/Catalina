@@ -56,7 +56,7 @@ typedef struct shared_data {
  * The client - calls services provided by the server                         *
  *                                                                            *
  ******************************************************************************/
-#pragma catapult secondary client(shared_data_t) address(0x2CA10) mode(CMM) stack(75000)
+#pragma catapult secondary client(shared_data_t) address(0x2CA18) mode(CMM) stack(75000)
 
 #include <lua.h>
 #include <lualib.h>
@@ -114,7 +114,7 @@ void client(shared_data_t *s) {
  * initialize it to null - the list will be loaded from the server itself.
  */
 svc_entry_t Lua_service_list[MAX_SERVICES + 1] = { 
-  {"", NULL, 0, 0, 0}
+  {"", NULL, 0, 0, 0, NULL, 0}
 };
 
 int main(int argc, char *argv[]) {
@@ -124,9 +124,6 @@ int main(int argc, char *argv[]) {
    int result;
    lua_State *L;
 
-   // align sbrk to 2k boundary - Lua needs this!
-   _align_sbrk(11,0,0);
-   
    // process command line arguments - note the
    // use of alloca to make sure the strings in 
    // the shared data structure are in Hub RAM.

@@ -1,17 +1,10 @@
 There are several variants of essentially the same eLua client/server program  
 in this folder. 
 
-Compile them all using by setting CATALINA_DEFINE to specify the propeller
-platform and execute the 'build_all' script. For example, to compile them 
+Compile them all using the 'build_all' script. For example, to compile them 
 for the P2_EDGE:
 
-On Windows:
-   set CATALINA_DEFINE=P2_EDGE
-   build_all
-
-On Pi OS or Linux:
-   export CATALINA_DEFINE=P2_EDGE
-   build_all
+   build_all P2_EDGE
 
 They can also be compiled individually using Catapult:
 

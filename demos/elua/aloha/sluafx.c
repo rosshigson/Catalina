@@ -51,7 +51,7 @@
  * because we load the actual list from the server itself.
  */
 svc_entry_t Lua_service_list[MAX_SERVICES + 1] = { 
-  {"", NULL, 0, 0, 0}
+  {"", NULL, 0, 0, 0, NULL, 0}
 };
 
 int main(int argc, char *argv[]) {
@@ -60,9 +60,6 @@ int main(int argc, char *argv[]) {
    int result;
    lua_State *L;
    char *server = NULL;
-
-   // align sbrk to 2k boundary - Lua needs this!
-   _align_sbrk(11,0,0);
 
    // process command line arguments
    if (argc > 1) {

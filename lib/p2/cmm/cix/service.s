@@ -53,7 +53,7 @@ C__register_services_7
  alignl ' align long
  long I32_CALA + (@C__registry)<<S32 ' CALL addrg
  word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
- word I16A_MOVI + (r20)<<D16A + (20)<<S16A ' reg <- coni
+ word I16A_MOVI + (r20)<<D16A + (28)<<S16A ' reg <- coni
  word I16A_MOV + (r0)<<D16A + (r20)<<S16A ' setup r0/r1 (2)
  word I16A_MOV + (r1)<<D16A + (r19)<<S16A ' setup r0/r1 (2)
  word I16B_MULT ' MULT(I/U)
@@ -87,7 +87,7 @@ C__register_services_7
  word I16A_ADDSI + (r19)<<D16A + (1)<<S16A ' ADDI4 reg coni
  alignl ' align long
 C__register_services_8
- word I16A_MOVI + (r22)<<D16A + (20)<<S16A ' reg <- coni
+ word I16A_MOVI + (r22)<<D16A + (28)<<S16A ' reg <- coni
  word I16A_MOV + (r0)<<D16A + (r22)<<S16A ' setup r0/r1 (2)
  word I16A_MOV + (r1)<<D16A + (r19)<<S16A ' setup r0/r1 (2)
  word I16B_MULT ' MULT(I/U)

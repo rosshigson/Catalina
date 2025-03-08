@@ -89,7 +89,7 @@ configured:
 
 2. For a P2 EDGE with the WiFi adaptor installed on pin group 16 (i.e. on 
    pins 16 .. 23) there is a P2_WIFI platform configuration file provided 
-   ("target/p2/P2_WIF.inc"). Use it by defining the Catalina symbol P2_WIFI. 
+   ("target/p2/P2_WIFI.inc"). Use it by defining the Catalina symbol P2_WIFI. 
    For example, add -C P2_WIFI to your Catalina commands, or use the build 
    script as follows:
 
@@ -586,6 +586,4 @@ See the file testhttp.lua for examples of the use of these functions.
 
 The Lua support files in this directory are:
 
-  lwifi.c   - a Lua module that "wraps" the C wifi library functions
-  lserial.c - a Lua module that "wraps" the C serial comms library functions
   linit.c   - initialization code which loads the Lua serial and wifi modules

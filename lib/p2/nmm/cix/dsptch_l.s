@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_sbv8_67b1114c_strdup_L000005 ' <symbol:strdup>
+C_sl44_67cacdf7_strdup_L000005 ' <symbol:strdup>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e00000 ' save registers
@@ -25,7 +25,7 @@ C_sbv8_67b1114c_strdup_L000005 ' <symbol:strdup>
  mov r21, r0 ' CVI, CVU or LOAD
  mov r22, r21 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_z jmp #\C_sbv8_67b1114c_strdup_L000005_7 ' EQU4
+ if_z jmp #\C_sl44_67cacdf7_strdup_L000005_7 ' EQU4
  mov r2, r23 ' CVI, CVU or LOAD
  mov r3, r21 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -33,9 +33,9 @@ C_sbv8_67b1114c_strdup_L000005 ' <symbol:strdup>
  calld PA,#CALA
  long @C_strcpy
  add SP, #4 ' CALL addrg
-C_sbv8_67b1114c_strdup_L000005_7
+C_sl44_67cacdf7_strdup_L000005_7
  mov r0, r21 ' CVI, CVU or LOAD
-' C_sbv8_67b1114c_strdup_L000005_6 ' (symbol refcount = 0)
+' C_sl44_67cacdf7_strdup_L000005_6 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -123,7 +123,7 @@ C__dispatch_L_ua_bg_11
  sar r11, #24 ' RSHI4 coni
  cmps r11,  #0 wcz
  if_be jmp #\C__dispatch_L_ua_bg_19 ' LEI4
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -133,7 +133,7 @@ C__dispatch_L_ua_bg_11
   allowi
  #endif
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  adds r22, #8 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRI4 reg
@@ -177,7 +177,7 @@ C__dispatch_L_ua_bg_23
  mov RI, FP
  sub RI, #-(-16)
  wrlong r22, RI ' ASGNI4 addrli reg
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -187,7 +187,7 @@ C__dispatch_L_ua_bg_23
   allowi
  #endif
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  mov r3, r23 ' CVI, CVU or LOAD
@@ -233,7 +233,7 @@ C__dispatch_L_ua_bg_23
  long @C_lua_tolstring
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
- mov r20, #20 ' reg <- coni
+ mov r20, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -243,7 +243,7 @@ C__dispatch_L_ua_bg_23
   allowi
  #endif
  mov r20, r0
- subs r20, #20 ' SUBI4 coni
+ subs r20, #28 ' SUBI4 coni
  adds r20, r21 ' ADDI/P (1)
  rdlong r2, r20 ' reg <- INDIRP4 reg
  mov r3, r22 ' CVI, CVU or LOAD
@@ -269,7 +269,7 @@ C__dispatch_L_ua_bg_24
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #0 wz
  if_nz jmp #\C__dispatch_L_ua_bg_28 ' NEI4
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -279,7 +279,7 @@ C__dispatch_L_ua_bg_24
   allowi
  #endif
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  mov r3, ##@C__dispatch_L_ua_bg_30_L000031 ' reg ARG ADDRG
@@ -308,7 +308,7 @@ C__dispatch_L_ua_bg_32
  mov RI, FP
  sub RI, #-(-16)
  wrlong r22, RI ' ASGNI4 addrli reg
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -318,7 +318,7 @@ C__dispatch_L_ua_bg_32
   allowi
  #endif
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  mov r3, r23 ' CVI, CVU or LOAD
@@ -364,7 +364,7 @@ C__dispatch_L_ua_bg_32
  long @C_lua_tolstring
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
- mov r20, #20 ' reg <- coni
+ mov r20, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -374,7 +374,7 @@ C__dispatch_L_ua_bg_32
   allowi
  #endif
  mov r20, r0
- subs r20, #20 ' SUBI4 coni
+ subs r20, #28 ' SUBI4 coni
  adds r20, r21 ' ADDI/P (1)
  rdlong r2, r20 ' reg <- INDIRP4 reg
  mov r3, r22 ' CVI, CVU or LOAD
@@ -400,7 +400,7 @@ C__dispatch_L_ua_bg_33
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #0 wz
  if_nz jmp #\C__dispatch_L_ua_bg_35 ' NEI4
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -410,7 +410,7 @@ C__dispatch_L_ua_bg_33
   allowi
  #endif
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  mov r3, ##@C__dispatch_L_ua_bg_30_L000031 ' reg ARG ADDRG
@@ -438,7 +438,7 @@ C__dispatch_L_ua_bg_37
  mov RI, FP
  sub RI, #-(-20)
  wrlong r22, RI ' ASGNP4 addrli reg
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -448,7 +448,7 @@ C__dispatch_L_ua_bg_37
   allowi
  #endif
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  mov r3, r23 ' CVI, CVU or LOAD
@@ -505,7 +505,7 @@ C__dispatch_L_ua_bg_37
  long @C_lua_tolstring
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
- mov r20, #20 ' reg <- coni
+ mov r20, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -515,7 +515,7 @@ C__dispatch_L_ua_bg_37
   allowi
  #endif
  mov r20, r0
- subs r20, #20 ' SUBI4 coni
+ subs r20, #28 ' SUBI4 coni
  adds r20, r21 ' ADDI/P (1)
  rdlong r2, r20 ' reg <- INDIRP4 reg
  mov r3, r22 ' CVI, CVU or LOAD
@@ -541,7 +541,7 @@ C__dispatch_L_ua_bg_38
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #0 wz
  if_nz jmp #\C__dispatch_L_ua_bg_40 ' NEI4
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -551,7 +551,7 @@ C__dispatch_L_ua_bg_38
   allowi
  #endif
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  mov r3, ##@C__dispatch_L_ua_bg_30_L000031 ' reg ARG ADDRG
@@ -579,7 +579,7 @@ C__dispatch_L_ua_bg_42
  mov RI, FP
  sub RI, #-(-20)
  wrlong r22, RI ' ASGNP4 addrli reg
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -589,7 +589,7 @@ C__dispatch_L_ua_bg_42
   allowi
  #endif
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  mov r3, r23 ' CVI, CVU or LOAD
@@ -646,7 +646,7 @@ C__dispatch_L_ua_bg_42
  long @C_lua_tolstring
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
- mov r20, #20 ' reg <- coni
+ mov r20, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -656,7 +656,7 @@ C__dispatch_L_ua_bg_42
   allowi
  #endif
  mov r20, r0
- subs r20, #20 ' SUBI4 coni
+ subs r20, #28 ' SUBI4 coni
  adds r20, r21 ' ADDI/P (1)
  rdlong r2, r20 ' reg <- INDIRP4 reg
  mov r3, r22 ' CVI, CVU or LOAD
@@ -684,7 +684,7 @@ C__dispatch_L_ua_bg_43
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #0 wz
  if_nz jmp #\C__dispatch_L_ua_bg_45 ' NEI4
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -694,7 +694,7 @@ C__dispatch_L_ua_bg_43
   allowi
  #endif
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  mov r3, ##@C__dispatch_L_ua_bg_30_L000031 ' reg ARG ADDRG
@@ -724,7 +724,7 @@ C__dispatch_L_ua_bg_47
  mov RI, FP
  sub RI, #-(-20)
  wrlong r22, RI ' ASGNP4 addrli reg
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -734,7 +734,7 @@ C__dispatch_L_ua_bg_47
   allowi
  #endif
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  mov r3, r23 ' CVI, CVU or LOAD
@@ -791,7 +791,7 @@ C__dispatch_L_ua_bg_47
  long @C_lua_tolstring
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
- mov r20, #20 ' reg <- coni
+ mov r20, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -801,7 +801,7 @@ C__dispatch_L_ua_bg_47
   allowi
  #endif
  mov r20, r0
- subs r20, #20 ' SUBI4 coni
+ subs r20, #28 ' SUBI4 coni
  adds r20, r21 ' ADDI/P (1)
  rdlong r2, r20 ' reg <- INDIRP4 reg
  mov r3, r22 ' CVI, CVU or LOAD
@@ -827,7 +827,7 @@ C__dispatch_L_ua_bg_48
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #0 wz
  if_nz jmp #\C__dispatch_L_ua_bg_50 ' NEI4
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -837,7 +837,7 @@ C__dispatch_L_ua_bg_48
   allowi
  #endif
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  mov r3, ##@C__dispatch_L_ua_bg_30_L000031 ' reg ARG ADDRG
@@ -865,7 +865,7 @@ C__dispatch_L_ua_bg_52
  mov RI, FP
  sub RI, #-(-16)
  wrlong r22, RI ' ASGNI4 addrli reg
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -875,7 +875,7 @@ C__dispatch_L_ua_bg_52
   allowi
  #endif
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  mov r3, r23 ' CVI, CVU or LOAD
@@ -922,7 +922,7 @@ C__dispatch_L_ua_bg_52
  long @C_lua_tolstring
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
- mov r20, #20 ' reg <- coni
+ mov r20, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -932,7 +932,7 @@ C__dispatch_L_ua_bg_52
   allowi
  #endif
  mov r20, r0
- subs r20, #20 ' SUBI4 coni
+ subs r20, #28 ' SUBI4 coni
  adds r20, r21 ' ADDI/P (1)
  rdlong r2, r20 ' reg <- INDIRP4 reg
  mov r3, r22 ' CVI, CVU or LOAD
@@ -958,7 +958,7 @@ C__dispatch_L_ua_bg_53
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #0 wz
  if_nz jmp #\C__dispatch_L_ua_bg_55 ' NEI4
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -968,7 +968,7 @@ C__dispatch_L_ua_bg_53
   allowi
  #endif
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  mov r3, ##@C__dispatch_L_ua_bg_30_L000031 ' reg ARG ADDRG
@@ -997,7 +997,7 @@ C__dispatch_L_ua_bg_57
  mov RI, FP
  sub RI, #-(-20)
  wrlong r22, RI ' ASGNP4 addrli reg
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -1007,7 +1007,7 @@ C__dispatch_L_ua_bg_57
   allowi
  #endif
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  mov r3, r23 ' CVI, CVU or LOAD
@@ -1056,7 +1056,7 @@ C__dispatch_L_ua_bg_57
  long @C_lua_tolstring
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
- mov r20, #20 ' reg <- coni
+ mov r20, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -1066,7 +1066,7 @@ C__dispatch_L_ua_bg_57
   allowi
  #endif
  mov r20, r0
- subs r20, #20 ' SUBI4 coni
+ subs r20, #28 ' SUBI4 coni
  adds r20, r21 ' ADDI/P (1)
  rdlong r2, r20 ' reg <- INDIRP4 reg
  mov r3, r22 ' CVI, CVU or LOAD
@@ -1094,7 +1094,7 @@ C__dispatch_L_ua_bg_58
  rdlong r22, r22 ' reg <- INDIRP4 reg
  cmp r22,  #0 wz
  if_nz jmp #\C__dispatch_L_ua_bg_60  ' NEU4
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -1104,7 +1104,7 @@ C__dispatch_L_ua_bg_58
   allowi
  #endif
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  mov r3, ##@C__dispatch_L_ua_bg_62_L000063 ' reg ARG ADDRG
@@ -1125,7 +1125,7 @@ C__dispatch_L_ua_bg_60
  rdlong r20, r20 ' reg <- INDIRU4 reg
  cmp r22, r20 wcz 
  if_b jmp #\C__dispatch_L_ua_bg_64 ' LTU4
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -1135,7 +1135,7 @@ C__dispatch_L_ua_bg_60
   allowi
  #endif
  mov r22, r0
- subs r22, #20 ' SUBI4 coni
+ subs r22, #28 ' SUBI4 coni
  adds r22, r21 ' ADDI/P (1)
  rdlong r2, r22 ' reg <- INDIRP4 reg
  mov r3, ##@C__dispatch_L_ua_bg_66_L000067 ' reg ARG ADDRG
@@ -1260,9 +1260,9 @@ C__load_L_ua_service_list_76
  mov r2, r22 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_sbv8_67b1114c_strdup_L000005 ' CALL addrg
+ long @C_sl44_67cacdf7_strdup_L000005 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
- mov r20, #20 ' reg <- coni
+ mov r20, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -1274,7 +1274,7 @@ C__load_L_ua_service_list_76
  mov r20, r0 ' ADDI/P
  adds r20, r21 ' ADDI/P (3)
  wrlong r22, r20 ' ASGNP4 reg reg
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -1288,7 +1288,7 @@ C__load_L_ua_service_list_76
  adds r22, #4 ' ADDP4 coni
  mov r20, ##0 ' reg <- con
  wrlong r20, r22 ' ASGNP4 reg reg
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -1311,7 +1311,7 @@ C__load_L_ua_service_list_76
  long @C_lua_tointegerx
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
- mov r20, #20 ' reg <- coni
+ mov r20, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -1324,7 +1324,7 @@ C__load_L_ua_service_list_76
  adds r20, r21 ' ADDI/P (3)
  adds r20, #12 ' ADDP4 coni
  wrlong r22, r20 ' ASGNI4 reg reg
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -1380,9 +1380,9 @@ C__load_L_ua_service_list_75
  mov r2, ##@C__load_L_ua_service_list_86_L000087 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_sbv8_67b1114c_strdup_L000005 ' CALL addrg
+ long @C_sl44_67cacdf7_strdup_L000005 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
- mov r20, #20 ' reg <- coni
+ mov r20, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -1394,7 +1394,7 @@ C__load_L_ua_service_list_75
  mov r20, r0 ' ADDI/P
  adds r20, r21 ' ADDI/P (3)
  wrlong r22, r20 ' ASGNP4 reg reg
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -1408,7 +1408,7 @@ C__load_L_ua_service_list_75
  adds r22, #4 ' ADDP4 coni
  mov r20, ##0 ' reg <- con
  wrlong r20, r22 ' ASGNP4 reg reg
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -1422,7 +1422,7 @@ C__load_L_ua_service_list_75
  adds r22, #8 ' ADDP4 coni
  mov r20, #0 ' reg <- coni
  wrlong r20, r22 ' ASGNI4 reg reg
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif
@@ -1436,7 +1436,7 @@ C__load_L_ua_service_list_75
  adds r22, #12 ' ADDP4 coni
  mov r20, #0 ' reg <- coni
  wrlong r20, r22 ' ASGNI4 reg reg
- mov r22, #20 ' reg <- coni
+ mov r22, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
   stalli
  #endif

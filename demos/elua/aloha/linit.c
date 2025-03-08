@@ -52,8 +52,15 @@ LUALIB_API int (luaopen_threads) (lua_State *L);
 #define LUA_SERVICELIBNAME	"service"
 LUALIB_API int (luaopen_service) (lua_State *L);
 
-#define LUA_SERIAL2LIBNAME	"serial2"
-LUALIB_API int (luaopen_serial2) (lua_State *L);
+#if defined(__CATALINA_libserial2) || defined(__CATALINA_libserial8)
+#define LUA_SERIALLIBNAME	"serial"
+LUALIB_API int (luaopen_serial) (lua_State *L);
+#endif
+
+#if defined(__CATALINA_libwifi)
+#define LUA_WIFILIBNAME	"wifi"
+LUALIB_API int (luaopen_wifi) (lua_State *L);
+#endif
 
 /*
 ** these libs are loaded by lua.c and are readily available to any Lua
@@ -80,7 +87,12 @@ static const luaL_Reg loadedlibs[] = {
   {LUA_HMILIBNAME, luaopen_hmi},
 #endif
   {LUA_SERVICELIBNAME, luaopen_service},
-  //{LUA_SERVICELIBNAME, luaopen_serial2},
+#if defined(__CATALINA_libserial2) || defined(__CATALINA_libserial8)
+  {LUA_SERIALLIBNAME, luaopen_serial},
+#endif
+#if defined(__CATALINA_libwifi)
+  {LUA_WIFILIBNAME, luaopen_wifi},
+#endif
   {NULL, NULL}
 };
 
@@ -89,11 +101,8 @@ LUALIB_API void luaL_openlibs (lua_State *L) {
   const luaL_Reg *lib;
   /* "require" functions from 'loadedlibs' and set results to global table */
   for (lib = loadedlibs; lib->func; lib++) {
-    //t_printf("loading %s\n", lib->name);
     luaL_requiref(L, lib->name, lib->func, 1);
     lua_pop(L, 1);  /* remove lib */
-    //t_printf("loaded %s\n", lib->name);
   }
-  //t_printf("load complete\n");
 }
 

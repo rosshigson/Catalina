@@ -110,9 +110,6 @@ _SD_DO     = 58         'pin SD Card MISO
 ' 2 Port Serial constants
 ' =======================
 
-' NOTE that the ports are numbered 1 and 2 here for consistency with the 
-' names used in the PASM code, but in C the ports are numbered 0 and 1
-
 _RX1_PIN   = 0 ' _RX_PIN
 _TX1_PIN   = 1 ' _TX_PIN
 _RX1_MODE  = %0000_0000_000_0000000000000_00_11111_0 ' async rx mode, true input, input  enabled for smart input
@@ -127,19 +124,14 @@ _BAUDRATE2 = _BAUDRATE
 ' Multi Port Serial (aka 8 Port Serial) constants
 ' ===============================================
 
-' NOTE Multi Port 1 and 2 use the 2 Port Serial constants defined above for
-' pins and baud rate (but not mode) - This is done so that by default the 
-' Multi Port Serial plugin behaves the same way as the 2 Port Serial plugin. 
-' To disable thiis "auto-configuration" behaviour, set the pins to -1 (or 
-' anything outside the range 0 .. 63). All such ports will have to be 
-' manually configured in the C program (see the s8_openport() function).
+' NOTE Multi Port 1 and 2 use the 2 Port Serial constants defined above for pins and baud rate (but not mode) -
+' This is done so that by default the Multi Port Serial plugin behaves the same way as the 2 Port Serial plugin. 
+' To disable thiis "auto-configuration" behaviour, set the pins to -1 (or anything outside the range 0 .. 63). 
+' All such ports will have to be manually configured in the C program (see the s8_openport() function).
 
 '    rxmode = %0xx1 = invert rx              (same for txmode)
 '             %0x1x = invert tx
 '             %01xx = open-drain/open-source tx
-
-' NOTE that the ports are numbered 1 to 8 here for compatibility with the 2
-' port serial port numbering, but in C the ports are numbered 0 to 7
 
 _RX1_MULTI_PIN  = 0 ' _RX1_PIN
 _TX1_MULTI_PIN  = 1 ' _TX1_PIN
