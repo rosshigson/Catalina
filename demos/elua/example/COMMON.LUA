@@ -63,8 +63,8 @@ function invert(input)
   return bs.deserializeN(svc.serial(INVERT_SVC, bs.serialize(input), 100), 1)
 end
 
-function invoke(input)
-  return bs.deserializeN(svc.serial(INVOKE_SVC, bs.serialize(input), 100), 1)
+function invoke(f, x)
+  return bs.deserializeN(svc.serial(INVOKE_SVC, bs.serialize(f, x), 100), 1)
 end
 
 function quit()
