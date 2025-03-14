@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_spsk_67cacdbc_charT_oI_nt_L000001 ' <symbol:charToInt>
+C_sg2c_67d11038_charT_oI_nt_L000001 ' <symbol:charToInt>
  calld PA,#PSHM
  long $400000 ' save registers
  mov r22, r2 ' CVUI
@@ -17,24 +17,24 @@ C_spsk_67cacdbc_charT_oI_nt_L000001 ' <symbol:charToInt>
  mov r22, r2 ' CVUI
  and r22, cviu_m1 ' zero extend
  cmps r22,  #10 wcz
- if_b jmp #\C_spsk_67cacdbc_charT_oI_nt_L000001_3 ' LTI4
+ if_b jmp #\C_sg2c_67d11038_charT_oI_nt_L000001_3 ' LTI4
  mov r22, r2 ' CVUI
  and r22, cviu_m1 ' zero extend
  subs r22, #7 ' SUBI4 coni
  mov r2, r22 ' CVI, CVU or LOAD
-C_spsk_67cacdbc_charT_oI_nt_L000001_3
+C_sg2c_67d11038_charT_oI_nt_L000001_3
  mov r22, r2 ' CVUI
  and r22, cviu_m1 ' zero extend
  cmps r22,  #15 wcz
- if_be jmp #\C_spsk_67cacdbc_charT_oI_nt_L000001_5 ' LEI4
+ if_be jmp #\C_sg2c_67d11038_charT_oI_nt_L000001_5 ' LEI4
  mov r22, r2 ' CVUI
  and r22, cviu_m1 ' zero extend
  subs r22, #32 ' SUBI4 coni
  mov r2, r22 ' CVI, CVU or LOAD
-C_spsk_67cacdbc_charT_oI_nt_L000001_5
+C_sg2c_67d11038_charT_oI_nt_L000001_5
  mov r0, r2 ' CVUI
  and r0, cviu_m1 ' zero extend
-' C_spsk_67cacdbc_charT_oI_nt_L000001_2 ' (symbol refcount = 0)
+' C_sg2c_67d11038_charT_oI_nt_L000001_2 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETN
 
@@ -121,7 +121,7 @@ C__scanf_getl_19
  and r2, cviu_m1 ' zero extend
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_spsk_67cacdbc_charT_oI_nt_L000001 ' CALL addrg
+ long @C_sg2c_67d11038_charT_oI_nt_L000001 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r20, r21 ' CVI, CVU or LOAD
  #ifndef NO_INTERRUPTS

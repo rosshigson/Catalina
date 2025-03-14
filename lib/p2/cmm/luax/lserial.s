@@ -11,37 +11,37 @@ DAT ' code segment
 DAT ' const data segment
 
  alignl ' align long
-C_smlkf_67cacd31_luaserial_funcs_L000018 ' <symbol:luaserial_funcs>
- long @C_smlkg_67cacd31_19_L000020
- long @C_smlk_67cacd31_serial_rxflush_L000003
- long @C_smlkh_67cacd31_21_L000022
- long @C_smlk1_67cacd31_serial_rxcheck_L000004
- long @C_smlki_67cacd31_23_L000024
- long @C_smlk2_67cacd31_serial_rxtime_L000005
- long @C_smlkj_67cacd31_25_L000026
- long @C_smlk3_67cacd31_serial_rxcount_L000006
- long @C_smlkk_67cacd31_27_L000028
- long @C_smlk4_67cacd31_serial_rx_L000007
- long @C_smlkl_67cacd31_29_L000030
- long @C_smlk5_67cacd31_serial_txflush_L000008
- long @C_smlkm_67cacd31_31_L000032
- long @C_smlk6_67cacd31_serial_txcount_L000009
- long @C_smlkn_67cacd31_33_L000034
- long @C_smlk7_67cacd31_serial_tx_L000010
- long @C_smlko_67cacd31_35_L000036
- long @C_smlk8_67cacd31_serial_str_L000011
- long @C_smlkp_67cacd31_37_L000038
- long @C_smlk9_67cacd31_serial_decl_L000012
- long @C_smlkq_67cacd31_39_L000040
- long @C_smlka_67cacd31_serial_hex_L000013
- long @C_smlkr_67cacd31_41_L000042
- long @C_smlkb_67cacd31_serial_ihex_L000014
- long @C_smlks_67cacd31_43_L000044
- long @C_smlkc_67cacd31_serial_bin_L000015
- long @C_smlkt_67cacd31_45_L000046
- long @C_smlkd_67cacd31_serial_ibin_L000016
- long @C_smlku_67cacd31_47_L000048
- long @C_smlke_67cacd31_serial_padchar_L000017
+C_sffcf_67d10fd4_luaserial_funcs_L000018 ' <symbol:luaserial_funcs>
+ long @C_sffcg_67d10fd4_19_L000020
+ long @C_sffc_67d10fd4_serial_rxflush_L000003
+ long @C_sffch_67d10fd4_21_L000022
+ long @C_sffc1_67d10fd4_serial_rxcheck_L000004
+ long @C_sffci_67d10fd4_23_L000024
+ long @C_sffc2_67d10fd4_serial_rxtime_L000005
+ long @C_sffcj_67d10fd4_25_L000026
+ long @C_sffc3_67d10fd4_serial_rxcount_L000006
+ long @C_sffck_67d10fd4_27_L000028
+ long @C_sffc4_67d10fd4_serial_rx_L000007
+ long @C_sffcl_67d10fd4_29_L000030
+ long @C_sffc5_67d10fd4_serial_txflush_L000008
+ long @C_sffcm_67d10fd4_31_L000032
+ long @C_sffc6_67d10fd4_serial_txcount_L000009
+ long @C_sffcn_67d10fd4_33_L000034
+ long @C_sffc7_67d10fd4_serial_tx_L000010
+ long @C_sffco_67d10fd4_35_L000036
+ long @C_sffc8_67d10fd4_serial_str_L000011
+ long @C_sffcp_67d10fd4_37_L000038
+ long @C_sffc9_67d10fd4_serial_decl_L000012
+ long @C_sffcq_67d10fd4_39_L000040
+ long @C_sffca_67d10fd4_serial_hex_L000013
+ long @C_sffcr_67d10fd4_41_L000042
+ long @C_sffcb_67d10fd4_serial_ihex_L000014
+ long @C_sffcs_67d10fd4_43_L000044
+ long @C_sffcc_67d10fd4_serial_bin_L000015
+ long @C_sffct_67d10fd4_45_L000046
+ long @C_sffcd_67d10fd4_serial_ibin_L000016
+ long @C_sffcu_67d10fd4_47_L000048
+ long @C_sffce_67d10fd4_serial_padchar_L000017
  long $0
  long $0
 
@@ -50,7 +50,7 @@ C_smlkf_67cacd31_luaserial_funcs_L000018 ' <symbol:luaserial_funcs>
 DAT ' code segment
 
  alignl ' align long
-C_smlk_67cacd31_serial_rxflush_L000003 ' <symbol:serial_rxflush>
+C_sffc_67d10fd4_serial_rxflush_L000003 ' <symbol:serial_rxflush>
  alignl ' align long
  long I32_NEWF + 0<<S32
  alignl ' align long
@@ -75,12 +75,12 @@ C_smlk_67cacd31_serial_rxflush_L000003 ' <symbol:serial_rxflush>
  long I32_CALA + (@C_lua_pushinteger)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (1)<<S16A ' RET coni
-' C_smlk_67cacd31_serial_rxflush_L000003_49 ' (symbol refcount = 0)
+' C_sffc_67d10fd4_serial_rxflush_L000003_49 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
  alignl ' align long
-C_smlk1_67cacd31_serial_rxcheck_L000004 ' <symbol:serial_rxcheck>
+C_sffc1_67d10fd4_serial_rxcheck_L000004 ' <symbol:serial_rxcheck>
  alignl ' align long
  long I32_NEWF + 0<<S32
  alignl ' align long
@@ -105,12 +105,12 @@ C_smlk1_67cacd31_serial_rxcheck_L000004 ' <symbol:serial_rxcheck>
  long I32_CALA + (@C_lua_pushinteger)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (1)<<S16A ' RET coni
-' C_smlk1_67cacd31_serial_rxcheck_L000004_50 ' (symbol refcount = 0)
+' C_sffc1_67d10fd4_serial_rxcheck_L000004_50 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
  alignl ' align long
-C_smlk2_67cacd31_serial_rxtime_L000005 ' <symbol:serial_rxtime>
+C_sffc2_67d10fd4_serial_rxtime_L000005 ' <symbol:serial_rxtime>
  alignl ' align long
  long I32_NEWF + 0<<S32
  alignl ' align long
@@ -144,12 +144,12 @@ C_smlk2_67cacd31_serial_rxtime_L000005 ' <symbol:serial_rxtime>
  long I32_CALA + (@C_lua_pushinteger)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (1)<<S16A ' RET coni
-' C_smlk2_67cacd31_serial_rxtime_L000005_51 ' (symbol refcount = 0)
+' C_sffc2_67d10fd4_serial_rxtime_L000005_51 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
  alignl ' align long
-C_smlk3_67cacd31_serial_rxcount_L000006 ' <symbol:serial_rxcount>
+C_sffc3_67d10fd4_serial_rxcount_L000006 ' <symbol:serial_rxcount>
  alignl ' align long
  long I32_NEWF + 0<<S32
  alignl ' align long
@@ -174,12 +174,12 @@ C_smlk3_67cacd31_serial_rxcount_L000006 ' <symbol:serial_rxcount>
  long I32_CALA + (@C_lua_pushinteger)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (1)<<S16A ' RET coni
-' C_smlk3_67cacd31_serial_rxcount_L000006_52 ' (symbol refcount = 0)
+' C_sffc3_67d10fd4_serial_rxcount_L000006_52 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
  alignl ' align long
-C_smlk4_67cacd31_serial_rx_L000007 ' <symbol:serial_rx>
+C_sffc4_67d10fd4_serial_rx_L000007 ' <symbol:serial_rx>
  alignl ' align long
  long I32_NEWF + 0<<S32
  alignl ' align long
@@ -204,12 +204,12 @@ C_smlk4_67cacd31_serial_rx_L000007 ' <symbol:serial_rx>
  long I32_CALA + (@C_lua_pushinteger)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (1)<<S16A ' RET coni
-' C_smlk4_67cacd31_serial_rx_L000007_53 ' (symbol refcount = 0)
+' C_sffc4_67d10fd4_serial_rx_L000007_53 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
  alignl ' align long
-C_smlk5_67cacd31_serial_txflush_L000008 ' <symbol:serial_txflush>
+C_sffc5_67d10fd4_serial_txflush_L000008 ' <symbol:serial_txflush>
  alignl ' align long
  long I32_NEWF + 0<<S32
  alignl ' align long
@@ -234,12 +234,12 @@ C_smlk5_67cacd31_serial_txflush_L000008 ' <symbol:serial_txflush>
  long I32_CALA + (@C_lua_pushinteger)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (1)<<S16A ' RET coni
-' C_smlk5_67cacd31_serial_txflush_L000008_54 ' (symbol refcount = 0)
+' C_sffc5_67d10fd4_serial_txflush_L000008_54 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
  alignl ' align long
-C_smlk6_67cacd31_serial_txcount_L000009 ' <symbol:serial_txcount>
+C_sffc6_67d10fd4_serial_txcount_L000009 ' <symbol:serial_txcount>
  alignl ' align long
  long I32_NEWF + 0<<S32
  alignl ' align long
@@ -264,12 +264,12 @@ C_smlk6_67cacd31_serial_txcount_L000009 ' <symbol:serial_txcount>
  long I32_CALA + (@C_lua_pushinteger)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (1)<<S16A ' RET coni
-' C_smlk6_67cacd31_serial_txcount_L000009_55 ' (symbol refcount = 0)
+' C_sffc6_67d10fd4_serial_txcount_L000009_55 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
  alignl ' align long
-C_smlk7_67cacd31_serial_tx_L000010 ' <symbol:serial_tx>
+C_sffc7_67d10fd4_serial_tx_L000010 ' <symbol:serial_tx>
  alignl ' align long
  long I32_NEWF + 0<<S32
  alignl ' align long
@@ -303,12 +303,12 @@ C_smlk7_67cacd31_serial_tx_L000010 ' <symbol:serial_tx>
  long I32_CALA + (@C_lua_pushinteger)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (1)<<S16A ' RET coni
-' C_smlk7_67cacd31_serial_tx_L000010_56 ' (symbol refcount = 0)
+' C_sffc7_67d10fd4_serial_tx_L000010_56 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
  alignl ' align long
-C_smlk8_67cacd31_serial_str_L000011 ' <symbol:serial_str>
+C_sffc8_67d10fd4_serial_str_L000011 ' <symbol:serial_str>
  alignl ' align long
  long I32_NEWF + 0<<S32
  alignl ' align long
@@ -338,12 +338,12 @@ C_smlk8_67cacd31_serial_str_L000011 ' <symbol:serial_str>
  long I32_CALA + (@C_s_str)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (0)<<S16A ' RET coni
-' C_smlk8_67cacd31_serial_str_L000011_57 ' (symbol refcount = 0)
+' C_sffc8_67d10fd4_serial_str_L000011_57 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
  alignl ' align long
-C_smlk9_67cacd31_serial_decl_L000012 ' <symbol:serial_decl>
+C_sffc9_67d10fd4_serial_decl_L000012 ' <symbol:serial_decl>
  alignl ' align long
  long I32_NEWF + 0<<S32
  alignl ' align long
@@ -386,12 +386,12 @@ C_smlk9_67cacd31_serial_decl_L000012 ' <symbol:serial_decl>
  long I32_CALA + (@C_s_decl)<<S32
  word I16A_ADDI + SP<<D16A + 12<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (0)<<S16A ' RET coni
-' C_smlk9_67cacd31_serial_decl_L000012_58 ' (symbol refcount = 0)
+' C_sffc9_67d10fd4_serial_decl_L000012_58 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
  alignl ' align long
-C_smlka_67cacd31_serial_hex_L000013 ' <symbol:serial_hex>
+C_sffca_67d10fd4_serial_hex_L000013 ' <symbol:serial_hex>
  alignl ' align long
  long I32_NEWF + 0<<S32
  alignl ' align long
@@ -426,12 +426,12 @@ C_smlka_67cacd31_serial_hex_L000013 ' <symbol:serial_hex>
  long I32_CALA + (@C_s_hex)<<S32
  word I16A_ADDI + SP<<D16A + 8<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (0)<<S16A ' RET coni
-' C_smlka_67cacd31_serial_hex_L000013_59 ' (symbol refcount = 0)
+' C_sffca_67d10fd4_serial_hex_L000013_59 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
  alignl ' align long
-C_smlkb_67cacd31_serial_ihex_L000014 ' <symbol:serial_ihex>
+C_sffcb_67d10fd4_serial_ihex_L000014 ' <symbol:serial_ihex>
  alignl ' align long
  long I32_NEWF + 0<<S32
  alignl ' align long
@@ -466,12 +466,12 @@ C_smlkb_67cacd31_serial_ihex_L000014 ' <symbol:serial_ihex>
  long I32_CALA + (@C_s_ihex)<<S32
  word I16A_ADDI + SP<<D16A + 8<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (0)<<S16A ' RET coni
-' C_smlkb_67cacd31_serial_ihex_L000014_60 ' (symbol refcount = 0)
+' C_sffcb_67d10fd4_serial_ihex_L000014_60 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
  alignl ' align long
-C_smlkc_67cacd31_serial_bin_L000015 ' <symbol:serial_bin>
+C_sffcc_67d10fd4_serial_bin_L000015 ' <symbol:serial_bin>
  alignl ' align long
  long I32_NEWF + 0<<S32
  alignl ' align long
@@ -506,12 +506,12 @@ C_smlkc_67cacd31_serial_bin_L000015 ' <symbol:serial_bin>
  long I32_CALA + (@C_s_bin)<<S32
  word I16A_ADDI + SP<<D16A + 8<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (0)<<S16A ' RET coni
-' C_smlkc_67cacd31_serial_bin_L000015_61 ' (symbol refcount = 0)
+' C_sffcc_67d10fd4_serial_bin_L000015_61 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
  alignl ' align long
-C_smlkd_67cacd31_serial_ibin_L000016 ' <symbol:serial_ibin>
+C_sffcd_67d10fd4_serial_ibin_L000016 ' <symbol:serial_ibin>
  alignl ' align long
  long I32_NEWF + 0<<S32
  alignl ' align long
@@ -546,12 +546,12 @@ C_smlkd_67cacd31_serial_ibin_L000016 ' <symbol:serial_ibin>
  long I32_CALA + (@C_s_ibin)<<S32
  word I16A_ADDI + SP<<D16A + 8<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (0)<<S16A ' RET coni
-' C_smlkd_67cacd31_serial_ibin_L000016_62 ' (symbol refcount = 0)
+' C_sffcd_67d10fd4_serial_ibin_L000016_62 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
  alignl ' align long
-C_smlke_67cacd31_serial_padchar_L000017 ' <symbol:serial_padchar>
+C_sffce_67d10fd4_serial_padchar_L000017 ' <symbol:serial_padchar>
  alignl ' align long
  long I32_NEWF + 0<<S32
  alignl ' align long
@@ -586,7 +586,7 @@ C_smlke_67cacd31_serial_padchar_L000017 ' <symbol:serial_padchar>
  long I32_CALA + (@C_s_padchar)<<S32
  word I16A_ADDI + SP<<D16A + 8<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (0)<<S16A ' RET coni
-' C_smlke_67cacd31_serial_padchar_L000017_63 ' (symbol refcount = 0)
+' C_sffce_67d10fd4_serial_padchar_L000017_63 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
@@ -619,7 +619,7 @@ C_luaopen_serial ' <symbol:luaopen_serial>
  word I16A_MOVI + (r2)<<D16A + (0)<<S16A ' reg ARG coni
  word I16B_LODL + (r3)<<D16B
  alignl ' align long
- long @C_smlkf_67cacd31_luaserial_funcs_L000018 ' reg ARG ADDRG
+ long @C_sffcf_67d10fd4_luaserial_funcs_L000018 ' reg ARG ADDRG
  word I16A_MOV + (r4)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 50<<S16B ' arg size, rpsize = 12, spsize = 12
  alignl ' align long
@@ -681,7 +681,7 @@ C_luaopen_serial_65_L000066 ' <symbol:65>
  long $43fc0000 ' float
 
  alignl ' align long
-C_smlku_67cacd31_47_L000048 ' <symbol:47>
+C_sffcu_67d10fd4_47_L000048 ' <symbol:47>
  byte 112
  byte 97
  byte 100
@@ -692,7 +692,7 @@ C_smlku_67cacd31_47_L000048 ' <symbol:47>
  byte 0
 
  alignl ' align long
-C_smlkt_67cacd31_45_L000046 ' <symbol:45>
+C_sffct_67d10fd4_45_L000046 ' <symbol:45>
  byte 105
  byte 98
  byte 105
@@ -700,14 +700,14 @@ C_smlkt_67cacd31_45_L000046 ' <symbol:45>
  byte 0
 
  alignl ' align long
-C_smlks_67cacd31_43_L000044 ' <symbol:43>
+C_sffcs_67d10fd4_43_L000044 ' <symbol:43>
  byte 98
  byte 105
  byte 110
  byte 0
 
  alignl ' align long
-C_smlkr_67cacd31_41_L000042 ' <symbol:41>
+C_sffcr_67d10fd4_41_L000042 ' <symbol:41>
  byte 105
  byte 104
  byte 101
@@ -715,14 +715,14 @@ C_smlkr_67cacd31_41_L000042 ' <symbol:41>
  byte 0
 
  alignl ' align long
-C_smlkq_67cacd31_39_L000040 ' <symbol:39>
+C_sffcq_67d10fd4_39_L000040 ' <symbol:39>
  byte 104
  byte 101
  byte 120
  byte 0
 
  alignl ' align long
-C_smlkp_67cacd31_37_L000038 ' <symbol:37>
+C_sffcp_67d10fd4_37_L000038 ' <symbol:37>
  byte 100
  byte 101
  byte 99
@@ -730,20 +730,20 @@ C_smlkp_67cacd31_37_L000038 ' <symbol:37>
  byte 0
 
  alignl ' align long
-C_smlko_67cacd31_35_L000036 ' <symbol:35>
+C_sffco_67d10fd4_35_L000036 ' <symbol:35>
  byte 115
  byte 116
  byte 114
  byte 0
 
  alignl ' align long
-C_smlkn_67cacd31_33_L000034 ' <symbol:33>
+C_sffcn_67d10fd4_33_L000034 ' <symbol:33>
  byte 116
  byte 120
  byte 0
 
  alignl ' align long
-C_smlkm_67cacd31_31_L000032 ' <symbol:31>
+C_sffcm_67d10fd4_31_L000032 ' <symbol:31>
  byte 116
  byte 120
  byte 99
@@ -754,7 +754,7 @@ C_smlkm_67cacd31_31_L000032 ' <symbol:31>
  byte 0
 
  alignl ' align long
-C_smlkl_67cacd31_29_L000030 ' <symbol:29>
+C_sffcl_67d10fd4_29_L000030 ' <symbol:29>
  byte 116
  byte 120
  byte 102
@@ -765,13 +765,13 @@ C_smlkl_67cacd31_29_L000030 ' <symbol:29>
  byte 0
 
  alignl ' align long
-C_smlkk_67cacd31_27_L000028 ' <symbol:27>
+C_sffck_67d10fd4_27_L000028 ' <symbol:27>
  byte 114
  byte 120
  byte 0
 
  alignl ' align long
-C_smlkj_67cacd31_25_L000026 ' <symbol:25>
+C_sffcj_67d10fd4_25_L000026 ' <symbol:25>
  byte 114
  byte 120
  byte 99
@@ -782,7 +782,7 @@ C_smlkj_67cacd31_25_L000026 ' <symbol:25>
  byte 0
 
  alignl ' align long
-C_smlki_67cacd31_23_L000024 ' <symbol:23>
+C_sffci_67d10fd4_23_L000024 ' <symbol:23>
  byte 114
  byte 120
  byte 116
@@ -792,7 +792,7 @@ C_smlki_67cacd31_23_L000024 ' <symbol:23>
  byte 0
 
  alignl ' align long
-C_smlkh_67cacd31_21_L000022 ' <symbol:21>
+C_sffch_67d10fd4_21_L000022 ' <symbol:21>
  byte 114
  byte 120
  byte 99
@@ -803,7 +803,7 @@ C_smlkh_67cacd31_21_L000022 ' <symbol:21>
  byte 0
 
  alignl ' align long
-C_smlkg_67cacd31_19_L000020 ' <symbol:19>
+C_sffcg_67d10fd4_19_L000020 ' <symbol:19>
  byte 114
  byte 120
  byte 102

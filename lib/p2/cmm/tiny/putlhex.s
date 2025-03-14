@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_s3t8_67cacd2d_digits_L000001 ' <symbol:digits>
+C_sft8_67d10fd1_digits_L000001 ' <symbol:digits>
  byte 48
  byte 49
  byte 50
@@ -57,7 +57,7 @@ C_putlhex_5
  word I16A_AND + (r20)<<D16A + (r23)<<S16A ' BANDI/U (2)
  word I16B_LODL + (r18)<<D16B
  alignl ' align long
- long @C_s3t8_67cacd2d_digits_L000001 ' reg <- addrg
+ long @C_sft8_67d10fd1_digits_L000001 ' reg <- addrg
  word I16A_ADDS + (r20)<<D16A + (r18)<<S16A ' ADDI/P (1)
  word I16A_RDBYTE + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRU1 reg
  word I16A_WRBYTE + (r20)<<D16A + (r22)<<S16A ' ASGNU1 reg reg

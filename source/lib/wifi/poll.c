@@ -94,7 +94,7 @@ int wifi_POLL(int mask, char *event, int *handle , int *value) {
       strcpy(buff, "POLL");
    }
    else {
-      isprintf(buff, "POLL:0x%8x", mask);
+      isprintf(buff, "POLL:%d", mask);
    }
    result = wifi_Send_Command(buff);
    if (result == wifi_Success) {

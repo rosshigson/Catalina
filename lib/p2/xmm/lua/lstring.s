@@ -160,13 +160,13 @@ C_luaS__hashlongstr_23
 
 
  alignl ' align long
-C_siog_67cacc0e_tablerehash_L000025 ' <symbol:tablerehash>
+C_sd6o_67d10efb_tablerehash_L000025 ' <symbol:tablerehash>
  jmp #PSHM
  long $fa0000 ' save registers
  mov r23, r3 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_siog_67cacc0e_tablerehash_L000025_30 ' JUMPV addrg
-C_siog_67cacc0e_tablerehash_L000025_27
+ long @C_sd6o_67d10efb_tablerehash_L000025_30 ' JUMPV addrg
+C_sd6o_67d10efb_tablerehash_L000025_27
  mov r22, r23
  shl r22, #2 ' LSHI4 coni
  adds r22, r4 ' ADDI/P (1)
@@ -176,16 +176,16 @@ C_siog_67cacc0e_tablerehash_L000025_27
  mov RI, r22
  mov BC, r20
  jmp #WLNG ' ASGNP4 reg reg
-' C_siog_67cacc0e_tablerehash_L000025_28 ' (symbol refcount = 0)
+' C_sd6o_67d10efb_tablerehash_L000025_28 ' (symbol refcount = 0)
  adds r23, #1 ' ADDI4 coni
-C_siog_67cacc0e_tablerehash_L000025_30
+C_sd6o_67d10efb_tablerehash_L000025_30
  cmps r23, r2 wz,wc
  jmp #BR_B
- long @C_siog_67cacc0e_tablerehash_L000025_27 ' LTI4
+ long @C_sd6o_67d10efb_tablerehash_L000025_27 ' LTI4
  mov r23, #0 ' reg <- coni
  jmp #JMPA
- long @C_siog_67cacc0e_tablerehash_L000025_34 ' JUMPV addrg
-C_siog_67cacc0e_tablerehash_L000025_31
+ long @C_sd6o_67d10efb_tablerehash_L000025_34 ' JUMPV addrg
+C_sd6o_67d10efb_tablerehash_L000025_31
  mov r22, r23
  shl r22, #2 ' LSHI4 coni
  adds r22, r4 ' ADDI/P (1)
@@ -202,8 +202,8 @@ C_siog_67cacc0e_tablerehash_L000025_31
  mov BC, r20
  jmp #WLNG ' ASGNP4 reg reg
  jmp #JMPA
- long @C_siog_67cacc0e_tablerehash_L000025_36 ' JUMPV addrg
-C_siog_67cacc0e_tablerehash_L000025_35
+ long @C_sd6o_67d10efb_tablerehash_L000025_36 ' JUMPV addrg
+C_sd6o_67d10efb_tablerehash_L000025_35
  mov r22, r21
  adds r22, #12 ' ADDP4 coni
  mov RI, r22
@@ -236,18 +236,18 @@ C_siog_67cacc0e_tablerehash_L000025_35
  mov BC, r21
  jmp #WLNG ' ASGNP4 reg reg
  mov r21, r17 ' CVI, CVU or LOAD
-C_siog_67cacc0e_tablerehash_L000025_36
+C_sd6o_67d10efb_tablerehash_L000025_36
  mov r22, r21 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
  jmp #BRNZ
- long @C_siog_67cacc0e_tablerehash_L000025_35 ' NEU4
-' C_siog_67cacc0e_tablerehash_L000025_32 ' (symbol refcount = 0)
+ long @C_sd6o_67d10efb_tablerehash_L000025_35 ' NEU4
+' C_sd6o_67d10efb_tablerehash_L000025_32 ' (symbol refcount = 0)
  adds r23, #1 ' ADDI4 coni
-C_siog_67cacc0e_tablerehash_L000025_34
+C_sd6o_67d10efb_tablerehash_L000025_34
  cmps r23, r3 wz,wc
  jmp #BR_B
- long @C_siog_67cacc0e_tablerehash_L000025_31 ' LTI4
-' C_siog_67cacc0e_tablerehash_L000025_26 ' (symbol refcount = 0)
+ long @C_sd6o_67d10efb_tablerehash_L000025_31 ' LTI4
+' C_sd6o_67d10efb_tablerehash_L000025_26 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETN
 
@@ -285,7 +285,7 @@ C_luaS__resize ' <symbol:luaS_resize>
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_siog_67cacc0e_tablerehash_L000025
+ long @C_sd6o_67d10efb_tablerehash_L000025
  add SP, #8 ' CALL addrg
 C_luaS__resize_39
  mov r22, r21 ' CVI, CVU or LOAD
@@ -323,7 +323,7 @@ C_luaS__resize_39
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_siog_67cacc0e_tablerehash_L000025
+ long @C_sd6o_67d10efb_tablerehash_L000025
  add SP, #8 ' CALL addrg
  jmp #JMPA
  long @C_luaS__resize_42 ' JUMPV addrg
@@ -350,7 +350,7 @@ C_luaS__resize_41
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_siog_67cacc0e_tablerehash_L000025
+ long @C_sd6o_67d10efb_tablerehash_L000025
  add SP, #8 ' CALL addrg
 C_luaS__resize_45
 C_luaS__resize_42
@@ -463,7 +463,7 @@ C_luaS__init ' <symbol:luaS_init>
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_siog_67cacc0e_tablerehash_L000025
+ long @C_sd6o_67d10efb_tablerehash_L000025
  add SP, #8 ' CALL addrg
  mov r22, r15
  adds r22, #8 ' ADDP4 coni
@@ -533,7 +533,7 @@ C_luaS__init_65
 
 
  alignl ' align long
-C_siog2_67cacc0e_createstrobj_L000069 ' <symbol:createstrobj>
+C_sd6o2_67d10efb_createstrobj_L000069 ' <symbol:createstrobj>
  jmp #NEWF
  sub SP, #8
  jmp #PSHM
@@ -588,7 +588,7 @@ C_siog2_67cacc0e_createstrobj_L000069 ' <symbol:createstrobj>
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
  mov r0, r15 ' CVI, CVU or LOAD
-' C_siog2_67cacc0e_createstrobj_L000069_70 ' (symbol refcount = 0)
+' C_sd6o2_67d10efb_createstrobj_L000069_70 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #8 ' framesize
  jmp #RETF
@@ -618,7 +618,7 @@ C_luaS__createlngstrobj ' <symbol:luaS_createlngstrobj>
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_siog2_67cacc0e_createstrobj_L000069
+ long @C_sd6o2_67d10efb_createstrobj_L000069
  add SP, #12 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
  mov r22, r19
@@ -704,7 +704,7 @@ C_luaS__remove_74
 
 
  alignl ' align long
-C_siog3_67cacc0e_growstrtab_L000076 ' <symbol:growstrtab>
+C_sd6o3_67d10efb_growstrtab_L000076 ' <symbol:growstrtab>
  jmp #NEWF
  jmp #PSHM
  long $f00000 ' save registers
@@ -720,7 +720,7 @@ C_siog3_67cacc0e_growstrtab_L000076 ' <symbol:growstrtab>
  mov r20, RI ' reg <- con
  cmps r22, r20 wz
  jmp #BRNZ
- long @C_siog3_67cacc0e_growstrtab_L000076_78 ' NEI4
+ long @C_sd6o3_67d10efb_growstrtab_L000076_78 ' NEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -738,7 +738,7 @@ C_siog3_67cacc0e_growstrtab_L000076 ' <symbol:growstrtab>
  mov r20, RI ' reg <- con
  cmps r22, r20 wz
  jmp #BRNZ
- long @C_siog3_67cacc0e_growstrtab_L000076_80 ' NEI4
+ long @C_sd6o3_67d10efb_growstrtab_L000076_80 ' NEI4
  mov r2, #4 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -746,8 +746,8 @@ C_siog3_67cacc0e_growstrtab_L000076 ' <symbol:growstrtab>
  jmp #CALA
  long @C_luaD__throw
  add SP, #4 ' CALL addrg
-C_siog3_67cacc0e_growstrtab_L000076_80
-C_siog3_67cacc0e_growstrtab_L000076_78
+C_sd6o3_67d10efb_growstrtab_L000076_80
+C_sd6o3_67d10efb_growstrtab_L000076_78
  mov r22, r21
  adds r22, #8 ' ADDP4 coni
  mov RI, r22
@@ -758,7 +758,7 @@ C_siog3_67cacc0e_growstrtab_L000076_78
  mov r20, RI ' reg <- con
  cmps r22, r20 wz,wc
  jmp #BR_A
- long @C_siog3_67cacc0e_growstrtab_L000076_82 ' GTI4
+ long @C_sd6o3_67d10efb_growstrtab_L000076_82 ' GTI4
  mov r22, r21
  adds r22, #8 ' ADDP4 coni
  mov RI, r22
@@ -772,14 +772,14 @@ C_siog3_67cacc0e_growstrtab_L000076_78
  jmp #CALA
  long @C_luaS__resize
  add SP, #4 ' CALL addrg
-C_siog3_67cacc0e_growstrtab_L000076_82
-' C_siog3_67cacc0e_growstrtab_L000076_77 ' (symbol refcount = 0)
+C_sd6o3_67d10efb_growstrtab_L000076_82
+' C_sd6o3_67d10efb_growstrtab_L000076_77 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_siog4_67cacc0e_internshrstr_L000084 ' <symbol:internshrstr>
+C_sd6o4_67d10efb_internshrstr_L000084 ' <symbol:internshrstr>
  jmp #NEWF
  jmp #PSHM
  long $faaa00 ' save registers
@@ -823,8 +823,8 @@ C_siog4_67cacc0e_internshrstr_L000084 ' <symbol:internshrstr>
  jmp #RLNG
  mov r17, BC ' reg <- INDIRP4 reg
  jmp #JMPA
- long @C_siog4_67cacc0e_internshrstr_L000084_89 ' JUMPV addrg
-C_siog4_67cacc0e_internshrstr_L000084_86
+ long @C_sd6o4_67d10efb_internshrstr_L000084_89 ' JUMPV addrg
+C_sd6o4_67d10efb_internshrstr_L000084_86
  mov r22, r17
  adds r22, #7 ' ADDP4 coni
  mov RI, r22
@@ -833,7 +833,7 @@ C_siog4_67cacc0e_internshrstr_L000084_86
  and r22, cviu_m1 ' zero extend
  cmp r19, r22 wz
  jmp #BRNZ
- long @C_siog4_67cacc0e_internshrstr_L000084_90 ' NEU4
+ long @C_sd6o4_67d10efb_internshrstr_L000084_90 ' NEU4
  mov r22, #1 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r19 ' setup r0/r1 (2)
@@ -849,7 +849,7 @@ C_siog4_67cacc0e_internshrstr_L000084_86
  add SP, #8 ' CALL addrg
  cmps r0,  #0 wz
  jmp #BRNZ
- long @C_siog4_67cacc0e_internshrstr_L000084_90 ' NEI4
+ long @C_sd6o4_67d10efb_internshrstr_L000084_90 ' NEI4
  mov r22, r17
  adds r22, #5 ' ADDP4 coni
  mov RI, r22
@@ -866,7 +866,7 @@ C_siog4_67cacc0e_internshrstr_L000084_86
  and r22, r20 ' BANDI/U (1)
  cmps r22,  #0 wz
  jmp #BR_Z
- long @C_siog4_67cacc0e_internshrstr_L000084_92 ' EQI4
+ long @C_sd6o4_67d10efb_internshrstr_L000084_92 ' EQI4
  mov r22, r17
  adds r22, #5 ' ADDP4 coni
  mov RI, r22
@@ -877,22 +877,22 @@ C_siog4_67cacc0e_internshrstr_L000084_86
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
-C_siog4_67cacc0e_internshrstr_L000084_92
+C_sd6o4_67d10efb_internshrstr_L000084_92
  mov r0, r17 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_siog4_67cacc0e_internshrstr_L000084_85 ' JUMPV addrg
-C_siog4_67cacc0e_internshrstr_L000084_90
-' C_siog4_67cacc0e_internshrstr_L000084_87 ' (symbol refcount = 0)
+ long @C_sd6o4_67d10efb_internshrstr_L000084_85 ' JUMPV addrg
+C_sd6o4_67d10efb_internshrstr_L000084_90
+' C_sd6o4_67d10efb_internshrstr_L000084_87 ' (symbol refcount = 0)
  mov r22, r17
  adds r22, #12 ' ADDP4 coni
  mov RI, r22
  jmp #RLNG
  mov r17, BC ' reg <- INDIRP4 reg
-C_siog4_67cacc0e_internshrstr_L000084_89
+C_sd6o4_67d10efb_internshrstr_L000084_89
  mov r22, r17 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
  jmp #BRNZ
- long @C_siog4_67cacc0e_internshrstr_L000084_86 ' NEU4
+ long @C_sd6o4_67d10efb_internshrstr_L000084_86 ' NEU4
  mov r22, r13
  adds r22, #4 ' ADDP4 coni
  mov RI, r22
@@ -905,13 +905,13 @@ C_siog4_67cacc0e_internshrstr_L000084_89
  mov r20, BC ' reg <- INDIRI4 reg
  cmps r22, r20 wz,wc
  jmp #BR_B
- long @C_siog4_67cacc0e_internshrstr_L000084_94 ' LTI4
+ long @C_sd6o4_67d10efb_internshrstr_L000084_94 ' LTI4
  mov r2, r13 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_siog3_67cacc0e_growstrtab_L000076
+ long @C_sd6o3_67d10efb_growstrtab_L000076
  add SP, #4 ' CALL addrg
  mov r22, r13
  adds r22, #8 ' ADDP4 coni
@@ -926,7 +926,7 @@ C_siog4_67cacc0e_internshrstr_L000084_89
  mov r20, BC ' reg <- INDIRP4 reg
  mov r11, r22 ' ADDI/P
  adds r11, r20 ' ADDI/P (3)
-C_siog4_67cacc0e_internshrstr_L000084_94
+C_sd6o4_67d10efb_internshrstr_L000084_94
  mov r2, r9 ' CVI, CVU or LOAD
  mov r3, #4 ' reg ARG coni
  mov r4, r19 ' CVI, CVU or LOAD
@@ -934,7 +934,7 @@ C_siog4_67cacc0e_internshrstr_L000084_94
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_siog2_67cacc0e_createstrobj_L000069
+ long @C_sd6o2_67d10efb_createstrobj_L000069
  add SP, #12 ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
  mov r22, #1 ' reg <- coni
@@ -977,7 +977,7 @@ C_siog4_67cacc0e_internshrstr_L000084_94
  mov BC, r20
  jmp #WLNG ' ASGNI4 reg reg
  mov r0, r17 ' CVI, CVU or LOAD
-C_siog4_67cacc0e_internshrstr_L000084_85
+C_sd6o4_67d10efb_internshrstr_L000084_85
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -1002,7 +1002,7 @@ C_luaS__newlstr ' <symbol:luaS_newlstr>
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_siog4_67cacc0e_internshrstr_L000084
+ long @C_sd6o4_67d10efb_internshrstr_L000084
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  jmp #JMPA
