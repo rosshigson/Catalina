@@ -1,5 +1,5 @@
 /*
- * my_dispatch_lua_bg - A custom Lua/ALOHA dispatcher. Dispatches ALOHA
+ * my_dispatch_Lua_bg - A custom Lua/ALOHA dispatcher. Dispatches ALOHA
  *                      serial requests using information loaded from
  *                      the "service_index" and "port_n_index" tables
  *                      (n = 0 .. 1 if 2 port serial is used, or 0 .. 7
@@ -46,7 +46,7 @@
 static int port_in_use[PORTS];
 
 // set to 1 if we should poll for incoming WiFi events (i.e. RPC calls)
-static int wifi_in_use = 0;
+static int wifi_listening = 0;
 
 #if defined(__CATALINA_libwifi)
 // my IP address (filled in if we join a network, otherwise use the default
@@ -177,7 +177,7 @@ int rpc_call(char *ip, char *name,
          len = 0;
          for (i = 0; i < REPLY_RETRIES; i++) {
             event = 'N';
-            if ((wifi_POLL(0, &event, &rhandle, &value)) == wifi_Success) {
+            if ((wifi_POLL(1<<handle, &event, &rhandle, &value)) == wifi_Success) {
                if (event == 'D') {
 #if DEBUG_INFO
                   t_printf("DATA: %d %d\n", rhandle, value);
@@ -320,7 +320,7 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
 #endif
       // check for WiFi events
       event = 'N';
-      if ((port < 0) && (wifi_in_use)) {
+      if ((port < 0) && (wifi_listening)) {
 #if defined(__CATALINA_libwifi)
         wifi_POLL(0, &event, &handle, &value);
 #endif        
@@ -1143,8 +1143,8 @@ int mod_handles(lua_State *L, svc_list_t services, char *name,
       }
       // pop the table
       lua_pop(L, 1);
-      // return the number of services we modified
-      return n;
+      // return 1 if listening
+      return listening;
    }
 #if DEBUG_INFO   
    else {
@@ -1219,8 +1219,9 @@ int my_load_Lua_service_list(lua_State *L, svc_list_t services, int max) {
 #endif
 #if defined(__CATALINA_libwifi)
    if (mod_handles(L, services, "rpc_network", RPC_SVC, max) > 0) {
-      // indicate we should poll for WiFi events
-      wifi_in_use = 1;
+      // indicate we should poll for WiFi events, 
+      // because we are listening for RPC calls
+      wifi_listening = 1;
    }
 #endif
    num_services = n;
