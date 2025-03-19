@@ -17,8 +17,8 @@ extern long _serial_service(long svc, serial_t *serial) {
  * The internal id is the list index + 1. e.g.
  *
  * svc_list_t my_list[] = {
- *    {"name", NULL, SHORT_SVC, SVC_COMP, 0}, // internal index 1
- *    {"", NULL, 0, 0, 0}
+ *    {"name", NULL, SHORT_SVC, SVC_COMP, 0, NULL, 0}, // internal index 1
+ *    {"", NULL, 0, 0, 0, NULL, 0}
  * };
  *
  * if the lock is specified as NO_LOCK (-1), then no lock is used to protect 
@@ -31,9 +31,9 @@ void _register_services(int lock, svc_list_t list) {
 
    while (list[n].svc_id != 0) {
       svc_ptr = SERVICE_POINTER(list[n].svc_id);
-      *svc_ptr =  (cog &0x0F) << 12; // 4 bits for cog
-      *svc_ptr |= lock & 0x1F << 7;  // 5 bits for lock id
-      *svc_ptr |= ((n+1) & 0x7F);    // 7 bits for internal id
+      *svc_ptr =  (cog &0x0F) << 12;   // 4 bits for cog
+      *svc_ptr |= (lock & 0x1F) << 7;  // 5 bits for lock id
+      *svc_ptr |= ((n+1) & 0x7F);      // 7 bits for internal id
       n++;
    }
 }
