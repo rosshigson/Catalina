@@ -43,6 +43,8 @@ set CATALINA_DEFINE=P2_WIFI
 catapult rlua.c
 catapult rluax.c
 catapult rluax2.c
+catapult rluasx.c
+catapult rluafx.c
 
 set CATALINA_DEFINE=
 :done

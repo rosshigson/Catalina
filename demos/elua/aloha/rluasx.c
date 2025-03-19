@@ -1,32 +1,41 @@
 /******************************************************************************
- *        A general-purpose Lua Client and Server for ALOHA services.         *
+ *        A general-purpose Lua Client and Server for RPC services.           *
  *                                                                            *
  * This program demonstrates executing a Lua server from XMM RAM that         *
  * dispatches service calls made from a Lua secondary client executing        * 
  * from Hub RAM.                                                              *
  *                                                                            *
+ * NOTE THAT THIS PROGRAM DISABLES ALOHA SERIAL SUPPORT - it supports         *
+ * only Wifi RPC services. Doing this saves some Hub RAM because the ALOHA    *
+ * protocol code is not required, and it also allows the use of the 2-port    *
+ * serial plugin instead of the 8 port serial plugin, which saves additional  *
+ * Hub RAM. It also does not load the WiFi library for the client, assuming   *
+ * that all WiFi functions will be implemented in the server only, which      *
+ * is usually the case, and which also saves Hub RAM. Finally, neither the    *
+ * client nor the server load a Lua parser.                                   *
+ *                                                                            *
+ * The WiFi configuration (SSID, PASSPHRASE and IP Addresses) must be         *
+ * configured in the table 'rpc_network' to use the RPC capabilities.         *
+ *                                                                            *
  * Set the CATALINA_DEFINE environemnt variable to the appropriate platform   *
  * and then compile this program using Catapult - for example:                *
  *                                                                            *
- *   set CATALINA_DEFINE=P2_MASTER                                            *
- *   catapult alua.c                                                          *
- * or                                                                         *
- *   set CATALINA_DEFINE=P2_SLAVE                                             *
- *   catapult alua.c                                                          *
+ *   set CATALINA_DEFINE=P2_WIFI                                              *
+ *   catapult rluasx.c                                                        *
  *                                                                            *
  * This program reads Lua programs from the files specified on the command    *
  * line. If no files are specified, it defaults to loading from the files     *
- * 'client.lua' and 'server.lua'. The client and server files can be either   *
- * compiled Lua binary files or Lua text files.                               *
+ * 'client.lux' and 'server.lux'. The files must be compiled, because neither *
+ * the client nor server load a Lua parser.                                   *
  *                                                                            *
- * To use ALOHA services, the program must be executed on TWO Propellers,     *
- * connected via a serial link. For example, on one Propeller execute:        *
+ * To use RPC services, the program must be executed on TWO Propellers,       *
+ * both equipped with WiFi modules. For example, on one Propeller execute:    *
  *                                                                            *
- *    alua client.lua remote.lua                                              *
+ *    rluasx client.lux remote.lux                                            *
  *                                                                            *
  * And on the other Propeller, execute:                                       *
  *                                                                            *
- *    alua remote.lua server.lua                                              *
+ *    rluasx remote.lux server.lux                                            *
  *                                                                            *
  * Note that if you modify the program, you may have to modify the address    *
  * specified in the secondary pragma - but the program will tell you what     *
@@ -34,7 +43,7 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma catapult common options(-W-w -p2 -C CONST_ARGS -C SIMPLE -C VT100 -C MHZ_200 -C CLOCK -O5 -lcx -lmc -lserial2 -llua linit.c -C ENABLE_PROPELLER -C ENABLE_HMI aloha.c)
+#pragma catapult common options(-W-w -p2 -C CONST_ARGS -C SIMPLE -C VT100 -C MHZ_200 -C CLOCK -lcx -lmc -lluax -C PROTECT_PLUGINS -C ENABLE_PROPELLER -C DISABLE_SERIAL xinit.c)
 
 #include <catapult.h>
 #include <service.h>
@@ -45,8 +54,8 @@
 #define MAX_NAMELEN   12 // for DOS 8.3 file names
 #define MAX_SERVICES  20 // arbitrary
 
-#define DEFAULT_CLIENT "client.lua"
-#define DEFAULT_SERVER "server.lua"
+#define DEFAULT_CLIENT "client.lux"
+#define DEFAULT_SERVER "server.lux"
 
 #define DEFAULT_BG "background"
 
@@ -68,7 +77,7 @@ typedef struct shared_data {
  * The client - calls services provided by the server                         *
  *                                                                            *
  ******************************************************************************/
-#pragma catapult secondary client(shared_data_t) address(0x18CB4) mode(CMM) stack(100000) options(-lthreads)
+#pragma catapult secondary client(shared_data_t) address(0x13060) mode(CMM) stack(200000)
 
 #include <lua.h>
 #include <lualib.h>
@@ -115,7 +124,7 @@ void client(shared_data_t *s) {
  * to the Lua functions specified in Lua_service_list                          *
  *                                                                            *
  ******************************************************************************/
-#pragma catapult primary server binary(alua) mode(XMM) options(dsptch_l.c)
+#pragma catapult primary server binary(rluasx) mode(XMM) options(dsptch_l.c -lwifi -lserial2)
 
 #include <lua.h>
 #include <lualib.h>
@@ -137,6 +146,12 @@ int main(int argc, char *argv[]) {
    int cog;
    int result;
    lua_State *L;
+
+#if !defined(__CATALINA_libthreads)
+   // make memory allocation safe (this is not done 
+   // automatically unless multi-threading is used)
+   _memory_set_lock(_locknew());
+#endif
 
    // process command line arguments - note the
    // use of alloca to make sure the strings in 

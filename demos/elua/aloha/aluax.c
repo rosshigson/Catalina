@@ -67,7 +67,7 @@ typedef struct shared_data {
  * The client - calls services provided by the server                         *
  *                                                                            *
  ******************************************************************************/
-#pragma catapult secondary client(shared_data_t) address(0x177E4) mode(CMM) stack(150000) options(-lthreads)
+#pragma catapult secondary client(shared_data_t) address(0x168DC) mode(CMM) stack(150000) options(-lthreads)
 
 #include <lua.h>
 #include <lualib.h>
