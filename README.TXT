@@ -1,7 +1,7 @@
 This file contains a summary of changes to Catalina in recent releases. For
 information about installing and using Catalina, see the file README.md 
 
-Catalina release 8.5 is a full release.
+Catalina release 8.5.1 is a full release.
 
 WARNING: DO NOT INSTALL THIS RELEASE OVER A PRIOR VERSION OF CATALINA AND
 DO NOT LINK OR COMBINE PROGRAMS COMPILED WITH THIS VERSION WITH CODE (E.G. 
@@ -15,6 +15,62 @@ The following sections list the changes that have been made in releases
 you can skip the rest of this README and instead go straight to the Catalina 
 tutorial documents. For a complete list of all changes, see the "Catalina 
 Release History" in the documents folder.
+
+RELEASE 8.5.1
+
+New Functionality
+-----------------
+
+1. Simplified eLua so that the extension does not need to be specified for 
+   client and server Lua file names - eLua (and all its variants) will 
+   now add the appropriate default extension if none is specified. 
+
+   So, for example:
+      elua client server
+   is now the same as:
+      elua client.lua server.lua
+
+   and
+      eluax client server
+   is now the same as:
+      eluax client.lux server.lux
+
+2. Added a null server (null.lua) to all the eLua demos, so it can be
+   specified as the server when executing non-eLua programs. The null
+   server does nothing except stop eLua from complaining about missing 
+   tables and functions it expects to find in any eLua server. 
+   For example:
+
+      elua ex4 null
+
+   Previously, eLua would load and execute whatever it found in server.lua 
+   (or server.lux) which may have not been an eLua server, or it may have 
+   been an eLua server that interfered with the non-eLua client program.
+
+3. Modified the ALOHA WiFi RPC dispatcher so that the IP addresses in the 
+   "rpc_network" table need now only be configured in the Lua remote server
+   (i.e. remote.lua). The change was to interpret any invalid IP address to 
+   mean the local IP address should be used - so the IP address field can 
+   simply be left as a null string (or "xxx.xxx.xxx.xxx") in all servers 
+   except for the remote server.
+
+   Of course, the SSID and PASSPHRASE still have to be configured in both 
+   the remote server and local servers (e.g. server.lua or serverbg.lua). 
+
+   Previously, all IP addresses needed to be configured in all servers, and so
+   it was recommended that the "rpc_network" table be stored in common.lua. 
+   While this is still possible, this change makes configuring WiFi/RPC ALOHA 
+   programs more consistent with configuring Serial ALOHA programs.
+
+
+Other Changes
+-------------
+
+1. Fixed a bug in the eLua support function _register_services(), which was
+   not setting the service lock correctly. This did not affect any of the
+   eLua demo programs in the release, but may have led to lock-ups in other
+   eLua programs. Affected the Propeller 2 only.
+
 
 RELEASE 8.5
 
