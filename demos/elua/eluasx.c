@@ -36,6 +36,7 @@
 
 #define DEFAULT_CLIENT "client.lux"
 #define DEFAULT_SERVER "server.lux"
+#define DEFAULT_EXTN   ".lux"
 
 #define DEFAULT_BG "background"
 
@@ -127,23 +128,39 @@ int main(int argc, char *argv[]) {
    // process command line arguments - note the
    // use of alloca to make sure the strings in 
    // the shared data structure are in Hub RAM.
-   // use default names if not specified.
    if (argc > 2) {
-      shared.server = alloca(strlen(argv[2]) + 1);
-      strcpy(shared.server, argv[2]);
-   }
-   else {
-      shared.server = alloca(MAX_NAMELEN + 1);
-      strcpy(shared.server, DEFAULT_SERVER);
+      if (strchr(argv[2], '.') == NULL) {
+         shared.server = alloca(strlen(argv[2]) + 5);
+         strcpy(shared.server, argv[2]);
+         strcat(shared.server, DEFAULT_EXTN);
+      }
+      else {
+         shared.server = alloca(strlen(argv[2]) + 1);
+         strcpy(shared.server, argv[2]);
+      }
    }
    if (argc > 1) {
-      shared.client = alloca(strlen(argv[1]) + 1);
-      strcpy(shared.client, argv[1]);
+      if (strchr(argv[1], '.') == NULL) {
+         shared.client = alloca(strlen(argv[1]) + 5);
+         strcpy(shared.client, argv[1]);
+         strcat(shared.client, DEFAULT_EXTN);
+      }
+      else {
+         shared.client = alloca(strlen(argv[1]) + 1);
+         strcpy(shared.client, argv[1]);
+      }
    }
-   else {
+   // use default names if no arguments specified
+   if (shared.client == NULL) {
       shared.client = alloca(MAX_NAMELEN + 1);
       strcpy(shared.client, DEFAULT_CLIENT);
    }
+   if (shared.server == NULL) {
+      shared.server = alloca(MAX_NAMELEN + 1);
+      strcpy(shared.server, DEFAULT_SERVER);
+   }
+   //t_printf("client = %s\n", shared.client);
+   //t_printf("server = %s\n", shared.server);
 
    // re-register this cog as a server (it will already
    // be registered, but as a kernel, not a server)

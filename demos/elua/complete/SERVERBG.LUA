@@ -11,6 +11,9 @@ rpc_network = {
   ["SSID"]       = "MyNetwork";     -- set to "" if this propeller offers the AP
   ["PASSPHRASE"] = "TellMeASecret"; -- set to "" for a propeller AP
 
+  [ADD_SVC]      = "xxx.xxx.xxx.xxx";
+  [DIVMOD_SVC]   = "xxx.xxx.xxx.xxx";
+  [INVERT_SVC]   = "xxx.xxx.xxx.xxx"; 
   [INVOKE_SVC]   = "xxx.xxx.xxx.xxx";
   [QUIT_SVC]     = "xxx.xxx.xxx.xxx";
 }
@@ -32,50 +35,42 @@ function background()
   end
 end
 
--- this service listens for HTTP requests on a path ...
-function listen(serial)
-  protocol,path = bs.deserializeN(serial, 2);
-  return bs.serialize(wifi.LISTEN(protocol, path));
-end
+-- define local services ... 
 
--- this service polls for WiFi events ...
-function poll(serial)
-  mask = bs.deserializeN(serial, 1);
-  return bs.serialize(wifi.POLL(mask));
-end
-
--- this service sends HTTP data ...
-function send(serial)
-  handle,code,size,data = bs.deserializeN(serial, 4);
-  return bs.serialize(wifi.SEND_DATA(handle,code,size,data));
-end
-
--- this service checks a WiFi setting ...
-function check(serial)
-  setting = bs.deserializeN(serial, 1);
-  return bs.serialize(wifi.CHECK(setting));
-end
-
--- this service returns the output of invoking 
--- the function pased as the first parameter on
--- the value passed as the second parameter ...
+-- this service returns the output of invoking function f on value x ...
 function invoke(serial) 
-  f, x = bs.deserializeN(serial, 2)
-  if type(f) == 'function' then
-     output = f(x)
-  else
-    output = 'ERROR: input is not a function'
-  end
-  return bs.serialize(output)
+   f, x = bs.deserializeN(serial, 2);
+   output = f(x);
+   return bs.serialize(output)
 end
 
--- this service just quits the server ...
+-- this service demonstrates accepting and returning a big string ...
+function big(serial)
+   input = bs.deserializeN(serial, 1);
+   output = "bigger ... " .. input
+   return bs.serialize(output)
+end
+
+-- this service executes a Catalyst command, which will also
+-- terminate the slave ...
+function execute(serial)
+  command = bs.deserializeN(serial, 1);
+  if type(command) == "string" then
+    print("Client requested execute '" .. command .. "'")
+    propeller.execute(command)
+  else
+    result = "Invalid execute command";
+  end
+   return bs.serialize(output)
+end
+
+-- this service quits the local server ...
 function quit()
   print("Client requested shutdown\n")
   os.exit()
 end
 
-print("... loaded\n")
+print("... loaded")
 print("Note: this server will flash LED " .. LED)
 print("If this is not suitable for your propeller ")
-print("edit serverbg.lua and then 'exec rebuild'\n")
+print("edit serverbg.lua and then 'exec rebuild'")

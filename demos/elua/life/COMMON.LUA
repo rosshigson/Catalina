@@ -48,16 +48,6 @@ service_index = {
   [QUIT_SVC]   = "quit"
 }
 
--- define the RPC calls implemented using WiFi:
-
-rpc_network = {
-  ["SSID"]       = "MyNetwork";     -- set to "" if this propeller offers the AP
-  ["PASSPHRASE"] = "TellMeASecret"; -- set to "" for a propeller AP
-
-  [FETCH_SVC]   = "xxx.xxx.xxx.xxx";
-  [QUIT_SVC]    = "xxx.xxx.xxx.xxx";
-}
-
 -- define proxy calls for the services implemented by the server:
 
 function get_row(y)

@@ -3,15 +3,27 @@ print("background server ...")
 -- load common definitions ...
 common = dofile('common.lux')
 
--- this is used by ALOHA ...
-port_0_index = { }
+-- this is used by ALOHA for serial services ...
+port_0_index = { } -- an empty table means monitor the port for serial calls
+
+-- this is used by ALOHA for WiFi services ...
+rpc_network = {
+  ["SSID"]       = "MyNetwork";     -- set to "" if this propeller offers the AP
+  ["PASSPHRASE"] = "TellMeASecret"; -- set to "" for a propeller AP
+
+  [ADD_SVC]      = "xxx.xxx.xxx.xxx";
+  [DIVMOD_SVC]   = "xxx.xxx.xxx.xxx";
+  [INVERT_SVC]   = "xxx.xxx.xxx.xxx"; 
+  [INVOKE_SVC]   = "xxx.xxx.xxx.xxx";
+  [QUIT_SVC]     = "xxx.xxx.xxx.xxx";
+}
 
 -- define a function for the server to execute in the background ...
 count = 0
 LED = 38 -- suitable for P2 EDGE
 function background()
   count = count + 1;
-  if count == 100 then
+  if count == 10 then
     count = 0
     if propeller then
       -- indicate activity by toggling a pin ...

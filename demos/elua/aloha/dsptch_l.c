@@ -11,6 +11,7 @@
 #include <service.h>
 #include <serial.h>
 #include <lua.h>
+#include <ctype.h>
 
 #if defined(__CATALINA_libwifi)
 #include <wifi.h>
@@ -508,6 +509,9 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
       switch (svc_type) {
          case SHORT_SVC :
             {
+#if DEBUG_INFO
+               t_printf("short svc\n");
+#endif               
                // parameter is lower 24 bits
                param  = req&0xFFFFFF; 
                // execute function and return result
@@ -533,6 +537,9 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
             break;
          case LONG_SVC :
             {
+#if DEBUG_INFO
+               t_printf("long svc\n");
+#endif               
                // param is 32 bit long pointed to by lower 24 bits
                param  = *(long *)(req&0xFFFFFF); 
                // execute function and return result
@@ -560,6 +567,9 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
             {
                // param is a pointer to a structure with two parameters
                long_param_2_t *tmp = (long_param_2_t *)(req&0xFFFFFF);
+#if DEBUG_INFO
+               t_printf("long 2 svc\n");
+#endif               
                // execute function and return result
                lua_getglobal(L, list[int_id-1].name);
                // parameter is two full 32 bits
@@ -588,6 +598,9 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                // param is a pointer to a structure with two parameters
                float_param_2_t *tmp = (float_param_2_t *)(req&0xFFFFFF);
                result_t r;
+#if DEBUG_INFO
+               t_printf("float svc\n");
+#endif               
                // execute function and return result
                lua_getglobal(L, list[int_id-1].name);
                // parameter is two full 32 bits
@@ -615,6 +628,9 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
             {
                // param is a pointer to a structure with two parameters
                float_param_2_t *tmp = (float_param_2_t *)(req&0xFFFFFF);
+#if DEBUG_INFO
+               t_printf("long float svc\n");
+#endif               
                // execute function and return result
                lua_getglobal(L, list[int_id-1].name);
                // parameter is two full 32 bits
@@ -640,6 +656,9 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
             break;
          case SHARED_SVC :
             {
+#if DEBUG_INFO
+               t_printf("shared svc\n");
+#endif               
                // parameter is lower 24 bits, and represents a shared
                // data structure, so it is passed to Lua as lightuserdata
                // and the Lua function is expected to return an int
@@ -672,9 +691,15 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                unsigned int len;
                char not_a_number[] = {203,255,255,255,127}; // serialized nan 
 
+#if DEBUG_INFO
+               t_printf("serial svc\n");
+#endif               
                // param is serial_t * pointed to by lower 24 bits
                serial  = (serial_t *)(*(long *)(req&0xFFFFFF));
                // execute function and return result
+#if DEBUG_INFO
+               t_printf("calling name '%s'\n", list[int_id-1].name);
+#endif               
                lua_getglobal(L, list[int_id-1].name);
                // parameter is a Lua string (may contain embedded zeroes)
                lua_pushlstring(L, serial->ser_in, serial->len_in);
@@ -719,8 +744,11 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                int id;
                int ms = REMOTE_TIMEOUT;
                int max;
-
                char not_a_number[] = {203,255,255,255,127}; // serialized nan 
+
+#if DEBUG_INFO
+               t_printf("remote svc\n");
+#endif               
                //t_printf("calling remote service on port %d\n", svc_port);
                // param is serial_t * pointed to by lower 24 bits
                s  = (serial_t *)(*(long *)(req&0xFFFFFF));
@@ -840,6 +868,9 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
 #endif
 
          default:
+#if DEBUG_INFO
+               t_printf("unknown svc\n");
+#endif               
             break;
       }
       // indicate completion
@@ -1100,8 +1131,13 @@ int mod_handles(lua_State *L, svc_list_t services, char *name,
                if (services[i].svc_id == id) {
                   // this is an RPC service
                   services[i].svc_type = svc_type;
-                  if (strcmp(ip, my_ip) == 0) {
-                     // this is our IP address - listen (once!) for RPC calls
+                  // check the IP address - if it is an empty address,
+                  // an invalid address, or OUR address, then it means
+                  // we should listen for RPC calls to this service.
+                  if ((strlen(ip) == 0) 
+                  || !isdigit(ip[0]) 
+                  || (strcmp(ip, my_ip) == 0)) {
+                     // listen (once!) for RPC calls
                      if (!listening) {
                         result = wifi_LISTEN(TKN_HTTP, "/rpc/*", &handle);
                         if (result == wifi_Success) {
@@ -1123,7 +1159,7 @@ int mod_handles(lua_State *L, svc_list_t services, char *name,
 #endif
                   }
                   else {
-                     // this is not our IP address - call it using RPC
+                     // an IP address but not ours - call it using RPC
                      services[i].svc_ip = strdup(ip);
                      services[i].svc_type = svc_type;
 #if DEBUG_INFO

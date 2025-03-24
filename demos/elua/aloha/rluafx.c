@@ -56,6 +56,7 @@
 
 #define DEFAULT_CLIENT "client.lux"
 #define DEFAULT_SERVER "server.lux"
+#define DEFAULT_EXTN   ".lux"
 
 #define DEFAULT_BG "background"
 
@@ -157,12 +158,26 @@ int main(int argc, char *argv[]) {
    // use of alloca to make sure the strings in 
    // the shared data structure are in Hub RAM.
    if (argc > 2) {
-      shared.server = alloca(strlen(argv[2]) + 1);
-      strcpy(shared.server, argv[2]);
+      if (strchr(argv[2], '.') == NULL) {
+         shared.server = alloca(strlen(argv[2]) + 5);
+         strcpy(shared.server, argv[2]);
+         strcat(shared.server, DEFAULT_EXTN);
+      }
+      else {
+         shared.server = alloca(strlen(argv[2]) + 1);
+         strcpy(shared.server, argv[2]);
+      }
    }
    if (argc > 1) {
-      shared.client = alloca(strlen(argv[1]) + 1);
-      strcpy(shared.client, argv[1]);
+      if (strchr(argv[1], '.') == NULL) {
+         shared.client = alloca(strlen(argv[1]) + 5);
+         strcpy(shared.client, argv[1]);
+         strcat(shared.client, DEFAULT_EXTN);
+      }
+      else {
+         shared.client = alloca(strlen(argv[1]) + 1);
+         strcpy(shared.client, argv[1]);
+      }
    }
    // use default names if no arguments specified
    if (shared.client == NULL) {

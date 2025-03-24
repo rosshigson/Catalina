@@ -76,6 +76,8 @@ void display_services(void) {
  */
 void main (void) {
    
+   _waitsec(1); // wait in case using VT100 emulator
+
    printf("\nDisplaying plugin registry ...\n\n");
    display_registry(8);
 

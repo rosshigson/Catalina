@@ -36,6 +36,7 @@
 #define MAX_SERVICES  20 // arbitrary
 
 #define DEFAULT_SERVER "server.lux"
+#define DEFAULT_EXTN   ".lux"
 
 #define DEFAULT_BG "background"
 
@@ -69,7 +70,15 @@ int main(int argc, char *argv[]) {
 
    // process command line arguments
    if (argc > 1) {
-      server = argv[1];
+      if (strchr(argv[1], '.') == NULL) {
+         server = alloca(strlen(argv[1]) + 5);
+         strcpy(server, argv[1]);
+         strcat(server, DEFAULT_EXTN);
+      }
+      else {
+         server = alloca(strlen(argv[1]) + 1);
+         strcpy(server, argv[1]);
+      }
    }
    // use default name if no arguments specified
    if (server == NULL) {

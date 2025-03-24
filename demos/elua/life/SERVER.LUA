@@ -11,6 +11,15 @@ common = dofile('common.lux')
 -- this is used by ALOHA ...
 port_0_index = { }
 
+-- define the RPC calls implemented using WiFi ...
+rpc_network = {
+  ["SSID"]       = "MyNetwork";     -- set to "" if this propeller offers the AP
+  ["PASSPHRASE"] = "TellMeASecret"; -- set to "" for a propeller AP
+
+  [FETCH_SVC]   = "xxx.xxx.xxx.xxx";
+  [QUIT_SVC]    = "xxx.xxx.xxx.xxx";
+}
+
 function ARRAY2D(w,h)
   local t = {w=w,h=h,y=h,x=w}
   for y = 1, h do

@@ -4,3 +4,4 @@ luac -o client.lux client.lua
 luac -o server.lux server.lua
 luac -o remote.lux remote.lua
 luac -o serverbg.lux serverbg.lua
+luac -o null.lux null.lua
