@@ -7,23 +7,23 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_sapo_67d10fc0___testsigset_L000001 ' <symbol:__testsigset>
+C_siic_67da3fe0___testsigset_L000001 ' <symbol:__testsigset>
  alignl ' align long
  long I32_PSHM + $800000<<S32 ' save registers
  word I16A_MOVI + (r23)<<D16A + (0)<<S16A ' reg <- coni
  word I16A_CMPSI + (r23)<<D16A + (0)<<S16A
  alignl ' align long
- long I32_BR_Z + (@C_sapo_67d10fc0___testsigset_L000001_4)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C_siic_67da3fe0___testsigset_L000001_4)<<S32 ' EQI4 reg coni
  word I16A_CMPSI + (r23)<<D16A + (1)<<S16A
  alignl ' align long
- long I32_BR_Z + (@C_sapo_67d10fc0___testsigset_L000001_4)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C_siic_67da3fe0___testsigset_L000001_4)<<S32 ' EQI4 reg coni
  alignl ' align long
- long I32_JMPA + (@C_sapo_67d10fc0___testsigset_L000001_3)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_siic_67da3fe0___testsigset_L000001_3)<<S32 ' JUMPV addrg
  alignl ' align long
-C_sapo_67d10fc0___testsigset_L000001_3
+C_siic_67da3fe0___testsigset_L000001_3
  alignl ' align long
-C_sapo_67d10fc0___testsigset_L000001_4
-' C_sapo_67d10fc0___testsigset_L000001_2 ' (symbol refcount = 0)
+C_siic_67da3fe0___testsigset_L000001_4
+' C_siic_67da3fe0___testsigset_L000001_2 ' (symbol refcount = 0)
  word I16B_POPM + $80<<S16B ' restore registers, do not pop frame, do return
  alignl ' align long
 

@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_s18k_67d10f70_pixels_L000001 ' <symbol:pixels>
+C_sle8_67da3f92_pixels_L000001 ' <symbol:pixels>
  byte 0
  byte 0
  byte 0
@@ -91,7 +91,7 @@ C_g_width_7
  word I16A_SUBSI + (r21)<<D16A + (2)<<S16A ' SUBI4 reg coni
  word I16B_LODL + (r22)<<D16B
  alignl ' align long
- long @C_s18k_67d10f70_pixels_L000001 ' reg <- addrg
+ long @C_sle8_67da3f92_pixels_L000001 ' reg <- addrg
  word I16A_ADDS + (r22)<<D16A + (r23)<<S16A ' ADDI/P (2)
  word I16A_RDBYTE + (r10)<<D16A + (r22)<<S16A ' reg <- INDIRU1 reg
  word I16A_MOVI + (r17)<<D16A + (0)<<S16A ' reg <- coni

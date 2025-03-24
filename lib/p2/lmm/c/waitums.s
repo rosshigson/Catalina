@@ -7,13 +7,13 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_sgfc7_67d10e26_recalculate_L000008 ' <symbol:recalculate>
+C_srm87_67da3e51_recalculate_L000008 ' <symbol:recalculate>
  jmp #NEWF
  jmp #PSHM
  long $fc0000 ' save registers
  mov r23, r2 ' reg var <- reg arg
  jmp #LODL
- long @C_sgfc_67d10e26_old_freq_L000001
+ long @C_srm8_67da3e51_old_freq_L000001
  wrlong r23, RI ' ASGNU4 addrg reg
  jmp #LODL
  long $f4240
@@ -22,7 +22,7 @@ C_sgfc7_67d10e26_recalculate_L000008 ' <symbol:recalculate>
  mov r1, r22 ' setup r0/r1 (2)
  jmp #DIVU ' DIVU
  jmp #LODL
- long @C_sgfc1_67d10e26_cnt_usec_L000002
+ long @C_srm81_67da3e51_cnt_usec_L000002
  wrlong r0, RI ' ASGNU4 addrg reg
  jmp #LODL
  long 1000
@@ -31,14 +31,14 @@ C_sgfc7_67d10e26_recalculate_L000008 ' <symbol:recalculate>
  mov r1, r22 ' setup r0/r1 (2)
  jmp #DIVU ' DIVU
  jmp #LODL
- long @C_sgfc2_67d10e26_cnt_msec_L000003
+ long @C_srm82_67da3e51_cnt_msec_L000003
  wrlong r0, RI ' ASGNU4 addrg reg
  mov r2, #0 ' reg ARG coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C__wait ' CALL addrg
  jmp #LODL
- long @C_sgfc3_67d10e26_min_tick_L000004
+ long @C_srm83_67da3e51_min_tick_L000004
  wrlong r0, RI ' ASGNU4 addrg reg
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
@@ -54,20 +54,20 @@ C_sgfc7_67d10e26_recalculate_L000008 ' <symbol:recalculate>
  long @C__cnt ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
  jmp #LODL
- long @C_sgfc6_67d10e26_overhead_L000007
+ long @C_srm86_67da3e51_overhead_L000007
  mov r22, RI ' reg <- addrg
  mov r20, r19 ' SUBU
  sub r20, r21 ' SUBU (3)
  jmp #LODI
- long @C_sgfc3_67d10e26_min_tick_L000004
+ long @C_srm83_67da3e51_min_tick_L000004
  mov r18, RI ' reg <- INDIRU4 addrg
  sub r20, r18 ' SUBU (1)
  jmp #LODL
- long @C_sgfc6_67d10e26_overhead_L000007
+ long @C_srm86_67da3e51_overhead_L000007
  wrlong r20, RI ' ASGNU4 addrg reg
  rdlong r22, r22 ' reg <- INDIRU4 reg
  jmp #LODI
- long @C_sgfc1_67d10e26_cnt_usec_L000002
+ long @C_srm81_67da3e51_cnt_usec_L000002
  mov r20, RI ' reg <- INDIRU4 addrg
  mov r18, r22 ' ADDU
  add r18, r20 ' ADDU (3)
@@ -76,10 +76,10 @@ C_sgfc7_67d10e26_recalculate_L000008 ' <symbol:recalculate>
  mov r1, r20 ' setup r0/r1 (2)
  jmp #DIVU ' DIVU
  jmp #LODL
- long @C_sgfc4_67d10e26_min_usec_L000005
+ long @C_srm84_67da3e51_min_usec_L000005
  wrlong r0, RI ' ASGNU4 addrg reg
  jmp #LODI
- long @C_sgfc2_67d10e26_cnt_msec_L000003
+ long @C_srm82_67da3e51_cnt_msec_L000003
  mov r20, RI ' reg <- INDIRU4 addrg
  add r22, r20 ' ADDU (1)
  sub r22, #1 ' SUBU4 coni
@@ -87,9 +87,9 @@ C_sgfc7_67d10e26_recalculate_L000008 ' <symbol:recalculate>
  mov r1, r20 ' setup r0/r1 (2)
  jmp #DIVU ' DIVU
  jmp #LODL
- long @C_sgfc5_67d10e26_min_msec_L000006
+ long @C_srm85_67da3e51_min_msec_L000006
  wrlong r0, RI ' ASGNU4 addrg reg
-' C_sgfc7_67d10e26_recalculate_L000008_9 ' (symbol refcount = 0)
+' C_srm87_67da3e51_recalculate_L000008_9 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -106,7 +106,7 @@ C_min_waitus ' <symbol:min_waitus>
  long @C__clockfreq ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  jmp #LODI
- long @C_sgfc_67d10e26_old_freq_L000001
+ long @C_srm8_67da3e51_old_freq_L000001
  mov r22, RI ' reg <- INDIRU4 addrg
  cmp r23, r22 wz
  jmp #BR_Z
@@ -114,10 +114,10 @@ C_min_waitus ' <symbol:min_waitus>
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_sgfc7_67d10e26_recalculate_L000008 ' CALL addrg
+ long @C_srm87_67da3e51_recalculate_L000008 ' CALL addrg
 C_min_waitus_11
  jmp #LODI
- long @C_sgfc4_67d10e26_min_usec_L000005
+ long @C_srm84_67da3e51_min_usec_L000005
  mov r0, RI ' reg <- INDIRU4 addrg
 ' C_min_waitus_10 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
@@ -136,7 +136,7 @@ C_min_waitms ' <symbol:min_waitms>
  long @C__clockfreq ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  jmp #LODI
- long @C_sgfc_67d10e26_old_freq_L000001
+ long @C_srm8_67da3e51_old_freq_L000001
  mov r22, RI ' reg <- INDIRU4 addrg
  cmp r23, r22 wz
  jmp #BR_Z
@@ -144,10 +144,10 @@ C_min_waitms ' <symbol:min_waitms>
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_sgfc7_67d10e26_recalculate_L000008 ' CALL addrg
+ long @C_srm87_67da3e51_recalculate_L000008 ' CALL addrg
 C_min_waitms_14
  jmp #LODI
- long @C_sgfc5_67d10e26_min_msec_L000006
+ long @C_srm85_67da3e51_min_msec_L000006
  mov r0, RI ' reg <- INDIRU4 addrg
 ' C_min_waitms_13 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
@@ -166,7 +166,7 @@ C_min_wait ' <symbol:min_wait>
  long @C__clockfreq ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  jmp #LODI
- long @C_sgfc_67d10e26_old_freq_L000001
+ long @C_srm8_67da3e51_old_freq_L000001
  mov r22, RI ' reg <- INDIRU4 addrg
  cmp r23, r22 wz
  jmp #BR_Z
@@ -174,10 +174,10 @@ C_min_wait ' <symbol:min_wait>
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_sgfc7_67d10e26_recalculate_L000008 ' CALL addrg
+ long @C_srm87_67da3e51_recalculate_L000008 ' CALL addrg
 C_min_wait_17
  jmp #LODI
- long @C_sgfc3_67d10e26_min_tick_L000004
+ long @C_srm83_67da3e51_min_tick_L000004
  mov r0, RI ' reg <- INDIRU4 addrg
 ' C_min_wait_16 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
@@ -260,7 +260,7 @@ C__iwaitus ' <symbol:_iwaitus>
  long @C__clockfreq ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  jmp #LODI
- long @C_sgfc_67d10e26_old_freq_L000001
+ long @C_srm8_67da3e51_old_freq_L000001
  mov r22, RI ' reg <- INDIRU4 addrg
  cmp r21, r22 wz
  jmp #BR_Z
@@ -268,16 +268,16 @@ C__iwaitus ' <symbol:_iwaitus>
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_sgfc7_67d10e26_recalculate_L000008 ' CALL addrg
+ long @C_srm87_67da3e51_recalculate_L000008 ' CALL addrg
 C__iwaitus_26
  jmp #LODI
- long @C_sgfc4_67d10e26_min_usec_L000005
+ long @C_srm84_67da3e51_min_usec_L000005
  mov r22, RI ' reg <- INDIRU4 addrg
  cmp r23, r22 wcz 
  jmp #BRBE
  long @C__iwaitus_29 ' LEU4
  jmp #LODI
- long @C_sgfc4_67d10e26_min_usec_L000005
+ long @C_srm84_67da3e51_min_usec_L000005
  mov r22, RI ' reg <- INDIRU4 addrg
  mov r19, r23 ' SUBU
  sub r19, r22 ' SUBU (3)
@@ -285,12 +285,12 @@ C__iwaitus_26
  long @C__iwaitus_30 ' JUMPV addrg
 C__iwaitus_29
  jmp #LODI
- long @C_sgfc4_67d10e26_min_usec_L000005
+ long @C_srm84_67da3e51_min_usec_L000005
  mov r19, RI ' reg <- INDIRU4 addrg
 C__iwaitus_30
  mov r2, r19 ' CVI, CVU or LOAD
  jmp #LODI
- long @C_sgfc1_67d10e26_cnt_usec_L000002
+ long @C_srm81_67da3e51_cnt_usec_L000002
  mov r3, RI ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -315,7 +315,7 @@ C__iwaitms ' <symbol:_iwaitms>
  long @C__clockfreq ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  jmp #LODI
- long @C_sgfc_67d10e26_old_freq_L000001
+ long @C_srm8_67da3e51_old_freq_L000001
  mov r22, RI ' reg <- INDIRU4 addrg
  cmp r21, r22 wz
  jmp #BR_Z
@@ -323,16 +323,16 @@ C__iwaitms ' <symbol:_iwaitms>
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_sgfc7_67d10e26_recalculate_L000008 ' CALL addrg
+ long @C_srm87_67da3e51_recalculate_L000008 ' CALL addrg
 C__iwaitms_32
  jmp #LODI
- long @C_sgfc5_67d10e26_min_msec_L000006
+ long @C_srm85_67da3e51_min_msec_L000006
  mov r22, RI ' reg <- INDIRU4 addrg
  cmp r23, r22 wcz 
  jmp #BRBE
  long @C__iwaitms_35 ' LEU4
  jmp #LODI
- long @C_sgfc5_67d10e26_min_msec_L000006
+ long @C_srm85_67da3e51_min_msec_L000006
  mov r22, RI ' reg <- INDIRU4 addrg
  mov r19, r23 ' SUBU
  sub r19, r22 ' SUBU (3)
@@ -340,12 +340,12 @@ C__iwaitms_32
  long @C__iwaitms_36 ' JUMPV addrg
 C__iwaitms_35
  jmp #LODI
- long @C_sgfc5_67d10e26_min_msec_L000006
+ long @C_srm85_67da3e51_min_msec_L000006
  mov r19, RI ' reg <- INDIRU4 addrg
 C__iwaitms_36
  mov r2, r19 ' CVI, CVU or LOAD
  jmp #LODI
- long @C_sgfc2_67d10e26_cnt_msec_L000003
+ long @C_srm82_67da3e51_cnt_msec_L000003
  mov r3, RI ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -370,7 +370,7 @@ C__iwaitsec ' <symbol:_iwaitsec>
  long @C__clockfreq ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  jmp #LODI
- long @C_sgfc_67d10e26_old_freq_L000001
+ long @C_srm8_67da3e51_old_freq_L000001
  mov r22, RI ' reg <- INDIRU4 addrg
  cmp r21, r22 wz
  jmp #BR_Z
@@ -378,7 +378,7 @@ C__iwaitsec ' <symbol:_iwaitsec>
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_sgfc7_67d10e26_recalculate_L000008 ' CALL addrg
+ long @C_srm87_67da3e51_recalculate_L000008 ' CALL addrg
 C__iwaitsec_38
  mov r2, r23 ' CVI, CVU or LOAD
  mov r3, r21 ' CVI, CVU or LOAD
@@ -405,7 +405,7 @@ C__waitus ' <symbol:_waitus>
  long @C__clockfreq ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  jmp #LODI
- long @C_sgfc_67d10e26_old_freq_L000001
+ long @C_srm8_67da3e51_old_freq_L000001
  mov r22, RI ' reg <- INDIRU4 addrg
  cmp r21, r22 wz
  jmp #BR_Z
@@ -413,10 +413,10 @@ C__waitus ' <symbol:_waitus>
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_sgfc7_67d10e26_recalculate_L000008 ' CALL addrg
+ long @C_srm87_67da3e51_recalculate_L000008 ' CALL addrg
 C__waitus_41
  jmp #LODI
- long @C_sgfc1_67d10e26_cnt_usec_L000002
+ long @C_srm81_67da3e51_cnt_usec_L000002
  mov r22, RI ' reg <- INDIRU4 addrg
  mov r0, r23 ' setup r0/r1 (2)
  mov r1, r22 ' setup r0/r1 (2)
@@ -424,14 +424,14 @@ C__waitus_41
  mov r19, r0 ' CVI, CVU or LOAD
  mov r22, r19 ' CVI, CVU or LOAD
  jmp #LODI
- long @C_sgfc6_67d10e26_overhead_L000007
+ long @C_srm86_67da3e51_overhead_L000007
  mov r20, RI ' reg <- INDIRU4 addrg
  cmp r22, r20 wcz 
  jmp #BR_B
  long @C__waitus_46' LTU4
  mov r22, r19 ' CVI, CVU or LOAD
  jmp #LODI
- long @C_sgfc6_67d10e26_overhead_L000007
+ long @C_srm86_67da3e51_overhead_L000007
  mov r20, RI ' reg <- INDIRU4 addrg
  sub r22, r20 ' SUBU (1)
  mov r19, r22 ' CVI, CVU or LOAD
@@ -439,7 +439,7 @@ C__waitus_41
  long @C__waitus_46 ' JUMPV addrg
 C__waitus_45
  jmp #LODI
- long @C_sgfc3_67d10e26_min_tick_L000004
+ long @C_srm83_67da3e51_min_tick_L000004
  mov r22, RI ' reg <- INDIRU4 addrg
  mov r2, r21 ' SUBU
  sub r2, r22 ' SUBU (3)
@@ -456,7 +456,7 @@ C__waitus_46
  long @C__waitus_45 ' GTU4
  mov r22, r19 ' CVI, CVU or LOAD
  jmp #LODI
- long @C_sgfc3_67d10e26_min_tick_L000004
+ long @C_srm83_67da3e51_min_tick_L000004
  mov r20, RI ' reg <- INDIRU4 addrg
  cmp r22, r20 wcz 
  jmp #BRBE
@@ -472,7 +472,7 @@ C__waitus_48
  jmp #BRBE
  long @C__waitus_50 ' LEI4
  jmp #LODI
- long @C_sgfc3_67d10e26_min_tick_L000004
+ long @C_srm83_67da3e51_min_tick_L000004
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -482,7 +482,7 @@ C__waitus_48
 C__waitus_50
  mov r22, r19 ' CVI, CVU or LOAD
  jmp #LODI
- long @C_sgfc3_67d10e26_min_tick_L000004
+ long @C_srm83_67da3e51_min_tick_L000004
  mov r20, RI ' reg <- INDIRU4 addrg
  cmp r22, r20 wcz 
  jmp #BRBE
@@ -516,7 +516,7 @@ C__waitms ' <symbol:_waitms>
  long @C__clockfreq ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  jmp #LODI
- long @C_sgfc_67d10e26_old_freq_L000001
+ long @C_srm8_67da3e51_old_freq_L000001
  mov r22, RI ' reg <- INDIRU4 addrg
  cmp r21, r22 wz
  jmp #BR_Z
@@ -524,30 +524,30 @@ C__waitms ' <symbol:_waitms>
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_sgfc7_67d10e26_recalculate_L000008 ' CALL addrg
+ long @C_srm87_67da3e51_recalculate_L000008 ' CALL addrg
 C__waitms_55
  jmp #LODI
- long @C_sgfc2_67d10e26_cnt_msec_L000003
+ long @C_srm82_67da3e51_cnt_msec_L000003
  mov r22, RI ' reg <- INDIRU4 addrg
  mov r0, r23 ' setup r0/r1 (2)
  mov r1, r22 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  mov r19, r0 ' CVI, CVU or LOAD
  jmp #LODI
- long @C_sgfc6_67d10e26_overhead_L000007
+ long @C_srm86_67da3e51_overhead_L000007
  mov r22, RI ' reg <- INDIRU4 addrg
  cmp r19, r22 wcz 
  jmp #BR_B
  long @C__waitms_60' LTU4
  jmp #LODI
- long @C_sgfc6_67d10e26_overhead_L000007
+ long @C_srm86_67da3e51_overhead_L000007
  mov r22, RI ' reg <- INDIRU4 addrg
  sub r19, r22 ' SUBU (1)
  jmp #JMPA
  long @C__waitms_60 ' JUMPV addrg
 C__waitms_59
  jmp #LODI
- long @C_sgfc3_67d10e26_min_tick_L000004
+ long @C_srm83_67da3e51_min_tick_L000004
  mov r22, RI ' reg <- INDIRU4 addrg
  mov r2, r21 ' SUBU
  sub r2, r22 ' SUBU (3)
@@ -560,7 +560,7 @@ C__waitms_60
  jmp #BR_A
  long @C__waitms_59 ' GTU4
  jmp #LODI
- long @C_sgfc3_67d10e26_min_tick_L000004
+ long @C_srm83_67da3e51_min_tick_L000004
  mov r22, RI ' reg <- INDIRU4 addrg
  cmp r19, r22 wcz 
  jmp #BRBE
@@ -576,7 +576,7 @@ C__waitms_62
  jmp #BR_Z
  long @C__waitms_64 ' EQU4
  jmp #LODI
- long @C_sgfc3_67d10e26_min_tick_L000004
+ long @C_srm83_67da3e51_min_tick_L000004
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -600,7 +600,7 @@ C__waitsec ' <symbol:_waitsec>
  long @C__clockfreq ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  jmp #LODI
- long @C_sgfc_67d10e26_old_freq_L000001
+ long @C_srm8_67da3e51_old_freq_L000001
  mov r22, RI ' reg <- INDIRU4 addrg
  cmp r21, r22 wz
  jmp #BR_Z
@@ -608,12 +608,12 @@ C__waitsec ' <symbol:_waitsec>
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_sgfc7_67d10e26_recalculate_L000008 ' CALL addrg
+ long @C_srm87_67da3e51_recalculate_L000008 ' CALL addrg
  jmp #JMPA
  long @C__waitsec_70 ' JUMPV addrg
 C__waitsec_69
  jmp #LODI
- long @C_sgfc3_67d10e26_min_tick_L000004
+ long @C_srm83_67da3e51_min_tick_L000004
  mov r22, RI ' reg <- INDIRU4 addrg
  mov r2, r21 ' SUBU
  sub r2, r22 ' SUBU (3)
@@ -639,31 +639,31 @@ C__waitsec_70
 DAT ' uninitialized data segment
 
  alignl ' align long
-C_sgfc6_67d10e26_overhead_L000007 ' <symbol:overhead>
+C_srm86_67da3e51_overhead_L000007 ' <symbol:overhead>
  byte 0[4]
 
  alignl ' align long
-C_sgfc5_67d10e26_min_msec_L000006 ' <symbol:min_msec>
+C_srm85_67da3e51_min_msec_L000006 ' <symbol:min_msec>
  byte 0[4]
 
  alignl ' align long
-C_sgfc4_67d10e26_min_usec_L000005 ' <symbol:min_usec>
+C_srm84_67da3e51_min_usec_L000005 ' <symbol:min_usec>
  byte 0[4]
 
  alignl ' align long
-C_sgfc3_67d10e26_min_tick_L000004 ' <symbol:min_tick>
+C_srm83_67da3e51_min_tick_L000004 ' <symbol:min_tick>
  byte 0[4]
 
  alignl ' align long
-C_sgfc2_67d10e26_cnt_msec_L000003 ' <symbol:cnt_msec>
+C_srm82_67da3e51_cnt_msec_L000003 ' <symbol:cnt_msec>
  byte 0[4]
 
  alignl ' align long
-C_sgfc1_67d10e26_cnt_usec_L000002 ' <symbol:cnt_usec>
+C_srm81_67da3e51_cnt_usec_L000002 ' <symbol:cnt_usec>
  byte 0[4]
 
  alignl ' align long
-C_sgfc_67d10e26_old_freq_L000001 ' <symbol:old_freq>
+C_srm8_67da3e51_old_freq_L000001 ' <symbol:old_freq>
  byte 0[4]
 
 ' Catalina Code

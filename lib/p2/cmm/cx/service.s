@@ -70,9 +70,9 @@ C__register_services_7
  word I16A_WRWORD + (r22)<<D16A + (r17)<<S16A ' ASGNU2 reg reg
  word I16A_RDWORD + (r22)<<D16A + (r17)<<S16A ' reg <- INDIRU2 reg
  word I16B_TRN2 + (r22)<<D16B ' zero extend
- alignl ' align long
- long I32_LODS + (r20)<<D32S + ((3968)&$7FFFF)<<S32 ' reg <- cons
+ word I16A_MOVI + (r20)<<D16A + (31)<<S16A ' reg <- coni
  word I16A_AND + (r20)<<D16A + (r23)<<S16A ' BANDI/U (2)
+ word I16A_SHLI + (r20)<<D16A + (7)<<S16A ' SHLI4 reg coni
  word I16A_OR + (r22)<<D16A + (r20)<<S16A ' BORI/U (1)
  word I16A_WRWORD + (r22)<<D16A + (r17)<<S16A ' ASGNU2 reg reg
  word I16A_RDWORD + (r22)<<D16A + (r17)<<S16A ' reg <- INDIRU2 reg

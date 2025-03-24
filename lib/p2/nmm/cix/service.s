@@ -74,8 +74,9 @@ C__register_services_7
  shl r22, #12 ' LSHI4 coni
  wrword r22, r17 ' ASGNU2 reg reg
  rdword r22, r17 ' reg <- CVUI4 INDIRU2 reg
- mov r20, ##3968 ' reg <- con
- and r20, r23 ' BANDI/U (2)
+ mov r20, r23
+ and r20, #31 ' BANDI4 coni
+ shl r20, #7 ' LSHI4 coni
  or r22, r20 ' BORI/U (1)
  wrword r22, r17 ' ASGNU2 reg reg
  rdword r22, r17 ' reg <- CVUI4 INDIRU2 reg

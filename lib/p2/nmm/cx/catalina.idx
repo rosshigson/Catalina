@@ -757,9 +757,9 @@ sd_sectwrite secwrite.s 9 export
 _long_service_2 secwrite.s 33 import
 _serial_service service.s 9 export
 _register_services service.s 36 export
-_cogid service.s 109 import
-_registry service.s 111 import
-_sys_plugin service.s 113 import
+_cogid service.s 110 import
+_registry service.s 112 import
+_sys_plugin service.s 114 import
 _set_service_lock servlock.s 9 export
 _locknew servlock.s 143 import
 _registry servlock.s 145 import

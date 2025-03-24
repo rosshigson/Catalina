@@ -11,11 +11,11 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_sh801_67d1103b_pstart_L000003 ' <symbol:pstart>
+C_sjms1_67da405e_pstart_L000003 ' <symbol:pstart>
  long $0
 
  alignl ' align long
-C_sh802_67d1103b_storageI_nitialized_L000004 ' <symbol:storageInitialized>
+C_sjms2_67da405e_storageI_nitialized_L000004 ' <symbol:storageInitialized>
  byte $0
 
 ' Catalina Export mountFatVolume
@@ -32,7 +32,7 @@ C_mountF_atV_olume ' <symbol:mountFatVolume>
  long $500000 ' save registers
  mov r2, ##512 ' reg ARG con
  mov r3, #0 ' reg ARG coni
- mov r4, ##@C_sh803_67d1103b_fatscratch_L000005 ' reg ARG ADDRG
+ mov r4, ##@C_sjms3_67da405e_fatscratch_L000005 ' reg ARG ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
@@ -40,7 +40,7 @@ C_mountF_atV_olume ' <symbol:mountFatVolume>
  add SP, #8 ' CALL addrg
  mov r2, #1 ' reg ARG coni
  mov r3, #0 ' reg ARG coni
- mov r4, ##@C_sh803_67d1103b_fatscratch_L000005 ' reg ARG ADDRG
+ mov r4, ##@C_sjms3_67da405e_fatscratch_L000005 ' reg ARG ADDRG
  mov r5, #0 ' reg ARG coni
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
@@ -52,23 +52,23 @@ C_mountF_atV_olume ' <symbol:mountFatVolume>
  mov r0, ##-1 ' RET con
  jmp #\@C_mountF_atV_olume_6 ' JUMPV addrg
 C_mountF_atV_olume_7
- mov r22, ##@C_sh803_67d1103b_fatscratch_L000005+450 ' reg <- addrg
+ mov r22, ##@C_sjms3_67da405e_fatscratch_L000005+450 ' reg <- addrg
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #11 wz
  if_z jmp #\C_mountF_atV_olume_19 ' EQI4
- mov r22, ##@C_sh803_67d1103b_fatscratch_L000005+450 ' reg <- addrg
+ mov r22, ##@C_sjms3_67da405e_fatscratch_L000005+450 ' reg <- addrg
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #12 wz
  if_z jmp #\C_mountF_atV_olume_19 ' EQI4
- mov r22, ##@C_sh803_67d1103b_fatscratch_L000005+450 ' reg <- addrg
+ mov r22, ##@C_sjms3_67da405e_fatscratch_L000005+450 ' reg <- addrg
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #4 wz
  if_z jmp #\C_mountF_atV_olume_19 ' EQI4
- mov r22, ##@C_sh803_67d1103b_fatscratch_L000005+450 ' reg <- addrg
+ mov r22, ##@C_sjms3_67da405e_fatscratch_L000005+450 ' reg <- addrg
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #6 wz
  if_z jmp #\C_mountF_atV_olume_19 ' EQI4
- mov r22, ##@C_sh803_67d1103b_fatscratch_L000005+450 ' reg <- addrg
+ mov r22, ##@C_sjms3_67da405e_fatscratch_L000005+450 ' reg <- addrg
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #14 wz
  if_nz jmp #\C_mountF_atV_olume_9 ' NEI4
@@ -82,7 +82,7 @@ C_mountF_atV_olume_19
  mov r22, #0 ' reg <- coni
  mov r5, r22 ' CVI, CVU or LOAD
  sub SP, #16 ' stack space for reg ARGs
- mov RI, ##@C_sh803_67d1103b_fatscratch_L000005
+ mov RI, ##@C_sjms3_67da405e_fatscratch_L000005
  wrlong RI, --PTRA ' stack ARG ADDRG
  mov RI, #0
  wrlong RI, --PTRA ' stack ARG coni
@@ -91,15 +91,15 @@ C_mountF_atV_olume_19
  calld PA,#CALA
  long @C_D_F_S__G_etP_tnS_tart
  add SP, #20 ' CALL addrg
- wrlong r0, ##@C_sh801_67d1103b_pstart_L000003 ' ASGNU4 addrg reg
+ wrlong r0, ##@C_sjms1_67da405e_pstart_L000003 ' ASGNU4 addrg reg
  jmp #\@C_mountF_atV_olume_10 ' JUMPV addrg
 C_mountF_atV_olume_9
  mov r22, #0 ' reg <- coni
- wrlong r22, ##@C_sh801_67d1103b_pstart_L000003 ' ASGNU4 addrg reg
+ wrlong r22, ##@C_sjms1_67da405e_pstart_L000003 ' ASGNU4 addrg reg
  mov r0, #0 ' reg <- coni
  jmp #\@C_mountF_atV_olume_6 ' JUMPV addrg
 C_mountF_atV_olume_10
- mov r22, ##@C_sh801_67d1103b_pstart_L000003
+ mov r22, ##@C_sjms1_67da405e_pstart_L000003
  rdlong r22, r22 ' reg <- INDIRU4 addrg
  mov r20, ##$ffffffff ' reg <- con
  cmp r22, r20 wz
@@ -107,11 +107,11 @@ C_mountF_atV_olume_10
  mov r0, ##-1 ' RET con
  jmp #\@C_mountF_atV_olume_6 ' JUMPV addrg
 C_mountF_atV_olume_20
- mov r2, ##@C_sh80_67d1103b_vi_L000002 ' reg ARG ADDRG
- mov r3, ##@C_sh801_67d1103b_pstart_L000003
+ mov r2, ##@C_sjms_67da405e_vi_L000002 ' reg ARG ADDRG
+ mov r3, ##@C_sjms1_67da405e_pstart_L000003
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
- mov r4, ##@C_sh803_67d1103b_fatscratch_L000005 ' reg ARG ADDRG
+ mov r4, ##@C_sjms3_67da405e_fatscratch_L000005 ' reg ARG ADDRG
  mov r5, #0 ' reg ARG coni
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
@@ -124,22 +124,22 @@ C_mountF_atV_olume_20
  jmp #\@C_mountF_atV_olume_6 ' JUMPV addrg
 C_mountF_atV_olume_22
  mov r22, #1 ' reg <- coni
- wrbyte r22, ##@C_sh802_67d1103b_storageI_nitialized_L000004 ' ASGNU1 addrg reg
- mov r22, ##@C_sh80_67d1103b_vi_L000002+1 ' reg <- addrg
+ wrbyte r22, ##@C_sjms2_67da405e_storageI_nitialized_L000004 ' ASGNU1 addrg reg
+ mov r22, ##@C_sjms_67da405e_vi_L000002+1 ' reg <- addrg
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #0 wz
  if_nz jmp #\C_mountF_atV_olume_24 ' NEI4
  mov r0, #1 ' reg <- coni
  jmp #\@C_mountF_atV_olume_6 ' JUMPV addrg
 C_mountF_atV_olume_24
- mov r22, ##@C_sh80_67d1103b_vi_L000002+1 ' reg <- addrg
+ mov r22, ##@C_sjms_67da405e_vi_L000002+1 ' reg <- addrg
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #1 wz
  if_nz jmp #\C_mountF_atV_olume_27 ' NEI4
  mov r0, #2 ' reg <- coni
  jmp #\@C_mountF_atV_olume_6 ' JUMPV addrg
 C_mountF_atV_olume_27
- mov r22, ##@C_sh80_67d1103b_vi_L000002+1 ' reg <- addrg
+ mov r22, ##@C_sjms_67da405e_vi_L000002+1 ' reg <- addrg
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #2 wz
  if_nz jmp #\C_mountF_atV_olume_30 ' NEI4
@@ -231,14 +231,14 @@ C_buildfn_40
 
 
  alignl ' align long
-C_sh805_67d1103b_upper_L000050 ' <symbol:upper>
+C_sjms5_67da405e_upper_L000050 ' <symbol:upper>
  calld PA,#NEWF
  calld PA,#PSHM
  long $f00000 ' save registers
  mov r23, r3 ' reg var <- reg arg
  mov r21, r2 ' reg var <- reg arg
- jmp #\@C_sh805_67d1103b_upper_L000050_53 ' JUMPV addrg
-C_sh805_67d1103b_upper_L000050_52
+ jmp #\@C_sjms5_67da405e_upper_L000050_53 ' JUMPV addrg
+C_sjms5_67da405e_upper_L000050_52
  mov r22, r23 ' CVI, CVU or LOAD
  mov r23, r22
  adds r23, #1 ' ADDP4 coni
@@ -251,13 +251,13 @@ C_sh805_67d1103b_upper_L000050_52
  long @C_toupper ' CALL addrg
  mov r20, r0 ' CVI, CVU or LOAD
  wrbyte r20, r22 ' ASGNU1 reg reg
-C_sh805_67d1103b_upper_L000050_53
+C_sjms5_67da405e_upper_L000050_53
  rdbyte r22, r21 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #0 wz
- if_nz jmp #\C_sh805_67d1103b_upper_L000050_52 ' NEI4
+ if_nz jmp #\C_sjms5_67da405e_upper_L000050_52 ' NEI4
  mov r22, #0 ' reg <- coni
  wrbyte r22, r23 ' ASGNU1 reg reg
-' C_sh805_67d1103b_upper_L000050_51 ' (symbol refcount = 0)
+' C_sjms5_67da405e_upper_L000050_51 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -279,9 +279,9 @@ C_doD_ir ' <symbol:doDir>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sh805_67d1103b_upper_L000050
+ long @C_sjms5_67da405e_upper_L000050
  add SP, #4 ' CALL addrg
- mov r22, ##@C_sh802_67d1103b_storageI_nitialized_L000004 ' reg <- addrg
+ mov r22, ##@C_sjms2_67da405e_storageI_nitialized_L000004 ' reg <- addrg
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #0 wz
  if_nz jmp #\C_doD_ir_56 ' NEI4
@@ -289,20 +289,20 @@ C_doD_ir ' <symbol:doDir>
 C_doD_ir_56
  mov r2, ##512 ' reg ARG con
  mov r3, #0 ' reg ARG coni
- mov r4, ##@C_sh803_67d1103b_fatscratch_L000005 ' reg ARG ADDRG
+ mov r4, ##@C_sjms3_67da405e_fatscratch_L000005 ' reg ARG ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
  long @C_memset
  add SP, #8 ' CALL addrg
- mov RI, ##@C_sh803_67d1103b_fatscratch_L000005
+ mov RI, ##@C_sjms3_67da405e_fatscratch_L000005
  mov BC, FP
  sub BC, #-(-44)
  wrlong RI, BC ' ASGNP4 addrli addrg
  mov r2, FP
  sub r2, #-(-52) ' reg ARG ADDRLi
  mov r3, r23 ' CVI, CVU or LOAD
- mov r4, ##@C_sh80_67d1103b_vi_L000002 ' reg ARG ADDRG
+ mov r4, ##@C_sjms_67da405e_vi_L000002 ' reg ARG ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
@@ -395,7 +395,7 @@ C_doD_ir_62
  sub r2, #-(-36) ' reg ARG ADDRLi
  mov r3, FP
  sub r3, #-(-52) ' reg ARG ADDRLi
- mov r4, ##@C_sh80_67d1103b_vi_L000002 ' reg ARG ADDRG
+ mov r4, ##@C_sjms_67da405e_vi_L000002 ' reg ARG ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
@@ -411,7 +411,7 @@ C_doD_ir_55
 
 
  alignl ' align long
-C_sh806_67d1103b_listF_ile_L000076 ' <symbol:listFile>
+C_sjms6_67da405e_listF_ile_L000076 ' <symbol:listFile>
  calld PA,#NEWF
  calld PA,#PSHM
  long $a80000 ' save registers
@@ -419,13 +419,13 @@ C_sh806_67d1103b_listF_ile_L000076 ' <symbol:listFile>
  mov r21, r3 ' reg var <- reg arg
  mov r19, r2 ' reg var <- reg arg
  mov r2, r23 ' CVI, CVU or LOAD
- mov r3, ##@C_sh806_67d1103b_listF_ile_L000076_78_L000079 ' reg ARG ADDRG
+ mov r3, ##@C_sjms6_67da405e_listF_ile_L000076_78_L000079 ' reg ARG ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
  long @C_printf
  add SP, #4 ' CALL addrg
-' C_sh806_67d1103b_listF_ile_L000076_77 ' (symbol refcount = 0)
+' C_sjms6_67da405e_listF_ile_L000076_77 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -439,7 +439,7 @@ C_listD_ir ' <symbol:listDir>
  long $a00000 ' save registers
  mov r23, r3 ' reg var <- reg arg
  mov r21, r2 ' reg var <- reg arg
- mov r2, ##@C_sh806_67d1103b_listF_ile_L000076 ' reg ARG ADDRG
+ mov r2, ##@C_sjms6_67da405e_listF_ile_L000076 ' reg ARG ADDRG
  mov r3, r21 ' CVI, CVU or LOAD
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -460,7 +460,7 @@ C_listD_irS_tart ' <symbol:listDirStart>
  calld PA,#PSHM
  long $c00000 ' save registers
  mov r23, r2 ' reg var <- reg arg
- mov r22, ##@C_sh802_67d1103b_storageI_nitialized_L000004 ' reg <- addrg
+ mov r22, ##@C_sjms2_67da405e_storageI_nitialized_L000004 ' reg <- addrg
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #0 wz
  if_nz jmp #\C_listD_irS_tart_86 ' NEI4
@@ -469,17 +469,17 @@ C_listD_irS_tart ' <symbol:listDirStart>
 C_listD_irS_tart_86
  mov r2, ##512 ' reg ARG con
  mov r3, #0 ' reg ARG coni
- mov r4, ##@C_sh803_67d1103b_fatscratch_L000005 ' reg ARG ADDRG
+ mov r4, ##@C_sjms3_67da405e_fatscratch_L000005 ' reg ARG ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
  long @C_memset
  add SP, #8 ' CALL addrg
- mov r22, ##@C_sh803_67d1103b_fatscratch_L000005 ' reg <- addrg
- wrlong r22, ##@C_sh808_67d1103b_sdi_L000081+8 ' ASGNP4 addrg reg
- mov r2, ##@C_sh808_67d1103b_sdi_L000081 ' reg ARG ADDRG
+ mov r22, ##@C_sjms3_67da405e_fatscratch_L000005 ' reg <- addrg
+ wrlong r22, ##@C_sjms8_67da405e_sdi_L000081+8 ' ASGNP4 addrg reg
+ mov r2, ##@C_sjms8_67da405e_sdi_L000081 ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
- mov r4, ##@C_sh80_67d1103b_vi_L000002 ' reg ARG ADDRG
+ mov r4, ##@C_sjms_67da405e_vi_L000002 ' reg ARG ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
@@ -507,12 +507,12 @@ C_listD_irN_ext ' <symbol:listDirNext>
  mov r23, r2 ' reg var <- reg arg
  jmp #\@C_listD_irN_ext_93 ' JUMPV addrg
 C_listD_irN_ext_92
- mov r22, ##@C_sh809_67d1103b_sde_L000082 ' reg <- addrg
+ mov r22, ##@C_sjms9_67da405e_sde_L000082 ' reg <- addrg
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #0 wz
  if_z jmp #\C_listD_irN_ext_95 ' EQI4
- mov r2, ##@C_sh809_67d1103b_sde_L000082 ' reg ARG ADDRG
- mov r3, ##@C_sh80b_67d1103b_fnam_L000084 ' reg ARG ADDRG
+ mov r2, ##@C_sjms9_67da405e_sde_L000082 ' reg ARG ADDRG
+ mov r3, ##@C_sjmsb_67da405e_fnam_L000084 ' reg ARG ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
@@ -530,11 +530,11 @@ C_listD_irN_ext_92
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sh805_67d1103b_upper_L000050
+ long @C_sjms5_67da405e_upper_L000050
  add SP, #4 ' CALL addrg
  mov r2, FP
  sub r2, #-(-20) ' reg ARG ADDRLi
- mov r3, ##@C_sh80b_67d1103b_fnam_L000084 ' reg ARG ADDRG
+ mov r3, ##@C_sjmsb_67da405e_fnam_L000084 ' reg ARG ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
@@ -542,33 +542,33 @@ C_listD_irN_ext_92
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
  if_z jmp #\C_listD_irN_ext_98 ' EQI4
- mov r2, ##@C_sh80b_67d1103b_fnam_L000084 ' reg ARG ADDRG
+ mov r2, ##@C_sjmsb_67da405e_fnam_L000084 ' reg ARG ADDRG
  mov r3, ##@C_listD_irN_ext_101_L000102 ' reg ARG ADDRG
- mov r4, ##@C_sh80a_67d1103b_snm_L000083 ' reg ARG ADDRG
+ mov r4, ##@C_sjmsa_67da405e_snm_L000083 ' reg ARG ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
  long @C_sprintf
  add SP, #8 ' CALL addrg
- mov r0, ##@C_sh80a_67d1103b_snm_L000083 ' reg <- addrg
+ mov r0, ##@C_sjmsa_67da405e_snm_L000083 ' reg <- addrg
  jmp #\@C_listD_irN_ext_91 ' JUMPV addrg
 C_listD_irN_ext_97
- mov r2, ##@C_sh80b_67d1103b_fnam_L000084 ' reg ARG ADDRG
+ mov r2, ##@C_sjmsb_67da405e_fnam_L000084 ' reg ARG ADDRG
  mov r3, ##@C_listD_irN_ext_101_L000102 ' reg ARG ADDRG
- mov r4, ##@C_sh80a_67d1103b_snm_L000083 ' reg ARG ADDRG
+ mov r4, ##@C_sjmsa_67da405e_snm_L000083 ' reg ARG ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
  long @C_sprintf
  add SP, #8 ' CALL addrg
- mov r0, ##@C_sh80a_67d1103b_snm_L000083 ' reg <- addrg
+ mov r0, ##@C_sjmsa_67da405e_snm_L000083 ' reg <- addrg
  jmp #\@C_listD_irN_ext_91 ' JUMPV addrg
 C_listD_irN_ext_98
 C_listD_irN_ext_95
 C_listD_irN_ext_93
- mov r2, ##@C_sh809_67d1103b_sde_L000082 ' reg ARG ADDRG
- mov r3, ##@C_sh808_67d1103b_sdi_L000081 ' reg ARG ADDRG
- mov r4, ##@C_sh80_67d1103b_vi_L000002 ' reg ARG ADDRG
+ mov r2, ##@C_sjms9_67da405e_sde_L000082 ' reg ARG ADDRG
+ mov r3, ##@C_sjms8_67da405e_sdi_L000081 ' reg ARG ADDRG
+ mov r4, ##@C_sjms_67da405e_vi_L000002 ' reg ARG ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
@@ -598,27 +598,27 @@ C_listD_irN_ext_91
 DAT ' uninitialized data segment
 
  alignl ' align long
-C_sh80b_67d1103b_fnam_L000084 ' <symbol:fnam>
+C_sjmsb_67da405e_fnam_L000084 ' <symbol:fnam>
  byte 0[13]
 
  alignl ' align long
-C_sh80a_67d1103b_snm_L000083 ' <symbol:snm>
+C_sjmsa_67da405e_snm_L000083 ' <symbol:snm>
  byte 0[13]
 
  alignl ' align long
-C_sh809_67d1103b_sde_L000082 ' <symbol:sde>
+C_sjms9_67da405e_sde_L000082 ' <symbol:sde>
  byte 0[32]
 
  alignl ' align long
-C_sh808_67d1103b_sdi_L000081 ' <symbol:sdi>
+C_sjms8_67da405e_sdi_L000081 ' <symbol:sdi>
  byte 0[16]
 
  alignl ' align long
-C_sh803_67d1103b_fatscratch_L000005 ' <symbol:fatscratch>
+C_sjms3_67da405e_fatscratch_L000005 ' <symbol:fatscratch>
  byte 0[512]
 
  alignl ' align long
-C_sh80_67d1103b_vi_L000002 ' <symbol:vi>
+C_sjms_67da405e_vi_L000002 ' <symbol:vi>
  byte 0[52]
 
 ' Catalina Code
@@ -702,7 +702,7 @@ C_listD_irN_ext_101_L000102 ' <symbol:101>
  byte 0
 
  alignl ' align long
-C_sh806_67d1103b_listF_ile_L000076_78_L000079 ' <symbol:78>
+C_sjms6_67da405e_listF_ile_L000076_78_L000079 ' <symbol:78>
  byte 37
  byte 115
  byte 10

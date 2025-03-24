@@ -79,10 +79,9 @@ C__register_services_7
  jmp #RWRD
  mov r22, BC ' reg <- INDIRU2 reg
  and r22, cviu_m2 ' zero extend
- jmp #LODL
- long 3968
- mov r20, RI ' reg <- con
- and r20, r23 ' BANDI/U (2)
+ mov r20, r23
+ and r20, #31 ' BANDI4 coni
+ shl r20, #7 ' LSHI4 coni
  or r22, r20 ' BORI/U (1)
  mov RI, r17
  mov BC, r22
