@@ -804,7 +804,7 @@ C_wifi_R_E_S_E_T_ ' <symbol:wifi_RESET>
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_drvhigh ' CALL addrg
- mov r2, #100 ' reg ARG coni
+ mov r2, #500 ' reg ARG coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C__waitms ' CALL addrg

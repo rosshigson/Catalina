@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_s7kg_67da404d_two_digits_L000001 ' <symbol:two_digits>
+C_s9v4_67e3471f_two_digits_L000001 ' <symbol:two_digits>
  calld PA,#PSHM
  long $500000 ' save registers
  mov r22, #10 ' reg <- coni
@@ -20,13 +20,13 @@ C_s7kg_67da404d_two_digits_L000001 ' <symbol:two_digits>
  adds r22, #48 ' ADDI4 coni
  wrbyte r22, r4 ' ASGNU1 reg reg
  cmps r2,  #0 wz
- if_nz jmp #\C_s7kg_67da404d_two_digits_L000001_3 ' NEI4
+ if_nz jmp #\C_s9v4_67e3471f_two_digits_L000001_3 ' NEI4
  rdbyte r22, r4 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #48 wz
- if_nz jmp #\C_s7kg_67da404d_two_digits_L000001_3 ' NEI4
+ if_nz jmp #\C_s9v4_67e3471f_two_digits_L000001_3 ' NEI4
  mov r22, #32 ' reg <- coni
  wrbyte r22, r4 ' ASGNU1 reg reg
-C_s7kg_67da404d_two_digits_L000001_3
+C_s9v4_67e3471f_two_digits_L000001_3
  adds r4, #1 ' ADDP4 coni
  mov r22, r4 ' CVI, CVU or LOAD
  mov r4, r22
@@ -42,13 +42,13 @@ C_s7kg_67da404d_two_digits_L000001_3
  adds r22, #1 ' ADDP4 coni
  mov r4, r22 ' CVI, CVU or LOAD
  mov r0, r22 ' CVI, CVU or LOAD
-' C_s7kg_67da404d_two_digits_L000001_2 ' (symbol refcount = 0)
+' C_s9v4_67e3471f_two_digits_L000001_2 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETN
 
 
  alignl ' align long
-C_s7kg1_67da404d_four_digits_L000005 ' <symbol:four_digits>
+C_s9v41_67e3471f_four_digits_L000005 ' <symbol:four_digits>
  calld PA,#PSHM
  long $500000 ' save registers
  mov r22, ##10000 ' reg <- con
@@ -110,7 +110,7 @@ C_s7kg1_67da404d_four_digits_L000005 ' <symbol:four_digits>
  adds r22, #1 ' ADDP4 coni
  mov r3, r22 ' CVI, CVU or LOAD
  mov r0, r22 ' CVI, CVU or LOAD
-' C_s7kg1_67da404d_four_digits_L000005_6 ' (symbol refcount = 0)
+' C_s9v41_67e3471f_four_digits_L000005_6 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETN
 
@@ -201,7 +201,7 @@ C_asctime_16
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s7kg_67da404d_two_digits_L000001
+ long @C_s9v4_67e3471f_two_digits_L000001
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r2, #1 ' reg ARG coni
@@ -212,7 +212,7 @@ C_asctime_16
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s7kg_67da404d_two_digits_L000001
+ long @C_s9v4_67e3471f_two_digits_L000001
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r2, #1 ' reg ARG coni
@@ -223,7 +223,7 @@ C_asctime_16
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s7kg_67da404d_two_digits_L000001
+ long @C_s9v4_67e3471f_two_digits_L000001
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r2, #1 ' reg ARG coni
@@ -232,7 +232,7 @@ C_asctime_16
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s7kg_67da404d_two_digits_L000001
+ long @C_s9v4_67e3471f_two_digits_L000001
  add SP, #8 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  mov r22, r23
@@ -245,7 +245,7 @@ C_asctime_16
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s7kg1_67da404d_four_digits_L000005
+ long @C_s9v41_67e3471f_four_digits_L000005
  add SP, #4 ' CALL addrg
  mov r0, ##@C_asctime_buf_L000009 ' reg <- addrg
 ' C_asctime_7 ' (symbol refcount = 0)

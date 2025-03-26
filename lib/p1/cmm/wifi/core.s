@@ -772,29 +772,23 @@ C_drvlow ' <symbol:drvlow>
 ' call to PASM eliminated
 ' loading argument C_drvlow_96_L000097 to PASM eliminated
 'START PASM ... 
- sub  r2,#1
+ shl  r0,r2
 
 '... END PASM
 ' call to PASM eliminated
 ' loading argument C_drvlow_98_L000099 to PASM eliminated
 'START PASM ... 
- shl  r0,r2
+ andn OUTA,r0
 
 '... END PASM
 ' call to PASM eliminated
 ' loading argument C_drvlow_100_L000101 to PASM eliminated
 'START PASM ... 
- andn OUTA,r0
-
-'... END PASM
-' call to PASM eliminated
-' loading argument C_drvlow_102_L000103 to PASM eliminated
-'START PASM ... 
  or   DIRA,r0
 
 '... END PASM
 ' call to PASM eliminated
-' loading argument C_drvlow_104_L000105 to PASM eliminated
+' loading argument C_drvlow_102_L000103 to PASM eliminated
 'START PASM ... 
  jmp #EXEC_STOP
 '... END PASM
@@ -822,34 +816,28 @@ C_drvhigh ' <symbol:drvhigh>
 ' call to PASM eliminated
 ' loading argument C_drvlow_96_L000097 to PASM eliminated
 'START PASM ... 
- sub  r2,#1
-
-'... END PASM
-' call to PASM eliminated
-' loading argument C_drvlow_98_L000099 to PASM eliminated
-'START PASM ... 
  shl  r0,r2
 
 '... END PASM
 ' call to PASM eliminated
-' loading argument C_drvhigh_107_L000108 to PASM eliminated
+' loading argument C_drvhigh_105_L000106 to PASM eliminated
 'START PASM ... 
  or   OUTA,r0
 
 '... END PASM
 ' call to PASM eliminated
-' loading argument C_drvlow_102_L000103 to PASM eliminated
+' loading argument C_drvlow_100_L000101 to PASM eliminated
 'START PASM ... 
  or   DIRA,r0
 
 '... END PASM
 ' call to PASM eliminated
-' loading argument C_drvlow_104_L000105 to PASM eliminated
+' loading argument C_drvlow_102_L000103 to PASM eliminated
 'START PASM ... 
  jmp #EXEC_STOP
 '... END PASM
 ' call to PASM eliminated
-' C_drvhigh_106 ' (symbol refcount = 0)
+' C_drvhigh_104 ' (symbol refcount = 0)
  word I16B_RETN
  alignl ' align long
  alignl ' align long
@@ -872,28 +860,22 @@ C_input ' <symbol:input>
 ' call to PASM eliminated
 ' loading argument C_drvlow_96_L000097 to PASM eliminated
 'START PASM ... 
- sub  r2,#1
-
-'... END PASM
-' call to PASM eliminated
-' loading argument C_drvlow_98_L000099 to PASM eliminated
-'START PASM ... 
  shl  r0,r2
 
 '... END PASM
 ' call to PASM eliminated
-' loading argument C_input_110_L000111 to PASM eliminated
+' loading argument C_input_108_L000109 to PASM eliminated
 'START PASM ... 
  andn DIRA,r0
 
 '... END PASM
 ' call to PASM eliminated
-' loading argument C_drvlow_104_L000105 to PASM eliminated
+' loading argument C_drvlow_102_L000103 to PASM eliminated
 'START PASM ... 
  jmp #EXEC_STOP
 '... END PASM
 ' call to PASM eliminated
-' C_input_109 ' (symbol refcount = 0)
+' C_input_107 ' (symbol refcount = 0)
  word I16B_RETN
  alignl ' align long
  alignl ' align long
@@ -916,28 +898,22 @@ C_output ' <symbol:output>
 ' call to PASM eliminated
 ' loading argument C_drvlow_96_L000097 to PASM eliminated
 'START PASM ... 
- sub  r2,#1
-
-'... END PASM
-' call to PASM eliminated
-' loading argument C_drvlow_98_L000099 to PASM eliminated
-'START PASM ... 
  shl  r0,r2
 
 '... END PASM
 ' call to PASM eliminated
-' loading argument C_drvlow_102_L000103 to PASM eliminated
+' loading argument C_drvlow_100_L000101 to PASM eliminated
 'START PASM ... 
  or   DIRA,r0
 
 '... END PASM
 ' call to PASM eliminated
-' loading argument C_drvlow_104_L000105 to PASM eliminated
+' loading argument C_drvlow_102_L000103 to PASM eliminated
 'START PASM ... 
  jmp #EXEC_STOP
 '... END PASM
 ' call to PASM eliminated
-' C_output_112 ' (symbol refcount = 0)
+' C_output_110 ' (symbol refcount = 0)
  word I16B_RETN
  alignl ' align long
  alignl ' align long
@@ -955,12 +931,12 @@ C_wifi_B_R_E_A_K_ ' <symbol:wifi_BREAK>
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrg
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl ' align long
- long I32_BR_B + (@C_wifi_B_R_E_A_K__114)<<S32 ' LTI4 reg coni
+ long I32_BR_B + (@C_wifi_B_R_E_A_K__112)<<S32 ' LTI4 reg coni
  alignl ' align long
  long I32_MOVI + RI<<D32 + (63)<<S32
  word I16A_CMPS + (r22)<<D16A + RI<<S16A
  alignl ' align long
- long I32_BR_A + (@C_wifi_B_R_E_A_K__114)<<S32 ' GTI4 reg coni
+ long I32_BR_A + (@C_wifi_B_R_E_A_K__112)<<S32 ' GTI4 reg coni
  alignl ' align long
  long I32_MOVI + (r2)<<D32 + (100)<<S32 ' reg ARG coni
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
@@ -989,8 +965,8 @@ C_wifi_B_R_E_A_K_ ' <symbol:wifi_BREAK>
  alignl ' align long
  long I32_CALA + (@C__waitms)<<S32 ' CALL addrg
  alignl ' align long
-C_wifi_B_R_E_A_K__114
-' C_wifi_B_R_E_A_K__113 ' (symbol refcount = 0)
+C_wifi_B_R_E_A_K__112
+' C_wifi_B_R_E_A_K__111 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
@@ -1007,12 +983,12 @@ C_wifi_R_E_S_E_T_ ' <symbol:wifi_RESET>
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrg
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl ' align long
- long I32_BR_B + (@C_wifi_R_E_S_E_T__117)<<S32 ' LTI4 reg coni
+ long I32_BR_B + (@C_wifi_R_E_S_E_T__115)<<S32 ' LTI4 reg coni
  alignl ' align long
  long I32_MOVI + RI<<D32 + (63)<<S32
  word I16A_CMPS + (r22)<<D16A + RI<<S16A
  alignl ' align long
- long I32_BR_A + (@C_wifi_R_E_S_E_T__117)<<S32 ' GTI4 reg coni
+ long I32_BR_A + (@C_wifi_R_E_S_E_T__115)<<S32 ' GTI4 reg coni
  alignl ' align long
  long I32_LODI + (@C_wifi_pin_res)<<S32
  word I16A_MOV + (r2)<<D16A + RI<<S16A ' reg ARG INDIR ADDRG
@@ -1031,13 +1007,13 @@ C_wifi_R_E_S_E_T_ ' <symbol:wifi_RESET>
  alignl ' align long
  long I32_CALA + (@C_drvhigh)<<S32 ' CALL addrg
  alignl ' align long
- long I32_MOVI + (r2)<<D32 + (100)<<S32 ' reg ARG coni
+ long I32_MOVI + (r2)<<D32 + (500)<<S32 ' reg ARG coni
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
  alignl ' align long
  long I32_CALA + (@C__waitms)<<S32 ' CALL addrg
  alignl ' align long
-C_wifi_R_E_S_E_T__117
-' C_wifi_R_E_S_E_T__116 ' (symbol refcount = 0)
+C_wifi_R_E_S_E_T__115
+' C_wifi_R_E_S_E_T__114 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
@@ -1054,15 +1030,15 @@ C_wifi_P_G_M_ ' <symbol:wifi_PGM>
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrg
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl ' align long
- long I32_BR_B + (@C_wifi_P_G_M__120)<<S32 ' LTI4 reg coni
+ long I32_BR_B + (@C_wifi_P_G_M__118)<<S32 ' LTI4 reg coni
  alignl ' align long
  long I32_MOVI + RI<<D32 + (63)<<S32
  word I16A_CMPS + (r22)<<D16A + RI<<S16A
  alignl ' align long
- long I32_BR_A + (@C_wifi_P_G_M__120)<<S32 ' GTI4 reg coni
+ long I32_BR_A + (@C_wifi_P_G_M__118)<<S32 ' GTI4 reg coni
  word I16A_MOVI + (r23)<<D16A + (0)<<S16A ' reg <- coni
  alignl ' align long
-C_wifi_P_G_M__122
+C_wifi_P_G_M__120
  alignl ' align long
  long I32_LODI + (@C_wifi_pin_pgm)<<S32
  word I16A_MOV + (r2)<<D16A + RI<<S16A ' reg ARG INDIR ADDRG
@@ -1085,14 +1061,14 @@ C_wifi_P_G_M__122
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
  alignl ' align long
  long I32_CALA + (@C__waitms)<<S32 ' CALL addrg
-' C_wifi_P_G_M__123 ' (symbol refcount = 0)
+' C_wifi_P_G_M__121 ' (symbol refcount = 0)
  word I16A_ADDSI + (r23)<<D16A + (1)<<S16A ' ADDI4 reg coni
  word I16A_CMPSI + (r23)<<D16A + (4)<<S16A
  alignl ' align long
- long I32_BR_B + (@C_wifi_P_G_M__122)<<S32 ' LTI4 reg coni
+ long I32_BR_B + (@C_wifi_P_G_M__120)<<S32 ' LTI4 reg coni
  alignl ' align long
-C_wifi_P_G_M__120
-' C_wifi_P_G_M__119 ' (symbol refcount = 0)
+C_wifi_P_G_M__118
+' C_wifi_P_G_M__117 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
@@ -1109,22 +1085,22 @@ C_wifi_O_K_ ' <symbol:wifi_OK>
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrg
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl ' align long
- long I32_BRNZ + (@C_wifi_O_K__127)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C_wifi_O_K__125)<<S32 ' NEI4 reg coni
  word I16A_MOVI + R0<<D16A + (16)<<S16A ' RET coni
  alignl ' align long
- long I32_JMPA + (@C_wifi_O_K__126)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_wifi_O_K__124)<<S32 ' JUMPV addrg
  alignl ' align long
-C_wifi_O_K__127
+C_wifi_O_K__125
  word I16B_LODL + (r2)<<D16B
  alignl ' align long
- long @C_wifi_O_K__129_L000130 ' reg ARG ADDRG
+ long @C_wifi_O_K__127_L000128 ' reg ARG ADDRG
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
  alignl ' align long
  long I32_CALA + (@C_wifi_S_end_C_ommand)<<S32 ' CALL addrg
  word I16A_MOV + (r23)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPSI + (r23)<<D16A + (0)<<S16A
  alignl ' align long
- long I32_BRNZ + (@C_wifi_O_K__131)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C_wifi_O_K__129)<<S32 ' NEI4 reg coni
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_MOV + (r2)<<D16A + RI<<S16A ' reg ARG ADDRLi
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
@@ -1132,10 +1108,10 @@ C_wifi_O_K__127
  long I32_CALA + (@C_wifi_R_ead_C_ode)<<S32 ' CALL addrg
  word I16A_MOV + (r23)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  alignl ' align long
-C_wifi_O_K__131
+C_wifi_O_K__129
  word I16A_MOV + (r0)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  alignl ' align long
-C_wifi_O_K__126
+C_wifi_O_K__124
  word I16B_POPM + 1<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
@@ -1156,7 +1132,7 @@ C_wifi_I_N_I_T_ ' <symbol:wifi_INIT>
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrg
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl ' align long
- long I32_BRNZ + (@C_wifi_I_N_I_T__134)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C_wifi_I_N_I_T__132)<<S32 ' NEI4 reg coni
  word I16B_LODF + ((8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrl16
  alignl ' align long
@@ -1199,21 +1175,21 @@ C_wifi_I_N_I_T_ ' <symbol:wifi_INIT>
  long I32_CALA + (@C_wifi_O_K_)<<S32 ' CALL addrg
  word I16A_CMPSI + (r0)<<D16A + (0)<<S16A
  alignl ' align long
- long I32_BRNZ + (@C_wifi_I_N_I_T__136)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C_wifi_I_N_I_T__134)<<S32 ' NEI4 reg coni
  word I16A_MOVI + R0<<D16A + (0)<<S16A ' RET coni
  alignl ' align long
- long I32_JMPA + (@C_wifi_I_N_I_T__133)<<S32 ' JUMPV addrg
- alignl ' align long
-C_wifi_I_N_I_T__136
+ long I32_JMPA + (@C_wifi_I_N_I_T__131)<<S32 ' JUMPV addrg
  alignl ' align long
 C_wifi_I_N_I_T__134
+ alignl ' align long
+C_wifi_I_N_I_T__132
  word I16A_MOVI + (r22)<<D16A + (0)<<S16A ' reg <- coni
  alignl ' align long
  long I32_LODA + (@C_wifi_init)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNI4 addrg reg
  word I16A_MOVI + R0<<D16A + (16)<<S16A ' RET coni
  alignl ' align long
-C_wifi_I_N_I_T__133
+C_wifi_I_N_I_T__131
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
@@ -1253,7 +1229,7 @@ C_wifi_A_U_T_O_ ' <symbol:wifi_AUTO>
  long I32_CALA + (@C_wifi_I_N_I_T_)<<S32
  word I16A_ADDI + SP<<D16A + 16<<S16A ' CALL addrg
  word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
-' C_wifi_A_U_T_O__138 ' (symbol refcount = 0)
+' C_wifi_A_U_T_O__136 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
@@ -1292,7 +1268,7 @@ C_wifi_A_U_T_O_ ' <symbol:wifi_AUTO>
 DAT ' const data segment
 
  alignl ' align long
-C_wifi_O_K__129_L000130 ' <symbol:129>
+C_wifi_O_K__127_L000128 ' <symbol:127>
  byte 0
 
  alignl ' align long

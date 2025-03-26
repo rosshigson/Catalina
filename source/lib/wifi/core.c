@@ -366,7 +366,6 @@ void drvlow(int pin) {
    PASM(" word I16B_EXEC\n alignl");
    #endif
    PASM(" mov  r0,#1\n");
-   PASM(" sub  r2,#1\n");
    PASM(" shl  r0,r2\n");
    PASM(" andn OUTA,r0\n");
    PASM(" or   DIRA,r0\n");
@@ -388,7 +387,6 @@ void drvhigh(int pin) {
    PASM(" word I16B_EXEC\n alignl");
    #endif
    PASM(" mov  r0,#1\n");
-   PASM(" sub  r2,#1\n");
    PASM(" shl  r0,r2\n");
    PASM(" or   OUTA,r0\n");
    PASM(" or   DIRA,r0\n");
@@ -410,7 +408,6 @@ void input(int pin) {
    PASM(" word I16B_EXEC\n alignl");
    #endif
    PASM(" mov  r0,#1\n");
-   PASM(" sub  r2,#1\n");
    PASM(" shl  r0,r2\n");
    PASM(" andn DIRA,r0\n");
    #ifdef __CATALINA_COMPACT
@@ -431,7 +428,6 @@ void output(int pin) {
    PASM(" word I16B_EXEC\n alignl");
    #endif
    PASM(" mov  r0,#1\n");
-   PASM(" sub  r2,#1\n");
    PASM(" shl  r0,r2\n");
    PASM(" or   DIRA,r0\n");
    #ifdef __CATALINA_COMPACT
@@ -461,7 +457,7 @@ void wifi_RESET() {
       drvlow(wifi_pin_res);
       _waitms(200);
       drvhigh(wifi_pin_res);
-      _waitms(100);
+      _waitms(500);
    }
 }
 

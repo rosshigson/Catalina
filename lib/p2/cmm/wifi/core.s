@@ -1047,7 +1047,7 @@ C_wifi_R_E_S_E_T_ ' <symbol:wifi_RESET>
  alignl ' align long
  long I32_CALA + (@C_drvhigh)<<S32 ' CALL addrg
  alignl ' align long
- long I32_MOVI + (r2)<<D32 + (100)<<S32 ' reg ARG coni
+ long I32_MOVI + (r2)<<D32 + (500)<<S32 ' reg ARG coni
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
  alignl ' align long
  long I32_CALA + (@C__waitms)<<S32 ' CALL addrg

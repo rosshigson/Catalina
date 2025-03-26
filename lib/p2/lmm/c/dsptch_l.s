@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_s11g_67da3e4f_strdup_L000005 ' <symbol:strdup>
+C_s1i8_67e34541_strdup_L000005 ' <symbol:strdup>
  jmp #NEWF
  jmp #PSHM
  long $e00000 ' save registers
@@ -26,7 +26,7 @@ C_s11g_67da3e4f_strdup_L000005 ' <symbol:strdup>
  mov r22, r21 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
  jmp #BR_Z
- long @C_s11g_67da3e4f_strdup_L000005_7 ' EQU4
+ long @C_s1i8_67e34541_strdup_L000005_7 ' EQU4
  mov r2, r23 ' CVI, CVU or LOAD
  mov r3, r21 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -34,9 +34,9 @@ C_s11g_67da3e4f_strdup_L000005 ' <symbol:strdup>
  jmp #CALA
  long @C_strcpy
  add SP, #4 ' CALL addrg
-C_s11g_67da3e4f_strdup_L000005_7
+C_s1i8_67e34541_strdup_L000005_7
  mov r0, r21 ' CVI, CVU or LOAD
-' C_s11g_67da3e4f_strdup_L000005_6 ' (symbol refcount = 0)
+' C_s1i8_67e34541_strdup_L000005_6 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -1316,7 +1316,7 @@ C__load_L_ua_service_list_76
  mov r2, r22 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_s11g_67da3e4f_strdup_L000005 ' CALL addrg
+ long @C_s1i8_67e34541_strdup_L000005 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r20, #28 ' reg <- coni
  mov r0, r20 ' setup r0/r1 (2)
@@ -1429,7 +1429,7 @@ C__load_L_ua_service_list_75
  mov r2, RI ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_s11g_67da3e4f_strdup_L000005 ' CALL addrg
+ long @C_s1i8_67e34541_strdup_L000005 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r20, #28 ' reg <- coni
  mov r0, r20 ' setup r0/r1 (2)

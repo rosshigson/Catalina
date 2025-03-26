@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_sqa0_67da3de6_pixels_L000001 ' <symbol:pixels>
+C_snq0_67e344e1_pixels_L000001 ' <symbol:pixels>
  byte 0
  byte 0
  byte 0
@@ -106,7 +106,7 @@ C_g_width_7
  and r15, #15 ' BANDI4 coni
  subs r21, #2 ' SUBI4 coni
  jmp #LODL
- long @C_sqa0_67da3de6_pixels_L000001
+ long @C_snq0_67e344e1_pixels_L000001
  mov r22, RI ' reg <- addrg
  adds r22, r23 ' ADDI/P (2)
  rdbyte r7, r22 ' reg <- INDIRU1 reg

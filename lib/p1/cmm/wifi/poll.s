@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_so38_67da3f96_wifi_P_oll_R_esponse_L000001 ' <symbol:wifi_Poll_Response>
+C_se4c_67e34675_wifi_P_oll_R_esponse_L000001 ' <symbol:wifi_Poll_Response>
  alignl ' align long
  long I32_NEWF + 264<<S32
  alignl ' align long
@@ -22,9 +22,9 @@ C_so38_67da3f96_wifi_P_oll_R_esponse_L000001 ' <symbol:wifi_Poll_Response>
  long I32_LODF + ((-268)&$FFFFFF)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl32 reg
  alignl ' align long
- long I32_JMPA + (@C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_4)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_4)<<S32 ' JUMPV addrg
  alignl ' align long
-C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_3
+C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_3
  alignl ' align long
  long I32_LODS + (r2)<<D32S + ((1000)&$7FFFF)<<S32 ' reg ARG cons
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
@@ -33,23 +33,23 @@ C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_3
  word I16A_MOV + (r17)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPSI + (r17)<<D16A + (0)<<S16A
  alignl ' align long
- long I32_BRAE + (@C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_6)<<S32 ' GEI4 reg coni
+ long I32_BRAE + (@C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_6)<<S32 ' GEI4 reg coni
  word I16A_MOVI + R0<<D16A + (15)<<S16A ' RET coni
  alignl ' align long
- long I32_JMPA + (@C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_2)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_2)<<S32 ' JUMPV addrg
  alignl ' align long
-C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_6
+C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_6
  alignl ' align long
-C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_4
+C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_4
  alignl ' align long
  long I32_MOVI + RI<<D32 + (254)<<S32
  word I16A_CMPS + (r17)<<D16A + RI<<S16A
  alignl ' align long
- long I32_BRNZ + (@C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_3)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_3)<<S32 ' NEI4 reg coni
  alignl ' align long
- long I32_JMPA + (@C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_9)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_9)<<S32 ' JUMPV addrg
  alignl ' align long
-C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_8
+C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_8
  alignl ' align long
  long I32_LODS + (r2)<<D32S + ((1000)&$7FFFF)<<S32 ' reg ARG cons
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
@@ -58,15 +58,15 @@ C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_8
  word I16A_MOV + (r17)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPSI + (r17)<<D16A + (0)<<S16A
  alignl ' align long
- long I32_BRAE + (@C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_11)<<S32 ' GEI4 reg coni
+ long I32_BRAE + (@C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_11)<<S32 ' GEI4 reg coni
  word I16A_MOVI + R0<<D16A + (15)<<S16A ' RET coni
  alignl ' align long
- long I32_JMPA + (@C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_2)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_2)<<S32 ' JUMPV addrg
  alignl ' align long
-C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_11
+C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_11
  word I16A_CMPSI + (r17)<<D16A + (13)<<S16A
  alignl ' align long
- long I32_BR_Z + (@C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_13)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_13)<<S32 ' EQI4 reg coni
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r15)<<D16A + (r22)<<S16A
  word I16A_ADDSI + (r15)<<D16A + (1)<<S16A ' ADDI4 reg coni
@@ -77,9 +77,9 @@ C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_11
  word I16A_MOV + (r20)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
  word I16A_WRBYTE + (r20)<<D16A + (r22)<<S16A ' ASGNU1 reg reg
  alignl ' align long
- long I32_JMPA + (@C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_14)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_14)<<S32 ' JUMPV addrg
  alignl ' align long
-C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_13
+C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_13
  alignl ' align long
  long I32_LODF + ((-264)&$FFFFFF)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- addrl32
@@ -90,7 +90,7 @@ C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_13
  word I16A_MOV + (r3)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_LODL + (r4)<<D16B
  alignl ' align long
- long @C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_17_L000018 ' reg ARG ADDRG
+ long @C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_17_L000018 ' reg ARG ADDRG
  alignl ' align long
  long I32_LODF + ((-264)&$FFFFFF)<<S32 
  word I16A_MOV + (r5)<<D16A + RI<<S16A ' reg ARG ADDRL
@@ -100,25 +100,25 @@ C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_13
  word I16A_ADDI + SP<<D16A + 12<<S16A ' CALL addrg
  word I16A_CMPSI + (r0)<<D16A + (2)<<S16A
  alignl ' align long
- long I32_BRNZ + (@C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_15)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_15)<<S32 ' NEI4 reg coni
  word I16A_RDBYTE + (r22)<<D16A + (r23)<<S16A ' reg <- INDIRU1 reg
  word I16B_TRN1 + (r22)<<D16B ' zero extend
  alignl ' align long
  long I32_MOVI + RI<<D32 + (69)<<S32
  word I16A_CMPS + (r22)<<D16A + RI<<S16A
  alignl ' align long
- long I32_BRNZ + (@C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_19)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_19)<<S32 ' NEI4 reg coni
  word I16A_RDLONG + (r0)<<D16A + (r19)<<S16A ' reg <- INDIRI4 reg
  alignl ' align long
- long I32_JMPA + (@C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_2)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_2)<<S32 ' JUMPV addrg
  alignl ' align long
-C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_19
+C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_19
  word I16A_MOV + (r2)<<D16A + (r19)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r3)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r4)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_LODL + (r5)<<D16B
  alignl ' align long
- long @C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_23_L000024 ' reg ARG ADDRG
+ long @C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_23_L000024 ' reg ARG ADDRG
  word I16A_SUBI + SP<<D16A + 16<<S16A ' stack space for reg ARGs
  alignl ' align long
  long I32_LODF + ((-264)&$FFFFFF)<<S32
@@ -130,29 +130,29 @@ C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_19
  word I16A_ADDI + SP<<D16A + 16<<S16A ' CALL addrg
  word I16A_CMPSI + (r0)<<D16A + (3)<<S16A
  alignl ' align long
- long I32_BRNZ + (@C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_21)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_21)<<S32 ' NEI4 reg coni
  word I16A_MOVI + R0<<D16A + (0)<<S16A ' RET coni
  alignl ' align long
- long I32_JMPA + (@C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_2)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_2)<<S32 ' JUMPV addrg
  alignl ' align long
-C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_21
+C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_21
  alignl ' align long
-C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_15
+C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_15
  word I16A_MOVI + R0<<D16A + (16)<<S16A ' RET coni
  alignl ' align long
- long I32_JMPA + (@C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_2)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_2)<<S32 ' JUMPV addrg
  alignl ' align long
-C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_14
+C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_14
  alignl ' align long
-C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_9
+C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_9
  alignl ' align long
  long I32_MOVI + RI<<D32 + (256)<<S32
  word I16A_CMPS + (r15)<<D16A + RI<<S16A
  alignl ' align long
- long I32_BR_B + (@C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_8)<<S32 ' LTI4 reg coni
+ long I32_BR_B + (@C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_8)<<S32 ' LTI4 reg coni
  word I16A_MOVI + R0<<D16A + (16)<<S16A ' RET coni
  alignl ' align long
-C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_2
+C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_2
  word I16B_POPM + 66<<S16B ' restore registers, do pop frame, do return
  alignl ' align long
 
@@ -224,7 +224,7 @@ C_wifi_P_O_L_L__29
  word I16A_MOV + (r4)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 50<<S16B ' arg size, rpsize = 12, spsize = 12
  alignl ' align long
- long I32_CALA + (@C_so38_67da3f96_wifi_P_oll_R_esponse_L000001)<<S32
+ long I32_CALA + (@C_se4c_67e34675_wifi_P_oll_R_esponse_L000001)<<S32
  word I16A_ADDI + SP<<D16A + 8<<S16A ' CALL addrg
  word I16A_MOV + (r15)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPSI + (r15)<<D16A + (0)<<S16A
@@ -343,7 +343,7 @@ C_wifi_P_O_L_L__30_L000031 ' <symbol:30>
  byte 0
 
  alignl ' align long
-C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_23_L000024 ' <symbol:23>
+C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_23_L000024 ' <symbol:23>
  byte 61
  byte 37
  byte 99
@@ -356,7 +356,7 @@ C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_23_L000024 ' <symbol:23>
  byte 0
 
  alignl ' align long
-C_so38_67da3f96_wifi_P_oll_R_esponse_L000001_17_L000018 ' <symbol:17>
+C_se4c_67e34675_wifi_P_oll_R_esponse_L000001_17_L000018 ' <symbol:17>
  byte 61
  byte 37
  byte 99

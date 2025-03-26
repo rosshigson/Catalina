@@ -698,23 +698,17 @@ C_drvlow ' <symbol:drvlow>
 ' call to PASM eliminated
 ' loading argument C_drvlow_94_L000095 to PASM eliminated
 'START PASM ... 
- sub  r2,#1
+ shl  r0,r2
 
 '... END PASM
 ' call to PASM eliminated
 ' loading argument C_drvlow_96_L000097 to PASM eliminated
 'START PASM ... 
- shl  r0,r2
-
-'... END PASM
-' call to PASM eliminated
-' loading argument C_drvlow_98_L000099 to PASM eliminated
-'START PASM ... 
  andn OUTA,r0
 
 '... END PASM
 ' call to PASM eliminated
-' loading argument C_drvlow_100_L000101 to PASM eliminated
+' loading argument C_drvlow_98_L000099 to PASM eliminated
 'START PASM ... 
  or   DIRA,r0
 
@@ -736,29 +730,23 @@ C_drvhigh ' <symbol:drvhigh>
 ' call to PASM eliminated
 ' loading argument C_drvlow_94_L000095 to PASM eliminated
 'START PASM ... 
- sub  r2,#1
-
-'... END PASM
-' call to PASM eliminated
-' loading argument C_drvlow_96_L000097 to PASM eliminated
-'START PASM ... 
  shl  r0,r2
 
 '... END PASM
 ' call to PASM eliminated
-' loading argument C_drvhigh_103_L000104 to PASM eliminated
+' loading argument C_drvhigh_101_L000102 to PASM eliminated
 'START PASM ... 
  or   OUTA,r0
 
 '... END PASM
 ' call to PASM eliminated
-' loading argument C_drvlow_100_L000101 to PASM eliminated
+' loading argument C_drvlow_98_L000099 to PASM eliminated
 'START PASM ... 
  or   DIRA,r0
 
 '... END PASM
 ' call to PASM eliminated
-' C_drvhigh_102 ' (symbol refcount = 0)
+' C_drvhigh_100 ' (symbol refcount = 0)
  jmp #RETN
 
 
@@ -774,23 +762,17 @@ C_input ' <symbol:input>
 ' call to PASM eliminated
 ' loading argument C_drvlow_94_L000095 to PASM eliminated
 'START PASM ... 
- sub  r2,#1
-
-'... END PASM
-' call to PASM eliminated
-' loading argument C_drvlow_96_L000097 to PASM eliminated
-'START PASM ... 
  shl  r0,r2
 
 '... END PASM
 ' call to PASM eliminated
-' loading argument C_input_106_L000107 to PASM eliminated
+' loading argument C_input_104_L000105 to PASM eliminated
 'START PASM ... 
  andn DIRA,r0
 
 '... END PASM
 ' call to PASM eliminated
-' C_input_105 ' (symbol refcount = 0)
+' C_input_103 ' (symbol refcount = 0)
  jmp #RETN
 
 
@@ -806,23 +788,17 @@ C_output ' <symbol:output>
 ' call to PASM eliminated
 ' loading argument C_drvlow_94_L000095 to PASM eliminated
 'START PASM ... 
- sub  r2,#1
-
-'... END PASM
-' call to PASM eliminated
-' loading argument C_drvlow_96_L000097 to PASM eliminated
-'START PASM ... 
  shl  r0,r2
 
 '... END PASM
 ' call to PASM eliminated
-' loading argument C_drvlow_100_L000101 to PASM eliminated
+' loading argument C_drvlow_98_L000099 to PASM eliminated
 'START PASM ... 
  or   DIRA,r0
 
 '... END PASM
 ' call to PASM eliminated
-' C_output_108 ' (symbol refcount = 0)
+' C_output_106 ' (symbol refcount = 0)
  jmp #RETN
 
 
@@ -838,10 +814,10 @@ C_wifi_B_R_E_A_K_ ' <symbol:wifi_BREAK>
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz,wc
  jmp #BR_B
- long @C_wifi_B_R_E_A_K__110 ' LTI4
+ long @C_wifi_B_R_E_A_K__108 ' LTI4
  cmps r22,  #63 wz,wc
  jmp #BR_A
- long @C_wifi_B_R_E_A_K__110 ' GTI4
+ long @C_wifi_B_R_E_A_K__108 ' GTI4
  mov r2, #100 ' reg ARG coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -866,8 +842,8 @@ C_wifi_B_R_E_A_K_ ' <symbol:wifi_BREAK>
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C__waitms ' CALL addrg
-C_wifi_B_R_E_A_K__110
-' C_wifi_B_R_E_A_K__109 ' (symbol refcount = 0)
+C_wifi_B_R_E_A_K__108
+' C_wifi_B_R_E_A_K__107 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -884,10 +860,10 @@ C_wifi_R_E_S_E_T_ ' <symbol:wifi_RESET>
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz,wc
  jmp #BR_B
- long @C_wifi_R_E_S_E_T__113 ' LTI4
+ long @C_wifi_R_E_S_E_T__111 ' LTI4
  cmps r22,  #63 wz,wc
  jmp #BR_A
- long @C_wifi_R_E_S_E_T__113 ' GTI4
+ long @C_wifi_R_E_S_E_T__111 ' GTI4
  jmp #LODI
  long @C_wifi_pin_res
  mov r2, RI ' reg ARG INDIR ADDRG
@@ -904,12 +880,12 @@ C_wifi_R_E_S_E_T_ ' <symbol:wifi_RESET>
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C_drvhigh ' CALL addrg
- mov r2, #100 ' reg ARG coni
+ mov r2, #500 ' reg ARG coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C__waitms ' CALL addrg
-C_wifi_R_E_S_E_T__113
-' C_wifi_R_E_S_E_T__112 ' (symbol refcount = 0)
+C_wifi_R_E_S_E_T__111
+' C_wifi_R_E_S_E_T__110 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -926,12 +902,12 @@ C_wifi_P_G_M_ ' <symbol:wifi_PGM>
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz,wc
  jmp #BR_B
- long @C_wifi_P_G_M__116 ' LTI4
+ long @C_wifi_P_G_M__114 ' LTI4
  cmps r22,  #63 wz,wc
  jmp #BR_A
- long @C_wifi_P_G_M__116 ' GTI4
+ long @C_wifi_P_G_M__114 ' GTI4
  mov r23, #0 ' reg <- coni
-C_wifi_P_G_M__118
+C_wifi_P_G_M__116
  jmp #LODI
  long @C_wifi_pin_pgm
  mov r2, RI ' reg ARG INDIR ADDRG
@@ -952,13 +928,13 @@ C_wifi_P_G_M__118
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C__waitms ' CALL addrg
-' C_wifi_P_G_M__119 ' (symbol refcount = 0)
+' C_wifi_P_G_M__117 ' (symbol refcount = 0)
  adds r23, #1 ' ADDI4 coni
  cmps r23,  #4 wz,wc
  jmp #BR_B
- long @C_wifi_P_G_M__118 ' LTI4
-C_wifi_P_G_M__116
-' C_wifi_P_G_M__115 ' (symbol refcount = 0)
+ long @C_wifi_P_G_M__116 ' LTI4
+C_wifi_P_G_M__114
+' C_wifi_P_G_M__113 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -976,13 +952,13 @@ C_wifi_O_K_ ' <symbol:wifi_OK>
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_wifi_O_K__123 ' NEI4
+ long @C_wifi_O_K__121 ' NEI4
  mov r0, #16 ' RET coni
  jmp #JMPA
- long @C_wifi_O_K__122 ' JUMPV addrg
-C_wifi_O_K__123
+ long @C_wifi_O_K__120 ' JUMPV addrg
+C_wifi_O_K__121
  jmp #LODL
- long @C_wifi_O_K__125_L000126
+ long @C_wifi_O_K__123_L000124
  mov r2, RI ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -990,16 +966,16 @@ C_wifi_O_K__123
  mov r23, r0 ' CVI, CVU or LOAD
  cmps r23,  #0 wz
  jmp #BRNZ
- long @C_wifi_O_K__127 ' NEI4
+ long @C_wifi_O_K__125 ' NEI4
  mov r2, FP
  sub r2, #-(-8) ' reg ARG ADDRLi
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C_wifi_R_ead_C_ode ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
-C_wifi_O_K__127
+C_wifi_O_K__125
  mov r0, r23 ' CVI, CVU or LOAD
-C_wifi_O_K__122
+C_wifi_O_K__120
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
@@ -1021,7 +997,7 @@ C_wifi_I_N_I_T_ ' <symbol:wifi_INIT>
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_wifi_I_N_I_T__130 ' NEI4
+ long @C_wifi_I_N_I_T__128 ' NEI4
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 reg
@@ -1066,18 +1042,18 @@ C_wifi_I_N_I_T_ ' <symbol:wifi_INIT>
  long @C_wifi_O_K_ ' CALL addrg
  cmps r0,  #0 wz
  jmp #BRNZ
- long @C_wifi_I_N_I_T__132 ' NEI4
+ long @C_wifi_I_N_I_T__130 ' NEI4
  mov r0, #0 ' RET coni
  jmp #JMPA
- long @C_wifi_I_N_I_T__129 ' JUMPV addrg
-C_wifi_I_N_I_T__132
+ long @C_wifi_I_N_I_T__127 ' JUMPV addrg
 C_wifi_I_N_I_T__130
+C_wifi_I_N_I_T__128
  mov r22, #0 ' reg <- coni
  jmp #LODL
  long @C_wifi_init
  wrlong r22, RI ' ASGNI4 addrg reg
  mov r0, #16 ' RET coni
-C_wifi_I_N_I_T__129
+C_wifi_I_N_I_T__127
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -1122,7 +1098,7 @@ C_wifi_A_U_T_O_ ' <symbol:wifi_AUTO>
  long @C_wifi_I_N_I_T_
  add SP, #16 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
-' C_wifi_A_U_T_O__134 ' (symbol refcount = 0)
+' C_wifi_A_U_T_O__132 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -1162,7 +1138,7 @@ C_wifi_A_U_T_O_ ' <symbol:wifi_AUTO>
 DAT ' const data segment
 
  alignl ' align long
-C_wifi_O_K__125_L000126 ' <symbol:125>
+C_wifi_O_K__123_L000124 ' <symbol:123>
  byte 0
 
  alignl ' align long

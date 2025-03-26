@@ -307,7 +307,7 @@ C_luaO__ceillog2_19
 
 
  alignl ' align long
-C_sl9g1_67da3f21_intarith_L000021 ' <symbol:intarith>
+C_sf941_67e34607_intarith_L000021 ' <symbol:intarith>
  jmp #NEWF
  jmp #PSHM
  long $fa0000 ' save registers
@@ -317,14 +317,14 @@ C_sl9g1_67da3f21_intarith_L000021 ' <symbol:intarith>
  mov r17, r2 ' reg var <- reg arg
  cmps r21,  #0 wz,wc
  jmp #BR_B
- long @C_sl9g1_67da3f21_intarith_L000021_23 ' LTI4
+ long @C_sf941_67e34607_intarith_L000021_23 ' LTI4
  cmps r21,  #13 wz,wc
  jmp #BR_A
- long @C_sl9g1_67da3f21_intarith_L000021_23 ' GTI4
+ long @C_sf941_67e34607_intarith_L000021_23 ' GTI4
  mov r22, r21
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_sl9g1_67da3f21_intarith_L000021_37_L000039
+ long @C_sf941_67e34607_intarith_L000021_37_L000039
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  mov RI, r22
@@ -337,48 +337,48 @@ C_sl9g1_67da3f21_intarith_L000021 ' <symbol:intarith>
 DAT ' const data segment
 
  alignl ' align long
-C_sl9g1_67da3f21_intarith_L000021_37_L000039 ' <symbol:37>
- long @C_sl9g1_67da3f21_intarith_L000021_25
- long @C_sl9g1_67da3f21_intarith_L000021_26
- long @C_sl9g1_67da3f21_intarith_L000021_27
- long @C_sl9g1_67da3f21_intarith_L000021_28
- long @C_sl9g1_67da3f21_intarith_L000021_23
- long @C_sl9g1_67da3f21_intarith_L000021_23
- long @C_sl9g1_67da3f21_intarith_L000021_29
- long @C_sl9g1_67da3f21_intarith_L000021_30
- long @C_sl9g1_67da3f21_intarith_L000021_31
- long @C_sl9g1_67da3f21_intarith_L000021_32
- long @C_sl9g1_67da3f21_intarith_L000021_33
- long @C_sl9g1_67da3f21_intarith_L000021_34
- long @C_sl9g1_67da3f21_intarith_L000021_35
- long @C_sl9g1_67da3f21_intarith_L000021_36
+C_sf941_67e34607_intarith_L000021_37_L000039 ' <symbol:37>
+ long @C_sf941_67e34607_intarith_L000021_25
+ long @C_sf941_67e34607_intarith_L000021_26
+ long @C_sf941_67e34607_intarith_L000021_27
+ long @C_sf941_67e34607_intarith_L000021_28
+ long @C_sf941_67e34607_intarith_L000021_23
+ long @C_sf941_67e34607_intarith_L000021_23
+ long @C_sf941_67e34607_intarith_L000021_29
+ long @C_sf941_67e34607_intarith_L000021_30
+ long @C_sf941_67e34607_intarith_L000021_31
+ long @C_sf941_67e34607_intarith_L000021_32
+ long @C_sf941_67e34607_intarith_L000021_33
+ long @C_sf941_67e34607_intarith_L000021_34
+ long @C_sf941_67e34607_intarith_L000021_35
+ long @C_sf941_67e34607_intarith_L000021_36
 
 ' Catalina Code
 
 DAT ' code segment
-C_sl9g1_67da3f21_intarith_L000021_25
+C_sf941_67e34607_intarith_L000021_25
  mov r22, r19 ' CVI, CVU or LOAD
  mov r20, r17 ' CVI, CVU or LOAD
  add r22, r20 ' ADDU (1)
  mov r0, r22 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sl9g1_67da3f21_intarith_L000021_22 ' JUMPV addrg
-C_sl9g1_67da3f21_intarith_L000021_26
+ long @C_sf941_67e34607_intarith_L000021_22 ' JUMPV addrg
+C_sf941_67e34607_intarith_L000021_26
  mov r22, r19 ' CVI, CVU or LOAD
  mov r20, r17 ' CVI, CVU or LOAD
  sub r22, r20 ' SUBU (1)
  mov r0, r22 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sl9g1_67da3f21_intarith_L000021_22 ' JUMPV addrg
-C_sl9g1_67da3f21_intarith_L000021_27
+ long @C_sf941_67e34607_intarith_L000021_22 ' JUMPV addrg
+C_sf941_67e34607_intarith_L000021_27
  mov r22, r19 ' CVI, CVU or LOAD
  mov r20, r17 ' CVI, CVU or LOAD
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r20 ' setup r0/r1 (2)
  jmp #MULT ' MULT(I/U)
  jmp #JMPA
- long @C_sl9g1_67da3f21_intarith_L000021_22 ' JUMPV addrg
-C_sl9g1_67da3f21_intarith_L000021_28
+ long @C_sf941_67e34607_intarith_L000021_22 ' JUMPV addrg
+C_sf941_67e34607_intarith_L000021_28
  mov r2, r17 ' CVI, CVU or LOAD
  mov r3, r19 ' CVI, CVU or LOAD
  mov r4, r23 ' CVI, CVU or LOAD
@@ -389,8 +389,8 @@ C_sl9g1_67da3f21_intarith_L000021_28
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sl9g1_67da3f21_intarith_L000021_22 ' JUMPV addrg
-C_sl9g1_67da3f21_intarith_L000021_29
+ long @C_sf941_67e34607_intarith_L000021_22 ' JUMPV addrg
+C_sf941_67e34607_intarith_L000021_29
  mov r2, r17 ' CVI, CVU or LOAD
  mov r3, r19 ' CVI, CVU or LOAD
  mov r4, r23 ' CVI, CVU or LOAD
@@ -401,29 +401,29 @@ C_sl9g1_67da3f21_intarith_L000021_29
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sl9g1_67da3f21_intarith_L000021_22 ' JUMPV addrg
-C_sl9g1_67da3f21_intarith_L000021_30
+ long @C_sf941_67e34607_intarith_L000021_22 ' JUMPV addrg
+C_sf941_67e34607_intarith_L000021_30
  mov r22, r19 ' CVI, CVU or LOAD
  mov r20, r17 ' CVI, CVU or LOAD
  and r22, r20 ' BANDI/U (1)
  mov r0, r22 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sl9g1_67da3f21_intarith_L000021_22 ' JUMPV addrg
-C_sl9g1_67da3f21_intarith_L000021_31
+ long @C_sf941_67e34607_intarith_L000021_22 ' JUMPV addrg
+C_sf941_67e34607_intarith_L000021_31
  mov r22, r19 ' CVI, CVU or LOAD
  mov r20, r17 ' CVI, CVU or LOAD
  or r22, r20 ' BORI/U (1)
  mov r0, r22 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sl9g1_67da3f21_intarith_L000021_22 ' JUMPV addrg
-C_sl9g1_67da3f21_intarith_L000021_32
+ long @C_sf941_67e34607_intarith_L000021_22 ' JUMPV addrg
+C_sf941_67e34607_intarith_L000021_32
  mov r22, r19 ' CVI, CVU or LOAD
  mov r20, r17 ' CVI, CVU or LOAD
  xor r22, r20 ' BXORI/U (1)
  mov r0, r22 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sl9g1_67da3f21_intarith_L000021_22 ' JUMPV addrg
-C_sl9g1_67da3f21_intarith_L000021_33
+ long @C_sf941_67e34607_intarith_L000021_22 ' JUMPV addrg
+C_sf941_67e34607_intarith_L000021_33
  mov r2, r17 ' CVI, CVU or LOAD
  mov r3, r19 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -433,8 +433,8 @@ C_sl9g1_67da3f21_intarith_L000021_33
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sl9g1_67da3f21_intarith_L000021_22 ' JUMPV addrg
-C_sl9g1_67da3f21_intarith_L000021_34
+ long @C_sf941_67e34607_intarith_L000021_22 ' JUMPV addrg
+C_sf941_67e34607_intarith_L000021_34
  neg r2, r17 ' NEGI4
  mov r3, r19 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -444,15 +444,15 @@ C_sl9g1_67da3f21_intarith_L000021_34
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sl9g1_67da3f21_intarith_L000021_22 ' JUMPV addrg
-C_sl9g1_67da3f21_intarith_L000021_35
+ long @C_sf941_67e34607_intarith_L000021_22 ' JUMPV addrg
+C_sf941_67e34607_intarith_L000021_35
  mov r22, #0 ' reg <- coni
  mov r20, r19 ' CVI, CVU or LOAD
  sub r22, r20 ' SUBU (1)
  mov r0, r22 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sl9g1_67da3f21_intarith_L000021_22 ' JUMPV addrg
-C_sl9g1_67da3f21_intarith_L000021_36
+ long @C_sf941_67e34607_intarith_L000021_22 ' JUMPV addrg
+C_sf941_67e34607_intarith_L000021_36
  mov r22, r19 ' CVI, CVU or LOAD
  jmp #LODL
  long $ffffffff
@@ -460,16 +460,16 @@ C_sl9g1_67da3f21_intarith_L000021_36
  xor r22, r20 ' BXORI/U (1)
  mov r0, r22 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sl9g1_67da3f21_intarith_L000021_22 ' JUMPV addrg
-C_sl9g1_67da3f21_intarith_L000021_23
+ long @C_sf941_67e34607_intarith_L000021_22 ' JUMPV addrg
+C_sf941_67e34607_intarith_L000021_23
  mov r0, #0 ' reg <- coni
-C_sl9g1_67da3f21_intarith_L000021_22
+C_sf941_67e34607_intarith_L000021_22
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sl9g4_67da3f21_numarith_L000040 ' <symbol:numarith>
+C_sf944_67e34607_numarith_L000040 ' <symbol:numarith>
  jmp #NEWF
  jmp #PSHM
  long $fa8000 ' save registers
@@ -479,14 +479,14 @@ C_sl9g4_67da3f21_numarith_L000040 ' <symbol:numarith>
  mov r17, r2 ' reg var <- reg arg
  cmps r21,  #0 wz,wc
  jmp #BR_B
- long @C_sl9g4_67da3f21_numarith_L000040_42 ' LTI4
+ long @C_sf944_67e34607_numarith_L000040_42 ' LTI4
  cmps r21,  #12 wz,wc
  jmp #BR_A
- long @C_sl9g4_67da3f21_numarith_L000040_42 ' GTI4
+ long @C_sf944_67e34607_numarith_L000040_42 ' GTI4
  mov r22, r21
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_sl9g4_67da3f21_numarith_L000040_59_L000061
+ long @C_sf944_67e34607_numarith_L000040_59_L000061
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  mov RI, r22
@@ -499,64 +499,64 @@ C_sl9g4_67da3f21_numarith_L000040 ' <symbol:numarith>
 DAT ' const data segment
 
  alignl ' align long
-C_sl9g4_67da3f21_numarith_L000040_59_L000061 ' <symbol:59>
- long @C_sl9g4_67da3f21_numarith_L000040_44
- long @C_sl9g4_67da3f21_numarith_L000040_45
- long @C_sl9g4_67da3f21_numarith_L000040_46
- long @C_sl9g4_67da3f21_numarith_L000040_56
- long @C_sl9g4_67da3f21_numarith_L000040_48
- long @C_sl9g4_67da3f21_numarith_L000040_47
- long @C_sl9g4_67da3f21_numarith_L000040_54
- long @C_sl9g4_67da3f21_numarith_L000040_42
- long @C_sl9g4_67da3f21_numarith_L000040_42
- long @C_sl9g4_67da3f21_numarith_L000040_42
- long @C_sl9g4_67da3f21_numarith_L000040_42
- long @C_sl9g4_67da3f21_numarith_L000040_42
- long @C_sl9g4_67da3f21_numarith_L000040_55
+C_sf944_67e34607_numarith_L000040_59_L000061 ' <symbol:59>
+ long @C_sf944_67e34607_numarith_L000040_44
+ long @C_sf944_67e34607_numarith_L000040_45
+ long @C_sf944_67e34607_numarith_L000040_46
+ long @C_sf944_67e34607_numarith_L000040_56
+ long @C_sf944_67e34607_numarith_L000040_48
+ long @C_sf944_67e34607_numarith_L000040_47
+ long @C_sf944_67e34607_numarith_L000040_54
+ long @C_sf944_67e34607_numarith_L000040_42
+ long @C_sf944_67e34607_numarith_L000040_42
+ long @C_sf944_67e34607_numarith_L000040_42
+ long @C_sf944_67e34607_numarith_L000040_42
+ long @C_sf944_67e34607_numarith_L000040_42
+ long @C_sf944_67e34607_numarith_L000040_55
 
 ' Catalina Code
 
 DAT ' code segment
-C_sl9g4_67da3f21_numarith_L000040_44
+C_sf944_67e34607_numarith_L000040_44
  mov r0, r19 ' setup r0/r1 (2)
  mov r1, r17 ' setup r0/r1 (2)
  jmp #FADD ' ADDF4
  jmp #JMPA
- long @C_sl9g4_67da3f21_numarith_L000040_41 ' JUMPV addrg
-C_sl9g4_67da3f21_numarith_L000040_45
+ long @C_sf944_67e34607_numarith_L000040_41 ' JUMPV addrg
+C_sf944_67e34607_numarith_L000040_45
  mov r0, r19 ' setup r0/r1 (2)
  mov r1, r17 ' setup r0/r1 (2)
  jmp #FSUB ' SUBF4
  jmp #JMPA
- long @C_sl9g4_67da3f21_numarith_L000040_41 ' JUMPV addrg
-C_sl9g4_67da3f21_numarith_L000040_46
+ long @C_sf944_67e34607_numarith_L000040_41 ' JUMPV addrg
+C_sf944_67e34607_numarith_L000040_46
  mov r0, r19 ' setup r0/r1 (2)
  mov r1, r17 ' setup r0/r1 (2)
  jmp #FMUL ' MULF4
  jmp #JMPA
- long @C_sl9g4_67da3f21_numarith_L000040_41 ' JUMPV addrg
-C_sl9g4_67da3f21_numarith_L000040_47
+ long @C_sf944_67e34607_numarith_L000040_41 ' JUMPV addrg
+C_sf944_67e34607_numarith_L000040_47
  mov r0, r19 ' setup r0/r1 (2)
  mov r1, r17 ' setup r0/r1 (2)
  jmp #FDIV ' DIVF4
  jmp #JMPA
- long @C_sl9g4_67da3f21_numarith_L000040_41 ' JUMPV addrg
-C_sl9g4_67da3f21_numarith_L000040_48
+ long @C_sf944_67e34607_numarith_L000040_41 ' JUMPV addrg
+C_sf944_67e34607_numarith_L000040_48
  jmp #LODI
- long @C_sl9g4_67da3f21_numarith_L000040_52_L000053
+ long @C_sf944_67e34607_numarith_L000040_52_L000053
  mov r22, RI ' reg <- INDIRF4 addrg
  mov r0, r17 ' setup r0/r1 (2)
  mov r1, r22 ' setup r0/r1 (2)
  jmp #FCMP
  jmp #BRNZ
- long @C_sl9g4_67da3f21_numarith_L000040_50 ' NEF4
+ long @C_sf944_67e34607_numarith_L000040_50 ' NEF4
  mov r0, r19 ' setup r0/r1 (2)
  mov r1, r19 ' setup r0/r1 (2)
  jmp #FMUL ' MULF4
  mov r15, r0 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sl9g4_67da3f21_numarith_L000040_51 ' JUMPV addrg
-C_sl9g4_67da3f21_numarith_L000040_50
+ long @C_sf944_67e34607_numarith_L000040_51 ' JUMPV addrg
+C_sf944_67e34607_numarith_L000040_50
  mov r2, r17 ' CVI, CVU or LOAD
  mov r3, r19 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -566,11 +566,11 @@ C_sl9g4_67da3f21_numarith_L000040_50
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r15, r22 ' CVI, CVU or LOAD
-C_sl9g4_67da3f21_numarith_L000040_51
+C_sf944_67e34607_numarith_L000040_51
  mov r0, r15 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sl9g4_67da3f21_numarith_L000040_41 ' JUMPV addrg
-C_sl9g4_67da3f21_numarith_L000040_54
+ long @C_sf944_67e34607_numarith_L000040_41 ' JUMPV addrg
+C_sf944_67e34607_numarith_L000040_54
  mov r0, r19 ' setup r0/r1 (2)
  mov r1, r17 ' setup r0/r1 (2)
  jmp #FDIV ' DIVF4
@@ -580,13 +580,13 @@ C_sl9g4_67da3f21_numarith_L000040_54
  long @C_floor ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sl9g4_67da3f21_numarith_L000040_41 ' JUMPV addrg
-C_sl9g4_67da3f21_numarith_L000040_55
+ long @C_sf944_67e34607_numarith_L000040_41 ' JUMPV addrg
+C_sf944_67e34607_numarith_L000040_55
  mov r0, r19
  xor r0, Bit31 ' NEGF4
  jmp #JMPA
- long @C_sl9g4_67da3f21_numarith_L000040_41 ' JUMPV addrg
-C_sl9g4_67da3f21_numarith_L000040_56
+ long @C_sf944_67e34607_numarith_L000040_41 ' JUMPV addrg
+C_sf944_67e34607_numarith_L000040_56
  mov r2, r17 ' CVI, CVU or LOAD
  mov r3, r19 ' CVI, CVU or LOAD
  mov r4, r23 ' CVI, CVU or LOAD
@@ -597,12 +597,12 @@ C_sl9g4_67da3f21_numarith_L000040_56
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sl9g4_67da3f21_numarith_L000040_41 ' JUMPV addrg
-C_sl9g4_67da3f21_numarith_L000040_42
+ long @C_sf944_67e34607_numarith_L000040_41 ' JUMPV addrg
+C_sf944_67e34607_numarith_L000040_42
  jmp #LODI
- long @C_sl9g4_67da3f21_numarith_L000040_57_L000058
+ long @C_sf944_67e34607_numarith_L000040_57_L000058
  mov r0, RI ' reg <- INDIRF4 addrg
-C_sl9g4_67da3f21_numarith_L000040_41
+C_sf944_67e34607_numarith_L000040_41
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -741,7 +741,7 @@ C_luaO__rawarith_73
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_sl9g1_67da3f21_intarith_L000021
+ long @C_sf941_67e34607_intarith_L000021
  add SP, #12 ' CALL addrg
  mov r20, FP
  sub r20, #-(-16) ' reg <- addrli
@@ -873,7 +873,7 @@ C_luaO__rawarith_86
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_sl9g4_67da3f21_numarith_L000040
+ long @C_sf944_67e34607_numarith_L000040
  add SP, #12 ' CALL addrg
  mov r20, FP
  sub r20, #-(-16) ' reg <- addrli
@@ -932,7 +932,7 @@ C_luaO__rawarith_63
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_sl9g1_67da3f21_intarith_L000021
+ long @C_sf941_67e34607_intarith_L000021
  add SP, #12 ' CALL addrg
  mov r20, FP
  sub r20, #-(-16) ' reg <- addrli
@@ -1060,7 +1060,7 @@ C_luaO__rawarith_102
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_sl9g4_67da3f21_numarith_L000040
+ long @C_sf944_67e34607_numarith_L000040
  add SP, #12 ' CALL addrg
  mov r20, FP
  sub r20, #-(-16) ' reg <- addrli
@@ -1166,7 +1166,7 @@ C_luaO__hexavalue_112
 
 
  alignl ' align long
-C_sl9gb_67da3f21_isneg_L000116 ' <symbol:isneg>
+C_sf94b_67e34607_isneg_L000116 ' <symbol:isneg>
  jmp #PSHM
  long $400000 ' save registers
  mov RI, r2
@@ -1178,7 +1178,7 @@ C_sl9gb_67da3f21_isneg_L000116 ' <symbol:isneg>
  and r22, cviu_m1 ' zero extend
  cmps r22,  #45 wz
  jmp #BRNZ
- long @C_sl9gb_67da3f21_isneg_L000116_118 ' NEI4
+ long @C_sf94b_67e34607_isneg_L000116_118 ' NEI4
  mov RI, r2
  jmp #RLNG
  mov r22, BC ' reg <- INDIRP4 reg
@@ -1188,8 +1188,8 @@ C_sl9gb_67da3f21_isneg_L000116 ' <symbol:isneg>
  jmp #WLNG ' ASGNP4 reg reg
  mov r0, #1 ' reg <- coni
  jmp #JMPA
- long @C_sl9gb_67da3f21_isneg_L000116_117 ' JUMPV addrg
-C_sl9gb_67da3f21_isneg_L000116_118
+ long @C_sf94b_67e34607_isneg_L000116_117 ' JUMPV addrg
+C_sf94b_67e34607_isneg_L000116_118
  mov RI, r2
  jmp #RLNG
  mov r22, BC ' reg <- INDIRP4 reg
@@ -1199,7 +1199,7 @@ C_sl9gb_67da3f21_isneg_L000116_118
  and r22, cviu_m1 ' zero extend
  cmps r22,  #43 wz
  jmp #BRNZ
- long @C_sl9gb_67da3f21_isneg_L000116_120 ' NEI4
+ long @C_sf94b_67e34607_isneg_L000116_120 ' NEI4
  mov RI, r2
  jmp #RLNG
  mov r22, BC ' reg <- INDIRP4 reg
@@ -1207,15 +1207,15 @@ C_sl9gb_67da3f21_isneg_L000116_118
  mov RI, r2
  mov BC, r22
  jmp #WLNG ' ASGNP4 reg reg
-C_sl9gb_67da3f21_isneg_L000116_120
+C_sf94b_67e34607_isneg_L000116_120
  mov r0, #0 ' reg <- coni
-C_sl9gb_67da3f21_isneg_L000116_117
+C_sf94b_67e34607_isneg_L000116_117
  jmp #POPM ' restore registers
  jmp #RETN
 
 
  alignl ' align long
-C_sl9gc_67da3f21_lua_strx2number_L000122 ' <symbol:lua_strx2number>
+C_sf94c_67e34607_lua_strx2number_L000122 ' <symbol:lua_strx2number>
  jmp #NEWF
  sub SP, #8
  jmp #PSHM
@@ -1236,7 +1236,7 @@ C_sl9gc_67da3f21_lua_strx2number_L000122 ' <symbol:lua_strx2number>
  mov r21, r22 ' CVUI
  and r21, cviu_m1 ' zero extend
  jmp #LODI
- long @C_sl9g4_67da3f21_numarith_L000040_57_L000058
+ long @C_sf944_67e34607_numarith_L000040_57_L000058
  mov r13, RI ' reg <- INDIRF4 addrg
  mov r17, #0 ' reg <- coni
  mov r11, #0 ' reg <- coni
@@ -1249,8 +1249,8 @@ C_sl9gc_67da3f21_lua_strx2number_L000122 ' <symbol:lua_strx2number>
  mov BC, r22
  jmp #WLNG ' ASGNP4 reg reg
  jmp #JMPA
- long @C_sl9gc_67da3f21_lua_strx2number_L000122_125 ' JUMPV addrg
-C_sl9gc_67da3f21_lua_strx2number_L000122_124
+ long @C_sf94c_67e34607_lua_strx2number_L000122_125 ' JUMPV addrg
+C_sf94c_67e34607_lua_strx2number_L000122_124
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -1258,7 +1258,7 @@ C_sl9gc_67da3f21_lua_strx2number_L000122_124
  mov RI, FP
  add RI, #8
  wrlong r22, RI ' ASGNP4 addrfi reg
-C_sl9gc_67da3f21_lua_strx2number_L000122_125
+C_sf94c_67e34607_lua_strx2number_L000122_125
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -1277,12 +1277,12 @@ C_sl9gc_67da3f21_lua_strx2number_L000122_125
  and r22, #8 ' BANDI4 coni
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_sl9gc_67da3f21_lua_strx2number_L000122_124 ' NEI4
+ long @C_sf94c_67e34607_lua_strx2number_L000122_124 ' NEI4
  mov r2, FP
  add r2, #8 ' reg ARG ADDRFi
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_sl9gb_67da3f21_isneg_L000116 ' CALL addrg
+ long @C_sf94b_67e34607_isneg_L000116 ' CALL addrg
  mov RI, FP
  sub RI, #-(-8)
  wrlong r0, RI ' ASGNI4 addrli reg
@@ -1295,7 +1295,7 @@ C_sl9gc_67da3f21_lua_strx2number_L000122_125
  and r20, cviu_m1 ' zero extend
  cmps r20,  #48 wz
  jmp #BRNZ
- long @C_sl9gc_67da3f21_lua_strx2number_L000122_130 ' NEI4
+ long @C_sf94c_67e34607_lua_strx2number_L000122_130 ' NEI4
  adds r22, #1 ' ADDP4 coni
  mov RI, r22
  jmp #RBYT
@@ -1303,17 +1303,17 @@ C_sl9gc_67da3f21_lua_strx2number_L000122_125
  and r22, cviu_m1 ' zero extend
  cmps r22,  #120 wz
  jmp #BR_Z
- long @C_sl9gc_67da3f21_lua_strx2number_L000122_128 ' EQI4
+ long @C_sf94c_67e34607_lua_strx2number_L000122_128 ' EQI4
  cmps r22,  #88 wz
  jmp #BR_Z
- long @C_sl9gc_67da3f21_lua_strx2number_L000122_128 ' EQI4
-C_sl9gc_67da3f21_lua_strx2number_L000122_130
+ long @C_sf94c_67e34607_lua_strx2number_L000122_128 ' EQI4
+C_sf94c_67e34607_lua_strx2number_L000122_130
  jmp #LODI
- long @C_sl9g4_67da3f21_numarith_L000040_57_L000058
+ long @C_sf944_67e34607_numarith_L000040_57_L000058
  mov r0, RI ' reg <- INDIRF4 addrg
  jmp #JMPA
- long @C_sl9gc_67da3f21_lua_strx2number_L000122_123 ' JUMPV addrg
-C_sl9gc_67da3f21_lua_strx2number_L000122_128
+ long @C_sf94c_67e34607_lua_strx2number_L000122_123 ' JUMPV addrg
+C_sf94c_67e34607_lua_strx2number_L000122_128
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -1321,7 +1321,7 @@ C_sl9gc_67da3f21_lua_strx2number_L000122_128
  mov RI, FP
  add RI, #8
  wrlong r22, RI ' ASGNP4 addrfi reg
-C_sl9gc_67da3f21_lua_strx2number_L000122_131
+C_sf94c_67e34607_lua_strx2number_L000122_131
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -1331,17 +1331,17 @@ C_sl9gc_67da3f21_lua_strx2number_L000122_131
  and r22, cviu_m1 ' zero extend
  cmps r22, r21 wz
  jmp #BRNZ
- long @C_sl9gc_67da3f21_lua_strx2number_L000122_135 ' NEI4
+ long @C_sf94c_67e34607_lua_strx2number_L000122_135 ' NEI4
  cmps r19,  #0 wz
  jmp #BR_Z
- long @C_sl9gc_67da3f21_lua_strx2number_L000122_137 ' EQI4
+ long @C_sf94c_67e34607_lua_strx2number_L000122_137 ' EQI4
  jmp #JMPA
- long @C_sl9gc_67da3f21_lua_strx2number_L000122_133 ' JUMPV addrg
-C_sl9gc_67da3f21_lua_strx2number_L000122_137
+ long @C_sf94c_67e34607_lua_strx2number_L000122_133 ' JUMPV addrg
+C_sf94c_67e34607_lua_strx2number_L000122_137
  mov r19, #1 ' reg <- coni
  jmp #JMPA
- long @C_sl9gc_67da3f21_lua_strx2number_L000122_136 ' JUMPV addrg
-C_sl9gc_67da3f21_lua_strx2number_L000122_135
+ long @C_sf94c_67e34607_lua_strx2number_L000122_136 ' JUMPV addrg
+C_sf94c_67e34607_lua_strx2number_L000122_135
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -1360,10 +1360,10 @@ C_sl9gc_67da3f21_lua_strx2number_L000122_135
  and r22, #16 ' BANDI4 coni
  cmps r22,  #0 wz
  jmp #BR_Z
- long @C_sl9gc_67da3f21_lua_strx2number_L000122_133 ' EQI4
+ long @C_sf94c_67e34607_lua_strx2number_L000122_133 ' EQI4
  cmps r17,  #0 wz
  jmp #BRNZ
- long @C_sl9gc_67da3f21_lua_strx2number_L000122_142 ' NEI4
+ long @C_sf94c_67e34607_lua_strx2number_L000122_142 ' NEI4
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -1373,17 +1373,17 @@ C_sl9gc_67da3f21_lua_strx2number_L000122_135
  and r22, cviu_m1 ' zero extend
  cmps r22,  #48 wz
  jmp #BRNZ
- long @C_sl9gc_67da3f21_lua_strx2number_L000122_142 ' NEI4
+ long @C_sf94c_67e34607_lua_strx2number_L000122_142 ' NEI4
  adds r11, #1 ' ADDI4 coni
  jmp #JMPA
- long @C_sl9gc_67da3f21_lua_strx2number_L000122_143 ' JUMPV addrg
-C_sl9gc_67da3f21_lua_strx2number_L000122_142
+ long @C_sf94c_67e34607_lua_strx2number_L000122_143 ' JUMPV addrg
+C_sf94c_67e34607_lua_strx2number_L000122_142
  mov r22, r17
  adds r22, #1 ' ADDI4 coni
  mov r17, r22 ' CVI, CVU or LOAD
  cmps r22,  #30 wz,wc
  jmp #BR_A
- long @C_sl9gc_67da3f21_lua_strx2number_L000122_144 ' GTI4
+ long @C_sf94c_67e34607_lua_strx2number_L000122_144 ' GTI4
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -1397,7 +1397,7 @@ C_sl9gc_67da3f21_lua_strx2number_L000122_142
  long @C_luaO__hexavalue ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  jmp #LODI
- long @C_sl9gc_67da3f21_lua_strx2number_L000122_146_L000147
+ long @C_sf94c_67e34607_lua_strx2number_L000122_146_L000147
  mov r20, RI ' reg <- INDIRF4 addrg
  mov r0, r20 ' setup r0/r1 (2)
  mov r1, r13 ' setup r0/r1 (2)
@@ -1415,18 +1415,18 @@ C_sl9gc_67da3f21_lua_strx2number_L000122_142
  jmp #FADD ' ADDF4
  mov r13, r0 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sl9gc_67da3f21_lua_strx2number_L000122_145 ' JUMPV addrg
-C_sl9gc_67da3f21_lua_strx2number_L000122_144
+ long @C_sf94c_67e34607_lua_strx2number_L000122_145 ' JUMPV addrg
+C_sf94c_67e34607_lua_strx2number_L000122_144
  adds r15, #1 ' ADDI4 coni
-C_sl9gc_67da3f21_lua_strx2number_L000122_145
-C_sl9gc_67da3f21_lua_strx2number_L000122_143
+C_sf94c_67e34607_lua_strx2number_L000122_145
+C_sf94c_67e34607_lua_strx2number_L000122_143
  cmps r19,  #0 wz
  jmp #BR_Z
- long @C_sl9gc_67da3f21_lua_strx2number_L000122_140 ' EQI4
+ long @C_sf94c_67e34607_lua_strx2number_L000122_140 ' EQI4
  subs r15, #1 ' SUBI4 coni
-C_sl9gc_67da3f21_lua_strx2number_L000122_140
-C_sl9gc_67da3f21_lua_strx2number_L000122_136
-' C_sl9gc_67da3f21_lua_strx2number_L000122_132 ' (symbol refcount = 0)
+C_sf94c_67e34607_lua_strx2number_L000122_140
+C_sf94c_67e34607_lua_strx2number_L000122_136
+' C_sf94c_67e34607_lua_strx2number_L000122_132 ' (symbol refcount = 0)
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -1435,19 +1435,19 @@ C_sl9gc_67da3f21_lua_strx2number_L000122_136
  add RI, #8
  wrlong r22, RI ' ASGNP4 addrfi reg
  jmp #JMPA
- long @C_sl9gc_67da3f21_lua_strx2number_L000122_131 ' JUMPV addrg
-C_sl9gc_67da3f21_lua_strx2number_L000122_133
+ long @C_sf94c_67e34607_lua_strx2number_L000122_131 ' JUMPV addrg
+C_sf94c_67e34607_lua_strx2number_L000122_133
  mov r22, r11 ' ADDI/P
  adds r22, r17 ' ADDI/P (3)
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_sl9gc_67da3f21_lua_strx2number_L000122_150 ' NEI4
+ long @C_sf94c_67e34607_lua_strx2number_L000122_150 ' NEI4
  jmp #LODI
- long @C_sl9g4_67da3f21_numarith_L000040_57_L000058
+ long @C_sf944_67e34607_numarith_L000040_57_L000058
  mov r0, RI ' reg <- INDIRF4 addrg
  jmp #JMPA
- long @C_sl9gc_67da3f21_lua_strx2number_L000122_123 ' JUMPV addrg
-C_sl9gc_67da3f21_lua_strx2number_L000122_150
+ long @C_sf94c_67e34607_lua_strx2number_L000122_123 ' JUMPV addrg
+C_sf94c_67e34607_lua_strx2number_L000122_150
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -1464,11 +1464,11 @@ C_sl9gc_67da3f21_lua_strx2number_L000122_150
  and r22, cviu_m1 ' zero extend
  cmps r22,  #112 wz
  jmp #BR_Z
- long @C_sl9gc_67da3f21_lua_strx2number_L000122_154 ' EQI4
+ long @C_sf94c_67e34607_lua_strx2number_L000122_154 ' EQI4
  cmps r22,  #80 wz
  jmp #BRNZ
- long @C_sl9gc_67da3f21_lua_strx2number_L000122_152 ' NEI4
-C_sl9gc_67da3f21_lua_strx2number_L000122_154
+ long @C_sf94c_67e34607_lua_strx2number_L000122_152 ' NEI4
+C_sf94c_67e34607_lua_strx2number_L000122_154
  mov r9, #0 ' reg <- coni
  mov r22, FP
  add r22, #8 ' reg <- addrfi
@@ -1481,7 +1481,7 @@ C_sl9gc_67da3f21_lua_strx2number_L000122_154
  add r2, #8 ' reg ARG ADDRFi
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_sl9gb_67da3f21_isneg_L000116 ' CALL addrg
+ long @C_sf94b_67e34607_isneg_L000116 ' CALL addrg
  mov RI, FP
  sub RI, #-(-12)
  wrlong r0, RI ' ASGNI4 addrli reg
@@ -1503,13 +1503,13 @@ C_sl9gc_67da3f21_lua_strx2number_L000122_154
  and r22, #2 ' BANDI4 coni
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_sl9gc_67da3f21_lua_strx2number_L000122_159 ' NEI4
+ long @C_sf94c_67e34607_lua_strx2number_L000122_159 ' NEI4
  jmp #LODI
- long @C_sl9g4_67da3f21_numarith_L000040_57_L000058
+ long @C_sf944_67e34607_numarith_L000040_57_L000058
  mov r0, RI ' reg <- INDIRF4 addrg
  jmp #JMPA
- long @C_sl9gc_67da3f21_lua_strx2number_L000122_123 ' JUMPV addrg
-C_sl9gc_67da3f21_lua_strx2number_L000122_158
+ long @C_sf94c_67e34607_lua_strx2number_L000122_123 ' JUMPV addrg
+C_sf94c_67e34607_lua_strx2number_L000122_158
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -1529,7 +1529,7 @@ C_sl9gc_67da3f21_lua_strx2number_L000122_158
  adds r22, r0 ' ADDI/P (2)
  mov r9, r22
  subs r9, #48 ' SUBI4 coni
-C_sl9gc_67da3f21_lua_strx2number_L000122_159
+C_sf94c_67e34607_lua_strx2number_L000122_159
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -1548,15 +1548,15 @@ C_sl9gc_67da3f21_lua_strx2number_L000122_159
  and r22, #2 ' BANDI4 coni
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_sl9gc_67da3f21_lua_strx2number_L000122_158 ' NEI4
+ long @C_sf94c_67e34607_lua_strx2number_L000122_158 ' NEI4
  mov r22, FP
  sub r22, #-(-12) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 regl
  cmps r22,  #0 wz
  jmp #BR_Z
- long @C_sl9gc_67da3f21_lua_strx2number_L000122_162 ' EQI4
+ long @C_sf94c_67e34607_lua_strx2number_L000122_162 ' EQI4
  neg r9, r9 ' NEGI4
-C_sl9gc_67da3f21_lua_strx2number_L000122_162
+C_sf94c_67e34607_lua_strx2number_L000122_162
  adds r15, r9 ' ADDI/P (1)
  mov r22, FP
  add r22, #8 ' reg <- addrfi
@@ -1564,15 +1564,15 @@ C_sl9gc_67da3f21_lua_strx2number_L000122_162
  mov RI, r23
  mov BC, r22
  jmp #WLNG ' ASGNP4 reg reg
-C_sl9gc_67da3f21_lua_strx2number_L000122_152
+C_sf94c_67e34607_lua_strx2number_L000122_152
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 regl
  cmps r22,  #0 wz
  jmp #BR_Z
- long @C_sl9gc_67da3f21_lua_strx2number_L000122_164 ' EQI4
+ long @C_sf94c_67e34607_lua_strx2number_L000122_164 ' EQI4
  xor r13, Bit31 ' NEGF4
-C_sl9gc_67da3f21_lua_strx2number_L000122_164
+C_sf94c_67e34607_lua_strx2number_L000122_164
  mov r2, r15 ' CVI, CVU or LOAD
  mov r3, r13 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1581,14 +1581,14 @@ C_sl9gc_67da3f21_lua_strx2number_L000122_164
  long @C_ldexp
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
-C_sl9gc_67da3f21_lua_strx2number_L000122_123
+C_sf94c_67e34607_lua_strx2number_L000122_123
  jmp #POPM ' restore registers
  add SP, #8 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_sl9ge_67da3f21_l_str2dloc_L000166 ' <symbol:l_str2dloc>
+C_sf94e_67e34607_l_str2dloc_L000166 ' <symbol:l_str2dloc>
  jmp #NEWF
  sub SP, #4
  jmp #PSHM
@@ -1598,20 +1598,20 @@ C_sl9ge_67da3f21_l_str2dloc_L000166 ' <symbol:l_str2dloc>
  mov r19, r2 ' reg var <- reg arg
  cmps r19,  #120 wz
  jmp #BRNZ
- long @C_sl9ge_67da3f21_l_str2dloc_L000166_169 ' NEI4
+ long @C_sf94e_67e34607_l_str2dloc_L000166_169 ' NEI4
  mov r2, FP
  sub r2, #-(-8) ' reg ARG ADDRLi
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_sl9gc_67da3f21_lua_strx2number_L000122
+ long @C_sf94c_67e34607_lua_strx2number_L000122
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r17, r22 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sl9ge_67da3f21_l_str2dloc_L000166_170 ' JUMPV addrg
-C_sl9ge_67da3f21_l_str2dloc_L000166_169
+ long @C_sf94e_67e34607_l_str2dloc_L000166_170 ' JUMPV addrg
+C_sf94e_67e34607_l_str2dloc_L000166_169
  mov r2, FP
  sub r2, #-(-8) ' reg ARG ADDRLi
  mov r3, r23 ' CVI, CVU or LOAD
@@ -1622,7 +1622,7 @@ C_sl9ge_67da3f21_l_str2dloc_L000166_169
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r17, r22 ' CVI, CVU or LOAD
-C_sl9ge_67da3f21_l_str2dloc_L000166_170
+C_sf94e_67e34607_l_str2dloc_L000166_170
  mov RI, r21
  mov BC, r17
  jmp #WLNG ' ASGNF4 reg reg
@@ -1632,13 +1632,13 @@ C_sl9ge_67da3f21_l_str2dloc_L000166_170
  mov r20, r23 ' CVI, CVU or LOAD
  cmp r22, r20 wz
  jmp #BRNZ
- long @C_sl9ge_67da3f21_l_str2dloc_L000166_174 ' NEU4
+ long @C_sf94e_67e34607_l_str2dloc_L000166_174 ' NEU4
  jmp #LODL
  long 0
  mov r0, RI ' reg <- con
  jmp #JMPA
- long @C_sl9ge_67da3f21_l_str2dloc_L000166_167 ' JUMPV addrg
-C_sl9ge_67da3f21_l_str2dloc_L000166_173
+ long @C_sf94e_67e34607_l_str2dloc_L000166_167 ' JUMPV addrg
+C_sf94e_67e34607_l_str2dloc_L000166_173
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -1646,7 +1646,7 @@ C_sl9ge_67da3f21_l_str2dloc_L000166_173
  mov RI, FP
  sub RI, #-(-8)
  wrlong r22, RI ' ASGNP4 addrli reg
-C_sl9ge_67da3f21_l_str2dloc_L000166_174
+C_sf94e_67e34607_l_str2dloc_L000166_174
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -1665,7 +1665,7 @@ C_sl9ge_67da3f21_l_str2dloc_L000166_174
  and r22, #8 ' BANDI4 coni
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_sl9ge_67da3f21_l_str2dloc_L000166_173 ' NEI4
+ long @C_sf94e_67e34607_l_str2dloc_L000166_173 ' NEI4
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -1675,26 +1675,26 @@ C_sl9ge_67da3f21_l_str2dloc_L000166_174
  and r22, cviu_m1 ' zero extend
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_sl9ge_67da3f21_l_str2dloc_L000166_178 ' NEI4
+ long @C_sf94e_67e34607_l_str2dloc_L000166_178 ' NEI4
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r15, r22 ' reg <- INDIRP4 regl
  jmp #JMPA
- long @C_sl9ge_67da3f21_l_str2dloc_L000166_179 ' JUMPV addrg
-C_sl9ge_67da3f21_l_str2dloc_L000166_178
+ long @C_sf94e_67e34607_l_str2dloc_L000166_179 ' JUMPV addrg
+C_sf94e_67e34607_l_str2dloc_L000166_178
  jmp #LODL
  long 0
  mov r15, RI ' reg <- con
-C_sl9ge_67da3f21_l_str2dloc_L000166_179
+C_sf94e_67e34607_l_str2dloc_L000166_179
  mov r0, r15 ' CVI, CVU or LOAD
-C_sl9ge_67da3f21_l_str2dloc_L000166_167
+C_sf94e_67e34607_l_str2dloc_L000166_167
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_sl9gf_67da3f21_l_str2d_L000180 ' <symbol:l_str2d>
+C_sf94f_67e34607_l_str2d_L000180 ' <symbol:l_str2d>
  jmp #NEWF
  sub SP, #208
  jmp #PSHM
@@ -1702,7 +1702,7 @@ C_sl9gf_67da3f21_l_str2d_L000180 ' <symbol:l_str2d>
  mov r23, r3 ' reg var <- reg arg
  mov r21, r2 ' reg var <- reg arg
  jmp #LODL
- long @C_sl9gf_67da3f21_l_str2d_L000180_182_L000183
+ long @C_sf94f_67e34607_l_str2d_L000180_182_L000183
  mov r2, RI ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1714,7 +1714,7 @@ C_sl9gf_67da3f21_l_str2d_L000180 ' <symbol:l_str2d>
  mov r22, r15 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
  jmp #BR_Z
- long @C_sl9gf_67da3f21_l_str2d_L000180_185 ' EQU4
+ long @C_sf94f_67e34607_l_str2d_L000180_185 ' EQU4
  mov RI, r15
  jmp #RBYT
  mov r22, BC ' reg <- INDIRU1 reg
@@ -1722,33 +1722,33 @@ C_sl9gf_67da3f21_l_str2d_L000180 ' <symbol:l_str2d>
  mov r13, r22
  or r13, #32 ' BORI4 coni
  jmp #JMPA
- long @C_sl9gf_67da3f21_l_str2d_L000180_186 ' JUMPV addrg
-C_sl9gf_67da3f21_l_str2d_L000180_185
+ long @C_sf94f_67e34607_l_str2d_L000180_186 ' JUMPV addrg
+C_sf94f_67e34607_l_str2d_L000180_185
  mov r13, #0 ' reg <- coni
-C_sl9gf_67da3f21_l_str2d_L000180_186
+C_sf94f_67e34607_l_str2d_L000180_186
  mov r17, r13 ' CVI, CVU or LOAD
  cmps r17,  #110 wz
  jmp #BRNZ
- long @C_sl9gf_67da3f21_l_str2d_L000180_187 ' NEI4
+ long @C_sf94f_67e34607_l_str2d_L000180_187 ' NEI4
  jmp #LODL
  long 0
  mov r0, RI ' reg <- con
  jmp #JMPA
- long @C_sl9gf_67da3f21_l_str2d_L000180_181 ' JUMPV addrg
-C_sl9gf_67da3f21_l_str2d_L000180_187
+ long @C_sf94f_67e34607_l_str2d_L000180_181 ' JUMPV addrg
+C_sf94f_67e34607_l_str2d_L000180_187
  mov r2, r17 ' CVI, CVU or LOAD
  mov r3, r21 ' CVI, CVU or LOAD
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_sl9ge_67da3f21_l_str2dloc_L000166
+ long @C_sf94e_67e34607_l_str2dloc_L000166
  add SP, #8 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
  mov r22, r19 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
  jmp #BRNZ
- long @C_sl9gf_67da3f21_l_str2d_L000180_189 ' NEU4
+ long @C_sf94f_67e34607_l_str2d_L000180_189 ' NEU4
  mov r2, #46 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1764,21 +1764,21 @@ C_sl9gf_67da3f21_l_str2d_L000180_187
  rdlong r22, r22 ' reg <- INDIRP4 regl
  cmp r22,  #0 wz
  jmp #BR_Z
- long @C_sl9gf_67da3f21_l_str2d_L000180_193 ' EQU4
+ long @C_sf94f_67e34607_l_str2d_L000180_193 ' EQU4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C_strlen ' CALL addrg
  cmp r0,  #200 wz,wc 
  jmp #BRBE
- long @C_sl9gf_67da3f21_l_str2d_L000180_191 ' LEU4
-C_sl9gf_67da3f21_l_str2d_L000180_193
+ long @C_sf94f_67e34607_l_str2d_L000180_191 ' LEU4
+C_sf94f_67e34607_l_str2d_L000180_193
  jmp #LODL
  long 0
  mov r0, RI ' reg <- con
  jmp #JMPA
- long @C_sl9gf_67da3f21_l_str2d_L000180_181 ' JUMPV addrg
-C_sl9gf_67da3f21_l_str2d_L000180_191
+ long @C_sf94f_67e34607_l_str2d_L000180_181 ' JUMPV addrg
+C_sf94f_67e34607_l_str2d_L000180_191
  mov r2, r23 ' CVI, CVU or LOAD
  mov r3, FP
  sub r3, #-(-212) ' reg ARG ADDRLi
@@ -1814,30 +1814,30 @@ C_sl9gf_67da3f21_l_str2d_L000180_191
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_sl9ge_67da3f21_l_str2dloc_L000166
+ long @C_sf94e_67e34607_l_str2dloc_L000166
  add SP, #8 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
  mov r22, r19 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
  jmp #BR_Z
- long @C_sl9gf_67da3f21_l_str2d_L000180_194 ' EQU4
+ long @C_sf94f_67e34607_l_str2d_L000180_194 ' EQU4
  mov r22, r19 ' CVI, CVU or LOAD
  mov r20, FP
  sub r20, #-(-212) ' reg <- addrli
  sub r22, r20 ' SUBU (1)
  mov r19, r22 ' ADDI/P
  adds r19, r23 ' ADDI/P (3)
-C_sl9gf_67da3f21_l_str2d_L000180_194
-C_sl9gf_67da3f21_l_str2d_L000180_189
+C_sf94f_67e34607_l_str2d_L000180_194
+C_sf94f_67e34607_l_str2d_L000180_189
  mov r0, r19 ' CVI, CVU or LOAD
-C_sl9gf_67da3f21_l_str2d_L000180_181
+C_sf94f_67e34607_l_str2d_L000180_181
  jmp #POPM ' restore registers
  add SP, #208 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_sl9gh_67da3f21_l_str2int_L000196 ' <symbol:l_str2int>
+C_sf94h_67e34607_l_str2int_L000196 ' <symbol:l_str2int>
  jmp #NEWF
  jmp #PSHM
  long $fa8000 ' save registers
@@ -1848,8 +1848,8 @@ C_sl9gh_67da3f21_l_str2int_L000196 ' <symbol:l_str2int>
  mov r21, #0 ' reg <- coni
  mov r19, #1 ' reg <- coni
  jmp #JMPA
- long @C_sl9gh_67da3f21_l_str2int_L000196_199 ' JUMPV addrg
-C_sl9gh_67da3f21_l_str2int_L000196_198
+ long @C_sf94h_67e34607_l_str2int_L000196_199 ' JUMPV addrg
+C_sf94h_67e34607_l_str2int_L000196_198
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -1857,7 +1857,7 @@ C_sl9gh_67da3f21_l_str2int_L000196_198
  mov RI, FP
  add RI, #8
  wrlong r22, RI ' ASGNP4 addrfi reg
-C_sl9gh_67da3f21_l_str2int_L000196_199
+C_sf94h_67e34607_l_str2int_L000196_199
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -1876,12 +1876,12 @@ C_sl9gh_67da3f21_l_str2int_L000196_199
  and r22, #8 ' BANDI4 coni
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_sl9gh_67da3f21_l_str2int_L000196_198 ' NEI4
+ long @C_sf94h_67e34607_l_str2int_L000196_198 ' NEI4
  mov r2, FP
  add r2, #8 ' reg ARG ADDRFi
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_sl9gb_67da3f21_isneg_L000116 ' CALL addrg
+ long @C_sf94b_67e34607_isneg_L000116 ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
  mov r22, FP
  add r22, #8 ' reg <- addrfi
@@ -1892,7 +1892,7 @@ C_sl9gh_67da3f21_l_str2int_L000196_199
  and r20, cviu_m1 ' zero extend
  cmps r20,  #48 wz
  jmp #BRNZ
- long @C_sl9gh_67da3f21_l_str2int_L000196_213 ' NEI4
+ long @C_sf94h_67e34607_l_str2int_L000196_213 ' NEI4
  adds r22, #1 ' ADDP4 coni
  mov RI, r22
  jmp #RBYT
@@ -1900,11 +1900,11 @@ C_sl9gh_67da3f21_l_str2int_L000196_199
  and r22, cviu_m1 ' zero extend
  cmps r22,  #120 wz
  jmp #BR_Z
- long @C_sl9gh_67da3f21_l_str2int_L000196_204 ' EQI4
+ long @C_sf94h_67e34607_l_str2int_L000196_204 ' EQI4
  cmps r22,  #88 wz
  jmp #BRNZ
- long @C_sl9gh_67da3f21_l_str2int_L000196_213 ' NEI4
-C_sl9gh_67da3f21_l_str2int_L000196_204
+ long @C_sf94h_67e34607_l_str2int_L000196_213 ' NEI4
+C_sf94h_67e34607_l_str2int_L000196_204
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -1913,8 +1913,8 @@ C_sl9gh_67da3f21_l_str2int_L000196_204
  add RI, #8
  wrlong r22, RI ' ASGNP4 addrfi reg
  jmp #JMPA
- long @C_sl9gh_67da3f21_l_str2int_L000196_208 ' JUMPV addrg
-C_sl9gh_67da3f21_l_str2int_L000196_205
+ long @C_sf94h_67e34607_l_str2int_L000196_208 ' JUMPV addrg
+C_sf94h_67e34607_l_str2int_L000196_205
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -1932,7 +1932,7 @@ C_sl9gh_67da3f21_l_str2int_L000196_205
  mov r21, r20 ' ADDU
  add r21, r22 ' ADDU (3)
  mov r19, #0 ' reg <- coni
-' C_sl9gh_67da3f21_l_str2int_L000196_206 ' (symbol refcount = 0)
+' C_sf94h_67e34607_l_str2int_L000196_206 ' (symbol refcount = 0)
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -1940,7 +1940,7 @@ C_sl9gh_67da3f21_l_str2int_L000196_205
  mov RI, FP
  add RI, #8
  wrlong r22, RI ' ASGNP4 addrfi reg
-C_sl9gh_67da3f21_l_str2int_L000196_208
+C_sf94h_67e34607_l_str2int_L000196_208
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -1959,10 +1959,10 @@ C_sl9gh_67da3f21_l_str2int_L000196_208
  and r22, #16 ' BANDI4 coni
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_sl9gh_67da3f21_l_str2int_L000196_205 ' NEI4
+ long @C_sf94h_67e34607_l_str2int_L000196_205 ' NEI4
  jmp #JMPA
- long @C_sl9gh_67da3f21_l_str2int_L000196_219 ' JUMPV addrg
-C_sl9gh_67da3f21_l_str2int_L000196_210
+ long @C_sf94h_67e34607_l_str2int_L000196_219 ' JUMPV addrg
+C_sf94h_67e34607_l_str2int_L000196_210
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -1977,22 +1977,22 @@ C_sl9gh_67da3f21_l_str2int_L000196_210
  mov r22, RI ' reg <- con
  cmp r21, r22 wz,wc 
  jmp #BR_B
- long @C_sl9gh_67da3f21_l_str2int_L000196_215' LTU4
+ long @C_sf94h_67e34607_l_str2int_L000196_215' LTU4
  cmp r21, r22 wz,wc 
  jmp #BR_A
- long @C_sl9gh_67da3f21_l_str2int_L000196_217 ' GTU4
+ long @C_sf94h_67e34607_l_str2int_L000196_217 ' GTU4
  mov r22, r17
  adds r22, #7 ' ADDI4 coni
  cmps r15, r22 wz,wc
  jmp #BRBE
- long @C_sl9gh_67da3f21_l_str2int_L000196_215 ' LEI4
-C_sl9gh_67da3f21_l_str2int_L000196_217
+ long @C_sf94h_67e34607_l_str2int_L000196_215 ' LEI4
+C_sf94h_67e34607_l_str2int_L000196_217
  jmp #LODL
  long 0
  mov r0, RI ' reg <- con
  jmp #JMPA
- long @C_sl9gh_67da3f21_l_str2int_L000196_197 ' JUMPV addrg
-C_sl9gh_67da3f21_l_str2int_L000196_215
+ long @C_sf94h_67e34607_l_str2int_L000196_197 ' JUMPV addrg
+C_sf94h_67e34607_l_str2int_L000196_215
  mov r22, #10 ' reg <- coni
  mov r0, r22 ' setup r0/r1 (2)
  mov r1, r21 ' setup r0/r1 (2)
@@ -2001,7 +2001,7 @@ C_sl9gh_67da3f21_l_str2int_L000196_215
  mov r21, r0 ' ADDU
  add r21, r22 ' ADDU (3)
  mov r19, #0 ' reg <- coni
-' C_sl9gh_67da3f21_l_str2int_L000196_211 ' (symbol refcount = 0)
+' C_sf94h_67e34607_l_str2int_L000196_211 ' (symbol refcount = 0)
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -2009,7 +2009,7 @@ C_sl9gh_67da3f21_l_str2int_L000196_215
  mov RI, FP
  add RI, #8
  wrlong r22, RI ' ASGNP4 addrfi reg
-C_sl9gh_67da3f21_l_str2int_L000196_213
+C_sf94h_67e34607_l_str2int_L000196_213
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -2028,10 +2028,10 @@ C_sl9gh_67da3f21_l_str2int_L000196_213
  and r22, #2 ' BANDI4 coni
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_sl9gh_67da3f21_l_str2int_L000196_210 ' NEI4
+ long @C_sf94h_67e34607_l_str2int_L000196_210 ' NEI4
  jmp #JMPA
- long @C_sl9gh_67da3f21_l_str2int_L000196_219 ' JUMPV addrg
-C_sl9gh_67da3f21_l_str2int_L000196_218
+ long @C_sf94h_67e34607_l_str2int_L000196_219 ' JUMPV addrg
+C_sf94h_67e34607_l_str2int_L000196_218
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -2039,7 +2039,7 @@ C_sl9gh_67da3f21_l_str2int_L000196_218
  mov RI, FP
  add RI, #8
  wrlong r22, RI ' ASGNP4 addrfi reg
-C_sl9gh_67da3f21_l_str2int_L000196_219
+C_sf94h_67e34607_l_str2int_L000196_219
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -2058,11 +2058,11 @@ C_sl9gh_67da3f21_l_str2int_L000196_219
  and r22, #8 ' BANDI4 coni
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_sl9gh_67da3f21_l_str2int_L000196_218 ' NEI4
+ long @C_sf94h_67e34607_l_str2int_L000196_218 ' NEI4
  mov r22, #0 ' reg <- coni
  cmps r19, r22 wz
  jmp #BRNZ
- long @C_sl9gh_67da3f21_l_str2int_L000196_224 ' NEI4
+ long @C_sf94h_67e34607_l_str2int_L000196_224 ' NEI4
  mov r20, FP
  add r20, #8 ' reg <- addrfi
  rdlong r20, r20 ' reg <- INDIRP4 regl
@@ -2072,25 +2072,25 @@ C_sl9gh_67da3f21_l_str2int_L000196_219
  and r20, cviu_m1 ' zero extend
  cmps r20, r22 wz
  jmp #BR_Z
- long @C_sl9gh_67da3f21_l_str2int_L000196_222 ' EQI4
-C_sl9gh_67da3f21_l_str2int_L000196_224
+ long @C_sf94h_67e34607_l_str2int_L000196_222 ' EQI4
+C_sf94h_67e34607_l_str2int_L000196_224
  jmp #LODL
  long 0
  mov r0, RI ' reg <- con
  jmp #JMPA
- long @C_sl9gh_67da3f21_l_str2int_L000196_197 ' JUMPV addrg
-C_sl9gh_67da3f21_l_str2int_L000196_222
+ long @C_sf94h_67e34607_l_str2int_L000196_197 ' JUMPV addrg
+C_sf94h_67e34607_l_str2int_L000196_222
  cmps r17,  #0 wz
  jmp #BR_Z
- long @C_sl9gh_67da3f21_l_str2int_L000196_226 ' EQI4
+ long @C_sf94h_67e34607_l_str2int_L000196_226 ' EQI4
  mov r22, #0 ' reg <- coni
  mov r15, r22 ' SUBU
  sub r15, r21 ' SUBU (3)
  jmp #JMPA
- long @C_sl9gh_67da3f21_l_str2int_L000196_227 ' JUMPV addrg
-C_sl9gh_67da3f21_l_str2int_L000196_226
+ long @C_sf94h_67e34607_l_str2int_L000196_227 ' JUMPV addrg
+C_sf94h_67e34607_l_str2int_L000196_226
  mov r15, r21 ' CVI, CVU or LOAD
-C_sl9gh_67da3f21_l_str2int_L000196_227
+C_sf94h_67e34607_l_str2int_L000196_227
  mov r22, r15 ' CVI, CVU or LOAD
  mov RI, r23
  mov BC, r22
@@ -2098,7 +2098,7 @@ C_sl9gh_67da3f21_l_str2int_L000196_227
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r0, r22 ' reg <- INDIRP4 regl
-C_sl9gh_67da3f21_l_str2int_L000196_197
+C_sf94h_67e34607_l_str2int_L000196_197
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -2119,7 +2119,7 @@ C_luaO__str2num ' <symbol:luaO_str2num>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_sl9gh_67da3f21_l_str2int_L000196
+ long @C_sf94h_67e34607_l_str2int_L000196
  add SP, #4 ' CALL addrg
  mov RI, FP
  sub RI, #-(-8)
@@ -2157,7 +2157,7 @@ C_luaO__str2num_229
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_sl9gf_67da3f21_l_str2d_L000180
+ long @C_sf94f_67e34607_l_str2d_L000180
  add SP, #4 ' CALL addrg
  mov RI, FP
  sub RI, #-(-8)
@@ -2265,7 +2265,7 @@ C_luaO__utf8esc_235
 
 
  alignl ' align long
-C_sl9gi_67da3f21_tostringbuff_L000239 ' <symbol:tostringbuff>
+C_sf94i_67e34607_tostringbuff_L000239 ' <symbol:tostringbuff>
  jmp #NEWF
  sub SP, #4
  jmp #PSHM
@@ -2280,12 +2280,12 @@ C_sl9gi_67da3f21_tostringbuff_L000239 ' <symbol:tostringbuff>
  and r22, cviu_m1 ' zero extend
  cmps r22,  #3 wz
  jmp #BRNZ
- long @C_sl9gi_67da3f21_tostringbuff_L000239_241 ' NEI4
+ long @C_sf94i_67e34607_tostringbuff_L000239_241 ' NEI4
  mov RI, r23
  jmp #RLNG
  mov r2, BC ' reg <- INDIRI4 reg
  jmp #LODL
- long @C_sl9gi_67da3f21_tostringbuff_L000239_243_L000244
+ long @C_sf94i_67e34607_tostringbuff_L000239_243_L000244
  mov r3, RI ' reg ARG ADDRG
  mov r4, r21 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -2297,13 +2297,13 @@ C_sl9gi_67da3f21_tostringbuff_L000239 ' <symbol:tostringbuff>
  sub RI, #-(-8)
  wrlong r0, RI ' ASGNI4 addrli reg
  jmp #JMPA
- long @C_sl9gi_67da3f21_tostringbuff_L000239_242 ' JUMPV addrg
-C_sl9gi_67da3f21_tostringbuff_L000239_241
+ long @C_sf94i_67e34607_tostringbuff_L000239_242 ' JUMPV addrg
+C_sf94i_67e34607_tostringbuff_L000239_241
  mov RI, r23
  jmp #RLNG
  mov r2, BC ' reg <- INDIRF4 reg
  jmp #LODL
- long @C_sl9gi_67da3f21_tostringbuff_L000239_245_L000246
+ long @C_sf94i_67e34607_tostringbuff_L000239_245_L000246
  mov r3, RI ' reg ARG ADDRG
  mov r4, r21 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -2315,7 +2315,7 @@ C_sl9gi_67da3f21_tostringbuff_L000239_241
  sub RI, #-(-8)
  wrlong r0, RI ' ASGNI4 addrli reg
  jmp #LODL
- long @C_sl9gi_67da3f21_tostringbuff_L000239_249_L000250
+ long @C_sf94i_67e34607_tostringbuff_L000239_249_L000250
  mov r2, RI ' reg ARG ADDRG
  mov r3, r21 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -2331,7 +2331,7 @@ C_sl9gi_67da3f21_tostringbuff_L000239_241
  and r22, cviu_m1 ' zero extend
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_sl9gi_67da3f21_tostringbuff_L000239_247 ' NEI4
+ long @C_sf94i_67e34607_tostringbuff_L000239_247 ' NEI4
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 regl
@@ -2366,12 +2366,12 @@ C_sl9gi_67da3f21_tostringbuff_L000239_241
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
-C_sl9gi_67da3f21_tostringbuff_L000239_247
-C_sl9gi_67da3f21_tostringbuff_L000239_242
+C_sf94i_67e34607_tostringbuff_L000239_247
+C_sf94i_67e34607_tostringbuff_L000239_242
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r0, r22 ' reg <- INDIRI4 regl
-' C_sl9gi_67da3f21_tostringbuff_L000239_240 ' (symbol refcount = 0)
+' C_sf94i_67e34607_tostringbuff_L000239_240 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
@@ -2393,7 +2393,7 @@ C_luaO__tostring ' <symbol:luaO_tostring>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_sl9gi_67da3f21_tostringbuff_L000239
+ long @C_sf94i_67e34607_tostringbuff_L000239
  add SP, #4 ' CALL addrg
  mov RI, FP
  sub RI, #-(-52)
@@ -2434,7 +2434,7 @@ C_luaO__tostring ' <symbol:luaO_tostring>
 
 
  alignl ' align long
-C_sl9gm_67da3f21_pushstr_L000252 ' <symbol:pushstr>
+C_sf94m_67e34607_pushstr_L000252 ' <symbol:pushstr>
  jmp #NEWF
  jmp #PSHM
  long $faa000 ' save registers
@@ -2508,13 +2508,13 @@ C_sl9gm_67da3f21_pushstr_L000252 ' <symbol:pushstr>
  mov RI, r22
  mov BC, r20
  jmp #WLNG ' ASGNI4 reg reg
-' C_sl9gm_67da3f21_pushstr_L000252_253 ' (symbol refcount = 0)
+' C_sf94m_67e34607_pushstr_L000252_253 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sl9gn_67da3f21_clearbuff_L000254 ' <symbol:clearbuff>
+C_sf94n_67e34607_clearbuff_L000254 ' <symbol:clearbuff>
  jmp #NEWF
  jmp #PSHM
  long $d00000 ' save registers
@@ -2531,7 +2531,7 @@ C_sl9gn_67da3f21_clearbuff_L000254 ' <symbol:clearbuff>
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_sl9gm_67da3f21_pushstr_L000252
+ long @C_sf94m_67e34607_pushstr_L000252
  add SP, #8 ' CALL addrg
  mov r22, r23
  adds r22, #8 ' ADDP4 coni
@@ -2539,13 +2539,13 @@ C_sl9gn_67da3f21_clearbuff_L000254 ' <symbol:clearbuff>
  mov RI, r22
  mov BC, r20
  jmp #WLNG ' ASGNI4 reg reg
-' C_sl9gn_67da3f21_clearbuff_L000254_255 ' (symbol refcount = 0)
+' C_sf94n_67e34607_clearbuff_L000254_255 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sl9go_67da3f21_getbuff_L000256 ' <symbol:getbuff>
+C_sf94o_67e34607_getbuff_L000256 ' <symbol:getbuff>
  jmp #NEWF
  jmp #PSHM
  long $f00000 ' save registers
@@ -2560,12 +2560,12 @@ C_sl9go_67da3f21_getbuff_L000256 ' <symbol:getbuff>
  subs r22, r20 ' SUBI/P (1)
  cmps r21, r22 wz,wc
  jmp #BRBE
- long @C_sl9go_67da3f21_getbuff_L000256_258 ' LEI4
+ long @C_sf94o_67e34607_getbuff_L000256_258 ' LEI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_sl9gn_67da3f21_clearbuff_L000254 ' CALL addrg
-C_sl9go_67da3f21_getbuff_L000256_258
+ long @C_sf94n_67e34607_clearbuff_L000254 ' CALL addrg
+C_sf94o_67e34607_getbuff_L000256_258
  mov r22, r23
  adds r22, #8 ' ADDP4 coni
  mov RI, r22
@@ -2575,13 +2575,13 @@ C_sl9go_67da3f21_getbuff_L000256_258
  adds r20, #12 ' ADDP4 coni
  mov r0, r22 ' ADDI/P
  adds r0, r20 ' ADDI/P (3)
-' C_sl9go_67da3f21_getbuff_L000256_257 ' (symbol refcount = 0)
+' C_sf94o_67e34607_getbuff_L000256_257 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sl9gp_67da3f21_addstr2buff_L000260 ' <symbol:addstr2buff>
+C_sf94p_67e34607_addstr2buff_L000260 ' <symbol:addstr2buff>
  jmp #NEWF
  sub SP, #4
  jmp #PSHM
@@ -2591,13 +2591,13 @@ C_sl9gp_67da3f21_addstr2buff_L000260 ' <symbol:addstr2buff>
  mov r19, r2 ' reg var <- reg arg
  cmp r19,  #200 wz,wc 
  jmp #BR_A
- long @C_sl9gp_67da3f21_addstr2buff_L000260_262 ' GTU4
+ long @C_sf94p_67e34607_addstr2buff_L000260_262 ' GTU4
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_sl9go_67da3f21_getbuff_L000256
+ long @C_sf94o_67e34607_getbuff_L000256
  add SP, #4 ' CALL addrg
  mov RI, FP
  sub RI, #-(-8)
@@ -2623,29 +2623,29 @@ C_sl9gp_67da3f21_addstr2buff_L000260 ' <symbol:addstr2buff>
  mov BC, r20
  jmp #WLNG ' ASGNI4 reg reg
  jmp #JMPA
- long @C_sl9gp_67da3f21_addstr2buff_L000260_263 ' JUMPV addrg
-C_sl9gp_67da3f21_addstr2buff_L000260_262
+ long @C_sf94p_67e34607_addstr2buff_L000260_263 ' JUMPV addrg
+C_sf94p_67e34607_addstr2buff_L000260_262
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_sl9gn_67da3f21_clearbuff_L000254 ' CALL addrg
+ long @C_sf94n_67e34607_clearbuff_L000254 ' CALL addrg
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r21 ' CVI, CVU or LOAD
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_sl9gm_67da3f21_pushstr_L000252
+ long @C_sf94m_67e34607_pushstr_L000252
  add SP, #8 ' CALL addrg
-C_sl9gp_67da3f21_addstr2buff_L000260_263
-' C_sl9gp_67da3f21_addstr2buff_L000260_261 ' (symbol refcount = 0)
+C_sf94p_67e34607_addstr2buff_L000260_263
+' C_sf94p_67e34607_addstr2buff_L000260_261 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_sl9gq_67da3f21_addnum2buff_L000264 ' <symbol:addnum2buff>
+C_sf94q_67e34607_addnum2buff_L000264 ' <symbol:addnum2buff>
  jmp #NEWF
  sub SP, #8
  jmp #PSHM
@@ -2657,7 +2657,7 @@ C_sl9gq_67da3f21_addnum2buff_L000264 ' <symbol:addnum2buff>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_sl9go_67da3f21_getbuff_L000256
+ long @C_sf94o_67e34607_getbuff_L000256
  add SP, #4 ' CALL addrg
  mov RI, FP
  sub RI, #-(-8)
@@ -2669,7 +2669,7 @@ C_sl9gq_67da3f21_addnum2buff_L000264 ' <symbol:addnum2buff>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_sl9gi_67da3f21_tostringbuff_L000239
+ long @C_sf94i_67e34607_tostringbuff_L000239
  add SP, #4 ' CALL addrg
  mov RI, FP
  sub RI, #-(-12)
@@ -2686,7 +2686,7 @@ C_sl9gq_67da3f21_addnum2buff_L000264 ' <symbol:addnum2buff>
  mov RI, r22
  mov BC, r20
  jmp #WLNG ' ASGNI4 reg reg
-' C_sl9gq_67da3f21_addnum2buff_L000264_265 ' (symbol refcount = 0)
+' C_sf94q_67e34607_addnum2buff_L000264_265 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #8 ' framesize
  jmp #RETF
@@ -2726,7 +2726,7 @@ C_luaO__pushvfstring_269
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_sl9gp_67da3f21_addstr2buff_L000260
+ long @C_sf94p_67e34607_addstr2buff_L000260
  add SP, #8 ' CALL addrg
  mov r22, r17
  adds r22, #1 ' ADDP4 coni
@@ -2810,7 +2810,7 @@ C_luaO__pushvfstring_276
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_sl9gp_67da3f21_addstr2buff_L000260
+ long @C_sf94p_67e34607_addstr2buff_L000260
  add SP, #8 ' CALL addrg
  jmp #JMPA
  long @C_luaO__pushvfstring_273 ' JUMPV addrg
@@ -2836,7 +2836,7 @@ C_luaO__pushvfstring_280
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_sl9gp_67da3f21_addstr2buff_L000260
+ long @C_sf94p_67e34607_addstr2buff_L000260
  add SP, #8 ' CALL addrg
  jmp #JMPA
  long @C_luaO__pushvfstring_273 ' JUMPV addrg
@@ -2869,7 +2869,7 @@ C_luaO__pushvfstring_281
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_sl9gq_67da3f21_addnum2buff_L000264
+ long @C_sf94q_67e34607_addnum2buff_L000264
  add SP, #4 ' CALL addrg
  jmp #JMPA
  long @C_luaO__pushvfstring_273 ' JUMPV addrg
@@ -2902,7 +2902,7 @@ C_luaO__pushvfstring_282
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_sl9gq_67da3f21_addnum2buff_L000264
+ long @C_sf94q_67e34607_addnum2buff_L000264
  add SP, #4 ' CALL addrg
  jmp #JMPA
  long @C_luaO__pushvfstring_273 ' JUMPV addrg
@@ -2935,7 +2935,7 @@ C_luaO__pushvfstring_283
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_sl9gq_67da3f21_addnum2buff_L000264
+ long @C_sf94q_67e34607_addnum2buff_L000264
  add SP, #4 ' CALL addrg
  jmp #JMPA
  long @C_luaO__pushvfstring_273 ' JUMPV addrg
@@ -2947,7 +2947,7 @@ C_luaO__pushvfstring_284
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_sl9go_67da3f21_getbuff_L000256
+ long @C_sf94o_67e34607_getbuff_L000256
  add SP, #4 ' CALL addrg
  mov RI, FP
  sub RI, #-(-220)
@@ -3024,7 +3024,7 @@ C_luaO__pushvfstring_288
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_sl9gp_67da3f21_addstr2buff_L000260
+ long @C_sf94p_67e34607_addstr2buff_L000260
  add SP, #8 ' CALL addrg
  jmp #JMPA
  long @C_luaO__pushvfstring_273 ' JUMPV addrg
@@ -3038,7 +3038,7 @@ C_luaO__pushvfstring_290
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_sl9gp_67da3f21_addstr2buff_L000260
+ long @C_sf94p_67e34607_addstr2buff_L000260
  add SP, #8 ' CALL addrg
  jmp #JMPA
  long @C_luaO__pushvfstring_273 ' JUMPV addrg
@@ -3087,13 +3087,13 @@ C_luaO__pushvfstring_270
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_sl9gp_67da3f21_addstr2buff_L000260
+ long @C_sf94p_67e34607_addstr2buff_L000260
  add SP, #8 ' CALL addrg
  mov r2, FP
  sub r2, #-(-216) ' reg ARG ADDRLi
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_sl9gn_67da3f21_clearbuff_L000254 ' CALL addrg
+ long @C_sf94n_67e34607_clearbuff_L000254 ' CALL addrg
  mov r22, r23
  adds r22, #12 ' ADDP4 coni
  mov RI, r22
@@ -3555,7 +3555,7 @@ C_luaO__pushvfstring_278_L000279 ' <symbol:278>
  byte 0
 
  alignl ' align long
-C_sl9gi_67da3f21_tostringbuff_L000239_249_L000250 ' <symbol:249>
+C_sf94i_67e34607_tostringbuff_L000239_249_L000250 ' <symbol:249>
  byte 45
  byte 48
  byte 49
@@ -3570,7 +3570,7 @@ C_sl9gi_67da3f21_tostringbuff_L000239_249_L000250 ' <symbol:249>
  byte 0
 
  alignl ' align long
-C_sl9gi_67da3f21_tostringbuff_L000239_245_L000246 ' <symbol:245>
+C_sf94i_67e34607_tostringbuff_L000239_245_L000246 ' <symbol:245>
  byte 37
  byte 46
  byte 55
@@ -3578,13 +3578,13 @@ C_sl9gi_67da3f21_tostringbuff_L000239_245_L000246 ' <symbol:245>
  byte 0
 
  alignl ' align long
-C_sl9gi_67da3f21_tostringbuff_L000239_243_L000244 ' <symbol:243>
+C_sf94i_67e34607_tostringbuff_L000239_243_L000244 ' <symbol:243>
  byte 37
  byte 100
  byte 0
 
  alignl ' align long
-C_sl9gf_67da3f21_l_str2d_L000180_182_L000183 ' <symbol:182>
+C_sf94f_67e34607_l_str2d_L000180_182_L000183 ' <symbol:182>
  byte 46
  byte 120
  byte 88
@@ -3593,15 +3593,15 @@ C_sl9gf_67da3f21_l_str2d_L000180_182_L000183 ' <symbol:182>
  byte 0
 
  alignl ' align long
-C_sl9gc_67da3f21_lua_strx2number_L000122_146_L000147 ' <symbol:146>
+C_sf94c_67e34607_lua_strx2number_L000122_146_L000147 ' <symbol:146>
  long $41800000 ' float
 
  alignl ' align long
-C_sl9g4_67da3f21_numarith_L000040_57_L000058 ' <symbol:57>
+C_sf944_67e34607_numarith_L000040_57_L000058 ' <symbol:57>
  long $0 ' float
 
  alignl ' align long
-C_sl9g4_67da3f21_numarith_L000040_52_L000053 ' <symbol:52>
+C_sf944_67e34607_numarith_L000040_52_L000053 ' <symbol:52>
  long $40000000 ' float
 
 ' Catalina Code
