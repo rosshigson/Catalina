@@ -17,11 +17,11 @@
 #error THE 4 PORT SERIAL FUNCTIONS REQUIRE A PROPELLER 1 
 #endif
 
-#define S4_FF SERIAL_FF
+#define S4_FF 12
 
-#define S4_CR SERIAL_CR
+#define S4_CR 13
 
-#define S4_NL SERIAL_NL
+#define S4_NL 10
 
 extern int s_rxflush(unsigned port);
 
@@ -66,7 +66,7 @@ extern void s_padchar(unsigned port, unsigned count, char txbyte);
 
 #define s_decx(port, value, width) s_decl(port,value,width,2)
 
-#define s_putc(port, txbyte) tx(port,txbyte)
+#define s_putc(port, txbyte) s_tx(port,txbyte)
 
 #ifdef S4_CR_NEWLINE
 #define s_newline(port) s_tx(port, S4_CR) // use CR in newling & strln
@@ -80,7 +80,7 @@ extern void s_padchar(unsigned port, unsigned count, char txbyte);
 
 #define s_getc(port) s_rxcheck(port)
 
-// define the s5_ names of the functions (for backward compatibility):
+// define the s4_ names of the functions (for backward compatibility):
 
 #define s4_rxflush(port) s_rxflush(port)
 #define s4_rxcheck(port) s_rxcheck(port)
@@ -97,6 +97,12 @@ extern void s_padchar(unsigned port, unsigned count, char txbyte);
 #define s4_ihex(port, value, digits) s_ihex(port, value, digits)
 #define s4_bin(port, value, digits) s_bin(port, value, digits)
 #define s4_ibin(port, value, digits) s_ibin(port, value, digits)
-#define s4_padchar(port, value, txbyte) s_padchar(port, count, txbyte)
+#define s4_padchar(port, value, txbyte) s_padchar(port, value, txbyte)
+#define s4_dec(port, value) s_dec(port,value)
+#define s4_decf(port, value, width) s_decl(port,value,width,1)
+#define s4_decx(port, value, width) s_decl(port,value,width,2)
+#define s4_putc(port, txbyte) s_putc(port,txbyte)
+#define s4_newline(port) s_newline(port)
+#define s4_strln(port, stringptr) s_strln(port, stringptr)
 
 #endif // _SERIAL4__H

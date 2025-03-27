@@ -12,11 +12,11 @@
 #error THE 2 PORT SERIAL FUNCTIONS REQUIRE A PROPELLER 2 
 #endif
 
-#define S2_FF SERIAL_FF
+#define S2_FF 12
 
-#define S2_CR SERIAL_CR
+#define S2_CR 13
 
-#define S2_NL SERIAL_NL
+#define S2_NL 10
 
 extern int s_rxflush(unsigned port);
 
@@ -61,7 +61,7 @@ extern void s_padchar(unsigned port, unsigned count, char txbyte);
 
 #define s_decx(port, value, width) s_decl(port,value,width,2)
 
-#define s_putc(port, txbyte) tx(port,txbyte)
+#define s_putc(port, txbyte) s_tx(port,txbyte)
 
 #ifdef S2_CR_NEWLINE
 #define s_newline(port) s_tx(port, S2_CR) // use CR in newling & strln
@@ -92,6 +92,12 @@ extern void s_padchar(unsigned port, unsigned count, char txbyte);
 #define s2_ihex(port, value, digits) s_ihex(port, value, digits)
 #define s2_bin(port, value, digits) s_bin(port, value, digits)
 #define s2_ibin(port, value, digits) s_ibin(port, value, digits)
-#define s2_padchar(port, value, txbyte) s_padchar(port, count, txbyte)
+#define s2_padchar(port, value, txbyte) s_padchar(port, value, txbyte)
+#define s2_dec(port, value) s_dec(port,value)
+#define s2_decf(port, value, width) s_decl(port,value,width,1)
+#define s2_decx(port, value, width) s_decl(port,value,width,2)
+#define s2_putc(port, txbyte) s_putc(port,txbyte)
+#define s2_newline(port) s_newline(port)
+#define s2_strln(port, stringptr) s_strln(port, stringptr)
 
 #endif // _SERIAL2__H

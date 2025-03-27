@@ -53,11 +53,11 @@
 
 #define S8_MAX_PORTS 8 // may be up to 8 ports (i.e. 16 pins)
 
-#define S8_FF SERIAL_FF
+#define S8_FF 12
 
-#define S8_CR SERIAL_CR
+#define S8_CR 13
 
-#define S8_NL SERIAL_NL
+#define S8_NL 10
 
 extern int s_rxflush(unsigned port);
 
@@ -122,7 +122,7 @@ extern void s_closeport(unsigned port);
 
 #define s_decx(port, value, width) s_decl(port,value,width,2)
 
-#define s_putc(port, txbyte) tx(port,txbyte)
+#define s_putc(port, txbyte) s_tx(port,txbyte)
 
 #ifdef S8_CR_NEWLINE
 #define s_newline(port) s_tx(port, S8_CR) // use CR in newling & strln
@@ -153,6 +153,18 @@ extern void s_closeport(unsigned port);
 #define s8_ihex(port, value, digits) s_ihex(port, value, digits)
 #define s8_bin(port, value, digits) s_bin(port, value, digits)
 #define s8_ibin(port, value, digits) s_ibin(port, value, digits)
-#define s8_padchar(port, value, txbyte) s_padchar(port, count, txbyte)
-
+#define s8_padchar(port, value, txbyte) s_padchar(port, value, txbyte)
+#define s8_dec(port, value) s_dec(port,value)
+#define s8_decf(port, value, width) s_decl(port,value,width,1)
+#define s8_decx(port, value, width) s_decl(port,value,width,2)
+#define s8_putc(port, txbyte) s_putc(port,txbyte)
+#define s8_newline(port) s_newline(port)
+#define s8_strln(port, stringptr) s_strln(port, stringptr)
+#define s8_openport(port, baud, mode, \
+                    rx_pin, rx_start, rx_end, \
+                    tx_pin, tx_start, tx_end) \
+        s_openport(port, baud, mode, \
+                   rx_pin, rx_start, rx_end, \
+                   tx_pin, tx_start, tx_end)
+#define s8_closeport(port) s_closeport(port)
 #endif // _SERIAL8__H
