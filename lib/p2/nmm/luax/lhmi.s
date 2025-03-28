@@ -11,59 +11,59 @@ DAT ' code segment
 DAT ' const data segment
 
  alignl ' align long
-C_shk8q_67e3472f_luahmi_funcs_L000030 ' <symbol:luahmi_funcs>
- long @C_shk8r_67e3472f_31_L000032
- long @C_shk8_67e3472f_hmi_version_L000004
- long @C_shk8s_67e3472f_33_L000034
- long @C_shk81_67e3472f_hmi_k_get_L000005
- long @C_shk8t_67e3472f_35_L000036
- long @C_shk82_67e3472f_hmi_k_wait_L000006
- long @C_shk8u_67e3472f_37_L000038
- long @C_shk83_67e3472f_hmi_k_new_L000007
- long @C_shk8v_67e3472f_39_L000040
- long @C_shk84_67e3472f_hmi_k_ready_L000008
- long @C_shk810_67e3472f_41_L000042
- long @C_shk85_67e3472f_hmi_k_clear_L000009
- long @C_shk811_67e3472f_43_L000044
- long @C_shk86_67e3472f_hmi_m_button_L000010
- long @C_shk812_67e3472f_45_L000046
- long @C_shk87_67e3472f_hmi_m_abs_x_L000011
- long @C_shk813_67e3472f_47_L000048
- long @C_shk88_67e3472f_hmi_m_abs_y_L000012
- long @C_shk814_67e3472f_49_L000050
- long @C_shk89_67e3472f_hmi_m_delta_x_L000013
- long @C_shk815_67e3472f_51_L000052
- long @C_shk8a_67e3472f_hmi_m_delta_y_L000014
- long @C_shk816_67e3472f_53_L000054
- long @C_shk8b_67e3472f_hmi_m_reset_L000015
- long @C_shk817_67e3472f_55_L000056
- long @C_shk8c_67e3472f_hmi_m_bound_limits_L000016
- long @C_shk818_67e3472f_57_L000058
- long @C_shk8d_67e3472f_hmi_m_bound_scales_L000017
- long @C_shk819_67e3472f_59_L000060
- long @C_shk8e_67e3472f_hmi_m_bound_x_L000018
- long @C_shk81a_67e3472f_61_L000062
- long @C_shk8f_67e3472f_hmi_m_bound_y_L000019
- long @C_shk81b_67e3472f_63_L000064
- long @C_shk8g_67e3472f_hmi_t_geometry_L000020
- long @C_shk81c_67e3472f_65_L000066
- long @C_shk8h_67e3472f_hmi_t_char_L000021
- long @C_shk81d_67e3472f_67_L000068
- long @C_shk8i_67e3472f_hmi_t_mode_L000022
- long @C_shk81e_67e3472f_69_L000070
- long @C_shk8j_67e3472f_hmi_t_setpos_L000023
- long @C_shk81f_67e3472f_71_L000072
- long @C_shk8k_67e3472f_hmi_t_getpos_L000024
- long @C_shk81g_67e3472f_73_L000074
- long @C_shk8l_67e3472f_hmi_t_scroll_L000025
- long @C_shk81h_67e3472f_75_L000076
- long @C_shk8m_67e3472f_hmi_t_color_L000026
- long @C_shk81i_67e3472f_77_L000078
- long @C_shk8n_67e3472f_hmi_t_color_fg_L000027
- long @C_shk81j_67e3472f_79_L000080
- long @C_shk8o_67e3472f_hmi_t_color_bg_L000028
- long @C_shk81k_67e3472f_81_L000082
- long @C_shk8p_67e3472f_hmi_t_string_L000029
+C_sfuoq_67e4d989_luahmi_funcs_L000030 ' <symbol:luahmi_funcs>
+ long @C_sfuor_67e4d989_31_L000032
+ long @C_sfuo_67e4d989_hmi_version_L000004
+ long @C_sfuos_67e4d989_33_L000034
+ long @C_sfuo1_67e4d989_hmi_k_get_L000005
+ long @C_sfuot_67e4d989_35_L000036
+ long @C_sfuo2_67e4d989_hmi_k_wait_L000006
+ long @C_sfuou_67e4d989_37_L000038
+ long @C_sfuo3_67e4d989_hmi_k_new_L000007
+ long @C_sfuov_67e4d989_39_L000040
+ long @C_sfuo4_67e4d989_hmi_k_ready_L000008
+ long @C_sfuo10_67e4d989_41_L000042
+ long @C_sfuo5_67e4d989_hmi_k_clear_L000009
+ long @C_sfuo11_67e4d989_43_L000044
+ long @C_sfuo6_67e4d989_hmi_m_button_L000010
+ long @C_sfuo12_67e4d989_45_L000046
+ long @C_sfuo7_67e4d989_hmi_m_abs_x_L000011
+ long @C_sfuo13_67e4d989_47_L000048
+ long @C_sfuo8_67e4d989_hmi_m_abs_y_L000012
+ long @C_sfuo14_67e4d989_49_L000050
+ long @C_sfuo9_67e4d989_hmi_m_delta_x_L000013
+ long @C_sfuo15_67e4d989_51_L000052
+ long @C_sfuoa_67e4d989_hmi_m_delta_y_L000014
+ long @C_sfuo16_67e4d989_53_L000054
+ long @C_sfuob_67e4d989_hmi_m_reset_L000015
+ long @C_sfuo17_67e4d989_55_L000056
+ long @C_sfuoc_67e4d989_hmi_m_bound_limits_L000016
+ long @C_sfuo18_67e4d989_57_L000058
+ long @C_sfuod_67e4d989_hmi_m_bound_scales_L000017
+ long @C_sfuo19_67e4d989_59_L000060
+ long @C_sfuoe_67e4d989_hmi_m_bound_x_L000018
+ long @C_sfuo1a_67e4d989_61_L000062
+ long @C_sfuof_67e4d989_hmi_m_bound_y_L000019
+ long @C_sfuo1b_67e4d989_63_L000064
+ long @C_sfuog_67e4d989_hmi_t_geometry_L000020
+ long @C_sfuo1c_67e4d989_65_L000066
+ long @C_sfuoh_67e4d989_hmi_t_char_L000021
+ long @C_sfuo1d_67e4d989_67_L000068
+ long @C_sfuoi_67e4d989_hmi_t_mode_L000022
+ long @C_sfuo1e_67e4d989_69_L000070
+ long @C_sfuoj_67e4d989_hmi_t_setpos_L000023
+ long @C_sfuo1f_67e4d989_71_L000072
+ long @C_sfuok_67e4d989_hmi_t_getpos_L000024
+ long @C_sfuo1g_67e4d989_73_L000074
+ long @C_sfuol_67e4d989_hmi_t_scroll_L000025
+ long @C_sfuo1h_67e4d989_75_L000076
+ long @C_sfuom_67e4d989_hmi_t_color_L000026
+ long @C_sfuo1i_67e4d989_77_L000078
+ long @C_sfuon_67e4d989_hmi_t_color_fg_L000027
+ long @C_sfuo1j_67e4d989_79_L000080
+ long @C_sfuoo_67e4d989_hmi_t_color_bg_L000028
+ long @C_sfuo1k_67e4d989_81_L000082
+ long @C_sfuop_67e4d989_hmi_t_string_L000029
  long $0
  long $0
 
@@ -72,7 +72,7 @@ C_shk8q_67e3472f_luahmi_funcs_L000030 ' <symbol:luahmi_funcs>
 DAT ' code segment
 
  alignl ' align long
-C_shk8p_67e3472f_hmi_t_string_L000029 ' <symbol:hmi_t_string>
+C_sfuop_67e4d989_hmi_t_string_L000029 ' <symbol:hmi_t_string>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e80000 ' save registers
@@ -82,7 +82,7 @@ C_shk8p_67e3472f_hmi_t_string_L000029 ' <symbol:hmi_t_string>
  calld PA,#CALA
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wcz
- if_be jmp #\C_shk8p_67e3472f_hmi_t_string_L000029_84 ' LEI4
+ if_be jmp #\C_sfuop_67e4d989_hmi_t_string_L000029_84 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -123,16 +123,16 @@ C_shk8p_67e3472f_hmi_t_string_L000029 ' <symbol:hmi_t_string>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
- jmp #\@C_shk8p_67e3472f_hmi_t_string_L000029_83 ' JUMPV addrg
-C_shk8p_67e3472f_hmi_t_string_L000029_84
+ jmp #\@C_sfuop_67e4d989_hmi_t_string_L000029_83 ' JUMPV addrg
+C_sfuop_67e4d989_hmi_t_string_L000029_84
  mov r0, #0 ' reg <- coni
-C_shk8p_67e3472f_hmi_t_string_L000029_83
+C_sfuop_67e4d989_hmi_t_string_L000029_83
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_shk8_67e3472f_hmi_version_L000004 ' <symbol:hmi_version>
+C_sfuo_67e4d989_hmi_version_L000004 ' <symbol:hmi_version>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e00000 ' save registers
@@ -142,7 +142,7 @@ C_shk8_67e3472f_hmi_version_L000004 ' <symbol:hmi_version>
  calld PA,#CALA
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wcz
- if_be jmp #\C_shk8_67e3472f_hmi_version_L000004_87 ' LEI4
+ if_be jmp #\C_sfuo_67e4d989_hmi_version_L000004_87 ' LEI4
  mov r2, ##0 ' reg ARG con
  mov r3, #1 ' reg ARG coni
  mov r4, r23 ' CVI, CVU or LOAD
@@ -159,7 +159,7 @@ C_shk8_67e3472f_hmi_version_L000004 ' <symbol:hmi_version>
  calld PA,#CALA
  long @C_lua_settop
  add SP, #4 ' CALL addrg
- mov r2, ##@C_shk8_67e3472f_hmi_version_L000004_91_L000092 ' reg ARG ADDRG
+ mov r2, ##@C_sfuo_67e4d989_hmi_version_L000004_91_L000092 ' reg ARG ADDRG
  mov r3, r21 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -167,7 +167,7 @@ C_shk8_67e3472f_hmi_version_L000004 ' <symbol:hmi_version>
  long @C_strcmp
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
- if_nz jmp #\C_shk8_67e3472f_hmi_version_L000004_89 ' NEI4
+ if_nz jmp #\C_sfuo_67e4d989_hmi_version_L000004_89 ' NEI4
  mov r2, #504 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -175,9 +175,9 @@ C_shk8_67e3472f_hmi_version_L000004 ' <symbol:hmi_version>
  calld PA,#CALA
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
- jmp #\@C_shk8_67e3472f_hmi_version_L000004_88 ' JUMPV addrg
-C_shk8_67e3472f_hmi_version_L000004_89
- mov r2, ##@C_shk8_67e3472f_hmi_version_L000004_95_L000096 ' reg ARG ADDRG
+ jmp #\@C_sfuo_67e4d989_hmi_version_L000004_88 ' JUMPV addrg
+C_sfuo_67e4d989_hmi_version_L000004_89
+ mov r2, ##@C_sfuo_67e4d989_hmi_version_L000004_95_L000096 ' reg ARG ADDRG
  mov r3, r21 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -185,7 +185,7 @@ C_shk8_67e3472f_hmi_version_L000004_89
  long @C_strcmp
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
- if_nz jmp #\C_shk8_67e3472f_hmi_version_L000004_93 ' NEI4
+ if_nz jmp #\C_sfuo_67e4d989_hmi_version_L000004_93 ' NEI4
  mov r2, #2 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -193,8 +193,8 @@ C_shk8_67e3472f_hmi_version_L000004_89
  calld PA,#CALA
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
- jmp #\@C_shk8_67e3472f_hmi_version_L000004_88 ' JUMPV addrg
-C_shk8_67e3472f_hmi_version_L000004_93
+ jmp #\@C_sfuo_67e4d989_hmi_version_L000004_88 ' JUMPV addrg
+C_sfuo_67e4d989_hmi_version_L000004_93
  mov r2, ##810 ' reg ARG con
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -202,8 +202,8 @@ C_shk8_67e3472f_hmi_version_L000004_93
  calld PA,#CALA
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
- jmp #\@C_shk8_67e3472f_hmi_version_L000004_88 ' JUMPV addrg
-C_shk8_67e3472f_hmi_version_L000004_87
+ jmp #\@C_sfuo_67e4d989_hmi_version_L000004_88 ' JUMPV addrg
+C_sfuo_67e4d989_hmi_version_L000004_87
  mov r2, #0 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -218,15 +218,15 @@ C_shk8_67e3472f_hmi_version_L000004_87
  calld PA,#CALA
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
-C_shk8_67e3472f_hmi_version_L000004_88
+C_sfuo_67e4d989_hmi_version_L000004_88
  mov r0, #1 ' reg <- coni
-' C_shk8_67e3472f_hmi_version_L000004_86 ' (symbol refcount = 0)
+' C_sfuo_67e4d989_hmi_version_L000004_86 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_shk81_67e3472f_hmi_k_get_L000005 ' <symbol:hmi_k_get>
+C_sfuo1_67e4d989_hmi_k_get_L000005 ' <symbol:hmi_k_get>
  calld PA,#NEWF
  calld PA,#PSHM
  long $c00000 ' save registers
@@ -243,13 +243,13 @@ C_shk81_67e3472f_hmi_k_get_L000005 ' <symbol:hmi_k_get>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_shk81_67e3472f_hmi_k_get_L000005_97 ' (symbol refcount = 0)
+' C_sfuo1_67e4d989_hmi_k_get_L000005_97 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_shk82_67e3472f_hmi_k_wait_L000006 ' <symbol:hmi_k_wait>
+C_sfuo2_67e4d989_hmi_k_wait_L000006 ' <symbol:hmi_k_wait>
  calld PA,#NEWF
  calld PA,#PSHM
  long $c00000 ' save registers
@@ -266,13 +266,13 @@ C_shk82_67e3472f_hmi_k_wait_L000006 ' <symbol:hmi_k_wait>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_shk82_67e3472f_hmi_k_wait_L000006_98 ' (symbol refcount = 0)
+' C_sfuo2_67e4d989_hmi_k_wait_L000006_98 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_shk83_67e3472f_hmi_k_new_L000007 ' <symbol:hmi_k_new>
+C_sfuo3_67e4d989_hmi_k_new_L000007 ' <symbol:hmi_k_new>
  calld PA,#NEWF
  calld PA,#PSHM
  long $c00000 ' save registers
@@ -289,13 +289,13 @@ C_shk83_67e3472f_hmi_k_new_L000007 ' <symbol:hmi_k_new>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_shk83_67e3472f_hmi_k_new_L000007_99 ' (symbol refcount = 0)
+' C_sfuo3_67e4d989_hmi_k_new_L000007_99 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_shk84_67e3472f_hmi_k_ready_L000008 ' <symbol:hmi_k_ready>
+C_sfuo4_67e4d989_hmi_k_ready_L000008 ' <symbol:hmi_k_ready>
  calld PA,#NEWF
  calld PA,#PSHM
  long $c00000 ' save registers
@@ -312,13 +312,13 @@ C_shk84_67e3472f_hmi_k_ready_L000008 ' <symbol:hmi_k_ready>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_shk84_67e3472f_hmi_k_ready_L000008_100 ' (symbol refcount = 0)
+' C_sfuo4_67e4d989_hmi_k_ready_L000008_100 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_shk85_67e3472f_hmi_k_clear_L000009 ' <symbol:hmi_k_clear>
+C_sfuo5_67e4d989_hmi_k_clear_L000009 ' <symbol:hmi_k_clear>
  calld PA,#NEWF
  calld PA,#PSHM
  long $c00000 ' save registers
@@ -335,13 +335,13 @@ C_shk85_67e3472f_hmi_k_clear_L000009 ' <symbol:hmi_k_clear>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_shk85_67e3472f_hmi_k_clear_L000009_101 ' (symbol refcount = 0)
+' C_sfuo5_67e4d989_hmi_k_clear_L000009_101 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_shk86_67e3472f_hmi_m_button_L000010 ' <symbol:hmi_m_button>
+C_sfuo6_67e4d989_hmi_m_button_L000010 ' <symbol:hmi_m_button>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e00000 ' save registers
@@ -351,7 +351,7 @@ C_shk86_67e3472f_hmi_m_button_L000010 ' <symbol:hmi_m_button>
  calld PA,#CALA
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wcz
- if_be jmp #\C_shk86_67e3472f_hmi_m_button_L000010_103 ' LEI4
+ if_be jmp #\C_sfuo6_67e4d989_hmi_m_button_L000010_103 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -380,16 +380,16 @@ C_shk86_67e3472f_hmi_m_button_L000010 ' <symbol:hmi_m_button>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
- jmp #\@C_shk86_67e3472f_hmi_m_button_L000010_102 ' JUMPV addrg
-C_shk86_67e3472f_hmi_m_button_L000010_103
+ jmp #\@C_sfuo6_67e4d989_hmi_m_button_L000010_102 ' JUMPV addrg
+C_sfuo6_67e4d989_hmi_m_button_L000010_103
  mov r0, #0 ' reg <- coni
-C_shk86_67e3472f_hmi_m_button_L000010_102
+C_sfuo6_67e4d989_hmi_m_button_L000010_102
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_shk87_67e3472f_hmi_m_abs_x_L000011 ' <symbol:hmi_m_abs_x>
+C_sfuo7_67e4d989_hmi_m_abs_x_L000011 ' <symbol:hmi_m_abs_x>
  calld PA,#NEWF
  calld PA,#PSHM
  long $c00000 ' save registers
@@ -406,13 +406,13 @@ C_shk87_67e3472f_hmi_m_abs_x_L000011 ' <symbol:hmi_m_abs_x>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_shk87_67e3472f_hmi_m_abs_x_L000011_105 ' (symbol refcount = 0)
+' C_sfuo7_67e4d989_hmi_m_abs_x_L000011_105 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_shk88_67e3472f_hmi_m_abs_y_L000012 ' <symbol:hmi_m_abs_y>
+C_sfuo8_67e4d989_hmi_m_abs_y_L000012 ' <symbol:hmi_m_abs_y>
  calld PA,#NEWF
  calld PA,#PSHM
  long $c00000 ' save registers
@@ -429,13 +429,13 @@ C_shk88_67e3472f_hmi_m_abs_y_L000012 ' <symbol:hmi_m_abs_y>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_shk88_67e3472f_hmi_m_abs_y_L000012_106 ' (symbol refcount = 0)
+' C_sfuo8_67e4d989_hmi_m_abs_y_L000012_106 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_shk89_67e3472f_hmi_m_delta_x_L000013 ' <symbol:hmi_m_delta_x>
+C_sfuo9_67e4d989_hmi_m_delta_x_L000013 ' <symbol:hmi_m_delta_x>
  calld PA,#NEWF
  calld PA,#PSHM
  long $c00000 ' save registers
@@ -452,13 +452,13 @@ C_shk89_67e3472f_hmi_m_delta_x_L000013 ' <symbol:hmi_m_delta_x>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_shk89_67e3472f_hmi_m_delta_x_L000013_107 ' (symbol refcount = 0)
+' C_sfuo9_67e4d989_hmi_m_delta_x_L000013_107 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_shk8a_67e3472f_hmi_m_delta_y_L000014 ' <symbol:hmi_m_delta_y>
+C_sfuoa_67e4d989_hmi_m_delta_y_L000014 ' <symbol:hmi_m_delta_y>
  calld PA,#NEWF
  calld PA,#PSHM
  long $c00000 ' save registers
@@ -475,13 +475,13 @@ C_shk8a_67e3472f_hmi_m_delta_y_L000014 ' <symbol:hmi_m_delta_y>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_shk8a_67e3472f_hmi_m_delta_y_L000014_108 ' (symbol refcount = 0)
+' C_sfuoa_67e4d989_hmi_m_delta_y_L000014_108 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_shk8b_67e3472f_hmi_m_reset_L000015 ' <symbol:hmi_m_reset>
+C_sfuob_67e4d989_hmi_m_reset_L000015 ' <symbol:hmi_m_reset>
  calld PA,#NEWF
  calld PA,#PSHM
  long $c00000 ' save registers
@@ -498,13 +498,13 @@ C_shk8b_67e3472f_hmi_m_reset_L000015 ' <symbol:hmi_m_reset>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_shk8b_67e3472f_hmi_m_reset_L000015_109 ' (symbol refcount = 0)
+' C_sfuob_67e4d989_hmi_m_reset_L000015_109 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_shk8c_67e3472f_hmi_m_bound_limits_L000016 ' <symbol:hmi_m_bound_limits>
+C_sfuoc_67e4d989_hmi_m_bound_limits_L000016 ' <symbol:hmi_m_bound_limits>
  calld PA,#NEWF
  calld PA,#PSHM
  long $ea8000 ' save registers
@@ -514,7 +514,7 @@ C_shk8c_67e3472f_hmi_m_bound_limits_L000016 ' <symbol:hmi_m_bound_limits>
  calld PA,#CALA
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wcz
- if_be jmp #\C_shk8c_67e3472f_hmi_m_bound_limits_L000016_111 ' LEI4
+ if_be jmp #\C_sfuoc_67e4d989_hmi_m_bound_limits_L000016_111 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -578,16 +578,16 @@ C_shk8c_67e3472f_hmi_m_bound_limits_L000016 ' <symbol:hmi_m_bound_limits>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
- jmp #\@C_shk8c_67e3472f_hmi_m_bound_limits_L000016_110 ' JUMPV addrg
-C_shk8c_67e3472f_hmi_m_bound_limits_L000016_111
+ jmp #\@C_sfuoc_67e4d989_hmi_m_bound_limits_L000016_110 ' JUMPV addrg
+C_sfuoc_67e4d989_hmi_m_bound_limits_L000016_111
  mov r0, #0 ' reg <- coni
-C_shk8c_67e3472f_hmi_m_bound_limits_L000016_110
+C_sfuoc_67e4d989_hmi_m_bound_limits_L000016_110
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_shk8d_67e3472f_hmi_m_bound_scales_L000017 ' <symbol:hmi_m_bound_scales>
+C_sfuod_67e4d989_hmi_m_bound_scales_L000017 ' <symbol:hmi_m_bound_scales>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e80000 ' save registers
@@ -597,7 +597,7 @@ C_shk8d_67e3472f_hmi_m_bound_scales_L000017 ' <symbol:hmi_m_bound_scales>
  calld PA,#CALA
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wcz
- if_be jmp #\C_shk8d_67e3472f_hmi_m_bound_scales_L000017_114 ' LEI4
+ if_be jmp #\C_sfuod_67e4d989_hmi_m_bound_scales_L000017_114 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -638,16 +638,16 @@ C_shk8d_67e3472f_hmi_m_bound_scales_L000017 ' <symbol:hmi_m_bound_scales>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
- jmp #\@C_shk8d_67e3472f_hmi_m_bound_scales_L000017_113 ' JUMPV addrg
-C_shk8d_67e3472f_hmi_m_bound_scales_L000017_114
+ jmp #\@C_sfuod_67e4d989_hmi_m_bound_scales_L000017_113 ' JUMPV addrg
+C_sfuod_67e4d989_hmi_m_bound_scales_L000017_114
  mov r0, #0 ' reg <- coni
-C_shk8d_67e3472f_hmi_m_bound_scales_L000017_113
+C_sfuod_67e4d989_hmi_m_bound_scales_L000017_113
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_shk8e_67e3472f_hmi_m_bound_x_L000018 ' <symbol:hmi_m_bound_x>
+C_sfuoe_67e4d989_hmi_m_bound_x_L000018 ' <symbol:hmi_m_bound_x>
  calld PA,#NEWF
  calld PA,#PSHM
  long $c00000 ' save registers
@@ -664,13 +664,13 @@ C_shk8e_67e3472f_hmi_m_bound_x_L000018 ' <symbol:hmi_m_bound_x>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_shk8e_67e3472f_hmi_m_bound_x_L000018_116 ' (symbol refcount = 0)
+' C_sfuoe_67e4d989_hmi_m_bound_x_L000018_116 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_shk8f_67e3472f_hmi_m_bound_y_L000019 ' <symbol:hmi_m_bound_y>
+C_sfuof_67e4d989_hmi_m_bound_y_L000019 ' <symbol:hmi_m_bound_y>
  calld PA,#NEWF
  calld PA,#PSHM
  long $c00000 ' save registers
@@ -687,13 +687,13 @@ C_shk8f_67e3472f_hmi_m_bound_y_L000019 ' <symbol:hmi_m_bound_y>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_shk8f_67e3472f_hmi_m_bound_y_L000019_117 ' (symbol refcount = 0)
+' C_sfuof_67e4d989_hmi_m_bound_y_L000019_117 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_shk8g_67e3472f_hmi_t_geometry_L000020 ' <symbol:hmi_t_geometry>
+C_sfuog_67e4d989_hmi_t_geometry_L000020 ' <symbol:hmi_t_geometry>
  calld PA,#NEWF
  calld PA,#PSHM
  long $c00000 ' save registers
@@ -710,13 +710,13 @@ C_shk8g_67e3472f_hmi_t_geometry_L000020 ' <symbol:hmi_t_geometry>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_shk8g_67e3472f_hmi_t_geometry_L000020_118 ' (symbol refcount = 0)
+' C_sfuog_67e4d989_hmi_t_geometry_L000020_118 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_shk8h_67e3472f_hmi_t_char_L000021 ' <symbol:hmi_t_char>
+C_sfuoh_67e4d989_hmi_t_char_L000021 ' <symbol:hmi_t_char>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e80000 ' save registers
@@ -726,7 +726,7 @@ C_shk8h_67e3472f_hmi_t_char_L000021 ' <symbol:hmi_t_char>
  calld PA,#CALA
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wcz
- if_be jmp #\C_shk8h_67e3472f_hmi_t_char_L000021_120 ' LEI4
+ if_be jmp #\C_sfuoh_67e4d989_hmi_t_char_L000021_120 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -766,16 +766,16 @@ C_shk8h_67e3472f_hmi_t_char_L000021 ' <symbol:hmi_t_char>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
- jmp #\@C_shk8h_67e3472f_hmi_t_char_L000021_119 ' JUMPV addrg
-C_shk8h_67e3472f_hmi_t_char_L000021_120
+ jmp #\@C_sfuoh_67e4d989_hmi_t_char_L000021_119 ' JUMPV addrg
+C_sfuoh_67e4d989_hmi_t_char_L000021_120
  mov r0, #0 ' reg <- coni
-C_shk8h_67e3472f_hmi_t_char_L000021_119
+C_sfuoh_67e4d989_hmi_t_char_L000021_119
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_shk8i_67e3472f_hmi_t_mode_L000022 ' <symbol:hmi_t_mode>
+C_sfuoi_67e4d989_hmi_t_mode_L000022 ' <symbol:hmi_t_mode>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e80000 ' save registers
@@ -785,7 +785,7 @@ C_shk8i_67e3472f_hmi_t_mode_L000022 ' <symbol:hmi_t_mode>
  calld PA,#CALA
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wcz
- if_be jmp #\C_shk8i_67e3472f_hmi_t_mode_L000022_123 ' LEI4
+ if_be jmp #\C_sfuoi_67e4d989_hmi_t_mode_L000022_123 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -825,16 +825,16 @@ C_shk8i_67e3472f_hmi_t_mode_L000022 ' <symbol:hmi_t_mode>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
- jmp #\@C_shk8i_67e3472f_hmi_t_mode_L000022_122 ' JUMPV addrg
-C_shk8i_67e3472f_hmi_t_mode_L000022_123
+ jmp #\@C_sfuoi_67e4d989_hmi_t_mode_L000022_122 ' JUMPV addrg
+C_sfuoi_67e4d989_hmi_t_mode_L000022_123
  mov r0, #0 ' reg <- coni
-C_shk8i_67e3472f_hmi_t_mode_L000022_122
+C_sfuoi_67e4d989_hmi_t_mode_L000022_122
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_shk8j_67e3472f_hmi_t_setpos_L000023 ' <symbol:hmi_t_setpos>
+C_sfuoj_67e4d989_hmi_t_setpos_L000023 ' <symbol:hmi_t_setpos>
  calld PA,#NEWF
  calld PA,#PSHM
  long $ea0000 ' save registers
@@ -844,7 +844,7 @@ C_shk8j_67e3472f_hmi_t_setpos_L000023 ' <symbol:hmi_t_setpos>
  calld PA,#CALA
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wcz
- if_be jmp #\C_shk8j_67e3472f_hmi_t_setpos_L000023_126 ' LEI4
+ if_be jmp #\C_sfuoj_67e4d989_hmi_t_setpos_L000023_126 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -893,16 +893,16 @@ C_shk8j_67e3472f_hmi_t_setpos_L000023 ' <symbol:hmi_t_setpos>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
- jmp #\@C_shk8j_67e3472f_hmi_t_setpos_L000023_125 ' JUMPV addrg
-C_shk8j_67e3472f_hmi_t_setpos_L000023_126
+ jmp #\@C_sfuoj_67e4d989_hmi_t_setpos_L000023_125 ' JUMPV addrg
+C_sfuoj_67e4d989_hmi_t_setpos_L000023_126
  mov r0, #0 ' reg <- coni
-C_shk8j_67e3472f_hmi_t_setpos_L000023_125
+C_sfuoj_67e4d989_hmi_t_setpos_L000023_125
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_shk8k_67e3472f_hmi_t_getpos_L000024 ' <symbol:hmi_t_getpos>
+C_sfuok_67e4d989_hmi_t_getpos_L000024 ' <symbol:hmi_t_getpos>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e00000 ' save registers
@@ -912,7 +912,7 @@ C_shk8k_67e3472f_hmi_t_getpos_L000024 ' <symbol:hmi_t_getpos>
  calld PA,#CALA
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wcz
- if_be jmp #\C_shk8k_67e3472f_hmi_t_getpos_L000024_129 ' LEI4
+ if_be jmp #\C_sfuok_67e4d989_hmi_t_getpos_L000024_129 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -941,16 +941,16 @@ C_shk8k_67e3472f_hmi_t_getpos_L000024 ' <symbol:hmi_t_getpos>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
- jmp #\@C_shk8k_67e3472f_hmi_t_getpos_L000024_128 ' JUMPV addrg
-C_shk8k_67e3472f_hmi_t_getpos_L000024_129
+ jmp #\@C_sfuok_67e4d989_hmi_t_getpos_L000024_128 ' JUMPV addrg
+C_sfuok_67e4d989_hmi_t_getpos_L000024_129
  mov r0, #0 ' reg <- coni
-C_shk8k_67e3472f_hmi_t_getpos_L000024_128
+C_sfuok_67e4d989_hmi_t_getpos_L000024_128
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_shk8l_67e3472f_hmi_t_scroll_L000025 ' <symbol:hmi_t_scroll>
+C_sfuol_67e4d989_hmi_t_scroll_L000025 ' <symbol:hmi_t_scroll>
  calld PA,#NEWF
  calld PA,#PSHM
  long $ea0000 ' save registers
@@ -960,7 +960,7 @@ C_shk8l_67e3472f_hmi_t_scroll_L000025 ' <symbol:hmi_t_scroll>
  calld PA,#CALA
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wcz
- if_be jmp #\C_shk8l_67e3472f_hmi_t_scroll_L000025_132 ' LEI4
+ if_be jmp #\C_sfuol_67e4d989_hmi_t_scroll_L000025_132 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1009,16 +1009,16 @@ C_shk8l_67e3472f_hmi_t_scroll_L000025 ' <symbol:hmi_t_scroll>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
- jmp #\@C_shk8l_67e3472f_hmi_t_scroll_L000025_131 ' JUMPV addrg
-C_shk8l_67e3472f_hmi_t_scroll_L000025_132
+ jmp #\@C_sfuol_67e4d989_hmi_t_scroll_L000025_131 ' JUMPV addrg
+C_sfuol_67e4d989_hmi_t_scroll_L000025_132
  mov r0, #0 ' reg <- coni
-C_shk8l_67e3472f_hmi_t_scroll_L000025_131
+C_sfuol_67e4d989_hmi_t_scroll_L000025_131
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_shk8m_67e3472f_hmi_t_color_L000026 ' <symbol:hmi_t_color>
+C_sfuom_67e4d989_hmi_t_color_L000026 ' <symbol:hmi_t_color>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e80000 ' save registers
@@ -1028,7 +1028,7 @@ C_shk8m_67e3472f_hmi_t_color_L000026 ' <symbol:hmi_t_color>
  calld PA,#CALA
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wcz
- if_be jmp #\C_shk8m_67e3472f_hmi_t_color_L000026_135 ' LEI4
+ if_be jmp #\C_sfuom_67e4d989_hmi_t_color_L000026_135 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1068,16 +1068,16 @@ C_shk8m_67e3472f_hmi_t_color_L000026 ' <symbol:hmi_t_color>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
- jmp #\@C_shk8m_67e3472f_hmi_t_color_L000026_134 ' JUMPV addrg
-C_shk8m_67e3472f_hmi_t_color_L000026_135
+ jmp #\@C_sfuom_67e4d989_hmi_t_color_L000026_134 ' JUMPV addrg
+C_sfuom_67e4d989_hmi_t_color_L000026_135
  mov r0, #0 ' reg <- coni
-C_shk8m_67e3472f_hmi_t_color_L000026_134
+C_sfuom_67e4d989_hmi_t_color_L000026_134
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_shk8n_67e3472f_hmi_t_color_fg_L000027 ' <symbol:hmi_t_color_fg>
+C_sfuon_67e4d989_hmi_t_color_fg_L000027 ' <symbol:hmi_t_color_fg>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e80000 ' save registers
@@ -1087,7 +1087,7 @@ C_shk8n_67e3472f_hmi_t_color_fg_L000027 ' <symbol:hmi_t_color_fg>
  calld PA,#CALA
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wcz
- if_be jmp #\C_shk8n_67e3472f_hmi_t_color_fg_L000027_138 ' LEI4
+ if_be jmp #\C_sfuon_67e4d989_hmi_t_color_fg_L000027_138 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1127,16 +1127,16 @@ C_shk8n_67e3472f_hmi_t_color_fg_L000027 ' <symbol:hmi_t_color_fg>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
- jmp #\@C_shk8n_67e3472f_hmi_t_color_fg_L000027_137 ' JUMPV addrg
-C_shk8n_67e3472f_hmi_t_color_fg_L000027_138
+ jmp #\@C_sfuon_67e4d989_hmi_t_color_fg_L000027_137 ' JUMPV addrg
+C_sfuon_67e4d989_hmi_t_color_fg_L000027_138
  mov r0, #0 ' reg <- coni
-C_shk8n_67e3472f_hmi_t_color_fg_L000027_137
+C_sfuon_67e4d989_hmi_t_color_fg_L000027_137
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_shk8o_67e3472f_hmi_t_color_bg_L000028 ' <symbol:hmi_t_color_bg>
+C_sfuoo_67e4d989_hmi_t_color_bg_L000028 ' <symbol:hmi_t_color_bg>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e80000 ' save registers
@@ -1146,7 +1146,7 @@ C_shk8o_67e3472f_hmi_t_color_bg_L000028 ' <symbol:hmi_t_color_bg>
  calld PA,#CALA
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wcz
- if_be jmp #\C_shk8o_67e3472f_hmi_t_color_bg_L000028_141 ' LEI4
+ if_be jmp #\C_sfuoo_67e4d989_hmi_t_color_bg_L000028_141 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1186,10 +1186,10 @@ C_shk8o_67e3472f_hmi_t_color_bg_L000028 ' <symbol:hmi_t_color_bg>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
- jmp #\@C_shk8o_67e3472f_hmi_t_color_bg_L000028_140 ' JUMPV addrg
-C_shk8o_67e3472f_hmi_t_color_bg_L000028_141
+ jmp #\@C_sfuoo_67e4d989_hmi_t_color_bg_L000028_140 ' JUMPV addrg
+C_sfuoo_67e4d989_hmi_t_color_bg_L000028_141
  mov r0, #0 ' reg <- coni
-C_shk8o_67e3472f_hmi_t_color_bg_L000028_140
+C_sfuoo_67e4d989_hmi_t_color_bg_L000028_140
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -1221,7 +1221,7 @@ C_luaopen_hmi ' <symbol:luaopen_hmi>
  long @C_lua_createtable
  add SP, #8 ' CALL addrg
  mov r2, #0 ' reg ARG coni
- mov r3, ##@C_shk8q_67e3472f_luahmi_funcs_L000030 ' reg ARG ADDRG
+ mov r3, ##@C_sfuoq_67e4d989_luahmi_funcs_L000030 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -1309,7 +1309,7 @@ C_luaopen_hmi_144_L000145 ' <symbol:144>
  long $43fc0000 ' float
 
  alignl ' align long
-C_shk8_67e3472f_hmi_version_L000004_95_L000096 ' <symbol:95>
+C_sfuo_67e4d989_hmi_version_L000004_95_L000096 ' <symbol:95>
  byte 104
  byte 97
  byte 114
@@ -1321,14 +1321,14 @@ C_shk8_67e3472f_hmi_version_L000004_95_L000096 ' <symbol:95>
  byte 0
 
  alignl ' align long
-C_shk8_67e3472f_hmi_version_L000004_91_L000092 ' <symbol:91>
+C_sfuo_67e4d989_hmi_version_L000004_91_L000092 ' <symbol:91>
  byte 108
  byte 117
  byte 97
  byte 0
 
  alignl ' align long
-C_shk81k_67e3472f_81_L000082 ' <symbol:81>
+C_sfuo1k_67e4d989_81_L000082 ' <symbol:81>
  byte 116
  byte 95
  byte 115
@@ -1340,7 +1340,7 @@ C_shk81k_67e3472f_81_L000082 ' <symbol:81>
  byte 0
 
  alignl ' align long
-C_shk81j_67e3472f_79_L000080 ' <symbol:79>
+C_sfuo1j_67e4d989_79_L000080 ' <symbol:79>
  byte 116
  byte 95
  byte 99
@@ -1354,7 +1354,7 @@ C_shk81j_67e3472f_79_L000080 ' <symbol:79>
  byte 0
 
  alignl ' align long
-C_shk81i_67e3472f_77_L000078 ' <symbol:77>
+C_sfuo1i_67e4d989_77_L000078 ' <symbol:77>
  byte 116
  byte 95
  byte 99
@@ -1368,7 +1368,7 @@ C_shk81i_67e3472f_77_L000078 ' <symbol:77>
  byte 0
 
  alignl ' align long
-C_shk81h_67e3472f_75_L000076 ' <symbol:75>
+C_sfuo1h_67e4d989_75_L000076 ' <symbol:75>
  byte 116
  byte 95
  byte 99
@@ -1379,7 +1379,7 @@ C_shk81h_67e3472f_75_L000076 ' <symbol:75>
  byte 0
 
  alignl ' align long
-C_shk81g_67e3472f_73_L000074 ' <symbol:73>
+C_sfuo1g_67e4d989_73_L000074 ' <symbol:73>
  byte 116
  byte 95
  byte 115
@@ -1391,7 +1391,7 @@ C_shk81g_67e3472f_73_L000074 ' <symbol:73>
  byte 0
 
  alignl ' align long
-C_shk81f_67e3472f_71_L000072 ' <symbol:71>
+C_sfuo1f_67e4d989_71_L000072 ' <symbol:71>
  byte 116
  byte 95
  byte 103
@@ -1403,7 +1403,7 @@ C_shk81f_67e3472f_71_L000072 ' <symbol:71>
  byte 0
 
  alignl ' align long
-C_shk81e_67e3472f_69_L000070 ' <symbol:69>
+C_sfuo1e_67e4d989_69_L000070 ' <symbol:69>
  byte 116
  byte 95
  byte 115
@@ -1415,7 +1415,7 @@ C_shk81e_67e3472f_69_L000070 ' <symbol:69>
  byte 0
 
  alignl ' align long
-C_shk81d_67e3472f_67_L000068 ' <symbol:67>
+C_sfuo1d_67e4d989_67_L000068 ' <symbol:67>
  byte 116
  byte 95
  byte 109
@@ -1425,7 +1425,7 @@ C_shk81d_67e3472f_67_L000068 ' <symbol:67>
  byte 0
 
  alignl ' align long
-C_shk81c_67e3472f_65_L000066 ' <symbol:65>
+C_sfuo1c_67e4d989_65_L000066 ' <symbol:65>
  byte 116
  byte 95
  byte 99
@@ -1435,7 +1435,7 @@ C_shk81c_67e3472f_65_L000066 ' <symbol:65>
  byte 0
 
  alignl ' align long
-C_shk81b_67e3472f_63_L000064 ' <symbol:63>
+C_sfuo1b_67e4d989_63_L000064 ' <symbol:63>
  byte 116
  byte 95
  byte 103
@@ -1449,7 +1449,7 @@ C_shk81b_67e3472f_63_L000064 ' <symbol:63>
  byte 0
 
  alignl ' align long
-C_shk81a_67e3472f_61_L000062 ' <symbol:61>
+C_sfuo1a_67e4d989_61_L000062 ' <symbol:61>
  byte 109
  byte 95
  byte 98
@@ -1462,7 +1462,7 @@ C_shk81a_67e3472f_61_L000062 ' <symbol:61>
  byte 0
 
  alignl ' align long
-C_shk819_67e3472f_59_L000060 ' <symbol:59>
+C_sfuo19_67e4d989_59_L000060 ' <symbol:59>
  byte 109
  byte 95
  byte 98
@@ -1475,7 +1475,7 @@ C_shk819_67e3472f_59_L000060 ' <symbol:59>
  byte 0
 
  alignl ' align long
-C_shk818_67e3472f_57_L000058 ' <symbol:57>
+C_sfuo18_67e4d989_57_L000058 ' <symbol:57>
  byte 109
  byte 95
  byte 98
@@ -1493,7 +1493,7 @@ C_shk818_67e3472f_57_L000058 ' <symbol:57>
  byte 0
 
  alignl ' align long
-C_shk817_67e3472f_55_L000056 ' <symbol:55>
+C_sfuo17_67e4d989_55_L000056 ' <symbol:55>
  byte 109
  byte 95
  byte 98
@@ -1511,7 +1511,7 @@ C_shk817_67e3472f_55_L000056 ' <symbol:55>
  byte 0
 
  alignl ' align long
-C_shk816_67e3472f_53_L000054 ' <symbol:53>
+C_sfuo16_67e4d989_53_L000054 ' <symbol:53>
  byte 109
  byte 95
  byte 114
@@ -1522,7 +1522,7 @@ C_shk816_67e3472f_53_L000054 ' <symbol:53>
  byte 0
 
  alignl ' align long
-C_shk815_67e3472f_51_L000052 ' <symbol:51>
+C_sfuo15_67e4d989_51_L000052 ' <symbol:51>
  byte 109
  byte 95
  byte 100
@@ -1535,7 +1535,7 @@ C_shk815_67e3472f_51_L000052 ' <symbol:51>
  byte 0
 
  alignl ' align long
-C_shk814_67e3472f_49_L000050 ' <symbol:49>
+C_sfuo14_67e4d989_49_L000050 ' <symbol:49>
  byte 109
  byte 95
  byte 100
@@ -1548,7 +1548,7 @@ C_shk814_67e3472f_49_L000050 ' <symbol:49>
  byte 0
 
  alignl ' align long
-C_shk813_67e3472f_47_L000048 ' <symbol:47>
+C_sfuo13_67e4d989_47_L000048 ' <symbol:47>
  byte 109
  byte 95
  byte 97
@@ -1559,7 +1559,7 @@ C_shk813_67e3472f_47_L000048 ' <symbol:47>
  byte 0
 
  alignl ' align long
-C_shk812_67e3472f_45_L000046 ' <symbol:45>
+C_sfuo12_67e4d989_45_L000046 ' <symbol:45>
  byte 109
  byte 95
  byte 97
@@ -1570,7 +1570,7 @@ C_shk812_67e3472f_45_L000046 ' <symbol:45>
  byte 0
 
  alignl ' align long
-C_shk811_67e3472f_43_L000044 ' <symbol:43>
+C_sfuo11_67e4d989_43_L000044 ' <symbol:43>
  byte 109
  byte 95
  byte 98
@@ -1582,7 +1582,7 @@ C_shk811_67e3472f_43_L000044 ' <symbol:43>
  byte 0
 
  alignl ' align long
-C_shk810_67e3472f_41_L000042 ' <symbol:41>
+C_sfuo10_67e4d989_41_L000042 ' <symbol:41>
  byte 107
  byte 95
  byte 99
@@ -1593,7 +1593,7 @@ C_shk810_67e3472f_41_L000042 ' <symbol:41>
  byte 0
 
  alignl ' align long
-C_shk8v_67e3472f_39_L000040 ' <symbol:39>
+C_sfuov_67e4d989_39_L000040 ' <symbol:39>
  byte 107
  byte 95
  byte 114
@@ -1604,7 +1604,7 @@ C_shk8v_67e3472f_39_L000040 ' <symbol:39>
  byte 0
 
  alignl ' align long
-C_shk8u_67e3472f_37_L000038 ' <symbol:37>
+C_sfuou_67e4d989_37_L000038 ' <symbol:37>
  byte 107
  byte 95
  byte 110
@@ -1613,7 +1613,7 @@ C_shk8u_67e3472f_37_L000038 ' <symbol:37>
  byte 0
 
  alignl ' align long
-C_shk8t_67e3472f_35_L000036 ' <symbol:35>
+C_sfuot_67e4d989_35_L000036 ' <symbol:35>
  byte 107
  byte 95
  byte 119
@@ -1623,7 +1623,7 @@ C_shk8t_67e3472f_35_L000036 ' <symbol:35>
  byte 0
 
  alignl ' align long
-C_shk8s_67e3472f_33_L000034 ' <symbol:33>
+C_sfuos_67e4d989_33_L000034 ' <symbol:33>
  byte 107
  byte 95
  byte 103
@@ -1632,7 +1632,7 @@ C_shk8s_67e3472f_33_L000034 ' <symbol:33>
  byte 0
 
  alignl ' align long
-C_shk8r_67e3472f_31_L000032 ' <symbol:31>
+C_sfuor_67e4d989_31_L000032 ' <symbol:31>
  byte 118
  byte 101
  byte 114

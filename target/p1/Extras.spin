@@ -123,6 +123,10 @@ OBJ
   S4 : "Catalina_FullDuplexSerial4FC"
 #endif
 
+#ifdef libserial4x
+  S4 : "Catalina_FullDuplexSerial4FCx"
+#endif
+
 #ifdef libtty
   TTY : "Catalina_FullDuplexSerial"
 #endif
@@ -162,11 +166,23 @@ PUB Setup
   S4.Setup
 
   ' Edit the following AddPort statements to suit your Propeller platform.
-  ' By default, they add a single serial port, at 115200 baud, usng the 
+  ' By default, they add a single serial port, at 115200 baud, using the 
   ' normal Parallax serial pins (30 & 31):
 
   S4.AddPort(0,31,30,-1,-1,0,0,115200)
-  'S4.AddPort(0,rx,tx,cts,rts,threshold,mode,baud)
+  'S4.AddPort(1,rx,tx,cts,rts,threshold,mode,baud)
+  'S4.AddPort(2,rx,tx,cts,rts,threshold,mode,baud)
+  'S4.AddPort(3,rx,tx,cts,rts,threshold,mode,baud)
+#endif
+
+#ifdef libserial4x
+  S4.Setup
+
+  ' Edit the following AddPort statements to suit your Propeller platform.
+  ' By default, they add a single serial port, at 115200 baud, using the 
+  ' normal Parallax serial pins (30 & 31):
+
+  S4.AddPort(0,31,30,-1,-1,0,0,115200)
   'S4.AddPort(1,rx,tx,cts,rts,threshold,mode,baud)
   'S4.AddPort(2,rx,tx,cts,rts,threshold,mode,baud)
   'S4.AddPort(3,rx,tx,cts,rts,threshold,mode,baud)
@@ -176,7 +192,7 @@ PUB Setup
   TTY.Setup
 
   ' Edit the following Configure statement to suit your Propeller platform.
-  ' By default, it configures the serial port at 115200 baud, usng the 
+  ' By default, it configures the serial port at 115200 baud, using the 
   ' normal Parallax serial pins (30 & 31):
 
   TTY.Configure(31,30,0,115200)
@@ -186,7 +202,7 @@ PUB Setup
   TTY.Setup
 
   ' Edit the following Configure statement to suit your Propeller platform.
-  ' By default, it configures the serial port at 115200 baud, usng the 
+  ' By default, it configures the serial port at 115200 baud, using the 
   ' normal Parallax serial pins (30 & 31):
 
   TTY.Configure(31,30,0,115200)
@@ -218,6 +234,10 @@ PUB Start
 #endif
 
 #ifdef libserial4
+  S4.Start
+#endif
+
+#ifdef libserial4x
   S4.Start
 #endif
 

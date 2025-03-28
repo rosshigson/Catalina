@@ -47,7 +47,7 @@
 
 #include <serial2.h>
 
-#elif defined (__CATALINA_libserial4)
+#elif defined (__CATALINA_libserial4) || defined(__CATALINA_libserial4x)
 
 #ifdef SERIAL_CR_NEWLINE
 #ifndef S4_NEWLINE_CR

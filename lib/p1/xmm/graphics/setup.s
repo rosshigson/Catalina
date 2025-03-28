@@ -17,14 +17,14 @@ C__cgi_cog ' <symbol:_cgi_cog>
  long -1
 
  alignl ' align long
-C_scic_67e345a7_colors_L000004 ' <symbol:colors>
+C_sgoo_67e4d7e0_colors_L000004 ' <symbol:colors>
  long $0
  long $55555555
  long $aaaaaaaa
  long $ffffffff
 
  alignl ' align long
-C_scic1_67e345a7_font_L000005 ' <symbol:font>
+C_sgoo1_67e4d7e0_font_L000005 ' <symbol:font>
  word $9d62
  word $112a
  word $b0e9
@@ -487,7 +487,7 @@ C_g_setup_26
  mov r20, RI ' reg <- addrg
  adds r20, r22 ' ADDI/P (2)
  jmp #LODL
- long @C_scic_67e345a7_colors_L000004
+ long @C_sgoo_67e4d7e0_colors_L000004
  mov r18, RI ' reg <- addrg
  adds r22, r18 ' ADDI/P (1)
  mov RI, r22
@@ -534,7 +534,7 @@ C_g_setup_31
  mov r20, RI ' reg <- addrg
  adds r20, r22 ' ADDI/P (2)
  jmp #LODL
- long @C_scic1_67e345a7_font_L000005
+ long @C_sgoo1_67e4d7e0_font_L000005
  mov r18, RI ' reg <- addrg
  adds r22, r18 ' ADDI/P (1)
  mov RI, r22

@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_sjsk_67e345f5__sig_handler_L000001 ' <symbol:_sig_handler>
+C_seik_67e4d833__sig_handler_L000001 ' <symbol:_sig_handler>
  long $1
  byte 0[60]
 
@@ -44,7 +44,7 @@ C_raise_3
  mov r22, r23
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_sjsk_67e345f5__sig_handler_L000001
+ long @C_seik_67e4d833__sig_handler_L000001
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  mov RI, r22
@@ -114,7 +114,7 @@ C_signal_11
  mov r22, r3
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_sjsk_67e345f5__sig_handler_L000001
+ long @C_seik_67e4d833__sig_handler_L000001
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  mov RI, r22
@@ -130,7 +130,7 @@ C_signal_11
  mov r22, r3
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_sjsk_67e345f5__sig_handler_L000001
+ long @C_seik_67e4d833__sig_handler_L000001
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  jmp #LODL
@@ -145,7 +145,7 @@ C_signal_14
  mov r22, r3
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_sjsk_67e345f5__sig_handler_L000001
+ long @C_seik_67e4d833__sig_handler_L000001
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  mov RI, r22

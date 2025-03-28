@@ -45,7 +45,7 @@ all: assert ctype errno locale math setjmp signal stdlib string time catalina fl
 
 else
 
-all: assert ctype errno locale math setjmp signal stdlib string time catalina float threads linenoise int tiny spi lua graphics vgraphic serial4 wifi sound tty tty256 libc libci libcix libcx libm libma libmb libmc libthreads liblinenoise libint libtiny libspi liblua libluax libgraphics libvgraphic libserial4 libwifi libsound libtty libtty256 install
+all: assert ctype errno locale math setjmp signal stdlib string time catalina float threads linenoise int tiny spi lua graphics vgraphic serial4 serial4x wifi sound tty tty256 libc libci libcix libcx libm libma libmb libmc libthreads liblinenoise libint libtiny libspi liblua libluax libgraphics libvgraphic libserial4 libserial4x libwifi libsound libtty libtty256 install
 
 endif
 
@@ -73,6 +73,7 @@ clean:
 	$(MAKE) -C tiny clean
 	$(MAKE) -C spi clean
 	$(MAKE) -C serial4 clean
+	$(MAKE) -C serial4x clean
 	$(MAKE) -C serial2 clean
 	$(MAKE) -C serial8 clean
 	$(MAKE) -C wifi clean
@@ -98,6 +99,7 @@ clean:
 	$(MAKE) -C lib/tiny clean
 	$(MAKE) -C lib/spi clean
 	$(MAKE) -C lib/serial4 clean
+	$(MAKE) -C lib/serial4x clean
 	$(MAKE) -C lib/serial2 clean
 	$(MAKE) -C lib/serial8 clean
 	$(MAKE) -C lib/wifi clean
@@ -127,6 +129,7 @@ install:
 	-cp -r lib/tiny $(OUTPUT)/$(LIB)
 	-cp -r lib/spi $(OUTPUT)/$(LIB)
 	-cp -r lib/serial4 $(OUTPUT)/$(LIB)
+	-cp -r lib/serial4x $(OUTPUT)/$(LIB)
 	-cp -r lib/serial2 $(OUTPUT)/$(LIB)
 	-cp -r lib/serial8 $(OUTPUT)/$(LIB)
 	-cp -r lib/wifi $(OUTPUT)/$(LIB)
@@ -224,6 +227,9 @@ vgraphic:	ALWAYSRUN
 
 serial4:	ALWAYSRUN
 	$(MAKE) -C serial4 all
+
+serial4x:	ALWAYSRUN
+	$(MAKE) -C serial4x all
 
 sound:	ALWAYSRUN
 	$(MAKE) -C sound all
@@ -327,6 +333,9 @@ libvgraphic:	ALWAYSRUN
 
 libserial4:	ALWAYSRUN
 	$(MAKE) -C lib/serial4 all
+
+libserial4x:	ALWAYSRUN
+	$(MAKE) -C lib/serial4x all
 
 libsound:	ALWAYSRUN
 	$(MAKE) -C lib/sound all

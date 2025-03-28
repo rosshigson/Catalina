@@ -128,26 +128,37 @@ There is a build_all script that can be used to build all the programs.
 Specify the platform, memory model and other build options as parameters. 
 For example:
 
-   build all C3 SMALL CACHED_1K OPTIMIZE
+   build all C3 LARGE FLASH CACHED_1K TTY
 or
    build_all P2_WIFI
 or
    build_all P2_EDGE LARGE CACHED_64K OPTIMIZE
 
-Do NOT specify any HMI options. Apart from wlua (and wluax) The programs 
-in this folder do not use the normal HMI or C stdio functions for user 
-interaction. Since they are required to load a multi-port serial plugin, 
-they use the second serial port instead, and are compiled with -C NO_HMI 
-to reduce both the code size and the number of cogs used. While the same 
-can be done for wlua and wluax simply by explicitly adding NO_HMI to the 
-build command, it is easier to debug Lua programs if Lua uses the standard
-I/O functions. If extra cogs or code space is required, wlua and wluax can 
-be compiled with the NO_HMI option AFTER the Lua program has been debugged.
+Apart from wlua (and wluax), any HMI options will be ignored, because the 
+other programs in this folder do not use the normal HMI or C stdio functions 
+for user interaction, and are compiled with -C NO_HMI to reduce both the code
+size and the number of cogs used. Instead of the usual HMI, they use serial 
+port 0 for WiFi communications and serial port 1 for user I/O. But it is 
+easier to debug Lua programs if Lua uses the standard HMI functions, so the
+HMI is used in the case of wua and wluax. If extra cogs or code space is 
+required, wlua and wluax can be compiled with the NO_HMI option AFTER the 
+Lua program has been debugged.
 
-The default is to build the programs in LARGE mode on a Propeller 1, or
-COMPACT mode on a Propeller 2. If the programs are built to use XMM RAM, 
-then the build_utilities script can be run to build the necessary utilities
-to load the programs.
+Note that this introduces complexity into the platform configuration on the
+Propeller 1 when a serial HMI option is used (e.g. TTY). For all programs 
+OTHER than wlua and wluax, the Extras.spin file should be configured with 
+port 0 to communicate with the WiFi module, and port 1 to connect to the 
+normal serial I/O pins (i.e. pins 30 & 31). But for wlua and wluax, port 0 
+should be configured to communicate with the WiFi module, but port 1 should 
+not be configured or used, since wlua and wluax will expect to use these pins
+via the serial HMI.
+
+The default is to build all programs in COMPACT mode on a Propeller 1, or
+NATIVE mode on a Propeller 2, except for the wlua and wluax programs, which
+will be built in LARGE mode on a Propeller 1 and COMPACT mode on a Propeller
+2. If a memory model is specified on the command line it is used for all
+programs. If the programs are built to use XMM RAM, then the build_utilities 
+script can be run to build the necessary utilities to load the programs.
 
 The build_all script will build all the propeller binaries, which should
 succeed - and it will also try to use gcc to build the PC binaries (i.e. 
@@ -185,24 +196,34 @@ security software - see the appropriate documentation.
 WiFi On the Propeller 1:
 ========================
 
-On the Propeller 1, WiFi programs must use the 4 port serial plugin. 
+On the Propeller 1, WiFi programs must use the "extended" version of the
+4 port serial plugin, which is enabled by linking with libserial4x (i.e. 
+using the -lserial4x command line option). The Makefile provided is set
+up to do this automatically.
 
 On the Propeller 1, you have to provide suitable pin functions - i.e.
 wifi_DI_PIN(), wifi_DO_PIN(), wifi_BRK_PIN(), wifi_RES_PIN() and 
 wifi_PGM_PIN() - see the examples in each program. You may also need
-to configure at least the first serial port of the serial4 plugin 
-appropriately (use two ports if available)  - see 'Extras.spin' in the 
-'target/p1' directory.
+to configure at least the first serial port of the serial4x plugin 
+appropriately (use two ports if available, except for wlua and wlaux).
+See 'Extras.spin' in the 'target/p1' directory.
 
-For example, to use the WiFi module on pins 30&31 and see user messages 
-on pins 14&15, both at 115200 baud, that file might contain lines like:
+For example, to use the WiFi module on pins 14&15 and see user messages 
+on pins 30&31, both at 115200 baud, which would be appropriate for all 
+the programs other than wlua and wluax - see below), in the section on
+configuring libserial4x that file might contain lines like:
 
-   S4.AddPort(0,31,30,-1,-1,0,0,115200);
-   S4.AddPort(1,15,14,-1,-1,0,0,115200);
+   S4.AddPort(0,15,14,-1,-1,0,0,115200);
+   S4.AddPort(1,31,30,-1,-1,0,0,115200);
+
+To use a serial HMI option with wlua and wluax, do not configure port 1,
+so the file should instead look like:
+
+   S4.AddPort(0,15,14,-1,-1,0,0,115200);
 
 If a second serial port is available, set USER_PORT in "config.h" to 1.
-Otherwise set USER_PORT to 0 and user messages will appear interspersed
-with WiFi interactions.
+Otherwise set USER_PORT to 0 and WiFi information and debug messages will
+appear interspersed with WiFi interactions.
 
 WiFi  on the Propeller 2:
 =========================

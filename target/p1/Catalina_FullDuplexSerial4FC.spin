@@ -246,7 +246,7 @@ PUB AddPort(port,rxpin,txpin,ctspin,rtspin,rtsthreshold,mode,baudrate)
     byte[@rxchar][port] := $ff
     byte[S4_BLOCK+OFFSET_rxchar][port] := $ff ' save in S4_BLOCK (for runtime use by C)
   long[@bit_ticks][port] := (clkfreq / baudrate)
-  long[@bit4_ticks][port] := long[@bit_ticks][port] >> 2
+  long[@bit4_ticks][port] := long[@bit_ticks][port] >> 2 - 150
 
 PUB Start : okay
 '' Call start to start cog

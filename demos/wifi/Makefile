@@ -110,10 +110,14 @@ endif
 # and on a Propeller 2 use COMPACT
 ifeq ("$(MODEL)", "")
 ifeq ($(P2), TRUE)
-	MODEL = COMPACT
+	MODEL = NATIVE
+	LUA_MODEL = COMPACT
 else
-	MODEL = LARGE
+	MODEL = COMPACT
+	LUA_MODEL = LARGE
 endif
+else
+	LUA_MODEL = $(MODEL)
 endif
 
 ifeq ($(P2), TRUE)
@@ -133,7 +137,7 @@ ifneq ($(CLOCK), RTC)
   CLOCK = CLOCK
 endif
 
-CFLAGS += -C $(MODEL) -C $(CLOCK) -C NO_MOUSE -W-w
+CFLAGS += -C $(CLOCK) -C NO_MOUSE -W-w
 
 ifeq ($(P2), TRUE)
 	# could use -lserial8 here ...
@@ -141,24 +145,24 @@ ifeq ($(P2), TRUE)
   LIBSX = -lwifi -lmc -lcx -lluax -lserial2
   LIBSW = -lwifi -lci -lserial2
 else
-  LIBS  = -lwifi -lm -lcx -llua -lserial4
-  LIBSX = -lwifi -lm -lcx -lluax -lserial4
-  LIBSW = -lwifi -lci -lserial4
+  LIBS  = -lwifi -lm -lcx -llua -lserial4x
+  LIBSX = -lwifi -lm -lcx -lluax -lserial4x
+  LIBSW = -lwifi -lci -lserial4x
 endif
 
 #set up pattern rules
 
 %.binary : %.c
 	-@catalina_env
-	$(CC) $(CFLAGS) -o $@ $<
+	$(CC) $(CFLAGS) -C $(MODEL) -o $@ $<
 
 %.eeprom : %.c
 	-@catalina_env
-	$(CC) -e $(CFLAGS) -o $@ $<
+	$(CC) -e $(CFLAGS) -C $(MODEL) -o $@ $<
 
 %.bin : %.c
 	-@catalina_env
-	$(CC) $(CFLAGS) -p2 -o $@ $<
+	$(CC) $(CFLAGS) -C $(MODEL) -p2 -o $@ $<
 
 #
 # Named Targets
@@ -174,7 +178,7 @@ endif
 testwifi : testwifi$B
 
 testwifi$B  : testwifi.c
-	catalina $(CFLAGS) $^ -o $@ $(LIBSW) -C NO_HMI
+	catalina $(CFLAGS) -C $(MODEL) $^ -o $@ $(LIBSW) -C NO_HMI
 
 # add this to the 'all' target
 all :: testwifi
@@ -185,7 +189,7 @@ all :: testwifi
 testhttp : testhttp$B
 
 testhttp$B  : testhttp.c
-	catalina $(CFLAGS) $^ -o $@ $(LIBSW) -C NO_HMI
+	catalina $(CFLAGS) -C $(MODEL) $^ -o $@ $(LIBSW) -C NO_HMI
 
 # add this to the 'all' target
 all :: testhttp
@@ -196,7 +200,7 @@ all :: testhttp
 ws_client : ws_client$B
 
 ws_client$B  : ws_client.c
-	catalina $(CFLAGS) $^ -o $@ $(LIBSW) -C NO_HMI
+	catalina $(CFLAGS) -C $(MODEL) $^ -o $@ $(LIBSW) -C NO_HMI
 
 # add this to the 'all' target
 all :: ws_client
@@ -207,7 +211,7 @@ all :: ws_client
 ws_server : ws_server$B
 
 ws_server$B  : ws_server.c
-	catalina $(CFLAGS) $^ -o $@ $(LIBSW) -C NO_HMI
+	catalina $(CFLAGS) -C $(MODEL) $^ -o $@ $(LIBSW) -C NO_HMI
 
 # add this to the 'all' target
 all :: ws_server
@@ -218,7 +222,7 @@ all :: ws_server
 ws_ap_client : ws_ap_client$B
 
 ws_ap_client$B  : ws_ap_client.c
-	catalina $(CFLAGS) $^ -o $@ $(LIBSW) -C NO_HMI
+	catalina $(CFLAGS) -C $(MODEL) $^ -o $@ $(LIBSW) -C NO_HMI
 
 # add this to the 'all' target
 all :: ws_ap_client
@@ -229,7 +233,7 @@ all :: ws_ap_client
 ws_ap_server : ws_ap_server$B
 
 ws_ap_server$B  : ws_ap_server.c
-	catalina $(CFLAGS) $^ -o $@ $(LIBSW) -C NO_HMI
+	catalina $(CFLAGS) -C $(MODEL) $^ -o $@ $(LIBSW) -C NO_HMI
 
 # add this to the 'all' target
 all :: ws_ap_server
@@ -240,7 +244,7 @@ all :: ws_ap_server
 http_client : http_client$B
 
 http_client$B  : http_client.c
-	catalina $(CFLAGS) $^ -o $@ $(LIBSW) -C NO_HMI
+	catalina $(CFLAGS) -C $(MODEL) $^ -o $@ $(LIBSW) -C NO_HMI
 
 # add this to the 'all' target
 all :: http_client
@@ -251,7 +255,7 @@ all :: http_client
 http_server : http_server$B
 
 http_server$B  : http_server.c
-	catalina $(CFLAGS) $^ -o $@ $(LIBSW) -C NO_HMI
+	catalina $(CFLAGS) -C $(MODEL) $^ -o $@ $(LIBSW) -C NO_HMI
 
 # add this to the 'all' target
 all :: http_server
@@ -262,7 +266,7 @@ all :: http_server
 http_ap_client : http_ap_client$B
 
 http_ap_client$B  : http_ap_client.c
-	catalina $(CFLAGS) $^ -o $@ $(LIBSW) -C NO_HMI
+	catalina $(CFLAGS) -C $(MODEL) $^ -o $@ $(LIBSW) -C NO_HMI
 
 # add this to the 'all' target
 all :: http_ap_client
@@ -273,7 +277,7 @@ all :: http_ap_client
 http_ap_server : http_ap_server$B
 
 http_ap_server$B  : http_ap_server.c
-	catalina $(CFLAGS) $^ -o $@ $(LIBSW) -C NO_HMI
+	catalina $(CFLAGS) -C $(MODEL) $^ -o $@ $(LIBSW) -C NO_HMI
 
 # add this to the 'all' target
 all :: http_ap_server
@@ -284,7 +288,7 @@ all :: http_ap_server
 tcp_client : tcp_client$B
 
 tcp_client$B  : tcp_client.c
-	catalina $(CFLAGS) $^ -o $@ $(LIBSW) -C NO_HMI
+	catalina $(CFLAGS) -C $(MODEL) $^ -o $@ $(LIBSW) -C NO_HMI
 
 # add this to the 'all' target
 all :: tcp_client
@@ -295,7 +299,7 @@ all :: tcp_client
 tcp_server : tcp_server$B
 
 tcp_server$B  : tcp_server.c
-	catalina $(CFLAGS) $^ -o $@ $(LIBSW) -C NO_HMI
+	catalina $(CFLAGS) -C $(MODEL) $^ -o $@ $(LIBSW) -C NO_HMI
 
 # add this to the 'all' target
 all :: tcp_server
@@ -306,7 +310,7 @@ all :: tcp_server
 wlua : wlua$B
 
 wlua$B: lua.c linit.c 
-	$(CC) -o $@ $(CFLAGS) $(LIBS) $^ -M1M 
+	$(CC) -o $@ $(CFLAGS) -C $(LUA_MODEL) $(LIBS) $^ -M1M 
 
 # add this to the 'all' target
 all :: wlua 
@@ -317,7 +321,7 @@ all :: wlua
 wluax : wluax$B
 
 wluax$B: luax.c linit.c
-	$(CC) -o $@ $(CFLAGS) $(LIBSX) $^ -M1M
+	$(CC) -o $@ $(CFLAGS) -C $(LUA_MODEL) $(LIBSX) $^ -M1M
 
 # add this to the 'all' target
 all :: wluax

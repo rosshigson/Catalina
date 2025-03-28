@@ -1,7 +1,7 @@
 This file contains a summary of changes to Catalina in recent releases. For
 information about installing and using Catalina, see the file README.md 
 
-Catalina release 8.5.1 is a full release.
+Catalina release 8.5.2 is a full release.
 
 WARNING: DO NOT INSTALL THIS RELEASE OVER A PRIOR VERSION OF CATALINA AND
 DO NOT LINK OR COMBINE PROGRAMS COMPILED WITH THIS VERSION WITH CODE (E.G. 
@@ -15,6 +15,48 @@ The following sections list the changes that have been made in releases
 you can skip the rest of this README and instead go straight to the Catalina 
 tutorial documents. For a complete list of all changes, see the "Catalina 
 Release History" in the documents folder.
+
+RELEASE 8.5.2
+
+New Functionality
+-----------------
+
+1. The build_all script and Makefile in demos/wifi now defaults to building
+   all programs in COMPACT mode on the Propeller 1 and NATIVE mode on the
+   Propeller 2, except for wlua and wluax, which are built in LARGE mode
+   on the Propeller 1 and COMPACT mode on the Propeller 2. This can be
+   overridden on the build_all command line.
+
+2. A new "extended" version of the 4 port serial plugin and library has been
+   added for the Propeller 1 which has 256 byte rx and tx buffers for each 
+   port. This  version is enabled by linking with the new libserial4x library 
+   (e.g. by using the command -lserial4x line option option). Note that the 
+   same include file (serial4.h) is used for the serial4 and serial4x plugins.
+   The serial4x plugin is now used when building the demos/wifi programs for 
+   the Propeller 1.
+
+Other Changes
+-------------
+
+1. Fixed bugs in the Propeller 1 WiFi core functions drvlow(), drvhigh(), 
+   input() and output() which prevented (for example) the wiFi_RESET() 
+   function working on the Propeller 1. Affected the Propeller 1 only.
+
+2. Fixed a bug in the 4 port serial plugin. The bit timing meant it would 
+   only work at low baud rates (e.g. 1200 baud) and/or when only a small 
+   number of characters was being transmitted and/or received at a time. 
+   Affected the Propeller 1 only.
+
+3. Some definitions were left out of the 2, 4 & 8 port serial include files 
+   (i.e. serial2.h, serial4.h, serial8.h) when the serial function names 
+   were unified to accommodate the generic serial include file (serial.h).
+   Affected the Propeller 1 and Propeller 2.
+
+4. The README.TXT file in demos/wifi has been updated with more detail on 
+   configuring programs to use the WiFi functionality on the Propeller 1, 
+   which is more complex than the same process on the Propeller 2, 
+   particularly for the Lua demos (wlua and wluax).
+
 
 RELEASE 8.5.1
 
