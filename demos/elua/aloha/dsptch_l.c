@@ -217,7 +217,7 @@ int rpc_call(char *ip, char *name,
                      t_printf("encoded data = '%s'\n", body);
                      t_printf("encoded length = %d\n", len);
 #endif                     
-                     // decode base64 data into ser_in
+                     // decode base64 data into ser_out
                      len = decode_buff(body, len, ser_out, len_out);
                      if (len >= 0) {
                         ser_out[len] = '\0';
@@ -440,6 +440,7 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
             if (res >= 0) {
                const char *out;
                unsigned int len;
+               len_in = res;
                svc_type = list[i].svc_type;
                if (svc_type == RPC_SVC) {
                   // execute function and return result
