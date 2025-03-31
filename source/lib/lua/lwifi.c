@@ -106,7 +106,6 @@ static const struct luaL_Reg luawifi_funcs[] = {
   { "POLL",      lwifi_POLL },
   { "CLOSE",     lwifi_CLOSE },
   { "CONNECT",   lwifi_CONNECT },
-  { "CLOSE",     lwifi_CLOSE },
   { "LISTEN",    lwifi_LISTEN },
   { "PGM",       lwifi_PGM },
   { "RESET",     lwifi_RESET },
