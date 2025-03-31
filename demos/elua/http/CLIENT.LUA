@@ -1,7 +1,7 @@
-print("client ...")
+print("client ...");
 
 -- load common defintions ...
-dofile 'common.lux'
+dofile 'common.lux';
 
 POLL_INTERVAL = 250;   -- milliseconds between polls
 
@@ -26,7 +26,7 @@ local result = 0;
 
 -- listen for HTTP requests on /prop ...
 local prop_handle = 0;
-result,prop_handle = listen(TKN_HTTP, "/prop");
+result,prop_handle = LISTEN(TKN_HTTP, "/prop");
 if result ~= 0 then
   print("LISTEN failed\n");
   os.exit(2);
@@ -36,7 +36,7 @@ end
 
 -- listen for HTTP requests on /prop/val ...
 local val_handle = 0;
-result,val_handle = listen(TKN_HTTP, "/prop/val");
+result,val_handle = LISTEN(TKN_HTTP, "/prop/val");
 if result ~= 0 then
   print("LISTEN failed\n");
   os.exit(3);
@@ -101,7 +101,7 @@ local get_prop_val = "";
 
 print("\nLua HTTP Master/Slave WiFi RPC Test\n");
 
-result,ip_addr = check("station-ipaddr");
+result,ip_addr = CHECK("station-ipaddr");
 if (result ~= 0) or (ip_addr == "0.0.0.0") then
   print("\nFailed to get IP address\n");
   os.exit(-1);
@@ -112,17 +112,17 @@ print("\nOpen a browser to http://" .. ip_addr .. "/prop\n\n");
 -- poll for events
 while true do
   propeller.msleep(POLL_INTERVAL);
-  result,event,handle,value = poll(0);
+  result,event,handle,value = POLL(0);
   if (event == "N") or (event == "S") or (event == "X") then
     -- nothing (this is normal)
   elseif event == "G" then
     if value == prop_handle then
       print("MASTER\n");
-      result = send(handle, 200, #get_prop, get_prop);
+      result = SEND_DATA(handle, 200, #get_prop, get_prop);
     elseif value == val_handle then
       prop_val = invoke(function(x) print("SLAVE\n"); return x+1; end, prop_val)
       get_prop_val = tostring(prop_val).."\n\n";
-      result = send(handle, 200, #get_prop_val, get_prop_val);
+      result = SEND_DATA(handle, 200, #get_prop_val, get_prop_val);
     else
       print("Uknown GET path");
     end

@@ -131,6 +131,7 @@ function get_row(serial)
    row = thisgen:get_row(y);
    if row and y == height then
      thisgen.drawn = true
+     collectgarbage();
    end
    return bs.serialize(row)
 end

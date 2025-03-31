@@ -31,8 +31,10 @@ and the following binaries for P2_WIFI:
 
    catapult rlua.c
    catapult rluax.c
-   catapult rluax2.c
+   catapult rlua2.c
+   catapult rlua2x.c
    catapult rluafx.c
+   catapult sluarfx.c
 
 They can also be compiled individually using Catapult. For example:
 
@@ -40,8 +42,10 @@ On Windows:
    set CATALINA_DEFINE=P2_WIFI
    catapult rlua.c
    catapult rluax.c
-   catapult rluax2.c
+   catapult rlua2.c
+   catapult rlua2x.c
    catapult rluafx.c
+   catapult sluarfx.c
 
 On Pi OS or Linux:
    export CATALINA_DEFINE=P2_WIFI
@@ -49,5 +53,6 @@ On Pi OS or Linux:
    catapult rluax.c
    catapult rluax2.c
    catapult rluafx.c
+   catapult rsluafx.c
 
 For full details on eLua and its variants, see the document 'Aloha from Lua'.

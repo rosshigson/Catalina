@@ -43,7 +43,7 @@
 #include <alloca.h>
 
 #define MAX_NAMELEN   12 // for DOS 8.3 file names
-#define MAX_SERVICES  20 // arbitrary
+#define MAX_SERVICES  50 // arbitrary
 
 #define DEFAULT_CLIENT "client.lua"
 #define DEFAULT_SERVER "server.lua"
@@ -69,7 +69,7 @@ typedef struct shared_data {
  * The client - calls services provided by the server                         *
  *                                                                            *
  ******************************************************************************/
-#pragma catapult secondary client(shared_data_t) address(0x13578) mode(CMM) stack(100000) options(-lthreads)
+#pragma catapult secondary client(shared_data_t) address(0xE758) mode(CMM) stack(120000) options(-lthreads)
 
 #include <lua.h>
 #include <lualib.h>

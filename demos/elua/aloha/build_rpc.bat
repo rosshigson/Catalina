@@ -42,9 +42,11 @@ move /Y rluax.bin rslavex.bin
 set CATALINA_DEFINE=P2_WIFI
 catapult rlua.c
 catapult rluax.c
-catapult rluax2.c
+catapult rlua2.c
+catapult rlua2x.c
 catapult rluasx.c
 catapult rluafx.c
+catapult sluarfx.c
 
 set CATALINA_DEFINE=
 :done

@@ -1,30 +1,23 @@
-#pragma catapult primary server binary(sluacix) mode(CMM) options(-W-w -p2 -O5 -lluax iinit.c dsptch_l.c aloha.c -lcix -lmc -lserial2 -C SIMPLE -C VT100 -C MHZ_200 -C CLOCK)
+#pragma catapult primary server binary(sluarfx) mode(NMM) options(-W-w -p2 -O5 -lluax xinit.c dsptch_l.c -lcx -lmc -lwifi -lserial2 -C SIMPLE -C VT100 -C MHZ_200 -C CLOCK -C PROTECT_PLUGINS -C ENABLE_PROPELLER -C DISABLE_SERIAL)
 /******************************************************************************
- *    A general-purpose Integer Lua Server (no client) for remote services.   *
+ *        A general-purpose Lua Server (no client) for RPC services.          *
  *                                                                            *
  * This program demonstrates executing a Lua server that dispatches service   *
  * calls made from a remote Lua secondary client. This program contains no    *
  * client of its own. Therefore it is not a multi-model program, and is able  *
- * to execute from Hub RAM (i.e. in NATIVE mode or COMPACT mode).             *
- *                                                                            *
- * NOTE: This program uses the integer version of the extended C library      *
- * (i.e. -lcix). This means that while the program can USE floating point     *
- * point, it has no floating point I/O capability. It also uses iinit.c,      *
- * which does not load the Lua 'math' or 'os' modules, so the functions       *
- * provided by those modules will be unavailable. This is done to maximize    *
- * the available Hub RAM.                                                     *
+ * to execute from Hub RAM.                                                   *
  *                                                                            *
  * Set the CATALINA_DEFINE environemnt variable to the appropriate platform   *
  * and then compile this program using Catapult - for example:                *
  *                                                                            *
- *   set CATALINA_DEFINE=P2_SLAVE                                             *
- *   catapult sluacix.c                                                       *
+ *   set CATALINA_DEFINE=P2_WIFI                                              *
+ *   catapult sluarfx.c                                                       *
  *                                                                            *
- * This program reads Lua programs from the files specified on the command    *
- * line. If no files are specified, it defaults to loading from the files     *
+ * This program reads Lua programs from the file specified on the command     *
+ * line. If no files are specified, it defaults to loading from the file      *
  * 'server.lux', which must be a compiled Lua binary file. For example:       *
  *                                                                            *
- *    sluacix server                                                          *
+ *    sluarfx server                                                          *
  *                                                                            *
  ******************************************************************************/
 
@@ -47,7 +40,6 @@
  * to the Lua functions specified in Lua_service_list                          *
  *                                                                            *
  ******************************************************************************/
-
 #include <lua.h>
 #include <lualib.h>
 #include <lauxlib.h>
@@ -69,9 +61,15 @@ int main(int argc, char *argv[]) {
    lua_State *L;
    char *server = NULL;
 
+#if !defined(__CATALINA_libthreads)
+   // make memory allocation safe (this is not done 
+   // automatically unless multi-threading is used)
+   _memory_set_lock(_locknew());
+#endif
+
    // process command line arguments
    if (argc > 1) {
-      if (strchr(argv[1], '.') == NULL) {
+      if (strchr(argv[2], '.') == NULL) {
          server = alloca(strlen(argv[1]) + 5);
          strcpy(server, argv[1]);
          strcat(server, DEFAULT_EXTN);
@@ -81,7 +79,7 @@ int main(int argc, char *argv[]) {
          strcpy(server, argv[1]);
       }
    }
-   // use default name if no arguments specified
+   // use default names if no arguments specified
    if (server == NULL) {
       server = alloca(MAX_NAMELEN + 1);
       strcpy(server, DEFAULT_SERVER);
@@ -99,7 +97,7 @@ int main(int argc, char *argv[]) {
    // put garbage collector in incremental mode, and make it more agressive
    lua_gc(L, LUA_GCINC, 105, 0);  /* GC in incremental mode */
    lua_gc(L, LUA_GCRESTART);  /* ensure GC is started */
-
+   
    // load the Lua code and execute it so Lua knows about the
    // functions that will be called when we dispatch
    result = luaL_loadfile(L, server) || lua_pcall(L, 0, 0 ,0);

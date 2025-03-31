@@ -18,20 +18,21 @@
  * and then compile this program using Catapult - for example:                *
  *                                                                            *
  *   set CATALINA_DEFINE=P2_WIFI                                              *
- *   catapult rluax2.c                                                        *
+ *   catapult rlua2.c                                                          *
  *                                                                            *
  * This program reads Lua programs from the files specified on the command    *
  * line. If no files are specified, it defaults to loading from the files     *
- * 'client.lux' and 'server.lux'.                                             *
+ * 'client.lua' and 'server.lua'. The client and server files can be either   *
+ * compiled Lua binary files or Lua text files.                               *
  *                                                                            *
  * To use RPC services, the program must be executed on TWO Propellers,       *
  * both equipped with WiFi modules. For example, on one Propeller execute:    *
  *                                                                            *
- *    rluax2 client.lux remote.lux                                            *
+ *    rlua2 client.lua remote.lua                                              *
  *                                                                            *
  * And on the other Propeller, execute:                                       *
  *                                                                            *
- *    rluax2 remote.lux server.lux                                            *
+ *    rlua2 remote.lua server.lua                                              *
  *                                                                            *
  * Note that if you modify the program, you may have to modify the address    *
  * specified in the secondary pragma - but the program will tell you what     *
@@ -39,7 +40,7 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma catapult common options(-W-w -p2 -C CONST_ARGS -C SIMPLE -C VT100 -O5 -C MHZ_200 -C CLOCK -lcx -lmc -lwifi -lserial2 -lluax -C ENABLE_PROPELLER -C DISABLE_SERIAL xinit.c)
+#pragma catapult common options(-W-w -p2 -C CONST_ARGS -C SIMPLE -C VT100 -C MHZ_200 -C CLOCK -O5 -lcx -lmc -llua -C ENABLE_PROPELLER -C DISABLE_SERIAL linit.c)
 
 #include <catapult.h>
 #include <service.h>
@@ -48,11 +49,11 @@
 #include <alloca.h>
 
 #define MAX_NAMELEN   12 // for DOS 8.3 file names
-#define MAX_SERVICES  20 // arbitrary
+#define MAX_SERVICES  50 // arbitrary
 
-#define DEFAULT_CLIENT "client.lux"
-#define DEFAULT_SERVER "server.lux"
-#define DEFAULT_EXTN   ".lux"
+#define DEFAULT_CLIENT "client.lua"
+#define DEFAULT_SERVER "server.lua"
+#define DEFAULT_EXTN   ".lua"
 
 #define DEFAULT_BG "background"
 
@@ -74,7 +75,7 @@ typedef struct shared_data {
  * The client - calls services provided by the server                         *
  *                                                                            *
  ******************************************************************************/
-#pragma catapult secondary client(shared_data_t) address(0x15358) mode(CMM) stack(150000) options(-lthreads)
+#pragma catapult secondary client(shared_data_t) address(0xE6D0) mode(CMM) stack(150000) options(-lthreads)
 
 #include <lua.h>
 #include <lualib.h>
@@ -121,7 +122,7 @@ void client(shared_data_t *s) {
  * to the Lua functions specified in Lua_service_list                          *
  *                                                                            *
  ******************************************************************************/
-#pragma catapult primary server binary(rluax2) mode(XMM) options(dsptch_l.c)
+#pragma catapult primary server binary(rlua2) mode(XMM) options(dsptch_l.c -lserial2 -lwifi)
 
 #include <lua.h>
 #include <lualib.h>

@@ -5,6 +5,12 @@
  * dispatches service calls made from a Lua secondary client executing        * 
  * from Hub RAM.                                                              *
  *                                                                            *
+ * NOTE THAT THIS PROGRAM DISABLES ALOHA SERIAL SUPPORT - it supports         *
+ * only Wifi RPC services. Doing this saves some Hub RAM because the ALOHA    *
+ * protocol code is not required, and it also allows the use of the 2-port    *
+ * serial plugin instead of the 8 port serial plugin, which saves additional  *
+ * Hub RAM.                                                                   *
+ *                                                                            *
  * The WiFi configuration (SSID, PASSPHRASE and IP Addresses) must be         *
  * configured in the table 'rpc_network' to use the RPC capabilities.         *
  *                                                                            *
@@ -12,7 +18,7 @@
  * and then compile this program using Catapult - for example:                *
  *                                                                            *
  *   set CATALINA_DEFINE=P2_WIFI                                              *
- *   catapult rluax.c                                                         *
+ *   catapult rlua2x.c                                                        *
  *                                                                            *
  * This program reads Lua programs from the files specified on the command    *
  * line. If no files are specified, it defaults to loading from the files     *
@@ -21,11 +27,11 @@
  * To use RPC services, the program must be executed on TWO Propellers,       *
  * both equipped with WiFi modules. For example, on one Propeller execute:    *
  *                                                                            *
- *    rluax client.lux remote.lux                                             *
+ *    rlua2x client.lux remote.lux                                            *
  *                                                                            *
  * And on the other Propeller, execute:                                       *
  *                                                                            *
- *    rluax remote.lux server.lux                                             *
+ *    rlua2x remote.lux server.lux                                            *
  *                                                                            *
  * Note that if you modify the program, you may have to modify the address    *
  * specified in the secondary pragma - but the program will tell you what     *
@@ -33,7 +39,7 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma catapult common options(-W-w -p2 -C CONST_ARGS -C SIMPLE -C VT100 -O5 -C MHZ_200 -C CLOCK -lcx -lmc -lwifi -lserial8 -lluax -C ENABLE_PROPELLER aloha.c xinit.c)
+#pragma catapult common options(-W-w -p2 -C CONST_ARGS -C SIMPLE -C VT100 -O5 -C MHZ_200 -C CLOCK -lcx -lmc -lluax -C ENABLE_PROPELLER -C DISABLE_SERIAL xinit.c)
 
 #include <catapult.h>
 #include <service.h>
@@ -68,7 +74,7 @@ typedef struct shared_data {
  * The client - calls services provided by the server                         *
  *                                                                            *
  ******************************************************************************/
-#pragma catapult secondary client(shared_data_t) address(0x111A0) mode(CMM) stack(150000) options(-lthreads)
+#pragma catapult secondary client(shared_data_t) address(0x18648) mode(CMM) stack(150000) options(-lthreads)
 
 #include <lua.h>
 #include <lualib.h>
@@ -115,7 +121,7 @@ void client(shared_data_t *s) {
  * to the Lua functions specified in Lua_service_list                          *
  *                                                                            *
  ******************************************************************************/
-#pragma catapult primary server binary(rluax) mode(XMM) options(dsptch_l.c)
+#pragma catapult primary server binary(rlua2x) mode(XMM) options(dsptch_l.c -lwifi -lserial2)
 
 #include <lua.h>
 #include <lualib.h>

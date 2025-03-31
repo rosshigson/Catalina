@@ -42,7 +42,7 @@
 #include <alloca.h>
 
 #define MAX_NAMELEN   12 // for DOS 8.3 file names
-#define MAX_SERVICES  20 // arbitrary
+#define MAX_SERVICES  50 // arbitrary
 
 #define DEFAULT_CLIENT "client.lux"
 #define DEFAULT_SERVER "server.lux"

@@ -17,7 +17,7 @@
  * line. If no files are specified, it defaults to loading from the files     *
  * 'server.lux', which must be a compiled Lua binary file. For example:       *
  *                                                                            *
- *    sluafx server.lux                                                       *
+ *    sluafx server                                                           *
  *                                                                            *
  ******************************************************************************/
 
@@ -27,7 +27,7 @@
 #include <alloca.h>
 
 #define MAX_NAMELEN   12 // for DOS 8.3 file names
-#define MAX_SERVICES  20 // arbitrary
+#define MAX_SERVICES  50 // arbitrary
 
 #define DEFAULT_SERVER "server.lux"
 #define DEFAULT_EXTN   ".lux"

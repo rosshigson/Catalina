@@ -1,7 +1,7 @@
 This file contains a summary of changes to Catalina in recent releases. For
 information about installing and using Catalina, see the file README.md 
 
-Catalina release 8.5.2 is a full release.
+Catalina release 8.5.3 is a full release.
 
 WARNING: DO NOT INSTALL THIS RELEASE OVER A PRIOR VERSION OF CATALINA AND
 DO NOT LINK OR COMBINE PROGRAMS COMPILED WITH THIS VERSION WITH CODE (E.G. 
@@ -15,6 +15,41 @@ The following sections list the changes that have been made in releases
 you can skip the rest of this README and instead go straight to the Catalina 
 tutorial documents. For a complete list of all changes, see the "Catalina 
 Release History" in the documents folder.
+
+RELEASE 8.5.3
+
+New Functionality
+-----------------
+
+1. A new eLua variant (sluarfx.c) has been added which can be used when
+   a slave WiFi RPC propeller needs only a server and not a client. This 
+   variant executes the server in Hub RAM, making it significantly faster 
+   for Lua servers small enough to fit.
+
+2. A new eLua variant (rlua2.c) has been added which includes only WiFi RPC 
+   support and omits Serial ALOHA support. This allows it to omit the aloha 
+   protocol code, and also use the 2 port serial plugin in place of the 8 
+   port serial plugin, which saves Hub RAM. This variant includes the Lua 
+   parser. The corresponding variant that omits the Lua parser has been 
+   renamed as rlua2x.c for consistency (it was previously named rluax2.c).
+
+3. The eLua WiFi RPC HTTP demo (demos/eLua/http) now includes a complete set 
+   of definitions for all the Lua WiFi functions. As demonstated by the demo,
+   these allow a client Lua program to use the WiFi functions even though 
+   those functions are implemented in the server, not in the client.
+
+4. The MAX_SERVICES constant in all the eLua/ALOHA variants has been increased
+   from 20 to 50. This number is arbitrary, but it has been expanded to 50 to
+   accomodate the 20 WiFi services in the updated HTTP demo (demos/elua/http).
+   It can be increased futher if required.
+
+Other Changes
+-------------
+
+1. The eLua/ALOHA custom dispatcher was not using the correct length of the
+   RPC data it pushed onto the Lua stack when processing an RPC call. This may
+   have led to RPC call failing or Lua running out of memory when processing
+   the RPC call.
 
 RELEASE 8.5.2
 
