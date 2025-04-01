@@ -44,7 +44,6 @@ catapult rlua.c
 catapult rluax.c
 catapult rlua2.c
 catapult rlua2x.c
-catapult rluasx.c
 catapult rluafx.c
 catapult sluarfx.c
 

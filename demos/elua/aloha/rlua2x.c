@@ -22,7 +22,8 @@
  *                                                                            *
  * This program reads Lua programs from the files specified on the command    *
  * line. If no files are specified, it defaults to loading from the files     *
- * 'client.lux' and 'server.lux'.                                             *
+ * 'client.lux' and 'server.lux'. The files must be compiled, because neither *
+ * the client nor server load a Lua parser.                                   *
  *                                                                            *
  * To use RPC services, the program must be executed on TWO Propellers,       *
  * both equipped with WiFi modules. For example, on one Propeller execute:    *
