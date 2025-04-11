@@ -90,7 +90,7 @@ end
 -- this service retrieves incoming HTTP body or Websocket data ...
 function RECV(serial)
   handle,max,data,size = bs.deserializeN(serial, 4);
-  return bs.serialize(wifi.RECV_DATA(handle, max, data, size));
+  return bs.serialize(wifi.RECV(handle, max, data, size));
 end
 
 -- this service sends WebSocket/TCP or extended HTTP body data (after a REPLY) ...
