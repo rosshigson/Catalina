@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Catalina with jQuery</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <link href="/files/jquery.simplegauge.css" type="text/css" rel="stylesheet">
+  <script src="/files/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/files/jquery.simplegauge.js" type="text/javascript"></script>
+</head>
+<body>
+  <div id="container">
+  <h1>Catalina/jQuery Integration</h1>
+  <hr />
+  <!-- SimpleGuage -->
+  <h2>Analog/Digital Gauge</h2>
+  Displays value sent from the propeller:
+  <table>
+  <tr><td style="vertical-align: top;">
+    <div id="demoGauge"></div>
+    <script>
+    $(document).ready(function() {
+      $('#demoGauge').simpleGauge({
+        value:  0.0,
+        min:    0,
+        max:    10,
+
+        type:   'analog digital', // enable one or the other, or both
+        title: {
+          text:   'Value x 100',
+          style:  'color: #555; font-size: 20px; padding: 10px;'
+        },
+        digital: {
+          text:   '{value.3}', // value with number of decimals
+          style:  'color: auto; font-size: 35px;'
+        },
+        analog: {
+          minAngle:   -150,
+          maxAngle:   150
+        },
+        labels: {
+          text:   '{value.1}', // value with number of decimals
+          count:  10,
+          scale:  73,
+          style:  'font-size: 20px;'
+        },
+        ticks: {
+          count:  10,
+          scale1: 84,
+          scale2: 93,
+          style:  'width: 2px; color: #999;'
+        },
+        subTicks: {
+          count:  5,
+          scale1: 93,
+          scale2: 96,
+          style:  'width: 1px; color: #bbb;'
+        },
+        bars: {
+          scale1: 88,
+          scale2: 94,
+          style:  '',
+          colors: [
+            [ 0,   '#666666', 91, 92 ],
+            [ 1.0, '#378618', 0, 0 ],
+            [ 5.0, '#ffa500', 0, 0 ],
+            [ 6.5, '#dd2222', 0, 0 ]
+          ]
+        },
+        pointer: {
+          scale: 95,
+          style: 'color: #ee0; opacity: 0.5; filter: drop-shadow(-3px 3px 2px rgba(0, 0, 0, .7));'
+        }
+      });
+    });
+    </script>
+    <style>
+    #demoGauge {
+      width:  15em;
+      height: 15em;
+      margin: 1em 0 1em 0.3em;
+    }
+    </style>
+
+    <!-- get value demo -->
+    <button id="getValue">Get a single value</button>
+    <!-- animation demo -->
+    <button id="runAnimation">Start Animation</button>
+    <script>
+    $(document).ready(function() {
+      let runAnimation = false;
+      let gaugeTimerId;
+      function setGaugeValue(value) {
+        $('#demoGauge').simpleGauge('setValue', value / 100);
+      }
+      function httpGet(path, callback) {
+        var req = new XMLHttpRequest();
+        req.open("GET", path, true); 
+        req.onreadystatechange = function() { 
+          if (req.readyState == 4) 
+            if (req.status == 200) {
+              callback(req.responseText);
+            }
+            else {
+               console.log("NOT OK");
+            }
+        };
+        req.send();
+      }
+      function httpGetTimed() {
+         httpGet("/gauge/val", setGaugeValue);
+         if (runAnimation) {
+           setTimeout(httpGetTimed, 1000);
+         }
+      }
+      $(document).on('click', '#getValue', function() {
+        httpGet("/gauge/val", setGaugeValue);
+      }); 
+      $(document).on('click', '#runAnimation', function() {
+        runAnimation = runAnimation ? false : true;
+        if(gaugeTimerId) {
+          clearTimeout(gaugeTimerId);
+        }
+        if(runAnimation) {
+          $('#runAnimation').text('Stop Animation');
+          gaugeTimerId = setTimeout(httpGetTimed, 1000);
+        } else {
+          $('#runAnimation').text('Start Animation');
+        }
+      });
+    });
+    </script>
+    <div style="width: 21em; height: 1px;"></div>
+  </td><td>&nbsp;</td><td style="vertical-align: top;">
+  </td></tr></table>
+  <hr />
+  <!-- Radio Button -->
+  <h2 class="demoHeaders">Radio Button</h2>
+  Sends selected option to propeller:
+  <form style="margin-top: 1em;">
+    <div id="radioset">
+      <label><input type="radio" id="radio1" name="radio" value="Option 1">Option 1</label>
+      <label><input type="radio" id="radio2" name="radio" value="Option 2">Option 2</label>
+      <label><input type="radio" id="radio3" name="radio" value="Option 3">Option 3</label>
+      <script>
+        $(document).ready(function() {
+          $('input:radio[name=radio]:checked').prop('checked', false).checkboxradio("refresh");
+        });
+        function checkedValue() {
+          return $('input[name=radio]:checked', '#radioset').val();
+        }
+        function httpPost(path, data) {
+          // alert(data);
+          var req = new XMLHttpRequest();
+          req.open("POST", path, true);
+          req.setRequestHeader('Content-type', 'text/plain');
+          req.send(data);
+          req.onload = function() {
+            // do something with the response
+            console.log(this.responseText);
+          };
+        }
+        $('#radioset input').on('change', function() {
+          httpPost("/gauge/radio", checkedValue());
+        });
+      </script>
+    </div>
+  </form>
+  </div>
+</body>
+</html>
+

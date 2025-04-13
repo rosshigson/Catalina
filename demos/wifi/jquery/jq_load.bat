@@ -1,0 +1,28 @@
+@echo off
+
+if "%1"=="" goto no_parameters
+@echo on
+curl -d '' http://%1/userfs/format
+curl --data-binary @jquery.js http://%1/userfs/write?file=jquery.js
+curl --data-binary @jquery-ui.css http://%1/userfs/write?file=jquery-ui.css
+curl --data-binary @jquery-ui.js http://%1/userfs/write?file=jquery-ui.js
+curl --data-binary @jquery-ui.structure.css http://%1/userfs/write?file=jquery-ui.structure.css
+curl --data-binary @jquery-ui.theme.css http://%1/userfs/write?file=jquery-ui.theme.css
+curl --data-binary @jquery.simplegauge.css http://%1/userfs/write?file=jquery.simplegauge.css
+curl --data-binary @jquery.simplegauge.js http://%1/userfs/write?file=jquery.simplegauge.js
+curl --data-binary @ui-icons_444444_256x240.png http://%1/userfs/write?file=ui-icons_444444_256x240.png
+curl --data-binary @ui-icons_555555_256x240.png http://%1/userfs/write?file=ui-icons_555555_256x240.png
+curl --data-binary @ui-icons_777620_256x240.png http://%1/userfs/write?file=ui-icons_777620_256x240.png
+curl --data-binary @ui-icons_777777_256x240.png http://%1/userfs/write?file=ui-icons_777777_256x240.png
+curl --data-binary @ui-icons_cc0000_256x240.png http://%1/userfs/write?file=ui-icons_cc0000_256x240.png
+curl --data-binary @ui-icons_ffffff_256x240.png http://%1/userfs/write?file=ui-icons_ffffff_256x240.png
+@echo off
+goto done
+
+:no_parameters
+echo.
+echo usage: %0 ip_address
+echo e.g.   %0 192.168.1.117
+echo.
+
+:done

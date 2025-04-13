@@ -34,6 +34,9 @@ to demonstrate the many ways the Propeller WiFi module can be used:
    luax.c           - Lua Execution engine with WiFi support enabled ****
    testhttp.lua     - a Lua demo program similar to testhttp.c ****
 
+   gauge.lua        - A Lua demo of a custom widget *****
+   gauge.htm        - the HTML code for the above demo *****
+
 * These programs require the client to be running on a PC, and the server to
 be running on a propeller (or vice_versa). TCP cannot be used to communicate 
 between a client and a server both running on a propeller even when both have 
@@ -58,6 +61,9 @@ the WiFi module and the Lua demo program, which must be executed with a
 version of Lua called wlua (also included) which loads the necessary serial 
 comms and wifi support modules.
 
+***** This demo requires the jQuery files be loaded into the WiFi adaptor.
+See the README.TXT document in the jquery folder.
+
 See the source code for more details on each of the programs, and how to 
 configure and use them.
 
@@ -74,7 +80,7 @@ to communicate with both the WiFi module and the user. This means that the
 usual C stdio functions (printf() etc) are not available - instead, use 
 the serial comms library functions (s_str() etc). However, the WiFi 
 library does include two stdio-like functions useful for building and 
-decoding strings used to communicate with the adapter from C programs:
+decoding strings used to communicate with the adaptor from C programs:
 
    isprintf() : an integer version of the stdio sprintf() function.
    isscanf()  : an integer version of the stdio sscanf() function.
