@@ -1,5 +1,5 @@
 -- set these to suit the local WiFi network ...
-local SSID = "MyNetwork";
+local SSID       = "MyNetwork";
 local PASSPHRASE = "TellMeASecret";
 
 wifi = require "wifi";
@@ -45,6 +45,7 @@ local get_gauge_val = "";
 local gauge_timer = 0;
 local gauge_handle = 0;
 
+-- initialize WiFi module
 result = AUTO();
 if result ~= 0 then                                                          
    print("Initialization failed, result = " .. result .. "\n");
@@ -131,7 +132,7 @@ while true do
       print("Sending " .. gauge_val);
       result = SEND_DATA(handle, 200, #get_gauge_val, get_gauge_val);
     else
-      print("Unkown GET path = '" .. path .. "'");
+      print("Unknown GET path = '" .. path .. "'");
     end
   elseif event == "P" then
     result,path = PATH(handle);
@@ -143,10 +144,11 @@ while true do
       print("Received " .. data);
       result = REPLY(handle, 200, 2, 2, "OK");
     else
-      print("Unkown POST path = '" .. path .. "'");
+      print("Unknown POST path = '" .. path .. "'");
     end
   else
     print("Unexpected event = '" .. event .. "'");
   end
+    collectgarbage();
 end
 

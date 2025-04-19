@@ -472,9 +472,10 @@ If, instead, the output looks like this ...
 
    ... etc ...
 
-then you need to update the firmware in your WiFi module if you need to use 
-TCP. Refer to ESP_Reload_FS_and_FW_Catalina.zip for the updated firmware and 
-installation instructions.
+Or the output simply stops after a few seconds, then you need to update the 
+firmware in your WiFi module if you need to use TCP. The updated firmware
+is in the file ESP_Reload_FS_and_FW_Catalina.zip - it contains the updated 
+firmware and installation instructions.
 
 The firmware update is also required if you need propellers to talk to each
 other directly using HTTP or WebSockets (it is not required if the propellers
