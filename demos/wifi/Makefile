@@ -141,13 +141,15 @@ CFLAGS += -C $(CLOCK) -C NO_MOUSE -W-w
 
 ifeq ($(P2), TRUE)
 	# could use -lserial8 here ...
-  LIBS  = -lwifi -lmc -lcx -llua -lserial2
-  LIBSX = -lwifi -lmc -lcx -lluax -lserial2
-  LIBSW = -lwifi -lci -lserial2
+  LIBS   = -lwifi -lmc -lcx -llua -lserial2
+  LIBSX  = -lwifi -lmc -lcx -lluax -lserial2
+  LIBSW  = -lwifi -lci -lserial2
+  LIBSWX = -lwifi -lmc -lcx -lserial2
 else
-  LIBS  = -lwifi -lm -lcx -llua -lserial4x
-  LIBSX = -lwifi -lm -lcx -lluax -lserial4x
-  LIBSW = -lwifi -lci -lserial4x
+  LIBS   = -lwifi -lm -lcx -llua -lserial4x
+  LIBSX  = -lwifi -lm -lcx -lluax -lserial4x
+  LIBSW  = -lwifi -lci -lserial4x
+  LIBSWX = -lwifi -lm -lcx -lserial4x
 endif
 
 #set up pattern rules
@@ -193,6 +195,17 @@ testhttp$B  : testhttp.c
 
 # add this to the 'all' target
 all :: testhttp
+
+# =============
+
+.PHONY : gauge
+gauge : gauge$B
+
+gauge$B: gauge.c 
+	catalina $(CFLAGS) -C $(MODEL) $^ -o $@ $(LIBSWX)
+
+# add this to the 'all' target
+all :: gauge
 
 # =============
 

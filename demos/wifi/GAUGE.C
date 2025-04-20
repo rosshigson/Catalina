@@ -11,6 +11,37 @@
 
 #define POLL_INTERVAL 250   // milliseconds between polls
 
+// Propeller 1 specific configuration 
+
+#ifndef __CATALINA_P2
+
+// pin functions - these are required on the Propeller 1 only, because
+// on the Propeller 2 we have direct access to the PASM in the platform
+// configuration files, where the pins are defined. but we do not have 
+// that on the Propeller 1. If the pin is not connected, these functions 
+// should return -1:
+
+int wifi_DO_PIN() {
+   return 31;
+}
+
+int wifi_DI_PIN() {
+   return 30;
+}
+
+int wifi_PGM_PIN() {
+   return -1; // if not used, return -1
+}
+
+int wifi_RES_PIN() {
+   return -1; // if not used, return -1
+}
+
+int wifi_BRK_PIN() {
+   return -1; // if not used, return -1
+}
+
+#endif
 
 int SEND_FILE(int handle, int rcode, char *name) {
    FILE *f;

@@ -34,8 +34,9 @@ to demonstrate the many ways the Propeller WiFi module can be used:
    luax.c           - Lua Execution engine with WiFi support enabled ****
    testhttp.lua     - a Lua demo program similar to testhttp.c ****
 
-   gauge.lua        - A Lua demo of a custom widget *****
-   gauge.htm        - the HTML code for the above demo *****
+   gauge.lua        - A Lua demo of a custom jQuery widget *****
+   gauge.c          - A C demo of a custom jQuery widget *****
+   gauge.htm        - the HTML code for the above demos *****
 
 * These programs require the client to be running on a PC, and the server to
 be running on a propeller (or vice_versa). TCP cannot be used to communicate 
@@ -61,8 +62,11 @@ the WiFi module and the Lua demo program, which must be executed with a
 version of Lua called wlua (also included) which loads the necessary serial 
 comms and wifi support modules.
 
-***** This demo requires the jQuery files be loaded into the WiFi adaptor.
-See the README.TXT document in the jquery folder.
+***** These demos require the jQuery files be loaded into the WiFi adaptor.
+See the README.TXT document in the jquery folder. Also, they do not use
+config.h, so the SSID and PASSPHRASE will have to be manually edited in both
+gauge.c and gauge.lua.
+
 
 See the source code for more details on each of the programs, and how to 
 configure and use them.
@@ -109,6 +113,18 @@ configured:
    pins 56 .. 63 are used instead then port 1 will be unavailable and port 0 
    must be used for both WiFi communications and user interaction. Edit 
    "config.h" and set USER_PORT to 0.
+
+   For a P1, the programs expect the WiFi module to be installed on pins
+   30 & 31. Otherwise, at least the following Propeller 1 pin configuration 
+   functions will need to be modified in each of the C programs:
+      wifi_DO_PIN()
+      wifi_DI_PIN()
+
+   For a P1, some programs can be built in TINY (the default) or COMPACT mode, 
+   but some require XMM (SMALL or LARGE) mode. For example, to build all the 
+   programs on a C3, you might use XMM SMALL mode as follows:
+
+      build_all C3 TTY SMALL CACHED_1K
 
 3. Edit tcp_client.c and pc_tcp_client.c to modify the value of the following:
 
