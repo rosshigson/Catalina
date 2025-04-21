@@ -34,6 +34,7 @@
                                       // (NOTE: http => must be wifi_DATA_SIZE)
 #define IP_RETRIES      30   // times to retry to get a valid IP addr
 #define IP_RETRY_SECS    3   // seconds between retries
+#define POLL_INTERVAL  250   // msecs between WiFi Polls
 #define RETRY_INTERVAL 200   // msecs between RPC reply polls
 #define REPLY_RETRIES (5*1000/RETRY_INTERVAL) // max 5 seconds for RPC reply
 #define WIFI_INFO        1   // 1 to display WiFi info messages
@@ -324,6 +325,7 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
       if ((port < 0) && (wifi_listening)) {
 #if defined(__CATALINA_libwifi)
         wifi_POLL(0, &event, &handle, &value);
+        _waitms(POLL_INTERVAL);
 #endif        
       }
       // check for registry requests
