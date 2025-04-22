@@ -8,8 +8,11 @@ use of the WiFi/RPC capabilities in the web code, so it can be executed on a
 single Propeller. It DOES, however, make use of the eLua client/server 
 architecture to (for example) allow the client code to execute from Hub RAM
 while the web server code executes from XMM RAM, so the client can execute 
-faster by executing the program using rlua2x or rluafx (although it CAN also 
-be executed with rlua or rluax).
+fast (by executing the program using rlua2x or rluafx, although it CAN also 
+be executed with rlua or rluax) while the server executes more slowly but 
+from XMM RAM. This allows the program to be larger than if the whole program 
+were executed from Hub RAM, but faster than if the whole program were executed
+from XMM RAM.
 
 The appropriate WiFi SSID and PASSPHRASE must be configured in the rpc_network
 table in the server files (remote.lua, server.lua and serverbg.lua). See the 
