@@ -14,41 +14,41 @@ DAT ' initialized data segment
 
  alignl ' align long
 C__sys_errlist ' <symbol:_sys_errlist>
- long @C_s4tg_67e4d6ed_1_L000002
- long @C_s4tg1_67e4d6ed_3_L000004
- long @C_s4tg2_67e4d6ed_5_L000006
- long @C_s4tg3_67e4d6ed_7_L000008
- long @C_s4tg4_67e4d6ed_9_L000010
- long @C_s4tg5_67e4d6ed_11_L000012
- long @C_s4tg6_67e4d6ed_13_L000014
- long @C_s4tg7_67e4d6ed_15_L000016
- long @C_s4tg8_67e4d6ed_17_L000018
- long @C_s4tg9_67e4d6ed_19_L000020
- long @C_s4tga_67e4d6ed_21_L000022
- long @C_s4tgb_67e4d6ed_23_L000024
- long @C_s4tgc_67e4d6ed_25_L000026
- long @C_s4tgd_67e4d6ed_27_L000028
- long @C_s4tge_67e4d6ed_29_L000030
- long @C_s4tgf_67e4d6ed_31_L000032
- long @C_s4tgg_67e4d6ed_33_L000034
- long @C_s4tgh_67e4d6ed_35_L000036
- long @C_s4tgi_67e4d6ed_37_L000038
- long @C_s4tgj_67e4d6ed_39_L000040
- long @C_s4tgk_67e4d6ed_41_L000042
- long @C_s4tgl_67e4d6ed_43_L000044
- long @C_s4tgm_67e4d6ed_45_L000046
- long @C_s4tgn_67e4d6ed_47_L000048
- long @C_s4tgo_67e4d6ed_49_L000050
- long @C_s4tgp_67e4d6ed_51_L000052
- long @C_s4tgq_67e4d6ed_53_L000054
- long @C_s4tgr_67e4d6ed_55_L000056
- long @C_s4tgs_67e4d6ed_57_L000058
- long @C_s4tgt_67e4d6ed_59_L000060
- long @C_s4tgu_67e4d6ed_61_L000062
- long @C_s4tgv_67e4d6ed_63_L000064
- long @C_s4tg10_67e4d6ed_65_L000066
- long @C_s4tg11_67e4d6ed_67_L000068
- long @C_s4tg12_67e4d6ed_69_L000070
+ long @C_sdoo_67ea4039_1_L000002
+ long @C_sdoo1_67ea4039_3_L000004
+ long @C_sdoo2_67ea4039_5_L000006
+ long @C_sdoo3_67ea4039_7_L000008
+ long @C_sdoo4_67ea4039_9_L000010
+ long @C_sdoo5_67ea4039_11_L000012
+ long @C_sdoo6_67ea4039_13_L000014
+ long @C_sdoo7_67ea4039_15_L000016
+ long @C_sdoo8_67ea4039_17_L000018
+ long @C_sdoo9_67ea4039_19_L000020
+ long @C_sdooa_67ea4039_21_L000022
+ long @C_sdoob_67ea4039_23_L000024
+ long @C_sdooc_67ea4039_25_L000026
+ long @C_sdood_67ea4039_27_L000028
+ long @C_sdooe_67ea4039_29_L000030
+ long @C_sdoof_67ea4039_31_L000032
+ long @C_sdoog_67ea4039_33_L000034
+ long @C_sdooh_67ea4039_35_L000036
+ long @C_sdooi_67ea4039_37_L000038
+ long @C_sdooj_67ea4039_39_L000040
+ long @C_sdook_67ea4039_41_L000042
+ long @C_sdool_67ea4039_43_L000044
+ long @C_sdoom_67ea4039_45_L000046
+ long @C_sdoon_67ea4039_47_L000048
+ long @C_sdooo_67ea4039_49_L000050
+ long @C_sdoop_67ea4039_51_L000052
+ long @C_sdooq_67ea4039_53_L000054
+ long @C_sdoor_67ea4039_55_L000056
+ long @C_sdoos_67ea4039_57_L000058
+ long @C_sdoot_67ea4039_59_L000060
+ long @C_sdoou_67ea4039_61_L000062
+ long @C_sdoov_67ea4039_63_L000064
+ long @C_sdoo10_67ea4039_65_L000066
+ long @C_sdoo11_67ea4039_67_L000068
+ long @C_sdoo12_67ea4039_69_L000070
 
 ' Catalina Export _sys_nerr
 
@@ -61,7 +61,7 @@ C__sys_nerr ' <symbol:_sys_nerr>
 DAT ' const data segment
 
  alignl ' align long
-C_s4tg12_67e4d6ed_69_L000070 ' <symbol:69>
+C_sdoo12_67ea4039_69_L000070 ' <symbol:69>
  byte 82
  byte 101
  byte 115
@@ -81,7 +81,7 @@ C_s4tg12_67e4d6ed_69_L000070 ' <symbol:69>
  byte 0
 
  alignl ' align long
-C_s4tg11_67e4d6ed_67_L000068 ' <symbol:67>
+C_sdoo11_67ea4039_67_L000068 ' <symbol:67>
  byte 77
  byte 97
  byte 116
@@ -98,7 +98,7 @@ C_s4tg11_67e4d6ed_67_L000068 ' <symbol:67>
  byte 0
 
  alignl ' align long
-C_s4tg10_67e4d6ed_65_L000066 ' <symbol:65>
+C_sdoo10_67ea4039_65_L000066 ' <symbol:65>
  byte 66
  byte 114
  byte 111
@@ -113,7 +113,7 @@ C_s4tg10_67e4d6ed_65_L000066 ' <symbol:65>
  byte 0
 
  alignl ' align long
-C_s4tgv_67e4d6ed_63_L000064 ' <symbol:63>
+C_sdoov_67ea4039_63_L000064 ' <symbol:63>
  byte 84
  byte 111
  byte 111
@@ -131,7 +131,7 @@ C_s4tgv_67e4d6ed_63_L000064 ' <symbol:63>
  byte 0
 
  alignl ' align long
-C_s4tgu_67e4d6ed_61_L000062 ' <symbol:61>
+C_sdoou_67ea4039_61_L000062 ' <symbol:61>
  byte 82
  byte 101
  byte 97
@@ -156,7 +156,7 @@ C_s4tgu_67e4d6ed_61_L000062 ' <symbol:61>
  byte 0
 
  alignl ' align long
-C_s4tgt_67e4d6ed_59_L000060 ' <symbol:59>
+C_sdoot_67ea4039_59_L000060 ' <symbol:59>
  byte 73
  byte 108
  byte 108
@@ -172,7 +172,7 @@ C_s4tgt_67e4d6ed_59_L000060 ' <symbol:59>
  byte 0
 
  alignl ' align long
-C_s4tgs_67e4d6ed_57_L000058 ' <symbol:57>
+C_sdoos_67ea4039_57_L000058 ' <symbol:57>
  byte 78
  byte 111
  byte 32
@@ -199,7 +199,7 @@ C_s4tgs_67e4d6ed_57_L000058 ' <symbol:57>
  byte 0
 
  alignl ' align long
-C_s4tgr_67e4d6ed_55_L000056 ' <symbol:55>
+C_sdoor_67ea4039_55_L000056 ' <symbol:55>
  byte 70
  byte 105
  byte 108
@@ -217,7 +217,7 @@ C_s4tgr_67e4d6ed_55_L000056 ' <symbol:55>
  byte 0
 
  alignl ' align long
-C_s4tgq_67e4d6ed_53_L000054 ' <symbol:53>
+C_sdooq_67ea4039_53_L000054 ' <symbol:53>
  byte 84
  byte 101
  byte 120
@@ -235,7 +235,7 @@ C_s4tgq_67e4d6ed_53_L000054 ' <symbol:53>
  byte 0
 
  alignl ' align long
-C_s4tgp_67e4d6ed_51_L000052 ' <symbol:51>
+C_sdoop_67ea4039_51_L000052 ' <symbol:51>
  byte 78
  byte 111
  byte 116
@@ -255,7 +255,7 @@ C_s4tgp_67e4d6ed_51_L000052 ' <symbol:51>
  byte 0
 
  alignl ' align long
-C_s4tgo_67e4d6ed_49_L000050 ' <symbol:49>
+C_sdooo_67ea4039_49_L000050 ' <symbol:49>
  byte 84
  byte 111
  byte 111
@@ -278,7 +278,7 @@ C_s4tgo_67e4d6ed_49_L000050 ' <symbol:49>
  byte 0
 
  alignl ' align long
-C_s4tgn_67e4d6ed_47_L000048 ' <symbol:47>
+C_sdoon_67ea4039_47_L000048 ' <symbol:47>
  byte 70
  byte 105
  byte 108
@@ -301,7 +301,7 @@ C_s4tgn_67e4d6ed_47_L000048 ' <symbol:47>
  byte 0
 
  alignl ' align long
-C_s4tgm_67e4d6ed_45_L000046 ' <symbol:45>
+C_sdoom_67ea4039_45_L000046 ' <symbol:45>
  byte 73
  byte 110
  byte 118
@@ -321,7 +321,7 @@ C_s4tgm_67e4d6ed_45_L000046 ' <symbol:45>
  byte 0
 
  alignl ' align long
-C_s4tgl_67e4d6ed_43_L000044 ' <symbol:43>
+C_sdool_67ea4039_43_L000044 ' <symbol:43>
  byte 73
  byte 115
  byte 32
@@ -339,7 +339,7 @@ C_s4tgl_67e4d6ed_43_L000044 ' <symbol:43>
  byte 0
 
  alignl ' align long
-C_s4tgk_67e4d6ed_41_L000042 ' <symbol:41>
+C_sdook_67ea4039_41_L000042 ' <symbol:41>
  byte 78
  byte 111
  byte 116
@@ -358,7 +358,7 @@ C_s4tgk_67e4d6ed_41_L000042 ' <symbol:41>
  byte 0
 
  alignl ' align long
-C_s4tgj_67e4d6ed_39_L000040 ' <symbol:39>
+C_sdooj_67ea4039_39_L000040 ' <symbol:39>
  byte 78
  byte 111
  byte 32
@@ -376,7 +376,7 @@ C_s4tgj_67e4d6ed_39_L000040 ' <symbol:39>
  byte 0
 
  alignl ' align long
-C_s4tgi_67e4d6ed_37_L000038 ' <symbol:37>
+C_sdooi_67ea4039_37_L000038 ' <symbol:37>
  byte 67
  byte 114
  byte 111
@@ -397,7 +397,7 @@ C_s4tgi_67e4d6ed_37_L000038 ' <symbol:37>
  byte 0
 
  alignl ' align long
-C_s4tgh_67e4d6ed_35_L000036 ' <symbol:35>
+C_sdooh_67ea4039_35_L000036 ' <symbol:35>
  byte 70
  byte 105
  byte 108
@@ -412,7 +412,7 @@ C_s4tgh_67e4d6ed_35_L000036 ' <symbol:35>
  byte 0
 
  alignl ' align long
-C_s4tgg_67e4d6ed_33_L000034 ' <symbol:33>
+C_sdoog_67ea4039_33_L000034 ' <symbol:33>
  byte 77
  byte 111
  byte 117
@@ -433,7 +433,7 @@ C_s4tgg_67e4d6ed_33_L000034 ' <symbol:33>
  byte 0
 
  alignl ' align long
-C_s4tgf_67e4d6ed_31_L000032 ' <symbol:31>
+C_sdoof_67ea4039_31_L000032 ' <symbol:31>
  byte 66
  byte 108
  byte 111
@@ -458,7 +458,7 @@ C_s4tgf_67e4d6ed_31_L000032 ' <symbol:31>
  byte 0
 
  alignl ' align long
-C_s4tge_67e4d6ed_29_L000030 ' <symbol:29>
+C_sdooe_67ea4039_29_L000030 ' <symbol:29>
  byte 66
  byte 97
  byte 100
@@ -473,7 +473,7 @@ C_s4tge_67e4d6ed_29_L000030 ' <symbol:29>
  byte 0
 
  alignl ' align long
-C_s4tgd_67e4d6ed_27_L000028 ' <symbol:27>
+C_sdood_67ea4039_27_L000028 ' <symbol:27>
  byte 80
  byte 101
  byte 114
@@ -494,7 +494,7 @@ C_s4tgd_67e4d6ed_27_L000028 ' <symbol:27>
  byte 0
 
  alignl ' align long
-C_s4tgc_67e4d6ed_25_L000026 ' <symbol:25>
+C_sdooc_67ea4039_25_L000026 ' <symbol:25>
  byte 78
  byte 111
  byte 116
@@ -513,7 +513,7 @@ C_s4tgc_67e4d6ed_25_L000026 ' <symbol:25>
  byte 0
 
  alignl ' align long
-C_s4tgb_67e4d6ed_23_L000024 ' <symbol:23>
+C_sdoob_67ea4039_23_L000024 ' <symbol:23>
  byte 78
  byte 111
  byte 32
@@ -534,7 +534,7 @@ C_s4tgb_67e4d6ed_23_L000024 ' <symbol:23>
  byte 0
 
  alignl ' align long
-C_s4tga_67e4d6ed_21_L000022 ' <symbol:21>
+C_sdooa_67ea4039_21_L000022 ' <symbol:21>
  byte 78
  byte 111
  byte 32
@@ -549,7 +549,7 @@ C_s4tga_67e4d6ed_21_L000022 ' <symbol:21>
  byte 0
 
  alignl ' align long
-C_s4tg9_67e4d6ed_19_L000020 ' <symbol:19>
+C_sdoo9_67ea4039_19_L000020 ' <symbol:19>
  byte 66
  byte 97
  byte 100
@@ -568,7 +568,7 @@ C_s4tg9_67e4d6ed_19_L000020 ' <symbol:19>
  byte 0
 
  alignl ' align long
-C_s4tg8_67e4d6ed_17_L000018 ' <symbol:17>
+C_sdoo8_67ea4039_17_L000018 ' <symbol:17>
  byte 69
  byte 120
  byte 101
@@ -589,7 +589,7 @@ C_s4tg8_67e4d6ed_17_L000018 ' <symbol:17>
  byte 0
 
  alignl ' align long
-C_s4tg7_67e4d6ed_15_L000016 ' <symbol:15>
+C_sdoo7_67ea4039_15_L000016 ' <symbol:15>
  byte 65
  byte 114
  byte 103
@@ -610,7 +610,7 @@ C_s4tg7_67e4d6ed_15_L000016 ' <symbol:15>
  byte 0
 
  alignl ' align long
-C_s4tg6_67e4d6ed_13_L000014 ' <symbol:13>
+C_sdoo6_67ea4039_13_L000014 ' <symbol:13>
  byte 78
  byte 111
  byte 32
@@ -639,7 +639,7 @@ C_s4tg6_67e4d6ed_13_L000014 ' <symbol:13>
  byte 0
 
  alignl ' align long
-C_s4tg5_67e4d6ed_11_L000012 ' <symbol:11>
+C_sdoo5_67ea4039_11_L000012 ' <symbol:11>
  byte 73
  byte 47
  byte 79
@@ -652,7 +652,7 @@ C_s4tg5_67e4d6ed_11_L000012 ' <symbol:11>
  byte 0
 
  alignl ' align long
-C_s4tg4_67e4d6ed_9_L000010 ' <symbol:9>
+C_sdoo4_67ea4039_9_L000010 ' <symbol:9>
  byte 73
  byte 110
  byte 116
@@ -679,7 +679,7 @@ C_s4tg4_67e4d6ed_9_L000010 ' <symbol:9>
  byte 0
 
  alignl ' align long
-C_s4tg3_67e4d6ed_7_L000008 ' <symbol:7>
+C_sdoo3_67ea4039_7_L000008 ' <symbol:7>
  byte 78
  byte 111
  byte 32
@@ -698,7 +698,7 @@ C_s4tg3_67e4d6ed_7_L000008 ' <symbol:7>
  byte 0
 
  alignl ' align long
-C_s4tg2_67e4d6ed_5_L000006 ' <symbol:5>
+C_sdoo2_67ea4039_5_L000006 ' <symbol:5>
  byte 78
  byte 111
  byte 32
@@ -727,7 +727,7 @@ C_s4tg2_67e4d6ed_5_L000006 ' <symbol:5>
  byte 0
 
  alignl ' align long
-C_s4tg1_67e4d6ed_3_L000004 ' <symbol:3>
+C_sdoo1_67ea4039_3_L000004 ' <symbol:3>
  byte 78
  byte 111
  byte 116
@@ -740,7 +740,7 @@ C_s4tg1_67e4d6ed_3_L000004 ' <symbol:3>
  byte 0
 
  alignl ' align long
-C_s4tg_67e4d6ed_1_L000002 ' <symbol:1>
+C_sdoo_67ea4039_1_L000002 ' <symbol:1>
  byte 69
  byte 114
  byte 114

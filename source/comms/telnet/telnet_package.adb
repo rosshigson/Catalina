@@ -3,7 +3,7 @@
 --               (Terminal_Emulator, Term_IO and Redirect)                   --
 --                               package                                     --
 --                                                                           --
---                             Version 1.9                                   --
+--                             Version 3.0                                   --
 --                                                                           --
 --                   Copyright (C) 2003 Ross Higson                          --
 --                                                                           --
@@ -23,6 +23,7 @@
 -- Boston, MA  02111-1307, USA.                                              --
 -------------------------------------------------------------------------------
 
+with Telnet_Types;
 with Telnet_Apl;
 with Debug_Io;
 with User_Data;
@@ -34,6 +35,7 @@ package body Telnet_Package is
    use User_Data;
    use Telnet_Apl;
    use Telnet_Options;
+   use Telnet_Types;
    use Option_Negotiation;
 
 
@@ -150,7 +152,10 @@ package body Telnet_Package is
          Process_Transport_Input (VT);
       end loop;
       if Ucb.Connected then
+         --Ucb.Options.Remote_In_Effect (Echo) := true;
+         --Ucb.Options.Remote_In_Effect (Suppress_Go_Ahead) := true;
          if not Ucb.Ga_Sent
+         and not (Ucb.Mode = Mode_Character)
          and not Ucb.Options.Local_In_Effect (Suppress_Go_Ahead) then
             -- nothing more can be done without addiitonal input, so ...
             Transmit_Telnet_Go_Ahead (VT);

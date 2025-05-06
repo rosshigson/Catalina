@@ -120,6 +120,8 @@
 --
 -- version 8.5   - just update version number.
 --
+-- version 8.6   - just update version number.
+--
 
 require "os"
 require "io"
@@ -128,7 +130,7 @@ require "string"
 require "propeller"
 
 -- configuration parameters and default values
-CATALINA_VERSION = "8.5"
+CATALINA_VERSION = "8.6"
 LCCDIR           = "/";
 CATALINA_TARGET  = LCCDIR .. "target"
 CATALINA_LIBRARY = LCCDIR .. "lib"

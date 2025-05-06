@@ -1,5 +1,0 @@
-#!/bin/bash
-#
-# this file is used by the windows makefile for lcc 
-#
-cmd.exe //c del_del.bat "$@"

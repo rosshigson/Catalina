@@ -74,6 +74,11 @@ package Telnet_Terminal is
          Debug : in     Debug_Type);
 
          
+   procedure Set_Mode (
+         VT    : in out Virtual_Terminal;
+         Mode : in      Mode_Type);
+
+         
    procedure Start (
          VT : in out Virtual_Terminal);
 

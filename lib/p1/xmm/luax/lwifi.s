@@ -62,47 +62,45 @@ C_wifi_B_R_K__P_I_N_ ' <symbol:wifi_BRK_PIN>
 DAT ' const data segment
 
  alignl ' align long
-C_saokj_67e4d7df_luawifi_funcs_L000027 ' <symbol:luawifi_funcs>
- long @C_saokk_67e4d7df_28_L000029
- long @C_saok_67e4d7df_lwifi_R_E_C_V__L000008
- long @C_saokl_67e4d7df_30_L000031
- long @C_saok1_67e4d7df_lwifi_S_E_N_D__L000009
- long @C_saokm_67e4d7df_32_L000033
- long @C_saok2_67e4d7df_lwifi_R_E_P_L_Y__L000010
- long @C_saokn_67e4d7df_34_L000035
- long @C_saok3_67e4d7df_lwifi_P_A_T_H__L000011
- long @C_saoko_67e4d7df_36_L000037
- long @C_saok4_67e4d7df_lwifi_A_R_G__L000012
- long @C_saokp_67e4d7df_38_L000039
- long @C_saok5_67e4d7df_lwifi_S_E_N_D__D_A_T_A__L000013
- long @C_saokq_67e4d7df_40_L000041
- long @C_saok6_67e4d7df_lwifi_S_E_T__L000014
- long @C_saokr_67e4d7df_42_L000043
- long @C_saok7_67e4d7df_lwifi_C_H_E_C_K__L000015
- long @C_saoks_67e4d7df_44_L000045
- long @C_saok8_67e4d7df_lwifi_J_O_I_N__L000016
- long @C_saokt_67e4d7df_46_L000047
- long @C_saok9_67e4d7df_lwifi_P_O_L_L__L000017
- long @C_saoku_67e4d7df_48_L000049
- long @C_saoka_67e4d7df_lwifi_C_L_O_S_E__L000018
- long @C_saokv_67e4d7df_50_L000051
- long @C_saokb_67e4d7df_lwifi_C_O_N_N_E_C_T__L000019
- long @C_saoku_67e4d7df_48_L000049
- long @C_saoka_67e4d7df_lwifi_C_L_O_S_E__L000018
- long @C_saok10_67e4d7df_52_L000053
- long @C_saokc_67e4d7df_lwifi_L_I_S_T_E_N__L000020
- long @C_saok11_67e4d7df_54_L000055
- long @C_saokd_67e4d7df_lwifi_P_G_M__L000021
- long @C_saok12_67e4d7df_56_L000057
- long @C_saoke_67e4d7df_lwifi_R_E_S_E_T__L000022
- long @C_saok13_67e4d7df_58_L000059
- long @C_saokf_67e4d7df_lwifi_B_R_E_A_K__L000023
- long @C_saok14_67e4d7df_60_L000061
- long @C_saokg_67e4d7df_lwifi_O_K__L000024
- long @C_saok15_67e4d7df_62_L000063
- long @C_saokh_67e4d7df_lwifi_A_U_T_O__L000025
- long @C_saok16_67e4d7df_64_L000065
- long @C_saoki_67e4d7df_lwifi_I_N_I_T__L000026
+C_siukj_67ea411f_luawifi_funcs_L000027 ' <symbol:luawifi_funcs>
+ long @C_siukk_67ea411f_28_L000029
+ long @C_siuk_67ea411f_lwifi_R_E_C_V__L000008
+ long @C_siukl_67ea411f_30_L000031
+ long @C_siuk1_67ea411f_lwifi_S_E_N_D__L000009
+ long @C_siukm_67ea411f_32_L000033
+ long @C_siuk2_67ea411f_lwifi_R_E_P_L_Y__L000010
+ long @C_siukn_67ea411f_34_L000035
+ long @C_siuk3_67ea411f_lwifi_P_A_T_H__L000011
+ long @C_siuko_67ea411f_36_L000037
+ long @C_siuk4_67ea411f_lwifi_A_R_G__L000012
+ long @C_siukp_67ea411f_38_L000039
+ long @C_siuk5_67ea411f_lwifi_S_E_N_D__D_A_T_A__L000013
+ long @C_siukq_67ea411f_40_L000041
+ long @C_siuk6_67ea411f_lwifi_S_E_T__L000014
+ long @C_siukr_67ea411f_42_L000043
+ long @C_siuk7_67ea411f_lwifi_C_H_E_C_K__L000015
+ long @C_siuks_67ea411f_44_L000045
+ long @C_siuk8_67ea411f_lwifi_J_O_I_N__L000016
+ long @C_siukt_67ea411f_46_L000047
+ long @C_siuk9_67ea411f_lwifi_P_O_L_L__L000017
+ long @C_siuku_67ea411f_48_L000049
+ long @C_siuka_67ea411f_lwifi_C_L_O_S_E__L000018
+ long @C_siukv_67ea411f_50_L000051
+ long @C_siukb_67ea411f_lwifi_C_O_N_N_E_C_T__L000019
+ long @C_siuk10_67ea411f_52_L000053
+ long @C_siukc_67ea411f_lwifi_L_I_S_T_E_N__L000020
+ long @C_siuk11_67ea411f_54_L000055
+ long @C_siukd_67ea411f_lwifi_P_G_M__L000021
+ long @C_siuk12_67ea411f_56_L000057
+ long @C_siuke_67ea411f_lwifi_R_E_S_E_T__L000022
+ long @C_siuk13_67ea411f_58_L000059
+ long @C_siukf_67ea411f_lwifi_B_R_E_A_K__L000023
+ long @C_siuk14_67ea411f_60_L000061
+ long @C_siukg_67ea411f_lwifi_O_K__L000024
+ long @C_siuk15_67ea411f_62_L000063
+ long @C_siukh_67ea411f_lwifi_A_U_T_O__L000025
+ long @C_siuk16_67ea411f_64_L000065
+ long @C_siuki_67ea411f_lwifi_I_N_I_T__L000026
  long $0
  long $0
 
@@ -111,7 +109,7 @@ C_saokj_67e4d7df_luawifi_funcs_L000027 ' <symbol:luawifi_funcs>
 DAT ' code segment
 
  alignl ' align long
-C_saokf_67e4d7df_lwifi_B_R_E_A_K__L000023 ' <symbol:lwifi_BREAK>
+C_siukf_67ea411f_lwifi_B_R_E_A_K__L000023 ' <symbol:lwifi_BREAK>
  jmp #NEWF
  jmp #PSHM
  long $800000 ' save registers
@@ -120,13 +118,13 @@ C_saokf_67e4d7df_lwifi_B_R_E_A_K__L000023 ' <symbol:lwifi_BREAK>
  jmp #CALA
  long @C_wifi_B_R_E_A_K_ ' CALL addrg
  mov r0, #0 ' reg <- coni
-' C_saokf_67e4d7df_lwifi_B_R_E_A_K__L000023_66 ' (symbol refcount = 0)
+' C_siukf_67ea411f_lwifi_B_R_E_A_K__L000023_66 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_saoke_67e4d7df_lwifi_R_E_S_E_T__L000022 ' <symbol:lwifi_RESET>
+C_siuke_67ea411f_lwifi_R_E_S_E_T__L000022 ' <symbol:lwifi_RESET>
  jmp #NEWF
  jmp #PSHM
  long $800000 ' save registers
@@ -135,13 +133,13 @@ C_saoke_67e4d7df_lwifi_R_E_S_E_T__L000022 ' <symbol:lwifi_RESET>
  jmp #CALA
  long @C_wifi_R_E_S_E_T_ ' CALL addrg
  mov r0, #0 ' reg <- coni
-' C_saoke_67e4d7df_lwifi_R_E_S_E_T__L000022_67 ' (symbol refcount = 0)
+' C_siuke_67ea411f_lwifi_R_E_S_E_T__L000022_67 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_saokd_67e4d7df_lwifi_P_G_M__L000021 ' <symbol:lwifi_PGM>
+C_siukd_67ea411f_lwifi_P_G_M__L000021 ' <symbol:lwifi_PGM>
  jmp #NEWF
  jmp #PSHM
  long $800000 ' save registers
@@ -150,13 +148,13 @@ C_saokd_67e4d7df_lwifi_P_G_M__L000021 ' <symbol:lwifi_PGM>
  jmp #CALA
  long @C_wifi_P_G_M_ ' CALL addrg
  mov r0, #0 ' reg <- coni
-' C_saokd_67e4d7df_lwifi_P_G_M__L000021_68 ' (symbol refcount = 0)
+' C_siukd_67ea411f_lwifi_P_G_M__L000021_68 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_saokg_67e4d7df_lwifi_O_K__L000024 ' <symbol:lwifi_OK>
+C_siukg_67ea411f_lwifi_O_K__L000024 ' <symbol:lwifi_OK>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -173,13 +171,13 @@ C_saokg_67e4d7df_lwifi_O_K__L000024 ' <symbol:lwifi_OK>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_saokg_67e4d7df_lwifi_O_K__L000024_69 ' (symbol refcount = 0)
+' C_siukg_67ea411f_lwifi_O_K__L000024_69 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_saoki_67e4d7df_lwifi_I_N_I_T__L000026 ' <symbol:lwifi_INIT>
+C_siuki_67ea411f_lwifi_I_N_I_T__L000026 ' <symbol:lwifi_INIT>
  jmp #NEWF
  jmp #PSHM
  long $eaa000 ' save registers
@@ -245,13 +243,13 @@ C_saoki_67e4d7df_lwifi_I_N_I_T__L000026 ' <symbol:lwifi_INIT>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_saoki_67e4d7df_lwifi_I_N_I_T__L000026_70 ' (symbol refcount = 0)
+' C_siuki_67ea411f_lwifi_I_N_I_T__L000026_70 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_saokh_67e4d7df_lwifi_A_U_T_O__L000025 ' <symbol:lwifi_AUTO>
+C_siukh_67ea411f_lwifi_A_U_T_O__L000025 ' <symbol:lwifi_AUTO>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -268,13 +266,13 @@ C_saokh_67e4d7df_lwifi_A_U_T_O__L000025 ' <symbol:lwifi_AUTO>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_saokh_67e4d7df_lwifi_A_U_T_O__L000025_71 ' (symbol refcount = 0)
+' C_siukh_67ea411f_lwifi_A_U_T_O__L000025_71 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_saokc_67e4d7df_lwifi_L_I_S_T_E_N__L000020 ' <symbol:lwifi_LISTEN>
+C_siukc_67ea411f_lwifi_L_I_S_T_E_N__L000020 ' <symbol:lwifi_LISTEN>
  jmp #NEWF
  sub SP, #8
  jmp #PSHM
@@ -332,14 +330,14 @@ C_saokc_67e4d7df_lwifi_L_I_S_T_E_N__L000020 ' <symbol:lwifi_LISTEN>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #2 ' reg <- coni
-' C_saokc_67e4d7df_lwifi_L_I_S_T_E_N__L000020_72 ' (symbol refcount = 0)
+' C_siukc_67ea411f_lwifi_L_I_S_T_E_N__L000020_72 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #8 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_saokb_67e4d7df_lwifi_C_O_N_N_E_C_T__L000019 ' <symbol:lwifi_CONNECT>
+C_siukb_67ea411f_lwifi_C_O_N_N_E_C_T__L000019 ' <symbol:lwifi_CONNECT>
  jmp #NEWF
  sub SP, #8
  jmp #PSHM
@@ -395,14 +393,14 @@ C_saokb_67e4d7df_lwifi_C_O_N_N_E_C_T__L000019 ' <symbol:lwifi_CONNECT>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #2 ' reg <- coni
-' C_saokb_67e4d7df_lwifi_C_O_N_N_E_C_T__L000019_73 ' (symbol refcount = 0)
+' C_siukb_67ea411f_lwifi_C_O_N_N_E_C_T__L000019_73 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #8 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_saoka_67e4d7df_lwifi_C_L_O_S_E__L000018 ' <symbol:lwifi_CLOSE>
+C_siuka_67ea411f_lwifi_C_L_O_S_E__L000018 ' <symbol:lwifi_CLOSE>
  jmp #NEWF
  jmp #PSHM
  long $e00000 ' save registers
@@ -428,13 +426,13 @@ C_saoka_67e4d7df_lwifi_C_L_O_S_E__L000018 ' <symbol:lwifi_CLOSE>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_saoka_67e4d7df_lwifi_C_L_O_S_E__L000018_74 ' (symbol refcount = 0)
+' C_siuka_67ea411f_lwifi_C_L_O_S_E__L000018_74 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_saok9_67e4d7df_lwifi_P_O_L_L__L000017 ' <symbol:lwifi_POLL>
+C_siuk9_67ea411f_lwifi_P_O_L_L__L000017 ' <symbol:lwifi_POLL>
  jmp #NEWF
  sub SP, #16
  jmp #PSHM
@@ -503,14 +501,14 @@ C_saok9_67e4d7df_lwifi_P_O_L_L__L000017 ' <symbol:lwifi_POLL>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #4 ' reg <- coni
-' C_saok9_67e4d7df_lwifi_P_O_L_L__L000017_75 ' (symbol refcount = 0)
+' C_siuk9_67ea411f_lwifi_P_O_L_L__L000017_75 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #16 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_saok_67e4d7df_lwifi_R_E_C_V__L000008 ' <symbol:lwifi_RECV>
+C_siuk_67ea411f_lwifi_R_E_C_V__L000008 ' <symbol:lwifi_RECV>
  jmp #NEWF
  jmp #LODL
  long 520
@@ -581,7 +579,7 @@ C_saok_67e4d7df_lwifi_R_E_C_V__L000008 ' <symbol:lwifi_RECV>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #3 ' reg <- coni
-' C_saok_67e4d7df_lwifi_R_E_C_V__L000008_77 ' (symbol refcount = 0)
+' C_siuk_67ea411f_lwifi_R_E_C_V__L000008_77 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #LODL
  long 520
@@ -590,7 +588,7 @@ C_saok_67e4d7df_lwifi_R_E_C_V__L000008 ' <symbol:lwifi_RECV>
 
 
  alignl ' align long
-C_saok1_67e4d7df_lwifi_S_E_N_D__L000009 ' <symbol:lwifi_SEND>
+C_siuk1_67ea411f_lwifi_S_E_N_D__L000009 ' <symbol:lwifi_SEND>
  jmp #NEWF
  sub SP, #4
  jmp #PSHM
@@ -644,14 +642,14 @@ C_saok1_67e4d7df_lwifi_S_E_N_D__L000009 ' <symbol:lwifi_SEND>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_saok1_67e4d7df_lwifi_S_E_N_D__L000009_78 ' (symbol refcount = 0)
+' C_siuk1_67ea411f_lwifi_S_E_N_D__L000009_78 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_saok2_67e4d7df_lwifi_R_E_P_L_Y__L000010 ' <symbol:lwifi_REPLY>
+C_siuk2_67ea411f_lwifi_R_E_P_L_Y__L000010 ' <symbol:lwifi_REPLY>
  jmp #NEWF
  sub SP, #4
  jmp #PSHM
@@ -725,14 +723,14 @@ C_saok2_67e4d7df_lwifi_R_E_P_L_Y__L000010 ' <symbol:lwifi_REPLY>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_saok2_67e4d7df_lwifi_R_E_P_L_Y__L000010_79 ' (symbol refcount = 0)
+' C_siuk2_67ea411f_lwifi_R_E_P_L_Y__L000010_79 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_saok3_67e4d7df_lwifi_P_A_T_H__L000011 ' <symbol:lwifi_PATH>
+C_siuk3_67ea411f_lwifi_P_A_T_H__L000011 ' <symbol:lwifi_PATH>
  jmp #NEWF
  jmp #LODL
  long 516
@@ -779,7 +777,7 @@ C_saok3_67e4d7df_lwifi_P_A_T_H__L000011 ' <symbol:lwifi_PATH>
  long @C_lua_pushstring
  add SP, #4 ' CALL addrg
  mov r0, #2 ' reg <- coni
-' C_saok3_67e4d7df_lwifi_P_A_T_H__L000011_80 ' (symbol refcount = 0)
+' C_siuk3_67ea411f_lwifi_P_A_T_H__L000011_80 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #LODL
  long 516
@@ -788,7 +786,7 @@ C_saok3_67e4d7df_lwifi_P_A_T_H__L000011 ' <symbol:lwifi_PATH>
 
 
  alignl ' align long
-C_saok4_67e4d7df_lwifi_A_R_G__L000012 ' <symbol:lwifi_ARG>
+C_siuk4_67ea411f_lwifi_A_R_G__L000012 ' <symbol:lwifi_ARG>
  jmp #NEWF
  jmp #LODL
  long 516
@@ -847,7 +845,7 @@ C_saok4_67e4d7df_lwifi_A_R_G__L000012 ' <symbol:lwifi_ARG>
  long @C_lua_pushstring
  add SP, #4 ' CALL addrg
  mov r0, #2 ' reg <- coni
-' C_saok4_67e4d7df_lwifi_A_R_G__L000012_81 ' (symbol refcount = 0)
+' C_siuk4_67ea411f_lwifi_A_R_G__L000012_81 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #LODL
  long 516
@@ -856,7 +854,7 @@ C_saok4_67e4d7df_lwifi_A_R_G__L000012 ' <symbol:lwifi_ARG>
 
 
  alignl ' align long
-C_saok5_67e4d7df_lwifi_S_E_N_D__D_A_T_A__L000013 ' <symbol:lwifi_SEND_DATA>
+C_siuk5_67ea411f_lwifi_S_E_N_D__D_A_T_A__L000013 ' <symbol:lwifi_SEND_DATA>
  jmp #NEWF
  sub SP, #4
  jmp #PSHM
@@ -919,14 +917,14 @@ C_saok5_67e4d7df_lwifi_S_E_N_D__D_A_T_A__L000013 ' <symbol:lwifi_SEND_DATA>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_saok5_67e4d7df_lwifi_S_E_N_D__D_A_T_A__L000013_82 ' (symbol refcount = 0)
+' C_siuk5_67ea411f_lwifi_S_E_N_D__D_A_T_A__L000013_82 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_saok6_67e4d7df_lwifi_S_E_T__L000014 ' <symbol:lwifi_SET>
+C_siuk6_67ea411f_lwifi_S_E_T__L000014 ' <symbol:lwifi_SET>
  jmp #NEWF
  sub SP, #4
  jmp #PSHM
@@ -974,14 +972,14 @@ C_saok6_67e4d7df_lwifi_S_E_T__L000014 ' <symbol:lwifi_SET>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_saok6_67e4d7df_lwifi_S_E_T__L000014_83 ' (symbol refcount = 0)
+' C_siuk6_67ea411f_lwifi_S_E_T__L000014_83 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_saok7_67e4d7df_lwifi_C_H_E_C_K__L000015 ' <symbol:lwifi_CHECK>
+C_siuk7_67ea411f_lwifi_C_H_E_C_K__L000015 ' <symbol:lwifi_CHECK>
  jmp #NEWF
  jmp #LODL
  long 516
@@ -1031,7 +1029,7 @@ C_saok7_67e4d7df_lwifi_C_H_E_C_K__L000015 ' <symbol:lwifi_CHECK>
  long @C_lua_pushstring
  add SP, #4 ' CALL addrg
  mov r0, #2 ' reg <- coni
-' C_saok7_67e4d7df_lwifi_C_H_E_C_K__L000015_84 ' (symbol refcount = 0)
+' C_siuk7_67ea411f_lwifi_C_H_E_C_K__L000015_84 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #LODL
  long 516
@@ -1040,7 +1038,7 @@ C_saok7_67e4d7df_lwifi_C_H_E_C_K__L000015 ' <symbol:lwifi_CHECK>
 
 
  alignl ' align long
-C_saok8_67e4d7df_lwifi_J_O_I_N__L000016 ' <symbol:lwifi_JOIN>
+C_siuk8_67ea411f_lwifi_J_O_I_N__L000016 ' <symbol:lwifi_JOIN>
  jmp #NEWF
  sub SP, #4
  jmp #PSHM
@@ -1088,7 +1086,7 @@ C_saok8_67e4d7df_lwifi_J_O_I_N__L000016 ' <symbol:lwifi_JOIN>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_saok8_67e4d7df_lwifi_J_O_I_N__L000016_85 ' (symbol refcount = 0)
+' C_siuk8_67ea411f_lwifi_J_O_I_N__L000016_85 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
@@ -1112,7 +1110,7 @@ C_luaopen_wifi ' <symbol:luaopen_wifi>
  jmp #CALA
  long @C_luaL__checkversion_
  add SP, #8 ' CALL addrg
- mov r2, #20 ' reg ARG coni
+ mov r2, #19 ' reg ARG coni
  mov r3, #0 ' reg ARG coni
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -1122,7 +1120,7 @@ C_luaopen_wifi ' <symbol:luaopen_wifi>
  add SP, #8 ' CALL addrg
  mov r2, #0 ' reg ARG coni
  jmp #LODL
- long @C_saokj_67e4d7df_luawifi_funcs_L000027
+ long @C_siukj_67ea411f_luawifi_funcs_L000027
  mov r3, RI ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -1199,7 +1197,7 @@ C_luaopen_wifi_87_L000088 ' <symbol:87>
  long $43fc0000 ' float
 
  alignl ' align long
-C_saok16_67e4d7df_64_L000065 ' <symbol:64>
+C_siuk16_67ea411f_64_L000065 ' <symbol:64>
  byte 73
  byte 78
  byte 73
@@ -1207,7 +1205,7 @@ C_saok16_67e4d7df_64_L000065 ' <symbol:64>
  byte 0
 
  alignl ' align long
-C_saok15_67e4d7df_62_L000063 ' <symbol:62>
+C_siuk15_67ea411f_62_L000063 ' <symbol:62>
  byte 65
  byte 85
  byte 84
@@ -1215,13 +1213,13 @@ C_saok15_67e4d7df_62_L000063 ' <symbol:62>
  byte 0
 
  alignl ' align long
-C_saok14_67e4d7df_60_L000061 ' <symbol:60>
+C_siuk14_67ea411f_60_L000061 ' <symbol:60>
  byte 79
  byte 75
  byte 0
 
  alignl ' align long
-C_saok13_67e4d7df_58_L000059 ' <symbol:58>
+C_siuk13_67ea411f_58_L000059 ' <symbol:58>
  byte 66
  byte 82
  byte 69
@@ -1230,7 +1228,7 @@ C_saok13_67e4d7df_58_L000059 ' <symbol:58>
  byte 0
 
  alignl ' align long
-C_saok12_67e4d7df_56_L000057 ' <symbol:56>
+C_siuk12_67ea411f_56_L000057 ' <symbol:56>
  byte 82
  byte 69
  byte 83
@@ -1239,14 +1237,14 @@ C_saok12_67e4d7df_56_L000057 ' <symbol:56>
  byte 0
 
  alignl ' align long
-C_saok11_67e4d7df_54_L000055 ' <symbol:54>
+C_siuk11_67ea411f_54_L000055 ' <symbol:54>
  byte 80
  byte 71
  byte 77
  byte 0
 
  alignl ' align long
-C_saok10_67e4d7df_52_L000053 ' <symbol:52>
+C_siuk10_67ea411f_52_L000053 ' <symbol:52>
  byte 76
  byte 73
  byte 83
@@ -1256,7 +1254,7 @@ C_saok10_67e4d7df_52_L000053 ' <symbol:52>
  byte 0
 
  alignl ' align long
-C_saokv_67e4d7df_50_L000051 ' <symbol:50>
+C_siukv_67ea411f_50_L000051 ' <symbol:50>
  byte 67
  byte 79
  byte 78
@@ -1267,7 +1265,7 @@ C_saokv_67e4d7df_50_L000051 ' <symbol:50>
  byte 0
 
  alignl ' align long
-C_saoku_67e4d7df_48_L000049 ' <symbol:48>
+C_siuku_67ea411f_48_L000049 ' <symbol:48>
  byte 67
  byte 76
  byte 79
@@ -1276,7 +1274,7 @@ C_saoku_67e4d7df_48_L000049 ' <symbol:48>
  byte 0
 
  alignl ' align long
-C_saokt_67e4d7df_46_L000047 ' <symbol:46>
+C_siukt_67ea411f_46_L000047 ' <symbol:46>
  byte 80
  byte 79
  byte 76
@@ -1284,7 +1282,7 @@ C_saokt_67e4d7df_46_L000047 ' <symbol:46>
  byte 0
 
  alignl ' align long
-C_saoks_67e4d7df_44_L000045 ' <symbol:44>
+C_siuks_67ea411f_44_L000045 ' <symbol:44>
  byte 74
  byte 79
  byte 73
@@ -1292,7 +1290,7 @@ C_saoks_67e4d7df_44_L000045 ' <symbol:44>
  byte 0
 
  alignl ' align long
-C_saokr_67e4d7df_42_L000043 ' <symbol:42>
+C_siukr_67ea411f_42_L000043 ' <symbol:42>
  byte 67
  byte 72
  byte 69
@@ -1301,14 +1299,14 @@ C_saokr_67e4d7df_42_L000043 ' <symbol:42>
  byte 0
 
  alignl ' align long
-C_saokq_67e4d7df_40_L000041 ' <symbol:40>
+C_siukq_67ea411f_40_L000041 ' <symbol:40>
  byte 83
  byte 69
  byte 84
  byte 0
 
  alignl ' align long
-C_saokp_67e4d7df_38_L000039 ' <symbol:38>
+C_siukp_67ea411f_38_L000039 ' <symbol:38>
  byte 83
  byte 69
  byte 78
@@ -1321,14 +1319,14 @@ C_saokp_67e4d7df_38_L000039 ' <symbol:38>
  byte 0
 
  alignl ' align long
-C_saoko_67e4d7df_36_L000037 ' <symbol:36>
+C_siuko_67ea411f_36_L000037 ' <symbol:36>
  byte 65
  byte 82
  byte 71
  byte 0
 
  alignl ' align long
-C_saokn_67e4d7df_34_L000035 ' <symbol:34>
+C_siukn_67ea411f_34_L000035 ' <symbol:34>
  byte 80
  byte 65
  byte 84
@@ -1336,7 +1334,7 @@ C_saokn_67e4d7df_34_L000035 ' <symbol:34>
  byte 0
 
  alignl ' align long
-C_saokm_67e4d7df_32_L000033 ' <symbol:32>
+C_siukm_67ea411f_32_L000033 ' <symbol:32>
  byte 82
  byte 69
  byte 80
@@ -1345,7 +1343,7 @@ C_saokm_67e4d7df_32_L000033 ' <symbol:32>
  byte 0
 
  alignl ' align long
-C_saokl_67e4d7df_30_L000031 ' <symbol:30>
+C_siukl_67ea411f_30_L000031 ' <symbol:30>
  byte 83
  byte 69
  byte 78
@@ -1353,7 +1351,7 @@ C_saokl_67e4d7df_30_L000031 ' <symbol:30>
  byte 0
 
  alignl ' align long
-C_saokk_67e4d7df_28_L000029 ' <symbol:28>
+C_siukk_67ea411f_28_L000029 ' <symbol:28>
  byte 82
  byte 69
  byte 67

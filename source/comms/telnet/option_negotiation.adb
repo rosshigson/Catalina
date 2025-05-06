@@ -3,7 +3,7 @@
 --               (Terminal_Emulator, Term_IO and Redirect)                   --
 --                               package                                     --
 --                                                                           --
---                             Version 1.9                                  --
+--                             Version 3.0                                  --
 --                                                                           --
 --                   Copyright (C) 2003 Ross Higson                          --
 --                                                                           --
@@ -387,7 +387,7 @@ package body Option_Negotiation is
                   Ucb.Options.Remote_In_Effect (Option) := True;
                   Store_Option_Message (Ucb, "remote " & Text (Option) & " option in effect");
                   Send_Option (Ucb, Telnet_Do, Option);
-               else -- send negative ack
+               elsif Ucb.Options.Local_In_Effect (Option) then
                   Store_Option_Message (Ucb, "remote " & Text (Option) & " option refused by local telnet");
                   Send_Option (Ucb, Telnet_Dont, Option);
                end if;
@@ -448,7 +448,8 @@ package body Option_Negotiation is
          -- If the option was pending (which means we requested it) then
          -- just accept the WONT, otherwise acknowledge it with a DONT.
          if Ucb.Options.Remote_In_Effect (Option) 
-         and not Ucb.Options.Remote_Pending (Option) then
+           and not Ucb.Options.Remote_Pending (Option)
+         and Option /= Echo then
             Send_Option (Ucb, Telnet_Dont, Option);
          end if;
          Ucb.Options.Remote_In_Effect (Option) := False;
@@ -490,9 +491,14 @@ package body Option_Negotiation is
          Store_Control_Message (Ucb, "RCVD: " & Text (Telnet_Do) & " " & Text (Option));
          case Option is
             when Echo =>
+               if Ucb.Options.Remote_Pending (Option)
+               and not Ucb.Options.Remote_In_Effect (Option) then
+                  Reset_Remote_Pending (Ucb, Option);
+                  Ucb.Options.Remote_In_Effect (Option) := True;
+                  Store_Option_Message (Ucb, "remote " & Text (Option) & " option in effect");
                -- note both sides cannot echo at once (=> loop forever)
                -- see RFC 857 for information on the TELNET echo option
-               if Ucb.Options.Local_Pending (Option)
+               elsif Ucb.Options.Local_Pending (Option)
                and not Ucb.Options.Remote_In_Effect (Option) then
                   Reset_Local_Pending (Ucb, Option);
                   Ucb.Options.Local_In_Effect (Option) := True;
@@ -518,7 +524,12 @@ package body Option_Negotiation is
                if Supported (Option) then
                   -- option supported, so if the option was pending (i.e. we requested it), 
                   -- then just accept the DO, otherwise positively acknowledge it
-                  if Ucb.Options.Local_Pending (Option) then
+                  if Ucb.Options.Remote_Pending (Option)
+                  and not Ucb.Options.Remote_In_Effect (Option) then
+                     Reset_Remote_Pending (Ucb, Option);
+                     Ucb.Options.Remote_In_Effect (Option) := True;
+                     Store_Option_Message (Ucb, "remote " & Text (Option) & " option in effect");
+                  elsif Ucb.Options.Local_Pending (Option) then
                      Reset_Local_Pending (Ucb, Option);
                      Ucb.Options.Local_In_Effect (Option) := True;
                      Store_Option_Message (Ucb, "local " & Text (Option) & " option in effect");
@@ -667,6 +678,10 @@ package body Option_Negotiation is
       Ucb    : User_Control_Block := Get_Ucb (VT);
    begin
       case Option is 
+         when Negotiate_About_Window_Size =>
+            if Length = 1 and SubOption (SubOption'First) = 1 then -- SEND
+               Debug_Io.Put_Line ("SUBNEGOTIATION : Option " & Text (Option) & " Sub-negotiation");
+            end if;
          when Terminal_Type =>
             if Length = 1 and SubOption (SubOption'First) = 1 then -- SEND
                Send_Terminal_Type (VT);

@@ -139,14 +139,17 @@ endif
 # set up options specific to Windows or Linux
 ifeq ($(OS), Windows_NT)
 	E=.exe
-	MV=cmd //c move //y
-	RM=-cmd //c del //q //s
-	CP=cmd //c copy //y
-	DEST_CP=cmd //c dest_cp
-else
+endif
+ifeq ($(SHELL), /bin/sh)
 	MV=mv
 	RM=-rm -f
 	CP=cp -f
+	DEST_CP=dest_cp
+else
+	MV=mov_mov
+	RM=-del_del
+	CP=cp_cp
+	DEST_CP=dest_cp
 endif
 
 CFLAGS= $(MYCFLAGS) -W-w

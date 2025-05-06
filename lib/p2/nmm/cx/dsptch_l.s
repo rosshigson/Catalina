@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_sef0_67e4d9bf_strdup_L000005 ' <symbol:strdup>
+C_sock_67ea42ef_strdup_L000005 ' <symbol:strdup>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e00000 ' save registers
@@ -25,7 +25,7 @@ C_sef0_67e4d9bf_strdup_L000005 ' <symbol:strdup>
  mov r21, r0 ' CVI, CVU or LOAD
  mov r22, r21 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_z jmp #\C_sef0_67e4d9bf_strdup_L000005_7 ' EQU4
+ if_z jmp #\C_sock_67ea42ef_strdup_L000005_7 ' EQU4
  mov r2, r23 ' CVI, CVU or LOAD
  mov r3, r21 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -33,9 +33,9 @@ C_sef0_67e4d9bf_strdup_L000005 ' <symbol:strdup>
  calld PA,#CALA
  long @C_strcpy
  add SP, #4 ' CALL addrg
-C_sef0_67e4d9bf_strdup_L000005_7
+C_sock_67ea42ef_strdup_L000005_7
  mov r0, r21 ' CVI, CVU or LOAD
-' C_sef0_67e4d9bf_strdup_L000005_6 ' (symbol refcount = 0)
+' C_sock_67ea42ef_strdup_L000005_6 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -1260,7 +1260,7 @@ C__load_L_ua_service_list_76
  mov r2, r22 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_sef0_67e4d9bf_strdup_L000005 ' CALL addrg
+ long @C_sock_67ea42ef_strdup_L000005 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r20, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS
@@ -1380,7 +1380,7 @@ C__load_L_ua_service_list_75
  mov r2, ##@C__load_L_ua_service_list_86_L000087 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_sef0_67e4d9bf_strdup_L000005 ' CALL addrg
+ long @C_sock_67ea42ef_strdup_L000005 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r20, #28 ' reg <- coni
  #ifndef NO_INTERRUPTS

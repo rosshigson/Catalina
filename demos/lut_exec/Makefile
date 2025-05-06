@@ -71,14 +71,10 @@ endif
 # set up options specific to Windows or Linux
 ifeq ($(OS), Windows_NT)
 	E=.exe
-	MV=cmd //c move //y
-	RM=-cmd //c del //q //s
-	CP=cmd //c copy //y
+	RM=-del_del
 else
 	E=
-	MV=mv
 	RM=-rm -f
-	CP=cp -f
 endif
 
 #

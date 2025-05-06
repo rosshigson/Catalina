@@ -974,7 +974,11 @@ int BuiltInCommand(PVOLINFO vi, uint8_t *keyword, uint8_t *arguments) {
    }
    if (strcmp((char *)keyword, "CLS") == 0) {
 #ifdef SERIAL_HMI
+#ifdef __CATALINA_VT100
       t_str("\x1b[0;0H\x1b[2J");   // VT 100 HVP + Erase Page
+#else
+      t_str("\f");   // form feed
+#endif
 #else
       t_scroll(rows-1, 0, rows-1);
       t_setpos(1, 0, 0) ;

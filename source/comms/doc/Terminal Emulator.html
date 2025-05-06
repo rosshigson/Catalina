@@ -3,10 +3,10 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<title>Ada Terminal Emulator Reference Manual</title>
-	<meta name="generator" content="LibreOffice 7.6.5.2 (Windows)"/>
+	<meta name="generator" content="LibreOffice 7.6.6.3 (Windows)"/>
 	<meta name="author" content="Ross Higson"/>
-	<meta name="created" content="2006-06-20T22:07:00"/>
-	<meta name="changed" content="2024-03-17T15:13:01.547000000"/>
+	<meta name="created" content="2006-06-20T21:07:00"/>
+	<meta name="changed" content="2025-05-03T09:24:01.566000000"/>
 	<style type="text/css">
 		@page { size: 21cm 29.7cm; margin-left: 2.03cm; margin-right: 2.03cm; margin-top: 1.27cm; margin-bottom: 1.27cm }
 		p { color: #000000; orphans: 2; widows: 2; margin-bottom: 0.21cm; direction: ltr; background: transparent }
@@ -44,7 +44,8 @@
 </head>
 <body lang="en-AU" text="#000000" link="#0000ff" vlink="#800080" dir="ltr">
 <div title="header"><p style="margin-bottom: 1.17cm"><font size="2" style="font-size: 9pt">Ada
-	Terminal Emulator	Version 2.9	Reference Manual</font></p>
+	Terminal Emulator	Version </font><font size="2" style="font-size: 9pt">3.0</font><font size="2" style="font-size: 9pt">	Reference
+	Manual</font></p>
 </div><p align="center" style="margin-bottom: 0cm"><br/>
 
 </p>
@@ -115,7 +116,7 @@ Manual </b></font>
 
 </p>
 <p align="center" style="margin-bottom: 0cm"><font size="4" style="font-size: 14pt"><b>Version
-2.9 (including Telnet)</b></font></p>
+3.0 (including Telnet)</b></font></p>
 <p align="center" style="font-weight: normal; margin-bottom: 0cm"><br/>
 
 </p>
@@ -130,7 +131,11 @@ Manual </b></font>
 </p>
 <p style="margin-bottom: 0cm"><font size="4" style="font-size: 16pt"><b>Table
 of Contents</b></font></p>
-<div id="Table of Contents1" dir="ltr"><p lang="en-AU" style="margin-top: 0.14cm; margin-bottom: 0cm; page-break-after: avoid">
+<div id="Table of Contents2" dir="ltr">
+	<div id="Table of Contents2_Head" dir="ltr"><p style="margin-bottom: 0cm">
+		<font size="4" style="font-size: 16pt"><b>Table of Contents</b></font></p>
+	</div>
+	<p lang="en-AU" style="margin-top: 0.14cm; margin-bottom: 0cm; page-break-after: avoid">
 	<font size="3" style="font-size: 12pt"><b><a href="#__RefHeading___Toc138601249">1
 	Ada Terminal Emulator Package	5</a></b></font></p>
 	<p lang="en-AU" style="margin-left: 0.35cm; margin-top: 0.07cm; margin-bottom: 0cm">
@@ -419,26 +424,33 @@ of Contents</b></font></p>
 	<p lang="en-AU" style="margin-left: 1.06cm; margin-bottom: 0cm"><font size="2" style="font-size: 9pt"><a href="#__RefHeading___Toc2804_160240294">6.3.2.30
 	SEND END RECORD	74</a></font></p>
 	<p lang="en-AU" style="margin-left: 1.06cm; margin-bottom: 0cm"><font size="2" style="font-size: 9pt"><a href="#__RefHeading___Toc2806_160240294">6.3.2.31
-	SEND STATUS REQUEST	74</a></font></p>
+	SEND STATUS REQUEST	75</a></font></p>
 	<p lang="en-AU" style="margin-left: 1.06cm; margin-bottom: 0cm"><font size="2" style="font-size: 9pt"><a href="#__RefHeading___Toc2808_160240294">6.3.2.32
 	SEND STATUS UPDATE	75</a></font></p>
+	<p lang="en-AU" style="margin-left: 1.06cm; margin-bottom: 0cm"><font size="2" style="font-size: 9pt"><a href="#__RefHeading___Toc2808_160240294%20Copy%202">6.3.2.33
+	MODE CHAR	75</a></font></p>
+	<p lang="en-AU" style="margin-left: 1.06cm; margin-bottom: 0cm"><font size="2" style="font-size: 9pt"><a href="#__RefHeading___Toc2808_160240294%20Copy%202%20Copy%201">6.3.2.34
+	MODE LINE	75</a></font></p>
 	<p lang="en-AU" style="margin-left: 0.35cm; margin-top: 0.07cm; margin-bottom: 0cm">
-	<b><a href="#__RefHeading___Toc138601540">6.4 Telnet Negotiable
+	<b><a href="#__RefHeading___Toc270_3585882809">6.4 Telnet Negotiable
 	Options	75</a></b></p>
 	<p lang="en-AU" style="margin-left: 0.35cm; margin-top: 0.07cm; margin-bottom: 0cm">
 	<b><a href="#__RefHeading___Toc138601541">6.5 Using Telnet to
 	emulate a PC Client	75</a></b></p>
 	<p lang="en-AU" style="margin-left: 0.35cm; margin-top: 0.07cm; margin-bottom: 0cm">
-	<b><a href="#__RefHeading___Toc138601565">6.6 MIT Parser	85</a></b></p>
+	<b><a href="#__RefHeading___Toc138601565">6.6 MIT Parser	86</a></b></p>
 	<p lang="en-AU" style="margin-left: 0.35cm; margin-top: 0.07cm; margin-bottom: 0cm">
-	<b><a href="#__RefHeading___Toc138601566">6.7 VTtest	85</a></b></p>
+	<b><a href="#__RefHeading___Toc138601566">6.7 VTtest	86</a></b></p>
 	<p lang="en-AU" style="margin-left: 0.35cm; margin-top: 0.07cm; margin-bottom: 0cm">
-	<b><a href="#__RefHeading___Toc138601567">6.8 Windows 95/98	86</a></b></p>
+	<b><a href="#__RefHeading___Toc138601567">6.8 Windows 95/98	87</a></b></p>
 	<p lang="en-AU" style="margin-left: 0.35cm; margin-top: 0.07cm; margin-bottom: 0cm">
-	<b><a href="#__RefHeading___Toc138601568">6.9 Windows NT/2000/XP	86</a></b></p>
+	<b><a href="#__RefHeading___Toc138601568">6.9 Windows NT/2000/XP	87</a></b></p>
 	<p lang="en-AU" style="margin-left: 0.35cm; margin-top: 0.07cm; margin-bottom: 0cm">
-	<b><a href="#__RefHeading___Toc138601569">6.10 Still To Do	86</a></b></p>
+	<b><a href="#__RefHeading___Toc138601569">6.10 Still To Do	87</a></b></p>
 </div>
+<p style="margin-bottom: 0cm"><br/>
+
+</p>
 <p class="western" style="margin-bottom: 0cm"><br/>
 
 </p>
@@ -706,7 +718,7 @@ even more welcome.
 Email:	<font color="#0000ff"><u><font color="#0000ff"><font size="2" style="font-size: 10pt"><span lang="en-AU">ross@thevastydeep.com</span></font></font></u></font></p>
 <h2 class="western" style="text-indent: -1.02cm; margin-left: 1.02cm"><a name="__RefHeading___Toc138601259"></a><a name="_Ref43313602"></a>
 1.5Acknowledgments</h2>
-<h3 class="western"><a name="__RefHeading___Toc138601260"></a><a name="_Ref116643258"></a><a name="_Ref116643340"></a>
+<h3 class="western"><a name="__RefHeading___Toc138601260"></a><a name="_Ref116643340"></a><a name="_Ref116643258"></a>
 1.5.1GNAT</h3>
 <p align="justify" style="margin-left: 1cm; margin-top: 0.07cm; margin-bottom: 0.14cm">
 The GNU Ada Translator (GNAT) is an excellent and very complete Ada
@@ -1771,7 +1783,7 @@ will appear to move left if the <code class="western">Rows</code>
 parameter is positive, and the characters in the region will appear
 to move right if the <code class="western">Rows</code> parameter is
 negative. Any characters that scroll off the region are lost.</p>
-<h3 class="western"><a name="__RefHeading___Toc138601316"></a><a name="_Ref42708255"></a><a name="_Ref42712258"></a><a name="_Ref43012224"></a>
+<h3 class="western"><a name="__RefHeading___Toc138601316"></a><a name="_Ref43012224"></a><a name="_Ref42712258"></a><a name="_Ref42708255"></a>
 2.4.5Separate Input and Output Cursor and Style Operations</h3>
 <p align="justify" style="margin-left: 1cm; margin-top: 0.07cm; margin-bottom: 0.14cm; page-break-after: avoid">
 The terminal emulator can be configured to use either a single cursor
@@ -3719,7 +3731,7 @@ to EOL</b></font></font></font></p>
 This command erases all characters from the current output (or
 combined) cursor position to the end of the line (row). The
 characters will be set to spaces using the current output style.</p>
-<h3 class="western" style="page-break-before: always"><a name="__RefHeading___Toc138601454"></a><a name="_Ref43038784"></a><a name="_Ref43038931"></a>
+<h3 class="western" style="page-break-before: always"><a name="__RefHeading___Toc138601454"></a><a name="_Ref43038931"></a><a name="_Ref43038784"></a>
 2.6.3Format Menu</h3>
 <p align="justify" style="margin-left: 1cm; margin-top: 0.07cm; margin-bottom: 0.14cm">
 The Format menu appears whenever the Main menu is enabled.</p>
@@ -4429,7 +4441,7 @@ In any of these cases, any spooled output is printed first. To force
 spooled output to be printed, select either the Print or Page Setup
 command from the File menu, but cancel the request when the dialog
 box appears.</p>
-<h2 class="western" style="text-indent: -1.02cm; margin-left: 1.02cm; page-break-before: always"><a name="__RefHeading___Toc138601490"></a><a name="_Ref43052423"></a><a name="_Ref43052478"></a><a name="_Ref43179786"></a>
+<h2 class="western" style="text-indent: -1.02cm; margin-left: 1.02cm; page-break-before: always"><a name="__RefHeading___Toc138601490"></a><a name="_Ref43179786"></a><a name="_Ref43052478"></a><a name="_Ref43052423"></a>
 2.8Terminal_Emulator Options</h2>
 <p align="justify" style="margin-left: 1cm; margin-top: 0.07cm; margin-bottom: 0.14cm">
 The <b>Terminal_Emulator</b> package includes a powerful and user
@@ -6640,7 +6652,7 @@ leading ‘/’ is not shown, but must be included) are as follows:</p>
 		</tr>
 	</table>
 </center>
-<h2 class="western" style="text-indent: -1.02cm; margin-left: 1.02cm"><a name="__RefHeading___Toc138601530"></a><a name="_Ref42677180"></a><a name="_Ref43108877"></a><a name="_Ref55666448"></a>
+<h2 class="western" style="text-indent: -1.02cm; margin-left: 1.02cm"><a name="__RefHeading___Toc138601530"></a><a name="_Ref55666448"></a><a name="_Ref43108877"></a><a name="_Ref42677180"></a>
 4.3Specific Redirect issues with Windows 95/98</h2>
 <p align="justify" style="margin-left: 1cm; margin-top: 0.07cm; margin-bottom: 0.14cm">
 By default, <b>Redirect</b> is a windows mode application that opens
@@ -6682,7 +6694,7 @@ cases where it is neither necessary nor desirable for it to do so
 (e.g. if started using the Windows &quot;Start -&gt; Run...&quot;
 command. Hence the default is to make the program a windows mode
 application, and accept the minor (and somewhat obscure) limitations.</p>
-<h1 class="western" style="text-indent: -0.76cm; margin-left: 0.76cm"><a name="__RefHeading___Toc138601531"></a><a name="_Ref43182941"></a><a name="_Ref43186589"></a><a name="_Ref43186689"></a>
+<h1 class="western" style="text-indent: -0.76cm; margin-left: 0.76cm"><a name="__RefHeading___Toc138601531"></a><a name="_Ref43186689"></a><a name="_Ref43186589"></a><a name="_Ref43182941"></a>
 5Comms</h1>
 <h2 class="western" style="text-indent: -1.02cm; margin-left: 1.02cm"><a name="__RefHeading___Toc138601532"></a>
 5.1Introduction</h2>
@@ -6961,10 +6973,10 @@ is not shown, but must be included) are as follows:	</p>
 				<code class="western"><font color="#000000"><span style="font-weight: normal">[</span></font></code><code class="western"><font size="2" style="font-size: 9pt">No</font></code><code class="western"><font color="#000000"><span style="font-weight: normal">]</span></font></code><code class="western"><font size="2" style="font-size: 9pt">LockScreen</font></code></p>
 			</td>
 			<td width="386" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding: 0cm 0.19cm"><p style="font-weight: normal; margin-top: 0.07cm; page-break-after: auto">
-				<font size="2" style="font-size: 9pt">Disable or enable </font><font size="2" style="font-size: 9pt">the
+				<font size="2" style="font-size: 9pt">Disable or enable the
 				Terminal_Emulator LockScreenAndView option. Note that this can
-				also be enabled or disabled on the Options-&gt;Advanced menu.</font><font size="2" style="font-size: 9pt">
-				The default value is disabled.</font></p>
+				also be enabled or disabled on the Options-&gt;Advanced menu. The
+				default value is disabled.</font></p>
 			</td>
 		</tr>
 	</table>
@@ -7059,7 +7071,7 @@ be started before this command is <font color="#000000"><font size="2" style="fo
 <br/>
 
 </p>
-<h1 class="western" style="text-indent: -0.76cm; margin-left: 0.76cm"><a name="__RefHeading___Toc138601534"></a><a name="_Ref44438221"></a><a name="_Ref44438270"></a><a name="_Ref44438287"></a><a name="_Ref44438310"></a><a name="_Ref44438382"></a>
+<h1 class="western" style="text-indent: -0.76cm; margin-left: 0.76cm"><a name="__RefHeading___Toc138601534"></a><a name="_Ref44438382"></a><a name="_Ref44438310"></a><a name="_Ref44438287"></a><a name="_Ref44438270"></a><a name="_Ref44438221"></a>
 6Telnet</h1>
 <h2 class="western" style="text-indent: -1.02cm; margin-left: 1.02cm"><a name="__RefHeading___Toc138601535"></a>
 6.1Introduction</h2>
@@ -7267,9 +7279,36 @@ is not shown, but must be included) are as follows:	</p>
 		</tr>
 		<tr valign="top">
 			<td width="130" style="border: 1px solid #000000; padding: 0cm 0.19cm"><p style="font-weight: normal; margin-top: 0.07cm; page-break-after: auto">
-				<code class="western"><font size="2" style="font-size: 9pt">High</font></code></p>
+				<code class="western"><font size="2" style="font-size: 9pt">/Mode=</font></code><code class="western"><font color="#000000"><span style="font-weight: normal">[</span></font></code><code class="western"><span style="font-weight: normal">
+				</span></code><code class="western"><font size="2" style="font-size: 9pt"><br/>
+</font></code>	<code class="western"><font size="2" style="font-size: 9pt">Line</font></code><code class="western"><span style="font-weight: normal">
+				</span></code><code class="western"><font color="#000000"><span style="font-weight: normal">|</span></font></code><br/>
+	<code class="western"><font size="2" style="font-size: 9pt">Char</font></code><code class="western"><span style="font-weight: normal">
+				</span></code><code class="western"><font color="#000000"><span style="font-weight: normal">]</span></font></code><br/>
+
+				<br/>
+
+				</p>
 			</td>
 			<td width="392" style="border: 1px solid #000000; padding: 0cm 0.19cm"><p style="font-weight: normal; margin-top: 0.07cm; page-break-after: auto">
+				<font size="2" style="font-size: 9pt">Specify whether to enter
+				character-</font><font size="2" style="font-size: 9pt">at-a-time</font><font size="2" style="font-size: 9pt">
+				or line-</font><font size="2" style="font-size: 9pt">at-a-time</font><font size="2" style="font-size: 9pt">
+				mode. Note that unlike the telnet command </font><font color="#0000ff"><font face="Courier New, monospace"><font size="2" style="font-size: 10pt"><b>mode
+				char</b></font></font></font><font size="2" style="font-size: 9pt">,
+				negotiation of the mode is not performed – </font><font size="2" style="font-size: 9pt">the</font><font size="2" style="font-size: 9pt">
+				command-line option option simply sets the mode in the telnet
+				client. It is intended to be used with servers that are not real
+				telnet servers, but simply echo all characters, including any
+				telnet commands. This can make it difficult for the client to
+				enter the mode successfully using normal telnet negotiation.</font></p>
+			</td>
+		</tr>
+		<tr valign="top">
+			<td width="130" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding: 0cm 0.19cm"><p style="font-weight: normal; margin-top: 0.07cm; page-break-after: auto">
+				<code class="western"><font size="2" style="font-size: 9pt">High</font></code></p>
+			</td>
+			<td width="392" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding: 0cm 0.19cm"><p style="font-weight: normal; margin-top: 0.07cm; page-break-after: auto">
 				<font size="2" style="font-size: 9pt">Force the program to set
 				its Windows priority to High. The default is to set the priority
 				to Normal.</font></p>
@@ -7658,7 +7697,30 @@ STATUS UPDATE</h4>
 This command causes TELNET to transmit its current status to the
 remote TELNET. 
 </p>
-<h2 class="western" style="text-indent: -1.02cm; margin-left: 1.02cm"><a name="__RefHeading___Toc138601540"></a>
+<h4 class="western"><a name="__RefHeading___Toc2808_160240294 Copy 2"></a>
+6.3.2.33MODE CHAR</h4>
+<p align="justify" style="margin-left: 1cm; margin-top: 0.07cm; margin-bottom: 0.14cm">
+This option can be used to tell both the local and the remote TELNET
+to suppress the TELNET GOAHEAD and enable remote TELNET ECHO. When
+one side of the TELNET connection is performing remote echoing and
+both sides have agreed to suppress sending the TELNET GO-AHEAD, then
+TELNET will go into character-at-a-time mode.</p>
+<p align="justify" style="margin-left: 1cm; margin-top: 0.07cm; margin-bottom: 0.14cm">
+Note that this is different from the <code class="western">/mode=char</code>
+command line option, which does not use option negotiation with the
+remote TELNET, but instead causes the local TELNET to behave as if
+character-at-a-time mode had been successfully negotiated. The
+command-line version is intended to be used with servers that are not
+full TELNET servers, but simply echo their input character by
+character. In such cases, performing a TELNET negotiation would not
+succeed.</p>
+<h4 class="western"><a name="__RefHeading___Toc2808_160240294 Copy 2 Copy 1"></a>
+6.3.2.34MODE LINE</h4>
+<p align="justify" style="margin-left: 1cm; margin-top: 0.07cm; margin-bottom: 0.14cm">
+This option can be used to tell the remote TELNET to enable both the
+local and the remote TELNET GOAHEAD and suppress remote TELNET ECHO.
+This causes TELNET to go into line-at-a-time mode.</p>
+<h2 class="western" style="text-indent: -1.02cm; margin-left: 1.02cm"><a name="__RefHeading___Toc270_3585882809"></a>
 6.4Telnet Negotiable Options</h2>
 <p align="justify" style="margin-left: 1cm; margin-top: 0.07cm; margin-bottom: 0.14cm; page-break-after: avoid">
 The <b>Telnet</b> program supports only a bare minimum of negotiable
@@ -7705,8 +7767,8 @@ need to be set to something other than <code class="western">DEC-VT100</code>
 or even <code class="western">ibmpc</code>. An appropriate command to
 do all this would be similar to the following:</p>
 <p style="margin-left: 1.5cm; margin-bottom: 0cm; page-break-after: auto">
-<font color="#008000"><font face="Courier New, monospace"><code class="western"><font color="#008000"><span style="font-weight: normal">telnet
-/mode=PC /fontname=terminal /charset=oem /terminal='ANSI' &lt;host&gt;</span></font></code></font></font></p>
+<font color="#008000"><font face="Courier New, monospace"><b><code class="western"><font color="#008000">telnet
+/mode=PC /fontname=terminal /charset=oem /terminal='ANSI' &lt;host&gt;</font></code></b></font></font></p>
 <p align="justify" style="margin-left: 1cm; margin-top: 0.07cm; margin-bottom: 0.14cm">
 A batch file specifying these options (<code class="western">pc_telnet.bat</code>)
 is provided.<code class="western"><span style="font-weight: normal">
@@ -8827,9 +8889,9 @@ subsequent versions:</p>
 	required for debugging.</p>
 </div>
 <div title="footer"><p style="margin-top: 1.17cm; margin-bottom: 0cm">
-	<font size="2" style="font-size: 9pt">Copyright © 2003,2022 Ross
-	Higson		Page <span style="background: #c0c0c0"><sdfield type=PAGE subtype=RANDOM format=PAGE>87</sdfield></span>
-	of <span style="background: #c0c0c0"><sdfield type=DOCSTAT subtype=PAGE format=ARABIC>87</sdfield></span></font></p>
+	<font size="2" style="font-size: 9pt">Copyright © 2003,202</font><font size="2" style="font-size: 9pt">5</font><font size="2" style="font-size: 9pt">
+	Ross Higson		Page <span style="background: #c0c0c0"><sdfield type=PAGE subtype=RANDOM format=PAGE>2</sdfield></span>
+	of <span style="background: #c0c0c0"><sdfield type=DOCSTAT subtype=PAGE format=ARABIC>88</sdfield></span></font></p>
 </div>
 </body>
 </html>

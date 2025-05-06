@@ -3,7 +3,7 @@
 --               (Terminal_Emulator, Term_IO and Redirect)                   --
 --                               package                                     --
 --                                                                           --
---                             Version 2.9                                   --
+--                             Version 3.0                                   --
 --                                                                           --
 --                   Copyright (C) 2003 Ross Higson                          --
 --                                                                           --
@@ -322,7 +322,7 @@ package body Terminal_Dialogs is
       Button        : Integer;
 
       FFT_Text      : constant String :=
-            "Ada Terminal Emulator - version 2.9. This program should have come" & CRLF &
+            "Ada Terminal Emulator - version 3.0. This program should have come" & CRLF &
             "complete with all source code and documentation. If not, you can" & CRLF &
             "download them from https://ada-terminal-emulator.sourceforge.io/" & CRLF & CRLF &
             "Terminal_Emulator, Comms, Term_IO and Redirect:" & CRLF & CRLF &

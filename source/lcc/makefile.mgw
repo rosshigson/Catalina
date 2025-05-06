@@ -24,7 +24,7 @@ LD=$(CC)
 AR=ar ruv
 RANLIB=ranlib
 DIFF=diff
-RM=cmd_del
+RM=del_del
 TSTDIR=$(BUILDDIR)\\$(TARGET)\\tst
 CUSTOM=custom.mk
 include $(CUSTOM)

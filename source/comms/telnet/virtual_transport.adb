@@ -3,7 +3,7 @@
 --               (Terminal_Emulator, Term_IO and Redirect)                   --
 --                               package                                     --
 --                                                                           --
---                             Version 2.1                                   --
+--                             Version 3.0                                   --
 --                                                                           --
 --                   Copyright (C) 2003 Ross Higson                          --
 --                                                                           --
@@ -106,8 +106,8 @@ package body Virtual_Transport is
          for i in Message'Range loop
             Ucb.Transport_Data.Messages.Put_Last (Character'Pos (Message (i)));
          end loop;
-         Ucb.Transport_Data.Messages.Put_Last (LF);
          Ucb.Transport_Data.Messages.Put_Last (CR);
+         Ucb.Transport_Data.Messages.Put_Last (LF);
          Signal (Ucb);
       else
          Debug_Io.Put_Line ("STORE_MESSAGE : no room for message :" & Message);

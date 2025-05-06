@@ -3,7 +3,7 @@
 --               (Terminal_Emulator, Term_IO and Redirect)                   --
 --                               package                                     --
 --                                                                           --
---                             Version 2.2                                   --
+--                             Version 3.0                                   --
 --                                                                           --
 --                   Copyright (C) 2003 Ross Higson                          --
 --                                                                           --
@@ -250,6 +250,8 @@ package body Terminal_To_Transport is
                 Translate_CR_Input_Command,
                 Quit_Translate_CR_Output_Command,
                 Quit_Translate_CR_Input_Command,
+                Mode_Character_Command,
+                Mode_Line_Command,
                 Bad_Command,
                 Null_Command);
 
@@ -542,6 +544,10 @@ package body Terminal_To_Transport is
                Type_Of_Command := Quit_Translate_CR_Output_Command;
             elsif Command_String (Command_String'First .. Command_String'First + 3) = "QTCI" then
                Type_Of_Command := Quit_Translate_CR_Input_Command;
+            elsif Command_String (Command_String'First .. Command_String'First + 3) = "MC  " then
+               Type_Of_Command := Mode_Character_Command;
+            elsif Command_String (Command_String'First .. Command_String'First + 3) = "ML  " then
+               Type_Of_Command := Mode_Line_Command;
             else
                Type_Of_Command := Bad_Command;
             end if;
@@ -620,6 +626,8 @@ package body Terminal_To_Transport is
                Write_To_Terminal (VT, "   [ Quit ] Binary [ Local | Remote ]");
                Write_To_Terminal (VT, "   [ Quit ] Suppress Goahead [ Local | Remote ]");
                Write_To_Terminal (VT, "   [ Quit ] Translate CR [ Input | Output ]");
+               Write_To_Terminal (VT, "   Mode Char");
+               Write_To_Terminal (VT, "   Mode Line");
                Write_To_Terminal (VT, "   Send End Record");
                Write_To_Terminal (VT, "   Send Status Request");
                Write_To_Terminal (VT, "   Send Status Update");
@@ -706,6 +714,18 @@ package body Terminal_To_Transport is
             when Quit_Suppress_Ga_Remote_Command =>
                Option_Negotiation.Demand_Remote_Option_Disable (VT, Telnet_Options.Suppress_Go_Ahead);
 
+            when Mode_Character_Command =>
+               Option_Negotiation.Request_Local_Option_Enable (VT, Telnet_Options.Suppress_Go_Ahead);
+               Option_Negotiation.Request_Remote_Option_Enable (VT, Telnet_Options.Suppress_Go_Ahead);
+               Option_Negotiation.Request_Remote_Option_Enable (VT, Telnet_Options.Echo);
+               Ucb.Mode := Mode_Character; -- force mode (e.g for ESP8266)
+
+            when Mode_Line_Command =>
+               Option_Negotiation.Demand_Remote_Option_Disable (VT, Telnet_Options.Suppress_Go_Ahead);
+               Option_Negotiation.Demand_Remote_Option_Disable (VT, Telnet_Options.Echo);
+               Option_Negotiation.Request_Local_Option_Enable (VT, Telnet_Options.Echo);
+               Ucb.Mode := Mode_Line; -- force mode (e.g. for ESP8266)
+
             when Send_Abort_Output_Command =>
                Command_Bytes (Buffer_Area'First + 0) := T_IAC; -- page 14 of RFC 854
                Command_Bytes (Buffer_Area'First + 1) := T_AO;
@@ -781,7 +801,7 @@ package body Terminal_To_Transport is
       end Process_Command_Buffer;
 
    begin -- process partial command
-      if Char /= CR then
+      if Char /= CR and Char /= LF then
          Add_Char_To_Command_Buffer (Ucb, Char);
       else
          Telnet_Terminal.Output_To_Terminal (VT, LF); -- RJH added this

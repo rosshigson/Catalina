@@ -27,6 +27,8 @@
  *
  * version 8.5 - just update version number.
  *
+ * version 8.6 - just update version number.
+ *
  */
 
 /*--------------------------------------------------------------------------
@@ -67,7 +69,7 @@
 #define SHORT_LAYOUT_4     1 /* 1 to remove unused bytes when using layout 4 (P1 only) */
 #define SHORT_LAYOUT_5     1 /* 1 to remove unused bytes when using layout 5 (P1 or P2) */
 
-#define VERSION            "8.5"
+#define VERSION            "8.6"
 
 #define MAX_LINELEN        4096
 #define MAX_PATHLEN        1000

@@ -97,7 +97,7 @@ clean::
 	$(RM) bcc$E binbuild$E binstats$E catbind$E catalina$E payload$E spinc$E bindump$E blackbox$E catdbgfilegen$E pstrip$E
 	$(RM) y.tab.c y.tab.h blackbox_l.c
 	$(RM) parallelize$E parallelize_awka$E parallelize_awka.c parallelize_functions.o
-	$(RM) parallelize$E cataplut_awka$E catapult_awka.c catapult_functions.o
+	$(RM) catapult$E catapult_awka$E catapult_awka.c catapult_functions.o
 	$(RM) pasm_strip.c
 	$(RM) awka$E libawka.a libawka.h
 

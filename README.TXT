@@ -1,7 +1,7 @@
 This file contains a summary of changes to Catalina in recent releases. For
 information about installing and using Catalina, see the file README.md 
 
-Catalina release 8.5.3 is a full release.
+Catalina release 8.6 is a full release.
 
 WARNING: DO NOT INSTALL THIS RELEASE OVER A PRIOR VERSION OF CATALINA AND
 DO NOT LINK OR COMBINE PROGRAMS COMPILED WITH THIS VERSION WITH CODE (E.G. 
@@ -16,7 +16,7 @@ you can skip the rest of this README and instead go straight to the Catalina
 tutorial documents. For a complete list of all changes, see the "Catalina 
 Release History" in the documents folder.
 
-RELEASE 8.5.3
+RELEASE 8.6
 
 New Functionality
 -----------------
@@ -33,15 +33,108 @@ New Functionality
    parser. The corresponding variant that omits the Lua parser has been 
    renamed as rlua2x.c for consistency (it was previously named rluax2.c).
 
-3. The eLua WiFi RPC HTTP demo (demos/eLua/http) now includes a complete set 
-   of definitions for all the Lua WiFi functions. As demonstated by the demo,
-   these allow a client Lua program to use the WiFi functions even though 
-   those functions are implemented in the server, not in the client.
+3. The eLua/ALOHA WiFi RPC HTTP demo (demos/eLua/http) now includes a complete
+   set of definitions for all the Lua WiFi functions. As demonstrated by the 
+   demo, these allow a client Lua program to use the WiFi functions even 
+   though those functions are implemented in the server, not in the client.
 
 4. The MAX_SERVICES constant in all the eLua/ALOHA variants has been increased
    from 20 to 50. This number is arbitrary, but it has been expanded to 50 to
-   accomodate the 20 WiFi services in the updated HTTP demo (demos/elua/http).
-   It can be increased futher if required.
+   accommodate the 20 WiFi services in the updated HTTP demo (demos/elua/http).
+   It can be increased further if required.
+
+5. The eLua/ALOHA WiFi RPC variant rlua2x.c is now so similar to the rluasx.c
+   variant that there is no need to have both, so rluasx.c has been removed. 
+   The build scripts and Aloha documentation have been updated accordingly.
+
+6. A demo of using jQuery with Catalina has been added. The demos/wifi/gauge 
+   demo uses jQuery and a custom jQuery widget to demonstrate exchanging data
+   between a Propeller and a browser-based user interface. Both a Lua and a C 
+   version of the demo are provided. An eLua/ALOHA WiFi version is also
+   provided (in demos/eLua/gauge).
+
+7. The Catalina telnet binary has been copied to the bin directory (it was
+   previously only in the source/comms/bin directory). This is because the 
+   telnet client was not previously much use, but it has now been enhanced 
+   to work with the Parallax WiFi module's Serial Bridge TCP Server. This 
+   enables either Catalyst, or a downloaded program, to be used via the 
+   WiFi module using the telnet client. This is currently supported on a 
+   Propeller 2 only. 
+
+   Catalina's telnet client has been enhanced to work with the Parallax WiFi 
+   module's Serial Bridge TCP Server by:
+
+   - Increasing the size and number of comms buffers, to account for the 
+     fact that the Serial Bridge TCP Server may send larger packets than 
+     a telnet server, and may also send more small packets than a telnet 
+     server.
+
+   - adding a new mode selection telnet command ("mode char" or "mode line"), 
+     which can also be specified on the command line (as "/mode=char" or
+     "/mode=line"). When specified on the command line, the "/mode=char" 
+     option forces the telnet client into character mode without using 
+     telnet option negotiation, which is not supported by the WiFi module's 
+     Serial Bridge TCP Server (which is not actually a telnet server, it
+     simply echoes any characters sent, including any telnet commands).
+
+     When using another telnet client, specifying character mode will try
+     to do the same using telnet option negotiation, which may or may not 
+     work, depending on how the telnet client responds to having all the
+     option negotiations simply echoed by the Serial Bridge TCP Server. It
+     SHOULD work, but it may not - e.g. it does not work with the Microsoft
+     telnet client, which does not properly support either character mode 
+     or disabling local echo - so all characters entered end up being echoed 
+     twice.
+
+   To use the telnet client via WiFi instead of a hard-wired serial port, the 
+   Parallax WiFi module must be installed on pin group 56..63. However, note
+   that using this pin group on a P2 EDGE with PSRAM (i.e. P2-EC32MB) means 
+   the WiFi module's RESET and PGM pins are not connected, so the WiFi module
+   cannot be reset programmatically and may have to be power-cycled manually 
+   whenever it needs to be reset. But it does allow a telnet client program 
+   to be used as Catalyst's user interface.
+
+   Also note that when the WiFi module is installed on pin group 56 .. 63, 
+   it is possible to download software to the Propeller 2 by opening a 
+   browser to the page http://xxx.xxx.xxx.xxx//p2-ddloader.html (where
+   xxx.xxx.xxx.xxx is the WiFi module's IP address) - and then use the
+   telnet client to interact with the downloaded software. But to download 
+   software the P2 module's switch 3 must be up and switch 4 must be down, 
+   whereas to run software from the SD card using Catalyst, switch 3 must 
+   be down and pin 4 must be up. So you cannot do both without changing 
+   the switch settings.
+
+   Under Windows, you can build Catalyst to use one of the serial HMI options
+   and a VT100 as usual, such as:
+
+      build_all P2_EDGE SIMPLE VT100 USE_COLOR
+
+   Then, to use the Catalina telnet client, specify the IP address of the
+   WiFi module, and the following options (where xxx.xxx.xxx.xxx is the IP 
+   address of the WiFi module):
+
+      telnet /mode=char /uselfaseol /autocronlf /host=xxx.xxx.xxx.xxx
+
+   The Linux telnet client does not have comparable options, so instead you 
+   must build Catalyst to use one of the serial HMI options but also add the 
+   CR_ON_LF option:
+
+      build_all P2_EDGE SIMPLE VT100 USE_COLOR CR_ON_LF
+
+   Then, use the Linux telnet client specifying the IP address of the WiFi 
+   module (e.g. where xxx.xxx.xxx.xxx is the IP address of the WiFi module):
+
+      telnet xxx.xxx.xxx.xxx
+
+   Once in telnet (Linux only), enter the telnet escape character ("Ctrl+]") 
+   and then enter the telnet command "mode char". This will use telnet 
+   negotiations to enter character mode, which may result in the program 
+   receiving a few spurious characters - but it should work ok after that.
+
+   Note that the WiFi module's Serial Bridge TCP Server times out after 5 
+   minutes of inactivity. The connection can be re-opened again using the 
+   telnet "open" command (i.e. Enter telnet command mode by pressing "CTrl ]" 
+   and enter the command "open xxx.xxx.xxx.xxx" at the "Telnet>" prompt).
 
 Other Changes
 -------------
@@ -49,7 +142,26 @@ Other Changes
 1. The eLua/ALOHA custom dispatcher was not using the correct length of the
    RPC data it pushed onto the Lua stack when processing an RPC call. This may
    have led to RPC call failing or Lua running out of memory when processing
-   the RPC call.
+   the RPC call. Affected the Propeller 2 only on Windows and Linux.
+
+2. The definition of the WiFi RECV function in the eLua http demo was wrong.
+   Affected the Propeller 1 and Propeller 2 on Windows and Linux.
+
+3. The serial.h include file did not allow for the use of the Propeller 1 
+   serial4x library. Affected the Propeller 1 only on Winows and Linux.
+
+4. The P2_EVAL platform definition file (P2EVAL.inc) was missing the WiFi and 
+   2 Port Serial definitions. Affected the Propeller 2 only on Windows and 
+   Linux.
+
+5. Add a small delay to the eLua/ALOHA custom dispatcher, to prevent the 
+   program monopolizing the WiFi module by continuously polling it for new
+   events. Affected the Propeller 2 only on Windows and Linux.
+
+6. Some Catalina makefiles were not correctly detecting whether or not to use
+   DOS or Linux commands (e.g. "del" vs "rm"). Most affected was the 
+   "clean_all" command, which would never complete when used in some demos 
+   directories. Affected Windows only.
 
 RELEASE 8.5.2
 

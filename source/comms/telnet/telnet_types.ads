@@ -3,7 +3,7 @@
 --               (Terminal_Emulator, Term_IO and Redirect)                   --
 --                               package                                     --
 --                                                                           --
---                             Version 1.9                                   --
+--                             Version 3.0                                   --
 --                                                                           --
 --                   Copyright (C) 2003 Ross Higson                          --
 --                                                                           --
@@ -31,12 +31,21 @@ package Telnet_Types is
 
    use Ada.Streams;
 
-   MAXIMUM_BUFFER_SIZE : constant := 576;    -- maximum size of a datagram 
+   MAXIMUM_BUFFER_SIZE : constant := 4096;    -- maximum size of a datagram
+                                              -- (must be >= 576)
+                                              -- increased to 4096 for ESP8266 serial bridge
 
    DEFAULT_PORT        : constant := 23;     -- default port for Telnet
 
    DEFAULT_ESCAPE_CHAR : constant := Character'Pos (ASCII.GS); -- CTRL+]
 
+   -- charcacter mode or line mode (in telnet, used to negotiate mode, but for
+   -- the ESP8266 is used to override negotiations and force character mode)
+   type Mode_Type is (
+      Mode_None,           -- no mode set
+      Mode_Character,      -- implies remote Suppress_Go_Ahead and remote Echo
+      Mode_Line);          -- line mode
+                      
    -- do not confuse this with the "Debug_Io" debugging - this type is used by telnet itself
    type Debug_Type is (
       Debug_None,          -- don't print debug messages or information

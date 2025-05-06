@@ -81,6 +81,8 @@
  *
  * version 8.5  - just update version number.
  *
+ * version 8.6  - just update version number.
+ *
  * ----------------------------------------------------------------------------
  * @file spinc.h
  * Defines data structures and API for spinc converter
@@ -109,7 +111,7 @@
 
 #define P2_PC_OFFSET_XMM    0x1038 // not currently used
 
-#define VERSION       "8.5"
+#define VERSION       "8.6"
 
 #define MAX_FILES     10
 #define MAX_LINELEN   1000

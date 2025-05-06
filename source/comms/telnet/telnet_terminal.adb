@@ -3,7 +3,7 @@
 --               (Terminal_Emulator, Term_IO and Redirect)                   --
 --                               package                                     --
 --                                                                           --
---                             Version 2.2                                   --
+--                             Version 3.0                                   --
 --                                                                           --
 --                   Copyright (C) 2003 Ross Higson                          --
 --                                                                           --
@@ -120,15 +120,18 @@ package body Telnet_Terminal is
       MyUcb := Get_Ucb (MyVT);
 
       if MyUcb.Active then
-         -- set default option negotiation for active terminals
-         Telnet_Package.Request_Remote_To_Do_Option (Suppress_Go_Ahead, MyVT);
-         Telnet_Package.Request_To_Do_Option (Suppress_Go_Ahead, MyVT);
-         Telnet_Package.Request_Remote_To_Do_Option (Echo, MyVT);
-         Telnet_Package.Request_To_Do_Option (Terminal_Type, MyVT);
-         -- Telnet_Package.Request_Remote_To_Do_Option (Binary_Transmission, MyVT);
-         -- Telnet_Package.Request_To_Do_Option (Binary_Transmission, MyVT);
-         Telnet_Package.Request_Remote_To_Do_Option (Status, MyVT);
-         Telnet_Package.Request_To_Do_Option (Status, MyVT);
+         -- set default option negotiation for active terminals, unless we
+         -- have already been set to character mode (e.g. for the ESP8266)
+         if (MyUCB.Mode /= Mode_Character) then
+            Telnet_Package.Request_Remote_To_Do_Option (Suppress_Go_Ahead, MyVT);
+            Telnet_Package.Request_To_Do_Option (Suppress_Go_Ahead, MyVT);
+            Telnet_Package.Request_Remote_To_Do_Option (Echo, MyVT);
+            Telnet_Package.Request_To_Do_Option (Terminal_Type, MyVT);
+            Telnet_Package.Request_Remote_To_Do_Option (Binary_Transmission, MyVT);
+            Telnet_Package.Request_To_Do_Option (Binary_Transmission, MyVT);
+            Telnet_Package.Request_Remote_To_Do_Option (Status, MyVT);
+            Telnet_Package.Request_To_Do_Option (Status, MyVT);
+         end if;
       else
          -- set default option negotiation for passive terminals
          Telnet_Package.Request_Remote_To_Do_Option (Suppress_Go_Ahead, MyVT);
@@ -317,6 +320,17 @@ package body Telnet_Terminal is
          end if;
       end if;
    end Set_Debug_Type;
+
+
+   procedure Set_Mode (
+         VT    : in out Virtual_Terminal;
+         Mode : in     Mode_Type)
+   is
+   begin
+      if VT /= null and then VT.Ucb /= null then
+         VT.Ucb.Mode := Mode;
+      end if;
+   end Set_Mode;
 
 
    procedure Start (

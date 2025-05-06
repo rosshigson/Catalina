@@ -1,3 +1,22 @@
+Release 3.0 (Including Telnet):
+
+- The telnet program has been enhanced to work better with simple "bridge" 
+  servers, such as Serial Bridge TCP Server implemented by the ESP8266 
+  WiFi module:
+
+   1 Increasing the size and number of comms buffers, to account for the 
+     fact that the Serial Bridge TCP Server may send larger packets than 
+     a telnet server, and may also send more small packets than a telnet 
+     server.
+
+   2 adding a new mode selection telnet command ("mode char" or "mode line"), 
+     which can also be specified on the command line (as "/mode=char" or
+     "/mode=line"). When specified on the command line, the "/mode=char" 
+     option forces the telnet client into character mode without using 
+     telnet option negotiation, which is not supported by "bridge" type
+     servers (which are not actually telnet servers, they simply echo
+     any charatcers sent, including any telnet commands).
+
 Release 2.9 (Including Telnet):
 
 - The Comms program now accepts setting the Terminal Emulator 

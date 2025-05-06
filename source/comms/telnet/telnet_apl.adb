@@ -3,7 +3,7 @@
 --               (Terminal_Emulator, Term_IO and Redirect)                   --
 --                               package                                     --
 --                                                                           --
---                             Version 1.9                                   --
+--                             Version 3.0                                   --
 --                                                                           --
 --                   Copyright (C) 2003 Ross Higson                          --
 --                                                                           --
@@ -81,12 +81,15 @@ package body Telnet_Apl is
      
    begin
       if Ucb.Ga_Received 
-      or Ucb.Options.Remote_In_Effect (Suppress_Go_Ahead) 
+      or Ucb.Mode = Mode_Character
+      or Ucb.Options.Remote_In_Effect (Suppress_Go_Ahead)
       or Ucb.Options.Local_In_Effect (Suppress_Go_Ahead) then
          -- either we have a go ahead, or the remote end doesn't send them
          -- TBD : the above test also assumes we do not wait for a go ahead
          --       if WE are suppressing go aheads - the RFC is not clear
-         if Char = CR then
+         if Ucb.Mode = Mode_Character then
+            Transmit := True;
+         elsif Char = CR then
             -- end of line, no option negotiation pending => transmit line
             -- WAITING FOR RESPONSES TO PENDING OPTION NEGOTIATION CAUSES 
             -- PROBLEMS WITH IMPROPER TELNET IMPLEMENTATIONS, SO THIS ...
@@ -176,7 +179,8 @@ package body Telnet_Apl is
                   end;
                else
                   Debug_Io.Put_Line ("data character");
-                  if not Ucb.Options.Remote_In_Effect (Echo) then
+                  if not Ucb.Options.Remote_In_Effect (Echo)
+                  and not (Ucb.Mode = Mode_Character) then
                      -- the remote end will not echo the character, so ... 
                      Transport_To_Terminal.Output_To_Terminal (VT, Char);
                   end if;

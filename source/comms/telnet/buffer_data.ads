@@ -3,7 +3,7 @@
 --               (Terminal_Emulator, Term_IO and Redirect)                   --
 --                               package                                     --
 --                                                                           --
---                             Version 1.9                                   --
+--                             Version 3.0                                   --
 --                                                                           --
 --                   Copyright (C) 2003 Ross Higson                          --
 --                                                                           --
@@ -28,7 +28,9 @@ package Buffer_Data is
 
    use Telnet_Types;
 
-   NUMBER_OF_BUFFERS : constant := 20; -- arbitrary, but must be > 3
+   NUMBER_OF_BUFFERS : constant := 32; -- arbitrary, but must be > 3
+                                       -- increase if characters are lost
+                                       -- when in "mode character"
 
    type Data_Buffer;
 

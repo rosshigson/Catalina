@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_s2tk_67e4d975__sig_handler_L000001 ' <symbol:_sig_handler>
+C_si9c_67ea42a6__sig_handler_L000001 ' <symbol:_sig_handler>
  long $1
  byte 0[60]
 
@@ -38,7 +38,7 @@ C_raise_5
 C_raise_3
  mov r22, r23
  shl r22, #2 ' LSHI4 coni
- mov r20, ##@C_s2tk_67e4d975__sig_handler_L000001 ' reg <- addrg
+ mov r20, ##@C_si9c_67ea42a6__sig_handler_L000001 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRP4 reg
  mov RI, FP
@@ -93,7 +93,7 @@ C_signal_13
 C_signal_11
  mov r22, r3
  shl r22, #2 ' LSHI4 coni
- mov r20, ##@C_s2tk_67e4d975__sig_handler_L000001 ' reg <- addrg
+ mov r20, ##@C_si9c_67ea42a6__sig_handler_L000001 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRP4 reg
  mov RI, FP
@@ -104,7 +104,7 @@ C_signal_11
  if_nz jmp #\C_signal_14  ' NEU4
  mov r22, r3
  shl r22, #2 ' LSHI4 coni
- mov r20, ##@C_s2tk_67e4d975__sig_handler_L000001 ' reg <- addrg
+ mov r20, ##@C_si9c_67ea42a6__sig_handler_L000001 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  mov r20, ##$1 ' reg <- con
  wrlong r20, r22 ' ASGNP4 reg reg
@@ -112,7 +112,7 @@ C_signal_11
 C_signal_14
  mov r22, r3
  shl r22, #2 ' LSHI4 coni
- mov r20, ##@C_s2tk_67e4d975__sig_handler_L000001 ' reg <- addrg
+ mov r20, ##@C_si9c_67ea42a6__sig_handler_L000001 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  wrlong r2, r22 ' ASGNP4 reg reg
 C_signal_15

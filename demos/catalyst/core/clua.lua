@@ -39,6 +39,8 @@
 --
 -- version 8.5 - just update version number.
 --
+-- version 8.6 - just update version number.
+--
 
 require "os"
 require "io"
@@ -46,7 +48,7 @@ require "string"
 require "propeller"
 
 -- configuration parameters and default values
-LUAC_VERSION     = "8.5"
+LUAC_VERSION     = "8.6"
 LUAC_SCRIPT      = "luac.cmd"
 PATH_SEP         = "/";
 MAX_ARGS         = 24

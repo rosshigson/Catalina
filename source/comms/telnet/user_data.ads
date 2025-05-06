@@ -3,7 +3,7 @@
 --               (Terminal_Emulator, Term_IO and Redirect)                   --
 --                               package                                     --
 --                                                                           --
---                             Version 1.9                                   --
+--                             Version 3.0                                   --
 --                                                                           --
 --                   Copyright (C) 2003 Ross Higson                          --
 --                                                                           --
@@ -67,6 +67,7 @@ package User_Data is
       record 
          Port                    : Port_Type                         := DEFAULT_PORT;
          Active                  : Boolean                           := False;  
+         Mode                    : Mode_Type                         := Mode_None;
          Debug                   : Debug_Type                        := Debug_None;
          Transport               : Actual_Transport.Transport_Type;
          Signal                  : aliased Signal_Type; 

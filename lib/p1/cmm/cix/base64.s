@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' const data segment
 
  alignl ' align long
-C_sbmc_67e4d8df_cb64_L000003 ' <symbol:cb64>
+C_s6r8_67ea4214_cb64_L000003 ' <symbol:cb64>
  byte 65
  byte 66
  byte 67
@@ -79,7 +79,7 @@ C_sbmc_67e4d8df_cb64_L000003 ' <symbol:cb64>
  byte 0
 
  alignl ' align long
-C_sbmc1_67e4d8df_cd64_L000004 ' <symbol:cd64>
+C_s6r81_67ea4214_cd64_L000004 ' <symbol:cd64>
  byte 124
  byte 36
  byte 36
@@ -167,7 +167,7 @@ C_sbmc1_67e4d8df_cd64_L000004 ' <symbol:cd64>
 DAT ' code segment
 
  alignl ' align long
-C_sbmc2_67e4d8df_encodeblock_L000005 ' <symbol:encodeblock>
+C_s6r82_67ea4214_encodeblock_L000005 ' <symbol:encodeblock>
  alignl ' align long
  long I32_PSHM + $f50000<<S32 ' save registers
  word I16A_RDBYTE + (r22)<<D16A + (r4)<<S16A ' reg <- INDIRU1 reg
@@ -175,7 +175,7 @@ C_sbmc2_67e4d8df_encodeblock_L000005 ' <symbol:encodeblock>
  word I16A_SARI + (r22)<<D16A + (2)<<S16A ' SHRI4 reg coni
  word I16B_LODL + (r20)<<D16B
  alignl ' align long
- long @C_sbmc_67e4d8df_cb64_L000003 ' reg <- addrg
+ long @C_s6r8_67ea4214_cb64_L000003 ' reg <- addrg
  word I16A_ADDS + (r22)<<D16A + (r20)<<S16A ' ADDI/P (1)
  word I16A_RDBYTE + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU1 reg
  word I16A_WRBYTE + (r22)<<D16A + (r3)<<S16A ' ASGNU1 reg reg
@@ -197,13 +197,13 @@ C_sbmc2_67e4d8df_encodeblock_L000005 ' <symbol:encodeblock>
  word I16A_OR + (r20)<<D16A + (r18)<<S16A ' BORI/U (1)
  word I16B_LODL + (r18)<<D16B
  alignl ' align long
- long @C_sbmc_67e4d8df_cb64_L000003 ' reg <- addrg
+ long @C_s6r8_67ea4214_cb64_L000003 ' reg <- addrg
  word I16A_ADDS + (r20)<<D16A + (r18)<<S16A ' ADDI/P (1)
  word I16A_RDBYTE + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRU1 reg
  word I16A_WRBYTE + (r20)<<D16A + (r22)<<S16A ' ASGNU1 reg reg
  word I16A_CMPSI + (r2)<<D16A + (1)<<S16A
  alignl ' align long
- long I32_BRBE + (@C_sbmc2_67e4d8df_encodeblock_L000005_8)<<S32 ' LEI4 reg coni
+ long I32_BRBE + (@C_s6r82_67ea4214_encodeblock_L000005_8)<<S32 ' LEI4 reg coni
  word I16A_MOV + (r22)<<D16A + (r4)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (1)<<S16A ' ADDP4 reg coni
  word I16A_RDBYTE + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU1 reg
@@ -222,26 +222,26 @@ C_sbmc2_67e4d8df_encodeblock_L000005 ' <symbol:encodeblock>
  word I16A_OR + (r22)<<D16A + (r20)<<S16A ' BORI/U (1)
  word I16B_LODL + (r20)<<D16B
  alignl ' align long
- long @C_sbmc_67e4d8df_cb64_L000003 ' reg <- addrg
+ long @C_s6r8_67ea4214_cb64_L000003 ' reg <- addrg
  word I16A_ADDS + (r22)<<D16A + (r20)<<S16A ' ADDI/P (1)
  word I16A_RDBYTE + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU1 reg
  word I16A_MOV + (r23)<<D16A + (r22)<<S16A ' CVUI
  word I16B_TRN1 + (r23)<<D16B ' zero extend
  alignl ' align long
- long I32_JMPA + (@C_sbmc2_67e4d8df_encodeblock_L000005_9)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_s6r82_67ea4214_encodeblock_L000005_9)<<S32 ' JUMPV addrg
  alignl ' align long
-C_sbmc2_67e4d8df_encodeblock_L000005_8
+C_s6r82_67ea4214_encodeblock_L000005_8
  alignl ' align long
  long I32_LODS + (r23)<<D32S + ((61)&$7FFFF)<<S32 ' reg <- cons
  alignl ' align long
-C_sbmc2_67e4d8df_encodeblock_L000005_9
+C_s6r82_67ea4214_encodeblock_L000005_9
  word I16A_MOV + (r22)<<D16A + (r3)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (2)<<S16A ' ADDP4 reg coni
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16A_WRBYTE + (r20)<<D16A + (r22)<<S16A ' ASGNU1 reg reg
  word I16A_CMPSI + (r2)<<D16A + (2)<<S16A
  alignl ' align long
- long I32_BRBE + (@C_sbmc2_67e4d8df_encodeblock_L000005_11)<<S32 ' LEI4 reg coni
+ long I32_BRBE + (@C_s6r82_67ea4214_encodeblock_L000005_11)<<S32 ' LEI4 reg coni
  word I16A_MOV + (r22)<<D16A + (r4)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (2)<<S16A ' ADDP4 reg coni
  word I16A_RDBYTE + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU1 reg
@@ -251,24 +251,24 @@ C_sbmc2_67e4d8df_encodeblock_L000005_9
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16B_LODL + (r20)<<D16B
  alignl ' align long
- long @C_sbmc_67e4d8df_cb64_L000003 ' reg <- addrg
+ long @C_s6r8_67ea4214_cb64_L000003 ' reg <- addrg
  word I16A_ADDS + (r22)<<D16A + (r20)<<S16A ' ADDI/P (1)
  word I16A_RDBYTE + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU1 reg
  word I16A_MOV + (r21)<<D16A + (r22)<<S16A ' CVUI
  word I16B_TRN1 + (r21)<<D16B ' zero extend
  alignl ' align long
- long I32_JMPA + (@C_sbmc2_67e4d8df_encodeblock_L000005_12)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_s6r82_67ea4214_encodeblock_L000005_12)<<S32 ' JUMPV addrg
  alignl ' align long
-C_sbmc2_67e4d8df_encodeblock_L000005_11
+C_s6r82_67ea4214_encodeblock_L000005_11
  alignl ' align long
  long I32_LODS + (r21)<<D32S + ((61)&$7FFFF)<<S32 ' reg <- cons
  alignl ' align long
-C_sbmc2_67e4d8df_encodeblock_L000005_12
+C_s6r82_67ea4214_encodeblock_L000005_12
  word I16A_MOV + (r22)<<D16A + (r3)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (3)<<S16A ' ADDP4 reg coni
  word I16A_MOV + (r20)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16A_WRBYTE + (r20)<<D16A + (r22)<<S16A ' ASGNU1 reg reg
-' C_sbmc2_67e4d8df_encodeblock_L000005_6 ' (symbol refcount = 0)
+' C_s6r82_67ea4214_encodeblock_L000005_6 ' (symbol refcount = 0)
  word I16B_POPM + $80<<S16B ' restore registers, do not pop frame, do return
  alignl ' align long
 
@@ -357,7 +357,7 @@ C_encode_buff_26
  word I16A_MOV + (r4)<<D16A + RI<<S16A ' reg ARG ADDRLi
  word I16B_CPREP + 50<<S16B ' arg size, rpsize = 12, spsize = 12
  alignl ' align long
- long I32_CALA + (@C_sbmc2_67e4d8df_encodeblock_L000005)<<S32
+ long I32_CALA + (@C_s6r82_67ea4214_encodeblock_L000005)<<S32
  word I16A_ADDI + SP<<D16A + 8<<S16A ' CALL addrg
  word I16A_MOVI + (r15)<<D16A + (0)<<S16A ' reg <- coni
  alignl ' align long
@@ -429,7 +429,7 @@ C_encode_buff_19
  alignl ' align long
 
  alignl ' align long
-C_sbmc3_67e4d8df_decodeblock_L000040 ' <symbol:decodeblock>
+C_s6r83_67ea4214_decodeblock_L000040 ' <symbol:decodeblock>
  alignl ' align long
  long I32_PSHM + $540000<<S32 ' save registers
  word I16A_RDBYTE + (r22)<<D16A + (r3)<<S16A ' reg <- INDIRU1 reg
@@ -472,7 +472,7 @@ C_sbmc3_67e4d8df_decodeblock_L000040 ' <symbol:decodeblock>
  word I16B_TRN1 + (r18)<<D16B ' zero extend
  word I16A_OR + (r20)<<D16A + (r18)<<S16A ' BORI/U (1)
  word I16A_WRBYTE + (r20)<<D16A + (r22)<<S16A ' ASGNU1 reg reg
-' C_sbmc3_67e4d8df_decodeblock_L000040_41 ' (symbol refcount = 0)
+' C_s6r83_67ea4214_decodeblock_L000040_41 ' (symbol refcount = 0)
  word I16B_POPM + $80<<S16B ' restore registers, do not pop frame, do return
  alignl ' align long
 
@@ -538,7 +538,7 @@ C_decode_buff_59
 C_decode_buff_57
  word I16B_LODL + (r22)<<D16B
  alignl ' align long
- long @C_sbmc1_67e4d8df_cd64_L000004-43 ' reg <- addrg
+ long @C_s6r81_67ea4214_cd64_L000004-43 ' reg <- addrg
  word I16A_ADDS + (r22)<<D16A + (r15)<<S16A ' ADDI/P (2)
  word I16A_RDBYTE + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU1 reg
  word I16A_MOV + (r8)<<D16A + (r22)<<S16A ' CVUI
@@ -626,7 +626,7 @@ C_decode_buff_70
  word I16A_MOV + (r3)<<D16A + RI<<S16A ' reg ARG ADDRLi
  word I16B_CPREP + 33<<S16B ' arg size, rpsize = 8, spsize = 8
  alignl ' align long
- long I32_CALA + (@C_sbmc3_67e4d8df_decodeblock_L000040)<<S32
+ long I32_CALA + (@C_s6r83_67ea4214_decodeblock_L000040)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + (r11)<<D16A + (0)<<S16A ' reg <- coni
  alignl ' align long

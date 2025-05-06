@@ -3,10 +3,10 @@
 --               (Terminal_Emulator, Term_IO and Redirect)                   --
 --                               package                                     --
 --                                                                           --
---                             Version 1.9                                   --
+--                             Version 3.0                                   --
 --                                                                           --
 --                   Copyright (C) 2003 Ross Higson                          --
---                                                                           --
+--                                                            E               --
 -- The Ada Terminal Emulator package is free software; you can redistribute  --
 -- it and/or modify it under the terms of the GNU General Public License as  --
 -- published by the Free Software Foundation; either version 2 of the        --
@@ -45,6 +45,7 @@ with Option_Negotiation;
 function Telnet return Integer is
 
    use Terminal_Types;
+   use Telnet_Types;
    use Terminal_Emulator;
    use Win32.Winbase;
    use Ada.Strings.Fixed;
@@ -72,7 +73,7 @@ function Telnet return Integer is
    -- window as a Network Virtual Terminal. It adds new telnet related 
    -- options:
    -- "/client", "/server", "/host", "/port", "/debug", 
-   -- "/terminal", "/escape", "/binary", etc
+   -- "/terminal", "/escape", "/binary /mode", etc
    --
    -- For example, try:
    --
@@ -112,6 +113,7 @@ function Telnet return Integer is
 
    HighPriority : aliased Boolean := False;
    Port         : aliased Natural          := DEFAULT_TELNET_PORT;
+   Mode         : aliased Mode_Type        := Mode_None;
    Escape       : aliased Natural          := Natural'Last;
    Client       : aliased Boolean          := True;
    HostStr      : aliased OP.String_Result := (others => ASCII.NUL);
@@ -120,7 +122,9 @@ function Telnet return Integer is
    DebugOpt     : Telnet_Types.Debug_Type  := Telnet_Types.Debug_None;
    BinaryStr    : aliased OP.String_Result := (others => ASCII.NUL);
    BinaryOpt    : Binary_Type              := Binary_Default;
-
+   ModeStr      : aliased OP.String_Result := (others => ASCII.NUL);
+   ModeOpt      : Mode_Type                := Mode_None;
+   
    StrLast      : Natural;
 
 
@@ -208,6 +212,30 @@ function Telnet return Integer is
    end DecodeBinary;
 
 
+   -- DecodeMode : Decode a mode option string
+   function DecodeMode (Str : in String) 
+      return Mode_Type 
+   is
+      Last : Natural := Str'First;
+   begin
+      Last := FindLastChar (Str);
+      if Last = Str'First then
+         return Mode_None;
+      elsif Str (Str'First .. Last) = "character" then
+         return Mode_Character;
+      elsif Str (Str'First .. Last) = "char" then
+         return Mode_Character;
+      elsif Str (Str'First .. Last) = "line" then
+         return Mode_Line;
+      elsif Str (Str'First .. Last) = "none" then
+         return Mode_Line;
+      else
+         Put (Term, "Invalid mode option """ & Str & """ - using default" & CRLF);
+         return Mode_None;
+      end if;
+   end DecodeMode;
+
+
 begin -- Telnet
 
    -- Set up terminal with initial options. Note that command line options
@@ -249,7 +277,7 @@ begin -- Telnet
    -- Create an options parser and set it up to parse the options that
    -- are unique to this program.
 
-   OP.CreateParser (Parser, Term, 9, '/'); -- 9 new options:
+   OP.CreateParser (Parser, Term, 10, '/'); -- 9 new options:
    OP.AddOption (Parser, "Port",     3, OP.Num_Option,   Added, Num1 => Port'Unchecked_Access);
    OP.AddOption (Parser, "Host",     3, OP.Str_Option,   Added, Str  => HostStr'Unchecked_Access);
    OP.AddOption (Parser, "High",     4, OP.Bool_Option,  Added, Bool => HighPriority'Unchecked_Access);
@@ -259,6 +287,7 @@ begin -- Telnet
    OP.AddOption (Parser, "Debug",    3, OP.Str_Option,   Added, Str  => DebugStr'Unchecked_Access);
    OP.AddOption (Parser, "Binary",   3, OP.Str_Option,   Added, Str  => BinaryStr'Unchecked_Access);
    OP.AddOption (Parser, "Terminal", 3, OP.Str_Option,   Added, Str  => TerminalStr'Unchecked_Access);
+   OP.AddOption (Parser, "Mode",     3, OP.Str_Option,   Added, Str  => ModeStr'Unchecked_Access);
 
    -- Parse any options in the command line arguments. To do
    -- this we collect all the aruments into a single line, since
@@ -333,6 +362,9 @@ begin -- Telnet
       end if;
    end if;
    
+   ModeOpt := DecodeMode (ModeStr);
+   Telnet_Terminal.Set_Mode (VT, Mode => ModeOpt);
+
    StrLast := FindLastChar (TerminalStr);
    if StrLast /= TerminalStr'First then
       Telnet_Terminal.Set_Terminal_Name (VT, Name => TerminalStr (1 .. StrLast));

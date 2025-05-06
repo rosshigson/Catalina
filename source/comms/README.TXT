@@ -2,7 +2,7 @@
 About this release:
 -------------------
 
-This is release 2.9 of the Ada Terminal Emulator package.
+This is release 3.0 of the Ada Terminal Emulator package.
 
 The package is available at: https://ada-terminal-emulator.sourceforge.io/
 
