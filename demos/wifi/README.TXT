@@ -571,16 +571,9 @@ or, to compile the program and then execute the compiled version:
    clua testhttp.lua
    wluax testhttp.lux
 
-Like the other WiFi programs in this directory, wlua and wluax are compiled
-with the NO_HMI option, so the usual user interaction and I/O functions
-(e.g. print() etc) are unavailable, so (like the C programs) the serial 
-library functions should be used for user interaction instead. 
-
-This also means no error messages will be produced by Lua itself when the 
-program is loaded. To detect simple syntax errors, use the Lua compiler to 
-compile the program beforehand even if the text version is going to be 
-executed, and also print diagnostic messages using the serial I/O functions 
-to port 1 as appropriate. See the program "testhttp.lua" for an example.
+Unlike the other WiFi programs in this directory, wlua and wluax are compiled
+without the NO_HMI option, so the usual user interaction and I/O functions
+can be used. 
 
 The Lua serial library is very similar to the C serial library, except the
 names have been changed to suit Lua - for example:
