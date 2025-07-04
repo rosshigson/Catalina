@@ -654,103 +654,103 @@ call compile_and_run_p2 %1 test_threads -lthreads -O5 -lcix -C COMPACT
 
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -ltiny -lc -lm -C TINY
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -ltiny -lc -lm -C NATIVE
-call compile_and_run_p2 %1 test_interrupts -lint -lthreads -ltiny -lc -lm -C COMPACT
+call compile_and_run_p2_no_fifo %1 test_interrupts -lint -lthreads -ltiny -lc -lm -C COMPACT
 
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -lc -lm -C TINY
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -lc -lm -C NATIVE
-call compile_and_run_p2 %1 test_interrupts -lint -lthreads -lc -lm -C COMPACT
+call compile_and_run_p2_no_fifo %1 test_interrupts -lint -lthreads -lc -lm -C COMPACT
 
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -lci -C TINY
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -lci -C NATIVE
-call compile_and_run_p2 %1 test_interrupts -lint -lthreads -lci -C COMPACT
+call compile_and_run_p2_no_fifo %1 test_interrupts -lint -lthreads -lci -C COMPACT
 
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -lcix -C TINY
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -lcix -C NATIVE
-call compile_and_run_p2 %1 test_interrupts -lint -lthreads -lcix -C COMPACT
+call compile_and_run_p2_no_fifo %1 test_interrupts -lint -lthreads -lcix -C COMPACT
 
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -lcx -lm -C TINY
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -lcx -lm -C NATIVE
-call compile_and_run_p2 %1 test_interrupts -lint -lthreads -lcx -lm -C COMPACT
+call compile_and_run_p2_no_fifo %1 test_interrupts -lint -lthreads -lcx -lm -C COMPACT
 
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O1 -lc -lm -C TINY
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O1 -lc -lm -C NATIVE
-call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O1 -lc -lm -C COMPACT
+call compile_and_run_p2_no_fifo %1 test_interrupts -lint -lthreads -O1 -lc -lm -C COMPACT
 
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O2 -lc -lm -C TINY
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O2 -lc -lm -C NATIVE
-call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O2 -lc -lm -C COMPACT
+call compile_and_run_p2_no_fifo %1 test_interrupts -lint -lthreads -O2 -lc -lm -C COMPACT
 
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O3 -lc -lm -C TINY
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O3 -lc -lm -C NATIVE
-call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O3 -lc -lm -C COMPACT
+call compile_and_run_p2_no_fifo %1 test_interrupts -lint -lthreads -O3 -lc -lm -C COMPACT
 
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O4 -lc -lm -C TINY
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O4 -lc -lm -C NATIVE
-call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O4 -lc -lm -C COMPACT
+call compile_and_run_p2_no_fifo %1 test_interrupts -lint -lthreads -O4 -lc -lm -C COMPACT
 
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O5 -lc -lm -C TINY
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O5 -lc -lm -C NATIVE
-call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O5 -lc -lm -C COMPACT
+call compile_and_run_p2_no_fifo %1 test_interrupts -lint -lthreads -O5 -lc -lm -C COMPACT
 
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O1 -lci -C TINY
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O1 -lci -C NATIVE
-call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O1 -lci -C COMPACT
+call compile_and_run_p2_no_fifo %1 test_interrupts -lint -lthreads -O1 -lci -C COMPACT
 
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O2 -lci -C TINY
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O2 -lci -C NATIVE
-call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O2 -lci -C COMPACT
+call compile_and_run_p2_no_fifo %1 test_interrupts -lint -lthreads -O2 -lci -C COMPACT
 
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O3 -lci -C TINY
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O3 -lci -C NATIVE
-call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O3 -lci -C COMPACT
+call compile_and_run_p2_no_fifo %1 test_interrupts -lint -lthreads -O3 -lci -C COMPACT
 
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O4 -lci -C TINY
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O4 -lci -C NATIVE
-call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O4 -lci -C COMPACT
+call compile_and_run_p2_no_fifo %1 test_interrupts -lint -lthreads -O4 -lci -C COMPACT
 
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O5 -lci -C TINY
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O5 -lci -C NATIVE
-call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O5 -lci -C COMPACT
+call compile_and_run_p2_no_fifo %1 test_interrupts -lint -lthreads -O5 -lci -C COMPACT
 
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O1 -lcx -lm -C TINY
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O1 -lcx -lm -C NATIVE
-call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O1 -lcx -lm -C COMPACT
+call compile_and_run_p2_no_fifo %1 test_interrupts -lint -lthreads -O1 -lcx -lm -C COMPACT
 
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O2 -lcx -lm -C TINY
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O2 -lcx -lm -C NATIVE
-call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O2 -lcx -lm -C COMPACT
+call compile_and_run_p2_no_fifo %1 test_interrupts -lint -lthreads -O2 -lcx -lm -C COMPACT
 
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O3 -lcx -lm -C TINY
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O3 -lcx -lm -C NATIVE
-call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O3 -lcx -lm -C COMPACT
+call compile_and_run_p2_no_fifo %1 test_interrupts -lint -lthreads -O3 -lcx -lm -C COMPACT
 
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O4 -lcx -lm -C TINY
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O4 -lcx -lm -C NATIVE
-call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O4 -lcx -lm -C COMPACT
+call compile_and_run_p2_no_fifo %1 test_interrupts -lint -lthreads -O4 -lcx -lm -C COMPACT
 
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O5 -lcx -lm -C TINY
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O5 -lcx -lm -C NATIVE
-call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O5 -lcx -lm -C COMPACT
+call compile_and_run_p2_no_fifo %1 test_interrupts -lint -lthreads -O5 -lcx -lm -C COMPACT
 
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O1 -lcix -C TINY
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O1 -lcix -C NATIVE
-call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O1 -lcix -C COMPACT
+call compile_and_run_p2_no_fifo %1 test_interrupts -lint -lthreads -O1 -lcix -C COMPACT
 
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O2 -lcix -C TINY
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O2 -lcix -C NATIVE
-call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O2 -lcix -C COMPACT
+call compile_and_run_p2_no_fifo %1 test_interrupts -lint -lthreads -O2 -lcix -C COMPACT
 
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O3 -lcix -C TINY
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O3 -lcix -C NATIVE
-call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O3 -lcix -C COMPACT
+call compile_and_run_p2_no_fifo %1 test_interrupts -lint -lthreads -O3 -lcix -C COMPACT
 
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O4 -lcix -C TINY
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O4 -lcix -C NATIVE
-call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O4 -lcix -C COMPACT
+call compile_and_run_p2_no_fifo %1 test_interrupts -lint -lthreads -O4 -lcix -C COMPACT
 
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O5 -lcix -C TINY
 call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O5 -lcix -C NATIVE
-call compile_and_run_p2 %1 test_interrupts -lint -lthreads -O5 -lcix -C COMPACT
+call compile_and_run_p2_no_fifo %1 test_interrupts -lint -lthreads -O5 -lcix -C COMPACT
 
 
 

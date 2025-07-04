@@ -55,14 +55,14 @@ FC_START     = $56  ' must match FC_START     in cmm.s
 
 DEBUG_ADJUST = $6f  ' must match DEBUG_ADJUST in cmm.s
 FC_INLINE    = $74  ' must macth FC_INLINE    in cmm.s
-EXEC_STOP    = $76  ' must match EXEC_STOP    in cmm.s
+EXEC_STOP    = $84  ' must match EXEC_STOP    in cmm.s
 DECODE_OFF   = $79  ' must match DECODE_OFF   in cmm.s
 'FC_RETURN    = $1a6 ' must match FC_RETURN    in cmm.s 
 
 #else
 
 FC_INLINE    = $72  ' must macth FC_INLINE    in cmm.s
-EXEC_STOP    = $74  ' must match EXEC_STOP    in cmm.s
+EXEC_STOP    = $81  ' must match EXEC_STOP    in cmm.s
 '#ifdef libthreads
 'FC_RETURN    = $1a5 ' must match FC_RETURN    in cmmt.s
 '#else
@@ -302,5 +302,14 @@ I32_LODS   = %010110__00000_0000000000000000000_11  '  LODS  d,s ' load 19 bits 
 #ifndef alignl
 #define alignl long
 #endif
+' On the P1, these must all do the same as alignl
+#define alignl_p1 alignl
+#define alignl_label alignl
+#define alignl_debug alignl
+#else
+' On the P2, these should do nothing, but currently all do the same as P1
+#define alignl_p1 alignl
+#define alignl_label alignl
+#define alignl_debug alignl
 #endif
 

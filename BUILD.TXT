@@ -32,9 +32,9 @@ specific Linux or Raspberry Pi OS distribution.
 Windows
 =======
 
-This section assumes you are using Catalina 7.7, and will install it using 
-the Windows installation program (Catalina_7.7_Setup.exe) so it will end 
-up installed in the folder "C:\Program Files (x86)\Catalina_7.7" (if either 
+This section assumes you are using Catalina 8.7, and will install it using 
+the Windows installation program (Catalina_8.7_Setup.exe) so it will end 
+up installed in the folder "C:\Program Files (x86)\Catalina_8.7" (if either 
 of these changes, some commands will need to change accordingly).
 
 If you instead are cloning or downloading the GitHub repository (i.e. from
@@ -44,7 +44,7 @@ e.g. a folder called "Catalina" in your home directory.
 1. Install Catalina
 ===================
 
-Install Catalina by executing Catalina_7.7_Setup.exe and following the 
+Install Catalina by executing Catalina_8.7_Setup.exe and following the 
 prompts, or cloning or downloading the GitHub repository and associated
 binary assets. 
 
@@ -124,9 +124,9 @@ as an Administrator):
 
    mkdir C:\catalina
    cd C:\catalina
-   mklink /D 7.7 "C:\Program Files (x86)\Catalina_7.7"
+   mklink /D 8.7 "C:\Program Files (x86)\Catalina_8.7"
 
-Then in any MSYS2 bash shell you can use the path /c/catalina/7.7 to refer to 
+Then in any MSYS2 bash shell you can use the path /c/catalina/8.7 to refer to 
 the Catalina installation, without worrying about spaces in the path name.
 
 Then add the MSYS2 folders to the Windows Path (e.g. Open Settings, search 
@@ -173,10 +173,10 @@ required by Geany:
    pacman -S mingw-w64-x86_64-gettext-tools
 
 Go to the geany source directory and build geany. The following commands 
-assume the Catalina Geany source is in /c/catalina/7.7/source/geany - which 
+assume the Catalina Geany source is in /c/catalina/8.7/source/geany - which 
 may be a link! - and we want to end up with Geany in /c/geany:
 
-   cd /c/catalina/7.7/source/geany-1.37.1
+   cd /c/catalina/8.7/source/geany-1.37.1
    NOCONFIGURE=1 ./autogen.sh
    ./configure --prefix=/c/geany --enable-gtk2 
    make clean
@@ -208,7 +208,7 @@ following, where the destination directory specified is the directory where
 Catalina is installed, which - if this was in "C:\Program Files (x86)" - will 
 be the link created earlier:
 
-   cp -R /c/geany/* /c/catalina/7.7/catalina_geany/
+   cp -R /c/geany/* /c/catalina/8.7/catalina_geany/
 
 6. Test Catalina and Geany
 ========================== 
@@ -245,7 +245,7 @@ accordingly.
 ===================
 
 Install Catalina by unpacking a compressed Catalina distribution 
-(e.g. Catalina_7.7_Linux.tar.gz), or cloning or downloading Catalina from
+(e.g. Catalina_8.7_Linux.tar.gz), or cloning or downloading Catalina from
 the GitHub repository (i.e. https://github.com/rosshigson/Catalina) in a 
 suitable directory for building, such as a subdirectory called "catalina" in 
 your home directory.

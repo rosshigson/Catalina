@@ -11,31 +11,31 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_sgsg_67ea40c6_startupD_ata_L000002 ' <symbol:startupData>
+C_s5e4_6864c30a_startupD_ata_L000002 ' <symbol:startupData>
  long $0
 
  alignl ' align long
-C_sgsg1_67ea40c6_deviceD_ata_L000003 ' <symbol:deviceData>
+C_s5e41_6864c30a_deviceD_ata_L000003 ' <symbol:deviceData>
  long $0
 
  alignl ' align long
-C_sgsg2_67ea40c6_Q_osD_ata_L000004 ' <symbol:QosData>
+C_s5e42_6864c30a_Q_osD_ata_L000004 ' <symbol:QosData>
  long $0
 
  alignl ' align long
-C_sgsg3_67ea40c6_mailboxes_L000005 ' <symbol:mailboxes>
+C_s5e43_6864c30a_mailboxes_L000005 ' <symbol:mailboxes>
  long $0
 
  alignl ' align long
-C_sgsg4_67ea40c6_drivercog_L000006 ' <symbol:drivercog>
+C_s5e44_6864c30a_drivercog_L000006 ' <symbol:drivercog>
  long -1
 
  alignl ' align long
-C_sgsg5_67ea40c6_driverlock_L000007 ' <symbol:driverlock>
+C_s5e45_6864c30a_driverlock_L000007 ' <symbol:driverlock>
  long -1
 
  alignl ' align long
-C_sgsg6_67ea40c6_delayT_able_r_L000008 ' <symbol:delayTable_r>
+C_s5e46_6864c30a_delayT_able_r_L000008 ' <symbol:delayTable_r>
  long $6
  long $57bcf00
  long $80befc0
@@ -46,7 +46,7 @@ C_sgsg6_67ea40c6_delayT_able_r_L000008 ' <symbol:delayTable_r>
  long $0
 
  alignl ' align long
-C_sgsg7_67ea40c6_delayT_able_f_L000009 ' <symbol:delayTable_f>
+C_s5e47_6864c30a_delayT_able_f_L000009 ' <symbol:delayTable_f>
  long $5
  long $42c1d80
  long $68e7780
@@ -73,7 +73,7 @@ C_hyper_getM_ailbox ' <symbol:hyper_getMailbox>
  mov r22, r0
  shl r22, #2 ' LSHI4 coni
  jmp #LODI
- long @C_sgsg3_67ea40c6_mailboxes_L000005
+ long @C_s5e43_6864c30a_mailboxes_L000005
  mov r20, RI ' reg <- INDIRP4 addrg
  mov r0, r22 ' ADDI/P
  adds r0, r20 ' ADDI/P (3)
@@ -91,7 +91,7 @@ C_hyper_initialize ' <symbol:hyper_initialize>
  jmp #PSHM
  long $540000 ' save registers
  jmp #LODI
- long @C_sgsg_67ea40c6_startupD_ata_L000002
+ long @C_s5e4_6864c30a_startupD_ata_L000002
  mov r22, RI ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  jmp #BRNZ
@@ -101,10 +101,10 @@ C_hyper_initialize ' <symbol:hyper_initialize>
  jmp #CALA
  long @C__locate_plugin ' CALL addrg
  jmp #LODL
- long @C_sgsg4_67ea40c6_drivercog_L000006
+ long @C_s5e44_6864c30a_drivercog_L000006
  wrlong r0, RI ' ASGNI4 addrg reg
  jmp #LODI
- long @C_sgsg4_67ea40c6_drivercog_L000006
+ long @C_s5e44_6864c30a_drivercog_L000006
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
  jmp #BR_B
@@ -116,7 +116,7 @@ C_hyper_initialize ' <symbol:hyper_initialize>
  long $ffffff
  mov r20, RI ' reg <- con
  jmp #LODI
- long @C_sgsg4_67ea40c6_drivercog_L000006
+ long @C_s5e44_6864c30a_drivercog_L000006
  mov r18, RI ' reg <- INDIRI4 addrg
  shl r18, #2 ' LSHI4 coni
  mov r22, r0 ' CVI, CVU or LOAD
@@ -128,43 +128,43 @@ C_hyper_initialize ' <symbol:hyper_initialize>
  long -8
  wrlong r22, RI ' ASGNU4 addrl reg
  jmp #LODL
- long @C_sgsg_67ea40c6_startupD_ata_L000002
+ long @C_s5e4_6864c30a_startupD_ata_L000002
  mov r22, RI ' reg <- addrg
  mov r18, FP
  sub r18, #-(-8) ' reg <- addrli
  rdlong r18, r18 ' reg <- INDIRU4 reg
  and r20, r18 ' BANDI/U (2)
  jmp #LODL
- long @C_sgsg_67ea40c6_startupD_ata_L000002
+ long @C_s5e4_6864c30a_startupD_ata_L000002
  wrlong r20, RI ' ASGNP4 addrg reg
  jmp #LODL
- long @C_sgsg1_67ea40c6_deviceD_ata_L000003
+ long @C_s5e41_6864c30a_deviceD_ata_L000003
  mov r20, RI ' reg <- addrg
  rdlong r22, r22 ' reg <- INDIRP4 reg
  adds r22, #32 ' ADDP4 coni
  jmp #LODL
- long @C_sgsg1_67ea40c6_deviceD_ata_L000003
+ long @C_s5e41_6864c30a_deviceD_ata_L000003
  wrlong r22, RI ' ASGNP4 addrg reg
  jmp #LODL
- long @C_sgsg2_67ea40c6_Q_osD_ata_L000004
+ long @C_s5e42_6864c30a_Q_osD_ata_L000004
  mov r22, RI ' reg <- addrg
  rdlong r20, r20 ' reg <- INDIRP4 reg
  adds r20, #128 ' ADDP4 coni
  jmp #LODL
- long @C_sgsg2_67ea40c6_Q_osD_ata_L000004
+ long @C_s5e42_6864c30a_Q_osD_ata_L000004
  wrlong r20, RI ' ASGNP4 addrg reg
  rdlong r22, r22 ' reg <- INDIRP4 reg
  adds r22, #32 ' ADDP4 coni
  jmp #LODL
- long @C_sgsg3_67ea40c6_mailboxes_L000005
+ long @C_s5e43_6864c30a_mailboxes_L000005
  wrlong r22, RI ' ASGNP4 addrg reg
  jmp #LODL
- long @C_sgsg5_67ea40c6_driverlock_L000007
+ long @C_s5e45_6864c30a_driverlock_L000007
  mov r22, RI ' reg <- addrg
  mov r20, r18
  shr r20, #24 ' RSHU4 coni
  jmp #LODL
- long @C_sgsg5_67ea40c6_driverlock_L000007
+ long @C_s5e45_6864c30a_driverlock_L000007
  wrlong r20, RI ' ASGNI4 addrg reg
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #0 wz
@@ -174,10 +174,10 @@ C_hyper_initialize ' <symbol:hyper_initialize>
  jmp #CALA
  long @C__locknew ' CALL addrg
  jmp #LODL
- long @C_sgsg5_67ea40c6_driverlock_L000007
+ long @C_s5e45_6864c30a_driverlock_L000007
  wrlong r0, RI ' ASGNI4 addrg reg
  jmp #LODI
- long @C_sgsg5_67ea40c6_driverlock_L000007
+ long @C_s5e45_6864c30a_driverlock_L000007
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
  jmp #BR_B
@@ -186,7 +186,7 @@ C_hyper_initialize ' <symbol:hyper_initialize>
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRU4 reg
  jmp #LODI
- long @C_sgsg5_67ea40c6_driverlock_L000007
+ long @C_s5e45_6864c30a_driverlock_L000007
  mov r20, RI ' reg <- INDIRI4 addrg
  adds r20, #1 ' ADDI4 coni
  shl r20, #24 ' LSHI4 coni
@@ -198,7 +198,7 @@ C_hyper_initialize ' <symbol:hyper_initialize>
  jmp #CALA
  long @C__registry ' CALL addrg
  jmp #LODI
- long @C_sgsg4_67ea40c6_drivercog_L000006
+ long @C_s5e44_6864c30a_drivercog_L000006
  mov r20, RI ' reg <- INDIRI4 addrg
  shl r20, #2 ' LSHI4 coni
  mov r22, r0 ' CVI, CVU or LOAD
@@ -216,18 +216,18 @@ C_hyper_initialize ' <symbol:hyper_initialize>
  long @C_hyper_initialize_17 ' JUMPV addrg
 C_hyper_initialize_16
  jmp #LODL
- long @C_sgsg5_67ea40c6_driverlock_L000007
+ long @C_s5e45_6864c30a_driverlock_L000007
  mov r22, RI ' reg <- addrg
  rdlong r22, r22 ' reg <- INDIRI4 reg
  subs r22, #1 ' SUBI4 coni
  jmp #LODL
- long @C_sgsg5_67ea40c6_driverlock_L000007
+ long @C_s5e45_6864c30a_driverlock_L000007
  wrlong r22, RI ' ASGNI4 addrg reg
 C_hyper_initialize_17
 C_hyper_initialize_14
 C_hyper_initialize_12
  jmp #LODI
- long @C_sgsg4_67ea40c6_drivercog_L000006
+ long @C_s5e44_6864c30a_drivercog_L000006
  mov r0, RI ' reg <- INDIRI4 addrg
 ' C_hyper_initialize_11 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
@@ -284,16 +284,16 @@ C_hyper_stop_21
  long -1
  mov r22, RI ' reg <- con
  jmp #LODL
- long @C_sgsg4_67ea40c6_drivercog_L000006
+ long @C_s5e44_6864c30a_drivercog_L000006
  wrlong r22, RI ' ASGNI4 addrg reg
  jmp #LODI
- long @C_sgsg5_67ea40c6_driverlock_L000007
+ long @C_s5e45_6864c30a_driverlock_L000007
  mov r20, RI ' reg <- INDIRI4 addrg
  cmps r20, r22 wz
  jmp #BR_Z
  long @C_hyper_stop_29 ' EQI4
  jmp #LODI
- long @C_sgsg5_67ea40c6_driverlock_L000007
+ long @C_s5e45_6864c30a_driverlock_L000007
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -302,7 +302,7 @@ C_hyper_stop_21
  long -1
  mov r22, RI ' reg <- con
  jmp #LODL
- long @C_sgsg5_67ea40c6_driverlock_L000007
+ long @C_s5e45_6864c30a_driverlock_L000007
  wrlong r22, RI ' ASGNI4 addrg reg
 C_hyper_stop_29
  mov r0, r23 ' CVI, CVU or LOAD
@@ -320,7 +320,7 @@ C_hyper_getD_riverC_ogI_d ' <symbol:hyper_getDriverCogId>
  jmp #CALA
  long @C_hyper_initialize ' CALL addrg
  jmp #LODI
- long @C_sgsg4_67ea40c6_drivercog_L000006
+ long @C_s5e44_6864c30a_drivercog_L000006
  mov r0, RI ' reg <- INDIRI4 addrg
 ' C_hyper_getD_riverC_ogI_d_31 ' (symbol refcount = 0)
  jmp #RETF
@@ -335,14 +335,14 @@ C_hyper_getD_riverL_ock ' <symbol:hyper_getDriverLock>
  jmp #CALA
  long @C_hyper_initialize ' CALL addrg
  jmp #LODI
- long @C_sgsg5_67ea40c6_driverlock_L000007
+ long @C_s5e45_6864c30a_driverlock_L000007
  mov r0, RI ' reg <- INDIRI4 addrg
 ' C_hyper_getD_riverL_ock_32 ' (symbol refcount = 0)
  jmp #RETF
 
 
  alignl ' align long
-C_sgsg8_67ea40c6_hyper_getS_tartB_ank_L000033 ' <symbol:hyper_getStartBank>
+C_s5e48_6864c30a_hyper_getS_tartB_ank_L000033 ' <symbol:hyper_getStartBank>
  jmp #NEWF
  sub SP, #4
  jmp #PSHM
@@ -354,7 +354,7 @@ C_sgsg8_67ea40c6_hyper_getS_tartB_ank_L000033 ' <symbol:hyper_getStartBank>
  mov r22, r23
  shl r22, #2 ' LSHI4 coni
  jmp #LODI
- long @C_sgsg1_67ea40c6_deviceD_ata_L000003
+ long @C_s5e41_6864c30a_deviceD_ata_L000003
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRI4 reg
@@ -367,59 +367,59 @@ C_sgsg8_67ea40c6_hyper_getS_tartB_ank_L000033 ' <symbol:hyper_getStartBank>
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #25 wz
  jmp #BRNZ
- long @C_sgsg8_67ea40c6_hyper_getS_tartB_ank_L000033_35 ' NEI4
+ long @C_s5e48_6864c30a_hyper_getS_tartB_ank_L000033_35 ' NEI4
  and r23, #14 ' BANDI4 coni
  jmp #JMPA
- long @C_sgsg8_67ea40c6_hyper_getS_tartB_ank_L000033_36 ' JUMPV addrg
-C_sgsg8_67ea40c6_hyper_getS_tartB_ank_L000033_35
+ long @C_s5e48_6864c30a_hyper_getS_tartB_ank_L000033_36 ' JUMPV addrg
+C_s5e48_6864c30a_hyper_getS_tartB_ank_L000033_35
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #26 wz
  jmp #BRNZ
- long @C_sgsg8_67ea40c6_hyper_getS_tartB_ank_L000033_37 ' NEI4
+ long @C_s5e48_6864c30a_hyper_getS_tartB_ank_L000033_37 ' NEI4
  and r23, #12 ' BANDI4 coni
  jmp #JMPA
- long @C_sgsg8_67ea40c6_hyper_getS_tartB_ank_L000033_38 ' JUMPV addrg
-C_sgsg8_67ea40c6_hyper_getS_tartB_ank_L000033_37
+ long @C_s5e48_6864c30a_hyper_getS_tartB_ank_L000033_38 ' JUMPV addrg
+C_s5e48_6864c30a_hyper_getS_tartB_ank_L000033_37
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #27 wz
  jmp #BRNZ
- long @C_sgsg8_67ea40c6_hyper_getS_tartB_ank_L000033_39 ' NEI4
+ long @C_s5e48_6864c30a_hyper_getS_tartB_ank_L000033_39 ' NEI4
  and r23, #8 ' BANDI4 coni
  jmp #JMPA
- long @C_sgsg8_67ea40c6_hyper_getS_tartB_ank_L000033_40 ' JUMPV addrg
-C_sgsg8_67ea40c6_hyper_getS_tartB_ank_L000033_39
+ long @C_s5e48_6864c30a_hyper_getS_tartB_ank_L000033_40 ' JUMPV addrg
+C_s5e48_6864c30a_hyper_getS_tartB_ank_L000033_39
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #28 wz
  jmp #BRNZ
- long @C_sgsg8_67ea40c6_hyper_getS_tartB_ank_L000033_41 ' NEI4
+ long @C_s5e48_6864c30a_hyper_getS_tartB_ank_L000033_41 ' NEI4
  mov r23, #0 ' reg <- coni
  jmp #JMPA
- long @C_sgsg8_67ea40c6_hyper_getS_tartB_ank_L000033_42 ' JUMPV addrg
-C_sgsg8_67ea40c6_hyper_getS_tartB_ank_L000033_41
+ long @C_s5e48_6864c30a_hyper_getS_tartB_ank_L000033_42 ' JUMPV addrg
+C_s5e48_6864c30a_hyper_getS_tartB_ank_L000033_41
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #28 wcz
  jmp #BRBE
- long @C_sgsg8_67ea40c6_hyper_getS_tartB_ank_L000033_43 ' LEI4
+ long @C_s5e48_6864c30a_hyper_getS_tartB_ank_L000033_43 ' LEI4
  jmp #LODL
  long -6
  mov r0, RI ' reg <- con
  jmp #JMPA
- long @C_sgsg8_67ea40c6_hyper_getS_tartB_ank_L000033_34 ' JUMPV addrg
-C_sgsg8_67ea40c6_hyper_getS_tartB_ank_L000033_43
-C_sgsg8_67ea40c6_hyper_getS_tartB_ank_L000033_42
-C_sgsg8_67ea40c6_hyper_getS_tartB_ank_L000033_40
-C_sgsg8_67ea40c6_hyper_getS_tartB_ank_L000033_38
-C_sgsg8_67ea40c6_hyper_getS_tartB_ank_L000033_36
+ long @C_s5e48_6864c30a_hyper_getS_tartB_ank_L000033_34 ' JUMPV addrg
+C_s5e48_6864c30a_hyper_getS_tartB_ank_L000033_43
+C_s5e48_6864c30a_hyper_getS_tartB_ank_L000033_42
+C_s5e48_6864c30a_hyper_getS_tartB_ank_L000033_40
+C_s5e48_6864c30a_hyper_getS_tartB_ank_L000033_38
+C_s5e48_6864c30a_hyper_getS_tartB_ank_L000033_36
  mov r0, r23 ' CVI, CVU or LOAD
-C_sgsg8_67ea40c6_hyper_getS_tartB_ank_L000033_34
+C_s5e48_6864c30a_hyper_getS_tartB_ank_L000033_34
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
@@ -444,7 +444,7 @@ C_hyper_getF_lashS_ize ' <symbol:hyper_getFlashSize>
  mov r22, r21
  shl r22, #2 ' LSHI4 coni
  jmp #LODI
- long @C_sgsg1_67ea40c6_deviceD_ata_L000003
+ long @C_s5e41_6864c30a_deviceD_ata_L000003
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRI4 reg
@@ -465,7 +465,7 @@ C_hyper_getF_lashS_ize_46
  mov r20, r21
  shl r20, #2 ' LSHI4 coni
  jmp #LODI
- long @C_sgsg1_67ea40c6_deviceD_ata_L000003
+ long @C_s5e41_6864c30a_deviceD_ata_L000003
  mov r18, RI ' reg <- INDIRP4 addrg
  adds r20, r18 ' ADDI/P (1)
  rdlong r20, r20 ' reg <- INDIRI4 reg
@@ -502,7 +502,7 @@ C_hyper_getF_lashB_urstS_ize ' <symbol:hyper_getFlashBurstSize>
  mov r22, r21
  shl r22, #2 ' LSHI4 coni
  jmp #LODI
- long @C_sgsg1_67ea40c6_deviceD_ata_L000003
+ long @C_s5e41_6864c30a_deviceD_ata_L000003
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRI4 reg
@@ -522,7 +522,7 @@ C_hyper_getF_lashB_urstS_ize_49
  mov r22, r21
  shl r22, #2 ' LSHI4 coni
  jmp #LODI
- long @C_sgsg1_67ea40c6_deviceD_ata_L000003
+ long @C_s5e41_6864c30a_deviceD_ata_L000003
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRI4 reg
@@ -553,7 +553,7 @@ C_hyper_readR_aw ' <symbol:hyper_readRaw>
  jmp #CALA
  long @C_hyper_initialize ' CALL addrg
  jmp #LODI
- long @C_sgsg4_67ea40c6_drivercog_L000006
+ long @C_s5e44_6864c30a_drivercog_L000006
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -575,7 +575,7 @@ C_hyper_readR_aw_54
  long @C__waitms ' CALL addrg
 C_hyper_readR_aw_55
  jmp #LODI
- long @C_sgsg5_67ea40c6_driverlock_L000007
+ long @C_s5e45_6864c30a_driverlock_L000007
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -610,7 +610,7 @@ C_hyper_readR_aw_57
  jmp #BR_B
  long @C_hyper_readR_aw_57 ' LTI4
  jmp #LODI
- long @C_sgsg5_67ea40c6_driverlock_L000007
+ long @C_s5e45_6864c30a_driverlock_L000007
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -648,7 +648,7 @@ C_hyper_writeR_aw ' <symbol:hyper_writeRaw>
  jmp #CALA
  long @C_hyper_initialize ' CALL addrg
  jmp #LODI
- long @C_sgsg4_67ea40c6_drivercog_L000006
+ long @C_s5e44_6864c30a_drivercog_L000006
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -676,7 +676,7 @@ C_hyper_writeR_aw_66
  long @C__waitms ' CALL addrg
 C_hyper_writeR_aw_67
  jmp #LODI
- long @C_sgsg5_67ea40c6_driverlock_L000007
+ long @C_s5e45_6864c30a_driverlock_L000007
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -718,7 +718,7 @@ C_hyper_writeR_aw_69
  jmp #BR_B
  long @C_hyper_writeR_aw_69 ' LTI4
  jmp #LODI
- long @C_sgsg5_67ea40c6_driverlock_L000007
+ long @C_s5e45_6864c30a_driverlock_L000007
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -742,7 +742,7 @@ C_hyper_modifyB_ankP_arams ' <symbol:hyper_modifyBankParams>
  mov r21, r3 ' reg var <- reg arg
  mov r19, r2 ' reg var <- reg arg
  jmp #LODI
- long @C_sgsg4_67ea40c6_drivercog_L000006
+ long @C_s5e44_6864c30a_drivercog_L000006
  mov r22, RI ' reg <- INDIRI4 addrg
  jmp #LODL
  long -1
@@ -759,7 +759,7 @@ C_hyper_modifyB_ankP_arams_73
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_sgsg8_67ea40c6_hyper_getS_tartB_ank_L000033 ' CALL addrg
+ long @C_s5e48_6864c30a_hyper_getS_tartB_ank_L000033 ' CALL addrg
  mov r7, r0 ' CVI, CVU or LOAD
  cmps r7,  #0 wcz
  jmp #BRAE
@@ -773,14 +773,14 @@ C_hyper_modifyB_ankP_arams_75
  mov r22, r7
  shl r22, #2 ' LSHI4 coni
  jmp #LODI
- long @C_sgsg1_67ea40c6_deviceD_ata_L000003
+ long @C_s5e41_6864c30a_deviceD_ata_L000003
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRI4 reg
  mov r9, r22
  and r9, #255 ' BANDI4 coni
  jmp #LODI
- long @C_sgsg4_67ea40c6_drivercog_L000006
+ long @C_s5e44_6864c30a_drivercog_L000006
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -795,7 +795,7 @@ C_hyper_modifyB_ankP_arams_77
  long @C__waitms ' CALL addrg
 C_hyper_modifyB_ankP_arams_78
  jmp #LODI
- long @C_sgsg5_67ea40c6_driverlock_L000007
+ long @C_s5e45_6864c30a_driverlock_L000007
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -810,7 +810,7 @@ C_hyper_modifyB_ankP_arams_80
  mov r22, r13
  shl r22, #2 ' LSHI4 coni
  jmp #LODI
- long @C_sgsg1_67ea40c6_deviceD_ata_L000003
+ long @C_s5e41_6864c30a_deviceD_ata_L000003
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRI4 reg
@@ -843,7 +843,7 @@ C_hyper_modifyB_ankP_arams_85
  mov r22, r13
  shl r22, #2 ' LSHI4 coni
  jmp #LODI
- long @C_sgsg1_67ea40c6_deviceD_ata_L000003
+ long @C_s5e41_6864c30a_deviceD_ata_L000003
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  wrlong r11, r22 ' ASGNI4 reg reg
@@ -882,7 +882,7 @@ C_hyper_modifyB_ankP_arams_91
  jmp #BRBE
  long @C_hyper_modifyB_ankP_arams_80 ' LEI4
  jmp #LODI
- long @C_sgsg5_67ea40c6_driverlock_L000007
+ long @C_s5e45_6864c30a_driverlock_L000007
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -895,36 +895,36 @@ C_hyper_modifyB_ankP_arams_72
 
 
  alignl ' align long
-C_sgsg9_67ea40c6_getB_ankP_arams_L000092 ' <symbol:getBankParams>
+C_s5e49_6864c30a_getB_ankP_arams_L000092 ' <symbol:getBankParams>
  jmp #NEWF
  jmp #PSHM
  long $ff0000 ' save registers
  mov r23, r3 ' reg var <- reg arg
  mov r21, r2 ' reg var <- reg arg
  jmp #LODI
- long @C_sgsg4_67ea40c6_drivercog_L000006
+ long @C_s5e44_6864c30a_drivercog_L000006
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C_hyper_getM_ailbox ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sgsg9_67ea40c6_getB_ankP_arams_L000092_95 ' JUMPV addrg
-C_sgsg9_67ea40c6_getB_ankP_arams_L000092_94
+ long @C_s5e49_6864c30a_getB_ankP_arams_L000092_95 ' JUMPV addrg
+C_s5e49_6864c30a_getB_ankP_arams_L000092_94
  mov r2, #1 ' reg ARG coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C__waitms ' CALL addrg
-C_sgsg9_67ea40c6_getB_ankP_arams_L000092_95
+C_s5e49_6864c30a_getB_ankP_arams_L000092_95
  jmp #LODI
- long @C_sgsg5_67ea40c6_driverlock_L000007
+ long @C_s5e45_6864c30a_driverlock_L000007
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C__locktry ' CALL addrg
  cmps r0,  #0 wz
  jmp #BR_Z
- long @C_sgsg9_67ea40c6_getB_ankP_arams_L000092_94 ' EQI4
+ long @C_s5e49_6864c30a_getB_ankP_arams_L000092_94 ' EQI4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
  long @C__cogid ' CALL addrg
@@ -939,40 +939,40 @@ C_sgsg9_67ea40c6_getB_ankP_arams_L000092_95
  mov r22, r0 ' CVI, CVU or LOAD
  add r22, r20 ' ADDU (2)
  wrlong r22, r17 ' ASGNI4 reg reg
-C_sgsg9_67ea40c6_getB_ankP_arams_L000092_97
+C_s5e49_6864c30a_getB_ankP_arams_L000092_97
  rdlong r19, r17 ' reg <- INDIRI4 reg
-' C_sgsg9_67ea40c6_getB_ankP_arams_L000092_98 ' (symbol refcount = 0)
+' C_s5e49_6864c30a_getB_ankP_arams_L000092_98 ' (symbol refcount = 0)
  cmps r19,  #0 wcz
  jmp #BR_B
- long @C_sgsg9_67ea40c6_getB_ankP_arams_L000092_97 ' LTI4
+ long @C_s5e49_6864c30a_getB_ankP_arams_L000092_97 ' LTI4
  cmps r19,  #0 wcz
  jmp #BRBE
- long @C_sgsg9_67ea40c6_getB_ankP_arams_L000092_100 ' LEI4
+ long @C_s5e49_6864c30a_getB_ankP_arams_L000092_100 ' LEI4
  neg r19, r19 ' NEGI4
  jmp #LODI
- long @C_sgsg5_67ea40c6_driverlock_L000007
+ long @C_s5e45_6864c30a_driverlock_L000007
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C__lockclr ' CALL addrg
  mov r0, r19 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sgsg9_67ea40c6_getB_ankP_arams_L000092_93 ' JUMPV addrg
-C_sgsg9_67ea40c6_getB_ankP_arams_L000092_100
+ long @C_s5e49_6864c30a_getB_ankP_arams_L000092_93 ' JUMPV addrg
+C_s5e49_6864c30a_getB_ankP_arams_L000092_100
  cmps r21,  #1 wz
  jmp #BRNZ
- long @C_sgsg9_67ea40c6_getB_ankP_arams_L000092_102 ' NEI4
+ long @C_s5e49_6864c30a_getB_ankP_arams_L000092_102 ' NEI4
  mov r22, r17
  adds r22, #4 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRI4 reg
  shr r22, #16 ' RSHU4 coni
  mov r19, r22 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sgsg9_67ea40c6_getB_ankP_arams_L000092_103 ' JUMPV addrg
-C_sgsg9_67ea40c6_getB_ankP_arams_L000092_102
+ long @C_s5e49_6864c30a_getB_ankP_arams_L000092_103 ' JUMPV addrg
+C_s5e49_6864c30a_getB_ankP_arams_L000092_102
  cmps r21,  #2 wz
  jmp #BRNZ
- long @C_sgsg9_67ea40c6_getB_ankP_arams_L000092_104 ' NEI4
+ long @C_s5e49_6864c30a_getB_ankP_arams_L000092_104 ' NEI4
  mov r22, r17
  adds r22, #4 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRI4 reg
@@ -980,11 +980,11 @@ C_sgsg9_67ea40c6_getB_ankP_arams_L000092_102
  and r22, #15 ' BANDU4 coni
  mov r19, r22 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sgsg9_67ea40c6_getB_ankP_arams_L000092_105 ' JUMPV addrg
-C_sgsg9_67ea40c6_getB_ankP_arams_L000092_104
+ long @C_s5e49_6864c30a_getB_ankP_arams_L000092_105 ' JUMPV addrg
+C_s5e49_6864c30a_getB_ankP_arams_L000092_104
  cmps r21,  #4 wz
  jmp #BRNZ
- long @C_sgsg9_67ea40c6_getB_ankP_arams_L000092_106 ' NEI4
+ long @C_s5e49_6864c30a_getB_ankP_arams_L000092_106 ' NEI4
  mov r22, r17
  adds r22, #4 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRI4 reg
@@ -992,11 +992,11 @@ C_sgsg9_67ea40c6_getB_ankP_arams_L000092_104
  and r22, #15 ' BANDU4 coni
  mov r19, r22 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sgsg9_67ea40c6_getB_ankP_arams_L000092_107 ' JUMPV addrg
-C_sgsg9_67ea40c6_getB_ankP_arams_L000092_106
+ long @C_s5e49_6864c30a_getB_ankP_arams_L000092_107 ' JUMPV addrg
+C_s5e49_6864c30a_getB_ankP_arams_L000092_106
  cmps r21,  #3 wz
  jmp #BRNZ
- long @C_sgsg9_67ea40c6_getB_ankP_arams_L000092_108 ' NEI4
+ long @C_s5e49_6864c30a_getB_ankP_arams_L000092_108 ' NEI4
  mov r22, r17
  adds r22, #4 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRI4 reg
@@ -1006,7 +1006,7 @@ C_sgsg9_67ea40c6_getB_ankP_arams_L000092_106
  and r22, r20 ' BANDI/U (1)
  cmp r22,  #0 wz
  jmp #BR_Z
- long @C_sgsg9_67ea40c6_getB_ankP_arams_L000092_110 ' EQU4
+ long @C_s5e49_6864c30a_getB_ankP_arams_L000092_110 ' EQU4
  mov r22, r17
  adds r22, #4 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRI4 reg
@@ -1018,33 +1018,33 @@ C_sgsg9_67ea40c6_getB_ankP_arams_L000092_106
  add r22, r20 ' ADDU (1)
  mov r19, r22 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sgsg9_67ea40c6_getB_ankP_arams_L000092_109 ' JUMPV addrg
-C_sgsg9_67ea40c6_getB_ankP_arams_L000092_110
+ long @C_s5e49_6864c30a_getB_ankP_arams_L000092_109 ' JUMPV addrg
+C_s5e49_6864c30a_getB_ankP_arams_L000092_110
  mov r19, #0 ' reg <- coni
  jmp #JMPA
- long @C_sgsg9_67ea40c6_getB_ankP_arams_L000092_109 ' JUMPV addrg
-C_sgsg9_67ea40c6_getB_ankP_arams_L000092_108
+ long @C_s5e49_6864c30a_getB_ankP_arams_L000092_109 ' JUMPV addrg
+C_s5e49_6864c30a_getB_ankP_arams_L000092_108
  jmp #LODL
  long -6
  mov r19, RI ' reg <- con
-C_sgsg9_67ea40c6_getB_ankP_arams_L000092_109
-C_sgsg9_67ea40c6_getB_ankP_arams_L000092_107
-C_sgsg9_67ea40c6_getB_ankP_arams_L000092_105
-C_sgsg9_67ea40c6_getB_ankP_arams_L000092_103
+C_s5e49_6864c30a_getB_ankP_arams_L000092_109
+C_s5e49_6864c30a_getB_ankP_arams_L000092_107
+C_s5e49_6864c30a_getB_ankP_arams_L000092_105
+C_s5e49_6864c30a_getB_ankP_arams_L000092_103
  jmp #LODI
- long @C_sgsg5_67ea40c6_driverlock_L000007
+ long @C_s5e45_6864c30a_driverlock_L000007
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C__lockclr ' CALL addrg
  mov r0, r19 ' CVI, CVU or LOAD
-C_sgsg9_67ea40c6_getB_ankP_arams_L000092_93
+C_s5e49_6864c30a_getB_ankP_arams_L000092_93
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sgsga_67ea40c6_validH_yperR_A_M__L000112 ' <symbol:validHyperRAM>
+C_s5e4a_6864c30a_validH_yperR_A_M__L000112 ' <symbol:validHyperRAM>
  jmp #NEWF
  sub SP, #4
  jmp #PSHM
@@ -1060,7 +1060,7 @@ C_sgsga_67ea40c6_validH_yperR_A_M__L000112 ' <symbol:validHyperRAM>
  rdlong r22, r22 ' reg <- INDIRU4 reg
  shl r22, #2 ' LSHU4 coni
  jmp #LODI
- long @C_sgsg1_67ea40c6_deviceD_ata_L000003
+ long @C_s5e41_6864c30a_deviceD_ata_L000003
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRI4 reg
@@ -1070,22 +1070,22 @@ C_sgsga_67ea40c6_validH_yperR_A_M__L000112 ' <symbol:validHyperRAM>
  and r22, r20 ' BANDI/U (1)
  cmps r22,  #0 wz
  jmp #BR_Z
- long @C_sgsga_67ea40c6_validH_yperR_A_M__L000112_114 ' EQI4
+ long @C_s5e4a_6864c30a_validH_yperR_A_M__L000112_114 ' EQI4
  jmp #LODL
  long -23
  mov r0, RI ' reg <- con
  jmp #JMPA
- long @C_sgsga_67ea40c6_validH_yperR_A_M__L000112_113 ' JUMPV addrg
-C_sgsga_67ea40c6_validH_yperR_A_M__L000112_114
+ long @C_s5e4a_6864c30a_validH_yperR_A_M__L000112_113 ' JUMPV addrg
+C_s5e4a_6864c30a_validH_yperR_A_M__L000112_114
  mov r0, #0 ' RET coni
-C_sgsga_67ea40c6_validH_yperR_A_M__L000112_113
+C_s5e4a_6864c30a_validH_yperR_A_M__L000112_113
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_sgsgb_67ea40c6_hyper_lookupD_elay_L000116 ' <symbol:hyper_lookupDelay>
+C_s5e4b_6864c30a_hyper_lookupD_elay_L000116 ' <symbol:hyper_lookupDelay>
  jmp #NEWF
  jmp #PSHM
  long $fe0000 ' save registers
@@ -1096,93 +1096,93 @@ C_sgsgb_67ea40c6_hyper_lookupD_elay_L000116 ' <symbol:hyper_lookupDelay>
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_sgsga_67ea40c6_validH_yperR_A_M__L000112 ' CALL addrg
+ long @C_s5e4a_6864c30a_validH_yperR_A_M__L000112 ' CALL addrg
  cmps r0,  #0 wz
  jmp #BRNZ
- long @C_sgsgb_67ea40c6_hyper_lookupD_elay_L000116_118 ' NEI4
+ long @C_s5e4b_6864c30a_hyper_lookupD_elay_L000116_118 ' NEI4
  mov r22, r19
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_sgsg6_67ea40c6_delayT_able_r_L000008
+ long @C_s5e46_6864c30a_delayT_able_r_L000008
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRU4 reg
  mov r17, r22 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sgsgb_67ea40c6_hyper_lookupD_elay_L000116_121 ' JUMPV addrg
-C_sgsgb_67ea40c6_hyper_lookupD_elay_L000116_120
+ long @C_s5e4b_6864c30a_hyper_lookupD_elay_L000116_121 ' JUMPV addrg
+C_s5e4b_6864c30a_hyper_lookupD_elay_L000116_120
  mov r22, r21 ' CVI, CVU or LOAD
  mov r20, r19
  shl r20, #2 ' LSHI4 coni
  jmp #LODL
- long @C_sgsg6_67ea40c6_delayT_able_r_L000008+4
+ long @C_s5e46_6864c30a_delayT_able_r_L000008+4
  mov r18, RI ' reg <- addrg
  adds r20, r18 ' ADDI/P (1)
  rdlong r20, r20 ' reg <- INDIRU4 reg
  cmp r22, r20 wcz 
  jmp #BRAE
- long @C_sgsgb_67ea40c6_hyper_lookupD_elay_L000116_124 ' GEU4
+ long @C_s5e4b_6864c30a_hyper_lookupD_elay_L000116_124 ' GEU4
  jmp #JMPA
- long @C_sgsgb_67ea40c6_hyper_lookupD_elay_L000116_119 ' JUMPV addrg
-C_sgsgb_67ea40c6_hyper_lookupD_elay_L000116_124
+ long @C_s5e4b_6864c30a_hyper_lookupD_elay_L000116_119 ' JUMPV addrg
+C_s5e4b_6864c30a_hyper_lookupD_elay_L000116_124
  adds r19, #1 ' ADDI4 coni
  adds r17, #1 ' ADDI4 coni
-C_sgsgb_67ea40c6_hyper_lookupD_elay_L000116_121
+C_s5e4b_6864c30a_hyper_lookupD_elay_L000116_121
  mov r22, r19
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_sgsg6_67ea40c6_delayT_able_r_L000008+4
+ long @C_s5e46_6864c30a_delayT_able_r_L000008+4
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRU4 reg
  cmp r22,  #0 wz
  jmp #BRNZ
- long @C_sgsgb_67ea40c6_hyper_lookupD_elay_L000116_120 ' NEU4
+ long @C_s5e4b_6864c30a_hyper_lookupD_elay_L000116_120 ' NEU4
  jmp #JMPA
- long @C_sgsgb_67ea40c6_hyper_lookupD_elay_L000116_119 ' JUMPV addrg
-C_sgsgb_67ea40c6_hyper_lookupD_elay_L000116_118
+ long @C_s5e4b_6864c30a_hyper_lookupD_elay_L000116_119 ' JUMPV addrg
+C_s5e4b_6864c30a_hyper_lookupD_elay_L000116_118
  mov r22, r19
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_sgsg7_67ea40c6_delayT_able_f_L000009
+ long @C_s5e47_6864c30a_delayT_able_f_L000009
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRU4 reg
  mov r17, r22 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sgsgb_67ea40c6_hyper_lookupD_elay_L000116_128 ' JUMPV addrg
-C_sgsgb_67ea40c6_hyper_lookupD_elay_L000116_127
+ long @C_s5e4b_6864c30a_hyper_lookupD_elay_L000116_128 ' JUMPV addrg
+C_s5e4b_6864c30a_hyper_lookupD_elay_L000116_127
  mov r22, r21 ' CVI, CVU or LOAD
  mov r20, r19
  shl r20, #2 ' LSHI4 coni
  jmp #LODL
- long @C_sgsg7_67ea40c6_delayT_able_f_L000009+4
+ long @C_s5e47_6864c30a_delayT_able_f_L000009+4
  mov r18, RI ' reg <- addrg
  adds r20, r18 ' ADDI/P (1)
  rdlong r20, r20 ' reg <- INDIRU4 reg
  cmp r22, r20 wcz 
  jmp #BRAE
- long @C_sgsgb_67ea40c6_hyper_lookupD_elay_L000116_131 ' GEU4
+ long @C_s5e4b_6864c30a_hyper_lookupD_elay_L000116_131 ' GEU4
  jmp #JMPA
- long @C_sgsgb_67ea40c6_hyper_lookupD_elay_L000116_129 ' JUMPV addrg
-C_sgsgb_67ea40c6_hyper_lookupD_elay_L000116_131
+ long @C_s5e4b_6864c30a_hyper_lookupD_elay_L000116_129 ' JUMPV addrg
+C_s5e4b_6864c30a_hyper_lookupD_elay_L000116_131
  adds r19, #1 ' ADDI4 coni
  adds r17, #1 ' ADDI4 coni
-C_sgsgb_67ea40c6_hyper_lookupD_elay_L000116_128
+C_s5e4b_6864c30a_hyper_lookupD_elay_L000116_128
  mov r22, r19
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_sgsg7_67ea40c6_delayT_able_f_L000009+4
+ long @C_s5e47_6864c30a_delayT_able_f_L000009+4
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRU4 reg
  cmp r22,  #0 wz
  jmp #BRNZ
- long @C_sgsgb_67ea40c6_hyper_lookupD_elay_L000116_127 ' NEU4
-C_sgsgb_67ea40c6_hyper_lookupD_elay_L000116_129
-C_sgsgb_67ea40c6_hyper_lookupD_elay_L000116_119
+ long @C_s5e4b_6864c30a_hyper_lookupD_elay_L000116_127 ' NEU4
+C_s5e4b_6864c30a_hyper_lookupD_elay_L000116_129
+C_s5e4b_6864c30a_hyper_lookupD_elay_L000116_119
  mov r0, r17 ' CVI, CVU or LOAD
-' C_sgsgb_67ea40c6_hyper_lookupD_elay_L000116_117 ' (symbol refcount = 0)
+' C_s5e4b_6864c30a_hyper_lookupD_elay_L000116_117 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -1259,7 +1259,7 @@ C_hyper_setD_elayF_requency_138
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_sgsgb_67ea40c6_hyper_lookupD_elay_L000116
+ long @C_s5e4b_6864c30a_hyper_lookupD_elay_L000116
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r2, r22 ' CVI, CVU or LOAD
@@ -1292,7 +1292,7 @@ C_hyper_getD_elay ' <symbol:hyper_getDelay>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_sgsg9_67ea40c6_getB_ankP_arams_L000092
+ long @C_s5e49_6864c30a_getB_ankP_arams_L000092
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
 ' C_hyper_getD_elay_140 ' (symbol refcount = 0)
@@ -1368,7 +1368,7 @@ C_hyper_getB_urst ' <symbol:hyper_getBurst>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_sgsg9_67ea40c6_getB_ankP_arams_L000092
+ long @C_s5e49_6864c30a_getB_ankP_arams_L000092
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
 ' C_hyper_getB_urst_146 ' (symbol refcount = 0)
@@ -1392,7 +1392,7 @@ C_hyper_getF_lags ' <symbol:hyper_getFlags>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_sgsg9_67ea40c6_getB_ankP_arams_L000092
+ long @C_s5e49_6864c30a_getB_ankP_arams_L000092
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
 ' C_hyper_getF_lags_147 ' (symbol refcount = 0)
@@ -1452,7 +1452,7 @@ C_hyper_setQ_os_151
  mov r22, r23
  shl r22, #2 ' LSHI4 coni
  jmp #LODI
- long @C_sgsg2_67ea40c6_Q_osD_ata_L000004
+ long @C_s5e42_6864c30a_Q_osD_ata_L000004
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  jmp #LODL
@@ -1532,7 +1532,7 @@ C_hyper_getQ_os ' <symbol:hyper_getQos>
  and r22, #7 ' BANDI4 coni
  shl r22, #2 ' LSHI4 coni
  jmp #LODI
- long @C_sgsg2_67ea40c6_Q_osD_ata_L000004
+ long @C_s5e42_6864c30a_Q_osD_ata_L000004
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r0, r22 ' reg <- INDIRI4 reg
@@ -1562,7 +1562,7 @@ C_hyper_getB_ankP_arameters_162
  mov r22, r23
  shl r22, #2 ' LSHI4 coni
  jmp #LODI
- long @C_sgsg1_67ea40c6_deviceD_ata_L000003
+ long @C_s5e41_6864c30a_deviceD_ata_L000003
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r0, r22 ' reg <- INDIRI4 reg
@@ -1593,7 +1593,7 @@ C_hyper_getP_inP_arameters_165
  shl r22, #2 ' LSHI4 coni
  adds r22, #64 ' ADDI4 coni
  jmp #LODI
- long @C_sgsg1_67ea40c6_deviceD_ata_L000003
+ long @C_s5e41_6864c30a_deviceD_ata_L000003
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r0, r22 ' reg <- INDIRI4 reg
@@ -1615,7 +1615,7 @@ C_hyper_readR_amI_R_ ' <symbol:hyper_readRamIR>
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_sgsga_67ea40c6_validH_yperR_A_M__L000112 ' CALL addrg
+ long @C_s5e4a_6864c30a_validH_yperR_A_M__L000112 ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
  cmps r17,  #0 wz
  jmp #BRNZ
@@ -1657,7 +1657,7 @@ C_hyper_readR_amC_R_ ' <symbol:hyper_readRamCR>
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_sgsga_67ea40c6_validH_yperR_A_M__L000112 ' CALL addrg
+ long @C_s5e4a_6864c30a_validH_yperR_A_M__L000112 ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
  cmps r17,  #0 wz
  jmp #BRNZ
@@ -1700,7 +1700,7 @@ C_hyper_getD_riverL_atency ' <symbol:hyper_getDriverLatency>
  long $fd0000 ' save registers
  mov r23, r2 ' reg var <- reg arg
  jmp #LODI
- long @C_sgsg4_67ea40c6_drivercog_L000006
+ long @C_s5e44_6864c30a_drivercog_L000006
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -1715,7 +1715,7 @@ C_hyper_getD_riverL_atency_174
  long @C__waitms ' CALL addrg
 C_hyper_getD_riverL_atency_175
  jmp #LODI
- long @C_sgsg5_67ea40c6_driverlock_L000007
+ long @C_s5e45_6864c30a_driverlock_L000007
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -1757,7 +1757,7 @@ C_hyper_getD_riverL_atency_180
  mov r21, r22 ' CVI, CVU or LOAD
 C_hyper_getD_riverL_atency_181
  jmp #LODI
- long @C_sgsg5_67ea40c6_driverlock_L000007
+ long @C_s5e45_6864c30a_driverlock_L000007
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA

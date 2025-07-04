@@ -14,6 +14,7 @@
 '               New smaller division.
 ' Version 3.13 - Improve PSHM performance
 ' Version 3.15 - Modified for P2.
+' Version 8.7  - Updated to support FIFO (not enabled by default).
 '
 '
 ' This file incorporates software derived from:
@@ -55,6 +56,12 @@ CON
 '#ifndef NO_INTERRUPTS
 '#define NO_INTERRUPTS
 '#endif
+
+' FIFO - if defined, RDFAST and RFLONG will be used to read instructions,
+'        otherwise RDLONG and PC will be used - but note that the PC 
+'        still needs be kept up to date, and a new RDFAST needs to be 
+'        issued whenever the PC has to change by anything other than 
+'        just adding 4 to move to the next long.
 
 '--------------------- Start of LMM Kernel ------------------------------------
 
@@ -192,7 +199,11 @@ lmm_init
         nop                     '$67 14 
         setq2   r0              '$68 15 copy lut library ...
         rdlong  $100,r1         '$69 16 ... to LUT RAM, starting at $100
+#ifdef FIFO
+        jmp     #LMM_fifo       '$6a 17 start executing LMM code
+#else
         jmp     #LMM_loop       '$6a 17 start executing LMM code
+#endif
 #else
         wrlong  t1,t2           '$5a  1 set up free memory pointer
         mov     reg,t4          '$5b  2 point to registry
@@ -207,7 +218,11 @@ lmm_init
         neg     t1,#1           '$65 12 set ... MEM_LOCK ...
         wrlong  t1,##MEM_LOCK   '$66&67 13&14 ... to unused
         call    #_C_init        '$68 15 execute startup code
+#ifdef FIFO
+        jmp     #LMM_fifo       '$69 16 start executing LMM code
+#else
         jmp     #LMM_loop       '$69 16 start executing LMM code
+#endif
         long    0               '$6a 17
 #endif
         long    0               '$6b 18
@@ -223,32 +238,49 @@ LMM_next
 '
 LMM_loop
         stalli                  '$6f
+#ifdef FIFO
+        rflong LMM_1            '$70
+#else
         rdlong LMM_1,PC         '$70
+#endif
         add    PC,#4            '$71
         nop                     '$72 P2 needs an extra NOP
 LMM_1
         nop                     '$73
         allowi
         jmp    #LMM_loop
+
 '
 'load_l - load the long stored at the PC into RI, incrementing the PC
 '
 load_l
+#ifdef FIFO
+       rflong RI            ' load the address
+#else
        rdlong RI,PC         ' load the address
+#endif
        jmp    #LMM_next     ' increment PC, execute next instruction
 '
 'load_i - load the long at the address stored at the PC into RI, 
 '         incrementing the PC (i.e. load indirect)
 '
 load_i
+#ifdef FIFO
+       rflong RI            ' load the address
+#else
        rdlong RI,PC         ' load the address
+#endif
        rdlong RI,RI         ' load the long at that address
        jmp    #LMM_next     ' execute next instruction
 '
 ' fp_ind - load the FP into RI, then add the long at the PC to result, incrementing the PC
 '
 fp_ind
+#ifdef FIFO
+       rflong RI            ' load the long value
+#else
        rdlong RI,PC         ' load the long value
+#endif
        adds   RI,FP         ' add the frame pointer
        jmp    #LMM_next     ' increment PC, execute next instruction
 '
@@ -263,14 +295,22 @@ push_l
 '          variable onto the stack
 '
 push_a
+#ifdef FIFO
+       rflong RI            ' load the address
+#else
        rdlong RI,PC         ' load the address
+#endif
        jmp    #push_x       ' use the result as an address of the value to push
 '
 ' push_i - push a value whose address is specified indirectly in a frame variable
 '          onto the stack
 '
 push_i
-       rdlong RI,PC         ' load the long value
+#ifdef FIFO
+       rflong RI            ' load the long value
+#else
+       rdlong RI,PC         ' load long value
+#endif
        adds   RI,FP         ' add the frame pointer
 push_x
        rdlong RI,RI         ' read the value at that address
@@ -282,7 +322,11 @@ push_x
 ' decrementing the SP before each one
 '
 push_m
-       rdlong RI,PC         ' load the long value specifying the registers to push
+#ifdef FIFO
+       rflong RI            ' load long value specifying registers to push
+#else
+       rdlong RI,PC         ' load long value specifying registers to push
+#endif
        mov    t1,RI         ' save register specification for later
        mov    t2, #r6       ' start with ...
        shr    RI,#6         ' ... r6 ...
@@ -321,7 +365,11 @@ pop_nxt
 '          onto the stack, decrementing the SP.
 '
 push_b
+#ifdef FIFO
+       rflong BC            ' load the byte count
+#else
        rdlong BC,PC         ' load the byte count
+#endif
        add    PC,#4         ' increment the PC
        mov    t3,BC         ' round up the count ...
        add    t3,#3         ' ... to be ...
@@ -335,7 +383,11 @@ push_b
 '          from the address in R1 to the address in R0
 '
 copy_b
+#ifdef FIFO
+       rflong BC            ' load the byte count
+#else
        rdlong BC,PC         ' load the byte count
+#endif
        add    PC,#4         ' increment the PC
        mov    t1,R1         ' source is in R1
        mov    t2,R0         ' destination is in R0
@@ -374,13 +426,21 @@ fp_ret
 f_ret
        rdlong PC,SP         ' read the PC
        add    SP,#8         ' increment the SP
+#ifdef FIFO
+       jmp    #LMM_fifo     ' re-initialize FIFO, execute next instruction
+#else
        jmp    #LMM_loop     ' execute the next instruction
+#endif
 '
 ' f_call - call the routine at the address pointed to by the PC (increment the PC)
 ' f_cali - call the routine whose address is in RI
 '
-f_call                    
+f_call
+#ifdef FIFO
+       rflong RI            ' get the address to call
+#else                    
        rdlong RI,PC         ' get the address to call
+#endif
        add    PC,#4         ' increment the PC (this is the return address)
 f_cali
        sub    SP,#8         ' decrement the SP
@@ -390,14 +450,23 @@ f_cali
 ' f_jump - jump to the location at the address pointed to by PC (increment the PC)
 '
 f_jump
+#ifdef FIFO
+       rflong PC            ' get the address to jump to
+       jmp    #LMM_fifo     ' re-initialize FIFO, execute next instruction
+#else                    
        rdlong PC,PC         ' get the address to jump to
        jmp    #LMM_loop     ' execute next instruction
+#endif
 '
 ' f_jmpi - jump to the location whose address in RI
 '
 f_jmpi
        mov    PC,RI         ' get the address to jump to
+#ifdef FIFO
+       jmp    #LMM_fifo     ' re-initialize FIFO, execute next instruction
+#else
        jmp    #LMM_loop     ' execute next instruction
+#endif
 '
 ' rd_long/rd_word/rd_byte : Read long/word/byte from HUB memory at address in RI into BC.
 '
@@ -408,13 +477,13 @@ f_jmpi
 '
 rd_long
         rdlong  BC,RI
-        jmp     #LMM_Next
+        jmp     #LMM_next
 rd_word
         rdword  BC,RI
-        jmp     #LMM_Next
+        jmp     #LMM_next
 rd_byte
         rdbyte  BC,RI
-        jmp     #LMM_Next
+        jmp     #LMM_next
 '
 ' wr_long/wr_word/wr_byte : Write long/word/byte to HUB memory at address in RI into BC.
 '
@@ -426,13 +495,13 @@ rd_byte
 
 wr_long
         wrlong  BC,RI
-        jmp     #LMM_Next
+        jmp     #LMM_next
 wr_word
         wrword  BC,RI
-        jmp     #LMM_Next
+        jmp     #LMM_next
 wr_byte
         wrbyte  BC,RI
-        jmp     #LMM_Next
+        jmp     #LMM_next
 
 'f_d32s - Signed 32 bit division
 '         Divisor --> r1
@@ -472,21 +541,45 @@ f_m32
 '
 bra_z
   if_z  jmp    #f_jump       ' if condition true, branch is equiv to jump
+#ifdef FIFO
+        jmp    #f_nojump     ' read addr, increment PC, execute next instruction
+#else
         jmp    #LMM_next     ' increment PC, execute next instruction
+#endif
 bra_nz
  if_nz  jmp    #f_jump       ' if condition true, branch is equiv to jump
+#ifdef FIFO
+        jmp    #f_nojump     ' read addr, increment PC, execute next instruction
+#else
         jmp    #LMM_next     ' increment PC, execute next instruction
+#endif
 bra_ae
  if_ae  jmp    #f_jump       ' if condition true, branch is equiv to jump
+#ifdef FIFO
+        jmp    #f_nojump     ' read addr, increment PC, execute next instruction
+#else
         jmp    #LMM_next     ' increment PC, execute next instruction
+#endif
 bra_a
  if_a   jmp    #f_jump       ' if condition true, branch is equiv to jump
+#ifdef FIFO
+        jmp    #f_nojump     ' read addr, increment PC, execute next instruction
+#else
         jmp    #LMM_next     ' increment PC, execute next instruction
+#endif
 bra_be
  if_be  jmp    #f_jump       ' if condition true, branch is equiv to jump
+#ifdef FIFO
+        jmp    #f_nojump     ' read addr, increment PC, execute next instruction
+#else
         jmp    #LMM_next     ' increment PC, execute next instruction
+#endif
 bra_b
  if_b   jmp    #f_jump       ' if condition true, branch is equiv to jump
+#ifdef FIFO
+f_nojump
+        rflong RI            ' read addr, even though we don't use it
+#endif
         jmp    #LMM_next     ' increment PC, execute next instruction
 
 ' plugin - call a plugin
@@ -818,6 +911,12 @@ expB                    long    0
 manB                    long    0
 
 '-------------------- End of Float32 Components -------------------------------
+
+#ifdef FIFO
+LMM_fifo
+        rdfast #0,PC
+        jmp    #LMM_loop
+#endif
 
 '---------------------------- local variables ---------------------------------
 

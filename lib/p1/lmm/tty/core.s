@@ -11,11 +11,11 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_sjcs_67ea4055_rxbase_L000002 ' <symbol:rxbase>
+C_s48c_6864c268_rxbase_L000002 ' <symbol:rxbase>
  long $0
 
  alignl ' align long
-C_sjcs1_67ea4055_lock_L000003 ' <symbol:lock>
+C_s48c1_6864c268_lock_L000003 ' <symbol:lock>
  long -1
 
 ' Catalina Code
@@ -23,17 +23,17 @@ C_sjcs1_67ea4055_lock_L000003 ' <symbol:lock>
 DAT ' code segment
 
  alignl ' align long
-C_sjcs2_67ea4055_initialize_L000004 ' <symbol:initialize>
+C_s48c2_6864c268_initialize_L000004 ' <symbol:initialize>
  jmp #NEWF
  sub SP, #8
  jmp #PSHM
  long $540000 ' save registers
  jmp #LODI
- long @C_sjcs_67ea4055_rxbase_L000002
+ long @C_s48c_6864c268_rxbase_L000002
  mov r22, RI ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  jmp #BRNZ
- long @C_sjcs2_67ea4055_initialize_L000004_6 ' NEU4
+ long @C_s48c2_6864c268_initialize_L000004_6 ' NEU4
  mov r2, #18 ' reg ARG coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -46,7 +46,7 @@ C_sjcs2_67ea4055_initialize_L000004 ' <symbol:initialize>
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #0 wz,wc
  jmp #BR_B
- long @C_sjcs2_67ea4055_initialize_L000004_8 ' LTI4
+ long @C_s48c2_6864c268_initialize_L000004_8 ' LTI4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
  long @C__registry ' CALL addrg
@@ -70,36 +70,36 @@ C_sjcs2_67ea4055_initialize_L000004 ' <symbol:initialize>
  rdlong r22, r22 ' reg <- INDIRU4 reg
  and r20, r22 ' BANDI/U (2)
  jmp #LODL
- long @C_sjcs_67ea4055_rxbase_L000002
+ long @C_s48c_6864c268_rxbase_L000002
  wrlong r20, RI ' ASGNP4 addrg reg
  jmp #LODL
- long @C_sjcs1_67ea4055_lock_L000003
+ long @C_s48c1_6864c268_lock_L000003
  mov r20, RI ' reg <- addrg
  shr r22, #24 ' RSHU4 coni
  jmp #LODL
- long @C_sjcs1_67ea4055_lock_L000003
+ long @C_s48c1_6864c268_lock_L000003
  wrlong r22, RI ' ASGNI4 addrg reg
  rdlong r22, r20 ' reg <- INDIRI4 reg
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_sjcs2_67ea4055_initialize_L000004_10 ' NEI4
+ long @C_s48c2_6864c268_initialize_L000004_10 ' NEI4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
  long @C__locknew ' CALL addrg
  jmp #LODL
- long @C_sjcs1_67ea4055_lock_L000003
+ long @C_s48c1_6864c268_lock_L000003
  wrlong r0, RI ' ASGNI4 addrg reg
  jmp #LODI
- long @C_sjcs1_67ea4055_lock_L000003
+ long @C_s48c1_6864c268_lock_L000003
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz,wc
  jmp #BR_B
- long @C_sjcs2_67ea4055_initialize_L000004_11 ' LTI4
+ long @C_s48c2_6864c268_initialize_L000004_11 ' LTI4
  mov r22, FP
  sub r22, #-(-12) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRU4 reg
  jmp #LODI
- long @C_sjcs1_67ea4055_lock_L000003
+ long @C_s48c1_6864c268_lock_L000003
  mov r20, RI ' reg <- INDIRI4 addrg
  adds r20, #1 ' ADDI4 coni
  shl r20, #24 ' LSHI4 coni
@@ -126,20 +126,20 @@ C_sjcs2_67ea4055_initialize_L000004 ' <symbol:initialize>
  rdlong r20, r20 ' reg <- INDIRU4 reg
  wrlong r20, r22 ' ASGNU4 reg reg
  jmp #JMPA
- long @C_sjcs2_67ea4055_initialize_L000004_11 ' JUMPV addrg
-C_sjcs2_67ea4055_initialize_L000004_10
+ long @C_s48c2_6864c268_initialize_L000004_11 ' JUMPV addrg
+C_s48c2_6864c268_initialize_L000004_10
  jmp #LODL
- long @C_sjcs1_67ea4055_lock_L000003
+ long @C_s48c1_6864c268_lock_L000003
  mov r22, RI ' reg <- addrg
  rdlong r22, r22 ' reg <- INDIRI4 reg
  subs r22, #1 ' SUBI4 coni
  jmp #LODL
- long @C_sjcs1_67ea4055_lock_L000003
+ long @C_s48c1_6864c268_lock_L000003
  wrlong r22, RI ' ASGNI4 addrg reg
-C_sjcs2_67ea4055_initialize_L000004_11
-C_sjcs2_67ea4055_initialize_L000004_8
-C_sjcs2_67ea4055_initialize_L000004_6
-' C_sjcs2_67ea4055_initialize_L000004_5 ' (symbol refcount = 0)
+C_s48c2_6864c268_initialize_L000004_11
+C_s48c2_6864c268_initialize_L000004_8
+C_s48c2_6864c268_initialize_L000004_6
+' C_s48c2_6864c268_initialize_L000004_5 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #8 ' framesize
  jmp #RETF
@@ -153,14 +153,14 @@ C_s_rxflush ' <symbol:s_rxflush>
  jmp #PSHM
  long $400000 ' save registers
  jmp #LODI
- long @C_sjcs_67ea4055_rxbase_L000002
+ long @C_s48c_6864c268_rxbase_L000002
  mov r22, RI ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  jmp #BRNZ
  long @C_s_rxflush_18 ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
- long @C_sjcs2_67ea4055_initialize_L000004 ' CALL addrg
+ long @C_s48c2_6864c268_initialize_L000004 ' CALL addrg
 C_s_rxflush_17
 C_s_rxflush_18
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
@@ -184,17 +184,17 @@ C_s_rxcheck ' <symbol:s_rxcheck>
  jmp #PSHM
  long $540000 ' save registers
  jmp #LODI
- long @C_sjcs_67ea4055_rxbase_L000002
+ long @C_s48c_6864c268_rxbase_L000002
  mov r22, RI ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  jmp #BRNZ
  long @C_s_rxcheck_21 ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
- long @C_sjcs2_67ea4055_initialize_L000004 ' CALL addrg
+ long @C_s48c2_6864c268_initialize_L000004 ' CALL addrg
 C_s_rxcheck_21
  jmp #LODI
- long @C_sjcs1_67ea4055_lock_L000003
+ long @C_s48c1_6864c268_lock_L000003
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz,wc
  jmp #BR_B
@@ -202,7 +202,7 @@ C_s_rxcheck_21
 C_s_rxcheck_25
 ' C_s_rxcheck_26 ' (symbol refcount = 0)
  jmp #LODI
- long @C_sjcs1_67ea4055_lock_L000003
+ long @C_s48c1_6864c268_lock_L000003
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -212,7 +212,7 @@ C_s_rxcheck_25
  long @C_s_rxcheck_25 ' EQI4
 C_s_rxcheck_23
  jmp #LODI
- long @C_sjcs_67ea4055_rxbase_L000002
+ long @C_s48c_6864c268_rxbase_L000002
  mov r22, RI ' reg <- INDIRP4 addrg
  mov r20, r22
  adds r20, #4 ' ADDP4 coni
@@ -222,7 +222,7 @@ C_s_rxcheck_23
  jmp #BR_Z
  long @C_s_rxcheck_28 ' EQI4
  jmp #LODI
- long @C_sjcs_67ea4055_rxbase_L000002
+ long @C_s48c_6864c268_rxbase_L000002
  mov r22, RI ' reg <- INDIRP4 addrg
  mov r20, r22
  adds r20, #4 ' ADDP4 coni
@@ -249,13 +249,13 @@ C_s_rxcheck_28
  wrlong r22, RI ' ASGNI4 addrl reg
 C_s_rxcheck_29
  jmp #LODI
- long @C_sjcs1_67ea4055_lock_L000003
+ long @C_s48c1_6864c268_lock_L000003
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz,wc
  jmp #BR_B
  long @C_s_rxcheck_30 ' LTI4
  jmp #LODI
- long @C_sjcs1_67ea4055_lock_L000003
+ long @C_s48c1_6864c268_lock_L000003
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -278,14 +278,14 @@ C_s_rx ' <symbol:s_rx>
  jmp #PSHM
  long $c00000 ' save registers
  jmp #LODI
- long @C_sjcs_67ea4055_rxbase_L000002
+ long @C_s48c_6864c268_rxbase_L000002
  mov r22, RI ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  jmp #BRNZ
  long @C_s_rx_36 ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
- long @C_sjcs2_67ea4055_initialize_L000004 ' CALL addrg
+ long @C_s48c2_6864c268_initialize_L000004 ' CALL addrg
 C_s_rx_35
 C_s_rx_36
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
@@ -310,17 +310,17 @@ C_s_tx ' <symbol:s_tx>
  long $d00000 ' save registers
  mov r23, r2 ' reg var <- reg arg
  jmp #LODI
- long @C_sjcs_67ea4055_rxbase_L000002
+ long @C_s48c_6864c268_rxbase_L000002
  mov r22, RI ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  jmp #BRNZ
  long @C_s_tx_39 ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
- long @C_sjcs2_67ea4055_initialize_L000004 ' CALL addrg
+ long @C_s48c2_6864c268_initialize_L000004 ' CALL addrg
 C_s_tx_39
  jmp #LODI
- long @C_sjcs1_67ea4055_lock_L000003
+ long @C_s48c1_6864c268_lock_L000003
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz,wc
  jmp #BR_B
@@ -328,7 +328,7 @@ C_s_tx_39
 C_s_tx_43
 ' C_s_tx_44 ' (symbol refcount = 0)
  jmp #LODI
- long @C_sjcs1_67ea4055_lock_L000003
+ long @C_s48c1_6864c268_lock_L000003
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -339,7 +339,7 @@ C_s_tx_43
 C_s_tx_46
 C_s_tx_47
  jmp #LODI
- long @C_sjcs_67ea4055_rxbase_L000002
+ long @C_s48c_6864c268_rxbase_L000002
  mov r22, RI ' reg <- INDIRP4 addrg
  mov r20, r22
  adds r20, #12 ' ADDP4 coni
@@ -352,7 +352,7 @@ C_s_tx_47
  jmp #BR_Z
  long @C_s_tx_46 ' EQI4
  jmp #LODI
- long @C_sjcs_67ea4055_rxbase_L000002
+ long @C_s48c_6864c268_rxbase_L000002
  mov r22, RI ' reg <- INDIRP4 addrg
  mov r20, r22
  adds r20, #8 ' ADDP4 coni
@@ -361,7 +361,7 @@ C_s_tx_47
  adds r22, r20 ' ADDI/P (2)
  wrbyte r23, r22 ' ASGNU1 reg reg
  jmp #LODI
- long @C_sjcs_67ea4055_rxbase_L000002
+ long @C_s48c_6864c268_rxbase_L000002
  mov r22, RI ' reg <- INDIRP4 addrg
  adds r22, #8 ' ADDP4 coni
  rdlong r20, r22 ' reg <- INDIRI4 reg
@@ -369,7 +369,7 @@ C_s_tx_47
  and r20, #15 ' BANDI4 coni
  wrlong r20, r22 ' ASGNI4 reg reg
  jmp #LODI
- long @C_sjcs_67ea4055_rxbase_L000002
+ long @C_s48c_6864c268_rxbase_L000002
  mov r22, RI ' reg <- INDIRP4 addrg
  adds r22, #24 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRI4 reg
@@ -382,13 +382,13 @@ C_s_tx_47
  long @C_s_rx ' CALL addrg
 C_s_tx_49
  jmp #LODI
- long @C_sjcs1_67ea4055_lock_L000003
+ long @C_s48c1_6864c268_lock_L000003
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz,wc
  jmp #BR_B
  long @C_s_tx_51 ' LTI4
  jmp #LODI
- long @C_sjcs1_67ea4055_lock_L000003
+ long @C_s48c1_6864c268_lock_L000003
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -408,17 +408,17 @@ C_s_txflush ' <symbol:s_txflush>
  jmp #PSHM
  long $500000 ' save registers
  jmp #LODI
- long @C_sjcs_67ea4055_rxbase_L000002
+ long @C_s48c_6864c268_rxbase_L000002
  mov r22, RI ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  jmp #BRNZ
  long @C_s_txflush_54 ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
- long @C_sjcs2_67ea4055_initialize_L000004 ' CALL addrg
+ long @C_s48c2_6864c268_initialize_L000004 ' CALL addrg
 C_s_txflush_54
  jmp #LODI
- long @C_sjcs1_67ea4055_lock_L000003
+ long @C_s48c1_6864c268_lock_L000003
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz,wc
  jmp #BR_B
@@ -426,7 +426,7 @@ C_s_txflush_54
 C_s_txflush_58
 ' C_s_txflush_59 ' (symbol refcount = 0)
  jmp #LODI
- long @C_sjcs1_67ea4055_lock_L000003
+ long @C_s48c1_6864c268_lock_L000003
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -437,7 +437,7 @@ C_s_txflush_58
 C_s_txflush_61
 C_s_txflush_62
  jmp #LODI
- long @C_sjcs_67ea4055_rxbase_L000002
+ long @C_s48c_6864c268_rxbase_L000002
  mov r22, RI ' reg <- INDIRP4 addrg
  mov r20, r22
  adds r20, #12 ' ADDP4 coni
@@ -448,13 +448,13 @@ C_s_txflush_62
  jmp #BRNZ
  long @C_s_txflush_61 ' NEI4
  jmp #LODI
- long @C_sjcs1_67ea4055_lock_L000003
+ long @C_s48c1_6864c268_lock_L000003
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz,wc
  jmp #BR_B
  long @C_s_txflush_64 ' LTI4
  jmp #LODI
- long @C_sjcs1_67ea4055_lock_L000003
+ long @C_s48c1_6864c268_lock_L000003
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -475,17 +475,17 @@ C_s_txcheck ' <symbol:s_txcheck>
  jmp #PSHM
  long $500000 ' save registers
  jmp #LODI
- long @C_sjcs_67ea4055_rxbase_L000002
+ long @C_s48c_6864c268_rxbase_L000002
  mov r22, RI ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  jmp #BRNZ
  long @C_s_txcheck_67 ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
- long @C_sjcs2_67ea4055_initialize_L000004 ' CALL addrg
+ long @C_s48c2_6864c268_initialize_L000004 ' CALL addrg
 C_s_txcheck_67
  jmp #LODI
- long @C_sjcs1_67ea4055_lock_L000003
+ long @C_s48c1_6864c268_lock_L000003
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz,wc
  jmp #BR_B
@@ -493,7 +493,7 @@ C_s_txcheck_67
 C_s_txcheck_71
 ' C_s_txcheck_72 ' (symbol refcount = 0)
  jmp #LODI
- long @C_sjcs1_67ea4055_lock_L000003
+ long @C_s48c1_6864c268_lock_L000003
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -503,7 +503,7 @@ C_s_txcheck_71
  long @C_s_txcheck_71 ' EQI4
 C_s_txcheck_69
  jmp #LODI
- long @C_sjcs_67ea4055_rxbase_L000002
+ long @C_s48c_6864c268_rxbase_L000002
  mov r22, RI ' reg <- INDIRP4 addrg
  mov r20, r22
  adds r20, #8 ' ADDP4 coni
@@ -518,13 +518,13 @@ C_s_txcheck_69
  long -8
  wrlong r22, RI ' ASGNI4 addrl reg
  jmp #LODI
- long @C_sjcs1_67ea4055_lock_L000003
+ long @C_s48c1_6864c268_lock_L000003
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz,wc
  jmp #BR_B
  long @C_s_txcheck_74 ' LTI4
  jmp #LODI
- long @C_sjcs1_67ea4055_lock_L000003
+ long @C_s48c1_6864c268_lock_L000003
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA

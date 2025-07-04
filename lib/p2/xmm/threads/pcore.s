@@ -11,23 +11,23 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_slg8_67ea417d_K_ernel_lock_L000004 ' <symbol:Kernel_lock>
+C_sco4_6864c411_K_ernel_lock_L000004 ' <symbol:Kernel_lock>
  long -1
 
  alignl ' align long
-C_slg81_67ea417d_P_thread_L_ock_L000005 ' <symbol:Pthread_Lock>
+C_sco41_6864c411_P_thread_L_ock_L000005 ' <symbol:Pthread_Lock>
  long -1
 
  alignl ' align long
-C_slg82_67ea417d_P_rintf_L_ock_L000006 ' <symbol:Printf_Lock>
+C_sco42_6864c411_P_rintf_L_ock_L000006 ' <symbol:Printf_Lock>
  long -1
 
  alignl ' align long
-C_slg83_67ea417d_O_nce_L_ock_L000007 ' <symbol:Once_Lock>
+C_sco43_6864c411_O_nce_L_ock_L000007 ' <symbol:Once_Lock>
  long -1
 
  alignl ' align long
-C_slg84_67ea417d_concurrency_L000008 ' <symbol:concurrency>
+C_sco44_6864c411_concurrency_L000008 ' <symbol:concurrency>
  long 0
 
 ' Catalina Code
@@ -35,7 +35,7 @@ C_slg84_67ea417d_concurrency_L000008 ' <symbol:concurrency>
 DAT ' code segment
 
  alignl ' align long
-C_slg85_67ea417d__ensure_lock_L000009 ' <symbol:_ensure_lock>
+C_sco45_6864c411__ensure_lock_L000009 ' <symbol:_ensure_lock>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -45,7 +45,7 @@ C_slg85_67ea417d__ensure_lock_L000009 ' <symbol:_ensure_lock>
  mov r22, BC ' reg <- INDIRI4 reg
  cmps r22,  #0 wz,wc
  jmp #BR_A
- long @C_slg85_67ea417d__ensure_lock_L000009_11 ' GTI4
+ long @C_sco45_6864c411__ensure_lock_L000009_11 ' GTI4
  jmp #LODL
  long @C__P_thread_P_ool
  mov r2, RI ' reg ARG ADDRG
@@ -55,8 +55,8 @@ C_slg85_67ea417d__ensure_lock_L000009 ' <symbol:_ensure_lock>
  mov RI, r23
  mov BC, r0
  jmp #WLNG ' ASGNI4 reg reg
-C_slg85_67ea417d__ensure_lock_L000009_11
-' C_slg85_67ea417d__ensure_lock_L000009_10 ' (symbol refcount = 0)
+C_sco45_6864c411__ensure_lock_L000009_11
+' C_sco45_6864c411__ensure_lock_L000009_10 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -70,7 +70,7 @@ C__pthread_init_lock_pool ' <symbol:_pthread_init_lock_pool>
  long $d00000 ' save registers
  mov r23, r2 ' reg var <- reg arg
  jmp #LODI
- long @C_slg8_67ea417d_K_ernel_lock_L000004
+ long @C_sco4_6864c411_K_ernel_lock_L000004
  mov r22, RI ' reg <- INDIRI4 addrg
  jmp #LODL
  long -1
@@ -82,11 +82,11 @@ C__pthread_init_lock_pool ' <symbol:_pthread_init_lock_pool>
  jmp #CALA
  long @C__locknew ' CALL addrg
  jmp #LODL
- long @C_slg8_67ea417d_K_ernel_lock_L000004
+ long @C_sco4_6864c411_K_ernel_lock_L000004
  mov BC, r0
  jmp #WLNG ' ASGNI4 addrg reg
  jmp #LODI
- long @C_slg8_67ea417d_K_ernel_lock_L000004
+ long @C_sco4_6864c411_K_ernel_lock_L000004
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -96,7 +96,7 @@ C__pthread_init_lock_pool_14
  jmp #CALA
  long @C__thread_stall ' CALL addrg
  jmp #LODI
- long @C_slg81_67ea417d_P_thread_L_ock_L000005
+ long @C_sco41_6864c411_P_thread_L_ock_L000005
  mov r22, RI ' reg <- INDIRI4 addrg
  jmp #LODL
  long -1
@@ -108,11 +108,11 @@ C__pthread_init_lock_pool_14
  jmp #CALA
  long @C__locknew ' CALL addrg
  jmp #LODL
- long @C_slg81_67ea417d_P_thread_L_ock_L000005
+ long @C_sco41_6864c411_P_thread_L_ock_L000005
  mov BC, r0
  jmp #WLNG ' ASGNI4 addrg reg
  jmp #LODI
- long @C_slg81_67ea417d_P_thread_L_ock_L000005
+ long @C_sco41_6864c411_P_thread_L_ock_L000005
  mov r2, RI ' reg ARG INDIR ADDRG
  jmp #LODL
  long 1002
@@ -127,17 +127,17 @@ C__pthread_init_lock_pool_14
  add SP, #8 ' CALL addrg
 C__pthread_init_lock_pool_16
  jmp #LODL
- long @C_slg82_67ea417d_P_rintf_L_ock_L000006
+ long @C_sco42_6864c411_P_rintf_L_ock_L000006
  mov r2, RI ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_slg85_67ea417d__ensure_lock_L000009 ' CALL addrg
+ long @C_sco45_6864c411__ensure_lock_L000009 ' CALL addrg
  jmp #LODL
- long @C_slg83_67ea417d_O_nce_L_ock_L000007
+ long @C_sco43_6864c411_O_nce_L_ock_L000007
  mov r2, RI ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_slg85_67ea417d__ensure_lock_L000009 ' CALL addrg
+ long @C_sco45_6864c411__ensure_lock_L000009 ' CALL addrg
  mov r22, r23 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
  jmp #BR_Z
@@ -145,7 +145,7 @@ C__pthread_init_lock_pool_16
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_slg85_67ea417d__ensure_lock_L000009 ' CALL addrg
+ long @C_sco45_6864c411__ensure_lock_L000009 ' CALL addrg
 C__pthread_init_lock_pool_18
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
@@ -253,7 +253,7 @@ C_pthread_printf ' <symbol:pthread_printf>
  cmp BC, RI wz,wc
  if_ae wrlong r5, BC ' spill reg (varadic)
  jmp #LODL
- long @C_slg82_67ea417d_P_rintf_L_ock_L000006
+ long @C_sco42_6864c411_P_rintf_L_ock_L000006
  mov r2, RI ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -266,7 +266,7 @@ C_pthread_printf_25
  long @C__thread_yield ' CALL addrg
 C_pthread_printf_26
  jmp #LODI
- long @C_slg82_67ea417d_P_rintf_L_ock_L000006
+ long @C_sco42_6864c411_P_rintf_L_ock_L000006
  mov r2, RI ' reg ARG INDIR ADDRG
  jmp #LODL
  long @C__P_thread_P_ool
@@ -299,7 +299,7 @@ C_pthread_printf_26
  sub RI, #-(-12)
  wrlong r0, RI ' ASGNI4 addrli reg
  jmp #LODI
- long @C_slg82_67ea417d_P_rintf_L_ock_L000006
+ long @C_sco42_6864c411_P_rintf_L_ock_L000006
  mov r2, RI ' reg ARG INDIR ADDRG
  jmp #LODL
  long @C__P_thread_P_ool
@@ -341,7 +341,7 @@ C_pthread_printf_ln ' <symbol:pthread_printf_ln>
  cmp BC, RI wz,wc
  if_ae wrlong r5, BC ' spill reg (varadic)
  jmp #LODL
- long @C_slg82_67ea417d_P_rintf_L_ock_L000006
+ long @C_sco42_6864c411_P_rintf_L_ock_L000006
  mov r2, RI ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -354,7 +354,7 @@ C_pthread_printf_ln_30
  long @C__thread_yield ' CALL addrg
 C_pthread_printf_ln_31
  jmp #LODI
- long @C_slg82_67ea417d_P_rintf_L_ock_L000006
+ long @C_sco42_6864c411_P_rintf_L_ock_L000006
  mov r2, RI ' reg ARG INDIR ADDRG
  jmp #LODL
  long @C__P_thread_P_ool
@@ -393,7 +393,7 @@ C_pthread_printf_ln_31
  jmp #CALA
  long @C_t_printf ' CALL addrg
  jmp #LODI
- long @C_slg82_67ea417d_P_rintf_L_ock_L000006
+ long @C_sco42_6864c411_P_rintf_L_ock_L000006
  mov r2, RI ' reg ARG INDIR ADDRG
  jmp #LODL
  long @C__P_thread_P_ool
@@ -433,7 +433,7 @@ C_pthread_lock_check ' <symbol:pthread_lock_check>
  long @C_t_printf
  add SP, #4 ' CALL addrg
  jmp #LODI
- long @C_slg81_67ea417d_P_thread_L_ock_L000005
+ long @C_sco41_6864c411_P_thread_L_ock_L000005
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz,wc
  jmp #BRAE
@@ -448,7 +448,7 @@ C_pthread_lock_check ' <symbol:pthread_lock_check>
  long @C_pthread_lock_check_40 ' JUMPV addrg
 C_pthread_lock_check_39
  jmp #LODI
- long @C_slg81_67ea417d_P_thread_L_ock_L000005
+ long @C_sco41_6864c411_P_thread_L_ock_L000005
  mov r2, RI ' reg ARG INDIR ADDRG
  jmp #LODL
  long @C_pthread_lock_check_43_L000044
@@ -459,7 +459,7 @@ C_pthread_lock_check_39
  long @C_t_printf
  add SP, #4 ' CALL addrg
  jmp #LODI
- long @C_slg82_67ea417d_P_rintf_L_ock_L000006
+ long @C_sco42_6864c411_P_rintf_L_ock_L000006
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz,wc
  jmp #BRAE
@@ -474,7 +474,7 @@ C_pthread_lock_check_39
  long @C_pthread_lock_check_46 ' JUMPV addrg
 C_pthread_lock_check_45
  jmp #LODI
- long @C_slg82_67ea417d_P_rintf_L_ock_L000006
+ long @C_sco42_6864c411_P_rintf_L_ock_L000006
  mov r2, RI ' reg ARG INDIR ADDRG
  jmp #LODL
  long @C_pthread_lock_check_49_L000050
@@ -485,7 +485,7 @@ C_pthread_lock_check_45
  long @C_t_printf
  add SP, #4 ' CALL addrg
  jmp #LODI
- long @C_slg82_67ea417d_P_rintf_L_ock_L000006
+ long @C_sco42_6864c411_P_rintf_L_ock_L000006
  mov r2, RI ' reg ARG INDIR ADDRG
  jmp #LODL
  long @C__P_thread_P_ool
@@ -506,7 +506,7 @@ C_pthread_lock_check_45
  long @C_t_printf ' CALL addrg
 C_pthread_lock_check_51
  jmp #LODI
- long @C_slg82_67ea417d_P_rintf_L_ock_L000006
+ long @C_sco42_6864c411_P_rintf_L_ock_L000006
  mov r2, RI ' reg ARG INDIR ADDRG
  jmp #LODL
  long @C__P_thread_P_ool
@@ -568,7 +568,7 @@ C_pthread_equal_59
 
 
  alignl ' align long
-C_slg8d_67ea417d_dummy_function_L000060 ' <symbol:dummy_function>
+C_sco4d_6864c411_dummy_function_L000060 ' <symbol:dummy_function>
  jmp #NEWF
  sub SP, #12
  jmp #PSHM
@@ -622,7 +622,7 @@ C_slg8d_67ea417d_dummy_function_L000060 ' <symbol:dummy_function>
  mov r22, BC ' reg <- INDIRI4 reg
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_slg8d_67ea417d_dummy_function_L000060_62 ' NEI4
+ long @C_sco4d_6864c411_dummy_function_L000060_62 ' NEI4
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 regl
@@ -630,11 +630,11 @@ C_slg8d_67ea417d_dummy_function_L000060 ' <symbol:dummy_function>
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C_pthread_exit ' CALL addrg
-C_slg8d_67ea417d_dummy_function_L000060_62
+C_sco4d_6864c411_dummy_function_L000060_62
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r0, r22 ' reg <- INDIRI4 regl
-' C_slg8d_67ea417d_dummy_function_L000060_61 ' (symbol refcount = 0)
+' C_sco4d_6864c411_dummy_function_L000060_61 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #12 ' framesize
  jmp #RETF
@@ -776,7 +776,7 @@ C_pthread_create_70
  mov r4, r22 ' ADDI/P
  adds r4, r20 ' ADDI/P (3)
  jmp #LODL
- long @C_slg8d_67ea417d_dummy_function_L000060
+ long @C_sco4d_6864c411_dummy_function_L000060
  mov r5, RI ' reg ARG ADDRG
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
@@ -852,30 +852,30 @@ C_pthread_create_64
 
 
  alignl ' align long
-C_slg8e_67ea417d_foreman_L000075 ' <symbol:foreman>
+C_sco4e_6864c411_foreman_L000075 ' <symbol:foreman>
  jmp #NEWF
  jmp #PSHM
  long $a00000 ' save registers
  mov r23, r3 ' reg var <- reg arg
  mov r21, r2 ' reg var <- reg arg
  jmp #LODI
- long @C_slg8_67ea417d_K_ernel_lock_L000004
+ long @C_sco4_6864c411_K_ernel_lock_L000004
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C__thread_set_lock ' CALL addrg
  jmp #JMPA
- long @C_slg8e_67ea417d_foreman_L000075_78 ' JUMPV addrg
-C_slg8e_67ea417d_foreman_L000075_77
+ long @C_sco4e_6864c411_foreman_L000075_78 ' JUMPV addrg
+C_sco4e_6864c411_foreman_L000075_77
  mov r2, #100 ' reg ARG coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C__thread_wait ' CALL addrg
-C_slg8e_67ea417d_foreman_L000075_78
+C_sco4e_6864c411_foreman_L000075_78
  jmp #JMPA
- long @C_slg8e_67ea417d_foreman_L000075_77 ' JUMPV addrg
+ long @C_sco4e_6864c411_foreman_L000075_77 ' JUMPV addrg
  mov r0, #0 ' reg <- coni
-' C_slg8e_67ea417d_foreman_L000075_76 ' (symbol refcount = 0)
+' C_sco4e_6864c411_foreman_L000075_76 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -922,7 +922,7 @@ C_pthread_createaffinity_81
  mov r4, r21 ' ADDI/P
  adds r4, r23 ' ADDI/P (3)
  jmp #LODL
- long @C_slg8e_67ea417d_foreman_L000075
+ long @C_sco4e_6864c411_foreman_L000075
  mov r5, RI ' reg ARG ADDRG
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
@@ -1079,13 +1079,13 @@ C_pthread_once ' <symbol:pthread_once>
  mov r23, r3 ' reg var <- reg arg
  mov r21, r2 ' reg var <- reg arg
  jmp #LODL
- long @C_slg83_67ea417d_O_nce_L_ock_L000007
+ long @C_sco43_6864c411_O_nce_L_ock_L000007
  mov r2, RI ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C__pthread_init_lock_pool ' CALL addrg
  jmp #LODI
- long @C_slg83_67ea417d_O_nce_L_ock_L000007
+ long @C_sco43_6864c411_O_nce_L_ock_L000007
  mov r2, RI ' reg ARG INDIR ADDRG
  jmp #LODL
  long @C__P_thread_P_ool
@@ -1123,7 +1123,7 @@ C_pthread_once_100
  jmp #CALI ' CALL indirect
 C_pthread_once_102
  jmp #LODI
- long @C_slg83_67ea417d_O_nce_L_ock_L000007
+ long @C_sco43_6864c411_O_nce_L_ock_L000007
  mov r2, RI ' reg ARG INDIR ADDRG
  jmp #LODL
  long @C__P_thread_P_ool
@@ -1175,7 +1175,7 @@ C_pthread_detach_104
  alignl ' align long
 C_pthread_setconcurrency ' <symbol:pthread_setconcurrency>
  jmp #LODL
- long @C_slg84_67ea417d_concurrency_L000008
+ long @C_sco44_6864c411_concurrency_L000008
  mov BC, r2
  jmp #WLNG ' ASGNI4 addrg reg
  mov r0, #0 ' reg <- coni
@@ -1188,7 +1188,7 @@ C_pthread_setconcurrency ' <symbol:pthread_setconcurrency>
  alignl ' align long
 C_pthread_getconcurrency ' <symbol:pthread_getconcurrency>
  jmp #LODI
- long @C_slg84_67ea417d_concurrency_L000008
+ long @C_sco44_6864c411_concurrency_L000008
  mov r0, RI ' reg <- INDIRI4 addrg
 ' C_pthread_getconcurrency_108 ' (symbol refcount = 0)
  jmp #RETN

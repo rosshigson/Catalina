@@ -8,12 +8,12 @@ DAT ' code segment
 
 ' Catalina Export isalnum
 
- alignl ' align long
+ alignl_label
 C_isalnum ' <symbol:isalnum>
- alignl ' align long
+ alignl_p1
  long I32_PSHM + $500000<<S32 ' save registers
  word I16B_LODL + (r22)<<D16B
- alignl ' align long
+ alignl_p1
  long @C___ctype+1 ' reg <- addrg
  word I16A_ADDS + (r22)<<D16A + (r2)<<S16A ' ADDI/P (2)
  word I16A_RDBYTE + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU1 reg
@@ -23,7 +23,7 @@ C_isalnum ' <symbol:isalnum>
  word I16A_AND + (r0)<<D16A + (r20)<<S16A ' BANDI/U (3)
 ' C_isalnum_1 ' (symbol refcount = 0)
  word I16B_POPM + $80<<S16B ' restore registers, do not pop frame, do return
- alignl ' align long
+ alignl_p1
 
 ' Catalina Import __ctype
 ' end

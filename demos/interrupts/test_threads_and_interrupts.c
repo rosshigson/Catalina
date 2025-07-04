@@ -13,12 +13,12 @@
 /*
  * Catalina interrupt support
  */
-#include <catalina_interrupts.h>
+#include <int.h>
 
 /*
  * Catalina multi-threading support
  */
-#include <catalina_threads.h>
+#include <threads.h>
 
 /*
  * Catalina HMI functions (unlike stdio functions, these 

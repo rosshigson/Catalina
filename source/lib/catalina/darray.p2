@@ -1,15 +1,19 @@
 /* 
- * The files included herea are created using p2_asm and bindump: 
+ * The files included herea are created using p2_asm and bindump
+ * (see the Makefile for full details): 
  *
- *    cp dynamic_array.p2 dynamic_array.h
+ *    cp darray.p2 darray.h
  *
- *    p2_asm  lmmd.spin2
+ *    spp -D P2 lmmd.t > lmmd.s
+ *    p2_asm  lmmd.s
  *    bindump lmmd.bin -p "   0x" -c > lmmd.inc
  *
- *    p2_asm  cmmd.spin2
+ *    spp -D P2 cmmd.t > cmmd.s
+ *    p2_asm  cmmd.s
  *    bindump cmmd.bin -p "   0x" -c > cmmd.inc
  *
- *    p2_asm  nmmd.spin2
+ *    spp -D P2 nmmd.t > nmmd.s
+ *    p2_asm  nmmd.s
  *    bindump nmmd.bin -p "   0x" -c > nmmd.inc
  *
  */

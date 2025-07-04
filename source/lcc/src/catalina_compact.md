@@ -528,17 +528,17 @@ addrl32: ADDRLP4  "%a"
 addrl32: ADDRFP4  "%a"
 
 reg: addrl16  " word I16B_LODF + ((%a)&$1FF)<<S16B\n word I16A_MOV + (%c)<<D16A + RI<<S16A ' reg <- addrl16\n" 7
-reg: addrl32  " alignl ' align long\n long I32_LODF + ((%a)&$FFFFFF)<<S32\n word I16A_MOV + (%c)<<D16A + RI<<S16A ' reg <- addrl32\n" 7
+reg: addrl32  " alignl_p1\n long I32_LODF + ((%a)&$FFFFFF)<<S32\n word I16A_MOV + (%c)<<D16A + RI<<S16A ' reg <- addrl32\n" 7
 
-reg: addrg  " word I16B_LODL + (%c)<<D16B\n alignl ' align long\n long @%0 ' reg <- addrg\n" 7
+reg: addrg  " word I16B_LODL + (%c)<<D16B\n alignl_p1\n long @%0 ' reg <- addrg\n" 7
 
-reg: special " alignl ' align long\n long I32_MOV + (%c)<<D32 + %a<<S32 ' reg <- special\n" 99
+reg: special " alignl_p1\n long I32_MOV + (%c)<<D32 + %a<<S32 ' reg <- special\n" 99
 
 reg: coni  " word I16A_MOVI + (%c)<<D16A + (%0)<<S16A ' reg <- coni\n" 3
 reg: conn  " word I16A_NEGI + (%c)<<D16A + (-(%0)&$1F)<<S16A ' reg <- conn\n" 3
-reg: cons  " alignl ' align long\n long I32_LODS + (%c)<<D32S + ((%0)&$7FFFF)<<S32 ' reg <- cons\n" 4
-reg: conli " alignl ' align long\n long I32_MOVI + (%c)<<D32 +(%0)<<S32 ' reg <- conli\n" 7
-reg: con   " word I16B_LODL + (%c)<<D16B\n alignl ' align long\n long %0 ' reg <- con\n" 17
+reg: cons  " alignl_p1\n long I32_LODS + (%c)<<D32S + ((%0)&$7FFFF)<<S32 ' reg <- cons\n" 4
+reg: conli " alignl_p1\n long I32_MOVI + (%c)<<D32 +(%0)<<S32 ' reg <- conli\n" 7
+reg: con   " word I16B_LODL + (%c)<<D16B\n alignl_p1\n long %0 ' reg <- con\n" 17
 
 
 
@@ -551,23 +551,23 @@ reg: INDIRU4(reg)   " word I16A_RDLONG + (%c)<<D16A + (%0)<<S16A ' reg <- INDIRU
 reg: INDIRF4(reg)   " word I16A_RDLONG + (%c)<<D16A + (%0)<<S16A ' reg <- INDIRF4 reg\n" 1
 reg: INDIRP4(reg)   " word I16A_RDLONG + (%c)<<D16A + (%0)<<S16A ' reg <- INDIRP4 reg\n" 1
 
-reg: INDIRI1(addrg) " alignl ' align long\n long I32_LODA + (@%0)<<S32\n word I16A_RDBYTE + (%c)<<D16A + RI<<S16A ' reg <- INDIRI1 addrg\n" 7
-reg: INDIRI2(addrg) " alignl ' align long\n long I32_LODA + (@%0)<<S32\n word I16A_RDWORD + (%c)<<D16A + RI<<S16A ' reg <- INDIRI2 addrg\n" 7
-reg: INDIRI4(addrg) " alignl ' align long\n long I32_LODI + (@%0)<<S32\n word I16A_MOV + (%c)<<D16A + RI<<S16A ' reg <- INDIRI4 addrg\n" 7
-reg: INDIRU1(addrg) " alignl ' align long\n long I32_LODA + (@%0)<<S32\n word I16A_RDBYTE + (%c)<<D16A + RI<<S16A ' reg <- INDIRU1 addrg\n" 7
-reg: INDIRU2(addrg) " alignl ' align long\n long I32_LODA + (@%0)<<S32\n word I16A_RDWORD + (%c)<<D16A + RI<<S16A ' reg <- INDIRU2 addrg\n" 7
-reg: INDIRU4(addrg) " alignl ' align long\n long I32_LODI + (@%0)<<S32\n word I16A_MOV + (%c)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg\n" 7
-reg: INDIRF4(addrg) " alignl ' align long\n long I32_LODI + (@%0)<<S32\n word I16A_MOV + (%c)<<D16A + RI<<S16A ' reg <- INDIRF4 addrg\n" 7
-reg: INDIRP4(addrg) " alignl ' align long\n long I32_LODI + (@%0)<<S32\n word I16A_MOV + (%c)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg\n" 7
+reg: INDIRI1(addrg) " alignl_p1\n long I32_LODA + (@%0)<<S32\n word I16A_RDBYTE + (%c)<<D16A + RI<<S16A ' reg <- INDIRI1 addrg\n" 7
+reg: INDIRI2(addrg) " alignl_p1\n long I32_LODA + (@%0)<<S32\n word I16A_RDWORD + (%c)<<D16A + RI<<S16A ' reg <- INDIRI2 addrg\n" 7
+reg: INDIRI4(addrg) " alignl_p1\n long I32_LODI + (@%0)<<S32\n word I16A_MOV + (%c)<<D16A + RI<<S16A ' reg <- INDIRI4 addrg\n" 7
+reg: INDIRU1(addrg) " alignl_p1\n long I32_LODA + (@%0)<<S32\n word I16A_RDBYTE + (%c)<<D16A + RI<<S16A ' reg <- INDIRU1 addrg\n" 7
+reg: INDIRU2(addrg) " alignl_p1\n long I32_LODA + (@%0)<<S32\n word I16A_RDWORD + (%c)<<D16A + RI<<S16A ' reg <- INDIRU2 addrg\n" 7
+reg: INDIRU4(addrg) " alignl_p1\n long I32_LODI + (@%0)<<S32\n word I16A_MOV + (%c)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg\n" 7
+reg: INDIRF4(addrg) " alignl_p1\n long I32_LODI + (@%0)<<S32\n word I16A_MOV + (%c)<<D16A + RI<<S16A ' reg <- INDIRF4 addrg\n" 7
+reg: INDIRP4(addrg) " alignl_p1\n long I32_LODI + (@%0)<<S32\n word I16A_MOV + (%c)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg\n" 7
 
-reg: INDIRI1(special) " alignl ' align long\n long I32_MOV + (%c)<<D32 + (%0)<<S32 ' reg <- INDIRI1 addrg special\n" 0
-reg: INDIRI2(special) " alignl ' align long\n long I32_MOV + (%c)<<D32 + (%0)<<S32 ' reg <- INDIRI2 addrg special\n" 0
-reg: INDIRI4(special) " alignl ' align long\n long I32_MOV + (%c)<<D32 + (%0)<<S32 ' reg <- INDIRI4 addrg special\n" 0
-reg: INDIRU1(special) " alignl ' align long\n long I32_MOV + (%c)<<D32 + (%0)<<S32 ' reg <- INDIRU1 addrg special\n" 0
-reg: INDIRU2(special) " alignl ' align long\n long I32_MOV + (%c)<<D32 + (%0)<<S32 ' reg <- INDIRU2 addrg special\n" 0
-reg: INDIRU4(special) " alignl ' align long\n long I32_MOV + (%c)<<D32 + (%0)<<S32 ' reg <- INDIRU4 addrg special\n" 0
-reg: INDIRF4(special) " alignl ' align long\n long I32_MOV + (%c)<<D32 + (%0)<<S32 ' reg <- INDIRF4 addrg special\n" 0
-reg: INDIRP4(special) " alignl ' align long\n long I32_MOV + (%c)<<D32 + (%0)<<S32 ' reg <- INDIRP4 addrg special\n" 0
+reg: INDIRI1(special) " alignl_p1\n long I32_MOV + (%c)<<D32 + (%0)<<S32 ' reg <- INDIRI1 addrg special\n" 0
+reg: INDIRI2(special) " alignl_p1\n long I32_MOV + (%c)<<D32 + (%0)<<S32 ' reg <- INDIRI2 addrg special\n" 0
+reg: INDIRI4(special) " alignl_p1\n long I32_MOV + (%c)<<D32 + (%0)<<S32 ' reg <- INDIRI4 addrg special\n" 0
+reg: INDIRU1(special) " alignl_p1\n long I32_MOV + (%c)<<D32 + (%0)<<S32 ' reg <- INDIRU1 addrg special\n" 0
+reg: INDIRU2(special) " alignl_p1\n long I32_MOV + (%c)<<D32 + (%0)<<S32 ' reg <- INDIRU2 addrg special\n" 0
+reg: INDIRU4(special) " alignl_p1\n long I32_MOV + (%c)<<D32 + (%0)<<S32 ' reg <- INDIRU4 addrg special\n" 0
+reg: INDIRF4(special) " alignl_p1\n long I32_MOV + (%c)<<D32 + (%0)<<S32 ' reg <- INDIRF4 addrg special\n" 0
+reg: INDIRP4(special) " alignl_p1\n long I32_MOV + (%c)<<D32 + (%0)<<S32 ' reg <- INDIRP4 addrg special\n" 0
 
 reg: INDIRI1(addrl16) " word I16B_LODF + ((%0)&$1FF)<<S16B\n word I16A_RDBYTE + (%c)<<D16A + RI<<S16A ' reg <- INDIRI1 addrl16\n" 7 
 reg: INDIRI2(addrl16) " word I16B_LODF + ((%0)&$1FF)<<S16B\n word I16A_RDWORD + (%c)<<D16A + RI<<S16A ' reg <- INDIRI2 addrl16\n" 7
@@ -578,14 +578,14 @@ reg: INDIRU4(addrl16) " word I16B_LODF + ((%0)&$1FF)<<S16B\n word I16A_RDLONG + 
 reg: INDIRF4(addrl16) " word I16B_LODF + ((%0)&$1FF)<<S16B\n word I16A_RDLONG + (%c)<<D16A + RI<<S16A ' reg <- INDIRF4 addrl16\n" 7
 reg: INDIRP4(addrl16) " word I16B_LODF + ((%0)&$1FF)<<S16B\n word I16A_RDLONG + (%c)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16\n" 7
 
-reg: INDIRI1(addrl32) " alignl ' align long\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_RDBYTE + (%c)<<D16A + RI<<S16A ' reg <- INDIRI1 addrl32\n" 7 
-reg: INDIRI2(addrl32) " alignl ' align long\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_RDWORD + (%c)<<D16A + RI<<S16A ' reg <- INDIRI2 addrl32\n" 7
-reg: INDIRI4(addrl32) " alignl ' align long\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_RDLONG + (%c)<<D16A + RI<<S16A ' reg <- INDIRI4 addrl32\n" 7
-reg: INDIRU1(addrl32) " alignl ' align long\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_RDBYTE + (%c)<<D16A + RI<<S16A ' reg <- INDIRU1 addrl32\n" 7
-reg: INDIRU2(addrl32) " alignl ' align long\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_RDWORD + (%c)<<D16A + RI<<S16A ' reg <- INDIRU2 addrl32\n" 7
-reg: INDIRU4(addrl32) " alignl ' align long\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_RDLONG + (%c)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl32\n" 7
-reg: INDIRF4(addrl32) " alignl ' align long\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_RDLONG + (%c)<<D16A + RI<<S16A ' reg <- INDIRF4 addrl32\n" 7
-reg: INDIRP4(addrl32) " alignl ' align long\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_RDLONG + (%c)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl32\n" 7
+reg: INDIRI1(addrl32) " alignl_p1\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_RDBYTE + (%c)<<D16A + RI<<S16A ' reg <- INDIRI1 addrl32\n" 7 
+reg: INDIRI2(addrl32) " alignl_p1\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_RDWORD + (%c)<<D16A + RI<<S16A ' reg <- INDIRI2 addrl32\n" 7
+reg: INDIRI4(addrl32) " alignl_p1\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_RDLONG + (%c)<<D16A + RI<<S16A ' reg <- INDIRI4 addrl32\n" 7
+reg: INDIRU1(addrl32) " alignl_p1\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_RDBYTE + (%c)<<D16A + RI<<S16A ' reg <- INDIRU1 addrl32\n" 7
+reg: INDIRU2(addrl32) " alignl_p1\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_RDWORD + (%c)<<D16A + RI<<S16A ' reg <- INDIRU2 addrl32\n" 7
+reg: INDIRU4(addrl32) " alignl_p1\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_RDLONG + (%c)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl32\n" 7
+reg: INDIRF4(addrl32) " alignl_p1\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_RDLONG + (%c)<<D16A + RI<<S16A ' reg <- INDIRF4 addrl32\n" 7
+reg: INDIRP4(addrl32) " alignl_p1\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_RDLONG + (%c)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl32\n" 7
 
 reg: CVUU1(INDIRU1(reg)) " word I16A_RDBYTE + (%c)<<D16A + (%0)<<S16A ' reg <- CVUU1 INDIRU1 reg\n" 5
 reg: CVUU2(INDIRU1(reg)) " word I16A_RDBYTE + (%c)<<D16A + (%0)<<S16A ' reg <- CVUU2 INDIRU1 reg\n" 5
@@ -600,32 +600,32 @@ reg: CVUI4(INDIRU1(reg)) " word I16A_RDBYTE + (%c)<<D16A + (%0)<<S16A ' reg <- C
 reg: CVUI4(INDIRU2(reg)) " word I16A_RDWORD + (%c)<<D16A + (%0)<<S16A ' reg <- CVUI4 INDIRU2 reg\n" 5
 reg: CVUI4(INDIRU4(reg)) " word I16A_RDLONG + (%c)<<D16A + (%0)<<S16A ' reg <- CVUI4 INDIRU4 reg\n" 5
 
-stmt: ASGNI1(addrg,reg)   " alignl ' align long\n long I32_LODA + (@%0)<<S32\n word I16A_WRBYTE + (%1)<<D16A + RI<<S16A ' ASGNI1 addrg reg\n" 7
-stmt: ASGNI2(addrg,reg)   " alignl ' align long\n long I32_LODA + (@%0)<<S32\n word I16A_WRWORD + (%1)<<D16A + RI<<S16A ' ASGNI2 addrg reg\n" 7
-stmt: ASGNI4(addrg,reg)   " alignl ' align long\n long I32_LODA + (@%0)<<S32\n word I16A_WRLONG + (%1)<<D16A + RI<<S16A ' ASGNI4 addrg reg\n" 7
-stmt: ASGNU1(addrg,reg)   " alignl ' align long\n long I32_LODA + (@%0)<<S32\n word I16A_WRBYTE + (%1)<<D16A + RI<<S16A ' ASGNU1 addrg reg\n" 7
-stmt: ASGNU2(addrg,reg)   " alignl ' align long\n long I32_LODA + (@%0)<<S32\n word I16A_WRWORD + (%1)<<D16A + RI<<S16A ' ASGNU2 addrg reg\n" 7
-stmt: ASGNU4(addrg,reg)   " alignl ' align long\n long I32_LODA + (@%0)<<S32\n word I16A_WRLONG + (%1)<<D16A + RI<<S16A ' ASGNU4 addrg reg\n" 7
-stmt: ASGNF4(addrg,reg)   " alignl ' align long\n long I32_LODA + (@%0)<<S32\n word I16A_WRLONG + (%1)<<D16A + RI<<S16A ' ASGNF4 addrg reg\n" 7
-stmt: ASGNP4(addrg,reg)   " alignl ' align long\n long I32_LODA + (@%0)<<S32\n word I16A_WRLONG + (%1)<<D16A + RI<<S16A ' ASGNP4 addrg reg\n" 7
+stmt: ASGNI1(addrg,reg)   " alignl_p1\n long I32_LODA + (@%0)<<S32\n word I16A_WRBYTE + (%1)<<D16A + RI<<S16A ' ASGNI1 addrg reg\n" 7
+stmt: ASGNI2(addrg,reg)   " alignl_p1\n long I32_LODA + (@%0)<<S32\n word I16A_WRWORD + (%1)<<D16A + RI<<S16A ' ASGNI2 addrg reg\n" 7
+stmt: ASGNI4(addrg,reg)   " alignl_p1\n long I32_LODA + (@%0)<<S32\n word I16A_WRLONG + (%1)<<D16A + RI<<S16A ' ASGNI4 addrg reg\n" 7
+stmt: ASGNU1(addrg,reg)   " alignl_p1\n long I32_LODA + (@%0)<<S32\n word I16A_WRBYTE + (%1)<<D16A + RI<<S16A ' ASGNU1 addrg reg\n" 7
+stmt: ASGNU2(addrg,reg)   " alignl_p1\n long I32_LODA + (@%0)<<S32\n word I16A_WRWORD + (%1)<<D16A + RI<<S16A ' ASGNU2 addrg reg\n" 7
+stmt: ASGNU4(addrg,reg)   " alignl_p1\n long I32_LODA + (@%0)<<S32\n word I16A_WRLONG + (%1)<<D16A + RI<<S16A ' ASGNU4 addrg reg\n" 7
+stmt: ASGNF4(addrg,reg)   " alignl_p1\n long I32_LODA + (@%0)<<S32\n word I16A_WRLONG + (%1)<<D16A + RI<<S16A ' ASGNF4 addrg reg\n" 7
+stmt: ASGNP4(addrg,reg)   " alignl_p1\n long I32_LODA + (@%0)<<S32\n word I16A_WRLONG + (%1)<<D16A + RI<<S16A ' ASGNP4 addrg reg\n" 7
 
-stmt: ASGNI1(special,reg)   " alignl ' align long\n long I32_MOV + (%0)<<D32 + (%1)<<S32 ' ASGNI1 special reg\n" 1
-stmt: ASGNI2(special,reg)   " alignl ' align long\n long I32_MOV + (%0)<<D32 + (%1)<<S32 ' ASGNI2 special reg\n" 1
-stmt: ASGNI4(special,reg)   " alignl ' align long\n long I32_MOV + (%0)<<D32 + (%1)<<S32 ' ASGNI4 special reg\n" 1
-stmt: ASGNU1(special,reg)   " alignl ' align long\n long I32_MOV + (%0)<<D32 + (%1)<<S32 ' ASGNU1 special reg\n" 1
-stmt: ASGNU2(special,reg)   " alignl ' align long\n long I32_MOV + (%0)<<D32 + (%1)<<S32 ' ASGNU2 special reg\n" 1
-stmt: ASGNU4(special,reg)   " alignl ' align long\n long I32_MOV + (%0)<<D32 + (%1)<<S32 ' ASGNU4 special reg\n" 1
-stmt: ASGNF4(special,reg)   " alignl ' align long\n long I32_MOV + (%0)<<D32 + (%1)<<S32 ' ASGNF4 special reg\n" 1
-stmt: ASGNP4(special,reg)   " alignl ' align long\n long I32_MOV + (%0)<<D32 + (%1)<<S32 ' ASGNP4 special reg\n" 1
+stmt: ASGNI1(special,reg)   " alignl_p1\n long I32_MOV + (%0)<<D32 + (%1)<<S32 ' ASGNI1 special reg\n" 1
+stmt: ASGNI2(special,reg)   " alignl_p1\n long I32_MOV + (%0)<<D32 + (%1)<<S32 ' ASGNI2 special reg\n" 1
+stmt: ASGNI4(special,reg)   " alignl_p1\n long I32_MOV + (%0)<<D32 + (%1)<<S32 ' ASGNI4 special reg\n" 1
+stmt: ASGNU1(special,reg)   " alignl_p1\n long I32_MOV + (%0)<<D32 + (%1)<<S32 ' ASGNU1 special reg\n" 1
+stmt: ASGNU2(special,reg)   " alignl_p1\n long I32_MOV + (%0)<<D32 + (%1)<<S32 ' ASGNU2 special reg\n" 1
+stmt: ASGNU4(special,reg)   " alignl_p1\n long I32_MOV + (%0)<<D32 + (%1)<<S32 ' ASGNU4 special reg\n" 1
+stmt: ASGNF4(special,reg)   " alignl_p1\n long I32_MOV + (%0)<<D32 + (%1)<<S32 ' ASGNF4 special reg\n" 1
+stmt: ASGNP4(special,reg)   " alignl_p1\n long I32_MOV + (%0)<<D32 + (%1)<<S32 ' ASGNP4 special reg\n" 1
 
-stmt: ASGNI1(special,conli)   " alignl ' align long\n long I32_MOVI + (%0)<<D32 + (%1)<<S32 ' ASGNI1 special conli\n" 1 
-stmt: ASGNI2(special,conli)   " alignl ' align long\n long I32_MOVI + (%0)<<D32 + (%1)<<S32 ' ASGNI2 special conli\n" 1
-stmt: ASGNI4(special,conli)   " alignl ' align long\n long I32_MOVI + (%0)<<D32 + (%1)<<S32 ' ASGNI4 special conli\n" 1
-stmt: ASGNU1(special,conli)   " alignl ' align long\n long I32_MOVI + (%0)<<D32 + (%1)<<S32 ' ASGNU1 special conli\n" 1
-stmt: ASGNU2(special,conli)   " alignl ' align long\n long I32_MOVI + (%0)<<D32 + (%1)<<S32 ' ASGNU2 special conli\n" 1
-stmt: ASGNU4(special,conli)   " alignl ' align long\n long I32_MOVI + (%0)<<D32 + (%1)<<S32 ' ASGNU4 special conli\n" 1
-stmt: ASGNF4(special,conli)   " alignl ' align long\n long I32_MOVI + (%0)<<D32 + (%1)<<S32 ' ASGNF4 special conli\n" 1
-stmt: ASGNP4(special,conli)   " alignl ' align long\n long I32_MOVI + (%0)<<D32 + (%1)<<S32 ' ASGNP4 special conli\n" 1
+stmt: ASGNI1(special,conli)   " alignl_p1\n long I32_MOVI + (%0)<<D32 + (%1)<<S32 ' ASGNI1 special conli\n" 1 
+stmt: ASGNI2(special,conli)   " alignl_p1\n long I32_MOVI + (%0)<<D32 + (%1)<<S32 ' ASGNI2 special conli\n" 1
+stmt: ASGNI4(special,conli)   " alignl_p1\n long I32_MOVI + (%0)<<D32 + (%1)<<S32 ' ASGNI4 special conli\n" 1
+stmt: ASGNU1(special,conli)   " alignl_p1\n long I32_MOVI + (%0)<<D32 + (%1)<<S32 ' ASGNU1 special conli\n" 1
+stmt: ASGNU2(special,conli)   " alignl_p1\n long I32_MOVI + (%0)<<D32 + (%1)<<S32 ' ASGNU2 special conli\n" 1
+stmt: ASGNU4(special,conli)   " alignl_p1\n long I32_MOVI + (%0)<<D32 + (%1)<<S32 ' ASGNU4 special conli\n" 1
+stmt: ASGNF4(special,conli)   " alignl_p1\n long I32_MOVI + (%0)<<D32 + (%1)<<S32 ' ASGNF4 special conli\n" 1
+stmt: ASGNP4(special,conli)   " alignl_p1\n long I32_MOVI + (%0)<<D32 + (%1)<<S32 ' ASGNP4 special conli\n" 1
 
 stmt: ASGNI1(addrl16,reg)   " word I16B_LODF + ((%0)&$1FF)<<S16B\n word I16A_WRBYTE + (%1)<<D16A + RI<<S16A ' ASGNI1 addrl16 reg\n" 7
 stmt: ASGNI2(addrl16,reg)   " word I16B_LODF + ((%0)&$1FF)<<S16B\n word I16A_WRWORD + (%1)<<D16A + RI<<S16A ' ASGNI2 addrl16 reg\n" 7
@@ -636,14 +636,14 @@ stmt: ASGNU4(addrl16,reg)   " word I16B_LODF + ((%0)&$1FF)<<S16B\n word I16A_WRL
 stmt: ASGNF4(addrl16,reg)   " word I16B_LODF + ((%0)&$1FF)<<S16B\n word I16A_WRLONG + (%1)<<D16A + RI<<S16A ' ASGNF4 addrl16 reg\n" 7
 stmt: ASGNP4(addrl16,reg)   " word I16B_LODF + ((%0)&$1FF)<<S16B\n word I16A_WRLONG + (%1)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg\n" 7
 
-stmt: ASGNI1(addrl32,reg)   " alignl ' align long\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_WRBYTE + (%1)<<D16A + RI<<S16A ' ASGNI1 addrl32 reg\n" 7
-stmt: ASGNI2(addrl32,reg)   " alignl ' align long\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_WRWORD + (%1)<<D16A + RI<<S16A ' ASGNI2 addrl32 reg\n" 7
-stmt: ASGNI4(addrl32,reg)   " alignl ' align long\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_WRLONG + (%1)<<D16A + RI<<S16A ' ASGNI4 addrl32 reg\n" 7
-stmt: ASGNU1(addrl32,reg)   " alignl ' align long\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_WRBYTE + (%1)<<D16A + RI<<S16A ' ASGNU1 addrl32 reg\n" 7
-stmt: ASGNU2(addrl32,reg)   " alignl ' align long\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_WRWORD + (%1)<<D16A + RI<<S16A ' ASGNU2 addrl32 reg\n" 7
-stmt: ASGNU4(addrl32,reg)   " alignl ' align long\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_WRLONG + (%1)<<D16A + RI<<S16A ' ASGNU4 addrl32 reg\n" 7
-stmt: ASGNF4(addrl32,reg)   " alignl ' align long\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_WRLONG + (%1)<<D16A + RI<<S16A ' ASGNF4 addrl32 reg\n" 7
-stmt: ASGNP4(addrl32,reg)   " alignl ' align long\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_WRLONG + (%1)<<D16A + RI<<S16A ' ASGNP4 addrl32 reg\n" 7
+stmt: ASGNI1(addrl32,reg)   " alignl_p1\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_WRBYTE + (%1)<<D16A + RI<<S16A ' ASGNI1 addrl32 reg\n" 7
+stmt: ASGNI2(addrl32,reg)   " alignl_p1\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_WRWORD + (%1)<<D16A + RI<<S16A ' ASGNI2 addrl32 reg\n" 7
+stmt: ASGNI4(addrl32,reg)   " alignl_p1\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_WRLONG + (%1)<<D16A + RI<<S16A ' ASGNI4 addrl32 reg\n" 7
+stmt: ASGNU1(addrl32,reg)   " alignl_p1\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_WRBYTE + (%1)<<D16A + RI<<S16A ' ASGNU1 addrl32 reg\n" 7
+stmt: ASGNU2(addrl32,reg)   " alignl_p1\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_WRWORD + (%1)<<D16A + RI<<S16A ' ASGNU2 addrl32 reg\n" 7
+stmt: ASGNU4(addrl32,reg)   " alignl_p1\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_WRLONG + (%1)<<D16A + RI<<S16A ' ASGNU4 addrl32 reg\n" 7
+stmt: ASGNF4(addrl32,reg)   " alignl_p1\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_WRLONG + (%1)<<D16A + RI<<S16A ' ASGNF4 addrl32 reg\n" 7
+stmt: ASGNP4(addrl32,reg)   " alignl_p1\n long I32_LODF + ((%0)&$FFFFFF)<<S32\n word I16A_WRLONG + (%1)<<D16A + RI<<S16A ' ASGNP4 addrl32 reg\n" 7
 
 stmt: ASGNI1(reg,reg)   " word I16A_WRBYTE + (%1)<<D16A + (%0)<<S16A ' ASGNI1 reg reg\n" 99
 stmt: ASGNI2(reg,reg)   " word I16A_WRWORD + (%1)<<D16A + (%0)<<S16A ' ASGNI2 reg reg\n" 99
@@ -675,18 +675,18 @@ stmt: RETI4(coni)  " word I16A_MOVI + R0<<D16A + (%0)<<S16A ' RET coni\n" 1
 stmt: RETU4(coni)  " word I16A_MOVI + R0<<D16A + (%0)<<S16A ' RET coni\n" 1
 stmt: RETP4(coni)  " word I16A_MOVI + R0<<D16A + (%0)<<S16A ' RET coni\n" 1
 
-stmt: RETI4(cons)  " alignl ' align long\n long I32_LODS + R0<<D32S + ((%0)&$7FFFF)<<S32 ' RET cons\n" 2 
-stmt: RETU4(cons)  " alignl ' align long\n long I32_LODS + R0<<D32S + ((%0)&$7FFFF)<<S32 ' RET cons\n" 2
-stmt: RETP4(cons)  " alignl ' align long\n long I32_LODS + R0<<D32S + ((%0)&$7FFFF)<<S32 ' RET cons\n" 2
+stmt: RETI4(cons)  " alignl_p1\n long I32_LODS + R0<<D32S + ((%0)&$7FFFF)<<S32 ' RET cons\n" 2 
+stmt: RETU4(cons)  " alignl_p1\n long I32_LODS + R0<<D32S + ((%0)&$7FFFF)<<S32 ' RET cons\n" 2
+stmt: RETP4(cons)  " alignl_p1\n long I32_LODS + R0<<D32S + ((%0)&$7FFFF)<<S32 ' RET cons\n" 2
 
-stmt: RETI4(conli)  " alignl ' align long\n long I32_MOVI + R0<<D32 + (%0)<<S32 ' RET conli\n" 1 
-stmt: RETU4(conli)  " alignl ' align long\n long I32_MOVI + R0<<D32 + (%0)<<S32 ' RET conli\n" 1
-stmt: RETP4(conli)  " alignl ' align long\n long I32_MOVI + R0<<D32 + (%0)<<S32 ' RET conli\n" 1
+stmt: RETI4(conli)  " alignl_p1\n long I32_MOVI + R0<<D32 + (%0)<<S32 ' RET conli\n" 1 
+stmt: RETU4(conli)  " alignl_p1\n long I32_MOVI + R0<<D32 + (%0)<<S32 ' RET conli\n" 1
+stmt: RETP4(conli)  " alignl_p1\n long I32_MOVI + R0<<D32 + (%0)<<S32 ' RET conli\n" 1
 
-stmt: RETI4(con)  " word I16B_LODL + R0<<D16B\n alignl ' align long\n long %0 ' RET con\n" 7
-stmt: RETU4(con)  " word I16B_LODL + R0<<D16B\n alignl ' align long\n long %0 ' RET con\n" 7
-stmt: RETP4(con)  " word I16B_LODL + R0<<D16B\n alignl ' align long\n long %0 ' RET con\n" 7
-stmt: RETF4(con)  " word I16B_LODL + R0<<D16B\n alignl ' align long\n long %0 ' RET con\n" 7
+stmt: RETI4(con)  " word I16B_LODL + R0<<D16B\n alignl_p1\n long %0 ' RET con\n" 7
+stmt: RETU4(con)  " word I16B_LODL + R0<<D16B\n alignl_p1\n long %0 ' RET con\n" 7
+stmt: RETP4(con)  " word I16B_LODL + R0<<D16B\n alignl_p1\n long %0 ' RET con\n" 7
+stmt: RETF4(con)  " word I16B_LODL + R0<<D16B\n alignl_p1\n long %0 ' RET con\n" 7
 
 reg: CVUI1(reg)  "# zero extend\n" 1
 reg: CVUI2(reg)  "# zero extend\n" 1
@@ -770,121 +770,121 @@ reg:  RSHI4(reg,coni) "? word I16A_MOV + (%c)<<D16A + (%0)<<S16A\n word I16A_SAR
 reg:  RSHU4(reg,coni) "? word I16A_MOV + (%c)<<D16A + (%0)<<S16A\n word I16A_SHRI + (%c)<<D16A + (%1)<<S16A ' SHRU4 reg coni\n" 1
  
 
-stmt: ASGNI4(special, reg)   " alignl ' align long\n long I32_MOV + (%1)<<D32 + (%2)<<S32 ' ASGNI4 special reg\n" 1
-stmt: ASGNU4(special, reg)   " alignl ' align long\n long I32_MOV + (%1)<<D32 + (%2)<<S32 ' ASGNU4 special reg\n" 1
+stmt: ASGNI4(special, reg)   " alignl_p1\n long I32_MOV + (%1)<<D32 + (%2)<<S32 ' ASGNI4 special reg\n" 1
+stmt: ASGNU4(special, reg)   " alignl_p1\n long I32_MOV + (%1)<<D32 + (%2)<<S32 ' ASGNU4 special reg\n" 1
 
-stmt: ASGNI4(special, BANDI4(INDIRI4(special),conli)) " word I16B_PASM \n alignl ' align long\n and %0, #%2 ' ASGNI4 special BAND4 special conli\n" (in_place_special(a) ? 0 : LBURG_MAX)
-stmt: ASGNU4(special, BANDU4(INDIRU4(special),conli)) " word I16B_PASM \n alignl ' align long\n and %0, #%2 ' ASGNU4 special BAND4 special conli\n" (in_place_special(a) ? 0 : LBURG_MAX)
-stmt: ASGNI4(special, BANDI4(INDIRI4(special),reg))   " word I16B_PASM \n alignl ' align long\n and %0, %2 ' ASGNI4 special BAND4 special reg\n"   (in_place_special(a) ? 0 : LBURG_MAX)
-stmt: ASGNU4(special, BANDU4(INDIRU4(special),reg))   " word I16B_PASM \n alignl ' align long\n and %0, %2 ' ASGNU4 special BAND4 special reg\n"   (in_place_special(a) ? 0 : LBURG_MAX)
+stmt: ASGNI4(special, BANDI4(INDIRI4(special),conli)) " word I16B_PASM \n alignl_p1\n and %0, #%2 ' ASGNI4 special BAND4 special conli\n" (in_place_special(a) ? 0 : LBURG_MAX)
+stmt: ASGNU4(special, BANDU4(INDIRU4(special),conli)) " word I16B_PASM \n alignl_p1\n and %0, #%2 ' ASGNU4 special BAND4 special conli\n" (in_place_special(a) ? 0 : LBURG_MAX)
+stmt: ASGNI4(special, BANDI4(INDIRI4(special),reg))   " word I16B_PASM \n alignl_p1\n and %0, %2 ' ASGNI4 special BAND4 special reg\n"   (in_place_special(a) ? 0 : LBURG_MAX)
+stmt: ASGNU4(special, BANDU4(INDIRU4(special),reg))   " word I16B_PASM \n alignl_p1\n and %0, %2 ' ASGNU4 special BAND4 special reg\n"   (in_place_special(a) ? 0 : LBURG_MAX)
 
-stmt: ASGNI4(special, BORI4(INDIRI4(special),conli))  " word I16B_PASM \n alignl ' align long\n or %0, #%2 ' ASGNI4 special BOR4 special conli\n" (in_place_special(a) ? 0 : LBURG_MAX)
-stmt: ASGNU4(special, BORU4(INDIRU4(special),conli))  " word I16B_PASM \n alignl ' align long\n or %0, #%2 ' ASGNU4 special BOR4 special conli\n" (in_place_special(a) ? 0 : LBURG_MAX)
-stmt: ASGNI4(special, BORI4(INDIRI4(special),reg))    " word I16B_PASM \n alignl ' align long\n or %0, %2 ' ASGNI4 special BOR4 special reg\n"   (in_place_special(a) ? 0 : LBURG_MAX)
-stmt: ASGNU4(special, BORU4(INDIRU4(special),reg))    " word I16B_PASM \n alignl ' align long\n or %0, %2 ' ASGNU4 special BOR4 special reg\n"   (in_place_special(a) ? 0 : LBURG_MAX)
+stmt: ASGNI4(special, BORI4(INDIRI4(special),conli))  " word I16B_PASM \n alignl_p1\n or %0, #%2 ' ASGNI4 special BOR4 special conli\n" (in_place_special(a) ? 0 : LBURG_MAX)
+stmt: ASGNU4(special, BORU4(INDIRU4(special),conli))  " word I16B_PASM \n alignl_p1\n or %0, #%2 ' ASGNU4 special BOR4 special conli\n" (in_place_special(a) ? 0 : LBURG_MAX)
+stmt: ASGNI4(special, BORI4(INDIRI4(special),reg))    " word I16B_PASM \n alignl_p1\n or %0, %2 ' ASGNI4 special BOR4 special reg\n"   (in_place_special(a) ? 0 : LBURG_MAX)
+stmt: ASGNU4(special, BORU4(INDIRU4(special),reg))    " word I16B_PASM \n alignl_p1\n or %0, %2 ' ASGNU4 special BOR4 special reg\n"   (in_place_special(a) ? 0 : LBURG_MAX)
 
-stmt: ASGNI4(special, BXORI4(INDIRI4(special),conli)) " word I16B_PASM \n alignl ' align long\n xor %0, #%2 ' ASGNI4 special BXOR4 special conli\n" (in_place_special(a) ? 0 : LBURG_MAX)
-stmt: ASGNU4(special, BXORU4(INDIRU4(special),conli)) " word I16B_PASM \n alignl ' align long\n xor %0, #%2 ' ASGNU4 special BXOR4 special conli\n" (in_place_special(a) ? 0 : LBURG_MAX)
-stmt: ASGNI4(special, BXORI4(INDIRI4(special),reg))   " word I16B_PASM \n alignl ' align long\n xor %0, %2 ' ASGNI4 special BXOR4 special reg\n"   (in_place_special(a) ? 0 : LBURG_MAX)
-stmt: ASGNU4(special, BXORU4(INDIRU4(special),reg))   " word I16B_PASM \n alignl ' align long\n xor %0, %2 ' ASGNU4 special BXOR4 special reg\n"   (in_place_special(a) ? 0 : LBURG_MAX)
+stmt: ASGNI4(special, BXORI4(INDIRI4(special),conli)) " word I16B_PASM \n alignl_p1\n xor %0, #%2 ' ASGNI4 special BXOR4 special conli\n" (in_place_special(a) ? 0 : LBURG_MAX)
+stmt: ASGNU4(special, BXORU4(INDIRU4(special),conli)) " word I16B_PASM \n alignl_p1\n xor %0, #%2 ' ASGNU4 special BXOR4 special conli\n" (in_place_special(a) ? 0 : LBURG_MAX)
+stmt: ASGNI4(special, BXORI4(INDIRI4(special),reg))   " word I16B_PASM \n alignl_p1\n xor %0, %2 ' ASGNI4 special BXOR4 special reg\n"   (in_place_special(a) ? 0 : LBURG_MAX)
+stmt: ASGNU4(special, BXORU4(INDIRU4(special),reg))   " word I16B_PASM \n alignl_p1\n xor %0, %2 ' ASGNU4 special BXOR4 special reg\n"   (in_place_special(a) ? 0 : LBURG_MAX)
 
 stmt: ASGNI4(special, SUBI4(INDIRI4(special),coni))   " word I16A_ADDSI (%0)<<D16A + (%2)<<S16A ' ASGNI4 special BADD4 special coni\n" (in_place_special(a) ? 0 : LBURG_MAX)
 stmt: ASGNU4(special, SUBU4(INDIRU4(special),coni))   " word I16A_ADDI (%0)<<D16A + (%2)<<S16A ' ASGNU4 special BADD4 special coni\n"  (in_place_special(a) ? 0 : LBURG_MAX)
-stmt: ASGNI4(special, ADDI4(INDIRI4(special),conli))  " word I16B_PASM \n alignl ' align long\n adds %0, #%2 ' ASGNI4 special BADD4 special conli\n" (in_place_special(a) ? 0 : LBURG_MAX)
-stmt: ASGNU4(special, ADDU4(INDIRU4(special),conli))  " word I16B_PASM \n alignl ' align long\n add %0, #%2 ' ASGNU4 special BADD4 special conli\n"  (in_place_special(a) ? 0 : LBURG_MAX)
-stmt: ASGNI4(special, ADDI4(INDIRI4(special),reg))    " word I16B_PASM \n alignl ' align long\n adds %0, %2 ' ASGNI4 special BADD4 special reg\n"   (in_place_special(a) ? 0 : LBURG_MAX)
-stmt: ASGNU4(special, ADDU4(INDIRU4(special),reg))    " word I16B_PASM \n alignl ' align long\n add %0, %2 ' ASGNU4 special BADD4 special reg\n"    (in_place_special(a) ? 0 : LBURG_MAX)
+stmt: ASGNI4(special, ADDI4(INDIRI4(special),conli))  " word I16B_PASM \n alignl_p1\n adds %0, #%2 ' ASGNI4 special BADD4 special conli\n" (in_place_special(a) ? 0 : LBURG_MAX)
+stmt: ASGNU4(special, ADDU4(INDIRU4(special),conli))  " word I16B_PASM \n alignl_p1\n add %0, #%2 ' ASGNU4 special BADD4 special conli\n"  (in_place_special(a) ? 0 : LBURG_MAX)
+stmt: ASGNI4(special, ADDI4(INDIRI4(special),reg))    " word I16B_PASM \n alignl_p1\n adds %0, %2 ' ASGNI4 special BADD4 special reg\n"   (in_place_special(a) ? 0 : LBURG_MAX)
+stmt: ASGNU4(special, ADDU4(INDIRU4(special),reg))    " word I16B_PASM \n alignl_p1\n add %0, %2 ' ASGNU4 special BADD4 special reg\n"    (in_place_special(a) ? 0 : LBURG_MAX)
 
 stmt: ASGNI4(special, SUBI4(INDIRI4(special),coni))   " word I16A_SUBSI (%0)<<D16A + (%2)<<S16A ' ASGNI4 special BSUB4 special coni\n" (in_place_special(a) ? 0 : LBURG_MAX)
 stmt: ASGNU4(special, SUBU4(INDIRU4(special),coni))   " word I16A_SUBI (%0)<<D16A + (%2)<<S16A ' ASGNU4 special BSUB4 special coni\n"  (in_place_special(a) ? 0 : LBURG_MAX)
-stmt: ASGNI4(special, SUBI4(INDIRI4(special),conli))  " word I16B_PASM \n alignl ' align long\n subs %0, #%2 ' ASGNI4 special BSUB4 special conli\n" (in_place_special(a) ? 0 : LBURG_MAX)
-stmt: ASGNU4(special, SUBU4(INDIRU4(special),conli))  " word I16B_PASM \n alignl ' align long\n sub %0, #%2 ' ASGNU4 special BSUB4 special conli\n"  (in_place_special(a) ? 0 : LBURG_MAX)
-stmt: ASGNI4(special, SUBI4(INDIRI4(special),reg))    " word I16B_PASM \n alignl ' align long\n subs %0, %2 ' ASGNI4 special BSUB4 special reg\n"   (in_place_special(a) ? 0 : LBURG_MAX)
-stmt: ASGNU4(special, SUBU4(INDIRU4(special),reg))    " word I16B_PASM \n alignl ' align long\n sub %0, %2 ' ASGNU4 special BSUB4 special reg\n"    (in_place_special(a) ? 0 : LBURG_MAX)
+stmt: ASGNI4(special, SUBI4(INDIRI4(special),conli))  " word I16B_PASM \n alignl_p1\n subs %0, #%2 ' ASGNI4 special BSUB4 special conli\n" (in_place_special(a) ? 0 : LBURG_MAX)
+stmt: ASGNU4(special, SUBU4(INDIRU4(special),conli))  " word I16B_PASM \n alignl_p1\n sub %0, #%2 ' ASGNU4 special BSUB4 special conli\n"  (in_place_special(a) ? 0 : LBURG_MAX)
+stmt: ASGNI4(special, SUBI4(INDIRI4(special),reg))    " word I16B_PASM \n alignl_p1\n subs %0, %2 ' ASGNI4 special BSUB4 special reg\n"   (in_place_special(a) ? 0 : LBURG_MAX)
+stmt: ASGNU4(special, SUBU4(INDIRU4(special),reg))    " word I16B_PASM \n alignl_p1\n sub %0, %2 ' ASGNU4 special BSUB4 special reg\n"    (in_place_special(a) ? 0 : LBURG_MAX)
 
 stmt: ASGNI4(special, LSHI4(INDIRI4(special),coni))   " word I16A_SHLI + (%0)<<D16A + (%2)<<S16A ' ASGNI4 special LSH4 special coni\n" (in_place_special(a) ? 0 : LBURG_MAX)
 stmt: ASGNU4(special, LSHU4(INDIRU4(special),coni))   " word I16A_SHLI + (%0)<<D16A + (%2)<<S16A ' ASGNU4 special LSH4 special coni\n" (in_place_special(a) ? 0 : LBURG_MAX)
-stmt: ASGNI4(special, LSHI4(INDIRI4(special),conli))  " word I16B_PASM \n alignl ' align long\n shl %0, #%2 ' ASGNI4 special LSH4 special conli\n" (in_place_special(a) ? 0 : LBURG_MAX)
-stmt: ASGNU4(special, LSHU4(INDIRU4(special),conli))  " word I16B_PASM \n alignl ' align long\n shl %0, #%2 ' ASGNU4 special LSH4 special conli\n" (in_place_special(a) ? 0 : LBURG_MAX)
-stmt: ASGNI4(special, LSHI4(INDIRI4(special),reg))    " word I16B_PASM \n alignl ' align long\n shl %0, %2 ' ASGNI4 special LSH4 special reg\n"   (in_place_special(a) ? 0 : LBURG_MAX)
-stmt: ASGNU4(special, LSHU4(INDIRU4(special),reg))    " word I16B_PASM \n alignl ' align long\n shl %0, %2 ' ASGNU4 special LSH4 special reg\n"   (in_place_special(a) ? 0 : LBURG_MAX)
+stmt: ASGNI4(special, LSHI4(INDIRI4(special),conli))  " word I16B_PASM \n alignl_p1\n shl %0, #%2 ' ASGNI4 special LSH4 special conli\n" (in_place_special(a) ? 0 : LBURG_MAX)
+stmt: ASGNU4(special, LSHU4(INDIRU4(special),conli))  " word I16B_PASM \n alignl_p1\n shl %0, #%2 ' ASGNU4 special LSH4 special conli\n" (in_place_special(a) ? 0 : LBURG_MAX)
+stmt: ASGNI4(special, LSHI4(INDIRI4(special),reg))    " word I16B_PASM \n alignl_p1\n shl %0, %2 ' ASGNI4 special LSH4 special reg\n"   (in_place_special(a) ? 0 : LBURG_MAX)
+stmt: ASGNU4(special, LSHU4(INDIRU4(special),reg))    " word I16B_PASM \n alignl_p1\n shl %0, %2 ' ASGNU4 special LSH4 special reg\n"   (in_place_special(a) ? 0 : LBURG_MAX)
 
 stmt: ASGNI4(special, RSHI4(INDIRI4(special),coni))   " word I16A_SHRI + (%0)<<D16A + (%2)<<S16A ' ASGNI4 special RSH4 special coni\n" (in_place_special(a) ? 0 : LBURG_MAX)
 stmt: ASGNU4(special, RSHU4(INDIRU4(special),coni))   " word I16A_SHRI + (%0)<<D16A + (%2)<<S16A ' ASGNU4 special RSH4 special coni\n" (in_place_special(a) ? 0 : LBURG_MAX)
-stmt: ASGNI4(special, RSHI4(INDIRI4(special),conli))  " word I16B_PASM \n alignl ' align long\n shr %0, #%2 ' ASGNI4 special RSH4 special conli\n" (in_place_special(a) ? 0 : LBURG_MAX)
-stmt: ASGNU4(special, RSHU4(INDIRU4(special),conli))  " word I16B_PASM \n alignl ' align long\n shr %0, #%2 ' ASGNU4 special RSH4 special conli\n" (in_place_special(a) ? 0 : LBURG_MAX)
-stmt: ASGNI4(special, RSHI4(INDIRI4(special),reg))    " word I16B_PASM \n alignl ' align long\n shr %0, %2 ' ASGNI4 special RSH4 special reg\n"   (in_place_special(a) ? 0 : LBURG_MAX)
-stmt: ASGNU4(special, RSHU4(INDIRU4(special),reg))    " word I16B_PASM \n alignl ' align long\n shr %0, %2 ' ASGNU4 special RSH4 special reg\n"   (in_place_special(a) ? 0 : LBURG_MAX)
+stmt: ASGNI4(special, RSHI4(INDIRI4(special),conli))  " word I16B_PASM \n alignl_p1\n shr %0, #%2 ' ASGNI4 special RSH4 special conli\n" (in_place_special(a) ? 0 : LBURG_MAX)
+stmt: ASGNU4(special, RSHU4(INDIRU4(special),conli))  " word I16B_PASM \n alignl_p1\n shr %0, #%2 ' ASGNU4 special RSH4 special conli\n" (in_place_special(a) ? 0 : LBURG_MAX)
+stmt: ASGNI4(special, RSHI4(INDIRI4(special),reg))    " word I16B_PASM \n alignl_p1\n shr %0, %2 ' ASGNI4 special RSH4 special reg\n"   (in_place_special(a) ? 0 : LBURG_MAX)
+stmt: ASGNU4(special, RSHU4(INDIRU4(special),reg))    " word I16B_PASM \n alignl_p1\n shr %0, %2 ' ASGNU4 special RSH4 special reg\n"   (in_place_special(a) ? 0 : LBURG_MAX)
 
-stmt: EQI4(reg,reg)  " word I16A_CMPS + (%0)<<D16A + (%1)<<S16A\n alignl ' align long\n long I32_BR_Z + (@%a)<<S32 ' EQI4 reg reg\n" 11
-stmt: EQU4(reg,reg)  " word I16A_CMP + (%0)<<D16A + (%1)<<S16A\n alignl ' align long\n long I32_BR_Z + (@%a)<<S32 ' EQU4 reg reg\n" 11
+stmt: EQI4(reg,reg)  " word I16A_CMPS + (%0)<<D16A + (%1)<<S16A\n alignl_p1\n long I32_BR_Z + (@%a)<<S32 ' EQI4 reg reg\n" 11
+stmt: EQU4(reg,reg)  " word I16A_CMP + (%0)<<D16A + (%1)<<S16A\n alignl_p1\n long I32_BR_Z + (@%a)<<S32 ' EQU4 reg reg\n" 11
 stmt: EQF4(reg,reg)  "# jmp #FCMP\n jmp #BR_Z\n long (@%a) ' EQF4 reg reg\n" 15
 
-stmt: NEI4(reg,reg)  " word I16A_CMPS + (%0)<<D16A + (%1)<<S16A\n alignl ' align long\n long I32_BRNZ + (@%a)<<S32 ' NEI4 reg reg\n" 11
-stmt: NEU4(reg,reg)  " word I16A_CMP + (%0)<<D16A + (%1)<<S16A\n alignl ' align long\n long I32_BRNZ + (@%a)<<S32 ' NEU4 reg reg\n" 11
+stmt: NEI4(reg,reg)  " word I16A_CMPS + (%0)<<D16A + (%1)<<S16A\n alignl_p1\n long I32_BRNZ + (@%a)<<S32 ' NEI4 reg reg\n" 11
+stmt: NEU4(reg,reg)  " word I16A_CMP + (%0)<<D16A + (%1)<<S16A\n alignl_p1\n long I32_BRNZ + (@%a)<<S32 ' NEU4 reg reg\n" 11
 stmt: NEF4(reg,reg)  "# jmp #FCMP\n jmp #BRNZ\n long (@%a) ' NEF4 reg reg\n" 15
 
-stmt: GEI4(reg,reg)  " word I16A_CMPS + (%0)<<D16A + (%1)<<S16A\n alignl ' align long\n long I32_BRAE + (@%a)<<S32 ' GEI4 reg reg\n" 11
-stmt: GEU4(reg,reg)  " word I16A_CMP + (%0)<<D16A + (%1)<<S16A\n alignl ' align long\n long I32_BRAE + (@%a)<<S32 ' GEU4 reg reg\n" 11
+stmt: GEI4(reg,reg)  " word I16A_CMPS + (%0)<<D16A + (%1)<<S16A\n alignl_p1\n long I32_BRAE + (@%a)<<S32 ' GEI4 reg reg\n" 11
+stmt: GEU4(reg,reg)  " word I16A_CMP + (%0)<<D16A + (%1)<<S16A\n alignl_p1\n long I32_BRAE + (@%a)<<S32 ' GEU4 reg reg\n" 11
 stmt: GEF4(reg,reg)  "# jmp #FCMP\n jmp #BRAE\n long (@%a) ' GEF4 reg reg\n" 15
 
-stmt: GTI4(reg,reg)  " word I16A_CMPS + (%0)<<D16A + (%1)<<S16A\n alignl ' align long\n long I32_BR_A + (@%a)<<S32 ' GTI4 reg reg\n" 11
-stmt: GTU4(reg,reg)  " word I16A_CMP + (%0)<<D16A + (%1)<<S16A\n alignl ' align long\n long I32_BR_A + (@%a)<<S32 ' GTU4 reg reg\n" 11
+stmt: GTI4(reg,reg)  " word I16A_CMPS + (%0)<<D16A + (%1)<<S16A\n alignl_p1\n long I32_BR_A + (@%a)<<S32 ' GTI4 reg reg\n" 11
+stmt: GTU4(reg,reg)  " word I16A_CMP + (%0)<<D16A + (%1)<<S16A\n alignl_p1\n long I32_BR_A + (@%a)<<S32 ' GTU4 reg reg\n" 11
 stmt: GTF4(reg,reg)  "# jmp #FCMP\n jmp #BR_A\n long (@%a) ' GTF4 reg reg\n" 15
 
-stmt: LEI4(reg,reg)  " word I16A_CMPS + (%0)<<D16A + (%1)<<S16A\n alignl ' align long\n long I32_BRBE + (@%a)<<S32 ' LEI4 reg reg\n" 11
-stmt: LEU4(reg,reg)  " word I16A_CMP + (%0)<<D16A + (%1)<<S16A\n alignl ' align long\n long I32_BRBE + (@%a)<<S32 ' LEU4 reg reg\n" 11
+stmt: LEI4(reg,reg)  " word I16A_CMPS + (%0)<<D16A + (%1)<<S16A\n alignl_p1\n long I32_BRBE + (@%a)<<S32 ' LEI4 reg reg\n" 11
+stmt: LEU4(reg,reg)  " word I16A_CMP + (%0)<<D16A + (%1)<<S16A\n alignl_p1\n long I32_BRBE + (@%a)<<S32 ' LEU4 reg reg\n" 11
 stmt: LEF4(reg,reg)  "# jmp #FCMP\n jmp #BRBE\n long (@%a) '  LEF4 reg reg\n" 15
 
-stmt: LTI4(reg,reg)  " word I16A_CMPS + (%0)<<D16A + (%1)<<S16A\n alignl ' align long\n long I32_BR_B + (@%a)<<S32 ' LTI4 reg reg\n" 11
-stmt: LTU4(reg,reg)  " word I16A_CMP + (%0)<<D16A + (%1)<<S16A\n alignl ' align long\n long I32_BR_B + (@%a)<<S32 ' LTU4 reg reg\n" 11
+stmt: LTI4(reg,reg)  " word I16A_CMPS + (%0)<<D16A + (%1)<<S16A\n alignl_p1\n long I32_BR_B + (@%a)<<S32 ' LTI4 reg reg\n" 11
+stmt: LTU4(reg,reg)  " word I16A_CMP + (%0)<<D16A + (%1)<<S16A\n alignl_p1\n long I32_BR_B + (@%a)<<S32 ' LTU4 reg reg\n" 11
 stmt: LTF4(reg,reg)  "# jmp #FCMP\n jmp #BR_B\n long (@%a) ' LTF4 reg reg\n" 15
 
 
-stmt: EQI4(reg,coni)  " word I16A_CMPSI + (%0)<<D16A + (%1)<<S16A\n alignl ' align long\n long I32_BR_Z + (@%a)<<S32 ' EQI4 reg coni\n" 3
-stmt: EQU4(reg,coni)  " word I16A_CMPI + (%0)<<D16A + (%1)<<S16A\n alignl ' align long\n long I32_BR_Z + (@%a)<<S32 ' EQU4 reg coni\n" 3
+stmt: EQI4(reg,coni)  " word I16A_CMPSI + (%0)<<D16A + (%1)<<S16A\n alignl_p1\n long I32_BR_Z + (@%a)<<S32 ' EQI4 reg coni\n" 3
+stmt: EQU4(reg,coni)  " word I16A_CMPI + (%0)<<D16A + (%1)<<S16A\n alignl_p1\n long I32_BR_Z + (@%a)<<S32 ' EQU4 reg coni\n" 3
 
-stmt: NEI4(reg,coni)  " word I16A_CMPSI + (%0)<<D16A + (%1)<<S16A\n alignl ' align long\n long I32_BRNZ + (@%a)<<S32 ' NEI4 reg coni\n" 3
-stmt: NEU4(reg,coni)  " word I16A_CMPI + (%0)<<D16A + (%1)<<S16A\n alignl ' align long\n long I32_BRNZ + (@%a)<<S32 ' NEU4 reg coni\n" 3
+stmt: NEI4(reg,coni)  " word I16A_CMPSI + (%0)<<D16A + (%1)<<S16A\n alignl_p1\n long I32_BRNZ + (@%a)<<S32 ' NEI4 reg coni\n" 3
+stmt: NEU4(reg,coni)  " word I16A_CMPI + (%0)<<D16A + (%1)<<S16A\n alignl_p1\n long I32_BRNZ + (@%a)<<S32 ' NEU4 reg coni\n" 3
 
-stmt: GEI4(reg,coni)  " word I16A_CMPSI + (%0)<<D16A + (%1)<<S16A\n alignl ' align long\n long I32_BRAE + (@%a)<<S32 ' GEI4 reg coni\n" 3
-stmt: GEU4(reg,coni)  " word I16A_CMPI + (%0)<<D16A + (%1)<<S16A\n alignl ' align long\n long I32_BRAE + (@%a)<<S32 ' GEU4 reg coni\n" 3
+stmt: GEI4(reg,coni)  " word I16A_CMPSI + (%0)<<D16A + (%1)<<S16A\n alignl_p1\n long I32_BRAE + (@%a)<<S32 ' GEI4 reg coni\n" 3
+stmt: GEU4(reg,coni)  " word I16A_CMPI + (%0)<<D16A + (%1)<<S16A\n alignl_p1\n long I32_BRAE + (@%a)<<S32 ' GEU4 reg coni\n" 3
 
-stmt: GTI4(reg,coni)  " word I16A_CMPSI + (%0)<<D16A + (%1)<<S16A\n alignl ' align long\n long I32_BR_A + (@%a)<<S32 ' GTI4 reg coni\n" 3
-stmt: GTU4(reg,coni)  " word I16A_CMPI + (%0)<<D16A + (%1)<<S16A\n alignl ' align long\n long I32_BR_A + (@%a)<<S32 ' GTU4 reg coni\n" 3
+stmt: GTI4(reg,coni)  " word I16A_CMPSI + (%0)<<D16A + (%1)<<S16A\n alignl_p1\n long I32_BR_A + (@%a)<<S32 ' GTI4 reg coni\n" 3
+stmt: GTU4(reg,coni)  " word I16A_CMPI + (%0)<<D16A + (%1)<<S16A\n alignl_p1\n long I32_BR_A + (@%a)<<S32 ' GTU4 reg coni\n" 3
 
-stmt: LEI4(reg,coni)  " word I16A_CMPSI + (%0)<<D16A + (%1)<<S16A\n alignl ' align long\n long I32_BRBE + (@%a)<<S32 ' LEI4 reg coni\n" 3
-stmt: LEU4(reg,coni)  " word I16A_CMPI + (%0)<<D16A + (%1)<<S16A\n alignl ' align long\n long I32_BRBE + (@%a)<<S32 ' LEU4 reg coni\n" 3
+stmt: LEI4(reg,coni)  " word I16A_CMPSI + (%0)<<D16A + (%1)<<S16A\n alignl_p1\n long I32_BRBE + (@%a)<<S32 ' LEI4 reg coni\n" 3
+stmt: LEU4(reg,coni)  " word I16A_CMPI + (%0)<<D16A + (%1)<<S16A\n alignl_p1\n long I32_BRBE + (@%a)<<S32 ' LEU4 reg coni\n" 3
 
-stmt: LTI4(reg,coni)  " word I16A_CMPSI + (%0)<<D16A + (%1)<<S16A\n alignl ' align long\n long I32_BR_B + (@%a)<<S32 ' LTI4 reg coni\n" 3
-stmt: LTU4(reg,coni)  " word I16A_CMPI + (%0)<<D16A + (%1)<<S16A\n alignl ' align long\n long I32_BR_B + (@%a)<<S32 ' LTU4 reg coni\n" 3
+stmt: LTI4(reg,coni)  " word I16A_CMPSI + (%0)<<D16A + (%1)<<S16A\n alignl_p1\n long I32_BR_B + (@%a)<<S32 ' LTI4 reg coni\n" 3
+stmt: LTU4(reg,coni)  " word I16A_CMPI + (%0)<<D16A + (%1)<<S16A\n alignl_p1\n long I32_BR_B + (@%a)<<S32 ' LTU4 reg coni\n" 3
 
-stmt: EQI4(reg,conli)  " alignl ' align long\n long I32_MOVI + RI<<D32 + (%1)<<S32\n word I16A_CMPS + (%0)<<D16A + RI<<S16A\n alignl ' align long\n long I32_BR_Z + (@%a)<<S32 ' EQI4 reg coni\n" 3
-stmt: EQU4(reg,conli)  " alignl ' align long\n long I32_MOVI + RI<<D32 + (%1)<<S32\n word I16A_CMP + (%0)<<D16A + RI<<S16A\n alignl ' align long\n long I32_BR_Z + (@%a)<<S32 ' EQU4 reg coni\n" 3
+stmt: EQI4(reg,conli)  " alignl_p1\n long I32_MOVI + RI<<D32 + (%1)<<S32\n word I16A_CMPS + (%0)<<D16A + RI<<S16A\n alignl_p1\n long I32_BR_Z + (@%a)<<S32 ' EQI4 reg coni\n" 3
+stmt: EQU4(reg,conli)  " alignl_p1\n long I32_MOVI + RI<<D32 + (%1)<<S32\n word I16A_CMP + (%0)<<D16A + RI<<S16A\n alignl_p1\n long I32_BR_Z + (@%a)<<S32 ' EQU4 reg coni\n" 3
 
-stmt: NEI4(reg,conli)  " alignl ' align long\n long I32_MOVI + RI<<D32 + (%1)<<S32\n word I16A_CMPS + (%0)<<D16A + RI<<S16A\n alignl ' align long\n long I32_BRNZ + (@%a)<<S32 ' NEI4 reg coni\n" 3
-stmt: NEU4(reg,conli)  " alignl ' align long\n long I32_MOVI + RI<<D32 + (%1)<<S32\n word I16A_CMP + (%0)<<D16A + RI<<S16A\n alignl ' align long\n long I32_BRNZ + (@%a)<<S32 ' NEU4 reg coni\n" 3
+stmt: NEI4(reg,conli)  " alignl_p1\n long I32_MOVI + RI<<D32 + (%1)<<S32\n word I16A_CMPS + (%0)<<D16A + RI<<S16A\n alignl_p1\n long I32_BRNZ + (@%a)<<S32 ' NEI4 reg coni\n" 3
+stmt: NEU4(reg,conli)  " alignl_p1\n long I32_MOVI + RI<<D32 + (%1)<<S32\n word I16A_CMP + (%0)<<D16A + RI<<S16A\n alignl_p1\n long I32_BRNZ + (@%a)<<S32 ' NEU4 reg coni\n" 3
 
-stmt: GEI4(reg,conli)  " alignl ' align long\n long I32_MOVI + RI<<D32 + (%1)<<S32\n word I16A_CMPS + (%0)<<D16A + RI<<S16A\n alignl ' align long\n long I32_BRAE + (@%a)<<S32 ' GEI4 reg coni\n" 3
-stmt: GEU4(reg,conli)  " alignl ' align long\n long I32_MOVI + RI<<D32 + (%1)<<S32\n word I16A_CMP + (%0)<<D16A + RI<<S16A\n alignl ' align long\n long I32_BRAE + (@%a)<<S32 ' GEU4 reg coni\n" 3
+stmt: GEI4(reg,conli)  " alignl_p1\n long I32_MOVI + RI<<D32 + (%1)<<S32\n word I16A_CMPS + (%0)<<D16A + RI<<S16A\n alignl_p1\n long I32_BRAE + (@%a)<<S32 ' GEI4 reg coni\n" 3
+stmt: GEU4(reg,conli)  " alignl_p1\n long I32_MOVI + RI<<D32 + (%1)<<S32\n word I16A_CMP + (%0)<<D16A + RI<<S16A\n alignl_p1\n long I32_BRAE + (@%a)<<S32 ' GEU4 reg coni\n" 3
 
-stmt: GTI4(reg,conli)  " alignl ' align long\n long I32_MOVI + RI<<D32 + (%1)<<S32\n word I16A_CMPS + (%0)<<D16A + RI<<S16A\n alignl ' align long\n long I32_BR_A + (@%a)<<S32 ' GTI4 reg coni\n" 3
-stmt: GTU4(reg,conli)  " alignl ' align long\n long I32_MOVI + RI<<D32 + (%1)<<S32\n word I16A_CMP + (%0)<<D16A + RI<<S16A\n alignl ' align long\n long I32_BR_A + (@%a)<<S32 ' GTU4 reg coni\n" 3
+stmt: GTI4(reg,conli)  " alignl_p1\n long I32_MOVI + RI<<D32 + (%1)<<S32\n word I16A_CMPS + (%0)<<D16A + RI<<S16A\n alignl_p1\n long I32_BR_A + (@%a)<<S32 ' GTI4 reg coni\n" 3
+stmt: GTU4(reg,conli)  " alignl_p1\n long I32_MOVI + RI<<D32 + (%1)<<S32\n word I16A_CMP + (%0)<<D16A + RI<<S16A\n alignl_p1\n long I32_BR_A + (@%a)<<S32 ' GTU4 reg coni\n" 3
 
-stmt: LEI4(reg,conli)  " alignl ' align long\n long I32_MOVI + RI<<D32 + (%1)<<S32\n word I16A_CMPS + (%0)<<D16A + RI<<S16A\n alignl ' align long\n long I32_BRBE + (@%a)<<S32 ' LEI4 reg coni\n" 3
-stmt: LEU4(reg,conli)  " alignl ' align long\n long I32_MOVI + RI<<D32 + (%1)<<S32\n word I16A_CMP + (%0)<<D16A + RI<<S16A\n alignl ' align long\n long I32_BRBE + (@%a)<<S32 ' LEU4 reg coni\n" 3
+stmt: LEI4(reg,conli)  " alignl_p1\n long I32_MOVI + RI<<D32 + (%1)<<S32\n word I16A_CMPS + (%0)<<D16A + RI<<S16A\n alignl_p1\n long I32_BRBE + (@%a)<<S32 ' LEI4 reg coni\n" 3
+stmt: LEU4(reg,conli)  " alignl_p1\n long I32_MOVI + RI<<D32 + (%1)<<S32\n word I16A_CMP + (%0)<<D16A + RI<<S16A\n alignl_p1\n long I32_BRBE + (@%a)<<S32 ' LEU4 reg coni\n" 3
 
-stmt: LTI4(reg,conli)  " alignl ' align long\n long I32_MOVI + RI<<D32 + (%1)<<S32\n word I16A_CMPS + (%0)<<D16A + RI<<S16A\n alignl ' align long\n long I32_BR_B + (@%a)<<S32 ' LTI4 reg coni\n" 3
-stmt: LTU4(reg,conli)  " alignl ' align long\n long I32_MOVI + RI<<D32 + (%1)<<S32\n word I16A_CMP + (%0)<<D16A + RI<<S16A\n alignl ' align long\n long I32_BR_B + (@%a)<<S32 ' LTU4 reg coni\n" 3
+stmt: LTI4(reg,conli)  " alignl_p1\n long I32_MOVI + RI<<D32 + (%1)<<S32\n word I16A_CMPS + (%0)<<D16A + RI<<S16A\n alignl_p1\n long I32_BR_B + (@%a)<<S32 ' LTI4 reg coni\n" 3
+stmt: LTU4(reg,conli)  " alignl_p1\n long I32_MOVI + RI<<D32 + (%1)<<S32\n word I16A_CMP + (%0)<<D16A + RI<<S16A\n alignl_p1\n long I32_BR_B + (@%a)<<S32 ' LTU4 reg coni\n" 3
 
 stmt: ARGB(INDIRB(reg))   "# ARGB\n"
 stmt: ASGNB(reg, INDIRB(reg))  "# ASGNB\n"
 
-stmt:  JUMPV(INDIRP4(addrl16))  " word I16A_RDLONG + RI<<D16A + (%0)<<S16A\n word I16B_JMPI ' JUMPV INDIR addrl16\n alignl ' align long\n"  6
-stmt:  JUMPV(INDIRP4(addrl32))  " word I16A_RDLONG + RI<<D16A + (%0)<<S16A\n word I16B_JMPI ' JUMPV INDIR addrl32\n alignl ' align long\n"  6
-stmt:  JUMPV(INDIRP4(addrg))  " word I16A_RDLONG + RI<<D16A + (%0)<<S16A\n word I16B_JMPI ' JUMPV INDIR addrg\n alignl ' align long\n"  6
-stmt:  JUMPV(INDIRP4(reg))    " word I16A_RDLONG + RI<<D16A + (%0)<<S16A\n word I16B_JMPI ' JUMPV INDIR reg\n alignl ' align long\n" 6
-stmt:  JUMPV(addrg)           " alignl ' align long\n long I32_JMPA + (@%0)<<S32 ' JUMPV addrg\n" 6
+stmt:  JUMPV(INDIRP4(addrl16))  " word I16A_RDLONG + RI<<D16A + (%0)<<S16A\n word I16B_JMPI ' JUMPV INDIR addrl16\n alignl_p1\n"  6
+stmt:  JUMPV(INDIRP4(addrl32))  " word I16A_RDLONG + RI<<D16A + (%0)<<S16A\n word I16B_JMPI ' JUMPV INDIR addrl32\n alignl_p1\n"  6
+stmt:  JUMPV(INDIRP4(addrg))  " word I16A_RDLONG + RI<<D16A + (%0)<<S16A\n word I16B_JMPI ' JUMPV INDIR addrg\n alignl_p1\n"  6
+stmt:  JUMPV(INDIRP4(reg))    " word I16A_RDLONG + RI<<D16A + (%0)<<S16A\n word I16B_JMPI ' JUMPV INDIR reg\n alignl_p1\n" 6
+stmt:  JUMPV(addrg)           " alignl_p1\n long I32_JMPA + (@%0)<<S32 ' JUMPV addrg\n" 6
 
 stmt:  LABELV "# %a\n"
 
@@ -1578,7 +1578,7 @@ static void my_stabline(Coordinate *cp) {
 #ifdef ALIGN_LINES_LONG_FOR_DEBUG
       if (glevel > 0) {
          // when debugging all lines must start long aligned
-         print(" alignl ' align long - line %d\n", prevline = cp->y);
+         print(" alignl_debug ' line %d\n", prevline = cp->y);
       }
       else {
          print("' line %d\n", prevline = cp->y);
@@ -2423,7 +2423,7 @@ static void emit2(Node p) {
       Symbol r;
       r = p->syms[0];
       if (!r->generated || (r->ref > 0)) {
-         print(" alignl ' align long\n%s\n", r->x.name);
+         print(" alignl_label\n%s\n", r->x.name);
       }
       else {
          print("' %s ' (symbol refcount = %d)\n", r->x.name, (int)r->ref);
@@ -2458,7 +2458,7 @@ static void emit2(Node p) {
             calls_alloca = 1;
             print ("' call to alloca replaced with ...\n");
             print (" word I16B_EXEC\n");
-            print (" alignl ' align long\n");
+            print (" alignl\n");
             print (" mov RI, FP         ' if ...\n");
             print (" sub RI, #4         ' ... we have not yet ...\n");
             print (" rdlong r0, RI      ' ... saved a pre-alloca SP ...\n");
@@ -2485,7 +2485,7 @@ static void emit2(Node p) {
          print(" word I16A_MOVI + BC<<D16A + %d<<S16A ' arg size, rpsize = %d, spsize = %d\n", p->syms[0]->u.c.v.u, rpsize, spsize);
       }
       else if (p->syms[0]->u.c.v.u < I32_MOVI_SIZE) {
-         print(" alignl ' align long\n long I32_MOVI + BC<<D32 + %d<<S32 ' arg size, rpsize = %d, spsize = %d\n", p->syms[0]->u.c.v.u, rpsize, spsize);
+         print(" alignl_p1\n long I32_MOVI + BC<<D32 + %d<<S32 ' arg size, rpsize = %d, spsize = %d\n", p->syms[0]->u.c.v.u, rpsize, spsize);
       }
       else {
          print(" ERROR !!!!\n");
@@ -2501,7 +2501,7 @@ static void emit2(Node p) {
             }
          }
          else {
-            print(" alignl ' align long\n long I32_LODA + %d<<S32\n word I16A_SUB + SP<<D16A + RI<<S16A ' stack space for reg ARGs\n", rpsize - 4);
+            print(" alignl_p1\n long I32_LODA + %d<<S32\n word I16A_SUB + SP<<D16A + RI<<S16A ' stack space for reg ARGs\n", rpsize - 4);
          }
       }
 
@@ -2513,7 +2513,7 @@ static void emit2(Node p) {
             print(" word I16A_MOVI + BC<<D16A + %d<<S16A ' arg size, rpsize = %d, spsize = %d\n", p->syms[0]->u.c.v.u, rpsize, spsize);
          }
          else if (p->syms[0]->u.c.v.u < I32_MOVI_SIZE) {
-            print(" alignl ' align long\n long I32_MOVI + BC<<D32 + %d<<S32 ' arg size, rpsize = %d, spsize = %d\n", p->syms[0]->u.c.v.u, rpsize, spsize);
+            print(" alignl_p1\n long I32_MOVI + BC<<D32 + %d<<S32 ' arg size, rpsize = %d, spsize = %d\n", p->syms[0]->u.c.v.u, rpsize, spsize);
          }
          else {
             print(" ERROR !!!!\n");
@@ -2529,7 +2529,7 @@ static void emit2(Node p) {
                   print(" word I16B_CPREP + %d<<S16B ' arg size, rpsize = %d, spsize = %d\n", (((p->syms[0]->u.c.v.u/4)<<I16B_CPREP_BC_SHFT) + (rpsize - 4)/4), rpsize, spsize);
                }
                else {
-                  print(" alignl ' align long\n long I32_CPREP + %d<<D32 + %d<<S32 ' arg size, rpsize = %d, spsize = %d\n", p->syms[0]->u.c.v.u, rpsize - 4, rpsize, spsize);
+                  print(" alignl_p1\n long I32_CPREP + %d<<D32 + %d<<S32 ' arg size, rpsize = %d, spsize = %d\n", p->syms[0]->u.c.v.u, rpsize - 4, rpsize, spsize);
                }
 #else
                print(" word I16A_SUBI + SP<<D16A + %d<<S16A ' stack space for reg ARGs\n", rpsize - 4);
@@ -2541,7 +2541,7 @@ static void emit2(Node p) {
                   print(" word I16A_MOVI + BC<<D16A + %d<<S16A ' arg size, rpsize = %d, spsize = %d\n", p->syms[0]->u.c.v.u, rpsize, spsize);
                }
                else if (p->syms[0]->u.c.v.u < I32_MOVI_SIZE) {
-                  print(" alignl ' align long\n long I32_MOVI + BC<<D32 + %d<<S32 ' arg size, rpsize = %d, spsize = %d\n", p->syms[0]->u.c.v.u, rpsize, spsize);
+                  print(" alignl_p1\n long I32_MOVI + BC<<D32 + %d<<S32 ' arg size, rpsize = %d, spsize = %d\n", p->syms[0]->u.c.v.u, rpsize, spsize);
                }
                else {
                   print(" ERROR !!!!\n");
@@ -2555,13 +2555,13 @@ static void emit2(Node p) {
                print(" word I16A_MOVI + BC<<D16A + %d<<S16A ' arg size, rpsize = %d, spsize = %d\n", p->syms[0]->u.c.v.u, rpsize, spsize);
             }
             else if (p->syms[0]->u.c.v.u < I32_MOVI_SIZE) {
-               print(" alignl ' align long\n long I32_MOVI + BC<<D32 + %d<<S32 ' arg size, rpsize = %d, spsize = %d\n", p->syms[0]->u.c.v.u, rpsize, spsize);
+               print(" alignl_p1\n long I32_MOVI + BC<<D32 + %d<<S32 ' arg size, rpsize = %d, spsize = %d\n", p->syms[0]->u.c.v.u, rpsize, spsize);
             }
             else {
                print(" ERROR !!!!\n");
             }
 #endif      
-            print(" alignl ' align long\n long I32_LODA + %d<<S32\n word I16A_SUB + SP<<D16A + RI<<S16A ' stack space for reg ARGs\n", rpsize - 4);
+            print(" alignl_p1\n long I32_LODA + %d<<S32\n word I16A_SUB + SP<<D16A + RI<<S16A ' stack space for reg ARGs\n", rpsize - 4);
          }
       }
 
@@ -2574,13 +2574,13 @@ static void emit2(Node p) {
          assert(kp->syms[0] && kp->syms[0]->x.name);
          src = kp->syms[0]->x.name;
          if (spsize <= 4) {
-            print(" alignl ' align long\n long I32_CALA + (@%s)<<S32 ' CALL addrg\n", src);
+            print(" alignl_p1\n long I32_CALA + (@%s)<<S32 ' CALL addrg\n", src);
          }
          else if (spsize < I16A_MOVI_SIZE + 4) {
-            print(" alignl ' align long\n long I32_CALA + (@%s)<<S32\n word I16A_ADDI + SP<<D16A + %d<<S16A ' CALL addrg\n", src, spsize - 4);   
+            print(" alignl_p1\n long I32_CALA + (@%s)<<S32\n word I16A_ADDI + SP<<D16A + %d<<S16A ' CALL addrg\n", src, spsize - 4);   
          }
          else {
-            print(" alignl ' align long\n long I32_CALA + (@%s)<<S32\n alignl ' align long\n long I32_LODA + %d<<S32\n word I16A_ADD + SP<<D16A + RI<<S16A ' CALL addrg\n", src, spsize - 4);   
+            print(" alignl_p1\n long I32_CALA + (@%s)<<S32\n alignl_p1\n long I32_LODA + %d<<S32\n word I16A_ADD + SP<<D16A + RI<<S16A ' CALL addrg\n", src, spsize - 4);   
          }
       }
       else {
@@ -2591,13 +2591,13 @@ static void emit2(Node p) {
          assert(kp->syms[RX] && kp->syms[RX]->x.name);
          src = kp->syms[RX]->x.name;
          if (spsize <= 4) {
-            print(" word I16A_MOV + RI<<D16A + (%s)<<S16A\n word I16B_CALI' CALL indirect\n alignl ' align long\n", src); 
+            print(" word I16A_MOV + RI<<D16A + (%s)<<S16A\n word I16B_CALI' CALL indirect\n alignl\n", src); 
          }
          else if (spsize < I16A_MOVI_SIZE + 4) {
-            print(" word I16A_MOV + RI<<D16A + (%s)<<S16A\n word I16B_CALI\n alignl ' align long\n word I16A_ADDI + SP<<D16A + %d<<S16A ' CALL indirect\n", src, spsize - 4); 
+            print(" word I16A_MOV + RI<<D16A + (%s)<<S16A\n word I16B_CALI\n alignl\n word I16A_ADDI + SP<<D16A + %d<<S16A ' CALL indirect\n", src, spsize - 4); 
          }
          else {
-            print(" word I16A_MOV + RI<<D16A + (%s)<<S16A\n word I16B_CALI\n alignl ' align long\n long I32_LODA + %d<<S32\n word I16A_ADD + SP<<D16A + RI<<S16A ' CALL indirect\n", src, spsize - 4); 
+            print(" word I16A_MOV + RI<<D16A + (%s)<<S16A\n word I16B_CALI\n alignl\n long I32_LODA + %d<<S32\n word I16A_ADD + SP<<D16A + RI<<S16A ' CALL indirect\n", src, spsize - 4); 
          }
       }
       spsize = 0;
@@ -2677,7 +2677,7 @@ static void emit2(Node p) {
                print(" word I16A_SUBI + SP<<D16A + %d<<S16A ' stack space for reg ARGs\n", rpsize);
             }
             else {
-               print(" alignl ' align long\n long I32_LODA + (%s)<<S32 \n word I16A_SUB + SP<<D16A + RI<<S16A ' stack space for reg ARGs\n", rpsize);
+               print(" alignl_p1\n long I32_LODA + (%s)<<S32 \n word I16A_SUB + SP<<D16A + RI<<S16A ' stack space for reg ARGs\n", rpsize);
             }
             rpsize = 0;
          }
@@ -2694,14 +2694,14 @@ static void emit2(Node p) {
             }
             else if ((isint(r->type) || isunsigned(r->type))
             &&       (r->u.c.v.i >= 0) && (r->u.c.v.i < I32_MOVI_SIZE)) {
-               print(" alignl ' align long\n long I32_MOVI + RI<<D32 + (%s)<<S32\n word I16B_PSHL ' stack ARG coni\n", src);
+               print(" alignl_p1\n long I32_MOVI + RI<<D32 + (%s)<<S32\n word I16B_PSHL ' stack ARG coni\n", src);
             }
             else if ((isint(r->type) || isunsigned(r->type))
             &&       (r->u.c.v.i >= I32_LODS_MIN) && (r->u.c.v.i <= I32_LODS_MAX)) {
-               print(" alignl ' align long\n long I32_LODS + RI<<D32S + ((%s)&$7FFFF)<<S32\n word I16B_PSHL ' stack ARG cons\n", src);
+               print(" alignl_p1\n long I32_LODS + RI<<D32S + ((%s)&$7FFFF)<<S32\n word I16B_PSHL ' stack ARG cons\n", src);
             }
             else {
-               print(" word I16B_LODL + RI<<D16B\n alignl ' align long\n long %s\n word I16B_PSHL ' stack ARG con\n", src);
+               print(" word I16B_LODL + RI<<D16B\n alignl_p1\n long %s\n word I16B_PSHL ' stack ARG con\n", src);
             }
          }
          else if  (generic(kop) == ADDRG) {
@@ -2710,7 +2710,7 @@ static void emit2(Node p) {
 #endif
             assert(kp->syms[0] && kp->syms[0]->x.name);
             src = kp->syms[0]->x.name;
-            print(" alignl ' align long\n long I32_LODA + (@%s)<<S32\n word I16B_PSHL ' stack ARG ADDRG\n", src); 
+            print(" alignl_p1\n long I32_LODA + (@%s)<<S32\n word I16B_PSHL ' stack ARG ADDRG\n", src); 
          }
          else if (generic(kop) == ADDRL) {
 #ifdef DIAGNOSTIC            
@@ -2723,7 +2723,7 @@ static void emit2(Node p) {
                print(" word I16B_LODF + ((%s)&$1FF)<<S16B\n word I16B_PSHL ' stack ARG ADDRLi\n", src); 
             }
             else {
-               print(" alignl ' align long\n long I32_LODF + ((%s)&$FFFFFF)<<S32\n word I16B_PSHL ' stack ARG ADDRL\n", src); 
+               print(" alignl_p1\n long I32_LODF + ((%s)&$FFFFFF)<<S32\n word I16B_PSHL ' stack ARG ADDRL\n", src); 
             }
          }
          else if (generic(kop) == ADDRF) {
@@ -2737,7 +2737,7 @@ static void emit2(Node p) {
                print(" word I16B_LODF + ((%s)&$1FF)<<S16B\n word I16B_PSHL ' stack ARG ADDRFi\n", src); 
             }
             else {
-               print(" alignl ' align long\n long I32_LODF + ((%s)&$FFFFFF)<<S32\n word I16B_PSHL ' stack ARG ADDRF\n", src); 
+               print(" alignl_p1\n long I32_LODF + ((%s)&$FFFFFF)<<S32\n word I16B_PSHL ' stack ARG ADDRF\n", src); 
             }
          }
          else if ((generic(kop) == INDIR) && !special(kp->kids[0])) {
@@ -2750,7 +2750,7 @@ static void emit2(Node p) {
 #endif
                assert(kkp->syms[0] && kkp->syms[0]->x.name);
                src = kkp->syms[0]->x.name;
-               print(" alignl ' align long\n long I32_PSHA + (@%s)<<S32 ' stack ARG INDIR ADDRG\n", src); 
+               print(" alignl_p1\n long I32_PSHA + (@%s)<<S32 ' stack ARG INDIR ADDRG\n", src); 
             }
             else if (generic(kkop) == ADDRL) {
 #ifdef DIAGNOSTIC            
@@ -2759,7 +2759,7 @@ static void emit2(Node p) {
                assert(kkp->syms[0] && kkp->syms[0]->x.name);
                src = kkp->syms[0]->x.name;
                offs = kkp->syms[0]->x.offset;
-               print(" alignl ' align long\n long I32_PSHF + ((%s)&$FFFFFF)<<S32 ' stack ARG INDIR ADDRL\n", src); 
+               print(" alignl_p1\n long I32_PSHF + ((%s)&$FFFFFF)<<S32 ' stack ARG INDIR ADDRL\n", src); 
             }
             else if (generic(kkop) == ADDRF) {
 #ifdef DIAGNOSTIC            
@@ -2768,7 +2768,7 @@ static void emit2(Node p) {
                assert(kkp->syms[0] && kkp->syms[0]->x.name);
                src = kkp->syms[0]->x.name;
                offs = kkp->syms[0]->x.offset;
-               print(" alignl ' align long\n long I32_PSHF + ((%s)&$FFFFFF)<<S32 ' stack ARG INDIR ADDRF\n", src); 
+               print(" alignl_p1\n long I32_PSHF + ((%s)&$FFFFFF)<<S32 ' stack ARG INDIR ADDRF\n", src); 
             }
             else if (kkop == VREG+P) {
 #ifdef DIAGNOSTIC            
@@ -2793,14 +2793,14 @@ static void emit2(Node p) {
                      }
                      else if ((isint(r->type) || isunsigned(r->type))
                      &&       (r->u.c.v.i >= 0) && (r->u.c.v.i < I32_MOVI_SIZE)) {
-                        print(" alignl ' align long\n long I32_MOVI + RI<<D32 + (%s)<<S32\n word I16B_PSHL ' stack ARG coni\n", src);
+                        print(" alignl_p1\n long I32_MOVI + RI<<D32 + (%s)<<S32\n word I16B_PSHL ' stack ARG coni\n", src);
                      }
                      else if ((isint(r->type) || isunsigned(r->type))
                      &&       (r->u.c.v.i >= I32_LODS_MIN) && (r->u.c.v.i <= I32_LODS_MAX)) {
-                        print(" alignl ' align long\n long I32_LODS + RI<<D32S + ((%s)&$7FFFF)<<S32\n word I16B_PSHL ' stack ARG cons\n", src);
+                        print(" alignl_p1\n long I32_LODS + RI<<D32S + ((%s)&$7FFFF)<<S32\n word I16B_PSHL ' stack ARG cons\n", src);
                      }
                      else {
-                        print(" word I16B_LODL + RI<<D16B\n alignl ' align long\n long %s\n word I16B_PSHL ' stack ARG con\n", src);
+                        print(" word I16B_LODL + RI<<D16B\n alignl_p1\n long %s\n word I16B_PSHL ' stack ARG con\n", src);
                      }
 #ifdef DIAGNOSTIC            
                      print ("' ... Common Subexpression Reinstated\n");
@@ -2850,14 +2850,14 @@ static void emit2(Node p) {
             }
             else if ((isint(r->type) || isunsigned(r->type))
             &&       (r->u.c.v.i >= 0) && (r->u.c.v.i < I32_MOVI_SIZE)) {
-               print(" alignl ' align long\n long I32_MOVI + (%s)<<D32 + (%s)<<S32 ' reg ARG coni\n", q->name, src);
+               print(" alignl_p1\n long I32_MOVI + (%s)<<D32 + (%s)<<S32 ' reg ARG coni\n", q->name, src);
             }
             else if ((isint(r->type) || isunsigned(r->type))
             &&       (r->u.c.v.i >= I32_LODS_MIN) && (r->u.c.v.i <= I32_LODS_MAX)) {
-               print(" alignl ' align long\n long I32_LODS + (%s)<<D32S + ((%s)&$7FFFF)<<S32 ' reg ARG cons\n", q->name, src);
+               print(" alignl_p1\n long I32_LODS + (%s)<<D32S + ((%s)&$7FFFF)<<S32 ' reg ARG cons\n", q->name, src);
             }
             else {
-               print(" word I16B_LODL + (%s)<<D16B\n alignl ' align long\n long %s ' reg ARG con\n", q->name, src);
+               print(" word I16B_LODL + (%s)<<D16B\n alignl_p1\n long %s ' reg ARG con\n", q->name, src);
             }
          }
          else if  (generic(kop) == ADDRG) {
@@ -2866,8 +2866,8 @@ static void emit2(Node p) {
 #endif
             assert(kp->syms[0] && kp->syms[0]->x.name);
             src = kp->syms[0]->x.name;
-            print(" word I16B_LODL + (%s)<<D16B\n alignl ' align long\n long @%s ' reg ARG ADDRG\n", q->name, src); 
-            //print(" alignl ' align long\n long I32_LODS + (%s)<<D32S + ((@%s)&$7FFFF)<<S32 ' reg ARG ADDRG !!!TBD !!! MUST USE LODL FOR XMM!!!\n", q->name, src); 
+            print(" word I16B_LODL + (%s)<<D16B\n alignl_p1\n long @%s ' reg ARG ADDRG\n", q->name, src); 
+            //print(" alignl_p1\n long I32_LODS + (%s)<<D32S + ((@%s)&$7FFFF)<<S32 ' reg ARG ADDRG !!!TBD !!! MUST USE LODL FOR XMM!!!\n", q->name, src); 
          }
          else if (generic(kop) == ADDRL) {
 #ifdef DIAGNOSTIC            
@@ -2880,7 +2880,7 @@ static void emit2(Node p) {
                print(" word I16B_LODF + ((%s)&$1FF)<<S16B\n word I16A_MOV + (%s)<<D16A + RI<<S16A ' reg ARG ADDRLi\n", src, q->name); 
             }
             else {
-               print(" alignl ' align long\n long I32_LODF + ((%s)&$FFFFFF)<<S32 \n word I16A_MOV + (%s)<<D16A + RI<<S16A ' reg ARG ADDRL\n", src, q->name); 
+               print(" alignl_p1\n long I32_LODF + ((%s)&$FFFFFF)<<S32 \n word I16A_MOV + (%s)<<D16A + RI<<S16A ' reg ARG ADDRL\n", src, q->name); 
             }
          }
          else if (generic(kop) == ADDRF) {
@@ -2894,7 +2894,7 @@ static void emit2(Node p) {
                print(" word I16B_LODF + ((%s)&$1FF)<<S16B\n word I16A_MOV + (%s)<<D16A + RI<<S16A ' reg ARG ADDRFi\n", src, q->name); 
             }
             else {
-               print(" alignl ' align long\n long I32_LODF + ((%s)&$FFFFFF)<<S32\n word I16A_MOV + (%s)<<D16A + RI<<S16A ' reg ARG ADDRF\n", src, q->name); 
+               print(" alignl_p1\n long I32_LODF + ((%s)&$FFFFFF)<<S32\n word I16A_MOV + (%s)<<D16A + RI<<S16A ' reg ARG ADDRF\n", src, q->name); 
             }
          }
          else if ((generic(kop) == INDIR) && !special(kp->kids[0])) {
@@ -2907,7 +2907,7 @@ static void emit2(Node p) {
 #endif
                assert(kkp->syms[0] && kkp->syms[0]->x.name);
                src = kkp->syms[0]->x.name;
-               print(" alignl ' align long\n long I32_LODI + (@%s)<<S32\n word I16A_MOV + (%s)<<D16A + RI<<S16A ' reg ARG INDIR ADDRG\n", src, q->name); 
+               print(" alignl_p1\n long I32_LODI + (@%s)<<S32\n word I16A_MOV + (%s)<<D16A + RI<<S16A ' reg ARG INDIR ADDRG\n", src, q->name); 
             }
             else if (generic(kkop) == ADDRL) {
 #ifdef DIAGNOSTIC            
@@ -2920,7 +2920,7 @@ static void emit2(Node p) {
                   print(" word I16B_LODF + ((%s)&$1FF)<<S16B\n word I16A_RDLONG + (%s)<<D16A + RI<<S16A ' reg ARG INDIR ADDRLi\n", src, q->name); 
                }
                else {
-                  print(" alignl ' align long\n long I32_LODF + ((%s)&$FFFFFF)<<S32\n word I16A_RDLONG + (%s)<<D16A + RI<<S16A ' reg ARG INDIR ADDRL\n", src, q->name); 
+                  print(" alignl_p1\n long I32_LODF + ((%s)&$FFFFFF)<<S32\n word I16A_RDLONG + (%s)<<D16A + RI<<S16A ' reg ARG INDIR ADDRL\n", src, q->name); 
                }
             }
             else if (generic(kkop) == ADDRF) {
@@ -2934,7 +2934,7 @@ static void emit2(Node p) {
                   print(" word I16B_LODF + ((%s)&$1FF)<<S16B\n word I16A_RDLONG + (%s)<<D16A + RI<<S16A ' reg ARG INDIR ADDRFi\n", src, q->name); 
                }
                else {
-                  print(" alignl ' align long\n long I32_LODF + ((%s)&$FFFFFF)<<S32\n word I16A_RDLONG + (%s)<<D16A + RI<<S16A ' reg ARG INDIR ADDRF\n", src, q->name); 
+                  print(" alignl_p1\n long I32_LODF + ((%s)&$FFFFFF)<<S32\n word I16A_RDLONG + (%s)<<D16A + RI<<S16A ' reg ARG INDIR ADDRF\n", src, q->name); 
                }
             }
             else {
@@ -3003,7 +3003,7 @@ static void emit2(Node p) {
    }
    else if (op == ASGN+B) {
       int size = p->syms[0]->u.c.v.u;
-      print(" alignl ' align long\n long I32_CPYB + %d<<S32 ' ASGNB\n", size); 
+      print(" alignl_p1\n long I32_CPYB + %d<<S32 ' ASGNB\n", size); 
    }   
    else if (op == ARG+B) {
       int size = p->syms[0]->u.c.v.u;
@@ -3014,14 +3014,14 @@ static void emit2(Node p) {
             }
          }
          else if (rpsize <= I32_LODS_MAX) {
-            print(" alignl ' align long\n long I32_LODS + RI<<D32S + ((%s)&$7FFFF)<<S32\n word I16A_SUB + SP<<D16A + RI<<S16A ' stack space for reg ARGs\n", rpsize);
+            print(" alignl_p1\n long I32_LODS + RI<<D32S + ((%s)&$7FFFF)<<S32\n word I16A_SUB + SP<<D16A + RI<<S16A ' stack space for reg ARGs\n", rpsize);
          }
          else {
-            print(" word I16B_LODL + RI<<D16B\n alignl ' align long\n long %d\n word I16A_SUB + SP<<D16A + RI<<S16A ' stack space for reg ARGs\n", rpsize);
+            print(" word I16B_LODL + RI<<D16B\n alignl_p1\n long %d\n word I16A_SUB + SP<<D16A + RI<<S16A ' stack space for reg ARGs\n", rpsize);
          }
          rpsize = 0;
       }
-      print(" alignl ' align long\n long I32_PSHB + %d<<S32 ' ARGB\n", size);
+      print(" alignl_p1\n long I32_PSHB + %d<<S32 ' ARGB\n", size);
       spsize += roundup(size, 4);
    }
    /* 
@@ -3059,27 +3059,27 @@ static void emit2(Node p) {
    }
    else if (op == EQ+F) {
       setup_r0_and_r1(preg0(intreg), preg1(intreg)); 
-      print(" word I16B_FLTP + FCMP<<S16B\n alignl ' align long\n long I32_BR_Z + (@%s)<<S32 ' EQF4\n", p->syms[0]->x.name);
+      print(" word I16B_FLTP + FCMP<<S16B\n alignl_p1\n long I32_BR_Z + (@%s)<<S32 ' EQF4\n", p->syms[0]->x.name);
    }
    else if (op == NE+F) {
       setup_r0_and_r1(preg0(intreg), preg1(intreg)); 
-      print(" word I16B_FLTP + FCMP<<S16B\n alignl ' align long\n long I32_BRNZ + (@%s)<<S32 ' NEF4\n", p->syms[0]->x.name);
+      print(" word I16B_FLTP + FCMP<<S16B\n alignl_p1\n long I32_BRNZ + (@%s)<<S32 ' NEF4\n", p->syms[0]->x.name);
    }
    else if (op == GE+F) {
       setup_r0_and_r1(preg0(intreg), preg1(intreg)); 
-      print(" word I16B_FLTP + FCMP<<S16B\n alignl ' align long\n long I32_BRAE + (@%s)<<S32 ' GEF4\n", p->syms[0]->x.name);
+      print(" word I16B_FLTP + FCMP<<S16B\n alignl_p1\n long I32_BRAE + (@%s)<<S32 ' GEF4\n", p->syms[0]->x.name);
    }
    else if (op == GT+F) {
       setup_r0_and_r1(preg0(intreg), preg1(intreg)); 
-      print(" word I16B_FLTP + FCMP<<S16B\n alignl ' align long\n long I32_BR_A + (@%s)<<S32 ' GTF4\n", p->syms[0]->x.name);
+      print(" word I16B_FLTP + FCMP<<S16B\n alignl_p1\n long I32_BR_A + (@%s)<<S32 ' GTF4\n", p->syms[0]->x.name);
    }
    else if (op == LE+F) {
       setup_r0_and_r1(preg0(intreg), preg1(intreg)); 
-      print(" word I16B_FLTP + FCMP<<S16B\n alignl ' align long\n long I32_BRBE + (@%s)<<S32 ' LEF4\n", p->syms[0]->x.name);
+      print(" word I16B_FLTP + FCMP<<S16B\n alignl_p1\n long I32_BRBE + (@%s)<<S32 ' LEF4\n", p->syms[0]->x.name);
    }
    else if (op == LT+F) {
       setup_r0_and_r1(preg0(intreg), preg1(intreg)); 
-      print(" word I16B_FLTP + FCMP<<S16B\n alignl ' align long\n long I32_BR_B + (@%s)<<S32 ' LTF4\n", p->syms[0]->x.name);
+      print(" word I16B_FLTP + FCMP<<S16B\n alignl_p1\n long I32_BR_B + (@%s)<<S32 ' LTF4\n", p->syms[0]->x.name);
    }
  
    /*
@@ -3313,7 +3313,7 @@ static void function(Symbol f, Symbol caller[], Symbol callee[], int n) {
 
    offset = maxoffset = maxargoffset = 0;
 
-   print("\n alignl ' align long\n%s ' <symbol:%s>\n", f->x.name, f->name);
+   print("\n alignl_label\n%s ' <symbol:%s>\n", f->x.name, f->name);
 #ifdef PRINT_SYMBOL_INFO
    fprintf(stderr,"\nfunction %s\n", f->x.name);
 #endif
@@ -3458,17 +3458,17 @@ static void function(Symbol f, Symbol caller[], Symbol callee[], int n) {
 #endif
       }
 #endif         
-      print(" alignl ' align long\n long I32_NEWF + %d<<S32\n", framesize-4);
+      print(" alignl_p1\n long I32_NEWF + %d<<S32\n", framesize-4);
    }
    if (ismain) {
       print ("#ifdef libthreads\n");
-      print (" alignl ' align long\n long I32_CALA + @C_thread_setup<<S32\n");
+      print (" alignl_p1\n long I32_CALA + @C_thread_setup<<S32\n");
       print ("#endif\n");
       print ("#ifndef NO_ARGS\n");
-      print (" alignl ' align long\n long I32_CALA + @C_arg_setup<<S32\n");
+      print (" alignl_p1\n long I32_CALA + @C_arg_setup<<S32\n");
       print ("#endif\n");
       if (glevel > 0) {
-         print (" alignl ' align long\n long I32_CALA + @C_debug_init<<S32\n");
+         print (" alignl_p1\n long I32_CALA + @C_debug_init<<S32\n");
       }
    }
    else {
@@ -3476,7 +3476,7 @@ static void function(Symbol f, Symbol caller[], Symbol callee[], int n) {
       printf("' SAVEMASK=%x\n", (saveimask | savefmask) & 0xfffffe);
 #endif
       if (((saveimask | savefmask) & 0xfffffe) != 0) {
-         print (" alignl ' align long\n long I32_PSHM + $%x<<S32 ' save registers\n", (saveimask | savefmask) & 0xfffffe);
+         print (" alignl_p1\n long I32_PSHM + $%x<<S32 ' save registers\n", (saveimask | savefmask) & 0xfffffe);
       }
    }
 #ifdef REG_PASSING
@@ -3488,7 +3488,7 @@ static void function(Symbol f, Symbol caller[], Symbol callee[], int n) {
       // ensure there is enough space to do this!
       print(" word I16B_LODF + 8<<S16B\n");
       for (i = 0; i < NUM_PASSING_REGS; i++) {
-         print(" alignl ' align long\n long I32_SPILL + r%d<<D32 ' spill reg (varadic)\n", FIRST_PASSING_REG + i);
+         print(" alignl_p1\n long I32_SPILL + r%d<<D32 ' spill reg (varadic)\n", FIRST_PASSING_REG + i);
       }
 #endif      
    }
@@ -3518,7 +3518,7 @@ static void function(Symbol f, Symbol caller[], Symbol callee[], int n) {
                      print(" word I16B_LODF + ((%d)&$1FF)<<S16B\n word I16A_WRLONG + (%s)<<D16A + RI<<S16A ' spill reg\n", out->x.offset, ins); 
                   }
                   else {
-                    print(" alignl ' align long\n long I32_LODF + ((%d)&$FFFFFF)<<S32\n word I16A_WRLONG + (%s)<<D16A + RI<<D16A ' spill reg\n", out->x.offset, ins);
+                    print(" alignl_p1\n long I32_LODF + ((%d)&$FFFFFF)<<S32\n word I16A_WRLONG + (%s)<<D16A + RI<<D16A ' spill reg\n", out->x.offset, ins);
                   }
                }
             }
@@ -3537,7 +3537,7 @@ static void function(Symbol f, Symbol caller[], Symbol callee[], int n) {
       // main routine never returns - if it never even exits, define 
       // NO_EXIT to disable the generation of the jump to exit.
       print("#ifndef NO_EXIT\n");
-      print(" alignl ' align long\n long I32_JMPA + (@C__exit)<<S32\n");
+      print(" alignl_p1\n long I32_JMPA + (@C__exit)<<S32\n");
       print("#endif\n");
    }
    else {
@@ -3547,7 +3547,7 @@ static void function(Symbol f, Symbol caller[], Symbol callee[], int n) {
 #ifdef SUPPORT_ALLOCA
       if (calls_alloca) {
          print (" word I16B_EXEC\n");
-         print (" alignl ' align long\n");
+         print (" alignl\n");
          print (" mov RI, FP    ' restore SP ... \n");
          print (" sub RI, #4    ' ... from SP stored in frame ...\n");
          print (" rdlong SP, RI ' ... because alloca was used\n");
@@ -3571,7 +3571,7 @@ static void function(Symbol f, Symbol caller[], Symbol callee[], int n) {
             if (((saveimask | savefmask) & 0xfffffe) != 0) {
                print (" word I16B_POPM + $180<<S16B ' restore registers, do not pop frame, do not return\n");
             }
-            print(" alignl ' align long\n long I32_RETF + %d<<S32\n", framesize-4);
+            print(" alignl_p1\n long I32_RETF + %d<<S32\n", framesize-4);
          }
       }
       else {
@@ -3579,12 +3579,12 @@ static void function(Symbol f, Symbol caller[], Symbol callee[], int n) {
             print (" word I16B_POPM + $80<<S16B ' restore registers, do not pop frame, do return\n");
          }
          else {
-            print(" word I16B_RETN\n alignl ' align long\n");
+            print(" word I16B_RETN\n alignl_p1\n");
          }
       }
    }
    // after each function, ensure we are long aligned
-   print(" alignl ' align long\n");
+   print(" alignl_p1\n");
 
 #ifdef PRINT_SYMBOL_INFO
    fprintf(stderr,"\n%s done\n", f->x.name);
@@ -3787,7 +3787,7 @@ static void import(Symbol p) {
 }
 
 static void global(Symbol p) {
-   print("\n alignl ' align long\n");
+   print("\n alignl_label\n");
    print("%s ' <symbol:%s>\n", p->x.name, p->name);
 }
 

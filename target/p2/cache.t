@@ -15,6 +15,8 @@
 '
 ' Version 5.4 - Initial P2 version 
 '
+' Version 8.7 - Support read-only LUT (LARGE mode only)
+'
 '-------------------------------------------------------------------------------
 '
 '    Copyright 2022 Ross Higson
@@ -79,7 +81,7 @@ DAT
 
 #ifdef CACHED
 
-#if defined(LUT_PAGE) || defined(LUT_CACHE)
+#if !defined(NO_LUT) || defined(LUT_CACHE)
 #include "lutcache.t"
 #else
 #include "cogcache.t"

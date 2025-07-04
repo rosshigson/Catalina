@@ -372,10 +372,10 @@ _threadstart_C tsc.s 9 export
 _threadstart_C_cog tsc.s 40 import
 cmmtd_array tsccog.s 13 export
 CMM_LUT_LIBRARY_array tsccog.s 722 export
-_threadstart_C_cog tsccog.s 930 export
-_registry tsccog.s 1004 import
-_coginit tsccog.s 1006 import
-_thread_wait tsccog.s 1008 import
+_threadstart_C_cog tsccog.s 931 export
+_registry tsccog.s 1005 import
+_coginit tsccog.s 1007 import
+_thread_wait tsccog.s 1009 import
 _thread_id ucheck.s 16 import
 _unlocked_check ucheck.s 18 export
 _thread_unsigned unsigned.s 9 export

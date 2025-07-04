@@ -147,10 +147,6 @@ CACHE_BYTES_LOG2       = 13 ' 8192 (the default)
 #error LUT_CACHE REQUIRES CACHED_1K
 #endif
 
-#if defined(LUT_CACHE) && defined(LUT_PAGE)
-#error CANNOT DEFINE BOTH LUT_CACHE AND LUT_PAGE
-#endif
-
 #ifdef CACHED
 
 ' The maximum value of CACHE_INDEX_LOG2 depends on the size of the XMM code,
@@ -164,7 +160,7 @@ CACHE_BYTES_LOG2       = 13 ' 8192 (the default)
 ' since the whole page must be written back even if only one byte on the page 
 ' has changed. The optimal value must be determined by trial and error.
 
-#if defined(LUT_PAGE)
+#if !defined(NO_LUT)
 
 CACHE_INDEX_LOG2      = 8 ' log2 of entries in cache index
                           ' NOTE: The valid range depends on the cache size,
@@ -189,19 +185,33 @@ CACHE_LINE_LOG2        = CACHE_BYTES_LOG2 - CACHE_INDEX_LOG2 ' log2 of size of l
 CACHE_LINE_MASK        = 1<<CACHE_LINE_LOG2-1   ' mask for address in cache line
 
 CACHE_CMD_MASK         = %11
+
+#if !defined(NO_LUT) && defined(LARGE)
+' read/write commands (note: no extended commands = no FLASH support)
+CACHE_WRITE_CMD        = %10 ' write page from Hub RAM
+CACHE_READ_CMD         = %11 ' read page into Hub RAM
+CACHE_CODE_CMD         = %01 ' read page into Hub RAM and copy to LUT
+CACHE_CODE_MASK        = %10 ' this bit must be zero for a CODE command
+#else
 ' read/write commands
 CACHE_WRITE_CMD        = %10
 CACHE_READ_CMD         = %11
-
-CACHE_EXTEND_MASK      = %10   ' this bit must be zero for an extended command
 ' extended commands
+CACHE_EXTEND_MASK      = %10   ' this bit must be zero for an extended command
 CACHE_ERASE_CHIP_CMD   = %000_01
 CACHE_ERASE_BLOCK_CMD  = %001_01
 CACHE_WRITE_DATA_CMD   = %010_01
 CACHE_SD_INIT_CMD      = %011_01
 CACHE_SD_READ_CMD      = %100_01
 CACHE_SD_WRITE_CMD     = %101_01
-'
+#endif
+
+#else
+
+#if defined(LUT_CACHE)
+#error LUT_CACHE REQUIRES CACHE
+#endif
+
 #endif
 
 '
@@ -381,8 +391,8 @@ CMD_RESPONSE = $FEED_FACE       ' COGSTORE set to this on any other command
 
 #ifdef CACHED
 
-#if defined(LUT_PAGE) || defined(LUT_CACHE)
-CACHE_COG    = 1                ' LUT cache MUST use this cog (to share LUT)
+#if !defined(NO_LUT) || defined(LUT_CACHE)
+' CACHE_COG    = 1              ' CACHE_COG is not used when sharing LUT
 STORE_COG    = 7                ' CogStore will use this cog
 #ifdef NO_ARGS
 LAST_COG     = 7                ' Last cog to be restarted is 7

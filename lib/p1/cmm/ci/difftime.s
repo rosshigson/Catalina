@@ -8,18 +8,18 @@ DAT ' code segment
 
 ' Catalina Export difftime
 
- alignl ' align long
+ alignl_label
 C_difftime ' <symbol:difftime>
- alignl ' align long
+ alignl_p1
  long I32_NEWF + 4<<S32
- alignl ' align long
+ alignl_p1
  long I32_PSHM + $540000<<S32 ' save registers
  word I16A_CMP + (r2)<<D16A + (r3)<<S16A
- alignl ' align long
+ alignl_p1
  long I32_BRBE + (@C_difftime_2)<<S32 ' LEU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r2)<<S16A ' SUBU
  word I16A_SUB + (r22)<<D16A + (r3)<<S16A ' SUBU (3)
- alignl ' align long
+ alignl_p1
  long I32_LODI + (@C_difftime_4_L000005)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRF4 addrg
  word I16A_MOV + (r18)<<D16A + (r22)<<S16A
@@ -41,13 +41,13 @@ C_difftime ' <symbol:difftime>
  word I16A_MOV + (r0)<<D16A + (r22)<<S16A ' setup r0/r1 (1)
  word I16B_FLTP + FADD<<S16B ' ADDF4
  word I16B_SIGN + (r0)<<D16B ' NEGF4
- alignl ' align long
+ alignl_p1
  long I32_JMPA + (@C_difftime_1)<<S32 ' JUMPV addrg
- alignl ' align long
+ alignl_label
 C_difftime_2
  word I16A_MOV + (r22)<<D16A + (r3)<<S16A ' SUBU
  word I16A_SUB + (r22)<<D16A + (r2)<<S16A ' SUBU (3)
- alignl ' align long
+ alignl_p1
  long I32_LODI + (@C_difftime_4_L000005)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRF4 addrg
  word I16A_MOV + (r18)<<D16A + (r22)<<S16A
@@ -68,16 +68,16 @@ C_difftime_2
  word I16A_MOV + (r1)<<D16A + (r0)<<S16A ' setup r0/r1 (1)
  word I16A_MOV + (r0)<<D16A + (r22)<<S16A ' setup r0/r1 (1)
  word I16B_FLTP + FADD<<S16B ' ADDF4
- alignl ' align long
+ alignl_label
 C_difftime_1
  word I16B_POPM + 1<<S16B ' restore registers, do pop frame, do return
- alignl ' align long
+ alignl_p1
 
 ' Catalina Cnst
 
 DAT ' const data segment
 
- alignl ' align long
+ alignl_label
 C_difftime_4_L000005 ' <symbol:4>
  long $40000000 ' float
 

@@ -1039,6 +1039,16 @@ XMM_RO_BASE_ADDRESS = $0008_0000 ' Read-Only Base address
 
 
 
+
+
+
+
+
+
+
+
+
+
 '
 ' Notes on the Registry definitions.
 '

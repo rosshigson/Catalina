@@ -122,6 +122,8 @@
 --
 -- version 8.6   - just update version number.
 --
+-- version 8.7   - if -c and -q are both specified, -q is ignored.
+--
 
 require "os"
 require "io"
@@ -130,7 +132,7 @@ require "string"
 require "propeller"
 
 -- configuration parameters and default values
-CATALINA_VERSION = "8.6"
+CATALINA_VERSION = "8.7"
 LCCDIR           = "/";
 CATALINA_TARGET  = LCCDIR .. "target"
 CATALINA_LIBRARY = LCCDIR .. "lib"
@@ -498,6 +500,10 @@ function decode_arguments()
       elseif (string.sub(arg[i],1,2) == "-S") 
       or (string.sub(arg[i],1,2) == "-c") then
         asm_only = 1;
+        if quickbuild then
+          quickbuild = nil;
+          print_if_verbose("-c overrides quickbuild (-q ignored)");
+        end
         print_if_diagnose("asm_only = " .. blank_if_nil(asm_only));
       elseif (string.sub(arg[i],1,2) == "-n") then
         no_exec = 1;
@@ -643,9 +649,13 @@ function decode_arguments()
         end
         readwrite = tonumber(val);
       elseif (string.sub(arg[i],1,2) == "-q") then
-        quickbuild = 1;
-        addCsym("QUICKBUILD");
-        print_if_diagnose("quickbuild = " .. blank_if_nil(quickbuild));
+        if asm_only then
+          print_if_verbose("-c overrides quickbuild (-q ignored)");
+        else
+          quickbuild = 1;
+          addCsym("QUICKBUILD");
+          print_if_diagnose("quickbuild = " .. blank_if_nil(quickbuild));
+        end
       elseif (string.sub(arg[i],1,2) == "-R") then
         if #arg[i] == 2 then
           i = i + 1;

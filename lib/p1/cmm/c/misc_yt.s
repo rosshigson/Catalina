@@ -12,7 +12,7 @@ DAT ' initialized data segment
 
 ' Catalina Export _ytab
 
- alignl ' align long
+ alignl_label
 C__ytab ' <symbol:_ytab>
  long 31
  long 28

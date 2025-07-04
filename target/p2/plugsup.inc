@@ -6,6 +6,7 @@
 '
 ' Version 7.1  - Initial version
 '                 
+' Version 8.7  - Support read-only LUT (LARGE mode only)
 '-------------------------------------------------------------------------------
 '
 '    Copyright 2011 Ross Higson
@@ -139,17 +140,13 @@ INITIALIZE_REGISTRY
 
 
 ' terminate any plugins 
-' (up to and including LAST_COG, but not ourselves or CACHE_COG)
+' (up to and including LAST_COG, but not ourselves)
 
 TERMINATE_PLUGINS
          cogid   r1                       ' get our own cog id
          mov     r0, #0                   ' starting at cog 0 ...
 .stop_another
-'#ifdef CACHED
-'         cmp     r0, #CACHE_COG wcz       ' ... but not including ...
-' if_z    jmp     #.dont_stop              ' ... the CACHE_COG ...
-'#endif
-         cmp     r0, r1 wz                ' ... or ourselves ...
+         cmp     r0, r1 wz                ' ... but not ourselves ...
  if_nz   cogstop r0                       ' stop all cogs ...
 .dont_stop                                
          add r0, #1
@@ -182,16 +179,16 @@ INITIALIZE_PLUGINS
 #endif
 
 ' cache must be the FIRST plugin loaded, since it may need to share a
-' cog with the XMM kernel (if LUT_PAGE or LUT_CACHE is specified)
+' cog with the XMM kernel (LUT_CACHE is specified, or NO_LUT is not specified)
 #if defined(CACHED)
  rdlong  r0, ##FREE_MEM
  sub     r0, ##CACHE_BLOCK_SIZE ' allocate a CACHE initialization block
  andn    r0, #$3                ' FREE_MEM should always be long aligned
  wrlong  r0, ##FREE_MEM
  call    #CACHE_Setup           ' set up CACHE control block
-#if defined(LUT_PAGE) || defined(LUT_CACHE)
+#if !defined(NO_LUT) || defined(LUT_CACHE)
  cogid   r1                     ' get our cog id (assuming we are the kernel)
- xor     r1,#1                  ' calculate other cog in pair (for LUT sharing)
+ xor     r1,#1                  ' calculate other cog in pair (when LUT sharing)
 #else
  mov     r1, #CACHE_COG         ' start ...
 #endif

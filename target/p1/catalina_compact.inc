@@ -284,5 +284,27 @@ I32_LODS   = %010110__00000_0000000000000000000_11  '  LODS  d,s ' load 19 bits 
 #ifndef alignl
 #define alignl long
 #endif
+' On the P1, these must all do the same as alignl
+#ifndef alignl_p1
+#define alignl_p1 alignl
 #endif
+#ifndef alignl_label
+#define alignl_label alignl
+#endif
+#ifndef alignl_debug
+#define alignl_debug alignl
+#endif
+#else
+' On the P2, these do nothing
+#ifndef alignl_p1
+#define alignl_p1
+#endif
+#ifndef alignl_label
+#define alignl_label
+#endif
+#ifndef alignl_debug
+#define alignl_debug
+#endif
+#endif
+
 

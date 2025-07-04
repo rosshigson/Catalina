@@ -544,7 +544,10 @@ psram_wrpage
 
 #define NEED_XMM_WRITEPAGE
 
+' do not use the LUT during load
+#define NO_LUT_LOAD
 #include "cached.inc"
+#undef NO_LUT_LOAD
 
 reg           long REGISTRY                     ' cache code needs this
 

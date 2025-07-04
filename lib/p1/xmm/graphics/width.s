@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_sis4_67ea4120_pixels_L000001 ' <symbol:pixels>
+C_sdug_6864c38e_pixels_L000001 ' <symbol:pixels>
  byte 0
  byte 0
  byte 0
@@ -93,7 +93,7 @@ C_g_width_7
  xor r15, #15 ' BXORI4 coni
  subs r21, #2 ' SUBI4 coni
  jmp #LODL
- long @C_sis4_67ea4120_pixels_L000001
+ long @C_sdug_6864c38e_pixels_L000001
  mov r22, RI ' reg <- addrg
  adds r22, r23 ' ADDI/P (2)
  mov RI, r22

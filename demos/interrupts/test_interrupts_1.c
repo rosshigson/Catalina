@@ -19,7 +19,7 @@
 
 #include <stdio.h>
 #include <propeller2.h>
-#include <catalina_interrupts.h>
+#include <int.h>
 
 /*
  * define the stack size each interrupt needs (since this number depends  

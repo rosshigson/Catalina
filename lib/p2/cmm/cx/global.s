@@ -12,13 +12,13 @@ DAT ' uninitialized data segment
 
 ' Catalina Export _malloc_store
 
- alignl ' align long
+ alignl_label
 C__malloc_store ' <symbol:_malloc_store>
  byte 0[128]
 
 ' Catalina Export ml_last
 
- alignl ' align long
+ alignl_label
 C_ml_last ' <symbol:ml_last>
  byte 0[4]
 

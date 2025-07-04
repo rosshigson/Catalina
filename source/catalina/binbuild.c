@@ -33,6 +33,8 @@
  *
  * version 8.6 - just update version number.
  *
+ * version 8.7 - sewt _EXIT_CODE to result.
+ *
  */
 
 /*--------------------------------------------------------------------------
@@ -73,7 +75,7 @@
 #define SHORT_LAYOUT_4     1 /* 1 to remove unused bytes when using layout 4 (P1 only) */
 #define SHORT_LAYOUT_5     1 /* 1 to remove unused bytes when using layout 5 (P1 or P2) */
 
-#define VERSION            "8.6"
+#define VERSION            "8.7"
 
 #define MAX_FILES          1
 #define MAX_LINELEN        4096
@@ -508,7 +510,11 @@ int do_binbuild() {
    if (diagnose) {
       fprintf(stderr, "renaming output file from %s to %s\n", temp_name_1, temp_name_2);
    }
-   rename_unquoted(temp_name_1, temp_name_2);
+   result = rename_unquoted(temp_name_1, temp_name_2);
+   if (result != 0) {
+      fprintf(stderr, "cannot rename file %s to %s\n",temp_name_1, temp_name_2);
+      return result;
+   }
    // now combine the temporary file with the target file
    strcpy(output_name, "");
    pathcat(output_name, input_file, output_suffix(prop_vers, format), MAX_LINELEN); 
@@ -931,6 +937,10 @@ void main (int argc, char *argv[]) {
       if (diagnose) {
          fprintf(stderr, "%s exiting\n", argv[0]);
       }
+#if defined(__CATALINA_P2)
+      setenv("_EXIT_CODE", "0", 1);
+      _waitms(1000);
+#endif
       exit(0);
    }
 
@@ -940,6 +950,10 @@ void main (int argc, char *argv[]) {
 
    if (input_file == NULL) {
       fprintf(stderr, "no input file specified\n");
+#if defined(__CATALINA_P2)
+      setenv("_EXIT_CODE", "1", 1);
+      _waitms(1000);
+#endif
       exit(-10);
    }
 
@@ -948,6 +962,20 @@ void main (int argc, char *argv[]) {
    if (diagnose) {
       fprintf(stderr, "\n%s done, result = %d\n", argv[0], result);
    }
+
+#if defined(__CATALINA_P2)
+   if (result == 0) {
+     setenv("_EXIT_CODE", "0", 1);
+   }
+   else {
+     setenv("_EXIT_CODE", "1", 1);
+   }
+   _waitms(1000);
+#endif
+
+#if defined(__CATALINA_P2) && defined(__CATALINA_WRITE_BACK)
+   CacheFlush(); // flush cache to SD
+#endif
 
    exit(result);
 }

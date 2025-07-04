@@ -12,7 +12,7 @@ DAT ' initialized data segment
 
 ' Catalina Export cmmd_array
 
- alignl ' align long
+ alignl_label
 C_cmmd_array ' <symbol:cmmd_array>
  long $fd900154
  long $0
@@ -116,7 +116,7 @@ C_cmmd_array ' <symbol:cmmd_array>
  long $fb020001
  long $f1843208
  long $f6005a19
- long $fd900034
+ long $fd800083
  long $0
  long $0
  long $0
@@ -131,20 +131,22 @@ C_cmmd_array ' <symbol:cmmd_array>
  long $fd604024
  long $f1043004
  long $fd604224
- long $fb004a18
+ long $fd604a12
  long $f6004e25
  long $f5044e01
- long $fb944e23
+ long $fb944e25
  long $f6004e25
  long $f5044e02
- long $fb944e2d
+ long $fb944e2f
  long $f6004e25
  long $f0444e1a
- long $f1044e83
+ long $f1044e85
  long $f6005025
  long $f0445002
  long $f5205022
  long $fd604e2c
+ long $fc780018
+ long $fd9fffbc
  long $fd9002fc
  long $fd9002ec
  long $fd9002fc
@@ -169,7 +171,7 @@ C_cmmd_array ' <symbol:cmmd_array>
  long $fd9003c0
  long $fd9003d4
  long $f0000000
- long $fd9fff58
+ long $fd9fff50
  long $f6005025
  long $f0445001
  long $f9b8de28
@@ -178,15 +180,15 @@ C_cmmd_array ' <symbol:cmmd_array>
  long $f0445005
  long $f504501f
  long $f1045031
- long $f9b94e28
+ long $f9b95228
  long $f500de24
  long $0
  long $f540de00
- long $fd9fff18
+ long $fd9fff10
  long $f6004e25
  long $f0444e0b
  long $f5044e1f
- long $f1044eae
+ long $f1044eb0
  long $fd604e2c
  long $fd9001e4
  long $fd9003bc
@@ -212,7 +214,7 @@ C_cmmd_array ' <symbol:cmmd_array>
  long $fd900168
  long $fd90016c
  long $fd900138
- long $fd9ffe3c
+ long $fd9ffe34
  long $fd900198
  long $fd900090
  long $fd9001b8
@@ -230,37 +232,37 @@ C_cmmd_array ' <symbol:cmmd_array>
  long $fd9fffe4
  long $f6005025
  long $f50c51fc
- long $f7c84add
+ long $f7c84adf
  long $ad900320
- long $f7c84ade
+ long $f7c84ae0
  long $ad900328
- long $fd9ffe4c
+ long $fd9ffe44
  long $200
  long $400
  long $f1843204
  long $fc603619
- long $fd9ffe38
+ long $fd9ffe30
  long $f600301b
- long $fd9ffe40
+ long $fd9ffe74
  long $fda00303
- long $fd9ffe28
- long $fda00300
  long $fd9ffe20
+ long $fda00300
+ long $fd9ffe18
  long $fd000001
  long $fd600018
- long $fd9ffe14
- long $fda00319
  long $fd9ffe0c
+ long $fda00319
+ long $fd9ffe04
  long $f5243003
  long $f1043004
- long $fb01e418
+ long $fb01e818
  long $f1043004
  long $0
  long $0
- long $fd800074
+ long $fd800083
  long $f5243003
  long $f1043004
- long $fb01f218
+ long $fb01f618
  long $f1043004
  long $0
  long $0
@@ -280,10 +282,10 @@ C_cmmd_array ' <symbol:cmmd_array>
  long $f600042b
  long $f600062c
  long $f25c0000
- long $fd9ffd94
+ long $fd9ffd8c
  long $f6004e01
  long $f6005400
- long $fb945164
+ long $fb945162
  long $fac05227
  long $fc40522a
  long $f1044e01
@@ -291,7 +293,7 @@ C_cmmd_array ' <symbol:cmmd_array>
  long $f1845001
  long $fd9fffe4
  long $f1043004
- long $fb003618
+ long $fd603612
  long $f5243003
  long $f600de32
  long $f604521b
@@ -299,7 +301,7 @@ C_cmmd_array ' <symbol:cmmd_array>
  long $f0445002
  long $f9b0de28
  long $f9b8de29
- long $fd9ffd44
+ long $fd9ffd3c
  long $f6045220
  long $fd900004
  long $f6045221
@@ -315,39 +317,39 @@ C_cmmd_array ' <symbol:cmmd_array>
  long $f0c45017
  long $f600361a
  long $f1403628
- long $fd9ffd08
+ long $fd9ffd00
  long $f6005025
  long $f0445002
  long $f50451ff
- long $f9b66856
+ long $f9b66c56
  long $0
  long $f1043004
  long $fb000018
- long $f1026826
+ long $f1026c26
  long $fb6c51fc
- long $fd9ffc78
+ long $fd9ffc70
  long $f6003825
  long $f0443804
  long $f504387c
  long $f6005025
  long $f504503c
  long $f1803228
- long $fd9ffcc4
+ long $fd9ffcbc
  long $f600501b
  long $f1043004
  long $f1843208
  long $fc603019
  long $f6003028
- long $fd9ffcbc
+ long $fd9ffcf0
  long $fb003628
- long $fd9ffcac
+ long $fd9ffca4
  long $f0645008
  long $f0c45008
  long $f140501a
  long $fb003628
  long $f1843204
  long $fc603619
- long $fd9ffc90
+ long $fd9ffc88
  long $f6004e28
  long $f6045206
  long $f0445006
@@ -362,30 +364,30 @@ C_cmmd_array ' <symbol:cmmd_array>
  long $5d9fffe8
  long $f1843204
  long $fc604e19
- long $fd9ffc54
- long $5d9fff94
  long $fd9ffc4c
- long $ad9fff8c
+ long $5d9fff94
  long $fd9ffc44
+ long $ad9fff8c
+ long $fd9ffc3c
  long $3d9fff84
  long $1d9fff80
- long $fd9ffc38
+ long $fd9ffc30
  long $ed9fff78
  long $cd9fff74
- long $fd9ffc2c
+ long $fd9ffc24
  long $5d900020
- long $fd9ffc1c
- long $ad900018
  long $fd9ffc14
+ long $ad900018
+ long $fd9ffc0c
  long $3d900010
  long $1d90000c
- long $fd9ffc08
+ long $fd9ffc00
  long $ed900004
- long $3d9ffc00
+ long $3d9ffbf8
  long $f0644a15
  long $f0c44a17
  long $f1003025
- long $fd9ffc00
+ long $fd9ffc34
  long $f6005228
  long $f1045203
  long $f5245203
@@ -393,33 +395,33 @@ C_cmmd_array ' <symbol:cmmd_array>
  long $f6004e00
  long $f6005419
  long $fd9ffe48
- long $f5213451
+ long $f5213851
  long $fd900004
- long $f5413451
- long $f9ad34c0
- long $f5213423
- long $f5413428
+ long $f5413851
+ long $f9ad38c0
+ long $f5213823
+ long $f5413828
  long $fd9ffc60
  long $f1843804
  long $f218381b
- long $cd9ffbb4
- long $f5213451
+ long $cd9ffbac
+ long $f5213851
  long $f544501c
- long $f9ad358c
+ long $f9ad398c
  long $fd9fffd8
  long $f6003828
  long $f0443809
  long $f50451ff
  long $fd900038
  long $f6003628
- long $fd9ffb8c
+ long $fd9ffb84
  long $f6004e28
  long $f0444e13
- long $f9b32827
+ long $f9b32c27
  long $f064500d
  long $f0c4500d
  long $f6000028
- long $fd9ffb70
+ long $fd9ffb68
  long $f1843204
  long $fc603419
  long $f6003419
@@ -428,7 +430,7 @@ C_cmmd_array ' <symbol:cmmd_array>
  long $f1843204
  long $fc60a419
  long $f1803228
- long $fd9ffb4c
+ long $fd9ffb44
  long $f6005025
  long $f0445002
  long $f50451ff
@@ -438,14 +440,12 @@ C_cmmd_array ' <symbol:cmmd_array>
  long $f1043204
  long $fb003019
  long $f1043208
- long $fd9ffb2c
+ long $fd9ffb60
  long $f0645008
  long $f0c45008
  long $f600361a
  long $f1403628
- long $fd9ffb10
- long $0
- long $0
+ long $fd9ffb08
  long $0
  long $0
  long $0
@@ -625,7 +625,7 @@ C_cmmd_array ' <symbol:cmmd_array>
 
 ' Catalina Export CMM_LUT_LIBRARY_array
 
- alignl ' align long
+ alignl_label
 C_C_M_M__L_U_T__L_I_B_R_A_R_Y__array ' <symbol:CMM_LUT_LIBRARY_array>
  long $fd100001
  long $fd600018
@@ -740,16 +740,16 @@ C_C_M_M__L_U_T__L_I_B_R_A_R_Y__array ' <symbol:CMM_LUT_LIBRARY_array>
 
 DAT ' code segment
 
- alignl ' align long
+ alignl_label
 C__coginit_C__cog ' <symbol:_coginit_C_cog>
- alignl ' align long
+ alignl_p1
  long I32_NEWF + 24<<S32
- alignl ' align long
+ alignl_p1
  long I32_PSHM + $fc0000<<S32 ' save registers
  word I16A_MOV + (r23)<<D16A + (r4)<<S16A ' reg var <- reg arg
  word I16A_MOV + (r21)<<D16A + (r3)<<S16A ' reg var <- reg arg
  word I16A_MOV + (r19)<<D16A + (r2)<<S16A ' reg var <- reg arg
- alignl ' align long
+ alignl_p1
  long I32_CALA + (@C__registry)<<S32 ' CALL addrg
  word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16B_LODF + ((-28)&$1FF)<<S16B
@@ -760,12 +760,12 @@ C__coginit_C__cog ' <symbol:_coginit_C_cog>
  word I16A_MOV + (r22)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
- alignl ' align long
+ alignl_p1
  long I32_MOVI + (r22)<<D32 +(106)<<S32 ' reg <- conli
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  word I16B_LODL + (r22)<<D16B
- alignl ' align long
+ alignl_p1
  long @C_C_M_M__L_U_T__L_I_B_R_A_R_Y__array ' reg <- addrg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
@@ -774,7 +774,7 @@ C__coginit_C__cog ' <symbol:_coginit_C_cog>
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  word I16A_MOV + (r2)<<D16A + (r19)<<S16A ' CVI, CVU or LOAD
  word I16B_LODL + (r22)<<D16B
- alignl ' align long
+ alignl_p1
  long @C_cmmd_array ' reg <- addrg
  word I16A_MOV + (r3)<<D16A + (r22)<<S16A
  word I16A_SARI + (r3)<<D16A + (2)<<S16A ' SHRI4 reg coni
@@ -783,15 +783,15 @@ C__coginit_C__cog ' <symbol:_coginit_C_cog>
  word I16A_MOV + (r4)<<D16A + (r22)<<S16A
  word I16A_SARI + (r4)<<D16A + (2)<<S16A ' SHRI4 reg coni
  word I16B_CPREP + 50<<S16B ' arg size, rpsize = 12, spsize = 12
- alignl ' align long
+ alignl_p1
  long I32_CALA + (@C__coginit)<<S32
  word I16A_ADDI + SP<<D16A + 8<<S16A ' CALL addrg
  word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r19)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
- alignl ' align long
+ alignl_p1
  long I32_CALA + (@C__cnt)<<S32 ' CALL addrg
  word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
- alignl ' align long
+ alignl_p1
  long I32_CALA + (@C__clockfreq)<<S32 ' CALL addrg
  word I16A_MOV + (r20)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16A_MOVI + (r18)<<D16A + (20)<<S16A ' reg <- coni
@@ -801,12 +801,12 @@ C__coginit_C__cog ' <symbol:_coginit_C_cog>
  word I16A_MOV + (r2)<<D16A + (r22)<<S16A ' ADDU
  word I16A_ADD + (r2)<<D16A + (r0)<<S16A ' ADDU (3)
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
- alignl ' align long
+ alignl_p1
  long I32_CALA + (@C__waitcnt)<<S32 ' CALL addrg
  word I16A_MOV + (r0)<<D16A + (r19)<<S16A ' CVI, CVU or LOAD
 ' C__coginit_C__cog_1 ' (symbol refcount = 0)
  word I16B_POPM + 6<<S16B ' restore registers, do pop frame, do return
- alignl ' align long
+ alignl_p1
 
 ' Catalina Import _registry
 

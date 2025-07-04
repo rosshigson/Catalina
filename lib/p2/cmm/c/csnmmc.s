@@ -12,7 +12,7 @@ DAT ' initialized data segment
 
 ' Catalina Export nmmd_array
 
- alignl ' align long
+ alignl_label
 C_nmmd_array ' <symbol:nmmd_array>
  long $fd900108
  long $fd9001fc
@@ -633,7 +633,7 @@ C_nmmd_array ' <symbol:nmmd_array>
 
 ' Catalina Export NMM_LUT_LIBRARY_array
 
- alignl ' align long
+ alignl_label
 C_N_M_M__L_U_T__L_I_B_R_A_R_Y__array ' <symbol:NMM_LUT_LIBRARY_array>
  long $fd102c17
  long $fd602c18
@@ -748,17 +748,17 @@ C_N_M_M__L_U_T__L_I_B_R_A_R_Y__array ' <symbol:NMM_LUT_LIBRARY_array>
 
 DAT ' code segment
 
- alignl ' align long
+ alignl_label
 C__cogstart_N_M_M__cog ' <symbol:_cogstart_NMM_cog>
- alignl ' align long
+ alignl_p1
  long I32_NEWF + 24<<S32
- alignl ' align long
+ alignl_p1
  long I32_PSHM + $fe0000<<S32 ' save registers
  word I16A_MOV + (r23)<<D16A + (r5)<<S16A ' reg var <- reg arg
  word I16A_MOV + (r21)<<D16A + (r4)<<S16A ' reg var <- reg arg
  word I16A_MOV + (r19)<<D16A + (r3)<<S16A ' reg var <- reg arg
  word I16A_MOV + (r17)<<D16A + (r2)<<S16A ' reg var <- reg arg
- alignl ' align long
+ alignl_p1
  long I32_CALA + (@C__registry)<<S32 ' CALL addrg
  word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16B_LODF + ((-28)&$1FF)<<S16B
@@ -767,12 +767,12 @@ C__cogstart_N_M_M__cog ' <symbol:_cogstart_NMM_cog>
  word I16A_WRLONG + (r23)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r21)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
- alignl ' align long
+ alignl_p1
  long I32_MOVI + (r22)<<D32 +(106)<<S32 ' reg <- conli
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  word I16B_LODL + (r22)<<D16B
- alignl ' align long
+ alignl_p1
  long @C_N_M_M__L_U_T__L_I_B_R_A_R_Y__array ' reg <- addrg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
@@ -781,7 +781,7 @@ C__cogstart_N_M_M__cog ' <symbol:_cogstart_NMM_cog>
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  word I16A_MOV + (r2)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
  word I16B_LODL + (r22)<<D16B
- alignl ' align long
+ alignl_p1
  long @C_nmmd_array ' reg <- addrg
  word I16A_MOV + (r3)<<D16A + (r22)<<S16A
  word I16A_SARI + (r3)<<D16A + (2)<<S16A ' SHRI4 reg coni
@@ -790,15 +790,15 @@ C__cogstart_N_M_M__cog ' <symbol:_cogstart_NMM_cog>
  word I16A_MOV + (r4)<<D16A + (r22)<<S16A
  word I16A_SARI + (r4)<<D16A + (2)<<S16A ' SHRI4 reg coni
  word I16B_CPREP + 50<<S16B ' arg size, rpsize = 12, spsize = 12
- alignl ' align long
+ alignl_p1
  long I32_CALA + (@C__coginit)<<S32
  word I16A_ADDI + SP<<D16A + 8<<S16A ' CALL addrg
  word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r17)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
- alignl ' align long
+ alignl_p1
  long I32_CALA + (@C__cnt)<<S32 ' CALL addrg
  word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
- alignl ' align long
+ alignl_p1
  long I32_CALA + (@C__clockfreq)<<S32 ' CALL addrg
  word I16A_MOV + (r20)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16A_MOVI + (r18)<<D16A + (20)<<S16A ' reg <- coni
@@ -808,12 +808,12 @@ C__cogstart_N_M_M__cog ' <symbol:_cogstart_NMM_cog>
  word I16A_MOV + (r2)<<D16A + (r22)<<S16A ' ADDU
  word I16A_ADD + (r2)<<D16A + (r0)<<S16A ' ADDU (3)
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
- alignl ' align long
+ alignl_p1
  long I32_CALA + (@C__waitcnt)<<S32 ' CALL addrg
  word I16A_MOV + (r0)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
 ' C__cogstart_N_M_M__cog_1 ' (symbol refcount = 0)
  word I16B_POPM + 6<<S16B ' restore registers, do pop frame, do return
- alignl ' align long
+ alignl_p1
 
 ' Catalina Import _registry
 

@@ -31,6 +31,8 @@
  *
  * version 8.6 - just update version number.
  *
+ * version 8.7 - just update version number.
+ *
  */
 
 #include <ctype.h>
@@ -39,7 +41,7 @@
 #include <string.h>
 #include <sys/stat.h>
 
-#define VERSION            "8.6" 
+#define VERSION            "8.7" 
 
 #ifdef WIN32_PATHS         /* define this on the command line for Windows */
 #define PATH_SEP           "\\"

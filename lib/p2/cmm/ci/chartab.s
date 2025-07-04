@@ -12,7 +12,7 @@ DAT ' initialized data segment
 
 ' Catalina Export __ctype
 
- alignl ' align long
+ alignl_label
 C___ctype ' <symbol:__ctype>
  byte 0
  byte 32

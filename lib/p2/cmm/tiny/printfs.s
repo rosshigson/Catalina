@@ -8,20 +8,20 @@ DAT ' code segment
 
 ' Catalina Export trivial_printf
 
- alignl ' align long
+ alignl_label
 C_trivial_printf ' <symbol:trivial_printf>
- alignl ' align long
+ alignl_p1
  long I32_NEWF + 4<<S32
- alignl ' align long
+ alignl_p1
  long I32_PSHM + $400000<<S32 ' save registers
  word I16B_LODF + 8<<S16B
- alignl ' align long
+ alignl_p1
  long I32_SPILL + r2<<D32 ' spill reg (varadic)
- alignl ' align long
+ alignl_p1
  long I32_SPILL + r3<<D32 ' spill reg (varadic)
- alignl ' align long
+ alignl_p1
  long I32_SPILL + r4<<D32 ' spill reg (varadic)
- alignl ' align long
+ alignl_p1
  long I32_SPILL + r5<<D32 ' spill reg (varadic)
  word I16B_LODF + ((12)&$1FF)<<S16B
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- addrl16
@@ -32,12 +32,12 @@ C_trivial_printf ' <symbol:trivial_printf>
  word I16B_LODF + ((8)&$1FF)<<S16B
  word I16A_RDLONG + (r3)<<D16A + RI<<S16A ' reg ARG INDIR ADDRFi
  word I16B_CPREP + 33<<S16B ' arg size, rpsize = 8, spsize = 8
- alignl ' align long
+ alignl_p1
  long I32_CALA + (@C__doprintf_s)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
 ' C_trivial_printf_1 ' (symbol refcount = 0)
  word I16B_POPM + 1<<S16B ' restore registers, do pop frame, do return
- alignl ' align long
+ alignl_p1
 
 ' Catalina Import _doprintf_s
 ' end

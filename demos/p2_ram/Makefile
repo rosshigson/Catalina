@@ -174,15 +174,15 @@ dump : start$B
 
 start.bin : start.c csxmml.c csxmms.c csxmmlc.c csxmmsc.c
 	-@catalina_env
-	$(SPINPP) -D CACHED -D LARGE -D P2 -D $(PLATFORM) -I "$(LCCDIR)"/target/p2 "$(LCCDIR)"/target/p2/xmmd.t > xmmld.s
+	$(SPINPP) -D CACHED -D LARGE -D P2 -D NEED_XMM_READPAGE -D $(PLATFORM) -I "$(LCCDIR)"/target/p2 "$(LCCDIR)"/target/p2/xmmd.t > xmmld.s
 	$(PASM_ASSEMBLER) xmmld.s
 	$(BINDUMP) xmmld.bin -p "   0x" -c > xmmld.inc
 	$(RM) xmmld.bin
-	$(SPINPP) -D CACHED -D SMALL -D P2 -D $(PLATFORM) -I "$(LCCDIR)"/target/p2 "$(LCCDIR)"/target/p2/xmmd.t > xmmsd.s
+	$(SPINPP) -D CACHED -D SMALL -D P2 -D NEED_XMM_READPAGE -D $(PLATFORM) -I "$(LCCDIR)"/target/p2 "$(LCCDIR)"/target/p2/xmmd.t > xmmsd.s
 	$(PASM_ASSEMBLER) xmmsd.s
 	$(BINDUMP) xmmsd.bin -p "   0x" -c > xmmsd.inc
 	$(RM) xmmsd.bin
-	$(SPINPP) -D CACHED -D P2 -D $(PLATFORM) -I "$(LCCDIR)"/target/p2 "$(LCCDIR)"/target/p2/xmmlib.t > xmml.s
+	$(SPINPP) -D CACHED -D P2 -D NEED_XMM_READPAGE -D $(PLATFORM) -I "$(LCCDIR)"/target/p2 "$(LCCDIR)"/target/p2/xmmlib.t > xmml.s
 	$(PASM_ASSEMBLER) xmml.s
 	spinc -p2 -B2 -n XMM_LUT_LIBRARY xmml.bin >xmml.inc
 	$(RM) xmml.bin

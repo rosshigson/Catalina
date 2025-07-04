@@ -8,17 +8,17 @@ DAT ' code segment
 
 ' Catalina Export putldec
 
- alignl ' align long
+ alignl_label
 C_putldec ' <symbol:putldec>
- alignl ' align long
+ alignl_p1
  long I32_NEWF + 0<<S32
- alignl ' align long
+ alignl_p1
  long I32_PSHM + $c00000<<S32 ' save registers
  word I16A_MOV + (r23)<<D16A + (r2)<<S16A ' reg var <- reg arg
  word I16B_LODL + (r2)<<D16B
- alignl ' align long
+ alignl_p1
  long $3000000 ' reg ARG con
- alignl ' align long
+ alignl_p1
  long I32_MOVI + (r3)<<D32 + (32)<<S32 ' reg ARG coni
  word I16A_MOVI + (r4)<<D16A + (0)<<S16A ' reg ARG coni
  word I16A_MOVI + (r5)<<D16A + (1)<<S16A ' reg ARG coni
@@ -30,12 +30,12 @@ C_putldec ' <symbol:putldec>
  word I16B_PSHL ' stack ARG
  word I16A_MOVI + BC<<D16A + 24<<S16A ' arg size, rpsize = 0, spsize = 24
  word I16A_ADDI + SP<<D16A + 4<<S16A ' correct for new kernel !!! 
- alignl ' align long
+ alignl_p1
  long I32_CALA + (@C__printf_putll)<<S32
  word I16A_ADDI + SP<<D16A + 20<<S16A ' CALL addrg
 ' C_putldec_1 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
- alignl ' align long
+ alignl_p1
 
 ' Catalina Import _printf_putll
 ' end

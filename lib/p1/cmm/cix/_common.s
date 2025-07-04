@@ -12,7 +12,7 @@ DAT ' initialized data segment
 
 ' Catalina Export __pstart
 
- alignl ' align long
+ alignl_label
 C___pstart ' <symbol:__pstart>
  long $ffffffff
 
@@ -22,13 +22,13 @@ DAT ' uninitialized data segment
 
 ' Catalina Export __vi
 
- alignl ' align long
+ alignl_label
 C___vi ' <symbol:__vi>
  byte 0[52]
 
 ' Catalina Export __fdtab
 
- alignl ' align long
+ alignl_label
 C___fdtab ' <symbol:__fdtab>
  byte 0[80]
 

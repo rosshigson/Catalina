@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' const data segment
 
  alignl ' align long
-C_sl9o_67ea42f2_cb64_L000003 ' <symbol:cb64>
+C_s1ds_6864c61c_cb64_L000003 ' <symbol:cb64>
  byte 65
  byte 66
  byte 67
@@ -79,7 +79,7 @@ C_sl9o_67ea42f2_cb64_L000003 ' <symbol:cb64>
  byte 0
 
  alignl ' align long
-C_sl9o1_67ea42f2_cd64_L000004 ' <symbol:cd64>
+C_s1ds1_6864c61c_cd64_L000004 ' <symbol:cd64>
  byte 124
  byte 36
  byte 36
@@ -167,12 +167,12 @@ C_sl9o1_67ea42f2_cd64_L000004 ' <symbol:cd64>
 DAT ' code segment
 
  alignl ' align long
-C_sl9o2_67ea42f2_encodeblock_L000005 ' <symbol:encodeblock>
+C_s1ds2_6864c61c_encodeblock_L000005 ' <symbol:encodeblock>
  calld PA,#PSHM
  long $f50000 ' save registers
  rdbyte r22, r4 ' reg <- CVUI4 INDIRU1 reg
  sar r22, #2 ' RSHI4 coni
- mov r20, ##@C_sl9o_67ea42f2_cb64_L000003 ' reg <- addrg
+ mov r20, ##@C_s1ds_6864c61c_cb64_L000003 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdbyte r22, r22 ' reg <- INDIRU1 reg
  wrbyte r22, r3 ' ASGNU1 reg reg
@@ -190,12 +190,12 @@ C_sl9o2_67ea42f2_encodeblock_L000005 ' <symbol:encodeblock>
  sar RI, r22
  mov r22, RI ' RSHI (2)
  or r22, r18 ' BORI/U (2)
- mov r18, ##@C_sl9o_67ea42f2_cb64_L000003 ' reg <- addrg
+ mov r18, ##@C_s1ds_6864c61c_cb64_L000003 ' reg <- addrg
  adds r22, r18 ' ADDI/P (1)
  rdbyte r22, r22 ' reg <- INDIRU1 reg
  wrbyte r22, r20 ' ASGNU1 reg reg
  cmps r2,  #1 wcz
- if_be jmp #\C_sl9o2_67ea42f2_encodeblock_L000005_8 ' LEI4
+ if_be jmp #\C_s1ds2_6864c61c_encodeblock_L000005_8 ' LEI4
  mov r22, r4
  adds r22, #1 ' ADDP4 coni
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
@@ -207,35 +207,35 @@ C_sl9o2_67ea42f2_encodeblock_L000005 ' <symbol:encodeblock>
  and r20, #192 ' BANDI4 coni
  sar r20, #6 ' RSHI4 coni
  or r22, r20 ' BORI/U (1)
- mov r20, ##@C_sl9o_67ea42f2_cb64_L000003 ' reg <- addrg
+ mov r20, ##@C_s1ds_6864c61c_cb64_L000003 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdbyte r23, r22 ' reg <- CVUI4 INDIRU1 reg
- jmp #\@C_sl9o2_67ea42f2_encodeblock_L000005_9 ' JUMPV addrg
-C_sl9o2_67ea42f2_encodeblock_L000005_8
+ jmp #\@C_s1ds2_6864c61c_encodeblock_L000005_9 ' JUMPV addrg
+C_s1ds2_6864c61c_encodeblock_L000005_8
  mov r23, #61 ' reg <- coni
-C_sl9o2_67ea42f2_encodeblock_L000005_9
+C_s1ds2_6864c61c_encodeblock_L000005_9
  mov r22, r3
  adds r22, #2 ' ADDP4 coni
  mov r20, r23 ' CVI, CVU or LOAD
  wrbyte r20, r22 ' ASGNU1 reg reg
  cmps r2,  #2 wcz
- if_be jmp #\C_sl9o2_67ea42f2_encodeblock_L000005_11 ' LEI4
+ if_be jmp #\C_s1ds2_6864c61c_encodeblock_L000005_11 ' LEI4
  mov r22, r4
  adds r22, #2 ' ADDP4 coni
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  and r22, #63 ' BANDI4 coni
- mov r20, ##@C_sl9o_67ea42f2_cb64_L000003 ' reg <- addrg
+ mov r20, ##@C_s1ds_6864c61c_cb64_L000003 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdbyte r21, r22 ' reg <- CVUI4 INDIRU1 reg
- jmp #\@C_sl9o2_67ea42f2_encodeblock_L000005_12 ' JUMPV addrg
-C_sl9o2_67ea42f2_encodeblock_L000005_11
+ jmp #\@C_s1ds2_6864c61c_encodeblock_L000005_12 ' JUMPV addrg
+C_s1ds2_6864c61c_encodeblock_L000005_11
  mov r21, #61 ' reg <- coni
-C_sl9o2_67ea42f2_encodeblock_L000005_12
+C_s1ds2_6864c61c_encodeblock_L000005_12
  mov r22, r3
  adds r22, #3 ' ADDP4 coni
  mov r20, r21 ' CVI, CVU or LOAD
  wrbyte r20, r22 ' ASGNU1 reg reg
-' C_sl9o2_67ea42f2_encodeblock_L000005_6 ' (symbol refcount = 0)
+' C_s1ds2_6864c61c_encodeblock_L000005_6 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETN
 
@@ -313,7 +313,7 @@ C_encode_buff_26
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sl9o2_67ea42f2_encodeblock_L000005
+ long @C_s1ds2_6864c61c_encodeblock_L000005
  add SP, #8 ' CALL addrg
  mov r15, #0 ' reg <- coni
 C_encode_buff_29
@@ -370,7 +370,7 @@ C_encode_buff_19
 
 
  alignl ' align long
-C_sl9o3_67ea42f2_decodeblock_L000040 ' <symbol:decodeblock>
+C_s1ds3_6864c61c_decodeblock_L000040 ' <symbol:decodeblock>
  calld PA,#PSHM
  long $550000 ' save registers
  rdbyte r22, r3 ' reg <- CVUI4 INDIRU1 reg
@@ -408,7 +408,7 @@ C_sl9o3_67ea42f2_decodeblock_L000040 ' <symbol:decodeblock>
  rdbyte r18, r18 ' reg <- CVUI4 INDIRU1 reg
  or r20, r18 ' BORI/U (1)
  wrbyte r20, r22 ' ASGNU1 reg reg
-' C_sl9o3_67ea42f2_decodeblock_L000040_41 ' (symbol refcount = 0)
+' C_s1ds3_6864c61c_decodeblock_L000040_41 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETN
 
@@ -460,7 +460,7 @@ C_decode_buff_59
  wrlong r22, RI ' ASGNI4 addrli reg
  jmp #\@C_decode_buff_58 ' JUMPV addrg
 C_decode_buff_57
- mov r22, ##@C_sl9o1_67ea42f2_cd64_L000004-43 ' reg <- addrg
+ mov r22, ##@C_s1ds1_6864c61c_cd64_L000004-43 ' reg <- addrg
  adds r22, r15 ' ADDI/P (2)
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  mov RI, FP
@@ -534,7 +534,7 @@ C_decode_buff_70
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sl9o3_67ea42f2_decodeblock_L000040
+ long @C_s1ds3_6864c61c_decodeblock_L000040
  add SP, #4 ' CALL addrg
  mov r11, #0 ' reg <- coni
  jmp #\@C_decode_buff_76 ' JUMPV addrg

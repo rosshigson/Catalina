@@ -12,7 +12,7 @@ DAT ' initialized data segment
 
 ' Catalina Export __stdin
 
- alignl ' align long
+ alignl_label
 C___stdin ' <symbol:__stdin>
  long 0
  long 0
@@ -23,7 +23,7 @@ C___stdin ' <symbol:__stdin>
 
 ' Catalina Export __stdout
 
- alignl ' align long
+ alignl_label
 C___stdout ' <symbol:__stdout>
  long 0
  long 1
@@ -34,7 +34,7 @@ C___stdout ' <symbol:__stdout>
 
 ' Catalina Export __stderr
 
- alignl ' align long
+ alignl_label
 C___stderr ' <symbol:__stderr>
  long 0
  long 2
@@ -45,7 +45,7 @@ C___stderr ' <symbol:__stderr>
 
 ' Catalina Export __iotab
 
- alignl ' align long
+ alignl_label
 C___iotab ' <symbol:__iotab>
  long @C___stdin
  long @C___stdout

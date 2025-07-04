@@ -8,9 +8,9 @@ DAT ' code segment
 
 ' Catalina Export getrealrand
 
- alignl ' align long
+ alignl_label
 C_getrealrand ' <symbol:getrealrand>
- alignl ' align long
+ alignl_p1
  long I32_PSHM + $400000<<S32 ' save registers
 ' loading argument C_getrealrand_3_L000004 to PASM eliminated
 'START PASM ... 
@@ -20,5 +20,5 @@ getrnd r0
  word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
 ' C_getrealrand_2 ' (symbol refcount = 0)
  word I16B_POPM + $80<<S16B ' restore registers, do not pop frame, do return
- alignl ' align long
+ alignl_p1
 ' end

@@ -8,6 +8,7 @@
 ' Version 3.13 - combine floating point operations, and add relative jumps
 ' Version 3.15 - Modified for P2.
 ' Version 7.1  - Updated to support Quick Build
+' Version 8.7  - Updated to use FIFO by default (disable with NO_FIFO).
 '
 '------------------------------------------------------------------------------
 '
@@ -31,6 +32,7 @@
 '
 '------------------------------------------------------------------------------
 }}
+
 
 '--------------------- Start of CMM Kernel ------------------------------------
 
@@ -81,14 +83,20 @@ D32S = 21 ' must match compact.inc
 '#define NO_INTERRUPTS
 '#endif
 
+' NO_FIFO - if defined, the RDLONG and PC will be used to read instructions,
+'           otherwise RDFAST and RFLONG will be used - but note that the PC 
+'           still needs be kept up to date, and a new RDFAST needs to be 
+'           issued whenever the PC has to change by anything other than 
+'           just adding 4 to move to the next long.
+
 '--------------------- Start of CMM Kernel ------------------------------------
+
+' the first $52 longs must be in the same place in all CMM kernels, to 
+' allow for the separate compilation of code that uses these locations
 
 DAT 
          org     0
 KERNEL_START
-
-' the first $52 longs must be in the same place in all CMM kernels, to 
-' allow for the separate compilation of code that uses these locations
 
 r0       jmp     #cmm_init      '$00
 r1       long    0              '$01
@@ -152,7 +160,7 @@ t5       long   $0000_0000      '$2b
 t6       long   $0000_0000      '$2c
 
 xfer     long   $0000_0000      '$2d set up during initialization
-                             
+
 ct1     long  0                 '$2e
 ct2     long  0                 '$2f
 ct3     long  0                 '$30
@@ -173,8 +181,8 @@ X16A_OR      or     0,0         '$3c
 X16A_XOR     xor    0,0         '$3d      
 X16A_SUB     sub    0,0         '$3e      
 X16A_SUBS    subs   0,0         '$3f      
-X16A_CMP     cmp    0,0 wcz     '$41 
-X16A_CMPS    cmps   0,0 wcz     '$40 
+X16A_CMP     cmp    0,0 wcz     '$40 
+X16A_CMPS    cmps   0,0 wcz     '$41 
 X16A_NEG     neg    0,0         '$42      
 X16A_SHL     shl    0,0         '$43   
 X16A_SHR     shr    0,0         '$44   
@@ -195,8 +203,8 @@ immi_bit long   %0000_0000000_001_000000000_000000000 '$51
 bit31    long   $8000_0000      '$52
 all_1s   long   $FFFF_FFFF      '$53
 
-req      long   0               '$54 ' request block address
-reg      long   0               '$55 ' registry address
+req      long   0               '$54 request block address
+reg      long   0               '$55 registry address
 
 X16B_BRKP                       ' execute break (when debug overlay loaded)
 FC_START                        ' must match FC_START in compact.inc
@@ -228,7 +236,11 @@ cmm_init
         sub     SP, #8          '$67 18 set up ...
         mov     xfer, SP        '$68 19 ... xfer block for floating point
         call    #INITIALIZE_THREAD ' $69 20 execute thread startup code
-        jmp     #read_next      '$6a 21 start executing C code
+#ifndef NO_FIFO
+        jmp     #\init_fifo     '$6a 21 start executing CMM code
+#else
+        jmp     #\read_next     '$6a 21 start executing CMM code
+#endif
         nop                     '$6b 22 
 #else
         wrlong  t1,t2           '$56 1 set up initial free memory pointer
@@ -250,7 +262,11 @@ cmm_init
         sub     SP,#8           '$68 19 set up ...
         mov     xfer,SP         '$69 20 ... xfer block for floating point
         call    #extra_init     '$6a 21 execute additional startup code
-        jmp     #read_next      '$6b 22 start executing C code
+#ifndef NO_FIFO
+        jmp     #\init_fifo     '$6b 22 start executing CMM code
+#else
+        jmp     #\read_next     '$6b 22 start executing CMM code
+#endif
 #endif
         nop                     '$6c 23 
         nop                     '$6d 24 
@@ -261,37 +277,43 @@ pasm_16
 done_16
          shr    inst,#16        '$70 decode ...
          tjnz   inst,#decode    '$71 ... another instruction ?
-
 FC_INLINE                       ' must match FC_INLINE in compact.inc
 done_32
          allowi                 '$72
          add    PC,#4           '$73 no - increment PC
 
-EXEC_STOP                       ' must match EXEC_STOP in compact.inc
-'
-' check whether we should context switch (and switch if so)
-'
 read_next
          stalli                 '$74
          djnz   ticks,#no_swap  ' if ticks not yet zero, don't context switch
          call   #\context_switch
 no_swap
-         rdlong inst,PC         ' fall through to ...
+#ifndef NO_FIFO
+         rflong inst            '$75 fall through to ...
+#else
+         rdlong inst,PC         '$75 fall through to ...
+#endif
 decode
-         mov    t1,inst         ' test ...
-         and    t1,#1           ' ... instruction ...
-         tjz    t1,#decode_16a  ' ... type ...
-         mov    t1,inst         ' ... to ...
-         and    t1,#2           ' ... determine ...
-         tjz    t1,#decode_16b  ' ... how to decode
+         mov    t1,inst         '$76 test ...
+         and    t1,#1           '$77 ... instruction ...
+         tjz    t1,#decode_16a  '$78 ... type ...
+         mov    t1,inst         '$79 ... to ...
+         and    t1,#2           '$7a ... determine ...
+         tjz    t1,#decode_16b  '$7b ... how to decode
 decode_32
-         mov    t1,inst         ' extract ...
-         shr    t1,#26          ' ... 6 bit opcode
+         mov    t1,inst         '$7c extract ...
+         shr    t1,#26          '$7d ... 6 bit opcode
          add    t1,#table_32
-         mov    t2,inst         ' extract ...
-         shr    t2,#S32         ' ... 24 bits ...
-         andn   t2,top8         ' ... of src (or src & dst)
+         mov    t2,inst         '$7e extract ...
+         shr    t2,#S32         '$7f ... 24 bits ...
+         andn   t2,top8         '$80 ... of src (or src & dst)
          jmp    t1
+EXEC_STOP                       ' must match EXEC_STOP in compact.inc
+#ifndef NO_FIFO
+init_fifo
+         rdfast #0,PC           '$81
+#endif
+         jmp #read_next
+
 table_32
          jmp    #X32_JMPA
          jmp    #X32_CALA
@@ -381,11 +403,11 @@ table_16b
 X16B_POPM     
          rdlong RI,SP           ' load ...
          add    SP,#4           ' ... register specification to pop
-         mov    t2,#r23         ' start with ...
+         mov    t2, #r23        ' start with ...
          shl    RI,#(32-24)     ' ... r23         
 pop_nxt
          shl    RI,#1 wcz       ' load rX?
-   if_c  altd   t2 
+   if_c  altd   t2              ' if so ...
    if_c  rdlong 0-0,SP          ' ... load ...
    if_c  add    SP,#4           ' ... the register
    if_z  jmp   #pop_done
@@ -408,7 +430,11 @@ X16B_PSHL
          jmp    #done_16
 X16B_JMPI        
          mov    PC,RI
+#ifndef NO_FIFO
+         jmp    #init_fifo
+#else
          jmp    #read_next
+#endif
 
 'X16B_DIVS - Signed 32 bit division
 '        Divisor  : r1
@@ -431,7 +457,7 @@ X16B_DIVS
 X16B_DIVU
         call    #\unsigned_d32   ' perform unsigned division
         jmp     #done_16
-
+        
 ' X16B_MULT - multiplication
 '        r0 : 1st operand (32 bit)
 '        r1 : 2nd operand (32 bit)
@@ -442,8 +468,7 @@ X16B_MULT
          qmul   r0,r1
          getqx  r0
          jmp    #done_16
-'
-'
+
 ' X16B_SYSP - call a plugin
 ' On entry:
 '        R3 = code:
@@ -463,7 +488,9 @@ X16B_SYSP
          jmp     #done_16
 
 '
-' X16B_PASM - Execute one long (starting at next long boundary) as an instruction.
+' X16B_PASM - Execute one long (starting at next long boundary) as an
+'             instruction. Note that we cannot use the FIFO here, because
+'             we do not know if the instruction we execute alter the PC!
 '
 X16B_PASM
          andn   PC,#3           ' align PC to long
@@ -474,8 +501,10 @@ X16B_PASM
 exec1a   long   0-0
          jmp    #\EXEC_STOP      ' done
 '
-' X16B_EXEC - Execute multiple longs (starting at next long boundary) as instructions.
-'            To exit, execute the instruction "jmp #EXEC_STOP"
+' X16B_EXEC - Execute multiple longs (starting at next long boundary) as 
+'             instructions. Note that we cannot use the FIFO here because
+'             we do not know if the instructions we execute alter the PC!
+'             To exit, execute the instruction "jmp #EXEC_STOP"
 X16B_EXEC
          andn   PC,#3           ' align PC to long
          add    PC,#4           ' point to next long
@@ -499,6 +528,7 @@ exec3    long   0-0
 exec4    long   0-0
 #endif
          jmp    #exec_loop
+          
 '
 '------------------------------------------------------------------------------
 ' Float32 Assembly language routines
@@ -578,7 +608,11 @@ copy_bytes
 '
 X16B_LODL  
          add    PC,#4           ' point to next long
+#ifndef NO_FIFO
+         rflong RI              ' read the long
+#else
          rdlong RI,PC           ' read the long
+#endif
          andn   PC,#3           ' align PC to long boundary
          mov    pasm_16,X16A_MOV ' set up 'mov' instruction
          mov    t3,#RI          ' set up src
@@ -649,7 +683,11 @@ X32_CALA
                                 ' fall through to ...
 X32_JMPA
          mov    PC,t2     
+#ifndef NO_FIFO
+         jmp    #init_fifo
+#else
          jmp    #read_next
+#endif
 X32_LODI  
          rdlong RI,t2   
          jmp    #done_32
@@ -714,7 +752,11 @@ X16B_JMPR
          shl    inst,#(32-S16B-9) ' sign ...
          sar    inst,#(32-9)      ' ... extend
          add    PC,inst         ' add relative jump to PC
+#ifndef NO_FIFO
+         jmp    #init_fifo
+#else
          jmp    #read_next
+#endif
 '
 ' X32_PSHB - push a structure (size in bytes at the PC) pointed to by R0
 '          onto the stack, decrementing the SP
@@ -787,7 +829,11 @@ FC_RETURN                       ' must match FC_RETURN in compact.inc
 X16B_RETN                     
          rdlong PC,SP           ' read the PC
          add    SP,#8           ' increment the SP
+#ifndef NO_FIFO
+         jmp    #init_fifo
+#else
          jmp    #read_next
+#endif
 X32_LODF
          shl    t2,#8           ' sign ...
          sar    t2,#8           ' ... extend

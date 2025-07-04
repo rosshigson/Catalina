@@ -34,7 +34,8 @@ execution of the script, or Catalyst builds ok but fails to execute correctly):
 
    build_all P2_EVAL TTY VT100 MHZ_200     <-- to use VT100 terminal emulator
 
-   build_all P2_EVAL LORES_VGA COLOR_4 MHZ_200  <-- to use VGA & USB keyboard
+   build_all P2_EVAL LORES_VGA COLOR_4 MHZ_200 NO_LINENOISE 
+                                           <-- to use VGA & USB keyboard
 
    build_all P2_EDGE SIMPLE VT100 OPTIMIZE MHZ_200  
                                            <-- to use VT100 terminal emulator

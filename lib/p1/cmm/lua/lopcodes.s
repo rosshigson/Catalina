@@ -12,7 +12,7 @@ DAT ' initialized data segment
 
 ' Catalina Export luaP_opmodes
 
- alignl ' align long
+ alignl_label
 C_luaP__opmodes ' <symbol:luaP_opmodes>
  byte 8
  byte 10

@@ -71,11 +71,15 @@ CON
 ' - Note that the choice is made based on whether PSRAM or HYPER is defined
 '   rather than libpsram or libhyper, since including both libraries might
 '   eventually be included, but only one plugin can be used for XMM.
-
 #if defined(PSRAM)
 #define XMM_PLUGIN LMM_PM1
 #elif defined(HYPER)
 #define XMM_PLUGIN LMM_HYP
+#else
+#if defined(SMALL) || defined(LARGE)
+#error: XMM PLUGIN NOT SPECIFIED
+#endif
+#define XMM_PLUGIN LMM_PM1
 #endif
 
 '-------------------------------------------------------------------------------

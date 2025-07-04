@@ -8,15 +8,15 @@ DAT ' code segment
 
 ' Catalina Export tzset
 
- alignl ' align long
+ alignl_label
 C_tzset ' <symbol:tzset>
- alignl ' align long
+ alignl_p1
  long I32_NEWF + 0<<S32
- alignl ' align long
+ alignl_p1
  long I32_CALA + (@C__tzset)<<S32 ' CALL addrg
 ' C_tzset_1 ' (symbol refcount = 0)
  word I16B_RETF + 0<<S32
- alignl ' align long
+ alignl_p1
 
 ' Catalina Import _tzset
 ' end

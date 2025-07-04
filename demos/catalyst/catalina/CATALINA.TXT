@@ -162,7 +162,7 @@ NOTE: Catalyst has a limit of 23 arguments that can be specified in a single
       on the command line using the -C option).
 
 WARNING: The larger C demo programs can take a long time to compile. Even the
-         standard C "hello world" program (hello.c) takes about 8 minutes. 
+         standard C "hello world" program (hello.c) takes several minutes. 
          Compiling the chimaera game (approx 5,500 lines of C code) takes 
          about 2 hours. Dumbo Basic (approx 12,000 lines of C code) takes 
          about 2 hours and 30 minutes. This is why the -v option is 
@@ -214,6 +214,10 @@ Note that the -v (for verbose) option is generally recommended when using
 catalina on the Propeller - it makes Catalyst echo each command in the
 script as it is executed. Given that some compilations can take a long time, 
 this gives a useful indication of how far the compilation has progressed. 
+However, note that when Catalina is used with a VGA option (rather than a 
+serial option) the propeller reboots between each command, so any messages 
+output by using -v will not generally be visible for long enough to be read 
+anyway.
 
 For example, here is the output that might be produced by the above command:
 

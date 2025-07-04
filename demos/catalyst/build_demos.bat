@@ -73,7 +73,7 @@ cd ..
 
 @echo building P2_EVAL_VGA.ZIP ...
 
-call build_all P2_EVAL VGA COLOR_4 OPTIMIZE MHZ_200 RTC
+call build_all P2_EVAL VGA COLOR_4 OPTIMIZE MHZ_200 RTC NO_LINENOISE
 
 cd catalina
 call build_all P2_EVAL VGA COLOR_4 OPTIMIZE MHZ_200
@@ -155,7 +155,7 @@ cd ..
 
 @echo building P2_EDGE_VGA.ZIP ...
 
-call build_all P2_EDGE VGA COLOR_4 OPTIMIZE MHZ_200 RTC
+call build_all P2_EDGE VGA COLOR_4 OPTIMIZE MHZ_200 RTC NO_LINENOISE
 
 cd catalina
 call build_all P2_EDGE VGA COLOR_4 OPTIMIZE MHZ_200

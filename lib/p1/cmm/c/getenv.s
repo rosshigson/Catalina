@@ -10,7 +10,7 @@ DAT ' code segment
 
 DAT ' initialized data segment
 
- alignl ' align long
+ alignl_label
 C_getenv_timezone_L000005 ' <symbol:timezone>
  byte 71
  byte 77
@@ -23,38 +23,38 @@ C_getenv_timezone_L000005 ' <symbol:timezone>
 
 DAT ' code segment
 
- alignl ' align long
+ alignl_label
 C_getenv ' <symbol:getenv>
- alignl ' align long
+ alignl_p1
  long I32_NEWF + 0<<S32
- alignl ' align long
+ alignl_p1
  long I32_PSHM + $c00000<<S32 ' save registers
  word I16A_MOV + (r23)<<D16A + (r2)<<S16A ' reg var <- reg arg
  word I16B_LODL + (r2)<<D16B
- alignl ' align long
+ alignl_p1
  long @C_getenv_8_L000009 ' reg ARG ADDRG
  word I16A_MOV + (r3)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 33<<S16B ' arg size, rpsize = 8, spsize = 8
- alignl ' align long
+ alignl_p1
  long I32_CALA + (@C_strcmp)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_CMPSI + (r0)<<D16A + (0)<<S16A
- alignl ' align long
+ alignl_p1
  long I32_BRNZ + (@C_getenv_6)<<S32 ' NEI4 reg coni
  word I16B_LODL + (r0)<<D16B
- alignl ' align long
+ alignl_p1
  long @C_getenv_timezone_L000005 ' reg <- addrg
- alignl ' align long
+ alignl_p1
  long I32_JMPA + (@C_getenv_3)<<S32 ' JUMPV addrg
- alignl ' align long
+ alignl_label
 C_getenv_6
  word I16B_LODL + R0<<D16B
- alignl ' align long
+ alignl_p1
  long 0 ' RET con
- alignl ' align long
+ alignl_label
 C_getenv_3
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
- alignl ' align long
+ alignl_p1
 
 ' Catalina Import strcmp
 
@@ -62,7 +62,7 @@ C_getenv_3
 
 DAT ' const data segment
 
- alignl ' align long
+ alignl_label
 C_getenv_8_L000009 ' <symbol:8>
  byte 84
  byte 90

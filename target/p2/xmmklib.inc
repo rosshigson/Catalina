@@ -15,7 +15,7 @@ DAT
 do_initcog
         setq    r4             ' this will end up in PTRA of new cog
         coginit r0, r3 wc
-        jmp     #LMM_Loop
+        jmp     #XMM_Loop
 
 ' do_rotxy - cannot be executed via LMM because rdlongs interrupt the setq
 '    r1 contains Y
@@ -25,13 +25,13 @@ do_initcog
 do_rotxy
         setq    r1
         qrotate r0, r2
-        jmp     #LMM_Loop
+        jmp     #XMM_Loop
 
 ' do_cnthl - cannot be executed via LMM as the 2 instructions must be adjacent
 do_cnthl
         getct   r1 wc
         getct   r0
-        jmp     #LMM_Loop
+        jmp     #XMM_Loop
 
 ' do_div64 - cannot be executed via LMM because rdlongs interrupt the setq
  ' on entry r0 = lower 32 bits of dividend
@@ -42,7 +42,7 @@ do_cnthl
 do_div64
         setq    r1       ' set upper 32 bits of product to q register
         qdiv    r0, r2   ' divide 64 bit product by 32 bit divisor
-        jmp     #LMM_loop
+        jmp     #XMM_Loop
 
 ' do_loadhub
 '
@@ -68,14 +68,14 @@ do_loadlut_xmm
         setd    XMM_Dst, #t2   ' ... signature ...
         call    #\XMM_ReadLong ' ... from XMM RAM
         cmp     t1, t2 wz      ' do we need to load?
- if_z   jmp     #LMM_Loop      ' no - nothing to do
+ if_z   jmp     #XMM_Loop      ' no - nothing to do
         sub     SP, ##$400     ' yes - allocate buffer of $100 longs on stack
         mov     XMM_Len, r1    ' copy ...
         and     XMM_Len, #$1FF ' ... longs ...
         shl     XMM_Len, #2    ' ... from ...
         mov     XMM_Addr, r0   ' ... XXM RAM ...
         mov     HUB_Addr, SP   ' ... to ...
-        call    #\XMM_ReadPage ' ... stack buffer
+        call    #\XMM_ReadLongPage ' ... stack buffer
         rdlong  t2,SP
         mov     t2, r1         ' set up ...
         and     t2, #$1FF      ' ... number of longs ...
@@ -88,7 +88,7 @@ do_loadlut_xmm
 .lutdst
         rdlong  0, SP          ' load from stack buffer to LUT
         add     SP, ##$400     ' restore original SP
-        jmp     #LMM_loop
+        jmp     #XMM_Loop
 
 ' special - perform a special operation that cannot be performed via LMM
 '    RI contains 1 => do_initcog

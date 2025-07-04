@@ -12,7 +12,7 @@ DAT ' initialized data segment
 
 ' Catalina Export luai_ctype_
 
- alignl ' align long
+ alignl_label
 C_luai_ctype_ ' <symbol:luai_ctype_>
  byte 0
  byte 0

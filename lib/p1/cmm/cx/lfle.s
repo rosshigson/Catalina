@@ -12,7 +12,7 @@ DAT ' uninitialized data segment
 
 ' Catalina Export _malloc_free_list
 
- alignl ' align long
+ alignl_label
 C__malloc_free_list ' <symbol:_malloc_free_list>
  byte 0[88]
 

@@ -7,6 +7,7 @@
 ' Version 3.8 - initial version - by Ross Higson
 ' Version 3.13 - combine floating point operations, and add relative jumps
 ' Version 3.15 - Modified for P2.
+' Version 8.7  - Updated to use FIFO by default (disable with NO_FIFO).
 '
 '------------------------------------------------------------------------------
 '
@@ -81,6 +82,12 @@ D32S = 21 ' must match compact.inc
 '#ifndef NO_INTERRUPTS
 '#define NO_INTERRUPTS
 '#endif
+
+' NO_FIFO - if defined, the RDLONG and PC will be used to read instructions,
+'           otherwise RDFAST and RFLONG will be used - but note that the PC 
+'           still needs be kept up to date, and a new RDFAST needs to be 
+'           issued whenever the PC has to change by anything other than 
+'           just adding 4 to move to the next long.
 
 '--------------------- Start of CMM Kernel ------------------------------------
 
@@ -180,7 +187,7 @@ X16A_MOVI    mov    0,#0        '$4b
 X16A_ADDSI   adds   0,#0        '$4c  
 X16A_SUBSI   subs   0,#0        '$4d  
 X16A_CMPI    cmp    0,#0 wcz    '$4e 
-X16A_CMPSI   cmps   0,#0 wcz    '$4f 
+X16A_CMPSI   cmps   0,#0 wcz    '$4f
 X16A_NEGI    neg    0,#0        '$50
 
 immi_bit long   %0000_0000000_001_000000000_000000000 '$51
@@ -215,7 +222,11 @@ cmm_init
         rdlong  $100,r1         '$63 14 ... to LUT RAM, starting at $100
         sub     SP,#8           '$64 15 reserve space ...
         mov     xfer,SP         '$65 16 ... for xfer block at top of stack
-        jmp     #read_next      '$66 17 we can now start executing CMM code
+#ifndef NO_FIFO
+        jmp     #\init_fifo     '$66 17 start executing CMM code
+#else
+        jmp     #\read_next     '$66 17 start executing CMM code
+#endif
         nop                     '$67 18 
         nop                     '$68 19 
         nop                     '$69 20 
@@ -241,15 +252,36 @@ FC_INLINE                       ' must match FC_INLINE in compact.inc
 done_32
          allowi                 '$74
          add    PC,#4           '$75 no - increment PC
-
-EXEC_STOP                       ' must match EXEC_STOP in compact.inc
 read_next
          stalli                 '$76
+#ifndef NO_FIFO
+         rflong inst            '$77 fall through to ...
+#else
          rdlong inst,PC         '$77 fall through to ...
+#endif
          mov    PC_OFFS,#0      '$78
 DECODE_OFF                      ' must match DECODE_OFF in compact.inc
 decode
          mov    t1,inst         '$79 test ...
+         and    t1,#1           '$7a ... instruction ...
+         tjz    t1,#decode_16a  '$7b ... type ...
+         mov    t1,inst         '$7c ... to ...
+         and    t1,#2           '$7d ... determine ...
+         tjz    t1,#decode_16b  '$7e ... how to decode
+decode_32
+         mov    t1,inst         '$7f extract ...
+         shr    t1,#26          '$80 ... 6 bit opcode
+         add    t1,#table_32
+         mov    t2,inst         '$81 extract ...
+         shr    t2,#S32         '$82 ... 24 bits ...
+         andn   t2,top8         '$83 ... of src (or src & dst)
+         jmp    t1
+EXEC_STOP                       ' must match EXEC_STOP in compact.inc
+#ifndef NO_FIFO
+init_fifo
+         rdfast #0,PC           '$84
+#endif
+         jmp #read_next
 
 #else
 
@@ -265,28 +297,37 @@ done_32
          allowi                 '$72
          add    PC,#4           '$73 no - increment PC
 
-EXEC_STOP                       ' must match EXEC_STOP in compact.inc
 read_next
          stalli                 '$74
+#ifndef NO_FIFO
+         rflong inst            '$75 fall through to ...
+#else
          rdlong inst,PC         '$75 fall through to ...
+#endif
 decode
          mov    t1,inst         '$76 test ...
+         and    t1,#1           '$77 ... instruction ...
+         tjz    t1,#decode_16a  '$78 ... type ...
+         mov    t1,inst         '$79 ... to ...
+         and    t1,#2           '$7a ... determine ...
+         tjz    t1,#decode_16b  '$7b ... how to decode
+decode_32
+         mov    t1,inst         '$7c extract ...
+         shr    t1,#26          '$7d ... 6 bit opcode
+         add    t1,#table_32
+         mov    t2,inst         '$7e extract ...
+         shr    t2,#S32         '$7f ... 24 bits ...
+         andn   t2,top8         '$80 ... of src (or src & dst)
+         jmp    t1
+EXEC_STOP                       ' must match EXEC_STOP in compact.inc
+#ifndef NO_FIFO
+init_fifo
+         rdfast #0,PC           '$81
+#endif
+         jmp #read_next
 
 #endif
 
-         and    t1,#1           ' ... instruction ...
-         tjz    t1,#decode_16a  ' ... type ...
-         mov    t1,inst         ' ... to ...
-         and    t1,#2           ' ... determine ...
-         tjz    t1,#decode_16b  ' ... how to decode
-decode_32
-         mov    t1,inst         ' extract ...
-         shr    t1,#26          ' ... 6 bit opcode
-         add    t1,#table_32
-         mov    t2,inst         ' extract ...
-         shr    t2,#S32         ' ... 24 bits ...
-         andn   t2,top8         ' ... of src (or src & dst)
-         jmp    t1
 table_32
          jmp    #X32_JMPA
          jmp    #X32_CALA
@@ -403,7 +444,11 @@ X16B_PSHL
          jmp    #done_16
 X16B_JMPI        
          mov    PC,RI
+#ifndef NO_FIFO
+         jmp    #init_fifo
+#else
          jmp    #read_next
+#endif
 
 'X16B_DIVS - Signed 32 bit division
 '        Divisor  : r1
@@ -413,7 +458,7 @@ X16B_JMPI
 '           Remainder in r1
 
 X16B_DIVS
-         call   #\signed_d32     ' performs signed division
+         call   #\signed_d32     ' perform signed division
          jmp    #done_16
 
 'X16B_DIVU - unsigned 32 bit division 
@@ -457,7 +502,9 @@ X16B_SYSP
          jmp     #done_16
 
 '
-' X16B_PASM - Execute one long (starting at next long boundary) as an instruction.
+' X16B_PASM - Execute one long (starting at next long boundary) as an
+'             instruction. Note that we cannot use the FIFO here, because
+'             we do not know if the instruction we execute alter the PC!
 '
 X16B_PASM
          andn   PC,#3           ' align PC to long
@@ -468,8 +515,10 @@ X16B_PASM
 exec1a   long   0-0
          jmp    #\EXEC_STOP      ' done
 '
-' X16B_EXEC - Execute multiple longs (starting at next long boundary) as instructions.
-'            To exit, execute the instruction "jmp #EXEC_STOP"
+' X16B_EXEC - Execute multiple longs (starting at next long boundary) as 
+'             instructions. Note that we cannot use the FIFO here because
+'             we do not know if the instructions we execute alter the PC!
+'             To exit, execute the instruction "jmp #EXEC_STOP"
 X16B_EXEC
          andn   PC,#3           ' align PC to long
          add    PC,#4           ' point to next long
@@ -573,7 +622,11 @@ copy_bytes
 '
 X16B_LODL  
          add    PC,#4           ' point to next long
+#ifndef NO_FIFO
+         rflong RI              ' read the long
+#else
          rdlong RI,PC           ' read the long
+#endif
          andn   PC,#3           ' align PC to long boundary
          mov    pasm_16,X16A_MOV ' set up 'mov' instruction
          mov    t3,#RI          ' set up src
@@ -644,7 +697,11 @@ X32_CALA
                                 ' fall through to ...
 X32_JMPA
          mov    PC,t2     
+#ifndef NO_FIFO
+         jmp    #init_fifo
+#else
          jmp    #read_next
+#endif
 X32_LODI  
          rdlong RI,t2   
          jmp    #done_32
@@ -714,7 +771,11 @@ X16B_JMPR
          shl    inst,#(32-S16B-9) ' sign ...
          sar    inst,#(32-9)      ' ... extend
          add    PC,inst         ' add relative jump to PC
+#ifndef NO_FIFO
+         jmp    #init_fifo
+#else
          jmp    #read_next
+#endif
 '
 ' X32_PSHB - push a structure (size in bytes at the PC) pointed to by R0
 '          onto the stack, decrementing the SP
@@ -787,7 +848,11 @@ FC_RETURN                       ' must match FC_RETURN in compact.inc
 X16B_RETN                     
          rdlong PC,SP           ' read the PC
          add    SP,#8           ' increment the SP
+#ifndef NO_FIFO
+         jmp    #init_fifo
+#else
          jmp    #read_next
+#endif
 X32_LODF
          shl    t2,#8           ' sign ...
          sar    t2,#8           ' ... extend

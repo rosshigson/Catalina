@@ -7,11 +7,11 @@ To build the demo programs, use the 'build_all' scripts, specifying the
 platform and memory type and HMI options. Note that you must specify one 
 of PSRAM or HYPER. For example:
 
-   build_all P2_EVAL HYPER VT100 SIMPLE VT100 
+   build_all P2_EVAL HYPER SIMPLE VT100 
 or
-   build_all P2_EDGE PSRAM VT100 SIMPLE VT100 
+   build_all P2_EDGE PSRAM SIMPLE VT100 
 or
-   build_all P2_EDGE HYPER VT100 SIMPLE VT100 
+   build_all P2_EDGE HYPER SIMPLE VT100 
 
 Note that the type of HMI (SIMPLE in this case) should be specified even if
 it is the default for the platform - this allows the test program to add

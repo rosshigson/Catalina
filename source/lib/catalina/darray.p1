@@ -1,12 +1,13 @@
 /* 
- * The files included here are created using spinnaker and spinc: 
+ * The files included here are created using spinnaker and spinc
+ * (see the Makefile for full details): 
  *
- *    cp dynamic_array.p1 dynamic_array.h
+ *    cp darray.p1 darray.h
  *
- *    spinnaker -p -a -I  lmmd.spin -o lmmd
+ *    spinnaker -p -a -I  Catalina_LMM_dynamic.spin -o lmmd
  *    spinc lmmd.binary > lmmd.inc
  *
- *    spinnaker -p -a -I  cmmd.spin -o cmmd
+ *    spinnaker -p -a -I  Catalina_CMM_dynamic -o cmmd
  *    spinc cmmd.binary > cmmd.inc
  *
  */

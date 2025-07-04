@@ -8,12 +8,12 @@ DAT ' code segment
 
 ' Catalina Export _creat
 
- alignl ' align long
+ alignl_label
 C__creat ' <symbol:_creat>
- alignl ' align long
+ alignl_p1
  long I32_LODS + R0<<D32S + ((-1)&$7FFFF)<<S32 ' RET cons
 ' C__creat_2 ' (symbol refcount = 0)
  word I16B_RETN
- alignl ' align long
- alignl ' align long
+ alignl_p1
+ alignl_p1
 ' end

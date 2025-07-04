@@ -49,6 +49,16 @@
 #ifndef alignl
 #define alignl long
 #endif
+' On the P1, these must all do the same as alignl
+#ifndef alignl_p1
+#define alignl_p1 alignl
+#endif
+#ifndef alignl_label
+#define alignl_label alignl
+#endif
+#ifndef alignl_debug
+#define alignl_debug alignl
+#endif
 '
 ' Caching options - allow CACHED_1K, CACHED_2K, CACHED_4K, CACHED_8K 
 '                   or just CACHED (equivalent to CACHED_8K)

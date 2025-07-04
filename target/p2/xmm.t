@@ -29,6 +29,7 @@
 '
 ' Version 7.9  - Fix set up of xfer block.
 '
+' Version 8.7  - Support read-only LUT (LARGE mode only)
 '------------------------------------------------------------------------------
 '
 '    Copyright 2009 Ross Higson
@@ -160,7 +161,7 @@ r15     long 0                  '$42
 setup_xfer
 r16     sub     SP,#8           '$43 reserve space ...
 r17     mov     xfer,SP         '$44 ... for xfer block at top of stack
-r18     jmp     #LMM_Loop       '$45 start executing C code
+r18     jmp     #XMM_Loop       '$45 start executing C code
  
 r19     long 0                  '$46
 r20     long 0                  '$47
@@ -213,7 +214,7 @@ lmm_init
         sub     CS,##$200       '$6a&6b 17&18 correct CS for proglogue
         sub     PC,CS           '$6c 19 correct PC for XMM
         call    #XMM_Activate   '$6d 20
-#if defined(LUT_PAGE) || defined(LUT_CACHE)
+#if !defined(NO_LUT) || defined(LUT_CACHE)
         setluts #1              '$6e 21 enable cache to write to our LUT
 #else
         nop                     '$6e 21                    
@@ -242,19 +243,23 @@ XMM_Addr    long  0             '$75
 Hub_Addr    long  0             '$76
 XMM_Len     long  0             '$77
 '
-' LMM_next - increment the PC then execute the instruction pointed to by the new PC
+' XMM_next - increment the PC then execute the instruction pointed to by the new PC
 '        
-LMM_next
+XMM_next
         add    PC,#4            '$78
 '
-LMM_loop
-        setd   XMM_Dst,#LMM_1   '$79
-        call   #XMM_ReadInstr   '$7a
+XMM_Loop
+#if !defined(NO_LUT) && defined(LARGE)
+        setd   XMM_iDst,#XMM_1  '$79
+#else
+        setd   XMM_Dst,#XMM_1   '$79
+#endif
+        call   #XMM_ReadPC      '$7a
         stalli                  '$7b
-LMM_1
+XMM_1
         nop                     '$7c
         allowi                  '$7d
-        jmp    #LMM_loop        '$7e
+        jmp    #XMM_Loop        '$7e
 
 '
 ' XMM_ReadReg - read a long value to a cog address.
@@ -267,10 +272,8 @@ LMM_1
 '    XMM_Addr - contains address to read
 '
 XMM_ReadReg
-        setd  XMM_Dst,#XMM_Reg  '$7f
-        call  #XMM_ReadLong     '$80
-XMM_ReadReg_ret
-        ret                     '$81
+        setd  XMM_Dst,#XMM_Reg
+        jmp   #XMM_ReadLong
 
 '
 ' XMM_WriteReg - write a long value from a cog address
@@ -283,16 +286,14 @@ XMM_ReadReg_ret
 '    XMM_Addr - contains address to read
 '
 XMM_WriteReg
-        sets  XMM_Src,#XMM_Reg  '$82
-        call  #XMM_WriteLong    '$83
-XMM_WriteReg_ret                   
-        ret                     '$84
+        sets  XMM_Src,#XMM_Reg
+        jmp   #XMM_WriteLong
 '
 'load_l - load the long stored at the PC into RI, incrementing the PC
 '
 load_l
        call   #XMM_ReadRI   ' load the long
-       jmp    #LMM_loop     ' execute next instruction
+       jmp    #XMM_Loop     ' execute next instruction
 '
 'load_i - load the long at the address stored at the PC into RI, 
 '         incrementing the PC (i.e. load indirect)
@@ -302,15 +303,17 @@ load_i
 #ifdef LARGE
        cmp    RI,CS wc
   if_c rdlong RI,RI
-  if_c jmp    #LMM_loop
+  if_c jmp    #XMM_Loop
        mov    XMM_Addr,RI   ' read ...
        sub    XMM_Addr,CS   ' ... (correct XMM address) ...
-       'setd   XMM_Dst,#RI   ' dest register is RI
+#if !defined(NO_LUT) && defined(LARGE)
+       setd   XMM_Dst,#RI   ' dest register is RI
+#endif
        call   #XMM_ReadLong ' ... the long at that address
-       jmp    #LMM_loop     ' execute next instruction
+       jmp    #XMM_Loop     ' execute next instruction
 #else
        rdlong RI,RI         ' read the value at that address
-       jmp    #LMM_loop     ' execute next instruction
+       jmp    #XMM_Loop     ' execute next instruction
 #endif
 '
 ' fp_ind - load the FP into RI, then add the long at the PC to result, incrementing the PC
@@ -318,7 +321,7 @@ load_i
 fp_ind
        call   #XMM_ReadRI   ' load the long value
        adds   RI,FP         ' add the frame pointer
-       jmp    #LMM_loop     ' execute next instruction
+       jmp    #XMM_Loop     ' execute next instruction
 '
 ' push_a - push a value whose address is specified indirectly in a global
 '          variable onto the stack
@@ -331,7 +334,9 @@ push_a
   if_c jmp    #push_l
        mov    XMM_Addr,RI   ' address is in RI
        sub    XMM_Addr,CS   ' correct XMM address
-'       setd   XMM_Dst,#RI   ' dest register is RI
+#if !defined(NO_LUT) && defined(LARGE)
+       setd   XMM_Dst,#RI   ' dest register is RI
+#endif
        call   #XMM_ReadLong ' read the bytes
        jmp    #push_l       ' push the value just read
 #else
@@ -351,7 +356,7 @@ push_x
 push_l 
        sub    SP,#4         ' decrement SP
        wrlong RI,SP         ' save value on stack
-       jmp    #LMM_loop     ' execute next instruction
+       jmp    #XMM_Loop     ' execute next instruction
 '
 ' push_m - push many registers (specified by long at PC) onto the stack,
 ' decrementing the SP before each one
@@ -370,7 +375,7 @@ push_m
  if_nz jmp    #:push_nxt    ' continue till all registers checked
        sub    SP,#4         ' save ...
        wrlong t1,SP         ' .... register specification
-       jmp    #LMM_loop     ' execute next instruction
+       jmp    #XMM_Loop     ' execute next instruction
         
 '
 ' pop_m - pop many registers (specified in RI) from the stack,
@@ -387,7 +392,7 @@ pop_m
  if_c  altd   t2 
  if_c  rdlong 0-0,SP        ' ... load ...
  if_c  add    SP,#4         ' ... the register
- if_z  jmp    #LMM_loop     ' execute next instruction if all done 
+ if_z  jmp    #XMM_Loop     ' execute next instruction if all done 
        sub    t2,#1         ' point to previous register
        jmp    #:pop_nxt     ' continue till all registers popped
 '
@@ -413,7 +418,7 @@ copy_b
        mov    t2,R0         ' destination is in R0
 ' 
 copy_bytes
-       tjz     BC,#LMM_Loop    ' no more to copy
+       tjz     BC,#XMM_Loop    ' no more to copy
        mov     XMM_Len,#1      ' one byte at a time
 #ifdef LARGE
        cmp     t1,CS wc        ' large mode - is src Hub Addr?
@@ -452,7 +457,7 @@ new_fp
        add    BC,FP         ' ... before arguments were pushed
        sub    SP,#4         ' allow for alloca
        wrlong Bit31,SP      ' initialize pre-alloca SP (to a known value)
-       jmp    #LMM_loop     ' execute the next instruction
+       jmp    #XMM_Loop     ' execute the next instruction
 '
 ' fp_ret - pop current frame, restore previous frame and stack pointers,
 '          then restore the previous program counter
@@ -469,7 +474,7 @@ f_ret
        sub    PC,CS
 #endif
        add    SP,#8         ' increment the SP
-       jmp    #LMM_loop     ' execute the next instruction
+       jmp    #XMM_Loop     ' execute the next instruction
 '
 ' f_call - call the routine at the address pointed to by the PC (increment the PC)
 '
@@ -498,7 +503,7 @@ f_jmpi
 #ifdef LARGE
        sub    PC,CS         ' correct for moved code segment
 #endif
-       jmp    #LMM_loop     ' execute next instruction
+       jmp    #XMM_Loop     ' execute next instruction
 '
 
 'fd_32s - Signed 32 bit division
@@ -509,7 +514,7 @@ f_jmpi
 '
 f_d32s
         call    #\signed_d32     ' perform signed division
-        jmp     #LMM_loop
+        jmp     #XMM_Loop
 
 'f_d32u - unsigned 32 bit division 
 '         Divisor : r1
@@ -520,7 +525,7 @@ f_d32s
 
 f_d32u
         call    #\unsigned_d32   ' perform signed division
-        jmp     #LMM_loop
+        jmp     #XMM_Loop
         
 
 'f_m32 - multiplication
@@ -532,29 +537,29 @@ f_d32u
 f_m32
         qmul   r0,r1
         getqx  r0
-        jmp #LMM_loop
+        jmp #XMM_Loop
 
 ' bra_xx - branch if condition is true to the address at the PC,
 '          otherwise, just increment the PC by 4
 
 bra_z
   if_z  jmp    #f_jump       ' if condition true, branch is equiv to jump
-        jmp    #LMM_next     ' increment PC, execute next instruction
+        jmp    #XMM_next     ' increment PC, execute next instruction
 bra_nz
  if_nz  jmp    #f_jump       ' if condition true, branch is equiv to jump
-        jmp    #LMM_next     ' increment PC, execute next instruction
+        jmp    #XMM_next     ' increment PC, execute next instruction
 bra_ae
  if_ae  jmp    #f_jump       ' if condition true, branch is equiv to jump
-        jmp    #LMM_next     ' increment PC, execute next instruction
+        jmp    #XMM_next     ' increment PC, execute next instruction
 bra_a
  if_a   jmp    #f_jump       ' if condition true, branch is equiv to jump
-        jmp    #LMM_next     ' increment PC, execute next instruction
+        jmp    #XMM_next     ' increment PC, execute next instruction
 bra_be
  if_be  jmp    #f_jump       ' if condition true, branch is equiv to jump
-        jmp    #LMM_next     ' increment PC, execute next instruction
+        jmp    #XMM_next     ' increment PC, execute next instruction
 bra_b
  if_b   jmp    #f_jump       ' if condition true, branch is equiv to jump
-        jmp    #LMM_next     ' increment PC, execute next instruction
+        jmp    #XMM_next     ' increment PC, execute next instruction
 
 ' plugin - call a plugin
 ' On entry:
@@ -572,7 +577,7 @@ bra_b
 '
 plugin
         call    #\do_plugin     ' do_plugin does all the work
-        jmp     #LMM_loop
+        jmp     #XMM_Loop
 '
 
 ' rd_long/rd_word/rd_byte : Read long/word/byte from memory from address in RI into BC.
@@ -589,7 +594,7 @@ rd_long
 #ifdef LARGE
         cmp     RI,CS wc
    if_c rdlong  BC,RI
-   if_c jmp     #LMM_loop
+   if_c jmp     #XMM_Loop
 #endif
         mov     XMM_Addr,RI     ' address is in RI
 #ifdef LARGE
@@ -597,13 +602,13 @@ rd_long
 #endif
         setd    XMM_Dst,#BC     ' dest register is BC
         call    #XMM_ReadLong   ' read the long
-        jmp     #LMM_loop
+        jmp     #XMM_Loop
 
 rd_word
 #ifdef LARGE
         cmp     RI,CS wc
    if_c rdword  BC,RI
-   if_c jmp     #LMM_loop
+   if_c jmp     #XMM_Loop
 #endif
         mov     XMM_Len,#2
         jmp     #rd_mult
@@ -612,7 +617,7 @@ rd_byte
 #ifdef LARGE
         cmp     RI,CS wc
    if_c rdbyte  BC,RI
-   if_c jmp     #LMM_loop
+   if_c jmp     #XMM_Loop
 #endif
         mov     XMM_Len,#1
 
@@ -623,7 +628,7 @@ rd_mult
 #endif
         setd    XMM_Dst,#BC     ' dest register is BC
         call    #XMM_ReadMult   ' read the bytes
-        jmp     #LMM_loop
+        jmp     #XMM_Loop
 '
 ' wr_long/wr_word/wr_byte : Write long/word/byte from BC to memory at address in RI.
 '
@@ -640,7 +645,7 @@ wr_long
 #ifdef LARGE
         cmp     RI,CS wc
    if_c wrlong  BC,RI
-   if_c jmp     #LMM_loop
+   if_c jmp     #XMM_Loop
 #endif
         mov     XMM_Addr,RI     ' address is in RI
 #ifdef LARGE
@@ -648,13 +653,13 @@ wr_long
 #endif
         sets    XMM_Src,#BC     ' source register is BC
         call    #XMM_WriteLong  ' write the long
-        jmp     #LMM_loop
+        jmp     #XMM_Loop
 
 wr_word
 #ifdef LARGE
         cmp     RI,CS wc
    if_c wrword  BC,RI
-   if_c jmp     #LMM_loop
+   if_c jmp     #XMM_Loop
 #endif
         mov     XMM_Len,#2
         jmp     #wr_mult
@@ -663,7 +668,7 @@ wr_byte
 #ifdef LARGE
         cmp     RI,CS wc
    if_c wrbyte  BC,RI
-   if_c jmp     #LMM_loop
+   if_c jmp     #XMM_Loop
 #endif
         mov     XMM_Len,#1
 
@@ -674,7 +679,7 @@ wr_mult
 #endif
         sets    XMM_Src,#BC     ' source register is BC
         call    #XMM_WriteMult  ' write the bytes
-        jmp     #LMM_loop
+        jmp     #XMM_Loop
 
 '------------------------------------------------------------------------------
 ' Float32 Assembly language jump points
@@ -730,7 +735,7 @@ fp_operation
   if_nc jmp     #.fp_wait
         rdpin   r0,#FLOAT_RSP_PIN 
         cmps    r0, #0 wz,wc ' set C & Z flags according to result
-        jmp     #LMM_loop
+        jmp     #XMM_Loop
 
 #else
 
@@ -780,7 +785,7 @@ fp_service
         mov     r2,ftmp2        ' restore r2
         mov     r3,ftmp3        ' restore r3
         cmps    r0,#0 wz,wc     ' set C & Z flags according to result
-        jmp     #LMM_loop
+        jmp     #XMM_Loop
 
 #endif
 
@@ -801,17 +806,17 @@ flt_cmp
          mov     t1, r0         ' check for +0 or -0
          or      t1, r1
          andn    t1, Bit31 wcz
-  if_z   jmp     #LMM_loop
+  if_z   jmp     #XMM_Loop
 
          test    r0, Bit31 wc   ' compare signs
-         jmp     #LMM_loop
+         jmp     #XMM_Loop
 
 cmp1     test    r0, Bit31 wz   ' check signs
   if_nz  jmp     #cmp2
          cmp     r0, r1 wcz
-         jmp     #LMM_loop
+         jmp     #XMM_Loop
 cmp2     cmp     r1, r0 wcz   ' reverse test if negative
-         jmp     #LMM_loop
+         jmp     #XMM_Loop
 
 #endif
 
@@ -831,26 +836,37 @@ ftmp3         long    $0
 ' On entry: PC (32-bit): address to read from (19-bits used)
 ' On exit:  RI loaded with long pointed to by PC, PC incremented by 4
 '
-' XMM_ReadInstr : Read instruction from XMM memory at address in PC into a register.
+' XMM_ReadPC : Read long from XMM at address in PC into a register.
 '
 ' On entry: PC (32-bit): address to read from (19-bits used)
-'           XMM_Dst : destination of this instruction set to destination register
-' On exit:  destintation register loaded with long pointed to by PC, PC incremented by 4
+'           XMM_Dst : destination of this instruction must be 
+'                     set to destination register
+' On exit:  destintation register loaded with long pointed to by PC, and
+'           PC incremented by 4
 '
+#if !defined(NO_LUT) && defined(LARGE)
+XMM_ReadBC
+              setd    XMM_iDst,#BC               ' dest register is BC
+              jmp     #XMM_ReadPC                ' 
+XMM_ReadRI
+              setd    XMM_iDst,#RI               ' dest register is RI
+                                                ' fall through to XMM_ReadPC
+XMM_ReadPC
+              mov     XMM_Addr,PC               ' source address is PC
+              call    #XMM_ReadCode             ' read the code long
+#else
 XMM_ReadBC
               setd    XMM_Dst,#BC               ' dest register is BC
-              jmp     #XMM_ReadInstr                ' 
+              jmp     #XMM_ReadPC                ' 
 XMM_ReadRI
               setd    XMM_Dst,#RI               ' dest register is RI
-                                                ' fall through to XMM_ReadInstr
-XMM_ReadInstr
+                                                ' fall through to XMM_ReadPC
+XMM_ReadPC
               mov     XMM_Addr,PC               ' source address is PC
-              call    #XMM_ReadLong             ' read the instuction
-              add     PC,#4                     ' increment the PC
-XMM_ReadInstr_ret
-XMM_ReadRI_ret
-XMM_ReadBC_ret
-              ret
+              call    #XMM_ReadLong             ' read the long
+#endif
+        _ret_ add     PC,#4                     ' increment the PC
+
 '----------------------------- End of XMM Kernel -------------------------------
 
 '
@@ -865,13 +881,8 @@ XMM_ReadBC_ret
 '#define NEED_XMM_WRITEPAGE
 '                                    
 #ifdef CACHED
-#if defined(LUT_PAGE) || defined(LUT_CACHE)
-#define USE_LUT
-#endif
-
 ' When the cache is in use, all platforms use the same XMM code
 #include "cached.inc"
-#undef USE_LUT
 #else
 #error XMM PROGRAMS REQUIRE CACHE OPTION (CACHED_1K .. CACHED_64K or CACHED)
 #endif

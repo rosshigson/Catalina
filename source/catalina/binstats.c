@@ -29,6 +29,8 @@
  *
  * version 8.6 - just update version number.
  *
+ * version 8.7 - sewt _EXIT_CODE to result.
+ *
  */
 
 /*--------------------------------------------------------------------------
@@ -69,7 +71,7 @@
 #define SHORT_LAYOUT_4     1 /* 1 to remove unused bytes when using layout 4 (P1 only) */
 #define SHORT_LAYOUT_5     1 /* 1 to remove unused bytes when using layout 5 (P1 or P2) */
 
-#define VERSION            "8.6"
+#define VERSION            "8.7"
 
 #define MAX_LINELEN        4096
 #define MAX_PATHLEN        1000
@@ -529,6 +531,16 @@ void main (int argc, char *argv[]) {
    if (diagnose) {
       fprintf(stderr, "\n%s done, result = %d\n", argv[0], result);
    }
+
+#if defined(__CATALINA_P2)
+   if (result == 0) {
+     setenv("_EXIT_CODE", "0", 1);
+   }
+   else {
+     setenv("_EXIT_CODE", "1", 1);
+   }
+   _waitms(1000);
+#endif
 
    exit(result);
 }

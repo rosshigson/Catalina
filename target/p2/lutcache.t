@@ -9,7 +9,7 @@
   other than Start). This plugin is enabled by defining one of the following 
   Catalina symbols:
 
-    LUT_PAGE  : use up to 1K of LUT ($000 - $0FF) as a cache page.
+    !NO_LUT   : use up to 1K of LUT ($000 - $0FF) as a cache page.
 
     LUT_CACHE : use 1K of LUT ($000 - $0FF) for the whole cache.
  
@@ -26,6 +26,9 @@
         of the Hub RAM address minus XMM_CACHE.
 
   Version 6.6   - Initial release
+
+  Version 8.7   - Support read-only LUT (LARGE mode only)
+                - Remove FLASH CACHE code (not supported on Propeller 2)
 
   TERMS OF USE: MIT License
 
@@ -54,30 +57,6 @@ CON
 
 #ifdef CACHED
 
-' define this either here or on the command line to enable 
-' verifying each FLASH write, and also retrying on failure
-
-'#define WRITE_CHECK
-
-' define this either here or on the command line to enable 
-' verifying FLASH chip erase, and also retrying on failure
-
-'#define ERASE_CHECK
-
-'#ifndef NO_FLASH
-'#ifdef CACHED
-'#ifdef FLASH
-'#ifndef NEED_FLASH
-'#define NEED_FLASH              ' include FLASH support 
-'#endif
-'#endif
-'#else
-'#ifdef FLASH
-'#error : FLASH REQUIRES CACHE OPTION (CACHED_1K .. CACHED_64K or CACHED)
-'#endif
-'#endif
-'#endif
-
 #define XMM_Activate      PSR_Activate
 #define XMM_Tristate      PSR_Tristate
 #define XMM_ReadPage      PSR_ReadPage
@@ -94,25 +73,12 @@ CON
   ' cache access commands
   WRITE_CMD             = CACHE_WRITE_CMD
   READ_CMD              = CACHE_READ_CMD
+#if !defined(NO_LUT) && defined(LARGE)
+  CODE_CMD              = CACHE_CODE_CMD
+  CODE_MASK             = CACHE_CODE_MASK
+#endif
 
   UNIQUE_RESPONSE       = $DEADC0DE
-
-{
-#ifdef NEED_FLASH
-
-  EXTEND_MASK           = CACHE_EXTEND_MASK
-  ' extended commands
-  ERASE_CHIP_CMD        = CACHE_ERASE_CHIP_CMD
-  ERASE_BLOCK_CMD       = CACHE_ERASE_BLOCK_CMD
-  WRITE_DATA_CMD        = CACHE_WRITE_DATA_CMD
-
-  ' flash chip commands
-
-  ERASE_RETRY           = 3
-  WRITE_RETRY           = 10
-
-#endif
-}
 
   ' number of entries in index
   CACHE_INDEX           = 1<<CACHE_INDEX_LOG2
@@ -127,79 +93,6 @@ CON
   EMPTY_BIT             = 30
   DIRTY_BIT             = 31
 
-{
-PUB Start : okay | init_mbox, init_cache, init_iwidth, init_owidth
-
-    if CACHE_COG > 0 
-
-      if not Running
-        init_mbox := XMM_CACHE_CMD
-        init_cache := XMM_CACHE
-        init_iwidth := DEFAULT_INDEX_WIDTH
-        init_owidth := DEFAULT_OFFSET_WIDTH
-        long[XMM_CACHE_CMD] := $ffffffff
-        coginit(CACHE_COG, @init_vm, @init_mbox)
-        repeat while long[XMM_CACHE_CMD]
-
-      okay := TRUE
-
-    else
-
-      okay := FALSE
-
-
-PUB Running : okay
-
-    long[XMM_CACHE_CMD] := $fffffffe
-    repeat 1000
-       if long[XMM_CACHE_CMD] == 0
-          quit
-    okay := (long[XMM_CACHE_RSP] == UNIQUE_RESPONSE)
-   
-
-pub readWord(madr)
-    long[vm_mbox][0] := (madr&!3) | READ_CMD
-    repeat while long[vm_mbox][0]
-    madr &= LINELEN-1
-    return word[long[vm_mbox][1]+madr]
-
-pub readLong(madr)
-    long[vm_mbox][0] := (madr&!3) | READ_CMD
-    repeat while long[vm_mbox][0]
-    madr &= LINELEN-1
-    return long[long[vm_mbox][1]+madr]
-
-pub writeLong(madr, val)
-    long[vm_mbox][0] := (madr&!3) | WRITE_CMD
-    repeat while long[vm_mbox][0]
-    madr &= LINELEN-1
-    long[long[vm_mbox][1]+madr] := val
-
-pub readByte(madr)
-    long[vm_mbox][0] := (madr&!3) | READ_CMD
-    repeat while long[vm_mbox][0]
-    madr &= LINELEN-1
-    return byte[long[vm_mbox][1]+madr]
-
-pub writeByte(madr, val)
-    long[vm_mbox][0] := (madr&!3) | WRITE_CMD
-    repeat while long[vm_mbox][0]
-    madr &= LINELEN-1
-    byte[long[vm_mbox][1]+madr] := val
-
-pub eraseFlashBlock(madr)
-    long[vm_mbox][0] := ERASE_BLOCK_CMD | (madr << 8)
-    repeat while long[vm_mbox][0] <> 0
-    return long[vm_mbox][1]
-
-pub writeFlash(madr, buf, count_) | pbuf, pcnt, paddr
-    pbuf := buf
-    pcnt := count_
-    paddr := madr
-    long[vm_mbox][0] := WRITE_DATA_CMD | (@pbuf << 8)
-    repeat while long[vm_mbox][0] <> 0
-    return long[vm_mbox][1]
-}
 DAT
         org   $0
 
@@ -251,18 +144,6 @@ fillme  long    0[CACHE_INDEX-fillme]   ' first cog locations are used for a dir
         shr     lut_setq2, #2         ' ... setq2 ...
         sub     lut_setq2, #1         ' ... value (longs)
         wrlong  line_mask, PTRA       ' ... actual line mask
-
-{        
-#ifdef NEED_FLASH
-
-        call    #XMM_FlashActivate
-        call    #XMM_FlashWriteEnable
-        call    #XMM_FlashUnprotect     ' unprotect entire Flash chip
-        call    #XMM_FlashTristate
-
-#endif
-}
-
         jmp     #vmflush
 
         ' initialize the cache lines
@@ -294,29 +175,17 @@ waitcmd
 #endif
 .cmd    cmps    vmpage, #0 wc           ' if it is just a ping (cmd < 0) ...
   if_c  jmp     #ping                   ' ... then respond
-
-{
-#ifdef NEED_FLASH  
-
-        test    vmpage, #EXTEND_MASK wz ' test for an extended command
-  if_z  jmp     #extend
-
-#endif
-}
         mov     set_dirty_bit,#0
         test    vmpage, #1 wz           ' is it a write command?
  if_z   mov     set_dirty_bit, dirty_mask  ' yes - writes make the page dirty
+#if !defined(NO_LUT) && defined(LARGE)
+        mov     copy_to_lut,#0
+        test    vmpage, #CODE_MASK wz    ' is this a CODE command?
+ if_z   mov     copy_to_lut,#1           ' yes - copy page to LUT
+#endif
         shr     vmpage, offset_width
-
-        ' CANNOT USE THIS CODE ANY MORE BECAUSE OF CHANGE IN SHR ON THE P2 !!!
-        'shr     vmpage, offset_width wc ' carry is now one for read and zero for write
-        'mov     set_dirty_bit, #0       ' make mask to set dirty bit on writes
-        'muxnc   set_dirty_bit, dirty_mask
-        
         mov     .line, vmpage            ' get the cache line index
-
         and     .line, index_mask
-
         mov     hubaddr, .line
         shl     hubaddr, offset_width
         add     hubaddr, cacheptr       ' get the address of the cache line
@@ -328,8 +197,13 @@ waitcmd
         and     vmcurrent, tag_mask
         cmp     vmcurrent, vmpage wz    ' z set means there was a cache hit
   if_nz call    #miss                   ' handle a cache miss
-#if defined(LUT_PAGE)
+#if !defined(NO_LUT) && defined(SMALL)
         setq2   lut_setq2               ' read line ...
+        rdlong  0, hubaddr               ' ... from Hub to LUT address 0
+#elif !defined(NO_LUT) && defined(LARGE)
+        test    copy_to_lut,#1 wz       ' was this a CODE command?
+  if_z  jmp     #.st                    ' no - don't read page to LUT
+        setq2   lut_setq2               ' yes - read line ...
         rdlong  0, hubaddr               ' ... from Hub to LUT address 0
 #endif
 .st     or      0-0, set_dirty_bit      ' set the dirty bit on writes
@@ -367,12 +241,12 @@ miss
         mov     XMM_Len, line_size
         mov     XMM_Addr, vmcurrent
         shl     XMM_Addr, offset_width
-        call    #BWRITE                 ' write current page
+        call    #XMM_WriteLongPage       ' write current page
 .rd2    mov     Hub_Addr, hubaddr
         mov     XMM_Len, line_size
         mov     XMM_Addr, vmpage
         shl     XMM_Addr, offset_width
-        call    #BREAD                  ' read new page
+        call    #XMM_ReadLongPage       ' read new page
 .st2    mov     0-0, vmpage
         call    #XMM_Tristate
 #if defined(LUT_CACHE)
@@ -386,113 +260,6 @@ miss
 .lutdst rdlong  0-0, hubaddr            ' ... from Hub to LUT
 #endif
         ret
-
-{
-#ifdef NEED_FLASH
-
-extend  mov     XMM_Addr, vmpage
-        shr     XMM_Addr, #8
-        shr     vmpage, #2
-        and     vmpage, #3
-        add     vmpage, #dispatch
-        jmp     vmpage
-
-dispatch
-        jmp     #erase_chip_handler
-        jmp     #erase_4k_block_handler
-        jmp     #write_data_handler
-        jmp     #waitcmd
-
-erase_chip_handler
-        call    #XMM_FlashActivate
-        call    #XMM_FlashWriteEnable
-        call    #XMM_FlashEraseChip
-        call    #XMM_FlashWaitUntilDone
-        call    #XMM_FlashTristate
-#ifdef ERASE_CHECK
-        mov     XMM_Addr,#0
-        mov     XMM_Len,Erase_Len
-        mov     Erase_Cnt,#ERASE_RETRY
-        call    #XMM_FlashActivate      ' select flash chip
-        call    #XMM_FlashCheckEmpty
-  if_nz mov     outx,#1
-  if_z  mov     outx,#0
-#endif
-        jmp     #.resp
-
-erase_4k_block_handler
-        call    #XMM_FlashActivate
-        call    #XMM_FlashWriteEnable
-        call    #XMM_FlashEraseBlock
-        call    #XMM_FlashWaitUntilDone
-        call    #XMM_FlashTristate
-        jmp     #.resp
-
-write_data_handler
-        rdlong  Hub_Addr,XMM_Addr ' get the buffer pointer
-        add     XMM_Addr,#4
-        rdlong  XMM_Len,XMM_Addr wz ' get the byte count
-  if_z  jmp     #.cont
-        add     XMM_Addr,#4
-        rdlong  XMM_Addr,XMM_Addr ' get the flash address (zero based) 
-
-#ifdef WRITE_CHECK
-        mov     Chk_Hub,Hub_Addr
-        mov     Chk_XMM,XMM_Addr
-        mov     Chk_Len,XMM_Len
-        mov     Chk_Cnt,#WRITE_RETRY
-#endif
-        call    #XMM_FlashActivate
-.write
-        call    #XMM_FlashWriteEnable
-        call    #XMM_FlashWritePage
-        call    #XMM_FlashWaitUntilDone
-        
-#ifdef WRITE_CHECK
-        mov     Hub_Addr,Chk_Hub
-        mov     XMM_Addr,Chk_XMM
-        mov     XMM_Len,Chk_Len
-.chk_loop
-        call    #XMM_FlashComparePage
-  if_nz jmp     #.fail
-        mov     outx,#0
-        jmp     #.cont
-.fail         
-        djnz    Chk_Cnt,#.retry
-        mov     outx,#1
-        jmp     #.cont
-.retry
-        mov     Hub_Addr,Chk_Hub
-        mov     XMM_Addr,Chk_XMM
-        mov     XMM_Len,Chk_Len
-        jmp     #.write
-#endif
-.cont
-        call    #XMM_FlashTristate
-.resp
-        mov     vmrsp,outx
-        call    #respond
-
-flash_cache_init
-        ' initialize any FLASH cache lines
-        sets    .ld, #0                          
-        setd    .st, #0
-        nop
-        mov     .t1, index_count
-.ld     mov     .t2, 0-0
-        and     .t2, address_mask
-        shl     .t2, offset_width
-        cmp     .t2, fbase wc
-   if_b jmp     #.next         
-.st     mov     0-0, empty_mask
-.next   add     .ld, #1
-        add     .st, .dstinc
-        djnz    .t1, #.ld
-
-        jmp     #waitcmd                ' wait for a new command
-
-#endif
-}
 
 ' pointers to mailbox entries
 pvmcmd          long    0       ' on call this is the virtual address and read/write bit
@@ -519,79 +286,22 @@ offset_width    long    DEFAULT_OFFSET_WIDTH
 line_size       long    0                       ' line size in bytes
 line_mask       long    0                       ' line mask
 lut_setq2       long    0                       ' line size in longs - 1
+#if !defined(NO_LUT) && defined(LARGE)
+copy_to_lut     long    0
+#endif
 empty_mask      long    (1<<EMPTY_BIT)
 dirty_mask      long    (1<<DIRTY_BIT) 
 ping_response   long    UNIQUE_RESPONSE
-
-' platform specific stuff ...
+hubaddr         long    0
+lutaddr         long    0
+lutcheck        long    0
+lutval          long    0
+hubval          long    0
+lutcount        long    0
 
 '-------------------------------------------------------------------------------
-'
-' BREAD
-'
-BREAD
-{
-#ifdef NEED_FLASH
-' With FLASH, we read from Flash addresses differently
-        cmp     XMM_Addr,fbase wcz
-  if_b  jmp     #.BREAD_SPI
-        sub     XMM_Addr,fbase
-        call    #XMM_FlashReadPage
-        jmp     #.BREAD_DONE
-.BREAD_SPI
-#endif
-}
-        call    #XMM_ReadLongPage
-.BREAD_DONE
-BREAD_ret
-        ret
-'
-' BWRITE
-'
-BWRITE
+' platform specific stuff ...
 
-{
-#ifdef NEED_FLASH
-' With FLASH, we ignore writes to Flash addresses
-        cmp     XMM_Addr,fbase wcz
-  if_b  call    #XMM_WriteLongPage
-#else
-}
-        call    #XMM_WriteLongPage
-{
-#endif
-}
-
-BWRITE_ret
-        ret
-'
-{
-#ifdef NEED_FLASH
-
-fbase    long    XMM_RO_BASE_ADDRESS - HUB_SIZE ' XMM addr of FLASH
-
-#endif
-}
-'
-hubaddr  long $0
-lutaddr  long $0
-lutcheck long $0
-lutval   long $0
-hubval   long $0
-lutcount long $0
-'
-#ifdef WRITE_CHECK
-Chk_Hub  long $0
-Chk_XMM  long $0
-Chk_Len  long $0
-Chk_Cnt  long $0
-#endif
-'
-#ifdef ERASE_CHECK
-Erase_Cnt long $0
-Erase_Len long 1024*1024
-#endif
-'
 #ifndef NEED_PSR_READPAGE
 #define NEED_PSR_READPAGE
 #endif

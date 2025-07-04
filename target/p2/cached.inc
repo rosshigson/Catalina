@@ -20,7 +20,9 @@
 '             - cache to be in the same cog pair).
 '             - Add ReadLongPage and WriteLongPage for P2 (note these assume
 '               long aligned buffers which are a multiple of 4 bytes long, 
-'               but this is currently always the case!)
+'               but this is currently always the case!).
+'
+' Version 8.7 - Support read-only LUT (LARGE mode only)
 '-------------------------------------------------------------------------------
 '
 '    Copyright 2011 Ross Higson
@@ -77,7 +79,13 @@
 XMM_Activate
 XMM_Tristate
               tjnz .XMM_Msk,#.XMM_Activate_done  ' nothing to do if mask already set up
+#if defined(LUT_CACHE) || !defined(NO_LUT)
+              cogid .XMM_Msk                     ' calculate ...
+              xor .XMM_Msk,#1                    ' ... the other cog in the cog pair
+              shl  .XMM_Msk,#2                   ' point to cache cog ...
+#else
               mov .XMM_Msk,#CACHE_COG*4          ' point to cache cog ...
+#endif
               add .XMM_Msk,reg                   ' ... registry entry ...
               rdlong .XMM_Msk,.XMM_Msk           ' ... and then its request block
               rdlong .XMM_Msk,.XMM_Msk           ' load the CACHE_LINE_MASK to use
@@ -97,7 +105,7 @@ XMM_Tristate
 '                this routine is used.
 ' On entry:
 '    XMM_Addr : address to read (up to 30 bits)
-'    XMM_Dst  : destination of this instruction set to destination register
+'    XMM_Dst  : destination of this instruction must be set to destination register
 ' On exit:
 '    Destination register contains long read from XMM.
 '    XMM_Addr incremented by 4.
@@ -131,19 +139,17 @@ XMM_ReadLong
 .ReadLong_Line2
               mov     .XMM_Tmp2,XMM_Addr         ' calculate ...
               and     .XMM_Tmp2,.XMM_Msk         ' ... the ...
-#ifdef USE_LUT
-#if defined(LUT_CACHE)
+#if defined(LUT_CACHE) && !defined(NO_LUT_LOAD)
               mov     .XMM_Tmp1,.XMM_Line
               add     .XMM_Tmp1,.XMM_Tmp2        ' ... Hub cache address
               andn    .XMM_Tmp1,#3               ' read only on long boundary!
-              sub     .XMM_Tmp1,##XMM_CACHE      ' convert Hub cache addr ...
+              sub     .XMM_Tmp1,##XMM_CACHE      ' convert Hub cache addr to ...
               and     .XMM_Tmp1,.XMM_LutMsk
-              shr     .XMM_Tmp1,#2               ' ... to LUT address (in longs)
+              shr     .XMM_Tmp1,#2               ' ... LUT address (in longs)
 XMM_Dst       rdlut   0-0,.XMM_Tmp1              ' read long from LUT to dst
-#else
-              shr     .XMM_Tmp2,#2               ' ... to LUT address (in longs)
+#elif !defined(NO_LUT) && defined(SMALL) && !defined(NO_LUT_LOAD)
+              shr     .XMM_Tmp2,#2               ' ... LUT address (in longs)
 XMM_Dst       rdlut   0-0,.XMM_Tmp2              ' read long from LUT to dst
-#endif
 #else
               mov     .XMM_Tmp1,.XMM_Line
               add     .XMM_Tmp1,.XMM_Tmp2        ' ... Hub cache address
@@ -152,12 +158,62 @@ XMM_Dst       rdlong  0-0,.XMM_Tmp1              ' read long from Hub to dst
 #endif
  _ret_        add      XMM_Addr,#4               ' update XMM_Addr
 
+#if !defined(NO_LUT) && defined(LARGE)
+
+' XMM_ReadCode : Read code from XMM at address in XMM_Addr into the destination register
+'                set up in XMM_Dest. XMM_Activate should be called at least once before
+'                this routine is used. Uses the LUT if the read is from the same page 
+'                as the last read (i.e. assume it is a read-only page containing longs
+'                that are instructions).
+' On entry:
+'    XMM_Addr : address to read (up to 30 bits)
+'    XMM_iDst : destination of this instruction must be set to destination register
+' On exit:
+'    Destination register contains long read from XMM.
+'    XMM_Addr incremented by 4.
+
+XMM_ReadCode
+              mov     .XMM_Tmp2,XMM_Addr         ' same page ...
+              andn    .XMM_Tmp2,.XMM_Msk         ' ... as last ...
+              sub     .XMM_Tmp2,.XMM_iLast       ' ... read from LUT?
+              tjz     .XMM_Tmp2,#.ReadCode_Line2 ' yes - already in LUT
+              mov     .XMM_Tmp1,XMM_Addr         ' no - get the address to read
+              andn    .XMM_Tmp1,#CACHE_CMD_MASK  ' set command ...
+              or      .XMM_Tmp1,#CACHE_CODE_CMD  ' ... to CODE
+#ifdef CACHE_PINS
+              wxpin   .XMM_Tmp1,#CACHE_CMD_PIN
+              muxc    .XMM_Tmp3,#1               ' MUST SAVE WC
+.ReadCode_Wait2
+              testp   #CACHE_RSP_PIN wc  
+       if_nc  jmp     #.ReadCode_Wait2
+              shr     .XMM_Tmp3,#1 wc            ' MUST RESTORE WC
+              rdpin   .XMM_Line,#CACHE_RSP_PIN
+#else
+              wrlong  .XMM_Tmp1,##XMM_CACHE_CMD  ' issue the command
+.ReadCode_Wait              
+              rdlong  .XMM_Tmp3,##XMM_CACHE_CMD  ' wait till ...
+              tjnz    .XMM_Tmp3,#.ReadCode_Wait  ' ... command completes
+              rdlong  .XMM_Line,##XMM_CACHE_RSP  ' get cache line address
+#endif
+.ReadCode_Line
+              mov     .XMM_iLast,XMM_Addr        ' save page ...
+              andn    .XMM_iLast,.XMM_Msk        ' ... as last read
+              mov     .XMM_Last,.XMM_iLast
+.ReadCode_Line2
+              mov     .XMM_Tmp2,XMM_Addr         ' calculate ...
+              and     .XMM_Tmp2,.XMM_Msk         ' ... the ...
+              shr     .XMM_Tmp2,#2               ' ... LUT address (in longs)
+XMM_iDst      rdlut   0-0,.XMM_Tmp2              ' read code from LUT to iDst
+ _ret_        add      XMM_Addr,#4               ' update XMM_Addr
+
+#endif
+
 
 ' XMM_ReadMult : Read multiple bytes in source register to XMM at address XMM_Addr.
 '                XMM_Activate should be called at least once before this routine is used.
 ' On entry:
 '    XMM_Addr : address to read (up to 30 bits)
-'    XMM_Dst  : destination of this instruction set to destination register
+'    XMM_Dst  : destination of this instruction must be set to destination register
 '    XMM_Len  : number of bytes to read (usually 1, 2 or 4)
 ' On exit:
 '    Destination register contains bytes read from XMM.
@@ -201,8 +257,10 @@ XMM_ReadMult
 
 XMM_WriteLong
               setd    .XMM_Src1,XMM_Src          ' set src reg as dst reg for hub write
-#ifdef USE_LUT
+#if !defined(NO_LUT_LOAD)
+#if defined(LUT_CACHE) || (!defined(NO_LUT) && defined(SMALL))
               setd    .XMM_Src2,XMM_Src          ' set src reg as dst reg for LUT write
+#endif
 #endif
               mov     .XMM_Last,XMM_Addr         ' save page ...
               andn    .XMM_Last,.XMM_Msk         ' ... as last read/written
@@ -230,16 +288,14 @@ XMM_WriteLong
               add     .XMM_Tmp1,.XMM_Tmp2        ' ... address
               andn    .XMM_Tmp1,#3               ' write only on long boundary!
 .XMM_Src1     wrlong   0-0,.XMM_Tmp1             ' write long from src to Hub  
-#ifdef USE_LUT
-#if defined(LUT_CACHE)
+#if defined(LUT_CACHE) && !defined(NO_LUT_LOAD)
               sub     .XMM_Tmp1,##XMM_CACHE      ' convert Hub cache addr ...
               and     .XMM_Tmp1,.XMM_LutMsk
               shr     .XMM_Tmp1,#2              ' ... to LUT address (in longs)
 .XMM_Src2     wrlut   0-0,.XMM_Tmp1             ' write long from src to LUT
-#else
+#elif !defined(NO_LUT) && defined(SMALL) && !defined(NO_LUT_LOAD)
               shr     .XMM_Tmp2,#2               ' ... to LUT address (in longs)
 .XMM_Src2     wrlut   0-0,.XMM_Tmp2              ' write long from src to LUT
-#endif
 #endif
  _ret_        add      XMM_Addr,#4               ' update XMM_Addr
 
@@ -295,7 +351,7 @@ XMM_WriteMult
 ' NOTE : IF PAGE IS A LONG ALIGNED MULTIPLE OF 4 BYTES, USE XMM_WritePageLong
 '
 ' NOTE : Destroys XMM_Src !!!
-
+{
 XMM_WritePage
               mov     .XMM_Tmp6,XMM_Len          ' save length
               mov     XMM_Len,#1                 ' we write one byte at a time
@@ -306,7 +362,7 @@ XMM_WritePage
               call    #XMM_WriteMult             ' write byte to sram (this updates XMM_Addr)
               djnz    .XMM_Tmp6,#.WriteLoop      ' repeat till all bytes written
               ret
-
+}
 ' As above, except we assume the page consists of longs rather than byes, so:
 '    - it is long aligned; and
 '    - the length is a multiple of 4 (bytes)
@@ -334,7 +390,7 @@ XMM_WriteLongPage
 ' NOTE : IF PAGE IS A LONG ALIGNED MULTIPLE OF 4 BYTES, USE XMM_ReadPageLong
 '
 ' NOTE : DESTROYS XMM_Dst !!!
-
+{
 XMM_ReadPage
               mov     .XMM_Tmp6,XMM_Len          ' save length
               mov     XMM_Len,#1                 ' we read one byte at a time
@@ -345,6 +401,7 @@ XMM_ReadPage
               add     Hub_Addr,#1                ' inc dest address (this updates XMM_Addr)
               djnz    .XMM_Tmp6,#.ReadLoop       ' repeat till all bytes read
               ret
+}
 '
 ' As above, except we assume the page consists of longs rather than byes, so:
 '    - it is long aligned; and
@@ -372,8 +429,9 @@ XMM_ReadLongPage
 .XMM_Tmp6      long      $0
 .XMM_Line      long      $0
 .XMM_Last      long      -1     ' should be an invalid address
+.XMM_iLast     long      -1     ' should be an invalid address
 .XMM_Msk       long      $0     ' now set up on first Activate
-#ifdef USE_LUT
+#if defined(LUT_CACHE)
 .XMM_LutMsk    long      (1<<CACHE_BYTES_LOG2) - 1
 #endif
 

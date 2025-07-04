@@ -8,21 +8,21 @@ DAT ' code segment
 
 ' Catalina Export __huge_val
 
- alignl ' align long
+ alignl_label
 C___huge_val ' <symbol:__huge_val>
- alignl ' align long
+ alignl_p1
  long I32_LODI + (@C___huge_val_2_L000003)<<S32
  word I16A_MOV + (r0)<<D16A + RI<<S16A ' reg <- INDIRF4 addrg
 ' C___huge_val_1 ' (symbol refcount = 0)
  word I16B_RETN
- alignl ' align long
- alignl ' align long
+ alignl_p1
+ alignl_p1
 
 ' Catalina Cnst
 
 DAT ' const data segment
 
- alignl ' align long
+ alignl_label
 C___huge_val_2_L000003 ' <symbol:2>
  long $7f800000 ' float
 

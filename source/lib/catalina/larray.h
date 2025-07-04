@@ -1,13 +1,17 @@
 /* 
- * The files included here are created using p2asm and spinc: 
+ * The files included here are created using p2asm and spinc
+ * *see the Makefile for full details): 
  *
- *  p2asm -v33  lmml.spin2
+ *  spp -D P2 lmmlib.t > lmml.s
+ *  p2asm -v33  lmml.s
  *  spinc -p2 -B2 -n LMM_LUT_LIBRARY lmml.bin > lmml.inc
  *
- *  p2asm -v33  cmml.spin2
+ *  spp -D P2 cmmlib.t > cmml.s
+ *  p2asm -v33  cmml.s
  *  spinc -p2 -B2 -n CMM_LUT_LIBRARY cmml.bin > cmml.inc
  *
- *  p2asm -v33  nmml.spin2
+ *  spp -D P2 nmmlib.t > nmml.s
+ *  p2asm -v33  nmml.s
  *  spinc -p2 -B2 -n NMM_LUT_LIBRARY nmml.bin > nmml.inc
  *
  */

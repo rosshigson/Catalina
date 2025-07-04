@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_sjcs_67ea4190_unget_count_L000002 ' <symbol:unget_count>
+C_sn9s_6864c42a_unget_count_L000002 ' <symbol:unget_count>
  long 0
 
 ' Catalina Export catalina_getc
@@ -35,22 +35,22 @@ C_catalina_getc ' <symbol:catalina_getc>
  jmp #BRNZ
  long @C_catalina_getc_5 ' NEU4
  jmp #LODI
- long @C_sjcs_67ea4190_unget_count_L000002
+ long @C_sn9s_6864c42a_unget_count_L000002
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz,wc
  jmp #BRBE
  long @C_catalina_getc_7 ' LEI4
  jmp #LODI
- long @C_sjcs_67ea4190_unget_count_L000002
+ long @C_sn9s_6864c42a_unget_count_L000002
  mov r22, RI ' reg <- INDIRI4 addrg
  subs r22, #1 ' SUBI4 coni
  jmp #LODL
- long @C_sjcs_67ea4190_unget_count_L000002
+ long @C_sn9s_6864c42a_unget_count_L000002
  mov BC, r22
  jmp #WLNG ' ASGNI4 addrg reg
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_sjcs1_67ea4190_unget_buff_L000003
+ long @C_sn9s1_6864c42a_unget_buff_L000003
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  mov RI, r22
@@ -127,23 +127,23 @@ C_catalina_ungetc ' <symbol:catalina_ungetc>
  jmp #BRNZ
  long @C_catalina_ungetc_14 ' NEU4
  jmp #LODI
- long @C_sjcs_67ea4190_unget_count_L000002
+ long @C_sn9s_6864c42a_unget_count_L000002
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #10 wz,wc
  jmp #BRAE
  long @C_catalina_ungetc_13 ' GEI4
  jmp #LODI
- long @C_sjcs_67ea4190_unget_count_L000002
+ long @C_sn9s_6864c42a_unget_count_L000002
  mov r22, RI ' reg <- INDIRI4 addrg
  mov r20, r22
  adds r20, #1 ' ADDI4 coni
  jmp #LODL
- long @C_sjcs_67ea4190_unget_count_L000002
+ long @C_sn9s_6864c42a_unget_count_L000002
  mov BC, r20
  jmp #WLNG ' ASGNI4 addrg reg
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_sjcs1_67ea4190_unget_buff_L000003
+ long @C_sn9s1_6864c42a_unget_buff_L000003
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  mov RI, r22
@@ -178,7 +178,7 @@ C_catalina_fflush ' <symbol:catalina_fflush>
  long $400000 ' save registers
  mov r22, #0 ' reg <- coni
  jmp #LODL
- long @C_sjcs_67ea4190_unget_count_L000002
+ long @C_sn9s_6864c42a_unget_count_L000002
  mov BC, r22
  jmp #WLNG ' ASGNI4 addrg reg
  mov r0, r22 ' CVI, CVU or LOAD
@@ -192,7 +192,7 @@ C_catalina_fflush ' <symbol:catalina_fflush>
 DAT ' uninitialized data segment
 
  alignl ' align long
-C_sjcs1_67ea4190_unget_buff_L000003 ' <symbol:unget_buff>
+C_sn9s1_6864c42a_unget_buff_L000003 ' <symbol:unget_buff>
  byte 0[40]
 
 ' Catalina Code

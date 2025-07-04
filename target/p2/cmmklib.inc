@@ -55,10 +55,13 @@ CMM_switch
  if_z   mov     ticks, #100      ' ... (use default tick count if zero)
 
 CMM_unlock
-        lockrel lock                 ' release inter-cog lock
-        bitl    lockbits,lock        ' release intra-cog lock
+        lockrel lock             ' release inter-cog lock
+        bitl    lockbits,lock    ' release intra-cog lock
 
 CMM_resume
+#ifndef NO_FIFO
+        rdfast  #0,PC            ' re-initialize FIFO
+#endif
  _ret_  shr     flags, #1 wcz    ' restore Z & C flags and return
 
 CMM_affine
@@ -93,7 +96,6 @@ CMM_force
 :unlock
         call    #CMM_unlock      ' unlock, restore C & Z ...
         jmp     #read_next       ' ... and resume
-
 #endif
 
 #endif

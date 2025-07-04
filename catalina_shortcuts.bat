@@ -43,6 +43,7 @@ bin\shortcut /F:"%ALLUSERSPROFILE%\Start Menu\Programs\%menu%\Documents\Catalina
 bin\shortcut /F:"%ALLUSERSPROFILE%\Start Menu\Programs\%menu%\Documents\Catalina P2 Command Summary.lnk" /A:C /T:"%catpath%\Documents\Catalina P2 Command Summary.pdf" /W:"%catpath%" 
 bin\shortcut /F:"%ALLUSERSPROFILE%\Start Menu\Programs\%menu%\Documents\Catalina Reference Manual (Propeller 1).lnk" /A:C /T:"%catpath%\Documents\Catalina Reference Manual (Propeller 1).pdf" /W:"%catpath%" 
 bin\shortcut /F:"%ALLUSERSPROFILE%\Start Menu\Programs\%menu%\Documents\Catalina Reference Manual (Propeller 2).lnk" /A:C /T:"%catpath%\Documents\Catalina Reference Manual (Propeller 2).pdf" /W:"%catpath%" 
+bin\shortcut /F:"%ALLUSERSPROFILE%\Start Menu\Programs\%menu%\Documents\Catalina Release History.lnk" /A:C /T:"%catpath%\Documents\Catalina Release History.pdf" /W:"%catpath%" 
 bin\shortcut /F:"%ALLUSERSPROFILE%\Start Menu\Programs\%menu%\Documents\Catalyst Reference Manual.lnk" /A:C /T:"%catpath%\Documents\Catalyst Reference Manual.pdf" /W:"%catpath%" 
 bin\shortcut /F:"%ALLUSERSPROFILE%\Start Menu\Programs\%menu%\Documents\Getting Started With Blackbox.lnk" /A:C /T:"%catpath%\Documents\Getting Started With Blackbox.pdf" /W:"%catpath%" 
 bin\shortcut /F:"%ALLUSERSPROFILE%\Start Menu\Programs\%menu%\Documents\Getting Started With Catalina.lnk" /A:C /T:"%catpath%\Documents\Getting Started With Catalina.pdf" /W:"%catpath%" 

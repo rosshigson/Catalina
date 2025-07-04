@@ -372,9 +372,11 @@ ClearPage_ret
 #define Hub_Addr          TMP_Hub_Addr
 #define XMM_Src           TMP_Src
 #define XMM_Dst           TMP_Dst
+#define XMM_iDst          TMP_iDst
 #define XMM_Activate      TMP_Activate
 #define XMM_Tristate      TMP_Tristate
 #define XMM_ReadLong      TMP_ReadLong
+#define XMM_ReadCode      TMP_ReadCode
 #define XMM_WriteLong     TMP_WriteLong
 #define XMM_ReadMult      TMP_ReadMult
 #define XMM_WriteMult     TMP_WriteMult
@@ -382,15 +384,20 @@ ClearPage_ret
 #define XMM_WritePage     TMP_WritePage
 #define XMM_ReadLongPage  TMP_ReadLongPage
 #define XMM_WriteLongPage TMP_WriteLongPage
+' do not use the LUT during load
+#define NO_LUT_LOAD
 #include "cached.inc"
+#undef NO_LUT_LOAD
 #undef XMM_Addr
 #undef XMM_Len
 #undef Hub_Addr
 #undef XMM_Src
 #undef XMM_Dst
+#undef XMM_iDst
 #undef XMM_Activate
 #undef XMM_Tristate
 #undef XMM_ReadLong
+#undef XMM_ReadCode
 #undef XMM_WriteLong
 #undef XMM_ReadMult
 #undef XMM_WriteMult
