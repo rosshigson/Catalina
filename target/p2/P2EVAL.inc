@@ -234,14 +234,14 @@ HYPER_RAM_ADDR   = $0000_0000 ' 16Mb starting at 0
 HYPER_FLASH_ADDR = $0200_0000 ' 32Mb starting on 32Mb boundary
 
 ' RAM options
-HYPER_FASTREAD   = 1 ' 0 disables, 1 enables
+HYPER_FASTREAD   = 0 ' 0 disables, 1 enables
 HYPER_FASTWRITE  = 0 ' 0 disables, 1 enables
 HYPER_UNREGCLK   = 0 ' 0 disables, 1 enables
 
 ' RAM latency, burst size and delay
 HYPER_LATENCY_RAM   = 6
 HYPER_BURST_RAM     = $0280
-HYPER_DELAY_RAM     = 9
+HYPER_DELAY_RAM     = 10 ' 11 if clock > 260Mhz, 10 if 150-260Mhz, 9 if < 150Mhz
 
 HYPER_LATENCY_FLASH = 16
 HYPER_BURST_FLASH   = $FFF0
