@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl_label
-C_sd0k_6864c4e7_wait100ms_L000003 ' <symbol:wait100ms>
+C_s7bs_686cc468_wait100ms_L000003 ' <symbol:wait100ms>
  alignl_p1
  long I32_NEWF + 0<<S32
  alignl_p1
@@ -27,7 +27,7 @@ C_sd0k_6864c4e7_wait100ms_L000003 ' <symbol:wait100ms>
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
  alignl_p1
  long I32_CALA + (@C__waitcnt)<<S32 ' CALL addrg
-' C_sd0k_6864c4e7_wait100ms_L000003_4 ' (symbol refcount = 0)
+' C_s7bs_686cc468_wait100ms_L000003_4 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
@@ -61,7 +61,7 @@ C_D_F_S__R_eadS_ector_6
  alignl_label
 C_D_F_S__R_eadS_ector_10
  alignl_p1
- long I32_CALA + (@C_sd0k_6864c4e7_wait100ms_L000003)<<S32 ' CALL addrg
+ long I32_CALA + (@C_s7bs_686cc468_wait100ms_L000003)<<S32 ' CALL addrg
 ' C_D_F_S__R_eadS_ector_7 ' (symbol refcount = 0)
  word I16A_ADDSI + (r15)<<D16A + (1)<<S16A ' ADDI4 reg coni
  word I16A_CMPSI + (r15)<<D16A + (10)<<S16A

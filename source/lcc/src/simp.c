@@ -27,10 +27,10 @@ static char rcsid[] = "$Id: simp.c 355 2007-02-18 22:08:49Z drh $";
 #define xcvtcnstp(FTYPE,SRC,DST,VAR,EXPR) \
 	if (l->op == CNST+FTYPE) do {\
 		if (!explicitCast\
-		&&  ((SRC) < (intptr_t)DST->u.sym->u.limits.min.VAR || (SRC) > (intptr_t)DST->u.sym->u.limits.max.VAR))\
+		&&  ((SRC) < (uintptr_t)DST->u.sym->u.limits.min.VAR || (SRC) > (uintptr_t)DST->u.sym->u.limits.max.VAR))\
 			warning("overflow in converting constant expression from `%t' to `%t'\n", l->type, DST);\
 		if (needconst\
-		|| !((SRC) < (intptr_t)DST->u.sym->u.limits.min.VAR || (SRC) > (intptr_t)DST->u.sym->u.limits.max.VAR))\
+		|| !((SRC) < (uintptr_t)DST->u.sym->u.limits.min.VAR || (SRC) > (uintptr_t)DST->u.sym->u.limits.max.VAR))\
 			return cnsttree(ty, (EXPR)); } while(0)
 
 #define identity(X,Y,TYPE,VAR,VAL) \

@@ -71,10 +71,10 @@ all:	darray.h \
 	cis.s \
 	cisc.s \
 	getrand.s \
-	getrealrand.s \
+	getrrand.s \
 	pins.s \
 	waitums.s \
-	hub_malloc.s \
+	hmalloc.s \
 	aligns.s \
 	base64.s
 
@@ -150,7 +150,7 @@ else
 	$(SPINPP) $(SPINPPFLAGS) clkmode.e > clkmode.s
 	$(SPINPP) $(SPINPPFLAGS) clkinit.e > clkinit.s
 	$(SPINPP) $(SPINPPFLAGS) registry.e > registry.s
-	$(SPINPP) $(SPINPPFLAGS) register.e > registerx.s
+	$(SPINPP) $(SPINPPFLAGS) register.e > register.s
 	$(SPINPP) $(SPINPPFLAGS) unreg.e > unreg.s
 	$(SPINPP) $(SPINPPFLAGS) locate.e > locate.s
 	$(SPINPP) $(SPINPPFLAGS) reqstat.e > reqstat.s

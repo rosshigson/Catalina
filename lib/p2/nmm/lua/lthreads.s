@@ -11,21 +11,21 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_sbno_6864c5c9_mutex_channel_list_L000005 ' <symbol:mutex_channel_list>
+C_shn8_686cc54d_mutex_channel_list_L000005 ' <symbol:mutex_channel_list>
  long 0
  long $0
  long $0
  long 0
 
  alignl ' align long
-C_sbno1_6864c5c9_mutex_recycle_list_L000006 ' <symbol:mutex_recycle_list>
+C_shn81_686cc54d_mutex_recycle_list_L000006 ' <symbol:mutex_recycle_list>
  long 0
  long $0
  long $0
  long 0
 
  alignl ' align long
-C_sbno3_6864c5c9_recyclemax_L000008 ' <symbol:recyclemax>
+C_shn83_686cc54d_recyclemax_L000008 ' <symbol:recyclemax>
  long 0
 
 ' Catalina Export stacksize
@@ -35,7 +35,7 @@ C_stacksize ' <symbol:stacksize>
  long 4000
 
  alignl ' align long
-C_sbno4_6864c5c9_chanls_L000009 ' <symbol:chanls>
+C_shn84_686cc54d_chanls_L000009 ' <symbol:chanls>
  long $0
 
 ' Catalina Export cond_mainls_sendrecv
@@ -46,7 +46,7 @@ C_cond_mainls_sendrecv ' <symbol:cond_mainls_sendrecv>
  long $0
 
  alignl ' align long
-C_sbno6_6864c5c9_mutex_mainls_L000011 ' <symbol:mutex_mainls>
+C_shn86_686cc54d_mutex_mainls_L000011 ' <symbol:mutex_mainls>
  long 0
  long $0
  long $0
@@ -57,87 +57,87 @@ C_sbno6_6864c5c9_mutex_mainls_L000011 ' <symbol:mutex_mainls>
 DAT ' const data segment
 
  alignl ' align long
-C_sbno17_6864c5c9_luathread_funcs_L000044 ' <symbol:luathread_funcs>
- long @C_sbno18_6864c5c9_45_L000046
- long @C_sbno8_6864c5c9_threads_create_newproc_L000013
- long @C_sbno19_6864c5c9_47_L000048
- long @C_sbno9_6864c5c9_threads_wait_L000014
- long @C_sbno1a_6864c5c9_49_L000050
- long @C_sbnoa_6864c5c9_threads_send_L000015
- long @C_sbno1b_6864c5c9_51_L000052
- long @C_sbnob_6864c5c9_threads_receive_L000016
- long @C_sbno1c_6864c5c9_53_L000054
- long @C_sbnoc_6864c5c9_threads_create_channel_L000017
- long @C_sbno1d_6864c5c9_55_L000056
- long @C_sbnod_6864c5c9_threads_destroy_channel_L000018
- long @C_sbno1e_6864c5c9_57_L000058
- long @C_sbnoe_6864c5c9_threads_set_numworkers_L000019
- long @C_sbno1f_6864c5c9_59_L000060
- long @C_sbnof_6864c5c9_threads_get_numworkers_L000020
- long @C_sbno1g_6864c5c9_61_L000062
- long @C_sbnog_6864c5c9_threads_recycle_set_L000021
- long @C_sbno1h_6864c5c9_63_L000064
- long @C_sbnon_6864c5c9_threads_lock_L000028
- long @C_sbno1i_6864c5c9_65_L000066
- long @C_sbnop_6864c5c9_threads_trylock_L000030
- long @C_sbno1j_6864c5c9_67_L000068
- long @C_sbnoo_6864c5c9_threads_unlock_L000029
- long @C_sbno1k_6864c5c9_69_L000070
- long @C_sbnoq_6864c5c9_threads_wait_for_L000031
- long @C_sbno1l_6864c5c9_71_L000072
- long @C_sbnor_6864c5c9_threads_signal_L000032
- long @C_sbno1m_6864c5c9_73_L000074
- long @C_sbnos_6864c5c9_threads_broadcast_L000033
- long @C_sbno1n_6864c5c9_75_L000076
- long @C_sbnot_6864c5c9_threads_rendezvous_L000034
- long @C_sbno1o_6864c5c9_77_L000078
- long @C_sbnou_6864c5c9_threads_shared_L000035
- long @C_sbno1p_6864c5c9_79_L000080
- long @C_sbnov_6864c5c9_threads_update_L000036
- long @C_sbno1q_6864c5c9_81_L000082
- long @C_sbno10_6864c5c9_threads_export_L000037
- long @C_sbno1r_6864c5c9_83_L000084
- long @C_sbnoh_6864c5c9_threads_send_async_L000022
- long @C_sbno1s_6864c5c9_85_L000086
- long @C_sbnoi_6864c5c9_threads_receive_async_L000023
- long @C_sbno1t_6864c5c9_87_L000088
- long @C_sbnol_6864c5c9_threads_sleep_L000026
- long @C_sbno1u_6864c5c9_89_L000090
- long @C_sbnom_6864c5c9_threads_msleep_L000027
- long @C_sbno1v_6864c5c9_91_L000092
- long @C_sbnoj_6864c5c9_threads_print_L000024
- long @C_sbno20_6864c5c9_93_L000094
- long @C_sbnok_6864c5c9_threads_print_raw_L000025
- long @C_sbno21_6864c5c9_95_L000096
- long @C_sbno11_6864c5c9_threads_sbrk_L000038
- long @C_sbno22_6864c5c9_97_L000098
- long @C_sbno12_6864c5c9_threads_stacksize_L000039
- long @C_sbno23_6864c5c9_99_L000100
- long @C_sbno15_6864c5c9_threads_factories_L000042
- long @C_sbno24_6864c5c9_101_L000102
- long @C_sbno13_6864c5c9_threads_factory_L000040
- long @C_sbno25_6864c5c9_103_L000104
- long @C_sbno14_6864c5c9_threads_version_L000041
- long @C_sbno26_6864c5c9_105_L000106
- long @C_sbno8_6864c5c9_threads_create_newproc_L000013
- long @C_sbno27_6864c5c9_107_L000108
- long @C_sbnoe_6864c5c9_threads_set_numworkers_L000019
- long @C_sbno28_6864c5c9_109_L000110
- long @C_sbnoc_6864c5c9_threads_create_channel_L000017
- long @C_sbno29_6864c5c9_111_L000112
- long @C_sbnoc_6864c5c9_threads_create_channel_L000017
- long @C_sbno2a_6864c5c9_113_L000114
- long @C_sbnoc_6864c5c9_threads_create_channel_L000017
- long @C_sbno2b_6864c5c9_115_L000116
- long @C_sbnod_6864c5c9_threads_destroy_channel_L000018
- long @C_sbno2c_6864c5c9_117_L000118
- long @C_sbnoa_6864c5c9_threads_send_L000015
- long @C_sbno2d_6864c5c9_119_L000120
- long @C_sbnob_6864c5c9_threads_receive_L000016
- long @C_sbno2e_6864c5c9_121_L000122
- long @C_sbnoh_6864c5c9_threads_send_async_L000022
- long @C_sbno2f_6864c5c9_123_L000124
- long @C_sbnoi_6864c5c9_threads_receive_async_L000023
+C_shn817_686cc54d_luathread_funcs_L000044 ' <symbol:luathread_funcs>
+ long @C_shn818_686cc54d_45_L000046
+ long @C_shn88_686cc54d_threads_create_newproc_L000013
+ long @C_shn819_686cc54d_47_L000048
+ long @C_shn89_686cc54d_threads_wait_L000014
+ long @C_shn81a_686cc54d_49_L000050
+ long @C_shn8a_686cc54d_threads_send_L000015
+ long @C_shn81b_686cc54d_51_L000052
+ long @C_shn8b_686cc54d_threads_receive_L000016
+ long @C_shn81c_686cc54d_53_L000054
+ long @C_shn8c_686cc54d_threads_create_channel_L000017
+ long @C_shn81d_686cc54d_55_L000056
+ long @C_shn8d_686cc54d_threads_destroy_channel_L000018
+ long @C_shn81e_686cc54d_57_L000058
+ long @C_shn8e_686cc54d_threads_set_numworkers_L000019
+ long @C_shn81f_686cc54d_59_L000060
+ long @C_shn8f_686cc54d_threads_get_numworkers_L000020
+ long @C_shn81g_686cc54d_61_L000062
+ long @C_shn8g_686cc54d_threads_recycle_set_L000021
+ long @C_shn81h_686cc54d_63_L000064
+ long @C_shn8n_686cc54d_threads_lock_L000028
+ long @C_shn81i_686cc54d_65_L000066
+ long @C_shn8p_686cc54d_threads_trylock_L000030
+ long @C_shn81j_686cc54d_67_L000068
+ long @C_shn8o_686cc54d_threads_unlock_L000029
+ long @C_shn81k_686cc54d_69_L000070
+ long @C_shn8q_686cc54d_threads_wait_for_L000031
+ long @C_shn81l_686cc54d_71_L000072
+ long @C_shn8r_686cc54d_threads_signal_L000032
+ long @C_shn81m_686cc54d_73_L000074
+ long @C_shn8s_686cc54d_threads_broadcast_L000033
+ long @C_shn81n_686cc54d_75_L000076
+ long @C_shn8t_686cc54d_threads_rendezvous_L000034
+ long @C_shn81o_686cc54d_77_L000078
+ long @C_shn8u_686cc54d_threads_shared_L000035
+ long @C_shn81p_686cc54d_79_L000080
+ long @C_shn8v_686cc54d_threads_update_L000036
+ long @C_shn81q_686cc54d_81_L000082
+ long @C_shn810_686cc54d_threads_export_L000037
+ long @C_shn81r_686cc54d_83_L000084
+ long @C_shn8h_686cc54d_threads_send_async_L000022
+ long @C_shn81s_686cc54d_85_L000086
+ long @C_shn8i_686cc54d_threads_receive_async_L000023
+ long @C_shn81t_686cc54d_87_L000088
+ long @C_shn8l_686cc54d_threads_sleep_L000026
+ long @C_shn81u_686cc54d_89_L000090
+ long @C_shn8m_686cc54d_threads_msleep_L000027
+ long @C_shn81v_686cc54d_91_L000092
+ long @C_shn8j_686cc54d_threads_print_L000024
+ long @C_shn820_686cc54d_93_L000094
+ long @C_shn8k_686cc54d_threads_print_raw_L000025
+ long @C_shn821_686cc54d_95_L000096
+ long @C_shn811_686cc54d_threads_sbrk_L000038
+ long @C_shn822_686cc54d_97_L000098
+ long @C_shn812_686cc54d_threads_stacksize_L000039
+ long @C_shn823_686cc54d_99_L000100
+ long @C_shn815_686cc54d_threads_factories_L000042
+ long @C_shn824_686cc54d_101_L000102
+ long @C_shn813_686cc54d_threads_factory_L000040
+ long @C_shn825_686cc54d_103_L000104
+ long @C_shn814_686cc54d_threads_version_L000041
+ long @C_shn826_686cc54d_105_L000106
+ long @C_shn88_686cc54d_threads_create_newproc_L000013
+ long @C_shn827_686cc54d_107_L000108
+ long @C_shn8e_686cc54d_threads_set_numworkers_L000019
+ long @C_shn828_686cc54d_109_L000110
+ long @C_shn8c_686cc54d_threads_create_channel_L000017
+ long @C_shn829_686cc54d_111_L000112
+ long @C_shn8c_686cc54d_threads_create_channel_L000017
+ long @C_shn82a_686cc54d_113_L000114
+ long @C_shn8c_686cc54d_threads_create_channel_L000017
+ long @C_shn82b_686cc54d_115_L000116
+ long @C_shn8d_686cc54d_threads_destroy_channel_L000018
+ long @C_shn82c_686cc54d_117_L000118
+ long @C_shn8a_686cc54d_threads_send_L000015
+ long @C_shn82d_686cc54d_119_L000120
+ long @C_shn8b_686cc54d_threads_receive_L000016
+ long @C_shn82e_686cc54d_121_L000122
+ long @C_shn8h_686cc54d_threads_send_async_L000022
+ long @C_shn82f_686cc54d_123_L000124
+ long @C_shn8i_686cc54d_threads_receive_async_L000023
  long $0
  long $0
 
@@ -254,17 +254,17 @@ C_list_init ' <symbol:list_init>
 
 
  alignl ' align long
-C_sbno2g_6864c5c9_channel_create_L000133 ' <symbol:channel_create>
+C_shn82g_686cc54d_channel_create_L000133 ' <symbol:channel_create>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e00000 ' save registers
  mov r23, r2 ' reg var <- reg arg
- mov r2, ##@C_sbno_6864c5c9_mutex_channel_list_L000005 ' reg ARG ADDRG
+ mov r2, ##@C_shn8_686cc54d_mutex_channel_list_L000005 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_lock ' CALL addrg
- mov r2, ##@C_sbno2g_6864c5c9_channel_create_L000133_135_L000136 ' reg ARG ADDRG
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r2, ##@C_shn82g_686cc54d_channel_create_L000133_135_L000136 ' reg ARG ADDRG
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -274,7 +274,7 @@ C_sbno2g_6864c5c9_channel_create_L000133 ' <symbol:channel_create>
  add SP, #4 ' CALL addrg
  mov r2, #1 ' reg ARG coni
  mov r3, #72 ' reg ARG coni
- mov r4, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r4, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r4, r4
  ' reg ARG INDIR ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -285,7 +285,7 @@ C_sbno2g_6864c5c9_channel_create_L000133 ' <symbol:channel_create>
  mov r21, r0 ' CVI, CVU or LOAD
  mov r2, r23 ' CVI, CVU or LOAD
  mov r3, ##-2 ' reg ARG con
- mov r4, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r4, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r4, r4
  ' reg ARG INDIR ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -294,7 +294,7 @@ C_sbno2g_6864c5c9_channel_create_L000133 ' <symbol:channel_create>
  long @C_lua_setfield
  add SP, #8 ' CALL addrg
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -343,25 +343,25 @@ C_sbno2g_6864c5c9_channel_create_L000133 ' <symbol:channel_create>
  calld PA,#CALA
  long @C_pthread_cond_init
  add SP, #4 ' CALL addrg
- mov r2, ##@C_sbno_6864c5c9_mutex_channel_list_L000005 ' reg ARG ADDRG
+ mov r2, ##@C_shn8_686cc54d_mutex_channel_list_L000005 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
  mov r0, r21 ' CVI, CVU or LOAD
-' C_sbno2g_6864c5c9_channel_create_L000133_134 ' (symbol refcount = 0)
+' C_shn82g_686cc54d_channel_create_L000133_134 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbno2i_6864c5c9_channel_unlocked_get_L000137 ' <symbol:channel_unlocked_get>
+C_shn82i_686cc54d_channel_unlocked_get_L000137 ' <symbol:channel_unlocked_get>
  calld PA,#NEWF
  sub SP, #4
  calld PA,#PSHM
  long $c00000 ' save registers
  mov r23, r2 ' reg var <- reg arg
- mov r2, ##@C_sbno2g_6864c5c9_channel_create_L000133_135_L000136 ' reg ARG ADDRG
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r2, ##@C_shn82g_686cc54d_channel_create_L000133_135_L000136 ' reg ARG ADDRG
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -371,7 +371,7 @@ C_sbno2i_6864c5c9_channel_unlocked_get_L000137 ' <symbol:channel_unlocked_get>
  add SP, #4 ' CALL addrg
  mov r2, r23 ' CVI, CVU or LOAD
  mov r3, ##-1 ' reg ARG con
- mov r4, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r4, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r4, r4
  ' reg ARG INDIR ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -380,7 +380,7 @@ C_sbno2i_6864c5c9_channel_unlocked_get_L000137 ' <symbol:channel_unlocked_get>
  long @C_lua_getfield
  add SP, #8 ' CALL addrg
  mov r2, ##-1 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -392,7 +392,7 @@ C_sbno2i_6864c5c9_channel_unlocked_get_L000137 ' <symbol:channel_unlocked_get>
  sub RI, #-(-8)
  wrlong r0, RI ' ASGNP4 addrli reg
  mov r2, ##-3 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -403,28 +403,28 @@ C_sbno2i_6864c5c9_channel_unlocked_get_L000137 ' <symbol:channel_unlocked_get>
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r0, r22 ' reg <- INDIRP4 reg
-' C_sbno2i_6864c5c9_channel_unlocked_get_L000137_138 ' (symbol refcount = 0)
+' C_shn82i_686cc54d_channel_unlocked_get_L000137_138 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  add SP, #4 ' framesize
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbno2j_6864c5c9_channel_locked_get_L000139 ' <symbol:channel_locked_get>
+C_shn82j_686cc54d_channel_locked_get_L000139 ' <symbol:channel_locked_get>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e80000 ' save registers
  mov r23, r3 ' reg var <- reg arg
  mov r21, r2 ' reg var <- reg arg
- mov r2, ##@C_sbno_6864c5c9_mutex_channel_list_L000005 ' reg ARG ADDRG
+ mov r2, ##@C_shn8_686cc54d_mutex_channel_list_L000005 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_lock ' CALL addrg
  cmps r21,  #0 wz
- if_z jmp #\C_sbno2j_6864c5c9_channel_locked_get_L000139_148 ' EQI4
- jmp #\@C_sbno2j_6864c5c9_channel_locked_get_L000139_144 ' JUMPV addrg
-C_sbno2j_6864c5c9_channel_locked_get_L000139_143
- mov r2, ##@C_sbno_6864c5c9_mutex_channel_list_L000005 ' reg ARG ADDRG
+ if_z jmp #\C_shn82j_686cc54d_channel_locked_get_L000139_148 ' EQI4
+ jmp #\@C_shn82j_686cc54d_channel_locked_get_L000139_144 ' JUMPV addrg
+C_shn82j_686cc54d_channel_locked_get_L000139_143
+ mov r2, ##@C_shn8_686cc54d_mutex_channel_list_L000005 ' reg ARG ADDRG
  mov r3, r19
  adds r3, #56 ' ADDP4 coni
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -432,71 +432,71 @@ C_sbno2j_6864c5c9_channel_locked_get_L000139_143
  calld PA,#CALA
  long @C_pthread_cond_wait
  add SP, #4 ' CALL addrg
- mov r2, ##@C_sbno_6864c5c9_mutex_channel_list_L000005 ' reg ARG ADDRG
+ mov r2, ##@C_shn8_686cc54d_mutex_channel_list_L000005 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C_pthread_yield ' CALL addrg
- mov r2, ##@C_sbno_6864c5c9_mutex_channel_list_L000005 ' reg ARG ADDRG
+ mov r2, ##@C_shn8_686cc54d_mutex_channel_list_L000005 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_lock ' CALL addrg
-C_sbno2j_6864c5c9_channel_locked_get_L000139_144
+C_shn82j_686cc54d_channel_locked_get_L000139_144
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_sbno2i_6864c5c9_channel_unlocked_get_L000137 ' CALL addrg
+ long @C_shn82i_686cc54d_channel_unlocked_get_L000137 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
  mov r22, r0 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_z jmp #\C_sbno2j_6864c5c9_channel_locked_get_L000139_146 ' EQU4
+ if_z jmp #\C_shn82j_686cc54d_channel_locked_get_L000139_146 ' EQU4
  mov r2, r19
  adds r2, #24 ' ADDP4 coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_trylock ' CALL addrg
  cmps r0,  #0 wz
- if_nz jmp #\C_sbno2j_6864c5c9_channel_locked_get_L000139_143 ' NEI4
-C_sbno2j_6864c5c9_channel_locked_get_L000139_146
- jmp #\@C_sbno2j_6864c5c9_channel_locked_get_L000139_142 ' JUMPV addrg
-C_sbno2j_6864c5c9_channel_locked_get_L000139_147
- mov r2, ##@C_sbno_6864c5c9_mutex_channel_list_L000005 ' reg ARG ADDRG
+ if_nz jmp #\C_shn82j_686cc54d_channel_locked_get_L000139_143 ' NEI4
+C_shn82j_686cc54d_channel_locked_get_L000139_146
+ jmp #\@C_shn82j_686cc54d_channel_locked_get_L000139_142 ' JUMPV addrg
+C_shn82j_686cc54d_channel_locked_get_L000139_147
+ mov r2, ##@C_shn8_686cc54d_mutex_channel_list_L000005 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C_pthread_yield ' CALL addrg
- mov r2, ##@C_sbno_6864c5c9_mutex_channel_list_L000005 ' reg ARG ADDRG
+ mov r2, ##@C_shn8_686cc54d_mutex_channel_list_L000005 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_lock ' CALL addrg
-C_sbno2j_6864c5c9_channel_locked_get_L000139_148
+C_shn82j_686cc54d_channel_locked_get_L000139_148
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_sbno2i_6864c5c9_channel_unlocked_get_L000137 ' CALL addrg
+ long @C_shn82i_686cc54d_channel_unlocked_get_L000137 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
  mov r22, r0 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_z jmp #\C_sbno2j_6864c5c9_channel_locked_get_L000139_150 ' EQU4
+ if_z jmp #\C_shn82j_686cc54d_channel_locked_get_L000139_150 ' EQU4
  mov r2, r19
  adds r2, #24 ' ADDP4 coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_trylock ' CALL addrg
  cmps r0,  #0 wz
- if_nz jmp #\C_sbno2j_6864c5c9_channel_locked_get_L000139_147 ' NEI4
-C_sbno2j_6864c5c9_channel_locked_get_L000139_150
-C_sbno2j_6864c5c9_channel_locked_get_L000139_142
- mov r2, ##@C_sbno_6864c5c9_mutex_channel_list_L000005 ' reg ARG ADDRG
+ if_nz jmp #\C_shn82j_686cc54d_channel_locked_get_L000139_147 ' NEI4
+C_shn82j_686cc54d_channel_locked_get_L000139_150
+C_shn82j_686cc54d_channel_locked_get_L000139_142
+ mov r2, ##@C_shn8_686cc54d_mutex_channel_list_L000005 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
  mov r0, r19 ' CVI, CVU or LOAD
-' C_sbno2j_6864c5c9_channel_locked_get_L000139_140 ' (symbol refcount = 0)
+' C_shn82j_686cc54d_channel_locked_get_L000139_140 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -509,7 +509,7 @@ C_luathread_unlock_channel ' <symbol:luathread_unlock_channel>
  calld PA,#PSHM
  long $800000 ' save registers
  mov r23, r2 ' reg var <- reg arg
- mov r2, ##@C_sbno_6864c5c9_mutex_channel_list_L000005 ' reg ARG ADDRG
+ mov r2, ##@C_shn8_686cc54d_mutex_channel_list_L000005 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_lock ' CALL addrg
@@ -523,7 +523,7 @@ C_luathread_unlock_channel ' <symbol:luathread_unlock_channel>
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_cond_signal ' CALL addrg
- mov r2, ##@C_sbno_6864c5c9_mutex_channel_list_L000005 ' reg ARG ADDRG
+ mov r2, ##@C_shn8_686cc54d_mutex_channel_list_L000005 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
@@ -540,15 +540,15 @@ C_luathread_recycle_insert ' <symbol:luathread_recycle_insert>
  calld PA,#PSHM
  long $d00000 ' save registers
  mov r23, r2 ' reg var <- reg arg
- mov r2, ##@C_sbno1_6864c5c9_mutex_recycle_list_L000006 ' reg ARG ADDRG
+ mov r2, ##@C_shn81_686cc54d_mutex_recycle_list_L000006 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_lock ' CALL addrg
- mov r2, ##@C_sbno2_6864c5c9_recycle_list_L000007 ' reg ARG ADDRG
+ mov r2, ##@C_shn82_686cc54d_recycle_list_L000007 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_list_count ' CALL addrg
- mov r20, ##@C_sbno3_6864c5c9_recyclemax_L000008
+ mov r20, ##@C_shn83_686cc54d_recyclemax_L000008
  rdlong r20, r20 ' reg <- INDIRI4 addrg
  cmps r0, r20 wcz
  if_b jmp #\C_luathread_recycle_insert_153 ' LTI4
@@ -564,14 +564,14 @@ C_luathread_recycle_insert ' <symbol:luathread_recycle_insert>
  jmp #\@C_luathread_recycle_insert_154 ' JUMPV addrg
 C_luathread_recycle_insert_153
  mov r2, r23 ' CVI, CVU or LOAD
- mov r3, ##@C_sbno2_6864c5c9_recycle_list_L000007 ' reg ARG ADDRG
+ mov r3, ##@C_shn82_686cc54d_recycle_list_L000007 ' reg ARG ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
  long @C_list_insert
  add SP, #4 ' CALL addrg
 C_luathread_recycle_insert_154
- mov r2, ##@C_sbno1_6864c5c9_mutex_recycle_list_L000006 ' reg ARG ADDRG
+ mov r2, ##@C_shn81_686cc54d_mutex_recycle_list_L000006 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
@@ -630,7 +630,7 @@ C_luathread_queue_receiver ' <symbol:luathread_queue_receiver>
 
 
  alignl ' align long
-C_sbno2k_6864c5c9_luathread_loadbuffer_L000157 ' <symbol:luathread_loadbuffer>
+C_shn82k_686cc54d_luathread_loadbuffer_L000157 ' <symbol:luathread_loadbuffer>
  calld PA,#NEWF
  sub SP, #4
  calld PA,#PSHM
@@ -659,7 +659,7 @@ C_sbno2k_6864c5c9_luathread_loadbuffer_L000157 ' <symbol:luathread_loadbuffer>
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #0 wz
- if_z jmp #\C_sbno2k_6864c5c9_luathread_loadbuffer_L000157_159 ' EQI4
+ if_z jmp #\C_shn82k_686cc54d_luathread_loadbuffer_L000157_159 ' EQI4
  mov r2, ##0 ' reg ARG con
  mov r3, ##-1 ' reg ARG con
  rdlong r4, r21 ' reg <- INDIRP4 reg
@@ -696,15 +696,15 @@ C_sbno2k_6864c5c9_luathread_loadbuffer_L000157 ' <symbol:luathread_loadbuffer>
  calld PA,#CALA
  long @C_luaL__error
  add SP, #4 ' CALL addrg
-C_sbno2k_6864c5c9_luathread_loadbuffer_L000157_159
-' C_sbno2k_6864c5c9_luathread_loadbuffer_L000157_158 ' (symbol refcount = 0)
+C_shn82k_686cc54d_luathread_loadbuffer_L000157_159
+' C_shn82k_686cc54d_luathread_loadbuffer_L000157_158 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  add SP, #4 ' framesize
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161 ' <symbol:luathread_copyvalues>
+C_shn82l_686cc54d_luathread_copyvalues_L000161 ' <symbol:luathread_copyvalues>
  calld PA,#NEWF
  sub SP, #8
  calld PA,#PSHM
@@ -724,12 +724,12 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161 ' <symbol:luathread_copyvalues>
  long @C_lua_checkstack
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
- if_nz jmp #\C_sbno2l_6864c5c9_luathread_copyvalues_L000161_163 ' NEI4
+ if_nz jmp #\C_shn82l_686cc54d_luathread_copyvalues_L000161_163 ' NEI4
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
- mov r2, ##@C_sbno2l_6864c5c9_luathread_copyvalues_L000161_165_L000166 ' reg ARG ADDRG
+ mov r2, ##@C_shn82l_686cc54d_luathread_copyvalues_L000161_165_L000166 ' reg ARG ADDRG
  mov r3, r21 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -740,7 +740,7 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161 ' <symbol:luathread_copyvalues>
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
- mov r2, ##@C_sbno2l_6864c5c9_luathread_copyvalues_L000161_167_L000168 ' reg ARG ADDRG
+ mov r2, ##@C_shn82l_686cc54d_luathread_copyvalues_L000161_167_L000168 ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -748,11 +748,11 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161 ' <symbol:luathread_copyvalues>
  long @C_lua_pushstring
  add SP, #4 ' CALL addrg
  mov r0, #0 ' reg <- coni
- jmp #\@C_sbno2l_6864c5c9_luathread_copyvalues_L000161_162 ' JUMPV addrg
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161_163
+ jmp #\@C_shn82l_686cc54d_luathread_copyvalues_L000161_162 ' JUMPV addrg
+C_shn82l_686cc54d_luathread_copyvalues_L000161_163
  mov r19, #2 ' reg <- coni
- jmp #\@C_sbno2l_6864c5c9_luathread_copyvalues_L000161_172 ' JUMPV addrg
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161_169
+ jmp #\@C_shn82l_686cc54d_luathread_copyvalues_L000161_172 ' JUMPV addrg
+C_shn82l_686cc54d_luathread_copyvalues_L000161_169
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -762,12 +762,12 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161_169
  add SP, #4 ' CALL addrg
  mov r15, r0 ' CVI, CVU or LOAD
  cmps r15,  #0 wcz
- if_b jmp #\C_sbno2l_6864c5c9_luathread_copyvalues_L000161_173 ' LTI4
+ if_b jmp #\C_shn82l_686cc54d_luathread_copyvalues_L000161_173 ' LTI4
  cmps r15,  #5 wcz
- if_a jmp #\C_sbno2l_6864c5c9_luathread_copyvalues_L000161_173 ' GTI4
+ if_a jmp #\C_shn82l_686cc54d_luathread_copyvalues_L000161_173 ' GTI4
  mov r22, r15
  shl r22, #2 ' LSHI4 coni
- mov r20, ##@C_sbno2l_6864c5c9_luathread_copyvalues_L000161_204_L000206 ' reg <- addrg
+ mov r20, ##@C_shn82l_686cc54d_luathread_copyvalues_L000161_204_L000206 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong RI, r22
  jmp RI ' JUMPV INDIR reg
@@ -777,18 +777,18 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161_169
 DAT ' const data segment
 
  alignl ' align long
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161_204_L000206 ' <symbol:204>
- long @C_sbno2l_6864c5c9_luathread_copyvalues_L000161_181
- long @C_sbno2l_6864c5c9_luathread_copyvalues_L000161_176
- long @C_sbno2l_6864c5c9_luathread_copyvalues_L000161_173
- long @C_sbno2l_6864c5c9_luathread_copyvalues_L000161_177
- long @C_sbno2l_6864c5c9_luathread_copyvalues_L000161_180
- long @C_sbno2l_6864c5c9_luathread_copyvalues_L000161_182
+C_shn82l_686cc54d_luathread_copyvalues_L000161_204_L000206 ' <symbol:204>
+ long @C_shn82l_686cc54d_luathread_copyvalues_L000161_181
+ long @C_shn82l_686cc54d_luathread_copyvalues_L000161_176
+ long @C_shn82l_686cc54d_luathread_copyvalues_L000161_173
+ long @C_shn82l_686cc54d_luathread_copyvalues_L000161_177
+ long @C_shn82l_686cc54d_luathread_copyvalues_L000161_180
+ long @C_shn82l_686cc54d_luathread_copyvalues_L000161_182
 
 ' Catalina Code
 
 DAT ' code segment
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161_176
+C_shn82l_686cc54d_luathread_copyvalues_L000161_176
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -804,8 +804,8 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161_176
  calld PA,#CALA
  long @C_lua_pushboolean
  add SP, #4 ' CALL addrg
- jmp #\@C_sbno2l_6864c5c9_luathread_copyvalues_L000161_174 ' JUMPV addrg
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161_177
+ jmp #\@C_shn82l_686cc54d_luathread_copyvalues_L000161_174 ' JUMPV addrg
+C_shn82l_686cc54d_luathread_copyvalues_L000161_177
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -814,7 +814,7 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161_177
  long @C_lua_isinteger
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
- if_z jmp #\C_sbno2l_6864c5c9_luathread_copyvalues_L000161_178 ' EQI4
+ if_z jmp #\C_shn82l_686cc54d_luathread_copyvalues_L000161_178 ' EQI4
  mov r2, ##0 ' reg ARG con
  mov r3, r19 ' CVI, CVU or LOAD
  mov r4, r23 ' CVI, CVU or LOAD
@@ -832,8 +832,8 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161_177
  calld PA,#CALA
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
- jmp #\@C_sbno2l_6864c5c9_luathread_copyvalues_L000161_174 ' JUMPV addrg
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161_178
+ jmp #\@C_shn82l_686cc54d_luathread_copyvalues_L000161_174 ' JUMPV addrg
+C_shn82l_686cc54d_luathread_copyvalues_L000161_178
  mov r2, ##0 ' reg ARG con
  mov r3, r19 ' CVI, CVU or LOAD
  mov r4, r23 ' CVI, CVU or LOAD
@@ -850,8 +850,8 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161_178
  calld PA,#CALA
  long @C_lua_pushnumber
  add SP, #4 ' CALL addrg
- jmp #\@C_sbno2l_6864c5c9_luathread_copyvalues_L000161_174 ' JUMPV addrg
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161_180
+ jmp #\@C_shn82l_686cc54d_luathread_copyvalues_L000161_174 ' JUMPV addrg
+C_shn82l_686cc54d_luathread_copyvalues_L000161_180
  mov r2, FP
  sub r2, #-(-12) ' reg ARG ADDRLi
  mov r3, r19 ' CVI, CVU or LOAD
@@ -876,14 +876,14 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161_180
  calld PA,#CALA
  long @C_lua_pushlstring
  add SP, #8 ' CALL addrg
- jmp #\@C_sbno2l_6864c5c9_luathread_copyvalues_L000161_174 ' JUMPV addrg
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161_181
+ jmp #\@C_shn82l_686cc54d_luathread_copyvalues_L000161_174 ' JUMPV addrg
+C_shn82l_686cc54d_luathread_copyvalues_L000161_181
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
- jmp #\@C_sbno2l_6864c5c9_luathread_copyvalues_L000161_174 ' JUMPV addrg
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161_182
+ jmp #\@C_shn82l_686cc54d_luathread_copyvalues_L000161_174 ' JUMPV addrg
+C_shn82l_686cc54d_luathread_copyvalues_L000161_182
  mov r22, #0 ' reg <- coni
  mov r2, r22 ' CVI, CVU or LOAD
  mov r3, r22 ' CVI, CVU or LOAD
@@ -897,8 +897,8 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161_182
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
- jmp #\@C_sbno2l_6864c5c9_luathread_copyvalues_L000161_184 ' JUMPV addrg
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161_183
+ jmp #\@C_shn82l_686cc54d_luathread_copyvalues_L000161_184 ' JUMPV addrg
+C_shn82l_686cc54d_luathread_copyvalues_L000161_183
  mov r2, ##-2 ' reg ARG con
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -907,7 +907,7 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161_183
  long @C_lua_type
  add SP, #4 ' CALL addrg
  cmps r0,  #4 wz
- if_nz jmp #\C_sbno2l_6864c5c9_luathread_copyvalues_L000161_186 ' NEI4
+ if_nz jmp #\C_shn82l_686cc54d_luathread_copyvalues_L000161_186 ' NEI4
  mov r2, ##0 ' reg ARG con
  mov r3, ##-2 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -933,12 +933,12 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161_183
  add SP, #4 ' CALL addrg
  mov r13, r0 ' CVI, CVU or LOAD
  cmps r13,  #0 wcz
- if_b jmp #\C_sbno2l_6864c5c9_luathread_copyvalues_L000161_188 ' LTI4
+ if_b jmp #\C_shn82l_686cc54d_luathread_copyvalues_L000161_188 ' LTI4
  cmps r13,  #4 wcz
- if_a jmp #\C_sbno2l_6864c5c9_luathread_copyvalues_L000161_188 ' GTI4
+ if_a jmp #\C_shn82l_686cc54d_luathread_copyvalues_L000161_188 ' GTI4
  mov r22, r13
  shl r22, #2 ' LSHI4 coni
- mov r20, ##@C_sbno2l_6864c5c9_luathread_copyvalues_L000161_197_L000199 ' reg <- addrg
+ mov r20, ##@C_shn82l_686cc54d_luathread_copyvalues_L000161_197_L000199 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong RI, r22
  jmp RI ' JUMPV INDIR reg
@@ -948,17 +948,17 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161_183
 DAT ' const data segment
 
  alignl ' align long
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161_197_L000199 ' <symbol:197>
- long @C_sbno2l_6864c5c9_luathread_copyvalues_L000161_196
- long @C_sbno2l_6864c5c9_luathread_copyvalues_L000161_191
- long @C_sbno2l_6864c5c9_luathread_copyvalues_L000161_188
- long @C_sbno2l_6864c5c9_luathread_copyvalues_L000161_192
- long @C_sbno2l_6864c5c9_luathread_copyvalues_L000161_195
+C_shn82l_686cc54d_luathread_copyvalues_L000161_197_L000199 ' <symbol:197>
+ long @C_shn82l_686cc54d_luathread_copyvalues_L000161_196
+ long @C_shn82l_686cc54d_luathread_copyvalues_L000161_191
+ long @C_shn82l_686cc54d_luathread_copyvalues_L000161_188
+ long @C_shn82l_686cc54d_luathread_copyvalues_L000161_192
+ long @C_shn82l_686cc54d_luathread_copyvalues_L000161_195
 
 ' Catalina Code
 
 DAT ' code segment
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161_191
+C_shn82l_686cc54d_luathread_copyvalues_L000161_191
  mov r2, ##-1 ' reg ARG con
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -981,8 +981,8 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161_191
  calld PA,#CALA
  long @C_lua_settable
  add SP, #4 ' CALL addrg
- jmp #\@C_sbno2l_6864c5c9_luathread_copyvalues_L000161_189 ' JUMPV addrg
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161_192
+ jmp #\@C_shn82l_686cc54d_luathread_copyvalues_L000161_189 ' JUMPV addrg
+C_shn82l_686cc54d_luathread_copyvalues_L000161_192
  mov r2, ##-1 ' reg ARG con
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -991,7 +991,7 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161_192
  long @C_lua_isinteger
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
- if_z jmp #\C_sbno2l_6864c5c9_luathread_copyvalues_L000161_193 ' EQI4
+ if_z jmp #\C_shn82l_686cc54d_luathread_copyvalues_L000161_193 ' EQI4
  mov r2, ##0 ' reg ARG con
  mov r3, ##-1 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -1009,8 +1009,8 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161_192
  calld PA,#CALA
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
- jmp #\@C_sbno2l_6864c5c9_luathread_copyvalues_L000161_194 ' JUMPV addrg
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161_193
+ jmp #\@C_shn82l_686cc54d_luathread_copyvalues_L000161_194 ' JUMPV addrg
+C_shn82l_686cc54d_luathread_copyvalues_L000161_193
  mov r2, ##0 ' reg ARG con
  mov r3, ##-1 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -1027,7 +1027,7 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161_193
  calld PA,#CALA
  long @C_lua_pushnumber
  add SP, #4 ' CALL addrg
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161_194
+C_shn82l_686cc54d_luathread_copyvalues_L000161_194
  mov r2, ##-3 ' reg ARG con
  mov r3, r21 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1035,8 +1035,8 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161_194
  calld PA,#CALA
  long @C_lua_settable
  add SP, #4 ' CALL addrg
- jmp #\@C_sbno2l_6864c5c9_luathread_copyvalues_L000161_189 ' JUMPV addrg
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161_195
+ jmp #\@C_shn82l_686cc54d_luathread_copyvalues_L000161_189 ' JUMPV addrg
+C_shn82l_686cc54d_luathread_copyvalues_L000161_195
  mov r2, ##0 ' reg ARG con
  mov r3, ##-1 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -1060,8 +1060,8 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161_195
  calld PA,#CALA
  long @C_lua_settable
  add SP, #4 ' CALL addrg
- jmp #\@C_sbno2l_6864c5c9_luathread_copyvalues_L000161_189 ' JUMPV addrg
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161_196
+ jmp #\@C_shn82l_686cc54d_luathread_copyvalues_L000161_189 ' JUMPV addrg
+C_shn82l_686cc54d_luathread_copyvalues_L000161_196
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
@@ -1073,8 +1073,8 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161_196
  calld PA,#CALA
  long @C_lua_settable
  add SP, #4 ' CALL addrg
- jmp #\@C_sbno2l_6864c5c9_luathread_copyvalues_L000161_189 ' JUMPV addrg
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161_188
+ jmp #\@C_shn82l_686cc54d_luathread_copyvalues_L000161_189 ' JUMPV addrg
+C_shn82l_686cc54d_luathread_copyvalues_L000161_188
  mov r2, ##-2 ' reg ARG con
  mov r3, r21 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1082,8 +1082,8 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161_188
  calld PA,#CALA
  long @C_lua_settop
  add SP, #4 ' CALL addrg
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161_189
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161_186
+C_shn82l_686cc54d_luathread_copyvalues_L000161_189
+C_shn82l_686cc54d_luathread_copyvalues_L000161_186
  mov r2, ##-2 ' reg ARG con
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1091,7 +1091,7 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161_186
  calld PA,#CALA
  long @C_lua_settop
  add SP, #4 ' CALL addrg
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161_184
+C_shn82l_686cc54d_luathread_copyvalues_L000161_184
  mov r2, ##-2 ' reg ARG con
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1100,9 +1100,9 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161_184
  long @C_lua_next
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
- if_nz jmp #\C_sbno2l_6864c5c9_luathread_copyvalues_L000161_183 ' NEI4
- jmp #\@C_sbno2l_6864c5c9_luathread_copyvalues_L000161_174 ' JUMPV addrg
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161_173
+ if_nz jmp #\C_shn82l_686cc54d_luathread_copyvalues_L000161_183 ' NEI4
+ jmp #\@C_shn82l_686cc54d_luathread_copyvalues_L000161_174 ' JUMPV addrg
+C_shn82l_686cc54d_luathread_copyvalues_L000161_173
  mov r2, #1 ' reg ARG coni
  mov r3, r21 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1131,7 +1131,7 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161_173
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r2, r22 ' CVI, CVU or LOAD
- mov r3, ##@C_sbno2l_6864c5c9_luathread_copyvalues_L000161_200_L000201 ' reg ARG ADDRG
+ mov r3, ##@C_shn82l_686cc54d_luathread_copyvalues_L000161_200_L000201 ' reg ARG ADDRG
  mov r4, r21 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -1159,7 +1159,7 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161_173
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r2, r22 ' CVI, CVU or LOAD
- mov r3, ##@C_sbno2l_6864c5c9_luathread_copyvalues_L000161_202_L000203 ' reg ARG ADDRG
+ mov r3, ##@C_shn82l_686cc54d_luathread_copyvalues_L000161_202_L000203 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -1167,28 +1167,28 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161_173
  long @C_lua_pushfstring
  add SP, #8 ' CALL addrg
  mov r0, #0 ' reg <- coni
- jmp #\@C_sbno2l_6864c5c9_luathread_copyvalues_L000161_162 ' JUMPV addrg
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161_174
-' C_sbno2l_6864c5c9_luathread_copyvalues_L000161_170 ' (symbol refcount = 0)
+ jmp #\@C_shn82l_686cc54d_luathread_copyvalues_L000161_162 ' JUMPV addrg
+C_shn82l_686cc54d_luathread_copyvalues_L000161_174
+' C_shn82l_686cc54d_luathread_copyvalues_L000161_170 ' (symbol refcount = 0)
  adds r19, #1 ' ADDI4 coni
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161_172
+C_shn82l_686cc54d_luathread_copyvalues_L000161_172
  cmps r19, r17 wcz
- if_be jmp #\C_sbno2l_6864c5c9_luathread_copyvalues_L000161_169 ' LEI4
+ if_be jmp #\C_shn82l_686cc54d_luathread_copyvalues_L000161_169 ' LEI4
  mov r0, #1 ' reg <- coni
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161_162
+C_shn82l_686cc54d_luathread_copyvalues_L000161_162
  calld PA,#POPM ' restore registers
  add SP, #8 ' framesize
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbno2u_6864c5c9_luathread_getself_L000207 ' <symbol:luathread_getself>
+C_shn82u_686cc54d_luathread_getself_L000207 ' <symbol:luathread_getself>
  calld PA,#NEWF
  sub SP, #4
  calld PA,#PSHM
  long $c00000 ' save registers
  mov r23, r2 ' reg var <- reg arg
- mov r2, ##@C_sbno2u_6864c5c9_luathread_getself_L000207_209_L000210 ' reg ARG ADDRG
+ mov r2, ##@C_shn82u_686cc54d_luathread_getself_L000207_209_L000210 ' reg ARG ADDRG
  mov r3, ##-1001000 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -1216,14 +1216,14 @@ C_sbno2u_6864c5c9_luathread_getself_L000207 ' <symbol:luathread_getself>
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r0, r22 ' reg <- INDIRP4 reg
-' C_sbno2u_6864c5c9_luathread_getself_L000207_208 ' (symbol refcount = 0)
+' C_shn82u_686cc54d_luathread_getself_L000207_208 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  add SP, #4 ' framesize
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbno30_6864c5c9_luathread_new_L000211 ' <symbol:luathread_new>
+C_shn830_686cc54d_luathread_new_L000211 ' <symbol:luathread_new>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e80000 ' save registers
@@ -1241,7 +1241,7 @@ C_sbno30_6864c5c9_luathread_new_L000211 ' <symbol:luathread_new>
  long @C_lua_newuserdatauv
  add SP, #8 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
- mov r2, ##@C_sbno2u_6864c5c9_luathread_getself_L000207_209_L000210 ' reg ARG ADDRG
+ mov r2, ##@C_shn82u_686cc54d_luathread_getself_L000207_209_L000210 ' reg ARG ADDRG
  mov r3, ##-1001000 ' reg ARG con
  mov r4, r21 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -1252,10 +1252,10 @@ C_sbno30_6864c5c9_luathread_new_L000211 ' <symbol:luathread_new>
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_sbno7_6864c5c9_luathread_openlualibs_L000012 ' CALL addrg
+ long @C_shn87_686cc54d_luathread_openlualibs_L000012 ' CALL addrg
  mov r2, #1 ' reg ARG coni
- mov r3, ##@C_sbno16_6864c5c9_luathread_loadlib_L000043 ' reg ARG ADDRG
- mov r4, ##@C_sbno30_6864c5c9_luathread_new_L000211_213_L000214 ' reg ARG ADDRG
+ mov r3, ##@C_shn816_686cc54d_luathread_loadlib_L000043 ' reg ARG ADDRG
+ mov r4, ##@C_shn830_686cc54d_luathread_new_L000211_213_L000214 ' reg ARG ADDRG
  mov r5, r21 ' CVI, CVU or LOAD
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
@@ -1271,7 +1271,7 @@ C_sbno30_6864c5c9_luathread_new_L000211 ' <symbol:luathread_new>
  add SP, #4 ' CALL addrg
  mov r2, #1 ' reg ARG coni
  mov r3, ##@C_luaopen_propeller ' reg ARG ADDRG
- mov r4, ##@C_sbno30_6864c5c9_luathread_new_L000211_215_L000216 ' reg ARG ADDRG
+ mov r4, ##@C_shn830_686cc54d_luathread_new_L000211_215_L000216 ' reg ARG ADDRG
  mov r5, r21 ' CVI, CVU or LOAD
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
@@ -1287,7 +1287,7 @@ C_sbno30_6864c5c9_luathread_new_L000211 ' <symbol:luathread_new>
  add SP, #4 ' CALL addrg
  mov r2, #1 ' reg ARG coni
  mov r3, ##@C_luaopen_coroutine ' reg ARG ADDRG
- mov r4, ##@C_sbno30_6864c5c9_luathread_new_L000211_217_L000218 ' reg ARG ADDRG
+ mov r4, ##@C_shn830_686cc54d_luathread_new_L000211_217_L000218 ' reg ARG ADDRG
  mov r5, r21 ' CVI, CVU or LOAD
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
@@ -1303,13 +1303,13 @@ C_sbno30_6864c5c9_luathread_new_L000211 ' <symbol:luathread_new>
  add SP, #4 ' CALL addrg
  wrlong r21, r19 ' ASGNP4 reg reg
  mov r0, r19 ' CVI, CVU or LOAD
-' C_sbno30_6864c5c9_luathread_new_L000211_212 ' (symbol refcount = 0)
+' C_shn830_686cc54d_luathread_new_L000211_212 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbno34_6864c5c9_luathread_join_workers_L000219 ' <symbol:luathread_join_workers>
+C_shn834_686cc54d_luathread_join_workers_L000219 ' <symbol:luathread_join_workers>
  calld PA,#NEWF
  calld PA,#PSHM
  long $800000 ' save registers
@@ -1317,20 +1317,20 @@ C_sbno34_6864c5c9_luathread_join_workers_L000219 ' <symbol:luathread_join_worker
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C_sched_join_workers ' CALL addrg
- mov r2, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r2, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_close ' CALL addrg
  mov r0, #0 ' reg <- coni
-' C_sbno34_6864c5c9_luathread_join_workers_L000219_220 ' (symbol refcount = 0)
+' C_shn834_686cc54d_luathread_join_workers_L000219_220 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbno35_6864c5c9_writer_L000221 ' <symbol:writer>
+C_shn835_686cc54d_writer_L000221 ' <symbol:writer>
  calld PA,#NEWF
  calld PA,#PSHM
  long $ea8000 ' save registers
@@ -1341,7 +1341,7 @@ C_sbno35_6864c5c9_writer_L000221 ' <symbol:writer>
  mov r15, r17 ' CVI, CVU or LOAD
  rdlong r22, r15 ' reg <- INDIRI4 reg
  cmps r22,  #0 wz
- if_nz jmp #\C_sbno35_6864c5c9_writer_L000221_223 ' NEI4
+ if_nz jmp #\C_shn835_686cc54d_writer_L000221_223 ' NEI4
  mov r22, #1 ' reg <- coni
  wrlong r22, r15 ' ASGNI4 reg reg
  mov r2, r15
@@ -1352,7 +1352,7 @@ C_sbno35_6864c5c9_writer_L000221 ' <symbol:writer>
  calld PA,#CALA
  long @C_luaL__buffinit
  add SP, #4 ' CALL addrg
-C_sbno35_6864c5c9_writer_L000221_223
+C_shn835_686cc54d_writer_L000221_223
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r21 ' CVI, CVU or LOAD
  mov r4, r15
@@ -1363,13 +1363,13 @@ C_sbno35_6864c5c9_writer_L000221_223
  long @C_luaL__addlstring
  add SP, #8 ' CALL addrg
  mov r0, #0 ' reg <- coni
-' C_sbno35_6864c5c9_writer_L000221_222 ' (symbol refcount = 0)
+' C_shn835_686cc54d_writer_L000221_222 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbno36_6864c5c9_func_dump_L000225 ' <symbol:func_dump>
+C_shn836_686cc54d_func_dump_L000225 ' <symbol:func_dump>
  calld PA,#NEWF
  sub SP, #280
  calld PA,#PSHM
@@ -1409,7 +1409,7 @@ C_sbno36_6864c5c9_func_dump_L000225 ' <symbol:func_dump>
  rdlong r2, RI ' reg ARG INDIR ADDRLi
  mov r3, FP
  sub r3, #-(-280) ' reg ARG ADDRLi
- mov r4, ##@C_sbno35_6864c5c9_writer_L000221 ' reg ARG ADDRG
+ mov r4, ##@C_shn835_686cc54d_writer_L000221 ' reg ARG ADDRG
  mov r5, r23 ' CVI, CVU or LOAD
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
@@ -1417,8 +1417,8 @@ C_sbno36_6864c5c9_func_dump_L000225 ' <symbol:func_dump>
  long @C_lua_dump
  add SP, #12 ' CALL addrg
  cmps r0,  #0 wz
- if_z jmp #\C_sbno36_6864c5c9_func_dump_L000225_227 ' EQI4
- mov r2, ##@C_sbno36_6864c5c9_func_dump_L000225_229_L000230 ' reg ARG ADDRG
+ if_z jmp #\C_shn836_686cc54d_func_dump_L000225_227 ' EQI4
+ mov r2, ##@C_shn836_686cc54d_func_dump_L000225_229_L000230 ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -1426,22 +1426,22 @@ C_sbno36_6864c5c9_func_dump_L000225 ' <symbol:func_dump>
  long @C_luaL__error
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
- jmp #\@C_sbno36_6864c5c9_func_dump_L000225_226 ' JUMPV addrg
-C_sbno36_6864c5c9_func_dump_L000225_227
+ jmp #\@C_shn836_686cc54d_func_dump_L000225_226 ' JUMPV addrg
+C_shn836_686cc54d_func_dump_L000225_227
  mov r2, FP
  sub r2, #-(-276) ' reg ARG ADDRLi
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_luaL__pushresult ' CALL addrg
  mov r0, #1 ' reg <- coni
-C_sbno36_6864c5c9_func_dump_L000225_226
+C_shn836_686cc54d_func_dump_L000225_226
  calld PA,#POPM ' restore registers
  add SP, #280 ' framesize
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbno38_6864c5c9_luathread_copyupvalues_L000232 ' <symbol:luathread_copyupvalues>
+C_shn838_686cc54d_luathread_copyupvalues_L000232 ' <symbol:luathread_copyupvalues>
  calld PA,#NEWF
  sub SP, #8
  calld PA,#PSHM
@@ -1450,8 +1450,8 @@ C_sbno38_6864c5c9_luathread_copyupvalues_L000232 ' <symbol:luathread_copyupvalue
  mov r21, r3 ' reg var <- reg arg
  mov r19, r2 ' reg var <- reg arg
  mov r17, #1 ' reg <- coni
- jmp #\@C_sbno38_6864c5c9_luathread_copyupvalues_L000232_235 ' JUMPV addrg
-C_sbno38_6864c5c9_luathread_copyupvalues_L000232_234
+ jmp #\@C_shn838_686cc54d_luathread_copyupvalues_L000232_235 ' JUMPV addrg
+C_shn838_686cc54d_luathread_copyupvalues_L000232_234
  mov r2, ##-1 ' reg ARG con
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1461,12 +1461,12 @@ C_sbno38_6864c5c9_luathread_copyupvalues_L000232_234
  add SP, #4 ' CALL addrg
  mov r15, r0 ' CVI, CVU or LOAD
  cmps r15,  #0 wcz
- if_b jmp #\C_sbno38_6864c5c9_luathread_copyupvalues_L000232_237 ' LTI4
+ if_b jmp #\C_shn838_686cc54d_luathread_copyupvalues_L000232_237 ' LTI4
  cmps r15,  #5 wcz
- if_a jmp #\C_sbno38_6864c5c9_luathread_copyupvalues_L000232_237 ' GTI4
+ if_a jmp #\C_shn838_686cc54d_luathread_copyupvalues_L000232_237 ' GTI4
  mov r22, r15
  shl r22, #2 ' LSHI4 coni
- mov r20, ##@C_sbno38_6864c5c9_luathread_copyupvalues_L000232_251_L000253 ' reg <- addrg
+ mov r20, ##@C_shn838_686cc54d_luathread_copyupvalues_L000232_251_L000253 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong RI, r22
  jmp RI ' JUMPV INDIR reg
@@ -1476,18 +1476,18 @@ C_sbno38_6864c5c9_luathread_copyupvalues_L000232_234
 DAT ' const data segment
 
  alignl ' align long
-C_sbno38_6864c5c9_luathread_copyupvalues_L000232_251_L000253 ' <symbol:251>
- long @C_sbno38_6864c5c9_luathread_copyupvalues_L000232_245
- long @C_sbno38_6864c5c9_luathread_copyupvalues_L000232_240
- long @C_sbno38_6864c5c9_luathread_copyupvalues_L000232_237
- long @C_sbno38_6864c5c9_luathread_copyupvalues_L000232_241
- long @C_sbno38_6864c5c9_luathread_copyupvalues_L000232_244
- long @C_sbno38_6864c5c9_luathread_copyupvalues_L000232_246
+C_shn838_686cc54d_luathread_copyupvalues_L000232_251_L000253 ' <symbol:251>
+ long @C_shn838_686cc54d_luathread_copyupvalues_L000232_245
+ long @C_shn838_686cc54d_luathread_copyupvalues_L000232_240
+ long @C_shn838_686cc54d_luathread_copyupvalues_L000232_237
+ long @C_shn838_686cc54d_luathread_copyupvalues_L000232_241
+ long @C_shn838_686cc54d_luathread_copyupvalues_L000232_244
+ long @C_shn838_686cc54d_luathread_copyupvalues_L000232_246
 
 ' Catalina Code
 
 DAT ' code segment
-C_sbno38_6864c5c9_luathread_copyupvalues_L000232_240
+C_shn838_686cc54d_luathread_copyupvalues_L000232_240
  mov r2, ##-1 ' reg ARG con
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1503,8 +1503,8 @@ C_sbno38_6864c5c9_luathread_copyupvalues_L000232_240
  calld PA,#CALA
  long @C_lua_pushboolean
  add SP, #4 ' CALL addrg
- jmp #\@C_sbno38_6864c5c9_luathread_copyupvalues_L000232_238 ' JUMPV addrg
-C_sbno38_6864c5c9_luathread_copyupvalues_L000232_241
+ jmp #\@C_shn838_686cc54d_luathread_copyupvalues_L000232_238 ' JUMPV addrg
+C_shn838_686cc54d_luathread_copyupvalues_L000232_241
  mov r2, ##-1 ' reg ARG con
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1513,7 +1513,7 @@ C_sbno38_6864c5c9_luathread_copyupvalues_L000232_241
  long @C_lua_isinteger
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
- if_z jmp #\C_sbno38_6864c5c9_luathread_copyupvalues_L000232_242 ' EQI4
+ if_z jmp #\C_shn838_686cc54d_luathread_copyupvalues_L000232_242 ' EQI4
  mov r2, ##0 ' reg ARG con
  mov r3, ##-1 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -1531,8 +1531,8 @@ C_sbno38_6864c5c9_luathread_copyupvalues_L000232_241
  calld PA,#CALA
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
- jmp #\@C_sbno38_6864c5c9_luathread_copyupvalues_L000232_238 ' JUMPV addrg
-C_sbno38_6864c5c9_luathread_copyupvalues_L000232_242
+ jmp #\@C_shn838_686cc54d_luathread_copyupvalues_L000232_238 ' JUMPV addrg
+C_shn838_686cc54d_luathread_copyupvalues_L000232_242
  mov r2, ##0 ' reg ARG con
  mov r3, ##-1 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -1549,8 +1549,8 @@ C_sbno38_6864c5c9_luathread_copyupvalues_L000232_242
  calld PA,#CALA
  long @C_lua_pushnumber
  add SP, #4 ' CALL addrg
- jmp #\@C_sbno38_6864c5c9_luathread_copyupvalues_L000232_238 ' JUMPV addrg
-C_sbno38_6864c5c9_luathread_copyupvalues_L000232_244
+ jmp #\@C_shn838_686cc54d_luathread_copyupvalues_L000232_238 ' JUMPV addrg
+C_shn838_686cc54d_luathread_copyupvalues_L000232_244
  mov r2, FP
  sub r2, #-(-12) ' reg ARG ADDRLi
  mov r3, ##-1 ' reg ARG con
@@ -1575,14 +1575,14 @@ C_sbno38_6864c5c9_luathread_copyupvalues_L000232_244
  calld PA,#CALA
  long @C_lua_pushlstring
  add SP, #8 ' CALL addrg
- jmp #\@C_sbno38_6864c5c9_luathread_copyupvalues_L000232_238 ' JUMPV addrg
-C_sbno38_6864c5c9_luathread_copyupvalues_L000232_245
+ jmp #\@C_shn838_686cc54d_luathread_copyupvalues_L000232_238 ' JUMPV addrg
+C_shn838_686cc54d_luathread_copyupvalues_L000232_245
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
- jmp #\@C_sbno38_6864c5c9_luathread_copyupvalues_L000232_238 ' JUMPV addrg
-C_sbno38_6864c5c9_luathread_copyupvalues_L000232_246
+ jmp #\@C_shn838_686cc54d_luathread_copyupvalues_L000232_238 ' JUMPV addrg
+C_shn838_686cc54d_luathread_copyupvalues_L000232_246
  mov r2, #2 ' reg ARG coni
  mov r3, ##-1001000 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -1601,7 +1601,7 @@ C_sbno38_6864c5c9_luathread_copyupvalues_L000232_246
  long @C_lua_compare
  add SP, #12 ' CALL addrg
  cmps r0,  #0 wz
- if_z jmp #\C_sbno38_6864c5c9_luathread_copyupvalues_L000232_247 ' EQI4
+ if_z jmp #\C_shn838_686cc54d_luathread_copyupvalues_L000232_247 ' EQI4
  mov r2, ##-2 ' reg ARG con
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1617,8 +1617,8 @@ C_sbno38_6864c5c9_luathread_copyupvalues_L000232_246
  calld PA,#CALA
  long @C_lua_rawgeti
  add SP, #8 ' CALL addrg
- jmp #\@C_sbno38_6864c5c9_luathread_copyupvalues_L000232_238 ' JUMPV addrg
-C_sbno38_6864c5c9_luathread_copyupvalues_L000232_247
+ jmp #\@C_shn838_686cc54d_luathread_copyupvalues_L000232_238 ' JUMPV addrg
+C_shn838_686cc54d_luathread_copyupvalues_L000232_247
  mov r2, ##-2 ' reg ARG con
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1626,7 +1626,7 @@ C_sbno38_6864c5c9_luathread_copyupvalues_L000232_247
  calld PA,#CALA
  long @C_lua_settop
  add SP, #4 ' CALL addrg
-C_sbno38_6864c5c9_luathread_copyupvalues_L000232_237
+C_shn838_686cc54d_luathread_copyupvalues_L000232_237
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
@@ -1648,7 +1648,7 @@ C_sbno38_6864c5c9_luathread_copyupvalues_L000232_237
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r2, r22 ' CVI, CVU or LOAD
- mov r3, ##@C_sbno38_6864c5c9_luathread_copyupvalues_L000232_249_L000250 ' reg ARG ADDRG
+ mov r3, ##@C_shn838_686cc54d_luathread_copyupvalues_L000232_249_L000250 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -1656,8 +1656,8 @@ C_sbno38_6864c5c9_luathread_copyupvalues_L000232_237
  long @C_lua_pushfstring
  add SP, #8 ' CALL addrg
  mov r0, #0 ' reg <- coni
- jmp #\@C_sbno38_6864c5c9_luathread_copyupvalues_L000232_233 ' JUMPV addrg
-C_sbno38_6864c5c9_luathread_copyupvalues_L000232_238
+ jmp #\@C_shn838_686cc54d_luathread_copyupvalues_L000232_233 ' JUMPV addrg
+C_shn838_686cc54d_luathread_copyupvalues_L000232_238
  mov r2, ##-2 ' reg ARG con
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1675,12 +1675,12 @@ C_sbno38_6864c5c9_luathread_copyupvalues_L000232_238
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sbno38_6864c5c9_luathread_copyupvalues_L000232_254  ' NEU4
+ if_nz jmp #\C_shn838_686cc54d_luathread_copyupvalues_L000232_254  ' NEU4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
- mov r2, ##@C_sbno38_6864c5c9_luathread_copyupvalues_L000232_256_L000257 ' reg ARG ADDRG
+ mov r2, ##@C_shn838_686cc54d_luathread_copyupvalues_L000232_256_L000257 ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -1688,10 +1688,10 @@ C_sbno38_6864c5c9_luathread_copyupvalues_L000232_238
  long @C_lua_pushstring
  add SP, #4 ' CALL addrg
  mov r0, #0 ' reg <- coni
- jmp #\@C_sbno38_6864c5c9_luathread_copyupvalues_L000232_233 ' JUMPV addrg
-C_sbno38_6864c5c9_luathread_copyupvalues_L000232_254
+ jmp #\@C_shn838_686cc54d_luathread_copyupvalues_L000232_233 ' JUMPV addrg
+C_shn838_686cc54d_luathread_copyupvalues_L000232_254
  adds r17, #1 ' ADDI4 coni
-C_sbno38_6864c5c9_luathread_copyupvalues_L000232_235
+C_shn838_686cc54d_luathread_copyupvalues_L000232_235
  mov r2, r17 ' CVI, CVU or LOAD
  mov r3, r19 ' CVI, CVU or LOAD
  mov r4, r23 ' CVI, CVU or LOAD
@@ -1702,16 +1702,16 @@ C_sbno38_6864c5c9_luathread_copyupvalues_L000232_235
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sbno38_6864c5c9_luathread_copyupvalues_L000232_234  ' NEU4
+ if_nz jmp #\C_shn838_686cc54d_luathread_copyupvalues_L000232_234  ' NEU4
  mov r0, #1 ' reg <- coni
-C_sbno38_6864c5c9_luathread_copyupvalues_L000232_233
+C_shn838_686cc54d_luathread_copyupvalues_L000232_233
  calld PA,#POPM ' restore registers
  add SP, #8 ' framesize
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbnog_6864c5c9_threads_recycle_set_L000021 ' <symbol:threads_recycle_set>
+C_shn8g_686cc54d_threads_recycle_set_L000021 ' <symbol:threads_recycle_set>
  calld PA,#NEWF
  calld PA,#PSHM
  long $f80000 ' save registers
@@ -1725,8 +1725,8 @@ C_sbnog_6864c5c9_threads_recycle_set_L000021 ' <symbol:threads_recycle_set>
  add SP, #4 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
  cmps r19,  #0 wcz
- if_ae jmp #\C_sbnog_6864c5c9_threads_recycle_set_L000021_261 ' GEI4
- mov r2, ##@C_sbnog_6864c5c9_threads_recycle_set_L000021_259_L000260 ' reg ARG ADDRG
+ if_ae jmp #\C_shn8g_686cc54d_threads_recycle_set_L000021_261 ' GEI4
+ mov r2, ##@C_shn8g_686cc54d_threads_recycle_set_L000021_259_L000260 ' reg ARG ADDRG
  mov r3, #1 ' reg ARG coni
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -1734,15 +1734,15 @@ C_sbnog_6864c5c9_threads_recycle_set_L000021 ' <symbol:threads_recycle_set>
  calld PA,#CALA
  long @C_luaL__argerror
  add SP, #8 ' CALL addrg
-C_sbnog_6864c5c9_threads_recycle_set_L000021_261
- mov r2, ##@C_sbno1_6864c5c9_mutex_recycle_list_L000006 ' reg ARG ADDRG
+C_shn8g_686cc54d_threads_recycle_set_L000021_261
+ mov r2, ##@C_shn81_686cc54d_mutex_recycle_list_L000006 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_lock ' CALL addrg
- wrlong r19, ##@C_sbno3_6864c5c9_recyclemax_L000008 ' ASGNI4 addrg reg
- jmp #\@C_sbnog_6864c5c9_threads_recycle_set_L000021_263 ' JUMPV addrg
-C_sbnog_6864c5c9_threads_recycle_set_L000021_262
- mov r2, ##@C_sbno2_6864c5c9_recycle_list_L000007 ' reg ARG ADDRG
+ wrlong r19, ##@C_shn83_686cc54d_recyclemax_L000008 ' ASGNI4 addrg reg
+ jmp #\@C_shn8g_686cc54d_threads_recycle_set_L000021_263 ' JUMPV addrg
+C_shn8g_686cc54d_threads_recycle_set_L000021_262
+ mov r2, ##@C_shn82_686cc54d_recycle_list_L000007 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_list_remove ' CALL addrg
@@ -1751,27 +1751,27 @@ C_sbnog_6864c5c9_threads_recycle_set_L000021_262
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_close ' CALL addrg
-C_sbnog_6864c5c9_threads_recycle_set_L000021_263
- mov r2, ##@C_sbno2_6864c5c9_recycle_list_L000007 ' reg ARG ADDRG
+C_shn8g_686cc54d_threads_recycle_set_L000021_263
+ mov r2, ##@C_shn82_686cc54d_recycle_list_L000007 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_list_count ' CALL addrg
- mov r20, ##@C_sbno3_6864c5c9_recyclemax_L000008
+ mov r20, ##@C_shn83_686cc54d_recyclemax_L000008
  rdlong r20, r20 ' reg <- INDIRI4 addrg
  cmps r0, r20 wcz
- if_a jmp #\C_sbnog_6864c5c9_threads_recycle_set_L000021_262 ' GTI4
- mov r2, ##@C_sbno1_6864c5c9_mutex_recycle_list_L000006 ' reg ARG ADDRG
+ if_a jmp #\C_shn8g_686cc54d_threads_recycle_set_L000021_262 ' GTI4
+ mov r2, ##@C_shn81_686cc54d_mutex_recycle_list_L000006 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
  mov r0, #0 ' reg <- coni
-' C_sbnog_6864c5c9_threads_recycle_set_L000021_258 ' (symbol refcount = 0)
+' C_shn8g_686cc54d_threads_recycle_set_L000021_258 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbno9_6864c5c9_threads_wait_L000014 ' <symbol:threads_wait>
+C_shn89_686cc54d_threads_wait_L000014 ' <symbol:threads_wait>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e00000 ' save registers
@@ -1782,14 +1782,14 @@ C_sbno9_6864c5c9_threads_wait_L000014 ' <symbol:threads_wait>
  long @C_lua_gettop ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  cmps r21,  #0 wcz
- if_be jmp #\C_sbno9_6864c5c9_threads_wait_L000014_266 ' LEI4
+ if_be jmp #\C_shn89_686cc54d_threads_wait_L000014_266 ' LEI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_sbnoq_6864c5c9_threads_wait_for_L000031 ' CALL addrg
+ long @C_shn8q_686cc54d_threads_wait_for_L000031 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
- jmp #\@C_sbno9_6864c5c9_threads_wait_L000014_265 ' JUMPV addrg
-C_sbno9_6864c5c9_threads_wait_L000014_266
+ jmp #\@C_shn89_686cc54d_threads_wait_L000014_265 ' JUMPV addrg
+C_shn89_686cc54d_threads_wait_L000014_266
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C_sched_wait ' CALL addrg
@@ -1819,13 +1819,13 @@ C_sbno9_6864c5c9_threads_wait_L000014_266
  long @C_lua_gc
  add SP, #8 ' CALL addrg
  mov r0, #0 ' reg <- coni
-C_sbno9_6864c5c9_threads_wait_L000014_265
+C_shn89_686cc54d_threads_wait_L000014_265
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbnoe_6864c5c9_threads_set_numworkers_L000019 ' <symbol:threads_set_numworkers>
+C_shn8e_686cc54d_threads_set_numworkers_L000019 ' <symbol:threads_set_numworkers>
  calld PA,#NEWF
  calld PA,#PSHM
  long $f00000 ' save registers
@@ -1835,7 +1835,7 @@ C_sbnoe_6864c5c9_threads_set_numworkers_L000019 ' <symbol:threads_set_numworkers
  calld PA,#CALA
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wcz
- if_be jmp #\C_sbnoe_6864c5c9_threads_set_numworkers_L000019_269 ' LEI4
+ if_be jmp #\C_shn8e_686cc54d_threads_set_numworkers_L000019_269 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1845,8 +1845,8 @@ C_sbnoe_6864c5c9_threads_set_numworkers_L000019 ' <symbol:threads_set_numworkers
  add SP, #4 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  cmps r21,  #0 wcz
- if_ae jmp #\C_sbnoe_6864c5c9_threads_set_numworkers_L000019_273 ' GEI4
- mov r2, ##@C_sbnoe_6864c5c9_threads_set_numworkers_L000019_271_L000272 ' reg ARG ADDRG
+ if_ae jmp #\C_shn8e_686cc54d_threads_set_numworkers_L000019_273 ' GEI4
+ mov r2, ##@C_shn8e_686cc54d_threads_set_numworkers_L000019_271_L000272 ' reg ARG ADDRG
  mov r3, #1 ' reg ARG coni
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -1854,22 +1854,22 @@ C_sbnoe_6864c5c9_threads_set_numworkers_L000019 ' <symbol:threads_set_numworkers
  calld PA,#CALA
  long @C_luaL__argerror
  add SP, #8 ' CALL addrg
-C_sbnoe_6864c5c9_threads_set_numworkers_L000019_273
+C_shn8e_686cc54d_threads_set_numworkers_L000019_273
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_sched_set_numworkers ' CALL addrg
  mov r20, ##-1 ' reg <- con
  cmps r0, r20 wz
- if_nz jmp #\C_sbnoe_6864c5c9_threads_set_numworkers_L000019_274 ' NEI4
- mov r2, ##@C_sbnoe_6864c5c9_threads_set_numworkers_L000019_276_L000277 ' reg ARG ADDRG
+ if_nz jmp #\C_shn8e_686cc54d_threads_set_numworkers_L000019_274 ' NEI4
+ mov r2, ##@C_shn8e_686cc54d_threads_set_numworkers_L000019_276_L000277 ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
  long @C_luaL__error
  add SP, #4 ' CALL addrg
-C_sbnoe_6864c5c9_threads_set_numworkers_L000019_274
+C_shn8e_686cc54d_threads_set_numworkers_L000019_274
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C__thread_stall ' CALL addrg
@@ -1895,7 +1895,7 @@ C_sbnoe_6864c5c9_threads_set_numworkers_L000019_274
  calld PA,#CALA
  long @C_lua_gc
  add SP, #8 ' CALL addrg
-C_sbnoe_6864c5c9_threads_set_numworkers_L000019_269
+C_shn8e_686cc54d_threads_set_numworkers_L000019_269
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C_sched_get_numworkers ' CALL addrg
@@ -1908,13 +1908,13 @@ C_sbnoe_6864c5c9_threads_set_numworkers_L000019_269
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_sbnoe_6864c5c9_threads_set_numworkers_L000019_268 ' (symbol refcount = 0)
+' C_shn8e_686cc54d_threads_set_numworkers_L000019_268 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbnof_6864c5c9_threads_get_numworkers_L000020 ' <symbol:threads_get_numworkers>
+C_shn8f_686cc54d_threads_get_numworkers_L000020 ' <symbol:threads_get_numworkers>
  calld PA,#NEWF
  calld PA,#PSHM
  long $c00000 ' save registers
@@ -1931,13 +1931,13 @@ C_sbnof_6864c5c9_threads_get_numworkers_L000020 ' <symbol:threads_get_numworkers
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_sbnof_6864c5c9_threads_get_numworkers_L000020_278 ' (symbol refcount = 0)
+' C_shn8f_686cc54d_threads_get_numworkers_L000020_278 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbno8_6864c5c9_threads_create_newproc_L000013 ' <symbol:threads_create_newproc>
+C_shn88_686cc54d_threads_create_newproc_L000013 ' <symbol:threads_create_newproc>
  calld PA,#NEWF
  sub SP, #4
  calld PA,#PSHM
@@ -1957,19 +1957,19 @@ C_sbno8_6864c5c9_threads_create_newproc_L000013 ' <symbol:threads_create_newproc
  long @C_lua_gettop ' CALL addrg
  mov r13, r0 ' CVI, CVU or LOAD
  cmps r15,  #6 wz
- if_nz jmp #\C_sbno8_6864c5c9_threads_create_newproc_L000013_280 ' NEI4
+ if_nz jmp #\C_shn88_686cc54d_threads_create_newproc_L000013_280 ' NEI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_sbno36_6864c5c9_func_dump_L000225 ' CALL addrg
+ long @C_shn836_686cc54d_func_dump_L000225 ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
  cmps r17,  #1 wz
- if_z jmp #\C_sbno8_6864c5c9_threads_create_newproc_L000013_282 ' EQI4
+ if_z jmp #\C_shn88_686cc54d_threads_create_newproc_L000013_282 ' EQI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
- mov r2, ##@C_sbno8_6864c5c9_threads_create_newproc_L000013_284_L000285 ' reg ARG ADDRG
+ mov r2, ##@C_shn88_686cc54d_threads_create_newproc_L000013_284_L000285 ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -1977,8 +1977,8 @@ C_sbno8_6864c5c9_threads_create_newproc_L000013 ' <symbol:threads_create_newproc
  long @C_lua_pushfstring
  add SP, #4 ' CALL addrg
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbno8_6864c5c9_threads_create_newproc_L000013_279 ' JUMPV addrg
-C_sbno8_6864c5c9_threads_create_newproc_L000013_282
+ jmp #\@C_shn88_686cc54d_threads_create_newproc_L000013_279 ' JUMPV addrg
+C_shn88_686cc54d_threads_create_newproc_L000013_282
  mov r2, #1 ' reg ARG coni
  mov r3, r13 ' CVI, CVU or LOAD
  mov r4, r23 ' CVI, CVU or LOAD
@@ -1987,10 +1987,10 @@ C_sbno8_6864c5c9_threads_create_newproc_L000013_282
  calld PA,#CALA
  long @C_lua_rotate
  add SP, #8 ' CALL addrg
- jmp #\@C_sbno8_6864c5c9_threads_create_newproc_L000013_281 ' JUMPV addrg
-C_sbno8_6864c5c9_threads_create_newproc_L000013_280
+ jmp #\@C_shn88_686cc54d_threads_create_newproc_L000013_281 ' JUMPV addrg
+C_shn88_686cc54d_threads_create_newproc_L000013_280
  cmps r15,  #4 wz
- if_z jmp #\C_sbno8_6864c5c9_threads_create_newproc_L000013_286 ' EQI4
+ if_z jmp #\C_shn88_686cc54d_threads_create_newproc_L000013_286 ' EQI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
@@ -2012,7 +2012,7 @@ C_sbno8_6864c5c9_threads_create_newproc_L000013_280
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r2, r22 ' CVI, CVU or LOAD
- mov r3, ##@C_sbno8_6864c5c9_threads_create_newproc_L000013_288_L000289 ' reg ARG ADDRG
+ mov r3, ##@C_shn88_686cc54d_threads_create_newproc_L000013_288_L000289 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -2020,32 +2020,32 @@ C_sbno8_6864c5c9_threads_create_newproc_L000013_280
  long @C_lua_pushfstring
  add SP, #8 ' CALL addrg
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbno8_6864c5c9_threads_create_newproc_L000013_279 ' JUMPV addrg
-C_sbno8_6864c5c9_threads_create_newproc_L000013_286
-C_sbno8_6864c5c9_threads_create_newproc_L000013_281
- mov r2, ##@C_sbno1_6864c5c9_mutex_recycle_list_L000006 ' reg ARG ADDRG
+ jmp #\@C_shn88_686cc54d_threads_create_newproc_L000013_279 ' JUMPV addrg
+C_shn88_686cc54d_threads_create_newproc_L000013_286
+C_shn88_686cc54d_threads_create_newproc_L000013_281
+ mov r2, ##@C_shn81_686cc54d_mutex_recycle_list_L000006 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_lock ' CALL addrg
- mov r22, ##@C_sbno3_6864c5c9_recyclemax_L000008
+ mov r22, ##@C_shn83_686cc54d_recyclemax_L000008
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
- if_be jmp #\C_sbno8_6864c5c9_threads_create_newproc_L000013_290 ' LEI4
- mov r2, ##@C_sbno2_6864c5c9_recycle_list_L000007 ' reg ARG ADDRG
+ if_be jmp #\C_shn88_686cc54d_threads_create_newproc_L000013_290 ' LEI4
+ mov r2, ##@C_shn82_686cc54d_recycle_list_L000007 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_list_remove ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  mov r22, r21 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sbno8_6864c5c9_threads_create_newproc_L000013_292  ' NEU4
+ if_nz jmp #\C_shn88_686cc54d_threads_create_newproc_L000013_292  ' NEU4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_sbno30_6864c5c9_luathread_new_L000211 ' CALL addrg
+ long @C_shn830_686cc54d_luathread_new_L000211 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
- jmp #\@C_sbno8_6864c5c9_threads_create_newproc_L000013_291 ' JUMPV addrg
-C_sbno8_6864c5c9_threads_create_newproc_L000013_292
+ jmp #\@C_shn88_686cc54d_threads_create_newproc_L000013_291 ' JUMPV addrg
+C_shn88_686cc54d_threads_create_newproc_L000013_292
  mov r2, #0 ' reg ARG coni
  rdlong r3, r21 ' reg <- INDIRP4 reg
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -2053,15 +2053,15 @@ C_sbno8_6864c5c9_threads_create_newproc_L000013_292
  calld PA,#CALA
  long @C_lua_settop
  add SP, #4 ' CALL addrg
- jmp #\@C_sbno8_6864c5c9_threads_create_newproc_L000013_291 ' JUMPV addrg
-C_sbno8_6864c5c9_threads_create_newproc_L000013_290
+ jmp #\@C_shn88_686cc54d_threads_create_newproc_L000013_291 ' JUMPV addrg
+C_shn88_686cc54d_threads_create_newproc_L000013_290
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_sbno30_6864c5c9_luathread_new_L000211 ' CALL addrg
+ long @C_shn830_686cc54d_luathread_new_L000211 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
-C_sbno8_6864c5c9_threads_create_newproc_L000013_291
- mov r2, ##@C_sbno1_6864c5c9_mutex_recycle_list_L000006 ' reg ARG ADDRG
+C_shn88_686cc54d_threads_create_newproc_L000013_291
+ mov r2, ##@C_shn81_686cc54d_mutex_recycle_list_L000006 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
@@ -2103,10 +2103,10 @@ C_sbno8_6864c5c9_threads_create_newproc_L000013_291
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno2k_6864c5c9_luathread_loadbuffer_L000157
+ long @C_shn82k_686cc54d_luathread_loadbuffer_L000157
  add SP, #12 ' CALL addrg
  cmps r15,  #6 wz
- if_nz jmp #\C_sbno8_6864c5c9_threads_create_newproc_L000013_294 ' NEI4
+ if_nz jmp #\C_shn88_686cc54d_threads_create_newproc_L000013_294 ' NEI4
  mov r2, r13
  adds r2, #1 ' ADDI4 coni
  rdlong r3, r21 ' reg <- INDIRP4 reg
@@ -2114,17 +2114,17 @@ C_sbno8_6864c5c9_threads_create_newproc_L000013_291
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno38_6864c5c9_luathread_copyupvalues_L000232
+ long @C_shn838_686cc54d_luathread_copyupvalues_L000232
  add SP, #8 ' CALL addrg
  cmps r0,  #0 wz
- if_nz jmp #\C_sbno8_6864c5c9_threads_create_newproc_L000013_296 ' NEI4
+ if_nz jmp #\C_shn88_686cc54d_threads_create_newproc_L000013_296 ' NEI4
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_luathread_recycle_insert ' CALL addrg
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbno8_6864c5c9_threads_create_newproc_L000013_279 ' JUMPV addrg
-C_sbno8_6864c5c9_threads_create_newproc_L000013_296
+ jmp #\@C_shn88_686cc54d_threads_create_newproc_L000013_279 ' JUMPV addrg
+C_shn88_686cc54d_threads_create_newproc_L000013_296
  mov r2, ##-2 ' reg ARG con
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -2132,7 +2132,7 @@ C_sbno8_6864c5c9_threads_create_newproc_L000013_296
  calld PA,#CALA
  long @C_lua_settop
  add SP, #4 ' CALL addrg
-C_sbno8_6864c5c9_threads_create_newproc_L000013_294
+C_shn88_686cc54d_threads_create_newproc_L000013_294
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C_sched_inc_lpcount ' CALL addrg
@@ -2148,14 +2148,14 @@ C_sbno8_6864c5c9_threads_create_newproc_L000013_294
  long @C_lua_pushboolean
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-C_sbno8_6864c5c9_threads_create_newproc_L000013_279
+C_shn88_686cc54d_threads_create_newproc_L000013_279
  calld PA,#POPM ' restore registers
  add SP, #4 ' framesize
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbnoa_6864c5c9_threads_send_L000015 ' <symbol:threads_send>
+C_shn8a_686cc54d_threads_send_L000015 ' <symbol:threads_send>
  calld PA,#NEWF
  calld PA,#PSHM
  long $faa000 ' save registers
@@ -2174,18 +2174,18 @@ C_sbnoa_6864c5c9_threads_send_L000015 ' <symbol:threads_send>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno2j_6864c5c9_channel_locked_get_L000139
+ long @C_shn82j_686cc54d_channel_locked_get_L000139
  add SP, #4 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
  mov r22, r19 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sbnoa_6864c5c9_threads_send_L000015_299  ' NEU4
+ if_nz jmp #\C_shn8a_686cc54d_threads_send_L000015_299  ' NEU4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
  mov r2, r13 ' CVI, CVU or LOAD
- mov r3, ##@C_sbnoa_6864c5c9_threads_send_L000015_301_L000302 ' reg ARG ADDRG
+ mov r3, ##@C_shn8a_686cc54d_threads_send_L000015_301_L000302 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -2193,8 +2193,8 @@ C_sbnoa_6864c5c9_threads_send_L000015 ' <symbol:threads_send>
  long @C_lua_pushfstring
  add SP, #8 ' CALL addrg
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbnoa_6864c5c9_threads_send_L000015_298 ' JUMPV addrg
-C_sbnoa_6864c5c9_threads_send_L000015_299
+ jmp #\@C_shn8a_686cc54d_threads_send_L000015_298 ' JUMPV addrg
+C_shn8a_686cc54d_threads_send_L000015_299
  mov r2, r19
  adds r2, #12 ' ADDP4 coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -2203,13 +2203,13 @@ C_sbnoa_6864c5c9_threads_send_L000015_299
  mov r17, r0 ' CVI, CVU or LOAD
  mov r22, r17 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_z jmp #\C_sbnoa_6864c5c9_threads_send_L000015_303 ' EQU4
+ if_z jmp #\C_shn8a_686cc54d_threads_send_L000015_303 ' EQU4
  rdlong r2, r17 ' reg <- INDIRP4 reg
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno2l_6864c5c9_luathread_copyvalues_L000161
+ long @C_shn82l_686cc54d_luathread_copyvalues_L000161
  add SP, #4 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  rdlong r2, r17 ' reg <- INDIRP4 reg
@@ -2222,11 +2222,11 @@ C_sbnoa_6864c5c9_threads_send_L000015_299
  subs r22, #1 ' SUBI4 coni
  wrlong r22, r20 ' ASGNI4 reg reg
  rdlong r22, r17 ' reg <- INDIRP4 reg
- mov r20, ##@C_sbno5_6864c5c9_mainlp_L000010
+ mov r20, ##@C_shn85_686cc54d_mainlp_L000010
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  cmp r22, r20 wz
- if_nz jmp #\C_sbnoa_6864c5c9_threads_send_L000015_305  ' NEU4
- mov r2, ##@C_sbno6_6864c5c9_mutex_mainls_L000011 ' reg ARG ADDRG
+ if_nz jmp #\C_shn8a_686cc54d_threads_send_L000015_305  ' NEU4
+ mov r2, ##@C_shn86_686cc54d_mutex_mainls_L000011 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_lock ' CALL addrg
@@ -2234,23 +2234,23 @@ C_sbnoa_6864c5c9_threads_send_L000015_299
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_cond_signal ' CALL addrg
- mov r2, ##@C_sbno6_6864c5c9_mutex_mainls_L000011 ' reg ARG ADDRG
+ mov r2, ##@C_shn86_686cc54d_mutex_mainls_L000011 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
- jmp #\@C_sbnoa_6864c5c9_threads_send_L000015_306 ' JUMPV addrg
-C_sbnoa_6864c5c9_threads_send_L000015_305
+ jmp #\@C_shn8a_686cc54d_threads_send_L000015_306 ' JUMPV addrg
+C_shn8a_686cc54d_threads_send_L000015_305
  mov r2, r17 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_sched_queue_proc ' CALL addrg
-C_sbnoa_6864c5c9_threads_send_L000015_306
+C_shn8a_686cc54d_threads_send_L000015_306
  mov r2, r19 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_luathread_unlock_channel ' CALL addrg
  cmps r21,  #1 wz
- if_nz jmp #\C_sbnoa_6864c5c9_threads_send_L000015_307 ' NEI4
+ if_nz jmp #\C_shn8a_686cc54d_threads_send_L000015_307 ' NEI4
  mov r2, #0 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -2266,18 +2266,18 @@ C_sbnoa_6864c5c9_threads_send_L000015_306
  long @C_lua_pushboolean
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
- jmp #\@C_sbnoa_6864c5c9_threads_send_L000015_298 ' JUMPV addrg
-C_sbnoa_6864c5c9_threads_send_L000015_307
+ jmp #\@C_shn8a_686cc54d_threads_send_L000015_298 ' JUMPV addrg
+C_shn8a_686cc54d_threads_send_L000015_307
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbnoa_6864c5c9_threads_send_L000015_298 ' JUMPV addrg
-C_sbnoa_6864c5c9_threads_send_L000015_303
+ jmp #\@C_shn8a_686cc54d_threads_send_L000015_298 ' JUMPV addrg
+C_shn8a_686cc54d_threads_send_L000015_303
  mov r22, r23 ' CVI, CVU or LOAD
- mov r20, ##@C_sbno5_6864c5c9_mainlp_L000010
+ mov r20, ##@C_shn85_686cc54d_mainlp_L000010
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  cmp r22, r20 wz
- if_nz jmp #\C_sbnoa_6864c5c9_threads_send_L000015_309  ' NEU4
- wrlong r19, ##@C_sbno5_6864c5c9_mainlp_L000010+12 ' ASGNP4 addrg reg
- mov r2, ##@C_sbno5_6864c5c9_mainlp_L000010 ' reg ARG ADDRG
+ if_nz jmp #\C_shn8a_686cc54d_threads_send_L000015_309  ' NEU4
+ wrlong r19, ##@C_shn85_686cc54d_mainlp_L000010+12 ' ASGNP4 addrg reg
+ mov r2, ##@C_shn85_686cc54d_mainlp_L000010 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_luathread_queue_sender ' CALL addrg
@@ -2285,33 +2285,33 @@ C_sbnoa_6864c5c9_threads_send_L000015_303
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_luathread_unlock_channel ' CALL addrg
- mov r2, ##@C_sbno6_6864c5c9_mutex_mainls_L000011 ' reg ARG ADDRG
+ mov r2, ##@C_shn86_686cc54d_mutex_mainls_L000011 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_lock ' CALL addrg
- mov r2, ##@C_sbno6_6864c5c9_mutex_mainls_L000011 ' reg ARG ADDRG
+ mov r2, ##@C_shn86_686cc54d_mutex_mainls_L000011 ' reg ARG ADDRG
  mov r3, ##@C_cond_mainls_sendrecv ' reg ARG ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
  long @C_pthread_cond_wait
  add SP, #4 ' CALL addrg
- mov r2, ##@C_sbno6_6864c5c9_mutex_mainls_L000011 ' reg ARG ADDRG
+ mov r2, ##@C_shn86_686cc54d_mutex_mainls_L000011 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
- mov r0, ##@C_sbno5_6864c5c9_mainlp_L000010+8
+ mov r0, ##@C_shn85_686cc54d_mainlp_L000010+8
  rdlong r0, r0 ' reg <- INDIRI4 addrg
- jmp #\@C_sbnoa_6864c5c9_threads_send_L000015_298 ' JUMPV addrg
-C_sbnoa_6864c5c9_threads_send_L000015_309
+ jmp #\@C_shn8a_686cc54d_threads_send_L000015_298 ' JUMPV addrg
+C_shn8a_686cc54d_threads_send_L000015_309
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_sbno2u_6864c5c9_luathread_getself_L000207 ' CALL addrg
+ long @C_shn82u_686cc54d_luathread_getself_L000207 ' CALL addrg
  mov r15, r0 ' CVI, CVU or LOAD
  mov r22, r15 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_z jmp #\C_sbnoa_6864c5c9_threads_send_L000015_313 ' EQU4
+ if_z jmp #\C_shn8a_686cc54d_threads_send_L000015_313 ' EQU4
  mov r22, r15
  adds r22, #4 ' ADDP4 coni
  mov r20, #2 ' reg <- coni
@@ -2319,7 +2319,7 @@ C_sbnoa_6864c5c9_threads_send_L000015_309
  mov r22, r15
  adds r22, #12 ' ADDP4 coni
  wrlong r19, r22 ' ASGNP4 reg reg
-C_sbnoa_6864c5c9_threads_send_L000015_313
+C_shn8a_686cc54d_threads_send_L000015_313
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
@@ -2335,13 +2335,13 @@ C_sbnoa_6864c5c9_threads_send_L000015_313
  long @C_lua_yieldk
  add SP, #12 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
-C_sbnoa_6864c5c9_threads_send_L000015_298
+C_shn8a_686cc54d_threads_send_L000015_298
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbnoh_6864c5c9_threads_send_async_L000022 ' <symbol:threads_send_async>
+C_shn8h_686cc54d_threads_send_async_L000022 ' <symbol:threads_send_async>
  calld PA,#NEWF
  calld PA,#PSHM
  long $fa8000 ' save registers
@@ -2360,18 +2360,18 @@ C_sbnoh_6864c5c9_threads_send_async_L000022 ' <symbol:threads_send_async>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno2j_6864c5c9_channel_locked_get_L000139
+ long @C_shn82j_686cc54d_channel_locked_get_L000139
  add SP, #4 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
  mov r22, r19 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sbnoh_6864c5c9_threads_send_async_L000022_316  ' NEU4
+ if_nz jmp #\C_shn8h_686cc54d_threads_send_async_L000022_316  ' NEU4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
  mov r2, r15 ' CVI, CVU or LOAD
- mov r3, ##@C_sbnoa_6864c5c9_threads_send_L000015_301_L000302 ' reg ARG ADDRG
+ mov r3, ##@C_shn8a_686cc54d_threads_send_L000015_301_L000302 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -2379,8 +2379,8 @@ C_sbnoh_6864c5c9_threads_send_async_L000022 ' <symbol:threads_send_async>
  long @C_lua_pushfstring
  add SP, #8 ' CALL addrg
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbnoh_6864c5c9_threads_send_async_L000022_315 ' JUMPV addrg
-C_sbnoh_6864c5c9_threads_send_async_L000022_316
+ jmp #\@C_shn8h_686cc54d_threads_send_async_L000022_315 ' JUMPV addrg
+C_shn8h_686cc54d_threads_send_async_L000022_316
  mov r2, r19
  adds r2, #12 ' ADDP4 coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -2389,13 +2389,13 @@ C_sbnoh_6864c5c9_threads_send_async_L000022_316
  mov r17, r0 ' CVI, CVU or LOAD
  mov r22, r17 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_z jmp #\C_sbnoh_6864c5c9_threads_send_async_L000022_318 ' EQU4
+ if_z jmp #\C_shn8h_686cc54d_threads_send_async_L000022_318 ' EQU4
  rdlong r2, r17 ' reg <- INDIRP4 reg
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno2l_6864c5c9_luathread_copyvalues_L000161
+ long @C_shn82l_686cc54d_luathread_copyvalues_L000161
  add SP, #4 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  rdlong r2, r17 ' reg <- INDIRP4 reg
@@ -2408,11 +2408,11 @@ C_sbnoh_6864c5c9_threads_send_async_L000022_316
  subs r22, #1 ' SUBI4 coni
  wrlong r22, r20 ' ASGNI4 reg reg
  rdlong r22, r17 ' reg <- INDIRP4 reg
- mov r20, ##@C_sbno5_6864c5c9_mainlp_L000010
+ mov r20, ##@C_shn85_686cc54d_mainlp_L000010
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  cmp r22, r20 wz
- if_nz jmp #\C_sbnoh_6864c5c9_threads_send_async_L000022_320  ' NEU4
- mov r2, ##@C_sbno6_6864c5c9_mutex_mainls_L000011 ' reg ARG ADDRG
+ if_nz jmp #\C_shn8h_686cc54d_threads_send_async_L000022_320  ' NEU4
+ mov r2, ##@C_shn86_686cc54d_mutex_mainls_L000011 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_lock ' CALL addrg
@@ -2420,23 +2420,23 @@ C_sbnoh_6864c5c9_threads_send_async_L000022_316
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_cond_signal ' CALL addrg
- mov r2, ##@C_sbno6_6864c5c9_mutex_mainls_L000011 ' reg ARG ADDRG
+ mov r2, ##@C_shn86_686cc54d_mutex_mainls_L000011 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
- jmp #\@C_sbnoh_6864c5c9_threads_send_async_L000022_321 ' JUMPV addrg
-C_sbnoh_6864c5c9_threads_send_async_L000022_320
+ jmp #\@C_shn8h_686cc54d_threads_send_async_L000022_321 ' JUMPV addrg
+C_shn8h_686cc54d_threads_send_async_L000022_320
  mov r2, r17 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_sched_queue_proc ' CALL addrg
-C_sbnoh_6864c5c9_threads_send_async_L000022_321
+C_shn8h_686cc54d_threads_send_async_L000022_321
  mov r2, r19 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_luathread_unlock_channel ' CALL addrg
  cmps r21,  #1 wz
- if_nz jmp #\C_sbnoh_6864c5c9_threads_send_async_L000022_322 ' NEI4
+ if_nz jmp #\C_shn8h_686cc54d_threads_send_async_L000022_322 ' NEI4
  mov r2, #0 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -2452,11 +2452,11 @@ C_sbnoh_6864c5c9_threads_send_async_L000022_321
  long @C_lua_pushboolean
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
- jmp #\@C_sbnoh_6864c5c9_threads_send_async_L000022_315 ' JUMPV addrg
-C_sbnoh_6864c5c9_threads_send_async_L000022_322
+ jmp #\@C_shn8h_686cc54d_threads_send_async_L000022_315 ' JUMPV addrg
+C_shn8h_686cc54d_threads_send_async_L000022_322
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbnoh_6864c5c9_threads_send_async_L000022_315 ' JUMPV addrg
-C_sbnoh_6864c5c9_threads_send_async_L000022_318
+ jmp #\@C_shn8h_686cc54d_threads_send_async_L000022_315 ' JUMPV addrg
+C_shn8h_686cc54d_threads_send_async_L000022_318
  mov r2, r19 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
@@ -2466,7 +2466,7 @@ C_sbnoh_6864c5c9_threads_send_async_L000022_318
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
  mov r2, r15 ' CVI, CVU or LOAD
- mov r3, ##@C_sbnoh_6864c5c9_threads_send_async_L000022_324_L000325 ' reg ARG ADDRG
+ mov r3, ##@C_shn8h_686cc54d_threads_send_async_L000022_324_L000325 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -2474,13 +2474,13 @@ C_sbnoh_6864c5c9_threads_send_async_L000022_318
  long @C_lua_pushfstring
  add SP, #8 ' CALL addrg
  mov r0, #2 ' reg <- coni
-C_sbnoh_6864c5c9_threads_send_async_L000022_315
+C_shn8h_686cc54d_threads_send_async_L000022_315
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbnon_6864c5c9_threads_lock_L000028 ' <symbol:threads_lock>
+C_shn8n_686cc54d_threads_lock_L000028 ' <symbol:threads_lock>
  calld PA,#NEWF
  calld PA,#PSHM
  long $ea0000 ' save registers
@@ -2499,18 +2499,18 @@ C_sbnon_6864c5c9_threads_lock_L000028 ' <symbol:threads_lock>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno2j_6864c5c9_channel_locked_get_L000139
+ long @C_shn82j_686cc54d_channel_locked_get_L000139
  add SP, #4 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  mov r22, r21 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sbnon_6864c5c9_threads_lock_L000028_330  ' NEU4
+ if_nz jmp #\C_shn8n_686cc54d_threads_lock_L000028_330  ' NEU4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
  mov r2, r19 ' CVI, CVU or LOAD
- mov r3, ##@C_sbnoa_6864c5c9_threads_send_L000015_301_L000302 ' reg ARG ADDRG
+ mov r3, ##@C_shn8a_686cc54d_threads_send_L000015_301_L000302 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -2518,8 +2518,8 @@ C_sbnon_6864c5c9_threads_lock_L000028 ' <symbol:threads_lock>
  long @C_lua_pushfstring
  add SP, #8 ' CALL addrg
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbnon_6864c5c9_threads_lock_L000028_326 ' JUMPV addrg
-C_sbnon_6864c5c9_threads_lock_L000028_329
+ jmp #\@C_shn8n_686cc54d_threads_lock_L000028_326 ' JUMPV addrg
+C_shn8n_686cc54d_threads_lock_L000028_329
  mov r2, r21
  adds r2, #24 ' ADDP4 coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -2533,13 +2533,13 @@ C_sbnon_6864c5c9_threads_lock_L000028_329
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno2j_6864c5c9_channel_locked_get_L000139
+ long @C_shn82j_686cc54d_channel_locked_get_L000139
  add SP, #4 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
-C_sbnon_6864c5c9_threads_lock_L000028_330
+C_shn8n_686cc54d_threads_lock_L000028_330
  mov r22, r21 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_z jmp #\C_sbnon_6864c5c9_threads_lock_L000028_332 ' EQU4
+ if_z jmp #\C_shn8n_686cc54d_threads_lock_L000028_332 ' EQU4
  mov r2, r21
  adds r2, #40 ' ADDP4 coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -2547,11 +2547,11 @@ C_sbnon_6864c5c9_threads_lock_L000028_330
  long @C_pthread_mutex_trylock ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
  cmps r0,  #0 wz
- if_nz jmp #\C_sbnon_6864c5c9_threads_lock_L000028_329 ' NEI4
-C_sbnon_6864c5c9_threads_lock_L000028_332
+ if_nz jmp #\C_shn8n_686cc54d_threads_lock_L000028_329 ' NEI4
+C_shn8n_686cc54d_threads_lock_L000028_332
  mov r22, r21 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sbnon_6864c5c9_threads_lock_L000028_333  ' NEU4
+ if_nz jmp #\C_shn8n_686cc54d_threads_lock_L000028_333  ' NEU4
  mov r2, #0 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -2560,8 +2560,8 @@ C_sbnon_6864c5c9_threads_lock_L000028_332
  long @C_lua_pushboolean
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
- jmp #\@C_sbnon_6864c5c9_threads_lock_L000028_326 ' JUMPV addrg
-C_sbnon_6864c5c9_threads_lock_L000028_333
+ jmp #\@C_shn8n_686cc54d_threads_lock_L000028_326 ' JUMPV addrg
+C_shn8n_686cc54d_threads_lock_L000028_333
  mov r2, r21
  adds r2, #24 ' ADDP4 coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -2575,13 +2575,13 @@ C_sbnon_6864c5c9_threads_lock_L000028_333
  long @C_lua_pushboolean
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-C_sbnon_6864c5c9_threads_lock_L000028_326
+C_shn8n_686cc54d_threads_lock_L000028_326
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbnop_6864c5c9_threads_trylock_L000030 ' <symbol:threads_trylock>
+C_shn8p_686cc54d_threads_trylock_L000030 ' <symbol:threads_trylock>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e80000 ' save registers
@@ -2600,18 +2600,18 @@ C_sbnop_6864c5c9_threads_trylock_L000030 ' <symbol:threads_trylock>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno2j_6864c5c9_channel_locked_get_L000139
+ long @C_shn82j_686cc54d_channel_locked_get_L000139
  add SP, #4 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  mov r22, r21 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sbnop_6864c5c9_threads_trylock_L000030_336  ' NEU4
+ if_nz jmp #\C_shn8p_686cc54d_threads_trylock_L000030_336  ' NEU4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
  mov r2, r19 ' CVI, CVU or LOAD
- mov r3, ##@C_sbnoa_6864c5c9_threads_send_L000015_301_L000302 ' reg ARG ADDRG
+ mov r3, ##@C_shn8a_686cc54d_threads_send_L000015_301_L000302 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -2619,15 +2619,15 @@ C_sbnop_6864c5c9_threads_trylock_L000030 ' <symbol:threads_trylock>
  long @C_lua_pushfstring
  add SP, #8 ' CALL addrg
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbnop_6864c5c9_threads_trylock_L000030_335 ' JUMPV addrg
-C_sbnop_6864c5c9_threads_trylock_L000030_336
+ jmp #\@C_shn8p_686cc54d_threads_trylock_L000030_335 ' JUMPV addrg
+C_shn8p_686cc54d_threads_trylock_L000030_336
  mov r2, r21
  adds r2, #40 ' ADDP4 coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_trylock ' CALL addrg
  cmps r0,  #0 wz
- if_nz jmp #\C_sbnop_6864c5c9_threads_trylock_L000030_338 ' NEI4
+ if_nz jmp #\C_shn8p_686cc54d_threads_trylock_L000030_338 ' NEI4
  mov r2, r21
  adds r2, #24 ' ADDP4 coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -2640,8 +2640,8 @@ C_sbnop_6864c5c9_threads_trylock_L000030_336
  calld PA,#CALA
  long @C_lua_pushboolean
  add SP, #4 ' CALL addrg
- jmp #\@C_sbnop_6864c5c9_threads_trylock_L000030_339 ' JUMPV addrg
-C_sbnop_6864c5c9_threads_trylock_L000030_338
+ jmp #\@C_shn8p_686cc54d_threads_trylock_L000030_339 ' JUMPV addrg
+C_shn8p_686cc54d_threads_trylock_L000030_338
  mov r2, r21
  adds r2, #24 ' ADDP4 coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -2654,15 +2654,15 @@ C_sbnop_6864c5c9_threads_trylock_L000030_338
  calld PA,#CALA
  long @C_lua_pushboolean
  add SP, #4 ' CALL addrg
-C_sbnop_6864c5c9_threads_trylock_L000030_339
+C_shn8p_686cc54d_threads_trylock_L000030_339
  mov r0, #1 ' reg <- coni
-C_sbnop_6864c5c9_threads_trylock_L000030_335
+C_shn8p_686cc54d_threads_trylock_L000030_335
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbnoo_6864c5c9_threads_unlock_L000029 ' <symbol:threads_unlock>
+C_shn8o_686cc54d_threads_unlock_L000029 ' <symbol:threads_unlock>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e80000 ' save registers
@@ -2681,18 +2681,18 @@ C_sbnoo_6864c5c9_threads_unlock_L000029 ' <symbol:threads_unlock>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno2j_6864c5c9_channel_locked_get_L000139
+ long @C_shn82j_686cc54d_channel_locked_get_L000139
  add SP, #4 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  mov r22, r21 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sbnoo_6864c5c9_threads_unlock_L000029_341  ' NEU4
+ if_nz jmp #\C_shn8o_686cc54d_threads_unlock_L000029_341  ' NEU4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
  mov r2, r19 ' CVI, CVU or LOAD
- mov r3, ##@C_sbnoa_6864c5c9_threads_send_L000015_301_L000302 ' reg ARG ADDRG
+ mov r3, ##@C_shn8a_686cc54d_threads_send_L000015_301_L000302 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -2700,15 +2700,15 @@ C_sbnoo_6864c5c9_threads_unlock_L000029 ' <symbol:threads_unlock>
  long @C_lua_pushfstring
  add SP, #8 ' CALL addrg
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbnoo_6864c5c9_threads_unlock_L000029_340 ' JUMPV addrg
-C_sbnoo_6864c5c9_threads_unlock_L000029_341
+ jmp #\@C_shn8o_686cc54d_threads_unlock_L000029_340 ' JUMPV addrg
+C_shn8o_686cc54d_threads_unlock_L000029_341
  mov r2, r21
  adds r2, #40 ' ADDP4 coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
  cmps r0,  #0 wz
- if_nz jmp #\C_sbnoo_6864c5c9_threads_unlock_L000029_343 ' NEI4
+ if_nz jmp #\C_shn8o_686cc54d_threads_unlock_L000029_343 ' NEI4
  mov r2, r21
  adds r2, #24 ' ADDP4 coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -2721,8 +2721,8 @@ C_sbnoo_6864c5c9_threads_unlock_L000029_341
  calld PA,#CALA
  long @C_lua_pushboolean
  add SP, #4 ' CALL addrg
- jmp #\@C_sbnoo_6864c5c9_threads_unlock_L000029_344 ' JUMPV addrg
-C_sbnoo_6864c5c9_threads_unlock_L000029_343
+ jmp #\@C_shn8o_686cc54d_threads_unlock_L000029_344 ' JUMPV addrg
+C_shn8o_686cc54d_threads_unlock_L000029_343
  mov r2, r21
  adds r2, #24 ' ADDP4 coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -2735,15 +2735,15 @@ C_sbnoo_6864c5c9_threads_unlock_L000029_343
  calld PA,#CALA
  long @C_lua_pushboolean
  add SP, #4 ' CALL addrg
-C_sbnoo_6864c5c9_threads_unlock_L000029_344
+C_shn8o_686cc54d_threads_unlock_L000029_344
  mov r0, #1 ' reg <- coni
-C_sbnoo_6864c5c9_threads_unlock_L000029_340
+C_shn8o_686cc54d_threads_unlock_L000029_340
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbnoq_6864c5c9_threads_wait_for_L000031 ' <symbol:threads_wait_for>
+C_shn8q_686cc54d_threads_wait_for_L000031 ' <symbol:threads_wait_for>
  calld PA,#NEWF
  calld PA,#PSHM
  long $ea0000 ' save registers
@@ -2763,12 +2763,12 @@ C_sbnoq_6864c5c9_threads_wait_for_L000031 ' <symbol:threads_wait_for>
  long @C_lua_gettop ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
  cmps r17,  #1 wz
- if_z jmp #\C_sbnoq_6864c5c9_threads_wait_for_L000031_346 ' EQI4
+ if_z jmp #\C_shn8q_686cc54d_threads_wait_for_L000031_346 ' EQI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
- mov r2, ##@C_sbnoq_6864c5c9_threads_wait_for_L000031_348_L000349 ' reg ARG ADDRG
+ mov r2, ##@C_shn8q_686cc54d_threads_wait_for_L000031_348_L000349 ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -2776,25 +2776,25 @@ C_sbnoq_6864c5c9_threads_wait_for_L000031 ' <symbol:threads_wait_for>
  long @C_lua_pushfstring
  add SP, #4 ' CALL addrg
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbnoq_6864c5c9_threads_wait_for_L000031_345 ' JUMPV addrg
-C_sbnoq_6864c5c9_threads_wait_for_L000031_346
+ jmp #\@C_shn8q_686cc54d_threads_wait_for_L000031_345 ' JUMPV addrg
+C_shn8q_686cc54d_threads_wait_for_L000031_346
  mov r2, #0 ' reg ARG coni
  mov r3, r19 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno2j_6864c5c9_channel_locked_get_L000139
+ long @C_shn82j_686cc54d_channel_locked_get_L000139
  add SP, #4 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  mov r22, r21 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sbnoq_6864c5c9_threads_wait_for_L000031_350  ' NEU4
+ if_nz jmp #\C_shn8q_686cc54d_threads_wait_for_L000031_350  ' NEU4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
  mov r2, r19 ' CVI, CVU or LOAD
- mov r3, ##@C_sbnoa_6864c5c9_threads_send_L000015_301_L000302 ' reg ARG ADDRG
+ mov r3, ##@C_shn8a_686cc54d_threads_send_L000015_301_L000302 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -2802,8 +2802,8 @@ C_sbnoq_6864c5c9_threads_wait_for_L000031_346
  long @C_lua_pushfstring
  add SP, #8 ' CALL addrg
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbnoq_6864c5c9_threads_wait_for_L000031_345 ' JUMPV addrg
-C_sbnoq_6864c5c9_threads_wait_for_L000031_350
+ jmp #\@C_shn8q_686cc54d_threads_wait_for_L000031_345 ' JUMPV addrg
+C_shn8q_686cc54d_threads_wait_for_L000031_350
  mov r2, r21
  adds r2, #24 ' ADDP4 coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -2826,13 +2826,13 @@ C_sbnoq_6864c5c9_threads_wait_for_L000031_350
  long @C_lua_pushboolean
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-C_sbnoq_6864c5c9_threads_wait_for_L000031_345
+C_shn8q_686cc54d_threads_wait_for_L000031_345
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbnor_6864c5c9_threads_signal_L000032 ' <symbol:threads_signal>
+C_shn8r_686cc54d_threads_signal_L000032 ' <symbol:threads_signal>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e80000 ' save registers
@@ -2851,18 +2851,18 @@ C_sbnor_6864c5c9_threads_signal_L000032 ' <symbol:threads_signal>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno2j_6864c5c9_channel_locked_get_L000139
+ long @C_shn82j_686cc54d_channel_locked_get_L000139
  add SP, #4 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  mov r22, r21 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sbnor_6864c5c9_threads_signal_L000032_353  ' NEU4
+ if_nz jmp #\C_shn8r_686cc54d_threads_signal_L000032_353  ' NEU4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
  mov r2, r19 ' CVI, CVU or LOAD
- mov r3, ##@C_sbnoa_6864c5c9_threads_send_L000015_301_L000302 ' reg ARG ADDRG
+ mov r3, ##@C_shn8a_686cc54d_threads_send_L000015_301_L000302 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -2870,8 +2870,8 @@ C_sbnor_6864c5c9_threads_signal_L000032 ' <symbol:threads_signal>
  long @C_lua_pushfstring
  add SP, #8 ' CALL addrg
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbnor_6864c5c9_threads_signal_L000032_352 ' JUMPV addrg
-C_sbnor_6864c5c9_threads_signal_L000032_353
+ jmp #\@C_shn8r_686cc54d_threads_signal_L000032_352 ' JUMPV addrg
+C_shn8r_686cc54d_threads_signal_L000032_353
  mov r2, r21
  adds r2, #64 ' ADDP4 coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -2893,13 +2893,13 @@ C_sbnor_6864c5c9_threads_signal_L000032_353
  long @C_lua_pushboolean
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-C_sbnor_6864c5c9_threads_signal_L000032_352
+C_shn8r_686cc54d_threads_signal_L000032_352
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbnos_6864c5c9_threads_broadcast_L000033 ' <symbol:threads_broadcast>
+C_shn8s_686cc54d_threads_broadcast_L000033 ' <symbol:threads_broadcast>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e80000 ' save registers
@@ -2918,18 +2918,18 @@ C_sbnos_6864c5c9_threads_broadcast_L000033 ' <symbol:threads_broadcast>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno2j_6864c5c9_channel_locked_get_L000139
+ long @C_shn82j_686cc54d_channel_locked_get_L000139
  add SP, #4 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  mov r22, r21 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sbnos_6864c5c9_threads_broadcast_L000033_356  ' NEU4
+ if_nz jmp #\C_shn8s_686cc54d_threads_broadcast_L000033_356  ' NEU4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
  mov r2, r19 ' CVI, CVU or LOAD
- mov r3, ##@C_sbnoa_6864c5c9_threads_send_L000015_301_L000302 ' reg ARG ADDRG
+ mov r3, ##@C_shn8a_686cc54d_threads_send_L000015_301_L000302 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -2937,8 +2937,8 @@ C_sbnos_6864c5c9_threads_broadcast_L000033 ' <symbol:threads_broadcast>
  long @C_lua_pushfstring
  add SP, #8 ' CALL addrg
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbnos_6864c5c9_threads_broadcast_L000033_355 ' JUMPV addrg
-C_sbnos_6864c5c9_threads_broadcast_L000033_356
+ jmp #\@C_shn8s_686cc54d_threads_broadcast_L000033_355 ' JUMPV addrg
+C_shn8s_686cc54d_threads_broadcast_L000033_356
  mov r2, r21
  adds r2, #64 ' ADDP4 coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -2960,13 +2960,13 @@ C_sbnos_6864c5c9_threads_broadcast_L000033_356
  long @C_lua_pushboolean
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-C_sbnos_6864c5c9_threads_broadcast_L000033_355
+C_shn8s_686cc54d_threads_broadcast_L000033_355
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbnot_6864c5c9_threads_rendezvous_L000034 ' <symbol:threads_rendezvous>
+C_shn8t_686cc54d_threads_rendezvous_L000034 ' <symbol:threads_rendezvous>
  calld PA,#NEWF
  calld PA,#PSHM
  long $ea0000 ' save registers
@@ -2985,18 +2985,18 @@ C_sbnot_6864c5c9_threads_rendezvous_L000034 ' <symbol:threads_rendezvous>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno2j_6864c5c9_channel_locked_get_L000139
+ long @C_shn82j_686cc54d_channel_locked_get_L000139
  add SP, #4 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
  mov r22, r19 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sbnot_6864c5c9_threads_rendezvous_L000034_362  ' NEU4
+ if_nz jmp #\C_shn8t_686cc54d_threads_rendezvous_L000034_362  ' NEU4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
  mov r2, r17 ' CVI, CVU or LOAD
- mov r3, ##@C_sbnoa_6864c5c9_threads_send_L000015_301_L000302 ' reg ARG ADDRG
+ mov r3, ##@C_shn8a_686cc54d_threads_send_L000015_301_L000302 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -3004,8 +3004,8 @@ C_sbnot_6864c5c9_threads_rendezvous_L000034 ' <symbol:threads_rendezvous>
  long @C_lua_pushfstring
  add SP, #8 ' CALL addrg
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbnot_6864c5c9_threads_rendezvous_L000034_358 ' JUMPV addrg
-C_sbnot_6864c5c9_threads_rendezvous_L000034_361
+ jmp #\@C_shn8t_686cc54d_threads_rendezvous_L000034_358 ' JUMPV addrg
+C_shn8t_686cc54d_threads_rendezvous_L000034_361
  mov r2, r19
  adds r2, #24 ' ADDP4 coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -3019,13 +3019,13 @@ C_sbnot_6864c5c9_threads_rendezvous_L000034_361
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno2j_6864c5c9_channel_locked_get_L000139
+ long @C_shn82j_686cc54d_channel_locked_get_L000139
  add SP, #4 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
-C_sbnot_6864c5c9_threads_rendezvous_L000034_362
+C_shn8t_686cc54d_threads_rendezvous_L000034_362
  mov r22, r19 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_z jmp #\C_sbnot_6864c5c9_threads_rendezvous_L000034_364 ' EQU4
+ if_z jmp #\C_shn8t_686cc54d_threads_rendezvous_L000034_364 ' EQU4
  mov r2, r19
  adds r2, #40 ' ADDP4 coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -3033,11 +3033,11 @@ C_sbnot_6864c5c9_threads_rendezvous_L000034_362
  long @C_pthread_mutex_trylock ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  cmps r0,  #0 wz
- if_nz jmp #\C_sbnot_6864c5c9_threads_rendezvous_L000034_361 ' NEI4
-C_sbnot_6864c5c9_threads_rendezvous_L000034_364
+ if_nz jmp #\C_shn8t_686cc54d_threads_rendezvous_L000034_361 ' NEI4
+C_shn8t_686cc54d_threads_rendezvous_L000034_364
  mov r22, r19 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sbnot_6864c5c9_threads_rendezvous_L000034_365  ' NEU4
+ if_nz jmp #\C_shn8t_686cc54d_threads_rendezvous_L000034_365  ' NEU4
  mov r2, #0 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -3046,8 +3046,8 @@ C_sbnot_6864c5c9_threads_rendezvous_L000034_364
  long @C_lua_pushboolean
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
- jmp #\@C_sbnot_6864c5c9_threads_rendezvous_L000034_358 ' JUMPV addrg
-C_sbnot_6864c5c9_threads_rendezvous_L000034_365
+ jmp #\@C_shn8t_686cc54d_threads_rendezvous_L000034_358 ' JUMPV addrg
+C_shn8t_686cc54d_threads_rendezvous_L000034_365
  mov r2, r19
  adds r2, #64 ' ADDP4 coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -3072,12 +3072,12 @@ C_sbnot_6864c5c9_threads_rendezvous_L000034_365
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno2j_6864c5c9_channel_locked_get_L000139
+ long @C_shn82j_686cc54d_channel_locked_get_L000139
  add SP, #4 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
  mov r22, r19 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sbnot_6864c5c9_threads_rendezvous_L000034_367  ' NEU4
+ if_nz jmp #\C_shn8t_686cc54d_threads_rendezvous_L000034_367  ' NEU4
  mov r2, r19
  adds r2, #40 ' ADDP4 coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -3088,7 +3088,7 @@ C_sbnot_6864c5c9_threads_rendezvous_L000034_365
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
  mov r2, r17 ' CVI, CVU or LOAD
- mov r3, ##@C_sbnoa_6864c5c9_threads_send_L000015_301_L000302 ' reg ARG ADDRG
+ mov r3, ##@C_shn8a_686cc54d_threads_send_L000015_301_L000302 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -3096,8 +3096,8 @@ C_sbnot_6864c5c9_threads_rendezvous_L000034_365
  long @C_lua_pushfstring
  add SP, #8 ' CALL addrg
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbnot_6864c5c9_threads_rendezvous_L000034_358 ' JUMPV addrg
-C_sbnot_6864c5c9_threads_rendezvous_L000034_367
+ jmp #\@C_shn8t_686cc54d_threads_rendezvous_L000034_358 ' JUMPV addrg
+C_shn8t_686cc54d_threads_rendezvous_L000034_367
  mov r2, r19
  adds r2, #40 ' ADDP4 coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -3124,37 +3124,37 @@ C_sbnot_6864c5c9_threads_rendezvous_L000034_367
  long @C_lua_pushboolean
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-C_sbnot_6864c5c9_threads_rendezvous_L000034_358
+C_shn8t_686cc54d_threads_rendezvous_L000034_358
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbno3l_6864c5c9_simple_type_L000369 ' <symbol:simple_type>
+C_shn83l_686cc54d_simple_type_L000369 ' <symbol:simple_type>
  calld PA,#PSHM
  long $800000 ' save registers
  cmps r2,  #0 wz
- if_z jmp #\C_sbno3l_6864c5c9_simple_type_L000369_376 ' EQI4
+ if_z jmp #\C_shn83l_686cc54d_simple_type_L000369_376 ' EQI4
  cmps r2,  #3 wz
- if_z jmp #\C_sbno3l_6864c5c9_simple_type_L000369_376 ' EQI4
+ if_z jmp #\C_shn83l_686cc54d_simple_type_L000369_376 ' EQI4
  cmps r2,  #1 wz
- if_z jmp #\C_sbno3l_6864c5c9_simple_type_L000369_376 ' EQI4
+ if_z jmp #\C_shn83l_686cc54d_simple_type_L000369_376 ' EQI4
  cmps r2,  #4 wz
- if_nz jmp #\C_sbno3l_6864c5c9_simple_type_L000369_372 ' NEI4
-C_sbno3l_6864c5c9_simple_type_L000369_376
+ if_nz jmp #\C_shn83l_686cc54d_simple_type_L000369_372 ' NEI4
+C_shn83l_686cc54d_simple_type_L000369_376
  mov r23, #1 ' reg <- coni
- jmp #\@C_sbno3l_6864c5c9_simple_type_L000369_373 ' JUMPV addrg
-C_sbno3l_6864c5c9_simple_type_L000369_372
+ jmp #\@C_shn83l_686cc54d_simple_type_L000369_373 ' JUMPV addrg
+C_shn83l_686cc54d_simple_type_L000369_372
  mov r23, #0 ' reg <- coni
-C_sbno3l_6864c5c9_simple_type_L000369_373
+C_shn83l_686cc54d_simple_type_L000369_373
  mov r0, r23 ' CVI, CVU or LOAD
-' C_sbno3l_6864c5c9_simple_type_L000369_370 ' (symbol refcount = 0)
+' C_shn83l_686cc54d_simple_type_L000369_370 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETN
 
 
  alignl ' align long
-C_sbno3m_6864c5c9_luathread_movevalues_L000377 ' <symbol:luathread_movevalues>
+C_shn83m_686cc54d_luathread_movevalues_L000377 ' <symbol:luathread_movevalues>
  calld PA,#NEWF
  sub SP, #8
  calld PA,#PSHM
@@ -3174,13 +3174,13 @@ C_sbno3m_6864c5c9_luathread_movevalues_L000377 ' <symbol:luathread_movevalues>
  long @C_lua_checkstack
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
- if_nz jmp #\C_sbno3m_6864c5c9_luathread_movevalues_L000377_379 ' NEI4
+ if_nz jmp #\C_shn83m_686cc54d_luathread_movevalues_L000377_379 ' NEI4
  mov r0, #0 ' reg <- coni
- jmp #\@C_sbno3m_6864c5c9_luathread_movevalues_L000377_378 ' JUMPV addrg
-C_sbno3m_6864c5c9_luathread_movevalues_L000377_379
+ jmp #\@C_shn83m_686cc54d_luathread_movevalues_L000377_378 ' JUMPV addrg
+C_shn83m_686cc54d_luathread_movevalues_L000377_379
  mov r19, #1 ' reg <- coni
- jmp #\@C_sbno3m_6864c5c9_luathread_movevalues_L000377_384 ' JUMPV addrg
-C_sbno3m_6864c5c9_luathread_movevalues_L000377_381
+ jmp #\@C_shn83m_686cc54d_luathread_movevalues_L000377_384 ' JUMPV addrg
+C_shn83m_686cc54d_luathread_movevalues_L000377_381
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -3190,12 +3190,12 @@ C_sbno3m_6864c5c9_luathread_movevalues_L000377_381
  add SP, #4 ' CALL addrg
  mov r15, r0 ' CVI, CVU or LOAD
  cmps r15,  #0 wcz
- if_b jmp #\C_sbno3m_6864c5c9_luathread_movevalues_L000377_385 ' LTI4
+ if_b jmp #\C_shn83m_686cc54d_luathread_movevalues_L000377_385 ' LTI4
  cmps r15,  #5 wcz
- if_a jmp #\C_sbno3m_6864c5c9_luathread_movevalues_L000377_385 ' GTI4
+ if_a jmp #\C_shn83m_686cc54d_luathread_movevalues_L000377_385 ' GTI4
  mov r22, r15
  shl r22, #2 ' LSHI4 coni
- mov r20, ##@C_sbno3m_6864c5c9_luathread_movevalues_L000377_412_L000414 ' reg <- addrg
+ mov r20, ##@C_shn83m_686cc54d_luathread_movevalues_L000377_412_L000414 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong RI, r22
  jmp RI ' JUMPV INDIR reg
@@ -3205,18 +3205,18 @@ C_sbno3m_6864c5c9_luathread_movevalues_L000377_381
 DAT ' const data segment
 
  alignl ' align long
-C_sbno3m_6864c5c9_luathread_movevalues_L000377_412_L000414 ' <symbol:412>
- long @C_sbno3m_6864c5c9_luathread_movevalues_L000377_393
- long @C_sbno3m_6864c5c9_luathread_movevalues_L000377_388
- long @C_sbno3m_6864c5c9_luathread_movevalues_L000377_385
- long @C_sbno3m_6864c5c9_luathread_movevalues_L000377_389
- long @C_sbno3m_6864c5c9_luathread_movevalues_L000377_392
- long @C_sbno3m_6864c5c9_luathread_movevalues_L000377_394
+C_shn83m_686cc54d_luathread_movevalues_L000377_412_L000414 ' <symbol:412>
+ long @C_shn83m_686cc54d_luathread_movevalues_L000377_393
+ long @C_shn83m_686cc54d_luathread_movevalues_L000377_388
+ long @C_shn83m_686cc54d_luathread_movevalues_L000377_385
+ long @C_shn83m_686cc54d_luathread_movevalues_L000377_389
+ long @C_shn83m_686cc54d_luathread_movevalues_L000377_392
+ long @C_shn83m_686cc54d_luathread_movevalues_L000377_394
 
 ' Catalina Code
 
 DAT ' code segment
-C_sbno3m_6864c5c9_luathread_movevalues_L000377_388
+C_shn83m_686cc54d_luathread_movevalues_L000377_388
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -3232,8 +3232,8 @@ C_sbno3m_6864c5c9_luathread_movevalues_L000377_388
  calld PA,#CALA
  long @C_lua_pushboolean
  add SP, #4 ' CALL addrg
- jmp #\@C_sbno3m_6864c5c9_luathread_movevalues_L000377_386 ' JUMPV addrg
-C_sbno3m_6864c5c9_luathread_movevalues_L000377_389
+ jmp #\@C_shn83m_686cc54d_luathread_movevalues_L000377_386 ' JUMPV addrg
+C_shn83m_686cc54d_luathread_movevalues_L000377_389
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -3242,7 +3242,7 @@ C_sbno3m_6864c5c9_luathread_movevalues_L000377_389
  long @C_lua_isinteger
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
- if_z jmp #\C_sbno3m_6864c5c9_luathread_movevalues_L000377_390 ' EQI4
+ if_z jmp #\C_shn83m_686cc54d_luathread_movevalues_L000377_390 ' EQI4
  mov r2, ##0 ' reg ARG con
  mov r3, r19 ' CVI, CVU or LOAD
  mov r4, r23 ' CVI, CVU or LOAD
@@ -3260,8 +3260,8 @@ C_sbno3m_6864c5c9_luathread_movevalues_L000377_389
  calld PA,#CALA
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
- jmp #\@C_sbno3m_6864c5c9_luathread_movevalues_L000377_386 ' JUMPV addrg
-C_sbno3m_6864c5c9_luathread_movevalues_L000377_390
+ jmp #\@C_shn83m_686cc54d_luathread_movevalues_L000377_386 ' JUMPV addrg
+C_shn83m_686cc54d_luathread_movevalues_L000377_390
  mov r2, ##0 ' reg ARG con
  mov r3, r19 ' CVI, CVU or LOAD
  mov r4, r23 ' CVI, CVU or LOAD
@@ -3278,8 +3278,8 @@ C_sbno3m_6864c5c9_luathread_movevalues_L000377_390
  calld PA,#CALA
  long @C_lua_pushnumber
  add SP, #4 ' CALL addrg
- jmp #\@C_sbno3m_6864c5c9_luathread_movevalues_L000377_386 ' JUMPV addrg
-C_sbno3m_6864c5c9_luathread_movevalues_L000377_392
+ jmp #\@C_shn83m_686cc54d_luathread_movevalues_L000377_386 ' JUMPV addrg
+C_shn83m_686cc54d_luathread_movevalues_L000377_392
  mov r2, FP
  sub r2, #-(-12) ' reg ARG ADDRLi
  mov r3, r19 ' CVI, CVU or LOAD
@@ -3304,20 +3304,20 @@ C_sbno3m_6864c5c9_luathread_movevalues_L000377_392
  calld PA,#CALA
  long @C_lua_pushlstring
  add SP, #8 ' CALL addrg
- jmp #\@C_sbno3m_6864c5c9_luathread_movevalues_L000377_386 ' JUMPV addrg
-C_sbno3m_6864c5c9_luathread_movevalues_L000377_393
+ jmp #\@C_shn83m_686cc54d_luathread_movevalues_L000377_386 ' JUMPV addrg
+C_shn83m_686cc54d_luathread_movevalues_L000377_393
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
- jmp #\@C_sbno3m_6864c5c9_luathread_movevalues_L000377_386 ' JUMPV addrg
-C_sbno3m_6864c5c9_luathread_movevalues_L000377_394
+ jmp #\@C_shn83m_686cc54d_luathread_movevalues_L000377_386 ' JUMPV addrg
+C_shn83m_686cc54d_luathread_movevalues_L000377_394
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
- jmp #\@C_sbno3m_6864c5c9_luathread_movevalues_L000377_396 ' JUMPV addrg
-C_sbno3m_6864c5c9_luathread_movevalues_L000377_395
+ jmp #\@C_shn83m_686cc54d_luathread_movevalues_L000377_396 ' JUMPV addrg
+C_shn83m_686cc54d_luathread_movevalues_L000377_395
  mov r2, ##-2 ' reg ARG con
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -3326,7 +3326,7 @@ C_sbno3m_6864c5c9_luathread_movevalues_L000377_395
  long @C_lua_type
  add SP, #4 ' CALL addrg
  cmps r0,  #4 wz
- if_nz jmp #\C_sbno3m_6864c5c9_luathread_movevalues_L000377_398 ' NEI4
+ if_nz jmp #\C_shn83m_686cc54d_luathread_movevalues_L000377_398 ' NEI4
  mov r2, ##0 ' reg ARG con
  mov r3, ##-2 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -3352,12 +3352,12 @@ C_sbno3m_6864c5c9_luathread_movevalues_L000377_395
  add SP, #4 ' CALL addrg
  mov r13, r0 ' CVI, CVU or LOAD
  cmps r13,  #0 wcz
- if_b jmp #\C_sbno3m_6864c5c9_luathread_movevalues_L000377_400 ' LTI4
+ if_b jmp #\C_shn83m_686cc54d_luathread_movevalues_L000377_400 ' LTI4
  cmps r13,  #4 wcz
- if_a jmp #\C_sbno3m_6864c5c9_luathread_movevalues_L000377_400 ' GTI4
+ if_a jmp #\C_shn83m_686cc54d_luathread_movevalues_L000377_400 ' GTI4
  mov r22, r13
  shl r22, #2 ' LSHI4 coni
- mov r20, ##@C_sbno3m_6864c5c9_luathread_movevalues_L000377_409_L000411 ' reg <- addrg
+ mov r20, ##@C_shn83m_686cc54d_luathread_movevalues_L000377_409_L000411 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong RI, r22
  jmp RI ' JUMPV INDIR reg
@@ -3367,17 +3367,17 @@ C_sbno3m_6864c5c9_luathread_movevalues_L000377_395
 DAT ' const data segment
 
  alignl ' align long
-C_sbno3m_6864c5c9_luathread_movevalues_L000377_409_L000411 ' <symbol:409>
- long @C_sbno3m_6864c5c9_luathread_movevalues_L000377_408
- long @C_sbno3m_6864c5c9_luathread_movevalues_L000377_403
- long @C_sbno3m_6864c5c9_luathread_movevalues_L000377_400
- long @C_sbno3m_6864c5c9_luathread_movevalues_L000377_404
- long @C_sbno3m_6864c5c9_luathread_movevalues_L000377_407
+C_shn83m_686cc54d_luathread_movevalues_L000377_409_L000411 ' <symbol:409>
+ long @C_shn83m_686cc54d_luathread_movevalues_L000377_408
+ long @C_shn83m_686cc54d_luathread_movevalues_L000377_403
+ long @C_shn83m_686cc54d_luathread_movevalues_L000377_400
+ long @C_shn83m_686cc54d_luathread_movevalues_L000377_404
+ long @C_shn83m_686cc54d_luathread_movevalues_L000377_407
 
 ' Catalina Code
 
 DAT ' code segment
-C_sbno3m_6864c5c9_luathread_movevalues_L000377_403
+C_shn83m_686cc54d_luathread_movevalues_L000377_403
  mov r2, ##-1 ' reg ARG con
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -3400,8 +3400,8 @@ C_sbno3m_6864c5c9_luathread_movevalues_L000377_403
  calld PA,#CALA
  long @C_lua_settable
  add SP, #4 ' CALL addrg
- jmp #\@C_sbno3m_6864c5c9_luathread_movevalues_L000377_401 ' JUMPV addrg
-C_sbno3m_6864c5c9_luathread_movevalues_L000377_404
+ jmp #\@C_shn83m_686cc54d_luathread_movevalues_L000377_401 ' JUMPV addrg
+C_shn83m_686cc54d_luathread_movevalues_L000377_404
  mov r2, ##-1 ' reg ARG con
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -3410,7 +3410,7 @@ C_sbno3m_6864c5c9_luathread_movevalues_L000377_404
  long @C_lua_isinteger
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
- if_z jmp #\C_sbno3m_6864c5c9_luathread_movevalues_L000377_405 ' EQI4
+ if_z jmp #\C_shn83m_686cc54d_luathread_movevalues_L000377_405 ' EQI4
  mov r2, ##0 ' reg ARG con
  mov r3, ##-1 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -3428,8 +3428,8 @@ C_sbno3m_6864c5c9_luathread_movevalues_L000377_404
  calld PA,#CALA
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
- jmp #\@C_sbno3m_6864c5c9_luathread_movevalues_L000377_406 ' JUMPV addrg
-C_sbno3m_6864c5c9_luathread_movevalues_L000377_405
+ jmp #\@C_shn83m_686cc54d_luathread_movevalues_L000377_406 ' JUMPV addrg
+C_shn83m_686cc54d_luathread_movevalues_L000377_405
  mov r2, ##0 ' reg ARG con
  mov r3, ##-1 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -3446,7 +3446,7 @@ C_sbno3m_6864c5c9_luathread_movevalues_L000377_405
  calld PA,#CALA
  long @C_lua_pushnumber
  add SP, #4 ' CALL addrg
-C_sbno3m_6864c5c9_luathread_movevalues_L000377_406
+C_shn83m_686cc54d_luathread_movevalues_L000377_406
  mov r2, ##-3 ' reg ARG con
  mov r3, r21 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -3454,8 +3454,8 @@ C_sbno3m_6864c5c9_luathread_movevalues_L000377_406
  calld PA,#CALA
  long @C_lua_settable
  add SP, #4 ' CALL addrg
- jmp #\@C_sbno3m_6864c5c9_luathread_movevalues_L000377_401 ' JUMPV addrg
-C_sbno3m_6864c5c9_luathread_movevalues_L000377_407
+ jmp #\@C_shn83m_686cc54d_luathread_movevalues_L000377_401 ' JUMPV addrg
+C_shn83m_686cc54d_luathread_movevalues_L000377_407
  mov r2, ##0 ' reg ARG con
  mov r3, ##-1 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -3479,8 +3479,8 @@ C_sbno3m_6864c5c9_luathread_movevalues_L000377_407
  calld PA,#CALA
  long @C_lua_settable
  add SP, #4 ' CALL addrg
- jmp #\@C_sbno3m_6864c5c9_luathread_movevalues_L000377_401 ' JUMPV addrg
-C_sbno3m_6864c5c9_luathread_movevalues_L000377_408
+ jmp #\@C_shn83m_686cc54d_luathread_movevalues_L000377_401 ' JUMPV addrg
+C_shn83m_686cc54d_luathread_movevalues_L000377_408
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
@@ -3492,8 +3492,8 @@ C_sbno3m_6864c5c9_luathread_movevalues_L000377_408
  calld PA,#CALA
  long @C_lua_settable
  add SP, #4 ' CALL addrg
- jmp #\@C_sbno3m_6864c5c9_luathread_movevalues_L000377_401 ' JUMPV addrg
-C_sbno3m_6864c5c9_luathread_movevalues_L000377_400
+ jmp #\@C_shn83m_686cc54d_luathread_movevalues_L000377_401 ' JUMPV addrg
+C_shn83m_686cc54d_luathread_movevalues_L000377_400
  mov r2, ##-2 ' reg ARG con
  mov r3, r21 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -3501,8 +3501,8 @@ C_sbno3m_6864c5c9_luathread_movevalues_L000377_400
  calld PA,#CALA
  long @C_lua_settop
  add SP, #4 ' CALL addrg
-C_sbno3m_6864c5c9_luathread_movevalues_L000377_401
-C_sbno3m_6864c5c9_luathread_movevalues_L000377_398
+C_shn83m_686cc54d_luathread_movevalues_L000377_401
+C_shn83m_686cc54d_luathread_movevalues_L000377_398
  mov r2, ##-2 ' reg ARG con
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -3510,7 +3510,7 @@ C_sbno3m_6864c5c9_luathread_movevalues_L000377_398
  calld PA,#CALA
  long @C_lua_settop
  add SP, #4 ' CALL addrg
-C_sbno3m_6864c5c9_luathread_movevalues_L000377_396
+C_shn83m_686cc54d_luathread_movevalues_L000377_396
  mov r2, ##-2 ' reg ARG con
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -3519,17 +3519,17 @@ C_sbno3m_6864c5c9_luathread_movevalues_L000377_396
  long @C_lua_next
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
- if_nz jmp #\C_sbno3m_6864c5c9_luathread_movevalues_L000377_395 ' NEI4
- jmp #\@C_sbno3m_6864c5c9_luathread_movevalues_L000377_386 ' JUMPV addrg
-C_sbno3m_6864c5c9_luathread_movevalues_L000377_385
+ if_nz jmp #\C_shn83m_686cc54d_luathread_movevalues_L000377_395 ' NEI4
+ jmp #\@C_shn83m_686cc54d_luathread_movevalues_L000377_386 ' JUMPV addrg
+C_shn83m_686cc54d_luathread_movevalues_L000377_385
  mov r0, #0 ' reg <- coni
- jmp #\@C_sbno3m_6864c5c9_luathread_movevalues_L000377_378 ' JUMPV addrg
-C_sbno3m_6864c5c9_luathread_movevalues_L000377_386
-' C_sbno3m_6864c5c9_luathread_movevalues_L000377_382 ' (symbol refcount = 0)
+ jmp #\@C_shn83m_686cc54d_luathread_movevalues_L000377_378 ' JUMPV addrg
+C_shn83m_686cc54d_luathread_movevalues_L000377_386
+' C_shn83m_686cc54d_luathread_movevalues_L000377_382 ' (symbol refcount = 0)
  adds r19, #1 ' ADDI4 coni
-C_sbno3m_6864c5c9_luathread_movevalues_L000377_384
+C_shn83m_686cc54d_luathread_movevalues_L000377_384
  cmps r19, r17 wcz
- if_be jmp #\C_sbno3m_6864c5c9_luathread_movevalues_L000377_381 ' LEI4
+ if_be jmp #\C_shn83m_686cc54d_luathread_movevalues_L000377_381 ' LEI4
  neg r22, r17 ' NEGI4
  mov r2, r22
  subs r2, #1 ' SUBI4 coni
@@ -3540,14 +3540,14 @@ C_sbno3m_6864c5c9_luathread_movevalues_L000377_384
  long @C_lua_settop
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-C_sbno3m_6864c5c9_luathread_movevalues_L000377_378
+C_shn83m_686cc54d_luathread_movevalues_L000377_378
  calld PA,#POPM ' restore registers
  add SP, #8 ' framesize
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbnou_6864c5c9_threads_shared_L000035 ' <symbol:threads_shared>
+C_shn8u_686cc54d_threads_shared_L000035 ' <symbol:threads_shared>
  calld PA,#NEWF
  sub SP, #136
  calld PA,#PSHM
@@ -3573,12 +3573,12 @@ C_sbnou_6864c5c9_threads_shared_L000035 ' <symbol:threads_shared>
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #1 wz
- if_z jmp #\C_sbnou_6864c5c9_threads_shared_L000035_416 ' EQI4
+ if_z jmp #\C_shn8u_686cc54d_threads_shared_L000035_416 ' EQI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
- mov r2, ##@C_sbnou_6864c5c9_threads_shared_L000035_418_L000419 ' reg ARG ADDRG
+ mov r2, ##@C_shn8u_686cc54d_threads_shared_L000035_418_L000419 ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -3586,16 +3586,16 @@ C_sbnou_6864c5c9_threads_shared_L000035 ' <symbol:threads_shared>
  long @C_lua_pushfstring
  add SP, #4 ' CALL addrg
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbnou_6864c5c9_threads_shared_L000035_415 ' JUMPV addrg
-C_sbnou_6864c5c9_threads_shared_L000035_416
+ jmp #\@C_shn8u_686cc54d_threads_shared_L000035_415 ' JUMPV addrg
+C_shn8u_686cc54d_threads_shared_L000035_416
  mov r22, r17 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sbnou_6864c5c9_threads_shared_L000035_420  ' NEU4
+ if_nz jmp #\C_shn8u_686cc54d_threads_shared_L000035_420  ' NEU4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
- mov r2, ##@C_sbnou_6864c5c9_threads_shared_L000035_422_L000423 ' reg ARG ADDRG
+ mov r2, ##@C_shn8u_686cc54d_threads_shared_L000035_422_L000423 ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -3603,9 +3603,9 @@ C_sbnou_6864c5c9_threads_shared_L000035_416
  long @C_lua_pushstring
  add SP, #4 ' CALL addrg
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbnou_6864c5c9_threads_shared_L000035_415 ' JUMPV addrg
-C_sbnou_6864c5c9_threads_shared_L000035_420
- mov r2, ##@C_sbno_6864c5c9_mutex_channel_list_L000005 ' reg ARG ADDRG
+ jmp #\@C_shn8u_686cc54d_threads_shared_L000035_415 ' JUMPV addrg
+C_shn8u_686cc54d_threads_shared_L000035_420
+ mov r2, ##@C_shn8_686cc54d_mutex_channel_list_L000005 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_lock ' CALL addrg
@@ -3625,9 +3625,9 @@ C_sbnou_6864c5c9_threads_shared_L000035_420
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sbnou_6864c5c9_threads_shared_L000035_424  ' NEU4
+ if_nz jmp #\C_shn8u_686cc54d_threads_shared_L000035_424  ' NEU4
  mov r2, r17 ' CVI, CVU or LOAD
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -3636,7 +3636,7 @@ C_sbnou_6864c5c9_threads_shared_L000035_420
  long @C_lua_getglobal
  add SP, #4 ' CALL addrg
  mov r2, ##-1 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -3645,7 +3645,7 @@ C_sbnou_6864c5c9_threads_shared_L000035_420
  long @C_lua_type
  add SP, #4 ' CALL addrg
  cmps r0,  #5 wz
- if_nz jmp #\C_sbnou_6864c5c9_threads_shared_L000035_426 ' NEI4
+ if_nz jmp #\C_shn8u_686cc54d_threads_shared_L000035_426 ' NEI4
  mov r22, #0 ' reg <- coni
  mov r2, r22 ' CVI, CVU or LOAD
  mov r3, r22 ' CVI, CVU or LOAD
@@ -3655,15 +3655,15 @@ C_sbnou_6864c5c9_threads_shared_L000035_420
  calld PA,#CALA
  long @C_lua_createtable
  add SP, #8 ' CALL addrg
-C_sbnou_6864c5c9_threads_shared_L000035_426
+C_shn8u_686cc54d_threads_shared_L000035_426
  mov r2, r23 ' CVI, CVU or LOAD
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno3m_6864c5c9_luathread_movevalues_L000377
+ long @C_shn83m_686cc54d_luathread_movevalues_L000377
  add SP, #4 ' CALL addrg
  mov RI, FP
  sub RI, #-(-12)
@@ -3672,14 +3672,14 @@ C_sbnou_6864c5c9_threads_shared_L000035_426
  sub r22, #-(-12) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #1 wz
- if_nz jmp #\C_sbnou_6864c5c9_threads_shared_L000035_425 ' NEI4
- mov r2, ##@C_sbno_6864c5c9_mutex_channel_list_L000005 ' reg ARG ADDRG
+ if_nz jmp #\C_shn8u_686cc54d_threads_shared_L000035_425 ' NEI4
+ mov r2, ##@C_shn8_686cc54d_mutex_channel_list_L000005 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
  mov r0, #1 ' reg <- coni
- jmp #\@C_sbnou_6864c5c9_threads_shared_L000035_415 ' JUMPV addrg
-C_sbnou_6864c5c9_threads_shared_L000035_424
+ jmp #\@C_shn8u_686cc54d_threads_shared_L000035_415 ' JUMPV addrg
+C_shn8u_686cc54d_threads_shared_L000035_424
  mov r2, #127 ' reg ARG coni
  mov r3, r17 ' CVI, CVU or LOAD
  mov r4, FP
@@ -3693,7 +3693,7 @@ C_sbnou_6864c5c9_threads_shared_L000035_424
  mov RI, FP
  sub RI, #-(-13)
  wrbyte r22, RI ' ASGNU1 addrli reg
- mov r2, ##@C_sbnou_6864c5c9_threads_shared_L000035_431_L000432 ' reg ARG ADDRG
+ mov r2, ##@C_shn8u_686cc54d_threads_shared_L000035_431_L000432 ' reg ARG ADDRG
  mov r3, FP
  sub r3, #-(-140) ' reg ARG ADDRLi
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -3703,7 +3703,7 @@ C_sbnou_6864c5c9_threads_shared_L000035_424
  add SP, #4 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
  mov r2, r19 ' CVI, CVU or LOAD
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -3711,7 +3711,7 @@ C_sbnou_6864c5c9_threads_shared_L000035_424
  calld PA,#CALA
  long @C_lua_getglobal
  add SP, #4 ' CALL addrg
- mov r2, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r2, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -3719,9 +3719,9 @@ C_sbnou_6864c5c9_threads_shared_L000035_424
  long @C_lua_gettop ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_z jmp #\C_sbnou_6864c5c9_threads_shared_L000035_435 ' EQI4
+ if_z jmp #\C_shn8u_686cc54d_threads_shared_L000035_435 ' EQI4
  mov r2, ##-1 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -3730,16 +3730,16 @@ C_sbnou_6864c5c9_threads_shared_L000035_424
  long @C_lua_type
  add SP, #4 ' CALL addrg
  cmps r0,  #5 wz
- if_z jmp #\C_sbnou_6864c5c9_threads_shared_L000035_433 ' EQI4
-C_sbnou_6864c5c9_threads_shared_L000035_435
+ if_z jmp #\C_shn8u_686cc54d_threads_shared_L000035_433 ' EQI4
+C_shn8u_686cc54d_threads_shared_L000035_435
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
  mov r0, #1 ' reg <- coni
- jmp #\@C_sbnou_6864c5c9_threads_shared_L000035_415 ' JUMPV addrg
-C_sbnou_6864c5c9_threads_shared_L000035_433
- mov r2, ##@C_sbnou_6864c5c9_threads_shared_L000035_431_L000432 ' reg ARG ADDRG
+ jmp #\@C_shn8u_686cc54d_threads_shared_L000035_415 ' JUMPV addrg
+C_shn8u_686cc54d_threads_shared_L000035_433
+ mov r2, ##@C_shn8u_686cc54d_threads_shared_L000035_431_L000432 ' reg ARG ADDRG
  mov r3, ##0 ' reg ARG con
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -3747,7 +3747,7 @@ C_sbnou_6864c5c9_threads_shared_L000035_433
  long @C_strtok
  add SP, #4 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
- mov r2, ##@C_sbnou_6864c5c9_threads_shared_L000035_431_L000432 ' reg ARG ADDRG
+ mov r2, ##@C_shn8u_686cc54d_threads_shared_L000035_431_L000432 ' reg ARG ADDRG
  mov r3, ##0 ' reg ARG con
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -3755,10 +3755,10 @@ C_sbnou_6864c5c9_threads_shared_L000035_433
  long @C_strtok
  add SP, #4 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
- jmp #\@C_sbnou_6864c5c9_threads_shared_L000035_437 ' JUMPV addrg
-C_sbnou_6864c5c9_threads_shared_L000035_436
+ jmp #\@C_shn8u_686cc54d_threads_shared_L000035_437 ' JUMPV addrg
+C_shn8u_686cc54d_threads_shared_L000035_436
  mov r2, r19 ' CVI, CVU or LOAD
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -3767,7 +3767,7 @@ C_sbnou_6864c5c9_threads_shared_L000035_436
  long @C_lua_pushstring
  add SP, #4 ' CALL addrg
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -3776,7 +3776,7 @@ C_sbnou_6864c5c9_threads_shared_L000035_436
  long @C_lua_gettable
  add SP, #4 ' CALL addrg
  mov r2, ##-1 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -3785,9 +3785,9 @@ C_sbnou_6864c5c9_threads_shared_L000035_436
  long @C_lua_type
  add SP, #4 ' CALL addrg
  cmps r0,  #5 wz
- if_z jmp #\C_sbnou_6864c5c9_threads_shared_L000035_439 ' EQI4
+ if_z jmp #\C_shn8u_686cc54d_threads_shared_L000035_439 ' EQI4
  mov r2, ##-3 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -3800,7 +3800,7 @@ C_sbnou_6864c5c9_threads_shared_L000035_436
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
  mov r2, r19 ' CVI, CVU or LOAD
- mov r3, ##@C_sbnou_6864c5c9_threads_shared_L000035_441_L000442 ' reg ARG ADDRG
+ mov r3, ##@C_shn8u_686cc54d_threads_shared_L000035_441_L000442 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -3808,11 +3808,11 @@ C_sbnou_6864c5c9_threads_shared_L000035_436
  long @C_lua_pushfstring
  add SP, #8 ' CALL addrg
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbnou_6864c5c9_threads_shared_L000035_415 ' JUMPV addrg
-C_sbnou_6864c5c9_threads_shared_L000035_439
+ jmp #\@C_shn8u_686cc54d_threads_shared_L000035_415 ' JUMPV addrg
+C_shn8u_686cc54d_threads_shared_L000035_439
  mov r2, ##-1 ' reg ARG con
  mov r3, ##-2 ' reg ARG con
- mov r4, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r4, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r4, r4
  ' reg ARG INDIR ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -3821,7 +3821,7 @@ C_sbnou_6864c5c9_threads_shared_L000035_439
  long @C_lua_rotate
  add SP, #8 ' CALL addrg
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -3830,7 +3830,7 @@ C_sbnou_6864c5c9_threads_shared_L000035_439
  long @C_lua_settop
  add SP, #4 ' CALL addrg
  mov r19, r21 ' CVI, CVU or LOAD
- mov r2, ##@C_sbnou_6864c5c9_threads_shared_L000035_431_L000432 ' reg ARG ADDRG
+ mov r2, ##@C_shn8u_686cc54d_threads_shared_L000035_431_L000432 ' reg ARG ADDRG
  mov r3, ##0 ' reg ARG con
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -3838,13 +3838,13 @@ C_sbnou_6864c5c9_threads_shared_L000035_439
  long @C_strtok
  add SP, #4 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
-C_sbnou_6864c5c9_threads_shared_L000035_437
+C_shn8u_686cc54d_threads_shared_L000035_437
  mov r22, r21 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sbnou_6864c5c9_threads_shared_L000035_436  ' NEU4
+ if_nz jmp #\C_shn8u_686cc54d_threads_shared_L000035_436  ' NEU4
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, ##-1 ' reg ARG con
- mov r4, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r4, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r4, r4
  ' reg ARG INDIR ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -3854,7 +3854,7 @@ C_sbnou_6864c5c9_threads_shared_L000035_437
  add SP, #8 ' CALL addrg
  mov r2, ##-1 ' reg ARG con
  mov r3, ##-2 ' reg ARG con
- mov r4, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r4, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r4, r4
  ' reg ARG INDIR ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -3863,7 +3863,7 @@ C_sbnou_6864c5c9_threads_shared_L000035_437
  long @C_lua_rotate
  add SP, #8 ' CALL addrg
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -3872,7 +3872,7 @@ C_sbnou_6864c5c9_threads_shared_L000035_437
  long @C_lua_settop
  add SP, #4 ' CALL addrg
  mov r2, ##-1 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -3881,7 +3881,7 @@ C_sbnou_6864c5c9_threads_shared_L000035_437
  long @C_lua_type
  add SP, #4 ' CALL addrg
  cmps r0,  #5 wz
- if_nz jmp #\C_sbnou_6864c5c9_threads_shared_L000035_443 ' NEI4
+ if_nz jmp #\C_shn8u_686cc54d_threads_shared_L000035_443 ' NEI4
  mov r22, #0 ' reg <- coni
  mov r2, r22 ' CVI, CVU or LOAD
  mov r3, r22 ' CVI, CVU or LOAD
@@ -3891,15 +3891,15 @@ C_sbnou_6864c5c9_threads_shared_L000035_437
  calld PA,#CALA
  long @C_lua_createtable
  add SP, #8 ' CALL addrg
-C_sbnou_6864c5c9_threads_shared_L000035_443
+C_shn8u_686cc54d_threads_shared_L000035_443
  mov r2, r23 ' CVI, CVU or LOAD
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno3m_6864c5c9_luathread_movevalues_L000377
+ long @C_shn83m_686cc54d_luathread_movevalues_L000377
  add SP, #4 ' CALL addrg
  mov RI, FP
  sub RI, #-(-12)
@@ -3908,39 +3908,39 @@ C_sbnou_6864c5c9_threads_shared_L000035_443
  sub r22, #-(-12) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #1 wz
- if_nz jmp #\C_sbnou_6864c5c9_threads_shared_L000035_445 ' NEI4
- mov r2, ##@C_sbno_6864c5c9_mutex_channel_list_L000005 ' reg ARG ADDRG
+ if_nz jmp #\C_shn8u_686cc54d_threads_shared_L000035_445 ' NEI4
+ mov r2, ##@C_shn8_686cc54d_mutex_channel_list_L000005 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
  mov r0, #1 ' reg <- coni
- jmp #\@C_sbnou_6864c5c9_threads_shared_L000035_415 ' JUMPV addrg
-C_sbnou_6864c5c9_threads_shared_L000035_445
-C_sbnou_6864c5c9_threads_shared_L000035_425
+ jmp #\@C_shn8u_686cc54d_threads_shared_L000035_415 ' JUMPV addrg
+C_shn8u_686cc54d_threads_shared_L000035_445
+C_shn8u_686cc54d_threads_shared_L000035_425
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
- mov r2, ##@C_sbnou_6864c5c9_threads_shared_L000035_447_L000448 ' reg ARG ADDRG
+ mov r2, ##@C_shn8u_686cc54d_threads_shared_L000035_447_L000448 ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
  long @C_lua_pushstring
  add SP, #4 ' CALL addrg
- mov r2, ##@C_sbno_6864c5c9_mutex_channel_list_L000005 ' reg ARG ADDRG
+ mov r2, ##@C_shn8_686cc54d_mutex_channel_list_L000005 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
  mov r0, #2 ' reg <- coni
-C_sbnou_6864c5c9_threads_shared_L000035_415
+C_shn8u_686cc54d_threads_shared_L000035_415
  calld PA,#POPM ' restore registers
  add SP, #136 ' framesize
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbno10_6864c5c9_threads_export_L000037 ' <symbol:threads_export>
+C_shn810_686cc54d_threads_export_L000037 ' <symbol:threads_export>
  calld PA,#NEWF
  sub SP, #136
  calld PA,#PSHM
@@ -3966,12 +3966,12 @@ C_sbno10_6864c5c9_threads_export_L000037 ' <symbol:threads_export>
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #1 wz
- if_z jmp #\C_sbno10_6864c5c9_threads_export_L000037_450 ' EQI4
+ if_z jmp #\C_shn810_686cc54d_threads_export_L000037_450 ' EQI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
- mov r2, ##@C_sbno10_6864c5c9_threads_export_L000037_452_L000453 ' reg ARG ADDRG
+ mov r2, ##@C_shn810_686cc54d_threads_export_L000037_452_L000453 ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -3979,16 +3979,16 @@ C_sbno10_6864c5c9_threads_export_L000037 ' <symbol:threads_export>
  long @C_lua_pushfstring
  add SP, #4 ' CALL addrg
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbno10_6864c5c9_threads_export_L000037_449 ' JUMPV addrg
-C_sbno10_6864c5c9_threads_export_L000037_450
+ jmp #\@C_shn810_686cc54d_threads_export_L000037_449 ' JUMPV addrg
+C_shn810_686cc54d_threads_export_L000037_450
  mov r22, r17 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sbno10_6864c5c9_threads_export_L000037_454  ' NEU4
+ if_nz jmp #\C_shn810_686cc54d_threads_export_L000037_454  ' NEU4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
- mov r2, ##@C_sbno10_6864c5c9_threads_export_L000037_456_L000457 ' reg ARG ADDRG
+ mov r2, ##@C_shn810_686cc54d_threads_export_L000037_456_L000457 ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -3996,9 +3996,9 @@ C_sbno10_6864c5c9_threads_export_L000037_450
  long @C_lua_pushfstring
  add SP, #4 ' CALL addrg
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbno10_6864c5c9_threads_export_L000037_449 ' JUMPV addrg
-C_sbno10_6864c5c9_threads_export_L000037_454
- mov r2, ##@C_sbno_6864c5c9_mutex_channel_list_L000005 ' reg ARG ADDRG
+ jmp #\@C_shn810_686cc54d_threads_export_L000037_449 ' JUMPV addrg
+C_shn810_686cc54d_threads_export_L000037_454
+ mov r2, ##@C_shn8_686cc54d_mutex_channel_list_L000005 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_lock ' CALL addrg
@@ -4018,7 +4018,7 @@ C_sbno10_6864c5c9_threads_export_L000037_454
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sbno10_6864c5c9_threads_export_L000037_458  ' NEU4
+ if_nz jmp #\C_shn810_686cc54d_threads_export_L000037_458  ' NEU4
  mov r2, r17 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4032,7 +4032,7 @@ C_sbno10_6864c5c9_threads_export_L000037_454
  long @C_lua_gettop ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  cmps r22,  #0 wcz
- if_be jmp #\C_sbno10_6864c5c9_threads_export_L000037_460 ' LEI4
+ if_be jmp #\C_shn810_686cc54d_threads_export_L000037_460 ' LEI4
  mov r2, ##-1 ' reg ARG con
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4041,9 +4041,9 @@ C_sbno10_6864c5c9_threads_export_L000037_454
  long @C_lua_type
  add SP, #4 ' CALL addrg
  cmps r0,  #5 wz
- if_nz jmp #\C_sbno10_6864c5c9_threads_export_L000037_460 ' NEI4
+ if_nz jmp #\C_shn810_686cc54d_threads_export_L000037_460 ' NEI4
  mov r2, r17 ' CVI, CVU or LOAD
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4051,7 +4051,7 @@ C_sbno10_6864c5c9_threads_export_L000037_454
  calld PA,#CALA
  long @C_lua_getglobal
  add SP, #4 ' CALL addrg
- mov r2, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r2, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -4059,9 +4059,9 @@ C_sbno10_6864c5c9_threads_export_L000037_454
  long @C_lua_gettop ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_z jmp #\C_sbno10_6864c5c9_threads_export_L000037_464 ' EQI4
+ if_z jmp #\C_shn810_686cc54d_threads_export_L000037_464 ' EQI4
  mov r2, ##-1 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4070,10 +4070,10 @@ C_sbno10_6864c5c9_threads_export_L000037_454
  long @C_lua_type
  add SP, #4 ' CALL addrg
  cmps r0,  #5 wz
- if_z jmp #\C_sbno10_6864c5c9_threads_export_L000037_462 ' EQI4
-C_sbno10_6864c5c9_threads_export_L000037_464
+ if_z jmp #\C_shn810_686cc54d_threads_export_L000037_462 ' EQI4
+C_shn810_686cc54d_threads_export_L000037_464
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4084,7 +4084,7 @@ C_sbno10_6864c5c9_threads_export_L000037_464
  mov r22, #0 ' reg <- coni
  mov r2, r22 ' CVI, CVU or LOAD
  mov r3, r22 ' CVI, CVU or LOAD
- mov r4, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r4, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r4, r4
  ' reg ARG INDIR ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -4092,16 +4092,16 @@ C_sbno10_6864c5c9_threads_export_L000037_464
  calld PA,#CALA
  long @C_lua_createtable
  add SP, #8 ' CALL addrg
-C_sbno10_6864c5c9_threads_export_L000037_462
-C_sbno10_6864c5c9_threads_export_L000037_460
- mov r2, ##@C_sbno4_6864c5c9_chanls_L000009
+C_shn810_686cc54d_threads_export_L000037_462
+C_shn810_686cc54d_threads_export_L000037_460
+ mov r2, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno3m_6864c5c9_luathread_movevalues_L000377
+ long @C_shn83m_686cc54d_luathread_movevalues_L000377
  add SP, #4 ' CALL addrg
  mov RI, FP
  sub RI, #-(-140)
@@ -4110,9 +4110,9 @@ C_sbno10_6864c5c9_threads_export_L000037_460
  sub r22, #-(-140) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #1 wz
- if_nz jmp #\C_sbno10_6864c5c9_threads_export_L000037_459 ' NEI4
+ if_nz jmp #\C_shn810_686cc54d_threads_export_L000037_459 ' NEI4
  mov r2, r17 ' CVI, CVU or LOAD
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4120,13 +4120,13 @@ C_sbno10_6864c5c9_threads_export_L000037_460
  calld PA,#CALA
  long @C_lua_setglobal
  add SP, #4 ' CALL addrg
- mov r2, ##@C_sbno_6864c5c9_mutex_channel_list_L000005 ' reg ARG ADDRG
+ mov r2, ##@C_shn8_686cc54d_mutex_channel_list_L000005 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
  mov r0, #0 ' reg <- coni
- jmp #\@C_sbno10_6864c5c9_threads_export_L000037_449 ' JUMPV addrg
-C_sbno10_6864c5c9_threads_export_L000037_458
+ jmp #\@C_shn810_686cc54d_threads_export_L000037_449 ' JUMPV addrg
+C_shn810_686cc54d_threads_export_L000037_458
  mov r2, #127 ' reg ARG coni
  mov r3, r17 ' CVI, CVU or LOAD
  mov r4, FP
@@ -4140,7 +4140,7 @@ C_sbno10_6864c5c9_threads_export_L000037_458
  mov RI, FP
  sub RI, #-(-9)
  wrbyte r22, RI ' ASGNU1 addrli reg
- mov r2, ##@C_sbnou_6864c5c9_threads_shared_L000035_431_L000432 ' reg ARG ADDRG
+ mov r2, ##@C_shn8u_686cc54d_threads_shared_L000035_431_L000432 ' reg ARG ADDRG
  mov r3, FP
  sub r3, #-(-136) ' reg ARG ADDRLi
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4162,7 +4162,7 @@ C_sbno10_6864c5c9_threads_export_L000037_458
  long @C_lua_gettop ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_z jmp #\C_sbno10_6864c5c9_threads_export_L000037_470 ' EQI4
+ if_z jmp #\C_shn810_686cc54d_threads_export_L000037_470 ' EQI4
  mov r2, ##-1 ' reg ARG con
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4171,14 +4171,14 @@ C_sbno10_6864c5c9_threads_export_L000037_458
  long @C_lua_type
  add SP, #4 ' CALL addrg
  cmps r0,  #5 wz
- if_z jmp #\C_sbno10_6864c5c9_threads_export_L000037_468 ' EQI4
-C_sbno10_6864c5c9_threads_export_L000037_470
+ if_z jmp #\C_shn810_686cc54d_threads_export_L000037_468 ' EQI4
+C_shn810_686cc54d_threads_export_L000037_470
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
  mov r2, r21 ' CVI, CVU or LOAD
- mov r3, ##@C_sbno10_6864c5c9_threads_export_L000037_471_L000472 ' reg ARG ADDRG
+ mov r3, ##@C_shn810_686cc54d_threads_export_L000037_471_L000472 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -4186,10 +4186,10 @@ C_sbno10_6864c5c9_threads_export_L000037_470
  long @C_lua_pushfstring
  add SP, #8 ' CALL addrg
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbno10_6864c5c9_threads_export_L000037_449 ' JUMPV addrg
-C_sbno10_6864c5c9_threads_export_L000037_468
+ jmp #\@C_shn810_686cc54d_threads_export_L000037_449 ' JUMPV addrg
+C_shn810_686cc54d_threads_export_L000037_468
  mov r2, r21 ' CVI, CVU or LOAD
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4198,7 +4198,7 @@ C_sbno10_6864c5c9_threads_export_L000037_468
  long @C_lua_getglobal
  add SP, #4 ' CALL addrg
  mov r2, ##-1 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4207,9 +4207,9 @@ C_sbno10_6864c5c9_threads_export_L000037_468
  long @C_lua_type
  add SP, #4 ' CALL addrg
  cmps r0,  #5 wz
- if_z jmp #\C_sbno10_6864c5c9_threads_export_L000037_473 ' EQI4
+ if_z jmp #\C_shn810_686cc54d_threads_export_L000037_473 ' EQI4
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4220,7 +4220,7 @@ C_sbno10_6864c5c9_threads_export_L000037_468
  mov r22, #0 ' reg <- coni
  mov r2, r22 ' CVI, CVU or LOAD
  mov r3, r22 ' CVI, CVU or LOAD
- mov r4, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r4, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r4, r4
  ' reg ARG INDIR ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -4229,7 +4229,7 @@ C_sbno10_6864c5c9_threads_export_L000037_468
  long @C_lua_createtable
  add SP, #8 ' CALL addrg
  mov r2, r21 ' CVI, CVU or LOAD
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4238,7 +4238,7 @@ C_sbno10_6864c5c9_threads_export_L000037_468
  long @C_lua_setglobal
  add SP, #4 ' CALL addrg
  mov r2, r21 ' CVI, CVU or LOAD
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4246,8 +4246,8 @@ C_sbno10_6864c5c9_threads_export_L000037_468
  calld PA,#CALA
  long @C_lua_getglobal
  add SP, #4 ' CALL addrg
-C_sbno10_6864c5c9_threads_export_L000037_473
- mov r2, ##@C_sbnou_6864c5c9_threads_shared_L000035_431_L000432 ' reg ARG ADDRG
+C_shn810_686cc54d_threads_export_L000037_473
+ mov r2, ##@C_shn8u_686cc54d_threads_shared_L000035_431_L000432 ' reg ARG ADDRG
  mov r3, ##0 ' reg ARG con
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -4255,7 +4255,7 @@ C_sbno10_6864c5c9_threads_export_L000037_473
  long @C_strtok
  add SP, #4 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
- mov r2, ##@C_sbnou_6864c5c9_threads_shared_L000035_431_L000432 ' reg ARG ADDRG
+ mov r2, ##@C_shn8u_686cc54d_threads_shared_L000035_431_L000432 ' reg ARG ADDRG
  mov r3, ##0 ' reg ARG con
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -4263,8 +4263,8 @@ C_sbno10_6864c5c9_threads_export_L000037_473
  long @C_strtok
  add SP, #4 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
- jmp #\@C_sbno10_6864c5c9_threads_export_L000037_476 ' JUMPV addrg
-C_sbno10_6864c5c9_threads_export_L000037_475
+ jmp #\@C_shn810_686cc54d_threads_export_L000037_476 ' JUMPV addrg
+C_shn810_686cc54d_threads_export_L000037_475
  mov r2, r21 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4287,13 +4287,13 @@ C_sbno10_6864c5c9_threads_export_L000037_475
  long @C_lua_type
  add SP, #4 ' CALL addrg
  cmps r0,  #5 wz
- if_z jmp #\C_sbno10_6864c5c9_threads_export_L000037_478 ' EQI4
+ if_z jmp #\C_shn810_686cc54d_threads_export_L000037_478 ' EQI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
  mov r2, r21 ' CVI, CVU or LOAD
- mov r3, ##@C_sbno10_6864c5c9_threads_export_L000037_471_L000472 ' reg ARG ADDRG
+ mov r3, ##@C_shn810_686cc54d_threads_export_L000037_471_L000472 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -4301,10 +4301,10 @@ C_sbno10_6864c5c9_threads_export_L000037_475
  long @C_lua_pushfstring
  add SP, #8 ' CALL addrg
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbno10_6864c5c9_threads_export_L000037_449 ' JUMPV addrg
-C_sbno10_6864c5c9_threads_export_L000037_478
+ jmp #\@C_shn810_686cc54d_threads_export_L000037_449 ' JUMPV addrg
+C_shn810_686cc54d_threads_export_L000037_478
  mov r2, r21 ' CVI, CVU or LOAD
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4313,7 +4313,7 @@ C_sbno10_6864c5c9_threads_export_L000037_478
  long @C_lua_pushstring
  add SP, #4 ' CALL addrg
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4322,7 +4322,7 @@ C_sbno10_6864c5c9_threads_export_L000037_478
  long @C_lua_gettable
  add SP, #4 ' CALL addrg
  mov r2, ##-1 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4331,9 +4331,9 @@ C_sbno10_6864c5c9_threads_export_L000037_478
  long @C_lua_type
  add SP, #4 ' CALL addrg
  cmps r0,  #5 wz
- if_z jmp #\C_sbno10_6864c5c9_threads_export_L000037_480 ' EQI4
+ if_z jmp #\C_shn810_686cc54d_threads_export_L000037_480 ' EQI4
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4344,7 +4344,7 @@ C_sbno10_6864c5c9_threads_export_L000037_478
  mov r22, #0 ' reg <- coni
  mov r2, r22 ' CVI, CVU or LOAD
  mov r3, r22 ' CVI, CVU or LOAD
- mov r4, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r4, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r4, r4
  ' reg ARG INDIR ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -4354,7 +4354,7 @@ C_sbno10_6864c5c9_threads_export_L000037_478
  add SP, #8 ' CALL addrg
  mov r2, r21 ' CVI, CVU or LOAD
  mov r3, ##-2 ' reg ARG con
- mov r4, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r4, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r4, r4
  ' reg ARG INDIR ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -4363,7 +4363,7 @@ C_sbno10_6864c5c9_threads_export_L000037_478
  long @C_lua_setfield
  add SP, #8 ' CALL addrg
  mov r2, r21 ' CVI, CVU or LOAD
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4372,7 +4372,7 @@ C_sbno10_6864c5c9_threads_export_L000037_478
  long @C_lua_pushstring
  add SP, #4 ' CALL addrg
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4380,7 +4380,7 @@ C_sbno10_6864c5c9_threads_export_L000037_478
  calld PA,#CALA
  long @C_lua_gettable
  add SP, #4 ' CALL addrg
-C_sbno10_6864c5c9_threads_export_L000037_480
+C_shn810_686cc54d_threads_export_L000037_480
  mov r2, ##-1 ' reg ARG con
  mov r3, ##-2 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -4398,7 +4398,7 @@ C_sbno10_6864c5c9_threads_export_L000037_480
  add SP, #4 ' CALL addrg
  mov r2, ##-1 ' reg ARG con
  mov r3, ##-2 ' reg ARG con
- mov r4, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r4, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r4, r4
  ' reg ARG INDIR ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -4407,7 +4407,7 @@ C_sbno10_6864c5c9_threads_export_L000037_480
  long @C_lua_rotate
  add SP, #8 ' CALL addrg
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4416,7 +4416,7 @@ C_sbno10_6864c5c9_threads_export_L000037_480
  long @C_lua_settop
  add SP, #4 ' CALL addrg
  mov r21, r19 ' CVI, CVU or LOAD
- mov r2, ##@C_sbnou_6864c5c9_threads_shared_L000035_431_L000432 ' reg ARG ADDRG
+ mov r2, ##@C_shn8u_686cc54d_threads_shared_L000035_431_L000432 ' reg ARG ADDRG
  mov r3, ##0 ' reg ARG con
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -4424,10 +4424,10 @@ C_sbno10_6864c5c9_threads_export_L000037_480
  long @C_strtok
  add SP, #4 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
-C_sbno10_6864c5c9_threads_export_L000037_476
+C_shn810_686cc54d_threads_export_L000037_476
  mov r22, r19 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sbno10_6864c5c9_threads_export_L000037_475  ' NEU4
+ if_nz jmp #\C_shn810_686cc54d_threads_export_L000037_475  ' NEU4
  mov r2, r21 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4465,9 +4465,9 @@ C_sbno10_6864c5c9_threads_export_L000037_476
  long @C_lua_type
  add SP, #4 ' CALL addrg
  cmps r0,  #5 wz
- if_nz jmp #\C_sbno10_6864c5c9_threads_export_L000037_482 ' NEI4
+ if_nz jmp #\C_shn810_686cc54d_threads_export_L000037_482 ' NEI4
  mov r2, r21 ' CVI, CVU or LOAD
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4476,7 +4476,7 @@ C_sbno10_6864c5c9_threads_export_L000037_476
  long @C_lua_pushstring
  add SP, #4 ' CALL addrg
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4485,7 +4485,7 @@ C_sbno10_6864c5c9_threads_export_L000037_476
  long @C_lua_gettable
  add SP, #4 ' CALL addrg
  mov r2, ##-1 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4494,9 +4494,9 @@ C_sbno10_6864c5c9_threads_export_L000037_476
  long @C_lua_type
  add SP, #4 ' CALL addrg
  cmps r0,  #5 wz
- if_z jmp #\C_sbno10_6864c5c9_threads_export_L000037_484 ' EQI4
+ if_z jmp #\C_shn810_686cc54d_threads_export_L000037_484 ' EQI4
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4507,7 +4507,7 @@ C_sbno10_6864c5c9_threads_export_L000037_476
  mov r22, #0 ' reg <- coni
  mov r2, r22 ' CVI, CVU or LOAD
  mov r3, r22 ' CVI, CVU or LOAD
- mov r4, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r4, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r4, r4
  ' reg ARG INDIR ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -4517,7 +4517,7 @@ C_sbno10_6864c5c9_threads_export_L000037_476
  add SP, #8 ' CALL addrg
  mov r2, r21 ' CVI, CVU or LOAD
  mov r3, ##-2 ' reg ARG con
- mov r4, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r4, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r4, r4
  ' reg ARG INDIR ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -4526,7 +4526,7 @@ C_sbno10_6864c5c9_threads_export_L000037_476
  long @C_lua_setfield
  add SP, #8 ' CALL addrg
  mov r2, r21 ' CVI, CVU or LOAD
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4535,7 +4535,7 @@ C_sbno10_6864c5c9_threads_export_L000037_476
  long @C_lua_pushstring
  add SP, #4 ' CALL addrg
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4543,23 +4543,23 @@ C_sbno10_6864c5c9_threads_export_L000037_476
  calld PA,#CALA
  long @C_lua_gettable
  add SP, #4 ' CALL addrg
-C_sbno10_6864c5c9_threads_export_L000037_484
-C_sbno10_6864c5c9_threads_export_L000037_482
- mov r2, ##@C_sbno4_6864c5c9_chanls_L000009
+C_shn810_686cc54d_threads_export_L000037_484
+C_shn810_686cc54d_threads_export_L000037_482
+ mov r2, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno3m_6864c5c9_luathread_movevalues_L000377
+ long @C_shn83m_686cc54d_luathread_movevalues_L000377
  add SP, #4 ' CALL addrg
  mov RI, FP
  sub RI, #-(-140)
  wrlong r0, RI ' ASGNI4 addrli reg
  mov r2, r21 ' CVI, CVU or LOAD
  mov r3, ##-2 ' reg ARG con
- mov r4, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r4, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r4, r4
  ' reg ARG INDIR ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -4568,7 +4568,7 @@ C_sbno10_6864c5c9_threads_export_L000037_482
  long @C_lua_setfield
  add SP, #8 ' CALL addrg
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4576,37 +4576,37 @@ C_sbno10_6864c5c9_threads_export_L000037_482
  calld PA,#CALA
  long @C_lua_settop
  add SP, #4 ' CALL addrg
- mov r2, ##@C_sbno_6864c5c9_mutex_channel_list_L000005 ' reg ARG ADDRG
+ mov r2, ##@C_shn8_686cc54d_mutex_channel_list_L000005 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
  mov r0, #0 ' reg <- coni
- jmp #\@C_sbno10_6864c5c9_threads_export_L000037_449 ' JUMPV addrg
-C_sbno10_6864c5c9_threads_export_L000037_459
+ jmp #\@C_shn810_686cc54d_threads_export_L000037_449 ' JUMPV addrg
+C_shn810_686cc54d_threads_export_L000037_459
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
- mov r2, ##@C_sbno10_6864c5c9_threads_export_L000037_486_L000487 ' reg ARG ADDRG
+ mov r2, ##@C_shn810_686cc54d_threads_export_L000037_486_L000487 ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
  long @C_lua_pushstring
  add SP, #4 ' CALL addrg
- mov r2, ##@C_sbno_6864c5c9_mutex_channel_list_L000005 ' reg ARG ADDRG
+ mov r2, ##@C_shn8_686cc54d_mutex_channel_list_L000005 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
  mov r0, #2 ' reg <- coni
-C_sbno10_6864c5c9_threads_export_L000037_449
+C_shn810_686cc54d_threads_export_L000037_449
  calld PA,#POPM ' restore registers
  add SP, #136 ' framesize
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbnov_6864c5c9_threads_update_L000036 ' <symbol:threads_update>
+C_shn8v_686cc54d_threads_update_L000036 ' <symbol:threads_update>
  calld PA,#NEWF
  sub SP, #136
  calld PA,#PSHM
@@ -4632,12 +4632,12 @@ C_sbnov_6864c5c9_threads_update_L000036 ' <symbol:threads_update>
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #2 wz
- if_z jmp #\C_sbnov_6864c5c9_threads_update_L000036_489 ' EQI4
+ if_z jmp #\C_shn8v_686cc54d_threads_update_L000036_489 ' EQI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
- mov r2, ##@C_sbnov_6864c5c9_threads_update_L000036_491_L000492 ' reg ARG ADDRG
+ mov r2, ##@C_shn8v_686cc54d_threads_update_L000036_491_L000492 ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -4645,8 +4645,8 @@ C_sbnov_6864c5c9_threads_update_L000036 ' <symbol:threads_update>
  long @C_lua_pushfstring
  add SP, #4 ' CALL addrg
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbnov_6864c5c9_threads_update_L000036_488 ' JUMPV addrg
-C_sbnov_6864c5c9_threads_update_L000036_489
+ jmp #\@C_shn8v_686cc54d_threads_update_L000036_488 ' JUMPV addrg
+C_shn8v_686cc54d_threads_update_L000036_489
  mov r2, ##-1 ' reg ARG con
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4658,14 +4658,14 @@ C_sbnov_6864c5c9_threads_update_L000036_489
  mov r2, r22 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_sbno3l_6864c5c9_simple_type_L000369 ' CALL addrg
+ long @C_shn83l_686cc54d_simple_type_L000369 ' CALL addrg
  cmps r0,  #0 wz
- if_nz jmp #\C_sbnov_6864c5c9_threads_update_L000036_493 ' NEI4
+ if_nz jmp #\C_shn8v_686cc54d_threads_update_L000036_493 ' NEI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
- mov r2, ##@C_sbnov_6864c5c9_threads_update_L000036_495_L000496 ' reg ARG ADDRG
+ mov r2, ##@C_shn8v_686cc54d_threads_update_L000036_495_L000496 ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -4673,16 +4673,16 @@ C_sbnov_6864c5c9_threads_update_L000036_489
  long @C_lua_pushfstring
  add SP, #4 ' CALL addrg
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbnov_6864c5c9_threads_update_L000036_488 ' JUMPV addrg
-C_sbnov_6864c5c9_threads_update_L000036_493
+ jmp #\@C_shn8v_686cc54d_threads_update_L000036_488 ' JUMPV addrg
+C_shn8v_686cc54d_threads_update_L000036_493
  mov r22, r17 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sbnov_6864c5c9_threads_update_L000036_497  ' NEU4
+ if_nz jmp #\C_shn8v_686cc54d_threads_update_L000036_497  ' NEU4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
- mov r2, ##@C_sbnov_6864c5c9_threads_update_L000036_499_L000500 ' reg ARG ADDRG
+ mov r2, ##@C_shn8v_686cc54d_threads_update_L000036_499_L000500 ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -4690,9 +4690,9 @@ C_sbnov_6864c5c9_threads_update_L000036_493
  long @C_lua_pushfstring
  add SP, #4 ' CALL addrg
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbnov_6864c5c9_threads_update_L000036_488 ' JUMPV addrg
-C_sbnov_6864c5c9_threads_update_L000036_497
- mov r2, ##@C_sbno_6864c5c9_mutex_channel_list_L000005 ' reg ARG ADDRG
+ jmp #\@C_shn8v_686cc54d_threads_update_L000036_488 ' JUMPV addrg
+C_shn8v_686cc54d_threads_update_L000036_497
+ mov r2, ##@C_shn8_686cc54d_mutex_channel_list_L000005 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_lock ' CALL addrg
@@ -4720,15 +4720,15 @@ C_sbnov_6864c5c9_threads_update_L000036_497
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sbnov_6864c5c9_threads_update_L000036_501  ' NEU4
- mov r2, ##@C_sbno4_6864c5c9_chanls_L000009
+ if_nz jmp #\C_shn8v_686cc54d_threads_update_L000036_501  ' NEU4
+ mov r2, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno3m_6864c5c9_luathread_movevalues_L000377
+ long @C_shn83m_686cc54d_luathread_movevalues_L000377
  add SP, #4 ' CALL addrg
  mov RI, FP
  sub RI, #-(-140)
@@ -4737,9 +4737,9 @@ C_sbnov_6864c5c9_threads_update_L000036_497
  sub r22, #-(-140) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #1 wz
- if_nz jmp #\C_sbnov_6864c5c9_threads_update_L000036_502 ' NEI4
+ if_nz jmp #\C_shn8v_686cc54d_threads_update_L000036_502 ' NEI4
  mov r2, r17 ' CVI, CVU or LOAD
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4747,13 +4747,13 @@ C_sbnov_6864c5c9_threads_update_L000036_497
  calld PA,#CALA
  long @C_lua_setglobal
  add SP, #4 ' CALL addrg
- mov r2, ##@C_sbno_6864c5c9_mutex_channel_list_L000005 ' reg ARG ADDRG
+ mov r2, ##@C_shn8_686cc54d_mutex_channel_list_L000005 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
  mov r0, #0 ' reg <- coni
- jmp #\@C_sbnov_6864c5c9_threads_update_L000036_488 ' JUMPV addrg
-C_sbnov_6864c5c9_threads_update_L000036_501
+ jmp #\@C_shn8v_686cc54d_threads_update_L000036_488 ' JUMPV addrg
+C_shn8v_686cc54d_threads_update_L000036_501
  mov r2, #127 ' reg ARG coni
  mov r3, r17 ' CVI, CVU or LOAD
  mov r4, FP
@@ -4767,7 +4767,7 @@ C_sbnov_6864c5c9_threads_update_L000036_501
  mov RI, FP
  sub RI, #-(-9)
  wrbyte r22, RI ' ASGNU1 addrli reg
- mov r2, ##@C_sbnou_6864c5c9_threads_shared_L000035_431_L000432 ' reg ARG ADDRG
+ mov r2, ##@C_shn8u_686cc54d_threads_shared_L000035_431_L000432 ' reg ARG ADDRG
  mov r3, FP
  sub r3, #-(-136) ' reg ARG ADDRLi
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4777,7 +4777,7 @@ C_sbnov_6864c5c9_threads_update_L000036_501
  add SP, #4 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  mov r2, r21 ' CVI, CVU or LOAD
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4786,7 +4786,7 @@ C_sbnov_6864c5c9_threads_update_L000036_501
  long @C_lua_getglobal
  add SP, #4 ' CALL addrg
  mov r2, ##-1 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4795,9 +4795,9 @@ C_sbnov_6864c5c9_threads_update_L000036_501
  long @C_lua_type
  add SP, #4 ' CALL addrg
  cmps r0,  #5 wz
- if_z jmp #\C_sbnov_6864c5c9_threads_update_L000036_506 ' EQI4
+ if_z jmp #\C_shn8v_686cc54d_threads_update_L000036_506 ' EQI4
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4808,7 +4808,7 @@ C_sbnov_6864c5c9_threads_update_L000036_501
  mov r22, #0 ' reg <- coni
  mov r2, r22 ' CVI, CVU or LOAD
  mov r3, r22 ' CVI, CVU or LOAD
- mov r4, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r4, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r4, r4
  ' reg ARG INDIR ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -4817,7 +4817,7 @@ C_sbnov_6864c5c9_threads_update_L000036_501
  long @C_lua_createtable
  add SP, #8 ' CALL addrg
  mov r2, r21 ' CVI, CVU or LOAD
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4826,7 +4826,7 @@ C_sbnov_6864c5c9_threads_update_L000036_501
  long @C_lua_setglobal
  add SP, #4 ' CALL addrg
  mov r2, r21 ' CVI, CVU or LOAD
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4834,8 +4834,8 @@ C_sbnov_6864c5c9_threads_update_L000036_501
  calld PA,#CALA
  long @C_lua_getglobal
  add SP, #4 ' CALL addrg
-C_sbnov_6864c5c9_threads_update_L000036_506
- mov r2, ##@C_sbnou_6864c5c9_threads_shared_L000035_431_L000432 ' reg ARG ADDRG
+C_shn8v_686cc54d_threads_update_L000036_506
+ mov r2, ##@C_shn8u_686cc54d_threads_shared_L000035_431_L000432 ' reg ARG ADDRG
  mov r3, ##0 ' reg ARG con
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -4843,7 +4843,7 @@ C_sbnov_6864c5c9_threads_update_L000036_506
  long @C_strtok
  add SP, #4 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
- mov r2, ##@C_sbnou_6864c5c9_threads_shared_L000035_431_L000432 ' reg ARG ADDRG
+ mov r2, ##@C_shn8u_686cc54d_threads_shared_L000035_431_L000432 ' reg ARG ADDRG
  mov r3, ##0 ' reg ARG con
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -4851,10 +4851,10 @@ C_sbnov_6864c5c9_threads_update_L000036_506
  long @C_strtok
  add SP, #4 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
- jmp #\@C_sbnov_6864c5c9_threads_update_L000036_509 ' JUMPV addrg
-C_sbnov_6864c5c9_threads_update_L000036_508
+ jmp #\@C_shn8v_686cc54d_threads_update_L000036_509 ' JUMPV addrg
+C_shn8v_686cc54d_threads_update_L000036_508
  mov r2, r21 ' CVI, CVU or LOAD
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4863,7 +4863,7 @@ C_sbnov_6864c5c9_threads_update_L000036_508
  long @C_lua_pushstring
  add SP, #4 ' CALL addrg
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4872,7 +4872,7 @@ C_sbnov_6864c5c9_threads_update_L000036_508
  long @C_lua_gettable
  add SP, #4 ' CALL addrg
  mov r2, ##-1 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4881,9 +4881,9 @@ C_sbnov_6864c5c9_threads_update_L000036_508
  long @C_lua_type
  add SP, #4 ' CALL addrg
  cmps r0,  #5 wz
- if_z jmp #\C_sbnov_6864c5c9_threads_update_L000036_511 ' EQI4
+ if_z jmp #\C_shn8v_686cc54d_threads_update_L000036_511 ' EQI4
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4892,7 +4892,7 @@ C_sbnov_6864c5c9_threads_update_L000036_508
  long @C_lua_settop
  add SP, #4 ' CALL addrg
  mov r2, r21 ' CVI, CVU or LOAD
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4903,7 +4903,7 @@ C_sbnov_6864c5c9_threads_update_L000036_508
  mov r22, #0 ' reg <- coni
  mov r2, r22 ' CVI, CVU or LOAD
  mov r3, r22 ' CVI, CVU or LOAD
- mov r4, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r4, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r4, r4
  ' reg ARG INDIR ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -4912,7 +4912,7 @@ C_sbnov_6864c5c9_threads_update_L000036_508
  long @C_lua_createtable
  add SP, #8 ' CALL addrg
  mov r2, ##-3 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4921,7 +4921,7 @@ C_sbnov_6864c5c9_threads_update_L000036_508
  long @C_lua_settable
  add SP, #4 ' CALL addrg
  mov r2, r21 ' CVI, CVU or LOAD
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4930,7 +4930,7 @@ C_sbnov_6864c5c9_threads_update_L000036_508
  long @C_lua_pushstring
  add SP, #4 ' CALL addrg
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4938,10 +4938,10 @@ C_sbnov_6864c5c9_threads_update_L000036_508
  calld PA,#CALA
  long @C_lua_gettable
  add SP, #4 ' CALL addrg
-C_sbnov_6864c5c9_threads_update_L000036_511
+C_shn8v_686cc54d_threads_update_L000036_511
  mov r2, ##-1 ' reg ARG con
  mov r3, ##-2 ' reg ARG con
- mov r4, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r4, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r4, r4
  ' reg ARG INDIR ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -4950,7 +4950,7 @@ C_sbnov_6864c5c9_threads_update_L000036_511
  long @C_lua_rotate
  add SP, #8 ' CALL addrg
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4959,7 +4959,7 @@ C_sbnov_6864c5c9_threads_update_L000036_511
  long @C_lua_settop
  add SP, #4 ' CALL addrg
  mov r21, r19 ' CVI, CVU or LOAD
- mov r2, ##@C_sbnou_6864c5c9_threads_shared_L000035_431_L000432 ' reg ARG ADDRG
+ mov r2, ##@C_shn8u_686cc54d_threads_shared_L000035_431_L000432 ' reg ARG ADDRG
  mov r3, ##0 ' reg ARG con
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -4967,12 +4967,12 @@ C_sbnov_6864c5c9_threads_update_L000036_511
  long @C_strtok
  add SP, #4 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
-C_sbnov_6864c5c9_threads_update_L000036_509
+C_shn8v_686cc54d_threads_update_L000036_509
  mov r22, r19 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sbnov_6864c5c9_threads_update_L000036_508  ' NEU4
+ if_nz jmp #\C_shn8v_686cc54d_threads_update_L000036_508  ' NEU4
  mov r2, r21 ' CVI, CVU or LOAD
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -4980,20 +4980,20 @@ C_sbnov_6864c5c9_threads_update_L000036_509
  calld PA,#CALA
  long @C_lua_pushstring
  add SP, #4 ' CALL addrg
- mov r2, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r2, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno3m_6864c5c9_luathread_movevalues_L000377
+ long @C_shn83m_686cc54d_luathread_movevalues_L000377
  add SP, #4 ' CALL addrg
  mov RI, FP
  sub RI, #-(-140)
  wrlong r0, RI ' ASGNI4 addrli reg
  mov r2, ##-3 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -5002,7 +5002,7 @@ C_sbnov_6864c5c9_threads_update_L000036_509
  long @C_lua_settable
  add SP, #4 ' CALL addrg
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -5010,37 +5010,37 @@ C_sbnov_6864c5c9_threads_update_L000036_509
  calld PA,#CALA
  long @C_lua_settop
  add SP, #4 ' CALL addrg
- mov r2, ##@C_sbno_6864c5c9_mutex_channel_list_L000005 ' reg ARG ADDRG
+ mov r2, ##@C_shn8_686cc54d_mutex_channel_list_L000005 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
  mov r0, #0 ' reg <- coni
- jmp #\@C_sbnov_6864c5c9_threads_update_L000036_488 ' JUMPV addrg
-C_sbnov_6864c5c9_threads_update_L000036_502
+ jmp #\@C_shn8v_686cc54d_threads_update_L000036_488 ' JUMPV addrg
+C_shn8v_686cc54d_threads_update_L000036_502
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
- mov r2, ##@C_sbnov_6864c5c9_threads_update_L000036_513_L000514 ' reg ARG ADDRG
+ mov r2, ##@C_shn8v_686cc54d_threads_update_L000036_513_L000514 ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
  long @C_lua_pushstring
  add SP, #4 ' CALL addrg
- mov r2, ##@C_sbno_6864c5c9_mutex_channel_list_L000005 ' reg ARG ADDRG
+ mov r2, ##@C_shn8_686cc54d_mutex_channel_list_L000005 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
  mov r0, #2 ' reg <- coni
-C_sbnov_6864c5c9_threads_update_L000036_488
+C_shn8v_686cc54d_threads_update_L000036_488
  calld PA,#POPM ' restore registers
  add SP, #136 ' framesize
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbnoi_6864c5c9_threads_receive_async_L000023 ' <symbol:threads_receive_async>
+C_shn8i_686cc54d_threads_receive_async_L000023 ' <symbol:threads_receive_async>
  calld PA,#NEWF
  calld PA,#PSHM
  long $d00000 ' save registers
@@ -5052,7 +5052,7 @@ C_sbnoi_6864c5c9_threads_receive_async_L000023 ' <symbol:threads_receive_async>
  mov r22, r0 ' CVI, CVU or LOAD
  mov r20, #2 ' reg <- coni
  cmps r22, r20 wz
- if_nz jmp #\C_sbnoi_6864c5c9_threads_receive_async_L000023_516 ' NEI4
+ if_nz jmp #\C_shn8i_686cc54d_threads_receive_async_L000023_516 ' NEI4
  mov r2, r20 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -5061,14 +5061,14 @@ C_sbnoi_6864c5c9_threads_receive_async_L000023 ' <symbol:threads_receive_async>
  long @C_lua_toboolean
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
- if_z jmp #\C_sbnoi_6864c5c9_threads_receive_async_L000023_516 ' EQI4
+ if_z jmp #\C_shn8i_686cc54d_threads_receive_async_L000023_516 ' EQI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_sbnob_6864c5c9_threads_receive_L000016 ' CALL addrg
+ long @C_shn8b_686cc54d_threads_receive_L000016 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
- jmp #\@C_sbnoi_6864c5c9_threads_receive_async_L000023_515 ' JUMPV addrg
-C_sbnoi_6864c5c9_threads_receive_async_L000023_516
+ jmp #\@C_shn8i_686cc54d_threads_receive_async_L000023_515 ' JUMPV addrg
+C_shn8i_686cc54d_threads_receive_async_L000023_516
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -5079,15 +5079,15 @@ C_sbnoi_6864c5c9_threads_receive_async_L000023_516
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_sbnob_6864c5c9_threads_receive_L000016 ' CALL addrg
+ long @C_shn8b_686cc54d_threads_receive_L000016 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
-C_sbnoi_6864c5c9_threads_receive_async_L000023_515
+C_shn8i_686cc54d_threads_receive_async_L000023_515
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbnob_6864c5c9_threads_receive_L000016 ' <symbol:threads_receive>
+C_shn8b_686cc54d_threads_receive_L000016 ' <symbol:threads_receive>
  calld PA,#NEWF
  calld PA,#PSHM
  long $faaa80 ' save registers
@@ -5114,38 +5114,38 @@ C_sbnob_6864c5c9_threads_receive_L000016 ' <symbol:threads_receive>
  long @C_lua_toboolean
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
- if_z jmp #\C_sbnob_6864c5c9_threads_receive_L000016_519 ' EQI4
+ if_z jmp #\C_shn8b_686cc54d_threads_receive_L000016_519 ' EQI4
  mov r17, #1 ' reg <- coni
- jmp #\@C_sbnob_6864c5c9_threads_receive_L000016_520 ' JUMPV addrg
-C_sbnob_6864c5c9_threads_receive_L000016_519
+ jmp #\@C_shn8b_686cc54d_threads_receive_L000016_520 ' JUMPV addrg
+C_shn8b_686cc54d_threads_receive_L000016_519
  mov r17, #0 ' reg <- coni
-C_sbnob_6864c5c9_threads_receive_L000016_520
+C_shn8b_686cc54d_threads_receive_L000016_520
  cmps r17,  #0 wz
- if_nz jmp #\C_sbnob_6864c5c9_threads_receive_L000016_522 ' NEI4
+ if_nz jmp #\C_shn8b_686cc54d_threads_receive_L000016_522 ' NEI4
  mov r7, #1 ' reg <- coni
- jmp #\@C_sbnob_6864c5c9_threads_receive_L000016_523 ' JUMPV addrg
-C_sbnob_6864c5c9_threads_receive_L000016_522
+ jmp #\@C_shn8b_686cc54d_threads_receive_L000016_523 ' JUMPV addrg
+C_shn8b_686cc54d_threads_receive_L000016_522
  mov r7, #0 ' reg <- coni
-C_sbnob_6864c5c9_threads_receive_L000016_523
+C_shn8b_686cc54d_threads_receive_L000016_523
  mov r2, r7 ' CVI, CVU or LOAD
  mov r3, r9 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno2j_6864c5c9_channel_locked_get_L000139
+ long @C_shn82j_686cc54d_channel_locked_get_L000139
  add SP, #4 ' CALL addrg
  mov r15, r0 ' CVI, CVU or LOAD
  mov r22, r15 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sbnob_6864c5c9_threads_receive_L000016_524  ' NEU4
+ if_nz jmp #\C_shn8b_686cc54d_threads_receive_L000016_524  ' NEU4
  cmps r17,  #0 wz
- if_z jmp #\C_sbnob_6864c5c9_threads_receive_L000016_526 ' EQI4
+ if_z jmp #\C_shn8b_686cc54d_threads_receive_L000016_526 ' EQI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
  mov r2, r9 ' CVI, CVU or LOAD
- mov r3, ##@C_sbnob_6864c5c9_threads_receive_L000016_528_L000529 ' reg ARG ADDRG
+ mov r3, ##@C_shn8b_686cc54d_threads_receive_L000016_528_L000529 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -5153,14 +5153,14 @@ C_sbnob_6864c5c9_threads_receive_L000016_523
  long @C_lua_pushfstring
  add SP, #8 ' CALL addrg
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbnob_6864c5c9_threads_receive_L000016_518 ' JUMPV addrg
-C_sbnob_6864c5c9_threads_receive_L000016_526
+ jmp #\@C_shn8b_686cc54d_threads_receive_L000016_518 ' JUMPV addrg
+C_shn8b_686cc54d_threads_receive_L000016_526
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
  mov r2, r9 ' CVI, CVU or LOAD
- mov r3, ##@C_sbnob_6864c5c9_threads_receive_L000016_530_L000531 ' reg ARG ADDRG
+ mov r3, ##@C_shn8b_686cc54d_threads_receive_L000016_530_L000531 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -5168,8 +5168,8 @@ C_sbnob_6864c5c9_threads_receive_L000016_526
  long @C_lua_pushfstring
  add SP, #8 ' CALL addrg
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbnob_6864c5c9_threads_receive_L000016_518 ' JUMPV addrg
-C_sbnob_6864c5c9_threads_receive_L000016_524
+ jmp #\@C_shn8b_686cc54d_threads_receive_L000016_518 ' JUMPV addrg
+C_shn8b_686cc54d_threads_receive_L000016_524
  mov r2, r15 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
@@ -5177,17 +5177,17 @@ C_sbnob_6864c5c9_threads_receive_L000016_524
  mov r13, r0 ' CVI, CVU or LOAD
  mov r22, r13 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_z jmp #\C_sbnob_6864c5c9_threads_receive_L000016_532 ' EQU4
+ if_z jmp #\C_shn8b_686cc54d_threads_receive_L000016_532 ' EQU4
  mov r2, r23 ' CVI, CVU or LOAD
  rdlong r3, r13 ' reg <- INDIRP4 reg
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno2l_6864c5c9_luathread_copyvalues_L000161
+ long @C_shn82l_686cc54d_luathread_copyvalues_L000161
  add SP, #4 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  cmps r21,  #1 wz
- if_nz jmp #\C_sbnob_6864c5c9_threads_receive_L000016_534 ' NEI4
+ if_nz jmp #\C_shn8b_686cc54d_threads_receive_L000016_534 ' NEI4
  mov r2, #1 ' reg ARG coni
  rdlong r3, r13 ' reg <- INDIRP4 reg
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -5199,19 +5199,19 @@ C_sbnob_6864c5c9_threads_receive_L000016_524
  adds r22, #8 ' ADDP4 coni
  mov r20, #1 ' reg <- coni
  wrlong r20, r22 ' ASGNI4 reg reg
- jmp #\@C_sbnob_6864c5c9_threads_receive_L000016_535 ' JUMPV addrg
-C_sbnob_6864c5c9_threads_receive_L000016_534
+ jmp #\@C_shn8b_686cc54d_threads_receive_L000016_535 ' JUMPV addrg
+C_shn8b_686cc54d_threads_receive_L000016_534
  mov r22, r13
  adds r22, #8 ' ADDP4 coni
  mov r20, #2 ' reg <- coni
  wrlong r20, r22 ' ASGNI4 reg reg
-C_sbnob_6864c5c9_threads_receive_L000016_535
+C_shn8b_686cc54d_threads_receive_L000016_535
  rdlong r22, r13 ' reg <- INDIRP4 reg
- mov r20, ##@C_sbno5_6864c5c9_mainlp_L000010
+ mov r20, ##@C_shn85_686cc54d_mainlp_L000010
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  cmp r22, r20 wz
- if_nz jmp #\C_sbnob_6864c5c9_threads_receive_L000016_536  ' NEU4
- mov r2, ##@C_sbno6_6864c5c9_mutex_mainls_L000011 ' reg ARG ADDRG
+ if_nz jmp #\C_shn8b_686cc54d_threads_receive_L000016_536  ' NEU4
+ mov r2, ##@C_shn86_686cc54d_mutex_mainls_L000011 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_lock ' CALL addrg
@@ -5219,17 +5219,17 @@ C_sbnob_6864c5c9_threads_receive_L000016_535
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_cond_signal ' CALL addrg
- mov r2, ##@C_sbno6_6864c5c9_mutex_mainls_L000011 ' reg ARG ADDRG
+ mov r2, ##@C_shn86_686cc54d_mutex_mainls_L000011 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
- jmp #\@C_sbnob_6864c5c9_threads_receive_L000016_537 ' JUMPV addrg
-C_sbnob_6864c5c9_threads_receive_L000016_536
+ jmp #\@C_shn8b_686cc54d_threads_receive_L000016_537 ' JUMPV addrg
+C_shn8b_686cc54d_threads_receive_L000016_536
  mov r2, r13 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_sched_queue_proc ' CALL addrg
-C_sbnob_6864c5c9_threads_receive_L000016_537
+C_shn8b_686cc54d_threads_receive_L000016_537
  mov r2, r15 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
@@ -5241,10 +5241,10 @@ C_sbnob_6864c5c9_threads_receive_L000016_537
  mov r22, r0 ' CVI, CVU or LOAD
  mov r0, r22 ' SUBI/P
  subs r0, r19 ' SUBI/P (3)
- jmp #\@C_sbnob_6864c5c9_threads_receive_L000016_518 ' JUMPV addrg
-C_sbnob_6864c5c9_threads_receive_L000016_532
+ jmp #\@C_shn8b_686cc54d_threads_receive_L000016_518 ' JUMPV addrg
+C_shn8b_686cc54d_threads_receive_L000016_532
  cmps r17,  #0 wz
- if_z jmp #\C_sbnob_6864c5c9_threads_receive_L000016_538 ' EQI4
+ if_z jmp #\C_shn8b_686cc54d_threads_receive_L000016_538 ' EQI4
  mov r2, r15 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
@@ -5254,7 +5254,7 @@ C_sbnob_6864c5c9_threads_receive_L000016_532
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
  mov r2, r9 ' CVI, CVU or LOAD
- mov r3, ##@C_sbnob_6864c5c9_threads_receive_L000016_528_L000529 ' reg ARG ADDRG
+ mov r3, ##@C_shn8b_686cc54d_threads_receive_L000016_528_L000529 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -5262,15 +5262,15 @@ C_sbnob_6864c5c9_threads_receive_L000016_532
  long @C_lua_pushfstring
  add SP, #8 ' CALL addrg
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbnob_6864c5c9_threads_receive_L000016_518 ' JUMPV addrg
-C_sbnob_6864c5c9_threads_receive_L000016_538
+ jmp #\@C_shn8b_686cc54d_threads_receive_L000016_518 ' JUMPV addrg
+C_shn8b_686cc54d_threads_receive_L000016_538
  mov r22, r23 ' CVI, CVU or LOAD
- mov r20, ##@C_sbno5_6864c5c9_mainlp_L000010
+ mov r20, ##@C_shn85_686cc54d_mainlp_L000010
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  cmp r22, r20 wz
- if_nz jmp #\C_sbnob_6864c5c9_threads_receive_L000016_540  ' NEU4
- wrlong r15, ##@C_sbno5_6864c5c9_mainlp_L000010+12 ' ASGNP4 addrg reg
- mov r2, ##@C_sbno5_6864c5c9_mainlp_L000010 ' reg ARG ADDRG
+ if_nz jmp #\C_shn8b_686cc54d_threads_receive_L000016_540  ' NEU4
+ wrlong r15, ##@C_shn85_686cc54d_mainlp_L000010+12 ' ASGNP4 addrg reg
+ mov r2, ##@C_shn85_686cc54d_mainlp_L000010 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_luathread_queue_receiver ' CALL addrg
@@ -5278,33 +5278,33 @@ C_sbnob_6864c5c9_threads_receive_L000016_538
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_luathread_unlock_channel ' CALL addrg
- mov r2, ##@C_sbno6_6864c5c9_mutex_mainls_L000011 ' reg ARG ADDRG
+ mov r2, ##@C_shn86_686cc54d_mutex_mainls_L000011 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_lock ' CALL addrg
- mov r2, ##@C_sbno6_6864c5c9_mutex_mainls_L000011 ' reg ARG ADDRG
+ mov r2, ##@C_shn86_686cc54d_mutex_mainls_L000011 ' reg ARG ADDRG
  mov r3, ##@C_cond_mainls_sendrecv ' reg ARG ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
  long @C_pthread_cond_wait
  add SP, #4 ' CALL addrg
- mov r2, ##@C_sbno6_6864c5c9_mutex_mainls_L000011 ' reg ARG ADDRG
+ mov r2, ##@C_shn86_686cc54d_mutex_mainls_L000011 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
- mov r0, ##@C_sbno5_6864c5c9_mainlp_L000010+8
+ mov r0, ##@C_shn85_686cc54d_mainlp_L000010+8
  rdlong r0, r0 ' reg <- INDIRI4 addrg
- jmp #\@C_sbnob_6864c5c9_threads_receive_L000016_518 ' JUMPV addrg
-C_sbnob_6864c5c9_threads_receive_L000016_540
+ jmp #\@C_shn8b_686cc54d_threads_receive_L000016_518 ' JUMPV addrg
+C_shn8b_686cc54d_threads_receive_L000016_540
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_sbno2u_6864c5c9_luathread_getself_L000207 ' CALL addrg
+ long @C_shn82u_686cc54d_luathread_getself_L000207 ' CALL addrg
  mov r11, r0 ' CVI, CVU or LOAD
  mov r22, r11 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_z jmp #\C_sbnob_6864c5c9_threads_receive_L000016_544 ' EQU4
+ if_z jmp #\C_shn8b_686cc54d_threads_receive_L000016_544 ' EQU4
  mov r22, r11
  adds r22, #4 ' ADDP4 coni
  mov r20, #3 ' reg <- coni
@@ -5312,7 +5312,7 @@ C_sbnob_6864c5c9_threads_receive_L000016_540
  mov r22, r11
  adds r22, #12 ' ADDP4 coni
  wrlong r15, r22 ' ASGNP4 reg reg
-C_sbnob_6864c5c9_threads_receive_L000016_544
+C_shn8b_686cc54d_threads_receive_L000016_544
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
@@ -5328,13 +5328,13 @@ C_sbnob_6864c5c9_threads_receive_L000016_544
  long @C_lua_yieldk
  add SP, #12 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
-C_sbnob_6864c5c9_threads_receive_L000016_518
+C_shn8b_686cc54d_threads_receive_L000016_518
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbnoc_6864c5c9_threads_create_channel_L000017 ' <symbol:threads_create_channel>
+C_shn8c_686cc54d_threads_create_channel_L000017 ' <symbol:threads_create_channel>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e80000 ' save registers
@@ -5348,19 +5348,19 @@ C_sbnoc_6864c5c9_threads_create_channel_L000017 ' <symbol:threads_create_channel
  long @C_luaL__checklstring
  add SP, #8 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
- mov r2, ##@C_sbno_6864c5c9_mutex_channel_list_L000005 ' reg ARG ADDRG
+ mov r2, ##@C_shn8_686cc54d_mutex_channel_list_L000005 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_lock ' CALL addrg
  mov r2, r19 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_sbno2i_6864c5c9_channel_unlocked_get_L000137 ' CALL addrg
+ long @C_shn82i_686cc54d_channel_unlocked_get_L000137 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  mov r22, r0 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_z jmp #\C_sbnoc_6864c5c9_threads_create_channel_L000017_547 ' EQU4
- mov r2, ##@C_sbno_6864c5c9_mutex_channel_list_L000005 ' reg ARG ADDRG
+ if_z jmp #\C_shn8c_686cc54d_threads_create_channel_L000017_547 ' EQU4
+ mov r2, ##@C_shn8_686cc54d_mutex_channel_list_L000005 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
@@ -5369,7 +5369,7 @@ C_sbnoc_6864c5c9_threads_create_channel_L000017 ' <symbol:threads_create_channel
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
  mov r2, r19 ' CVI, CVU or LOAD
- mov r3, ##@C_sbnoc_6864c5c9_threads_create_channel_L000017_549_L000550 ' reg ARG ADDRG
+ mov r3, ##@C_shn8c_686cc54d_threads_create_channel_L000017_549_L000550 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -5377,16 +5377,16 @@ C_sbnoc_6864c5c9_threads_create_channel_L000017 ' <symbol:threads_create_channel
  long @C_lua_pushfstring
  add SP, #8 ' CALL addrg
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbnoc_6864c5c9_threads_create_channel_L000017_546 ' JUMPV addrg
-C_sbnoc_6864c5c9_threads_create_channel_L000017_547
- mov r2, ##@C_sbno_6864c5c9_mutex_channel_list_L000005 ' reg ARG ADDRG
+ jmp #\@C_shn8c_686cc54d_threads_create_channel_L000017_546 ' JUMPV addrg
+C_shn8c_686cc54d_threads_create_channel_L000017_547
+ mov r2, ##@C_shn8_686cc54d_mutex_channel_list_L000005 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
  mov r2, r19 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_sbno2g_6864c5c9_channel_create_L000133 ' CALL addrg
+ long @C_shn82g_686cc54d_channel_create_L000133 ' CALL addrg
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -5395,13 +5395,13 @@ C_sbnoc_6864c5c9_threads_create_channel_L000017_547
  long @C_lua_pushboolean
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-C_sbnoc_6864c5c9_threads_create_channel_L000017_546
+C_shn8c_686cc54d_threads_create_channel_L000017_546
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbnod_6864c5c9_threads_destroy_channel_L000018 ' <symbol:threads_destroy_channel>
+C_shn8d_686cc54d_threads_destroy_channel_L000018 ' <symbol:threads_destroy_channel>
  calld PA,#NEWF
  calld PA,#PSHM
  long $fa8000 ' save registers
@@ -5415,28 +5415,28 @@ C_sbnod_6864c5c9_threads_destroy_channel_L000018 ' <symbol:threads_destroy_chann
  long @C_luaL__checklstring
  add SP, #8 ' CALL addrg
  mov r15, r0 ' CVI, CVU or LOAD
- mov r2, ##@C_sbno_6864c5c9_mutex_channel_list_L000005 ' reg ARG ADDRG
+ mov r2, ##@C_shn8_686cc54d_mutex_channel_list_L000005 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_lock ' CALL addrg
  mov r2, r15 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_sbno2i_6864c5c9_channel_unlocked_get_L000137 ' CALL addrg
+ long @C_shn82i_686cc54d_channel_unlocked_get_L000137 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  mov r22, r0 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_z jmp #\C_sbnod_6864c5c9_threads_destroy_channel_L000018_552 ' EQU4
+ if_z jmp #\C_shn8d_686cc54d_threads_destroy_channel_L000018_552 ' EQU4
  mov r2, r21
  adds r2, #24 ' ADDP4 coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_trylock ' CALL addrg
-C_sbnod_6864c5c9_threads_destroy_channel_L000018_552
+C_shn8d_686cc54d_threads_destroy_channel_L000018_552
  mov r22, r21 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sbnod_6864c5c9_threads_destroy_channel_L000018_554  ' NEU4
- mov r2, ##@C_sbno_6864c5c9_mutex_channel_list_L000005 ' reg ARG ADDRG
+ if_nz jmp #\C_shn8d_686cc54d_threads_destroy_channel_L000018_554  ' NEU4
+ mov r2, ##@C_shn8_686cc54d_mutex_channel_list_L000005 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
@@ -5445,7 +5445,7 @@ C_sbnod_6864c5c9_threads_destroy_channel_L000018_552
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
  mov r2, r15 ' CVI, CVU or LOAD
- mov r3, ##@C_sbnoa_6864c5c9_threads_send_L000015_301_L000302 ' reg ARG ADDRG
+ mov r3, ##@C_shn8a_686cc54d_threads_send_L000015_301_L000302 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -5453,10 +5453,10 @@ C_sbnod_6864c5c9_threads_destroy_channel_L000018_552
  long @C_lua_pushfstring
  add SP, #8 ' CALL addrg
  mov r0, #2 ' reg <- coni
- jmp #\@C_sbnod_6864c5c9_threads_destroy_channel_L000018_551 ' JUMPV addrg
-C_sbnod_6864c5c9_threads_destroy_channel_L000018_554
- mov r2, ##@C_sbno2g_6864c5c9_channel_create_L000133_135_L000136 ' reg ARG ADDRG
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ jmp #\@C_shn8d_686cc54d_threads_destroy_channel_L000018_551 ' JUMPV addrg
+C_shn8d_686cc54d_threads_destroy_channel_L000018_554
+ mov r2, ##@C_shn82g_686cc54d_channel_create_L000133_135_L000136 ' reg ARG ADDRG
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -5464,7 +5464,7 @@ C_sbnod_6864c5c9_threads_destroy_channel_L000018_554
  calld PA,#CALA
  long @C_lua_getglobal
  add SP, #4 ' CALL addrg
- mov r2, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r2, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -5472,7 +5472,7 @@ C_sbnod_6864c5c9_threads_destroy_channel_L000018_554
  long @C_lua_pushnil ' CALL addrg
  mov r2, r15 ' CVI, CVU or LOAD
  mov r3, ##-2 ' reg ARG con
- mov r4, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r4, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r4, r4
  ' reg ARG INDIR ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -5481,7 +5481,7 @@ C_sbnod_6864c5c9_threads_destroy_channel_L000018_554
  long @C_lua_setfield
  add SP, #8 ' CALL addrg
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -5502,9 +5502,9 @@ C_sbnod_6864c5c9_threads_destroy_channel_L000018_554
  mov r19, ##0 ' reg <- con
  rdlong r22, r21 ' reg <- INDIRP4 reg
  cmp r22,  #0 wz
- if_z jmp #\C_sbnod_6864c5c9_threads_destroy_channel_L000018_556 ' EQU4
+ if_z jmp #\C_shn8d_686cc54d_threads_destroy_channel_L000018_556 ' EQU4
  mov r2, r15 ' CVI, CVU or LOAD
- mov r3, ##@C_sbnod_6864c5c9_threads_destroy_channel_L000018_558_L000559 ' reg ARG ADDRG
+ mov r3, ##@C_shn8d_686cc54d_threads_destroy_channel_L000018_558_L000559 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -5512,12 +5512,12 @@ C_sbnod_6864c5c9_threads_destroy_channel_L000018_554
  long @C_lua_pushfstring
  add SP, #8 ' CALL addrg
  mov r19, r21 ' CVI, CVU or LOAD
-C_sbnod_6864c5c9_threads_destroy_channel_L000018_556
+C_shn8d_686cc54d_threads_destroy_channel_L000018_556
  mov r22, r19 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_z jmp #\C_sbnod_6864c5c9_threads_destroy_channel_L000018_560 ' EQU4
- jmp #\@C_sbnod_6864c5c9_threads_destroy_channel_L000018_563 ' JUMPV addrg
-C_sbnod_6864c5c9_threads_destroy_channel_L000018_562
+ if_z jmp #\C_shn8d_686cc54d_threads_destroy_channel_L000018_560 ' EQU4
+ jmp #\@C_shn8d_686cc54d_threads_destroy_channel_L000018_563 ' JUMPV addrg
+C_shn8d_686cc54d_threads_destroy_channel_L000018_562
  rdlong r2, r17 ' reg <- INDIRP4 reg
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
@@ -5546,7 +5546,7 @@ C_sbnod_6864c5c9_threads_destroy_channel_L000018_562
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_sched_queue_proc ' CALL addrg
-C_sbnod_6864c5c9_threads_destroy_channel_L000018_563
+C_shn8d_686cc54d_threads_destroy_channel_L000018_563
  mov r2, r19 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
@@ -5554,7 +5554,7 @@ C_sbnod_6864c5c9_threads_destroy_channel_L000018_563
  mov r17, r0 ' CVI, CVU or LOAD
  mov r22, r0 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sbnod_6864c5c9_threads_destroy_channel_L000018_562  ' NEU4
+ if_nz jmp #\C_shn8d_686cc54d_threads_destroy_channel_L000018_562  ' NEU4
  mov r2, ##-2 ' reg ARG con
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -5562,15 +5562,15 @@ C_sbnod_6864c5c9_threads_destroy_channel_L000018_563
  calld PA,#CALA
  long @C_lua_settop
  add SP, #4 ' CALL addrg
-C_sbnod_6864c5c9_threads_destroy_channel_L000018_560
+C_shn8d_686cc54d_threads_destroy_channel_L000018_560
  mov r19, ##0 ' reg <- con
  mov r22, r21
  adds r22, #12 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg
  cmp r22,  #0 wz
- if_z jmp #\C_sbnod_6864c5c9_threads_destroy_channel_L000018_565 ' EQU4
+ if_z jmp #\C_shn8d_686cc54d_threads_destroy_channel_L000018_565 ' EQU4
  mov r2, r15 ' CVI, CVU or LOAD
- mov r3, ##@C_sbnod_6864c5c9_threads_destroy_channel_L000018_567_L000568 ' reg ARG ADDRG
+ mov r3, ##@C_shn8d_686cc54d_threads_destroy_channel_L000018_567_L000568 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -5579,12 +5579,12 @@ C_sbnod_6864c5c9_threads_destroy_channel_L000018_560
  add SP, #8 ' CALL addrg
  mov r19, r21
  adds r19, #12 ' ADDP4 coni
-C_sbnod_6864c5c9_threads_destroy_channel_L000018_565
+C_shn8d_686cc54d_threads_destroy_channel_L000018_565
  mov r22, r19 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_z jmp #\C_sbnod_6864c5c9_threads_destroy_channel_L000018_569 ' EQU4
- jmp #\@C_sbnod_6864c5c9_threads_destroy_channel_L000018_572 ' JUMPV addrg
-C_sbnod_6864c5c9_threads_destroy_channel_L000018_571
+ if_z jmp #\C_shn8d_686cc54d_threads_destroy_channel_L000018_569 ' EQU4
+ jmp #\@C_shn8d_686cc54d_threads_destroy_channel_L000018_572 ' JUMPV addrg
+C_shn8d_686cc54d_threads_destroy_channel_L000018_571
  rdlong r2, r17 ' reg <- INDIRP4 reg
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
@@ -5613,7 +5613,7 @@ C_sbnod_6864c5c9_threads_destroy_channel_L000018_571
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_sched_queue_proc ' CALL addrg
-C_sbnod_6864c5c9_threads_destroy_channel_L000018_572
+C_shn8d_686cc54d_threads_destroy_channel_L000018_572
  mov r2, r19 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
@@ -5621,7 +5621,7 @@ C_sbnod_6864c5c9_threads_destroy_channel_L000018_572
  mov r17, r0 ' CVI, CVU or LOAD
  mov r22, r0 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_sbnod_6864c5c9_threads_destroy_channel_L000018_571  ' NEU4
+ if_nz jmp #\C_shn8d_686cc54d_threads_destroy_channel_L000018_571  ' NEU4
  mov r2, ##-2 ' reg ARG con
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -5629,8 +5629,8 @@ C_sbnod_6864c5c9_threads_destroy_channel_L000018_572
  calld PA,#CALA
  long @C_lua_settop
  add SP, #4 ' CALL addrg
-C_sbnod_6864c5c9_threads_destroy_channel_L000018_569
- mov r2, ##@C_sbno_6864c5c9_mutex_channel_list_L000005 ' reg ARG ADDRG
+C_shn8d_686cc54d_threads_destroy_channel_L000018_569
+ mov r2, ##@C_shn8_686cc54d_mutex_channel_list_L000005 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
@@ -5672,13 +5672,13 @@ C_sbnod_6864c5c9_threads_destroy_channel_L000018_569
  long @C_lua_pushboolean
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-C_sbnod_6864c5c9_threads_destroy_channel_L000018_551
+C_shn8d_686cc54d_threads_destroy_channel_L000018_551
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbno11_6864c5c9_threads_sbrk_L000038 ' <symbol:threads_sbrk>
+C_shn811_686cc54d_threads_sbrk_L000038 ' <symbol:threads_sbrk>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e00000 ' save registers
@@ -5688,7 +5688,7 @@ C_sbno11_6864c5c9_threads_sbrk_L000038 ' <symbol:threads_sbrk>
  calld PA,#CALA
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wcz
- if_be jmp #\C_sbno11_6864c5c9_threads_sbrk_L000038_575 ' LEI4
+ if_be jmp #\C_shn811_686cc54d_threads_sbrk_L000038_575 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -5697,7 +5697,7 @@ C_sbno11_6864c5c9_threads_sbrk_L000038 ' <symbol:threads_sbrk>
  long @C_lua_toboolean
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
- if_z jmp #\C_sbno11_6864c5c9_threads_sbrk_L000038_577 ' EQI4
+ if_z jmp #\C_shn811_686cc54d_threads_sbrk_L000038_577 ' EQI4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C__thread_stall ' CALL addrg
@@ -5707,8 +5707,8 @@ C_sbno11_6864c5c9_threads_sbrk_L000038 ' <symbol:threads_sbrk>
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C__thread_allow ' CALL addrg
-C_sbno11_6864c5c9_threads_sbrk_L000038_577
-C_sbno11_6864c5c9_threads_sbrk_L000038_575
+C_shn811_686cc54d_threads_sbrk_L000038_577
+C_shn811_686cc54d_threads_sbrk_L000038_575
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C__thread_stall ' CALL addrg
@@ -5728,13 +5728,13 @@ C_sbno11_6864c5c9_threads_sbrk_L000038_575
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_sbno11_6864c5c9_threads_sbrk_L000038_574 ' (symbol refcount = 0)
+' C_shn811_686cc54d_threads_sbrk_L000038_574 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbno12_6864c5c9_threads_stacksize_L000039 ' <symbol:threads_stacksize>
+C_shn812_686cc54d_threads_stacksize_L000039 ' <symbol:threads_stacksize>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e00000 ' save registers
@@ -5744,7 +5744,7 @@ C_sbno12_6864c5c9_threads_stacksize_L000039 ' <symbol:threads_stacksize>
  calld PA,#CALA
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wcz
- if_be jmp #\C_sbno12_6864c5c9_threads_stacksize_L000039_580 ' LEI4
+ if_be jmp #\C_shn812_686cc54d_threads_stacksize_L000039_580 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -5754,8 +5754,8 @@ C_sbno12_6864c5c9_threads_stacksize_L000039 ' <symbol:threads_stacksize>
  add SP, #4 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  cmps r21,  #0 wcz
- if_a jmp #\C_sbno12_6864c5c9_threads_stacksize_L000039_584 ' GTI4
- mov r2, ##@C_sbno12_6864c5c9_threads_stacksize_L000039_582_L000583 ' reg ARG ADDRG
+ if_a jmp #\C_shn812_686cc54d_threads_stacksize_L000039_584 ' GTI4
+ mov r2, ##@C_shn812_686cc54d_threads_stacksize_L000039_582_L000583 ' reg ARG ADDRG
  mov r3, #1 ' reg ARG coni
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -5763,9 +5763,9 @@ C_sbno12_6864c5c9_threads_stacksize_L000039 ' <symbol:threads_stacksize>
  calld PA,#CALA
  long @C_luaL__argerror
  add SP, #8 ' CALL addrg
-C_sbno12_6864c5c9_threads_stacksize_L000039_584
+C_shn812_686cc54d_threads_stacksize_L000039_584
  wrlong r21, ##@C_stacksize ' ASGNI4 addrg reg
-C_sbno12_6864c5c9_threads_stacksize_L000039_580
+C_shn812_686cc54d_threads_stacksize_L000039_580
  mov r2, ##@C_stacksize
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
@@ -5776,13 +5776,13 @@ C_sbno12_6864c5c9_threads_stacksize_L000039_580
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_sbno12_6864c5c9_threads_stacksize_L000039_579 ' (symbol refcount = 0)
+' C_shn812_686cc54d_threads_stacksize_L000039_579 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbno15_6864c5c9_threads_factories_L000042 ' <symbol:threads_factories>
+C_shn815_686cc54d_threads_factories_L000042 ' <symbol:threads_factories>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e00000 ' save registers
@@ -5792,7 +5792,7 @@ C_sbno15_6864c5c9_threads_factories_L000042 ' <symbol:threads_factories>
  calld PA,#CALA
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wcz
- if_be jmp #\C_sbno15_6864c5c9_threads_factories_L000042_586 ' LEI4
+ if_be jmp #\C_shn815_686cc54d_threads_factories_L000042_586 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -5802,8 +5802,8 @@ C_sbno15_6864c5c9_threads_factories_L000042 ' <symbol:threads_factories>
  add SP, #4 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  cmps r21,  #0 wcz
- if_a jmp #\C_sbno15_6864c5c9_threads_factories_L000042_590 ' GTI4
- mov r2, ##@C_sbno15_6864c5c9_threads_factories_L000042_588_L000589 ' reg ARG ADDRG
+ if_a jmp #\C_shn815_686cc54d_threads_factories_L000042_590 ' GTI4
+ mov r2, ##@C_shn815_686cc54d_threads_factories_L000042_588_L000589 ' reg ARG ADDRG
  mov r3, #1 ' reg ARG coni
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -5811,23 +5811,23 @@ C_sbno15_6864c5c9_threads_factories_L000042 ' <symbol:threads_factories>
  calld PA,#CALA
  long @C_luaL__argerror
  add SP, #8 ' CALL addrg
-C_sbno15_6864c5c9_threads_factories_L000042_590
+C_shn815_686cc54d_threads_factories_L000042_590
  cmps r21,  #16 wcz
- if_be jmp #\C_sbno15_6864c5c9_threads_factories_L000042_591 ' LEI4
+ if_be jmp #\C_shn815_686cc54d_threads_factories_L000042_591 ' LEI4
  mov r21, #16 ' reg <- coni
-C_sbno15_6864c5c9_threads_factories_L000042_591
+C_shn815_686cc54d_threads_factories_L000042_591
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_sched_set_numfactories ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
- jmp #\@C_sbno15_6864c5c9_threads_factories_L000042_587 ' JUMPV addrg
-C_sbno15_6864c5c9_threads_factories_L000042_586
+ jmp #\@C_shn815_686cc54d_threads_factories_L000042_587 ' JUMPV addrg
+C_shn815_686cc54d_threads_factories_L000042_586
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C_sched_get_numfactories ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
-C_sbno15_6864c5c9_threads_factories_L000042_587
+C_shn815_686cc54d_threads_factories_L000042_587
  mov r2, r21 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -5836,13 +5836,13 @@ C_sbno15_6864c5c9_threads_factories_L000042_587
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_sbno15_6864c5c9_threads_factories_L000042_585 ' (symbol refcount = 0)
+' C_shn815_686cc54d_threads_factories_L000042_585 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbno13_6864c5c9_threads_factory_L000040 ' <symbol:threads_factory>
+C_shn813_686cc54d_threads_factory_L000040 ' <symbol:threads_factory>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e00000 ' save registers
@@ -5852,7 +5852,7 @@ C_sbno13_6864c5c9_threads_factory_L000040 ' <symbol:threads_factory>
  calld PA,#CALA
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wcz
- if_be jmp #\C_sbno13_6864c5c9_threads_factory_L000040_594 ' LEI4
+ if_be jmp #\C_shn813_686cc54d_threads_factory_L000040_594 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -5862,8 +5862,8 @@ C_sbno13_6864c5c9_threads_factory_L000040 ' <symbol:threads_factory>
  add SP, #4 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  cmps r21,  #0 wcz
- if_a jmp #\C_sbno13_6864c5c9_threads_factory_L000040_596 ' GTI4
- mov r2, ##@C_sbno15_6864c5c9_threads_factories_L000042_588_L000589 ' reg ARG ADDRG
+ if_a jmp #\C_shn813_686cc54d_threads_factory_L000040_596 ' GTI4
+ mov r2, ##@C_shn815_686cc54d_threads_factories_L000042_588_L000589 ' reg ARG ADDRG
  mov r3, #1 ' reg ARG coni
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -5871,23 +5871,23 @@ C_sbno13_6864c5c9_threads_factory_L000040 ' <symbol:threads_factory>
  calld PA,#CALA
  long @C_luaL__argerror
  add SP, #8 ' CALL addrg
-C_sbno13_6864c5c9_threads_factory_L000040_596
+C_shn813_686cc54d_threads_factory_L000040_596
  cmps r21,  #16 wcz
- if_be jmp #\C_sbno13_6864c5c9_threads_factory_L000040_597 ' LEI4
+ if_be jmp #\C_shn813_686cc54d_threads_factory_L000040_597 ' LEI4
  mov r21, #16 ' reg <- coni
-C_sbno13_6864c5c9_threads_factory_L000040_597
+C_shn813_686cc54d_threads_factory_L000040_597
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_sched_set_factory ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
- jmp #\@C_sbno13_6864c5c9_threads_factory_L000040_595 ' JUMPV addrg
-C_sbno13_6864c5c9_threads_factory_L000040_594
+ jmp #\@C_shn813_686cc54d_threads_factory_L000040_595 ' JUMPV addrg
+C_shn813_686cc54d_threads_factory_L000040_594
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C_sched_get_factory ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
-C_sbno13_6864c5c9_threads_factory_L000040_595
+C_shn813_686cc54d_threads_factory_L000040_595
  mov r2, r21 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -5896,13 +5896,13 @@ C_sbno13_6864c5c9_threads_factory_L000040_595
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_sbno13_6864c5c9_threads_factory_L000040_593 ' (symbol refcount = 0)
+' C_shn813_686cc54d_threads_factory_L000040_593 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbno14_6864c5c9_threads_version_L000041 ' <symbol:threads_version>
+C_shn814_686cc54d_threads_version_L000041 ' <symbol:threads_version>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e00000 ' save registers
@@ -5912,7 +5912,7 @@ C_sbno14_6864c5c9_threads_version_L000041 ' <symbol:threads_version>
  calld PA,#CALA
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wcz
- if_be jmp #\C_sbno14_6864c5c9_threads_version_L000041_600 ' LEI4
+ if_be jmp #\C_shn814_686cc54d_threads_version_L000041_600 ' LEI4
  mov r2, ##0 ' reg ARG con
  mov r3, #1 ' reg ARG coni
  mov r4, r23 ' CVI, CVU or LOAD
@@ -5922,7 +5922,7 @@ C_sbno14_6864c5c9_threads_version_L000041 ' <symbol:threads_version>
  long @C_luaL__checklstring
  add SP, #8 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
- mov r2, ##@C_sbno14_6864c5c9_threads_version_L000041_604_L000605 ' reg ARG ADDRG
+ mov r2, ##@C_shn814_686cc54d_threads_version_L000041_604_L000605 ' reg ARG ADDRG
  mov r3, r21 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -5930,7 +5930,7 @@ C_sbno14_6864c5c9_threads_version_L000041 ' <symbol:threads_version>
  long @C_strcmp
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
- if_nz jmp #\C_sbno14_6864c5c9_threads_version_L000041_602 ' NEI4
+ if_nz jmp #\C_shn814_686cc54d_threads_version_L000041_602 ' NEI4
  mov r2, #504 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -5938,9 +5938,9 @@ C_sbno14_6864c5c9_threads_version_L000041 ' <symbol:threads_version>
  calld PA,#CALA
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
- jmp #\@C_sbno14_6864c5c9_threads_version_L000041_601 ' JUMPV addrg
-C_sbno14_6864c5c9_threads_version_L000041_602
- mov r2, ##@C_sbno14_6864c5c9_threads_version_L000041_608_L000609 ' reg ARG ADDRG
+ jmp #\@C_shn814_686cc54d_threads_version_L000041_601 ' JUMPV addrg
+C_shn814_686cc54d_threads_version_L000041_602
+ mov r2, ##@C_shn814_686cc54d_threads_version_L000041_608_L000609 ' reg ARG ADDRG
  mov r3, r21 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -5948,7 +5948,7 @@ C_sbno14_6864c5c9_threads_version_L000041_602
  long @C_strcmp
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
- if_nz jmp #\C_sbno14_6864c5c9_threads_version_L000041_606 ' NEI4
+ if_nz jmp #\C_shn814_686cc54d_threads_version_L000041_606 ' NEI4
  mov r2, #2 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -5956,8 +5956,8 @@ C_sbno14_6864c5c9_threads_version_L000041_602
  calld PA,#CALA
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
- jmp #\@C_sbno14_6864c5c9_threads_version_L000041_601 ' JUMPV addrg
-C_sbno14_6864c5c9_threads_version_L000041_606
+ jmp #\@C_shn814_686cc54d_threads_version_L000041_601 ' JUMPV addrg
+C_shn814_686cc54d_threads_version_L000041_606
  mov r2, ##740 ' reg ARG con
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -5965,8 +5965,8 @@ C_sbno14_6864c5c9_threads_version_L000041_606
  calld PA,#CALA
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
- jmp #\@C_sbno14_6864c5c9_threads_version_L000041_601 ' JUMPV addrg
-C_sbno14_6864c5c9_threads_version_L000041_600
+ jmp #\@C_shn814_686cc54d_threads_version_L000041_601 ' JUMPV addrg
+C_shn814_686cc54d_threads_version_L000041_600
  mov r2, #504 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -5974,15 +5974,15 @@ C_sbno14_6864c5c9_threads_version_L000041_600
  calld PA,#CALA
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
-C_sbno14_6864c5c9_threads_version_L000041_601
+C_shn814_686cc54d_threads_version_L000041_601
  mov r0, #1 ' reg <- coni
-' C_sbno14_6864c5c9_threads_version_L000041_599 ' (symbol refcount = 0)
+' C_shn814_686cc54d_threads_version_L000041_599 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbnol_6864c5c9_threads_sleep_L000026 ' <symbol:threads_sleep>
+C_shn8l_686cc54d_threads_sleep_L000026 ' <symbol:threads_sleep>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e00000 ' save registers
@@ -5992,7 +5992,7 @@ C_sbnol_6864c5c9_threads_sleep_L000026 ' <symbol:threads_sleep>
  calld PA,#CALA
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wcz
- if_be jmp #\C_sbnol_6864c5c9_threads_sleep_L000026_611 ' LEI4
+ if_be jmp #\C_shn8l_686cc54d_threads_sleep_L000026_611 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -6002,8 +6002,8 @@ C_sbnol_6864c5c9_threads_sleep_L000026 ' <symbol:threads_sleep>
  add SP, #4 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  cmps r21,  #0 wcz
- if_ae jmp #\C_sbnol_6864c5c9_threads_sleep_L000026_615 ' GEI4
- mov r2, ##@C_sbnol_6864c5c9_threads_sleep_L000026_613_L000614 ' reg ARG ADDRG
+ if_ae jmp #\C_shn8l_686cc54d_threads_sleep_L000026_615 ' GEI4
+ mov r2, ##@C_shn8l_686cc54d_threads_sleep_L000026_613_L000614 ' reg ARG ADDRG
  mov r3, #1 ' reg ARG coni
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -6011,32 +6011,32 @@ C_sbnol_6864c5c9_threads_sleep_L000026 ' <symbol:threads_sleep>
  calld PA,#CALA
  long @C_luaL__argerror
  add SP, #8 ' CALL addrg
-C_sbnol_6864c5c9_threads_sleep_L000026_615
+C_shn8l_686cc54d_threads_sleep_L000026_615
  cmps r21,  #0 wcz
- if_be jmp #\C_sbnol_6864c5c9_threads_sleep_L000026_616 ' LEI4
+ if_be jmp #\C_shn8l_686cc54d_threads_sleep_L000026_616 ' LEI4
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_sleep ' CALL addrg
- jmp #\@C_sbnol_6864c5c9_threads_sleep_L000026_612 ' JUMPV addrg
-C_sbnol_6864c5c9_threads_sleep_L000026_616
+ jmp #\@C_shn8l_686cc54d_threads_sleep_L000026_612 ' JUMPV addrg
+C_shn8l_686cc54d_threads_sleep_L000026_616
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C_pthread_yield ' CALL addrg
- jmp #\@C_sbnol_6864c5c9_threads_sleep_L000026_612 ' JUMPV addrg
-C_sbnol_6864c5c9_threads_sleep_L000026_611
+ jmp #\@C_shn8l_686cc54d_threads_sleep_L000026_612 ' JUMPV addrg
+C_shn8l_686cc54d_threads_sleep_L000026_611
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C_pthread_yield ' CALL addrg
-C_sbnol_6864c5c9_threads_sleep_L000026_612
+C_shn8l_686cc54d_threads_sleep_L000026_612
  mov r0, #0 ' reg <- coni
-' C_sbnol_6864c5c9_threads_sleep_L000026_610 ' (symbol refcount = 0)
+' C_shn8l_686cc54d_threads_sleep_L000026_610 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbnom_6864c5c9_threads_msleep_L000027 ' <symbol:threads_msleep>
+C_shn8m_686cc54d_threads_msleep_L000027 ' <symbol:threads_msleep>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e00000 ' save registers
@@ -6046,7 +6046,7 @@ C_sbnom_6864c5c9_threads_msleep_L000027 ' <symbol:threads_msleep>
  calld PA,#CALA
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wcz
- if_be jmp #\C_sbnom_6864c5c9_threads_msleep_L000027_619 ' LEI4
+ if_be jmp #\C_shn8m_686cc54d_threads_msleep_L000027_619 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -6056,8 +6056,8 @@ C_sbnom_6864c5c9_threads_msleep_L000027 ' <symbol:threads_msleep>
  add SP, #4 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  cmps r21,  #0 wcz
- if_ae jmp #\C_sbnom_6864c5c9_threads_msleep_L000027_623 ' GEI4
- mov r2, ##@C_sbnom_6864c5c9_threads_msleep_L000027_621_L000622 ' reg ARG ADDRG
+ if_ae jmp #\C_shn8m_686cc54d_threads_msleep_L000027_623 ' GEI4
+ mov r2, ##@C_shn8m_686cc54d_threads_msleep_L000027_621_L000622 ' reg ARG ADDRG
  mov r3, #1 ' reg ARG coni
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -6065,32 +6065,32 @@ C_sbnom_6864c5c9_threads_msleep_L000027 ' <symbol:threads_msleep>
  calld PA,#CALA
  long @C_luaL__argerror
  add SP, #8 ' CALL addrg
-C_sbnom_6864c5c9_threads_msleep_L000027_623
+C_shn8m_686cc54d_threads_msleep_L000027_623
  cmps r21,  #0 wcz
- if_be jmp #\C_sbnom_6864c5c9_threads_msleep_L000027_624 ' LEI4
+ if_be jmp #\C_shn8m_686cc54d_threads_msleep_L000027_624 ' LEI4
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_msleep ' CALL addrg
- jmp #\@C_sbnom_6864c5c9_threads_msleep_L000027_620 ' JUMPV addrg
-C_sbnom_6864c5c9_threads_msleep_L000027_624
+ jmp #\@C_shn8m_686cc54d_threads_msleep_L000027_620 ' JUMPV addrg
+C_shn8m_686cc54d_threads_msleep_L000027_624
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C_pthread_yield ' CALL addrg
- jmp #\@C_sbnom_6864c5c9_threads_msleep_L000027_620 ' JUMPV addrg
-C_sbnom_6864c5c9_threads_msleep_L000027_619
+ jmp #\@C_shn8m_686cc54d_threads_msleep_L000027_620 ' JUMPV addrg
+C_shn8m_686cc54d_threads_msleep_L000027_619
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C_pthread_yield ' CALL addrg
-C_sbnom_6864c5c9_threads_msleep_L000027_620
+C_shn8m_686cc54d_threads_msleep_L000027_620
  mov r0, #0 ' reg <- coni
-' C_sbnom_6864c5c9_threads_msleep_L000027_618 ' (symbol refcount = 0)
+' C_shn8m_686cc54d_threads_msleep_L000027_618 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbnoj_6864c5c9_threads_print_L000024 ' <symbol:threads_print>
+C_shn8j_686cc54d_threads_print_L000024 ' <symbol:threads_print>
  calld PA,#NEWF
  calld PA,#PSHM
  long $fa0000 ' save registers
@@ -6101,7 +6101,7 @@ C_sbnoj_6864c5c9_threads_print_L000024 ' <symbol:threads_print>
  long @C_lua_gettop ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
  cmps r19,  #1 wz
- if_nz jmp #\C_sbnoj_6864c5c9_threads_print_L000024_627 ' NEI4
+ if_nz jmp #\C_shn8j_686cc54d_threads_print_L000024_627 ' NEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -6110,7 +6110,7 @@ C_sbnoj_6864c5c9_threads_print_L000024 ' <symbol:threads_print>
  long @C_lua_isstring
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
- if_z jmp #\C_sbnoj_6864c5c9_threads_print_L000024_629 ' EQI4
+ if_z jmp #\C_shn8j_686cc54d_threads_print_L000024_629 ' EQI4
  mov r2, ##0 ' reg ARG con
  mov r3, r19 ' CVI, CVU or LOAD
  mov r4, r23 ' CVI, CVU or LOAD
@@ -6121,14 +6121,14 @@ C_sbnoj_6864c5c9_threads_print_L000024 ' <symbol:threads_print>
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r2, r22 ' CVI, CVU or LOAD
- mov r3, ##@C_sbnoj_6864c5c9_threads_print_L000024_631_L000632 ' reg ARG ADDRG
+ mov r3, ##@C_shn8j_686cc54d_threads_print_L000024_631_L000632 ' reg ARG ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
  long @C_pthread_printf
  add SP, #4 ' CALL addrg
- jmp #\@C_sbnoj_6864c5c9_threads_print_L000024_628 ' JUMPV addrg
-C_sbnoj_6864c5c9_threads_print_L000024_629
+ jmp #\@C_shn8j_686cc54d_threads_print_L000024_628 ' JUMPV addrg
+C_shn8j_686cc54d_threads_print_L000024_629
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -6137,13 +6137,13 @@ C_sbnoj_6864c5c9_threads_print_L000024_629
  long @C_lua_type
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
- if_nz jmp #\C_sbnoj_6864c5c9_threads_print_L000024_633 ' NEI4
- mov r2, ##@C_sbnoj_6864c5c9_threads_print_L000024_635_L000636 ' reg ARG ADDRG
+ if_nz jmp #\C_shn8j_686cc54d_threads_print_L000024_633 ' NEI4
+ mov r2, ##@C_shn8j_686cc54d_threads_print_L000024_635_L000636 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_printf ' CALL addrg
- jmp #\@C_sbnoj_6864c5c9_threads_print_L000024_628 ' JUMPV addrg
-C_sbnoj_6864c5c9_threads_print_L000024_633
+ jmp #\@C_shn8j_686cc54d_threads_print_L000024_628 ' JUMPV addrg
+C_shn8j_686cc54d_threads_print_L000024_633
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -6152,7 +6152,7 @@ C_sbnoj_6864c5c9_threads_print_L000024_633
  long @C_lua_type
  add SP, #4 ' CALL addrg
  cmps r0,  #1 wz
- if_nz jmp #\C_sbnoj_6864c5c9_threads_print_L000024_637 ' NEI4
+ if_nz jmp #\C_shn8j_686cc54d_threads_print_L000024_637 ' NEI4
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -6162,18 +6162,18 @@ C_sbnoj_6864c5c9_threads_print_L000024_633
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_z jmp #\C_sbnoj_6864c5c9_threads_print_L000024_644 ' EQI4
- mov r17, ##@C_sbnoj_6864c5c9_threads_print_L000024_639_L000640 ' reg <- addrg
- jmp #\@C_sbnoj_6864c5c9_threads_print_L000024_645 ' JUMPV addrg
-C_sbnoj_6864c5c9_threads_print_L000024_644
- mov r17, ##@C_sbnoj_6864c5c9_threads_print_L000024_641_L000642 ' reg <- addrg
-C_sbnoj_6864c5c9_threads_print_L000024_645
+ if_z jmp #\C_shn8j_686cc54d_threads_print_L000024_644 ' EQI4
+ mov r17, ##@C_shn8j_686cc54d_threads_print_L000024_639_L000640 ' reg <- addrg
+ jmp #\@C_shn8j_686cc54d_threads_print_L000024_645 ' JUMPV addrg
+C_shn8j_686cc54d_threads_print_L000024_644
+ mov r17, ##@C_shn8j_686cc54d_threads_print_L000024_641_L000642 ' reg <- addrg
+C_shn8j_686cc54d_threads_print_L000024_645
  mov r2, r17 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_printf ' CALL addrg
- jmp #\@C_sbnoj_6864c5c9_threads_print_L000024_628 ' JUMPV addrg
-C_sbnoj_6864c5c9_threads_print_L000024_637
+ jmp #\@C_shn8j_686cc54d_threads_print_L000024_628 ' JUMPV addrg
+C_shn8j_686cc54d_threads_print_L000024_637
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -6200,24 +6200,24 @@ C_sbnoj_6864c5c9_threads_print_L000024_637
  mov r20, r0 ' CVI, CVU or LOAD
  mov r2, r20 ' CVI, CVU or LOAD
  mov r3, r22 ' CVI, CVU or LOAD
- mov r4, ##@C_sbnoj_6864c5c9_threads_print_L000024_646_L000647 ' reg ARG ADDRG
+ mov r4, ##@C_shn8j_686cc54d_threads_print_L000024_646_L000647 ' reg ARG ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
  long @C_pthread_printf
  add SP, #8 ' CALL addrg
- jmp #\@C_sbnoj_6864c5c9_threads_print_L000024_628 ' JUMPV addrg
-C_sbnoj_6864c5c9_threads_print_L000024_627
+ jmp #\@C_shn8j_686cc54d_threads_print_L000024_628 ' JUMPV addrg
+C_shn8j_686cc54d_threads_print_L000024_627
  mov r21, #1 ' reg <- coni
- jmp #\@C_sbnoj_6864c5c9_threads_print_L000024_651 ' JUMPV addrg
-C_sbnoj_6864c5c9_threads_print_L000024_648
+ jmp #\@C_shn8j_686cc54d_threads_print_L000024_651 ' JUMPV addrg
+C_shn8j_686cc54d_threads_print_L000024_648
  cmps r21,  #1 wcz
- if_be jmp #\C_sbnoj_6864c5c9_threads_print_L000024_652 ' LEI4
- mov r2, ##@C_sbnoj_6864c5c9_threads_print_L000024_654_L000655 ' reg ARG ADDRG
+ if_be jmp #\C_shn8j_686cc54d_threads_print_L000024_652 ' LEI4
+ mov r2, ##@C_shn8j_686cc54d_threads_print_L000024_654_L000655 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_printf ' CALL addrg
-C_sbnoj_6864c5c9_threads_print_L000024_652
+C_shn8j_686cc54d_threads_print_L000024_652
  mov r2, r21 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -6226,7 +6226,7 @@ C_sbnoj_6864c5c9_threads_print_L000024_652
  long @C_lua_isstring
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
- if_z jmp #\C_sbnoj_6864c5c9_threads_print_L000024_656 ' EQI4
+ if_z jmp #\C_shn8j_686cc54d_threads_print_L000024_656 ' EQI4
  mov r2, ##0 ' reg ARG con
  mov r3, r21 ' CVI, CVU or LOAD
  mov r4, r23 ' CVI, CVU or LOAD
@@ -6240,8 +6240,8 @@ C_sbnoj_6864c5c9_threads_print_L000024_652
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_printf ' CALL addrg
- jmp #\@C_sbnoj_6864c5c9_threads_print_L000024_657 ' JUMPV addrg
-C_sbnoj_6864c5c9_threads_print_L000024_656
+ jmp #\@C_shn8j_686cc54d_threads_print_L000024_657 ' JUMPV addrg
+C_shn8j_686cc54d_threads_print_L000024_656
  mov r2, r21 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -6250,13 +6250,13 @@ C_sbnoj_6864c5c9_threads_print_L000024_656
  long @C_lua_type
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
- if_nz jmp #\C_sbnoj_6864c5c9_threads_print_L000024_658 ' NEI4
- mov r2, ##@C_sbnoj_6864c5c9_threads_print_L000024_660_L000661 ' reg ARG ADDRG
+ if_nz jmp #\C_shn8j_686cc54d_threads_print_L000024_658 ' NEI4
+ mov r2, ##@C_shn8j_686cc54d_threads_print_L000024_660_L000661 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_printf ' CALL addrg
- jmp #\@C_sbnoj_6864c5c9_threads_print_L000024_659 ' JUMPV addrg
-C_sbnoj_6864c5c9_threads_print_L000024_658
+ jmp #\@C_shn8j_686cc54d_threads_print_L000024_659 ' JUMPV addrg
+C_shn8j_686cc54d_threads_print_L000024_658
  mov r2, r21 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -6265,7 +6265,7 @@ C_sbnoj_6864c5c9_threads_print_L000024_658
  long @C_lua_type
  add SP, #4 ' CALL addrg
  cmps r0,  #1 wz
- if_nz jmp #\C_sbnoj_6864c5c9_threads_print_L000024_662 ' NEI4
+ if_nz jmp #\C_shn8j_686cc54d_threads_print_L000024_662 ' NEI4
  mov r2, r21 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -6275,18 +6275,18 @@ C_sbnoj_6864c5c9_threads_print_L000024_658
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_z jmp #\C_sbnoj_6864c5c9_threads_print_L000024_669 ' EQI4
- mov r17, ##@C_sbnoj_6864c5c9_threads_print_L000024_664_L000665 ' reg <- addrg
- jmp #\@C_sbnoj_6864c5c9_threads_print_L000024_670 ' JUMPV addrg
-C_sbnoj_6864c5c9_threads_print_L000024_669
- mov r17, ##@C_sbnoj_6864c5c9_threads_print_L000024_666_L000667 ' reg <- addrg
-C_sbnoj_6864c5c9_threads_print_L000024_670
+ if_z jmp #\C_shn8j_686cc54d_threads_print_L000024_669 ' EQI4
+ mov r17, ##@C_shn8j_686cc54d_threads_print_L000024_664_L000665 ' reg <- addrg
+ jmp #\@C_shn8j_686cc54d_threads_print_L000024_670 ' JUMPV addrg
+C_shn8j_686cc54d_threads_print_L000024_669
+ mov r17, ##@C_shn8j_686cc54d_threads_print_L000024_666_L000667 ' reg <- addrg
+C_shn8j_686cc54d_threads_print_L000024_670
  mov r2, r17 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_printf ' CALL addrg
- jmp #\@C_sbnoj_6864c5c9_threads_print_L000024_663 ' JUMPV addrg
-C_sbnoj_6864c5c9_threads_print_L000024_662
+ jmp #\@C_shn8j_686cc54d_threads_print_L000024_663 ' JUMPV addrg
+C_shn8j_686cc54d_threads_print_L000024_662
  mov r2, r21 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -6313,33 +6313,33 @@ C_sbnoj_6864c5c9_threads_print_L000024_662
  mov r20, r0 ' CVI, CVU or LOAD
  mov r2, r20 ' CVI, CVU or LOAD
  mov r3, r22 ' CVI, CVU or LOAD
- mov r4, ##@C_sbnoj_6864c5c9_threads_print_L000024_671_L000672 ' reg ARG ADDRG
+ mov r4, ##@C_shn8j_686cc54d_threads_print_L000024_671_L000672 ' reg ARG ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
  long @C_pthread_printf
  add SP, #8 ' CALL addrg
-C_sbnoj_6864c5c9_threads_print_L000024_663
-C_sbnoj_6864c5c9_threads_print_L000024_659
-C_sbnoj_6864c5c9_threads_print_L000024_657
-' C_sbnoj_6864c5c9_threads_print_L000024_649 ' (symbol refcount = 0)
+C_shn8j_686cc54d_threads_print_L000024_663
+C_shn8j_686cc54d_threads_print_L000024_659
+C_shn8j_686cc54d_threads_print_L000024_657
+' C_shn8j_686cc54d_threads_print_L000024_649 ' (symbol refcount = 0)
  adds r21, #1 ' ADDI4 coni
-C_sbnoj_6864c5c9_threads_print_L000024_651
+C_shn8j_686cc54d_threads_print_L000024_651
  cmps r21, r19 wcz
- if_be jmp #\C_sbnoj_6864c5c9_threads_print_L000024_648 ' LEI4
- mov r2, ##@C_sbnoj_6864c5c9_threads_print_L000024_673_L000674 ' reg ARG ADDRG
+ if_be jmp #\C_shn8j_686cc54d_threads_print_L000024_648 ' LEI4
+ mov r2, ##@C_shn8j_686cc54d_threads_print_L000024_673_L000674 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_printf ' CALL addrg
-C_sbnoj_6864c5c9_threads_print_L000024_628
+C_shn8j_686cc54d_threads_print_L000024_628
  mov r0, #0 ' reg <- coni
-' C_sbnoj_6864c5c9_threads_print_L000024_626 ' (symbol refcount = 0)
+' C_shn8j_686cc54d_threads_print_L000024_626 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbnok_6864c5c9_threads_print_raw_L000025 ' <symbol:threads_print_raw>
+C_shn8k_686cc54d_threads_print_raw_L000025 ' <symbol:threads_print_raw>
  calld PA,#NEWF
  calld PA,#PSHM
  long $fa0000 ' save registers
@@ -6350,8 +6350,8 @@ C_sbnok_6864c5c9_threads_print_raw_L000025 ' <symbol:threads_print_raw>
  long @C_lua_gettop ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
  mov r21, #1 ' reg <- coni
- jmp #\@C_sbnok_6864c5c9_threads_print_raw_L000025_679 ' JUMPV addrg
-C_sbnok_6864c5c9_threads_print_raw_L000025_676
+ jmp #\@C_shn8k_686cc54d_threads_print_raw_L000025_679 ' JUMPV addrg
+C_shn8k_686cc54d_threads_print_raw_L000025_676
  mov r2, r21 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -6360,7 +6360,7 @@ C_sbnok_6864c5c9_threads_print_raw_L000025_676
  long @C_lua_isstring
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
- if_z jmp #\C_sbnok_6864c5c9_threads_print_raw_L000025_680 ' EQI4
+ if_z jmp #\C_shn8k_686cc54d_threads_print_raw_L000025_680 ' EQI4
  mov r2, ##0 ' reg ARG con
  mov r3, r21 ' CVI, CVU or LOAD
  mov r4, r23 ' CVI, CVU or LOAD
@@ -6374,8 +6374,8 @@ C_sbnok_6864c5c9_threads_print_raw_L000025_676
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_printf ' CALL addrg
- jmp #\@C_sbnok_6864c5c9_threads_print_raw_L000025_681 ' JUMPV addrg
-C_sbnok_6864c5c9_threads_print_raw_L000025_680
+ jmp #\@C_shn8k_686cc54d_threads_print_raw_L000025_681 ' JUMPV addrg
+C_shn8k_686cc54d_threads_print_raw_L000025_680
  mov r2, r21 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -6384,13 +6384,13 @@ C_sbnok_6864c5c9_threads_print_raw_L000025_680
  long @C_lua_type
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
- if_nz jmp #\C_sbnok_6864c5c9_threads_print_raw_L000025_682 ' NEI4
- mov r2, ##@C_sbnoj_6864c5c9_threads_print_L000024_660_L000661 ' reg ARG ADDRG
+ if_nz jmp #\C_shn8k_686cc54d_threads_print_raw_L000025_682 ' NEI4
+ mov r2, ##@C_shn8j_686cc54d_threads_print_L000024_660_L000661 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_printf ' CALL addrg
- jmp #\@C_sbnok_6864c5c9_threads_print_raw_L000025_683 ' JUMPV addrg
-C_sbnok_6864c5c9_threads_print_raw_L000025_682
+ jmp #\@C_shn8k_686cc54d_threads_print_raw_L000025_683 ' JUMPV addrg
+C_shn8k_686cc54d_threads_print_raw_L000025_682
  mov r2, r21 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -6399,7 +6399,7 @@ C_sbnok_6864c5c9_threads_print_raw_L000025_682
  long @C_lua_type
  add SP, #4 ' CALL addrg
  cmps r0,  #1 wz
- if_nz jmp #\C_sbnok_6864c5c9_threads_print_raw_L000025_684 ' NEI4
+ if_nz jmp #\C_shn8k_686cc54d_threads_print_raw_L000025_684 ' NEI4
  mov r2, r21 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -6409,18 +6409,18 @@ C_sbnok_6864c5c9_threads_print_raw_L000025_682
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_z jmp #\C_sbnok_6864c5c9_threads_print_raw_L000025_687 ' EQI4
- mov r17, ##@C_sbnoj_6864c5c9_threads_print_L000024_664_L000665 ' reg <- addrg
- jmp #\@C_sbnok_6864c5c9_threads_print_raw_L000025_688 ' JUMPV addrg
-C_sbnok_6864c5c9_threads_print_raw_L000025_687
- mov r17, ##@C_sbnoj_6864c5c9_threads_print_L000024_666_L000667 ' reg <- addrg
-C_sbnok_6864c5c9_threads_print_raw_L000025_688
+ if_z jmp #\C_shn8k_686cc54d_threads_print_raw_L000025_687 ' EQI4
+ mov r17, ##@C_shn8j_686cc54d_threads_print_L000024_664_L000665 ' reg <- addrg
+ jmp #\@C_shn8k_686cc54d_threads_print_raw_L000025_688 ' JUMPV addrg
+C_shn8k_686cc54d_threads_print_raw_L000025_687
+ mov r17, ##@C_shn8j_686cc54d_threads_print_L000024_666_L000667 ' reg <- addrg
+C_shn8k_686cc54d_threads_print_raw_L000025_688
  mov r2, r17 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_printf ' CALL addrg
- jmp #\@C_sbnok_6864c5c9_threads_print_raw_L000025_685 ' JUMPV addrg
-C_sbnok_6864c5c9_threads_print_raw_L000025_684
+ jmp #\@C_shn8k_686cc54d_threads_print_raw_L000025_685 ' JUMPV addrg
+C_shn8k_686cc54d_threads_print_raw_L000025_684
  mov r2, r21 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -6447,22 +6447,22 @@ C_sbnok_6864c5c9_threads_print_raw_L000025_684
  mov r20, r0 ' CVI, CVU or LOAD
  mov r2, r20 ' CVI, CVU or LOAD
  mov r3, r22 ' CVI, CVU or LOAD
- mov r4, ##@C_sbnoj_6864c5c9_threads_print_L000024_671_L000672 ' reg ARG ADDRG
+ mov r4, ##@C_shn8j_686cc54d_threads_print_L000024_671_L000672 ' reg ARG ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
  long @C_pthread_printf
  add SP, #8 ' CALL addrg
-C_sbnok_6864c5c9_threads_print_raw_L000025_685
-C_sbnok_6864c5c9_threads_print_raw_L000025_683
-C_sbnok_6864c5c9_threads_print_raw_L000025_681
-' C_sbnok_6864c5c9_threads_print_raw_L000025_677 ' (symbol refcount = 0)
+C_shn8k_686cc54d_threads_print_raw_L000025_685
+C_shn8k_686cc54d_threads_print_raw_L000025_683
+C_shn8k_686cc54d_threads_print_raw_L000025_681
+' C_shn8k_686cc54d_threads_print_raw_L000025_677 ' (symbol refcount = 0)
  adds r21, #1 ' ADDI4 coni
-C_sbnok_6864c5c9_threads_print_raw_L000025_679
+C_shn8k_686cc54d_threads_print_raw_L000025_679
  cmps r21, r19 wcz
- if_be jmp #\C_sbnok_6864c5c9_threads_print_raw_L000025_676 ' LEI4
+ if_be jmp #\C_shn8k_686cc54d_threads_print_raw_L000025_676 ' LEI4
  mov r0, #0 ' reg <- coni
-' C_sbnok_6864c5c9_threads_print_raw_L000025_675 ' (symbol refcount = 0)
+' C_shn8k_686cc54d_threads_print_raw_L000025_675 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -6547,21 +6547,21 @@ C_luathread_set_numargs ' <symbol:luathread_set_numargs>
 
 
  alignl ' align long
-C_sbno4u_6864c5c9_luathread_reglualib_L000695 ' <symbol:luathread_reglualib>
+C_shn84u_686cc54d_luathread_reglualib_L000695 ' <symbol:luathread_reglualib>
  calld PA,#NEWF
  calld PA,#PSHM
  long $a80000 ' save registers
  mov r23, r4 ' reg var <- reg arg
  mov r21, r3 ' reg var <- reg arg
  mov r19, r2 ' reg var <- reg arg
- mov r2, ##@C_sbno4u_6864c5c9_luathread_reglualib_L000695_697_L000698 ' reg ARG ADDRG
+ mov r2, ##@C_shn84u_686cc54d_luathread_reglualib_L000695_697_L000698 ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
  long @C_lua_getglobal
  add SP, #4 ' CALL addrg
- mov r2, ##@C_sbno4u_6864c5c9_luathread_reglualib_L000695_699_L000700 ' reg ARG ADDRG
+ mov r2, ##@C_shn84u_686cc54d_luathread_reglualib_L000695_699_L000700 ' reg ARG ADDRG
  mov r3, ##-1 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -6592,20 +6592,20 @@ C_sbno4u_6864c5c9_luathread_reglualib_L000695 ' <symbol:luathread_reglualib>
  calld PA,#CALA
  long @C_lua_settop
  add SP, #4 ' CALL addrg
-' C_sbno4u_6864c5c9_luathread_reglualib_L000695_696 ' (symbol refcount = 0)
+' C_shn84u_686cc54d_luathread_reglualib_L000695_696 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sbno7_6864c5c9_luathread_openlualibs_L000012 ' <symbol:luathread_openlualibs>
+C_shn87_686cc54d_luathread_openlualibs_L000012 ' <symbol:luathread_openlualibs>
  calld PA,#NEWF
  calld PA,#PSHM
  long $800000 ' save registers
  mov r23, r2 ' reg var <- reg arg
  mov r2, #0 ' reg ARG coni
  mov r3, ##@C_luaopen_base ' reg ARG ADDRG
- mov r4, ##@C_sbno7_6864c5c9_luathread_openlualibs_L000012_702_L000703 ' reg ARG ADDRG
+ mov r4, ##@C_shn87_686cc54d_luathread_openlualibs_L000012_702_L000703 ' reg ARG ADDRG
  mov r5, r23 ' CVI, CVU or LOAD
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
@@ -6621,7 +6621,7 @@ C_sbno7_6864c5c9_luathread_openlualibs_L000012 ' <symbol:luathread_openlualibs>
  add SP, #4 ' CALL addrg
  mov r2, #1 ' reg ARG coni
  mov r3, ##@C_luaopen_package ' reg ARG ADDRG
- mov r4, ##@C_sbno4u_6864c5c9_luathread_reglualib_L000695_697_L000698 ' reg ARG ADDRG
+ mov r4, ##@C_shn84u_686cc54d_luathread_reglualib_L000695_697_L000698 ' reg ARG ADDRG
  mov r5, r23 ' CVI, CVU or LOAD
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
@@ -6636,78 +6636,78 @@ C_sbno7_6864c5c9_luathread_openlualibs_L000012 ' <symbol:luathread_openlualibs>
  long @C_lua_settop
  add SP, #4 ' CALL addrg
  mov r2, ##@C_luaopen_io ' reg ARG ADDRG
- mov r3, ##@C_sbno7_6864c5c9_luathread_openlualibs_L000012_704_L000705 ' reg ARG ADDRG
+ mov r3, ##@C_shn87_686cc54d_luathread_openlualibs_L000012_704_L000705 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno4u_6864c5c9_luathread_reglualib_L000695
+ long @C_shn84u_686cc54d_luathread_reglualib_L000695
  add SP, #8 ' CALL addrg
  mov r2, ##@C_luaopen_os ' reg ARG ADDRG
- mov r3, ##@C_sbno7_6864c5c9_luathread_openlualibs_L000012_706_L000707 ' reg ARG ADDRG
+ mov r3, ##@C_shn87_686cc54d_luathread_openlualibs_L000012_706_L000707 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno4u_6864c5c9_luathread_reglualib_L000695
+ long @C_shn84u_686cc54d_luathread_reglualib_L000695
  add SP, #8 ' CALL addrg
  mov r2, ##@C_luaopen_table ' reg ARG ADDRG
- mov r3, ##@C_sbno7_6864c5c9_luathread_openlualibs_L000012_708_L000709 ' reg ARG ADDRG
+ mov r3, ##@C_shn87_686cc54d_luathread_openlualibs_L000012_708_L000709 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno4u_6864c5c9_luathread_reglualib_L000695
+ long @C_shn84u_686cc54d_luathread_reglualib_L000695
  add SP, #8 ' CALL addrg
  mov r2, ##@C_luaopen_string ' reg ARG ADDRG
- mov r3, ##@C_sbno7_6864c5c9_luathread_openlualibs_L000012_710_L000711 ' reg ARG ADDRG
+ mov r3, ##@C_shn87_686cc54d_luathread_openlualibs_L000012_710_L000711 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno4u_6864c5c9_luathread_reglualib_L000695
+ long @C_shn84u_686cc54d_luathread_reglualib_L000695
  add SP, #8 ' CALL addrg
  mov r2, ##@C_luaopen_math ' reg ARG ADDRG
- mov r3, ##@C_sbno7_6864c5c9_luathread_openlualibs_L000012_712_L000713 ' reg ARG ADDRG
+ mov r3, ##@C_shn87_686cc54d_luathread_openlualibs_L000012_712_L000713 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno4u_6864c5c9_luathread_reglualib_L000695
+ long @C_shn84u_686cc54d_luathread_reglualib_L000695
  add SP, #8 ' CALL addrg
  mov r2, ##@C_luaopen_debug ' reg ARG ADDRG
- mov r3, ##@C_sbno7_6864c5c9_luathread_openlualibs_L000012_714_L000715 ' reg ARG ADDRG
+ mov r3, ##@C_shn87_686cc54d_luathread_openlualibs_L000012_714_L000715 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno4u_6864c5c9_luathread_reglualib_L000695
+ long @C_shn84u_686cc54d_luathread_reglualib_L000695
  add SP, #8 ' CALL addrg
  mov r2, ##@C_luaopen_coroutine ' reg ARG ADDRG
- mov r3, ##@C_sbno30_6864c5c9_luathread_new_L000211_217_L000218 ' reg ARG ADDRG
+ mov r3, ##@C_shn830_686cc54d_luathread_new_L000211_217_L000218 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno4u_6864c5c9_luathread_reglualib_L000695
+ long @C_shn84u_686cc54d_luathread_reglualib_L000695
  add SP, #8 ' CALL addrg
  mov r2, ##@C_luaopen_utf8 ' reg ARG ADDRG
- mov r3, ##@C_sbno7_6864c5c9_luathread_openlualibs_L000012_716_L000717 ' reg ARG ADDRG
+ mov r3, ##@C_shn87_686cc54d_luathread_openlualibs_L000012_716_L000717 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno4u_6864c5c9_luathread_reglualib_L000695
+ long @C_shn84u_686cc54d_luathread_reglualib_L000695
  add SP, #8 ' CALL addrg
  mov r2, ##@C_luaopen_propeller ' reg ARG ADDRG
- mov r3, ##@C_sbno30_6864c5c9_luathread_new_L000211_215_L000216 ' reg ARG ADDRG
+ mov r3, ##@C_shn830_686cc54d_luathread_new_L000211_215_L000216 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbno4u_6864c5c9_luathread_reglualib_L000695
+ long @C_shn84u_686cc54d_luathread_reglualib_L000695
  add SP, #8 ' CALL addrg
-' C_sbno7_6864c5c9_luathread_openlualibs_L000012_701 ' (symbol refcount = 0)
+' C_shn87_686cc54d_luathread_openlualibs_L000012_701 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -6739,7 +6739,7 @@ C_luaopen_threads ' <symbol:luaopen_threads>
  long @C_lua_createtable
  add SP, #8 ' CALL addrg
  mov r2, #0 ' reg ARG coni
- mov r3, ##@C_sbno17_6864c5c9_luathread_funcs_L000044 ' reg ARG ADDRG
+ mov r3, ##@C_shn817_686cc54d_luathread_funcs_L000044 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -6750,27 +6750,27 @@ C_luaopen_threads ' <symbol:luaopen_threads>
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C__pthread_init_lock_pool ' CALL addrg
- wrlong r23, ##@C_sbno5_6864c5c9_mainlp_L000010 ' ASGNP4 addrg reg
+ wrlong r23, ##@C_shn85_686cc54d_mainlp_L000010 ' ASGNP4 addrg reg
  mov r22, #0 ' reg <- coni
- wrlong r22, ##@C_sbno5_6864c5c9_mainlp_L000010+4 ' ASGNI4 addrg reg
+ wrlong r22, ##@C_shn85_686cc54d_mainlp_L000010+4 ' ASGNI4 addrg reg
  mov r22, #0 ' reg <- coni
- wrlong r22, ##@C_sbno5_6864c5c9_mainlp_L000010+8 ' ASGNI4 addrg reg
+ wrlong r22, ##@C_shn85_686cc54d_mainlp_L000010+8 ' ASGNI4 addrg reg
  mov r22, ##0 ' reg <- con
- wrlong r22, ##@C_sbno5_6864c5c9_mainlp_L000010+12 ' ASGNP4 addrg reg
+ wrlong r22, ##@C_shn85_686cc54d_mainlp_L000010+12 ' ASGNP4 addrg reg
  mov r22, ##0 ' reg <- con
- wrlong r22, ##@C_sbno5_6864c5c9_mainlp_L000010+16 ' ASGNP4 addrg reg
- mov r2, ##@C_sbno2_6864c5c9_recycle_list_L000007 ' reg ARG ADDRG
+ wrlong r22, ##@C_shn85_686cc54d_mainlp_L000010+16 ' ASGNP4 addrg reg
+ mov r2, ##@C_shn82_686cc54d_recycle_list_L000007 ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_list_init ' CALL addrg
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C_luaL__newstate ' CALL addrg
- wrlong r0, ##@C_sbno4_6864c5c9_chanls_L000009 ' ASGNP4 addrg reg
+ wrlong r0, ##@C_shn84_686cc54d_chanls_L000009 ' ASGNP4 addrg reg
  mov r22, #0 ' reg <- coni
  mov r2, r22 ' CVI, CVU or LOAD
  mov r3, r22 ' CVI, CVU or LOAD
- mov r4, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r4, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r4, r4
  ' reg ARG INDIR ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -6778,8 +6778,8 @@ C_luaopen_threads ' <symbol:luaopen_threads>
  calld PA,#CALA
  long @C_lua_createtable
  add SP, #8 ' CALL addrg
- mov r2, ##@C_sbno2g_6864c5c9_channel_create_L000133_135_L000136 ' reg ARG ADDRG
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r2, ##@C_shn82g_686cc54d_channel_create_L000133_135_L000136 ' reg ARG ADDRG
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -6789,8 +6789,8 @@ C_luaopen_threads ' <symbol:luaopen_threads>
  add SP, #4 ' CALL addrg
  mov r2, #1 ' reg ARG coni
  mov r3, ##@C_luaopen_base ' reg ARG ADDRG
- mov r4, ##@C_sbno7_6864c5c9_luathread_openlualibs_L000012_702_L000703 ' reg ARG ADDRG
- mov r5, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r4, ##@C_shn87_686cc54d_luathread_openlualibs_L000012_702_L000703 ' reg ARG ADDRG
+ mov r5, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r5, r5
  ' reg ARG INDIR ADDRG
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
@@ -6799,7 +6799,7 @@ C_luaopen_threads ' <symbol:luaopen_threads>
  long @C_luaL__requiref
  add SP, #12 ' CALL addrg
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_sbno4_6864c5c9_chanls_L000009
+ mov r3, ##@C_shn84_686cc54d_chanls_L000009
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -6838,7 +6838,7 @@ C_luaopen_threads ' <symbol:luaopen_threads>
  long @C_lua_pushstring
  add SP, #4 ' CALL addrg
  mov r2, #0 ' reg ARG coni
- mov r3, ##@C_sbno34_6864c5c9_luathread_join_workers_L000219 ' reg ARG ADDRG
+ mov r3, ##@C_shn834_686cc54d_luathread_join_workers_L000219 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -6895,7 +6895,7 @@ C_luaopen_threads ' <symbol:luaopen_threads>
  mov r20, ##-1 ' reg <- con
  cmps r0, r20 wz
  if_nz jmp #\C_luaopen_threads_731 ' NEI4
- mov r2, ##@C_sbnoe_6864c5c9_threads_set_numworkers_L000019_276_L000277 ' reg ARG ADDRG
+ mov r2, ##@C_shn8e_686cc54d_threads_set_numworkers_L000019_276_L000277 ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
@@ -6910,7 +6910,7 @@ C_luaopen_threads_731
 
 
  alignl ' align long
-C_sbno16_6864c5c9_luathread_loadlib_L000043 ' <symbol:luathread_loadlib>
+C_shn816_686cc54d_luathread_loadlib_L000043 ' <symbol:luathread_loadlib>
  calld PA,#NEWF
  calld PA,#PSHM
  long $800000 ' save registers
@@ -6934,7 +6934,7 @@ C_sbno16_6864c5c9_luathread_loadlib_L000043 ' <symbol:luathread_loadlib>
  long @C_lua_createtable
  add SP, #8 ' CALL addrg
  mov r2, #0 ' reg ARG coni
- mov r3, ##@C_sbno17_6864c5c9_luathread_funcs_L000044 ' reg ARG ADDRG
+ mov r3, ##@C_shn817_686cc54d_luathread_funcs_L000044 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -6942,7 +6942,7 @@ C_sbno16_6864c5c9_luathread_loadlib_L000043 ' <symbol:luathread_loadlib>
  long @C_luaL__setfuncs
  add SP, #8 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_sbno16_6864c5c9_luathread_loadlib_L000043_733 ' (symbol refcount = 0)
+' C_shn816_686cc54d_luathread_loadlib_L000043_733 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -6960,11 +6960,11 @@ C_sbno16_6864c5c9_luathread_loadlib_L000043 ' <symbol:luathread_loadlib>
 DAT ' uninitialized data segment
 
  alignl ' align long
-C_sbno5_6864c5c9_mainlp_L000010 ' <symbol:mainlp>
+C_shn85_686cc54d_mainlp_L000010 ' <symbol:mainlp>
  byte 0[20]
 
  alignl ' align long
-C_sbno2_6864c5c9_recycle_list_L000007 ' <symbol:recycle_list>
+C_shn82_686cc54d_recycle_list_L000007 ' <symbol:recycle_list>
  byte 0[12]
 
 ' Catalina Code
@@ -7989,7 +7989,7 @@ C_luaopen_threads_719_L000720 ' <symbol:719>
  long $43fc0000 ' float
 
  alignl ' align long
-C_sbno7_6864c5c9_luathread_openlualibs_L000012_716_L000717 ' <symbol:716>
+C_shn87_686cc54d_luathread_openlualibs_L000012_716_L000717 ' <symbol:716>
  byte 117
  byte 116
  byte 102
@@ -7997,7 +7997,7 @@ C_sbno7_6864c5c9_luathread_openlualibs_L000012_716_L000717 ' <symbol:716>
  byte 0
 
  alignl ' align long
-C_sbno7_6864c5c9_luathread_openlualibs_L000012_714_L000715 ' <symbol:714>
+C_shn87_686cc54d_luathread_openlualibs_L000012_714_L000715 ' <symbol:714>
  byte 100
  byte 101
  byte 98
@@ -8006,7 +8006,7 @@ C_sbno7_6864c5c9_luathread_openlualibs_L000012_714_L000715 ' <symbol:714>
  byte 0
 
  alignl ' align long
-C_sbno7_6864c5c9_luathread_openlualibs_L000012_712_L000713 ' <symbol:712>
+C_shn87_686cc54d_luathread_openlualibs_L000012_712_L000713 ' <symbol:712>
  byte 109
  byte 97
  byte 116
@@ -8014,7 +8014,7 @@ C_sbno7_6864c5c9_luathread_openlualibs_L000012_712_L000713 ' <symbol:712>
  byte 0
 
  alignl ' align long
-C_sbno7_6864c5c9_luathread_openlualibs_L000012_710_L000711 ' <symbol:710>
+C_shn87_686cc54d_luathread_openlualibs_L000012_710_L000711 ' <symbol:710>
  byte 115
  byte 116
  byte 114
@@ -8024,7 +8024,7 @@ C_sbno7_6864c5c9_luathread_openlualibs_L000012_710_L000711 ' <symbol:710>
  byte 0
 
  alignl ' align long
-C_sbno7_6864c5c9_luathread_openlualibs_L000012_708_L000709 ' <symbol:708>
+C_shn87_686cc54d_luathread_openlualibs_L000012_708_L000709 ' <symbol:708>
  byte 116
  byte 97
  byte 98
@@ -8033,25 +8033,25 @@ C_sbno7_6864c5c9_luathread_openlualibs_L000012_708_L000709 ' <symbol:708>
  byte 0
 
  alignl ' align long
-C_sbno7_6864c5c9_luathread_openlualibs_L000012_706_L000707 ' <symbol:706>
+C_shn87_686cc54d_luathread_openlualibs_L000012_706_L000707 ' <symbol:706>
  byte 111
  byte 115
  byte 0
 
  alignl ' align long
-C_sbno7_6864c5c9_luathread_openlualibs_L000012_704_L000705 ' <symbol:704>
+C_shn87_686cc54d_luathread_openlualibs_L000012_704_L000705 ' <symbol:704>
  byte 105
  byte 111
  byte 0
 
  alignl ' align long
-C_sbno7_6864c5c9_luathread_openlualibs_L000012_702_L000703 ' <symbol:702>
+C_shn87_686cc54d_luathread_openlualibs_L000012_702_L000703 ' <symbol:702>
  byte 95
  byte 71
  byte 0
 
  alignl ' align long
-C_sbno4u_6864c5c9_luathread_reglualib_L000695_699_L000700 ' <symbol:699>
+C_shn84u_686cc54d_luathread_reglualib_L000695_699_L000700 ' <symbol:699>
  byte 112
  byte 114
  byte 101
@@ -8062,7 +8062,7 @@ C_sbno4u_6864c5c9_luathread_reglualib_L000695_699_L000700 ' <symbol:699>
  byte 0
 
  alignl ' align long
-C_sbno4u_6864c5c9_luathread_reglualib_L000695_697_L000698 ' <symbol:697>
+C_shn84u_686cc54d_luathread_reglualib_L000695_697_L000698 ' <symbol:697>
  byte 112
  byte 97
  byte 99
@@ -8073,12 +8073,12 @@ C_sbno4u_6864c5c9_luathread_reglualib_L000695_697_L000698 ' <symbol:697>
  byte 0
 
  alignl ' align long
-C_sbnoj_6864c5c9_threads_print_L000024_673_L000674 ' <symbol:673>
+C_shn8j_686cc54d_threads_print_L000024_673_L000674 ' <symbol:673>
  byte 10
  byte 0
 
  alignl ' align long
-C_sbnoj_6864c5c9_threads_print_L000024_671_L000672 ' <symbol:671>
+C_shn8j_686cc54d_threads_print_L000024_671_L000672 ' <symbol:671>
  byte 37
  byte 115
  byte 58
@@ -8087,7 +8087,7 @@ C_sbnoj_6864c5c9_threads_print_L000024_671_L000672 ' <symbol:671>
  byte 0
 
  alignl ' align long
-C_sbnoj_6864c5c9_threads_print_L000024_666_L000667 ' <symbol:666>
+C_shn8j_686cc54d_threads_print_L000024_666_L000667 ' <symbol:666>
  byte 102
  byte 97
  byte 108
@@ -8096,7 +8096,7 @@ C_sbnoj_6864c5c9_threads_print_L000024_666_L000667 ' <symbol:666>
  byte 0
 
  alignl ' align long
-C_sbnoj_6864c5c9_threads_print_L000024_664_L000665 ' <symbol:664>
+C_shn8j_686cc54d_threads_print_L000024_664_L000665 ' <symbol:664>
  byte 116
  byte 114
  byte 117
@@ -8104,19 +8104,19 @@ C_sbnoj_6864c5c9_threads_print_L000024_664_L000665 ' <symbol:664>
  byte 0
 
  alignl ' align long
-C_sbnoj_6864c5c9_threads_print_L000024_660_L000661 ' <symbol:660>
+C_shn8j_686cc54d_threads_print_L000024_660_L000661 ' <symbol:660>
  byte 110
  byte 105
  byte 108
  byte 0
 
  alignl ' align long
-C_sbnoj_6864c5c9_threads_print_L000024_654_L000655 ' <symbol:654>
+C_shn8j_686cc54d_threads_print_L000024_654_L000655 ' <symbol:654>
  byte 9
  byte 0
 
  alignl ' align long
-C_sbnoj_6864c5c9_threads_print_L000024_646_L000647 ' <symbol:646>
+C_shn8j_686cc54d_threads_print_L000024_646_L000647 ' <symbol:646>
  byte 37
  byte 115
  byte 58
@@ -8127,7 +8127,7 @@ C_sbnoj_6864c5c9_threads_print_L000024_646_L000647 ' <symbol:646>
  byte 0
 
  alignl ' align long
-C_sbnoj_6864c5c9_threads_print_L000024_641_L000642 ' <symbol:641>
+C_shn8j_686cc54d_threads_print_L000024_641_L000642 ' <symbol:641>
  byte 102
  byte 97
  byte 108
@@ -8137,7 +8137,7 @@ C_sbnoj_6864c5c9_threads_print_L000024_641_L000642 ' <symbol:641>
  byte 0
 
  alignl ' align long
-C_sbnoj_6864c5c9_threads_print_L000024_639_L000640 ' <symbol:639>
+C_shn8j_686cc54d_threads_print_L000024_639_L000640 ' <symbol:639>
  byte 116
  byte 114
  byte 117
@@ -8146,7 +8146,7 @@ C_sbnoj_6864c5c9_threads_print_L000024_639_L000640 ' <symbol:639>
  byte 0
 
  alignl ' align long
-C_sbnoj_6864c5c9_threads_print_L000024_635_L000636 ' <symbol:635>
+C_shn8j_686cc54d_threads_print_L000024_635_L000636 ' <symbol:635>
  byte 110
  byte 105
  byte 108
@@ -8154,14 +8154,14 @@ C_sbnoj_6864c5c9_threads_print_L000024_635_L000636 ' <symbol:635>
  byte 0
 
  alignl ' align long
-C_sbnoj_6864c5c9_threads_print_L000024_631_L000632 ' <symbol:631>
+C_shn8j_686cc54d_threads_print_L000024_631_L000632 ' <symbol:631>
  byte 37
  byte 115
  byte 10
  byte 0
 
  alignl ' align long
-C_sbnom_6864c5c9_threads_msleep_L000027_621_L000622 ' <symbol:621>
+C_shn8m_686cc54d_threads_msleep_L000027_621_L000622 ' <symbol:621>
  byte 109
  byte 115
  byte 101
@@ -8195,7 +8195,7 @@ C_sbnom_6864c5c9_threads_msleep_L000027_621_L000622 ' <symbol:621>
  byte 0
 
  alignl ' align long
-C_sbnol_6864c5c9_threads_sleep_L000026_613_L000614 ' <symbol:613>
+C_shn8l_686cc54d_threads_sleep_L000026_613_L000614 ' <symbol:613>
  byte 115
  byte 101
  byte 99
@@ -8228,7 +8228,7 @@ C_sbnol_6864c5c9_threads_sleep_L000026_613_L000614 ' <symbol:613>
  byte 0
 
  alignl ' align long
-C_sbno14_6864c5c9_threads_version_L000041_608_L000609 ' <symbol:608>
+C_shn814_686cc54d_threads_version_L000041_608_L000609 ' <symbol:608>
  byte 104
  byte 97
  byte 114
@@ -8240,14 +8240,14 @@ C_sbno14_6864c5c9_threads_version_L000041_608_L000609 ' <symbol:608>
  byte 0
 
  alignl ' align long
-C_sbno14_6864c5c9_threads_version_L000041_604_L000605 ' <symbol:604>
+C_shn814_686cc54d_threads_version_L000041_604_L000605 ' <symbol:604>
  byte 108
  byte 117
  byte 97
  byte 0
 
  alignl ' align long
-C_sbno15_6864c5c9_threads_factories_L000042_588_L000589 ' <symbol:588>
+C_shn815_686cc54d_threads_factories_L000042_588_L000589 ' <symbol:588>
  byte 105
  byte 110
  byte 118
@@ -8266,7 +8266,7 @@ C_sbno15_6864c5c9_threads_factories_L000042_588_L000589 ' <symbol:588>
  byte 0
 
  alignl ' align long
-C_sbno12_6864c5c9_threads_stacksize_L000039_582_L000583 ' <symbol:582>
+C_shn812_686cc54d_threads_stacksize_L000039_582_L000583 ' <symbol:582>
  byte 115
  byte 116
  byte 97
@@ -8296,7 +8296,7 @@ C_sbno12_6864c5c9_threads_stacksize_L000039_582_L000583 ' <symbol:582>
  byte 0
 
  alignl ' align long
-C_sbnod_6864c5c9_threads_destroy_channel_L000018_567_L000568 ' <symbol:567>
+C_shn8d_686cc54d_threads_destroy_channel_L000018_567_L000568 ' <symbol:567>
  byte 99
  byte 104
  byte 97
@@ -8347,7 +8347,7 @@ C_sbnod_6864c5c9_threads_destroy_channel_L000018_567_L000568 ' <symbol:567>
  byte 0
 
  alignl ' align long
-C_sbnod_6864c5c9_threads_destroy_channel_L000018_558_L000559 ' <symbol:558>
+C_shn8d_686cc54d_threads_destroy_channel_L000018_558_L000559 ' <symbol:558>
  byte 99
  byte 104
  byte 97
@@ -8400,7 +8400,7 @@ C_sbnod_6864c5c9_threads_destroy_channel_L000018_558_L000559 ' <symbol:558>
  byte 0
 
  alignl ' align long
-C_sbnoc_6864c5c9_threads_create_channel_L000017_549_L000550 ' <symbol:549>
+C_shn8c_686cc54d_threads_create_channel_L000017_549_L000550 ' <symbol:549>
  byte 99
  byte 104
  byte 97
@@ -8431,7 +8431,7 @@ C_sbnoc_6864c5c9_threads_create_channel_L000017_549_L000550 ' <symbol:549>
  byte 0
 
  alignl ' align long
-C_sbnob_6864c5c9_threads_receive_L000016_530_L000531 ' <symbol:530>
+C_shn8b_686cc54d_threads_receive_L000016_530_L000531 ' <symbol:530>
  byte 114
  byte 101
  byte 99
@@ -8472,7 +8472,7 @@ C_sbnob_6864c5c9_threads_receive_L000016_530_L000531 ' <symbol:530>
  byte 0
 
  alignl ' align long
-C_sbnob_6864c5c9_threads_receive_L000016_528_L000529 ' <symbol:528>
+C_shn8b_686cc54d_threads_receive_L000016_528_L000529 ' <symbol:528>
  byte 110
  byte 111
  byte 32
@@ -8510,7 +8510,7 @@ C_sbnob_6864c5c9_threads_receive_L000016_528_L000529 ' <symbol:528>
  byte 0
 
  alignl ' align long
-C_sbnov_6864c5c9_threads_update_L000036_513_L000514 ' <symbol:513>
+C_shn8v_686cc54d_threads_update_L000036_513_L000514 ' <symbol:513>
  byte 117
  byte 112
  byte 100
@@ -8559,7 +8559,7 @@ C_sbnov_6864c5c9_threads_update_L000036_513_L000514 ' <symbol:513>
  byte 0
 
  alignl ' align long
-C_sbnov_6864c5c9_threads_update_L000036_499_L000500 ' <symbol:499>
+C_shn8v_686cc54d_threads_update_L000036_499_L000500 ' <symbol:499>
  byte 117
  byte 112
  byte 100
@@ -8591,7 +8591,7 @@ C_sbnov_6864c5c9_threads_update_L000036_499_L000500 ' <symbol:499>
  byte 0
 
  alignl ' align long
-C_sbnov_6864c5c9_threads_update_L000036_495_L000496 ' <symbol:495>
+C_shn8v_686cc54d_threads_update_L000036_495_L000496 ' <symbol:495>
  byte 117
  byte 112
  byte 100
@@ -8630,7 +8630,7 @@ C_sbnov_6864c5c9_threads_update_L000036_495_L000496 ' <symbol:495>
  byte 0
 
  alignl ' align long
-C_sbnov_6864c5c9_threads_update_L000036_491_L000492 ' <symbol:491>
+C_shn8v_686cc54d_threads_update_L000036_491_L000492 ' <symbol:491>
  byte 117
  byte 112
  byte 100
@@ -8671,7 +8671,7 @@ C_sbnov_6864c5c9_threads_update_L000036_491_L000492 ' <symbol:491>
  byte 0
 
  alignl ' align long
-C_sbno10_6864c5c9_threads_export_L000037_486_L000487 ' <symbol:486>
+C_shn810_686cc54d_threads_export_L000037_486_L000487 ' <symbol:486>
  byte 101
  byte 120
  byte 112
@@ -8720,7 +8720,7 @@ C_sbno10_6864c5c9_threads_export_L000037_486_L000487 ' <symbol:486>
  byte 0
 
  alignl ' align long
-C_sbno10_6864c5c9_threads_export_L000037_471_L000472 ' <symbol:471>
+C_shn810_686cc54d_threads_export_L000037_471_L000472 ' <symbol:471>
  byte 101
  byte 120
  byte 112
@@ -8754,7 +8754,7 @@ C_sbno10_6864c5c9_threads_export_L000037_471_L000472 ' <symbol:471>
  byte 0
 
  alignl ' align long
-C_sbno10_6864c5c9_threads_export_L000037_456_L000457 ' <symbol:456>
+C_shn810_686cc54d_threads_export_L000037_456_L000457 ' <symbol:456>
  byte 101
  byte 120
  byte 112
@@ -8786,7 +8786,7 @@ C_sbno10_6864c5c9_threads_export_L000037_456_L000457 ' <symbol:456>
  byte 0
 
  alignl ' align long
-C_sbno10_6864c5c9_threads_export_L000037_452_L000453 ' <symbol:452>
+C_shn810_686cc54d_threads_export_L000037_452_L000453 ' <symbol:452>
  byte 101
  byte 120
  byte 112
@@ -8827,7 +8827,7 @@ C_sbno10_6864c5c9_threads_export_L000037_452_L000453 ' <symbol:452>
  byte 0
 
  alignl ' align long
-C_sbnou_6864c5c9_threads_shared_L000035_447_L000448 ' <symbol:447>
+C_shn8u_686cc54d_threads_shared_L000035_447_L000448 ' <symbol:447>
  byte 115
  byte 104
  byte 97
@@ -8876,7 +8876,7 @@ C_sbnou_6864c5c9_threads_shared_L000035_447_L000448 ' <symbol:447>
  byte 0
 
  alignl ' align long
-C_sbnou_6864c5c9_threads_shared_L000035_441_L000442 ' <symbol:441>
+C_shn8u_686cc54d_threads_shared_L000035_441_L000442 ' <symbol:441>
  byte 115
  byte 104
  byte 97
@@ -8910,12 +8910,12 @@ C_sbnou_6864c5c9_threads_shared_L000035_441_L000442 ' <symbol:441>
  byte 0
 
  alignl ' align long
-C_sbnou_6864c5c9_threads_shared_L000035_431_L000432 ' <symbol:431>
+C_shn8u_686cc54d_threads_shared_L000035_431_L000432 ' <symbol:431>
  byte 46
  byte 0
 
  alignl ' align long
-C_sbnou_6864c5c9_threads_shared_L000035_422_L000423 ' <symbol:422>
+C_shn8u_686cc54d_threads_shared_L000035_422_L000423 ' <symbol:422>
  byte 115
  byte 104
  byte 97
@@ -8947,7 +8947,7 @@ C_sbnou_6864c5c9_threads_shared_L000035_422_L000423 ' <symbol:422>
  byte 0
 
  alignl ' align long
-C_sbnou_6864c5c9_threads_shared_L000035_418_L000419 ' <symbol:418>
+C_shn8u_686cc54d_threads_shared_L000035_418_L000419 ' <symbol:418>
  byte 115
  byte 104
  byte 97
@@ -8988,7 +8988,7 @@ C_sbnou_6864c5c9_threads_shared_L000035_418_L000419 ' <symbol:418>
  byte 0
 
  alignl ' align long
-C_sbnoq_6864c5c9_threads_wait_for_L000031_348_L000349 ' <symbol:348>
+C_shn8q_686cc54d_threads_wait_for_L000031_348_L000349 ' <symbol:348>
  byte 119
  byte 97
  byte 105
@@ -9031,7 +9031,7 @@ C_sbnoq_6864c5c9_threads_wait_for_L000031_348_L000349 ' <symbol:348>
  byte 0
 
  alignl ' align long
-C_sbnoh_6864c5c9_threads_send_async_L000022_324_L000325 ' <symbol:324>
+C_shn8h_686cc54d_threads_send_async_L000022_324_L000325 ' <symbol:324>
  byte 110
  byte 111
  byte 32
@@ -9071,7 +9071,7 @@ C_sbnoh_6864c5c9_threads_send_async_L000022_324_L000325 ' <symbol:324>
  byte 0
 
  alignl ' align long
-C_sbnoa_6864c5c9_threads_send_L000015_301_L000302 ' <symbol:301>
+C_shn8a_686cc54d_threads_send_L000015_301_L000302 ' <symbol:301>
  byte 99
  byte 104
  byte 97
@@ -9102,7 +9102,7 @@ C_sbnoa_6864c5c9_threads_send_L000015_301_L000302 ' <symbol:301>
  byte 0
 
  alignl ' align long
-C_sbno8_6864c5c9_threads_create_newproc_L000013_288_L000289 ' <symbol:288>
+C_shn88_686cc54d_threads_create_newproc_L000013_288_L000289 ' <symbol:288>
  byte 99
  byte 97
  byte 110
@@ -9145,7 +9145,7 @@ C_sbno8_6864c5c9_threads_create_newproc_L000013_288_L000289 ' <symbol:288>
  byte 0
 
  alignl ' align long
-C_sbno8_6864c5c9_threads_create_newproc_L000013_284_L000285 ' <symbol:284>
+C_shn88_686cc54d_threads_create_newproc_L000013_284_L000285 ' <symbol:284>
  byte 101
  byte 114
  byte 114
@@ -9188,7 +9188,7 @@ C_sbno8_6864c5c9_threads_create_newproc_L000013_284_L000285 ' <symbol:284>
  byte 0
 
  alignl ' align long
-C_sbnoe_6864c5c9_threads_set_numworkers_L000019_276_L000277 ' <symbol:276>
+C_shn8e_686cc54d_threads_set_numworkers_L000019_276_L000277 ' <symbol:276>
  byte 102
  byte 97
  byte 105
@@ -9215,7 +9215,7 @@ C_sbnoe_6864c5c9_threads_set_numworkers_L000019_276_L000277 ' <symbol:276>
  byte 0
 
  alignl ' align long
-C_sbnoe_6864c5c9_threads_set_numworkers_L000019_271_L000272 ' <symbol:271>
+C_shn8e_686cc54d_threads_set_numworkers_L000019_271_L000272 ' <symbol:271>
  byte 110
  byte 117
  byte 109
@@ -9261,7 +9261,7 @@ C_sbnoe_6864c5c9_threads_set_numworkers_L000019_271_L000272 ' <symbol:271>
  byte 0
 
  alignl ' align long
-C_sbnog_6864c5c9_threads_recycle_set_L000021_259_L000260 ' <symbol:259>
+C_shn8g_686cc54d_threads_recycle_set_L000021_259_L000260 ' <symbol:259>
  byte 114
  byte 101
  byte 99
@@ -9303,7 +9303,7 @@ C_sbnog_6864c5c9_threads_recycle_set_L000021_259_L000260 ' <symbol:259>
  byte 0
 
  alignl ' align long
-C_sbno38_6864c5c9_luathread_copyupvalues_L000232_256_L000257 ' <symbol:256>
+C_shn838_686cc54d_luathread_copyupvalues_L000232_256_L000257 ' <symbol:256>
  byte 102
  byte 97
  byte 105
@@ -9328,7 +9328,7 @@ C_sbno38_6864c5c9_luathread_copyupvalues_L000232_256_L000257 ' <symbol:256>
  byte 0
 
  alignl ' align long
-C_sbno38_6864c5c9_luathread_copyupvalues_L000232_249_L000250 ' <symbol:249>
+C_shn838_686cc54d_luathread_copyupvalues_L000232_249_L000250 ' <symbol:249>
  byte 102
  byte 97
  byte 105
@@ -9379,7 +9379,7 @@ C_sbno38_6864c5c9_luathread_copyupvalues_L000232_249_L000250 ' <symbol:249>
  byte 0
 
  alignl ' align long
-C_sbno36_6864c5c9_func_dump_L000225_229_L000230 ' <symbol:229>
+C_shn836_686cc54d_func_dump_L000225_229_L000230 ' <symbol:229>
  byte 117
  byte 110
  byte 97
@@ -9412,7 +9412,7 @@ C_sbno36_6864c5c9_func_dump_L000225_229_L000230 ' <symbol:229>
  byte 0
 
  alignl ' align long
-C_sbno30_6864c5c9_luathread_new_L000211_217_L000218 ' <symbol:217>
+C_shn830_686cc54d_luathread_new_L000211_217_L000218 ' <symbol:217>
  byte 99
  byte 111
  byte 114
@@ -9425,7 +9425,7 @@ C_sbno30_6864c5c9_luathread_new_L000211_217_L000218 ' <symbol:217>
  byte 0
 
  alignl ' align long
-C_sbno30_6864c5c9_luathread_new_L000211_215_L000216 ' <symbol:215>
+C_shn830_686cc54d_luathread_new_L000211_215_L000216 ' <symbol:215>
  byte 112
  byte 114
  byte 111
@@ -9438,7 +9438,7 @@ C_sbno30_6864c5c9_luathread_new_L000211_215_L000216 ' <symbol:215>
  byte 0
 
  alignl ' align long
-C_sbno30_6864c5c9_luathread_new_L000211_213_L000214 ' <symbol:213>
+C_shn830_686cc54d_luathread_new_L000211_213_L000214 ' <symbol:213>
  byte 116
  byte 104
  byte 114
@@ -9449,7 +9449,7 @@ C_sbno30_6864c5c9_luathread_new_L000211_213_L000214 ' <symbol:213>
  byte 0
 
  alignl ' align long
-C_sbno2u_6864c5c9_luathread_getself_L000207_209_L000210 ' <symbol:209>
+C_shn82u_686cc54d_luathread_getself_L000207_209_L000210 ' <symbol:209>
  byte 76
  byte 85
  byte 65
@@ -9471,7 +9471,7 @@ C_sbno2u_6864c5c9_luathread_getself_L000207_209_L000210 ' <symbol:209>
  byte 0
 
  alignl ' align long
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161_202_L000203 ' <symbol:202>
+C_shn82l_686cc54d_luathread_copyvalues_L000161_202_L000203 ' <symbol:202>
  byte 102
  byte 97
  byte 105
@@ -9520,7 +9520,7 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161_202_L000203 ' <symbol:202>
  byte 0
 
  alignl ' align long
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161_200_L000201 ' <symbol:200>
+C_shn82l_686cc54d_luathread_copyvalues_L000161_200_L000201 ' <symbol:200>
  byte 102
  byte 97
  byte 105
@@ -9572,7 +9572,7 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161_200_L000201 ' <symbol:200>
  byte 0
 
  alignl ' align long
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161_167_L000168 ' <symbol:167>
+C_shn82l_686cc54d_luathread_copyvalues_L000161_167_L000168 ' <symbol:167>
  byte 110
  byte 111
  byte 116
@@ -9616,7 +9616,7 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161_167_L000168 ' <symbol:167>
  byte 0
 
  alignl ' align long
-C_sbno2l_6864c5c9_luathread_copyvalues_L000161_165_L000166 ' <symbol:165>
+C_shn82l_686cc54d_luathread_copyvalues_L000161_165_L000166 ' <symbol:165>
  byte 110
  byte 111
  byte 116
@@ -9649,7 +9649,7 @@ C_sbno2l_6864c5c9_luathread_copyvalues_L000161_165_L000166 ' <symbol:165>
  byte 0
 
  alignl ' align long
-C_sbno2g_6864c5c9_channel_create_L000133_135_L000136 ' <symbol:135>
+C_shn82g_686cc54d_channel_create_L000133_135_L000136 ' <symbol:135>
  byte 99
  byte 104
  byte 97
@@ -9662,7 +9662,7 @@ C_sbno2g_6864c5c9_channel_create_L000133_135_L000136 ' <symbol:135>
  byte 0
 
  alignl ' align long
-C_sbno2f_6864c5c9_123_L000124 ' <symbol:123>
+C_shn82f_686cc54d_123_L000124 ' <symbol:123>
  byte 97
  byte 103
  byte 101
@@ -9670,7 +9670,7 @@ C_sbno2f_6864c5c9_123_L000124 ' <symbol:123>
  byte 0
 
  alignl ' align long
-C_sbno2e_6864c5c9_121_L000122 ' <symbol:121>
+C_shn82e_686cc54d_121_L000122 ' <symbol:121>
  byte 97
  byte 112
  byte 117
@@ -9678,21 +9678,21 @@ C_sbno2e_6864c5c9_121_L000122 ' <symbol:121>
  byte 0
 
  alignl ' align long
-C_sbno2d_6864c5c9_119_L000120 ' <symbol:119>
+C_shn82d_686cc54d_119_L000120 ' <symbol:119>
  byte 103
  byte 101
  byte 116
  byte 0
 
  alignl ' align long
-C_sbno2c_6864c5c9_117_L000118 ' <symbol:117>
+C_shn82c_686cc54d_117_L000118 ' <symbol:117>
  byte 112
  byte 117
  byte 116
  byte 0
 
  alignl ' align long
-C_sbno2b_6864c5c9_115_L000116 ' <symbol:115>
+C_shn82b_686cc54d_115_L000116 ' <symbol:115>
  byte 100
  byte 101
  byte 115
@@ -9703,7 +9703,7 @@ C_sbno2b_6864c5c9_115_L000116 ' <symbol:115>
  byte 0
 
  alignl ' align long
-C_sbno2a_6864c5c9_113_L000114 ' <symbol:113>
+C_shn82a_686cc54d_113_L000114 ' <symbol:113>
  byte 99
  byte 111
  byte 110
@@ -9716,7 +9716,7 @@ C_sbno2a_6864c5c9_113_L000114 ' <symbol:113>
  byte 0
 
  alignl ' align long
-C_sbno29_6864c5c9_111_L000112 ' <symbol:111>
+C_shn829_686cc54d_111_L000112 ' <symbol:111>
  byte 109
  byte 117
  byte 116
@@ -9725,7 +9725,7 @@ C_sbno29_6864c5c9_111_L000112 ' <symbol:111>
  byte 0
 
  alignl ' align long
-C_sbno28_6864c5c9_109_L000110 ' <symbol:109>
+C_shn828_686cc54d_109_L000110 ' <symbol:109>
  byte 99
  byte 104
  byte 97
@@ -9736,7 +9736,7 @@ C_sbno28_6864c5c9_109_L000110 ' <symbol:109>
  byte 0
 
  alignl ' align long
-C_sbno27_6864c5c9_107_L000108 ' <symbol:107>
+C_shn827_686cc54d_107_L000108 ' <symbol:107>
  byte 119
  byte 111
  byte 114
@@ -9747,14 +9747,14 @@ C_sbno27_6864c5c9_107_L000108 ' <symbol:107>
  byte 0
 
  alignl ' align long
-C_sbno26_6864c5c9_105_L000106 ' <symbol:105>
+C_shn826_686cc54d_105_L000106 ' <symbol:105>
  byte 110
  byte 101
  byte 119
  byte 0
 
  alignl ' align long
-C_sbno25_6864c5c9_103_L000104 ' <symbol:103>
+C_shn825_686cc54d_103_L000104 ' <symbol:103>
  byte 118
  byte 101
  byte 114
@@ -9765,7 +9765,7 @@ C_sbno25_6864c5c9_103_L000104 ' <symbol:103>
  byte 0
 
  alignl ' align long
-C_sbno24_6864c5c9_101_L000102 ' <symbol:101>
+C_shn824_686cc54d_101_L000102 ' <symbol:101>
  byte 102
  byte 97
  byte 99
@@ -9776,7 +9776,7 @@ C_sbno24_6864c5c9_101_L000102 ' <symbol:101>
  byte 0
 
  alignl ' align long
-C_sbno23_6864c5c9_99_L000100 ' <symbol:99>
+C_shn823_686cc54d_99_L000100 ' <symbol:99>
  byte 102
  byte 97
  byte 99
@@ -9789,7 +9789,7 @@ C_sbno23_6864c5c9_99_L000100 ' <symbol:99>
  byte 0
 
  alignl ' align long
-C_sbno22_6864c5c9_97_L000098 ' <symbol:97>
+C_shn822_686cc54d_97_L000098 ' <symbol:97>
  byte 115
  byte 116
  byte 97
@@ -9802,7 +9802,7 @@ C_sbno22_6864c5c9_97_L000098 ' <symbol:97>
  byte 0
 
  alignl ' align long
-C_sbno21_6864c5c9_95_L000096 ' <symbol:95>
+C_shn821_686cc54d_95_L000096 ' <symbol:95>
  byte 115
  byte 98
  byte 114
@@ -9810,7 +9810,7 @@ C_sbno21_6864c5c9_95_L000096 ' <symbol:95>
  byte 0
 
  alignl ' align long
-C_sbno20_6864c5c9_93_L000094 ' <symbol:93>
+C_shn820_686cc54d_93_L000094 ' <symbol:93>
  byte 111
  byte 117
  byte 116
@@ -9820,7 +9820,7 @@ C_sbno20_6864c5c9_93_L000094 ' <symbol:93>
  byte 0
 
  alignl ' align long
-C_sbno1v_6864c5c9_91_L000092 ' <symbol:91>
+C_shn81v_686cc54d_91_L000092 ' <symbol:91>
  byte 112
  byte 114
  byte 105
@@ -9829,7 +9829,7 @@ C_sbno1v_6864c5c9_91_L000092 ' <symbol:91>
  byte 0
 
  alignl ' align long
-C_sbno1u_6864c5c9_89_L000090 ' <symbol:89>
+C_shn81u_686cc54d_89_L000090 ' <symbol:89>
  byte 109
  byte 115
  byte 108
@@ -9839,7 +9839,7 @@ C_sbno1u_6864c5c9_89_L000090 ' <symbol:89>
  byte 0
 
  alignl ' align long
-C_sbno1t_6864c5c9_87_L000088 ' <symbol:87>
+C_shn81t_686cc54d_87_L000088 ' <symbol:87>
  byte 115
  byte 108
  byte 101
@@ -9848,7 +9848,7 @@ C_sbno1t_6864c5c9_87_L000088 ' <symbol:87>
  byte 0
 
  alignl ' align long
-C_sbno1s_6864c5c9_85_L000086 ' <symbol:85>
+C_shn81s_686cc54d_85_L000086 ' <symbol:85>
  byte 114
  byte 101
  byte 99
@@ -9865,7 +9865,7 @@ C_sbno1s_6864c5c9_85_L000086 ' <symbol:85>
  byte 0
 
  alignl ' align long
-C_sbno1r_6864c5c9_83_L000084 ' <symbol:83>
+C_shn81r_686cc54d_83_L000084 ' <symbol:83>
  byte 115
  byte 101
  byte 110
@@ -9879,7 +9879,7 @@ C_sbno1r_6864c5c9_83_L000084 ' <symbol:83>
  byte 0
 
  alignl ' align long
-C_sbno1q_6864c5c9_81_L000082 ' <symbol:81>
+C_shn81q_686cc54d_81_L000082 ' <symbol:81>
  byte 101
  byte 120
  byte 112
@@ -9889,7 +9889,7 @@ C_sbno1q_6864c5c9_81_L000082 ' <symbol:81>
  byte 0
 
  alignl ' align long
-C_sbno1p_6864c5c9_79_L000080 ' <symbol:79>
+C_shn81p_686cc54d_79_L000080 ' <symbol:79>
  byte 117
  byte 112
  byte 100
@@ -9899,7 +9899,7 @@ C_sbno1p_6864c5c9_79_L000080 ' <symbol:79>
  byte 0
 
  alignl ' align long
-C_sbno1o_6864c5c9_77_L000078 ' <symbol:77>
+C_shn81o_686cc54d_77_L000078 ' <symbol:77>
  byte 115
  byte 104
  byte 97
@@ -9909,7 +9909,7 @@ C_sbno1o_6864c5c9_77_L000078 ' <symbol:77>
  byte 0
 
  alignl ' align long
-C_sbno1n_6864c5c9_75_L000076 ' <symbol:75>
+C_shn81n_686cc54d_75_L000076 ' <symbol:75>
  byte 114
  byte 101
  byte 110
@@ -9923,7 +9923,7 @@ C_sbno1n_6864c5c9_75_L000076 ' <symbol:75>
  byte 0
 
  alignl ' align long
-C_sbno1m_6864c5c9_73_L000074 ' <symbol:73>
+C_shn81m_686cc54d_73_L000074 ' <symbol:73>
  byte 98
  byte 114
  byte 111
@@ -9936,7 +9936,7 @@ C_sbno1m_6864c5c9_73_L000074 ' <symbol:73>
  byte 0
 
  alignl ' align long
-C_sbno1l_6864c5c9_71_L000072 ' <symbol:71>
+C_shn81l_686cc54d_71_L000072 ' <symbol:71>
  byte 115
  byte 105
  byte 103
@@ -9946,7 +9946,7 @@ C_sbno1l_6864c5c9_71_L000072 ' <symbol:71>
  byte 0
 
  alignl ' align long
-C_sbno1k_6864c5c9_69_L000070 ' <symbol:69>
+C_shn81k_686cc54d_69_L000070 ' <symbol:69>
  byte 119
  byte 97
  byte 105
@@ -9958,7 +9958,7 @@ C_sbno1k_6864c5c9_69_L000070 ' <symbol:69>
  byte 0
 
  alignl ' align long
-C_sbno1j_6864c5c9_67_L000068 ' <symbol:67>
+C_shn81j_686cc54d_67_L000068 ' <symbol:67>
  byte 117
  byte 110
  byte 108
@@ -9968,7 +9968,7 @@ C_sbno1j_6864c5c9_67_L000068 ' <symbol:67>
  byte 0
 
  alignl ' align long
-C_sbno1i_6864c5c9_65_L000066 ' <symbol:65>
+C_shn81i_686cc54d_65_L000066 ' <symbol:65>
  byte 116
  byte 114
  byte 121
@@ -9979,7 +9979,7 @@ C_sbno1i_6864c5c9_65_L000066 ' <symbol:65>
  byte 0
 
  alignl ' align long
-C_sbno1h_6864c5c9_63_L000064 ' <symbol:63>
+C_shn81h_686cc54d_63_L000064 ' <symbol:63>
  byte 108
  byte 111
  byte 99
@@ -9987,7 +9987,7 @@ C_sbno1h_6864c5c9_63_L000064 ' <symbol:63>
  byte 0
 
  alignl ' align long
-C_sbno1g_6864c5c9_61_L000062 ' <symbol:61>
+C_shn81g_686cc54d_61_L000062 ' <symbol:61>
  byte 114
  byte 101
  byte 99
@@ -9998,7 +9998,7 @@ C_sbno1g_6864c5c9_61_L000062 ' <symbol:61>
  byte 0
 
  alignl ' align long
-C_sbno1f_6864c5c9_59_L000060 ' <symbol:59>
+C_shn81f_686cc54d_59_L000060 ' <symbol:59>
  byte 103
  byte 101
  byte 116
@@ -10015,7 +10015,7 @@ C_sbno1f_6864c5c9_59_L000060 ' <symbol:59>
  byte 0
 
  alignl ' align long
-C_sbno1e_6864c5c9_57_L000058 ' <symbol:57>
+C_shn81e_686cc54d_57_L000058 ' <symbol:57>
  byte 115
  byte 101
  byte 116
@@ -10032,7 +10032,7 @@ C_sbno1e_6864c5c9_57_L000058 ' <symbol:57>
  byte 0
 
  alignl ' align long
-C_sbno1d_6864c5c9_55_L000056 ' <symbol:55>
+C_shn81d_686cc54d_55_L000056 ' <symbol:55>
  byte 100
  byte 101
  byte 108
@@ -10046,7 +10046,7 @@ C_sbno1d_6864c5c9_55_L000056 ' <symbol:55>
  byte 0
 
  alignl ' align long
-C_sbno1c_6864c5c9_53_L000054 ' <symbol:53>
+C_shn81c_686cc54d_53_L000054 ' <symbol:53>
  byte 110
  byte 101
  byte 119
@@ -10060,7 +10060,7 @@ C_sbno1c_6864c5c9_53_L000054 ' <symbol:53>
  byte 0
 
  alignl ' align long
-C_sbno1b_6864c5c9_51_L000052 ' <symbol:51>
+C_shn81b_686cc54d_51_L000052 ' <symbol:51>
  byte 114
  byte 101
  byte 99
@@ -10071,7 +10071,7 @@ C_sbno1b_6864c5c9_51_L000052 ' <symbol:51>
  byte 0
 
  alignl ' align long
-C_sbno1a_6864c5c9_49_L000050 ' <symbol:49>
+C_shn81a_686cc54d_49_L000050 ' <symbol:49>
  byte 115
  byte 101
  byte 110
@@ -10079,7 +10079,7 @@ C_sbno1a_6864c5c9_49_L000050 ' <symbol:49>
  byte 0
 
  alignl ' align long
-C_sbno19_6864c5c9_47_L000048 ' <symbol:47>
+C_shn819_686cc54d_47_L000048 ' <symbol:47>
  byte 119
  byte 97
  byte 105
@@ -10087,7 +10087,7 @@ C_sbno19_6864c5c9_47_L000048 ' <symbol:47>
  byte 0
 
  alignl ' align long
-C_sbno18_6864c5c9_45_L000046 ' <symbol:45>
+C_shn818_686cc54d_45_L000046 ' <symbol:45>
  byte 110
  byte 101
  byte 119
