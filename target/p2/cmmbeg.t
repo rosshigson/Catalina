@@ -8,7 +8,7 @@ CON
 
 #include <constant.inc>
 
-#ifdef QUICKBUILD
+#if defined(QUICKBUILD) || defined(QUICKFORCE)
 
 #define DEFINE_COMPACT_CONSTANTS
 #include <compact.inc>
@@ -46,7 +46,7 @@ DEBUG_VECTORS = $1eb
 
 #endif
 
-#ifndef QUICKBUILD
+#if !defined(QUICKBUILD) && !defined(QUICKFORCE)
 
 ' NOT a Quick Build
 

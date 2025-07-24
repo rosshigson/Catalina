@@ -20,7 +20,7 @@
  *
  * To use the WiFi program load capabilities on the Propeller 2, the board 
  * must be plugged into the header on pins 56-63. This means that the pins 
- * used for serial comms HAVE to be pins 62 & 63. However, on the P2_EC32MB
+ * used for serial comms HAVE to be pins 62 & 63. However, on the P2-EC32MB
  * pins 56 and 57 (RES and PGM) are used for PSRAM, so to be able to reset 
  * the board, a different base pin must be used (e.g. base pin 32).
  *

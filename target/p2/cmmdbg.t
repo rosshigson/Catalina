@@ -56,7 +56,7 @@
 
 #include <compact.inc>
 
-#ifdef QUICKBUILD
+#if defined(QUICKBUILD) || defined(QUICKFORCE)
 
 DAT
 

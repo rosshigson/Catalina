@@ -1,0 +1,10 @@
+#!/bin/bash
+##!/bin/bash -login
+#
+cd lib
+./clean_all
+cd ..
+#
+echo "Done!"
+#
+

@@ -63,7 +63,7 @@ goto done
 
 echo.
 echo  ===========================
-echo  Building all Catalyst Demos
+echo  Building Catalyst and Demos
 echo  ===========================
 echo.
 
@@ -82,7 +82,7 @@ call build_all %1 %2 %3 %4 %5 %6 %7 %8 %9
 call copy_all "..\image\"
 cd ..
 
-if "%1%" == "SUPERQUAD" goto done
+if "%1" == "SUPERQUAD" goto make_bin
 
 cd xvi-2.51
 call build_all %1 %2 %3 %4 %5 %6 %7 %8 %9
@@ -94,7 +94,7 @@ call build_all %1 %2 %3 %4 %5 %6 %7 %8 %9
 call copy_all "..\image\"
 cd ..
 
-if "%1%" == "C3" goto no_pascal
+if "%1" == "C3" goto no_pascal
 
 cd pascal\p5_c
 call build_all %1 %2 %3 %4 %5 %6 %7 %8 %9
@@ -102,7 +102,7 @@ call copy_all "..\..\image\"
 cd ..\..
 :no_pascal
 
-if "%1%" == "C3" goto no_jzip
+if "%1" == "C3" goto no_jzip
 
 cd jzip
 call build_all %1 %2 %3 %4 %5 %6 %7 %8 %9
@@ -128,6 +128,19 @@ cd ..
 
 cd ilua
 call copy_all "..\image\"
+cd ..
+
+:make_bin
+cd image
+mkdir bin
+move /y *.bin bin\
+move /y if.lua bin\
+move /y exec.lua bin\
+move /y clua.lua bin\
+move /y call.lua bin\
+move /y echo.lua bin\
+move /y _save.lua bin\
+move /y _restore.lua bin\
 cd ..
 
 :done

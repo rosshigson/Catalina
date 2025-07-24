@@ -1,0 +1,20 @@
+#!/bin/bash
+
+make clean
+
+echo ""
+echo "   ======================"
+echo "   Cleaning Local Library"
+echo "   ======================"
+echo ""
+
+cd local
+./clean_all
+cd ..
+
+echo ""
+echo "===="
+echo "Done"
+echo "===="
+echo ""
+

@@ -394,6 +394,8 @@
  *
  * version 8.7  - just update version number.
  *
+ * version 8.8  - add -Q (and -C QUICKFORCE) to mean enable Qquick Build,
+ *                but also rebuild the target file even if it already exists.
  */                  
 
 /*--------------------------------------------------------------------------
@@ -423,7 +425,7 @@
 #include <string.h>
 #include <math.h>
 
-#define VERSION            "8.7"
+#define VERSION            "8.8"
 
 #define MAX_LINELEN        4096
 
@@ -486,7 +488,8 @@ static int suppress   = 0; // suppress banners and statistics
 static int bannered   = 0; // banner has been output
 static int parallel   = 0; // invoke the parallelizer on the input files
 static int untidy     = 0; // untidy (i.e. no cleanup) mode
-static int quickbuild = 0; // enable quick build
+static int quickbuild = 0; // enable quick build, re-use any existing target
+static int quickforce = 0; // enable quick build, always rebuild target
 
 /* clock calculation parameters */
 static int baud_rate  = 0; // baud rate (no default)
@@ -566,6 +569,7 @@ void help(char *my_name) {
    fprintf(stderr, "          -p ver     Propeller Hardware Version\n");
    fprintf(stderr, "          -P addr    address for Read-Write segments\n");
    fprintf(stderr, "          -q         enable quick build (re-use any existing target files)\n");
+   fprintf(stderr, "          -Q         force quick build (rebuild target files)\n");
    fprintf(stderr, "          -R addr    address for Read-Only segments\n");
    fprintf(stderr, "          -S         compile to assembly code (do not bind)\n");
    fprintf(stderr, "          -t name    name of dedicated target to use\n");
@@ -1064,6 +1068,10 @@ int pass_symbol_to_compiler(char *symbol, int *code) {
    else if (strcmp (symbol, "QUICKBUILD") == 0) {
       quickbuild = 1;
       safecat(lcc_cmd, "-Wl-q ", MAX_LINELEN);
+   }
+   else if (strcmp (symbol, "QUICKFORCE") == 0) {
+      quickforce = 1;
+      safecat(lcc_cmd, "-Wl-Q ", MAX_LINELEN);
    }
    else if (strcmp (symbol, "COMPACT") == 0) {
       pass = 0; // don't pass this symbol yet - we do it later
@@ -1682,6 +1690,14 @@ int decode_arguments (int argc, char *argv[]) {
                   }
                   break;
 
+               case 'Q':
+                  quickforce = 1;   /* enable quick force */
+                  catalina_symboldef("QUICKFORCE", "");
+                  if (verbose) {
+                     fprintf(stderr, "quick build forced\n");
+                  }
+                  break;
+
                case 'R':
                   modifier = 0;
                   arg = get_option_argument(&i, &argc, argv);
@@ -2085,6 +2101,9 @@ int decode_arguments (int argc, char *argv[]) {
    }
    if (quickbuild) {
       safecat(lcc_cmd, "-Wl-q ", MAX_LINELEN);
+   }
+   if (quickforce) {
+      safecat(lcc_cmd, "-Wl-Q ", MAX_LINELEN);
    }
    if (suppress == 1) {
       safecat(lcc_cmd, "-Wl-k ", MAX_LINELEN);

@@ -131,7 +131,7 @@ r21     long 0                 '$2b
 r22     long 0                 '$2c
 r23     long 0                 '$2d
 
-#ifdef QUICKBUILD
+#if defined(QUICKBUILD) || defined(QUICKFORCE)
 Save_PC long 0                 '$2e
 #else                             
 Save_PC long @C_main           '$2e set here only for creating blobs!
@@ -169,7 +169,7 @@ DBG2    long  0                '$42 ' debugger temp
 
 DEBUG_OVERLAY
 nmm_init
-#ifdef QUICKBUILD
+#if defined(QUICKBUILD) || defined(QUICKFORCE)
         rdlong  reg,PTRA++      '$43  1 load registry address (used later)   
         cogid   r2              '$44  2 register ...
         shl     r2,#2           '$45  3 ... ourselves ...

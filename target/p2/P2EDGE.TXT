@@ -11,10 +11,10 @@ or
    set CATALINA_DEFINE=P2_EDGE
    catalina -p2 -lc hello_world.c
 
-The P2_EDGE configuration file supports both the P2_EC and P2_EC32MB.
+The P2_EDGE configuration file supports both the P2_EC and P2-EC32MB.
 
 The P2_EDGE configuration file includes XMM RAM definitions to suit both
-the internal PSRAM on the P2_EC32MB as well as the Parallax Hyper RAM add-on 
+the internal PSRAM on the P2-EC32MB as well as the Parallax Hyper RAM add-on 
 board. One or the other can be used as additional RAM storage by linking with
 the psram or hyper libraries respectively (i.e. adding -lpsram or -lhyper to 
 the Catalina command line), and can also be used as XMM RAM by specifying 

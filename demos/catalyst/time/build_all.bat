@@ -61,9 +61,9 @@ goto done
 
 :found_catalina
 echo.
-echo ==============
-echo BUILDING DEMOS
-echo ==============
+echo =============
+echo Building time
+echo =============
 echo.
 
 rem remove COMPACT (if present) 

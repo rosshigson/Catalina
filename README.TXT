@@ -58,7 +58,7 @@ Setting up Catalina
 Windows Installer
 -----------------
 
-If you used a Windows Installer package (e.g. Catalina_8.7_Setup.exe) to 
+If you used a Windows Installer package (e.g. Catalina_8.8_Setup.exe) to 
 install Catalina and accepted the recommended settings, the Windows Start Menu
 should contain the following shortcuts:
 
@@ -84,8 +84,8 @@ If you do not want to rebuild Catalina from source (which is a complex process
 under Windows) then one or more separate packages of precompiled binaries will
 be available suitable for Windows 10 or Windows 11 as assets associated with
 the Git release. Download the assets and uncompress them into the relevant 
-directory (e.g. from Catalina_8.7_Windows_binaries.zip into Catalina\bin or 
-from Catalina_8.7_Windows_Geany_binaries.zip into Catalina\catalina_geany).
+directory (e.g. from Catalina_8.8_Windows_binaries.zip into Catalina\bin or 
+from Catalina_8.8_Windows_Geany_binaries.zip into Catalina\catalina_geany).
     
 Open a Windows command shell (i.e. cmd.exe), then cd to the Catalina 
 installation folder. Then execute the following command to set up the 
@@ -104,7 +104,7 @@ cmd.exe) with Administrator privileges, then cd to the Catalina installation
 folder. Then execute the command catalina_shortcuts optionally specifying the
 name of the Start Menu entry to create (in quotes). For example: 
 
-   catalina_shortcuts "Catalina 8.7". 
+   catalina_shortcuts "Catalina 8.8". 
 
 If you do not specify a name then "Catalina" will be used. Then you can start
 either a Catalina Command Line or Catalina Geany from the Windows Start Menu. 
@@ -113,7 +113,7 @@ Also, the Start Menu will contain links to the Catalina Documents.
 Linux Precompiled Package
 -------------------------
 
-If you downloaded a Linux release package (e.g. Catalina_8.7_Linux.tar.gz)
+If you downloaded a Linux release package (e.g. Catalina_8.8_Linux.tar.gz)
 then the package will contain executables built for a recent Debian release 
 (currently Debian 12). Simply open a Terminal window, cd to the directory
 where you installed Catalina and enter (note the back quotes):
@@ -196,100 +196,110 @@ documents folder.
 New Functionality
 -----------------
 
-1. The Propeller 2 COMPACT kernels have been updated to enable using the FIFO
-   by default. Enabling the use of the FIFO means the kernel will use RDFAST 
-   and RFLONG instructions in place of RDLONG to read instructions. This can 
-   result in a typical speed improvement between 4% and 7%, but it means the 
-   FIFO cannot be used for other purposes by the C program. To disable the 
-   use of the FIFO (essentially reverting to pre-8.7 behaviour) define the
-   Catalina symbol NO_FIFO (e.g. -C NO_FIFO). For example:
+1. On all Propeller 2 boards, the Parallax HyperFlash/HyperRAM add-on board 
+   is now configured to use pin 0 by default rather than pin 16. This change 
+   was made because pin 0 allows a wider range of clock frequencies to be 
+   used on most boards, allowing (for example) the self-hosted version of 
+   Catalina itself to be compiled at 300Mhz. To accommodate the change, the 
+   VGA base pin has been changed to pin 16 and the USB base pin to pin 24. 
 
-      cd demos\benchmarks
-      catalina -p2 -lci -C CLOCK -p2 fibo.c -C COMPACT -C NO_FIFO
+2. A new utility to test the delay setting used for the PSRAM and HYPER RAM 
+   drivers has been added in the file /demos/p2_ram/delay.c. This utility can
+   be used to verify that the current delay setting (configured in the platform
+   configuration file) works across a selected range of clock frequencies.
+   See the README.TXT file in that folder for more details.
 
-   Note that COMPACT programs that use interrupts MUST specify NO_FIFO, since
-   interrupts disrupt the FIFO. 
+3. Add a -Q option to the catalina command, which can also be specified by 
+   defining the Catalina symbol QUICKFORCE (e.g. -C QUICKFORCE), to force a 
+   Quick Build. This option is similar to the -q option except that it will 
+   re-build the target file even if one already exists. If the target file 
+   does not exist, then the -Q option has the same effect as the -q option.
 
-2. The LUT_PAGE option introduced in Catalina 7.4 improved performance for
-   XMM SMALL programs, but for XMM LARGE programs it sometimes reduced
-   performance, so at the time it was not made the default. In this release
-   it has been updated so that the performance of LARGE programs is also 
-   improved by up to 25% for cache sizes above 2K, so it is now enabled by 
-   default for all XMM programs. This means it is no longer necessary to 
-   define the LUT_PAGE Catalina symbol, and doing so has no effect. 
-   However, it can now be disabled if required (e.g. in programs that want 
-   to use the LUT themselves, or have only 2K available for the cache) by
-   defining the new Catalina symbol NO_LUT (e.g. -C NO_LUT). For example:
+4. For the Propeller 2, Catalyst can now be built for the P2 Edge to use
+   either the PSRAM (if installed - i.e. the P2-EC32MB) or the HyperRAM
+   add-on board (on base pin 0 by default). To specify that Catalyst and
+   associated utilities should use the HyperRAM rather than on-board PSRAM, 
+   specify HYPER when building it using the build_all script. You can also 
+   specify PSRAM to use the PSRAM on the P2-EC32MB, but this is not necessary
+   since this is the default if HYPER is not specified. If specified, HYPER 
+   or PSRAM should be the second parameter. For example:
 
-      cd demos\benchmarks
-      catalina -p2 -lci -C CLOCK -p2 fibo.c -C LARGE -C NO_LUT
+     cd demos\catalyst
+     build_all P2_EDGE SIMPLE VT100 OPTIMIZE MHZ_200
+or 
+     cd demos\catalyst
+     build_all P2_EDGE PSRAM SIMPLE VT100 OPTIMIZE MHZ_200
+or
+     cd demos\catalyst
+     build_all P2_EDGE HYPER SIMPLE VT100 OPTIMIZE MHZ_200
 
-   Note that for programs that have only a 1K cache, the CACHE_LUT option
-   is recommended, and if this is specified the LUT is used to hold the
-   entire cache instead of just a 1K page. Also note that the other options 
-   introduced in Catalina 7.4 - CACHE_PINS and FLOAT_PINS are still 
-   available and can be used with or without using the LUT. They are not 
-   enabled by default since they require suitable pins to be available, but
-   can offer additional speed improvements of around 10%. See the platform
-   configuration files (e.g. P2EVAL.inc, P2EDGE.inc or P2CUSTOM.inc for
-   more details on allocating suitable pins).
+   The catalyst build scripts have been amended to facilitate building for
+   the P2 Edge demos using either HYPER or PSRAM by adding a new script 
+   called 'build_p2' which accepts one or two parameters - the platform and 
+   (optionally) the type of XMM RAM to use. Do not specify any other options.
+   For example:
 
-   Using the LUT, CACHE_PINS and FLOAT_PINS options can improve the 
-   performance of benchmark programs (e.g. Whetstone) by up to 30%, and 
-   real-world programs (such as the self-hosted version of Catalina itself) 
-   by about 25%.
+      build_p2 P2_EDGE         <-- for P2_EDGE using on-board PSRAM
+      build_p2 P2_EDGE PSRAM   <-- ditto
+      build_p2 P2_EDGE HYPER   <-- for P2_EDGE using HYPER RAM add-on board
+      build_p2 P2_EVAL         <-- for P2_EVAL using HYPER RAM add-on board
+      build_p2 P2_EVAL HYPER   <-- for P2_EVAL using HYPER RAM add-on board
+      build_p2 P2_EVAL PSRAM   <-- will generate an error (not supported)
 
-3. The COMPACT Catalina code generator has been updated to emit different
-   alignl options in different circumstances:
+   This script will build two ZIP files - one that uses the SIMPLE serial
+   HMI option named for the platform (e.g. P2_EDGE.ZIP) and one that uses 
+   the VGA HMI option (e.g. P2_EDGE_VGA.ZIP). Note that the 'p2_edge' and 
+   'p2_eval' scripts have now been removed, but the same function can be
+   achieved using the new 'build_p2' script. Also note that  the 'build_demos'
+   script still only builds demos for the P2_EDGE using PSRAM and for the 
+   P2_EVAL using HYPER RAM - but building for the P2_EDGE using HYPER RAM 
+   instead can be done with the following command:
 
-      alignl       : align a long as required for both the P1 and P2
-      alignl_p1    : align a long as required for the P1 only
-      alignl_debug : align a statement for debugging (i.e. when -g is used)
-      alignl_label : align a label
+      build_p2 P2_EDGE HYPER
 
-   On the Propeller 1, these all do the same thing, which is to align the 
-   next code or data element  on the next long (4 byte) boundary. On the 
-   P2 they also currently all do the same thing, but this may be modified 
-   in a future release since the Propeller 2 does not always require code 
-   or data to be aligned on long (4 byte) boundaries.
+5. Added a new demo (in the folder demos/sd_cache) to provide an example of 
+   how to build a local custom version of the Catalina C library to implement
+   some platform-specific functionality, such as (in this case) enabling the
+   PSRAM-based SD card cache. This folder also contains a test program that 
+   can be used to demonstrate the SD cache. See the README.TXT file in that 
+   folder for more details.
+
+6. Removed the file demos/catalyst/README.SMM_Loader. The information it
+   contained has been added to the Catalyst Reference Manual.
 
 Other Changes
 -------------
 
-1. A known bug occurs when an XMM program (LARGE or SMALL) is compiled for 
-   the P2 Evaluation board (i.e. P2_EVAL) when the program uses the default 
-   clock frequency (180Mhz). In this case the program may not work correctly.
-   This problem occurs on some P2 Evaluation boards that use the HyperFlash/
-   HyperRAM add-on board - it does not occur on the P2 Edge board, either 
-   with the HyperFlash/HyperRAM add-on board, or with the on-board PSRAM. 
-   This issue occurs on some Rev B boards, and may also occur on other boards. 
-   The program will work correctly if 200Mhz is used as the clock frequency
-   (i.e. MHZ_200), which is the default frequency used for Catalyst and 
-   its programs. Affects the Propeller 2 Evaluation board only.
+1. Fixed an issue with Catalina only supporting 200Mhz when the HyperRAM 
+   add-on board is used on the P2 Evaluation board. The platform configuration
+   files (target/p2/P2EVAL.inc and also target/p2/P2EDGE.inc) have been 
+   updated to disable the use of Fast Reads (HYPER_FASTREAD) and also modify 
+   the RAM read delay (HYPER_DELAY_RAM). Note that the default delay (10)
+   works from 150 to 260Mhz, but outside that range it may need to be adjusted.
+   The new utility (demos/p2_ram/delay.c) included in this release can be used
+   to verify the specified delay works across a range of clock frequencies. 
+   See also the platform configuration file (e.g. P2EVAL.inc) for more details. 
+   Affected the Propeller 2 Evaluation board only.
 
-2. The VGA versions of the Catalyst demos would not execute correctly because
-   they not being compiled with the NO_LINENOISE option. The linenoise library
-   relies on the use of a VT100 compatible serial terminal emulator, which is 
-   not applicable when using the VGA option. Affected the Propeller 2 only.
+2. Fix some non 8.3 filenames in library files:
+      getrealrand.c -> getrrand.c
+      hub_malloc.c  -> hmalloc.c
+      registerx.e -> register.e
+   Affected the Propeller 2 under Catalyst only.
 
-3. The Propeller 2 version of Catalina was erroneously executing Quick Build
-   processing if both -c (compile only) and -q (quick build) were specified, 
-   even though the quickbuild would fail because no binary file was generated
-   by the compile. Now specifying -c causes -q to be ignored, which matches 
-   the PC version of Catalina. Affected the Propeller 2 on Catalyst only.
+3. Fix the C include file stdint.h to specifically identify Catalina as one
+   of the platforms with 32 bit pointers. 
+   Affected The Propeller 2 under Catalyst only.
 
-4. The Windows create_shortcuts.bat file was not creating a link to the 
-   Catalina Release History document. Affected the Propeller 1 and 2 on 
-   Windows only.
+4. Fix LCC bug in pointer comparisons which led to the compiler emitting 
+   erroneous warning messages such as "overflow in converting constant 
+   expression from `pointer to char' to `pointer to void".
+   Affected The Propeller 2 under Catalyst only.
 
-5. The Propeller 2 versions of the binbuild and binstats utilities were
-   not setting their exit codes, which meant Catalyst scripts could not 
-   detect when they failed. Affected the Propeller 2 on Catalyst only.
+5. Fixed an issue with the COMPACT version of the getcnt() function on the 
+   Propeller 2. Affected COMPACT mode programs on the Propeller 2 only.
 
-6. Various README files have been removed, with the relevant information
-   consolidated into one file, or else included in the various reference 
-   and tutorial documents.
-
-7. The Windows installer no longer offers the option of installing Make
-   and other Gnu utilities.
-
+6. The pre-built Catalyst demo (P2_DEMO.ZIP) was incorrectly claiming it was
+   built for a P2_EVAL board (in the CATALYST.ENV file, as displayed by the 
+   'set' command). It now says it was built for the P2_CUSTOM platform.
+   Affected the Propller 2 only.

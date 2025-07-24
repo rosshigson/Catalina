@@ -297,20 +297,20 @@ _TX8_MULTI_MODE = %0000
 ' VGA constants
 ' =============
 
-_VGA_BASE_PIN = 0
+_VGA_BASE_PIN = 16
 
 ' USB constants
 ' =============
 
-_USB_BASE_PIN = 8
+_USB_BASE_PIN = 24
 
 ' Hyper Flash / Hyper RAM constants
 ' =================================
 
 ' Base pin and reset pin mask
-HYPER_BASE_PIN   = 16 ' If you change this, it may be required to change these:
+HYPER_BASE_PIN   = 0 ' If you change this, it may be required to change these:
 HYPER_RST_A_MASK = 1<<(HYPER_BASE_PIN+15)           ' if HYPER_BASE_PIN < 32
-HYPER_RST_B_MASK = 0' 1 <<(HYPER_BASE_PIN+15-32)    ' if HYPER_BASE_PIN >= 32
+HYPER_RST_B_MASK = 0 ' 1<<(HYPER_BASE_PIN+15-32)    ' if HYPER_BASE_PIN >= 32
 
 ' RAM size (number of address bits)
 HYPER_RAM_SIZE   = 24 ' 16Mb Hyper RAM
@@ -321,15 +321,14 @@ HYPER_RAM_ADDR   = $0000_0000 ' 16Mb starting at 0
 HYPER_FLASH_ADDR = $0200_0000 ' 32Mb starting on 32Mb boundary
 
 ' RAM options
-HYPER_FASTREAD   = 1 ' 0 disables, 1 enables
+HYPER_FASTREAD   = 0 ' 0 disables, 1 enables
 HYPER_FASTWRITE  = 0 ' 0 disables, 1 enables
 HYPER_UNREGCLK   = 0 ' 0 disables, 1 enables
 
 ' RAM latency, burst size and delay
 HYPER_LATENCY_RAM   = 6
 HYPER_BURST_RAM     = $0280
-HYPER_DELAY_RAM     = 9
-
+HYPER_DELAY_RAM     = 10 ' 7 for <100Mhz, 8 or 9 for < 100-180Mhz, 10 for 180-260Mhz, 11 for > 260Mhz
 HYPER_LATENCY_FLASH = 16
 HYPER_BURST_FLASH   = $FFF0
 HYPER_DELAY_FLASH   = 8
@@ -350,7 +349,7 @@ PSRAM_MAX_CS_LOW_USEC = 8
 
 ' burst size and delay
 PSRAM_MAXBURST = 512
-PSRAM_DELAY = 8
+PSRAM_DELAY = 10 ' 8 for <150Mhz, 9 or 10 for 150Mhz-260Mhz, 11 for >260Mhz
 
 ' optional FLAGS for driver
 PSRAM_OPTIONS = 0

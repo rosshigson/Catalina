@@ -1,7 +1,7 @@
 This file describes Catalina's support for PSRAM. However, there is not 
 currently a separate add-on board for PSRAM - the Parallax Hyper RAM board 
 is supported by another set of configuration files (for details of that 
-support, see the file HYPER_README.TXT).
+support, see the file HYPER.TXT).
 
 The only hardware currently supported by these PSRAM configuration files is 
 the PSRAM that is included on some Parallax P2 EDGE boards (specifically, the 

@@ -124,6 +124,9 @@
 --
 -- version 8.7   - if -c and -q are both specified, -q is ignored.
 --
+-- version 8.8   - add -Q option (or -C QUICKFORCE) to force Quick Build 
+--                 even if the target exists.
+--
 
 require "os"
 require "io"
@@ -132,7 +135,7 @@ require "string"
 require "propeller"
 
 -- configuration parameters and default values
-CATALINA_VERSION = "8.7"
+CATALINA_VERSION = "8.8"
 LCCDIR           = "/";
 CATALINA_TARGET  = LCCDIR .. "target"
 CATALINA_LIBRARY = LCCDIR .. "lib"
@@ -185,6 +188,7 @@ SAVE_NAME        = "____CALL.___"
 untidy     = nil;
 verbose    = nil;
 quickbuild = nil;
+quickforce = nil;
 diagnose   = nil;
 p2_rev_a   = nil;
 asm_only   = nil;
@@ -274,6 +278,7 @@ function print_help()
    print("          -p ver     Propeller Hardware Version");
    print("          -P addr    address for Read-Write segments");
    print("          -q         enable quick build (re-use any existing target files)");
+   print("          -Q         force quick build (rebuild target files)");
    print("          -R addr    address for Read-Only segments");
    print("          -S         compile to assembly code (do not bind)");
    print("          -t name    name of dedicated target to use");
@@ -500,9 +505,10 @@ function decode_arguments()
       elseif (string.sub(arg[i],1,2) == "-S") 
       or (string.sub(arg[i],1,2) == "-c") then
         asm_only = 1;
-        if quickbuild then
+        if quickbuild or quickforce then
           quickbuild = nil;
-          print_if_verbose("-c overrides quickbuild (-q ignored)");
+          quickforce = nil;
+          print_if_verbose("-c overrides quickbuild (-q and -Q ignored)");
         end
         print_if_diagnose("asm_only = " .. blank_if_nil(asm_only));
       elseif (string.sub(arg[i],1,2) == "-n") then
@@ -655,6 +661,14 @@ function decode_arguments()
           quickbuild = 1;
           addCsym("QUICKBUILD");
           print_if_diagnose("quickbuild = " .. blank_if_nil(quickbuild));
+        end
+      elseif (string.sub(arg[i],1,2) == "-Q") then
+        if asm_only then
+          print_if_verbose("-c overrides quickbuild (-Q ignored)");
+        else
+          quickforce = 1;
+          addCsym("QUICKFORCE");
+          print_if_diagnose("quickforce = " .. blank_if_nil(quickforce));
         end
       elseif (string.sub(arg[i],1,2) == "-R") then
         if #arg[i] == 2 then
@@ -811,6 +825,9 @@ function decode_if_special(Csym)
   elseif Csym == "QUICKBUILD" then
     quickbuild = 1;
     print_if_diagnose("quickbuild = " .. quickbuild);
+  elseif Csym == "QUICKFORCE" then
+    quickforce = 1;
+    print_if_diagnose("quickforce = " .. quickforce);
   elseif Csym == "COMPACT" then
     if layout and layout ~= 8 then
       -- cannot use symbol to change layouts
@@ -1143,7 +1160,9 @@ function file_exists(name)
 end
 
 -- generate the following commands to assemble the target ...
--- if quickbuild and a target exists, use it - otherwise generate commands like ... 
+-- if quickforce, build the target even if one already exists, otherwise
+-- if quickbuild and a target exists, use it, otherwise rebuild it
+-- rebuilding the target uses commands like ... 
 --   spp -I/ -I/include -I/target/p2 -Dlibci -DSMALL -DP2 /target/p2/xmmdef.s xmmdef.s
 --   p2asm -v33 xmmdef.s
 -- or
@@ -1155,13 +1174,13 @@ function generate_assemble_target(cmd)
   local pasm = PASM_COMMAND;
   local strip = STRIP_COMMAND .. target_file() .. PASM_SUFFIX;
   if file_exists(target_file() .. BIN_SUFFIX) then
-    if quickbuild then
+    if quickbuild and not quickforce then
       print_info("Using existing target " .. target_file() .. BIN_SUFFIX);
       return;
     end
   end
-  if quickbuild then
-    print_info("No existing target - rebuilding " .. target_file() .. BIN_SUFFIX);
+  if quickbuild or quickforce then
+    print_info("Building target " .. target_file() .. BIN_SUFFIX);
   end
   spp = spp .. '-I' .. LCCDIR .. ' ' 
   .. '-I' .. target_dir() .. ' ' 
@@ -1200,7 +1219,7 @@ function generate_assemble_output(cmd)
   spp = SPP_COMMAND .. '-I' .. LCCDIR .. ' ' 
   .. '-I' .. target_dir() .. ' ' 
   .. spp_define_list();
-  if quickbuild or (layout == 2) or (layout == 5) then
+  if quickbuild or quickforce or (layout == 2) or (layout == 5) then
     spp = spp .. DEFAULT_BIND .. ' '
   else
     spp = spp .. target_name() .. TARGET_SUFFIX .. ' '
@@ -1311,6 +1330,9 @@ function generate_program_build(cmd)
   end
   if quickbuild then
      build = build .. '-q '
+  end
+  if quickforce then
+     build = build .. '-Q '
   end
   build = build .. '-p2 '
      .. '-t' .. target .. ' '
@@ -1559,14 +1581,15 @@ if Fcount > 0 or Ocount > 0 then
     generate_bind(cmd);
     generate_assemble_output(cmd);
   end
-  if quickbuild or (layout == 2) or (layout == 5) then
+  if quickbuild or quickforce or (layout == 2) or (layout == 5) then
     generate_assemble_target(cmd)
     generate_program_build(cmd);
   end
   if not untidy then
     generate_post_clean(cmd);
   end
-  if not quickbuild and not untidy and (layout == 2 or layout == 5) then
+  if not quickbuild and not quickforce and not untidy 
+  and (layout == 2 or layout == 5) then
     generate_post_xmm_clean(cmd);
   end
   if not asm_only and not suppress then

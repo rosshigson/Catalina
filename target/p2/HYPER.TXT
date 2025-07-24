@@ -1,5 +1,8 @@
-.tis file describes Catalina's support for the Parallax HyperFlash & HyperRAM 
-add-on board (specifically, the 64004-ES).
+This file describes Catalina's support for the Parallax HyperFlash & HyperRAM 
+add-on board (specifically, the 64004-ES). This board is supported on both the
+P2 Evaluation board and P2 Edge board (with or without PSRAM of its own - but
+note that the PSRAM on the P2 Edge is supported by a DIFFERENT set of files - 
+see PSRAM.TXT for details).
 
 The relevant files in the target\p2 directory are:
 
@@ -16,7 +19,7 @@ P2EDGE.inc titled "Hyper Flash / Hyper RAM constants".
 
 The default base pin definitions depend on the board:
 
-   P2_EDGE - base pin is 16
+   P2_EDGE - base pin is 0
    P2_EVAL - base pin is 32
 
 Using Hyper RAM is enabled simply by linking with the hyper library. There is
@@ -41,7 +44,7 @@ add-on board as follows:
 This program can also be compiled as an XMM program to execute from Hyper RAM
 simply by adding -C LARGE or -C SMALL on the command line. For example:
 
-   catalina -p2 -lpsram -lci ex_psram.c -C P2_EVAL -C LARGE
+   catalina -p2 -lhyper -lci ex_hyper.c -C P2_EVAL -C LARGE
 
 Note that if this program is compiled as an XMM program for the P2_EDGE, 
 then -C HYPER will need to be added, to tell the P2_EDGE to use Hyper RAM

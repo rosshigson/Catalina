@@ -77,9 +77,9 @@ else
 fi
 
 echo ""
-echo "=============="
-echo "Building Demos"
-echo "=============="
+echo "============="
+echo "Building time"
+echo "============="
 echo ""
 
 # save value of CATALINA_DEFINE

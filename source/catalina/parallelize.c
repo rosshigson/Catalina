@@ -42,6 +42,8 @@
  *
  * version 8.7  - just update version number.
  *
+ * version 8.8  - just update version number.
+ *
  */
 
 #include <ctype.h>
@@ -52,7 +54,7 @@
 
 #define DO_EXECUTE         1 // 0 for debugging (output only, no execute)
 
-#define VERSION            "8.7" 
+#define VERSION            "8.8" 
 
 #ifdef WIN32_PATHS         /* define this on the command line for Windows */
 #define PATH_SEP           "\\"

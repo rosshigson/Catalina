@@ -87,6 +87,27 @@ ifeq (P2_CUSTOM, $(findstring P2_CUSTOM, $(CATALINA_OPTIONS)))
 endif
 
 
+# see if HYPER is in CATALINA_DEFINE
+ifeq (HYPER, $(findstring HYPER, $(CATALINA_DEFINE)))
+	HYPER = YES
+endif
+
+# see if HYPER is in CATALINA_OPTIONS
+ifeq (HYPER, $(findstring HYPER, $(CATALINA_OPTIONS)))
+	HYPER = YES
+endif
+
+# see if PSRAM is in CATALINA_DEFINE
+ifeq (PSRAM, $(findstring PSRAM, $(CATALINA_DEFINE)))
+	PSRAM = YES
+endif
+
+# see if PSRAM is in CATALINA_OPTIONS
+ifeq (PSRAM, $(findstring PSRAM, $(CATALINA_OPTIONS)))
+	PSRAM = YES
+endif
+
+
 # see if NO_LINENOISE is in CATALINA_DEFINE
 ifeq (NO_LINENOISE, $(findstring NO_LINENOISE, $(CATALINA_DEFINE)))
 	NO_LINENOISE = YES
@@ -114,16 +135,28 @@ else
 	CFLAGS_UTILITIES += -C COMPACT
 endif
 
-ifeq ($(P2_EDGE), YES)
-	CFLAGS_CATALYST += -lpsram
-endif
-
 ifeq ($(P2_EVAL), YES)
+ifneq ($(HYPER), YES)
+ifneq ($(PSRAM), YES)
+  HYPER = YES
+endif
+endif
+endif
+
+ifeq ($(P2_EDGE), YES)
+ifneq ($(HYPER), YES)
+ifneq ($(PSRAM), YES)
+  PSRAM = YES
+endif
+endif
+endif
+
+ifeq ($(HYPER), YES)
 	CFLAGS_CATALYST += -lhyper
 endif
 
-ifeq ($(P2_CUSTOM), YES)
-	CFLAGS_CATALYST += -lhyper
+ifeq ($(PSRAM), YES)
+	CFLAGS_CATALYST += -lpsram
 endif
 
 # set up options specific to Windows or Linux

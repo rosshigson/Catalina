@@ -4,7 +4,7 @@
  * This section contains user configurable options.
  *
  */
-#define CATALYST_VER "Catalyst 8.7"   // Banner string
+#define CATALYST_VER "Catalyst 8.8"   // Banner string
 #define AUTOFILE     "AUTOEXEC.TXT"   // auto-execution file if AUTOFILE
 #define ONCEFILE     "EXECONCE.TXT"   // auto-execution file if ONCEFILE
 #define MOREFILE     "____MORE.___"   // auto-execution more file if ONCEFILE

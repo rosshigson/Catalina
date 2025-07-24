@@ -78,9 +78,9 @@ else
 fi
 
 echo ""
-echo "=============="
-echo "Building Demos"
-echo "=============="
+echo "================"
+echo "Building fymodem"
+echo "================"
 echo ""
 
 make -B all

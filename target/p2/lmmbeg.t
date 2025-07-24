@@ -8,7 +8,7 @@ CON
 
 #include <constant.inc>
 
-#ifdef QUICKBUILD
+#if defined(QUICKBUILD) || defined(QUICKFORCE)
 
 ' Include the LMM layout information ...
 
@@ -114,7 +114,7 @@ LMM_force       = $144
 
 #endif
 
-#ifndef QUICKBUILD
+#if !defined(QUICKBUILD) && !defined(QUICKFORCE)
 
 ' NOT a Quick Build
 

@@ -1,0 +1,28 @@
+#!/bin/bash
+#set -x
+
+echo ""
+echo "   ======================"
+echo "   Building Local Library"
+echo "   ======================"
+echo ""
+
+# save current CATALINA_DEFINE
+TMP_DEFINE2=$CATALINA_DEFINE
+# clear CATALINA_DEFINE
+CATALINA_DEFINE=
+
+cd local
+./build_all $1 $2
+./copy_all ../image/
+cd ..
+
+# restore CATALINA_DEFINE after building library
+CATALINA_DEFINE=$TMP_DEFINE2
+
+echo ""
+echo "===="
+echo "Done"
+echo "===="
+echo ""
+

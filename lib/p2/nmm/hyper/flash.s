@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_flashC_og_L000005 ' <symbol:flashCog>
+C_spu0_68805081_hyper_setF_lashA_ccess_L000002_flashC_og_L000005 ' <symbol:flashCog>
  long -1
 
 ' Catalina Code
@@ -19,7 +19,7 @@ C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_flashC_og_L000005 ' <symbol:flash
 DAT ' code segment
 
  alignl ' align long
-C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002 ' <symbol:hyper_setFlashAccess>
+C_spu0_68805081_hyper_setF_lashA_ccess_L000002 ' <symbol:hyper_setFlashAccess>
  calld PA,#NEWF
  calld PA,#PSHM
  long $fa8000 ' save registers
@@ -35,79 +35,79 @@ C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002 ' <symbol:hyper_setFlashAccess>
  long @C_hyper_getF_lashS_ize ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
  cmps r0,  #0 wcz
- if_ae jmp #\C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_9 ' GEI4
+ if_ae jmp #\C_spu0_68805081_hyper_setF_lashA_ccess_L000002_9 ' GEI4
  mov r0, r17 ' CVI, CVU or LOAD
- jmp #\@C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_3 ' JUMPV addrg
-C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_8
+ jmp #\@C_spu0_68805081_hyper_setF_lashA_ccess_L000002_3 ' JUMPV addrg
+C_spu0_68805081_hyper_setF_lashA_ccess_L000002_8
  mov r2, #1 ' reg ARG coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C__waitms ' CALL addrg
-C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_9
+C_spu0_68805081_hyper_setF_lashA_ccess_L000002_9
  mov r2, r19 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C__locktry ' CALL addrg
  cmps r0,  #0 wz
- if_z jmp #\C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_8 ' EQI4
+ if_z jmp #\C_spu0_68805081_hyper_setF_lashA_ccess_L000002_8 ' EQI4
  cmps r21,  #0 wz
- if_z jmp #\C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_11 ' EQI4
- mov r22, ##@C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_flashC_og_L000005
+ if_z jmp #\C_spu0_68805081_hyper_setF_lashA_ccess_L000002_11 ' EQI4
+ mov r22, ##@C_spu0_68805081_hyper_setF_lashA_ccess_L000002_flashC_og_L000005
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
- if_ae jmp #\C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_13 ' GEI4
+ if_ae jmp #\C_spu0_68805081_hyper_setF_lashA_ccess_L000002_13 ' GEI4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C__cogid ' CALL addrg
- wrlong r0, ##@C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_flashC_og_L000005 ' ASGNI4 addrg reg
- jmp #\@C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_12 ' JUMPV addrg
-C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_13
+ wrlong r0, ##@C_spu0_68805081_hyper_setF_lashA_ccess_L000002_flashC_og_L000005 ' ASGNI4 addrg reg
+ jmp #\@C_spu0_68805081_hyper_setF_lashA_ccess_L000002_12 ' JUMPV addrg
+C_spu0_68805081_hyper_setF_lashA_ccess_L000002_13
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C__cogid ' CALL addrg
- mov r20, ##@C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_flashC_og_L000005
+ mov r20, ##@C_spu0_68805081_hyper_setF_lashA_ccess_L000002_flashC_og_L000005
  rdlong r20, r20 ' reg <- INDIRI4 addrg
  cmps r20, r0 wz
- if_z jmp #\C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_12 ' EQI4
+ if_z jmp #\C_spu0_68805081_hyper_setF_lashA_ccess_L000002_12 ' EQI4
  mov r2, r19 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C__lockclr ' CALL addrg
  mov r0, ##-5 ' RET con
- jmp #\@C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_3 ' JUMPV addrg
-C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_11
- mov r22, ##@C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_flashC_og_L000005
+ jmp #\@C_spu0_68805081_hyper_setF_lashA_ccess_L000002_3 ' JUMPV addrg
+C_spu0_68805081_hyper_setF_lashA_ccess_L000002_11
+ mov r22, ##@C_spu0_68805081_hyper_setF_lashA_ccess_L000002_flashC_og_L000005
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
- if_ae jmp #\C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_17 ' GEI4
+ if_ae jmp #\C_spu0_68805081_hyper_setF_lashA_ccess_L000002_17 ' GEI4
  mov r2, r19 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C__lockclr ' CALL addrg
  mov r0, #0 ' reg <- coni
- jmp #\@C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_3 ' JUMPV addrg
-C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_17
+ jmp #\@C_spu0_68805081_hyper_setF_lashA_ccess_L000002_3 ' JUMPV addrg
+C_spu0_68805081_hyper_setF_lashA_ccess_L000002_17
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C__cogid ' CALL addrg
- mov r20, ##@C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_flashC_og_L000005
+ mov r20, ##@C_spu0_68805081_hyper_setF_lashA_ccess_L000002_flashC_og_L000005
  rdlong r20, r20 ' reg <- INDIRI4 addrg
  cmps r20, r0 wz
- if_nz jmp #\C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_19 ' NEI4
+ if_nz jmp #\C_spu0_68805081_hyper_setF_lashA_ccess_L000002_19 ' NEI4
  mov r22, ##-1 ' reg <- con
- wrlong r22, ##@C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_flashC_og_L000005 ' ASGNI4 addrg reg
- jmp #\@C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_20 ' JUMPV addrg
-C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_19
+ wrlong r22, ##@C_spu0_68805081_hyper_setF_lashA_ccess_L000002_flashC_og_L000005 ' ASGNI4 addrg reg
+ jmp #\@C_spu0_68805081_hyper_setF_lashA_ccess_L000002_20 ' JUMPV addrg
+C_spu0_68805081_hyper_setF_lashA_ccess_L000002_19
  mov r2, r19 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C__lockclr ' CALL addrg
  mov r0, ##-6 ' RET con
- jmp #\@C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_3 ' JUMPV addrg
-C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_20
-C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_12
+ jmp #\@C_spu0_68805081_hyper_setF_lashA_ccess_L000002_3 ' JUMPV addrg
+C_spu0_68805081_hyper_setF_lashA_ccess_L000002_20
+C_spu0_68805081_hyper_setF_lashA_ccess_L000002_12
  cmps r21,  #0 wz
- if_z jmp #\C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_22 ' EQI4
+ if_z jmp #\C_spu0_68805081_hyper_setF_lashA_ccess_L000002_22 ' EQI4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C__cogid ' CALL addrg
@@ -116,10 +116,10 @@ C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_12
  mov r20, ##2048 ' reg <- con
  mov r15, r22 ' ADDI/P
  adds r15, r20 ' ADDI/P (3)
- jmp #\@C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_23 ' JUMPV addrg
-C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_22
+ jmp #\@C_spu0_68805081_hyper_setF_lashA_ccess_L000002_23 ' JUMPV addrg
+C_spu0_68805081_hyper_setF_lashA_ccess_L000002_22
  mov r15, #0 ' reg <- coni
-C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_23
+C_spu0_68805081_hyper_setF_lashA_ccess_L000002_23
  mov r2, r15 ' CVI, CVU or LOAD
  mov r3, ##$fff8f7ff ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -130,14 +130,14 @@ C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_23
  add SP, #8 ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
  cmps r17,  #0 wcz
- if_ae jmp #\C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_24 ' GEI4
+ if_ae jmp #\C_spu0_68805081_hyper_setF_lashA_ccess_L000002_24 ' GEI4
  mov r2, r19 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C__lockclr ' CALL addrg
-C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_24
+C_spu0_68805081_hyper_setF_lashA_ccess_L000002_24
  mov r0, r17 ' CVI, CVU or LOAD
-C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002_3
+C_spu0_68805081_hyper_setF_lashA_ccess_L000002_3
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -155,7 +155,7 @@ C_hyper_lockF_lashA_ccess ' <symbol:hyper_lockFlashAccess>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002
+ long @C_spu0_68805081_hyper_setF_lashA_ccess_L000002
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
 ' C_hyper_lockF_lashA_ccess_26 ' (symbol refcount = 0)
@@ -176,7 +176,7 @@ C_hyper_unlockF_lashA_ccess ' <symbol:hyper_unlockFlashAccess>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s80g_686cc56a_hyper_setF_lashA_ccess_L000002
+ long @C_spu0_68805081_hyper_setF_lashA_ccess_L000002
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
 ' C_hyper_unlockF_lashA_ccess_27 ' (symbol refcount = 0)
@@ -253,7 +253,7 @@ C_hyper_writeR_eg ' <symbol:hyper_writeReg>
 
 
  alignl ' align long
-C_s80g2_686cc56a_erase_L000030 ' <symbol:erase>
+C_spu02_68805081_erase_L000030 ' <symbol:erase>
  calld PA,#NEWF
  sub SP, #16
  calld PA,#PSHM
@@ -272,14 +272,14 @@ C_s80g2_686cc56a_erase_L000030 ' <symbol:erase>
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #0 wcz
- if_ae jmp #\C_s80g2_686cc56a_erase_L000030_32 ' GEI4
+ if_ae jmp #\C_spu02_68805081_erase_L000030_32 ' GEI4
  mov r0, ##-22 ' RET con
- jmp #\@C_s80g2_686cc56a_erase_L000030_31 ' JUMPV addrg
-C_s80g2_686cc56a_erase_L000030_32
+ jmp #\@C_spu02_68805081_erase_L000030_31 ' JUMPV addrg
+C_spu02_68805081_erase_L000030_32
  mov r22, ##262144 ' reg <- con
  and r22, r21 ' BANDI/U (2)
  cmps r22,  #0 wz
- if_z jmp #\C_s80g2_686cc56a_erase_L000030_34 ' EQI4
+ if_z jmp #\C_spu02_68805081_erase_L000030_34 ' EQI4
  mov r22, r23 ' CVI, CVU or LOAD
  mov r20, FP
  sub r20, #-(-8) ' reg <- addrli
@@ -294,12 +294,12 @@ C_s80g2_686cc56a_erase_L000030_32
  mov RI, FP
  sub RI, #-(-16)
  wrlong r22, RI ' ASGNI4 addrli reg
- jmp #\@C_s80g2_686cc56a_erase_L000030_35 ' JUMPV addrg
-C_s80g2_686cc56a_erase_L000030_34
+ jmp #\@C_spu02_68805081_erase_L000030_35 ' JUMPV addrg
+C_spu02_68805081_erase_L000030_34
  mov r22, ##268435456 ' reg <- con
  and r22, r21 ' BANDI/U (2)
  cmps r22,  #0 wz
- if_z jmp #\C_s80g2_686cc56a_erase_L000030_36 ' EQI4
+ if_z jmp #\C_spu02_68805081_erase_L000030_36 ' EQI4
  mov r22, ##1365 ' reg <- con
  mov RI, FP
  sub RI, #-(-12)
@@ -308,16 +308,16 @@ C_s80g2_686cc56a_erase_L000030_34
  mov RI, FP
  sub RI, #-(-16)
  wrlong r22, RI ' ASGNI4 addrli reg
- jmp #\@C_s80g2_686cc56a_erase_L000030_37 ' JUMPV addrg
-C_s80g2_686cc56a_erase_L000030_36
+ jmp #\@C_spu02_68805081_erase_L000030_37 ' JUMPV addrg
+C_spu02_68805081_erase_L000030_36
  mov r0, ##-6 ' RET con
- jmp #\@C_s80g2_686cc56a_erase_L000030_31 ' JUMPV addrg
-C_s80g2_686cc56a_erase_L000030_37
-C_s80g2_686cc56a_erase_L000030_35
+ jmp #\@C_spu02_68805081_erase_L000030_31 ' JUMPV addrg
+C_spu02_68805081_erase_L000030_37
+C_spu02_68805081_erase_L000030_35
  mov r22, ##262144 ' reg <- con
  and r22, r21 ' BANDI/U (2)
  cmps r22,  #0 wz
- if_z jmp #\C_s80g2_686cc56a_erase_L000030_38 ' EQI4
+ if_z jmp #\C_spu02_68805081_erase_L000030_38 ' EQI4
  mov r2, #51 ' reg ARG coni
  mov r22, FP
  sub r22, #-(-12) ' reg <- addrli
@@ -335,10 +335,10 @@ C_s80g2_686cc56a_erase_L000030_35
  add SP, #8 ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
  cmps r0,  #0 wz
- if_z jmp #\C_s80g2_686cc56a_erase_L000030_40 ' EQI4
+ if_z jmp #\C_spu02_68805081_erase_L000030_40 ' EQI4
  mov r0, r17 ' CVI, CVU or LOAD
- jmp #\@C_s80g2_686cc56a_erase_L000030_31 ' JUMPV addrg
-C_s80g2_686cc56a_erase_L000030_40
+ jmp #\@C_spu02_68805081_erase_L000030_31 ' JUMPV addrg
+C_spu02_68805081_erase_L000030_40
  mov r2, #25 ' reg ARG coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
@@ -353,7 +353,7 @@ C_s80g2_686cc56a_erase_L000030_40
  add SP, #8 ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
  cmps r0,  #0 wz
- if_nz jmp #\C_s80g2_686cc56a_erase_L000030_42 ' NEI4
+ if_nz jmp #\C_spu02_68805081_erase_L000030_42 ' NEI4
  mov r2, #0 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -362,26 +362,26 @@ C_s80g2_686cc56a_erase_L000030_40
  long @C_hyper_readR_eg
  add SP, #4 ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
-C_s80g2_686cc56a_erase_L000030_42
+C_spu02_68805081_erase_L000030_42
  cmps r17,  #0 wcz
- if_ae jmp #\C_s80g2_686cc56a_erase_L000030_44 ' GEI4
+ if_ae jmp #\C_spu02_68805081_erase_L000030_44 ' GEI4
  mov r0, r17 ' CVI, CVU or LOAD
- jmp #\@C_s80g2_686cc56a_erase_L000030_31 ' JUMPV addrg
-C_s80g2_686cc56a_erase_L000030_44
+ jmp #\@C_spu02_68805081_erase_L000030_31 ' JUMPV addrg
+C_spu02_68805081_erase_L000030_44
  mov r22, r17
  and r22, #128 ' BANDI4 coni
  cmps r22,  #0 wz
- if_nz jmp #\C_s80g2_686cc56a_erase_L000030_46 ' NEI4
+ if_nz jmp #\C_spu02_68805081_erase_L000030_46 ' NEI4
  mov r0, ##-20 ' RET con
- jmp #\@C_s80g2_686cc56a_erase_L000030_31 ' JUMPV addrg
-C_s80g2_686cc56a_erase_L000030_46
+ jmp #\@C_spu02_68805081_erase_L000030_31 ' JUMPV addrg
+C_spu02_68805081_erase_L000030_46
  mov r22, r17
  and r22, #32 ' BANDI4 coni
  cmps r22,  #0 wz
- if_nz jmp #\C_s80g2_686cc56a_erase_L000030_48 ' NEI4
+ if_nz jmp #\C_spu02_68805081_erase_L000030_48 ' NEI4
  mov r0, #0 ' reg <- coni
- jmp #\@C_s80g2_686cc56a_erase_L000030_31 ' JUMPV addrg
-C_s80g2_686cc56a_erase_L000030_48
+ jmp #\@C_spu02_68805081_erase_L000030_31 ' JUMPV addrg
+C_spu02_68805081_erase_L000030_48
  mov r2, #113 ' reg ARG coni
  mov r3, ##1365 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -390,7 +390,7 @@ C_s80g2_686cc56a_erase_L000030_48
  calld PA,#CALA
  long @C_hyper_writeR_eg
  add SP, #8 ' CALL addrg
-C_s80g2_686cc56a_erase_L000030_38
+C_spu02_68805081_erase_L000030_38
  mov r2, #170 ' reg ARG coni
  mov r3, ##1365 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -402,7 +402,7 @@ C_s80g2_686cc56a_erase_L000030_38
  mov r22, r0 ' CVI, CVU or LOAD
  mov r17, r22 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_nz jmp #\C_s80g2_686cc56a_erase_L000030_56 ' NEI4
+ if_nz jmp #\C_spu02_68805081_erase_L000030_56 ' NEI4
  mov r2, #85 ' reg ARG coni
  mov r3, ##682 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -414,7 +414,7 @@ C_s80g2_686cc56a_erase_L000030_38
  mov r22, r0 ' CVI, CVU or LOAD
  mov r17, r22 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_nz jmp #\C_s80g2_686cc56a_erase_L000030_56 ' NEI4
+ if_nz jmp #\C_spu02_68805081_erase_L000030_56 ' NEI4
  mov r2, #128 ' reg ARG coni
  mov r3, ##1365 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -426,7 +426,7 @@ C_s80g2_686cc56a_erase_L000030_38
  mov r22, r0 ' CVI, CVU or LOAD
  mov r17, r22 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_nz jmp #\C_s80g2_686cc56a_erase_L000030_56 ' NEI4
+ if_nz jmp #\C_spu02_68805081_erase_L000030_56 ' NEI4
  mov r2, #170 ' reg ARG coni
  mov r3, ##1365 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -438,7 +438,7 @@ C_s80g2_686cc56a_erase_L000030_38
  mov r22, r0 ' CVI, CVU or LOAD
  mov r17, r22 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_nz jmp #\C_s80g2_686cc56a_erase_L000030_56 ' NEI4
+ if_nz jmp #\C_spu02_68805081_erase_L000030_56 ' NEI4
  mov r2, #85 ' reg ARG coni
  mov r3, ##682 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -450,7 +450,7 @@ C_s80g2_686cc56a_erase_L000030_38
  mov r22, r0 ' CVI, CVU or LOAD
  mov r17, r22 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_nz jmp #\C_s80g2_686cc56a_erase_L000030_56 ' NEI4
+ if_nz jmp #\C_spu02_68805081_erase_L000030_56 ' NEI4
  mov RI, FP
  sub RI, #-(-16)
  rdlong r2, RI ' reg ARG INDIR ADDRLi
@@ -465,11 +465,11 @@ C_s80g2_686cc56a_erase_L000030_38
  add SP, #8 ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
  cmps r0,  #0 wz
- if_z jmp #\C_s80g2_686cc56a_erase_L000030_50 ' EQI4
-C_s80g2_686cc56a_erase_L000030_56
+ if_z jmp #\C_spu02_68805081_erase_L000030_50 ' EQI4
+C_spu02_68805081_erase_L000030_56
  mov r0, r17 ' CVI, CVU or LOAD
- jmp #\@C_s80g2_686cc56a_erase_L000030_31 ' JUMPV addrg
-C_s80g2_686cc56a_erase_L000030_50
+ jmp #\@C_spu02_68805081_erase_L000030_31 ' JUMPV addrg
+C_spu02_68805081_erase_L000030_50
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C__cnt ' CALL addrg
@@ -479,7 +479,7 @@ C_s80g2_686cc56a_erase_L000030_50
  mov RI, FP
  sub RI, #-(-20)
  wrlong r22, RI ' ASGNI4 addrli reg
-C_s80g2_686cc56a_erase_L000030_57
+C_spu02_68805081_erase_L000030_57
  mov r2, #112 ' reg ARG coni
  mov r3, ##1365 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -490,7 +490,7 @@ C_s80g2_686cc56a_erase_L000030_57
  add SP, #8 ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
  cmps r0,  #0 wz
- if_nz jmp #\C_s80g2_686cc56a_erase_L000030_60 ' NEI4
+ if_nz jmp #\C_spu02_68805081_erase_L000030_60 ' NEI4
  mov r2, #0 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -499,12 +499,12 @@ C_s80g2_686cc56a_erase_L000030_57
  long @C_hyper_readR_eg
  add SP, #4 ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
-C_s80g2_686cc56a_erase_L000030_60
+C_spu02_68805081_erase_L000030_60
  cmps r17,  #0 wcz
- if_ae jmp #\C_s80g2_686cc56a_erase_L000030_62 ' GEI4
+ if_ae jmp #\C_spu02_68805081_erase_L000030_62 ' GEI4
  mov r0, r17 ' CVI, CVU or LOAD
- jmp #\@C_s80g2_686cc56a_erase_L000030_31 ' JUMPV addrg
-C_s80g2_686cc56a_erase_L000030_62
+ jmp #\@C_spu02_68805081_erase_L000030_31 ' JUMPV addrg
+C_spu02_68805081_erase_L000030_62
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C__cnt ' CALL addrg
@@ -526,7 +526,7 @@ C_s80g2_686cc56a_erase_L000030_62
   allowi
  #endif
  cmp r15, r0 wcz 
- if_be jmp #\C_s80g2_686cc56a_erase_L000030_64 ' LEU4
+ if_be jmp #\C_spu02_68805081_erase_L000030_64 ' LEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C__clockfreq ' CALL addrg
@@ -575,27 +575,27 @@ C_s80g2_686cc56a_erase_L000030_62
  sub r22, r1 ' SUBU (3)
  add r22, r20 ' ADDU (2)
  mov r13, r22 ' CVI, CVU or LOAD
-C_s80g2_686cc56a_erase_L000030_64
+C_spu02_68805081_erase_L000030_64
  mov r2, #10 ' reg ARG coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C__waitms ' CALL addrg
-' C_s80g2_686cc56a_erase_L000030_58 ' (symbol refcount = 0)
+' C_spu02_68805081_erase_L000030_58 ' (symbol refcount = 0)
  mov r22, r17
  and r22, #128 ' BANDI4 coni
  cmps r22,  #0 wz
- if_nz jmp #\C_s80g2_686cc56a_erase_L000030_66 ' NEI4
+ if_nz jmp #\C_spu02_68805081_erase_L000030_66 ' NEI4
  mov r22, r19 ' CVI, CVU or LOAD
  cmp r11, r22 wcz 
- if_be jmp #\C_s80g2_686cc56a_erase_L000030_57 ' LEU4
-C_s80g2_686cc56a_erase_L000030_66
+ if_be jmp #\C_spu02_68805081_erase_L000030_57 ' LEU4
+C_spu02_68805081_erase_L000030_66
  mov r22, r17
  and r22, #128 ' BANDI4 coni
  cmps r22,  #0 wz
- if_nz jmp #\C_s80g2_686cc56a_erase_L000030_67 ' NEI4
+ if_nz jmp #\C_spu02_68805081_erase_L000030_67 ' NEI4
  mov r0, ##-20 ' RET con
- jmp #\@C_s80g2_686cc56a_erase_L000030_31 ' JUMPV addrg
-C_s80g2_686cc56a_erase_L000030_67
+ jmp #\@C_spu02_68805081_erase_L000030_31 ' JUMPV addrg
+C_spu02_68805081_erase_L000030_67
  mov r2, #113 ' reg ARG coni
  mov r3, ##1365 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -607,19 +607,19 @@ C_s80g2_686cc56a_erase_L000030_67
  mov r22, r17
  and r22, #32 ' BANDI4 coni
  cmps r22,  #0 wz
- if_z jmp #\C_s80g2_686cc56a_erase_L000030_69 ' EQI4
+ if_z jmp #\C_spu02_68805081_erase_L000030_69 ' EQI4
  mov r22, r17
  and r22, #2 ' BANDI4 coni
  cmps r22,  #0 wz
- if_z jmp #\C_s80g2_686cc56a_erase_L000030_71 ' EQI4
+ if_z jmp #\C_spu02_68805081_erase_L000030_71 ' EQI4
  mov r0, ##-21 ' RET con
- jmp #\@C_s80g2_686cc56a_erase_L000030_31 ' JUMPV addrg
-C_s80g2_686cc56a_erase_L000030_71
+ jmp #\@C_spu02_68805081_erase_L000030_31 ' JUMPV addrg
+C_spu02_68805081_erase_L000030_71
  mov r0, ##-18 ' RET con
- jmp #\@C_s80g2_686cc56a_erase_L000030_31 ' JUMPV addrg
-C_s80g2_686cc56a_erase_L000030_69
+ jmp #\@C_spu02_68805081_erase_L000030_31 ' JUMPV addrg
+C_spu02_68805081_erase_L000030_69
  mov r0, #0 ' reg <- coni
-C_s80g2_686cc56a_erase_L000030_31
+C_spu02_68805081_erase_L000030_31
  calld PA,#POPM ' restore registers
  add SP, #16 ' framesize
  calld PA,#RETF
@@ -709,7 +709,7 @@ C_hyper_eraseF_lash_83
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s80g2_686cc56a_erase_L000030
+ long @C_spu02_68805081_erase_L000030
  add SP, #8 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
  mov r2, r23 ' CVI, CVU or LOAD
@@ -723,7 +723,7 @@ C_hyper_eraseF_lash_73
 
 
  alignl ' align long
-C_s80g3_686cc56a_programF_lashL_ine_L000085 ' <symbol:programFlashLine>
+C_spu03_68805081_programF_lashL_ine_L000085 ' <symbol:programFlashLine>
  calld PA,#NEWF
  calld PA,#PSHM
  long $faa000 ' save registers
@@ -731,42 +731,42 @@ C_s80g3_686cc56a_programF_lashL_ine_L000085 ' <symbol:programFlashLine>
  mov r21, r3 ' reg var <- reg arg
  mov r19, r2 ' reg var <- reg arg
  cmp r19,  #0 wz
- if_nz jmp #\C_s80g3_686cc56a_programF_lashL_ine_L000085_87  ' NEU4
+ if_nz jmp #\C_spu03_68805081_programF_lashL_ine_L000085_87  ' NEU4
  mov r0, #0 ' reg <- coni
- jmp #\@C_s80g3_686cc56a_programF_lashL_ine_L000085_86 ' JUMPV addrg
-C_s80g3_686cc56a_programF_lashL_ine_L000085_87
+ jmp #\@C_spu03_68805081_programF_lashL_ine_L000085_86 ' JUMPV addrg
+C_spu03_68805081_programF_lashL_ine_L000085_87
  mov r22, #0 ' reg <- coni
  mov r20, r23 ' CVI, CVU or LOAD
  and r20, #1 ' BANDU4 coni
  cmp r20, r22 wz
- if_nz jmp #\C_s80g3_686cc56a_programF_lashL_ine_L000085_91  ' NEU4
+ if_nz jmp #\C_spu03_68805081_programF_lashL_ine_L000085_91  ' NEU4
  mov r20, r19
  and r20, #1 ' BANDU4 coni
  cmp r20, r22 wz
- if_z jmp #\C_s80g3_686cc56a_programF_lashL_ine_L000085_89 ' EQU4
-C_s80g3_686cc56a_programF_lashL_ine_L000085_91
+ if_z jmp #\C_spu03_68805081_programF_lashL_ine_L000085_89 ' EQU4
+C_spu03_68805081_programF_lashL_ine_L000085_91
  mov r0, ##-4 ' RET con
- jmp #\@C_s80g3_686cc56a_programF_lashL_ine_L000085_86 ' JUMPV addrg
-C_s80g3_686cc56a_programF_lashL_ine_L000085_89
+ jmp #\@C_spu03_68805081_programF_lashL_ine_L000085_86 ' JUMPV addrg
+C_spu03_68805081_programF_lashL_ine_L000085_89
  mov r22, r23 ' CVI, CVU or LOAD
  and r22, #511 ' BANDU4 coni
  add r22, r19 ' ADDU (2)
  mov r20, ##512 ' reg <- con
  cmp r22, r20 wcz 
- if_be jmp #\C_s80g3_686cc56a_programF_lashL_ine_L000085_92 ' LEU4
+ if_be jmp #\C_spu03_68805081_programF_lashL_ine_L000085_92 ' LEU4
  mov r0, ##-4 ' RET con
- jmp #\@C_s80g3_686cc56a_programF_lashL_ine_L000085_86 ' JUMPV addrg
-C_s80g3_686cc56a_programF_lashL_ine_L000085_92
+ jmp #\@C_spu03_68805081_programF_lashL_ine_L000085_86 ' JUMPV addrg
+C_spu03_68805081_programF_lashL_ine_L000085_92
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_hyper_lockF_lashA_ccess ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
  cmps r0,  #0 wcz
- if_ae jmp #\C_s80g3_686cc56a_programF_lashL_ine_L000085_94 ' GEI4
+ if_ae jmp #\C_spu03_68805081_programF_lashL_ine_L000085_94 ' GEI4
  mov r0, r17 ' CVI, CVU or LOAD
- jmp #\@C_s80g3_686cc56a_programF_lashL_ine_L000085_86 ' JUMPV addrg
-C_s80g3_686cc56a_programF_lashL_ine_L000085_94
+ jmp #\@C_spu03_68805081_programF_lashL_ine_L000085_86 ' JUMPV addrg
+C_spu03_68805081_programF_lashL_ine_L000085_94
  mov r2, #170 ' reg ARG coni
  mov r3, ##1365 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -778,7 +778,7 @@ C_s80g3_686cc56a_programF_lashL_ine_L000085_94
  mov r22, r0 ' CVI, CVU or LOAD
  mov r17, r22 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_nz jmp #\C_s80g3_686cc56a_programF_lashL_ine_L000085_99 ' NEI4
+ if_nz jmp #\C_spu03_68805081_programF_lashL_ine_L000085_99 ' NEI4
  mov r2, #85 ' reg ARG coni
  mov r3, ##682 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -790,7 +790,7 @@ C_s80g3_686cc56a_programF_lashL_ine_L000085_94
  mov r22, r0 ' CVI, CVU or LOAD
  mov r17, r22 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_nz jmp #\C_s80g3_686cc56a_programF_lashL_ine_L000085_99 ' NEI4
+ if_nz jmp #\C_spu03_68805081_programF_lashL_ine_L000085_99 ' NEI4
  mov r2, #160 ' reg ARG coni
  mov r3, ##1365 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -801,15 +801,15 @@ C_s80g3_686cc56a_programF_lashL_ine_L000085_94
  add SP, #8 ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
  cmps r0,  #0 wz
- if_z jmp #\C_s80g3_686cc56a_programF_lashL_ine_L000085_96 ' EQI4
-C_s80g3_686cc56a_programF_lashL_ine_L000085_99
+ if_z jmp #\C_spu03_68805081_programF_lashL_ine_L000085_96 ' EQI4
+C_spu03_68805081_programF_lashL_ine_L000085_99
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_hyper_unlockF_lashA_ccess ' CALL addrg
  mov r0, r17 ' CVI, CVU or LOAD
- jmp #\@C_s80g3_686cc56a_programF_lashL_ine_L000085_86 ' JUMPV addrg
-C_s80g3_686cc56a_programF_lashL_ine_L000085_96
+ jmp #\@C_spu03_68805081_programF_lashL_ine_L000085_86 ' JUMPV addrg
+C_spu03_68805081_programF_lashL_ine_L000085_96
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov r4, r21 ' CVI, CVU or LOAD
@@ -820,20 +820,20 @@ C_s80g3_686cc56a_programF_lashL_ine_L000085_96
  add SP, #8 ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
  cmps r0,  #0 wcz
- if_ae jmp #\C_s80g3_686cc56a_programF_lashL_ine_L000085_100 ' GEI4
+ if_ae jmp #\C_spu03_68805081_programF_lashL_ine_L000085_100 ' GEI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_hyper_unlockF_lashA_ccess ' CALL addrg
  mov r0, r17 ' CVI, CVU or LOAD
- jmp #\@C_s80g3_686cc56a_programF_lashL_ine_L000085_86 ' JUMPV addrg
-C_s80g3_686cc56a_programF_lashL_ine_L000085_100
+ jmp #\@C_spu03_68805081_programF_lashL_ine_L000085_86 ' JUMPV addrg
+C_spu03_68805081_programF_lashL_ine_L000085_100
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C__cnt ' CALL addrg
  mov r13, r0 ' CVI, CVU or LOAD
  mov r15, #0 ' reg <- coni
-C_s80g3_686cc56a_programF_lashL_ine_L000085_102
+C_spu03_68805081_programF_lashL_ine_L000085_102
  mov r2, #112 ' reg ARG coni
  mov r3, ##1365 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -844,7 +844,7 @@ C_s80g3_686cc56a_programF_lashL_ine_L000085_102
  add SP, #8 ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
  cmps r0,  #0 wz
- if_nz jmp #\C_s80g3_686cc56a_programF_lashL_ine_L000085_105 ' NEI4
+ if_nz jmp #\C_spu03_68805081_programF_lashL_ine_L000085_105 ' NEI4
  mov r2, #0 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -853,16 +853,16 @@ C_s80g3_686cc56a_programF_lashL_ine_L000085_102
  long @C_hyper_readR_eg
  add SP, #4 ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
-C_s80g3_686cc56a_programF_lashL_ine_L000085_105
+C_spu03_68805081_programF_lashL_ine_L000085_105
  cmps r17,  #0 wcz
- if_ae jmp #\C_s80g3_686cc56a_programF_lashL_ine_L000085_107 ' GEI4
+ if_ae jmp #\C_spu03_68805081_programF_lashL_ine_L000085_107 ' GEI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_hyper_unlockF_lashA_ccess ' CALL addrg
  mov r0, r17 ' CVI, CVU or LOAD
- jmp #\@C_s80g3_686cc56a_programF_lashL_ine_L000085_86 ' JUMPV addrg
-C_s80g3_686cc56a_programF_lashL_ine_L000085_107
+ jmp #\@C_spu03_68805081_programF_lashL_ine_L000085_86 ' JUMPV addrg
+C_spu03_68805081_programF_lashL_ine_L000085_107
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C__cnt ' CALL addrg
@@ -895,25 +895,25 @@ C_s80g3_686cc56a_programF_lashL_ine_L000085_107
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C__waitus ' CALL addrg
-' C_s80g3_686cc56a_programF_lashL_ine_L000085_103 ' (symbol refcount = 0)
+' C_spu03_68805081_programF_lashL_ine_L000085_103 ' (symbol refcount = 0)
  mov r22, r17
  and r22, #128 ' BANDI4 coni
  cmps r22,  #0 wz
- if_nz jmp #\C_s80g3_686cc56a_programF_lashL_ine_L000085_109 ' NEI4
+ if_nz jmp #\C_spu03_68805081_programF_lashL_ine_L000085_109 ' NEI4
  cmp r15,  #2 wcz 
- if_be jmp #\C_s80g3_686cc56a_programF_lashL_ine_L000085_102 ' LEU4
-C_s80g3_686cc56a_programF_lashL_ine_L000085_109
+ if_be jmp #\C_spu03_68805081_programF_lashL_ine_L000085_102 ' LEU4
+C_spu03_68805081_programF_lashL_ine_L000085_109
  mov r22, r17
  and r22, #128 ' BANDI4 coni
  cmps r22,  #0 wz
- if_nz jmp #\C_s80g3_686cc56a_programF_lashL_ine_L000085_110 ' NEI4
+ if_nz jmp #\C_spu03_68805081_programF_lashL_ine_L000085_110 ' NEI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_hyper_unlockF_lashA_ccess ' CALL addrg
  mov r0, ##-20 ' RET con
- jmp #\@C_s80g3_686cc56a_programF_lashL_ine_L000085_86 ' JUMPV addrg
-C_s80g3_686cc56a_programF_lashL_ine_L000085_110
+ jmp #\@C_spu03_68805081_programF_lashL_ine_L000085_86 ' JUMPV addrg
+C_spu03_68805081_programF_lashL_ine_L000085_110
  mov r2, #113 ' reg ARG coni
  mov r3, ##1365 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -929,19 +929,19 @@ C_s80g3_686cc56a_programF_lashL_ine_L000085_110
  mov r22, r17
  and r22, #16 ' BANDI4 coni
  cmps r22,  #0 wz
- if_z jmp #\C_s80g3_686cc56a_programF_lashL_ine_L000085_112 ' EQI4
+ if_z jmp #\C_spu03_68805081_programF_lashL_ine_L000085_112 ' EQI4
  mov r22, r17
  and r22, #2 ' BANDI4 coni
  cmps r22,  #0 wz
- if_z jmp #\C_s80g3_686cc56a_programF_lashL_ine_L000085_114 ' EQI4
+ if_z jmp #\C_spu03_68805081_programF_lashL_ine_L000085_114 ' EQI4
  mov r0, ##-21 ' RET con
- jmp #\@C_s80g3_686cc56a_programF_lashL_ine_L000085_86 ' JUMPV addrg
-C_s80g3_686cc56a_programF_lashL_ine_L000085_114
+ jmp #\@C_spu03_68805081_programF_lashL_ine_L000085_86 ' JUMPV addrg
+C_spu03_68805081_programF_lashL_ine_L000085_114
  mov r0, ##-19 ' RET con
- jmp #\@C_s80g3_686cc56a_programF_lashL_ine_L000085_86 ' JUMPV addrg
-C_s80g3_686cc56a_programF_lashL_ine_L000085_112
+ jmp #\@C_spu03_68805081_programF_lashL_ine_L000085_86 ' JUMPV addrg
+C_spu03_68805081_programF_lashL_ine_L000085_112
  mov r0, #0 ' reg <- coni
-C_s80g3_686cc56a_programF_lashL_ine_L000085_86
+C_spu03_68805081_programF_lashL_ine_L000085_86
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -1027,7 +1027,7 @@ C_eraseF_lash_126
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s80g2_686cc56a_erase_L000030
+ long @C_spu02_68805081_erase_L000030
  add SP, #8 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
  cmps r19,  #0 wz
@@ -1212,7 +1212,7 @@ C_hyper_programF_lash_161
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s80g3_686cc56a_programF_lashL_ine_L000085
+ long @C_spu03_68805081_programF_lashL_ine_L000085
  add SP, #8 ' CALL addrg
  mov r13, r0 ' CVI, CVU or LOAD
  cmps r0,  #0 wcz
@@ -1305,7 +1305,7 @@ C_hyper_programF_lashB_yte_171
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s80g3_686cc56a_programF_lashL_ine_L000085
+ long @C_spu03_68805081_programF_lashL_ine_L000085
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
 C_hyper_programF_lashB_yte_167
@@ -1360,7 +1360,7 @@ C_hyper_programF_lashW_ord_173
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s80g3_686cc56a_programF_lashL_ine_L000085
+ long @C_spu03_68805081_programF_lashL_ine_L000085
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r21, r22 ' CVI, CVU or LOAD
@@ -1374,7 +1374,7 @@ C_hyper_programF_lashW_ord_173
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s80g3_686cc56a_programF_lashL_ine_L000085
+ long @C_spu03_68805081_programF_lashL_ine_L000085
  add SP, #8 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  cmps r0,  #0 wz
@@ -1390,7 +1390,7 @@ C_hyper_programF_lashW_ord_175
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s80g3_686cc56a_programF_lashL_ine_L000085
+ long @C_spu03_68805081_programF_lashL_ine_L000085
  add SP, #8 ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
 C_hyper_programF_lashW_ord_176
@@ -1446,7 +1446,7 @@ C_hyper_programF_lashL_ong_181
 
 
  alignl ' align long
-C_s80g4_686cc56a_readF_lashS_R__L000185 ' <symbol:readFlashSR>
+C_spu04_68805081_readF_lashS_R__L000185 ' <symbol:readFlashSR>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e80000 ' save registers
@@ -1458,10 +1458,10 @@ C_s80g4_686cc56a_readF_lashS_R__L000185 ' <symbol:readFlashSR>
  long @C_hyper_lockF_lashA_ccess ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
  cmps r0,  #0 wcz
- if_ae jmp #\C_s80g4_686cc56a_readF_lashS_R__L000185_187 ' GEI4
+ if_ae jmp #\C_spu04_68805081_readF_lashS_R__L000185_187 ' GEI4
  mov r0, r19 ' CVI, CVU or LOAD
- jmp #\@C_s80g4_686cc56a_readF_lashS_R__L000185_186 ' JUMPV addrg
-C_s80g4_686cc56a_readF_lashS_R__L000185_187
+ jmp #\@C_spu04_68805081_readF_lashS_R__L000185_186 ' JUMPV addrg
+C_spu04_68805081_readF_lashS_R__L000185_187
  mov r2, #170 ' reg ARG coni
  mov r3, ##1365 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -1472,7 +1472,7 @@ C_s80g4_686cc56a_readF_lashS_R__L000185_187
  add SP, #8 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
  cmps r0,  #0 wz
- if_nz jmp #\C_s80g4_686cc56a_readF_lashS_R__L000185_189 ' NEI4
+ if_nz jmp #\C_spu04_68805081_readF_lashS_R__L000185_189 ' NEI4
  mov r2, #85 ' reg ARG coni
  mov r3, ##682 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -1483,7 +1483,7 @@ C_s80g4_686cc56a_readF_lashS_R__L000185_187
  add SP, #8 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
  cmps r0,  #0 wz
- if_nz jmp #\C_s80g4_686cc56a_readF_lashS_R__L000185_191 ' NEI4
+ if_nz jmp #\C_spu04_68805081_readF_lashS_R__L000185_191 ' NEI4
  mov r2, r21 ' CVI, CVU or LOAD
  mov r3, ##1365 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -1494,7 +1494,7 @@ C_s80g4_686cc56a_readF_lashS_R__L000185_187
  add SP, #8 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
  cmps r0,  #0 wz
- if_nz jmp #\C_s80g4_686cc56a_readF_lashS_R__L000185_193 ' NEI4
+ if_nz jmp #\C_spu04_68805081_readF_lashS_R__L000185_193 ' NEI4
  mov r2, #0 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1503,15 +1503,15 @@ C_s80g4_686cc56a_readF_lashS_R__L000185_187
  long @C_hyper_readR_eg
  add SP, #4 ' CALL addrg
  mov r19, r0 ' CVI, CVU or LOAD
-C_s80g4_686cc56a_readF_lashS_R__L000185_193
-C_s80g4_686cc56a_readF_lashS_R__L000185_191
-C_s80g4_686cc56a_readF_lashS_R__L000185_189
+C_spu04_68805081_readF_lashS_R__L000185_193
+C_spu04_68805081_readF_lashS_R__L000185_191
+C_spu04_68805081_readF_lashS_R__L000185_189
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_hyper_unlockF_lashA_ccess ' CALL addrg
  mov r0, r19 ' CVI, CVU or LOAD
-C_s80g4_686cc56a_readF_lashS_R__L000185_186
+C_spu04_68805081_readF_lashS_R__L000185_186
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -1671,7 +1671,7 @@ C_hyper_readF_lashI_C_R_ ' <symbol:hyper_readFlashICR>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s80g4_686cc56a_readF_lashS_R__L000185
+ long @C_spu04_68805081_readF_lashS_R__L000185
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
 ' C_hyper_readF_lashI_C_R__208 ' (symbol refcount = 0)
@@ -1692,7 +1692,7 @@ C_hyper_readF_lashI_S_R_ ' <symbol:hyper_readFlashISR>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s80g4_686cc56a_readF_lashS_R__L000185
+ long @C_spu04_68805081_readF_lashS_R__L000185
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
 ' C_hyper_readF_lashI_S_R__209 ' (symbol refcount = 0)
@@ -1713,7 +1713,7 @@ C_hyper_readF_lashN_V_C_R_ ' <symbol:hyper_readFlashNVCR>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s80g4_686cc56a_readF_lashS_R__L000185
+ long @C_spu04_68805081_readF_lashS_R__L000185
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
 ' C_hyper_readF_lashN_V_C_R__210 ' (symbol refcount = 0)
@@ -1734,7 +1734,7 @@ C_hyper_readF_lashV_C_R_ ' <symbol:hyper_readFlashVCR>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s80g4_686cc56a_readF_lashS_R__L000185
+ long @C_spu04_68805081_readF_lashS_R__L000185
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
 ' C_hyper_readF_lashV_C_R__211 ' (symbol refcount = 0)
@@ -1743,7 +1743,7 @@ C_hyper_readF_lashV_C_R_ ' <symbol:hyper_readFlashVCR>
 
 
  alignl ' align long
-C_s80g5_686cc56a_writeF_lashS_R__L000212 ' <symbol:writeFlashSR>
+C_spu05_68805081_writeF_lashS_R__L000212 ' <symbol:writeFlashSR>
  calld PA,#NEWF
  calld PA,#PSHM
  long $ea0000 ' save registers
@@ -1756,10 +1756,10 @@ C_s80g5_686cc56a_writeF_lashS_R__L000212 ' <symbol:writeFlashSR>
  long @C_hyper_lockF_lashA_ccess ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
  cmps r0,  #0 wcz
- if_ae jmp #\C_s80g5_686cc56a_writeF_lashS_R__L000212_214 ' GEI4
+ if_ae jmp #\C_spu05_68805081_writeF_lashS_R__L000212_214 ' GEI4
  mov r0, r17 ' CVI, CVU or LOAD
- jmp #\@C_s80g5_686cc56a_writeF_lashS_R__L000212_213 ' JUMPV addrg
-C_s80g5_686cc56a_writeF_lashS_R__L000212_214
+ jmp #\@C_spu05_68805081_writeF_lashS_R__L000212_213 ' JUMPV addrg
+C_spu05_68805081_writeF_lashS_R__L000212_214
  mov r2, #170 ' reg ARG coni
  mov r3, ##1365 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -1770,7 +1770,7 @@ C_s80g5_686cc56a_writeF_lashS_R__L000212_214
  add SP, #8 ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
  cmps r0,  #0 wz
- if_nz jmp #\C_s80g5_686cc56a_writeF_lashS_R__L000212_216 ' NEI4
+ if_nz jmp #\C_spu05_68805081_writeF_lashS_R__L000212_216 ' NEI4
  mov r2, #85 ' reg ARG coni
  mov r3, ##682 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -1781,7 +1781,7 @@ C_s80g5_686cc56a_writeF_lashS_R__L000212_214
  add SP, #8 ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
  cmps r0,  #0 wz
- if_nz jmp #\C_s80g5_686cc56a_writeF_lashS_R__L000212_218 ' NEI4
+ if_nz jmp #\C_spu05_68805081_writeF_lashS_R__L000212_218 ' NEI4
  mov r2, r21 ' CVI, CVU or LOAD
  mov r3, ##1365 ' reg ARG con
  mov r4, r23 ' CVI, CVU or LOAD
@@ -1792,7 +1792,7 @@ C_s80g5_686cc56a_writeF_lashS_R__L000212_214
  add SP, #8 ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
  cmps r0,  #0 wz
- if_nz jmp #\C_s80g5_686cc56a_writeF_lashS_R__L000212_220 ' NEI4
+ if_nz jmp #\C_spu05_68805081_writeF_lashS_R__L000212_220 ' NEI4
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, #0 ' reg ARG coni
  mov r4, r23 ' CVI, CVU or LOAD
@@ -1802,15 +1802,15 @@ C_s80g5_686cc56a_writeF_lashS_R__L000212_214
  long @C_hyper_writeR_eg
  add SP, #8 ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
-C_s80g5_686cc56a_writeF_lashS_R__L000212_220
-C_s80g5_686cc56a_writeF_lashS_R__L000212_218
-C_s80g5_686cc56a_writeF_lashS_R__L000212_216
+C_spu05_68805081_writeF_lashS_R__L000212_220
+C_spu05_68805081_writeF_lashS_R__L000212_218
+C_spu05_68805081_writeF_lashS_R__L000212_216
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_hyper_unlockF_lashA_ccess ' CALL addrg
  mov r0, r17 ' CVI, CVU or LOAD
-C_s80g5_686cc56a_writeF_lashS_R__L000212_213
+C_spu05_68805081_writeF_lashS_R__L000212_213
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -1830,7 +1830,7 @@ C_hyper_writeF_lashI_C_R_ ' <symbol:hyper_writeFlashICR>
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s80g5_686cc56a_writeF_lashS_R__L000212
+ long @C_spu05_68805081_writeF_lashS_R__L000212
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
 ' C_hyper_writeF_lashI_C_R__222 ' (symbol refcount = 0)
@@ -1853,7 +1853,7 @@ C_hyper_writeF_lashI_S_R_ ' <symbol:hyper_writeFlashISR>
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s80g5_686cc56a_writeF_lashS_R__L000212
+ long @C_spu05_68805081_writeF_lashS_R__L000212
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
 ' C_hyper_writeF_lashI_S_R__223 ' (symbol refcount = 0)
@@ -1876,7 +1876,7 @@ C_hyper_writeF_lashV_C_R_ ' <symbol:hyper_writeFlashVCR>
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s80g5_686cc56a_writeF_lashS_R__L000212
+ long @C_spu05_68805081_writeF_lashS_R__L000212
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
 ' C_hyper_writeF_lashV_C_R__224 ' (symbol refcount = 0)

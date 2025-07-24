@@ -115,7 +115,7 @@ WBYT    jmp #wr_byte           '$29
 
 req     long  0                '$2a request block address
 
-#ifdef QUICKBUILD
+#if defined(QUICKBUILD) || defined(QUICKFORCE)
 PC      long 0                 '$2b
 #else
 PC      long @C_main           '$2b
@@ -185,7 +185,7 @@ ct3     long  0                '$59
 
 DEBUG_OVERLAY
 lmm_init
-#ifdef QUICKBUILD
+#if defined(QUICKBUILD) || defined(QUICKFORCE)
         rdlong  reg,PTRA++      '$5a  1 load registry address (used later)   
         cogid   r2              '$5b  2 register ...
         shl     r2,#2           '$5c  3 ... ourselves ...

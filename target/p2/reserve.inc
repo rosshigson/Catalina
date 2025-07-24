@@ -31,7 +31,7 @@ segtable
         long  @Catalina_RW_Ends
 init_PC long  @C_main                    ' should be filled in with @C_main
 
-#if defined(QUICKBUILD) && !defined(SMALL) && !defined(LARGE)
+#if (defined(QUICKBUILD) || defined(QUICKFORCE)) && !defined(SMALL) && !defined(LARGE)
          orgh P2_LOAD_SIZE
 #endif
 

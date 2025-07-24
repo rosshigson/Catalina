@@ -109,9 +109,11 @@ rem call clean_all >NUL: 2>&1
 rem save CATALINA_DEFINE before building library
 set TMP_DEFINE_3=%CATALINA_DEFINE%
 
+if "%2" == "PSRAM" goto psram_lib
+if "%2" == "HYPER" goto hyper_lib
 if "%1" == "P2_EDGE" goto psram_lib
 if "%1" == "P2_EVAL" goto hyper_lib
-echo ERROR: Only P2_EDGE with PSRAM or P2_EVAL with HYPER RAM are supported
+echo ERROR: Only P2_EDGE or P2_EVAL supported
 goto done
 
 :psram_lib

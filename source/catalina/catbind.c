@@ -341,6 +341,8 @@
  *
  * version 8.7   - just update version number.
  *
+ * version 8.8   - add -Q (and -C QUICKFORCE) to mean enable Qquick Build,
+ *                 but also rebuild the target file even if it already exists.
  */
 
 /*--------------------------------------------------------------------------
@@ -376,7 +378,7 @@
 #include <sys/stat.h>
 #endif
 
-#define VERSION            "8.7"
+#define VERSION            "8.8"
 
 #define MAX_FILES          500
 #define MAX_LIBS           500
@@ -491,6 +493,7 @@ static int assemble   = 1;
 static int bind       = 1;
 static int force      = 0;
 static int cleanup    = 1; 
+static int quickforce = 0; 
 static int quickbuild = 0; 
 static int prop_vers  = 1; 
 static int format     = 0; // 0 => binary, 1 => eeprom
@@ -1178,6 +1181,13 @@ int decode_arguments (int argc, char *argv[]) {
                   }
                   break;
 
+               case 'Q':
+                  quickforce = 1;   /* force quick build */
+                  if (verbose) {
+                     fprintf(stderr, "Quick Build forced\n");
+                  }
+                  break;
+
                case 'R':
                   modifier = 0;
                   arg = get_option_argument(&i, &argc, argv);
@@ -1658,6 +1668,9 @@ void do_binbuild(char *fullname, int prop_vers, int layout, int format) {
    if (quickbuild) {
      safecat(binbuild, "-q ", MAX_LINELEN);
    }
+   if (quickforce) {
+     safecat(binbuild, "-Q ", MAX_LINELEN);
+   }
    if (diagnose) {
      safecat(binbuild, "-d ", MAX_LINELEN);
    }
@@ -1730,7 +1743,8 @@ void do_assemble(char *fullname) {
    if (diagnose) {
       fprintf(stderr, "assembling %s\n", fullname);
    }
-   if (!quickbuild && ((layout == 0) || (layout == 8) || (layout == 11))) {
+   if (!quickbuild && !quickforce && 
+       ((layout == 0) || (layout == 8) || (layout == 11))) {
       // for these layouts, the target file includes the output of the Binder,
       // so it is straightforward to just assemble the target file, using
       // the name of file as both the source and destination
@@ -1785,6 +1799,12 @@ void do_assemble(char *fullname) {
             }
             result = preprocess_assemble(target_name, output_name, target_opt);
          }
+      }
+      else if (quickforce) {
+         if (verbose) {
+            fprintf(stderr, "Quick Build - building target file %s\n",target_output_name);
+         }
+         result = preprocess_assemble(target_name, output_name, target_opt);
       }
       else {
          result = preprocess_assemble(target_name, output_name, target_opt);

@@ -1,0 +1,115 @@
+#!/bin/bash
+#set -x
+#
+if [[ "$1" == "P2_EDGE" ]]; then
+   if [[ "$2" == "" ]]; then
+     TMP_RAM=PSRAM
+   elif [[ "$2" == "HYPER" ]]; then
+     TMP_RAM=HYPER
+   elif [[ "$2" == "PSRAM" ]]; then
+     TMP_RAM=PSRAM
+   else
+     TMP_RAM=ERROR
+   fi
+fi
+
+if [[ "$1" == "P2_EVAL" ]]; then
+   if [[ "$2" == "" ]]; then
+     TMP_RAM=HYPER
+   elif [[ "$2" == "HYPER" ]]; then
+     TMP_RAM=HYPER
+   else
+     TMP_RAM=ERROR     
+   fi
+fi
+
+if [[ "$1" != "P2_EVAL" ]] && [[ "$1" != "P2_EDGE" ]]; then
+  echo "ERROR: ONLY P2_EDGE AND P2_EVAL ARE SUPPORTED"
+  exit
+fi
+
+if [[ "$TMP_RAM" != "PSRAM" ]] && [[ "$TMP_RAM" != "HYPER" ]]; then
+  echo "ERROR: XMM TYPE NOT SUPPORTED"
+  exit
+fi
+
+if [[ ! -e "/usr/bin/zip" ]] ; then
+   echo "ZIP ARCHIVE MANAGER NOT FOUND - INSTALL IT AND TRY AGAIN!"
+   exit
+fi
+
+if [[ "$CATALINA_DEFINE" != "" ]]; then
+   echo "CATALINA_DEFINE MUST NOT BE SET - UNSET IT AND TRY AGAIN!"
+   exit
+fi
+
+echo ""
+echo "building $1.ZIP ..."
+echo ""
+
+./build_all $1 $2 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 RTC
+
+cd catalina
+./build_all  $1 $2 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200
+cat CATALYST.ENV $1.ENV > ../image/CATALYST.ENV
+cd ..
+
+cd xvi-2.51
+./build_all  $1 $2 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 LARGE
+cp src/xvi.bin ../image/bin/xl_vi.bin
+cd ..
+
+cd lua-5.4.4
+./build_all  $1 $2 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 SMALL
+cp src/lua.bin ../image/bin/xs_lua.bin
+cp src/luac.bin ../image/bin/xs_luac.bin
+cp src/luax.bin ../image/bin/xs_luax.bin
+cd ..
+
+cd lua-5.4.4
+./build_all  $1 $2 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 LARGE
+cp src/lua.bin ../image/bin/xl_lua.bin
+cp src/luac.bin ../image/bin/xl_luac.bin
+cp src/luax.bin ../image/bin/xl_luax.bin
+cd ..
+
+rm -f $1.ZIP
+cd image
+zip -r -q ../$1.ZIP *
+cd ..
+
+echo ""
+echo "building $1_VGA.ZIP ..."
+echo ""
+
+./build_all  $1 $2 VGA COLOR_4 OPTIMIZE MHZ_200 RTC NO_LINENOISE
+
+cd catalina
+./build_all  $1 $2 HIRES_VGA COLOR_4 OPTIMIZE MHZ_200
+cat CATALYST.ENV P2_EVAL_VGA.ENV > ../image/CATALYST.ENV
+cd ..
+
+cd xvi-2.51
+./build_all  $1 $2 VGA COLOR_4 OPTIMIZE MHZ_200 LARGE
+cp src/xvi.bin ../image/bin/xl_vi.bin
+cd ..
+
+cd lua-5.4.4
+./build_all  $1 $2 VGA COLOR_4 OPTIMIZE MHZ_200 SMALL
+cp src/lua.bin ../image/bin/xs_lua.bin
+cp src/luac.bin ../image/bin/xs_luac.bin
+cp src/luax.bin ../image/bin/xs_luax.bin
+cd ..
+
+cd lua-5.4.4
+./build_all  $1 $2 VGA COLOR_4 OPTIMIZE MHZ_200 LARGE
+cp src/lua.bin ../image/bin/xl_lua.bin
+cp src/luac.bin ../image/bin/xl_luac.bin
+cp src/luax.bin ../image/bin/xl_luax.bin
+cd ..
+
+rm -f $1_VGA.ZIP
+cd image
+zip -r -q ../$1_VGA.ZIP *
+cd ..
+

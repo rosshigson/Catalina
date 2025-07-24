@@ -210,20 +210,20 @@ _TX8_MULTI_MODE = %0000
 ' VGA constants
 ' =============
 
-_VGA_BASE_PIN = 0
+_VGA_BASE_PIN = 16
 
 ' USB constants
 ' =============
 
-_USB_BASE_PIN = 8
+_USB_BASE_PIN = 24
 
 ' Hyper Flash / Hyper RAM constants
 ' =================================
 
 ' Base pin and reset pin mask
-HYPER_BASE_PIN   = 32 ' If you change this, it may be required to change these:
-HYPER_RST_A_MASK = 0 ' 1<<(HYPER_BASE_PIN+15)   ' if HYPER_BASE_PIN < 32
-HYPER_RST_B_MASK = 1<<(HYPER_BASE_PIN+15-32)    ' if HYPER_BASE_PIN >= 32
+HYPER_BASE_PIN   = 0 ' If you change this, it may be required to change these:
+HYPER_RST_A_MASK = 1<<(HYPER_BASE_PIN+15)           ' if HYPER_BASE_PIN < 32
+HYPER_RST_B_MASK = 0 ' 1<<(HYPER_BASE_PIN+15-32)    ' if HYPER_BASE_PIN >= 32
 
 ' RAM size (number of address bits)
 HYPER_RAM_SIZE   = 24 ' 16Mb Hyper RAM
@@ -241,7 +241,7 @@ HYPER_UNREGCLK   = 0 ' 0 disables, 1 enables
 ' RAM latency, burst size and delay
 HYPER_LATENCY_RAM   = 6
 HYPER_BURST_RAM     = $0280
-HYPER_DELAY_RAM     = 10 ' 11 if clock > 260Mhz, 10 if 150-260Mhz, 9 if < 150Mhz
+HYPER_DELAY_RAM     = 10 ' 7 for <100Mhz, 8 or 9 for < 100-180Mhz, 10 for 180-260Mhz, 11 for > 260Mhz 
 
 HYPER_LATENCY_FLASH = 16
 HYPER_BURST_FLASH   = $FFF0

@@ -207,6 +207,18 @@ all :: args
 
 # =============
 
+.PHONY : delay
+dump : delay$B
+
+delay.bin : delay.c
+	-@catalina_env
+	$(CC) $(CFLAGS) -p2 -lci -o $@ $<
+
+# add this to the 'all' target
+all :: delay
+
+# =============
+
 ifeq ($(HYPER), YES)
 .PHONY : test
 dump : test$B

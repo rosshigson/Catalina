@@ -2,6 +2,10 @@
 
 static int _seed() {
 #ifdef __CATALINA_P2
+#ifdef __CATALINA_COMPACT
+  PASM (" word I16B_PASM\n"
+        " alignl\n");
+#endif
   return PASM("getct r0\n");
 #else
   return CNT;

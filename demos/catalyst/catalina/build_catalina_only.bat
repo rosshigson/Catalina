@@ -72,9 +72,11 @@ echo.
 
 call set_short_path TMP_LIBPATH "."
 
+if "%2" == "PSRAM" goto psram_lib
+if "%2" == "HYPER" goto hyper_lib
 if "%1" == "P2_EDGE" goto psram_lib
 if "%1" == "P2_EVAL" goto hyper_lib
-echo ERROR: Only P2_EDGE with PSRAM or P2_EVAL with HYPER RAM are supported
+echo ERROR: Only P2_EDGE or P2_EVAL supported
 goto done
 
 :psram_lib

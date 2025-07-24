@@ -1,7 +1,7 @@
 Catalyst
 ========
 
-This directory contains Catalyst - Catalina's SD Card Loader - and some
+This directory contains Catalyst - Catalina's SD Card Loader - and various
 Catalyst utilities and demo programs.
 
 See the file CATALYST.TXT for an overview, or the Catalyst Reference Manual.
@@ -108,6 +108,14 @@ a subset of supported Propeller 2 platforms. To build it manually, use the
 build_all script in that directory. For example, you might use the commands:
 
    cd catalina
-   build_all P2_EDGE SIMPLE VT100 OPTIMIZE MHZ_200
+   build_all P2_EDGE PSRAM SIMPLE VT100 OPTIMIZE MHZ_200
+or
+   cd catalina
+   build_all P2_EDGE HYPER SIMPLE VT100 OPTIMIZE MHZ_200
+or
+   cd catalina
+   build_all P2_EVAL HYPER SIMPLE VT100 OPTIMIZE MHZ_200
+
+See the file CATALINA.TXT in that directory for more details.
 
 The output of the build will be copied to the image folder.

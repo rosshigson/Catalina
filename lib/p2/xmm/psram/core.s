@@ -11,31 +11,31 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_sc3c_686cc3b6_startupD_ata_L000002 ' <symbol:startupData>
+C_sel0_68804ed7_startupD_ata_L000002 ' <symbol:startupData>
  long $0
 
  alignl ' align long
-C_sc3c1_686cc3b6_deviceD_ata_L000003 ' <symbol:deviceData>
+C_sel01_68804ed7_deviceD_ata_L000003 ' <symbol:deviceData>
  long $0
 
  alignl ' align long
-C_sc3c2_686cc3b6_Q_osD_ata_L000004 ' <symbol:QosData>
+C_sel02_68804ed7_Q_osD_ata_L000004 ' <symbol:QosData>
  long $0
 
  alignl ' align long
-C_sc3c3_686cc3b6_mailboxes_L000005 ' <symbol:mailboxes>
+C_sel03_68804ed7_mailboxes_L000005 ' <symbol:mailboxes>
  long $0
 
  alignl ' align long
-C_sc3c4_686cc3b6_drivercog_L000006 ' <symbol:drivercog>
+C_sel04_68804ed7_drivercog_L000006 ' <symbol:drivercog>
  long -1
 
  alignl ' align long
-C_sc3c5_686cc3b6_driverlock_L000007 ' <symbol:driverlock>
+C_sel05_68804ed7_driverlock_L000007 ' <symbol:driverlock>
  long -1
 
  alignl ' align long
-C_sc3c6_686cc3b6_delayT_able_L000008 ' <symbol:delayTable>
+C_sel06_68804ed7_delayT_able_L000008 ' <symbol:delayTable>
  long $7
  long $57bcf00
  long $8f0d180
@@ -62,7 +62,7 @@ C_psram_getM_ailbox ' <symbol:psram_getMailbox>
  mov r22, r0
  shl r22, #2 ' LSHI4 coni
  jmp #LODI
- long @C_sc3c3_686cc3b6_mailboxes_L000005
+ long @C_sel03_68804ed7_mailboxes_L000005
  mov r20, RI ' reg <- INDIRP4 addrg
  mov r0, r22 ' ADDI/P
  adds r0, r20 ' ADDI/P (3)
@@ -80,7 +80,7 @@ C_psram_initialize ' <symbol:psram_initialize>
  jmp #PSHM
  long $540000 ' save registers
  jmp #LODI
- long @C_sc3c_686cc3b6_startupD_ata_L000002
+ long @C_sel0_68804ed7_startupD_ata_L000002
  mov r22, RI ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  jmp #BRNZ
@@ -90,11 +90,11 @@ C_psram_initialize ' <symbol:psram_initialize>
  jmp #CALA
  long @C__locate_plugin ' CALL addrg
  jmp #LODL
- long @C_sc3c4_686cc3b6_drivercog_L000006
+ long @C_sel04_68804ed7_drivercog_L000006
  mov BC, r0
  jmp #WLNG ' ASGNI4 addrg reg
  jmp #LODI
- long @C_sc3c4_686cc3b6_drivercog_L000006
+ long @C_sel04_68804ed7_drivercog_L000006
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz,wc
  jmp #BR_B
@@ -106,7 +106,7 @@ C_psram_initialize ' <symbol:psram_initialize>
  long $ffffff
  mov r20, RI ' reg <- con
  jmp #LODI
- long @C_sc3c4_686cc3b6_drivercog_L000006
+ long @C_sel04_68804ed7_drivercog_L000006
  mov r18, RI ' reg <- INDIRI4 addrg
  shl r18, #2 ' LSHI4 coni
  mov r22, r0 ' CVI, CVU or LOAD
@@ -126,40 +126,40 @@ C_psram_initialize ' <symbol:psram_initialize>
  rdlong r22, r22 ' reg <- INDIRU4 regl
  and r20, r22 ' BANDI/U (2)
  jmp #LODL
- long @C_sc3c_686cc3b6_startupD_ata_L000002
+ long @C_sel0_68804ed7_startupD_ata_L000002
  mov BC, r20
  jmp #WLNG ' ASGNP4 addrg reg
  jmp #LODI
- long @C_sc3c_686cc3b6_startupD_ata_L000002
+ long @C_sel0_68804ed7_startupD_ata_L000002
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r20, #32 ' ADDP4 coni
  jmp #LODL
- long @C_sc3c1_686cc3b6_deviceD_ata_L000003
+ long @C_sel01_68804ed7_deviceD_ata_L000003
  mov BC, r20
  jmp #WLNG ' ASGNP4 addrg reg
  jmp #LODI
- long @C_sc3c1_686cc3b6_deviceD_ata_L000003
+ long @C_sel01_68804ed7_deviceD_ata_L000003
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r20, #128 ' ADDP4 coni
  jmp #LODL
- long @C_sc3c2_686cc3b6_Q_osD_ata_L000004
+ long @C_sel02_68804ed7_Q_osD_ata_L000004
  mov BC, r20
  jmp #WLNG ' ASGNP4 addrg reg
  jmp #LODI
- long @C_sc3c2_686cc3b6_Q_osD_ata_L000004
+ long @C_sel02_68804ed7_Q_osD_ata_L000004
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r20, #32 ' ADDP4 coni
  jmp #LODL
- long @C_sc3c3_686cc3b6_mailboxes_L000005
+ long @C_sel03_68804ed7_mailboxes_L000005
  mov BC, r20
  jmp #WLNG ' ASGNP4 addrg reg
  shr r22, #24 ' RSHU4 coni
  jmp #LODL
- long @C_sc3c5_686cc3b6_driverlock_L000007
+ long @C_sel05_68804ed7_driverlock_L000007
  mov BC, r22
  jmp #WLNG ' ASGNI4 addrg reg
  jmp #LODI
- long @C_sc3c5_686cc3b6_driverlock_L000007
+ long @C_sel05_68804ed7_driverlock_L000007
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz
  jmp #BRNZ
@@ -168,11 +168,11 @@ C_psram_initialize ' <symbol:psram_initialize>
  jmp #CALA
  long @C__locknew ' CALL addrg
  jmp #LODL
- long @C_sc3c5_686cc3b6_driverlock_L000007
+ long @C_sel05_68804ed7_driverlock_L000007
  mov BC, r0
  jmp #WLNG ' ASGNI4 addrg reg
  jmp #LODI
- long @C_sc3c5_686cc3b6_driverlock_L000007
+ long @C_sel05_68804ed7_driverlock_L000007
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz,wc
  jmp #BR_B
@@ -181,7 +181,7 @@ C_psram_initialize ' <symbol:psram_initialize>
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRU4 regl
  jmp #LODI
- long @C_sc3c5_686cc3b6_driverlock_L000007
+ long @C_sel05_68804ed7_driverlock_L000007
  mov r20, RI ' reg <- INDIRI4 addrg
  adds r20, #1 ' ADDI4 coni
  shl r20, #24 ' LSHI4 coni
@@ -193,7 +193,7 @@ C_psram_initialize ' <symbol:psram_initialize>
  jmp #CALA
  long @C__registry ' CALL addrg
  jmp #LODI
- long @C_sc3c4_686cc3b6_drivercog_L000006
+ long @C_sel04_68804ed7_drivercog_L000006
  mov r20, RI ' reg <- INDIRI4 addrg
  shl r20, #2 ' LSHI4 coni
  mov r22, r0 ' CVI, CVU or LOAD
@@ -215,18 +215,18 @@ C_psram_initialize ' <symbol:psram_initialize>
  long @C_psram_initialize_16 ' JUMPV addrg
 C_psram_initialize_15
  jmp #LODI
- long @C_sc3c5_686cc3b6_driverlock_L000007
+ long @C_sel05_68804ed7_driverlock_L000007
  mov r22, RI ' reg <- INDIRI4 addrg
  subs r22, #1 ' SUBI4 coni
  jmp #LODL
- long @C_sc3c5_686cc3b6_driverlock_L000007
+ long @C_sel05_68804ed7_driverlock_L000007
  mov BC, r22
  jmp #WLNG ' ASGNI4 addrg reg
 C_psram_initialize_16
 C_psram_initialize_13
 C_psram_initialize_11
  jmp #LODI
- long @C_sc3c4_686cc3b6_drivercog_L000006
+ long @C_sel04_68804ed7_drivercog_L000006
  mov r0, RI ' reg <- INDIRI4 addrg
 ' C_psram_initialize_10 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
@@ -287,17 +287,17 @@ C_psram_stop_20
  long -1
  mov r22, RI ' reg <- con
  jmp #LODL
- long @C_sc3c4_686cc3b6_drivercog_L000006
+ long @C_sel04_68804ed7_drivercog_L000006
  mov BC, r22
  jmp #WLNG ' ASGNI4 addrg reg
  jmp #LODI
- long @C_sc3c5_686cc3b6_driverlock_L000007
+ long @C_sel05_68804ed7_driverlock_L000007
  mov r20, RI ' reg <- INDIRI4 addrg
  cmps r20, r22 wz
  jmp #BR_Z
  long @C_psram_stop_28 ' EQI4
  jmp #LODI
- long @C_sc3c5_686cc3b6_driverlock_L000007
+ long @C_sel05_68804ed7_driverlock_L000007
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -306,7 +306,7 @@ C_psram_stop_20
  long -1
  mov r22, RI ' reg <- con
  jmp #LODL
- long @C_sc3c5_686cc3b6_driverlock_L000007
+ long @C_sel05_68804ed7_driverlock_L000007
  mov BC, r22
  jmp #WLNG ' ASGNI4 addrg reg
 C_psram_stop_28
@@ -325,14 +325,14 @@ C_psram_getD_riverL_ock ' <symbol:psram_getDriverLock>
  jmp #CALA
  long @C_psram_initialize ' CALL addrg
  jmp #LODI
- long @C_sc3c5_686cc3b6_driverlock_L000007
+ long @C_sel05_68804ed7_driverlock_L000007
  mov r0, RI ' reg <- INDIRI4 addrg
 ' C_psram_getD_riverL_ock_30 ' (symbol refcount = 0)
  jmp #RETF
 
 
  alignl ' align long
-C_sc3c7_686cc3b6_psram_modifyB_ankP_arams_L000031 ' <symbol:psram_modifyBankParams>
+C_sel07_68804ed7_psram_modifyB_ankP_arams_L000031 ' <symbol:psram_modifyBankParams>
  jmp #NEWF
  jmp #PSHM
  long $fea000 ' save registers
@@ -340,50 +340,50 @@ C_sc3c7_686cc3b6_psram_modifyB_ankP_arams_L000031 ' <symbol:psram_modifyBankPara
  mov r21, r2 ' reg var <- reg arg
  mov r19, #0 ' reg <- coni
  jmp #LODI
- long @C_sc3c4_686cc3b6_drivercog_L000006
+ long @C_sel04_68804ed7_drivercog_L000006
  mov r22, RI ' reg <- INDIRI4 addrg
  jmp #LODL
  long -1
  mov r20, RI ' reg <- con
  cmps r22, r20 wz
  jmp #BRNZ
- long @C_sc3c7_686cc3b6_psram_modifyB_ankP_arams_L000031_33 ' NEI4
+ long @C_sel07_68804ed7_psram_modifyB_ankP_arams_L000031_33 ' NEI4
  jmp #LODL
  long -15
  mov r0, RI ' reg <- con
  jmp #JMPA
- long @C_sc3c7_686cc3b6_psram_modifyB_ankP_arams_L000031_32 ' JUMPV addrg
-C_sc3c7_686cc3b6_psram_modifyB_ankP_arams_L000031_33
+ long @C_sel07_68804ed7_psram_modifyB_ankP_arams_L000031_32 ' JUMPV addrg
+C_sel07_68804ed7_psram_modifyB_ankP_arams_L000031_33
  jmp #LODI
- long @C_sc3c4_686cc3b6_drivercog_L000006
+ long @C_sel04_68804ed7_drivercog_L000006
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C_psram_getM_ailbox ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sc3c7_686cc3b6_psram_modifyB_ankP_arams_L000031_36 ' JUMPV addrg
-C_sc3c7_686cc3b6_psram_modifyB_ankP_arams_L000031_35
+ long @C_sel07_68804ed7_psram_modifyB_ankP_arams_L000031_36 ' JUMPV addrg
+C_sel07_68804ed7_psram_modifyB_ankP_arams_L000031_35
  mov r2, #1 ' reg ARG coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C__waitms ' CALL addrg
-C_sc3c7_686cc3b6_psram_modifyB_ankP_arams_L000031_36
+C_sel07_68804ed7_psram_modifyB_ankP_arams_L000031_36
  jmp #LODI
- long @C_sc3c5_686cc3b6_driverlock_L000007
+ long @C_sel05_68804ed7_driverlock_L000007
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C__locktry ' CALL addrg
  cmps r0,  #0 wz
  jmp #BR_Z
- long @C_sc3c7_686cc3b6_psram_modifyB_ankP_arams_L000031_35 ' EQI4
+ long @C_sel07_68804ed7_psram_modifyB_ankP_arams_L000031_35 ' EQI4
  mov r15, #0 ' reg <- coni
-C_sc3c7_686cc3b6_psram_modifyB_ankP_arams_L000031_38
+C_sel07_68804ed7_psram_modifyB_ankP_arams_L000031_38
  mov r22, r15
  shl r22, #2 ' LSHI4 coni
  jmp #LODI
- long @C_sc3c1_686cc3b6_deviceD_ata_L000003
+ long @C_sel01_68804ed7_deviceD_ata_L000003
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  mov RI, r22
@@ -410,53 +410,53 @@ C_sc3c7_686cc3b6_psram_modifyB_ankP_arams_L000031_38
  mov RI, r17
  mov BC, r22
  jmp #WLNG ' ASGNI4 reg reg
-C_sc3c7_686cc3b6_psram_modifyB_ankP_arams_L000031_42
+C_sel07_68804ed7_psram_modifyB_ankP_arams_L000031_42
  mov RI, r17
  jmp #RLNG
  mov r19, BC ' reg <- INDIRI4 reg
-' C_sc3c7_686cc3b6_psram_modifyB_ankP_arams_L000031_43 ' (symbol refcount = 0)
+' C_sel07_68804ed7_psram_modifyB_ankP_arams_L000031_43 ' (symbol refcount = 0)
  cmps r19,  #0 wz,wc
  jmp #BR_B
- long @C_sc3c7_686cc3b6_psram_modifyB_ankP_arams_L000031_42 ' LTI4
+ long @C_sel07_68804ed7_psram_modifyB_ankP_arams_L000031_42 ' LTI4
  cmps r19,  #0 wz
  jmp #BRNZ
- long @C_sc3c7_686cc3b6_psram_modifyB_ankP_arams_L000031_45 ' NEI4
+ long @C_sel07_68804ed7_psram_modifyB_ankP_arams_L000031_45 ' NEI4
  mov r22, r15
  shl r22, #2 ' LSHI4 coni
  jmp #LODI
- long @C_sc3c1_686cc3b6_deviceD_ata_L000003
+ long @C_sel01_68804ed7_deviceD_ata_L000003
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  mov RI, r22
  mov BC, r13
  jmp #WLNG ' ASGNI4 reg reg
  jmp #JMPA
- long @C_sc3c7_686cc3b6_psram_modifyB_ankP_arams_L000031_46 ' JUMPV addrg
-C_sc3c7_686cc3b6_psram_modifyB_ankP_arams_L000031_45
+ long @C_sel07_68804ed7_psram_modifyB_ankP_arams_L000031_46 ' JUMPV addrg
+C_sel07_68804ed7_psram_modifyB_ankP_arams_L000031_45
  neg r19, r19 ' NEGI4
  jmp #JMPA
- long @C_sc3c7_686cc3b6_psram_modifyB_ankP_arams_L000031_40 ' JUMPV addrg
-C_sc3c7_686cc3b6_psram_modifyB_ankP_arams_L000031_46
-' C_sc3c7_686cc3b6_psram_modifyB_ankP_arams_L000031_39 ' (symbol refcount = 0)
+ long @C_sel07_68804ed7_psram_modifyB_ankP_arams_L000031_40 ' JUMPV addrg
+C_sel07_68804ed7_psram_modifyB_ankP_arams_L000031_46
+' C_sel07_68804ed7_psram_modifyB_ankP_arams_L000031_39 ' (symbol refcount = 0)
  adds r15, #1 ' ADDI4 coni
  cmps r15,  #2 wz,wc
  jmp #BR_B
- long @C_sc3c7_686cc3b6_psram_modifyB_ankP_arams_L000031_38 ' LTI4
-C_sc3c7_686cc3b6_psram_modifyB_ankP_arams_L000031_40
+ long @C_sel07_68804ed7_psram_modifyB_ankP_arams_L000031_38 ' LTI4
+C_sel07_68804ed7_psram_modifyB_ankP_arams_L000031_40
  jmp #LODI
- long @C_sc3c5_686cc3b6_driverlock_L000007
+ long @C_sel05_68804ed7_driverlock_L000007
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C__lockclr ' CALL addrg
  mov r0, r19 ' CVI, CVU or LOAD
-C_sc3c7_686cc3b6_psram_modifyB_ankP_arams_L000031_32
+C_sel07_68804ed7_psram_modifyB_ankP_arams_L000031_32
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sc3c8_686cc3b6_psram_lookupD_elay_L000047 ' <symbol:psram_lookupDelay>
+C_sel08_68804ed7_psram_lookupD_elay_L000047 ' <symbol:psram_lookupDelay>
  jmp #PSHM
  long $f40000 ' save registers
  mov r21, #0 ' reg <- coni
@@ -464,7 +464,7 @@ C_sc3c8_686cc3b6_psram_lookupD_elay_L000047 ' <symbol:psram_lookupDelay>
  mov r22, r23
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_sc3c6_686cc3b6_delayT_able_L000008
+ long @C_sel06_68804ed7_delayT_able_L000008
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  mov RI, r22
@@ -472,13 +472,13 @@ C_sc3c8_686cc3b6_psram_lookupD_elay_L000047 ' <symbol:psram_lookupDelay>
  mov r22, BC ' reg <- INDIRU4 reg
  mov r21, r22 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sc3c8_686cc3b6_psram_lookupD_elay_L000047_50 ' JUMPV addrg
-C_sc3c8_686cc3b6_psram_lookupD_elay_L000047_49
+ long @C_sel08_68804ed7_psram_lookupD_elay_L000047_50 ' JUMPV addrg
+C_sel08_68804ed7_psram_lookupD_elay_L000047_49
  mov r22, r2 ' CVI, CVU or LOAD
  mov r20, r23
  shl r20, #2 ' LSHI4 coni
  jmp #LODL
- long @C_sc3c6_686cc3b6_delayT_able_L000008+4
+ long @C_sel06_68804ed7_delayT_able_L000008+4
  mov r18, RI ' reg <- addrg
  adds r20, r18 ' ADDI/P (1)
  mov RI, r20
@@ -486,17 +486,17 @@ C_sc3c8_686cc3b6_psram_lookupD_elay_L000047_49
  mov r20, BC ' reg <- INDIRU4 reg
  cmp r22, r20 wz,wc 
  jmp #BRAE
- long @C_sc3c8_686cc3b6_psram_lookupD_elay_L000047_53 ' GEU4
+ long @C_sel08_68804ed7_psram_lookupD_elay_L000047_53 ' GEU4
  jmp #JMPA
- long @C_sc3c8_686cc3b6_psram_lookupD_elay_L000047_51 ' JUMPV addrg
-C_sc3c8_686cc3b6_psram_lookupD_elay_L000047_53
+ long @C_sel08_68804ed7_psram_lookupD_elay_L000047_51 ' JUMPV addrg
+C_sel08_68804ed7_psram_lookupD_elay_L000047_53
  adds r23, #1 ' ADDI4 coni
  adds r21, #1 ' ADDI4 coni
-C_sc3c8_686cc3b6_psram_lookupD_elay_L000047_50
+C_sel08_68804ed7_psram_lookupD_elay_L000047_50
  mov r22, r23
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_sc3c6_686cc3b6_delayT_able_L000008+4
+ long @C_sel06_68804ed7_delayT_able_L000008+4
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  mov RI, r22
@@ -504,10 +504,10 @@ C_sc3c8_686cc3b6_psram_lookupD_elay_L000047_50
  mov r22, BC ' reg <- INDIRU4 reg
  cmp r22,  #0 wz
  jmp #BRNZ
- long @C_sc3c8_686cc3b6_psram_lookupD_elay_L000047_49 ' NEU4
-C_sc3c8_686cc3b6_psram_lookupD_elay_L000047_51
+ long @C_sel08_68804ed7_psram_lookupD_elay_L000047_49 ' NEU4
+C_sel08_68804ed7_psram_lookupD_elay_L000047_51
  mov r0, r21 ' CVI, CVU or LOAD
-' C_sc3c8_686cc3b6_psram_lookupD_elay_L000047_48 ' (symbol refcount = 0)
+' C_sel08_68804ed7_psram_lookupD_elay_L000047_48 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETN
 
@@ -533,7 +533,7 @@ C_psram_setD_elay ' <symbol:psram_setDelay>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_sc3c7_686cc3b6_psram_modifyB_ankP_arams_L000031
+ long @C_sel07_68804ed7_psram_modifyB_ankP_arams_L000031
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
 ' C_psram_setD_elay_56 ' (symbol refcount = 0)
@@ -563,7 +563,7 @@ C_psram_setF_requency_58
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_sc3c8_686cc3b6_psram_lookupD_elay_L000047 ' CALL addrg
+ long @C_sel08_68804ed7_psram_lookupD_elay_L000047 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r2, r22 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -586,7 +586,7 @@ C_psram_getD_elay ' <symbol:psram_getDelay>
  jmp #CALA
  long @C_psram_initialize ' CALL addrg
  jmp #LODI
- long @C_sc3c1_686cc3b6_deviceD_ata_L000003
+ long @C_sel01_68804ed7_deviceD_ata_L000003
  mov r22, RI ' reg <- INDIRP4 addrg
  mov RI, r22
  jmp #RLNG
@@ -618,7 +618,7 @@ C_psram_setB_urst ' <symbol:psram_setBurst>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_sc3c7_686cc3b6_psram_modifyB_ankP_arams_L000031
+ long @C_sel07_68804ed7_psram_modifyB_ankP_arams_L000031
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
 ' C_psram_setB_urst_61 ' (symbol refcount = 0)
@@ -637,7 +637,7 @@ C_psram_getB_urst ' <symbol:psram_getBurst>
  jmp #CALA
  long @C_psram_initialize ' CALL addrg
  jmp #LODI
- long @C_sc3c1_686cc3b6_deviceD_ata_L000003
+ long @C_sel01_68804ed7_deviceD_ata_L000003
  mov r22, RI ' reg <- INDIRP4 addrg
  mov RI, r22
  jmp #RLNG
@@ -701,7 +701,7 @@ C_psram_setQ_os_66
  mov r22, r23
  shl r22, #2 ' LSHI4 coni
  jmp #LODI
- long @C_sc3c2_686cc3b6_Q_osD_ata_L000004
+ long @C_sel02_68804ed7_Q_osD_ata_L000004
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  jmp #LODL
@@ -787,7 +787,7 @@ C_psram_getQ_os ' <symbol:psram_getQos>
  and r22, #7 ' BANDI4 coni
  shl r22, #2 ' LSHI4 coni
  jmp #LODI
- long @C_sc3c2_686cc3b6_Q_osD_ata_L000004
+ long @C_sel02_68804ed7_Q_osD_ata_L000004
  mov r20, RI ' reg <- INDIRP4 addrg
  adds r22, r20 ' ADDI/P (1)
  mov RI, r22

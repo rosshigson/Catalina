@@ -14,7 +14,7 @@ static int numsect = 0;
 //#define SHOW_DEBUG       // define this to print detailed debug messages
 //#define SHOW_WARNINGS    // define this to print read/write warnings
 //#define SHOW_STATISTICS  // define this to print statistics on flush
-#define SHOW_ERRORS      // define this to print read/write failures
+//#define SHOW_ERRORS      // define this to print read/write failures
 
 
 #ifdef SHOW_STATISTICS
@@ -22,6 +22,41 @@ static int cache_read_hits    = 0;
 static int cache_read_misses  = 0;
 static int cache_write_hits   = 0;
 static int cache_write_misses = 0;
+#endif
+
+#ifdef __CATALINA_P2
+
+/* 
+ * memcpy for longs - works on P2 even if s1 & s2 are not long aligned
+ */
+void * longcpy(void *s1, const void *s2, register size_t n)
+{
+  if (n) {
+    if ((((uint32_t)n|(uint32_t)s1|(uint32_t)s2) & 0x3) == 0) {
+      // s1, s2 and n are all long aligned, so copy by longs!
+      register long *p1 = (long *)s1;
+      register long *p2 = (long *)s2;
+      register size_t m = n/4;
+
+      m++;
+      while (--m > 0) {
+        *p1++ = *p2++;
+      }
+    }
+    else {
+      memcpy(s1, s2, n);
+    }
+  }
+  return s1;
+}
+
+#else
+
+/*
+ * On the p1, just use memcpy, even for longs
+ */
+#define longcpy memcpy
+
 #endif
 
 /*
@@ -97,16 +132,15 @@ static void WriteData(uint32_t slot, uint8_t *data) {
    uint8_t local[SECTOR_SIZE]; // local variable ensures it is in Hub RAM
    uint32_t addr = (uint32_t) (SectorTable + slot); // pointer arithmetic!
    addr = addr + 4*sizeof(uint32_t);
-   memcpy(local, data, SECTOR_SIZE);
+   longcpy(local, data, SECTOR_SIZE);
    ram_write(local, (void *)addr, SECTOR_SIZE);
 }
 
+// !!! assumes "data" is in Hub RAM !!!
 static void ReadData(uint32_t slot, char *data) {
-   uint8_t local[SECTOR_SIZE]; // local variable ensures it is in Hub RAM
    uint32_t addr = (uint32_t) (SectorTable + slot); // pointer arithmetic!
    addr = addr + 4*sizeof(uint32_t);
-   ram_read(local, (void *)addr, SECTOR_SIZE);
-   memcpy(data, local, SECTOR_SIZE);
+   ram_read((uint8_t *)data, (void *)addr, SECTOR_SIZE);
 }
 
 // initialize the sector data (in PSRAM or HYPER RAM)
@@ -456,7 +490,7 @@ unsigned long cached_sectread(char * buffer, long sector) {
       fprintf(stderr, "cr %d\n", sector);
 #endif
       ReadData(slot, (char *)data);
-      memcpy(buffer, data, SECTOR_SIZE);
+      longcpy(buffer, data, SECTOR_SIZE);
 #ifdef SHOW_DEBUG
       for (retries = 0; retries < MAX_RETRIES; retries++) {
          if ((result = sd_sectread(check_buffer, sector)) == 0) {

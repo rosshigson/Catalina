@@ -33,7 +33,9 @@
  *
  * version 8.6 - just update version number.
  *
- * version 8.7 - sewt _EXIT_CODE to result.
+ * version 8.7 - set _EXIT_CODE to result.
+ *
+ * version 8.8 - accept -Q (which in this program does the same as -q).
  *
  */
 
@@ -75,7 +77,7 @@
 #define SHORT_LAYOUT_4     1 /* 1 to remove unused bytes when using layout 4 (P1 only) */
 #define SHORT_LAYOUT_5     1 /* 1 to remove unused bytes when using layout 5 (P1 or P2) */
 
-#define VERSION            "8.7"
+#define VERSION            "8.8"
 
 #define MAX_FILES          1
 #define MAX_LINELEN        4096
@@ -347,6 +349,7 @@ int decode_arguments (int argc, char *argv[]) {
                   break;
 
                case 'q':
+               case 'Q':
                   quickbuild = 1;   /* enable quick build */
                   if (verbose) {
                      fprintf(stderr, "quick build enabled\n");

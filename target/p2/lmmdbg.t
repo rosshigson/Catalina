@@ -49,7 +49,7 @@
 
 #include "define.inc"
 
-#ifdef QUICKBUILD
+#if defined(QUICKBUILD) || defined(QUICKFORCE)
 
 DAT
 

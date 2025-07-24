@@ -90,17 +90,17 @@ fi
 
 TMP_LIBPATH=`pwd`
 
-if [ "$1" == "P2_EDGE" ]; then
+if [ "$2" == "PSRAM" ] || [ "$1" == "P2_EDGE" ]; then
 
    TMP_PSRAM=psram
 
-elif [ "$1" == "P2_EVAL" ]; then
+elif [ "$2" == "HYPER" ] || [ "$1" == "P2_EVAL" ]; then
 
    TMP_PSRAM=hyper
 
 else
 
-   echo "ERROR: Only P2_EDGE with PSRAM or P2_EVAL with HYPER RAM are supported"
+   echo "ERROR: Only P2_EDGE or P2_EVAL are supported"
    exit
 
 fi

@@ -126,7 +126,7 @@ r21      long    0              '$15
 r22      long    0              '$16
 r23      long    0              '$17
 
-#ifdef QUICKBUILD
+#if defined(QUICKBUILD) || defined(QUICKFORCE)
 PC       long    0              '$18
 #else
 PC       long    @C_main        '$18
@@ -215,7 +215,7 @@ FC_START                        ' must match FC_START in compact.inc
 
 DEBUG_OVERLAY
 cmm_init
-#ifdef QUICKBUILD
+#if defined(QUICKBUILD) || defined(QUICKFORCE)
         rdlong  reg,PTRA++      '$56  1 load registry address (used later)   
         cogid   r2              '$57  2 register ...
         shl     r2,#2           '$58  3 ... ourselves ...

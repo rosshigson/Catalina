@@ -1,0 +1,10 @@
+#!/bin/bash
+
+make clean
+
+echo ""
+echo "===="
+echo "Done"
+echo "===="
+echo ""
+

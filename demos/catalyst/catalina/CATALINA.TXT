@@ -32,6 +32,15 @@ NOTE: Since it is always required, the LARGE option is added by the build_all
       script automatically. The script also adds the CACHED_64K option. To 
       change the size of the cache, modify the script.
 
+The second parameter can be used to indicate whether PSRAM or HYPER RAM is to 
+be used, on platforms (such as the P2-EC32MB) which can support both. If not
+specified, the default is to use PSRAM on the P2_EDGE and HYPER RAM on the
+P2_EVAL. For example:
+
+   build_all P2_EDGE PSRAM SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 
+or
+   build_all P2_EDGE HYPER SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 
+
 The build_all script will first copy the latest Catalina sources from the 
 current %LCCDIR%/source directory, then build the various components required.
 Finally, it will copy the results to the Catalyst image directory using the 
@@ -109,7 +118,7 @@ You can compile them using the following commands:
    catalina chimaera.c -lcx -lmc -v 
    catalina diners.c -lci -lthreads -v 
    catalina station.c -lci -lthreads -v -C NO_REBOOT
-   catalina dbasic.c basic.c token.c -lcx -lmc -v
+   catalina dbasic.c basic.c tokens.c -lcx -lmc -v -q -u
    catalina lhello.c linit.c -llua -lcx -lmc -W-w -v
 
 Note that some of the demo programs require the platform and/or specific
@@ -164,8 +173,8 @@ NOTE: Catalyst has a limit of 23 arguments that can be specified in a single
 WARNING: The larger C demo programs can take a long time to compile. Even the
          standard C "hello world" program (hello.c) takes several minutes. 
          Compiling the chimaera game (approx 5,500 lines of C code) takes 
-         about 2 hours. Dumbo Basic (approx 12,000 lines of C code) takes 
-         about 2 hours and 30 minutes. This is why the -v option is 
+         about 1 hour. Dumbo Basic (approx 12,000 lines of C code) takes 
+         about 1 hours and 40 minutes. This is why the -v option is 
          strongly recommended - without it, there is no way of telling that 
          anything is actually happening until the compilation completes.
 
@@ -213,7 +222,7 @@ directory, and can be executed by just entering the command:
 Note that the -v (for verbose) option is generally recommended when using
 catalina on the Propeller - it makes Catalyst echo each command in the
 script as it is executed. Given that some compilations can take a long time, 
-this gives a useful indication of how far the compilation has progressed. 
+this gives a useful indication of how far the compilation has progressed.
 However, note that when Catalina is used with a VGA option (rather than a 
 serial option) the propeller reboots between each command, so any messages 
 output by using -v will not generally be visible for long enough to be read 

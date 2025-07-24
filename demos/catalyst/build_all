@@ -79,7 +79,7 @@ fi
 
 echo ""
 echo "   ==========================="
-echo "   Building all Catalyst Demos"
+echo "   Building Catalyst and Demos"
 echo "   ==========================="
 echo ""
 
@@ -144,6 +144,18 @@ if [[ "$1" != "SUPERQUAD" ]]; then
   cd ..
 
 fi
+
+cd image
+mkdir bin
+mv -f *.bin bin/
+mv -f if.lua bin/
+mv -f exec.lua bin/
+mv -f clua.lua bin/
+mv -f call.lua bin/
+mv -f echo.lua bin/
+mv -f _save.lua bin/
+mv -f _restore.lua bin/
+cd ..
 
 echo ""
 echo "===="

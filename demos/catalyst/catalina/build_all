@@ -13,7 +13,7 @@ EXTRA_OPTIONS=-"C LARGE -C CACHED_64K -C WRITE_BACK -C NO_MOUSE"
 #EXTRA_OPTIONS=-"C LARGE -C HUB_MALLOC -C CACHED_64K -C WRITE_BACK -C NO_MOUSE"
 
 # To use the XMM cache options:
-# set EXTRA_OPTIONS=-C LARGE -C CACHED_64K -C CACHE_LUT -C CACHE_PINS -C FLOAT_PINS -C WRITE_BACK -C NO_MOUSE
+#EXTRA_OPTIONS=-C LARGE -C CACHED_64K -C CACHE_LUT -C CACHE_PINS -C FLOAT_PINS -C WRITE_BACK -C NO_MOUSE
 
 TMP_LCCDIR="$LCCDIR"
 if [[ "$TMP_LCCDIR" == "" ]] ; then
@@ -127,14 +127,14 @@ echo "building library for Catalina ..."
 # save CATALINA_DEFINE before building library
 TMP_DEFINE_3=$CATALINA_DEFINE
 
-if [ "$1" == "P2_EDGE" ]; then
+if [ "$2" == "PSRAM" ] || [ "$1" == "P2_EDGE" ]; then
 
    TMP_PSRAM=psram
    cd lib
    ./build_psram >result.txt 2>&1
    cd ..
 
-elif [ "$1" == "P2_EVAL" ]; then
+elif [ "$2" == "HYPER" ] || [ "$1" == "P2_EVAL" ]; then
 
    TMP_PSRAM=hyper
    cd lib
@@ -143,7 +143,7 @@ elif [ "$1" == "P2_EVAL" ]; then
 
 else
 
-   echo "ERROR: Only P2_EDGE with PSRAM or P2_EVAL with HYPER RAM are supported"
+   echo "ERROR: Only P2_EDGE or P2_EVAL are supported"
    exit
 
 fi

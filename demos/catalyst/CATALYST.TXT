@@ -1,5 +1,5 @@
-Catalyst v8.0
-=============
+Catalyst
+========
 
 This file contains a quick overview of Catalyst. For more details, see the
 Catalyst Reference Manual.
@@ -81,11 +81,11 @@ used.
 
 For CLS to work correctly when using a Serial HMI option (PC, TTY or SIMPLE), 
 Catalyst should be compiled with the VT100 opton, and a VT100 compatible
-terminal emulator (such as payload, Comms or PuTTY) must be used. The same is 
-true of the VI.BIN external command.
+terminal emulator (such as payload, Comms or PuTTY) should be used. This is
+particularly true of the VI.BIN external command.
 
-Whenever the SD Card is inserted, Catalyst must be reset. Otherwise the SD file
-system access will not work correctly.
+Whenever the SD Card is inserted, Catalyst must be reset. Otherwise the SD 
+file system access will not work correctly.
 
 
 The following demo programs are provided in the catalyst\demo subdirectory:

@@ -12,6 +12,7 @@ IF EXIST image\include rmdir /s /q "image\include"
 IF EXIST image\lib rmdir /s /q "image\lib"
 IF EXIST image\target rmdir /s /q "image\target"
 IF EXIST image\tmp rmdir /s /q "image\tmp"
+IF EXIST image\repl rmdir /s /q "image\repl"
 rem rm -fr image/*
 
 cd core

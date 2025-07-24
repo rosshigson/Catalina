@@ -1,0 +1,7 @@
+#!/bin/bash
+#set -x
+
+rm -fr include/*
+rm -fr source/lib/*
+rm -fr target/*
+rm -fr lib/*

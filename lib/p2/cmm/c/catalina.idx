@@ -408,9 +408,9 @@ _getpid getpid.s 17 export
 _cnt getpid.s 60 import
 srand getpid.s 62 import
 rand getpid.s 64 import
-getrand getrand.s 32 export
-rand getrand.s 81 import
-srand getrand.s 83 import
+getrand getrand.s 39 export
+rand getrand.s 88 import
+srand getrand.s 90 import
 getrealrand getrrand.s 9 export
 gets gets.s 9 export
 getc gets.s 88 import
