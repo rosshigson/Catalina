@@ -1,3 +1,6 @@
+#ifndef _STDINT_H
+#define _STDINT_H  1
+
 /*  A portable stdint.h
  *
  *  Modified for Catalina by Ross Higson
@@ -432,6 +435,42 @@
 #endif
 #endif
 
+#ifdef __CATALINA__ 
+
+// Catalina does not have 64 bit integers, but it accepts the declaration
+// of long longs and unsigned long longs, and so some programs will expect 
+// to have them, so we define them here but make them 32 bits. This makes
+// Cake work, but may confuse some other programs.
+
+#  define stdint_int64_defined
+   typedef long int64_t;
+   typedef unsigned long uint64_t;
+#  define UINT64_C(v) v ## ULL
+#  define  INT64_C(v) v ## LL
+#  ifndef PRINTF_INT64_MODIFIER
+#   define PRINTF_INT64_MODIFIER "ll"
+#  endif
+# endif
+
+#if !defined (LONG_LONG_MAX) && defined (INT64_C)
+# define LONG_LONG_MAX INT64_C (2147483647)
+#endif
+#ifndef ULONG_LONG_MAX
+# define ULONG_LONG_MAX UINT64_C (429496729)
+#endif
+
+#if !defined (INT64_MAX) && defined (INT64_C)
+# define INT64_MAX INT64_C (2147483647)
+#endif
+#if !defined (INT64_MIN) && defined (INT64_C)
+# define INT64_MIN INT64_C (-2147483648)
+#endif
+#if !defined (UINT64_MAX) && defined (INT64_C)
+# define UINT64_MAX UINT64_C (4294967295)
+#endif
+
+#else
+
 /*
  *  The macro stdint_int64_defined is temporarily used to record
  *  whether or not 64 integer support is available.  It must be
@@ -440,7 +479,6 @@
  */
 
 #undef stdint_int64_defined
-#ifndef __CATALINA__  
 #if (defined(__STDC__) && defined(__STDC_VERSION__)) || defined (S_SPLINT_S)
 # if (__STDC__ && __STDC_VERSION >= 199901L) || defined (S_SPLINT_S)
 #  define stdint_int64_defined
@@ -452,7 +490,6 @@
 #   define PRINTF_INT64_MODIFIER "ll"
 #  endif
 # endif
-#endif
 #endif
 
 #if !defined (stdint_int64_defined)
@@ -501,6 +538,8 @@
 #endif
 #if !defined (UINT64_MAX) && defined (INT64_C)
 # define UINT64_MAX UINT64_C (18446744073709551615)
+#endif
+
 #endif
 
 /*
@@ -671,7 +710,9 @@ typedef uint_least32_t uint_fast32_t;
 #endif
 
 #ifndef STDINT_H_UINTPTR_T_DEFINED
-# if defined (__alpha__) || defined (__ia64__) || defined (__x86_64__) || defined (_WIN64)
+# if defined (__CATALINA__)
+#    define stdint_intptr_bits 32
+# elif defined (__alpha__) || defined (__ia64__) || defined (__x86_64__) || defined (_WIN64)
 #  define stdint_intptr_bits 64
 # elif defined (__WATCOMC__) || defined (__TURBOC__)
 #  if defined(__TINY__) || defined(__SMALL__) || defined(__MEDIUM__)
@@ -679,7 +720,7 @@ typedef uint_least32_t uint_fast32_t;
 #  else
 #    define stdint_intptr_bits 32
 #  endif
-# elif defined (__i386__) || defined (_WIN32) || defined (WIN32) || defined(__CATALINA__)
+# elif defined (__i386__) || defined (_WIN32) || defined (WIN32)
 #  define stdint_intptr_bits 32
 # elif defined (__INTEL_COMPILER)
 /* TODO -- what will Intel do about x86-64? */

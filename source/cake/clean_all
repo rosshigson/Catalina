@@ -1,0 +1,4 @@
+#!/bin/bash
+##!/bin/bash
+
+rm -fr bake.out src/build src/cake src/embed src/catalina/*

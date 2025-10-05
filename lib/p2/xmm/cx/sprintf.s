@@ -56,7 +56,7 @@ C_sprintf ' <symbol:sprintf>
  sub RI, #-(-8)
  wrlong r22, RI ' ASGNP4 addrli reg
  jmp #LODL
- long 32767
+ long 2147483647
  mov r22, RI ' reg <- con
  mov RI, FP
  sub RI, #-(-28)

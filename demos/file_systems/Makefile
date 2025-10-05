@@ -104,6 +104,14 @@ test_stdio_buffering : test_stdio_buffering$B
 # add this to the 'all' target
 all :: test_stdio_buffering
 
+# =============
+
+.PHONY : test_mkdir
+test_mkdir : test_mkdir$B
+
+# add this to the 'all' target
+all :: test_mkdir
+
 #
 # Clean Target (should not be first target!)
 # ==========================================

@@ -63,7 +63,7 @@
 extern uint32_t _clockfreq(void);  // return current frequency - e.g. 80000000
 extern uint32_t _clockmode(void);  // return current mode - e.g. XTAL_1 + PLL16X
 
-extern _clockinit(unsigned mode, unsigned freq); // set mode and freq
+extern void _clockinit(unsigned mode, unsigned freq); // set mode and freq
 
 
 /*

@@ -52,6 +52,7 @@
  *
  * version 8.8   - just update version number.
  *
+ * version 8.8.1 - remove local strdup (now in C libary).
  */
 
 /*--------------------------------------------------------------------------
@@ -89,7 +90,7 @@
 
 #define COMPILE_IN_PLACE   1 /* 0 = compile in target, 1 = compile locally */
 
-#define VERSION            "8.8"
+#define VERSION            "8.8.1"
 
 #define MAX_FILES          500
 #define MAX_LIBS           500
@@ -218,15 +219,6 @@ int print_symbols(int all);
 
 int getpid() {
    return 0;
-}
-
-char * strdup(const char *str) {
-   if (str != NULL) {
-      register char *copy = malloc(strlen(str) + 1);
-      if (copy != NULL)
-         return strcpy(copy, str);
-   }
-   return NULL;
 }
 
 // simulate environment variables if not set

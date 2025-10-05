@@ -42,8 +42,9 @@ C_sprintf ' <symbol:sprintf>
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
+ word I16B_LODL + (r22)<<D16B
  alignl_p1
- long I32_LODS + (r22)<<D32S + ((32767)&$7FFFF)<<S32 ' reg <- cons
+ long 2147483647 ' reg <- con
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNI4 addrl16 reg
  word I16B_LODF + ((-28)&$1FF)<<S16B

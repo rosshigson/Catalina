@@ -51,6 +51,10 @@ cd catalina
 call clean_all
 cd ..
 
+cd cake
+call clean_all
+cd ..
+
 cd time
 call clean_all
 cd ..

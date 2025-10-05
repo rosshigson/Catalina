@@ -24,7 +24,6 @@ copy ..\..\..\src\simp.s
 copy ..\..\..\src\stab.s
 copy ..\..\..\src\stmt.s
 copy ..\..\..\src\string.s
-copy ..\..\..\src\strdup.s
 copy ..\..\..\src\sym.s
 copy ..\..\..\src\symbolic.s
 copy ..\..\..\src\trace.s

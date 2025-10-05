@@ -64,24 +64,24 @@ typedef struct {
 #define PRIdFAST16   "hd"
 #define PRIiFAST16   "hi"
 
-#define PRId32       "I32d"
-#define PRIi32       "I32i"
-#define PRIdLEAST32  "I32d"
-#define PRIiLEAST32  "I32i"
-#define PRIdFAST32   "I32d"
-#define PRIiFAST32   "I32i"
+#define PRId32       "d"
+#define PRIi32       "i"
+#define PRIdLEAST32  "d"
+#define PRIiLEAST32  "i"
+#define PRIdFAST32   "d"
+#define PRIiFAST32   "i"
 
 #ifdef INT64_MAX
 
-#define PRId64       "I64d"
-#define PRIi64       "I64i"
-#define PRIdLEAST64  "I64d"
-#define PRIiLEAST64  "I64i"
-#define PRIdFAST64   "I64d"
-#define PRIiFAST64   "I64i"
+#define PRId64       "d"
+#define PRIi64       "i"
+#define PRIdLEAST64  "d"
+#define PRIiLEAST64  "i"
+#define PRIdFAST64   "d"
+#define PRIiFAST64   "i"
 
-#define PRIdMAX     "I64d"
-#define PRIiMAX     "I64i"
+#define PRIdMAX     "d"
+#define PRIiMAX     "i"
 
 #endif
 
@@ -115,38 +115,38 @@ typedef struct {
 #define PRIxFAST16   "hx"
 #define PRIXFAST16   "hX"
 
-#define PRIo32       "I32o"
-#define PRIu32       "I32u"
-#define PRIx32       "I32x"
-#define PRIX32       "I32X"
-#define PRIoLEAST32  "I32o"
-#define PRIuLEAST32  "I32u"
-#define PRIxLEAST32  "I32x"
-#define PRIXLEAST32  "I32X"
-#define PRIoFAST32   "I32o"
-#define PRIuFAST32   "I32u"
-#define PRIxFAST32   "I32x"
-#define PRIXFAST32   "I32X"
+#define PRIo32       "o"
+#define PRIu32       "u"
+#define PRIx32       "x"
+#define PRIX32       "X"
+#define PRIoLEAST32  "o"
+#define PRIuLEAST32  "u"
+#define PRIxLEAST32  "x"
+#define PRIXLEAST32  "X"
+#define PRIoFAST32   "o"
+#define PRIuFAST32   "u"
+#define PRIxFAST32   "x"
+#define PRIXFAST32   "X"
 
 #ifdef INT64_MAX
 
-#define PRIo64       "I64o"
-#define PRIu64       "I64u"
-#define PRIx64       "I64x"
-#define PRIX64       "I64X"
-#define PRIoLEAST64  "I64o"
-#define PRIuLEAST64  "I64u"
-#define PRIxLEAST64  "I64x"
-#define PRIXLEAST64  "I64X"
-#define PRIoFAST64   "I64o"
-#define PRIuFAST64   "I64u"
-#define PRIxFAST64   "I64x"
-#define PRIXFAST64   "I64X"
+#define PRIo64       "o"
+#define PRIu64       "u"
+#define PRIx64       "x"
+#define PRIX64       "X"
+#define PRIoLEAST64  "o"
+#define PRIuLEAST64  "u"
+#define PRIxLEAST64  "x"
+#define PRIXLEAST64  "X"
+#define PRIoFAST64   "o"
+#define PRIuFAST64   "u"
+#define PRIxFAST64   "x"
+#define PRIXFAST64   "X"
 
-#define PRIoMAX     "I64o"
-#define PRIuMAX     "I64u"
-#define PRIxMAX     "I64x"
-#define PRIXMAX     "I64X"
+#define PRIoMAX     "o"
+#define PRIuMAX     "u"
+#define PRIxMAX     "x"
+#define PRIXMAX     "X"
 
 #endif
 
@@ -179,15 +179,15 @@ typedef struct {
 
 #ifdef INT64_MAX
 
-#define SCNd64       "I64d"
-#define SCNi64       "I64i"
-#define SCNdLEAST64  "I64d"
-#define SCNiLEAST64  "I64i"
-#define SCNdFAST64   "I64d"
-#define SCNiFAST64   "I64i"
+#define SCNd64       "d"
+#define SCNi64       "i"
+#define SCNdLEAST64  "d"
+#define SCNiLEAST64  "i"
+#define SCNdFAST64   "d"
+#define SCNiFAST64   "i"
 
-#define SCNdMAX     "I64d"
-#define SCNiMAX     "I64i"
+#define SCNdMAX     "d"
+#define SCNiMAX     "i"
 
 #endif
 
@@ -236,23 +236,23 @@ typedef struct {
 
 #ifdef INT64_MAX
 
-#define SCNo64       "I64o"
-#define SCNu64       "I64u"
-#define SCNx64       "I64x"
-#define SCNX64       "I64X"
-#define SCNoLEAST64  "I64o"
-#define SCNuLEAST64  "I64u"
-#define SCNxLEAST64  "I64x"
-#define SCNXLEAST64  "I64X"
-#define SCNoFAST64   "I64o"
-#define SCNuFAST64   "I64u"
-#define SCNxFAST64   "I64x"
-#define SCNXFAST64   "I64X"
+#define SCNo64       "o"
+#define SCNu64       "u"
+#define SCNx64       "x"
+#define SCNX64       "X"
+#define SCNoLEAST64  "o"
+#define SCNuLEAST64  "u"
+#define SCNxLEAST64  "x"
+#define SCNXLEAST64  "X"
+#define SCNoFAST64   "o"
+#define SCNuFAST64   "u"
+#define SCNxFAST64   "x"
+#define SCNXFAST64   "X"
 
-#define SCNoMAX     "I64o"
-#define SCNuMAX     "I64u"
-#define SCNxMAX     "I64x"
-#define SCNXMAX     "I64X"
+#define SCNoMAX     "o"
+#define SCNuMAX     "u"
+#define SCNxMAX     "x"
+#define SCNXMAX     "X"
 
 #endif
 

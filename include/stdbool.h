@@ -9,12 +9,19 @@
 #  if !defined(__bool_true_false_are_defined)
 #    define __bool_true_false_are_defined 1
 
-     /* If this is C99 or later, use built-in bool */
-#    if __STDC_VERSION__ >= 199901L
-#      define bool _Bool
-#    else
-       /* Choose an unsigned type that can be used as a bitfield */
+#    if defined(__INT_BOOL__)
+       /* force use of int as both bool and _Bool */
 #      define bool unsigned int
+#      define _Bool unsigned int
+#    else
+     /* If this is C99 or later, use built-in bool */
+#      if __STDC_VERSION__ >= 199901L
+#        define bool _Bool
+#      else
+         /* Choose an unsigned type that can be used as a bitfield */
+#        define bool unsigned int
+#        define _Bool unsigned int
+#      endif
 #    endif
 
 #    define true 1

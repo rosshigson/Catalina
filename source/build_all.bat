@@ -21,6 +21,8 @@ cd %LCCDIR%\source
 
 cd catalina
 call build_all
+cd ..\cake
+call build_all
 cd ..\catoptimize
 call build_all
 call copy_all

@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' const data segment
 
  alignl ' align long
-C_sn80_68804e63_cb64_L000003 ' <symbol:cb64>
+C_sok8_68dcc0f5_cb64_L000003 ' <symbol:cb64>
  byte 65
  byte 66
  byte 67
@@ -79,7 +79,7 @@ C_sn80_68804e63_cb64_L000003 ' <symbol:cb64>
  byte 0
 
  alignl ' align long
-C_sn801_68804e63_cd64_L000004 ' <symbol:cd64>
+C_sok81_68dcc0f5_cd64_L000004 ' <symbol:cd64>
  byte 124
  byte 36
  byte 36
@@ -167,7 +167,7 @@ C_sn801_68804e63_cd64_L000004 ' <symbol:cd64>
 DAT ' code segment
 
  alignl ' align long
-C_sn802_68804e63_encodeblock_L000005 ' <symbol:encodeblock>
+C_sok82_68dcc0f5_encodeblock_L000005 ' <symbol:encodeblock>
  jmp #PSHM
  long $f50000 ' save registers
  mov RI, r4
@@ -176,7 +176,7 @@ C_sn802_68804e63_encodeblock_L000005 ' <symbol:encodeblock>
  and r22, cviu_m1 ' zero extend
  sar r22, #2 ' RSHI4 coni
  jmp #LODL
- long @C_sn80_68804e63_cb64_L000003
+ long @C_sok8_68dcc0f5_cb64_L000003
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  mov RI, r22
@@ -206,7 +206,7 @@ C_sn802_68804e63_encodeblock_L000005 ' <symbol:encodeblock>
  mov r22, RI ' RSHI (2)
  or r22, r18 ' BORI/U (2)
  jmp #LODL
- long @C_sn80_68804e63_cb64_L000003
+ long @C_sok8_68dcc0f5_cb64_L000003
  mov r18, RI ' reg <- addrg
  adds r22, r18 ' ADDI/P (1)
  mov RI, r22
@@ -217,7 +217,7 @@ C_sn802_68804e63_encodeblock_L000005 ' <symbol:encodeblock>
  jmp #WBYT ' ASGNU1 reg reg
  cmps r2,  #1 wz,wc
  jmp #BRBE
- long @C_sn802_68804e63_encodeblock_L000005_8 ' LEI4
+ long @C_sok82_68dcc0f5_encodeblock_L000005_8 ' LEI4
  mov r22, r4
  adds r22, #1 ' ADDP4 coni
  mov RI, r22
@@ -236,7 +236,7 @@ C_sn802_68804e63_encodeblock_L000005 ' <symbol:encodeblock>
  sar r20, #6 ' RSHI4 coni
  or r22, r20 ' BORI/U (1)
  jmp #LODL
- long @C_sn80_68804e63_cb64_L000003
+ long @C_sok8_68dcc0f5_cb64_L000003
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  mov RI, r22
@@ -245,10 +245,10 @@ C_sn802_68804e63_encodeblock_L000005 ' <symbol:encodeblock>
  mov r23, r22 ' CVUI
  and r23, cviu_m1 ' zero extend
  jmp #JMPA
- long @C_sn802_68804e63_encodeblock_L000005_9 ' JUMPV addrg
-C_sn802_68804e63_encodeblock_L000005_8
+ long @C_sok82_68dcc0f5_encodeblock_L000005_9 ' JUMPV addrg
+C_sok82_68dcc0f5_encodeblock_L000005_8
  mov r23, #61 ' reg <- coni
-C_sn802_68804e63_encodeblock_L000005_9
+C_sok82_68dcc0f5_encodeblock_L000005_9
  mov r22, r3
  adds r22, #2 ' ADDP4 coni
  mov r20, r23 ' CVI, CVU or LOAD
@@ -257,7 +257,7 @@ C_sn802_68804e63_encodeblock_L000005_9
  jmp #WBYT ' ASGNU1 reg reg
  cmps r2,  #2 wz,wc
  jmp #BRBE
- long @C_sn802_68804e63_encodeblock_L000005_11 ' LEI4
+ long @C_sok82_68dcc0f5_encodeblock_L000005_11 ' LEI4
  mov r22, r4
  adds r22, #2 ' ADDP4 coni
  mov RI, r22
@@ -266,7 +266,7 @@ C_sn802_68804e63_encodeblock_L000005_9
  and r22, cviu_m1 ' zero extend
  and r22, #63 ' BANDI4 coni
  jmp #LODL
- long @C_sn80_68804e63_cb64_L000003
+ long @C_sok8_68dcc0f5_cb64_L000003
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  mov RI, r22
@@ -275,17 +275,17 @@ C_sn802_68804e63_encodeblock_L000005_9
  mov r21, r22 ' CVUI
  and r21, cviu_m1 ' zero extend
  jmp #JMPA
- long @C_sn802_68804e63_encodeblock_L000005_12 ' JUMPV addrg
-C_sn802_68804e63_encodeblock_L000005_11
+ long @C_sok82_68dcc0f5_encodeblock_L000005_12 ' JUMPV addrg
+C_sok82_68dcc0f5_encodeblock_L000005_11
  mov r21, #61 ' reg <- coni
-C_sn802_68804e63_encodeblock_L000005_12
+C_sok82_68dcc0f5_encodeblock_L000005_12
  mov r22, r3
  adds r22, #3 ' ADDP4 coni
  mov r20, r21 ' CVI, CVU or LOAD
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
-' C_sn802_68804e63_encodeblock_L000005_6 ' (symbol refcount = 0)
+' C_sok82_68dcc0f5_encodeblock_L000005_6 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETN
 
@@ -377,7 +377,7 @@ C_encode_buff_26
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_sn802_68804e63_encodeblock_L000005
+ long @C_sok82_68dcc0f5_encodeblock_L000005
  add SP, #8 ' CALL addrg
  mov r15, #0 ' reg <- coni
 C_encode_buff_29
@@ -450,7 +450,7 @@ C_encode_buff_19
 
 
  alignl ' align long
-C_sn803_68804e63_decodeblock_L000040 ' <symbol:decodeblock>
+C_sok83_68dcc0f5_decodeblock_L000040 ' <symbol:decodeblock>
  jmp #PSHM
  long $550000 ' save registers
  mov RI, r3
@@ -512,7 +512,7 @@ C_sn803_68804e63_decodeblock_L000040 ' <symbol:decodeblock>
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
-' C_sn803_68804e63_decodeblock_L000040_41 ' (symbol refcount = 0)
+' C_sok83_68dcc0f5_decodeblock_L000040_41 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETN
 
@@ -576,7 +576,7 @@ C_decode_buff_59
  long @C_decode_buff_58 ' JUMPV addrg
 C_decode_buff_57
  jmp #LODL
- long @C_sn801_68804e63_cd64_L000004-43
+ long @C_sok81_68dcc0f5_cd64_L000004-43
  mov r22, RI ' reg <- addrg
  adds r22, r15 ' ADDI/P (2)
  mov RI, r22
@@ -669,7 +669,7 @@ C_decode_buff_70
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_sn803_68804e63_decodeblock_L000040
+ long @C_sok83_68dcc0f5_decodeblock_L000040
  add SP, #4 ' CALL addrg
  mov r11, #0 ' reg <- coni
  jmp #JMPA

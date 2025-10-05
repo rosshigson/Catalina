@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl_label
-C_s23s_68804fe0_cmmtd_array_L000001 ' <symbol:cmmtd_array>
+C_sc8g_68dcc284_cmmtd_array_L000001 ' <symbol:cmmtd_array>
  long $fd900154
  long $0
  long $0
@@ -972,7 +972,7 @@ C__threaded_cogstart_C_M_M__cog ' <symbol:_threaded_cogstart_CMM_cog>
  word I16A_MOV + (r2)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
  word I16B_LODL + (r22)<<D16B
  alignl_p1
- long @C_s23s_68804fe0_cmmtd_array_L000001 ' reg <- addrg
+ long @C_sc8g_68dcc284_cmmtd_array_L000001 ' reg <- addrg
  word I16A_MOV + (r3)<<D16A + (r22)<<S16A
  word I16A_SARI + (r3)<<D16A + (2)<<S16A ' SHRI4 reg coni
  word I16B_LODF + ((-36)&$1FF)<<S16B

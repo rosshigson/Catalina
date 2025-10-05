@@ -11,11 +11,11 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_sdj0_6880507f_s8base_L000002 ' <symbol:s8base>
+C_snek_68dcc32e_s8base_L000002 ' <symbol:s8base>
  long $0
 
  alignl ' align long
-C_sdj01_6880507f_lock_L000003 ' <symbol:lock>
+C_snek1_68dcc32e_lock_L000003 ' <symbol:lock>
  long -1
 
 ' Catalina Code
@@ -23,7 +23,7 @@ C_sdj01_6880507f_lock_L000003 ' <symbol:lock>
 DAT ' code segment
 
  alignl ' align long
-C_sdj02_6880507f_pinconfig_L000004 ' <symbol:pinconfig>
+C_snek2_68dcc32e_pinconfig_L000004 ' <symbol:pinconfig>
  calld PA,#NEWF
  sub SP, #4
  calld PA,#PSHM
@@ -33,7 +33,7 @@ C_sdj02_6880507f_pinconfig_L000004 ' <symbol:pinconfig>
  mov r19, r3 ' reg var <- reg arg
  mov r17, r2 ' reg var <- reg arg
  cmps r17,  #0 wz
- if_nz jmp #\C_sdj02_6880507f_pinconfig_L000004_6 ' NEI4
+ if_nz jmp #\C_snek2_68dcc32e_pinconfig_L000004_6 ' NEI4
  mov r22, #62 ' reg <- coni
  mov RI, FP
  sub RI, #-(-8)
@@ -41,7 +41,7 @@ C_sdj02_6880507f_pinconfig_L000004 ' <symbol:pinconfig>
  mov r22, r19
  and r22, #1 ' BANDU4 coni
  cmp r22,  #0 wz
- if_z jmp #\C_sdj02_6880507f_pinconfig_L000004_7 ' EQU4
+ if_z jmp #\C_snek2_68dcc32e_pinconfig_L000004_7 ' EQU4
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRU4 reg
@@ -50,8 +50,8 @@ C_sdj02_6880507f_pinconfig_L000004 ' <symbol:pinconfig>
  mov RI, FP
  sub RI, #-(-8)
  wrlong r22, RI ' ASGNU4 addrli reg
- jmp #\@C_sdj02_6880507f_pinconfig_L000004_7 ' JUMPV addrg
-C_sdj02_6880507f_pinconfig_L000004_6
+ jmp #\@C_snek2_68dcc32e_pinconfig_L000004_7 ' JUMPV addrg
+C_snek2_68dcc32e_pinconfig_L000004_6
  mov r22, #124 ' reg <- coni
  mov RI, FP
  sub RI, #-(-8)
@@ -61,12 +61,12 @@ C_sdj02_6880507f_pinconfig_L000004_6
  mov r13, r22
  and r13, #3 ' BANDU4 coni
  cmps r13,  #0 wcz
- if_b jmp #\C_sdj02_6880507f_pinconfig_L000004_10 ' LTI4
+ if_b jmp #\C_snek2_68dcc32e_pinconfig_L000004_10 ' LTI4
  cmps r13,  #3 wcz
- if_a jmp #\C_sdj02_6880507f_pinconfig_L000004_10 ' GTI4
+ if_a jmp #\C_snek2_68dcc32e_pinconfig_L000004_10 ' GTI4
  mov r22, r13
  shl r22, #2 ' LSHI4 coni
- mov r20, ##@C_sdj02_6880507f_pinconfig_L000004_17_L000019 ' reg <- addrg
+ mov r20, ##@C_snek2_68dcc32e_pinconfig_L000004_17_L000019 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong RI, r22
  jmp RI ' JUMPV INDIR reg
@@ -76,16 +76,16 @@ C_sdj02_6880507f_pinconfig_L000004_6
 DAT ' const data segment
 
  alignl ' align long
-C_sdj02_6880507f_pinconfig_L000004_17_L000019 ' <symbol:17>
- long @C_sdj02_6880507f_pinconfig_L000004_11
- long @C_sdj02_6880507f_pinconfig_L000004_14
- long @C_sdj02_6880507f_pinconfig_L000004_15
- long @C_sdj02_6880507f_pinconfig_L000004_16
+C_snek2_68dcc32e_pinconfig_L000004_17_L000019 ' <symbol:17>
+ long @C_snek2_68dcc32e_pinconfig_L000004_11
+ long @C_snek2_68dcc32e_pinconfig_L000004_14
+ long @C_snek2_68dcc32e_pinconfig_L000004_15
+ long @C_snek2_68dcc32e_pinconfig_L000004_16
 
 ' Catalina Code
 
 DAT ' code segment
-C_sdj02_6880507f_pinconfig_L000004_14
+C_snek2_68dcc32e_pinconfig_L000004_14
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRU4 reg
@@ -94,8 +94,8 @@ C_sdj02_6880507f_pinconfig_L000004_14
  mov RI, FP
  sub RI, #-(-8)
  wrlong r22, RI ' ASGNU4 addrli reg
- jmp #\@C_sdj02_6880507f_pinconfig_L000004_11 ' JUMPV addrg
-C_sdj02_6880507f_pinconfig_L000004_15
+ jmp #\@C_snek2_68dcc32e_pinconfig_L000004_11 ' JUMPV addrg
+C_snek2_68dcc32e_pinconfig_L000004_15
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRU4 reg
@@ -104,8 +104,8 @@ C_sdj02_6880507f_pinconfig_L000004_15
  mov RI, FP
  sub RI, #-(-8)
  wrlong r22, RI ' ASGNU4 addrli reg
- jmp #\@C_sdj02_6880507f_pinconfig_L000004_11 ' JUMPV addrg
-C_sdj02_6880507f_pinconfig_L000004_16
+ jmp #\@C_snek2_68dcc32e_pinconfig_L000004_11 ' JUMPV addrg
+C_snek2_68dcc32e_pinconfig_L000004_16
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRU4 reg
@@ -114,9 +114,9 @@ C_sdj02_6880507f_pinconfig_L000004_16
  mov RI, FP
  sub RI, #-(-8)
  wrlong r22, RI ' ASGNU4 addrli reg
-C_sdj02_6880507f_pinconfig_L000004_10
-C_sdj02_6880507f_pinconfig_L000004_11
-C_sdj02_6880507f_pinconfig_L000004_7
+C_snek2_68dcc32e_pinconfig_L000004_10
+C_snek2_68dcc32e_pinconfig_L000004_11
+C_snek2_68dcc32e_pinconfig_L000004_7
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C__clockfreq ' CALL addrg
@@ -145,21 +145,21 @@ C_sdj02_6880507f_pinconfig_L000004_7
  calld PA,#CALA
  long @C__pinstart
  add SP, #12 ' CALL addrg
-' C_sdj02_6880507f_pinconfig_L000004_5 ' (symbol refcount = 0)
+' C_snek2_68dcc32e_pinconfig_L000004_5 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  add SP, #4 ' framesize
  calld PA,#RETF
 
 
  alignl ' align long
-C_sdj05_6880507f_p_config_L000020 ' <symbol:p_config>
+C_snek5_68dcc32e_p_config_L000020 ' <symbol:p_config>
  calld PA,#NEWF
  calld PA,#PSHM
  long $500000 ' save registers
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 reg
- mov r20, ##@C_sdj0_6880507f_s8base_L000002
+ mov r20, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  adds r20, #4 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
@@ -169,7 +169,7 @@ C_sdj05_6880507f_p_config_L000020 ' <symbol:p_config>
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 reg
  shl r22, #4 ' LSHI4 coni
- mov r20, ##@C_sdj0_6880507f_s8base_L000002
+ mov r20, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  adds r20, #20 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
@@ -178,7 +178,7 @@ C_sdj05_6880507f_p_config_L000020 ' <symbol:p_config>
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 reg
  shl r22, #4 ' LSHI4 coni
- mov r20, ##@C_sdj0_6880507f_s8base_L000002
+ mov r20, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  adds r20, #24 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
@@ -187,7 +187,7 @@ C_sdj05_6880507f_p_config_L000020 ' <symbol:p_config>
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 reg
  shl r22, #4 ' LSHI4 coni
- mov r20, ##@C_sdj0_6880507f_s8base_L000002
+ mov r20, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  adds r20, #28 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
@@ -196,7 +196,7 @@ C_sdj05_6880507f_p_config_L000020 ' <symbol:p_config>
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 reg
  shl r22, #4 ' LSHI4 coni
- mov r20, ##@C_sdj0_6880507f_s8base_L000002
+ mov r20, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  adds r20, #32 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
@@ -204,7 +204,7 @@ C_sdj05_6880507f_p_config_L000020 ' <symbol:p_config>
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 reg
- mov r20, ##@C_sdj0_6880507f_s8base_L000002
+ mov r20, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  adds r20, #4 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
@@ -212,45 +212,45 @@ C_sdj05_6880507f_p_config_L000020 ' <symbol:p_config>
  add r20, #12 ' reg <- addrfi
  rdlong r20, r20 ' reg <- INDIRI4 reg
  wrbyte r20, r22 ' ASGNU1 reg reg
-' C_sdj05_6880507f_p_config_L000020_21 ' (symbol refcount = 0)
+' C_snek5_68dcc32e_p_config_L000020_21 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sdj06_6880507f_autoinitialize_L000022 ' <symbol:autoinitialize>
+C_snek6_68dcc32e_autoinitialize_L000022 ' <symbol:autoinitialize>
  calld PA,#NEWF
  calld PA,#PSHM
  long $fea800 ' save registers
- mov r22, ##@C_sdj0_6880507f_s8base_L000002
+ mov r22, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
- if_z jmp #\C_sdj06_6880507f_autoinitialize_L000022_24 ' EQU4
- mov r22, ##@C_sdj0_6880507f_s8base_L000002
+ if_z jmp #\C_snek6_68dcc32e_autoinitialize_L000022_24 ' EQU4
+ mov r22, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  rdlong r19, r22 ' reg <- INDIRU4 reg
  mov r22, ##1024 ' reg <- con
  mov r15, r19 ' ADDU
  add r15, r22 ' ADDU (3)
  mov r17, #0 ' reg <- coni
-C_sdj06_6880507f_autoinitialize_L000022_26
+C_snek6_68dcc32e_autoinitialize_L000022_26
  mov r21, r17
  shl r21, #1 ' LSHI4 coni
  mov r22, r21
  shl r22, #4 ' LSHI4 coni
- mov r20, ##@C_sdj0_6880507f_s8base_L000002
+ mov r20, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  adds r20, #20 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRU4 reg
  mov r23, r22 ' CVI, CVU or LOAD
  cmps r23,  #0 wcz
- if_b jmp #\C_sdj06_6880507f_autoinitialize_L000022_30 ' LTI4
+ if_b jmp #\C_snek6_68dcc32e_autoinitialize_L000022_30 ' LTI4
  cmps r23,  #63 wcz
- if_a jmp #\C_sdj06_6880507f_autoinitialize_L000022_30 ' GTI4
+ if_a jmp #\C_snek6_68dcc32e_autoinitialize_L000022_30 ' GTI4
  mov r22, r21
  shl r22, #4 ' LSHI4 coni
- mov r20, ##@C_sdj0_6880507f_s8base_L000002
+ mov r20, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  mov r18, r20
  adds r18, #24 ' ADDP4 coni
@@ -266,7 +266,7 @@ C_sdj06_6880507f_autoinitialize_L000022_26
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sdj02_6880507f_pinconfig_L000004
+ long @C_snek2_68dcc32e_pinconfig_L000004
  add SP, #12 ' CALL addrg
  mov r22, ##1024 ' reg <- con
  mov r2, r19 ' ADDU
@@ -284,25 +284,25 @@ C_sdj06_6880507f_autoinitialize_L000022_26
  mov BC, #24 ' arg size, rpsize = 0, spsize = 24
  add SP, #4 ' correct for new kernel !!! 
  calld PA,#CALA
- long @C_sdj05_6880507f_p_config_L000020
+ long @C_snek5_68dcc32e_p_config_L000020
  add SP, #20 ' CALL addrg
-C_sdj06_6880507f_autoinitialize_L000022_30
+C_snek6_68dcc32e_autoinitialize_L000022_30
  adds r21, #1 ' ADDI4 coni
  mov r22, r21
  shl r22, #4 ' LSHI4 coni
- mov r20, ##@C_sdj0_6880507f_s8base_L000002
+ mov r20, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  adds r20, #20 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRU4 reg
  mov r23, r22 ' CVI, CVU or LOAD
  cmps r23,  #0 wcz
- if_b jmp #\C_sdj06_6880507f_autoinitialize_L000022_32 ' LTI4
+ if_b jmp #\C_snek6_68dcc32e_autoinitialize_L000022_32 ' LTI4
  cmps r23,  #63 wcz
- if_a jmp #\C_sdj06_6880507f_autoinitialize_L000022_32 ' GTI4
+ if_a jmp #\C_snek6_68dcc32e_autoinitialize_L000022_32 ' GTI4
  mov r22, r21
  shl r22, #4 ' LSHI4 coni
- mov r20, ##@C_sdj0_6880507f_s8base_L000002
+ mov r20, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  mov r18, r20
  adds r18, #24 ' ADDP4 coni
@@ -318,7 +318,7 @@ C_sdj06_6880507f_autoinitialize_L000022_30
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sdj02_6880507f_pinconfig_L000004
+ long @C_snek2_68dcc32e_pinconfig_L000004
  add SP, #12 ' CALL addrg
  mov r22, ##1024 ' reg <- con
  mov r2, r15 ' ADDU
@@ -336,32 +336,32 @@ C_sdj06_6880507f_autoinitialize_L000022_30
  mov BC, #24 ' arg size, rpsize = 0, spsize = 24
  add SP, #4 ' correct for new kernel !!! 
  calld PA,#CALA
- long @C_sdj05_6880507f_p_config_L000020
+ long @C_snek5_68dcc32e_p_config_L000020
  add SP, #20 ' CALL addrg
-C_sdj06_6880507f_autoinitialize_L000022_32
+C_snek6_68dcc32e_autoinitialize_L000022_32
  mov r22, ##2048 ' reg <- con
  add r19, r22 ' ADDU (1)
  add r15, r22 ' ADDU (1)
-' C_sdj06_6880507f_autoinitialize_L000022_27 ' (symbol refcount = 0)
+' C_snek6_68dcc32e_autoinitialize_L000022_27 ' (symbol refcount = 0)
  adds r17, #1 ' ADDI4 coni
  cmps r17,  #8 wcz
- if_b jmp #\C_sdj06_6880507f_autoinitialize_L000022_26 ' LTI4
-C_sdj06_6880507f_autoinitialize_L000022_24
-' C_sdj06_6880507f_autoinitialize_L000022_23 ' (symbol refcount = 0)
+ if_b jmp #\C_snek6_68dcc32e_autoinitialize_L000022_26 ' LTI4
+C_snek6_68dcc32e_autoinitialize_L000022_24
+' C_snek6_68dcc32e_autoinitialize_L000022_23 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sdj07_6880507f_initialize_L000034 ' <symbol:initialize>
+C_snek7_68dcc32e_initialize_L000034 ' <symbol:initialize>
  calld PA,#NEWF
  sub SP, #8
  calld PA,#PSHM
  long $540000 ' save registers
- mov r22, ##@C_sdj0_6880507f_s8base_L000002
+ mov r22, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
- if_nz jmp #\C_sdj07_6880507f_initialize_L000034_36  ' NEU4
+ if_nz jmp #\C_snek7_68dcc32e_initialize_L000034_36  ' NEU4
  mov r2, #25 ' reg ARG coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
@@ -373,7 +373,7 @@ C_sdj07_6880507f_initialize_L000034 ' <symbol:initialize>
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #0 wcz
- if_b jmp #\C_sdj07_6880507f_initialize_L000034_38 ' LTI4
+ if_b jmp #\C_snek7_68dcc32e_initialize_L000034_38 ' LTI4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C__registry ' CALL addrg
@@ -394,25 +394,25 @@ C_sdj07_6880507f_initialize_L000034 ' <symbol:initialize>
  sub r22, #-(-12) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRU4 reg
  and r20, r22 ' BANDI/U (2)
- wrlong r20, ##@C_sdj0_6880507f_s8base_L000002 ' ASGNP4 addrg reg
- mov r20, ##@C_sdj01_6880507f_lock_L000003 ' reg <- addrg
+ wrlong r20, ##@C_snek_68dcc32e_s8base_L000002 ' ASGNP4 addrg reg
+ mov r20, ##@C_snek1_68dcc32e_lock_L000003 ' reg <- addrg
  shr r22, #24 ' RSHU4 coni
- wrlong r22, ##@C_sdj01_6880507f_lock_L000003 ' ASGNI4 addrg reg
+ wrlong r22, ##@C_snek1_68dcc32e_lock_L000003 ' ASGNI4 addrg reg
  rdlong r22, r20 ' reg <- INDIRI4 reg
  cmps r22,  #0 wz
- if_nz jmp #\C_sdj07_6880507f_initialize_L000034_40 ' NEI4
+ if_nz jmp #\C_snek7_68dcc32e_initialize_L000034_40 ' NEI4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C__locknew ' CALL addrg
- wrlong r0, ##@C_sdj01_6880507f_lock_L000003 ' ASGNI4 addrg reg
- mov r22, ##@C_sdj01_6880507f_lock_L000003
+ wrlong r0, ##@C_snek1_68dcc32e_lock_L000003 ' ASGNI4 addrg reg
+ mov r22, ##@C_snek1_68dcc32e_lock_L000003
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
- if_b jmp #\C_sdj07_6880507f_initialize_L000034_41 ' LTI4
+ if_b jmp #\C_snek7_68dcc32e_initialize_L000034_41 ' LTI4
  mov r22, FP
  sub r22, #-(-12) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRU4 reg
- mov r20, ##@C_sdj01_6880507f_lock_L000003
+ mov r20, ##@C_snek1_68dcc32e_lock_L000003
  rdlong r20, r20 ' reg <- INDIRI4 addrg
  adds r20, #1 ' ADDI4 coni
  shl r20, #24 ' LSHI4 coni
@@ -436,19 +436,19 @@ C_sdj07_6880507f_initialize_L000034 ' <symbol:initialize>
  sub r20, #-(-12) ' reg <- addrli
  rdlong r20, r20 ' reg <- INDIRU4 reg
  wrlong r20, r22 ' ASGNU4 reg reg
- jmp #\@C_sdj07_6880507f_initialize_L000034_41 ' JUMPV addrg
-C_sdj07_6880507f_initialize_L000034_40
- mov r22, ##@C_sdj01_6880507f_lock_L000003 ' reg <- addrg
+ jmp #\@C_snek7_68dcc32e_initialize_L000034_41 ' JUMPV addrg
+C_snek7_68dcc32e_initialize_L000034_40
+ mov r22, ##@C_snek1_68dcc32e_lock_L000003 ' reg <- addrg
  rdlong r22, r22 ' reg <- INDIRI4 reg
  subs r22, #1 ' SUBI4 coni
- wrlong r22, ##@C_sdj01_6880507f_lock_L000003 ' ASGNI4 addrg reg
-C_sdj07_6880507f_initialize_L000034_41
+ wrlong r22, ##@C_snek1_68dcc32e_lock_L000003 ' ASGNI4 addrg reg
+C_snek7_68dcc32e_initialize_L000034_41
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
- long @C_sdj06_6880507f_autoinitialize_L000022 ' CALL addrg
-C_sdj07_6880507f_initialize_L000034_38
-C_sdj07_6880507f_initialize_L000034_36
-' C_sdj07_6880507f_initialize_L000034_35 ' (symbol refcount = 0)
+ long @C_snek6_68dcc32e_autoinitialize_L000022 ' CALL addrg
+C_snek7_68dcc32e_initialize_L000034_38
+C_snek7_68dcc32e_initialize_L000034_36
+' C_snek7_68dcc32e_initialize_L000034_35 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  add SP, #8 ' framesize
  calld PA,#RETF
@@ -463,13 +463,13 @@ C_s_closeport ' <symbol:s_closeport>
  calld PA,#PSHM
  long $f00000 ' save registers
  mov r23, r2 ' reg var <- reg arg
- mov r22, ##@C_sdj0_6880507f_s8base_L000002
+ mov r22, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  if_nz jmp #\C_s_closeport_45  ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
- long @C_sdj07_6880507f_initialize_L000034 ' CALL addrg
+ long @C_snek7_68dcc32e_initialize_L000034 ' CALL addrg
 C_s_closeport_45
  cmp r23,  #8 wcz 
  if_ae jmp #\C_s_closeport_47 ' GEU4
@@ -481,7 +481,7 @@ C_s_closeport_45
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
- mov r20, ##@C_sdj0_6880507f_s8base_L000002
+ mov r20, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  adds r20, #4 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
@@ -498,7 +498,7 @@ C_s_closeport_45
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
- mov r20, ##@C_sdj0_6880507f_s8base_L000002
+ mov r20, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  adds r20, #4 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
@@ -515,7 +515,7 @@ C_s_closeport_49
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
- mov r20, ##@C_sdj0_6880507f_s8base_L000002
+ mov r20, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  adds r20, #4 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
@@ -532,7 +532,7 @@ C_s_closeport_49
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
- mov r20, ##@C_sdj0_6880507f_s8base_L000002
+ mov r20, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  adds r20, #4 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
@@ -558,13 +558,13 @@ C_s_openport ' <symbol:s_openport>
  mov r21, r4 ' reg var <- reg arg
  mov r19, r3 ' reg var <- reg arg
  mov r17, r2 ' reg var <- reg arg
- mov r22, ##@C_sdj0_6880507f_s8base_L000002
+ mov r22, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  if_nz jmp #\C_s_openport_54  ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
- long @C_sdj07_6880507f_initialize_L000034 ' CALL addrg
+ long @C_snek7_68dcc32e_initialize_L000034 ' CALL addrg
 C_s_openport_54
  mov r22, FP
  add r22, #8 ' reg <- addrfi
@@ -603,7 +603,7 @@ C_s_openport_54
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sdj02_6880507f_pinconfig_L000004
+ long @C_snek2_68dcc32e_pinconfig_L000004
  add SP, #12 ' CALL addrg
  mov r2, r23 ' CVI, CVU or LOAD
  mov r22, FP
@@ -624,7 +624,7 @@ C_s_openport_54
  mov BC, #24 ' arg size, rpsize = 0, spsize = 24
  add SP, #4 ' correct for new kernel !!! 
  calld PA,#CALA
- long @C_sdj05_6880507f_p_config_L000020
+ long @C_snek5_68dcc32e_p_config_L000020
  add SP, #20 ' CALL addrg
 C_s_openport_58
  mov r22, FP
@@ -647,7 +647,7 @@ C_s_openport_58
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sdj02_6880507f_pinconfig_L000004
+ long @C_snek2_68dcc32e_pinconfig_L000004
  add SP, #12 ' CALL addrg
  mov r2, r17 ' CVI, CVU or LOAD
  mov r3, r19 ' CVI, CVU or LOAD
@@ -663,7 +663,7 @@ C_s_openport_58
  mov BC, #24 ' arg size, rpsize = 0, spsize = 24
  add SP, #4 ' correct for new kernel !!! 
  calld PA,#CALA
- long @C_sdj05_6880507f_p_config_L000020
+ long @C_snek5_68dcc32e_p_config_L000020
  add SP, #20 ' CALL addrg
 C_s_openport_60
 C_s_openport_56
@@ -681,13 +681,13 @@ C_s_rxflush ' <symbol:s_rxflush>
  calld PA,#PSHM
  long $c00000 ' save registers
  mov r23, r2 ' reg var <- reg arg
- mov r22, ##@C_sdj0_6880507f_s8base_L000002
+ mov r22, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  if_nz jmp #\C_s_rxflush_63  ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
- long @C_sdj07_6880507f_initialize_L000034 ' CALL addrg
+ long @C_snek7_68dcc32e_initialize_L000034 ' CALL addrg
 C_s_rxflush_63
  cmp r23,  #8 wcz 
  if_b jmp #\C_s_rxflush_68 ' LTU4
@@ -716,24 +716,24 @@ C_s_rxcheck ' <symbol:s_rxcheck>
  calld PA,#PSHM
  long $f40000 ' save registers
  mov r23, r2 ' reg var <- reg arg
- mov r22, ##@C_sdj0_6880507f_s8base_L000002
+ mov r22, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  if_nz jmp #\C_s_rxcheck_71  ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
- long @C_sdj07_6880507f_initialize_L000034 ' CALL addrg
+ long @C_snek7_68dcc32e_initialize_L000034 ' CALL addrg
 C_s_rxcheck_71
  cmp r23,  #8 wcz 
  if_b jmp #\C_s_rxcheck_73 ' LTU4
  mov r0, ##-1 ' RET con
  jmp #\@C_s_rxcheck_70 ' JUMPV addrg
 C_s_rxcheck_73
- mov r22, ##@C_sdj01_6880507f_lock_L000003
+ mov r22, ##@C_snek1_68dcc32e_lock_L000003
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
  if_b jmp #\C_s_rxcheck_75 ' LTI4
- mov r2, ##@C_sdj01_6880507f_lock_L000003
+ mov r2, ##@C_snek1_68dcc32e_lock_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -742,7 +742,7 @@ C_s_rxcheck_73
 C_s_rxcheck_75
  mov r22, r23
  shl r22, #5 ' LSHU4 coni
- mov r20, ##@C_sdj0_6880507f_s8base_L000002
+ mov r20, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  mov r18, r20
  adds r18, #24 ' ADDP4 coni
@@ -755,7 +755,7 @@ C_s_rxcheck_75
  if_z jmp #\C_s_rxcheck_77 ' EQI4
  mov r22, r23
  shl r22, #5 ' LSHU4 coni
- mov r20, ##@C_sdj0_6880507f_s8base_L000002
+ mov r20, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  mov r18, r20
  adds r18, #24 ' ADDP4 coni
@@ -774,7 +774,7 @@ C_s_rxcheck_75
  if_nz jmp #\C_s_rxcheck_79 ' NEI4
  mov r22, r23
  shl r22, #5 ' LSHU4 coni
- mov r20, ##@C_sdj0_6880507f_s8base_L000002
+ mov r20, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  adds r20, #28 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
@@ -782,7 +782,7 @@ C_s_rxcheck_75
 C_s_rxcheck_79
  mov r22, r23
  shl r22, #5 ' LSHU4 coni
- mov r20, ##@C_sdj0_6880507f_s8base_L000002
+ mov r20, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  adds r20, #24 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
@@ -794,11 +794,11 @@ C_s_rxcheck_77
  sub RI, #-(-8)
  wrlong r22, RI ' ASGNI4 addrli reg
 C_s_rxcheck_78
- mov r22, ##@C_sdj01_6880507f_lock_L000003
+ mov r22, ##@C_snek1_68dcc32e_lock_L000003
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
  if_b jmp #\C_s_rxcheck_81 ' LTI4
- mov r2, ##@C_sdj01_6880507f_lock_L000003
+ mov r2, ##@C_snek1_68dcc32e_lock_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -823,11 +823,11 @@ C_s_rxcount ' <symbol:s_rxcount>
  calld PA,#PSHM
  long $f50000 ' save registers
  mov r23, r2 ' reg var <- reg arg
- mov r22, ##@C_sdj01_6880507f_lock_L000003
+ mov r22, ##@C_snek1_68dcc32e_lock_L000003
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
  if_b jmp #\C_s_rxcount_84 ' LTI4
- mov r2, ##@C_sdj01_6880507f_lock_L000003
+ mov r2, ##@C_snek1_68dcc32e_lock_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -836,7 +836,7 @@ C_s_rxcount ' <symbol:s_rxcount>
 C_s_rxcount_84
  mov r22, r23
  shl r22, #5 ' LSHU4 coni
- mov r20, ##@C_sdj0_6880507f_s8base_L000002
+ mov r20, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  mov r18, r20
  adds r18, #32 ' ADDP4 coni
@@ -866,11 +866,11 @@ C_s_rxcount_84
  rdlong r22, r22 ' reg <- INDIRI4 reg
  adds r21, r22 ' ADDI/P (1)
 C_s_rxcount_86
- mov r22, ##@C_sdj01_6880507f_lock_L000003
+ mov r22, ##@C_snek1_68dcc32e_lock_L000003
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
  if_b jmp #\C_s_rxcount_88 ' LTI4
- mov r2, ##@C_sdj01_6880507f_lock_L000003
+ mov r2, ##@C_snek1_68dcc32e_lock_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -892,13 +892,13 @@ C_s_rx ' <symbol:s_rx>
  calld PA,#PSHM
  long $e00000 ' save registers
  mov r23, r2 ' reg var <- reg arg
- mov r22, ##@C_sdj0_6880507f_s8base_L000002
+ mov r22, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  if_nz jmp #\C_s_rx_91  ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
- long @C_sdj07_6880507f_initialize_L000034 ' CALL addrg
+ long @C_snek7_68dcc32e_initialize_L000034 ' CALL addrg
 C_s_rx_91
  cmp r23,  #8 wcz 
  if_b jmp #\C_s_rx_96 ' LTU4
@@ -928,13 +928,13 @@ C_s_tx ' <symbol:s_tx>
  long $fe8000 ' save registers
  mov r23, r3 ' reg var <- reg arg
  mov r21, r2 ' reg var <- reg arg
- mov r22, ##@C_sdj0_6880507f_s8base_L000002
+ mov r22, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  if_nz jmp #\C_s_tx_99  ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
- long @C_sdj07_6880507f_initialize_L000034 ' CALL addrg
+ long @C_snek7_68dcc32e_initialize_L000034 ' CALL addrg
 C_s_tx_99
  cmp r23,  #8 wcz 
  if_b jmp #\C_s_tx_101 ' LTU4
@@ -943,7 +943,7 @@ C_s_tx_99
 C_s_tx_101
  mov r22, r23
  shl r22, #5 ' LSHU4 coni
- mov r20, ##@C_sdj0_6880507f_s8base_L000002
+ mov r20, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  mov r18, r20
  adds r18, #48 ' ADDP4 coni
@@ -954,11 +954,11 @@ C_s_tx_101
  rdlong r22, r22 ' reg <- INDIRI4 reg
  mov r17, r18 ' SUBI/P
  subs r17, r22 ' SUBI/P (3)
- mov r22, ##@C_sdj01_6880507f_lock_L000003
+ mov r22, ##@C_snek1_68dcc32e_lock_L000003
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
  if_b jmp #\C_s_tx_103 ' LTI4
- mov r2, ##@C_sdj01_6880507f_lock_L000003
+ mov r2, ##@C_snek1_68dcc32e_lock_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -968,7 +968,7 @@ C_s_tx_103
 C_s_tx_105
  mov r22, r23
  shl r22, #5 ' LSHU4 coni
- mov r20, ##@C_sdj0_6880507f_s8base_L000002
+ mov r20, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  mov r18, r20
  adds r18, #36 ' ADDP4 coni
@@ -990,7 +990,7 @@ C_s_tx_108
  if_z jmp #\C_s_tx_105 ' EQI4
  mov r22, r23
  shl r22, #5 ' LSHU4 coni
- mov r20, ##@C_sdj0_6880507f_s8base_L000002
+ mov r20, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  adds r20, #36 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
@@ -1000,7 +1000,7 @@ C_s_tx_108
  adds r15, #1 ' ADDI4 coni
  mov r22, r23
  shl r22, #5 ' LSHU4 coni
- mov r20, ##@C_sdj0_6880507f_s8base_L000002
+ mov r20, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  adds r20, #48 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
@@ -1009,7 +1009,7 @@ C_s_tx_108
  if_nz jmp #\C_s_tx_110 ' NEI4
  mov r22, r23
  shl r22, #5 ' LSHU4 coni
- mov r20, ##@C_sdj0_6880507f_s8base_L000002
+ mov r20, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  adds r20, #44 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
@@ -1017,16 +1017,16 @@ C_s_tx_108
 C_s_tx_110
  mov r22, r23
  shl r22, #5 ' LSHU4 coni
- mov r20, ##@C_sdj0_6880507f_s8base_L000002
+ mov r20, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  adds r20, #36 ' ADDP4 coni
  adds r22, r20 ' ADDI/P (1)
  wrlong r15, r22 ' ASGNI4 reg reg
- mov r22, ##@C_sdj01_6880507f_lock_L000003
+ mov r22, ##@C_snek1_68dcc32e_lock_L000003
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
  if_b jmp #\C_s_tx_112 ' LTI4
- mov r2, ##@C_sdj01_6880507f_lock_L000003
+ mov r2, ##@C_snek1_68dcc32e_lock_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -1047,24 +1047,24 @@ C_s_txflush ' <symbol:s_txflush>
  calld PA,#PSHM
  long $d50000 ' save registers
  mov r23, r2 ' reg var <- reg arg
- mov r22, ##@C_sdj0_6880507f_s8base_L000002
+ mov r22, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  if_nz jmp #\C_s_txflush_115  ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
- long @C_sdj07_6880507f_initialize_L000034 ' CALL addrg
+ long @C_snek7_68dcc32e_initialize_L000034 ' CALL addrg
 C_s_txflush_115
  cmp r23,  #8 wcz 
  if_b jmp #\C_s_txflush_117 ' LTU4
  mov r0, ##-1 ' RET con
  jmp #\@C_s_txflush_114 ' JUMPV addrg
 C_s_txflush_117
- mov r22, ##@C_sdj01_6880507f_lock_L000003
+ mov r22, ##@C_snek1_68dcc32e_lock_L000003
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
  if_b jmp #\C_s_txflush_122 ' LTI4
- mov r2, ##@C_sdj01_6880507f_lock_L000003
+ mov r2, ##@C_snek1_68dcc32e_lock_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -1074,7 +1074,7 @@ C_s_txflush_121
 C_s_txflush_122
  mov r22, r23
  shl r22, #5 ' LSHU4 coni
- mov r20, ##@C_sdj0_6880507f_s8base_L000002
+ mov r20, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  mov r18, r20
  adds r18, #40 ' ADDP4 coni
@@ -1085,11 +1085,11 @@ C_s_txflush_122
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r18, r22 wz
  if_nz jmp #\C_s_txflush_121 ' NEI4
- mov r22, ##@C_sdj01_6880507f_lock_L000003
+ mov r22, ##@C_snek1_68dcc32e_lock_L000003
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
  if_b jmp #\C_s_txflush_124 ' LTI4
- mov r2, ##@C_sdj01_6880507f_lock_L000003
+ mov r2, ##@C_snek1_68dcc32e_lock_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -1142,24 +1142,24 @@ C_s_txcheck ' <symbol:s_txcheck>
  calld PA,#PSHM
  long $f50000 ' save registers
  mov r23, r2 ' reg var <- reg arg
- mov r22, ##@C_sdj0_6880507f_s8base_L000002
+ mov r22, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  if_nz jmp #\C_s_txcheck_127  ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
- long @C_sdj07_6880507f_initialize_L000034 ' CALL addrg
+ long @C_snek7_68dcc32e_initialize_L000034 ' CALL addrg
 C_s_txcheck_127
  cmp r23,  #8 wcz 
  if_b jmp #\C_s_txcheck_129 ' LTU4
  mov r0, ##-1 ' RET con
  jmp #\@C_s_txcheck_126 ' JUMPV addrg
 C_s_txcheck_129
- mov r22, ##@C_sdj01_6880507f_lock_L000003
+ mov r22, ##@C_snek1_68dcc32e_lock_L000003
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
  if_b jmp #\C_s_txcheck_131 ' LTI4
- mov r2, ##@C_sdj01_6880507f_lock_L000003
+ mov r2, ##@C_snek1_68dcc32e_lock_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -1168,7 +1168,7 @@ C_s_txcheck_129
 C_s_txcheck_131
  mov r22, r23
  shl r22, #5 ' LSHU4 coni
- mov r20, ##@C_sdj0_6880507f_s8base_L000002
+ mov r20, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  mov r18, r20
  adds r18, #48 ' ADDP4 coni
@@ -1198,11 +1198,11 @@ C_s_txcheck_131
  rdlong r22, r22 ' reg <- INDIRI4 reg
  adds r21, r22 ' ADDI/P (1)
 C_s_txcheck_133
- mov r22, ##@C_sdj01_6880507f_lock_L000003
+ mov r22, ##@C_snek1_68dcc32e_lock_L000003
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
  if_b jmp #\C_s_txcheck_135 ' LTI4
- mov r2, ##@C_sdj01_6880507f_lock_L000003
+ mov r2, ##@C_snek1_68dcc32e_lock_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -1229,24 +1229,24 @@ C_s_txcount ' <symbol:s_txcount>
  calld PA,#PSHM
  long $f50000 ' save registers
  mov r23, r2 ' reg var <- reg arg
- mov r22, ##@C_sdj0_6880507f_s8base_L000002
+ mov r22, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r22, r22 ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  if_nz jmp #\C_s_txcount_138  ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
- long @C_sdj07_6880507f_initialize_L000034 ' CALL addrg
+ long @C_snek7_68dcc32e_initialize_L000034 ' CALL addrg
 C_s_txcount_138
  cmp r23,  #8 wcz 
  if_b jmp #\C_s_txcount_140 ' LTU4
  mov r0, ##-1 ' RET con
  jmp #\@C_s_txcount_137 ' JUMPV addrg
 C_s_txcount_140
- mov r22, ##@C_sdj01_6880507f_lock_L000003
+ mov r22, ##@C_snek1_68dcc32e_lock_L000003
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
  if_b jmp #\C_s_txcount_142 ' LTI4
- mov r2, ##@C_sdj01_6880507f_lock_L000003
+ mov r2, ##@C_snek1_68dcc32e_lock_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -1255,7 +1255,7 @@ C_s_txcount_140
 C_s_txcount_142
  mov r22, r23
  shl r22, #5 ' LSHU4 coni
- mov r20, ##@C_sdj0_6880507f_s8base_L000002
+ mov r20, ##@C_snek_68dcc32e_s8base_L000002
  rdlong r20, r20 ' reg <- INDIRP4 addrg
  mov r18, r20
  adds r18, #48 ' ADDP4 coni
@@ -1285,11 +1285,11 @@ C_s_txcount_142
  rdlong r22, r22 ' reg <- INDIRI4 reg
  adds r21, r22 ' ADDI/P (1)
 C_s_txcount_144
- mov r22, ##@C_sdj01_6880507f_lock_L000003
+ mov r22, ##@C_snek1_68dcc32e_lock_L000003
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
  if_b jmp #\C_s_txcount_146 ' LTI4
- mov r2, ##@C_sdj01_6880507f_lock_L000003
+ mov r2, ##@C_snek1_68dcc32e_lock_L000003
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4

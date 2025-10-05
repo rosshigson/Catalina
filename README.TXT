@@ -8,7 +8,7 @@ Catalina supports both internal and external memory models on both the
 Propeller 1 and 2, for program sizes up to 16Mb.
 
 Catalina runs under Windows, Linux, the Raspberry Pi OS and also its own 
-self-hosted development enviroment (Catalyst).
+self-hosted development environment (Catalyst).
 
 Catalina supports command-line use (Windows, Linux, Pi and Catalyst) and an 
 Integrated Development Environment based on Geany (Windows, Linux and Pi).
@@ -196,110 +196,122 @@ documents folder.
 New Functionality
 -----------------
 
-1. On all Propeller 2 boards, the Parallax HyperFlash/HyperRAM add-on board 
-   is now configured to use pin 0 by default rather than pin 16. This change 
-   was made because pin 0 allows a wider range of clock frequencies to be 
-   used on most boards, allowing (for example) the self-hosted version of 
-   Catalina itself to be compiled at 300Mhz. To accommodate the change, the 
-   VGA base pin has been changed to pin 16 and the USB base pin to pin 24. 
+1. Cake is now included as a component of Catalina. Cake is a preprocessor
+   that can take C99, C11 or C23 source programs and translate them to C89,
+   suitable for compiling with Catalina. 
 
-2. A new utility to test the delay setting used for the PSRAM and HYPER RAM 
-   drivers has been added in the file /demos/p2_ram/delay.c. This utility can
-   be used to verify that the current delay setting (configured in the platform
-   configuration file) works across a selected range of clock frequencies.
-   See the README.TXT file in that folder for more details.
+   Eventually, Cake may be fully integrated into Catalina, but at present it
+   is a separate component that must be invoked manually to convert a C99 (or 
+   C11 or C23) program to C89, which can then be compiled with Catalina as 
+   normal. A demo C99 program called hello_99.c is provided. To convert this 
+   to C89 and compile it with Catalina, use Cake first and then compile the 
+   result with Catalina as normal. For example (on the Propeller 2):
 
-3. Add a -Q option to the catalina command, which can also be specified by 
-   defining the Catalina symbol QUICKFORCE (e.g. -C QUICKFORCE), to force a 
-   Quick Build. This option is similar to the -q option except that it will 
-   re-build the target file even if one already exists. If the target file 
-   does not exist, then the -Q option has the same effect as the -q option.
+      cake hello_99.c -o hello_89.c
+      catalina -p2 -lc hello_89.c
 
-4. For the Propeller 2, Catalyst can now be built for the P2 Edge to use
-   either the PSRAM (if installed - i.e. the P2-EC32MB) or the HyperRAM
-   add-on board (on base pin 0 by default). To specify that Catalyst and
-   associated utilities should use the HyperRAM rather than on-board PSRAM, 
-   specify HYPER when building it using the build_all script. You can also 
-   specify PSRAM to use the PSRAM on the P2-EC32MB, but this is not necessary
-   since this is the default if HYPER is not specified. If specified, HYPER 
-   or PSRAM should be the second parameter. For example:
+   See the file source\cake\README.TXT for a brief introduction to Cake and
+   how to use it with Catalina. See the Cake manaul in source\caka\manual.md
+   for full details on Cake.
 
-     cd demos\catalyst
-     build_all P2_EDGE SIMPLE VT100 OPTIMIZE MHZ_200
-or 
-     cd demos\catalyst
-     build_all P2_EDGE PSRAM SIMPLE VT100 OPTIMIZE MHZ_200
-or
-     cd demos\catalyst
-     build_all P2_EDGE HYPER SIMPLE VT100 OPTIMIZE MHZ_200
+2. Increased the maximum size of a string cpp can process from 4096 to 8192 
+   bytes. This was required for Cake support.
 
-   The catalyst build scripts have been amended to facilitate building for
-   the P2 Edge demos using either HYPER or PSRAM by adding a new script 
-   called 'build_p2' which accepts one or two parameters - the platform and 
-   (optionally) the type of XMM RAM to use. Do not specify any other options.
-   For example:
+3. Added va_copy macro to stdarg.h, and a new program to demonstrate its use
+   (demos/examples/ex_va_copy.c). This was required for Cake support.
 
-      build_p2 P2_EDGE         <-- for P2_EDGE using on-board PSRAM
-      build_p2 P2_EDGE PSRAM   <-- ditto
-      build_p2 P2_EDGE HYPER   <-- for P2_EDGE using HYPER RAM add-on board
-      build_p2 P2_EVAL         <-- for P2_EVAL using HYPER RAM add-on board
-      build_p2 P2_EVAL HYPER   <-- for P2_EVAL using HYPER RAM add-on board
-      build_p2 P2_EVAL PSRAM   <-- will generate an error (not supported)
+4. Added minimum and maximums for long longs and unsigned long longs, and the 
+   ability for CPP to parse constants of the form ddddLL or ddddULL. Currently,
+   long longs are the same size as longs and unsigned long longs are the same 
+   size as unsigned longs, but some programs (like Cake) require that these 
+   are explicitly supported.
 
-   This script will build two ZIP files - one that uses the SIMPLE serial
-   HMI option named for the platform (e.g. P2_EDGE.ZIP) and one that uses 
-   the VGA HMI option (e.g. P2_EDGE_VGA.ZIP). Note that the 'p2_edge' and 
-   'p2_eval' scripts have now been removed, but the same function can be
-   achieved using the new 'build_p2' script. Also note that  the 'build_demos'
-   script still only builds demos for the P2_EDGE using PSRAM and for the 
-   P2_EVAL using HYPER RAM - but building for the P2_EDGE using HYPER RAM 
-   instead can be done with the following command:
+5. Added a dummy wchar.h header file, which (at present) defines wchar_t but 
+   does nothing else. This was required for Cake support.
 
-      build_p2 P2_EDGE HYPER
+6. Added an implementation of asprintf, vasprintf, snprintf and vsnprintf 
+   to stdio, and a new program to demonstrate their use 
+   (demos/examples/ex_snprintf.c). This was required for Cake support.
 
-5. Added a new demo (in the folder demos/sd_cache) to provide an example of 
-   how to build a local custom version of the Catalina C library to implement
-   some platform-specific functionality, such as (in this case) enabling the
-   PSRAM-based SD card cache. This folder also contains a test program that 
-   can be used to demonstrate the SD cache. See the README.TXT file in that 
-   folder for more details.
+7. Added the ability for printf and family to process z or t format
+   specifiers - e.g. %dz, which means to print/scan something of size size_t, 
+   or %ut, which means to print/scan something of size ptrdiff_t, and a new 
+   program to demonstrate them (demos/examples/ex_printf_tz.c). These format 
+   specifiers were introduced in C99, but some C89 programs assume this 
+   functionality exists. Note that these work only in the standard C stdio 
+   libraries (i.e. libc, libci, libcx, libcix) but not in the tiny I/O 
+   library (libtiny). This was required for Cake support.
 
-6. Removed the file demos/catalyst/README.SMM_Loader. The information it
-   contained has been added to the Catalyst Reference Manual.
+8. Two new functions for creating directories have been added:
+
+      mkdir(const char *name, mode_t *mode);
+      mkdirr(const char *name, mode_t *mode);
+
+   The mode parameter is not currently used, but is included for compatibility
+   with other C compilers. These new functions are defined in sys/stat.h, and 
+   the type mode_t is defined in the new include file sys/types.h for the same
+   reason. Equivalent functions _mkdir and _mkdirr are defined in fs.h.
+   This was required for Cake support.
+
+   A new program to demonstrate the functions is included in 
+   demos/file_systems/test_mkdir.c
+
+   The mkdir function creates only the leaf directory - e.g. mkdir "a/b/c" 
+   will make only directory "c" assuming that "a/b" already exist - whereas 
+   mkdirr "a/b/c" will make directory "a" if it does not exist, then "a/b" 
+   (ditto) then "a/b/c". If the functions succeed they return zero, and if 
+   they fail (e.g. because a directory that was expected to exist does not, 
+   or that was not expected to exist already does) then they return -1.
+
+9. Added definitions of EOVERFLOW and EDEADLK to sys/errno.h. These are not
+   used by Catalina, but are expected to be defined by some C programs. This
+   was required for Cake support.
+
+10. Added definitions of HUGE_VALF and HUGE_VALL. These are not used by 
+    Catalina, but are expected to be defined by some C programs. This was
+    required for Cake support.
+
+11. A version of strdup and strndup has been added to the C libraries.
+    These are defined in the include file string.h as:
+
+       char *strdup(const char *_s);
+       char *strndup(const char *_s, size_t _n);
+
+    Some Catalina components and demo programs had their own versions of 
+    strdup and/or strndup which have now been replaced with the library
+    versions. This was required for Cake support.
+
+12. Catalina's version of stdbool.h was defining bool to be unsigned int, but
+    was not also defining _Bool. Now it defines both as unsigned char, which
+    is intended to make Catalina more compatible with C99 onwards for programs
+    compiled using Cake. However, this may break some existing C89 programs 
+    which expect type bool to be compatible with bit-fields (i.e. to be of an 
+    integer type) - so stdbool.h will revert to the previous definitions of 
+    bool and _Bool if the C symbol __INT_BOOL__ is defined (e.g. using -D on 
+    the catalina command line). For example:
+
+       catalina my_program.c -lc -D__INT_BOOL__
+
+13. Catalina does not support 64 bit integers, but LCC does accept the 
+    declaration of long long and unsigned long long, and so some programs 
+    will expect it to support them and therefore also expect the types and 
+    values associated with them (such as INT64_MAX and UINT64_MAX) to be
+    defined. The stdint.h include file has been modified to define 64 bit 
+    types and values but make them all the same as 32 bit types and values. 
+    This makes programs (like Cake) work, but may confuse other programs 
+    which assume that if these values are defined then 64 bit integers are 
+    supported. 
 
 Other Changes
 -------------
 
-1. Fixed an issue with Catalina only supporting 200Mhz when the HyperRAM 
-   add-on board is used on the P2 Evaluation board. The platform configuration
-   files (target/p2/P2EVAL.inc and also target/p2/P2EDGE.inc) have been 
-   updated to disable the use of Fast Reads (HYPER_FASTREAD) and also modify 
-   the RAM read delay (HYPER_DELAY_RAM). Note that the default delay (10)
-   works from 150 to 260Mhz, but outside that range it may need to be adjusted.
-   The new utility (demos/p2_ram/delay.c) included in this release can be used
-   to verify the specified delay works across a range of clock frequencies. 
-   See also the platform configuration file (e.g. P2EVAL.inc) for more details. 
-   Affected the Propeller 2 Evaluation board only.
+1. Some of the values of the fprintf and fscanf format macros defined in 
+   inttypes.h were incorrect. Affected Windows, Linux and Catalyst.
 
-2. Fix some non 8.3 filenames in library files:
-      getrealrand.c -> getrrand.c
-      hub_malloc.c  -> hmalloc.c
-      registerx.e -> register.e
-   Affected the Propeller 2 under Catalyst only.
+2. The library functions sprintf and vsprintf were being limited to writing 
+   up to 32767 characters in each call. This limit has been increased to 
+   INT_MAX (2147483647) characters. Affected Windows, Linux and Catalyst.
 
-3. Fix the C include file stdint.h to specifically identify Catalina as one
-   of the platforms with 32 bit pointers. 
-   Affected The Propeller 2 under Catalyst only.
-
-4. Fix LCC bug in pointer comparisons which led to the compiler emitting 
-   erroneous warning messages such as "overflow in converting constant 
-   expression from `pointer to char' to `pointer to void".
-   Affected The Propeller 2 under Catalyst only.
-
-5. Fixed an issue with the COMPACT version of the getcnt() function on the 
-   Propeller 2. Affected COMPACT mode programs on the Propeller 2 only.
-
-6. The pre-built Catalyst demo (P2_DEMO.ZIP) was incorrectly claiming it was
-   built for a P2_EVAL board (in the CATALYST.ENV file, as displayed by the 
-   'set' command). It now says it was built for the P2_CUSTOM platform.
-   Affected the Propller 2 only.
+3. The Catalyst build_demos and build_p2 scripts were not working under 
+   Linux, leading to missing files in the ZIP files they created. Affected 
+   Linux only.

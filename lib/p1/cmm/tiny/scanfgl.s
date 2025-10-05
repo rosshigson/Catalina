@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl_label
-C_skis_68804f4f_charT_oI_nt_L000001 ' <symbol:charToInt>
+C_sg4o_68dcc1eb_charT_oI_nt_L000001 ' <symbol:charToInt>
  alignl_p1
  long I32_PSHM + $500000<<S32 ' save registers
  word I16A_MOV + (r22)<<D16A + (r2)<<S16A ' CVUI
@@ -20,18 +20,18 @@ C_skis_68804f4f_charT_oI_nt_L000001 ' <symbol:charToInt>
  word I16B_TRN1 + (r22)<<D16B ' zero extend
  word I16A_CMPSI + (r22)<<D16A + (10)<<S16A
  alignl_p1
- long I32_BR_B + (@C_skis_68804f4f_charT_oI_nt_L000001_3)<<S32 ' LTI4 reg coni
+ long I32_BR_B + (@C_sg4o_68dcc1eb_charT_oI_nt_L000001_3)<<S32 ' LTI4 reg coni
  word I16A_MOV + (r22)<<D16A + (r2)<<S16A ' CVUI
  word I16B_TRN1 + (r22)<<D16B ' zero extend
  word I16A_SUBSI + (r22)<<D16A + (7)<<S16A ' SUBI4 reg coni
  word I16A_MOV + (r2)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
  alignl_label
-C_skis_68804f4f_charT_oI_nt_L000001_3
+C_sg4o_68dcc1eb_charT_oI_nt_L000001_3
  word I16A_MOV + (r22)<<D16A + (r2)<<S16A ' CVUI
  word I16B_TRN1 + (r22)<<D16B ' zero extend
  word I16A_CMPSI + (r22)<<D16A + (15)<<S16A
  alignl_p1
- long I32_BRBE + (@C_skis_68804f4f_charT_oI_nt_L000001_5)<<S32 ' LEI4 reg coni
+ long I32_BRBE + (@C_sg4o_68dcc1eb_charT_oI_nt_L000001_5)<<S32 ' LEI4 reg coni
  word I16A_MOV + (r22)<<D16A + (r2)<<S16A ' CVUI
  word I16B_TRN1 + (r22)<<D16B ' zero extend
  alignl_p1
@@ -39,10 +39,10 @@ C_skis_68804f4f_charT_oI_nt_L000001_3
  word I16A_SUBS + (r22)<<D16A + (r20)<<S16A ' SUBI/P (1)
  word I16A_MOV + (r2)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
  alignl_label
-C_skis_68804f4f_charT_oI_nt_L000001_5
+C_sg4o_68dcc1eb_charT_oI_nt_L000001_5
  word I16A_MOV + (r0)<<D16A + (r2)<<S16A ' CVUI
  word I16B_TRN1 + (r0)<<D16B ' zero extend
-' C_skis_68804f4f_charT_oI_nt_L000001_2 ' (symbol refcount = 0)
+' C_sg4o_68dcc1eb_charT_oI_nt_L000001_2 ' (symbol refcount = 0)
  word I16B_POPM + $80<<S16B ' restore registers, do not pop frame, do return
  alignl_p1
 
@@ -171,7 +171,7 @@ C__scanf_getl_19
  word I16B_TRN1 + (r2)<<D16B ' zero extend
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
  alignl_p1
- long I32_CALA + (@C_skis_68804f4f_charT_oI_nt_L000001)<<S32 ' CALL addrg
+ long I32_CALA + (@C_sg4o_68dcc1eb_charT_oI_nt_L000001)<<S32 ' CALL addrg
  word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r20)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r0)<<D16A + (r20)<<S16A ' setup r0/r1 (2)

@@ -169,7 +169,7 @@ C_pthread_mutex_timedlock_9
  cmp r22, r20 wz
  jmp #BRNZ
  long @C_pthread_mutex_timedlock_25 ' NEU4
- mov r22, #45 ' reg <- coni
+ mov r22, #35 ' reg <- coni
  jmp #LODL
  long @C_errno
  wrlong r22, RI ' ASGNI4 addrg reg

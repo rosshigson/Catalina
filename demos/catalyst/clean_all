@@ -44,6 +44,10 @@ cd catalina
 ./clean_all
 cd ..
 
+cd cake
+./clean_all
+cd ..
+
 cd time
 ./clean_all
 cd ..

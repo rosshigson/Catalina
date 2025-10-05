@@ -74,7 +74,7 @@ C_pthread_mutex_trylock_11
  mov r22, r0 ' CVI, CVU or LOAD
  cmp r20, r22 wz
  if_nz jmp #\C_pthread_mutex_trylock_13  ' NEU4
- mov r22, #45 ' reg <- coni
+ mov r22, #35 ' reg <- coni
  wrlong r22, ##@C_errno ' ASGNI4 addrg reg
  mov r0, r22 ' CVI, CVU or LOAD
  jmp #\@C_pthread_mutex_trylock_2 ' JUMPV addrg

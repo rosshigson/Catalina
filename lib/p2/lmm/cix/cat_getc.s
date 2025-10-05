@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_s2a0_68804dd9_unget_count_L000002 ' <symbol:unget_count>
+C_sai8_68dcc062_unget_count_L000002 ' <symbol:unget_count>
  long 0
 
 ' Catalina Export catalina_getc
@@ -35,22 +35,22 @@ C_catalina_getc ' <symbol:catalina_getc>
  jmp #BRNZ
  long @C_catalina_getc_5 ' NEU4
  jmp #LODI
- long @C_s2a0_68804dd9_unget_count_L000002
+ long @C_sai8_68dcc062_unget_count_L000002
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
  jmp #BRBE
  long @C_catalina_getc_7 ' LEI4
  jmp #LODL
- long @C_s2a0_68804dd9_unget_count_L000002
+ long @C_sai8_68dcc062_unget_count_L000002
  mov r22, RI ' reg <- addrg
  rdlong r22, r22 ' reg <- INDIRI4 reg
  subs r22, #1 ' SUBI4 coni
  jmp #LODL
- long @C_s2a0_68804dd9_unget_count_L000002
+ long @C_sai8_68dcc062_unget_count_L000002
  wrlong r22, RI ' ASGNI4 addrg reg
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_s2a01_68804dd9_unget_buff_L000003
+ long @C_sai81_68dcc062_unget_buff_L000003
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRI4 reg
@@ -125,23 +125,23 @@ C_catalina_ungetc ' <symbol:catalina_ungetc>
  jmp #BRNZ
  long @C_catalina_ungetc_14 ' NEU4
  jmp #LODI
- long @C_s2a0_68804dd9_unget_count_L000002
+ long @C_sai8_68dcc062_unget_count_L000002
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #10 wcz
  jmp #BRAE
  long @C_catalina_ungetc_13 ' GEI4
  jmp #LODL
- long @C_s2a0_68804dd9_unget_count_L000002
+ long @C_sai8_68dcc062_unget_count_L000002
  mov r22, RI ' reg <- addrg
  rdlong r22, r22 ' reg <- INDIRI4 reg
  mov r20, r22
  adds r20, #1 ' ADDI4 coni
  jmp #LODL
- long @C_s2a0_68804dd9_unget_count_L000002
+ long @C_sai8_68dcc062_unget_count_L000002
  wrlong r20, RI ' ASGNI4 addrg reg
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_s2a01_68804dd9_unget_buff_L000003
+ long @C_sai81_68dcc062_unget_buff_L000003
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  wrlong r3, r22 ' ASGNI4 reg reg
@@ -174,7 +174,7 @@ C_catalina_fflush ' <symbol:catalina_fflush>
  long $400000 ' save registers
  mov r22, #0 ' reg <- coni
  jmp #LODL
- long @C_s2a0_68804dd9_unget_count_L000002
+ long @C_sai8_68dcc062_unget_count_L000002
  wrlong r22, RI ' ASGNI4 addrg reg
  mov r0, r22 ' CVI, CVU or LOAD
 ' C_catalina_fflush_18 ' (symbol refcount = 0)
@@ -187,7 +187,7 @@ C_catalina_fflush ' <symbol:catalina_fflush>
 DAT ' uninitialized data segment
 
  alignl ' align long
-C_s2a01_68804dd9_unget_buff_L000003 ' <symbol:unget_buff>
+C_sai81_68dcc062_unget_buff_L000003 ' <symbol:unget_buff>
  byte 0[40]
 
 ' Catalina Code

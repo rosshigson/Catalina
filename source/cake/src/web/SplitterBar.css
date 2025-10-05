@@ -1,0 +1,31 @@
+
+.leftSide, .rightSide, .splitter {
+    position: absolute;
+    height: 100%;
+    overflow: hidden;
+}
+
+
+.topSide, .bottomSide, .splitter {
+    position: absolute;
+    width: 100%;
+    overflow: hidden;
+}
+
+
+
+.leftSide > div, .rightSide > div {
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+
+
+.topSide > div, .bottomSide > div {
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+

@@ -695,9 +695,20 @@ int gettok(void) {
 	}
 }
 static Symbol icon(unsigned long n, int overflow, int base) {
-	if ((*cp=='u'||*cp=='U') && (cp[1]=='l'||cp[1]=='L')
+	if ((*cp=='u'||*cp=='U') && (cp[1]=='l'||cp[1]=='L') && (cp[2]=='l'||cp[2]=='L')
+	||  (*cp=='l'||*cp=='L') && (cp[1]=='u'||cp[1]=='U') && (cp[2]=='l'||cp[2]=='L')) {
+		tval.type = unsignedlonglong;
+		cp += 3;
+  }
+  else if ((*cp=='u'||*cp=='U') && (cp[1]=='l'||cp[1]=='L')
 	||  (*cp=='l'||*cp=='L') && (cp[1]=='u'||cp[1]=='U')) {
 		tval.type = unsignedlong;
+		cp += 2;
+	} else if ((*cp == 'l' || *cp == 'L') && (cp[1]=='l'||cp[1]=='L')) {
+		if (overflow || n > longlong->u.sym->u.limits.max.i)
+			tval.type = unsignedlonglong;
+		else
+			tval.type = longlong;
 		cp += 2;
 	} else if (*cp == 'u' || *cp == 'U') {
 		if (overflow || n > unsignedtype->u.sym->u.limits.max.i)

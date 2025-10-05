@@ -235,6 +235,8 @@ _doscan(register FILE *stream, const char *format, va_list ap)
 		switch (*format) {
 		case 'h': flags |= FL_SHORT; format++; break;
 		case 'l': flags |= FL_LONG; format++; break;
+		case 'z': flags |= FL_LONG; format++; break;
+		case 't': flags |= FL_LONG; format++; break;
 		case 'L': flags |= FL_LONGDOUBLE; format++; break;
 		}
 		kind = *format;

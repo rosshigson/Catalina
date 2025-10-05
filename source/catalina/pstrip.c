@@ -3,6 +3,8 @@
  *
  * version 6.0 - initial release (to coincide with catalina 6.0
  *
+ * version 8.8.1 - remove local strdup (now in C libary).
+ * 
  */                  
 
 /*--------------------------------------------------------------------------
@@ -32,7 +34,7 @@
 #include <string.h>
 #include <math.h>
 
-#define VERSION            "6.0"
+#define VERSION            "8.8.1"
 
 #define MAX_LINELEN        4096
 #define MAX_PATHLEN        1024
@@ -70,18 +72,6 @@ void help(char *my_name) {
    fprintf(stderr, "          -d         output diagnostic messages\n");
    fprintf(stderr, "          -v         verbose (output information messages)\n");
 }
-
-#ifdef __CATALINA__
-// strdup is not ANSI C
-char * strdup(const char *str) {
-   if (str != NULL) {
-      register char *copy = malloc(strlen(str) + 1);
-      if (copy != NULL)
-         return strcpy(copy, str);
-   }
-   return NULL;
-}
-#endif
 
 // safecpy will never write more than size characters, 
 // and is guaranteed to null terminate its result, so

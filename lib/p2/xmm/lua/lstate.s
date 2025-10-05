@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_sca8_68804eba_luai_makeseed_L000013 ' <symbol:luai_makeseed>
+C_sfhc_68dcc150_luai_makeseed_L000013 ' <symbol:luai_makeseed>
  jmp #NEWF
  sub SP, #20
  jmp #PSHM
@@ -95,7 +95,7 @@ C_sca8_68804eba_luai_makeseed_L000013 ' <symbol:luai_makeseed>
  long @C_luaS__hash
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
-' C_sca8_68804eba_luai_makeseed_L000013_14 ' (symbol refcount = 0)
+' C_sfhc_68dcc150_luai_makeseed_L000013_14 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #20 ' framesize
  jmp #RETF
@@ -467,7 +467,7 @@ C_luaE__incC_stack_40
 
 
  alignl ' align long
-C_sca82_68804eba_stack_init_L000042 ' <symbol:stack_init>
+C_sfhc2_68dcc150_stack_init_L000042 ' <symbol:stack_init>
  jmp #NEWF
  jmp #PSHM
  long $fa0000 ' save registers
@@ -497,7 +497,7 @@ C_sca82_68804eba_stack_init_L000042 ' <symbol:stack_init>
  mov BC, r20
  jmp #WLNG ' ASGNP4 reg reg
  mov r19, #0 ' reg <- coni
-C_sca82_68804eba_stack_init_L000042_44
+C_sfhc2_68dcc150_stack_init_L000042_44
  mov r22, r19
  shl r22, #3 ' LSHI4 coni
  mov r20, r23
@@ -511,11 +511,11 @@ C_sca82_68804eba_stack_init_L000042_44
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
-' C_sca82_68804eba_stack_init_L000042_45 ' (symbol refcount = 0)
+' C_sfhc2_68dcc150_stack_init_L000042_45 ' (symbol refcount = 0)
  adds r19, #1 ' ADDI4 coni
  cmps r19,  #45 wz,wc
  jmp #BR_B
- long @C_sca82_68804eba_stack_init_L000042_44 ' LTI4
+ long @C_sfhc2_68dcc150_stack_init_L000042_44 ' LTI4
  mov r22, r23
  adds r22, #12 ' ADDP4 coni
  mov r20, r23
@@ -615,13 +615,13 @@ C_sca82_68804eba_stack_init_L000042_44
  mov RI, r22
  mov BC, r17
  jmp #WLNG ' ASGNP4 reg reg
-' C_sca82_68804eba_stack_init_L000042_43 ' (symbol refcount = 0)
+' C_sfhc2_68dcc150_stack_init_L000042_43 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sca83_68804eba_freestack_L000048 ' <symbol:freestack>
+C_sfhc3_68dcc150_freestack_L000048 ' <symbol:freestack>
  jmp #NEWF
  jmp #PSHM
  long $d40000 ' save registers
@@ -633,10 +633,10 @@ C_sca83_68804eba_freestack_L000048 ' <symbol:freestack>
  mov r22, BC ' reg <- INDIRP4 reg
  cmp r22,  #0 wz
  jmp #BRNZ
- long @C_sca83_68804eba_freestack_L000048_50 ' NEU4
+ long @C_sfhc3_68dcc150_freestack_L000048_50 ' NEU4
  jmp #JMPA
- long @C_sca83_68804eba_freestack_L000048_49 ' JUMPV addrg
-C_sca83_68804eba_freestack_L000048_50
+ long @C_sfhc3_68dcc150_freestack_L000048_49 ' JUMPV addrg
+C_sfhc3_68dcc150_freestack_L000048_50
  mov r22, r23
  adds r22, #20 ' ADDP4 coni
  mov r20, r23
@@ -675,13 +675,13 @@ C_sca83_68804eba_freestack_L000048_50
  jmp #CALA
  long @C_luaM__free_
  add SP, #8 ' CALL addrg
-C_sca83_68804eba_freestack_L000048_49
+C_sfhc3_68dcc150_freestack_L000048_49
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sca84_68804eba_init_registry_L000052 ' <symbol:init_registry>
+C_sfhc4_68dcc150_init_registry_L000052 ' <symbol:init_registry>
  jmp #NEWF
  sub SP, #4
  jmp #PSHM
@@ -765,14 +765,14 @@ C_sca84_68804eba_init_registry_L000052 ' <symbol:init_registry>
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
-' C_sca84_68804eba_init_registry_L000052_53 ' (symbol refcount = 0)
+' C_sfhc4_68dcc150_init_registry_L000052_53 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_sca85_68804eba_f_luaopen_L000054 ' <symbol:f_luaopen>
+C_sfhc5_68dcc150_f_luaopen_L000054 ' <symbol:f_luaopen>
  jmp #NEWF
  jmp #PSHM
  long $f80000 ' save registers
@@ -788,14 +788,14 @@ C_sca85_68804eba_f_luaopen_L000054 ' <symbol:f_luaopen>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_sca82_68804eba_stack_init_L000042
+ long @C_sfhc2_68dcc150_stack_init_L000042
  add SP, #4 ' CALL addrg
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_sca84_68804eba_init_registry_L000052
+ long @C_sfhc4_68dcc150_init_registry_L000052
  add SP, #4 ' CALL addrg
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -821,13 +821,13 @@ C_sca85_68804eba_f_luaopen_L000054 ' <symbol:f_luaopen>
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
-' C_sca85_68804eba_f_luaopen_L000054_55 ' (symbol refcount = 0)
+' C_sfhc5_68dcc150_f_luaopen_L000054_55 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_sca86_68804eba_preinit_thread_L000056 ' <symbol:preinit_thread>
+C_sfhc6_68dcc150_preinit_thread_L000056 ' <symbol:preinit_thread>
  jmp #PSHM
  long $500000 ' save registers
  mov r22, r3
@@ -938,13 +938,13 @@ C_sca86_68804eba_preinit_thread_L000056 ' <symbol:preinit_thread>
  mov RI, r22
  mov BC, r20
  jmp #WLNG ' ASGNI4 reg reg
-' C_sca86_68804eba_preinit_thread_L000056_57 ' (symbol refcount = 0)
+' C_sfhc6_68dcc150_preinit_thread_L000056_57 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETN
 
 
  alignl ' align long
-C_sca87_68804eba_close_state_L000058 ' <symbol:close_state>
+C_sfhc7_68dcc150_close_state_L000058 ' <symbol:close_state>
  jmp #NEWF
  jmp #PSHM
  long $f00000 ' save registers
@@ -963,14 +963,14 @@ C_sca87_68804eba_close_state_L000058 ' <symbol:close_state>
  and r22, #15 ' BANDI4 coni
  cmps r22,  #0 wz
  jmp #BR_Z
- long @C_sca87_68804eba_close_state_L000058_60 ' EQI4
+ long @C_sfhc7_68dcc150_close_state_L000058_60 ' EQI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C_luaC__freeallobjects ' CALL addrg
  jmp #JMPA
- long @C_sca87_68804eba_close_state_L000058_61 ' JUMPV addrg
-C_sca87_68804eba_close_state_L000058_60
+ long @C_sfhc7_68dcc150_close_state_L000058_61 ' JUMPV addrg
+C_sfhc7_68dcc150_close_state_L000058_60
  mov r22, r23
  adds r22, #20 ' ADDP4 coni
  mov r20, r23
@@ -990,7 +990,7 @@ C_sca87_68804eba_close_state_L000058_60
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C_luaC__freeallobjects ' CALL addrg
-C_sca87_68804eba_close_state_L000058_61
+C_sfhc7_68dcc150_close_state_L000058_61
  mov r22, r23
  adds r22, #16 ' ADDP4 coni
  mov RI, r22
@@ -1016,7 +1016,7 @@ C_sca87_68804eba_close_state_L000058_61
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_sca83_68804eba_freestack_L000048 ' CALL addrg
+ long @C_sfhc3_68dcc150_freestack_L000048 ' CALL addrg
  mov r2, #0 ' reg ARG coni
  jmp #LODL
  long 840
@@ -1039,7 +1039,7 @@ C_sca87_68804eba_close_state_L000058_61
  mov RI, r22
  jmp #CALI
  add SP, #12 ' CALL indirect
-' C_sca87_68804eba_close_state_L000058_59 ' (symbol refcount = 0)
+' C_sfhc7_68dcc150_close_state_L000058_59 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -1150,7 +1150,7 @@ C_lua_newthread_63
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_sca86_68804eba_preinit_thread_L000056
+ long @C_sfhc6_68dcc150_preinit_thread_L000056
  add SP, #4 ' CALL addrg
  mov r22, r21
  adds r22, #112 ' ADDP4 coni
@@ -1215,7 +1215,7 @@ C_lua_newthread_63
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_sca82_68804eba_stack_init_L000042
+ long @C_sfhc2_68dcc150_stack_init_L000042
  add SP, #4 ' CALL addrg
  mov r0, r21 ' CVI, CVU or LOAD
 ' C_lua_newthread_62 ' (symbol refcount = 0)
@@ -1252,7 +1252,7 @@ C_luaE__freethread ' <symbol:luaE_freethread>
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_sca83_68804eba_freestack_L000048 ' CALL addrg
+ long @C_sfhc3_68dcc150_freestack_L000048 ' CALL addrg
  mov r2, #120 ' reg ARG coni
  mov r3, r19 ' CVI, CVU or LOAD
  mov r4, r23 ' CVI, CVU or LOAD
@@ -1499,7 +1499,7 @@ C_lua_newstate_73
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_sca86_68804eba_preinit_thread_L000056
+ long @C_sfhc6_68dcc150_preinit_thread_L000056
  add SP, #4 ' CALL addrg
  mov r22, r19
  adds r22, #68 ' ADDP4 coni
@@ -1560,7 +1560,7 @@ C_lua_newstate_73
  mov r2, r15 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_sca8_68804eba_luai_makeseed_L000013 ' CALL addrg
+ long @C_sfhc_68dcc150_luai_makeseed_L000013 ' CALL addrg
  mov r20, r19
  adds r20, #52 ' ADDP4 coni
  mov RI, r20
@@ -1819,7 +1819,7 @@ C_lua_newstate_75
  long 0
  mov r2, RI ' reg ARG con
  jmp #LODL
- long @C_sca85_68804eba_f_luaopen_L000054
+ long @C_sfhc5_68dcc150_f_luaopen_L000054
  mov r3, RI ' reg ARG ADDRG
  mov r4, r15 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -1833,7 +1833,7 @@ C_lua_newstate_75
  mov r2, r15 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_sca87_68804eba_close_state_L000058 ' CALL addrg
+ long @C_sfhc7_68dcc150_close_state_L000058 ' CALL addrg
  jmp #LODL
  long 0
  mov r15, RI ' reg <- con
@@ -1864,7 +1864,7 @@ C_lua_close ' <symbol:lua_close>
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_sca87_68804eba_close_state_L000058 ' CALL addrg
+ long @C_sfhc7_68dcc150_close_state_L000058 ' CALL addrg
 ' C_lua_close_81 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF

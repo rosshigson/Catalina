@@ -452,6 +452,8 @@
  *
  * version 8.8  - just update version number.
  *
+ * version 8.8.1 - just update version number.
+ * 
  *-----------------------------------------------------------------------------
  * Payload is part of Catalina.
  *
@@ -501,7 +503,7 @@
 #include "lua-5.4.4/src/lauxlib.h"
 #endif
 
-#define VERSION            "8.8"
+#define VERSION            "8.8.1"
 
 #define DEFAULT_LCC_ENV    "LCCDIR" // used to locate binary files if not in current directory
 

@@ -396,6 +396,9 @@
  *
  * version 8.8  - add -Q (and -C QUICKFORCE) to mean enable Qquick Build,
  *                but also rebuild the target file even if it already exists.
+ *
+ * version 8.8.1 - just update version number.
+ * 
  */                  
 
 /*--------------------------------------------------------------------------
@@ -425,7 +428,7 @@
 #include <string.h>
 #include <math.h>
 
-#define VERSION            "8.8"
+#define VERSION            "8.8.1"
 
 #define MAX_LINELEN        4096
 

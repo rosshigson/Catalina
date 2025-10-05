@@ -127,6 +127,9 @@
 -- version 8.8   - add -Q option (or -C QUICKFORCE) to force Quick Build 
 --                 even if the target exists.
 --
+-- version 8.8.1 - just update version number.
+--
+--
 
 require "os"
 require "io"
@@ -135,7 +138,7 @@ require "string"
 require "propeller"
 
 -- configuration parameters and default values
-CATALINA_VERSION = "8.8"
+CATALINA_VERSION = "8.8.1"
 LCCDIR           = "/";
 CATALINA_TARGET  = LCCDIR .. "target"
 CATALINA_LIBRARY = LCCDIR .. "lib"

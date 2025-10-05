@@ -37,6 +37,8 @@
  *
  * version 8.8 - accept -Q (which in this program does the same as -q).
  *
+ * version 8.8.1 - remove local strdup (now in C libary).
+ *
  */
 
 /*--------------------------------------------------------------------------
@@ -77,7 +79,7 @@
 #define SHORT_LAYOUT_4     1 /* 1 to remove unused bytes when using layout 4 (P1 only) */
 #define SHORT_LAYOUT_5     1 /* 1 to remove unused bytes when using layout 5 (P1 or P2) */
 
-#define VERSION            "8.8"
+#define VERSION            "8.8.1"
 
 #define MAX_FILES          1
 #define MAX_LINELEN        4096
@@ -139,17 +141,6 @@ static char *target     = NULL;
 static char *input_file = NULL;
 
 #ifdef __CATALINA__
-
-// strdup is not ANSI C
-char * strdup(const char *str) {
-   if (str != NULL) {
-      register char *copy = malloc(strlen(str) + 1);
-      if (copy != NULL) {
-         return strcpy(copy, str);
-      }
-   }
-   return NULL;
-}
 
 #endif
 

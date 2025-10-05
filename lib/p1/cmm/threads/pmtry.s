@@ -94,7 +94,7 @@ C_pthread_mutex_trylock_11
  alignl_p1
  long I32_BRNZ + (@C_pthread_mutex_trylock_13)<<S32 ' NEU4 reg reg
  alignl_p1
- long I32_LODS + (r22)<<D32S + ((45)&$7FFFF)<<S32 ' reg <- cons
+ long I32_LODS + (r22)<<D32S + ((35)&$7FFFF)<<S32 ' reg <- cons
  alignl_p1
  long I32_LODA + (@C_errno)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNI4 addrg reg

@@ -20,6 +20,11 @@
 #define	LONG_MAX		2147483647L
 #define	ULONG_MAX		4294967295UL
 
+// in LCC, long longs are the same as longs, but C99 needs these defined ...
+#define	LLONG_MIN		LONG_MIN
+#define	LLONG_MAX		LONG_MAX
+#define	ULLONG_MAX		ULONG_MAX
+
 /* Assume signed characters (yegh) */
 #define	CHAR_MAX		SCHAR_MAX
 #define	CHAR_MIN		SCHAR_MIN

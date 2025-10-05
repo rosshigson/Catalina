@@ -2,6 +2,8 @@
 
 cd catalina
 call clean_all
+cd ..\cake
+call clean_all
 cd ..\catoptimize
 call clean_all
 cd ..\p2asm_src

@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl_label
-C_ss3k_68805016_o_collect_L000003 ' <symbol:o_collect>
+C_s1ug_68dcc2bd_o_collect_L000003 ' <symbol:o_collect>
  alignl_p1
  long I32_NEWF + 0<<S32
  alignl_p1
@@ -23,102 +23,102 @@ C_ss3k_68805016_o_collect_L000003 ' <symbol:o_collect>
  long I32_MOVI + RI<<D32 + (105)<<S32
  word I16A_CMPS + (r11)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_Z + (@C_ss3k_68805016_o_collect_L000003_8)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C_s1ug_68dcc2bd_o_collect_L000003_8)<<S32 ' EQI4 reg coni
  alignl_p1
  long I32_MOVI + RI<<D32 + (105)<<S32
  word I16A_CMPS + (r11)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_A + (@C_ss3k_68805016_o_collect_L000003_13)<<S32 ' GTI4 reg coni
-' C_ss3k_68805016_o_collect_L000003_12 ' (symbol refcount = 0)
+ long I32_BR_A + (@C_s1ug_68dcc2bd_o_collect_L000003_13)<<S32 ' GTI4 reg coni
+' C_s1ug_68dcc2bd_o_collect_L000003_12 ' (symbol refcount = 0)
  alignl_p1
  long I32_MOVI + RI<<D32 + (88)<<S32
  word I16A_CMPS + (r11)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_Z + (@C_ss3k_68805016_o_collect_L000003_8)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C_s1ug_68dcc2bd_o_collect_L000003_8)<<S32 ' EQI4 reg coni
  alignl_p1
  long I32_MOVI + RI<<D32 + (88)<<S32
  word I16A_CMPS + (r11)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_B + (@C_ss3k_68805016_o_collect_L000003_5)<<S32 ' LTI4 reg coni
-' C_ss3k_68805016_o_collect_L000003_14 ' (symbol refcount = 0)
+ long I32_BR_B + (@C_s1ug_68dcc2bd_o_collect_L000003_5)<<S32 ' LTI4 reg coni
+' C_s1ug_68dcc2bd_o_collect_L000003_14 ' (symbol refcount = 0)
  alignl_p1
  long I32_MOVI + RI<<D32 + (98)<<S32
  word I16A_CMPS + (r11)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_Z + (@C_ss3k_68805016_o_collect_L000003_11)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C_s1ug_68dcc2bd_o_collect_L000003_11)<<S32 ' EQI4 reg coni
  alignl_p1
  long I32_MOVI + RI<<D32 + (100)<<S32
  word I16A_CMPS + (r11)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_Z + (@C_ss3k_68805016_o_collect_L000003_9)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C_s1ug_68dcc2bd_o_collect_L000003_9)<<S32 ' EQI4 reg coni
  alignl_p1
- long I32_JMPA + (@C_ss3k_68805016_o_collect_L000003_5)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_s1ug_68dcc2bd_o_collect_L000003_5)<<S32 ' JUMPV addrg
  alignl_label
-C_ss3k_68805016_o_collect_L000003_13
+C_s1ug_68dcc2bd_o_collect_L000003_13
  alignl_p1
  long I32_MOVI + RI<<D32 + (111)<<S32
  word I16A_CMPS + (r11)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_Z + (@C_ss3k_68805016_o_collect_L000003_10)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C_s1ug_68dcc2bd_o_collect_L000003_10)<<S32 ' EQI4 reg coni
  alignl_p1
  long I32_MOVI + RI<<D32 + (112)<<S32
  word I16A_CMPS + (r11)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_Z + (@C_ss3k_68805016_o_collect_L000003_8)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C_s1ug_68dcc2bd_o_collect_L000003_8)<<S32 ' EQI4 reg coni
  alignl_p1
  long I32_MOVI + RI<<D32 + (111)<<S32
  word I16A_CMPS + (r11)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_B + (@C_ss3k_68805016_o_collect_L000003_5)<<S32 ' LTI4 reg coni
-' C_ss3k_68805016_o_collect_L000003_15 ' (symbol refcount = 0)
+ long I32_BR_B + (@C_s1ug_68dcc2bd_o_collect_L000003_5)<<S32 ' LTI4 reg coni
+' C_s1ug_68dcc2bd_o_collect_L000003_15 ' (symbol refcount = 0)
  alignl_p1
  long I32_MOVI + RI<<D32 + (117)<<S32
  word I16A_CMPS + (r11)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_Z + (@C_ss3k_68805016_o_collect_L000003_9)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C_s1ug_68dcc2bd_o_collect_L000003_9)<<S32 ' EQI4 reg coni
  alignl_p1
  long I32_MOVI + RI<<D32 + (120)<<S32
  word I16A_CMPS + (r11)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_Z + (@C_ss3k_68805016_o_collect_L000003_8)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C_s1ug_68dcc2bd_o_collect_L000003_8)<<S32 ' EQI4 reg coni
  alignl_p1
- long I32_JMPA + (@C_ss3k_68805016_o_collect_L000003_5)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_s1ug_68dcc2bd_o_collect_L000003_5)<<S32 ' JUMPV addrg
  alignl_label
-C_ss3k_68805016_o_collect_L000003_8
+C_s1ug_68dcc2bd_o_collect_L000003_8
  word I16A_MOVI + (r13)<<D16A + (16)<<S16A ' reg <- coni
  alignl_p1
- long I32_JMPA + (@C_ss3k_68805016_o_collect_L000003_6)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_s1ug_68dcc2bd_o_collect_L000003_6)<<S32 ' JUMPV addrg
  alignl_label
-C_ss3k_68805016_o_collect_L000003_9
+C_s1ug_68dcc2bd_o_collect_L000003_9
  word I16A_MOVI + (r13)<<D16A + (10)<<S16A ' reg <- coni
  alignl_p1
- long I32_JMPA + (@C_ss3k_68805016_o_collect_L000003_6)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_s1ug_68dcc2bd_o_collect_L000003_6)<<S32 ' JUMPV addrg
  alignl_label
-C_ss3k_68805016_o_collect_L000003_10
+C_s1ug_68dcc2bd_o_collect_L000003_10
  word I16A_MOVI + (r13)<<D16A + (8)<<S16A ' reg <- coni
  alignl_p1
- long I32_JMPA + (@C_ss3k_68805016_o_collect_L000003_6)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_s1ug_68dcc2bd_o_collect_L000003_6)<<S32 ' JUMPV addrg
  alignl_label
-C_ss3k_68805016_o_collect_L000003_11
+C_s1ug_68dcc2bd_o_collect_L000003_11
  word I16A_MOVI + (r13)<<D16A + (2)<<S16A ' reg <- coni
  alignl_label
-C_ss3k_68805016_o_collect_L000003_5
+C_s1ug_68dcc2bd_o_collect_L000003_5
  alignl_label
-C_ss3k_68805016_o_collect_L000003_6
+C_s1ug_68dcc2bd_o_collect_L000003_6
  word I16B_LODF + ((8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrl16
  alignl_p1
  long I32_MOVI + RI<<D32 + (45)<<S32
  word I16A_CMPS + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_Z + (@C_ss3k_68805016_o_collect_L000003_18)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C_s1ug_68dcc2bd_o_collect_L000003_18)<<S32 ' EQI4 reg coni
  alignl_p1
  long I32_MOVI + RI<<D32 + (43)<<S32
  word I16A_CMPS + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BRNZ + (@C_ss3k_68805016_o_collect_L000003_16)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C_s1ug_68dcc2bd_o_collect_L000003_16)<<S32 ' NEI4 reg coni
  alignl_label
-C_ss3k_68805016_o_collect_L000003_18
+C_s1ug_68dcc2bd_o_collect_L000003_18
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r15)<<D16A + (r22)<<S16A
  word I16A_ADDSI + (r15)<<D16A + (1)<<S16A ' ADDP4 reg coni
@@ -130,7 +130,7 @@ C_ss3k_68805016_o_collect_L000003_18
  word I16A_MOV + (r21)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_ss3k_68805016_o_collect_L000003_19)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C_s1ug_68dcc2bd_o_collect_L000003_19)<<S32 ' EQI4 reg coni
  word I16B_LODF + ((12)&$1FF)<<S16B
  word I16A_RDLONG + (r2)<<D16A + RI<<S16A ' reg ARG INDIR ADDRFi
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
@@ -139,22 +139,22 @@ C_ss3k_68805016_o_collect_L000003_18
  word I16B_LODF + ((8)&$1FF)<<S16B
  word I16A_WRLONG + (r0)<<D16A + RI<<S16A ' ASGNI4 addrl16 reg
  alignl_label
-C_ss3k_68805016_o_collect_L000003_19
+C_s1ug_68dcc2bd_o_collect_L000003_19
  alignl_label
-C_ss3k_68805016_o_collect_L000003_16
+C_s1ug_68dcc2bd_o_collect_L000003_16
  word I16A_CMPSI + (r21)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_ss3k_68805016_o_collect_L000003_21)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C_s1ug_68dcc2bd_o_collect_L000003_21)<<S32 ' EQI4 reg coni
  word I16B_LODF + ((8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrl16
  alignl_p1
  long I32_MOVI + RI<<D32 + (48)<<S32
  word I16A_CMPS + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BRNZ + (@C_ss3k_68805016_o_collect_L000003_21)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C_s1ug_68dcc2bd_o_collect_L000003_21)<<S32 ' NEI4 reg coni
  word I16A_CMPSI + (r13)<<D16A + (16)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_ss3k_68805016_o_collect_L000003_21)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C_s1ug_68dcc2bd_o_collect_L000003_21)<<S32 ' NEI4 reg coni
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r15)<<D16A + (r22)<<S16A
  word I16A_ADDSI + (r15)<<D16A + (1)<<S16A ' ADDP4 reg coni
@@ -166,7 +166,7 @@ C_ss3k_68805016_o_collect_L000003_16
  word I16A_MOV + (r21)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_ss3k_68805016_o_collect_L000003_23)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C_s1ug_68dcc2bd_o_collect_L000003_23)<<S32 ' EQI4 reg coni
  word I16B_LODF + ((12)&$1FF)<<S16B
  word I16A_RDLONG + (r2)<<D16A + RI<<S16A ' reg ARG INDIR ADDRFi
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
@@ -175,34 +175,34 @@ C_ss3k_68805016_o_collect_L000003_16
  word I16B_LODF + ((8)&$1FF)<<S16B
  word I16A_WRLONG + (r0)<<D16A + RI<<S16A ' ASGNI4 addrl16 reg
  alignl_label
-C_ss3k_68805016_o_collect_L000003_23
+C_s1ug_68dcc2bd_o_collect_L000003_23
  word I16B_LODF + ((8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrl16
  alignl_p1
  long I32_MOVI + RI<<D32 + (120)<<S32
  word I16A_CMPS + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_Z + (@C_ss3k_68805016_o_collect_L000003_25)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C_s1ug_68dcc2bd_o_collect_L000003_25)<<S32 ' EQI4 reg coni
  alignl_p1
  long I32_MOVI + RI<<D32 + (88)<<S32
  word I16A_CMPS + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_Z + (@C_ss3k_68805016_o_collect_L000003_25)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C_s1ug_68dcc2bd_o_collect_L000003_25)<<S32 ' EQI4 reg coni
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A ' CVUI
  word I16B_TRN1 + (r22)<<D16B ' zero extend
  alignl_p1
  long I32_MOVI + RI<<D32 + (105)<<S32
  word I16A_CMPS + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BRNZ + (@C_ss3k_68805016_o_collect_L000003_36)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C_s1ug_68dcc2bd_o_collect_L000003_36)<<S32 ' NEI4 reg coni
  word I16A_MOVI + (r13)<<D16A + (8)<<S16A ' reg <- coni
  alignl_p1
- long I32_JMPA + (@C_ss3k_68805016_o_collect_L000003_36)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_s1ug_68dcc2bd_o_collect_L000003_36)<<S32 ' JUMPV addrg
  alignl_label
-C_ss3k_68805016_o_collect_L000003_25
+C_s1ug_68dcc2bd_o_collect_L000003_25
  word I16A_CMPSI + (r21)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_ss3k_68805016_o_collect_L000003_36)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C_s1ug_68dcc2bd_o_collect_L000003_36)<<S32 ' EQI4 reg coni
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r15)<<D16A + (r22)<<S16A
  word I16A_ADDSI + (r15)<<D16A + (1)<<S16A ' ADDP4 reg coni
@@ -214,7 +214,7 @@ C_ss3k_68805016_o_collect_L000003_25
  word I16A_MOV + (r21)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_ss3k_68805016_o_collect_L000003_36)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C_s1ug_68dcc2bd_o_collect_L000003_36)<<S32 ' EQI4 reg coni
  word I16B_LODF + ((12)&$1FF)<<S16B
  word I16A_RDLONG + (r2)<<D16A + RI<<S16A ' reg ARG INDIR ADDRFi
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
@@ -223,24 +223,24 @@ C_ss3k_68805016_o_collect_L000003_25
  word I16B_LODF + ((8)&$1FF)<<S16B
  word I16A_WRLONG + (r0)<<D16A + RI<<S16A ' ASGNI4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_ss3k_68805016_o_collect_L000003_36)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_s1ug_68dcc2bd_o_collect_L000003_36)<<S32 ' JUMPV addrg
  alignl_label
-C_ss3k_68805016_o_collect_L000003_21
+C_s1ug_68dcc2bd_o_collect_L000003_21
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A ' CVUI
  word I16B_TRN1 + (r22)<<D16B ' zero extend
  alignl_p1
  long I32_MOVI + RI<<D32 + (105)<<S32
  word I16A_CMPS + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BRNZ + (@C_ss3k_68805016_o_collect_L000003_36)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C_s1ug_68dcc2bd_o_collect_L000003_36)<<S32 ' NEI4 reg coni
  word I16A_MOVI + (r13)<<D16A + (10)<<S16A ' reg <- coni
  alignl_p1
- long I32_JMPA + (@C_ss3k_68805016_o_collect_L000003_36)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_s1ug_68dcc2bd_o_collect_L000003_36)<<S32 ' JUMPV addrg
  alignl_label
-C_ss3k_68805016_o_collect_L000003_35
+C_s1ug_68dcc2bd_o_collect_L000003_35
  word I16A_CMPSI + (r13)<<D16A + (10)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_ss3k_68805016_o_collect_L000003_42)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C_s1ug_68dcc2bd_o_collect_L000003_42)<<S32 ' NEI4 reg coni
  word I16B_LODF + ((8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrl16
  alignl_p1
@@ -248,12 +248,12 @@ C_ss3k_68805016_o_collect_L000003_35
  word I16A_SUBS + (r22)<<D16A + (r20)<<S16A ' SUBI/P (1)
  word I16A_CMPI + (r22)<<D16A + (10)<<S16A
  alignl_p1
- long I32_BR_B + (@C_ss3k_68805016_o_collect_L000003_45)<<S32 ' LTU4 reg coni
+ long I32_BR_B + (@C_s1ug_68dcc2bd_o_collect_L000003_45)<<S32 ' LTU4 reg coni
  alignl_label
-C_ss3k_68805016_o_collect_L000003_42
+C_s1ug_68dcc2bd_o_collect_L000003_42
  word I16A_CMPSI + (r13)<<D16A + (16)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_ss3k_68805016_o_collect_L000003_44)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C_s1ug_68dcc2bd_o_collect_L000003_44)<<S32 ' NEI4 reg coni
  word I16B_LODF + ((8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrl16
  word I16B_LODL + (r20)<<D16B
@@ -267,12 +267,12 @@ C_ss3k_68805016_o_collect_L000003_42
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_ss3k_68805016_o_collect_L000003_45)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C_s1ug_68dcc2bd_o_collect_L000003_45)<<S32 ' NEI4 reg coni
  alignl_label
-C_ss3k_68805016_o_collect_L000003_44
+C_s1ug_68dcc2bd_o_collect_L000003_44
  word I16A_CMPSI + (r13)<<D16A + (8)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_ss3k_68805016_o_collect_L000003_47)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C_s1ug_68dcc2bd_o_collect_L000003_47)<<S32 ' NEI4 reg coni
  word I16B_LODF + ((8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrl16
  alignl_p1
@@ -281,17 +281,17 @@ C_ss3k_68805016_o_collect_L000003_44
  word I16A_NEG + (r20)<<D16A + (r20)<<S16A ' SUBI/P (2)
  word I16A_CMPI + (r20)<<D16A + (10)<<S16A
  alignl_p1
- long I32_BRAE + (@C_ss3k_68805016_o_collect_L000003_47)<<S32 ' GEU4 reg coni
+ long I32_BRAE + (@C_s1ug_68dcc2bd_o_collect_L000003_47)<<S32 ' GEU4 reg coni
  alignl_p1
  long I32_MOVI + RI<<D32 + (56)<<S32
  word I16A_CMPS + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_B + (@C_ss3k_68805016_o_collect_L000003_45)<<S32 ' LTI4 reg coni
+ long I32_BR_B + (@C_s1ug_68dcc2bd_o_collect_L000003_45)<<S32 ' LTI4 reg coni
  alignl_label
-C_ss3k_68805016_o_collect_L000003_47
+C_s1ug_68dcc2bd_o_collect_L000003_47
  word I16A_CMPSI + (r13)<<D16A + (2)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_ss3k_68805016_o_collect_L000003_37)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C_s1ug_68dcc2bd_o_collect_L000003_37)<<S32 ' NEI4 reg coni
  word I16B_LODF + ((8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrl16
  alignl_p1
@@ -300,14 +300,14 @@ C_ss3k_68805016_o_collect_L000003_47
  word I16A_NEG + (r20)<<D16A + (r20)<<S16A ' SUBI/P (2)
  word I16A_CMPI + (r20)<<D16A + (10)<<S16A
  alignl_p1
- long I32_BRAE + (@C_ss3k_68805016_o_collect_L000003_37)<<S32 ' GEU4 reg coni
+ long I32_BRAE + (@C_s1ug_68dcc2bd_o_collect_L000003_37)<<S32 ' GEU4 reg coni
  alignl_p1
  long I32_MOVI + RI<<D32 + (50)<<S32
  word I16A_CMPS + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BRAE + (@C_ss3k_68805016_o_collect_L000003_37)<<S32 ' GEI4 reg coni
+ long I32_BRAE + (@C_s1ug_68dcc2bd_o_collect_L000003_37)<<S32 ' GEI4 reg coni
  alignl_label
-C_ss3k_68805016_o_collect_L000003_45
+C_s1ug_68dcc2bd_o_collect_L000003_45
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r15)<<D16A + (r22)<<S16A
  word I16A_ADDSI + (r15)<<D16A + (1)<<S16A ' ADDP4 reg coni
@@ -319,7 +319,7 @@ C_ss3k_68805016_o_collect_L000003_45
  word I16A_MOV + (r21)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_ss3k_68805016_o_collect_L000003_39)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C_s1ug_68dcc2bd_o_collect_L000003_39)<<S32 ' EQI4 reg coni
  word I16B_LODF + ((12)&$1FF)<<S16B
  word I16A_RDLONG + (r2)<<D16A + RI<<S16A ' reg ARG INDIR ADDRFi
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
@@ -328,23 +328,23 @@ C_ss3k_68805016_o_collect_L000003_45
  word I16B_LODF + ((8)&$1FF)<<S16B
  word I16A_WRLONG + (r0)<<D16A + RI<<S16A ' ASGNI4 addrl16 reg
  alignl_label
-C_ss3k_68805016_o_collect_L000003_39
+C_s1ug_68dcc2bd_o_collect_L000003_39
  alignl_label
-C_ss3k_68805016_o_collect_L000003_36
+C_s1ug_68dcc2bd_o_collect_L000003_36
  word I16A_CMPSI + (r21)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_ss3k_68805016_o_collect_L000003_35)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C_s1ug_68dcc2bd_o_collect_L000003_35)<<S32 ' NEI4 reg coni
  alignl_label
-C_ss3k_68805016_o_collect_L000003_37
+C_s1ug_68dcc2bd_o_collect_L000003_37
  word I16A_CMPSI + (r21)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_ss3k_68805016_o_collect_L000003_50)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C_s1ug_68dcc2bd_o_collect_L000003_50)<<S32 ' EQI4 reg coni
  word I16B_LODF + ((8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrl16
  word I16A_NEGI + (r20)<<D16A + (-(-1)&$1F)<<S16A ' reg <- conn
  word I16A_CMPS + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_ss3k_68805016_o_collect_L000003_50)<<S32 ' EQI4 reg reg
+ long I32_BR_Z + (@C_s1ug_68dcc2bd_o_collect_L000003_50)<<S32 ' EQI4 reg reg
  word I16B_LODF + ((12)&$1FF)<<S16B
  word I16A_RDLONG + (r2)<<D16A + RI<<S16A ' reg ARG INDIR ADDRFi
  word I16B_LODF + ((8)&$1FF)<<S16B
@@ -354,24 +354,24 @@ C_ss3k_68805016_o_collect_L000003_37
  long I32_CALA + (@C_ungetc)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  alignl_label
-C_ss3k_68805016_o_collect_L000003_50
+C_s1ug_68dcc2bd_o_collect_L000003_50
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A ' CVUI
  word I16B_TRN1 + (r22)<<D16B ' zero extend
  alignl_p1
  long I32_MOVI + RI<<D32 + (105)<<S32
  word I16A_CMPS + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BRNZ + (@C_ss3k_68805016_o_collect_L000003_52)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C_s1ug_68dcc2bd_o_collect_L000003_52)<<S32 ' NEI4 reg coni
  word I16A_MOVI + (r13)<<D16A + (0)<<S16A ' reg <- coni
  alignl_label
-C_ss3k_68805016_o_collect_L000003_52
+C_s1ug_68dcc2bd_o_collect_L000003_52
  word I16A_WRLONG + (r13)<<D16A + (r19)<<S16A ' ASGNI4 reg reg
  word I16A_MOVI + (r22)<<D16A + (0)<<S16A ' reg <- coni
  word I16A_WRBYTE + (r22)<<D16A + (r15)<<S16A ' ASGNU1 reg reg
  word I16A_NEGI + (r22)<<D16A + (-(-1)&$1F)<<S16A ' reg <- conn
  word I16A_MOV + (r0)<<D16A + (r15)<<S16A ' ADDI/P
  word I16A_ADDS + (r0)<<D16A + (r22)<<S16A ' ADDI/P (3)
-' C_ss3k_68805016_o_collect_L000003_4 ' (symbol refcount = 0)
+' C_s1ug_68dcc2bd_o_collect_L000003_4 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
@@ -613,16 +613,16 @@ C__doscan_87
  long I32_LODF + ((-788)&$FFFFFF)<<S32
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrl32
  alignl_p1
- long I32_MOVI + RI<<D32 + (104)<<S32
+ long I32_MOVI + RI<<D32 + (108)<<S32
  word I16A_CMPS + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_96)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C__doscan_97)<<S32 ' EQI4 reg coni
  alignl_p1
- long I32_MOVI + RI<<D32 + (104)<<S32
+ long I32_MOVI + RI<<D32 + (108)<<S32
  word I16A_CMPS + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_A + (@C__doscan_100)<<S32 ' GTI4 reg coni
-' C__doscan_99 ' (symbol refcount = 0)
+ long I32_BR_A + (@C__doscan_102)<<S32 ' GTI4 reg coni
+' C__doscan_101 ' (symbol refcount = 0)
  alignl_p1
  long I32_LODF + ((-788)&$FFFFFF)<<S32
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrl32
@@ -630,19 +630,47 @@ C__doscan_87
  long I32_MOVI + RI<<D32 + (76)<<S32
  word I16A_CMPS + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_98)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C__doscan_100)<<S32 ' EQI4 reg coni
  alignl_p1
- long I32_JMPA + (@C__doscan_93)<<S32 ' JUMPV addrg
- alignl_label
-C__doscan_100
+ long I32_MOVI + RI<<D32 + (76)<<S32
+ word I16A_CMPS + (r22)<<D16A + RI<<S16A
+ alignl_p1
+ long I32_BR_B + (@C__doscan_93)<<S32 ' LTI4 reg coni
+' C__doscan_103 ' (symbol refcount = 0)
  alignl_p1
  long I32_LODF + ((-788)&$FFFFFF)<<S32
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrl32
  alignl_p1
- long I32_MOVI + RI<<D32 + (108)<<S32
+ long I32_MOVI + RI<<D32 + (104)<<S32
  word I16A_CMPS + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_97)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C__doscan_96)<<S32 ' EQI4 reg coni
+ alignl_p1
+ long I32_JMPA + (@C__doscan_93)<<S32 ' JUMPV addrg
+ alignl_label
+C__doscan_102
+ alignl_p1
+ long I32_LODF + ((-788)&$FFFFFF)<<S32
+ word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrl32
+ alignl_p1
+ long I32_MOVI + RI<<D32 + (116)<<S32
+ word I16A_CMPS + (r22)<<D16A + RI<<S16A
+ alignl_p1
+ long I32_BR_Z + (@C__doscan_99)<<S32 ' EQI4 reg coni
+ alignl_p1
+ long I32_MOVI + RI<<D32 + (116)<<S32
+ word I16A_CMPS + (r22)<<D16A + RI<<S16A
+ alignl_p1
+ long I32_BR_B + (@C__doscan_93)<<S32 ' LTI4 reg coni
+' C__doscan_104 ' (symbol refcount = 0)
+ alignl_p1
+ long I32_LODF + ((-788)&$FFFFFF)<<S32
+ word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrl32
+ alignl_p1
+ long I32_MOVI + RI<<D32 + (122)<<S32
+ word I16A_CMPS + (r22)<<D16A + RI<<S16A
+ alignl_p1
+ long I32_BR_Z + (@C__doscan_98)<<S32 ' EQI4 reg coni
  alignl_p1
  long I32_JMPA + (@C__doscan_93)<<S32 ' JUMPV addrg
  alignl_label
@@ -664,6 +692,22 @@ C__doscan_97
  alignl_label
 C__doscan_98
  alignl_p1
+ long I32_LODS + (r22)<<D32S + ((64)&$7FFFF)<<S32 ' reg <- cons
+ word I16A_OR + (r10)<<D16A + (r22)<<S16A ' BORI/U (1)
+ word I16A_ADDSI + (r21)<<D16A + (1)<<S16A ' ADDP4 reg coni
+ alignl_p1
+ long I32_JMPA + (@C__doscan_94)<<S32 ' JUMPV addrg
+ alignl_label
+C__doscan_99
+ alignl_p1
+ long I32_LODS + (r22)<<D32S + ((64)&$7FFFF)<<S32 ' reg <- cons
+ word I16A_OR + (r10)<<D16A + (r22)<<S16A ' BORI/U (1)
+ word I16A_ADDSI + (r21)<<D16A + (1)<<S16A ' ADDP4 reg coni
+ alignl_p1
+ long I32_JMPA + (@C__doscan_94)<<S32 ' JUMPV addrg
+ alignl_label
+C__doscan_100
+ alignl_p1
  long I32_LODS + (r22)<<D32S + ((128)&$7FFFF)<<S32 ' reg <- cons
  word I16A_OR + (r10)<<D16A + (r22)<<S16A ' BORI/U (1)
  word I16A_ADDSI + (r21)<<D16A + (1)<<S16A ' ADDP4 reg coni
@@ -678,26 +722,26 @@ C__doscan_94
  long I32_MOVI + RI<<D32 + (99)<<S32
  word I16A_CMPS + (r9)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_101)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C__doscan_105)<<S32 ' EQI4 reg coni
  alignl_p1
  long I32_MOVI + RI<<D32 + (91)<<S32
  word I16A_CMPS + (r9)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_101)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C__doscan_105)<<S32 ' EQI4 reg coni
  alignl_p1
  long I32_MOVI + RI<<D32 + (110)<<S32
  word I16A_CMPS + (r9)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_101)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C__doscan_105)<<S32 ' EQI4 reg coni
  alignl_label
-C__doscan_103
+C__doscan_107
  word I16A_MOV + (r2)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
  alignl_p1
  long I32_CALA + (@C_getc)<<S32 ' CALL addrg
  word I16A_MOV + (r15)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16A_ADDSI + (r11)<<D16A + (1)<<S16A ' ADDI4 reg coni
-' C__doscan_104 ' (symbol refcount = 0)
+' C__doscan_108 ' (symbol refcount = 0)
  word I16B_LODL + (r22)<<D16B
  alignl_p1
  long @C___ctype+1 ' reg <- addrg
@@ -708,20 +752,20 @@ C__doscan_103
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_103)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C__doscan_107)<<S32 ' NEI4 reg coni
  word I16A_NEGI + (r22)<<D16A + (-(-1)&$1F)<<S16A ' reg <- conn
  word I16A_CMPS + (r15)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_102)<<S32 ' NEI4 reg reg
+ long I32_BRNZ + (@C__doscan_106)<<S32 ' NEI4 reg reg
  alignl_p1
  long I32_JMPA + (@C__doscan_59)<<S32 ' JUMPV addrg
  alignl_label
-C__doscan_101
+C__doscan_105
  alignl_p1
  long I32_MOVI + RI<<D32 + (110)<<S32
  word I16A_CMPS + (r9)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_109)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C__doscan_113)<<S32 ' EQI4 reg coni
  word I16A_MOV + (r2)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
  alignl_p1
@@ -730,85 +774,31 @@ C__doscan_101
  word I16A_NEGI + (r22)<<D16A + (-(-1)&$1F)<<S16A ' reg <- conn
  word I16A_CMPS + (r15)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_111)<<S32 ' NEI4 reg reg
+ long I32_BRNZ + (@C__doscan_115)<<S32 ' NEI4 reg reg
  alignl_p1
  long I32_JMPA + (@C__doscan_59)<<S32 ' JUMPV addrg
  alignl_label
-C__doscan_111
+C__doscan_115
  word I16A_ADDSI + (r11)<<D16A + (1)<<S16A ' ADDI4 reg coni
  alignl_label
-C__doscan_109
+C__doscan_113
  alignl_label
-C__doscan_102
+C__doscan_106
  alignl_p1
  long I32_MOVI + RI<<D32 + (98)<<S32
  word I16A_CMPS + (r9)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_B + (@C__doscan_237)<<S32 ' LTI4 reg coni
+ long I32_BR_B + (@C__doscan_241)<<S32 ' LTI4 reg coni
  alignl_p1
  long I32_MOVI + RI<<D32 + (105)<<S32
  word I16A_CMPS + (r9)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_A + (@C__doscan_238)<<S32 ' GTI4 reg coni
+ long I32_BR_A + (@C__doscan_242)<<S32 ' GTI4 reg coni
  word I16A_MOV + (r22)<<D16A + (r9)<<S16A
  word I16A_SHLI + (r22)<<D16A + (2)<<S16A ' SHLI4 reg coni
  word I16B_LODL + (r20)<<D16B
  alignl_p1
- long @C__doscan_239_L000241-392 ' reg <- addrg
- word I16A_ADDS + (r22)<<D16A + (r20)<<S16A ' ADDI/P (1)
- word I16A_RDLONG + RI<<D16A + (r22)<<S16A
- word I16B_JMPI ' JUMPV INDIR reg
- alignl_p1
-
-' Catalina Cnst
-
-DAT ' const data segment
-
- alignl_label
-C__doscan_239_L000241 ' <symbol:239>
- long @C__doscan_127
- long @C__doscan_146
- long @C__doscan_127
- long @C__doscan_113
- long @C__doscan_113
- long @C__doscan_113
- long @C__doscan_113
- long @C__doscan_127
-
-' Catalina Code
-
-DAT ' code segment
- alignl_label
-C__doscan_237
- alignl_p1
- long I32_MOVI + RI<<D32 + (88)<<S32
- word I16A_CMPS + (r9)<<D16A + RI<<S16A
- alignl_p1
- long I32_BR_Z + (@C__doscan_127)<<S32 ' EQI4 reg coni
- alignl_p1
- long I32_MOVI + RI<<D32 + (91)<<S32
- word I16A_CMPS + (r9)<<D16A + RI<<S16A
- alignl_p1
- long I32_BR_Z + (@C__doscan_188)<<S32 ' EQI4 reg coni
- alignl_p1
- long I32_JMPA + (@C__doscan_113)<<S32 ' JUMPV addrg
- alignl_label
-C__doscan_238
- alignl_p1
- long I32_MOVI + RI<<D32 + (110)<<S32
- word I16A_CMPS + (r9)<<D16A + RI<<S16A
- alignl_p1
- long I32_BR_B + (@C__doscan_113)<<S32 ' LTI4 reg coni
- alignl_p1
- long I32_MOVI + RI<<D32 + (120)<<S32
- word I16A_CMPS + (r9)<<D16A + RI<<S16A
- alignl_p1
- long I32_BR_A + (@C__doscan_113)<<S32 ' GTI4 reg coni
- word I16A_MOV + (r22)<<D16A + (r9)<<S16A
- word I16A_SHLI + (r22)<<D16A + (2)<<S16A ' SHLI4 reg coni
- word I16B_LODL + (r20)<<D16B
- alignl_p1
- long @C__doscan_243_L000245-440 ' reg <- addrg
+ long @C__doscan_243_L000245-392 ' reg <- addrg
  word I16A_ADDS + (r22)<<D16A + (r20)<<S16A ' ADDI/P (1)
  word I16A_RDLONG + RI<<D16A + (r22)<<S16A
  word I16B_JMPI ' JUMPV INDIR reg
@@ -820,64 +810,118 @@ DAT ' const data segment
 
  alignl_label
 C__doscan_243_L000245 ' <symbol:243>
- long @C__doscan_119
- long @C__doscan_127
- long @C__doscan_126
- long @C__doscan_113
- long @C__doscan_113
- long @C__doscan_165
- long @C__doscan_113
- long @C__doscan_127
- long @C__doscan_113
- long @C__doscan_113
- long @C__doscan_127
+ long @C__doscan_131
+ long @C__doscan_150
+ long @C__doscan_131
+ long @C__doscan_117
+ long @C__doscan_117
+ long @C__doscan_117
+ long @C__doscan_117
+ long @C__doscan_131
 
 ' Catalina Code
 
 DAT ' code segment
  alignl_label
-C__doscan_113
+C__doscan_241
+ alignl_p1
+ long I32_MOVI + RI<<D32 + (88)<<S32
+ word I16A_CMPS + (r9)<<D16A + RI<<S16A
+ alignl_p1
+ long I32_BR_Z + (@C__doscan_131)<<S32 ' EQI4 reg coni
+ alignl_p1
+ long I32_MOVI + RI<<D32 + (91)<<S32
+ word I16A_CMPS + (r9)<<D16A + RI<<S16A
+ alignl_p1
+ long I32_BR_Z + (@C__doscan_192)<<S32 ' EQI4 reg coni
+ alignl_p1
+ long I32_JMPA + (@C__doscan_117)<<S32 ' JUMPV addrg
+ alignl_label
+C__doscan_242
+ alignl_p1
+ long I32_MOVI + RI<<D32 + (110)<<S32
+ word I16A_CMPS + (r9)<<D16A + RI<<S16A
+ alignl_p1
+ long I32_BR_B + (@C__doscan_117)<<S32 ' LTI4 reg coni
+ alignl_p1
+ long I32_MOVI + RI<<D32 + (120)<<S32
+ word I16A_CMPS + (r9)<<D16A + RI<<S16A
+ alignl_p1
+ long I32_BR_A + (@C__doscan_117)<<S32 ' GTI4 reg coni
+ word I16A_MOV + (r22)<<D16A + (r9)<<S16A
+ word I16A_SHLI + (r22)<<D16A + (2)<<S16A ' SHLI4 reg coni
+ word I16B_LODL + (r20)<<D16B
+ alignl_p1
+ long @C__doscan_247_L000249-440 ' reg <- addrg
+ word I16A_ADDS + (r22)<<D16A + (r20)<<S16A ' ADDI/P (1)
+ word I16A_RDLONG + RI<<D16A + (r22)<<S16A
+ word I16B_JMPI ' JUMPV INDIR reg
+ alignl_p1
+
+' Catalina Cnst
+
+DAT ' const data segment
+
+ alignl_label
+C__doscan_247_L000249 ' <symbol:247>
+ long @C__doscan_123
+ long @C__doscan_131
+ long @C__doscan_130
+ long @C__doscan_117
+ long @C__doscan_117
+ long @C__doscan_169
+ long @C__doscan_117
+ long @C__doscan_131
+ long @C__doscan_117
+ long @C__doscan_117
+ long @C__doscan_131
+
+' Catalina Code
+
+DAT ' code segment
+ alignl_label
+C__doscan_117
  word I16A_CMPSI + (r8)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_118)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C__doscan_122)<<S32 ' NEI4 reg coni
  word I16A_NEGI + (r22)<<D16A + (-(-1)&$1F)<<S16A ' reg <- conn
  word I16A_CMPS + (r15)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_116)<<S32 ' EQI4 reg reg
+ long I32_BR_Z + (@C__doscan_120)<<S32 ' EQI4 reg reg
  alignl_label
-C__doscan_118
+C__doscan_122
  alignl_p1
  long I32_LODF + ((-792)&$FFFFFF)<<S32
  word I16A_WRLONG + (r6)<<D16A + RI<<S16A ' ASGNI4 addrl32 reg
  alignl_p1
- long I32_JMPA + (@C__doscan_117)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C__doscan_121)<<S32 ' JUMPV addrg
  alignl_label
-C__doscan_116
+C__doscan_120
  word I16A_NEGI + (r22)<<D16A + (-(-1)&$1F)<<S16A ' reg <- conn
  alignl_p1
  long I32_LODF + ((-792)&$FFFFFF)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNI4 addrl32 reg
  alignl_label
-C__doscan_117
+C__doscan_121
  alignl_p1
  long I32_LODF + ((-792)&$FFFFFF)<<S32
  word I16A_RDLONG + (r0)<<D16A + RI<<S16A ' reg <- INDIRI4 addrl32
  alignl_p1
  long I32_JMPA + (@C__doscan_54)<<S32 ' JUMPV addrg
  alignl_label
-C__doscan_119
+C__doscan_123
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((2048)&$7FFFF)<<S32 ' reg <- cons
  word I16A_AND + (r22)<<D16A + (r10)<<S16A ' BANDI/U (2)
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_114)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C__doscan_118)<<S32 ' NEI4 reg coni
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((32)&$7FFFF)<<S32 ' reg <- cons
  word I16A_AND + (r22)<<D16A + (r10)<<S16A ' BANDI/U (2)
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_122)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C__doscan_126)<<S32 ' EQI4 reg coni
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_MOV + (r19)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
@@ -887,15 +931,15 @@ C__doscan_119
  word I16A_MOV + (r20)<<D16A + (r11)<<S16A ' CVI, CVU or LOAD
  word I16A_WRWORD + (r20)<<D16A + (r22)<<S16A ' ASGNI2 reg reg
  alignl_p1
- long I32_JMPA + (@C__doscan_114)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C__doscan_118)<<S32 ' JUMPV addrg
  alignl_label
-C__doscan_122
+C__doscan_126
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((64)&$7FFFF)<<S32 ' reg <- cons
  word I16A_AND + (r22)<<D16A + (r10)<<S16A ' BANDI/U (2)
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_124)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C__doscan_128)<<S32 ' EQI4 reg coni
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_MOV + (r19)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
@@ -904,9 +948,9 @@ C__doscan_122
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_WRLONG + (r11)<<D16A + (r22)<<S16A ' ASGNI4 reg reg
  alignl_p1
- long I32_JMPA + (@C__doscan_114)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C__doscan_118)<<S32 ' JUMPV addrg
  alignl_label
-C__doscan_124
+C__doscan_128
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_MOV + (r19)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
@@ -915,38 +959,38 @@ C__doscan_124
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_WRLONG + (r11)<<D16A + (r22)<<S16A ' ASGNI4 reg reg
  alignl_p1
- long I32_JMPA + (@C__doscan_114)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C__doscan_118)<<S32 ' JUMPV addrg
  alignl_label
-C__doscan_126
+C__doscan_130
  alignl_label
-C__doscan_127
+C__doscan_131
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((256)&$7FFFF)<<S32 ' reg <- cons
  word I16A_AND + (r22)<<D16A + (r10)<<S16A ' BANDI/U (2)
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_130)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C__doscan_134)<<S32 ' EQI4 reg coni
  word I16B_LODL + (r22)<<D16B
  alignl_p1
  long 512 ' reg <- con
  word I16A_CMP + (r13)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BRBE + (@C__doscan_128)<<S32 ' LEU4 reg reg
+ long I32_BRBE + (@C__doscan_132)<<S32 ' LEU4 reg reg
  alignl_label
-C__doscan_130
+C__doscan_134
  word I16B_LODL + (r13)<<D16B
  alignl_p1
  long 512 ' reg <- con
  alignl_label
-C__doscan_128
+C__doscan_132
  word I16A_CMPI + (r13)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_131)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C__doscan_135)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r0)<<D16A + (r6)<<S16A ' CVI, CVU or LOAD
  alignl_p1
  long I32_JMPA + (@C__doscan_54)<<S32 ' JUMPV addrg
  alignl_label
-C__doscan_131
+C__doscan_135
  alignl_p1
  long I32_LODF + ((-772)&$FFFFFF)<<S32 
  word I16A_MOV + (r2)<<D16A + RI<<S16A ' reg ARG ADDRL
@@ -965,7 +1009,7 @@ C__doscan_131
  word I16A_MOVI + BC<<D16A + 24<<S16A ' arg size, rpsize = 0, spsize = 24
  word I16A_ADDI + SP<<D16A + 4<<S16A ' correct for new kernel !!! 
  alignl_p1
- long I32_CALA + (@C_ss3k_68805016_o_collect_L000003)<<S32
+ long I32_CALA + (@C_s1ug_68dcc2bd_o_collect_L000003)<<S32
  word I16A_ADDI + SP<<D16A + 20<<S16A ' CALL addrg
  word I16A_MOV + (r17)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  alignl_p1
@@ -973,29 +1017,29 @@ C__doscan_131
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- addrl32
  word I16A_CMP + (r17)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C__doscan_136)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C__doscan_140)<<S32 ' LTU4 reg reg
  word I16A_CMP + (r17)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_133)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C__doscan_137)<<S32 ' NEU4 reg reg
  word I16A_RDBYTE + (r22)<<D16A + (r17)<<S16A ' reg <- INDIRU1 reg
  word I16B_TRN1 + (r22)<<D16B ' zero extend
  alignl_p1
  long I32_MOVI + RI<<D32 + (45)<<S32
  word I16A_CMPS + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_136)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C__doscan_140)<<S32 ' EQI4 reg coni
  alignl_p1
  long I32_MOVI + RI<<D32 + (43)<<S32
  word I16A_CMPS + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_133)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C__doscan_137)<<S32 ' NEI4 reg coni
  alignl_label
-C__doscan_136
+C__doscan_140
  word I16A_MOV + (r0)<<D16A + (r6)<<S16A ' CVI, CVU or LOAD
  alignl_p1
  long I32_JMPA + (@C__doscan_54)<<S32 ' JUMPV addrg
  alignl_label
-C__doscan_133
+C__doscan_137
  word I16A_MOV + (r22)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
  alignl_p1
  long I32_LODF + ((-772)&$FFFFFF)<<S32
@@ -1007,19 +1051,19 @@ C__doscan_133
  word I16A_AND + (r22)<<D16A + (r10)<<S16A ' BANDI/U (2)
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_114)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C__doscan_118)<<S32 ' NEI4 reg coni
  alignl_p1
  long I32_MOVI + RI<<D32 + (100)<<S32
  word I16A_CMPS + (r9)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_141)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C__doscan_145)<<S32 ' EQI4 reg coni
  alignl_p1
  long I32_MOVI + RI<<D32 + (105)<<S32
  word I16A_CMPS + (r9)<<D16A + RI<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_139)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C__doscan_143)<<S32 ' NEI4 reg coni
  alignl_label
-C__doscan_141
+C__doscan_145
  alignl_p1
  long I32_LODF + ((-776)&$FFFFFF)<<S32
  word I16A_RDLONG + (r2)<<D16A + RI<<S16A ' reg ARG INDIR ADDRL
@@ -1038,9 +1082,9 @@ C__doscan_141
  long I32_LODF + ((-780)&$FFFFFF)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl32 reg
  alignl_p1
- long I32_JMPA + (@C__doscan_140)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C__doscan_144)<<S32 ' JUMPV addrg
  alignl_label
-C__doscan_139
+C__doscan_143
  alignl_p1
  long I32_LODF + ((-776)&$FFFFFF)<<S32
  word I16A_RDLONG + (r2)<<D16A + RI<<S16A ' reg ARG INDIR ADDRL
@@ -1058,13 +1102,13 @@ C__doscan_139
  long I32_LODF + ((-780)&$FFFFFF)<<S32
  word I16A_WRLONG + (r0)<<D16A + RI<<S16A ' ASGNU4 addrl32 reg
  alignl_label
-C__doscan_140
+C__doscan_144
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((64)&$7FFFF)<<S32 ' reg <- cons
  word I16A_AND + (r22)<<D16A + (r10)<<S16A ' BANDI/U (2)
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_142)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C__doscan_146)<<S32 ' EQI4 reg coni
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_MOV + (r19)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
@@ -1076,15 +1120,15 @@ C__doscan_140
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl32
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C__doscan_114)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C__doscan_118)<<S32 ' JUMPV addrg
  alignl_label
-C__doscan_142
+C__doscan_146
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((32)&$7FFFF)<<S32 ' reg <- cons
  word I16A_AND + (r22)<<D16A + (r10)<<S16A ' BANDI/U (2)
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_144)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C__doscan_148)<<S32 ' EQI4 reg coni
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_MOV + (r19)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
@@ -1096,9 +1140,9 @@ C__doscan_142
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl32
  word I16A_WRWORD + (r20)<<D16A + (r22)<<S16A ' ASGNU2 reg reg
  alignl_p1
- long I32_JMPA + (@C__doscan_114)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C__doscan_118)<<S32 ' JUMPV addrg
  alignl_label
-C__doscan_144
+C__doscan_148
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_MOV + (r19)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
@@ -1110,24 +1154,24 @@ C__doscan_144
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl32
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C__doscan_114)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C__doscan_118)<<S32 ' JUMPV addrg
  alignl_label
-C__doscan_146
+C__doscan_150
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((256)&$7FFFF)<<S32 ' reg <- cons
  word I16A_AND + (r22)<<D16A + (r10)<<S16A ' BANDI/U (2)
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_147)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C__doscan_151)<<S32 ' NEI4 reg coni
  word I16A_MOVI + (r13)<<D16A + (1)<<S16A ' reg <- coni
  alignl_label
-C__doscan_147
+C__doscan_151
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((2048)&$7FFFF)<<S32 ' reg <- cons
  word I16A_AND + (r22)<<D16A + (r10)<<S16A ' BANDI/U (2)
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_149)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C__doscan_153)<<S32 ' NEI4 reg coni
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_MOV + (r19)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
@@ -1135,34 +1179,34 @@ C__doscan_147
  word I16A_ADDS + (r22)<<D16A + (r20)<<S16A ' ADDI/P (1)
  word I16A_RDLONG + (r17)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  alignl_label
-C__doscan_149
+C__doscan_153
  word I16A_CMPI + (r13)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_154)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C__doscan_158)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r0)<<D16A + (r6)<<S16A ' CVI, CVU or LOAD
  alignl_p1
  long I32_JMPA + (@C__doscan_54)<<S32 ' JUMPV addrg
  alignl_label
-C__doscan_153
+C__doscan_157
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((2048)&$7FFFF)<<S32 ' reg <- cons
  word I16A_AND + (r22)<<D16A + (r10)<<S16A ' BANDI/U (2)
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_156)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C__doscan_160)<<S32 ' NEI4 reg coni
  word I16A_MOV + (r22)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r17)<<D16A + (r22)<<S16A
  word I16A_ADDSI + (r17)<<D16A + (1)<<S16A ' ADDP4 reg coni
  word I16A_MOV + (r20)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  word I16A_WRBYTE + (r20)<<D16A + (r22)<<S16A ' ASGNU1 reg reg
  alignl_label
-C__doscan_156
+C__doscan_160
  word I16A_MOV + (r22)<<D16A + (r13)<<S16A
  word I16A_SUBI + (r22)<<D16A + (1)<<S16A ' SUBU4 reg coni
  word I16A_MOV + (r13)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_158)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C__doscan_162)<<S32 ' EQU4 reg coni
  word I16A_MOV + (r2)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
  alignl_p1
@@ -1170,25 +1214,25 @@ C__doscan_156
  word I16A_MOV + (r15)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16A_ADDSI + (r11)<<D16A + (1)<<S16A ' ADDI4 reg coni
  alignl_label
+C__doscan_162
+ alignl_label
 C__doscan_158
- alignl_label
-C__doscan_154
  word I16A_CMPI + (r13)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_160)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C__doscan_164)<<S32 ' EQU4 reg coni
  word I16A_NEGI + (r22)<<D16A + (-(-1)&$1F)<<S16A ' reg <- conn
  word I16A_CMPS + (r15)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_153)<<S32 ' NEI4 reg reg
+ long I32_BRNZ + (@C__doscan_157)<<S32 ' NEI4 reg reg
  alignl_label
-C__doscan_160
+C__doscan_164
  word I16A_CMPI + (r13)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_114)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C__doscan_118)<<S32 ' EQU4 reg coni
  word I16A_NEGI + (r22)<<D16A + (-(-1)&$1F)<<S16A ' reg <- conn
  word I16A_CMPS + (r15)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_163)<<S32 ' EQI4 reg reg
+ long I32_BR_Z + (@C__doscan_167)<<S32 ' EQI4 reg reg
  word I16A_MOV + (r2)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r3)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 33<<S16B ' arg size, rpsize = 8, spsize = 8
@@ -1196,29 +1240,29 @@ C__doscan_160
  long I32_CALA + (@C_ungetc)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  alignl_label
-C__doscan_163
+C__doscan_167
  word I16A_SUBSI + (r11)<<D16A + (1)<<S16A ' SUBI4 reg coni
  alignl_p1
- long I32_JMPA + (@C__doscan_114)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C__doscan_118)<<S32 ' JUMPV addrg
  alignl_label
-C__doscan_165
+C__doscan_169
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((256)&$7FFFF)<<S32 ' reg <- cons
  word I16A_AND + (r22)<<D16A + (r10)<<S16A ' BANDI/U (2)
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_166)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C__doscan_170)<<S32 ' NEI4 reg coni
  word I16B_LODL + (r13)<<D16B
  alignl_p1
  long $ffff ' reg <- con
  alignl_label
-C__doscan_166
+C__doscan_170
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((2048)&$7FFFF)<<S32 ' reg <- cons
  word I16A_AND + (r22)<<D16A + (r10)<<S16A ' BANDI/U (2)
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_168)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C__doscan_172)<<S32 ' NEI4 reg coni
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_MOV + (r19)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
@@ -1226,34 +1270,34 @@ C__doscan_166
  word I16A_ADDS + (r22)<<D16A + (r20)<<S16A ' ADDI/P (1)
  word I16A_RDLONG + (r17)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  alignl_label
-C__doscan_168
+C__doscan_172
  word I16A_CMPI + (r13)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_173)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C__doscan_177)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r0)<<D16A + (r6)<<S16A ' CVI, CVU or LOAD
  alignl_p1
  long I32_JMPA + (@C__doscan_54)<<S32 ' JUMPV addrg
  alignl_label
-C__doscan_172
+C__doscan_176
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((2048)&$7FFFF)<<S32 ' reg <- cons
  word I16A_AND + (r22)<<D16A + (r10)<<S16A ' BANDI/U (2)
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_176)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C__doscan_180)<<S32 ' NEI4 reg coni
  word I16A_MOV + (r22)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r17)<<D16A + (r22)<<S16A
  word I16A_ADDSI + (r17)<<D16A + (1)<<S16A ' ADDP4 reg coni
  word I16A_MOV + (r20)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  word I16A_WRBYTE + (r20)<<D16A + (r22)<<S16A ' ASGNU1 reg reg
  alignl_label
-C__doscan_176
+C__doscan_180
  word I16A_MOV + (r22)<<D16A + (r13)<<S16A
  word I16A_SUBI + (r22)<<D16A + (1)<<S16A ' SUBU4 reg coni
  word I16A_MOV + (r13)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_178)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C__doscan_182)<<S32 ' EQU4 reg coni
  word I16A_MOV + (r2)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
  alignl_p1
@@ -1261,16 +1305,16 @@ C__doscan_176
  word I16A_MOV + (r15)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16A_ADDSI + (r11)<<D16A + (1)<<S16A ' ADDI4 reg coni
  alignl_label
-C__doscan_178
+C__doscan_182
  alignl_label
-C__doscan_173
+C__doscan_177
  word I16A_CMPI + (r13)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_181)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C__doscan_185)<<S32 ' EQU4 reg coni
  word I16A_NEGI + (r22)<<D16A + (-(-1)&$1F)<<S16A ' reg <- conn
  word I16A_CMPS + (r15)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_181)<<S32 ' EQI4 reg reg
+ long I32_BR_Z + (@C__doscan_185)<<S32 ' EQI4 reg reg
  word I16B_LODL + (r22)<<D16B
  alignl_p1
  long @C___ctype+1 ' reg <- addrg
@@ -1281,26 +1325,26 @@ C__doscan_173
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_172)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C__doscan_176)<<S32 ' EQI4 reg coni
  alignl_label
-C__doscan_181
+C__doscan_185
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((2048)&$7FFFF)<<S32 ' reg <- cons
  word I16A_AND + (r22)<<D16A + (r10)<<S16A ' BANDI/U (2)
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_182)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C__doscan_186)<<S32 ' NEI4 reg coni
  word I16A_MOVI + (r22)<<D16A + (0)<<S16A ' reg <- coni
  word I16A_WRBYTE + (r22)<<D16A + (r17)<<S16A ' ASGNU1 reg reg
  alignl_label
-C__doscan_182
+C__doscan_186
  word I16A_CMPI + (r13)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_114)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C__doscan_118)<<S32 ' EQU4 reg coni
  word I16A_NEGI + (r22)<<D16A + (-(-1)&$1F)<<S16A ' reg <- conn
  word I16A_CMPS + (r15)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_186)<<S32 ' EQI4 reg reg
+ long I32_BR_Z + (@C__doscan_190)<<S32 ' EQI4 reg reg
  word I16A_MOV + (r2)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r3)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 33<<S16B ' arg size, rpsize = 8, spsize = 8
@@ -1308,31 +1352,31 @@ C__doscan_182
  long I32_CALA + (@C_ungetc)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  alignl_label
-C__doscan_186
+C__doscan_190
  word I16A_SUBSI + (r11)<<D16A + (1)<<S16A ' SUBI4 reg coni
  alignl_p1
- long I32_JMPA + (@C__doscan_114)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C__doscan_118)<<S32 ' JUMPV addrg
  alignl_label
-C__doscan_188
+C__doscan_192
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((256)&$7FFFF)<<S32 ' reg <- cons
  word I16A_AND + (r22)<<D16A + (r10)<<S16A ' BANDI/U (2)
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_189)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C__doscan_193)<<S32 ' NEI4 reg coni
  word I16B_LODL + (r13)<<D16B
  alignl_p1
  long $ffff ' reg <- con
  alignl_label
-C__doscan_189
+C__doscan_193
  word I16A_CMPI + (r13)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_191)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C__doscan_195)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r0)<<D16A + (r6)<<S16A ' CVI, CVU or LOAD
  alignl_p1
  long I32_JMPA + (@C__doscan_54)<<S32 ' JUMPV addrg
  alignl_label
-C__doscan_191
+C__doscan_195
  word I16A_MOV + (r22)<<D16A + (r21)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (1)<<S16A ' ADDP4 reg coni
  word I16A_MOV + (r21)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
@@ -1342,43 +1386,43 @@ C__doscan_191
  long I32_MOVI + RI<<D32 + (94)<<S32
  word I16A_CMPS + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_193)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C__doscan_197)<<S32 ' NEI4 reg coni
  word I16A_MOVI + (r22)<<D16A + (1)<<S16A ' reg <- coni
  word I16A_MOV + (r7)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
  word I16A_ADDSI + (r21)<<D16A + (1)<<S16A ' ADDP4 reg coni
  alignl_p1
- long I32_JMPA + (@C__doscan_194)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C__doscan_198)<<S32 ' JUMPV addrg
  alignl_label
-C__doscan_193
+C__doscan_197
  word I16A_MOVI + (r7)<<D16A + (0)<<S16A ' reg <- coni
  alignl_label
-C__doscan_194
+C__doscan_198
  alignl_p1
  long I32_LODF + ((-260)&$FFFFFF)<<S32
  word I16A_MOV + (r17)<<D16A + RI<<S16A ' reg <- addrl32
  alignl_p1
- long I32_JMPA + (@C__doscan_198)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C__doscan_202)<<S32 ' JUMPV addrg
  alignl_label
-C__doscan_195
+C__doscan_199
  word I16A_MOVI + (r22)<<D16A + (0)<<S16A ' reg <- coni
  word I16A_WRBYTE + (r22)<<D16A + (r17)<<S16A ' ASGNU1 reg reg
-' C__doscan_196 ' (symbol refcount = 0)
+' C__doscan_200 ' (symbol refcount = 0)
  word I16A_ADDSI + (r17)<<D16A + (1)<<S16A ' ADDP4 reg coni
  alignl_label
-C__doscan_198
+C__doscan_202
  word I16A_MOV + (r22)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
  word I16B_LODF + ((-4)&$1FF)<<S16B
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- addrl16
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C__doscan_195)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C__doscan_199)<<S32 ' LTU4 reg reg
  word I16A_RDBYTE + (r22)<<D16A + (r21)<<S16A ' reg <- INDIRU1 reg
  word I16B_TRN1 + (r22)<<D16B ' zero extend
  alignl_p1
  long I32_MOVI + RI<<D32 + (93)<<S32
  word I16A_CMPS + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_203)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C__doscan_207)<<S32 ' NEI4 reg coni
  word I16A_MOV + (r22)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r21)<<D16A + (r22)<<S16A
  word I16A_ADDSI + (r21)<<D16A + (1)<<S16A ' ADDP4 reg coni
@@ -1391,9 +1435,9 @@ C__doscan_198
  word I16A_MOVI + (r20)<<D16A + (1)<<S16A ' reg <- coni
  word I16A_WRBYTE + (r20)<<D16A + (r22)<<S16A ' ASGNU1 reg reg
  alignl_p1
- long I32_JMPA + (@C__doscan_203)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C__doscan_207)<<S32 ' JUMPV addrg
  alignl_label
-C__doscan_202
+C__doscan_206
  word I16A_MOV + (r22)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r21)<<D16A + (r22)<<S16A
  word I16A_ADDSI + (r21)<<D16A + (1)<<S16A ' ADDP4 reg coni
@@ -1411,25 +1455,25 @@ C__doscan_202
  long I32_MOVI + RI<<D32 + (45)<<S32
  word I16A_CMPS + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_205)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C__doscan_209)<<S32 ' NEI4 reg coni
  word I16A_ADDSI + (r21)<<D16A + (1)<<S16A ' ADDP4 reg coni
  word I16A_RDBYTE + (r22)<<D16A + (r21)<<S16A ' reg <- INDIRU1 reg
  word I16B_TRN1 + (r22)<<D16B ' zero extend
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_207)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C__doscan_211)<<S32 ' EQI4 reg coni
  alignl_p1
  long I32_MOVI + RI<<D32 + (93)<<S32
  word I16A_CMPS + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_207)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C__doscan_211)<<S32 ' EQI4 reg coni
  word I16A_NEGI + (r20)<<D16A + (-(-2)&$1F)<<S16A ' reg <- conn
  word I16A_ADDS + (r20)<<D16A + (r21)<<S16A ' ADDI/P (2)
  word I16A_RDBYTE + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRU1 reg
  word I16B_TRN1 + (r20)<<D16B ' zero extend
  word I16A_CMPS + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C__doscan_207)<<S32 ' LTI4 reg reg
+ long I32_BR_B + (@C__doscan_211)<<S32 ' LTI4 reg reg
  word I16A_NEGI + (r22)<<D16A + (-(-2)&$1F)<<S16A ' reg <- conn
  word I16A_ADDS + (r22)<<D16A + (r21)<<S16A ' ADDI/P (2)
  word I16A_RDBYTE + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU1 reg
@@ -1439,9 +1483,9 @@ C__doscan_202
  long I32_LODF + ((-796)&$FFFFFF)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNI4 addrl32 reg
  alignl_p1
- long I32_JMPA + (@C__doscan_212)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C__doscan_216)<<S32 ' JUMPV addrg
  alignl_label
-C__doscan_209
+C__doscan_213
  alignl_p1
  long I32_LODF + ((-796)&$FFFFFF)<<S32
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrl32
@@ -1451,7 +1495,7 @@ C__doscan_209
  word I16A_ADDS + (r22)<<D16A + (r20)<<S16A ' ADDI/P (1)
  word I16A_MOVI + (r20)<<D16A + (1)<<S16A ' reg <- coni
  word I16A_WRBYTE + (r20)<<D16A + (r22)<<S16A ' ASGNU1 reg reg
-' C__doscan_210 ' (symbol refcount = 0)
+' C__doscan_214 ' (symbol refcount = 0)
  alignl_p1
  long I32_LODF + ((-796)&$FFFFFF)<<S32
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrl32
@@ -1460,7 +1504,7 @@ C__doscan_209
  long I32_LODF + ((-796)&$FFFFFF)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNI4 addrl32 reg
  alignl_label
-C__doscan_212
+C__doscan_216
  alignl_p1
  long I32_LODF + ((-796)&$FFFFFF)<<S32
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrl32
@@ -1468,38 +1512,38 @@ C__doscan_212
  word I16B_TRN1 + (r20)<<D16B ' zero extend
  word I16A_CMPS + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRBE + (@C__doscan_209)<<S32 ' LEI4 reg reg
+ long I32_BRBE + (@C__doscan_213)<<S32 ' LEI4 reg reg
  word I16A_ADDSI + (r21)<<D16A + (1)<<S16A ' ADDP4 reg coni
  alignl_p1
- long I32_JMPA + (@C__doscan_208)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C__doscan_212)<<S32 ' JUMPV addrg
  alignl_label
-C__doscan_207
+C__doscan_211
  word I16A_MOVI + (r22)<<D16A + (1)<<S16A ' reg <- coni
  word I16B_LODF + ((-215)&$1FF)<<S16B
  word I16A_WRBYTE + (r22)<<D16A + RI<<S16A ' ASGNU1 addrl16 reg
  alignl_label
-C__doscan_208
+C__doscan_212
  alignl_label
-C__doscan_205
+C__doscan_209
  alignl_label
-C__doscan_203
+C__doscan_207
  word I16A_RDBYTE + (r22)<<D16A + (r21)<<S16A ' reg <- INDIRU1 reg
  word I16B_TRN1 + (r22)<<D16B ' zero extend
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_214)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C__doscan_218)<<S32 ' EQI4 reg coni
  alignl_p1
  long I32_MOVI + RI<<D32 + (93)<<S32
  word I16A_CMPS + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_202)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C__doscan_206)<<S32 ' NEI4 reg coni
  alignl_label
-C__doscan_214
+C__doscan_218
  word I16A_RDBYTE + (r22)<<D16A + (r21)<<S16A ' reg <- INDIRU1 reg
  word I16B_TRN1 + (r22)<<D16B ' zero extend
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_217)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C__doscan_221)<<S32 ' EQI4 reg coni
  alignl_p1
  long I32_LODF + ((-260)&$FFFFFF)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- addrl32
@@ -1509,13 +1553,13 @@ C__doscan_214
  word I16A_XOR + (r22)<<D16A + (r7)<<S16A ' BXORI/U (1)
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_215)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C__doscan_219)<<S32 ' NEI4 reg coni
  alignl_label
-C__doscan_217
+C__doscan_221
  word I16A_NEGI + (r22)<<D16A + (-(-1)&$1F)<<S16A ' reg <- conn
  word I16A_CMPS + (r15)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_218)<<S32 ' EQI4 reg reg
+ long I32_BR_Z + (@C__doscan_222)<<S32 ' EQI4 reg reg
  word I16A_MOV + (r2)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r3)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 33<<S16B ' arg size, rpsize = 8, spsize = 8
@@ -1523,18 +1567,18 @@ C__doscan_217
  long I32_CALA + (@C_ungetc)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  alignl_label
-C__doscan_218
+C__doscan_222
  word I16A_MOV + (r0)<<D16A + (r6)<<S16A ' CVI, CVU or LOAD
  alignl_p1
  long I32_JMPA + (@C__doscan_54)<<S32 ' JUMPV addrg
  alignl_label
-C__doscan_215
+C__doscan_219
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((2048)&$7FFFF)<<S32 ' reg <- cons
  word I16A_AND + (r22)<<D16A + (r10)<<S16A ' BANDI/U (2)
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_220)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C__doscan_224)<<S32 ' NEI4 reg coni
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_MOV + (r19)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
@@ -1542,28 +1586,28 @@ C__doscan_215
  word I16A_ADDS + (r22)<<D16A + (r20)<<S16A ' ADDI/P (1)
  word I16A_RDLONG + (r17)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  alignl_label
-C__doscan_220
+C__doscan_224
  alignl_label
-C__doscan_222
+C__doscan_226
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((2048)&$7FFFF)<<S32 ' reg <- cons
  word I16A_AND + (r22)<<D16A + (r10)<<S16A ' BANDI/U (2)
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_225)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C__doscan_229)<<S32 ' NEI4 reg coni
  word I16A_MOV + (r22)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r17)<<D16A + (r22)<<S16A
  word I16A_ADDSI + (r17)<<D16A + (1)<<S16A ' ADDP4 reg coni
  word I16A_MOV + (r20)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  word I16A_WRBYTE + (r20)<<D16A + (r22)<<S16A ' ASGNU1 reg reg
  alignl_label
-C__doscan_225
+C__doscan_229
  word I16A_MOV + (r22)<<D16A + (r13)<<S16A
  word I16A_SUBI + (r22)<<D16A + (1)<<S16A ' SUBU4 reg coni
  word I16A_MOV + (r13)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_227)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C__doscan_231)<<S32 ' EQU4 reg coni
  word I16A_MOV + (r2)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
  alignl_p1
@@ -1571,15 +1615,15 @@ C__doscan_225
  word I16A_MOV + (r15)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16A_ADDSI + (r11)<<D16A + (1)<<S16A ' ADDI4 reg coni
  alignl_label
-C__doscan_227
-' C__doscan_223 ' (symbol refcount = 0)
+C__doscan_231
+' C__doscan_227 ' (symbol refcount = 0)
  word I16A_CMPI + (r13)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_230)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C__doscan_234)<<S32 ' EQU4 reg coni
  word I16A_NEGI + (r22)<<D16A + (-(-1)&$1F)<<S16A ' reg <- conn
  word I16A_CMPS + (r15)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_230)<<S32 ' EQI4 reg reg
+ long I32_BR_Z + (@C__doscan_234)<<S32 ' EQI4 reg reg
  alignl_p1
  long I32_LODF + ((-260)&$FFFFFF)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- addrl32
@@ -1589,16 +1633,16 @@ C__doscan_227
  word I16A_XOR + (r22)<<D16A + (r7)<<S16A ' BXORI/U (1)
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_222)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C__doscan_226)<<S32 ' NEI4 reg coni
  alignl_label
-C__doscan_230
+C__doscan_234
  word I16A_CMPI + (r13)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_231)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C__doscan_235)<<S32 ' EQU4 reg coni
  word I16A_NEGI + (r22)<<D16A + (-(-1)&$1F)<<S16A ' reg <- conn
  word I16A_CMPS + (r15)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_233)<<S32 ' EQI4 reg reg
+ long I32_BR_Z + (@C__doscan_237)<<S32 ' EQI4 reg reg
  word I16A_MOV + (r2)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r3)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 33<<S16B ' arg size, rpsize = 8, spsize = 8
@@ -1606,35 +1650,35 @@ C__doscan_230
  long I32_CALA + (@C_ungetc)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  alignl_label
-C__doscan_233
+C__doscan_237
  word I16A_SUBSI + (r11)<<D16A + (1)<<S16A ' SUBI4 reg coni
  alignl_label
-C__doscan_231
+C__doscan_235
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((2048)&$7FFFF)<<S32 ' reg <- cons
  word I16A_AND + (r22)<<D16A + (r10)<<S16A ' BANDI/U (2)
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_114)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C__doscan_118)<<S32 ' NEI4 reg coni
  word I16A_MOVI + (r22)<<D16A + (0)<<S16A ' reg <- coni
  word I16A_WRBYTE + (r22)<<D16A + (r17)<<S16A ' ASGNU1 reg reg
  alignl_label
-C__doscan_114
+C__doscan_118
  word I16A_ADDSI + (r8)<<D16A + (1)<<S16A ' ADDI4 reg coni
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((2048)&$7FFFF)<<S32 ' reg <- cons
  word I16A_AND + (r22)<<D16A + (r10)<<S16A ' BANDI/U (2)
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_247)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C__doscan_251)<<S32 ' NEI4 reg coni
  alignl_p1
  long I32_MOVI + RI<<D32 + (110)<<S32
  word I16A_CMPS + (r9)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_247)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C__doscan_251)<<S32 ' EQI4 reg coni
  word I16A_ADDSI + (r6)<<D16A + (1)<<S16A ' ADDI4 reg coni
  alignl_label
-C__doscan_247
+C__doscan_251
  word I16A_ADDSI + (r21)<<D16A + (1)<<S16A ' ADDP4 reg coni
  alignl_label
 C__doscan_58
@@ -1644,26 +1688,26 @@ C__doscan_58
 C__doscan_59
  word I16A_CMPSI + (r8)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C__doscan_252)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C__doscan_256)<<S32 ' NEI4 reg coni
  word I16A_NEGI + (r22)<<D16A + (-(-1)&$1F)<<S16A ' reg <- conn
  word I16A_CMPS + (r15)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_Z + (@C__doscan_250)<<S32 ' EQI4 reg reg
+ long I32_BR_Z + (@C__doscan_254)<<S32 ' EQI4 reg reg
  alignl_label
-C__doscan_252
+C__doscan_256
  alignl_p1
  long I32_LODF + ((-788)&$FFFFFF)<<S32
  word I16A_WRLONG + (r6)<<D16A + RI<<S16A ' ASGNI4 addrl32 reg
  alignl_p1
- long I32_JMPA + (@C__doscan_251)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C__doscan_255)<<S32 ' JUMPV addrg
  alignl_label
-C__doscan_250
+C__doscan_254
  word I16A_NEGI + (r22)<<D16A + (-(-1)&$1F)<<S16A ' reg <- conn
  alignl_p1
  long I32_LODF + ((-788)&$FFFFFF)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNI4 addrl32 reg
  alignl_label
-C__doscan_251
+C__doscan_255
  alignl_p1
  long I32_LODF + ((-788)&$FFFFFF)<<S32
  word I16A_RDLONG + (r0)<<D16A + RI<<S16A ' reg <- INDIRI4 addrl32

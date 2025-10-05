@@ -1,0 +1,6 @@
+#!/bin/bash
+##!/bin/bash
+
+pushd $LCCDIR/source/cake
+./clean_all
+popd

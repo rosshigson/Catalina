@@ -25,7 +25,6 @@ cp ../../../src/simp.s .
 cp ../../../src/stab.s .
 cp ../../../src/stmt.s .
 cp ../../../src/string.s .
-cp ../../../src/strdup.s .
 cp ../../../src/sym.s .
 cp ../../../src/symbolic.s .
 cp ../../../src/trace.s .

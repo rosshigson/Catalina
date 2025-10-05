@@ -1,5 +1,6 @@
 #include <hmi.h>
 #include <string.h>
+#include <stdlib.h>
 
 char str3[100];
 
@@ -57,6 +58,24 @@ void test_5(char *str1) {
    t_char(1, '\n');
 }
 
+void test_6(char *str) {
+   char *dup;
+   dup = strdup(str);
+   t_string(1, "Test 6 : ");
+   t_string(1, dup);
+   t_char(1, '\n');
+   free(dup);
+}
+
+void test_7(char *str) {
+   char *dup;
+   dup = strndup(str, 7);
+   t_string(1, "Test 7 : ");
+   t_string(1, dup);
+   t_char(1, '\n');
+   free(dup);
+}
+
 int main(void) {
 
    char * str1 = "hello, ";
@@ -68,6 +87,8 @@ int main(void) {
    test_3("boo", "boo");
    test_4("needle in a haystack", "hay");
    test_5("qwertyuiop");
+   test_6("hello, and well met!");
+   test_7("goodbye, farewell and amen!");
 
    t_string(1, "Press any key to exit ...\n");
    k_wait();

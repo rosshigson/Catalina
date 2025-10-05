@@ -8,6 +8,9 @@
 
 double __huge_val(void);	/* may be infinity */
 #define	HUGE_VAL	(__huge_val())
+// Catalina only has double, but these may be expected to exist ...
+#define	HUGE_VALF	((float)__huge_val())
+#define	HUGE_VALL	((long double)__huge_val())
 
 int	__IsNan(double d);	/* test for Not A Number */
 

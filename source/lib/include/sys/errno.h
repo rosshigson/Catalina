@@ -141,4 +141,12 @@
 /* Room for other POSIX implementations */
 #endif
 
+#if     !defined(EDEADLK)
+#define EDEADLK		35
+#endif
+
+#if     !defined(EOVERFLOW)
+#define EOVERFLOW	104
+#endif
+
 #endif	/* _SYS_ERRNO_H */

@@ -133,4 +133,16 @@ extern int _rename(const char *path, const char *newname);
  */
 extern int _unlink(const char *path);
 
+/*
+ * make a leaf directory (no recursion)
+ * NOTE: mode not currently used
+ */
+extern int _mkdir(const char *pathname, mode_t mode);
+
+/*
+ * make a directory, recursing as necessary (i.e. creating intermediates)
+ * NOTE: mode not currently used
+ */
+extern int _mkdirr(const char *pathname, mode_t mode);
+
 #endif

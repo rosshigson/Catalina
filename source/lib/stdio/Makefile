@@ -2,7 +2,7 @@ include ../Makefile.inc
 
 all:	tmpfile.s tmpnam.s rename.s remove.s fopen.s freopen.s \
 	setbuf.s setvbuf.s setcbuf.s perror.s fprintf.s printf.s sprintf.s \
-	vfprintf.s vprintf.s vsprintf.s doprnt.s icompute.s \
+	vfprintf.s vprintf.s vsprintf.s doprnt.s icompute.s snprintf.s \
 	fscanf.s scanf.s sscanf.s doscan.s fgetc.s fgets.s getc.s \
 	getchar.s gets.s putc.s putchar.s fputc.s puts.s fputs.s \
 	ungetc.s fread.s fwrite.s fgetpos.s fsetpos.s rewind.s \
@@ -26,7 +26,7 @@ endif
 clean:
 	-rm -f tmpfile.s tmpnam.s rename.s remove.s fopen.s freopen.s \
 		setbuf.s setvbuf.s setcbuf.s perror.s fprintf.s printf.s sprintf.s \
-		vfprintf.s vprintf.s vsprintf.s doprnt.s icompute.s \
+		vfprintf.s vprintf.s vsprintf.s doprnt.s icompute.s snprintf.s \
 		fscanf.s scanf.s sscanf.s doscan.s fgetc.s fgets.s getc.s \
 		getchar.s gets.s putc.s putchar.s fputc.s puts.s fputs.s \
 		ungetc.s fread.s fwrite.s fgetpos.s fsetpos.s rewind.s \

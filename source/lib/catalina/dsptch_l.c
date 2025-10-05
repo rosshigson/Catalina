@@ -1,13 +1,6 @@
 #include <string.h>
 #include <service.h>
 
-// strdup replacment (strdup is not ANSI!)
-static char *strdup(const char *s) {
-    char *p = malloc(strlen(s) + 1);
-    if(p) { strcpy(p, s); }
-    return p;
-}
-
 // use _dispatch_Lua_bg if a background task is required
 void _dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
    request_t *rqst_ptr = REQUEST_BLOCK(_cogid());

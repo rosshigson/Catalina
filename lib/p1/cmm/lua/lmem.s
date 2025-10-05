@@ -199,7 +199,7 @@ C_luaM__free_ ' <symbol:luaM_free_>
  alignl_p1
 
  alignl_label
-C_sdi42_68804f50_tryagain_L000028 ' <symbol:tryagain>
+C_smrk2_68dcc1ed_tryagain_L000028 ' <symbol:tryagain>
  alignl_p1
  long I32_NEWF + 0<<S32
  alignl_p1
@@ -220,7 +220,7 @@ C_sdi42_68804f50_tryagain_L000028 ' <symbol:tryagain>
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sdi42_68804f50_tryagain_L000028_30)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C_smrk2_68dcc1ed_tryagain_L000028_30)<<S32 ' NEI4 reg coni
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((59)&$7FFFF)<<S32 ' reg <- cons
  word I16A_ADDS + (r22)<<D16A + (r15)<<S16A ' ADDI/P (2)
@@ -228,7 +228,7 @@ C_sdi42_68804f50_tryagain_L000028 ' <symbol:tryagain>
  word I16B_TRN1 + (r22)<<D16B ' zero extend
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sdi42_68804f50_tryagain_L000028_30)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C_smrk2_68dcc1ed_tryagain_L000028_30)<<S32 ' NEI4 reg coni
  word I16A_MOVI + (r2)<<D16A + (1)<<S16A ' reg ARG coni
  word I16A_MOV + (r3)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 33<<S16B ' arg size, rpsize = 8, spsize = 8
@@ -249,14 +249,14 @@ C_sdi42_68804f50_tryagain_L000028 ' <symbol:tryagain>
  word I16A_ADDI + SP<<D16A + 12<<S16A ' CALL indirect
  word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  alignl_p1
- long I32_JMPA + (@C_sdi42_68804f50_tryagain_L000028_29)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_smrk2_68dcc1ed_tryagain_L000028_29)<<S32 ' JUMPV addrg
  alignl_label
-C_sdi42_68804f50_tryagain_L000028_30
+C_smrk2_68dcc1ed_tryagain_L000028_30
  word I16B_LODL + R0<<D16B
  alignl_p1
  long 0 ' RET con
  alignl_label
-C_sdi42_68804f50_tryagain_L000028_29
+C_smrk2_68dcc1ed_tryagain_L000028_29
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
@@ -301,7 +301,7 @@ C_luaM__realloc_ ' <symbol:luaM_realloc_>
  word I16A_MOV + (r5)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 67<<S16B ' arg size, rpsize = 16, spsize = 16
  alignl_p1
- long I32_CALA + (@C_sdi42_68804f50_tryagain_L000028)<<S32
+ long I32_CALA + (@C_smrk2_68dcc1ed_tryagain_L000028)<<S32
  word I16A_ADDI + SP<<D16A + 12<<S16A ' CALL addrg
  word I16A_MOV + (r13)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r22)<<D16A + (r13)<<S16A ' CVI, CVU or LOAD
@@ -427,7 +427,7 @@ C_luaM__malloc__41
  word I16A_MOV + (r5)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 67<<S16B ' arg size, rpsize = 16, spsize = 16
  alignl_p1
- long I32_CALA + (@C_sdi42_68804f50_tryagain_L000028)<<S32
+ long I32_CALA + (@C_smrk2_68dcc1ed_tryagain_L000028)<<S32
  word I16A_ADDI + SP<<D16A + 12<<S16A ' CALL addrg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_WRLONG + (r0)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg

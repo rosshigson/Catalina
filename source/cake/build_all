@@ -1,0 +1,17 @@
+#!/bin/bash
+##!/bin/bash
+
+cd src
+gcc build.c -D__CATALINA__ -o build
+./build
+cp cake $LCCDIR/bin/cake
+cp cakeconfig.h $LCCDIR/bin/cakeconfig.h
+cd ..
+
+if [[ "$1" != "" ]]; then
+
+   # also build cake for the specified Propeller platform
+   make_cake $@
+
+fi
+

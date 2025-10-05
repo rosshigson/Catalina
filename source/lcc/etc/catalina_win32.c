@@ -13,7 +13,7 @@ char *suffixes[] = { ".c;.C", ".i;.I", ".s;.S", ".obj;.OBJ", ".out", 0 };
 char inputs[256] = "";
 char *cpp[] = { LCCDIR "\\bin\\cpp.exe", 
 	"-U__GNUC__", "-D_POSIX_SOURCE", "-D__STDC__=1", "-D__STRICT_ANSI__",
-	"-Dwin32", "-D_WIN32", "-D_M_IX86", 
+	//"-Dwin32", "-D_WIN32", "-D_M_IX86", 
 	"-D__extension__=""""", "-D__cdecl=""""",
 	"-D__CATALINA__",
 	"$1", "$2", "$3", 0 };

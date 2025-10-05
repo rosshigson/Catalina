@@ -31,7 +31,7 @@ C_vsprintf ' <symbol:vsprintf>
  mov RI, FP
  sub RI, #-(-8)
  wrlong r23, RI ' ASGNP4 addrli reg
- mov r22, ##32767 ' reg <- con
+ mov r22, ##2147483647 ' reg <- con
  mov RI, FP
  sub RI, #-(-28)
  wrlong r22, RI ' ASGNI4 addrli reg

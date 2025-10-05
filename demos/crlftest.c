@@ -49,7 +49,7 @@
  *
  */
 #include <hmi.h>
-#include <hmi.h>
+#include <prop.h>
 
 int PressToContinue() {
    k_clear();

@@ -50,15 +50,6 @@ static char * first_file_name;
 
 static FILE *gf;
 
-#ifdef __CATALINA__
-// strdup replacment (strdup is not ANSI!)
-static char *strdup(const char *s) {
-    char *p = malloc(strlen(s) + 1);
-    if(p) { strcpy(p, s); }
-    return p;
-}
-#endif
-
 // safecpy will never write more than size characters, 
 // and is guaranteed to null terminate its result, so
 // make sure the buffer passed is at least size + 1

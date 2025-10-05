@@ -39,4 +39,8 @@ void	*memset(void *_s, int _c, size_t _n);
 char	*strerror(int _errnum);
 size_t	strlen(const char *_s);
 
+// Catalina extensions to C89
+char *strdup(const char *_s);
+char *strndup(const char *_s, size_t _n);
+
 #endif	/* _STRING_H */

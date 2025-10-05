@@ -11,7 +11,7 @@ all:	ddebug.s dgptn.s dgvol.s\
 	_write.s _lseek.s _create.s\
 	_creat.s _rename.s _unlink.s\
 	cat_getc.s cat_putc.s _openu.s\
-	_closeu.s _createu.s\
+	_closeu.s _createu.s _mkdir.s\
 	_created.s dwrite.s dread.s cache_sd.s
 
 clean:

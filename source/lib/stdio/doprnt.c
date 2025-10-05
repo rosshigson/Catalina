@@ -174,6 +174,8 @@ _doprnt(register const char *fmt, va_list ap, FILE *stream)
 		switch (*fmt) {
 		case 'h':	flags |= FL_SHORT; fmt++; break;
 		case 'l':	flags |= FL_LONG; fmt++; break;
+		case 'z':	flags |= FL_LONG; fmt++; break;
+		case 't':	flags |= FL_LONG; fmt++; break;
 		case 'L':	flags |= FL_LONGDOUBLE; fmt++; break;
 		}
 

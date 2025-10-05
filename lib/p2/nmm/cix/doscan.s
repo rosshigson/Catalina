@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_shcg_688050a7_o_collect_L000003 ' <symbol:o_collect>
+C_sbtc_68dcc359_o_collect_L000003 ' <symbol:o_collect>
  calld PA,#NEWF
  calld PA,#PSHM
  long $faa800 ' save registers
@@ -20,56 +20,56 @@ C_shcg_688050a7_o_collect_L000003 ' <symbol:o_collect>
  and r11, cviu_m1 ' zero extend
  mov r22, #105 ' reg <- coni
  cmps r11, r22 wz
- if_z jmp #\C_shcg_688050a7_o_collect_L000003_8 ' EQI4
+ if_z jmp #\C_sbtc_68dcc359_o_collect_L000003_8 ' EQI4
  cmps r11, r22 wcz
- if_a jmp #\C_shcg_688050a7_o_collect_L000003_13 ' GTI4
-' C_shcg_688050a7_o_collect_L000003_12 ' (symbol refcount = 0)
+ if_a jmp #\C_sbtc_68dcc359_o_collect_L000003_13 ' GTI4
+' C_sbtc_68dcc359_o_collect_L000003_12 ' (symbol refcount = 0)
  mov r22, #88 ' reg <- coni
  cmps r11, r22 wz
- if_z jmp #\C_shcg_688050a7_o_collect_L000003_8 ' EQI4
+ if_z jmp #\C_sbtc_68dcc359_o_collect_L000003_8 ' EQI4
  cmps r11, r22 wcz
- if_b jmp #\C_shcg_688050a7_o_collect_L000003_5 ' LTI4
-' C_shcg_688050a7_o_collect_L000003_14 ' (symbol refcount = 0)
+ if_b jmp #\C_sbtc_68dcc359_o_collect_L000003_5 ' LTI4
+' C_sbtc_68dcc359_o_collect_L000003_14 ' (symbol refcount = 0)
  cmps r11,  #98 wz
- if_z jmp #\C_shcg_688050a7_o_collect_L000003_11 ' EQI4
+ if_z jmp #\C_sbtc_68dcc359_o_collect_L000003_11 ' EQI4
  cmps r11,  #100 wz
- if_z jmp #\C_shcg_688050a7_o_collect_L000003_9 ' EQI4
- jmp #\@C_shcg_688050a7_o_collect_L000003_5 ' JUMPV addrg
-C_shcg_688050a7_o_collect_L000003_13
+ if_z jmp #\C_sbtc_68dcc359_o_collect_L000003_9 ' EQI4
+ jmp #\@C_sbtc_68dcc359_o_collect_L000003_5 ' JUMPV addrg
+C_sbtc_68dcc359_o_collect_L000003_13
  mov r22, #111 ' reg <- coni
  cmps r11, r22 wz
- if_z jmp #\C_shcg_688050a7_o_collect_L000003_10 ' EQI4
+ if_z jmp #\C_sbtc_68dcc359_o_collect_L000003_10 ' EQI4
  cmps r11,  #112 wz
- if_z jmp #\C_shcg_688050a7_o_collect_L000003_8 ' EQI4
+ if_z jmp #\C_sbtc_68dcc359_o_collect_L000003_8 ' EQI4
  cmps r11, r22 wcz
- if_b jmp #\C_shcg_688050a7_o_collect_L000003_5 ' LTI4
-' C_shcg_688050a7_o_collect_L000003_15 ' (symbol refcount = 0)
+ if_b jmp #\C_sbtc_68dcc359_o_collect_L000003_5 ' LTI4
+' C_sbtc_68dcc359_o_collect_L000003_15 ' (symbol refcount = 0)
  cmps r11,  #117 wz
- if_z jmp #\C_shcg_688050a7_o_collect_L000003_9 ' EQI4
+ if_z jmp #\C_sbtc_68dcc359_o_collect_L000003_9 ' EQI4
  cmps r11,  #120 wz
- if_z jmp #\C_shcg_688050a7_o_collect_L000003_8 ' EQI4
- jmp #\@C_shcg_688050a7_o_collect_L000003_5 ' JUMPV addrg
-C_shcg_688050a7_o_collect_L000003_8
+ if_z jmp #\C_sbtc_68dcc359_o_collect_L000003_8 ' EQI4
+ jmp #\@C_sbtc_68dcc359_o_collect_L000003_5 ' JUMPV addrg
+C_sbtc_68dcc359_o_collect_L000003_8
  mov r13, #16 ' reg <- coni
- jmp #\@C_shcg_688050a7_o_collect_L000003_6 ' JUMPV addrg
-C_shcg_688050a7_o_collect_L000003_9
+ jmp #\@C_sbtc_68dcc359_o_collect_L000003_6 ' JUMPV addrg
+C_sbtc_68dcc359_o_collect_L000003_9
  mov r13, #10 ' reg <- coni
- jmp #\@C_shcg_688050a7_o_collect_L000003_6 ' JUMPV addrg
-C_shcg_688050a7_o_collect_L000003_10
+ jmp #\@C_sbtc_68dcc359_o_collect_L000003_6 ' JUMPV addrg
+C_sbtc_68dcc359_o_collect_L000003_10
  mov r13, #8 ' reg <- coni
- jmp #\@C_shcg_688050a7_o_collect_L000003_6 ' JUMPV addrg
-C_shcg_688050a7_o_collect_L000003_11
+ jmp #\@C_sbtc_68dcc359_o_collect_L000003_6 ' JUMPV addrg
+C_sbtc_68dcc359_o_collect_L000003_11
  mov r13, #2 ' reg <- coni
-C_shcg_688050a7_o_collect_L000003_5
-C_shcg_688050a7_o_collect_L000003_6
+C_sbtc_68dcc359_o_collect_L000003_5
+C_sbtc_68dcc359_o_collect_L000003_6
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #45 wz
- if_z jmp #\C_shcg_688050a7_o_collect_L000003_18 ' EQI4
+ if_z jmp #\C_sbtc_68dcc359_o_collect_L000003_18 ' EQI4
  cmps r22,  #43 wz
- if_nz jmp #\C_shcg_688050a7_o_collect_L000003_16 ' NEI4
-C_shcg_688050a7_o_collect_L000003_18
+ if_nz jmp #\C_sbtc_68dcc359_o_collect_L000003_16 ' NEI4
+C_sbtc_68dcc359_o_collect_L000003_18
  mov r22, r15 ' CVI, CVU or LOAD
  mov r15, r22
  adds r15, #1 ' ADDP4 coni
@@ -81,7 +81,7 @@ C_shcg_688050a7_o_collect_L000003_18
  subs r22, #1 ' SUBI4 coni
  mov r21, r22 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_z jmp #\C_shcg_688050a7_o_collect_L000003_19 ' EQI4
+ if_z jmp #\C_sbtc_68dcc359_o_collect_L000003_19 ' EQI4
  mov RI, FP
  add RI, #12
  rdlong r2, RI ' reg ARG INDIR ADDRFi
@@ -91,17 +91,17 @@ C_shcg_688050a7_o_collect_L000003_18
  mov RI, FP
  add RI,#8
  wrlong r0, RI ' ASGNI4 addrfi reg
-C_shcg_688050a7_o_collect_L000003_19
-C_shcg_688050a7_o_collect_L000003_16
+C_sbtc_68dcc359_o_collect_L000003_19
+C_sbtc_68dcc359_o_collect_L000003_16
  cmps r21,  #0 wz
- if_z jmp #\C_shcg_688050a7_o_collect_L000003_21 ' EQI4
+ if_z jmp #\C_sbtc_68dcc359_o_collect_L000003_21 ' EQI4
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #48 wz
- if_nz jmp #\C_shcg_688050a7_o_collect_L000003_21 ' NEI4
+ if_nz jmp #\C_sbtc_68dcc359_o_collect_L000003_21 ' NEI4
  cmps r13,  #16 wz
- if_nz jmp #\C_shcg_688050a7_o_collect_L000003_21 ' NEI4
+ if_nz jmp #\C_sbtc_68dcc359_o_collect_L000003_21 ' NEI4
  mov r22, r15 ' CVI, CVU or LOAD
  mov r15, r22
  adds r15, #1 ' ADDP4 coni
@@ -113,7 +113,7 @@ C_shcg_688050a7_o_collect_L000003_16
  subs r22, #1 ' SUBI4 coni
  mov r21, r22 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_z jmp #\C_shcg_688050a7_o_collect_L000003_23 ' EQI4
+ if_z jmp #\C_sbtc_68dcc359_o_collect_L000003_23 ' EQI4
  mov RI, FP
  add RI, #12
  rdlong r2, RI ' reg ARG INDIR ADDRFi
@@ -123,23 +123,23 @@ C_shcg_688050a7_o_collect_L000003_16
  mov RI, FP
  add RI,#8
  wrlong r0, RI ' ASGNI4 addrfi reg
-C_shcg_688050a7_o_collect_L000003_23
+C_sbtc_68dcc359_o_collect_L000003_23
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #120 wz
- if_z jmp #\C_shcg_688050a7_o_collect_L000003_25 ' EQI4
+ if_z jmp #\C_sbtc_68dcc359_o_collect_L000003_25 ' EQI4
  cmps r22,  #88 wz
- if_z jmp #\C_shcg_688050a7_o_collect_L000003_25 ' EQI4
+ if_z jmp #\C_sbtc_68dcc359_o_collect_L000003_25 ' EQI4
  mov r22, r23 ' CVUI
  and r22, cviu_m1 ' zero extend
  cmps r22,  #105 wz
- if_nz jmp #\C_shcg_688050a7_o_collect_L000003_36 ' NEI4
+ if_nz jmp #\C_sbtc_68dcc359_o_collect_L000003_36 ' NEI4
  mov r13, #8 ' reg <- coni
- jmp #\@C_shcg_688050a7_o_collect_L000003_36 ' JUMPV addrg
-C_shcg_688050a7_o_collect_L000003_25
+ jmp #\@C_sbtc_68dcc359_o_collect_L000003_36 ' JUMPV addrg
+C_sbtc_68dcc359_o_collect_L000003_25
  cmps r21,  #0 wz
- if_z jmp #\C_shcg_688050a7_o_collect_L000003_36 ' EQI4
+ if_z jmp #\C_sbtc_68dcc359_o_collect_L000003_36 ' EQI4
  mov r22, r15 ' CVI, CVU or LOAD
  mov r15, r22
  adds r15, #1 ' ADDP4 coni
@@ -151,7 +151,7 @@ C_shcg_688050a7_o_collect_L000003_25
  subs r22, #1 ' SUBI4 coni
  mov r21, r22 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_z jmp #\C_shcg_688050a7_o_collect_L000003_36 ' EQI4
+ if_z jmp #\C_sbtc_68dcc359_o_collect_L000003_36 ' EQI4
  mov RI, FP
  add RI, #12
  rdlong r2, RI ' reg ARG INDIR ADDRFi
@@ -161,26 +161,26 @@ C_shcg_688050a7_o_collect_L000003_25
  mov RI, FP
  add RI,#8
  wrlong r0, RI ' ASGNI4 addrfi reg
- jmp #\@C_shcg_688050a7_o_collect_L000003_36 ' JUMPV addrg
-C_shcg_688050a7_o_collect_L000003_21
+ jmp #\@C_sbtc_68dcc359_o_collect_L000003_36 ' JUMPV addrg
+C_sbtc_68dcc359_o_collect_L000003_21
  mov r22, r23 ' CVUI
  and r22, cviu_m1 ' zero extend
  cmps r22,  #105 wz
- if_nz jmp #\C_shcg_688050a7_o_collect_L000003_36 ' NEI4
+ if_nz jmp #\C_sbtc_68dcc359_o_collect_L000003_36 ' NEI4
  mov r13, #10 ' reg <- coni
- jmp #\@C_shcg_688050a7_o_collect_L000003_36 ' JUMPV addrg
-C_shcg_688050a7_o_collect_L000003_35
+ jmp #\@C_sbtc_68dcc359_o_collect_L000003_36 ' JUMPV addrg
+C_sbtc_68dcc359_o_collect_L000003_35
  cmps r13,  #10 wz
- if_nz jmp #\C_shcg_688050a7_o_collect_L000003_42 ' NEI4
+ if_nz jmp #\C_sbtc_68dcc359_o_collect_L000003_42 ' NEI4
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 reg
  subs r22, #48 ' SUBI4 coni
  cmp r22,  #10 wcz 
- if_b jmp #\C_shcg_688050a7_o_collect_L000003_45 ' LTU4
-C_shcg_688050a7_o_collect_L000003_42
+ if_b jmp #\C_sbtc_68dcc359_o_collect_L000003_45 ' LTU4
+C_sbtc_68dcc359_o_collect_L000003_42
  cmps r13,  #16 wz
- if_nz jmp #\C_shcg_688050a7_o_collect_L000003_44 ' NEI4
+ if_nz jmp #\C_sbtc_68dcc359_o_collect_L000003_44 ' NEI4
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 reg
@@ -189,32 +189,32 @@ C_shcg_688050a7_o_collect_L000003_42
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  and r22, #68 ' BANDI4 coni
  cmps r22,  #0 wz
- if_nz jmp #\C_shcg_688050a7_o_collect_L000003_45 ' NEI4
-C_shcg_688050a7_o_collect_L000003_44
+ if_nz jmp #\C_sbtc_68dcc359_o_collect_L000003_45 ' NEI4
+C_sbtc_68dcc359_o_collect_L000003_44
  cmps r13,  #8 wz
- if_nz jmp #\C_shcg_688050a7_o_collect_L000003_47 ' NEI4
+ if_nz jmp #\C_sbtc_68dcc359_o_collect_L000003_47 ' NEI4
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 reg
  mov r20, r22
  subs r20, #48 ' SUBI4 coni
  cmp r20,  #10 wcz 
- if_ae jmp #\C_shcg_688050a7_o_collect_L000003_47 ' GEU4
+ if_ae jmp #\C_sbtc_68dcc359_o_collect_L000003_47 ' GEU4
  cmps r22,  #56 wcz
- if_b jmp #\C_shcg_688050a7_o_collect_L000003_45 ' LTI4
-C_shcg_688050a7_o_collect_L000003_47
+ if_b jmp #\C_sbtc_68dcc359_o_collect_L000003_45 ' LTI4
+C_sbtc_68dcc359_o_collect_L000003_47
  cmps r13,  #2 wz
- if_nz jmp #\C_shcg_688050a7_o_collect_L000003_37 ' NEI4
+ if_nz jmp #\C_sbtc_68dcc359_o_collect_L000003_37 ' NEI4
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 reg
  mov r20, r22
  subs r20, #48 ' SUBI4 coni
  cmp r20,  #10 wcz 
- if_ae jmp #\C_shcg_688050a7_o_collect_L000003_37 ' GEU4
+ if_ae jmp #\C_sbtc_68dcc359_o_collect_L000003_37 ' GEU4
  cmps r22,  #50 wcz
- if_ae jmp #\C_shcg_688050a7_o_collect_L000003_37 ' GEI4
-C_shcg_688050a7_o_collect_L000003_45
+ if_ae jmp #\C_sbtc_68dcc359_o_collect_L000003_37 ' GEI4
+C_sbtc_68dcc359_o_collect_L000003_45
  mov r22, r15 ' CVI, CVU or LOAD
  mov r15, r22
  adds r15, #1 ' ADDP4 coni
@@ -226,7 +226,7 @@ C_shcg_688050a7_o_collect_L000003_45
  subs r22, #1 ' SUBI4 coni
  mov r21, r22 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
- if_z jmp #\C_shcg_688050a7_o_collect_L000003_39 ' EQI4
+ if_z jmp #\C_sbtc_68dcc359_o_collect_L000003_39 ' EQI4
  mov RI, FP
  add RI, #12
  rdlong r2, RI ' reg ARG INDIR ADDRFi
@@ -236,19 +236,19 @@ C_shcg_688050a7_o_collect_L000003_45
  mov RI, FP
  add RI,#8
  wrlong r0, RI ' ASGNI4 addrfi reg
-C_shcg_688050a7_o_collect_L000003_39
-C_shcg_688050a7_o_collect_L000003_36
+C_sbtc_68dcc359_o_collect_L000003_39
+C_sbtc_68dcc359_o_collect_L000003_36
  cmps r21,  #0 wz
- if_nz jmp #\C_shcg_688050a7_o_collect_L000003_35 ' NEI4
-C_shcg_688050a7_o_collect_L000003_37
+ if_nz jmp #\C_sbtc_68dcc359_o_collect_L000003_35 ' NEI4
+C_sbtc_68dcc359_o_collect_L000003_37
  cmps r21,  #0 wz
- if_z jmp #\C_shcg_688050a7_o_collect_L000003_50 ' EQI4
+ if_z jmp #\C_sbtc_68dcc359_o_collect_L000003_50 ' EQI4
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRI4 reg
  mov r20, ##-1 ' reg <- con
  cmps r22, r20 wz
- if_z jmp #\C_shcg_688050a7_o_collect_L000003_50 ' EQI4
+ if_z jmp #\C_sbtc_68dcc359_o_collect_L000003_50 ' EQI4
  mov RI, FP
  add RI, #12
  rdlong r2, RI ' reg ARG INDIR ADDRFi
@@ -260,20 +260,20 @@ C_shcg_688050a7_o_collect_L000003_37
  calld PA,#CALA
  long @C_ungetc
  add SP, #4 ' CALL addrg
-C_shcg_688050a7_o_collect_L000003_50
+C_sbtc_68dcc359_o_collect_L000003_50
  mov r22, r23 ' CVUI
  and r22, cviu_m1 ' zero extend
  cmps r22,  #105 wz
- if_nz jmp #\C_shcg_688050a7_o_collect_L000003_52 ' NEI4
+ if_nz jmp #\C_sbtc_68dcc359_o_collect_L000003_52 ' NEI4
  mov r13, #0 ' reg <- coni
-C_shcg_688050a7_o_collect_L000003_52
+C_sbtc_68dcc359_o_collect_L000003_52
  wrlong r13, r19 ' ASGNI4 reg reg
  mov r22, #0 ' reg <- coni
  wrbyte r22, r15 ' ASGNU1 reg reg
  mov r22, ##-1 ' reg <- con
  mov r0, r15 ' ADDI/P
  adds r0, r22 ' ADDI/P (3)
-' C_shcg_688050a7_o_collect_L000003_4 ' (symbol refcount = 0)
+' C_sbtc_68dcc359_o_collect_L000003_4 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -452,26 +452,46 @@ C__doscan_87
  adds r22, FP
  ' reg <- addrl
  rdlong r22, r22 ' reg <- INDIRI4 reg
- mov r20, #104 ' reg <- coni
+ mov r20, #108 ' reg <- coni
  cmps r22, r20 wz
- if_z jmp #\C__doscan_96 ' EQI4
- cmps r22, r20 wcz
- if_a jmp #\C__doscan_100 ' GTI4
-' C__doscan_99 ' (symbol refcount = 0)
- mov r22, ##-800
- adds r22, FP
- ' reg <- addrl
- rdlong r22, r22 ' reg <- INDIRI4 reg
- cmps r22,  #76 wz
- if_z jmp #\C__doscan_98 ' EQI4
- jmp #\@C__doscan_93 ' JUMPV addrg
-C__doscan_100
- mov r22, ##-800
- adds r22, FP
- ' reg <- addrl
- rdlong r22, r22 ' reg <- INDIRI4 reg
- cmps r22,  #108 wz
  if_z jmp #\C__doscan_97 ' EQI4
+ cmps r22, r20 wcz
+ if_a jmp #\C__doscan_102 ' GTI4
+' C__doscan_101 ' (symbol refcount = 0)
+ mov r22, ##-800
+ adds r22, FP
+ ' reg <- addrl
+ rdlong r22, r22 ' reg <- INDIRI4 reg
+ mov r20, #76 ' reg <- coni
+ cmps r22, r20 wz
+ if_z jmp #\C__doscan_100 ' EQI4
+ cmps r22, r20 wcz
+ if_b jmp #\C__doscan_93 ' LTI4
+' C__doscan_103 ' (symbol refcount = 0)
+ mov r22, ##-800
+ adds r22, FP
+ ' reg <- addrl
+ rdlong r22, r22 ' reg <- INDIRI4 reg
+ cmps r22,  #104 wz
+ if_z jmp #\C__doscan_96 ' EQI4
+ jmp #\@C__doscan_93 ' JUMPV addrg
+C__doscan_102
+ mov r22, ##-800
+ adds r22, FP
+ ' reg <- addrl
+ rdlong r22, r22 ' reg <- INDIRI4 reg
+ mov r20, #116 ' reg <- coni
+ cmps r22, r20 wz
+ if_z jmp #\C__doscan_99 ' EQI4
+ cmps r22, r20 wcz
+ if_b jmp #\C__doscan_93 ' LTI4
+' C__doscan_104 ' (symbol refcount = 0)
+ mov r22, ##-800
+ adds r22, FP
+ ' reg <- addrl
+ rdlong r22, r22 ' reg <- INDIRI4 reg
+ cmps r22,  #122 wz
+ if_z jmp #\C__doscan_98 ' EQI4
  jmp #\@C__doscan_93 ' JUMPV addrg
 C__doscan_96
  or r9, #32 ' BORI4 coni
@@ -482,38 +502,46 @@ C__doscan_97
  adds r21, #1 ' ADDP4 coni
  jmp #\@C__doscan_94 ' JUMPV addrg
 C__doscan_98
+ or r9, #64 ' BORI4 coni
+ adds r21, #1 ' ADDP4 coni
+ jmp #\@C__doscan_94 ' JUMPV addrg
+C__doscan_99
+ or r9, #64 ' BORI4 coni
+ adds r21, #1 ' ADDP4 coni
+ jmp #\@C__doscan_94 ' JUMPV addrg
+C__doscan_100
  or r9, #128 ' BORI4 coni
  adds r21, #1 ' ADDP4 coni
 C__doscan_93
 C__doscan_94
  rdbyte r7, r21 ' reg <- CVUI4 INDIRU1 reg
  cmps r7,  #99 wz
- if_z jmp #\C__doscan_101 ' EQI4
+ if_z jmp #\C__doscan_105 ' EQI4
  cmps r7,  #91 wz
- if_z jmp #\C__doscan_101 ' EQI4
+ if_z jmp #\C__doscan_105 ' EQI4
  cmps r7,  #110 wz
- if_z jmp #\C__doscan_101 ' EQI4
-C__doscan_103
+ if_z jmp #\C__doscan_105 ' EQI4
+C__doscan_107
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_getc ' CALL addrg
  mov r15, r0 ' CVI, CVU or LOAD
  adds r11, #1 ' ADDI4 coni
-' C__doscan_104 ' (symbol refcount = 0)
+' C__doscan_108 ' (symbol refcount = 0)
  mov r22, ##@C___ctype+1 ' reg <- addrg
  adds r22, r15 ' ADDI/P (2)
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  and r22, #8 ' BANDI4 coni
  cmps r22,  #0 wz
- if_nz jmp #\C__doscan_103 ' NEI4
+ if_nz jmp #\C__doscan_107 ' NEI4
  mov r22, ##-1 ' reg <- con
  cmps r15, r22 wz
- if_nz jmp #\C__doscan_102 ' NEI4
+ if_nz jmp #\C__doscan_106 ' NEI4
  jmp #\@C__doscan_59 ' JUMPV addrg
-C__doscan_101
+C__doscan_105
  cmps r7,  #110 wz
- if_z jmp #\C__doscan_109 ' EQI4
+ if_z jmp #\C__doscan_113 ' EQI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
@@ -521,55 +549,19 @@ C__doscan_101
  mov r15, r0 ' CVI, CVU or LOAD
  mov r22, ##-1 ' reg <- con
  cmps r15, r22 wz
- if_nz jmp #\C__doscan_111 ' NEI4
+ if_nz jmp #\C__doscan_115 ' NEI4
  jmp #\@C__doscan_59 ' JUMPV addrg
-C__doscan_111
+C__doscan_115
  adds r11, #1 ' ADDI4 coni
-C__doscan_109
-C__doscan_102
+C__doscan_113
+C__doscan_106
  cmps r7,  #98 wcz
- if_b jmp #\C__doscan_237 ' LTI4
+ if_b jmp #\C__doscan_241 ' LTI4
  cmps r7,  #105 wcz
- if_a jmp #\C__doscan_238 ' GTI4
+ if_a jmp #\C__doscan_242 ' GTI4
  mov r22, r7
  shl r22, #2 ' LSHI4 coni
- mov r20, ##@C__doscan_239_L000241-392 ' reg <- addrg
- adds r22, r20 ' ADDI/P (1)
- rdlong RI, r22
- jmp RI ' JUMPV INDIR reg
-
-' Catalina Cnst
-
-DAT ' const data segment
-
- alignl ' align long
-C__doscan_239_L000241 ' <symbol:239>
- long @C__doscan_127
- long @C__doscan_146
- long @C__doscan_127
- long @C__doscan_113
- long @C__doscan_113
- long @C__doscan_113
- long @C__doscan_113
- long @C__doscan_127
-
-' Catalina Code
-
-DAT ' code segment
-C__doscan_237
- cmps r7,  #88 wz
- if_z jmp #\C__doscan_127 ' EQI4
- cmps r7,  #91 wz
- if_z jmp #\C__doscan_188 ' EQI4
- jmp #\@C__doscan_113 ' JUMPV addrg
-C__doscan_238
- cmps r7,  #110 wcz
- if_b jmp #\C__doscan_113 ' LTI4
- cmps r7,  #120 wcz
- if_a jmp #\C__doscan_113 ' GTI4
- mov r22, r7
- shl r22, #2 ' LSHI4 coni
- mov r20, ##@C__doscan_243_L000245-440 ' reg <- addrg
+ mov r20, ##@C__doscan_243_L000245-392 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong RI, r22
  jmp RI ' JUMPV INDIR reg
@@ -580,58 +572,94 @@ DAT ' const data segment
 
  alignl ' align long
 C__doscan_243_L000245 ' <symbol:243>
- long @C__doscan_119
- long @C__doscan_127
- long @C__doscan_126
- long @C__doscan_113
- long @C__doscan_113
- long @C__doscan_165
- long @C__doscan_113
- long @C__doscan_127
- long @C__doscan_113
- long @C__doscan_113
- long @C__doscan_127
+ long @C__doscan_131
+ long @C__doscan_150
+ long @C__doscan_131
+ long @C__doscan_117
+ long @C__doscan_117
+ long @C__doscan_117
+ long @C__doscan_117
+ long @C__doscan_131
 
 ' Catalina Code
 
 DAT ' code segment
-C__doscan_113
+C__doscan_241
+ cmps r7,  #88 wz
+ if_z jmp #\C__doscan_131 ' EQI4
+ cmps r7,  #91 wz
+ if_z jmp #\C__doscan_192 ' EQI4
+ jmp #\@C__doscan_117 ' JUMPV addrg
+C__doscan_242
+ cmps r7,  #110 wcz
+ if_b jmp #\C__doscan_117 ' LTI4
+ cmps r7,  #120 wcz
+ if_a jmp #\C__doscan_117 ' GTI4
+ mov r22, r7
+ shl r22, #2 ' LSHI4 coni
+ mov r20, ##@C__doscan_247_L000249-440 ' reg <- addrg
+ adds r22, r20 ' ADDI/P (1)
+ rdlong RI, r22
+ jmp RI ' JUMPV INDIR reg
+
+' Catalina Cnst
+
+DAT ' const data segment
+
+ alignl ' align long
+C__doscan_247_L000249 ' <symbol:247>
+ long @C__doscan_123
+ long @C__doscan_131
+ long @C__doscan_130
+ long @C__doscan_117
+ long @C__doscan_117
+ long @C__doscan_169
+ long @C__doscan_117
+ long @C__doscan_131
+ long @C__doscan_117
+ long @C__doscan_117
+ long @C__doscan_131
+
+' Catalina Code
+
+DAT ' code segment
+C__doscan_117
  mov r22, FP
  sub r22, #-(-264) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #0 wz
- if_nz jmp #\C__doscan_118 ' NEI4
+ if_nz jmp #\C__doscan_122 ' NEI4
  mov r22, ##-1 ' reg <- con
  cmps r15, r22 wz
- if_z jmp #\C__doscan_116 ' EQI4
-C__doscan_118
+ if_z jmp #\C__doscan_120 ' EQI4
+C__doscan_122
  mov r22, FP
  sub r22, #-(-272) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
  mov RI, ##-804
  adds RI, FP
  wrlong r22, RI ' ASGNI4 addrl reg
- jmp #\@C__doscan_117 ' JUMPV addrg
-C__doscan_116
+ jmp #\@C__doscan_121 ' JUMPV addrg
+C__doscan_120
  mov r22, ##-1 ' reg <- con
  mov RI, ##-804
  adds RI, FP
  wrlong r22, RI ' ASGNI4 addrl reg
-C__doscan_117
+C__doscan_121
  mov r22, ##-804
  adds r22, FP
  ' reg <- addrl
  rdlong r0, r22 ' reg <- INDIRI4 reg
  jmp #\@C__doscan_54 ' JUMPV addrg
-C__doscan_119
+C__doscan_123
  mov r22, ##2048 ' reg <- con
  and r22, r9 ' BANDI/U (2)
  cmps r22,  #0 wz
- if_nz jmp #\C__doscan_114 ' NEI4
+ if_nz jmp #\C__doscan_118 ' NEI4
  mov r22, r9
  and r22, #32 ' BANDI4 coni
  cmps r22,  #0 wz
- if_z jmp #\C__doscan_122 ' EQI4
+ if_z jmp #\C__doscan_126 ' EQI4
  mov r22, r19
  adds r22, #4 ' ADDP4 coni
  mov r19, r22 ' CVI, CVU or LOAD
@@ -640,12 +668,12 @@ C__doscan_119
  rdlong r22, r22 ' reg <- INDIRP4 reg
  mov r20, r11 ' CVI, CVU or LOAD
  wrword r20, r22 ' ASGNI2 reg reg
- jmp #\@C__doscan_114 ' JUMPV addrg
-C__doscan_122
+ jmp #\@C__doscan_118 ' JUMPV addrg
+C__doscan_126
  mov r22, r9
  and r22, #64 ' BANDI4 coni
  cmps r22,  #0 wz
- if_z jmp #\C__doscan_124 ' EQI4
+ if_z jmp #\C__doscan_128 ' EQI4
  mov r22, r19
  adds r22, #4 ' ADDP4 coni
  mov r19, r22 ' CVI, CVU or LOAD
@@ -653,8 +681,8 @@ C__doscan_122
  adds r22, r20 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRP4 reg
  wrlong r11, r22 ' ASGNI4 reg reg
- jmp #\@C__doscan_114 ' JUMPV addrg
-C__doscan_124
+ jmp #\@C__doscan_118 ' JUMPV addrg
+C__doscan_128
  mov r22, r19
  adds r22, #4 ' ADDP4 coni
  mov r19, r22 ' CVI, CVU or LOAD
@@ -662,26 +690,26 @@ C__doscan_124
  adds r22, r20 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRP4 reg
  wrlong r11, r22 ' ASGNI4 reg reg
- jmp #\@C__doscan_114 ' JUMPV addrg
-C__doscan_126
-C__doscan_127
+ jmp #\@C__doscan_118 ' JUMPV addrg
+C__doscan_130
+C__doscan_131
  mov r22, r9
  and r22, #256 ' BANDI4 coni
  cmps r22,  #0 wz
- if_z jmp #\C__doscan_130 ' EQI4
+ if_z jmp #\C__doscan_134 ' EQI4
  mov r22, ##512 ' reg <- con
  cmp r13, r22 wcz 
- if_be jmp #\C__doscan_128 ' LEU4
-C__doscan_130
+ if_be jmp #\C__doscan_132 ' LEU4
+C__doscan_134
  mov r13, ##512 ' reg <- con
-C__doscan_128
+C__doscan_132
  cmp r13,  #0 wz
- if_nz jmp #\C__doscan_131  ' NEU4
+ if_nz jmp #\C__doscan_135  ' NEU4
  mov r22, FP
  sub r22, #-(-272) ' reg <- addrli
  rdlong r0, r22 ' reg <- INDIRI4 reg
  jmp #\@C__doscan_54 ' JUMPV addrg
-C__doscan_131
+C__doscan_135
  mov r2, FP
  adds r2, ##(-784)
 ' reg ARG ADDRL
@@ -700,27 +728,27 @@ C__doscan_131
  mov BC, #24 ' arg size, rpsize = 0, spsize = 24
  add SP, #4 ' correct for new kernel !!! 
  calld PA,#CALA
- long @C_shcg_688050a7_o_collect_L000003
+ long @C_sbtc_68dcc359_o_collect_L000003
  add SP, #20 ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
  mov r20, ##-784
  adds r20, FP
  ' reg <- addrl
  cmp r17, r20 wcz 
- if_b jmp #\C__doscan_136 ' LTU4
+ if_b jmp #\C__doscan_140 ' LTU4
  cmp r17, r20 wz
- if_nz jmp #\C__doscan_133  ' NEU4
+ if_nz jmp #\C__doscan_137  ' NEU4
  rdbyte r22, r17 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #45 wz
- if_z jmp #\C__doscan_136 ' EQI4
+ if_z jmp #\C__doscan_140 ' EQI4
  cmps r22,  #43 wz
- if_nz jmp #\C__doscan_133 ' NEI4
-C__doscan_136
+ if_nz jmp #\C__doscan_137 ' NEI4
+C__doscan_140
  mov r22, FP
  sub r22, #-(-272) ' reg <- addrli
  rdlong r0, r22 ' reg <- INDIRI4 reg
  jmp #\@C__doscan_54 ' JUMPV addrg
-C__doscan_133
+C__doscan_137
  mov r22, r17 ' CVI, CVU or LOAD
  mov r20, ##-784
  adds r20, FP
@@ -730,12 +758,12 @@ C__doscan_133
  mov r22, ##2048 ' reg <- con
  and r22, r9 ' BANDI/U (2)
  cmps r22,  #0 wz
- if_nz jmp #\C__doscan_114 ' NEI4
+ if_nz jmp #\C__doscan_118 ' NEI4
  cmps r7,  #100 wz
- if_z jmp #\C__doscan_141 ' EQI4
+ if_z jmp #\C__doscan_145 ' EQI4
  cmps r7,  #105 wz
- if_nz jmp #\C__doscan_139 ' NEI4
-C__doscan_141
+ if_nz jmp #\C__doscan_143 ' NEI4
+C__doscan_145
  mov RI, FP
  adds RI, ##(-788)
  rdlong r2, RI ' reg ARG INDIR ADDRL
@@ -754,8 +782,8 @@ C__doscan_141
  mov RI, ##-792
  adds RI, FP
  wrlong r22, RI ' ASGNU4 addrl reg
- jmp #\@C__doscan_140 ' JUMPV addrg
-C__doscan_139
+ jmp #\@C__doscan_144 ' JUMPV addrg
+C__doscan_143
  mov RI, FP
  adds RI, ##(-788)
  rdlong r2, RI ' reg ARG INDIR ADDRL
@@ -773,11 +801,11 @@ C__doscan_139
  mov RI, ##-792
  adds RI, FP
  wrlong r0, RI ' ASGNU4 addrl reg
-C__doscan_140
+C__doscan_144
  mov r22, r9
  and r22, #64 ' BANDI4 coni
  cmps r22,  #0 wz
- if_z jmp #\C__doscan_142 ' EQI4
+ if_z jmp #\C__doscan_146 ' EQI4
  mov r22, r19
  adds r22, #4 ' ADDP4 coni
  mov r19, r22 ' CVI, CVU or LOAD
@@ -789,12 +817,12 @@ C__doscan_140
  ' reg <- addrl
  rdlong r20, r20 ' reg <- INDIRU4 reg
  wrlong r20, r22 ' ASGNU4 reg reg
- jmp #\@C__doscan_114 ' JUMPV addrg
-C__doscan_142
+ jmp #\@C__doscan_118 ' JUMPV addrg
+C__doscan_146
  mov r22, r9
  and r22, #32 ' BANDI4 coni
  cmps r22,  #0 wz
- if_z jmp #\C__doscan_144 ' EQI4
+ if_z jmp #\C__doscan_148 ' EQI4
  mov r22, r19
  adds r22, #4 ' ADDP4 coni
  mov r19, r22 ' CVI, CVU or LOAD
@@ -806,8 +834,8 @@ C__doscan_142
  ' reg <- addrl
  rdlong r20, r20 ' reg <- INDIRU4 reg
  wrword r20, r22 ' ASGNU2 reg reg
- jmp #\@C__doscan_114 ' JUMPV addrg
-C__doscan_144
+ jmp #\@C__doscan_118 ' JUMPV addrg
+C__doscan_148
  mov r22, r19
  adds r22, #4 ' ADDP4 coni
  mov r19, r22 ' CVI, CVU or LOAD
@@ -819,66 +847,66 @@ C__doscan_144
  ' reg <- addrl
  rdlong r20, r20 ' reg <- INDIRU4 reg
  wrlong r20, r22 ' ASGNU4 reg reg
- jmp #\@C__doscan_114 ' JUMPV addrg
-C__doscan_146
+ jmp #\@C__doscan_118 ' JUMPV addrg
+C__doscan_150
  mov r22, r9
  and r22, #256 ' BANDI4 coni
  cmps r22,  #0 wz
- if_nz jmp #\C__doscan_147 ' NEI4
+ if_nz jmp #\C__doscan_151 ' NEI4
  mov r13, #1 ' reg <- coni
-C__doscan_147
+C__doscan_151
  mov r22, ##2048 ' reg <- con
  and r22, r9 ' BANDI/U (2)
  cmps r22,  #0 wz
- if_nz jmp #\C__doscan_149 ' NEI4
+ if_nz jmp #\C__doscan_153 ' NEI4
  mov r22, r19
  adds r22, #4 ' ADDP4 coni
  mov r19, r22 ' CVI, CVU or LOAD
  mov r20, ##-4 ' reg <- con
  adds r22, r20 ' ADDI/P (1)
  rdlong r17, r22 ' reg <- INDIRP4 reg
-C__doscan_149
+C__doscan_153
  cmp r13,  #0 wz
- if_nz jmp #\C__doscan_154  ' NEU4
+ if_nz jmp #\C__doscan_158  ' NEU4
  mov r22, FP
  sub r22, #-(-272) ' reg <- addrli
  rdlong r0, r22 ' reg <- INDIRI4 reg
  jmp #\@C__doscan_54 ' JUMPV addrg
-C__doscan_153
+C__doscan_157
  mov r22, ##2048 ' reg <- con
  and r22, r9 ' BANDI/U (2)
  cmps r22,  #0 wz
- if_nz jmp #\C__doscan_156 ' NEI4
+ if_nz jmp #\C__doscan_160 ' NEI4
  mov r22, r17 ' CVI, CVU or LOAD
  mov r17, r22
  adds r17, #1 ' ADDP4 coni
  mov r20, r15 ' CVI, CVU or LOAD
  wrbyte r20, r22 ' ASGNU1 reg reg
-C__doscan_156
+C__doscan_160
  mov r22, r13
  sub r22, #1 ' SUBU4 coni
  mov r13, r22 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_z jmp #\C__doscan_158 ' EQU4
+ if_z jmp #\C__doscan_162 ' EQU4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_getc ' CALL addrg
  mov r15, r0 ' CVI, CVU or LOAD
  adds r11, #1 ' ADDI4 coni
+C__doscan_162
 C__doscan_158
-C__doscan_154
  cmp r13,  #0 wz
- if_z jmp #\C__doscan_160 ' EQU4
+ if_z jmp #\C__doscan_164 ' EQU4
  mov r22, ##-1 ' reg <- con
  cmps r15, r22 wz
- if_nz jmp #\C__doscan_153 ' NEI4
-C__doscan_160
+ if_nz jmp #\C__doscan_157 ' NEI4
+C__doscan_164
  cmp r13,  #0 wz
- if_z jmp #\C__doscan_114 ' EQU4
+ if_z jmp #\C__doscan_118 ' EQU4
  mov r22, ##-1 ' reg <- con
  cmps r15, r22 wz
- if_z jmp #\C__doscan_163 ' EQI4
+ if_z jmp #\C__doscan_167 ' EQI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov r3, r15 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -886,81 +914,81 @@ C__doscan_160
  calld PA,#CALA
  long @C_ungetc
  add SP, #4 ' CALL addrg
-C__doscan_163
+C__doscan_167
  subs r11, #1 ' SUBI4 coni
- jmp #\@C__doscan_114 ' JUMPV addrg
-C__doscan_165
+ jmp #\@C__doscan_118 ' JUMPV addrg
+C__doscan_169
  mov r22, r9
  and r22, #256 ' BANDI4 coni
  cmps r22,  #0 wz
- if_nz jmp #\C__doscan_166 ' NEI4
+ if_nz jmp #\C__doscan_170 ' NEI4
  mov r13, ##$ffff ' reg <- con
-C__doscan_166
+C__doscan_170
  mov r22, ##2048 ' reg <- con
  and r22, r9 ' BANDI/U (2)
  cmps r22,  #0 wz
- if_nz jmp #\C__doscan_168 ' NEI4
+ if_nz jmp #\C__doscan_172 ' NEI4
  mov r22, r19
  adds r22, #4 ' ADDP4 coni
  mov r19, r22 ' CVI, CVU or LOAD
  mov r20, ##-4 ' reg <- con
  adds r22, r20 ' ADDI/P (1)
  rdlong r17, r22 ' reg <- INDIRP4 reg
-C__doscan_168
+C__doscan_172
  cmp r13,  #0 wz
- if_nz jmp #\C__doscan_173  ' NEU4
+ if_nz jmp #\C__doscan_177  ' NEU4
  mov r22, FP
  sub r22, #-(-272) ' reg <- addrli
  rdlong r0, r22 ' reg <- INDIRI4 reg
  jmp #\@C__doscan_54 ' JUMPV addrg
-C__doscan_172
+C__doscan_176
  mov r22, ##2048 ' reg <- con
  and r22, r9 ' BANDI/U (2)
  cmps r22,  #0 wz
- if_nz jmp #\C__doscan_176 ' NEI4
+ if_nz jmp #\C__doscan_180 ' NEI4
  mov r22, r17 ' CVI, CVU or LOAD
  mov r17, r22
  adds r17, #1 ' ADDP4 coni
  mov r20, r15 ' CVI, CVU or LOAD
  wrbyte r20, r22 ' ASGNU1 reg reg
-C__doscan_176
+C__doscan_180
  mov r22, r13
  sub r22, #1 ' SUBU4 coni
  mov r13, r22 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_z jmp #\C__doscan_178 ' EQU4
+ if_z jmp #\C__doscan_182 ' EQU4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_getc ' CALL addrg
  mov r15, r0 ' CVI, CVU or LOAD
  adds r11, #1 ' ADDI4 coni
-C__doscan_178
-C__doscan_173
+C__doscan_182
+C__doscan_177
  cmp r13,  #0 wz
- if_z jmp #\C__doscan_181 ' EQU4
+ if_z jmp #\C__doscan_185 ' EQU4
  mov r22, ##-1 ' reg <- con
  cmps r15, r22 wz
- if_z jmp #\C__doscan_181 ' EQI4
+ if_z jmp #\C__doscan_185 ' EQI4
  mov r22, ##@C___ctype+1 ' reg <- addrg
  adds r22, r15 ' ADDI/P (2)
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  and r22, #8 ' BANDI4 coni
  cmps r22,  #0 wz
- if_z jmp #\C__doscan_172 ' EQI4
-C__doscan_181
+ if_z jmp #\C__doscan_176 ' EQI4
+C__doscan_185
  mov r22, ##2048 ' reg <- con
  and r22, r9 ' BANDI/U (2)
  cmps r22,  #0 wz
- if_nz jmp #\C__doscan_182 ' NEI4
+ if_nz jmp #\C__doscan_186 ' NEI4
  mov r22, #0 ' reg <- coni
  wrbyte r22, r17 ' ASGNU1 reg reg
-C__doscan_182
+C__doscan_186
  cmp r13,  #0 wz
- if_z jmp #\C__doscan_114 ' EQU4
+ if_z jmp #\C__doscan_118 ' EQU4
  mov r22, ##-1 ' reg <- con
  cmps r15, r22 wz
- if_z jmp #\C__doscan_186 ' EQI4
+ if_z jmp #\C__doscan_190 ' EQI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov r3, r15 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -968,58 +996,58 @@ C__doscan_182
  calld PA,#CALA
  long @C_ungetc
  add SP, #4 ' CALL addrg
-C__doscan_186
+C__doscan_190
  subs r11, #1 ' SUBI4 coni
- jmp #\@C__doscan_114 ' JUMPV addrg
-C__doscan_188
+ jmp #\@C__doscan_118 ' JUMPV addrg
+C__doscan_192
  mov r22, r9
  and r22, #256 ' BANDI4 coni
  cmps r22,  #0 wz
- if_nz jmp #\C__doscan_189 ' NEI4
+ if_nz jmp #\C__doscan_193 ' NEI4
  mov r13, ##$ffff ' reg <- con
-C__doscan_189
+C__doscan_193
  cmp r13,  #0 wz
- if_nz jmp #\C__doscan_191  ' NEU4
+ if_nz jmp #\C__doscan_195  ' NEU4
  mov r22, FP
  sub r22, #-(-272) ' reg <- addrli
  rdlong r0, r22 ' reg <- INDIRI4 reg
  jmp #\@C__doscan_54 ' JUMPV addrg
-C__doscan_191
+C__doscan_195
  mov r22, r21
  adds r22, #1 ' ADDP4 coni
  mov r21, r22 ' CVI, CVU or LOAD
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #94 wz
- if_nz jmp #\C__doscan_193 ' NEI4
+ if_nz jmp #\C__doscan_197 ' NEI4
  mov r22, #1 ' reg <- coni
  mov RI, FP
  sub RI, #-(-268)
  wrlong r22, RI ' ASGNI4 addrli reg
  adds r21, #1 ' ADDP4 coni
- jmp #\@C__doscan_194 ' JUMPV addrg
-C__doscan_193
+ jmp #\@C__doscan_198 ' JUMPV addrg
+C__doscan_197
  mov r22, #0 ' reg <- coni
  mov RI, FP
  sub RI, #-(-268)
  wrlong r22, RI ' ASGNI4 addrli reg
-C__doscan_194
+C__doscan_198
  mov r17, FP
  sub r17, #-(-260) ' reg <- addrli
- jmp #\@C__doscan_198 ' JUMPV addrg
-C__doscan_195
+ jmp #\@C__doscan_202 ' JUMPV addrg
+C__doscan_199
  mov r22, #0 ' reg <- coni
  wrbyte r22, r17 ' ASGNU1 reg reg
-' C__doscan_196 ' (symbol refcount = 0)
+' C__doscan_200 ' (symbol refcount = 0)
  adds r17, #1 ' ADDP4 coni
-C__doscan_198
+C__doscan_202
  mov r22, r17 ' CVI, CVU or LOAD
  mov r20, FP
  sub r20, #-(-4) ' reg <- addrli
  cmp r22, r20 wcz 
- if_b jmp #\C__doscan_195 ' LTU4
+ if_b jmp #\C__doscan_199 ' LTU4
  rdbyte r22, r21 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #93 wz
- if_nz jmp #\C__doscan_203 ' NEI4
+ if_nz jmp #\C__doscan_207 ' NEI4
  mov r22, r21 ' CVI, CVU or LOAD
  mov r21, r22
  adds r21, #1 ' ADDP4 coni
@@ -1029,8 +1057,8 @@ C__doscan_198
  adds r22, r20 ' ADDI/P (1)
  mov r20, #1 ' reg <- coni
  wrbyte r20, r22 ' ASGNU1 reg reg
- jmp #\@C__doscan_203 ' JUMPV addrg
-C__doscan_202
+ jmp #\@C__doscan_207 ' JUMPV addrg
+C__doscan_206
  mov r22, r21 ' CVI, CVU or LOAD
  mov r21, r22
  adds r21, #1 ' ADDP4 coni
@@ -1042,18 +1070,18 @@ C__doscan_202
  wrbyte r20, r22 ' ASGNU1 reg reg
  rdbyte r22, r21 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #45 wz
- if_nz jmp #\C__doscan_205 ' NEI4
+ if_nz jmp #\C__doscan_209 ' NEI4
  adds r21, #1 ' ADDP4 coni
  rdbyte r22, r21 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #0 wz
- if_z jmp #\C__doscan_207 ' EQI4
+ if_z jmp #\C__doscan_211 ' EQI4
  cmps r22,  #93 wz
- if_z jmp #\C__doscan_207 ' EQI4
+ if_z jmp #\C__doscan_211 ' EQI4
  mov r20, ##-2 ' reg <- con
  adds r20, r21 ' ADDI/P (2)
  rdbyte r20, r20 ' reg <- CVUI4 INDIRU1 reg
  cmps r22, r20 wcz
- if_b jmp #\C__doscan_207 ' LTI4
+ if_b jmp #\C__doscan_211 ' LTI4
  mov r22, ##-2 ' reg <- con
  adds r22, r21 ' ADDI/P (2)
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
@@ -1061,8 +1089,8 @@ C__doscan_202
  mov RI, ##-808
  adds RI, FP
  wrlong r22, RI ' ASGNI4 addrl reg
- jmp #\@C__doscan_212 ' JUMPV addrg
-C__doscan_209
+ jmp #\@C__doscan_216 ' JUMPV addrg
+C__doscan_213
  mov r22, ##-808
  adds r22, FP
  ' reg <- addrl
@@ -1072,7 +1100,7 @@ C__doscan_209
  adds r22, r20 ' ADDI/P (1)
  mov r20, #1 ' reg <- coni
  wrbyte r20, r22 ' ASGNU1 reg reg
-' C__doscan_210 ' (symbol refcount = 0)
+' C__doscan_214 ' (symbol refcount = 0)
  mov r22, ##-808
  adds r22, FP
  ' reg <- addrl
@@ -1081,34 +1109,34 @@ C__doscan_209
  mov RI, ##-808
  adds RI, FP
  wrlong r22, RI ' ASGNI4 addrl reg
-C__doscan_212
+C__doscan_216
  mov r22, ##-808
  adds r22, FP
  ' reg <- addrl
  rdlong r22, r22 ' reg <- INDIRI4 reg
  rdbyte r20, r21 ' reg <- CVUI4 INDIRU1 reg
  cmps r22, r20 wcz
- if_be jmp #\C__doscan_209 ' LEI4
+ if_be jmp #\C__doscan_213 ' LEI4
  adds r21, #1 ' ADDP4 coni
- jmp #\@C__doscan_208 ' JUMPV addrg
-C__doscan_207
+ jmp #\@C__doscan_212 ' JUMPV addrg
+C__doscan_211
  mov r22, #1 ' reg <- coni
  mov RI, FP
  sub RI, #-(-215)
  wrbyte r22, RI ' ASGNU1 addrli reg
-C__doscan_208
-C__doscan_205
-C__doscan_203
+C__doscan_212
+C__doscan_209
+C__doscan_207
  rdbyte r22, r21 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #0 wz
- if_z jmp #\C__doscan_214 ' EQI4
+ if_z jmp #\C__doscan_218 ' EQI4
  cmps r22,  #93 wz
- if_nz jmp #\C__doscan_202 ' NEI4
-C__doscan_214
+ if_nz jmp #\C__doscan_206 ' NEI4
+C__doscan_218
  mov r22, #0 ' reg <- coni
  rdbyte r20, r21 ' reg <- CVUI4 INDIRU1 reg
  cmps r20, r22 wz
- if_z jmp #\C__doscan_217 ' EQI4
+ if_z jmp #\C__doscan_221 ' EQI4
  mov r20, FP
  sub r20, #-(-260) ' reg <- addrli
  adds r20, r15 ' ADDI/P (2)
@@ -1118,11 +1146,11 @@ C__doscan_214
  rdlong r18, r18 ' reg <- INDIRI4 reg
  xor r20, r18 ' BXORI/U (1)
  cmps r20, r22 wz
- if_nz jmp #\C__doscan_215 ' NEI4
-C__doscan_217
+ if_nz jmp #\C__doscan_219 ' NEI4
+C__doscan_221
  mov r22, ##-1 ' reg <- con
  cmps r15, r22 wz
- if_z jmp #\C__doscan_218 ' EQI4
+ if_z jmp #\C__doscan_222 ' EQI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov r3, r15 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1130,52 +1158,52 @@ C__doscan_217
  calld PA,#CALA
  long @C_ungetc
  add SP, #4 ' CALL addrg
-C__doscan_218
+C__doscan_222
  mov r22, FP
  sub r22, #-(-272) ' reg <- addrli
  rdlong r0, r22 ' reg <- INDIRI4 reg
  jmp #\@C__doscan_54 ' JUMPV addrg
-C__doscan_215
+C__doscan_219
  mov r22, ##2048 ' reg <- con
  and r22, r9 ' BANDI/U (2)
  cmps r22,  #0 wz
- if_nz jmp #\C__doscan_220 ' NEI4
+ if_nz jmp #\C__doscan_224 ' NEI4
  mov r22, r19
  adds r22, #4 ' ADDP4 coni
  mov r19, r22 ' CVI, CVU or LOAD
  mov r20, ##-4 ' reg <- con
  adds r22, r20 ' ADDI/P (1)
  rdlong r17, r22 ' reg <- INDIRP4 reg
-C__doscan_220
-C__doscan_222
+C__doscan_224
+C__doscan_226
  mov r22, ##2048 ' reg <- con
  and r22, r9 ' BANDI/U (2)
  cmps r22,  #0 wz
- if_nz jmp #\C__doscan_225 ' NEI4
+ if_nz jmp #\C__doscan_229 ' NEI4
  mov r22, r17 ' CVI, CVU or LOAD
  mov r17, r22
  adds r17, #1 ' ADDP4 coni
  mov r20, r15 ' CVI, CVU or LOAD
  wrbyte r20, r22 ' ASGNU1 reg reg
-C__doscan_225
+C__doscan_229
  mov r22, r13
  sub r22, #1 ' SUBU4 coni
  mov r13, r22 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_z jmp #\C__doscan_227 ' EQU4
+ if_z jmp #\C__doscan_231 ' EQU4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_getc ' CALL addrg
  mov r15, r0 ' CVI, CVU or LOAD
  adds r11, #1 ' ADDI4 coni
-C__doscan_227
-' C__doscan_223 ' (symbol refcount = 0)
+C__doscan_231
+' C__doscan_227 ' (symbol refcount = 0)
  cmp r13,  #0 wz
- if_z jmp #\C__doscan_230 ' EQU4
+ if_z jmp #\C__doscan_234 ' EQU4
  mov r22, ##-1 ' reg <- con
  cmps r15, r22 wz
- if_z jmp #\C__doscan_230 ' EQI4
+ if_z jmp #\C__doscan_234 ' EQI4
  mov r22, FP
  sub r22, #-(-260) ' reg <- addrli
  adds r22, r15 ' ADDI/P (2)
@@ -1185,13 +1213,13 @@ C__doscan_227
  rdlong r20, r20 ' reg <- INDIRI4 reg
  xor r22, r20 ' BXORI/U (1)
  cmps r22,  #0 wz
- if_nz jmp #\C__doscan_222 ' NEI4
-C__doscan_230
+ if_nz jmp #\C__doscan_226 ' NEI4
+C__doscan_234
  cmp r13,  #0 wz
- if_z jmp #\C__doscan_231 ' EQU4
+ if_z jmp #\C__doscan_235 ' EQU4
  mov r22, ##-1 ' reg <- con
  cmps r15, r22 wz
- if_z jmp #\C__doscan_233 ' EQI4
+ if_z jmp #\C__doscan_237 ' EQI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov r3, r15 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1199,16 +1227,16 @@ C__doscan_230
  calld PA,#CALA
  long @C_ungetc
  add SP, #4 ' CALL addrg
-C__doscan_233
+C__doscan_237
  subs r11, #1 ' SUBI4 coni
-C__doscan_231
+C__doscan_235
  mov r22, ##2048 ' reg <- con
  and r22, r9 ' BANDI/U (2)
  cmps r22,  #0 wz
- if_nz jmp #\C__doscan_114 ' NEI4
+ if_nz jmp #\C__doscan_118 ' NEI4
  mov r22, #0 ' reg <- coni
  wrbyte r22, r17 ' ASGNU1 reg reg
-C__doscan_114
+C__doscan_118
  mov r22, FP
  sub r22, #-(-264) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
@@ -1219,9 +1247,9 @@ C__doscan_114
  mov r22, ##2048 ' reg <- con
  and r22, r9 ' BANDI/U (2)
  cmps r22,  #0 wz
- if_nz jmp #\C__doscan_247 ' NEI4
+ if_nz jmp #\C__doscan_251 ' NEI4
  cmps r7,  #110 wz
- if_z jmp #\C__doscan_247 ' EQI4
+ if_z jmp #\C__doscan_251 ' EQI4
  mov r22, FP
  sub r22, #-(-272) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
@@ -1229,7 +1257,7 @@ C__doscan_114
  mov RI, FP
  sub RI, #-(-272)
  wrlong r22, RI ' ASGNI4 addrli reg
-C__doscan_247
+C__doscan_251
  adds r21, #1 ' ADDP4 coni
 C__doscan_58
  jmp #\@C__doscan_57 ' JUMPV addrg
@@ -1238,24 +1266,24 @@ C__doscan_59
  sub r22, #-(-264) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #0 wz
- if_nz jmp #\C__doscan_252 ' NEI4
+ if_nz jmp #\C__doscan_256 ' NEI4
  mov r22, ##-1 ' reg <- con
  cmps r15, r22 wz
- if_z jmp #\C__doscan_250 ' EQI4
-C__doscan_252
+ if_z jmp #\C__doscan_254 ' EQI4
+C__doscan_256
  mov r22, FP
  sub r22, #-(-272) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
  mov RI, ##-800
  adds RI, FP
  wrlong r22, RI ' ASGNI4 addrl reg
- jmp #\@C__doscan_251 ' JUMPV addrg
-C__doscan_250
+ jmp #\@C__doscan_255 ' JUMPV addrg
+C__doscan_254
  mov r22, ##-1 ' reg <- con
  mov RI, ##-800
  adds RI, FP
  wrlong r22, RI ' ASGNI4 addrl reg
-C__doscan_251
+C__doscan_255
  mov r22, ##-800
  adds r22, FP
  ' reg <- addrl

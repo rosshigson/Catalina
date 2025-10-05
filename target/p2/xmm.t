@@ -71,10 +71,9 @@ CON
 ' the old, so on some platforms, adding the necessary XMM code makes the 
 ' kernel too large. Typically, this symbol is enabled only for LARGE mode. 
 ' Undefine this symbol if you have enough space on a particular platform.
-' Currently, all supported Propeller 2 XMM platforms have enough space
 
 #ifdef LARGE
-'#define EXTERNAL_FLT_CMP
+#define EXTERNAL_FLT_CMP
 #endif
 '
   

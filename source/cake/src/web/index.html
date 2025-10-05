@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+  
+    <link rel="stylesheet" href="default.min.css">
+    <script src="highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <link rel="stylesheet" href="style.css" />
+    <title>Cake Playground</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <script>
+    function Try(elm)
+    {
+        //collect the text previous sample
+        var source = elm.parentElement.previousElementSibling.innerText;
+
+        var link = "./playground.html?code=" + encodeURIComponent(btoa(source)) +
+            "&to=" + encodeURI("-2") +
+            "&options=" + encodeURI("");
+
+        window.open(link, 'popup','width=800,height=600');
+    }
+// find-replace for this
+// <button onclick="Try(this)">try</button> 
+</script></head>
+<body>
+    <article style="max-width: 40em; margin:auto">
+<p><a href="index.html">Home</a> | <a href="manual.html">Manual</a> | <a href="playground.html">Playground</a></p>
+<article>
+<h1>Cake - C23 and Beyond</h1>
+<ul>
+<li>
+<a href="#toc_0">🍰 Cake</a>
+</li>
+<li>
+<a href="#toc_1">Web Playground</a>
+</li>
+<li>
+<a href="#toc_2">Use cases</a>
+</li>
+<li>
+<a href="#toc_3">Features</a>
+</li>
+<li>
+<a href="#toc_4">Build</a>
+<ul>
+<li>
+<a href="#toc_5">MSVC build instructions</a>
+</li>
+<li>
+<a href="#toc_6">GCC on Linux build instructions</a>
+</li>
+<li>
+<a href="#toc_7">Clang on Linux/Windows/MacOS build instructions</a>
+</li>
+<li>
+<a href="#toc_8">Emscripten build instructions (web)</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_9">Running cake at command line</a>
+</li>
+<li>
+<a href="#toc_10">Road map</a>
+</li>
+<li>
+<a href="#toc_11">References</a>
+</li>
+<li>
+<a href="#toc_12">Participating</a>
+</li>
+<li>
+<a href="#toc_13">How cake is developed?</a>
+</li>
+<li>
+<a href="#toc_14">Cake is not C++</a>
+</li>
+</ul>
+<p>The C Programming language 1978</p>
+
+<blockquote>
+<p><em>&quot;C is a general-purpose programming language which features economy of expression, modern control flow and data structures, and a rich set of operators. C is not a &quot;very high level&quot; language, nor a &quot;big&quot; one, and is not specialized to any particular area of application. But its absence of restrictions and its generality make it more convenient and effective for many tasks than supposedly more powerful languages.&quot;</em></p>
+
+<p><em>&quot;In our experience, C has proven to be a pleasant, expressive, and versatile language for a wide variety of programs. It is easy to learn, and it wears well as one&#39;s experience with it grows&quot;</em></p>
+</blockquote>
+
+<p>The C Programming language Second Edition 1988</p>
+
+<blockquote>
+<p><em>&quot;As we said in the preface to the first edition, C &quot;wears well as one&#39;s experience with it grows.&quot; With a decade more experience, we still feel that way.&quot;</em></p>
+</blockquote>
+
+<h1 id="toc_0">🍰 Cake</h1>
+
+<p>Cake is a compiler front-end written from scratch in C, adhering to the C23 language 
+specification and beyond.</p>
+
+<p>It serves as a platform for experimenting with new features, 
+including C2Y language proposals, safety enhancements, and extensions such as 
+literal functions and defer statements.</p>
+
+<p>The current backend generates C89-compatible code, which can be pipelined with existing 
+compilers to produce executables. </p>
+
+<p>Cake aims to enhance C&#39;s safety by providing high-quality warning messages and advanced 
+flow analysis, including <a href="ownership.html">object lifetime</a> checks.</p>
+
+<h1 id="toc_1">Web Playground</h1>
+
+<p>This is the best way to try.</p>
+
+<p><a href="http://thradams.com/cake/playground.html">http://thradams.com/cake/playground.html</a></p>
+
+<h1 id="toc_2">Use cases</h1>
+
+<p>Note: Cake is still in development and has not yet reached 
+a stable version.</p>
+
+<p>Cake can be used as a static analyzer alongside other compilers. 
+It generates SARIF files, which are recognized by popular IDEs 
+such as Visual Studio and Visual Studio Code, providing a 
+seamless integration.</p>
+
+<p>It can also function as a preprocessor, converting C23 code to C89. 
+This allows developers to use modern or experimental features while targeting 
+compilers that do not yet support the latest language standards.</p>
+
+<p>The objective of the C89 generation is to produce low-level C code, 
+simplifying the process of writing C backends <strong>dedicated to code generation</strong>.</p>
+
+<p>Previous versions of Cake included a conversion mode to 
+translate code while preserving the preprocessor parts. 
+Although useful, this process could not guarantee 100% conversion,
+functioning more as a tool than a compiler. With the new versions 
+of Cake moving toward becoming a more traditional compiler,
+the previous mode has been discontinued at version 0.9.36.
+This version is online here 
+<a href="http://thradams.com/cake3/playground.html">http://thradams.com/cake3/playground.html</a>.</p>
+
+<h1 id="toc_3">Features</h1>
+
+<ul>
+<li>C23 preprocessor</li>
+<li>C23 syntax analysis</li>
+<li>C23 semantic analysis</li>
+<li>Static <a href="ownership.html">object lifetime</a> checks (Extension)</li>
+<li>Sarif output</li>
+<li>Backend generating C89 compatible code</li>
+<li>AST </li>
+<li>More than 260 diagnostics</li>
+</ul>
+
+<h1 id="toc_4">Build</h1>
+
+<p>GitHub 
+<a href="https://github.com/thradams/cake">https://github.com/thradams/cake</a></p>
+
+<h2 id="toc_5">MSVC build instructions</h2>
+
+<p>Open the Developer Command Prompt of visual studio. Go to the <em>src</em> directory and type</p>
+
+<pre><code>cl build.c &amp;&amp; build
+</code></pre>
+
+<p>This will build <em>cake.exe</em>, then run cake on its own source code.</p>
+
+<h2 id="toc_6">GCC on Linux build instructions</h2>
+
+<p>Got to the <em>src</em> directory and type:</p>
+
+<pre><code>gcc build.c -o build &amp;&amp; ./build
+</code></pre>
+
+<h2 id="toc_7">Clang on Linux/Windows/MacOS build instructions</h2>
+
+<p>Got to the <em>src</em> directory and type:</p>
+
+<pre><code>clang build.c -o build &amp;&amp; ./build
+</code></pre>
+
+<p>To run unit tests windows/linux add <em>-DTEST</em> for instance:</p>
+
+<pre><code>gcc -DTEST build.c -o build &amp;&amp; ./build
+</code></pre>
+
+<h2 id="toc_8">Emscripten build instructions (web)</h2>
+
+<p>Emscripten <a href="https://emscripten.org/">https://emscripten.org/</a>  is required. </p>
+
+<p>First do the normal build. </p>
+
+<p>The normal build also generates a file <em>lib.c</em> that is the amalgamated  version of the &quot;core lib&quot;.</p>
+
+<p>Then at <em>./src</em> dir type:</p>
+
+<pre><code>call emcc -DMOCKFILES &quot;lib.c&quot; -o &quot;Web\cake.js&quot; -s WASM=0 -s EXPORTED_FUNCTIONS=&quot;[&#39;_CompileText&#39;]&quot; -s EXTRA_EXPORTED_RUNTIME_METHODS=&quot;[&#39;ccall&#39;, &#39;cwrap&#39;]&quot;
+</code></pre>
+
+<p>This will generate the <em>\src\Web\cake.js</em></p>
+
+<h1 id="toc_9">Running cake at command line</h1>
+
+<p>Make sure cake is on your system path.</p>
+
+<p>Samples</p>
+
+<pre><code>cake source.c
+</code></pre>
+
+<p>this will output <em>./out/source.c</em></p>
+
+<p>See <a href="manual.html">Manual</a></p>
+
+<h1 id="toc_10">Road map</h1>
+
+<ul>
+<li>Making it usable as C89 backend and fixes</li>
+<li>Flow v2 algorithm was delayed</li>
+</ul>
+
+<h1 id="toc_11">References</h1>
+
+<p><a href="https://www.c-language.org/">https://www.c-language.org/</a></p>
+
+<p>A very nice introduction was written by Al Williams</p>
+
+<p>C23 Programming For Everyone</p>
+
+<p><a href="https://hackaday.com/2022/09/13/c23-programming-for-everyone/">https://hackaday.com/2022/09/13/c23-programming-for-everyone/</a></p>
+
+<h1 id="toc_12">Participating</h1>
+
+<p>You can contribute by trying out cake, reporting bugs, and giving feedback.</p>
+
+<p>Have a suggestion for C?</p>
+
+<p>DISCORD SERVER</p>
+
+<p><a href="https://discord.gg/YRekr2N65S">https://discord.gg/YRekr2N65S</a></p>
+
+<h1 id="toc_13">How cake is developed?</h1>
+
+<p>I am using Visual Studio 2022 IDE to write/debug cake source. Cake is parsing itself using
+the includes of MSVC and it generates the <em>out</em> dir after build. </p>
+
+<p>I use Visual Studio code with WSL for testing and compiling the code for Linux.</p>
+
+<p>Cake source code is not using any extension so the output is the same of input. 
+This compilation is useful for tracking errors together with the unit tests.</p>
+
+<h1 id="toc_14">Cake is not C++</h1>
+
+<p>CFront was the original C++ compiler, designed to translate C++ code into C.</p>
+
+<p>Although CFront was initially compatible with C89, it eventually diverged from C’s evolution.</p>
+
+<p>In contrast, Cake stays true to the core development of C, ensuring full compatibility.</p>
+
+<p>Its extensions aim to preserve the essence of C while allowing developers to experiment and contribute to C’s evolution using an open-source compiler written in C.</p>
+</article></body></html>

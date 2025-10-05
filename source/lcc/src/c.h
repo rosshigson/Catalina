@@ -14,7 +14,7 @@
 	|| specific(op)==ADDRF+P)
 
 #define	MAXLINE  512
-#define	BUFSIZE 4096
+#define	BUFSIZE 8192
 
 #define istypename(t,tsym) (kind[t] == CHAR \
 	|| t == ID && tsym && tsym->sclass == TYPEDEF)

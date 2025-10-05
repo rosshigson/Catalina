@@ -6,7 +6,7 @@
 #include	<stdio.h>
 #include	<stdarg.h>
 #include	"loc_incl.h"
-
+#include  <limits.h>
 int
 vsprintf(char *s, const char *format, va_list arg)
 {
@@ -17,7 +17,7 @@ vsprintf(char *s, const char *format, va_list arg)
 	tmp_stream._flags  = _IOWRITE + _IONBF + _IOWRITING;
 	tmp_stream._buf    = (unsigned char *) s;
 	tmp_stream._ptr    = (unsigned char *) s;
-	tmp_stream._count  = 32767;
+	tmp_stream._count  = INT_MAX;
 
 	retval = _doprnt(format, arg, &tmp_stream);
 	putc('\0',&tmp_stream);

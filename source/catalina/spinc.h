@@ -87,6 +87,8 @@
  *
  * version 8.8  - just update version number.
  *
+ * version 8.8.1 - remove local strdup (now in C libary).
+ *
  * ----------------------------------------------------------------------------
  * @file spinc.h
  * Defines data structures and API for spinc converter
@@ -115,7 +117,7 @@
 
 #define P2_PC_OFFSET_XMM    0x1038 // not currently used
 
-#define VERSION       "8.8"
+#define VERSION       "8.8.1"
 
 #define MAX_FILES     10
 #define MAX_LINELEN   1000

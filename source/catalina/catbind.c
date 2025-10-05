@@ -343,6 +343,9 @@
  *
  * version 8.8   - add -Q (and -C QUICKFORCE) to mean enable Qquick Build,
  *                 but also rebuild the target file even if it already exists.
+ *
+ * version 8.8.1 - remove local strdup (now in C libary).
+ *
  */
 
 /*--------------------------------------------------------------------------
@@ -378,7 +381,7 @@
 #include <sys/stat.h>
 #endif
 
-#define VERSION            "8.8"
+#define VERSION            "8.8.1"
 
 #define MAX_FILES          500
 #define MAX_LIBS           500
@@ -624,17 +627,6 @@ int directory_exists(char *dir) {
 // we have no process ids!
 int getpid() {
    return 0;
-}
-
-// strdup is not ANSI C
-char * strdup(const char *str) {
-   if (str != NULL) {
-      register char *copy = malloc(strlen(str) + 1);
-      if (copy != NULL) {
-         return strcpy(copy, str);
-      }
-   }
-   return NULL;
 }
 
 #else

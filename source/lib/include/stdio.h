@@ -155,6 +155,16 @@ int	putc(int _c, FILE *_stream);
 int	putchar(int _c);
 int	puts(const char *_s);
 
+int rpl_asprintf(char **_s, const char *_format, ...);
+int rpl_vasprintf(char **_s, const char *_format, char * _ap);
+int rpl_snprintf(char *_s, size_t n, const char *_format, ...);
+int rpl_vsnprintf(char *_s, size_t n, const char *_format, char * _ap);
+
+#define asprintf  rpl_asprintf
+#define vasprintf rpl_vasprintf
+#define snprintf  rpl_snprintf
+#define vsnprintf rpl_vsnprintf
+
 size_t	fread(void *_ptr, size_t _size, size_t _nmemb, FILE *_stream);
 size_t	fwrite(const void *_ptr, size_t _size, size_t _nmemb, FILE *_stream);
 int	fgetpos(FILE *_stream, fpos_t *_pos);

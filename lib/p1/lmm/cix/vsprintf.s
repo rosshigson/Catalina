@@ -34,7 +34,7 @@ C_vsprintf ' <symbol:vsprintf>
  long -8
  wrlong r23, RI ' ASGNP4 addrl reg
  jmp #LODL
- long 32767
+ long 2147483647
  mov r22, RI ' reg <- con
  jmp #LODF
  long -28

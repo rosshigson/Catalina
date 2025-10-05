@@ -2,7 +2,7 @@ my_write linenoise.s 9 export
 my_read linenoise.s 43 export
 strdup linenoise.s 81 export
 strcasecmp linenoise.s 117 export
-snprintf linenoise.s 167 export
+rpl_snprintf linenoise.s 167 export
 my_lndebug linenoise.s 220 export
 linenoiseMaskModeEnable linenoise.s 295 export
 linenoiseMaskModeDisable linenoise.s 312 export

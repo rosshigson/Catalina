@@ -61,9 +61,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include <math.h>
 /* #include <time.h> */
 #include <cog.h> // use _cnt instead of time as random seed
+#include <hmi.h>
 
 #ifndef FALSE
 #define FALSE        0
@@ -88,7 +90,7 @@
  
 /* Useful typedefs */
  
-typedef int bool;
+//typedef int bool;
 typedef char line[MAXCOL];
 typedef char string[MAXLEN];
 
@@ -672,10 +674,10 @@ new_quadrant(void)
         }
     }
 
-  /* @@@ k3 = g[q1][q2] * .01; */
-  k3 = (int)(g[q1][q2] * .01);
-  /* @@@ b3 = g[q1][q2] * .1 - 10 * k3; */
-  b3 = (int)(g[q1][q2] * .1 - 10 * k3);
+  /* @@@ k3 = g[q1][q2] * 0.01; */
+  k3 = (int)(g[q1][q2] * 0.01);
+  /* @@@ b3 = g[q1][q2] * 0.1 - 10 * k3; */
+  b3 = (int)(g[q1][q2] * 0.1 - 10 * k3);
   s3 = g[q1][q2] - 100 * k3 - 10 * b3;
 
   if (k3 > 0)
@@ -751,7 +753,7 @@ new_quadrant(void)
 void
 course_control(void)
 {
-  register i;
+  register int i;
   /* @@@ int c2, c3, q4, q5; */
   int q4, q5;
   string sTemp;
@@ -1033,11 +1035,11 @@ maneuver_energy(void)
 void
 short_range_scan(void)
 {
-  register i, j;
+  register int i, j;
 
   strcpy(sC, "GREEN");
 
-  if (e < e0 * .1)
+  if (e < e0 * 0.1)
     strcpy(sC, "AMBER");
 
   if (k3 > 0)
@@ -1106,7 +1108,7 @@ short_range_scan(void)
 void
 long_range_scan(void)
 {
-  register i, j;
+  register int i, j;
 
   if (d[3] < 0.0)
     {
@@ -1136,7 +1138,7 @@ long_range_scan(void)
 void
 phaser_control(void)
 {
-  register i;
+  register int i;
   int iEnergy;
   int h1, h;
   string sTemp;
@@ -1192,7 +1194,7 @@ phaser_control(void)
         {
           /* @@@ h = (h1 / function_d(0) * (rnd() + 2)); */
           h = (int)(h1 / function_d(i) * (rnd() + 2));
-          if (h <= .15 * k[i][3])
+          if (h <= 0.15 * k[i][3])
             {
               t_print("Sensors show no damage to enemy at ");
               t_print_2in("", k[i][1], k[i][2]); t_char(1, '\n');
@@ -1390,7 +1392,7 @@ damage_control(void)
 { 
   int a1;
   double d3 = 0.0;
-  register i;
+  register int i;
 
   if (d[6] < 0.0)
     {
@@ -1402,7 +1404,7 @@ damage_control(void)
       d3 = 0.0;
       for (i = 1; i <= 8; i++)
         if (d[i] < 0.0)
-          d3 = d3 + .1;
+          d3 = d3 + 0.1;
 
       if (d3 == 0.0)
         return;
@@ -1569,8 +1571,8 @@ status_report(void)
 
   t_print("Klingon"); t_print(sX); t_print(" Left: "); t_prini(k9); t_char(1, '\n');
 
-  t_print("Mission must be completed in "); t_prinf(.1 * (int)((t0 + t9 - t) * 10)); t_print("\nstardates\n");
-    /* @@@ .1 * cint((t0 + t9 - t) * 10)); */
+  t_print("Mission must be completed in "); t_prinf(0.1 * (int)((t0 + t9 - t) * 10)); t_print("\nstardates\n");
+    /* @@@ 0.1 * cint((t0 + t9 - t) * 10)); */
 
   if (b9 < 1)
   {
@@ -1951,7 +1953,7 @@ repair_damage(void)
     {
       r1 = function_r();
 
-      if (rnd() < .6)
+      if (rnd() < 0.6)
         {
           d[r1] = d[r1] - (rnd() * 5.0 + 1.0);
           t_print("Damage Control report:\n   ");

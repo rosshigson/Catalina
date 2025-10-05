@@ -42,9 +42,20 @@ goto done
 
 call build_all %1 %2 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200
 
+rem create the expected directory structure
+call mk_cat_dirs image
+
 cd catalina
 call build_all  %1 %2 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200
 cat CATALYST.ENV %1.ENV > ..\image\CATALYST.ENV
+cd ..
+
+cd cake
+rem NOTE: we cannot use OPTIMIZE with Cake ...
+call build_all  %1 %2 SIMPLE VT100 USE_COLOR MHZ_200
+copy %LCCDIR%\source\cake\src\catalina\cake.bin ..\image\bin\cake.bin
+copy CAKECONF.H ..\image\CAKECONF.H
+copy hello_99.c ..\image\hello_99.c
 cd ..
 
 cd xvi-2.51
@@ -77,9 +88,20 @@ cd ..
 
 call build_all %1 %2 VGA COLOR_4 OPTIMIZE MHZ_200 RTC NO_LINENOISE
 
+rem create the expected directory structure
+call mk_cat_dirs image
+
 cd catalina
 call build_all %1 %2 VGA COLOR_4 OPTIMIZE MHZ_200
 cat CATALYST.ENV %1_VGA.ENV > ..\image\CATALYST.ENV
+cd ..
+
+cd cake
+rem NOTE: we cannot use OPTIMIZE with Cake ...
+call build_all  %1 %2 SIMPLE VT100 USE_COLOR MHZ_200
+copy %LCCDIR%\source\cake\src\catalina\cake.bin ..\image\bin\cake.bin
+copy CAKECONF.H ..\image\CAKECONF.H
+copy hello_99.c ..\image\hello_99.c
 cd ..
 
 cd xvi-2.51

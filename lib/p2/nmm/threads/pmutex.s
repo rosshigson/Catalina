@@ -106,7 +106,7 @@ C_pthread_mutex_lock_9
  mov r20, r21 ' CVI, CVU or LOAD
  cmp r22, r20 wz
  if_nz jmp #\C_pthread_mutex_lock_21  ' NEU4
- mov r22, #45 ' reg <- coni
+ mov r22, #35 ' reg <- coni
  wrlong r22, ##@C_errno ' ASGNI4 addrg reg
  mov r0, r22 ' CVI, CVU or LOAD
  jmp #\@C_pthread_mutex_lock_2 ' JUMPV addrg

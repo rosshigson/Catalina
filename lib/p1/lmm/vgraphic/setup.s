@@ -23,7 +23,7 @@ C__vdb_cog ' <symbol:_vdb_cog>
  long -1
 
  alignl ' align long
-C_smjs_68804d10_font_L000004 ' <symbol:font>
+C_sksk_68dcbf92_font_L000004 ' <symbol:font>
  word $9d62
  word $112a
  word $b0e9
@@ -653,7 +653,7 @@ C_g_setup_45
  mov r15, r22
  adds r15, #4 ' ADDP4 coni
  jmp #LODL
- long @C_smjs_68804d10_font_L000004
+ long @C_sksk_68dcbf92_font_L000004
  mov r20, RI ' reg <- addrg
  wrlong r20, r22 ' ASGNI4 reg reg
  mov r22, r15 ' CVI, CVU or LOAD

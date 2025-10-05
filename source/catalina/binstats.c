@@ -33,6 +33,7 @@
  *
  * version 8.8 - set _EXIT_CODE to result.
  *
+ * version 8.8.1 - remove local strdup (now in C libary).
  */
 
 /*--------------------------------------------------------------------------
@@ -73,7 +74,7 @@
 #define SHORT_LAYOUT_4     1 /* 1 to remove unused bytes when using layout 4 (P1 only) */
 #define SHORT_LAYOUT_5     1 /* 1 to remove unused bytes when using layout 5 (P1 or P2) */
 
-#define VERSION            "8.8"
+#define VERSION            "8.8.1"
 
 #define MAX_LINELEN        4096
 #define MAX_PATHLEN        1000
@@ -104,21 +105,6 @@ static int prop_vers = 2;
 static int layout    = 0;
 
 static char *input_file = NULL;
-
-#ifdef __CATALINA__
-
-// strdup is not ANSI C
-char * strdup(const char *str) {
-   if (str != NULL) {
-      register char *copy = malloc(strlen(str) + 1);
-      if (copy != NULL) {
-         return strcpy(copy, str);
-      }
-   }
-   return NULL;
-}
-
-#endif
 
 void help(char *my_name) {
    fprintf(stderr, "\nusage: %s [options] input_file\n\n", my_name);
