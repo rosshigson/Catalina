@@ -24,6 +24,8 @@ source ../use_catalina
 #
 cd catalina
 ./build_all
+cd ../cake
+./build_all
 cd ../catoptimize
 ./build_all
 ./copy_all
