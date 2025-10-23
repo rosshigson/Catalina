@@ -289,6 +289,9 @@ static imaxdiv_t imaxdiv(intmax_t numer, intmax_t denom)
 }
 
 // 7.8.2.3 The strtoimax and strtoumax functions
+long int _strtoi(const char *s, char **scan_end, int base);
+long unsigned _strtou(const char *s, char **scan_end, int base);
+
 #define strtoimax _strtoi
 #define strtoumax _strtou
 

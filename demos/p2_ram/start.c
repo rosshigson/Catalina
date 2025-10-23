@@ -61,8 +61,11 @@
 #endif
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <stdint.h>
 #include <plugin.h>
+#include <cog.h>
 #if defined(__CATALINA_HYPER)||defined(__CATALINA_libhyper)
 #include <hyper.h>
 #define ram_read hyper_read
@@ -136,6 +139,9 @@ unsigned long load_long(unsigned char *buff, int offs) {
         + (buff[offs+1]<<8) 
         + (buff[offs]);
 }
+
+int _cogstart_XMM_LARGE_cog_2(uint32_t PC, uint32_t CS, uint32_t SP, 
+                              void *arg1, void *arg2, unsigned int cog);
 
 int main(int argc, char *argv[]) {
    unsigned char prologue[PROLOGUE_SIZE];

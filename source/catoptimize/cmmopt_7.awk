@@ -22,7 +22,7 @@
       f = left(f, length(f)-5);
    }
    /* print "f= ", f */
-   getline; while ($1 == "alignl") { getline }
+   getline; while (left($1,6) == "alignl") { getline }
    if (($1 == "word") && ($2 == "I16A_ADDI") && ($4 == "SP<<D16A")) {
       s = $6;
       /* print "s= ", s */
@@ -37,7 +37,7 @@
    else if (($1 == "long") && ($2 == "I32_LODA")) {
       s = $4;
       /* print "s= ", s */
-      getline; while ($1 == "alignl") { getline }
+      getline; while (left($1,6) == "alignl") { getline }
       if (($1 == "word") && ($2 == "I16_ADD") && ($4 == "SP<<D16A")) {
          if (left(s,1)=="(") {
             s = ltrim(s,"(");

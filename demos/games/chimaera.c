@@ -46,13 +46,16 @@
 #include    <time.h>        /*  Date and time definitions               */
 #include    "chimaera.h"    /*  CHIMAERA variables, arrays and          */
                             /*  structures                              */
+
+extern int  _cnt(void);
+
 /*---- Main Function ---------------------------------------------------*/
 
 struct tm *tptr;                   /* Time and date structure      */
 time_t lt;                         /* Time as type time_t          */
 char timebuff[80];                 /* Buffer for time string       */
 
-int main()
+int main(void)
    {
     int i, j, k, len, iresp, itest, forever;
     int seed;                          /* Seed for srand()             */
@@ -333,7 +336,7 @@ int main()
                 case 19 : shangrila(); break;                  /* Visits Shangri La */
                 case 21 : eat(opoint); break;                  /* Eat something     */
                 case 22 : cheat(); break;                      /* Wizard cheats     */
-                case 24 : throw(opoint); break;                /* Throw something   */
+                case 24 : toss(opoint); break;                 /* Throw something   */
                 case 25 : wave(opoint); break;                 /* Wave              */
                 case 26 : stamp(monstpoint); break;            /* Stamp on a dwarf  */
                 case 27 : put(apoint, opoint); break;          /* Put               */
@@ -1781,7 +1784,7 @@ void move(int mpoint)            /* Make a move if possible             */
       }
    }
 /*----------------------------------------------------------------------*/
-void news()                           /* Display the current news items */
+void news(void)                           /* Display the current news items */
    {
     int r;
     r = rnd(4);
@@ -2049,7 +2052,7 @@ void tonl(int n)               /* Print n blank lines to the terminal */
       }
    }
 /*----------------------------------------------------------------------*/
-void welcome()
+void welcome(void)
    {
     tonl(1);
     tnou("*** Welcome to the world of  CHIMAERA ***");
@@ -2065,7 +2068,7 @@ void welcome()
     showtext();
    }
 /*----------------------------------------------------------------------*/
-void worth()  /* Load object value array                                */
+void worth(void)  /* Load object value array                                */
    {
     int i;
     for(i=0;i<10;i++) points[i] = 5;          /* Common objects (1-10) */
@@ -2824,7 +2827,7 @@ void fill(int objpoint)          /* Fill something                      */
     showtext();
    }
 /*----------------------------------------------------------------------*/
-void find(objpoint)              /* Find something                      */
+void find(int objpoint)              /* Find something                      */
    {
     if (objpoint == 0)
       {
@@ -3352,7 +3355,7 @@ void shangrila(void)             /* Visit Shangri La                    */
     showtext();
    }
 /*----------------------------------------------------------------------*/
-void throw(int objpt)                  /* Throw something               */
+void toss(int objpt)                  /* Throw something               */
    {
     int i, dropit, plural;
     long bottom;

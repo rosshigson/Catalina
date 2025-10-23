@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <pthread.h>
+#include <prop.h>
 
 #ifndef STATIC_STACKS
 #define STATIC_STACKS 1                // 0 for dynamic stacks, 1 for static

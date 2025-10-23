@@ -38,11 +38,11 @@
  ******************************************************************************/
 
 #pragma catapult common options(-W-w -C C3 -C TTY -C NO_ARGS -lc -lma service.c)
-
 #include <catapult.h>
 #include <stdlib.h>
 #include <plugin.h>
 #include "service.h"
+#include <hmi.h>
 
 /*
  * define global service identifiers for our services 
@@ -166,6 +166,11 @@ void hub_client(shared_data_t *s) {
 #include <lua.h>
 #include <lualib.h>
 #include <lauxlib.h>
+
+/*
+ * declare our dispatch function
+ */
+void my_dispatch_Lua(lua_State *L, svc_list_t list);
 
 /*
  * define our services as Lua functions

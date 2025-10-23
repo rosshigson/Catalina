@@ -108,8 +108,6 @@ C_pthread_cond_destroy_5
 
 ' Catalina Import free
 
-' Catalina Import _thread_stall
-
 ' Catalina Import _pthread_init_lock_pool
 
 ' Catalina Import pthread_cond_broadcast
@@ -117,4 +115,6 @@ C_pthread_cond_destroy_5
 ' Catalina Import errno
 
 ' Catalina Import _thread_allow
+
+' Catalina Import _thread_stall
 ' end

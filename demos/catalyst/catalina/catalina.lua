@@ -13,7 +13,11 @@
 --
 -- will generate a script that looks like ...
 --
+-- either ...
 --   cpp -I/include PROGRAM.C /tmp/PROGRAM.cpp
+-- or ...
+--   cake -I/include PROGRAM.C -o /tmp/PROGRAM.cpp
+-- followed by ...
 --   rcc /tmp/PROGRAM.cpp -target=catalina_native_p2/catalyst /tmp/PROGRAM.rcc
 --   bcc -p2 -x11 -L/lib/p2/nmm -lc /tmp/PROGRAM.rcc -o catalina.s
 --   strip catalina.s
@@ -129,6 +133,9 @@
 --
 -- version 8.8.1 - just update version number.
 --
+-- version 8.8.2 - add -CXX (where XX is the C standard) which selects cpp
+--                 as preprocessor if a standard is not specified, or if 
+--                 XX is 89 or 90, or cake otherwise.
 --
 
 require "os"
@@ -138,7 +145,7 @@ require "string"
 require "propeller"
 
 -- configuration parameters and default values
-CATALINA_VERSION = "8.8.1"
+CATALINA_VERSION = "8.8.2"
 LCCDIR           = "/";
 CATALINA_TARGET  = LCCDIR .. "target"
 CATALINA_LIBRARY = LCCDIR .. "lib"
@@ -165,6 +172,7 @@ CSYM_PREFIX      = "__CATALINA_"
 DEFAULT_OUTPUT   = "catalina"
 BCC_COMMAND      = "bcc "
 CPP_COMMAND      = "cpp "
+CAKE_COMMAND     = "cake "
 RCC_COMMAND      = "rcc "
 SPP_COMMAND      = "spp "
 STRIP_COMMAND    = "pstrip "
@@ -206,6 +214,7 @@ output     = "";
 heaptop    = 0;
 readwrite  = 0;
 readonly   = 0;
+standard   = 89;
 
 -- command line option lists
 Libs     = {}
@@ -476,6 +485,7 @@ end
 function decode_arguments()
   local val;
   local num;
+  local c;
   if #arg >= 1 then
     i = 1;
     while i <= #arg do
@@ -547,8 +557,13 @@ function decode_arguments()
           val = string.sub(arg[i],3);
         end
         val = unquote(val);
-        print_if_diagnose("Catalina symbol " .. val);
-        addCsym(val);
+        c = string.byte(val);
+        if (c >= 48) and (c <= 57) then
+          standard = tonumber(val);
+        else
+          print_if_diagnose("Catalina symbol " .. val);
+          addCsym(val);
+        end
       elseif (string.sub(arg[i],1,2) == "-B") then
         if #arg[i] == 2 then
           i = i + 1;
@@ -1068,7 +1083,11 @@ function output_name()
 end
 
 -- generate the following commands to compile each PROGRAM file ...
+-- either ...
 --   cpp -I/ -I/include PROGRAM /tmp/PROGRAM.cpp
+-- or ...
+--   cake -I/ -I/include PROGRAM -o /tmp/PROGRAM.cpp
+-- then ...
 --   rcc /tmp/PROGRAM.cpp -target=catalina_native_p2/catalyst /tmp/PROGRAM.rcc
 function generate_compiles(cmd)
   local i;
@@ -1080,13 +1099,22 @@ function generate_compiles(cmd)
     local ext  = "";
     if (Files[i]) and (Files[i] ~= "") then
       dir, file, ext = decompose(Files[i]);
-      cpp = CPP_COMMAND 
-      .. '-I/ '
-      .. '-I' .. IncludePath .. ' ' 
-      .. include_list() 
-      .. cpp_define_list() 
-      .. Files[i] .. ' ' 
-      .. CATALINA_TEMPDIR .. PATH_SEP .. file .. CPP_SUFFIX .. ' ';
+      if standard == 89 or standard == 90 then
+        cpp = CPP_COMMAND
+        .. '-I/ -I' .. IncludePath .. ' ' 
+        .. include_list() 
+        .. cpp_define_list() 
+        .. Files[i] .. ' ' 
+        .. CATALINA_TEMPDIR .. PATH_SEP .. file .. CPP_SUFFIX .. ' ';
+      else
+        cpp = CAKE_COMMAND
+        .. '-suppress -I/ -I' .. IncludePath .. ' ' 
+        .. include_list() 
+        .. cpp_define_list() 
+        .. Files[i] .. ' ' 
+        .. '-o '
+        .. CATALINA_TEMPDIR .. PATH_SEP .. file .. CPP_SUFFIX .. ' ';
+      end
       rcc = RCC_COMMAND
       .. blank_if_nil(rccopt) .. ' '
       .. lcc_target() 
@@ -1549,6 +1577,17 @@ decode_specials(Defines);
 
 -- decode the command line arguments
 decode_arguments();
+
+if standard ~= 89 
+  and standard ~= 90 
+  and standard ~= 94
+  and standard ~= 95
+  and standard ~= 99
+  and standard ~= 17
+  and standard ~= 18
+  and standard ~= 23 then
+  print_info("Unknown C standard specified - ignoring")
+end
 
 -- display the banner if required
 if not suppress then

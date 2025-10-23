@@ -8,6 +8,16 @@
  *                                                                           *
  \***************************************************************************/
 
+#include <ctype.h>
+
+/*
+ * include propeller functions
+ */
+#include <prop.h>
+#ifdef __CATALINA_P2
+#include <prop2.h>
+#endif
+
 /*
  * include Catalina multi-threading:
  */

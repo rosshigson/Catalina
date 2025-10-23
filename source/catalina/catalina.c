@@ -399,7 +399,25 @@
  *
  * version 8.8.1 - just update version number.
  * 
- */                  
+ * version 8.8.2 - allow -C to also be used to select either cpp or cake as
+ *                 the C precompiler, by specifying the C standard as two 
+ *                 numeric digits. If no standard is specfied or -C89 or -C90 
+ *                 is specified Catalina will use cpp, otherwise Catalina will 
+ *                 use cake. 
+ *                    
+ *                 Catalina will use cpp as the preprocessor by using the 
+ *                 existing lcc command (which is unchanged), whereas -C99 
+ *                 etc use a new clcc command which invokes cake in place 
+ *                 of cpp. 
+ *                 
+ *                 A warning will be issued if the debug or parallel options 
+ *                 are selected when cake is also selected. 
+ *                    
+ *                 Note that cake currently always defines __STDC_VERSION__ 
+ *                 as 202311L for all standards (94, 95, 99, 11, 17, 18, 23)
+ *                 whereas cpp does not define it at all. This may change
+ *                 in a future Cake release.
+ */
 
 /*--------------------------------------------------------------------------
     This file is part of Catalina.
@@ -428,7 +446,7 @@
 #include <string.h>
 #include <math.h>
 
-#define VERSION            "8.8.1"
+#define VERSION            "8.8.2"
 
 #define MAX_LINELEN        4096
 
@@ -494,6 +512,10 @@ static int untidy     = 0; // untidy (i.e. no cleanup) mode
 static int quickbuild = 0; // enable quick build, re-use any existing target
 static int quickforce = 0; // enable quick build, always rebuild target
 
+/* C standard (and precompiler) to use  */
+
+static int standard   = 89; // valid are 89, 90, 94, 95, 99, 11, 17, 18, 23
+
 /* clock calculation parameters */
 static int baud_rate  = 0; // baud rate (no default)
 static int reqd_freq  = 0; // required clock frequency (no default)
@@ -533,6 +555,7 @@ static char def_lib_path[MAX_LINELEN + 1] = "";
 static char def_inc_path[MAX_LINELEN + 1] = "";
 
 static char lcc_cmd[MAX_LINELEN + 1] = "";
+static char lcc_opt[MAX_LINELEN + 1] = "";
 
 static int  file_count = 0;
 static int  par_count = 0;
@@ -552,9 +575,10 @@ void help(char *my_name) {
    fprintf(stderr, "options:  -? or -h   print this help (and exit)\n");
    fprintf(stderr, "          -b         generate a binary output file (this is the default)\n");
    fprintf(stderr, "          -B baud    baud rate to use for serial interfaces (P2 only)\n");
-   fprintf(stderr, "          -c         compile only (do not bind)\n");
    fprintf(stderr, "          -d         output diagnostic messages\n");
+   fprintf(stderr, "          -c         compile only (do not bind)\n");
    fprintf(stderr, "          -C symbol  define a Catalina symbol (e.g. -C HYDRA)\n");
+   fprintf(stderr, "                     or the C standard to use (e.g. -C99)\n");
    fprintf(stderr, "          -D symbol  define a symbol (e.g. -D printf=tiny_printf)\n");
    fprintf(stderr, "          -e         generate an eeprom output file\n");
    fprintf(stderr, "          -E         allowable frequency error (default is 100k\n");
@@ -720,34 +744,55 @@ char * catalina_getenv(char *name) {
 #endif
 
 /*
+ * add the definition of a C preprocessor symbol to the lcc command line,
+ * quoting as necessary. The value can be the null string. 
+ */
+void preprocessor_symboldef(char *name, char *value) {
+   if ((value == NULL) || (strcmp(value, "") == 0)) {
+      // simple symbol - no need to quote it
+      safecat(lcc_opt, "-D", MAX_LINELEN);
+      safecat(lcc_opt, name, MAX_LINELEN);
+      safecat(lcc_opt, " ", MAX_LINELEN);
+   }
+   else {
+      // complex symbol - must quote it
+      safecat(lcc_opt, "-D\"", MAX_LINELEN);
+      safecat(lcc_opt, name, MAX_LINELEN);
+      safecat(lcc_opt, "=", MAX_LINELEN);
+      safecat(lcc_opt, value, MAX_LINELEN);
+      safecat(lcc_opt, "\" ", MAX_LINELEN);
+   }
+}
+
+/*
  * add the definition of a Catalina symbol to the lcc command line,
  * quoting as necessary. Note that we add it as both a Catalina
- * symbol and as a C symbol (prefixed with "__CATALINA_"). The
- * value can be the null string. Note that quoting only works 
- * on the P2, where we use p2_asm as our assembler. On the P1
- * the value should always be the null string.
+ * symbol and as a C preprocessor symbol (prefixed with "__CATALINA_"). 
+ * The value can be the null string. Note that quoting catalina symbols 
+ * only works on the P2, where we use p2_asm as our assembler. On the 
+ * P1 the value should always be the null string.
  */
 void catalina_symboldef(char *name, char *value) {
    if ((value == NULL) || (strcmp(value, "") == 0)) {
       // simple symbol - no need to quote it (works on P1 or P2)
-      safecat(lcc_cmd, "-D__CATALINA_", MAX_LINELEN);
-      safecat(lcc_cmd, name, MAX_LINELEN);
-      safecat(lcc_cmd, value, MAX_LINELEN);
-      safecat(lcc_cmd, " -Wl-C", MAX_LINELEN);
-      safecat(lcc_cmd, name, MAX_LINELEN);
-      safecat(lcc_cmd, value, MAX_LINELEN);
-      safecat(lcc_cmd, " ", MAX_LINELEN);
+      safecat(lcc_opt, "-D__CATALINA_", MAX_LINELEN);
+      safecat(lcc_opt, name, MAX_LINELEN);
+      safecat(lcc_opt, value, MAX_LINELEN);
+      safecat(lcc_opt, " -Wl-C", MAX_LINELEN);
+      safecat(lcc_opt, name, MAX_LINELEN);
+      safecat(lcc_opt, " ", MAX_LINELEN);
    }
    else {
       // complex symbol - must quote it (works on P2 only!)
-      safecat(lcc_cmd, "-D\"__CATALINA_", MAX_LINELEN);
-      safecat(lcc_cmd, name, MAX_LINELEN);
-      safecat(lcc_cmd, value, MAX_LINELEN);
-      safecat(lcc_cmd, "\" ", MAX_LINELEN);
-      safecat(lcc_cmd, "-Wl-C\"", MAX_LINELEN);
-      safecat(lcc_cmd, name, MAX_LINELEN);
-      safecat(lcc_cmd, value, MAX_LINELEN);
-      safecat(lcc_cmd, "\" ", MAX_LINELEN);
+      safecat(lcc_opt, "-D\"__CATALINA_", MAX_LINELEN);
+      safecat(lcc_opt, name, MAX_LINELEN);
+      safecat(lcc_opt, value, MAX_LINELEN);
+      safecat(lcc_opt, "\" ", MAX_LINELEN);
+      safecat(lcc_opt, "-Wl-C\"", MAX_LINELEN);
+      safecat(lcc_opt, name, MAX_LINELEN);
+      safecat(lcc_opt, "=", MAX_LINELEN);
+      safecat(lcc_opt, value, MAX_LINELEN);
+      safecat(lcc_opt, "\" ", MAX_LINELEN);
    }
 }
 /*
@@ -961,7 +1006,38 @@ void delete(char *files) {
 int pass_symbol_to_compiler(char *symbol, int *code) {
    int pass = 1;
 
-   if (strcmp (symbol, "EEPROM") == 0) {
+   if (isdigit(symbol[0])) {
+     pass = 0; // don't pass numeric symbols
+     if (strcmp(symbol,"89") == 0) {
+        standard = 89;
+     }
+     else if (strcmp(symbol,"90") == 0) {
+        standard = 90;
+     }
+     else if (strcmp(symbol,"95") == 0) {
+        standard = 95;
+     }
+     else if (strcmp(symbol,"99") == 0) {
+        standard = 99;
+     }
+     else if (strcmp(symbol,"11") == 0) {
+        standard = 11;
+     }
+     else if (strcmp(symbol,"17") == 0) {
+        standard = 17;
+     }
+     else if (strcmp(symbol,"23") == 0) {
+        standard = 23;
+     }
+     else {
+       fprintf(stderr, "Uknown C standard specified - ignoring\n");
+     }
+     if ((standard != 89) && (standard != 90) && ((glevel > 0) || parallel)) {
+        fprintf(stderr, "selected C standard is incompatible with -g and -Z - ignoring\n");
+        standard = 89;
+     }
+   }
+   else if (strcmp (symbol, "EEPROM") == 0) {
       if ((layout < 0)||(layout == 1)) {
          if (verbose) {
             fprintf(stderr, "EEPROM implies -x1\n");
@@ -1070,11 +1146,11 @@ int pass_symbol_to_compiler(char *symbol, int *code) {
    }
    else if (strcmp (symbol, "QUICKBUILD") == 0) {
       quickbuild = 1;
-      safecat(lcc_cmd, "-Wl-q ", MAX_LINELEN);
+      safecat(lcc_opt, "-Wl-q ", MAX_LINELEN);
    }
    else if (strcmp (symbol, "QUICKFORCE") == 0) {
       quickforce = 1;
-      safecat(lcc_cmd, "-Wl-Q ", MAX_LINELEN);
+      safecat(lcc_opt, "-Wl-Q ", MAX_LINELEN);
    }
    else if (strcmp (symbol, "COMPACT") == 0) {
       pass = 0; // don't pass this symbol yet - we do it later
@@ -1276,7 +1352,7 @@ int decode_arguments (int argc, char *argv[]) {
                      banner();
                      fprintf(stderr, "compile only\n");
                   }
-                  safecat(lcc_cmd, "-c ", MAX_LINELEN);
+                  safecat(lcc_opt, "-c ", MAX_LINELEN);
                   break;
 
                case 'd':
@@ -1313,9 +1389,9 @@ int decode_arguments (int argc, char *argv[]) {
                      code = -1;
                   }
                   else {
-                     safecat(lcc_cmd, " -D", MAX_LINELEN);
-                     safecat(lcc_cmd, arg, MAX_LINELEN);
-                     safecat(lcc_cmd, " ", MAX_LINELEN);
+                     safecat(lcc_opt, " -D", MAX_LINELEN);
+                     safecat(lcc_opt, arg, MAX_LINELEN);
+                     safecat(lcc_opt, " ", MAX_LINELEN);
                      if (verbose) {
                         banner();
                         fprintf(stderr, "define symbol %s\n", arg);
@@ -1554,9 +1630,9 @@ int decode_arguments (int argc, char *argv[]) {
                   }
                   else {
                      char libstr[MAX_LINELEN] = "";
-                     safecat(lcc_cmd, "-l", MAX_LINELEN);
-                     safecat(lcc_cmd, arg, MAX_LINELEN);
-                     safecat(lcc_cmd, " ", MAX_LINELEN);
+                     safecat(lcc_opt, "-l", MAX_LINELEN);
+                     safecat(lcc_opt, arg, MAX_LINELEN);
+                     safecat(lcc_opt, " ", MAX_LINELEN);
                      // Now define a library symbol for LCC and the binder
                      sprintf(libstr,"lib%s", arg);
                      catalina_symboldef(libstr, "");
@@ -1784,7 +1860,7 @@ int decode_arguments (int argc, char *argv[]) {
                      banner();
                      fprintf(stderr, "compile to assembly only\n");
                   }
-                  safecat(lcc_cmd, "-S ", MAX_LINELEN);
+                  safecat(lcc_opt, "-S ", MAX_LINELEN);
                   break;
 
                case 't':
@@ -1835,11 +1911,11 @@ int decode_arguments (int argc, char *argv[]) {
                      // Note that we undefine the symbol both for LCC and also for the 
                      // binder, but for LCC we prefix it with "__CATALINA_" to avoid
                      // colliding with user symbols
-                     safecat(lcc_cmd, "-U__CATALINA_", MAX_LINELEN);
-                     safecat(lcc_cmd, arg, MAX_LINELEN);
-                     safecat(lcc_cmd, " -Wl-U", MAX_LINELEN);
-                     safecat(lcc_cmd, arg, MAX_LINELEN);
-                     safecat(lcc_cmd, " ", MAX_LINELEN);
+                     safecat(lcc_opt, "-U__CATALINA_", MAX_LINELEN);
+                     safecat(lcc_opt, arg, MAX_LINELEN);
+                     safecat(lcc_opt, " -Wl-U", MAX_LINELEN);
+                     safecat(lcc_opt, arg, MAX_LINELEN);
+                     safecat(lcc_opt, " ", MAX_LINELEN);
                      if (verbose) {
                         banner();
                         fprintf(stderr, "undefine symbol %s\n", arg);
@@ -1854,8 +1930,8 @@ int decode_arguments (int argc, char *argv[]) {
                      fprintf(stderr, "untidy mode\n");
                      fprintf(stderr, "passing switch %s\n", argv[i]);
                   }
-                  pathcat(lcc_cmd, argv[i], NULL, MAX_LINELEN);
-                  safecat(lcc_cmd, " ", MAX_LINELEN);
+                  pathcat(lcc_opt, argv[i], NULL, MAX_LINELEN);
+                  safecat(lcc_opt, " ", MAX_LINELEN);
                   break;
 
                case 'v':
@@ -1876,8 +1952,8 @@ int decode_arguments (int argc, char *argv[]) {
                      code = -1;
                   }
                   else {
-                     safecat(lcc_cmd, arg, MAX_LINELEN);
-                     safecat(lcc_cmd, " ", MAX_LINELEN);
+                     safecat(lcc_opt, arg, MAX_LINELEN);
+                     safecat(lcc_opt, " ", MAX_LINELEN);
                      if (verbose) {
                         banner();
                         fprintf(stderr, "passing option %s\n", arg);
@@ -1967,40 +2043,46 @@ int decode_arguments (int argc, char *argv[]) {
                   break;
 
                case 'g':
-                  if (verbose) {
-                     banner();
-                     fprintf(stderr, "generate debug information - listing selected\n");
-                  }
-                  listing = 1;
-                  if (strlen(argv[i]) == 2) {
-                     glevel = 1;
+                  if (standard > 90) {
+                       banner();
+                       fprintf(stderr, "debug incompatible with selected C standard - ignoring\n");
                   }
                   else {
-                     // use remainder of this arg
-                     sscanf(&argv[i][2], "%d", &glevel);
-                  }
-                  if ((glevel <= 0) || (glevel > 9)) {
-                     glevel = 1; // glevel must be 1 to 9
-                  }
-                  if (verbose) {
-                     fprintf(stderr, "debugging level %d\n", glevel);
-                  }
-                  optnum[0] = '0' + glevel;
-                  optnum[1] = ' ';
-                  optnum[2] = '\0';
-                  safecat(lcc_cmd, argv[i], MAX_LINELEN);
-                  safecat(lcc_cmd, " -Wl-g", MAX_LINELEN);
-                  safecat(lcc_cmd, optnum, MAX_LINELEN);
-                  safecat(lcc_cmd, " -Wf-g", MAX_LINELEN);
-                  safecat(lcc_cmd, optnum, MAX_LINELEN);
-                  catalina_symboldef("BLACKBOX", "");
-                  if (target_named) {
-                     banner();
-                     fprintf(stderr, "option -g will NOT override current target (%s)\n", tgt_name);
-                  }
-                  else {
-                     safecpy(tgt_name, DEBUG_TARGET, MAX_LINELEN);
-                     target_named = 1;
+                     if (verbose) {
+                        banner();
+                        fprintf(stderr, "generate debug information - listing selected\n");
+                     }
+                     listing = 1;
+                     if (strlen(argv[i]) == 2) {
+                        glevel = 1;
+                     }
+                     else {
+                        // use remainder of this arg
+                        sscanf(&argv[i][2], "%d", &glevel);
+                     }
+                     if ((glevel <= 0) || (glevel > 9)) {
+                        glevel = 1; // glevel must be 1 to 9
+                     }
+                     if (verbose) {
+                        fprintf(stderr, "debugging level %d\n", glevel);
+                     }
+                     optnum[0] = '0' + glevel;
+                     optnum[1] = ' ';
+                     optnum[2] = '\0';
+                     safecat(lcc_opt, argv[i], MAX_LINELEN);
+                     safecat(lcc_opt, " -Wl-g", MAX_LINELEN);
+                     safecat(lcc_opt, optnum, MAX_LINELEN);
+                     safecat(lcc_opt, " -Wf-g", MAX_LINELEN);
+                     safecat(lcc_opt, optnum, MAX_LINELEN);
+                     catalina_symboldef("BLACKBOX", "");
+                     if (target_named) {
+                        banner();
+                        fprintf(stderr, "option -g will NOT override current target (%s)\n", tgt_name);
+                     }
+                     else {
+                        safecpy(tgt_name, DEBUG_TARGET, MAX_LINELEN);
+                        target_named = 1;
+                     }
                   }
                   break;
 
@@ -2013,10 +2095,16 @@ int decode_arguments (int argc, char *argv[]) {
                   break;
 
                case 'Z':
-                  parallel = 1;
-                  if (verbose) {
-                     banner();
-                     fprintf(stderr, "Parallelizer will be invoked on files following '-Z'\n");
+                  if (standard > 90) {
+                       banner();
+                       fprintf(stderr, "Parallelizer incompatible with selected C standard - ignoring\n");
+                  }
+                  else {
+                     parallel = 1;
+                     if (verbose) {
+                        banner();
+                        fprintf(stderr, "Parallelizer will be invoked on files following '-Z'\n");
+                     }
                   }
                   break;
 
@@ -2034,8 +2122,8 @@ int decode_arguments (int argc, char *argv[]) {
                      banner();
                      fprintf(stderr, "passing switch %s\n", argv[i]);
                   }
-                  pathcat(lcc_cmd, argv[i], NULL, MAX_LINELEN);
-                  safecat(lcc_cmd, " ", MAX_LINELEN);
+                  pathcat(lcc_opt, argv[i], NULL, MAX_LINELEN);
+                  safecat(lcc_opt, " ", MAX_LINELEN);
                   break;
 
             }
@@ -2060,9 +2148,9 @@ int decode_arguments (int argc, char *argv[]) {
                pathcat(par_files, argv[i], NULL, MAX_LINELEN);
                safecat(par_files, " ", MAX_LINELEN);
                // add name of output file (adjusted input file) to lcc command
-               pathcat(lcc_cmd, argv[i], NULL, MAX_LINELEN);
-               adjust_filename(lcc_cmd, MAX_LINELEN);
-               safecat(lcc_cmd, " ", MAX_LINELEN);
+               pathcat(lcc_opt, argv[i], NULL, MAX_LINELEN);
+               adjust_filename(lcc_opt, MAX_LINELEN);
+               safecat(lcc_opt, " ", MAX_LINELEN);
                // remember adjusted input file name so we can delete it later
                pathcat(del_files, argv[i], NULL, MAX_LINELEN);
                adjust_filename(del_files, MAX_LINELEN);
@@ -2072,8 +2160,8 @@ int decode_arguments (int argc, char *argv[]) {
             }
             else {
                // add input file name to lcc command
-               pathcat(lcc_cmd, argv[i], NULL, MAX_LINELEN);
-               safecat(lcc_cmd, " ", MAX_LINELEN);
+               pathcat(lcc_opt, argv[i], NULL, MAX_LINELEN);
+               safecat(lcc_opt, " ", MAX_LINELEN);
             }
             if (verbose) {
                banner();
@@ -2097,49 +2185,49 @@ int decode_arguments (int argc, char *argv[]) {
    }
 
    if (verbose > 0) {
-      safecat(lcc_cmd, "-v ", MAX_LINELEN);
+      safecat(lcc_opt, "-v ", MAX_LINELEN);
       for (i = 0; i < verbose; i++) {
-         safecat(lcc_cmd, "-Wl-v ", MAX_LINELEN);
+         safecat(lcc_opt, "-Wl-v ", MAX_LINELEN);
       }
    }
    if (quickbuild) {
-      safecat(lcc_cmd, "-Wl-q ", MAX_LINELEN);
+      safecat(lcc_opt, "-Wl-q ", MAX_LINELEN);
    }
    if (quickforce) {
-      safecat(lcc_cmd, "-Wl-Q ", MAX_LINELEN);
+      safecat(lcc_opt, "-Wl-Q ", MAX_LINELEN);
    }
    if (suppress == 1) {
-      safecat(lcc_cmd, "-Wl-k ", MAX_LINELEN);
+      safecat(lcc_opt, "-Wl-k ", MAX_LINELEN);
    }
    if (diagnose > 0) {
       for (i = 0; i < diagnose; i++) {
-         safecat(lcc_cmd, "-Wl-d ", MAX_LINELEN);
+         safecat(lcc_opt, "-Wl-d ", MAX_LINELEN);
       }
    }
    if (format == 1) {
-      safecat(lcc_cmd, "-Wl-w-b ", MAX_LINELEN);
+      safecat(lcc_opt, "-Wl-w-b ", MAX_LINELEN);
    }
    if (format == 2){
-      safecat(lcc_cmd, "-Wl-w-e ", MAX_LINELEN);
+      safecat(lcc_opt, "-Wl-w-e ", MAX_LINELEN);
    }
    if (memory > 0) {
       sprintf(option, "-Wl-M%d ", memory);
-      safecat(lcc_cmd, option, MAX_LINELEN);
+      safecat(lcc_opt, option, MAX_LINELEN);
    }
    if (readonly > 0) {
       sprintf(option, "-Wl-R%d ", readonly);
-      safecat(lcc_cmd, option, MAX_LINELEN);
+      safecat(lcc_opt, option, MAX_LINELEN);
    }
    if (readwrite > 0) {
       sprintf(option, "-Wl-P%d ", readwrite);
-      safecat(lcc_cmd, option, MAX_LINELEN);
+      safecat(lcc_opt, option, MAX_LINELEN);
    }
    if (heaptop > 0) {
       sprintf(option, "-Wl-H%d ", heaptop);
-      safecat(lcc_cmd, option, MAX_LINELEN);
+      safecat(lcc_opt, option, MAX_LINELEN);
    }
    if (listing == 1) {
-      safecat(lcc_cmd, "-Wl-w-l ", MAX_LINELEN);
+      safecat(lcc_opt, "-Wl-w-l ", MAX_LINELEN);
    }
    if (diagnose) {
       banner();
@@ -2147,16 +2235,16 @@ int decode_arguments (int argc, char *argv[]) {
    }
    if (output_named) {
       if (output_override || (!asm_only && !comp_only)) {
-         safecat(lcc_cmd, "-o ", MAX_LINELEN);
-         pathcat(lcc_cmd, out_name, NULL, MAX_LINELEN);
-         safecat(lcc_cmd, " ", MAX_LINELEN);
+         safecat(lcc_opt, "-o ", MAX_LINELEN);
+         pathcat(lcc_opt, out_name, NULL, MAX_LINELEN);
+         safecat(lcc_opt, " ", MAX_LINELEN);
       }
    }
 
    if (target_named) {
-      safecat(lcc_cmd, "-Wl-t", MAX_LINELEN);
-      pathcat(lcc_cmd, tgt_name, NULL, MAX_LINELEN);
-      safecat(lcc_cmd, " ", MAX_LINELEN);
+      safecat(lcc_opt, "-Wl-t", MAX_LINELEN);
+      pathcat(lcc_opt, tgt_name, NULL, MAX_LINELEN);
+      safecat(lcc_opt, " ", MAX_LINELEN);
    }
    return code;
 }
@@ -2181,11 +2269,6 @@ void main(int argc, char *argv[]) {
       safecpy(lcc_path, DEFAULT_LCCDIR, MAX_LINELEN);
    }
 
-   // set up the LCC command with any default options from the environment
-   safecpy(lcc_cmd, "lcc ", MAX_LINELEN);
-   safecat(lcc_cmd, catalina_getenv(DEFAULT_OPT_ENV), MAX_LINELEN);
-   safecat(lcc_cmd, " ", MAX_LINELEN);
-
    // set up the default path (also used to display the help defaults)
    safecpy(def_tgt_path, lcc_path, MAX_LINELEN);
    safecat(def_tgt_path, DEFAULT_SEP, MAX_LINELEN);
@@ -2201,6 +2284,17 @@ void main(int argc, char *argv[]) {
          fprintf(stderr, "decoding arguments returned result %d\n", result);
       }
    }
+
+   // set up the LCC command with any default options from the environment
+   if ((standard == 89) || (standard == 90)) {
+      // use cpp as our preprocessor (by using the command lcc)
+      safecpy(lcc_cmd, "lcc ", MAX_LINELEN);
+   }
+   else {
+      // use cake as our preprocessor (by using the command clcc)
+      safecpy(lcc_cmd, "clcc ", MAX_LINELEN);
+   }
+
    // print banner now if not suppressed and not already printed
    if (suppress == 0) {
       banner();
@@ -2254,7 +2348,7 @@ void main(int argc, char *argv[]) {
       char clockstr[12] = "";
 
       // note that while we check reqd_extal, we actually send xtal_freq
-      sprintf(clockstr, "=%u", xtal_freq);
+      sprintf(clockstr, "%u", xtal_freq);
       if (verbose) {
          printf("_CLOCK_XTAL = %s\n",clockstr); 
       }
@@ -2265,19 +2359,19 @@ void main(int argc, char *argv[]) {
    if (result_Fout != 0) {
       char clockstr[12] = "";
 
-      sprintf(clockstr, "=%u", result_divd);
+      sprintf(clockstr, "%u", result_divd);
       if (verbose) {
          printf("_CLOCK_XDIV = %s\n",clockstr); 
       }
       catalina_symboldef("_CLOCK_XDIV", clockstr);
       
-      sprintf(clockstr, "=%u", result_mult);
+      sprintf(clockstr, "%u", result_mult);
       if (verbose) {
          printf("_CLOCK_MULT = %s\n",clockstr); 
       }
       catalina_symboldef("_CLOCK_MULT", clockstr);
       
-      sprintf(clockstr, "=%u", result_post);
+      sprintf(clockstr, "%u", result_post);
       if (verbose) {
          printf("_CLOCK_DIVP = %s\n",clockstr); 
       }
@@ -2292,7 +2386,7 @@ void main(int argc, char *argv[]) {
       }
       else {
          char baudstr[12] = "";
-         sprintf(baudstr, "=%u", baud_rate);
+         sprintf(baudstr, "%u", baud_rate);
          catalina_symboldef("_BAUDRATE", baudstr);
       }
    }
@@ -2329,26 +2423,26 @@ void main(int argc, char *argv[]) {
       optnum[0] = '0' + olevel;
       optnum[1] = ' ';
       optnum[2] = '\0';
-      safecat(lcc_cmd, " -Wl-O", MAX_LINELEN);
-      safecat(lcc_cmd, optnum, MAX_LINELEN);
+      safecat(lcc_opt, " -Wl-O", MAX_LINELEN);
+      safecat(lcc_opt, optnum, MAX_LINELEN);
    }
 
 
    // add the paths to the LCC command
    if (strlen(tgt_path) > 0) {
-      safecat(lcc_cmd, "-Wl-T", MAX_LINELEN);
-      pathcat(lcc_cmd, tgt_path, NULL, MAX_LINELEN);
-      safecat(lcc_cmd, " ", MAX_LINELEN);
+      safecat(lcc_opt, "-Wl-T", MAX_LINELEN);
+      pathcat(lcc_opt, tgt_path, NULL, MAX_LINELEN);
+      safecat(lcc_opt, " ", MAX_LINELEN);
    }
    if (strlen(tmp_path) > 0) {
-      safecat(lcc_cmd, "-tempdir=", MAX_LINELEN);
-      pathcat(lcc_cmd, tmp_path, NULL, MAX_LINELEN);
-      safecat(lcc_cmd, " ", MAX_LINELEN);
+      safecat(lcc_opt, "-tempdir=", MAX_LINELEN);
+      pathcat(lcc_opt, tmp_path, NULL, MAX_LINELEN);
+      safecat(lcc_opt, " ", MAX_LINELEN);
    }
    if (strlen(inc_path) > 0) {
-      safecat(lcc_cmd, "-I", MAX_LINELEN);
-      pathcat(lcc_cmd, inc_path, NULL, MAX_LINELEN);
-      safecat(lcc_cmd, " ", MAX_LINELEN);
+      safecat(lcc_opt, "-I", MAX_LINELEN);
+      pathcat(lcc_opt, inc_path, NULL, MAX_LINELEN);
+      safecat(lcc_opt, " ", MAX_LINELEN);
    }
 
    // specify layout and library path
@@ -2357,50 +2451,50 @@ void main(int argc, char *argv[]) {
       layout = 0;
    }
    sprintf(option, "-Wl-x%d ", layout);
-   safecat(lcc_cmd, option, MAX_LINELEN);
+   safecat(lcc_opt, option, MAX_LINELEN);
 
    // specify assembler
    if (assembler == 1) {
       catalina_symboldef("OPENSPIN__", "");
-      safecat(lcc_cmd, "-Wl-as ", MAX_LINELEN);
+      safecat(lcc_opt, "-Wl-as ", MAX_LINELEN);
    }
    if (assembler == 2) {
       catalina_symboldef("P2PASM__", "");
-      safecat(lcc_cmd, "-Wl-ap ", MAX_LINELEN);
+      safecat(lcc_opt, "-Wl-ap ", MAX_LINELEN);
    }
 
    if (layout == 11) {
       if (prop_vers == 1) {
          // Propeller 1 (note - NATIVE mode on P1 not supported yet!)
-         safecat(lcc_cmd, "-target=catalina_native/win32 ", MAX_LINELEN);
+         safecat(lcc_opt, "-target=catalina_native/win32 ", MAX_LINELEN);
          catalina_symboldef("NATIVE", "");
          if ((asm_only == 0) && (comp_only == 0)) {
-            safecat(lcc_cmd, "-L", MAX_LINELEN);
-            pathcat(lcc_cmd, lib_path, NULL, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, LIB_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, P1_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, NATIVE_LIB_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, " ", MAX_LINELEN);
+            safecat(lcc_opt, "-L", MAX_LINELEN);
+            pathcat(lcc_opt, lib_path, NULL, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, LIB_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, P1_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, NATIVE_LIB_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, " ", MAX_LINELEN);
          }
       }
       else {
          // Propeller 2
-         safecat(lcc_cmd, "-target=catalina_native_p2/win32 -Wl-p2 ", MAX_LINELEN);
+         safecat(lcc_opt, "-target=catalina_native_p2/win32 -Wl-p2 ", MAX_LINELEN);
          catalina_symboldef("NATIVE", "");
          catalina_symboldef("P2", "");
          if ((asm_only == 0) && (comp_only == 0)) {
-            safecat(lcc_cmd, "-L", MAX_LINELEN);
-            pathcat(lcc_cmd, lib_path, NULL, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, LIB_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, P2_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, NATIVE_LIB_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, " ", MAX_LINELEN);
+            safecat(lcc_opt, "-L", MAX_LINELEN);
+            pathcat(lcc_opt, lib_path, NULL, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, LIB_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, P2_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, NATIVE_LIB_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, " ", MAX_LINELEN);
          }
       }
    }  
@@ -2410,32 +2504,32 @@ void main(int argc, char *argv[]) {
          // Propeller 1
          catalina_symboldef("TINY", "");
          if ((asm_only == 0) && (comp_only == 0)) {
-            safecat(lcc_cmd, "-L", MAX_LINELEN);
-            pathcat(lcc_cmd, lib_path, NULL, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, LIB_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, P1_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, SMALL_LIB_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, " ", MAX_LINELEN);
+            safecat(lcc_opt, "-L", MAX_LINELEN);
+            pathcat(lcc_opt, lib_path, NULL, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, LIB_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, P1_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, SMALL_LIB_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, " ", MAX_LINELEN);
          }
       }
       else {
          // Propeller 2
-         safecat(lcc_cmd, "-target=catalina_p2/win32 -Wl-p2 ", MAX_LINELEN);
+         safecat(lcc_opt, "-target=catalina_p2/win32 -Wl-p2 ", MAX_LINELEN);
          catalina_symboldef("TINY", "");
          catalina_symboldef("P2", "");
          if ((asm_only == 0) && (comp_only == 0)) {
-            safecat(lcc_cmd, "-L", MAX_LINELEN);
-            pathcat(lcc_cmd, lib_path, NULL, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, LIB_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, P2_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, SMALL_LIB_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, " ", MAX_LINELEN);
+            safecat(lcc_opt, "-L", MAX_LINELEN);
+            pathcat(lcc_opt, lib_path, NULL, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, LIB_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, P2_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, SMALL_LIB_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, " ", MAX_LINELEN);
          }
       }
    }
@@ -2445,15 +2539,15 @@ void main(int argc, char *argv[]) {
          // use normal model code generator, but indicate XMM (SMALL)
          catalina_symboldef("SMALL", "");
          if ((asm_only == 0) && (comp_only == 0)) {
-            safecat(lcc_cmd, "-L", MAX_LINELEN);
-            pathcat(lcc_cmd, lib_path, NULL, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, LIB_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, P1_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, SMALL_LIB_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, " ", MAX_LINELEN);
+            safecat(lcc_opt, "-L", MAX_LINELEN);
+            pathcat(lcc_opt, lib_path, NULL, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, LIB_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, P1_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, SMALL_LIB_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, " ", MAX_LINELEN);
          }
       }
       else {
@@ -2461,17 +2555,17 @@ void main(int argc, char *argv[]) {
          // use normal model code generator, but indicate XMM (SMALL)
          catalina_symboldef("SMALL", "");
          catalina_symboldef("P2", "");
-         safecat(lcc_cmd, "-Wl-p2 ", MAX_LINELEN);
+         safecat(lcc_opt, "-Wl-p2 ", MAX_LINELEN);
          if ((asm_only == 0) && (comp_only == 0)) {
-            safecat(lcc_cmd, "-L", MAX_LINELEN);
-            pathcat(lcc_cmd, lib_path, NULL, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, LIB_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, P2_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, SMALL_LIB_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, " ", MAX_LINELEN);
+            safecat(lcc_opt, "-L", MAX_LINELEN);
+            pathcat(lcc_opt, lib_path, NULL, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, LIB_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, P2_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, SMALL_LIB_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, " ", MAX_LINELEN);
          }
       } 
    }
@@ -2479,36 +2573,36 @@ void main(int argc, char *argv[]) {
       if (prop_vers == 1) {
          // Propeller 1
          // use large model code generator, and indicate XMM (LARGE)
-         safecat(lcc_cmd, "-target=catalina_large/win32 ", MAX_LINELEN);
+         safecat(lcc_opt, "-target=catalina_large/win32 ", MAX_LINELEN);
          catalina_symboldef("LARGE", "");
          if ((asm_only == 0) && (comp_only == 0)) {
-            safecat(lcc_cmd, "-L", MAX_LINELEN);
-            pathcat(lcc_cmd, lib_path, NULL, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, LIB_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, P1_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, LARGE_LIB_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, " ", MAX_LINELEN);
+            safecat(lcc_opt, "-L", MAX_LINELEN);
+            pathcat(lcc_opt, lib_path, NULL, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, LIB_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, P1_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, LARGE_LIB_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, " ", MAX_LINELEN);
          }
       }
       else {
          // Propeller 2
          // use large model code generator, and indicate XMM (LARGE)
-         safecat(lcc_cmd, "-target=catalina_large/win32 -Wl-p2 ", MAX_LINELEN);
+         safecat(lcc_opt, "-target=catalina_large/win32 -Wl-p2 ", MAX_LINELEN);
          catalina_symboldef("LARGE", "");
          catalina_symboldef("P2", "");
          if ((asm_only == 0) && (comp_only == 0)) {
-            safecat(lcc_cmd, "-L", MAX_LINELEN);
-            pathcat(lcc_cmd, lib_path, NULL, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, LIB_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, P2_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, LARGE_LIB_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, " ", MAX_LINELEN);
+            safecat(lcc_opt, "-L", MAX_LINELEN);
+            pathcat(lcc_opt, lib_path, NULL, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, LIB_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, P2_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, LARGE_LIB_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, " ", MAX_LINELEN);
          }
       }
    }
@@ -2516,35 +2610,35 @@ void main(int argc, char *argv[]) {
       // use compact code generator, and indicate CMM (COMPACT)
       if (prop_vers == 1) {
          // Propeller 1
-         safecat(lcc_cmd, "-target=catalina_compact/win32 ", MAX_LINELEN);
+         safecat(lcc_opt, "-target=catalina_compact/win32 ", MAX_LINELEN);
          catalina_symboldef("COMPACT", "");
          if ((asm_only == 0) && (comp_only == 0)) {
-            safecat(lcc_cmd, "-L", MAX_LINELEN);
-            pathcat(lcc_cmd, lib_path, NULL, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, LIB_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, P1_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, COMPACT_LIB_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, " ", MAX_LINELEN);
+            safecat(lcc_opt, "-L", MAX_LINELEN);
+            pathcat(lcc_opt, lib_path, NULL, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, LIB_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, P1_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, COMPACT_LIB_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, " ", MAX_LINELEN);
          }
       }
       else {
          // Propeller 2
-         safecat(lcc_cmd, "-target=catalina_compact/win32 -Wl-p2 ", MAX_LINELEN);
+         safecat(lcc_opt, "-target=catalina_compact/win32 -Wl-p2 ", MAX_LINELEN);
          catalina_symboldef("COMPACT", "");
          catalina_symboldef("P2", "");
          if ((asm_only == 0) && (comp_only == 0)) {
-            safecat(lcc_cmd, "-L", MAX_LINELEN);
-            pathcat(lcc_cmd, lib_path, NULL, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, LIB_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, P2_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, DEFAULT_SEP, MAX_LINELEN);
-            safecat(lcc_cmd, COMPACT_LIB_SUFFIX, MAX_LINELEN);
-            safecat(lcc_cmd, " ", MAX_LINELEN);
+            safecat(lcc_opt, "-L", MAX_LINELEN);
+            pathcat(lcc_opt, lib_path, NULL, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, LIB_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, P2_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, DEFAULT_SEP, MAX_LINELEN);
+            safecat(lcc_opt, COMPACT_LIB_SUFFIX, MAX_LINELEN);
+            safecat(lcc_opt, " ", MAX_LINELEN);
          }
       }
    }
@@ -2590,6 +2684,11 @@ void main(int argc, char *argv[]) {
       }
       exit(result);
    }
+
+   safecat(lcc_cmd, lcc_opt, MAX_LINELEN);
+   safecat(lcc_cmd, " ", MAX_LINELEN);
+   safecat(lcc_cmd, catalina_getenv(DEFAULT_OPT_ENV), MAX_LINELEN);
+   safecat(lcc_cmd, " ", MAX_LINELEN);
 
    if (verbose && (file_count > 0)) {
       fprintf(stderr, "lcc command = %s\n", lcc_cmd);

@@ -163,6 +163,6 @@ unsigned long _wait_ATN(unsigned long timeout);
 /*
  * request the attention of all the cogs specified in 'cogs' bits 0 .. 15
  */
-_cog_ATN(unsigned long cogs);
+void _cog_ATN(unsigned long cogs);
 
 #endif

@@ -100,9 +100,9 @@ C_pthread_join_5
  calld PA,#RETF
 
 
-' Catalina Import _pthread_init_lock_pool
-
 ' Catalina Import free
+
+' Catalina Import _pthread_init_lock_pool
 
 ' Catalina Import errno
 

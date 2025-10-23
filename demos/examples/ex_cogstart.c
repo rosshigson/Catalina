@@ -12,6 +12,8 @@
  * 
  */
 #include <cog.h>
+#include <prop.h>
+#include <stdio.h>
 
 #define STACK_SIZE 200
 

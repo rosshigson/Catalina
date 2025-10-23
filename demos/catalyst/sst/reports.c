@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+extern int min(int a, int b);
+
 void attakreport(void) {
 	if (future[FCDBAS] < 1e30) {
 		proutn("Starbase in ");

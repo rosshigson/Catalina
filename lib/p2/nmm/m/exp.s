@@ -51,7 +51,7 @@ C_exp_8
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C___I_sN_an ' CALL addrg
+ long @C_isnan ' CALL addrg
  cmps r0,  #0 wz
  if_z jmp #\C_exp_11 ' EQI4
  mov r22, #33 ' reg <- coni
@@ -216,9 +216,9 @@ C_exp_1
 
 ' Catalina Import errno
 
-' Catalina Import ldexp
+' Catalina Import isnan
 
-' Catalina Import __IsNan
+' Catalina Import ldexp
 
 ' Catalina Import __huge_val
 

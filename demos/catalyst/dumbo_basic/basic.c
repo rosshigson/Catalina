@@ -21,6 +21,7 @@
 #include <time.h>
 
 #ifdef __CATALINA__
+#include <prop.h>
 #include <rtc.h>
 #include <hmi.h>
 #include <hmalloc.h>
@@ -414,7 +415,7 @@ static unsigned char *stringstring(void);
 static unsigned char *stringdimvar(void);
 static unsigned char *stringvar(void);
 static unsigned char *stringliteral(void);
-static unsigned char *varptrstring();
+static unsigned char *varptrstring(void);
 
 static int strict_integer(RVALUE x);
 static int integer(RVALUE x);
@@ -5273,7 +5274,7 @@ void next_token(void) {
   Returns line to jump to, or -1 to end program
 
 */
-static int do_while()
+static int do_while(void)
 {
   int index = current_indx;
   RVALUE condition;
@@ -5472,7 +5473,7 @@ static int line_index(RVALUE x) {
   if (x.type == INTID) {
      return findline(x.val.ival);
   }
-  if ( x.val.dval < INT_MIN || x.val.dval > INT_MAX ) {
+  if ( x.val.dval < (float)INT_MIN || x.val.dval > (float)INT_MAX ) {
      seterror( ERR_BADVALUE );
   }
   if ( x.val.dval != floor(x.val.dval) ) {
@@ -5613,6 +5614,7 @@ static int argtype(const unsigned char *id, int len) {
        //debug("argtype will be based on '%c'\n",toupper(id[0]));
        return deftype[toupper(id[0])-'A'];
    }
+   return INTID;
 }
 
 /*
@@ -6755,6 +6757,7 @@ int precedence(int token) {
       default:
         return 0;
    }
+   return 0;
 }
 
 static void debug_val(RVALUE val) {
@@ -7681,7 +7684,7 @@ static RVALUE factor(void)
           }
        }
        else {
-          if (answer.val.dval < INT_MIN) {
+          if (answer.val.dval < (float)INT_MIN) {
              seterror(ERR_OVERFLOW);
           }
           else {
@@ -8261,6 +8264,7 @@ static RVALUE variable(void)
         seterror(ERR_BADTYPE);
         return DUMMY_IVALUE;
   }
+  return answer;
 }
 
 /*
@@ -8889,6 +8893,7 @@ static VARIABLE *addautovar(const unsigned char *id)
          return addstring(id);
          break;
    }
+   return 0;
 }
 
 /*
@@ -10107,7 +10112,7 @@ static int strict_integer(RVALUE x) {
   if (x.type == INTID) {
      return x.val.ival;
   }
-  if ( x.val.dval < INT_MIN || x.val.dval > INT_MAX ) {
+  if ( x.val.dval < (float)INT_MIN || x.val.dval > (float)INT_MAX ) {
      seterror( ERR_BADVALUE );
   }
   if ( x.val.dval != floor(x.val.dval) ) {
@@ -10124,7 +10129,7 @@ static int integer(RVALUE x) {
   if (x.type == INTID) {
      return x.val.ival;
   }
-  if ( x.val.dval < INT_MIN || x.val.dval > INT_MAX ) {
+  if ( x.val.dval < (float)INT_MIN || x.val.dval > (float)INT_MAX ) {
      seterror( ERR_BADVALUE );
   }
   return (int) floor(x.val.dval);
@@ -10603,6 +10608,7 @@ static int gettoken(void)
 
     return TOKERR;
   } 
+  return TOKERR;
 }
 
 /*
@@ -10854,6 +10860,7 @@ static int tokenlen(void)
 #endif      
       return 0;
   }
+  return 0;
 }
 
 

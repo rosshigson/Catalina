@@ -25,6 +25,10 @@
 #include "lstate.h"
 #include "lundump.h"
 
+#ifdef __CATALINA__
+#include <prop.h>
+#endif
+
 static void PrintFunction(const Proto* f, int full);
 #define luaU_print	PrintFunction
 

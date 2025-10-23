@@ -14,6 +14,11 @@
 #include <lualib.h>
 #include <lauxlib.h>
 
+#include <prop.h>
+#ifdef __CATALINA_P2
+#include <prop2.h>
+#endif
+
 #define NO_LOCK -1  // no lock required (see _register_services)
 
 // structure used to pass 2 long parameters to a service
@@ -128,6 +133,10 @@ void _dispatch_C_bg(svc_list_t list, background bg);
 
 // use _dispatch_Lua_bg if a Lua background task is required
 void _dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg);
+
+// retrieve the list of Lua services from the "service_index" table
+// (note that all the services in this table must be serial services)
+int _load_Lua_service_list(lua_State *L, svc_list_t services, int max);
 
 
 #endif // _SERVICE_H

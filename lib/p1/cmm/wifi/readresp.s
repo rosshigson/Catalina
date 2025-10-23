@@ -209,9 +209,9 @@ C_wifi_R_ead_R_esponse_D_ata_1
  word I16B_POPM + 67<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
-' Catalina Import isscanf
-
 ' Catalina Import wifi_timed_rx
+
+' Catalina Import isscanf
 
 ' Catalina Cnst
 

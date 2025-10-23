@@ -30,9 +30,18 @@
  \***************************************************************************/
 
 /*
- * include standard C library
+ * include standard C library functions:
  */
 #include <stdlib.h>
+#include <string.h>
+
+/*
+ * include propeller functions
+ */
+#include <prop.h>
+#ifdef __CATALINA_P2
+#include <prop2.h>
+#endif
 
 /*
  * include Catalina multi-threading:

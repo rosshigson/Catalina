@@ -117,9 +117,9 @@ C_pthread_join_5
  word I16B_POPM + 1<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
-' Catalina Import _pthread_init_lock_pool
-
 ' Catalina Import free
+
+' Catalina Import _pthread_init_lock_pool
 
 ' Catalina Import errno
 

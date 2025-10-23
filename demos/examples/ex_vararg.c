@@ -1,5 +1,5 @@
 #include <stdarg.h>
-#include <stdio.h>
+#include <hmi.h>
 
 struct x {
    int x, y;

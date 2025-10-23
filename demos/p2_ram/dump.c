@@ -26,9 +26,12 @@
 #error THIS PROGRAM MUST BE COMPILED FOR THE PROPELLER 2 (-p2)
 #endif
 
+#include <ctype.h>
 #include <stdio.h>
+#include <string.h>
 #include <stdint.h>
 #include <plugin.h>
+#include <hmi.h>
 #if defined(__CATALINA_HYPER)||defined(__CATALINA_libhyper)
 #include <hyper.h>
 #define ram_read hyper_read

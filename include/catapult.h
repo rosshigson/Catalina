@@ -4,6 +4,7 @@
 #include <cog.h>
 #include <hmi.h>
 #include <plugin.h>
+#include <fs.h>
 
 #ifdef __CATAPULTED // file has been processed by Catalina Catapult
 

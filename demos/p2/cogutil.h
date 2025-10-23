@@ -2,8 +2,10 @@
 #define __MULTICOG_UTILITIES_H
 
 /*
- * include the definitions of the hmi functions:
+ * include the definitions of propeller and hmi functions:
  */
+#include <prop.h>
+#include <prop2.h>
 #include <hmi.h>
 
 /*
@@ -22,7 +24,7 @@ void cogsafe_print_str(int lock, char *format, char *str);
  * define some handy utility functions:
  */
 void wait(int milliseconds);
-void randomize();
+void randomize(void);
 int  random(int max);
 
 #endif // __MULTICOG_UTILITIES_H

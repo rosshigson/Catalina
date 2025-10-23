@@ -1,7 +1,7 @@
 /* 
  * Created from flash.binary with option -a
  * 
- * by Spin to C Array Converter, version 7.6
+ * by Spin to C Array Converter, version 8.8.1
  */
 
 #define FLASH_CLOCKFREQ  80000000

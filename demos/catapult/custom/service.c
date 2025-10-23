@@ -1,5 +1,3 @@
-#include <plugin.h>
-
 #include "service.h"
 
 /*

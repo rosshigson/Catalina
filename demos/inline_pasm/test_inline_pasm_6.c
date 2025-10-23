@@ -70,7 +70,7 @@ int sum(int a, int b, int c, int d) {
 
 // variables declared at file scope are global, and 
 // can be referenced using the _PASM() macro ...
-static value;
+static int value;
 
 // this function uses the _PASM() macro to refer to value ...
 void add_to_value(int a) {

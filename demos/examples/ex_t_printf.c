@@ -13,7 +13,7 @@ int main(void) {
    str = "hello!";
    i = 95;
    f = 9.5;
-   u = 0xdeadbeef;
+   u = 0xdeadbeefUL;
 
    t_printf("Welcome ... ");
    t_printf("to Catalina!\n\n");

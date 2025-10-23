@@ -382,7 +382,7 @@ NOTE: If you get a message about "cmd.exe" not being found, then Geany is
 using the Windows version of the file 'filetypes.c' (which contains default
 project build commands for files with a '.c' extension) instead of the Linux 
 version. This can happen if (for example) you cloned or downloaded sources 
-from GitHub (which is set up for Windows). To fix this, locate filetpes.c
+from GitHub (which is set up for Windows). To fix this, locate filetypes.c
 in the Geany data/filedefs folder (not the src folder, which also has a file
 of that name, but it is not the same file) and overwrite it with the version 
 contained in filetypes.c.linux, which should be in the same folder - i.e.

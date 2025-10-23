@@ -142,7 +142,7 @@ BEGIN {
             }
             getline;
          }
-         else if (($1 == "'" ) || ($1 == "byte") || ($1 == "word") || ($1 == "alignl")) {
+         else if (($1 == "'" ) || ($1 == "byte") || ($1 == "word") || (left($1,6) == "alignl")) {
             /* ignore these */
             getline;
          }

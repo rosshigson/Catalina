@@ -1,4 +1,5 @@
 #include <hmi.h>
+#include <prop.h>
 #include <stdlib.h>
 
 struct list_entry {

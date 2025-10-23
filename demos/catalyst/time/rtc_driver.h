@@ -66,6 +66,8 @@ void     rtc_set_minutes(uint32_t mn);
 
 void     rtc_set_hours(uint32_t hr);
 
+void     rtc_get_time(uint32_t *sc, uint32_t *mn, uint32_t *hr);
+  
 uint32_t rtc_get_hours();
 
 void     rtc_read_time(uint8_t *p_dest);
@@ -80,7 +82,7 @@ uint32_t rtc_get_date();
 
 uint32_t rtc_get_month();
 
-void rtc_set_month(uint32_t mon);
+void     rtc_set_month(uint32_t mon);
 
 void     rtc_set_date(uint32_t date);
 
@@ -91,6 +93,8 @@ uint32_t rtc_bcd2dec(uint32_t bcd);
 uint32_t rtc_get_year();
 
 void     rtc_set_year(uint32_t yr);
+
+void rtc_get_calendar(uint32_t *date, uint32_t *mon, uint32_t *yr);
 
 char *   rtc_day_name_short(uint32_t dow);
 
@@ -105,5 +109,11 @@ char *   rtc_time_12(uint32_t hr, uint32_t mn, uint32_t sc);
 void     rtc_generic_write(uint32_t r, uint8_t *p_buf, uint32_t len);
 
 void     rtc_generic_read(uint32_t r, uint8_t *p_buf, uint32_t len);
+
+void     rtc_set_calendar(uint32_t date, uint32_t mon, uint32_t yr);
+
+char *   rtc_calendar(uint32_t date, uint32_t mon, uint32_t yr);
+
+uint32_t rtc_day_number(uint32_t date, uint32_t mon, uint32_t yr);
 
 #endif

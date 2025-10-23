@@ -271,11 +271,11 @@ C_pthread_rwlock_trywrlock_11
  jmp #RETF
 
 
-' Catalina Import _pthread_init_lock_pool
-
 ' Catalina Import _Pthread_Pool
 
 ' Catalina Import malloc
+
+' Catalina Import _pthread_init_lock_pool
 
 ' Catalina Import pthread_self
 

@@ -32,18 +32,18 @@ BEGIN {
       /* printf("processing known function %s\n", f) */
       leaf = 1;
       done = 0;
-      getline; while ($1 == "alignl") { getline }
+      getline; while (left($1,6) == "alignl") { getline }
       if (left($0,1) == "{") {
          /* skip code that is commented out */
          getline;
          while (left($0,1) != "}") {
             getline;
          }
-         getline; while ($1 == "alignl") { getline }
+         getline; while (left($1,6) == "alignl") { getline }
       }
       if (($1 == "long") && ($2 == "I32_NEWF")) {
          /* strip the call to NEWF - we simulate it later */
-         getline; while ($1 == "alignl") { getline }
+         getline; while (left($1,6) == "alignl") { getline }
       }
       while (done == 0) {
          if (left($0,1) == "{") {
@@ -52,7 +52,7 @@ BEGIN {
             while (left($0,1) != "}") {
                getline;
             }
-            getline; while ($1 == "alignl") { getline }
+            getline; while (left($1,6) == "alignl") { getline }
          }
          if ((left($0,19) == " word I16A_SUB + SP") || (left($0,20) == " word I16A_SUBI + SP")) {
             /* pretend this function uses BC - actually it has local vars */
@@ -137,7 +137,7 @@ BEGIN {
          }
          else if (left($0,15) == " word I16B_LODL") {
             add_line_to_function(f, $0);
-            getline; while ($1 == "alignl") { getline }
+            getline; while (left($1,6) == "alignl") { getline }
          }
          if (!done) {
             if (left($0,15) == " jmp #FC_RETURN") {
@@ -148,7 +148,7 @@ BEGIN {
                add_line_to_function(f, $0);
             }
          }
-         getline; while ($1 == "alignl") { getline }
+         getline; while (left($1,6) == "alignl") { getline }
       }
       set_leaf(f, leaf);
       f = "no function";

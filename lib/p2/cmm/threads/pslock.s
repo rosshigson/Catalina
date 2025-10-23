@@ -265,9 +265,9 @@ C_pthread_spin_destroy_24
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
-' Catalina Import _pthread_init_lock_pool
-
 ' Catalina Import _Pthread_Pool
+
+' Catalina Import _pthread_init_lock_pool
 
 ' Catalina Import errno
 

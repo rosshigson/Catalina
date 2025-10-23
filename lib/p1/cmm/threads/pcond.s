@@ -216,8 +216,6 @@ C_pthread_cond_broadcast_17
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
-' Catalina Import _thread_stall
-
 ' Catalina Import _pthread_init_lock_pool
 
 ' Catalina Import pthread_mutex_unlock
@@ -227,6 +225,8 @@ C_pthread_cond_broadcast_17
 ' Catalina Import errno
 
 ' Catalina Import _thread_allow
+
+' Catalina Import _thread_stall
 
 ' Catalina Import _thread_yield
 ' end

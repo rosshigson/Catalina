@@ -1,5 +1,6 @@
 #include <float.h>
 #include <stdio.h>
+#include <hmi.h>
 
 void print_float_as_unsigned(int curs, char *str, float f)  {
    unsigned *u;

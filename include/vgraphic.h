@@ -441,4 +441,11 @@ extern int gk_state(int key);
 
 #endif
 
+// Graphics support functions:
+//
+extern int _rand_forward(int var); // Simulate SPIN ?var operator
+extern int _rand_reverse(int var); // Simulate SPIN var? operator
+
+extern int g_sar(int var, int count); // Simulate PASM SAR var,count
+
 #endif

@@ -3,6 +3,7 @@
  * http://www.cs.utk.edu/~plank/plank/classes/cs360/360/notes/Setjmp/lecture.html
  *
  */
+#include <stdlib.h>
 #include <setjmp.h>
 #include <hmi.h>
 

@@ -1,6 +1,8 @@
+#include <ctype.h>
 #include <prop.h>
 #include <serial4.h>
 #include <plugin.h>
+#include <hmi.h>
 
 #ifdef __CATALINA_libthreads
 #include <threads.h>

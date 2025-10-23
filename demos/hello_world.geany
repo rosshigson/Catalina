@@ -32,4 +32,6 @@ long_line_column=72
 
 [files]
 current_page=0
-FILE_NAME_0=18;C;0;EUTF-8;1;1;0;hello_world.c;0;4
+FILE_NAME_0=37;C;0;EUTF-8;1;1;0;hello_world.c;0;4
+
+[build-menu]

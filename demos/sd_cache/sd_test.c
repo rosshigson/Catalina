@@ -1,13 +1,14 @@
 
-#include <propeller2.h>
-#include <lut_exec.h>
-#include <alloca.h>
-
+#include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <stdlib.h>
+#include <string.h>
 #include <errno.h>
 #include <math.h>
+#include <prop.h>
+#include <lut_exec.h>
+#include <alloca.h>
+#include <cache_sd.h>
 
 
 #define  SECTORS  1                // number of sectors per file

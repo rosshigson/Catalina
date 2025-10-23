@@ -846,7 +846,7 @@ C__cogstart_L_M_M__cog ' <symbol:_cogstart_LMM_cog>
  calld PA,#CALA
  long @C__waitcnt ' CALL addrg
  mov r0, r17 ' CVI, CVU or LOAD
-' C__cogstart_L_M_M__cog_1 ' (symbol refcount = 0)
+' C__cogstart_L_M_M__cog_2 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  add SP, #24 ' framesize
  calld PA,#RETF

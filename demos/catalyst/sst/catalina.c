@@ -1,5 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <hmi.h>
+#include <prop.h>
 
 void randomize(void) {
   srand ((unsigned) _cnt());

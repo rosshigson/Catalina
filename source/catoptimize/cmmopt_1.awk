@@ -24,7 +24,7 @@
       f = ltrim($4,"@");
       f = left(f,length(f)-5);
    }
-   getline; while ($1 == "alignl") { getline }
+   getline; while (left($1,6) == "alignl") { getline }
    if (left($0, 26) == " word I16A_ADDI + SP<<D16A") {
       if (left($6, 1) == "(") {
          s = ltrim($6,"(");

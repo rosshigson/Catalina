@@ -18,11 +18,20 @@
  * linking with the threaded kernel (by adding -lthreads)                     *
  *****************************************************************************/
 #include <stdio.h>
-#include <propeller.h>
+#include <prop.h>
+#include <hmi.h>
 
 #ifndef __CATALINA_CLOCK
 #error THIS PROGRAM REQUIRES THE CLOCK!
 #endif
+
+// the following are normally internal functions, not intended to be used 
+// by user programs, and therefore not mentioned in any header files ...
+uint32_t min_waitus();
+uint32_t min_waitms();
+uint32_t min_wait();
+void _iwaitus(uint32_t usecs);
+void _iwaitms(uint32_t usecs);
 
 // execute a single millisecond timer and report its accuracy
 void single_msecs(unsigned long msecs) {

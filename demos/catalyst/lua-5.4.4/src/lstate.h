@@ -96,7 +96,7 @@
 
 
 /* true if this thread does not have non-yieldable calls in the stack */
-#define yieldable(L)		(((L)->nCcalls & 0xffff0000) == 0)
+#define yieldable(L)		(((L)->nCcalls & 0xffff0000u) == 0)
 
 /* real number of C calls */
 #define getCcalls(L)	((L)->nCcalls & 0xffff)

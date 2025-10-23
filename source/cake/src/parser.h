@@ -114,7 +114,7 @@ struct parser_ctx
     /*
     * Points to the selection_statement we're in. Or null.
     */
-    const struct selection_statement* _Opt p_current_selection_statement;
+    struct selection_statement* _Opt p_current_selection_statement;
 
 
     FILE* _Owner _Opt sarif_file;
@@ -123,14 +123,20 @@ struct parser_ctx
     _View struct token_list input_list;
     struct token* _Opt current;
     struct token* _Opt previous;
-    /*
-       Expression inside sizeof etc.. are not evaluated
-    */
-    //bool evaluation_is_disabled;
 
     bool inside_generic_association;
 
     int label_id; /*generates unique ids for labels*/
+
+    /*
+       complete structs have unique ids
+    */
+    unsigned int unique_tag_id;
+
+    /*
+       Generate tag names for anonymous structs
+    */
+    int anonymous_struct_count;
 
     struct report* p_report;
 
@@ -650,6 +656,8 @@ struct struct_or_union_specifier
     */
     struct token* _Opt tagtoken;
 
+    unsigned int unique_id;
+
     char tag_name[200];
     /*geramos um tag name para anomimas, mas colocamos banonymousTag para true*/
     bool has_anonymous_tag;
@@ -775,6 +783,8 @@ struct declarator
     bool declarator_renamed;
 };
 
+const struct declarator* _Opt declarator_get_innert_function_declarator(const struct declarator* p);
+
 const struct declarator* _Opt declarator_get_function_definition(const struct declarator* p);
 enum type_specifier_flags declarator_get_type_specifier_flags(const struct declarator* p);
 
@@ -814,6 +824,7 @@ void array_declarator_delete(struct array_declarator* _Owner _Opt p);
   Return a value > 0 if it has constant size
 */
 size_t  array_declarator_get_size(const struct array_declarator* p_array_declarator);
+size_t array_declarator_is_vla(const struct array_declarator* p_array_declarator);
 
 struct function_declarator
 {

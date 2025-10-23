@@ -638,7 +638,7 @@ void play        (int i);        /* Play an instrument                  */
 void plugh       (void);         /* He says PLUGH                       */
 void put         (int i, int j); /* Put down or drop something          */
 void shangrila   (void);         /* Visit Shangri La                    */
-void throw       (int i);        /* Throw something                     */
+void toss        (int i);        /* Throw something                     */
 void gamic       (void);         /* Section in gamic language           */
 void help        (void);         /* Help                                */
 void hint        (char *c);      /* Context sensitive hints             */

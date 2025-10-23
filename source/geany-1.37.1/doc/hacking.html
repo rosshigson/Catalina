@@ -1,0 +1,1003 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<title>Hacking Geany</title>
+<style type="text/css">
+
+/*
+:Author: Enrico Troeger
+:Contact: enrico(dot)troeger(at)uvena(dot)de
+:Copyright: This stylesheet has been placed in the public domain.
+
+Stylesheet for Geany's documentation based on a version of John Gabriele.
+*/
+
+@media screen {
+
+	body {
+		background-color: #f2f2f2;
+		color: #404040;
+		margin-left: 0.4em;
+		max-width: 60em;
+		font-size: 90%;
+	}
+
+	a {
+		color: #990000;
+	}
+
+	a:visited {
+		color: #7E558E;
+	}
+
+	a:hover {
+		text-decoration: none;
+	}
+
+	h1 {
+		border-top: 1px dotted;
+		margin-top: 2em;
+	}
+
+	h1, h2, h3 {
+		font-family: sans-serif;
+		color: #5D0606;
+	}
+
+	h1.title {
+	  text-align: left }
+
+	h2 {
+		margin-top: 30px;
+	}
+
+	h2.subtitle {
+	  text-align: left }
+
+	h3 {
+		padding-left: 3px;
+	}
+
+	blockquote, pre {
+		border: 1px solid;
+		padding: 0.4em;
+	}
+
+	blockquote {
+		font-family: sans-serif;
+		background-color: #DBEDD5;
+		border: 1px dotted;
+		border-left: 4px solid;
+		border-color: #9FD98C;
+	}
+
+	pre {
+		background-color: #ECDFCE;
+		border: 1px dotted;
+		border-left: 4px solid;
+		border-color: #D9BE9A;
+	}
+
+	tt, pre, code {
+		color: #6D4212;
+	}
+
+	table {
+		border: 1px solid #D9BE9A;
+	}
+
+	th {
+		background-color: #ECDFCE;
+		border: 1px dotted #D9BE9A;
+	}
+
+	td {
+		border: 1px dotted #D9BE9A;
+	}
+
+	.docinfo-name {
+		color: #5D0606;
+	}
+
+	p.admonition-title {
+		color: #990000;
+		font-weight: bold;
+	}
+
+	div.note {
+		margin: 1em 3em;
+		padding: 0em;
+	}
+
+	dt {
+		font-style: italic;
+	}
+
+}
+
+@media print {
+
+}
+
+</style>
+</head>
+<body>
+<div class="document" id="hacking-geany">
+<h1 class="title">Hacking Geany</h1>
+
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#general" id="toc-entry-1">General</a><ul>
+<li><a class="reference internal" href="#about-this-file" id="toc-entry-2">About this file</a></li>
+<li><a class="reference internal" href="#writing-plugins" id="toc-entry-3">Writing plugins</a><ul>
+<li><a class="reference internal" href="#plugin-api-documentation" id="toc-entry-4">Plugin API documentation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pull-requests" id="toc-entry-5">Pull requests</a></li>
+<li><a class="reference internal" href="#patches" id="toc-entry-6">Patches</a></li>
+<li><a class="reference internal" href="#rules-to-contribute" id="toc-entry-7">Rules to contribute</a></li>
+<li><a class="reference internal" href="#windows-tools" id="toc-entry-8">Windows tools</a></li>
+<li><a class="reference internal" href="#file-organization" id="toc-entry-9">File organization</a></li>
+<li><a class="reference internal" href="#plugin-api-code" id="toc-entry-10">Plugin API code</a><ul>
+<li><a class="reference internal" href="#keeping-the-plugin-abi-stable" id="toc-entry-11">Keeping the plugin ABI stable</a></li>
+<li><a class="reference internal" href="#plugin-api-abi-design" id="toc-entry-12">Plugin API/ABI design</a></li>
+<li><a class="reference internal" href="#doc-comments" id="toc-entry-13">Doc-comments</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#glade" id="toc-entry-14">Glade</a></li>
+<li><a class="reference internal" href="#gtk-versions-api-documentation" id="toc-entry-15">GTK versions &amp; API documentation</a></li>
+<li><a class="reference internal" href="#coding" id="toc-entry-16">Coding</a><ul>
+<li><a class="reference internal" href="#compiler-options-warnings" id="toc-entry-17">Compiler options &amp; warnings</a></li>
+<li><a class="reference internal" href="#style" id="toc-entry-18">Style</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#header-includes" id="toc-entry-19">Header Includes</a><ul>
+<li><a class="reference internal" href="#private-headers" id="toc-entry-20">Private Headers</a></li>
+<li><a class="reference internal" href="#order-of-includes" id="toc-entry-21">Order of Includes</a></li>
+<li><a class="reference internal" href="#including-in-header-files" id="toc-entry-22">Including in Header Files</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#committing" id="toc-entry-23">Committing</a><ul>
+<li><a class="reference internal" href="#commit-messages" id="toc-entry-24">Commit messages</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#testing" id="toc-entry-25">Testing</a></li>
+<li><a class="reference internal" href="#bugs-to-watch-out-for" id="toc-entry-26">Bugs to watch out for</a></li>
+<li><a class="reference internal" href="#libraries" id="toc-entry-27">Libraries</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#notes" id="toc-entry-28">Notes</a><ul>
+<li><a class="reference internal" href="#using-pre-defined-autotools-values" id="toc-entry-29">Using pre-defined autotools values</a></li>
+<li><a class="reference internal" href="#adding-a-source-file-foo-hc-in-src-or-plugins" id="toc-entry-30">Adding a source file foo.[hc] in src/ or plugins/</a></li>
+<li><a class="reference internal" href="#adding-a-filetype" id="toc-entry-31">Adding a filetype</a><ul>
+<li><a class="reference internal" href="#filetypes-configuration-file" id="toc-entry-32">filetypes.* configuration file</a></li>
+<li><a class="reference internal" href="#syntax-highlighting" id="toc-entry-33">Syntax highlighting</a></li>
+<li><a class="reference internal" href="#error-message-parsing" id="toc-entry-34">Error message parsing</a></li>
+<li><a class="reference internal" href="#other-features" id="toc-entry-35">Other features</a></li>
+<li><a class="reference internal" href="#adding-a-tagmanager-parser" id="toc-entry-36">Adding a TagManager parser</a><ul>
+<li><a class="reference internal" href="#method" id="toc-entry-37">Method</a></li>
+<li><a class="reference internal" href="#tests" id="toc-entry-38">Tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#upgrading-scintilla" id="toc-entry-39">Upgrading Scintilla</a></li>
+<li><a class="reference internal" href="#gdb" id="toc-entry-40">GDB</a><ul>
+<li><a class="reference internal" href="#stop-on-warnings" id="toc-entry-41">Stop on warnings</a></li>
+<li><a class="reference internal" href="#running-with-batch-commands" id="toc-entry-42">Running with batch commands</a></li>
+<li><a class="reference internal" href="#loading-a-plugin" id="toc-entry-43">Loading a plugin</a></li>
+<li><a class="reference internal" href="#building-plugins" id="toc-entry-44">Building Plugins</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="general">
+<h1><a class="toc-backref" href="#toc-entry-1">General</a></h1>
+<div class="section" id="about-this-file">
+<h2><a class="toc-backref" href="#toc-entry-2">About this file</a></h2>
+<p>This file contains information for anyone wanting to work on the Geany
+codebase. You should be aware of the open source licenses used - see
+the README file or the documentation. It is reStructuredText; the
+source file is HACKING.</p>
+<p>You can generate this file by:</p>
+<ul class="simple">
+<li>Passing the <em>--enable-html-docs</em> option to <tt class="docutils literal">configure</tt>.</li>
+<li>Running <tt class="docutils literal">make</tt> from the doc/ subdirectory.</li>
+</ul>
+</div>
+<div class="section" id="writing-plugins">
+<h2><a class="toc-backref" href="#toc-entry-3">Writing plugins</a></h2>
+<ul class="simple">
+<li>src/plugindata.h contains the plugin API data types.</li>
+<li>See plugins/demoplugin.c for a very basic example plugin.</li>
+<li>src/plugins.c loads and unloads plugins (you shouldn't need to read
+this really).</li>
+<li>The API documentation contains a few basic guidelines and hints to
+write plugins.</li>
+</ul>
+<p>You should generate and read the plugin API documentation, see below.</p>
+<div class="section" id="plugin-api-documentation">
+<h3><a class="toc-backref" href="#toc-entry-4">Plugin API documentation</a></h3>
+<p>You can generate documentation for the plugin API using the doxygen
+tool:</p>
+<ul class="simple">
+<li>Pass the <em>--enable-api-docs</em> option to <tt class="docutils literal">configure</tt>.</li>
+<li>Run <tt class="docutils literal">make</tt> from the doc/ subdirectory.</li>
+</ul>
+<p>The documentation will be output to doc/reference/index.html.
+Alternatively you can view the API documentation online at
+<a class="reference external" href="https://www.geany.org/manual/reference/">https://www.geany.org/manual/reference/</a>.</p>
+</div>
+</div>
+<div class="section" id="pull-requests">
+<h2><a class="toc-backref" href="#toc-entry-5">Pull requests</a></h2>
+<p>Making pull requests on Github is the preferred way of contributing for geany.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For helping you to get started: <a class="reference external" href="https://help.github.com/articles/fork-a-repo">https://help.github.com/articles/fork-a-repo</a></p>
+</div>
+<p>See <a class="reference internal" href="#rules-to-contribute">Rules to contribute</a> for more information.</p>
+</div>
+<div class="section" id="patches">
+<h2><a class="toc-backref" href="#toc-entry-6">Patches</a></h2>
+<p>We are happy to receive patches, but the preferred way is to make a pull
+request on our Github repository. If you don't want to make a pull request,
+you can send your patches on the devel mailing list, but the rules are the same:
+see <a class="reference internal" href="#rules-to-contribute">Rules to contribute</a> for more information.</p>
+<p>In general it's best to provide git-formatted patches made from the
+current Git (see <a class="reference internal" href="#committing">Committing</a>):</p>
+<pre class="literal-block">
+$ git commit -a
+$ git format-patch HEAD^
+</pre>
+<p>We also accept patches against other releases, but it's more work for us.</p>
+<p>If you're not using Git, although you're strongly suggested to use it,
+you can use the diff command:</p>
+<pre class="literal-block">
+$ diff -u originalpath modifiedpath &gt; new-feature.patch
+</pre>
+<p>However, such a patch won't contain the authoring information nor the
+patch's description.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Please make sure patches follow the style of existing code - In
+particular, use tabs for indentation. See <a class="reference internal" href="#coding">Coding</a>.</p>
+</div>
+</div>
+<div class="section" id="rules-to-contribute">
+<h2><a class="toc-backref" href="#toc-entry-7">Rules to contribute</a></h2>
+<p>Keep in mind this is best to check with us by email on mailing list
+whether a new feature is appropriate and whether someone is already
+working on similar code.</p>
+<p>Please, make sure contributions you make follow these rules:</p>
+<ul class="simple">
+<li>changes should be made in a dedicated branch for pull requests.</li>
+<li>only one feature should be in each pull request (or patch).</li>
+<li>pull requests (or patches) should not contain changes unrelated to the feature,
+and commits should be sensible units of change.</li>
+<li>the submitter should squash together corrections that are part of
+the development process, especially correcting your own mistakes.</li>
+<li>Please make sure your modifications follow the style of existing code:
+see <a class="reference internal" href="#coding">Coding</a> for more information.</li>
+</ul>
+<p>See <a class="reference internal" href="#committing">Committing</a> for more information.</p>
+</div>
+<div class="section" id="windows-tools">
+<h2><a class="toc-backref" href="#toc-entry-8">Windows tools</a></h2>
+<ul class="simple">
+<li>Git: <a class="reference external" href="http://git-scm.com/">http://git-scm.com/</a> and <a class="reference external" href="http://msysgit.github.io/">http://msysgit.github.io/</a></li>
+<li>diff, grep, etc: <a class="reference external" href="http://mingw.org/">http://mingw.org/</a> or <a class="reference external" href="http://unxutils.sourceforge.net/">http://unxutils.sourceforge.net/</a></li>
+</ul>
+<p>See also the 'Building on Windows' document on the website.</p>
+</div>
+<div class="section" id="file-organization">
+<h2><a class="toc-backref" href="#toc-entry-9">File organization</a></h2>
+<p>callbacks.c is just for Glade callbacks.
+Avoid adding code to geany.h if it will fit better elsewhere.
+See the top of each <tt class="docutils literal"><span class="pre">src/*.c</span></tt> file for a brief description of what
+it's for.</p>
+</div>
+<div class="section" id="plugin-api-code">
+<h2><a class="toc-backref" href="#toc-entry-10">Plugin API code</a></h2>
+<p>Please be aware that anything with a doc-comment (a comment with an
+extra asterix: <tt class="docutils literal">/**</tt>) is something in the plugin API. Things like
+enums and structs can usually still be appended to, ensuring that all
+the existing elements stay in place - this will keep the ABI stable.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Some structs like GeanyCallback cannot be appended to without
+breaking the ABI because they are used to declare structs by
+plugins, not just for accessing struct members through a pointer.
+Normally structs should never be allocated by plugins.</p>
+</div>
+<div class="section" id="keeping-the-plugin-abi-stable">
+<h3><a class="toc-backref" href="#toc-entry-11">Keeping the plugin ABI stable</a></h3>
+<p>Before the 1.0 release series, the ABI can change when necessary, and
+even the API can change. An ABI change just means that all plugins will
+not load and they must be rebuilt. An API change means that some plugins
+might not build correctly.</p>
+<p>If you're reordering or changing existing elements of structs that are
+used as part of the plugin API, you must increment GEANY_ABI_VERSION
+in plugindata.h. This is usually not needed if you're just appending
+fields to structs. The GEANY_API_VERSION value should be incremented
+for any changes to the plugin API, including appending elements.</p>
+<p>If you're in any doubt when making changes to plugin API code, just ask us.</p>
+</div>
+<div class="section" id="plugin-api-abi-design">
+<h3><a class="toc-backref" href="#toc-entry-12">Plugin API/ABI design</a></h3>
+<p>You should not make plugins rely on the size of a struct. This means:</p>
+<ul class="simple">
+<li>Don't let plugins allocate any structs (stack or heap).</li>
+<li>Don't let plugins index any arrays of structs.</li>
+<li>Don't add any array fields to structs in case we want to change the
+array size later.</li>
+</ul>
+</div>
+<div class="section" id="doc-comments">
+<h3><a class="toc-backref" href="#toc-entry-13">Doc-comments</a></h3>
+<ul class="simple">
+<li>The &#64;file tag can go in the source .c file, but use the .h header name so
+it appears normally in the generated documentation. See ui_utils.c for an
+example.</li>
+<li>Function doc-comments should always go in the source file, not the
+header, so they can be updated if/when the implementation changes.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="glade">
+<h2><a class="toc-backref" href="#toc-entry-14">Glade</a></h2>
+<p>Add user-interface widgets to the Glade 3 file <tt class="docutils literal">data/geany.glade</tt>.
+Callbacks for the user-interface should go in <tt class="docutils literal">src/callbacks.c</tt>.</p>
+<p>Use Glade 3.8.5. The 3.8 series still supports GTK+ 2, and earlier
+point releases did not preserve the order of XML elements, leading to
+unmanageable diffs.</p>
+</div>
+<div class="section" id="gtk-versions-api-documentation">
+<h2><a class="toc-backref" href="#toc-entry-15">GTK versions &amp; API documentation</a></h2>
+<p>Geany requires GTK &gt;= 2.24 or GTK 3 (with the --enable-gtk3 configure option)
+and GLib &gt;= 2.32. API symbols from newer GTK/GLib versions should be
+avoided or made optional to keep the source code building on older systems.</p>
+<p>It is recommended to use the 2.24 API documentation of the GTK
+libs (including GLib, GDK and Pango) has the advantages
+that you don't get confused by any newer API additions and you
+don't have to take care about whether you can use them or not.</p>
+<p>You might want to pass the <tt class="docutils literal"><span class="pre">-DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_32</span></tt> C
+preprocessor flag to get warnings about newer symbols from the GLib.</p>
+<p>On the contrary, you might also want to get deprecation warnings for symbols
+deprecated in newer versions, typically when preparing a dependency bump or
+trying to improve forward compatibility.
+To do so, use the <tt class="docutils literal"><span class="pre">-UGLIB_VERSION_MIN_REQUIRED</span></tt> flag for GLib deprecations,
+and <tt class="docutils literal"><span class="pre">-UGDK_DISABLE_DEPRECATION_WARNINGS</span></tt> for GTK and GDK ones.
+To change the lower deprecation bound for GLib (and then get warnings about
+symbols deprecated more recently) instead of simply removing it entirely, use
+<tt class="docutils literal"><span class="pre">-UGLIB_VERSION_MIN_REQUIRED</span> <span class="pre">-DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_X_YY</span></tt>.</p>
+<p>See <a class="reference internal" href="#compiler-options-warnings">Compiler options &amp; warnings</a> for how to set such flags.</p>
+</div>
+<div class="section" id="coding">
+<h2><a class="toc-backref" href="#toc-entry-16">Coding</a></h2>
+<ul class="simple">
+<li>Don't write long functions with a lot of variables and/or scopes - break
+them down into smaller static functions where possible. This makes code
+much easier to read and maintain.</li>
+<li>Use GLib types and functions - gint not int, g_free() not free().</li>
+<li>Your code should build against GLib 2.32 and GTK 2.24. At least for the
+moment, we want to keep the minimum requirement for GTK at 2.24 (of
+course, you can use the GTK_CHECK_VERSION macro to protect code using
+later versions).</li>
+<li>Variables should be declared (and initialized) as close as practical
+to their first use. This reduces the chances of intervening code being
+inserted between declaration and use, where the variable may be
+uninitialized.</li>
+<li>Variables should be defined within the smallest scope that is practical,
+for example inside a conditional branch which uses them or in the
+initialization part of a for loop.</li>
+<li>Local variables that will not be modified should be marked as <tt class="docutils literal">const</tt>
+to indicate intention. This allows the compiler to give a warning if
+part of the code accidentally tries to change the value.</li>
+<li>Pointer parameters should be marked <tt class="docutils literal">const</tt> if the value they point
+to will not be mutated within the function.</li>
+<li>Don't let variable names shadow outer variables - use gcc's -Wshadow
+option.</li>
+<li>Use the strictest possible data type where practical.
+Avoid using untyped pointers (e.g. gpointer) where practical.
+For an enumeration, use the actual enum type rather than just a
+<tt class="docutils literal">gint</tt>, use a <tt class="docutils literal">gchar</tt> for individual (ASCII/UTF-8) string
+characters rather than <tt class="docutils literal">gint</tt>, and use a <tt class="docutils literal">guint</tt> for integers
+which cannot be negative rather than <tt class="docutils literal">gint</tt>.</li>
+<li>Prefer loops to calling <tt class="docutils literal">some_type_foreach()</tt> with a <tt class="docutils literal">user_data</tt>
+argument. (Note: Some containers don't support external iteration,
+e.g. for tree structures, so <tt class="docutils literal">*_foreach</tt> is fine for those).</li>
+<li>Do not use G_LIKELY or G_UNLIKELY (except in critical loops). These
+add noise to the code with little real benefit.</li>
+</ul>
+<div class="section" id="compiler-options-warnings">
+<h3><a class="toc-backref" href="#toc-entry-17">Compiler options &amp; warnings</a></h3>
+<p>Use <tt class="docutils literal"><span class="pre">CFLAGS='-Wfoo'</span> ./configure</tt> or <tt class="docutils literal"><span class="pre">CFLAGS='-Wfoo'</span> ./autogen.sh</tt>
+to set warning options (as well as anything else e.g. -g -O2).</p>
+<ul class="simple">
+<li>Enable warnings - for gcc use '-Wall -Wextra' (and optionally
+-Wno-unused-parameter to avoid unused parameter warnings in Glade
+callbacks). Alternatively you can use the Glib macro G_GNUC_UNUSED
+to suppress warnings on single parameters, e.g.
+<tt class="docutils literal">void examplefunction(G_GNUC_UNUSED gchar *foo)</tt>. Also see
+<a class="reference external" href="https://developer.gnome.org/glib/stable/glib-Miscellaneous-Macros.html">https://developer.gnome.org/glib/stable/glib-Miscellaneous-Macros.html</a>.</li>
+<li>You should try to write ISO C99 code for portability, so always
+use C <tt class="docutils literal">/* */</tt> comments and function_name(void) instead of
+function_name(). This is for compatibility with various Unix-like
+compilers. You should use -std=c99 to help check this.</li>
+</ul>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">Remember for gcc you need to enable optimization to get certain
+warnings like uninitialized variables, but for debugging it's
+better to have no optimization on.</p>
+</div>
+</div>
+<div class="section" id="style">
+<h3><a class="toc-backref" href="#toc-entry-18">Style</a></h3>
+<ul class="simple">
+<li>We use a tab width of 4 and indent completely with tabs not spaces.
+Note the documentation files use (4) spaces instead, so you may want
+to use the 'Detect from file' indent pref.</li>
+<li>Do not add whitespace at the end of lines, this adds to commit noise.
+When editing with Geany set preference files-&gt;Strip trailing spaces
+and tabs.</li>
+<li>Use the multiline comment <tt class="docutils literal">/* */</tt> to comment small blocks of code,
+functions descriptions or longer explanations of code, etc. The more
+comments are in your code the better. (See also
+<tt class="docutils literal"><span class="pre">scripts/fix-cxx-comments.pl</span></tt> in Git).</li>
+<li>Lines should not be longer than about 100 characters and after 100
+characters the lines should be wrapped and indented once more to
+show that the line is continued.</li>
+<li>We don't put spaces between function names and the opening brace for
+argument lists.</li>
+<li>Variable declarations come first after an opening brace, then one
+newline to separate declarations and code.</li>
+<li>2-operand operators should have a space each side.</li>
+<li>Function bodies should have 2 blank newlines after them.</li>
+<li>Align braces together on separate lines.</li>
+<li>Don't put assignments in 'if/while/etc' expressions except for loops,
+for example <tt class="docutils literal">for (int i = 0; i &lt; some_limit; <span class="pre">i++)</span></tt>.</li>
+<li>if statements without brace bodies should have the code on a separate
+line, then a blank line afterwards.</li>
+<li>Use braces after if/while statements if the body uses another
+if/while statement.</li>
+<li>Try to fit in with the existing code style.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A few of the above can be done with the Git
+<tt class="docutils literal"><span class="pre">scripts/fix-alignment.pl</span></tt>, but it is quite dumb and it's much better
+to write it correctly in the first place.
+<tt class="docutils literal"><span class="pre">scripts/rstrip-whitespace.py</span></tt> just removes trailing whitespace.</p>
+</div>
+<!-- below tabs should be used, but spaces are required for reST. -->
+<p>Example:</p>
+<pre class="literal-block">
+struct Bar;
+
+typedef struct Foo  /* struct names normally are the same as typedef names */
+{
+    gint    foo;    /* names are somewhat aligned visually */
+    gint    bar;    /* fields don't share the same line */
+    SomeLongTypeName baz; /* alignment is not strict */
+    gchar   *ptr;   /* pointer symbol must go next to variable name, not type */
+    Bar     public; /**&lt; only plugin API fields have a doc-comment */
+}
+Foo;
+
+
+gint some_func(void);
+
+gint some_other_func(void);
+
+
+/* optional function comment explains something important */
+gint function_long_name(gchar arg1, &lt;too many args to fit on this line&gt;,
+        gchar argN)
+{
+    /* variable declarations always go before code in each scope */
+    /* variable names should NOT be aligned at all */
+    gint foo, bar;  /* variables can go on the same line */
+    gint baz;       /* but often don't */
+    gchar *ptr;     /* pointer symbol must go next to variable name, not type */
+    gchar *another; /* pointers should normally go on separate lines */
+
+    /* Some long comment block
+     * taking several different
+     * lines to explain */
+    if (foo)
+    {
+        /* variables only used in one scope should normally be declared there */
+        gint dir = -1;
+
+        bar = foo;
+        if ((bar &amp; (guint)dir) != 7)
+            some_code(arg1, &lt;too many args to fit on this line&gt;,
+                argN - 1, argN);
+
+        some_func();
+    }
+}
+
+
+/** Explains using doc-comments for plugin API functions.
+ * First line should be short and use the third person tense - 'explains',
+ * not 'explain'.
+ *
+ * &#64;return Some number.
+ * &#64;since 1.22. */
+gint another_function(void)
+{
+    ...
+</pre>
+</div>
+</div>
+<div class="section" id="header-includes">
+<h2><a class="toc-backref" href="#toc-entry-19">Header Includes</a></h2>
+<p>In order to make including various headers in Geany more convenient, each
+file should include what it uses. If there is a file named <tt class="docutils literal">foo.c</tt>, and a
+file named <tt class="docutils literal">foo.h</tt>, it should be possible to include <tt class="docutils literal">foo.h</tt> on its own
+without depending on stuff in <tt class="docutils literal">foo.c</tt> that is included for the first time
+before <tt class="docutils literal">foo.h</tt>.</p>
+<div class="section" id="private-headers">
+<h3><a class="toc-backref" href="#toc-entry-20">Private Headers</a></h3>
+<p>If there is some data that needs to be shared between various parts of the
+core code, put them in a &quot;private header&quot;, that is, if the public header is
+called <tt class="docutils literal">foo.h</tt>, then make a <tt class="docutils literal">fooprivate.h</tt> header that contains the
+non-public functions, types, globals, etc that are needed. Other core source
+files can then just include the <tt class="docutils literal">foo.h</tt> and/or <tt class="docutils literal">fooprivate.h</tt> depending
+what they need, without exposing that stuff to plugins.</p>
+</div>
+<div class="section" id="order-of-includes">
+<h3><a class="toc-backref" href="#toc-entry-21">Order of Includes</a></h3>
+<p>Inside a source file the includes section should be ordered like this:</p>
+<ol class="arabic">
+<li><p class="first">Always include the <tt class="docutils literal">config.h</tt> file at the start of every source file,
+for example:</p>
+<pre class="literal-block">
+#ifdef HAVE_CONFIG_H
+# include &quot;config.h&quot;
+#endif
+</pre>
+<p>This allows the Autotools and other build systems use the <tt class="docutils literal">./configure</tt>
+time settings. If you don't do this, there's likely to be a number of
+macros that you'll have to define in the build system or custom headers.</p>
+<p>Warning: Never include <tt class="docutils literal">config.h</tt> in headers, and especially in &quot;public&quot;
+headers that plugins might include.</p>
+</li>
+<li><p class="first">Then include the header that has the same name as the source file (if
+applicable). For example, for a source file named <tt class="docutils literal">foo.c</tt>, include
+the <tt class="docutils literal">foo.h</tt> below the <tt class="docutils literal">config.h</tt> include. If there is a
+<tt class="docutils literal">fooprivate.h</tt>, <tt class="docutils literal">foo.c</tt> will most likely want to include that too,
+put it in with includes in #3.</p>
+</li>
+<li><p class="first">At this point, it should be safe to include all the headers that declare
+whatever is needed. If everything generally &quot;includes what it uses&quot; and
+all files included contain the appropriate multiple-declaration guards
+then the order of includes is fairly arbitrary. Prefer to use English
+alphabetic order if possible.</p>
+</li>
+<li><p class="first">By now it doesn't really matter about the order, nothing below here is
+&quot;our problem&quot;. Semi-arbitrarily, you should use an include order like this:</p>
+<blockquote>
+<ol class="arabic simple">
+<li>Standard C headers</li>
+<li>Non-standard system headers (eg. <tt class="docutils literal">windows.h</tt> or <tt class="docutils literal">unistd.h</tt>)</li>
+<li>GLib/GTK+ or related headers</li>
+</ol>
+</blockquote>
+</li>
+<li><p class="first">Everything else that should not influence 1-4.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="including-in-header-files">
+<h3><a class="toc-backref" href="#toc-entry-22">Including in Header Files</a></h3>
+<p>Headers should also include what they use. All of the types should defined in
+order to allow the header to be included stand-alone. For example, if a
+header uses a <tt class="docutils literal">GtkWidget*</tt>, it should <tt class="docutils literal">#include &lt;gtk/gtk.h&gt;</tt>. Or, if a
+headers uses a <tt class="docutils literal">GPtrArray*</tt>, it should <tt class="docutils literal">#include &lt;glib.h&gt;</tt> to ensure that
+all of the types are declared, whether by pointers/opaquely or fully, as
+required. Since all headers will use a <tt class="docutils literal">G_BEGIN_DECLS</tt> and <tt class="docutils literal">G_END_DECLS</tt>
+guard for C++, the bare minimum for a header is to include <tt class="docutils literal">glib.h</tt> or
+<tt class="docutils literal">&lt;gtk/gtk.h&gt;</tt> or <tt class="docutils literal">gtkcompat.h</tt> or some other header that makes those
+macros available.</p>
+</div>
+</div>
+<div class="section" id="committing">
+<h2><a class="toc-backref" href="#toc-entry-23">Committing</a></h2>
+<ul class="simple">
+<li>Commit one thing at a time, do small commits.  Commits should be
+meaningful and not too big when possible; multiple small commits are
+good if there is no good reason to group them.</li>
+<li>Use meaningful name and email in the Author and Committer fields.
+This helps knowing who did what and allows to contact the author if
+there is a good reason to do so (unlikely, but can happen).</li>
+<li>When working on a new feature, create a new branch for it.  When
+merging it, use the --no-ff option to make sure a merge commit will
+be created to better track what happened.  However, if the feature
+only took one commit you might merge it fast-forward since there is
+not history to keep together.</li>
+</ul>
+<div class="section" id="commit-messages">
+<h3><a class="toc-backref" href="#toc-entry-24">Commit messages</a></h3>
+<p>Follow the standard Git formatting:</p>
+<ul>
+<li><p class="first">No line should use more than about 80 characters (around 72 is best).</p>
+</li>
+<li><p class="first">The first line is the commit's summary and is followed by an empty
+line.  This summary should be one line and one line only, thus less
+than 80 characters.  This summary should not include any punctuation
+unless really needed.  See it as the subject of an email: keep it
+concise and as precise as you can, but not tool long.</p>
+</li>
+<li><p class="first">Following lines are optional detailed commit information, with
+paragraphs separated by blank lines.  This part should be as long as
+needed to describe the commit in depth, should use proper
+punctuation and should include any useful information, like the
+motivation for the patch and/or any valuable details the diff itself
+don't provide or don't make clear.  Make it as complete as you think
+it makes sense, but don't include an information that is better
+explained by the commit's diff.</p>
+<p>It is OK to use ASCII formatting like bullet list using &quot;*&quot; or &quot;-&quot;,
+etc. if useful, but emphasis (bold, italic, underline) should be
+avoided.</p>
+</li>
+</ul>
+<p>Example:</p>
+<pre class="literal-block">
+Ask the user if spawn fails in utils_open_browser()
+
+Ask the user to configure a valid browser command if spawning it
+fails rather than falling back to some arbitrary hardcoded defaults.
+
+This avoid spawning an unexpected browser when the configured one is
+wrong, and gives the user a chance to correctly fix the preference.
+</pre>
+</div>
+</div>
+<div class="section" id="testing">
+<h2><a class="toc-backref" href="#toc-entry-25">Testing</a></h2>
+<ul class="simple">
+<li>Run with <tt class="docutils literal"><span class="pre">-v</span></tt> to print any debug messages.</li>
+<li>You can use a second instance (<tt class="docutils literal">geany <span class="pre">-i</span></tt>).</li>
+<li>To check first-run behaviour, use an alternate config directory by
+passing <tt class="docutils literal"><span class="pre">-c</span> some_dir</tt> (but make sure the directory is clean first).</li>
+<li>For debugging tips, see <a class="reference internal" href="#gdb">GDB</a>.</li>
+</ul>
+</div>
+<div class="section" id="bugs-to-watch-out-for">
+<h2><a class="toc-backref" href="#toc-entry-26">Bugs to watch out for</a></h2>
+<ul class="simple">
+<li>Forgetting to check <em>doc-&gt;is_valid</em> when looping through
+<em>documents_array</em> - instead use <em>foreach_document()</em>.</li>
+<li>Inserting fields into structs in the plugin API instead of appending.</li>
+<li>Not breaking the plugin ABI when necessary.</li>
+<li>Using an idle callback that doesn't check main_status.quitting.</li>
+<li>Forgetting CRLF line endings on Windows.</li>
+<li>Not handling Tabs &amp; Spaces indent mode.</li>
+</ul>
+</div>
+<div class="section" id="libraries">
+<h2><a class="toc-backref" href="#toc-entry-27">Libraries</a></h2>
+<p>We try to use an unmodified version of Scintilla - any new lexers or
+other changes should be passed on to the maintainers at
+<a class="reference external" href="http://scintilla.org">http://scintilla.org</a>. We normally update to a new Scintilla release
+shortly after one is made. See also scintilla/README.</p>
+<p>Tagmanager was originally taken from Anjuta 1.2.2, and parts of it
+(notably c.c) have been merged from later versions of Anjuta and
+CTags. The independent Tagmanager library itself ceased development
+before Geany was started. It's source code parsing is mostly taken from
+Exuberant CTags (see <a class="reference external" href="http://ctags.sf.net">http://ctags.sf.net</a>). If appropriate it's good to
+pass language parser changes back to the CTags project.</p>
+</div>
+</div>
+<div class="section" id="notes">
+<h1><a class="toc-backref" href="#toc-entry-28">Notes</a></h1>
+<p>Some of these notes below are brief (or maybe incomplete) - please
+contact the geany-devel mailing list for more information.</p>
+<div class="section" id="using-pre-defined-autotools-values">
+<h2><a class="toc-backref" href="#toc-entry-29">Using pre-defined autotools values</a></h2>
+<p>When you are use macros supplied by the autotools like GEANY_PREFIX,
+GEANY_LIBDIR, GEANY_DATADIR and GEANY_LOCALEDIR be aware that these
+might not be static strings when Geany is configured with
+--enable-binreloc. Then these macros will be replaced by function calls
+(in src/prefix.h). So, don't use anything like
+printf(&quot;Prefix: &quot; GEANY_PREFIX); but instead use
+printf(&quot;Prefix: %s&quot;, GEANY_PREFIX);</p>
+</div>
+<div class="section" id="adding-a-source-file-foo-hc-in-src-or-plugins">
+<h2><a class="toc-backref" href="#toc-entry-30">Adding a source file foo.[hc] in src/ or plugins/</a></h2>
+<ul class="simple">
+<li>Add foo.c, foo.h to SRCS in path/Makefile.am.</li>
+<li>Add path/foo.c to po/POTFILES.in (for string translation).</li>
+</ul>
+</div>
+<div class="section" id="adding-a-filetype">
+<h2><a class="toc-backref" href="#toc-entry-31">Adding a filetype</a></h2>
+<p>You can add a filetype without syntax highlighting or tag parsing, but
+check to see if those features have been written in upstream projects
+first (scintilla or ctags).</p>
+<p><strong>Custom:</strong></p>
+<p>If you want to reuse an existing lexer and/or tag parser, making a
+custom filetype is probably easier - it doesn't require any
+changes to the source code. Follow instructions in the manual:
+<a class="reference external" href="http://geany.org/manual/index.html#custom-filetypes">http://geany.org/manual/index.html#custom-filetypes</a>. Don't forget to
+update the <tt class="docutils literal">[Groups]</tt> section in <tt class="docutils literal">filetype_extensions.conf</tt>.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You should use the newer <cite>[build-menu]</cite> section for default build
+commands - the older <cite>[build_settings]</cite> may not work correctly for
+custom filetypes.</p>
+</div>
+<p><strong>Built-in:</strong></p>
+<ul class="simple">
+<li>Add GEANY_FILETYPES_FOO to filetypes.h.</li>
+<li>Initialize GEANY_FILETYPES_FOO in init_builtin_filetypes() of
+filetypes.c.</li>
+<li>Update data/filetype_extensions.conf.</li>
+</ul>
+<p>The remaining notes relate mostly to built-in filetypes.</p>
+<div class="section" id="filetypes-configuration-file">
+<h3><a class="toc-backref" href="#toc-entry-32">filetypes.* configuration file</a></h3>
+<p>All languages need a data/filetypes.foo configuration file. See
+the &quot;Filetype definition files&quot; section in the manual and/or
+data/filetypes.c for an example.</p>
+<p>Programming languages should have:</p>
+<ul class="simple">
+<li>[keywords] if the lexer supports it.</li>
+<li>[settings] mostly for comment settings.</li>
+<li>[build-menu] (or [build_settings]) for commands to run.</li>
+</ul>
+<p>For languages with a Scintilla lexer, there should be a [styling] section,
+to correspond to the styles used in highlighting_styles_FOO[] in
+highlightingmappings.h - see below.</p>
+<p>Don't forget to add the newly created filetype file to data/Makefile.am.</p>
+</div>
+<div class="section" id="syntax-highlighting">
+<h3><a class="toc-backref" href="#toc-entry-33">Syntax highlighting</a></h3>
+<p>It may be possible to use an existing Scintilla lexer in the scintilla/
+subdirectory - if not, you will need to find (or write) one,
+LexFoo.cxx. Try the official Scintilla project first.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">We won't accept adding a lexer that conflicts with one in
+Scintilla. All new lexers should be submitted back to the Scintilla
+project to save duplication of work.</p>
+</div>
+<p>When adding a lexer, update:</p>
+<ul class="simple">
+<li>scintilla/Makefile.am</li>
+<li>scintilla/src/Catalogue.cxx - add a LINK_LEXER command <em>manually</em></li>
+</ul>
+<p>For syntax highlighting, you will need to edit highlighting.c and
+highlightingmappings.h and add the following things:</p>
+<ol class="arabic">
+<li><p class="first">In highlightingmappings.h:</p>
+<ol class="loweralpha simple">
+<li>define <tt class="docutils literal">highlighting_lexer_FOO</tt> to the Scintilla lexer ID for
+this filtype, e.g. <tt class="docutils literal">SCLEX_CPP</tt>.</li>
+<li>define the <tt class="docutils literal">highlighting_styles_FOO</tt> array that maps Scintilla
+style states to style names in the configuration file.</li>
+<li>define <tt class="docutils literal">highlighting_keywords_FOO</tt> to <tt class="docutils literal">EMPTY_KEYWORDS</tt> if the
+filtype has no keywords, or as an <tt class="docutils literal">HLKeyword</tt> array mapping
+the Scintilla keyword IDs to names in the configuration file.</li>
+<li>define <tt class="docutils literal">highlighting_properties_FOO</tt> to <tt class="docutils literal">EMPTY_PROPERTIES</tt>, or
+as an array of <tt class="docutils literal">HLProperty</tt> if the filetype requires some lexer
+properties to be set.  However, note that properties should
+normally be set in the <tt class="docutils literal">[lexer_properties]</tt> section of the
+configuration file instead.</li>
+</ol>
+<p>You may look at other filtype's definitions for some examples
+(Ada, CSS or Diff being good examples).</p>
+</li>
+<li><p class="first">In highlighting.c:</p>
+<ol class="loweralpha simple">
+<li>Add <tt class="docutils literal">init_styleset_case(FOO);</tt> in <tt class="docutils literal">highlighting_init_styles()</tt>.</li>
+<li>Add <tt class="docutils literal">styleset_case(FOO);</tt> in <tt class="docutils literal">highlighting_set_styles()</tt>.</li>
+</ol>
+</li>
+<li><p class="first">Write data/filetypes.foo configuration file [styling] section. See
+the manual and see data/filetypes.d for a named style example.</p>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Please try to make your styles fit in with the other filetypes'
+default colors, and to use named styles where possible (e.g.
+&quot;commentline=comment&quot;). Filetypes that share a lexer should have
+the same colors. If not using named styles, leave the background color
+empty to match the default color.</p>
+</div>
+</div>
+<div class="section" id="error-message-parsing">
+<h3><a class="toc-backref" href="#toc-entry-34">Error message parsing</a></h3>
+<p>New-style error message parsing is done with an extended GNU-style regex
+stored in the filetypes.foo file - see the [build_settings] information
+in the manual for details.</p>
+<p>Old-style error message parsing is done in
+msgwin_parse_compiler_error_line() of msgwindow.c - see the ParseData
+typedef for more information.</p>
+</div>
+<div class="section" id="other-features">
+<h3><a class="toc-backref" href="#toc-entry-35">Other features</a></h3>
+<p>If the lexer has comment styles, you should add them in
+highlighting_is_comment_style(). You should also update
+highlighting_is_string_style() for string/character styles. For now,
+this prevents calltips and autocompletion when typing in a comment
+(but it can still be forced by the user).</p>
+<p>For brace indentation, update lexer_has_braces() in editor.c;
+indentation after ':' is done from on_new_line_added().</p>
+<p>If the Scintilla lexer supports user type keyword highlighting (e.g.
+SCLEX_CPP), update document_update_tags() in document.c.</p>
+</div>
+<div class="section" id="adding-a-tagmanager-parser">
+<h3><a class="toc-backref" href="#toc-entry-36">Adding a TagManager parser</a></h3>
+<p>This assumes the filetype for Geany already exists.</p>
+<p>First write or find a CTags compatible parser, foo.c. Check this fork:
+<a class="reference external" href="https://github.com/universal-ctags/ctags">https://github.com/universal-ctags/ctags</a></p>
+<p>There may be some unmerged language patches for CTags at:
+<a class="reference external" href="http://sf.net/projects/ctags">http://sf.net/projects/ctags</a> - see the tracker.</p>
+<p>(You can also try the Anjuta project's anjuta-tags codebase.)</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">From Geany 1.22 GLib's GRegex engine is used instead of POSIX
+regex, unlike CTags. It should be close enough to POSIX to work
+OK.
+We no longer support regex parsers with the &quot;b&quot; regex flag
+option set and Geany will print debug warnings if it's used.
+CTags supports it but doesn't currently (2011) include any
+parsers that use it. It should be easy to convert to extended
+regex syntax anyway.</p>
+</div>
+<div class="section" id="method">
+<h4><a class="toc-backref" href="#toc-entry-37">Method</a></h4>
+<ul class="simple">
+<li>Add foo.c to SRCS in Makefile.am.</li>
+<li>Add Foo to parsers.h</li>
+<li>Add TM_PARSER_FOO to src/tagmanager/tm_parser.h.  The list here must follow
+exactly the order in parsers.h.</li>
+</ul>
+<p>In src/tagmanager/tm_parser.c:
+Add a map_FOO TMParserMapEntry mapping each kind's letter from foo.c's
+FooKinds to the appropriate TMTagType, and add the corresponding
+MAP_ENTRY(FOO) to parser_map.
+(You may want to make the symbols.c change before doing this).</p>
+<p>In src/tagmanager/tm_parser.c:
+Update tm_parser_context_separator() and tm_parser_has_full_context() to
+handle the new parser if applicable, by adding a TM_PARSER_FOO case entry.</p>
+<p>In filetypes.c, init_builtin_filetypes():
+Set the 2nd argument of the FT_INIT() macro for this filetype to FOO.</p>
+<p>In symbols.c:
+Unless your parser uses C-like tag type kinds, update
+add_top_level_items() for foo, calling tag_list_add_groups(). See
+get_tag_type_iter() for which tv_iters fields to use.</p>
+</div>
+<div class="section" id="tests">
+<h4><a class="toc-backref" href="#toc-entry-38">Tests</a></h4>
+<p>The tag parser tests checks if the proper tags are emitted
+for a given source. Tests for tag parsers consist of two files: the
+source to parse, and the expected output. Tests are run using <tt class="docutils literal">make
+check</tt>.</p>
+<p>The source to parse should be in the file <tt class="docutils literal">tests/ctags/mytest.ext</tt>,
+where <tt class="docutils literal">mytest</tt> is the name you choose for your test, and <tt class="docutils literal">ext</tt> is an
+extension recognized by Geany as the language the test file is for.
+This file should contain a snippet of the language to test for.
+It can be either long or short, depending on what it tests.</p>
+<p>The expected output should be in the file <tt class="docutils literal">tests/ctags/mytest.ext.tags</tt>
+(which is the same name as the source, but with <tt class="docutils literal">.tags</tt> appended), and
+should be in the format generated by <tt class="docutils literal">geany <span class="pre">-g</span></tt>. This file contains
+the tag information expected to be generated from the corresponding
+source file.</p>
+<p>When you have these two files, you have to list your new test along the
+other ones in the <tt class="docutils literal">test_source</tt> variable in <tt class="docutils literal">tests/ctags/Makefile.am</tt>.
+Please keep this list sorted alphabetically.</p>
+</div>
+</div>
+</div>
+<div class="section" id="upgrading-scintilla">
+<h2><a class="toc-backref" href="#toc-entry-39">Upgrading Scintilla</a></h2>
+<p>To upgrade the local Scintilla copy, use the <tt class="docutils literal"><span class="pre">scripts/update-scintilla.sh</span></tt>
+script.</p>
+<p>To use it, you need to first obtain a copy of the Scintilla sources you want
+to update to.  This will generally mean checking out a release tag from the
+Scintilla Mercurial repository, or extracting a tarball.</p>
+<p>Then, just run the script from Geany's to source directory passing the path
+to the Scintilla source directory as first argument, and follow the
+instructions, if any:</p>
+<pre class="literal-block">
+./scripts/update-scintilla.sh /path/to/scintilla/
+</pre>
+</div>
+<div class="section" id="gdb">
+<h2><a class="toc-backref" href="#toc-entry-40">GDB</a></h2>
+<div class="section" id="stop-on-warnings">
+<h3><a class="toc-backref" href="#toc-entry-41">Stop on warnings</a></h3>
+<p>When a GLib or GTK warning is printed, often you want to get a
+backtrace to find out what code caused them. You can do that with the
+<tt class="docutils literal"><span class="pre">--g-fatal-warnings</span></tt> argument, which will abort Geany on the first
+warning it receives.</p>
+<p>But for ordinary testing, you don't always want your editor to abort
+just because of a warning - use:</p>
+<pre class="literal-block">
+(gdb) b handler_log if level &lt;= G_LOG_LEVEL_WARNING
+</pre>
+</div>
+<div class="section" id="running-with-batch-commands">
+<h3><a class="toc-backref" href="#toc-entry-42">Running with batch commands</a></h3>
+<p>Use:</p>
+<pre class="literal-block">
+$ gdb src/geany -x gdb-commands
+</pre>
+<p>Where <tt class="docutils literal"><span class="pre">gdb-commands</span></tt> is a file with the following lines:</p>
+<pre class="literal-block">
+set pagination off
+b handler_log if level &lt;= G_LOG_LEVEL_WARNING
+r -v
+</pre>
+</div>
+<div class="section" id="loading-a-plugin">
+<h3><a class="toc-backref" href="#toc-entry-43">Loading a plugin</a></h3>
+<p>This is useful so you can load plugins without installing them first.
+Alternatively you can use a symlink in ~/.config/geany/plugins or
+$prefix/lib/geany (where $prefix is /usr/local by default).</p>
+<p>The gdb session below was run from the toplevel Geany source directory.
+Start normally with e.g. &quot;gdb src/geany&quot;.
+Type 'r' to run.
+Press Ctrl-C from the gdb window to interrupt program execution.</p>
+<p>Example:</p>
+<pre class="literal-block">
+Program received signal SIGINT, Interrupt.
+0x00d16402 in __kernel_vsyscall ()
+(gdb) call plugin_new(&quot;./plugins/.libs/demoplugin.so&quot;)
+** INFO: Loaded:   ./plugins/.libs/demoplugin.so (Demo)
+$1 = (Plugin *) 0x905a890
+(gdb) c
+Continuing.
+
+Program received signal SIGINT, Interrupt.
+0x00d16402 in __kernel_vsyscall ()
+(gdb) call plugin_free(0x905a890)
+** INFO: Unloaded: ./plugins/.libs/demoplugin.so
+(gdb) c
+Continuing.
+</pre>
+</div>
+<div class="section" id="building-plugins">
+<h3><a class="toc-backref" href="#toc-entry-44">Building Plugins</a></h3>
+<p>The geany-plugins autotools script automatically detects the
+installed system Geany and builds the plugins against that.</p>
+<p>Plugins will build with either GTK2 or GTK3, whichever the detected
+Geany was built with.</p>
+<p>To use plugins with a development version of Geany built with
+a different prefix, the plugins will need to be compiled against
+that version if the ABI has changed.</p>
+<p>To do this you need to specify both --prefix and --with-geany-libdir
+to the plugin configure.  Normally the plugin prefix is the
+same as the Geany prefix to keep plugins with the version of Geany
+that they are compiled against, and with-geany-libdir is the Geany
+prefix/lib.</p>
+<p>Whilst it is possible for the plugin prefix to be different to
+the prefix of the libdir (which is why there are two settings),
+it is probably better to keep the version of Geany and its plugins
+together.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<a class="reference external" href="../HACKING">View document source</a>.
+Generated on: 2024-08-03 01:16 UTC.
+Generated by <a class="reference external" href="https://docutils.sourceforge.io/">Docutils</a> from <a class="reference external" href="https://docutils.sourceforge.io/rst.html">reStructuredText</a> source.
+
+</div>
+</body>
+</html>

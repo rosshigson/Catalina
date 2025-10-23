@@ -14,6 +14,7 @@
  
 #include <stdio.h>
 #include <prop.h>
+#include <hmi.h>
 #include <plugin.h>
 
 /*

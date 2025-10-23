@@ -14,7 +14,9 @@
 // any common includes or types here ...
 
 #include "catapult.h"
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <prop.h>
 
 typedef struct func_1 {

@@ -20,6 +20,8 @@
  * include Posix multi-threading:
  */
 #include <pthread.h>
+#include <prop2.h>
+#include <hmi.h>
 
 /*
  * define the stack size each thread needs (since this number depends on the

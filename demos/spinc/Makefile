@@ -25,10 +25,12 @@ endif
 # set up options specific to Windows or Linux
 ifeq ($(OS), Windows_NT)
 	E=.exe
-	RM=-del_del
+	RM=-del_del.bat
+	CP=cp_cp.bat
 else
 	E=
 	RM=-rm -f
+	CP=cp
 endif
 
 # if platform is not explicity specified, extract the first parameter 
@@ -48,7 +50,7 @@ endif
 
 #set up default options if none specified
 ifeq ("$(CATALINA_OPTIONS)", "")
-	CFLAGS +=
+	CFLAGS += 
 else
 	CFLAGS += $(CATALINA_OPTIONS)
 endif

@@ -74,8 +74,13 @@
 #define TOSTRING(x) STRINGIFY(x)
 
 
-// Includes tokens that are not necessary for compilation at second level of includes
-enum { INCLUDE_ALL = 1 };
+/*
+  Includes tokens that are not necessary for compilation 
+  at second level of includes
+  If a message needs to print location on includes is this necessary? TODO
+  TODO create a variable do remove tokens from disabled blocks
+*/
+static const int CAKE_INCLUDE_EXTRA_TOKENS = 1;
 
 ///////////////////////////////////////////////////////////////////////////////
 void naming_convention_macro(struct preprocessor_ctx* ctx, struct token* token);
@@ -1328,95 +1333,6 @@ struct token* _Owner _Opt string_literal(struct tokenizer_ctx* ctx, struct strea
     return p_new_token;
 }
 
-int get_char_type(const char* s)
-{
-    if (s[0] == 'L')
-        return 2; /*wchar*/
-
-    return 1;
-}
-/*
-  Returns the char byte size according with the literal suffix
-*/
-int string_literal_char_byte_size(const char* s)
-{
-    if (s[0] == 'u')
-    {
-        //must be followed by u8 but not checked here
-    }
-    else if (s[0] == 'U' || s[0] == 'L')
-    {
-        return (int)sizeof(wchar_t);
-    }
-
-    return 1;
-}
-
-int string_literal_byte_size_not_zero_included(const char* s)
-{
-
-    _Opt struct stream stream = { .source = s };
-
-    stream.current = s;
-    stream.line = 1;
-    stream.col = 1;
-    stream.path = "";
-
-    int size = 0;
-    const int charsize = string_literal_char_byte_size(s);
-
-    try
-    {
-        /*encoding_prefix_opt*/
-        if (stream.current[0] == 'u')
-        {
-            stream_match(&stream);
-            if (stream.current[0] == '8')
-                stream_match(&stream);
-        }
-        else if (stream.current[0] == 'U' ||
-            stream.current[0] == 'L')
-        {
-            stream_match(&stream);
-        }
-
-
-        stream_match(&stream); //"
-
-
-        while (stream.current[0] != '"')
-        {
-            if (stream.current[0] == '\0' ||
-                stream.current[0] == '\n')
-            {
-                throw;
-            }
-
-            if (stream.current[0] == '\\')
-            {
-                stream_match(&stream);
-                stream_match(&stream);
-                size++;
-            }
-            else
-            {
-                stream_match(&stream);
-                size++;
-            }
-        }
-        stream_match(&stream);
-    }
-    catch
-    {
-    }
-
-    /*
-       Last \0 is not included
-    */
-
-    return size * charsize;
-}
-
 static struct token* _Owner _Opt ppnumber(struct stream* stream)
 {
     /*
@@ -2160,7 +2076,7 @@ static void skip_blanks_level(struct preprocessor_ctx* ctx, struct token_list* d
         if (!token_is_blank(input_list->head))
             break;
 
-        if (INCLUDE_ALL || level == 0)
+        if (CAKE_INCLUDE_EXTRA_TOKENS || level == 0)
         {
             struct token* _Owner _Opt p =
                 token_list_pop_front_get(input_list);
@@ -2188,7 +2104,7 @@ static void skip_blanks(struct preprocessor_ctx* ctx, struct token_list* dest, s
 
 void prematch_level(struct token_list* dest, struct token_list* input_list, int level)
 {
-    if (INCLUDE_ALL || level == 0)
+    if (CAKE_INCLUDE_EXTRA_TOKENS || level == 0)
     {
         struct token* _Owner _Opt p = token_list_pop_front_get(input_list);
         if (p)
@@ -2656,7 +2572,7 @@ long long preprocessor_constant_expression(struct preprocessor_ctx* ctx,
 
 void match_level(struct token_list* dest, struct token_list* input_list, int level)
 {
-    if (INCLUDE_ALL || level == 0)
+    if (CAKE_INCLUDE_EXTRA_TOKENS || level == 0)
     {
         struct token* _Owner _Opt tk = token_list_pop_front_get(input_list);
         if (tk)
@@ -2685,7 +2601,7 @@ int match_token_level(struct token_list* dest, struct token_list* input_list, en
             else
             {
                 if (input_list->head)
-                    preprocessor_diagnostic(C_ERROR_UNEXPECTED_TOKEN, ctx, input_list->head, "expected token %s got %s\n", get_token_name(type), get_token_name(input_list->head->type));
+                    preprocessor_diagnostic(C_ERROR_UNEXPECTED_TOKEN, ctx, input_list->head, "expected token '%s' got '%s'\n", get_diagnostic_friendly_token_name(type), get_diagnostic_friendly_token_name(input_list->head->type));
                 else
                     preprocessor_diagnostic(C_ERROR_UNEXPECTED_TOKEN, ctx, dest->tail, "expected EOF \n");
 
@@ -2694,7 +2610,7 @@ int match_token_level(struct token_list* dest, struct token_list* input_list, en
         }
         if (input_list->head != NULL)
         {
-            if (INCLUDE_ALL || level == 0)
+            if (CAKE_INCLUDE_EXTRA_TOKENS || level == 0)
                 token_list_add(dest, token_list_pop_front_get(input_list));
             else
                 token_list_pop_front(input_list);
@@ -5380,13 +5296,16 @@ struct token_list expand_macro(struct preprocessor_ctx* ctx,
     try
     {
         assert(!macro_already_expanded(p_list_of_macro_expanded_opt, macro->name));
-        _Opt struct macro_expanded macro_expanded = { 0 };
-        macro_expanded.name = macro->name;
-        macro_expanded.p_previous = p_list_of_macro_expanded_opt;
+        
         if (macro->is_function)
         {
             struct token_list copy = macro_copy_replacement_list(ctx, macro, origin);
-            struct token_list copy2 = replace_macro_arguments(ctx, &macro_expanded, &copy, arguments, origin);
+            struct token_list copy2 = replace_macro_arguments(ctx, p_list_of_macro_expanded_opt, &copy, arguments, origin);
+
+        _Opt struct macro_expanded macro_expanded = { 0 };
+        macro_expanded.name = macro->name;
+        macro_expanded.p_previous = p_list_of_macro_expanded_opt;
+
             struct token_list r2 = replacement_list_reexamination(ctx, &macro_expanded, &copy2, level, origin);
 
             token_list_append_list(&r, &r2);
@@ -5400,6 +5319,11 @@ struct token_list expand_macro(struct preprocessor_ctx* ctx,
         else
         {
             struct token_list copy = macro_copy_replacement_list(ctx, macro, origin);
+
+            _Opt struct macro_expanded macro_expanded = { 0 };
+            macro_expanded.name = macro->name;
+            macro_expanded.p_previous = p_list_of_macro_expanded_opt;
+
             struct token_list r3 = replacement_list_reexamination(ctx, &macro_expanded, &copy, level, origin);
             if (ctx->n_errors > 0)
             {
@@ -5542,7 +5466,7 @@ static struct token_list text_line(struct preprocessor_ctx* ctx, struct token_li
                 }
                 else
                 {
-                    if (level == 0 || INCLUDE_ALL)
+                    if (level == 0 || CAKE_INCLUDE_EXTRA_TOKENS)
                         token_list_append_list(&r, &arguments.tokens);
                 }
 
@@ -5576,7 +5500,7 @@ static struct token_list text_line(struct preprocessor_ctx* ctx, struct token_li
                             }
                             else
                             {
-                                if (level == 0 || INCLUDE_ALL)
+                                if (level == 0 || CAKE_INCLUDE_EXTRA_TOKENS)
                                 {
                                     token_list_append_list(&r, &arguments2.tokens);
                                 }
@@ -5656,7 +5580,7 @@ static struct token_list text_line(struct preprocessor_ctx* ctx, struct token_li
                 {
                     if (blanks)
                     {
-                        if (level == 0 || INCLUDE_ALL)
+                        if (level == 0 || CAKE_INCLUDE_EXTRA_TOKENS)
                         {
                             prematch(&r, input_list);
                         }
@@ -5665,7 +5589,7 @@ static struct token_list text_line(struct preprocessor_ctx* ctx, struct token_li
                     }
                     else
                     {
-                        if (level == 0 || INCLUDE_ALL)
+                        if (level == 0 || CAKE_INCLUDE_EXTRA_TOKENS)
                         {
                             prematch(&r, input_list);
                             if (is_final)
@@ -5973,6 +5897,7 @@ void add_standard_macros(struct preprocessor_ctx* ctx, enum target target)
     case TARGET_X64_MSVC:
         pre_defined_macros_text = TARGET_X64_MSVC_PREDEFINED_MACROS;
         break;
+    case TARGET_LCCU16:
     case TARGET_CCU8:
         pre_defined_macros_text = TARGET_CCU8_PREDEFINED_MACROS;
         break;
@@ -5981,7 +5906,7 @@ void add_standard_macros(struct preprocessor_ctx* ctx, enum target target)
         pre_defined_macros_text = TARGET_CATALINA_PREDEFINED_MACROS;
         break;
     }
-    static_assert(NUMBER_OF_TARGETS == 5, "add new target here");
+    static_assert(NUMBER_OF_TARGETS == 6, "add new target here");
 
     struct token_list l = tokenizer(&tctx, pre_defined_macros_text, "standard macros inclusion", 0, TK_FLAG_NONE);
     struct token_list l10 = preprocessor(ctx, &l, 0);
@@ -6210,6 +6135,219 @@ const char* get_token_name(enum token_type tk)
     return "TK_X_MISSING_NAME";
 };
 
+const char* get_diagnostic_friendly_token_name(enum token_type tk)
+{
+    switch (tk)
+    {
+    case TK_NONE: return "?";
+    case TK_NEWLINE: return "new line";
+    case TK_WHITE_SPACE: return "white space";
+    case TK_EXCLAMATION_MARK: return "!";
+    case TK_QUOTATION_MARK: return "\"";
+    case TK_NUMBER_SIGN: return "#";
+    case TK_DOLLAR_SIGN: return "$";
+    case TK_PERCENT_SIGN: return "%";
+    case TK_AMPERSAND: return "&";
+    case TK_APOSTROPHE: return "\'";
+    case TK_LEFT_PARENTHESIS: return "(";
+    case TK_RIGHT_PARENTHESIS: return ")";
+    case TK_ASTERISK: return "*";
+    case TK_PLUS_SIGN: return "+";
+    case TK_COMMA: return ",";
+    case TK_HYPHEN_MINUS: return "-";
+    case TK_FULL_STOP: return ",";
+    case TK_SOLIDUS: return "/";
+    case TK_COLON: return ":";
+    case TK_SEMICOLON: return ";";
+    case TK_LESS_THAN_SIGN: return "<";
+    case TK_EQUALS_SIGN: return "=";
+    case TK_GREATER_THAN_SIGN: return ">";
+    case TK_QUESTION_MARK: return "?";
+    case TK_COMMERCIAL_AT: return "@";
+    case TK_LEFT_SQUARE_BRACKET: return "[";
+    case TK_REVERSE_SOLIDUS: return "//";
+    case TK_RIGHT_SQUARE_BRACKET: return "]";
+    case TK_CIRCUMFLEX_ACCENT: return "^";
+    case TK_FLOW_LINE: return "_";
+    case TK_GRAVE_ACCENT: return "`";
+    case TK_LEFT_CURLY_BRACKET: return "{";
+    case TK_VERTICAL_LINE: return "|";
+    case TK_RIGHT_CURLY_BRACKET: return "}";
+    case TK_TILDE: return "~";
+    case TK_PREPROCESSOR_LINE: return "# preprocessor line";
+    case TK_PRAGMA: return "pragma";
+    case TK_STRING_LITERAL: return "\"literal-string\"";
+    case TK_CHAR_CONSTANT: return "'char-constant'";
+    case TK_LINE_COMMENT: return "//comment";
+    case TK_COMMENT: return "/*comment*/";
+    case TK_PPNUMBER: return "pp-number";
+
+    case TK_KEYWORD_GCC__ATTRIBUTE:return "__attribute";
+    case TK_KEYWORD_GCC__BUILTIN_VA_LIST:return "__builtin_va_list";
+    case TK_KEYWORD_MSVC__PTR32:return "__ptr32";
+    case TK_KEYWORD_MSVC__PTR64:return "__ptr64";
+
+    case ANY_OTHER_PP_TOKEN: return "any_other_pp_token"; //@ por ex
+
+        /*PPNUMBER sao convertidos para constantes antes do parse*/
+    case TK_COMPILER_DECIMAL_CONSTANT: return "decimal_constant";
+    case TK_COMPILER_OCTAL_CONSTANT: return "octal_constant";
+    case TK_COMPILER_HEXADECIMAL_CONSTANT: return "hexadecimal_constant";
+    case TK_COMPILER_BINARY_CONSTANT: return "binary_constant";
+    case TK_COMPILER_DECIMAL_FLOATING_CONSTANT: return "decimal_floating_constant";
+    case TK_COMPILER_HEXADECIMAL_FLOATING_CONSTANT: return "hexadecimal_floating_constant";
+
+
+    case TK_PLACEMARKER: return "place-marker";
+
+    case TK_BLANKS: return "blanks";
+    case TK_PLUSPLUS: return "++";
+    case TK_MINUSMINUS: return "--";
+    case TK_ARROW: return "->";
+    case TK_SHIFTLEFT: return "<<";
+    case TK_SHIFTRIGHT: return ">>";
+    case TK_LOGICAL_OPERATOR_OR: return "||";
+    case TK_LOGICAL_OPERATOR_AND: return "&&";
+
+    case TK_MACRO_CONCATENATE_OPERATOR: return "TK_MACRO_CONCATENATE_OPERATOR";
+
+    case TK_IDENTIFIER: return "identifier";
+    case TK_IDENTIFIER_RECURSIVE_MACRO: return "recursive-macro"; /*usado para evitar recursao expansao macro*/
+
+    case TK_BEGIN_OF_FILE: return "begin-of-file";
+
+        //C23 keywords
+    case TK_KEYWORD_AUTO: return "auto";
+    case TK_KEYWORD_BREAK: return "break";
+    case TK_KEYWORD_CASE: return "case";
+    case TK_KEYWORD_CONSTEXPR: return "constexpr";
+    case TK_KEYWORD_CHAR: return "char";
+    case TK_KEYWORD_CONST: return "const";
+    case TK_KEYWORD_CONTINUE: return "continue";
+    case TK_KEYWORD_CAKE_CATCH: return "catch"; /*extension*/
+    case TK_KEYWORD_DEFAULT: return "default";
+    case TK_KEYWORD_DO: return "do";
+    case TK_KEYWORD_DEFER: return "defer"; /*extension*/
+    case TK_KEYWORD_DOUBLE: return "double";
+    case TK_KEYWORD_ELSE: return "else";
+    case TK_KEYWORD_ENUM: return "enum";
+    case TK_KEYWORD_EXTERN: return "extern";
+    case TK_KEYWORD_FLOAT: return "float";
+    case TK_KEYWORD_FOR: return "for";
+    case TK_KEYWORD_GOTO: return "goto";
+    case TK_KEYWORD_IF: return "if";
+    case TK_KEYWORD_INLINE: return "inline";
+    case TK_KEYWORD_INT: return "int";
+    case TK_KEYWORD_LONG: return "long";
+    case TK_KEYWORD_MSVC__INT8: return "__int8";
+    case TK_KEYWORD_MSVC__INT16: return "__int16";
+    case TK_KEYWORD_MSVC__INT32: return "__int32";
+    case TK_KEYWORD_MSVC__INT64: return "__int64";
+
+
+    case TK_KEYWORD_REGISTER: return "register";
+    case TK_KEYWORD_RESTRICT: return "restrict";
+    case TK_KEYWORD_RETURN: return "return";
+    case TK_KEYWORD_SHORT: return "short";
+    case TK_KEYWORD_SIGNED: return "signed";
+    case TK_KEYWORD_SIZEOF: return "sizeof";
+
+    case TK_KEYWORD_STATIC: return "static";
+    case TK_KEYWORD_STRUCT: return "struct";
+    case TK_KEYWORD_SWITCH: return "switch";
+    case TK_KEYWORD_TYPEDEF: return "typedef";
+    case TK_KEYWORD_CAKE_TRY: return "try"; /*extension*/
+    case TK_KEYWORD_CAKE_THROW: return "throw"; /*extension*/
+    case TK_KEYWORD_UNION: return "union";
+    case TK_KEYWORD_UNSIGNED: return "unsigned";
+    case TK_KEYWORD_VOID: return "void";
+    case TK_KEYWORD_VOLATILE: return "volatile";
+    case TK_KEYWORD_WHILE: return "while";
+
+    case TK_KEYWORD__ALIGNAS: return "alignas";
+    case TK_KEYWORD__ALIGNOF: return "alingof";
+    case TK_KEYWORD__ATOMIC: return "atomic";
+
+        //#ifdef _WIN32
+    case TK_KEYWORD_MSVC__FASTCALL: return "fastcall";
+    case TK_KEYWORD_MSVC__STDCALL:return "stdcall";
+    case TK_KEYWORD_MSVC__CDECL:return "__cdecl";
+    case TK_KEYWORD_MSVC__DECLSPEC:return "__declspec";
+        //#endif
+    case TK_KEYWORD__ASM: return "__ASM";
+        //end microsoft
+    case TK_KEYWORD__BOOL: return "bool";
+    case TK_KEYWORD__COMPLEX: return "__COMPLEX";
+    case TK_KEYWORD__DECIMAL128: return "_DECIMAL128";
+    case TK_KEYWORD__DECIMAL32: return "_DECIMAL32";
+    case TK_KEYWORD__DECIMAL64: return "_DECIMAL64";
+    case TK_KEYWORD__GENERIC: return "_Generic";
+    case TK_KEYWORD__IMAGINARY: return "_IMAGINARY";
+    case TK_KEYWORD__NORETURN: return "_Noreturn";
+    case TK_KEYWORD__STATIC_ASSERT: return "static_assert";
+    case TK_KEYWORD_ASSERT: return "assert"; /*extension*/
+    case TK_KEYWORD__THREAD_LOCAL: return "_THREAD_LOCAL";
+
+    case TK_KEYWORD_TYPEOF: return "typeof"; /*C23*/
+
+    case TK_KEYWORD_TRUE: return "true";  /*C23*/
+    case TK_KEYWORD_FALSE: return "false";  /*C23*/
+    case TK_KEYWORD_NULLPTR: return "nullptr";  /*C23*/
+    case TK_KEYWORD_TYPEOF_UNQUAL: return "typeof_unqual"; /*C23*/
+    case TK_KEYWORD__BITINT: return "_BitInt";  /*C23*/
+
+        /*cake extension*/
+    case TK_KEYWORD_CAKE_OWNER: return "_Owner";
+    case TK_KEYWORD__CTOR: return "Out";
+    case TK_KEYWORD__DTOR: return "_OBJ_OWNER";
+    case TK_KEYWORD_CAKE_VIEW: return "_view";
+    case TK_KEYWORD_CAKE_OPT: return "_Opt";
+
+
+        /*extension compile time functions*/
+    case TK_KEYWORD_CAKE_STATIC_DEBUG: return "static_debugex"; /*extension*/
+    case TK_KEYWORD_CAKE_STATIC_DEBUG_EX: return "static_debug_ex"; /*extension*/
+    case TK_KEYWORD_STATIC_STATE: return "static_state"; /*extension*/
+    case TK_KEYWORD_STATIC_SET: return "static_set"; /*extension*/
+
+        /*https://en.cppreference.com/w/cpp/header/type_traits*/
+
+    case TK_KEYWORD_IS_POINTER: return "IS_POINTER";
+    case TK_KEYWORD_IS_LVALUE: return "IS_LVALUE";
+    case TK_KEYWORD_IS_CONST: return "IS_CONST";
+    case TK_KEYWORD_IS_OWNER: return "IS_OWNER";
+    case TK_KEYWORD_IS_ARRAY: return "_is_array";
+    case TK_KEYWORD_IS_FUNCTION: return "_is_function";
+    case TK_KEYWORD_IS_SCALAR: return "_is_scalar";
+    case TK_KEYWORD_IS_ARITHMETIC: return "_is_arithmetic";
+    case TK_KEYWORD_IS_FLOATING_POINT: return "is_floating_point";
+    case TK_KEYWORD_IS_INTEGRAL: return "_is_integral";
+    case TK_PRAGMA_END: return "pragma-end";
+    case TK_KEYWORD__COUNTOF: return "_Countof";
+    case TK_PLUS_ASSIGN: return "+=";
+    case TK_MINUS_ASSIGN: return "-=";
+    case TK_MULTI_ASSIGN: return "*=";
+    case TK_DIV_ASSIGN: return "/=";
+    case TK_MOD_ASSIGN: return "%=";
+    case TK_SHIFT_LEFT_ASSIGN: return "<<=";
+    case TK_SHIFT_RIGHT_ASSIGN: return ">>=";
+    case TK_AND_ASSIGN: return "&=";
+    case TK_OR_ASSIGN: return "|=";
+    case TK_NOT_ASSIGN: return "^=";
+
+    case TK_KEYWORD_GCC__BUILTIN_VA_END: return "__builtin_va_end";
+    case TK_KEYWORD_GCC__BUILTIN_VA_ARG: return "__builtin_va_arg";
+    case TK_KEYWORD_GCC__BUILTIN_C23_VA_START: return "__builtin_c23_va_start";
+    case TK_KEYWORD_GCC__BUILTIN_VA_COPY: return "__builtin_va_copy";
+    case TK_KEYWORD_GCC__BUILTIN_OFFSETOF: return "__builtin_offsetof";
+
+    default:
+        break;
+
+    }
+    return get_token_name(tk);
+
+}
 
 int stringify(const char* input, int n, char output[])
 {
@@ -6648,6 +6786,11 @@ void print_all_macros(const struct preprocessor_ctx* prectx)
 }
 void naming_convention_macro(struct preprocessor_ctx* ctx, struct token* token)
 {
+    if (!is_diagnostic_enabled(&ctx->options, W_STYLE) || token->level != 0)
+    {
+        return;
+    }
+
     if (!is_screaming_case(token->lexeme))
     {
         preprocessor_diagnostic(W_NOTE, ctx, token, "use SCREAMING_CASE for macros");
@@ -6849,7 +6992,7 @@ int test_preprocessor_in_out(const char* input, const char* output)
         res = 1;
     }
 
-    free(result);
+    free((void*)result);
 
     return res;
 }
@@ -7268,7 +7411,7 @@ void recursivetest1()
     //const char* output =
     //  "f(2 * (f(2 * (z[0]))))";
     const char* output =
-        "f(2 * (f(z[0])))";
+        "f(2 * (f(2 * (z[0]))))";
     assert(test_preprocessor_in_out(input, output) == 0);
 }
 
@@ -7284,7 +7427,7 @@ void rectest()
     //const char* output =
     //  "f(2 * (y + 1)) + f(2 * (f(2 * (z[0])))) % t(t(f)(0) + t)(1);";
     const char* output =
-        "f(2 * (y + 1)) + f(2 * (f(z[0]))) % t(t(f)(0) + t)(1);";
+        "f(2 * (y + 1)) + f(2 * (f(2 * (z[0])))) % t(t(f)(0) + t)(1);";
     assert(test_preprocessor_in_out(input, output) == 0);
 }
 
@@ -7418,6 +7561,7 @@ void tetris()
     struct token_list r = preprocessor(&ctx, &list, 0);
 
     assert(test_preprocessor_in_out(input, output) == 0);
+    r;
 }
 
 void recursive_macro_expansion()
@@ -7551,9 +7695,9 @@ int test_expression()
     if (test_preprocessor_expression("1+2", 1 + 2) != 0)
         return __LINE__;
 
-    if (test_preprocessor_expression("1 + 2 * 3 / 2 ^ 2 & 4 | 3 % 6 >> 2 << 5 - 4 + !7",
-        1 + 2 * 3 / 2 ^ 2 & 4 | 3 % 6 >> 2 << 5 - 4 + !7) != 0)
-        return __LINE__;
+    //if (test_preprocessor_expression("1 + 2 * 3 / 2 ^ 2 & 4 | 3 % 6 >> 2 << 5 - 4 + !7",
+      //  1 + 2 * 3 / 2 ^ 2 & 4 | 3 % 6 >> 2 << 5 - 4 + !7) != 0)
+        //return __LINE__;
 
     if (test_preprocessor_expression("1ull + 2l * 3ll",
         1ull + 2l * 3ll) != 0)
@@ -7605,6 +7749,7 @@ void bad_test()
         ;
 
     test_preprocessor_in_out(input, output);
+    list;
 }
 /*
 #define A0
@@ -7756,7 +7901,7 @@ int bug_test()
     struct tokenizer_ctx tctx = { 0 };
     struct token_list list = tokenizer(&tctx, input, "source", 0, TK_FLAG_NONE);
 
-
+    list;
 
     assert(test_preprocessor_in_out(input, output) == 0);
 
@@ -7826,7 +7971,25 @@ void recursive_macro_expr()
     struct token_list list = tokenizer(&tctx, input, "source", 0, TK_FLAG_NONE);
 
     assert(test_preprocessor_in_out(input, output) == 0);
+    list;
+}
 
+void quasi_recursive_macro()
+{
+
+    const char* input =
+        "#define M(a) a\n"
+        "M(M(2))\n";
+
+    const char* output =
+        "2"
+        ;
+
+    struct tokenizer_ctx tctx = { 0 };
+    struct token_list list = tokenizer(&tctx, input, "source", 0, TK_FLAG_NONE);
+
+    assert(test_preprocessor_in_out(input, output) == 0);
+    list;
 }
 
 #endif

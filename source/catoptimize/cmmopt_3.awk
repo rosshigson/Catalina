@@ -25,7 +25,7 @@ BEGIN {
    if (known_function(f)) {
       /* remove the actual function (will be inlined at each call) */
       printf "' Catalina Optimizer - %s removed (Inlined)\n", f
-      getline; while ($1 == "alignl") { getline }
+      getline; while (left($1,6) == "alignl") { getline }
       while (1) {
          if (($1 == "long") && ($2 == "I32_RETF")) {
             break;
@@ -43,7 +43,7 @@ BEGIN {
             /* this line indicates we have reached the end, even if it is not a normal termination */
             break;
          }
-         getline; while ($1 == "alignl") { getline }
+         getline; while (left($1,6) == "alignl") { getline }
       }
    }
    else {
@@ -54,10 +54,10 @@ BEGIN {
 }
 /^[ \t]+word[ \t]+I16A_MOVI[ \t]*\+[ \t]*BC/  {
    bcl = $0;
-   getline; while ($1 == "alignl") { getline }
+   getline; while (left($1,6) == "alignl") { getline }
    if (left($0, 20) == " word I16A_ADDI + SP") {
       spl = $0;
-      getline; while ($1 == "alignl") { getline }
+      getline; while (left($1,6) == "alignl") { getline }
       if (left($0, 14) == " long I32_CALA") {
          cal = $0
          if (left($4,1)=="(") {
@@ -71,12 +71,12 @@ BEGIN {
          if (known_function(f)) {
             /* inline it */
             insert_inline(f);
-            print " alignl ' align long"
-            getline; while ($1 == "alignl") { getline }
+            print " alignl"
+            getline; while (left($1,6) == "alignl") { getline }
             if (left($0, 20) != " word I16A_ADDI + SP") {
                if (left($0, 14) == " long I32_LODA") {
                   spl = $0
-                  getline; while ($1 == "alignl") { getline }
+                  getline; while (left($1,6) == "alignl") { getline }
                   if (left($0, 19) != " word I16A_ADD + SP") {
                      print spl
                      print $0
@@ -115,12 +115,12 @@ BEGIN {
       if (known_function(f)) {
          /* inline it */
          insert_inline(f);
-         print " alignl ' align long"
-         getline; while ($1 == "alignl") { getline }
+         print " alignl"
+         getline; while (left($1,6) == "alignl") { getline }
          if (left($0, 20) != " word I16A_ADDI + SP") {
             if (left($0, 14) == " long I32_LODA") {
                spl = $0
-               getline; while ($1 == "alignl") { getline }
+               getline; while (left($1,6) == "alignl") { getline }
                if (left($0, 19) != " word I16A_ADD + SP") {
                   print cal
                   print $0
@@ -146,10 +146,10 @@ BEGIN {
 }
 /^[ \t]+long[ \t]+I32_MOVI[ \t]*\+[ \t]*BC/  {
    bcl = $0;
-   getline; while ($1 == "alignl") { getline }
+   getline; while (left($1,6) == "alignl") { getline }
    if (left($0, 20) == " word I16A_ADDI + SP") {
       spl = $0;
-      getline; while ($1 == "alignl") { getline }
+      getline; while (left($1,6) == "alignl") { getline }
       if (left($0, 14) == " long I32_CALA") {
          cal = $0
          if (left($4,1)=="(") {
@@ -163,12 +163,12 @@ BEGIN {
          if (known_function(f)) {
             /* inline it */
             insert_inline(f);
-            print " alignl ' align long"
-            getline; while ($1 == "alignl") { getline }
+            print " alignl"
+            getline; while (left($1,6) == "alignl") { getline }
             if (left($0, 20) != " word I16A_ADDI + SP") {
                if (left($0, 14) == " long I32_LODA") {
                   spl = $0
-                  getline; while ($1 == "alignl") { getline }
+                  getline; while (left($1,6) == "alignl") { getline }
                   if (left($0, 19) != " word I16A_ADD + SP") {
                      print spl
                      print $0
@@ -207,12 +207,12 @@ BEGIN {
       if (known_function(f)) {
          /* inline it */
          insert_inline(f);
-         print " alignl ' align long"
-         getline; while ($1 == "alignl") { getline }
+         print " alignl"
+         getline; while (left($1,6) == "alignl") { getline }
          if (left($0, 20) != " word I16A_ADDI + SP") {
             if (left($0, 14) == " long I32_LODA") {
                spl = $0
-               getline; while ($1 == "alignl") { getline }
+               getline; while (left($1,6) == "alignl") { getline }
                if (left($0, 19) != " word I16A_ADD + SP") {
                   print cal
                   print $0
@@ -240,7 +240,7 @@ BEGIN {
 /^[ \t]+word[ \t]+I16B_CPREP/ {
    /* printf("cprep : %s", $0) */
    cpl = $0;
-   getline; while ($1 == "alignl") { getline }
+   getline; while (left($1,6) == "alignl") { getline }
    sp1 = "";
    sp2 = "";
    if (left($0, 20) == " word I16A_SUBI + SP") {
@@ -248,7 +248,7 @@ BEGIN {
    }
    else if (left($0, 14) == " long I32_LODA") {
       sp1 = $0;
-      getline; while ($1 == "alignl") { getline }
+      getline; while (left($1,6) == "alignl") { getline }
       if (left($0, 19) != " word I16A_SUB + SP") {
          sp2 = $0;
       }
@@ -268,12 +268,12 @@ BEGIN {
       if (known_function(f)) {
          /* inline it */
          insert_inline(f);
-         print " alignl ' align long"
-         getline; while ($1 == "alignl") { getline }
+         print " alignl"
+         getline; while (left($1,6) == "alignl") { getline }
          if (left($0, 20) != " word I16A_ADDI + SP") {
             if (left($0, 14) == " long I32_LODA") {
                spl = $0
-               getline; while ($1 == "alignl") { getline }
+               getline; while (left($1,6) == "alignl") { getline }
                if (left($0, 19) != " word I16A_ADD + SP") {
                   print spl
                   print $0
@@ -311,7 +311,7 @@ BEGIN {
 }
 /^[ \t]+long[ \t]+I32_CPREP/ {
    cpl = $0;
-   getline; while ($1 == "alignl") { getline }
+   getline; while (left($1,6) == "alignl") { getline }
    sp1 = "";
    sp2 = "";
    if (left($0, 20) == " word I16A_SUBI + SP") {
@@ -319,7 +319,7 @@ BEGIN {
    }
    else if (left($0, 14) == " long I32_LODA") {
       sp1 = $0;
-      getline; while ($1 == "alignl") { getline }
+      getline; while (left($1,6) == "alignl") { getline }
       if (left($0, 19) != " word I16A_SUB + SP") {
          sp2 = $0;
       }
@@ -337,12 +337,12 @@ BEGIN {
       if (known_function(f)) {
          /* inline it */
          insert_inline(f);
-         print " alignl ' align long"
-         getline; while ($1 == "alignl") { getline }
+         print " alignl"
+         getline; while (left($1,6) == "alignl") { getline }
          if (left($0, 20) != " word I16A_ADDI + SP") {
             if (left($0, 14) == " long I32_LODA") {
                spl = $0
-               getline; while ($1 == "alignl") { getline }
+               getline; while (left($1,6) == "alignl") { getline }
                if (left($0, 19) != " word I16A_ADD + SP") {
                   print spl
                   print $0
@@ -393,12 +393,12 @@ BEGIN {
    if (known_function(f)) {
       /* inline it */
       insert_inline(f);
-      print " alignl ' align long"
-      getline; while ($1 == "alignl") { getline }
+      print " alignl"
+      getline; while (left($1,6) == "alignl") { getline }
       if (left($0, 20) != " word I16A_ADDI + SP") {
          if (left($0, 14) == " long I32_LODA") {
             spl = $0
-            getline; while ($1 == "alignl") { getline }
+            getline; while (left($1,6) == "alignl") { getline }
             if (left($0, 19) != " word I16A_ADD + SP") {
                print spl
                print $0

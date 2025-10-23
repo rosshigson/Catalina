@@ -105,6 +105,13 @@
 #include "rs232.h"
 #endif
 
+#ifdef __CATALINA__
+#include "prop.h"
+#ifdef __CATALINA_P2
+#include "prop2.h"
+#endif
+#endif
+
 /* filesize 999999999999999 should be enough... */
 #define YM_FILE_SIZE_LENGTH        (16)
 

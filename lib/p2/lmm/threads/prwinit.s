@@ -224,15 +224,15 @@ C_pthread_rwlockattr_getpshared_20
  jmp #RETN
 
 
-' Catalina Import _thread_stall
+' Catalina Import _Pthread_Pool
 
 ' Catalina Import _pthread_init_lock_pool
-
-' Catalina Import _Pthread_Pool
 
 ' Catalina Import errno
 
 ' Catalina Import _thread_allow
+
+' Catalina Import _thread_stall
 
 ' Catalina Import _thread_lockret
 ' end

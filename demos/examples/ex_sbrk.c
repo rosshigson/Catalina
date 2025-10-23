@@ -1,5 +1,7 @@
+#include <prop.h>
 #include <hmi.h>
 #include <stdlib.h>
+
 
 struct list_entry {
    struct list_entry *next;

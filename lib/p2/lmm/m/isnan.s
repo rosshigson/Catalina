@@ -6,43 +6,43 @@ DAT ' code segment
 ' (Catalina v3.15 Code Generator by Ross Higson)
 '
 
-' Catalina Export __IsNan
+' Catalina Export isnan
 
  alignl ' align long
-C___I_sN_an ' <symbol:__IsNan>
+C_isnan ' <symbol:isnan>
  jmp #NEWF
- sub SP, #4
  jmp #PSHM
- long $540000 ' save registers
- jmp #LODF
- long -8
- wrlong r2, RI ' ASGNF4 addrl reg
+ long $f00000 ' save registers
+ mov RI, FP
+ add RI, #8
+ wrlong r2, RI ' spill reg
  mov r22, FP
- sub r22, #-(-8) ' reg <- addrli
- rdlong r22, r22 ' reg <- INDIRI4 reg
+ add r22, #8 ' reg <- addrfi
+ rdlong r23, r22 ' reg <- INDIRU4 reg
  jmp #LODL
- long 2139095040
- mov r20, RI ' reg <- con
- mov r18, r22 ' BANDI/U
- and r18, r20 ' BANDI/U (3)
- cmps r18, r20 wz
+ long $7f800000
+ mov r22, RI ' reg <- con
+ mov r20, r23 ' BANDI/U
+ and r20, r22 ' BANDI/U (3)
+ cmp r20, r22 wz
  jmp #BRNZ
- long @C___I_sN_an_2 ' NEI4
+ long @C_isnan_3 ' NEU4
  jmp #LODL
- long 8388607
- mov r20, RI ' reg <- con
- and r22, r20 ' BANDI/U (1)
- cmps r22,  #0 wz
+ long $7fffff
+ mov r22, RI ' reg <- con
+ and r22, r23 ' BANDI/U (2)
+ cmp r22,  #0 wz
  jmp #BR_Z
- long @C___I_sN_an_2 ' EQI4
- mov r0, #1 ' RET coni
+ long @C_isnan_3 ' EQU4
+ mov r21, #1 ' reg <- coni
  jmp #JMPA
- long @C___I_sN_an_1 ' JUMPV addrg
-C___I_sN_an_2
- mov r0, #0 ' RET coni
-C___I_sN_an_1
+ long @C_isnan_4 ' JUMPV addrg
+C_isnan_3
+ mov r21, #0 ' reg <- coni
+C_isnan_4
+ mov r0, r21 ' CVI, CVU or LOAD
+' C_isnan_1 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
- add SP, #4 ' framesize
  jmp #RETF
 
 ' end

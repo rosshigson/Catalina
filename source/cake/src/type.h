@@ -93,7 +93,7 @@ enum type_specifier_flags
 };
 
 
-
+enum type_specifier_flags get_bool_c89_type_specifier(enum target target);
 enum type_specifier_flags get_wchar_type_specifier(enum target target);
 enum type_specifier_flags get_size_t_specifier(enum target target);
 enum type_specifier_flags get_ptrdiff_t_specifier(enum target target);
@@ -258,6 +258,7 @@ struct type
     size_t num_of_elements;
     bool has_static_array_size;
 
+
     /*
       address_of is true when the type is created by address of operator.
       This is used to create _Dtor pointer.
@@ -371,7 +372,7 @@ struct type get_array_item_type(const struct type* p_type);
 
 struct type type_param_array_to_pointer(const struct type* p_type, bool null_checks_enabled);
 
-struct type type_make_literal_string(int size, enum type_specifier_flags chartype, enum type_qualifier_flags qualifiers, enum target target);
+struct type type_make_literal_string2(int size, enum type_specifier_flags chartype, enum type_qualifier_flags qualifiers, enum target target);
 struct type type_make_int();
 struct type type_make_int_bool_like();
 struct type type_make_size_t(enum target target);
@@ -417,6 +418,7 @@ void print_type_qualifier_specifiers(struct osstream* ss, const struct type* typ
 void type_visit_to_mark_anonymous(struct type* p_type);
 
 void type_set_qualifiers_using_declarator(struct type* p_type, struct declarator* pdeclarator);
+void type_set_storage_specifiers_using_declarator(struct type* p_type, struct declarator* pdeclarator);
 void type_merge_qualifiers_using_declarator(struct type* p_type, struct declarator* pdeclarator);
 
 void print_type_declarator(struct osstream* ss, const struct type* p_type, enum target target);

@@ -6,6 +6,7 @@
 // #define MATCH_FUNCTION strstr  // use simple substring matching
 #define MATCH_FUNCTION amatch     // use globbing (see glob.c)
 
+int MATCH_FUNCTION(unsigned char *str, unsigned char *p);
 
 static VOLINFO vi;
 static uint32_t pstart = 0;
@@ -62,7 +63,7 @@ int mountFatVolume(void) {
    }
 
 
-   if (pstart == 0xFFFFFFFF) {
+   if (pstart == 0xFFFFFFFFUL) {
       #ifdef STORAGE_DEBUG
       printf("Cannot find first partition\n");
       #endif
@@ -117,7 +118,7 @@ void buildfn(unsigned char *dst, unsigned char *src) {
          *dst++ = src[i];
       }
    }
-   if (strncmp(&src[8], "   ", 3) != 0) {
+   if (strncmp((char *)&src[8], "   ", 3) != 0) {
       *dst++ = '.';
       for (i = 8; i < 11; i++) {
          if (src[i] != ' ') {
@@ -172,7 +173,7 @@ void doDir(unsigned char *dir, unsigned char *filter, doFile func) {
                      |  (((unsigned long) de.filesize_1) << 8)
                      |  (((unsigned long) de.filesize_2) << 16)
                      |  (((unsigned long) de.filesize_3)) << 24);
-            if (strlen(filter) > 0) {
+            if (strlen((char *)filter) > 0) {
                if (MATCH_FUNCTION(fnam, filt) != 0) { 
                   (*func)(fnam, de.attr, filesize);
                }
@@ -240,7 +241,7 @@ unsigned char *listDirNext(unsigned char *filter) {
    while (!DFS_GetNext(&vi, &sdi, &sde)) {
       if(sde.name[0]) {
          buildfn(fnam, sde.name);
-         if (strlen(filter) > 0) {
+         if (strlen((char *)filter) > 0) {
             upper(filt, filter);
             if (MATCH_FUNCTION(fnam, filt) != 0) {
                sprintf((char *)snm, "%s", fnam);

@@ -5,6 +5,10 @@
 
 #include "basic.h"
 
+#ifdef __CATALINA__
+#include <prop.h>
+#endif
+
 #define MAX_COMMAND_LEN 80
 
 #define VERSION "Dumbo BASIC v1.8"

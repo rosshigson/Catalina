@@ -3,7 +3,9 @@
  * via the normal registry functions.
  */
 #include <stdlib.h>
+#include <string.h>
 #include <plugin.h>
+#include <cog.h>
 
 #if defined(__CATALINA_liblua) || defined(__CATALINA_libluax)
 #include <lua.h>

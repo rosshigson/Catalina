@@ -41,6 +41,14 @@
 #include <prop.h>
 #include <stdio.h>
 
+// dummy code make sure example_3 and val_5 are defined 
+// and included when using the Catalina Optimizer ...
+static int val_5;
+int example_3(int a, int b, int c, int d);
+void dummy() {
+   val_5 = example_3(0,0,0,0);
+}
+
 // make sure we are compiled using the correct model for our PASM code
 #ifdef __CATALINA_P2
 #if !defined(__CATALINA_NATIVE) && !defined(__CATALINA_TINY)
@@ -99,11 +107,12 @@ int example_4(int a, int b, int c, int d, int e, int f) {
    );
 }
 
-static val_5;                         // variables at file scope are global
+static int val_5;                     // variables at file scope are global
 
 // example 5 - accessing a global variable (we use val_5)
 // (Note that we need different code on the P1 and the P2 to access Hub RAM)
 void example_5(int a) {
+   val_5 = val_5; // required to force Cake to declare val_5 before it is used
    PASM(
       "#ifdef NATIVE\n"               // propeller 2 code 
       " rdlong r0, ##@_PASM(val_5)\n" //    val_5 is at address _PASM(val_5)

@@ -24,6 +24,7 @@
 #include "lthrsch.h"
 
 #ifdef __CATALINA__
+#include <prop.h>
 #include <cog.h>
 #else
 #define pthread_printf printf

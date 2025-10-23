@@ -26,7 +26,7 @@ BEGIN {
    next
 }
 {
-   if ($1 == "alignl") {
+   if (left($1,6) == "alignl") {
       alignment = 4;
    }
    else if ($1 == "alignw") {
@@ -47,13 +47,13 @@ BEGIN {
    #else if (($1 == "long") || (left($1,2) == "C_")||( left($1,3)=="#if")||( left($1,3)=="#el")) {
    else if (($1 == "long") || ((length($1) > 0) && (left($1,1) != " ") && (left($1,1) != "\t") && (left($1,1) != "#"))) {
       if (alignment != 4) {
-         print (" alignl ' align long")
+         print (" alignl")
       }
       alignment = 4;
    }
    print
    if (post_align) {
-      print (" alignl ' align long")
+      print (" alignl")
       post_align = 0;
    }
 }

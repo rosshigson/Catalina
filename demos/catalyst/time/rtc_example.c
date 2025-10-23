@@ -13,8 +13,11 @@
 
 #include <stdio.h>
 #include <stdint.h>
-#include <propeller2.h>
-#include <smartpins.h>
+#include <stdlib.h>
+#include <prop.h>
+#include <prop2.h>
+#include <smartpin.h>
+#include <floatext.h>
 
 #include "rtc_driver.h"
 
@@ -148,7 +151,7 @@ void main() {
 
   if (!rtc_start(RTCBASE, 1)) {                                  // start rtc, or else quit. 2nd parameter forces calibration if true
     printf("Failed to start RTC\n");
-    exit();
+    exit(0);
   }
 
   x = 0;
@@ -156,13 +159,13 @@ void main() {
     _waitms(100);
     if (x++ > 8) {                                              // timeout, rtc module didn't start
       printf("Oscillator not detected!\n");
-      exit();
+      exit(0);
     }
   }
 
   // Optional - Check battery
   if (rtc_battery_low()) {
-    //exit();
+    //exit(0);
   }
 
   // Optional - Reset the RTC settings to default

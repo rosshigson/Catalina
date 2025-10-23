@@ -31,10 +31,13 @@
 
 #include <ctype.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
 #include <plugin.h>
 #include <hyper.h>
 #include <hmi.h>
+#include <cog.h>
 
 #define ESC 0x1b                // escape character
 #define MAX_LINE  80            // max length of command line
@@ -674,7 +677,7 @@ void settings() {
       fprintf(stdout, "Bank %02d BankInfo %08X", bank, bankparams);
       pins = hyper_getPinParameters(bank);
       fprintf(stdout, "  PinInfo %08X   ", pins,8);
-      if ((pins & 0x80000000) == 0) {  // decode if valid
+      if ((pins & 0x80000000UL) == 0) {  // decode if valid
          if (bankparams & (1<<10)) {
             fprintf(stdout, " HyperFlash ");
          }
@@ -782,7 +785,7 @@ void main(int argc, char *argv[]) {
            break;
          case 'Q' :
            fprintf(stdout, "Quit\n");
-           exit();
+           exit(0);
          default :
            break;
       }

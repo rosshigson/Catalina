@@ -1346,7 +1346,7 @@ enum token_type parse_number_core(struct stream* stream, char suffix[4], _Ctor c
         {
             exponent_part_opt(stream);
             floating_suffix_opt(stream, suffix);
-
+            type = TK_COMPILER_DECIMAL_FLOATING_CONSTANT;
         }
         else if (stream->current[0] == '.')
         {
@@ -1466,6 +1466,10 @@ static bool is_hex_digit(unsigned char c)
 
 const unsigned char* _Opt escape_sequences_decode_opt(const unsigned char* p, unsigned int* out_value)
 {
+    /*
+      caller must skip the / before calling this function
+    */
+    
     // TODO OVERFLOW CHECK
     if (*p == 'x')
     {
@@ -1582,6 +1586,7 @@ void token_list_remove_get_test()
     struct token_list r = token_list_remove_get(&list, pnew, pnew);
     assert(list.head == NULL);
     assert(list.tail == NULL);
+    r;
 }
 
 void token_list_remove_get_test2()
@@ -1595,6 +1600,7 @@ void token_list_remove_get_test2()
     struct token_list r = token_list_remove_get(&list, pnew1, pnew1);
     assert(list.head == pnew2);
     assert(list.tail == pnew2);
+    r;
 }
 
 

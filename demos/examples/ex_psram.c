@@ -30,6 +30,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <plugin.h>
+#include <hmi.h>
 #include <psram.h>
 
 #define MAX_CHARS 1024

@@ -14,10 +14,19 @@ struct d_visit_ctx
 {
     struct options options;
     int indentation;
+    bool print_qualifiers;
 
-    unsigned int cake_declarator_number; //used to create unique declarator names
+    /*
+       File scope counter to generate unique names
+    */
+    unsigned int cake_file_scope_declarator_number;
 
-    unsigned int cake_tag_count; //used to create unique tag names
+    /*
+       This counter is reset in each function
+    */
+    unsigned int cake_local_declarator_number;
+
+    
     struct hash_map tag_names;
     struct hash_map structs_map;
     struct hash_map file_scope_declarator_map;
@@ -34,6 +43,8 @@ struct d_visit_ctx
 
     bool define_nullptr;
     bool null_pointer_constant_used;
+        
+    bool address_of_argument;
         
     /*
     * Points to the function we're in. Or null in file scope.

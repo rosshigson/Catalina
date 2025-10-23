@@ -25,6 +25,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <alloca.h>
+#include <hmi.h>
 
 #define MAX_NAMELEN   12 // for DOS 8.3 file names
 #define MAX_SERVICES  50 // arbitrary
@@ -54,6 +55,10 @@
 svc_entry_t Lua_service_list[MAX_SERVICES + 1] = { 
   {"", NULL, 0, 0, 0, NULL, 0}
 };
+
+extern void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg);
+
+extern int my_load_Lua_service_list(lua_State *L, svc_list_t services, int max);
 
 int main(int argc, char *argv[]) {
 

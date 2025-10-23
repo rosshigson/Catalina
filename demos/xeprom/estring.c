@@ -12,6 +12,10 @@
  *    payload -i EEPROM estring.binary
  */
 
+#include <stdio.h>
+#include <prop.h>
+#include <hmi.h>
+
 /*
  * define a message to print. Note that this message will end up in both 
  * Hub RAM and the EEPROM, but we do not use the Hub RAM copy - instead, 

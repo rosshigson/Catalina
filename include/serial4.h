@@ -43,6 +43,8 @@ extern int s_txcount(unsigned port);
 
 extern void s_str(unsigned port, char *stringptr);
 
+extern void s_strterm(unsigned port, char *stringptr, char term);
+
 extern void s_decl(unsigned port, int value, int digits, int flag);
 
 extern void s_hex(unsigned port, unsigned value, int digits);
@@ -92,6 +94,7 @@ extern void s_padchar(unsigned port, unsigned count, char txbyte);
 #define s4_txcheck(port) s_txcheck(port)
 #define s4_txcount(port) s_txcount(port)
 #define s4_str(port, stringptr) s_str(port, stringptr)
+#define s4_strln(port, stringptr) s_strln(port, stringptr)
 #define s4_decl(port, value, digits, flag) s_decl(port, value, digits, flag)
 #define s4_hex(port, value, digits) s_hex(port, value, digits)
 #define s4_ihex(port, value, digits) s_ihex(port, value, digits)
@@ -103,6 +106,5 @@ extern void s_padchar(unsigned port, unsigned count, char txbyte);
 #define s4_decx(port, value, width) s_decl(port,value,width,2)
 #define s4_putc(port, txbyte) s_putc(port,txbyte)
 #define s4_newline(port) s_newline(port)
-#define s4_strln(port, stringptr) s_strln(port, stringptr)
 
 #endif // _SERIAL4__H

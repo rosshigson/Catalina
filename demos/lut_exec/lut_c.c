@@ -21,7 +21,7 @@
  *                                                                           *
  *****************************************************************************/
 
-#include <propeller.h>
+#include <prop.h>
 #include <stdio.h>
 #include <math.h>
 

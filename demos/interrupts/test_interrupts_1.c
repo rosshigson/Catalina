@@ -18,8 +18,10 @@
  \***************************************************************************/
 
 #include <stdio.h>
-#include <propeller2.h>
+#include <prop.h>
+#include <prop2.h>
 #include <int.h>
+#include <hmi.h>
 
 /*
  * define the stack size each interrupt needs (since this number depends  

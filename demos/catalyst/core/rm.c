@@ -20,6 +20,7 @@
  *
  */
 
+#include <ctype.h>
 #include <string.h>
 #include <stdio.h>
 #include <dosfs.h>
@@ -263,6 +264,11 @@ unsigned long remove_dir(char *name) {
    return DFS_UnlinkDir(&vi, (uint8_t *)name, scratch);
 }
 
+// forward declaration
+int remove_entry(char *name, int count_only);
+
+// match function - see glob.c
+extern int amatch(char *str, char *p);
 
 /*
  * process a directory, either recursively deleting all contents, or just
@@ -358,14 +364,14 @@ int process_directory(char *dir, char *file, int count_only) {
                      t_str("counting ");
                      t_strln(dir);
                   }
-                  count += remove_entry(di, dir, count_only);
+                  count += remove_entry(dir, count_only);
                }
                else {
                   if (diagnose) {
                      t_str("removing ");
                      t_strln(dir);
                   }
-                  tmpcount = remove_entry(di, dir, count_only);
+                  tmpcount = remove_entry(dir, count_only);
                   count += tmpcount;
                   if (tmpcount > 0) {
                      // reopen the directory after removing entry
@@ -396,7 +402,6 @@ int process_directory(char *dir, char *file, int count_only) {
 int remove_entry(char *name, int count_only) {
    int i, j, k, len;
    char tmp_name[MAX_PATH + 1];
-   DIRINFO di;
    FILEINFO fi;
    VOLINFO vi;
    uint8_t scratch[SECTOR_SIZE];

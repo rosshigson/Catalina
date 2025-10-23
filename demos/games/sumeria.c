@@ -5,8 +5,10 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <time.h>
 #include <math.h>
+#include <prop.h>
 
 int year_term;
 int year_abs;

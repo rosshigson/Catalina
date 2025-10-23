@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl_label
-C_sfes_68dcc2b1_nmmtd_array_L000001 ' <symbol:nmmtd_array>
+C_smlg_68f7398e_nmmtd_array_L000001 ' <symbol:nmmtd_array>
  long $fd900108
  long $fd9001fc
  long $fd900220
@@ -849,7 +849,7 @@ C__threaded_cogstart_N_M_M__cog ' <symbol:_threaded_cogstart_NMM_cog>
  word I16A_MOV + (r2)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
  word I16B_LODL + (r22)<<D16B
  alignl_p1
- long @C_sfes_68dcc2b1_nmmtd_array_L000001 ' reg <- addrg
+ long @C_smlg_68f7398e_nmmtd_array_L000001 ' reg <- addrg
  word I16A_MOV + (r3)<<D16A + (r22)<<S16A
  word I16A_SARI + (r3)<<D16A + (2)<<S16A ' SHRI4 reg coni
  word I16B_LODF + ((-36)&$1FF)<<S16B
@@ -878,7 +878,7 @@ C__threaded_cogstart_N_M_M__cog ' <symbol:_threaded_cogstart_NMM_cog>
  alignl_p1
  long I32_CALA + (@C__waitcnt)<<S32 ' CALL addrg
  word I16A_MOV + (r0)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
-' C__threaded_cogstart_N_M_M__cog_2 ' (symbol refcount = 0)
+' C__threaded_cogstart_N_M_M__cog_3 ' (symbol refcount = 0)
  word I16B_POPM + 8<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 

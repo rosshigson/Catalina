@@ -1,7 +1,7 @@
-#include "stdint.h"
+#include <stdint.h>
 #include <cog.h>
 #include <sd.h>
-#include <dosfs.h>
+#include "dosfs.h"
 
 #define WRITE_RETRIES 10
 

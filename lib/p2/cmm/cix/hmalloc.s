@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl_label
-C_sioc2_68dcc2b5_segment_holding_L000005 ' <symbol:segment_holding>
+C_snr42_68f73992_segment_holding_L000005 ' <symbol:segment_holding>
  alignl_p1
  long I32_PSHM + $d40000<<S32 ' save registers
  alignl_p1
@@ -15,41 +15,41 @@ C_sioc2_68dcc2b5_segment_holding_L000005 ' <symbol:segment_holding>
  word I16A_MOV + (r23)<<D16A + (r3)<<S16A ' ADDI/P
  word I16A_ADDS + (r23)<<D16A + (r22)<<S16A ' ADDI/P (3)
  alignl_label
-C_sioc2_68dcc2b5_segment_holding_L000005_7
+C_snr42_68f73992_segment_holding_L000005_7
  word I16A_RDLONG + (r20)<<D16A + (r23)<<S16A ' reg <- INDIRP4 reg
  word I16A_MOV + (r18)<<D16A + (r20)<<S16A ' CVI, CVU or LOAD
  word I16A_CMP + (r2)<<D16A + (r18)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioc2_68dcc2b5_segment_holding_L000005_11)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr42_68f73992_segment_holding_L000005_11)<<S32 ' LTU4 reg reg
  word I16A_MOV + (r18)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r18)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r18)<<D16A + (r18)<<S16A ' reg <- INDIRU4 reg
  word I16A_ADDS + (r20)<<D16A + (r18)<<S16A ' ADDI/P (2)
  word I16A_CMP + (r2)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRAE + (@C_sioc2_68dcc2b5_segment_holding_L000005_11)<<S32 ' GEU4 reg reg
+ long I32_BRAE + (@C_snr42_68f73992_segment_holding_L000005_11)<<S32 ' GEU4 reg reg
  word I16A_MOV + (r0)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  alignl_p1
- long I32_JMPA + (@C_sioc2_68dcc2b5_segment_holding_L000005_6)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr42_68f73992_segment_holding_L000005_6)<<S32 ' JUMPV addrg
  alignl_label
-C_sioc2_68dcc2b5_segment_holding_L000005_11
+C_snr42_68f73992_segment_holding_L000005_11
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_MOV + (r23)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioc2_68dcc2b5_segment_holding_L000005_7)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr42_68f73992_segment_holding_L000005_7)<<S32 ' NEU4 reg coni
  word I16B_LODL + R0<<D16B
  alignl_p1
  long 0 ' RET con
  alignl_label
-C_sioc2_68dcc2b5_segment_holding_L000005_6
+C_snr42_68f73992_segment_holding_L000005_6
  word I16B_POPM + $80<<S16B ' restore registers, do not pop frame, do return
  alignl_p1
 
  alignl_label
-C_sioc3_68dcc2b5_has_segment_link_L000015 ' <symbol:has_segment_link>
+C_snr43_68f73992_has_segment_link_L000015 ' <symbol:has_segment_link>
  alignl_p1
  long I32_PSHM + $d40000<<S32 ' save registers
  alignl_p1
@@ -57,49 +57,49 @@ C_sioc3_68dcc2b5_has_segment_link_L000015 ' <symbol:has_segment_link>
  word I16A_MOV + (r23)<<D16A + (r3)<<S16A ' ADDI/P
  word I16A_ADDS + (r23)<<D16A + (r22)<<S16A ' ADDI/P (3)
  alignl_label
-C_sioc3_68dcc2b5_has_segment_link_L000015_17
+C_snr43_68f73992_has_segment_link_L000015_17
  word I16A_RDLONG + (r20)<<D16A + (r2)<<S16A ' reg <- INDIRP4 reg
  word I16A_MOV + (r18)<<D16A + (r20)<<S16A ' CVI, CVU or LOAD
  word I16A_CMP + (r23)<<D16A + (r18)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioc3_68dcc2b5_has_segment_link_L000015_21)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr43_68f73992_has_segment_link_L000015_21)<<S32 ' LTU4 reg reg
  word I16A_MOV + (r18)<<D16A + (r2)<<S16A
  word I16A_ADDSI + (r18)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r18)<<D16A + (r18)<<S16A ' reg <- INDIRU4 reg
  word I16A_ADDS + (r20)<<D16A + (r18)<<S16A ' ADDI/P (2)
  word I16A_CMP + (r23)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRAE + (@C_sioc3_68dcc2b5_has_segment_link_L000015_21)<<S32 ' GEU4 reg reg
+ long I32_BRAE + (@C_snr43_68f73992_has_segment_link_L000015_21)<<S32 ' GEU4 reg reg
  word I16A_MOVI + R0<<D16A + (1)<<S16A ' RET coni
  alignl_p1
- long I32_JMPA + (@C_sioc3_68dcc2b5_has_segment_link_L000015_16)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr43_68f73992_has_segment_link_L000015_16)<<S32 ' JUMPV addrg
  alignl_label
-C_sioc3_68dcc2b5_has_segment_link_L000015_21
+C_snr43_68f73992_has_segment_link_L000015_21
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_MOV + (r23)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioc3_68dcc2b5_has_segment_link_L000015_17)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr43_68f73992_has_segment_link_L000015_17)<<S32 ' NEU4 reg coni
  word I16A_MOVI + R0<<D16A + (0)<<S16A ' RET coni
  alignl_label
-C_sioc3_68dcc2b5_has_segment_link_L000015_16
+C_snr43_68f73992_has_segment_link_L000015_16
  word I16B_POPM + $80<<S16B ' restore registers, do not pop frame, do return
  alignl_p1
 
  alignl_label
-C_sioc4_68dcc2b5_init_mparams_L000025 ' <symbol:init_mparams>
+C_snr44_68f73992_init_mparams_L000025 ' <symbol:init_mparams>
  alignl_p1
  long I32_NEWF + 12<<S32
  alignl_p1
  long I32_PSHM + $500000<<S32 ' save registers
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioc4_68dcc2b5_init_mparams_L000025_27)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr44_68f73992_init_mparams_L000025_27)<<S32 ' NEU4 reg coni
  word I16B_LODL + (r22)<<D16B
  alignl_p1
  long 4096 ' reg <- con
@@ -116,7 +116,7 @@ C_sioc4_68dcc2b5_init_mparams_L000025 ' <symbol:init_mparams>
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioc4_68dcc2b5_init_mparams_L000025_31)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr44_68f73992_init_mparams_L000025_31)<<S32 ' NEU4 reg coni
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_MOV + (r20)<<D16A + (r22)<<S16A
@@ -124,40 +124,40 @@ C_sioc4_68dcc2b5_init_mparams_L000025 ' <symbol:init_mparams>
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioc4_68dcc2b5_init_mparams_L000025_29)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr44_68f73992_init_mparams_L000025_29)<<S32 ' EQU4 reg coni
  alignl_label
-C_sioc4_68dcc2b5_init_mparams_L000025_31
+C_snr44_68f73992_init_mparams_L000025_31
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_sioc4_68dcc2b5_init_mparams_L000025_29
+C_snr44_68f73992_init_mparams_L000025_29
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  alignl_p1
- long I32_LODA + (@C_sioc_68dcc2b5_mparams_L000003+8)<<S32
+ long I32_LODA + (@C_snr4_68f73992_mparams_L000003+8)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  alignl_p1
- long I32_LODA + (@C_sioc_68dcc2b5_mparams_L000003+4)<<S32
+ long I32_LODA + (@C_snr4_68f73992_mparams_L000003+4)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  word I16A_NEGI + (r22)<<D16A + (-($ffffffff)&$1F)<<S16A ' reg <- conn
  alignl_p1
- long I32_LODA + (@C_sioc_68dcc2b5_mparams_L000003+12)<<S32
+ long I32_LODA + (@C_snr4_68f73992_mparams_L000003+12)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  word I16A_NEGI + (r22)<<D16A + (-($ffffffff)&$1F)<<S16A ' reg <- conn
  alignl_p1
- long I32_LODA + (@C_sioc_68dcc2b5_mparams_L000003+16)<<S32
+ long I32_LODA + (@C_snr4_68f73992_mparams_L000003+16)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  word I16A_MOVI + (r22)<<D16A + (0)<<S16A ' reg <- coni
  alignl_p1
- long I32_LODA + (@C_sioc_68dcc2b5_mparams_L000003+20)<<S32
+ long I32_LODA + (@C_snr4_68f73992_mparams_L000003+20)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003+20)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003+20)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004+444)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004+444)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- addrl16
@@ -182,17 +182,17 @@ C_sioc4_68dcc2b5_init_mparams_L000025_29
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  alignl_p1
- long I32_LODA + (@C_sioc_68dcc2b5_mparams_L000003)<<S32
+ long I32_LODA + (@C_snr4_68f73992_mparams_L000003)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  alignl_label
-C_sioc4_68dcc2b5_init_mparams_L000025_27
+C_snr44_68f73992_init_mparams_L000025_27
  word I16A_MOVI + R0<<D16A + (1)<<S16A ' RET coni
-' C_sioc4_68dcc2b5_init_mparams_L000025_26 ' (symbol refcount = 0)
+' C_snr44_68f73992_init_mparams_L000025_26 ' (symbol refcount = 0)
  word I16B_POPM + 3<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_sioc5_68dcc2b5_change_mparam_L000039 ' <symbol:change_mparam>
+C_snr45_68f73992_change_mparam_L000039 ' <symbol:change_mparam>
  alignl_p1
  long I32_NEWF + 4<<S32
  alignl_p1
@@ -200,102 +200,102 @@ C_sioc5_68dcc2b5_change_mparam_L000039 ' <symbol:change_mparam>
  word I16A_MOV + (r23)<<D16A + (r3)<<S16A ' reg var <- reg arg
  word I16A_MOV + (r21)<<D16A + (r2)<<S16A ' reg var <- reg arg
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioc5_68dcc2b5_change_mparam_L000039_41)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr45_68f73992_change_mparam_L000039_41)<<S32 ' NEU4 reg coni
  alignl_p1
- long I32_CALA + (@C_sioc4_68dcc2b5_init_mparams_L000025)<<S32 ' CALL addrg
+ long I32_CALA + (@C_snr44_68f73992_init_mparams_L000025)<<S32 ' CALL addrg
  alignl_label
-C_sioc5_68dcc2b5_change_mparam_L000039_41
+C_snr45_68f73992_change_mparam_L000039_41
  word I16A_NEGI + (r22)<<D16A + (-(-1)&$1F)<<S16A ' reg <- conn
  word I16A_CMPS + (r21)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioc5_68dcc2b5_change_mparam_L000039_43)<<S32 ' NEI4 reg reg
+ long I32_BRNZ + (@C_snr45_68f73992_change_mparam_L000039_43)<<S32 ' NEI4 reg reg
  word I16A_NEGI + (r19)<<D16A + (-($ffffffff)&$1F)<<S16A ' reg <- conn
  alignl_p1
- long I32_JMPA + (@C_sioc5_68dcc2b5_change_mparam_L000039_44)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr45_68f73992_change_mparam_L000039_44)<<S32 ' JUMPV addrg
  alignl_label
-C_sioc5_68dcc2b5_change_mparam_L000039_43
+C_snr45_68f73992_change_mparam_L000039_43
  word I16A_MOV + (r19)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  alignl_label
-C_sioc5_68dcc2b5_change_mparam_L000039_44
+C_snr45_68f73992_change_mparam_L000039_44
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_WRLONG + (r19)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  word I16A_NEGI + (r22)<<D16A + (-(-3)&$1F)<<S16A ' reg <- conn
  word I16A_CMPS + (r23)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioc5_68dcc2b5_change_mparam_L000039_54)<<S32 ' EQI4 reg reg
+ long I32_BR_Z + (@C_snr45_68f73992_change_mparam_L000039_54)<<S32 ' EQI4 reg reg
  word I16A_NEGI + (r22)<<D16A + (-(-2)&$1F)<<S16A ' reg <- conn
  word I16A_CMPS + (r23)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioc5_68dcc2b5_change_mparam_L000039_49)<<S32 ' EQI4 reg reg
+ long I32_BR_Z + (@C_snr45_68f73992_change_mparam_L000039_49)<<S32 ' EQI4 reg reg
  word I16A_NEGI + (r22)<<D16A + (-(-1)&$1F)<<S16A ' reg <- conn
  word I16A_CMPS + (r23)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioc5_68dcc2b5_change_mparam_L000039_47)<<S32 ' EQI4 reg reg
+ long I32_BR_Z + (@C_snr45_68f73992_change_mparam_L000039_47)<<S32 ' EQI4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioc5_68dcc2b5_change_mparam_L000039_45)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr45_68f73992_change_mparam_L000039_45)<<S32 ' JUMPV addrg
  alignl_label
-C_sioc5_68dcc2b5_change_mparam_L000039_47
+C_snr45_68f73992_change_mparam_L000039_47
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  alignl_p1
- long I32_LODA + (@C_sioc_68dcc2b5_mparams_L000003+16)<<S32
+ long I32_LODA + (@C_snr4_68f73992_mparams_L000003+16)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  word I16A_MOVI + R0<<D16A + (1)<<S16A ' RET coni
  alignl_p1
- long I32_JMPA + (@C_sioc5_68dcc2b5_change_mparam_L000039_40)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr45_68f73992_change_mparam_L000039_40)<<S32 ' JUMPV addrg
  alignl_label
-C_sioc5_68dcc2b5_change_mparam_L000039_49
+C_snr45_68f73992_change_mparam_L000039_49
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003+4)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003+4)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioc5_68dcc2b5_change_mparam_L000039_50)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr45_68f73992_change_mparam_L000039_50)<<S32 ' LTU4 reg reg
  word I16A_MOV + (r20)<<D16A + (r22)<<S16A
  word I16A_SUBI + (r20)<<D16A + (1)<<S16A ' SUBU4 reg coni
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioc5_68dcc2b5_change_mparam_L000039_50)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr45_68f73992_change_mparam_L000039_50)<<S32 ' NEU4 reg coni
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  alignl_p1
- long I32_LODA + (@C_sioc_68dcc2b5_mparams_L000003+8)<<S32
+ long I32_LODA + (@C_snr4_68f73992_mparams_L000003+8)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  word I16A_MOVI + R0<<D16A + (1)<<S16A ' RET coni
  alignl_p1
- long I32_JMPA + (@C_sioc5_68dcc2b5_change_mparam_L000039_40)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr45_68f73992_change_mparam_L000039_40)<<S32 ' JUMPV addrg
  alignl_label
-C_sioc5_68dcc2b5_change_mparam_L000039_50
+C_snr45_68f73992_change_mparam_L000039_50
  word I16A_MOVI + R0<<D16A + (0)<<S16A ' RET coni
  alignl_p1
- long I32_JMPA + (@C_sioc5_68dcc2b5_change_mparam_L000039_40)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr45_68f73992_change_mparam_L000039_40)<<S32 ' JUMPV addrg
  alignl_label
-C_sioc5_68dcc2b5_change_mparam_L000039_54
+C_snr45_68f73992_change_mparam_L000039_54
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  alignl_p1
- long I32_LODA + (@C_sioc_68dcc2b5_mparams_L000003+12)<<S32
+ long I32_LODA + (@C_snr4_68f73992_mparams_L000003+12)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  word I16A_MOVI + R0<<D16A + (1)<<S16A ' RET coni
  alignl_p1
- long I32_JMPA + (@C_sioc5_68dcc2b5_change_mparam_L000039_40)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr45_68f73992_change_mparam_L000039_40)<<S32 ' JUMPV addrg
  alignl_label
-C_sioc5_68dcc2b5_change_mparam_L000039_45
+C_snr45_68f73992_change_mparam_L000039_45
  word I16A_MOVI + R0<<D16A + (0)<<S16A ' RET coni
  alignl_label
-C_sioc5_68dcc2b5_change_mparam_L000039_40
+C_snr45_68f73992_change_mparam_L000039_40
  word I16B_POPM + 1<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_sioc6_68dcc2b5_mmap_alloc_L000056 ' <symbol:mmap_alloc>
+C_snr46_68f73992_mmap_alloc_L000056 ' <symbol:mmap_alloc>
  alignl_p1
  long I32_NEWF + 16<<S32
  alignl_p1
@@ -304,12 +304,12 @@ C_sioc6_68dcc2b5_mmap_alloc_L000056 ' <symbol:mmap_alloc>
  word I16A_ADDI + (r22)<<D16A + (24)<<S16A ' ADDU4 reg coni
  word I16A_ADDI + (r22)<<D16A + (7)<<S16A ' ADDU4 reg coni
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003+4)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003+4)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_SUBI + (r20)<<D16A + (1)<<S16A ' SUBU4 reg coni
  word I16A_ADD + (r22)<<D16A + (r20)<<S16A ' ADDU (1)
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003+4)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003+4)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_SUBI + (r20)<<D16A + (1)<<S16A ' SUBU4 reg coni
  word I16B_CPL + (r20)<<D16B ' BCOMU4
@@ -321,7 +321,7 @@ C_sioc6_68dcc2b5_mmap_alloc_L000056 ' <symbol:mmap_alloc>
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioc6_68dcc2b5_mmap_alloc_L000056_60)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr46_68f73992_mmap_alloc_L000056_60)<<S32 ' EQU4 reg coni
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((432)&$7FFFF)<<S32 ' reg <- cons
  word I16A_ADDS + (r22)<<D16A + (r3)<<S16A ' ADDI/P (2)
@@ -337,28 +337,28 @@ C_sioc6_68dcc2b5_mmap_alloc_L000056 ' <symbol:mmap_alloc>
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRU4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRBE + (@C_sioc6_68dcc2b5_mmap_alloc_L000056_64)<<S32 ' LEU4 reg reg
+ long I32_BRBE + (@C_snr46_68f73992_mmap_alloc_L000056_64)<<S32 ' LEU4 reg reg
  alignl_p1
  long I32_LODS + (r20)<<D32S + ((440)&$7FFFF)<<S32 ' reg <- cons
  word I16A_ADDS + (r20)<<D16A + (r3)<<S16A ' ADDI/P (2)
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRU4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRBE + (@C_sioc6_68dcc2b5_mmap_alloc_L000056_62)<<S32 ' LEU4 reg reg
+ long I32_BRBE + (@C_snr46_68f73992_mmap_alloc_L000056_62)<<S32 ' LEU4 reg reg
  alignl_label
-C_sioc6_68dcc2b5_mmap_alloc_L000056_64
+C_snr46_68f73992_mmap_alloc_L000056_64
  word I16B_LODL + R0<<D16B
  alignl_p1
  long 0 ' RET con
  alignl_p1
- long I32_JMPA + (@C_sioc6_68dcc2b5_mmap_alloc_L000056_57)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr46_68f73992_mmap_alloc_L000056_57)<<S32 ' JUMPV addrg
  alignl_label
-C_sioc6_68dcc2b5_mmap_alloc_L000056_62
+C_snr46_68f73992_mmap_alloc_L000056_62
  alignl_label
-C_sioc6_68dcc2b5_mmap_alloc_L000056_60
+C_snr46_68f73992_mmap_alloc_L000056_60
  word I16A_CMP + (r23)<<D16A + (r2)<<S16A
  alignl_p1
- long I32_BRBE + (@C_sioc6_68dcc2b5_mmap_alloc_L000056_65)<<S32 ' LEU4 reg reg
+ long I32_BRBE + (@C_snr46_68f73992_mmap_alloc_L000056_65)<<S32 ' LEU4 reg reg
  word I16B_LODL + (r22)<<D16B
  alignl_p1
  long $ffffffff ' reg <- con
@@ -369,7 +369,7 @@ C_sioc6_68dcc2b5_mmap_alloc_L000056_60
  word I16A_NEGI + (r20)<<D16A + (-($ffffffff)&$1F)<<S16A ' reg <- conn
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioc6_68dcc2b5_mmap_alloc_L000056_67)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr46_68f73992_mmap_alloc_L000056_67)<<S32 ' EQU4 reg reg
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
@@ -377,12 +377,12 @@ C_sioc6_68dcc2b5_mmap_alloc_L000056_60
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioc6_68dcc2b5_mmap_alloc_L000056_70)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr46_68f73992_mmap_alloc_L000056_70)<<S32 ' NEU4 reg coni
  word I16A_MOVI + (r21)<<D16A + (0)<<S16A ' reg <- coni
  alignl_p1
- long I32_JMPA + (@C_sioc6_68dcc2b5_mmap_alloc_L000056_71)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr46_68f73992_mmap_alloc_L000056_71)<<S32 ' JUMPV addrg
  alignl_label
-C_sioc6_68dcc2b5_mmap_alloc_L000056_70
+C_snr46_68f73992_mmap_alloc_L000056_70
  word I16A_MOVI + (r22)<<D16A + (8)<<S16A ' reg <- coni
  word I16A_MOVI + (r20)<<D16A + (7)<<S16A ' reg <- coni
  word I16B_LODF + ((-8)&$1FF)<<S16B
@@ -393,7 +393,7 @@ C_sioc6_68dcc2b5_mmap_alloc_L000056_70
  word I16A_MOV + (r21)<<D16A + (r22)<<S16A ' BANDI/U
  word I16A_AND + (r21)<<D16A + (r20)<<S16A ' BANDI/U (3)
  alignl_label
-C_sioc6_68dcc2b5_mmap_alloc_L000056_71
+C_snr46_68f73992_mmap_alloc_L000056_71
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_WRLONG + (r21)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  word I16B_LODF + ((-16)&$1FF)<<S16B
@@ -444,21 +444,21 @@ C_sioc6_68dcc2b5_mmap_alloc_L000056_71
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioc6_68dcc2b5_mmap_alloc_L000056_74)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr46_68f73992_mmap_alloc_L000056_74)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMP + (r20)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BRAE + (@C_sioc6_68dcc2b5_mmap_alloc_L000056_72)<<S32 ' GEU4 reg reg
+ long I32_BRAE + (@C_snr46_68f73992_mmap_alloc_L000056_72)<<S32 ' GEU4 reg reg
  alignl_label
-C_sioc6_68dcc2b5_mmap_alloc_L000056_74
+C_snr46_68f73992_mmap_alloc_L000056_74
  word I16A_MOV + (r22)<<D16A + (r3)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_label
-C_sioc6_68dcc2b5_mmap_alloc_L000056_72
+C_snr46_68f73992_mmap_alloc_L000056_72
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((432)&$7FFFF)<<S32 ' reg <- cons
  word I16A_ADDS + (r22)<<D16A + (r3)<<S16A ' ADDI/P (2)
@@ -471,7 +471,7 @@ C_sioc6_68dcc2b5_mmap_alloc_L000056_72
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16A_CMP + (r20)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BRBE + (@C_sioc6_68dcc2b5_mmap_alloc_L000056_75)<<S32 ' LEU4 reg reg
+ long I32_BRBE + (@C_snr46_68f73992_mmap_alloc_L000056_75)<<S32 ' LEU4 reg reg
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((436)&$7FFFF)<<S32 ' reg <- cons
  word I16A_ADDS + (r22)<<D16A + (r3)<<S16A ' ADDI/P (2)
@@ -481,27 +481,27 @@ C_sioc6_68dcc2b5_mmap_alloc_L000056_72
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRU4 reg
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  alignl_label
-C_sioc6_68dcc2b5_mmap_alloc_L000056_75
+C_snr46_68f73992_mmap_alloc_L000056_75
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r0)<<D16A + (r22)<<S16A
  word I16A_ADDSI + (r0)<<D16A + (8)<<S16A ' ADDP4 reg coni
  alignl_p1
- long I32_JMPA + (@C_sioc6_68dcc2b5_mmap_alloc_L000056_57)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr46_68f73992_mmap_alloc_L000056_57)<<S32 ' JUMPV addrg
  alignl_label
-C_sioc6_68dcc2b5_mmap_alloc_L000056_67
+C_snr46_68f73992_mmap_alloc_L000056_67
  alignl_label
-C_sioc6_68dcc2b5_mmap_alloc_L000056_65
+C_snr46_68f73992_mmap_alloc_L000056_65
  word I16B_LODL + R0<<D16B
  alignl_p1
  long 0 ' RET con
  alignl_label
-C_sioc6_68dcc2b5_mmap_alloc_L000056_57
+C_snr46_68f73992_mmap_alloc_L000056_57
  word I16B_POPM + 4<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_sioc7_68dcc2b5_mmap_resize_L000077 ' <symbol:mmap_resize>
+C_snr47_68f73992_mmap_resize_L000077 ' <symbol:mmap_resize>
  alignl_p1
  long I32_NEWF + 24<<S32
  alignl_p1
@@ -518,33 +518,33 @@ C_sioc7_68dcc2b5_mmap_resize_L000077 ' <symbol:mmap_resize>
  long I32_MOVI + RI<<D32 + (32)<<S32
  word I16A_CMP + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BRAE + (@C_sioc7_68dcc2b5_mmap_resize_L000077_79)<<S32 ' GEU4 reg coni
+ long I32_BRAE + (@C_snr47_68f73992_mmap_resize_L000077_79)<<S32 ' GEU4 reg coni
  word I16B_LODL + R0<<D16B
  alignl_p1
  long 0 ' RET con
  alignl_p1
- long I32_JMPA + (@C_sioc7_68dcc2b5_mmap_resize_L000077_78)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr47_68f73992_mmap_resize_L000077_78)<<S32 ' JUMPV addrg
  alignl_label
-C_sioc7_68dcc2b5_mmap_resize_L000077_79
+C_snr47_68f73992_mmap_resize_L000077_79
  word I16A_MOV + (r22)<<D16A + (r3)<<S16A
  word I16A_ADDI + (r22)<<D16A + (4)<<S16A ' ADDU4 reg coni
  word I16A_CMP + (r23)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioc7_68dcc2b5_mmap_resize_L000077_81)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr47_68f73992_mmap_resize_L000077_81)<<S32 ' LTU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A ' SUBU
  word I16A_SUB + (r22)<<D16A + (r3)<<S16A ' SUBU (3)
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003+8)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003+8)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_SHLI + (r20)<<D16A + (1)<<S16A ' SHLU4 reg coni
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_A + (@C_sioc7_68dcc2b5_mmap_resize_L000077_81)<<S32 ' GTU4 reg reg
+ long I32_BR_A + (@C_snr47_68f73992_mmap_resize_L000077_81)<<S32 ' GTU4 reg reg
  word I16A_MOV + (r0)<<D16A + (r4)<<S16A ' CVI, CVU or LOAD
  alignl_p1
- long I32_JMPA + (@C_sioc7_68dcc2b5_mmap_resize_L000077_78)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr47_68f73992_mmap_resize_L000077_78)<<S32 ' JUMPV addrg
  alignl_label
-C_sioc7_68dcc2b5_mmap_resize_L000077_81
+C_snr47_68f73992_mmap_resize_L000077_81
  word I16A_RDLONG + (r22)<<D16A + (r4)<<S16A ' reg <- INDIRU4 reg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
@@ -558,12 +558,12 @@ C_sioc7_68dcc2b5_mmap_resize_L000077_81
  word I16A_ADDI + (r22)<<D16A + (24)<<S16A ' ADDU4 reg coni
  word I16A_ADDI + (r22)<<D16A + (7)<<S16A ' ADDU4 reg coni
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003+4)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003+4)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_SUBI + (r20)<<D16A + (1)<<S16A ' SUBU4 reg coni
  word I16A_ADD + (r22)<<D16A + (r20)<<S16A ' ADDU (1)
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003+4)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003+4)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_SUBI + (r20)<<D16A + (1)<<S16A ' SUBU4 reg coni
  word I16B_CPL + (r20)<<D16B ' BCOMU4
@@ -580,7 +580,7 @@ C_sioc7_68dcc2b5_mmap_resize_L000077_81
  word I16A_NEGI + (r20)<<D16A + (-($ffffffff)&$1F)<<S16A ' reg <- conn
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioc7_68dcc2b5_mmap_resize_L000077_86)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr47_68f73992_mmap_resize_L000077_86)<<S32 ' EQU4 reg reg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16B_LODF + ((-8)&$1FF)<<S16B
@@ -626,14 +626,14 @@ C_sioc7_68dcc2b5_mmap_resize_L000077_81
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRAE + (@C_sioc7_68dcc2b5_mmap_resize_L000077_88)<<S32 ' GEU4 reg reg
+ long I32_BRAE + (@C_snr47_68f73992_mmap_resize_L000077_88)<<S32 ' GEU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r5)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_label
-C_sioc7_68dcc2b5_mmap_resize_L000077_88
+C_snr47_68f73992_mmap_resize_L000077_88
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((432)&$7FFFF)<<S32 ' reg <- cons
  word I16A_ADDS + (r22)<<D16A + (r5)<<S16A ' ADDI/P (2)
@@ -651,7 +651,7 @@ C_sioc7_68dcc2b5_mmap_resize_L000077_88
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16A_CMP + (r20)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BRBE + (@C_sioc7_68dcc2b5_mmap_resize_L000077_90)<<S32 ' LEU4 reg reg
+ long I32_BRBE + (@C_snr47_68f73992_mmap_resize_L000077_90)<<S32 ' LEU4 reg reg
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((436)&$7FFFF)<<S32 ' reg <- cons
  word I16A_ADDS + (r22)<<D16A + (r5)<<S16A ' ADDI/P (2)
@@ -661,23 +661,23 @@ C_sioc7_68dcc2b5_mmap_resize_L000077_88
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRU4 reg
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  alignl_label
-C_sioc7_68dcc2b5_mmap_resize_L000077_90
+C_snr47_68f73992_mmap_resize_L000077_90
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r0)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  alignl_p1
- long I32_JMPA + (@C_sioc7_68dcc2b5_mmap_resize_L000077_78)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr47_68f73992_mmap_resize_L000077_78)<<S32 ' JUMPV addrg
  alignl_label
-C_sioc7_68dcc2b5_mmap_resize_L000077_86
+C_snr47_68f73992_mmap_resize_L000077_86
  word I16B_LODL + R0<<D16B
  alignl_p1
  long 0 ' RET con
  alignl_label
-C_sioc7_68dcc2b5_mmap_resize_L000077_78
+C_snr47_68f73992_mmap_resize_L000077_78
  word I16B_POPM + 6<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_sioc8_68dcc2b5_init_top_L000092 ' <symbol:init_top>
+C_snr48_68f73992_init_top_L000092 ' <symbol:init_top>
  alignl_p1
  long I32_PSHM + $f40000<<S32 ' save registers
  word I16A_MOV + (r22)<<D16A + (r3)<<S16A
@@ -686,12 +686,12 @@ C_sioc8_68dcc2b5_init_top_L000092 ' <symbol:init_top>
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioc8_68dcc2b5_init_top_L000092_95)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr48_68f73992_init_top_L000092_95)<<S32 ' NEU4 reg coni
  word I16A_MOVI + (r21)<<D16A + (0)<<S16A ' reg <- coni
  alignl_p1
- long I32_JMPA + (@C_sioc8_68dcc2b5_init_top_L000092_96)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr48_68f73992_init_top_L000092_96)<<S32 ' JUMPV addrg
  alignl_label
-C_sioc8_68dcc2b5_init_top_L000092_95
+C_snr48_68f73992_init_top_L000092_95
  word I16A_MOVI + (r22)<<D16A + (8)<<S16A ' reg <- coni
  word I16A_MOVI + (r20)<<D16A + (7)<<S16A ' reg <- coni
  word I16A_MOV + (r18)<<D16A + (r3)<<S16A
@@ -701,7 +701,7 @@ C_sioc8_68dcc2b5_init_top_L000092_95
  word I16A_MOV + (r21)<<D16A + (r22)<<S16A ' BANDI/U
  word I16A_AND + (r21)<<D16A + (r20)<<S16A ' BANDI/U (3)
  alignl_label
-C_sioc8_68dcc2b5_init_top_L000092_96
+C_snr48_68f73992_init_top_L000092_96
  word I16A_MOV + (r23)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16A_ADDS + (r3)<<D16A + (r23)<<S16A ' ADDI/P (2)
  word I16A_SUB + (r2)<<D16A + (r23)<<S16A ' SUBU (1)
@@ -725,22 +725,22 @@ C_sioc8_68dcc2b5_init_top_L000092_96
  word I16A_MOV + (r22)<<D16A + (r4)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (28)<<S16A ' ADDP4 reg coni
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003+16)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003+16)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
-' C_sioc8_68dcc2b5_init_top_L000092_93 ' (symbol refcount = 0)
+' C_snr48_68f73992_init_top_L000092_93 ' (symbol refcount = 0)
  word I16B_POPM + $80<<S16B ' restore registers, do not pop frame, do return
  alignl_p1
 
  alignl_label
-C_sioc9_68dcc2b5_init_bins_L000098 ' <symbol:init_bins>
+C_snr49_68f73992_init_bins_L000098 ' <symbol:init_bins>
  alignl_p1
  long I32_PSHM + $f00000<<S32 ' save registers
  word I16A_MOVI + (r23)<<D16A + (0)<<S16A ' reg <- coni
  alignl_p1
- long I32_JMPA + (@C_sioc9_68dcc2b5_init_bins_L000098_103)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr49_68f73992_init_bins_L000098_103)<<S32 ' JUMPV addrg
  alignl_label
-C_sioc9_68dcc2b5_init_bins_L000098_100
+C_snr49_68f73992_init_bins_L000098_100
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_SHLI + (r22)<<D16A + (1)<<S16A ' SHLU4 reg coni
  word I16A_SHLI + (r22)<<D16A + (2)<<S16A ' SHLU4 reg coni
@@ -755,21 +755,21 @@ C_sioc9_68dcc2b5_init_bins_L000098_100
  word I16A_MOV + (r22)<<D16A + (r21)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_WRLONG + (r21)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
-' C_sioc9_68dcc2b5_init_bins_L000098_101 ' (symbol refcount = 0)
+' C_snr49_68f73992_init_bins_L000098_101 ' (symbol refcount = 0)
  word I16A_ADDI + (r23)<<D16A + (1)<<S16A ' ADDU4 reg coni
  alignl_label
-C_sioc9_68dcc2b5_init_bins_L000098_103
+C_snr49_68f73992_init_bins_L000098_103
  alignl_p1
  long I32_MOVI + RI<<D32 + (32)<<S32
  word I16A_CMP + (r23)<<D16A + RI<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioc9_68dcc2b5_init_bins_L000098_100)<<S32 ' LTU4 reg coni
-' C_sioc9_68dcc2b5_init_bins_L000098_99 ' (symbol refcount = 0)
+ long I32_BR_B + (@C_snr49_68f73992_init_bins_L000098_100)<<S32 ' LTU4 reg coni
+' C_snr49_68f73992_init_bins_L000098_99 ' (symbol refcount = 0)
  word I16B_POPM + $80<<S16B ' restore registers, do not pop frame, do return
  alignl_p1
 
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104 ' <symbol:prepend_alloc>
+C_snr4a_68f73992_prepend_alloc_L000104 ' <symbol:prepend_alloc>
  alignl_p1
  long I32_NEWF + 32<<S32
  alignl_p1
@@ -784,12 +784,12 @@ C_sioca_68dcc2b5_prepend_alloc_L000104 ' <symbol:prepend_alloc>
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioca_68dcc2b5_prepend_alloc_L000104_107)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4a_68f73992_prepend_alloc_L000104_107)<<S32 ' NEU4 reg coni
  word I16A_MOVI + (r9)<<D16A + (0)<<S16A ' reg <- coni
  alignl_p1
- long I32_JMPA + (@C_sioca_68dcc2b5_prepend_alloc_L000104_108)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4a_68f73992_prepend_alloc_L000104_108)<<S32 ' JUMPV addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_107
+C_snr4a_68f73992_prepend_alloc_L000104_107
  word I16A_MOVI + (r22)<<D16A + (8)<<S16A ' reg <- coni
  word I16A_MOVI + (r20)<<D16A + (7)<<S16A ' reg <- coni
  word I16A_MOV + (r18)<<D16A + (r21)<<S16A
@@ -799,7 +799,7 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_107
  word I16A_MOV + (r9)<<D16A + (r22)<<S16A ' BANDI/U
  word I16A_AND + (r9)<<D16A + (r20)<<S16A ' BANDI/U (3)
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_108
+C_snr4a_68f73992_prepend_alloc_L000104_108
  word I16A_MOV + (r15)<<D16A + (r9)<<S16A ' ADDI/P
  word I16A_ADDS + (r15)<<D16A + (r21)<<S16A ' ADDI/P (3)
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A
@@ -808,12 +808,12 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_108
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioca_68dcc2b5_prepend_alloc_L000104_110)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4a_68f73992_prepend_alloc_L000104_110)<<S32 ' NEU4 reg coni
  word I16A_MOVI + (r8)<<D16A + (0)<<S16A ' reg <- coni
  alignl_p1
- long I32_JMPA + (@C_sioca_68dcc2b5_prepend_alloc_L000104_111)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4a_68f73992_prepend_alloc_L000104_111)<<S32 ' JUMPV addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_110
+C_snr4a_68f73992_prepend_alloc_L000104_110
  word I16A_MOVI + (r22)<<D16A + (8)<<S16A ' reg <- coni
  word I16A_MOVI + (r20)<<D16A + (7)<<S16A ' reg <- coni
  word I16A_MOV + (r18)<<D16A + (r19)<<S16A
@@ -823,7 +823,7 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_110
  word I16A_MOV + (r8)<<D16A + (r22)<<S16A ' BANDI/U
  word I16A_AND + (r8)<<D16A + (r20)<<S16A ' BANDI/U (3)
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_111
+C_snr4a_68f73992_prepend_alloc_L000104_111
  word I16A_MOV + (r13)<<D16A + (r8)<<S16A ' ADDI/P
  word I16A_ADDS + (r13)<<D16A + (r19)<<S16A ' ADDI/P (3)
  word I16A_MOV + (r22)<<D16A + (r13)<<S16A ' CVI, CVU or LOAD
@@ -850,7 +850,7 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_111
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioca_68dcc2b5_prepend_alloc_L000104_112)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4a_68f73992_prepend_alloc_L000104_112)<<S32 ' NEU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -869,16 +869,16 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_111
  word I16A_OR + (r20)<<D16A + (r18)<<S16A ' BORI/U (1)
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioca_68dcc2b5_prepend_alloc_L000104_113)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4a_68f73992_prepend_alloc_L000104_113)<<S32 ' JUMPV addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_112
+C_snr4a_68f73992_prepend_alloc_L000104_112
  word I16A_MOV + (r22)<<D16A + (r13)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r20)<<D16A + (20)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioca_68dcc2b5_prepend_alloc_L000104_114)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4a_68f73992_prepend_alloc_L000104_114)<<S32 ' NEU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -902,9 +902,9 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_112
  word I16A_ADDS + (r20)<<D16A + (r11)<<S16A ' ADDI/P (3)
  word I16A_WRLONG + (r22)<<D16A + (r20)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioca_68dcc2b5_prepend_alloc_L000104_115)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4a_68f73992_prepend_alloc_L000104_115)<<S32 ' JUMPV addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_114
+C_snr4a_68f73992_prepend_alloc_L000104_114
  word I16A_MOV + (r22)<<D16A + (r13)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -912,7 +912,7 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_114
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (1)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioca_68dcc2b5_prepend_alloc_L000104_116)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4a_68f73992_prepend_alloc_L000104_116)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r13)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -927,7 +927,7 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_114
  long I32_MOVI + RI<<D32 + (32)<<S32
  word I16A_CMP + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BRAE + (@C_sioca_68dcc2b5_prepend_alloc_L000104_118)<<S32 ' GEU4 reg coni
+ long I32_BRAE + (@C_snr4a_68f73992_prepend_alloc_L000104_118)<<S32 ' GEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r13)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
@@ -956,28 +956,28 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_114
  word I16A_ADDS + (r18)<<D16A + (r16)<<S16A ' ADDI/P (1)
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioca_68dcc2b5_prepend_alloc_L000104_122)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4a_68f73992_prepend_alloc_L000104_122)<<S32 ' EQU4 reg reg
  word I16A_MOV + (r18)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r18)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r18)<<D16A + (r18)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioca_68dcc2b5_prepend_alloc_L000104_120)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4a_68f73992_prepend_alloc_L000104_120)<<S32 ' LTU4 reg reg
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_MOV + (r20)<<D16A + (r13)<<S16A ' CVI, CVU or LOAD
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioca_68dcc2b5_prepend_alloc_L000104_120)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4a_68f73992_prepend_alloc_L000104_120)<<S32 ' NEU4 reg reg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_122
+C_snr4a_68f73992_prepend_alloc_L000104_122
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioca_68dcc2b5_prepend_alloc_L000104_123)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4a_68f73992_prepend_alloc_L000104_123)<<S32 ' NEU4 reg reg
  word I16A_RDLONG + (r22)<<D16A + (r23)<<S16A ' reg <- INDIRU4 reg
  word I16A_MOVI + (r20)<<D16A + (1)<<S16A ' reg <- coni
  word I16B_LODF + ((-24)&$1FF)<<S16B
@@ -987,9 +987,9 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_122
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_WRLONG + (r22)<<D16A + (r23)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioca_68dcc2b5_prepend_alloc_L000104_119)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4a_68f73992_prepend_alloc_L000104_119)<<S32 ' JUMPV addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_123
+C_snr4a_68f73992_prepend_alloc_L000104_123
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
@@ -1003,21 +1003,21 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_123
  word I16A_ADDS + (r18)<<D16A + (r16)<<S16A ' ADDI/P (1)
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioca_68dcc2b5_prepend_alloc_L000104_127)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4a_68f73992_prepend_alloc_L000104_127)<<S32 ' EQU4 reg reg
  word I16A_MOV + (r18)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r18)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r18)<<D16A + (r18)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioca_68dcc2b5_prepend_alloc_L000104_125)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4a_68f73992_prepend_alloc_L000104_125)<<S32 ' LTU4 reg reg
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_MOV + (r20)<<D16A + (r13)<<S16A ' CVI, CVU or LOAD
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioca_68dcc2b5_prepend_alloc_L000104_125)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4a_68f73992_prepend_alloc_L000104_125)<<S32 ' NEU4 reg reg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_127
+C_snr4a_68f73992_prepend_alloc_L000104_127
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
@@ -1031,21 +1031,21 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_127
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioca_68dcc2b5_prepend_alloc_L000104_119)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4a_68f73992_prepend_alloc_L000104_119)<<S32 ' JUMPV addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_125
+C_snr4a_68f73992_prepend_alloc_L000104_125
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_sioca_68dcc2b5_prepend_alloc_L000104_119)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4a_68f73992_prepend_alloc_L000104_119)<<S32 ' JUMPV addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_120
+C_snr4a_68f73992_prepend_alloc_L000104_120
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_sioca_68dcc2b5_prepend_alloc_L000104_119)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4a_68f73992_prepend_alloc_L000104_119)<<S32 ' JUMPV addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_118
+C_snr4a_68f73992_prepend_alloc_L000104_118
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_WRLONG + (r13)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16B_LODF + ((-16)&$1FF)<<S16B
@@ -1061,7 +1061,7 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_118
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r20)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioca_68dcc2b5_prepend_alloc_L000104_128)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4a_68f73992_prepend_alloc_L000104_128)<<S32 ' EQU4 reg reg
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
@@ -1082,21 +1082,21 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_118
  word I16A_RDLONG + (r18)<<D16A + (r18)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioca_68dcc2b5_prepend_alloc_L000104_130)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4a_68f73992_prepend_alloc_L000104_130)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioca_68dcc2b5_prepend_alloc_L000104_130)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4a_68f73992_prepend_alloc_L000104_130)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioca_68dcc2b5_prepend_alloc_L000104_130)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4a_68f73992_prepend_alloc_L000104_130)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
@@ -1110,15 +1110,15 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_118
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioca_68dcc2b5_prepend_alloc_L000104_129)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4a_68f73992_prepend_alloc_L000104_129)<<S32 ' JUMPV addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_130
+C_snr4a_68f73992_prepend_alloc_L000104_130
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_sioca_68dcc2b5_prepend_alloc_L000104_129)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4a_68f73992_prepend_alloc_L000104_129)<<S32 ' JUMPV addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_128
+C_snr4a_68f73992_prepend_alloc_L000104_128
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r22)<<S16A
@@ -1130,7 +1130,7 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_128
  word I16A_WRLONG + (r20)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_CMPI + (r20)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioca_68dcc2b5_prepend_alloc_L000104_134)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4a_68f73992_prepend_alloc_L000104_134)<<S32 ' NEU4 reg coni
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
@@ -1139,13 +1139,13 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_128
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioca_68dcc2b5_prepend_alloc_L000104_132)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4a_68f73992_prepend_alloc_L000104_132)<<S32 ' EQU4 reg coni
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_134
+C_snr4a_68f73992_prepend_alloc_L000104_134
  alignl_p1
- long I32_JMPA + (@C_sioca_68dcc2b5_prepend_alloc_L000104_136)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4a_68f73992_prepend_alloc_L000104_136)<<S32 ' JUMPV addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_135
+C_snr4a_68f73992_prepend_alloc_L000104_135
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-28)&$1FF)<<S16B
@@ -1154,7 +1154,7 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_135
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_136
+C_snr4a_68f73992_prepend_alloc_L000104_136
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r22)<<S16A
@@ -1164,14 +1164,14 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_136
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMPI + (r20)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioca_68dcc2b5_prepend_alloc_L000104_135)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4a_68f73992_prepend_alloc_L000104_135)<<S32 ' NEU4 reg coni
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioca_68dcc2b5_prepend_alloc_L000104_135)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4a_68f73992_prepend_alloc_L000104_135)<<S32 ' NEU4 reg coni
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -1179,7 +1179,7 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_136
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioca_68dcc2b5_prepend_alloc_L000104_138)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4a_68f73992_prepend_alloc_L000104_138)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODL + (r20)<<D16B
@@ -1187,22 +1187,22 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_136
  long 0 ' reg <- con
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioca_68dcc2b5_prepend_alloc_L000104_139)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4a_68f73992_prepend_alloc_L000104_139)<<S32 ' JUMPV addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_138
+C_snr4a_68f73992_prepend_alloc_L000104_138
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_139
+C_snr4a_68f73992_prepend_alloc_L000104_139
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_132
+C_snr4a_68f73992_prepend_alloc_L000104_132
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_129
+C_snr4a_68f73992_prepend_alloc_L000104_129
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioca_68dcc2b5_prepend_alloc_L000104_140)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4a_68f73992_prepend_alloc_L000104_140)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (28)<<S16A ' ADDP4 reg coni
@@ -1221,7 +1221,7 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_129
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioca_68dcc2b5_prepend_alloc_L000104_142)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4a_68f73992_prepend_alloc_L000104_142)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-28)&$1FF)<<S16B
@@ -1229,7 +1229,7 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_129
  word I16A_WRLONG + (r22)<<D16A + (r20)<<S16A ' ASGNP4 reg reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioca_68dcc2b5_prepend_alloc_L000104_143)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4a_68f73992_prepend_alloc_L000104_143)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -1243,9 +1243,9 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_129
  word I16A_AND + (r20)<<D16A + (r18)<<S16A ' BANDI/U (1)
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioca_68dcc2b5_prepend_alloc_L000104_143)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4a_68f73992_prepend_alloc_L000104_143)<<S32 ' JUMPV addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_142
+C_snr4a_68f73992_prepend_alloc_L000104_142
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -1253,7 +1253,7 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_142
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioca_68dcc2b5_prepend_alloc_L000104_146)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4a_68f73992_prepend_alloc_L000104_146)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
@@ -1262,7 +1262,7 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_142
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioca_68dcc2b5_prepend_alloc_L000104_148)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4a_68f73992_prepend_alloc_L000104_148)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
@@ -1270,9 +1270,9 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_142
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioca_68dcc2b5_prepend_alloc_L000104_147)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4a_68f73992_prepend_alloc_L000104_147)<<S32 ' JUMPV addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_148
+C_snr4a_68f73992_prepend_alloc_L000104_148
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
@@ -1280,20 +1280,20 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_148
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioca_68dcc2b5_prepend_alloc_L000104_147)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4a_68f73992_prepend_alloc_L000104_147)<<S32 ' JUMPV addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_146
+C_snr4a_68f73992_prepend_alloc_L000104_146
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_147
+C_snr4a_68f73992_prepend_alloc_L000104_147
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_143
+C_snr4a_68f73992_prepend_alloc_L000104_143
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioca_68dcc2b5_prepend_alloc_L000104_150)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4a_68f73992_prepend_alloc_L000104_150)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -1301,7 +1301,7 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_143
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioca_68dcc2b5_prepend_alloc_L000104_152)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4a_68f73992_prepend_alloc_L000104_152)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (24)<<S16A ' ADDP4 reg coni
@@ -1316,7 +1316,7 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_143
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioca_68dcc2b5_prepend_alloc_L000104_154)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4a_68f73992_prepend_alloc_L000104_154)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -1324,7 +1324,7 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_143
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioca_68dcc2b5_prepend_alloc_L000104_156)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4a_68f73992_prepend_alloc_L000104_156)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
@@ -1338,15 +1338,15 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_143
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioca_68dcc2b5_prepend_alloc_L000104_157)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4a_68f73992_prepend_alloc_L000104_157)<<S32 ' JUMPV addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_156
+C_snr4a_68f73992_prepend_alloc_L000104_156
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_157
+C_snr4a_68f73992_prepend_alloc_L000104_157
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_154
+C_snr4a_68f73992_prepend_alloc_L000104_154
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
@@ -1355,7 +1355,7 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_154
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioca_68dcc2b5_prepend_alloc_L000104_153)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4a_68f73992_prepend_alloc_L000104_153)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-36)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -1363,7 +1363,7 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_154
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioca_68dcc2b5_prepend_alloc_L000104_160)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4a_68f73992_prepend_alloc_L000104_160)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
@@ -1377,31 +1377,31 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_154
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioca_68dcc2b5_prepend_alloc_L000104_153)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4a_68f73992_prepend_alloc_L000104_153)<<S32 ' JUMPV addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_160
+C_snr4a_68f73992_prepend_alloc_L000104_160
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_sioca_68dcc2b5_prepend_alloc_L000104_153)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4a_68f73992_prepend_alloc_L000104_153)<<S32 ' JUMPV addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_152
+C_snr4a_68f73992_prepend_alloc_L000104_152
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_153
+C_snr4a_68f73992_prepend_alloc_L000104_153
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_150
+C_snr4a_68f73992_prepend_alloc_L000104_150
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_140
+C_snr4a_68f73992_prepend_alloc_L000104_140
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_119
+C_snr4a_68f73992_prepend_alloc_L000104_119
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_ADDS + (r13)<<D16A + (r22)<<S16A ' ADDI/P (2)
  word I16A_ADD + (r10)<<D16A + (r22)<<S16A ' ADDU (1)
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_116
+C_snr4a_68f73992_prepend_alloc_L000104_116
  word I16A_MOV + (r22)<<D16A + (r13)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -1422,7 +1422,7 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_116
  long I32_MOVI + RI<<D32 + (32)<<S32
  word I16A_CMP + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BRAE + (@C_sioca_68dcc2b5_prepend_alloc_L000104_162)<<S32 ' GEU4 reg coni
+ long I32_BRAE + (@C_snr4a_68f73992_prepend_alloc_L000104_162)<<S32 ' GEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r10)<<S16A
  word I16A_SHRI + (r22)<<D16A + (3)<<S16A ' SHRU4 reg coni
  word I16B_LODF + ((-16)&$1FF)<<S16B
@@ -1449,7 +1449,7 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_116
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioca_68dcc2b5_prepend_alloc_L000104_164)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4a_68f73992_prepend_alloc_L000104_164)<<S32 ' NEU4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r23)<<S16A ' reg <- INDIRU4 reg
  word I16A_MOVI + (r20)<<D16A + (1)<<S16A ' reg <- coni
  word I16B_LODF + ((-16)&$1FF)<<S16B
@@ -1458,9 +1458,9 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_116
  word I16A_OR + (r22)<<D16A + (r20)<<S16A ' BORI/U (1)
  word I16A_WRLONG + (r22)<<D16A + (r23)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioca_68dcc2b5_prepend_alloc_L000104_165)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4a_68f73992_prepend_alloc_L000104_165)<<S32 ' JUMPV addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_164
+C_snr4a_68f73992_prepend_alloc_L000104_164
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
@@ -1470,7 +1470,7 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_164
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioca_68dcc2b5_prepend_alloc_L000104_166)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4a_68f73992_prepend_alloc_L000104_166)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
@@ -1478,15 +1478,15 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_164
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_sioca_68dcc2b5_prepend_alloc_L000104_167)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4a_68f73992_prepend_alloc_L000104_167)<<S32 ' JUMPV addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_166
+C_snr4a_68f73992_prepend_alloc_L000104_166
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_167
+C_snr4a_68f73992_prepend_alloc_L000104_167
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_165
+C_snr4a_68f73992_prepend_alloc_L000104_165
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
@@ -1506,9 +1506,9 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_165
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioca_68dcc2b5_prepend_alloc_L000104_163)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4a_68f73992_prepend_alloc_L000104_163)<<S32 ' JUMPV addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_162
+C_snr4a_68f73992_prepend_alloc_L000104_162
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_WRLONG + (r11)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_MOV + (r22)<<D16A + (r10)<<S16A
@@ -1519,14 +1519,14 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_162
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioca_68dcc2b5_prepend_alloc_L000104_168)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4a_68f73992_prepend_alloc_L000104_168)<<S32 ' NEU4 reg coni
  word I16A_MOVI + (r22)<<D16A + (0)<<S16A ' reg <- coni
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_sioca_68dcc2b5_prepend_alloc_L000104_169)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4a_68f73992_prepend_alloc_L000104_169)<<S32 ' JUMPV addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_168
+C_snr4a_68f73992_prepend_alloc_L000104_168
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16B_LODL + (r20)<<D16B
@@ -1534,14 +1534,14 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_168
  long $ffff ' reg <- con
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRBE + (@C_sioca_68dcc2b5_prepend_alloc_L000104_170)<<S32 ' LEU4 reg reg
+ long I32_BRBE + (@C_snr4a_68f73992_prepend_alloc_L000104_170)<<S32 ' LEU4 reg reg
  word I16A_MOVI + (r22)<<D16A + (31)<<S16A ' reg <- coni
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_sioca_68dcc2b5_prepend_alloc_L000104_171)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4a_68f73992_prepend_alloc_L000104_171)<<S32 ' JUMPV addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_170
+C_snr4a_68f73992_prepend_alloc_L000104_170
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16B_LODF + ((-32)&$1FF)<<S16B
@@ -1629,9 +1629,9 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_170
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_171
+C_snr4a_68f73992_prepend_alloc_L000104_171
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_169
+C_snr4a_68f73992_prepend_alloc_L000104_169
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_MOV + (r20)<<D16A + (r22)<<S16A
@@ -1666,7 +1666,7 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_169
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioca_68dcc2b5_prepend_alloc_L000104_172)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4a_68f73992_prepend_alloc_L000104_172)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -1696,9 +1696,9 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_169
  word I16A_ADDSI + (r20)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_WRLONG + (r22)<<D16A + (r20)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioca_68dcc2b5_prepend_alloc_L000104_173)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4a_68f73992_prepend_alloc_L000104_173)<<S32 ' JUMPV addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_172
+C_snr4a_68f73992_prepend_alloc_L000104_172
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_RDLONG + (r7)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
@@ -1706,12 +1706,12 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_172
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_CMPI + (r22)<<D16A + (31)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioca_68dcc2b5_prepend_alloc_L000104_175)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4a_68f73992_prepend_alloc_L000104_175)<<S32 ' NEU4 reg coni
  word I16A_MOVI + (r6)<<D16A + (0)<<S16A ' reg <- coni
  alignl_p1
- long I32_JMPA + (@C_sioca_68dcc2b5_prepend_alloc_L000104_176)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4a_68f73992_prepend_alloc_L000104_176)<<S32 ' JUMPV addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_175
+C_snr4a_68f73992_prepend_alloc_L000104_175
  word I16A_MOVI + (r22)<<D16A + (31)<<S16A ' reg <- coni
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
@@ -1721,7 +1721,7 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_175
  word I16A_MOV + (r6)<<D16A + (r22)<<S16A ' SUBU
  word I16A_SUB + (r6)<<D16A + (r20)<<S16A ' SUBU (3)
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_176
+C_snr4a_68f73992_prepend_alloc_L000104_176
  word I16A_MOV + (r22)<<D16A + (r6)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + RI<<D16A + (r10)<<S16A
  word I16A_SHL + RI<<D16A + (r22)<<S16A
@@ -1729,7 +1729,7 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_176
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_177
+C_snr4a_68f73992_prepend_alloc_L000104_177
  word I16A_MOV + (r22)<<D16A + (r7)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -1737,7 +1737,7 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_177
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMP + (r22)<<D16A + (r10)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioca_68dcc2b5_prepend_alloc_L000104_181)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4a_68f73992_prepend_alloc_L000104_181)<<S32 ' EQU4 reg reg
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_SHRI + (r22)<<D16A + (31)<<S16A ' SHRU4 reg coni
@@ -1759,14 +1759,14 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_177
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioca_68dcc2b5_prepend_alloc_L000104_183)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4a_68f73992_prepend_alloc_L000104_183)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_RDLONG + (r7)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  alignl_p1
- long I32_JMPA + (@C_sioca_68dcc2b5_prepend_alloc_L000104_177)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4a_68f73992_prepend_alloc_L000104_177)<<S32 ' JUMPV addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_183
+C_snr4a_68f73992_prepend_alloc_L000104_183
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -1774,7 +1774,7 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_183
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioca_68dcc2b5_prepend_alloc_L000104_185)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4a_68f73992_prepend_alloc_L000104_185)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-12)&$1FF)<<S16B
@@ -1793,15 +1793,15 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_183
  word I16A_ADDSI + (r20)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_WRLONG + (r22)<<D16A + (r20)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioca_68dcc2b5_prepend_alloc_L000104_179)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4a_68f73992_prepend_alloc_L000104_179)<<S32 ' JUMPV addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_185
+C_snr4a_68f73992_prepend_alloc_L000104_185
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_sioca_68dcc2b5_prepend_alloc_L000104_179)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4a_68f73992_prepend_alloc_L000104_179)<<S32 ' JUMPV addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_181
+C_snr4a_68f73992_prepend_alloc_L000104_181
  word I16A_MOV + (r22)<<D16A + (r7)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
@@ -1813,12 +1813,12 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_181
  word I16A_MOV + (r20)<<D16A + (r7)<<S16A ' CVI, CVU or LOAD
  word I16A_CMP + (r20)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioca_68dcc2b5_prepend_alloc_L000104_187)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4a_68f73992_prepend_alloc_L000104_187)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMP + (r20)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioca_68dcc2b5_prepend_alloc_L000104_187)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4a_68f73992_prepend_alloc_L000104_187)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-28)&$1FF)<<S16B
@@ -1846,29 +1846,29 @@ C_sioca_68dcc2b5_prepend_alloc_L000104_181
  long 0 ' reg <- con
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioca_68dcc2b5_prepend_alloc_L000104_179)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4a_68f73992_prepend_alloc_L000104_179)<<S32 ' JUMPV addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_187
+C_snr4a_68f73992_prepend_alloc_L000104_187
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_179
+C_snr4a_68f73992_prepend_alloc_L000104_179
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_173
+C_snr4a_68f73992_prepend_alloc_L000104_173
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_163
+C_snr4a_68f73992_prepend_alloc_L000104_163
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_115
+C_snr4a_68f73992_prepend_alloc_L000104_115
  alignl_label
-C_sioca_68dcc2b5_prepend_alloc_L000104_113
+C_snr4a_68f73992_prepend_alloc_L000104_113
  word I16A_MOV + (r0)<<D16A + (r15)<<S16A
  word I16A_ADDSI + (r0)<<D16A + (8)<<S16A ' ADDP4 reg coni
-' C_sioca_68dcc2b5_prepend_alloc_L000104_105 ' (symbol refcount = 0)
+' C_snr4a_68f73992_prepend_alloc_L000104_105 ' (symbol refcount = 0)
  word I16B_POPM + 8<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_siocb_68dcc2b5_add_segment_L000189 ' <symbol:add_segment>
+C_snr4b_68f73992_add_segment_L000189 ' <symbol:add_segment>
  alignl_p1
  long I32_NEWF + 68<<S32
  alignl_p1
@@ -1884,7 +1884,7 @@ C_siocb_68dcc2b5_add_segment_L000189 ' <symbol:add_segment>
  word I16A_MOV + (r3)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 33<<S16B ' arg size, rpsize = 8, spsize = 8
  alignl_p1
- long I32_CALA + (@C_sioc2_68dcc2b5_segment_holding_L000005)<<S32
+ long I32_CALA + (@C_snr42_68f73992_segment_holding_L000005)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_WRLONG + (r0)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
@@ -1908,14 +1908,14 @@ C_siocb_68dcc2b5_add_segment_L000189 ' <symbol:add_segment>
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocb_68dcc2b5_add_segment_L000189_192)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4b_68f73992_add_segment_L000189_192)<<S32 ' NEU4 reg coni
  word I16A_MOVI + (r22)<<D16A + (0)<<S16A ' reg <- coni
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_siocb_68dcc2b5_add_segment_L000189_193)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4b_68f73992_add_segment_L000189_193)<<S32 ' JUMPV addrg
  alignl_label
-C_siocb_68dcc2b5_add_segment_L000189_192
+C_snr4b_68f73992_add_segment_L000189_192
  word I16A_MOVI + (r22)<<D16A + (8)<<S16A ' reg <- coni
  word I16A_MOVI + (r20)<<D16A + (7)<<S16A ' reg <- coni
  word I16A_MOV + (r18)<<D16A + (r8)<<S16A
@@ -1926,7 +1926,7 @@ C_siocb_68dcc2b5_add_segment_L000189_192
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_label
-C_siocb_68dcc2b5_add_segment_L000189_193
+C_snr4b_68f73992_add_segment_L000189_193
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16B_LODF + ((-20)&$1FF)<<S16B
@@ -1942,19 +1942,19 @@ C_siocb_68dcc2b5_add_segment_L000189_193
  word I16A_ADDSI + (r20)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRAE + (@C_siocb_68dcc2b5_add_segment_L000189_195)<<S32 ' GEU4 reg reg
+ long I32_BRAE + (@C_snr4b_68f73992_add_segment_L000189_195)<<S32 ' GEU4 reg reg
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_WRLONG + (r10)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_siocb_68dcc2b5_add_segment_L000189_196)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4b_68f73992_add_segment_L000189_196)<<S32 ' JUMPV addrg
  alignl_label
-C_siocb_68dcc2b5_add_segment_L000189_195
+C_snr4b_68f73992_add_segment_L000189_195
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  alignl_label
-C_siocb_68dcc2b5_add_segment_L000189_196
+C_snr4b_68f73992_add_segment_L000189_196
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_RDLONG + (r6)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r7)<<D16A + (r6)<<S16A ' CVI, CVU or LOAD
@@ -1977,7 +1977,7 @@ C_siocb_68dcc2b5_add_segment_L000189_196
  word I16A_MOV + (r4)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 50<<S16B ' arg size, rpsize = 12, spsize = 12
  alignl_p1
- long I32_CALA + (@C_sioc8_68dcc2b5_init_top_L000092)<<S32
+ long I32_CALA + (@C_snr48_68f73992_init_top_L000092)<<S32
  word I16A_ADDI + SP<<D16A + 8<<S16A ' CALL addrg
  word I16A_MOV + (r22)<<D16A + (r7)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
@@ -2013,7 +2013,7 @@ C_siocb_68dcc2b5_add_segment_L000189_196
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_label
-C_siocb_68dcc2b5_add_segment_L000189_197
+C_snr4b_68f73992_add_segment_L000189_197
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16B_LODF + ((-36)&$1FF)<<S16B
@@ -2029,18 +2029,18 @@ C_siocb_68dcc2b5_add_segment_L000189_197
  word I16A_MOV + (r20)<<D16A + (r13)<<S16A ' CVI, CVU or LOAD
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRAE + (@C_siocb_68dcc2b5_add_segment_L000189_199)<<S32 ' GEU4 reg reg
+ long I32_BRAE + (@C_snr4b_68f73992_add_segment_L000189_199)<<S32 ' GEU4 reg reg
  word I16B_LODF + ((-36)&$1FF)<<S16B
  word I16A_RDLONG + (r15)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  alignl_p1
- long I32_JMPA + (@C_siocb_68dcc2b5_add_segment_L000189_197)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4b_68f73992_add_segment_L000189_197)<<S32 ' JUMPV addrg
  alignl_label
-C_siocb_68dcc2b5_add_segment_L000189_199
+C_snr4b_68f73992_add_segment_L000189_199
  word I16A_MOV + (r22)<<D16A + (r6)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r20)<<D16A + (r10)<<S16A ' CVI, CVU or LOAD
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocb_68dcc2b5_add_segment_L000189_203)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4b_68f73992_add_segment_L000189_203)<<S32 ' EQU4 reg reg
  word I16B_LODF + ((-40)&$1FF)<<S16B
  word I16A_WRLONG + (r10)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_MOV + (r22)<<D16A + (r6)<<S16A ' CVI, CVU or LOAD
@@ -2083,7 +2083,7 @@ C_siocb_68dcc2b5_add_segment_L000189_199
  long I32_MOVI + RI<<D32 + (32)<<S32
  word I16A_CMP + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BRAE + (@C_siocb_68dcc2b5_add_segment_L000189_205)<<S32 ' GEU4 reg coni
+ long I32_BRAE + (@C_snr4b_68f73992_add_segment_L000189_205)<<S32 ' GEU4 reg coni
  word I16B_LODF + ((-36)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_SHRI + (r22)<<D16A + (3)<<S16A ' SHRU4 reg coni
@@ -2111,7 +2111,7 @@ C_siocb_68dcc2b5_add_segment_L000189_199
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocb_68dcc2b5_add_segment_L000189_207)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4b_68f73992_add_segment_L000189_207)<<S32 ' NEU4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r23)<<S16A ' reg <- INDIRU4 reg
  word I16A_MOVI + (r20)<<D16A + (1)<<S16A ' reg <- coni
  word I16B_LODF + ((-52)&$1FF)<<S16B
@@ -2120,9 +2120,9 @@ C_siocb_68dcc2b5_add_segment_L000189_199
  word I16A_OR + (r22)<<D16A + (r20)<<S16A ' BORI/U (1)
  word I16A_WRLONG + (r22)<<D16A + (r23)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocb_68dcc2b5_add_segment_L000189_208)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4b_68f73992_add_segment_L000189_208)<<S32 ' JUMPV addrg
  alignl_label
-C_siocb_68dcc2b5_add_segment_L000189_207
+C_snr4b_68f73992_add_segment_L000189_207
  word I16B_LODF + ((-48)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
@@ -2132,7 +2132,7 @@ C_siocb_68dcc2b5_add_segment_L000189_207
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocb_68dcc2b5_add_segment_L000189_209)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4b_68f73992_add_segment_L000189_209)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-48)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
@@ -2140,15 +2140,15 @@ C_siocb_68dcc2b5_add_segment_L000189_207
  word I16B_LODF + ((-56)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_siocb_68dcc2b5_add_segment_L000189_210)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4b_68f73992_add_segment_L000189_210)<<S32 ' JUMPV addrg
  alignl_label
-C_siocb_68dcc2b5_add_segment_L000189_209
+C_snr4b_68f73992_add_segment_L000189_209
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_siocb_68dcc2b5_add_segment_L000189_210
+C_snr4b_68f73992_add_segment_L000189_210
  alignl_label
-C_siocb_68dcc2b5_add_segment_L000189_208
+C_snr4b_68f73992_add_segment_L000189_208
  word I16B_LODF + ((-48)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
@@ -2174,9 +2174,9 @@ C_siocb_68dcc2b5_add_segment_L000189_208
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocb_68dcc2b5_add_segment_L000189_206)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4b_68f73992_add_segment_L000189_206)<<S32 ' JUMPV addrg
  alignl_label
-C_siocb_68dcc2b5_add_segment_L000189_205
+C_snr4b_68f73992_add_segment_L000189_205
  word I16B_LODF + ((-40)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-48)&$1FF)<<S16B
@@ -2190,14 +2190,14 @@ C_siocb_68dcc2b5_add_segment_L000189_205
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocb_68dcc2b5_add_segment_L000189_211)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4b_68f73992_add_segment_L000189_211)<<S32 ' NEU4 reg coni
  word I16A_MOVI + (r22)<<D16A + (0)<<S16A ' reg <- coni
  word I16B_LODF + ((-52)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_siocb_68dcc2b5_add_segment_L000189_212)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4b_68f73992_add_segment_L000189_212)<<S32 ' JUMPV addrg
  alignl_label
-C_siocb_68dcc2b5_add_segment_L000189_211
+C_snr4b_68f73992_add_segment_L000189_211
  word I16B_LODF + ((-60)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16B_LODL + (r20)<<D16B
@@ -2205,14 +2205,14 @@ C_siocb_68dcc2b5_add_segment_L000189_211
  long $ffff ' reg <- con
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRBE + (@C_siocb_68dcc2b5_add_segment_L000189_213)<<S32 ' LEU4 reg reg
+ long I32_BRBE + (@C_snr4b_68f73992_add_segment_L000189_213)<<S32 ' LEU4 reg reg
  word I16A_MOVI + (r22)<<D16A + (31)<<S16A ' reg <- coni
  word I16B_LODF + ((-52)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_siocb_68dcc2b5_add_segment_L000189_214)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4b_68f73992_add_segment_L000189_214)<<S32 ' JUMPV addrg
  alignl_label
-C_siocb_68dcc2b5_add_segment_L000189_213
+C_snr4b_68f73992_add_segment_L000189_213
  word I16B_LODF + ((-60)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16B_LODF + ((-68)&$1FF)<<S16B
@@ -2302,9 +2302,9 @@ C_siocb_68dcc2b5_add_segment_L000189_213
  word I16B_LODF + ((-52)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_label
-C_siocb_68dcc2b5_add_segment_L000189_214
+C_snr4b_68f73992_add_segment_L000189_214
  alignl_label
-C_siocb_68dcc2b5_add_segment_L000189_212
+C_snr4b_68f73992_add_segment_L000189_212
  word I16B_LODF + ((-52)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_MOV + (r20)<<D16A + (r22)<<S16A
@@ -2339,7 +2339,7 @@ C_siocb_68dcc2b5_add_segment_L000189_212
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocb_68dcc2b5_add_segment_L000189_215)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4b_68f73992_add_segment_L000189_215)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -2369,9 +2369,9 @@ C_siocb_68dcc2b5_add_segment_L000189_212
  word I16A_ADDSI + (r20)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_WRLONG + (r22)<<D16A + (r20)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocb_68dcc2b5_add_segment_L000189_216)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4b_68f73992_add_segment_L000189_216)<<S32 ' JUMPV addrg
  alignl_label
-C_siocb_68dcc2b5_add_segment_L000189_215
+C_snr4b_68f73992_add_segment_L000189_215
  word I16B_LODF + ((-56)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
@@ -2381,14 +2381,14 @@ C_siocb_68dcc2b5_add_segment_L000189_215
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_CMPI + (r22)<<D16A + (31)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocb_68dcc2b5_add_segment_L000189_218)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4b_68f73992_add_segment_L000189_218)<<S32 ' NEU4 reg coni
  word I16A_MOVI + (r22)<<D16A + (0)<<S16A ' reg <- coni
  word I16B_LODF + ((-68)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_siocb_68dcc2b5_add_segment_L000189_219)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4b_68f73992_add_segment_L000189_219)<<S32 ' JUMPV addrg
  alignl_label
-C_siocb_68dcc2b5_add_segment_L000189_218
+C_snr4b_68f73992_add_segment_L000189_218
  word I16A_MOVI + (r22)<<D16A + (31)<<S16A ' reg <- coni
  word I16B_LODF + ((-52)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
@@ -2399,7 +2399,7 @@ C_siocb_68dcc2b5_add_segment_L000189_218
  word I16B_LODF + ((-68)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_label
-C_siocb_68dcc2b5_add_segment_L000189_219
+C_snr4b_68f73992_add_segment_L000189_219
  word I16B_LODF + ((-36)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16B_LODF + ((-68)&$1FF)<<S16B
@@ -2408,7 +2408,7 @@ C_siocb_68dcc2b5_add_segment_L000189_219
  word I16B_LODF + ((-64)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_label
-C_siocb_68dcc2b5_add_segment_L000189_220
+C_snr4b_68f73992_add_segment_L000189_220
  word I16B_LODF + ((-60)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
@@ -2419,7 +2419,7 @@ C_siocb_68dcc2b5_add_segment_L000189_220
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocb_68dcc2b5_add_segment_L000189_224)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4b_68f73992_add_segment_L000189_224)<<S32 ' EQU4 reg reg
  word I16B_LODF + ((-64)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_SHRI + (r22)<<D16A + (31)<<S16A ' SHRU4 reg coni
@@ -2442,16 +2442,16 @@ C_siocb_68dcc2b5_add_segment_L000189_220
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocb_68dcc2b5_add_segment_L000189_226)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4b_68f73992_add_segment_L000189_226)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-72)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16B_LODF + ((-60)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_siocb_68dcc2b5_add_segment_L000189_220)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4b_68f73992_add_segment_L000189_220)<<S32 ' JUMPV addrg
  alignl_label
-C_siocb_68dcc2b5_add_segment_L000189_226
+C_snr4b_68f73992_add_segment_L000189_226
  word I16B_LODF + ((-72)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -2459,7 +2459,7 @@ C_siocb_68dcc2b5_add_segment_L000189_226
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocb_68dcc2b5_add_segment_L000189_228)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4b_68f73992_add_segment_L000189_228)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-72)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-48)&$1FF)<<S16B
@@ -2480,15 +2480,15 @@ C_siocb_68dcc2b5_add_segment_L000189_226
  word I16A_ADDSI + (r20)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_WRLONG + (r22)<<D16A + (r20)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocb_68dcc2b5_add_segment_L000189_222)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4b_68f73992_add_segment_L000189_222)<<S32 ' JUMPV addrg
  alignl_label
-C_siocb_68dcc2b5_add_segment_L000189_228
+C_snr4b_68f73992_add_segment_L000189_228
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_siocb_68dcc2b5_add_segment_L000189_222)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4b_68f73992_add_segment_L000189_222)<<S32 ' JUMPV addrg
  alignl_label
-C_siocb_68dcc2b5_add_segment_L000189_224
+C_snr4b_68f73992_add_segment_L000189_224
  word I16B_LODF + ((-60)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
@@ -2502,12 +2502,12 @@ C_siocb_68dcc2b5_add_segment_L000189_224
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMP + (r20)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocb_68dcc2b5_add_segment_L000189_230)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4b_68f73992_add_segment_L000189_230)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-72)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMP + (r20)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocb_68dcc2b5_add_segment_L000189_230)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4b_68f73992_add_segment_L000189_230)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-48)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-72)&$1FF)<<S16B
@@ -2538,25 +2538,25 @@ C_siocb_68dcc2b5_add_segment_L000189_224
  long 0 ' reg <- con
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocb_68dcc2b5_add_segment_L000189_222)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4b_68f73992_add_segment_L000189_222)<<S32 ' JUMPV addrg
  alignl_label
-C_siocb_68dcc2b5_add_segment_L000189_230
+C_snr4b_68f73992_add_segment_L000189_230
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_siocb_68dcc2b5_add_segment_L000189_222
+C_snr4b_68f73992_add_segment_L000189_222
  alignl_label
-C_siocb_68dcc2b5_add_segment_L000189_216
+C_snr4b_68f73992_add_segment_L000189_216
  alignl_label
-C_siocb_68dcc2b5_add_segment_L000189_206
+C_snr4b_68f73992_add_segment_L000189_206
  alignl_label
-C_siocb_68dcc2b5_add_segment_L000189_203
-' C_siocb_68dcc2b5_add_segment_L000189_190 ' (symbol refcount = 0)
+C_snr4b_68f73992_add_segment_L000189_203
+' C_snr4b_68f73992_add_segment_L000189_190 ' (symbol refcount = 0)
  word I16B_POPM + 17<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232 ' <symbol:sys_alloc>
+C_snr4c_68f73992_sys_alloc_L000232 ' <symbol:sys_alloc>
  alignl_p1
  long I32_NEWF + 24<<S32
  alignl_p1
@@ -2571,36 +2571,36 @@ C_siocc_68dcc2b5_sys_alloc_L000232 ' <symbol:sys_alloc>
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocc_68dcc2b5_sys_alloc_L000232_234)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4c_68f73992_sys_alloc_L000232_234)<<S32 ' NEU4 reg coni
  alignl_p1
- long I32_CALA + (@C_sioc4_68dcc2b5_init_mparams_L000025)<<S32 ' CALL addrg
+ long I32_CALA + (@C_snr44_68f73992_init_mparams_L000025)<<S32 ' CALL addrg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_234
+C_snr4c_68f73992_sys_alloc_L000232_234
  word I16A_MOVI + (r22)<<D16A + (0)<<S16A ' reg <- coni
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocc_68dcc2b5_sys_alloc_L000232_235)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4c_68f73992_sys_alloc_L000232_235)<<S32 ' EQU4 reg coni
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003+12)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003+12)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_CMP + (r21)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocc_68dcc2b5_sys_alloc_L000232_235)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4c_68f73992_sys_alloc_L000232_235)<<S32 ' LTU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocc_68dcc2b5_sys_alloc_L000232_235)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4c_68f73992_sys_alloc_L000232_235)<<S32 ' EQU4 reg coni
  word I16A_MOV + (r2)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r3)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 33<<S16B ' arg size, rpsize = 8, spsize = 8
  alignl_p1
- long I32_CALA + (@C_sioc6_68dcc2b5_mmap_alloc_L000056)<<S32
+ long I32_CALA + (@C_snr46_68f73992_mmap_alloc_L000056)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_WRLONG + (r0)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
@@ -2608,25 +2608,25 @@ C_siocc_68dcc2b5_sys_alloc_L000232_234
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocc_68dcc2b5_sys_alloc_L000232_238)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4c_68f73992_sys_alloc_L000232_238)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r0)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  alignl_p1
- long I32_JMPA + (@C_siocc_68dcc2b5_sys_alloc_L000232_233)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4c_68f73992_sys_alloc_L000232_233)<<S32 ' JUMPV addrg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_238
+C_snr4c_68f73992_sys_alloc_L000232_238
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_235
+C_snr4c_68f73992_sys_alloc_L000232_235
  alignl_p1
  long I32_MOVI + (r22)<<D32 +(48)<<S32 ' reg <- conli
  word I16A_ADD + (r22)<<D16A + (r21)<<S16A ' ADDU (2)
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003+8)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003+8)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_SUBI + (r20)<<D16A + (1)<<S16A ' SUBU4 reg coni
  word I16A_ADD + (r22)<<D16A + (r20)<<S16A ' ADDU (1)
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003+8)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003+8)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_SUBI + (r20)<<D16A + (1)<<S16A ' SUBU4 reg coni
  word I16B_CPL + (r20)<<D16B ' BCOMU4
@@ -2634,21 +2634,21 @@ C_siocc_68dcc2b5_sys_alloc_L000232_235
  word I16A_AND + (r15)<<D16A + (r20)<<S16A ' BANDI/U (3)
  word I16A_CMP + (r15)<<D16A + (r21)<<S16A
  alignl_p1
- long I32_BR_A + (@C_siocc_68dcc2b5_sys_alloc_L000232_242)<<S32 ' GTU4 reg reg
+ long I32_BR_A + (@C_snr4c_68f73992_sys_alloc_L000232_242)<<S32 ' GTU4 reg reg
  word I16B_LODL + R0<<D16B
  alignl_p1
  long 0 ' RET con
  alignl_p1
- long I32_JMPA + (@C_siocc_68dcc2b5_sys_alloc_L000232_233)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4c_68f73992_sys_alloc_L000232_233)<<S32 ' JUMPV addrg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_242
+C_snr4c_68f73992_sys_alloc_L000232_242
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((440)&$7FFFF)<<S32 ' reg <- cons
  word I16A_ADDS + (r22)<<D16A + (r23)<<S16A ' ADDI/P (2)
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocc_68dcc2b5_sys_alloc_L000232_244)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4c_68f73992_sys_alloc_L000232_244)<<S32 ' EQU4 reg coni
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((432)&$7FFFF)<<S32 ' reg <- cons
  word I16A_ADDS + (r22)<<D16A + (r23)<<S16A ' ADDI/P (2)
@@ -2664,25 +2664,25 @@ C_siocc_68dcc2b5_sys_alloc_L000232_242
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRU4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRBE + (@C_siocc_68dcc2b5_sys_alloc_L000232_248)<<S32 ' LEU4 reg reg
+ long I32_BRBE + (@C_snr4c_68f73992_sys_alloc_L000232_248)<<S32 ' LEU4 reg reg
  alignl_p1
  long I32_LODS + (r20)<<D32S + ((440)&$7FFFF)<<S32 ' reg <- cons
  word I16A_ADDS + (r20)<<D16A + (r23)<<S16A ' ADDI/P (2)
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRU4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRBE + (@C_siocc_68dcc2b5_sys_alloc_L000232_246)<<S32 ' LEU4 reg reg
+ long I32_BRBE + (@C_snr4c_68f73992_sys_alloc_L000232_246)<<S32 ' LEU4 reg reg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_248
+C_snr4c_68f73992_sys_alloc_L000232_248
  word I16B_LODL + R0<<D16B
  alignl_p1
  long 0 ' RET con
  alignl_p1
- long I32_JMPA + (@C_siocc_68dcc2b5_sys_alloc_L000232_233)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4c_68f73992_sys_alloc_L000232_233)<<S32 ' JUMPV addrg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_246
+C_snr4c_68f73992_sys_alloc_L000232_246
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_244
+C_snr4c_68f73992_sys_alloc_L000232_244
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((444)&$7FFFF)<<S32 ' reg <- cons
  word I16A_ADDS + (r22)<<D16A + (r23)<<S16A ' ADDI/P (2)
@@ -2691,7 +2691,7 @@ C_siocc_68dcc2b5_sys_alloc_L000232_244
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocc_68dcc2b5_sys_alloc_L000232_249)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4c_68f73992_sys_alloc_L000232_249)<<S32 ' NEU4 reg coni
  word I16B_LODL + (r22)<<D16B
  alignl_p1
  long $ffffffff ' reg <- con
@@ -2704,33 +2704,33 @@ C_siocc_68dcc2b5_sys_alloc_L000232_244
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocc_68dcc2b5_sys_alloc_L000232_252)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4c_68f73992_sys_alloc_L000232_252)<<S32 ' NEU4 reg coni
  word I16B_LODL + (r13)<<D16B
  alignl_p1
  long 0 ' reg <- con
  alignl_p1
- long I32_JMPA + (@C_siocc_68dcc2b5_sys_alloc_L000232_253)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4c_68f73992_sys_alloc_L000232_253)<<S32 ' JUMPV addrg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_252
+C_snr4c_68f73992_sys_alloc_L000232_252
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (24)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r2)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_MOV + (r3)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 33<<S16B ' arg size, rpsize = 8, spsize = 8
  alignl_p1
- long I32_CALA + (@C_sioc2_68dcc2b5_segment_holding_L000005)<<S32
+ long I32_CALA + (@C_snr42_68f73992_segment_holding_L000005)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r13)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_253
+C_snr4c_68f73992_sys_alloc_L000232_253
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r13)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocc_68dcc2b5_sys_alloc_L000232_254)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4c_68f73992_sys_alloc_L000232_254)<<S32 ' NEU4 reg coni
  word I16A_MOVI + (r2)<<D16A + (0)<<S16A ' reg ARG coni
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
  alignl_p1
@@ -2743,28 +2743,28 @@ C_siocc_68dcc2b5_sys_alloc_L000232_253
  word I16A_NEGI + (r20)<<D16A + (-($ffffffff)&$1F)<<S16A ' reg <- conn
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocc_68dcc2b5_sys_alloc_L000232_255)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4c_68f73992_sys_alloc_L000232_255)<<S32 ' EQU4 reg reg
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003+4)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003+4)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_SUBI + (r20)<<D16A + (1)<<S16A ' SUBU4 reg coni
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocc_68dcc2b5_sys_alloc_L000232_258)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4c_68f73992_sys_alloc_L000232_258)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003+4)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003+4)<<S32
  word I16A_MOV + (r18)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_SUBI + (r18)<<D16A + (1)<<S16A ' SUBU4 reg coni
  word I16A_ADD + (r18)<<D16A + (r22)<<S16A ' ADDU (2)
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003+4)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003+4)<<S32
  word I16A_MOV + (r16)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_SUBI + (r16)<<D16A + (1)<<S16A ' SUBU4 reg coni
  word I16B_CPL + (r16)<<D16B ' BCOMU4
@@ -2776,7 +2776,7 @@ C_siocc_68dcc2b5_sys_alloc_L000232_253
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_258
+C_snr4c_68f73992_sys_alloc_L000232_258
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((432)&$7FFFF)<<S32 ' reg <- cons
  word I16A_ADDS + (r22)<<D16A + (r23)<<S16A ' ADDI/P (2)
@@ -2790,20 +2790,20 @@ C_siocc_68dcc2b5_sys_alloc_L000232_258
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_CMP + (r22)<<D16A + (r21)<<S16A
  alignl_p1
- long I32_BRBE + (@C_siocc_68dcc2b5_sys_alloc_L000232_255)<<S32 ' LEU4 reg reg
+ long I32_BRBE + (@C_snr4c_68f73992_sys_alloc_L000232_255)<<S32 ' LEU4 reg reg
  word I16B_LODL + (r20)<<D16B
  alignl_p1
  long $7fffffff ' reg <- con
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRAE + (@C_siocc_68dcc2b5_sys_alloc_L000232_255)<<S32 ' GEU4 reg reg
+ long I32_BRAE + (@C_snr4c_68f73992_sys_alloc_L000232_255)<<S32 ' GEU4 reg reg
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((440)&$7FFFF)<<S32 ' reg <- cons
  word I16A_ADDS + (r22)<<D16A + (r23)<<S16A ' ADDI/P (2)
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocc_68dcc2b5_sys_alloc_L000232_265)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4c_68f73992_sys_alloc_L000232_265)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  alignl_p1
@@ -2812,12 +2812,12 @@ C_siocc_68dcc2b5_sys_alloc_L000232_258
  word I16A_RDLONG + (r18)<<D16A + (r18)<<S16A ' reg <- INDIRU4 reg
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
- long I32_BRBE + (@C_siocc_68dcc2b5_sys_alloc_L000232_255)<<S32 ' LEU4 reg reg
+ long I32_BRBE + (@C_snr4c_68f73992_sys_alloc_L000232_255)<<S32 ' LEU4 reg reg
  word I16A_CMP + (r20)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_A + (@C_siocc_68dcc2b5_sys_alloc_L000232_255)<<S32 ' GTU4 reg reg
+ long I32_BR_A + (@C_snr4c_68f73992_sys_alloc_L000232_255)<<S32 ' GTU4 reg reg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_265
+C_snr4c_68f73992_sys_alloc_L000232_265
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r2)<<D16A + RI<<S16A ' reg ARG INDIR ADDRLi
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
@@ -2830,15 +2830,15 @@ C_siocc_68dcc2b5_sys_alloc_L000232_265
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocc_68dcc2b5_sys_alloc_L000232_255)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4c_68f73992_sys_alloc_L000232_255)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r19)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r17)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  alignl_p1
- long I32_JMPA + (@C_siocc_68dcc2b5_sys_alloc_L000232_255)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4c_68f73992_sys_alloc_L000232_255)<<S32 ' JUMPV addrg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_254
+C_snr4c_68f73992_sys_alloc_L000232_254
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -2849,12 +2849,12 @@ C_siocc_68dcc2b5_sys_alloc_L000232_254
  long I32_MOVI + (r20)<<D32 +(48)<<S32 ' reg <- conli
  word I16A_ADD + (r22)<<D16A + (r20)<<S16A ' ADDU (1)
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003+8)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003+8)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_SUBI + (r20)<<D16A + (1)<<S16A ' SUBU4 reg coni
  word I16A_ADD + (r22)<<D16A + (r20)<<S16A ' ADDU (1)
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003+8)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003+8)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_SUBI + (r20)<<D16A + (1)<<S16A ' SUBU4 reg coni
  word I16B_CPL + (r20)<<D16B ' BCOMU4
@@ -2868,7 +2868,7 @@ C_siocc_68dcc2b5_sys_alloc_L000232_254
  long $7fffffff ' reg <- con
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRAE + (@C_siocc_68dcc2b5_sys_alloc_L000232_268)<<S32 ' GEU4 reg reg
+ long I32_BRAE + (@C_snr4c_68f73992_sys_alloc_L000232_268)<<S32 ' GEU4 reg reg
  word I16A_MOV + (r2)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
  alignl_p1
@@ -2885,26 +2885,26 @@ C_siocc_68dcc2b5_sys_alloc_L000232_254
  word I16A_ADDS + (r20)<<D16A + (r18)<<S16A ' ADDI/P (2)
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocc_68dcc2b5_sys_alloc_L000232_268)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4c_68f73992_sys_alloc_L000232_268)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r19)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r17)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_268
+C_snr4c_68f73992_sys_alloc_L000232_268
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_255
+C_snr4c_68f73992_sys_alloc_L000232_255
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A ' CVI, CVU or LOAD
  word I16A_NEGI + (r20)<<D16A + (-($ffffffff)&$1F)<<S16A ' reg <- conn
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocc_68dcc2b5_sys_alloc_L000232_270)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4c_68f73992_sys_alloc_L000232_270)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_NEGI + (r20)<<D16A + (-($ffffffff)&$1F)<<S16A ' reg <- conn
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocc_68dcc2b5_sys_alloc_L000232_272)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4c_68f73992_sys_alloc_L000232_272)<<S32 ' EQU4 reg reg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16B_LODL + (r20)<<D16B
@@ -2912,13 +2912,13 @@ C_siocc_68dcc2b5_sys_alloc_L000232_255
  long $7fffffff ' reg <- con
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRAE + (@C_siocc_68dcc2b5_sys_alloc_L000232_274)<<S32 ' GEU4 reg reg
+ long I32_BRAE + (@C_snr4c_68f73992_sys_alloc_L000232_274)<<S32 ' GEU4 reg reg
  alignl_p1
  long I32_MOVI + (r20)<<D32 +(48)<<S32 ' reg <- conli
  word I16A_ADD + (r20)<<D16A + (r21)<<S16A ' ADDU (2)
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRAE + (@C_siocc_68dcc2b5_sys_alloc_L000232_274)<<S32 ' GEU4 reg reg
+ long I32_BRAE + (@C_snr4c_68f73992_sys_alloc_L000232_274)<<S32 ' GEU4 reg reg
  alignl_p1
  long I32_MOVI + (r22)<<D32 +(48)<<S32 ' reg <- conli
  word I16A_ADD + (r22)<<D16A + (r21)<<S16A ' ADDU (2)
@@ -2926,12 +2926,12 @@ C_siocc_68dcc2b5_sys_alloc_L000232_255
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_SUB + (r22)<<D16A + (r20)<<S16A ' SUBU (1)
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003+8)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003+8)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_SUBI + (r20)<<D16A + (1)<<S16A ' SUBU4 reg coni
  word I16A_ADD + (r22)<<D16A + (r20)<<S16A ' ADDU (1)
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003+8)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003+8)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_SUBI + (r20)<<D16A + (1)<<S16A ' SUBU4 reg coni
  word I16B_CPL + (r20)<<D16B ' BCOMU4
@@ -2945,7 +2945,7 @@ C_siocc_68dcc2b5_sys_alloc_L000232_255
  long $7fffffff ' reg <- con
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRAE + (@C_siocc_68dcc2b5_sys_alloc_L000232_278)<<S32 ' GEU4 reg reg
+ long I32_BRAE + (@C_snr4c_68f73992_sys_alloc_L000232_278)<<S32 ' GEU4 reg reg
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r2)<<D16A + RI<<S16A ' reg ARG INDIR ADDRLi
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
@@ -2959,7 +2959,7 @@ C_siocc_68dcc2b5_sys_alloc_L000232_255
  word I16A_NEGI + (r20)<<D16A + (-($ffffffff)&$1F)<<S16A ' reg <- conn
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocc_68dcc2b5_sys_alloc_L000232_280)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4c_68f73992_sys_alloc_L000232_280)<<S32 ' EQU4 reg reg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16B_LODF + ((-24)&$1FF)<<S16B
@@ -2968,9 +2968,9 @@ C_siocc_68dcc2b5_sys_alloc_L000232_255
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_siocc_68dcc2b5_sys_alloc_L000232_281)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4c_68f73992_sys_alloc_L000232_281)<<S32 ' JUMPV addrg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_280
+C_snr4c_68f73992_sys_alloc_L000232_280
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16B_CPL + (r22)<<D16B ' BCOMU4
@@ -2985,27 +2985,27 @@ C_siocc_68dcc2b5_sys_alloc_L000232_280
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_281
+C_snr4c_68f73992_sys_alloc_L000232_281
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_278
+C_snr4c_68f73992_sys_alloc_L000232_278
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_274
+C_snr4c_68f73992_sys_alloc_L000232_274
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_272
+C_snr4c_68f73992_sys_alloc_L000232_272
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_NEGI + (r20)<<D16A + (-($ffffffff)&$1F)<<S16A ' reg <- conn
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocc_68dcc2b5_sys_alloc_L000232_282)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4c_68f73992_sys_alloc_L000232_282)<<S32 ' EQU4 reg reg
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r19)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r17)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  alignl_p1
- long I32_JMPA + (@C_siocc_68dcc2b5_sys_alloc_L000232_283)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4c_68f73992_sys_alloc_L000232_283)<<S32 ' JUMPV addrg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_282
+C_snr4c_68f73992_sys_alloc_L000232_282
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((444)&$7FFFF)<<S32 ' reg <- cons
  word I16A_ADDS + (r22)<<D16A + (r23)<<S16A ' ADDI/P (2)
@@ -3014,13 +3014,13 @@ C_siocc_68dcc2b5_sys_alloc_L000232_282
  word I16A_OR + (r20)<<D16A + (r18)<<S16A ' BORI/U (1)
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_283
+C_snr4c_68f73992_sys_alloc_L000232_283
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_270
+C_snr4c_68f73992_sys_alloc_L000232_270
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_249
+C_snr4c_68f73992_sys_alloc_L000232_249
  alignl_p1
- long I32_JMPA + (@C_siocc_68dcc2b5_sys_alloc_L000232_284)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4c_68f73992_sys_alloc_L000232_284)<<S32 ' JUMPV addrg
  word I16B_LODL + (r22)<<D16B
  alignl_p1
  long $ffffffff ' reg <- con
@@ -3031,7 +3031,7 @@ C_siocc_68dcc2b5_sys_alloc_L000232_249
  word I16A_NEGI + (r20)<<D16A + (-($ffffffff)&$1F)<<S16A ' reg <- conn
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocc_68dcc2b5_sys_alloc_L000232_286)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4c_68f73992_sys_alloc_L000232_286)<<S32 ' EQU4 reg reg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r19)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r17)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
@@ -3039,20 +3039,20 @@ C_siocc_68dcc2b5_sys_alloc_L000232_249
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_286
+C_snr4c_68f73992_sys_alloc_L000232_286
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_284
+C_snr4c_68f73992_sys_alloc_L000232_284
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A ' CVI, CVU or LOAD
  word I16A_NEGI + (r20)<<D16A + (-($ffffffff)&$1F)<<S16A ' reg <- conn
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocc_68dcc2b5_sys_alloc_L000232_288)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4c_68f73992_sys_alloc_L000232_288)<<S32 ' NEU4 reg reg
  word I16B_LODL + (r22)<<D16B
  alignl_p1
  long $7fffffff ' reg <- con
  word I16A_CMP + (r15)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BRAE + (@C_siocc_68dcc2b5_sys_alloc_L000232_290)<<S32 ' GEU4 reg reg
+ long I32_BRAE + (@C_snr4c_68f73992_sys_alloc_L000232_290)<<S32 ' GEU4 reg reg
  word I16B_LODL + (r22)<<D16B
  alignl_p1
  long $ffffffff ' reg <- con
@@ -3082,15 +3082,15 @@ C_siocc_68dcc2b5_sys_alloc_L000232_284
  word I16A_NEGI + (r20)<<D16A + (-($ffffffff)&$1F)<<S16A ' reg <- conn
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocc_68dcc2b5_sys_alloc_L000232_292)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4c_68f73992_sys_alloc_L000232_292)<<S32 ' EQU4 reg reg
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r18)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMP + (r18)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocc_68dcc2b5_sys_alloc_L000232_292)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4c_68f73992_sys_alloc_L000232_292)<<S32 ' EQU4 reg reg
  word I16A_CMP + (r22)<<D16A + (r18)<<S16A
  alignl_p1
- long I32_BRAE + (@C_siocc_68dcc2b5_sys_alloc_L000232_292)<<S32 ' GEU4 reg reg
+ long I32_BRAE + (@C_snr4c_68f73992_sys_alloc_L000232_292)<<S32 ' GEU4 reg reg
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-12)&$1FF)<<S16B
@@ -3105,24 +3105,24 @@ C_siocc_68dcc2b5_sys_alloc_L000232_284
  word I16A_ADD + (r20)<<D16A + (r21)<<S16A ' ADDU (2)
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRBE + (@C_siocc_68dcc2b5_sys_alloc_L000232_294)<<S32 ' LEU4 reg reg
+ long I32_BRBE + (@C_snr4c_68f73992_sys_alloc_L000232_294)<<S32 ' LEU4 reg reg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r19)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r17)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_294
+C_snr4c_68f73992_sys_alloc_L000232_294
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_292
+C_snr4c_68f73992_sys_alloc_L000232_292
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_290
+C_snr4c_68f73992_sys_alloc_L000232_290
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_288
+C_snr4c_68f73992_sys_alloc_L000232_288
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A ' CVI, CVU or LOAD
  word I16A_NEGI + (r20)<<D16A + (-($ffffffff)&$1F)<<S16A ' reg <- conn
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocc_68dcc2b5_sys_alloc_L000232_296)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4c_68f73992_sys_alloc_L000232_296)<<S32 ' EQU4 reg reg
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((432)&$7FFFF)<<S32 ' reg <- cons
  word I16A_ADDS + (r22)<<D16A + (r23)<<S16A ' ADDI/P (2)
@@ -3135,7 +3135,7 @@ C_siocc_68dcc2b5_sys_alloc_L000232_288
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16A_CMP + (r20)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BRBE + (@C_siocc_68dcc2b5_sys_alloc_L000232_298)<<S32 ' LEU4 reg reg
+ long I32_BRBE + (@C_snr4c_68f73992_sys_alloc_L000232_298)<<S32 ' LEU4 reg reg
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((436)&$7FFFF)<<S32 ' reg <- cons
  word I16A_ADDS + (r22)<<D16A + (r23)<<S16A ' ADDI/P (2)
@@ -3145,30 +3145,30 @@ C_siocc_68dcc2b5_sys_alloc_L000232_288
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRU4 reg
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_298
+C_snr4c_68f73992_sys_alloc_L000232_298
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (24)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocc_68dcc2b5_sys_alloc_L000232_300)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4c_68f73992_sys_alloc_L000232_300)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocc_68dcc2b5_sys_alloc_L000232_304)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4c_68f73992_sys_alloc_L000232_304)<<S32 ' EQU4 reg coni
  word I16A_MOV + (r20)<<D16A + (r19)<<S16A ' CVI, CVU or LOAD
  word I16A_CMP + (r20)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BRAE + (@C_siocc_68dcc2b5_sys_alloc_L000232_302)<<S32 ' GEU4 reg reg
+ long I32_BRAE + (@C_snr4c_68f73992_sys_alloc_L000232_302)<<S32 ' GEU4 reg reg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_304
+C_snr4c_68f73992_sys_alloc_L000232_304
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16A_WRLONG + (r19)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_302
+C_snr4c_68f73992_sys_alloc_L000232_302
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((448)&$7FFFF)<<S32 ' reg <- cons
  word I16A_ADDS + (r22)<<D16A + (r23)<<S16A ' ADDI/P (2)
@@ -3187,7 +3187,7 @@ C_siocc_68dcc2b5_sys_alloc_L000232_302
  long I32_LODS + (r22)<<D32S + ((36)&$7FFFF)<<S32 ' reg <- cons
  word I16A_ADDS + (r22)<<D16A + (r23)<<S16A ' ADDI/P (2)
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  alignl_p1
@@ -3198,14 +3198,14 @@ C_siocc_68dcc2b5_sys_alloc_L000232_302
  word I16A_MOV + (r2)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
  alignl_p1
- long I32_CALA + (@C_sioc9_68dcc2b5_init_bins_L000098)<<S32 ' CALL addrg
+ long I32_CALA + (@C_snr49_68f73992_init_bins_L000098)<<S32 ' CALL addrg
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_LODL + (r20)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004 ' reg <- addrg
+ long @C_snr41_68f73992__gm__L000004 ' reg <- addrg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocc_68dcc2b5_sys_alloc_L000232_305)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4c_68f73992_sys_alloc_L000232_305)<<S32 ' NEU4 reg reg
  alignl_p1
  long I32_MOVI + (r22)<<D32 +(40)<<S32 ' reg <- conli
  word I16A_MOV + (r2)<<D16A + (r17)<<S16A ' SUBU
@@ -3214,12 +3214,12 @@ C_siocc_68dcc2b5_sys_alloc_L000232_302
  word I16A_MOV + (r4)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 50<<S16B ' arg size, rpsize = 12, spsize = 12
  alignl_p1
- long I32_CALA + (@C_sioc8_68dcc2b5_init_top_L000092)<<S32
+ long I32_CALA + (@C_snr48_68f73992_init_top_L000092)<<S32
  word I16A_ADDI + SP<<D16A + 8<<S16A ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_siocc_68dcc2b5_sys_alloc_L000232_301)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4c_68f73992_sys_alloc_L000232_301)<<S32 ' JUMPV addrg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_305
+C_snr4c_68f73992_sys_alloc_L000232_305
  word I16A_NEGI + (r22)<<D16A + (-(-4)&$1F)<<S16A ' reg <- conn
  word I16A_ADDS + (r22)<<D16A + (r23)<<S16A ' ADDI/P (2)
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -3244,29 +3244,29 @@ C_siocc_68dcc2b5_sys_alloc_L000232_305
  word I16A_MOV + (r4)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 50<<S16B ' arg size, rpsize = 12, spsize = 12
  alignl_p1
- long I32_CALA + (@C_sioc8_68dcc2b5_init_top_L000092)<<S32
+ long I32_CALA + (@C_snr48_68f73992_init_top_L000092)<<S32
  word I16A_ADDI + SP<<D16A + 8<<S16A ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_siocc_68dcc2b5_sys_alloc_L000232_301)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4c_68f73992_sys_alloc_L000232_301)<<S32 ' JUMPV addrg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_300
+C_snr4c_68f73992_sys_alloc_L000232_300
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((448)&$7FFFF)<<S32 ' reg <- cons
  word I16A_MOV + (r13)<<D16A + (r23)<<S16A ' ADDI/P
  word I16A_ADDS + (r13)<<D16A + (r22)<<S16A ' ADDI/P (3)
  alignl_p1
- long I32_JMPA + (@C_siocc_68dcc2b5_sys_alloc_L000232_308)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4c_68f73992_sys_alloc_L000232_308)<<S32 ' JUMPV addrg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_307
+C_snr4c_68f73992_sys_alloc_L000232_307
  word I16A_MOV + (r22)<<D16A + (r13)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r13)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_308
+C_snr4c_68f73992_sys_alloc_L000232_308
  word I16A_MOV + (r22)<<D16A + (r13)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocc_68dcc2b5_sys_alloc_L000232_310)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4c_68f73992_sys_alloc_L000232_310)<<S32 ' EQU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r20)<<D16A + (r13)<<S16A
  word I16A_ADDSI + (r20)<<D16A + (4)<<S16A ' ADDP4 reg coni
@@ -3275,14 +3275,14 @@ C_siocc_68dcc2b5_sys_alloc_L000232_308
  word I16A_ADDS + (r20)<<D16A + (r18)<<S16A ' ADDI/P (1)
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocc_68dcc2b5_sys_alloc_L000232_307)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4c_68f73992_sys_alloc_L000232_307)<<S32 ' NEU4 reg reg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_310
+C_snr4c_68f73992_sys_alloc_L000232_310
  word I16A_MOVI + (r22)<<D16A + (0)<<S16A ' reg <- coni
  word I16A_MOV + (r20)<<D16A + (r13)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPI + (r20)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocc_68dcc2b5_sys_alloc_L000232_311)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4c_68f73992_sys_alloc_L000232_311)<<S32 ' EQU4 reg coni
  word I16A_MOV + (r20)<<D16A + (r13)<<S16A
  word I16A_ADDSI + (r20)<<D16A + (12)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRU4 reg
@@ -3290,12 +3290,12 @@ C_siocc_68dcc2b5_sys_alloc_L000232_310
  word I16A_AND + (r20)<<D16A + (r18)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r20)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocc_68dcc2b5_sys_alloc_L000232_311)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4c_68f73992_sys_alloc_L000232_311)<<S32 ' NEU4 reg coni
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocc_68dcc2b5_sys_alloc_L000232_311)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4c_68f73992_sys_alloc_L000232_311)<<S32 ' NEU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (24)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
@@ -3303,14 +3303,14 @@ C_siocc_68dcc2b5_sys_alloc_L000232_310
  word I16A_MOV + (r18)<<D16A + (r20)<<S16A ' CVI, CVU or LOAD
  word I16A_CMP + (r22)<<D16A + (r18)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocc_68dcc2b5_sys_alloc_L000232_311)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4c_68f73992_sys_alloc_L000232_311)<<S32 ' LTU4 reg reg
  word I16A_MOV + (r18)<<D16A + (r13)<<S16A
  word I16A_ADDSI + (r18)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r18)<<D16A + (r18)<<S16A ' reg <- INDIRU4 reg
  word I16A_ADDS + (r20)<<D16A + (r18)<<S16A ' ADDI/P (2)
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRAE + (@C_siocc_68dcc2b5_sys_alloc_L000232_311)<<S32 ' GEU4 reg reg
+ long I32_BRAE + (@C_snr4c_68f73992_sys_alloc_L000232_311)<<S32 ' GEU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r13)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -3327,54 +3327,54 @@ C_siocc_68dcc2b5_sys_alloc_L000232_310
  word I16A_MOV + (r4)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 50<<S16B ' arg size, rpsize = 12, spsize = 12
  alignl_p1
- long I32_CALA + (@C_sioc8_68dcc2b5_init_top_L000092)<<S32
+ long I32_CALA + (@C_snr48_68f73992_init_top_L000092)<<S32
  word I16A_ADDI + SP<<D16A + 8<<S16A ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_siocc_68dcc2b5_sys_alloc_L000232_312)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4c_68f73992_sys_alloc_L000232_312)<<S32 ' JUMPV addrg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_311
+C_snr4c_68f73992_sys_alloc_L000232_311
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r20)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRAE + (@C_siocc_68dcc2b5_sys_alloc_L000232_313)<<S32 ' GEU4 reg reg
+ long I32_BRAE + (@C_snr4c_68f73992_sys_alloc_L000232_313)<<S32 ' GEU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16A_WRLONG + (r19)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_313
+C_snr4c_68f73992_sys_alloc_L000232_313
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((448)&$7FFFF)<<S32 ' reg <- cons
  word I16A_MOV + (r13)<<D16A + (r23)<<S16A ' ADDI/P
  word I16A_ADDS + (r13)<<D16A + (r22)<<S16A ' ADDI/P (3)
  alignl_p1
- long I32_JMPA + (@C_siocc_68dcc2b5_sys_alloc_L000232_316)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4c_68f73992_sys_alloc_L000232_316)<<S32 ' JUMPV addrg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_315
+C_snr4c_68f73992_sys_alloc_L000232_315
  word I16A_MOV + (r22)<<D16A + (r13)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r13)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_316
+C_snr4c_68f73992_sys_alloc_L000232_316
  word I16A_MOV + (r22)<<D16A + (r13)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocc_68dcc2b5_sys_alloc_L000232_318)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4c_68f73992_sys_alloc_L000232_318)<<S32 ' EQU4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r13)<<S16A ' reg <- INDIRP4 reg
  word I16A_MOV + (r20)<<D16A + (r17)<<S16A ' ADDI/P
  word I16A_ADDS + (r20)<<D16A + (r19)<<S16A ' ADDI/P (3)
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocc_68dcc2b5_sys_alloc_L000232_315)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4c_68f73992_sys_alloc_L000232_315)<<S32 ' NEU4 reg reg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_318
+C_snr4c_68f73992_sys_alloc_L000232_318
  word I16A_MOVI + (r22)<<D16A + (0)<<S16A ' reg <- coni
  word I16A_MOV + (r20)<<D16A + (r13)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPI + (r20)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocc_68dcc2b5_sys_alloc_L000232_319)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4c_68f73992_sys_alloc_L000232_319)<<S32 ' EQU4 reg coni
  word I16A_MOV + (r20)<<D16A + (r13)<<S16A
  word I16A_ADDSI + (r20)<<D16A + (12)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRU4 reg
@@ -3382,12 +3382,12 @@ C_siocc_68dcc2b5_sys_alloc_L000232_318
  word I16A_AND + (r20)<<D16A + (r18)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r20)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocc_68dcc2b5_sys_alloc_L000232_319)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4c_68f73992_sys_alloc_L000232_319)<<S32 ' NEU4 reg coni
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocc_68dcc2b5_sys_alloc_L000232_319)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4c_68f73992_sys_alloc_L000232_319)<<S32 ' NEU4 reg reg
  word I16A_RDLONG + (r22)<<D16A + (r13)<<S16A ' reg <- INDIRP4 reg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
@@ -3404,13 +3404,13 @@ C_siocc_68dcc2b5_sys_alloc_L000232_318
  word I16A_MOV + (r5)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 67<<S16B ' arg size, rpsize = 16, spsize = 16
  alignl_p1
- long I32_CALA + (@C_sioca_68dcc2b5_prepend_alloc_L000104)<<S32
+ long I32_CALA + (@C_snr4a_68f73992_prepend_alloc_L000104)<<S32
  word I16A_ADDI + SP<<D16A + 12<<S16A ' CALL addrg
  word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  alignl_p1
- long I32_JMPA + (@C_siocc_68dcc2b5_sys_alloc_L000232_233)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4c_68f73992_sys_alloc_L000232_233)<<S32 ' JUMPV addrg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_319
+C_snr4c_68f73992_sys_alloc_L000232_319
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r2)<<D16A + RI<<S16A ' reg ARG INDIR ADDRLi
  word I16A_MOV + (r3)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
@@ -3418,18 +3418,18 @@ C_siocc_68dcc2b5_sys_alloc_L000232_319
  word I16A_MOV + (r5)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 67<<S16B ' arg size, rpsize = 16, spsize = 16
  alignl_p1
- long I32_CALA + (@C_siocb_68dcc2b5_add_segment_L000189)<<S32
+ long I32_CALA + (@C_snr4b_68f73992_add_segment_L000189)<<S32
  word I16A_ADDI + SP<<D16A + 12<<S16A ' CALL addrg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_312
+C_snr4c_68f73992_sys_alloc_L000232_312
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_301
+C_snr4c_68f73992_sys_alloc_L000232_301
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16A_CMP + (r21)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BRAE + (@C_siocc_68dcc2b5_sys_alloc_L000232_321)<<S32 ' GEU4 reg reg
+ long I32_BRAE + (@C_snr4c_68f73992_sys_alloc_L000232_321)<<S32 ' GEU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -3471,11 +3471,11 @@ C_siocc_68dcc2b5_sys_alloc_L000232_301
  word I16A_MOV + (r0)<<D16A + (r22)<<S16A
  word I16A_ADDSI + (r0)<<D16A + (8)<<S16A ' ADDP4 reg coni
  alignl_p1
- long I32_JMPA + (@C_siocc_68dcc2b5_sys_alloc_L000232_233)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4c_68f73992_sys_alloc_L000232_233)<<S32 ' JUMPV addrg
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_321
+C_snr4c_68f73992_sys_alloc_L000232_321
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_296
+C_snr4c_68f73992_sys_alloc_L000232_296
  word I16A_MOVI + (r22)<<D16A + (12)<<S16A ' reg <- coni
  alignl_p1
  long I32_LODA + (@C_errno)<<S32
@@ -3484,12 +3484,12 @@ C_siocc_68dcc2b5_sys_alloc_L000232_296
  alignl_p1
  long 0 ' RET con
  alignl_label
-C_siocc_68dcc2b5_sys_alloc_L000232_233
+C_snr4c_68f73992_sys_alloc_L000232_233
  word I16B_POPM + 6<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323 ' <symbol:release_unused_segments>
+C_snr4d_68f73992_release_unused_segments_L000323 ' <symbol:release_unused_segments>
  alignl_p1
  long I32_NEWF + 24<<S32
  alignl_p1
@@ -3505,9 +3505,9 @@ C_siocd_68dcc2b5_release_unused_segments_L000323 ' <symbol:release_unused_segmen
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r21)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  alignl_p1
- long I32_JMPA + (@C_siocd_68dcc2b5_release_unused_segments_L000323_326)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4d_68f73992_release_unused_segments_L000323_326)<<S32 ' JUMPV addrg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_325
+C_snr4d_68f73992_release_unused_segments_L000323_325
  word I16A_RDLONG + (r13)<<D16A + (r21)<<S16A ' reg <- INDIRP4 reg
  word I16A_MOV + (r22)<<D16A + (r21)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
@@ -3519,7 +3519,7 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_325
  word I16A_MOVI + (r22)<<D16A + (0)<<S16A ' reg <- coni
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocd_68dcc2b5_release_unused_segments_L000323_328)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4d_68f73992_release_unused_segments_L000323_328)<<S32 ' EQU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r21)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -3527,19 +3527,19 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_325
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocd_68dcc2b5_release_unused_segments_L000323_328)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4d_68f73992_release_unused_segments_L000323_328)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r13)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_MOVI + (r20)<<D16A + (7)<<S16A ' reg <- coni
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocd_68dcc2b5_release_unused_segments_L000323_331)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4d_68f73992_release_unused_segments_L000323_331)<<S32 ' NEU4 reg coni
  word I16A_MOVI + (r7)<<D16A + (0)<<S16A ' reg <- coni
  alignl_p1
- long I32_JMPA + (@C_siocd_68dcc2b5_release_unused_segments_L000323_332)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4d_68f73992_release_unused_segments_L000323_332)<<S32 ' JUMPV addrg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_331
+C_snr4d_68f73992_release_unused_segments_L000323_331
  word I16A_MOVI + (r22)<<D16A + (8)<<S16A ' reg <- coni
  word I16A_MOVI + (r20)<<D16A + (7)<<S16A ' reg <- coni
  word I16A_MOV + (r18)<<D16A + (r13)<<S16A
@@ -3549,7 +3549,7 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_331
  word I16A_MOV + (r7)<<D16A + (r22)<<S16A ' BANDI/U
  word I16A_AND + (r7)<<D16A + (r20)<<S16A ' BANDI/U (3)
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_332
+C_snr4d_68f73992_release_unused_segments_L000323_332
  word I16A_MOV + (r9)<<D16A + (r7)<<S16A ' ADDI/P
  word I16A_ADDS + (r9)<<D16A + (r13)<<S16A ' ADDI/P (3)
  word I16A_MOV + (r22)<<D16A + (r9)<<S16A
@@ -3565,7 +3565,7 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_332
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (1)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocd_68dcc2b5_release_unused_segments_L000323_333)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4d_68f73992_release_unused_segments_L000323_333)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r8)<<S16A ' ADDI/P
  word I16A_ADDS + (r22)<<D16A + (r9)<<S16A ' ADDI/P (3)
  word I16A_MOV + (r20)<<D16A + (r10)<<S16A ' ADDI/P
@@ -3575,7 +3575,7 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_332
  word I16A_ADDS + (r20)<<D16A + (r18)<<S16A ' ADDI/P (1)
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocd_68dcc2b5_release_unused_segments_L000323_333)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4d_68f73992_release_unused_segments_L000323_333)<<S32 ' LTU4 reg reg
  word I16A_MOV + (r6)<<D16A + (r9)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r22)<<D16A + (r9)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -3583,7 +3583,7 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_332
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocd_68dcc2b5_release_unused_segments_L000323_335)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4d_68f73992_release_unused_segments_L000323_335)<<S32 ' NEU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
  word I16B_LODL + (r20)<<D16B
@@ -3595,9 +3595,9 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_332
  word I16A_MOVI + (r20)<<D16A + (0)<<S16A ' reg <- coni
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocd_68dcc2b5_release_unused_segments_L000323_336)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4d_68f73992_release_unused_segments_L000323_336)<<S32 ' JUMPV addrg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_335
+C_snr4d_68f73992_release_unused_segments_L000323_335
  word I16A_MOV + (r22)<<D16A + (r6)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (24)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
@@ -3609,7 +3609,7 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_335
  word I16A_MOV + (r20)<<D16A + (r6)<<S16A ' CVI, CVU or LOAD
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocd_68dcc2b5_release_unused_segments_L000323_337)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4d_68f73992_release_unused_segments_L000323_337)<<S32 ' EQU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r6)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
@@ -3628,19 +3628,19 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_335
  word I16A_RDLONG + (r18)<<D16A + (r18)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocd_68dcc2b5_release_unused_segments_L000323_339)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4d_68f73992_release_unused_segments_L000323_339)<<S32 ' LTU4 reg reg
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r6)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocd_68dcc2b5_release_unused_segments_L000323_339)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4d_68f73992_release_unused_segments_L000323_339)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r6)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocd_68dcc2b5_release_unused_segments_L000323_339)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4d_68f73992_release_unused_segments_L000323_339)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
@@ -3654,15 +3654,15 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_335
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocd_68dcc2b5_release_unused_segments_L000323_338)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4d_68f73992_release_unused_segments_L000323_338)<<S32 ' JUMPV addrg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_339
+C_snr4d_68f73992_release_unused_segments_L000323_339
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_siocd_68dcc2b5_release_unused_segments_L000323_338)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4d_68f73992_release_unused_segments_L000323_338)<<S32 ' JUMPV addrg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_337
+C_snr4d_68f73992_release_unused_segments_L000323_337
  word I16A_MOV + (r22)<<D16A + (r6)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
  word I16B_LODF + ((-16)&$1FF)<<S16B
@@ -3672,7 +3672,7 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_337
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocd_68dcc2b5_release_unused_segments_L000323_343)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4d_68f73992_release_unused_segments_L000323_343)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r6)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16B_LODF + ((-16)&$1FF)<<S16B
@@ -3682,13 +3682,13 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_337
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocd_68dcc2b5_release_unused_segments_L000323_341)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4d_68f73992_release_unused_segments_L000323_341)<<S32 ' EQU4 reg coni
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_343
+C_snr4d_68f73992_release_unused_segments_L000323_343
  alignl_p1
- long I32_JMPA + (@C_siocd_68dcc2b5_release_unused_segments_L000323_345)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4d_68f73992_release_unused_segments_L000323_345)<<S32 ' JUMPV addrg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_344
+C_snr4d_68f73992_release_unused_segments_L000323_344
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-16)&$1FF)<<S16B
@@ -3697,7 +3697,7 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_344
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_345
+C_snr4d_68f73992_release_unused_segments_L000323_345
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r22)<<S16A
@@ -3707,14 +3707,14 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_345
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMPI + (r20)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocd_68dcc2b5_release_unused_segments_L000323_344)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4d_68f73992_release_unused_segments_L000323_344)<<S32 ' NEU4 reg coni
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocd_68dcc2b5_release_unused_segments_L000323_344)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4d_68f73992_release_unused_segments_L000323_344)<<S32 ' NEU4 reg coni
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -3722,7 +3722,7 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_345
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocd_68dcc2b5_release_unused_segments_L000323_347)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4d_68f73992_release_unused_segments_L000323_347)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODL + (r20)<<D16B
@@ -3730,22 +3730,22 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_345
  long 0 ' reg <- con
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocd_68dcc2b5_release_unused_segments_L000323_348)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4d_68f73992_release_unused_segments_L000323_348)<<S32 ' JUMPV addrg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_347
+C_snr4d_68f73992_release_unused_segments_L000323_347
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_348
+C_snr4d_68f73992_release_unused_segments_L000323_348
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_341
+C_snr4d_68f73992_release_unused_segments_L000323_341
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_338
+C_snr4d_68f73992_release_unused_segments_L000323_338
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocd_68dcc2b5_release_unused_segments_L000323_349)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4d_68f73992_release_unused_segments_L000323_349)<<S32 ' EQU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r6)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (28)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -3762,7 +3762,7 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_338
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocd_68dcc2b5_release_unused_segments_L000323_351)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4d_68f73992_release_unused_segments_L000323_351)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-16)&$1FF)<<S16B
@@ -3770,7 +3770,7 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_338
  word I16A_WRLONG + (r22)<<D16A + (r20)<<S16A ' ASGNP4 reg reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocd_68dcc2b5_release_unused_segments_L000323_352)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4d_68f73992_release_unused_segments_L000323_352)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -3783,9 +3783,9 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_338
  word I16A_AND + (r20)<<D16A + (r18)<<S16A ' BANDI/U (1)
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocd_68dcc2b5_release_unused_segments_L000323_352)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4d_68f73992_release_unused_segments_L000323_352)<<S32 ' JUMPV addrg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_351
+C_snr4d_68f73992_release_unused_segments_L000323_351
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -3793,7 +3793,7 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_351
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocd_68dcc2b5_release_unused_segments_L000323_355)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4d_68f73992_release_unused_segments_L000323_355)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
@@ -3801,7 +3801,7 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_351
  word I16A_MOV + (r20)<<D16A + (r6)<<S16A ' CVI, CVU or LOAD
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocd_68dcc2b5_release_unused_segments_L000323_357)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4d_68f73992_release_unused_segments_L000323_357)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
@@ -3809,9 +3809,9 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_351
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocd_68dcc2b5_release_unused_segments_L000323_356)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4d_68f73992_release_unused_segments_L000323_356)<<S32 ' JUMPV addrg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_357
+C_snr4d_68f73992_release_unused_segments_L000323_357
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
@@ -3819,20 +3819,20 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_357
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocd_68dcc2b5_release_unused_segments_L000323_356)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4d_68f73992_release_unused_segments_L000323_356)<<S32 ' JUMPV addrg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_355
+C_snr4d_68f73992_release_unused_segments_L000323_355
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_356
+C_snr4d_68f73992_release_unused_segments_L000323_356
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_352
+C_snr4d_68f73992_release_unused_segments_L000323_352
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocd_68dcc2b5_release_unused_segments_L000323_359)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4d_68f73992_release_unused_segments_L000323_359)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -3840,7 +3840,7 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_352
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocd_68dcc2b5_release_unused_segments_L000323_361)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4d_68f73992_release_unused_segments_L000323_361)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (24)<<S16A ' ADDP4 reg coni
@@ -3854,7 +3854,7 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_352
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocd_68dcc2b5_release_unused_segments_L000323_363)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4d_68f73992_release_unused_segments_L000323_363)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -3862,7 +3862,7 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_352
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocd_68dcc2b5_release_unused_segments_L000323_365)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4d_68f73992_release_unused_segments_L000323_365)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
@@ -3876,15 +3876,15 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_352
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocd_68dcc2b5_release_unused_segments_L000323_366)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4d_68f73992_release_unused_segments_L000323_366)<<S32 ' JUMPV addrg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_365
+C_snr4d_68f73992_release_unused_segments_L000323_365
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_366
+C_snr4d_68f73992_release_unused_segments_L000323_366
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_363
+C_snr4d_68f73992_release_unused_segments_L000323_363
  word I16A_MOV + (r22)<<D16A + (r6)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
@@ -3892,7 +3892,7 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_363
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocd_68dcc2b5_release_unused_segments_L000323_362)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4d_68f73992_release_unused_segments_L000323_362)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -3900,7 +3900,7 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_363
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocd_68dcc2b5_release_unused_segments_L000323_369)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4d_68f73992_release_unused_segments_L000323_369)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
@@ -3914,27 +3914,27 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_363
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocd_68dcc2b5_release_unused_segments_L000323_362)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4d_68f73992_release_unused_segments_L000323_362)<<S32 ' JUMPV addrg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_369
+C_snr4d_68f73992_release_unused_segments_L000323_369
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_siocd_68dcc2b5_release_unused_segments_L000323_362)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4d_68f73992_release_unused_segments_L000323_362)<<S32 ' JUMPV addrg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_361
+C_snr4d_68f73992_release_unused_segments_L000323_361
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_362
+C_snr4d_68f73992_release_unused_segments_L000323_362
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_359
+C_snr4d_68f73992_release_unused_segments_L000323_359
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_349
+C_snr4d_68f73992_release_unused_segments_L000323_349
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_336
+C_snr4d_68f73992_release_unused_segments_L000323_336
  alignl_p1
- long I32_JMPA + (@C_siocd_68dcc2b5_release_unused_segments_L000323_371)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4d_68f73992_release_unused_segments_L000323_371)<<S32 ' JUMPV addrg
  word I16A_ADD + (r15)<<D16A + (r10)<<S16A ' ADDU (1)
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((432)&$7FFFF)<<S32 ' reg <- cons
@@ -3947,9 +3947,9 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_336
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_WRLONG + (r11)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocd_68dcc2b5_release_unused_segments_L000323_372)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4d_68f73992_release_unused_segments_L000323_372)<<S32 ' JUMPV addrg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_371
+C_snr4d_68f73992_release_unused_segments_L000323_371
  word I16A_MOV + (r22)<<D16A + (r8)<<S16A
  word I16A_SHRI + (r22)<<D16A + (8)<<S16A ' SHRU4 reg coni
  word I16B_LODF + ((-16)&$1FF)<<S16B
@@ -3958,14 +3958,14 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_371
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocd_68dcc2b5_release_unused_segments_L000323_373)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4d_68f73992_release_unused_segments_L000323_373)<<S32 ' NEU4 reg coni
  word I16A_MOVI + (r22)<<D16A + (0)<<S16A ' reg <- coni
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_siocd_68dcc2b5_release_unused_segments_L000323_374)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4d_68f73992_release_unused_segments_L000323_374)<<S32 ' JUMPV addrg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_373
+C_snr4d_68f73992_release_unused_segments_L000323_373
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16B_LODL + (r20)<<D16B
@@ -3973,14 +3973,14 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_373
  long $ffff ' reg <- con
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRBE + (@C_siocd_68dcc2b5_release_unused_segments_L000323_375)<<S32 ' LEU4 reg reg
+ long I32_BRBE + (@C_snr4d_68f73992_release_unused_segments_L000323_375)<<S32 ' LEU4 reg reg
  word I16A_MOVI + (r22)<<D16A + (31)<<S16A ' reg <- coni
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_siocd_68dcc2b5_release_unused_segments_L000323_376)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4d_68f73992_release_unused_segments_L000323_376)<<S32 ' JUMPV addrg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_375
+C_snr4d_68f73992_release_unused_segments_L000323_375
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16B_LODF + ((-24)&$1FF)<<S16B
@@ -4068,9 +4068,9 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_375
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_376
+C_snr4d_68f73992_release_unused_segments_L000323_376
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_374
+C_snr4d_68f73992_release_unused_segments_L000323_374
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_MOV + (r20)<<D16A + (r22)<<S16A
@@ -4103,7 +4103,7 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_374
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocd_68dcc2b5_release_unused_segments_L000323_377)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4d_68f73992_release_unused_segments_L000323_377)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -4128,9 +4128,9 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_374
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_WRLONG + (r6)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocd_68dcc2b5_release_unused_segments_L000323_378)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4d_68f73992_release_unused_segments_L000323_378)<<S32 ' JUMPV addrg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_377
+C_snr4d_68f73992_release_unused_segments_L000323_377
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
@@ -4140,14 +4140,14 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_377
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_CMPI + (r22)<<D16A + (31)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocd_68dcc2b5_release_unused_segments_L000323_380)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4d_68f73992_release_unused_segments_L000323_380)<<S32 ' NEU4 reg coni
  word I16A_MOVI + (r22)<<D16A + (0)<<S16A ' reg <- coni
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_siocd_68dcc2b5_release_unused_segments_L000323_381)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4d_68f73992_release_unused_segments_L000323_381)<<S32 ' JUMPV addrg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_380
+C_snr4d_68f73992_release_unused_segments_L000323_380
  word I16A_MOVI + (r22)<<D16A + (31)<<S16A ' reg <- coni
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
@@ -4158,7 +4158,7 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_380
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_381
+C_snr4d_68f73992_release_unused_segments_L000323_381
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_MOV + RI<<D16A + (r8)<<S16A
@@ -4167,7 +4167,7 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_381
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_382
+C_snr4d_68f73992_release_unused_segments_L000323_382
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
@@ -4176,7 +4176,7 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_382
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMP + (r22)<<D16A + (r8)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocd_68dcc2b5_release_unused_segments_L000323_386)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4d_68f73992_release_unused_segments_L000323_386)<<S32 ' EQU4 reg reg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_SHRI + (r22)<<D16A + (31)<<S16A ' SHRU4 reg coni
@@ -4199,16 +4199,16 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_382
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocd_68dcc2b5_release_unused_segments_L000323_388)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4d_68f73992_release_unused_segments_L000323_388)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_siocd_68dcc2b5_release_unused_segments_L000323_382)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4d_68f73992_release_unused_segments_L000323_382)<<S32 ' JUMPV addrg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_388
+C_snr4d_68f73992_release_unused_segments_L000323_388
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -4216,7 +4216,7 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_388
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocd_68dcc2b5_release_unused_segments_L000323_390)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4d_68f73992_release_unused_segments_L000323_390)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r6)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
@@ -4232,15 +4232,15 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_388
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_WRLONG + (r6)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocd_68dcc2b5_release_unused_segments_L000323_384)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4d_68f73992_release_unused_segments_L000323_384)<<S32 ' JUMPV addrg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_390
+C_snr4d_68f73992_release_unused_segments_L000323_390
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_siocd_68dcc2b5_release_unused_segments_L000323_384)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4d_68f73992_release_unused_segments_L000323_384)<<S32 ' JUMPV addrg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_386
+C_snr4d_68f73992_release_unused_segments_L000323_386
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
@@ -4254,12 +4254,12 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_386
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMP + (r20)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocd_68dcc2b5_release_unused_segments_L000323_392)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4d_68f73992_release_unused_segments_L000323_392)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMP + (r20)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocd_68dcc2b5_release_unused_segments_L000323_392)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4d_68f73992_release_unused_segments_L000323_392)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
@@ -4285,61 +4285,61 @@ C_siocd_68dcc2b5_release_unused_segments_L000323_386
  long 0 ' reg <- con
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocd_68dcc2b5_release_unused_segments_L000323_384)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4d_68f73992_release_unused_segments_L000323_384)<<S32 ' JUMPV addrg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_392
+C_snr4d_68f73992_release_unused_segments_L000323_392
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_384
+C_snr4d_68f73992_release_unused_segments_L000323_384
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_378
+C_snr4d_68f73992_release_unused_segments_L000323_378
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_372
+C_snr4d_68f73992_release_unused_segments_L000323_372
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_333
+C_snr4d_68f73992_release_unused_segments_L000323_333
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_328
+C_snr4d_68f73992_release_unused_segments_L000323_328
  alignl_p1
- long I32_JMPA + (@C_siocd_68dcc2b5_release_unused_segments_L000323_394)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4d_68f73992_release_unused_segments_L000323_394)<<S32 ' JUMPV addrg
  alignl_p1
- long I32_JMPA + (@C_siocd_68dcc2b5_release_unused_segments_L000323_327)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4d_68f73992_release_unused_segments_L000323_327)<<S32 ' JUMPV addrg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_394
+C_snr4d_68f73992_release_unused_segments_L000323_394
  word I16A_MOV + (r19)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r21)<<D16A + (r11)<<S16A ' CVI, CVU or LOAD
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_326
+C_snr4d_68f73992_release_unused_segments_L000323_326
  word I16A_MOV + (r22)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocd_68dcc2b5_release_unused_segments_L000323_325)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4d_68f73992_release_unused_segments_L000323_325)<<S32 ' NEU4 reg coni
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_327
+C_snr4d_68f73992_release_unused_segments_L000323_327
  word I16A_MOV + (r22)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
  word I16A_NEGI + (r20)<<D16A + (-($ffffffff)&$1F)<<S16A ' reg <- conn
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRBE + (@C_siocd_68dcc2b5_release_unused_segments_L000323_397)<<S32 ' LEU4 reg reg
+ long I32_BRBE + (@C_snr4d_68f73992_release_unused_segments_L000323_397)<<S32 ' LEU4 reg reg
  word I16A_MOV + (r13)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
  alignl_p1
- long I32_JMPA + (@C_siocd_68dcc2b5_release_unused_segments_L000323_398)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4d_68f73992_release_unused_segments_L000323_398)<<S32 ' JUMPV addrg
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_397
+C_snr4d_68f73992_release_unused_segments_L000323_397
  word I16A_NEGI + (r13)<<D16A + (-($ffffffff)&$1F)<<S16A ' reg <- conn
  alignl_label
-C_siocd_68dcc2b5_release_unused_segments_L000323_398
+C_snr4d_68f73992_release_unused_segments_L000323_398
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((32)&$7FFFF)<<S32 ' reg <- cons
  word I16A_ADDS + (r22)<<D16A + (r23)<<S16A ' ADDI/P (2)
  word I16A_WRLONG + (r13)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  word I16A_MOV + (r0)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
-' C_siocd_68dcc2b5_release_unused_segments_L000323_324 ' (symbol refcount = 0)
+' C_snr4d_68f73992_release_unused_segments_L000323_324 ' (symbol refcount = 0)
  word I16B_POPM + 6<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_sioce_68dcc2b5_sys_trim_L000399 ' <symbol:sys_trim>
+C_snr4e_68f73992_sys_trim_L000399 ' <symbol:sys_trim>
  alignl_p1
  long I32_NEWF + 24<<S32
  alignl_p1
@@ -4348,27 +4348,27 @@ C_sioce_68dcc2b5_sys_trim_L000399 ' <symbol:sys_trim>
  word I16A_MOV + (r21)<<D16A + (r2)<<S16A ' reg var <- reg arg
  word I16A_MOVI + (r19)<<D16A + (0)<<S16A ' reg <- coni
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioce_68dcc2b5_sys_trim_L000399_401)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4e_68f73992_sys_trim_L000399_401)<<S32 ' NEU4 reg coni
  alignl_p1
- long I32_CALA + (@C_sioc4_68dcc2b5_init_mparams_L000025)<<S32 ' CALL addrg
+ long I32_CALA + (@C_snr44_68f73992_init_mparams_L000025)<<S32 ' CALL addrg
  alignl_label
-C_sioce_68dcc2b5_sys_trim_L000399_401
+C_snr4e_68f73992_sys_trim_L000399_401
  word I16B_LODL + (r22)<<D16B
  alignl_p1
  long $ffffffc0 ' reg <- con
  word I16A_CMP + (r21)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BRAE + (@C_sioce_68dcc2b5_sys_trim_L000399_402)<<S32 ' GEU4 reg reg
+ long I32_BRAE + (@C_snr4e_68f73992_sys_trim_L000399_402)<<S32 ' GEU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (24)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioce_68dcc2b5_sys_trim_L000399_402)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4e_68f73992_sys_trim_L000399_402)<<S32 ' EQU4 reg coni
  alignl_p1
  long I32_MOVI + (r22)<<D32 +(40)<<S32 ' reg <- conli
  word I16A_ADD + (r21)<<D16A + (r22)<<S16A ' ADDU (1)
@@ -4377,9 +4377,9 @@ C_sioce_68dcc2b5_sys_trim_L000399_401
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16A_CMP + (r22)<<D16A + (r21)<<S16A
  alignl_p1
- long I32_BRBE + (@C_sioce_68dcc2b5_sys_trim_L000399_404)<<S32 ' LEU4 reg reg
+ long I32_BRBE + (@C_snr4e_68f73992_sys_trim_L000399_404)<<S32 ' LEU4 reg reg
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003+8)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003+8)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
@@ -4408,7 +4408,7 @@ C_sioce_68dcc2b5_sys_trim_L000399_401
  word I16A_MOV + (r3)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 33<<S16B ' arg size, rpsize = 8, spsize = 8
  alignl_p1
- long I32_CALA + (@C_sioc2_68dcc2b5_segment_holding_L000005)<<S32
+ long I32_CALA + (@C_snr42_68f73992_segment_holding_L000005)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_WRLONG + (r0)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
@@ -4420,13 +4420,13 @@ C_sioce_68dcc2b5_sys_trim_L000399_401
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioce_68dcc2b5_sys_trim_L000399_407)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4e_68f73992_sys_trim_L000399_407)<<S32 ' NEU4 reg coni
  word I16A_MOVI + (r22)<<D16A + (0)<<S16A ' reg <- coni
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioce_68dcc2b5_sys_trim_L000399_409)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4e_68f73992_sys_trim_L000399_409)<<S32 ' EQU4 reg coni
  alignl_p1
- long I32_JMPA + (@C_sioce_68dcc2b5_sys_trim_L000399_410)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4e_68f73992_sys_trim_L000399_410)<<S32 ' JUMPV addrg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
@@ -4437,13 +4437,13 @@ C_sioce_68dcc2b5_sys_trim_L000399_401
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_sioce_68dcc2b5_sys_trim_L000399_410)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4e_68f73992_sys_trim_L000399_410)<<S32 ' JUMPV addrg
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r19)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  alignl_p1
- long I32_JMPA + (@C_sioce_68dcc2b5_sys_trim_L000399_410)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4e_68f73992_sys_trim_L000399_410)<<S32 ' JUMPV addrg
  alignl_label
-C_sioce_68dcc2b5_sys_trim_L000399_409
+C_snr4e_68f73992_sys_trim_L000399_409
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16B_LODL + (r20)<<D16B
@@ -4451,7 +4451,7 @@ C_sioce_68dcc2b5_sys_trim_L000399_409
  long $7fffffff ' reg <- con
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioce_68dcc2b5_sys_trim_L000399_417)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4e_68f73992_sys_trim_L000399_417)<<S32 ' LTU4 reg reg
  word I16B_LODL + (r22)<<D16B
  alignl_p1
  long $80000000 ' reg <- con
@@ -4461,7 +4461,7 @@ C_sioce_68dcc2b5_sys_trim_L000399_409
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_label
-C_sioce_68dcc2b5_sys_trim_L000399_417
+C_snr4e_68f73992_sys_trim_L000399_417
  word I16A_MOVI + (r2)<<D16A + (0)<<S16A ' reg ARG coni
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
  alignl_p1
@@ -4480,7 +4480,7 @@ C_sioce_68dcc2b5_sys_trim_L000399_417
  word I16A_ADDS + (r22)<<D16A + (r18)<<S16A ' ADDI/P (2)
  word I16A_CMP + (r20)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioce_68dcc2b5_sys_trim_L000399_419)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4e_68f73992_sys_trim_L000399_419)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16B_CPL + (r22)<<D16B ' BCOMU4
@@ -4504,14 +4504,14 @@ C_sioce_68dcc2b5_sys_trim_L000399_417
  word I16A_NEGI + (r20)<<D16A + (-($ffffffff)&$1F)<<S16A ' reg <- conn
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioce_68dcc2b5_sys_trim_L000399_421)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4e_68f73992_sys_trim_L000399_421)<<S32 ' EQU4 reg reg
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRAE + (@C_sioce_68dcc2b5_sys_trim_L000399_421)<<S32 ' GEU4 reg reg
+ long I32_BRAE + (@C_snr4e_68f73992_sys_trim_L000399_421)<<S32 ' GEU4 reg reg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-24)&$1FF)<<S16B
@@ -4519,17 +4519,17 @@ C_sioce_68dcc2b5_sys_trim_L000399_417
  word I16A_SUB + (r22)<<D16A + (r20)<<S16A ' SUBU (1)
  word I16A_MOV + (r19)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
  alignl_label
-C_sioce_68dcc2b5_sys_trim_L000399_421
+C_snr4e_68f73992_sys_trim_L000399_421
  alignl_label
-C_sioce_68dcc2b5_sys_trim_L000399_419
-' C_sioce_68dcc2b5_sys_trim_L000399_415 ' (symbol refcount = 0)
+C_snr4e_68f73992_sys_trim_L000399_419
+' C_snr4e_68f73992_sys_trim_L000399_415 ' (symbol refcount = 0)
  alignl_label
-C_sioce_68dcc2b5_sys_trim_L000399_410
+C_snr4e_68f73992_sys_trim_L000399_410
  alignl_label
-C_sioce_68dcc2b5_sys_trim_L000399_407
+C_snr4e_68f73992_sys_trim_L000399_407
  word I16A_CMPI + (r19)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioce_68dcc2b5_sys_trim_L000399_423)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4e_68f73992_sys_trim_L000399_423)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
@@ -4553,24 +4553,24 @@ C_sioce_68dcc2b5_sys_trim_L000399_407
  word I16A_MOV + (r4)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 50<<S16B ' arg size, rpsize = 12, spsize = 12
  alignl_p1
- long I32_CALA + (@C_sioc8_68dcc2b5_init_top_L000092)<<S32
+ long I32_CALA + (@C_snr48_68f73992_init_top_L000092)<<S32
  word I16A_ADDI + SP<<D16A + 8<<S16A ' CALL addrg
  alignl_label
-C_sioce_68dcc2b5_sys_trim_L000399_423
+C_snr4e_68f73992_sys_trim_L000399_423
  alignl_label
-C_sioce_68dcc2b5_sys_trim_L000399_404
+C_snr4e_68f73992_sys_trim_L000399_404
  alignl_p1
- long I32_JMPA + (@C_sioce_68dcc2b5_sys_trim_L000399_425)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4e_68f73992_sys_trim_L000399_425)<<S32 ' JUMPV addrg
  word I16A_MOV + (r2)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
  alignl_p1
- long I32_CALA + (@C_siocd_68dcc2b5_release_unused_segments_L000323)<<S32 ' CALL addrg
+ long I32_CALA + (@C_snr4d_68f73992_release_unused_segments_L000323)<<S32 ' CALL addrg
  word I16A_ADD + (r19)<<D16A + (r0)<<S16A ' ADDU (1)
  alignl_label
-C_sioce_68dcc2b5_sys_trim_L000399_425
+C_snr4e_68f73992_sys_trim_L000399_425
  word I16A_CMPI + (r19)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioce_68dcc2b5_sys_trim_L000399_427)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4e_68f73992_sys_trim_L000399_427)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -4579,33 +4579,33 @@ C_sioce_68dcc2b5_sys_trim_L000399_425
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRU4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRBE + (@C_sioce_68dcc2b5_sys_trim_L000399_427)<<S32 ' LEU4 reg reg
+ long I32_BRBE + (@C_snr4e_68f73992_sys_trim_L000399_427)<<S32 ' LEU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (28)<<S16A ' ADDP4 reg coni
  word I16A_NEGI + (r20)<<D16A + (-($ffffffff)&$1F)<<S16A ' reg <- conn
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  alignl_label
-C_sioce_68dcc2b5_sys_trim_L000399_427
+C_snr4e_68f73992_sys_trim_L000399_427
  alignl_label
-C_sioce_68dcc2b5_sys_trim_L000399_402
+C_snr4e_68f73992_sys_trim_L000399_402
  word I16A_CMPI + (r19)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioce_68dcc2b5_sys_trim_L000399_430)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4e_68f73992_sys_trim_L000399_430)<<S32 ' EQU4 reg coni
  word I16A_MOVI + (r17)<<D16A + (1)<<S16A ' reg <- coni
  alignl_p1
- long I32_JMPA + (@C_sioce_68dcc2b5_sys_trim_L000399_431)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4e_68f73992_sys_trim_L000399_431)<<S32 ' JUMPV addrg
  alignl_label
-C_sioce_68dcc2b5_sys_trim_L000399_430
+C_snr4e_68f73992_sys_trim_L000399_430
  word I16A_MOVI + (r17)<<D16A + (0)<<S16A ' reg <- coni
  alignl_label
-C_sioce_68dcc2b5_sys_trim_L000399_431
+C_snr4e_68f73992_sys_trim_L000399_431
  word I16A_MOV + (r0)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
-' C_sioce_68dcc2b5_sys_trim_L000399_400 ' (symbol refcount = 0)
+' C_snr4e_68f73992_sys_trim_L000399_400 ' (symbol refcount = 0)
  word I16B_POPM + 6<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432 ' <symbol:dispose_chunk>
+C_snr4f_68f73992_dispose_chunk_L000432 ' <symbol:dispose_chunk>
  alignl_p1
  long I32_NEWF + 32<<S32
  alignl_p1
@@ -4622,7 +4622,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432 ' <symbol:dispose_chunk>
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_434)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_434)<<S32 ' NEU4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r21)<<S16A ' reg <- INDIRU4 reg
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
@@ -4633,13 +4633,13 @@ C_siocf_68dcc2b5_dispose_chunk_L000432 ' <symbol:dispose_chunk>
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_436)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_436)<<S32 ' NEU4 reg coni
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_ADDI + (r22)<<D16A + (16)<<S16A ' ADDU4 reg coni
  word I16A_ADD + (r19)<<D16A + (r22)<<S16A ' ADDU (1)
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_433)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_433)<<S32 ' JUMPV addrg
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((432)&$7FFFF)<<S32 ' reg <- cons
  word I16A_ADDS + (r22)<<D16A + (r23)<<S16A ' ADDI/P (2)
@@ -4647,9 +4647,9 @@ C_siocf_68dcc2b5_dispose_chunk_L000432 ' <symbol:dispose_chunk>
  word I16A_SUB + (r20)<<D16A + (r19)<<S16A ' SUBU (1)
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_433)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_433)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_436
+C_snr4f_68f73992_dispose_chunk_L000432_436
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_MOV + (r20)<<D16A + (r21)<<S16A ' SUBI/P
@@ -4665,14 +4665,14 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_436
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocf_68dcc2b5_dispose_chunk_L000432_440)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4f_68f73992_dispose_chunk_L000432_440)<<S32 ' LTU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r20)<<D16A + (20)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocf_68dcc2b5_dispose_chunk_L000432_442)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4f_68f73992_dispose_chunk_L000432_442)<<S32 ' EQU4 reg reg
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_SHRI + (r22)<<D16A + (3)<<S16A ' SHRU4 reg coni
@@ -4680,7 +4680,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_436
  long I32_MOVI + RI<<D32 + (32)<<S32
  word I16A_CMP + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BRAE + (@C_siocf_68dcc2b5_dispose_chunk_L000432_444)<<S32 ' GEU4 reg coni
+ long I32_BRAE + (@C_snr4f_68f73992_dispose_chunk_L000432_444)<<S32 ' GEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r21)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
@@ -4709,28 +4709,28 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_436
  word I16A_ADDS + (r18)<<D16A + (r16)<<S16A ' ADDI/P (1)
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocf_68dcc2b5_dispose_chunk_L000432_448)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4f_68f73992_dispose_chunk_L000432_448)<<S32 ' EQU4 reg reg
  word I16A_MOV + (r18)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r18)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r18)<<D16A + (r18)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocf_68dcc2b5_dispose_chunk_L000432_446)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4f_68f73992_dispose_chunk_L000432_446)<<S32 ' LTU4 reg reg
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_MOV + (r20)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_446)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_446)<<S32 ' NEU4 reg reg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_448
+C_snr4f_68f73992_dispose_chunk_L000432_448
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_449)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_449)<<S32 ' NEU4 reg reg
  word I16A_RDLONG + (r22)<<D16A + (r23)<<S16A ' reg <- INDIRU4 reg
  word I16A_MOVI + (r20)<<D16A + (1)<<S16A ' reg <- coni
  word I16B_LODF + ((-24)&$1FF)<<S16B
@@ -4740,9 +4740,9 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_448
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_WRLONG + (r22)<<D16A + (r23)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_441)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_441)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_449
+C_snr4f_68f73992_dispose_chunk_L000432_449
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
@@ -4756,21 +4756,21 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_449
  word I16A_ADDS + (r18)<<D16A + (r16)<<S16A ' ADDI/P (1)
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocf_68dcc2b5_dispose_chunk_L000432_453)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4f_68f73992_dispose_chunk_L000432_453)<<S32 ' EQU4 reg reg
  word I16A_MOV + (r18)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r18)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r18)<<D16A + (r18)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocf_68dcc2b5_dispose_chunk_L000432_451)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4f_68f73992_dispose_chunk_L000432_451)<<S32 ' LTU4 reg reg
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_MOV + (r20)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_451)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_451)<<S32 ' NEU4 reg reg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_453
+C_snr4f_68f73992_dispose_chunk_L000432_453
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
@@ -4784,21 +4784,21 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_453
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_441)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_441)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_451
+C_snr4f_68f73992_dispose_chunk_L000432_451
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_441)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_441)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_446
+C_snr4f_68f73992_dispose_chunk_L000432_446
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_441)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_441)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_444
+C_snr4f_68f73992_dispose_chunk_L000432_444
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_WRLONG + (r21)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16B_LODF + ((-16)&$1FF)<<S16B
@@ -4814,7 +4814,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_444
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r20)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocf_68dcc2b5_dispose_chunk_L000432_454)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4f_68f73992_dispose_chunk_L000432_454)<<S32 ' EQU4 reg reg
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
@@ -4835,21 +4835,21 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_444
  word I16A_RDLONG + (r18)<<D16A + (r18)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocf_68dcc2b5_dispose_chunk_L000432_456)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4f_68f73992_dispose_chunk_L000432_456)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_456)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_456)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_456)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_456)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
@@ -4863,15 +4863,15 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_444
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_455)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_455)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_456
+C_snr4f_68f73992_dispose_chunk_L000432_456
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_455)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_455)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_454
+C_snr4f_68f73992_dispose_chunk_L000432_454
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r22)<<S16A
@@ -4883,7 +4883,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_454
  word I16A_WRLONG + (r20)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_CMPI + (r20)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_460)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_460)<<S32 ' NEU4 reg coni
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
@@ -4892,13 +4892,13 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_454
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocf_68dcc2b5_dispose_chunk_L000432_458)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4f_68f73992_dispose_chunk_L000432_458)<<S32 ' EQU4 reg coni
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_460
+C_snr4f_68f73992_dispose_chunk_L000432_460
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_462)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_462)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_461
+C_snr4f_68f73992_dispose_chunk_L000432_461
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-28)&$1FF)<<S16B
@@ -4907,7 +4907,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_461
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_462
+C_snr4f_68f73992_dispose_chunk_L000432_462
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r22)<<S16A
@@ -4917,14 +4917,14 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_462
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMPI + (r20)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_461)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_461)<<S32 ' NEU4 reg coni
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_461)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_461)<<S32 ' NEU4 reg coni
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -4932,7 +4932,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_462
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocf_68dcc2b5_dispose_chunk_L000432_464)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4f_68f73992_dispose_chunk_L000432_464)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODL + (r20)<<D16B
@@ -4940,22 +4940,22 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_462
  long 0 ' reg <- con
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_465)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_465)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_464
+C_snr4f_68f73992_dispose_chunk_L000432_464
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_465
+C_snr4f_68f73992_dispose_chunk_L000432_465
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_458
+C_snr4f_68f73992_dispose_chunk_L000432_458
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_455
+C_snr4f_68f73992_dispose_chunk_L000432_455
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocf_68dcc2b5_dispose_chunk_L000432_441)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4f_68f73992_dispose_chunk_L000432_441)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (28)<<S16A ' ADDP4 reg coni
@@ -4974,7 +4974,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_455
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_468)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_468)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-28)&$1FF)<<S16B
@@ -4982,7 +4982,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_455
  word I16A_WRLONG + (r22)<<D16A + (r20)<<S16A ' ASGNP4 reg reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_469)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_469)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -4996,9 +4996,9 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_455
  word I16A_AND + (r20)<<D16A + (r18)<<S16A ' BANDI/U (1)
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_469)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_469)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_468
+C_snr4f_68f73992_dispose_chunk_L000432_468
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -5006,7 +5006,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_468
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocf_68dcc2b5_dispose_chunk_L000432_472)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4f_68f73992_dispose_chunk_L000432_472)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
@@ -5015,7 +5015,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_468
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_474)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_474)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
@@ -5023,9 +5023,9 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_468
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_473)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_473)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_474
+C_snr4f_68f73992_dispose_chunk_L000432_474
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
@@ -5033,20 +5033,20 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_474
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_473)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_473)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_472
+C_snr4f_68f73992_dispose_chunk_L000432_472
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_473
+C_snr4f_68f73992_dispose_chunk_L000432_473
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_469
+C_snr4f_68f73992_dispose_chunk_L000432_469
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocf_68dcc2b5_dispose_chunk_L000432_441)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4f_68f73992_dispose_chunk_L000432_441)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -5054,7 +5054,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_469
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocf_68dcc2b5_dispose_chunk_L000432_478)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4f_68f73992_dispose_chunk_L000432_478)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (24)<<S16A ' ADDP4 reg coni
@@ -5069,7 +5069,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_469
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocf_68dcc2b5_dispose_chunk_L000432_480)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4f_68f73992_dispose_chunk_L000432_480)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -5077,7 +5077,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_469
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocf_68dcc2b5_dispose_chunk_L000432_482)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4f_68f73992_dispose_chunk_L000432_482)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
@@ -5091,15 +5091,15 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_469
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_483)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_483)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_482
+C_snr4f_68f73992_dispose_chunk_L000432_482
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_483
+C_snr4f_68f73992_dispose_chunk_L000432_483
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_480
+C_snr4f_68f73992_dispose_chunk_L000432_480
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
@@ -5108,7 +5108,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_480
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocf_68dcc2b5_dispose_chunk_L000432_441)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4f_68f73992_dispose_chunk_L000432_441)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-36)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -5116,7 +5116,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_480
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocf_68dcc2b5_dispose_chunk_L000432_486)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4f_68f73992_dispose_chunk_L000432_486)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
@@ -5130,21 +5130,21 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_480
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_441)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_441)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_486
+C_snr4f_68f73992_dispose_chunk_L000432_486
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_441)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_441)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_478
+C_snr4f_68f73992_dispose_chunk_L000432_478
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_441)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_441)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_442
+C_snr4f_68f73992_dispose_chunk_L000432_442
  word I16A_MOVI + (r22)<<D16A + (3)<<S16A ' reg <- coni
  word I16A_MOV + (r20)<<D16A + (r17)<<S16A
  word I16A_ADDSI + (r20)<<D16A + (4)<<S16A ' ADDP4 reg coni
@@ -5152,7 +5152,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_442
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (2)
  word I16A_CMPI + (r22)<<D16A + (3)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_441)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_441)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_WRLONG + (r19)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
@@ -5171,24 +5171,24 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_442
  word I16A_ADDS + (r22)<<D16A + (r21)<<S16A ' ADDI/P (3)
  word I16A_WRLONG + (r19)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_433)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_433)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_440
+C_snr4f_68f73992_dispose_chunk_L000432_440
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_433)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_433)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_441
+C_snr4f_68f73992_dispose_chunk_L000432_441
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_434
+C_snr4f_68f73992_dispose_chunk_L000432_434
  word I16A_MOV + (r22)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r20)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocf_68dcc2b5_dispose_chunk_L000432_490)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4f_68f73992_dispose_chunk_L000432_490)<<S32 ' LTU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r17)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -5196,14 +5196,14 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_434
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_492)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_492)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r20)<<D16A + (24)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_494)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_494)<<S32 ' NEU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -5227,7 +5227,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_434
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_433)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_433)<<S32 ' NEU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
  word I16B_LODL + (r20)<<D16B
@@ -5239,16 +5239,16 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_434
  word I16A_MOVI + (r20)<<D16A + (0)<<S16A ' reg <- coni
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_433)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_433)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_494
+C_snr4f_68f73992_dispose_chunk_L000432_494
  word I16A_MOV + (r22)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r20)<<D16A + (20)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_498)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_498)<<S32 ' NEU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -5272,9 +5272,9 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_494
  word I16A_ADDS + (r20)<<D16A + (r21)<<S16A ' ADDI/P (3)
  word I16A_WRLONG + (r22)<<D16A + (r20)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_433)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_433)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_498
+C_snr4f_68f73992_dispose_chunk_L000432_498
  word I16A_MOV + (r22)<<D16A + (r17)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -5290,7 +5290,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_498
  long I32_MOVI + RI<<D32 + (32)<<S32
  word I16A_CMP + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BRAE + (@C_siocf_68dcc2b5_dispose_chunk_L000432_500)<<S32 ' GEU4 reg coni
+ long I32_BRAE + (@C_snr4f_68f73992_dispose_chunk_L000432_500)<<S32 ' GEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r17)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
@@ -5319,28 +5319,28 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_498
  word I16A_ADDS + (r18)<<D16A + (r16)<<S16A ' ADDI/P (1)
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocf_68dcc2b5_dispose_chunk_L000432_504)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4f_68f73992_dispose_chunk_L000432_504)<<S32 ' EQU4 reg reg
  word I16A_MOV + (r18)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r18)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r18)<<D16A + (r18)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocf_68dcc2b5_dispose_chunk_L000432_502)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4f_68f73992_dispose_chunk_L000432_502)<<S32 ' LTU4 reg reg
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_MOV + (r20)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_502)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_502)<<S32 ' NEU4 reg reg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_504
+C_snr4f_68f73992_dispose_chunk_L000432_504
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_505)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_505)<<S32 ' NEU4 reg reg
  word I16A_RDLONG + (r22)<<D16A + (r23)<<S16A ' reg <- INDIRU4 reg
  word I16A_MOVI + (r20)<<D16A + (1)<<S16A ' reg <- coni
  word I16B_LODF + ((-20)&$1FF)<<S16B
@@ -5350,9 +5350,9 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_504
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_WRLONG + (r22)<<D16A + (r23)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_501)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_501)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_505
+C_snr4f_68f73992_dispose_chunk_L000432_505
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
@@ -5366,21 +5366,21 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_505
  word I16A_ADDS + (r18)<<D16A + (r16)<<S16A ' ADDI/P (1)
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocf_68dcc2b5_dispose_chunk_L000432_509)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4f_68f73992_dispose_chunk_L000432_509)<<S32 ' EQU4 reg reg
  word I16A_MOV + (r18)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r18)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r18)<<D16A + (r18)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocf_68dcc2b5_dispose_chunk_L000432_507)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4f_68f73992_dispose_chunk_L000432_507)<<S32 ' LTU4 reg reg
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_MOV + (r20)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_507)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_507)<<S32 ' NEU4 reg reg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_509
+C_snr4f_68f73992_dispose_chunk_L000432_509
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
@@ -5394,21 +5394,21 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_509
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_501)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_501)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_507
+C_snr4f_68f73992_dispose_chunk_L000432_507
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_501)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_501)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_502
+C_snr4f_68f73992_dispose_chunk_L000432_502
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_501)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_501)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_500
+C_snr4f_68f73992_dispose_chunk_L000432_500
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_WRLONG + (r17)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16B_LODF + ((-12)&$1FF)<<S16B
@@ -5424,7 +5424,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_500
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r20)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocf_68dcc2b5_dispose_chunk_L000432_510)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4f_68f73992_dispose_chunk_L000432_510)<<S32 ' EQU4 reg reg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
@@ -5445,21 +5445,21 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_500
  word I16A_RDLONG + (r18)<<D16A + (r18)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocf_68dcc2b5_dispose_chunk_L000432_512)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4f_68f73992_dispose_chunk_L000432_512)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_512)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_512)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_512)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_512)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
@@ -5473,15 +5473,15 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_500
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_511)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_511)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_512
+C_snr4f_68f73992_dispose_chunk_L000432_512
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_511)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_511)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_510
+C_snr4f_68f73992_dispose_chunk_L000432_510
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r22)<<S16A
@@ -5493,7 +5493,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_510
  word I16A_WRLONG + (r20)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_CMPI + (r20)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_516)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_516)<<S32 ' NEU4 reg coni
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
@@ -5502,13 +5502,13 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_510
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocf_68dcc2b5_dispose_chunk_L000432_514)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4f_68f73992_dispose_chunk_L000432_514)<<S32 ' EQU4 reg coni
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_516
+C_snr4f_68f73992_dispose_chunk_L000432_516
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_518)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_518)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_517
+C_snr4f_68f73992_dispose_chunk_L000432_517
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-24)&$1FF)<<S16B
@@ -5517,7 +5517,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_517
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_518
+C_snr4f_68f73992_dispose_chunk_L000432_518
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r22)<<S16A
@@ -5527,14 +5527,14 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_518
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMPI + (r20)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_517)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_517)<<S32 ' NEU4 reg coni
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_517)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_517)<<S32 ' NEU4 reg coni
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -5542,7 +5542,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_518
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocf_68dcc2b5_dispose_chunk_L000432_520)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4f_68f73992_dispose_chunk_L000432_520)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODL + (r20)<<D16B
@@ -5550,22 +5550,22 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_518
  long 0 ' reg <- con
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_521)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_521)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_520
+C_snr4f_68f73992_dispose_chunk_L000432_520
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_521
+C_snr4f_68f73992_dispose_chunk_L000432_521
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_514
+C_snr4f_68f73992_dispose_chunk_L000432_514
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_511
+C_snr4f_68f73992_dispose_chunk_L000432_511
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocf_68dcc2b5_dispose_chunk_L000432_522)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4f_68f73992_dispose_chunk_L000432_522)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (28)<<S16A ' ADDP4 reg coni
@@ -5584,7 +5584,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_511
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_524)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_524)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-24)&$1FF)<<S16B
@@ -5592,7 +5592,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_511
  word I16A_WRLONG + (r22)<<D16A + (r20)<<S16A ' ASGNP4 reg reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_525)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_525)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -5606,9 +5606,9 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_511
  word I16A_AND + (r20)<<D16A + (r18)<<S16A ' BANDI/U (1)
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_525)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_525)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_524
+C_snr4f_68f73992_dispose_chunk_L000432_524
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -5616,7 +5616,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_524
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocf_68dcc2b5_dispose_chunk_L000432_528)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4f_68f73992_dispose_chunk_L000432_528)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
@@ -5625,7 +5625,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_524
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_530)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_530)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
@@ -5633,9 +5633,9 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_524
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_529)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_529)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_530
+C_snr4f_68f73992_dispose_chunk_L000432_530
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
@@ -5643,20 +5643,20 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_530
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_529)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_529)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_528
+C_snr4f_68f73992_dispose_chunk_L000432_528
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_529
+C_snr4f_68f73992_dispose_chunk_L000432_529
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_525
+C_snr4f_68f73992_dispose_chunk_L000432_525
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocf_68dcc2b5_dispose_chunk_L000432_532)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4f_68f73992_dispose_chunk_L000432_532)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -5664,7 +5664,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_525
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocf_68dcc2b5_dispose_chunk_L000432_534)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4f_68f73992_dispose_chunk_L000432_534)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (24)<<S16A ' ADDP4 reg coni
@@ -5679,7 +5679,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_525
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocf_68dcc2b5_dispose_chunk_L000432_536)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4f_68f73992_dispose_chunk_L000432_536)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -5687,7 +5687,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_525
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocf_68dcc2b5_dispose_chunk_L000432_538)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4f_68f73992_dispose_chunk_L000432_538)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
@@ -5701,15 +5701,15 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_525
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_539)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_539)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_538
+C_snr4f_68f73992_dispose_chunk_L000432_538
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_539
+C_snr4f_68f73992_dispose_chunk_L000432_539
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_536
+C_snr4f_68f73992_dispose_chunk_L000432_536
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
@@ -5718,7 +5718,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_536
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocf_68dcc2b5_dispose_chunk_L000432_535)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4f_68f73992_dispose_chunk_L000432_535)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -5726,7 +5726,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_536
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocf_68dcc2b5_dispose_chunk_L000432_542)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4f_68f73992_dispose_chunk_L000432_542)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
@@ -5740,25 +5740,25 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_536
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_535)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_535)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_542
+C_snr4f_68f73992_dispose_chunk_L000432_542
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_535)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_535)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_534
+C_snr4f_68f73992_dispose_chunk_L000432_534
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_535
+C_snr4f_68f73992_dispose_chunk_L000432_535
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_532
+C_snr4f_68f73992_dispose_chunk_L000432_532
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_522
+C_snr4f_68f73992_dispose_chunk_L000432_522
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_501
+C_snr4f_68f73992_dispose_chunk_L000432_501
  word I16A_MOV + (r22)<<D16A + (r21)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_MOVI + (r20)<<D16A + (1)<<S16A ' reg <- coni
@@ -5773,14 +5773,14 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_501
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_493)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_493)<<S32 ' NEU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_WRLONG + (r19)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_433)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_433)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_492
+C_snr4f_68f73992_dispose_chunk_L000432_492
  word I16A_MOV + (r22)<<D16A + (r17)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -5796,14 +5796,14 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_492
  word I16A_ADDS + (r22)<<D16A + (r21)<<S16A ' ADDI/P (3)
  word I16A_WRLONG + (r19)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_493
+C_snr4f_68f73992_dispose_chunk_L000432_493
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A
  word I16A_SHRI + (r22)<<D16A + (3)<<S16A ' SHRU4 reg coni
  alignl_p1
  long I32_MOVI + RI<<D32 + (32)<<S32
  word I16A_CMP + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BRAE + (@C_siocf_68dcc2b5_dispose_chunk_L000432_546)<<S32 ' GEU4 reg coni
+ long I32_BRAE + (@C_snr4f_68f73992_dispose_chunk_L000432_546)<<S32 ' GEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A
  word I16A_SHRI + (r22)<<D16A + (3)<<S16A ' SHRU4 reg coni
  word I16B_LODF + ((-12)&$1FF)<<S16B
@@ -5830,7 +5830,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_493
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_548)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_548)<<S32 ' NEU4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r23)<<S16A ' reg <- INDIRU4 reg
  word I16A_MOVI + (r20)<<D16A + (1)<<S16A ' reg <- coni
  word I16B_LODF + ((-12)&$1FF)<<S16B
@@ -5839,9 +5839,9 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_493
  word I16A_OR + (r22)<<D16A + (r20)<<S16A ' BORI/U (1)
  word I16A_WRLONG + (r22)<<D16A + (r23)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_549)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_549)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_548
+C_snr4f_68f73992_dispose_chunk_L000432_548
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
@@ -5851,7 +5851,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_548
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocf_68dcc2b5_dispose_chunk_L000432_550)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4f_68f73992_dispose_chunk_L000432_550)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
@@ -5859,15 +5859,15 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_548
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_551)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_551)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_550
+C_snr4f_68f73992_dispose_chunk_L000432_550
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_551
+C_snr4f_68f73992_dispose_chunk_L000432_551
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_549
+C_snr4f_68f73992_dispose_chunk_L000432_549
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
@@ -5887,9 +5887,9 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_549
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_491)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_491)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_546
+C_snr4f_68f73992_dispose_chunk_L000432_546
  word I16A_MOV + (r15)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A
  word I16A_SHRI + (r22)<<D16A + (8)<<S16A ' SHRU4 reg coni
@@ -5899,14 +5899,14 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_546
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_552)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_552)<<S32 ' NEU4 reg coni
  word I16A_MOVI + (r22)<<D16A + (0)<<S16A ' reg <- coni
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_553)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_553)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_552
+C_snr4f_68f73992_dispose_chunk_L000432_552
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16B_LODL + (r20)<<D16B
@@ -5914,14 +5914,14 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_552
  long $ffff ' reg <- con
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRBE + (@C_siocf_68dcc2b5_dispose_chunk_L000432_554)<<S32 ' LEU4 reg reg
+ long I32_BRBE + (@C_snr4f_68f73992_dispose_chunk_L000432_554)<<S32 ' LEU4 reg reg
  word I16A_MOVI + (r22)<<D16A + (31)<<S16A ' reg <- coni
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_555)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_555)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_554
+C_snr4f_68f73992_dispose_chunk_L000432_554
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16B_LODF + ((-24)&$1FF)<<S16B
@@ -6009,9 +6009,9 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_554
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_555
+C_snr4f_68f73992_dispose_chunk_L000432_555
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_553
+C_snr4f_68f73992_dispose_chunk_L000432_553
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_MOV + (r20)<<D16A + (r22)<<S16A
@@ -6044,7 +6044,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_553
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_556)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_556)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -6069,9 +6069,9 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_553
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_WRLONG + (r15)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_491)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_491)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_556
+C_snr4f_68f73992_dispose_chunk_L000432_556
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_RDLONG + (r13)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
@@ -6079,12 +6079,12 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_556
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_CMPI + (r22)<<D16A + (31)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocf_68dcc2b5_dispose_chunk_L000432_559)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4f_68f73992_dispose_chunk_L000432_559)<<S32 ' NEU4 reg coni
  word I16A_MOVI + (r11)<<D16A + (0)<<S16A ' reg <- coni
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_560)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_560)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_559
+C_snr4f_68f73992_dispose_chunk_L000432_559
  word I16A_MOVI + (r22)<<D16A + (31)<<S16A ' reg <- coni
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
@@ -6094,7 +6094,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_559
  word I16A_MOV + (r11)<<D16A + (r22)<<S16A ' SUBU
  word I16A_SUB + (r11)<<D16A + (r20)<<S16A ' SUBU (3)
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_560
+C_snr4f_68f73992_dispose_chunk_L000432_560
  word I16A_MOV + (r22)<<D16A + (r11)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + RI<<D16A + (r19)<<S16A
  word I16A_SHL + RI<<D16A + (r22)<<S16A
@@ -6102,7 +6102,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_560
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_561
+C_snr4f_68f73992_dispose_chunk_L000432_561
  word I16A_MOV + (r22)<<D16A + (r13)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -6110,7 +6110,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_561
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMP + (r22)<<D16A + (r19)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocf_68dcc2b5_dispose_chunk_L000432_565)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4f_68f73992_dispose_chunk_L000432_565)<<S32 ' EQU4 reg reg
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_SHRI + (r22)<<D16A + (31)<<S16A ' SHRU4 reg coni
@@ -6132,14 +6132,14 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_561
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocf_68dcc2b5_dispose_chunk_L000432_567)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4f_68f73992_dispose_chunk_L000432_567)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_RDLONG + (r13)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_561)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_561)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_567
+C_snr4f_68f73992_dispose_chunk_L000432_567
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -6147,7 +6147,7 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_567
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocf_68dcc2b5_dispose_chunk_L000432_569)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4f_68f73992_dispose_chunk_L000432_569)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r15)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
@@ -6161,15 +6161,15 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_567
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_WRLONG + (r15)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_491)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_491)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_569
+C_snr4f_68f73992_dispose_chunk_L000432_569
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_491)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_491)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_565
+C_snr4f_68f73992_dispose_chunk_L000432_565
  word I16A_MOV + (r22)<<D16A + (r13)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
@@ -6181,12 +6181,12 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_565
  word I16A_MOV + (r20)<<D16A + (r13)<<S16A ' CVI, CVU or LOAD
  word I16A_CMP + (r20)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocf_68dcc2b5_dispose_chunk_L000432_571)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4f_68f73992_dispose_chunk_L000432_571)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMP + (r20)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocf_68dcc2b5_dispose_chunk_L000432_571)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4f_68f73992_dispose_chunk_L000432_571)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
@@ -6209,26 +6209,26 @@ C_siocf_68dcc2b5_dispose_chunk_L000432_565
  long 0 ' reg <- con
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_491)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_491)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_571
+C_snr4f_68f73992_dispose_chunk_L000432_571
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_siocf_68dcc2b5_dispose_chunk_L000432_491)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4f_68f73992_dispose_chunk_L000432_491)<<S32 ' JUMPV addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_490
+C_snr4f_68f73992_dispose_chunk_L000432_490
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_491
+C_snr4f_68f73992_dispose_chunk_L000432_491
  alignl_label
-C_siocf_68dcc2b5_dispose_chunk_L000432_433
+C_snr4f_68f73992_dispose_chunk_L000432_433
  word I16B_POPM + 8<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573 ' <symbol:tmalloc_large>
+C_snr4g_68f73992_tmalloc_large_L000573 ' <symbol:tmalloc_large>
  alignl_p1
  long I32_NEWF + 32<<S32
  alignl_p1
@@ -6250,12 +6250,12 @@ C_siocg_68dcc2b5_tmalloc_large_L000573 ' <symbol:tmalloc_large>
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocg_68dcc2b5_tmalloc_large_L000573_575)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4g_68f73992_tmalloc_large_L000573_575)<<S32 ' NEU4 reg coni
  word I16A_MOVI + (r13)<<D16A + (0)<<S16A ' reg <- coni
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_576)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_576)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_575
+C_snr4g_68f73992_tmalloc_large_L000573_575
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16B_LODL + (r20)<<D16B
@@ -6263,12 +6263,12 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_575
  long $ffff ' reg <- con
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRBE + (@C_siocg_68dcc2b5_tmalloc_large_L000573_577)<<S32 ' LEU4 reg reg
+ long I32_BRBE + (@C_snr4g_68f73992_tmalloc_large_L000573_577)<<S32 ' LEU4 reg reg
  word I16A_MOVI + (r13)<<D16A + (31)<<S16A ' reg <- coni
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_578)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_578)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_577
+C_snr4g_68f73992_tmalloc_large_L000573_577
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16B_LODF + ((-16)&$1FF)<<S16B
@@ -6355,9 +6355,9 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_577
  word I16A_MOV + (r13)<<D16A + (r20)<<S16A ' ADDU
  word I16A_ADD + (r13)<<D16A + (r22)<<S16A ' ADDU (3)
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_578
+C_snr4g_68f73992_tmalloc_large_L000573_578
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_576
+C_snr4g_68f73992_tmalloc_large_L000573_576
  word I16A_MOV + (r22)<<D16A + (r13)<<S16A
  word I16A_SHLI + (r22)<<D16A + (2)<<S16A ' SHLU4 reg coni
  alignl_p1
@@ -6368,15 +6368,15 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_576
  word I16A_MOV + (r19)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocg_68dcc2b5_tmalloc_large_L000573_579)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4g_68f73992_tmalloc_large_L000573_579)<<S32 ' EQU4 reg coni
  word I16A_CMPI + (r13)<<D16A + (31)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocg_68dcc2b5_tmalloc_large_L000573_582)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4g_68f73992_tmalloc_large_L000573_582)<<S32 ' NEU4 reg coni
  word I16A_MOVI + (r9)<<D16A + (0)<<S16A ' reg <- coni
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_583)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_583)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_582
+C_snr4g_68f73992_tmalloc_large_L000573_582
  word I16A_MOVI + (r22)<<D16A + (31)<<S16A ' reg <- coni
  word I16A_MOV + (r20)<<D16A + (r13)<<S16A
  word I16A_SHRI + (r20)<<D16A + (1)<<S16A ' SHRU4 reg coni
@@ -6385,7 +6385,7 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_582
  word I16A_MOV + (r9)<<D16A + (r22)<<S16A ' SUBU
  word I16A_SUB + (r9)<<D16A + (r20)<<S16A ' SUBU (3)
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_583
+C_snr4g_68f73992_tmalloc_large_L000573_583
  word I16A_MOV + (r22)<<D16A + (r9)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r11)<<D16A + (r21)<<S16A ' LSHI/U
  word I16A_SHL + (r11)<<D16A + (r22)<<S16A ' LSHI/U (3)
@@ -6393,7 +6393,7 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_583
  alignl_p1
  long 0 ' reg <- con
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_584
+C_snr4g_68f73992_tmalloc_large_L000573_584
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -6403,18 +6403,18 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_584
  word I16A_SUB + (r7)<<D16A + (r21)<<S16A ' SUBU (3)
  word I16A_CMP + (r7)<<D16A + (r17)<<S16A
  alignl_p1
- long I32_BRAE + (@C_siocg_68dcc2b5_tmalloc_large_L000573_588)<<S32 ' GEU4 reg reg
+ long I32_BRAE + (@C_snr4g_68f73992_tmalloc_large_L000573_588)<<S32 ' GEU4 reg reg
  word I16A_MOV + (r15)<<D16A + (r19)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r17)<<D16A + (r7)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPI + (r7)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocg_68dcc2b5_tmalloc_large_L000573_590)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4g_68f73992_tmalloc_large_L000573_590)<<S32 ' NEU4 reg coni
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_586)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_586)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_590
+C_snr4g_68f73992_tmalloc_large_L000573_590
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_588
+C_snr4g_68f73992_tmalloc_large_L000573_588
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r8)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
@@ -6429,38 +6429,38 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_588
  word I16A_RDLONG + (r19)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMPI + (r8)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocg_68dcc2b5_tmalloc_large_L000573_592)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4g_68f73992_tmalloc_large_L000573_592)<<S32 ' EQU4 reg coni
  word I16A_MOV + (r20)<<D16A + (r19)<<S16A ' CVI, CVU or LOAD
  word I16A_CMP + (r8)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocg_68dcc2b5_tmalloc_large_L000573_592)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4g_68f73992_tmalloc_large_L000573_592)<<S32 ' EQU4 reg reg
  word I16A_MOV + (r10)<<D16A + (r8)<<S16A ' CVI, CVU or LOAD
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_592
+C_snr4g_68f73992_tmalloc_large_L000573_592
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocg_68dcc2b5_tmalloc_large_L000573_594)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4g_68f73992_tmalloc_large_L000573_594)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r19)<<D16A + (r10)<<S16A ' CVI, CVU or LOAD
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_586)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_586)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_594
+C_snr4g_68f73992_tmalloc_large_L000573_594
  word I16A_SHLI + (r11)<<D16A + (1)<<S16A ' SHLU4 reg coni
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_584)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_584)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_586
+C_snr4g_68f73992_tmalloc_large_L000573_586
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_579
+C_snr4g_68f73992_tmalloc_large_L000573_579
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocg_68dcc2b5_tmalloc_large_L000573_601)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4g_68f73992_tmalloc_large_L000573_601)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocg_68dcc2b5_tmalloc_large_L000573_601)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4g_68f73992_tmalloc_large_L000573_601)<<S32 ' NEU4 reg coni
  word I16A_MOVI + (r22)<<D16A + (1)<<S16A ' reg <- coni
  word I16A_MOV + (r20)<<D16A + (r13)<<S16A ' CVI, CVU or LOAD
  word I16A_SHL + (r22)<<D16A + (r20)<<S16A ' LSHI/U (1)
@@ -6479,7 +6479,7 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_579
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocg_68dcc2b5_tmalloc_large_L000573_601)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4g_68f73992_tmalloc_large_L000573_601)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_MOV + (r20)<<D16A + (r22)<<S16A
@@ -6563,9 +6563,9 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_579
  word I16A_ADDS + (r22)<<D16A + (r20)<<S16A ' ADDI/P (1)
  word I16A_RDLONG + (r19)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_601)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_601)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_600
+C_snr4g_68f73992_tmalloc_large_L000573_600
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -6575,54 +6575,54 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_600
  word I16A_SUB + (r11)<<D16A + (r21)<<S16A ' SUBU (3)
  word I16A_CMP + (r11)<<D16A + (r17)<<S16A
  alignl_p1
- long I32_BRAE + (@C_siocg_68dcc2b5_tmalloc_large_L000573_603)<<S32 ' GEU4 reg reg
+ long I32_BRAE + (@C_snr4g_68f73992_tmalloc_large_L000573_603)<<S32 ' GEU4 reg reg
  word I16A_MOV + (r17)<<D16A + (r11)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r15)<<D16A + (r19)<<S16A ' CVI, CVU or LOAD
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_603
+C_snr4g_68f73992_tmalloc_large_L000573_603
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocg_68dcc2b5_tmalloc_large_L000573_606)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4g_68f73992_tmalloc_large_L000573_606)<<S32 ' EQU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r10)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_607)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_607)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_606
+C_snr4g_68f73992_tmalloc_large_L000573_606
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r10)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_607
+C_snr4g_68f73992_tmalloc_large_L000573_607
  word I16A_MOV + (r19)<<D16A + (r10)<<S16A ' CVI, CVU or LOAD
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_601
+C_snr4g_68f73992_tmalloc_large_L000573_601
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocg_68dcc2b5_tmalloc_large_L000573_600)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4g_68f73992_tmalloc_large_L000573_600)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocg_68dcc2b5_tmalloc_large_L000573_608)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4g_68f73992_tmalloc_large_L000573_608)<<S32 ' EQU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16A_SUB + (r22)<<D16A + (r21)<<S16A ' SUBU (1)
  word I16A_CMP + (r17)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BRAE + (@C_siocg_68dcc2b5_tmalloc_large_L000573_608)<<S32 ' GEU4 reg reg
+ long I32_BRAE + (@C_snr4g_68f73992_tmalloc_large_L000573_608)<<S32 ' GEU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r20)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocg_68dcc2b5_tmalloc_large_L000573_610)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4g_68f73992_tmalloc_large_L000573_610)<<S32 ' LTU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r21)<<S16A ' ADDI/P
  word I16A_ADDS + (r22)<<D16A + (r15)<<S16A ' ADDI/P (3)
  word I16B_LODF + ((-8)&$1FF)<<S16B
@@ -6632,7 +6632,7 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_601
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRAE + (@C_siocg_68dcc2b5_tmalloc_large_L000573_612)<<S32 ' GEU4 reg reg
+ long I32_BRAE + (@C_snr4g_68f73992_tmalloc_large_L000573_612)<<S32 ' GEU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (24)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
@@ -6644,7 +6644,7 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_601
  word I16A_MOV + (r20)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocg_68dcc2b5_tmalloc_large_L000573_614)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4g_68f73992_tmalloc_large_L000573_614)<<S32 ' EQU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
@@ -6663,19 +6663,19 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_601
  word I16A_RDLONG + (r18)<<D16A + (r18)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocg_68dcc2b5_tmalloc_large_L000573_616)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4g_68f73992_tmalloc_large_L000573_616)<<S32 ' LTU4 reg reg
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r15)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocg_68dcc2b5_tmalloc_large_L000573_616)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4g_68f73992_tmalloc_large_L000573_616)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r15)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocg_68dcc2b5_tmalloc_large_L000573_616)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4g_68f73992_tmalloc_large_L000573_616)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
@@ -6689,15 +6689,15 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_601
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_615)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_615)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_616
+C_snr4g_68f73992_tmalloc_large_L000573_616
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_615)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_615)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_614
+C_snr4g_68f73992_tmalloc_large_L000573_614
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
  word I16B_LODF + ((-20)&$1FF)<<S16B
@@ -6707,7 +6707,7 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_614
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocg_68dcc2b5_tmalloc_large_L000573_620)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4g_68f73992_tmalloc_large_L000573_620)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16B_LODF + ((-20)&$1FF)<<S16B
@@ -6717,13 +6717,13 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_614
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocg_68dcc2b5_tmalloc_large_L000573_618)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4g_68f73992_tmalloc_large_L000573_618)<<S32 ' EQU4 reg coni
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_620
+C_snr4g_68f73992_tmalloc_large_L000573_620
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_622)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_622)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_621
+C_snr4g_68f73992_tmalloc_large_L000573_621
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-20)&$1FF)<<S16B
@@ -6732,7 +6732,7 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_621
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_622
+C_snr4g_68f73992_tmalloc_large_L000573_622
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r22)<<S16A
@@ -6742,14 +6742,14 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_622
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMPI + (r20)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocg_68dcc2b5_tmalloc_large_L000573_621)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4g_68f73992_tmalloc_large_L000573_621)<<S32 ' NEU4 reg coni
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocg_68dcc2b5_tmalloc_large_L000573_621)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4g_68f73992_tmalloc_large_L000573_621)<<S32 ' NEU4 reg coni
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -6757,7 +6757,7 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_622
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocg_68dcc2b5_tmalloc_large_L000573_624)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4g_68f73992_tmalloc_large_L000573_624)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODL + (r20)<<D16B
@@ -6765,22 +6765,22 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_622
  long 0 ' reg <- con
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_625)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_625)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_624
+C_snr4g_68f73992_tmalloc_large_L000573_624
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_625
+C_snr4g_68f73992_tmalloc_large_L000573_625
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_618
+C_snr4g_68f73992_tmalloc_large_L000573_618
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_615
+C_snr4g_68f73992_tmalloc_large_L000573_615
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocg_68dcc2b5_tmalloc_large_L000573_626)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4g_68f73992_tmalloc_large_L000573_626)<<S32 ' EQU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (28)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -6797,7 +6797,7 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_615
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocg_68dcc2b5_tmalloc_large_L000573_628)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4g_68f73992_tmalloc_large_L000573_628)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-20)&$1FF)<<S16B
@@ -6805,7 +6805,7 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_615
  word I16A_WRLONG + (r22)<<D16A + (r20)<<S16A ' ASGNP4 reg reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocg_68dcc2b5_tmalloc_large_L000573_629)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4g_68f73992_tmalloc_large_L000573_629)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -6818,9 +6818,9 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_615
  word I16A_AND + (r20)<<D16A + (r18)<<S16A ' BANDI/U (1)
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_629)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_629)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_628
+C_snr4g_68f73992_tmalloc_large_L000573_628
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -6828,7 +6828,7 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_628
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocg_68dcc2b5_tmalloc_large_L000573_632)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4g_68f73992_tmalloc_large_L000573_632)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
@@ -6836,7 +6836,7 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_628
  word I16A_MOV + (r20)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocg_68dcc2b5_tmalloc_large_L000573_634)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4g_68f73992_tmalloc_large_L000573_634)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
@@ -6844,9 +6844,9 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_628
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_633)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_633)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_634
+C_snr4g_68f73992_tmalloc_large_L000573_634
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
@@ -6854,20 +6854,20 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_634
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_633)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_633)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_632
+C_snr4g_68f73992_tmalloc_large_L000573_632
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_633
+C_snr4g_68f73992_tmalloc_large_L000573_633
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_629
+C_snr4g_68f73992_tmalloc_large_L000573_629
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocg_68dcc2b5_tmalloc_large_L000573_636)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4g_68f73992_tmalloc_large_L000573_636)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -6875,7 +6875,7 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_629
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocg_68dcc2b5_tmalloc_large_L000573_638)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4g_68f73992_tmalloc_large_L000573_638)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (24)<<S16A ' ADDP4 reg coni
@@ -6889,7 +6889,7 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_629
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocg_68dcc2b5_tmalloc_large_L000573_640)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4g_68f73992_tmalloc_large_L000573_640)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -6897,7 +6897,7 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_629
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocg_68dcc2b5_tmalloc_large_L000573_642)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4g_68f73992_tmalloc_large_L000573_642)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
@@ -6911,15 +6911,15 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_629
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_643)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_643)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_642
+C_snr4g_68f73992_tmalloc_large_L000573_642
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_643
+C_snr4g_68f73992_tmalloc_large_L000573_643
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_640
+C_snr4g_68f73992_tmalloc_large_L000573_640
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
@@ -6927,7 +6927,7 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_640
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocg_68dcc2b5_tmalloc_large_L000573_639)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4g_68f73992_tmalloc_large_L000573_639)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -6935,7 +6935,7 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_640
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocg_68dcc2b5_tmalloc_large_L000573_646)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4g_68f73992_tmalloc_large_L000573_646)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
@@ -6949,26 +6949,26 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_640
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_639)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_639)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_646
+C_snr4g_68f73992_tmalloc_large_L000573_646
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_639)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_639)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_638
+C_snr4g_68f73992_tmalloc_large_L000573_638
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_639
+C_snr4g_68f73992_tmalloc_large_L000573_639
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_636
+C_snr4g_68f73992_tmalloc_large_L000573_636
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_626
+C_snr4g_68f73992_tmalloc_large_L000573_626
  word I16A_CMPI + (r17)<<D16A + (16)<<S16A
  alignl_p1
- long I32_BRAE + (@C_siocg_68dcc2b5_tmalloc_large_L000573_648)<<S32 ' GEU4 reg coni
+ long I32_BRAE + (@C_snr4g_68f73992_tmalloc_large_L000573_648)<<S32 ' GEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_MOV + (r20)<<D16A + (r17)<<S16A ' ADDU
@@ -6987,9 +6987,9 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_626
  word I16A_OR + (r20)<<D16A + (r18)<<S16A ' BORI/U (1)
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_649)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_649)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_648
+C_snr4g_68f73992_tmalloc_large_L000573_648
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_MOVI + (r20)<<D16A + (1)<<S16A ' reg <- coni
@@ -7013,7 +7013,7 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_648
  long I32_MOVI + RI<<D32 + (32)<<S32
  word I16A_CMP + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BRAE + (@C_siocg_68dcc2b5_tmalloc_large_L000573_650)<<S32 ' GEU4 reg coni
+ long I32_BRAE + (@C_snr4g_68f73992_tmalloc_large_L000573_650)<<S32 ' GEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r17)<<S16A
  word I16A_SHRI + (r22)<<D16A + (3)<<S16A ' SHRU4 reg coni
  word I16B_LODF + ((-16)&$1FF)<<S16B
@@ -7040,7 +7040,7 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_648
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocg_68dcc2b5_tmalloc_large_L000573_652)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4g_68f73992_tmalloc_large_L000573_652)<<S32 ' NEU4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r23)<<S16A ' reg <- INDIRU4 reg
  word I16A_MOVI + (r20)<<D16A + (1)<<S16A ' reg <- coni
  word I16B_LODF + ((-16)&$1FF)<<S16B
@@ -7049,9 +7049,9 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_648
  word I16A_OR + (r22)<<D16A + (r20)<<S16A ' BORI/U (1)
  word I16A_WRLONG + (r22)<<D16A + (r23)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_653)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_653)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_652
+C_snr4g_68f73992_tmalloc_large_L000573_652
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
@@ -7061,7 +7061,7 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_652
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocg_68dcc2b5_tmalloc_large_L000573_654)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4g_68f73992_tmalloc_large_L000573_654)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
@@ -7069,15 +7069,15 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_652
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_655)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_655)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_654
+C_snr4g_68f73992_tmalloc_large_L000573_654
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_655
+C_snr4g_68f73992_tmalloc_large_L000573_655
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_653
+C_snr4g_68f73992_tmalloc_large_L000573_653
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
@@ -7103,9 +7103,9 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_653
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_651)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_651)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_650
+C_snr4g_68f73992_tmalloc_large_L000573_650
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-12)&$1FF)<<S16B
@@ -7118,14 +7118,14 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_650
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocg_68dcc2b5_tmalloc_large_L000573_656)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4g_68f73992_tmalloc_large_L000573_656)<<S32 ' NEU4 reg coni
  word I16A_MOVI + (r22)<<D16A + (0)<<S16A ' reg <- coni
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_657)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_657)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_656
+C_snr4g_68f73992_tmalloc_large_L000573_656
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16B_LODL + (r20)<<D16B
@@ -7133,14 +7133,14 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_656
  long $ffff ' reg <- con
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRBE + (@C_siocg_68dcc2b5_tmalloc_large_L000573_658)<<S32 ' LEU4 reg reg
+ long I32_BRBE + (@C_snr4g_68f73992_tmalloc_large_L000573_658)<<S32 ' LEU4 reg reg
  word I16A_MOVI + (r22)<<D16A + (31)<<S16A ' reg <- coni
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_659)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_659)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_658
+C_snr4g_68f73992_tmalloc_large_L000573_658
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16B_LODF + ((-32)&$1FF)<<S16B
@@ -7228,9 +7228,9 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_658
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_659
+C_snr4g_68f73992_tmalloc_large_L000573_659
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_657
+C_snr4g_68f73992_tmalloc_large_L000573_657
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_MOV + (r20)<<D16A + (r22)<<S16A
@@ -7265,7 +7265,7 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_657
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocg_68dcc2b5_tmalloc_large_L000573_660)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4g_68f73992_tmalloc_large_L000573_660)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -7295,9 +7295,9 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_657
  word I16A_ADDSI + (r20)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_WRLONG + (r22)<<D16A + (r20)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_661)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_661)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_660
+C_snr4g_68f73992_tmalloc_large_L000573_660
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
@@ -7307,12 +7307,12 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_660
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_CMPI + (r22)<<D16A + (31)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocg_68dcc2b5_tmalloc_large_L000573_663)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4g_68f73992_tmalloc_large_L000573_663)<<S32 ' NEU4 reg coni
  word I16A_MOVI + (r11)<<D16A + (0)<<S16A ' reg <- coni
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_664)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_664)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_663
+C_snr4g_68f73992_tmalloc_large_L000573_663
  word I16A_MOVI + (r22)<<D16A + (31)<<S16A ' reg <- coni
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
@@ -7322,7 +7322,7 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_663
  word I16A_MOV + (r11)<<D16A + (r22)<<S16A ' SUBU
  word I16A_SUB + (r11)<<D16A + (r20)<<S16A ' SUBU (3)
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_664
+C_snr4g_68f73992_tmalloc_large_L000573_664
  word I16A_MOV + (r22)<<D16A + (r11)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + RI<<D16A + (r17)<<S16A
  word I16A_SHL + RI<<D16A + (r22)<<S16A
@@ -7330,7 +7330,7 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_664
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_665
+C_snr4g_68f73992_tmalloc_large_L000573_665
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
@@ -7339,7 +7339,7 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_665
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMP + (r22)<<D16A + (r17)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocg_68dcc2b5_tmalloc_large_L000573_669)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4g_68f73992_tmalloc_large_L000573_669)<<S32 ' EQU4 reg reg
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_SHRI + (r22)<<D16A + (31)<<S16A ' SHRU4 reg coni
@@ -7362,16 +7362,16 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_665
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocg_68dcc2b5_tmalloc_large_L000573_671)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4g_68f73992_tmalloc_large_L000573_671)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_665)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_665)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_671
+C_snr4g_68f73992_tmalloc_large_L000573_671
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -7379,7 +7379,7 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_671
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocg_68dcc2b5_tmalloc_large_L000573_673)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4g_68f73992_tmalloc_large_L000573_673)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-12)&$1FF)<<S16B
@@ -7400,15 +7400,15 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_671
  word I16A_ADDSI + (r20)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_WRLONG + (r22)<<D16A + (r20)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_667)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_667)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_673
+C_snr4g_68f73992_tmalloc_large_L000573_673
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_667)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_667)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_669
+C_snr4g_68f73992_tmalloc_large_L000573_669
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
@@ -7422,12 +7422,12 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_669
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMP + (r20)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocg_68dcc2b5_tmalloc_large_L000573_675)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4g_68f73992_tmalloc_large_L000573_675)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMP + (r20)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocg_68dcc2b5_tmalloc_large_L000573_675)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4g_68f73992_tmalloc_large_L000573_675)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-32)&$1FF)<<S16B
@@ -7458,41 +7458,41 @@ C_siocg_68dcc2b5_tmalloc_large_L000573_669
  long 0 ' reg <- con
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_667)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_667)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_675
+C_snr4g_68f73992_tmalloc_large_L000573_675
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_667
+C_snr4g_68f73992_tmalloc_large_L000573_667
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_661
+C_snr4g_68f73992_tmalloc_large_L000573_661
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_651
+C_snr4g_68f73992_tmalloc_large_L000573_651
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_649
+C_snr4g_68f73992_tmalloc_large_L000573_649
  word I16A_MOV + (r0)<<D16A + (r15)<<S16A
  word I16A_ADDSI + (r0)<<D16A + (8)<<S16A ' ADDP4 reg coni
  alignl_p1
- long I32_JMPA + (@C_siocg_68dcc2b5_tmalloc_large_L000573_574)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4g_68f73992_tmalloc_large_L000573_574)<<S32 ' JUMPV addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_612
+C_snr4g_68f73992_tmalloc_large_L000573_612
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_610
+C_snr4g_68f73992_tmalloc_large_L000573_610
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_608
+C_snr4g_68f73992_tmalloc_large_L000573_608
  word I16B_LODL + R0<<D16B
  alignl_p1
  long 0 ' RET con
  alignl_label
-C_siocg_68dcc2b5_tmalloc_large_L000573_574
+C_snr4g_68f73992_tmalloc_large_L000573_574
  word I16B_POPM + 8<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677 ' <symbol:tmalloc_small>
+C_snr4h_68f73992_tmalloc_small_L000677 ' <symbol:tmalloc_small>
  alignl_p1
  long I32_NEWF + 32<<S32
  alignl_p1
@@ -7574,9 +7574,9 @@ C_sioch_68dcc2b5_tmalloc_small_L000677 ' <symbol:tmalloc_small>
  word I16A_MOV + (r17)<<D16A + (r22)<<S16A ' SUBU
  word I16A_SUB + (r17)<<D16A + (r21)<<S16A ' SUBU (3)
  alignl_p1
- long I32_JMPA + (@C_sioch_68dcc2b5_tmalloc_small_L000677_680)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4h_68f73992_tmalloc_small_L000677_680)<<S32 ' JUMPV addrg
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_679
+C_snr4h_68f73992_tmalloc_small_L000677_679
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -7586,43 +7586,43 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_679
  word I16A_SUB + (r13)<<D16A + (r21)<<S16A ' SUBU (3)
  word I16A_CMP + (r13)<<D16A + (r17)<<S16A
  alignl_p1
- long I32_BRAE + (@C_sioch_68dcc2b5_tmalloc_small_L000677_683)<<S32 ' GEU4 reg reg
+ long I32_BRAE + (@C_snr4h_68f73992_tmalloc_small_L000677_683)<<S32 ' GEU4 reg reg
  word I16A_MOV + (r17)<<D16A + (r13)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r15)<<D16A + (r19)<<S16A ' CVI, CVU or LOAD
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_683
+C_snr4h_68f73992_tmalloc_small_L000677_683
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_680
+C_snr4h_68f73992_tmalloc_small_L000677_680
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioch_68dcc2b5_tmalloc_small_L000677_685)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4h_68f73992_tmalloc_small_L000677_685)<<S32 ' EQU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r13)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  alignl_p1
- long I32_JMPA + (@C_sioch_68dcc2b5_tmalloc_small_L000677_686)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4h_68f73992_tmalloc_small_L000677_686)<<S32 ' JUMPV addrg
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_685
+C_snr4h_68f73992_tmalloc_small_L000677_685
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r13)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_686
+C_snr4h_68f73992_tmalloc_small_L000677_686
  word I16A_MOV + (r19)<<D16A + (r13)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r22)<<D16A + (r13)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioch_68dcc2b5_tmalloc_small_L000677_679)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4h_68f73992_tmalloc_small_L000677_679)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r20)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioch_68dcc2b5_tmalloc_small_L000677_687)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4h_68f73992_tmalloc_small_L000677_687)<<S32 ' LTU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r21)<<S16A ' ADDI/P
  word I16A_ADDS + (r22)<<D16A + (r15)<<S16A ' ADDI/P (3)
  word I16B_LODF + ((-16)&$1FF)<<S16B
@@ -7632,7 +7632,7 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_686
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRAE + (@C_sioch_68dcc2b5_tmalloc_small_L000677_689)<<S32 ' GEU4 reg reg
+ long I32_BRAE + (@C_snr4h_68f73992_tmalloc_small_L000677_689)<<S32 ' GEU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (24)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
@@ -7644,7 +7644,7 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_686
  word I16A_MOV + (r20)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioch_68dcc2b5_tmalloc_small_L000677_691)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4h_68f73992_tmalloc_small_L000677_691)<<S32 ' EQU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
@@ -7663,19 +7663,19 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_686
  word I16A_RDLONG + (r18)<<D16A + (r18)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioch_68dcc2b5_tmalloc_small_L000677_693)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4h_68f73992_tmalloc_small_L000677_693)<<S32 ' LTU4 reg reg
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r15)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioch_68dcc2b5_tmalloc_small_L000677_693)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4h_68f73992_tmalloc_small_L000677_693)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r15)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioch_68dcc2b5_tmalloc_small_L000677_693)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4h_68f73992_tmalloc_small_L000677_693)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
@@ -7689,15 +7689,15 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_686
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioch_68dcc2b5_tmalloc_small_L000677_692)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4h_68f73992_tmalloc_small_L000677_692)<<S32 ' JUMPV addrg
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_693
+C_snr4h_68f73992_tmalloc_small_L000677_693
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_sioch_68dcc2b5_tmalloc_small_L000677_692)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4h_68f73992_tmalloc_small_L000677_692)<<S32 ' JUMPV addrg
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_691
+C_snr4h_68f73992_tmalloc_small_L000677_691
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
  word I16B_LODF + ((-28)&$1FF)<<S16B
@@ -7707,7 +7707,7 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_691
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioch_68dcc2b5_tmalloc_small_L000677_697)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4h_68f73992_tmalloc_small_L000677_697)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16B_LODF + ((-28)&$1FF)<<S16B
@@ -7717,13 +7717,13 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_691
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioch_68dcc2b5_tmalloc_small_L000677_695)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4h_68f73992_tmalloc_small_L000677_695)<<S32 ' EQU4 reg coni
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_697
+C_snr4h_68f73992_tmalloc_small_L000677_697
  alignl_p1
- long I32_JMPA + (@C_sioch_68dcc2b5_tmalloc_small_L000677_699)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4h_68f73992_tmalloc_small_L000677_699)<<S32 ' JUMPV addrg
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_698
+C_snr4h_68f73992_tmalloc_small_L000677_698
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-28)&$1FF)<<S16B
@@ -7732,7 +7732,7 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_698
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_699
+C_snr4h_68f73992_tmalloc_small_L000677_699
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r22)<<S16A
@@ -7742,14 +7742,14 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_699
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMPI + (r20)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioch_68dcc2b5_tmalloc_small_L000677_698)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4h_68f73992_tmalloc_small_L000677_698)<<S32 ' NEU4 reg coni
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioch_68dcc2b5_tmalloc_small_L000677_698)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4h_68f73992_tmalloc_small_L000677_698)<<S32 ' NEU4 reg coni
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -7757,7 +7757,7 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_699
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioch_68dcc2b5_tmalloc_small_L000677_701)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4h_68f73992_tmalloc_small_L000677_701)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODL + (r20)<<D16B
@@ -7765,22 +7765,22 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_699
  long 0 ' reg <- con
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioch_68dcc2b5_tmalloc_small_L000677_702)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4h_68f73992_tmalloc_small_L000677_702)<<S32 ' JUMPV addrg
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_701
+C_snr4h_68f73992_tmalloc_small_L000677_701
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_702
+C_snr4h_68f73992_tmalloc_small_L000677_702
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_695
+C_snr4h_68f73992_tmalloc_small_L000677_695
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_692
+C_snr4h_68f73992_tmalloc_small_L000677_692
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioch_68dcc2b5_tmalloc_small_L000677_703)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4h_68f73992_tmalloc_small_L000677_703)<<S32 ' EQU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (28)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -7797,7 +7797,7 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_692
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioch_68dcc2b5_tmalloc_small_L000677_705)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4h_68f73992_tmalloc_small_L000677_705)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-28)&$1FF)<<S16B
@@ -7805,7 +7805,7 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_692
  word I16A_WRLONG + (r22)<<D16A + (r20)<<S16A ' ASGNP4 reg reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioch_68dcc2b5_tmalloc_small_L000677_706)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4h_68f73992_tmalloc_small_L000677_706)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -7818,9 +7818,9 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_692
  word I16A_AND + (r20)<<D16A + (r18)<<S16A ' BANDI/U (1)
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioch_68dcc2b5_tmalloc_small_L000677_706)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4h_68f73992_tmalloc_small_L000677_706)<<S32 ' JUMPV addrg
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_705
+C_snr4h_68f73992_tmalloc_small_L000677_705
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -7828,7 +7828,7 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_705
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioch_68dcc2b5_tmalloc_small_L000677_709)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4h_68f73992_tmalloc_small_L000677_709)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
@@ -7836,7 +7836,7 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_705
  word I16A_MOV + (r20)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioch_68dcc2b5_tmalloc_small_L000677_711)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4h_68f73992_tmalloc_small_L000677_711)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
@@ -7844,9 +7844,9 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_705
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioch_68dcc2b5_tmalloc_small_L000677_710)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4h_68f73992_tmalloc_small_L000677_710)<<S32 ' JUMPV addrg
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_711
+C_snr4h_68f73992_tmalloc_small_L000677_711
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
@@ -7854,20 +7854,20 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_711
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioch_68dcc2b5_tmalloc_small_L000677_710)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4h_68f73992_tmalloc_small_L000677_710)<<S32 ' JUMPV addrg
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_709
+C_snr4h_68f73992_tmalloc_small_L000677_709
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_710
+C_snr4h_68f73992_tmalloc_small_L000677_710
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_706
+C_snr4h_68f73992_tmalloc_small_L000677_706
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioch_68dcc2b5_tmalloc_small_L000677_713)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4h_68f73992_tmalloc_small_L000677_713)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -7875,7 +7875,7 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_706
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioch_68dcc2b5_tmalloc_small_L000677_715)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4h_68f73992_tmalloc_small_L000677_715)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (24)<<S16A ' ADDP4 reg coni
@@ -7889,7 +7889,7 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_706
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioch_68dcc2b5_tmalloc_small_L000677_717)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4h_68f73992_tmalloc_small_L000677_717)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -7897,7 +7897,7 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_706
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioch_68dcc2b5_tmalloc_small_L000677_719)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4h_68f73992_tmalloc_small_L000677_719)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
@@ -7911,15 +7911,15 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_706
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioch_68dcc2b5_tmalloc_small_L000677_720)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4h_68f73992_tmalloc_small_L000677_720)<<S32 ' JUMPV addrg
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_719
+C_snr4h_68f73992_tmalloc_small_L000677_719
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_720
+C_snr4h_68f73992_tmalloc_small_L000677_720
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_717
+C_snr4h_68f73992_tmalloc_small_L000677_717
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
@@ -7927,7 +7927,7 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_717
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioch_68dcc2b5_tmalloc_small_L000677_716)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4h_68f73992_tmalloc_small_L000677_716)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-36)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -7935,7 +7935,7 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_717
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioch_68dcc2b5_tmalloc_small_L000677_723)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4h_68f73992_tmalloc_small_L000677_723)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
@@ -7949,26 +7949,26 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_717
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioch_68dcc2b5_tmalloc_small_L000677_716)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4h_68f73992_tmalloc_small_L000677_716)<<S32 ' JUMPV addrg
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_723
+C_snr4h_68f73992_tmalloc_small_L000677_723
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_sioch_68dcc2b5_tmalloc_small_L000677_716)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4h_68f73992_tmalloc_small_L000677_716)<<S32 ' JUMPV addrg
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_715
+C_snr4h_68f73992_tmalloc_small_L000677_715
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_716
+C_snr4h_68f73992_tmalloc_small_L000677_716
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_713
+C_snr4h_68f73992_tmalloc_small_L000677_713
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_703
+C_snr4h_68f73992_tmalloc_small_L000677_703
  word I16A_CMPI + (r17)<<D16A + (16)<<S16A
  alignl_p1
- long I32_BRAE + (@C_sioch_68dcc2b5_tmalloc_small_L000677_725)<<S32 ' GEU4 reg coni
+ long I32_BRAE + (@C_snr4h_68f73992_tmalloc_small_L000677_725)<<S32 ' GEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_MOV + (r20)<<D16A + (r17)<<S16A ' ADDU
@@ -7987,9 +7987,9 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_703
  word I16A_OR + (r20)<<D16A + (r18)<<S16A ' BORI/U (1)
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioch_68dcc2b5_tmalloc_small_L000677_726)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4h_68f73992_tmalloc_small_L000677_726)<<S32 ' JUMPV addrg
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_725
+C_snr4h_68f73992_tmalloc_small_L000677_725
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_MOVI + (r20)<<D16A + (1)<<S16A ' reg <- coni
@@ -8016,7 +8016,7 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_725
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioch_68dcc2b5_tmalloc_small_L000677_727)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4h_68f73992_tmalloc_small_L000677_727)<<S32 ' EQU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
@@ -8049,7 +8049,7 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_725
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioch_68dcc2b5_tmalloc_small_L000677_729)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4h_68f73992_tmalloc_small_L000677_729)<<S32 ' NEU4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r23)<<S16A ' reg <- INDIRU4 reg
  word I16A_MOVI + (r20)<<D16A + (1)<<S16A ' reg <- coni
  word I16B_LODF + ((-32)&$1FF)<<S16B
@@ -8058,9 +8058,9 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_725
  word I16A_OR + (r22)<<D16A + (r20)<<S16A ' BORI/U (1)
  word I16A_WRLONG + (r22)<<D16A + (r23)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioch_68dcc2b5_tmalloc_small_L000677_730)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4h_68f73992_tmalloc_small_L000677_730)<<S32 ' JUMPV addrg
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_729
+C_snr4h_68f73992_tmalloc_small_L000677_729
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
@@ -8070,7 +8070,7 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_729
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioch_68dcc2b5_tmalloc_small_L000677_731)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4h_68f73992_tmalloc_small_L000677_731)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
@@ -8078,15 +8078,15 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_729
  word I16B_LODF + ((-36)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_sioch_68dcc2b5_tmalloc_small_L000677_732)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4h_68f73992_tmalloc_small_L000677_732)<<S32 ' JUMPV addrg
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_731
+C_snr4h_68f73992_tmalloc_small_L000677_731
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_732
+C_snr4h_68f73992_tmalloc_small_L000677_732
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_730
+C_snr4h_68f73992_tmalloc_small_L000677_730
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
@@ -8112,7 +8112,7 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_730
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_727
+C_snr4h_68f73992_tmalloc_small_L000677_727
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_WRLONG + (r17)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
@@ -8122,22 +8122,22 @@ C_sioch_68dcc2b5_tmalloc_small_L000677_727
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_726
+C_snr4h_68f73992_tmalloc_small_L000677_726
  word I16A_MOV + (r0)<<D16A + (r15)<<S16A
  word I16A_ADDSI + (r0)<<D16A + (8)<<S16A ' ADDP4 reg coni
  alignl_p1
- long I32_JMPA + (@C_sioch_68dcc2b5_tmalloc_small_L000677_678)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4h_68f73992_tmalloc_small_L000677_678)<<S32 ' JUMPV addrg
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_689
+C_snr4h_68f73992_tmalloc_small_L000677_689
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_687
+C_snr4h_68f73992_tmalloc_small_L000677_687
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  word I16B_LODL + R0<<D16B
  alignl_p1
  long 0 ' RET con
  alignl_label
-C_sioch_68dcc2b5_tmalloc_small_L000677_678
+C_snr4h_68f73992_tmalloc_small_L000677_678
  word I16B_POPM + 8<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
@@ -8177,7 +8177,7 @@ C_hub_malloc_740
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
@@ -8207,7 +8207,7 @@ C_hub_malloc_740
  word I16A_SHLI + (r22)<<D16A + (2)<<S16A ' SHLU4 reg coni
  word I16B_LODL + (r20)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004+40 ' reg <- addrg
+ long @C_snr41_68f73992__gm__L000004+40 ' reg <- addrg
  word I16A_ADDS + (r22)<<D16A + (r20)<<S16A ' ADDI/P (1)
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
@@ -8232,7 +8232,7 @@ C_hub_malloc_740
  long I32_BRNZ + (@C_hub_malloc_744)<<S32 ' NEU4 reg reg
  word I16B_LODL + (r22)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004 ' reg <- addrg
+ long @C_snr41_68f73992__gm__L000004 ' reg <- addrg
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16A_MOVI + (r20)<<D16A + (1)<<S16A ' reg <- coni
  word I16B_LODF + ((-12)&$1FF)<<S16B
@@ -8241,7 +8241,7 @@ C_hub_malloc_740
  word I16B_CPL + (r20)<<D16B ' BCOMU4
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  alignl_p1
  long I32_JMPA + (@C_hub_malloc_745)<<S32 ' JUMPV addrg
@@ -8251,7 +8251,7 @@ C_hub_malloc_744
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+16)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+16)<<S32
  word I16A_MOV + (r18)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
@@ -8317,7 +8317,7 @@ C_hub_malloc_745
  alignl_label
 C_hub_malloc_741
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+8)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+8)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_CMP + (r21)<<D16A + (r22)<<S16A
  alignl_p1
@@ -8460,7 +8460,7 @@ C_hub_malloc_741
  word I16A_SHLI + (r22)<<D16A + (2)<<S16A ' SHLU4 reg coni
  word I16B_LODL + (r20)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004+40 ' reg <- addrg
+ long @C_snr41_68f73992__gm__L000004+40 ' reg <- addrg
  word I16A_ADDS + (r22)<<D16A + (r20)<<S16A ' ADDI/P (1)
  word I16B_LODF + ((-40)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
@@ -8485,7 +8485,7 @@ C_hub_malloc_741
  long I32_BRNZ + (@C_hub_malloc_756)<<S32 ' NEU4 reg reg
  word I16B_LODL + (r22)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004 ' reg <- addrg
+ long @C_snr41_68f73992__gm__L000004 ' reg <- addrg
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16A_MOVI + (r20)<<D16A + (1)<<S16A ' reg <- coni
  word I16B_LODF + ((-32)&$1FF)<<S16B
@@ -8494,7 +8494,7 @@ C_hub_malloc_741
  word I16B_CPL + (r20)<<D16B ' BCOMU4
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  alignl_p1
  long I32_JMPA + (@C_hub_malloc_757)<<S32 ' JUMPV addrg
@@ -8504,7 +8504,7 @@ C_hub_malloc_756
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+16)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+16)<<S32
  word I16A_MOV + (r18)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
@@ -8600,7 +8600,7 @@ C_hub_malloc_761
  word I16A_ADDS + (r20)<<D16A + (r22)<<S16A ' ADDI/P (2)
  word I16A_WRLONG + (r22)<<D16A + (r20)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+8)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+8)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16B_LODF + ((-48)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
@@ -8610,7 +8610,7 @@ C_hub_malloc_761
  alignl_p1
  long I32_BR_Z + (@C_hub_malloc_764)<<S32 ' EQU4 reg coni
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+20)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+20)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16B_LODF + ((-52)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
@@ -8625,7 +8625,7 @@ C_hub_malloc_761
  word I16A_SHLI + (r22)<<D16A + (2)<<S16A ' SHLU4 reg coni
  word I16B_LODL + (r20)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004+40 ' reg <- addrg
+ long @C_snr41_68f73992__gm__L000004+40 ' reg <- addrg
  word I16A_ADDS + (r22)<<D16A + (r20)<<S16A ' ADDI/P (1)
  word I16B_LODF + ((-56)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
@@ -8634,7 +8634,7 @@ C_hub_malloc_761
  word I16B_LODF + ((-64)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_MOVI + (r20)<<D16A + (1)<<S16A ' reg <- coni
  word I16B_LODF + ((-60)&$1FF)<<S16B
@@ -8646,7 +8646,7 @@ C_hub_malloc_761
  long I32_BRNZ + (@C_hub_malloc_768)<<S32 ' NEU4 reg coni
  word I16B_LODL + (r22)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004 ' reg <- addrg
+ long @C_snr41_68f73992__gm__L000004 ' reg <- addrg
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16A_MOVI + (r20)<<D16A + (1)<<S16A ' reg <- coni
  word I16B_LODF + ((-60)&$1FF)<<S16B
@@ -8654,7 +8654,7 @@ C_hub_malloc_761
  word I16A_SHL + (r20)<<D16A + (r18)<<S16A ' LSHI/U (1)
  word I16A_OR + (r22)<<D16A + (r20)<<S16A ' BORI/U (1)
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  alignl_p1
  long I32_JMPA + (@C_hub_malloc_769)<<S32 ' JUMPV addrg
@@ -8665,7 +8665,7 @@ C_hub_malloc_768
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+16)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+16)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
@@ -8715,12 +8715,12 @@ C_hub_malloc_764
  word I16B_LODF + ((-36)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004+8)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004+8)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  word I16B_LODF + ((-44)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004+20)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004+20)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrg reg
  alignl_label
 C_hub_malloc_762
@@ -8734,7 +8734,7 @@ C_hub_malloc_762
  alignl_label
 C_hub_malloc_753
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+4)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+4)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
@@ -8742,10 +8742,10 @@ C_hub_malloc_753
  word I16A_MOV + (r2)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16B_LODL + (r3)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004 ' reg ARG ADDRG
+ long @C_snr41_68f73992__gm__L000004 ' reg ARG ADDRG
  word I16B_CPREP + 33<<S16B ' arg size, rpsize = 8, spsize = 8
  alignl_p1
- long I32_CALA + (@C_sioch_68dcc2b5_tmalloc_small_L000677)<<S32
+ long I32_CALA + (@C_snr4h_68f73992_tmalloc_small_L000677)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_WRLONG + (r0)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
@@ -8775,7 +8775,7 @@ C_hub_malloc_778
  word I16A_MOV + (r21)<<D16A + (r22)<<S16A ' BANDI/U
  word I16A_AND + (r21)<<D16A + (r20)<<S16A ' BANDI/U (3)
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+4)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+4)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
@@ -8783,10 +8783,10 @@ C_hub_malloc_778
  word I16A_MOV + (r2)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16B_LODL + (r3)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004 ' reg ARG ADDRG
+ long @C_snr41_68f73992__gm__L000004 ' reg ARG ADDRG
  word I16B_CPREP + 33<<S16B ' arg size, rpsize = 8, spsize = 8
  alignl_p1
- long I32_CALA + (@C_siocg_68dcc2b5_tmalloc_large_L000573)<<S32
+ long I32_CALA + (@C_snr4g_68f73992_tmalloc_large_L000573)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_WRLONG + (r0)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
@@ -8803,19 +8803,19 @@ C_hub_malloc_779
  alignl_label
 C_hub_malloc_737
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+8)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+8)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_CMP + (r21)<<D16A + (r22)<<S16A
  alignl_p1
  long I32_BR_A + (@C_hub_malloc_783)<<S32 ' GTU4 reg reg
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+8)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+8)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_SUB + (r22)<<D16A + (r21)<<S16A ' SUBU (1)
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+20)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+20)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
@@ -8828,14 +8828,14 @@ C_hub_malloc_737
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDS + (r22)<<D16A + (r21)<<S16A ' ADDI/P (2)
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004+20)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004+20)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrg reg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004+8)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004+8)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
@@ -8864,19 +8864,19 @@ C_hub_malloc_737
  alignl_label
 C_hub_malloc_788
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+8)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+8)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  word I16A_MOVI + (r22)<<D16A + (0)<<S16A ' reg <- coni
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004+8)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004+8)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  word I16B_LODL + (r22)<<D16B
  alignl_p1
  long 0 ' reg <- con
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004+20)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004+20)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrg reg
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
@@ -8910,23 +8910,23 @@ C_hub_malloc_789
  alignl_label
 C_hub_malloc_783
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+12)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+12)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_CMP + (r21)<<D16A + (r22)<<S16A
  alignl_p1
  long I32_BRAE + (@C_hub_malloc_795)<<S32 ' GEU4 reg reg
  word I16B_LODL + (r22)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004+12 ' reg <- addrg
+ long @C_snr41_68f73992__gm__L000004+12 ' reg <- addrg
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16A_SUB + (r22)<<D16A + (r21)<<S16A ' SUBU (1)
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004+12)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004+12)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+24)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+24)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
@@ -8934,7 +8934,7 @@ C_hub_malloc_783
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDS + (r22)<<D16A + (r21)<<S16A ' ADDI/P (2)
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004+24)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004+24)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrg reg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
@@ -8966,10 +8966,10 @@ C_hub_malloc_795
  word I16A_MOV + (r2)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16B_LODL + (r3)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004 ' reg ARG ADDRG
+ long @C_snr41_68f73992__gm__L000004 ' reg ARG ADDRG
  word I16B_CPREP + 33<<S16B ' arg size, rpsize = 8, spsize = 8
  alignl_p1
- long I32_CALA + (@C_siocc_68dcc2b5_sys_alloc_L000232)<<S32
+ long I32_CALA + (@C_snr4c_68f73992_sys_alloc_L000232)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_WRLONG + (r0)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
@@ -9009,7 +9009,7 @@ C_hub_free ' <symbol:hub_free>
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+16)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+16)<<S32
  word I16A_MOV + (r18)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
@@ -9071,13 +9071,13 @@ C_hub_free ' <symbol:hub_free>
  long I32_JMPA + (@C_hub_free_816)<<S32 ' JUMPV addrg
  word I16B_LODL + (r22)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004+432 ' reg <- addrg
+ long @C_snr41_68f73992__gm__L000004+432 ' reg <- addrg
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_SUB + (r22)<<D16A + (r20)<<S16A ' SUBU (1)
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004+432)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004+432)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  alignl_p1
  long I32_JMPA + (@C_hub_free_816)<<S32 ' JUMPV addrg
@@ -9102,7 +9102,7 @@ C_hub_free_811
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+16)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+16)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
@@ -9110,7 +9110,7 @@ C_hub_free_811
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+20)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+20)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
@@ -9149,13 +9149,13 @@ C_hub_free_811
  word I16A_SHLI + (r18)<<D16A + (2)<<S16A ' SHLU4 reg coni
  word I16B_LODL + (r16)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004+40 ' reg <- addrg
+ long @C_snr41_68f73992__gm__L000004+40 ' reg <- addrg
  word I16A_ADDS + (r18)<<D16A + (r16)<<S16A ' ADDI/P (1)
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
  long I32_BR_Z + (@C_hub_free_829)<<S32 ' EQU4 reg reg
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+16)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+16)<<S32
  word I16A_MOV + (r18)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
@@ -9178,7 +9178,7 @@ C_hub_free_829
  long I32_BRNZ + (@C_hub_free_830)<<S32 ' NEU4 reg reg
  word I16B_LODL + (r22)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004 ' reg <- addrg
+ long @C_snr41_68f73992__gm__L000004 ' reg <- addrg
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16A_MOVI + (r20)<<D16A + (1)<<S16A ' reg <- coni
  word I16B_LODF + ((-36)&$1FF)<<S16B
@@ -9187,7 +9187,7 @@ C_hub_free_829
  word I16B_CPL + (r20)<<D16B ' BCOMU4
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  alignl_p1
  long I32_JMPA + (@C_hub_free_818)<<S32 ' JUMPV addrg
@@ -9202,13 +9202,13 @@ C_hub_free_830
  word I16A_SHLI + (r18)<<D16A + (2)<<S16A ' SHLU4 reg coni
  word I16B_LODL + (r16)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004+40 ' reg <- addrg
+ long @C_snr41_68f73992__gm__L000004+40 ' reg <- addrg
  word I16A_ADDS + (r18)<<D16A + (r16)<<S16A ' ADDI/P (1)
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
  long I32_BR_Z + (@C_hub_free_836)<<S32 ' EQU4 reg reg
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+16)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+16)<<S32
  word I16A_MOV + (r18)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
@@ -9284,7 +9284,7 @@ C_hub_free_823
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+16)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+16)<<S32
  word I16A_MOV + (r18)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
@@ -9381,7 +9381,7 @@ C_hub_free_846
  word I16B_LODF + ((-40)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+16)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+16)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
@@ -9416,7 +9416,7 @@ C_hub_free_838
  word I16A_SHLI + (r22)<<D16A + (2)<<S16A ' SHLU4 reg coni
  word I16B_LODL + (r20)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004+304 ' reg <- addrg
+ long @C_snr41_68f73992__gm__L000004+304 ' reg <- addrg
  word I16A_ADDS + (r22)<<D16A + (r20)<<S16A ' ADDI/P (1)
  word I16B_LODF + ((-40)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
@@ -9438,7 +9438,7 @@ C_hub_free_838
  long I32_BRNZ + (@C_hub_free_855)<<S32 ' NEU4 reg coni
  word I16B_LODL + (r22)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004+4 ' reg <- addrg
+ long @C_snr41_68f73992__gm__L000004+4 ' reg <- addrg
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16A_MOVI + (r20)<<D16A + (1)<<S16A ' reg <- coni
  word I16B_LODF + ((-28)&$1FF)<<S16B
@@ -9449,7 +9449,7 @@ C_hub_free_838
  word I16B_CPL + (r20)<<D16B ' BCOMU4
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004+4)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004+4)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  alignl_p1
  long I32_JMPA + (@C_hub_free_855)<<S32 ' JUMPV addrg
@@ -9458,7 +9458,7 @@ C_hub_free_854
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+16)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+16)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
@@ -9506,7 +9506,7 @@ C_hub_free_855
  word I16B_LODF + ((-36)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+16)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+16)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
@@ -9529,7 +9529,7 @@ C_hub_free_855
  word I16B_LODF + ((-44)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+16)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+16)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
@@ -9568,7 +9568,7 @@ C_hub_free_869
  word I16B_LODF + ((-48)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+16)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+16)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
@@ -9613,7 +9613,7 @@ C_hub_free_820
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004+8)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004+8)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
@@ -9669,27 +9669,27 @@ C_hub_free_809
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+24)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+24)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
  long I32_BRNZ + (@C_hub_free_887)<<S32 ' NEU4 reg reg
  word I16B_LODL + (r22)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004+12 ' reg <- addrg
+ long @C_snr41_68f73992__gm__L000004+12 ' reg <- addrg
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_ADD + (r22)<<D16A + (r20)<<S16A ' ADDU (1)
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004+12)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004+12)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004+24)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004+24)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrg reg
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
@@ -9702,7 +9702,7 @@ C_hub_free_809
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+20)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+20)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
@@ -9711,11 +9711,11 @@ C_hub_free_809
  alignl_p1
  long 0 ' reg <- con
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004+20)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004+20)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrg reg
  word I16A_MOVI + (r22)<<D16A + (0)<<S16A ' reg <- coni
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004+8)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004+8)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  alignl_label
 C_hub_free_892
@@ -9724,10 +9724,10 @@ C_hub_free_892
  word I16A_MOVI + (r2)<<D16A + (0)<<S16A ' reg ARG coni
  word I16B_LODL + (r3)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004 ' reg ARG ADDRG
+ long @C_snr41_68f73992__gm__L000004 ' reg ARG ADDRG
  word I16B_CPREP + 33<<S16B ' arg size, rpsize = 8, spsize = 8
  alignl_p1
- long I32_CALA + (@C_sioce_68dcc2b5_sys_trim_L000399)<<S32
+ long I32_CALA + (@C_snr4e_68f73992_sys_trim_L000399)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  alignl_p1
  long I32_JMPA + (@C_hub_free_816)<<S32 ' JUMPV addrg
@@ -9736,27 +9736,27 @@ C_hub_free_887
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+20)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+20)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
  long I32_BRNZ + (@C_hub_free_899)<<S32 ' NEU4 reg reg
  word I16B_LODL + (r22)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004+8 ' reg <- addrg
+ long @C_snr41_68f73992__gm__L000004+8 ' reg <- addrg
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_ADD + (r22)<<D16A + (r20)<<S16A ' ADDU (1)
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004+8)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004+8)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004+20)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004+20)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrg reg
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
@@ -9823,13 +9823,13 @@ C_hub_free_899
  word I16A_SHLI + (r18)<<D16A + (2)<<S16A ' SHLU4 reg coni
  word I16B_LODL + (r16)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004+40 ' reg <- addrg
+ long @C_snr41_68f73992__gm__L000004+40 ' reg <- addrg
  word I16A_ADDS + (r18)<<D16A + (r16)<<S16A ' ADDI/P (1)
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
  long I32_BR_Z + (@C_hub_free_910)<<S32 ' EQU4 reg reg
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+16)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+16)<<S32
  word I16A_MOV + (r18)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
@@ -9852,7 +9852,7 @@ C_hub_free_910
  long I32_BRNZ + (@C_hub_free_911)<<S32 ' NEU4 reg reg
  word I16B_LODL + (r22)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004 ' reg <- addrg
+ long @C_snr41_68f73992__gm__L000004 ' reg <- addrg
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16A_MOVI + (r20)<<D16A + (1)<<S16A ' reg <- coni
  word I16B_LODF + ((-32)&$1FF)<<S16B
@@ -9861,7 +9861,7 @@ C_hub_free_910
  word I16B_CPL + (r20)<<D16B ' BCOMU4
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  alignl_p1
  long I32_JMPA + (@C_hub_free_905)<<S32 ' JUMPV addrg
@@ -9876,13 +9876,13 @@ C_hub_free_911
  word I16A_SHLI + (r18)<<D16A + (2)<<S16A ' SHLU4 reg coni
  word I16B_LODL + (r16)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004+40 ' reg <- addrg
+ long @C_snr41_68f73992__gm__L000004+40 ' reg <- addrg
  word I16A_ADDS + (r18)<<D16A + (r16)<<S16A ' ADDI/P (1)
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
  long I32_BR_Z + (@C_hub_free_917)<<S32 ' EQU4 reg reg
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+16)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+16)<<S32
  word I16A_MOV + (r18)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
@@ -9958,7 +9958,7 @@ C_hub_free_904
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+16)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+16)<<S32
  word I16A_MOV + (r18)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
@@ -10055,7 +10055,7 @@ C_hub_free_927
  word I16B_LODF + ((-36)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+16)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+16)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
@@ -10090,7 +10090,7 @@ C_hub_free_919
  word I16A_SHLI + (r22)<<D16A + (2)<<S16A ' SHLU4 reg coni
  word I16B_LODL + (r20)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004+304 ' reg <- addrg
+ long @C_snr41_68f73992__gm__L000004+304 ' reg <- addrg
  word I16A_ADDS + (r22)<<D16A + (r20)<<S16A ' ADDI/P (1)
  word I16B_LODF + ((-36)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
@@ -10112,7 +10112,7 @@ C_hub_free_919
  long I32_BRNZ + (@C_hub_free_936)<<S32 ' NEU4 reg coni
  word I16B_LODL + (r22)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004+4 ' reg <- addrg
+ long @C_snr41_68f73992__gm__L000004+4 ' reg <- addrg
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16A_MOVI + (r20)<<D16A + (1)<<S16A ' reg <- coni
  word I16B_LODF + ((-24)&$1FF)<<S16B
@@ -10123,7 +10123,7 @@ C_hub_free_919
  word I16B_CPL + (r20)<<D16B ' BCOMU4
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004+4)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004+4)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  alignl_p1
  long I32_JMPA + (@C_hub_free_936)<<S32 ' JUMPV addrg
@@ -10132,7 +10132,7 @@ C_hub_free_935
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+16)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+16)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
@@ -10180,7 +10180,7 @@ C_hub_free_936
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+16)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+16)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
@@ -10203,7 +10203,7 @@ C_hub_free_936
  word I16B_LODF + ((-40)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+16)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+16)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
@@ -10242,7 +10242,7 @@ C_hub_free_950
  word I16B_LODF + ((-44)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+16)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+16)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
@@ -10296,7 +10296,7 @@ C_hub_free_905
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+20)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+20)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
@@ -10304,7 +10304,7 @@ C_hub_free_905
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004+8)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004+8)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  alignl_p1
  long I32_JMPA + (@C_hub_free_816)<<S32 ' JUMPV addrg
@@ -10352,7 +10352,7 @@ C_hub_free_886
  word I16A_SHLI + (r22)<<D16A + (2)<<S16A ' SHLU4 reg coni
  word I16B_LODL + (r20)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004+40 ' reg <- addrg
+ long @C_snr41_68f73992__gm__L000004+40 ' reg <- addrg
  word I16A_ADDS + (r22)<<D16A + (r20)<<S16A ' ADDI/P (1)
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
@@ -10361,7 +10361,7 @@ C_hub_free_886
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_MOVI + (r20)<<D16A + (1)<<S16A ' reg <- coni
  word I16B_LODF + ((-24)&$1FF)<<S16B
@@ -10373,7 +10373,7 @@ C_hub_free_886
  long I32_BRNZ + (@C_hub_free_967)<<S32 ' NEU4 reg coni
  word I16B_LODL + (r22)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004 ' reg <- addrg
+ long @C_snr41_68f73992__gm__L000004 ' reg <- addrg
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16A_MOVI + (r20)<<D16A + (1)<<S16A ' reg <- coni
  word I16B_LODF + ((-24)&$1FF)<<S16B
@@ -10381,7 +10381,7 @@ C_hub_free_886
  word I16A_SHL + (r20)<<D16A + (r18)<<S16A ' LSHI/U (1)
  word I16A_OR + (r22)<<D16A + (r20)<<S16A ' BORI/U (1)
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  alignl_p1
  long I32_JMPA + (@C_hub_free_968)<<S32 ' JUMPV addrg
@@ -10392,7 +10392,7 @@ C_hub_free_967
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+16)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+16)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
@@ -10575,7 +10575,7 @@ C_hub_free_973
  word I16A_SHLI + (r20)<<D16A + (2)<<S16A ' SHLU4 reg coni
  word I16B_LODL + (r18)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004+304 ' reg <- addrg
+ long @C_snr41_68f73992__gm__L000004+304 ' reg <- addrg
  word I16A_ADDS + (r20)<<D16A + (r18)<<S16A ' ADDI/P (1)
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_WRLONG + (r20)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
@@ -10594,7 +10594,7 @@ C_hub_free_973
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+4)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+4)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_MOVI + (r20)<<D16A + (1)<<S16A ' reg <- coni
  word I16B_LODF + ((-24)&$1FF)<<S16B
@@ -10606,7 +10606,7 @@ C_hub_free_973
  long I32_BRNZ + (@C_hub_free_977)<<S32 ' NEU4 reg coni
  word I16B_LODL + (r22)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004+4 ' reg <- addrg
+ long @C_snr41_68f73992__gm__L000004+4 ' reg <- addrg
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16A_MOVI + (r20)<<D16A + (1)<<S16A ' reg <- coni
  word I16B_LODF + ((-24)&$1FF)<<S16B
@@ -10614,7 +10614,7 @@ C_hub_free_973
  word I16A_SHL + (r20)<<D16A + (r18)<<S16A ' LSHI/U (1)
  word I16A_OR + (r22)<<D16A + (r20)<<S16A ' BORI/U (1)
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004+4)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004+4)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
@@ -10718,7 +10718,7 @@ C_hub_free_990
  word I16B_LODF + ((-40)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+16)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+16)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
@@ -10761,7 +10761,7 @@ C_hub_free_988
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+16)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+16)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
@@ -10769,7 +10769,7 @@ C_hub_free_988
  word I16B_LODF + ((-40)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+16)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+16)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
@@ -10815,21 +10815,21 @@ C_hub_free_986
 C_hub_free_978
  word I16B_LODL + (r22)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004+32 ' reg <- addrg
+ long @C_snr41_68f73992__gm__L000004+32 ' reg <- addrg
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16A_SUBI + (r22)<<D16A + (1)<<S16A ' SUBU4 reg coni
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004+32)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004+32)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
  long I32_BRNZ + (@C_hub_free_816)<<S32 ' NEU4 reg coni
  word I16B_LODL + (r2)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004 ' reg ARG ADDRG
+ long @C_snr41_68f73992__gm__L000004 ' reg ARG ADDRG
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
  alignl_p1
- long I32_CALA + (@C_siocd_68dcc2b5_release_unused_segments_L000323)<<S32 ' CALL addrg
+ long I32_CALA + (@C_snr4d_68f73992_release_unused_segments_L000323)<<S32 ' CALL addrg
  alignl_p1
  long I32_JMPA + (@C_hub_free_816)<<S32 ' JUMPV addrg
  alignl_label
@@ -10919,7 +10919,7 @@ C_hub_calloc_1007
  alignl_p1
 
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009 ' <symbol:try_realloc_chunk>
+C_snr4i_68f73992_try_realloc_chunk_L001009 ' <symbol:try_realloc_chunk>
  alignl_p1
  long I32_NEWF + 40<<S32
  alignl_p1
@@ -10949,7 +10949,7 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009 ' <symbol:try_realloc_chunk>
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r21)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1011)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1011)<<S32 ' LTU4 reg reg
  word I16A_MOVI + (r20)<<D16A + (1)<<S16A ' reg <- coni
  word I16A_MOV + (r18)<<D16A + (r21)<<S16A
  word I16A_ADDSI + (r18)<<D16A + (4)<<S16A ' ADDP4 reg coni
@@ -10958,18 +10958,18 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009 ' <symbol:try_realloc_chunk>
  word I16A_AND + (r18)<<D16A + (r16)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r18)<<D16A + (1)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1011)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1011)<<S32 ' EQU4 reg coni
  word I16A_MOV + (r18)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  word I16A_CMP + (r21)<<D16A + (r18)<<S16A
  alignl_p1
- long I32_BRAE + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1011)<<S32 ' GEU4 reg reg
+ long I32_BRAE + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1011)<<S32 ' GEU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1011)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1011)<<S32 ' EQU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r21)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -10977,26 +10977,26 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009 ' <symbol:try_realloc_chunk>
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1013)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1013)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r2)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r3)<<D16A + (r19)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r4)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r5)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 67<<S16B ' arg size, rpsize = 16, spsize = 16
  alignl_p1
- long I32_CALA + (@C_sioc7_68dcc2b5_mmap_resize_L000077)<<S32
+ long I32_CALA + (@C_snr47_68f73992_mmap_resize_L000077)<<S32
  word I16A_ADDI + SP<<D16A + 12<<S16A ' CALL addrg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_WRLONG + (r0)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1012)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1012)<<S32 ' JUMPV addrg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1013
+C_snr4i_68f73992_try_realloc_chunk_L001009_1013
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_CMP + (r22)<<D16A + (r19)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1015)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1015)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_SUB + (r22)<<D16A + (r19)<<S16A ' SUBU (1)
@@ -11006,7 +11006,7 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1013
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_CMPI + (r22)<<D16A + (16)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1017)<<S32 ' LTU4 reg coni
+ long I32_BR_B + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1017)<<S32 ' LTU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A ' ADDI/P
  word I16A_ADDS + (r22)<<D16A + (r21)<<S16A ' ADDI/P (3)
  word I16B_LODF + ((-20)&$1FF)<<S16B
@@ -11056,23 +11056,23 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1013
  word I16A_MOV + (r4)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 50<<S16B ' arg size, rpsize = 12, spsize = 12
  alignl_p1
- long I32_CALA + (@C_siocf_68dcc2b5_dispose_chunk_L000432)<<S32
+ long I32_CALA + (@C_snr4f_68f73992_dispose_chunk_L000432)<<S32
  word I16A_ADDI + SP<<D16A + 8<<S16A ' CALL addrg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1017
+C_snr4i_68f73992_try_realloc_chunk_L001009_1017
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_WRLONG + (r21)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1012)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1012)<<S32 ' JUMPV addrg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1015
+C_snr4i_68f73992_try_realloc_chunk_L001009_1015
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r20)<<D16A + (24)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1019)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1019)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -11081,7 +11081,7 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1015
  word I16A_ADD + (r22)<<D16A + (r20)<<S16A ' ADDU (1)
  word I16A_CMP + (r22)<<D16A + (r19)<<S16A
  alignl_p1
- long I32_BRBE + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1012)<<S32 ' LEU4 reg reg
+ long I32_BRBE + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1012)<<S32 ' LEU4 reg reg
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -11136,16 +11136,16 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1015
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_WRLONG + (r21)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1012)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1012)<<S32 ' JUMPV addrg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1019
+C_snr4i_68f73992_try_realloc_chunk_L001009_1019
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r20)<<D16A + (20)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1023)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1023)<<S32 ' NEU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -11158,7 +11158,7 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1019
  word I16A_ADD + (r22)<<D16A + (r20)<<S16A ' ADDU (1)
  word I16A_CMP + (r22)<<D16A + (r19)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1012)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1012)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16B_LODF + ((-16)&$1FF)<<S16B
@@ -11171,7 +11171,7 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1019
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_CMPI + (r22)<<D16A + (16)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1027)<<S32 ' LTU4 reg coni
+ long I32_BR_B + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1027)<<S32 ' LTU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A ' ADDI/P
  word I16A_ADDS + (r22)<<D16A + (r21)<<S16A ' ADDI/P (3)
  word I16B_LODF + ((-24)&$1FF)<<S16B
@@ -11231,9 +11231,9 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1019
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1028)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1028)<<S32 ' JUMPV addrg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1027
+C_snr4i_68f73992_try_realloc_chunk_L001009_1027
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16B_LODF + ((-16)&$1FF)<<S16B
@@ -11271,13 +11271,13 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1027
  long 0 ' reg <- con
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1028
+C_snr4i_68f73992_try_realloc_chunk_L001009_1028
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_WRLONG + (r21)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1012)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1012)<<S32 ' JUMPV addrg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1023
+C_snr4i_68f73992_try_realloc_chunk_L001009_1023
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -11285,7 +11285,7 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1023
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1012)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1012)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -11300,7 +11300,7 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1023
  word I16A_ADD + (r22)<<D16A + (r20)<<S16A ' ADDU (1)
  word I16A_CMP + (r22)<<D16A + (r19)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1012)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1012)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16B_LODF + ((-16)&$1FF)<<S16B
@@ -11316,7 +11316,7 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1023
  long I32_MOVI + RI<<D32 + (32)<<S32
  word I16A_CMP + (r22)<<D16A + RI<<S16A
  alignl_p1
- long I32_BRAE + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1033)<<S32 ' GEU4 reg coni
+ long I32_BRAE + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1033)<<S32 ' GEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
@@ -11345,28 +11345,28 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1023
  word I16A_ADDS + (r18)<<D16A + (r16)<<S16A ' ADDI/P (1)
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1037)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1037)<<S32 ' EQU4 reg reg
  word I16A_MOV + (r18)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r18)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r18)<<D16A + (r18)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1035)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1035)<<S32 ' LTU4 reg reg
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_MOV + (r20)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1035)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1035)<<S32 ' NEU4 reg reg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1037
+C_snr4i_68f73992_try_realloc_chunk_L001009_1037
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1038)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1038)<<S32 ' NEU4 reg reg
  word I16A_RDLONG + (r22)<<D16A + (r23)<<S16A ' reg <- INDIRU4 reg
  word I16A_MOVI + (r20)<<D16A + (1)<<S16A ' reg <- coni
  word I16B_LODF + ((-32)&$1FF)<<S16B
@@ -11376,9 +11376,9 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1037
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_WRLONG + (r22)<<D16A + (r23)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1034)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1034)<<S32 ' JUMPV addrg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1038
+C_snr4i_68f73992_try_realloc_chunk_L001009_1038
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
@@ -11392,21 +11392,21 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1038
  word I16A_ADDS + (r18)<<D16A + (r16)<<S16A ' ADDI/P (1)
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1042)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1042)<<S32 ' EQU4 reg reg
  word I16A_MOV + (r18)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r18)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r18)<<D16A + (r18)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1040)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1040)<<S32 ' LTU4 reg reg
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_MOV + (r20)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1040)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1040)<<S32 ' NEU4 reg reg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1042
+C_snr4i_68f73992_try_realloc_chunk_L001009_1042
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
@@ -11420,21 +11420,21 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1042
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1034)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1034)<<S32 ' JUMPV addrg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1040
+C_snr4i_68f73992_try_realloc_chunk_L001009_1040
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1034)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1034)<<S32 ' JUMPV addrg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1035
+C_snr4i_68f73992_try_realloc_chunk_L001009_1035
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1034)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1034)<<S32 ' JUMPV addrg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1033
+C_snr4i_68f73992_try_realloc_chunk_L001009_1033
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_WRLONG + (r15)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16B_LODF + ((-24)&$1FF)<<S16B
@@ -11450,7 +11450,7 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1033
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r20)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1043)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1043)<<S32 ' EQU4 reg reg
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
@@ -11471,21 +11471,21 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1033
  word I16A_RDLONG + (r18)<<D16A + (r18)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r20)<<D16A + (r18)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1045)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1045)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1045)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1045)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1045)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1045)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-36)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
@@ -11499,15 +11499,15 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1033
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1044)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1044)<<S32 ' JUMPV addrg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1045
+C_snr4i_68f73992_try_realloc_chunk_L001009_1045
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1044)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1044)<<S32 ' JUMPV addrg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1043
+C_snr4i_68f73992_try_realloc_chunk_L001009_1043
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r22)<<S16A
@@ -11519,7 +11519,7 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1043
  word I16A_WRLONG + (r20)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_CMPI + (r20)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1049)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1049)<<S32 ' NEU4 reg coni
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16B_LODF + ((-36)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
@@ -11528,13 +11528,13 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1043
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1047)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1047)<<S32 ' EQU4 reg coni
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1049
+C_snr4i_68f73992_try_realloc_chunk_L001009_1049
  alignl_p1
- long I32_JMPA + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1051)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1051)<<S32 ' JUMPV addrg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1050
+C_snr4i_68f73992_try_realloc_chunk_L001009_1050
  word I16B_LODF + ((-40)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-36)&$1FF)<<S16B
@@ -11543,7 +11543,7 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1050
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1051
+C_snr4i_68f73992_try_realloc_chunk_L001009_1051
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r22)<<S16A
@@ -11553,14 +11553,14 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1051
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMPI + (r20)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1050)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1050)<<S32 ' NEU4 reg coni
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
  word I16B_LODF + ((-40)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1050)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1050)<<S32 ' NEU4 reg coni
  word I16B_LODF + ((-36)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -11568,7 +11568,7 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1051
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1053)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1053)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-36)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODL + (r20)<<D16B
@@ -11576,22 +11576,22 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1051
  long 0 ' reg <- con
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1054)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1054)<<S32 ' JUMPV addrg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1053
+C_snr4i_68f73992_try_realloc_chunk_L001009_1053
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1054
+C_snr4i_68f73992_try_realloc_chunk_L001009_1054
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1047
+C_snr4i_68f73992_try_realloc_chunk_L001009_1047
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1044
+C_snr4i_68f73992_try_realloc_chunk_L001009_1044
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1055)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1055)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (28)<<S16A ' ADDP4 reg coni
@@ -11610,7 +11610,7 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1044
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1057)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1057)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-36)&$1FF)<<S16B
@@ -11618,7 +11618,7 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1044
  word I16A_WRLONG + (r22)<<D16A + (r20)<<S16A ' ASGNP4 reg reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1058)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1058)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r20)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -11632,9 +11632,9 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1044
  word I16A_AND + (r20)<<D16A + (r18)<<S16A ' BANDI/U (1)
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1058)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1058)<<S32 ' JUMPV addrg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1057
+C_snr4i_68f73992_try_realloc_chunk_L001009_1057
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -11642,7 +11642,7 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1057
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1061)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1061)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
@@ -11651,7 +11651,7 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1057
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1063)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1063)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
@@ -11659,9 +11659,9 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1057
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1062)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1062)<<S32 ' JUMPV addrg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1063
+C_snr4i_68f73992_try_realloc_chunk_L001009_1063
  word I16B_LODF + ((-28)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
@@ -11669,20 +11669,20 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1063
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1062)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1062)<<S32 ' JUMPV addrg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1061
+C_snr4i_68f73992_try_realloc_chunk_L001009_1061
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1062
+C_snr4i_68f73992_try_realloc_chunk_L001009_1062
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1058
+C_snr4i_68f73992_try_realloc_chunk_L001009_1058
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1065)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1065)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -11690,7 +11690,7 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1058
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1067)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1067)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (24)<<S16A ' ADDP4 reg coni
@@ -11705,7 +11705,7 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1058
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1069)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1069)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-40)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -11713,7 +11713,7 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1058
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1071)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1071)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (16)<<S16A ' ADDP4 reg coni
@@ -11727,15 +11727,15 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1058
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1072)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1072)<<S32 ' JUMPV addrg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1071
+C_snr4i_68f73992_try_realloc_chunk_L001009_1071
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1072
+C_snr4i_68f73992_try_realloc_chunk_L001009_1072
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1069
+C_snr4i_68f73992_try_realloc_chunk_L001009_1069
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
@@ -11744,7 +11744,7 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1069
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1068)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1068)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-44)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -11752,7 +11752,7 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1069
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1075)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1075)<<S32 ' LTU4 reg reg
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (20)<<S16A ' ADDP4 reg coni
@@ -11766,30 +11766,30 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1069
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1068)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1068)<<S32 ' JUMPV addrg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1075
+C_snr4i_68f73992_try_realloc_chunk_L001009_1075
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1068)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1068)<<S32 ' JUMPV addrg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1067
+C_snr4i_68f73992_try_realloc_chunk_L001009_1067
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1068
+C_snr4i_68f73992_try_realloc_chunk_L001009_1068
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1065
+C_snr4i_68f73992_try_realloc_chunk_L001009_1065
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1055
+C_snr4i_68f73992_try_realloc_chunk_L001009_1055
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1034
+C_snr4i_68f73992_try_realloc_chunk_L001009_1034
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_CMPI + (r22)<<D16A + (16)<<S16A
  alignl_p1
- long I32_BRAE + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1077)<<S32 ' GEU4 reg coni
+ long I32_BRAE + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1077)<<S32 ' GEU4 reg coni
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16B_LODF + ((-16)&$1FF)<<S16B
@@ -11817,9 +11817,9 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1034
  word I16A_OR + (r20)<<D16A + (r18)<<S16A ' BORI/U (1)
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1078)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1078)<<S32 ' JUMPV addrg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1077
+C_snr4i_68f73992_try_realloc_chunk_L001009_1077
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A ' ADDI/P
  word I16A_ADDS + (r22)<<D16A + (r21)<<S16A ' ADDI/P (3)
  word I16B_LODF + ((-24)&$1FF)<<S16B
@@ -11869,28 +11869,28 @@ C_sioci_68dcc2b5_try_realloc_chunk_L001009_1077
  word I16A_MOV + (r4)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 50<<S16B ' arg size, rpsize = 12, spsize = 12
  alignl_p1
- long I32_CALA + (@C_siocf_68dcc2b5_dispose_chunk_L000432)<<S32
+ long I32_CALA + (@C_snr4f_68f73992_dispose_chunk_L000432)<<S32
  word I16A_ADDI + SP<<D16A + 8<<S16A ' CALL addrg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1078
+C_snr4i_68f73992_try_realloc_chunk_L001009_1078
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_WRLONG + (r21)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009_1012)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4i_68f73992_try_realloc_chunk_L001009_1012)<<S32 ' JUMPV addrg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1011
+C_snr4i_68f73992_try_realloc_chunk_L001009_1011
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_label
-C_sioci_68dcc2b5_try_realloc_chunk_L001009_1012
+C_snr4i_68f73992_try_realloc_chunk_L001009_1012
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r0)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
-' C_sioci_68dcc2b5_try_realloc_chunk_L001009_1010 ' (symbol refcount = 0)
+' C_snr4i_68f73992_try_realloc_chunk_L001009_1010 ' (symbol refcount = 0)
  word I16B_POPM + 10<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_siocj_68dcc2b5_internal_memalign_L001079 ' <symbol:internal_memalign>
+C_snr4j_68f73992_internal_memalign_L001079 ' <symbol:internal_memalign>
  alignl_p1
  long I32_NEWF + 32<<S32
  alignl_p1
@@ -11903,57 +11903,57 @@ C_siocj_68dcc2b5_internal_memalign_L001079 ' <symbol:internal_memalign>
  long 0 ' reg <- con
  word I16A_CMPI + (r21)<<D16A + (16)<<S16A
  alignl_p1
- long I32_BRAE + (@C_siocj_68dcc2b5_internal_memalign_L001079_1081)<<S32 ' GEU4 reg coni
+ long I32_BRAE + (@C_snr4j_68f73992_internal_memalign_L001079_1081)<<S32 ' GEU4 reg coni
  word I16A_MOVI + (r21)<<D16A + (16)<<S16A ' reg <- coni
  alignl_label
-C_siocj_68dcc2b5_internal_memalign_L001079_1081
+C_snr4j_68f73992_internal_memalign_L001079_1081
  word I16A_MOV + (r22)<<D16A + (r21)<<S16A
  word I16A_SUBI + (r22)<<D16A + (1)<<S16A ' SUBU4 reg coni
  word I16A_AND + (r22)<<D16A + (r21)<<S16A ' BANDI/U (2)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocj_68dcc2b5_internal_memalign_L001079_1083)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4j_68f73992_internal_memalign_L001079_1083)<<S32 ' EQU4 reg coni
  word I16A_MOVI + (r15)<<D16A + (16)<<S16A ' reg <- coni
  alignl_p1
- long I32_JMPA + (@C_siocj_68dcc2b5_internal_memalign_L001079_1086)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4j_68f73992_internal_memalign_L001079_1086)<<S32 ' JUMPV addrg
  alignl_label
-C_siocj_68dcc2b5_internal_memalign_L001079_1085
+C_snr4j_68f73992_internal_memalign_L001079_1085
  word I16A_SHLI + (r15)<<D16A + (1)<<S16A ' SHLU4 reg coni
  alignl_label
-C_siocj_68dcc2b5_internal_memalign_L001079_1086
+C_snr4j_68f73992_internal_memalign_L001079_1086
  word I16A_CMP + (r15)<<D16A + (r21)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocj_68dcc2b5_internal_memalign_L001079_1085)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4j_68f73992_internal_memalign_L001079_1085)<<S32 ' LTU4 reg reg
  word I16A_MOV + (r21)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  alignl_label
-C_siocj_68dcc2b5_internal_memalign_L001079_1083
+C_snr4j_68f73992_internal_memalign_L001079_1083
  word I16B_LODL + (r22)<<D16B
  alignl_p1
  long $ffffffc0 ' reg <- con
  word I16A_SUB + (r22)<<D16A + (r21)<<S16A ' SUBU (1)
  word I16A_CMP + (r19)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocj_68dcc2b5_internal_memalign_L001079_1088)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4j_68f73992_internal_memalign_L001079_1088)<<S32 ' LTU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocj_68dcc2b5_internal_memalign_L001079_1089)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4j_68f73992_internal_memalign_L001079_1089)<<S32 ' EQU4 reg coni
  word I16A_MOVI + (r22)<<D16A + (12)<<S16A ' reg <- coni
  alignl_p1
  long I32_LODA + (@C_errno)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNI4 addrg reg
  alignl_p1
- long I32_JMPA + (@C_siocj_68dcc2b5_internal_memalign_L001079_1089)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4j_68f73992_internal_memalign_L001079_1089)<<S32 ' JUMPV addrg
  alignl_label
-C_siocj_68dcc2b5_internal_memalign_L001079_1088
+C_snr4j_68f73992_internal_memalign_L001079_1088
  word I16A_CMPI + (r19)<<D16A + (11)<<S16A
  alignl_p1
- long I32_BRAE + (@C_siocj_68dcc2b5_internal_memalign_L001079_1093)<<S32 ' GEU4 reg coni
+ long I32_BRAE + (@C_snr4j_68f73992_internal_memalign_L001079_1093)<<S32 ' GEU4 reg coni
  word I16A_MOVI + (r15)<<D16A + (16)<<S16A ' reg <- coni
  alignl_p1
- long I32_JMPA + (@C_siocj_68dcc2b5_internal_memalign_L001079_1094)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4j_68f73992_internal_memalign_L001079_1094)<<S32 ' JUMPV addrg
  alignl_label
-C_siocj_68dcc2b5_internal_memalign_L001079_1093
+C_snr4j_68f73992_internal_memalign_L001079_1093
  word I16A_MOV + (r22)<<D16A + (r19)<<S16A
  word I16A_ADDI + (r22)<<D16A + (4)<<S16A ' ADDU4 reg coni
  word I16A_ADDI + (r22)<<D16A + (7)<<S16A ' ADDU4 reg coni
@@ -11961,7 +11961,7 @@ C_siocj_68dcc2b5_internal_memalign_L001079_1093
  word I16A_MOV + (r15)<<D16A + (r22)<<S16A ' BANDI/U
  word I16A_AND + (r15)<<D16A + (r20)<<S16A ' BANDI/U (3)
  alignl_label
-C_siocj_68dcc2b5_internal_memalign_L001079_1094
+C_snr4j_68f73992_internal_memalign_L001079_1094
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_WRLONG + (r15)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  word I16B_LODF + ((-8)&$1FF)<<S16B
@@ -11980,27 +11980,27 @@ C_siocj_68dcc2b5_internal_memalign_L001079_1094
  word I16A_MOV + (r22)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocj_68dcc2b5_internal_memalign_L001079_1095)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4j_68f73992_internal_memalign_L001079_1095)<<S32 ' EQU4 reg coni
  word I16A_NEGI + (r22)<<D16A + (-(-8)&$1F)<<S16A ' reg <- conn
  word I16A_ADDS + (r22)<<D16A + (r17)<<S16A ' ADDI/P (2)
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_siocj_68dcc2b5_internal_memalign_L001079_1097)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4j_68f73992_internal_memalign_L001079_1097)<<S32 ' JUMPV addrg
  word I16B_LODL + R0<<D16B
  alignl_p1
  long 0 ' RET con
  alignl_p1
- long I32_JMPA + (@C_siocj_68dcc2b5_internal_memalign_L001079_1080)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4j_68f73992_internal_memalign_L001079_1080)<<S32 ' JUMPV addrg
  alignl_label
-C_siocj_68dcc2b5_internal_memalign_L001079_1097
+C_snr4j_68f73992_internal_memalign_L001079_1097
  word I16A_MOV + (r22)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r20)<<D16A + (r21)<<S16A
  word I16A_SUBI + (r20)<<D16A + (1)<<S16A ' SUBU4 reg coni
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocj_68dcc2b5_internal_memalign_L001079_1099)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4j_68f73992_internal_memalign_L001079_1099)<<S32 ' EQU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r21)<<S16A ' ADDI/P
  word I16A_ADDS + (r22)<<D16A + (r17)<<S16A ' ADDI/P (3)
  word I16A_NEGI + (r20)<<D16A + (-(-1)&$1F)<<S16A ' reg <- conn
@@ -12020,19 +12020,19 @@ C_siocj_68dcc2b5_internal_memalign_L001079_1097
  word I16A_SUB + (r22)<<D16A + (r20)<<S16A ' SUBU (1)
  word I16A_CMPI + (r22)<<D16A + (16)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocj_68dcc2b5_internal_memalign_L001079_1102)<<S32 ' LTU4 reg coni
+ long I32_BR_B + (@C_snr4j_68f73992_internal_memalign_L001079_1102)<<S32 ' LTU4 reg coni
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r13)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  alignl_p1
- long I32_JMPA + (@C_siocj_68dcc2b5_internal_memalign_L001079_1103)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4j_68f73992_internal_memalign_L001079_1103)<<S32 ' JUMPV addrg
  alignl_label
-C_siocj_68dcc2b5_internal_memalign_L001079_1102
+C_snr4j_68f73992_internal_memalign_L001079_1102
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r13)<<D16A + (r21)<<S16A ' ADDI/P
  word I16A_ADDS + (r13)<<D16A + (r22)<<S16A ' ADDI/P (3)
  alignl_label
-C_siocj_68dcc2b5_internal_memalign_L001079_1103
+C_snr4j_68f73992_internal_memalign_L001079_1103
  word I16B_LODF + ((-32)&$1FF)<<S16B
  word I16A_WRLONG + (r13)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16B_LODF + ((-32)&$1FF)<<S16B
@@ -12065,7 +12065,7 @@ C_siocj_68dcc2b5_internal_memalign_L001079_1103
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocj_68dcc2b5_internal_memalign_L001079_1104)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4j_68f73992_internal_memalign_L001079_1104)<<S32 ' NEU4 reg coni
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-16)&$1FF)<<S16B
@@ -12082,9 +12082,9 @@ C_siocj_68dcc2b5_internal_memalign_L001079_1103
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocj_68dcc2b5_internal_memalign_L001079_1105)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4j_68f73992_internal_memalign_L001079_1105)<<S32 ' JUMPV addrg
  alignl_label
-C_siocj_68dcc2b5_internal_memalign_L001079_1104
+C_snr4j_68f73992_internal_memalign_L001079_1104
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
@@ -12136,16 +12136,16 @@ C_siocj_68dcc2b5_internal_memalign_L001079_1104
  word I16A_MOV + (r4)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 50<<S16B ' arg size, rpsize = 12, spsize = 12
  alignl_p1
- long I32_CALA + (@C_siocf_68dcc2b5_dispose_chunk_L000432)<<S32
+ long I32_CALA + (@C_snr4f_68f73992_dispose_chunk_L000432)<<S32
  word I16A_ADDI + SP<<D16A + 8<<S16A ' CALL addrg
  alignl_label
-C_siocj_68dcc2b5_internal_memalign_L001079_1105
+C_snr4j_68f73992_internal_memalign_L001079_1105
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  alignl_label
-C_siocj_68dcc2b5_internal_memalign_L001079_1099
+C_snr4j_68f73992_internal_memalign_L001079_1099
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
@@ -12154,7 +12154,7 @@ C_siocj_68dcc2b5_internal_memalign_L001079_1099
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocj_68dcc2b5_internal_memalign_L001079_1106)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4j_68f73992_internal_memalign_L001079_1106)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
@@ -12170,7 +12170,7 @@ C_siocj_68dcc2b5_internal_memalign_L001079_1099
  word I16A_ADDI + (r20)<<D16A + (16)<<S16A ' ADDU4 reg coni
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRBE + (@C_siocj_68dcc2b5_internal_memalign_L001079_1108)<<S32 ' LEU4 reg reg
+ long I32_BRBE + (@C_snr4j_68f73992_internal_memalign_L001079_1108)<<S32 ' LEU4 reg reg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16B_LODF + ((-8)&$1FF)<<S16B
@@ -12236,28 +12236,28 @@ C_siocj_68dcc2b5_internal_memalign_L001079_1099
  word I16A_MOV + (r4)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 50<<S16B ' arg size, rpsize = 12, spsize = 12
  alignl_p1
- long I32_CALA + (@C_siocf_68dcc2b5_dispose_chunk_L000432)<<S32
+ long I32_CALA + (@C_snr4f_68f73992_dispose_chunk_L000432)<<S32
  word I16A_ADDI + SP<<D16A + 8<<S16A ' CALL addrg
  alignl_label
-C_siocj_68dcc2b5_internal_memalign_L001079_1108
+C_snr4j_68f73992_internal_memalign_L001079_1108
  alignl_label
-C_siocj_68dcc2b5_internal_memalign_L001079_1106
+C_snr4j_68f73992_internal_memalign_L001079_1106
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_MOV + (r17)<<D16A + (r22)<<S16A
  word I16A_ADDSI + (r17)<<D16A + (8)<<S16A ' ADDP4 reg coni
  alignl_label
-C_siocj_68dcc2b5_internal_memalign_L001079_1095
+C_snr4j_68f73992_internal_memalign_L001079_1095
  alignl_label
-C_siocj_68dcc2b5_internal_memalign_L001079_1089
+C_snr4j_68f73992_internal_memalign_L001079_1089
  word I16A_MOV + (r0)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
  alignl_label
-C_siocj_68dcc2b5_internal_memalign_L001079_1080
+C_snr4j_68f73992_internal_memalign_L001079_1080
  word I16B_POPM + 8<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110 ' <symbol:ialloc>
+C_snr4k_68f73992_ialloc_L001110 ' <symbol:ialloc>
  alignl_p1
  long I32_NEWF + 16<<S32
  alignl_p1
@@ -12267,47 +12267,47 @@ C_siock_68dcc2b5_ialloc_L001110 ' <symbol:ialloc>
  word I16A_MOV + (r19)<<D16A + (r3)<<S16A ' reg var <- reg arg
  word I16A_MOV + (r17)<<D16A + (r2)<<S16A ' reg var <- reg arg
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siock_68dcc2b5_ialloc_L001110_1112)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4k_68f73992_ialloc_L001110_1112)<<S32 ' NEU4 reg coni
  alignl_p1
- long I32_CALA + (@C_sioc4_68dcc2b5_init_mparams_L000025)<<S32 ' CALL addrg
+ long I32_CALA + (@C_snr44_68f73992_init_mparams_L000025)<<S32 ' CALL addrg
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110_1112
+C_snr4k_68f73992_ialloc_L001110_1112
  word I16A_MOV + (r22)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siock_68dcc2b5_ialloc_L001110_1113)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4k_68f73992_ialloc_L001110_1113)<<S32 ' EQU4 reg coni
  word I16A_CMPI + (r23)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siock_68dcc2b5_ialloc_L001110_1115)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4k_68f73992_ialloc_L001110_1115)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r0)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
  alignl_p1
- long I32_JMPA + (@C_siock_68dcc2b5_ialloc_L001110_1111)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4k_68f73992_ialloc_L001110_1111)<<S32 ' JUMPV addrg
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110_1115
+C_snr4k_68f73992_ialloc_L001110_1115
  word I16A_MOV + (r10)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
  word I16A_MOVI + (r22)<<D16A + (0)<<S16A ' reg <- coni
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_siock_68dcc2b5_ialloc_L001110_1114)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4k_68f73992_ialloc_L001110_1114)<<S32 ' JUMPV addrg
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110_1113
+C_snr4k_68f73992_ialloc_L001110_1113
  word I16A_CMPI + (r23)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siock_68dcc2b5_ialloc_L001110_1117)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4k_68f73992_ialloc_L001110_1117)<<S32 ' NEU4 reg coni
  word I16A_MOVI + (r2)<<D16A + (0)<<S16A ' reg ARG coni
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
  alignl_p1
  long I32_CALA + (@C_hub_malloc)<<S32 ' CALL addrg
  word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  alignl_p1
- long I32_JMPA + (@C_siock_68dcc2b5_ialloc_L001110_1111)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4k_68f73992_ialloc_L001110_1111)<<S32 ' JUMPV addrg
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110_1117
+C_snr4k_68f73992_ialloc_L001110_1117
  word I16B_LODL + (r10)<<D16B
  alignl_p1
  long 0 ' reg <- con
@@ -12315,14 +12315,14 @@ C_siock_68dcc2b5_ialloc_L001110_1117
  word I16A_SHLI + (r22)<<D16A + (2)<<S16A ' SHLU4 reg coni
  word I16A_CMPI + (r22)<<D16A + (11)<<S16A
  alignl_p1
- long I32_BRAE + (@C_siock_68dcc2b5_ialloc_L001110_1120)<<S32 ' GEU4 reg coni
+ long I32_BRAE + (@C_snr4k_68f73992_ialloc_L001110_1120)<<S32 ' GEU4 reg coni
  word I16A_MOVI + (r22)<<D16A + (16)<<S16A ' reg <- coni
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_siock_68dcc2b5_ialloc_L001110_1121)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4k_68f73992_ialloc_L001110_1121)<<S32 ' JUMPV addrg
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110_1120
+C_snr4k_68f73992_ialloc_L001110_1120
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_SHLI + (r22)<<D16A + (2)<<S16A ' SHLU4 reg coni
  word I16A_ADDI + (r22)<<D16A + (4)<<S16A ' ADDU4 reg coni
@@ -12332,29 +12332,29 @@ C_siock_68dcc2b5_ialloc_L001110_1120
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110_1121
+C_snr4k_68f73992_ialloc_L001110_1121
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110_1114
+C_snr4k_68f73992_ialloc_L001110_1114
  word I16A_MOVI + (r22)<<D16A + (1)<<S16A ' reg <- coni
  word I16A_AND + (r22)<<D16A + (r19)<<S16A ' BANDI/U (2)
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siock_68dcc2b5_ialloc_L001110_1122)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C_snr4k_68f73992_ialloc_L001110_1122)<<S32 ' EQI4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r21)<<S16A ' reg <- INDIRU4 reg
  word I16A_CMPI + (r22)<<D16A + (11)<<S16A
  alignl_p1
- long I32_BRAE + (@C_siock_68dcc2b5_ialloc_L001110_1125)<<S32 ' GEU4 reg coni
+ long I32_BRAE + (@C_snr4k_68f73992_ialloc_L001110_1125)<<S32 ' GEU4 reg coni
  word I16A_MOVI + (r22)<<D16A + (16)<<S16A ' reg <- coni
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_siock_68dcc2b5_ialloc_L001110_1126)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4k_68f73992_ialloc_L001110_1126)<<S32 ' JUMPV addrg
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110_1125
+C_snr4k_68f73992_ialloc_L001110_1125
  word I16A_RDLONG + (r22)<<D16A + (r21)<<S16A ' reg <- INDIRU4 reg
  word I16A_ADDI + (r22)<<D16A + (4)<<S16A ' ADDU4 reg coni
  word I16A_ADDI + (r22)<<D16A + (7)<<S16A ' ADDU4 reg coni
@@ -12363,7 +12363,7 @@ C_siock_68dcc2b5_ialloc_L001110_1125
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110_1126
+C_snr4k_68f73992_ialloc_L001110_1126
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r8)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_MOV + (r0)<<D16A + (r23)<<S16A ' setup r0/r1 (2)
@@ -12371,31 +12371,31 @@ C_siock_68dcc2b5_ialloc_L001110_1126
  word I16B_MULT ' MULT(I/U)
  word I16A_MOV + (r7)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  alignl_p1
- long I32_JMPA + (@C_siock_68dcc2b5_ialloc_L001110_1123)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4k_68f73992_ialloc_L001110_1123)<<S32 ' JUMPV addrg
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110_1122
+C_snr4k_68f73992_ialloc_L001110_1122
  word I16A_MOVI + (r22)<<D16A + (0)<<S16A ' reg <- coni
  word I16A_MOV + (r8)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r7)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r15)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
  alignl_p1
- long I32_JMPA + (@C_siock_68dcc2b5_ialloc_L001110_1130)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4k_68f73992_ialloc_L001110_1130)<<S32 ' JUMPV addrg
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110_1127
+C_snr4k_68f73992_ialloc_L001110_1127
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A
  word I16A_SHLI + (r22)<<D16A + (2)<<S16A ' SHLU4 reg coni
  word I16A_ADDS + (r22)<<D16A + (r21)<<S16A ' ADDI/P (1)
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16A_CMPI + (r22)<<D16A + (11)<<S16A
  alignl_p1
- long I32_BRAE + (@C_siock_68dcc2b5_ialloc_L001110_1132)<<S32 ' GEU4 reg coni
+ long I32_BRAE + (@C_snr4k_68f73992_ialloc_L001110_1132)<<S32 ' GEU4 reg coni
  word I16A_MOVI + (r22)<<D16A + (16)<<S16A ' reg <- coni
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_siock_68dcc2b5_ialloc_L001110_1133)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4k_68f73992_ialloc_L001110_1133)<<S32 ' JUMPV addrg
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110_1132
+C_snr4k_68f73992_ialloc_L001110_1132
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A
  word I16A_SHLI + (r22)<<D16A + (2)<<S16A ' SHLU4 reg coni
  word I16A_ADDS + (r22)<<D16A + (r21)<<S16A ' ADDI/P (1)
@@ -12407,19 +12407,19 @@ C_siock_68dcc2b5_ialloc_L001110_1132
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110_1133
+C_snr4k_68f73992_ialloc_L001110_1133
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_ADD + (r7)<<D16A + (r22)<<S16A ' ADDU (1)
-' C_siock_68dcc2b5_ialloc_L001110_1128 ' (symbol refcount = 0)
+' C_snr4k_68f73992_ialloc_L001110_1128 ' (symbol refcount = 0)
  word I16A_ADDI + (r15)<<D16A + (1)<<S16A ' ADDU4 reg coni
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110_1130
+C_snr4k_68f73992_ialloc_L001110_1130
  word I16A_CMP + (r15)<<D16A + (r23)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siock_68dcc2b5_ialloc_L001110_1127)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4k_68f73992_ialloc_L001110_1127)<<S32 ' NEU4 reg reg
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110_1123
+C_snr4k_68f73992_ialloc_L001110_1123
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_MOV + (r11)<<D16A + (r7)<<S16A ' ADDU
@@ -12437,7 +12437,7 @@ C_siock_68dcc2b5_ialloc_L001110_1123
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siock_68dcc2b5_ialloc_L001110_1134)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4k_68f73992_ialloc_L001110_1134)<<S32 ' EQU4 reg coni
  word I16B_LODF + ((8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  alignl_p1
@@ -12446,27 +12446,27 @@ C_siock_68dcc2b5_ialloc_L001110_1123
  word I16A_RDLONG + (r20)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110_1134
+C_snr4k_68f73992_ialloc_L001110_1134
  word I16A_MOV + (r22)<<D16A + (r6)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siock_68dcc2b5_ialloc_L001110_1136)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4k_68f73992_ialloc_L001110_1136)<<S32 ' NEU4 reg coni
  word I16B_LODL + R0<<D16B
  alignl_p1
  long 0 ' RET con
  alignl_p1
- long I32_JMPA + (@C_siock_68dcc2b5_ialloc_L001110_1111)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4k_68f73992_ialloc_L001110_1111)<<S32 ' JUMPV addrg
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110_1136
+C_snr4k_68f73992_ialloc_L001110_1136
  alignl_p1
- long I32_JMPA + (@C_siock_68dcc2b5_ialloc_L001110_1138)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4k_68f73992_ialloc_L001110_1138)<<S32 ' JUMPV addrg
  word I16B_LODL + R0<<D16B
  alignl_p1
  long 0 ' RET con
  alignl_p1
- long I32_JMPA + (@C_siock_68dcc2b5_ialloc_L001110_1111)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4k_68f73992_ialloc_L001110_1111)<<S32 ' JUMPV addrg
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110_1138
+C_snr4k_68f73992_ialloc_L001110_1138
  word I16A_NEGI + (r22)<<D16A + (-(-8)&$1F)<<S16A ' reg <- conn
  word I16A_MOV + (r13)<<D16A + (r6)<<S16A ' ADDI/P
  word I16A_ADDS + (r13)<<D16A + (r22)<<S16A ' ADDI/P (3)
@@ -12480,7 +12480,7 @@ C_siock_68dcc2b5_ialloc_L001110_1138
  word I16A_AND + (r22)<<D16A + (r19)<<S16A ' BANDI/U (2)
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siock_68dcc2b5_ialloc_L001110_1140)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C_snr4k_68f73992_ialloc_L001110_1140)<<S32 ' EQI4 reg coni
  word I16A_MOV + (r22)<<D16A + (r9)<<S16A
  word I16A_SUBI + (r22)<<D16A + (4)<<S16A ' SUBU4 reg coni
  word I16B_LODF + ((-8)&$1FF)<<S16B
@@ -12494,11 +12494,11 @@ C_siock_68dcc2b5_ialloc_L001110_1138
  long I32_CALA + (@C_memset)<<S32
  word I16A_ADDI + SP<<D16A + 8<<S16A ' CALL addrg
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110_1140
+C_snr4k_68f73992_ialloc_L001110_1140
  word I16A_MOV + (r22)<<D16A + (r10)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siock_68dcc2b5_ialloc_L001110_1142)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_snr4k_68f73992_ialloc_L001110_1142)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r7)<<S16A ' ADDI/P
  word I16A_ADDS + (r22)<<D16A + (r13)<<S16A ' ADDI/P (3)
  word I16B_LODF + ((-16)&$1FF)<<S16B
@@ -12521,10 +12521,10 @@ C_siock_68dcc2b5_ialloc_L001110_1140
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  word I16A_MOV + (r9)<<D16A + (r7)<<S16A ' CVI, CVU or LOAD
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110_1142
+C_snr4k_68f73992_ialloc_L001110_1142
  word I16A_MOVI + (r15)<<D16A + (0)<<S16A ' reg <- coni
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110_1144
+C_snr4k_68f73992_ialloc_L001110_1144
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A
  word I16A_SHLI + (r22)<<D16A + (2)<<S16A ' SHLU4 reg coni
  word I16A_ADDS + (r22)<<D16A + (r10)<<S16A ' ADDI/P (1)
@@ -12535,29 +12535,29 @@ C_siock_68dcc2b5_ialloc_L001110_1144
  word I16A_SUBI + (r22)<<D16A + (1)<<S16A ' SUBU4 reg coni
  word I16A_CMP + (r15)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siock_68dcc2b5_ialloc_L001110_1148)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4k_68f73992_ialloc_L001110_1148)<<S32 ' EQU4 reg reg
  word I16A_CMPI + (r8)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siock_68dcc2b5_ialloc_L001110_1150)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4k_68f73992_ialloc_L001110_1150)<<S32 ' EQU4 reg coni
  word I16A_MOV + (r11)<<D16A + (r8)<<S16A ' CVI, CVU or LOAD
  alignl_p1
- long I32_JMPA + (@C_siock_68dcc2b5_ialloc_L001110_1151)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4k_68f73992_ialloc_L001110_1151)<<S32 ' JUMPV addrg
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110_1150
+C_snr4k_68f73992_ialloc_L001110_1150
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A
  word I16A_SHLI + (r22)<<D16A + (2)<<S16A ' SHLU4 reg coni
  word I16A_ADDS + (r22)<<D16A + (r21)<<S16A ' ADDI/P (1)
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16A_CMPI + (r22)<<D16A + (11)<<S16A
  alignl_p1
- long I32_BRAE + (@C_siock_68dcc2b5_ialloc_L001110_1153)<<S32 ' GEU4 reg coni
+ long I32_BRAE + (@C_snr4k_68f73992_ialloc_L001110_1153)<<S32 ' GEU4 reg coni
  word I16A_MOVI + (r22)<<D16A + (16)<<S16A ' reg <- coni
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_p1
- long I32_JMPA + (@C_siock_68dcc2b5_ialloc_L001110_1154)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4k_68f73992_ialloc_L001110_1154)<<S32 ' JUMPV addrg
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110_1153
+C_snr4k_68f73992_ialloc_L001110_1153
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A
  word I16A_SHLI + (r22)<<D16A + (2)<<S16A ' SHLU4 reg coni
  word I16A_ADDS + (r22)<<D16A + (r21)<<S16A ' ADDI/P (1)
@@ -12569,11 +12569,11 @@ C_siock_68dcc2b5_ialloc_L001110_1153
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110_1154
+C_snr4k_68f73992_ialloc_L001110_1154
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_RDLONG + (r11)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110_1151
+C_snr4k_68f73992_ialloc_L001110_1151
  word I16A_SUB + (r9)<<D16A + (r11)<<S16A ' SUBU (1)
  word I16A_MOV + (r22)<<D16A + (r13)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
@@ -12584,9 +12584,9 @@ C_siock_68dcc2b5_ialloc_L001110_1151
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  word I16A_ADDS + (r13)<<D16A + (r11)<<S16A ' ADDI/P (2)
  alignl_p1
- long I32_JMPA + (@C_siock_68dcc2b5_ialloc_L001110_1149)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4k_68f73992_ialloc_L001110_1149)<<S32 ' JUMPV addrg
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110_1148
+C_snr4k_68f73992_ialloc_L001110_1148
  word I16A_MOV + (r22)<<D16A + (r13)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_MOVI + (r20)<<D16A + (1)<<S16A ' reg <- coni
@@ -12595,23 +12595,23 @@ C_siock_68dcc2b5_ialloc_L001110_1148
  word I16A_OR + (r20)<<D16A + (r18)<<S16A ' BORI/U (1)
  word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siock_68dcc2b5_ialloc_L001110_1146)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4k_68f73992_ialloc_L001110_1146)<<S32 ' JUMPV addrg
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110_1149
-' C_siock_68dcc2b5_ialloc_L001110_1145 ' (symbol refcount = 0)
+C_snr4k_68f73992_ialloc_L001110_1149
+' C_snr4k_68f73992_ialloc_L001110_1145 ' (symbol refcount = 0)
  word I16A_ADDI + (r15)<<D16A + (1)<<S16A ' ADDU4 reg coni
  alignl_p1
- long I32_JMPA + (@C_siock_68dcc2b5_ialloc_L001110_1144)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4k_68f73992_ialloc_L001110_1144)<<S32 ' JUMPV addrg
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110_1146
+C_snr4k_68f73992_ialloc_L001110_1146
  word I16A_MOV + (r0)<<D16A + (r10)<<S16A ' CVI, CVU or LOAD
  alignl_label
-C_siock_68dcc2b5_ialloc_L001110_1111
+C_snr4k_68f73992_ialloc_L001110_1111
  word I16B_POPM + 4<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_siocl_68dcc2b5_internal_bulk_free_L001155 ' <symbol:internal_bulk_free>
+C_snr4l_68f73992_internal_bulk_free_L001155 ' <symbol:internal_bulk_free>
  alignl_p1
  long I32_NEWF + 16<<S32
  alignl_p1
@@ -12628,14 +12628,14 @@ C_siocl_68dcc2b5_internal_bulk_free_L001155 ' <symbol:internal_bulk_free>
  word I16A_ADDS + (r15)<<D16A + (r21)<<S16A ' ADDI/P (3)
  word I16A_MOV + (r17)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  alignl_p1
- long I32_JMPA + (@C_siocl_68dcc2b5_internal_bulk_free_L001155_1162)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4l_68f73992_internal_bulk_free_L001155_1162)<<S32 ' JUMPV addrg
  alignl_label
-C_siocl_68dcc2b5_internal_bulk_free_L001155_1159
+C_snr4l_68f73992_internal_bulk_free_L001155_1159
  word I16A_RDLONG + (r13)<<D16A + (r17)<<S16A ' reg <- INDIRP4 reg
  word I16A_MOV + (r22)<<D16A + (r13)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocl_68dcc2b5_internal_bulk_free_L001155_1163)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4l_68f73992_internal_bulk_free_L001155_1163)<<S32 ' EQU4 reg coni
  word I16A_NEGI + (r22)<<D16A + (-(-8)&$1F)<<S16A ' reg <- conn
  word I16A_MOV + (r11)<<D16A + (r13)<<S16A ' ADDI/P
  word I16A_ADDS + (r11)<<D16A + (r22)<<S16A ' ADDI/P (3)
@@ -12656,7 +12656,7 @@ C_siocl_68dcc2b5_internal_bulk_free_L001155_1159
  word I16A_RDLONG + (r20)<<D16A + (r20)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_B + (@C_siocl_68dcc2b5_internal_bulk_free_L001155_1165)<<S32 ' LTU4 reg reg
+ long I32_BR_B + (@C_snr4l_68f73992_internal_bulk_free_L001155_1165)<<S32 ' LTU4 reg reg
  word I16A_MOV + (r22)<<D16A + (r11)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
@@ -12664,7 +12664,7 @@ C_siocl_68dcc2b5_internal_bulk_free_L001155_1159
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPI + (r22)<<D16A + (1)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocl_68dcc2b5_internal_bulk_free_L001155_1165)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_snr4l_68f73992_internal_bulk_free_L001155_1165)<<S32 ' EQU4 reg coni
  word I16A_MOV + (r10)<<D16A + (r17)<<S16A
  word I16A_ADDSI + (r10)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_MOV + (r22)<<D16A + (r11)<<S16A
@@ -12679,14 +12679,14 @@ C_siocl_68dcc2b5_internal_bulk_free_L001155_1159
  word I16A_MOV + (r20)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_siocl_68dcc2b5_internal_bulk_free_L001155_1167)<<S32 ' EQU4 reg reg
+ long I32_BR_Z + (@C_snr4l_68f73992_internal_bulk_free_L001155_1167)<<S32 ' EQU4 reg reg
  word I16A_RDLONG + (r22)<<D16A + (r10)<<S16A ' reg <- INDIRP4 reg
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r20)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocl_68dcc2b5_internal_bulk_free_L001155_1167)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4l_68f73992_internal_bulk_free_L001155_1167)<<S32 ' NEU4 reg reg
  word I16B_LODF + ((-16)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrl16
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
@@ -12721,54 +12721,54 @@ C_siocl_68dcc2b5_internal_bulk_free_L001155_1159
  word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
  word I16A_WRLONG + (r22)<<D16A + (r10)<<S16A ' ASGNP4 reg reg
  alignl_p1
- long I32_JMPA + (@C_siocl_68dcc2b5_internal_bulk_free_L001155_1166)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4l_68f73992_internal_bulk_free_L001155_1166)<<S32 ' JUMPV addrg
  alignl_label
-C_siocl_68dcc2b5_internal_bulk_free_L001155_1167
+C_snr4l_68f73992_internal_bulk_free_L001155_1167
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_RDLONG + (r2)<<D16A + RI<<S16A ' reg ARG INDIR ADDRLi
  word I16A_MOV + (r3)<<D16A + (r11)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r4)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 50<<S16B ' arg size, rpsize = 12, spsize = 12
  alignl_p1
- long I32_CALA + (@C_siocf_68dcc2b5_dispose_chunk_L000432)<<S32
+ long I32_CALA + (@C_snr4f_68f73992_dispose_chunk_L000432)<<S32
  word I16A_ADDI + SP<<D16A + 8<<S16A ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_siocl_68dcc2b5_internal_bulk_free_L001155_1166)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4l_68f73992_internal_bulk_free_L001155_1166)<<S32 ' JUMPV addrg
  alignl_label
-C_siocl_68dcc2b5_internal_bulk_free_L001155_1165
+C_snr4l_68f73992_internal_bulk_free_L001155_1165
  alignl_p1
  long I32_CALA + (@C_abort)<<S32 ' CALL addrg
  alignl_p1
- long I32_JMPA + (@C_siocl_68dcc2b5_internal_bulk_free_L001155_1161)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4l_68f73992_internal_bulk_free_L001155_1161)<<S32 ' JUMPV addrg
  alignl_label
-C_siocl_68dcc2b5_internal_bulk_free_L001155_1166
+C_snr4l_68f73992_internal_bulk_free_L001155_1166
  alignl_label
-C_siocl_68dcc2b5_internal_bulk_free_L001155_1163
-' C_siocl_68dcc2b5_internal_bulk_free_L001155_1160 ' (symbol refcount = 0)
+C_snr4l_68f73992_internal_bulk_free_L001155_1163
+' C_snr4l_68f73992_internal_bulk_free_L001155_1160 ' (symbol refcount = 0)
  word I16A_ADDSI + (r17)<<D16A + (4)<<S16A ' ADDP4 reg coni
  alignl_label
-C_siocl_68dcc2b5_internal_bulk_free_L001155_1162
+C_snr4l_68f73992_internal_bulk_free_L001155_1162
  word I16A_MOV + (r22)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r20)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siocl_68dcc2b5_internal_bulk_free_L001155_1159)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_snr4l_68f73992_internal_bulk_free_L001155_1159)<<S32 ' NEU4 reg reg
  alignl_label
-C_siocl_68dcc2b5_internal_bulk_free_L001155_1161
+C_snr4l_68f73992_internal_bulk_free_L001155_1161
  alignl_p1
- long I32_JMPA + (@C_siocl_68dcc2b5_internal_bulk_free_L001155_1169)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_snr4l_68f73992_internal_bulk_free_L001155_1169)<<S32 ' JUMPV addrg
  word I16A_MOVI + (r2)<<D16A + (0)<<S16A ' reg ARG coni
  word I16A_MOV + (r3)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 33<<S16B ' arg size, rpsize = 8, spsize = 8
  alignl_p1
- long I32_CALA + (@C_sioce_68dcc2b5_sys_trim_L000399)<<S32
+ long I32_CALA + (@C_snr4e_68f73992_sys_trim_L000399)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  alignl_label
-C_siocl_68dcc2b5_internal_bulk_free_L001155_1169
-' C_siocl_68dcc2b5_internal_bulk_free_L001155_1157 ' (symbol refcount = 0)
+C_snr4l_68f73992_internal_bulk_free_L001155_1169
+' C_snr4l_68f73992_internal_bulk_free_L001155_1157 ' (symbol refcount = 0)
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r0)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
-' C_siocl_68dcc2b5_internal_bulk_free_L001155_1156 ' (symbol refcount = 0)
+' C_snr4l_68f73992_internal_bulk_free_L001155_1156 ' (symbol refcount = 0)
  word I16B_POPM + 4<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
@@ -12839,7 +12839,7 @@ C_hub_realloc_1178
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16B_LODL + (r22)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004 ' reg <- addrg
+ long @C_snr41_68f73992__gm__L000004 ' reg <- addrg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_MOVI + (r2)<<D16A + (1)<<S16A ' reg ARG coni
@@ -12851,7 +12851,7 @@ C_hub_realloc_1178
  word I16A_RDLONG + (r5)<<D16A + RI<<S16A ' reg ARG INDIR ADDRLi
  word I16B_CPREP + 67<<S16B ' arg size, rpsize = 16, spsize = 16
  alignl_p1
- long I32_CALA + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009)<<S32
+ long I32_CALA + (@C_snr4i_68f73992_try_realloc_chunk_L001009)<<S32
  word I16A_ADDI + SP<<D16A + 12<<S16A ' CALL addrg
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_WRLONG + (r0)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
@@ -13000,7 +13000,7 @@ C_hub_realloc_in_place_1198
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16B_LODL + (r22)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004 ' reg <- addrg
+ long @C_snr41_68f73992__gm__L000004 ' reg <- addrg
  word I16B_LODF + ((-20)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
  word I16A_MOVI + (r2)<<D16A + (0)<<S16A ' reg ARG coni
@@ -13012,7 +13012,7 @@ C_hub_realloc_in_place_1198
  word I16A_RDLONG + (r5)<<D16A + RI<<S16A ' reg ARG INDIR ADDRLi
  word I16B_CPREP + 67<<S16B ' arg size, rpsize = 16, spsize = 16
  alignl_p1
- long I32_CALA + (@C_sioci_68dcc2b5_try_realloc_chunk_L001009)<<S32
+ long I32_CALA + (@C_snr4i_68f73992_try_realloc_chunk_L001009)<<S32
  word I16A_ADDI + SP<<D16A + 12<<S16A ' CALL addrg
  word I16B_LODF + ((-24)&$1FF)<<S16B
  word I16A_WRLONG + (r0)<<D16A + RI<<S16A ' ASGNP4 addrl16 reg
@@ -13064,10 +13064,10 @@ C_hub_memalign_1204
  word I16A_MOV + (r3)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_LODL + (r4)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004 ' reg ARG ADDRG
+ long @C_snr41_68f73992__gm__L000004 ' reg ARG ADDRG
  word I16B_CPREP + 50<<S16B ' arg size, rpsize = 12, spsize = 12
  alignl_p1
- long I32_CALA + (@C_siocj_68dcc2b5_internal_memalign_L001079)<<S32
+ long I32_CALA + (@C_snr4j_68f73992_internal_memalign_L001079)<<S32
  word I16A_ADDI + SP<<D16A + 8<<S16A ' CALL addrg
  word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  alignl_label
@@ -13149,10 +13149,10 @@ C_hub_posix_memalign_1215
  word I16A_MOV + (r3)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16B_LODL + (r4)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004 ' reg ARG ADDRG
+ long @C_snr41_68f73992__gm__L000004 ' reg ARG ADDRG
  word I16B_CPREP + 50<<S16B ' arg size, rpsize = 12, spsize = 12
  alignl_p1
- long I32_CALA + (@C_siocj_68dcc2b5_internal_memalign_L001079)<<S32
+ long I32_CALA + (@C_snr4j_68f73992_internal_memalign_L001079)<<S32
  word I16A_ADDI + SP<<D16A + 8<<S16A ' CALL addrg
  word I16A_MOV + (r17)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  alignl_label
@@ -13185,17 +13185,17 @@ C_hub_valloc ' <symbol:hub_valloc>
  long I32_PSHM + $c00000<<S32 ' save registers
  word I16A_MOV + (r23)<<D16A + (r2)<<S16A ' reg var <- reg arg
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
  long I32_BRNZ + (@C_hub_valloc_1220)<<S32 ' NEU4 reg coni
  alignl_p1
- long I32_CALA + (@C_sioc4_68dcc2b5_init_mparams_L000025)<<S32 ' CALL addrg
+ long I32_CALA + (@C_snr44_68f73992_init_mparams_L000025)<<S32 ' CALL addrg
  alignl_label
 C_hub_valloc_1220
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003+4)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003+4)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrl16 reg
@@ -13221,17 +13221,17 @@ C_hub_pvalloc ' <symbol:hub_pvalloc>
  long I32_PSHM + $f00000<<S32 ' save registers
  word I16A_MOV + (r23)<<D16A + (r2)<<S16A ' reg var <- reg arg
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
  long I32_BRNZ + (@C_hub_pvalloc_1223)<<S32 ' NEU4 reg coni
  alignl_p1
- long I32_CALA + (@C_sioc4_68dcc2b5_init_mparams_L000025)<<S32 ' CALL addrg
+ long I32_CALA + (@C_snr44_68f73992_init_mparams_L000025)<<S32 ' CALL addrg
  alignl_label
 C_hub_pvalloc_1223
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003+4)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003+4)<<S32
  word I16A_MOV + (r21)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A ' ADDU
  word I16A_ADD + (r22)<<D16A + (r21)<<S16A ' ADDU (3)
@@ -13271,12 +13271,12 @@ C_hub_independent_calloc ' <symbol:hub_independent_calloc>
  word I16A_MOV + (r5)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16A_SUBI + SP<<D16A + 16<<S16A ' stack space for reg ARGs
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004)<<S32
  word I16B_PSHL ' stack ARG ADDRG
  word I16A_MOVI + BC<<D16A + 20<<S16A ' arg size, rpsize = 0, spsize = 20
  word I16A_ADDI + SP<<D16A + 4<<S16A ' correct for new kernel !!! 
  alignl_p1
- long I32_CALA + (@C_siock_68dcc2b5_ialloc_L001110)<<S32
+ long I32_CALA + (@C_snr4k_68f73992_ialloc_L001110)<<S32
  word I16A_ADDI + SP<<D16A + 16<<S16A ' CALL addrg
  word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
 ' C_hub_independent_calloc_1225 ' (symbol refcount = 0)
@@ -13300,12 +13300,12 @@ C_hub_independent_comalloc ' <symbol:hub_independent_comalloc>
  word I16A_MOV + (r5)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16A_SUBI + SP<<D16A + 16<<S16A ' stack space for reg ARGs
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004)<<S32
  word I16B_PSHL ' stack ARG ADDRG
  word I16A_MOVI + BC<<D16A + 20<<S16A ' arg size, rpsize = 0, spsize = 20
  word I16A_ADDI + SP<<D16A + 4<<S16A ' correct for new kernel !!! 
  alignl_p1
- long I32_CALA + (@C_siock_68dcc2b5_ialloc_L001110)<<S32
+ long I32_CALA + (@C_snr4k_68f73992_ialloc_L001110)<<S32
  word I16A_ADDI + SP<<D16A + 16<<S16A ' CALL addrg
  word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
 ' C_hub_independent_comalloc_1226 ' (symbol refcount = 0)
@@ -13326,10 +13326,10 @@ C_hub_bulk_free ' <symbol:hub_bulk_free>
  word I16A_MOV + (r3)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_LODL + (r4)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004 ' reg ARG ADDRG
+ long @C_snr41_68f73992__gm__L000004 ' reg ARG ADDRG
  word I16B_CPREP + 50<<S16B ' arg size, rpsize = 12, spsize = 12
  alignl_p1
- long I32_CALA + (@C_siocl_68dcc2b5_internal_bulk_free_L001155)<<S32
+ long I32_CALA + (@C_snr4l_68f73992_internal_bulk_free_L001155)<<S32
  word I16A_ADDI + SP<<D16A + 8<<S16A ' CALL addrg
  word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
 ' C_hub_bulk_free_1227 ' (symbol refcount = 0)
@@ -13349,22 +13349,22 @@ C_hub_malloc_trim ' <symbol:hub_malloc_trim>
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNI4 addrl16 reg
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
  long I32_BRNZ + (@C_hub_malloc_trim_1229)<<S32 ' NEU4 reg coni
  alignl_p1
- long I32_CALA + (@C_sioc4_68dcc2b5_init_mparams_L000025)<<S32 ' CALL addrg
+ long I32_CALA + (@C_snr44_68f73992_init_mparams_L000025)<<S32 ' CALL addrg
  alignl_label
 C_hub_malloc_trim_1229
  word I16A_MOV + (r2)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_LODL + (r3)<<D16B
  alignl_p1
- long @C_sioc1_68dcc2b5__gm__L000004 ' reg ARG ADDRG
+ long @C_snr41_68f73992__gm__L000004 ' reg ARG ADDRG
  word I16B_CPREP + 33<<S16B ' arg size, rpsize = 8, spsize = 8
  alignl_p1
- long I32_CALA + (@C_sioce_68dcc2b5_sys_trim_L000399)<<S32
+ long I32_CALA + (@C_snr4e_68f73992_sys_trim_L000399)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_WRLONG + (r0)<<D16A + RI<<S16A ' ASGNI4 addrl16 reg
@@ -13380,7 +13380,7 @@ C_hub_malloc_trim_1229
  alignl_label
 C_hub_malloc_footprint ' <symbol:hub_malloc_footprint>
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+432)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+432)<<S32
  word I16A_MOV + (r0)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
 ' C_hub_malloc_footprint_1232 ' (symbol refcount = 0)
  word I16B_RETN
@@ -13392,7 +13392,7 @@ C_hub_malloc_footprint ' <symbol:hub_malloc_footprint>
  alignl_label
 C_hub_malloc_max_footprint ' <symbol:hub_malloc_max_footprint>
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+436)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+436)<<S32
  word I16A_MOV + (r0)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
 ' C_hub_malloc_max_footprint_1234 ' (symbol refcount = 0)
  word I16B_RETN
@@ -13406,7 +13406,7 @@ C_hub_malloc_footprint_limit ' <symbol:hub_malloc_footprint_limit>
  alignl_p1
  long I32_PSHM + $a00000<<S32 ' save registers
  alignl_p1
- long I32_LODI + (@C_sioc1_68dcc2b5__gm__L000004+440)<<S32
+ long I32_LODI + (@C_snr41_68f73992__gm__L000004+440)<<S32
  word I16A_MOV + (r23)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_CMPI + (r23)<<D16A + (0)<<S16A
  alignl_p1
@@ -13436,12 +13436,12 @@ C_hub_malloc_set_footprint_limit ' <symbol:hub_malloc_set_footprint_limit>
  alignl_p1
  long I32_BRNZ + (@C_hub_malloc_set_footprint_limit_1242)<<S32 ' NEU4 reg coni
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003+8)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003+8)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_SUBI + (r22)<<D16A + (1)<<S16A ' SUBU4 reg coni
  word I16A_ADDI + (r22)<<D16A + (1)<<S16A ' ADDU4 reg coni
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003+8)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003+8)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_SUBI + (r20)<<D16A + (1)<<S16A ' SUBU4 reg coni
  word I16B_CPL + (r20)<<D16B ' BCOMU4
@@ -13462,12 +13462,12 @@ C_hub_malloc_set_footprint_limit_1242
  alignl_label
 C_hub_malloc_set_footprint_limit_1246
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003+8)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003+8)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_SUBI + (r22)<<D16A + (1)<<S16A ' SUBU4 reg coni
  word I16A_ADD + (r22)<<D16A + (r2)<<S16A ' ADDU (2)
  alignl_p1
- long I32_LODI + (@C_sioc_68dcc2b5_mparams_L000003+8)<<S32
+ long I32_LODI + (@C_snr4_68f73992_mparams_L000003+8)<<S32
  word I16A_MOV + (r20)<<D16A + RI<<S16A ' reg <- INDIRU4 addrg
  word I16A_SUBI + (r20)<<D16A + (1)<<S16A ' SUBU4 reg coni
  word I16B_CPL + (r20)<<D16B ' BCOMU4
@@ -13479,7 +13479,7 @@ C_hub_malloc_set_footprint_limit_1247
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRU4 addrl16
  alignl_p1
- long I32_LODA + (@C_sioc1_68dcc2b5__gm__L000004+440)<<S32
+ long I32_LODA + (@C_snr41_68f73992__gm__L000004+440)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  word I16A_MOV + (r0)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
 ' C_hub_malloc_set_footprint_limit_1241 ' (symbol refcount = 0)
@@ -13500,7 +13500,7 @@ C_hub_mallopt ' <symbol:hub_mallopt>
  word I16A_MOV + (r3)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 33<<S16B ' arg size, rpsize = 8, spsize = 8
  alignl_p1
- long I32_CALA + (@C_sioc5_68dcc2b5_change_mparam_L000039)<<S32
+ long I32_CALA + (@C_snr45_68f73992_change_mparam_L000039)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
 ' C_hub_mallopt_1251 ' (symbol refcount = 0)
@@ -13572,11 +13572,11 @@ C_hub_malloc_usable_size_1252
 DAT ' uninitialized data segment
 
  alignl_label
-C_sioc1_68dcc2b5__gm__L000004 ' <symbol:_gm_>
+C_snr41_68f73992__gm__L000004 ' <symbol:_gm_>
  byte 0[472]
 
  alignl_label
-C_sioc_68dcc2b5_mparams_L000003 ' <symbol:mparams>
+C_snr4_68f73992_mparams_L000003 ' <symbol:mparams>
  byte 0[24]
 
 ' Catalina Code

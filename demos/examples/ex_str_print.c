@@ -54,10 +54,12 @@
  *   catalina -C C3 -C TTY ex_str_print.c -lc -lm
  *
  */
-#include <float.h>
-#include <math.h>
 #include <limits.h>
 #include <stdlib.h>
+#include <string.h>
+#include <float.h>
+#include <math.h>
+#include <hmi.h>
 
 #define MAX_WIDTH 30            // maximum field width supported (arbitrary)
 #define MAX_PRECN FLT_DIG+2     // maximum precision supported (for float)
@@ -140,16 +142,16 @@ static char *exptoa(int e, char *itoa_buf) {
 
 static char * NanOrInf(double r, char *s) {
    float f = r;
-   if ((*((unsigned long *) &f) & 0x7f800000) == 0x7f800000) { /* NaN or Inf */
-      if ((*((unsigned long *) &f) & 0x007fffff) == 0) { /* Inf */
-         if (*((unsigned long *) &f) & 0x80000000) {
+   if ((*((unsigned long *) &f) & 0x7f800000UL) == 0x7f800000UL) { /* NaN or Inf */
+      if ((*((unsigned long *) &f) & 0x007fffffUL) == 0) { /* Inf */
+         if (*((unsigned long *) &f) & 0x80000000UL) {
             *s++ = '-';
          }
          strcpy(s, "inf");
          return s+3;
       }
       else { /* NaN */
-         if (*((unsigned long *) &f) & 0x80000000) {
+         if (*((unsigned long *) &f) & 0x80000000UL) {
             *s++ = '-';
          }
          strcpy(s, "nan");
@@ -309,7 +311,7 @@ void str_float(double d, int width, int precision, int flags, char *buffer) {
      l2 = 0;
   }
 
-  *str3 = 0;
+  str3[0] = 0;
   if (exp != 0) {
      strcpy(str3, exptoa(exp, itoa_buf));
      l3 = strlen(str3);
@@ -353,7 +355,7 @@ void str_float(double d, int width, int precision, int flags, char *buffer) {
 void str_bin(unsigned value, int digits, char *buffer) {
   value <<= (32 - digits);
   while (digits-- > 0) {
-     *(buffer++) = (((value & 0x80000000) == 0) ? '0' : '1');
+     *(buffer++) = (((value & 0x80000000UL) == 0) ? '0' : '1');
      value <<= 1;
   }
   *buffer++ = 0;

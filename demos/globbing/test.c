@@ -8,6 +8,7 @@
  */
 
 #include "storage.h"
+#include <hmi.h>
 
 /*
  * printFile - just print the name (ignore file attributes and size)

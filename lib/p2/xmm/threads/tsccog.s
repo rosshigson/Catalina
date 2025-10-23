@@ -890,7 +890,7 @@ C__threadstart_C__cog ' <symbol:_threadstart_C_cog>
  long -4104
  wrlong r22, RI ' ASGNU4 addrl reg
  mov r15, #0 ' reg <- coni
-C__threadstart_C__cog_10
+C__threadstart_C__cog_11
  mov r22, r15
  shl r22, #2 ' LSHI4 coni
  jmp #LODF
@@ -907,16 +907,16 @@ C__threadstart_C__cog_10
  mov RI, r20
  mov BC, r22
  jmp #WLNG ' ASGNI4 reg reg
-' C__threadstart_C__cog_11 ' (symbol refcount = 0)
+' C__threadstart_C__cog_12 ' (symbol refcount = 0)
  adds r15, #1 ' ADDI4 coni
  jmp #LODL
  long 512
  mov r22, RI ' reg <- con
  cmps r15, r22 wz,wc
  jmp #BR_B
- long @C__threadstart_C__cog_10 ' LTI4
+ long @C__threadstart_C__cog_11 ' LTI4
  mov r15, #0 ' reg <- coni
-C__threadstart_C__cog_14
+C__threadstart_C__cog_15
  mov r22, r15
  shl r22, #2 ' LSHI4 coni
  jmp #LODF
@@ -933,11 +933,11 @@ C__threadstart_C__cog_14
  mov RI, r20
  mov BC, r22
  jmp #WLNG ' ASGNI4 reg reg
-' C__threadstart_C__cog_15 ' (symbol refcount = 0)
+' C__threadstart_C__cog_16 ' (symbol refcount = 0)
  adds r15, #1 ' ADDI4 coni
  cmps r15,  #153 wz,wc
  jmp #BR_B
- long @C__threadstart_C__cog_14 ' LTI4
+ long @C__threadstart_C__cog_15 ' LTI4
  jmp #LODF
  long -4100
  mov r22, RI ' reg <- addrl
@@ -968,7 +968,7 @@ C__threadstart_C__cog_14
  jmp #CALA
  long @C__thread_wait ' CALL addrg
  mov r0, r17 ' CVI, CVU or LOAD
-' C__threadstart_C__cog_1 ' (symbol refcount = 0)
+' C__threadstart_C__cog_2 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #LODL
  long 4128

@@ -3,9 +3,10 @@
  * http://www.cs.utk.edu/~plank/plank/classes/cs360/360/notes/Setjmp/lecture.html
  *
  */
+
+#include <stdlib.h>
 #include <setjmp.h>
 #include <hmi.h>
-
 
 int proc_4(jmp_buf env, int i) {
   if (i == 0) longjmp(env, 1);

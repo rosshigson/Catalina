@@ -189,11 +189,11 @@ C_pthread_rwlock_timedwrlock_4
  word I16B_POPM + 2<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
-' Catalina Import _pthread_init_lock_pool
-
 ' Catalina Import _Pthread_Pool
 
 ' Catalina Import malloc
+
+' Catalina Import _pthread_init_lock_pool
 
 ' Catalina Import pthread_msleep
 

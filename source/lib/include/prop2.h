@@ -94,7 +94,7 @@ void      _hubset(uint32_t val);
  *    In _cogstart_XXX, function 'func' accepts a parameter (i.e. 'arg').
  *    In _cogstart_XXX, 'stack' specifies the BASE of the stack, not the TOP.
  */
-_cogstart_C(void (*func)(void *), void *arg, void *stack_base, uint32_t stack_size);
+int _cogstart_C(void func(void *), void *arg, void *stack_base, uint32_t stack_size);
 
 /* stop/check status of COGs */
 void      _cogstop(int cog);
@@ -136,7 +136,7 @@ counter64_t _cnthl();  /* fetch both together */
 
 void      _waitcnt(uint32_t tick);
 
-#if !defined(_waitx) && !defined(__CATALINA_P2)
+#if !defined(_waitx)
 /* the Propeller 1 has no _waitx function - prop.h defines a macro */
 void      _waitx(uint32_t delay);
 #endif

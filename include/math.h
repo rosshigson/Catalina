@@ -12,7 +12,7 @@ double __huge_val(void);	/* may be infinity */
 #define	HUGE_VALF	((float)__huge_val())
 #define	HUGE_VALL	((long double)__huge_val())
 
-int	__IsNan(double d);	/* test for Not A Number */
+//int	__IsNan(double d);	/* test for Not A Number (now a macro!) */
 
 double	acos(double _x);
 double	asin(double _x);
@@ -42,5 +42,22 @@ double	frexp(double _x, int *_exp);
 double	ldexp(double _x, int _exp);
 double	modf(double _x, double *_iptr);
 double	fmod(double _x, double _y);
+
+/*
+ *    Return values for fpclassify
+ */
+#define FP_NAN		   1
+#define FP_INFINITE	 2
+#define FP_NORMAL	   4
+#define FP_ZERO		   8
+#define FP_SUBNORMAL 16
+
+int fpclassify(double x);
+int isfinite(double x);
+int isnormal(double x);
+int isnan(double x);
+int isinf(double x);
+
+#define __IsNan(x) isnan(x)
 
 #endif	/* _MATH_H */

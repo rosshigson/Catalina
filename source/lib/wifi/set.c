@@ -19,7 +19,7 @@ int wifi_SET(char *setting, char *value) {
 #if WIFI_DEBUG
    wifi_debug_print("WiFi SET", setting);
 #endif
-  isprintf(buff,"SET:%s,%s", setting, value);
+   isprintf(buff,"SET:%s,%s", setting, value);
    result = wifi_Send_Command(buff);
    if (result == wifi_Success) {
       result = wifi_Read_Code(&code);

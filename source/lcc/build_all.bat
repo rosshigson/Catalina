@@ -7,7 +7,11 @@ set TMP_LCCDIR=%TMP_LCCDIR:\=\\%
 
 rem now clean and make everything
 
-make clobber -f makefile.mgw HOSTFILE=etc\\catalina_win32.c LCCDIR=%TMP_LCCDIR%
+make clobber -f makefile.mgw LCCDIR=%TMP_LCCDIR%
+make all -f makefile.mgw HOSTFILE=etc\\catalina_win32_cake.c LCCDIR=%TMP_LCCDIR%
+rename %TMP_LCCDIR%\\bin\lcc.exe clcc.exe
+
+make clobber -f makefile.mgw LCCDIR=%TMP_LCCDIR%
 make all -f makefile.mgw HOSTFILE=etc\\catalina_win32.c LCCDIR=%TMP_LCCDIR%
 
 

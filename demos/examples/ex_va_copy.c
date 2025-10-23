@@ -1,5 +1,5 @@
 #include <stdarg.h>
-#include <stdio.h>
+#include <hmi.h>
 
 struct x {
    int x, y;
@@ -25,7 +25,7 @@ int add_em_up_vararg (char *str, struct x a, int count, ...) {
   sum = 0;
   for (i = 0; i < count; i++) {
     sum += va_arg (ap, int);    /* Get the next argument value. */
-    printf("(arg = %d) ", va_arg(ap2, int));
+    t_printf("(arg = %d) ", va_arg(ap2, int));
   }
 
   va_end (ap);                  /* Clean up. */

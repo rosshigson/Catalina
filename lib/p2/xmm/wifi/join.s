@@ -65,9 +65,9 @@ C_wifi_J_O_I_N__1
 
 ' Catalina Import wifi_Send_Command
 
-' Catalina Import isprintf
-
 ' Catalina Import wifi_init
+
+' Catalina Import isprintf
 
 ' Catalina Cnst
 

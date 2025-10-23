@@ -7,59 +7,59 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_sovs_68dcc30d_isspace_L000001 ' <symbol:isspace>
+C_si2o_68f739ee_isspace_L000001 ' <symbol:isspace>
  calld PA,#PSHM
  long $800000 ' save registers
  cmps r2,  #0 wz
- if_z jmp #\C_sovs_68dcc30d_isspace_L000001_11 ' EQI4
+ if_z jmp #\C_si2o_68f739ee_isspace_L000001_11 ' EQI4
  cmps r2,  #32 wz
- if_z jmp #\C_sovs_68dcc30d_isspace_L000001_11 ' EQI4
+ if_z jmp #\C_si2o_68f739ee_isspace_L000001_11 ' EQI4
  cmps r2,  #12 wz
- if_z jmp #\C_sovs_68dcc30d_isspace_L000001_11 ' EQI4
+ if_z jmp #\C_si2o_68f739ee_isspace_L000001_11 ' EQI4
  cmps r2,  #11 wz
- if_z jmp #\C_sovs_68dcc30d_isspace_L000001_11 ' EQI4
+ if_z jmp #\C_si2o_68f739ee_isspace_L000001_11 ' EQI4
  cmps r2,  #9 wz
- if_z jmp #\C_sovs_68dcc30d_isspace_L000001_11 ' EQI4
+ if_z jmp #\C_si2o_68f739ee_isspace_L000001_11 ' EQI4
  cmps r2,  #13 wz
- if_z jmp #\C_sovs_68dcc30d_isspace_L000001_11 ' EQI4
+ if_z jmp #\C_si2o_68f739ee_isspace_L000001_11 ' EQI4
  cmps r2,  #10 wz
- if_nz jmp #\C_sovs_68dcc30d_isspace_L000001_4 ' NEI4
-C_sovs_68dcc30d_isspace_L000001_11
+ if_nz jmp #\C_si2o_68f739ee_isspace_L000001_4 ' NEI4
+C_si2o_68f739ee_isspace_L000001_11
  mov r23, #1 ' reg <- coni
- jmp #\@C_sovs_68dcc30d_isspace_L000001_5 ' JUMPV addrg
-C_sovs_68dcc30d_isspace_L000001_4
+ jmp #\@C_si2o_68f739ee_isspace_L000001_5 ' JUMPV addrg
+C_si2o_68f739ee_isspace_L000001_4
  mov r23, #0 ' reg <- coni
-C_sovs_68dcc30d_isspace_L000001_5
+C_si2o_68f739ee_isspace_L000001_5
  mov r0, r23 ' CVI, CVU or LOAD
-' C_sovs_68dcc30d_isspace_L000001_2 ' (symbol refcount = 0)
+' C_si2o_68f739ee_isspace_L000001_2 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETN
 
 
  alignl ' align long
-C_sovs1_68dcc30d_trim_L000012 ' <symbol:trim>
+C_si2o1_68f739ee_trim_L000012 ' <symbol:trim>
  calld PA,#NEWF
  calld PA,#PSHM
  long $c00000 ' save registers
  mov r23, r2 ' reg var <- reg arg
- jmp #\@C_sovs1_68dcc30d_trim_L000012_15 ' JUMPV addrg
-C_sovs1_68dcc30d_trim_L000012_14
+ jmp #\@C_si2o1_68f739ee_trim_L000012_15 ' JUMPV addrg
+C_si2o1_68f739ee_trim_L000012_14
  adds r23, #1 ' ADDP4 coni
-C_sovs1_68dcc30d_trim_L000012_15
+C_si2o1_68f739ee_trim_L000012_15
  rdbyte r2, r23 ' reg <- CVUI4 INDIRU1 reg
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_sovs_68dcc30d_isspace_L000001 ' CALL addrg
+ long @C_si2o_68f739ee_isspace_L000001 ' CALL addrg
  cmps r0,  #0 wz
- if_nz jmp #\C_sovs1_68dcc30d_trim_L000012_14 ' NEI4
+ if_nz jmp #\C_si2o1_68f739ee_trim_L000012_14 ' NEI4
  mov r0, r23 ' CVI, CVU or LOAD
-' C_sovs1_68dcc30d_trim_L000012_13 ' (symbol refcount = 0)
+' C_si2o1_68f739ee_trim_L000012_13 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sovs2_68dcc30d__scanf_gets_L000017 ' <symbol:_scanf_gets>
+C_si2o2_68f739ee__scanf_gets_L000017 ' <symbol:_scanf_gets>
  calld PA,#NEWF
  calld PA,#PSHM
  long $fa0000 ' save registers
@@ -67,8 +67,8 @@ C_sovs2_68dcc30d__scanf_gets_L000017 ' <symbol:_scanf_gets>
  mov r21, r4 ' reg var <- reg arg
  mov r19, r3 ' reg var <- reg arg
  mov r17, r2 ' reg var <- reg arg
- jmp #\@C_sovs2_68dcc30d__scanf_gets_L000017_20 ' JUMPV addrg
-C_sovs2_68dcc30d__scanf_gets_L000017_19
+ jmp #\@C_si2o2_68f739ee__scanf_gets_L000017_20 ' JUMPV addrg
+C_si2o2_68f739ee__scanf_gets_L000017_19
  mov r22, r21 ' CVI, CVU or LOAD
  mov r21, r22
  adds r21, #1 ' ADDP4 coni
@@ -77,28 +77,28 @@ C_sovs2_68dcc30d__scanf_gets_L000017_19
  adds r23, #1 ' ADDP4 coni
  rdbyte r20, r20 ' reg <- INDIRU1 reg
  wrbyte r20, r22 ' ASGNU1 reg reg
-C_sovs2_68dcc30d__scanf_gets_L000017_20
+C_si2o2_68f739ee__scanf_gets_L000017_20
  mov r22, r19 ' CVI, CVU or LOAD
  mov r19, r22
  sub r19, #1 ' SUBU4 coni
  cmp r22,  #0 wz
- if_z jmp #\C_sovs2_68dcc30d__scanf_gets_L000017_22 ' EQU4
+ if_z jmp #\C_si2o2_68f739ee__scanf_gets_L000017_22 ' EQU4
  cmps r17,  #0 wz
- if_nz jmp #\C_sovs2_68dcc30d__scanf_gets_L000017_19 ' NEI4
+ if_nz jmp #\C_si2o2_68f739ee__scanf_gets_L000017_19 ' NEI4
  rdbyte r2, r23 ' reg <- CVUI4 INDIRU1 reg
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_sovs_68dcc30d_isspace_L000001 ' CALL addrg
+ long @C_si2o_68f739ee_isspace_L000001 ' CALL addrg
  cmps r0,  #0 wz
- if_z jmp #\C_sovs2_68dcc30d__scanf_gets_L000017_19 ' EQI4
-C_sovs2_68dcc30d__scanf_gets_L000017_22
+ if_z jmp #\C_si2o2_68f739ee__scanf_gets_L000017_19 ' EQI4
+C_si2o2_68f739ee__scanf_gets_L000017_22
  cmps r17,  #0 wz
- if_nz jmp #\C_sovs2_68dcc30d__scanf_gets_L000017_23 ' NEI4
+ if_nz jmp #\C_si2o2_68f739ee__scanf_gets_L000017_23 ' NEI4
  mov r22, #0 ' reg <- coni
  wrbyte r22, r21 ' ASGNU1 reg reg
-C_sovs2_68dcc30d__scanf_gets_L000017_23
+C_si2o2_68f739ee__scanf_gets_L000017_23
  mov r0, r23 ' CVI, CVU or LOAD
-' C_sovs2_68dcc30d__scanf_gets_L000017_18 ' (symbol refcount = 0)
+' C_si2o2_68f739ee__scanf_gets_L000017_18 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -122,13 +122,13 @@ C__doscanf_26
  mov r2, r17 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_sovs_68dcc30d_isspace_L000001 ' CALL addrg
+ long @C_si2o_68f739ee_isspace_L000001 ' CALL addrg
  cmps r0,  #0 wz
  if_z jmp #\C__doscanf_31 ' EQI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_sovs1_68dcc30d_trim_L000012 ' CALL addrg
+ long @C_si2o1_68f739ee_trim_L000012 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  jmp #\@C__doscanf_27 ' JUMPV addrg
 C__doscanf_31
@@ -178,7 +178,7 @@ C__doscanf_36
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_sovs1_68dcc30d_trim_L000012 ' CALL addrg
+ long @C_si2o1_68f739ee_trim_L000012 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  rdbyte r22, r23 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #0 wz
@@ -249,7 +249,7 @@ C__doscanf_49
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sovs2_68dcc30d__scanf_gets_L000017
+ long @C_si2o2_68f739ee__scanf_gets_L000017
  add SP, #12 ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
  mov r22, r0 ' CVI, CVU or LOAD

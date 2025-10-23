@@ -846,7 +846,7 @@ C__coginit_C__cog ' <symbol:_coginit_C_cog>
  jmp #CALA
  long @C__waitcnt ' CALL addrg
  mov r0, r19 ' CVI, CVU or LOAD
-' C__coginit_C__cog_1 ' (symbol refcount = 0)
+' C__coginit_C__cog_2 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #24 ' framesize
  jmp #RETF

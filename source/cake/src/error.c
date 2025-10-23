@@ -290,6 +290,7 @@ const char* get_posix_error_message(int error)
         return "Too many references: cannot splice";
     case  ESTALE:
         return "Stale NFS file handle";
+
 #endif
 
 #endif // !defined(__CATALINA__)

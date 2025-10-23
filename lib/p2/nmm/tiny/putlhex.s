@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_s4ao_68dcc30f_digits_L000001 ' <symbol:digits>
+C_sne0_68f739f0_digits_L000001 ' <symbol:digits>
  byte 48
  byte 49
  byte 50
@@ -55,7 +55,7 @@ C_putlhex_5
  adds r21, r20 ' ADDI/P (3)
  mov r20, r23
  and r20, #15 ' BANDU4 coni
- mov r18, ##@C_s4ao_68dcc30f_digits_L000001 ' reg <- addrg
+ mov r18, ##@C_sne0_68f739f0_digits_L000001 ' reg <- addrg
  adds r20, r18 ' ADDI/P (1)
  rdbyte r20, r20 ' reg <- INDIRU1 reg
  wrbyte r20, r22 ' ASGNU1 reg reg

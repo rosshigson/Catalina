@@ -430,7 +430,7 @@ uint8_t *DOSFS_CanonicalToDir(uint8_t *dest, uint8_t *src)
 */
 uint32_t DOSFS_GetFreeFAT(PVOLINFO volinfo, uint8_t *scratch)
 {
-   uint32_t i, result = 0xffffffff, scratchcache = 0;
+   uint32_t i, result = 0xffffffffUL, scratchcache = 0;
    
    // Search starts at cluster 2, which is the first usable cluster
    // NOTE: This search can't terminate at a bad cluster, because there might
@@ -872,10 +872,10 @@ uint32_t DOSFS_OpenFile(PVOLINFO volinfo, uint8_t *path, uint8_t mode, uint8_t *
       // allocate a starting cluster for the directory entry
       cluster = DOSFS_GetFreeFAT(volinfo, scratch);
 
-      de.startclus_l_l = cluster & 0xff;
-      de.startclus_l_h = (cluster & 0xff00) >> 8;
-      de.startclus_h_l = (cluster & 0xff0000) >> 16;
-      de.startclus_h_h = (cluster & 0xff000000) >> 24;
+      de.startclus_l_l = cluster & 0xffUL;
+      de.startclus_l_h = (cluster & 0xff00UL) >> 8;
+      de.startclus_h_l = (cluster & 0xff0000UL) >> 16;
+      de.startclus_h_h = (cluster & 0xff000000UL) >> 24;
 
       // update FILEINFO for our caller's sake
       fileinfo->volinfo = volinfo;
@@ -928,9 +928,9 @@ uint32_t DOSFS_OpenFile(PVOLINFO volinfo, uint8_t *path, uint8_t mode, uint8_t *
           memcpy( scratch, &de, sizeof( DIRENT ) );
            memcpy( &( de.name ), "..         ", 11 );
           de.startclus_l_l = dircluster & 0xff;
-          de.startclus_l_h = ( dircluster & 0xff00 ) >> 8;
-          de.startclus_h_l = ( dircluster & 0xff0000 ) >> 16;
-          de.startclus_h_h = ( dircluster & 0xff000000 ) >> 24;
+          de.startclus_l_h = ( dircluster & 0xff00UL ) >> 8;
+          de.startclus_h_l = ( dircluster & 0xff0000UL ) >> 16;
+          de.startclus_h_h = ( dircluster & 0xff000000UL ) >> 24;
            memcpy( scratch + sizeof( DIRENT ), &de, sizeof( DIRENT ) );
            DOSFS_WriteSector( volinfo->unit, scratch, startsector, 1 );
       }
@@ -1334,10 +1334,10 @@ uint32_t DOSFS_WriteFile(PFILEINFO fileinfo, uint8_t *scratch, uint8_t *buffer, 
       ((PDIRENT) scratch)[fileinfo->diroffset].wrtdate_l = remain & 0xFF; remain >>= 8;
       ((PDIRENT) scratch)[fileinfo->diroffset].wrtdate_h = remain & 0xFF;
 
-      ((PDIRENT) scratch)[fileinfo->diroffset].filesize_0 = fileinfo->filelen & 0xff;
-      ((PDIRENT) scratch)[fileinfo->diroffset].filesize_1 = (fileinfo->filelen & 0xff00) >> 8;
-      ((PDIRENT) scratch)[fileinfo->diroffset].filesize_2 = (fileinfo->filelen & 0xff0000) >> 16;
-      ((PDIRENT) scratch)[fileinfo->diroffset].filesize_3 = (fileinfo->filelen & 0xff000000) >> 24;
+      ((PDIRENT) scratch)[fileinfo->diroffset].filesize_0 = fileinfo->filelen & 0xffUL;
+      ((PDIRENT) scratch)[fileinfo->diroffset].filesize_1 = (fileinfo->filelen & 0xff00UL) >> 8;
+      ((PDIRENT) scratch)[fileinfo->diroffset].filesize_2 = (fileinfo->filelen & 0xff0000UL) >> 16;
+      ((PDIRENT) scratch)[fileinfo->diroffset].filesize_3 = (fileinfo->filelen & 0xff000000UL) >> 24;
       if (DOSFS_WriteSector(fileinfo->volinfo->unit, scratch, fileinfo->dirsector, 1))
          return DOSFS_ERRMISC;
    return result;

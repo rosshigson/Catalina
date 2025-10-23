@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_sfik_68dcc175_cmmtd_array_L000001 ' <symbol:cmmtd_array>
+C_sclg_68f7384a_cmmtd_array_L000001 ' <symbol:cmmtd_array>
  long $fd900154
  long $0
  long $0
@@ -980,7 +980,7 @@ C__threaded_cogstart_C_M_M__cog ' <symbol:_threaded_cogstart_CMM_cog>
  long -4104
  wrlong r22, RI ' ASGNU4 addrl reg
  mov r15, #0 ' reg <- coni
-C__threaded_cogstart_C_M_M__cog_11
+C__threaded_cogstart_C_M_M__cog_12
  mov r22, r15
  shl r22, #2 ' LSHI4 coni
  jmp #LODF
@@ -988,7 +988,7 @@ C__threaded_cogstart_C_M_M__cog_11
  mov r20, RI ' reg <- addrl
  adds r20, r22 ' ADDI/P (2)
  jmp #LODL
- long @C_sfik_68dcc175_cmmtd_array_L000001
+ long @C_sclg_68f7384a_cmmtd_array_L000001
  mov r18, RI ' reg <- addrg
  adds r22, r18 ' ADDI/P (1)
  mov RI, r22
@@ -997,16 +997,16 @@ C__threaded_cogstart_C_M_M__cog_11
  mov RI, r20
  mov BC, r22
  jmp #WLNG ' ASGNI4 reg reg
-' C__threaded_cogstart_C_M_M__cog_12 ' (symbol refcount = 0)
+' C__threaded_cogstart_C_M_M__cog_13 ' (symbol refcount = 0)
  adds r15, #1 ' ADDI4 coni
  jmp #LODL
  long 512
  mov r22, RI ' reg <- con
  cmps r15, r22 wz,wc
  jmp #BR_B
- long @C__threaded_cogstart_C_M_M__cog_11 ' LTI4
+ long @C__threaded_cogstart_C_M_M__cog_12 ' LTI4
  mov r15, #0 ' reg <- coni
-C__threaded_cogstart_C_M_M__cog_15
+C__threaded_cogstart_C_M_M__cog_16
  mov r22, r15
  shl r22, #2 ' LSHI4 coni
  jmp #LODF
@@ -1023,11 +1023,11 @@ C__threaded_cogstart_C_M_M__cog_15
  mov RI, r20
  mov BC, r22
  jmp #WLNG ' ASGNI4 reg reg
-' C__threaded_cogstart_C_M_M__cog_16 ' (symbol refcount = 0)
+' C__threaded_cogstart_C_M_M__cog_17 ' (symbol refcount = 0)
  adds r15, #1 ' ADDI4 coni
  cmps r15,  #204 wz,wc
  jmp #BR_B
- long @C__threaded_cogstart_C_M_M__cog_15 ' LTI4
+ long @C__threaded_cogstart_C_M_M__cog_16 ' LTI4
  jmp #LODF
  long -4100
  mov r22, RI ' reg <- addrl
@@ -1071,7 +1071,7 @@ C__threaded_cogstart_C_M_M__cog_15
  jmp #CALA
  long @C__waitcnt ' CALL addrg
  mov r0, r17 ' CVI, CVU or LOAD
-' C__threaded_cogstart_C_M_M__cog_2 ' (symbol refcount = 0)
+' C__threaded_cogstart_C_M_M__cog_3 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #LODL
  long 4128

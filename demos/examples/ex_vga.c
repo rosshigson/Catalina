@@ -15,15 +15,10 @@
  *   catalina -p2 -lci -C P2_EVAL -C HIRES_VGA -C COLOR_8 -C MHZ_260 ex_vga.c *
  *                                                                            *
  ******************************************************************************/
+#include <stdio.h>
+#include <prop.h>
 #include <hmi.h>
 #include <cog.h>
-#include <stdio.h>
-
-#ifdef __CATALINA_P2
-#define msleep(msec) _waitx((msec)*(_clockfreq()/1000))
-#else
-#define msleep(msec) _waitcnt(_cnt() + ((msec)*(_clockfreq()/1000)));
-#endif
 
 // cursor mode definitions ...
 #define ALWAYS_OFF 0x0 // cursor is invisible

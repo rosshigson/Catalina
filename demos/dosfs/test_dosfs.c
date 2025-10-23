@@ -20,10 +20,13 @@
  * The CLOCK symbol must be defined to perform timed tests.
  *
  */
-#include "stdint.h"
+#include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "dosfs.h"
+#include <prop.h>
 #include <hmi.h>
 #ifdef __CATALINA_CLOCK
 #include <time.h>
@@ -105,7 +108,7 @@ int main() {
 
    // Obtain pointer to first partition on first (only) unit
    pstart = DOSFS_GetPtnStart(0, sector, 0, &pactive, &ptype, &psize);
-   if (pstart == 0xffffffff) {
+   if (pstart == 0xffffffffUL) {
       t_printf("Cannot find first partition - is an SD card inserted?\n");
       return -1;
    }

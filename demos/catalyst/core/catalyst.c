@@ -142,7 +142,9 @@
  *      catalyst.h).
  */
 
+#include <ctype.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <dosfs.h>
@@ -152,9 +154,13 @@
 
 #include "catalyst.h"  // most configuration options now here!
 
+#include "cogstore.h" 
+
 #ifdef __CATALINA_liblinenoise
 #include "linenoise.h"
 #endif
+
+void Execute(int CPU_Num, int File_Mode); // see loader.c
 
 // debugging - note that enabling these options will reduce the size of 
 // loadable programs, since the Cluster List overlaps with the registry
@@ -244,7 +250,7 @@ int press_key_to_continue() {
 /*
  * Load the cluster list of the file whose name is in filename, storing up
  * to MAX_FLIST_SIZE words starting at FLIST_ADDRESS - if there are less
- * than MAX_FLIST_SIZE longs then the list is terminated with 0xFFFFFFFF.
+ * than MAX_FLIST_SIZE longs then the list is terminated with 0xFFFFFFFFUL.
  *
  * return codes:
  *     0 = ok
@@ -335,7 +341,7 @@ int LoadClusterList (PVOLINFO vi, uint8_t *filename, PLOADINFO li)  {
 #endif
 
    if (chain_count < MAX_FLIST_SIZE) {
-      li->List[chain_count] = 0xFFFFFFFF;
+      li->List[chain_count] = 0xFFFFFFFFUL;
    }
 
    return 0;
@@ -1519,11 +1525,11 @@ void main() {
                int i = 0;
 #if ENABLE_FAT32
                long *list = (long *)FLIST_ADDRESS;
-               while ((i < MAX_FLIST_SIZE) && (li.List[i] != 0xFFFFFFFF)) {
+               while ((i < MAX_FLIST_SIZE) && (li.List[i] != 0xFFFFFFFFUL)) {
                   *list = (long)li.List[i];
 #else
                short *list = (short *)FLIST_ADDRESS;
-               while ((i < MAX_FLIST_SIZE) && (li.List[i] != 0xFFFFFFFF)) {
+               while ((i < MAX_FLIST_SIZE) && (li.List[i] != 0xFFFFFFFFUL)) {
                   *list = (short)li.List[i];
 #endif
 #ifdef DEBUG_CLUSTERLIST

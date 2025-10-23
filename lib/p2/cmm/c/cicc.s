@@ -804,7 +804,7 @@ C__coginit_C__cog ' <symbol:_coginit_C_cog>
  alignl_p1
  long I32_CALA + (@C__waitcnt)<<S32 ' CALL addrg
  word I16A_MOV + (r0)<<D16A + (r19)<<S16A ' CVI, CVU or LOAD
-' C__coginit_C__cog_1 ' (symbol refcount = 0)
+' C__coginit_C__cog_2 ' (symbol refcount = 0)
  word I16B_POPM + 6<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 

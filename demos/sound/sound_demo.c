@@ -1,5 +1,6 @@
 #include "sound.h"
 #include <plugin.h>
+#include <hmi.h>
 
 static char demo_sound[] = {
 

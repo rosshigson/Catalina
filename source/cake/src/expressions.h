@@ -240,7 +240,7 @@ struct expression* _Owner _Opt expression(struct parser_ctx* ctx, enum expressio
 struct expression* _Owner _Opt constant_expression(struct parser_ctx* ctx, bool show_error_if_not_constant, enum expression_eval_mode eval_mode);
 bool expression_is_subjected_to_lvalue_conversion(const struct expression*);
 
-bool expression_get_variables(const struct expression* expr, int n, struct object* variables[/*n*/]);
+bool expression_get_variables(struct expression* expr, int n, struct object* variables[/*n*/]);
 
 bool expression_is_lvalue(const struct expression* expr);
 
@@ -264,9 +264,5 @@ void check_assigment(struct parser_ctx* ctx,
     const struct expression* right,
     enum assigment_type assigment_type);
 
-void check_comparison(struct parser_ctx* ctx,
-    struct expression* p_a_expression,
-    struct expression* p_b_expression,
-    const struct token* op_token);
 
 struct object expression_eval(struct expression* p_expression);

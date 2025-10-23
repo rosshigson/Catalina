@@ -1133,21 +1133,21 @@ C_wifi_A_U_T_O_ ' <symbol:wifi_AUTO>
  jmp #RETF
 
 
-' Catalina Import s_rxflush
+' Catalina Import isprintf
 
 ' Catalina Import isscanf
+
+' Catalina Import s_str
+
+' Catalina Import s_txflush
+
+' Catalina Import s_tx
 
 ' Catalina Import s_rx
 
 ' Catalina Import s_rxcount
 
-' Catalina Import s_tx
-
-' Catalina Import s_txflush
-
-' Catalina Import s_str
-
-' Catalina Import isprintf
+' Catalina Import s_rxflush
 
 ' Catalina Import strlen
 

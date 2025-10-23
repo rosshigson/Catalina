@@ -1,8 +1,10 @@
 /*
  * test signal raising
  */
-#include <hmi.h>
+
+#include <stdlib.h>
 #include <signal.h>
+#include <hmi.h>
 
 void my_signal_handler (int sig) {
    t_string (1, "signal = ");
@@ -23,9 +25,9 @@ int main(void) {
    if (signal (6, &my_signal_handler) == SIG_ERR) {
       t_string (1, "Error setting signal handler\n");
    }
-   raise (1);
+   raise(1);
 
-   abort (0);
+   abort();
 
    t_string (1, "\nTest failed if this appears\n");
 

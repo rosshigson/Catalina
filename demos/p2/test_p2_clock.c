@@ -10,7 +10,9 @@
  *                                                                           *
  \***************************************************************************/
 
+#include <stdio.h>
 #include <prop2.h>
+#include <cog.h>
 
 #if defined(__CATALINA_P2_EDGE)
 #define LED_PIN         38 // for P2_EDGE board

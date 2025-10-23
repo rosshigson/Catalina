@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_s5vg_68dcc30e_digits_L000001 ' <symbol:digits>
+C_smf4_68f739f0_digits_L000001 ' <symbol:digits>
  byte 48
  byte 49
  byte 50
@@ -89,7 +89,7 @@ C__printf_putls_7
  mov r20, ##-1 ' reg <- con
  mov r17, r22 ' ADDI/P
  adds r17, r20 ' ADDI/P (3)
- mov r20, ##@C_s5vg_68dcc30e_digits_L000001 ' reg <- addrg
+ mov r20, ##@C_smf4_68f739f0_digits_L000001 ' reg <- addrg
  adds r20, r15 ' ADDI/P (2)
  rdbyte r20, r20 ' reg <- INDIRU1 reg
  wrbyte r20, r22 ' ASGNU1 reg reg

@@ -123,7 +123,7 @@ void main() {
 #else
    output_line("specified then the following are tried:");
 #endif
-#if __CATALINA_P2
+#ifdef __CATALINA_P2
    output_line("'.BIN' then '.BIX'");
 #else
    output_line("'.BIN' then '.XMM', '.SMM', '.LMM'.");

@@ -196,122 +196,85 @@ documents folder.
 New Functionality
 -----------------
 
-1. Cake is now included as a component of Catalina. Cake is a preprocessor
-   that can take C99, C11 or C23 source programs and translate them to C89,
-   suitable for compiling with Catalina. 
+1. Cake is now fully integrated into Catalina. While Cake can still be used as
+   a stand-alone preprocessor that can take C99, C11 or C23 source programs 
+   and translate them to C89 suitable for compiling with Catalina, it can
+   now also be used in place of the default Catalina preprocessor (cpp) by
+   using the -C option to specify the appropriate C standard using a 2 digit 
+   numeric value. For example:
 
-   Eventually, Cake may be fully integrated into Catalina, but at present it
-   is a separate component that must be invoked manually to convert a C99 (or 
-   C11 or C23) program to C89, which can then be compiled with Catalina as 
-   normal. A demo C99 program called hello_99.c is provided. To convert this 
-   to C89 and compile it with Catalina, use Cake first and then compile the 
-   result with Catalina as normal. For example (on the Propeller 2):
+      catalina -C99 -lci hello_99.c
+      catalina -C 23 -lci hello_99.c
 
-      cake hello_99.c -o hello_89.c
-      catalina -p2 -lc hello_89.c
+   Not specifying any C standard, or specifying -C89 or -C90 means Catalina 
+   will use cpp as the C preprocessor, whereas specifying -C94, -C95, -C99, 
+   -C11, -C17, -C18 or -C23 will use cake as the C preprocessor instead. 
 
-   See the file source\cake\README.TXT for a brief introduction to Cake and
-   how to use it with Catalina. See the Cake manaul in source\caka\manual.md
-   for full details on Cake.
+   Other than determining whether cpp or cake is used, there is currently no
+   difference between the various standards except that cake will define the 
+   symbol __STDC_VERSION__ to be 202311L (no matter which C standard is 
+   specified) but this symbol will not be defined when using cpp. However, 
+   eventually cake may behave differently according to which standard is 
+   specified.
 
-2. Increased the maximum size of a string cpp can process from 4096 to 8192 
-   bytes. This was required for Cake support.
+   Note that the use of cake as a preprocessor is currently not compatible 
+   with the Catalina debugger or the Catalina parallelizer. If -g or -Z is 
+   specified along with -CXX (where XX != 89 or 90) then Catalina will issue
+   a warning and ignore the option. The reason for disallowing this is that
+   Cake may re-write the C program, which means the line numbers will not 
+   match the original program (which would interfere with the use of the 
+   debugger) and/or it may re-arrange lines in the C source program (which
+   would interfere with the operation of the parallelizer). However, Cake 
+   can be used stand-alone to first (for example) convert a C99 program to 
+   C89, which can then be edited, modified and compiled with Catalina using
+   the debug or parallelizer options.
 
-3. Added va_copy macro to stdarg.h, and a new program to demonstrate its use
-   (demos/examples/ex_va_copy.c). This was required for Cake support.
+   Cake is fully compatible with catapult - simply add the appropriate C
+   standard (e.g. -C99) to the appropriate catapult pragma (typically, it
+   would be added to the "common" pragma).
 
-4. Added minimum and maximums for long longs and unsigned long longs, and the 
-   ability for CPP to parse constants of the form ddddLL or ddddULL. Currently,
-   long longs are the same size as longs and unsigned long longs are the same 
-   size as unsigned longs, but some programs (like Cake) require that these 
-   are explicitly supported.
+   Cake is fully compatible with geany - simply add the appropriate C 
+   standard (e.g. -C99) to the Catalina Options field in the "Project->
+   Properties" dialog box.
 
-5. Added a dummy wchar.h header file, which (at present) defines wchar_t but 
-   does nothing else. This was required for Cake support.
+   Cake is fully compatible with the optimizer - simply add the appropriate 
+   option (e.g. -O5 or -C OPTIMIZE). However, note that Cake may re-write 
+   the C code and (similar to the optimizer itself) this may sometimes 
+   result in it omitting code that it thinks is not used by the program (e.g. 
+   because it appears only in the string arguments to "PASM" statements, which
+   are not understood by either Cake or the Optimizer). In such cases, it may 
+   be necessary to add some dummy C code to prevent the code from being 
+   omitted (for an example, see demos\inline_pasm\test_inline_pasm_7.c).
 
-6. Added an implementation of asprintf, vasprintf, snprintf and vsnprintf 
-   to stdio, and a new program to demonstrate their use 
-   (demos/examples/ex_snprintf.c). This was required for Cake support.
+   Note that Cake is much more rigorous in parsing C source code than cpp, 
+   and it may issue errors, warnings or information notes in cases where cpp 
+   simply passed the result silently on to the compiler. Also, there may be 
+   identifiers that were valid in a C89 program that are not valid according 
+   to later C standards, so a valid C89 program may not compile if cake is 
+   used. However, the Catalina and Catalyst demo programs** have been updated 
+   to compile correctly using EITHER cpp OR cake, albeit sometimes generating
+   additional warning messages when cake is used.
 
-7. Added the ability for printf and family to process z or t format
-   specifiers - e.g. %dz, which means to print/scan something of size size_t, 
-   or %ut, which means to print/scan something of size ptrdiff_t, and a new 
-   program to demonstrate them (demos/examples/ex_printf_tz.c). These format 
-   specifiers were introduced in C99, but some C89 programs assume this 
-   functionality exists. Note that these work only in the standard C stdio 
-   libraries (i.e. libc, libci, libcx, libcix) but not in the tiny I/O 
-   library (libtiny). This was required for Cake support.
+   ** All programs except for the Catalyst jzip and xvi (aka vi) programs.
+   While these programs COULD be updated to C99, they both use old-style C 
+   function definitions extensively, which were dropped in C23 and which 
+   Cake does not support. These programs remain as C89 only programs and 
+   must still be compiled using -C89, -C90 or with no C standard specified.
+   The same is currently true of Catalina itself and the Catalina C library,
+   except that the C library include files have been updated where necessary
+   so that they can be used with any of the C standards.
 
-8. Two new functions for creating directories have been added:
-
-      mkdir(const char *name, mode_t *mode);
-      mkdirr(const char *name, mode_t *mode);
-
-   The mode parameter is not currently used, but is included for compatibility
-   with other C compilers. These new functions are defined in sys/stat.h, and 
-   the type mode_t is defined in the new include file sys/types.h for the same
-   reason. Equivalent functions _mkdir and _mkdirr are defined in fs.h.
-   This was required for Cake support.
-
-   A new program to demonstrate the functions is included in 
-   demos/file_systems/test_mkdir.c
-
-   The mkdir function creates only the leaf directory - e.g. mkdir "a/b/c" 
-   will make only directory "c" assuming that "a/b" already exist - whereas 
-   mkdirr "a/b/c" will make directory "a" if it does not exist, then "a/b" 
-   (ditto) then "a/b/c". If the functions succeed they return zero, and if 
-   they fail (e.g. because a directory that was expected to exist does not, 
-   or that was not expected to exist already does) then they return -1.
-
-9. Added definitions of EOVERFLOW and EDEADLK to sys/errno.h. These are not
-   used by Catalina, but are expected to be defined by some C programs. This
-   was required for Cake support.
-
-10. Added definitions of HUGE_VALF and HUGE_VALL. These are not used by 
-    Catalina, but are expected to be defined by some C programs. This was
-    required for Cake support.
-
-11. A version of strdup and strndup has been added to the C libraries.
-    These are defined in the include file string.h as:
-
-       char *strdup(const char *_s);
-       char *strndup(const char *_s, size_t _n);
-
-    Some Catalina components and demo programs had their own versions of 
-    strdup and/or strndup which have now been replaced with the library
-    versions. This was required for Cake support.
-
-12. Catalina's version of stdbool.h was defining bool to be unsigned int, but
-    was not also defining _Bool. Now it defines both as unsigned char, which
-    is intended to make Catalina more compatible with C99 onwards for programs
-    compiled using Cake. However, this may break some existing C89 programs 
-    which expect type bool to be compatible with bit-fields (i.e. to be of an 
-    integer type) - so stdbool.h will revert to the previous definitions of 
-    bool and _Bool if the C symbol __INT_BOOL__ is defined (e.g. using -D on 
-    the catalina command line). For example:
-
-       catalina my_program.c -lc -D__INT_BOOL__
-
-13. Catalina does not support 64 bit integers, but LCC does accept the 
-    declaration of long long and unsigned long long, and so some programs 
-    will expect it to support them and therefore also expect the types and 
-    values associated with them (such as INT64_MAX and UINT64_MAX) to be
-    defined. The stdint.h include file has been modified to define 64 bit 
-    types and values but make them all the same as 32 bit types and values. 
-    This makes programs (like Cake) work, but may confuse other programs 
-    which assume that if these values are defined then 64 bit integers are 
-    supported. 
+   A section on Cake has been added to the Catalina Reference Manuals.
 
 Other Changes
 -------------
 
-1. Some of the values of the fprintf and fscanf format macros defined in 
-   inttypes.h were incorrect. Affected Windows, Linux and Catalyst.
+1. The "Catalina Command Line" option on the geany build menu was not working
+   in Windows 11. It has now been changed to:
 
-2. The library functions sprintf and vsprintf were being limited to writing 
-   up to 32767 characters in each call. This limit has been increased to 
-   INT_MAX (2147483647) characters. Affected Windows, Linux and Catalyst.
+      cmd.exe /k "call ""%LCCDIR%\\use_catalina"" && cd %p"
 
-3. The Catalyst build_demos and build_p2 scripts were not working under 
-   Linux, leading to missing files in the ZIP files they created. Affected 
-   Linux only.
+   Note that this command must be entered with a double backslash (i.e \\) 
+   when manually edited in %LCCDIR%\catalina_geany\data\filedefs\filetypes.c
+   but as a single backslash (i.e. \) when modified using the geany
+   "Build->Set Build Commands" menu & dialog box. 

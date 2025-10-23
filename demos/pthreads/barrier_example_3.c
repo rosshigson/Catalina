@@ -21,8 +21,10 @@
 
 */
 #include <pthread.h>
+#include <thutil.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define NUM_THREADS 5
 #define NUM_BARRIERS 3
@@ -59,7 +61,7 @@ threadFunc(void *arg)
 
     for (j = 0; j < numBarriers; j++) {
 
-        int nsecs = random() % 5 + 1;   /* Sleep for 1 to 5 seconds */
+        int nsecs = rand() % 5 + 1;   /* Sleep for 1 to 5 seconds */
         pthread_sleep(nsecs);
 
         /* Calling pthread_barrier_wait() causes each thread to block

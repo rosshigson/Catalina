@@ -2,7 +2,7 @@
 
 void main (void) {
    int i = 95;
-   unsigned u = 0xF00DFACE;
+   unsigned u = 0xF00DFACEUL;
    float f = 9.5;
    char *s = "A String!";
 

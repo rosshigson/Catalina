@@ -19,6 +19,7 @@
  *
  */
 
+#include <ctype.h>
 #include <string.h>
 #include <stdio.h>
 #include <dosfs.h>
@@ -242,6 +243,24 @@ int decode_arguments (int argc, char *argv[]) {
    return result;
 }
 
+int press_key_to_continue() {
+   int k;
+/*
+ * Prompt for a key to continue - set aborted to 1 
+ * and return TRUE if ESC is the key
+ */
+   if (colcount > 0) {
+      t_eol();
+      colcount = 0;
+      rowcount += 1;
+   }
+   t_str("Continue? (ESC exits) ...");
+   k = k_wait();
+   t_eol();
+   aborted = (k == 0x1b);
+   return aborted;
+}
+
 /* We are about to output 'count' rows - if this would make the top of 
  * the current page scroll off the screen, prompt to continue first.
  * Sets aborted to 1 if ESCAPE is pressed.
@@ -268,25 +287,6 @@ void increment_colcount(int count) {
    }
    colcount += count;
    return;
-}
-
-
-int press_key_to_continue() {
-   int k;
-/*
- * Prompt for a key to continue - set aborted to 1 
- * and return TRUE if ESC is the key
- */
-   if (colcount > 0) {
-      t_eol();
-      colcount = 0;
-      rowcount += 1;
-   }
-   t_str("Continue? (ESC exits) ...");
-   k = k_wait();
-   t_eol();
-   aborted = (k == 0x1b);
-   return aborted;
 }
 
 /*
@@ -316,6 +316,8 @@ char * formatted_name(uint8_t *name) {
    return filename;
 }
 
+// match function - see glob.c
+extern int amatch(char *str, char *p);
 
 /*
  * print a single directory entry, filtering if requested

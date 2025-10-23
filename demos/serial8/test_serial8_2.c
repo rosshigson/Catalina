@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <prop2.h>
 #include <serial8.h>
 #include <plugin.h>

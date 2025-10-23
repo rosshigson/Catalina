@@ -10,6 +10,7 @@
 #include <prop.h>
 #include <prop2.h>
 #include <plugin.h>
+#include <hmi.h>
 #include "storage.h"
 #endif
 
@@ -112,7 +113,7 @@ static int hmi_t_string( lua_State *L ) {
      register lua_Integer curs = luaL_checkinteger( L, 1 );
      register const char *value = luaL_checkstring( L, 2 );
      lua_settop(L, 0);
-     pushint( L, t_string(((unsigned)curs), value) );
+     pushint( L, t_string(((unsigned)curs), (char *)value) );
      return 1;
   }
 #else

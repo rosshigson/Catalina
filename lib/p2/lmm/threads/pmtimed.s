@@ -241,9 +241,9 @@ C_pthread_mutex_timedlock_2
  jmp #RETF
 
 
-' Catalina Import _pthread_init_lock_pool
-
 ' Catalina Import _Pthread_Pool
+
+' Catalina Import _pthread_init_lock_pool
 
 ' Catalina Import pthread_msleep
 

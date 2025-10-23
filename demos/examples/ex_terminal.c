@@ -17,14 +17,10 @@
  *    catalina -p2 -lci -C P2_EVAL -C VGA -C COLOR_8 test_terminal.c          *
  *                                                                            *
  ******************************************************************************/
+
 #include <hmi.h>
 #include <cog.h>
-
-#ifdef __CATALINA_P2
-#define msleep(msec) _waitx((msec)*(_clockfreq()/1000))
-#else
-#define msleep(msec) _waitcnt(_cnt() + ((msec)*(_clockfreq()/1000)));
-#endif
+#include <prop.h>
 
 // cursor mode definitions ...
 #define ALWAYS_OFF 0x0 // cursor is invisible

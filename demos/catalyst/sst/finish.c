@@ -2,7 +2,7 @@
 #include <string.h>
 #include <time.h>
 
-void dstrct() {
+void dstrct(void) {
 	/* Finish with a BANG! */
 	chew();
 	if (damage[DCOMPTR] != 0.0) {

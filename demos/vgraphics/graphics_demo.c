@@ -6,6 +6,7 @@
 
 #include <stdlib.h>
 #include <hmi.h>
+#include <prop.h>
 
 #if defined(__CATALINA_libvgraphic)
 #if defined(__CATALINA_BLACKBOX)

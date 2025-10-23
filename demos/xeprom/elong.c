@@ -19,11 +19,15 @@
  *    payload -i EEPROM estring.binary
  */
 
+#include <stdio.h>
+#include <prop.h>
+#include <hmi.h>
+
 /*
  * define a long to print. Note that this long will end up in both 
  * Hub RAM and the EEPROM - we will print both:
  */
-static unsigned long ELONG = 0xDEADBEEF;
+static unsigned long ELONG = 0xDEADBEEFUL;
 
 /*
  * From the listing of this program (use the -y switch), we can find that 
@@ -83,7 +87,7 @@ void main() {
    printf("Hub RAM long = 0x%08x\n", l);
 
    // now change the long (this will only change Hub RAM, not EEPROM).
-   *(unsigned long *)ADDR = 0xFEEDFACE;
+   *(unsigned long *)ADDR = 0xFEEDFACEUL;
 
    l = 0;
 

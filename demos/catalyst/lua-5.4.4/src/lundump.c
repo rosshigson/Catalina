@@ -9,7 +9,6 @@
 
 #include "lprefix.h"
 
-
 #include <limits.h>
 #include <string.h>
 
@@ -330,8 +329,9 @@ static void fchecksize (LoadState *S, size_t size, const char *tname) {
 
 static void checkHeader (LoadState *S) {
   /* skip 1st char (already read and checked) */
+  lu_byte b;
   checkliteral(S, &LUA_SIGNATURE[1], "not a binary chunk");
-  if (loadByte(S) != LUAC_VERSION)
+  if ((b = loadByte(S)) != LUAC_VERSION)
     error(S, "version mismatch");
   if (loadByte(S) != LUAC_FORMAT)
     error(S, "format mismatch");

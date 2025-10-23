@@ -7,11 +7,14 @@
  *                      using information loaded from the "rpc_network" table
  *                      (if __CATALINA_libwifi is defined)
  */
+#include <ctype.h>
 #include <string.h>
 #include <service.h>
 #include <serial.h>
 #include <lua.h>
-#include <ctype.h>
+#include <hmi.h>
+
+#include "aloha.h"
 
 #if defined(__CATALINA_libwifi)
 #include <wifi.h>

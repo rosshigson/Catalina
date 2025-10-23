@@ -42,6 +42,7 @@
 #include <catapult.h>
 #include <stdlib.h>
 #include <plugin.h>
+#include <prop2.h>
 #include "service.h"
 
 /*
@@ -166,6 +167,11 @@ void hub_client(shared_data_t *s) {
 #include <lua.h>
 #include <lualib.h>
 #include <lauxlib.h>
+
+/*
+ * declare our dispatch function
+ */
+void my_dispatch_Lua(lua_State *L, svc_list_t list);
 
 /*
  * define our services as Lua functions

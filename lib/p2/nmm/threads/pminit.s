@@ -156,15 +156,15 @@ C_pthread_mutex_consistent_15
  calld PA,#RETN
 
 
-' Catalina Import _thread_stall
+' Catalina Import _Pthread_Pool
 
 ' Catalina Import _pthread_init_lock_pool
-
-' Catalina Import _Pthread_Pool
 
 ' Catalina Import errno
 
 ' Catalina Import _thread_allow
+
+' Catalina Import _thread_stall
 
 ' Catalina Import _thread_lockret
 

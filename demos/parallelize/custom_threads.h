@@ -47,7 +47,7 @@
 
 // include propeller functions:
 #include <cog.h>
-#include <propeller.h>
+#include <prop.h>
 
 // include posix thread functions:
 #include <pthread.h>

@@ -21,7 +21,7 @@
    d1 = left($4, length($4)-6)
    s1 = left($6, length($6)-6)
    print $0
-   getline; while ($1 == "alignl") { getline }
+   getline; while (left($1,6) == "alignl") { getline }
    if (($1 == "word") && ($2 == "I16A_MOV")) {
       d2 = left($4, length($4)-6)
       s2 = left($6, length($6)-6)
@@ -41,7 +41,7 @@
    line = $0
    d1 = left($4, length($4)-6)
    print $0
-   getline; while ($1 == "alignl") { getline }
+   getline; while (left($1,6) == "alignl") { getline }
    if (($1 == "word") && ($2 == "I16B_TRN1")) {
       d2 = left($4, length($4)-6)
       if (d1 == d2) {
@@ -60,7 +60,7 @@
    line = $0
    d1 = left($4, length($4)-6)
    print $0
-   getline; while ($1 == "alignl") { getline }
+   getline; while (left($1,6) == "alignl") { getline }
    if (($1 == "word") && ($2 == "I16B_TRN2")) {
       d2 = left($4, length($4)-6)
       if (d1 == d2) {

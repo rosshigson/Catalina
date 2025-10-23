@@ -1,6 +1,7 @@
 #include <hmi.h>
 
 #include <math.h>
+#include <stdio.h>
 
 #define PI 3.1414926
 

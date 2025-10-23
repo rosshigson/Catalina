@@ -26,7 +26,7 @@
    dst = ltrim(dst,"(")
    dst = left(dst,3)
    dst = rtrim(dst,")<")
-   getline; while ($1 == "alignl") { getline }
+   getline; while (left($1,6) == "alignl") { getline }
    if ($1 == "long") {
       if ((left($2,1) >= "0") && (left($2,1) <= "9")) {
          val = 0 + $2

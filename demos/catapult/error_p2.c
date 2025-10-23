@@ -12,6 +12,7 @@
 
 #include "catapult.h"
 #include <stdlib.h>
+#include <string.h>
 #include <prop.h>
 
 // undefine the default version of CATAPULT_ERROR

@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <stdlib.h>
+#include <plugin.h>
 #include <cog.h>
 
 #ifndef __CATALINA_P2

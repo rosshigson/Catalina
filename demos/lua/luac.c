@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <prop.h>
 
 #include "lua.h"
 #include "lauxlib.h"
@@ -151,6 +152,8 @@ static const char* reader(lua_State* L, void* ud, size_t* size)
 
 static const Proto* combine(lua_State* L, int n)
 {
+  toproto(L,1);
+  //check_exp(((((&(L->top+(-1))->val))->value_).gc)->tt == ((6) | ((0) << 4)), &((((union GCUnion *)(((((&(L->top+(-1))->val))->value_).gc))))->cl.l));
  if (n==1)
   return toproto(L,-1);
  else

@@ -28,7 +28,9 @@
 
 #include <catapult.h>
 #include <stdlib.h>
+#include <string.h>
 #include <prop.h>
+#include <prop2.h>
 
 /*
  * define a type to be used for exchanging information between

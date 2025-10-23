@@ -45,6 +45,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <hmi.h>
 
 #define CPU             1             // Payload defaults to CPU 1
 #define TIMEOUT         1000          // read timeout (milliseconds)
@@ -53,13 +54,13 @@
 
 #ifdef __CATALINA_P2
 // On the Propeller 2, we can use the 2-port serial plugin
-#include <catalina_serial2.h>
+#include <serial2.h>
 #define PORT 0
 #define tx(ch)        s2_tx(PORT, ch)
 #define rx(timeout)   s2_rxtime(PORT, timeout);
 #else
 // On the Propeller 1, we must use the tty256 plugin
-#include <catalina_tty.h>
+#include <tty.h>
 #define tx(ch)        tty_tx(ch)
 #define rx(timeout)   tty_rxtime(timeout);
 #endif

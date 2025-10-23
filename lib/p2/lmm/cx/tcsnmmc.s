@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_s744_68dcc06d_nmmtd_array_L000001 ' <symbol:nmmtd_array>
+C_sifo_68f7373e_nmmtd_array_L000001 ' <symbol:nmmtd_array>
  long $fd900108
  long $fd9001fc
  long $fd900220
@@ -857,7 +857,7 @@ C__threaded_cogstart_N_M_M__cog ' <symbol:_threaded_cogstart_NMM_cog>
  mov r2, r17 ' CVI, CVU or LOAD
  mov r22, #2 ' reg <- coni
  jmp #LODL
- long @C_s744_68dcc06d_nmmtd_array_L000001
+ long @C_sifo_68f7373e_nmmtd_array_L000001
  mov r20, RI ' reg <- addrg
  mov r3, r20 ' RSHI
  sar r3, r22 ' RSHI (3)
@@ -890,7 +890,7 @@ C__threaded_cogstart_N_M_M__cog ' <symbol:_threaded_cogstart_NMM_cog>
  jmp #CALA
  long @C__waitcnt ' CALL addrg
  mov r0, r17 ' CVI, CVU or LOAD
-' C__threaded_cogstart_N_M_M__cog_2 ' (symbol refcount = 0)
+' C__threaded_cogstart_N_M_M__cog_3 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #32 ' framesize
  jmp #RETF

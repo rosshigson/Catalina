@@ -43,7 +43,7 @@
 #define FALSE   0
 
 int
-amatch(char *str, char *p)
+amatch(unsigned char *str, unsigned char *p)
 {
 	int negate;
 	int match;

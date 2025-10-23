@@ -204,9 +204,9 @@ C_pthread_spin_destroy_24
  calld PA,#RETF
 
 
-' Catalina Import _pthread_init_lock_pool
-
 ' Catalina Import _Pthread_Pool
+
+' Catalina Import _pthread_init_lock_pool
 
 ' Catalina Import errno
 

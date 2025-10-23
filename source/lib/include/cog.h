@@ -77,7 +77,7 @@ extern void _clockinit(unsigned mode, unsigned freq); // set mode and freq
 #endif
 #endif
 
-extern int _cogid();
+extern int _cogid(void);
 
 extern int _coginit(int par, int addr, int cogid);
 
@@ -157,7 +157,7 @@ extern int _cogstart_XMM_LARGE_cog_2(uint32_t PC, uint32_t CS, uint32_t SP, void
  */
 #ifndef __CATALINA_P2
 // on the Propeller 2, these are defined in p2.h
-extern int _locknew();
+extern int _locknew(void);
 
 extern void _lockret(int lockid);
 #endif
@@ -220,11 +220,11 @@ extern int _waitpne(unsigned mask, unsigned result, int a_or_b);
  */
 extern uint32_t  _cnt(void);
 
-extern unsigned _ina();
-extern unsigned _inb();
+extern unsigned _ina(void);
+extern unsigned _inb(void);
 
-extern unsigned _get_dira();
-extern unsigned _get_dirb();
+extern unsigned _get_dira(void);
+extern unsigned _get_dirb(void);
 
 extern unsigned _dira(unsigned mask, unsigned direction);
 extern unsigned _dirb(unsigned mask, unsigned direction);

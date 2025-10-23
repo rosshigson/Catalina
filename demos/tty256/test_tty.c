@@ -1,5 +1,7 @@
+#include <ctype.h>
 #include <tty.h>
 #include <plugin.h>
+#include <hmi.h>
 
 /*
  * Simple test program for the Full Duplex serial plugin.

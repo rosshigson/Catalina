@@ -10,6 +10,7 @@
  * Version 5.3   - ignore volume id
  */
 
+#include <ctype.h>
 #include <string.h>
 #include <stdio.h>
 #include <dosfs.h>
@@ -274,6 +275,8 @@ void concatenate_file(PVOLINFO vi, char *src) {
    }
 }
 
+// match function - see glob.c
+extern int amatch(char *str, char *p);
 
 void concatenate(PVOLINFO vi, char *src) {
    uint8_t scratch[SECTOR_SIZE];

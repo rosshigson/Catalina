@@ -47,7 +47,7 @@ int main(void) {
       t_setpos(1, 22, 11); t_string(1, "B      :"); t_char(1, BIT(NES1_B));
       // check if done
       if ((bits & NES0_A) && (bits & NES1_A)) {
-         stop_gamepad_updates(&bits);
+         stop_gamepad_updates();
          t_setpos(1, 3, 13); t_string(1,"             Done!                ");
       }
    }

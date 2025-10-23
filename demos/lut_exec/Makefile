@@ -71,7 +71,7 @@ endif
 # set up options specific to Windows or Linux
 ifeq ($(OS), Windows_NT)
 	E=.exe
-	RM=-del_del
+	RM=-del_del.bat
 else
 	E=
 	RM=-rm -f

@@ -1,6 +1,9 @@
-#include <propeller.h>
-#include <catalina_spi.h>
-#include <catalina_plugin.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <prop.h>
+#include <spi.h>
+#include <hmi.h>
+#include <plugin.h>
 
 /*
  * Simple test program for the SPI/I2C plugin. The I2C bus is intended for

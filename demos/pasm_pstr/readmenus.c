@@ -11,6 +11,9 @@
  *    payload EEPROM readmenus.binary -Ivt100
  */
 
+#include <prop.h>
+#include <hmi.h>
+
 unsigned long GetMemAddr(unsigned long Address) {
    PASM("mov RI, r2");
    PASM("jmp #RLNG");

@@ -4,10 +4,12 @@
 
 #ifdef __STDC_OWNERSHIP__
 
-// temporarily ...
+#if defined(__CATALINA__)
+
 #include <stdio.h>
-//... instead of ...
-/* 
+
+#else
+
 #ifdef _WIN64
     typedef struct _iobuf FILE;
     typedef unsigned __int64 size_t;    
@@ -22,7 +24,8 @@
     typedef __SIZE_TYPE__ size_t; // valid since C23
 
 #endif
-*/
+
+#endif
 
 /*
   ownership is suported

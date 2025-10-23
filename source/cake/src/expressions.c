@@ -598,7 +598,7 @@ struct expression* _Owner _Opt character_constant_expression(struct parser_ctx* 
                 compiler_diagnostic(C_CHARACTER_NOT_ENCODABLE_IN_A_SINGLE_CODE_UNIT, ctx, ctx->current, NULL, "character not encodable in a single code unit.");
             }
 
-            p_expression_node->object = object_make_unsigned_char(c);//, ctx->evaluation_is_disabled);
+            p_expression_node->object = object_make_unsigned_char((unsigned char) c);//, ctx->evaluation_is_disabled);
         }
         else if (p[0] == 'u')
         {
@@ -887,16 +887,16 @@ int convert_to_number(struct parser_ctx* ctx, struct expression* p_expression_no
         }
         else
         {
-            static_assert(NUMBER_OF_TARGETS == 5, "does your target follow the C rules? see why MSVC is different");
+            static_assert(NUMBER_OF_TARGETS == 6, "does your target follow the C rules? see why MSVC is different");
 
             /*fixing the type that fits the size*/
-            if (value <= target_get_signed_int_max(target)&& suffix[0] != 'L')
+            if (value <= (unsigned long long) target_get_signed_int_max(target)&& suffix[0] != 'L')
             {
                 object_destroy(&p_expression_node->object);
                 p_expression_node->object = object_make_signed_int((int)value);
                 p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_INT;
             }
-            else if (value <= target_get_signed_int_max(target) && suffix[1] != 'L')
+            else if (value <= (unsigned long long) target_get_signed_int_max(target) && suffix[1] != 'L')
             {
                 object_destroy(&p_expression_node->object);
                 p_expression_node->object = object_make_signed_long((int)value, target);
@@ -952,7 +952,7 @@ int convert_to_number(struct parser_ctx* ctx, struct expression* p_expression_no
 
             float value = strtof(buffer, NULL);
 #endif
-            if (value == HUGE_VALF && errno == ERANGE)
+            if (isinf(value) && errno == ERANGE)
             {
             }
             p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_FLOAT;
@@ -966,7 +966,7 @@ int convert_to_number(struct parser_ctx* ctx, struct expression* p_expression_no
 #else
             long double value = strtold(buffer, NULL);
 #endif
-            if (value == HUGE_VALL && errno == ERANGE)
+            if (isinf(value) && errno == ERANGE)
             {
             }
 
@@ -977,7 +977,7 @@ int convert_to_number(struct parser_ctx* ctx, struct expression* p_expression_no
         else
         {
             double value = strtod(buffer, NULL);
-            if (value == HUGE_VAL && errno == ERANGE)
+            if (isinf(value) && errno == ERANGE)
             {
             }
             object_destroy(&p_expression_node->object);
@@ -1123,13 +1123,11 @@ struct expression* _Owner _Opt primary_expression(struct parser_ctx* ctx, enum e
                     ctx->p_current_function_opt->name_opt->lexeme :
                     "unnamed";
 
-
-
                 p_expression_node->expression_type = PRIMARY_EXPRESSION__FUNC__;
                 p_expression_node->first_token = ctx->current;
                 p_expression_node->last_token = ctx->current;
 
-                p_expression_node->type = type_make_literal_string(strlen(func_name) + 1, TYPE_SPECIFIER_CHAR, TYPE_QUALIFIER_CONST, ctx->options.target);
+                p_expression_node->type = type_make_literal_string2(strlen(func_name) + 1, TYPE_SPECIFIER_CHAR, TYPE_QUALIFIER_CONST, ctx->options.target);
             }
             else
             {
@@ -1153,52 +1151,121 @@ struct expression* _Owner _Opt primary_expression(struct parser_ctx* ctx, enum e
             p_expression_node->first_token = ctx->current;
             p_expression_node->last_token = ctx->current;
 
-            enum type_specifier_flags char_type = TYPE_SPECIFIER_CHAR;
+            enum type_specifier_flags char_type_specifiers = TYPE_SPECIFIER_CHAR;
 
-            if (get_char_type(ctx->current->lexeme) == 2)
+            bool is_bigger_than_char = false;
+            bool is_wide = false;
+            bool is_u8 = false;
+            bool is_u32 = false;
+            bool is_u16 = false;
+      
+
+            if (ctx->current->lexeme[0] == 'L')
             {
-                /*
-                   automatically finding out the type of wchar_t to copy
-                   GCC or MSVC.
-                   windows it is short linux is
-                */
-                char_type = get_wchar_type_specifier(ctx->options.target);
+                is_wide = true;
+                is_bigger_than_char = true;
+                char_type_specifiers = get_wchar_type_specifier(ctx->options.target);
+            }
+            else if (ctx->current->lexeme[0] == 'u' &&
+                     ctx->current->lexeme[1] == '8')
+            {
+                is_u8 = true;                
+                char_type_specifiers = TYPE_SPECIFIER_CHAR;
+            }
+            else if (ctx->current->lexeme[0] == 'u')
+            {
+                is_u16 = true;
+                is_bigger_than_char = true;
+                char_type_specifiers = TYPE_SPECIFIER_UNSIGNED | get_intN_type_specifier(ctx->options.target, 16);
+            }
+            else if (ctx->current->lexeme[0] == 'U')
+            {
+                is_u32 = true;
+                is_bigger_than_char = true;
+                char_type_specifiers = TYPE_SPECIFIER_UNSIGNED | get_intN_type_specifier(ctx->options.target, 32);
+            }
+            else
+            {
+                char_type_specifiers = TYPE_SPECIFIER_CHAR;
             }
             /*
               string concatenation should have been done in a previous phase
               but since we keep the source format here it was an alternative
             */
 
-            const int char_byte_size = string_literal_char_byte_size(ctx->current->lexeme);
-            int number_of_bytes = 0;
+            unsigned int number_of_elements_including_zero = 0;
             struct object* _Opt last = NULL;
 
             while (ctx->current->type == TK_STRING_LITERAL)
             {
                 //"part1" "part2" TODO check different types
 
-                const unsigned char* it = (unsigned char *)ctx->current->lexeme + 1;
+
+                const unsigned char* it = (unsigned char*)ctx->current->lexeme;
+
+                //skip string literal prefix u8, L etc 
+                while (*it != '"')
+                    it++;
+
+                assert(*it == '"');
+                it++; //skip "
+
                 unsigned int value = 0;
                 while (it && *it != '"')
                 {
-                    if (*it == '\\')
-                        it = escape_sequences_decode_opt(it, &value);
+                    unsigned int c = 0;
+
+                    if (is_bigger_than_char)
+                    {
+                        it = utf8_decode(it, &c);
+                        if (it == NULL)
+                        {
+                            throw;
+                        }
+                    }
                     else
                     {
-                        value = *it;
+                        c = *it;
                         it++;
+                    }
+
+                    if (c == '\\')
+                    {
+                        it = escape_sequences_decode_opt(it, &value);
+                    }
+                    else
+                    {
+                        value = c;
                     }
 
                     struct object* _Opt _Owner p_new = calloc(1, sizeof * p_new);
                     if (p_new == NULL) throw;
-
-                    p_new->state = CONSTANT_VALUE_STATE_CONSTANT;
-                    p_new->value_type = TYPE_SIGNED_INT8;
-                    p_new->value.signed_int8 = (char)value;
-
-                    if (p_expression_node->object.members == NULL)
+                    if (is_wide)
                     {
-                        p_expression_node->object.members = p_new;
+                        *p_new = object_make_wchar_t(ctx->options.target, value);
+                    }
+                    else if (is_u8)
+                    {
+                        //C11 u8 is sigend, C23 it is unsigned
+                        *p_new = object_make_uint8((uint8_t)value);
+                    }
+                    else if (is_u16)
+                    {
+                        *p_new = object_make_uint16((uint16_t)value);
+                    }
+                    else if (is_u32)
+                    {
+                        *p_new = object_make_uint32((uint32_t)value);
+                    }
+                    else
+                    {
+                        //u8"" also are char not (char8_t)
+                        *p_new = object_make_char(ctx->options.target, value);
+                    }
+                    number_of_elements_including_zero++;
+                    if (p_expression_node->object.members.head == NULL)
+                    {
+                        p_expression_node->object.members.head = p_new;
                     }
                     else
                     {
@@ -1208,24 +1275,6 @@ struct expression* _Owner _Opt primary_expression(struct parser_ctx* ctx, enum e
                     last = p_new;
                 }
 
-                struct object* _Opt _Owner p_new = calloc(1, sizeof * p_new);
-                if (p_new == NULL) throw;
-
-                p_new->state = CONSTANT_VALUE_STATE_CONSTANT;
-                p_new->value_type = TYPE_SIGNED_INT8;
-                p_new->value.signed_int8 = 0;
-
-                if (last == NULL)
-                {
-                    p_expression_node->object.members = p_new;
-                }
-                else
-                {
-                    last->next = p_new;
-                }
-
-                number_of_bytes += string_literal_byte_size_not_zero_included(ctx->current->lexeme);
-
                 parser_match(ctx);
                 if (ctx->current == NULL)
                 {
@@ -1234,8 +1283,47 @@ struct expression* _Owner _Opt primary_expression(struct parser_ctx* ctx, enum e
                 }
             }
 
+            /*
+              Appending the last \0
+            */
+                struct object* _Opt _Owner p_new = calloc(1, sizeof * p_new);
+                if (p_new == NULL) throw;
+
+            if (is_wide)
+            {
+                *p_new = object_make_wchar_t(ctx->options.target, 0);
+            }
+            else if (is_u8)
+            {
+                //C11 u8 is sigend, C23 it is unsigned
+                *p_new = object_make_uint8((uint8_t)0);
+            }
+            else if (is_u16)
+            {
+                *p_new = object_make_uint16(0);
+            }
+            else if (is_u32)
+            {
+                *p_new = object_make_uint32( 0);
+            }
+            else
+            {
+                //u8"" also are char not (char8_t)
+                *p_new = object_make_char(ctx->options.target, 0);
+            }
+            number_of_elements_including_zero++;
+
+                if (last == NULL)
+                {
+                    p_expression_node->object.members.head = p_new;
+                }
+                else
+                {
+                    last->next = p_new;
+            }
+
             enum type_qualifier_flags lit_flags = ctx->options.const_literal ? TYPE_QUALIFIER_CONST : TYPE_QUALIFIER_NONE;
-            p_expression_node->type = type_make_literal_string(number_of_bytes + (1 * char_byte_size), char_type, lit_flags, ctx->options.target);
+            p_expression_node->type = type_make_literal_string2(number_of_elements_including_zero, char_type_specifiers, lit_flags, ctx->options.target);
         }
         else if (ctx->current->type == TK_CHAR_CONSTANT)
         {
@@ -2063,6 +2151,14 @@ struct expression* _Owner _Opt postfix_expression_type_name(struct parser_ctx* c
 
         if (type_is_function(&p_expression_node->type_name->abstract_declarator->type))
         {
+            //this keep the typedef for function out.. we must have the function declarator
+            const struct declarator* inner = declarator_get_innert_function_declarator(p_expression_node->type_name->abstract_declarator);
+            if (inner->direct_declarator->function_declarator == NULL)
+            {
+                compiler_diagnostic(C_ERROR_UNEXPECTED, ctx, p_expression_node->type_name->first_token, NULL, "missing function declarator");
+                throw;
+            }
+
             p_expression_node->expression_type = POSTFIX_EXPRESSION_FUNCTION_LITERAL;
 
 
@@ -4853,6 +4949,79 @@ struct expression* _Owner _Opt shift_expression(struct parser_ctx* ctx, enum exp
     return p_expression_node;
 }
 
+static void check_comparison(struct parser_ctx* ctx,
+    struct expression* p_a_expression,
+    struct expression* p_b_expression,
+    const struct token* op_token)
+{
+    //TODO more checks unsigned < 0
+    bool equal_not_equal =
+        op_token->type == '!=' ||
+        op_token->type == '==';
+
+    struct type* p_a_type = &p_a_expression->type;
+    struct type* p_b_type = &p_b_expression->type;
+
+    if (type_is_pointer(p_a_type) && type_is_integer(p_b_type))
+    {
+        if (expression_is_zero(p_b_expression))
+        {
+            // p == 0
+            //style warning
+        }
+        else
+        {
+            //array functions..
+            compiler_diagnostic(W_ENUN_CONVERSION,
+                                        ctx,
+                                        op_token, NULL,
+                                        "comparison between pointer and integer");
+        }
+    }
+
+    if (type_is_bool(p_a_type) &&
+        !(type_is_bool(p_b_type) || type_is_essential_bool(p_b_type)))
+    {
+        if (equal_not_equal && (object_is_zero(&p_b_expression->object) ||
+            object_is_one(&p_b_expression->object)))
+        {
+            //no warning when comparing == 0 == 1 != 0 != 0
+        }
+        else
+        {
+            compiler_diagnostic(W_BOOL_COMPARISON,
+                                 ctx,
+                                 op_token, NULL,
+                                 "comparison bool with non bool");
+        }
+    }
+
+    if (type_is_bool(p_b_type) &&
+        !(type_is_bool(p_a_type) || type_is_essential_bool(p_a_type))
+        )
+    {
+        if (equal_not_equal &&
+            (object_is_zero(&p_a_expression->object) ||
+                object_is_one(&p_a_expression->object)))
+        {
+            //no warning when comparing == 0 == 1 != 0 != 0
+        }
+        else
+        {
+            compiler_diagnostic(W_BOOL_COMPARISON,
+                                 ctx,
+                                 op_token, NULL,
+                                 "comparison bool with non bool");
+        }
+    }
+
+    check_diferent_enuns(ctx,
+                         op_token,
+                         p_a_expression,
+                         p_b_expression,
+                         "comparing different enums.");
+}
+
 struct expression* _Owner _Opt relational_expression(struct parser_ctx* ctx, enum expression_eval_mode eval_mode)
 {
     /*
@@ -4914,10 +5083,7 @@ struct expression* _Owner _Opt relational_expression(struct parser_ctx* ctx, enu
                 throw;
             }
 
-            check_comparison(ctx,
-              new_expression->left,
-              new_expression->right,
-              optk);
+            check_comparison(ctx, new_expression->left, new_expression->right, optk);
 
             if (op == '>')
             {
@@ -5085,10 +5251,7 @@ struct expression* _Owner _Opt equality_expression(struct parser_ctx* ctx, enum 
                 throw;
             }
 
-            check_comparison(ctx,
-              new_expression->left,
-              new_expression->right,
-              op);
+            check_comparison(ctx, new_expression->left, new_expression->right, op);
 
             new_expression->last_token = new_expression->right->last_token;
             new_expression->first_token = operator_token;
@@ -6366,7 +6529,7 @@ struct expression* _Owner _Opt constant_expression(struct parser_ctx* ctx, bool 
     return p_expression;
 }
 
-bool expression_get_variables(const struct expression* expr, int n, struct object* variables[/*n*/])
+bool expression_get_variables(struct expression* expr, int n, struct object* variables[/*n*/])
 {
     int count = 0;
     switch (expr->expression_type)
@@ -6565,78 +6728,7 @@ bool expression_is_subjected_to_lvalue_conversion(const struct expression* expre
     return true;
 }
 
-void check_comparison(struct parser_ctx* ctx,
-    struct expression* p_a_expression,
-    struct expression* p_b_expression,
-    const struct token* op_token)
-{
-    //TODO more checks unsigned < 0
-    bool equal_not_equal =
-        op_token->type == '!=' ||
-        op_token->type == '==';
 
-    struct type* p_a_type = &p_a_expression->type;
-    struct type* p_b_type = &p_b_expression->type;
-
-    if (type_is_pointer(p_a_type) && type_is_integer(p_b_type))
-    {
-        if (expression_is_zero(p_b_expression))
-        {
-            // p == 0
-            //style warning
-        }
-        else
-        {
-            //array functions..
-            compiler_diagnostic(W_ENUN_CONVERSION,
-                                        ctx,
-                                        op_token, NULL,
-                                        "comparison between pointer and integer");
-        }
-    }
-
-    if (type_is_bool(p_a_type) &&
-        !(type_is_bool(p_b_type) || type_is_essential_bool(p_b_type)))
-    {
-        if (equal_not_equal && (object_is_zero(&p_b_expression->object) ||
-            object_is_one(&p_b_expression->object)))
-        {
-            //no warning when comparing == 0 == 1 != 0 != 0
-        }
-        else
-        {
-            compiler_diagnostic(W_BOOL_COMPARISON,
-                                 ctx,
-                                 op_token, NULL,
-                                 "comparison bool with non bool");
-        }
-    }
-
-    if (type_is_bool(p_b_type) &&
-        !(type_is_bool(p_a_type) || type_is_essential_bool(p_a_type))
-        )
-    {
-        if (equal_not_equal &&
-            (object_is_zero(&p_a_expression->object) ||
-                object_is_one(&p_a_expression->object)))
-        {
-            //no warning when comparing == 0 == 1 != 0 != 0
-        }
-        else
-        {
-            compiler_diagnostic(W_BOOL_COMPARISON,
-                                 ctx,
-                                 op_token, NULL,
-                                 "comparison bool with non bool");
-        }
-    }
-
-    check_diferent_enuns(ctx,
-                         op_token,
-                         p_a_expression,
-                         p_b_expression,
-                         "comparing different enums.");
-}
 
 void check_assigment(struct parser_ctx* ctx,
     const struct type* p_a_type, /*this is not expression because function parameters*/

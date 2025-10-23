@@ -184,8 +184,6 @@ C_pthread_mutex_trylock_2
  calld PA,#RETF
 
 
-' Catalina Import _thread_stall
-
 ' Catalina Import _Pthread_Pool
 
 ' Catalina Import pthread_self
@@ -193,6 +191,8 @@ C_pthread_mutex_trylock_2
 ' Catalina Import errno
 
 ' Catalina Import _thread_allow
+
+' Catalina Import _thread_stall
 
 ' Catalina Import _thread_lockset
 

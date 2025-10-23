@@ -105,11 +105,9 @@ const char* _Owner _Opt print_preprocessed_to_string2(const struct token* _Opt p
 void check_unused_macros(const struct hash_map* map);
 
 const char* get_token_name(enum token_type tk);
+const char* get_diagnostic_friendly_token_name(enum token_type tk);
 void print_all_macros(const struct preprocessor_ctx* prectx);
 
-int string_literal_char_byte_size(const char* s);
-int string_literal_byte_size_not_zero_included(const char* s);
 
-int get_char_type(const char* s);
 int include_config_header(struct preprocessor_ctx* ctx, const char* file_name);
 int stringify(const char* input, int n, char output[]);

@@ -813,7 +813,7 @@ C__cogstart_C_M_M__cog ' <symbol:_cogstart_CMM_cog>
  jmp #CALA
  long @C__waitcnt ' CALL addrg
  mov r0, r17 ' CVI, CVU or LOAD
-' C__cogstart_C_M_M__cog_1 ' (symbol refcount = 0)
+' C__cogstart_C_M_M__cog_2 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #24 ' framesize
  jmp #RETF

@@ -473,7 +473,7 @@ run_int_xmm.binary :
 run_int_xmm.bin : test_interrupts_1.c run_test_interrupts_1.c
 	catalina $(CFLAGS) -lci -lint -C NO_ARGS test_interrupts_1.c -R 0x40000 -C TINY
 	spinc -p2 -B2 -n LMM -s 8000 -f _cogstart_LMM_cog -c -l test_interrupts_1.bin >test_interrupts_1_lmm.inc
-	catalina $(CFLAGS) -lci -lint -C NO_ARGS test_interrupts_1.c -R 0x40000 -C COMPACT
+	catalina $(CFLAGS) -lci -lint -C NO_ARGS test_interrupts_1.c -R 0x40000 -C COMPACT -C NO_FIFO
 	spinc -p2 -B2 -n CMM -s 8000 -c -l test_interrupts_1.bin >test_interrupts_1_cmm.inc
 	catalina $(CFLAGS) -lci -lint -C NO_ARGS test_interrupts_1.c -R 0x40000 -C NATIVE
 	spinc -p2 -B2 -n NMM -s 8000 -c -l test_interrupts_1.bin >test_interrupts_1_nmm.inc
@@ -493,11 +493,11 @@ run_int_cmm.binary :
 run_int_cmm.bin : test_interrupts_1.c run_test_interrupts_1.c
 	catalina $(CFLAGS) -lci -lint -C NO_ARGS test_interrupts_1.c -R 0x40000 -C TINY
 	spinc -p2 -B2 -n LMM -s 8000 -f _cogstart_LMM_cog -c -l test_interrupts_1.bin >test_interrupts_1_lmm.inc
-	catalina $(CFLAGS) -lci -lint -C NO_ARGS test_interrupts_1.c -R 0x40000 -C COMPACT
+	catalina $(CFLAGS) -lci -lint -C NO_ARGS test_interrupts_1.c -R 0x40000 -C COMPACT -C NO_FIFO
 	spinc -p2 -B2 -n CMM -s 8000 -c -l test_interrupts_1.bin >test_interrupts_1_cmm.inc
 	catalina $(CFLAGS) -lci -lint -C NO_ARGS test_interrupts_1.c -R 0x40000 -C NATIVE
 	spinc -p2 -B2 -n NMM -s 8000 -c -l test_interrupts_1.bin >test_interrupts_1_nmm.inc
-	catalina $(CFLAGS) -lci run_test_interrupts_1.c -C COMPACT -o $@
+	catalina $(CFLAGS) -lci run_test_interrupts_1.c -C COMPACT -C NO_FIFO -o $@
 
 # add this to the 'all' target
 all :: run_int_cmm
@@ -513,7 +513,7 @@ run_int_lmm.binary :
 run_int_lmm.bin : test_interrupts_1.c run_test_interrupts_1.c
 	catalina $(CFLAGS) -lci -lint -C NO_ARGS test_interrupts_1.c -R 0x40000 -C TINY
 	spinc -p2 -B2 -n LMM -s 8000 -f _cogstart_LMM_cog -c -l test_interrupts_1.bin >test_interrupts_1_lmm.inc
-	catalina $(CFLAGS) -lci -lint -C NO_ARGS test_interrupts_1.c -R 0x40000 -C COMPACT
+	catalina $(CFLAGS) -lci -lint -C NO_ARGS test_interrupts_1.c -R 0x40000 -C COMPACT -C NO_FIFO
 	spinc -p2 -B2 -n CMM -s 8000 -c -l test_interrupts_1.bin >test_interrupts_1_cmm.inc
 	catalina $(CFLAGS) -lci -lint -C NO_ARGS test_interrupts_1.c -R 0x40000 -C NATIVE
 	spinc -p2 -B2 -n NMM -s 8000 -c -l test_interrupts_1.bin >test_interrupts_1_nmm.inc
@@ -533,7 +533,7 @@ run_int_nmm.binary :
 run_int_nmm.bin : test_interrupts_1.c run_test_interrupts_1.c
 	catalina $(CFLAGS) -lint -lci -C NO_ARGS test_interrupts_1.c -R 0x40000 -C TINY
 	spinc -p2 -B2 -n LMM -s 8000 -c -l test_interrupts_1.bin >test_interrupts_1_lmm.inc
-	catalina $(CFLAGS) -lint -lci -C NO_ARGS test_interrupts_1.c -R 0x40000 -C COMPACT
+	catalina $(CFLAGS) -lint -lci -C NO_ARGS test_interrupts_1.c -R 0x40000 -C COMPACT -C NO_FIFO
 	spinc -p2 -B2 -n CMM -s 8000 -c -l test_interrupts_1.bin >test_interrupts_1_cmm.inc
 	catalina $(CFLAGS) -lint -lci -C NO_ARGS test_interrupts_1.c -R 0x40000 -C NATIVE
 	spinc -p2 -B2 -n NMM -s 8000 -c -l test_interrupts_1.bin >test_interrupts_1_nmm.inc

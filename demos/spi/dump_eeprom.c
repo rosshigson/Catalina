@@ -1,6 +1,9 @@
-#include <propeller.h>
-#include <catalina_spi.h>
-#include <catalina_plugin.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <prop.h>
+#include <spi.h>
+#include <hmi.h>
+#include <plugin.h>
 
 /*
  * EEPROM dump program using the SPI/I2C plugin. The I2C bus is intended 
@@ -85,7 +88,7 @@ void main() {
          dump_buffer(buffer, BUFFER_SIZE);
       }
       else {
-         exit();
+         exit(0);
       }
    }
 }

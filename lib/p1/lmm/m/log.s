@@ -39,7 +39,7 @@ C_log ' <symbol:log>
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C___I_sN_an ' CALL addrg
+ long @C_isnan ' CALL addrg
  cmps r0,  #0 wz
  jmp #BR_Z
  long @C_log_6 ' EQI4
@@ -289,9 +289,9 @@ C_log_1
 
 ' Catalina Import errno
 
-' Catalina Import frexp
+' Catalina Import isnan
 
-' Catalina Import __IsNan
+' Catalina Import frexp
 
 ' Catalina Import __huge_val
 

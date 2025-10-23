@@ -12,36 +12,36 @@
 
 #define COGSTORE_RETRIES 10000
 
-#define CMD_READ   0x10000000   // copy Hub to Cog (address in lower 24 bits)
+#define CMD_READ   0x10000000UL // copy Hub to Cog (address in lower 24 bits)
                                 // COGSTORE set to zero when complete
 
-#define CMD_WRITE  0x20000000   // copy Cog to Hub (address in lower 24 bits)
+#define CMD_WRITE  0x20000000UL // copy Cog to Hub (address in lower 24 bits)
                                 // COGSTORE set to zero when complete
 
-#define CMD_SIZE   0x30000000   // return size of stored data (in LONGs) - set
+#define CMD_SIZE   0x30000000UL // return size of stored data (in LONGs) - set
                                 // lower 24 bits to $FFFFFF on call - lower 24 
                                 // bits (set to size when complete)
 
-#define CMD_SETUP  0x40000000   // setup argc and argv array with the stored 
+#define CMD_SETUP  0x40000000UL // setup argc and argv array with the stored 
                                 // data (set to zero when complete)
 
-#define CMD_STOP   0x50000000   // stop the CogStore cog.
+#define CMD_STOP   0x50000000UL // stop the CogStore cog.
 
 #ifdef __CATALINA_P2
 
-#define LUT_READ   0x60000000   // copy Hub to LUT (address in lower 24 bits)
+#define LUT_READ   0x60000000UL // copy Hub to LUT (address in lower 24 bits)
                                 // COGSTORE set to zero when complete
 
-#define LUT_WRITE  0x70000000   // copy LUT to Hub (address in lower 24 bits)
+#define LUT_WRITE  0x70000000UL // copy LUT to Hub (address in lower 24 bits)
                                 // COGSTORE set to zero when complete
 
-#define LUT_SIZE   0x80000000   // return size of LUT data (in LONGs) - set
+#define LUT_SIZE   0x80000000UL // return size of LUT data (in LONGs) - set
                                 // lower 24 bits to $FFFFFF on call - lower 24 
                                 // bits (set to size when complete)
 
 #endif
 
-#define CMD_RESPONSE 0xFEEDFACE // COGSTORE set to this on any other command
+#define CMD_RESPONSE 0xFEEDFACEUL // COGSTORE set to this on any other command
 
 
 static unsigned long *CogStore = (unsigned long *)COGSTORE;
@@ -118,10 +118,10 @@ int SizeCogStore() {
       return -1;
    }
     
-   *CogStore = CMD_SIZE | 0xFFFFFF;
+   *CogStore = CMD_SIZE | 0xFFFFFFUL;
    for (i = 0; i < COGSTORE_RETRIES; i++) {
-     if (*CogStore != (CMD_SIZE | 0xFFFFFF)) {
-        return *CogStore & 0xFFFFFF;
+     if (*CogStore != (CMD_SIZE | 0xFFFFFFUL)) {
+        return *CogStore & 0xFFFFFFUL;
      }
    }
    return -2;
@@ -165,10 +165,10 @@ int SizeLUTStore() {
       return -1;
    }
     
-   *CogStore = LUT_SIZE | 0xFFFFFF;
+   *CogStore = LUT_SIZE | 0xFFFFFFUL;
    for (i = 0; i < COGSTORE_RETRIES; i++) {
-     if (*CogStore != (LUT_SIZE | 0xFFFFFF)) {
-        return *CogStore & 0xFFFFFF;
+     if (*CogStore != (LUT_SIZE | 0xFFFFFFUL)) {
+        return *CogStore & 0xFFFFFFUL;
      }
    }
    return -2;
@@ -197,7 +197,7 @@ int SetupCogStore(void *addr) {
       *argc = 1;
       // use "nul" as name if no arguments
       *argv_0 = (long)ARGV_0 + 4*(ARGV_MAX-2);
-      argv_0[ARGV_MAX-2] = 0x006C756E; // nul;
+      argv_0[ARGV_MAX-2] = 0x006C756EUL; // nul;
    }
    else {
       *CogStore = CMD_SETUP | (long)addr;

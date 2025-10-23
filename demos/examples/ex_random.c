@@ -1,4 +1,7 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include <prop.h>
+#include <hmi.h>
 
 /* 
  * use getrand() or getrealrand() to seed the C random number generator, 

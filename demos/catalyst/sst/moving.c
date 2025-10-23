@@ -739,7 +739,7 @@ void atover(int igrab) {
 	if (d.remkl==0) finish(FWON); /* Snova killed remaining enemy. */
 }
 
-void timwrp() {
+void timwrp(void) {
 	int l, ll, gotit;
 	prout("***TIME WARP ENTERED.");
 	if (d.snap && Rand() < 0.5) {

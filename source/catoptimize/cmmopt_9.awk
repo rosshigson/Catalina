@@ -25,23 +25,23 @@ BEGIN {
 }
 /^[ \t]+word[ \t]+I16A_MOVI[ \t]+\+[ \t]+BC/  {
    bcl = $0;
-   getline; while ($1 == "alignl") { getline }
+   getline; while (left($1,6) == "alignl") { getline }
    sp1 = "";
    sp2 = "";
    if (left($0, 20) == " word I16A_ADDI + SP") {
       sp1 = $0;
-      getline; while ($1 == "alignl") { getline }
+      getline; while (left($1,6) == "alignl") { getline }
    }
    else if (left($0, 20) == " word I16A_SUBI + SP") {
       sp1 = $0;
-      getline; while ($1 == "alignl") { getline }
+      getline; while (left($1,6) == "alignl") { getline }
    }
    else if (left($0, 14) == " long I32_LODA") {
       sp1 = $0;
-      getline; while ($1 == "alignl") { getline }
+      getline; while (left($1,6) == "alignl") { getline }
       if (left($0, 19) == " word I16A_SUB + SP") {
          sp2 = $0;
-         getline; while ($1 == "alignl") { getline }
+         getline; while (left($1,6) == "alignl") { getline }
       }
    }
    if (left($0,14) == " long I32_CALA") {
@@ -80,10 +80,10 @@ BEGIN {
    line1 = $0;
    line2 = "";
    if ((toupper($6) == "(R0)<<S16A") || (toupper($6) == "R0<<S16A")) {
-      getline; while ($1 == "alignl") { getline }
+      getline; while (left($1,6) == "alignl") { getline }
       if ((left($0,4) == "' C_") || (left($0,2) == "C_")) {
          line2 = $0
-         getline; while ($1 == "alignl") { getline }
+         getline; while (left($1,6) == "alignl") { getline }
       }
       if (left($0, 15) == " word I16B_POPM") {
          printf "' %s ' Catalina Optimized\n", line1

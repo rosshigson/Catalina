@@ -134,6 +134,7 @@ int	fflush(FILE *_stream);
 FILE	*fopen(const char *_filename, const char *_mode);
 FILE	*freopen(const char *_filename, const char *_mode, FILE *_stream);
 void	setbuf(FILE *_stream, char *_buf);
+int	setcbuf(FILE *_stream, char *_buf, int _mode, size_t _size);
 int	setvbuf(FILE *_stream, char *_buf, int _mode, size_t _size);
 int	fprintf(FILE *_stream, const char *_format, ...);
 int	fscanf(FILE *_stream, const char *_format, ...);

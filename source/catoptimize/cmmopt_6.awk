@@ -41,7 +41,7 @@ BEGIN {
       else {
          d = left($4,length($4)-5);
       }
-      printf " %s + ((%s-(@:Opt_%06d-4))&$1FF)<<S16B ' Catalina Optimized %s\n alignl ' align long\n:Opt_%06d\n", opt, d, n, n, n
+      printf " %s + ((%s-(@:Opt_%06d-4))&$1FF)<<S16B ' Catalina Optimized %s\n alignl\n:Opt_%06d\n", opt, d, n, n, n
    }
    else {
       printf " %s %s %s %s\n", $1,$2,$3,$4
@@ -60,7 +60,7 @@ BEGIN {
       else {
          d = left($4,length($4)-5);
       }
-      printf " %s + ((%s-(@:Opt_%06d-4))&$1FF)<<S16B ' Catalina Optimized %s\n alignl ' align long\n:Opt_%06d\n", opt, d, n, n, n
+      printf " %s + ((%s-(@:Opt_%06d-4))&$1FF)<<S16B ' Catalina Optimized %s\n alignl\n:Opt_%06d\n", opt, d, n, n, n
    }
    else {
       printf " %s %s %s %s\n", $1,$2,$3,$4

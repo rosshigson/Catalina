@@ -49,7 +49,10 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <prop.h>
+#ifdef __CATALINA_P2
 #include <prop2.h>
+#endif
+#include <hmi.h>
 
 void main() {
    uint32_t delay;

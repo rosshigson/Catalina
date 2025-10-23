@@ -64,9 +64,12 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
 #include <ctype.h>
 #include <time.h>
-#include <propeller2.h>
+#include <prop.h>
+#include <hmi.h>
 
 #include "rtc_driver.h"
 
@@ -89,7 +92,7 @@ static int utc         = 0; // set UTC time instead of local time
 static int utc_12      = 0; // display UTC time instead of local time (12 hour)
 static int utc_24      = 0; // display UTC time instead of local time (24 hour)
 
-static int sc, mn, hr, dt, mo, yr, wd;
+static uint32_t sc, mn, hr, dt, mo, yr, wd;
 
 void help(char *my_name) {
    t_printf("\nusage: %s [options] [ DD/MM/YY ] [ HH:MM:SS [ AM | PM ] ]\n", my_name);
@@ -371,7 +374,7 @@ void terminate() {
    t_printf("Press any key to exit ...");
    k_wait();
 #endif
-   exit();
+   exit(0);
 }
 
 time_t portable_timegm(struct tm *tm) {

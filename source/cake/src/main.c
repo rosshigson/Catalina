@@ -20,7 +20,9 @@
 #define assert _ASSERTE
 #endif
 
-
+#if defined(__CATALYST__)
+#include <prop.h> // for setenv()
+#endif
 
 static void print_report(struct report* report, bool no_colors)
 {
@@ -122,7 +124,17 @@ int main(int argc, char** argv)
     }
 
 
-    return report.error_count > 0 ? EXIT_FAILURE : EXIT_SUCCESS;
+#if defined(__CATALYST__)
+   if (report.error_count > 0) {
+      setenv("_EXIT_CODE", "1", 1);
+   }
+   else {
+      setenv("_EXIT_CODE", "0", 1);
+   }
+   _waitms(1000);
+#endif
+
+   return report.error_count > 0 ? EXIT_FAILURE : EXIT_SUCCESS;
 
 }
 

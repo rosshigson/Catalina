@@ -12,6 +12,8 @@
 #include <stdlib.h>
 #include "dosfs.h"
 
+uint8_t *DOSFS_CanonicalToDir(uint8_t *dest, uint8_t *src);
+
 /*
    Rename a file. You supply populated VOLINFO, a path to the file, a new name
    for the file (just the filename, no path). 

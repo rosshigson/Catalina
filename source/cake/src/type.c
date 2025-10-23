@@ -24,10 +24,11 @@ size_t get_align_void_ptr(enum target target)
     case TARGET_X86_X64_GCC:  return 8;
     case TARGET_X86_MSVC:     return 4;
     case TARGET_X64_MSVC:     return 8;
+    case TARGET_LCCU16:
     case TARGET_CCU8:         return 2;
     case TARGET_CATALINA:     return 4;
     }
-    static_assert(NUMBER_OF_TARGETS == 5, "add your new target here");
+    static_assert(NUMBER_OF_TARGETS == 6, "add your new target here");
     assert(false);
     return 0;
 }
@@ -39,10 +40,11 @@ size_t get_size_void_ptr(enum target target)
     case TARGET_X86_X64_GCC:  return 8;
     case TARGET_X86_MSVC:     return 4;
     case TARGET_X64_MSVC:     return 8;
+    case TARGET_LCCU16:
     case TARGET_CCU8:         return 2;
     case TARGET_CATALINA:     return 4;
     }
-    static_assert(NUMBER_OF_TARGETS == 5, "add your new target here");
+    static_assert(NUMBER_OF_TARGETS == 6, "add your new target here");
     assert(false);
     return 0;
 
@@ -55,10 +57,11 @@ size_t get_align_char(enum target target)
     case TARGET_X86_X64_GCC:  return 1;
     case TARGET_X86_MSVC:     return 1;
     case TARGET_X64_MSVC:     return 1;
+    case TARGET_LCCU16:
     case TARGET_CCU8:         return 1;
     case TARGET_CATALINA:     return 1;
     }
-    static_assert(NUMBER_OF_TARGETS == 5, "add your new target here");
+    static_assert(NUMBER_OF_TARGETS == 6, "add your new target here");
     assert(false);
     return 0;
 }
@@ -70,10 +73,11 @@ size_t get_size_char(enum target target)
     case TARGET_X86_X64_GCC:  return 1;
     case TARGET_X86_MSVC:     return 1;
     case TARGET_X64_MSVC:     return 1;
+    case TARGET_LCCU16:
     case TARGET_CCU8:         return 1;
     case TARGET_CATALINA:     return 1;
     }
-    static_assert(NUMBER_OF_TARGETS == 5, "add your new target here");
+    static_assert(NUMBER_OF_TARGETS == 6, "add your new target here");
     assert(false);
     return 0;
 
@@ -86,12 +90,13 @@ size_t get_align_bool(enum target target)
     case TARGET_X86_X64_GCC:  return 1;
     case TARGET_X86_MSVC:     return 1;
     case TARGET_X64_MSVC:     return 1;
+    case TARGET_LCCU16:
     case TARGET_CCU8:         return 1;
-    // Note: Catalina's stdbool.h defines bool and _Bool as unsigned int, 
-    // so this should not be used even when target=catalina: 
+    // Note: Catalina's stdbool.h defines bool and _Bool as unsigned int 
+    // if __INT_BOOL_ is defined, so bool will not be used in that case
     case TARGET_CATALINA:     return 1;
     }
-    static_assert(NUMBER_OF_TARGETS == 5, "add your new target here");
+    static_assert(NUMBER_OF_TARGETS == 6, "add your new target here");
     assert(false);
     return 0;
 }
@@ -103,12 +108,13 @@ size_t get_size_bool(enum target target)
     case TARGET_X86_X64_GCC:  return 1;
     case TARGET_X86_MSVC:     return 1;
     case TARGET_X64_MSVC:     return 1;
+    case TARGET_LCCU16:
     case TARGET_CCU8:         return 1;
-    // Note: Catalina's stdbool.h defines bool and _Bool as unsigned int, 
-    // so this should not be used even when target=catalina:
+    // Note: Catalina's stdbool.h defines bool and _Bool as unsigned int 
+    // if __INT_BOOL_ is defined, so bool will not be used in that case
     case TARGET_CATALINA:     return 1; 
     }
-    static_assert(NUMBER_OF_TARGETS == 5, "add your new target here");
+    static_assert(NUMBER_OF_TARGETS == 6, "add your new target here");
     assert(false);
     return 0;
 }
@@ -120,10 +126,11 @@ size_t get_align_short(enum target target)
     case TARGET_X86_X64_GCC:  return 2;
     case TARGET_X86_MSVC:     return 2;
     case TARGET_X64_MSVC:     return 2;
+    case TARGET_LCCU16:
     case TARGET_CCU8:         return 2;
     case TARGET_CATALINA:     return 2;
     }
-    static_assert(NUMBER_OF_TARGETS == 5, "add your new target here");
+    static_assert(NUMBER_OF_TARGETS == 6, "add your new target here");
     assert(false);
     return 0;
 }
@@ -135,10 +142,11 @@ size_t get_size_short(enum target target)
     case TARGET_X86_X64_GCC:  return 2;
     case TARGET_X86_MSVC:     return 2;
     case TARGET_X64_MSVC:     return 2;
+    case TARGET_LCCU16:
     case TARGET_CCU8:         return 2;
     case TARGET_CATALINA:     return 2;
     }
-    static_assert(NUMBER_OF_TARGETS == 5, "add your new target here");
+    static_assert(NUMBER_OF_TARGETS == 6, "add your new target here");
     assert(false);
     return 0;
 }
@@ -150,10 +158,11 @@ size_t get_align_int(enum target target)
     case TARGET_X86_X64_GCC:  return 4;
     case TARGET_X86_MSVC:     return 4;
     case TARGET_X64_MSVC:     return 4;
+    case TARGET_LCCU16:
     case TARGET_CCU8:         return 2;
     case TARGET_CATALINA:     return 4;
     }
-    static_assert(NUMBER_OF_TARGETS == 5, "add your new target here");
+    static_assert(NUMBER_OF_TARGETS == 6, "add your new target here");
     assert(false);
     return 0;
 }
@@ -165,10 +174,11 @@ size_t get_size_int(enum target target)
     case TARGET_X86_X64_GCC:  return 4;
     case TARGET_X86_MSVC:     return 4;
     case TARGET_X64_MSVC:     return 4;
+    case TARGET_LCCU16:
     case TARGET_CCU8:         return 2;
     case TARGET_CATALINA:     return 4;
     }    
-    static_assert(NUMBER_OF_TARGETS == 5, "add your new target here");
+    static_assert(NUMBER_OF_TARGETS == 6, "add your new target here");
     assert(false);
     return 0;
 }
@@ -180,10 +190,11 @@ size_t get_align_long(enum target target)
     case TARGET_X86_X64_GCC:  return 8;
     case TARGET_X86_MSVC:     return 4;
     case TARGET_X64_MSVC:     return 4;
+    case TARGET_LCCU16:
     case TARGET_CCU8:         return 4;
     case TARGET_CATALINA:     return 4;
     }
-    static_assert(NUMBER_OF_TARGETS == 5, "add your new target here");
+    static_assert(NUMBER_OF_TARGETS == 6, "add your new target here");
     assert(false);
     return 0;
 }
@@ -195,10 +206,11 @@ size_t get_size_long(enum target target)
     case TARGET_X86_X64_GCC:  return 8;
     case TARGET_X86_MSVC:     return 4;
     case TARGET_X64_MSVC:     return 4;
+    case TARGET_LCCU16:
     case TARGET_CCU8:         return 4;
     case TARGET_CATALINA:     return 4;
     }
-    static_assert(NUMBER_OF_TARGETS == 5, "add your new target here");
+    static_assert(NUMBER_OF_TARGETS == 6, "add your new target here");
     assert(false);
     return 0;
 }
@@ -210,10 +222,11 @@ size_t get_align_long_long(enum target target)
     case TARGET_X86_X64_GCC:  return 8;
     case TARGET_X86_MSVC:     return 8;
     case TARGET_X64_MSVC:     return 8;
+    case TARGET_LCCU16:
     case TARGET_CCU8:         return 4;
     case TARGET_CATALINA:     return 4;
     }
-    static_assert(NUMBER_OF_TARGETS == 5, "add your new target here");
+    static_assert(NUMBER_OF_TARGETS == 6, "add your new target here");
     assert(false);
     return 0;
 }
@@ -225,10 +238,11 @@ size_t get_size_long_long(enum target target)
     case TARGET_X86_X64_GCC:  return 8;
     case TARGET_X86_MSVC:     return 8;
     case TARGET_X64_MSVC:     return 8;
+    case TARGET_LCCU16:
     case TARGET_CCU8:         return 4;
     case TARGET_CATALINA:     return 4;
     }
-    static_assert(NUMBER_OF_TARGETS == 5, "add your new target here");
+    static_assert(NUMBER_OF_TARGETS == 6, "add your new target here");
     
     assert(false);
     return 0;
@@ -242,10 +256,11 @@ size_t get_align_float(enum target target)
     case TARGET_X86_X64_GCC:  return 4;
     case TARGET_X86_MSVC:     return 4;
     case TARGET_X64_MSVC:     return 4;
+    case TARGET_LCCU16:
     case TARGET_CCU8:         return 4;
     case TARGET_CATALINA:     return 4;
     }
-    static_assert(NUMBER_OF_TARGETS == 5, "add your new target here");
+    static_assert(NUMBER_OF_TARGETS == 6, "add your new target here");
     assert(false);
     return 0;
 }
@@ -257,10 +272,11 @@ size_t get_size_float(enum target target)
     case TARGET_X86_X64_GCC:  return 4;
     case TARGET_X86_MSVC:     return 4;
     case TARGET_X64_MSVC:     return 4;
+    case TARGET_LCCU16:
     case TARGET_CCU8:         return 4;
     case TARGET_CATALINA:     return 4;
     }    
-    static_assert(NUMBER_OF_TARGETS == 5, "add your new target here");
+    static_assert(NUMBER_OF_TARGETS == 6, "add your new target here");
     assert(false);
     return 0;
 }
@@ -272,10 +288,11 @@ size_t get_align_double(enum target target)
     case TARGET_X86_X64_GCC:  return 8;
     case TARGET_X86_MSVC:     return 8;
     case TARGET_X64_MSVC:     return 8;
+    case TARGET_LCCU16:
     case TARGET_CCU8:         return 8;
     case TARGET_CATALINA:     return 4;
     }
-    static_assert(NUMBER_OF_TARGETS == 5, "add your new target here");
+    static_assert(NUMBER_OF_TARGETS == 6, "add your new target here");
     assert(false);
     return 0;
 }
@@ -287,10 +304,11 @@ size_t get_size_double(enum target target)
     case TARGET_X86_X64_GCC:  return 8;
     case TARGET_X86_MSVC:     return 8;
     case TARGET_X64_MSVC:     return 8;
+    case TARGET_LCCU16:
     case TARGET_CCU8:         return 8;
     case TARGET_CATALINA:     return 4;
     }    
-    static_assert(NUMBER_OF_TARGETS == 5, "add your new target here");
+    static_assert(NUMBER_OF_TARGETS == 6, "add your new target here");
     assert(false);
     return 0;
 }
@@ -302,10 +320,11 @@ size_t get_align_long_double(enum target target)
     case TARGET_X86_X64_GCC:  return 16;
     case TARGET_X86_MSVC:     return 8;
     case TARGET_X64_MSVC:     return 8;
+    case TARGET_LCCU16:
     case TARGET_CCU8:         return 8;
     case TARGET_CATALINA:     return 4;
     }
-    static_assert(NUMBER_OF_TARGETS == 5, "add your new target here");
+    static_assert(NUMBER_OF_TARGETS == 6, "add your new target here");
     assert(false);
     return 0;
 }
@@ -317,14 +336,38 @@ size_t get_size_long_double(enum target target)
     case TARGET_X86_X64_GCC:  return 16;
     case TARGET_X86_MSVC:     return 8;
     case TARGET_X64_MSVC:     return 8;
+    case TARGET_LCCU16:
     case TARGET_CCU8:         return 8;
     case TARGET_CATALINA:     return 4;
     }    
-    static_assert(NUMBER_OF_TARGETS == 5, "add your new target here");
+    static_assert(NUMBER_OF_TARGETS == 6, "add your new target here");
     assert(false);
     return 0;
 }
 
+
+enum type_specifier_flags get_bool_c89_type_specifier(enum target target)
+{
+    switch (target)
+    {
+    case TARGET_X86_X64_GCC:
+        return (TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_CHAR);
+
+    case TARGET_X86_MSVC:
+    case TARGET_X64_MSVC:
+        return (TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_CHAR);
+
+    case TARGET_LCCU16:
+    case TARGET_CCU8:
+        return (TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_CHAR);
+
+    case TARGET_CATALINA:
+        return (TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_CHAR);
+    }
+    static_assert(NUMBER_OF_TARGETS == 6, "type specifier when generating c89 bool");
+    assert(false);
+    return 0;
+}
 
 enum type_specifier_flags get_wchar_type_specifier(enum target target)
 {
@@ -339,6 +382,7 @@ enum type_specifier_flags get_wchar_type_specifier(enum target target)
         return (TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_SHORT);
         break;
 
+    case TARGET_LCCU16:
     case TARGET_CCU8:
         return (TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_CHAR);
         break;
@@ -346,7 +390,7 @@ enum type_specifier_flags get_wchar_type_specifier(enum target target)
     case TARGET_CATALINA:
         return (TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_CHAR);
     }
-    static_assert(NUMBER_OF_TARGETS == 5, "add your new target here");
+    static_assert(NUMBER_OF_TARGETS == 6, "add your new target here");
     assert(false);
     return 0;
 }
@@ -374,6 +418,7 @@ enum type_specifier_flags get_intN_type_specifier(enum target target, int nbits)
         if (nbits == 64) return TYPE_SPECIFIER_LONG_LONG;
         break;
 
+    case TARGET_LCCU16:
     case TARGET_CCU8:
         if (nbits == 8) return TYPE_SPECIFIER_CHAR;
         if (nbits == 16) return TYPE_SPECIFIER_INT;
@@ -387,7 +432,7 @@ enum type_specifier_flags get_intN_type_specifier(enum target target, int nbits)
         if (nbits == 64) return TYPE_SPECIFIER_LONG_LONG;
         break;
     }
-    static_assert(NUMBER_OF_TARGETS == 5, "add your new target here");
+    static_assert(NUMBER_OF_TARGETS == 6, "add your new target here");
 
     assert(false);
     return TYPE_SPECIFIER_LONG_LONG;
@@ -406,13 +451,14 @@ enum type_specifier_flags get_ptrdiff_t_specifier(enum target target)
     case TARGET_X64_MSVC:
         return (TYPE_SPECIFIER_LONG_LONG);
 
+    case TARGET_LCCU16:
     case TARGET_CCU8:
         return (TYPE_SPECIFIER_INT);
 
     case TARGET_CATALINA:
         return (TYPE_SPECIFIER_INT);
     }
-    static_assert(NUMBER_OF_TARGETS == 5, "add your new target here");
+    static_assert(NUMBER_OF_TARGETS == 6, "add your new target here");
     assert(false);
     return 0;
 
@@ -431,6 +477,7 @@ enum type_specifier_flags get_size_t_specifier(enum target target)
     case TARGET_X64_MSVC:
         return (TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_LONG_LONG);
 
+    case TARGET_LCCU16:
     case TARGET_CCU8:
         return (TYPE_SPECIFIER_INT);
 
@@ -438,7 +485,7 @@ enum type_specifier_flags get_size_t_specifier(enum target target)
         return (TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_INT);
 
     }
-    static_assert(NUMBER_OF_TARGETS == 5, "add your new target here");
+    static_assert(NUMBER_OF_TARGETS == 6, "add your new target here");
     assert(false);
     return 0;
 }
@@ -501,6 +548,7 @@ bool print_type_alignment_flags(struct osstream* ss, bool* first, enum alignment
             print_item(ss, first, "__attribute__((aligned(128)))");
         break;
 
+    case TARGET_LCCU16:
     case TARGET_CCU8:
         if (flags & ALIGNMENT_SPECIFIER_8_FLAGS)
             print_item(ss, first, "/*alignas(8)*/");
@@ -527,7 +575,7 @@ bool print_type_alignment_flags(struct osstream* ss, bool* first, enum alignment
             print_item(ss, first, "__attribute__((aligned(32)))");
         break;
     }
-    static_assert(NUMBER_OF_TARGETS == 5, "does this compiler have something similar of alignas?");
+    static_assert(NUMBER_OF_TARGETS == 6, "does this compiler have something similar of alignas?");
 
     return *first;
 }
@@ -2869,7 +2917,7 @@ size_t type_get_alignof(const struct type* p_type, enum target target)
     }
     else if (category == TYPE_CATEGORY_FUNCTION)
     {
-        align = -1;
+        align = SIZE_MAX-1;        
         //seterror(error, "sizeof function");
     }
     else if (category == TYPE_CATEGORY_ITSELF)
@@ -2966,18 +3014,18 @@ size_t type_get_alignof(const struct type* p_type, enum target target)
                 }
                 else
                 {
-                    align = -2;
+                    align = SIZE_MAX - 2;
                 }
             }
             else
             {
-                align = -2;
+                align = SIZE_MAX - 2;
                 assert(false);
             }
         }
         else if (p_type->type_specifier_flags == TYPE_SPECIFIER_NONE)
         {
-            align = -3;
+            align = SIZE_MAX - 3;
             //seterror(error, "type information is missing");
         }
         else if (p_type->type_specifier_flags == TYPE_SPECIFIER_VOID)
@@ -3468,7 +3516,7 @@ struct type type_make_int()
     return t;
 }
 
-struct type type_make_literal_string(int size_in_bytes,
+struct type type_make_literal_string2(int number_of_chars_including_zero,
     enum type_specifier_flags chartype,
     enum type_qualifier_flags qualifiers,
     enum target target)
@@ -3484,23 +3532,8 @@ struct type type_make_literal_string(int size_in_bytes,
         char_type.category = TYPE_CATEGORY_ITSELF;
         char_type.type_specifier_flags = chartype;
 
-        size_t char_size = 0;
-
-        if (type_get_sizeof(&char_type, &char_size, target) != 0)
-        {
-            type_delete(p2);
-            throw;
-        }
-
-        if (char_size == 0)
-        {
-            char_size = 1;
-        }
-        type_destroy(&char_type);
-
-
         t.category = TYPE_CATEGORY_ARRAY;
-        t.num_of_elements = size_in_bytes / char_size;
+        t.num_of_elements = number_of_chars_including_zero;
 
         p2->category = TYPE_CATEGORY_ITSELF;
         p2->type_specifier_flags = chartype;
@@ -4006,6 +4039,7 @@ void  make_type_using_direct_declarator(struct parser_ctx* ctx,
 
             p->category = TYPE_CATEGORY_ARRAY;
 
+
             p->num_of_elements =
                 array_declarator_get_size(pdirectdeclarator->array_declarator);
 
@@ -4272,6 +4306,13 @@ struct type make_type_using_declarator(struct parser_ctx* ctx, struct declarator
 
             struct type nt =
                 type_dup(&p_typedef_declarator->type);
+            
+            free((void*)nt.name_opt);
+            nt.name_opt = NULL;
+            if (pdeclarator->name_opt)
+            {
+                nt.name_opt = strdup(pdeclarator->name_opt->lexeme);
+            }
 
             struct type* _Owner _Opt p_nt = calloc(1, sizeof(struct type));
             if (p_nt == NULL)

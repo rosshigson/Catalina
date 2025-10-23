@@ -216,9 +216,42 @@ void setpin(int pin, int value);
 //
 // togglepin - toggle the state of a pin
 //    pin : Pin to toggle (0 to 31 on Propeller 1, 0 to 63 on Propeller 2)
-//   i returns : nothing
+//    returns : nothing
 //
 void togglepin(int pin);
+
+//
+// _sbrk - adjust the C program break (i.e. end of data/start of heap) - used
+//         in conjunction with malloc etc.
+//    amount  : amount to adjust break (may be postive, zero or negative)
+//    returns : previous value of program break
+//
+// NOTE: use sbrk if multiprocessing!
+//
+int _sbrk(int amount);
+
+//
+// sbrk - same as _sbrk but locks memory during operation (required when 
+//        multi-processing)
+//
+int sbrk(int amount);
+
+//
+// _hbrk - adjust the C program break (i.e. end of data/start of heap) - used 
+//         in conjunction with hub_malloc etc.
+//    amount  : amount to adjust break (may be postive, zero or negative)
+//    returns : previous value of program break
+//
+// NOTE: use hbrk if multiprocessing!
+//
+int _hbrk(int amount);
+
+//
+// hbrk - same as _hbrk but locks memory during operation (required when 
+//        multi-processing)
+//
+int hbrk(int amount);
+
 
 //
 // include definitions required by spin2cpp (if requested)

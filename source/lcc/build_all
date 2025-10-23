@@ -1,5 +1,11 @@
 #!/bin/bash
 ##!/bin/bash -login
+
+make clobber LCCDIR=$LCCDIR
+make HOSTFILE=etc/catalina_linux_cake.c LCCDIR=$LCCDIR lcc
+make all LCCDIR=$LCCDIR
+mv $LCCDIR/bin/lcc $LCCDIR/bin/clcc
+
 make clobber LCCDIR=$LCCDIR
 make HOSTFILE=etc/catalina_linux.c LCCDIR=$LCCDIR lcc
 make all LCCDIR=$LCCDIR

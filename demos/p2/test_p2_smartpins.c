@@ -14,9 +14,9 @@
 #define ledpin 56
 #define reppin 57
 
-#define ncomode 0x4C // 0b01001100
-#define repmode 0x06 // 0b00000110
-#define unique  0xc0ffee00
+#define ncomode 0x4CUL // 0b01001100
+#define repmode 0x06UL // 0b00000110
+#define unique  0xc0ffee00UL
 
 void main()
 {

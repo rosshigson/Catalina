@@ -26,6 +26,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <time.h>
+#include <prop2.h>
 
 #if !defined(__CATALINA_RTC)
 

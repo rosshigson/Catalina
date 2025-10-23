@@ -10,7 +10,9 @@ all:
 	cp ../../float/fround.s .
 	cp ../../float/ftrunc.s .
 	cp ../../math/fmod.s .
+	cp ../../math/isinf.s .
 	cp ../../math/isnan.s .
+	cp ../../math/fpclass.s .
 	cp ../../math/ldexp.s .
 	cp ../../math/frexp.s .
 	cp ../../math/hugeval.s .

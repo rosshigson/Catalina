@@ -79,6 +79,8 @@ extern int s_txcount(unsigned port);
 
 extern void s_str(unsigned port, char *stringptr);
 
+extern void s_strterm(unsigned port, char *stringptr, char term);
+
 extern void s_decl(unsigned port, int value, int digits, int flag);
 
 extern void s_hex(unsigned port, unsigned value, int digits);
@@ -148,6 +150,7 @@ extern void s_closeport(unsigned port);
 #define s8_txcheck(port) s_txcheck(port)
 #define s8_txcount(port) s_txcount(port)
 #define s8_str(port, stringptr) s_str(port, stringptr)
+#define s8_strln(port, stringptr) s_strln(port, stringptr)
 #define s8_decl(port, value, digits, flag) s_decl(port, value, digits, flag)
 #define s8_hex(port, value, digits) s_hex(port, value, digits)
 #define s8_ihex(port, value, digits) s_ihex(port, value, digits)
@@ -159,7 +162,6 @@ extern void s_closeport(unsigned port);
 #define s8_decx(port, value, width) s_decl(port,value,width,2)
 #define s8_putc(port, txbyte) s_putc(port,txbyte)
 #define s8_newline(port) s_newline(port)
-#define s8_strln(port, stringptr) s_strln(port, stringptr)
 #define s8_openport(port, baud, mode, \
                     rx_pin, rx_start, rx_end, \
                     tx_pin, tx_start, tx_end) \

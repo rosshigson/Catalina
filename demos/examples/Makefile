@@ -119,6 +119,14 @@ all :: ex_printf
 
 # =============
 
+.PHONY : ex_printf_tz
+ex_printf_tz : ex_printf_tz$B
+
+# add this to the 'all' target
+all :: ex_printf_tz
+
+# =============
+
 .PHONY : ex_registry
 ex_registry : ex_registry$B
 
@@ -290,6 +298,14 @@ ex_inttype : ex_inttype$B
 
 # add this to the 'all' target
 all :: ex_inttype
+
+# =============
+
+.PHONY : ex_itoa
+ex_itoa : ex_itoa$B
+
+# add this to the 'all' target
+all :: ex_itoa
 
 # =============
 
@@ -511,8 +527,17 @@ all :: ex_vararg
 
 # =============
 
+.PHONY : ex_va_copy
+ex_va_copy : ex_va_copy$B
+
+# add this to the 'all' target
+all :: ex_va_copy
+
+# =============
+
 .PHONY : ex_vararg_legacy
-ex_vararg_legacy : ex_vararg_legacy$B
+# Note: this program will fail to compile with cake!
+-ex_vararg_legacy : ex_vararg_legacy$B
 
 # add this to the 'all' target
 all :: ex_vararg_legacy
@@ -597,10 +622,10 @@ all :: ex_wait
 ex_timers : ex_timers$B
 
 ex_timers.binary : ex_timers.c
-	$(CC) $(CFLAGS) -C $(CLOCK) -lmb -O5 -o $@ $<
+	$(CC) $(CFLAGS) -C $(CLOCK) -lmb -o $@ $<
 
 ex_timers.bin : ex_timers.c
-	$(CC) $(CFLAGS) -C $(CLOCK) -lmc -O5 -p2 -o $@ $<
+	$(CC) $(CFLAGS) -C $(CLOCK) -lmc -p2 -o $@ $<
 
 # add this to the 'all' target
 all :: ex_timers

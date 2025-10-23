@@ -165,6 +165,11 @@ void hub_client(shared_data_t *s) {
 #include <string.h>
 
 /*
+ * declare our dispatch function
+ */
+void my_dispatch_C(svc_list_t list);
+
+/*
  * define our services as C functions
  */
 

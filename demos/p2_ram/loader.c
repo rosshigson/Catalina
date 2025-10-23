@@ -31,8 +31,11 @@
 #endif
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
 #include <plugin.h>
+#include <prop.h>
 #if defined(__CATALINA_HYPER)||defined(__CATALINA_libhyper)
 #include <hyper.h>
 #define ram_read hyper_read
@@ -60,14 +63,14 @@
 #define __CATALINA_DISPLAY_PROLOGUE
 
 // zero the buffer 
-void zero_buffer(unsigned char *buff, int size) {
+void zero_buffer(char *buff, int size) {
    int i;
    for (i = 0; i < size; i++) {
       buff[i] = 0;
    }
 }
 
-unsigned long load_long(unsigned char *buff, int offs) {
+unsigned long load_long(char *buff, int offs) {
    return (buff[offs+3]<<24) 
         + (buff[offs+2]<<16) 
         + (buff[offs+1]<<8) 
@@ -79,9 +82,9 @@ char test[] = "This is a TEST string for RAM";
 #endif
 
 int main(int argc, char *argv[]) {
-   unsigned char buff1[MAX_BYTES];
-   unsigned char buff2[MAX_BYTES];
-   unsigned char prologue[PROLOGUE_SIZE];
+   char buff1[MAX_BYTES];
+   char buff2[MAX_BYTES];
+   char prologue[PROLOGUE_SIZE];
    unsigned int dest = RAM_DEST;
    int result;
    FILE *file;

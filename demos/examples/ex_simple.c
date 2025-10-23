@@ -9,10 +9,11 @@
  *
  */
 
+#include <stdio.h>
+#include <ctype.h>
 #include <prop2.h>
 #include <hmi.h>
 #include <plugin.h>
-#include <stdio.h>
 
 void print_plugin_names() {
    int type;

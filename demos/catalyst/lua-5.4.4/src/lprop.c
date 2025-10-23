@@ -5,11 +5,13 @@
 #include "lua.h"
 #include "lauxlib.h"
 #include <string.h>
+#include <stdlib.h>
 
 #ifdef __CATALINA__
 #include <prop.h>
 #include <prop2.h>
 #include <plugin.h>
+#include <hmi.h>
 #include "storage.h"
 #endif
 
@@ -47,7 +49,6 @@ static int propeller_clkfreq( lua_State *L );
 static int propeller_clkmode( lua_State *L );
 static int propeller_getcnt( lua_State *L );
 static int propeller_muldiv64( lua_State *L );
-static int propeller_t_string( lua_State *L );
 static int propeller_setenv( lua_State *L );
 static int propeller_unsetenv( lua_State *L );
 static int propeller_getpin( lua_State *L );
@@ -533,16 +534,6 @@ static int propeller_execute( lua_State *L ) {
    return -1; // cannot open file
 #else
    return -4;
-#endif
-}
-
-/* k_get - the Catalina k_get function */
-static int propeller_k_get( lua_State *L ) {
-#ifdef __CATALINA__
-  pushint( L, k_get() );
-  return 1;
-#else
-  return 0;
 #endif
 }
 

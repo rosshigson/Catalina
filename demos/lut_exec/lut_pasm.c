@@ -20,7 +20,7 @@
  *                                                                           *
  *****************************************************************************/
 
-#include <propeller.h>
+#include <prop.h>
 #include <stdio.h>
 
 #include <lut_exec.h>

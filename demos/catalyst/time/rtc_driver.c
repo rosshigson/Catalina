@@ -9,8 +9,9 @@
 #include <string.h>
 #include <stdint.h>
 #include <hmi.h>
-#include <propeller2.h>
-#include <smartpins.h>
+#include <prop2.h>
+#include <smartpin.h>
+#include <floatext.h>
 
 #include "rtc_driver.h"
 
@@ -18,7 +19,7 @@
 
 /*
  * '' ====================================================
- * #include "propeller2.h"
+ * #include "prop2.h"
  *=============================================
  * ''
  * ''   File....... 64013_RTC_Driver.spin2
@@ -1552,7 +1553,7 @@ char *rtc_calendar(uint32_t date, uint32_t mon, uint32_t yr) {
  * 
  */
 
-static DaysInMonth[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+static int DaysInMonth[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
 /* 
  * pub days_in_month(mon, yr) : days
@@ -1569,7 +1570,7 @@ static DaysInMonth[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
  * 
  */
 
-uint32_t rtc_days_in_month(mon, yr) {
+uint32_t rtc_days_in_month(uint32_t mon, uint32_t yr) {
 
   // Returns days in month for given year
   // -- set year to -1 to ignore leap year

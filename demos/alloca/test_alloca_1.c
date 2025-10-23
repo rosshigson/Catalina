@@ -14,6 +14,7 @@
 
 #include <stdio.h>
 #include <alloca.h>
+#include <prop.h>
 
 // this handy macro returns the current frame pointer in any memory model
 // on the P1 or P2 ...

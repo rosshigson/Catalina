@@ -451,15 +451,15 @@ C_pthread_barrierattr_setpshared_41
  word I16B_POPM + $80<<S16B ' restore registers, do not pop frame, do return
  alignl_p1
 
-' Catalina Import _thread_stall
+' Catalina Import _Pthread_Pool
 
 ' Catalina Import _pthread_init_lock_pool
-
-' Catalina Import _Pthread_Pool
 
 ' Catalina Import errno
 
 ' Catalina Import _thread_allow
+
+' Catalina Import _thread_stall
 
 ' Catalina Import _thread_lockset
 

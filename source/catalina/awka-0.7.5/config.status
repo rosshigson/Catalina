@@ -420,7 +420,7 @@ Copyright (C) 2021 Free Software Foundation, Inc.
 This config.status script is free software; the Free Software Foundation
 gives unlimited permission to copy, distribute and modify it."
 
-ac_pwd='/cygdrive/c/Program Files (x86)/Catalina_6.2/source/catalina/awka-0.7.5'
+ac_pwd='/c/Users/rossh/Catalina_Work_64/source/catalina/awka-0.7.5'
 srcdir='.'
 test -n "$AWK" || AWK=awk
 # The default lists apply if the user does not specify any file.
@@ -611,8 +611,8 @@ S["ECHO_N"]="-n"
 S["ECHO_C"]=""
 S["DEFS"]="-DPACKAGE_NAME=\\\"\\\" -DPACKAGE_TARNAME=\\\"\\\" -DPACKAGE_VERSION=\\\"\\\" -DPACKAGE_STRING=\\\"\\\" -DPACKAGE_BUGREPORT=\\\"\\\" -DPACKAGE_URL=\\\"\\\" -DHAVE_STDIO_H=1"\
 " -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_STRINGS_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_UNISTD"\
-"_H=1 -DHAVE_SYS_TIME_H=1 -DSTDC_HEADERS=1 -DHAVE_SYS_SOCKET_H=1 -DHAVE_NETINET_IN_H=1 -DNO_MATHERR=1 -DNO_FPRINTF_IN_STDIO=1 -DNO_SPRINTF_IN_STDIO=1"\
-" -DHAVE_SOCKETS=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1"
+"_H=1 -DHAVE_SYS_TIME_H=1 -DSTDC_HEADERS=1 -DNO_NETDB_H=1 -DNO_MATHERR=1 -DNO_FPRINTF_IN_STDIO=1 -DNO_SPRINTF_IN_STDIO=1 -DTIME_WITH_SYS_TIME=1 -DHAV"\
+"E_DECL_TZNAME=1 -DHAVE_TZNAME=1"
 S["mandir"]="${datarootdir}/man"
 S["localedir"]="${datarootdir}/locale"
 S["libdir"]="${exec_prefix}/lib"
@@ -634,7 +634,7 @@ S["libexecdir"]="${exec_prefix}/libexec"
 S["sbindir"]="${exec_prefix}/sbin"
 S["bindir"]="${exec_prefix}/bin"
 S["program_transform_name"]="s,x,x,"
-S["prefix"]="/usr/local"
+S["prefix"]=""
 S["exec_prefix"]="${prefix}"
 S["PACKAGE_URL"]=""
 S["PACKAGE_BUGREPORT"]=""

@@ -10,6 +10,9 @@
  *                                                                           *
  \***************************************************************************/
 
+#include <prop.h>
+#include <prop2.h>
+
 /*
  * Catalina interrupt support
  */

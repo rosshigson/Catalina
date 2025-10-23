@@ -28,6 +28,7 @@
 
 #include <catapult.h>
 #include <stdlib.h>
+#include <string.h>
 #include <prop.h>
 
 /*

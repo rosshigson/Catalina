@@ -565,6 +565,9 @@ static void print_p1_blob_defines(char* p, char* name, long int *hdrlen,  int *d
    }
    *datlen   = cp1->catalina_data - cp1->catalina_code;
    // additional defines for blobs
+   fprintf(gf, "#include <string.h>\n");
+   fprintf(gf, "#include <cog.h>\n");
+   fprintf(gf, "#include <fs.h>\n\n");
    fprintf(gf, "#define %s_LAYOUT         %d\n\n", name, cp1->seglayout);
    fprintf(gf, "#define %s_BLOB_SIZE      0x%x // bytes\n", name, *datlen);
    fprintf(gf, "#define %s_STACK_SIZE     0x%x // bytes\n", name, stack_size);
@@ -608,6 +611,9 @@ static void print_p2_blob_defines(char* p, char* name, int *datstart, int *datle
    }
    *datlen   = cp2->catalina_data - cp2->catalina_code;
    // additional defines for blobs
+   fprintf(gf, "#include <string.h>\n");
+   fprintf(gf, "#include <cog.h>\n");
+   fprintf(gf, "#include <fs.h>\n\n");
    fprintf(gf, "#define %s_LAYOUT         %d\n\n", name, cp2->seglayout);
    fprintf(gf, "#define %s_BLOB_SIZE      0x%x // bytes\n", name, *datlen);
    fprintf(gf, "#define %s_STACK_SIZE     0x%x // bytes\n", name, stack_size);

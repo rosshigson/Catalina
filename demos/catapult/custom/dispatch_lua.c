@@ -3,8 +3,10 @@
 #include <lua.h>
 #include <lualib.h>
 #include <lauxlib.h>
+#include <hmi.h>
 
 #include "service.h"
+
 
 // strdup replacment (strdup is not ANSI!)
 static char *strdup(const char *s) {

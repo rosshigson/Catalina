@@ -20,10 +20,11 @@
 #define CHUNK_SIZE 2048 
 #endif
 
-#include <prop.h>
+#include <ctype.h>
 #include <string.h>
 #include <stdio.h>
 #include <dosfs.h>
+#include <prop.h>
 #include <hmi.h>
 #include <fs.h>
 
@@ -309,6 +310,8 @@ void copy_file(PVOLINFO vi, char *src, char *dst) {
    }
 }
 
+// match function - see glob.c
+extern int amatch(char *str, char *p);
 
 void copy_to_target(PVOLINFO vi, char *src, char *target) {
    uint8_t scratch[SECTOR_SIZE];

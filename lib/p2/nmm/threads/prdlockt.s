@@ -155,11 +155,11 @@ C_pthread_rwlock_timedrdlock_4
  calld PA,#RETF
 
 
-' Catalina Import _pthread_init_lock_pool
-
 ' Catalina Import _Pthread_Pool
 
 ' Catalina Import malloc
+
+' Catalina Import _pthread_init_lock_pool
 
 ' Catalina Import pthread_msleep
 

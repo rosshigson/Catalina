@@ -51,7 +51,7 @@ Note that there may be a Cake binary included in the Catalina distribution,
 but it will need configuration before it will work correctly (this is done
 automatically if Cake is rebuilt from source). The symptoms of Cake not
 being configured correctly are that when executed, it will complain that it
-cannnot find the C include files. To configure Cake under Winows, Linux or
+cannot find the C include files. To configure Cake under Windows, Linux or
 Catalyst, execute the following command in a Catalina command-line window:
 
    cake -autoconfig

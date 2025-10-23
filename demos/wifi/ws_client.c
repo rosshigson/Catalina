@@ -200,7 +200,7 @@ void printch(char ch) {
 }
 
 // These are for demo purposes only ...
-static uint32_t WS_MASK  = 0xDEADBEEF;
+static uint32_t WS_MASK  = 0xDEADBEEFUL;
 static char     WS_KEY[] = "6OmI3aQmM/GgQ6G+wM6n+A==";
 
 void main() {

@@ -17,8 +17,11 @@
  \***************************************************************************/
 
 #include <stdio.h>
-#include <propeller2.h>
+#include <stdlib.h>
+#include <prop.h>
+#include <prop2.h>
 #include <int.h>
+#include <hmi.h>
 
 // define the stack size each interrupt needs 
 #define INT_STACK_SIZE (MIN_INT_STACK_SIZE + 100)

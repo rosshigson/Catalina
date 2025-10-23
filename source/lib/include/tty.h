@@ -19,11 +19,9 @@
 #error THE TTY AND TTY256 SERIAL FUNCTIONS REQUIRE A PROPELLER 1 
 #endif
 
-#define TTY_FF SERIAL_FF
-
-#define TTY_CR SERIAL_CR
-
-#define TTY_NL SERIAL_NL
+#define TTY_FF 12
+#define TTY_CR 13
+#define TTY_NL 10
 
 extern int s_rxflush();
 
@@ -40,6 +38,8 @@ extern int s_txflush();
 extern int s_txcheck();
 
 extern void s_str(char *stringptr);
+
+extern void s_strterm(char *stringptr, char term);
 
 extern void s_decl(int value, int digits, int flag);
 
@@ -88,12 +88,14 @@ extern void s_padchar(unsigned count, char txbyte);
 #define tty_txflush() s_txflush()
 #define tty_txcheck() s_txcheck()
 #define tty_str(stringptr) s_str(stringptr)
+#define tty_strln(stringptr) s_strln(stringptr)
+#define tty_dec(value) s_dec(value)
 #define tty_decl(value, digits, flag) s_decl(value, digits, flag)
 #define tty_hex(value, digits) s_hex(value, digits)
 #define tty_ihex(value, digits) s_ihex(value, digits)
 #define tty_bin(value, digits) s_bin(value, digits)
 #define tty_ibin(value, digits) s_ibin(value, digits)
-#define tty_padchar(value, txbyte) s_padchar(count, txbyte)
-
+#define tty_padchar(value, txbyte) s_padchar(value, txbyte)
+#define tty_newline() s_newline();
 
 #endif // _TTY__H

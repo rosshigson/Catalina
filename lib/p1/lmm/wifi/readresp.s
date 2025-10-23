@@ -188,9 +188,9 @@ C_wifi_R_ead_R_esponse_D_ata_1
  jmp #RETF
 
 
-' Catalina Import isscanf
-
 ' Catalina Import wifi_timed_rx
+
+' Catalina Import isscanf
 
 ' Catalina Cnst
 

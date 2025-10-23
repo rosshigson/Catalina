@@ -443,4 +443,10 @@ int wifi_JOIN(char *ssid, char *passphrase);
 #define wifi_GPIO14(value) wifi_CHECK("pin-gpio14", value)
 #define wifi_GPIO15(value) wifi_CHECK("pin-gpio15", value)
 
+/*
+ * tiny i/o functions for use by WiFi programs.
+ */
+int isscanf(const char *str, const char *fmt, ...);
+int isprintf(char* buf, const char* fmt, ...);
+
 #endif

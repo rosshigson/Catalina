@@ -4237,7 +4237,7 @@ static void braced_initializer_flow_core(struct flow_visit_ctx* ctx, struct obje
         /*flow_object and object have the same number of members*/
         int i = 0;
 
-        struct object* _Opt m = obj->members;
+        struct object* _Opt m = obj->members.head;
         while (m)
         {
             braced_initializer_flow_core(ctx, m, flow_obj->members.data[i]);
@@ -4670,8 +4670,7 @@ static void flow_visit_block_item(struct flow_visit_ctx* ctx, struct block_item*
 
 static void flow_visit_try_statement(struct flow_visit_ctx* ctx, struct try_statement* p_try_statement)
 {
-    try
-    {
+
         const int throw_join_state_old = ctx->throw_join_state;
         struct secondary_block* _Opt catch_secondary_block_old = ctx->catch_secondary_block_opt;
 
@@ -4717,10 +4716,7 @@ static void flow_visit_try_statement(struct flow_visit_ctx* ctx, struct try_stat
 
         ctx->throw_join_state = throw_join_state_old; //restore
         ctx->catch_secondary_block_opt = catch_secondary_block_old; //restore
-    }
-    catch
-    {
-    }
+
 }
 
 static void flow_visit_switch_statement(struct flow_visit_ctx* ctx, struct selection_statement* p_selection_statement)
@@ -6317,8 +6313,7 @@ static void flow_visit_do_while_statement(struct flow_visit_ctx* ctx, struct ite
 
     struct true_false_set true_false_set = { 0 };
 
-    try
-    {
+
         if (p_iteration_statement->expression1)
         {
             flow_visit_expression(ctx, p_iteration_statement->expression1, &true_false_set);
@@ -6347,10 +6342,7 @@ static void flow_visit_do_while_statement(struct flow_visit_ctx* ctx, struct ite
             //do { } while (p);
             true_false_set_set_objects_to_false_branch(ctx, &true_false_set, nullable_enabled);
         }
-    }
-    catch
-    {
-    }
+
 
     true_false_set_destroy(&true_false_set);
 }
@@ -6462,8 +6454,7 @@ static void flow_visit_for_statement(struct flow_visit_ctx* ctx, struct iteratio
 
     struct true_false_set d = { 0 };
 
-    try
-    {
+
         if (p_iteration_statement->declaration &&
             p_iteration_statement->declaration->init_declarator_list.head)
         {
@@ -6506,10 +6497,7 @@ static void flow_visit_for_statement(struct flow_visit_ctx* ctx, struct iteratio
             flow_defer_list_set_end_of_lifetime(ctx, &p_iteration_statement->defer_list, p_iteration_statement->secondary_block->last_token);
         }
 
-    }
-    catch
-    {
-    }
+
     true_false_set_destroy(&d);
 }
 

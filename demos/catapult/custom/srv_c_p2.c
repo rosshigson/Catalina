@@ -163,6 +163,12 @@ void hub_client(shared_data_t *s) {
 #pragma catapult primary binary(srv_c_p2) mode(XMM) options(dispatch_c.c)
 
 #include <string.h>
+#include <prop2.h>
+
+/*
+ * declare our dispatch function
+ */
+void my_dispatch_C(svc_list_t list);
 
 /*
  * define our services as C functions

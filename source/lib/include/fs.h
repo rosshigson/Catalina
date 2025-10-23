@@ -145,4 +145,20 @@ extern int _mkdir(const char *pathname, mode_t mode);
  */
 extern int _mkdirr(const char *pathname, mode_t mode);
 
+/*
+ * _load_overlay - load a blob stored in a named overlay file 
+ *                 and with a specified size to a specified 
+ *                 Hub RAM address.
+ */
+extern int _load_overlay (char *filename, void *addr, int size);
+
+/*
+ * _load_overlay_unmanaged - load a blob stored in a named overlay file 
+ *                 and with a specified size to a specified Hub RAM address, 
+ *                 but using Catalina file system functions rather than stdio.
+ *
+ *                 NOTE that _mount MUST be called before using this function.
+ */
+extern int _load_overlay_unmanaged (char *filename, void *addr, int size);
+
 #endif

@@ -1,6 +1,9 @@
 #include <time.h>
 #include "sst.h"
 
+extern int randomize(void);
+extern int min(int a, int b);
+
 void prelim(void) {
 	skip(2);
 	prout("-SUPER- STAR TREK");

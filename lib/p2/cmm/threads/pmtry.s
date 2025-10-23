@@ -245,8 +245,6 @@ C_pthread_mutex_trylock_2
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
-' Catalina Import _thread_stall
-
 ' Catalina Import _Pthread_Pool
 
 ' Catalina Import pthread_self
@@ -254,6 +252,8 @@ C_pthread_mutex_trylock_2
 ' Catalina Import errno
 
 ' Catalina Import _thread_allow
+
+' Catalina Import _thread_stall
 
 ' Catalina Import _thread_lockset
 

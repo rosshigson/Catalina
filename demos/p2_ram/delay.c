@@ -24,6 +24,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <prop.h>
 #include <prop2.h>
 #include <hmi.h>
 
@@ -367,7 +368,7 @@ void main(void) {
    end_freq = getdec(350);
 
    printf("\nFrequency Success%%\n");
-   for (new_freq = start_freq*1E6; new_freq <= end_freq*1E6; new_freq += 1E6) {
+   for (new_freq = start_freq*1000000; new_freq <= end_freq*1000000; new_freq += 1000000) {
       new_mode = computeClockMode(new_freq);
       if (new_mode == 0) {
          printf("Frequency %9d is unattainable, stopping\n", new_freq);

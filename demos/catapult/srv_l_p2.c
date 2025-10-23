@@ -37,6 +37,7 @@
 #include <catapult.h>
 #include <service.h>
 #include <stdlib.h>
+#include <prop2.h>
 
 /*
  * define global service identifiers for our services 

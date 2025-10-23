@@ -1,4 +1,3 @@
-
 /*
  *  A simple C program to test the new level of the Optimizer. To see
  *  the affects of the various tests, compile with -u and examine the
@@ -45,25 +44,26 @@
  */
 
 #include <stdio.h>
+#include <hmi.h>
 
 void func_5() {
-   t_string("I should always be commented out when compiled with -O4\n");
+   t_string(1, "I should always be commented out when compiled with -O4\n");
 }
 
 void (* f5)() = &func_5;
 
 void func_4() {
-   t_string("I should be printed when compiled with -D TEST_4\n");
+   t_string(1, "I should be printed when compiled with -D TEST_4\n");
 }
 
 void (* f4)() = &func_4;
 
 void func_3() {
-   t_string("I should be printed when compiled with -D TEST_3\n");
+   t_string(1, "I should be printed when compiled with -D TEST_3\n");
 }
 
 void func_2c() {
-   t_string("I should be printed when compiled with -D TEST_2\n");
+   t_string(1, "I should be printed when compiled with -D TEST_2\n");
 }
 
 void func_2b() {
@@ -75,7 +75,7 @@ void func_2() {
 }
 
 void func_1() {
-   t_string("Hello, World!\n");
+   t_string(1, "Hello, World!\n");
 #ifdef TEST_3
    func_3();
 #endif   

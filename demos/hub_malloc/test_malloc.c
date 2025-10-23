@@ -21,8 +21,9 @@
  *                                                                            *
  ******************************************************************************/
 
-#include <hmi.h>
 #include <stdlib.h>
+#include <hmi.h>
+#include <prop.h>
 
 #ifdef __CATALINA_HUB_MALLOC
 

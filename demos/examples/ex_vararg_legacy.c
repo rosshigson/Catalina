@@ -1,5 +1,9 @@
 #include <varargs.h>
-#include <stdio.h>
+
+#ifdef __STDC_VERSION__
+// This program uses old-style variadic function definitions 
+#error THIS PROGRAM CANNOT BE COMPILED USING CAKE
+#endif
 
 struct x {
    int x, y;

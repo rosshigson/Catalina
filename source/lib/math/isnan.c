@@ -1,11 +1,8 @@
-__IsNan(double d)
-{
-#if defined(__vax) || defined(__pdp)
-#else
-	float f = d;
+#include <math.h>
 
-	if ((*((long *) &f) & 0x7f800000) == 0x7f800000 &&
-	    (*((long *) &f) & 0x007fffff) != 0) return 1;
-#endif
-	return 0;
+static int isnan(double x) {
+    register unsigned int mask = *(unsigned int *)(&x);
+    return (((mask & 0x7F800000) == 0x7F800000)
+        &&  ((mask & 0x007FFFFF) != 0 ));
 }
+

@@ -1,6 +1,8 @@
+#include <ctype.h>
 #include <prop2.h>
 #include <serial8.h>
 #include <plugin.h>
+#include <hmi.h>
 
 /*
  * Simple test program for the 8 Port serial plugin. This program only 

@@ -757,7 +757,7 @@ void f()
 auto literal_string = "hello auto";
 
 struct {int i;} x;
-auto x2 = x;
+
 
 auto bb = true;
 auto pnull = nullptr;
@@ -1436,20 +1436,51 @@ int main()
 }
 `;
 
+sample["Extensions"]["Local functions III"] =
+`
+#include <stdio.h>
 
-
-sample["Extensions"]["Literal function async I"] =
-    `
-#include <stdlib.h>
-
-void async(void (* callback)(int result, void * data), void * data);
+void f() {
+    printf("f1\\n");
+}
 
 int main()
 {
-	struct {int value; }* capture = calloc(1, sizeof * capture);
+    /*
+       auto or static storage specifier ?
+       Currently it accepts both
+    */
+    static void f();
+    void f() {
+        printf("f2\\n");
+    }
+
+    f();
+}
+`;
+
+
+
+sample["Extensions"]["Literal function async I"] =
+`
+#include <stdlib.h>
+#include <stdio.h>
+
+void async(void (* callback)(int result, void * data), void * data)
+{
+   callback(1, data);
+}
+
+int main()
+{
+	struct capture {int value; }* capture = calloc(1, sizeof * capture);
+    if (capture == 0) return 1;
+
+    capture->value = 123;
     async((void (int result, void * data))
     {
-		typeof(capture) p = data;
+		struct capture* p = data;
+        printf("result=%d, value=%d\\n", result, p->value);
         free(p);
     }, capture);
 }
@@ -1458,32 +1489,49 @@ int main()
 
 
 sample["Extensions"]["Literal function async II"] =
-    `
-#include <stdlib.h>
+`
+/*
+   Pattern:
+   do this -> then that -> then that ....
+*/
 
-void async1(void (* callback)(int result, void * data), void * data);
-void async2(void (* callback)(int result, void * data), void * data);
+#include <stdlib.h>
+#include <stdio.h>
+
+void login_async(void (* callback)(int id, void * data), void * data)
+{
+   callback(1, data);
+}
+
+void get_data_async(void (* callback)(const char* email, void * data), void * data)
+{
+  callback("your data...", data);
+}
 
 int main()
 {
-	struct capture1 {int value; }* capture1 = calloc(1, sizeof * capture1);
-    async1((void (int result, void * capture1))
+	struct capture { int id; }* capture = calloc(1, sizeof * capture);
+    login_async((void (int id, void * p))
     {
-		struct capture1 * p1 = capture1;
-        struct capture2 {int value; }* capture2 = calloc(1, sizeof * capture2);
-        async2((void (int result, void * capture2))
+        printf("login completed. id=%d\\n", id);
+		struct capture * cap1 = p;
+        cap1->id = id;
+        get_data_async((void (const char* email, void * data))
         {
-		    struct capture2 * p2 = capture2;
-            free(p2);
-        }, capture1);
-        free(p1);
-    }, capture1);
+		    struct capture * cap2 = data;
+            printf("your data='%s'  from id=%d\\n", email, cap2->id);
+            free(cap2);
+        }, cap1 /*MOVED*/);
+    }, capture);
 }
+
+
+
 `;
 
 
 sample["Extensions"]["Literal function scopes"] =
-    `
+`
 
 void f1(){
     /*we cannot use local variables*/
@@ -1504,14 +1552,14 @@ void f3(){
 }
 
 
-void f3(){
-    (void(void)){ char * s = __func__; }();
+void f4(){
+    (void(void)){ const char * s = __func__; }();
 }
 
 `;
+
 sample["Extensions"]["Literal function 1"] =
-    `
-/*simple lambda*/
+`
 #include <stdio.h>
 int main()
 {

@@ -60,7 +60,7 @@ C_atan_10
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C___I_sN_an ' CALL addrg
+ long @C_isnan ' CALL addrg
  cmps r0,  #0 wz
  if_z jmp #\C_atan_13 ' EQI4
  mov r22, #33 ' reg <- coni
@@ -232,7 +232,7 @@ C_atan_1
 
 ' Catalina Import errno
 
-' Catalina Import __IsNan
+' Catalina Import isnan
 
 ' Catalina Cnst
 

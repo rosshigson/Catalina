@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_s6j4_68dcbf8c_luaB__print_L000004 ' <symbol:luaB_print>
+C_snp0_68f73655_luaB__print_L000004 ' <symbol:luaB_print>
  jmp #NEWF
  sub SP, #4
  jmp #PSHM
@@ -20,8 +20,8 @@ C_s6j4_68dcbf8c_luaB__print_L000004 ' <symbol:luaB_print>
  mov r19, r0 ' CVI, CVU or LOAD
  mov r21, #1 ' reg <- coni
  jmp #JMPA
- long @C_s6j4_68dcbf8c_luaB__print_L000004_9 ' JUMPV addrg
-C_s6j4_68dcbf8c_luaB__print_L000004_6
+ long @C_snp0_68f73655_luaB__print_L000004_9 ' JUMPV addrg
+C_snp0_68f73655_luaB__print_L000004_6
  mov r2, FP
  sub r2, #-(-8) ' reg ARG ADDRLi
  mov r3, r21 ' CVI, CVU or LOAD
@@ -34,7 +34,7 @@ C_s6j4_68dcbf8c_luaB__print_L000004_6
  mov r17, r0 ' CVI, CVU or LOAD
  cmps r21,  #1 wz,wc
  jmp #BRBE
- long @C_s6j4_68dcbf8c_luaB__print_L000004_10 ' LEI4
+ long @C_snp0_68f73655_luaB__print_L000004_10 ' LEI4
  jmp #LODL
  long @C___stdout
  mov r2, RI ' reg ARG ADDRG
@@ -42,14 +42,14 @@ C_s6j4_68dcbf8c_luaB__print_L000004_6
  mov r3, r22 ' CVI, CVU or LOAD
  mov r4, r22 ' CVI, CVU or LOAD
  jmp #LODL
- long @C_s6j4_68dcbf8c_luaB__print_L000004_12_L000013
+ long @C_snp0_68f73655_luaB__print_L000004_12_L000013
  mov r5, RI ' reg ARG ADDRG
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
  long @C_fwrite
  add SP, #12 ' CALL addrg
-C_s6j4_68dcbf8c_luaB__print_L000004_10
+C_snp0_68f73655_luaB__print_L000004_10
  jmp #LODL
  long @C___stdout
  mov r2, RI ' reg ARG ADDRG
@@ -72,12 +72,12 @@ C_s6j4_68dcbf8c_luaB__print_L000004_10
  jmp #CALA
  long @C_lua_settop
  add SP, #4 ' CALL addrg
-' C_s6j4_68dcbf8c_luaB__print_L000004_7 ' (symbol refcount = 0)
+' C_snp0_68f73655_luaB__print_L000004_7 ' (symbol refcount = 0)
  adds r21, #1 ' ADDI4 coni
-C_s6j4_68dcbf8c_luaB__print_L000004_9
+C_snp0_68f73655_luaB__print_L000004_9
  cmps r21, r19 wz,wc
  jmp #BRBE
- long @C_s6j4_68dcbf8c_luaB__print_L000004_6 ' LEI4
+ long @C_snp0_68f73655_luaB__print_L000004_6 ' LEI4
  jmp #LODL
  long @C___stdout
  mov r2, RI ' reg ARG ADDRG
@@ -85,7 +85,7 @@ C_s6j4_68dcbf8c_luaB__print_L000004_9
  mov r3, r22 ' CVI, CVU or LOAD
  mov r4, r22 ' CVI, CVU or LOAD
  jmp #LODL
- long @C_s6j4_68dcbf8c_luaB__print_L000004_14_L000015
+ long @C_snp0_68f73655_luaB__print_L000004_14_L000015
  mov r5, RI ' reg ARG ADDRG
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
@@ -99,14 +99,14 @@ C_s6j4_68dcbf8c_luaB__print_L000004_9
  jmp #CALA
  long @C_fflush ' CALL addrg
  mov r0, #0 ' RET coni
-' C_s6j4_68dcbf8c_luaB__print_L000004_5 ' (symbol refcount = 0)
+' C_snp0_68f73655_luaB__print_L000004_5 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_s6j43_68dcbf8c_luaB__warn_L000016 ' <symbol:luaB_warn>
+C_snp03_68f73655_luaB__warn_L000016 ' <symbol:luaB_warn>
  jmp #NEWF
  jmp #PSHM
  long $e80000 ' save registers
@@ -128,8 +128,8 @@ C_s6j43_68dcbf8c_luaB__warn_L000016 ' <symbol:luaB_warn>
  add SP, #8 ' CALL addrg
  mov r21, #2 ' reg <- coni
  jmp #JMPA
- long @C_s6j43_68dcbf8c_luaB__warn_L000016_21 ' JUMPV addrg
-C_s6j43_68dcbf8c_luaB__warn_L000016_18
+ long @C_snp03_68f73655_luaB__warn_L000016_21 ' JUMPV addrg
+C_snp03_68f73655_luaB__warn_L000016_18
  jmp #LODL
  long 0
  mov r2, RI ' reg ARG con
@@ -140,16 +140,16 @@ C_s6j43_68dcbf8c_luaB__warn_L000016_18
  jmp #CALA
  long @C_luaL__checklstring
  add SP, #8 ' CALL addrg
-' C_s6j43_68dcbf8c_luaB__warn_L000016_19 ' (symbol refcount = 0)
+' C_snp03_68f73655_luaB__warn_L000016_19 ' (symbol refcount = 0)
  adds r21, #1 ' ADDI4 coni
-C_s6j43_68dcbf8c_luaB__warn_L000016_21
+C_snp03_68f73655_luaB__warn_L000016_21
  cmps r21, r19 wz,wc
  jmp #BRBE
- long @C_s6j43_68dcbf8c_luaB__warn_L000016_18 ' LEI4
+ long @C_snp03_68f73655_luaB__warn_L000016_18 ' LEI4
  mov r21, #1 ' reg <- coni
  jmp #JMPA
- long @C_s6j43_68dcbf8c_luaB__warn_L000016_25 ' JUMPV addrg
-C_s6j43_68dcbf8c_luaB__warn_L000016_22
+ long @C_snp03_68f73655_luaB__warn_L000016_25 ' JUMPV addrg
+C_snp03_68f73655_luaB__warn_L000016_22
  jmp #LODL
  long 0
  mov r2, RI ' reg ARG con
@@ -169,12 +169,12 @@ C_s6j43_68dcbf8c_luaB__warn_L000016_22
  jmp #CALA
  long @C_lua_warning
  add SP, #8 ' CALL addrg
-' C_s6j43_68dcbf8c_luaB__warn_L000016_23 ' (symbol refcount = 0)
+' C_snp03_68f73655_luaB__warn_L000016_23 ' (symbol refcount = 0)
  adds r21, #1 ' ADDI4 coni
-C_s6j43_68dcbf8c_luaB__warn_L000016_25
+C_snp03_68f73655_luaB__warn_L000016_25
  cmps r21, r19 wz,wc
  jmp #BR_B
- long @C_s6j43_68dcbf8c_luaB__warn_L000016_22 ' LTI4
+ long @C_snp03_68f73655_luaB__warn_L000016_22 ' LTI4
  jmp #LODL
  long 0
  mov r2, RI ' reg ARG con
@@ -195,13 +195,13 @@ C_s6j43_68dcbf8c_luaB__warn_L000016_25
  long @C_lua_warning
  add SP, #8 ' CALL addrg
  mov r0, #0 ' RET coni
-' C_s6j43_68dcbf8c_luaB__warn_L000016_17 ' (symbol refcount = 0)
+' C_snp03_68f73655_luaB__warn_L000016_17 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_s6j44_68dcbf8c_b_str2int_L000026 ' <symbol:b_str2int>
+C_snp04_68f73655_b_str2int_L000026 ' <symbol:b_str2int>
  jmp #NEWF
  sub SP, #4
  jmp #PSHM
@@ -215,7 +215,7 @@ C_s6j44_68dcbf8c_b_str2int_L000026 ' <symbol:b_str2int>
  long -8
  wrlong r22, RI ' ASGNI4 addrl reg
  jmp #LODL
- long @C_s6j44_68dcbf8c_b_str2int_L000026_28_L000029
+ long @C_snp04_68f73655_b_str2int_L000026_28_L000029
  mov r2, RI ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -228,23 +228,23 @@ C_s6j44_68dcbf8c_b_str2int_L000026 ' <symbol:b_str2int>
  and r22, cviu_m1 ' zero extend
  cmps r22,  #45 wz
  jmp #BRNZ
- long @C_s6j44_68dcbf8c_b_str2int_L000026_30 ' NEI4
+ long @C_snp04_68f73655_b_str2int_L000026_30 ' NEI4
  mov r22, #1 ' reg <- coni
  adds r23, #1 ' ADDP4 coni
  jmp #LODF
  long -8
  wrlong r22, RI ' ASGNI4 addrl reg
  jmp #JMPA
- long @C_s6j44_68dcbf8c_b_str2int_L000026_31 ' JUMPV addrg
-C_s6j44_68dcbf8c_b_str2int_L000026_30
+ long @C_snp04_68f73655_b_str2int_L000026_31 ' JUMPV addrg
+C_snp04_68f73655_b_str2int_L000026_30
  rdbyte r22, r23 ' reg <- INDIRU1 reg
  and r22, cviu_m1 ' zero extend
  cmps r22,  #43 wz
  jmp #BRNZ
- long @C_s6j44_68dcbf8c_b_str2int_L000026_32 ' NEI4
+ long @C_snp04_68f73655_b_str2int_L000026_32 ' NEI4
  adds r23, #1 ' ADDP4 coni
-C_s6j44_68dcbf8c_b_str2int_L000026_32
-C_s6j44_68dcbf8c_b_str2int_L000026_31
+C_snp04_68f73655_b_str2int_L000026_32
+C_snp04_68f73655_b_str2int_L000026_31
  rdbyte r22, r23 ' reg <- INDIRU1 reg
  and r22, cviu_m1 ' zero extend
  jmp #LODL
@@ -256,27 +256,27 @@ C_s6j44_68dcbf8c_b_str2int_L000026_31
  and r22, #7 ' BANDI4 coni
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_s6j44_68dcbf8c_b_str2int_L000026_34 ' NEI4
+ long @C_snp04_68f73655_b_str2int_L000026_34 ' NEI4
  jmp #LODL
  long 0
  mov r0, RI ' reg <- con
  jmp #JMPA
- long @C_s6j44_68dcbf8c_b_str2int_L000026_27 ' JUMPV addrg
-C_s6j44_68dcbf8c_b_str2int_L000026_34
-C_s6j44_68dcbf8c_b_str2int_L000026_37
+ long @C_snp04_68f73655_b_str2int_L000026_27 ' JUMPV addrg
+C_snp04_68f73655_b_str2int_L000026_34
+C_snp04_68f73655_b_str2int_L000026_37
  rdbyte r22, r23 ' reg <- INDIRU1 reg
  and r22, cviu_m1 ' zero extend
  subs r22, #48 ' SUBI4 coni
  cmp r22,  #10 wz,wc 
  jmp #BRAE
- long @C_s6j44_68dcbf8c_b_str2int_L000026_41 ' GEU4
+ long @C_snp04_68f73655_b_str2int_L000026_41 ' GEU4
  rdbyte r22, r23 ' reg <- INDIRU1 reg
  and r22, cviu_m1 ' zero extend
  mov r13, r22
  subs r13, #48 ' SUBI4 coni
  jmp #JMPA
- long @C_s6j44_68dcbf8c_b_str2int_L000026_42 ' JUMPV addrg
-C_s6j44_68dcbf8c_b_str2int_L000026_41
+ long @C_snp04_68f73655_b_str2int_L000026_42 ' JUMPV addrg
+C_snp04_68f73655_b_str2int_L000026_41
  rdbyte r22, r23 ' reg <- INDIRU1 reg
  mov r2, r22 ' CVUI
  and r2, cviu_m1 ' zero extend
@@ -287,17 +287,17 @@ C_s6j44_68dcbf8c_b_str2int_L000026_41
  subs r22, #65 ' SUBI4 coni
  mov r13, r22
  adds r13, #10 ' ADDI4 coni
-C_s6j44_68dcbf8c_b_str2int_L000026_42
+C_snp04_68f73655_b_str2int_L000026_42
  mov r15, r13 ' CVI, CVU or LOAD
  cmps r15, r21 wz,wc
  jmp #BR_B
- long @C_s6j44_68dcbf8c_b_str2int_L000026_43 ' LTI4
+ long @C_snp04_68f73655_b_str2int_L000026_43 ' LTI4
  jmp #LODL
  long 0
  mov r0, RI ' reg <- con
  jmp #JMPA
- long @C_s6j44_68dcbf8c_b_str2int_L000026_27 ' JUMPV addrg
-C_s6j44_68dcbf8c_b_str2int_L000026_43
+ long @C_snp04_68f73655_b_str2int_L000026_27 ' JUMPV addrg
+C_snp04_68f73655_b_str2int_L000026_43
  mov r22, r21 ' CVI, CVU or LOAD
  mov r0, r17 ' setup r0/r1 (2)
  mov r1, r22 ' setup r0/r1 (2)
@@ -306,7 +306,7 @@ C_s6j44_68dcbf8c_b_str2int_L000026_43
  mov r17, r0 ' ADDU
  add r17, r22 ' ADDU (3)
  adds r23, #1 ' ADDP4 coni
-' C_s6j44_68dcbf8c_b_str2int_L000026_38 ' (symbol refcount = 0)
+' C_snp04_68f73655_b_str2int_L000026_38 ' (symbol refcount = 0)
  rdbyte r22, r23 ' reg <- INDIRU1 reg
  and r22, cviu_m1 ' zero extend
  jmp #LODL
@@ -318,9 +318,9 @@ C_s6j44_68dcbf8c_b_str2int_L000026_43
  and r22, #7 ' BANDI4 coni
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_s6j44_68dcbf8c_b_str2int_L000026_37 ' NEI4
+ long @C_snp04_68f73655_b_str2int_L000026_37 ' NEI4
  jmp #LODL
- long @C_s6j44_68dcbf8c_b_str2int_L000026_28_L000029
+ long @C_snp04_68f73655_b_str2int_L000026_28_L000029
  mov r2, RI ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -334,26 +334,26 @@ C_s6j44_68dcbf8c_b_str2int_L000026_43
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #0 wz
  jmp #BR_Z
- long @C_s6j44_68dcbf8c_b_str2int_L000026_47 ' EQI4
+ long @C_snp04_68f73655_b_str2int_L000026_47 ' EQI4
  mov r22, #0 ' reg <- coni
  mov r15, r22 ' SUBU
  sub r15, r17 ' SUBU (3)
  jmp #JMPA
- long @C_s6j44_68dcbf8c_b_str2int_L000026_48 ' JUMPV addrg
-C_s6j44_68dcbf8c_b_str2int_L000026_47
+ long @C_snp04_68f73655_b_str2int_L000026_48 ' JUMPV addrg
+C_snp04_68f73655_b_str2int_L000026_47
  mov r15, r17 ' CVI, CVU or LOAD
-C_s6j44_68dcbf8c_b_str2int_L000026_48
+C_snp04_68f73655_b_str2int_L000026_48
  mov r22, r15 ' CVI, CVU or LOAD
  wrlong r22, r19 ' ASGNI4 reg reg
  mov r0, r23 ' CVI, CVU or LOAD
-C_s6j44_68dcbf8c_b_str2int_L000026_27
+C_snp04_68f73655_b_str2int_L000026_27
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_s6j46_68dcbf8c_luaB__tonumber_L000049 ' <symbol:luaB_tonumber>
+C_snp06_68f73655_luaB__tonumber_L000049 ' <symbol:luaB_tonumber>
  jmp #NEWF
  sub SP, #16
  jmp #PSHM
@@ -368,7 +368,7 @@ C_s6j46_68dcbf8c_luaB__tonumber_L000049 ' <symbol:luaB_tonumber>
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz,wc
  jmp #BR_A
- long @C_s6j46_68dcbf8c_luaB__tonumber_L000049_51 ' GTI4
+ long @C_snp06_68f73655_luaB__tonumber_L000049_51 ' GTI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -378,7 +378,7 @@ C_s6j46_68dcbf8c_luaB__tonumber_L000049 ' <symbol:luaB_tonumber>
  add SP, #4 ' CALL addrg
  cmps r0,  #3 wz
  jmp #BRNZ
- long @C_s6j46_68dcbf8c_luaB__tonumber_L000049_53 ' NEI4
+ long @C_snp06_68f73655_luaB__tonumber_L000049_53 ' NEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -388,8 +388,8 @@ C_s6j46_68dcbf8c_luaB__tonumber_L000049 ' <symbol:luaB_tonumber>
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
  jmp #JMPA
- long @C_s6j46_68dcbf8c_luaB__tonumber_L000049_50 ' JUMPV addrg
-C_s6j46_68dcbf8c_luaB__tonumber_L000049_53
+ long @C_snp06_68f73655_luaB__tonumber_L000049_50 ' JUMPV addrg
+C_snp06_68f73655_luaB__tonumber_L000049_53
  mov r2, FP
  sub r2, #-(-12) ' reg ARG ADDRLi
  mov r3, #1 ' reg ARG coni
@@ -408,7 +408,7 @@ C_s6j46_68dcbf8c_luaB__tonumber_L000049_53
  mov r20, r22 ' CVI, CVU or LOAD
  cmp r20,  #0 wz
  jmp #BR_Z
- long @C_s6j46_68dcbf8c_luaB__tonumber_L000049_55 ' EQU4
+ long @C_snp06_68f73655_luaB__tonumber_L000049_55 ' EQU4
  mov r2, r22 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -422,11 +422,11 @@ C_s6j46_68dcbf8c_luaB__tonumber_L000049_53
  add r20, #1 ' ADDU4 coni
  cmp r0, r20 wz
  jmp #BRNZ
- long @C_s6j46_68dcbf8c_luaB__tonumber_L000049_55 ' NEU4
+ long @C_snp06_68f73655_luaB__tonumber_L000049_55 ' NEU4
  mov r0, #1 ' RET coni
  jmp #JMPA
- long @C_s6j46_68dcbf8c_luaB__tonumber_L000049_50 ' JUMPV addrg
-C_s6j46_68dcbf8c_luaB__tonumber_L000049_55
+ long @C_snp06_68f73655_luaB__tonumber_L000049_50 ' JUMPV addrg
+C_snp06_68f73655_luaB__tonumber_L000049_55
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -435,8 +435,8 @@ C_s6j46_68dcbf8c_luaB__tonumber_L000049_55
  long @C_luaL__checkany
  add SP, #4 ' CALL addrg
  jmp #JMPA
- long @C_s6j46_68dcbf8c_luaB__tonumber_L000049_52 ' JUMPV addrg
-C_s6j46_68dcbf8c_luaB__tonumber_L000049_51
+ long @C_snp06_68f73655_luaB__tonumber_L000049_52 ' JUMPV addrg
+C_snp06_68f73655_luaB__tonumber_L000049_51
  mov r22, #0 ' reg <- coni
  jmp #LODF
  long -12
@@ -477,13 +477,13 @@ C_s6j46_68dcbf8c_luaB__tonumber_L000049_51
  mov r20, #2 ' reg <- coni
  cmps r20, r22 wz,wc
  jmp #BR_A
- long @C_s6j46_68dcbf8c_luaB__tonumber_L000049_60 ' GTI4
+ long @C_snp06_68f73655_luaB__tonumber_L000049_60 ' GTI4
  cmps r22,  #36 wz,wc
  jmp #BRBE
- long @C_s6j46_68dcbf8c_luaB__tonumber_L000049_59 ' LEI4
-C_s6j46_68dcbf8c_luaB__tonumber_L000049_60
+ long @C_snp06_68f73655_luaB__tonumber_L000049_59 ' LEI4
+C_snp06_68f73655_luaB__tonumber_L000049_60
  jmp #LODL
- long @C_s6j46_68dcbf8c_luaB__tonumber_L000049_57_L000058
+ long @C_snp06_68f73655_luaB__tonumber_L000049_57_L000058
  mov r2, RI ' reg ARG ADDRG
  mov r3, #2 ' reg ARG coni
  mov r4, r23 ' CVI, CVU or LOAD
@@ -492,7 +492,7 @@ C_s6j46_68dcbf8c_luaB__tonumber_L000049_60
  jmp #CALA
  long @C_luaL__argerror
  add SP, #8 ' CALL addrg
-C_s6j46_68dcbf8c_luaB__tonumber_L000049_59
+C_snp06_68f73655_luaB__tonumber_L000049_59
  mov r2, FP
  sub r2, #-(-12) ' reg ARG ADDRLi
  mov RI, FP
@@ -504,7 +504,7 @@ C_s6j46_68dcbf8c_luaB__tonumber_L000049_59
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_s6j44_68dcbf8c_b_str2int_L000026
+ long @C_snp04_68f73655_b_str2int_L000026
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r20, FP
@@ -516,7 +516,7 @@ C_s6j46_68dcbf8c_luaB__tonumber_L000049_59
  adds r20, r18 ' ADDI/P (1)
  cmp r22, r20 wz
  jmp #BRNZ
- long @C_s6j46_68dcbf8c_luaB__tonumber_L000049_61 ' NEU4
+ long @C_snp06_68f73655_luaB__tonumber_L000049_61 ' NEU4
  mov RI, FP
  sub RI, #-(-12)
  rdlong r2, RI ' reg ARG INDIR ADDRLi
@@ -528,22 +528,22 @@ C_s6j46_68dcbf8c_luaB__tonumber_L000049_59
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
  jmp #JMPA
- long @C_s6j46_68dcbf8c_luaB__tonumber_L000049_50 ' JUMPV addrg
-C_s6j46_68dcbf8c_luaB__tonumber_L000049_61
-C_s6j46_68dcbf8c_luaB__tonumber_L000049_52
+ long @C_snp06_68f73655_luaB__tonumber_L000049_50 ' JUMPV addrg
+C_snp06_68f73655_luaB__tonumber_L000049_61
+C_snp06_68f73655_luaB__tonumber_L000049_52
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C_lua_pushnil ' CALL addrg
  mov r0, #1 ' RET coni
-C_s6j46_68dcbf8c_luaB__tonumber_L000049_50
+C_snp06_68f73655_luaB__tonumber_L000049_50
  jmp #POPM ' restore registers
  add SP, #16 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_s6j48_68dcbf8c_luaB__error_L000063 ' <symbol:luaB_error>
+C_snp08_68f73655_luaB__error_L000063 ' <symbol:luaB_error>
  jmp #NEWF
  sub SP, #4
  jmp #PSHM
@@ -576,13 +576,13 @@ C_s6j48_68dcbf8c_luaB__error_L000063 ' <symbol:luaB_error>
  add SP, #4 ' CALL addrg
  cmps r0,  #4 wz
  jmp #BRNZ
- long @C_s6j48_68dcbf8c_luaB__error_L000063_65 ' NEI4
+ long @C_snp08_68f73655_luaB__error_L000063_65 ' NEI4
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #0 wz,wc
  jmp #BRBE
- long @C_s6j48_68dcbf8c_luaB__error_L000063_65 ' LEI4
+ long @C_snp08_68f73655_luaB__error_L000063_65 ' LEI4
  mov RI, FP
  sub RI, #-(-8)
  rdlong r2, RI ' reg ARG INDIR ADDRLi
@@ -606,20 +606,20 @@ C_s6j48_68dcbf8c_luaB__error_L000063 ' <symbol:luaB_error>
  jmp #CALA
  long @C_lua_concat
  add SP, #4 ' CALL addrg
-C_s6j48_68dcbf8c_luaB__error_L000063_65
+C_snp08_68f73655_luaB__error_L000063_65
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C_lua_error ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
-' C_s6j48_68dcbf8c_luaB__error_L000063_64 ' (symbol refcount = 0)
+' C_snp08_68f73655_luaB__error_L000063_64 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_s6j49_68dcbf8c_luaB__getmetatable_L000067 ' <symbol:luaB_getmetatable>
+C_snp09_68f73655_luaB__getmetatable_L000067 ' <symbol:luaB_getmetatable>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -640,17 +640,17 @@ C_s6j49_68dcbf8c_luaB__getmetatable_L000067 ' <symbol:luaB_getmetatable>
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
  jmp #BRNZ
- long @C_s6j49_68dcbf8c_luaB__getmetatable_L000067_69 ' NEI4
+ long @C_snp09_68f73655_luaB__getmetatable_L000067_69 ' NEI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C_lua_pushnil ' CALL addrg
  mov r0, #1 ' RET coni
  jmp #JMPA
- long @C_s6j49_68dcbf8c_luaB__getmetatable_L000067_68 ' JUMPV addrg
-C_s6j49_68dcbf8c_luaB__getmetatable_L000067_69
+ long @C_snp09_68f73655_luaB__getmetatable_L000067_68 ' JUMPV addrg
+C_snp09_68f73655_luaB__getmetatable_L000067_69
  jmp #LODL
- long @C_s6j49_68dcbf8c_luaB__getmetatable_L000067_71_L000072
+ long @C_snp09_68f73655_luaB__getmetatable_L000067_71_L000072
  mov r2, RI ' reg ARG ADDRG
  mov r3, #1 ' reg ARG coni
  mov r4, r23 ' CVI, CVU or LOAD
@@ -660,13 +660,13 @@ C_s6j49_68dcbf8c_luaB__getmetatable_L000067_69
  long @C_luaL__getmetafield
  add SP, #8 ' CALL addrg
  mov r0, #1 ' RET coni
-C_s6j49_68dcbf8c_luaB__getmetatable_L000067_68
+C_snp09_68f73655_luaB__getmetatable_L000067_68
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_s6j4b_68dcbf8c_luaB__setmetatable_L000073 ' <symbol:luaB_setmetatable>
+C_snp0b_68f73655_luaB__setmetatable_L000073 ' <symbol:luaB_setmetatable>
  jmp #NEWF
  jmp #PSHM
  long $e00000 ' save registers
@@ -689,12 +689,12 @@ C_s6j4b_68dcbf8c_luaB__setmetatable_L000073 ' <symbol:luaB_setmetatable>
  add SP, #8 ' CALL addrg
  cmps r21,  #0 wz
  jmp #BR_Z
- long @C_s6j4b_68dcbf8c_luaB__setmetatable_L000073_77 ' EQI4
+ long @C_snp0b_68f73655_luaB__setmetatable_L000073_77 ' EQI4
  cmps r21,  #5 wz
  jmp #BR_Z
- long @C_s6j4b_68dcbf8c_luaB__setmetatable_L000073_77 ' EQI4
+ long @C_snp0b_68f73655_luaB__setmetatable_L000073_77 ' EQI4
  jmp #LODL
- long @C_s6j4b_68dcbf8c_luaB__setmetatable_L000073_75_L000076
+ long @C_snp0b_68f73655_luaB__setmetatable_L000073_75_L000076
  mov r2, RI ' reg ARG ADDRG
  mov r3, #2 ' reg ARG coni
  mov r4, r23 ' CVI, CVU or LOAD
@@ -703,9 +703,9 @@ C_s6j4b_68dcbf8c_luaB__setmetatable_L000073 ' <symbol:luaB_setmetatable>
  jmp #CALA
  long @C_luaL__typeerror
  add SP, #8 ' CALL addrg
-C_s6j4b_68dcbf8c_luaB__setmetatable_L000073_77
+C_snp0b_68f73655_luaB__setmetatable_L000073_77
  jmp #LODL
- long @C_s6j49_68dcbf8c_luaB__getmetatable_L000067_71_L000072
+ long @C_snp09_68f73655_luaB__getmetatable_L000067_71_L000072
  mov r2, RI ' reg ARG ADDRG
  mov r3, #1 ' reg ARG coni
  mov r4, r23 ' CVI, CVU or LOAD
@@ -716,9 +716,9 @@ C_s6j4b_68dcbf8c_luaB__setmetatable_L000073_77
  add SP, #8 ' CALL addrg
  cmps r0,  #0 wz
  jmp #BR_Z
- long @C_s6j4b_68dcbf8c_luaB__setmetatable_L000073_78 ' EQI4
+ long @C_snp0b_68f73655_luaB__setmetatable_L000073_78 ' EQI4
  jmp #LODL
- long @C_s6j4b_68dcbf8c_luaB__setmetatable_L000073_80_L000081
+ long @C_snp0b_68f73655_luaB__setmetatable_L000073_80_L000081
  mov r2, RI ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -728,8 +728,8 @@ C_s6j4b_68dcbf8c_luaB__setmetatable_L000073_77
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_s6j4b_68dcbf8c_luaB__setmetatable_L000073_74 ' JUMPV addrg
-C_s6j4b_68dcbf8c_luaB__setmetatable_L000073_78
+ long @C_snp0b_68f73655_luaB__setmetatable_L000073_74 ' JUMPV addrg
+C_snp0b_68f73655_luaB__setmetatable_L000073_78
  mov r2, #2 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -745,13 +745,13 @@ C_s6j4b_68dcbf8c_luaB__setmetatable_L000073_78
  long @C_lua_setmetatable
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
-C_s6j4b_68dcbf8c_luaB__setmetatable_L000073_74
+C_snp0b_68f73655_luaB__setmetatable_L000073_74
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_s6j4e_68dcbf8c_luaB__rawequal_L000082 ' <symbol:luaB_rawequal>
+C_snp0e_68f73655_luaB__rawequal_L000082 ' <symbol:luaB_rawequal>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -787,13 +787,13 @@ C_s6j4e_68dcbf8c_luaB__rawequal_L000082 ' <symbol:luaB_rawequal>
  long @C_lua_pushboolean
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_s6j4e_68dcbf8c_luaB__rawequal_L000082_83 ' (symbol refcount = 0)
+' C_snp0e_68f73655_luaB__rawequal_L000082_83 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_s6j4f_68dcbf8c_luaB__rawlen_L000084 ' <symbol:luaB_rawlen>
+C_snp0f_68f73655_luaB__rawlen_L000084 ' <symbol:luaB_rawlen>
  jmp #NEWF
  jmp #PSHM
  long $e00000 ' save registers
@@ -808,12 +808,12 @@ C_s6j4f_68dcbf8c_luaB__rawlen_L000084 ' <symbol:luaB_rawlen>
  mov r21, r0 ' CVI, CVU or LOAD
  cmps r21,  #5 wz
  jmp #BR_Z
- long @C_s6j4f_68dcbf8c_luaB__rawlen_L000084_88 ' EQI4
+ long @C_snp0f_68f73655_luaB__rawlen_L000084_88 ' EQI4
  cmps r21,  #4 wz
  jmp #BR_Z
- long @C_s6j4f_68dcbf8c_luaB__rawlen_L000084_88 ' EQI4
+ long @C_snp0f_68f73655_luaB__rawlen_L000084_88 ' EQI4
  jmp #LODL
- long @C_s6j4f_68dcbf8c_luaB__rawlen_L000084_86_L000087
+ long @C_snp0f_68f73655_luaB__rawlen_L000084_86_L000087
  mov r2, RI ' reg ARG ADDRG
  mov r3, #1 ' reg ARG coni
  mov r4, r23 ' CVI, CVU or LOAD
@@ -822,7 +822,7 @@ C_s6j4f_68dcbf8c_luaB__rawlen_L000084 ' <symbol:luaB_rawlen>
  jmp #CALA
  long @C_luaL__typeerror
  add SP, #8 ' CALL addrg
-C_s6j4f_68dcbf8c_luaB__rawlen_L000084_88
+C_snp0f_68f73655_luaB__rawlen_L000084_88
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -839,13 +839,13 @@ C_s6j4f_68dcbf8c_luaB__rawlen_L000084_88
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_s6j4f_68dcbf8c_luaB__rawlen_L000084_85 ' (symbol refcount = 0)
+' C_snp0f_68f73655_luaB__rawlen_L000084_85 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_s6j4h_68dcbf8c_luaB__rawget_L000089 ' <symbol:luaB_rawget>
+C_snp0h_68f73655_luaB__rawget_L000089 ' <symbol:luaB_rawget>
  jmp #NEWF
  jmp #PSHM
  long $800000 ' save registers
@@ -880,13 +880,13 @@ C_s6j4h_68dcbf8c_luaB__rawget_L000089 ' <symbol:luaB_rawget>
  long @C_lua_rawget
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_s6j4h_68dcbf8c_luaB__rawget_L000089_90 ' (symbol refcount = 0)
+' C_snp0h_68f73655_luaB__rawget_L000089_90 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_s6j4i_68dcbf8c_luaB__rawset_L000091 ' <symbol:luaB_rawset>
+C_snp0i_68f73655_luaB__rawset_L000091 ' <symbol:luaB_rawset>
  jmp #NEWF
  jmp #PSHM
  long $800000 ' save registers
@@ -928,13 +928,13 @@ C_s6j4i_68dcbf8c_luaB__rawset_L000091 ' <symbol:luaB_rawset>
  long @C_lua_rawset
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_s6j4i_68dcbf8c_luaB__rawset_L000091_92 ' (symbol refcount = 0)
+' C_snp0i_68f73655_luaB__rawset_L000091_92 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_s6j4j_68dcbf8c_pushmode_L000093 ' <symbol:pushmode>
+C_snp0j_68f73655_pushmode_L000093 ' <symbol:pushmode>
  jmp #NEWF
  jmp #PSHM
  long $e80000 ' save registers
@@ -945,27 +945,27 @@ C_s6j4j_68dcbf8c_pushmode_L000093 ' <symbol:pushmode>
  mov r22, RI ' reg <- con
  cmps r21, r22 wz
  jmp #BRNZ
- long @C_s6j4j_68dcbf8c_pushmode_L000093_95 ' NEI4
+ long @C_snp0j_68f73655_pushmode_L000093_95 ' NEI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C_lua_pushnil ' CALL addrg
  jmp #JMPA
- long @C_s6j4j_68dcbf8c_pushmode_L000093_96 ' JUMPV addrg
-C_s6j4j_68dcbf8c_pushmode_L000093_95
+ long @C_snp0j_68f73655_pushmode_L000093_96 ' JUMPV addrg
+C_snp0j_68f73655_pushmode_L000093_95
  cmps r21,  #11 wz
  jmp #BRNZ
- long @C_s6j4j_68dcbf8c_pushmode_L000093_102 ' NEI4
+ long @C_snp0j_68f73655_pushmode_L000093_102 ' NEI4
  jmp #LODL
- long @C_s6j4j_68dcbf8c_pushmode_L000093_97_L000098
+ long @C_snp0j_68f73655_pushmode_L000093_97_L000098
  mov r19, RI ' reg <- addrg
  jmp #JMPA
- long @C_s6j4j_68dcbf8c_pushmode_L000093_103 ' JUMPV addrg
-C_s6j4j_68dcbf8c_pushmode_L000093_102
+ long @C_snp0j_68f73655_pushmode_L000093_103 ' JUMPV addrg
+C_snp0j_68f73655_pushmode_L000093_102
  jmp #LODL
- long @C_s6j4j_68dcbf8c_pushmode_L000093_99_L000100
+ long @C_snp0j_68f73655_pushmode_L000093_99_L000100
  mov r19, RI ' reg <- addrg
-C_s6j4j_68dcbf8c_pushmode_L000093_103
+C_snp0j_68f73655_pushmode_L000093_103
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -973,9 +973,9 @@ C_s6j4j_68dcbf8c_pushmode_L000093_103
  jmp #CALA
  long @C_lua_pushstring
  add SP, #4 ' CALL addrg
-C_s6j4j_68dcbf8c_pushmode_L000093_96
+C_snp0j_68f73655_pushmode_L000093_96
  mov r0, #1 ' RET coni
-' C_s6j4j_68dcbf8c_pushmode_L000093_94 ' (symbol refcount = 0)
+' C_snp0j_68f73655_pushmode_L000093_94 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -985,21 +985,21 @@ C_s6j4j_68dcbf8c_pushmode_L000093_96
 DAT ' const data segment
 
  alignl ' align long
-C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_opts_L000107 ' <symbol:opts>
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_108_L000109
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_110_L000111
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_112_L000113
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_114_L000115
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_116_L000117
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_118_L000119
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_120_L000121
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_122_L000123
- long @C_s6j4j_68dcbf8c_pushmode_L000093_99_L000100
- long @C_s6j4j_68dcbf8c_pushmode_L000093_97_L000098
+C_snp0m_68f73655_luaB__collectgarbage_L000104_opts_L000107 ' <symbol:opts>
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_108_L000109
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_110_L000111
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_112_L000113
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_114_L000115
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_116_L000117
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_118_L000119
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_120_L000121
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_122_L000123
+ long @C_snp0j_68f73655_pushmode_L000093_99_L000100
+ long @C_snp0j_68f73655_pushmode_L000093_97_L000098
  long $0
 
  alignl ' align long
-C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_optsnum_L000125 ' <symbol:optsnum>
+C_snp0m_68f73655_luaB__collectgarbage_L000104_optsnum_L000125 ' <symbol:optsnum>
  long 0
  long 1
  long 2
@@ -1016,17 +1016,17 @@ C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_optsnum_L000125 ' <symbol:optsnum>
 DAT ' code segment
 
  alignl ' align long
-C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104 ' <symbol:luaB_collectgarbage>
+C_snp0m_68f73655_luaB__collectgarbage_L000104 ' <symbol:luaB_collectgarbage>
  jmp #NEWF
  sub SP, #16
  jmp #PSHM
  long $d00000 ' save registers
  mov r23, r2 ' reg var <- reg arg
  jmp #LODL
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_opts_L000107
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_opts_L000107
  mov r2, RI ' reg ARG ADDRG
  jmp #LODL
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_112_L000113
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_112_L000113
  mov r3, RI ' reg ARG ADDRG
  mov r4, #1 ' reg ARG coni
  mov r5, r23 ' CVI, CVU or LOAD
@@ -1038,7 +1038,7 @@ C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104 ' <symbol:luaB_collectgarbage>
  mov r22, r0
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_optsnum_L000125
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_optsnum_L000125
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRI4 reg
@@ -1050,13 +1050,13 @@ C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104 ' <symbol:luaB_collectgarbage>
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #3 wz,wc
  jmp #BR_B
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_126 ' LTI4
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_126 ' LTI4
  cmps r22,  #11 wz,wc
  jmp #BR_A
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_126 ' GTI4
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_126 ' GTI4
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_146_L000148-12
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_146_L000148-12
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong RI, r22
@@ -1067,21 +1067,21 @@ C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104 ' <symbol:luaB_collectgarbage>
 DAT ' const data segment
 
  alignl ' align long
-C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_146_L000148 ' <symbol:146>
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_128
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_126
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_133
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_136
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_136
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_126
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_139
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_142
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_143
+C_snp0m_68f73655_luaB__collectgarbage_L000104_146_L000148 ' <symbol:146>
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_128
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_126
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_133
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_136
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_136
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_126
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_139
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_142
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_143
 
 ' Catalina Code
 
 DAT ' code segment
-C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_128
+C_snp0m_68f73655_luaB__collectgarbage_L000104_128
  mov RI, FP
  sub RI, #-(-8)
  rdlong r2, RI ' reg ARG INDIR ADDRLi
@@ -1112,10 +1112,10 @@ C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_128
  mov r20, RI ' reg <- con
  cmps r22, r20 wz
  jmp #BRNZ
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_129 ' NEI4
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_129 ' NEI4
  jmp #JMPA
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_127 ' JUMPV addrg
-C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_129
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_127 ' JUMPV addrg
+C_snp0m_68f73655_luaB__collectgarbage_L000104_129
  mov r22, FP
  sub r22, #-(-12) ' reg <- addrli
  rdlong r0, r22 ' reg <- INDIRI4 reg
@@ -1128,7 +1128,7 @@ C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_129
  rdlong r0, r22 ' reg <- INDIRI4 reg
  jmp #FLIN ' CVIF4
  jmp #LODI
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_131_L000132
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_131_L000132
  mov r22, RI ' reg <- INDIRF4 addrg
  mov r1, r22 ' setup r0/r1 (2)
  jmp #FDIV ' DIVF4
@@ -1147,8 +1147,8 @@ C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_129
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
  jmp #JMPA
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_105 ' JUMPV addrg
-C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_133
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_105 ' JUMPV addrg
+C_snp0m_68f73655_luaB__collectgarbage_L000104_133
  mov r2, #0 ' reg ARG coni
  mov r3, #2 ' reg ARG coni
  mov r4, r23 ' CVI, CVU or LOAD
@@ -1183,10 +1183,10 @@ C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_133
  mov r20, RI ' reg <- con
  cmps r22, r20 wz
  jmp #BRNZ
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_134 ' NEI4
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_134 ' NEI4
  jmp #JMPA
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_127 ' JUMPV addrg
-C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_134
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_127 ' JUMPV addrg
+C_snp0m_68f73655_luaB__collectgarbage_L000104_134
  mov RI, FP
  sub RI, #-(-12)
  rdlong r2, RI ' reg ARG INDIR ADDRLi
@@ -1198,8 +1198,8 @@ C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_134
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
  jmp #JMPA
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_105 ' JUMPV addrg
-C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_136
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_105 ' JUMPV addrg
+C_snp0m_68f73655_luaB__collectgarbage_L000104_136
  mov r2, #0 ' reg ARG coni
  mov r3, #2 ' reg ARG coni
  mov r4, r23 ' CVI, CVU or LOAD
@@ -1234,10 +1234,10 @@ C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_136
  mov r20, RI ' reg <- con
  cmps r22, r20 wz
  jmp #BRNZ
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_137 ' NEI4
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_137 ' NEI4
  jmp #JMPA
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_127 ' JUMPV addrg
-C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_137
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_127 ' JUMPV addrg
+C_snp0m_68f73655_luaB__collectgarbage_L000104_137
  mov RI, FP
  sub RI, #-(-12)
  rdlong r2, RI ' reg ARG INDIR ADDRLi
@@ -1249,8 +1249,8 @@ C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_137
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
  jmp #JMPA
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_105 ' JUMPV addrg
-C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_139
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_105 ' JUMPV addrg
+C_snp0m_68f73655_luaB__collectgarbage_L000104_139
  mov RI, FP
  sub RI, #-(-8)
  rdlong r2, RI ' reg ARG INDIR ADDRLi
@@ -1271,10 +1271,10 @@ C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_139
  mov r20, RI ' reg <- con
  cmps r22, r20 wz
  jmp #BRNZ
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_140 ' NEI4
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_140 ' NEI4
  jmp #JMPA
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_127 ' JUMPV addrg
-C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_140
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_127 ' JUMPV addrg
+C_snp0m_68f73655_luaB__collectgarbage_L000104_140
  mov RI, FP
  sub RI, #-(-12)
  rdlong r2, RI ' reg ARG INDIR ADDRLi
@@ -1286,8 +1286,8 @@ C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_140
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
  jmp #JMPA
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_105 ' JUMPV addrg
-C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_142
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_105 ' JUMPV addrg
+C_snp0m_68f73655_luaB__collectgarbage_L000104_142
  mov r2, #0 ' reg ARG coni
  mov r3, #2 ' reg ARG coni
  mov r4, r23 ' CVI, CVU or LOAD
@@ -1331,12 +1331,12 @@ C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_142
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_s6j4j_68dcbf8c_pushmode_L000093
+ long @C_snp0j_68f73655_pushmode_L000093
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_105 ' JUMPV addrg
-C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_143
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_105 ' JUMPV addrg
+C_snp0m_68f73655_luaB__collectgarbage_L000104_143
  mov r2, #0 ' reg ARG coni
  mov r3, #2 ' reg ARG coni
  mov r4, r23 ' CVI, CVU or LOAD
@@ -1396,12 +1396,12 @@ C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_143
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_s6j4j_68dcbf8c_pushmode_L000093
+ long @C_snp0j_68f73655_pushmode_L000093
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_105 ' JUMPV addrg
-C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_126
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_105 ' JUMPV addrg
+C_snp0m_68f73655_luaB__collectgarbage_L000104_126
  mov RI, FP
  sub RI, #-(-8)
  rdlong r2, RI ' reg ARG INDIR ADDRLi
@@ -1422,10 +1422,10 @@ C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_126
  mov r20, RI ' reg <- con
  cmps r22, r20 wz
  jmp #BRNZ
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_144 ' NEI4
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_144 ' NEI4
  jmp #JMPA
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_127 ' JUMPV addrg
-C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_144
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_127 ' JUMPV addrg
+C_snp0m_68f73655_luaB__collectgarbage_L000104_144
  mov RI, FP
  sub RI, #-(-12)
  rdlong r2, RI ' reg ARG INDIR ADDRLi
@@ -1437,21 +1437,21 @@ C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_144
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
  jmp #JMPA
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_105 ' JUMPV addrg
-C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_127
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104_105 ' JUMPV addrg
+C_snp0m_68f73655_luaB__collectgarbage_L000104_127
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C_lua_pushnil ' CALL addrg
  mov r0, #1 ' RET coni
-C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_105
+C_snp0m_68f73655_luaB__collectgarbage_L000104_105
  jmp #POPM ' restore registers
  add SP, #16 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_s6j414_68dcbf8c_luaB__type_L000150 ' <symbol:luaB_type>
+C_snp014_68f73655_luaB__type_L000150 ' <symbol:luaB_type>
  jmp #NEWF
  jmp #PSHM
  long $e00000 ' save registers
@@ -1469,9 +1469,9 @@ C_s6j414_68dcbf8c_luaB__type_L000150 ' <symbol:luaB_type>
  mov r22, RI ' reg <- con
  cmps r21, r22 wz
  jmp #BRNZ
- long @C_s6j414_68dcbf8c_luaB__type_L000150_154 ' NEI4
+ long @C_snp014_68f73655_luaB__type_L000150_154 ' NEI4
  jmp #LODL
- long @C_s6j414_68dcbf8c_luaB__type_L000150_152_L000153
+ long @C_snp014_68f73655_luaB__type_L000150_152_L000153
  mov r2, RI ' reg ARG ADDRG
  mov r3, #1 ' reg ARG coni
  mov r4, r23 ' CVI, CVU or LOAD
@@ -1480,7 +1480,7 @@ C_s6j414_68dcbf8c_luaB__type_L000150 ' <symbol:luaB_type>
  jmp #CALA
  long @C_luaL__argerror
  add SP, #8 ' CALL addrg
-C_s6j414_68dcbf8c_luaB__type_L000150_154
+C_snp014_68f73655_luaB__type_L000150_154
  mov r2, r21 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1497,13 +1497,13 @@ C_s6j414_68dcbf8c_luaB__type_L000150_154
  long @C_lua_pushstring
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_s6j414_68dcbf8c_luaB__type_L000150_151 ' (symbol refcount = 0)
+' C_snp014_68f73655_luaB__type_L000150_151 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_s6j416_68dcbf8c_luaB__next_L000155 ' <symbol:luaB_next>
+C_snp016_68f73655_luaB__next_L000155 ' <symbol:luaB_next>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -1532,30 +1532,30 @@ C_s6j416_68dcbf8c_luaB__next_L000155 ' <symbol:luaB_next>
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
  jmp #BR_Z
- long @C_s6j416_68dcbf8c_luaB__next_L000155_157 ' EQI4
+ long @C_snp016_68f73655_luaB__next_L000155_157 ' EQI4
  mov r0, #2 ' RET coni
  jmp #JMPA
- long @C_s6j416_68dcbf8c_luaB__next_L000155_156 ' JUMPV addrg
-C_s6j416_68dcbf8c_luaB__next_L000155_157
+ long @C_snp016_68f73655_luaB__next_L000155_156 ' JUMPV addrg
+C_snp016_68f73655_luaB__next_L000155_157
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C_lua_pushnil ' CALL addrg
  mov r0, #1 ' RET coni
-C_s6j416_68dcbf8c_luaB__next_L000155_156
+C_snp016_68f73655_luaB__next_L000155_156
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_s6j417_68dcbf8c_pairscont_L000159 ' <symbol:pairscont>
+C_snp017_68f73655_pairscont_L000159 ' <symbol:pairscont>
  mov r0, #3 ' RET coni
-' C_s6j417_68dcbf8c_pairscont_L000159_160 ' (symbol refcount = 0)
+' C_snp017_68f73655_pairscont_L000159_160 ' (symbol refcount = 0)
  jmp #RETN
 
 
  alignl ' align long
-C_s6j418_68dcbf8c_luaB__pairs_L000161 ' <symbol:luaB_pairs>
+C_snp018_68f73655_luaB__pairs_L000161 ' <symbol:luaB_pairs>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -1568,7 +1568,7 @@ C_s6j418_68dcbf8c_luaB__pairs_L000161 ' <symbol:luaB_pairs>
  long @C_luaL__checkany
  add SP, #4 ' CALL addrg
  jmp #LODL
- long @C_s6j418_68dcbf8c_luaB__pairs_L000161_165_L000166
+ long @C_snp018_68f73655_luaB__pairs_L000161_165_L000166
  mov r2, RI ' reg ARG ADDRG
  mov r3, #1 ' reg ARG coni
  mov r4, r23 ' CVI, CVU or LOAD
@@ -1579,10 +1579,10 @@ C_s6j418_68dcbf8c_luaB__pairs_L000161 ' <symbol:luaB_pairs>
  add SP, #8 ' CALL addrg
  cmps r0,  #0 wz
  jmp #BRNZ
- long @C_s6j418_68dcbf8c_luaB__pairs_L000161_163 ' NEI4
+ long @C_snp018_68f73655_luaB__pairs_L000161_163 ' NEI4
  mov r2, #0 ' reg ARG coni
  jmp #LODL
- long @C_s6j416_68dcbf8c_luaB__next_L000155
+ long @C_snp016_68f73655_luaB__next_L000155
  mov r3, RI ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -1602,8 +1602,8 @@ C_s6j418_68dcbf8c_luaB__pairs_L000161 ' <symbol:luaB_pairs>
  jmp #CALA
  long @C_lua_pushnil ' CALL addrg
  jmp #JMPA
- long @C_s6j418_68dcbf8c_luaB__pairs_L000161_164 ' JUMPV addrg
-C_s6j418_68dcbf8c_luaB__pairs_L000161_163
+ long @C_snp018_68f73655_luaB__pairs_L000161_164 ' JUMPV addrg
+C_snp018_68f73655_luaB__pairs_L000161_163
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1612,7 +1612,7 @@ C_s6j418_68dcbf8c_luaB__pairs_L000161_163
  long @C_lua_pushvalue
  add SP, #4 ' CALL addrg
  jmp #LODL
- long @C_s6j417_68dcbf8c_pairscont_L000159
+ long @C_snp017_68f73655_pairscont_L000159
  mov r2, RI ' reg ARG ADDRG
  mov r3, #0 ' reg ARG coni
  mov r4, #3 ' reg ARG coni
@@ -1625,15 +1625,15 @@ C_s6j418_68dcbf8c_luaB__pairs_L000161_163
  jmp #CALA
  long @C_lua_callk
  add SP, #16 ' CALL addrg
-C_s6j418_68dcbf8c_luaB__pairs_L000161_164
+C_snp018_68f73655_luaB__pairs_L000161_164
  mov r0, #3 ' RET coni
-' C_s6j418_68dcbf8c_luaB__pairs_L000161_162 ' (symbol refcount = 0)
+' C_snp018_68f73655_luaB__pairs_L000161_162 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_s6j41a_68dcbf8c_ipairsaux_L000167 ' <symbol:ipairsaux>
+C_snp01a_68f73655_ipairsaux_L000167 ' <symbol:ipairsaux>
  jmp #NEWF
  jmp #PSHM
  long $e80000 ' save registers
@@ -1667,21 +1667,21 @@ C_s6j41a_68dcbf8c_ipairsaux_L000167 ' <symbol:ipairsaux>
  mov r22, r0 ' CVI, CVU or LOAD
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_s6j41a_68dcbf8c_ipairsaux_L000167_170 ' NEI4
+ long @C_snp01a_68f73655_ipairsaux_L000167_170 ' NEI4
  mov r19, #1 ' reg <- coni
  jmp #JMPA
- long @C_s6j41a_68dcbf8c_ipairsaux_L000167_171 ' JUMPV addrg
-C_s6j41a_68dcbf8c_ipairsaux_L000167_170
+ long @C_snp01a_68f73655_ipairsaux_L000167_171 ' JUMPV addrg
+C_snp01a_68f73655_ipairsaux_L000167_170
  mov r19, #2 ' reg <- coni
-C_s6j41a_68dcbf8c_ipairsaux_L000167_171
+C_snp01a_68f73655_ipairsaux_L000167_171
  mov r0, r19 ' CVI, CVU or LOAD
-' C_s6j41a_68dcbf8c_ipairsaux_L000167_168 ' (symbol refcount = 0)
+' C_snp01a_68f73655_ipairsaux_L000167_168 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_s6j41b_68dcbf8c_luaB__ipairs_L000172 ' <symbol:luaB_ipairs>
+C_snp01b_68f73655_luaB__ipairs_L000172 ' <symbol:luaB_ipairs>
  jmp #NEWF
  jmp #PSHM
  long $800000 ' save registers
@@ -1695,7 +1695,7 @@ C_s6j41b_68dcbf8c_luaB__ipairs_L000172 ' <symbol:luaB_ipairs>
  add SP, #4 ' CALL addrg
  mov r2, #0 ' reg ARG coni
  jmp #LODL
- long @C_s6j41a_68dcbf8c_ipairsaux_L000167
+ long @C_snp01a_68f73655_ipairsaux_L000167
  mov r3, RI ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -1718,13 +1718,13 @@ C_s6j41b_68dcbf8c_luaB__ipairs_L000172 ' <symbol:luaB_ipairs>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #3 ' RET coni
-' C_s6j41b_68dcbf8c_luaB__ipairs_L000172_173 ' (symbol refcount = 0)
+' C_snp01b_68f73655_luaB__ipairs_L000172_173 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_s6j41c_68dcbf8c_load_aux_L000174 ' <symbol:load_aux>
+C_snp01c_68f73655_load_aux_L000174 ' <symbol:load_aux>
  jmp #NEWF
  jmp #PSHM
  long $e80000 ' save registers
@@ -1733,10 +1733,10 @@ C_s6j41c_68dcbf8c_load_aux_L000174 ' <symbol:load_aux>
  mov r19, r2 ' reg var <- reg arg
  cmps r21,  #0 wz
  jmp #BRNZ
- long @C_s6j41c_68dcbf8c_load_aux_L000174_176 ' NEI4
+ long @C_snp01c_68f73655_load_aux_L000174_176 ' NEI4
  cmps r19,  #0 wz
  jmp #BR_Z
- long @C_s6j41c_68dcbf8c_load_aux_L000174_178 ' EQI4
+ long @C_snp01c_68f73655_load_aux_L000174_178 ' EQI4
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1757,7 +1757,7 @@ C_s6j41c_68dcbf8c_load_aux_L000174 ' <symbol:load_aux>
  mov r22, r0 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
  jmp #BRNZ
- long @C_s6j41c_68dcbf8c_load_aux_L000174_180 ' NEU4
+ long @C_snp01c_68f73655_load_aux_L000174_180 ' NEU4
  jmp #LODL
  long -2
  mov r2, RI ' reg ARG con
@@ -1767,12 +1767,12 @@ C_s6j41c_68dcbf8c_load_aux_L000174 ' <symbol:load_aux>
  jmp #CALA
  long @C_lua_settop
  add SP, #4 ' CALL addrg
-C_s6j41c_68dcbf8c_load_aux_L000174_180
-C_s6j41c_68dcbf8c_load_aux_L000174_178
+C_snp01c_68f73655_load_aux_L000174_180
+C_snp01c_68f73655_load_aux_L000174_178
  mov r0, #1 ' RET coni
  jmp #JMPA
- long @C_s6j41c_68dcbf8c_load_aux_L000174_175 ' JUMPV addrg
-C_s6j41c_68dcbf8c_load_aux_L000174_176
+ long @C_snp01c_68f73655_load_aux_L000174_175 ' JUMPV addrg
+C_snp01c_68f73655_load_aux_L000174_176
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -1788,13 +1788,13 @@ C_s6j41c_68dcbf8c_load_aux_L000174_176
  long @C_lua_rotate
  add SP, #8 ' CALL addrg
  mov r0, #2 ' RET coni
-C_s6j41c_68dcbf8c_load_aux_L000174_175
+C_snp01c_68f73655_load_aux_L000174_175
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_s6j41d_68dcbf8c_luaB__loadfile_L000182 ' <symbol:luaB_loadfile>
+C_snp01d_68f73655_luaB__loadfile_L000182 ' <symbol:luaB_loadfile>
  jmp #NEWF
  sub SP, #16
  jmp #PSHM
@@ -1845,13 +1845,13 @@ C_s6j41d_68dcbf8c_luaB__loadfile_L000182 ' <symbol:luaB_loadfile>
  mov r20, RI ' reg <- con
  cmps r22, r20 wz
  jmp #BR_Z
- long @C_s6j41d_68dcbf8c_luaB__loadfile_L000182_185 ' EQI4
+ long @C_snp01d_68f73655_luaB__loadfile_L000182_185 ' EQI4
  mov r21, #3 ' reg <- coni
  jmp #JMPA
- long @C_s6j41d_68dcbf8c_luaB__loadfile_L000182_186 ' JUMPV addrg
-C_s6j41d_68dcbf8c_luaB__loadfile_L000182_185
+ long @C_snp01d_68f73655_luaB__loadfile_L000182_186 ' JUMPV addrg
+C_snp01d_68f73655_luaB__loadfile_L000182_185
  mov r21, #0 ' reg <- coni
-C_s6j41d_68dcbf8c_luaB__loadfile_L000182_186
+C_snp01d_68f73655_luaB__loadfile_L000182_186
  jmp #LODF
  long -16
  wrlong r21, RI ' ASGNI4 addrl reg
@@ -1880,17 +1880,17 @@ C_s6j41d_68dcbf8c_luaB__loadfile_L000182_186
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_s6j41c_68dcbf8c_load_aux_L000174
+ long @C_snp01c_68f73655_load_aux_L000174
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
-' C_s6j41d_68dcbf8c_luaB__loadfile_L000182_183 ' (symbol refcount = 0)
+' C_snp01d_68f73655_luaB__loadfile_L000182_183 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #16 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_s6j41e_68dcbf8c_generic_reader_L000187 ' <symbol:generic_reader>
+C_snp01e_68f73655_generic_reader_L000187 ' <symbol:generic_reader>
  jmp #NEWF
  jmp #PSHM
  long $e80000 ' save registers
@@ -1898,7 +1898,7 @@ C_s6j41e_68dcbf8c_generic_reader_L000187 ' <symbol:generic_reader>
  mov r21, r3 ' reg var <- reg arg
  mov r19, r2 ' reg var <- reg arg
  jmp #LODL
- long @C_s6j41e_68dcbf8c_generic_reader_L000187_189_L000190
+ long @C_snp01e_68f73655_generic_reader_L000187_189_L000190
  mov r2, RI ' reg ARG ADDRG
  mov r3, #2 ' reg ARG coni
  mov r4, r23 ' CVI, CVU or LOAD
@@ -1940,7 +1940,7 @@ C_s6j41e_68dcbf8c_generic_reader_L000187 ' <symbol:generic_reader>
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
  jmp #BRNZ
- long @C_s6j41e_68dcbf8c_generic_reader_L000187_191 ' NEI4
+ long @C_snp01e_68f73655_generic_reader_L000187_191 ' NEI4
  jmp #LODL
  long -2
  mov r2, RI ' reg ARG con
@@ -1956,8 +1956,8 @@ C_s6j41e_68dcbf8c_generic_reader_L000187 ' <symbol:generic_reader>
  long 0
  mov r0, RI ' reg <- con
  jmp #JMPA
- long @C_s6j41e_68dcbf8c_generic_reader_L000187_188 ' JUMPV addrg
-C_s6j41e_68dcbf8c_generic_reader_L000187_191
+ long @C_snp01e_68f73655_generic_reader_L000187_188 ' JUMPV addrg
+C_snp01e_68f73655_generic_reader_L000187_191
  jmp #LODL
  long -1
  mov r2, RI ' reg ARG con
@@ -1969,9 +1969,9 @@ C_s6j41e_68dcbf8c_generic_reader_L000187_191
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
  jmp #BRNZ
- long @C_s6j41e_68dcbf8c_generic_reader_L000187_193 ' NEI4
+ long @C_snp01e_68f73655_generic_reader_L000187_193 ' NEI4
  jmp #LODL
- long @C_s6j41e_68dcbf8c_generic_reader_L000187_195_L000196
+ long @C_snp01e_68f73655_generic_reader_L000187_195_L000196
  mov r2, RI ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1979,7 +1979,7 @@ C_s6j41e_68dcbf8c_generic_reader_L000187_191
  jmp #CALA
  long @C_luaL__error
  add SP, #4 ' CALL addrg
-C_s6j41e_68dcbf8c_generic_reader_L000187_193
+C_snp01e_68f73655_generic_reader_L000187_193
  mov r2, #5 ' reg ARG coni
  jmp #LODL
  long -1
@@ -2008,13 +2008,13 @@ C_s6j41e_68dcbf8c_generic_reader_L000187_193
  long @C_lua_tolstring
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
-C_s6j41e_68dcbf8c_generic_reader_L000187_188
+C_snp01e_68f73655_generic_reader_L000187_188
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_s6j41h_68dcbf8c_luaB__load_L000197 ' <symbol:luaB_load>
+C_snp01h_68f73655_luaB__load_L000197 ' <symbol:luaB_load>
  jmp #NEWF
  sub SP, #20
  jmp #PSHM
@@ -2034,7 +2034,7 @@ C_s6j41h_68dcbf8c_luaB__load_L000197 ' <symbol:luaB_load>
  long 0
  mov r2, RI ' reg ARG con
  jmp #LODL
- long @C_s6j41h_68dcbf8c_luaB__load_L000197_199_L000200
+ long @C_snp01h_68f73655_luaB__load_L000197_199_L000200
  mov r3, RI ' reg ARG ADDRG
  mov r4, #3 ' reg ARG coni
  mov r5, r23 ' CVI, CVU or LOAD
@@ -2059,20 +2059,20 @@ C_s6j41h_68dcbf8c_luaB__load_L000197 ' <symbol:luaB_load>
  mov r20, RI ' reg <- con
  cmps r22, r20 wz
  jmp #BR_Z
- long @C_s6j41h_68dcbf8c_luaB__load_L000197_202 ' EQI4
+ long @C_snp01h_68f73655_luaB__load_L000197_202 ' EQI4
  mov r19, #4 ' reg <- coni
  jmp #JMPA
- long @C_s6j41h_68dcbf8c_luaB__load_L000197_203 ' JUMPV addrg
-C_s6j41h_68dcbf8c_luaB__load_L000197_202
+ long @C_snp01h_68f73655_luaB__load_L000197_203 ' JUMPV addrg
+C_snp01h_68f73655_luaB__load_L000197_202
  mov r19, #0 ' reg <- coni
-C_s6j41h_68dcbf8c_luaB__load_L000197_203
+C_snp01h_68f73655_luaB__load_L000197_203
  jmp #LODF
  long -16
  wrlong r19, RI ' ASGNI4 addrl reg
  mov r22, r21 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
  jmp #BR_Z
- long @C_s6j41h_68dcbf8c_luaB__load_L000197_204 ' EQU4
+ long @C_snp01h_68f73655_luaB__load_L000197_204 ' EQU4
  jmp #LODL
  long 0
  mov r2, RI ' reg ARG con
@@ -2109,13 +2109,13 @@ C_s6j41h_68dcbf8c_luaB__load_L000197_203
  long -8
  wrlong r0, RI ' ASGNI4 addrl reg
  jmp #JMPA
- long @C_s6j41h_68dcbf8c_luaB__load_L000197_205 ' JUMPV addrg
-C_s6j41h_68dcbf8c_luaB__load_L000197_204
+ long @C_snp01h_68f73655_luaB__load_L000197_205 ' JUMPV addrg
+C_snp01h_68f73655_luaB__load_L000197_204
  jmp #LODL
  long 0
  mov r2, RI ' reg ARG con
  jmp #LODL
- long @C_s6j41h_68dcbf8c_luaB__load_L000197_206_L000207
+ long @C_snp01h_68f73655_luaB__load_L000197_206_L000207
  mov r3, RI ' reg ARG ADDRG
  mov r4, #2 ' reg ARG coni
  mov r5, r23 ' CVI, CVU or LOAD
@@ -2152,7 +2152,7 @@ C_s6j41h_68dcbf8c_luaB__load_L000197_204
  long 0
  mov r4, RI ' reg ARG con
  jmp #LODL
- long @C_s6j41e_68dcbf8c_generic_reader_L000187
+ long @C_snp01e_68f73655_generic_reader_L000187
  mov r5, RI ' reg ARG ADDRG
  sub SP, #16 ' stack space for reg ARGs
  mov RI, r23
@@ -2165,7 +2165,7 @@ C_s6j41h_68dcbf8c_luaB__load_L000197_204
  jmp #LODF
  long -8
  wrlong r0, RI ' ASGNI4 addrl reg
-C_s6j41h_68dcbf8c_luaB__load_L000197_205
+C_snp01h_68f73655_luaB__load_L000197_205
  mov RI, FP
  sub RI, #-(-16)
  rdlong r2, RI ' reg ARG INDIR ADDRLi
@@ -2176,17 +2176,17 @@ C_s6j41h_68dcbf8c_luaB__load_L000197_205
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_s6j41c_68dcbf8c_load_aux_L000174
+ long @C_snp01c_68f73655_load_aux_L000174
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
-' C_s6j41h_68dcbf8c_luaB__load_L000197_198 ' (symbol refcount = 0)
+' C_snp01h_68f73655_luaB__load_L000197_198 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #20 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_s6j41k_68dcbf8c_dofilecont_L000208 ' <symbol:dofilecont>
+C_snp01k_68f73655_dofilecont_L000208 ' <symbol:dofilecont>
  jmp #NEWF
  jmp #PSHM
  long $e80000 ' save registers
@@ -2200,13 +2200,13 @@ C_s6j41k_68dcbf8c_dofilecont_L000208 ' <symbol:dofilecont>
  mov r22, r0 ' CVI, CVU or LOAD
  mov r0, r22
  subs r0, #1 ' SUBI4 coni
-' C_s6j41k_68dcbf8c_dofilecont_L000208_209 ' (symbol refcount = 0)
+' C_snp01k_68f73655_dofilecont_L000208_209 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_s6j41l_68dcbf8c_luaB__dofile_L000210 ' <symbol:luaB_dofile>
+C_snp01l_68f73655_luaB__dofile_L000210 ' <symbol:luaB_dofile>
  jmp #NEWF
  sub SP, #4
  jmp #PSHM
@@ -2249,17 +2249,17 @@ C_s6j41l_68dcbf8c_luaB__dofile_L000210 ' <symbol:luaB_dofile>
  add SP, #8 ' CALL addrg
  cmps r0,  #0 wz
  jmp #BR_Z
- long @C_s6j41l_68dcbf8c_luaB__dofile_L000210_212 ' EQI4
+ long @C_snp01l_68f73655_luaB__dofile_L000210_212 ' EQI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C_lua_error ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_s6j41l_68dcbf8c_luaB__dofile_L000210_211 ' JUMPV addrg
-C_s6j41l_68dcbf8c_luaB__dofile_L000210_212
+ long @C_snp01l_68f73655_luaB__dofile_L000210_211 ' JUMPV addrg
+C_snp01l_68f73655_luaB__dofile_L000210_212
  jmp #LODL
- long @C_s6j41k_68dcbf8c_dofilecont_L000208
+ long @C_snp01k_68f73655_dofilecont_L000208
  mov r2, RI ' reg ARG ADDRG
  mov r22, #0 ' reg <- coni
  mov r3, r22 ' CVI, CVU or LOAD
@@ -2282,17 +2282,17 @@ C_s6j41l_68dcbf8c_luaB__dofile_L000210_212
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_s6j41k_68dcbf8c_dofilecont_L000208
+ long @C_snp01k_68f73655_dofilecont_L000208
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
-C_s6j41l_68dcbf8c_luaB__dofile_L000210_211
+C_snp01l_68f73655_luaB__dofile_L000210_211
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_s6j41m_68dcbf8c_luaB__assert_L000214 ' <symbol:luaB_assert>
+C_snp01m_68f73655_luaB__assert_L000214 ' <symbol:luaB_assert>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -2306,15 +2306,15 @@ C_s6j41m_68dcbf8c_luaB__assert_L000214 ' <symbol:luaB_assert>
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
  jmp #BR_Z
- long @C_s6j41m_68dcbf8c_luaB__assert_L000214_216 ' EQI4
+ long @C_snp01m_68f73655_luaB__assert_L000214_216 ' EQI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C_lua_gettop ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_s6j41m_68dcbf8c_luaB__assert_L000214_215 ' JUMPV addrg
-C_s6j41m_68dcbf8c_luaB__assert_L000214_216
+ long @C_snp01m_68f73655_luaB__assert_L000214_215 ' JUMPV addrg
+C_snp01m_68f73655_luaB__assert_L000214_216
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -2342,7 +2342,7 @@ C_s6j41m_68dcbf8c_luaB__assert_L000214_216
  long @C_lua_settop
  add SP, #4 ' CALL addrg
  jmp #LODL
- long @C_s6j41m_68dcbf8c_luaB__assert_L000214_218_L000219
+ long @C_snp01m_68f73655_luaB__assert_L000214_218_L000219
  mov r2, RI ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -2360,15 +2360,15 @@ C_s6j41m_68dcbf8c_luaB__assert_L000214_216
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_s6j48_68dcbf8c_luaB__error_L000063 ' CALL addrg
+ long @C_snp08_68f73655_luaB__error_L000063 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
-C_s6j41m_68dcbf8c_luaB__assert_L000214_215
+C_snp01m_68f73655_luaB__assert_L000214_215
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_s6j41o_68dcbf8c_luaB__select_L000220 ' <symbol:luaB_select>
+C_snp01o_68f73655_luaB__select_L000220 ' <symbol:luaB_select>
  jmp #NEWF
  sub SP, #4
  jmp #PSHM
@@ -2391,7 +2391,7 @@ C_s6j41o_68dcbf8c_luaB__select_L000220 ' <symbol:luaB_select>
  mov r22, r0 ' CVI, CVU or LOAD
  cmps r22,  #4 wz
  jmp #BRNZ
- long @C_s6j41o_68dcbf8c_luaB__select_L000220_222 ' NEI4
+ long @C_snp01o_68f73655_luaB__select_L000220_222 ' NEI4
  jmp #LODL
  long 0
  mov r2, RI ' reg ARG con
@@ -2406,7 +2406,7 @@ C_s6j41o_68dcbf8c_luaB__select_L000220 ' <symbol:luaB_select>
  and r22, cviu_m1 ' zero extend
  cmps r22,  #35 wz
  jmp #BRNZ
- long @C_s6j41o_68dcbf8c_luaB__select_L000220_222 ' NEI4
+ long @C_snp01o_68f73655_luaB__select_L000220_222 ' NEI4
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
@@ -2420,8 +2420,8 @@ C_s6j41o_68dcbf8c_luaB__select_L000220 ' <symbol:luaB_select>
  add SP, #4 ' CALL addrg
  mov r0, #1 ' RET coni
  jmp #JMPA
- long @C_s6j41o_68dcbf8c_luaB__select_L000220_221 ' JUMPV addrg
-C_s6j41o_68dcbf8c_luaB__select_L000220_222
+ long @C_snp01o_68f73655_luaB__select_L000220_221 ' JUMPV addrg
+C_snp01o_68f73655_luaB__select_L000220_222
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -2432,31 +2432,31 @@ C_s6j41o_68dcbf8c_luaB__select_L000220_222
  mov r21, r0 ' CVI, CVU or LOAD
  cmps r21,  #0 wz,wc
  jmp #BRAE
- long @C_s6j41o_68dcbf8c_luaB__select_L000220_224 ' GEI4
+ long @C_snp01o_68f73655_luaB__select_L000220_224 ' GEI4
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
  adds r21, r22 ' ADDI/P (2)
  jmp #JMPA
- long @C_s6j41o_68dcbf8c_luaB__select_L000220_225 ' JUMPV addrg
-C_s6j41o_68dcbf8c_luaB__select_L000220_224
+ long @C_snp01o_68f73655_luaB__select_L000220_225 ' JUMPV addrg
+C_snp01o_68f73655_luaB__select_L000220_224
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r21, r22 wz,wc
  jmp #BRBE
- long @C_s6j41o_68dcbf8c_luaB__select_L000220_226 ' LEI4
+ long @C_snp01o_68f73655_luaB__select_L000220_226 ' LEI4
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r21, r22 ' reg <- INDIRI4 reg
-C_s6j41o_68dcbf8c_luaB__select_L000220_226
-C_s6j41o_68dcbf8c_luaB__select_L000220_225
+C_snp01o_68f73655_luaB__select_L000220_226
+C_snp01o_68f73655_luaB__select_L000220_225
  mov r22, #1 ' reg <- coni
  cmps r22, r21 wz,wc
  jmp #BRBE
- long @C_s6j41o_68dcbf8c_luaB__select_L000220_230 ' LEI4
+ long @C_snp01o_68f73655_luaB__select_L000220_230 ' LEI4
  jmp #LODL
- long @C_s6j41o_68dcbf8c_luaB__select_L000220_228_L000229
+ long @C_snp01o_68f73655_luaB__select_L000220_228_L000229
  mov r2, RI ' reg ARG ADDRG
  mov r3, r22 ' CVI, CVU or LOAD
  mov r4, r23 ' CVI, CVU or LOAD
@@ -2465,20 +2465,20 @@ C_s6j41o_68dcbf8c_luaB__select_L000220_225
  jmp #CALA
  long @C_luaL__argerror
  add SP, #8 ' CALL addrg
-C_s6j41o_68dcbf8c_luaB__select_L000220_230
+C_snp01o_68f73655_luaB__select_L000220_230
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
  mov r0, r22 ' SUBI/P
  subs r0, r21 ' SUBI/P (3)
-C_s6j41o_68dcbf8c_luaB__select_L000220_221
+C_snp01o_68f73655_luaB__select_L000220_221
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_s6j41q_68dcbf8c_finishpcall_L000231 ' <symbol:finishpcall>
+C_snp01q_68f73655_finishpcall_L000231 ' <symbol:finishpcall>
  jmp #NEWF
  jmp #PSHM
  long $e80000 ' save registers
@@ -2487,10 +2487,10 @@ C_s6j41q_68dcbf8c_finishpcall_L000231 ' <symbol:finishpcall>
  mov r19, r2 ' reg var <- reg arg
  cmps r21,  #0 wz
  jmp #BR_Z
- long @C_s6j41q_68dcbf8c_finishpcall_L000231_233 ' EQI4
+ long @C_snp01q_68f73655_finishpcall_L000231_233 ' EQI4
  cmps r21,  #1 wz
  jmp #BR_Z
- long @C_s6j41q_68dcbf8c_finishpcall_L000231_233 ' EQI4
+ long @C_snp01q_68f73655_finishpcall_L000231_233 ' EQI4
  mov r2, #0 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -2509,8 +2509,8 @@ C_s6j41q_68dcbf8c_finishpcall_L000231 ' <symbol:finishpcall>
  add SP, #4 ' CALL addrg
  mov r0, #2 ' RET coni
  jmp #JMPA
- long @C_s6j41q_68dcbf8c_finishpcall_L000231_232 ' JUMPV addrg
-C_s6j41q_68dcbf8c_finishpcall_L000231_233
+ long @C_snp01q_68f73655_finishpcall_L000231_232 ' JUMPV addrg
+C_snp01q_68f73655_finishpcall_L000231_233
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
@@ -2518,13 +2518,13 @@ C_s6j41q_68dcbf8c_finishpcall_L000231_233
  mov r22, r0 ' CVI, CVU or LOAD
  mov r0, r22 ' SUBI/P
  subs r0, r19 ' SUBI/P (3)
-C_s6j41q_68dcbf8c_finishpcall_L000231_232
+C_snp01q_68f73655_finishpcall_L000231_232
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_s6j41r_68dcbf8c_luaB__pcall_L000235 ' <symbol:luaB_pcall>
+C_snp01r_68f73655_luaB__pcall_L000235 ' <symbol:luaB_pcall>
  jmp #NEWF
  sub SP, #4
  jmp #PSHM
@@ -2558,7 +2558,7 @@ C_s6j41r_68dcbf8c_luaB__pcall_L000235 ' <symbol:luaB_pcall>
  jmp #CALA
  long @C_lua_gettop ' CALL addrg
  jmp #LODL
- long @C_s6j41q_68dcbf8c_finishpcall_L000231
+ long @C_snp01q_68f73655_finishpcall_L000231
  mov r2, RI ' reg ARG ADDRG
  mov r20, #0 ' reg <- coni
  mov r3, r20 ' CVI, CVU or LOAD
@@ -2589,17 +2589,17 @@ C_s6j41r_68dcbf8c_luaB__pcall_L000235 ' <symbol:luaB_pcall>
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_s6j41q_68dcbf8c_finishpcall_L000231
+ long @C_snp01q_68f73655_finishpcall_L000231
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
-' C_s6j41r_68dcbf8c_luaB__pcall_L000235_236 ' (symbol refcount = 0)
+' C_snp01r_68f73655_luaB__pcall_L000235_236 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_s6j41s_68dcbf8c_luaB__xpcall_L000237 ' <symbol:luaB_xpcall>
+C_snp01s_68f73655_luaB__xpcall_L000237 ' <symbol:luaB_xpcall>
  jmp #NEWF
  sub SP, #8
  jmp #PSHM
@@ -2643,7 +2643,7 @@ C_s6j41s_68dcbf8c_luaB__xpcall_L000237 ' <symbol:luaB_xpcall>
  long @C_lua_rotate
  add SP, #8 ' CALL addrg
  jmp #LODL
- long @C_s6j41q_68dcbf8c_finishpcall_L000231
+ long @C_snp01q_68f73655_finishpcall_L000231
  mov r2, RI ' reg ARG ADDRG
  mov r22, #2 ' reg <- coni
  mov r3, r22 ' CVI, CVU or LOAD
@@ -2676,17 +2676,17 @@ C_s6j41s_68dcbf8c_luaB__xpcall_L000237 ' <symbol:luaB_xpcall>
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_s6j41q_68dcbf8c_finishpcall_L000231
+ long @C_snp01q_68f73655_finishpcall_L000231
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
-' C_s6j41s_68dcbf8c_luaB__xpcall_L000237_238 ' (symbol refcount = 0)
+' C_snp01s_68f73655_luaB__xpcall_L000237_238 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #8 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_s6j41t_68dcbf8c_luaB__tostring_L000239 ' <symbol:luaB_tostring>
+C_snp01t_68f73655_luaB__tostring_L000239 ' <symbol:luaB_tostring>
  jmp #NEWF
  jmp #PSHM
  long $800000 ' save registers
@@ -2709,7 +2709,7 @@ C_s6j41t_68dcbf8c_luaB__tostring_L000239 ' <symbol:luaB_tostring>
  long @C_luaL__tolstring
  add SP, #8 ' CALL addrg
  mov r0, #1 ' RET coni
-' C_s6j41t_68dcbf8c_luaB__tostring_L000239_240 ' (symbol refcount = 0)
+' C_snp01t_68f73655_luaB__tostring_L000239_240 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -2719,56 +2719,56 @@ C_s6j41t_68dcbf8c_luaB__tostring_L000239 ' <symbol:luaB_tostring>
 DAT ' const data segment
 
  alignl ' align long
-C_s6j41u_68dcbf8c_base_funcs_L000241 ' <symbol:base_funcs>
- long @C_s6j41v_68dcbf8c_242_L000243
- long @C_s6j41m_68dcbf8c_luaB__assert_L000214
- long @C_s6j420_68dcbf8c_244_L000245
- long @C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104
- long @C_s6j421_68dcbf8c_246_L000247
- long @C_s6j41l_68dcbf8c_luaB__dofile_L000210
- long @C_s6j422_68dcbf8c_248_L000249
- long @C_s6j48_68dcbf8c_luaB__error_L000063
- long @C_s6j423_68dcbf8c_250_L000251
- long @C_s6j49_68dcbf8c_luaB__getmetatable_L000067
- long @C_s6j424_68dcbf8c_252_L000253
- long @C_s6j41b_68dcbf8c_luaB__ipairs_L000172
- long @C_s6j425_68dcbf8c_254_L000255
- long @C_s6j41d_68dcbf8c_luaB__loadfile_L000182
- long @C_s6j426_68dcbf8c_256_L000257
- long @C_s6j41h_68dcbf8c_luaB__load_L000197
- long @C_s6j427_68dcbf8c_258_L000259
- long @C_s6j416_68dcbf8c_luaB__next_L000155
- long @C_s6j428_68dcbf8c_260_L000261
- long @C_s6j418_68dcbf8c_luaB__pairs_L000161
- long @C_s6j429_68dcbf8c_262_L000263
- long @C_s6j41r_68dcbf8c_luaB__pcall_L000235
- long @C_s6j42a_68dcbf8c_264_L000265
- long @C_s6j4_68dcbf8c_luaB__print_L000004
- long @C_s6j42b_68dcbf8c_266_L000267
- long @C_s6j43_68dcbf8c_luaB__warn_L000016
- long @C_s6j42c_68dcbf8c_268_L000269
- long @C_s6j4e_68dcbf8c_luaB__rawequal_L000082
- long @C_s6j42d_68dcbf8c_270_L000271
- long @C_s6j4f_68dcbf8c_luaB__rawlen_L000084
- long @C_s6j42e_68dcbf8c_272_L000273
- long @C_s6j4h_68dcbf8c_luaB__rawget_L000089
- long @C_s6j42f_68dcbf8c_274_L000275
- long @C_s6j4i_68dcbf8c_luaB__rawset_L000091
- long @C_s6j42g_68dcbf8c_276_L000277
- long @C_s6j41o_68dcbf8c_luaB__select_L000220
- long @C_s6j42h_68dcbf8c_278_L000279
- long @C_s6j4b_68dcbf8c_luaB__setmetatable_L000073
- long @C_s6j42i_68dcbf8c_280_L000281
- long @C_s6j46_68dcbf8c_luaB__tonumber_L000049
- long @C_s6j42j_68dcbf8c_282_L000283
- long @C_s6j41t_68dcbf8c_luaB__tostring_L000239
- long @C_s6j42k_68dcbf8c_284_L000285
- long @C_s6j414_68dcbf8c_luaB__type_L000150
- long @C_s6j42l_68dcbf8c_286_L000287
- long @C_s6j41s_68dcbf8c_luaB__xpcall_L000237
- long @C_s6j42m_68dcbf8c_288_L000289
+C_snp01u_68f73655_base_funcs_L000241 ' <symbol:base_funcs>
+ long @C_snp01v_68f73655_242_L000243
+ long @C_snp01m_68f73655_luaB__assert_L000214
+ long @C_snp020_68f73655_244_L000245
+ long @C_snp0m_68f73655_luaB__collectgarbage_L000104
+ long @C_snp021_68f73655_246_L000247
+ long @C_snp01l_68f73655_luaB__dofile_L000210
+ long @C_snp022_68f73655_248_L000249
+ long @C_snp08_68f73655_luaB__error_L000063
+ long @C_snp023_68f73655_250_L000251
+ long @C_snp09_68f73655_luaB__getmetatable_L000067
+ long @C_snp024_68f73655_252_L000253
+ long @C_snp01b_68f73655_luaB__ipairs_L000172
+ long @C_snp025_68f73655_254_L000255
+ long @C_snp01d_68f73655_luaB__loadfile_L000182
+ long @C_snp026_68f73655_256_L000257
+ long @C_snp01h_68f73655_luaB__load_L000197
+ long @C_snp027_68f73655_258_L000259
+ long @C_snp016_68f73655_luaB__next_L000155
+ long @C_snp028_68f73655_260_L000261
+ long @C_snp018_68f73655_luaB__pairs_L000161
+ long @C_snp029_68f73655_262_L000263
+ long @C_snp01r_68f73655_luaB__pcall_L000235
+ long @C_snp02a_68f73655_264_L000265
+ long @C_snp0_68f73655_luaB__print_L000004
+ long @C_snp02b_68f73655_266_L000267
+ long @C_snp03_68f73655_luaB__warn_L000016
+ long @C_snp02c_68f73655_268_L000269
+ long @C_snp0e_68f73655_luaB__rawequal_L000082
+ long @C_snp02d_68f73655_270_L000271
+ long @C_snp0f_68f73655_luaB__rawlen_L000084
+ long @C_snp02e_68f73655_272_L000273
+ long @C_snp0h_68f73655_luaB__rawget_L000089
+ long @C_snp02f_68f73655_274_L000275
+ long @C_snp0i_68f73655_luaB__rawset_L000091
+ long @C_snp02g_68f73655_276_L000277
+ long @C_snp01o_68f73655_luaB__select_L000220
+ long @C_snp02h_68f73655_278_L000279
+ long @C_snp0b_68f73655_luaB__setmetatable_L000073
+ long @C_snp02i_68f73655_280_L000281
+ long @C_snp06_68f73655_luaB__tonumber_L000049
+ long @C_snp02j_68f73655_282_L000283
+ long @C_snp01t_68f73655_luaB__tostring_L000239
+ long @C_snp02k_68f73655_284_L000285
+ long @C_snp014_68f73655_luaB__type_L000150
+ long @C_snp02l_68f73655_286_L000287
+ long @C_snp01s_68f73655_luaB__xpcall_L000237
+ long @C_snp02m_68f73655_288_L000289
  long $0
- long @C_s6j42n_68dcbf8c_290_L000291
+ long @C_snp02n_68f73655_290_L000291
  long $0
  long $0
  long $0
@@ -2797,7 +2797,7 @@ C_luaopen_base ' <symbol:luaopen_base>
  add SP, #8 ' CALL addrg
  mov r2, #0 ' reg ARG coni
  jmp #LODL
- long @C_s6j41u_68dcbf8c_base_funcs_L000241
+ long @C_snp01u_68f73655_base_funcs_L000241
  mov r3, RI ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -2815,7 +2815,7 @@ C_luaopen_base ' <symbol:luaopen_base>
  long @C_lua_pushvalue
  add SP, #4 ' CALL addrg
  jmp #LODL
- long @C_s6j42m_68dcbf8c_288_L000289
+ long @C_snp02m_68f73655_288_L000289
  mov r2, RI ' reg ARG ADDRG
  jmp #LODL
  long -2
@@ -2836,7 +2836,7 @@ C_luaopen_base ' <symbol:luaopen_base>
  long @C_lua_pushstring
  add SP, #4 ' CALL addrg
  jmp #LODL
- long @C_s6j42n_68dcbf8c_290_L000291
+ long @C_snp02n_68f73655_290_L000291
  mov r2, RI ' reg ARG ADDRG
  jmp #LODL
  long -2
@@ -2985,7 +2985,7 @@ C_luaopen_base_293_L000294 ' <symbol:293>
  byte 0
 
  alignl ' align long
-C_s6j42n_68dcbf8c_290_L000291 ' <symbol:290>
+C_snp02n_68f73655_290_L000291 ' <symbol:290>
  byte 95
  byte 86
  byte 69
@@ -2997,13 +2997,13 @@ C_s6j42n_68dcbf8c_290_L000291 ' <symbol:290>
  byte 0
 
  alignl ' align long
-C_s6j42m_68dcbf8c_288_L000289 ' <symbol:288>
+C_snp02m_68f73655_288_L000289 ' <symbol:288>
  byte 95
  byte 71
  byte 0
 
  alignl ' align long
-C_s6j42l_68dcbf8c_286_L000287 ' <symbol:286>
+C_snp02l_68f73655_286_L000287 ' <symbol:286>
  byte 120
  byte 112
  byte 99
@@ -3013,7 +3013,7 @@ C_s6j42l_68dcbf8c_286_L000287 ' <symbol:286>
  byte 0
 
  alignl ' align long
-C_s6j42k_68dcbf8c_284_L000285 ' <symbol:284>
+C_snp02k_68f73655_284_L000285 ' <symbol:284>
  byte 116
  byte 121
  byte 112
@@ -3021,7 +3021,7 @@ C_s6j42k_68dcbf8c_284_L000285 ' <symbol:284>
  byte 0
 
  alignl ' align long
-C_s6j42j_68dcbf8c_282_L000283 ' <symbol:282>
+C_snp02j_68f73655_282_L000283 ' <symbol:282>
  byte 116
  byte 111
  byte 115
@@ -3033,7 +3033,7 @@ C_s6j42j_68dcbf8c_282_L000283 ' <symbol:282>
  byte 0
 
  alignl ' align long
-C_s6j42i_68dcbf8c_280_L000281 ' <symbol:280>
+C_snp02i_68f73655_280_L000281 ' <symbol:280>
  byte 116
  byte 111
  byte 110
@@ -3045,7 +3045,7 @@ C_s6j42i_68dcbf8c_280_L000281 ' <symbol:280>
  byte 0
 
  alignl ' align long
-C_s6j42h_68dcbf8c_278_L000279 ' <symbol:278>
+C_snp02h_68f73655_278_L000279 ' <symbol:278>
  byte 115
  byte 101
  byte 116
@@ -3061,7 +3061,7 @@ C_s6j42h_68dcbf8c_278_L000279 ' <symbol:278>
  byte 0
 
  alignl ' align long
-C_s6j42g_68dcbf8c_276_L000277 ' <symbol:276>
+C_snp02g_68f73655_276_L000277 ' <symbol:276>
  byte 115
  byte 101
  byte 108
@@ -3071,7 +3071,7 @@ C_s6j42g_68dcbf8c_276_L000277 ' <symbol:276>
  byte 0
 
  alignl ' align long
-C_s6j42f_68dcbf8c_274_L000275 ' <symbol:274>
+C_snp02f_68f73655_274_L000275 ' <symbol:274>
  byte 114
  byte 97
  byte 119
@@ -3081,7 +3081,7 @@ C_s6j42f_68dcbf8c_274_L000275 ' <symbol:274>
  byte 0
 
  alignl ' align long
-C_s6j42e_68dcbf8c_272_L000273 ' <symbol:272>
+C_snp02e_68f73655_272_L000273 ' <symbol:272>
  byte 114
  byte 97
  byte 119
@@ -3091,7 +3091,7 @@ C_s6j42e_68dcbf8c_272_L000273 ' <symbol:272>
  byte 0
 
  alignl ' align long
-C_s6j42d_68dcbf8c_270_L000271 ' <symbol:270>
+C_snp02d_68f73655_270_L000271 ' <symbol:270>
  byte 114
  byte 97
  byte 119
@@ -3101,7 +3101,7 @@ C_s6j42d_68dcbf8c_270_L000271 ' <symbol:270>
  byte 0
 
  alignl ' align long
-C_s6j42c_68dcbf8c_268_L000269 ' <symbol:268>
+C_snp02c_68f73655_268_L000269 ' <symbol:268>
  byte 114
  byte 97
  byte 119
@@ -3113,7 +3113,7 @@ C_s6j42c_68dcbf8c_268_L000269 ' <symbol:268>
  byte 0
 
  alignl ' align long
-C_s6j42b_68dcbf8c_266_L000267 ' <symbol:266>
+C_snp02b_68f73655_266_L000267 ' <symbol:266>
  byte 119
  byte 97
  byte 114
@@ -3121,7 +3121,7 @@ C_s6j42b_68dcbf8c_266_L000267 ' <symbol:266>
  byte 0
 
  alignl ' align long
-C_s6j42a_68dcbf8c_264_L000265 ' <symbol:264>
+C_snp02a_68f73655_264_L000265 ' <symbol:264>
  byte 112
  byte 114
  byte 105
@@ -3130,7 +3130,7 @@ C_s6j42a_68dcbf8c_264_L000265 ' <symbol:264>
  byte 0
 
  alignl ' align long
-C_s6j429_68dcbf8c_262_L000263 ' <symbol:262>
+C_snp029_68f73655_262_L000263 ' <symbol:262>
  byte 112
  byte 99
  byte 97
@@ -3139,7 +3139,7 @@ C_s6j429_68dcbf8c_262_L000263 ' <symbol:262>
  byte 0
 
  alignl ' align long
-C_s6j428_68dcbf8c_260_L000261 ' <symbol:260>
+C_snp028_68f73655_260_L000261 ' <symbol:260>
  byte 112
  byte 97
  byte 105
@@ -3148,7 +3148,7 @@ C_s6j428_68dcbf8c_260_L000261 ' <symbol:260>
  byte 0
 
  alignl ' align long
-C_s6j427_68dcbf8c_258_L000259 ' <symbol:258>
+C_snp027_68f73655_258_L000259 ' <symbol:258>
  byte 110
  byte 101
  byte 120
@@ -3156,7 +3156,7 @@ C_s6j427_68dcbf8c_258_L000259 ' <symbol:258>
  byte 0
 
  alignl ' align long
-C_s6j426_68dcbf8c_256_L000257 ' <symbol:256>
+C_snp026_68f73655_256_L000257 ' <symbol:256>
  byte 108
  byte 111
  byte 97
@@ -3164,7 +3164,7 @@ C_s6j426_68dcbf8c_256_L000257 ' <symbol:256>
  byte 0
 
  alignl ' align long
-C_s6j425_68dcbf8c_254_L000255 ' <symbol:254>
+C_snp025_68f73655_254_L000255 ' <symbol:254>
  byte 108
  byte 111
  byte 97
@@ -3176,7 +3176,7 @@ C_s6j425_68dcbf8c_254_L000255 ' <symbol:254>
  byte 0
 
  alignl ' align long
-C_s6j424_68dcbf8c_252_L000253 ' <symbol:252>
+C_snp024_68f73655_252_L000253 ' <symbol:252>
  byte 105
  byte 112
  byte 97
@@ -3186,7 +3186,7 @@ C_s6j424_68dcbf8c_252_L000253 ' <symbol:252>
  byte 0
 
  alignl ' align long
-C_s6j423_68dcbf8c_250_L000251 ' <symbol:250>
+C_snp023_68f73655_250_L000251 ' <symbol:250>
  byte 103
  byte 101
  byte 116
@@ -3202,7 +3202,7 @@ C_s6j423_68dcbf8c_250_L000251 ' <symbol:250>
  byte 0
 
  alignl ' align long
-C_s6j422_68dcbf8c_248_L000249 ' <symbol:248>
+C_snp022_68f73655_248_L000249 ' <symbol:248>
  byte 101
  byte 114
  byte 114
@@ -3211,7 +3211,7 @@ C_s6j422_68dcbf8c_248_L000249 ' <symbol:248>
  byte 0
 
  alignl ' align long
-C_s6j421_68dcbf8c_246_L000247 ' <symbol:246>
+C_snp021_68f73655_246_L000247 ' <symbol:246>
  byte 100
  byte 111
  byte 102
@@ -3221,7 +3221,7 @@ C_s6j421_68dcbf8c_246_L000247 ' <symbol:246>
  byte 0
 
  alignl ' align long
-C_s6j420_68dcbf8c_244_L000245 ' <symbol:244>
+C_snp020_68f73655_244_L000245 ' <symbol:244>
  byte 99
  byte 111
  byte 108
@@ -3239,7 +3239,7 @@ C_s6j420_68dcbf8c_244_L000245 ' <symbol:244>
  byte 0
 
  alignl ' align long
-C_s6j41v_68dcbf8c_242_L000243 ' <symbol:242>
+C_snp01v_68f73655_242_L000243 ' <symbol:242>
  byte 97
  byte 115
  byte 115
@@ -3249,7 +3249,7 @@ C_s6j41v_68dcbf8c_242_L000243 ' <symbol:242>
  byte 0
 
  alignl ' align long
-C_s6j41o_68dcbf8c_luaB__select_L000220_228_L000229 ' <symbol:228>
+C_snp01o_68f73655_luaB__select_L000220_228_L000229 ' <symbol:228>
  byte 105
  byte 110
  byte 100
@@ -3271,7 +3271,7 @@ C_s6j41o_68dcbf8c_luaB__select_L000220_228_L000229 ' <symbol:228>
  byte 0
 
  alignl ' align long
-C_s6j41m_68dcbf8c_luaB__assert_L000214_218_L000219 ' <symbol:218>
+C_snp01m_68f73655_luaB__assert_L000214_218_L000219 ' <symbol:218>
  byte 97
  byte 115
  byte 115
@@ -3292,7 +3292,7 @@ C_s6j41m_68dcbf8c_luaB__assert_L000214_218_L000219 ' <symbol:218>
  byte 0
 
  alignl ' align long
-C_s6j41h_68dcbf8c_luaB__load_L000197_206_L000207 ' <symbol:206>
+C_snp01h_68f73655_luaB__load_L000197_206_L000207 ' <symbol:206>
  byte 61
  byte 40
  byte 108
@@ -3303,13 +3303,13 @@ C_s6j41h_68dcbf8c_luaB__load_L000197_206_L000207 ' <symbol:206>
  byte 0
 
  alignl ' align long
-C_s6j41h_68dcbf8c_luaB__load_L000197_199_L000200 ' <symbol:199>
+C_snp01h_68f73655_luaB__load_L000197_199_L000200 ' <symbol:199>
  byte 98
  byte 116
  byte 0
 
  alignl ' align long
-C_s6j41e_68dcbf8c_generic_reader_L000187_195_L000196 ' <symbol:195>
+C_snp01e_68f73655_generic_reader_L000187_195_L000196 ' <symbol:195>
  byte 114
  byte 101
  byte 97
@@ -3349,7 +3349,7 @@ C_s6j41e_68dcbf8c_generic_reader_L000187_195_L000196 ' <symbol:195>
  byte 0
 
  alignl ' align long
-C_s6j41e_68dcbf8c_generic_reader_L000187_189_L000190 ' <symbol:189>
+C_snp01e_68f73655_generic_reader_L000187_189_L000190 ' <symbol:189>
  byte 116
  byte 111
  byte 111
@@ -3378,7 +3378,7 @@ C_s6j41e_68dcbf8c_generic_reader_L000187_189_L000190 ' <symbol:189>
  byte 0
 
  alignl ' align long
-C_s6j418_68dcbf8c_luaB__pairs_L000161_165_L000166 ' <symbol:165>
+C_snp018_68f73655_luaB__pairs_L000161_165_L000166 ' <symbol:165>
  byte 95
  byte 95
  byte 112
@@ -3389,7 +3389,7 @@ C_s6j418_68dcbf8c_luaB__pairs_L000161_165_L000166 ' <symbol:165>
  byte 0
 
  alignl ' align long
-C_s6j414_68dcbf8c_luaB__type_L000150_152_L000153 ' <symbol:152>
+C_snp014_68f73655_luaB__type_L000150_152_L000153 ' <symbol:152>
  byte 118
  byte 97
  byte 108
@@ -3407,11 +3407,11 @@ C_s6j414_68dcbf8c_luaB__type_L000150_152_L000153 ' <symbol:152>
  byte 0
 
  alignl ' align long
-C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_131_L000132 ' <symbol:131>
+C_snp0m_68f73655_luaB__collectgarbage_L000104_131_L000132 ' <symbol:131>
  long $44800000 ' float
 
  alignl ' align long
-C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_122_L000123 ' <symbol:122>
+C_snp0m_68f73655_luaB__collectgarbage_L000104_122_L000123 ' <symbol:122>
  byte 105
  byte 115
  byte 114
@@ -3424,7 +3424,7 @@ C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_122_L000123 ' <symbol:122>
  byte 0
 
  alignl ' align long
-C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_120_L000121 ' <symbol:120>
+C_snp0m_68f73655_luaB__collectgarbage_L000104_120_L000121 ' <symbol:120>
  byte 115
  byte 101
  byte 116
@@ -3438,7 +3438,7 @@ C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_120_L000121 ' <symbol:120>
  byte 0
 
  alignl ' align long
-C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_118_L000119 ' <symbol:118>
+C_snp0m_68f73655_luaB__collectgarbage_L000104_118_L000119 ' <symbol:118>
  byte 115
  byte 101
  byte 116
@@ -3450,7 +3450,7 @@ C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_118_L000119 ' <symbol:118>
  byte 0
 
  alignl ' align long
-C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_116_L000117 ' <symbol:116>
+C_snp0m_68f73655_luaB__collectgarbage_L000104_116_L000117 ' <symbol:116>
  byte 115
  byte 116
  byte 101
@@ -3458,7 +3458,7 @@ C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_116_L000117 ' <symbol:116>
  byte 0
 
  alignl ' align long
-C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_114_L000115 ' <symbol:114>
+C_snp0m_68f73655_luaB__collectgarbage_L000104_114_L000115 ' <symbol:114>
  byte 99
  byte 111
  byte 117
@@ -3467,7 +3467,7 @@ C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_114_L000115 ' <symbol:114>
  byte 0
 
  alignl ' align long
-C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_112_L000113 ' <symbol:112>
+C_snp0m_68f73655_luaB__collectgarbage_L000104_112_L000113 ' <symbol:112>
  byte 99
  byte 111
  byte 108
@@ -3478,7 +3478,7 @@ C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_112_L000113 ' <symbol:112>
  byte 0
 
  alignl ' align long
-C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_110_L000111 ' <symbol:110>
+C_snp0m_68f73655_luaB__collectgarbage_L000104_110_L000111 ' <symbol:110>
  byte 114
  byte 101
  byte 115
@@ -3489,7 +3489,7 @@ C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_110_L000111 ' <symbol:110>
  byte 0
 
  alignl ' align long
-C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_108_L000109 ' <symbol:108>
+C_snp0m_68f73655_luaB__collectgarbage_L000104_108_L000109 ' <symbol:108>
  byte 115
  byte 116
  byte 111
@@ -3497,7 +3497,7 @@ C_s6j4m_68dcbf8c_luaB__collectgarbage_L000104_108_L000109 ' <symbol:108>
  byte 0
 
  alignl ' align long
-C_s6j4j_68dcbf8c_pushmode_L000093_99_L000100 ' <symbol:99>
+C_snp0j_68f73655_pushmode_L000093_99_L000100 ' <symbol:99>
  byte 103
  byte 101
  byte 110
@@ -3513,7 +3513,7 @@ C_s6j4j_68dcbf8c_pushmode_L000093_99_L000100 ' <symbol:99>
  byte 0
 
  alignl ' align long
-C_s6j4j_68dcbf8c_pushmode_L000093_97_L000098 ' <symbol:97>
+C_snp0j_68f73655_pushmode_L000093_97_L000098 ' <symbol:97>
  byte 105
  byte 110
  byte 99
@@ -3528,7 +3528,7 @@ C_s6j4j_68dcbf8c_pushmode_L000093_97_L000098 ' <symbol:97>
  byte 0
 
  alignl ' align long
-C_s6j4f_68dcbf8c_luaB__rawlen_L000084_86_L000087 ' <symbol:86>
+C_snp0f_68f73655_luaB__rawlen_L000084_86_L000087 ' <symbol:86>
  byte 116
  byte 97
  byte 98
@@ -3547,7 +3547,7 @@ C_s6j4f_68dcbf8c_luaB__rawlen_L000084_86_L000087 ' <symbol:86>
  byte 0
 
  alignl ' align long
-C_s6j4b_68dcbf8c_luaB__setmetatable_L000073_80_L000081 ' <symbol:80>
+C_snp0b_68f73655_luaB__setmetatable_L000073_80_L000081 ' <symbol:80>
  byte 99
  byte 97
  byte 110
@@ -3586,7 +3586,7 @@ C_s6j4b_68dcbf8c_luaB__setmetatable_L000073_80_L000081 ' <symbol:80>
  byte 0
 
  alignl ' align long
-C_s6j4b_68dcbf8c_luaB__setmetatable_L000073_75_L000076 ' <symbol:75>
+C_snp0b_68f73655_luaB__setmetatable_L000073_75_L000076 ' <symbol:75>
  byte 110
  byte 105
  byte 108
@@ -3602,7 +3602,7 @@ C_s6j4b_68dcbf8c_luaB__setmetatable_L000073_75_L000076 ' <symbol:75>
  byte 0
 
  alignl ' align long
-C_s6j49_68dcbf8c_luaB__getmetatable_L000067_71_L000072 ' <symbol:71>
+C_snp09_68f73655_luaB__getmetatable_L000067_71_L000072 ' <symbol:71>
  byte 95
  byte 95
  byte 109
@@ -3617,7 +3617,7 @@ C_s6j49_68dcbf8c_luaB__getmetatable_L000067_71_L000072 ' <symbol:71>
  byte 0
 
  alignl ' align long
-C_s6j46_68dcbf8c_luaB__tonumber_L000049_57_L000058 ' <symbol:57>
+C_snp06_68f73655_luaB__tonumber_L000049_57_L000058 ' <symbol:57>
  byte 98
  byte 97
  byte 115
@@ -3638,7 +3638,7 @@ C_s6j46_68dcbf8c_luaB__tonumber_L000049_57_L000058 ' <symbol:57>
  byte 0
 
  alignl ' align long
-C_s6j44_68dcbf8c_b_str2int_L000026_28_L000029 ' <symbol:28>
+C_snp04_68f73655_b_str2int_L000026_28_L000029 ' <symbol:28>
  byte 32
  byte 12
  byte 10
@@ -3648,12 +3648,12 @@ C_s6j44_68dcbf8c_b_str2int_L000026_28_L000029 ' <symbol:28>
  byte 0
 
  alignl ' align long
-C_s6j4_68dcbf8c_luaB__print_L000004_14_L000015 ' <symbol:14>
+C_snp0_68f73655_luaB__print_L000004_14_L000015 ' <symbol:14>
  byte 10
  byte 0
 
  alignl ' align long
-C_s6j4_68dcbf8c_luaB__print_L000004_12_L000013 ' <symbol:12>
+C_snp0_68f73655_luaB__print_L000004_12_L000013 ' <symbol:12>
  byte 9
  byte 0
 

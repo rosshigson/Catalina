@@ -13,6 +13,7 @@
  * Load with a command like:
  *    payload EEPROM loadmenus.binary
  */
+#include <prop.h>
 
 // stringizing functions (required to process MENU_ADDR):
 #define STRING_VALUE(x) STRING_VALUE__(x)

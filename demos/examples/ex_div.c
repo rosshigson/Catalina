@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <limits.h>
 #include <stdlib.h>
+#include <prop.h>
 
 //
 // This program tests random divisions, comparing integer division with the

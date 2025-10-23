@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_s5kc_68dcc34c_lmmtd_array_L000001 ' <symbol:lmmtd_array>
+C_sl0k_68f73a2e_lmmtd_array_L000001 ' <symbol:lmmtd_array>
  long $fd900164
  long $fd900dd0
  long $fd9001cc
@@ -878,7 +878,7 @@ C__threaded_cogstart_L_M_M__cog ' <symbol:_threaded_cogstart_LMM_cog>
  wrlong r22, RI ' ASGNU4 addrli reg
  mov r2, r17 ' CVI, CVU or LOAD
  mov r22, #2 ' reg <- coni
- mov r20, ##@C_s5kc_68dcc34c_lmmtd_array_L000001 ' reg <- addrg
+ mov r20, ##@C_sl0k_68f73a2e_lmmtd_array_L000001 ' reg <- addrg
  mov r3, r20 ' RSHI
  sar r3, r22 ' RSHI (3)
  mov r20, FP
@@ -915,7 +915,7 @@ C__threaded_cogstart_L_M_M__cog ' <symbol:_threaded_cogstart_LMM_cog>
  calld PA,#CALA
  long @C__waitcnt ' CALL addrg
  mov r0, r17 ' CVI, CVU or LOAD
-' C__threaded_cogstart_L_M_M__cog_2 ' (symbol refcount = 0)
+' C__threaded_cogstart_L_M_M__cog_3 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  add SP, #32 ' framesize
  calld PA,#RETF

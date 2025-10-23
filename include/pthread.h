@@ -294,9 +294,9 @@ int pthread_setschedparam(pthread_t thread,
                           int policy,
                           const struct sched_param *param);
 
-pthread_getschedparam(pthread_t thread, 
-                      int *policy,
-                      struct sched_param *param);
+int pthread_getschedparam(pthread_t thread, 
+                          int *policy,
+                          struct sched_param *param);
 
 // enable or disable cancellation
 int pthread_setcancelstate(int state, int *oldstate);
@@ -587,9 +587,11 @@ int pthread_createaffinity(void *addr, size_t size, affinity_t *affinity);
 int pthread_setaffinity(pthread_t thread, const affinity_t affinity);
 
 // return the affinity of a thread
-// n Catalina, this returns the cog on which the thread is running.
+// On Catalina, this returns the cog on which the thread is running.
 int pthread_getaffinity(pthread_t thread, affinity_t *affinity);
 
+// initialize the thread lock pool
+void _pthread_init_lock_pool(int *lock);
 
 /*
  *

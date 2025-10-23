@@ -24,7 +24,7 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma catapult common options(-W-w -p2 -C CONST_ARGS -C SIMPLE -C VT100 -C MHZ_200 -C CLOCK -O5 -lcx -lmc -llua linit.c -C ENABLE_PROPELLER)
+#pragma catapult common options(-W-w -p2 -C CONST_ARGS -C SIMPLE -C VT100 -C MHZ_200 -C CLOCK -lcx -lmc -llua linit.c -C ENABLE_PROPELLER -u -v -y)
 
 #include <catapult.h>
 #include <service.h>

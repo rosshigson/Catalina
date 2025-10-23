@@ -15,8 +15,9 @@
  */
 
 #include <stdint.h>
-#include <propeller2.h>
-#include <smartpins.h>
+#include <stdlib.h>
+#include <prop.h>
+#include <smartpin.h>
 
 #include "i2c_driver.h"
 

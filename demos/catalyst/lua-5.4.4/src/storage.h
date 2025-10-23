@@ -2,7 +2,9 @@
 #define STORAGE_H
 
 #include <stdio.h>
+#include <string.h>
 #include <dosfs.h>
+#include <ctype.h>
 
 
 /*

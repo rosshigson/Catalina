@@ -6,7 +6,10 @@
 #endif
 #include <time.h>
 	
-int getch(void);
+extern int randomize(void);
+extern int getch(void);
+extern int max(int a, int b);
+extern int min(int a, int b);
 
 static char line[128], *linep = line;
 static int linecount;	/* for paging */
