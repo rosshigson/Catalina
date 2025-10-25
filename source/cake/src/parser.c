@@ -453,7 +453,7 @@ _Bool compiler_diagnostic(enum diagnostic_id w,
         else if (is_note)
             printf("note: ");
 
-        printf("%s"\n, buffer);
+        printf("%s\n", buffer);
     }
     else
     {
