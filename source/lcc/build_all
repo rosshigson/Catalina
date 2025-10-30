@@ -4,6 +4,7 @@
 make clobber LCCDIR=$LCCDIR
 make HOSTFILE=etc/catalina_linux_cake.c LCCDIR=$LCCDIR lcc
 make all LCCDIR=$LCCDIR
+rm $LCCDIR/bin/clcc
 mv $LCCDIR/bin/lcc $LCCDIR/bin/clcc
 
 make clobber LCCDIR=$LCCDIR
