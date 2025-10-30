@@ -83,7 +83,7 @@ enum diagnostic_id {
     W_BOOL_COMPARISON,
     W_WARNING_DID_NOT_HAPPEN,
     W_NULLABLE_TO_NON_NULLABLE,
-    W_NOT_DEFINED60,
+    W_CAST_TO_SAME_TYPE,
 
     W_LOCATION, /*prints code location*/
     W_NOTE,
@@ -360,7 +360,7 @@ struct options
     /*
       -fdiagnostics-color=never
     */
-    bool disable_colors;
+    bool color_disabled;
 
     /*
       -dump-tokens
@@ -378,14 +378,6 @@ struct options
       -autoconfig
     */
     bool auto_config;
-
-#if defined(__CATALINA__)
-    /*
-      -suppress
-      (suppress statistics (if zero))
-    */
-    bool suppress;
-#endif // defined(__CATALINA__)
 
     bool do_static_debug;
     int static_debug_lines;

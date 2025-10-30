@@ -24,27 +24,32 @@
 #include <prop.h> // for setenv()
 #endif
 
-static void print_report(struct report* report, bool no_colors)
+
+static void print_report(struct report* report)
 {
+    if (report->test_mode ||
+        report->error_count != 0 ||
+        report->warnings_count != 0 ||
+        report->info_count != 0)
+{
+
     printf("\n");
-    printf(" %d files in %.2f seconds\n", report->no_files, report->cpu_time_used_sec);
-    if (no_colors)
-    {
         printf(" %d"   " errors ", report->error_count);
         printf("%d"  " warnings ", report->warnings_count);
         printf("%d"     " notes ", report->info_count);
-    }
-    else
-    {
-        printf(" %d" LIGHTRED  " errors " RESET, report->error_count);
-        printf("%d" LIGHTMAGENTA " warnings " RESET, report->warnings_count);
-        printf("%d" LIGHTCYAN    " notes " RESET, report->info_count);
-    }
+        printf("\n");
+        printf("%d files in %.2f seconds", report->no_files, report->cpu_time_used_sec);
 
     if (report->test_mode)
     {
+        if (report->test_failed > 0)
+                printf(" - TEST FAILED");
+        else
+                printf(" - TEST SUCCEEDED");
+
+        }
         printf("\n");
-        printf(" %d tests of %d failed\n", report->test_failed, (report->test_failed + report->test_succeeded));
+
     }
 
     printf("\n");
@@ -115,7 +120,7 @@ int main(int argc, char** argv)
 
     if (!report.ignore_this_report)
     {
-        print_report(&report, true);
+        print_report(&report);
     }
 
     if (report.test_mode)

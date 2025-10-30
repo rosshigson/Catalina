@@ -59,6 +59,17 @@ static void pre_conditional_expression(struct preprocessor_ctx* ctx, struct pre_
  */
 static int ppnumber_to_longlong(struct preprocessor_ctx* ctx, struct token* token, long long* result, enum target target)
 {
+
+    const long long signed_long_max_value =
+        target_signed_max(ctx->options.target, TYPE_SIGNED_LONG);
+
+    const unsigned long long unsigned_long_max_value =
+        target_unsigned_max(ctx->options.target, TYPE_UNSIGNED_LONG);
+
+    const long long signed_long_long_max_value =
+        target_signed_max(ctx->options.target, TYPE_SIGNED_LONG_LONG);
+
+
     /*copy removing the separators*/
     // um dos maiores buffer necessarios seria 128 bits binario...
     // 0xb1'1'1....
@@ -130,16 +141,16 @@ static int ppnumber_to_longlong(struct preprocessor_ctx* ctx, struct token* toke
             /*fixing the type that fits the size*/
             if (value <= UINT_MAX && suffix[1] != 'L')
             {
-                cv = object_make_unsigned_int((unsigned int)value);
+                cv = object_make_unsigned_int(ctx->options.target, (unsigned int)value);
 
             }
-            else if (value <= target_get_unsigned_long_max(target) && suffix[2] != 'L')
+            else if (value <= unsigned_long_max_value && suffix[2] != 'L')
             {
-                cv = object_make_unsigned_long((unsigned long)value, target);
+                cv = object_make_unsigned_long(target, (unsigned long)value);
             }
             else //if (value <= ULLONG_MAX)
             {
-                cv = object_make_unsigned_long_long((unsigned long long)value);
+                cv = object_make_unsigned_long_long(ctx->options.target, value);
             }
         }
         else
@@ -147,19 +158,19 @@ static int ppnumber_to_longlong(struct preprocessor_ctx* ctx, struct token* toke
             /*fixing the type that fits the size*/
             if (value <= INT_MAX && suffix[0] != 'L')
             {
-                cv = object_make_signed_int((int)value);
+                cv = object_make_signed_int(ctx->options.target, (int)value);
             }
-            else if (value <= (unsigned long long) target_get_signed_long_max(target) && suffix[1] != 'L' /*!= LL*/)
+            else if (value <= (unsigned long long) signed_long_max_value && suffix[1] != 'L' /*!= LL*/)
             {
-                cv = object_make_signed_long((long)value, target);
+                cv = object_make_signed_long(target, (long)value);
             }
-            else if (value <= (unsigned long long) target_get_signed_long_long_max(target))
+            else if (value <= (unsigned long long) signed_long_long_max_value)
             {
-                cv = object_make_signed_long_long((long long)value);
+                cv = object_make_signed_long_long(ctx->options.target, (long long)value);
             }
             else
             {
-                cv = object_make_signed_long_long(value);
+                cv = object_make_signed_long_long(ctx->options.target, value);
             }
         }
 
@@ -207,6 +218,9 @@ static struct object char_constant_to_value(const char* s, char error_message[/*
     error_message[0] = '\0';
 
     const unsigned char* _Opt p = (const unsigned char*)s;
+    const unsigned long long
+        wchar_max_value = target_unsigned_max(target, get_platform(target)->wchar_t_type);
+
 
     try
     {
@@ -274,7 +288,7 @@ static struct object char_constant_to_value(const char* s, char error_message[/*
                 snprintf(error_message, error_message_sz_bytes, "Unicode character literals may not contain multiple characters.");
             }
 
-            if ((int)c > target_get_wchar_max(target))
+            if ((int)c > wchar_max_value)
             {
                 snprintf(error_message, error_message_sz_bytes, "Character too large for enclosing character literal type.");
             }
@@ -352,7 +366,7 @@ static struct object char_constant_to_value(const char* s, char error_message[/*
                 // TODO \u
                 value = value * 256 + c;
 
-                if (value > target_get_wchar_max(target))
+                if (value > (long long)wchar_max_value)
                 {
                     snprintf(error_message, error_message_sz_bytes, "character constant too long for its type");
                     break;

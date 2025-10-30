@@ -7,13 +7,13 @@ DAT ' code segment
 '
 
  alignl_label
-C_sndo_68f7390f__seed_L000001 ' <symbol:_seed>
+C_skj0_68fd77ae__seed_L000001 ' <symbol:_seed>
  alignl_p1
  long I32_PSHM + $400000<<S32 ' save registers
  alignl_p1
  long I32_MOV + (r22)<<D32 + (CNT)<<S32 ' reg <- INDIRU4 addrg special
  word I16A_MOV + (r0)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
-' C_sndo_68f7390f__seed_L000001_2 ' (symbol refcount = 0)
+' C_skj0_68fd77ae__seed_L000001_2 ' (symbol refcount = 0)
  word I16B_POPM + $80<<S16B ' restore registers, do not pop frame, do return
  alignl_p1
 
@@ -44,7 +44,7 @@ C_getrand ' <symbol:getrand>
  alignl_p1
  long I32_BRNZ + (@C_getrand_6)<<S32 ' NEI4 reg coni
  alignl_p1
- long I32_CALA + (@C_sndo_68f7390f__seed_L000001)<<S32 ' CALL addrg
+ long I32_CALA + (@C_skj0_68fd77ae__seed_L000001)<<S32 ' CALL addrg
  word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r2)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4

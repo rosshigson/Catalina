@@ -417,6 +417,10 @@
  *                 as 202311L for all standards (94, 95, 99, 11, 17, 18, 23)
  *                 whereas cpp does not define it at all. This may change
  *                 in a future Cake release.
+ *                 
+ * version 8.8.3 - Add -C CAKE_COLOR, which enables the use of colors by Cake
+ *                 in error and warning messages. Does nothing unless Cake is
+ *                 enabled (e.g. by also adding -C99 etc).
  */
 
 /*--------------------------------------------------------------------------
@@ -446,7 +450,7 @@
 #include <string.h>
 #include <math.h>
 
-#define VERSION            "8.8.2"
+#define VERSION            "8.8.3"
 
 #define MAX_LINELEN        4096
 
@@ -511,6 +515,7 @@ static int parallel   = 0; // invoke the parallelizer on the input files
 static int untidy     = 0; // untidy (i.e. no cleanup) mode
 static int quickbuild = 0; // enable quick build, re-use any existing target
 static int quickforce = 0; // enable quick build, always rebuild target
+static int cake_color = 0; // enable the use of color by Cake
 
 /* C standard (and precompiler) to use  */
 
@@ -1218,6 +1223,10 @@ int pass_symbol_to_compiler(char *symbol, int *code) {
    else if (strcmp (symbol, "OPTIMISE") == 0) {
       pass = 0; // don't pass this symbol 
       olevel = 5;
+   }
+   else if (strcmp (symbol, "CAKE_COLOR") == 0) {
+      pass = 0; // don't pass this symbol 
+      cake_color = 1;
    }
    else if (strcmp (symbol, "MHZ_300") == 0) {
       pass = 0; // don't pass this symbol 
@@ -2292,7 +2301,14 @@ void main(int argc, char *argv[]) {
    }
    else {
       // use cake as our preprocessor (by using the command clcc)
-      safecpy(lcc_cmd, "clcc ", MAX_LINELEN);
+      if (cake_color) {
+         // allow Cake to use colors 
+         safecpy(lcc_cmd, "clcc ", MAX_LINELEN);
+      }
+      else {
+         // disable Cake's use of color
+         safecpy(lcc_cmd, "clcc -Wp-fdiagnostics-format=msvc ", MAX_LINELEN);
+      }
    }
 
    // print banner now if not suppressed and not already printed

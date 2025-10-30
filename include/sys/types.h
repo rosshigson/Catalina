@@ -5,5 +5,7 @@ typedef long            off_t;
 
 typedef long            mode_t; // used in mkdir() and mkdirr()
 
+typedef unsigned short  ino_t;  // used in opendir(), readdir, closedir()
+
 #endif
 

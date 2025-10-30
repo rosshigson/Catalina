@@ -117,32 +117,6 @@ bool path_is_relative(const char* path)
 }
 
 
-#if defined(__CATALYST__)
-
-/*
-* realpath
-   If there is no error, realpath() returns a pointer to the
-       resolved_path.
-
-       Otherwise, it returns NULL, the contents of the array
-       resolved_path are undefined, and errno is set to indicate the
-       error.
-*/
-char* _Opt realpath(const char* restrict path, char* restrict resolved_path)
-{
-    char *p2 = strncat(resolved_path, "/", MAX_PATH);
-    p2 = strncat(resolved_path, path, MAX_PATH-1);
-    while (*p2)
-    {
-        if (*p2 == '\\')
-            *p2 = '/';
-        p2++;
-    }
-    return resolved_path;
-}
-
-#endif //__CATALYST__
-
 #ifdef _WIN32
 
 #ifdef __CAKE__
@@ -165,7 +139,7 @@ DIR* _Owner _Opt opendir(const char* name)
     assert(name != 0);
     WIN32_FIND_DATAA fdfile = { 0 };
 
-    char path[MAX_PATH] = { 0 };
+    char path[FS_MAX_PATH] = { 0 };
     strcat(path, name);
     strcat(path, "\\*.*");
 
@@ -249,7 +223,7 @@ char* _Opt realpath(const char* restrict path, char* restrict resolved_path)
     */
 #pragma CAKE diagnostic push
 #pragma CAKE diagnostic ignored "-Wflow-not-null"
-    char* _Opt p = _fullpath(resolved_path, path, MAX_PATH);
+    char* _Opt p = _fullpath(resolved_path, path, FS_MAX_PATH);
     if (p)
     {
         char* p2 = resolved_path;
@@ -312,9 +286,6 @@ int copy_file(const char* pathfrom, const char* pathto)
     return -1;
 }
 
-// Catalyst does not have opendir/readdir etc
-#if !defined(__CATALYST__)
-
 int copy_folder(const char* from, const char* to)
 {
 #if !defined __EMSCRIPTEN__
@@ -340,11 +311,11 @@ int copy_folder(const char* from, const char* to)
             continue;
         }
 
-        char fromlocal[MAX_PATH] = { 0 };
-        snprintf(fromlocal, MAX_PATH, "%s/%s", from, dp->d_name);
+        char fromlocal[FS_MAX_PATH] = { 0 };
+        snprintf(fromlocal, FS_MAX_PATH, "%s/%s", from, dp->d_name);
 
-        char tolocal[MAX_PATH] = { 0 };
-        snprintf(tolocal, MAX_PATH, "%s/%s", to, dp->d_name);
+        char tolocal[FS_MAX_PATH] = { 0 };
+        snprintf(tolocal, FS_MAX_PATH, "%s/%s", to, dp->d_name);
 
         if (dp->d_type & DT_DIR)
         {
@@ -365,8 +336,6 @@ int copy_folder(const char* from, const char* to)
     return -1;
 #endif
 }
-
-#endif // !defined(__CATALYST__)
 
 #ifdef _WIN32
 int get_self_path(char* buffer, int maxsize)

@@ -16,7 +16,6 @@ char *suffixes[] = { ".c", ".i", ".s", ".o", ".out", 0 };
 char inputs[256] = "";
 char *cpp[] = { LCCDIR "/bin/cake",
 	"-D__CATALINA__",
-  "-suppress",
 	"-D__unix__", "-D__i386__", "-D__linux__", "-D__signed__=signed",
 	"$1", "$2", "-o", "$3", 0 };
 char *include[] = {"-I" LCCDIR "/include", 0 };

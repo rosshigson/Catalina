@@ -99,9 +99,7 @@ void diagnostic_stack_pop(struct diagnostic_stack* diagnostic_stack)
 
 struct diagnostic default_diagnostic = {
       .warnings = (~0ULL) & ~(
-#if !defined(__CATALINA__)
         NULLABLE_DISABLE_REMOVED_WARNINGS |
-#endif
         (1ULL << W_NOTE) |
         (1ULL << W_STYLE) |
         (1ULL << W_UNUSED_PARAMETER) |
@@ -357,13 +355,6 @@ int fill_options(struct options* options,
     //&~items;
 
 
-#if defined(__CATALINA__)
-    // for Catalina, disable all nullable checks
-    options->null_checks_enabled = false;
-    unsigned long long wc = NULLABLE_DISABLE_REMOVED_WARNINGS;
-    options->diagnostic_stack.stack[0].warnings &= ~wc;
-#endif
-
     /*first loop used to collect options*/
     for (int i = 1; i < argc; i++)
     {
@@ -437,15 +428,6 @@ int fill_options(struct options* options,
             continue;
         }
 
-#if defined(__CATALINA__)
-// Alow the suppression of statistics (when zero)
-        if (strcmp(argv[i], "-suppress") == 0)
-        {
-            options->suppress = true;
-            continue;
-        }
-#endif // defined(__CATALINA__)
-
         if (strcmp(argv[i], "-sarif") == 0)
         {
             options->sarif_output = true;
@@ -509,7 +491,7 @@ int fill_options(struct options* options,
         {
             if (strcmp(argv[i], "-fdiagnostics-color=never") == 0)
             {
-                options->disable_colors = true;
+                options->color_disabled = true;
                 continue;
             }
 
@@ -587,7 +569,7 @@ int fill_options(struct options* options,
 
         if (has_prefix(argv[i], "-target="))
         {
-            int r = parse_target(argv[i], &options->target);
+            int r = parse_target(argv[i] + (sizeof("-target=")-1), &options->target);
             if (r != 0)
             {
                 printf("Invalid target. Options: ");
@@ -670,63 +652,63 @@ int fill_options(struct options* options,
 
 void print_help()
 {
-#define CAKE LIGHTCYAN "cake " RESET 
+#define CAKE LIGHTCYAN "cake " COLOR_RESET 
 
     const char* options =
-        LIGHTGREEN "Usage :" RESET CAKE LIGHTBLUE "[OPTIONS] source1.c source2.c ...\n" RESET
+        LIGHTGREEN "Usage :" COLOR_RESET CAKE LIGHTBLUE "[OPTIONS] source1.c source2.c ...\n" COLOR_RESET
         "\n"
-        LIGHTGREEN "Samples:\n" RESET
+        LIGHTGREEN "Samples:\n" COLOR_RESET
         "\n"
-        WHITE "    " CAKE " source.c\n" RESET
+        WHITE "    " CAKE " source.c\n" COLOR_RESET
         "    Compiles source.c and outputs /out/source.c\n"
         "\n"        
-        WHITE "    " CAKE " file.c -o file.cc && cl file.cc\n" RESET
+        WHITE "    " CAKE " file.c -o file.cc && cl file.cc\n" COLOR_RESET
         "    Compiles file.c and outputs file.cc then use cl to compile file.cc\n"
         "\n"
-        WHITE "    " CAKE " file.c -direct-compilation -o file.cc && cl file.cc\n" RESET
+        WHITE "    " CAKE " file.c -direct-compilation -o file.cc && cl file.cc\n" COLOR_RESET
         "    Compiles file.c and outputs file.cc for direct compilation then use cl to compile file.cc\n"
         "\n"
-        LIGHTGREEN "Options:\n" RESET
+        LIGHTGREEN "Options:\n" COLOR_RESET
         "\n"
-        LIGHTCYAN "  -I                   " RESET " Adds a directory to the list of directories searched for include files \n"
+        LIGHTCYAN "  -I                   " COLOR_RESET " Adds a directory to the list of directories searched for include files \n"
         "                        (On windows, if you run cake at the visual studio command prompt cake \n"
         "                        uses the same include files used by msvc )\n"
         "\n"
-        LIGHTCYAN "  -auto-config           " RESET "Generates cakeconfig.h with include directories\n"
+        LIGHTCYAN "  -auto-config           " COLOR_RESET "Generates cakeconfig.h with include directories\n"
         "\n"
-        LIGHTCYAN "  -no-output            " RESET "Cake will not generate output\n"
+        LIGHTCYAN "  -no-output            " COLOR_RESET "Cake will not generate output\n"
         "\n"
-        LIGHTCYAN "  -D                    " RESET "Defines a preprocessing symbol for a source file \n"
+        LIGHTCYAN "  -D                    " COLOR_RESET "Defines a preprocessing symbol for a source file \n"
         "\n"
-        LIGHTCYAN "  -E                    " RESET "Copies preprocessor output to standard output \n"
+        LIGHTCYAN "  -E                    " COLOR_RESET "Copies preprocessor output to standard output \n"
         "\n"
-        LIGHTCYAN "  -o name.c             " RESET "Defines the output name when compiling one file\n"
+        LIGHTCYAN "  -o name.c             " COLOR_RESET "Defines the output name when compiling one file\n"
         "\n"
-        LIGHTCYAN "  -no-discard           " RESET "Makes [[nodiscard]] default implicitly \n"
+        LIGHTCYAN "  -no-discard           " COLOR_RESET "Makes [[nodiscard]] default implicitly \n"
         "\n"
-        LIGHTCYAN "  -Wname -Wno-name      " RESET "Enables or disable warning\n"
+        LIGHTCYAN "  -Wname -Wno-name      " COLOR_RESET "Enables or disable warning\n"
         "\n"
-        LIGHTCYAN "  -fanalyzer            " RESET "Runs flow analysis -  required for ownership\n"
+        LIGHTCYAN "  -fanalyzer            " COLOR_RESET "Runs flow analysis -  required for ownership\n"
         "\n"
-        LIGHTCYAN "  -sarif                " RESET "Generates sarif files\n"
+        LIGHTCYAN "  -sarif                " COLOR_RESET "Generates sarif files\n"
         "\n"
-        LIGHTCYAN "  -H                    " RESET "Print the name of each header file used\n"
+        LIGHTCYAN "  -H                    " COLOR_RESET "Print the name of each header file used\n"
         "\n"
-        LIGHTCYAN "  -sarif-path           " RESET "Set sarif output dir\n"
+        LIGHTCYAN "  -sarif-path           " COLOR_RESET "Set sarif output dir\n"
         "\n"
-        LIGHTCYAN "  -msvc-output          " RESET "Output is compatible with visual studio\n"
+        LIGHTCYAN "  -msvc-output          " COLOR_RESET "Output is compatible with visual studio\n"
         "\n"
-        LIGHTCYAN "  -dump-tokens          " RESET "Output tokens before preprocessor\n"
+        LIGHTCYAN "  -fdiagnostics-color=never " COLOR_RESET "Output will not use colors\n"
         "\n"
-        LIGHTCYAN "  -dump-pp-tokens       " RESET "Output tokens after preprocessor\n"
+        LIGHTCYAN "  -dump-tokens          " COLOR_RESET "Output tokens before preprocessor\n"
         "\n"
-        LIGHTCYAN "  -disable-assert       " RESET "disables built-in assert\n"
+        LIGHTCYAN "  -dump-pp-tokens       " COLOR_RESET "Output tokens after preprocessor\n"
         "\n"
-        LIGHTCYAN "  -const-literal        " RESET "literal string becomes const\n"
+        LIGHTCYAN "  -disable-assert       " COLOR_RESET "disables built-in assert\n"
         "\n"
-        LIGHTCYAN "  -preprocess-def-macro " RESET "preprocess def macros after expansion\n"
+        LIGHTCYAN "  -const-literal        " COLOR_RESET "literal string becomes const\n"
         "\n"
-        LIGHTCYAN "  -suppress             " RESET "suppress statistics (if zero)\n"
+        LIGHTCYAN "  -preprocess-def-macro " COLOR_RESET "preprocess def macros after expansion\n"
 
         "More details at http://thradams.com/cake/manual.html\n"
         ;

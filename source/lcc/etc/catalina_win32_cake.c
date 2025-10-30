@@ -13,7 +13,6 @@ char *suffixes[] = { ".c;.C", ".i;.I", ".s;.S", ".obj;.OBJ", ".out", 0 };
 char inputs[256] = "";
 char *cpp[] = { LCCDIR "\\bin\\cake.exe", 
 	"-D__CATALINA__",
-	"-suppress",
   "$1", "$2", "-o", "$3", 0 };
 char *include[] = { "-I" LCCDIR "\\include", 0 };
 char *com[] = { LCCDIR "\\bin\\rcc.exe", "-target=catalina/win32", "$1", "$2", "$3", 0 };

@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_snd0_68f736d0__sig_handler_L000001 ' <symbol:_sig_handler>
+C_sb0o_68fd755b__sig_handler_L000001 ' <symbol:_sig_handler>
  long $1
  byte 0[60]
 
@@ -44,7 +44,7 @@ C_raise_3
  mov r22, r23
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_snd0_68f736d0__sig_handler_L000001
+ long @C_sb0o_68fd755b__sig_handler_L000001
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -112,7 +112,7 @@ C_signal_11
  mov r22, r3
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_snd0_68f736d0__sig_handler_L000001
+ long @C_sb0o_68fd755b__sig_handler_L000001
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -126,7 +126,7 @@ C_signal_11
  mov r22, r3
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_snd0_68f736d0__sig_handler_L000001
+ long @C_sb0o_68fd755b__sig_handler_L000001
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  jmp #LODL
@@ -139,7 +139,7 @@ C_signal_14
  mov r22, r3
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_snd0_68f736d0__sig_handler_L000001
+ long @C_sb0o_68fd755b__sig_handler_L000001
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  wrlong r2, r22 ' ASGNP4 reg reg

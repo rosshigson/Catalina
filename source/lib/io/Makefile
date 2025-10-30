@@ -12,7 +12,8 @@ all:	ddebug.s dgptn.s dgvol.s\
 	_creat.s _rename.s _unlink.s\
 	cat_getc.s cat_putc.s _openu.s\
 	_closeu.s _createu.s _mkdir.s\
-	_created.s dwrite.s dread.s cache_sd.s
+	_created.s dwrite.s dread.s\
+	cache_sd.s dirent.s
 
 clean:
 	-rm -f *.s *.lst *.bin *.binary OLIST

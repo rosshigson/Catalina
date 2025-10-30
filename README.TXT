@@ -196,85 +196,19 @@ documents folder.
 New Functionality
 -----------------
 
-1. Cake is now fully integrated into Catalina. While Cake can still be used as
-   a stand-alone preprocessor that can take C99, C11 or C23 source programs 
-   and translate them to C89 suitable for compiling with Catalina, it can
-   now also be used in place of the default Catalina preprocessor (cpp) by
-   using the -C option to specify the appropriate C standard using a 2 digit 
-   numeric value. For example:
+1. A verison of dirent.h, which defines the functions opendir(), readdir(),
+   closedir() and realpath(). These functions are not part of any C standard,
+   but are required by Cake.
 
-      catalina -C99 -lci hello_99.c
-      catalina -C 23 -lci hello_99.c
+2. Catalina now disables Cake's use of colors in error and warning messages
+   by default, because Geany does not support it. However, for command-line 
+   or terminal emulator use, colors can be re-enabled by defining the Catalina
+   symbol CAKE_COLOR, e,g, by adding -C CAKE_COLOR to the Catalina command. 
+   For example:
 
-   Not specifying any C standard, or specifying -C89 or -C90 means Catalina 
-   will use cpp as the C preprocessor, whereas specifying -C94, -C95, -C99, 
-   -C11, -C17, -C18 or -C23 will use cake as the C preprocessor instead. 
-
-   Other than determining whether cpp or cake is used, there is currently no
-   difference between the various standards except that cake will define the 
-   symbol __STDC_VERSION__ to be 202311L (no matter which C standard is 
-   specified) but this symbol will not be defined when using cpp. However, 
-   eventually cake may behave differently according to which standard is 
-   specified.
-
-   Note that the use of cake as a preprocessor is currently not compatible 
-   with the Catalina debugger or the Catalina parallelizer. If -g or -Z is 
-   specified along with -CXX (where XX != 89 or 90) then Catalina will issue
-   a warning and ignore the option. The reason for disallowing this is that
-   Cake may re-write the C program, which means the line numbers will not 
-   match the original program (which would interfere with the use of the 
-   debugger) and/or it may re-arrange lines in the C source program (which
-   would interfere with the operation of the parallelizer). However, Cake 
-   can be used stand-alone to first (for example) convert a C99 program to 
-   C89, which can then be edited, modified and compiled with Catalina using
-   the debug or parallelizer options.
-
-   Cake is fully compatible with catapult - simply add the appropriate C
-   standard (e.g. -C99) to the appropriate catapult pragma (typically, it
-   would be added to the "common" pragma).
-
-   Cake is fully compatible with geany - simply add the appropriate C 
-   standard (e.g. -C99) to the Catalina Options field in the "Project->
-   Properties" dialog box.
-
-   Cake is fully compatible with the optimizer - simply add the appropriate 
-   option (e.g. -O5 or -C OPTIMIZE). However, note that Cake may re-write 
-   the C code and (similar to the optimizer itself) this may sometimes 
-   result in it omitting code that it thinks is not used by the program (e.g. 
-   because it appears only in the string arguments to "PASM" statements, which
-   are not understood by either Cake or the Optimizer). In such cases, it may 
-   be necessary to add some dummy C code to prevent the code from being 
-   omitted (for an example, see demos\inline_pasm\test_inline_pasm_7.c).
-
-   Note that Cake is much more rigorous in parsing C source code than cpp, 
-   and it may issue errors, warnings or information notes in cases where cpp 
-   simply passed the result silently on to the compiler. Also, there may be 
-   identifiers that were valid in a C89 program that are not valid according 
-   to later C standards, so a valid C89 program may not compile if cake is 
-   used. However, the Catalina and Catalyst demo programs** have been updated 
-   to compile correctly using EITHER cpp OR cake, albeit sometimes generating
-   additional warning messages when cake is used.
-
-   ** All programs except for the Catalyst jzip and xvi (aka vi) programs.
-   While these programs COULD be updated to C99, they both use old-style C 
-   function definitions extensively, which were dropped in C23 and which 
-   Cake does not support. These programs remain as C89 only programs and 
-   must still be compiled using -C89, -C90 or with no C standard specified.
-   The same is currently true of Catalina itself and the Catalina C library,
-   except that the C library include files have been updated where necessary
-   so that they can be used with any of the C standards.
-
-   A section on Cake has been added to the Catalina Reference Manuals.
+     catalina hello_99.c -lci -C99 -C CAKE_COLOR
 
 Other Changes
 -------------
 
-1. The "Catalina Command Line" option on the geany build menu was not working
-   in Windows 11. It has now been changed to:
-
-      cmd.exe /k "call ""%LCCDIR%\\use_catalina"" && cd %p"
-
-   Note that this command must be entered with a double backslash (i.e \\) 
-   when manually edited in %LCCDIR%\catalina_geany\data\filedefs\filetypes.c
-   but as a single backslash (i.e. \) when modified using the geany
-   "Build->Set Build Commands" menu & dialog box. 
+1. 

@@ -8,12 +8,12 @@
 #endif
 
 #ifndef WCHAR_MAX
-#define WCHAR_MAX 0xff
+#define WCHAR_MAX 0xffff
 #endif
 
 #if	!defined(_WCHAR_T)
 #define	_WCHAR_T
-typedef char	wchar_t;		/* type expanded character set */
+typedef unsigned short	wchar_t;		/* type expanded character set */
 #endif	/* _WCHAR_T */
 
 #endif

@@ -8,6 +8,14 @@
 #include <stdbool.h>
  
 
+#if defined(PATH_MAX)
+#define FS_MAX_PATH PATH_MAX // Linux uses this in realpath
+#elif defined(MAX_PATH)
+#define FS_MAX_PATH MAX_PATH // Some systems define this
+#else
+#define FS_MAX_PATH 500 
+
+#endif
 #ifdef _WIN32 
 #include <direct.h>
 #include <sys/types.h>
@@ -17,7 +25,6 @@
 #pragma cake diagnostic push
 #pragma cake diagnostic ignored "-Wstyle"
 #endif
-
 
 //https://docs.microsoft.com/pt-br/cpp/c-runtime-library/reference/mkdir-wmkdir?_View=msvc-160
 #define mkdir(a, b) _mkdir(a)
@@ -32,7 +39,6 @@
  opendir,  readdir closedir for windows.
  include dirent.h on linux
 */
-
 
 
 enum
@@ -82,12 +88,11 @@ struct dirent* _Opt readdir(DIR* dirp);
 //int closedir(DIR* _Owner dirp);
 
 
-#define MAX_PATH 500
 
 //https://man7.org/linux/man-pages/man2/mkdir.2.html
 #include <sys/types.h>
-#if !defined(__CATALYST__)
 #include <dirent.h>
+#if !defined(__CATALYST__)
 #include <unistd.h>
 #endif // !defined(__CATALYST__)
 #include <sys/stat.h>

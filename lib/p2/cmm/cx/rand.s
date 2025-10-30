@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl_label
-C_sfmk_68f7393d_next_L000003 ' <symbol:next>
+C_skj0_68fd77dd_next_L000003 ' <symbol:next>
  long $1
 
 ' Catalina Export rand
@@ -26,7 +26,7 @@ C_rand ' <symbol:rand>
  long I32_PSHM + $540000<<S32 ' save registers
  word I16B_LODL + (r22)<<D16B
  alignl_p1
- long @C_sfmk_68f7393d_next_L000003 ' reg <- addrg
+ long @C_skj0_68fd77dd_next_L000003 ' reg <- addrg
  word I16B_LODL + (r20)<<D16B
  alignl_p1
  long $41c64e6d ' reg <- con
@@ -39,7 +39,7 @@ C_rand ' <symbol:rand>
  long 12345 ' reg <- con
  word I16A_ADD + (r20)<<D16A + (r0)<<S16A ' ADDU (2)
  alignl_p1
- long I32_LODA + (@C_sfmk_68f7393d_next_L000003)<<S32
+ long I32_LODA + (@C_skj0_68fd77dd_next_L000003)<<S32
  word I16A_WRLONG + (r20)<<D16A + RI<<S16A ' ASGNU4 addrg reg
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
  word I16A_SHRI + (r22)<<D16A + (16)<<S16A ' SHRU4 reg coni
@@ -57,7 +57,7 @@ C_rand ' <symbol:rand>
  alignl_label
 C_srand ' <symbol:srand>
  alignl_p1
- long I32_LODA + (@C_sfmk_68f7393d_next_L000003)<<S32
+ long I32_LODA + (@C_skj0_68fd77dd_next_L000003)<<S32
  word I16A_WRLONG + (r2)<<D16A + RI<<S16A ' ASGNU4 addrg reg
 ' C_srand_5 ' (symbol refcount = 0)
  word I16B_RETN

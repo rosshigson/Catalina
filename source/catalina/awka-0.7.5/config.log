@@ -29,6 +29,12 @@ uname -v = 2025-03-11 08:33 UTC
 
 PATH: ./
 PATH: /c/Users/rossh/Catalina_Work_64/bin/
+PATH: ./
+PATH: ./
+PATH: ./
+PATH: ./
+PATH: ./
+PATH: ./
 PATH: /c/Users/rossh/Catalina_Work_64/bin/
 PATH: /c/WINDOWS/system32/
 PATH: /c/WINDOWS/
@@ -557,7 +563,7 @@ configure:4545: $? = 0
 configure:4545: result: yes
 configure:4555: checking for matherr
 configure:4555: gcc -o conftest.exe -g -O2   conftest.c  -lm >&5
-C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\rossh\AppData\Local\Temp\ccQTjGKz.o: in function `main':
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\rossh\AppData\Local\Temp\ccoFzeK8.o: in function `main':
 C:/Users/rossh/Catalina_Work_64/source/catalina/awka-0.7.5/conftest.c:48:(.text.startup+0xa): undefined reference to `matherr'
 collect2.exe: error: ld returned 1 exit status
 configure:4555: $? = 1
@@ -624,7 +630,7 @@ configure:4740: $? = 0
 configure:4740: result: yes
 configure:4855: checking for gethostbyname
 configure:4855: gcc -o conftest.exe -g -O2   conftest.c  -lm >&5
-C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\rossh\AppData\Local\Temp\cc6MWvH1.o: in function `main':
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\rossh\AppData\Local\Temp\cc74BkRi.o: in function `main':
 C:/Users/rossh/Catalina_Work_64/source/catalina/awka-0.7.5/conftest.c:51:(.text.startup+0xa): undefined reference to `gethostbyname'
 collect2.exe: error: ld returned 1 exit status
 configure:4855: $? = 1
@@ -734,7 +740,7 @@ configure: failed program was:
 configure:4901: result: no
 configure:4917: checking for connect
 configure:4917: gcc -o conftest.exe -g -O2   conftest.c  -lm >&5
-C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\rossh\AppData\Local\Temp\cccLG1hN.o: in function `main':
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\rossh\AppData\Local\Temp\ccmY0Emc.o: in function `main':
 C:/Users/rossh/Catalina_Work_64/source/catalina/awka-0.7.5/conftest.c:51:(.text.startup+0xa): undefined reference to `connect'
 collect2.exe: error: ld returned 1 exit status
 configure:4917: $? = 1

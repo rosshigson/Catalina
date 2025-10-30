@@ -37,11 +37,6 @@
 #include "visit_il.h"
 #include <time.h>
 
-#ifdef PATH_MAX
-#define MYMAX_PATH PATH_MAX // Linux uses it in realpath
-#else
-#define MYMAX_PATH MAX_PATH
-#endif
 
 #include <stddef.h>  // for NULL
 
@@ -317,6 +312,8 @@ _Bool compiler_diagnostic(enum diagnostic_id w,
     const char* fmt, ...)
 {
 
+    const bool color_enabled = !ctx->options.color_disabled;
+
     if (ctx->p_diagnostic_id_stack &&
         ctx->p_diagnostic_id_stack->size > 0)
     {
@@ -428,7 +425,10 @@ _Bool compiler_diagnostic(enum diagnostic_id w,
 
     char buffer[200] = { 0 };
 
-    print_position(marker.file, marker.line, marker.start_col, ctx->options.visual_studio_ouput_format);
+    print_position(marker.file, marker.line,
+        marker.start_col,
+        ctx->options.visual_studio_ouput_format,
+        color_enabled);
 
 #pragma CAKE diagnostic push
 #pragma CAKE diagnostic ignored "-Wnullable-to-non-nullable"
@@ -459,22 +459,28 @@ _Bool compiler_diagnostic(enum diagnostic_id w,
     {
         if (is_error)
         {
-            printf(LIGHTRED "error " WHITE "C%04d: %s\n" RESET, w, buffer);
+            if (color_enabled)
+                printf(LIGHTRED "error " WHITE "C%04d: %s\n" COLOR_RESET, w, buffer);
+            else
+                printf("error "        "C%04d: %s\n", w, buffer);
         }
         else if (is_warning)
         {
-            printf(LIGHTMAGENTA "warning " WHITE "C%04d: %s\n" RESET, w, buffer);
+            if (color_enabled)
+                printf(LIGHTMAGENTA "warning " WHITE "C%04d: %s\n" COLOR_RESET, w, buffer);
+            else
+                printf("warning "  "C%04d: %s\n", w, buffer);
         }
         else if (is_note)
         {
-            if (w == W_LOCATION)
-                printf(LIGHTCYAN "note: " WHITE "%s\n" RESET, buffer);
+            if (color_enabled)
+                printf(LIGHTCYAN "note: " WHITE "%s\n" COLOR_RESET, buffer);
             else
-                printf(LIGHTCYAN "note: " WHITE "%s\n" RESET, buffer);
+                printf("note: " "%s\n", buffer);
         }
     }
 
-    print_line_and_token(&marker, ctx->options.visual_studio_ouput_format);
+    print_line_and_token(&marker, color_enabled);
 
 
     if (ctx->sarif_file)
@@ -1279,7 +1285,7 @@ enum token_type is_keyword(const char* text, enum target target)
         if (strcmp("__builtin_va_copy", text) == 0)
             return TK_KEYWORD_GCC__BUILTIN_VA_COPY;
 
-        static_assert(NUMBER_OF_TARGETS == 6, "does your target have builtins or extensions?");
+        static_assert(NUMBER_OF_TARGETS == 6, "some target builtins or extensions may be necessary");
 
         if (target == TARGET_X86_MSVC || target == TARGET_X64_MSVC)
         {
@@ -1402,7 +1408,7 @@ struct token* _Opt parser_look_ahead(const struct parser_ctx* ctx)
 }
 
 
-static struct token* _Opt pragma_match(const struct token* p_current)
+static struct token* _Opt pragma_declaration_match(const struct token* p_current)
 {
     struct token* _Opt p_token = p_current->next;
     while (p_token && p_token->type == TK_BLANKS)
@@ -1412,142 +1418,11 @@ static struct token* _Opt pragma_match(const struct token* p_current)
     return p_token;
 }
 
-static void pragma_skip_blanks(struct parser_ctx* ctx)
-{
-    while (ctx->current && ctx->current->type == TK_BLANKS)
-    {
-        ctx->current = ctx->current->next;
-    }
-}
-
-/*
- * Some pragmas needs to be handled by the compiler
- */
-static void parse_pragma(struct parser_ctx* ctx, struct token* token)
-{
-    try
-    {
-        if (ctx->current == NULL)
-        {
-            unexpected_end_of_file(ctx);
-            throw;
-        }
-
-        if (ctx->current->type == TK_PRAGMA)
-        {
-            ctx->current = ctx->current->next;
-            pragma_skip_blanks(ctx);
-
-            if (ctx->current &&
-                (strcmp(ctx->current->lexeme, "CAKE") == 0 ||
-                    strcmp(ctx->current->lexeme, "cake") == 0))
-            {
-                ctx->current = ctx->current->next;
-                pragma_skip_blanks(ctx);
-            }
-
-            if (ctx->current && strcmp(ctx->current->lexeme, "nullchecks") == 0)
-            {
-                ctx->current = ctx->current->next;
-                pragma_skip_blanks(ctx);
-
-                // This is not working because this information needs to be in the AST. 
-                // because it is used in a second step.
-                bool onoff = false;
-                if (ctx->current && strcmp(ctx->current->lexeme, "ON") == 0)
-                {
-                    onoff = true;
-                }
-                else if (ctx->current && strcmp(ctx->current->lexeme, "OFF") == 0)
-                {
-                    onoff = false;
-                }
-                else
-                {
-                    compiler_diagnostic(C_ERROR_PRAGMA_ERROR, ctx, ctx->current, NULL, "nullchecks pragma needs to use ON OFF");
-                }
-                ctx->options.null_checks_enabled = onoff;
-            }
-
-            if (ctx->current && strcmp(ctx->current->lexeme, "diagnostic") == 0)
-            {
-                ctx->current = ctx->current->next;
-                pragma_skip_blanks(ctx);
-
-                if (ctx->current && strcmp(ctx->current->lexeme, "push") == 0)
-                {
-                    // #pragma GCC diagnostic push
-                    if (ctx->options.diagnostic_stack.top_index <
-                        sizeof(ctx->options.diagnostic_stack) / sizeof(ctx->options.diagnostic_stack.stack[0]))
-                    {
-                        ctx->options.diagnostic_stack.top_index++;
-                        ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index] =
-                            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index - 1];
-                    }
-                    ctx->current = ctx->current->next;
-                    pragma_skip_blanks(ctx);
-                }
-                else if (ctx->current && strcmp(ctx->current->lexeme, "pop") == 0)
-                {
-                    // #pragma CAKE diagnostic pop
-                    if (ctx->options.diagnostic_stack.top_index > 0)
-                    {
-                        ctx->options.diagnostic_stack.top_index--;
-                    }
-                    ctx->current = ctx->current->next;
-                    pragma_skip_blanks(ctx);
-                }
-                else if (ctx->current &&
-                    (strcmp(ctx->current->lexeme, "error") == 0 ||
-                        strcmp(ctx->current->lexeme, "warning") == 0 ||
-                        strcmp(ctx->current->lexeme, "note") == 0 ||
-                        strcmp(ctx->current->lexeme, "ignored") == 0))
-                {
-                    const bool is_error = strcmp(ctx->current->lexeme, "error") == 0;
-                    const bool is_warning = strcmp(ctx->current->lexeme, "warning") == 0;
-                    const bool is_note = strcmp(ctx->current->lexeme, "note") == 0;
-
-                    ctx->current = ctx->current->next;
-                    pragma_skip_blanks(ctx);
-
-                    if (ctx->current && ctx->current->type == TK_STRING_LITERAL)
-                    {
-                        unsigned long long w = get_warning_bit_mask(ctx->current->lexeme + 1 /*+ 2*/);
-
-                        ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].errors &= ~w;
-                        ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].notes &= ~w;
-                        ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings &= ~w;
-
-                        if (is_error)
-                            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].errors |= w;
-                        else if (is_warning)
-                            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings |= w;
-                        else if (is_note)
-                            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].notes |= w;
-                    }
-                }
-                else
-                {
-                    compiler_diagnostic(C_ERROR_UNEXPECTED, ctx, ctx->current, NULL, "unknown pragma");
-                }
-            }
-        }
-    }
-    catch
-    {
-    }
-}
 
 static void parser_skip_blanks(struct parser_ctx* ctx)
 {
     while (ctx->current && !(ctx->current->flags & TK_FLAG_FINAL))
     {
-        if (ctx->current->type == TK_PRAGMA)
-        {
-            /*only active block have TK_PRAGMA*/
-            parse_pragma(ctx, ctx->current);
-        }
-
         if (ctx->current)
             ctx->current = ctx->current->next;
     }
@@ -1906,8 +1781,14 @@ struct declaration_specifiers* _Owner _Opt declaration_specifiers(struct parser_
                 p_declaration_specifiers->p_attribute_specifier_sequence = NULL;//
             }
 
-            assert(p_declaration_specifiers->p_attribute_specifier_sequence == NULL);
+            if (p_declaration_specifiers->p_attribute_specifier_sequence == NULL)
+            {
+                free(p_declaration_specifiers->p_attribute_specifier_sequence);
+                p_declaration_specifiers->p_attribute_specifier_sequence = NULL;
+            }
+
             p_declaration_specifiers->p_attribute_specifier_sequence = attribute_specifier_sequence_opt(ctx);
+
 
             if (ctx->current == NULL)
             {
@@ -2075,7 +1956,11 @@ struct declaration* _Owner _Opt declaration_core(struct parser_ctx* ctx,
                 }
                 else
                 {
-                    compiler_diagnostic(C_ERROR_EXPECTED_DECLARATION, ctx, ctx->current, NULL, "expected declaration not '%s'", ctx->current->lexeme);
+                    compiler_diagnostic(C_ERROR_EXPECTED_DECLARATION,
+                        ctx,
+                        ctx->current,
+                        NULL,
+                        "expected declaration not '%s'", get_diagnostic_friendly_token_name(ctx->current->type));
                 }
                 parser_match(ctx); // we need to go ahead
             }
@@ -3823,25 +3708,25 @@ struct type_specifier* _Owner _Opt type_specifier(struct parser_ctx* ctx)
 
         case TK_KEYWORD_MSVC__INT8:
             p_type_specifier->token = ctx->current;
-            p_type_specifier->flags = get_intN_type_specifier(ctx->options.target, 8);
+            p_type_specifier->flags = object_type_to_type_specifier(get_platform(ctx->options.target)->int8_type) & ~TYPE_SPECIFIER_SIGNED;
             parser_match(ctx);
             return p_type_specifier;
 
         case TK_KEYWORD_MSVC__INT16:
             p_type_specifier->token = ctx->current;
-            p_type_specifier->flags = get_intN_type_specifier(ctx->options.target, 16);
+            p_type_specifier->flags = object_type_to_type_specifier(get_platform(ctx->options.target)->int16_type);
             parser_match(ctx);
             return p_type_specifier;
 
         case TK_KEYWORD_MSVC__INT32:
             p_type_specifier->token = ctx->current;
-            p_type_specifier->flags = get_intN_type_specifier(ctx->options.target, 32);
+            p_type_specifier->flags = object_type_to_type_specifier(get_platform(ctx->options.target)->int32_type);
             parser_match(ctx);
             return p_type_specifier;
 
         case TK_KEYWORD_MSVC__INT64:
             p_type_specifier->token = ctx->current;
-            p_type_specifier->flags = get_intN_type_specifier(ctx->options.target, 64);
+            p_type_specifier->flags = object_type_to_type_specifier(get_platform(ctx->options.target)->int64_type);
             parser_match(ctx);
             return p_type_specifier;
 
@@ -5061,7 +4946,7 @@ struct type_specifier_qualifier* _Owner _Opt type_specifier_qualifier(struct par
     return type_specifier_qualifier;
 }
 
-const struct enumerator* _Opt find_enumerator_by_value(const struct enum_specifier* p_enum_specifier, const struct object* object)
+const struct enumerator* _Opt find_enumerator_by_value(struct parser_ctx* ctx, const struct enum_specifier* p_enum_specifier, const struct object* object)
 {
     if (p_enum_specifier->enumerator_list.head == NULL)
     {
@@ -5071,7 +4956,7 @@ const struct enumerator* _Opt find_enumerator_by_value(const struct enum_specifi
     struct enumerator* _Opt p = p_enum_specifier->enumerator_list.head;
     while (p)
     {
-        if (object_equal(&p->value, object))
+        if (object_is_equal(ctx->options.target, &p->value, object))
             return p;
         p = p->next;
     }
@@ -5320,12 +5205,12 @@ struct enumerator_list enumerator_list(struct parser_ctx* ctx, const struct enum
      */
 
 
-    struct object next_enumerator_value = object_make_signed_int(0);
+    struct object next_enumerator_value = object_make_signed_int(ctx->options.target, 0);
 
     if (p_enum_specifier->specifier_qualifier_list)
     {
-        enum object_value_type vt = type_specifier_to_object_type(p_enum_specifier->specifier_qualifier_list->type_specifier_flags, ctx->options.target);
-        next_enumerator_value = object_cast(vt, &next_enumerator_value);
+        enum object_type vt = type_specifier_to_object_type(p_enum_specifier->specifier_qualifier_list->type_specifier_flags, ctx->options.target);
+        next_enumerator_value = object_cast(ctx->options.target, vt, &next_enumerator_value);
     }
 
     struct enumerator_list enumeratorlist = { 0 };
@@ -5450,18 +5335,13 @@ struct enumerator* _Owner _Opt enumerator(struct parser_ctx* ctx,
             //fixes #257
             *p_next_enumerator_value = *object_get_referenced(&p_enumerator->value);
 
-            if (object_increment_value(p_next_enumerator_value) != 0)
-            {
-                //overflow TODO
-            }
+            object_increment_value(ctx->options.target, p_next_enumerator_value);
+            //overflow?
         }
         else
         {
             p_enumerator->value = *p_next_enumerator_value;
-            if (object_increment_value(p_next_enumerator_value) != 0)
-            {
-                //overflow
-            }
+            object_increment_value(ctx->options.target, p_next_enumerator_value);
         }
     }
     catch
@@ -5516,7 +5396,7 @@ struct alignment_specifier* _Owner _Opt alignment_specifier(struct parser_ctx* c
                 throw;
             if (object_has_constant_value(&alignment_specifier->constant_expression->object))
             {
-                long a = object_to_signed_long(&alignment_specifier->constant_expression->object);
+                long long a = object_to_signed_long_long(&alignment_specifier->constant_expression->object);
                 if (a == 8)
                     alignment_specifier->flags |= ALIGNMENT_SPECIFIER_8_FLAGS;
                 else if (a == 16)
@@ -7371,30 +7251,38 @@ void pragma_declaration_delete(struct pragma_declaration* _Owner _Opt p)
     }
 }
 
-void execute_pragma(struct parser_ctx* ctx, struct pragma_declaration* p_pragma, bool on_flow_analysis)
+void execute_pragma_declaration(struct parser_ctx* ctx, struct pragma_declaration* p_pragma, bool on_flow_analysis)
 {
     struct token* _Opt p_pragma_token = p_pragma->first_token;
 
-    if (p_pragma_token->type != TK_PRAGMA)
+    try
     {
-        assert(false);
-        return;
-    }
+    if (p_pragma_token->type != TK_PRAGMA)
+            throw;
 
-    p_pragma_token = pragma_match(p_pragma_token);
+        p_pragma_token = pragma_declaration_match(p_pragma_token);
+        if (p_pragma_token == NULL)
+            throw;
 
-    if (p_pragma_token &&
-        (strcmp(p_pragma_token->lexeme, "CAKE") == 0 ||
+        if ((strcmp(p_pragma_token->lexeme, "CAKE") == 0 ||
             strcmp(p_pragma_token->lexeme, "cake") == 0))
     {
-        p_pragma_token = pragma_match(p_pragma_token);
+            /*
+               optional
+            */
+            p_pragma_token = pragma_declaration_match(p_pragma_token);
+            if (p_pragma_token == NULL)
+                throw;
     }
 
-    if (p_pragma_token && strcmp(p_pragma_token->lexeme, "diagnostic") == 0)
+        if (strcmp(p_pragma_token->lexeme, "diagnostic") == 0)
     {
-        p_pragma_token = pragma_match(p_pragma_token);
+            p_pragma_token = pragma_declaration_match(p_pragma_token);
 
-        if (p_pragma_token && strcmp(p_pragma_token->lexeme, "push") == 0)
+            if (p_pragma_token == NULL)
+                throw;
+
+            if (strcmp(p_pragma_token->lexeme, "push") == 0)
         {
             // #pragma GCC diagnostic push
             if (ctx->options.diagnostic_stack.top_index <
@@ -7404,31 +7292,32 @@ void execute_pragma(struct parser_ctx* ctx, struct pragma_declaration* p_pragma,
                 ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index] =
                     ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index - 1];
             }
-            p_pragma_token = p_pragma_token->next;
+                p_pragma_token = pragma_declaration_match(p_pragma_token);
         }
-        else if (p_pragma_token && strcmp(p_pragma_token->lexeme, "pop") == 0)
+            else if (strcmp(p_pragma_token->lexeme, "pop") == 0)
         {
             // #pragma CAKE diagnostic pop
             if (ctx->options.diagnostic_stack.top_index > 0)
             {
                 ctx->options.diagnostic_stack.top_index--;
             }
-            p_pragma_token = pragma_match(p_pragma_token);
+                p_pragma_token = pragma_declaration_match(p_pragma_token);
         }
-        else if (p_pragma_token &&
-            (strcmp(p_pragma_token->lexeme, "error") == 0 ||
+            else if (strcmp(p_pragma_token->lexeme, "error") == 0 ||
                 strcmp(p_pragma_token->lexeme, "warning") == 0 ||
                 strcmp(p_pragma_token->lexeme, "note") == 0 ||
-                strcmp(p_pragma_token->lexeme, "ignored") == 0))
+                    strcmp(p_pragma_token->lexeme, "ignored") == 0)
         {
             const bool is_error = strcmp(p_pragma_token->lexeme, "error") == 0;
             const bool is_warning = strcmp(p_pragma_token->lexeme, "warning") == 0;
             const bool is_note = strcmp(p_pragma_token->lexeme, "note") == 0;
 
-            p_pragma_token = pragma_match(p_pragma_token);
+                p_pragma_token = pragma_declaration_match(p_pragma_token);
+                if (p_pragma_token == NULL)
+                    throw;
 
-            if (p_pragma_token && p_pragma_token->type == TK_STRING_LITERAL)
-            {
+                if (p_pragma_token->type != TK_STRING_LITERAL)
+                    throw;
 
                 unsigned long long w = get_warning_bit_mask(p_pragma_token->lexeme + 1 /*+ 2*/);
 
@@ -7442,118 +7331,138 @@ void execute_pragma(struct parser_ctx* ctx, struct pragma_declaration* p_pragma,
                     ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings |= w;
                 else if (is_note)
                     ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].notes |= w;
-            }
         }
         else
         {
-            compiler_diagnostic(C_ERROR_UNEXPECTED, ctx, p_pragma_token, NULL, "unknown pragma");
+                compiler_diagnostic(W_ATTRIBUTES, ctx, p_pragma_token, NULL, "unknown diagnostic command");
+                throw;
         }
     }
-    else if (p_pragma_token && strcmp(p_pragma_token->lexeme, "nullable") == 0)
+        else if (strcmp(p_pragma_token->lexeme, "nullable") == 0)
     {
-        //see
-        //https://learn.microsoft.com/en-us/dotnet/csharp/nullable-references
-        p_pragma_token = pragma_match(p_pragma_token);
+            p_pragma_token = pragma_declaration_match(p_pragma_token);
+            if (p_pragma_token == NULL)
+                throw;
 
-        if (p_pragma_token && strcmp(p_pragma_token->lexeme, "enable") == 0)
+            if (strcmp(p_pragma_token->lexeme, "enable") != 0 &&
+                strcmp(p_pragma_token->lexeme, "disable") != 0)
         {
+                compiler_diagnostic(W_ATTRIBUTES, ctx, p_pragma_token, NULL, "expected enable/disable");
+                throw;
+            }
+
+            const bool nullable_enable = strcmp(p_pragma_token->lexeme, "enable") == 0;
+
             unsigned long long w = NULLABLE_DISABLE_REMOVED_WARNINGS;
             ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].errors &= ~w;
             ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].notes &= ~w;
             ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings &= ~w;
 
+            if (nullable_enable)
+            {
             ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings |= w;
             ctx->options.null_checks_enabled = true;
             ctx->options.flow_analysis = true; //also enable flow analysis
         }
-        if (p_pragma_token && strcmp(p_pragma_token->lexeme, "disable") == 0)
+            else
         {
-            unsigned long long w = NULLABLE_DISABLE_REMOVED_WARNINGS;
-
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].errors &= ~w;
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].notes &= ~w;
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings &= ~w;
-
-
-            // Dereference warnings : Disabled
-            // Assignment warnings : Disabled
-            // Pointer types : All are nullable
             ctx->options.null_checks_enabled = false;
         }
     }
-    else if (p_pragma_token && strcmp(p_pragma_token->lexeme, "ownership") == 0)
+        else if (strcmp(p_pragma_token->lexeme, "ownership") == 0)
     {
-        //see
-        //https://learn.microsoft.com/en-us/dotnet/csharp/nullable-references
-        p_pragma_token = pragma_match(p_pragma_token);
+            p_pragma_token = pragma_declaration_match(p_pragma_token);
+            if (p_pragma_token == NULL)
+                throw;
 
-        if (p_pragma_token && strcmp(p_pragma_token->lexeme, "enable") == 0)
+            if (strcmp(p_pragma_token->lexeme, "enable") != 0 &&
+                strcmp(p_pragma_token->lexeme, "disable") != 0)
         {
+                compiler_diagnostic(W_ATTRIBUTES, ctx, p_pragma_token, NULL, "expected enable/disable");
+                throw;
+            }
+
+            const bool ownership_enable = strcmp(p_pragma_token->lexeme, "enable") == 0;
             unsigned long long w = OWNERSHIP_DISABLE_REMOVED_WARNINGS;
 
             ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].errors &= ~w;
             ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].notes &= ~w;
             ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings &= ~w;
 
+            if (ownership_enable)
+            {
             ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings |= w;
-
             ctx->options.ownership_enabled = true;
             ctx->options.flow_analysis = true; //also enable flow analysis
-
         }
-        if (p_pragma_token && strcmp(p_pragma_token->lexeme, "disable") == 0)
+            else
         {
-            unsigned long long w = OWNERSHIP_DISABLE_REMOVED_WARNINGS;
-
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].errors &= ~w;
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].notes &= ~w;
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings &= ~w;
-
             ctx->options.ownership_enabled = false;
         }
     }
     else if (p_pragma_token && strcmp(p_pragma_token->lexeme, "flow") == 0)
     {
-        p_pragma_token = pragma_match(p_pragma_token);
+            p_pragma_token = pragma_declaration_match(p_pragma_token);
+            if (p_pragma_token == NULL)
+                throw;
 
-        if (p_pragma_token && strcmp(p_pragma_token->lexeme, "enable") == 0)
+            if (strcmp(p_pragma_token->lexeme, "enable") != 0 &&
+                strcmp(p_pragma_token->lexeme, "disable") != 0)
         {
-            ctx->options.flow_analysis = true;
+                compiler_diagnostic(W_ATTRIBUTES, ctx, p_pragma_token, NULL, "expected enable/disable");
+                throw;
         }
-        if (p_pragma_token && strcmp(p_pragma_token->lexeme, "disable") == 0)
-        {
-            ctx->options.flow_analysis = false;
+
+            const bool flow_enable = strcmp(p_pragma_token->lexeme, "enable") == 0;
+
+            p_pragma_token = pragma_declaration_match(p_pragma_token);
+
+            ctx->options.flow_analysis = flow_enable;
         }
-    }
-    else if (p_pragma_token && strcmp(p_pragma_token->lexeme, "safety") == 0)
+        else if (strcmp(p_pragma_token->lexeme, "safety") == 0)
     {
-        p_pragma_token = pragma_match(p_pragma_token);
+            p_pragma_token = pragma_declaration_match(p_pragma_token);
+            if (p_pragma_token == NULL)
+                throw;
 
-        if (p_pragma_token && strcmp(p_pragma_token->lexeme, "enable") == 0)
+            if (strcmp(p_pragma_token->lexeme, "enable") != 0 &&
+                strcmp(p_pragma_token->lexeme, "disable") != 0)
         {
+                compiler_diagnostic(W_ATTRIBUTES, ctx, p_pragma_token, NULL, "expected enable/disable");
+                throw;
+            }
+
+            const bool safety_enable = strcmp(p_pragma_token->lexeme, "enable") == 0;
+
+            p_pragma_token = pragma_declaration_match(p_pragma_token);
+
             unsigned long long w = NULLABLE_DISABLE_REMOVED_WARNINGS | OWNERSHIP_DISABLE_REMOVED_WARNINGS;
             ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].errors &= ~w;
             ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].notes &= ~w;
             ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings &= ~w;
 
+            if (safety_enable)
+            {
             ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings |= w;
             ctx->options.null_checks_enabled = true;
             ctx->options.flow_analysis = true; //also enable flow analysis
-
             ctx->options.ownership_enabled = true;
         }
-        if (p_pragma_token && strcmp(p_pragma_token->lexeme, "disable") == 0)
+            else
         {
-            unsigned long long w = NULLABLE_DISABLE_REMOVED_WARNINGS | OWNERSHIP_DISABLE_REMOVED_WARNINGS;
-
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].errors &= ~w;
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].notes &= ~w;
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings &= ~w;
-
             ctx->options.null_checks_enabled = false;
             ctx->options.ownership_enabled = false;
             ctx->options.flow_analysis = false;
         }
+    }
+        else
+    {
+            compiler_diagnostic(W_ATTRIBUTES, ctx, p_pragma_token, NULL, "unknown pragma");
+            throw;
+        }
+    }
+    catch
+        {
     }
 }
 
@@ -7588,12 +7497,14 @@ struct pragma_declaration* _Owner _Opt pragma_declaration(struct parser_ctx* ctx
 
         p_pragma_declaration->last_token = ctx->current;
         parser_match(ctx);
+
+        execute_pragma_declaration(ctx, p_pragma_declaration, false);
     }
     catch
     {
+        
     }
-    if (p_pragma_declaration)
-        execute_pragma(ctx, p_pragma_declaration, false);
+    
 
     return p_pragma_declaration;
 }
@@ -7676,7 +7587,7 @@ struct static_assert_declaration* _Owner _Opt static_assert_declaration(struct p
         if (position->type == TK_KEYWORD__STATIC_ASSERT)
         {
             if (object_has_constant_value(&p_static_assert_declaration->constant_expression->object) &&
-                !object_to_bool(&p_static_assert_declaration->constant_expression->object))
+                !object_is_true(&p_static_assert_declaration->constant_expression->object))
             {
                 if (p_static_assert_declaration->string_literal_opt)
                 {
@@ -8802,7 +8713,8 @@ struct label* _Owner _Opt label(struct parser_ctx* ctx, struct attribute_specifi
                 described by the constant range expression is empty.
                 */
 
-                struct label* _Opt p_existing_label = case_label_list_find_range(&ctx->p_current_selection_statement->label_list,
+                struct label* _Opt p_existing_label = case_label_list_find_range(ctx,
+                    &ctx->p_current_selection_statement->label_list,
                     &p_label->constant_expression->object,
                     &p_label->constant_expression_end->object);
 
@@ -8832,7 +8744,7 @@ struct label* _Owner _Opt label(struct parser_ctx* ctx, struct attribute_specifi
             }
             else
             {
-                struct label* _Opt p_existing_label = case_label_list_find(&ctx->p_current_selection_statement->label_list, &p_label->constant_expression->object);
+                struct label* _Opt p_existing_label = case_label_list_find(ctx, &ctx->p_current_selection_statement->label_list, &p_label->constant_expression->object);
                 if (p_existing_label)
                 {
 
@@ -8895,7 +8807,7 @@ struct label* _Owner _Opt label(struct parser_ctx* ctx, struct attribute_specifi
 
                 if (p_enum_specifier)
                 {
-                    const struct enumerator* _Opt p_enumerator = find_enumerator_by_value(p_enum_specifier, &p_label->constant_expression->object);
+                    const struct enumerator* _Opt p_enumerator = find_enumerator_by_value(ctx, p_enum_specifier, &p_label->constant_expression->object);
                     if (p_enumerator == NULL)
                     {
                         char str[50];
@@ -8918,7 +8830,7 @@ struct label* _Owner _Opt label(struct parser_ctx* ctx, struct attribute_specifi
         }
         else if (ctx->current->type == TK_KEYWORD_DEFAULT)
         {
-            struct label* _Opt p_existing_default_label = case_label_list_find_default(&ctx->p_current_selection_statement->label_list);
+            struct label* _Opt p_existing_default_label = case_label_list_find_default(ctx, &ctx->p_current_selection_statement->label_list);
 
             if (p_existing_default_label)
             {
@@ -8961,7 +8873,7 @@ struct label* _Owner _Opt label(struct parser_ctx* ctx, struct attribute_specifi
 }
 
 
-struct label* _Opt case_label_list_find_default(const struct case_label_list* list)
+struct label* _Opt case_label_list_find_default(struct parser_ctx* ctx, const struct case_label_list* list)
 {
     struct label* _Opt p = list->head;
     while (p)
@@ -8974,15 +8886,15 @@ struct label* _Opt case_label_list_find_default(const struct case_label_list* li
 }
 
 
-struct label* _Opt case_label_list_find_range(const struct case_label_list* list, const struct object* begin, const struct object* end)
+struct label* _Opt case_label_list_find_range(struct parser_ctx* ctx, const struct case_label_list* list, const struct object* begin, const struct object* end)
 {
     struct label* _Opt p = list->head;
     while (p)
     {
         if (p->constant_expression_end == NULL)
         {
-            if (object_greater_than_or_equal(&p->constant_expression->object, begin) &&
-                object_smaller_than_or_equal(&p->constant_expression_end->object, end))
+            if (object_is_greater_than_or_equal(ctx->options.target, &p->constant_expression->object, begin) &&
+                object_is_smaller_than_or_equal(ctx->options.target, &p->constant_expression_end->object, end))
             {
                 return p;
             }
@@ -8990,8 +8902,8 @@ struct label* _Opt case_label_list_find_range(const struct case_label_list* list
         else
         {
             //range with range intersection
-            if (object_smaller_than_or_equal(&p->constant_expression->object, end) &&
-                object_smaller_than_or_equal(begin, &p->constant_expression_end->object))
+            if (object_is_smaller_than_or_equal(ctx->options.target, &p->constant_expression->object, end) &&
+                object_is_smaller_than_or_equal(ctx->options.target, begin, &p->constant_expression_end->object))
                 return p;
         }
         p = p->next;
@@ -8999,7 +8911,7 @@ struct label* _Opt case_label_list_find_range(const struct case_label_list* list
     return NULL;
 }
 
-struct label* _Opt case_label_list_find(const struct case_label_list* list, const struct object* object)
+struct label* _Opt case_label_list_find(struct parser_ctx* ctx, const struct case_label_list* list, const struct object* object)
 {
     struct label* _Opt p = list->head;
     while (p)
@@ -9007,7 +8919,7 @@ struct label* _Opt case_label_list_find(const struct case_label_list* list, cons
         if (p->constant_expression_end == NULL)
         {
             if (p->constant_expression &&
-                object_equal(&p->constant_expression->object, object))
+                object_is_equal(ctx->options.target, &p->constant_expression->object, object))
             {
                 return p;
             }
@@ -9015,8 +8927,8 @@ struct label* _Opt case_label_list_find(const struct case_label_list* list, cons
         else
         {
             if (p->constant_expression &&
-                object_greater_than_or_equal(object, &p->constant_expression->object) &&
-                object_smaller_than_or_equal(object, &p->constant_expression_end->object))
+                object_is_greater_than_or_equal(ctx->options.target, object, &p->constant_expression->object) &&
+                object_is_smaller_than_or_equal(ctx->options.target, object, &p->constant_expression_end->object))
             {
                 return p;
         }
@@ -9751,7 +9663,7 @@ struct selection_statement* _Owner _Opt selection_statement(struct parser_ctx* c
         if (p_selection_statement->first_token->type == TK_KEYWORD_SWITCH)
         {
             //switch of enum without default, then we check if all items were used
-            if (case_label_list_find_default(&p_selection_statement->label_list) == NULL)
+            if (case_label_list_find_default(ctx, &p_selection_statement->label_list) == NULL)
             {
                 const struct enum_specifier* _Opt p_enum_specifier = NULL;
 
@@ -9768,7 +9680,7 @@ struct selection_statement* _Owner _Opt selection_statement(struct parser_ctx* c
                     struct enumerator* _Opt p = p_enum_specifier->enumerator_list.head;
                     while (p)
                     {
-                        struct label* _Opt p_used = case_label_list_find(&p_selection_statement->label_list, &p->value);
+                        struct label* _Opt p_used = case_label_list_find(ctx, &p_selection_statement->label_list, &p->value);
 
                         if (p_used == NULL)
                         {
@@ -11053,6 +10965,8 @@ int compile_one_file(const char* file_name,
     const char** argv,
     struct report* report)
 {
+    bool color_enabled = !options->color_disabled;
+
 #if !defined(__CATALINA__)
     // For Catalina, don't print the name of each file processed
     // (there will usually be only one file)
@@ -11144,7 +11058,7 @@ int compile_one_file(const char* file_name,
 
         if (options->dump_tokens)
         {
-            print_tokens(tokens.head);
+            print_tokens(color_enabled, tokens.head);
         }
 
         prectx.options.diagnostic_stack.stack[prectx.options.diagnostic_stack.top_index].notes |= (1ULL << W_NOTE);
@@ -11161,7 +11075,7 @@ int compile_one_file(const char* file_name,
         if (options->dump_pptokens)
         {
             if (ast.token_list.head != NULL)
-                print_tokens(ast.token_list.head);
+                print_tokens(color_enabled, ast.token_list.head);
         }
 
         if (options->preprocess_only)
@@ -11235,11 +11149,11 @@ int compile_one_file(const char* file_name,
     if (ctx.options.test_mode)
     {
         //lets check if the generated file is the expected
-        char file_name_no_ext[MYMAX_PATH] = { 0 };
+        char file_name_no_ext[FS_MAX_PATH] = { 0 };
         remove_file_extension(file_name, sizeof(file_name_no_ext), file_name_no_ext);
 
-        char buf[MYMAX_PATH] = { 0 };
-        snprintf(buf, sizeof buf, "%s_%s.out", file_name_no_ext, target_to_string(ctx.options.target));
+        char buf[FS_MAX_PATH] = { 0 };
+        snprintf(buf, sizeof buf, "%s_%s.out", file_name_no_ext, get_platform(ctx.options.target)->name);
 
         char* _Owner _Opt content_expected = read_file(buf, false /*append new line*/);
         if (content_expected)
@@ -11261,13 +11175,13 @@ int compile_one_file(const char* file_name,
             printf("-------------------------------------------\n");
             printf("%s", content);
             printf("\n-------------------------------------------\n");
-            if (ctx.options.disable_colors)
+            if (color_enabled)
             {
-                printf("TEST FAILED" " : error=%d, warnings=%d\n", report->error_count, report->warnings_count);
+                printf(LIGHTRED "TEST FAILED" COLOR_RESET " : error=%d, warnings=%d\n", report->error_count, report->warnings_count);
             }
             else
             {
-            printf(LIGHTRED "TEST FAILED" RESET " : error=%d, warnings=%d\n", report->error_count, report->warnings_count);
+                printf("TEST FAILED" " : error=%d, warnings=%d\n", report->error_count, report->warnings_count);
             }
             printf("\n\n");
             report->test_failed++;
@@ -11275,13 +11189,13 @@ int compile_one_file(const char* file_name,
         else
         {
             report->test_succeeded++;
-            if (ctx.options.disable_colors)
+            if (color_enabled)
             {
-                printf("TEST OK\n");
+                printf(LIGHTGREEN "TEST OK\n" COLOR_RESET);
             }
             else
             {
-            printf(LIGHTGREEN "TEST OK\n" RESET);
+                printf("TEST OK\n");
         }
     }
     }
@@ -11296,9 +11210,6 @@ int compile_one_file(const char* file_name,
 
     return report->error_count > 0;
 }
-
-#if !defined(__CATALYST__)
-// Catalyst has no dirent.h (opendir/readdir/etc) so cannot compile_many_files
 
 static int compile_many_files(const char* file_name,
     struct options* options,
@@ -11317,7 +11228,7 @@ static int compile_many_files(const char* file_name,
 
     int num_files = 0;
 
-    char path[MYMAX_PATH] = { 0 };
+    char path[FS_MAX_PATH] = { 0 };
     snprintf(path, sizeof path, "%s", file_name);
     dirname(path);
     DIR* _Owner _Opt dir = opendir(path);
@@ -11353,13 +11264,13 @@ static int compile_many_files(const char* file_name,
                 strcmp(file_name_extension, file_extension) == 0)
             {
                 //Fixes the output file name replacing the current name
-                char out_file_name_final[MYMAX_PATH] = { 0 };
+                char out_file_name_final[FS_MAX_PATH] = { 0 };
                 strcpy(out_file_name_final, out_file_name);
                 dirname(out_file_name_final);
                 strcat(out_file_name_final, "/");
                 strcat(out_file_name_final, file_name_iter);
 
-                char in_file_name_final[MYMAX_PATH] = { 0 };
+                char in_file_name_final[FS_MAX_PATH] = { 0 };
                 strcpy(in_file_name_final, file_name);
                 dirname(in_file_name_final);
                 strcat(in_file_name_final, "/");
@@ -11391,9 +11302,7 @@ static int compile_many_files(const char* file_name,
     return num_files;
 }
 
-#endif // !defined(__CATALYST__)
-
-static void longest_common_path(int argc, const char** argv, char root_dir[MYMAX_PATH])
+static void longest_common_path(int argc, const char** argv, char root_dir[FS_MAX_PATH])
 {
     /*
      find the longest common path
@@ -11403,12 +11312,12 @@ static void longest_common_path(int argc, const char** argv, char root_dir[MYMAX
         if (argv[i][0] == '-')
             continue;
 
-        char fullpath_i[MYMAX_PATH] = { 0 };
+        char fullpath_i[FS_MAX_PATH] = { 0 };
         realpath(argv[i], fullpath_i);
         strcpy(root_dir, fullpath_i);
         dirname(root_dir);
 
-        for (int k = 0; k < MYMAX_PATH; k++)
+        for (int k = 0; k < FS_MAX_PATH; k++)
         {
             const char ch = fullpath_i[k];
             for (int j = 2; j < argc; j++)
@@ -11416,7 +11325,7 @@ static void longest_common_path(int argc, const char** argv, char root_dir[MYMAX
                 if (argv[j][0] == '-')
                     continue;
 
-                char fullpath_j[MYMAX_PATH] = { 0 };
+                char fullpath_j[FS_MAX_PATH] = { 0 };
                 realpath(argv[j], fullpath_j);
                 if (fullpath_j[k] != ch)
                 {
@@ -11450,7 +11359,7 @@ static int create_multiple_paths(const char* root, const char* outdir)
             continue;
         }
 
-        char temp[MYMAX_PATH] = { 0 };
+        char temp[FS_MAX_PATH] = { 0 };
         strncpy(temp, outdir, p - outdir);
 
         int er = mkdir(temp, 0777);
@@ -11483,13 +11392,13 @@ int compile(int argc, const char** argv, struct report* report)
 
     if (options.target != CAKE_COMPILE_TIME_SELECTED_TARGET)
     {
-        printf("emulating %s\n", target_to_string(options.target));
+        printf("emulating %s\n", get_platform(options.target)->name);
     }
     
-    char executable_path[MAX_PATH - sizeof(CAKE_CFG_FNAME)] = { 0 };
+    char executable_path[FS_MAX_PATH - sizeof(CAKE_CFG_FNAME)] = { 0 };
     get_self_path(executable_path, sizeof(executable_path));
     dirname(executable_path);
-    char cakeconfig_path[MAX_PATH] = { 0 };
+    char cakeconfig_path[FS_MAX_PATH] = { 0 };
     snprintf(cakeconfig_path, sizeof cakeconfig_path, "%s" CAKE_CFG_FNAME, executable_path);
 
     if (options.auto_config) //-autoconfig
@@ -11503,14 +11412,14 @@ int compile(int argc, const char** argv, struct report* report)
     clock_t begin_clock = clock();
     int no_files = 0;
 
-    char root_dir[MYMAX_PATH] = { 0 };
+    char root_dir[FS_MAX_PATH] = { 0 };
 
     if (!options.no_output)
     {
         longest_common_path(argc, argv, root_dir);
     }
 
-    const int root_dir_len = strlen(root_dir);
+    const size_t root_dir_len = strlen(root_dir);
 
     /*second loop to compile each file*/
     for (int i = 1; i < argc; i++)
@@ -11527,7 +11436,7 @@ int compile(int argc, const char** argv, struct report* report)
             continue;
 
         no_files++;
-        char output_file[MYMAX_PATH] = { 0 };
+        char output_file[FS_MAX_PATH] = { 0 };
 
         if (!options.no_output)
         {
@@ -11541,16 +11450,16 @@ int compile(int argc, const char** argv, struct report* report)
             }
             else
             {
-                char fullpath[MYMAX_PATH] = { 0 };
+                char fullpath[FS_MAX_PATH] = { 0 };
                 realpath(argv[i], fullpath);
 
                 strcpy(output_file, root_dir);
                 strcat(output_file, "/");
-                strcat(output_file, target_to_string(options.target));
+                strcat(output_file, get_platform(options.target)->name);
 
                 strcat(output_file, fullpath + root_dir_len);
 
-                char outdir[MYMAX_PATH] = { 0 };
+                char outdir[FS_MAX_PATH] = { 0 };
                 strcpy(outdir, output_file);
                 dirname(outdir);
                 if (create_multiple_paths(root_dir, outdir) != 0)
@@ -11560,20 +11469,15 @@ int compile(int argc, const char** argv, struct report* report)
             }
         }
 
-        char fullpath[MYMAX_PATH] = { 0 };
+        char fullpath[FS_MAX_PATH] = { 0 };
         realpath(argv[i], fullpath);
 
         const char* file_extension = basename(fullpath);
 
         if (file_extension[0] == '*')
         {
-#if defined(__CATALYST__)
-           printf("Error: On Catalyst, only one file can be processed\n");
-           assert(false);
-#else
             no_files--; //does not count *.c 
             no_files += compile_many_files(fullpath, &options, output_file, argc, argv, report);
-#endif // defined(__CATALYST__)
         }
         else
         {
@@ -11587,19 +11491,6 @@ int compile(int argc, const char** argv, struct report* report)
             report->test_succeeded += report_local.test_succeeded;
             report->test_failed += report_local.test_failed;
         }
-#if defined(__CATALINA__)
-// Catalina allows the suppression of statistics (if zero)
-    if (options.suppress) //-suppress
-    {
-        if ((report->error_count == 0) 
-        &&  (report->warnings_count == 0)
-        &&  (report->info_count == 0))
-        {
-           report->ignore_this_report = true;
-        }
-    }
-#endif // defined(__CATALINA__)
-
     }
 
     clock_t end_clock = clock();
@@ -11755,8 +11646,9 @@ char* _Owner _Opt CompileText(const char* pszoptions, const char* content)
     /*
       This function is called by the web playground
     */
-    printf(WHITE "Cake " CAKE_VERSION RESET "\n");
+    printf(WHITE "Cake " CAKE_VERSION COLOR_RESET "\n");
     printf(WHITE "cake %s main.c\n", pszoptions);
+
     struct report report = { 0 };
     return (char* _Owner _Opt)compile_source(pszoptions, content, &report);
 }
@@ -12296,7 +12188,7 @@ static struct object* _Opt find_designated_subobject(struct parser_ctx* ctx,
                                                   NULL,
                                                   "array designator value '%d' is negative", index);
                     }
-                    else if (index > p_current_object_type->num_of_elements)
+                    else if (index > (int)p_current_object_type->num_of_elements)
                     {
                         compiler_diagnostic(
                                                   C_ERROR_STRUCT_MEMBER_NOT_FOUND,

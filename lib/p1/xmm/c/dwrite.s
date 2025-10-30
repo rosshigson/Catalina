@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_sl9k_68f737a9_wait100ms_L000003 ' <symbol:wait100ms>
+C_sku4_68fd763a_wait100ms_L000003 ' <symbol:wait100ms>
  jmp #NEWF
  jmp #PSHM
  long $540000 ' save registers
@@ -28,7 +28,7 @@ C_sl9k_68f737a9_wait100ms_L000003 ' <symbol:wait100ms>
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C__waitcnt ' CALL addrg
-' C_sl9k_68f737a9_wait100ms_L000003_4 ' (symbol refcount = 0)
+' C_sku4_68fd763a_wait100ms_L000003_4 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -62,7 +62,7 @@ C_D_F_S__W_riteS_ector_6
 C_D_F_S__W_riteS_ector_10
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
- long @C_sl9k_68f737a9_wait100ms_L000003 ' CALL addrg
+ long @C_sku4_68fd763a_wait100ms_L000003 ' CALL addrg
 ' C_D_F_S__W_riteS_ector_7 ' (symbol refcount = 0)
  adds r15, #1 ' ADDI4 coni
  cmps r15,  #10 wz,wc

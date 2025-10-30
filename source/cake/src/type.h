@@ -93,13 +93,6 @@ enum type_specifier_flags
 };
 
 
-enum type_specifier_flags get_bool_c89_type_specifier(enum target target);
-enum type_specifier_flags get_wchar_type_specifier(enum target target);
-enum type_specifier_flags get_size_t_specifier(enum target target);
-enum type_specifier_flags get_ptrdiff_t_specifier(enum target target);
-enum type_specifier_flags get_intN_type_specifier(enum target target, int nbits);
-
-
 enum type_qualifier_flags
 {
     TYPE_QUALIFIER_NONE,
@@ -372,7 +365,7 @@ struct type get_array_item_type(const struct type* p_type);
 
 struct type type_param_array_to_pointer(const struct type* p_type, bool null_checks_enabled);
 
-struct type type_make_literal_string2(int size, enum type_specifier_flags chartype, enum type_qualifier_flags qualifiers, enum target target);
+struct type type_make_literal_string(int size, enum type_specifier_flags chartype, enum type_qualifier_flags qualifiers, enum target target);
 struct type type_make_int();
 struct type type_make_int_bool_like();
 struct type type_make_size_t(enum target target);

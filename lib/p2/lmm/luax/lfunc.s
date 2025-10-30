@@ -191,7 +191,7 @@ C_luaF__initupvals_21
 
 
  alignl ' align long
-C_shfs_68f736ec_newupval_L000024 ' <symbol:newupval>
+C_svok_68fd7578_newupval_L000024 ' <symbol:newupval>
  jmp #NEWF
  sub SP, #4
  jmp #PSHM
@@ -231,13 +231,13 @@ C_shfs_68f736ec_newupval_L000024 ' <symbol:newupval>
  mov r22, r13 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
  jmp #BR_Z
- long @C_shfs_68f736ec_newupval_L000024_26 ' EQU4
+ long @C_svok_68fd7578_newupval_L000024_26 ' EQU4
  mov r22, r13
  adds r22, #16 ' ADDP4 coni
  mov r20, r15
  adds r20, #12 ' ADDP4 coni
  wrlong r20, r22 ' ASGNP4 reg reg
-C_shfs_68f736ec_newupval_L000024_26
+C_svok_68fd7578_newupval_L000024_26
  wrlong r15, r17 ' ASGNP4 reg reg
  mov r22, r23
  adds r22, #44 ' ADDP4 coni
@@ -245,7 +245,7 @@ C_shfs_68f736ec_newupval_L000024_26
  mov r20, r23 ' CVI, CVU or LOAD
  cmp r22, r20 wz
  jmp #BRNZ
- long @C_shfs_68f736ec_newupval_L000024_28 ' NEU4
+ long @C_svok_68fd7578_newupval_L000024_28 ' NEU4
  mov r22, r23
  adds r22, #44 ' ADDP4 coni
  mov r20, r23
@@ -259,9 +259,9 @@ C_shfs_68f736ec_newupval_L000024_26
  rdlong r22, r22 ' reg <- INDIRP4 reg
  adds r22, #136 ' ADDP4 coni
  wrlong r23, r22 ' ASGNP4 reg reg
-C_shfs_68f736ec_newupval_L000024_28
+C_svok_68fd7578_newupval_L000024_28
  mov r0, r15 ' CVI, CVU or LOAD
-' C_shfs_68f736ec_newupval_L000024_25 ' (symbol refcount = 0)
+' C_svok_68fd7578_newupval_L000024_25 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
@@ -315,7 +315,7 @@ C_luaF__findupval_36
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_shfs_68f736ec_newupval_L000024
+ long @C_svok_68fd7578_newupval_L000024
  add SP, #12 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
 C_luaF__findupval_30
@@ -324,7 +324,7 @@ C_luaF__findupval_30
 
 
  alignl ' align long
-C_shfs1_68f736ec_callclosemethod_L000037 ' <symbol:callclosemethod>
+C_svok1_68fd7578_callclosemethod_L000037 ' <symbol:callclosemethod>
  jmp #NEWF
  sub SP, #4
  jmp #PSHM
@@ -394,7 +394,7 @@ C_shfs1_68f736ec_callclosemethod_L000037 ' <symbol:callclosemethod>
  wrlong r20, r22 ' ASGNP4 reg reg
  cmps r17,  #0 wz
  jmp #BR_Z
- long @C_shfs1_68f736ec_callclosemethod_L000037_39 ' EQI4
+ long @C_svok1_68fd7578_callclosemethod_L000037_39 ' EQI4
  mov r2, #0 ' reg ARG coni
  mov r3, r15 ' CVI, CVU or LOAD
  mov r4, r23 ' CVI, CVU or LOAD
@@ -404,8 +404,8 @@ C_shfs1_68f736ec_callclosemethod_L000037 ' <symbol:callclosemethod>
  long @C_luaD__call
  add SP, #8 ' CALL addrg
  jmp #JMPA
- long @C_shfs1_68f736ec_callclosemethod_L000037_40 ' JUMPV addrg
-C_shfs1_68f736ec_callclosemethod_L000037_39
+ long @C_svok1_68fd7578_callclosemethod_L000037_40 ' JUMPV addrg
+C_svok1_68fd7578_callclosemethod_L000037_39
  mov r2, #0 ' reg ARG coni
  mov r3, r15 ' CVI, CVU or LOAD
  mov r4, r23 ' CVI, CVU or LOAD
@@ -414,15 +414,15 @@ C_shfs1_68f736ec_callclosemethod_L000037_39
  jmp #CALA
  long @C_luaD__callnoyield
  add SP, #8 ' CALL addrg
-C_shfs1_68f736ec_callclosemethod_L000037_40
-' C_shfs1_68f736ec_callclosemethod_L000037_38 ' (symbol refcount = 0)
+C_svok1_68fd7578_callclosemethod_L000037_40
+' C_svok1_68fd7578_callclosemethod_L000037_38 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_shfs2_68f736ec_checkclosemth_L000041 ' <symbol:checkclosemth>
+C_svok2_68fd7578_checkclosemth_L000041 ' <symbol:checkclosemth>
  jmp #NEWF
  sub SP, #12
  jmp #PSHM
@@ -449,7 +449,7 @@ C_shfs2_68f736ec_checkclosemth_L000041 ' <symbol:checkclosemth>
  and r22, #15 ' BANDI4 coni
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_shfs2_68f736ec_checkclosemth_L000041_43 ' NEI4
+ long @C_svok2_68fd7578_checkclosemth_L000041_43 ' NEI4
  mov r22, r21 ' CVI, CVU or LOAD
  mov r20, r23
  adds r20, #20 ' ADDP4 coni
@@ -486,18 +486,18 @@ C_shfs2_68f736ec_checkclosemth_L000041 ' <symbol:checkclosemth>
  rdlong r22, r22 ' reg <- INDIRP4 reg
  cmp r22,  #0 wz
  jmp #BRNZ
- long @C_shfs2_68f736ec_checkclosemth_L000041_45 ' NEU4
+ long @C_svok2_68fd7578_checkclosemth_L000041_45 ' NEU4
  jmp #LODL
- long @C_shfs2_68f736ec_checkclosemth_L000041_47_L000048
+ long @C_svok2_68fd7578_checkclosemth_L000041_47_L000048
  mov BC, FP
  sub BC, #-(-12)
  wrlong RI, BC ' ASGNP4 addrli addrg
-C_shfs2_68f736ec_checkclosemth_L000041_45
+C_svok2_68fd7578_checkclosemth_L000041_45
  mov RI, FP
  sub RI, #-(-12)
  rdlong r2, RI ' reg ARG INDIR ADDRLi
  jmp #LODL
- long @C_shfs2_68f736ec_checkclosemth_L000041_49_L000050
+ long @C_svok2_68fd7578_checkclosemth_L000041_49_L000050
  mov r3, RI ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -505,15 +505,15 @@ C_shfs2_68f736ec_checkclosemth_L000041_45
  jmp #CALA
  long @C_luaG__runerror
  add SP, #8 ' CALL addrg
-C_shfs2_68f736ec_checkclosemth_L000041_43
-' C_shfs2_68f736ec_checkclosemth_L000041_42 ' (symbol refcount = 0)
+C_svok2_68fd7578_checkclosemth_L000041_43
+' C_svok2_68fd7578_checkclosemth_L000041_42 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #12 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_shfs5_68f736ec_prepcallclosemth_L000051 ' <symbol:prepcallclosemth>
+C_svok5_68fd7578_prepcallclosemth_L000051 ' <symbol:prepcallclosemth>
  jmp #NEWF
  sub SP, #8
  jmp #PSHM
@@ -530,7 +530,7 @@ C_shfs5_68f736ec_prepcallclosemth_L000051 ' <symbol:prepcallclosemth>
  mov r22, RI ' reg <- con
  cmps r19, r22 wz
  jmp #BRNZ
- long @C_shfs5_68f736ec_prepcallclosemth_L000051_53 ' NEI4
+ long @C_svok5_68fd7578_prepcallclosemth_L000051_53 ' NEI4
  mov r22, r23
  adds r22, #16 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -539,8 +539,8 @@ C_shfs5_68f736ec_prepcallclosemth_L000051 ' <symbol:prepcallclosemth>
  long -12
  wrlong r22, RI ' ASGNP4 addrl reg
  jmp #JMPA
- long @C_shfs5_68f736ec_prepcallclosemth_L000051_54 ' JUMPV addrg
-C_shfs5_68f736ec_prepcallclosemth_L000051_53
+ long @C_svok5_68fd7578_prepcallclosemth_L000051_54 ' JUMPV addrg
+C_svok5_68fd7578_prepcallclosemth_L000051_53
  mov r22, r21
  adds r22, #8 ' ADDP4 coni
  jmp #LODF
@@ -554,7 +554,7 @@ C_shfs5_68f736ec_prepcallclosemth_L000051_53
  jmp #CALA
  long @C_luaD__seterrorobj
  add SP, #8 ' CALL addrg
-C_shfs5_68f736ec_prepcallclosemth_L000051_54
+C_svok5_68fd7578_prepcallclosemth_L000051_54
  mov r2, r17 ' CVI, CVU or LOAD
  mov RI, FP
  sub RI, #-(-12)
@@ -566,9 +566,9 @@ C_shfs5_68f736ec_prepcallclosemth_L000051_54
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_shfs1_68f736ec_callclosemethod_L000037
+ long @C_svok1_68fd7578_callclosemethod_L000037
  add SP, #12 ' CALL addrg
-' C_shfs5_68f736ec_prepcallclosemth_L000051_52 ' (symbol refcount = 0)
+' C_svok5_68fd7578_prepcallclosemth_L000051_52 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #8 ' framesize
  jmp #RETF
@@ -603,7 +603,7 @@ C_luaF__newtbcupval_56
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_shfs2_68f736ec_checkclosemth_L000041
+ long @C_svok2_68fd7578_checkclosemth_L000041
  add SP, #4 ' CALL addrg
  jmp #JMPA
  long @C_luaF__newtbcupval_60 ' JUMPV addrg
@@ -802,7 +802,7 @@ C_luaF__closeupval_73
 
 
  alignl ' align long
-C_shfs6_68f736ec_poptbclist_L000074 ' <symbol:poptbclist>
+C_svok6_68fd7578_poptbclist_L000074 ' <symbol:poptbclist>
  jmp #PSHM
  long $d00000 ' save registers
  mov r22, r2
@@ -815,32 +815,32 @@ C_shfs6_68f736ec_poptbclist_L000074 ' <symbol:poptbclist>
  shl r22, #3 ' LSHI4 coni
  subs r23, r22 ' SUBI/P (1)
  jmp #JMPA
- long @C_shfs6_68f736ec_poptbclist_L000074_77 ' JUMPV addrg
-C_shfs6_68f736ec_poptbclist_L000074_76
+ long @C_svok6_68fd7578_poptbclist_L000074_77 ' JUMPV addrg
+C_svok6_68fd7578_poptbclist_L000074_76
  jmp #LODL
  long -524280
  mov r22, RI ' reg <- con
  adds r23, r22 ' ADDI/P (1)
-C_shfs6_68f736ec_poptbclist_L000074_77
+C_svok6_68fd7578_poptbclist_L000074_77
  mov r22, r23 ' CVI, CVU or LOAD
  mov r20, r2
  adds r20, #28 ' ADDP4 coni
  rdlong r20, r20 ' reg <- INDIRP4 reg
  cmp r22, r20 wcz 
  jmp #BRBE
- long @C_shfs6_68f736ec_poptbclist_L000074_79 ' LEU4
+ long @C_svok6_68fd7578_poptbclist_L000074_79 ' LEU4
  mov r22, r23
  adds r22, #6 ' ADDP4 coni
  rdword r22, r22 ' reg <- INDIRU2 reg
  and r22, cviu_m2 ' zero extend
  cmps r22,  #0 wz
  jmp #BR_Z
- long @C_shfs6_68f736ec_poptbclist_L000074_76 ' EQI4
-C_shfs6_68f736ec_poptbclist_L000074_79
+ long @C_svok6_68fd7578_poptbclist_L000074_76 ' EQI4
+C_svok6_68fd7578_poptbclist_L000074_79
  mov r22, r2
  adds r22, #36 ' ADDP4 coni
  wrlong r23, r22 ' ASGNP4 reg reg
-' C_shfs6_68f736ec_poptbclist_L000074_75 ' (symbol refcount = 0)
+' C_svok6_68fd7578_poptbclist_L000074_75 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETN
 
@@ -878,7 +878,7 @@ C_luaF__close_81
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_shfs6_68f736ec_poptbclist_L000074 ' CALL addrg
+ long @C_svok6_68fd7578_poptbclist_L000074 ' CALL addrg
  mov r2, r17 ' CVI, CVU or LOAD
  mov r3, r19 ' CVI, CVU or LOAD
  mov r4, r13 ' CVI, CVU or LOAD
@@ -886,7 +886,7 @@ C_luaF__close_81
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_shfs5_68f736ec_prepcallclosemth_L000051
+ long @C_svok5_68fd7578_prepcallclosemth_L000051
  add SP, #12 ' CALL addrg
  mov r22, r23
  adds r22, #28 ' ADDP4 coni
@@ -1254,7 +1254,7 @@ C_luaF__getlocalname_86
 DAT ' const data segment
 
  alignl ' align long
-C_shfs2_68f736ec_checkclosemth_L000041_49_L000050 ' <symbol:49>
+C_svok2_68fd7578_checkclosemth_L000041_49_L000050 ' <symbol:49>
  byte 118
  byte 97
  byte 114
@@ -1296,7 +1296,7 @@ C_shfs2_68f736ec_checkclosemth_L000041_49_L000050 ' <symbol:49>
  byte 0
 
  alignl ' align long
-C_shfs2_68f736ec_checkclosemth_L000041_47_L000048 ' <symbol:47>
+C_svok2_68fd7578_checkclosemth_L000041_47_L000048 ' <symbol:47>
  byte 63
  byte 0
 

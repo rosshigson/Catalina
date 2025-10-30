@@ -163,6 +163,9 @@ Options: x86\_x64_gcc, x64\_msvc, x64\_msvc, catalina, ccu8
 Output is compatible with Visual Studio IDE. 
 (We can click on the error message and IDE selects the line.) 
 
+#### -fdiagnostics-color=never (same as GCC)
+Output will not use colors
+
 ### -fanalyzer
 This option enables an static analysis of program flow. This is required for some
 ownership checks
@@ -467,6 +470,21 @@ double d = 0x1p+1;
 Cake converts hexadecimal floating-point values to decimal 
 floating-point representation using strtod followed by snprintf.
 This conversion may introduce precision loss.
+
+
+```
+0x1.234p1 means:
+
+           2       3     4
+r1= 1 +   ---  +  --- + ---   = 1.1376953125 
+            1        2     3
+          16       16     16
+
+                1
+1.1376953125 x 2  = 2.275390625 (final number)
+
+```
+
 
 ### C99 Compound literals
 
@@ -1141,6 +1159,8 @@ https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3033.htm
 
 Not implemented
 
+https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2763.pdf
+
 ### C23 Compound Literals with storage specifier
   
 Not implemented yet.
@@ -1153,9 +1173,6 @@ int main()
    F((static int []){1, 2, 3, 0})
 }
 ```
-
-### C23 BitInt(N)
-Not implemented yet (just parsed)
 
 https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3038.htm
 
