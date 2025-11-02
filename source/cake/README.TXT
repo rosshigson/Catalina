@@ -2,10 +2,10 @@ Cake - a CXX to C89 Transpiler
 ==============================
 
 This folder contains a very slightly modified copy of the Cake transpiler
-(see http://thradams.com/cake/index.htm). Cake can be used as a pre-processor
-to convert C99, C11 & C23 programs to C89 for Catalina. Most C99 additions are
-supported, as well as many C11 additions. C23 is less fully supported at 
-present, but work on it is ongoing.
+(see http://cakecc.org/). Cake can be used as a pre-processor to convert C99, 
+C11 & C23 programs to C89 for Catalina. Most C99 additions are supported, 
+as well as many C11 additions. C23 is less fully supported at present, 
+but work on it is ongoing.
 
 The main differences between C99 and Catalina with Cake are that in Catalina:
 
