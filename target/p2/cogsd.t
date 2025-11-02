@@ -779,9 +779,7 @@ _writeBLOCK                                             ' CMD24: PAR=sector, 512
 ' NOTE: CRC16 is ignored in SPI mode
                 call    #_sendFF                        ' CRC16 byte 1/2
                 call    #_sendFF                        ' CRC16 byte 2/2
-#if SD_DELAY != 0
                 waitx   ##SD_DELAY                      ' why is this necessary???
-#endif
                 call    #_getreply                      ' 
                 and     reply,            #$1f
                 cmp     reply,            #$5 wz
@@ -789,9 +787,7 @@ _writeBLOCK                                             ' CMD24: PAR=sector, 512
                 or      reply,#$100                     ' ensure reply is not zero
                 jmp     #_fail
 .waitdelay
-#if SD_DELAY != 0
                 waitx   ##SD_DELAY                      ' why is this necessary???
-#endif
 .waitbusy
                 call    #_recvbyte                      ' get a byte
                 cmp     reply,            #$FF      wz  ' reply=$FF=busy ?
