@@ -136,7 +136,7 @@
 -- version 8.8.2 - add -CXX (where XX is the C standard) which selects cpp
 --                 as preprocessor if a standard is not specified, or if 
 --                 XX is 89 or 90, or cake otherwise.
---
+-- version 8.8.3 - remove -suppress option (Cake now suppresses by default)
 
 require "os"
 require "io"
@@ -145,7 +145,7 @@ require "string"
 require "propeller"
 
 -- configuration parameters and default values
-CATALINA_VERSION = "8.8.2"
+CATALINA_VERSION = "8.8.3"
 LCCDIR           = "/";
 CATALINA_TARGET  = LCCDIR .. "target"
 CATALINA_LIBRARY = LCCDIR .. "lib"
@@ -1108,7 +1108,7 @@ function generate_compiles(cmd)
         .. CATALINA_TEMPDIR .. PATH_SEP .. file .. CPP_SUFFIX .. ' ';
       else
         cpp = CAKE_COMMAND
-        .. '-suppress -I/ -I' .. IncludePath .. ' ' 
+        .. '-I/ -I' .. IncludePath .. ' ' 
         .. include_list() 
         .. cpp_define_list() 
         .. Files[i] .. ' ' 
