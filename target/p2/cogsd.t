@@ -19,6 +19,8 @@
 ''                 Fixed a race condition in integration of RTC and SD code.
 ''   Version 4.0 - Added 8 extra clocks after each operation. Added a new
 ''                 "ready" check before each operation.
+''   Version 5.0 - make delay configurable using Catalina symbol SD_DELAY
+''                 (defaults to 10ms if not specified)
 ''
 ''=============================================================================
 }}
@@ -36,6 +38,10 @@ delay20ms     = _CLOCKFREQ / 50            ' 20ms
 delay1ms      = _CLOCKFREQ / 1_000         ' 1ms
 delay5us      = _CLOCKFREQ / 200_000       ' 5us
 delay250us    = _CLOCKFREQ / 4_000         ' 250us
+
+#ifndef SD_DELAY
+#define SD_DELAY delay10ms
+#endif
 
 ' FLAG that extra clocks are needed above 200 Mhz (the flag will be 0 for
 ' any clock frequency less than 200Mh, and 1 for any frequency above that):
@@ -773,7 +779,9 @@ _writeBLOCK                                             ' CMD24: PAR=sector, 512
 ' NOTE: CRC16 is ignored in SPI mode
                 call    #_sendFF                        ' CRC16 byte 1/2
                 call    #_sendFF                        ' CRC16 byte 2/2
-                waitx   ##delay10ms                     ' why is this necessary???
+#if SD_DELAY != 0
+                waitx   ##SD_DELAY                      ' why is this necessary???
+#endif
                 call    #_getreply                      ' 
                 and     reply,            #$1f
                 cmp     reply,            #$5 wz
@@ -781,7 +789,9 @@ _writeBLOCK                                             ' CMD24: PAR=sector, 512
                 or      reply,#$100                     ' ensure reply is not zero
                 jmp     #_fail
 .waitdelay
-                waitx   ##delay10ms                     ' why is this necessary???
+#if SD_DELAY != 0
+                waitx   ##SD_DELAY                      ' why is this necessary???
+#endif
 .waitbusy
                 call    #_recvbyte                      ' get a byte
                 cmp     reply,            #$FF      wz  ' reply=$FF=busy ?
