@@ -1164,14 +1164,35 @@ bool type_is_arithmetic(const struct type* p_type)
     return type_is_integer(p_type) || type_is_floating_point(p_type);
 }
 
+bool type_is_scalar_decay(const struct type* p_type)
+{
+    if (type_is_arithmetic(p_type))
+        return true;
+
+    if (type_is_pointer_or_array(p_type))
+        return true;
+
+    if (type_get_category(p_type) != TYPE_CATEGORY_ITSELF)
+        return false;
+
+
+    if (p_type->type_specifier_flags & TYPE_SPECIFIER_ENUM)
+        return true;
+
+    if (p_type->type_specifier_flags & TYPE_SPECIFIER_NULLPTR_T)
+        return true;
+
+    if (p_type->type_specifier_flags & TYPE_SPECIFIER_BOOL)
+        return true;
+
+    return false;
+}
 /*
  Arithmetic types, pointer types, and the nullptr_t type are collectively
  called scalar types.
 */
 bool type_is_scalar(const struct type* p_type)
 {
-    //TODO we need two concepts...is_scalar on real type or is_scalar after lvalue converison
-
     if (type_is_arithmetic(p_type))
         return true;
 
@@ -1184,6 +1205,7 @@ bool type_is_scalar(const struct type* p_type)
 
     if (p_type->type_specifier_flags & TYPE_SPECIFIER_ENUM)
         return true;
+
     if (p_type->type_specifier_flags & TYPE_SPECIFIER_NULLPTR_T)
         return true;
 
@@ -2403,7 +2425,7 @@ size_t type_get_alignof(const struct type* p_type, enum target target)
 
     if (category == TYPE_CATEGORY_POINTER)
     {
-        align = get_platform(target)->pointer_aligment;
+        align = get_platform(target)->pointer_alignment;
     }
     else if (category == TYPE_CATEGORY_FUNCTION)
     {
@@ -2434,15 +2456,15 @@ size_t type_get_alignof(const struct type* p_type, enum target target)
         }
         else if (p_type->type_specifier_flags & TYPE_SPECIFIER_CHAR)
         {
-            align = get_platform(target)->char_aligment;
+            align = get_platform(target)->char_alignment;
         }
         else if (p_type->type_specifier_flags & TYPE_SPECIFIER_BOOL)
         {
-            align = get_platform(target)->bool_aligment;
+            align = get_platform(target)->bool_alignment;
         }
         else if (p_type->type_specifier_flags & TYPE_SPECIFIER_SHORT)
         {
-            align = get_platform(target)->short_aligment;
+            align = get_platform(target)->short_alignment;
         }
         else if (p_type->type_specifier_flags & TYPE_SPECIFIER_ENUM)
         {
@@ -2456,32 +2478,32 @@ size_t type_get_alignof(const struct type* p_type, enum target target)
                 type_destroy(&t);
             }
             else
-                align = get_platform(target)->int_aligment;
+                align = get_platform(target)->int_alignment;
         }
         else if (p_type->type_specifier_flags == (TYPE_SPECIFIER_LONG | TYPE_SPECIFIER_DOUBLE))
         {
             //before 
-            align = get_platform(target)->long_double_aligment;
+            align = get_platform(target)->long_double_alignment;
         }
         else if (p_type->type_specifier_flags & TYPE_SPECIFIER_LONG)
         {
-            align = get_platform(target)->long_aligment;
+            align = get_platform(target)->long_alignment;
         }
         else if (p_type->type_specifier_flags & TYPE_SPECIFIER_LONG_LONG)
         {
-            align = get_platform(target)->long_long_aligment;
+            align = get_platform(target)->long_long_alignment;
         }
         else if (p_type->type_specifier_flags & TYPE_SPECIFIER_INT) //must be after long
         {
-            align = get_platform(target)->int_aligment;
+            align = get_platform(target)->int_alignment;
         }
         else if (p_type->type_specifier_flags & TYPE_SPECIFIER_FLOAT)
         {
-            align = get_platform(target)->float_aligment;
+            align = get_platform(target)->float_alignment;
         }
         else if (p_type->type_specifier_flags & TYPE_SPECIFIER_DOUBLE)
         {
-            align = get_platform(target)->double_aligment;
+            align = get_platform(target)->double_alignment;
         }
 
         else if (p_type->type_specifier_flags & TYPE_SPECIFIER_GCC__BUILTIN_VA_LIST)
@@ -2489,7 +2511,7 @@ size_t type_get_alignof(const struct type* p_type, enum target target)
 #if __GNUC__
             align = _Alignof(__builtin_va_list);
 #else
-            align = get_platform(target)->pointer_aligment;
+            align = get_platform(target)->pointer_alignment;
 #endif
         }
         else if (p_type->type_specifier_flags & TYPE_SPECIFIER_STRUCT_OR_UNION)
@@ -2526,7 +2548,7 @@ size_t type_get_alignof(const struct type* p_type, enum target target)
         }
         else if (p_type->type_specifier_flags == TYPE_SPECIFIER_NULLPTR_T)
         {
-            align = get_platform(target)->pointer_aligment;
+            align = get_platform(target)->pointer_alignment;
         }
         else
         {
@@ -2623,20 +2645,7 @@ enum sizeof_error type_get_sizeof(const struct type* p_type, size_t* size, enum 
             unsigned long long result = 0;
             if (unsigned_long_long_mul(&result, sz, arraysize))
             {
-                //https://github.com/thradams/cake/issues/248
-                unsigned long long SIZE_MAX_WORKAROUND = 0;
-
-#ifdef __linux__
-#if __x86_64__
-                SIZE_MAX_WORKAROUND = 0xffffffffffffffffULL;
-#else
-                SIZE_MAX_WORKAROUND = 0xffffffffULL;
-#endif                    
-#else                
-                SIZE_MAX_WORKAROUND = SIZE_MAX;
-#endif
-
-                if (result > SIZE_MAX_WORKAROUND)
+                if (result > SIZE_MAX)
                 {
                     return ESIZEOF_OVERLOW;
                 }

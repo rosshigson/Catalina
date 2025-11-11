@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' const data segment
 
  alignl_label
-C_siao_68fd7762_udatatypename_L000013 ' <symbol:udatatypename>
+C_s620_690eda34_udatatypename_L000013 ' <symbol:udatatypename>
  byte 117
  byte 115
  byte 101
@@ -30,18 +30,18 @@ DAT ' initialized data segment
 
  alignl_label
 C_luaT__typenames_ ' <symbol:luaT_typenames_>
- long @C_siao1_68fd7762_14_L000015
- long @C_siao2_68fd7762_16_L000017
- long @C_siao3_68fd7762_18_L000019
- long @C_siao_68fd7762_udatatypename_L000013
- long @C_siao4_68fd7762_20_L000021
- long @C_siao5_68fd7762_22_L000023
- long @C_siao6_68fd7762_24_L000025
- long @C_siao7_68fd7762_26_L000027
- long @C_siao_68fd7762_udatatypename_L000013
- long @C_siao8_68fd7762_28_L000029
- long @C_siao9_68fd7762_30_L000031
- long @C_siaoa_68fd7762_32_L000033
+ long @C_s6201_690eda34_14_L000015
+ long @C_s6202_690eda34_16_L000017
+ long @C_s6203_690eda34_18_L000019
+ long @C_s620_690eda34_udatatypename_L000013
+ long @C_s6204_690eda34_20_L000021
+ long @C_s6205_690eda34_22_L000023
+ long @C_s6206_690eda34_24_L000025
+ long @C_s6207_690eda34_26_L000027
+ long @C_s620_690eda34_udatatypename_L000013
+ long @C_s6208_690eda34_28_L000029
+ long @C_s6209_690eda34_30_L000031
+ long @C_s620a_690eda34_32_L000033
 
 ' Catalina Cnst
 
@@ -647,7 +647,7 @@ C_luaT__callT_M_res_118
  alignl_p1
 
  alignl_label
-C_siao16_68fd7762_callbinT_M__L000119 ' <symbol:callbinTM>
+C_s62016_690eda34_callbinT_M__L000119 ' <symbol:callbinTM>
  alignl_p1
  long I32_NEWF + 0<<S32
  alignl_p1
@@ -673,7 +673,7 @@ C_siao16_68fd7762_callbinT_M__L000119 ' <symbol:callbinTM>
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siao16_68fd7762_callbinT_M__L000119_121)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C_s62016_690eda34_callbinT_M__L000119_121)<<S32 ' NEI4 reg coni
  word I16A_MOV + (r2)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r3)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16B_LODF + ((8)&$1FF)<<S16B
@@ -684,7 +684,7 @@ C_siao16_68fd7762_callbinT_M__L000119 ' <symbol:callbinTM>
  word I16A_ADDI + SP<<D16A + 8<<S16A ' CALL addrg
  word I16A_MOV + (r15)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  alignl_label
-C_siao16_68fd7762_callbinT_M__L000119_121
+C_s62016_690eda34_callbinT_M__L000119_121
  word I16A_MOV + (r22)<<D16A + (r15)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDBYTE + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU1 reg
@@ -693,12 +693,12 @@ C_siao16_68fd7762_callbinT_M__L000119_121
  word I16A_AND + (r22)<<D16A + (r20)<<S16A ' BANDI/U (1)
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_siao16_68fd7762_callbinT_M__L000119_123)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C_s62016_690eda34_callbinT_M__L000119_123)<<S32 ' NEI4 reg coni
  word I16A_MOVI + R0<<D16A + (0)<<S16A ' RET coni
  alignl_p1
- long I32_JMPA + (@C_siao16_68fd7762_callbinT_M__L000119_120)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_s62016_690eda34_callbinT_M__L000119_120)<<S32 ' JUMPV addrg
  alignl_label
-C_siao16_68fd7762_callbinT_M__L000119_123
+C_s62016_690eda34_callbinT_M__L000119_123
  word I16A_MOV + (r2)<<D16A + (r19)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r3)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r4)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
@@ -713,7 +713,7 @@ C_siao16_68fd7762_callbinT_M__L000119_123
  word I16A_ADDI + SP<<D16A + 16<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (1)<<S16A ' RET coni
  alignl_label
-C_siao16_68fd7762_callbinT_M__L000119_120
+C_s62016_690eda34_callbinT_M__L000119_120
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
@@ -739,7 +739,7 @@ C_luaT__trybinT_M_ ' <symbol:luaT_trybinTM>
  word I16A_MOVI + BC<<D16A + 20<<S16A ' arg size, rpsize = 0, spsize = 20
  word I16A_ADDI + SP<<D16A + 4<<S16A ' correct for new kernel !!! 
  alignl_p1
- long I32_CALA + (@C_siao16_68fd7762_callbinT_M__L000119)<<S32
+ long I32_CALA + (@C_s62016_690eda34_callbinT_M__L000119)<<S32
  word I16A_ADDI + SP<<D16A + 16<<S16A ' CALL addrg
  word I16A_CMPSI + (r0)<<D16A + (0)<<S16A
  alignl_p1
@@ -867,7 +867,7 @@ C_luaT__tryconcatT_M_ ' <symbol:luaT_tryconcatTM>
  word I16A_MOVI + BC<<D16A + 20<<S16A ' arg size, rpsize = 0, spsize = 20
  word I16A_ADDI + SP<<D16A + 4<<S16A ' correct for new kernel !!! 
  alignl_p1
- long I32_CALA + (@C_siao16_68fd7762_callbinT_M__L000119)<<S32
+ long I32_CALA + (@C_s62016_690eda34_callbinT_M__L000119)<<S32
  word I16A_ADDI + SP<<D16A + 16<<S16A ' CALL addrg
  word I16A_CMPSI + (r0)<<D16A + (0)<<S16A
  alignl_p1
@@ -1002,7 +1002,7 @@ C_luaT__callorderT_M_ ' <symbol:luaT_callorderTM>
  word I16A_MOVI + BC<<D16A + 20<<S16A ' arg size, rpsize = 0, spsize = 20
  word I16A_ADDI + SP<<D16A + 4<<S16A ' correct for new kernel !!! 
  alignl_p1
- long I32_CALA + (@C_siao16_68fd7762_callbinT_M__L000119)<<S32
+ long I32_CALA + (@C_s62016_690eda34_callbinT_M__L000119)<<S32
  word I16A_ADDI + SP<<D16A + 16<<S16A ' CALL addrg
  word I16A_CMPSI + (r0)<<D16A + (0)<<S16A
  alignl_p1
@@ -1747,7 +1747,7 @@ C_luaT__init_37_L000038 ' <symbol:37>
  byte 0
 
  alignl_label
-C_siaoa_68fd7762_32_L000033 ' <symbol:32>
+C_s620a_690eda34_32_L000033 ' <symbol:32>
  byte 112
  byte 114
  byte 111
@@ -1756,7 +1756,7 @@ C_siaoa_68fd7762_32_L000033 ' <symbol:32>
  byte 0
 
  alignl_label
-C_siao9_68fd7762_30_L000031 ' <symbol:30>
+C_s6209_690eda34_30_L000031 ' <symbol:30>
  byte 117
  byte 112
  byte 118
@@ -1767,7 +1767,7 @@ C_siao9_68fd7762_30_L000031 ' <symbol:30>
  byte 0
 
  alignl_label
-C_siao8_68fd7762_28_L000029 ' <symbol:28>
+C_s6208_690eda34_28_L000029 ' <symbol:28>
  byte 116
  byte 104
  byte 114
@@ -1777,7 +1777,7 @@ C_siao8_68fd7762_28_L000029 ' <symbol:28>
  byte 0
 
  alignl_label
-C_siao7_68fd7762_26_L000027 ' <symbol:26>
+C_s6207_690eda34_26_L000027 ' <symbol:26>
  byte 102
  byte 117
  byte 110
@@ -1789,7 +1789,7 @@ C_siao7_68fd7762_26_L000027 ' <symbol:26>
  byte 0
 
  alignl_label
-C_siao6_68fd7762_24_L000025 ' <symbol:24>
+C_s6206_690eda34_24_L000025 ' <symbol:24>
  byte 116
  byte 97
  byte 98
@@ -1798,7 +1798,7 @@ C_siao6_68fd7762_24_L000025 ' <symbol:24>
  byte 0
 
  alignl_label
-C_siao5_68fd7762_22_L000023 ' <symbol:22>
+C_s6205_690eda34_22_L000023 ' <symbol:22>
  byte 115
  byte 116
  byte 114
@@ -1808,7 +1808,7 @@ C_siao5_68fd7762_22_L000023 ' <symbol:22>
  byte 0
 
  alignl_label
-C_siao4_68fd7762_20_L000021 ' <symbol:20>
+C_s6204_690eda34_20_L000021 ' <symbol:20>
  byte 110
  byte 117
  byte 109
@@ -1818,7 +1818,7 @@ C_siao4_68fd7762_20_L000021 ' <symbol:20>
  byte 0
 
  alignl_label
-C_siao3_68fd7762_18_L000019 ' <symbol:18>
+C_s6203_690eda34_18_L000019 ' <symbol:18>
  byte 98
  byte 111
  byte 111
@@ -1829,14 +1829,14 @@ C_siao3_68fd7762_18_L000019 ' <symbol:18>
  byte 0
 
  alignl_label
-C_siao2_68fd7762_16_L000017 ' <symbol:16>
+C_s6202_690eda34_16_L000017 ' <symbol:16>
  byte 110
  byte 105
  byte 108
  byte 0
 
  alignl_label
-C_siao1_68fd7762_14_L000015 ' <symbol:14>
+C_s6201_690eda34_14_L000015 ' <symbol:14>
  byte 110
  byte 111
  byte 32

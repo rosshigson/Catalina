@@ -39,8 +39,12 @@ delay1ms      = _CLOCKFREQ / 1_000         ' 1ms
 delay5us      = _CLOCKFREQ / 200_000       ' 5us
 delay250us    = _CLOCKFREQ / 4_000         ' 250us
 
+#ifdef NO_SD_DELAY
+#define SD_DELAY 0
+#else
 #ifndef SD_DELAY
 #define SD_DELAY delay10ms
+#endif
 #endif
 
 ' FLAG that extra clocks are needed above 200 Mhz (the flag will be 0 for

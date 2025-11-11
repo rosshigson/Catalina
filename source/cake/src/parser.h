@@ -1189,9 +1189,16 @@ void defer_list_destroy(_Dtor struct defer_list* p);
 struct try_statement
 {
     /*
-      try-statement: (extension)
+      try-statement: (cake- extension)
        "try" secondary-block
        "try" secondary-block "catch" secondary-block
+    */
+
+    /*
+      __try: (msvc extension)
+       "__try" secondary-block
+       "__finally" secondary-block 
+       "__except(expression)" secondary-block
     */
     struct secondary_block* _Owner secondary_block;
     struct secondary_block* _Owner _Opt catch_secondary_block_opt;
@@ -1199,11 +1206,22 @@ struct try_statement
     struct token* last_token;
     struct token* _Opt catch_token_opt; /*catch*/
 
+    struct expression* msvc_except_expression;
     int catch_label_id;
 };
 
 struct try_statement* _Owner _Opt try_statement(struct parser_ctx* ctx);
 void try_statement_delete(struct try_statement* _Owner _Opt p);
+
+struct asm_statement
+{
+    struct token * p_first_token;
+    struct token * p_last_token;
+};
+
+struct asm_statement* _Owner _Opt asm_statement(struct parser_ctx* ctx);
+
+void asm_statement_delete(struct asm_statement* _Owner _Opt p);
 
 struct case_label_list
 {
@@ -1417,6 +1435,8 @@ struct primary_block
          iteration-statement
          defer-statement (extension)
          try-statement (extension)
+
+         gcc_asm_statement
     */
 
     struct compound_statement* _Owner _Opt compound_statement;
@@ -1424,6 +1444,7 @@ struct primary_block
     struct iteration_statement* _Owner _Opt iteration_statement;
     struct defer_statement* _Owner _Opt defer_statement;
     struct try_statement* _Owner _Opt try_statement;
+    struct asm_statement* _Owner _Opt asm_statement;
 };
 
 void primary_block_delete(struct primary_block* _Owner _Opt p);
@@ -1672,7 +1693,7 @@ struct type make_type_using_declarator(struct parser_ctx* ctx, struct declarator
 
 
 struct declaration_list parse(struct parser_ctx* ctx, struct token_list* list, bool* berror);
-const char* _Owner _Opt compile_source(const char* pszoptions, const char* content, struct report* report);
+
 
 int initializer_init_new(struct parser_ctx* ctx,
                          struct type* p_current_object_type,

@@ -16,6 +16,7 @@
 #include "parser.h"
 #include "type.h"
 #include <math.h>
+#include <float.h>
 
 #ifdef _WIN32
 #include <Windows.h>
@@ -26,6 +27,9 @@
 #include <debugapi.h>
 #endif
 
+
+//TODO i am doing this to same stack on expressoins TODO
+static char warning_message[200] = { 0 };
 
 struct expression* _Owner _Opt postfix_expression(struct parser_ctx* ctx, enum expression_eval_mode eval_mode);
 struct expression* _Owner _Opt cast_expression(struct parser_ctx* ctx, enum expression_eval_mode eval_mode);
@@ -336,17 +340,19 @@ struct generic_assoc_list generic_association_list(struct parser_ctx* ctx, enum 
             {
                 if (p_default_generic_association != NULL)
                 {
-                    compiler_diagnostic(C_ERROR_DUPLICATE_DEFAULT_GENERIC_ASSOCIATION,
+                    if (compiler_diagnostic(C_ERROR_DUPLICATE_DEFAULT_GENERIC_ASSOCIATION,
                         ctx,
                         p_generic_association2->first_token,
                         NULL,
-                        "duplicate default generic association.");
+                        "duplicate default generic association."))
+                    {
 
-                    compiler_diagnostic(W_NOTE,
+                        compiler_diagnostic(W_LOCATION,
                         ctx,
                         p_default_generic_association->first_token,
                         NULL,
                         "previous default generic association");
+                    }
                 }
                 else
                 {
@@ -546,6 +552,9 @@ struct expression* _Owner _Opt character_constant_expression(struct parser_ctx* 
     const unsigned long long 
         wchar_max_value = target_unsigned_max(ctx->options.target, get_platform(ctx->options.target)->wchar_t_type);
 
+    const unsigned long long
+        int_max_value = target_signed_max(ctx->options.target, TYPE_SIGNED_INT);
+
     try
     {
         if (ctx->current == NULL)
@@ -626,7 +635,7 @@ struct expression* _Owner _Opt character_constant_expression(struct parser_ctx* 
                 compiler_diagnostic(W_MULTICHAR_ERROR, ctx, ctx->current, NULL, "Unicode character literals may not contain multiple characters.");
             }
 
-            if (c > wchar_max_value)
+            if (c > UINT16_MAX)
             {
                 compiler_diagnostic(W_MULTICHAR_ERROR, ctx, ctx->current, NULL, "Character too large for enclosing character literal type.");
             }
@@ -659,7 +668,9 @@ struct expression* _Owner _Opt character_constant_expression(struct parser_ctx* 
                 compiler_diagnostic(W_MULTICHAR_ERROR, ctx, ctx->current, NULL, "Unicode character literals may not contain multiple characters.");
             }
 
-            if (c > UINT_MAX)
+            //Official definition (ISO/IEC 10646)
+            //CS codespace — the finite set of code points from 0 to 0x10FFFF (inclusive).
+            if (c > 0x10FFFF || c > UINT32_MAX)
             {
                 compiler_diagnostic(W_MULTICHAR_ERROR, ctx, ctx->current, NULL, "Character too large for enclosing character literal type.");
             }
@@ -735,7 +746,7 @@ struct expression* _Owner _Opt character_constant_expression(struct parser_ctx* 
               sequence, its value is the one that results when an object with type char whose value is that of the
               single character or escape sequence is converted to type int.
             */
-            long long value = 0;
+            unsigned long long value = 0;
             while (*p != '\'')
             {
                 unsigned int c = 0;
@@ -752,7 +763,7 @@ struct expression* _Owner _Opt character_constant_expression(struct parser_ctx* 
                 }
 
                 value = value * 256 + c;
-                if (value > INT_MAX)
+                if (value > int_max_value)
                 {
                     compiler_diagnostic(W_OUT_OF_BOUNDS, ctx, ctx->current, NULL, "character constant too long for its type", ctx->current->lexeme);
                     break;
@@ -798,6 +809,8 @@ int convert_to_number(struct parser_ctx* ctx, struct expression* p_expression_no
     const unsigned long long unsigned_long_long_max_value = 
         target_unsigned_max(ctx->options.target, TYPE_UNSIGNED_LONG_LONG);
 
+
+    errno = 0;
 
     if (ctx->current == NULL)
     {
@@ -965,9 +978,43 @@ int convert_to_number(struct parser_ctx* ctx, struct expression* p_expression_no
     {
         if (suffix[0] == 'F')
         {
-            double value = strtod(buffer, NULL);
-            if (isinf(value) && errno == ERANGE)
+            const double value = strtod(buffer, NULL);
+            if (errno == ERANGE)
             {
+                if (isinf(value))
+                {
+                    compiler_diagnostic(W_FLOAT_RANGE,
+                                        ctx,
+                                        token,
+                                        NULL,
+                                        "floating constant exceeds range of float");
+                }
+                else
+                {
+                    compiler_diagnostic(W_FLOAT_RANGE,
+                                     ctx,
+                                     token,
+                                     NULL,
+                                     "floating constant truncated to zero");
+                }
+            }
+            else if ((value > 0 && value > (double)FLT_MAX) ||
+                     (value < 0 && value < (double)FLT_MAX))
+            {
+                compiler_diagnostic(W_FLOAT_RANGE,
+                                    ctx,
+                                    token,
+                                    NULL,
+                                    "floating constant exceeds range of float");
+            }
+            else if (value > 0 && value < (double)FLT_MIN)
+            {
+                /*Minimum positive*/
+                compiler_diagnostic(W_FLOAT_RANGE,
+                                    ctx,
+                                    token,
+                                    NULL,
+                                    "floating constant is too small for float.");
             }
             p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_FLOAT;
             object_destroy(&p_expression_node->object);
@@ -975,16 +1022,53 @@ int convert_to_number(struct parser_ctx* ctx, struct expression* p_expression_no
         }
         else if (suffix[0] == 'L')
         {
-            long double value = strtod(buffer, NULL);
+            const long double value = strtod(buffer, NULL);
+
+            if (errno == ERANGE)
+            {
+                if (isinf(value))
+                {
+                    compiler_diagnostic(W_FLOAT_RANGE,
+                                        ctx,
+                                        token,
+                                        NULL,
+                                        "floating constant exceeds range of long double");
+                }
+                else
+                {
+                    compiler_diagnostic(W_FLOAT_RANGE,
+                                     ctx,
+                                     token,
+                                     NULL,
+                                     "floating constant truncated to zero");
+                }
+            }
+
             p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_DOUBLE | TYPE_SPECIFIER_LONG;
             object_destroy(&p_expression_node->object);
             p_expression_node->object = object_make_long_double(ctx->options.target, value);
         }
         else
         {
-            double value = strtod(buffer, NULL);
-            if (isinf(value) && errno == ERANGE)
+            const double value = strtod(buffer, NULL);
+            if (errno == ERANGE)
             {
+                if (isinf(value))
+                {
+                    compiler_diagnostic(W_FLOAT_RANGE,
+                                        ctx,
+                                        token,
+                                        NULL,
+                                        "floating constant exceeds range of double");
+                }
+                else
+                {
+                    compiler_diagnostic(W_FLOAT_RANGE,
+                                     ctx,
+                                     token,
+                                     NULL,
+                                     "floating constant truncated to zero");
+                }
             }
             object_destroy(&p_expression_node->object);
             p_expression_node->object = object_make_double(ctx->options.target, value);
@@ -1104,7 +1188,7 @@ struct expression* _Owner _Opt primary_expression(struct parser_ctx* ctx, enum e
                         {
                             compiler_diagnostic(C_ERROR_OUTER_SCOPE,
                                 ctx,
-                                ctx->current,
+                                p_expression_node->first_token,
                                 NULL,
                                 "'%s' cannot be evaluated in this scope", ctx->current->lexeme);
                         }
@@ -1137,7 +1221,7 @@ struct expression* _Owner _Opt primary_expression(struct parser_ctx* ctx, enum e
             }
             else
             {
-                compiler_diagnostic(C_ERROR_NOT_FOUND, ctx, ctx->current, NULL, "not found '%s'", ctx->current->lexeme);
+                compiler_diagnostic(C_ERROR_NOT_FOUND, ctx, p_expression_node->first_token, NULL, "identifier '%s' not declared", ctx->current->lexeme);
                 throw;
             }
             parser_match(ctx);
@@ -1491,14 +1575,6 @@ struct argument_expression_list argument_expression_list(struct parser_ctx* ctx,
     /*
      argument-expression-list:
       assignment-expression
-      argument-expression-ctx , assignment-expression
-    */
-
-    /*
-     argument-expression-list: (extended)
-      assignment-expression
-      move assignment-expression
-      argument-expression-ctx , assignment-expression
       argument-expression-ctx , assignment-expression
     */
 
@@ -2387,6 +2463,7 @@ bool is_first_of_unary_expression(struct parser_ctx* ctx)
         ctx->current->type == TK_KEYWORD_GCC__BUILTIN_C23_VA_START ||
         ctx->current->type == TK_KEYWORD_GCC__BUILTIN_VA_COPY ||
         ctx->current->type == TK_KEYWORD_GCC__BUILTIN_OFFSETOF ||
+        ctx->current->type == TK_KEYWORD_GCC__BUILTIN_XXXXX ||
 
         is_first_of_compiler_function(ctx);
 }
@@ -2549,7 +2626,7 @@ struct expression* _Owner _Opt unary_expression(struct parser_ctx* ctx, enum exp
                 if (eval_mode == EXPRESSION_EVAL_MODE_VALUE_AND_TYPE &&
                     object_has_constant_value(&new_expression->right->object))
                 {
-                    char warning_message[200] = { 0 };
+                    
                     new_expression->object =
                         object_logical_not(ctx->options.target, &new_expression->right->object, warning_message);
                 }
@@ -2585,7 +2662,7 @@ struct expression* _Owner _Opt unary_expression(struct parser_ctx* ctx, enum exp
                 if (eval_mode == EXPRESSION_EVAL_MODE_VALUE_AND_TYPE &&
                   object_has_constant_value(&new_expression->right->object))
                 {
-                    char warning_message[200] = { 0 };
+                    
                     new_expression->object =
                         object_bitwise_not(ctx->options.target, &new_expression->right->object, warning_message);
                 }
@@ -2603,7 +2680,7 @@ struct expression* _Owner _Opt unary_expression(struct parser_ctx* ctx, enum exp
                 if (eval_mode == EXPRESSION_EVAL_MODE_VALUE_AND_TYPE &&
                     object_has_constant_value(&new_expression->right->object))
                 {
-                    char warning_message[200] = { 0 };
+                    
                         if (op == '-')
                     {
                         new_expression->object =
@@ -2696,8 +2773,6 @@ struct expression* _Owner _Opt unary_expression(struct parser_ctx* ctx, enum exp
         }
         else if (ctx->current->type == TK_KEYWORD_GCC__BUILTIN_C23_VA_START)
         {
-
-
             struct expression* _Owner _Opt new_expression = calloc(1, sizeof * new_expression);
             if (new_expression == NULL) throw;
             new_expression->first_token = ctx->current;
@@ -2744,8 +2819,6 @@ struct expression* _Owner _Opt unary_expression(struct parser_ctx* ctx, enum exp
         }
         else if (ctx->current->type == TK_KEYWORD_GCC__BUILTIN_VA_END)
         {
-
-
             struct expression* _Owner _Opt new_expression = calloc(1, sizeof * new_expression);
             if (new_expression == NULL) throw;
             new_expression->first_token = ctx->current;
@@ -2953,6 +3026,173 @@ struct expression* _Owner _Opt unary_expression(struct parser_ctx* ctx, enum exp
 
             new_expression->object = object_make_size_t(ctx->options.target, offsetof);
             
+            return new_expression;
+        }
+        else if (ctx->current->type == TK_KEYWORD_GCC__BUILTIN_XXXXX)
+        {
+            const char* const builtin_name = ctx->current->lexeme;
+
+            struct expression* _Owner _Opt new_expression = calloc(1, sizeof * new_expression);
+            if (new_expression == NULL) throw;
+            new_expression->first_token = ctx->current;
+            new_expression->expression_type = UNARY_EXPRESSION_GCC__BUILTIN_XXXXX;
+
+            parser_match(ctx);
+
+            if (ctx->current == NULL)
+            {
+                unexpected_end_of_file(ctx);
+                expression_delete(new_expression);
+                throw;
+            }
+
+                if (parser_match_tk(ctx, '(') != 0)
+                {
+                    expression_delete(new_expression);
+                    throw;
+                }
+
+            if (ctx->current->type != ')')
+                {
+               new_expression->argument_expression_list = argument_expression_list(ctx, eval_mode);
+                }
+
+                if (parser_match_tk(ctx, ')') != 0)
+                {
+                    expression_delete(new_expression);
+                    throw;
+                }
+
+            //https://gcc.gnu.org/onlinedocs/gcc/Floating-Point-Format-Builtins.html
+
+            if (strcmp(builtin_name, "__builtin_huge_val") == 0 ||
+                strcmp(builtin_name, "__builtin_inf") == 0 ||
+                strcmp(builtin_name, "__builtin_nan(const char* str)") == 0 ||
+                strcmp(builtin_name, "__builtin_nans(const char* str)") == 0 ||
+                strcmp(builtin_name, "__builtin_powi(double, int)") == 0
+                )
+            {
+                new_expression->type = type_make_double();
+            }
+            else if (strcmp(builtin_name, "__builtin_huge_valf") == 0 ||
+                     strcmp(builtin_name, "__builtin_inff") == 0 ||
+                     strcmp(builtin_name, "__builtin_nanf") == 0 ||
+                     strcmp(builtin_name, "__builtin_nansf") == 0 ||
+                     strcmp(builtin_name, "__builtin_powif") == 0)
+            {
+                new_expression->type = type_make_float();
+            }
+             else if (strcmp(builtin_name, "__builtin_add_overflow") == 0 ||
+                      strcmp(builtin_name, "__builtin_sadd_overflow") == 0 ||
+                      strcmp(builtin_name, "__builtin_saddl_overflow") == 0 ||
+                      strcmp(builtin_name, "__builtin_saddll_overflow") == 0 ||
+                      strcmp(builtin_name, "__builtin_uaddl_overflow ") == 0 ||
+                      strcmp(builtin_name, "__builtin_uaddll_overflow") == 0)
+                {
+                new_expression->type = type_make_int_bool_like();
+                }
+            else if (strcmp(builtin_name, "__builtin_huge_vall") == 0 ||
+                    strcmp(builtin_name, "__builtin_infl") == 0 ||
+                    strcmp(builtin_name, "__builtin_nanl") == 0 ||
+                    strcmp(builtin_name, "__builtin_nansl") == 0 ||
+                    strcmp(builtin_name, "__builtin_powil") == 0)
+                {
+                new_expression->type = type_make_long_double();
+                }
+            else if (strcmp(builtin_name, "__builtin_huge_valfN") == 0 ||
+                    strcmp(builtin_name, "__builtin_inffN") == 0 ||
+                    strcmp(builtin_name, "__builtin_nanfN") == 0 ||
+                    strcmp(builtin_name, "__builtin_nansfN") == 0 ||
+                    strcmp(builtin_name, "__builtin_huge_valfNx") == 0 ||
+                    strcmp(builtin_name, "__builtin_inffNx") == 0 ||
+                    strcmp(builtin_name, "__builtin_nanfNx") == 0 ||
+                    strcmp(builtin_name, "__builtin_nansfNx") == 0 )
+                {
+                //there is not f floatn in cake yet
+                new_expression->type = type_make_long_double();
+                }
+            else if (strcmp(builtin_name, "__builtin_infd32") == 0 ||
+                     strcmp(builtin_name, "__builtin_infd64") == 0 ||
+                     strcmp(builtin_name, "__builtin_infd128") == 0 ||
+                     strcmp(builtin_name, "__builtin_nand32") == 0 ||
+                     strcmp(builtin_name, "__builtin_nand64") == 0 ||
+                     strcmp(builtin_name, "__builtin_nand128") == 0 ||
+                     strcmp(builtin_name, "__builtin_nansd32") == 0 ||
+                     strcmp(builtin_name, "__builtin_nansd64") == 0 ||
+                     strcmp(builtin_name, "__builtin_nansd128") == 0)
+            {
+                //tODO
+            }
+            else if (strcmp(builtin_name, "__builtin_fpclassify") == 0 ||
+                     strcmp(builtin_name, "__builtin_isinf_sign") == 0 ||
+                     strcmp(builtin_name, "__builtin_issignaling") == 0)
+            {
+                new_expression->type = type_make_int();
+                }
+            else if (strcmp(builtin_name, "__builtin_signbitf") == 0 ||
+                strcmp(builtin_name, "__builtin_signbit") == 0 ||
+                strcmp(builtin_name, "__builtin_signbitl") == 0)
+                {
+                new_expression->type = type_make_int();
+                }
+                else if (strcmp(builtin_name, "__builtin_unreachable") == 0 ||
+                         strcmp(builtin_name, "__builtin_trap") == 0)
+                {
+                    new_expression->type = make_void_type();
+            }
+            else if (strcmp(builtin_name, "__builtin_ffs") == 0 ||
+                     strcmp(builtin_name, "__builtin_clz") == 0 ||
+                     strcmp(builtin_name, "__builtin_clrsb ") == 0 ||
+                     strcmp(builtin_name, "__builtin_popcount ") == 0 ||
+                    strcmp(builtin_name, "__builtin_parity") == 0 ||
+                    strcmp(builtin_name, "__builtin_ffsl") == 0 ||
+                    strcmp(builtin_name, "__builtin_clzl") == 0 ||
+                    strcmp(builtin_name, "__builtin_clrsbl") == 0 ||
+                    strcmp(builtin_name, "__builtin_popcountl") == 0 ||
+                    strcmp(builtin_name, "__builtin_parityl") == 0 ||
+                    strcmp(builtin_name, "__builti__builtin_ffsll") == 0 ||
+                    strcmp(builtin_name, "__builtin_clzll") == 0 ||
+                    strcmp(builtin_name, "__builtin_ctzll") == 0 ||
+                    strcmp(builtin_name, "__builtin_clrsbll") == 0 ||
+                    strcmp(builtin_name, "__builtin_parityll") == 0 ||
+                    strcmp(builtin_name, "__builtin_ffsg") == 0 ||
+                    strcmp(builtin_name, "__builtin_clzg") == 0 ||
+                    strcmp(builtin_name, "__builtin_ctzg") == 0 ||
+                    strcmp(builtin_name, "__builtin_clrsbg") == 0 ||
+                    strcmp(builtin_name, "__builtin_popcountg") == 0 ||
+                    strcmp(builtin_name, "__builtin_parityg") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_bit_ceil") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_bit_floor") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_bit_width") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_count_ones") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_count_zeros") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_first_leading_one") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_first_leading_zero") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_first_trailing_one") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_first_trailing_zero") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_has_single_bit") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_leading_ones") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_leading_zeros") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_trailing_ones ") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_trailing_zeros") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_rotate_left") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_rotate_right")
+                )
+            {
+                //https://gcc.gnu.org/onlinedocs/gcc/Bit-Operation-Builtins.html
+                new_expression->type = type_make_int();
+                }
+                else
+                {
+                    //https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html
+                    compiler_diagnostic(C_ERROR_NOT_FOUND,
+                                        ctx,
+                                        new_expression->first_token,
+                                            NULL,
+                                    "unknown builtin '%s'", builtin_name);
+                new_expression->type = make_void_type();
+            }
+
             return new_expression;
         }
         else if (ctx->current->type == TK_KEYWORD_SIZEOF)
@@ -3705,11 +3945,11 @@ struct expression* _Owner _Opt cast_expression(struct parser_ctx* ctx, enum expr
                         }
                         else
                         {
-                            compiler_diagnostic(W_CAST_TO_SAME_TYPE,
-                                                ctx,
-                                                p_expression_node->first_token,
-                                                NULL,
-                                                "casting to the same type");
+                            //compiler_diagnostic(W_CAST_TO_SAME_TYPE,
+                              //                  ctx,
+                                //                p_expression_node->first_token,
+                                  //              NULL,
+                                    //            "casting to the same type");
                         }
                     }
                 }
@@ -3761,235 +4001,8 @@ struct expression* _Owner _Opt cast_expression(struct parser_ctx* ctx, enum expr
     return p_expression_node;
 }
 
-
-
-_Attr(nodiscard)
-errno_t execute_arithmetic(const struct parser_ctx* ctx,
-                      const struct expression* new_expression,
-                      int op,
-                      struct object* result)
-{
-    //TODO REMOVE THE USAGE OF THIS FUNCTION 
-    try
-    {
-        if (new_expression->left == NULL || new_expression->right == NULL)
-        {
-            assert(false);
-            throw;
-        }
-
-        //Each of the operands shall have arithmetic type
-        if (!type_is_arithmetic(&new_expression->left->type))
-        {
-            compiler_diagnostic(C_ERROR_LEFT_IS_NOT_INTEGER, ctx, ctx->current, NULL, "left type must be an arithmetic type");
-            throw;
-        }
-
-        if (!type_is_arithmetic(&new_expression->right->type))
-        {
-            compiler_diagnostic(C_ERROR_LEFT_IS_NOT_INTEGER, ctx, ctx->current, NULL, "right type must be an arithmetic type");
-            throw;
-        }
-
-
-        if (object_has_constant_value(&new_expression->left->object) &&
-            object_has_constant_value(&new_expression->right->object))
-        {
-
-            const struct marker m =
-            {
-                .p_token_begin = new_expression->left->first_token,
-                .p_token_end = new_expression->right->last_token
-            };
-
-
-
-            char warning_message[200] = { 0 };
-            enum diagnostic_id warning_id = 0;
-
-                if (op == '+')
-                {
-                *result = object_add(ctx->options.target,
-                                     &new_expression->left->object,
-                                     &new_expression->right->object,
-                                     warning_message);
-                warning_id = W_INTEGER_OVERFLOW;
-                if (warning_message[0] != '\0')
-                    {
-                    compiler_diagnostic(warning_id,
-                        ctx,
-                        NULL,
-                        &m,
-                        "%s",
-                        warning_message);
-                        }
-                return 0;
-                    }
-            if (op == '-')
-                    {
-                *result = object_sub(ctx->options.target,
-                                     &new_expression->left->object,
-                                     &new_expression->right->object,
-                                     warning_message);
-
-                warning_id = W_INTEGER_OVERFLOW;
-                if (warning_message[0] != '\0')
-                {
-                    compiler_diagnostic(warning_id,
-                        ctx,
-                        NULL,
-                        &m,
-                        "%s",
-                        warning_message);
-                }
-                return 0;
-                }
-            if (op == '*')
-                {
-                *result = object_mul(ctx->options.target,
-                                     &new_expression->left->object,
-                                     &new_expression->right->object,
-                                     warning_message);
-                warning_id = W_INTEGER_OVERFLOW;
-                if (warning_message[0] != '\0')
-                {
-                    compiler_diagnostic(warning_id,
-                        ctx,
-                        NULL,
-                        &m,
-                        "%s",
-                        warning_message);
-                }
-                return 0;
-                }
-            if (op == '/')
-                {
-                *result = object_div(ctx->options.target,
-                                     &new_expression->left->object,
-                                     &new_expression->right->object,
-                                     warning_message);
-                warning_id = W_DIVIZION_BY_ZERO;
-                if (warning_message[0] != '\0')
-            {
-                    compiler_diagnostic(warning_id,
-                        ctx,
-                        NULL,
-                        &m,
-                        "%s",
-                        warning_message);
-                    }
-                return 0;
-                }
-
-            if (op == '%')
-                    {
-                *result = object_mod(ctx->options.target,
-                                     &new_expression->left->object,
-                                     &new_expression->right->object,
-                                     warning_message);
-                warning_id = W_DIVIZION_BY_ZERO;
-                if (warning_message[0] != '\0')
-                    {
-                    compiler_diagnostic(warning_id,
-                        ctx,
-                        NULL,
-                        &m,
-                        "%s",
-                        warning_message);
-                    }
-                return 0;
-                    }
-
-            if (op == '>=')
-                {
-                *result = object_greater_than_or_equal(ctx->options.target,
-                                     &new_expression->left->object,
-                                     &new_expression->right->object,
-                                     warning_message);
-                warning_id = W_INTEGER_OVERFLOW;
-                if (warning_message[0] != '\0')
-                    {
-                    compiler_diagnostic(warning_id,
-                        ctx,
-                        NULL,
-                        &m,
-                        "%s",
-                        warning_message);
-                    }
-                return 0;
-                    }
-
-            if (op == '<=')
-                {
-                *result = object_smaller_than_or_equal(ctx->options.target,
-                                     &new_expression->left->object,
-                                     &new_expression->right->object,
-                                     warning_message);
-                warning_id = W_INTEGER_OVERFLOW;
-                if (warning_message[0] != '\0')
-                    {
-                    compiler_diagnostic(warning_id,
-                        ctx,
-                        NULL,
-                        &m,
-                        "%s",
-                        warning_message);
-                    }
-                return 0;
-                }
-
-
-            if (op == '>')
-            {
-                *result = object_greater_than(ctx->options.target,
-                                     &new_expression->left->object,
-                                     &new_expression->right->object,
-                                     warning_message);
-                warning_id = W_INTEGER_OVERFLOW;
-                if (warning_message[0] != '\0')
-                {
-                    compiler_diagnostic(warning_id,
-                        ctx,
-                        NULL,
-                        &m,
-                        "%s",
-                        warning_message);
-                }
-                return 0;
-                    }
-
-            if (op == '<')
-                {
-                *result = object_smaller_than(ctx->options.target,
-                                     &new_expression->left->object,
-                                     &new_expression->right->object,
-                                     warning_message);
-                warning_id = W_INTEGER_OVERFLOW;
-                if (warning_message[0] != '\0')
-                {
-                    compiler_diagnostic(warning_id,
-                        ctx,
-                        NULL,
-                        &m,
-                        "%s",
-                        warning_message);
-                }
-                return 0;
-                }
-
-            }
-                }
-    catch{
-
-            }
-    struct object empty = { 0 };
-    *result = empty;
-    return 0; //error
-}
-
 struct expression* _Owner _Opt multiplicative_expression(struct parser_ctx* ctx, enum expression_eval_mode eval_mode)
 {
-
     /*
      multiplicative-expression:
     cast-expression
@@ -4103,10 +4116,70 @@ struct expression* _Owner _Opt multiplicative_expression(struct parser_ctx* ctx,
             }
             new_expression->type = type_common(&new_expression->left->type, &new_expression->right->type, ctx->options.target);
 
-            if (eval_mode == EXPRESSION_EVAL_MODE_VALUE_AND_TYPE && execute_arithmetic(ctx, new_expression, op, &new_expression->object) != 0)
+            if (eval_mode == EXPRESSION_EVAL_MODE_VALUE_AND_TYPE)
             {
-                expression_delete(new_expression);
-                throw;
+                if (object_has_constant_value(&new_expression->left->object) &&
+                    object_has_constant_value(&new_expression->right->object))
+                {
+                    const struct marker m =
+                    {
+                        .p_token_begin = new_expression->left->first_token,
+                        .p_token_end = new_expression->right->last_token
+                    };
+
+                    
+                    if (op == '*')
+                    {
+                        new_expression->object = object_mul(ctx->options.target,
+                                             &new_expression->left->object,
+                                             &new_expression->right->object,
+                                             warning_message);
+
+                        if (warning_message[0] != '\0')
+                        {
+                            compiler_diagnostic(W_INTEGER_OVERFLOW,
+                                ctx,
+                                NULL,
+                                &m,
+                                "%s",
+                                warning_message);
+                        }
+                    }
+                    else if (op == '/')
+                    {
+                        new_expression->object = object_div(ctx->options.target,
+                                             &new_expression->left->object,
+                                             &new_expression->right->object,
+                                             warning_message);
+
+                        if (warning_message[0] != '\0')
+                        {
+                            compiler_diagnostic(W_DIVIZION_BY_ZERO,
+                                ctx,
+                                NULL,
+                                &m,
+                                "%s",
+                                warning_message);
+                        }
+                    }
+                    else if (op == '%')
+                    {
+                        new_expression->object = object_mod(ctx->options.target,
+                                             &new_expression->left->object,
+                                             &new_expression->right->object,
+                                             warning_message);
+
+                        if (warning_message[0] != '\0')
+                        {
+                            compiler_diagnostic(W_DIVIZION_BY_ZERO,
+                                ctx,
+                                NULL,
+                                &m,
+                                "%s",
+                                warning_message);
+                        }
+                    }
+                }
             }
 
             p_expression_node = new_expression;
@@ -4178,12 +4251,12 @@ struct expression* _Owner _Opt additive_expression(struct parser_ctx* ctx, enum 
             new_expression->last_token = new_expression->right->last_token;
 
 
-
-            if (!type_is_scalar(&new_expression->left->type) && !type_is_array(&new_expression->left->type))
+            if (!type_is_scalar_decay(&new_expression->left->type))
             {
                 compiler_diagnostic(C_ERROR_LEFT_IS_NOT_SCALAR, ctx, operator_position, NULL, "left operator is not scalar");
             }
-            if (!type_is_scalar(&new_expression->right->type) && !type_is_array(&new_expression->right->type))
+
+            if (!type_is_scalar_decay(&new_expression->right->type))
             {
                 compiler_diagnostic(C_ERROR_RIGHT_IS_NOT_SCALAR, ctx, operator_position, NULL, "right operator is not scalar");
             }
@@ -4207,10 +4280,34 @@ struct expression* _Owner _Opt additive_expression(struct parser_ctx* ctx, enum 
                 {
                     new_expression->type = type_common(&new_expression->left->type, &new_expression->right->type, ctx->options.target);
 
-                    if (eval_mode == EXPRESSION_EVAL_MODE_VALUE_AND_TYPE && execute_arithmetic(ctx, new_expression, op, &new_expression->object) != 0)
+                    if (eval_mode == EXPRESSION_EVAL_MODE_VALUE_AND_TYPE)
                     {
-                        expression_delete(new_expression);
-                        throw;
+                        if (object_has_constant_value(&new_expression->left->object) &&
+                            object_has_constant_value(&new_expression->right->object))
+                        {
+                            const struct marker m =
+                            {
+                                .p_token_begin = new_expression->left->first_token,
+                                .p_token_end = new_expression->right->last_token
+                            };
+
+                            
+
+                            new_expression->object = object_add(ctx->options.target,
+                                                 &new_expression->left->object,
+                                                 &new_expression->right->object,
+                                                 warning_message);
+
+                            if (warning_message[0] != '\0')
+                            {
+                                compiler_diagnostic(W_INTEGER_OVERFLOW,
+                                    ctx,
+                                    NULL,
+                                    &m,
+                                    "%s",
+                                    warning_message);
+                            }
+                        }
                     }
                 }
                 else
@@ -4276,10 +4373,35 @@ struct expression* _Owner _Opt additive_expression(struct parser_ctx* ctx, enum 
                 {
                     new_expression->type = type_common(&new_expression->left->type, &new_expression->right->type, ctx->options.target);
 
-                    if (eval_mode == EXPRESSION_EVAL_MODE_VALUE_AND_TYPE && execute_arithmetic(ctx, new_expression, op, &new_expression->object) != 0)
+                    if (eval_mode == EXPRESSION_EVAL_MODE_VALUE_AND_TYPE)
                     {
-                        expression_delete(new_expression);
-                        throw;
+
+                        if (object_has_constant_value(&new_expression->left->object) &&
+                            object_has_constant_value(&new_expression->right->object))
+                        {
+                            const struct marker m =
+                            {
+                                .p_token_begin = new_expression->left->first_token,
+                                .p_token_end = new_expression->right->last_token
+                            };
+
+                            
+
+                            new_expression->object = object_sub(ctx->options.target,
+                                                 &new_expression->left->object,
+                                                 &new_expression->right->object,
+                                                 warning_message);
+
+                            if (warning_message[0] != '\0')
+                            {
+                                compiler_diagnostic(W_INTEGER_OVERFLOW,
+                                    ctx,
+                                    NULL,
+                                    &m,
+                                    "%s",
+                                    warning_message);
+                            }
+                        }
                     }
                 }
                 else
@@ -4408,7 +4530,7 @@ struct expression* _Owner _Opt shift_expression(struct parser_ctx* ctx, enum exp
             if (object_has_constant_value(&new_expression->left->object) &&
                 object_has_constant_value(&new_expression->right->object))
             {
-                char warning_message[200] = { 0 };
+                
 
                 if (op == '<<')
                 {
@@ -4595,11 +4717,97 @@ struct expression* _Owner _Opt relational_expression(struct parser_ctx* ctx, enu
             {
                 new_expression->type = type_common(&new_expression->left->type, &new_expression->right->type, ctx->options.target);
 
-                if (eval_mode == EXPRESSION_EVAL_MODE_VALUE_AND_TYPE && execute_arithmetic(ctx, new_expression, op, &new_expression->object) != 0)
+                if (eval_mode == EXPRESSION_EVAL_MODE_VALUE_AND_TYPE)
                 {
-                    expression_delete(new_expression);
-                    new_expression = NULL;
-                    throw;
+                    if (object_has_constant_value(&new_expression->left->object) &&
+                        object_has_constant_value(&new_expression->right->object))
+                    {
+
+                        const struct marker m =
+                        {
+                            .p_token_begin = new_expression->left->first_token,
+                            .p_token_end = new_expression->right->last_token
+                        };
+
+
+
+                        
+                        enum diagnostic_id warning_id = 0;
+
+                        if (op == '>=')
+                        {
+                            new_expression->object = object_greater_than_or_equal(ctx->options.target,
+                                                 &new_expression->left->object,
+                                                 &new_expression->right->object,
+                                                 warning_message);
+                            warning_id = W_INTEGER_OVERFLOW;
+                            if (warning_message[0] != '\0')
+                            {
+                                compiler_diagnostic(warning_id,
+                                    ctx,
+                                    NULL,
+                                    &m,
+                                    "%s",
+                                    warning_message);
+                            }
+                           
+                        }
+                        else if (op == '<=')
+                        {
+                            new_expression->object = object_smaller_than_or_equal(ctx->options.target,
+                                                 &new_expression->left->object,
+                                                 &new_expression->right->object,
+                                                 warning_message);
+                            warning_id = W_INTEGER_OVERFLOW;
+                            if (warning_message[0] != '\0')
+                            {
+                                compiler_diagnostic(warning_id,
+                                    ctx,
+                                    NULL,
+                                    &m,
+                                    "%s",
+                                    warning_message);
+                            }
+                          
+                        }
+                        else if (op == '>')
+                        {
+                            new_expression->object= object_greater_than(ctx->options.target,
+                                                 &new_expression->left->object,
+                                                 &new_expression->right->object,
+                                                 warning_message);
+                            warning_id = W_INTEGER_OVERFLOW;
+                            if (warning_message[0] != '\0')
+                            {
+                                compiler_diagnostic(warning_id,
+                                    ctx,
+                                    NULL,
+                                    &m,
+                                    "%s",
+                                    warning_message);
+                            }
+                         
+                        }
+                        else if (op == '<')
+                        {
+                            new_expression->object= object_smaller_than(ctx->options.target,
+                                                 &new_expression->left->object,
+                                                 &new_expression->right->object,
+                                                 warning_message);
+                            warning_id = W_INTEGER_OVERFLOW;
+                            if (warning_message[0] != '\0')
+                            {
+                                compiler_diagnostic(warning_id,
+                                    ctx,
+                                    NULL,
+                                    &m,
+                                    "%s",
+                                    warning_message);
+                            }
+                     
+                        }
+
+                    }
                 }
             }
 
@@ -4738,7 +4946,7 @@ struct expression* _Owner _Opt equality_expression(struct parser_ctx* ctx, enum 
             {
                 if (eval_mode == EXPRESSION_EVAL_MODE_VALUE_AND_TYPE)
                 {
-                    char warning_message[200] = { 0 };
+                    
                     if (p_token_operator->type == '==')
                     {
                         new_expression->object = object_equal(ctx->options.target,
@@ -4830,7 +5038,7 @@ struct expression* _Owner _Opt and_expression(struct parser_ctx* ctx, enum expre
             if (object_has_constant_value(&new_expression->left->object) &&
                 object_has_constant_value(&new_expression->right->object))
             {
-                char warning_message[200] = { 0 };
+                
                 new_expression->object = object_bitwise_and(ctx->options.target,
                     &new_expression->left->object,
                     &new_expression->right->object, warning_message);
@@ -4909,7 +5117,7 @@ struct expression* _Owner _Opt  exclusive_or_expression(struct parser_ctx* ctx, 
         if (object_has_constant_value(&new_expression->left->object) &&
             object_has_constant_value(&new_expression->right->object))
         {
-                char warning_message[200] = { 0 };
+                
                 new_expression->object = object_bitwise_xor(ctx->options.target,
                     &new_expression->left->object,
                     &new_expression->right->object, warning_message);
@@ -4998,7 +5206,7 @@ struct expression* _Owner _Opt inclusive_or_expression(struct parser_ctx* ctx, e
             if (object_has_constant_value(&new_expression->left->object) &&
                 object_has_constant_value(&new_expression->right->object))
             {
-                char warning_message[200] = { 0 };
+                
                 new_expression->object = object_bitwise_or(ctx->options.target,
                 &new_expression->left->object,
                 &new_expression->right->object, warning_message);
@@ -5095,14 +5303,14 @@ struct expression* _Owner _Opt logical_and_expression(struct parser_ctx* ctx, en
             }
 
             //Each of the operands shall have scalar type
-            if (!type_is_scalar(&new_expression->left->type))
+            if (!type_is_scalar_decay(&new_expression->left->type))
             {
                 expression_delete(new_expression);
                 compiler_diagnostic(C_ERROR_LEFT_IS_NOT_SCALAR, ctx, ctx->current, NULL, "left type is not scalar for or expression");
                 throw;
             }
 
-            if (!type_is_scalar(&new_expression->right->type))
+            if (!type_is_scalar_decay(&new_expression->right->type))
             {
                 expression_delete(new_expression);
                 compiler_diagnostic(C_ERROR_RIGHT_IS_NOT_SCALAR, ctx, ctx->current, NULL, "right type is not scalar for or expression");
@@ -5220,14 +5428,14 @@ struct expression* _Owner _Opt logical_or_expression(struct parser_ctx* ctx, enu
 
 
             //Each of the operands shall have scalar type
-            if (!type_is_scalar(&new_expression->left->type))
+            if (!type_is_scalar_decay(&new_expression->left->type))
             {
                 expression_delete(new_expression);
                 compiler_diagnostic(C_ERROR_LEFT_IS_NOT_SCALAR, ctx, ctx->current, NULL, "left type is not scalar for or expression");
                 throw;
             }
 
-            if (!type_is_scalar(&new_expression->right->type))
+            if (!type_is_scalar_decay(&new_expression->right->type))
             {
                 expression_delete(new_expression);
                 compiler_diagnostic(C_ERROR_RIGHT_IS_NOT_SCALAR, ctx, ctx->current, NULL, "right type is not scalar for or expression");
@@ -5659,7 +5867,6 @@ struct expression* _Owner _Opt conditional_expression(struct parser_ctx* ctx, en
         if (p_expression_node == NULL)
             throw;
 
-        enum expression_eval_mode current_eval_mode = eval_mode;
 
         if (ctx->current && ctx->current->type == '?')
         {
@@ -5692,17 +5899,31 @@ struct expression* _Owner _Opt conditional_expression(struct parser_ctx* ctx, en
                 }
             }
 
-            switch (current_eval_mode)
+            enum expression_eval_mode true_eval_mode = eval_mode;
+            enum expression_eval_mode false_eval_mode = eval_mode;
+
+
+            switch (eval_mode)
             {
             case EXPRESSION_EVAL_MODE_NONE:
             case EXPRESSION_EVAL_MODE_TYPE:
                 break;
+
             case EXPRESSION_EVAL_MODE_VALUE_AND_TYPE:
-                current_eval_mode = has_constant_expression && !constant_expression_is_true;
+                if (has_constant_expression && constant_expression_is_true)
+                {
+                    true_eval_mode = EXPRESSION_EVAL_MODE_VALUE_AND_TYPE;
+                    false_eval_mode = EXPRESSION_EVAL_MODE_NONE;
+                }
+                else
+                {
+                    true_eval_mode = EXPRESSION_EVAL_MODE_NONE;
+                    false_eval_mode = EXPRESSION_EVAL_MODE_VALUE_AND_TYPE;
+                }
                 break;
             }
 
-            struct expression* _Owner _Opt p_left = expression(ctx, current_eval_mode);
+            struct expression* _Owner _Opt p_left = expression(ctx, true_eval_mode);
 
             if (p_left == NULL)
             {
@@ -5726,24 +5947,8 @@ struct expression* _Owner _Opt conditional_expression(struct parser_ctx* ctx, en
                 throw;
             }
 
-            enum expression_eval_mode new_eval_mode = EXPRESSION_EVAL_MODE_VALUE_AND_TYPE;
-            switch (eval_mode)
-            {
-            case EXPRESSION_EVAL_MODE_NONE:
-            case EXPRESSION_EVAL_MODE_TYPE:
-                new_eval_mode = eval_mode;
-                break;
 
-            case EXPRESSION_EVAL_MODE_VALUE_AND_TYPE:
-                new_eval_mode = eval_mode;
-                if (has_constant_expression && constant_expression_is_true)
-                {
-                    new_eval_mode = EXPRESSION_EVAL_MODE_TYPE;
-                }
-                break;
-            }
-
-            struct expression* _Owner _Opt p_right = conditional_expression(ctx, new_eval_mode);
+            struct expression* _Owner _Opt p_right = conditional_expression(ctx, false_eval_mode);
 
             if (p_right == NULL)
             {
@@ -5783,7 +5988,7 @@ struct expression* _Owner _Opt conditional_expression(struct parser_ctx* ctx, en
             }
 
             /*The first operand shall have scalar type*/
-            if (!type_is_scalar(&p_conditional_expression->condition_expr->type))
+            if (!type_is_scalar_decay(&p_conditional_expression->condition_expr->type))
             {
                 compiler_diagnostic(C_ERROR_CONDITION_MUST_HAVE_SCALAR_TYPE, ctx, ctx->current, NULL, "condition must have scalar type");
             }

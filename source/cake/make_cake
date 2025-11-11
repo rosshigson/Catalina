@@ -85,6 +85,7 @@ echo ""
 
 ./bake_cake>bake.out
 cd src/catalina
+#catalina -p2 -lcx -lmc -C LARGE -C RTC -DTEST -W-w *.c -o cake
 catalina -p2 -lcx -lmc -C LARGE -C RTC -W-w *.c -o cake
 cd ../..
 

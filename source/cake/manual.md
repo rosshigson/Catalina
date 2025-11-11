@@ -102,8 +102,6 @@ SAMPLES
 cake file.c -o file.cc && cl file.cc
     Compiles file.c and outputs file.cc then use cl to compile file.cc
 
-cake file.c -direct-compilation -o file.cc && cl file.cc
-    Compiles file.c and outputs file.cc for direct compilation then use cl to compile file.cc
   
 ```
 
@@ -1414,7 +1412,7 @@ __declspec
 __cdecl
 __fastcall, __stdcall
 __forceinline alias for inline in cake
-
+__pragma
 ```
 
 ### Extension assert built-in

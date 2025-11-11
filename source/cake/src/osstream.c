@@ -86,7 +86,21 @@ int ss_vafprintf(struct osstream* stream, const char* fmt, va_list args)
         return -1;
     }
 
+#if defined(__CATALINA__) 
+    // on Catalina, vsnprintf supports more C99 options than vsprintf
+    if (reserve(stream, stream->size + size + 1) != 0)
+    {
+        return -1;
+    }
+    size = vsnprintf(stream->c_str + stream->size, size+1, fmt, args);
+#else
+    if (reserve(stream, stream->size + size) != 0)
+    {
+        return -1;
+    }
     size = vsprintf(stream->c_str + stream->size, fmt, args);
+#endif // __CATALINA__
+
     if (size > 0)
     {
         stream->size += size;

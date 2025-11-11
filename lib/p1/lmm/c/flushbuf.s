@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_s8ls_68fd74fc_do_write_L000003 ' <symbol:do_write>
+C_sn8_690ed718_do_write_L000003 ' <symbol:do_write>
  jmp #NEWF
  jmp #PSHM
  long $ea8000 ' save registers
@@ -15,11 +15,11 @@ C_s8ls_68fd74fc_do_write_L000003 ' <symbol:do_write>
  mov r21, r3 ' reg var <- reg arg
  mov r19, r2 ' reg var <- reg arg
  jmp #JMPA
- long @C_s8ls_68fd74fc_do_write_L000003_6 ' JUMPV addrg
-C_s8ls_68fd74fc_do_write_L000003_5
+ long @C_sn8_690ed718_do_write_L000003_6 ' JUMPV addrg
+C_sn8_690ed718_do_write_L000003_5
  subs r19, r17 ' SUBI/P (1)
  adds r21, r17 ' ADDI/P (2)
-C_s8ls_68fd74fc_do_write_L000003_6
+C_sn8_690ed718_do_write_L000003_6
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r21 ' CVI, CVU or LOAD
  mov r4, r23 ' CVI, CVU or LOAD
@@ -31,28 +31,28 @@ C_s8ls_68fd74fc_do_write_L000003_6
  mov r17, r0 ' CVI, CVU or LOAD
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_s8ls_68fd74fc_do_write_L000003_8 ' LEI4
+ long @C_sn8_690ed718_do_write_L000003_8 ' LEI4
  cmps r17, r19 wz,wc
  jmp #BR_B
- long @C_s8ls_68fd74fc_do_write_L000003_5 ' LTI4
-C_s8ls_68fd74fc_do_write_L000003_8
+ long @C_sn8_690ed718_do_write_L000003_5 ' LTI4
+C_sn8_690ed718_do_write_L000003_8
  cmps r17,  #0 wz,wc
  jmp #BRBE
- long @C_s8ls_68fd74fc_do_write_L000003_10 ' LEI4
+ long @C_sn8_690ed718_do_write_L000003_10 ' LEI4
  mov r15, #1 ' reg <- coni
  jmp #JMPA
- long @C_s8ls_68fd74fc_do_write_L000003_11 ' JUMPV addrg
-C_s8ls_68fd74fc_do_write_L000003_10
+ long @C_sn8_690ed718_do_write_L000003_11 ' JUMPV addrg
+C_sn8_690ed718_do_write_L000003_10
  mov r15, #0 ' reg <- coni
-C_s8ls_68fd74fc_do_write_L000003_11
+C_sn8_690ed718_do_write_L000003_11
  mov r0, r15 ' CVI, CVU or LOAD
-' C_s8ls_68fd74fc_do_write_L000003_4 ' (symbol refcount = 0)
+' C_sn8_690ed718_do_write_L000003_4 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_s8ls1_68fd74fc_get_buf_L000012 ' <symbol:get_buf>
+C_sn81_690ed718_get_buf_L000012 ' <symbol:get_buf>
  jmp #NEWF
  jmp #PSHM
  long $400000 ' save registers
@@ -63,7 +63,7 @@ C_s8ls1_68fd74fc_get_buf_L000012 ' <symbol:get_buf>
  jmp #CALA
  long @C_malloc ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
-' C_s8ls1_68fd74fc_get_buf_L000012_13 ' (symbol refcount = 0)
+' C_sn81_690ed718_get_buf_L000012_13 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -172,7 +172,7 @@ C___flushbuf_19
  long @C___flushbuf_25 ' EQI4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
- long @C_s8ls1_68fd74fc_get_buf_L000012 ' CALL addrg
+ long @C_sn81_690ed718_get_buf_L000012 ' CALL addrg
  mov r20, r21
  adds r20, #16 ' ADDP4 coni
  wrlong r0, r20 ' ASGNP4 reg reg
@@ -208,7 +208,7 @@ C___flushbuf_28
 C___flushbuf_25
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
- long @C_s8ls1_68fd74fc_get_buf_L000012 ' CALL addrg
+ long @C_sn81_690ed718_get_buf_L000012 ' CALL addrg
  mov r20, r21
  adds r20, #16 ' ADDP4 coni
  wrlong r0, r20 ' ASGNP4 reg reg
@@ -434,7 +434,7 @@ C___flushbuf_47
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_s8ls_68fd74fc_do_write_L000003
+ long @C_sn8_690ed718_do_write_L000003
  add SP, #8 ' CALL addrg
  cmps r0,  #0 wz
  jmp #BRNZ
@@ -528,7 +528,7 @@ C___flushbuf_55
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_s8ls_68fd74fc_do_write_L000003
+ long @C_sn8_690ed718_do_write_L000003
  add SP, #8 ' CALL addrg
  cmps r0,  #0 wz
  jmp #BRNZ

@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' const data segment
 
  alignl ' align long
-C_svf8_68fd76bc_udatatypename_L000013 ' <symbol:udatatypename>
+C_sa64_690ed95d_udatatypename_L000013 ' <symbol:udatatypename>
  byte 117
  byte 115
  byte 101
@@ -30,18 +30,18 @@ DAT ' initialized data segment
 
  alignl ' align long
 C_luaT__typenames_ ' <symbol:luaT_typenames_>
- long @C_svf81_68fd76bc_14_L000015
- long @C_svf82_68fd76bc_16_L000017
- long @C_svf83_68fd76bc_18_L000019
- long @C_svf8_68fd76bc_udatatypename_L000013
- long @C_svf84_68fd76bc_20_L000021
- long @C_svf85_68fd76bc_22_L000023
- long @C_svf86_68fd76bc_24_L000025
- long @C_svf87_68fd76bc_26_L000027
- long @C_svf8_68fd76bc_udatatypename_L000013
- long @C_svf88_68fd76bc_28_L000029
- long @C_svf89_68fd76bc_30_L000031
- long @C_svf8a_68fd76bc_32_L000033
+ long @C_sa641_690ed95d_14_L000015
+ long @C_sa642_690ed95d_16_L000017
+ long @C_sa643_690ed95d_18_L000019
+ long @C_sa64_690ed95d_udatatypename_L000013
+ long @C_sa644_690ed95d_20_L000021
+ long @C_sa645_690ed95d_22_L000023
+ long @C_sa646_690ed95d_24_L000025
+ long @C_sa647_690ed95d_26_L000027
+ long @C_sa64_690ed95d_udatatypename_L000013
+ long @C_sa648_690ed95d_28_L000029
+ long @C_sa649_690ed95d_30_L000031
+ long @C_sa64a_690ed95d_32_L000033
 
 ' Catalina Cnst
 
@@ -769,7 +769,7 @@ C_luaT__callT_M_res_118
 
 
  alignl ' align long
-C_svf816_68fd76bc_callbinT_M__L000119 ' <symbol:callbinTM>
+C_sa6416_690ed95d_callbinT_M__L000119 ' <symbol:callbinTM>
  jmp #NEWF
  jmp #PSHM
  long $ea8000 ' save registers
@@ -797,7 +797,7 @@ C_svf816_68fd76bc_callbinT_M__L000119 ' <symbol:callbinTM>
  and r22, #15 ' BANDI4 coni
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_svf816_68fd76bc_callbinT_M__L000119_121 ' NEI4
+ long @C_sa6416_690ed95d_callbinT_M__L000119_121 ' NEI4
  mov r2, r17 ' CVI, CVU or LOAD
  mov r3, r21 ' CVI, CVU or LOAD
  mov RI, FP
@@ -809,7 +809,7 @@ C_svf816_68fd76bc_callbinT_M__L000119 ' <symbol:callbinTM>
  long @C_luaT__gettmbyobj
  add SP, #8 ' CALL addrg
  mov r15, r0 ' CVI, CVU or LOAD
-C_svf816_68fd76bc_callbinT_M__L000119_121
+C_sa6416_690ed95d_callbinT_M__L000119_121
  mov r22, r15
  adds r22, #4 ' ADDP4 coni
  mov RI, r22
@@ -819,11 +819,11 @@ C_svf816_68fd76bc_callbinT_M__L000119_121
  and r22, #15 ' BANDI4 coni
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_svf816_68fd76bc_callbinT_M__L000119_123 ' NEI4
+ long @C_sa6416_690ed95d_callbinT_M__L000119_123 ' NEI4
  mov r0, #0 ' reg <- coni
  jmp #JMPA
- long @C_svf816_68fd76bc_callbinT_M__L000119_120 ' JUMPV addrg
-C_svf816_68fd76bc_callbinT_M__L000119_123
+ long @C_sa6416_690ed95d_callbinT_M__L000119_120 ' JUMPV addrg
+C_sa6416_690ed95d_callbinT_M__L000119_123
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r21 ' CVI, CVU or LOAD
  mov r4, r23 ' CVI, CVU or LOAD
@@ -837,7 +837,7 @@ C_svf816_68fd76bc_callbinT_M__L000119_123
  long @C_luaT__callT_M_res
  add SP, #16 ' CALL addrg
  mov r0, #1 ' reg <- coni
-C_svf816_68fd76bc_callbinT_M__L000119_120
+C_sa6416_690ed95d_callbinT_M__L000119_120
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -863,7 +863,7 @@ C_luaT__trybinT_M_ ' <symbol:luaT_trybinTM>
  mov BC, #20 ' arg size, rpsize = 0, spsize = 20
  add SP, #4 ' correct for new kernel !!! 
  jmp #CALA
- long @C_svf816_68fd76bc_callbinT_M__L000119
+ long @C_sa6416_690ed95d_callbinT_M__L000119
  add SP, #16 ' CALL addrg
  cmps r0,  #0 wz
  jmp #BRNZ
@@ -1003,7 +1003,7 @@ C_luaT__tryconcatT_M_ ' <symbol:luaT_tryconcatTM>
  mov BC, #20 ' arg size, rpsize = 0, spsize = 20
  add SP, #4 ' correct for new kernel !!! 
  jmp #CALA
- long @C_svf816_68fd76bc_callbinT_M__L000119
+ long @C_sa6416_690ed95d_callbinT_M__L000119
  add SP, #16 ' CALL addrg
  cmps r0,  #0 wz
  jmp #BRNZ
@@ -1150,7 +1150,7 @@ C_luaT__callorderT_M_ ' <symbol:luaT_callorderTM>
  mov BC, #20 ' arg size, rpsize = 0, spsize = 20
  add SP, #4 ' correct for new kernel !!! 
  jmp #CALA
- long @C_svf816_68fd76bc_callbinT_M__L000119
+ long @C_sa6416_690ed95d_callbinT_M__L000119
  add SP, #16 ' CALL addrg
  cmps r0,  #0 wz
  jmp #BR_Z
@@ -1985,7 +1985,7 @@ C_luaT__init_37_L000038 ' <symbol:37>
  byte 0
 
  alignl ' align long
-C_svf8a_68fd76bc_32_L000033 ' <symbol:32>
+C_sa64a_690ed95d_32_L000033 ' <symbol:32>
  byte 112
  byte 114
  byte 111
@@ -1994,7 +1994,7 @@ C_svf8a_68fd76bc_32_L000033 ' <symbol:32>
  byte 0
 
  alignl ' align long
-C_svf89_68fd76bc_30_L000031 ' <symbol:30>
+C_sa649_690ed95d_30_L000031 ' <symbol:30>
  byte 117
  byte 112
  byte 118
@@ -2005,7 +2005,7 @@ C_svf89_68fd76bc_30_L000031 ' <symbol:30>
  byte 0
 
  alignl ' align long
-C_svf88_68fd76bc_28_L000029 ' <symbol:28>
+C_sa648_690ed95d_28_L000029 ' <symbol:28>
  byte 116
  byte 104
  byte 114
@@ -2015,7 +2015,7 @@ C_svf88_68fd76bc_28_L000029 ' <symbol:28>
  byte 0
 
  alignl ' align long
-C_svf87_68fd76bc_26_L000027 ' <symbol:26>
+C_sa647_690ed95d_26_L000027 ' <symbol:26>
  byte 102
  byte 117
  byte 110
@@ -2027,7 +2027,7 @@ C_svf87_68fd76bc_26_L000027 ' <symbol:26>
  byte 0
 
  alignl ' align long
-C_svf86_68fd76bc_24_L000025 ' <symbol:24>
+C_sa646_690ed95d_24_L000025 ' <symbol:24>
  byte 116
  byte 97
  byte 98
@@ -2036,7 +2036,7 @@ C_svf86_68fd76bc_24_L000025 ' <symbol:24>
  byte 0
 
  alignl ' align long
-C_svf85_68fd76bc_22_L000023 ' <symbol:22>
+C_sa645_690ed95d_22_L000023 ' <symbol:22>
  byte 115
  byte 116
  byte 114
@@ -2046,7 +2046,7 @@ C_svf85_68fd76bc_22_L000023 ' <symbol:22>
  byte 0
 
  alignl ' align long
-C_svf84_68fd76bc_20_L000021 ' <symbol:20>
+C_sa644_690ed95d_20_L000021 ' <symbol:20>
  byte 110
  byte 117
  byte 109
@@ -2056,7 +2056,7 @@ C_svf84_68fd76bc_20_L000021 ' <symbol:20>
  byte 0
 
  alignl ' align long
-C_svf83_68fd76bc_18_L000019 ' <symbol:18>
+C_sa643_690ed95d_18_L000019 ' <symbol:18>
  byte 98
  byte 111
  byte 111
@@ -2067,14 +2067,14 @@ C_svf83_68fd76bc_18_L000019 ' <symbol:18>
  byte 0
 
  alignl ' align long
-C_svf82_68fd76bc_16_L000017 ' <symbol:16>
+C_sa642_690ed95d_16_L000017 ' <symbol:16>
  byte 110
  byte 105
  byte 108
  byte 0
 
  alignl ' align long
-C_svf81_68fd76bc_14_L000015 ' <symbol:14>
+C_sa641_690ed95d_14_L000015 ' <symbol:14>
  byte 110
  byte 111
  byte 32

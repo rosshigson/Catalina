@@ -242,25 +242,10 @@ bool preprocessor_diagnostic(enum diagnostic_id w, struct preprocessor_ctx* ctx,
     /*warnings inside headers are ignored*/
     const bool included_file_location = p_token_opt->level > 0;
 
-    bool is_error = false;
-    bool is_warning = false;
-    bool is_note = false;
 
-    if (w > W_NOTE)
-    {
-        is_error = true;
-    }
-    else
-    {
-        is_error =
-            (ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].errors & (1ULL << w)) != 0;
-
-        is_warning =
-            (ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings & (1ULL << w)) != 0;
-
-        is_note =
-            ((ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].notes & (1ULL << w)) != 0);
-    }
+    bool is_error = options_diagnostic_is_error(&ctx->options, w);
+    bool is_warning = options_diagnostic_is_warning(&ctx->options, w);
+    bool is_note = options_diagnostic_is_note(&ctx->options, w);
 
     if (is_error)
     {
@@ -274,12 +259,16 @@ bool preprocessor_diagnostic(enum diagnostic_id w, struct preprocessor_ctx* ctx,
     {
 
     }
+    else if (w == W_LOCATION)
+    {
+        //location is always printed
+    }
     else
     {
         return false;
     }
 
-    if (!is_error && included_file_location)
+    if (w != W_LOCATION && !is_error && included_file_location)
     {
         //notes are warning are not printed in included files
         return false;
@@ -290,16 +279,12 @@ bool preprocessor_diagnostic(enum diagnostic_id w, struct preprocessor_ctx* ctx,
 
     char buffer[200] = { 0 };
 
-#pragma CAKE diagnostic push
-#pragma CAKE diagnostic ignored "-Wnullable-to-non-nullable"
-#pragma CAKE diagnostic ignored "-Wanalyzer-null-dereference"
 
     va_list args = { 0 };
 
     va_start(args, fmt);
     /*int n =*/ vsnprintf(buffer, sizeof(buffer), fmt, args);
     va_end(args);
-#pragma CAKE diagnostic pop
 
     if (ctx->options.visual_studio_ouput_format)
     {
@@ -317,21 +302,21 @@ bool preprocessor_diagnostic(enum diagnostic_id w, struct preprocessor_ctx* ctx,
         if (is_error)
         {
             if (color_enabled)
-            printf(LIGHTRED "error: " WHITE "%s\n", buffer);
+                printf(LIGHTRED "error " WHITE "C%04d: %s\n" COLOR_RESET, w, buffer);
             else
-                printf("error: " "%s\n", buffer);
+                printf("error "        "C%04d: %s\n", w, buffer);
         }
         else if (is_warning)
         {
             if (color_enabled)
-            printf(LIGHTMAGENTA "warning: " WHITE "%s\n", buffer);
+                printf(LIGHTMAGENTA "warning " WHITE "C%04d: %s\n" COLOR_RESET, w, buffer);
             else
-                printf("warning: " "%s\n", buffer);
+                printf("warning "  "C%04d: %s\n", w, buffer);
         }
         else if (is_note)
         {
             if (color_enabled)
-            printf(LIGHTCYAN "note: " WHITE "%s\n", buffer);
+                printf(LIGHTCYAN "note: " WHITE "%s\n" COLOR_RESET, buffer);
             else
                 printf("note: "  "%s\n", buffer);
         }
@@ -514,12 +499,21 @@ const char* _Owner _Opt  find_and_read_include_file(struct preprocessor_ctx* ctx
         size_t len = strlen(current->path);
         if (current->path[len - 1] == '/')
         {
-            snprintf(full_path_out, full_path_out_size, "%s%s", current->path, path);
+            snprintf(newpath, full_path_out_size, "%s%s", current->path, path);
         }
         else
         {
-            snprintf(full_path_out, full_path_out_size, "%s/%s", current->path, path);
+            snprintf(newpath, full_path_out_size, "%s/%s", current->path, path);
         }
+
+#ifdef __EMSCRIPTEN__
+        /*realpath returns empty on emscriptem*/
+        snprintf(full_path_out, full_path_out_size, "%s", newpath);
+#else
+        if (!realpath(newpath, full_path_out))
+            full_path_out[0] = '\0';
+
+#endif
 
         path_normalize(full_path_out);
         if (pragma_once_already_included(ctx, full_path_out))
@@ -936,7 +930,17 @@ int is_nondigit(const struct stream* p)
     */
     return (p->current[0] >= 'a' && p->current[0] <= 'z') ||
         (p->current[0] >= 'A' && p->current[0] <= 'Z') ||
-        (p->current[0] == '_');
+        (p->current[0] == '_') || (p->current[0] == '$');
+
+    
+    /*
+      From the standard:
+      
+      It is implementation-defined
+      if a $ (U+0024, DOLLAR SIGN) may be used as a nondigit character.
+
+      MSVC uses $
+    */
 }
 
 
@@ -1838,6 +1842,51 @@ struct token_list tokenizer(struct tokenizer_ctx* ctx, const char* text, const c
                         stream_match(&stream);
                     }
                 }
+
+                if (ctx->options.comment_to_attribute &&  start[2] == '!' && start[3] == 'w')
+                {
+                    /*
+                        Conversion from !w4 to -> [[cake::w4]]                         
+                    */
+                    struct token_list list2 = tokenizer(ctx, "[[cake::wN]]", "", level, 0);
+                    struct token* p_new_token = token_list_pop_front_get(&list2);
+                    token_delete(p_new_token);
+                    p_new_token = token_list_pop_front_get(&list2);
+                    while (p_new_token)
+                    {
+                        if (strcmp(p_new_token->lexeme, "wN") == 0)
+                        {
+                            free(p_new_token->lexeme);
+                            char fmt[10] = {0};
+                            const char * p = start + 3;
+                            for (int i = 0; i < sizeof fmt; i++)
+                            {
+                                fmt[i] = *p;
+                                if (p == (stream.current - 3))
+                                    break;
+                                p++;
+                            }
+                                                        
+                            p_new_token->lexeme = strdup(fmt);
+                        }
+                        p_new_token->flags |= has_space ? TK_FLAG_HAS_SPACE_BEFORE : TK_FLAG_NONE;
+                        p_new_token->flags |= new_line ? TK_FLAG_HAS_NEWLINE_BEFORE : TK_FLAG_NONE;
+                        p_new_token->flags |= addflags;
+
+                        p_new_token->level = level;
+                        p_new_token->token_origin = p_first;
+                        p_new_token->line = line;
+                        p_new_token->col = col;
+                        token_list_add(&list, p_new_token);
+
+                        p_new_token = token_list_pop_front_get(&list2);
+                    }
+                    token_list_destroy(&list2);
+                    new_line = false;
+                    has_space = false;
+                }
+                else
+                {
                 struct token* _Owner _Opt p_new_token = new_token(start, stream.current, TK_COMMENT);
                 if (p_new_token == NULL) throw;
 
@@ -1858,6 +1907,8 @@ struct token_list tokenizer(struct tokenizer_ctx* ctx, const char* text, const c
                 * if you are curious to see when it happens just add
                 * set_sliced_flag
                 */
+
+                }
 
                 continue;
             }
@@ -2085,6 +2136,27 @@ bool preprocessor_token_ahead_is(struct token* p, enum token_type t)
     return false;
 }
 
+static bool preprocessor_token_ahead_skiping_blanks_and_new_line(struct token* p, enum token_type t)
+{
+    /*
+       When preprocessor is inside directives, newline is not blank.
+       In other scenario (when this function is used) newline can be blank.
+    */
+    struct token* _Opt current = p->next;
+
+    while (current &&
+        (current->type == TK_BLANKS ||
+         current->type == TK_NEWLINE ||
+         current->type == TK_PLACEMARKER ||
+         current->type == TK_LINE_COMMENT ||
+         current->type == TK_COMMENT))
+    {
+        current = current->next;
+    }
+
+    return current && current->type == t;
+}
+
 bool preprocessor_token_ahead_is_identifier(struct token* p, const char* lexeme)
 {
     assert(p != NULL);
@@ -2121,6 +2193,24 @@ static void skip_blanks(struct preprocessor_ctx* ctx, struct token_list* dest, s
     {
         if (!token_is_blank(input_list->head))
             break;
+        struct token* _Owner _Opt p =
+            token_list_pop_front_get(input_list);
+        assert(p != NULL); //because input_list is not empty
+
+        token_list_add(dest, p);
+    }
+}
+
+static void skip_blanks_including_newline(struct preprocessor_ctx* ctx, struct token_list* dest, struct token_list* input_list)
+{
+    while (input_list->head)
+    {
+        if (!token_is_blank(input_list->head) &&
+            input_list->head->type != TK_NEWLINE)
+        {
+            break;
+        }
+
         struct token* _Owner _Opt p =
             token_list_pop_front_get(input_list);
         assert(p != NULL); //because input_list is not empty
@@ -3490,7 +3580,22 @@ static bool is_empty_assert(struct token_list* replacement_list)
     return true;
 }
 
-
+void print_path(const char* path)
+{
+    const char* p = path;
+    while (*p)
+    {
+#ifdef _WIN32
+        if (*p == '/')
+            printf("\\");
+        else
+            printf("%c", *p);
+#else
+        printf("%c", *p);
+#endif
+        p++;
+    }
+}
 struct token_list control_line(struct preprocessor_ctx* ctx, struct token_list* input_list, bool is_active, int level)
 {
 
@@ -3619,7 +3724,9 @@ struct token_list control_line(struct preprocessor_ctx* ctx, struct token_list* 
                 {
                     for (int i = 0; i < (level + 1); i++)
                         printf(".");
-                    printf("%s\n", full_path_result);
+
+                    print_path(full_path_result);
+                    printf("\n");
                 }
 
                 struct tokenizer_ctx tctx = { 0 };
@@ -3638,10 +3745,11 @@ struct token_list control_line(struct preprocessor_ctx* ctx, struct token_list* 
                 {
                     preprocessor_diagnostic(C_ERROR_FILE_NOT_FOUND, ctx, r.tail, "file %s not found", path + 1);
 
+                    printf("Include directories:\n");
                     for (struct include_dir* _Opt p = ctx->include_dir.head; p; p = p->next)
                     {
-                        /*let's print the include path*/
-                        preprocessor_diagnostic(W_NOTE, ctx, r.tail, "dir = '%s'", p->path);
+                        print_path(p->path);
+                        printf("\n");
                     }
                 }
                 else
@@ -3945,15 +4053,16 @@ struct token_list control_line(struct preprocessor_ctx* ctx, struct token_list* 
             {
                 if (!macro_is_same(macro, existing_macro))
                 {
-                    preprocessor_diagnostic(C_ERROR_MACRO_REDEFINITION,
+                    if (preprocessor_diagnostic(C_ERROR_MACRO_REDEFINITION,
                     ctx,
                     macro->p_name_token,
-                    "macro redefinition");
-
-                    preprocessor_diagnostic(W_NOTE,
+                        "macro redefinition"))
+                    {
+                    preprocessor_diagnostic(W_LOCATION,
                     ctx,
                     existing_macro->p_name_token,
                     "previous definition");
+                    }
 
                     macro_delete(macro);
                     throw;
@@ -4177,13 +4286,13 @@ static struct macro_argument_list collect_macro_arguments(struct preprocessor_ct
         int count = 1;
 
         //skip spaces after macro name
-        skip_blanks(ctx, &macro_argument_list.tokens, input_list);
+        skip_blanks_including_newline(ctx, &macro_argument_list.tokens, input_list);
 
         //macro is a function
         match_token_level(&macro_argument_list.tokens, input_list, '(', level, ctx);
 
         //skip spaces after (
-        skip_blanks(ctx, &macro_argument_list.tokens, input_list);
+        skip_blanks_including_newline(ctx, &macro_argument_list.tokens, input_list);
 
         if (input_list->head == NULL)
         {
@@ -4885,7 +4994,7 @@ struct token_list replacement_list_reexamination(struct preprocessor_ctx* ctx,
                 macro = find_macro(ctx, new_list.head->lexeme);
                 if (macro &&
                     macro->is_function &&
-                    !preprocessor_token_ahead_is(new_list.head, '('))
+                    !preprocessor_token_ahead_skiping_blanks_and_new_line(new_list.head, '('))
                 {
                     macro = NULL;
                 }
@@ -5321,7 +5430,7 @@ static struct token_list text_line(struct preprocessor_ctx* ctx, struct token_li
                 macro = find_macro(ctx, input_list->head->lexeme);
                 if (macro &&
                     macro->is_function &&
-                    !preprocessor_token_ahead_is(input_list->head, '('))
+                    !preprocessor_token_ahead_skiping_blanks_and_new_line(input_list->head, '('))
                 {
                     macro = NULL;
                 }
@@ -5400,7 +5509,7 @@ static struct token_list text_line(struct preprocessor_ctx* ctx, struct token_li
                     {
                         macro = find_macro(ctx, input_list->head->lexeme);
                         if (macro && macro->is_function &&
-                            !preprocessor_token_ahead_is(input_list->head, '('))
+                            !preprocessor_token_ahead_skiping_blanks_and_new_line(input_list->head, '('))
                         {
                             macro = NULL;
                         }
@@ -5474,7 +5583,7 @@ static struct token_list text_line(struct preprocessor_ctx* ctx, struct token_li
                     */
                     if (input_list->head->type == TK_STRING_LITERAL)
                     {
-                        preprocessor_diagnostic(W_NOTE, ctx, input_list->head, "you can use \"adjacent\" \"strings\"");
+                        preprocessor_diagnostic(W_LOCATION, ctx, input_list->head, "you can use \"adjacent\" \"strings\"");
                     }
                     else if (input_list->head->type == TK_LINE_COMMENT)
                         preprocessor_diagnostic(W_COMMENT, ctx, input_list->head, "multi-line //comment");
@@ -5684,7 +5793,7 @@ int include_config_header(struct preprocessor_ctx* ctx, const char* file_name)
     snprintf(local_cakeconfig_path, sizeof local_cakeconfig_path, "%s", file_name);
     dirname(local_cakeconfig_path);
 
-    snprintf(local_cakeconfig_path, sizeof local_cakeconfig_path, "%s" CAKE_CFG_FNAME, local_cakeconfig_path);
+    snprintf(local_cakeconfig_path, sizeof local_cakeconfig_path, "%s" CAKE_CONFIG_FILE_NAME, local_cakeconfig_path);
 
     char* _Owner _Opt str = read_file(local_cakeconfig_path, true);
 
@@ -5710,11 +5819,11 @@ int include_config_header(struct preprocessor_ctx* ctx, const char* file_name)
     {
         //Search cakeconfig at cake executable dir
 
-        char executable_path[FS_MAX_PATH - sizeof(CAKE_CFG_FNAME)] = { 0 };
+        char executable_path[FS_MAX_PATH - sizeof(CAKE_CONFIG_FILE_NAME)] = { 0 };
         get_self_path(executable_path, sizeof(executable_path));
         dirname(executable_path);
         char root_cakeconfig_path[FS_MAX_PATH] = { 0 };
-        snprintf(root_cakeconfig_path, sizeof root_cakeconfig_path, "%s" CAKE_CFG_FNAME, executable_path);
+        snprintf(root_cakeconfig_path, sizeof root_cakeconfig_path, "%s" CAKE_CONFIG_FILE_NAME, executable_path);
         str = read_file(root_cakeconfig_path, true);
         if (str && ctx->options.show_includes)
         {
@@ -5732,8 +5841,10 @@ int include_config_header(struct preprocessor_ctx* ctx, const char* file_name)
         return  ENOENT;
     }
 
-    const enum diagnostic_id w =
+    const struct bitset w =
         ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings;
+
+    options_set_clear_all_warnings(&ctx->options);
 
     struct tokenizer_ctx tctx = { 0 };
     struct token_list l = tokenizer(&tctx, str, "standard macros inclusion", 0, TK_FLAG_NONE);
@@ -5762,16 +5873,10 @@ static bool is_builtin_macro(const char* name)
 
 void add_standard_macros(struct preprocessor_ctx* ctx, enum target target)
 {
-    /*
-      This command prints all macros used by gcc
-      echo | gcc -dM -E -
-    */
     const struct diagnostic w =
         ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index];
 
-    /*we dont want warnings here*/
-    ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index] =
-        (struct diagnostic){ 0 };
+    options_set_clear_all_warnings(&ctx->options);
 
     static char mon[][4] = {
         "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -6030,6 +6135,7 @@ const char* get_token_name(enum token_type tk)
     case TK_KEYWORD_GCC__BUILTIN_C23_VA_START: return "TK_KEYWORD_GCC__BUILTIN_C23_VA_START";
     case TK_KEYWORD_GCC__BUILTIN_VA_COPY: return "TK_KEYWORD_GCC__BUILTIN_VA_COPY";
     case TK_KEYWORD_GCC__BUILTIN_OFFSETOF: return "TK_KEYWORD_GCC__BUILTIN_OFFSETOF";
+    case TK_KEYWORD_GCC__BUILTIN_XXXXX: return "TK_KEYWORD_GCC__BUILTIN_XXXXX";
 
     }
     return "TK_X_MISSING_NAME";
@@ -6082,7 +6188,7 @@ const char* get_diagnostic_friendly_token_name(enum token_type tk)
     case TK_COMMENT: return "/*comment*/";
     case TK_PPNUMBER: return "pp-number";
 
-    case TK_KEYWORD_GCC__ATTRIBUTE:return "__attribute";
+    case TK_KEYWORD_GCC__ATTRIBUTE:return "__attribute__";
     case TK_KEYWORD_GCC__BUILTIN_VA_LIST:return "__builtin_va_list";
     case TK_KEYWORD_MSVC__PTR32:return "__ptr32";
     case TK_KEYWORD_MSVC__PTR64:return "__ptr64";
@@ -6240,6 +6346,7 @@ const char* get_diagnostic_friendly_token_name(enum token_type tk)
     case TK_KEYWORD_GCC__BUILTIN_C23_VA_START: return "__builtin_c23_va_start";
     case TK_KEYWORD_GCC__BUILTIN_VA_COPY: return "__builtin_va_copy";
     case TK_KEYWORD_GCC__BUILTIN_OFFSETOF: return "__builtin_offsetof";
+    case TK_KEYWORD_GCC__BUILTIN_XXXXX: return "__builtin_xxxxx";
 
     default:
         break;
@@ -6665,7 +6772,7 @@ void naming_convention_macro(struct preprocessor_ctx* ctx, struct token* token)
 
     if (!is_screaming_case(token->lexeme))
     {
-        preprocessor_diagnostic(W_NOTE, ctx, token, "use SCREAMING_CASE for macros");
+        preprocessor_diagnostic(W_LOCATION, ctx, token, "use SCREAMING_CASE for macros");
     }
 
 }
@@ -6832,14 +6939,15 @@ char* normalize_line_end(char* input)
 }
 
 
-int test_preprocessor_in_out(const char* input, const char* output)
+bool test_preprocessor_in_out_match(const char* input, const char* output)
 {
-    int res = 0;
+    bool res = 0;
 
     struct tokenizer_ctx tctx = { 0 };
     struct token_list list = tokenizer(&tctx, input, "source", 0, TK_FLAG_NONE);
 
     struct preprocessor_ctx ctx = { 0 };
+    ctx.options.color_disabled = true;
 
     struct token_list r = preprocessor(&ctx, &list, 0);
     const char* result = print_preprocessed_to_string(r.head);
@@ -6850,53 +6958,12 @@ int test_preprocessor_in_out(const char* input, const char* output)
 
     if (strcmp(result, output) != 0)
     {
-        /*
-        printf("FAILED\n");
-        printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-        printf("assert\n");
-        printf("%s`", output);
-        printf("\nGOT\n");
-        printf("%s`", result);
-        printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-        print_tokens(r.head);
-
-        */
-        res = 1;
+        res = false;
     }
 
     free((void*)result);
 
-    return res;
-}
-
-int test_preprocessor_in_out_using_file(const char* fileName)
-{
-    int res = 0;
-    const char* input = normalize_line_end(read_file(fileName, true));
-    char* output = 0;
-    if (input)
-    {
-        char* pos = strstr(input, "\n---");
-        if (pos)
-        {
-            *pos = 0;
-            //anda ate sair ---
-            pos++;
-            while (*pos != '\n')
-            {
-                pos++;
-            }
-            pos++; //skip \n
-            output = pos;
-            /*optional*/
-            pos = strstr(output, "\n---");
-            if (pos)
-                *pos = 0;
-        }
-        res = test_preprocessor_in_out(input, output);
-        free((void* _Owner)input);
-    }
-    return res;
+    return true; //OK
 }
 
 void test_lexeme_cmp()
@@ -7014,9 +7081,7 @@ void test_collect()
         "ab"
         ;
 
-
-    assert(test_preprocessor_in_out(input, output) == 0);
-
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 
@@ -7027,7 +7092,8 @@ void test_va_opt_0()
         "F(a, b, c)";
     const char* output =
         "f(0, a, b, c)";
-    assert(test_preprocessor_in_out(input, output) == 0);
+
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void test_va_opt_1()
@@ -7037,9 +7103,8 @@ void test_va_opt_1()
         "F()";
     const char* output =
         "f(0)";
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
-
 
 void test_va_opt_2()
 {
@@ -7048,7 +7113,8 @@ void test_va_opt_2()
         "empty()";
     const char* output =
         "(1)";
-    assert(test_preprocessor_in_out(input, output) == 0);
+
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void test_va_opt_3()
@@ -7058,7 +7124,8 @@ void test_va_opt_3()
         "empty(1)";
     const char* output =
         "(!1)";
-    assert(test_preprocessor_in_out(input, output) == 0);
+
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void test_va_opt_4()
@@ -7071,7 +7138,8 @@ void test_va_opt_4()
         ;
     const char* output =
         "int x = 42;";
-    assert(test_preprocessor_in_out(input, output) == 0);
+
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void test_va_opt_5()
@@ -7083,7 +7151,7 @@ void test_va_opt_5()
         ;
     const char* output =
         "f(0)";
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void test_va_opt_6()
@@ -7096,7 +7164,7 @@ void test_va_opt_6()
     const char* output =
         "f(0, a)";
 
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 void test_va_opt_7()
 {
@@ -7108,7 +7176,7 @@ void test_va_opt_7()
     const char* output =
         "a b";
 
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void concatenation_problem()
@@ -7121,7 +7189,7 @@ void concatenation_problem()
     const char* output =
         "a b";
 
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 
@@ -7135,7 +7203,7 @@ void test_va_opt_G2()
     const char* output =
         "f(0, a)";
 
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 
@@ -7147,7 +7215,7 @@ void test_va_opt()
         "F(EMPTY)";
     const char* output =
         "f(0)";
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void test_empty_va_args()
@@ -7156,7 +7224,7 @@ void test_empty_va_args()
         "M(1)\n";
     const char* output =
         "1,";
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void test_va_args_single()
@@ -7166,7 +7234,7 @@ void test_va_args_single()
         "F(1, 2)";
     const char* output =
         "1, 2";
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void test_va_args_extra_args()
@@ -7176,9 +7244,8 @@ void test_va_args_extra_args()
         "F(0, 1, 2)";
     const char* output =
         "0 1, 2";
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
-
 
 void test_empty_va_args_empty()
 {
@@ -7187,7 +7254,7 @@ void test_empty_va_args_empty()
         "F()";
     const char* output =
         "a";
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void test_defined()
@@ -7200,7 +7267,7 @@ void test_defined()
         "#endif\n";
     const char* output =
         "B";
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void testline()
@@ -7212,7 +7279,7 @@ void testline()
         "M";
     const char* output =
         "a b";
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void ifelse()
@@ -7225,7 +7292,7 @@ void ifelse()
         "#endif\n";
     const char* output =
         "A";
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void T1()
@@ -7239,7 +7306,7 @@ void T1()
     //error: too few arguments provided to function-like macro invocation
     //se f nao tivesse nenhum ou menus
     //too many arguments provided to function-like macro invocation
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 int EXAMPLE5()
@@ -7284,7 +7351,7 @@ void recursivetest1()
     //  "f(2 * (f(2 * (z[0]))))";
     const char* output =
         "f(2 * (f(2 * (z[0]))))";
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void rectest()
@@ -7300,7 +7367,7 @@ void rectest()
     //  "f(2 * (y + 1)) + f(2 * (f(2 * (z[0])))) % t(t(f)(0) + t)(1);";
     const char* output =
         "f(2 * (y + 1)) + f(2 * (f(2 * (z[0])))) % t(t(f)(0) + t)(1);";
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void emptycall()
@@ -7312,7 +7379,7 @@ void emptycall()
     const char* output =
         ""
         ;
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void semiempty()
@@ -7324,7 +7391,7 @@ void semiempty()
     const char* output =
         "1"
         ;
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void calling_one_arg_with_empty_arg()
@@ -7336,7 +7403,7 @@ void calling_one_arg_with_empty_arg()
     const char* output =
         "\"\""
         ;
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 
@@ -7349,7 +7416,7 @@ void test_argument_with_parentesis()
     const char* output =
         "(1, 2, 3)4"
         ;
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void two_empty_arguments()
@@ -7361,7 +7428,7 @@ void two_empty_arguments()
     const char* output =
         ""
         ;
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void simple_object_macro()
@@ -7373,13 +7440,7 @@ void simple_object_macro()
     const char* output =
         "a b\n"
         "c";
-    assert(test_preprocessor_in_out(input, output) == 0);
-}
-
-
-void test_one_file()
-{
-    assert(test_preprocessor_in_out_using_file("tests/pre_debug.c") == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void test2()
@@ -7392,7 +7453,7 @@ void test2()
         "1 23 4"
         ;
 
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 
@@ -7422,18 +7483,12 @@ void tetris()
         "#define M F\n"
         "M(F)(C)(D)e"
         ;
+
     const char* output =
         "De"
         ;
-    struct tokenizer_ctx tctx = { 0 };
-    struct token_list list = tokenizer(&tctx, input, "source", 0, TK_FLAG_NONE);
 
-    struct preprocessor_ctx ctx = { 0 };
-
-    struct token_list r = preprocessor(&ctx, &list, 0);
-
-    assert(test_preprocessor_in_out(input, output) == 0);
-    r;
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void recursive_macro_expansion()
@@ -7445,7 +7500,7 @@ void recursive_macro_expansion()
     const char* output =
         "1 2 3 4 B"
         ;
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void empty_and_no_args()
@@ -7456,7 +7511,7 @@ void empty_and_no_args()
     const char* output =
         "1"
         ;
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void empty_and_args()
@@ -7467,8 +7522,8 @@ void empty_and_args()
     const char* output =
         "1"
         ;
-    int code = test_preprocessor_in_out(input, output);
-    assert(code != 0);
+
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void test4()
@@ -7482,26 +7537,28 @@ void test4()
         ;
 
 
-    int code = test_preprocessor_in_out(input, output);
-
-    //esperado um erro (falta mensagem)
-    //too few arguments provided to function-like macro invocation F (3)
-    //engracado msc eh warning  warning C4003: not enough actual parameters for macro 'F'
-    assert(code != 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void test_string()
 {
+    /*
+      #define M(a, b) a # b
+      M(A, "B")
+
+      ->
+
+      A "\"B\""
+    */
     const char* input =
         "#define M(a, b) a # b\n"
-        "M(A, \"B\")"
-        ;
+        "   M(A, \"B\")";
+
+
     const char* output =
-        "A \"\\\"B\\\"\""
-        ;
+        "A \"\\\"B\\\"\"";
 
-
-    test_preprocessor_in_out(input, output);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void test6()
@@ -7579,7 +7636,7 @@ int test_expression()
     return 0;
 }
 
-int test_concatenation_o()
+void test_concatenation_o()
 {
     const char* input =
         "# define F(t1, t2, t3) *i_##t1##_j k\n"
@@ -7590,10 +7647,10 @@ int test_concatenation_o()
         ;
 
 
-    return test_preprocessor_in_out(input, output);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
-int test_concatenation()
+void  test_concatenation()
 {
     const char* input =
         "#define F(t1, t2, t3) i##j##k\n"
@@ -7604,25 +7661,22 @@ int test_concatenation()
         ;
 
 
-    return test_preprocessor_in_out(input, output);
+    assert(test_preprocessor_in_out_match(input, output));
 
 
 }
 
 void bad_test()
 {
-    struct tokenizer_ctx tctx = { 0 };
-    struct token_list list = tokenizer(&tctx, "0xfe-BAD(3)", "source", 0, TK_FLAG_NONE);
-
     const char* input = "#define BAD(x) ((x) & 0xff)\n"
         "0xfe-BAD(3);";
     const char* output =
         "0xfe-BAD(3);"
         ;
 
-    test_preprocessor_in_out(input, output);
-    list;
+    assert(test_preprocessor_in_out_match(input, output));
 }
+
 /*
 #define A0
 #define B0
@@ -7630,7 +7684,7 @@ void bad_test()
 #define B1(x) x A##x(
 A1(1)1)1)1)1)0))
 */
-int test_spaces()
+void test_spaces()
 {
     const char* input =
         "#define throw A B\n"
@@ -7641,10 +7695,10 @@ int test_spaces()
         ;
 
 
-    return test_preprocessor_in_out(input, output);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
-int test_stringfy()
+void test_stringfy()
 {
     const char* input =
         "#define M(T) #T\n"
@@ -7655,10 +7709,59 @@ int test_stringfy()
         ;
 
 
-    return test_preprocessor_in_out(input, output);
+    assert(test_preprocessor_in_out_match(input, output));
 
 }
 
+void test_stringfy_scape()
+{
+    /*
+       #define STRINGIFY(x) #x
+       STRINGIFY("\"ab\\c\"");
+
+       ->
+
+       "\"\\\"ab\\\\c\\\"\""
+    */
+
+    const char* input =
+        "#define STRINGIFY(x) #x\n"
+        "STRINGIFY(\"\\\"ab\\\\c\\\"\")\n"
+        ;
+    const char* output =
+        "\"\\\"\\\\\\\"ab\\\\\\\\c\\\\\\\"\\\"\""
+        ;
+
+
+    assert(test_preprocessor_in_out_match(input, output));
+
+}
+
+
+void test_stringfy_scape3()
+{
+    /*
+       #define STRINGIFY(x) #x
+       STRINGIFY("\n")
+
+       ->
+
+       "\"\\n\""
+    */
+
+    const char* input
+        =
+        "       #define STRINGIFY(x) #x\n"
+        "       STRINGIFY(\"\\n\")";
+
+
+    const char* output =
+        "\"\\\"\\\\n\\\"\"";
+
+
+    assert(test_preprocessor_in_out_match(input, output));
+
+}
 
 int test_tokens()
 {
@@ -7728,7 +7831,7 @@ int test_utf8()
     return 0;
 }
 
-int test_counter()
+void test_counter()
 {
     //https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3457.htm#number-of-expansions
 
@@ -7740,26 +7843,11 @@ int test_counter()
         "0 0"
         ;
 
-    struct tokenizer_ctx tctx = { 0 };
-    struct token_list list = tokenizer(&tctx, input, "source", 0, TK_FLAG_NONE);
+    assert(test_preprocessor_in_out_match(input, output));
 
-    struct preprocessor_ctx prectx = { 0 };
-    prectx.macros.capacity = 5000;
-    add_standard_macros(&prectx, CAKE_COMPILE_TIME_SELECTED_TARGET);
-    struct token_list list2 = preprocessor(&prectx, &list, 0);
-
-    const char* result = print_preprocessed_to_string(list2.head);
-    if (result == NULL)
-    {
-        result = strdup("");
     }
 
-    assert(test_preprocessor_in_out(result, output) == 0);
-
-    return 0;
-}
-
-int bug_test()
+void bug_test()
 {
     const char* input =
         "#define M(b) a #b \n"
@@ -7769,16 +7857,9 @@ int bug_test()
         "a \"1\""
         ;
 
-
-    struct tokenizer_ctx tctx = { 0 };
-    struct token_list list = tokenizer(&tctx, input, "source", 0, TK_FLAG_NONE);
-
-    list;
-
-    assert(test_preprocessor_in_out(input, output) == 0);
-
-    return 0;
+    assert(test_preprocessor_in_out_match(input, output));
 }
+
 int test_line_continuation()
 {
 
@@ -7839,11 +7920,7 @@ void recursive_macro_expr()
         "1"
         ;
 
-    struct tokenizer_ctx tctx = { 0 };
-    struct token_list list = tokenizer(&tctx, input, "source", 0, TK_FLAG_NONE);
-
-    assert(test_preprocessor_in_out(input, output) == 0);
-    list;
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void quasi_recursive_macro()
@@ -7857,11 +7934,24 @@ void quasi_recursive_macro()
         "2"
         ;
 
-    struct tokenizer_ctx tctx = { 0 };
-    struct token_list list = tokenizer(&tctx, input, "source", 0, TK_FLAG_NONE);
+    assert(test_preprocessor_in_out_match(input, output));
 
-    assert(test_preprocessor_in_out(input, output) == 0);
-    list;
+}
+
+void newline_macro_func()
+{
+    const char* input =
+        "#define F(A) A\n"
+        "F\n"
+        "(1)\n";
+
+    const char* output =
+        "1"
+        ;
+
+
+    assert(test_preprocessor_in_out_match(input, output));
+
 }
 
 #endif

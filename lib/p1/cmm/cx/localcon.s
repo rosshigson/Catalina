@@ -79,49 +79,49 @@ C_localeconv ' <symbol:localeconv>
  long I32_LODS + (r22)<<D32S + ((40)&$7FFFF)<<S32 ' reg <- cons
  word I16A_ADDS + (r22)<<D16A + (r23)<<S16A ' ADDI/P (2)
  alignl_p1
- long I32_MOVI + (r20)<<D32 +(127)<<S32 ' reg <- conli
+ long I32_MOVI + (r20)<<D32 +(255)<<S32 ' reg <- conli
  word I16A_WRBYTE + (r20)<<D16A + (r22)<<S16A ' ASGNU1 reg reg
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((41)&$7FFFF)<<S32 ' reg <- cons
  word I16A_ADDS + (r22)<<D16A + (r23)<<S16A ' ADDI/P (2)
  alignl_p1
- long I32_MOVI + (r20)<<D32 +(127)<<S32 ' reg <- conli
+ long I32_MOVI + (r20)<<D32 +(255)<<S32 ' reg <- conli
  word I16A_WRBYTE + (r20)<<D16A + (r22)<<S16A ' ASGNU1 reg reg
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((42)&$7FFFF)<<S32 ' reg <- cons
  word I16A_ADDS + (r22)<<D16A + (r23)<<S16A ' ADDI/P (2)
  alignl_p1
- long I32_MOVI + (r20)<<D32 +(127)<<S32 ' reg <- conli
+ long I32_MOVI + (r20)<<D32 +(255)<<S32 ' reg <- conli
  word I16A_WRBYTE + (r20)<<D16A + (r22)<<S16A ' ASGNU1 reg reg
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((43)&$7FFFF)<<S32 ' reg <- cons
  word I16A_ADDS + (r22)<<D16A + (r23)<<S16A ' ADDI/P (2)
  alignl_p1
- long I32_MOVI + (r20)<<D32 +(127)<<S32 ' reg <- conli
+ long I32_MOVI + (r20)<<D32 +(255)<<S32 ' reg <- conli
  word I16A_WRBYTE + (r20)<<D16A + (r22)<<S16A ' ASGNU1 reg reg
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((44)&$7FFFF)<<S32 ' reg <- cons
  word I16A_ADDS + (r22)<<D16A + (r23)<<S16A ' ADDI/P (2)
  alignl_p1
- long I32_MOVI + (r20)<<D32 +(127)<<S32 ' reg <- conli
+ long I32_MOVI + (r20)<<D32 +(255)<<S32 ' reg <- conli
  word I16A_WRBYTE + (r20)<<D16A + (r22)<<S16A ' ASGNU1 reg reg
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((45)&$7FFFF)<<S32 ' reg <- cons
  word I16A_ADDS + (r22)<<D16A + (r23)<<S16A ' ADDI/P (2)
  alignl_p1
- long I32_MOVI + (r20)<<D32 +(127)<<S32 ' reg <- conli
+ long I32_MOVI + (r20)<<D32 +(255)<<S32 ' reg <- conli
  word I16A_WRBYTE + (r20)<<D16A + (r22)<<S16A ' ASGNU1 reg reg
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((46)&$7FFFF)<<S32 ' reg <- cons
  word I16A_ADDS + (r22)<<D16A + (r23)<<S16A ' ADDI/P (2)
  alignl_p1
- long I32_MOVI + (r20)<<D32 +(127)<<S32 ' reg <- conli
+ long I32_MOVI + (r20)<<D32 +(255)<<S32 ' reg <- conli
  word I16A_WRBYTE + (r20)<<D16A + (r22)<<S16A ' ASGNU1 reg reg
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((47)&$7FFFF)<<S32 ' reg <- cons
  word I16A_ADDS + (r22)<<D16A + (r23)<<S16A ' ADDI/P (2)
  alignl_p1
- long I32_MOVI + (r20)<<D32 +(127)<<S32 ' reg <- conli
+ long I32_MOVI + (r20)<<D32 +(255)<<S32 ' reg <- conli
  word I16A_WRBYTE + (r20)<<D16A + (r22)<<S16A ' ASGNU1 reg reg
  word I16A_MOV + (r0)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
 ' C_localeconv_1 ' (symbol refcount = 0)

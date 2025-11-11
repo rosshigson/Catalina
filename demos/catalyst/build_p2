@@ -47,38 +47,38 @@ echo ""
 echo "building $1.ZIP ..."
 echo ""
 
-./build_all $1 $2 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 RTC
+./build_all $1 $2 $3 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 RTC
 
 # create the directory structure expected by catalina 
 mk_cat_dirs image
 
 cd catalina
-./build_all  $1 $2 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200
+./build_all  $1 $2 $3 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200
 cat CATALYST.ENV $1.ENV > ../image/CATALYST.ENV
 cd ..
 
 cd cake
 # NOTE: we cannot use OPTIMIZE with Cake ...
-./build_all  $1 $2 SIMPLE VT100 USE_COLOR MHZ_200
+./build_all  $1 $2 $3 SIMPLE VT100 USE_COLOR MHZ_200
 cp $LCCDIR/source/cake/src/catalina/cake.bin ../image/bin/cake.bin
 cp CAKECONF.H ../image/CAKECONF.H
 cp hello_99.c ../image/hello_99.c
 cd ..
 
 cd xvi-2.51
-./build_all  $1 $2 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 LARGE
+./build_all  $1 $2 $3 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 LARGE
 cp src/xvi.bin ../image/bin/xl_vi.bin
 cd ..
 
 cd lua-5.4.4
-./build_all  $1 $2 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 SMALL
+./build_all  $1 $2 $3 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 SMALL
 cp src/lua.bin ../image/bin/xs_lua.bin
 cp src/luac.bin ../image/bin/xs_luac.bin
 cp src/luax.bin ../image/bin/xs_luax.bin
 cd ..
 
 cd lua-5.4.4
-./build_all  $1 $2 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 LARGE
+./build_all  $1 $2 $3 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 LARGE
 cp src/lua.bin ../image/bin/xl_lua.bin
 cp src/luac.bin ../image/bin/xl_luac.bin
 cp src/luax.bin ../image/bin/xl_luax.bin
@@ -93,38 +93,38 @@ echo ""
 echo "building $1_VGA.ZIP ..."
 echo ""
 
-./build_all  $1 $2 VGA COLOR_4 OPTIMIZE MHZ_200 RTC NO_LINENOISE
+./build_all  $1 $2 $3 VGA COLOR_4 OPTIMIZE MHZ_200 RTC NO_LINENOISE
 
 # create the directory structure expected by catalina
 mk_cat_dirs image
 
 cd catalina
-./build_all  $1 $2 VGA COLOR_4 OPTIMIZE MHZ_200
+./build_all  $1 $2 $3 VGA COLOR_4 OPTIMIZE MHZ_200
 cat CATALYST.ENV $1_VGA.ENV > ../image/CATALYST.ENV
 cd ..
 
 cd cake
 # NOTE: we cannot use OPTIMIZE with Cake ...
-./build_all  $1 $2 SIMPLE VT100 USE_COLOR MHZ_200
+./build_all  $1 $2 $3 SIMPLE VT100 USE_COLOR MHZ_200
 cp $LCCDIR/source/cake/src/catalina/cake.bin ../image/bin/cake.bin
 cp CAKECONF.H ../image/CAKECONF.H
 cp hello_99.c ../image/hello_99.c
 cd ..
 
 cd xvi-2.51
-./build_all  $1 $2 VGA COLOR_4 OPTIMIZE MHZ_200 LARGE
+./build_all  $1 $2 $3 VGA COLOR_4 OPTIMIZE MHZ_200 LARGE
 cp src/xvi.bin ../image/bin/xl_vi.bin
 cd ..
 
 cd lua-5.4.4
-./build_all  $1 $2 VGA COLOR_4 OPTIMIZE MHZ_200 SMALL
+./build_all  $1 $2 $3 VGA COLOR_4 OPTIMIZE MHZ_200 SMALL
 cp src/lua.bin ../image/bin/xs_lua.bin
 cp src/luac.bin ../image/bin/xs_luac.bin
 cp src/luax.bin ../image/bin/xs_luax.bin
 cd ..
 
 cd lua-5.4.4
-./build_all  $1 $2 VGA COLOR_4 OPTIMIZE MHZ_200 LARGE
+./build_all  $1 $2 $3 VGA COLOR_4 OPTIMIZE MHZ_200 LARGE
 cp src/lua.bin ../image/bin/xl_lua.bin
 cp src/luac.bin ../image/bin/xl_luac.bin
 cp src/luax.bin ../image/bin/xl_luax.bin

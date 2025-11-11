@@ -27,6 +27,7 @@
     " expressions.c "     \
     " pre_expressions.c " \
     " parser.c "          \
+    " compile.c "         \
     " visit_defer.c "     \
     " visit_il.c "        \
     " flow.c "            \
@@ -57,7 +58,8 @@ static void generate_doc(const char* mdfilename, const char* outfile)
         "    <script src=\"highlight.min.js\"></script>\n"
         "    <script>hljs.highlightAll();</script>\n"
         "    <link rel=\"stylesheet\" href=\"style.css\" />\n"
-        "    <title>Cake Playground</title>\n"
+        "    <title>Cake C Compiler</title>\n"
+        "    <meta name=\"description\" content=\"Cake C Compiler\">\n"
         "    <link rel=\"icon\" type=\"image/x-icon\" href=\"favicon.ico\">\n"
         "    <script>\n"
         "    function Try(elm)\n"
@@ -190,8 +192,15 @@ int main()
                " uuid.lib Ws2_32.lib Rpcrt4.lib Bcrypt.lib "
                " /out:cake.exe ");
 
+#ifdef CAKE_HEADERS
+    //uses cakeconfig
+#else
+    //Generates cakeconfig.h with the include dir used by gcc
+    execute_cmd("cake.exe -autoconfig");
+#endif
+
     //Runs cake on its own source
-    execute_cmd("cake.exe -const-literal -sarif -sarif-path \"../vc/.sarif\" -ownership=enable -Wstyle -Wno-unused-parameter -Wno-unused-variable " " main.c " CAKE_SOURCE_FILES);
+    execute_cmd("cake.exe -const-literal -sarif -sarif-path \"../vc/.sarif\" -ownership=enable -w11 " " main.c " CAKE_SOURCE_FILES);
 
 #ifndef TEST
     //compiling the generated code
@@ -330,33 +339,30 @@ int main()
 #endif
            " -o cake");
 
-#if defined(_WIN32)
-    //Generates cakeconfig.h with the include dir used by gcc
-    execute_cmd("cake -autoconfig");
 
-    //Uses previouly generated cakeconfig.h to find include dir
-    execute_cmd("cake "
-               " -fanalyzer "
-#if defined(__CATALINA__)
-// Use Catalina target and build for Catalyst platfrom
-               "-target=catalina "
-               "-D__CATALYST__ "
-#endif // defined(__CATALINA__)
-               CAKE_SOURCE_FILES);
+#if defined(CAKE_HEADERS)
+    //uses cakeconfig
+#elif defined(_WIN32) || defined(_WIN64)
+     //Generates cakeconfig.h with the include dir used by gcc
+    execute_cmd("cake.exe -autoconfig");
 #else
      //Generates cakeconfig.h with the include dir used by gcc
     execute_cmd("./cake -autoconfig");
+#endif
 
     //Uses previouly generated cakeconfig.h to find include dir
-    execute_cmd("./cake "
-               " -fanalyzer "
+#if defined(_WIN32) || defined(_WIN64)
+     //Generates cakeconfig.h with the include dir used by gcc
+    execute_cmd("cake.exe -fanalyzer "
+#else
+    execute_cmd("./cake -fanalyzer "
+#endif
 #if defined(__CATALINA__)
 // Use Catalina target and build for Catalyst platfrom
                "-target=catalina "
                "-D__CATALYST__ "
 #endif // defined(__CATALINA__)
                CAKE_SOURCE_FILES);
-#endif
 
     //run unit test if -DTEST
 
@@ -364,9 +370,12 @@ int main()
 #endif
 
 #ifdef TEST
-    execute_cmd(RUN "cake ../tests/en-cpp-reference-c/*.c -Wno-unused-variable -Wno-array-size -Wno-array-indirection -Wno-div-by-zero -test-mode");
-    execute_cmd(RUN "cake  -Wno-unused-variable ../tests/unit-tests/*.c -test-mode");
-    execute_cmd(RUN "cake  -Wno-unused-variable ../tests/output-test/*.c -test-mode");
+    execute_cmd(RUN "cake -selftest");
+    execute_cmd(RUN "cake -fdiagnostics-color=never ../tests/en-cpp-reference-c/*.c -wd20 -test-mode");
+    execute_cmd(RUN "cake  -fdiagnostics-color=never -wd20 ../tests/unit-tests/*.c -test-mode");
+
+    execute_cmd(RUN "cake  -fdiagnostics-color=never -wd20 ../tests/output-test/*.c -test-mode-in-out");
+    execute_cmd(RUN "cake  -fdiagnostics-color=never -E ../tests/preprocessor/*.c -test-mode-in-out");
 
     printf("Other test cases\n");
     printf("cake ../tests/unit-tests/failing/*.c -test-mode\n");

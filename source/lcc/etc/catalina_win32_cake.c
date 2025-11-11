@@ -12,6 +12,7 @@ static char rcsid[] = "$Id: catalina_win32.c,v 1.00 2009/03/28 18:00:13 rjh Exp 
 char *suffixes[] = { ".c;.C", ".i;.I", ".s;.S", ".obj;.OBJ", ".out", 0 };
 char inputs[256] = "";
 char *cpp[] = { LCCDIR "\\bin\\cake.exe", 
+	"-D_POSIX_SOURCE",
 	"-D__CATALINA__",
   "$1", "$2", "-o", "$3", 0 };
 char *include[] = { "-I" LCCDIR "\\include", 0 };

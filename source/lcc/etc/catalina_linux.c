@@ -15,11 +15,10 @@ static char rcsid[] = "$Id: catalina_linux.c,v 1.0 2009/03/28 20:41:09 rjh Exp $
 char *suffixes[] = { ".c", ".i", ".s", ".o", ".out", 0 };
 char inputs[256] = "";
 char *cpp[] = { LCCDIR "/bin/cpp",
-	"-U__GNUC__", "-D_POSIX_SOURCE", "-D__STDC__=1", "-D__STRICT_ANSI__",
-	//"-Dunix", "-Di386", "-Dlinux", 
+  //"-U__GNUC__", "-D__STDC__=1", "-D__STRICT_ANSI__",
+	"-D_POSIX_SOURCE",
 	"-D__extension__=""""", "-D__cdecl=""""",
 	"-D__CATALINA__",
-	"-D__unix__", "-D__i386__", "-D__linux__", "-D__signed__=signed",
 	"$1", "$2", "$3", 0 };
 char *include[] = {"-I" LCCDIR "/include", 0 };
 char *com[] = { LCCDIR "/bin/rcc", "-target=catalina/linux", "$1", "$2", "$3", 0 };

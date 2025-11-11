@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl_label
-C_srac_68fd77b3_unget_count_L000002 ' <symbol:unget_count>
+C_sv2k_690edaa1_unget_count_L000002 ' <symbol:unget_count>
  long 0
 
 ' Catalina Export catalina_getc
@@ -35,23 +35,23 @@ C_catalina_getc ' <symbol:catalina_getc>
  alignl_p1
  long I32_BRNZ + (@C_catalina_getc_5)<<S32 ' NEU4 reg reg
  alignl_p1
- long I32_LODI + (@C_srac_68fd77b3_unget_count_L000002)<<S32
+ long I32_LODI + (@C_sv2k_690edaa1_unget_count_L000002)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrg
  word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
  alignl_p1
  long I32_BRBE + (@C_catalina_getc_7)<<S32 ' LEI4 reg coni
  word I16B_LODL + (r22)<<D16B
  alignl_p1
- long @C_srac_68fd77b3_unget_count_L000002 ' reg <- addrg
+ long @C_sv2k_690edaa1_unget_count_L000002 ' reg <- addrg
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRI4 reg
  word I16A_SUBSI + (r22)<<D16A + (1)<<S16A ' SUBI4 reg coni
  alignl_p1
- long I32_LODA + (@C_srac_68fd77b3_unget_count_L000002)<<S32
+ long I32_LODA + (@C_sv2k_690edaa1_unget_count_L000002)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNI4 addrg reg
  word I16A_SHLI + (r22)<<D16A + (2)<<S16A ' SHLI4 reg coni
  word I16B_LODL + (r20)<<D16B
  alignl_p1
- long @C_srac1_68fd77b3_unget_buff_L000003 ' reg <- addrg
+ long @C_sv2k1_690edaa1_unget_buff_L000003 ' reg <- addrg
  word I16A_ADDS + (r22)<<D16A + (r20)<<S16A ' ADDI/P (1)
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRI4 reg
  word I16B_LODF + ((-8)&$1FF)<<S16B
@@ -114,24 +114,24 @@ C_catalina_ungetc ' <symbol:catalina_ungetc>
  alignl_p1
  long I32_BRNZ + (@C_catalina_ungetc_14)<<S32 ' NEU4 reg reg
  alignl_p1
- long I32_LODI + (@C_srac_68fd77b3_unget_count_L000002)<<S32
+ long I32_LODI + (@C_sv2k_690edaa1_unget_count_L000002)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrg
  word I16A_CMPSI + (r22)<<D16A + (10)<<S16A
  alignl_p1
  long I32_BRAE + (@C_catalina_ungetc_13)<<S32 ' GEI4 reg coni
  word I16B_LODL + (r22)<<D16B
  alignl_p1
- long @C_srac_68fd77b3_unget_count_L000002 ' reg <- addrg
+ long @C_sv2k_690edaa1_unget_count_L000002 ' reg <- addrg
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRI4 reg
  word I16A_MOV + (r20)<<D16A + (r22)<<S16A
  word I16A_ADDSI + (r20)<<D16A + (1)<<S16A ' ADDI4 reg coni
  alignl_p1
- long I32_LODA + (@C_srac_68fd77b3_unget_count_L000002)<<S32
+ long I32_LODA + (@C_sv2k_690edaa1_unget_count_L000002)<<S32
  word I16A_WRLONG + (r20)<<D16A + RI<<S16A ' ASGNI4 addrg reg
  word I16A_SHLI + (r22)<<D16A + (2)<<S16A ' SHLI4 reg coni
  word I16B_LODL + (r20)<<D16B
  alignl_p1
- long @C_srac1_68fd77b3_unget_buff_L000003 ' reg <- addrg
+ long @C_sv2k1_690edaa1_unget_buff_L000003 ' reg <- addrg
  word I16A_ADDS + (r22)<<D16A + (r20)<<S16A ' ADDI/P (1)
  word I16A_WRLONG + (r3)<<D16A + (r22)<<S16A ' ASGNI4 reg reg
  alignl_p1
@@ -164,7 +164,7 @@ C_catalina_fflush ' <symbol:catalina_fflush>
  long I32_PSHM + $400000<<S32 ' save registers
  word I16A_MOVI + (r22)<<D16A + (0)<<S16A ' reg <- coni
  alignl_p1
- long I32_LODA + (@C_srac_68fd77b3_unget_count_L000002)<<S32
+ long I32_LODA + (@C_sv2k_690edaa1_unget_count_L000002)<<S32
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNI4 addrg reg
  word I16A_MOV + (r0)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
 ' C_catalina_fflush_18 ' (symbol refcount = 0)
@@ -176,7 +176,7 @@ C_catalina_fflush ' <symbol:catalina_fflush>
 DAT ' uninitialized data segment
 
  alignl_label
-C_srac1_68fd77b3_unget_buff_L000003 ' <symbol:unget_buff>
+C_sv2k1_690edaa1_unget_buff_L000003 ' <symbol:unget_buff>
  byte 0[40]
 
 ' Catalina Code

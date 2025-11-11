@@ -6,7 +6,8 @@
     <script src="highlight.min.js"></script>
     <script>hljs.highlightAll();</script>
     <link rel="stylesheet" href="style.css" />
-    <title>Cake Playground</title>
+    <title>Cake C Compiler</title>
+    <meta name="description" content="Cake C Compiler">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <script>
     function Try(elm)
@@ -415,8 +416,6 @@ SAMPLES
 cake file.c -o file.cc &amp;&amp; cl file.cc
     Compiles file.c and outputs file.cc then use cl to compile file.cc
 
-cake file.c -direct-compilation -o file.cc &amp;&amp; cl file.cc
-    Compiles file.c and outputs file.cc for direct compilation then use cl to compile file.cc
   
 </code></pre>
 
@@ -1641,7 +1640,7 @@ __declspec
 __cdecl
 __fastcall, __stdcall
 __forceinline alias for inline in cake
-
+__pragma
 </code></pre>
 
 <h3 id="toc_90">Extension assert built-in</h3>

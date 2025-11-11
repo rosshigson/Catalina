@@ -12,9 +12,9 @@
 
 #if defined(__CATALYST__)
 // Catalyst uses DOS 8.3 file names
-#define CAKE_CFG_FNAME "/cakeconf.h"
+#define CAKE_CONFIG_FILE_NAME "/cakeconf.h"
 #else
-#define CAKE_CFG_FNAME "/cakeconfig.h"
+#define CAKE_CONFIG_FILE_NAME "/cakeconfig.h"
 #endif // defined(__CATALYST__)
 
 struct include_dir
@@ -111,3 +111,4 @@ void print_all_macros(const struct preprocessor_ctx* prectx);
 
 int include_config_header(struct preprocessor_ctx* ctx, const char* file_name);
 int stringify(const char* input, int n, char output[]);
+void print_path(const char* path);

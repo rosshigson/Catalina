@@ -10,7 +10,9 @@
 #include <inttypes.h>
 #include <assert.h>
 
+#ifndef _Countof
 #define _Countof(A) (sizeof(A)/sizeof((A)[0]))
+#endif
 
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
@@ -31,7 +33,12 @@
 "#define __STDC_NO_VLA__    " TOSTRING(__STDC_NO_VLA__) "\n"
 
 
-
+/*
+  To see all predefined macros
+  gcc -dM -E
+  For some reason __STDC_HOSTED__ is not printed
+  but it is defined (maybe others)
+*/
 const char* TARGET_X86_X64_GCC_PREDEFINED_MACROS =
 #ifdef __EMSCRIPTEN__
 //include dir on emscripten
@@ -39,8 +46,12 @@ const char* TARGET_X86_X64_GCC_PREDEFINED_MACROS =
 #endif
 
 CAKE_STANDARD_MACROS
-"#define __linux__\n"
-//"#define __GNUC__  16\n"
+"#define __linux__            1\n"
+"#define __extension__        \n"    /*this is not a macro*/
+"#define __GNUC__             4\n"      /*this number is reduced to parser headers without all GCC extensions*/
+"#define __GNUC_MINOR__       1\n"
+"#define __STDC_HOSTED__      1\n"
+"#define __STDC__             1\n"
 "#define __x86_64__ 1\n"
 "#define __CHAR_BIT__ 8\n"
 "#define __SIZE_TYPE__ long unsigned int\n"
@@ -96,9 +107,7 @@ CAKE_STANDARD_MACROS
 "#define __FLT_MANT_DIG__ 24\n"
 "#define __FLT_MIN_EXP__ (-125)\n"
 "#define __FLT_MAX_10_EXP__ 38\n"
-"#define __FLT_ROUNDS__ __FLT_ROUNDS__\n"
 "#define __FLT_EVAL_METHOD__ 0\n"
-"#define __FLT_HAS_SUBNORM__ __FLT_HAS_SUBNORM__\n"
 "#define __FLT_MAX_EXP__ 128\n"
 "#define __FLT_HAS_DENORM__ 1\n"
 "#define __SCHAR_MAX__ 0x7f\n"
@@ -143,15 +152,6 @@ CAKE_STANDARD_MACROS
 "#define __WINT_MIN__ 0U\n"
 "#define __SIG_ATOMIC_MIN__ (-0x7fffffff - 1)\n"
 "#define __INT8_C (-0x7fffffff - 1)\n"
-"#define __INT16_C __INT16_C\n"
-"#define __INT32_C __INT32_C\n"
-"#define __INT64_C __INT64_C\n"
-"#define __UINT8_C __UINT8_C\n"
-"#define __UINT16_C __UINT16_C\n"
-"#define __UINT32_C __UINT32_C\n"
-"#define __UINT64_C __UINT64_C\n"
-"#define __INTMAX_C __INTMAX_C\n"
-"#define __UINTMAX_C __UINTMAX_C\n"
 "#define __SCHAR_WIDTH__ 8\n"
 "#define __SHRT_WIDTH__ 16\n"
 "#define __INT_WIDTH__ 32\n"
@@ -197,6 +197,7 @@ CAKE_STANDARD_MACROS
 "#define _WIN32 1\n"
 "#define _INTEGRAL_MAX_BITS 64\n"
 "#define _MSC_VER 1944\n"
+"#define _MSC_EXTENSIONS 1\n"
 "#define _M_IX86 600\n"
 "#define __pragma(a)\n"
 "\n";
@@ -213,6 +214,7 @@ CAKE_STANDARD_MACROS
 "#define _WIN64 1\n"
 "#define _INTEGRAL_MAX_BITS 64\n"
 "#define _MSC_VER 1944\n"
+"#define _MSC_EXTENSIONS 1\n"
 "#define _M_X64 100\n"
 "#define __pragma(a)\n"
 "\n";
@@ -314,11 +316,11 @@ static struct platform platform_x86_x64_gcc =
 
   .bool_n_bits = 8,
   .bool_type = TYPE_UNSIGNED_CHAR,
-  .bool_aligment = 1,
+  .bool_alignment = 1,
 
   .char_n_bits = 8,
   .char_t_type = TYPE_SIGNED_CHAR,
-  .char_aligment = 1,
+  .char_alignment = 1,
 
 
 
@@ -328,29 +330,29 @@ static struct platform platform_x86_x64_gcc =
   .int64_type = TYPE_SIGNED_LONG,
 
   .pointer_n_bits = 64,
-  .pointer_aligment = 8,
+  .pointer_alignment = 8,
 
 
-  .wchar_t_type = TYPE_UNSIGNED_INT,
+  .wchar_t_type = TYPE_SIGNED_INT,
 
   .short_n_bits = 16,
-  .short_aligment = 2,
+  .short_alignment = 2,
   .int_n_bits = 32,
-  .int_aligment = 4,
+  .int_alignment = 4,
 
   .long_n_bits = 64,
-  .long_aligment = 8,
+  .long_alignment = 8,
 
   .long_long_n_bits = 64,
-  .long_long_aligment = 8,
+  .long_long_alignment = 8,
   .float_n_bits = 32,
-  .float_aligment = 4,
+  .float_alignment = 4,
 
   .double_n_bits = 64,
-  .double_aligment = 8,
+  .double_alignment = 8,
 
   .long_double_n_bits = 128,
-  .long_double_aligment = 168,
+  .long_double_alignment = 168,
 
 };
 
@@ -365,11 +367,11 @@ static struct platform platform_x86_msvc =
 
   .bool_n_bits = 8,
   .bool_type = TYPE_UNSIGNED_CHAR,
-  .bool_aligment = 1,
+  .bool_alignment = 1,
 
   .char_n_bits = 8,
   .char_t_type = TYPE_SIGNED_CHAR,
-  .char_aligment = 1,
+  .char_alignment = 1,
 
 
   .int8_type = TYPE_SIGNED_CHAR,
@@ -378,29 +380,29 @@ static struct platform platform_x86_msvc =
   .int64_type = TYPE_SIGNED_LONG_LONG,
 
   .pointer_n_bits = 32,
-  .pointer_aligment = 4,
+  .pointer_alignment = 4,
 
 
   .wchar_t_type = TYPE_UNSIGNED_SHORT,
 
   .short_n_bits = 16,
-  .short_aligment = 2,
+  .short_alignment = 2,
   .int_n_bits = 32,
-  .int_aligment = 4,
+  .int_alignment = 4,
 
   .long_n_bits = 32,
-  .long_aligment = 4,
+  .long_alignment = 4,
 
   .long_long_n_bits = 64,
-  .long_long_aligment = 8,
+  .long_long_alignment = 8,
   .float_n_bits = 32,
-  .float_aligment = 4,
+  .float_alignment = 4,
 
   .double_n_bits = 64,
-  .double_aligment = 8,
+  .double_alignment = 8,
 
   .long_double_n_bits = 64,
-  .long_double_aligment = 8,
+  .long_double_alignment = 8,
 };
 
 static struct platform platform_x64_msvc =
@@ -414,11 +416,11 @@ static struct platform platform_x64_msvc =
 
   .bool_n_bits = 8,
   .bool_type = TYPE_UNSIGNED_CHAR,
-  .bool_aligment = 1,
+  .bool_alignment = 1,
 
   .char_n_bits = 8,
   .char_t_type = TYPE_SIGNED_CHAR,
-  .char_aligment = 1,
+  .char_alignment = 1,
 
 
   .int8_type = TYPE_SIGNED_CHAR,
@@ -427,29 +429,29 @@ static struct platform platform_x64_msvc =
   .int64_type = TYPE_SIGNED_LONG_LONG,
 
   .pointer_n_bits = 64,
-  .pointer_aligment = 8,
+  .pointer_alignment = 8,
 
 
   .wchar_t_type = TYPE_UNSIGNED_SHORT,
 
   .short_n_bits = 16,
-  .short_aligment = 2,
+  .short_alignment = 2,
   .int_n_bits = 32,
-  .int_aligment = 4,
+  .int_alignment = 4,
 
   .long_n_bits = 32,
-  .long_aligment = 4,
+  .long_alignment = 4,
 
   .long_long_n_bits = 64,
-  .long_long_aligment = 8,
+  .long_long_alignment = 8,
   .float_n_bits = 32,
-  .float_aligment = 4,
+  .float_alignment = 4,
 
   .double_n_bits = 64,
-  .double_aligment = 8,
+  .double_alignment = 8,
 
   .long_double_n_bits = 64,
-  .long_double_aligment = 8,
+  .long_double_alignment = 8,
 };
 
 static struct platform platform_ccu8 =
@@ -463,11 +465,11 @@ static struct platform platform_ccu8 =
 
   .bool_n_bits = 8,
   .bool_type = TYPE_UNSIGNED_CHAR,
-  .bool_aligment = 1,
+  .bool_alignment = 1,
 
   .char_n_bits = 8,
   .char_t_type = TYPE_SIGNED_CHAR,
-  .char_aligment = 1,
+  .char_alignment = 1,
 
 
   .int8_type = TYPE_SIGNED_CHAR,
@@ -476,28 +478,28 @@ static struct platform platform_ccu8 =
   .int64_type = TYPE_SIGNED_LONG_LONG,
 
   .pointer_n_bits = 32,
-  .pointer_aligment = 8,
+  .pointer_alignment = 8,
 
 
   .wchar_t_type = TYPE_UNSIGNED_SHORT,
   .short_n_bits = 16,
-  .short_aligment = 2,
+  .short_alignment = 2,
   .int_n_bits = 16,
-  .int_aligment = 2,
+  .int_alignment = 2,
 
   .long_n_bits = 64,
-  .long_aligment = 4,
+  .long_alignment = 4,
 
   .long_long_n_bits = 64,
-  .long_long_aligment = 8,
+  .long_long_alignment = 8,
   .float_n_bits = 32,
-  .float_aligment = 32,
+  .float_alignment = 32,
 
   .double_n_bits = 64,
-  .double_aligment = 8,
+  .double_alignment = 8,
 
   .long_double_n_bits = 64,
-  .long_double_aligment = 8,
+  .long_double_alignment = 8,
 };
 
 static struct platform platform_catalina =
@@ -512,11 +514,11 @@ static struct platform platform_catalina =
 
   .bool_n_bits = 8,
   .bool_type = TYPE_UNSIGNED_CHAR,
-  .bool_aligment = 1,
+  .bool_alignment = 1,
 
   .char_n_bits = 8,
   .char_t_type = TYPE_UNSIGNED_CHAR,
-  .char_aligment = 1,
+  .char_alignment = 1,
 
 
   .int8_type = TYPE_SIGNED_CHAR,
@@ -525,29 +527,29 @@ static struct platform platform_catalina =
   .int64_type = TYPE_SIGNED_LONG_LONG,
 
   .pointer_n_bits = 32,
-  .pointer_aligment = 4,
+  .pointer_alignment = 4,
 
 
   .wchar_t_type = TYPE_UNSIGNED_SHORT,
   .short_n_bits = 16,
-  .short_aligment = 2,
+  .short_alignment = 2,
   .int_n_bits = 32,
-  .int_aligment = 4,
+  .int_alignment = 4,
 
   .long_n_bits = 32,
-  .long_aligment = 4,
+  .long_alignment = 4,
 
   .long_long_n_bits = 32,
-  .long_long_aligment = 4,
+  .long_long_alignment = 4,
   
   .float_n_bits = 32,
-  .float_aligment = 4,
+  .float_alignment = 4,
 
   .double_n_bits = 32,
-  .double_aligment = 4,
+  .double_alignment = 4,
 
   .long_double_n_bits = 32,
-  .long_double_aligment = 4,
+  .long_double_alignment = 4,
 };
 
 static struct platform* platforms[NUMBER_OF_TARGETS] = 
@@ -591,29 +593,28 @@ struct platform* get_platform(enum  target target)
     return platforms[target];
 }
 
-
 long long target_signed_max(enum  target target, enum object_type type)
 {
-    int bits = target_get_num_of_bits(target, type);
+    const int bits = target_get_num_of_bits(target, type);
+    assert(bits <= sizeof(long long) * CHAR_BIT);
 
-    if (bits >= 64) {
-        return 0x7FFFFFFFFFFFFFFFLL; // (2^(63) - 1)
+    if (bits >= sizeof(long long) * CHAR_BIT)
+    {
+        return LLONG_MAX;
     } 
-      
     
     return (1LL << (bits - 1)) - 1; // 2^(bits-1) - 1    
 }
 
 unsigned long long target_unsigned_max(enum  target target, enum object_type type)
 {
-    /*
-      2^bits - 1
-    */
-    int bits = target_get_num_of_bits(target, type);
-    if (bits >= 64)
-        return ~0ULL;   // all bits set to 1
+    const int bits = target_get_num_of_bits(target, type);
+    assert(bits <= sizeof(unsigned long long) * CHAR_BIT);
     
-    return (1ULL << bits) - 1;    
+    if (bits >= sizeof(unsigned long long) * CHAR_BIT)
+        return ULLONG_MAX;
+
+    return (1ULL << bits) - 1;
 }
 
 int target_get_num_of_bits(enum target target, enum object_type type)
@@ -668,3 +669,41 @@ const char* target_get_predefined_macros(enum target e)
     return "";
 };
 
+#ifdef TEST
+#include "unit_test.h"
+
+void target_self_test()
+{
+    assert(target_unsigned_max(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_UNSIGNED_CHAR) == UCHAR_MAX);
+    assert(target_unsigned_max(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_UNSIGNED_SHORT) == USHRT_MAX);
+    assert(target_unsigned_max(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_UNSIGNED_INT) == UINT_MAX);
+    assert(target_unsigned_max(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_UNSIGNED_LONG) == ULONG_MAX);
+    assert(target_unsigned_max(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_UNSIGNED_LONG_LONG) == ULLONG_MAX);
+
+    assert(target_signed_max(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_SIGNED_CHAR) == CHAR_MAX);
+    assert(target_signed_max(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_SIGNED_SHORT) == SHRT_MAX);
+    assert(target_signed_max(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_SIGNED_INT) == INT_MAX);
+    assert(target_signed_max(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_SIGNED_LONG) == LONG_MAX);
+    assert(target_signed_max(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_SIGNED_LONG_LONG) == LLONG_MAX);
+
+    assert(target_get_num_of_bits(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_SIGNED_CHAR) == sizeof(char) * CHAR_BIT);
+    assert(target_get_num_of_bits(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_SIGNED_SHORT) == sizeof(short) * CHAR_BIT);
+    assert(target_get_num_of_bits(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_SIGNED_INT) == sizeof(int) * CHAR_BIT);
+    assert(target_get_num_of_bits(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_SIGNED_LONG) == sizeof(long) * CHAR_BIT);
+    assert(target_get_num_of_bits(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_SIGNED_LONG_LONG) == sizeof(long long) * CHAR_BIT);
+
+
+    assert(target_get_num_of_bits(CAKE_COMPILE_TIME_SELECTED_TARGET, get_platform(CAKE_COMPILE_TIME_SELECTED_TARGET)->size_t_type) == sizeof(sizeof(1)) * CHAR_BIT);
+
+    assert(target_get_num_of_bits(CAKE_COMPILE_TIME_SELECTED_TARGET, get_platform(CAKE_COMPILE_TIME_SELECTED_TARGET)->wchar_t_type) == sizeof(L' ') * CHAR_BIT);
+
+    
+#if CHAR_MIN < 0
+    assert(get_platform(CAKE_COMPILE_TIME_SELECTED_TARGET)->char_t_type == TYPE_SIGNED_CHAR);
+#else
+    assert(get_platform(CAKE_COMPILE_TIME_SELECTED_TARGET)->char_t_type == TYPE_UNSIGNED_CHAR);
+#endif
+        
+
+}
+#endif

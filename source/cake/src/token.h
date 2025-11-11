@@ -157,6 +157,9 @@ enum token_type
     TK_KEYWORD_GCC__BUILTIN_C23_VA_START,    
     TK_KEYWORD_GCC__BUILTIN_VA_COPY,
     TK_KEYWORD_GCC__BUILTIN_OFFSETOF,
+
+    TK_KEYWORD_GCC__BUILTIN_XXXXX,
+
 //#ifdef _WIN32 
 
     //https://learn.microsoft.com/en-us/cpp/cpp/ptr32-ptr64?view=msvc-170&redirectedfrom=MSDN
@@ -167,6 +170,12 @@ enum token_type
     TK_KEYWORD_MSVC__STDCALL,
     TK_KEYWORD_MSVC__CDECL,    
     TK_KEYWORD_MSVC__DECLSPEC,
+    
+    TK_KEYWORD_MSVC__TRY,
+    TK_KEYWORD_MSVC__EXCEPT,
+    TK_KEYWORD_MSVC__FINALLY,
+    TK_KEYWORD_MSVC__LEAVE,
+
 //#endif
 
     TK_KEYWORD__ASM, 

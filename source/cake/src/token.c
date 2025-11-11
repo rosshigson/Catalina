@@ -252,6 +252,8 @@ char* _Owner _Opt token_list_join_tokens(struct token_list* list, bool bliteral)
         {
             if (*p == '"')
                 ss_fprintf(&ss, "\\\"");
+            else if (*p == '\\')
+                ss_fprintf(&ss, "\\\\");
             else
                 ss_fprintf(&ss, "%c", *p);
             p++;
@@ -883,18 +885,27 @@ void print_tokens_html(struct token* p_token)
 void print_position(const char* path, int line, int col, bool visual_studio_ouput_format, bool  color_enabled)
 {
 
+    if (path == NULL) path = "";
+
     if (visual_studio_ouput_format)
     {
         //MSVC format
-        printf("%s(%d,%d): ", path ? path : "<>", line, col);
+        print_path(path);
+        printf("(%d,%d): ", line, col);
     }
     else
     {
+        if (color_enabled)
+        {
+            printf(WHITE);
+        }
+        print_path(path);
+
         //GCC format
         if (color_enabled)
-        printf(WHITE "%s:%d:%d: ", path ? path : "<>", line, col);
+            printf(WHITE ":%d:%d: ", line, col);
         else
-            printf("%s:%d:%d: ", path ? path : "<>", line, col);
+            printf(":%d:%d: ", line, col);
     }
 }
 
@@ -920,7 +931,7 @@ void print_line_and_token(struct marker* p_marker, bool color_enabled)
 
         //lets find the begin of line
         const struct token* p_line_begin = p_token;
-        while (p_line_begin->prev && (p_line_begin->prev->type != TK_NEWLINE && p_line_begin->prev->type != TK_BEGIN_OF_FILE))
+        while (p_line_begin->prev && (p_line_begin->prev->type != TK_NEWLINE && p_line_begin->prev->type != TK_BEGIN_OF_FILE && p_line_begin->prev->type != TK_PRAGMA_END))
         {
             p_line_begin = p_line_begin->prev;
         }
@@ -963,11 +974,23 @@ void print_line_and_token(struct marker* p_marker, bool color_enabled)
             if (!(p_item->flags & TK_FLAG_MACRO_EXPANDED) || expand_macro)
             {
                 const char* p = p_item->lexeme;
+
+                if (p_item->type == TK_LINE_COMMENT)
+                {
+                    while (*p && *p != '\n' && *p != '\r')
+                    {
+                        putc(*p, stdout);
+                        p++;
+                    }
+                }
+                else
+                {
                 while (*p)
                 {
                     putc(*p, stdout);
                     p++;
                 }
+            }
             }
 
             if (color_enabled)
@@ -1018,7 +1041,15 @@ void print_line_and_token(struct marker* p_marker, bool color_enabled)
                     }
                     else
                     {
+                        if (*p == '\t')
+                        {
+                            putc(*p, stdout);
+                        }
+                        else
+                        {
                         putc(' ', stdout);
+                        }
+
                         if (!complete) start_col++;
                     }
                     p++;
@@ -1539,17 +1570,13 @@ const unsigned char* _Opt escape_sequences_decode_opt(const unsigned char* p, un
 
         *out_value = (int)result;
     }
-    else if (*p == '0')
+    else if (*p >= '0' && *p <= '7')
     {
         // octal digit
-        p++;
-
         int result = 0;
         while ((*p >= '0' && *p <= '7'))
         {
-            int byte;
-            byte = (*p - '0');
-            result = (result << 4) | (byte & 0xF);
+            result = (result << 3) | (*p - '0');  // shift left by 3 bits and add digit
             p++;
         }
         *out_value = result;
@@ -1590,7 +1617,6 @@ const unsigned char* _Opt escape_sequences_decode_opt(const unsigned char* p, un
             *out_value = '"';
             break;
         default:
-            // this is handled at tokenizer
             assert(false);
             return NULL;
         }

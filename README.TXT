@@ -196,11 +196,13 @@ documents folder.
 New Functionality
 -----------------
 
-1. A verison of dirent.h, which defines the functions opendir(), readdir(),
+1. A version of dirent.h, which defines the functions opendir(), readdir(),
    closedir() and realpath(). These functions are not part of any C standard,
    but are required by Cake.
 
-2. Catalina now disables Cake's use of colors in error and warning messages
+2. Cake has been updated to version 0.12.49.
+
+3. Catalina now disables Cake's use of colors in error and warning messages
    by default, because Geany does not support it. However, for command-line 
    or terminal emulator use, colors can be re-enabled by defining the Catalina
    symbol CAKE_COLOR, e,g, by adding -C CAKE_COLOR to the Catalina command. 
@@ -208,7 +210,72 @@ New Functionality
 
      catalina hello_99.c -lci -C99 -C CAKE_COLOR
 
+4. printf() (and fprintf() etc) now supports "ll" as a length specified, to
+   indicate a long long - for example "%llu" indicates an "unsigned long long". 
+   Note that in Catalina long longs are the same as longs, so in practice both
+   "%lu" and "%llu" will now do the same thing, whereas in previous releases
+   the former would have printed 100 as "100", whereas the latter would have 
+   printed it as "100ul". This change was required to support Cake.
+
+5. The Propeller 2 SD card driver (/target/p2/cogsd.t) now allows the SD card
+   delay (in clock ticks) to be specified using the Catalina symbol SD_DELAY 
+   during compilation. For example, to set it to zero use a command such as:
+
+      catalina -p2 -lcx program.c -C SD_DELAY=0
+
+   Defining the Catalina symbol NO_SD_DELAY also sets the SD_DELAY to zero,
+   but can be used in build_all scripts. Using NO_SD_DELAT overrides any 
+   other specified SD_DELAY.
+
+   The default if not specified is 10ms, and the driver may not work properly
+   if this delay is altered.
+
+6. In the Catalyst demos folder (demos/catalyst) there is now a build_p2_300
+   script, which builds Catalyst using a 300 Mhz clock speed (the default of
+   200Mhz is still used by the build_p2 script). So for example, building
+   Catalyst at 300 Mhz and with no SD_DELAY can be done with a command like:
+
+      build_p2_300 P2_EDGE PSRAM NO_SD_DELAY
+
+   Note that 300 baud and no SD_DELAY may not work for all programs, all SD 
+   cards, or all Propeller 2 platforms.
+
+7. Catalina no longer defines the symbols "win32", "_WIN32", "_M_IX86" "unix", 
+   "i386", "linux" "__unix__", "_i386__", "__linux__", or "__signed__" 
+   automatically on any platform.  Not defining these symbols may make some 
+   programs either not compile, or behave differently. If any of these symbols
+   are required, they can be defined on the command line (using -D). 
+   For example:
+
+      catalina program.c -D__signed=signed
+
+8. Catalina no longer defines the C symbols "__STRICT_ANSI__" or "__STDC__" 
+   automatically because this can interfere with the use of Cake as the C 
+   preprocessor. Not defining these symbols may make some programs either 
+   not compile, or behave differently. If these symbols are required, they 
+   can be defined on the command line (using -D). For example:
+
+      catalina program.c -D__STDC__=1
+
+   The C symbol _POSIX_SOURCE is still defined even though Catalina is not
+   fully POSIX compliant, because this symbol enables some necessary 
+   definitions in the C header files. 
+
+9. The -u option to catalina means it does not delete intermediate files.
+   This is sometimes useful for debugging. On Catalyst (only) it now also 
+   means to not run the pstrip utility, which 'strips' comments and blank 
+   lines from the intermediate source code files (to reduce their size). 
+
 Other Changes
 -------------
 
-1. 
+1. The C include file limits.h (i.e. include/limits.h) was incorrectly
+   defining CHAR_MIN and CHAR_MAX as if chars were signed. Since chars are 
+   unsigned in Catalina, these definitions were incorrect, and have been
+   changed to:
+
+      #define	CHAR_MAX		UCHAR_MAX
+      #define	CHAR_MIN		0   
+
+   Affected Windows, Linux and Catalyst.
+

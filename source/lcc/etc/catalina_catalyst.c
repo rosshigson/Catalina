@@ -15,7 +15,8 @@ static char rcsid[] = "$Id: catalina_catalyst.c,v 1.0 2009/03/28 20:41:09 rjh Ex
 char *suffixes[] = { ".c", ".i", ".s", ".o", ".out", 0 };
 char inputs[256] = "";
 char *cpp[] = { LCCDIR "/bin/cpp",
-	"-U__GNUC__", "-D_POSIX_SOURCE", "-D__STDC__=1", "-D__STRICT_ANSI__",
+  //"-U__GNUC__", "-D__STDC__=1", "-D__STRICT_ANSI__",
+	"-D_POSIX_SOURCE",
 	"-D__CATALINA__",
 	"$1", "$2", "$3", 0 };
 char *include[] = {"-I" LCCDIR "/include", 0 };

@@ -25,9 +25,9 @@
 #define	LLONG_MAX		LONG_MAX
 #define	ULLONG_MAX		ULONG_MAX
 
-/* Assume signed characters (yegh) */
-#define	CHAR_MAX		SCHAR_MAX
-#define	CHAR_MIN		SCHAR_MIN
+/* Catalina has unsigned characters */
+#define	CHAR_MAX		UCHAR_MAX
+#define	CHAR_MIN		0
 
 #if	_EM_WSIZE == 2
 #define	INT_MIN			SHRT_MIN

@@ -95,49 +95,49 @@ C_localeconv ' <symbol:localeconv>
  jmp #WLNG ' ASGNP4 reg reg
  mov r22, r23
  adds r22, #40 ' ADDP4 coni
- mov r20, #127 ' reg <- coni
+ mov r20, #255 ' reg <- coni
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
  mov r22, r23
  adds r22, #41 ' ADDP4 coni
- mov r20, #127 ' reg <- coni
+ mov r20, #255 ' reg <- coni
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
  mov r22, r23
  adds r22, #42 ' ADDP4 coni
- mov r20, #127 ' reg <- coni
+ mov r20, #255 ' reg <- coni
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
  mov r22, r23
  adds r22, #43 ' ADDP4 coni
- mov r20, #127 ' reg <- coni
+ mov r20, #255 ' reg <- coni
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
  mov r22, r23
  adds r22, #44 ' ADDP4 coni
- mov r20, #127 ' reg <- coni
+ mov r20, #255 ' reg <- coni
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
  mov r22, r23
  adds r22, #45 ' ADDP4 coni
- mov r20, #127 ' reg <- coni
+ mov r20, #255 ' reg <- coni
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
  mov r22, r23
  adds r22, #46 ' ADDP4 coni
- mov r20, #127 ' reg <- coni
+ mov r20, #255 ' reg <- coni
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
  mov r22, r23
  adds r22, #47 ' ADDP4 coni
- mov r20, #127 ' reg <- coni
+ mov r20, #255 ' reg <- coni
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg

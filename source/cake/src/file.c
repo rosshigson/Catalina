@@ -1,4 +1,3 @@
-typedef int size_t;
-int main() {
-    int i = (int)i;
- }
+int main(){
+  static_assert("\300\040\040"[0] == '@');  
+}

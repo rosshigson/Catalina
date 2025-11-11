@@ -212,10 +212,10 @@ strncpy dopenf.s 968 import
 strcpy dopenf.s 970 import
 memcpy dopenf.s 972 import
 _doprnt doprnt.s 503 export
-_f_print doprnt.s 1683 import
-_i_compute doprnt.s 1685 import
-putc doprnt.s 1687 import
-toupper doprnt.s 1689 import
+_f_print doprnt.s 1699 import
+_i_compute doprnt.s 1701 import
+putc doprnt.s 1703 import
+toupper doprnt.s 1705 import
 _doscan doscan.s 697 export
 __ctype doscan.s 2195 import
 strtoul doscan.s 2197 import

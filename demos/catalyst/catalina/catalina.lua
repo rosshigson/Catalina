@@ -136,7 +136,11 @@
 -- version 8.8.2 - add -CXX (where XX is the C standard) which selects cpp
 --                 as preprocessor if a standard is not specified, or if 
 --                 XX is 89 or 90, or cake otherwise.
--- version 8.8.3 - remove -suppress option (Cake now suppresses by default)
+--
+-- version 8.8.3 - Remove -suppress option (Cake now suppresses by default).
+--               - The -u (untidy) option now also disables the use of pstrip.
+--               - Remove the definition of __STDC__ and __STRICT_ANSI__ 
+--                 because these can interfere with the use of Cake.
 
 require "os"
 require "io"
@@ -443,10 +447,8 @@ end
 
 -- add Defined symbols that the include files expect
 function predefine_Dsyms()
-  addDsym('_POSIX_SOURCE');
-  addDsym('__STDC__=1');
-  addDsym('__STRICT_ANSI__');
   addDsym('__CATALINA__');
+  addDsym('_POSIX_SOURCE');
 end
 
 -- issue a warning for an unused environment variable
@@ -1229,9 +1231,11 @@ function generate_assemble_target(cmd)
   if not no_test then
     add_to_file(cmd, TEST_COMMAND);
   end
-  add_to_file(cmd, strip);
-  if not no_test then
-    add_to_file(cmd, TEST_COMMAND);
+  if not untidy then
+    add_to_file(cmd, strip);
+    if not no_test then
+      add_to_file(cmd, TEST_COMMAND);
+    end
   end
   add_to_file(cmd, pasm);
   if not no_test then
@@ -1263,9 +1267,11 @@ function generate_assemble_output(cmd)
   if listing then
     pasm = pasm .. ' -l'
   end
-  add_to_file(cmd, strip);
-  if not no_test then
-    add_to_file(cmd, TEST_COMMAND);
+  if not untidy then
+    add_to_file(cmd, strip);
+    if not no_test then
+      add_to_file(cmd, TEST_COMMAND);
+    end
   end
   add_to_file(cmd, spp);
   if not no_test then

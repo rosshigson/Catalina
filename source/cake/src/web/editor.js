@@ -7,8 +7,7 @@ var model = {};
 
 var on_edited_timer = -1; // setTimeout(myGreeting, 3000);
 
-function validate(model)
-{
+function validate(model) {
 
     /*we parse the ouput to create markers*/
     let ouput = document.getElementById("output").innerText;
@@ -16,33 +15,27 @@ function validate(model)
 
     const markers = [];
 
-    for (var i = 0; i < ouputlines.length; i++)
-    {
+    for (var i = 0; i < ouputlines.length; i++) {
         /*
          we need to parse this
          c:/main.c:17:11: warning: returning an uninitialized 'x.name' object [-Wanalyzer-maybe-uninitialized]
          17 |   return xxx;
             |          ^~~     
         */
-        if (ouputlines[i].search("c:/main.c") == 0)
-        {
+        if (ouputlines[i].search("c:/main.c") == 0) {
             let line_start = 0;
             let start_col = 0;
             let end_col = 0;
             let marks = ouputlines[i + 2];
-            for (var k = 0; k < marks.length; k++)
-            {
-                if (marks.charAt(k) == "|")
-                {
+            for (var k = 0; k < marks.length; k++) {
+                if (marks.charAt(k) == "|") {
                     line_start = k;
                 }
-                if (marks.charAt(k) == "^" || marks.charAt(k) == "~")
-                {
+                if (marks.charAt(k) == "^" || marks.charAt(k) == "~") {
                     start_col = k;
                     end_col = k;
                     k++;
-                    while (marks.charAt(k) == "~")
-                    {
+                    while (marks.charAt(k) == "~") {
                         end_col++;
                         k++;
                     }
@@ -77,14 +70,32 @@ function validate(model)
     monaco.editor.setModelMarkers(model, "owner", markers);
 }
 
+function ReportIssue() {
+    var source = inputEditor.getValue();
+    var generates = outputEditor.getValue();
 
-function Share()
-{
+    var to = -2;// document.getElementById("outtype").value;
+    var options = document.getElementById("options").value;
+
+    var title = "unexpected result";
+    var textbeforecode = "I believe the following code is not producing the expected result or diagnostics.\n";
+
+    var generatesText = "Is generating:\n";
+
+    var link = "https://github.com/thradams/cake/issues/new?title=" + encodeURIComponent(title) +
+        "&body=" + encodeURIComponent(textbeforecode + "\n```c\n" + source + "\n```\n");
+    "&body=" + encodeURIComponent(textbeforecode + "\n```c\n" + source + "\n```\n") +
+        encodeURIComponent(generatesText + "\n```c\n" + generates + "\n```\n");
+
+
+    window.open(link, '_blank');
+}
+function Share() {
     var source = inputEditor.getValue();
     var to = -2;// document.getElementById("outtype").value;
     var options = document.getElementById("options").value;
 
-    var link = "http://thradams.com/cake/playground.html?code=" + encodeURIComponent(btoa(source)) +
+    var link = "http://cakecc.org/playground.html?code=" + encodeURIComponent(btoa(source)) +
         "&to=" + encodeURI(to) +
         "&options=" + encodeURI(options);
 
@@ -93,15 +104,13 @@ function Share()
     document.getElementById("sharelink").select();
 }
 
-function OnSwap()
-{
+function OnSwap() {
     var temp = inputEditor.getValue();
     inputEditor.setValue(outputEditor.getValue());
     outputEditor.setValue(temp);
 }
 
-function Run()
-{
+function Run() {
     document.getElementById("output").value = "";
     var http = new XMLHttpRequest();
 
@@ -115,16 +124,14 @@ function Run()
     var convert = new Filter();
     text = convert.toHtml(text);
     if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
-    if (element)
-    {
+    if (element) {
         element.innerHTML = text + "\n";
         element.scrollTop = element.scrollHeight; // focus on bottom
     }
 }
 
 
-function OnCompileButton()
-{
+function OnCompileButton() {
     document.getElementById("output").value = "";
     outputEditor.setValue("");
     var outputLanguage = -2;// document.getElementById("outtype").value;
@@ -136,34 +143,30 @@ function OnCompileButton()
 
     if (outputLanguage == 0)
         options += " -E";
- 
+
 
     var source = inputEditor.getValue();
     var ot = CompileText(options, source);
 
-    if (model)
-    {
+    if (model) {
         validate(model);
     }
     outputEditor.setValue(ot);
 }
 
-function OnChangeSelectionSample(index)
-{
+function OnChangeSelectionSample(index) {
     var area = document.getElementById("samples").value;
     var source = sample[area][index];
     inputEditor.setValue(source, -1);
     outputEditor.setValue("");
 }
 
-function OnChangeSelection(index)
-{
+function OnChangeSelection(index) {
     var samples = sample[index];
     var se2 = document.getElementById("sample");
     se2.innerText = "";
 
-    for (var i in samples)
-    {
+    for (var i in samples) {
         var o = document.createElement('option');
         o.textContent = i;
         o.value = i;
@@ -172,20 +175,17 @@ function OnChangeSelection(index)
     OnChangeSelectionSample(Object.keys(sample[index])[0]);
 }
 
-function OnTimerAfterChanges()
-{
+function OnTimerAfterChanges() {
     clearTimeout(on_edited_timer);
     on_edited_timer = -1;
     OnCompileButton();
 }
 
-function OnLoad()
-{
+function OnLoad() {
 
     var se = document.getElementById("samples");
 
-    for (var area in sample)
-    {
+    for (var area in sample) {
         var o = document.createElement('option');
         o.textContent = area;
         o.value = area;
@@ -209,10 +209,10 @@ function OnLoad()
     monaco.editor.defineTheme("myCTheme", {
         base: "vs",  // or "vs" for light
         inherit: true,    // inherit existing rules
-        rules: [            
-            { token: "keyword.special", foreground: "008000"},   // your special keywords            
+        rules: [
+            { token: "keyword.special", foreground: "008000" },   // your special keywords            
         ],
-        colors: {           
+        colors: {
         }
     });
 
@@ -226,9 +226,19 @@ function OnLoad()
     });
 
     //validate(model);
+    inputEditor.setValue("#include <stdio.h>\n" +
+        "\n" +
+        "int main()\n" +
+        "{\n" +
+        "    printf(\"Hello World\"); \n" +
+        "    return 0;\n" +
+        "}\n");
 
-    model.onDidChangeContent(() =>
-    {
+
+    clearTimeout(on_edited_timer);
+    on_edited_timer = setTimeout(OnTimerAfterChanges, 500);
+
+    model.onDidChangeContent(() => {
         //https://microsoft.github.io/monaco-editor/typedoc/interfaces/editor.ITextModel.html#setValue.setValue-1
         //var source = inputEditor.getValue();
         //model.setValue(source);
@@ -247,10 +257,8 @@ function OnLoad()
     const urlParams = new URLSearchParams(window.location.search);
 
     var to = urlParams.get('to');
-    if (to)
-    {
-        try
-        {
+    if (to) {
+        try {
             to = decodeURI(to);
             //document.getElementById("outtype").value = to;
         }
@@ -258,18 +266,15 @@ function OnLoad()
     }
 
     var options = urlParams.get('options');
-    if (options)
-    {
-        try
-        {
+    if (options) {
+        try {
             options = decodeURI(options);
             document.getElementById("options").value = options;
         } catch { }
     }
 
     var code = urlParams.get('code');
-    if (code)
-    {
+    if (code) {
         code = atob(decodeURIComponent(code));
         inputEditor.setValue(code);
         //Not ready to call

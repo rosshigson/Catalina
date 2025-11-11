@@ -1059,8 +1059,8 @@ XMM_RO_BASE_ADDRESS = $0008_0000 ' Read-Only Base address
 ' the word at
 '    word[REGISTRY][-service]
 ' The top 4 bits of the word are the cog number (top bit of the 4 bits
-' set if not used), the next lower 4 bits are a lock number (top bit of
-' the 4 set if not required) and the lower 8 bits are the request number
+' set if not used), the next lower 5 bits are a lock number (all bits
+' set if lock not required) and the lower 7 bits are the request number
 ' to send to the cog to request the service.
 '
 ' Predefined Service Numbers (and the internal plugin types and requests):

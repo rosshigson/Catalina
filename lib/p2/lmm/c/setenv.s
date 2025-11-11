@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_s17c_68fd755c_find_name_L000003 ' <symbol:find_name>
+C_sric_690ed791_find_name_L000003 ' <symbol:find_name>
  jmp #NEWF
  jmp #PSHM
  long $fa8000 ' save registers
@@ -16,29 +16,29 @@ C_s17c_68fd755c_find_name_L000003 ' <symbol:find_name>
  mov r19, r2 ' reg var <- reg arg
  mov r17, r23 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_s17c_68fd755c_find_name_L000003_6 ' JUMPV addrg
-C_s17c_68fd755c_find_name_L000003_5
+ long @C_sric_690ed791_find_name_L000003_6 ' JUMPV addrg
+C_sric_690ed791_find_name_L000003_5
  wrlong r17, r19 ' ASGNP4 reg reg
  jmp #JMPA
- long @C_s17c_68fd755c_find_name_L000003_9 ' JUMPV addrg
-C_s17c_68fd755c_find_name_L000003_8
+ long @C_sric_690ed791_find_name_L000003_9 ' JUMPV addrg
+C_sric_690ed791_find_name_L000003_8
  rdlong r22, r19 ' reg <- INDIRP4 reg
  adds r22, #1 ' ADDP4 coni
  wrlong r22, r19 ' ASGNP4 reg reg
-C_s17c_68fd755c_find_name_L000003_9
+C_sric_690ed791_find_name_L000003_9
  rdlong r22, r19 ' reg <- INDIRP4 reg
  rdbyte r22, r22 ' reg <- INDIRU1 reg
  and r22, cviu_m1 ' zero extend
  cmps r22,  #10 wz
  jmp #BR_Z
- long @C_s17c_68fd755c_find_name_L000003_12 ' EQI4
+ long @C_sric_690ed791_find_name_L000003_12 ' EQI4
  cmps r22,  #61 wz
  jmp #BR_Z
- long @C_s17c_68fd755c_find_name_L000003_12 ' EQI4
+ long @C_sric_690ed791_find_name_L000003_12 ' EQI4
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_s17c_68fd755c_find_name_L000003_8 ' NEI4
-C_s17c_68fd755c_find_name_L000003_12
+ long @C_sric_690ed791_find_name_L000003_8 ' NEI4
+C_sric_690ed791_find_name_L000003_12
  rdlong r22, r19 ' reg <- INDIRP4 reg
  mov r20, r17 ' CVI, CVU or LOAD
  sub r22, r20 ' SUBU (1)
@@ -51,7 +51,7 @@ C_s17c_68fd755c_find_name_L000003_12
  mov r20, r15 ' CVI, CVU or LOAD
  cmp r20, r22 wz
  jmp #BRNZ
- long @C_s17c_68fd755c_find_name_L000003_18 ' NEU4
+ long @C_sric_690ed791_find_name_L000003_18 ' NEU4
  mov r2, r15 ' CVI, CVU or LOAD
  mov r3, r17 ' CVI, CVU or LOAD
  mov r4, r21 ' CVI, CVU or LOAD
@@ -62,45 +62,45 @@ C_s17c_68fd755c_find_name_L000003_12
  add SP, #8 ' CALL addrg
  cmps r0,  #0 wz
  jmp #BRNZ
- long @C_s17c_68fd755c_find_name_L000003_18 ' NEI4
+ long @C_sric_690ed791_find_name_L000003_18 ' NEI4
  rdlong r22, r19 ' reg <- INDIRP4 reg
  rdbyte r22, r22 ' reg <- INDIRU1 reg
  and r22, cviu_m1 ' zero extend
  cmps r22,  #61 wz
  jmp #BRNZ
- long @C_s17c_68fd755c_find_name_L000003_15 ' NEI4
+ long @C_sric_690ed791_find_name_L000003_15 ' NEI4
  rdlong r22, r19 ' reg <- INDIRP4 reg
  adds r22, #1 ' ADDP4 coni
  wrlong r22, r19 ' ASGNP4 reg reg
-C_s17c_68fd755c_find_name_L000003_15
+C_sric_690ed791_find_name_L000003_15
  mov r0, r17 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_s17c_68fd755c_find_name_L000003_4 ' JUMPV addrg
-C_s17c_68fd755c_find_name_L000003_17
+ long @C_sric_690ed791_find_name_L000003_4 ' JUMPV addrg
+C_sric_690ed791_find_name_L000003_17
  adds r17, #1 ' ADDP4 coni
-C_s17c_68fd755c_find_name_L000003_18
+C_sric_690ed791_find_name_L000003_18
  rdbyte r22, r17 ' reg <- INDIRU1 reg
  and r22, cviu_m1 ' zero extend
  cmps r22,  #10 wz
  jmp #BR_Z
- long @C_s17c_68fd755c_find_name_L000003_20 ' EQI4
+ long @C_sric_690ed791_find_name_L000003_20 ' EQI4
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_s17c_68fd755c_find_name_L000003_17 ' NEI4
-C_s17c_68fd755c_find_name_L000003_20
+ long @C_sric_690ed791_find_name_L000003_17 ' NEI4
+C_sric_690ed791_find_name_L000003_20
  rdbyte r22, r17 ' reg <- INDIRU1 reg
  and r22, cviu_m1 ' zero extend
  cmps r22,  #10 wz
  jmp #BRNZ
- long @C_s17c_68fd755c_find_name_L000003_21 ' NEI4
+ long @C_sric_690ed791_find_name_L000003_21 ' NEI4
  adds r17, #1 ' ADDP4 coni
-C_s17c_68fd755c_find_name_L000003_21
-C_s17c_68fd755c_find_name_L000003_6
+C_sric_690ed791_find_name_L000003_21
+C_sric_690ed791_find_name_L000003_6
  rdbyte r22, r17 ' reg <- INDIRU1 reg
  and r22, cviu_m1 ' zero extend
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_s17c_68fd755c_find_name_L000003_5 ' NEI4
+ long @C_sric_690ed791_find_name_L000003_5 ' NEI4
  jmp #LODL
  long 0
  mov r22, RI ' reg <- con
@@ -108,13 +108,13 @@ C_s17c_68fd755c_find_name_L000003_6
  jmp #LODL
  long 0
  mov r0, RI ' reg <- con
-C_s17c_68fd755c_find_name_L000003_4
+C_sric_690ed791_find_name_L000003_4
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_s17c1_68fd755c_delete_name_L000023 ' <symbol:delete_name>
+C_sric1_690ed791_delete_name_L000023 ' <symbol:delete_name>
  jmp #NEWF
  jmp #PSHM
  long $fa8000 ' save registers
@@ -122,26 +122,26 @@ C_s17c1_68fd755c_delete_name_L000023 ' <symbol:delete_name>
  mov r21, r2 ' reg var <- reg arg
  mov r17, r23 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_s17c1_68fd755c_delete_name_L000023_26 ' JUMPV addrg
-C_s17c1_68fd755c_delete_name_L000023_25
+ long @C_sric1_690ed791_delete_name_L000023_26 ' JUMPV addrg
+C_sric1_690ed791_delete_name_L000023_25
  mov r19, r17 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_s17c1_68fd755c_delete_name_L000023_29 ' JUMPV addrg
-C_s17c1_68fd755c_delete_name_L000023_28
+ long @C_sric1_690ed791_delete_name_L000023_29 ' JUMPV addrg
+C_sric1_690ed791_delete_name_L000023_28
  adds r19, #1 ' ADDP4 coni
-C_s17c1_68fd755c_delete_name_L000023_29
+C_sric1_690ed791_delete_name_L000023_29
  rdbyte r22, r19 ' reg <- INDIRU1 reg
  and r22, cviu_m1 ' zero extend
  cmps r22,  #10 wz
  jmp #BR_Z
- long @C_s17c1_68fd755c_delete_name_L000023_32 ' EQI4
+ long @C_sric1_690ed791_delete_name_L000023_32 ' EQI4
  cmps r22,  #61 wz
  jmp #BR_Z
- long @C_s17c1_68fd755c_delete_name_L000023_32 ' EQI4
+ long @C_sric1_690ed791_delete_name_L000023_32 ' EQI4
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_s17c1_68fd755c_delete_name_L000023_28 ' NEI4
-C_s17c1_68fd755c_delete_name_L000023_32
+ long @C_sric1_690ed791_delete_name_L000023_28 ' NEI4
+C_sric1_690ed791_delete_name_L000023_32
  mov r22, r19 ' CVI, CVU or LOAD
  mov r20, r17 ' CVI, CVU or LOAD
  sub r22, r20 ' SUBU (1)
@@ -154,7 +154,7 @@ C_s17c1_68fd755c_delete_name_L000023_32
  mov r20, r15 ' CVI, CVU or LOAD
  cmp r20, r22 wz
  jmp #BRNZ
- long @C_s17c1_68fd755c_delete_name_L000023_47 ' NEU4
+ long @C_sric1_690ed791_delete_name_L000023_47 ' NEU4
  mov r2, r15 ' CVI, CVU or LOAD
  mov r3, r17 ' CVI, CVU or LOAD
  mov r4, r21 ' CVI, CVU or LOAD
@@ -165,83 +165,83 @@ C_s17c1_68fd755c_delete_name_L000023_32
  add SP, #8 ' CALL addrg
  cmps r0,  #0 wz
  jmp #BRNZ
- long @C_s17c1_68fd755c_delete_name_L000023_47 ' NEI4
+ long @C_sric1_690ed791_delete_name_L000023_47 ' NEI4
  rdbyte r22, r19 ' reg <- INDIRU1 reg
  and r22, cviu_m1 ' zero extend
  cmps r22,  #61 wz
  jmp #BRNZ
- long @C_s17c1_68fd755c_delete_name_L000023_34 ' NEI4
+ long @C_sric1_690ed791_delete_name_L000023_34 ' NEI4
  adds r19, #1 ' ADDP4 coni
  jmp #JMPA
- long @C_s17c1_68fd755c_delete_name_L000023_38 ' JUMPV addrg
-C_s17c1_68fd755c_delete_name_L000023_37
+ long @C_sric1_690ed791_delete_name_L000023_38 ' JUMPV addrg
+C_sric1_690ed791_delete_name_L000023_37
  adds r19, #1 ' ADDP4 coni
-C_s17c1_68fd755c_delete_name_L000023_38
+C_sric1_690ed791_delete_name_L000023_38
  rdbyte r22, r19 ' reg <- INDIRU1 reg
  and r22, cviu_m1 ' zero extend
  cmps r22,  #0 wz
  jmp #BR_Z
- long @C_s17c1_68fd755c_delete_name_L000023_40 ' EQI4
+ long @C_sric1_690ed791_delete_name_L000023_40 ' EQI4
  cmps r22,  #10 wz
  jmp #BRNZ
- long @C_s17c1_68fd755c_delete_name_L000023_37 ' NEI4
-C_s17c1_68fd755c_delete_name_L000023_40
+ long @C_sric1_690ed791_delete_name_L000023_37 ' NEI4
+C_sric1_690ed791_delete_name_L000023_40
  rdbyte r22, r19 ' reg <- INDIRU1 reg
  and r22, cviu_m1 ' zero extend
  cmps r22,  #10 wz
  jmp #BRNZ
- long @C_s17c1_68fd755c_delete_name_L000023_44 ' NEI4
+ long @C_sric1_690ed791_delete_name_L000023_44 ' NEI4
  adds r19, #1 ' ADDP4 coni
  jmp #JMPA
- long @C_s17c1_68fd755c_delete_name_L000023_44 ' JUMPV addrg
-C_s17c1_68fd755c_delete_name_L000023_43
+ long @C_sric1_690ed791_delete_name_L000023_44 ' JUMPV addrg
+C_sric1_690ed791_delete_name_L000023_43
  rdbyte r22, r19 ' reg <- INDIRU1 reg
  wrbyte r22, r17 ' ASGNU1 reg reg
  adds r17, #1 ' ADDP4 coni
  adds r19, #1 ' ADDP4 coni
-C_s17c1_68fd755c_delete_name_L000023_44
+C_sric1_690ed791_delete_name_L000023_44
  rdbyte r22, r19 ' reg <- INDIRU1 reg
  and r22, cviu_m1 ' zero extend
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_s17c1_68fd755c_delete_name_L000023_43 ' NEI4
+ long @C_sric1_690ed791_delete_name_L000023_43 ' NEI4
  mov r22, #0 ' reg <- coni
  wrbyte r22, r17 ' ASGNU1 reg reg
  jmp #JMPA
- long @C_s17c1_68fd755c_delete_name_L000023_34 ' JUMPV addrg
-C_s17c1_68fd755c_delete_name_L000023_46
+ long @C_sric1_690ed791_delete_name_L000023_34 ' JUMPV addrg
+C_sric1_690ed791_delete_name_L000023_46
  adds r17, #1 ' ADDP4 coni
-C_s17c1_68fd755c_delete_name_L000023_47
+C_sric1_690ed791_delete_name_L000023_47
  rdbyte r22, r17 ' reg <- INDIRU1 reg
  and r22, cviu_m1 ' zero extend
  cmps r22,  #10 wz
  jmp #BR_Z
- long @C_s17c1_68fd755c_delete_name_L000023_49 ' EQI4
+ long @C_sric1_690ed791_delete_name_L000023_49 ' EQI4
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_s17c1_68fd755c_delete_name_L000023_46 ' NEI4
-C_s17c1_68fd755c_delete_name_L000023_49
+ long @C_sric1_690ed791_delete_name_L000023_46 ' NEI4
+C_sric1_690ed791_delete_name_L000023_49
  rdbyte r22, r17 ' reg <- INDIRU1 reg
  and r22, cviu_m1 ' zero extend
  cmps r22,  #10 wz
  jmp #BRNZ
- long @C_s17c1_68fd755c_delete_name_L000023_50 ' NEI4
+ long @C_sric1_690ed791_delete_name_L000023_50 ' NEI4
  adds r17, #1 ' ADDP4 coni
-C_s17c1_68fd755c_delete_name_L000023_50
-C_s17c1_68fd755c_delete_name_L000023_34
-C_s17c1_68fd755c_delete_name_L000023_26
+C_sric1_690ed791_delete_name_L000023_50
+C_sric1_690ed791_delete_name_L000023_34
+C_sric1_690ed791_delete_name_L000023_26
  rdbyte r22, r17 ' reg <- INDIRU1 reg
  and r22, cviu_m1 ' zero extend
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_s17c1_68fd755c_delete_name_L000023_25 ' NEI4
-' C_s17c1_68fd755c_delete_name_L000023_24 ' (symbol refcount = 0)
+ long @C_sric1_690ed791_delete_name_L000023_25 ' NEI4
+' C_sric1_690ed791_delete_name_L000023_24 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_s17c2_68fd755c_add_name_L000052 ' <symbol:add_name>
+C_sric2_690ed791_add_name_L000052 ' <symbol:add_name>
  jmp #NEWF
  jmp #PSHM
  long $faa800 ' save registers
@@ -274,16 +274,16 @@ C_s17c2_68fd755c_add_name_L000052 ' <symbol:add_name>
  mov r20, RI ' reg <- con
  cmps r22, r20 wcz
  jmp #BRBE
- long @C_s17c2_68fd755c_add_name_L000052_54 ' LEI4
+ long @C_sric2_690ed791_add_name_L000052_54 ' LEI4
  jmp #LODL
  long -1
  mov r0, RI ' reg <- con
  jmp #JMPA
- long @C_s17c2_68fd755c_add_name_L000052_53 ' JUMPV addrg
-C_s17c2_68fd755c_add_name_L000052_54
+ long @C_sric2_690ed791_add_name_L000052_53 ' JUMPV addrg
+C_sric2_690ed791_add_name_L000052_54
  cmps r15,  #0 wcz
  jmp #BRBE
- long @C_s17c2_68fd755c_add_name_L000052_56 ' LEI4
+ long @C_sric2_690ed791_add_name_L000052_56 ' LEI4
  mov r22, r15
  subs r22, #1 ' SUBI4 coni
  adds r22, r23 ' ADDI/P (1)
@@ -291,18 +291,18 @@ C_s17c2_68fd755c_add_name_L000052_54
  and r22, cviu_m1 ' zero extend
  cmps r22,  #10 wz
  jmp #BR_Z
- long @C_s17c2_68fd755c_add_name_L000052_56 ' EQI4
+ long @C_sric2_690ed791_add_name_L000052_56 ' EQI4
  mov r22, r15 ' CVI, CVU or LOAD
  mov r15, r22
  adds r15, #1 ' ADDI4 coni
  adds r22, r23 ' ADDI/P (1)
  mov r20, #10 ' reg <- coni
  wrbyte r20, r22 ' ASGNU1 reg reg
-C_s17c2_68fd755c_add_name_L000052_56
+C_sric2_690ed791_add_name_L000052_56
  mov r17, #0 ' reg <- coni
  jmp #JMPA
- long @C_s17c2_68fd755c_add_name_L000052_61 ' JUMPV addrg
-C_s17c2_68fd755c_add_name_L000052_58
+ long @C_sric2_690ed791_add_name_L000052_61 ' JUMPV addrg
+C_sric2_690ed791_add_name_L000052_58
  mov r22, r15 ' CVI, CVU or LOAD
  mov r15, r22
  adds r15, #1 ' ADDI4 coni
@@ -311,12 +311,12 @@ C_s17c2_68fd755c_add_name_L000052_58
  adds r20, r21 ' ADDI/P (3)
  rdbyte r20, r20 ' reg <- INDIRU1 reg
  wrbyte r20, r22 ' ASGNU1 reg reg
-' C_s17c2_68fd755c_add_name_L000052_59 ' (symbol refcount = 0)
+' C_sric2_690ed791_add_name_L000052_59 ' (symbol refcount = 0)
  adds r17, #1 ' ADDI4 coni
-C_s17c2_68fd755c_add_name_L000052_61
+C_sric2_690ed791_add_name_L000052_61
  cmps r17, r13 wcz
  jmp #BR_B
- long @C_s17c2_68fd755c_add_name_L000052_58 ' LTI4
+ long @C_sric2_690ed791_add_name_L000052_58 ' LTI4
  mov r22, r15 ' CVI, CVU or LOAD
  mov r15, r22
  adds r15, #1 ' ADDI4 coni
@@ -325,8 +325,8 @@ C_s17c2_68fd755c_add_name_L000052_61
  wrbyte r20, r22 ' ASGNU1 reg reg
  mov r17, #0 ' reg <- coni
  jmp #JMPA
- long @C_s17c2_68fd755c_add_name_L000052_65 ' JUMPV addrg
-C_s17c2_68fd755c_add_name_L000052_62
+ long @C_sric2_690ed791_add_name_L000052_65 ' JUMPV addrg
+C_sric2_690ed791_add_name_L000052_62
  mov r22, r15 ' CVI, CVU or LOAD
  mov r15, r22
  adds r15, #1 ' ADDI4 coni
@@ -335,12 +335,12 @@ C_s17c2_68fd755c_add_name_L000052_62
  adds r20, r19 ' ADDI/P (3)
  rdbyte r20, r20 ' reg <- INDIRU1 reg
  wrbyte r20, r22 ' ASGNU1 reg reg
-' C_s17c2_68fd755c_add_name_L000052_63 ' (symbol refcount = 0)
+' C_sric2_690ed791_add_name_L000052_63 ' (symbol refcount = 0)
  adds r17, #1 ' ADDI4 coni
-C_s17c2_68fd755c_add_name_L000052_65
+C_sric2_690ed791_add_name_L000052_65
  cmps r17, r11 wcz
  jmp #BR_B
- long @C_s17c2_68fd755c_add_name_L000052_62 ' LTI4
+ long @C_sric2_690ed791_add_name_L000052_62 ' LTI4
  mov r22, r15 ' ADDI/P
  adds r22, r23 ' ADDI/P (3)
  mov r20, #0 ' reg <- coni
@@ -351,7 +351,7 @@ C_s17c2_68fd755c_add_name_L000052_65
  long @C_strlen ' CALL addrg
  mov r15, r0 ' CVI, CVU or LOAD
  mov r0, #0 ' RET coni
-C_s17c2_68fd755c_add_name_L000052_53
+C_sric2_690ed791_add_name_L000052_53
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -455,7 +455,7 @@ C_setenv_68
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_s17c_68fd755c_find_name_L000003
+ long @C_sric_690ed791_find_name_L000003
  add SP, #8 ' CALL addrg
  jmp #LODF
  long -2060
@@ -476,7 +476,7 @@ C_setenv_68
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_s17c1_68fd755c_delete_name_L000023
+ long @C_sric1_690ed791_delete_name_L000023
  add SP, #4 ' CALL addrg
  mov r13, #1 ' reg <- coni
 C_setenv_77
@@ -495,7 +495,7 @@ C_setenv_77
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
- long @C_s17c2_68fd755c_add_name_L000052
+ long @C_sric2_690ed791_add_name_L000052
  add SP, #8 ' CALL addrg
  cmps r0,  #0 wz
  jmp #BR_Z

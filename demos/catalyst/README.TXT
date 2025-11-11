@@ -104,18 +104,26 @@ backspace key.
 
 Finally, note that the self-hosted version of Catalina (in the 'catalina'
 sub-directory) is never built by default, since it currently only runs on
-a subset of supported Propeller 2 platforms. To build it manually, use the 
-build_all script in that directory. For example, you might use the commands:
+a subset of supported Propeller 2 platforms. To build a version of Catalyst
+that includes Catalina, use either the build_p2 script or the build_p2_300 
+script (which does the same thing but sets the clock speed to 300MHz). 
+For example, you might use the commands:
 
-   cd catalina
-   build_all P2_EDGE PSRAM SIMPLE VT100 OPTIMIZE MHZ_200
+   build_p2 P2_EDGE PSRAM 
 or
-   cd catalina
-   build_all P2_EDGE HYPER SIMPLE VT100 OPTIMIZE MHZ_200
+   build_p2 P2_EDGE HYPER 
 or
-   cd catalina
-   build_all P2_EVAL HYPER SIMPLE VT100 OPTIMIZE MHZ_200
+   build_p2 P2_EVAL HYPER
+or
+   build_p2_300 P2_EDGE PSRAM 
+or
+   build_p2_300 P2_EVAL HYPER
 
-See the file CATALINA.TXT in that directory for more details.
+The build_p2 and build_p2_300 scripts will built both a VGA and Serial version
+of Catalyst with Catalina. The output of the build will be zipped into files
+P2_EDGE,ZIP and P2_EGDE_VGA.ZIP, or to P2_EVAL.ZIP and P2_EVAL_VGA.ZIP
 
-The output of the build will be copied to the image folder.
+See the file CATALINA.TXT in the catalina directory for more details on the
+self-hosted version of Catalina.
+
+

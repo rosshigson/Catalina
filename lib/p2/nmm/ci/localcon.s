@@ -53,35 +53,35 @@ C_localeconv ' <symbol:localeconv>
  wrlong r20, r22 ' ASGNP4 reg reg
  mov r22, r23
  adds r22, #40 ' ADDP4 coni
- mov r20, #127 ' reg <- coni
+ mov r20, #255 ' reg <- coni
  wrbyte r20, r22 ' ASGNU1 reg reg
  mov r22, r23
  adds r22, #41 ' ADDP4 coni
- mov r20, #127 ' reg <- coni
+ mov r20, #255 ' reg <- coni
  wrbyte r20, r22 ' ASGNU1 reg reg
  mov r22, r23
  adds r22, #42 ' ADDP4 coni
- mov r20, #127 ' reg <- coni
+ mov r20, #255 ' reg <- coni
  wrbyte r20, r22 ' ASGNU1 reg reg
  mov r22, r23
  adds r22, #43 ' ADDP4 coni
- mov r20, #127 ' reg <- coni
+ mov r20, #255 ' reg <- coni
  wrbyte r20, r22 ' ASGNU1 reg reg
  mov r22, r23
  adds r22, #44 ' ADDP4 coni
- mov r20, #127 ' reg <- coni
+ mov r20, #255 ' reg <- coni
  wrbyte r20, r22 ' ASGNU1 reg reg
  mov r22, r23
  adds r22, #45 ' ADDP4 coni
- mov r20, #127 ' reg <- coni
+ mov r20, #255 ' reg <- coni
  wrbyte r20, r22 ' ASGNU1 reg reg
  mov r22, r23
  adds r22, #46 ' ADDP4 coni
- mov r20, #127 ' reg <- coni
+ mov r20, #255 ' reg <- coni
  wrbyte r20, r22 ' ASGNU1 reg reg
  mov r22, r23
  adds r22, #47 ' ADDP4 coni
- mov r20, #127 ' reg <- coni
+ mov r20, #255 ' reg <- coni
  wrbyte r20, r22 ' ASGNU1 reg reg
  mov r0, r23 ' CVI, CVU or LOAD
 ' C_localeconv_1 ' (symbol refcount = 0)

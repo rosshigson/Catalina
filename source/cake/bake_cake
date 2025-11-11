@@ -16,6 +16,7 @@ cake $OPTIONS options.c
 cake $OPTIONS object.c
 cake $OPTIONS expressions.c
 cake $OPTIONS pre_expressions.c
+cake $OPTIONS compile.c
 cake $OPTIONS parser.c
 cake $OPTIONS visit_defer.c
 cake $OPTIONS visit_il.c

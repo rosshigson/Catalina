@@ -64,45 +64,45 @@ C_wifi_B_R_K__P_I_N_ ' <symbol:wifi_BRK_PIN>
 DAT ' const data segment
 
  alignl_label
-C_sjakj_68fd7764_luawifi_funcs_L000027 ' <symbol:luawifi_funcs>
- long @C_sjakk_68fd7764_28_L000029
- long @C_sjak_68fd7764_lwifi_R_E_C_V__L000008
- long @C_sjakl_68fd7764_30_L000031
- long @C_sjak1_68fd7764_lwifi_S_E_N_D__L000009
- long @C_sjakm_68fd7764_32_L000033
- long @C_sjak2_68fd7764_lwifi_R_E_P_L_Y__L000010
- long @C_sjakn_68fd7764_34_L000035
- long @C_sjak3_68fd7764_lwifi_P_A_T_H__L000011
- long @C_sjako_68fd7764_36_L000037
- long @C_sjak4_68fd7764_lwifi_A_R_G__L000012
- long @C_sjakp_68fd7764_38_L000039
- long @C_sjak5_68fd7764_lwifi_S_E_N_D__D_A_T_A__L000013
- long @C_sjakq_68fd7764_40_L000041
- long @C_sjak6_68fd7764_lwifi_S_E_T__L000014
- long @C_sjakr_68fd7764_42_L000043
- long @C_sjak7_68fd7764_lwifi_C_H_E_C_K__L000015
- long @C_sjaks_68fd7764_44_L000045
- long @C_sjak8_68fd7764_lwifi_J_O_I_N__L000016
- long @C_sjakt_68fd7764_46_L000047
- long @C_sjak9_68fd7764_lwifi_P_O_L_L__L000017
- long @C_sjaku_68fd7764_48_L000049
- long @C_sjaka_68fd7764_lwifi_C_L_O_S_E__L000018
- long @C_sjakv_68fd7764_50_L000051
- long @C_sjakb_68fd7764_lwifi_C_O_N_N_E_C_T__L000019
- long @C_sjak10_68fd7764_52_L000053
- long @C_sjakc_68fd7764_lwifi_L_I_S_T_E_N__L000020
- long @C_sjak11_68fd7764_54_L000055
- long @C_sjakd_68fd7764_lwifi_P_G_M__L000021
- long @C_sjak12_68fd7764_56_L000057
- long @C_sjake_68fd7764_lwifi_R_E_S_E_T__L000022
- long @C_sjak13_68fd7764_58_L000059
- long @C_sjakf_68fd7764_lwifi_B_R_E_A_K__L000023
- long @C_sjak14_68fd7764_60_L000061
- long @C_sjakg_68fd7764_lwifi_O_K__L000024
- long @C_sjak15_68fd7764_62_L000063
- long @C_sjakh_68fd7764_lwifi_A_U_T_O__L000025
- long @C_sjak16_68fd7764_64_L000065
- long @C_sjaki_68fd7764_lwifi_I_N_I_T__L000026
+C_svb0j_690eda37_luawifi_funcs_L000027 ' <symbol:luawifi_funcs>
+ long @C_svb0k_690eda37_28_L000029
+ long @C_svb0_690eda37_lwifi_R_E_C_V__L000008
+ long @C_svb0l_690eda37_30_L000031
+ long @C_svb01_690eda37_lwifi_S_E_N_D__L000009
+ long @C_svb0m_690eda37_32_L000033
+ long @C_svb02_690eda37_lwifi_R_E_P_L_Y__L000010
+ long @C_svb0n_690eda37_34_L000035
+ long @C_svb03_690eda37_lwifi_P_A_T_H__L000011
+ long @C_svb0o_690eda37_36_L000037
+ long @C_svb04_690eda37_lwifi_A_R_G__L000012
+ long @C_svb0p_690eda37_38_L000039
+ long @C_svb05_690eda37_lwifi_S_E_N_D__D_A_T_A__L000013
+ long @C_svb0q_690eda37_40_L000041
+ long @C_svb06_690eda37_lwifi_S_E_T__L000014
+ long @C_svb0r_690eda37_42_L000043
+ long @C_svb07_690eda37_lwifi_C_H_E_C_K__L000015
+ long @C_svb0s_690eda37_44_L000045
+ long @C_svb08_690eda37_lwifi_J_O_I_N__L000016
+ long @C_svb0t_690eda37_46_L000047
+ long @C_svb09_690eda37_lwifi_P_O_L_L__L000017
+ long @C_svb0u_690eda37_48_L000049
+ long @C_svb0a_690eda37_lwifi_C_L_O_S_E__L000018
+ long @C_svb0v_690eda37_50_L000051
+ long @C_svb0b_690eda37_lwifi_C_O_N_N_E_C_T__L000019
+ long @C_svb010_690eda37_52_L000053
+ long @C_svb0c_690eda37_lwifi_L_I_S_T_E_N__L000020
+ long @C_svb011_690eda37_54_L000055
+ long @C_svb0d_690eda37_lwifi_P_G_M__L000021
+ long @C_svb012_690eda37_56_L000057
+ long @C_svb0e_690eda37_lwifi_R_E_S_E_T__L000022
+ long @C_svb013_690eda37_58_L000059
+ long @C_svb0f_690eda37_lwifi_B_R_E_A_K__L000023
+ long @C_svb014_690eda37_60_L000061
+ long @C_svb0g_690eda37_lwifi_O_K__L000024
+ long @C_svb015_690eda37_62_L000063
+ long @C_svb0h_690eda37_lwifi_A_U_T_O__L000025
+ long @C_svb016_690eda37_64_L000065
+ long @C_svb0i_690eda37_lwifi_I_N_I_T__L000026
  long $0
  long $0
 
@@ -111,7 +111,7 @@ C_sjakj_68fd7764_luawifi_funcs_L000027 ' <symbol:luawifi_funcs>
 DAT ' code segment
 
  alignl_label
-C_sjakf_68fd7764_lwifi_B_R_E_A_K__L000023 ' <symbol:lwifi_BREAK>
+C_svb0f_690eda37_lwifi_B_R_E_A_K__L000023 ' <symbol:lwifi_BREAK>
  alignl_p1
  long I32_NEWF + 0<<S32
  alignl_p1
@@ -120,12 +120,12 @@ C_sjakf_68fd7764_lwifi_B_R_E_A_K__L000023 ' <symbol:lwifi_BREAK>
  alignl_p1
  long I32_CALA + (@C_wifi_B_R_E_A_K_)<<S32 ' CALL addrg
  word I16A_MOVI + R0<<D16A + (0)<<S16A ' RET coni
-' C_sjakf_68fd7764_lwifi_B_R_E_A_K__L000023_66 ' (symbol refcount = 0)
+' C_svb0f_690eda37_lwifi_B_R_E_A_K__L000023_66 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_sjake_68fd7764_lwifi_R_E_S_E_T__L000022 ' <symbol:lwifi_RESET>
+C_svb0e_690eda37_lwifi_R_E_S_E_T__L000022 ' <symbol:lwifi_RESET>
  alignl_p1
  long I32_NEWF + 0<<S32
  alignl_p1
@@ -134,12 +134,12 @@ C_sjake_68fd7764_lwifi_R_E_S_E_T__L000022 ' <symbol:lwifi_RESET>
  alignl_p1
  long I32_CALA + (@C_wifi_R_E_S_E_T_)<<S32 ' CALL addrg
  word I16A_MOVI + R0<<D16A + (0)<<S16A ' RET coni
-' C_sjake_68fd7764_lwifi_R_E_S_E_T__L000022_67 ' (symbol refcount = 0)
+' C_svb0e_690eda37_lwifi_R_E_S_E_T__L000022_67 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_sjakd_68fd7764_lwifi_P_G_M__L000021 ' <symbol:lwifi_PGM>
+C_svb0d_690eda37_lwifi_P_G_M__L000021 ' <symbol:lwifi_PGM>
  alignl_p1
  long I32_NEWF + 0<<S32
  alignl_p1
@@ -148,12 +148,12 @@ C_sjakd_68fd7764_lwifi_P_G_M__L000021 ' <symbol:lwifi_PGM>
  alignl_p1
  long I32_CALA + (@C_wifi_P_G_M_)<<S32 ' CALL addrg
  word I16A_MOVI + R0<<D16A + (0)<<S16A ' RET coni
-' C_sjakd_68fd7764_lwifi_P_G_M__L000021_68 ' (symbol refcount = 0)
+' C_svb0d_690eda37_lwifi_P_G_M__L000021_68 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_sjakg_68fd7764_lwifi_O_K__L000024 ' <symbol:lwifi_OK>
+C_svb0g_690eda37_lwifi_O_K__L000024 ' <symbol:lwifi_OK>
  alignl_p1
  long I32_NEWF + 0<<S32
  alignl_p1
@@ -169,12 +169,12 @@ C_sjakg_68fd7764_lwifi_O_K__L000024 ' <symbol:lwifi_OK>
  long I32_CALA + (@C_lua_pushinteger)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (1)<<S16A ' RET coni
-' C_sjakg_68fd7764_lwifi_O_K__L000024_69 ' (symbol refcount = 0)
+' C_svb0g_690eda37_lwifi_O_K__L000024_69 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_sjaki_68fd7764_lwifi_I_N_I_T__L000026 ' <symbol:lwifi_INIT>
+C_svb0i_690eda37_lwifi_I_N_I_T__L000026 ' <symbol:lwifi_INIT>
  alignl_p1
  long I32_NEWF + 0<<S32
  alignl_p1
@@ -235,12 +235,12 @@ C_sjaki_68fd7764_lwifi_I_N_I_T__L000026 ' <symbol:lwifi_INIT>
  long I32_CALA + (@C_lua_pushinteger)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (1)<<S16A ' RET coni
-' C_sjaki_68fd7764_lwifi_I_N_I_T__L000026_70 ' (symbol refcount = 0)
+' C_svb0i_690eda37_lwifi_I_N_I_T__L000026_70 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_sjakh_68fd7764_lwifi_A_U_T_O__L000025 ' <symbol:lwifi_AUTO>
+C_svb0h_690eda37_lwifi_A_U_T_O__L000025 ' <symbol:lwifi_AUTO>
  alignl_p1
  long I32_NEWF + 0<<S32
  alignl_p1
@@ -256,12 +256,12 @@ C_sjakh_68fd7764_lwifi_A_U_T_O__L000025 ' <symbol:lwifi_AUTO>
  long I32_CALA + (@C_lua_pushinteger)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (1)<<S16A ' RET coni
-' C_sjakh_68fd7764_lwifi_A_U_T_O__L000025_71 ' (symbol refcount = 0)
+' C_svb0h_690eda37_lwifi_A_U_T_O__L000025_71 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_sjakc_68fd7764_lwifi_L_I_S_T_E_N__L000020 ' <symbol:lwifi_LISTEN>
+C_svb0c_690eda37_lwifi_L_I_S_T_E_N__L000020 ' <symbol:lwifi_LISTEN>
  alignl_p1
  long I32_NEWF + 8<<S32
  alignl_p1
@@ -311,12 +311,12 @@ C_sjakc_68fd7764_lwifi_L_I_S_T_E_N__L000020 ' <symbol:lwifi_LISTEN>
  long I32_CALA + (@C_lua_pushinteger)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (2)<<S16A ' RET coni
-' C_sjakc_68fd7764_lwifi_L_I_S_T_E_N__L000020_72 ' (symbol refcount = 0)
+' C_svb0c_690eda37_lwifi_L_I_S_T_E_N__L000020_72 ' (symbol refcount = 0)
  word I16B_POPM + 2<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_sjakb_68fd7764_lwifi_C_O_N_N_E_C_T__L000019 ' <symbol:lwifi_CONNECT>
+C_svb0b_690eda37_lwifi_C_O_N_N_E_C_T__L000019 ' <symbol:lwifi_CONNECT>
  alignl_p1
  long I32_NEWF + 8<<S32
  alignl_p1
@@ -364,12 +364,12 @@ C_sjakb_68fd7764_lwifi_C_O_N_N_E_C_T__L000019 ' <symbol:lwifi_CONNECT>
  long I32_CALA + (@C_lua_pushinteger)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (2)<<S16A ' RET coni
-' C_sjakb_68fd7764_lwifi_C_O_N_N_E_C_T__L000019_73 ' (symbol refcount = 0)
+' C_svb0b_690eda37_lwifi_C_O_N_N_E_C_T__L000019_73 ' (symbol refcount = 0)
  word I16B_POPM + 2<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_sjaka_68fd7764_lwifi_C_L_O_S_E__L000018 ' <symbol:lwifi_CLOSE>
+C_svb0a_690eda37_lwifi_C_L_O_S_E__L000018 ' <symbol:lwifi_CLOSE>
  alignl_p1
  long I32_NEWF + 0<<S32
  alignl_p1
@@ -394,12 +394,12 @@ C_sjaka_68fd7764_lwifi_C_L_O_S_E__L000018 ' <symbol:lwifi_CLOSE>
  long I32_CALA + (@C_lua_pushinteger)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (1)<<S16A ' RET coni
-' C_sjaka_68fd7764_lwifi_C_L_O_S_E__L000018_74 ' (symbol refcount = 0)
+' C_svb0a_690eda37_lwifi_C_L_O_S_E__L000018_74 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_sjak9_68fd7764_lwifi_P_O_L_L__L000017 ' <symbol:lwifi_POLL>
+C_svb09_690eda37_lwifi_P_O_L_L__L000017 ' <symbol:lwifi_POLL>
  alignl_p1
  long I32_NEWF + 16<<S32
  alignl_p1
@@ -457,12 +457,12 @@ C_sjak9_68fd7764_lwifi_P_O_L_L__L000017 ' <symbol:lwifi_POLL>
  long I32_CALA + (@C_lua_pushinteger)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (4)<<S16A ' RET coni
-' C_sjak9_68fd7764_lwifi_P_O_L_L__L000017_75 ' (symbol refcount = 0)
+' C_svb09_690eda37_lwifi_P_O_L_L__L000017_75 ' (symbol refcount = 0)
  word I16B_POPM + 4<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_sjak_68fd7764_lwifi_R_E_C_V__L000008 ' <symbol:lwifi_RECV>
+C_svb0_690eda37_lwifi_R_E_C_V__L000008 ' <symbol:lwifi_RECV>
  alignl_p1
  long I32_NEWF + 520<<S32
  alignl_p1
@@ -523,14 +523,14 @@ C_sjak_68fd7764_lwifi_R_E_C_V__L000008 ' <symbol:lwifi_RECV>
  long I32_CALA + (@C_lua_pushinteger)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (3)<<S16A ' RET coni
-' C_sjak_68fd7764_lwifi_R_E_C_V__L000008_77 ' (symbol refcount = 0)
+' C_svb0_690eda37_lwifi_R_E_C_V__L000008_77 ' (symbol refcount = 0)
  word I16B_POPM + $180<<S16B ' restore registers, do not pop frame, do not return
  alignl_p1
  long I32_RETF + 520<<S32
  alignl_p1
 
  alignl_label
-C_sjak1_68fd7764_lwifi_S_E_N_D__L000009 ' <symbol:lwifi_SEND>
+C_svb01_690eda37_lwifi_S_E_N_D__L000009 ' <symbol:lwifi_SEND>
  alignl_p1
  long I32_NEWF + 4<<S32
  alignl_p1
@@ -577,12 +577,12 @@ C_sjak1_68fd7764_lwifi_S_E_N_D__L000009 ' <symbol:lwifi_SEND>
  long I32_CALA + (@C_lua_pushinteger)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (1)<<S16A ' RET coni
-' C_sjak1_68fd7764_lwifi_S_E_N_D__L000009_78 ' (symbol refcount = 0)
+' C_svb01_690eda37_lwifi_S_E_N_D__L000009_78 ' (symbol refcount = 0)
  word I16B_POPM + 1<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_sjak2_68fd7764_lwifi_R_E_P_L_Y__L000010 ' <symbol:lwifi_REPLY>
+C_svb02_690eda37_lwifi_R_E_P_L_Y__L000010 ' <symbol:lwifi_REPLY>
  alignl_p1
  long I32_NEWF + 4<<S32
  alignl_p1
@@ -648,12 +648,12 @@ C_sjak2_68fd7764_lwifi_R_E_P_L_Y__L000010 ' <symbol:lwifi_REPLY>
  long I32_CALA + (@C_lua_pushinteger)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (1)<<S16A ' RET coni
-' C_sjak2_68fd7764_lwifi_R_E_P_L_Y__L000010_79 ' (symbol refcount = 0)
+' C_svb02_690eda37_lwifi_R_E_P_L_Y__L000010_79 ' (symbol refcount = 0)
  word I16B_POPM + 1<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_sjak3_68fd7764_lwifi_P_A_T_H__L000011 ' <symbol:lwifi_PATH>
+C_svb03_690eda37_lwifi_P_A_T_H__L000011 ' <symbol:lwifi_PATH>
  alignl_p1
  long I32_NEWF + 516<<S32
  alignl_p1
@@ -694,14 +694,14 @@ C_sjak3_68fd7764_lwifi_P_A_T_H__L000011 ' <symbol:lwifi_PATH>
  long I32_CALA + (@C_lua_pushstring)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (2)<<S16A ' RET coni
-' C_sjak3_68fd7764_lwifi_P_A_T_H__L000011_80 ' (symbol refcount = 0)
+' C_svb03_690eda37_lwifi_P_A_T_H__L000011_80 ' (symbol refcount = 0)
  word I16B_POPM + $180<<S16B ' restore registers, do not pop frame, do not return
  alignl_p1
  long I32_RETF + 516<<S32
  alignl_p1
 
  alignl_label
-C_sjak4_68fd7764_lwifi_A_R_G__L000012 ' <symbol:lwifi_ARG>
+C_svb04_690eda37_lwifi_A_R_G__L000012 ' <symbol:lwifi_ARG>
  alignl_p1
  long I32_NEWF + 516<<S32
  alignl_p1
@@ -753,14 +753,14 @@ C_sjak4_68fd7764_lwifi_A_R_G__L000012 ' <symbol:lwifi_ARG>
  long I32_CALA + (@C_lua_pushstring)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (2)<<S16A ' RET coni
-' C_sjak4_68fd7764_lwifi_A_R_G__L000012_81 ' (symbol refcount = 0)
+' C_svb04_690eda37_lwifi_A_R_G__L000012_81 ' (symbol refcount = 0)
  word I16B_POPM + $180<<S16B ' restore registers, do not pop frame, do not return
  alignl_p1
  long I32_RETF + 516<<S32
  alignl_p1
 
  alignl_label
-C_sjak5_68fd7764_lwifi_S_E_N_D__D_A_T_A__L000013 ' <symbol:lwifi_SEND_DATA>
+C_svb05_690eda37_lwifi_S_E_N_D__D_A_T_A__L000013 ' <symbol:lwifi_SEND_DATA>
  alignl_p1
  long I32_NEWF + 4<<S32
  alignl_p1
@@ -815,12 +815,12 @@ C_sjak5_68fd7764_lwifi_S_E_N_D__D_A_T_A__L000013 ' <symbol:lwifi_SEND_DATA>
  long I32_CALA + (@C_lua_pushinteger)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (1)<<S16A ' RET coni
-' C_sjak5_68fd7764_lwifi_S_E_N_D__D_A_T_A__L000013_82 ' (symbol refcount = 0)
+' C_svb05_690eda37_lwifi_S_E_N_D__D_A_T_A__L000013_82 ' (symbol refcount = 0)
  word I16B_POPM + 1<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_sjak6_68fd7764_lwifi_S_E_T__L000014 ' <symbol:lwifi_SET>
+C_svb06_690eda37_lwifi_S_E_T__L000014 ' <symbol:lwifi_SET>
  alignl_p1
  long I32_NEWF + 4<<S32
  alignl_p1
@@ -862,12 +862,12 @@ C_sjak6_68fd7764_lwifi_S_E_T__L000014 ' <symbol:lwifi_SET>
  long I32_CALA + (@C_lua_pushinteger)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (1)<<S16A ' RET coni
-' C_sjak6_68fd7764_lwifi_S_E_T__L000014_83 ' (symbol refcount = 0)
+' C_svb06_690eda37_lwifi_S_E_T__L000014_83 ' (symbol refcount = 0)
  word I16B_POPM + 1<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_sjak7_68fd7764_lwifi_C_H_E_C_K__L000015 ' <symbol:lwifi_CHECK>
+C_svb07_690eda37_lwifi_C_H_E_C_K__L000015 ' <symbol:lwifi_CHECK>
  alignl_p1
  long I32_NEWF + 516<<S32
  alignl_p1
@@ -911,14 +911,14 @@ C_sjak7_68fd7764_lwifi_C_H_E_C_K__L000015 ' <symbol:lwifi_CHECK>
  long I32_CALA + (@C_lua_pushstring)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (2)<<S16A ' RET coni
-' C_sjak7_68fd7764_lwifi_C_H_E_C_K__L000015_84 ' (symbol refcount = 0)
+' C_svb07_690eda37_lwifi_C_H_E_C_K__L000015_84 ' (symbol refcount = 0)
  word I16B_POPM + $180<<S16B ' restore registers, do not pop frame, do not return
  alignl_p1
  long I32_RETF + 516<<S32
  alignl_p1
 
  alignl_label
-C_sjak8_68fd7764_lwifi_J_O_I_N__L000016 ' <symbol:lwifi_JOIN>
+C_svb08_690eda37_lwifi_J_O_I_N__L000016 ' <symbol:lwifi_JOIN>
  alignl_p1
  long I32_NEWF + 4<<S32
  alignl_p1
@@ -960,7 +960,7 @@ C_sjak8_68fd7764_lwifi_J_O_I_N__L000016 ' <symbol:lwifi_JOIN>
  long I32_CALA + (@C_lua_pushinteger)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (1)<<S16A ' RET coni
-' C_sjak8_68fd7764_lwifi_J_O_I_N__L000016_85 ' (symbol refcount = 0)
+' C_svb08_690eda37_lwifi_J_O_I_N__L000016_85 ' (symbol refcount = 0)
  word I16B_POPM + 1<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
@@ -993,7 +993,7 @@ C_luaopen_wifi ' <symbol:luaopen_wifi>
  word I16A_MOVI + (r2)<<D16A + (0)<<S16A ' reg ARG coni
  word I16B_LODL + (r3)<<D16B
  alignl_p1
- long @C_sjakj_68fd7764_luawifi_funcs_L000027 ' reg ARG ADDRG
+ long @C_svb0j_690eda37_luawifi_funcs_L000027 ' reg ARG ADDRG
  word I16A_MOV + (r4)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 50<<S16B ' arg size, rpsize = 12, spsize = 12
  alignl_p1
@@ -1067,7 +1067,7 @@ C_luaopen_wifi_87_L000088 ' <symbol:87>
  long $43fc0000 ' float
 
  alignl_label
-C_sjak16_68fd7764_64_L000065 ' <symbol:64>
+C_svb016_690eda37_64_L000065 ' <symbol:64>
  byte 73
  byte 78
  byte 73
@@ -1075,7 +1075,7 @@ C_sjak16_68fd7764_64_L000065 ' <symbol:64>
  byte 0
 
  alignl_label
-C_sjak15_68fd7764_62_L000063 ' <symbol:62>
+C_svb015_690eda37_62_L000063 ' <symbol:62>
  byte 65
  byte 85
  byte 84
@@ -1083,13 +1083,13 @@ C_sjak15_68fd7764_62_L000063 ' <symbol:62>
  byte 0
 
  alignl_label
-C_sjak14_68fd7764_60_L000061 ' <symbol:60>
+C_svb014_690eda37_60_L000061 ' <symbol:60>
  byte 79
  byte 75
  byte 0
 
  alignl_label
-C_sjak13_68fd7764_58_L000059 ' <symbol:58>
+C_svb013_690eda37_58_L000059 ' <symbol:58>
  byte 66
  byte 82
  byte 69
@@ -1098,7 +1098,7 @@ C_sjak13_68fd7764_58_L000059 ' <symbol:58>
  byte 0
 
  alignl_label
-C_sjak12_68fd7764_56_L000057 ' <symbol:56>
+C_svb012_690eda37_56_L000057 ' <symbol:56>
  byte 82
  byte 69
  byte 83
@@ -1107,14 +1107,14 @@ C_sjak12_68fd7764_56_L000057 ' <symbol:56>
  byte 0
 
  alignl_label
-C_sjak11_68fd7764_54_L000055 ' <symbol:54>
+C_svb011_690eda37_54_L000055 ' <symbol:54>
  byte 80
  byte 71
  byte 77
  byte 0
 
  alignl_label
-C_sjak10_68fd7764_52_L000053 ' <symbol:52>
+C_svb010_690eda37_52_L000053 ' <symbol:52>
  byte 76
  byte 73
  byte 83
@@ -1124,7 +1124,7 @@ C_sjak10_68fd7764_52_L000053 ' <symbol:52>
  byte 0
 
  alignl_label
-C_sjakv_68fd7764_50_L000051 ' <symbol:50>
+C_svb0v_690eda37_50_L000051 ' <symbol:50>
  byte 67
  byte 79
  byte 78
@@ -1135,7 +1135,7 @@ C_sjakv_68fd7764_50_L000051 ' <symbol:50>
  byte 0
 
  alignl_label
-C_sjaku_68fd7764_48_L000049 ' <symbol:48>
+C_svb0u_690eda37_48_L000049 ' <symbol:48>
  byte 67
  byte 76
  byte 79
@@ -1144,7 +1144,7 @@ C_sjaku_68fd7764_48_L000049 ' <symbol:48>
  byte 0
 
  alignl_label
-C_sjakt_68fd7764_46_L000047 ' <symbol:46>
+C_svb0t_690eda37_46_L000047 ' <symbol:46>
  byte 80
  byte 79
  byte 76
@@ -1152,7 +1152,7 @@ C_sjakt_68fd7764_46_L000047 ' <symbol:46>
  byte 0
 
  alignl_label
-C_sjaks_68fd7764_44_L000045 ' <symbol:44>
+C_svb0s_690eda37_44_L000045 ' <symbol:44>
  byte 74
  byte 79
  byte 73
@@ -1160,7 +1160,7 @@ C_sjaks_68fd7764_44_L000045 ' <symbol:44>
  byte 0
 
  alignl_label
-C_sjakr_68fd7764_42_L000043 ' <symbol:42>
+C_svb0r_690eda37_42_L000043 ' <symbol:42>
  byte 67
  byte 72
  byte 69
@@ -1169,14 +1169,14 @@ C_sjakr_68fd7764_42_L000043 ' <symbol:42>
  byte 0
 
  alignl_label
-C_sjakq_68fd7764_40_L000041 ' <symbol:40>
+C_svb0q_690eda37_40_L000041 ' <symbol:40>
  byte 83
  byte 69
  byte 84
  byte 0
 
  alignl_label
-C_sjakp_68fd7764_38_L000039 ' <symbol:38>
+C_svb0p_690eda37_38_L000039 ' <symbol:38>
  byte 83
  byte 69
  byte 78
@@ -1189,14 +1189,14 @@ C_sjakp_68fd7764_38_L000039 ' <symbol:38>
  byte 0
 
  alignl_label
-C_sjako_68fd7764_36_L000037 ' <symbol:36>
+C_svb0o_690eda37_36_L000037 ' <symbol:36>
  byte 65
  byte 82
  byte 71
  byte 0
 
  alignl_label
-C_sjakn_68fd7764_34_L000035 ' <symbol:34>
+C_svb0n_690eda37_34_L000035 ' <symbol:34>
  byte 80
  byte 65
  byte 84
@@ -1204,7 +1204,7 @@ C_sjakn_68fd7764_34_L000035 ' <symbol:34>
  byte 0
 
  alignl_label
-C_sjakm_68fd7764_32_L000033 ' <symbol:32>
+C_svb0m_690eda37_32_L000033 ' <symbol:32>
  byte 82
  byte 69
  byte 80
@@ -1213,7 +1213,7 @@ C_sjakm_68fd7764_32_L000033 ' <symbol:32>
  byte 0
 
  alignl_label
-C_sjakl_68fd7764_30_L000031 ' <symbol:30>
+C_svb0l_690eda37_30_L000031 ' <symbol:30>
  byte 83
  byte 69
  byte 78
@@ -1221,7 +1221,7 @@ C_sjakl_68fd7764_30_L000031 ' <symbol:30>
  byte 0
 
  alignl_label
-C_sjakk_68fd7764_28_L000029 ' <symbol:28>
+C_svb0k_690eda37_28_L000029 ' <symbol:28>
  byte 82
  byte 69
  byte 67

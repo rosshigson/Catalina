@@ -385,6 +385,7 @@ static int generate(const char* output, struct test_entry_list* list)
             }
             else
             {                
+//                fprintf(fout, "    printf(\"%s\\n\");", pCurrent->name);                                    
                 fprintf(fout, "    %s();\n", pCurrent->name);                                    
             }
 

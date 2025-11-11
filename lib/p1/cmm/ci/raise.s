@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl_label
-C_ssac_68fd7746__sig_handler_L000001 ' <symbol:_sig_handler>
+C_skos_690eda0f__sig_handler_L000001 ' <symbol:_sig_handler>
  long $1
  byte 0[60]
 
@@ -46,7 +46,7 @@ C_raise_3
  word I16A_SHLI + (r22)<<D16A + (2)<<S16A ' SHLI4 reg coni
  word I16B_LODL + (r20)<<D16B
  alignl_p1
- long @C_ssac_68fd7746__sig_handler_L000001 ' reg <- addrg
+ long @C_skos_690eda0f__sig_handler_L000001 ' reg <- addrg
  word I16A_ADDS + (r22)<<D16A + (r20)<<S16A ' ADDI/P (1)
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16B_LODF + ((-8)&$1FF)<<S16B
@@ -115,7 +115,7 @@ C_signal_11
  word I16A_SHLI + (r22)<<D16A + (2)<<S16A ' SHLI4 reg coni
  word I16B_LODL + (r20)<<D16B
  alignl_p1
- long @C_ssac_68fd7746__sig_handler_L000001 ' reg <- addrg
+ long @C_skos_690eda0f__sig_handler_L000001 ' reg <- addrg
  word I16A_ADDS + (r22)<<D16A + (r20)<<S16A ' ADDI/P (1)
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16B_LODF + ((-8)&$1FF)<<S16B
@@ -128,7 +128,7 @@ C_signal_11
  word I16A_SHLI + (r22)<<D16A + (2)<<S16A ' SHLI4 reg coni
  word I16B_LODL + (r20)<<D16B
  alignl_p1
- long @C_ssac_68fd7746__sig_handler_L000001 ' reg <- addrg
+ long @C_skos_690eda0f__sig_handler_L000001 ' reg <- addrg
  word I16A_ADDS + (r22)<<D16A + (r20)<<S16A ' ADDI/P (1)
  word I16B_LODL + (r20)<<D16B
  alignl_p1
@@ -142,7 +142,7 @@ C_signal_14
  word I16A_SHLI + (r22)<<D16A + (2)<<S16A ' SHLI4 reg coni
  word I16B_LODL + (r20)<<D16B
  alignl_p1
- long @C_ssac_68fd7746__sig_handler_L000001 ' reg <- addrg
+ long @C_skos_690eda0f__sig_handler_L000001 ' reg <- addrg
  word I16A_ADDS + (r22)<<D16A + (r20)<<S16A ' ADDI/P (1)
  word I16A_WRLONG + (r2)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  alignl_label

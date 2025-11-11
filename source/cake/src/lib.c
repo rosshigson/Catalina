@@ -489,6 +489,9 @@ enum token_type
     TK_KEYWORD_GCC__BUILTIN_C23_VA_START,    
     TK_KEYWORD_GCC__BUILTIN_VA_COPY,
     TK_KEYWORD_GCC__BUILTIN_OFFSETOF,
+
+    TK_KEYWORD_GCC__BUILTIN_XXXXX,
+
 //#ifdef _WIN32 
 
     //https://learn.microsoft.com/en-us/cpp/cpp/ptr32-ptr64?view=msvc-170&redirectedfrom=MSDN
@@ -499,6 +502,12 @@ enum token_type
     TK_KEYWORD_MSVC__STDCALL,
     TK_KEYWORD_MSVC__CDECL,    
     TK_KEYWORD_MSVC__DECLSPEC,
+    
+    TK_KEYWORD_MSVC__TRY,
+    TK_KEYWORD_MSVC__EXCEPT,
+    TK_KEYWORD_MSVC__FINALLY,
+    TK_KEYWORD_MSVC__LEAVE,
+
 //#endif
 
     TK_KEYWORD__ASM, 
@@ -689,7 +698,10 @@ typedef int errno_t;
 #ifndef __CAKE__
 
 //emulate _Countof
+
+#ifndef _Countof
 #define _Countof(A) (sizeof(A)/sizeof((A)[0]))
+#endif
 
 #define try  
 #define catch if (0) catch_label:
@@ -758,36 +770,36 @@ struct platform
     const char * alignas_fmt_must_have_one_percent_d;
 
     int bool_n_bits;
-    int bool_aligment;
+    int bool_alignment;
     enum object_type bool_type;
 
     int char_n_bits;
     enum object_type char_t_type;
-    int char_aligment;
+    int char_alignment;
 
     int short_n_bits;
-    int short_aligment;
+    int short_alignment;
 
     int int_n_bits;
-    int int_aligment;
+    int int_alignment;
 
     int long_n_bits;
-    int long_aligment;
+    int long_alignment;
 
     int long_long_n_bits;
-    int long_long_aligment;
+    int long_long_alignment;
 
     int float_n_bits;
-    int float_aligment;
+    int float_alignment;
 
     int double_n_bits;
-    int double_aligment;
+    int double_alignment;
 
     int long_double_n_bits;
-    int long_double_aligment;
+    int long_double_alignment;
 
     int pointer_n_bits;
-    int pointer_aligment;
+    int pointer_alignment;
 
     /*typedefs*/
     enum object_type wchar_t_type;
@@ -842,6 +854,9 @@ unsigned long long target_unsigned_max(enum  target target, enum object_type typ
 
 
 
+
+#include <limits.h>
+
 enum language_version
 {
     LANGUAGE_C23,
@@ -851,83 +866,149 @@ enum language_version
 
 enum diagnostic_id {
 
-    DIAGNOSTIC_ID_NONE = 0,
-    W_WARNING_DIRECTIVE,     
-    W_UNUSED_VARIABLE, //-Wunused-variable
-    W_DEPRECATED,
-    W_ENUN_CONVERSION,//-Wenum-conversion
+    W_LOCATION = 0,
 
-    W_ADDRESS, //-Waddress (always true)
-    W_UNUSED_PARAMETER, //-Wno-unused-parameter
-    W_DECLARATOR_HIDE, // gcc no
-    W_TYPEOF_ARRAY_PARAMETER,//
-    W_ATTRIBUTES, //-Wattributes
-    W_UNUSED_VALUE, //-Wunused-value
-    W_STYLE, //-Wstyle
-    W_COMMENT,
-    W_LINE_SLICING,
-    W_STRING_SLICED,
-    W_DISCARDED_QUALIFIERS,
-    W_DECLARATOR_STATE,
-    W_UNINITIALZED,
-    W_RETURN_LOCAL_ADDR,
-    W_MUST_USE_ADDRESSOF,
-    W_ARRAY_INDIRECTION,
-    /*ownership type system errors*/
-    W_OWNERSHIP_MISSING_OWNER_QUALIFIER,
-    W_OWNERSHIP_NOT_OWNER,
-    W_OWNERSHIP_USING_TEMPORARY_OWNER,
-    W_OWNERSHIP_MOVE_ASSIGNMENT_OF_NON_OWNER,
-    W_OWNERSHIP_NON_OWNER_TO_OWNER_ASSIGN,
-    W_OWNERSHIP_DISCARDING_OWNER,
-    W_OWNERSHIP_NON_OWNER_MOVE,    
-    //////////////////////////////////////////////
-    W_FLOW_NON_NULL, //-Wnonnull
-    W_FLOW_MISSING_DTOR,
-    W_FLOW_UNINITIALIZED,
-    W_FLOW_LIFETIME_ENDED,
-    W_FLOW_MOVED,
-    W_FLOW_NULL_DEREFERENCE,
-    W_FLOW_MAYBE_NULL_TO_NON_OPT_ARG,
-    W_FLOW_NULLABLE_TO_NON_NULLABLE,
-    W_FLOW_DIVIZION_BY_ZERO,    
-    //////////////////////////////////////////////
-    W_DIVIZION_BY_ZERO,
-    W_CONSTANT_VALUE, /*sample 0 * a */
-    W_PASSING_NULL_AS_ARRAY,
-    W_INCOMPATIBLE_ENUN_TYPES,
-    W_MULTICHAR_ERROR,
-    W_OUT_OF_BOUNDS,
-    W_ASSIGNMENT_OF_ARRAY_PARAMETER,
-    W_CONDITIONAL_IS_CONSTANT,
-    W_SWITCH,
-    W_UNSUAL_NULL_POINTER_CONSTANT,
-    W_SIZEOF_ARRAY_ARGUMENT,
-    W_CONST_NOT_INITIALIZED,
-    W_NULL_CONVERTION,
-    W_IMPLICITLY_UNSIGNED_LITERAL,
-    W_INTEGER_OVERFLOW,
-    W_ARRAY_SIZE,
+    W_WARNING_DIRECTIVE = 1,
+    W_UNUSED_VARIABLE = 2,
+    W_DEPRECATED = 3,
+    W_ENUN_CONVERSION = 4,
+    
+    W_ADDRESS = 5,
+    W_UNUSED_PARAMETER = 6,
+    W_DECLARATOR_HIDE = 7,
+    W_TYPEOF_ARRAY_PARAMETER = 8,
+    W_ATTRIBUTES = 9,
+    W_UNUSED_VALUE = 10,
+    W_STYLE = 11,
+    W_COMMENT = 12,
+    W_LINE_SLICING = 13,
+    W_STRING_SLICED = 14,
+    W_DISCARDED_QUALIFIERS = 15,
+    W_DECLARATOR_STATE = 16,
+    W_UNINITIALZED = 17,
+    W_RETURN_LOCAL_ADDR = 18,
+    W_MUST_USE_ADDRESSOF = 19,
+    W_ARRAY_INDIRECTION = 20,
+    
+    W_OWNERSHIP_MISSING_OWNER_QUALIFIER = 21,
+    W_OWNERSHIP_NOT_OWNER = 22,
+    W_OWNERSHIP_USING_TEMPORARY_OWNER = 23,
+    W_OWNERSHIP_MOVE_ASSIGNMENT_OF_NON_OWNER = 24,
+    W_OWNERSHIP_NON_OWNER_TO_OWNER_ASSIGN = 25,
+    W_OWNERSHIP_DISCARDING_OWNER = 26,
+    W_OWNERSHIP_NON_OWNER_MOVE = 27,
+
+    W_FLOW_NON_NULL = 28,
+    W_FLOW_MISSING_DTOR = 29,
+    W_FLOW_UNINITIALIZED = 30,
+    W_FLOW_LIFETIME_ENDED = 31,
+    W_FLOW_MOVED = 32,
+    W_FLOW_NULL_DEREFERENCE = 33,
+    W_FLOW_MAYBE_NULL_TO_NON_OPT_ARG = 34,
+    W_FLOW_NULLABLE_TO_NON_NULLABLE = 35,
+    W_FLOW_DIVIZION_BY_ZERO = 36,
+
+    
+    W_DIVIZION_BY_ZERO = 37,
+    W_CONSTANT_VALUE = 38,
+    W_PASSING_NULL_AS_ARRAY = 39,
+    W_INCOMPATIBLE_ENUN_TYPES = 40,
+    W_MULTICHAR_ERROR = 41,
+    W_OUT_OF_BOUNDS = 42,
+    W_ASSIGNMENT_OF_ARRAY_PARAMETER = 43,
+    W_CONDITIONAL_IS_CONSTANT = 44,
+    W_SWITCH = 45,
+    W_UNSUAL_NULL_POINTER_CONSTANT = 46,
+    W_SIZEOF_ARRAY_ARGUMENT = 47,
+    W_CONST_NOT_INITIALIZED = 48,
+    W_NULL_CONVERTION = 49,
+    W_IMPLICITLY_UNSIGNED_LITERAL = 50,
+    W_INTEGER_OVERFLOW = 51,
+    W_ARRAY_SIZE = 52,
+
+
+    W_EMPTY_STATEMENT = 53,
+    W_ERROR_INCOMPATIBLE_TYPES = 54,
+    W_UNUSED_LABEL = 55,
+    W_REDEFINING_BUITIN_MACRO = 56,
+    W_UNUSED_FUNCTION = 57,
+    W_BOOL_COMPARISON = 58,
+    W_WARNING_DID_NOT_HAPPEN = 59,
+    W_NULLABLE_TO_NON_NULLABLE = 60,
+    W_CAST_TO_SAME_TYPE = 61,
+
+    W_TO_MANY_INITIALIZERS = 62,
+    W_FLOAT_RANGE = 63,
+
+    
+    W_UNUSED_WARNING_64 = 64,
+    W_UNUSED_WARNING_65 = 65,
+    W_UNUSED_WARNING_66 = 66,
+    W_UNUSED_WARNING_67 = 67,
+    W_UNUSED_WARNING_68 = 68,
+    W_UNUSED_WARNING_69 = 69,
+    W_UNUSED_WARNING_70 = 70,
+    W_UNUSED_WARNING_71 = 71,
+    W_UNUSED_WARNING_72 = 72,
+    W_UNUSED_WARNING_73 = 73,
+    W_UNUSED_WARNING_74 = 74,
+    W_UNUSED_WARNING_75 = 75,
+    W_UNUSED_WARNING_76 = 76,
+    W_UNUSED_WARNING_77 = 77,
+    W_UNUSED_WARNING_78 = 78,
+    W_UNUSED_WARNING_79 = 79,
+    W_UNUSED_WARNING_80 = 80,
+    W_UNUSED_WARNING_81 = 81,
+    W_UNUSED_WARNING_82 = 82,
+    W_UNUSED_WARNING_83 = 83,
+    W_UNUSED_WARNING_84 = 84,
+    W_UNUSED_WARNING_85 = 85,
+    W_UNUSED_WARNING_86 = 86,
+    W_UNUSED_WARNING_87 = 87,
+    W_UNUSED_WARNING_88 = 88,
+    W_UNUSED_WARNING_89 = 89,
+    W_UNUSED_WARNING_90 = 90,
+    W_UNUSED_WARNING_91 = 91,
+    W_UNUSED_WARNING_92 = 92,
+    W_UNUSED_WARNING_93 = 93,
+    W_UNUSED_WARNING_94 = 94,
+    W_UNUSED_WARNING_95 = 95,
+    W_UNUSED_WARNING_96 = 96,
+    W_UNUSED_WARNING_97 = 97,
+    W_UNUSED_WARNING_98 = 98,
+    W_UNUSED_WARNING_99 = 99,
+    W_UNUSED_WARNING_100 = 100,
+    W_UNUSED_WARNING_101 = 101,
+    W_UNUSED_WARNING_102 = 102,
+    W_UNUSED_WARNING_103 = 103,
+    W_UNUSED_WARNING_104 = 104,
+    W_UNUSED_WARNING_105 = 105,
+    W_UNUSED_WARNING_106 = 106,
+    W_UNUSED_WARNING_107 = 107,
+    W_UNUSED_WARNING_108 = 108,
+    W_UNUSED_WARNING_109 = 109,
+    W_UNUSED_WARNING_110 = 110,
+    W_UNUSED_WARNING_111 = 111,
+    W_UNUSED_WARNING_112 = 112,
+    W_UNUSED_WARNING_113 = 113,
+    W_UNUSED_WARNING_114 = 114,
+    W_UNUSED_WARNING_115 = 115,
+    W_UNUSED_WARNING_116 = 116,
+    W_UNUSED_WARNING_117 = 117,
+    W_UNUSED_WARNING_118 = 118,
+    W_UNUSED_WARNING_119 = 119,
+    W_UNUSED_WARNING_120 = 120,
+    W_UNUSED_WARNING_121 = 121,
+    W_UNUSED_WARNING_122 = 122,
+    W_UNUSED_WARNING_123 = 123,
+    W_UNUSED_WARNING_124 = 124,
+    W_UNUSED_WARNING_125 = 125,
+    W_UNUSED_WARNING_126 = 126,
+    W_UNUSED_WARNING_127 = 127,
+    
+
     
     
-    W_EMPTY_STATEMENT,
-    W_ERROR_INCOMPATIBLE_TYPES,
-    W_UNUSED_LABEL,
-    W_REDEFINING_BUITIN_MACRO,
-    W_UNUSED_FUNCTION,
-    W_BOOL_COMPARISON,
-    W_WARNING_DID_NOT_HAPPEN,
-    W_NULLABLE_TO_NON_NULLABLE,
-    W_CAST_TO_SAME_TYPE,
-
-    W_LOCATION, /*prints code location*/
-    W_NOTE,
-
-    //----------------------------------------------------------------
-    
-    W_TO_MANY_INITIALIZERS = 100,
-
-    //---------------------------------------------------------------
 
     C_ERROR_INVALID_QUALIFIER_FOR_POINTER = 640,
     C_ERROR_UNEXPECTED = 650,
@@ -1029,17 +1110,7 @@ enum diagnostic_id {
 
 
 bool is_diagnostic_configurable(enum diagnostic_id id);
-bool is_diagnostic_warning(enum diagnostic_id id);
-bool is_diagnostic_error(enum diagnostic_id id);
-bool is_diagnostic_note(enum diagnostic_id id);
 
-/*
-* These warnings are removed when "nullable=disable"
-*/
-#define WFLAG(W) (1ULL << W)
-#define NULLABLE_DISABLE_REMOVED_WARNINGS  (WFLAG(W_FLOW_NULL_DEREFERENCE) | WFLAG(W_FLOW_NULLABLE_TO_NON_NULLABLE))
-
-#define OWNERSHIP_DISABLE_REMOVED_WARNINGS  (WFLAG(W_FLOW_UNINITIALIZED))
 
 
 int get_diagnostic_phase(enum diagnostic_id w);
@@ -1069,25 +1140,28 @@ enum style
     STYLE_GNU,// A style complying with the GNU coding standards
 
 };
-int get_warning_name(enum diagnostic_id w, int n, char buffer[/*n*/]);
-int get_warning_name_and_number(enum diagnostic_id w, int n, char buffer[/*n*/]);
-unsigned long long  get_warning_bit_mask(const char* wname);
 
-enum diagnostic_id  get_warning(const char* wname);
+#define BITSET_SIZE 128
+#define BITSET_WORD_BITS (CHAR_BIT * sizeof(unsigned long))
+#define BITSET_WORDS ((BITSET_SIZE + BITSET_WORD_BITS - 1) / BITSET_WORD_BITS)
+
+struct bitset
+{
+    unsigned long bits[BITSET_WORDS];
+};
+
 
 struct diagnostic
 {
-    /*
-      each message has number (0-63) that corresponds to the bit index
-      Messages bigger than W_NOTE are errors or bigger than 63
-    */
 
     /*set of warnings reported as errors*/
-    unsigned long long errors;
+    struct bitset errors;
+
     /*set of warnings reported as warnings*/
-    unsigned long long warnings;
+    struct bitset warnings;
+
     /*set of warnings reported as notes*/
-    unsigned long long notes;
+    struct bitset notes;
 };
 
 int get_diagnostic_type(struct diagnostic* d, enum diagnostic_id w);
@@ -1151,6 +1225,11 @@ struct options
     bool test_mode;
 
     /*
+      -test-in-out
+    */
+    bool test_mode_inout;
+
+    /*
     * -nullchecks
     */
     bool null_checks_enabled;
@@ -1161,6 +1240,8 @@ struct options
       -E
     */
     bool preprocess_only;
+
+    
 
     /*
       -preprocess-def-macro
@@ -1214,6 +1295,11 @@ struct options
     */
     bool auto_config;
 
+    /*
+       -comment-to-attr
+    */
+    bool comment_to_attribute;
+
     bool do_static_debug;
     int static_debug_lines;
 
@@ -1233,13 +1319,22 @@ bool is_diagnostic_enabled(const struct options* options, enum diagnostic_id w);
 
 void print_help();
 
+void options_set_error(struct options* options, enum diagnostic_id w, bool value);
+void options_set_warning(struct options* options, enum diagnostic_id w, bool value);
+void options_set_note(struct options* options, enum diagnostic_id w, bool value);
+void options_set_all_warnings(struct options* options);
+void options_set_clear_all_warnings(struct options* options);
+
+bool options_diagnostic_is_error(const struct options* options, enum diagnostic_id w);
+bool options_diagnostic_is_warning(const struct options* options, enum diagnostic_id w);
+bool options_diagnostic_is_note(const struct options* options, enum diagnostic_id w);
 
 
 #if defined(__CATALYST__)
 // Catalyst uses DOS 8.3 file names
-#define CAKE_CFG_FNAME "/cakeconf.h"
+#define CAKE_CONFIG_FILE_NAME "/cakeconf.h"
 #else
-#define CAKE_CFG_FNAME "/cakeconfig.h"
+#define CAKE_CONFIG_FILE_NAME "/cakeconfig.h"
 #endif // defined(__CATALYST__)
 
 struct include_dir
@@ -1336,6 +1431,7 @@ void print_all_macros(const struct preprocessor_ctx* prectx);
 
 int include_config_header(struct preprocessor_ctx* ctx, const char* file_name);
 int stringify(const char* input, int n, char output[]);
+void print_path(const char* path);
 
 
 
@@ -1579,6 +1675,8 @@ char* _Owner _Opt token_list_join_tokens(struct token_list* list, bool bliteral)
         {
             if (*p == '"')
                 ss_fprintf(&ss, "\\\"");
+            else if (*p == '\\')
+                ss_fprintf(&ss, "\\\\");
             else
                 ss_fprintf(&ss, "%c", *p);
             p++;
@@ -2210,18 +2308,27 @@ void print_tokens_html(struct token* p_token)
 void print_position(const char* path, int line, int col, bool visual_studio_ouput_format, bool  color_enabled)
 {
 
+    if (path == NULL) path = "";
+
     if (visual_studio_ouput_format)
     {
         //MSVC format
-        printf("%s(%d,%d): ", path ? path : "<>", line, col);
+        print_path(path);
+        printf("(%d,%d): ", line, col);
     }
     else
     {
+        if (color_enabled)
+        {
+            printf(WHITE);
+        }
+        print_path(path);
+
         //GCC format
         if (color_enabled)
-        printf(WHITE "%s:%d:%d: ", path ? path : "<>", line, col);
+            printf(WHITE ":%d:%d: ", line, col);
         else
-            printf("%s:%d:%d: ", path ? path : "<>", line, col);
+            printf(":%d:%d: ", line, col);
     }
 }
 
@@ -2247,7 +2354,7 @@ void print_line_and_token(struct marker* p_marker, bool color_enabled)
 
         //lets find the begin of line
         const struct token* p_line_begin = p_token;
-        while (p_line_begin->prev && (p_line_begin->prev->type != TK_NEWLINE && p_line_begin->prev->type != TK_BEGIN_OF_FILE))
+        while (p_line_begin->prev && (p_line_begin->prev->type != TK_NEWLINE && p_line_begin->prev->type != TK_BEGIN_OF_FILE && p_line_begin->prev->type != TK_PRAGMA_END))
         {
             p_line_begin = p_line_begin->prev;
         }
@@ -2290,11 +2397,23 @@ void print_line_and_token(struct marker* p_marker, bool color_enabled)
             if (!(p_item->flags & TK_FLAG_MACRO_EXPANDED) || expand_macro)
             {
                 const char* p = p_item->lexeme;
+
+                if (p_item->type == TK_LINE_COMMENT)
+                {
+                    while (*p && *p != '\n' && *p != '\r')
+                    {
+                        putc(*p, stdout);
+                        p++;
+                    }
+                }
+                else
+                {
                 while (*p)
                 {
                     putc(*p, stdout);
                     p++;
                 }
+            }
             }
 
             if (color_enabled)
@@ -2345,7 +2464,15 @@ void print_line_and_token(struct marker* p_marker, bool color_enabled)
                     }
                     else
                     {
+                        if (*p == '\t')
+                        {
+                            putc(*p, stdout);
+                        }
+                        else
+                        {
                         putc(' ', stdout);
+                        }
+
                         if (!complete) start_col++;
                     }
                     p++;
@@ -2866,17 +2993,13 @@ const unsigned char* _Opt escape_sequences_decode_opt(const unsigned char* p, un
 
         *out_value = (int)result;
     }
-    else if (*p == '0')
+    else if (*p >= '0' && *p <= '7')
     {
         // octal digit
-        p++;
-
         int result = 0;
         while ((*p >= '0' && *p <= '7'))
         {
-            int byte;
-            byte = (*p - '0');
-            result = (result << 4) | (byte & 0xF);
+            result = (result << 3) | (*p - '0');  // shift left by 3 bits and add digit
             p++;
         }
         *out_value = result;
@@ -2917,7 +3040,6 @@ const unsigned char* _Opt escape_sequences_decode_opt(const unsigned char* p, un
             *out_value = '"';
             break;
         default:
-            // this is handled at tokenizer
             assert(false);
             return NULL;
         }
@@ -3810,25 +3932,10 @@ bool preprocessor_diagnostic(enum diagnostic_id w, struct preprocessor_ctx* ctx,
     /*warnings inside headers are ignored*/
     const bool included_file_location = p_token_opt->level > 0;
 
-    bool is_error = false;
-    bool is_warning = false;
-    bool is_note = false;
 
-    if (w > W_NOTE)
-    {
-        is_error = true;
-    }
-    else
-    {
-        is_error =
-            (ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].errors & (1ULL << w)) != 0;
-
-        is_warning =
-            (ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings & (1ULL << w)) != 0;
-
-        is_note =
-            ((ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].notes & (1ULL << w)) != 0);
-    }
+    bool is_error = options_diagnostic_is_error(&ctx->options, w);
+    bool is_warning = options_diagnostic_is_warning(&ctx->options, w);
+    bool is_note = options_diagnostic_is_note(&ctx->options, w);
 
     if (is_error)
     {
@@ -3842,12 +3949,16 @@ bool preprocessor_diagnostic(enum diagnostic_id w, struct preprocessor_ctx* ctx,
     {
 
     }
+    else if (w == W_LOCATION)
+    {
+        //location is always printed
+    }
     else
     {
         return false;
     }
 
-    if (!is_error && included_file_location)
+    if (w != W_LOCATION && !is_error && included_file_location)
     {
         //notes are warning are not printed in included files
         return false;
@@ -3858,16 +3969,12 @@ bool preprocessor_diagnostic(enum diagnostic_id w, struct preprocessor_ctx* ctx,
 
     char buffer[200] = { 0 };
 
-#pragma CAKE diagnostic push
-#pragma CAKE diagnostic ignored "-Wnullable-to-non-nullable"
-#pragma CAKE diagnostic ignored "-Wanalyzer-null-dereference"
 
     va_list args = { 0 };
 
     va_start(args, fmt);
     /*int n =*/ vsnprintf(buffer, sizeof(buffer), fmt, args);
     va_end(args);
-#pragma CAKE diagnostic pop
 
     if (ctx->options.visual_studio_ouput_format)
     {
@@ -3885,21 +3992,21 @@ bool preprocessor_diagnostic(enum diagnostic_id w, struct preprocessor_ctx* ctx,
         if (is_error)
         {
             if (color_enabled)
-            printf(LIGHTRED "error: " WHITE "%s\n", buffer);
+                printf(LIGHTRED "error " WHITE "C%04d: %s\n" COLOR_RESET, w, buffer);
             else
-                printf("error: " "%s\n", buffer);
+                printf("error "        "C%04d: %s\n", w, buffer);
         }
         else if (is_warning)
         {
             if (color_enabled)
-            printf(LIGHTMAGENTA "warning: " WHITE "%s\n", buffer);
+                printf(LIGHTMAGENTA "warning " WHITE "C%04d: %s\n" COLOR_RESET, w, buffer);
             else
-                printf("warning: " "%s\n", buffer);
+                printf("warning "  "C%04d: %s\n", w, buffer);
         }
         else if (is_note)
         {
             if (color_enabled)
-            printf(LIGHTCYAN "note: " WHITE "%s\n", buffer);
+                printf(LIGHTCYAN "note: " WHITE "%s\n" COLOR_RESET, buffer);
             else
                 printf("note: "  "%s\n", buffer);
         }
@@ -4082,12 +4189,21 @@ const char* _Owner _Opt  find_and_read_include_file(struct preprocessor_ctx* ctx
         size_t len = strlen(current->path);
         if (current->path[len - 1] == '/')
         {
-            snprintf(full_path_out, full_path_out_size, "%s%s", current->path, path);
+            snprintf(newpath, full_path_out_size, "%s%s", current->path, path);
         }
         else
         {
-            snprintf(full_path_out, full_path_out_size, "%s/%s", current->path, path);
+            snprintf(newpath, full_path_out_size, "%s/%s", current->path, path);
         }
+
+#ifdef __EMSCRIPTEN__
+        /*realpath returns empty on emscriptem*/
+        snprintf(full_path_out, full_path_out_size, "%s", newpath);
+#else
+        if (!realpath(newpath, full_path_out))
+            full_path_out[0] = '\0';
+
+#endif
 
         path_normalize(full_path_out);
         if (pragma_once_already_included(ctx, full_path_out))
@@ -4504,7 +4620,17 @@ int is_nondigit(const struct stream* p)
     */
     return (p->current[0] >= 'a' && p->current[0] <= 'z') ||
         (p->current[0] >= 'A' && p->current[0] <= 'Z') ||
-        (p->current[0] == '_');
+        (p->current[0] == '_') || (p->current[0] == '$');
+
+    
+    /*
+      From the standard:
+      
+      It is implementation-defined
+      if a $ (U+0024, DOLLAR SIGN) may be used as a nondigit character.
+
+      MSVC uses $
+    */
 }
 
 
@@ -5406,6 +5532,51 @@ struct token_list tokenizer(struct tokenizer_ctx* ctx, const char* text, const c
                         stream_match(&stream);
                     }
                 }
+
+                if (ctx->options.comment_to_attribute &&  start[2] == '!' && start[3] == 'w')
+                {
+                    /*
+                        Conversion from !w4 to -> [[cake::w4]]                         
+                    */
+                    struct token_list list2 = tokenizer(ctx, "[[cake::wN]]", "", level, 0);
+                    struct token* p_new_token = token_list_pop_front_get(&list2);
+                    token_delete(p_new_token);
+                    p_new_token = token_list_pop_front_get(&list2);
+                    while (p_new_token)
+                    {
+                        if (strcmp(p_new_token->lexeme, "wN") == 0)
+                        {
+                            free(p_new_token->lexeme);
+                            char fmt[10] = {0};
+                            const char * p = start + 3;
+                            for (int i = 0; i < sizeof fmt; i++)
+                            {
+                                fmt[i] = *p;
+                                if (p == (stream.current - 3))
+                                    break;
+                                p++;
+                            }
+                                                        
+                            p_new_token->lexeme = strdup(fmt);
+                        }
+                        p_new_token->flags |= has_space ? TK_FLAG_HAS_SPACE_BEFORE : TK_FLAG_NONE;
+                        p_new_token->flags |= new_line ? TK_FLAG_HAS_NEWLINE_BEFORE : TK_FLAG_NONE;
+                        p_new_token->flags |= addflags;
+
+                        p_new_token->level = level;
+                        p_new_token->token_origin = p_first;
+                        p_new_token->line = line;
+                        p_new_token->col = col;
+                        token_list_add(&list, p_new_token);
+
+                        p_new_token = token_list_pop_front_get(&list2);
+                    }
+                    token_list_destroy(&list2);
+                    new_line = false;
+                    has_space = false;
+                }
+                else
+                {
                 struct token* _Owner _Opt p_new_token = new_token(start, stream.current, TK_COMMENT);
                 if (p_new_token == NULL) throw;
 
@@ -5426,6 +5597,8 @@ struct token_list tokenizer(struct tokenizer_ctx* ctx, const char* text, const c
                 * if you are curious to see when it happens just add
                 * set_sliced_flag
                 */
+
+                }
 
                 continue;
             }
@@ -5653,6 +5826,27 @@ bool preprocessor_token_ahead_is(struct token* p, enum token_type t)
     return false;
 }
 
+static bool preprocessor_token_ahead_skiping_blanks_and_new_line(struct token* p, enum token_type t)
+{
+    /*
+       When preprocessor is inside directives, newline is not blank.
+       In other scenario (when this function is used) newline can be blank.
+    */
+    struct token* _Opt current = p->next;
+
+    while (current &&
+        (current->type == TK_BLANKS ||
+         current->type == TK_NEWLINE ||
+         current->type == TK_PLACEMARKER ||
+         current->type == TK_LINE_COMMENT ||
+         current->type == TK_COMMENT))
+    {
+        current = current->next;
+    }
+
+    return current && current->type == t;
+}
+
 bool preprocessor_token_ahead_is_identifier(struct token* p, const char* lexeme)
 {
     assert(p != NULL);
@@ -5689,6 +5883,24 @@ static void skip_blanks(struct preprocessor_ctx* ctx, struct token_list* dest, s
     {
         if (!token_is_blank(input_list->head))
             break;
+        struct token* _Owner _Opt p =
+            token_list_pop_front_get(input_list);
+        assert(p != NULL); //because input_list is not empty
+
+        token_list_add(dest, p);
+    }
+}
+
+static void skip_blanks_including_newline(struct preprocessor_ctx* ctx, struct token_list* dest, struct token_list* input_list)
+{
+    while (input_list->head)
+    {
+        if (!token_is_blank(input_list->head) &&
+            input_list->head->type != TK_NEWLINE)
+        {
+            break;
+        }
+
         struct token* _Owner _Opt p =
             token_list_pop_front_get(input_list);
         assert(p != NULL); //because input_list is not empty
@@ -7058,7 +7270,22 @@ static bool is_empty_assert(struct token_list* replacement_list)
     return true;
 }
 
-
+void print_path(const char* path)
+{
+    const char* p = path;
+    while (*p)
+    {
+#ifdef _WIN32
+        if (*p == '/')
+            printf("\\");
+        else
+            printf("%c", *p);
+#else
+        printf("%c", *p);
+#endif
+        p++;
+    }
+}
 struct token_list control_line(struct preprocessor_ctx* ctx, struct token_list* input_list, bool is_active, int level)
 {
 
@@ -7187,7 +7414,9 @@ struct token_list control_line(struct preprocessor_ctx* ctx, struct token_list* 
                 {
                     for (int i = 0; i < (level + 1); i++)
                         printf(".");
-                    printf("%s\n", full_path_result);
+
+                    print_path(full_path_result);
+                    printf("\n");
                 }
 
                 struct tokenizer_ctx tctx = { 0 };
@@ -7206,10 +7435,11 @@ struct token_list control_line(struct preprocessor_ctx* ctx, struct token_list* 
                 {
                     preprocessor_diagnostic(C_ERROR_FILE_NOT_FOUND, ctx, r.tail, "file %s not found", path + 1);
 
+                    printf("Include directories:\n");
                     for (struct include_dir* _Opt p = ctx->include_dir.head; p; p = p->next)
                     {
-                        /*let's print the include path*/
-                        preprocessor_diagnostic(W_NOTE, ctx, r.tail, "dir = '%s'", p->path);
+                        print_path(p->path);
+                        printf("\n");
                     }
                 }
                 else
@@ -7513,15 +7743,16 @@ struct token_list control_line(struct preprocessor_ctx* ctx, struct token_list* 
             {
                 if (!macro_is_same(macro, existing_macro))
                 {
-                    preprocessor_diagnostic(C_ERROR_MACRO_REDEFINITION,
+                    if (preprocessor_diagnostic(C_ERROR_MACRO_REDEFINITION,
                     ctx,
                     macro->p_name_token,
-                    "macro redefinition");
-
-                    preprocessor_diagnostic(W_NOTE,
+                        "macro redefinition"))
+                    {
+                    preprocessor_diagnostic(W_LOCATION,
                     ctx,
                     existing_macro->p_name_token,
                     "previous definition");
+                    }
 
                     macro_delete(macro);
                     throw;
@@ -7745,13 +7976,13 @@ static struct macro_argument_list collect_macro_arguments(struct preprocessor_ct
         int count = 1;
 
         //skip spaces after macro name
-        skip_blanks(ctx, &macro_argument_list.tokens, input_list);
+        skip_blanks_including_newline(ctx, &macro_argument_list.tokens, input_list);
 
         //macro is a function
         match_token_level(&macro_argument_list.tokens, input_list, '(', level, ctx);
 
         //skip spaces after (
-        skip_blanks(ctx, &macro_argument_list.tokens, input_list);
+        skip_blanks_including_newline(ctx, &macro_argument_list.tokens, input_list);
 
         if (input_list->head == NULL)
         {
@@ -8453,7 +8684,7 @@ struct token_list replacement_list_reexamination(struct preprocessor_ctx* ctx,
                 macro = find_macro(ctx, new_list.head->lexeme);
                 if (macro &&
                     macro->is_function &&
-                    !preprocessor_token_ahead_is(new_list.head, '('))
+                    !preprocessor_token_ahead_skiping_blanks_and_new_line(new_list.head, '('))
                 {
                     macro = NULL;
                 }
@@ -8889,7 +9120,7 @@ static struct token_list text_line(struct preprocessor_ctx* ctx, struct token_li
                 macro = find_macro(ctx, input_list->head->lexeme);
                 if (macro &&
                     macro->is_function &&
-                    !preprocessor_token_ahead_is(input_list->head, '('))
+                    !preprocessor_token_ahead_skiping_blanks_and_new_line(input_list->head, '('))
                 {
                     macro = NULL;
                 }
@@ -8968,7 +9199,7 @@ static struct token_list text_line(struct preprocessor_ctx* ctx, struct token_li
                     {
                         macro = find_macro(ctx, input_list->head->lexeme);
                         if (macro && macro->is_function &&
-                            !preprocessor_token_ahead_is(input_list->head, '('))
+                            !preprocessor_token_ahead_skiping_blanks_and_new_line(input_list->head, '('))
                         {
                             macro = NULL;
                         }
@@ -9042,7 +9273,7 @@ static struct token_list text_line(struct preprocessor_ctx* ctx, struct token_li
                     */
                     if (input_list->head->type == TK_STRING_LITERAL)
                     {
-                        preprocessor_diagnostic(W_NOTE, ctx, input_list->head, "you can use \"adjacent\" \"strings\"");
+                        preprocessor_diagnostic(W_LOCATION, ctx, input_list->head, "you can use \"adjacent\" \"strings\"");
                     }
                     else if (input_list->head->type == TK_LINE_COMMENT)
                         preprocessor_diagnostic(W_COMMENT, ctx, input_list->head, "multi-line //comment");
@@ -9252,7 +9483,7 @@ int include_config_header(struct preprocessor_ctx* ctx, const char* file_name)
     snprintf(local_cakeconfig_path, sizeof local_cakeconfig_path, "%s", file_name);
     dirname(local_cakeconfig_path);
 
-    snprintf(local_cakeconfig_path, sizeof local_cakeconfig_path, "%s" CAKE_CFG_FNAME, local_cakeconfig_path);
+    snprintf(local_cakeconfig_path, sizeof local_cakeconfig_path, "%s" CAKE_CONFIG_FILE_NAME, local_cakeconfig_path);
 
     char* _Owner _Opt str = read_file(local_cakeconfig_path, true);
 
@@ -9278,11 +9509,11 @@ int include_config_header(struct preprocessor_ctx* ctx, const char* file_name)
     {
         //Search cakeconfig at cake executable dir
 
-        char executable_path[FS_MAX_PATH - sizeof(CAKE_CFG_FNAME)] = { 0 };
+        char executable_path[FS_MAX_PATH - sizeof(CAKE_CONFIG_FILE_NAME)] = { 0 };
         get_self_path(executable_path, sizeof(executable_path));
         dirname(executable_path);
         char root_cakeconfig_path[FS_MAX_PATH] = { 0 };
-        snprintf(root_cakeconfig_path, sizeof root_cakeconfig_path, "%s" CAKE_CFG_FNAME, executable_path);
+        snprintf(root_cakeconfig_path, sizeof root_cakeconfig_path, "%s" CAKE_CONFIG_FILE_NAME, executable_path);
         str = read_file(root_cakeconfig_path, true);
         if (str && ctx->options.show_includes)
         {
@@ -9300,8 +9531,10 @@ int include_config_header(struct preprocessor_ctx* ctx, const char* file_name)
         return  ENOENT;
     }
 
-    const enum diagnostic_id w =
+    const struct bitset w =
         ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings;
+
+    options_set_clear_all_warnings(&ctx->options);
 
     struct tokenizer_ctx tctx = { 0 };
     struct token_list l = tokenizer(&tctx, str, "standard macros inclusion", 0, TK_FLAG_NONE);
@@ -9330,16 +9563,10 @@ static bool is_builtin_macro(const char* name)
 
 void add_standard_macros(struct preprocessor_ctx* ctx, enum target target)
 {
-    /*
-      This command prints all macros used by gcc
-      echo | gcc -dM -E -
-    */
     const struct diagnostic w =
         ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index];
 
-    /*we dont want warnings here*/
-    ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index] =
-        (struct diagnostic){ 0 };
+    options_set_clear_all_warnings(&ctx->options);
 
     static char mon[][4] = {
         "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -9598,6 +9825,7 @@ const char* get_token_name(enum token_type tk)
     case TK_KEYWORD_GCC__BUILTIN_C23_VA_START: return "TK_KEYWORD_GCC__BUILTIN_C23_VA_START";
     case TK_KEYWORD_GCC__BUILTIN_VA_COPY: return "TK_KEYWORD_GCC__BUILTIN_VA_COPY";
     case TK_KEYWORD_GCC__BUILTIN_OFFSETOF: return "TK_KEYWORD_GCC__BUILTIN_OFFSETOF";
+    case TK_KEYWORD_GCC__BUILTIN_XXXXX: return "TK_KEYWORD_GCC__BUILTIN_XXXXX";
 
     }
     return "TK_X_MISSING_NAME";
@@ -9650,7 +9878,7 @@ const char* get_diagnostic_friendly_token_name(enum token_type tk)
     case TK_COMMENT: return "/*comment*/";
     case TK_PPNUMBER: return "pp-number";
 
-    case TK_KEYWORD_GCC__ATTRIBUTE:return "__attribute";
+    case TK_KEYWORD_GCC__ATTRIBUTE:return "__attribute__";
     case TK_KEYWORD_GCC__BUILTIN_VA_LIST:return "__builtin_va_list";
     case TK_KEYWORD_MSVC__PTR32:return "__ptr32";
     case TK_KEYWORD_MSVC__PTR64:return "__ptr64";
@@ -9808,6 +10036,7 @@ const char* get_diagnostic_friendly_token_name(enum token_type tk)
     case TK_KEYWORD_GCC__BUILTIN_C23_VA_START: return "__builtin_c23_va_start";
     case TK_KEYWORD_GCC__BUILTIN_VA_COPY: return "__builtin_va_copy";
     case TK_KEYWORD_GCC__BUILTIN_OFFSETOF: return "__builtin_offsetof";
+    case TK_KEYWORD_GCC__BUILTIN_XXXXX: return "__builtin_xxxxx";
 
     default:
         break;
@@ -10233,7 +10462,7 @@ void naming_convention_macro(struct preprocessor_ctx* ctx, struct token* token)
 
     if (!is_screaming_case(token->lexeme))
     {
-        preprocessor_diagnostic(W_NOTE, ctx, token, "use SCREAMING_CASE for macros");
+        preprocessor_diagnostic(W_LOCATION, ctx, token, "use SCREAMING_CASE for macros");
     }
 
 }
@@ -10441,14 +10670,15 @@ char* normalize_line_end(char* input)
 }
 
 
-int test_preprocessor_in_out(const char* input, const char* output)
+bool test_preprocessor_in_out_match(const char* input, const char* output)
 {
-    int res = 0;
+    bool res = 0;
 
     struct tokenizer_ctx tctx = { 0 };
     struct token_list list = tokenizer(&tctx, input, "source", 0, TK_FLAG_NONE);
 
     struct preprocessor_ctx ctx = { 0 };
+    ctx.options.color_disabled = true;
 
     struct token_list r = preprocessor(&ctx, &list, 0);
     const char* result = print_preprocessed_to_string(r.head);
@@ -10459,53 +10689,12 @@ int test_preprocessor_in_out(const char* input, const char* output)
 
     if (strcmp(result, output) != 0)
     {
-        /*
-        printf("FAILED\n");
-        printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-        printf("assert\n");
-        printf("%s`", output);
-        printf("\nGOT\n");
-        printf("%s`", result);
-        printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-        print_tokens(r.head);
-
-        */
-        res = 1;
+        res = false;
     }
 
     free((void*)result);
 
-    return res;
-}
-
-int test_preprocessor_in_out_using_file(const char* fileName)
-{
-    int res = 0;
-    const char* input = normalize_line_end(read_file(fileName, true));
-    char* output = 0;
-    if (input)
-    {
-        char* pos = strstr(input, "\n---");
-        if (pos)
-        {
-            *pos = 0;
-            //anda ate sair ---
-            pos++;
-            while (*pos != '\n')
-            {
-                pos++;
-            }
-            pos++; //skip \n
-            output = pos;
-            /*optional*/
-            pos = strstr(output, "\n---");
-            if (pos)
-                *pos = 0;
-        }
-        res = test_preprocessor_in_out(input, output);
-        free((void* _Owner)input);
-    }
-    return res;
+    return true; //OK
 }
 
 void test_lexeme_cmp()
@@ -10623,9 +10812,7 @@ void test_collect()
         "ab"
         ;
 
-
-    assert(test_preprocessor_in_out(input, output) == 0);
-
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 
@@ -10636,7 +10823,8 @@ void test_va_opt_0()
         "F(a, b, c)";
     const char* output =
         "f(0, a, b, c)";
-    assert(test_preprocessor_in_out(input, output) == 0);
+
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void test_va_opt_1()
@@ -10646,9 +10834,8 @@ void test_va_opt_1()
         "F()";
     const char* output =
         "f(0)";
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
-
 
 void test_va_opt_2()
 {
@@ -10657,7 +10844,8 @@ void test_va_opt_2()
         "empty()";
     const char* output =
         "(1)";
-    assert(test_preprocessor_in_out(input, output) == 0);
+
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void test_va_opt_3()
@@ -10667,7 +10855,8 @@ void test_va_opt_3()
         "empty(1)";
     const char* output =
         "(!1)";
-    assert(test_preprocessor_in_out(input, output) == 0);
+
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void test_va_opt_4()
@@ -10680,7 +10869,8 @@ void test_va_opt_4()
         ;
     const char* output =
         "int x = 42;";
-    assert(test_preprocessor_in_out(input, output) == 0);
+
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void test_va_opt_5()
@@ -10692,7 +10882,7 @@ void test_va_opt_5()
         ;
     const char* output =
         "f(0)";
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void test_va_opt_6()
@@ -10705,7 +10895,7 @@ void test_va_opt_6()
     const char* output =
         "f(0, a)";
 
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 void test_va_opt_7()
 {
@@ -10717,7 +10907,7 @@ void test_va_opt_7()
     const char* output =
         "a b";
 
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void concatenation_problem()
@@ -10730,7 +10920,7 @@ void concatenation_problem()
     const char* output =
         "a b";
 
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 
@@ -10744,7 +10934,7 @@ void test_va_opt_G2()
     const char* output =
         "f(0, a)";
 
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 
@@ -10756,7 +10946,7 @@ void test_va_opt()
         "F(EMPTY)";
     const char* output =
         "f(0)";
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void test_empty_va_args()
@@ -10765,7 +10955,7 @@ void test_empty_va_args()
         "M(1)\n";
     const char* output =
         "1,";
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void test_va_args_single()
@@ -10775,7 +10965,7 @@ void test_va_args_single()
         "F(1, 2)";
     const char* output =
         "1, 2";
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void test_va_args_extra_args()
@@ -10785,9 +10975,8 @@ void test_va_args_extra_args()
         "F(0, 1, 2)";
     const char* output =
         "0 1, 2";
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
-
 
 void test_empty_va_args_empty()
 {
@@ -10796,7 +10985,7 @@ void test_empty_va_args_empty()
         "F()";
     const char* output =
         "a";
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void test_defined()
@@ -10809,7 +10998,7 @@ void test_defined()
         "#endif\n";
     const char* output =
         "B";
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void testline()
@@ -10821,7 +11010,7 @@ void testline()
         "M";
     const char* output =
         "a b";
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void ifelse()
@@ -10834,7 +11023,7 @@ void ifelse()
         "#endif\n";
     const char* output =
         "A";
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void T1()
@@ -10848,7 +11037,7 @@ void T1()
     //error: too few arguments provided to function-like macro invocation
     //se f nao tivesse nenhum ou menus
     //too many arguments provided to function-like macro invocation
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 int EXAMPLE5()
@@ -10893,7 +11082,7 @@ void recursivetest1()
     //  "f(2 * (f(2 * (z[0]))))";
     const char* output =
         "f(2 * (f(2 * (z[0]))))";
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void rectest()
@@ -10909,7 +11098,7 @@ void rectest()
     //  "f(2 * (y + 1)) + f(2 * (f(2 * (z[0])))) % t(t(f)(0) + t)(1);";
     const char* output =
         "f(2 * (y + 1)) + f(2 * (f(2 * (z[0])))) % t(t(f)(0) + t)(1);";
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void emptycall()
@@ -10921,7 +11110,7 @@ void emptycall()
     const char* output =
         ""
         ;
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void semiempty()
@@ -10933,7 +11122,7 @@ void semiempty()
     const char* output =
         "1"
         ;
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void calling_one_arg_with_empty_arg()
@@ -10945,7 +11134,7 @@ void calling_one_arg_with_empty_arg()
     const char* output =
         "\"\""
         ;
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 
@@ -10958,7 +11147,7 @@ void test_argument_with_parentesis()
     const char* output =
         "(1, 2, 3)4"
         ;
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void two_empty_arguments()
@@ -10970,7 +11159,7 @@ void two_empty_arguments()
     const char* output =
         ""
         ;
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void simple_object_macro()
@@ -10982,13 +11171,7 @@ void simple_object_macro()
     const char* output =
         "a b\n"
         "c";
-    assert(test_preprocessor_in_out(input, output) == 0);
-}
-
-
-void test_one_file()
-{
-    assert(test_preprocessor_in_out_using_file("tests/pre_debug.c") == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void test2()
@@ -11001,7 +11184,7 @@ void test2()
         "1 23 4"
         ;
 
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 
@@ -11031,18 +11214,12 @@ void tetris()
         "#define M F\n"
         "M(F)(C)(D)e"
         ;
+
     const char* output =
         "De"
         ;
-    struct tokenizer_ctx tctx = { 0 };
-    struct token_list list = tokenizer(&tctx, input, "source", 0, TK_FLAG_NONE);
 
-    struct preprocessor_ctx ctx = { 0 };
-
-    struct token_list r = preprocessor(&ctx, &list, 0);
-
-    assert(test_preprocessor_in_out(input, output) == 0);
-    r;
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void recursive_macro_expansion()
@@ -11054,7 +11231,7 @@ void recursive_macro_expansion()
     const char* output =
         "1 2 3 4 B"
         ;
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void empty_and_no_args()
@@ -11065,7 +11242,7 @@ void empty_and_no_args()
     const char* output =
         "1"
         ;
-    assert(test_preprocessor_in_out(input, output) == 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void empty_and_args()
@@ -11076,8 +11253,8 @@ void empty_and_args()
     const char* output =
         "1"
         ;
-    int code = test_preprocessor_in_out(input, output);
-    assert(code != 0);
+
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void test4()
@@ -11091,26 +11268,28 @@ void test4()
         ;
 
 
-    int code = test_preprocessor_in_out(input, output);
-
-    //esperado um erro (falta mensagem)
-    //too few arguments provided to function-like macro invocation F (3)
-    //engracado msc eh warning  warning C4003: not enough actual parameters for macro 'F'
-    assert(code != 0);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void test_string()
 {
+    /*
+      #define M(a, b) a # b
+      M(A, "B")
+
+      ->
+
+      A "\"B\""
+    */
     const char* input =
         "#define M(a, b) a # b\n"
-        "M(A, \"B\")"
-        ;
+        "   M(A, \"B\")";
+
+
     const char* output =
-        "A \"\\\"B\\\"\""
-        ;
+        "A \"\\\"B\\\"\"";
 
-
-    test_preprocessor_in_out(input, output);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void test6()
@@ -11188,7 +11367,7 @@ int test_expression()
     return 0;
 }
 
-int test_concatenation_o()
+void test_concatenation_o()
 {
     const char* input =
         "# define F(t1, t2, t3) *i_##t1##_j k\n"
@@ -11199,10 +11378,10 @@ int test_concatenation_o()
         ;
 
 
-    return test_preprocessor_in_out(input, output);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
-int test_concatenation()
+void  test_concatenation()
 {
     const char* input =
         "#define F(t1, t2, t3) i##j##k\n"
@@ -11213,25 +11392,22 @@ int test_concatenation()
         ;
 
 
-    return test_preprocessor_in_out(input, output);
+    assert(test_preprocessor_in_out_match(input, output));
 
 
 }
 
 void bad_test()
 {
-    struct tokenizer_ctx tctx = { 0 };
-    struct token_list list = tokenizer(&tctx, "0xfe-BAD(3)", "source", 0, TK_FLAG_NONE);
-
     const char* input = "#define BAD(x) ((x) & 0xff)\n"
         "0xfe-BAD(3);";
     const char* output =
         "0xfe-BAD(3);"
         ;
 
-    test_preprocessor_in_out(input, output);
-    list;
+    assert(test_preprocessor_in_out_match(input, output));
 }
+
 /*
 #define A0
 #define B0
@@ -11239,7 +11415,7 @@ void bad_test()
 #define B1(x) x A##x(
 A1(1)1)1)1)1)0))
 */
-int test_spaces()
+void test_spaces()
 {
     const char* input =
         "#define throw A B\n"
@@ -11250,10 +11426,10 @@ int test_spaces()
         ;
 
 
-    return test_preprocessor_in_out(input, output);
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
-int test_stringfy()
+void test_stringfy()
 {
     const char* input =
         "#define M(T) #T\n"
@@ -11264,10 +11440,59 @@ int test_stringfy()
         ;
 
 
-    return test_preprocessor_in_out(input, output);
+    assert(test_preprocessor_in_out_match(input, output));
 
 }
 
+void test_stringfy_scape()
+{
+    /*
+       #define STRINGIFY(x) #x
+       STRINGIFY("\"ab\\c\"");
+
+       ->
+
+       "\"\\\"ab\\\\c\\\"\""
+    */
+
+    const char* input =
+        "#define STRINGIFY(x) #x\n"
+        "STRINGIFY(\"\\\"ab\\\\c\\\"\")\n"
+        ;
+    const char* output =
+        "\"\\\"\\\\\\\"ab\\\\\\\\c\\\\\\\"\\\"\""
+        ;
+
+
+    assert(test_preprocessor_in_out_match(input, output));
+
+}
+
+
+void test_stringfy_scape3()
+{
+    /*
+       #define STRINGIFY(x) #x
+       STRINGIFY("\n")
+
+       ->
+
+       "\"\\n\""
+    */
+
+    const char* input
+        =
+        "       #define STRINGIFY(x) #x\n"
+        "       STRINGIFY(\"\\n\")";
+
+
+    const char* output =
+        "\"\\\"\\\\n\\\"\"";
+
+
+    assert(test_preprocessor_in_out_match(input, output));
+
+}
 
 int test_tokens()
 {
@@ -11337,7 +11562,7 @@ int test_utf8()
     return 0;
 }
 
-int test_counter()
+void test_counter()
 {
     //https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3457.htm#number-of-expansions
 
@@ -11349,26 +11574,11 @@ int test_counter()
         "0 0"
         ;
 
-    struct tokenizer_ctx tctx = { 0 };
-    struct token_list list = tokenizer(&tctx, input, "source", 0, TK_FLAG_NONE);
+    assert(test_preprocessor_in_out_match(input, output));
 
-    struct preprocessor_ctx prectx = { 0 };
-    prectx.macros.capacity = 5000;
-    add_standard_macros(&prectx, CAKE_COMPILE_TIME_SELECTED_TARGET);
-    struct token_list list2 = preprocessor(&prectx, &list, 0);
-
-    const char* result = print_preprocessed_to_string(list2.head);
-    if (result == NULL)
-    {
-        result = strdup("");
     }
 
-    assert(test_preprocessor_in_out(result, output) == 0);
-
-    return 0;
-}
-
-int bug_test()
+void bug_test()
 {
     const char* input =
         "#define M(b) a #b \n"
@@ -11378,16 +11588,9 @@ int bug_test()
         "a \"1\""
         ;
 
-
-    struct tokenizer_ctx tctx = { 0 };
-    struct token_list list = tokenizer(&tctx, input, "source", 0, TK_FLAG_NONE);
-
-    list;
-
-    assert(test_preprocessor_in_out(input, output) == 0);
-
-    return 0;
+    assert(test_preprocessor_in_out_match(input, output));
 }
+
 int test_line_continuation()
 {
 
@@ -11448,11 +11651,7 @@ void recursive_macro_expr()
         "1"
         ;
 
-    struct tokenizer_ctx tctx = { 0 };
-    struct token_list list = tokenizer(&tctx, input, "source", 0, TK_FLAG_NONE);
-
-    assert(test_preprocessor_in_out(input, output) == 0);
-    list;
+    assert(test_preprocessor_in_out_match(input, output));
 }
 
 void quasi_recursive_macro()
@@ -11466,11 +11665,24 @@ void quasi_recursive_macro()
         "2"
         ;
 
-    struct tokenizer_ctx tctx = { 0 };
-    struct token_list list = tokenizer(&tctx, input, "source", 0, TK_FLAG_NONE);
+    assert(test_preprocessor_in_out_match(input, output));
 
-    assert(test_preprocessor_in_out(input, output) == 0);
-    list;
+}
+
+void newline_macro_func()
+{
+    const char* input =
+        "#define F(A) A\n"
+        "F\n"
+        "(1)\n";
+
+    const char* output =
+        "1"
+        ;
+
+
+    assert(test_preprocessor_in_out_match(input, output));
+
 }
 
 #endif
@@ -11557,7 +11769,21 @@ int ss_vafprintf(struct osstream* stream, const char* fmt, va_list args)
         return -1;
     }
 
+#if defined(__CATALINA__) 
+    // on Catalina, vsnprintf supports more C99 options than vsprintf
+    if (reserve(stream, stream->size + size + 1) != 0)
+    {
+        return -1;
+    }
+    size = vsnprintf(stream->c_str + stream->size, size+1, fmt, args);
+#else
+    if (reserve(stream, stream->size + size) != 0)
+    {
+        return -1;
+    }
     size = vsprintf(stream->c_str + stream->size, fmt, args);
+#endif // __CATALINA__
+
     if (size > 0)
     {
         stream->size += size;
@@ -12226,2083 +12452,2024 @@ char* _Owner _Opt read_file(const char* const path, bool append_newline)
 
 
 
-47,42,13,10,32,42,32,32,84,104,105,115,32,102,105,108,101,32,105,115,32,112,97,114,116
-,32,111,102,32,99,97,107,101,32,99,111,109,112,105,108,101,114,13,10,32,42,32,32,104,116
-,116,112,115,58,47,47,103,105,116,104,117,98,46,99,111,109,47,116,104,114,97,100,97,109,115
-,47,99,97,107,101,13,10,42,47,32,13,10,13,10,35,105,102,100,101,102,32,78,68,69,66
-,85,71,13,10,35,100,101,102,105,110,101,32,97,115,115,101,114,116,40,46,46,46,41,32,40
-,40,118,111,105,100,41,48,41,13,10,35,101,108,115,101,13,10,35,100,101,102,105,110,101,32
-,97,115,115,101,114,116,40,46,46,46,41,32,97,115,115,101,114,116,40,95,95,86,65,95,65
-,82,71,83,95,95,41,13,10,35,101,110,100,105,102,13,10
+47,42,10,32,42,32,32,84,104,105,115,32,102,105,108,101,32,105,115,32,112,97,114,116,32
+,111,102,32,99,97,107,101,32,99,111,109,112,105,108,101,114,10,32,42,32,32,104,116,116,112
+,115,58,47,47,103,105,116,104,117,98,46,99,111,109,47,116,104,114,97,100,97,109,115,47,99
+,97,107,101,10,42,47,32,10,10,35,105,102,100,101,102,32,78,68,69,66,85,71,10,35,100
+,101,102,105,110,101,32,97,115,115,101,114,116,40,46,46,46,41,32,40,40,118,111,105,100,41
+,48,41,10,35,101,108,115,101,10,35,100,101,102,105,110,101,32,97,115,115,101,114,116,40,46
+,46,46,41,32,97,115,115,101,114,116,40,95,95,86,65,95,65,82,71,83,95,95,41,10,35
+,101,110,100,105,102,10
 , 0 };
 static const char file_complex_h[] = {
 
 
 
-13,10,35,101,114,114,111,114,32,110,111,116,32,105,109,112,108,101,109,101,110,116,101,100,32
-,121,101,116,13,10
+10,35,101,114,114,111,114,32,110,111,116,32,105,109,112,108,101,109,101,110,116,101,100,32,121
+,101,116,10
 , 0 };
 static const char file_ctype_h[] = {
 
 
 
-35,105,102,110,100,101,102,32,67,84,89,80,69,95,72,13,10,35,100,101,102,105,110,101,32
-,67,84,89,80,69,95,72,13,10,13,10,47,42,32,67,104,97,114,97,99,116,101,114,32,99
-,108,97,115,115,105,102,105,99,97,116,105,111,110,32,109,97,99,114,111,115,32,42,47,13,10
-,105,110,116,32,105,115,97,108,110,117,109,40,105,110,116,32,99,41,59,13,10,105,110,116,32
-,105,115,97,108,112,104,97,40,105,110,116,32,99,41,59,13,10,105,110,116,32,105,115,98,108
-,97,110,107,40,105,110,116,32,99,41,59,13,10,105,110,116,32,105,115,99,110,116,114,108,40
-,105,110,116,32,99,41,59,13,10,105,110,116,32,105,115,100,105,103,105,116,40,105,110,116,32
-,99,41,59,13,10,105,110,116,32,105,115,103,114,97,112,104,40,105,110,116,32,99,41,59,13
-,10,105,110,116,32,105,115,108,111,119,101,114,40,105,110,116,32,99,41,59,13,10,105,110,116
-,32,105,115,112,114,105,110,116,40,105,110,116,32,99,41,59,13,10,105,110,116,32,105,115,112
-,117,110,99,116,40,105,110,116,32,99,41,59,13,10,105,110,116,32,105,115,115,112,97,99,101
-,40,105,110,116,32,99,41,59,13,10,105,110,116,32,105,115,117,112,112,101,114,40,105,110,116
-,32,99,41,59,13,10,105,110,116,32,105,115,120,100,105,103,105,116,40,105,110,116,32,99,41
-,59,13,10,13,10,47,42,32,67,104,97,114,97,99,116,101,114,32,99,111,110,118,101,114,115
-,105,111,110,32,42,47,13,10,105,110,116,32,116,111,108,111,119,101,114,40,105,110,116,32,99
-,41,59,13,10,105,110,116,32,116,111,117,112,112,101,114,40,105,110,116,32,99,41,59,13,10
-,13,10,35,101,110,100,105,102,32,47,42,32,67,84,89,80,69,95,72,32,42,47,13,10
+35,105,102,110,100,101,102,32,67,84,89,80,69,95,72,10,35,100,101,102,105,110,101,32,67
+,84,89,80,69,95,72,10,10,47,42,32,67,104,97,114,97,99,116,101,114,32,99,108,97,115
+,115,105,102,105,99,97,116,105,111,110,32,109,97,99,114,111,115,32,42,47,10,105,110,116,32
+,105,115,97,108,110,117,109,40,105,110,116,32,99,41,59,10,105,110,116,32,105,115,97,108,112
+,104,97,40,105,110,116,32,99,41,59,10,105,110,116,32,105,115,98,108,97,110,107,40,105,110
+,116,32,99,41,59,10,105,110,116,32,105,115,99,110,116,114,108,40,105,110,116,32,99,41,59
+,10,105,110,116,32,105,115,100,105,103,105,116,40,105,110,116,32,99,41,59,10,105,110,116,32
+,105,115,103,114,97,112,104,40,105,110,116,32,99,41,59,10,105,110,116,32,105,115,108,111,119
+,101,114,40,105,110,116,32,99,41,59,10,105,110,116,32,105,115,112,114,105,110,116,40,105,110
+,116,32,99,41,59,10,105,110,116,32,105,115,112,117,110,99,116,40,105,110,116,32,99,41,59
+,10,105,110,116,32,105,115,115,112,97,99,101,40,105,110,116,32,99,41,59,10,105,110,116,32
+,105,115,117,112,112,101,114,40,105,110,116,32,99,41,59,10,105,110,116,32,105,115,120,100,105
+,103,105,116,40,105,110,116,32,99,41,59,10,10,47,42,32,67,104,97,114,97,99,116,101,114
+,32,99,111,110,118,101,114,115,105,111,110,32,42,47,10,105,110,116,32,116,111,108,111,119,101
+,114,40,105,110,116,32,99,41,59,10,105,110,116,32,116,111,117,112,112,101,114,40,105,110,116
+,32,99,41,59,10,10,35,101,110,100,105,102,32,47,42,32,67,84,89,80,69,95,72,32,42
+,47,10
 , 0 };
 static const char file_errno_h[] = {
 
 
 
-47,42,13,10,32,42,32,32,84,104,105,115,32,102,105,108,101,32,105,115,32,112,97,114,116
-,32,111,102,32,99,97,107,101,32,99,111,109,112,105,108,101,114,13,10,32,42,32,32,104,116
-,116,112,115,58,47,47,103,105,116,104,117,98,46,99,111,109,47,116,104,114,97,100,97,109,115
-,47,99,97,107,101,13,10,42,47,13,10,13,10,35,112,114,97,103,109,97,32,111,110,99,101
-,13,10,13,10,105,110,116,42,32,95,101,114,114,110,111,40,118,111,105,100,41,59,13,10,35
-,100,101,102,105,110,101,32,101,114,114,110,111,32,40,42,95,101,114,114,110,111,40,41,41,13
-,10,32,13,10,13,10,35,100,101,102,105,110,101,32,69,80,69,82,77,32,32,32,32,32,32
-,32,32,32,32,32,49,13,10,35,100,101,102,105,110,101,32,69,78,79,69,78,84,32,32,32
-,32,32,32,32,32,32,32,50,13,10,35,100,101,102,105,110,101,32,69,83,82,67,72,32,32
-,32,32,32,32,32,32,32,32,32,51,13,10,35,100,101,102,105,110,101,32,69,73,78,84,82
-,32,32,32,32,32,32,32,32,32,32,32,52,13,10,35,100,101,102,105,110,101,32,69,73,79
-,32,32,32,32,32,32,32,32,32,32,32,32,32,53,13,10,35,100,101,102,105,110,101,32,69
-,78,88,73,79,32,32,32,32,32,32,32,32,32,32,32,54,13,10,35,100,101,102,105,110,101
-,32,69,50,66,73,71,32,32,32,32,32,32,32,32,32,32,32,55,13,10,35,100,101,102,105
-,110,101,32,69,78,79,69,88,69,67,32,32,32,32,32,32,32,32,32,56,13,10,35,100,101
-,102,105,110,101,32,69,66,65,68,70,32,32,32,32,32,32,32,32,32,32,32,57,13,10,35
-,100,101,102,105,110,101,32,69,67,72,73,76,68,32,32,32,32,32,32,32,32,32,32,49,48
-,13,10,35,100,101,102,105,110,101,32,69,65,71,65,73,78,32,32,32,32,32,32,32,32,32
-,32,49,49,13,10,35,100,101,102,105,110,101,32,69,78,79,77,69,77,32,32,32,32,32,32
-,32,32,32,32,49,50,13,10,35,100,101,102,105,110,101,32,69,65,67,67,69,83,32,32,32
-,32,32,32,32,32,32,32,49,51,13,10,35,100,101,102,105,110,101,32,69,70,65,85,76,84
-,32,32,32,32,32,32,32,32,32,32,49,52,13,10,35,100,101,102,105,110,101,32,69,66,85
-,83,89,32,32,32,32,32,32,32,32,32,32,32,49,54,13,10,35,100,101,102,105,110,101,32
-,69,69,88,73,83,84,32,32,32,32,32,32,32,32,32,32,49,55,13,10,35,100,101,102,105
-,110,101,32,69,88,68,69,86,32,32,32,32,32,32,32,32,32,32,32,49,56,13,10,35,100
-,101,102,105,110,101,32,69,78,79,68,69,86,32,32,32,32,32,32,32,32,32,32,49,57,13
-,10,35,100,101,102,105,110,101,32,69,78,79,84,68,73,82,32,32,32,32,32,32,32,32,32
-,50,48,13,10,35,100,101,102,105,110,101,32,69,73,83,68,73,82,32,32,32,32,32,32,32
-,32,32,32,50,49,13,10,35,100,101,102,105,110,101,32,69,78,70,73,76,69,32,32,32,32
-,32,32,32,32,32,32,50,51,13,10,35,100,101,102,105,110,101,32,69,77,70,73,76,69,32
-,32,32,32,32,32,32,32,32,32,50,52,13,10,35,100,101,102,105,110,101,32,69,78,79,84
-,84,89,32,32,32,32,32,32,32,32,32,32,50,53,13,10,35,100,101,102,105,110,101,32,69
-,70,66,73,71,32,32,32,32,32,32,32,32,32,32,32,50,55,13,10,35,100,101,102,105,110
-,101,32,69,78,79,83,80,67,32,32,32,32,32,32,32,32,32,32,50,56,13,10,35,100,101
-,102,105,110,101,32,69,83,80,73,80,69,32,32,32,32,32,32,32,32,32,32,50,57,13,10
-,35,100,101,102,105,110,101,32,69,82,79,70,83,32,32,32,32,32,32,32,32,32,32,32,51
-,48,13,10,35,100,101,102,105,110,101,32,69,77,76,73,78,75,32,32,32,32,32,32,32,32
-,32,32,51,49,13,10,35,100,101,102,105,110,101,32,69,80,73,80,69,32,32,32,32,32,32
-,32,32,32,32,32,51,50,13,10,35,100,101,102,105,110,101,32,69,68,79,77,32,32,32,32
-,32,32,32,32,32,32,32,32,51,51,13,10,35,100,101,102,105,110,101,32,69,68,69,65,68
-,76,75,32,32,32,32,32,32,32,32,32,51,54,13,10,35,100,101,102,105,110,101,32,69,78
-,65,77,69,84,79,79,76,79,78,71,32,32,32,32,51,56,13,10,35,100,101,102,105,110,101
-,32,69,78,79,76,67,75,32,32,32,32,32,32,32,32,32,32,51,57,13,10,35,100,101,102
-,105,110,101,32,69,78,79,83,89,83,32,32,32,32,32,32,32,32,32,32,52,48,13,10,35
-,100,101,102,105,110,101,32,69,78,79,84,69,77,80,84,89,32,32,32,32,32,32,32,52,49
-,13,10,13,10,13,10,47,47,32,83,117,112,112,111,114,116,32,69,68,69,65,68,76,79,67
-,75,32,102,111,114,32,99,111,109,112,97,116,105,98,105,108,105,116,121,32,119,105,116,104,32
-,111,108,100,101,114,32,77,105,99,114,111,115,111,102,116,32,67,32,118,101,114,115,105,111,110
-,115,13,10,35,100,101,102,105,110,101,32,69,68,69,65,68,76,79,67,75,32,32,32,32,32
-,32,32,69,68,69,65,68,76,75,13,10,13,10,35,100,101,102,105,110,101,32,69,65,68,68
-,82,73,78,85,83,69,32,32,32,32,32,32,49,48,48,13,10,35,100,101,102,105,110,101,32
-,69,65,68,68,82,78,79,84,65,86,65,73,76,32,32,32,49,48,49,13,10,35,100,101,102
-,105,110,101,32,69,65,70,78,79,83,85,80,80,79,82,84,32,32,32,32,49,48,50,13,10
-,35,100,101,102,105,110,101,32,69,65,76,82,69,65,68,89,32,32,32,32,32,32,32,32,49
-,48,51,13,10,35,100,101,102,105,110,101,32,69,66,65,68,77,83,71,32,32,32,32,32,32
-,32,32,32,49,48,52,13,10,35,100,101,102,105,110,101,32,69,67,65,78,67,69,76,69,68
-,32,32,32,32,32,32,32,49,48,53,13,10,35,100,101,102,105,110,101,32,69,67,79,78,78
-,65,66,79,82,84,69,68,32,32,32,32,49,48,54,13,10,35,100,101,102,105,110,101,32,69
-,67,79,78,78,82,69,70,85,83,69,68,32,32,32,32,49,48,55,13,10,35,100,101,102,105
-,110,101,32,69,67,79,78,78,82,69,83,69,84,32,32,32,32,32,32,49,48,56,13,10,35
-,100,101,102,105,110,101,32,69,68,69,83,84,65,68,68,82,82,69,81,32,32,32,32,49,48
-,57,13,10,35,100,101,102,105,110,101,32,69,72,79,83,84,85,78,82,69,65,67,72,32,32
-,32,32,49,49,48,13,10,35,100,101,102,105,110,101,32,69,73,68,82,77,32,32,32,32,32
-,32,32,32,32,32,32,49,49,49,13,10,35,100,101,102,105,110,101,32,69,73,78,80,82,79
-,71,82,69,83,83,32,32,32,32,32,49,49,50,13,10,35,100,101,102,105,110,101,32,69,73
-,83,67,79,78,78,32,32,32,32,32,32,32,32,32,49,49,51,13,10,35,100,101,102,105,110
-,101,32,69,76,79,79,80,32,32,32,32,32,32,32,32,32,32,32,49,49,52,13,10,35,100
-,101,102,105,110,101,32,69,77,83,71,83,73,90,69,32,32,32,32,32,32,32,32,49,49,53
-,13,10,35,100,101,102,105,110,101,32,69,78,69,84,68,79,87,78,32,32,32,32,32,32,32
-,32,49,49,54,13,10,35,100,101,102,105,110,101,32,69,78,69,84,82,69,83,69,84,32,32
-,32,32,32,32,32,49,49,55,13,10,35,100,101,102,105,110,101,32,69,78,69,84,85,78,82
-,69,65,67,72,32,32,32,32,32,49,49,56,13,10,35,100,101,102,105,110,101,32,69,78,79
-,66,85,70,83,32,32,32,32,32,32,32,32,32,49,49,57,13,10,35,100,101,102,105,110,101
-,32,69,78,79,68,65,84,65,32,32,32,32,32,32,32,32,32,49,50,48,13,10,35,100,101
-,102,105,110,101,32,69,78,79,76,73,78,75,32,32,32,32,32,32,32,32,32,49,50,49,13
-,10,35,100,101,102,105,110,101,32,69,78,79,77,83,71,32,32,32,32,32,32,32,32,32,32
-,49,50,50,13,10,35,100,101,102,105,110,101,32,69,78,79,80,82,79,84,79,79,80,84,32
-,32,32,32,32,49,50,51,13,10,35,100,101,102,105,110,101,32,69,78,79,83,82,32,32,32
-,32,32,32,32,32,32,32,32,49,50,52,13,10,35,100,101,102,105,110,101,32,69,78,79,83
-,84,82,32,32,32,32,32,32,32,32,32,32,49,50,53,13,10,35,100,101,102,105,110,101,32
-,69,78,79,84,67,79,78,78,32,32,32,32,32,32,32,32,49,50,54,13,10,35,100,101,102
-,105,110,101,32,69,78,79,84,82,69,67,79,86,69,82,65,66,76,69,32,49,50,55,13,10
-,35,100,101,102,105,110,101,32,69,78,79,84,83,79,67,75,32,32,32,32,32,32,32,32,49
-,50,56,13,10,35,100,101,102,105,110,101,32,69,78,79,84,83,85,80,32,32,32,32,32,32
-,32,32,32,49,50,57,13,10,35,100,101,102,105,110,101,32,69,79,80,78,79,84,83,85,80
-,80,32,32,32,32,32,32,49,51,48,13,10,35,100,101,102,105,110,101,32,69,79,84,72,69
-,82,32,32,32,32,32,32,32,32,32,32,49,51,49,13,10,35,100,101,102,105,110,101,32,69
-,79,86,69,82,70,76,79,87,32,32,32,32,32,32,32,49,51,50,13,10,35,100,101,102,105
-,110,101,32,69,79,87,78,69,82,68,69,65,68,32,32,32,32,32,32,49,51,51,13,10,35
-,100,101,102,105,110,101,32,69,80,82,79,84,79,32,32,32,32,32,32,32,32,32,32,49,51
-,52,13,10,35,100,101,102,105,110,101,32,69,80,82,79,84,79,78,79,83,85,80,80,79,82
-,84,32,49,51,53,13,10,35,100,101,102,105,110,101,32,69,80,82,79,84,79,84,89,80,69
-,32,32,32,32,32,32,49,51,54,13,10,35,100,101,102,105,110,101,32,69,84,73,77,69,32
-,32,32,32,32,32,32,32,32,32,32,49,51,55,13,10,35,100,101,102,105,110,101,32,69,84
-,73,77,69,68,79,85,84,32,32,32,32,32,32,32,49,51,56,13,10,35,100,101,102,105,110
-,101,32,69,84,88,84,66,83,89,32,32,32,32,32,32,32,32,32,49,51,57,13,10,35,100
-,101,102,105,110,101,32,69,87,79,85,76,68,66,76,79,67,75,32,32,32,32,32,49,52,48
-,13,10,13,10
+47,42,10,32,42,32,32,84,104,105,115,32,102,105,108,101,32,105,115,32,112,97,114,116,32
+,111,102,32,99,97,107,101,32,99,111,109,112,105,108,101,114,10,32,42,32,32,104,116,116,112
+,115,58,47,47,103,105,116,104,117,98,46,99,111,109,47,116,104,114,97,100,97,109,115,47,99
+,97,107,101,10,42,47,10,10,35,112,114,97,103,109,97,32,111,110,99,101,10,10,105,110,116
+,42,32,95,101,114,114,110,111,40,118,111,105,100,41,59,10,35,100,101,102,105,110,101,32,101
+,114,114,110,111,32,40,42,95,101,114,114,110,111,40,41,41,10,32,10,10,35,100,101,102,105
+,110,101,32,69,80,69,82,77,32,32,32,32,32,32,32,32,32,32,32,49,10,35,100,101,102
+,105,110,101,32,69,78,79,69,78,84,32,32,32,32,32,32,32,32,32,32,50,10,35,100,101
+,102,105,110,101,32,69,83,82,67,72,32,32,32,32,32,32,32,32,32,32,32,51,10,35,100
+,101,102,105,110,101,32,69,73,78,84,82,32,32,32,32,32,32,32,32,32,32,32,52,10,35
+,100,101,102,105,110,101,32,69,73,79,32,32,32,32,32,32,32,32,32,32,32,32,32,53,10
+,35,100,101,102,105,110,101,32,69,78,88,73,79,32,32,32,32,32,32,32,32,32,32,32,54
+,10,35,100,101,102,105,110,101,32,69,50,66,73,71,32,32,32,32,32,32,32,32,32,32,32
+,55,10,35,100,101,102,105,110,101,32,69,78,79,69,88,69,67,32,32,32,32,32,32,32,32
+,32,56,10,35,100,101,102,105,110,101,32,69,66,65,68,70,32,32,32,32,32,32,32,32,32
+,32,32,57,10,35,100,101,102,105,110,101,32,69,67,72,73,76,68,32,32,32,32,32,32,32
+,32,32,32,49,48,10,35,100,101,102,105,110,101,32,69,65,71,65,73,78,32,32,32,32,32
+,32,32,32,32,32,49,49,10,35,100,101,102,105,110,101,32,69,78,79,77,69,77,32,32,32
+,32,32,32,32,32,32,32,49,50,10,35,100,101,102,105,110,101,32,69,65,67,67,69,83,32
+,32,32,32,32,32,32,32,32,32,49,51,10,35,100,101,102,105,110,101,32,69,70,65,85,76
+,84,32,32,32,32,32,32,32,32,32,32,49,52,10,35,100,101,102,105,110,101,32,69,66,85
+,83,89,32,32,32,32,32,32,32,32,32,32,32,49,54,10,35,100,101,102,105,110,101,32,69
+,69,88,73,83,84,32,32,32,32,32,32,32,32,32,32,49,55,10,35,100,101,102,105,110,101
+,32,69,88,68,69,86,32,32,32,32,32,32,32,32,32,32,32,49,56,10,35,100,101,102,105
+,110,101,32,69,78,79,68,69,86,32,32,32,32,32,32,32,32,32,32,49,57,10,35,100,101
+,102,105,110,101,32,69,78,79,84,68,73,82,32,32,32,32,32,32,32,32,32,50,48,10,35
+,100,101,102,105,110,101,32,69,73,83,68,73,82,32,32,32,32,32,32,32,32,32,32,50,49
+,10,35,100,101,102,105,110,101,32,69,78,70,73,76,69,32,32,32,32,32,32,32,32,32,32
+,50,51,10,35,100,101,102,105,110,101,32,69,77,70,73,76,69,32,32,32,32,32,32,32,32
+,32,32,50,52,10,35,100,101,102,105,110,101,32,69,78,79,84,84,89,32,32,32,32,32,32
+,32,32,32,32,50,53,10,35,100,101,102,105,110,101,32,69,70,66,73,71,32,32,32,32,32
+,32,32,32,32,32,32,50,55,10,35,100,101,102,105,110,101,32,69,78,79,83,80,67,32,32
+,32,32,32,32,32,32,32,32,50,56,10,35,100,101,102,105,110,101,32,69,83,80,73,80,69
+,32,32,32,32,32,32,32,32,32,32,50,57,10,35,100,101,102,105,110,101,32,69,82,79,70
+,83,32,32,32,32,32,32,32,32,32,32,32,51,48,10,35,100,101,102,105,110,101,32,69,77
+,76,73,78,75,32,32,32,32,32,32,32,32,32,32,51,49,10,35,100,101,102,105,110,101,32
+,69,80,73,80,69,32,32,32,32,32,32,32,32,32,32,32,51,50,10,35,100,101,102,105,110
+,101,32,69,68,79,77,32,32,32,32,32,32,32,32,32,32,32,32,51,51,10,35,100,101,102
+,105,110,101,32,69,68,69,65,68,76,75,32,32,32,32,32,32,32,32,32,51,54,10,35,100
+,101,102,105,110,101,32,69,78,65,77,69,84,79,79,76,79,78,71,32,32,32,32,51,56,10
+,35,100,101,102,105,110,101,32,69,78,79,76,67,75,32,32,32,32,32,32,32,32,32,32,51
+,57,10,35,100,101,102,105,110,101,32,69,78,79,83,89,83,32,32,32,32,32,32,32,32,32
+,32,52,48,10,35,100,101,102,105,110,101,32,69,78,79,84,69,77,80,84,89,32,32,32,32
+,32,32,32,52,49,10,10,10,47,47,32,83,117,112,112,111,114,116,32,69,68,69,65,68,76
+,79,67,75,32,102,111,114,32,99,111,109,112,97,116,105,98,105,108,105,116,121,32,119,105,116
+,104,32,111,108,100,101,114,32,77,105,99,114,111,115,111,102,116,32,67,32,118,101,114,115,105
+,111,110,115,10,35,100,101,102,105,110,101,32,69,68,69,65,68,76,79,67,75,32,32,32,32
+,32,32,32,69,68,69,65,68,76,75,10,10,35,100,101,102,105,110,101,32,69,65,68,68,82
+,73,78,85,83,69,32,32,32,32,32,32,49,48,48,10,35,100,101,102,105,110,101,32,69,65
+,68,68,82,78,79,84,65,86,65,73,76,32,32,32,49,48,49,10,35,100,101,102,105,110,101
+,32,69,65,70,78,79,83,85,80,80,79,82,84,32,32,32,32,49,48,50,10,35,100,101,102
+,105,110,101,32,69,65,76,82,69,65,68,89,32,32,32,32,32,32,32,32,49,48,51,10,35
+,100,101,102,105,110,101,32,69,66,65,68,77,83,71,32,32,32,32,32,32,32,32,32,49,48
+,52,10,35,100,101,102,105,110,101,32,69,67,65,78,67,69,76,69,68,32,32,32,32,32,32
+,32,49,48,53,10,35,100,101,102,105,110,101,32,69,67,79,78,78,65,66,79,82,84,69,68
+,32,32,32,32,49,48,54,10,35,100,101,102,105,110,101,32,69,67,79,78,78,82,69,70,85
+,83,69,68,32,32,32,32,49,48,55,10,35,100,101,102,105,110,101,32,69,67,79,78,78,82
+,69,83,69,84,32,32,32,32,32,32,49,48,56,10,35,100,101,102,105,110,101,32,69,68,69
+,83,84,65,68,68,82,82,69,81,32,32,32,32,49,48,57,10,35,100,101,102,105,110,101,32
+,69,72,79,83,84,85,78,82,69,65,67,72,32,32,32,32,49,49,48,10,35,100,101,102,105
+,110,101,32,69,73,68,82,77,32,32,32,32,32,32,32,32,32,32,32,49,49,49,10,35,100
+,101,102,105,110,101,32,69,73,78,80,82,79,71,82,69,83,83,32,32,32,32,32,49,49,50
+,10,35,100,101,102,105,110,101,32,69,73,83,67,79,78,78,32,32,32,32,32,32,32,32,32
+,49,49,51,10,35,100,101,102,105,110,101,32,69,76,79,79,80,32,32,32,32,32,32,32,32
+,32,32,32,49,49,52,10,35,100,101,102,105,110,101,32,69,77,83,71,83,73,90,69,32,32
+,32,32,32,32,32,32,49,49,53,10,35,100,101,102,105,110,101,32,69,78,69,84,68,79,87
+,78,32,32,32,32,32,32,32,32,49,49,54,10,35,100,101,102,105,110,101,32,69,78,69,84
+,82,69,83,69,84,32,32,32,32,32,32,32,49,49,55,10,35,100,101,102,105,110,101,32,69
+,78,69,84,85,78,82,69,65,67,72,32,32,32,32,32,49,49,56,10,35,100,101,102,105,110
+,101,32,69,78,79,66,85,70,83,32,32,32,32,32,32,32,32,32,49,49,57,10,35,100,101
+,102,105,110,101,32,69,78,79,68,65,84,65,32,32,32,32,32,32,32,32,32,49,50,48,10
+,35,100,101,102,105,110,101,32,69,78,79,76,73,78,75,32,32,32,32,32,32,32,32,32,49
+,50,49,10,35,100,101,102,105,110,101,32,69,78,79,77,83,71,32,32,32,32,32,32,32,32
+,32,32,49,50,50,10,35,100,101,102,105,110,101,32,69,78,79,80,82,79,84,79,79,80,84
+,32,32,32,32,32,49,50,51,10,35,100,101,102,105,110,101,32,69,78,79,83,82,32,32,32
+,32,32,32,32,32,32,32,32,49,50,52,10,35,100,101,102,105,110,101,32,69,78,79,83,84
+,82,32,32,32,32,32,32,32,32,32,32,49,50,53,10,35,100,101,102,105,110,101,32,69,78
+,79,84,67,79,78,78,32,32,32,32,32,32,32,32,49,50,54,10,35,100,101,102,105,110,101
+,32,69,78,79,84,82,69,67,79,86,69,82,65,66,76,69,32,49,50,55,10,35,100,101,102
+,105,110,101,32,69,78,79,84,83,79,67,75,32,32,32,32,32,32,32,32,49,50,56,10,35
+,100,101,102,105,110,101,32,69,78,79,84,83,85,80,32,32,32,32,32,32,32,32,32,49,50
+,57,10,35,100,101,102,105,110,101,32,69,79,80,78,79,84,83,85,80,80,32,32,32,32,32
+,32,49,51,48,10,35,100,101,102,105,110,101,32,69,79,84,72,69,82,32,32,32,32,32,32
+,32,32,32,32,49,51,49,10,35,100,101,102,105,110,101,32,69,79,86,69,82,70,76,79,87
+,32,32,32,32,32,32,32,49,51,50,10,35,100,101,102,105,110,101,32,69,79,87,78,69,82
+,68,69,65,68,32,32,32,32,32,32,49,51,51,10,35,100,101,102,105,110,101,32,69,80,82
+,79,84,79,32,32,32,32,32,32,32,32,32,32,49,51,52,10,35,100,101,102,105,110,101,32
+,69,80,82,79,84,79,78,79,83,85,80,80,79,82,84,32,49,51,53,10,35,100,101,102,105
+,110,101,32,69,80,82,79,84,79,84,89,80,69,32,32,32,32,32,32,49,51,54,10,35,100
+,101,102,105,110,101,32,69,84,73,77,69,32,32,32,32,32,32,32,32,32,32,32,49,51,55
+,10,35,100,101,102,105,110,101,32,69,84,73,77,69,68,79,85,84,32,32,32,32,32,32,32
+,49,51,56,10,35,100,101,102,105,110,101,32,69,84,88,84,66,83,89,32,32,32,32,32,32
+,32,32,32,49,51,57,10,35,100,101,102,105,110,101,32,69,87,79,85,76,68,66,76,79,67
+,75,32,32,32,32,32,49,52,48,10,10
 , 0 };
 static const char file_fenv_h[] = {
 
 
 
-13,10,13,10,35,100,101,102,105,110,101,32,32,32,95,95,83,84,68,67,95,86,69,82,83
-,73,79,78,95,70,69,78,86,95,72,95,95,32,13,10,13,10,35,100,101,102,105,110,101,32
-,32,32,70,69,95,65,76,76,95,69,88,67,69,80,84,32,40,48,120,50,48,32,124,32,48
-,120,48,52,32,124,32,48,120,49,48,32,124,32,48,120,48,56,32,124,32,48,120,48,49,41
-,13,10,35,100,101,102,105,110,101,32,32,32,70,69,95,68,73,86,66,89,90,69,82,79,32
-,48,120,48,52,13,10,35,100,101,102,105,110,101,32,32,32,70,69,95,73,78,69,88,65,67
-,84,32,48,120,50,48,13,10,35,100,101,102,105,110,101,32,32,32,70,69,95,73,78,86,65
-,76,73,68,32,48,120,48,49,13,10,35,100,101,102,105,110,101,32,32,32,70,69,95,79,86
-,69,82,70,76,79,87,32,48,120,48,56,13,10,35,100,101,102,105,110,101,32,32,32,70,69
-,95,85,78,68,69,82,70,76,79,87,32,48,120,49,48,13,10,35,100,101,102,105,110,101,32
-,32,32,70,69,95,68,79,87,78,87,65,82,68,32,48,120,52,48,48,13,10,47,47,35,100
-,101,102,105,110,101,32,32,32,70,69,95,84,79,78,69,65,82,69,83,84,70,82,79,77,90
-,69,82,79,32,70,69,95,84,79,78,69,65,82,69,83,84,70,82,79,77,90,69,82,79,13
-,10,35,100,101,102,105,110,101,32,32,32,70,69,95,84,79,78,69,65,82,69,83,84,32,48
-,13,10,35,100,101,102,105,110,101,32,32,32,70,69,95,84,79,87,65,82,68,90,69,82,79
-,32,48,120,99,48,48,13,10,35,100,101,102,105,110,101,32,32,32,70,69,95,85,80,87,65
-,82,68,32,48,120,56,48,48,13,10,35,100,101,102,105,110,101,32,32,32,70,69,95,68,70
-,76,95,69,78,86,32,40,40,99,111,110,115,116,32,102,101,110,118,95,116,32,42,41,32,45
-,49,41,13,10,35,100,101,102,105,110,101,32,32,32,70,69,95,68,70,76,95,77,79,68,69
-,32,40,40,99,111,110,115,116,32,102,101,109,111,100,101,95,116,32,42,41,32,45,49,76,41
-,13,10,47,47,35,100,101,102,105,110,101,32,32,32,70,69,95,68,69,67,95,68,79,87,78
-,87,65,82,68,32,70,69,95,68,69,67,95,68,79,87,78,87,65,82,68,13,10,47,47,35
-,100,101,102,105,110,101,32,32,32,70,69,95,68,69,67,95,84,79,78,69,65,82,69,83,84
-,70,82,79,77,90,69,82,79,32,70,69,95,68,69,67,95,84,79,78,69,65,82,69,83,84
-,70,82,79,77,90,69,82,79,13,10,47,47,35,100,101,102,105,110,101,32,32,32,70,69,95
-,68,69,67,95,84,79,78,69,65,82,69,83,84,32,70,69,95,68,69,67,95,84,79,78,69
-,65,82,69,83,84,13,10,47,47,35,100,101,102,105,110,101,32,32,32,70,69,95,68,69,67
-,95,84,79,87,65,82,68,90,69,82,79,32,70,69,95,68,69,67,95,84,79,87,65,82,68
-,90,69,82,79,13,10,47,47,35,100,101,102,105,110,101,32,32,32,70,69,95,68,69,67,95
-,85,80,87,65,82,68,32,70,69,95,68,69,67,95,85,80,87,65,82,68,13,10,47,47,35
-,100,101,102,105,110,101,32,32,32,70,69,95,83,78,65,78,83,95,65,76,87,65,89,83,95
-,83,73,71,78,65,76,32,70,69,95,83,78,65,78,83,95,65,76,87,65,89,83,95,83,73
-,71,78,65,76,13,10,13,10,116,121,112,101,100,101,102,32,117,110,115,105,103,110,101,100,32
-,115,104,111,114,116,32,105,110,116,32,102,101,120,99,101,112,116,95,116,59,13,10,13,10,116
-,121,112,101,100,101,102,32,115,116,114,117,99,116,13,10,123,13,10,32,32,32,32,117,110,115
-,105,103,110,101,100,32,115,104,111,114,116,32,105,110,116,32,95,95,99,111,110,116,114,111,108
-,95,119,111,114,100,59,13,10,32,32,32,32,117,110,115,105,103,110,101,100,32,115,104,111,114
-,116,32,105,110,116,32,95,95,103,108,105,98,99,95,114,101,115,101,114,118,101,100,49,59,13
+10,10,35,100,101,102,105,110,101,32,32,32,95,95,83,84,68,67,95,86,69,82,83,73,79
+,78,95,70,69,78,86,95,72,95,95,32,10,10,35,100,101,102,105,110,101,32,32,32,70,69
+,95,65,76,76,95,69,88,67,69,80,84,32,40,48,120,50,48,32,124,32,48,120,48,52,32
+,124,32,48,120,49,48,32,124,32,48,120,48,56,32,124,32,48,120,48,49,41,10,35,100,101
+,102,105,110,101,32,32,32,70,69,95,68,73,86,66,89,90,69,82,79,32,48,120,48,52,10
+,35,100,101,102,105,110,101,32,32,32,70,69,95,73,78,69,88,65,67,84,32,48,120,50,48
+,10,35,100,101,102,105,110,101,32,32,32,70,69,95,73,78,86,65,76,73,68,32,48,120,48
+,49,10,35,100,101,102,105,110,101,32,32,32,70,69,95,79,86,69,82,70,76,79,87,32,48
+,120,48,56,10,35,100,101,102,105,110,101,32,32,32,70,69,95,85,78,68,69,82,70,76,79
+,87,32,48,120,49,48,10,35,100,101,102,105,110,101,32,32,32,70,69,95,68,79,87,78,87
+,65,82,68,32,48,120,52,48,48,10,47,47,35,100,101,102,105,110,101,32,32,32,70,69,95
+,84,79,78,69,65,82,69,83,84,70,82,79,77,90,69,82,79,32,70,69,95,84,79,78,69
+,65,82,69,83,84,70,82,79,77,90,69,82,79,10,35,100,101,102,105,110,101,32,32,32,70
+,69,95,84,79,78,69,65,82,69,83,84,32,48,10,35,100,101,102,105,110,101,32,32,32,70
+,69,95,84,79,87,65,82,68,90,69,82,79,32,48,120,99,48,48,10,35,100,101,102,105,110
+,101,32,32,32,70,69,95,85,80,87,65,82,68,32,48,120,56,48,48,10,35,100,101,102,105
+,110,101,32,32,32,70,69,95,68,70,76,95,69,78,86,32,40,40,99,111,110,115,116,32,102
+,101,110,118,95,116,32,42,41,32,45,49,41,10,35,100,101,102,105,110,101,32,32,32,70,69
+,95,68,70,76,95,77,79,68,69,32,40,40,99,111,110,115,116,32,102,101,109,111,100,101,95
+,116,32,42,41,32,45,49,76,41,10,47,47,35,100,101,102,105,110,101,32,32,32,70,69,95
+,68,69,67,95,68,79,87,78,87,65,82,68,32,70,69,95,68,69,67,95,68,79,87,78,87
+,65,82,68,10,47,47,35,100,101,102,105,110,101,32,32,32,70,69,95,68,69,67,95,84,79
+,78,69,65,82,69,83,84,70,82,79,77,90,69,82,79,32,70,69,95,68,69,67,95,84,79
+,78,69,65,82,69,83,84,70,82,79,77,90,69,82,79,10,47,47,35,100,101,102,105,110,101
+,32,32,32,70,69,95,68,69,67,95,84,79,78,69,65,82,69,83,84,32,70,69,95,68,69
+,67,95,84,79,78,69,65,82,69,83,84,10,47,47,35,100,101,102,105,110,101,32,32,32,70
+,69,95,68,69,67,95,84,79,87,65,82,68,90,69,82,79,32,70,69,95,68,69,67,95,84
+,79,87,65,82,68,90,69,82,79,10,47,47,35,100,101,102,105,110,101,32,32,32,70,69,95
+,68,69,67,95,85,80,87,65,82,68,32,70,69,95,68,69,67,95,85,80,87,65,82,68,10
+,47,47,35,100,101,102,105,110,101,32,32,32,70,69,95,83,78,65,78,83,95,65,76,87,65
+,89,83,95,83,73,71,78,65,76,32,70,69,95,83,78,65,78,83,95,65,76,87,65,89,83
+,95,83,73,71,78,65,76,10,10,116,121,112,101,100,101,102,32,117,110,115,105,103,110,101,100
+,32,115,104,111,114,116,32,105,110,116,32,102,101,120,99,101,112,116,95,116,59,10,10,116,121
+,112,101,100,101,102,32,115,116,114,117,99,116,10,123,10,32,32,32,32,117,110,115,105,103,110
+,101,100,32,115,104,111,114,116,32,105,110,116,32,95,95,99,111,110,116,114,111,108,95,119,111
+,114,100,59,10,32,32,32,32,117,110,115,105,103,110,101,100,32,115,104,111,114,116,32,105,110
+,116,32,95,95,103,108,105,98,99,95,114,101,115,101,114,118,101,100,49,59,10,32,32,32,32
+,117,110,115,105,103,110,101,100,32,115,104,111,114,116,32,105,110,116,32,95,95,115,116,97,116
+,117,115,95,119,111,114,100,59,10,32,32,32,32,117,110,115,105,103,110,101,100,32,115,104,111
+,114,116,32,105,110,116,32,95,95,103,108,105,98,99,95,114,101,115,101,114,118,101,100,50,59
 ,10,32,32,32,32,117,110,115,105,103,110,101,100,32,115,104,111,114,116,32,105,110,116,32,95
-,95,115,116,97,116,117,115,95,119,111,114,100,59,13,10,32,32,32,32,117,110,115,105,103,110
-,101,100,32,115,104,111,114,116,32,105,110,116,32,95,95,103,108,105,98,99,95,114,101,115,101
-,114,118,101,100,50,59,13,10,32,32,32,32,117,110,115,105,103,110,101,100,32,115,104,111,114
-,116,32,105,110,116,32,95,95,116,97,103,115,59,13,10,32,32,32,32,117,110,115,105,103,110
-,101,100,32,115,104,111,114,116,32,105,110,116,32,95,95,103,108,105,98,99,95,114,101,115,101
-,114,118,101,100,51,59,13,10,32,32,32,32,117,110,115,105,103,110,101,100,32,105,110,116,32
-,95,95,101,105,112,59,13,10,32,32,32,32,117,110,115,105,103,110,101,100,32,115,104,111,114
-,116,32,105,110,116,32,95,95,99,115,95,115,101,108,101,99,116,111,114,59,13,10,32,32,32
-,32,117,110,115,105,103,110,101,100,32,105,110,116,32,95,95,111,112,99,111,100,101,32,58,32
-,49,49,59,13,10,32,32,32,32,117,110,115,105,103,110,101,100,32,105,110,116,32,95,95,103
-,108,105,98,99,95,114,101,115,101,114,118,101,100,52,32,58,32,53,59,13,10,32,32,32,32
-,117,110,115,105,103,110,101,100,32,105,110,116,32,95,95,100,97,116,97,95,111,102,102,115,101
-,116,59,13,10,32,32,32,32,117,110,115,105,103,110,101,100,32,115,104,111,114,116,32,105,110
-,116,32,95,95,100,97,116,97,95,115,101,108,101,99,116,111,114,59,13,10,32,32,32,32,117
-,110,115,105,103,110,101,100,32,115,104,111,114,116,32,105,110,116,32,95,95,103,108,105,98,99
-,95,114,101,115,101,114,118,101,100,53,59,13,10,13,10,32,32,32,32,117,110,115,105,103,110
-,101,100,32,105,110,116,32,95,95,109,120,99,115,114,59,13,10,13,10,125,13,10,102,101,110
-,118,95,116,59,13,10,13,10,116,121,112,101,100,101,102,32,115,116,114,117,99,116,13,10,123
-,13,10,32,32,32,32,117,110,115,105,103,110,101,100,32,115,104,111,114,116,32,105,110,116,32
-,95,95,99,111,110,116,114,111,108,95,119,111,114,100,59,13,10,32,32,32,32,117,110,115,105
+,95,116,97,103,115,59,10,32,32,32,32,117,110,115,105,103,110,101,100,32,115,104,111,114,116
+,32,105,110,116,32,95,95,103,108,105,98,99,95,114,101,115,101,114,118,101,100,51,59,10,32
+,32,32,32,117,110,115,105,103,110,101,100,32,105,110,116,32,95,95,101,105,112,59,10,32,32
+,32,32,117,110,115,105,103,110,101,100,32,115,104,111,114,116,32,105,110,116,32,95,95,99,115
+,95,115,101,108,101,99,116,111,114,59,10,32,32,32,32,117,110,115,105,103,110,101,100,32,105
+,110,116,32,95,95,111,112,99,111,100,101,32,58,32,49,49,59,10,32,32,32,32,117,110,115
+,105,103,110,101,100,32,105,110,116,32,95,95,103,108,105,98,99,95,114,101,115,101,114,118,101
+,100,52,32,58,32,53,59,10,32,32,32,32,117,110,115,105,103,110,101,100,32,105,110,116,32
+,95,95,100,97,116,97,95,111,102,102,115,101,116,59,10,32,32,32,32,117,110,115,105,103,110
+,101,100,32,115,104,111,114,116,32,105,110,116,32,95,95,100,97,116,97,95,115,101,108,101,99
+,116,111,114,59,10,32,32,32,32,117,110,115,105,103,110,101,100,32,115,104,111,114,116,32,105
+,110,116,32,95,95,103,108,105,98,99,95,114,101,115,101,114,118,101,100,53,59,10,10,32,32
+,32,32,117,110,115,105,103,110,101,100,32,105,110,116,32,95,95,109,120,99,115,114,59,10,10
+,125,10,102,101,110,118,95,116,59,10,10,116,121,112,101,100,101,102,32,115,116,114,117,99,116
+,10,123,10,32,32,32,32,117,110,115,105,103,110,101,100,32,115,104,111,114,116,32,105,110,116
+,32,95,95,99,111,110,116,114,111,108,95,119,111,114,100,59,10,32,32,32,32,117,110,115,105
 ,103,110,101,100,32,115,104,111,114,116,32,105,110,116,32,95,95,103,108,105,98,99,95,114,101
-,115,101,114,118,101,100,59,13,10,32,32,32,32,117,110,115,105,103,110,101,100,32,105,110,116
-,32,95,95,109,120,99,115,114,59,13,10,125,13,10,102,101,109,111,100,101,95,116,59,13,10
-,13,10,47,47,32,102,117,110,99,116,105,111,110,115,13,10,105,110,116,32,102,101,99,108,101
-,97,114,101,120,99,101,112,116,40,105,110,116,32,101,120,99,101,112,116,115,41,59,13,10,105
-,110,116,32,102,101,103,101,116,101,120,99,101,112,116,102,108,97,103,40,102,101,120,99,101,112
-,116,95,116,42,32,102,108,97,103,112,44,32,105,110,116,32,101,120,99,101,112,116,115,41,59
-,13,10,105,110,116,32,102,101,114,97,105,115,101,101,120,99,101,112,116,40,105,110,116,32,101
-,120,99,101,112,116,115,41,59,13,10,105,110,116,32,102,101,115,101,116,101,120,99,101,112,116
-,40,105,110,116,32,101,120,99,101,112,116,115,41,59,13,10,105,110,116,32,102,101,115,101,116
-,101,120,99,101,112,116,102,108,97,103,40,99,111,110,115,116,32,102,101,120,99,101,112,116,95
-,116,42,32,102,108,97,103,112,44,32,105,110,116,32,101,120,99,101,112,116,115,41,59,13,10
-,105,110,116,32,102,101,116,101,115,116,101,120,99,101,112,116,102,108,97,103,40,99,111,110,115
-,116,32,102,101,120,99,101,112,116,95,116,42,32,102,108,97,103,112,44,32,105,110,116,32,101
-,120,99,101,112,116,115,41,59,13,10,105,110,116,32,102,101,116,101,115,116,101,120,99,101,112
-,116,40,105,110,116,32,101,120,99,101,112,116,115,41,59,13,10,105,110,116,32,102,101,103,101
-,116,109,111,100,101,40,102,101,109,111,100,101,95,116,42,32,109,111,100,101,112,41,59,13,10
-,105,110,116,32,102,101,103,101,116,114,111,117,110,100,40,118,111,105,100,41,59,13,10,105,110
-,116,32,102,101,115,101,116,109,111,100,101,40,99,111,110,115,116,32,102,101,109,111,100,101,95
-,116,42,32,109,111,100,101,112,41,59,13,10,105,110,116,32,102,101,115,101,116,114,111,117,110
-,100,40,105,110,116,32,114,110,100,41,59,13,10,105,110,116,32,102,101,103,101,116,101,110,118
-,40,102,101,110,118,95,116,42,32,101,110,118,112,41,59,13,10,105,110,116,32,102,101,104,111
-,108,100,101,120,99,101,112,116,40,102,101,110,118,95,116,42,32,101,110,118,112,41,59,13,10
-,105,110,116,32,102,101,115,101,116,101,110,118,40,99,111,110,115,116,32,102,101,110,118,95,116
-,42,32,101,110,118,112,41,59,13,10,105,110,116,32,102,101,117,112,100,97,116,101,101,110,118
-,40,99,111,110,115,116,32,102,101,110,118,95,116,42,32,101,110,118,112,41,59,13,10
+,115,101,114,118,101,100,59,10,32,32,32,32,117,110,115,105,103,110,101,100,32,105,110,116,32
+,95,95,109,120,99,115,114,59,10,125,10,102,101,109,111,100,101,95,116,59,10,10,47,47,32
+,102,117,110,99,116,105,111,110,115,10,105,110,116,32,102,101,99,108,101,97,114,101,120,99,101
+,112,116,40,105,110,116,32,101,120,99,101,112,116,115,41,59,10,105,110,116,32,102,101,103,101
+,116,101,120,99,101,112,116,102,108,97,103,40,102,101,120,99,101,112,116,95,116,42,32,102,108
+,97,103,112,44,32,105,110,116,32,101,120,99,101,112,116,115,41,59,10,105,110,116,32,102,101
+,114,97,105,115,101,101,120,99,101,112,116,40,105,110,116,32,101,120,99,101,112,116,115,41,59
+,10,105,110,116,32,102,101,115,101,116,101,120,99,101,112,116,40,105,110,116,32,101,120,99,101
+,112,116,115,41,59,10,105,110,116,32,102,101,115,101,116,101,120,99,101,112,116,102,108,97,103
+,40,99,111,110,115,116,32,102,101,120,99,101,112,116,95,116,42,32,102,108,97,103,112,44,32
+,105,110,116,32,101,120,99,101,112,116,115,41,59,10,105,110,116,32,102,101,116,101,115,116,101
+,120,99,101,112,116,102,108,97,103,40,99,111,110,115,116,32,102,101,120,99,101,112,116,95,116
+,42,32,102,108,97,103,112,44,32,105,110,116,32,101,120,99,101,112,116,115,41,59,10,105,110
+,116,32,102,101,116,101,115,116,101,120,99,101,112,116,40,105,110,116,32,101,120,99,101,112,116
+,115,41,59,10,105,110,116,32,102,101,103,101,116,109,111,100,101,40,102,101,109,111,100,101,95
+,116,42,32,109,111,100,101,112,41,59,10,105,110,116,32,102,101,103,101,116,114,111,117,110,100
+,40,118,111,105,100,41,59,10,105,110,116,32,102,101,115,101,116,109,111,100,101,40,99,111,110
+,115,116,32,102,101,109,111,100,101,95,116,42,32,109,111,100,101,112,41,59,10,105,110,116,32
+,102,101,115,101,116,114,111,117,110,100,40,105,110,116,32,114,110,100,41,59,10,105,110,116,32
+,102,101,103,101,116,101,110,118,40,102,101,110,118,95,116,42,32,101,110,118,112,41,59,10,105
+,110,116,32,102,101,104,111,108,100,101,120,99,101,112,116,40,102,101,110,118,95,116,42,32,101
+,110,118,112,41,59,10,105,110,116,32,102,101,115,101,116,101,110,118,40,99,111,110,115,116,32
+,102,101,110,118,95,116,42,32,101,110,118,112,41,59,10,105,110,116,32,102,101,117,112,100,97
+,116,101,101,110,118,40,99,111,110,115,116,32,102,101,110,118,95,116,42,32,101,110,118,112,41
+,59,10
 , 0 };
 static const char file_float_h[] = {
 
 
 
-35,112,114,97,103,109,97,32,111,110,99,101,13,10,13,10,35,100,101,102,105,110,101,32,32
-,70,76,84,95,82,79,85,78,68,83,32,49,13,10,35,100,101,102,105,110,101,32,32,70,76
-,84,95,69,86,65,76,95,77,69,84,72,79,68,32,48,13,10,35,100,101,102,105,110,101,32
-,32,70,76,84,95,72,65,83,95,83,85,66,78,79,82,77,32,49,13,10,35,100,101,102,105
-,110,101,32,32,68,66,76,95,72,65,83,95,83,85,66,78,79,82,77,32,49,13,10,35,100
-,101,102,105,110,101,32,32,76,68,66,76,95,72,65,83,95,83,85,66,78,79,82,77,32,49
-,13,10,35,100,101,102,105,110,101,32,32,70,76,84,95,82,65,68,73,88,32,50,13,10,35
-,100,101,102,105,110,101,32,32,70,76,84,95,77,65,78,84,95,68,73,71,32,50,52,13,10
-,35,100,101,102,105,110,101,32,32,68,66,76,95,77,65,78,84,95,68,73,71,32,53,51,13
-,10,35,100,101,102,105,110,101,32,32,76,68,66,76,95,77,65,78,84,95,68,73,71,32,54
-,52,13,10,35,100,101,102,105,110,101,32,32,70,76,84,95,68,69,67,73,77,65,76,95,68
-,73,71,32,57,13,10,35,100,101,102,105,110,101,32,32,68,66,76,95,68,69,67,73,77,65
-,76,95,68,73,71,32,49,55,13,10,35,100,101,102,105,110,101,32,32,76,68,66,76,95,68
-,69,67,73,77,65,76,95,68,73,71,32,50,49,13,10,35,100,101,102,105,110,101,32,32,68
-,69,67,73,77,65,76,95,68,73,71,32,50,49,13,10,35,100,101,102,105,110,101,32,32,70
-,76,84,95,68,73,71,32,54,13,10,35,100,101,102,105,110,101,32,32,68,66,76,95,68,73
-,71,32,49,53,13,10,35,100,101,102,105,110,101,32,32,76,68,66,76,95,68,73,71,32,49
-,56,13,10,35,100,101,102,105,110,101,32,32,70,76,84,95,77,73,78,95,69,88,80,32,40
-,45,49,50,53,41,13,10,35,100,101,102,105,110,101,32,32,68,66,76,95,77,73,78,95,69
-,88,80,32,40,45,49,48,50,49,41,13,10,35,100,101,102,105,110,101,32,32,76,68,66,76
-,95,77,73,78,95,69,88,80,32,40,45,49,54,51,56,49,41,13,10,35,100,101,102,105,110
-,101,32,32,70,76,84,95,77,73,78,95,49,48,95,69,88,80,32,40,45,51,55,41,13,10
-,35,100,101,102,105,110,101,32,32,68,66,76,95,77,73,78,95,49,48,95,69,88,80,32,40
-,45,51,48,55,41,13,10,35,100,101,102,105,110,101,32,32,76,68,66,76,95,77,73,78,95
-,49,48,95,69,88,80,32,40,45,52,57,51,49,41,13,10,35,100,101,102,105,110,101,32,32
-,70,76,84,95,77,65,88,95,69,88,80,32,49,50,56,13,10,35,100,101,102,105,110,101,32
-,32,68,66,76,95,77,65,88,95,69,88,80,32,49,48,50,52,13,10,35,100,101,102,105,110
-,101,32,32,76,68,66,76,95,77,65,88,95,69,88,80,32,49,54,51,56,52,13,10,35,100
-,101,102,105,110,101,32,32,70,76,84,95,77,65,88,95,49,48,95,69,88,80,32,51,56,13
-,10,35,100,101,102,105,110,101,32,32,68,66,76,95,77,65,88,95,49,48,95,69,88,80,32
-,51,48,56,13,10,35,100,101,102,105,110,101,32,32,76,68,66,76,95,77,65,88,95,49,48
-,95,69,88,80,32,52,57,51,50,13,10,35,100,101,102,105,110,101,32,32,70,76,84,95,77
-,65,88,32,51,46,52,48,50,56,50,51,52,54,54,51,56,53,50,56,56,53,57,56,49,49
-,55,48,52,49,56,51,52,56,52,53,49,54,57,50,53,101,43,51,56,70,13,10,35,100,101
-,102,105,110,101,32,32,68,66,76,95,77,65,88,32,40,40,100,111,117,98,108,101,41,49,46
-,55,57,55,54,57,51,49,51,52,56,54,50,51,49,53,55,48,56,49,52,53,50,55,52,50
-,51,55,51,49,55,48,52,51,53,55,101,43,51,48,56,76,41,13,10,35,100,101,102,105,110
-,101,32,32,76,68,66,76,95,77,65,88,32,49,46,49,56,57,55,51,49,52,57,53,51,53
-,55,50,51,49,55,54,53,48,50,49,50,54,51,56,53,51,48,51,48,57,55,48,50,49,101
-,43,52,57,51,50,76,13,10,35,100,101,102,105,110,101,32,32,70,76,84,95,69,80,83,73
-,76,79,78,32,49,46,49,57,50,48,57,50,56,57,53,53,48,55,56,49,50,53,48,48,48
-,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,101,45,55,70,13,10,35,100,101
-,102,105,110,101,32,32,68,66,76,95,69,80,83,73,76,79,78,32,40,40,100,111,117,98,108
-,101,41,50,46,50,50,48,52,52,54,48,52,57,50,53,48,51,49,51,48,56,48,56,52,55
-,50,54,51,51,51,54,49,56,49,54,52,48,54,50,101,45,49,54,76,41,13,10,35,100,101
-,102,105,110,101,32,32,76,68,66,76,95,69,80,83,73,76,79,78,32,49,46,48,56,52,50
-,48,50,49,55,50,52,56,53,53,48,52,52,51,52,48,48,55,52,53,50,56,48,48,56,54
-,57,57,52,49,55,49,101,45,49,57,76,13,10,35,100,101,102,105,110,101,32,32,70,76,84
-,95,77,73,78,32,49,46,49,55,53,52,57,52,51,53,48,56,50,50,50,56,55,53,48,55
-,57,54,56,55,51,54,53,51,55,50,50,50,50,52,53,54,56,101,45,51,56,70,13,10,35
-,100,101,102,105,110,101,32,32,68,66,76,95,77,73,78,32,40,40,100,111,117,98,108,101,41
-,50,46,50,50,53,48,55,51,56,53,56,53,48,55,50,48,49,51,56,51,48,57,48,50,51
-,50,55,49,55,51,51,50,52,48,52,48,54,101,45,51,48,56,76,41,13,10,35,100,101,102
-,105,110,101,32,32,76,68,66,76,95,77,73,78,32,51,46,51,54,50,49,48,51,49,52,51
-,49,49,50,48,57,51,53,48,54,50,54,50,54,55,55,56,49,55,51,50,49,55,53,50,54
-,48,101,45,52,57,51,50,76,13,10,35,100,101,102,105,110,101,32,32,70,76,84,95,84,82
-,85,69,95,77,73,78,32,49,46,52,48,49,50,57,56,52,54,52,51,50,52,56,49,55,48
-,55,48,57,50,51,55,50,57,53,56,51,50,56,57,57,49,54,49,51,101,45,52,53,70,13
-,10,35,100,101,102,105,110,101,32,32,68,66,76,95,84,82,85,69,95,77,73,78,32,40,40
-,100,111,117,98,108,101,41,52,46,57,52,48,54,53,54,52,53,56,52,49,50,52,54,53,52
-,52,49,55,54,53,54,56,55,57,50,56,54,56,50,50,49,51,55,50,101,45,51,50,52,76
-,41,13,10,35,100,101,102,105,110,101,32,32,76,68,66,76,95,84,82,85,69,95,77,73,78
-,32,51,46,54,52,53,49,57,57,53,51,49,56,56,50,52,55,52,54,48,50,53,50,56,52
-,48,53,57,51,51,54,49,57,52,49,57,56,50,101,45,52,57,53,49,76,13,10
+35,112,114,97,103,109,97,32,111,110,99,101,10,10,35,100,101,102,105,110,101,32,32,70,76
+,84,95,82,79,85,78,68,83,32,49,10,35,100,101,102,105,110,101,32,32,70,76,84,95,69
+,86,65,76,95,77,69,84,72,79,68,32,48,10,35,100,101,102,105,110,101,32,32,70,76,84
+,95,72,65,83,95,83,85,66,78,79,82,77,32,49,10,35,100,101,102,105,110,101,32,32,68
+,66,76,95,72,65,83,95,83,85,66,78,79,82,77,32,49,10,35,100,101,102,105,110,101,32
+,32,76,68,66,76,95,72,65,83,95,83,85,66,78,79,82,77,32,49,10,35,100,101,102,105
+,110,101,32,32,70,76,84,95,82,65,68,73,88,32,50,10,35,100,101,102,105,110,101,32,32
+,70,76,84,95,77,65,78,84,95,68,73,71,32,50,52,10,35,100,101,102,105,110,101,32,32
+,68,66,76,95,77,65,78,84,95,68,73,71,32,53,51,10,35,100,101,102,105,110,101,32,32
+,76,68,66,76,95,77,65,78,84,95,68,73,71,32,54,52,10,35,100,101,102,105,110,101,32
+,32,70,76,84,95,68,69,67,73,77,65,76,95,68,73,71,32,57,10,35,100,101,102,105,110
+,101,32,32,68,66,76,95,68,69,67,73,77,65,76,95,68,73,71,32,49,55,10,35,100,101
+,102,105,110,101,32,32,76,68,66,76,95,68,69,67,73,77,65,76,95,68,73,71,32,50,49
+,10,35,100,101,102,105,110,101,32,32,68,69,67,73,77,65,76,95,68,73,71,32,50,49,10
+,35,100,101,102,105,110,101,32,32,70,76,84,95,68,73,71,32,54,10,35,100,101,102,105,110
+,101,32,32,68,66,76,95,68,73,71,32,49,53,10,35,100,101,102,105,110,101,32,32,76,68
+,66,76,95,68,73,71,32,49,56,10,35,100,101,102,105,110,101,32,32,70,76,84,95,77,73
+,78,95,69,88,80,32,40,45,49,50,53,41,10,35,100,101,102,105,110,101,32,32,68,66,76
+,95,77,73,78,95,69,88,80,32,40,45,49,48,50,49,41,10,35,100,101,102,105,110,101,32
+,32,76,68,66,76,95,77,73,78,95,69,88,80,32,40,45,49,54,51,56,49,41,10,35,100
+,101,102,105,110,101,32,32,70,76,84,95,77,73,78,95,49,48,95,69,88,80,32,40,45,51
+,55,41,10,35,100,101,102,105,110,101,32,32,68,66,76,95,77,73,78,95,49,48,95,69,88
+,80,32,40,45,51,48,55,41,10,35,100,101,102,105,110,101,32,32,76,68,66,76,95,77,73
+,78,95,49,48,95,69,88,80,32,40,45,52,57,51,49,41,10,35,100,101,102,105,110,101,32
+,32,70,76,84,95,77,65,88,95,69,88,80,32,49,50,56,10,35,100,101,102,105,110,101,32
+,32,68,66,76,95,77,65,88,95,69,88,80,32,49,48,50,52,10,35,100,101,102,105,110,101
+,32,32,76,68,66,76,95,77,65,88,95,69,88,80,32,49,54,51,56,52,10,35,100,101,102
+,105,110,101,32,32,70,76,84,95,77,65,88,95,49,48,95,69,88,80,32,51,56,10,35,100
+,101,102,105,110,101,32,32,68,66,76,95,77,65,88,95,49,48,95,69,88,80,32,51,48,56
+,10,35,100,101,102,105,110,101,32,32,76,68,66,76,95,77,65,88,95,49,48,95,69,88,80
+,32,52,57,51,50,10,35,100,101,102,105,110,101,32,32,70,76,84,95,77,65,88,32,51,46
+,52,48,50,56,50,51,52,54,54,51,56,53,50,56,56,53,57,56,49,49,55,48,52,49,56
+,51,52,56,52,53,49,54,57,50,53,101,43,51,56,70,10,35,100,101,102,105,110,101,32,32
+,68,66,76,95,77,65,88,32,40,40,100,111,117,98,108,101,41,49,46,55,57,55,54,57,51
+,49,51,52,56,54,50,51,49,53,55,48,56,49,52,53,50,55,52,50,51,55,51,49,55,48
+,52,51,53,55,101,43,51,48,56,76,41,10,35,100,101,102,105,110,101,32,32,76,68,66,76
+,95,77,65,88,32,49,46,49,56,57,55,51,49,52,57,53,51,53,55,50,51,49,55,54,53
+,48,50,49,50,54,51,56,53,51,48,51,48,57,55,48,50,49,101,43,52,57,51,50,76,10
+,35,100,101,102,105,110,101,32,32,70,76,84,95,69,80,83,73,76,79,78,32,49,46,49,57
+,50,48,57,50,56,57,53,53,48,55,56,49,50,53,48,48,48,48,48,48,48,48,48,48,48
+,48,48,48,48,48,48,48,48,101,45,55,70,10,35,100,101,102,105,110,101,32,32,68,66,76
+,95,69,80,83,73,76,79,78,32,40,40,100,111,117,98,108,101,41,50,46,50,50,48,52,52
+,54,48,52,57,50,53,48,51,49,51,48,56,48,56,52,55,50,54,51,51,51,54,49,56,49
+,54,52,48,54,50,101,45,49,54,76,41,10,35,100,101,102,105,110,101,32,32,76,68,66,76
+,95,69,80,83,73,76,79,78,32,49,46,48,56,52,50,48,50,49,55,50,52,56,53,53,48
+,52,52,51,52,48,48,55,52,53,50,56,48,48,56,54,57,57,52,49,55,49,101,45,49,57
+,76,10,35,100,101,102,105,110,101,32,32,70,76,84,95,77,73,78,32,49,46,49,55,53,52
+,57,52,51,53,48,56,50,50,50,56,55,53,48,55,57,54,56,55,51,54,53,51,55,50,50
+,50,50,52,53,54,56,101,45,51,56,70,10,35,100,101,102,105,110,101,32,32,68,66,76,95
+,77,73,78,32,40,40,100,111,117,98,108,101,41,50,46,50,50,53,48,55,51,56,53,56,53
+,48,55,50,48,49,51,56,51,48,57,48,50,51,50,55,49,55,51,51,50,52,48,52,48,54
+,101,45,51,48,56,76,41,10,35,100,101,102,105,110,101,32,32,76,68,66,76,95,77,73,78
+,32,51,46,51,54,50,49,48,51,49,52,51,49,49,50,48,57,51,53,48,54,50,54,50,54
+,55,55,56,49,55,51,50,49,55,53,50,54,48,101,45,52,57,51,50,76,10,35,100,101,102
+,105,110,101,32,32,70,76,84,95,84,82,85,69,95,77,73,78,32,49,46,52,48,49,50,57
+,56,52,54,52,51,50,52,56,49,55,48,55,48,57,50,51,55,50,57,53,56,51,50,56,57
+,57,49,54,49,51,101,45,52,53,70,10,35,100,101,102,105,110,101,32,32,68,66,76,95,84
+,82,85,69,95,77,73,78,32,40,40,100,111,117,98,108,101,41,52,46,57,52,48,54,53,54
+,52,53,56,52,49,50,52,54,53,52,52,49,55,54,53,54,56,55,57,50,56,54,56,50,50
+,49,51,55,50,101,45,51,50,52,76,41,10,35,100,101,102,105,110,101,32,32,76,68,66,76
+,95,84,82,85,69,95,77,73,78,32,51,46,54,52,53,49,57,57,53,51,49,56,56,50,52
+,55,52,54,48,50,53,50,56,52,48,53,57,51,51,54,49,57,52,49,57,56,50,101,45,52
+,57,53,49,76,10
 , 0 };
 static const char file_inttypes_h[] = {
 
 
 
-35,112,114,97,103,109,97,32,111,110,99,101,13,10,13,10,35,105,102,100,101,102,32,95,87
-,73,78,51,50,13,10,13,10,35,100,101,102,105,110,101,32,80,82,73,100,56,32,32,34,104
-,104,100,34,13,10,35,100,101,102,105,110,101,32,80,82,73,100,49,54,32,32,34,104,100,34
-,13,10,35,100,101,102,105,110,101,32,80,82,73,100,51,50,32,32,34,100,34,13,10,35,100
-,101,102,105,110,101,32,80,82,73,100,54,52,32,32,34,108,108,100,34,13,10,35,100,101,102
-,105,110,101,32,80,82,73,100,76,69,65,83,84,56,32,80,82,73,100,56,13,10,35,100,101
-,102,105,110,101,32,80,82,73,100,76,69,65,83,84,49,54,32,32,80,82,73,100,49,54,13
-,10,35,100,101,102,105,110,101,32,80,82,73,100,76,69,65,83,84,51,50,32,32,80,82,73
-,100,51,50,13,10,35,100,101,102,105,110,101,32,80,82,73,100,76,69,65,83,84,54,52,32
-,32,80,82,73,100,54,52,13,10,35,100,101,102,105,110,101,32,80,82,73,100,70,65,83,84
-,56,32,80,82,73,100,56,13,10,35,100,101,102,105,110,101,32,80,82,73,100,70,65,83,84
-,49,54,32,80,82,73,100,51,50,13,10,35,100,101,102,105,110,101,32,80,82,73,100,70,65
-,83,84,51,50,32,80,82,73,100,51,50,13,10,35,100,101,102,105,110,101,32,80,82,73,100
-,70,65,83,84,54,52,32,80,82,73,100,54,52,13,10,35,100,101,102,105,110,101,32,80,82
-,73,100,77,65,88,32,80,82,73,100,54,52,13,10,35,105,102,100,101,102,32,95,87,73,78
-,54,52,13,10,32,35,100,101,102,105,110,101,32,80,82,73,100,80,84,82,32,32,80,82,73
-,100,54,52,13,10,35,101,108,115,101,13,10,32,35,100,101,102,105,110,101,32,80,82,73,100
-,80,84,82,32,32,80,82,73,100,51,50,13,10,35,101,110,100,105,102,13,10,13,10,35,100
-,101,102,105,110,101,32,80,82,73,105,56,32,32,34,104,104,105,34,13,10,35,100,101,102,105
-,110,101,32,80,82,73,105,49,54,32,32,34,104,105,34,13,10,35,100,101,102,105,110,101,32
-,80,82,73,105,51,50,32,32,34,105,34,13,10,35,100,101,102,105,110,101,32,80,82,73,105
-,54,52,32,32,34,108,108,105,34,13,10,35,100,101,102,105,110,101,32,80,82,73,105,76,69
-,65,83,84,56,32,80,82,73,105,56,13,10,35,100,101,102,105,110,101,32,80,82,73,105,76
-,69,65,83,84,49,54,32,32,80,82,73,105,49,54,13,10,35,100,101,102,105,110,101,32,80
-,82,73,105,76,69,65,83,84,51,50,32,32,80,82,73,105,51,50,13,10,35,100,101,102,105
-,110,101,32,80,82,73,105,76,69,65,83,84,54,52,32,32,80,82,73,105,54,52,13,10,35
-,100,101,102,105,110,101,32,80,82,73,105,70,65,83,84,56,32,80,82,73,105,56,13,10,35
-,100,101,102,105,110,101,32,80,82,73,105,70,65,83,84,49,54,32,80,82,73,105,51,50,13
-,10,35,100,101,102,105,110,101,32,80,82,73,105,70,65,83,84,51,50,32,80,82,73,105,51
-,50,13,10,35,100,101,102,105,110,101,32,80,82,73,105,70,65,83,84,54,52,32,80,82,73
-,105,54,52,13,10,35,100,101,102,105,110,101,32,80,82,73,105,77,65,88,32,80,82,73,105
-,54,52,13,10,35,105,102,100,101,102,32,95,87,73,78,54,52,13,10,32,35,100,101,102,105
-,110,101,32,80,82,73,105,80,84,82,32,32,80,82,73,105,54,52,13,10,35,101,108,115,101
-,13,10,32,35,100,101,102,105,110,101,32,80,82,73,105,80,84,82,32,32,80,82,73,105,51
-,50,13,10,35,101,110,100,105,102,13,10,13,10,35,100,101,102,105,110,101,32,80,82,73,111
-,56,32,32,34,104,104,111,34,13,10,35,100,101,102,105,110,101,32,80,82,73,111,49,54,32
-,32,34,104,111,34,13,10,35,100,101,102,105,110,101,32,80,82,73,111,51,50,32,32,34,111
-,34,13,10,35,100,101,102,105,110,101,32,80,82,73,111,54,52,32,32,34,108,108,111,34,13
-,10,35,100,101,102,105,110,101,32,80,82,73,111,76,69,65,83,84,56,32,80,82,73,111,56
-,13,10,35,100,101,102,105,110,101,32,80,82,73,111,76,69,65,83,84,49,54,32,32,80,82
-,73,111,49,54,13,10,35,100,101,102,105,110,101,32,80,82,73,111,76,69,65,83,84,51,50
-,32,32,80,82,73,111,51,50,13,10,35,100,101,102,105,110,101,32,80,82,73,111,76,69,65
-,83,84,54,52,32,32,80,82,73,111,54,52,13,10,35,100,101,102,105,110,101,32,80,82,73
-,111,70,65,83,84,56,32,80,82,73,111,56,13,10,35,100,101,102,105,110,101,32,80,82,73
-,111,70,65,83,84,49,54,32,80,82,73,111,51,50,13,10,35,100,101,102,105,110,101,32,80
-,82,73,111,70,65,83,84,51,50,32,80,82,73,111,51,50,13,10,35,100,101,102,105,110,101
-,32,80,82,73,111,70,65,83,84,54,52,32,80,82,73,111,54,52,13,10,35,100,101,102,105
-,110,101,32,80,82,73,111,77,65,88,32,80,82,73,111,54,52,13,10,35,105,102,100,101,102
-,32,95,87,73,78,54,52,13,10,32,35,100,101,102,105,110,101,32,80,82,73,111,80,84,82
-,32,32,80,82,73,111,54,52,13,10,35,101,108,115,101,13,10,32,35,100,101,102,105,110,101
-,32,80,82,73,111,80,84,82,32,32,80,82,73,111,51,50,13,10,35,101,110,100,105,102,13
-,10,13,10,35,100,101,102,105,110,101,32,80,82,73,117,56,32,32,34,104,104,117,34,13,10
-,35,100,101,102,105,110,101,32,80,82,73,117,49,54,32,32,34,104,117,34,13,10,35,100,101
-,102,105,110,101,32,80,82,73,117,51,50,32,32,34,117,34,13,10,35,100,101,102,105,110,101
-,32,80,82,73,117,54,52,32,32,34,108,108,117,34,13,10,35,100,101,102,105,110,101,32,80
-,82,73,117,76,69,65,83,84,56,32,80,82,73,117,56,13,10,35,100,101,102,105,110,101,32
-,80,82,73,117,76,69,65,83,84,49,54,32,32,80,82,73,117,49,54,13,10,35,100,101,102
-,105,110,101,32,80,82,73,117,76,69,65,83,84,51,50,32,32,80,82,73,117,51,50,13,10
-,35,100,101,102,105,110,101,32,80,82,73,117,76,69,65,83,84,54,52,32,32,80,82,73,117
-,54,52,13,10,35,100,101,102,105,110,101,32,80,82,73,117,70,65,83,84,56,32,80,82,73
-,117,56,13,10,35,100,101,102,105,110,101,32,80,82,73,117,70,65,83,84,49,54,32,80,82
-,73,117,51,50,13,10,35,100,101,102,105,110,101,32,80,82,73,117,70,65,83,84,51,50,32
-,80,82,73,117,51,50,13,10,35,100,101,102,105,110,101,32,80,82,73,117,70,65,83,84,54
-,52,32,80,82,73,117,54,52,13,10,35,100,101,102,105,110,101,32,80,82,73,117,77,65,88
-,32,80,82,73,117,54,52,13,10,35,105,102,100,101,102,32,95,87,73,78,54,52,13,10,32
-,35,100,101,102,105,110,101,32,80,82,73,117,80,84,82,32,32,80,82,73,117,54,52,13,10
-,35,101,108,115,101,13,10,32,35,100,101,102,105,110,101,32,80,82,73,117,80,84,82,32,32
-,80,82,73,117,51,50,13,10,35,101,110,100,105,102,13,10,13,10,35,100,101,102,105,110,101
-,32,80,82,73,120,56,32,32,34,104,104,120,34,13,10,35,100,101,102,105,110,101,32,80,82
-,73,120,49,54,32,32,34,104,120,34,13,10,35,100,101,102,105,110,101,32,80,82,73,120,51
-,50,32,32,34,120,34,13,10,35,100,101,102,105,110,101,32,80,82,73,120,54,52,32,32,34
-,108,108,120,34,13,10,35,100,101,102,105,110,101,32,80,82,73,120,76,69,65,83,84,56,32
-,80,82,73,120,56,13,10,35,100,101,102,105,110,101,32,80,82,73,120,76,69,65,83,84,49
-,54,32,32,80,82,73,120,49,54,13,10,35,100,101,102,105,110,101,32,80,82,73,120,76,69
-,65,83,84,51,50,32,32,80,82,73,120,51,50,13,10,35,100,101,102,105,110,101,32,80,82
-,73,120,76,69,65,83,84,54,52,32,32,80,82,73,120,54,52,13,10,35,100,101,102,105,110
-,101,32,80,82,73,120,70,65,83,84,56,32,80,82,73,120,56,13,10,35,100,101,102,105,110
-,101,32,80,82,73,120,70,65,83,84,49,54,32,80,82,73,120,51,50,13,10,35,100,101,102
-,105,110,101,32,80,82,73,120,70,65,83,84,51,50,32,80,82,73,120,51,50,13,10,35,100
-,101,102,105,110,101,32,80,82,73,120,70,65,83,84,54,52,32,80,82,73,120,54,52,13,10
-,35,100,101,102,105,110,101,32,80,82,73,120,77,65,88,32,80,82,73,120,54,52,13,10,35
-,105,102,100,101,102,32,95,87,73,78,54,52,13,10,32,35,100,101,102,105,110,101,32,80,82
-,73,120,80,84,82,32,32,80,82,73,120,54,52,13,10,35,101,108,115,101,13,10,32,35,100
-,101,102,105,110,101,32,80,82,73,120,80,84,82,32,32,80,82,73,120,51,50,13,10,35,101
-,110,100,105,102,13,10,13,10,35,100,101,102,105,110,101,32,80,82,73,88,56,32,32,34,104
-,104,88,34,13,10,35,100,101,102,105,110,101,32,80,82,73,88,49,54,32,32,34,104,88,34
-,13,10,35,100,101,102,105,110,101,32,80,82,73,88,51,50,32,32,34,88,34,13,10,35,100
-,101,102,105,110,101,32,80,82,73,88,54,52,32,32,34,108,108,88,34,13,10,35,100,101,102
-,105,110,101,32,80,82,73,88,76,69,65,83,84,56,32,80,82,73,88,56,13,10,35,100,101
-,102,105,110,101,32,80,82,73,88,76,69,65,83,84,49,54,32,32,80,82,73,88,49,54,13
-,10,35,100,101,102,105,110,101,32,80,82,73,88,76,69,65,83,84,51,50,32,32,80,82,73
-,88,51,50,13,10,35,100,101,102,105,110,101,32,80,82,73,88,76,69,65,83,84,54,52,32
-,32,80,82,73,88,54,52,13,10,35,100,101,102,105,110,101,32,80,82,73,88,70,65,83,84
-,56,32,80,82,73,88,56,13,10,35,100,101,102,105,110,101,32,80,82,73,88,70,65,83,84
-,49,54,32,80,82,73,88,51,50,13,10,35,100,101,102,105,110,101,32,80,82,73,88,70,65
-,83,84,51,50,32,80,82,73,88,51,50,13,10,35,100,101,102,105,110,101,32,80,82,73,88
-,70,65,83,84,54,52,32,80,82,73,88,54,52,13,10,35,100,101,102,105,110,101,32,80,82
-,73,88,77,65,88,32,80,82,73,88,54,52,13,10,35,105,102,100,101,102,32,95,87,73,78
-,54,52,13,10,32,35,100,101,102,105,110,101,32,80,82,73,88,80,84,82,32,32,80,82,73
-,88,54,52,13,10,35,101,108,115,101,13,10,32,35,100,101,102,105,110,101,32,80,82,73,88
-,80,84,82,32,32,80,82,73,88,51,50,13,10,35,101,110,100,105,102,13,10,13,10,13,10
-,35,100,101,102,105,110,101,32,83,67,78,100,56,32,32,34,104,104,100,34,13,10,35,100,101
-,102,105,110,101,32,83,67,78,100,49,54,32,32,34,104,100,34,13,10,35,100,101,102,105,110
-,101,32,83,67,78,100,51,50,32,32,34,100,34,13,10,35,100,101,102,105,110,101,32,83,67
-,78,100,54,52,32,32,34,108,108,100,34,13,10,35,100,101,102,105,110,101,32,83,67,78,100
-,76,69,65,83,84,56,32,83,67,78,100,56,13,10,35,100,101,102,105,110,101,32,83,67,78
-,100,76,69,65,83,84,49,54,32,32,83,67,78,100,49,54,13,10,35,100,101,102,105,110,101
-,32,83,67,78,100,76,69,65,83,84,51,50,32,32,83,67,78,100,51,50,13,10,35,100,101
-,102,105,110,101,32,83,67,78,100,76,69,65,83,84,54,52,32,32,83,67,78,100,54,52,13
-,10,35,100,101,102,105,110,101,32,83,67,78,100,70,65,83,84,56,32,83,67,78,100,56,13
-,10,35,100,101,102,105,110,101,32,83,67,78,100,70,65,83,84,49,54,32,83,67,78,100,51
-,50,13,10,35,100,101,102,105,110,101,32,83,67,78,100,70,65,83,84,51,50,32,83,67,78
-,100,51,50,13,10,35,100,101,102,105,110,101,32,83,67,78,100,70,65,83,84,54,52,32,83
-,67,78,100,54,52,13,10,35,100,101,102,105,110,101,32,83,67,78,100,77,65,88,32,83,67
-,78,100,54,52,13,10,35,105,102,100,101,102,32,95,87,73,78,54,52,13,10,32,35,100,101
-,102,105,110,101,32,83,67,78,100,80,84,82,32,32,83,67,78,100,54,52,13,10,35,101,108
-,115,101,13,10,32,35,100,101,102,105,110,101,32,83,67,78,100,80,84,82,32,32,83,67,78
-,100,51,50,13,10,35,101,110,100,105,102,13,10,13,10,35,100,101,102,105,110,101,32,83,67
-,78,105,56,32,32,34,104,104,105,34,13,10,35,100,101,102,105,110,101,32,83,67,78,105,49
-,54,32,32,34,104,105,34,13,10,35,100,101,102,105,110,101,32,83,67,78,105,51,50,32,32
-,34,105,34,13,10,35,100,101,102,105,110,101,32,83,67,78,105,54,52,32,32,34,108,108,105
-,34,13,10,35,100,101,102,105,110,101,32,83,67,78,105,76,69,65,83,84,56,32,83,67,78
-,105,56,13,10,35,100,101,102,105,110,101,32,83,67,78,105,76,69,65,83,84,49,54,32,32
-,83,67,78,105,49,54,13,10,35,100,101,102,105,110,101,32,83,67,78,105,76,69,65,83,84
-,51,50,32,32,83,67,78,105,51,50,13,10,35,100,101,102,105,110,101,32,83,67,78,105,76
-,69,65,83,84,54,52,32,32,83,67,78,105,54,52,13,10,35,100,101,102,105,110,101,32,83
-,67,78,105,70,65,83,84,56,32,83,67,78,105,56,13,10,35,100,101,102,105,110,101,32,83
-,67,78,105,70,65,83,84,49,54,32,83,67,78,105,51,50,13,10,35,100,101,102,105,110,101
-,32,83,67,78,105,70,65,83,84,51,50,32,83,67,78,105,51,50,13,10,35,100,101,102,105
-,110,101,32,83,67,78,105,70,65,83,84,54,52,32,83,67,78,105,54,52,13,10,35,100,101
-,102,105,110,101,32,83,67,78,105,77,65,88,32,83,67,78,105,54,52,13,10,35,105,102,100
-,101,102,32,95,87,73,78,54,52,13,10,32,35,100,101,102,105,110,101,32,83,67,78,105,80
-,84,82,32,32,83,67,78,105,54,52,13,10,35,101,108,115,101,13,10,32,35,100,101,102,105
-,110,101,32,83,67,78,105,80,84,82,32,32,83,67,78,105,51,50,13,10,35,101,110,100,105
-,102,13,10,13,10,35,100,101,102,105,110,101,32,83,67,78,111,56,32,32,34,104,104,111,34
-,13,10,35,100,101,102,105,110,101,32,83,67,78,111,49,54,32,32,34,104,111,34,13,10,35
-,100,101,102,105,110,101,32,83,67,78,111,51,50,32,32,34,111,34,13,10,35,100,101,102,105
-,110,101,32,83,67,78,111,54,52,32,32,34,108,108,111,34,13,10,35,100,101,102,105,110,101
-,32,83,67,78,111,76,69,65,83,84,56,32,83,67,78,111,56,13,10,35,100,101,102,105,110
-,101,32,83,67,78,111,76,69,65,83,84,49,54,32,32,83,67,78,111,49,54,13,10,35,100
-,101,102,105,110,101,32,83,67,78,111,76,69,65,83,84,51,50,32,32,83,67,78,111,51,50
-,13,10,35,100,101,102,105,110,101,32,83,67,78,111,76,69,65,83,84,54,52,32,32,83,67
-,78,111,54,52,13,10,35,100,101,102,105,110,101,32,83,67,78,111,70,65,83,84,56,32,83
-,67,78,111,56,13,10,35,100,101,102,105,110,101,32,83,67,78,111,70,65,83,84,49,54,32
-,83,67,78,111,51,50,13,10,35,100,101,102,105,110,101,32,83,67,78,111,70,65,83,84,51
-,50,32,83,67,78,111,51,50,13,10,35,100,101,102,105,110,101,32,83,67,78,111,70,65,83
-,84,54,52,32,83,67,78,111,54,52,13,10,35,100,101,102,105,110,101,32,83,67,78,111,77
-,65,88,32,83,67,78,111,54,52,13,10,35,105,102,100,101,102,32,95,87,73,78,54,52,13
-,10,32,35,100,101,102,105,110,101,32,83,67,78,111,80,84,82,32,32,83,67,78,111,54,52
-,13,10,35,101,108,115,101,13,10,32,35,100,101,102,105,110,101,32,83,67,78,111,80,84,82
-,32,32,83,67,78,111,51,50,13,10,35,101,110,100,105,102,13,10,13,10,35,100,101,102,105
-,110,101,32,83,67,78,117,56,32,32,34,104,104,117,34,13,10,35,100,101,102,105,110,101,32
-,83,67,78,117,49,54,32,32,34,104,117,34,13,10,35,100,101,102,105,110,101,32,83,67,78
-,117,51,50,32,32,34,117,34,13,10,35,100,101,102,105,110,101,32,83,67,78,117,54,52,32
-,32,34,108,108,117,34,13,10,35,100,101,102,105,110,101,32,83,67,78,117,76,69,65,83,84
-,56,32,83,67,78,117,56,13,10,35,100,101,102,105,110,101,32,83,67,78,117,76,69,65,83
-,84,49,54,32,32,83,67,78,117,49,54,13,10,35,100,101,102,105,110,101,32,83,67,78,117
-,76,69,65,83,84,51,50,32,32,83,67,78,117,51,50,13,10,35,100,101,102,105,110,101,32
-,83,67,78,117,76,69,65,83,84,54,52,32,32,83,67,78,117,54,52,13,10,35,100,101,102
-,105,110,101,32,83,67,78,117,70,65,83,84,56,32,83,67,78,117,56,13,10,35,100,101,102
-,105,110,101,32,83,67,78,117,70,65,83,84,49,54,32,83,67,78,117,51,50,13,10,35,100
-,101,102,105,110,101,32,83,67,78,117,70,65,83,84,51,50,32,83,67,78,117,51,50,13,10
-,35,100,101,102,105,110,101,32,83,67,78,117,70,65,83,84,54,52,32,83,67,78,117,54,52
-,13,10,35,100,101,102,105,110,101,32,83,67,78,117,77,65,88,32,83,67,78,117,54,52,13
-,10,35,105,102,100,101,102,32,95,87,73,78,54,52,13,10,32,35,100,101,102,105,110,101,32
-,83,67,78,117,80,84,82,32,32,83,67,78,117,54,52,13,10,35,101,108,115,101,13,10,32
-,35,100,101,102,105,110,101,32,83,67,78,117,80,84,82,32,32,83,67,78,117,51,50,13,10
-,35,101,110,100,105,102,13,10,13,10,35,100,101,102,105,110,101,32,83,67,78,120,56,32,32
-,34,104,104,120,34,13,10,35,100,101,102,105,110,101,32,83,67,78,120,49,54,32,32,34,104
-,120,34,13,10,35,100,101,102,105,110,101,32,83,67,78,120,51,50,32,32,34,120,34,13,10
-,35,100,101,102,105,110,101,32,83,67,78,120,54,52,32,32,34,108,108,120,34,13,10,35,100
-,101,102,105,110,101,32,83,67,78,120,76,69,65,83,84,56,32,83,67,78,120,56,13,10,35
+35,112,114,97,103,109,97,32,111,110,99,101,10,10,35,105,102,100,101,102,32,95,87,73,78
+,51,50,10,10,35,100,101,102,105,110,101,32,80,82,73,100,56,32,32,34,104,104,100,34,10
+,35,100,101,102,105,110,101,32,80,82,73,100,49,54,32,32,34,104,100,34,10,35,100,101,102
+,105,110,101,32,80,82,73,100,51,50,32,32,34,100,34,10,35,100,101,102,105,110,101,32,80
+,82,73,100,54,52,32,32,34,108,108,100,34,10,35,100,101,102,105,110,101,32,80,82,73,100
+,76,69,65,83,84,56,32,80,82,73,100,56,10,35,100,101,102,105,110,101,32,80,82,73,100
+,76,69,65,83,84,49,54,32,32,80,82,73,100,49,54,10,35,100,101,102,105,110,101,32,80
+,82,73,100,76,69,65,83,84,51,50,32,32,80,82,73,100,51,50,10,35,100,101,102,105,110
+,101,32,80,82,73,100,76,69,65,83,84,54,52,32,32,80,82,73,100,54,52,10,35,100,101
+,102,105,110,101,32,80,82,73,100,70,65,83,84,56,32,80,82,73,100,56,10,35,100,101,102
+,105,110,101,32,80,82,73,100,70,65,83,84,49,54,32,80,82,73,100,51,50,10,35,100,101
+,102,105,110,101,32,80,82,73,100,70,65,83,84,51,50,32,80,82,73,100,51,50,10,35,100
+,101,102,105,110,101,32,80,82,73,100,70,65,83,84,54,52,32,80,82,73,100,54,52,10,35
+,100,101,102,105,110,101,32,80,82,73,100,77,65,88,32,80,82,73,100,54,52,10,35,105,102
+,100,101,102,32,95,87,73,78,54,52,10,32,35,100,101,102,105,110,101,32,80,82,73,100,80
+,84,82,32,32,80,82,73,100,54,52,10,35,101,108,115,101,10,32,35,100,101,102,105,110,101
+,32,80,82,73,100,80,84,82,32,32,80,82,73,100,51,50,10,35,101,110,100,105,102,10,10
+,35,100,101,102,105,110,101,32,80,82,73,105,56,32,32,34,104,104,105,34,10,35,100,101,102
+,105,110,101,32,80,82,73,105,49,54,32,32,34,104,105,34,10,35,100,101,102,105,110,101,32
+,80,82,73,105,51,50,32,32,34,105,34,10,35,100,101,102,105,110,101,32,80,82,73,105,54
+,52,32,32,34,108,108,105,34,10,35,100,101,102,105,110,101,32,80,82,73,105,76,69,65,83
+,84,56,32,80,82,73,105,56,10,35,100,101,102,105,110,101,32,80,82,73,105,76,69,65,83
+,84,49,54,32,32,80,82,73,105,49,54,10,35,100,101,102,105,110,101,32,80,82,73,105,76
+,69,65,83,84,51,50,32,32,80,82,73,105,51,50,10,35,100,101,102,105,110,101,32,80,82
+,73,105,76,69,65,83,84,54,52,32,32,80,82,73,105,54,52,10,35,100,101,102,105,110,101
+,32,80,82,73,105,70,65,83,84,56,32,80,82,73,105,56,10,35,100,101,102,105,110,101,32
+,80,82,73,105,70,65,83,84,49,54,32,80,82,73,105,51,50,10,35,100,101,102,105,110,101
+,32,80,82,73,105,70,65,83,84,51,50,32,80,82,73,105,51,50,10,35,100,101,102,105,110
+,101,32,80,82,73,105,70,65,83,84,54,52,32,80,82,73,105,54,52,10,35,100,101,102,105
+,110,101,32,80,82,73,105,77,65,88,32,80,82,73,105,54,52,10,35,105,102,100,101,102,32
+,95,87,73,78,54,52,10,32,35,100,101,102,105,110,101,32,80,82,73,105,80,84,82,32,32
+,80,82,73,105,54,52,10,35,101,108,115,101,10,32,35,100,101,102,105,110,101,32,80,82,73
+,105,80,84,82,32,32,80,82,73,105,51,50,10,35,101,110,100,105,102,10,10,35,100,101,102
+,105,110,101,32,80,82,73,111,56,32,32,34,104,104,111,34,10,35,100,101,102,105,110,101,32
+,80,82,73,111,49,54,32,32,34,104,111,34,10,35,100,101,102,105,110,101,32,80,82,73,111
+,51,50,32,32,34,111,34,10,35,100,101,102,105,110,101,32,80,82,73,111,54,52,32,32,34
+,108,108,111,34,10,35,100,101,102,105,110,101,32,80,82,73,111,76,69,65,83,84,56,32,80
+,82,73,111,56,10,35,100,101,102,105,110,101,32,80,82,73,111,76,69,65,83,84,49,54,32
+,32,80,82,73,111,49,54,10,35,100,101,102,105,110,101,32,80,82,73,111,76,69,65,83,84
+,51,50,32,32,80,82,73,111,51,50,10,35,100,101,102,105,110,101,32,80,82,73,111,76,69
+,65,83,84,54,52,32,32,80,82,73,111,54,52,10,35,100,101,102,105,110,101,32,80,82,73
+,111,70,65,83,84,56,32,80,82,73,111,56,10,35,100,101,102,105,110,101,32,80,82,73,111
+,70,65,83,84,49,54,32,80,82,73,111,51,50,10,35,100,101,102,105,110,101,32,80,82,73
+,111,70,65,83,84,51,50,32,80,82,73,111,51,50,10,35,100,101,102,105,110,101,32,80,82
+,73,111,70,65,83,84,54,52,32,80,82,73,111,54,52,10,35,100,101,102,105,110,101,32,80
+,82,73,111,77,65,88,32,80,82,73,111,54,52,10,35,105,102,100,101,102,32,95,87,73,78
+,54,52,10,32,35,100,101,102,105,110,101,32,80,82,73,111,80,84,82,32,32,80,82,73,111
+,54,52,10,35,101,108,115,101,10,32,35,100,101,102,105,110,101,32,80,82,73,111,80,84,82
+,32,32,80,82,73,111,51,50,10,35,101,110,100,105,102,10,10,35,100,101,102,105,110,101,32
+,80,82,73,117,56,32,32,34,104,104,117,34,10,35,100,101,102,105,110,101,32,80,82,73,117
+,49,54,32,32,34,104,117,34,10,35,100,101,102,105,110,101,32,80,82,73,117,51,50,32,32
+,34,117,34,10,35,100,101,102,105,110,101,32,80,82,73,117,54,52,32,32,34,108,108,117,34
+,10,35,100,101,102,105,110,101,32,80,82,73,117,76,69,65,83,84,56,32,80,82,73,117,56
+,10,35,100,101,102,105,110,101,32,80,82,73,117,76,69,65,83,84,49,54,32,32,80,82,73
+,117,49,54,10,35,100,101,102,105,110,101,32,80,82,73,117,76,69,65,83,84,51,50,32,32
+,80,82,73,117,51,50,10,35,100,101,102,105,110,101,32,80,82,73,117,76,69,65,83,84,54
+,52,32,32,80,82,73,117,54,52,10,35,100,101,102,105,110,101,32,80,82,73,117,70,65,83
+,84,56,32,80,82,73,117,56,10,35,100,101,102,105,110,101,32,80,82,73,117,70,65,83,84
+,49,54,32,80,82,73,117,51,50,10,35,100,101,102,105,110,101,32,80,82,73,117,70,65,83
+,84,51,50,32,80,82,73,117,51,50,10,35,100,101,102,105,110,101,32,80,82,73,117,70,65
+,83,84,54,52,32,80,82,73,117,54,52,10,35,100,101,102,105,110,101,32,80,82,73,117,77
+,65,88,32,80,82,73,117,54,52,10,35,105,102,100,101,102,32,95,87,73,78,54,52,10,32
+,35,100,101,102,105,110,101,32,80,82,73,117,80,84,82,32,32,80,82,73,117,54,52,10,35
+,101,108,115,101,10,32,35,100,101,102,105,110,101,32,80,82,73,117,80,84,82,32,32,80,82
+,73,117,51,50,10,35,101,110,100,105,102,10,10,35,100,101,102,105,110,101,32,80,82,73,120
+,56,32,32,34,104,104,120,34,10,35,100,101,102,105,110,101,32,80,82,73,120,49,54,32,32
+,34,104,120,34,10,35,100,101,102,105,110,101,32,80,82,73,120,51,50,32,32,34,120,34,10
+,35,100,101,102,105,110,101,32,80,82,73,120,54,52,32,32,34,108,108,120,34,10,35,100,101
+,102,105,110,101,32,80,82,73,120,76,69,65,83,84,56,32,80,82,73,120,56,10,35,100,101
+,102,105,110,101,32,80,82,73,120,76,69,65,83,84,49,54,32,32,80,82,73,120,49,54,10
+,35,100,101,102,105,110,101,32,80,82,73,120,76,69,65,83,84,51,50,32,32,80,82,73,120
+,51,50,10,35,100,101,102,105,110,101,32,80,82,73,120,76,69,65,83,84,54,52,32,32,80
+,82,73,120,54,52,10,35,100,101,102,105,110,101,32,80,82,73,120,70,65,83,84,56,32,80
+,82,73,120,56,10,35,100,101,102,105,110,101,32,80,82,73,120,70,65,83,84,49,54,32,80
+,82,73,120,51,50,10,35,100,101,102,105,110,101,32,80,82,73,120,70,65,83,84,51,50,32
+,80,82,73,120,51,50,10,35,100,101,102,105,110,101,32,80,82,73,120,70,65,83,84,54,52
+,32,80,82,73,120,54,52,10,35,100,101,102,105,110,101,32,80,82,73,120,77,65,88,32,80
+,82,73,120,54,52,10,35,105,102,100,101,102,32,95,87,73,78,54,52,10,32,35,100,101,102
+,105,110,101,32,80,82,73,120,80,84,82,32,32,80,82,73,120,54,52,10,35,101,108,115,101
+,10,32,35,100,101,102,105,110,101,32,80,82,73,120,80,84,82,32,32,80,82,73,120,51,50
+,10,35,101,110,100,105,102,10,10,35,100,101,102,105,110,101,32,80,82,73,88,56,32,32,34
+,104,104,88,34,10,35,100,101,102,105,110,101,32,80,82,73,88,49,54,32,32,34,104,88,34
+,10,35,100,101,102,105,110,101,32,80,82,73,88,51,50,32,32,34,88,34,10,35,100,101,102
+,105,110,101,32,80,82,73,88,54,52,32,32,34,108,108,88,34,10,35,100,101,102,105,110,101
+,32,80,82,73,88,76,69,65,83,84,56,32,80,82,73,88,56,10,35,100,101,102,105,110,101
+,32,80,82,73,88,76,69,65,83,84,49,54,32,32,80,82,73,88,49,54,10,35,100,101,102
+,105,110,101,32,80,82,73,88,76,69,65,83,84,51,50,32,32,80,82,73,88,51,50,10,35
+,100,101,102,105,110,101,32,80,82,73,88,76,69,65,83,84,54,52,32,32,80,82,73,88,54
+,52,10,35,100,101,102,105,110,101,32,80,82,73,88,70,65,83,84,56,32,80,82,73,88,56
+,10,35,100,101,102,105,110,101,32,80,82,73,88,70,65,83,84,49,54,32,80,82,73,88,51
+,50,10,35,100,101,102,105,110,101,32,80,82,73,88,70,65,83,84,51,50,32,80,82,73,88
+,51,50,10,35,100,101,102,105,110,101,32,80,82,73,88,70,65,83,84,54,52,32,80,82,73
+,88,54,52,10,35,100,101,102,105,110,101,32,80,82,73,88,77,65,88,32,80,82,73,88,54
+,52,10,35,105,102,100,101,102,32,95,87,73,78,54,52,10,32,35,100,101,102,105,110,101,32
+,80,82,73,88,80,84,82,32,32,80,82,73,88,54,52,10,35,101,108,115,101,10,32,35,100
+,101,102,105,110,101,32,80,82,73,88,80,84,82,32,32,80,82,73,88,51,50,10,35,101,110
+,100,105,102,10,10,10,35,100,101,102,105,110,101,32,83,67,78,100,56,32,32,34,104,104,100
+,34,10,35,100,101,102,105,110,101,32,83,67,78,100,49,54,32,32,34,104,100,34,10,35,100
+,101,102,105,110,101,32,83,67,78,100,51,50,32,32,34,100,34,10,35,100,101,102,105,110,101
+,32,83,67,78,100,54,52,32,32,34,108,108,100,34,10,35,100,101,102,105,110,101,32,83,67
+,78,100,76,69,65,83,84,56,32,83,67,78,100,56,10,35,100,101,102,105,110,101,32,83,67
+,78,100,76,69,65,83,84,49,54,32,32,83,67,78,100,49,54,10,35,100,101,102,105,110,101
+,32,83,67,78,100,76,69,65,83,84,51,50,32,32,83,67,78,100,51,50,10,35,100,101,102
+,105,110,101,32,83,67,78,100,76,69,65,83,84,54,52,32,32,83,67,78,100,54,52,10,35
+,100,101,102,105,110,101,32,83,67,78,100,70,65,83,84,56,32,83,67,78,100,56,10,35,100
+,101,102,105,110,101,32,83,67,78,100,70,65,83,84,49,54,32,83,67,78,100,51,50,10,35
+,100,101,102,105,110,101,32,83,67,78,100,70,65,83,84,51,50,32,83,67,78,100,51,50,10
+,35,100,101,102,105,110,101,32,83,67,78,100,70,65,83,84,54,52,32,83,67,78,100,54,52
+,10,35,100,101,102,105,110,101,32,83,67,78,100,77,65,88,32,83,67,78,100,54,52,10,35
+,105,102,100,101,102,32,95,87,73,78,54,52,10,32,35,100,101,102,105,110,101,32,83,67,78
+,100,80,84,82,32,32,83,67,78,100,54,52,10,35,101,108,115,101,10,32,35,100,101,102,105
+,110,101,32,83,67,78,100,80,84,82,32,32,83,67,78,100,51,50,10,35,101,110,100,105,102
+,10,10,35,100,101,102,105,110,101,32,83,67,78,105,56,32,32,34,104,104,105,34,10,35,100
+,101,102,105,110,101,32,83,67,78,105,49,54,32,32,34,104,105,34,10,35,100,101,102,105,110
+,101,32,83,67,78,105,51,50,32,32,34,105,34,10,35,100,101,102,105,110,101,32,83,67,78
+,105,54,52,32,32,34,108,108,105,34,10,35,100,101,102,105,110,101,32,83,67,78,105,76,69
+,65,83,84,56,32,83,67,78,105,56,10,35,100,101,102,105,110,101,32,83,67,78,105,76,69
+,65,83,84,49,54,32,32,83,67,78,105,49,54,10,35,100,101,102,105,110,101,32,83,67,78
+,105,76,69,65,83,84,51,50,32,32,83,67,78,105,51,50,10,35,100,101,102,105,110,101,32
+,83,67,78,105,76,69,65,83,84,54,52,32,32,83,67,78,105,54,52,10,35,100,101,102,105
+,110,101,32,83,67,78,105,70,65,83,84,56,32,83,67,78,105,56,10,35,100,101,102,105,110
+,101,32,83,67,78,105,70,65,83,84,49,54,32,83,67,78,105,51,50,10,35,100,101,102,105
+,110,101,32,83,67,78,105,70,65,83,84,51,50,32,83,67,78,105,51,50,10,35,100,101,102
+,105,110,101,32,83,67,78,105,70,65,83,84,54,52,32,83,67,78,105,54,52,10,35,100,101
+,102,105,110,101,32,83,67,78,105,77,65,88,32,83,67,78,105,54,52,10,35,105,102,100,101
+,102,32,95,87,73,78,54,52,10,32,35,100,101,102,105,110,101,32,83,67,78,105,80,84,82
+,32,32,83,67,78,105,54,52,10,35,101,108,115,101,10,32,35,100,101,102,105,110,101,32,83
+,67,78,105,80,84,82,32,32,83,67,78,105,51,50,10,35,101,110,100,105,102,10,10,35,100
+,101,102,105,110,101,32,83,67,78,111,56,32,32,34,104,104,111,34,10,35,100,101,102,105,110
+,101,32,83,67,78,111,49,54,32,32,34,104,111,34,10,35,100,101,102,105,110,101,32,83,67
+,78,111,51,50,32,32,34,111,34,10,35,100,101,102,105,110,101,32,83,67,78,111,54,52,32
+,32,34,108,108,111,34,10,35,100,101,102,105,110,101,32,83,67,78,111,76,69,65,83,84,56
+,32,83,67,78,111,56,10,35,100,101,102,105,110,101,32,83,67,78,111,76,69,65,83,84,49
+,54,32,32,83,67,78,111,49,54,10,35,100,101,102,105,110,101,32,83,67,78,111,76,69,65
+,83,84,51,50,32,32,83,67,78,111,51,50,10,35,100,101,102,105,110,101,32,83,67,78,111
+,76,69,65,83,84,54,52,32,32,83,67,78,111,54,52,10,35,100,101,102,105,110,101,32,83
+,67,78,111,70,65,83,84,56,32,83,67,78,111,56,10,35,100,101,102,105,110,101,32,83,67
+,78,111,70,65,83,84,49,54,32,83,67,78,111,51,50,10,35,100,101,102,105,110,101,32,83
+,67,78,111,70,65,83,84,51,50,32,83,67,78,111,51,50,10,35,100,101,102,105,110,101,32
+,83,67,78,111,70,65,83,84,54,52,32,83,67,78,111,54,52,10,35,100,101,102,105,110,101
+,32,83,67,78,111,77,65,88,32,83,67,78,111,54,52,10,35,105,102,100,101,102,32,95,87
+,73,78,54,52,10,32,35,100,101,102,105,110,101,32,83,67,78,111,80,84,82,32,32,83,67
+,78,111,54,52,10,35,101,108,115,101,10,32,35,100,101,102,105,110,101,32,83,67,78,111,80
+,84,82,32,32,83,67,78,111,51,50,10,35,101,110,100,105,102,10,10,35,100,101,102,105,110
+,101,32,83,67,78,117,56,32,32,34,104,104,117,34,10,35,100,101,102,105,110,101,32,83,67
+,78,117,49,54,32,32,34,104,117,34,10,35,100,101,102,105,110,101,32,83,67,78,117,51,50
+,32,32,34,117,34,10,35,100,101,102,105,110,101,32,83,67,78,117,54,52,32,32,34,108,108
+,117,34,10,35,100,101,102,105,110,101,32,83,67,78,117,76,69,65,83,84,56,32,83,67,78
+,117,56,10,35,100,101,102,105,110,101,32,83,67,78,117,76,69,65,83,84,49,54,32,32,83
+,67,78,117,49,54,10,35,100,101,102,105,110,101,32,83,67,78,117,76,69,65,83,84,51,50
+,32,32,83,67,78,117,51,50,10,35,100,101,102,105,110,101,32,83,67,78,117,76,69,65,83
+,84,54,52,32,32,83,67,78,117,54,52,10,35,100,101,102,105,110,101,32,83,67,78,117,70
+,65,83,84,56,32,83,67,78,117,56,10,35,100,101,102,105,110,101,32,83,67,78,117,70,65
+,83,84,49,54,32,83,67,78,117,51,50,10,35,100,101,102,105,110,101,32,83,67,78,117,70
+,65,83,84,51,50,32,83,67,78,117,51,50,10,35,100,101,102,105,110,101,32,83,67,78,117
+,70,65,83,84,54,52,32,83,67,78,117,54,52,10,35,100,101,102,105,110,101,32,83,67,78
+,117,77,65,88,32,83,67,78,117,54,52,10,35,105,102,100,101,102,32,95,87,73,78,54,52
+,10,32,35,100,101,102,105,110,101,32,83,67,78,117,80,84,82,32,32,83,67,78,117,54,52
+,10,35,101,108,115,101,10,32,35,100,101,102,105,110,101,32,83,67,78,117,80,84,82,32,32
+,83,67,78,117,51,50,10,35,101,110,100,105,102,10,10,35,100,101,102,105,110,101,32,83,67
+,78,120,56,32,32,34,104,104,120,34,10,35,100,101,102,105,110,101,32,83,67,78,120,49,54
+,32,32,34,104,120,34,10,35,100,101,102,105,110,101,32,83,67,78,120,51,50,32,32,34,120
+,34,10,35,100,101,102,105,110,101,32,83,67,78,120,54,52,32,32,34,108,108,120,34,10,35
+,100,101,102,105,110,101,32,83,67,78,120,76,69,65,83,84,56,32,83,67,78,120,56,10,35
 ,100,101,102,105,110,101,32,83,67,78,120,76,69,65,83,84,49,54,32,32,83,67,78,120,49
-,54,13,10,35,100,101,102,105,110,101,32,83,67,78,120,76,69,65,83,84,51,50,32,32,83
-,67,78,120,51,50,13,10,35,100,101,102,105,110,101,32,83,67,78,120,76,69,65,83,84,54
-,52,32,32,83,67,78,120,54,52,13,10,35,100,101,102,105,110,101,32,83,67,78,120,70,65
-,83,84,56,32,83,67,78,120,56,13,10,35,100,101,102,105,110,101,32,83,67,78,120,70,65
-,83,84,49,54,32,83,67,78,120,51,50,13,10,35,100,101,102,105,110,101,32,83,67,78,120
-,70,65,83,84,51,50,32,83,67,78,120,51,50,13,10,35,100,101,102,105,110,101,32,83,67
-,78,120,70,65,83,84,54,52,32,83,67,78,120,54,52,13,10,35,100,101,102,105,110,101,32
-,83,67,78,120,77,65,88,32,83,67,78,120,54,52,13,10,35,105,102,100,101,102,32,95,87
-,73,78,54,52,13,10,32,35,100,101,102,105,110,101,32,83,67,78,120,80,84,82,32,32,83
-,67,78,120,54,52,13,10,35,101,108,115,101,13,10,32,35,100,101,102,105,110,101,32,83,67
-,78,120,80,84,82,32,32,83,67,78,120,51,50,13,10,35,101,110,100,105,102,13,10,13,10
-,13,10,35,101,110,100,105,102,13,10,13,10,35,105,102,32,95,95,71,78,85,67,95,95,13
-,10,35,119,97,114,110,105,110,103,32,84,79,68,79,13,10,35,101,110,100,105,102,13,10
+,54,10,35,100,101,102,105,110,101,32,83,67,78,120,76,69,65,83,84,51,50,32,32,83,67
+,78,120,51,50,10,35,100,101,102,105,110,101,32,83,67,78,120,76,69,65,83,84,54,52,32
+,32,83,67,78,120,54,52,10,35,100,101,102,105,110,101,32,83,67,78,120,70,65,83,84,56
+,32,83,67,78,120,56,10,35,100,101,102,105,110,101,32,83,67,78,120,70,65,83,84,49,54
+,32,83,67,78,120,51,50,10,35,100,101,102,105,110,101,32,83,67,78,120,70,65,83,84,51
+,50,32,83,67,78,120,51,50,10,35,100,101,102,105,110,101,32,83,67,78,120,70,65,83,84
+,54,52,32,83,67,78,120,54,52,10,35,100,101,102,105,110,101,32,83,67,78,120,77,65,88
+,32,83,67,78,120,54,52,10,35,105,102,100,101,102,32,95,87,73,78,54,52,10,32,35,100
+,101,102,105,110,101,32,83,67,78,120,80,84,82,32,32,83,67,78,120,54,52,10,35,101,108
+,115,101,10,32,35,100,101,102,105,110,101,32,83,67,78,120,80,84,82,32,32,83,67,78,120
+,51,50,10,35,101,110,100,105,102,10,10,10,35,101,110,100,105,102,10,10,35,105,102,32,95
+,95,71,78,85,67,95,95,10,35,119,97,114,110,105,110,103,32,84,79,68,79,10,35,101,110
+,100,105,102,10
 , 0 };
 static const char file_iso646_h[] = {
 
 
 
 35,101,114,114,111,114,32,110,111,116,32,105,109,112,108,101,109,101,110,116,101,100,32,121,101
-,116,13,10
+,116,10
 , 0 };
 static const char file_limits_h[] = {
 
 
 
-47,42,13,10,32,42,32,32,84,104,105,115,32,102,105,108,101,32,105,115,32,112,97,114,116
-,32,111,102,32,99,97,107,101,32,99,111,109,112,105,108,101,114,13,10,32,42,32,32,104,116
-,116,112,115,58,47,47,103,105,116,104,117,98,46,99,111,109,47,116,104,114,97,100,97,109,115
-,47,99,97,107,101,13,10,42,47,13,10,13,10,13,10,35,112,114,97,103,109,97,32,111,110
-,99,101,13,10,13,10,35,100,101,102,105,110,101,32,32,95,95,83,84,68,67,95,86,69,82
-,83,73,79,78,95,76,73,77,73,84,83,95,72,95,95,32,50,48,50,51,49,49,76,13,10
-,35,100,101,102,105,110,101,32,32,66,73,84,73,78,84,95,77,65,88,87,73,68,84,72,32
-,54,53,53,51,53,13,10,35,100,101,102,105,110,101,32,32,66,79,79,76,95,77,65,88,32
-,49,13,10,35,100,101,102,105,110,101,32,32,66,79,79,76,95,87,73,68,84,72,32,49,13
-,10,35,100,101,102,105,110,101,32,32,67,72,65,82,95,66,73,84,32,56,13,10,35,100,101
-,102,105,110,101,32,32,67,72,65,82,95,77,65,88,32,48,120,55,102,13,10,35,100,101,102
-,105,110,101,32,32,67,72,65,82,95,77,73,78,32,40,45,48,120,55,102,32,45,32,49,41
-,13,10,35,100,101,102,105,110,101,32,32,67,72,65,82,95,87,73,68,84,72,32,56,13,10
-,35,100,101,102,105,110,101,32,32,73,78,84,95,77,65,88,32,48,120,55,102,102,102,102,102
-,102,102,13,10,35,100,101,102,105,110,101,32,32,73,78,84,95,77,73,78,32,40,45,48,120
-,55,102,102,102,102,102,102,102,32,45,32,49,41,13,10,35,100,101,102,105,110,101,32,32,73
-,78,84,95,87,73,68,84,72,32,51,50,13,10,35,100,101,102,105,110,101,32,32,76,76,79
-,78,71,95,77,65,88,32,48,120,55,102,102,102,102,102,102,102,102,102,102,102,102,102,102,102
-,76,76,13,10,35,100,101,102,105,110,101,32,32,76,76,79,78,71,95,77,73,78,32,40,45
-,48,120,55,102,102,102,102,102,102,102,102,102,102,102,102,102,102,102,76,76,32,45,32,49,76
-,76,41,13,10,35,100,101,102,105,110,101,32,32,76,76,79,78,71,95,87,73,68,84,72,32
-,54,52,13,10,35,100,101,102,105,110,101,32,32,76,79,78,71,95,77,65,88,32,48,120,55
-,102,102,102,102,102,102,102,102,102,102,102,102,102,102,102,76,13,10,35,100,101,102,105,110,101
-,32,32,76,79,78,71,95,77,73,78,32,40,45,48,120,55,102,102,102,102,102,102,102,102,102
-,102,102,102,102,102,102,76,32,45,32,49,76,41,13,10,35,100,101,102,105,110,101,32,32,76
-,79,78,71,95,87,73,68,84,72,32,54,52,13,10,35,100,101,102,105,110,101,32,32,77,66
-,95,76,69,78,95,77,65,88,32,49,54,13,10,35,100,101,102,105,110,101,32,32,83,67,72
-,65,82,95,77,65,88,32,48,120,55,102,13,10,35,100,101,102,105,110,101,32,32,83,67,72
-,65,82,95,77,73,78,32,40,45,48,120,55,102,32,45,32,49,41,13,10,35,100,101,102,105
-,110,101,32,32,83,67,72,65,82,95,87,73,68,84,72,32,56,13,10,35,100,101,102,105,110
-,101,32,32,83,72,82,84,95,77,65,88,32,48,120,55,102,102,102,13,10,35,100,101,102,105
-,110,101,32,32,83,72,82,84,95,77,73,78,32,40,45,48,120,55,102,102,102,32,45,32,49
-,41,13,10,35,100,101,102,105,110,101,32,32,83,72,82,84,95,87,73,68,84,72,32,49,54
-,13,10,35,100,101,102,105,110,101,32,32,85,67,72,65,82,95,77,65,88,32,40,48,120,55
-,102,32,42,32,50,32,43,32,49,41,13,10,35,100,101,102,105,110,101,32,32,85,67,72,65
-,82,95,87,73,68,84,72,32,56,13,10,35,100,101,102,105,110,101,32,32,85,73,78,84,95
-,77,65,88,32,40,48,120,55,102,102,102,102,102,102,102,32,42,32,50,85,32,43,32,49,85
-,41,13,10,35,100,101,102,105,110,101,32,32,85,73,78,84,95,87,73,68,84,72,32,51,50
-,13,10,35,100,101,102,105,110,101,32,32,85,76,76,79,78,71,95,77,65,88,32,40,48,120
-,55,102,102,102,102,102,102,102,102,102,102,102,102,102,102,102,76,76,32,42,32,50,85,76,76
-,32,43,32,49,85,76,76,41,13,10,35,100,101,102,105,110,101,32,32,85,76,76,79,78,71
-,95,87,73,68,84,72,32,54,52,13,10,35,100,101,102,105,110,101,32,32,85,76,79,78,71
-,95,77,65,88,32,40,48,120,55,102,102,102,102,102,102,102,102,102,102,102,102,102,102,102,76
-,32,42,32,50,85,76,32,43,32,49,85,76,41,13,10,35,100,101,102,105,110,101,32,32,85
-,76,79,78,71,95,87,73,68,84,72,32,54,52,13,10,35,100,101,102,105,110,101,32,32,85
-,83,72,82,84,95,77,65,88,32,40,48,120,55,102,102,102,32,42,32,50,32,43,32,49,41
-,13,10,35,100,101,102,105,110,101,32,32,85,83,72,82,84,95,87,73,68,84,72,32,49,54
-,13,10
+47,42,10,32,42,32,32,84,104,105,115,32,102,105,108,101,32,105,115,32,112,97,114,116,32
+,111,102,32,99,97,107,101,32,99,111,109,112,105,108,101,114,10,32,42,32,32,104,116,116,112
+,115,58,47,47,103,105,116,104,117,98,46,99,111,109,47,116,104,114,97,100,97,109,115,47,99
+,97,107,101,10,42,47,10,10,10,35,112,114,97,103,109,97,32,111,110,99,101,10,10,35,100
+,101,102,105,110,101,32,32,95,95,83,84,68,67,95,86,69,82,83,73,79,78,95,76,73,77
+,73,84,83,95,72,95,95,32,50,48,50,51,49,49,76,10,35,100,101,102,105,110,101,32,32
+,66,73,84,73,78,84,95,77,65,88,87,73,68,84,72,32,54,53,53,51,53,10,35,100,101
+,102,105,110,101,32,32,66,79,79,76,95,77,65,88,32,49,10,35,100,101,102,105,110,101,32
+,32,66,79,79,76,95,87,73,68,84,72,32,49,10,35,100,101,102,105,110,101,32,32,67,72
+,65,82,95,66,73,84,32,56,10,35,100,101,102,105,110,101,32,32,67,72,65,82,95,77,65
+,88,32,48,120,55,102,10,35,100,101,102,105,110,101,32,32,67,72,65,82,95,77,73,78,32
+,40,45,48,120,55,102,32,45,32,49,41,10,35,100,101,102,105,110,101,32,32,67,72,65,82
+,95,87,73,68,84,72,32,56,10,35,100,101,102,105,110,101,32,32,73,78,84,95,77,65,88
+,32,48,120,55,102,102,102,102,102,102,102,10,35,100,101,102,105,110,101,32,32,73,78,84,95
+,77,73,78,32,40,45,48,120,55,102,102,102,102,102,102,102,32,45,32,49,41,10,35,100,101
+,102,105,110,101,32,32,73,78,84,95,87,73,68,84,72,32,51,50,10,35,100,101,102,105,110
+,101,32,32,76,76,79,78,71,95,77,65,88,32,48,120,55,102,102,102,102,102,102,102,102,102
+,102,102,102,102,102,102,76,76,10,35,100,101,102,105,110,101,32,32,76,76,79,78,71,95,77
+,73,78,32,40,45,48,120,55,102,102,102,102,102,102,102,102,102,102,102,102,102,102,102,76,76
+,32,45,32,49,76,76,41,10,35,100,101,102,105,110,101,32,32,76,76,79,78,71,95,87,73
+,68,84,72,32,54,52,10,35,100,101,102,105,110,101,32,32,76,79,78,71,95,77,65,88,32
+,48,120,55,102,102,102,102,102,102,102,102,102,102,102,102,102,102,102,76,10,35,100,101,102,105
+,110,101,32,32,76,79,78,71,95,77,73,78,32,40,45,48,120,55,102,102,102,102,102,102,102
+,102,102,102,102,102,102,102,102,76,32,45,32,49,76,41,10,35,100,101,102,105,110,101,32,32
+,76,79,78,71,95,87,73,68,84,72,32,54,52,10,35,100,101,102,105,110,101,32,32,77,66
+,95,76,69,78,95,77,65,88,32,49,54,10,35,100,101,102,105,110,101,32,32,83,67,72,65
+,82,95,77,65,88,32,48,120,55,102,10,35,100,101,102,105,110,101,32,32,83,67,72,65,82
+,95,77,73,78,32,40,45,48,120,55,102,32,45,32,49,41,10,35,100,101,102,105,110,101,32
+,32,83,67,72,65,82,95,87,73,68,84,72,32,56,10,35,100,101,102,105,110,101,32,32,83
+,72,82,84,95,77,65,88,32,48,120,55,102,102,102,10,35,100,101,102,105,110,101,32,32,83
+,72,82,84,95,77,73,78,32,40,45,48,120,55,102,102,102,32,45,32,49,41,10,35,100,101
+,102,105,110,101,32,32,83,72,82,84,95,87,73,68,84,72,32,49,54,10,35,100,101,102,105
+,110,101,32,32,85,67,72,65,82,95,77,65,88,32,40,48,120,55,102,32,42,32,50,32,43
+,32,49,41,10,35,100,101,102,105,110,101,32,32,85,67,72,65,82,95,87,73,68,84,72,32
+,56,10,35,100,101,102,105,110,101,32,32,85,73,78,84,95,77,65,88,32,40,48,120,55,102
+,102,102,102,102,102,102,32,42,32,50,85,32,43,32,49,85,41,10,35,100,101,102,105,110,101
+,32,32,85,73,78,84,95,87,73,68,84,72,32,51,50,10,35,100,101,102,105,110,101,32,32
+,85,76,76,79,78,71,95,77,65,88,32,40,48,120,55,102,102,102,102,102,102,102,102,102,102
+,102,102,102,102,102,76,76,32,42,32,50,85,76,76,32,43,32,49,85,76,76,41,10,35,100
+,101,102,105,110,101,32,32,85,76,76,79,78,71,95,87,73,68,84,72,32,54,52,10,35,100
+,101,102,105,110,101,32,32,85,76,79,78,71,95,77,65,88,32,40,48,120,55,102,102,102,102
+,102,102,102,102,102,102,102,102,102,102,102,76,32,42,32,50,85,76,32,43,32,49,85,76,41
+,10,35,100,101,102,105,110,101,32,32,85,76,79,78,71,95,87,73,68,84,72,32,54,52,10
+,35,100,101,102,105,110,101,32,32,85,83,72,82,84,95,77,65,88,32,40,48,120,55,102,102
+,102,32,42,32,50,32,43,32,49,41,10,35,100,101,102,105,110,101,32,32,85,83,72,82,84
+,95,87,73,68,84,72,32,49,54,10
 , 0 };
 static const char file_locale_h[] = {
 
 
 
-47,42,13,10,32,42,32,32,84,104,105,115,32,102,105,108,101,32,105,115,32,112,97,114,116
-,32,111,102,32,99,97,107,101,32,99,111,109,112,105,108,101,114,13,10,32,42,32,32,104,116
-,116,112,115,58,47,47,103,105,116,104,117,98,46,99,111,109,47,116,104,114,97,100,97,109,115
-,47,99,97,107,101,13,10,42,47,13,10,13,10,35,112,114,97,103,109,97,32,111,110,99,101
-,13,10,116,121,112,101,100,101,102,32,105,110,116,32,119,99,104,97,114,95,116,59,13,10,47
-,47,32,76,111,99,97,108,101,32,99,97,116,101,103,111,114,105,101,115,13,10,35,100,101,102
-,105,110,101,32,76,67,95,65,76,76,32,32,32,32,32,32,32,32,32,32,48,13,10,35,100
-,101,102,105,110,101,32,76,67,95,67,79,76,76,65,84,69,32,32,32,32,32,32,49,13,10
-,35,100,101,102,105,110,101,32,76,67,95,67,84,89,80,69,32,32,32,32,32,32,32,32,50
-,13,10,35,100,101,102,105,110,101,32,76,67,95,77,79,78,69,84,65,82,89,32,32,32,32
-,32,51,13,10,35,100,101,102,105,110,101,32,76,67,95,78,85,77,69,82,73,67,32,32,32
-,32,32,32,52,13,10,35,100,101,102,105,110,101,32,76,67,95,84,73,77,69,32,32,32,32
-,32,32,32,32,32,53,13,10,13,10,35,100,101,102,105,110,101,32,76,67,95,77,73,78,32
-,32,32,32,32,32,32,32,32,32,76,67,95,65,76,76,13,10,35,100,101,102,105,110,101,32
-,76,67,95,77,65,88,32,32,32,32,32,32,32,32,32,32,76,67,95,84,73,77,69,13,10
-,13,10,47,47,32,76,111,99,97,108,101,32,99,111,110,118,101,110,116,105,111,110,32,115,116
-,114,117,99,116,117,114,101,13,10,115,116,114,117,99,116,32,108,99,111,110,118,13,10,123,13
-,10,32,32,32,32,99,104,97,114,42,32,100,101,99,105,109,97,108,95,112,111,105,110,116,59
-,13,10,32,32,32,32,99,104,97,114,42,32,116,104,111,117,115,97,110,100,115,95,115,101,112
-,59,13,10,32,32,32,32,99,104,97,114,42,32,103,114,111,117,112,105,110,103,59,13,10,32
-,32,32,32,99,104,97,114,42,32,105,110,116,95,99,117,114,114,95,115,121,109,98,111,108,59
-,13,10,32,32,32,32,99,104,97,114,42,32,99,117,114,114,101,110,99,121,95,115,121,109,98
-,111,108,59,13,10,32,32,32,32,99,104,97,114,42,32,109,111,110,95,100,101,99,105,109,97
-,108,95,112,111,105,110,116,59,13,10,32,32,32,32,99,104,97,114,42,32,109,111,110,95,116
-,104,111,117,115,97,110,100,115,95,115,101,112,59,13,10,32,32,32,32,99,104,97,114,42,32
-,109,111,110,95,103,114,111,117,112,105,110,103,59,13,10,32,32,32,32,99,104,97,114,42,32
-,112,111,115,105,116,105,118,101,95,115,105,103,110,59,13,10,32,32,32,32,99,104,97,114,42
-,32,110,101,103,97,116,105,118,101,95,115,105,103,110,59,13,10,32,32,32,32,99,104,97,114
-,32,32,32,32,32,105,110,116,95,102,114,97,99,95,100,105,103,105,116,115,59,13,10,32,32
-,32,32,99,104,97,114,32,32,32,32,32,102,114,97,99,95,100,105,103,105,116,115,59,13,10
-,32,32,32,32,99,104,97,114,32,32,32,32,32,112,95,99,115,95,112,114,101,99,101,100,101
-,115,59,13,10,32,32,32,32,99,104,97,114,32,32,32,32,32,112,95,115,101,112,95,98,121
-,95,115,112,97,99,101,59,13,10,32,32,32,32,99,104,97,114,32,32,32,32,32,110,95,99
-,115,95,112,114,101,99,101,100,101,115,59,13,10,32,32,32,32,99,104,97,114,32,32,32,32
-,32,110,95,115,101,112,95,98,121,95,115,112,97,99,101,59,13,10,32,32,32,32,99,104,97
-,114,32,32,32,32,32,112,95,115,105,103,110,95,112,111,115,110,59,13,10,32,32,32,32,99
-,104,97,114,32,32,32,32,32,110,95,115,105,103,110,95,112,111,115,110,59,13,10,32,32,32
-,32,119,99,104,97,114,95,116,42,32,95,87,95,100,101,99,105,109,97,108,95,112,111,105,110
-,116,59,13,10,32,32,32,32,119,99,104,97,114,95,116,42,32,95,87,95,116,104,111,117,115
-,97,110,100,115,95,115,101,112,59,13,10,32,32,32,32,119,99,104,97,114,95,116,42,32,95
-,87,95,105,110,116,95,99,117,114,114,95,115,121,109,98,111,108,59,13,10,32,32,32,32,119
-,99,104,97,114,95,116,42,32,95,87,95,99,117,114,114,101,110,99,121,95,115,121,109,98,111
-,108,59,13,10,32,32,32,32,119,99,104,97,114,95,116,42,32,95,87,95,109,111,110,95,100
-,101,99,105,109,97,108,95,112,111,105,110,116,59,13,10,32,32,32,32,119,99,104,97,114,95
-,116,42,32,95,87,95,109,111,110,95,116,104,111,117,115,97,110,100,115,95,115,101,112,59,13
-,10,32,32,32,32,119,99,104,97,114,95,116,42,32,95,87,95,112,111,115,105,116,105,118,101
-,95,115,105,103,110,59,13,10,32,32,32,32,119,99,104,97,114,95,116,42,32,95,87,95,110
-,101,103,97,116,105,118,101,95,115,105,103,110,59,13,10,125,59,13,10,13,10,115,116,114,117
-,99,116,32,116,109,59,13,10,13,10,99,104,97,114,42,32,115,101,116,108,111,99,97,108,101
-,40,13,10,32,32,32,32,105,110,116,32,32,32,32,32,32,32,32,32,95,67,97,116,101,103
-,111,114,121,44,13,10,32,32,32,32,99,104,97,114,32,99,111,110,115,116,42,32,95,76,111
-,99,97,108,101,13,10,41,59,13,10,13,10,115,116,114,117,99,116,32,108,99,111,110,118,42
-,32,108,111,99,97,108,101,99,111,110,118,40,118,111,105,100,41,59,13,10
+47,42,10,32,42,32,32,84,104,105,115,32,102,105,108,101,32,105,115,32,112,97,114,116,32
+,111,102,32,99,97,107,101,32,99,111,109,112,105,108,101,114,10,32,42,32,32,104,116,116,112
+,115,58,47,47,103,105,116,104,117,98,46,99,111,109,47,116,104,114,97,100,97,109,115,47,99
+,97,107,101,10,42,47,10,10,35,112,114,97,103,109,97,32,111,110,99,101,10,116,121,112,101
+,100,101,102,32,105,110,116,32,119,99,104,97,114,95,116,59,10,47,47,32,76,111,99,97,108
+,101,32,99,97,116,101,103,111,114,105,101,115,10,35,100,101,102,105,110,101,32,76,67,95,65
+,76,76,32,32,32,32,32,32,32,32,32,32,48,10,35,100,101,102,105,110,101,32,76,67,95
+,67,79,76,76,65,84,69,32,32,32,32,32,32,49,10,35,100,101,102,105,110,101,32,76,67
+,95,67,84,89,80,69,32,32,32,32,32,32,32,32,50,10,35,100,101,102,105,110,101,32,76
+,67,95,77,79,78,69,84,65,82,89,32,32,32,32,32,51,10,35,100,101,102,105,110,101,32
+,76,67,95,78,85,77,69,82,73,67,32,32,32,32,32,32,52,10,35,100,101,102,105,110,101
+,32,76,67,95,84,73,77,69,32,32,32,32,32,32,32,32,32,53,10,10,35,100,101,102,105
+,110,101,32,76,67,95,77,73,78,32,32,32,32,32,32,32,32,32,32,76,67,95,65,76,76
+,10,35,100,101,102,105,110,101,32,76,67,95,77,65,88,32,32,32,32,32,32,32,32,32,32
+,76,67,95,84,73,77,69,10,10,47,47,32,76,111,99,97,108,101,32,99,111,110,118,101,110
+,116,105,111,110,32,115,116,114,117,99,116,117,114,101,10,115,116,114,117,99,116,32,108,99,111
+,110,118,10,123,10,32,32,32,32,99,104,97,114,42,32,100,101,99,105,109,97,108,95,112,111
+,105,110,116,59,10,32,32,32,32,99,104,97,114,42,32,116,104,111,117,115,97,110,100,115,95
+,115,101,112,59,10,32,32,32,32,99,104,97,114,42,32,103,114,111,117,112,105,110,103,59,10
+,32,32,32,32,99,104,97,114,42,32,105,110,116,95,99,117,114,114,95,115,121,109,98,111,108
+,59,10,32,32,32,32,99,104,97,114,42,32,99,117,114,114,101,110,99,121,95,115,121,109,98
+,111,108,59,10,32,32,32,32,99,104,97,114,42,32,109,111,110,95,100,101,99,105,109,97,108
+,95,112,111,105,110,116,59,10,32,32,32,32,99,104,97,114,42,32,109,111,110,95,116,104,111
+,117,115,97,110,100,115,95,115,101,112,59,10,32,32,32,32,99,104,97,114,42,32,109,111,110
+,95,103,114,111,117,112,105,110,103,59,10,32,32,32,32,99,104,97,114,42,32,112,111,115,105
+,116,105,118,101,95,115,105,103,110,59,10,32,32,32,32,99,104,97,114,42,32,110,101,103,97
+,116,105,118,101,95,115,105,103,110,59,10,32,32,32,32,99,104,97,114,32,32,32,32,32,105
+,110,116,95,102,114,97,99,95,100,105,103,105,116,115,59,10,32,32,32,32,99,104,97,114,32
+,32,32,32,32,102,114,97,99,95,100,105,103,105,116,115,59,10,32,32,32,32,99,104,97,114
+,32,32,32,32,32,112,95,99,115,95,112,114,101,99,101,100,101,115,59,10,32,32,32,32,99
+,104,97,114,32,32,32,32,32,112,95,115,101,112,95,98,121,95,115,112,97,99,101,59,10,32
+,32,32,32,99,104,97,114,32,32,32,32,32,110,95,99,115,95,112,114,101,99,101,100,101,115
+,59,10,32,32,32,32,99,104,97,114,32,32,32,32,32,110,95,115,101,112,95,98,121,95,115
+,112,97,99,101,59,10,32,32,32,32,99,104,97,114,32,32,32,32,32,112,95,115,105,103,110
+,95,112,111,115,110,59,10,32,32,32,32,99,104,97,114,32,32,32,32,32,110,95,115,105,103
+,110,95,112,111,115,110,59,10,32,32,32,32,119,99,104,97,114,95,116,42,32,95,87,95,100
+,101,99,105,109,97,108,95,112,111,105,110,116,59,10,32,32,32,32,119,99,104,97,114,95,116
+,42,32,95,87,95,116,104,111,117,115,97,110,100,115,95,115,101,112,59,10,32,32,32,32,119
+,99,104,97,114,95,116,42,32,95,87,95,105,110,116,95,99,117,114,114,95,115,121,109,98,111
+,108,59,10,32,32,32,32,119,99,104,97,114,95,116,42,32,95,87,95,99,117,114,114,101,110
+,99,121,95,115,121,109,98,111,108,59,10,32,32,32,32,119,99,104,97,114,95,116,42,32,95
+,87,95,109,111,110,95,100,101,99,105,109,97,108,95,112,111,105,110,116,59,10,32,32,32,32
+,119,99,104,97,114,95,116,42,32,95,87,95,109,111,110,95,116,104,111,117,115,97,110,100,115
+,95,115,101,112,59,10,32,32,32,32,119,99,104,97,114,95,116,42,32,95,87,95,112,111,115
+,105,116,105,118,101,95,115,105,103,110,59,10,32,32,32,32,119,99,104,97,114,95,116,42,32
+,95,87,95,110,101,103,97,116,105,118,101,95,115,105,103,110,59,10,125,59,10,10,115,116,114
+,117,99,116,32,116,109,59,10,10,99,104,97,114,42,32,115,101,116,108,111,99,97,108,101,40
+,10,32,32,32,32,105,110,116,32,32,32,32,32,32,32,32,32,95,67,97,116,101,103,111,114
+,121,44,10,32,32,32,32,99,104,97,114,32,99,111,110,115,116,42,32,95,76,111,99,97,108
+,101,10,41,59,10,10,115,116,114,117,99,116,32,108,99,111,110,118,42,32,108,111,99,97,108
+,101,99,111,110,118,40,118,111,105,100,41,59,10
 , 0 };
 static const char file_math_h[] = {
 
 
 
-47,42,13,10,32,42,32,32,84,104,105,115,32,102,105,108,101,32,105,115,32,112,97,114,116
-,32,111,102,32,99,97,107,101,32,99,111,109,112,105,108,101,114,13,10,32,42,32,32,104,116
-,116,112,115,58,47,47,103,105,116,104,117,98,46,99,111,109,47,116,104,114,97,100,97,109,115
-,47,99,97,107,101,13,10,42,47,13,10,13,10,35,112,114,97,103,109,97,32,111,110,99,101
-,13,10,13,10,100,111,117,98,108,101,32,97,99,111,115,40,100,111,117,98,108,101,32,95,95
-,120,41,59,13,10,100,111,117,98,108,101,32,97,115,105,110,40,100,111,117,98,108,101,32,95
-,95,120,41,59,13,10,100,111,117,98,108,101,32,97,116,97,110,40,100,111,117,98,108,101,32
-,95,95,120,41,59,13,10,100,111,117,98,108,101,32,97,116,97,110,50,40,100,111,117,98,108
-,101,32,95,95,121,44,32,100,111,117,98,108,101,32,95,95,120,41,59,13,10,100,111,117,98
-,108,101,32,99,111,115,40,100,111,117,98,108,101,32,95,95,120,41,59,13,10,100,111,117,98
-,108,101,32,115,105,110,40,100,111,117,98,108,101,32,95,95,120,41,59,13,10,100,111,117,98
-,108,101,32,116,97,110,40,100,111,117,98,108,101,32,95,95,120,41,59,13,10,100,111,117,98
-,108,101,32,99,111,115,104,40,100,111,117,98,108,101,32,95,95,120,41,59,13,10,100,111,117
-,98,108,101,32,115,105,110,104,40,100,111,117,98,108,101,32,95,95,120,41,59,13,10,100,111
-,117,98,108,101,32,116,97,110,104,40,100,111,117,98,108,101,32,95,95,120,41,59,13,10,100
-,111,117,98,108,101,32,97,99,111,115,104,40,100,111,117,98,108,101,32,95,95,120,41,59,13
-,10,100,111,117,98,108,101,32,97,115,105,110,104,40,100,111,117,98,108,101,32,95,95,120,41
-,59,13,10,100,111,117,98,108,101,32,97,116,97,110,104,40,100,111,117,98,108,101,32,95,95
-,120,41,59,13,10,100,111,117,98,108,101,32,101,120,112,40,100,111,117,98,108,101,32,95,95
-,120,41,59,13,10,100,111,117,98,108,101,32,102,114,101,120,112,40,100,111,117,98,108,101,32
-,95,95,120,44,32,105,110,116,42,32,95,95,101,120,112,111,110,101,110,116,41,59,13,10,100
-,111,117,98,108,101,32,108,100,101,120,112,40,100,111,117,98,108,101,32,95,95,120,44,32,105
-,110,116,32,95,95,101,120,112,111,110,101,110,116,41,59,13,10,100,111,117,98,108,101,32,108
-,111,103,40,100,111,117,98,108,101,32,95,95,120,41,59,13,10,100,111,117,98,108,101,32,108
-,111,103,49,48,40,100,111,117,98,108,101,32,95,95,120,41,59,13,10,100,111,117,98,108,101
+47,42,10,32,42,32,32,84,104,105,115,32,102,105,108,101,32,105,115,32,112,97,114,116,32
+,111,102,32,99,97,107,101,32,99,111,109,112,105,108,101,114,10,32,42,32,32,104,116,116,112
+,115,58,47,47,103,105,116,104,117,98,46,99,111,109,47,116,104,114,97,100,97,109,115,47,99
+,97,107,101,10,42,47,10,10,35,112,114,97,103,109,97,32,111,110,99,101,10,10,100,111,117
+,98,108,101,32,97,99,111,115,40,100,111,117,98,108,101,32,95,95,120,41,59,10,100,111,117
+,98,108,101,32,97,115,105,110,40,100,111,117,98,108,101,32,95,95,120,41,59,10,100,111,117
+,98,108,101,32,97,116,97,110,40,100,111,117,98,108,101,32,95,95,120,41,59,10,100,111,117
+,98,108,101,32,97,116,97,110,50,40,100,111,117,98,108,101,32,95,95,121,44,32,100,111,117
+,98,108,101,32,95,95,120,41,59,10,100,111,117,98,108,101,32,99,111,115,40,100,111,117,98
+,108,101,32,95,95,120,41,59,10,100,111,117,98,108,101,32,115,105,110,40,100,111,117,98,108
+,101,32,95,95,120,41,59,10,100,111,117,98,108,101,32,116,97,110,40,100,111,117,98,108,101
+,32,95,95,120,41,59,10,100,111,117,98,108,101,32,99,111,115,104,40,100,111,117,98,108,101
+,32,95,95,120,41,59,10,100,111,117,98,108,101,32,115,105,110,104,40,100,111,117,98,108,101
+,32,95,95,120,41,59,10,100,111,117,98,108,101,32,116,97,110,104,40,100,111,117,98,108,101
+,32,95,95,120,41,59,10,100,111,117,98,108,101,32,97,99,111,115,104,40,100,111,117,98,108
+,101,32,95,95,120,41,59,10,100,111,117,98,108,101,32,97,115,105,110,104,40,100,111,117,98
+,108,101,32,95,95,120,41,59,10,100,111,117,98,108,101,32,97,116,97,110,104,40,100,111,117
+,98,108,101,32,95,95,120,41,59,10,100,111,117,98,108,101,32,101,120,112,40,100,111,117,98
+,108,101,32,95,95,120,41,59,10,100,111,117,98,108,101,32,102,114,101,120,112,40,100,111,117
+,98,108,101,32,95,95,120,44,32,105,110,116,42,32,95,95,101,120,112,111,110,101,110,116,41
+,59,10,100,111,117,98,108,101,32,108,100,101,120,112,40,100,111,117,98,108,101,32,95,95,120
+,44,32,105,110,116,32,95,95,101,120,112,111,110,101,110,116,41,59,10,100,111,117,98,108,101
+,32,108,111,103,40,100,111,117,98,108,101,32,95,95,120,41,59,10,100,111,117,98,108,101,32
+,108,111,103,49,48,40,100,111,117,98,108,101,32,95,95,120,41,59,10,100,111,117,98,108,101
 ,32,109,111,100,102,40,100,111,117,98,108,101,32,95,95,120,44,32,100,111,117,98,108,101,42
-,32,95,95,105,112,116,114,41,59,13,10,100,111,117,98,108,101,32,101,120,112,109,49,40,100
-,111,117,98,108,101,32,95,95,120,41,59,13,10,100,111,117,98,108,101,32,108,111,103,49,112
-,40,100,111,117,98,108,101,32,95,95,120,41,59,13,10,100,111,117,98,108,101,32,108,111,103
-,98,40,100,111,117,98,108,101,32,95,95,120,41,59,13,10,100,111,117,98,108,101,32,101,120
-,112,50,40,100,111,117,98,108,101,32,95,95,120,41,59,13,10,100,111,117,98,108,101,32,108
-,111,103,50,40,100,111,117,98,108,101,32,95,95,120,41,59,13,10,100,111,117,98,108,101,32
-,112,111,119,40,100,111,117,98,108,101,32,95,95,120,44,32,100,111,117,98,108,101,32,95,95
-,121,41,59,13,10,100,111,117,98,108,101,32,115,113,114,116,40,100,111,117,98,108,101,32,95
-,95,120,41,59,13,10,100,111,117,98,108,101,32,104,121,112,111,116,40,100,111,117,98,108,101
-,32,95,95,120,44,32,100,111,117,98,108,101,32,95,95,121,41,59,13,10,100,111,117,98,108
-,101,32,99,98,114,116,40,100,111,117,98,108,101,32,95,95,120,41,59,13,10,100,111,117,98
-,108,101,32,99,101,105,108,40,100,111,117,98,108,101,32,95,95,120,41,59,13,10,100,111,117
-,98,108,101,32,102,97,98,115,40,100,111,117,98,108,101,32,95,95,120,41,59,13,10,100,111
-,117,98,108,101,32,102,108,111,111,114,40,100,111,117,98,108,101,32,95,95,120,41,59,13,10
-,100,111,117,98,108,101,32,102,109,111,100,40,100,111,117,98,108,101,32,95,95,120,44,32,100
-,111,117,98,108,101,32,95,95,121,41,59,13,10,105,110,116,32,105,115,105,110,102,40,100,111
-,117,98,108,101,32,95,95,118,97,108,117,101,41,59,13,10,105,110,116,32,102,105,110,105,116
-,101,40,100,111,117,98,108,101,32,95,95,118,97,108,117,101,41,59,13,10,100,111,117,98,108
-,101,32,100,114,101,109,40,100,111,117,98,108,101,32,95,95,120,44,32,100,111,117,98,108,101
-,32,95,95,121,41,59,13,10,100,111,117,98,108,101,32,115,105,103,110,105,102,105,99,97,110
-,100,40,100,111,117,98,108,101,32,95,95,120,41,59,13,10,100,111,117,98,108,101,32,99,111
-,112,121,115,105,103,110,40,100,111,117,98,108,101,32,95,95,120,44,32,100,111,117,98,108,101
-,32,95,95,121,41,59,13,10,100,111,117,98,108,101,32,110,97,110,40,99,111,110,115,116,32
-,99,104,97,114,42,32,95,95,116,97,103,98,41,59,13,10,105,110,116,32,105,115,110,97,110
-,40,100,111,117,98,108,101,32,95,95,118,97,108,117,101,41,59,13,10,100,111,117,98,108,101
-,32,106,48,40,100,111,117,98,108,101,41,59,13,10,100,111,117,98,108,101,32,106,49,40,100
-,111,117,98,108,101,41,59,13,10,100,111,117,98,108,101,32,106,110,40,105,110,116,44,32,100
-,111,117,98,108,101,41,59,13,10,100,111,117,98,108,101,32,121,48,40,100,111,117,98,108,101
-,41,59,13,10,100,111,117,98,108,101,32,121,49,40,100,111,117,98,108,101,41,59,13,10,100
-,111,117,98,108,101,32,121,110,40,105,110,116,44,32,100,111,117,98,108,101,41,59,13,10,100
-,111,117,98,108,101,32,101,114,102,40,100,111,117,98,108,101,41,59,13,10,100,111,117,98,108
-,101,32,101,114,102,99,40,100,111,117,98,108,101,41,59,13,10,100,111,117,98,108,101,32,108
-,103,97,109,109,97,40,100,111,117,98,108,101,41,59,13,10,100,111,117,98,108,101,32,116,103
-,97,109,109,97,40,100,111,117,98,108,101,41,59,13,10,100,111,117,98,108,101,32,103,97,109
-,109,97,40,100,111,117,98,108,101,41,59,13,10,100,111,117,98,108,101,32,108,103,97,109,109
-,97,95,114,40,100,111,117,98,108,101,44,32,105,110,116,42,32,95,95,115,105,103,110,103,97
-,109,112,41,59,13,10,100,111,117,98,108,101,32,114,105,110,116,40,100,111,117,98,108,101,32
-,95,95,120,41,59,13,10,100,111,117,98,108,101,32,110,101,120,116,97,102,116,101,114,40,100
-,111,117,98,108,101,32,95,95,120,44,32,100,111,117,98,108,101,32,95,95,121,41,59,13,10
-,100,111,117,98,108,101,32,110,101,120,116,116,111,119,97,114,100,40,100,111,117,98,108,101,32
-,95,95,120,44,32,108,111,110,103,32,100,111,117,98,108,101,32,95,95,121,41,59,13,10,100
-,111,117,98,108,101,32,114,101,109,97,105,110,100,101,114,40,100,111,117,98,108,101,32,95,95
-,120,44,32,100,111,117,98,108,101,32,95,95,121,41,59,13,10,100,111,117,98,108,101,32,115
-,99,97,108,98,110,40,100,111,117,98,108,101,32,95,95,120,44,32,105,110,116,32,95,95,110
-,41,59,13,10,105,110,116,32,105,108,111,103,98,40,100,111,117,98,108,101,32,95,95,120,41
-,59,13,10,100,111,117,98,108,101,32,115,99,97,108,98,108,110,40,100,111,117,98,108,101,32
-,95,95,120,44,32,108,111,110,103,32,105,110,116,32,95,95,110,41,59,13,10,100,111,117,98
-,108,101,32,110,101,97,114,98,121,105,110,116,40,100,111,117,98,108,101,32,95,95,120,41,59
-,13,10,100,111,117,98,108,101,32,114,111,117,110,100,40,100,111,117,98,108,101,32,95,95,120
-,41,59,13,10,100,111,117,98,108,101,32,116,114,117,110,99,40,100,111,117,98,108,101,32,95
-,95,120,41,59,13,10,100,111,117,98,108,101,32,114,101,109,113,117,111,40,100,111,117,98,108
-,101,32,95,95,120,44,32,100,111,117,98,108,101,32,95,95,121,44,32,105,110,116,42,32,95
-,95,113,117,111,41,59,13,10,108,111,110,103,32,105,110,116,32,108,114,105,110,116,40,100,111
-,117,98,108,101,32,95,95,120,41,59,13,10,108,111,110,103,32,108,111,110,103,32,105,110,116
-,32,108,108,114,111,117,110,100,40,100,111,117,98,108,101,32,95,95,120,41,59,13,10,100,111
-,117,98,108,101,32,102,100,105,109,40,100,111,117,98,108,101,32,95,95,120,44,32,100,111,117
-,98,108,101,32,95,95,121,41,59,13,10,100,111,117,98,108,101,32,102,109,97,120,40,100,111
-,117,98,108,101,32,95,95,120,44,32,100,111,117,98,108,101,32,95,95,121,41,59,13,10,100
-,111,117,98,108,101,32,102,109,105,110,40,100,111,117,98,108,101,32,95,95,120,44,32,100,111
-,117,98,108,101,32,95,95,121,41,59,13,10,100,111,117,98,108,101,32,102,109,97,40,100,111
-,117,98,108,101,32,95,95,120,44,32,100,111,117,98,108,101,32,95,95,121,44,32,100,111,117
-,98,108,101,32,95,95,122,41,59,13,10,100,111,117,98,108,101,32,115,99,97,108,98,40,100
-,111,117,98,108,101,32,95,95,120,44,32,100,111,117,98,108,101,32,95,95,110,41,59,13,10
-,102,108,111,97,116,32,97,99,111,115,102,40,102,108,111,97,116,32,95,95,120,41,59,13,10
-,102,108,111,97,116,32,97,115,105,110,102,40,102,108,111,97,116,32,95,95,120,41,59,13,10
-,102,108,111,97,116,32,97,116,97,110,102,40,102,108,111,97,116,32,95,95,120,41,59,13,10
-,102,108,111,97,116,32,97,116,97,110,50,102,40,102,108,111,97,116,32,95,95,121,44,32,102
-,108,111,97,116,32,95,95,120,41,59,13,10,102,108,111,97,116,32,99,111,115,102,40,102,108
-,111,97,116,32,95,95,120,41,59,13,10,102,108,111,97,116,32,115,105,110,102,40,102,108,111
-,97,116,32,95,95,120,41,59,13,10,102,108,111,97,116,32,116,97,110,102,40,102,108,111,97
-,116,32,95,95,120,41,59,13,10,102,108,111,97,116,32,99,111,115,104,102,40,102,108,111,97
-,116,32,95,95,120,41,59,13,10,102,108,111,97,116,32,115,105,110,104,102,40,102,108,111,97
-,116,32,95,95,120,41,59,13,10,102,108,111,97,116,32,116,97,110,104,102,40,102,108,111,97
-,116,32,95,95,120,41,59,13,10,102,108,111,97,116,32,97,99,111,115,104,102,40,102,108,111
-,97,116,32,95,95,120,41,59,13,10,102,108,111,97,116,32,97,115,105,110,104,102,40,102,108
-,111,97,116,32,95,95,120,41,59,13,10,102,108,111,97,116,32,97,116,97,110,104,102,40,102
-,108,111,97,116,32,95,95,120,41,59,13,10,102,108,111,97,116,32,101,120,112,102,40,102,108
-,111,97,116,32,95,95,120,41,59,13,10,102,108,111,97,116,32,102,114,101,120,112,102,40,102
-,108,111,97,116,32,95,95,120,44,32,105,110,116,42,32,95,95,101,120,112,111,110,101,110,116
-,41,59,13,10,102,108,111,97,116,32,108,100,101,120,112,102,40,102,108,111,97,116,32,95,95
-,120,44,32,105,110,116,32,95,95,101,120,112,111,110,101,110,116,41,59,13,10,102,108,111,97
-,116,32,108,111,103,102,40,102,108,111,97,116,32,95,95,120,41,59,13,10,102,108,111,97,116
-,32,108,111,103,49,48,102,40,102,108,111,97,116,32,95,95,120,41,59,32,102,108,111,97,116
-,32,95,95,108,111,103,49,48,102,40,102,108,111,97,116,32,95,95,120,41,59,13,10,102,108
-,111,97,116,32,109,111,100,102,102,40,102,108,111,97,116,32,95,95,120,44,32,102,108,111,97
-,116,42,32,95,95,105,112,116,114,41,59,13,10,102,108,111,97,116,32,101,120,112,109,49,102
-,40,102,108,111,97,116,32,95,95,120,41,59,13,10,102,108,111,97,116,32,108,111,103,49,112
-,102,40,102,108,111,97,116,32,95,95,120,41,59,13,10,102,108,111,97,116,32,108,111,103,98
-,102,40,102,108,111,97,116,32,95,95,120,41,59,13,10,102,108,111,97,116,32,101,120,112,50
-,102,40,102,108,111,97,116,32,95,95,120,41,59,13,10,102,108,111,97,116,32,108,111,103,50
-,102,40,102,108,111,97,116,32,95,95,120,41,59,13,10,102,108,111,97,116,32,112,111,119,102
-,40,102,108,111,97,116,32,95,95,120,44,32,102,108,111,97,116,32,95,95,121,41,59,13,10
-,102,108,111,97,116,32,115,113,114,116,102,40,102,108,111,97,116,32,95,95,120,41,59,13,10
-,102,108,111,97,116,32,104,121,112,111,116,102,40,102,108,111,97,116,32,95,95,120,44,32,102
-,108,111,97,116,32,95,95,121,41,59,13,10,102,108,111,97,116,32,99,98,114,116,102,40,102
-,108,111,97,116,32,95,95,120,41,59,13,10,102,108,111,97,116,32,99,101,105,108,102,40,102
-,108,111,97,116,32,95,95,120,41,59,13,10,102,108,111,97,116,32,102,97,98,115,102,40,102
-,108,111,97,116,32,95,95,120,41,59,13,10,102,108,111,97,116,32,102,108,111,111,114,102,40
-,102,108,111,97,116,32,95,95,120,41,59,13,10,102,108,111,97,116,32,102,109,111,100,102,40
-,102,108,111,97,116,32,95,95,120,44,32,102,108,111,97,116,32,95,95,121,41,59,13,10,105
-,110,116,32,105,115,105,110,102,102,40,102,108,111,97,116,32,95,95,118,97,108,117,101,41,59
-,13,10,105,110,116,32,102,105,110,105,116,101,102,40,102,108,111,97,116,32,95,95,118,97,108
-,117,101,41,59,13,10,102,108,111,97,116,32,100,114,101,109,102,40,102,108,111,97,116,32,95
-,95,120,44,32,102,108,111,97,116,32,95,95,121,41,59,13,10,102,108,111,97,116,32,115,105
-,103,110,105,102,105,99,97,110,100,102,40,102,108,111,97,116,32,95,95,120,41,59,13,10,102
-,108,111,97,116,32,99,111,112,121,115,105,103,110,102,40,102,108,111,97,116,32,95,95,120,44
-,32,102,108,111,97,116,32,95,95,121,41,59,13,10,102,108,111,97,116,32,110,97,110,102,40
-,99,111,110,115,116,32,99,104,97,114,42,32,95,95,116,97,103,98,41,59,13,10,105,110,116
-,32,105,115,110,97,110,102,40,102,108,111,97,116,32,95,95,118,97,108,117,101,41,59,13,10
-,102,108,111,97,116,32,106,48,102,40,102,108,111,97,116,41,59,13,10,102,108,111,97,116,32
-,106,49,102,40,102,108,111,97,116,41,59,13,10,102,108,111,97,116,32,106,110,102,40,105,110
-,116,44,32,102,108,111,97,116,41,59,13,10,102,108,111,97,116,32,121,48,102,40,102,108,111
-,97,116,41,59,13,10,102,108,111,97,116,32,121,49,102,40,102,108,111,97,116,41,59,13,10
-,102,108,111,97,116,32,121,110,102,40,105,110,116,44,32,102,108,111,97,116,41,59,13,10,102
-,108,111,97,116,32,101,114,102,102,40,102,108,111,97,116,41,59,13,10,102,108,111,97,116,32
-,101,114,102,99,102,40,102,108,111,97,116,41,59,13,10,102,108,111,97,116,32,108,103,97,109
-,109,97,102,40,102,108,111,97,116,41,59,13,10,102,108,111,97,116,32,116,103,97,109,109,97
-,102,40,102,108,111,97,116,41,59,13,10,102,108,111,97,116,32,103,97,109,109,97,102,40,102
-,108,111,97,116,41,59,13,10,102,108,111,97,116,32,108,103,97,109,109,97,102,95,114,40,102
-,108,111,97,116,44,32,105,110,116,42,32,95,95,115,105,103,110,103,97,109,112,41,59,13,10
-,102,108,111,97,116,32,114,105,110,116,102,40,102,108,111,97,116,32,95,95,120,41,59,13,10
-,102,108,111,97,116,32,110,101,120,116,97,102,116,101,114,102,40,102,108,111,97,116,32,95,95
-,120,44,32,102,108,111,97,116,32,95,95,121,41,59,13,10,102,108,111,97,116,32,110,101,120
-,116,116,111,119,97,114,100,102,40,102,108,111,97,116,32,95,95,120,44,32,108,111,110,103,32
-,100,111,117,98,108,101,32,95,95,121,41,59,13,10,102,108,111,97,116,32,114,101,109,97,105
-,110,100,101,114,102,40,102,108,111,97,116,32,95,95,120,44,32,102,108,111,97,116,32,95,95
-,121,41,59,13,10,102,108,111,97,116,32,115,99,97,108,98,110,102,40,102,108,111,97,116,32
-,95,95,120,44,32,105,110,116,32,95,95,110,41,59,13,10,105,110,116,32,105,108,111,103,98
-,102,40,102,108,111,97,116,32,95,95,120,41,59,13,10,102,108,111,97,116,32,115,99,97,108
-,98,108,110,102,40,102,108,111,97,116,32,95,95,120,44,32,108,111,110,103,32,105,110,116,32
-,95,95,110,41,59,13,10,102,108,111,97,116,32,110,101,97,114,98,121,105,110,116,102,40,102
-,108,111,97,116,32,95,95,120,41,59,13,10,102,108,111,97,116,32,114,111,117,110,100,102,40
-,102,108,111,97,116,32,95,95,120,41,59,13,10,102,108,111,97,116,32,116,114,117,110,99,102
-,40,102,108,111,97,116,32,95,95,120,41,59,13,10,102,108,111,97,116,32,114,101,109,113,117
-,111,102,40,102,108,111,97,116,32,95,95,120,44,32,102,108,111,97,116,32,95,95,121,44,32
-,105,110,116,42,32,95,95,113,117,111,41,59,13,10,108,111,110,103,32,105,110,116,32,108,114
-,105,110,116,102,40,102,108,111,97,116,32,95,95,120,41,59,13,10,108,111,110,103,32,108,111
-,110,103,32,105,110,116,32,108,108,114,111,117,110,100,102,40,102,108,111,97,116,32,95,95,120
-,41,59,13,10,102,108,111,97,116,32,102,100,105,109,102,40,102,108,111,97,116,32,95,95,120
-,44,32,102,108,111,97,116,32,95,95,121,41,59,13,10,102,108,111,97,116,32,102,109,97,120
-,102,40,102,108,111,97,116,32,95,95,120,44,32,102,108,111,97,116,32,95,95,121,41,59,13
-,10,102,108,111,97,116,32,102,109,105,110,102,40,102,108,111,97,116,32,95,95,120,44,32,102
-,108,111,97,116,32,95,95,121,41,59,13,10,102,108,111,97,116,32,102,109,97,102,40,102,108
-,111,97,116,32,95,95,120,44,32,102,108,111,97,116,32,95,95,121,44,32,102,108,111,97,116
-,32,95,95,122,41,59,13,10,102,108,111,97,116,32,115,99,97,108,98,102,40,102,108,111,97
-,116,32,95,95,120,44,32,102,108,111,97,116,32,95,95,110,41,59,13,10,108,111,110,103,32
-,100,111,117,98,108,101,32,97,99,111,115,108,40,108,111,110,103,32,100,111,117,98,108,101,32
-,95,95,120,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101,32,97,115,105,110,108,40
-,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,41,59,13,10,108,111,110,103,32,100
-,111,117,98,108,101,32,97,116,97,110,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95
-,95,120,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101,32,97,116,97,110,50,108,40
-,108,111,110,103,32,100,111,117,98,108,101,32,95,95,121,44,32,108,111,110,103,32,100,111,117
-,98,108,101,32,95,95,120,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101,32,99,111
-,115,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,41,59,13,10,108,111,110
+,32,95,95,105,112,116,114,41,59,10,100,111,117,98,108,101,32,101,120,112,109,49,40,100,111
+,117,98,108,101,32,95,95,120,41,59,10,100,111,117,98,108,101,32,108,111,103,49,112,40,100
+,111,117,98,108,101,32,95,95,120,41,59,10,100,111,117,98,108,101,32,108,111,103,98,40,100
+,111,117,98,108,101,32,95,95,120,41,59,10,100,111,117,98,108,101,32,101,120,112,50,40,100
+,111,117,98,108,101,32,95,95,120,41,59,10,100,111,117,98,108,101,32,108,111,103,50,40,100
+,111,117,98,108,101,32,95,95,120,41,59,10,100,111,117,98,108,101,32,112,111,119,40,100,111
+,117,98,108,101,32,95,95,120,44,32,100,111,117,98,108,101,32,95,95,121,41,59,10,100,111
+,117,98,108,101,32,115,113,114,116,40,100,111,117,98,108,101,32,95,95,120,41,59,10,100,111
+,117,98,108,101,32,104,121,112,111,116,40,100,111,117,98,108,101,32,95,95,120,44,32,100,111
+,117,98,108,101,32,95,95,121,41,59,10,100,111,117,98,108,101,32,99,98,114,116,40,100,111
+,117,98,108,101,32,95,95,120,41,59,10,100,111,117,98,108,101,32,99,101,105,108,40,100,111
+,117,98,108,101,32,95,95,120,41,59,10,100,111,117,98,108,101,32,102,97,98,115,40,100,111
+,117,98,108,101,32,95,95,120,41,59,10,100,111,117,98,108,101,32,102,108,111,111,114,40,100
+,111,117,98,108,101,32,95,95,120,41,59,10,100,111,117,98,108,101,32,102,109,111,100,40,100
+,111,117,98,108,101,32,95,95,120,44,32,100,111,117,98,108,101,32,95,95,121,41,59,10,105
+,110,116,32,105,115,105,110,102,40,100,111,117,98,108,101,32,95,95,118,97,108,117,101,41,59
+,10,105,110,116,32,102,105,110,105,116,101,40,100,111,117,98,108,101,32,95,95,118,97,108,117
+,101,41,59,10,100,111,117,98,108,101,32,100,114,101,109,40,100,111,117,98,108,101,32,95,95
+,120,44,32,100,111,117,98,108,101,32,95,95,121,41,59,10,100,111,117,98,108,101,32,115,105
+,103,110,105,102,105,99,97,110,100,40,100,111,117,98,108,101,32,95,95,120,41,59,10,100,111
+,117,98,108,101,32,99,111,112,121,115,105,103,110,40,100,111,117,98,108,101,32,95,95,120,44
+,32,100,111,117,98,108,101,32,95,95,121,41,59,10,100,111,117,98,108,101,32,110,97,110,40
+,99,111,110,115,116,32,99,104,97,114,42,32,95,95,116,97,103,98,41,59,10,105,110,116,32
+,105,115,110,97,110,40,100,111,117,98,108,101,32,95,95,118,97,108,117,101,41,59,10,100,111
+,117,98,108,101,32,106,48,40,100,111,117,98,108,101,41,59,10,100,111,117,98,108,101,32,106
+,49,40,100,111,117,98,108,101,41,59,10,100,111,117,98,108,101,32,106,110,40,105,110,116,44
+,32,100,111,117,98,108,101,41,59,10,100,111,117,98,108,101,32,121,48,40,100,111,117,98,108
+,101,41,59,10,100,111,117,98,108,101,32,121,49,40,100,111,117,98,108,101,41,59,10,100,111
+,117,98,108,101,32,121,110,40,105,110,116,44,32,100,111,117,98,108,101,41,59,10,100,111,117
+,98,108,101,32,101,114,102,40,100,111,117,98,108,101,41,59,10,100,111,117,98,108,101,32,101
+,114,102,99,40,100,111,117,98,108,101,41,59,10,100,111,117,98,108,101,32,108,103,97,109,109
+,97,40,100,111,117,98,108,101,41,59,10,100,111,117,98,108,101,32,116,103,97,109,109,97,40
+,100,111,117,98,108,101,41,59,10,100,111,117,98,108,101,32,103,97,109,109,97,40,100,111,117
+,98,108,101,41,59,10,100,111,117,98,108,101,32,108,103,97,109,109,97,95,114,40,100,111,117
+,98,108,101,44,32,105,110,116,42,32,95,95,115,105,103,110,103,97,109,112,41,59,10,100,111
+,117,98,108,101,32,114,105,110,116,40,100,111,117,98,108,101,32,95,95,120,41,59,10,100,111
+,117,98,108,101,32,110,101,120,116,97,102,116,101,114,40,100,111,117,98,108,101,32,95,95,120
+,44,32,100,111,117,98,108,101,32,95,95,121,41,59,10,100,111,117,98,108,101,32,110,101,120
+,116,116,111,119,97,114,100,40,100,111,117,98,108,101,32,95,95,120,44,32,108,111,110,103,32
+,100,111,117,98,108,101,32,95,95,121,41,59,10,100,111,117,98,108,101,32,114,101,109,97,105
+,110,100,101,114,40,100,111,117,98,108,101,32,95,95,120,44,32,100,111,117,98,108,101,32,95
+,95,121,41,59,10,100,111,117,98,108,101,32,115,99,97,108,98,110,40,100,111,117,98,108,101
+,32,95,95,120,44,32,105,110,116,32,95,95,110,41,59,10,105,110,116,32,105,108,111,103,98
+,40,100,111,117,98,108,101,32,95,95,120,41,59,10,100,111,117,98,108,101,32,115,99,97,108
+,98,108,110,40,100,111,117,98,108,101,32,95,95,120,44,32,108,111,110,103,32,105,110,116,32
+,95,95,110,41,59,10,100,111,117,98,108,101,32,110,101,97,114,98,121,105,110,116,40,100,111
+,117,98,108,101,32,95,95,120,41,59,10,100,111,117,98,108,101,32,114,111,117,110,100,40,100
+,111,117,98,108,101,32,95,95,120,41,59,10,100,111,117,98,108,101,32,116,114,117,110,99,40
+,100,111,117,98,108,101,32,95,95,120,41,59,10,100,111,117,98,108,101,32,114,101,109,113,117
+,111,40,100,111,117,98,108,101,32,95,95,120,44,32,100,111,117,98,108,101,32,95,95,121,44
+,32,105,110,116,42,32,95,95,113,117,111,41,59,10,108,111,110,103,32,105,110,116,32,108,114
+,105,110,116,40,100,111,117,98,108,101,32,95,95,120,41,59,10,108,111,110,103,32,108,111,110
+,103,32,105,110,116,32,108,108,114,111,117,110,100,40,100,111,117,98,108,101,32,95,95,120,41
+,59,10,100,111,117,98,108,101,32,102,100,105,109,40,100,111,117,98,108,101,32,95,95,120,44
+,32,100,111,117,98,108,101,32,95,95,121,41,59,10,100,111,117,98,108,101,32,102,109,97,120
+,40,100,111,117,98,108,101,32,95,95,120,44,32,100,111,117,98,108,101,32,95,95,121,41,59
+,10,100,111,117,98,108,101,32,102,109,105,110,40,100,111,117,98,108,101,32,95,95,120,44,32
+,100,111,117,98,108,101,32,95,95,121,41,59,10,100,111,117,98,108,101,32,102,109,97,40,100
+,111,117,98,108,101,32,95,95,120,44,32,100,111,117,98,108,101,32,95,95,121,44,32,100,111
+,117,98,108,101,32,95,95,122,41,59,10,100,111,117,98,108,101,32,115,99,97,108,98,40,100
+,111,117,98,108,101,32,95,95,120,44,32,100,111,117,98,108,101,32,95,95,110,41,59,10,102
+,108,111,97,116,32,97,99,111,115,102,40,102,108,111,97,116,32,95,95,120,41,59,10,102,108
+,111,97,116,32,97,115,105,110,102,40,102,108,111,97,116,32,95,95,120,41,59,10,102,108,111
+,97,116,32,97,116,97,110,102,40,102,108,111,97,116,32,95,95,120,41,59,10,102,108,111,97
+,116,32,97,116,97,110,50,102,40,102,108,111,97,116,32,95,95,121,44,32,102,108,111,97,116
+,32,95,95,120,41,59,10,102,108,111,97,116,32,99,111,115,102,40,102,108,111,97,116,32,95
+,95,120,41,59,10,102,108,111,97,116,32,115,105,110,102,40,102,108,111,97,116,32,95,95,120
+,41,59,10,102,108,111,97,116,32,116,97,110,102,40,102,108,111,97,116,32,95,95,120,41,59
+,10,102,108,111,97,116,32,99,111,115,104,102,40,102,108,111,97,116,32,95,95,120,41,59,10
+,102,108,111,97,116,32,115,105,110,104,102,40,102,108,111,97,116,32,95,95,120,41,59,10,102
+,108,111,97,116,32,116,97,110,104,102,40,102,108,111,97,116,32,95,95,120,41,59,10,102,108
+,111,97,116,32,97,99,111,115,104,102,40,102,108,111,97,116,32,95,95,120,41,59,10,102,108
+,111,97,116,32,97,115,105,110,104,102,40,102,108,111,97,116,32,95,95,120,41,59,10,102,108
+,111,97,116,32,97,116,97,110,104,102,40,102,108,111,97,116,32,95,95,120,41,59,10,102,108
+,111,97,116,32,101,120,112,102,40,102,108,111,97,116,32,95,95,120,41,59,10,102,108,111,97
+,116,32,102,114,101,120,112,102,40,102,108,111,97,116,32,95,95,120,44,32,105,110,116,42,32
+,95,95,101,120,112,111,110,101,110,116,41,59,10,102,108,111,97,116,32,108,100,101,120,112,102
+,40,102,108,111,97,116,32,95,95,120,44,32,105,110,116,32,95,95,101,120,112,111,110,101,110
+,116,41,59,10,102,108,111,97,116,32,108,111,103,102,40,102,108,111,97,116,32,95,95,120,41
+,59,10,102,108,111,97,116,32,108,111,103,49,48,102,40,102,108,111,97,116,32,95,95,120,41
+,59,32,102,108,111,97,116,32,95,95,108,111,103,49,48,102,40,102,108,111,97,116,32,95,95
+,120,41,59,10,102,108,111,97,116,32,109,111,100,102,102,40,102,108,111,97,116,32,95,95,120
+,44,32,102,108,111,97,116,42,32,95,95,105,112,116,114,41,59,10,102,108,111,97,116,32,101
+,120,112,109,49,102,40,102,108,111,97,116,32,95,95,120,41,59,10,102,108,111,97,116,32,108
+,111,103,49,112,102,40,102,108,111,97,116,32,95,95,120,41,59,10,102,108,111,97,116,32,108
+,111,103,98,102,40,102,108,111,97,116,32,95,95,120,41,59,10,102,108,111,97,116,32,101,120
+,112,50,102,40,102,108,111,97,116,32,95,95,120,41,59,10,102,108,111,97,116,32,108,111,103
+,50,102,40,102,108,111,97,116,32,95,95,120,41,59,10,102,108,111,97,116,32,112,111,119,102
+,40,102,108,111,97,116,32,95,95,120,44,32,102,108,111,97,116,32,95,95,121,41,59,10,102
+,108,111,97,116,32,115,113,114,116,102,40,102,108,111,97,116,32,95,95,120,41,59,10,102,108
+,111,97,116,32,104,121,112,111,116,102,40,102,108,111,97,116,32,95,95,120,44,32,102,108,111
+,97,116,32,95,95,121,41,59,10,102,108,111,97,116,32,99,98,114,116,102,40,102,108,111,97
+,116,32,95,95,120,41,59,10,102,108,111,97,116,32,99,101,105,108,102,40,102,108,111,97,116
+,32,95,95,120,41,59,10,102,108,111,97,116,32,102,97,98,115,102,40,102,108,111,97,116,32
+,95,95,120,41,59,10,102,108,111,97,116,32,102,108,111,111,114,102,40,102,108,111,97,116,32
+,95,95,120,41,59,10,102,108,111,97,116,32,102,109,111,100,102,40,102,108,111,97,116,32,95
+,95,120,44,32,102,108,111,97,116,32,95,95,121,41,59,10,105,110,116,32,105,115,105,110,102
+,102,40,102,108,111,97,116,32,95,95,118,97,108,117,101,41,59,10,105,110,116,32,102,105,110
+,105,116,101,102,40,102,108,111,97,116,32,95,95,118,97,108,117,101,41,59,10,102,108,111,97
+,116,32,100,114,101,109,102,40,102,108,111,97,116,32,95,95,120,44,32,102,108,111,97,116,32
+,95,95,121,41,59,10,102,108,111,97,116,32,115,105,103,110,105,102,105,99,97,110,100,102,40
+,102,108,111,97,116,32,95,95,120,41,59,10,102,108,111,97,116,32,99,111,112,121,115,105,103
+,110,102,40,102,108,111,97,116,32,95,95,120,44,32,102,108,111,97,116,32,95,95,121,41,59
+,10,102,108,111,97,116,32,110,97,110,102,40,99,111,110,115,116,32,99,104,97,114,42,32,95
+,95,116,97,103,98,41,59,10,105,110,116,32,105,115,110,97,110,102,40,102,108,111,97,116,32
+,95,95,118,97,108,117,101,41,59,10,102,108,111,97,116,32,106,48,102,40,102,108,111,97,116
+,41,59,10,102,108,111,97,116,32,106,49,102,40,102,108,111,97,116,41,59,10,102,108,111,97
+,116,32,106,110,102,40,105,110,116,44,32,102,108,111,97,116,41,59,10,102,108,111,97,116,32
+,121,48,102,40,102,108,111,97,116,41,59,10,102,108,111,97,116,32,121,49,102,40,102,108,111
+,97,116,41,59,10,102,108,111,97,116,32,121,110,102,40,105,110,116,44,32,102,108,111,97,116
+,41,59,10,102,108,111,97,116,32,101,114,102,102,40,102,108,111,97,116,41,59,10,102,108,111
+,97,116,32,101,114,102,99,102,40,102,108,111,97,116,41,59,10,102,108,111,97,116,32,108,103
+,97,109,109,97,102,40,102,108,111,97,116,41,59,10,102,108,111,97,116,32,116,103,97,109,109
+,97,102,40,102,108,111,97,116,41,59,10,102,108,111,97,116,32,103,97,109,109,97,102,40,102
+,108,111,97,116,41,59,10,102,108,111,97,116,32,108,103,97,109,109,97,102,95,114,40,102,108
+,111,97,116,44,32,105,110,116,42,32,95,95,115,105,103,110,103,97,109,112,41,59,10,102,108
+,111,97,116,32,114,105,110,116,102,40,102,108,111,97,116,32,95,95,120,41,59,10,102,108,111
+,97,116,32,110,101,120,116,97,102,116,101,114,102,40,102,108,111,97,116,32,95,95,120,44,32
+,102,108,111,97,116,32,95,95,121,41,59,10,102,108,111,97,116,32,110,101,120,116,116,111,119
+,97,114,100,102,40,102,108,111,97,116,32,95,95,120,44,32,108,111,110,103,32,100,111,117,98
+,108,101,32,95,95,121,41,59,10,102,108,111,97,116,32,114,101,109,97,105,110,100,101,114,102
+,40,102,108,111,97,116,32,95,95,120,44,32,102,108,111,97,116,32,95,95,121,41,59,10,102
+,108,111,97,116,32,115,99,97,108,98,110,102,40,102,108,111,97,116,32,95,95,120,44,32,105
+,110,116,32,95,95,110,41,59,10,105,110,116,32,105,108,111,103,98,102,40,102,108,111,97,116
+,32,95,95,120,41,59,10,102,108,111,97,116,32,115,99,97,108,98,108,110,102,40,102,108,111
+,97,116,32,95,95,120,44,32,108,111,110,103,32,105,110,116,32,95,95,110,41,59,10,102,108
+,111,97,116,32,110,101,97,114,98,121,105,110,116,102,40,102,108,111,97,116,32,95,95,120,41
+,59,10,102,108,111,97,116,32,114,111,117,110,100,102,40,102,108,111,97,116,32,95,95,120,41
+,59,10,102,108,111,97,116,32,116,114,117,110,99,102,40,102,108,111,97,116,32,95,95,120,41
+,59,10,102,108,111,97,116,32,114,101,109,113,117,111,102,40,102,108,111,97,116,32,95,95,120
+,44,32,102,108,111,97,116,32,95,95,121,44,32,105,110,116,42,32,95,95,113,117,111,41,59
+,10,108,111,110,103,32,105,110,116,32,108,114,105,110,116,102,40,102,108,111,97,116,32,95,95
+,120,41,59,10,108,111,110,103,32,108,111,110,103,32,105,110,116,32,108,108,114,111,117,110,100
+,102,40,102,108,111,97,116,32,95,95,120,41,59,10,102,108,111,97,116,32,102,100,105,109,102
+,40,102,108,111,97,116,32,95,95,120,44,32,102,108,111,97,116,32,95,95,121,41,59,10,102
+,108,111,97,116,32,102,109,97,120,102,40,102,108,111,97,116,32,95,95,120,44,32,102,108,111
+,97,116,32,95,95,121,41,59,10,102,108,111,97,116,32,102,109,105,110,102,40,102,108,111,97
+,116,32,95,95,120,44,32,102,108,111,97,116,32,95,95,121,41,59,10,102,108,111,97,116,32
+,102,109,97,102,40,102,108,111,97,116,32,95,95,120,44,32,102,108,111,97,116,32,95,95,121
+,44,32,102,108,111,97,116,32,95,95,122,41,59,10,102,108,111,97,116,32,115,99,97,108,98
+,102,40,102,108,111,97,116,32,95,95,120,44,32,102,108,111,97,116,32,95,95,110,41,59,10
+,108,111,110,103,32,100,111,117,98,108,101,32,97,99,111,115,108,40,108,111,110,103,32,100,111
+,117,98,108,101,32,95,95,120,41,59,10,108,111,110,103,32,100,111,117,98,108,101,32,97,115
+,105,110,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,41,59,10,108,111,110
+,103,32,100,111,117,98,108,101,32,97,116,97,110,108,40,108,111,110,103,32,100,111,117,98,108
+,101,32,95,95,120,41,59,10,108,111,110,103,32,100,111,117,98,108,101,32,97,116,97,110,50
+,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,121,44,32,108,111,110,103,32,100
+,111,117,98,108,101,32,95,95,120,41,59,10,108,111,110,103,32,100,111,117,98,108,101,32,99
+,111,115,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,41,59,10,108,111,110
 ,103,32,100,111,117,98,108,101,32,115,105,110,108,40,108,111,110,103,32,100,111,117,98,108,101
-,32,95,95,120,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101,32,116,97,110,108,40
-,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,41,59,13,10,108,111,110,103,32,100
-,111,117,98,108,101,32,99,111,115,104,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95
-,95,120,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101,32,115,105,110,104,108,40,108
-,111,110,103,32,100,111,117,98,108,101,32,95,95,120,41,59,13,10,108,111,110,103,32,100,111
-,117,98,108,101,32,116,97,110,104,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95
-,120,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101,32,97,99,111,115,104,108,40,108
-,111,110,103,32,100,111,117,98,108,101,32,95,95,120,41,59,13,10,108,111,110,103,32,100,111
-,117,98,108,101,32,97,115,105,110,104,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95
-,95,120,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101,32,97,116,97,110,104,108,40
-,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,41,59,13,10,108,111,110,103,32,100
-,111,117,98,108,101,32,101,120,112,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95
-,120,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101,32,102,114,101,120,112,108,40,108
-,111,110,103,32,100,111,117,98,108,101,32,95,95,120,44,32,105,110,116,42,32,95,95,101,120
-,112,111,110,101,110,116,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101,32,108,100,101
-,120,112,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,44,32,105,110,116,32
-,95,95,101,120,112,111,110,101,110,116,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101
-,32,108,111,103,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,41,59,13,10
-,108,111,110,103,32,100,111,117,98,108,101,32,108,111,103,49,48,108,40,108,111,110,103,32,100
-,111,117,98,108,101,32,95,95,120,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101,32
-,109,111,100,102,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,44,32,108,111
-,110,103,32,100,111,117,98,108,101,42,32,95,95,105,112,116,114,41,59,13,10,108,111,110,103
-,32,100,111,117,98,108,101,32,101,120,112,109,49,108,40,108,111,110,103,32,100,111,117,98,108
-,101,32,95,95,120,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101,32,108,111,103,49
-,112,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,41,59,13,10,108,111,110
-,103,32,100,111,117,98,108,101,32,108,111,103,98,108,40,108,111,110,103,32,100,111,117,98,108
-,101,32,95,95,120,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101,32,101,120,112,50
-,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,41,59,13,10,108,111,110,103
-,32,100,111,117,98,108,101,32,108,111,103,50,108,40,108,111,110,103,32,100,111,117,98,108,101
-,32,95,95,120,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101,32,112,111,119,108,40
-,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,44,32,108,111,110,103,32,100,111,117
-,98,108,101,32,95,95,121,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101,32,115,113
-,114,116,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,41,59,13,10,108,111
-,110,103,32,100,111,117,98,108,101,32,104,121,112,111,116,108,40,108,111,110,103,32,100,111,117
-,98,108,101,32,95,95,120,44,32,108,111,110,103,32,100,111,117,98,108,101,32,95,95,121,41
-,59,13,10,108,111,110,103,32,100,111,117,98,108,101,32,99,98,114,116,108,40,108,111,110,103
-,32,100,111,117,98,108,101,32,95,95,120,41,59,13,10,108,111,110,103,32,100,111,117,98,108
-,101,32,99,101,105,108,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,41,59
-,13,10,108,111,110,103,32,100,111,117,98,108,101,32,102,97,98,115,108,40,108,111,110,103,32
-,100,111,117,98,108,101,32,95,95,120,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101
+,32,95,95,120,41,59,10,108,111,110,103,32,100,111,117,98,108,101,32,116,97,110,108,40,108
+,111,110,103,32,100,111,117,98,108,101,32,95,95,120,41,59,10,108,111,110,103,32,100,111,117
+,98,108,101,32,99,111,115,104,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120
+,41,59,10,108,111,110,103,32,100,111,117,98,108,101,32,115,105,110,104,108,40,108,111,110,103
+,32,100,111,117,98,108,101,32,95,95,120,41,59,10,108,111,110,103,32,100,111,117,98,108,101
+,32,116,97,110,104,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,41,59,10
+,108,111,110,103,32,100,111,117,98,108,101,32,97,99,111,115,104,108,40,108,111,110,103,32,100
+,111,117,98,108,101,32,95,95,120,41,59,10,108,111,110,103,32,100,111,117,98,108,101,32,97
+,115,105,110,104,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,41,59,10,108
+,111,110,103,32,100,111,117,98,108,101,32,97,116,97,110,104,108,40,108,111,110,103,32,100,111
+,117,98,108,101,32,95,95,120,41,59,10,108,111,110,103,32,100,111,117,98,108,101,32,101,120
+,112,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,41,59,10,108,111,110,103
+,32,100,111,117,98,108,101,32,102,114,101,120,112,108,40,108,111,110,103,32,100,111,117,98,108
+,101,32,95,95,120,44,32,105,110,116,42,32,95,95,101,120,112,111,110,101,110,116,41,59,10
+,108,111,110,103,32,100,111,117,98,108,101,32,108,100,101,120,112,108,40,108,111,110,103,32,100
+,111,117,98,108,101,32,95,95,120,44,32,105,110,116,32,95,95,101,120,112,111,110,101,110,116
+,41,59,10,108,111,110,103,32,100,111,117,98,108,101,32,108,111,103,108,40,108,111,110,103,32
+,100,111,117,98,108,101,32,95,95,120,41,59,10,108,111,110,103,32,100,111,117,98,108,101,32
+,108,111,103,49,48,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,41,59,10
+,108,111,110,103,32,100,111,117,98,108,101,32,109,111,100,102,108,40,108,111,110,103,32,100,111
+,117,98,108,101,32,95,95,120,44,32,108,111,110,103,32,100,111,117,98,108,101,42,32,95,95
+,105,112,116,114,41,59,10,108,111,110,103,32,100,111,117,98,108,101,32,101,120,112,109,49,108
+,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,41,59,10,108,111,110,103,32,100
+,111,117,98,108,101,32,108,111,103,49,112,108,40,108,111,110,103,32,100,111,117,98,108,101,32
+,95,95,120,41,59,10,108,111,110,103,32,100,111,117,98,108,101,32,108,111,103,98,108,40,108
+,111,110,103,32,100,111,117,98,108,101,32,95,95,120,41,59,10,108,111,110,103,32,100,111,117
+,98,108,101,32,101,120,112,50,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120
+,41,59,10,108,111,110,103,32,100,111,117,98,108,101,32,108,111,103,50,108,40,108,111,110,103
+,32,100,111,117,98,108,101,32,95,95,120,41,59,10,108,111,110,103,32,100,111,117,98,108,101
+,32,112,111,119,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,44,32,108,111
+,110,103,32,100,111,117,98,108,101,32,95,95,121,41,59,10,108,111,110,103,32,100,111,117,98
+,108,101,32,115,113,114,116,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,41
+,59,10,108,111,110,103,32,100,111,117,98,108,101,32,104,121,112,111,116,108,40,108,111,110,103
+,32,100,111,117,98,108,101,32,95,95,120,44,32,108,111,110,103,32,100,111,117,98,108,101,32
+,95,95,121,41,59,10,108,111,110,103,32,100,111,117,98,108,101,32,99,98,114,116,108,40,108
+,111,110,103,32,100,111,117,98,108,101,32,95,95,120,41,59,10,108,111,110,103,32,100,111,117
+,98,108,101,32,99,101,105,108,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120
+,41,59,10,108,111,110,103,32,100,111,117,98,108,101,32,102,97,98,115,108,40,108,111,110,103
+,32,100,111,117,98,108,101,32,95,95,120,41,59,10,108,111,110,103,32,100,111,117,98,108,101
 ,32,102,108,111,111,114,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,41,59
-,13,10,108,111,110,103,32,100,111,117,98,108,101,32,102,109,111,100,108,40,108,111,110,103,32
+,10,108,111,110,103,32,100,111,117,98,108,101,32,102,109,111,100,108,40,108,111,110,103,32,100
+,111,117,98,108,101,32,95,95,120,44,32,108,111,110,103,32,100,111,117,98,108,101,32,95,95
+,121,41,59,10,105,110,116,32,105,115,105,110,102,108,40,108,111,110,103,32,100,111,117,98,108
+,101,32,95,95,118,97,108,117,101,41,59,10,105,110,116,32,102,105,110,105,116,101,108,40,108
+,111,110,103,32,100,111,117,98,108,101,32,95,95,118,97,108,117,101,41,59,10,108,111,110,103
+,32,100,111,117,98,108,101,32,100,114,101,109,108,40,108,111,110,103,32,100,111,117,98,108,101
+,32,95,95,120,44,32,108,111,110,103,32,100,111,117,98,108,101,32,95,95,121,41,59,10,108
+,111,110,103,32,100,111,117,98,108,101,32,115,105,103,110,105,102,105,99,97,110,100,108,40,108
+,111,110,103,32,100,111,117,98,108,101,32,95,95,120,41,59,10,108,111,110,103,32,100,111,117
+,98,108,101,32,99,111,112,121,115,105,103,110,108,40,108,111,110,103,32,100,111,117,98,108,101
+,32,95,95,120,44,32,108,111,110,103,32,100,111,117,98,108,101,32,95,95,121,41,59,10,108
+,111,110,103,32,100,111,117,98,108,101,32,110,97,110,108,40,99,111,110,115,116,32,99,104,97
+,114,42,32,95,95,116,97,103,98,41,59,10,105,110,116,32,105,115,110,97,110,108,40,108,111
+,110,103,32,100,111,117,98,108,101,32,95,95,118,97,108,117,101,41,59,10,108,111,110,103,32
+,100,111,117,98,108,101,32,106,48,108,40,108,111,110,103,32,100,111,117,98,108,101,41,59,10
+,108,111,110,103,32,100,111,117,98,108,101,32,106,49,108,40,108,111,110,103,32,100,111,117,98
+,108,101,41,59,10,108,111,110,103,32,100,111,117,98,108,101,32,106,110,108,40,105,110,116,44
+,32,108,111,110,103,32,100,111,117,98,108,101,41,59,10,108,111,110,103,32,100,111,117,98,108
+,101,32,121,48,108,40,108,111,110,103,32,100,111,117,98,108,101,41,59,10,108,111,110,103,32
+,100,111,117,98,108,101,32,121,49,108,40,108,111,110,103,32,100,111,117,98,108,101,41,59,10
+,108,111,110,103,32,100,111,117,98,108,101,32,121,110,108,40,105,110,116,44,32,108,111,110,103
+,32,100,111,117,98,108,101,41,59,10,108,111,110,103,32,100,111,117,98,108,101,32,101,114,102
+,108,40,108,111,110,103,32,100,111,117,98,108,101,41,59,10,108,111,110,103,32,100,111,117,98
+,108,101,32,101,114,102,99,108,40,108,111,110,103,32,100,111,117,98,108,101,41,59,10,108,111
+,110,103,32,100,111,117,98,108,101,32,108,103,97,109,109,97,108,40,108,111,110,103,32,100,111
+,117,98,108,101,41,59,10,108,111,110,103,32,100,111,117,98,108,101,32,116,103,97,109,109,97
+,108,40,108,111,110,103,32,100,111,117,98,108,101,41,59,10,108,111,110,103,32,100,111,117,98
+,108,101,32,103,97,109,109,97,108,40,108,111,110,103,32,100,111,117,98,108,101,41,59,10,108
+,111,110,103,32,100,111,117,98,108,101,32,108,103,97,109,109,97,108,95,114,40,108,111,110,103
+,32,100,111,117,98,108,101,44,32,105,110,116,42,32,95,95,115,105,103,110,103,97,109,112,41
+,59,10,108,111,110,103,32,100,111,117,98,108,101,32,114,105,110,116,108,40,108,111,110,103,32
+,100,111,117,98,108,101,32,95,95,120,41,59,10,108,111,110,103,32,100,111,117,98,108,101,32
+,110,101,120,116,97,102,116,101,114,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95
+,120,44,32,108,111,110,103,32,100,111,117,98,108,101,32,95,95,121,41,59,10,108,111,110,103
+,32,100,111,117,98,108,101,32,110,101,120,116,116,111,119,97,114,100,108,40,108,111,110,103,32
 ,100,111,117,98,108,101,32,95,95,120,44,32,108,111,110,103,32,100,111,117,98,108,101,32,95
-,95,121,41,59,13,10,105,110,116,32,105,115,105,110,102,108,40,108,111,110,103,32,100,111,117
-,98,108,101,32,95,95,118,97,108,117,101,41,59,13,10,105,110,116,32,102,105,110,105,116,101
-,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,118,97,108,117,101,41,59,13,10
-,108,111,110,103,32,100,111,117,98,108,101,32,100,114,101,109,108,40,108,111,110,103,32,100,111
-,117,98,108,101,32,95,95,120,44,32,108,111,110,103,32,100,111,117,98,108,101,32,95,95,121
-,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101,32,115,105,103,110,105,102,105,99,97
-,110,100,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,41,59,13,10,108,111
-,110,103,32,100,111,117,98,108,101,32,99,111,112,121,115,105,103,110,108,40,108,111,110,103,32
-,100,111,117,98,108,101,32,95,95,120,44,32,108,111,110,103,32,100,111,117,98,108,101,32,95
-,95,121,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101,32,110,97,110,108,40,99,111
-,110,115,116,32,99,104,97,114,42,32,95,95,116,97,103,98,41,59,13,10,105,110,116,32,105
-,115,110,97,110,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,118,97,108,117,101
-,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101,32,106,48,108,40,108,111,110,103,32
-,100,111,117,98,108,101,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101,32,106,49,108
-,40,108,111,110,103,32,100,111,117,98,108,101,41,59,13,10,108,111,110,103,32,100,111,117,98
-,108,101,32,106,110,108,40,105,110,116,44,32,108,111,110,103,32,100,111,117,98,108,101,41,59
-,13,10,108,111,110,103,32,100,111,117,98,108,101,32,121,48,108,40,108,111,110,103,32,100,111
-,117,98,108,101,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101,32,121,49,108,40,108
-,111,110,103,32,100,111,117,98,108,101,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101
-,32,121,110,108,40,105,110,116,44,32,108,111,110,103,32,100,111,117,98,108,101,41,59,13,10
-,108,111,110,103,32,100,111,117,98,108,101,32,101,114,102,108,40,108,111,110,103,32,100,111,117
-,98,108,101,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101,32,101,114,102,99,108,40
-,108,111,110,103,32,100,111,117,98,108,101,41,59,13,10,108,111,110,103,32,100,111,117,98,108
-,101,32,108,103,97,109,109,97,108,40,108,111,110,103,32,100,111,117,98,108,101,41,59,13,10
-,108,111,110,103,32,100,111,117,98,108,101,32,116,103,97,109,109,97,108,40,108,111,110,103,32
-,100,111,117,98,108,101,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101,32,103,97,109
-,109,97,108,40,108,111,110,103,32,100,111,117,98,108,101,41,59,13,10,108,111,110,103,32,100
-,111,117,98,108,101,32,108,103,97,109,109,97,108,95,114,40,108,111,110,103,32,100,111,117,98
-,108,101,44,32,105,110,116,42,32,95,95,115,105,103,110,103,97,109,112,41,59,13,10,108,111
-,110,103,32,100,111,117,98,108,101,32,114,105,110,116,108,40,108,111,110,103,32,100,111,117,98
-,108,101,32,95,95,120,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101,32,110,101,120
-,116,97,102,116,101,114,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,44,32
-,108,111,110,103,32,100,111,117,98,108,101,32,95,95,121,41,59,13,10,108,111,110,103,32,100
-,111,117,98,108,101,32,110,101,120,116,116,111,119,97,114,100,108,40,108,111,110,103,32,100,111
-,117,98,108,101,32,95,95,120,44,32,108,111,110,103,32,100,111,117,98,108,101,32,95,95,121
-,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101,32,114,101,109,97,105,110,100,101,114
-,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,44,32,108,111,110,103,32,100
-,111,117,98,108,101,32,95,95,121,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101,32
+,95,121,41,59,10,108,111,110,103,32,100,111,117,98,108,101,32,114,101,109,97,105,110,100,101
+,114,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,44,32,108,111,110,103,32
+,100,111,117,98,108,101,32,95,95,121,41,59,10,108,111,110,103,32,100,111,117,98,108,101,32
 ,115,99,97,108,98,110,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,44,32
-,105,110,116,32,95,95,110,41,59,13,10,105,110,116,32,105,108,111,103,98,108,40,108,111,110
-,103,32,100,111,117,98,108,101,32,95,95,120,41,59,13,10,108,111,110,103,32,100,111,117,98
-,108,101,32,115,99,97,108,98,108,110,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95
-,95,120,44,32,108,111,110,103,32,105,110,116,32,95,95,110,41,59,13,10,108,111,110,103,32
-,100,111,117,98,108,101,32,110,101,97,114,98,121,105,110,116,108,40,108,111,110,103,32,100,111
-,117,98,108,101,32,95,95,120,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101,32,114
-,111,117,110,100,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,41,59,13,10
-,108,111,110,103,32,100,111,117,98,108,101,32,116,114,117,110,99,108,40,108,111,110,103,32,100
-,111,117,98,108,101,32,95,95,120,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101,32
-,114,101,109,113,117,111,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,44,32
-,108,111,110,103,32,100,111,117,98,108,101,32,95,95,121,44,32,105,110,116,42,32,95,95,113
-,117,111,41,59,13,10,108,111,110,103,32,105,110,116,32,108,114,105,110,116,108,40,108,111,110
-,103,32,100,111,117,98,108,101,32,95,95,120,41,59,13,10,108,111,110,103,32,108,111,110,103
-,32,105,110,116,32,108,108,114,111,117,110,100,108,40,108,111,110,103,32,100,111,117,98,108,101
-,32,95,95,120,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101,32,102,100,105,109,108
-,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,44,32,108,111,110,103,32,100,111
-,117,98,108,101,32,95,95,121,41,59,13,10,108,111,110,103,32,100,111,117,98,108,101,32,102
-,109,97,120,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,44,32,108,111,110
-,103,32,100,111,117,98,108,101,32,95,95,121,41,59,13,10,108,111,110,103,32,100,111,117,98
-,108,101,32,102,109,105,110,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,44
-,32,108,111,110,103,32,100,111,117,98,108,101,32,95,95,121,41,59,13,10,108,111,110,103,32
-,100,111,117,98,108,101,32,102,109,97,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95
-,95,120,44,32,108,111,110,103,32,100,111,117,98,108,101,32,95,95,121,44,32,108,111,110,103
-,32,100,111,117,98,108,101,32,95,95,122,41,59,13,10,108,111,110,103,32,100,111,117,98,108
-,101,32,115,99,97,108,98,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,44
-,32,108,111,110,103,32,100,111,117,98,108,101,32,95,95,110,41,59,13,10
+,105,110,116,32,95,95,110,41,59,10,105,110,116,32,105,108,111,103,98,108,40,108,111,110,103
+,32,100,111,117,98,108,101,32,95,95,120,41,59,10,108,111,110,103,32,100,111,117,98,108,101
+,32,115,99,97,108,98,108,110,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120
+,44,32,108,111,110,103,32,105,110,116,32,95,95,110,41,59,10,108,111,110,103,32,100,111,117
+,98,108,101,32,110,101,97,114,98,121,105,110,116,108,40,108,111,110,103,32,100,111,117,98,108
+,101,32,95,95,120,41,59,10,108,111,110,103,32,100,111,117,98,108,101,32,114,111,117,110,100
+,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,41,59,10,108,111,110,103,32
+,100,111,117,98,108,101,32,116,114,117,110,99,108,40,108,111,110,103,32,100,111,117,98,108,101
+,32,95,95,120,41,59,10,108,111,110,103,32,100,111,117,98,108,101,32,114,101,109,113,117,111
+,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,44,32,108,111,110,103,32,100
+,111,117,98,108,101,32,95,95,121,44,32,105,110,116,42,32,95,95,113,117,111,41,59,10,108
+,111,110,103,32,105,110,116,32,108,114,105,110,116,108,40,108,111,110,103,32,100,111,117,98,108
+,101,32,95,95,120,41,59,10,108,111,110,103,32,108,111,110,103,32,105,110,116,32,108,108,114
+,111,117,110,100,108,40,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,41,59,10,108
+,111,110,103,32,100,111,117,98,108,101,32,102,100,105,109,108,40,108,111,110,103,32,100,111,117
+,98,108,101,32,95,95,120,44,32,108,111,110,103,32,100,111,117,98,108,101,32,95,95,121,41
+,59,10,108,111,110,103,32,100,111,117,98,108,101,32,102,109,97,120,108,40,108,111,110,103,32
+,100,111,117,98,108,101,32,95,95,120,44,32,108,111,110,103,32,100,111,117,98,108,101,32,95
+,95,121,41,59,10,108,111,110,103,32,100,111,117,98,108,101,32,102,109,105,110,108,40,108,111
+,110,103,32,100,111,117,98,108,101,32,95,95,120,44,32,108,111,110,103,32,100,111,117,98,108
+,101,32,95,95,121,41,59,10,108,111,110,103,32,100,111,117,98,108,101,32,102,109,97,108,40
+,108,111,110,103,32,100,111,117,98,108,101,32,95,95,120,44,32,108,111,110,103,32,100,111,117
+,98,108,101,32,95,95,121,44,32,108,111,110,103,32,100,111,117,98,108,101,32,95,95,122,41
+,59,10,108,111,110,103,32,100,111,117,98,108,101,32,115,99,97,108,98,108,40,108,111,110,103
+,32,100,111,117,98,108,101,32,95,95,120,44,32,108,111,110,103,32,100,111,117,98,108,101,32
+,95,95,110,41,59,10
 , 0 };
 static const char file_setjmp_h[] = {
 
 
 
 35,101,114,114,111,114,32,110,111,116,32,105,109,112,108,101,109,101,110,116,101,100,32,121,101
-,116,13,10
+,116,10
 , 0 };
 static const char file_signal_h[] = {
 
 
 
-35,105,102,110,100,101,102,32,83,73,71,78,65,76,95,72,13,10,35,100,101,102,105,110,101
-,32,83,73,71,78,65,76,95,72,13,10,13,10,116,121,112,101,100,101,102,32,118,111,105,100
-,32,40,42,115,105,103,104,97,110,100,108,101,114,95,116,41,40,105,110,116,41,59,13,10,13
-,10,47,42,32,83,116,97,110,100,97,114,100,32,115,105,103,110,97,108,115,32,42,47,13,10
-,35,100,101,102,105,110,101,32,83,73,71,65,66,82,84,32,54,13,10,35,100,101,102,105,110
-,101,32,83,73,71,70,80,69,32,56,13,10,35,100,101,102,105,110,101,32,83,73,71,73,76
-,76,32,52,13,10,35,100,101,102,105,110,101,32,83,73,71,73,78,84,32,50,13,10,35,100
-,101,102,105,110,101,32,83,73,71,83,69,71,86,32,49,49,13,10,35,100,101,102,105,110,101
-,32,83,73,71,84,69,82,77,32,49,53,13,10,35,100,101,102,105,110,101,32,83,73,71,95
-,68,70,76,32,40,40,115,105,103,104,97,110,100,108,101,114,95,116,41,48,41,13,10,35,100
-,101,102,105,110,101,32,83,73,71,95,73,71,78,32,40,40,115,105,103,104,97,110,100,108,101
-,114,95,116,41,49,41,13,10,13,10,47,42,32,70,117,110,99,116,105,111,110,32,100,101,99
-,108,97,114,97,116,105,111,110,115,32,42,47,13,10,115,105,103,104,97,110,100,108,101,114,95
-,116,32,115,105,103,110,97,108,40,105,110,116,32,115,105,103,44,32,115,105,103,104,97,110,100
-,108,101,114,95,116,32,104,97,110,100,108,101,114,41,59,13,10,105,110,116,32,114,97,105,115
-,101,40,105,110,116,32,115,105,103,41,59,13,10,13,10,35,101,110,100,105,102,32,47,42,32
-,83,73,71,78,65,76,95,72,32,42,47,13,10
+35,105,102,110,100,101,102,32,83,73,71,78,65,76,95,72,10,35,100,101,102,105,110,101,32
+,83,73,71,78,65,76,95,72,10,10,116,121,112,101,100,101,102,32,118,111,105,100,32,40,42
+,115,105,103,104,97,110,100,108,101,114,95,116,41,40,105,110,116,41,59,10,10,47,42,32,83
+,116,97,110,100,97,114,100,32,115,105,103,110,97,108,115,32,42,47,10,35,100,101,102,105,110
+,101,32,83,73,71,65,66,82,84,32,54,10,35,100,101,102,105,110,101,32,83,73,71,70,80
+,69,32,56,10,35,100,101,102,105,110,101,32,83,73,71,73,76,76,32,52,10,35,100,101,102
+,105,110,101,32,83,73,71,73,78,84,32,50,10,35,100,101,102,105,110,101,32,83,73,71,83
+,69,71,86,32,49,49,10,35,100,101,102,105,110,101,32,83,73,71,84,69,82,77,32,49,53
+,10,35,100,101,102,105,110,101,32,83,73,71,95,68,70,76,32,40,40,115,105,103,104,97,110
+,100,108,101,114,95,116,41,48,41,10,35,100,101,102,105,110,101,32,83,73,71,95,73,71,78
+,32,40,40,115,105,103,104,97,110,100,108,101,114,95,116,41,49,41,10,10,47,42,32,70,117
+,110,99,116,105,111,110,32,100,101,99,108,97,114,97,116,105,111,110,115,32,42,47,10,115,105
+,103,104,97,110,100,108,101,114,95,116,32,115,105,103,110,97,108,40,105,110,116,32,115,105,103
+,44,32,115,105,103,104,97,110,100,108,101,114,95,116,32,104,97,110,100,108,101,114,41,59,10
+,105,110,116,32,114,97,105,115,101,40,105,110,116,32,115,105,103,41,59,10,10,35,101,110,100
+,105,102,32,47,42,32,83,73,71,78,65,76,95,72,32,42,47,10
 , 0 };
 static const char file_stdalign_h[] = {
 
 
 
 35,105,102,32,95,95,83,84,68,67,95,86,69,82,83,73,79,78,95,95,32,60,32,50,48
-,50,51,49,49,76,13,10,35,100,101,102,105,110,101,32,97,108,105,103,110,97,115,32,95,65
-,108,105,103,110,97,115,13,10,35,100,101,102,105,110,101,32,97,108,105,103,110,111,102,32,95
-,65,108,105,103,110,111,102,13,10,35,100,101,102,105,110,101,32,95,95,97,108,105,103,110,97
-,115,95,105,115,95,100,101,102,105,110,101,100,32,49,13,10,35,100,101,102,105,110,101,32,95
-,95,97,108,105,103,110,111,102,95,105,115,95,100,101,102,105,110,101,100,32,49,13,10,35,101
-,110,100,105,102,13,10
+,50,51,49,49,76,10,35,100,101,102,105,110,101,32,97,108,105,103,110,97,115,32,95,65,108
+,105,103,110,97,115,10,35,100,101,102,105,110,101,32,97,108,105,103,110,111,102,32,95,65,108
+,105,103,110,111,102,10,35,100,101,102,105,110,101,32,95,95,97,108,105,103,110,97,115,95,105
+,115,95,100,101,102,105,110,101,100,32,49,10,35,100,101,102,105,110,101,32,95,95,97,108,105
+,103,110,111,102,95,105,115,95,100,101,102,105,110,101,100,32,49,10,35,101,110,100,105,102,10
 , 0 };
 static const char file_stdarg_h[] = {
 
 
 
-35,105,102,100,101,102,32,95,87,73,78,51,50,13,10,13,10,32,32,32,32,32,32,32,32
-,35,100,101,102,105,110,101,32,95,65,68,68,82,69,83,83,79,70,40,118,41,32,40,38,40
-,118,41,41,13,10,32,32,32,32,32,32,32,32,116,121,112,101,100,101,102,32,99,104,97,114
-,42,32,118,97,95,108,105,115,116,59,13,10,13,10,32,32,32,32,32,32,32,32,35,105,102
-,32,100,101,102,105,110,101,100,32,95,77,95,73,88,56,54,32,38,38,32,33,100,101,102,105
-,110,101,100,32,95,77,95,72,89,66,82,73,68,95,88,56,54,95,65,82,77,54,52,13,10
-,13,10,32,32,32,32,32,32,32,32,32,32,32,32,35,100,101,102,105,110,101,32,95,73,78
-,84,83,73,90,69,79,70,40,110,41,32,32,32,32,32,32,32,32,32,32,40,40,115,105,122
-,101,111,102,40,110,41,32,43,32,115,105,122,101,111,102,40,105,110,116,41,32,45,32,49,41
-,32,38,32,126,40,115,105,122,101,111,102,40,105,110,116,41,32,45,32,49,41,41,13,10,13
-,10,32,32,32,32,32,32,32,32,32,32,32,32,35,100,101,102,105,110,101,32,95,95,99,114
-,116,95,118,97,95,115,116,97,114,116,95,97,40,97,112,44,32,118,41,32,40,40,118,111,105
-,100,41,40,97,112,32,61,32,40,118,97,95,108,105,115,116,41,95,65,68,68,82,69,83,83
-,79,70,40,118,41,32,43,32,95,73,78,84,83,73,90,69,79,70,40,118,41,41,41,13,10
-,32,32,32,32,32,32,32,32,32,32,32,32,35,100,101,102,105,110,101,32,95,95,99,114,116
-,95,118,97,95,97,114,103,40,97,112,44,32,116,41,32,32,32,32,32,40,42,40,116,42,41
-,40,40,97,112,32,43,61,32,95,73,78,84,83,73,90,69,79,70,40,116,41,41,32,45,32
-,95,73,78,84,83,73,90,69,79,70,40,116,41,41,41,13,10,32,32,32,32,32,32,32,32
-,32,32,32,32,35,100,101,102,105,110,101,32,95,95,99,114,116,95,118,97,95,101,110,100,40
-,97,112,41,32,32,32,32,32,32,32,32,40,40,118,111,105,100,41,40,97,112,32,61,32,40
-,118,97,95,108,105,115,116,41,48,41,41,13,10,13,10,32,32,32,32,32,32,32,32,35,101
-,108,105,102,32,100,101,102,105,110,101,100,32,95,77,95,88,54,52,13,10,13,10,32,32,32
-,32,32,32,32,32,32,32,32,32,118,111,105,100,32,95,95,99,100,101,99,108,32,95,95,118
-,97,95,115,116,97,114,116,40,118,97,95,108,105,115,116,42,44,32,46,46,46,41,59,13,10
-,13,10,32,32,32,32,32,32,32,32,32,32,32,32,35,100,101,102,105,110,101,32,95,95,99
-,114,116,95,118,97,95,115,116,97,114,116,95,97,40,97,112,44,32,120,41,32,40,40,118,111
-,105,100,41,40,95,95,118,97,95,115,116,97,114,116,40,38,97,112,44,32,120,41,41,41,13
-,10,32,32,32,32,32,32,32,32,32,32,32,32,35,100,101,102,105,110,101,32,95,95,99,114
-,116,95,118,97,95,97,114,103,40,97,112,44,32,116,41,32,32,32,32,32,32,32,32,32,32
+35,105,102,100,101,102,32,95,87,73,78,51,50,10,10,32,32,32,32,32,32,32,32,35,100
+,101,102,105,110,101,32,95,65,68,68,82,69,83,83,79,70,40,118,41,32,40,38,40,118,41
+,41,10,32,32,32,32,32,32,32,32,116,121,112,101,100,101,102,32,99,104,97,114,42,32,118
+,97,95,108,105,115,116,59,10,10,32,32,32,32,32,32,32,32,35,105,102,32,100,101,102,105
+,110,101,100,32,95,77,95,73,88,56,54,32,38,38,32,33,100,101,102,105,110,101,100,32,95
+,77,95,72,89,66,82,73,68,95,88,56,54,95,65,82,77,54,52,10,10,32,32,32,32,32
+,32,32,32,32,32,32,32,35,100,101,102,105,110,101,32,95,73,78,84,83,73,90,69,79,70
+,40,110,41,32,32,32,32,32,32,32,32,32,32,40,40,115,105,122,101,111,102,40,110,41,32
+,43,32,115,105,122,101,111,102,40,105,110,116,41,32,45,32,49,41,32,38,32,126,40,115,105
+,122,101,111,102,40,105,110,116,41,32,45,32,49,41,41,10,10,32,32,32,32,32,32,32,32
+,32,32,32,32,35,100,101,102,105,110,101,32,95,95,99,114,116,95,118,97,95,115,116,97,114
+,116,95,97,40,97,112,44,32,118,41,32,40,40,118,111,105,100,41,40,97,112,32,61,32,40
+,118,97,95,108,105,115,116,41,95,65,68,68,82,69,83,83,79,70,40,118,41,32,43,32,95
+,73,78,84,83,73,90,69,79,70,40,118,41,41,41,10,32,32,32,32,32,32,32,32,32,32
+,32,32,35,100,101,102,105,110,101,32,95,95,99,114,116,95,118,97,95,97,114,103,40,97,112
+,44,32,116,41,32,32,32,32,32,40,42,40,116,42,41,40,40,97,112,32,43,61,32,95,73
+,78,84,83,73,90,69,79,70,40,116,41,41,32,45,32,95,73,78,84,83,73,90,69,79,70
+,40,116,41,41,41,10,32,32,32,32,32,32,32,32,32,32,32,32,35,100,101,102,105,110,101
+,32,95,95,99,114,116,95,118,97,95,101,110,100,40,97,112,41,32,32,32,32,32,32,32,32
+,40,40,118,111,105,100,41,40,97,112,32,61,32,40,118,97,95,108,105,115,116,41,48,41,41
+,10,10,32,32,32,32,32,32,32,32,35,101,108,105,102,32,100,101,102,105,110,101,100,32,95
+,77,95,88,54,52,10,10,32,32,32,32,32,32,32,32,32,32,32,32,118,111,105,100,32,95
+,95,99,100,101,99,108,32,95,95,118,97,95,115,116,97,114,116,40,118,97,95,108,105,115,116
+,42,44,32,46,46,46,41,59,10,10,32,32,32,32,32,32,32,32,32,32,32,32,35,100,101
+,102,105,110,101,32,95,95,99,114,116,95,118,97,95,115,116,97,114,116,95,97,40,97,112,44
+,32,120,41,32,40,40,118,111,105,100,41,40,95,95,118,97,95,115,116,97,114,116,40,38,97
+,112,44,32,120,41,41,41,10,32,32,32,32,32,32,32,32,32,32,32,32,35,100,101,102,105
+,110,101,32,95,95,99,114,116,95,118,97,95,97,114,103,40,97,112,44,32,116,41,32,32,32
 ,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32
-,32,32,32,32,32,32,32,32,32,32,32,32,92,13,10,32,32,32,32,32,32,32,32,32,32
-,32,32,32,32,32,32,32,32,32,32,40,40,115,105,122,101,111,102,40,116,41,32,62,32,115
-,105,122,101,111,102,40,95,95,105,110,116,54,52,41,32,124,124,32,40,115,105,122,101,111,102
-,40,116,41,32,38,32,40,115,105,122,101,111,102,40,116,41,32,45,32,49,41,41,32,33,61
-,32,48,41,32,92,13,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32
-,32,32,32,32,32,32,63,32,42,42,40,116,42,42,41,40,40,97,112,32,43,61,32,115,105
-,122,101,111,102,40,95,95,105,110,116,54,52,41,41,32,45,32,115,105,122,101,111,102,40,95
-,95,105,110,116,54,52,41,41,32,32,32,32,32,32,32,32,32,32,32,32,32,92,13,10,32
-,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,58,32
-,32,42,40,116,42,32,41,40,40,97,112,32,43,61,32,115,105,122,101,111,102,40,95,95,105
-,110,116,54,52,41,41,32,45,32,115,105,122,101,111,102,40,95,95,105,110,116,54,52,41,41
-,41,13,10,32,32,32,32,32,32,32,32,32,32,32,32,35,100,101,102,105,110,101,32,95,95
-,99,114,116,95,118,97,95,101,110,100,40,97,112,41,32,32,32,32,32,32,32,32,40,40,118
-,111,105,100,41,40,97,112,32,61,32,40,118,97,95,108,105,115,116,41,48,41,41,13,10,13
-,10,32,32,32,32,32,32,32,32,35,101,108,115,101,13,10,32,32,32,32,32,32,32,32,32
+,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,92,10,32,32,32,32
+,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,40,40,115,105,122,101,111,102,40
+,116,41,32,62,32,115,105,122,101,111,102,40,95,95,105,110,116,54,52,41,32,124,124,32,40
+,115,105,122,101,111,102,40,116,41,32,38,32,40,115,105,122,101,111,102,40,116,41,32,45,32
+,49,41,41,32,33,61,32,48,41,32,92,10,32,32,32,32,32,32,32,32,32,32,32,32,32
+,32,32,32,32,32,32,32,32,32,32,32,63,32,42,42,40,116,42,42,41,40,40,97,112,32
+,43,61,32,115,105,122,101,111,102,40,95,95,105,110,116,54,52,41,41,32,45,32,115,105,122
+,101,111,102,40,95,95,105,110,116,54,52,41,41,32,32,32,32,32,32,32,32,32,32,32,32
+,32,92,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32
+,32,32,58,32,32,42,40,116,42,32,41,40,40,97,112,32,43,61,32,115,105,122,101,111,102
+,40,95,95,105,110,116,54,52,41,41,32,45,32,115,105,122,101,111,102,40,95,95,105,110,116
+,54,52,41,41,41,10,32,32,32,32,32,32,32,32,32,32,32,32,35,100,101,102,105,110,101
+,32,95,95,99,114,116,95,118,97,95,101,110,100,40,97,112,41,32,32,32,32,32,32,32,32
+,40,40,118,111,105,100,41,40,97,112,32,61,32,40,118,97,95,108,105,115,116,41,48,41,41
+,10,10,32,32,32,32,32,32,32,32,35,101,108,115,101,10,32,32,32,32,32,32,32,32,32
 ,32,32,32,32,35,101,114,114,111,114,32,112,108,97,116,102,111,114,109,32,110,111,116,32,100
-,101,102,105,110,101,100,13,10,32,32,32,32,32,32,32,32,35,101,110,100,105,102,13,10,13
-,10,13,10,32,32,32,32,32,32,32,32,35,100,101,102,105,110,101,32,95,95,99,114,116,95
-,118,97,95,115,116,97,114,116,40,97,112,44,32,120,41,32,95,95,99,114,116,95,118,97,95
-,115,116,97,114,116,95,97,40,97,112,44,32,120,41,13,10,13,10,32,32,32,32,32,32,32
-,32,35,100,101,102,105,110,101,32,118,97,95,115,116,97,114,116,32,95,95,99,114,116,95,118
-,97,95,115,116,97,114,116,13,10,32,32,32,32,32,32,32,32,35,100,101,102,105,110,101,32
-,118,97,95,97,114,103,32,32,32,95,95,99,114,116,95,118,97,95,97,114,103,13,10,32,32
-,32,32,32,32,32,32,35,100,101,102,105,110,101,32,118,97,95,101,110,100,32,32,32,95,95
-,99,114,116,95,118,97,95,101,110,100,13,10,32,32,32,32,32,32,32,32,35,100,101,102,105
-,110,101,32,118,97,95,99,111,112,121,40,100,101,115,116,105,110,97,116,105,111,110,44,32,115
-,111,117,114,99,101,41,32,40,40,100,101,115,116,105,110,97,116,105,111,110,41,32,61,32,40
-,115,111,117,114,99,101,41,41,13,10,13,10,13,10,35,101,110,100,105,102,13,10,13,10,35
-,105,102,100,101,102,32,95,95,71,78,85,67,95,95,13,10,13,10,13,10,116,121,112,101,100
-,101,102,32,95,95,98,117,105,108,116,105,110,95,118,97,95,108,105,115,116,32,95,95,103,110
-,117,99,95,118,97,95,108,105,115,116,59,13,10,116,121,112,101,100,101,102,32,95,95,103,110
-,117,99,95,118,97,95,108,105,115,116,32,118,97,95,108,105,115,116,59,13,10,13,10,35,100
-,101,102,105,110,101,32,118,97,95,115,116,97,114,116,40,118,44,108,41,9,95,95,98,117,105
-,108,116,105,110,95,118,97,95,115,116,97,114,116,40,118,44,108,41,13,10,35,100,101,102,105
-,110,101,32,118,97,95,101,110,100,40,118,41,9,32,32,32,32,95,95,98,117,105,108,116,105
-,110,95,118,97,95,101,110,100,40,118,41,13,10,35,100,101,102,105,110,101,32,118,97,95,97
-,114,103,40,118,44,108,41,9,32,32,32,32,95,95,98,117,105,108,116,105,110,95,118,97,95
-,97,114,103,40,118,44,108,41,13,10,35,100,101,102,105,110,101,32,118,97,95,99,111,112,121
-,40,100,44,115,41,32,32,32,32,95,95,98,117,105,108,116,105,110,95,118,97,95,99,111,112
-,121,40,100,44,115,41,13,10,13,10,32,32,32,32,32,32,13,10,35,101,110,100,105,102,13
-,10,13,10,13,10
+,101,102,105,110,101,100,10,32,32,32,32,32,32,32,32,35,101,110,100,105,102,10,10,10,32
+,32,32,32,32,32,32,32,35,100,101,102,105,110,101,32,95,95,99,114,116,95,118,97,95,115
+,116,97,114,116,40,97,112,44,32,120,41,32,95,95,99,114,116,95,118,97,95,115,116,97,114
+,116,95,97,40,97,112,44,32,120,41,10,10,32,32,32,32,32,32,32,32,35,100,101,102,105
+,110,101,32,118,97,95,115,116,97,114,116,32,95,95,99,114,116,95,118,97,95,115,116,97,114
+,116,10,32,32,32,32,32,32,32,32,35,100,101,102,105,110,101,32,118,97,95,97,114,103,32
+,32,32,95,95,99,114,116,95,118,97,95,97,114,103,10,32,32,32,32,32,32,32,32,35,100
+,101,102,105,110,101,32,118,97,95,101,110,100,32,32,32,95,95,99,114,116,95,118,97,95,101
+,110,100,10,32,32,32,32,32,32,32,32,35,100,101,102,105,110,101,32,118,97,95,99,111,112
+,121,40,100,101,115,116,105,110,97,116,105,111,110,44,32,115,111,117,114,99,101,41,32,40,40
+,100,101,115,116,105,110,97,116,105,111,110,41,32,61,32,40,115,111,117,114,99,101,41,41,10
+,10,10,35,101,110,100,105,102,10,10,35,105,102,100,101,102,32,95,95,71,78,85,67,95,95
+,10,10,10,116,121,112,101,100,101,102,32,95,95,98,117,105,108,116,105,110,95,118,97,95,108
+,105,115,116,32,95,95,103,110,117,99,95,118,97,95,108,105,115,116,59,10,116,121,112,101,100
+,101,102,32,95,95,103,110,117,99,95,118,97,95,108,105,115,116,32,118,97,95,108,105,115,116
+,59,10,10,35,100,101,102,105,110,101,32,118,97,95,115,116,97,114,116,40,118,44,108,41,9
+,95,95,98,117,105,108,116,105,110,95,118,97,95,115,116,97,114,116,40,118,44,108,41,10,35
+,100,101,102,105,110,101,32,118,97,95,101,110,100,40,118,41,9,32,32,32,32,95,95,98,117
+,105,108,116,105,110,95,118,97,95,101,110,100,40,118,41,10,35,100,101,102,105,110,101,32,118
+,97,95,97,114,103,40,118,44,108,41,9,32,32,32,32,95,95,98,117,105,108,116,105,110,95
+,118,97,95,97,114,103,40,118,44,108,41,10,35,100,101,102,105,110,101,32,118,97,95,99,111
+,112,121,40,100,44,115,41,32,32,32,32,95,95,98,117,105,108,116,105,110,95,118,97,95,99
+,111,112,121,40,100,44,115,41,10,10,32,32,32,32,32,32,10,35,101,110,100,105,102,10,10
+,10
 , 0 };
 static const char file_stdatomic_h[] = {
 
 
 
 35,101,114,114,111,114,32,110,111,116,32,105,109,112,108,101,109,101,110,116,101,100,32,121,101
-,116,13,10
+,116,10
 , 0 };
 static const char file_stdbit_h[] = {
 
 
 
 35,101,114,114,111,114,32,110,111,116,32,105,109,112,108,101,109,101,110,116,101,100,32,121,101
-,116,13,10
+,116,10
 , 0 };
 static const char file_stdbool_h[] = {
 
 
 
-47,42,13,10,32,32,32,67,97,107,101,32,104,101,97,100,101,114,32,102,105,108,101,13,10
-,42,47,13,10,13,10,35,105,102,110,100,101,102,32,95,83,84,68,66,79,79,76,13,10,35
-,100,101,102,105,110,101,32,95,83,84,68,66,79,79,76,13,10,13,10,35,100,101,102,105,110
-,101,32,95,95,98,111,111,108,95,116,114,117,101,95,102,97,108,115,101,95,97,114,101,95,100
-,101,102,105,110,101,100,32,49,13,10,13,10,35,105,102,110,100,101,102,32,95,95,99,112,108
-,117,115,112,108,117,115,13,10,13,10,35,100,101,102,105,110,101,32,98,111,111,108,32,32,95
-,66,111,111,108,13,10,35,100,101,102,105,110,101,32,102,97,108,115,101,32,48,13,10,35,100
-,101,102,105,110,101,32,116,114,117,101,32,32,49,13,10,13,10,35,101,110,100,105,102,32,47
-,42,32,95,95,99,112,108,117,115,112,108,117,115,32,42,47,13,10,13,10,35,101,110,100,105
-,102,32,47,42,32,95,83,84,68,66,79,79,76,32,42,47,13,10,13,10,13,10
+47,42,10,32,32,32,67,97,107,101,32,104,101,97,100,101,114,32,102,105,108,101,10,42,47
+,10,10,35,105,102,110,100,101,102,32,95,83,84,68,66,79,79,76,10,35,100,101,102,105,110
+,101,32,95,83,84,68,66,79,79,76,10,10,35,100,101,102,105,110,101,32,95,95,98,111,111
+,108,95,116,114,117,101,95,102,97,108,115,101,95,97,114,101,95,100,101,102,105,110,101,100,32
+,49,10,10,35,105,102,110,100,101,102,32,95,95,99,112,108,117,115,112,108,117,115,10,10,35
+,100,101,102,105,110,101,32,98,111,111,108,32,32,95,66,111,111,108,10,35,100,101,102,105,110
+,101,32,102,97,108,115,101,32,48,10,35,100,101,102,105,110,101,32,116,114,117,101,32,32,49
+,10,10,35,101,110,100,105,102,32,47,42,32,95,95,99,112,108,117,115,112,108,117,115,32,42
+,47,10,10,35,101,110,100,105,102,32,47,42,32,95,83,84,68,66,79,79,76,32,42,47,10
+,10,10
 , 0 };
 static const char file_stdckdint_h[] = {
 
 
 
 35,101,114,114,111,114,32,110,111,116,32,105,109,112,108,101,109,101,110,116,101,100,32,121,101
-,116,13,10
+,116,10
 , 0 };
 static const char file_stddef_h[] = {
 
 
 
-47,42,13,10,32,42,32,32,84,104,105,115,32,102,105,108,101,32,105,115,32,112,97,114,116
-,32,111,102,32,99,97,107,101,32,99,111,109,112,105,108,101,114,13,10,32,42,32,32,104,116
-,116,112,115,58,47,47,103,105,116,104,117,98,46,99,111,109,47,116,104,114,97,100,97,109,115
-,47,99,97,107,101,13,10,42,47,13,10,13,10,35,100,101,102,105,110,101,32,117,110,114,101
-,97,99,104,97,98,108,101,40,41,32,100,111,32,123,125,32,119,104,105,108,101,40,48,41,32
-,13,10,116,121,112,101,100,101,102,32,108,111,110,103,32,105,110,116,32,112,116,114,100,105,102
-,102,95,116,59,13,10,116,121,112,101,100,101,102,32,117,110,115,105,103,110,101,100,32,108,111
-,110,103,32,115,105,122,101,95,116,59,13,10,116,121,112,101,100,101,102,32,105,110,116,32,119
-,99,104,97,114,95,116,59,13,10,116,121,112,101,100,101,102,32,115,116,114,117,99,116,32,123
-,13,10,32,32,108,111,110,103,32,108,111,110,103,32,95,95,109,97,120,95,97,108,105,103,110
-,95,108,108,59,13,10,32,32,108,111,110,103,32,100,111,117,98,108,101,32,95,95,109,97,120
-,95,97,108,105,103,110,95,108,100,59,13,10,125,32,109,97,120,95,97,108,105,103,110,95,116
-,59,13,10,13,10,116,121,112,101,100,101,102,32,116,121,112,101,111,102,40,110,117,108,108,112
-,116,114,41,32,110,117,108,108,112,116,114,95,116,59,13,10,13,10
+47,42,10,32,42,32,32,84,104,105,115,32,102,105,108,101,32,105,115,32,112,97,114,116,32
+,111,102,32,99,97,107,101,32,99,111,109,112,105,108,101,114,10,32,42,32,32,104,116,116,112
+,115,58,47,47,103,105,116,104,117,98,46,99,111,109,47,116,104,114,97,100,97,109,115,47,99
+,97,107,101,10,42,47,10,10,35,100,101,102,105,110,101,32,117,110,114,101,97,99,104,97,98
+,108,101,40,41,32,100,111,32,123,125,32,119,104,105,108,101,40,48,41,32,10,116,121,112,101
+,100,101,102,32,108,111,110,103,32,105,110,116,32,112,116,114,100,105,102,102,95,116,59,10,116
+,121,112,101,100,101,102,32,117,110,115,105,103,110,101,100,32,108,111,110,103,32,115,105,122,101
+,95,116,59,10,116,121,112,101,100,101,102,32,105,110,116,32,119,99,104,97,114,95,116,59,10
+,116,121,112,101,100,101,102,32,115,116,114,117,99,116,32,123,10,32,32,108,111,110,103,32,108
+,111,110,103,32,95,95,109,97,120,95,97,108,105,103,110,95,108,108,59,10,32,32,108,111,110
+,103,32,100,111,117,98,108,101,32,95,95,109,97,120,95,97,108,105,103,110,95,108,100,59,10
+,125,32,109,97,120,95,97,108,105,103,110,95,116,59,10,10,116,121,112,101,100,101,102,32,116
+,121,112,101,111,102,40,110,117,108,108,112,116,114,41,32,110,117,108,108,112,116,114,95,116,59
+,10,10
 , 0 };
 static const char file_stdint_h[] = {
 
 
 
-13,10,35,112,114,97,103,109,97,32,111,110,99,101,13,10,13,10,35,105,110,99,108,117,100
-,101,32,60,108,105,109,105,116,115,46,104,62,13,10,13,10,35,105,102,100,101,102,32,95,87
-,73,78,51,50,13,10,13,10,35,100,101,102,105,110,101,32,95,83,84,68,73,78,84,13,10
-,13,10,116,121,112,101,100,101,102,32,115,105,103,110,101,100,32,99,104,97,114,32,32,32,32
-,32,32,32,32,105,110,116,56,95,116,59,13,10,116,121,112,101,100,101,102,32,115,104,111,114
-,116,32,32,32,32,32,32,32,32,32,32,32,32,32,32,105,110,116,49,54,95,116,59,13,10
-,116,121,112,101,100,101,102,32,105,110,116,32,32,32,32,32,32,32,32,32,32,32,32,32,32
-,32,32,105,110,116,51,50,95,116,59,13,10,116,121,112,101,100,101,102,32,108,111,110,103,32
-,108,111,110,103,32,32,32,32,32,32,32,32,32,32,105,110,116,54,52,95,116,59,13,10,116
-,121,112,101,100,101,102,32,117,110,115,105,103,110,101,100,32,99,104,97,114,32,32,32,32,32
-,32,117,105,110,116,56,95,116,59,13,10,116,121,112,101,100,101,102,32,117,110,115,105,103,110
-,101,100,32,115,104,111,114,116,32,32,32,32,32,117,105,110,116,49,54,95,116,59,13,10,116
-,121,112,101,100,101,102,32,117,110,115,105,103,110,101,100,32,105,110,116,32,32,32,32,32,32
-,32,117,105,110,116,51,50,95,116,59,13,10,116,121,112,101,100,101,102,32,117,110,115,105,103
-,110,101,100,32,108,111,110,103,32,108,111,110,103,32,117,105,110,116,54,52,95,116,59,13,10
-,13,10,116,121,112,101,100,101,102,32,115,105,103,110,101,100,32,99,104,97,114,32,32,32,32
-,32,32,32,32,105,110,116,95,108,101,97,115,116,56,95,116,59,13,10,116,121,112,101,100,101
-,102,32,115,104,111,114,116,32,32,32,32,32,32,32,32,32,32,32,32,32,32,105,110,116,95
-,108,101,97,115,116,49,54,95,116,59,13,10,116,121,112,101,100,101,102,32,105,110,116,32,32
-,32,32,32,32,32,32,32,32,32,32,32,32,32,32,105,110,116,95,108,101,97,115,116,51,50
-,95,116,59,13,10,116,121,112,101,100,101,102,32,108,111,110,103,32,108,111,110,103,32,32,32
-,32,32,32,32,32,32,32,105,110,116,95,108,101,97,115,116,54,52,95,116,59,13,10,116,121
-,112,101,100,101,102,32,117,110,115,105,103,110,101,100,32,99,104,97,114,32,32,32,32,32,32
-,117,105,110,116,95,108,101,97,115,116,56,95,116,59,13,10,116,121,112,101,100,101,102,32,117
-,110,115,105,103,110,101,100,32,115,104,111,114,116,32,32,32,32,32,117,105,110,116,95,108,101
-,97,115,116,49,54,95,116,59,13,10,116,121,112,101,100,101,102,32,117,110,115,105,103,110,101
-,100,32,105,110,116,32,32,32,32,32,32,32,117,105,110,116,95,108,101,97,115,116,51,50,95
-,116,59,13,10,116,121,112,101,100,101,102,32,117,110,115,105,103,110,101,100,32,108,111,110,103
-,32,108,111,110,103,32,117,105,110,116,95,108,101,97,115,116,54,52,95,116,59,13,10,13,10
-,116,121,112,101,100,101,102,32,115,105,103,110,101,100,32,99,104,97,114,32,32,32,32,32,32
-,32,32,105,110,116,95,102,97,115,116,56,95,116,59,13,10,116,121,112,101,100,101,102,32,105
-,110,116,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,105,110,116,95,102,97,115
-,116,49,54,95,116,59,13,10,116,121,112,101,100,101,102,32,105,110,116,32,32,32,32,32,32
-,32,32,32,32,32,32,32,32,32,32,105,110,116,95,102,97,115,116,51,50,95,116,59,13,10
+10,35,112,114,97,103,109,97,32,111,110,99,101,10,10,35,105,110,99,108,117,100,101,32,60
+,108,105,109,105,116,115,46,104,62,10,10,35,105,102,100,101,102,32,95,87,73,78,51,50,10
+,10,35,100,101,102,105,110,101,32,95,83,84,68,73,78,84,10,10,116,121,112,101,100,101,102
+,32,115,105,103,110,101,100,32,99,104,97,114,32,32,32,32,32,32,32,32,105,110,116,56,95
+,116,59,10,116,121,112,101,100,101,102,32,115,104,111,114,116,32,32,32,32,32,32,32,32,32
+,32,32,32,32,32,105,110,116,49,54,95,116,59,10,116,121,112,101,100,101,102,32,105,110,116
+,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,105,110,116,51,50,95,116,59,10
 ,116,121,112,101,100,101,102,32,108,111,110,103,32,108,111,110,103,32,32,32,32,32,32,32,32
-,32,32,105,110,116,95,102,97,115,116,54,52,95,116,59,13,10,116,121,112,101,100,101,102,32
-,117,110,115,105,103,110,101,100,32,99,104,97,114,32,32,32,32,32,32,117,105,110,116,95,102
-,97,115,116,56,95,116,59,13,10,116,121,112,101,100,101,102,32,117,110,115,105,103,110,101,100
-,32,105,110,116,32,32,32,32,32,32,32,117,105,110,116,95,102,97,115,116,49,54,95,116,59
-,13,10,116,121,112,101,100,101,102,32,117,110,115,105,103,110,101,100,32,105,110,116,32,32,32
-,32,32,32,32,117,105,110,116,95,102,97,115,116,51,50,95,116,59,13,10,116,121,112,101,100
-,101,102,32,117,110,115,105,103,110,101,100,32,108,111,110,103,32,108,111,110,103,32,117,105,110
-,116,95,102,97,115,116,54,52,95,116,59,13,10,13,10,116,121,112,101,100,101,102,32,108,111
-,110,103,32,108,111,110,103,32,32,32,32,32,32,32,32,32,32,105,110,116,109,97,120,95,116
-,59,13,10,116,121,112,101,100,101,102,32,117,110,115,105,103,110,101,100,32,108,111,110,103,32
-,108,111,110,103,32,117,105,110,116,109,97,120,95,116,59,13,10,13,10,47,47,32,84,104,101
-,115,101,32,109,97,99,114,111,115,32,109,117,115,116,32,101,120,97,99,116,108,121,32,109,97
-,116,99,104,32,116,104,111,115,101,32,105,110,32,116,104,101,32,87,105,110,100,111,119,115,32
-,83,68,75,39,115,32,105,110,116,115,97,102,101,46,104,46,13,10,35,100,101,102,105,110,101
-,32,73,78,84,56,95,77,73,78,32,32,32,32,32,32,32,32,32,40,45,49,50,55,105,56
-,32,45,32,49,41,13,10,35,100,101,102,105,110,101,32,73,78,84,49,54,95,77,73,78,32
-,32,32,32,32,32,32,32,40,45,51,50,55,54,55,105,49,54,32,45,32,49,41,13,10,35
-,100,101,102,105,110,101,32,73,78,84,51,50,95,77,73,78,32,32,32,32,32,32,32,32,40
-,45,50,49,52,55,52,56,51,54,52,55,105,51,50,32,45,32,49,41,13,10,35,100,101,102
-,105,110,101,32,73,78,84,54,52,95,77,73,78,32,32,32,32,32,32,32,32,40,45,57,50
-,50,51,51,55,50,48,51,54,56,53,52,55,55,53,56,48,55,105,54,52,32,45,32,49,41
-,13,10,35,100,101,102,105,110,101,32,73,78,84,56,95,77,65,88,32,32,32,32,32,32,32
-,32,32,49,50,55,105,56,13,10,35,100,101,102,105,110,101,32,73,78,84,49,54,95,77,65
-,88,32,32,32,32,32,32,32,32,51,50,55,54,55,105,49,54,13,10,35,100,101,102,105,110
-,101,32,73,78,84,51,50,95,77,65,88,32,32,32,32,32,32,32,32,50,49,52,55,52,56
-,51,54,52,55,105,51,50,13,10,35,100,101,102,105,110,101,32,73,78,84,54,52,95,77,65
-,88,32,32,32,32,32,32,32,32,57,50,50,51,51,55,50,48,51,54,56,53,52,55,55,53
-,56,48,55,105,54,52,13,10,35,100,101,102,105,110,101,32,85,73,78,84,56,95,77,65,88
-,32,32,32,32,32,32,32,32,48,120,102,102,117,105,56,13,10,35,100,101,102,105,110,101,32
-,85,73,78,84,49,54,95,77,65,88,32,32,32,32,32,32,32,48,120,102,102,102,102,117,105
-,49,54,13,10,35,100,101,102,105,110,101,32,85,73,78,84,51,50,95,77,65,88,32,32,32
-,32,32,32,32,48,120,102,102,102,102,102,102,102,102,117,105,51,50,13,10,35,100,101,102,105
-,110,101,32,85,73,78,84,54,52,95,77,65,88,32,32,32,32,32,32,32,48,120,102,102,102
-,102,102,102,102,102,102,102,102,102,102,102,102,102,117,105,54,52,13,10,13,10,35,100,101,102
-,105,110,101,32,73,78,84,95,76,69,65,83,84,56,95,77,73,78,32,32,32,73,78,84,56
-,95,77,73,78,13,10,35,100,101,102,105,110,101,32,73,78,84,95,76,69,65,83,84,49,54
-,95,77,73,78,32,32,73,78,84,49,54,95,77,73,78,13,10,35,100,101,102,105,110,101,32
-,73,78,84,95,76,69,65,83,84,51,50,95,77,73,78,32,32,73,78,84,51,50,95,77,73
-,78,13,10,35,100,101,102,105,110,101,32,73,78,84,95,76,69,65,83,84,54,52,95,77,73
-,78,32,32,73,78,84,54,52,95,77,73,78,13,10,35,100,101,102,105,110,101,32,73,78,84
-,95,76,69,65,83,84,56,95,77,65,88,32,32,32,73,78,84,56,95,77,65,88,13,10,35
-,100,101,102,105,110,101,32,73,78,84,95,76,69,65,83,84,49,54,95,77,65,88,32,32,73
-,78,84,49,54,95,77,65,88,13,10,35,100,101,102,105,110,101,32,73,78,84,95,76,69,65
-,83,84,51,50,95,77,65,88,32,32,73,78,84,51,50,95,77,65,88,13,10,35,100,101,102
-,105,110,101,32,73,78,84,95,76,69,65,83,84,54,52,95,77,65,88,32,32,73,78,84,54
-,52,95,77,65,88,13,10,35,100,101,102,105,110,101,32,85,73,78,84,95,76,69,65,83,84
-,56,95,77,65,88,32,32,85,73,78,84,56,95,77,65,88,13,10,35,100,101,102,105,110,101
-,32,85,73,78,84,95,76,69,65,83,84,49,54,95,77,65,88,32,85,73,78,84,49,54,95
-,77,65,88,13,10,35,100,101,102,105,110,101,32,85,73,78,84,95,76,69,65,83,84,51,50
-,95,77,65,88,32,85,73,78,84,51,50,95,77,65,88,13,10,35,100,101,102,105,110,101,32
-,85,73,78,84,95,76,69,65,83,84,54,52,95,77,65,88,32,85,73,78,84,54,52,95,77
-,65,88,13,10,13,10,35,100,101,102,105,110,101,32,73,78,84,95,70,65,83,84,56,95,77
-,73,78,32,32,32,32,73,78,84,56,95,77,73,78,13,10,35,100,101,102,105,110,101,32,73
-,78,84,95,70,65,83,84,49,54,95,77,73,78,32,32,32,73,78,84,51,50,95,77,73,78
-,13,10,35,100,101,102,105,110,101,32,73,78,84,95,70,65,83,84,51,50,95,77,73,78,32
-,32,32,73,78,84,51,50,95,77,73,78,13,10,35,100,101,102,105,110,101,32,73,78,84,95
-,70,65,83,84,54,52,95,77,73,78,32,32,32,73,78,84,54,52,95,77,73,78,13,10,35
-,100,101,102,105,110,101,32,73,78,84,95,70,65,83,84,56,95,77,65,88,32,32,32,32,73
-,78,84,56,95,77,65,88,13,10,35,100,101,102,105,110,101,32,73,78,84,95,70,65,83,84
-,49,54,95,77,65,88,32,32,32,73,78,84,51,50,95,77,65,88,13,10,35,100,101,102,105
-,110,101,32,73,78,84,95,70,65,83,84,51,50,95,77,65,88,32,32,32,73,78,84,51,50
-,95,77,65,88,13,10,35,100,101,102,105,110,101,32,73,78,84,95,70,65,83,84,54,52,95
-,77,65,88,32,32,32,73,78,84,54,52,95,77,65,88,13,10,35,100,101,102,105,110,101,32
-,85,73,78,84,95,70,65,83,84,56,95,77,65,88,32,32,32,85,73,78,84,56,95,77,65
-,88,13,10,35,100,101,102,105,110,101,32,85,73,78,84,95,70,65,83,84,49,54,95,77,65
-,88,32,32,85,73,78,84,51,50,95,77,65,88,13,10,35,100,101,102,105,110,101,32,85,73
-,78,84,95,70,65,83,84,51,50,95,77,65,88,32,32,85,73,78,84,51,50,95,77,65,88
-,13,10,35,100,101,102,105,110,101,32,85,73,78,84,95,70,65,83,84,54,52,95,77,65,88
-,32,32,85,73,78,84,54,52,95,77,65,88,13,10,13,10,35,105,102,100,101,102,32,95,87
-,73,78,54,52,13,10,35,100,101,102,105,110,101,32,73,78,84,80,84,82,95,77,73,78,32
-,32,32,73,78,84,54,52,95,77,73,78,13,10,35,100,101,102,105,110,101,32,73,78,84,80
-,84,82,95,77,65,88,32,32,32,73,78,84,54,52,95,77,65,88,13,10,35,100,101,102,105
-,110,101,32,85,73,78,84,80,84,82,95,77,65,88,32,32,85,73,78,84,54,52,95,77,65
-,88,13,10,35,101,108,115,101,13,10,35,100,101,102,105,110,101,32,73,78,84,80,84,82,95
-,77,73,78,32,32,32,73,78,84,51,50,95,77,73,78,13,10,35,100,101,102,105,110,101,32
-,73,78,84,80,84,82,95,77,65,88,32,32,32,73,78,84,51,50,95,77,65,88,13,10,35
-,100,101,102,105,110,101,32,85,73,78,84,80,84,82,95,77,65,88,32,32,85,73,78,84,51
-,50,95,77,65,88,13,10,35,101,110,100,105,102,13,10,13,10,35,100,101,102,105,110,101,32
-,73,78,84,77,65,88,95,77,73,78,32,32,32,32,32,32,32,73,78,84,54,52,95,77,73
-,78,13,10,35,100,101,102,105,110,101,32,73,78,84,77,65,88,95,77,65,88,32,32,32,32
-,32,32,32,73,78,84,54,52,95,77,65,88,13,10,35,100,101,102,105,110,101,32,85,73,78
-,84,77,65,88,95,77,65,88,32,32,32,32,32,32,85,73,78,84,54,52,95,77,65,88,13
-,10,13,10,35,100,101,102,105,110,101,32,80,84,82,68,73,70,70,95,77,73,78,32,32,32
-,32,32,32,73,78,84,80,84,82,95,77,73,78,13,10,35,100,101,102,105,110,101,32,80,84
-,82,68,73,70,70,95,77,65,88,32,32,32,32,32,32,73,78,84,80,84,82,95,77,65,88
-,13,10,13,10,35,105,102,110,100,101,102,32,83,73,90,69,95,77,65,88,13,10,32,32,32
-,32,47,47,32,83,73,90,69,95,77,65,88,32,100,101,102,105,110,105,116,105,111,110,32,109
-,117,115,116,32,109,97,116,99,104,32,101,120,97,99,116,108,121,32,119,105,116,104,32,108,105
-,109,105,116,115,46,104,32,102,111,114,32,109,111,100,117,108,101,115,32,115,117,112,112,111,114
-,116,46,13,10,35,105,102,100,101,102,32,95,87,73,78,54,52,13,10,35,100,101,102,105,110
-,101,32,83,73,90,69,95,77,65,88,32,48,120,102,102,102,102,102,102,102,102,102,102,102,102
-,102,102,102,102,117,105,54,52,13,10,35,101,108,115,101,13,10,35,100,101,102,105,110,101,32
-,83,73,90,69,95,77,65,88,32,48,120,102,102,102,102,102,102,102,102,117,105,51,50,13,10
-,35,101,110,100,105,102,13,10,35,101,110,100,105,102,13,10,13,10,35,100,101,102,105,110,101
-,32,83,73,71,95,65,84,79,77,73,67,95,77,73,78,32,32,32,73,78,84,51,50,95,77
-,73,78,13,10,35,100,101,102,105,110,101,32,83,73,71,95,65,84,79,77,73,67,95,77,65
-,88,32,32,32,73,78,84,51,50,95,77,65,88,13,10,13,10,35,100,101,102,105,110,101,32
-,87,67,72,65,82,95,77,73,78,32,32,32,32,32,32,32,32,48,120,48,48,48,48,13,10
-,35,100,101,102,105,110,101,32,87,67,72,65,82,95,77,65,88,32,32,32,32,32,32,32,32
-,48,120,102,102,102,102,13,10,13,10,35,100,101,102,105,110,101,32,87,73,78,84,95,77,73
-,78,32,32,32,32,32,32,32,32,32,48,120,48,48,48,48,13,10,35,100,101,102,105,110,101
-,32,87,73,78,84,95,77,65,88,32,32,32,32,32,32,32,32,32,48,120,102,102,102,102,13
-,10,13,10,35,100,101,102,105,110,101,32,73,78,84,56,95,67,40,120,41,32,32,32,32,40
-,120,41,13,10,35,100,101,102,105,110,101,32,73,78,84,49,54,95,67,40,120,41,32,32,32
-,40,120,41,13,10,35,100,101,102,105,110,101,32,73,78,84,51,50,95,67,40,120,41,32,32
-,32,40,120,41,13,10,35,100,101,102,105,110,101,32,73,78,84,54,52,95,67,40,120,41,32
-,32,32,40,120,32,35,35,32,76,76,41,13,10,13,10,35,100,101,102,105,110,101,32,85,73
-,78,84,56,95,67,40,120,41,32,32,32,40,120,41,13,10,35,100,101,102,105,110,101,32,85
-,73,78,84,49,54,95,67,40,120,41,32,32,40,120,41,13,10,35,100,101,102,105,110,101,32
-,85,73,78,84,51,50,95,67,40,120,41,32,32,40,120,32,35,35,32,85,41,13,10,35,100
-,101,102,105,110,101,32,85,73,78,84,54,52,95,67,40,120,41,32,32,40,120,32,35,35,32
-,85,76,76,41,13,10,13,10,35,100,101,102,105,110,101,32,73,78,84,77,65,88,95,67,40
-,120,41,32,32,73,78,84,54,52,95,67,40,120,41,13,10,35,100,101,102,105,110,101,32,85
-,73,78,84,77,65,88,95,67,40,120,41,32,85,73,78,84,54,52,95,67,40,120,41,13,10
-,13,10,35,101,110,100,105,102,32,47,47,119,105,110,100,111,119,115,13,10,13,10,13,10,35
-,105,102,100,101,102,32,95,95,71,78,85,67,95,95,13,10,13,10,35,100,101,102,105,110,101
-,32,83,73,90,69,95,77,65,88,32,48,120,102,102,102,102,102,102,102,102,102,102,102,102,102
-,102,102,102,85,76,76,13,10,13,10,47,42,32,69,120,97,99,116,45,119,105,100,116,104,32
-,105,110,116,101,103,101,114,32,116,121,112,101,115,32,42,47,13,10,116,121,112,101,100,101,102
-,32,115,105,103,110,101,100,32,99,104,97,114,32,32,32,32,32,32,32,32,32,105,110,116,56
-,95,116,59,13,10,116,121,112,101,100,101,102,32,117,110,115,105,103,110,101,100,32,99,104,97
-,114,32,32,32,32,32,32,32,117,105,110,116,56,95,116,59,13,10,116,121,112,101,100,101,102
-,32,115,104,111,114,116,32,32,32,32,32,32,32,32,32,32,32,32,32,32,105,110,116,49,54
-,95,116,59,13,10,116,121,112,101,100,101,102,32,117,110,115,105,103,110,101,100,32,115,104,111
-,114,116,32,32,32,32,32,117,105,110,116,49,54,95,116,59,13,10,116,121,112,101,100,101,102
-,32,105,110,116,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,105,110,116,51,50
-,95,116,59,13,10,116,121,112,101,100,101,102,32,117,110,115,105,103,110,101,100,32,105,110,116
-,32,32,32,32,32,32,32,117,105,110,116,51,50,95,116,59,13,10,116,121,112,101,100,101,102
-,32,108,111,110,103,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,105,110,116,54,52
-,95,116,59,32,32,47,42,32,108,111,110,103,32,105,115,32,54,52,45,98,105,116,32,111,110
-,32,76,80,54,52,32,42,47,13,10,116,121,112,101,100,101,102,32,117,110,115,105,103,110,101
-,100,32,108,111,110,103,32,32,32,32,32,32,117,105,110,116,54,52,95,116,59,13,10,13,10
-,47,42,32,77,105,110,105,109,117,109,45,119,105,100,116,104,32,116,121,112,101,115,32,40,97
-,108,105,97,115,32,115,97,109,101,32,97,115,32,101,120,97,99,116,32,119,104,101,110,32,97
-,118,97,105,108,97,98,108,101,41,32,42,47,13,10,116,121,112,101,100,101,102,32,105,110,116
-,56,95,116,32,32,32,105,110,116,95,108,101,97,115,116,56,95,116,59,13,10,116,121,112,101
-,100,101,102,32,117,105,110,116,56,95,116,32,32,117,105,110,116,95,108,101,97,115,116,56,95
-,116,59,13,10,116,121,112,101,100,101,102,32,105,110,116,49,54,95,116,32,32,105,110,116,95
-,108,101,97,115,116,49,54,95,116,59,13,10,116,121,112,101,100,101,102,32,117,105,110,116,49
-,54,95,116,32,117,105,110,116,95,108,101,97,115,116,49,54,95,116,59,13,10,116,121,112,101
-,100,101,102,32,105,110,116,51,50,95,116,32,32,105,110,116,95,108,101,97,115,116,51,50,95
-,116,59,13,10,116,121,112,101,100,101,102,32,117,105,110,116,51,50,95,116,32,117,105,110,116
-,95,108,101,97,115,116,51,50,95,116,59,13,10,116,121,112,101,100,101,102,32,105,110,116,54
-,52,95,116,32,32,105,110,116,95,108,101,97,115,116,54,52,95,116,59,13,10,116,121,112,101
-,100,101,102,32,117,105,110,116,54,52,95,116,32,117,105,110,116,95,108,101,97,115,116,54,52
-,95,116,59,13,10,13,10,47,42,32,70,97,115,116,32,116,121,112,101,115,32,40,99,104,111
-,111,115,101,32,116,121,112,101,115,32,116,104,97,116,32,97,114,101,32,116,121,112,105,99,97
-,108,108,121,32,102,97,115,116,101,115,116,32,111,110,32,116,104,105,115,32,65,66,73,41,32
-,42,47,13,10,116,121,112,101,100,101,102,32,105,110,116,51,50,95,116,32,32,105,110,116,95
-,102,97,115,116,56,95,116,59,13,10,116,121,112,101,100,101,102,32,117,105,110,116,51,50,95
-,116,32,117,105,110,116,95,102,97,115,116,56,95,116,59,13,10,116,121,112,101,100,101,102,32
-,105,110,116,51,50,95,116,32,32,105,110,116,95,102,97,115,116,49,54,95,116,59,13,10,116
-,121,112,101,100,101,102,32,117,105,110,116,51,50,95,116,32,117,105,110,116,95,102,97,115,116
-,49,54,95,116,59,13,10,116,121,112,101,100,101,102,32,105,110,116,51,50,95,116,32,32,105
-,110,116,95,102,97,115,116,51,50,95,116,59,13,10,116,121,112,101,100,101,102,32,117,105,110
-,116,51,50,95,116,32,117,105,110,116,95,102,97,115,116,51,50,95,116,59,13,10,116,121,112
-,101,100,101,102,32,105,110,116,54,52,95,116,32,32,105,110,116,95,102,97,115,116,54,52,95
-,116,59,13,10,116,121,112,101,100,101,102,32,117,105,110,116,54,52,95,116,32,117,105,110,116
-,95,102,97,115,116,54,52,95,116,59,13,10,13,10,47,42,32,73,110,116,101,103,101,114,32
-,116,121,112,101,115,32,99,97,112,97,98,108,101,32,111,102,32,104,111,108,100,105,110,103,32
-,111,98,106,101,99,116,32,112,111,105,110,116,101,114,115,32,42,47,13,10,116,121,112,101,100
-,101,102,32,108,111,110,103,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,105,110,116
-,112,116,114,95,116,59,32,32,32,47,42,32,112,111,105,110,116,101,114,32,105,115,32,54,52
-,45,98,105,116,32,45,62,32,108,111,110,103,32,42,47,13,10,116,121,112,101,100,101,102,32
-,117,110,115,105,103,110,101,100,32,108,111,110,103,32,32,32,32,32,32,117,105,110,116,112,116
-,114,95,116,59,13,10,13,10,47,42,32,71,114,101,97,116,101,115,116,45,119,105,100,116,104
-,32,105,110,116,101,103,101,114,32,116,121,112,101,115,32,42,47,13,10,116,121,112,101,100,101
-,102,32,108,111,110,103,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,105,110,116,109
-,97,120,95,116,59,13,10,116,121,112,101,100,101,102,32,117,110,115,105,103,110,101,100,32,108
-,111,110,103,32,32,32,32,32,32,117,105,110,116,109,97,120,95,116,59,13,10,13,10,47,42
-,32,76,105,109,105,116,115,32,102,111,114,32,101,120,97,99,116,45,119,105,100,116,104,32,116
-,121,112,101,115,32,42,47,13,10,35,100,101,102,105,110,101,32,73,78,84,56,95,77,73,78
-,32,32,32,32,40,45,49,50,56,41,13,10,35,100,101,102,105,110,101,32,73,78,84,56,95
-,77,65,88,32,32,32,32,49,50,55,13,10,35,100,101,102,105,110,101,32,85,73,78,84,56
-,95,77,65,88,32,32,32,50,53,53,117,13,10,13,10,35,100,101,102,105,110,101,32,73,78
-,84,49,54,95,77,73,78,32,32,32,40,45,51,50,55,54,56,41,13,10,35,100,101,102,105
-,110,101,32,73,78,84,49,54,95,77,65,88,32,32,32,51,50,55,54,55,13,10,35,100,101
-,102,105,110,101,32,85,73,78,84,49,54,95,77,65,88,32,32,54,53,53,51,53,117,13,10
-,13,10,35,100,101,102,105,110,101,32,73,78,84,51,50,95,77,73,78,32,32,32,40,45,50
-,49,52,55,52,56,51,54,52,55,32,45,32,49,41,13,10,35,100,101,102,105,110,101,32,73
-,78,84,51,50,95,77,65,88,32,32,32,50,49,52,55,52,56,51,54,52,55,13,10,35,100
-,101,102,105,110,101,32,85,73,78,84,51,50,95,77,65,88,32,32,52,50,57,52,57,54,55
-,50,57,53,117,13,10,13,10,47,42,32,54,52,45,98,105,116,32,99,111,110,115,116,97,110
-,116,115,32,117,115,101,32,76,32,115,117,102,102,105,120,32,102,111,114,32,76,80,54,52,32
-,40,108,111,110,103,32,105,115,32,54,52,45,98,105,116,41,32,42,47,13,10,35,100,101,102
-,105,110,101,32,73,78,84,54,52,95,77,73,78,32,32,32,40,45,57,50,50,51,51,55,50
-,48,51,54,56,53,52,55,55,53,56,48,55,76,32,45,32,49,76,41,13,10,35,100,101,102
-,105,110,101,32,73,78,84,54,52,95,77,65,88,32,32,32,57,50,50,51,51,55,50,48,51
-,54,56,53,52,55,55,53,56,48,55,76,13,10,35,100,101,102,105,110,101,32,85,73,78,84
-,54,52,95,77,65,88,32,32,49,56,52,52,54,55,52,52,48,55,51,55,48,57,53,53,49
-,54,49,53,85,76,13,10,13,10,47,42,32,76,105,109,105,116,115,32,102,111,114,32,112,111
-,105,110,116,101,114,45,115,105,122,101,100,32,116,121,112,101,115,32,42,47,13,10,35,100,101
-,102,105,110,101,32,73,78,84,80,84,82,95,77,73,78,32,32,40,45,57,50,50,51,51,55
-,50,48,51,54,56,53,52,55,55,53,56,48,55,76,32,45,32,49,76,41,13,10,35,100,101
-,102,105,110,101,32,73,78,84,80,84,82,95,77,65,88,32,32,57,50,50,51,51,55,50,48
-,51,54,56,53,52,55,55,53,56,48,55,76,13,10,35,100,101,102,105,110,101,32,85,73,78
-,84,80,84,82,95,77,65,88,32,49,56,52,52,54,55,52,52,48,55,51,55,48,57,53,53
-,49,54,49,53,85,76,13,10,13,10,47,42,32,76,105,109,105,116,115,32,102,111,114,32,103
-,114,101,97,116,101,115,116,45,119,105,100,116,104,32,116,121,112,101,115,32,42,47,13,10,35
-,100,101,102,105,110,101,32,73,78,84,77,65,88,95,77,73,78,32,32,73,78,84,54,52,95
-,77,73,78,13,10,35,100,101,102,105,110,101,32,73,78,84,77,65,88,95,77,65,88,32,32
-,73,78,84,54,52,95,77,65,88,13,10,35,100,101,102,105,110,101,32,85,73,78,84,77,65
-,88,95,77,65,88,32,85,73,78,84,54,52,95,77,65,88,13,10,13,10,47,42,32,77,97
+,32,32,105,110,116,54,52,95,116,59,10,116,121,112,101,100,101,102,32,117,110,115,105,103,110
+,101,100,32,99,104,97,114,32,32,32,32,32,32,117,105,110,116,56,95,116,59,10,116,121,112
+,101,100,101,102,32,117,110,115,105,103,110,101,100,32,115,104,111,114,116,32,32,32,32,32,117
+,105,110,116,49,54,95,116,59,10,116,121,112,101,100,101,102,32,117,110,115,105,103,110,101,100
+,32,105,110,116,32,32,32,32,32,32,32,117,105,110,116,51,50,95,116,59,10,116,121,112,101
+,100,101,102,32,117,110,115,105,103,110,101,100,32,108,111,110,103,32,108,111,110,103,32,117,105
+,110,116,54,52,95,116,59,10,10,116,121,112,101,100,101,102,32,115,105,103,110,101,100,32,99
+,104,97,114,32,32,32,32,32,32,32,32,105,110,116,95,108,101,97,115,116,56,95,116,59,10
+,116,121,112,101,100,101,102,32,115,104,111,114,116,32,32,32,32,32,32,32,32,32,32,32,32
+,32,32,105,110,116,95,108,101,97,115,116,49,54,95,116,59,10,116,121,112,101,100,101,102,32
+,105,110,116,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,105,110,116,95,108,101
+,97,115,116,51,50,95,116,59,10,116,121,112,101,100,101,102,32,108,111,110,103,32,108,111,110
+,103,32,32,32,32,32,32,32,32,32,32,105,110,116,95,108,101,97,115,116,54,52,95,116,59
+,10,116,121,112,101,100,101,102,32,117,110,115,105,103,110,101,100,32,99,104,97,114,32,32,32
+,32,32,32,117,105,110,116,95,108,101,97,115,116,56,95,116,59,10,116,121,112,101,100,101,102
+,32,117,110,115,105,103,110,101,100,32,115,104,111,114,116,32,32,32,32,32,117,105,110,116,95
+,108,101,97,115,116,49,54,95,116,59,10,116,121,112,101,100,101,102,32,117,110,115,105,103,110
+,101,100,32,105,110,116,32,32,32,32,32,32,32,117,105,110,116,95,108,101,97,115,116,51,50
+,95,116,59,10,116,121,112,101,100,101,102,32,117,110,115,105,103,110,101,100,32,108,111,110,103
+,32,108,111,110,103,32,117,105,110,116,95,108,101,97,115,116,54,52,95,116,59,10,10,116,121
+,112,101,100,101,102,32,115,105,103,110,101,100,32,99,104,97,114,32,32,32,32,32,32,32,32
+,105,110,116,95,102,97,115,116,56,95,116,59,10,116,121,112,101,100,101,102,32,105,110,116,32
+,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,105,110,116,95,102,97,115,116,49,54
+,95,116,59,10,116,121,112,101,100,101,102,32,105,110,116,32,32,32,32,32,32,32,32,32,32
+,32,32,32,32,32,32,105,110,116,95,102,97,115,116,51,50,95,116,59,10,116,121,112,101,100
+,101,102,32,108,111,110,103,32,108,111,110,103,32,32,32,32,32,32,32,32,32,32,105,110,116
+,95,102,97,115,116,54,52,95,116,59,10,116,121,112,101,100,101,102,32,117,110,115,105,103,110
+,101,100,32,99,104,97,114,32,32,32,32,32,32,117,105,110,116,95,102,97,115,116,56,95,116
+,59,10,116,121,112,101,100,101,102,32,117,110,115,105,103,110,101,100,32,105,110,116,32,32,32
+,32,32,32,32,117,105,110,116,95,102,97,115,116,49,54,95,116,59,10,116,121,112,101,100,101
+,102,32,117,110,115,105,103,110,101,100,32,105,110,116,32,32,32,32,32,32,32,117,105,110,116
+,95,102,97,115,116,51,50,95,116,59,10,116,121,112,101,100,101,102,32,117,110,115,105,103,110
+,101,100,32,108,111,110,103,32,108,111,110,103,32,117,105,110,116,95,102,97,115,116,54,52,95
+,116,59,10,10,116,121,112,101,100,101,102,32,108,111,110,103,32,108,111,110,103,32,32,32,32
+,32,32,32,32,32,32,105,110,116,109,97,120,95,116,59,10,116,121,112,101,100,101,102,32,117
+,110,115,105,103,110,101,100,32,108,111,110,103,32,108,111,110,103,32,117,105,110,116,109,97,120
+,95,116,59,10,10,47,47,32,84,104,101,115,101,32,109,97,99,114,111,115,32,109,117,115,116
+,32,101,120,97,99,116,108,121,32,109,97,116,99,104,32,116,104,111,115,101,32,105,110,32,116
+,104,101,32,87,105,110,100,111,119,115,32,83,68,75,39,115,32,105,110,116,115,97,102,101,46
+,104,46,10,35,100,101,102,105,110,101,32,73,78,84,56,95,77,73,78,32,32,32,32,32,32
+,32,32,32,40,45,49,50,55,105,56,32,45,32,49,41,10,35,100,101,102,105,110,101,32,73
+,78,84,49,54,95,77,73,78,32,32,32,32,32,32,32,32,40,45,51,50,55,54,55,105,49
+,54,32,45,32,49,41,10,35,100,101,102,105,110,101,32,73,78,84,51,50,95,77,73,78,32
+,32,32,32,32,32,32,32,40,45,50,49,52,55,52,56,51,54,52,55,105,51,50,32,45,32
+,49,41,10,35,100,101,102,105,110,101,32,73,78,84,54,52,95,77,73,78,32,32,32,32,32
+,32,32,32,40,45,57,50,50,51,51,55,50,48,51,54,56,53,52,55,55,53,56,48,55,105
+,54,52,32,45,32,49,41,10,35,100,101,102,105,110,101,32,73,78,84,56,95,77,65,88,32
+,32,32,32,32,32,32,32,32,49,50,55,105,56,10,35,100,101,102,105,110,101,32,73,78,84
+,49,54,95,77,65,88,32,32,32,32,32,32,32,32,51,50,55,54,55,105,49,54,10,35,100
+,101,102,105,110,101,32,73,78,84,51,50,95,77,65,88,32,32,32,32,32,32,32,32,50,49
+,52,55,52,56,51,54,52,55,105,51,50,10,35,100,101,102,105,110,101,32,73,78,84,54,52
+,95,77,65,88,32,32,32,32,32,32,32,32,57,50,50,51,51,55,50,48,51,54,56,53,52
+,55,55,53,56,48,55,105,54,52,10,35,100,101,102,105,110,101,32,85,73,78,84,56,95,77
+,65,88,32,32,32,32,32,32,32,32,48,120,102,102,117,105,56,10,35,100,101,102,105,110,101
+,32,85,73,78,84,49,54,95,77,65,88,32,32,32,32,32,32,32,48,120,102,102,102,102,117
+,105,49,54,10,35,100,101,102,105,110,101,32,85,73,78,84,51,50,95,77,65,88,32,32,32
+,32,32,32,32,48,120,102,102,102,102,102,102,102,102,117,105,51,50,10,35,100,101,102,105,110
+,101,32,85,73,78,84,54,52,95,77,65,88,32,32,32,32,32,32,32,48,120,102,102,102,102
+,102,102,102,102,102,102,102,102,102,102,102,102,117,105,54,52,10,10,35,100,101,102,105,110,101
+,32,73,78,84,95,76,69,65,83,84,56,95,77,73,78,32,32,32,73,78,84,56,95,77,73
+,78,10,35,100,101,102,105,110,101,32,73,78,84,95,76,69,65,83,84,49,54,95,77,73,78
+,32,32,73,78,84,49,54,95,77,73,78,10,35,100,101,102,105,110,101,32,73,78,84,95,76
+,69,65,83,84,51,50,95,77,73,78,32,32,73,78,84,51,50,95,77,73,78,10,35,100,101
+,102,105,110,101,32,73,78,84,95,76,69,65,83,84,54,52,95,77,73,78,32,32,73,78,84
+,54,52,95,77,73,78,10,35,100,101,102,105,110,101,32,73,78,84,95,76,69,65,83,84,56
+,95,77,65,88,32,32,32,73,78,84,56,95,77,65,88,10,35,100,101,102,105,110,101,32,73
+,78,84,95,76,69,65,83,84,49,54,95,77,65,88,32,32,73,78,84,49,54,95,77,65,88
+,10,35,100,101,102,105,110,101,32,73,78,84,95,76,69,65,83,84,51,50,95,77,65,88,32
+,32,73,78,84,51,50,95,77,65,88,10,35,100,101,102,105,110,101,32,73,78,84,95,76,69
+,65,83,84,54,52,95,77,65,88,32,32,73,78,84,54,52,95,77,65,88,10,35,100,101,102
+,105,110,101,32,85,73,78,84,95,76,69,65,83,84,56,95,77,65,88,32,32,85,73,78,84
+,56,95,77,65,88,10,35,100,101,102,105,110,101,32,85,73,78,84,95,76,69,65,83,84,49
+,54,95,77,65,88,32,85,73,78,84,49,54,95,77,65,88,10,35,100,101,102,105,110,101,32
+,85,73,78,84,95,76,69,65,83,84,51,50,95,77,65,88,32,85,73,78,84,51,50,95,77
+,65,88,10,35,100,101,102,105,110,101,32,85,73,78,84,95,76,69,65,83,84,54,52,95,77
+,65,88,32,85,73,78,84,54,52,95,77,65,88,10,10,35,100,101,102,105,110,101,32,73,78
+,84,95,70,65,83,84,56,95,77,73,78,32,32,32,32,73,78,84,56,95,77,73,78,10,35
+,100,101,102,105,110,101,32,73,78,84,95,70,65,83,84,49,54,95,77,73,78,32,32,32,73
+,78,84,51,50,95,77,73,78,10,35,100,101,102,105,110,101,32,73,78,84,95,70,65,83,84
+,51,50,95,77,73,78,32,32,32,73,78,84,51,50,95,77,73,78,10,35,100,101,102,105,110
+,101,32,73,78,84,95,70,65,83,84,54,52,95,77,73,78,32,32,32,73,78,84,54,52,95
+,77,73,78,10,35,100,101,102,105,110,101,32,73,78,84,95,70,65,83,84,56,95,77,65,88
+,32,32,32,32,73,78,84,56,95,77,65,88,10,35,100,101,102,105,110,101,32,73,78,84,95
+,70,65,83,84,49,54,95,77,65,88,32,32,32,73,78,84,51,50,95,77,65,88,10,35,100
+,101,102,105,110,101,32,73,78,84,95,70,65,83,84,51,50,95,77,65,88,32,32,32,73,78
+,84,51,50,95,77,65,88,10,35,100,101,102,105,110,101,32,73,78,84,95,70,65,83,84,54
+,52,95,77,65,88,32,32,32,73,78,84,54,52,95,77,65,88,10,35,100,101,102,105,110,101
+,32,85,73,78,84,95,70,65,83,84,56,95,77,65,88,32,32,32,85,73,78,84,56,95,77
+,65,88,10,35,100,101,102,105,110,101,32,85,73,78,84,95,70,65,83,84,49,54,95,77,65
+,88,32,32,85,73,78,84,51,50,95,77,65,88,10,35,100,101,102,105,110,101,32,85,73,78
+,84,95,70,65,83,84,51,50,95,77,65,88,32,32,85,73,78,84,51,50,95,77,65,88,10
+,35,100,101,102,105,110,101,32,85,73,78,84,95,70,65,83,84,54,52,95,77,65,88,32,32
+,85,73,78,84,54,52,95,77,65,88,10,10,35,105,102,100,101,102,32,95,87,73,78,54,52
+,10,35,100,101,102,105,110,101,32,73,78,84,80,84,82,95,77,73,78,32,32,32,73,78,84
+,54,52,95,77,73,78,10,35,100,101,102,105,110,101,32,73,78,84,80,84,82,95,77,65,88
+,32,32,32,73,78,84,54,52,95,77,65,88,10,35,100,101,102,105,110,101,32,85,73,78,84
+,80,84,82,95,77,65,88,32,32,85,73,78,84,54,52,95,77,65,88,10,35,101,108,115,101
+,10,35,100,101,102,105,110,101,32,73,78,84,80,84,82,95,77,73,78,32,32,32,73,78,84
+,51,50,95,77,73,78,10,35,100,101,102,105,110,101,32,73,78,84,80,84,82,95,77,65,88
+,32,32,32,73,78,84,51,50,95,77,65,88,10,35,100,101,102,105,110,101,32,85,73,78,84
+,80,84,82,95,77,65,88,32,32,85,73,78,84,51,50,95,77,65,88,10,35,101,110,100,105
+,102,10,10,35,100,101,102,105,110,101,32,73,78,84,77,65,88,95,77,73,78,32,32,32,32
+,32,32,32,73,78,84,54,52,95,77,73,78,10,35,100,101,102,105,110,101,32,73,78,84,77
+,65,88,95,77,65,88,32,32,32,32,32,32,32,73,78,84,54,52,95,77,65,88,10,35,100
+,101,102,105,110,101,32,85,73,78,84,77,65,88,95,77,65,88,32,32,32,32,32,32,85,73
+,78,84,54,52,95,77,65,88,10,10,35,100,101,102,105,110,101,32,80,84,82,68,73,70,70
+,95,77,73,78,32,32,32,32,32,32,73,78,84,80,84,82,95,77,73,78,10,35,100,101,102
+,105,110,101,32,80,84,82,68,73,70,70,95,77,65,88,32,32,32,32,32,32,73,78,84,80
+,84,82,95,77,65,88,10,10,35,105,102,110,100,101,102,32,83,73,90,69,95,77,65,88,10
+,32,32,32,32,47,47,32,83,73,90,69,95,77,65,88,32,100,101,102,105,110,105,116,105,111
+,110,32,109,117,115,116,32,109,97,116,99,104,32,101,120,97,99,116,108,121,32,119,105,116,104
+,32,108,105,109,105,116,115,46,104,32,102,111,114,32,109,111,100,117,108,101,115,32,115,117,112
+,112,111,114,116,46,10,35,105,102,100,101,102,32,95,87,73,78,54,52,10,35,100,101,102,105
+,110,101,32,83,73,90,69,95,77,65,88,32,48,120,102,102,102,102,102,102,102,102,102,102,102
+,102,102,102,102,102,117,105,54,52,10,35,101,108,115,101,10,35,100,101,102,105,110,101,32,83
+,73,90,69,95,77,65,88,32,48,120,102,102,102,102,102,102,102,102,117,105,51,50,10,35,101
+,110,100,105,102,10,35,101,110,100,105,102,10,10,35,100,101,102,105,110,101,32,83,73,71,95
+,65,84,79,77,73,67,95,77,73,78,32,32,32,73,78,84,51,50,95,77,73,78,10,35,100
+,101,102,105,110,101,32,83,73,71,95,65,84,79,77,73,67,95,77,65,88,32,32,32,73,78
+,84,51,50,95,77,65,88,10,10,35,100,101,102,105,110,101,32,87,67,72,65,82,95,77,73
+,78,32,32,32,32,32,32,32,32,48,120,48,48,48,48,10,35,100,101,102,105,110,101,32,87
+,67,72,65,82,95,77,65,88,32,32,32,32,32,32,32,32,48,120,102,102,102,102,10,10,35
+,100,101,102,105,110,101,32,87,73,78,84,95,77,73,78,32,32,32,32,32,32,32,32,32,48
+,120,48,48,48,48,10,35,100,101,102,105,110,101,32,87,73,78,84,95,77,65,88,32,32,32
+,32,32,32,32,32,32,48,120,102,102,102,102,10,10,35,100,101,102,105,110,101,32,73,78,84
+,56,95,67,40,120,41,32,32,32,32,40,120,41,10,35,100,101,102,105,110,101,32,73,78,84
+,49,54,95,67,40,120,41,32,32,32,40,120,41,10,35,100,101,102,105,110,101,32,73,78,84
+,51,50,95,67,40,120,41,32,32,32,40,120,41,10,35,100,101,102,105,110,101,32,73,78,84
+,54,52,95,67,40,120,41,32,32,32,40,120,32,35,35,32,76,76,41,10,10,35,100,101,102
+,105,110,101,32,85,73,78,84,56,95,67,40,120,41,32,32,32,40,120,41,10,35,100,101,102
+,105,110,101,32,85,73,78,84,49,54,95,67,40,120,41,32,32,40,120,41,10,35,100,101,102
+,105,110,101,32,85,73,78,84,51,50,95,67,40,120,41,32,32,40,120,32,35,35,32,85,41
+,10,35,100,101,102,105,110,101,32,85,73,78,84,54,52,95,67,40,120,41,32,32,40,120,32
+,35,35,32,85,76,76,41,10,10,35,100,101,102,105,110,101,32,73,78,84,77,65,88,95,67
+,40,120,41,32,32,73,78,84,54,52,95,67,40,120,41,10,35,100,101,102,105,110,101,32,85
+,73,78,84,77,65,88,95,67,40,120,41,32,85,73,78,84,54,52,95,67,40,120,41,10,10
+,35,101,110,100,105,102,32,47,47,119,105,110,100,111,119,115,10,10,10,35,105,102,100,101,102
+,32,95,95,71,78,85,67,95,95,10,10,35,100,101,102,105,110,101,32,83,73,90,69,95,77
+,65,88,32,48,120,102,102,102,102,102,102,102,102,102,102,102,102,102,102,102,102,85,76,76,10
+,10,47,42,32,69,120,97,99,116,45,119,105,100,116,104,32,105,110,116,101,103,101,114,32,116
+,121,112,101,115,32,42,47,10,116,121,112,101,100,101,102,32,115,105,103,110,101,100,32,99,104
+,97,114,32,32,32,32,32,32,32,32,32,105,110,116,56,95,116,59,10,116,121,112,101,100,101
+,102,32,117,110,115,105,103,110,101,100,32,99,104,97,114,32,32,32,32,32,32,32,117,105,110
+,116,56,95,116,59,10,116,121,112,101,100,101,102,32,115,104,111,114,116,32,32,32,32,32,32
+,32,32,32,32,32,32,32,32,105,110,116,49,54,95,116,59,10,116,121,112,101,100,101,102,32
+,117,110,115,105,103,110,101,100,32,115,104,111,114,116,32,32,32,32,32,117,105,110,116,49,54
+,95,116,59,10,116,121,112,101,100,101,102,32,105,110,116,32,32,32,32,32,32,32,32,32,32
+,32,32,32,32,32,32,105,110,116,51,50,95,116,59,10,116,121,112,101,100,101,102,32,117,110
+,115,105,103,110,101,100,32,105,110,116,32,32,32,32,32,32,32,117,105,110,116,51,50,95,116
+,59,10,116,121,112,101,100,101,102,32,108,111,110,103,32,32,32,32,32,32,32,32,32,32,32
+,32,32,32,32,105,110,116,54,52,95,116,59,32,32,47,42,32,108,111,110,103,32,105,115,32
+,54,52,45,98,105,116,32,111,110,32,76,80,54,52,32,42,47,10,116,121,112,101,100,101,102
+,32,117,110,115,105,103,110,101,100,32,108,111,110,103,32,32,32,32,32,32,117,105,110,116,54
+,52,95,116,59,10,10,47,42,32,77,105,110,105,109,117,109,45,119,105,100,116,104,32,116,121
+,112,101,115,32,40,97,108,105,97,115,32,115,97,109,101,32,97,115,32,101,120,97,99,116,32
+,119,104,101,110,32,97,118,97,105,108,97,98,108,101,41,32,42,47,10,116,121,112,101,100,101
+,102,32,105,110,116,56,95,116,32,32,32,105,110,116,95,108,101,97,115,116,56,95,116,59,10
+,116,121,112,101,100,101,102,32,117,105,110,116,56,95,116,32,32,117,105,110,116,95,108,101,97
+,115,116,56,95,116,59,10,116,121,112,101,100,101,102,32,105,110,116,49,54,95,116,32,32,105
+,110,116,95,108,101,97,115,116,49,54,95,116,59,10,116,121,112,101,100,101,102,32,117,105,110
+,116,49,54,95,116,32,117,105,110,116,95,108,101,97,115,116,49,54,95,116,59,10,116,121,112
+,101,100,101,102,32,105,110,116,51,50,95,116,32,32,105,110,116,95,108,101,97,115,116,51,50
+,95,116,59,10,116,121,112,101,100,101,102,32,117,105,110,116,51,50,95,116,32,117,105,110,116
+,95,108,101,97,115,116,51,50,95,116,59,10,116,121,112,101,100,101,102,32,105,110,116,54,52
+,95,116,32,32,105,110,116,95,108,101,97,115,116,54,52,95,116,59,10,116,121,112,101,100,101
+,102,32,117,105,110,116,54,52,95,116,32,117,105,110,116,95,108,101,97,115,116,54,52,95,116
+,59,10,10,47,42,32,70,97,115,116,32,116,121,112,101,115,32,40,99,104,111,111,115,101,32
+,116,121,112,101,115,32,116,104,97,116,32,97,114,101,32,116,121,112,105,99,97,108,108,121,32
+,102,97,115,116,101,115,116,32,111,110,32,116,104,105,115,32,65,66,73,41,32,42,47,10,116
+,121,112,101,100,101,102,32,105,110,116,51,50,95,116,32,32,105,110,116,95,102,97,115,116,56
+,95,116,59,10,116,121,112,101,100,101,102,32,117,105,110,116,51,50,95,116,32,117,105,110,116
+,95,102,97,115,116,56,95,116,59,10,116,121,112,101,100,101,102,32,105,110,116,51,50,95,116
+,32,32,105,110,116,95,102,97,115,116,49,54,95,116,59,10,116,121,112,101,100,101,102,32,117
+,105,110,116,51,50,95,116,32,117,105,110,116,95,102,97,115,116,49,54,95,116,59,10,116,121
+,112,101,100,101,102,32,105,110,116,51,50,95,116,32,32,105,110,116,95,102,97,115,116,51,50
+,95,116,59,10,116,121,112,101,100,101,102,32,117,105,110,116,51,50,95,116,32,117,105,110,116
+,95,102,97,115,116,51,50,95,116,59,10,116,121,112,101,100,101,102,32,105,110,116,54,52,95
+,116,32,32,105,110,116,95,102,97,115,116,54,52,95,116,59,10,116,121,112,101,100,101,102,32
+,117,105,110,116,54,52,95,116,32,117,105,110,116,95,102,97,115,116,54,52,95,116,59,10,10
+,47,42,32,73,110,116,101,103,101,114,32,116,121,112,101,115,32,99,97,112,97,98,108,101,32
+,111,102,32,104,111,108,100,105,110,103,32,111,98,106,101,99,116,32,112,111,105,110,116,101,114
+,115,32,42,47,10,116,121,112,101,100,101,102,32,108,111,110,103,32,32,32,32,32,32,32,32
+,32,32,32,32,32,32,32,105,110,116,112,116,114,95,116,59,32,32,32,47,42,32,112,111,105
+,110,116,101,114,32,105,115,32,54,52,45,98,105,116,32,45,62,32,108,111,110,103,32,42,47
+,10,116,121,112,101,100,101,102,32,117,110,115,105,103,110,101,100,32,108,111,110,103,32,32,32
+,32,32,32,117,105,110,116,112,116,114,95,116,59,10,10,47,42,32,71,114,101,97,116,101,115
+,116,45,119,105,100,116,104,32,105,110,116,101,103,101,114,32,116,121,112,101,115,32,42,47,10
+,116,121,112,101,100,101,102,32,108,111,110,103,32,32,32,32,32,32,32,32,32,32,32,32,32
+,32,32,105,110,116,109,97,120,95,116,59,10,116,121,112,101,100,101,102,32,117,110,115,105,103
+,110,101,100,32,108,111,110,103,32,32,32,32,32,32,117,105,110,116,109,97,120,95,116,59,10
+,10,47,42,32,76,105,109,105,116,115,32,102,111,114,32,101,120,97,99,116,45,119,105,100,116
+,104,32,116,121,112,101,115,32,42,47,10,35,100,101,102,105,110,101,32,73,78,84,56,95,77
+,73,78,32,32,32,32,40,45,49,50,56,41,10,35,100,101,102,105,110,101,32,73,78,84,56
+,95,77,65,88,32,32,32,32,49,50,55,10,35,100,101,102,105,110,101,32,85,73,78,84,56
+,95,77,65,88,32,32,32,50,53,53,117,10,10,35,100,101,102,105,110,101,32,73,78,84,49
+,54,95,77,73,78,32,32,32,40,45,51,50,55,54,56,41,10,35,100,101,102,105,110,101,32
+,73,78,84,49,54,95,77,65,88,32,32,32,51,50,55,54,55,10,35,100,101,102,105,110,101
+,32,85,73,78,84,49,54,95,77,65,88,32,32,54,53,53,51,53,117,10,10,35,100,101,102
+,105,110,101,32,73,78,84,51,50,95,77,73,78,32,32,32,40,45,50,49,52,55,52,56,51
+,54,52,55,32,45,32,49,41,10,35,100,101,102,105,110,101,32,73,78,84,51,50,95,77,65
+,88,32,32,32,50,49,52,55,52,56,51,54,52,55,10,35,100,101,102,105,110,101,32,85,73
+,78,84,51,50,95,77,65,88,32,32,52,50,57,52,57,54,55,50,57,53,117,10,10,47,42
+,32,54,52,45,98,105,116,32,99,111,110,115,116,97,110,116,115,32,117,115,101,32,76,32,115
+,117,102,102,105,120,32,102,111,114,32,76,80,54,52,32,40,108,111,110,103,32,105,115,32,54
+,52,45,98,105,116,41,32,42,47,10,35,100,101,102,105,110,101,32,73,78,84,54,52,95,77
+,73,78,32,32,32,40,45,57,50,50,51,51,55,50,48,51,54,56,53,52,55,55,53,56,48
+,55,76,32,45,32,49,76,41,10,35,100,101,102,105,110,101,32,73,78,84,54,52,95,77,65
+,88,32,32,32,57,50,50,51,51,55,50,48,51,54,56,53,52,55,55,53,56,48,55,76,10
+,35,100,101,102,105,110,101,32,85,73,78,84,54,52,95,77,65,88,32,32,49,56,52,52,54
+,55,52,52,48,55,51,55,48,57,53,53,49,54,49,53,85,76,10,10,47,42,32,76,105,109
+,105,116,115,32,102,111,114,32,112,111,105,110,116,101,114,45,115,105,122,101,100,32,116,121,112
+,101,115,32,42,47,10,35,100,101,102,105,110,101,32,73,78,84,80,84,82,95,77,73,78,32
+,32,40,45,57,50,50,51,51,55,50,48,51,54,56,53,52,55,55,53,56,48,55,76,32,45
+,32,49,76,41,10,35,100,101,102,105,110,101,32,73,78,84,80,84,82,95,77,65,88,32,32
+,57,50,50,51,51,55,50,48,51,54,56,53,52,55,55,53,56,48,55,76,10,35,100,101,102
+,105,110,101,32,85,73,78,84,80,84,82,95,77,65,88,32,49,56,52,52,54,55,52,52,48
+,55,51,55,48,57,53,53,49,54,49,53,85,76,10,10,47,42,32,76,105,109,105,116,115,32
+,102,111,114,32,103,114,101,97,116,101,115,116,45,119,105,100,116,104,32,116,121,112,101,115,32
+,42,47,10,35,100,101,102,105,110,101,32,73,78,84,77,65,88,95,77,73,78,32,32,73,78
+,84,54,52,95,77,73,78,10,35,100,101,102,105,110,101,32,73,78,84,77,65,88,95,77,65
+,88,32,32,73,78,84,54,52,95,77,65,88,10,35,100,101,102,105,110,101,32,85,73,78,84
+,77,65,88,95,77,65,88,32,85,73,78,84,54,52,95,77,65,88,10,10,47,42,32,77,97
 ,99,114,111,115,32,116,111,32,100,101,102,105,110,101,32,105,110,116,101,103,101,114,32,99,111
-,110,115,116,97,110,116,115,32,42,47,13,10,35,100,101,102,105,110,101,32,73,78,84,56,95
-,67,40,118,41,32,32,32,32,118,13,10,35,100,101,102,105,110,101,32,85,73,78,84,56,95
-,67,40,118,41,32,32,32,118,35,35,117,13,10,35,100,101,102,105,110,101,32,73,78,84,49
-,54,95,67,40,118,41,32,32,32,118,13,10,35,100,101,102,105,110,101,32,85,73,78,84,49
-,54,95,67,40,118,41,32,32,118,35,35,117,13,10,35,100,101,102,105,110,101,32,73,78,84
-,51,50,95,67,40,118,41,32,32,32,118,13,10,35,100,101,102,105,110,101,32,85,73,78,84
-,51,50,95,67,40,118,41,32,32,118,35,35,117,13,10,35,100,101,102,105,110,101,32,73,78
-,84,54,52,95,67,40,118,41,32,32,32,118,35,35,76,13,10,35,100,101,102,105,110,101,32
-,85,73,78,84,54,52,95,67,40,118,41,32,32,118,35,35,85,76,13,10,13,10,13,10,13
-,10,35,101,110,100,105,102,13,10,13,10
+,110,115,116,97,110,116,115,32,42,47,10,35,100,101,102,105,110,101,32,73,78,84,56,95,67
+,40,118,41,32,32,32,32,118,10,35,100,101,102,105,110,101,32,85,73,78,84,56,95,67,40
+,118,41,32,32,32,118,35,35,117,10,35,100,101,102,105,110,101,32,73,78,84,49,54,95,67
+,40,118,41,32,32,32,118,10,35,100,101,102,105,110,101,32,85,73,78,84,49,54,95,67,40
+,118,41,32,32,118,35,35,117,10,35,100,101,102,105,110,101,32,73,78,84,51,50,95,67,40
+,118,41,32,32,32,118,10,35,100,101,102,105,110,101,32,85,73,78,84,51,50,95,67,40,118
+,41,32,32,118,35,35,117,10,35,100,101,102,105,110,101,32,73,78,84,54,52,95,67,40,118
+,41,32,32,32,118,35,35,76,10,35,100,101,102,105,110,101,32,85,73,78,84,54,52,95,67
+,40,118,41,32,32,118,35,35,85,76,10,10,10,10,35,101,110,100,105,102,10,10
 , 0 };
 static const char file_stdio_h[] = {
 
 
 
-47,42,13,10,32,42,32,32,84,104,105,115,32,102,105,108,101,32,105,115,32,112,97,114,116
-,32,111,102,32,99,97,107,101,32,99,111,109,112,105,108,101,114,13,10,32,42,32,32,104,116
-,116,112,115,58,47,47,103,105,116,104,117,98,46,99,111,109,47,116,104,114,97,100,97,109,115
-,47,99,97,107,101,13,10,42,47,13,10,13,10,35,112,114,97,103,109,97,32,111,110,99,101
-,13,10,35,100,101,102,105,110,101,32,95,73,79,70,66,70,32,48,120,48,48,48,48,13,10
-,35,100,101,102,105,110,101,32,95,73,79,76,66,70,32,48,120,48,48,52,48,13,10,35,100
-,101,102,105,110,101,32,95,73,79,78,66,70,32,48,120,48,48,48,52,13,10,13,10,35,100
-,101,102,105,110,101,32,66,85,70,83,73,90,32,32,53,49,50,13,10,13,10,35,100,101,102
-,105,110,101,32,69,79,70,32,32,32,32,40,45,49,41,13,10,13,10,35,100,101,102,105,110
-,101,32,70,73,76,69,78,65,77,69,95,77,65,88,32,32,32,32,50,54,48,13,10,35,100
-,101,102,105,110,101,32,70,79,80,69,78,95,77,65,88,32,32,32,32,32,32,32,50,48,13
-,10,13,10,35,100,101,102,105,110,101,32,76,95,116,109,112,110,97,109,32,32,32,50,54,48
-,32,47,47,32,95,77,65,88,95,80,65,84,72,13,10,13,10,47,42,32,83,101,101,107,32
-,109,101,116,104,111,100,32,99,111,110,115,116,97,110,116,115,32,42,47,13,10,13,10,35,100
-,101,102,105,110,101,32,83,69,69,75,95,67,85,82,32,32,32,32,49,13,10,35,100,101,102
-,105,110,101,32,83,69,69,75,95,69,78,68,32,32,32,32,50,13,10,35,100,101,102,105,110
-,101,32,83,69,69,75,95,83,69,84,32,32,32,32,48,13,10,13,10,13,10,35,100,101,102
-,105,110,101,32,84,77,80,95,77,65,88,32,32,32,32,32,32,32,32,32,50,49,52,55,52
-,56,51,54,52,55,13,10,13,10,13,10,13,10,116,121,112,101,100,101,102,32,108,111,110,103
-,32,108,111,110,103,32,102,112,111,115,95,116,59,13,10,116,121,112,101,100,101,102,32,105,110
-,116,32,70,73,76,69,59,13,10,13,10,101,120,116,101,114,110,32,70,73,76,69,42,32,115
-,116,100,105,110,59,13,10,101,120,116,101,114,110,32,70,73,76,69,42,32,115,116,100,111,117
-,116,59,13,10,101,120,116,101,114,110,32,70,73,76,69,42,32,115,116,100,101,114,114,59,13
-,10,13,10,116,121,112,101,100,101,102,32,117,110,115,105,103,110,101,100,32,108,111,110,103,32
-,115,105,122,101,95,116,59,13,10,116,121,112,101,100,101,102,32,118,111,105,100,42,32,118,97
-,95,108,105,115,116,59,13,10,105,110,116,32,114,101,109,111,118,101,40,99,111,110,115,116,32
-,99,104,97,114,42,32,102,105,108,101,110,97,109,101,41,59,13,10,105,110,116,32,114,101,110
-,97,109,101,40,99,111,110,115,116,32,99,104,97,114,42,32,111,108,100,44,32,99,111,110,115
-,116,32,99,104,97,114,42,32,110,101,119,115,41,59,13,10,70,73,76,69,42,32,95,79,112
-,116,32,116,109,112,102,105,108,101,40,118,111,105,100,41,59,13,10,99,104,97,114,42,32,116
-,109,112,110,97,109,40,99,104,97,114,42,32,115,41,59,13,10,35,105,102,32,100,101,102,105
-,110,101,100,40,95,95,83,84,68,67,95,79,87,78,69,82,83,72,73,80,95,95,41,32,13
-,10,105,110,116,32,102,99,108,111,115,101,40,70,73,76,69,42,32,95,79,119,110,101,114,32
-,115,116,114,101,97,109,41,59,13,10,35,101,108,115,101,13,10,105,110,116,32,102,99,108,111
-,115,101,40,70,73,76,69,42,32,115,116,114,101,97,109,41,59,13,10,35,101,110,100,105,102
-,13,10,105,110,116,32,102,102,108,117,115,104,40,70,73,76,69,42,32,115,116,114,101,97,109
-,41,59,13,10,35,105,102,32,100,101,102,105,110,101,100,40,95,95,83,84,68,67,95,79,87
-,78,69,82,83,72,73,80,95,95,41,32,13,10,70,73,76,69,42,32,95,79,119,110,101,114
+47,42,10,32,42,32,32,84,104,105,115,32,102,105,108,101,32,105,115,32,112,97,114,116,32
+,111,102,32,99,97,107,101,32,99,111,109,112,105,108,101,114,10,32,42,32,32,104,116,116,112
+,115,58,47,47,103,105,116,104,117,98,46,99,111,109,47,116,104,114,97,100,97,109,115,47,99
+,97,107,101,10,42,47,10,10,35,112,114,97,103,109,97,32,111,110,99,101,10,35,100,101,102
+,105,110,101,32,95,73,79,70,66,70,32,48,120,48,48,48,48,10,35,100,101,102,105,110,101
+,32,95,73,79,76,66,70,32,48,120,48,48,52,48,10,35,100,101,102,105,110,101,32,95,73
+,79,78,66,70,32,48,120,48,48,48,52,10,10,35,100,101,102,105,110,101,32,66,85,70,83
+,73,90,32,32,53,49,50,10,10,35,100,101,102,105,110,101,32,69,79,70,32,32,32,32,40
+,45,49,41,10,10,35,100,101,102,105,110,101,32,70,73,76,69,78,65,77,69,95,77,65,88
+,32,32,32,32,50,54,48,10,35,100,101,102,105,110,101,32,70,79,80,69,78,95,77,65,88
+,32,32,32,32,32,32,32,50,48,10,10,35,100,101,102,105,110,101,32,76,95,116,109,112,110
+,97,109,32,32,32,50,54,48,32,47,47,32,95,77,65,88,95,80,65,84,72,10,10,47,42
+,32,83,101,101,107,32,109,101,116,104,111,100,32,99,111,110,115,116,97,110,116,115,32,42,47
+,10,10,35,100,101,102,105,110,101,32,83,69,69,75,95,67,85,82,32,32,32,32,49,10,35
+,100,101,102,105,110,101,32,83,69,69,75,95,69,78,68,32,32,32,32,50,10,35,100,101,102
+,105,110,101,32,83,69,69,75,95,83,69,84,32,32,32,32,48,10,10,10,35,100,101,102,105
+,110,101,32,84,77,80,95,77,65,88,32,32,32,32,32,32,32,32,32,50,49,52,55,52,56
+,51,54,52,55,10,10,10,10,116,121,112,101,100,101,102,32,108,111,110,103,32,108,111,110,103
+,32,102,112,111,115,95,116,59,10,116,121,112,101,100,101,102,32,105,110,116,32,70,73,76,69
+,59,10,10,101,120,116,101,114,110,32,70,73,76,69,42,32,115,116,100,105,110,59,10,101,120
+,116,101,114,110,32,70,73,76,69,42,32,115,116,100,111,117,116,59,10,101,120,116,101,114,110
+,32,70,73,76,69,42,32,115,116,100,101,114,114,59,10,10,116,121,112,101,100,101,102,32,117
+,110,115,105,103,110,101,100,32,108,111,110,103,32,115,105,122,101,95,116,59,10,116,121,112,101
+,100,101,102,32,118,111,105,100,42,32,118,97,95,108,105,115,116,59,10,105,110,116,32,114,101
+,109,111,118,101,40,99,111,110,115,116,32,99,104,97,114,42,32,102,105,108,101,110,97,109,101
+,41,59,10,105,110,116,32,114,101,110,97,109,101,40,99,111,110,115,116,32,99,104,97,114,42
+,32,111,108,100,44,32,99,111,110,115,116,32,99,104,97,114,42,32,110,101,119,115,41,59,10
+,70,73,76,69,42,32,95,79,112,116,32,116,109,112,102,105,108,101,40,118,111,105,100,41,59
+,10,99,104,97,114,42,32,116,109,112,110,97,109,40,99,104,97,114,42,32,115,41,59,10,35
+,105,102,32,100,101,102,105,110,101,100,40,95,95,83,84,68,67,95,79,87,78,69,82,83,72
+,73,80,95,95,41,32,10,105,110,116,32,102,99,108,111,115,101,40,70,73,76,69,42,32,95
+,79,119,110,101,114,32,115,116,114,101,97,109,41,59,10,35,101,108,115,101,10,105,110,116,32
+,102,99,108,111,115,101,40,70,73,76,69,42,32,115,116,114,101,97,109,41,59,10,35,101,110
+,100,105,102,10,105,110,116,32,102,102,108,117,115,104,40,70,73,76,69,42,32,115,116,114,101
+,97,109,41,59,10,35,105,102,32,100,101,102,105,110,101,100,40,95,95,83,84,68,67,95,79
+,87,78,69,82,83,72,73,80,95,95,41,32,10,70,73,76,69,42,32,95,79,119,110,101,114
 ,32,95,79,112,116,32,102,111,112,101,110,40,99,111,110,115,116,32,99,104,97,114,42,32,114
 ,101,115,116,114,105,99,116,32,102,105,108,101,110,97,109,101,44,32,99,111,110,115,116,32,99
-,104,97,114,42,32,114,101,115,116,114,105,99,116,32,109,111,100,101,41,59,13,10,70,73,76
-,69,42,32,95,79,119,110,101,114,32,95,79,112,116,32,102,114,101,111,112,101,110,40,99,111
-,110,115,116,32,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32,102,105,108,101,110,97
-,109,101,44,32,99,111,110,115,116,32,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32
-,109,111,100,101,44,32,70,73,76,69,42,32,114,101,115,116,114,105,99,116,32,115,116,114,101
-,97,109,41,59,13,10,35,101,108,115,101,13,10,70,73,76,69,42,32,102,111,112,101,110,40
-,99,111,110,115,116,32,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32,102,105,108,101
-,110,97,109,101,44,32,99,111,110,115,116,32,99,104,97,114,42,32,114,101,115,116,114,105,99
-,116,32,109,111,100,101,41,59,13,10,70,73,76,69,42,32,102,114,101,111,112,101,110,40,99
-,111,110,115,116,32,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32,102,105,108,101,110
-,97,109,101,44,32,99,111,110,115,116,32,99,104,97,114,42,32,114,101,115,116,114,105,99,116
-,32,109,111,100,101,44,32,70,73,76,69,42,32,114,101,115,116,114,105,99,116,32,115,116,114
-,101,97,109,41,59,13,10,35,101,110,100,105,102,13,10,118,111,105,100,32,115,101,116,98,117
+,104,97,114,42,32,114,101,115,116,114,105,99,116,32,109,111,100,101,41,59,10,70,73,76,69
+,42,32,95,79,119,110,101,114,32,95,79,112,116,32,102,114,101,111,112,101,110,40,99,111,110
+,115,116,32,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32,102,105,108,101,110,97,109
+,101,44,32,99,111,110,115,116,32,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32,109
+,111,100,101,44,32,70,73,76,69,42,32,114,101,115,116,114,105,99,116,32,115,116,114,101,97
+,109,41,59,10,35,101,108,115,101,10,70,73,76,69,42,32,102,111,112,101,110,40,99,111,110
+,115,116,32,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32,102,105,108,101,110,97,109
+,101,44,32,99,111,110,115,116,32,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32,109
+,111,100,101,41,59,10,70,73,76,69,42,32,102,114,101,111,112,101,110,40,99,111,110,115,116
+,32,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32,102,105,108,101,110,97,109,101,44
+,32,99,111,110,115,116,32,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32,109,111,100
+,101,44,32,70,73,76,69,42,32,114,101,115,116,114,105,99,116,32,115,116,114,101,97,109,41
+,59,10,35,101,110,100,105,102,10,118,111,105,100,32,115,101,116,98,117,102,40,70,73,76,69
+,42,32,114,101,115,116,114,105,99,116,32,115,116,114,101,97,109,44,32,99,104,97,114,42,32
+,114,101,115,116,114,105,99,116,32,98,117,102,41,59,10,105,110,116,32,115,101,116,118,98,117
 ,102,40,70,73,76,69,42,32,114,101,115,116,114,105,99,116,32,115,116,114,101,97,109,44,32
-,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32,98,117,102,41,59,13,10,105,110,116
-,32,115,101,116,118,98,117,102,40,70,73,76,69,42,32,114,101,115,116,114,105,99,116,32,115
-,116,114,101,97,109,44,32,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32,98,117,102
-,44,32,105,110,116,32,109,111,100,101,44,32,115,105,122,101,95,116,32,115,105,122,101,41,59
-,13,10,105,110,116,32,102,112,114,105,110,116,102,40,70,73,76,69,42,32,114,101,115,116,114
-,105,99,116,32,115,116,114,101,97,109,44,32,99,111,110,115,116,32,99,104,97,114,42,32,114
-,101,115,116,114,105,99,116,32,102,111,114,109,97,116,44,32,46,46,46,41,59,13,10,105,110
-,116,32,102,115,99,97,110,102,40,70,73,76,69,42,32,114,101,115,116,114,105,99,116,32,115
-,116,114,101,97,109,44,32,99,111,110,115,116,32,99,104,97,114,42,32,114,101,115,116,114,105
-,99,116,32,102,111,114,109,97,116,44,32,46,46,46,41,59,13,10,105,110,116,32,112,114,105
-,110,116,102,40,99,111,110,115,116,32,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32
-,102,111,114,109,97,116,44,32,46,46,46,41,59,13,10,105,110,116,32,115,99,97,110,102,40
+,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32,98,117,102,44,32,105,110,116,32,109
+,111,100,101,44,32,115,105,122,101,95,116,32,115,105,122,101,41,59,10,105,110,116,32,102,112
+,114,105,110,116,102,40,70,73,76,69,42,32,114,101,115,116,114,105,99,116,32,115,116,114,101
+,97,109,44,32,99,111,110,115,116,32,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32
+,102,111,114,109,97,116,44,32,46,46,46,41,59,10,105,110,116,32,102,115,99,97,110,102,40
+,70,73,76,69,42,32,114,101,115,116,114,105,99,116,32,115,116,114,101,97,109,44,32,99,111
+,110,115,116,32,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32,102,111,114,109,97,116
+,44,32,46,46,46,41,59,10,105,110,116,32,112,114,105,110,116,102,40,99,111,110,115,116,32
+,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32,102,111,114,109,97,116,44,32,46,46
+,46,41,59,10,105,110,116,32,115,99,97,110,102,40,99,111,110,115,116,32,99,104,97,114,42
+,32,114,101,115,116,114,105,99,116,32,102,111,114,109,97,116,44,32,46,46,46,41,59,10,105
+,110,116,32,115,110,112,114,105,110,116,102,40,99,104,97,114,42,32,114,101,115,116,114,105,99
+,116,32,115,44,32,115,105,122,101,95,116,32,110,44,32,99,111,110,115,116,32,99,104,97,114
+,42,32,114,101,115,116,114,105,99,116,32,102,111,114,109,97,116,44,32,46,46,46,41,59,10
+,105,110,116,32,115,112,114,105,110,116,102,40,99,104,97,114,42,32,114,101,115,116,114,105,99
+,116,32,115,44,32,99,111,110,115,116,32,99,104,97,114,42,32,114,101,115,116,114,105,99,116
+,32,102,111,114,109,97,116,44,32,46,46,46,41,59,10,105,110,116,32,115,115,99,97,110,102
+,40,99,111,110,115,116,32,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32,115,44,32
 ,99,111,110,115,116,32,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32,102,111,114,109
-,97,116,44,32,46,46,46,41,59,13,10,105,110,116,32,115,110,112,114,105,110,116,102,40,99
-,104,97,114,42,32,114,101,115,116,114,105,99,116,32,115,44,32,115,105,122,101,95,116,32,110
-,44,32,99,111,110,115,116,32,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32,102,111
-,114,109,97,116,44,32,46,46,46,41,59,13,10,105,110,116,32,115,112,114,105,110,116,102,40
-,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32,115,44,32,99,111,110,115,116,32,99
-,104,97,114,42,32,114,101,115,116,114,105,99,116,32,102,111,114,109,97,116,44,32,46,46,46
-,41,59,13,10,105,110,116,32,115,115,99,97,110,102,40,99,111,110,115,116,32,99,104,97,114
-,42,32,114,101,115,116,114,105,99,116,32,115,44,32,99,111,110,115,116,32,99,104,97,114,42
-,32,114,101,115,116,114,105,99,116,32,102,111,114,109,97,116,44,32,46,46,46,41,59,13,10
-,105,110,116,32,118,102,112,114,105,110,116,102,40,70,73,76,69,42,32,114,101,115,116,114,105
-,99,116,32,115,116,114,101,97,109,44,32,99,111,110,115,116,32,99,104,97,114,42,32,114,101
-,115,116,114,105,99,116,32,102,111,114,109,97,116,44,32,118,97,95,108,105,115,116,32,97,114
-,103,41,59,13,10,105,110,116,32,118,102,115,99,97,110,102,40,70,73,76,69,42,32,114,101
-,115,116,114,105,99,116,32,115,116,114,101,97,109,44,32,99,111,110,115,116,32,99,104,97,114
-,42,32,114,101,115,116,114,105,99,116,32,102,111,114,109,97,116,44,32,118,97,95,108,105,115
-,116,32,97,114,103,41,59,13,10,105,110,116,32,118,112,114,105,110,116,102,40,99,111,110,115
+,97,116,44,32,46,46,46,41,59,10,105,110,116,32,118,102,112,114,105,110,116,102,40,70,73
+,76,69,42,32,114,101,115,116,114,105,99,116,32,115,116,114,101,97,109,44,32,99,111,110,115
 ,116,32,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32,102,111,114,109,97,116,44,32
-,118,97,95,108,105,115,116,32,97,114,103,41,59,13,10,105,110,116,32,118,115,99,97,110,102
-,40,99,111,110,115,116,32,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32,102,111,114
-,109,97,116,44,32,118,97,95,108,105,115,116,32,97,114,103,41,59,13,10,105,110,116,32,112
-,117,116,115,40,99,111,110,115,116,32,99,104,97,114,42,32,115,116,114,41,59,13,10,105,110
-,116,32,102,112,117,116,115,40,99,111,110,115,116,32,99,104,97,114,42,32,114,101,115,116,114
-,105,99,116,32,115,44,32,70,73,76,69,42,32,114,101,115,116,114,105,99,116,32,115,116,114
-,101,97,109,41,59,13,10,105,110,116,32,103,101,116,99,40,70,73,76,69,42,32,115,116,114
-,101,97,109,41,59,13,10,105,110,116,32,103,101,116,99,104,97,114,40,118,111,105,100,41,59
-,13,10,105,110,116,32,112,117,116,99,40,105,110,116,32,99,44,32,70,73,76,69,42,32,115
-,116,114,101,97,109,41,59,13,10,105,110,116,32,112,117,116,99,104,97,114,40,105,110,116,32
-,99,41,59,13,10,105,110,116,32,112,117,116,115,40,99,111,110,115,116,32,99,104,97,114,42
-,32,115,41,59,13,10,105,110,116,32,117,110,103,101,116,99,40,105,110,116,32,99,44,32,70
-,73,76,69,42,32,115,116,114,101,97,109,41,59,13,10,105,110,116,32,102,103,101,116,99,40
-,70,73,76,69,42,32,115,116,114,101,97,109,41,59,13,10,115,105,122,101,95,116,32,102,114
-,101,97,100,40,118,111,105,100,42,32,114,101,115,116,114,105,99,116,32,112,116,114,44,32,115
-,105,122,101,95,116,32,115,105,122,101,44,32,115,105,122,101,95,116,32,110,109,101,109,98,44
-,32,70,73,76,69,42,32,114,101,115,116,114,105,99,116,32,115,116,114,101,97,109,41,59,13
-,10,115,105,122,101,95,116,32,102,119,114,105,116,101,40,99,111,110,115,116,32,118,111,105,100
-,42,32,114,101,115,116,114,105,99,116,32,112,116,114,44,32,115,105,122,101,95,116,32,115,105
-,122,101,44,32,115,105,122,101,95,116,32,110,109,101,109,98,44,32,70,73,76,69,42,32,114
-,101,115,116,114,105,99,116,32,115,116,114,101,97,109,41,59,13,10,105,110,116,32,102,103,101
-,116,112,111,115,40,70,73,76,69,42,32,114,101,115,116,114,105,99,116,32,115,116,114,101,97
-,109,44,32,102,112,111,115,95,116,42,32,114,101,115,116,114,105,99,116,32,112,111,115,41,59
-,13,10,105,110,116,32,102,115,101,101,107,40,70,73,76,69,42,32,115,116,114,101,97,109,44
-,32,108,111,110,103,32,105,110,116,32,111,102,102,115,101,116,44,32,105,110,116,32,119,104,101
-,110,99,101,41,59,13,10,105,110,116,32,102,115,101,116,112,111,115,40,70,73,76,69,42,32
-,115,116,114,101,97,109,44,32,99,111,110,115,116,32,102,112,111,115,95,116,42,32,112,111,115
-,41,59,13,10,108,111,110,103,32,105,110,116,32,102,116,101,108,108,40,70,73,76,69,42,32
-,115,116,114,101,97,109,41,59,13,10,118,111,105,100,32,114,101,119,105,110,100,40,70,73,76
-,69,42,32,115,116,114,101,97,109,41,59,13,10,118,111,105,100,32,99,108,101,97,114,101,114
-,114,40,70,73,76,69,42,32,115,116,114,101,97,109,41,59,13,10,105,110,116,32,102,101,111
-,102,40,70,73,76,69,42,32,115,116,114,101,97,109,41,59,13,10,105,110,116,32,102,101,114
-,114,111,114,40,70,73,76,69,42,32,115,116,114,101,97,109,41,59,13,10,118,111,105,100,32
-,112,101,114,114,111,114,40,99,111,110,115,116,32,99,104,97,114,42,32,115,41,59,13,10,13
-,10,13,10,13,10,35,105,102,110,100,101,102,32,78,85,76,76,13,10,35,100,101,102,105,110
-,101,32,78,85,76,76,32,40,40,118,111,105,100,42,41,48,41,13,10,35,101,110,100,105,102
-,13,10
+,118,97,95,108,105,115,116,32,97,114,103,41,59,10,105,110,116,32,118,102,115,99,97,110,102
+,40,70,73,76,69,42,32,114,101,115,116,114,105,99,116,32,115,116,114,101,97,109,44,32,99
+,111,110,115,116,32,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32,102,111,114,109,97
+,116,44,32,118,97,95,108,105,115,116,32,97,114,103,41,59,10,105,110,116,32,118,112,114,105
+,110,116,102,40,99,111,110,115,116,32,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32
+,102,111,114,109,97,116,44,32,118,97,95,108,105,115,116,32,97,114,103,41,59,10,105,110,116
+,32,118,115,99,97,110,102,40,99,111,110,115,116,32,99,104,97,114,42,32,114,101,115,116,114
+,105,99,116,32,102,111,114,109,97,116,44,32,118,97,95,108,105,115,116,32,97,114,103,41,59
+,10,105,110,116,32,112,117,116,115,40,99,111,110,115,116,32,99,104,97,114,42,32,115,116,114
+,41,59,10,105,110,116,32,102,112,117,116,115,40,99,111,110,115,116,32,99,104,97,114,42,32
+,114,101,115,116,114,105,99,116,32,115,44,32,70,73,76,69,42,32,114,101,115,116,114,105,99
+,116,32,115,116,114,101,97,109,41,59,10,105,110,116,32,103,101,116,99,40,70,73,76,69,42
+,32,115,116,114,101,97,109,41,59,10,105,110,116,32,103,101,116,99,104,97,114,40,118,111,105
+,100,41,59,10,105,110,116,32,112,117,116,99,40,105,110,116,32,99,44,32,70,73,76,69,42
+,32,115,116,114,101,97,109,41,59,10,105,110,116,32,112,117,116,99,104,97,114,40,105,110,116
+,32,99,41,59,10,105,110,116,32,112,117,116,115,40,99,111,110,115,116,32,99,104,97,114,42
+,32,115,41,59,10,105,110,116,32,117,110,103,101,116,99,40,105,110,116,32,99,44,32,70,73
+,76,69,42,32,115,116,114,101,97,109,41,59,10,105,110,116,32,102,103,101,116,99,40,70,73
+,76,69,42,32,115,116,114,101,97,109,41,59,10,115,105,122,101,95,116,32,102,114,101,97,100
+,40,118,111,105,100,42,32,114,101,115,116,114,105,99,116,32,112,116,114,44,32,115,105,122,101
+,95,116,32,115,105,122,101,44,32,115,105,122,101,95,116,32,110,109,101,109,98,44,32,70,73
+,76,69,42,32,114,101,115,116,114,105,99,116,32,115,116,114,101,97,109,41,59,10,115,105,122
+,101,95,116,32,102,119,114,105,116,101,40,99,111,110,115,116,32,118,111,105,100,42,32,114,101
+,115,116,114,105,99,116,32,112,116,114,44,32,115,105,122,101,95,116,32,115,105,122,101,44,32
+,115,105,122,101,95,116,32,110,109,101,109,98,44,32,70,73,76,69,42,32,114,101,115,116,114
+,105,99,116,32,115,116,114,101,97,109,41,59,10,105,110,116,32,102,103,101,116,112,111,115,40
+,70,73,76,69,42,32,114,101,115,116,114,105,99,116,32,115,116,114,101,97,109,44,32,102,112
+,111,115,95,116,42,32,114,101,115,116,114,105,99,116,32,112,111,115,41,59,10,105,110,116,32
+,102,115,101,101,107,40,70,73,76,69,42,32,115,116,114,101,97,109,44,32,108,111,110,103,32
+,105,110,116,32,111,102,102,115,101,116,44,32,105,110,116,32,119,104,101,110,99,101,41,59,10
+,105,110,116,32,102,115,101,116,112,111,115,40,70,73,76,69,42,32,115,116,114,101,97,109,44
+,32,99,111,110,115,116,32,102,112,111,115,95,116,42,32,112,111,115,41,59,10,108,111,110,103
+,32,105,110,116,32,102,116,101,108,108,40,70,73,76,69,42,32,115,116,114,101,97,109,41,59
+,10,118,111,105,100,32,114,101,119,105,110,100,40,70,73,76,69,42,32,115,116,114,101,97,109
+,41,59,10,118,111,105,100,32,99,108,101,97,114,101,114,114,40,70,73,76,69,42,32,115,116
+,114,101,97,109,41,59,10,105,110,116,32,102,101,111,102,40,70,73,76,69,42,32,115,116,114
+,101,97,109,41,59,10,105,110,116,32,102,101,114,114,111,114,40,70,73,76,69,42,32,115,116
+,114,101,97,109,41,59,10,118,111,105,100,32,112,101,114,114,111,114,40,99,111,110,115,116,32
+,99,104,97,114,42,32,115,41,59,10,10,10,10,35,105,102,110,100,101,102,32,78,85,76,76
+,10,35,100,101,102,105,110,101,32,78,85,76,76,32,40,40,118,111,105,100,42,41,48,41,10
+,35,101,110,100,105,102,10
 , 0 };
 static const char file_stdlib_h[] = {
 
 
 
-47,42,13,10,32,42,32,32,84,104,105,115,32,102,105,108,101,32,105,115,32,112,97,114,116
-,32,111,102,32,99,97,107,101,32,99,111,109,112,105,108,101,114,13,10,32,42,32,32,104,116
-,116,112,115,58,47,47,103,105,116,104,117,98,46,99,111,109,47,116,104,114,97,100,97,109,115
-,47,99,97,107,101,13,10,42,47,13,10,13,10,116,121,112,101,100,101,102,32,108,111,110,103
-,32,108,111,110,103,32,102,112,111,115,95,116,59,13,10,116,121,112,101,100,101,102,32,117,110
-,115,105,103,110,101,100,32,108,111,110,103,32,115,105,122,101,95,116,59,13,10,13,10,35,100
-,101,102,105,110,101,32,69,88,73,84,95,83,85,67,67,69,83,83,32,48,13,10,35,100,101
-,102,105,110,101,32,69,88,73,84,95,70,65,73,76,85,82,69,32,49,13,10,35,100,101,102
-,105,110,101,32,78,85,76,76,32,40,40,118,111,105,100,42,41,48,41,13,10,13,10,116,121
-,112,101,100,101,102,32,105,110,116,32,119,99,104,97,114,95,116,59,13,10,91,91,110,111,100
-,105,115,99,97,114,100,93,93,32,100,111,117,98,108,101,32,97,116,111,102,40,99,111,110,115
-,116,32,99,104,97,114,42,32,110,112,116,114,41,59,13,10,91,91,110,111,100,105,115,99,97
-,114,100,93,93,32,105,110,116,32,97,116,111,105,40,99,111,110,115,116,32,99,104,97,114,42
-,32,110,112,116,114,41,59,13,10,91,91,110,111,100,105,115,99,97,114,100,93,93,32,108,111
-,110,103,32,105,110,116,32,97,116,111,108,40,99,111,110,115,116,32,99,104,97,114,42,32,110
-,112,116,114,41,59,13,10,91,91,110,111,100,105,115,99,97,114,100,93,93,32,108,111,110,103
-,32,108,111,110,103,32,105,110,116,32,97,116,111,108,108,40,99,111,110,115,116,32,99,104,97
-,114,42,32,110,112,116,114,41,59,13,10,100,111,117,98,108,101,32,115,116,114,116,111,100,40
-,99,111,110,115,116,32,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32,110,112,116,114
-,44,32,99,104,97,114,42,42,32,114,101,115,116,114,105,99,116,32,101,110,100,112,116,114,41
-,59,13,10,102,108,111,97,116,32,115,116,114,116,111,102,40,99,111,110,115,116,32,99,104,97
-,114,42,32,114,101,115,116,114,105,99,116,32,110,112,116,114,44,32,99,104,97,114,42,42,32
-,114,101,115,116,114,105,99,116,32,101,110,100,112,116,114,41,59,13,10,108,111,110,103,32,100
-,111,117,98,108,101,32,115,116,114,116,111,108,100,40,99,111,110,115,116,32,99,104,97,114,42
-,32,114,101,115,116,114,105,99,116,32,110,112,116,114,44,32,99,104,97,114,42,42,32,114,101
-,115,116,114,105,99,116,32,101,110,100,112,116,114,41,59,13,10,108,111,110,103,32,105,110,116
-,32,115,116,114,116,111,108,40,99,111,110,115,116,32,99,104,97,114,42,32,114,101,115,116,114
+47,42,10,32,42,32,32,84,104,105,115,32,102,105,108,101,32,105,115,32,112,97,114,116,32
+,111,102,32,99,97,107,101,32,99,111,109,112,105,108,101,114,10,32,42,32,32,104,116,116,112
+,115,58,47,47,103,105,116,104,117,98,46,99,111,109,47,116,104,114,97,100,97,109,115,47,99
+,97,107,101,10,42,47,10,10,116,121,112,101,100,101,102,32,108,111,110,103,32,108,111,110,103
+,32,102,112,111,115,95,116,59,10,116,121,112,101,100,101,102,32,117,110,115,105,103,110,101,100
+,32,108,111,110,103,32,115,105,122,101,95,116,59,10,10,35,100,101,102,105,110,101,32,69,88
+,73,84,95,83,85,67,67,69,83,83,32,48,10,35,100,101,102,105,110,101,32,69,88,73,84
+,95,70,65,73,76,85,82,69,32,49,10,35,100,101,102,105,110,101,32,78,85,76,76,32,40
+,40,118,111,105,100,42,41,48,41,10,10,116,121,112,101,100,101,102,32,105,110,116,32,119,99
+,104,97,114,95,116,59,10,91,91,110,111,100,105,115,99,97,114,100,93,93,32,100,111,117,98
+,108,101,32,97,116,111,102,40,99,111,110,115,116,32,99,104,97,114,42,32,110,112,116,114,41
+,59,10,91,91,110,111,100,105,115,99,97,114,100,93,93,32,105,110,116,32,97,116,111,105,40
+,99,111,110,115,116,32,99,104,97,114,42,32,110,112,116,114,41,59,10,91,91,110,111,100,105
+,115,99,97,114,100,93,93,32,108,111,110,103,32,105,110,116,32,97,116,111,108,40,99,111,110
+,115,116,32,99,104,97,114,42,32,110,112,116,114,41,59,10,91,91,110,111,100,105,115,99,97
+,114,100,93,93,32,108,111,110,103,32,108,111,110,103,32,105,110,116,32,97,116,111,108,108,40
+,99,111,110,115,116,32,99,104,97,114,42,32,110,112,116,114,41,59,10,100,111,117,98,108,101
+,32,115,116,114,116,111,100,40,99,111,110,115,116,32,99,104,97,114,42,32,114,101,115,116,114
 ,105,99,116,32,110,112,116,114,44,32,99,104,97,114,42,42,32,114,101,115,116,114,105,99,116
-,32,101,110,100,112,116,114,44,32,105,110,116,32,98,97,115,101,41,59,13,10,108,111,110,103
-,32,108,111,110,103,32,105,110,116,32,115,116,114,116,111,108,108,40,99,111,110,115,116,32,99
-,104,97,114,42,32,114,101,115,116,114,105,99,116,32,110,112,116,114,44,32,99,104,97,114,42
-,42,32,114,101,115,116,114,105,99,116,32,101,110,100,112,116,114,44,32,105,110,116,32,98,97
-,115,101,41,59,13,10,117,110,115,105,103,110,101,100,32,108,111,110,103,32,105,110,116,32,115
-,116,114,116,111,117,108,40,99,111,110,115,116,32,99,104,97,114,42,32,114,101,115,116,114,105
-,99,116,32,110,112,116,114,44,32,99,104,97,114,42,42,32,114,101,115,116,114,105,99,116,32
-,101,110,100,112,116,114,44,32,105,110,116,32,98,97,115,101,41,59,13,10,117,110,115,105,103
-,110,101,100,32,108,111,110,103,32,108,111,110,103,32,105,110,116,32,115,116,114,116,111,117,108
-,108,40,99,111,110,115,116,32,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32,110,112
-,116,114,44,32,99,104,97,114,42,42,32,114,101,115,116,114,105,99,116,32,101,110,100,112,116
-,114,44,32,105,110,116,32,98,97,115,101,41,59,13,10,105,110,116,32,114,97,110,100,40,118
-,111,105,100,41,59,13,10,118,111,105,100,32,115,114,97,110,100,40,117,110,115,105,103,110,101
-,100,32,105,110,116,32,115,101,101,100,41,59,13,10,118,111,105,100,42,32,97,108,105,103,110
-,101,100,95,97,108,108,111,99,40,115,105,122,101,95,116,32,97,108,105,103,110,109,101,110,116
-,44,32,115,105,122,101,95,116,32,115,105,122,101,41,59,13,10,13,10,35,105,102,32,100,101
-,102,105,110,101,100,40,95,95,83,84,68,67,95,79,87,78,69,82,83,72,73,80,95,95,41
-,32,13,10,91,91,110,111,100,105,115,99,97,114,100,93,93,32,118,111,105,100,42,32,95,79
-,119,110,101,114,32,95,79,112,116,32,99,97,108,108,111,99,40,115,105,122,101,95,116,32,110
-,109,101,109,98,44,32,115,105,122,101,95,116,32,115,105,122,101,41,59,13,10,118,111,105,100
-,32,102,114,101,101,40,118,111,105,100,42,32,95,79,119,110,101,114,32,95,79,112,116,32,112
-,116,114,41,59,13,10,91,91,110,111,100,105,115,99,97,114,100,93,93,32,118,111,105,100,42
-,32,95,79,119,110,101,114,32,95,79,112,116,32,109,97,108,108,111,99,40,115,105,122,101,95
-,116,32,115,105,122,101,41,59,13,10,91,91,110,111,100,105,115,99,97,114,100,93,93,32,118
-,111,105,100,42,32,95,79,119,110,101,114,32,95,79,112,116,32,114,101,97,108,108,111,99,40
-,118,111,105,100,42,32,95,79,112,116,32,112,116,114,44,32,115,105,122,101,95,116,32,115,105
-,122,101,41,59,13,10,35,101,108,115,101,13,10,91,91,110,111,100,105,115,99,97,114,100,93
-,93,32,118,111,105,100,42,32,99,97,108,108,111,99,40,115,105,122,101,95,116,32,110,109,101
-,109,98,44,32,115,105,122,101,95,116,32,115,105,122,101,41,59,13,10,118,111,105,100,32,102
-,114,101,101,40,118,111,105,100,42,32,112,116,114,41,59,13,10,91,91,110,111,100,105,115,99
-,97,114,100,93,93,32,118,111,105,100,42,32,109,97,108,108,111,99,40,115,105,122,101,95,116
-,32,115,105,122,101,41,59,13,10,91,91,110,111,100,105,115,99,97,114,100,93,93,32,118,111
-,105,100,42,32,114,101,97,108,108,111,99,40,118,111,105,100,42,32,112,116,114,44,32,115,105
-,122,101,95,116,32,115,105,122,101,41,59,13,10,35,101,110,100,105,102,13,10,13,10,91,91
-,110,111,114,101,116,117,114,110,93,93,32,118,111,105,100,32,97,98,111,114,116,40,118,111,105
-,100,41,59,13,10,105,110,116,32,97,116,101,120,105,116,40,118,111,105,100,32,40,42,102,117
-,110,99,41,40,118,111,105,100,41,41,59,13,10,105,110,116,32,97,116,95,113,117,105,99,107
-,95,101,120,105,116,40,118,111,105,100,32,40,42,102,117,110,99,41,40,118,111,105,100,41,41
-,59,13,10,91,91,110,111,114,101,116,117,114,110,93,93,32,118,111,105,100,32,101,120,105,116
-,40,105,110,116,32,115,116,97,116,117,115,41,59,13,10,91,91,110,111,114,101,116,117,114,110
-,93,93,32,118,111,105,100,32,95,69,120,105,116,40,105,110,116,32,115,116,97,116,117,115,41
-,59,13,10,99,104,97,114,42,32,103,101,116,101,110,118,40,99,111,110,115,116,32,99,104,97
-,114,42,32,110,97,109,101,41,59,13,10,91,91,110,111,114,101,116,117,114,110,93,93,32,118
-,111,105,100,32,113,117,105,99,107,95,101,120,105,116,40,105,110,116,32,115,116,97,116,117,115
-,41,59,13,10,105,110,116,32,115,121,115,116,101,109,40,99,111,110,115,116,32,99,104,97,114
-,42,32,115,116,114,105,110,103,41,59,13,10
+,32,101,110,100,112,116,114,41,59,10,102,108,111,97,116,32,115,116,114,116,111,102,40,99,111
+,110,115,116,32,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32,110,112,116,114,44,32
+,99,104,97,114,42,42,32,114,101,115,116,114,105,99,116,32,101,110,100,112,116,114,41,59,10
+,108,111,110,103,32,100,111,117,98,108,101,32,115,116,114,116,111,108,100,40,99,111,110,115,116
+,32,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32,110,112,116,114,44,32,99,104,97
+,114,42,42,32,114,101,115,116,114,105,99,116,32,101,110,100,112,116,114,41,59,10,108,111,110
+,103,32,105,110,116,32,115,116,114,116,111,108,40,99,111,110,115,116,32,99,104,97,114,42,32
+,114,101,115,116,114,105,99,116,32,110,112,116,114,44,32,99,104,97,114,42,42,32,114,101,115
+,116,114,105,99,116,32,101,110,100,112,116,114,44,32,105,110,116,32,98,97,115,101,41,59,10
+,108,111,110,103,32,108,111,110,103,32,105,110,116,32,115,116,114,116,111,108,108,40,99,111,110
+,115,116,32,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32,110,112,116,114,44,32,99
+,104,97,114,42,42,32,114,101,115,116,114,105,99,116,32,101,110,100,112,116,114,44,32,105,110
+,116,32,98,97,115,101,41,59,10,117,110,115,105,103,110,101,100,32,108,111,110,103,32,105,110
+,116,32,115,116,114,116,111,117,108,40,99,111,110,115,116,32,99,104,97,114,42,32,114,101,115
+,116,114,105,99,116,32,110,112,116,114,44,32,99,104,97,114,42,42,32,114,101,115,116,114,105
+,99,116,32,101,110,100,112,116,114,44,32,105,110,116,32,98,97,115,101,41,59,10,117,110,115
+,105,103,110,101,100,32,108,111,110,103,32,108,111,110,103,32,105,110,116,32,115,116,114,116,111
+,117,108,108,40,99,111,110,115,116,32,99,104,97,114,42,32,114,101,115,116,114,105,99,116,32
+,110,112,116,114,44,32,99,104,97,114,42,42,32,114,101,115,116,114,105,99,116,32,101,110,100
+,112,116,114,44,32,105,110,116,32,98,97,115,101,41,59,10,105,110,116,32,114,97,110,100,40
+,118,111,105,100,41,59,10,118,111,105,100,32,115,114,97,110,100,40,117,110,115,105,103,110,101
+,100,32,105,110,116,32,115,101,101,100,41,59,10,118,111,105,100,42,32,97,108,105,103,110,101
+,100,95,97,108,108,111,99,40,115,105,122,101,95,116,32,97,108,105,103,110,109,101,110,116,44
+,32,115,105,122,101,95,116,32,115,105,122,101,41,59,10,10,35,105,102,32,100,101,102,105,110
+,101,100,40,95,95,83,84,68,67,95,79,87,78,69,82,83,72,73,80,95,95,41,32,10,91
+,91,110,111,100,105,115,99,97,114,100,93,93,32,118,111,105,100,42,32,95,79,119,110,101,114
+,32,95,79,112,116,32,99,97,108,108,111,99,40,115,105,122,101,95,116,32,110,109,101,109,98
+,44,32,115,105,122,101,95,116,32,115,105,122,101,41,59,10,118,111,105,100,32,102,114,101,101
+,40,118,111,105,100,42,32,95,79,119,110,101,114,32,95,79,112,116,32,112,116,114,41,59,10
+,91,91,110,111,100,105,115,99,97,114,100,93,93,32,118,111,105,100,42,32,95,79,119,110,101
+,114,32,95,79,112,116,32,109,97,108,108,111,99,40,115,105,122,101,95,116,32,115,105,122,101
+,41,59,10,91,91,110,111,100,105,115,99,97,114,100,93,93,32,118,111,105,100,42,32,95,79
+,119,110,101,114,32,95,79,112,116,32,114,101,97,108,108,111,99,40,118,111,105,100,42,32,95
+,79,112,116,32,112,116,114,44,32,115,105,122,101,95,116,32,115,105,122,101,41,59,10,35,101
+,108,115,101,10,91,91,110,111,100,105,115,99,97,114,100,93,93,32,118,111,105,100,42,32,99
+,97,108,108,111,99,40,115,105,122,101,95,116,32,110,109,101,109,98,44,32,115,105,122,101,95
+,116,32,115,105,122,101,41,59,10,118,111,105,100,32,102,114,101,101,40,118,111,105,100,42,32
+,112,116,114,41,59,10,91,91,110,111,100,105,115,99,97,114,100,93,93,32,118,111,105,100,42
+,32,109,97,108,108,111,99,40,115,105,122,101,95,116,32,115,105,122,101,41,59,10,91,91,110
+,111,100,105,115,99,97,114,100,93,93,32,118,111,105,100,42,32,114,101,97,108,108,111,99,40
+,118,111,105,100,42,32,112,116,114,44,32,115,105,122,101,95,116,32,115,105,122,101,41,59,10
+,35,101,110,100,105,102,10,10,91,91,110,111,114,101,116,117,114,110,93,93,32,118,111,105,100
+,32,97,98,111,114,116,40,118,111,105,100,41,59,10,105,110,116,32,97,116,101,120,105,116,40
+,118,111,105,100,32,40,42,102,117,110,99,41,40,118,111,105,100,41,41,59,10,105,110,116,32
+,97,116,95,113,117,105,99,107,95,101,120,105,116,40,118,111,105,100,32,40,42,102,117,110,99
+,41,40,118,111,105,100,41,41,59,10,91,91,110,111,114,101,116,117,114,110,93,93,32,118,111
+,105,100,32,101,120,105,116,40,105,110,116,32,115,116,97,116,117,115,41,59,10,91,91,110,111
+,114,101,116,117,114,110,93,93,32,118,111,105,100,32,95,69,120,105,116,40,105,110,116,32,115
+,116,97,116,117,115,41,59,10,99,104,97,114,42,32,103,101,116,101,110,118,40,99,111,110,115
+,116,32,99,104,97,114,42,32,110,97,109,101,41,59,10,91,91,110,111,114,101,116,117,114,110
+,93,93,32,118,111,105,100,32,113,117,105,99,107,95,101,120,105,116,40,105,110,116,32,115,116
+,97,116,117,115,41,59,10,105,110,116,32,115,121,115,116,101,109,40,99,111,110,115,116,32,99
+,104,97,114,42,32,115,116,114,105,110,103,41,59,10
 , 0 };
 static const char file_stdnoreturn_h[] = {
 
 
 
-13,10,35,100,101,102,105,110,101,32,110,111,114,101,116,117,114,110,32,95,78,111,114,101,116
-,117,114,110,13,10
+10,35,100,101,102,105,110,101,32,110,111,114,101,116,117,114,110,32,95,78,111,114,101,116,117
+,114,110,10
 , 0 };
 static const char file_string_h[] = {
 
 
 
-32,13,10,116,121,112,101,100,101,102,32,105,110,116,32,101,114,114,110,111,95,116,59,13,10
-,116,121,112,101,100,101,102,32,117,110,115,105,103,110,101,100,32,108,111,110,103,32,115,105,122
-,101,95,116,59,13,10,116,121,112,101,100,101,102,32,117,110,115,105,103,110,101,100,32,108,111
-,110,103,32,114,115,105,122,101,95,116,59,13,10,116,121,112,101,100,101,102,32,105,110,116,32
-,119,99,104,97,114,95,116,59,13,10,118,111,105,100,42,32,109,101,109,99,104,114,40,118,111
-,105,100,32,99,111,110,115,116,42,32,95,66,117,102,44,32,105,110,116,32,95,86,97,108,44
-,32,115,105,122,101,95,116,32,95,77,97,120,67,111,117,110,116,41,59,13,10,105,110,116,32
-,109,101,109,99,109,112,40,118,111,105,100,32,99,111,110,115,116,42,32,95,66,117,102,49,44
-,32,118,111,105,100,32,99,111,110,115,116,42,32,95,66,117,102,50,44,32,115,105,122,101,95
-,116,32,95,83,105,122,101,41,59,13,10,118,111,105,100,42,32,109,101,109,99,112,121,40,118
-,111,105,100,42,32,95,68,115,116,44,32,118,111,105,100,32,99,111,110,115,116,42,32,95,83
-,114,99,44,32,115,105,122,101,95,116,32,95,83,105,122,101,41,59,13,10,118,111,105,100,42
-,32,109,101,109,109,111,118,101,40,118,111,105,100,42,32,95,68,115,116,44,32,118,111,105,100
-,32,99,111,110,115,116,42,32,95,83,114,99,44,32,115,105,122,101,95,116,32,95,83,105,122
-,101,41,59,13,10,118,111,105,100,42,32,109,101,109,115,101,116,40,118,111,105,100,42,32,95
-,68,115,116,44,32,105,110,116,32,95,86,97,108,44,32,115,105,122,101,95,116,32,95,83,105
-,122,101,41,59,13,10,99,104,97,114,42,32,115,116,114,99,104,114,40,99,104,97,114,32,99
-,111,110,115,116,42,32,95,83,116,114,44,32,105,110,116,32,95,86,97,108,41,59,13,10,99
-,104,97,114,32,42,115,116,114,99,112,121,40,95,67,116,111,114,32,99,104,97,114,32,42,114
-,101,115,116,114,105,99,116,32,100,101,115,116,44,32,99,111,110,115,116,32,99,104,97,114,32
-,42,114,101,115,116,114,105,99,116,32,115,114,99,32,41,59,13,10,99,104,97,114,42,32,115
-,116,114,114,99,104,114,40,99,104,97,114,32,99,111,110,115,116,42,32,95,83,116,114,44,32
-,105,110,116,32,95,67,104,41,59,13,10,99,104,97,114,42,32,115,116,114,115,116,114,40,99
-,104,97,114,32,99,111,110,115,116,42,32,95,83,116,114,44,32,99,104,97,114,32,99,111,110
-,115,116,42,32,95,83,117,98,83,116,114,41,59,13,10,119,99,104,97,114,95,116,42,32,119
-,99,115,99,104,114,40,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32,95,83,116,114
-,44,32,119,99,104,97,114,95,116,32,95,67,104,41,59,13,10,119,99,104,97,114,95,116,42
-,32,119,99,115,114,99,104,114,40,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32,95
-,83,116,114,44,32,119,99,104,97,114,95,116,32,95,67,104,41,59,13,10,119,99,104,97,114
-,95,116,42,32,119,99,115,115,116,114,40,119,99,104,97,114,95,116,32,99,111,110,115,116,42
-,32,95,83,116,114,44,32,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32,95,83,117
-,98,83,116,114,41,59,13,10,115,116,97,116,105,99,32,105,110,108,105,110,101,32,101,114,114
-,110,111,95,116,32,109,101,109,99,112,121,95,115,40,118,111,105,100,42,32,99,111,110,115,116
-,32,95,68,101,115,116,105,110,97,116,105,111,110,44,32,114,115,105,122,101,95,116,32,99,111
-,110,115,116,32,95,68,101,115,116,105,110,97,116,105,111,110,83,105,122,101,44,32,118,111,105
-,100,32,99,111,110,115,116,42,32,99,111,110,115,116,32,95,83,111,117,114,99,101,44,32,114
-,115,105,122,101,95,116,32,99,111,110,115,116,32,95,83,111,117,114,99,101,83,105,122,101,41
-,59,13,10,115,116,97,116,105,99,32,105,110,108,105,110,101,32,101,114,114,110,111,95,116,32
-,109,101,109,109,111,118,101,95,115,40,118,111,105,100,42,32,99,111,110,115,116,32,95,68,101
-,115,116,105,110,97,116,105,111,110,44,32,114,115,105,122,101,95,116,32,99,111,110,115,116,32
-,95,68,101,115,116,105,110,97,116,105,111,110,83,105,122,101,44,32,118,111,105,100,32,99,111
-,110,115,116,42,32,99,111,110,115,116,32,95,83,111,117,114,99,101,44,32,114,115,105,122,101
-,95,116,32,99,111,110,115,116,32,95,83,111,117,114,99,101,83,105,122,101,41,59,13,10,105
-,110,116,32,95,109,101,109,105,99,109,112,40,118,111,105,100,32,99,111,110,115,116,42,32,95
-,66,117,102,49,44,32,118,111,105,100,32,99,111,110,115,116,42,32,95,66,117,102,50,44,32
-,115,105,122,101,95,116,32,95,83,105,122,101,41,59,13,10,118,111,105,100,42,32,109,101,109
-,99,99,112,121,40,118,111,105,100,42,32,95,68,115,116,44,32,118,111,105,100,32,99,111,110
-,115,116,42,32,95,83,114,99,44,32,105,110,116,32,95,86,97,108,44,32,115,105,122,101,95
-,116,32,95,83,105,122,101,41,59,13,10,105,110,116,32,109,101,109,105,99,109,112,40,118,111
-,105,100,32,99,111,110,115,116,42,32,95,66,117,102,49,44,32,118,111,105,100,32,99,111,110
-,115,116,42,32,95,66,117,102,50,44,32,115,105,122,101,95,116,32,95,83,105,122,101,41,59
-,13,10,101,114,114,110,111,95,116,32,119,99,115,99,97,116,95,115,40,119,99,104,97,114,95
-,116,42,32,95,68,101,115,116,105,110,97,116,105,111,110,44,32,114,115,105,122,101,95,116,32
-,95,83,105,122,101,73,110,87,111,114,100,115,44,32,119,99,104,97,114,95,116,32,99,111,110
-,115,116,42,32,95,83,111,117,114,99,101,41,59,13,10,101,114,114,110,111,95,116,32,119,99
-,115,99,112,121,95,115,40,119,99,104,97,114,95,116,42,32,95,68,101,115,116,105,110,97,116
-,105,111,110,44,32,114,115,105,122,101,95,116,32,95,83,105,122,101,73,110,87,111,114,100,115
-,44,32,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32,95,83,111,117,114,99,101,41
-,59,13,10,101,114,114,110,111,95,116,32,119,99,115,110,99,97,116,95,115,40,119,99,104,97
-,114,95,116,42,32,95,68,101,115,116,105,110,97,116,105,111,110,44,32,114,115,105,122,101,95
-,116,32,95,83,105,122,101,73,110,87,111,114,100,115,44,32,119,99,104,97,114,95,116,32,99
-,111,110,115,116,42,32,95,83,111,117,114,99,101,44,32,114,115,105,122,101,95,116,32,95,77
-,97,120,67,111,117,110,116,41,59,13,10,101,114,114,110,111,95,116,32,119,99,115,110,99,112
+32,10,116,121,112,101,100,101,102,32,105,110,116,32,101,114,114,110,111,95,116,59,10,116,121
+,112,101,100,101,102,32,117,110,115,105,103,110,101,100,32,108,111,110,103,32,115,105,122,101,95
+,116,59,10,116,121,112,101,100,101,102,32,117,110,115,105,103,110,101,100,32,108,111,110,103,32
+,114,115,105,122,101,95,116,59,10,116,121,112,101,100,101,102,32,105,110,116,32,119,99,104,97
+,114,95,116,59,10,118,111,105,100,42,32,109,101,109,99,104,114,40,118,111,105,100,32,99,111
+,110,115,116,42,32,95,66,117,102,44,32,105,110,116,32,95,86,97,108,44,32,115,105,122,101
+,95,116,32,95,77,97,120,67,111,117,110,116,41,59,10,105,110,116,32,109,101,109,99,109,112
+,40,118,111,105,100,32,99,111,110,115,116,42,32,95,66,117,102,49,44,32,118,111,105,100,32
+,99,111,110,115,116,42,32,95,66,117,102,50,44,32,115,105,122,101,95,116,32,95,83,105,122
+,101,41,59,10,118,111,105,100,42,32,109,101,109,99,112,121,40,118,111,105,100,42,32,95,68
+,115,116,44,32,118,111,105,100,32,99,111,110,115,116,42,32,95,83,114,99,44,32,115,105,122
+,101,95,116,32,95,83,105,122,101,41,59,10,118,111,105,100,42,32,109,101,109,109,111,118,101
+,40,118,111,105,100,42,32,95,68,115,116,44,32,118,111,105,100,32,99,111,110,115,116,42,32
+,95,83,114,99,44,32,115,105,122,101,95,116,32,95,83,105,122,101,41,59,10,118,111,105,100
+,42,32,109,101,109,115,101,116,40,118,111,105,100,42,32,95,68,115,116,44,32,105,110,116,32
+,95,86,97,108,44,32,115,105,122,101,95,116,32,95,83,105,122,101,41,59,10,99,104,97,114
+,42,32,115,116,114,99,104,114,40,99,104,97,114,32,99,111,110,115,116,42,32,95,83,116,114
+,44,32,105,110,116,32,95,86,97,108,41,59,10,99,104,97,114,32,42,115,116,114,99,112,121
+,40,95,67,116,111,114,32,99,104,97,114,32,42,114,101,115,116,114,105,99,116,32,100,101,115
+,116,44,32,99,111,110,115,116,32,99,104,97,114,32,42,114,101,115,116,114,105,99,116,32,115
+,114,99,32,41,59,10,99,104,97,114,42,32,115,116,114,114,99,104,114,40,99,104,97,114,32
+,99,111,110,115,116,42,32,95,83,116,114,44,32,105,110,116,32,95,67,104,41,59,10,99,104
+,97,114,42,32,115,116,114,115,116,114,40,99,104,97,114,32,99,111,110,115,116,42,32,95,83
+,116,114,44,32,99,104,97,114,32,99,111,110,115,116,42,32,95,83,117,98,83,116,114,41,59
+,10,119,99,104,97,114,95,116,42,32,119,99,115,99,104,114,40,119,99,104,97,114,95,116,32
+,99,111,110,115,116,42,32,95,83,116,114,44,32,119,99,104,97,114,95,116,32,95,67,104,41
+,59,10,119,99,104,97,114,95,116,42,32,119,99,115,114,99,104,114,40,119,99,104,97,114,95
+,116,32,99,111,110,115,116,42,32,95,83,116,114,44,32,119,99,104,97,114,95,116,32,95,67
+,104,41,59,10,119,99,104,97,114,95,116,42,32,119,99,115,115,116,114,40,119,99,104,97,114
+,95,116,32,99,111,110,115,116,42,32,95,83,116,114,44,32,119,99,104,97,114,95,116,32,99
+,111,110,115,116,42,32,95,83,117,98,83,116,114,41,59,10,115,116,97,116,105,99,32,105,110
+,108,105,110,101,32,101,114,114,110,111,95,116,32,109,101,109,99,112,121,95,115,40,118,111,105
+,100,42,32,99,111,110,115,116,32,95,68,101,115,116,105,110,97,116,105,111,110,44,32,114,115
+,105,122,101,95,116,32,99,111,110,115,116,32,95,68,101,115,116,105,110,97,116,105,111,110,83
+,105,122,101,44,32,118,111,105,100,32,99,111,110,115,116,42,32,99,111,110,115,116,32,95,83
+,111,117,114,99,101,44,32,114,115,105,122,101,95,116,32,99,111,110,115,116,32,95,83,111,117
+,114,99,101,83,105,122,101,41,59,10,115,116,97,116,105,99,32,105,110,108,105,110,101,32,101
+,114,114,110,111,95,116,32,109,101,109,109,111,118,101,95,115,40,118,111,105,100,42,32,99,111
+,110,115,116,32,95,68,101,115,116,105,110,97,116,105,111,110,44,32,114,115,105,122,101,95,116
+,32,99,111,110,115,116,32,95,68,101,115,116,105,110,97,116,105,111,110,83,105,122,101,44,32
+,118,111,105,100,32,99,111,110,115,116,42,32,99,111,110,115,116,32,95,83,111,117,114,99,101
+,44,32,114,115,105,122,101,95,116,32,99,111,110,115,116,32,95,83,111,117,114,99,101,83,105
+,122,101,41,59,10,105,110,116,32,95,109,101,109,105,99,109,112,40,118,111,105,100,32,99,111
+,110,115,116,42,32,95,66,117,102,49,44,32,118,111,105,100,32,99,111,110,115,116,42,32,95
+,66,117,102,50,44,32,115,105,122,101,95,116,32,95,83,105,122,101,41,59,10,118,111,105,100
+,42,32,109,101,109,99,99,112,121,40,118,111,105,100,42,32,95,68,115,116,44,32,118,111,105
+,100,32,99,111,110,115,116,42,32,95,83,114,99,44,32,105,110,116,32,95,86,97,108,44,32
+,115,105,122,101,95,116,32,95,83,105,122,101,41,59,10,105,110,116,32,109,101,109,105,99,109
+,112,40,118,111,105,100,32,99,111,110,115,116,42,32,95,66,117,102,49,44,32,118,111,105,100
+,32,99,111,110,115,116,42,32,95,66,117,102,50,44,32,115,105,122,101,95,116,32,95,83,105
+,122,101,41,59,10,101,114,114,110,111,95,116,32,119,99,115,99,97,116,95,115,40,119,99,104
+,97,114,95,116,42,32,95,68,101,115,116,105,110,97,116,105,111,110,44,32,114,115,105,122,101
+,95,116,32,95,83,105,122,101,73,110,87,111,114,100,115,44,32,119,99,104,97,114,95,116,32
+,99,111,110,115,116,42,32,95,83,111,117,114,99,101,41,59,10,101,114,114,110,111,95,116,32
+,119,99,115,99,112,121,95,115,40,119,99,104,97,114,95,116,42,32,95,68,101,115,116,105,110
+,97,116,105,111,110,44,32,114,115,105,122,101,95,116,32,95,83,105,122,101,73,110,87,111,114
+,100,115,44,32,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32,95,83,111,117,114,99
+,101,41,59,10,101,114,114,110,111,95,116,32,119,99,115,110,99,97,116,95,115,40,119,99,104
+,97,114,95,116,42,32,95,68,101,115,116,105,110,97,116,105,111,110,44,32,114,115,105,122,101
+,95,116,32,95,83,105,122,101,73,110,87,111,114,100,115,44,32,119,99,104,97,114,95,116,32
+,99,111,110,115,116,42,32,95,83,111,117,114,99,101,44,32,114,115,105,122,101,95,116,32,95
+,77,97,120,67,111,117,110,116,41,59,10,101,114,114,110,111,95,116,32,119,99,115,110,99,112
 ,121,95,115,40,119,99,104,97,114,95,116,42,32,95,68,101,115,116,105,110,97,116,105,111,110
 ,44,32,114,115,105,122,101,95,116,32,95,83,105,122,101,73,110,87,111,114,100,115,44,32,119
 ,99,104,97,114,95,116,32,99,111,110,115,116,42,32,95,83,111,117,114,99,101,44,32,114,115
-,105,122,101,95,116,32,95,77,97,120,67,111,117,110,116,41,59,13,10,119,99,104,97,114,95
-,116,42,32,119,99,115,116,111,107,95,115,40,119,99,104,97,114,95,116,42,32,95,83,116,114
-,105,110,103,44,32,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32,95,68,101,108,105
-,109,105,116,101,114,44,32,119,99,104,97,114,95,116,42,42,32,95,67,111,110,116,101,120,116
-,41,59,13,10,119,99,104,97,114,95,116,42,32,95,119,99,115,100,117,112,40,119,99,104,97
-,114,95,116,32,99,111,110,115,116,42,32,95,83,116,114,105,110,103,41,59,13,10,119,99,104
-,97,114,95,116,42,32,119,99,115,99,97,116,40,119,99,104,97,114,95,116,42,32,95,68,101
-,115,116,105,110,97,116,105,111,110,44,32,119,99,104,97,114,95,116,32,99,111,110,115,116,42
-,32,95,83,111,117,114,99,101,41,59,32,105,110,116,32,119,99,115,99,109,112,40,119,99,104
-,97,114,95,116,32,99,111,110,115,116,42,32,95,83,116,114,105,110,103,49,44,32,119,99,104
-,97,114,95,116,32,99,111,110,115,116,42,32,95,83,116,114,105,110,103,50,41,59,13,10,119
-,99,104,97,114,95,116,42,32,119,99,115,99,112,121,40,119,99,104,97,114,95,116,42,32,95
-,68,101,115,116,105,110,97,116,105,111,110,44,32,119,99,104,97,114,95,116,32,99,111,110,115
-,116,42,32,95,83,111,117,114,99,101,41,59,32,115,105,122,101,95,116,32,119,99,115,99,115
-,112,110,40,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32,95,83,116,114,105,110,103
+,105,122,101,95,116,32,95,77,97,120,67,111,117,110,116,41,59,10,119,99,104,97,114,95,116
+,42,32,119,99,115,116,111,107,95,115,40,119,99,104,97,114,95,116,42,32,95,83,116,114,105
+,110,103,44,32,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32,95,68,101,108,105,109
+,105,116,101,114,44,32,119,99,104,97,114,95,116,42,42,32,95,67,111,110,116,101,120,116,41
+,59,10,119,99,104,97,114,95,116,42,32,95,119,99,115,100,117,112,40,119,99,104,97,114,95
+,116,32,99,111,110,115,116,42,32,95,83,116,114,105,110,103,41,59,10,119,99,104,97,114,95
+,116,42,32,119,99,115,99,97,116,40,119,99,104,97,114,95,116,42,32,95,68,101,115,116,105
+,110,97,116,105,111,110,44,32,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32,95,83
+,111,117,114,99,101,41,59,32,105,110,116,32,119,99,115,99,109,112,40,119,99,104,97,114,95
+,116,32,99,111,110,115,116,42,32,95,83,116,114,105,110,103,49,44,32,119,99,104,97,114,95
+,116,32,99,111,110,115,116,42,32,95,83,116,114,105,110,103,50,41,59,10,119,99,104,97,114
+,95,116,42,32,119,99,115,99,112,121,40,119,99,104,97,114,95,116,42,32,95,68,101,115,116
+,105,110,97,116,105,111,110,44,32,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32,95
+,83,111,117,114,99,101,41,59,32,115,105,122,101,95,116,32,119,99,115,99,115,112,110,40,119
+,99,104,97,114,95,116,32,99,111,110,115,116,42,32,95,83,116,114,105,110,103,44,32,119,99
+,104,97,114,95,116,32,99,111,110,115,116,42,32,95,67,111,110,116,114,111,108,41,59,10,115
+,105,122,101,95,116,32,119,99,115,108,101,110,40,119,99,104,97,114,95,116,32,99,111,110,115
+,116,42,32,95,83,116,114,105,110,103,41,59,10,115,105,122,101,95,116,32,119,99,115,110,108
+,101,110,40,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32,95,83,111,117,114,99,101
+,44,32,115,105,122,101,95,116,32,95,77,97,120,67,111,117,110,116,41,59,10,115,116,97,116
+,105,99,32,105,110,108,105,110,101,32,115,105,122,101,95,116,32,119,99,115,110,108,101,110,95
+,115,40,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32,95,83,111,117,114,99,101,44
+,32,115,105,122,101,95,116,32,95,77,97,120,67,111,117,110,116,41,59,10,119,99,104,97,114
+,95,116,42,32,119,99,115,110,99,97,116,40,119,99,104,97,114,95,116,42,32,95,68,101,115
+,116,105,110,97,116,105,111,110,44,32,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32
+,95,83,111,117,114,99,101,44,32,115,105,122,101,95,116,32,95,67,111,117,110,116,41,59,10
+,105,110,116,32,119,99,115,110,99,109,112,40,119,99,104,97,114,95,116,32,99,111,110,115,116
+,42,32,95,83,116,114,105,110,103,49,44,32,119,99,104,97,114,95,116,32,99,111,110,115,116
+,42,32,95,83,116,114,105,110,103,50,44,32,115,105,122,101,95,116,32,95,77,97,120,67,111
+,117,110,116,41,59,10,119,99,104,97,114,95,116,42,32,119,99,115,110,99,112,121,40,119,99
+,104,97,114,95,116,42,32,95,68,101,115,116,105,110,97,116,105,111,110,44,32,119,99,104,97
+,114,95,116,32,99,111,110,115,116,42,32,95,83,111,117,114,99,101,44,32,115,105,122,101,95
+,116,32,95,67,111,117,110,116,41,59,10,119,99,104,97,114,95,116,42,32,119,99,115,112,98
+,114,107,40,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32,95,83,116,114,105,110,103
 ,44,32,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32,95,67,111,110,116,114,111,108
-,41,59,13,10,115,105,122,101,95,116,32,119,99,115,108,101,110,40,119,99,104,97,114,95,116
-,32,99,111,110,115,116,42,32,95,83,116,114,105,110,103,41,59,13,10,115,105,122,101,95,116
-,32,119,99,115,110,108,101,110,40,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32,95
-,83,111,117,114,99,101,44,32,115,105,122,101,95,116,32,95,77,97,120,67,111,117,110,116,41
-,59,13,10,115,116,97,116,105,99,32,105,110,108,105,110,101,32,115,105,122,101,95,116,32,119
-,99,115,110,108,101,110,95,115,40,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32,95
-,83,111,117,114,99,101,44,32,115,105,122,101,95,116,32,95,77,97,120,67,111,117,110,116,41
-,59,13,10,119,99,104,97,114,95,116,42,32,119,99,115,110,99,97,116,40,119,99,104,97,114
-,95,116,42,32,95,68,101,115,116,105,110,97,116,105,111,110,44,32,119,99,104,97,114,95,116
-,32,99,111,110,115,116,42,32,95,83,111,117,114,99,101,44,32,115,105,122,101,95,116,32,95
-,67,111,117,110,116,41,59,13,10,105,110,116,32,119,99,115,110,99,109,112,40,119,99,104,97
+,41,59,10,115,105,122,101,95,116,32,119,99,115,115,112,110,40,119,99,104,97,114,95,116,32
+,99,111,110,115,116,42,32,95,83,116,114,105,110,103,44,32,119,99,104,97,114,95,116,32,99
+,111,110,115,116,42,32,95,67,111,110,116,114,111,108,41,59,10,119,99,104,97,114,95,116,42
+,32,119,99,115,116,111,107,40,119,99,104,97,114,95,116,42,32,95,83,116,114,105,110,103,44
+,32,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32,95,68,101,108,105,109,105,116,101
+,114,44,32,119,99,104,97,114,95,116,42,42,32,95,67,111,110,116,101,120,116,41,59,10,115
+,105,122,101,95,116,32,119,99,115,120,102,114,109,40,119,99,104,97,114,95,116,42,32,95,68
+,101,115,116,105,110,97,116,105,111,110,44,32,119,99,104,97,114,95,116,32,99,111,110,115,116
+,42,32,95,83,111,117,114,99,101,44,32,115,105,122,101,95,116,32,95,77,97,120,67,111,117
+,110,116,41,59,10,105,110,116,32,119,99,115,99,111,108,108,40,119,99,104,97,114,95,116,32
+,99,111,110,115,116,42,32,95,83,116,114,105,110,103,49,44,32,119,99,104,97,114,95,116,32
+,99,111,110,115,116,42,32,95,83,116,114,105,110,103,50,41,59,10,119,99,104,97,114,95,116
+,42,32,119,99,115,100,117,112,40,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32,95
+,83,116,114,105,110,103,41,59,10,105,110,116,32,119,99,115,105,99,109,112,40,119,99,104,97
 ,114,95,116,32,99,111,110,115,116,42,32,95,83,116,114,105,110,103,49,44,32,119,99,104,97
-,114,95,116,32,99,111,110,115,116,42,32,95,83,116,114,105,110,103,50,44,32,115,105,122,101
-,95,116,32,95,77,97,120,67,111,117,110,116,41,59,13,10,119,99,104,97,114,95,116,42,32
-,119,99,115,110,99,112,121,40,119,99,104,97,114,95,116,42,32,95,68,101,115,116,105,110,97
-,116,105,111,110,44,32,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32,95,83,111,117
-,114,99,101,44,32,115,105,122,101,95,116,32,95,67,111,117,110,116,41,59,13,10,119,99,104
-,97,114,95,116,42,32,119,99,115,112,98,114,107,40,119,99,104,97,114,95,116,32,99,111,110
-,115,116,42,32,95,83,116,114,105,110,103,44,32,119,99,104,97,114,95,116,32,99,111,110,115
-,116,42,32,95,67,111,110,116,114,111,108,41,59,13,10,115,105,122,101,95,116,32,119,99,115
-,115,112,110,40,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32,95,83,116,114,105,110
-,103,44,32,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32,95,67,111,110,116,114,111
-,108,41,59,13,10,119,99,104,97,114,95,116,42,32,119,99,115,116,111,107,40,119,99,104,97
-,114,95,116,42,32,95,83,116,114,105,110,103,44,32,119,99,104,97,114,95,116,32,99,111,110
-,115,116,42,32,95,68,101,108,105,109,105,116,101,114,44,32,119,99,104,97,114,95,116,42,42
-,32,95,67,111,110,116,101,120,116,41,59,13,10,115,105,122,101,95,116,32,119,99,115,120,102
-,114,109,40,119,99,104,97,114,95,116,42,32,95,68,101,115,116,105,110,97,116,105,111,110,44
-,32,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32,95,83,111,117,114,99,101,44,32
-,115,105,122,101,95,116,32,95,77,97,120,67,111,117,110,116,41,59,13,10,105,110,116,32,119
-,99,115,99,111,108,108,40,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32,95,83,116
-,114,105,110,103,49,44,32,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32,95,83,116
-,114,105,110,103,50,41,59,13,10,119,99,104,97,114,95,116,42,32,119,99,115,100,117,112,40
-,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32,95,83,116,114,105,110,103,41,59,13
-,10,105,110,116,32,119,99,115,105,99,109,112,40,119,99,104,97,114,95,116,32,99,111,110,115
-,116,42,32,95,83,116,114,105,110,103,49,44,32,119,99,104,97,114,95,116,32,99,111,110,115
-,116,42,32,95,83,116,114,105,110,103,50,41,59,13,10,105,110,116,32,119,99,115,110,105,99
-,109,112,40,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32,95,83,116,114,105,110,103
-,49,44,32,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32,95,83,116,114,105,110,103
-,50,44,32,115,105,122,101,95,116,32,95,77,97,120,67,111,117,110,116,41,59,13,10,119,99
-,104,97,114,95,116,42,32,119,99,115,110,115,101,116,40,119,99,104,97,114,95,116,42,32,95
-,83,116,114,105,110,103,44,32,119,99,104,97,114,95,116,32,95,86,97,108,117,101,44,32,115
-,105,122,101,95,116,32,95,77,97,120,67,111,117,110,116,41,59,13,10,119,99,104,97,114,95
-,116,42,32,119,99,115,114,101,118,40,119,99,104,97,114,95,116,42,32,95,83,116,114,105,110
-,103,41,59,13,10,119,99,104,97,114,95,116,42,32,119,99,115,115,101,116,40,119,99,104,97
+,114,95,116,32,99,111,110,115,116,42,32,95,83,116,114,105,110,103,50,41,59,10,105,110,116
+,32,119,99,115,110,105,99,109,112,40,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32
+,95,83,116,114,105,110,103,49,44,32,119,99,104,97,114,95,116,32,99,111,110,115,116,42,32
+,95,83,116,114,105,110,103,50,44,32,115,105,122,101,95,116,32,95,77,97,120,67,111,117,110
+,116,41,59,10,119,99,104,97,114,95,116,42,32,119,99,115,110,115,101,116,40,119,99,104,97
 ,114,95,116,42,32,95,83,116,114,105,110,103,44,32,119,99,104,97,114,95,116,32,95,86,97
-,108,117,101,41,59,13,10,119,99,104,97,114,95,116,42,32,119,99,115,108,119,114,40,119,99
-,104,97,114,95,116,42,32,95,83,116,114,105,110,103,41,59,32,119,99,104,97,114,95,116,42
-,32,119,99,115,117,112,114,40,119,99,104,97,114,95,116,42,32,95,83,116,114,105,110,103,41
-,59,13,10,105,110,116,32,119,99,115,105,99,111,108,108,40,119,99,104,97,114,95,116,32,99
-,111,110,115,116,42,32,95,83,116,114,105,110,103,49,44,32,119,99,104,97,114,95,116,32,99
-,111,110,115,116,42,32,95,83,116,114,105,110,103,50,41,59,13,10,99,104,97,114,42,32,115
-,116,114,116,111,107,95,115,40,99,104,97,114,42,32,95,83,116,114,105,110,103,44,32,99,104
-,97,114,32,99,111,110,115,116,42,32,95,68,101,108,105,109,105,116,101,114,44,32,99,104,97
-,114,42,42,32,95,67,111,110,116,101,120,116,41,59,13,10,118,111,105,100,42,32,95,109,101
+,108,117,101,44,32,115,105,122,101,95,116,32,95,77,97,120,67,111,117,110,116,41,59,10,119
+,99,104,97,114,95,116,42,32,119,99,115,114,101,118,40,119,99,104,97,114,95,116,42,32,95
+,83,116,114,105,110,103,41,59,10,119,99,104,97,114,95,116,42,32,119,99,115,115,101,116,40
+,119,99,104,97,114,95,116,42,32,95,83,116,114,105,110,103,44,32,119,99,104,97,114,95,116
+,32,95,86,97,108,117,101,41,59,10,119,99,104,97,114,95,116,42,32,119,99,115,108,119,114
+,40,119,99,104,97,114,95,116,42,32,95,83,116,114,105,110,103,41,59,32,119,99,104,97,114
+,95,116,42,32,119,99,115,117,112,114,40,119,99,104,97,114,95,116,42,32,95,83,116,114,105
+,110,103,41,59,10,105,110,116,32,119,99,115,105,99,111,108,108,40,119,99,104,97,114,95,116
+,32,99,111,110,115,116,42,32,95,83,116,114,105,110,103,49,44,32,119,99,104,97,114,95,116
+,32,99,111,110,115,116,42,32,95,83,116,114,105,110,103,50,41,59,10,99,104,97,114,42,32
+,115,116,114,116,111,107,95,115,40,99,104,97,114,42,32,95,83,116,114,105,110,103,44,32,99
+,104,97,114,32,99,111,110,115,116,42,32,95,68,101,108,105,109,105,116,101,114,44,32,99,104
+,97,114,42,42,32,95,67,111,110,116,101,120,116,41,59,10,118,111,105,100,42,32,95,109,101
 ,109,99,99,112,121,40,118,111,105,100,42,32,95,68,115,116,44,32,118,111,105,100,32,99,111
 ,110,115,116,42,32,95,83,114,99,44,32,105,110,116,32,95,86,97,108,44,32,115,105,122,101
-,95,116,32,95,77,97,120,67,111,117,110,116,41,59,13,10,99,104,97,114,42,32,115,116,114
-,99,97,116,40,99,104,97,114,42,32,95,68,101,115,116,105,110,97,116,105,111,110,44,32,99
-,104,97,114,32,99,111,110,115,116,42,32,95,83,111,117,114,99,101,41,59,13,10,105,110,116
-,32,115,116,114,99,109,112,40,99,104,97,114,32,99,111,110,115,116,42,32,95,83,116,114,49
-,44,32,99,104,97,114,32,99,111,110,115,116,42,32,95,83,116,114,50,41,59,13,10,105,110
-,116,32,115,116,114,99,111,108,108,40,99,104,97,114,32,99,111,110,115,116,42,32,95,83,116
-,114,105,110,103,49,44,32,99,104,97,114,32,99,111,110,115,116,42,32,95,83,116,114,105,110
-,103,50,41,59,13,10,99,104,97,114,42,32,115,116,114,101,114,114,111,114,40,105,110,116,32
-,95,69,114,114,111,114,77,101,115,115,97,103,101,41,59,13,10,115,105,122,101,95,116,32,115
-,116,114,108,101,110,40,99,104,97,114,32,99,111,110,115,116,42,32,95,83,116,114,41,59,13
-,10,99,104,97,114,42,32,115,116,114,110,99,97,116,40,99,104,97,114,42,32,95,68,101,115
-,116,105,110,97,116,105,111,110,44,32,99,104,97,114,32,99,111,110,115,116,42,32,95,83,111
-,117,114,99,101,44,32,115,105,122,101,95,116,32,95,67,111,117,110,116,41,59,13,10,105,110
-,116,32,115,116,114,110,99,109,112,40,99,104,97,114,32,99,111,110,115,116,42,32,95,83,116
-,114,49,44,32,99,104,97,114,32,99,111,110,115,116,42,32,95,83,116,114,50,44,32,115,105
-,122,101,95,116,32,95,77,97,120,67,111,117,110,116,41,59,13,10,99,104,97,114,42,32,115
-,116,114,110,99,112,121,40,99,104,97,114,42,32,95,68,101,115,116,105,110,97,116,105,111,110
-,44,32,99,104,97,114,32,99,111,110,115,116,42,32,95,83,111,117,114,99,101,44,32,115,105
-,122,101,95,116,32,95,67,111,117,110,116,41,59,13,10,115,105,122,101,95,116,32,115,116,114
-,110,108,101,110,40,99,104,97,114,32,99,111,110,115,116,42,32,95,83,116,114,105,110,103,44
-,32,115,105,122,101,95,116,32,95,77,97,120,67,111,117,110,116,41,59,13,10,115,116,97,116
-,105,99,32,105,110,108,105,110,101,32,115,105,122,101,95,116,32,115,116,114,110,108,101,110,95
-,115,40,99,104,97,114,32,99,111,110,115,116,42,32,95,83,116,114,105,110,103,44,32,115,105
-,122,101,95,116,32,95,77,97,120,67,111,117,110,116,41,59,13,10,99,104,97,114,42,32,115
-,116,114,112,98,114,107,40,99,104,97,114,32,99,111,110,115,116,42,32,95,83,116,114,44,32
-,99,104,97,114,32,99,111,110,115,116,42,32,95,67,111,110,116,114,111,108,41,59,13,10,115
-,105,122,101,95,116,32,115,116,114,115,112,110,40,99,104,97,114,32,99,111,110,115,116,42,32
-,95,83,116,114,44,32,99,104,97,114,32,99,111,110,115,116,42,32,95,67,111,110,116,114,111
-,108,41,59,13,10,99,104,97,114,42,32,115,116,114,116,111,107,40,99,104,97,114,42,32,95
-,83,116,114,105,110,103,44,32,99,104,97,114,32,99,111,110,115,116,42,32,95,68,101,108,105
-,109,105,116,101,114,41,59,13,10,13,10,35,105,102,32,100,101,102,105,110,101,100,40,95,95
-,83,84,68,67,95,79,87,78,69,82,83,72,73,80,95,95,41,32,13,10,99,104,97,114,42
-,32,95,79,119,110,101,114,32,95,79,112,116,32,115,116,114,100,117,112,40,99,104,97,114,32
-,99,111,110,115,116,42,32,95,83,116,114,105,110,103,41,59,13,10,35,101,108,115,101,13,10
-,99,104,97,114,42,32,115,116,114,100,117,112,40,99,104,97,114,32,99,111,110,115,116,42,32
-,95,83,116,114,105,110,103,41,59,13,10,35,101,110,100,105,102,13,10,13,10,105,110,116,32
-,115,116,114,99,109,112,105,40,99,104,97,114,32,99,111,110,115,116,42,32,95,83,116,114,105
-,110,103,49,44,32,99,104,97,114,32,99,111,110,115,116,42,32,95,83,116,114,105,110,103,50
-,41,59,13,10,105,110,116,32,115,116,114,105,99,109,112,40,99,104,97,114,32,99,111,110,115
-,116,42,32,95,83,116,114,105,110,103,49,44,32,99,104,97,114,32,99,111,110,115,116,42,32
-,95,83,116,114,105,110,103,50,41,59,13,10,99,104,97,114,42,32,115,116,114,108,119,114,40
-,99,104,97,114,42,32,95,83,116,114,105,110,103,41,59,13,10,105,110,116,32,115,116,114,110
-,105,99,109,112,40,99,104,97,114,32,99,111,110,115,116,42,32,95,83,116,114,105,110,103,49
-,44,32,99,104,97,114,32,99,111,110,115,116,42,32,95,83,116,114,105,110,103,50,44,32,115
-,105,122,101,95,116,32,95,77,97,120,67,111,117,110,116,41,59,13,10,99,104,97,114,42,32
+,95,116,32,95,77,97,120,67,111,117,110,116,41,59,10,99,104,97,114,42,32,115,116,114,99
+,97,116,40,99,104,97,114,42,32,95,68,101,115,116,105,110,97,116,105,111,110,44,32,99,104
+,97,114,32,99,111,110,115,116,42,32,95,83,111,117,114,99,101,41,59,10,105,110,116,32,115
+,116,114,99,109,112,40,99,104,97,114,32,99,111,110,115,116,42,32,95,83,116,114,49,44,32
+,99,104,97,114,32,99,111,110,115,116,42,32,95,83,116,114,50,41,59,10,105,110,116,32,115
+,116,114,99,111,108,108,40,99,104,97,114,32,99,111,110,115,116,42,32,95,83,116,114,105,110
+,103,49,44,32,99,104,97,114,32,99,111,110,115,116,42,32,95,83,116,114,105,110,103,50,41
+,59,10,99,104,97,114,42,32,115,116,114,101,114,114,111,114,40,105,110,116,32,95,69,114,114
+,111,114,77,101,115,115,97,103,101,41,59,10,115,105,122,101,95,116,32,115,116,114,108,101,110
+,40,99,104,97,114,32,99,111,110,115,116,42,32,95,83,116,114,41,59,10,99,104,97,114,42
+,32,115,116,114,110,99,97,116,40,99,104,97,114,42,32,95,68,101,115,116,105,110,97,116,105
+,111,110,44,32,99,104,97,114,32,99,111,110,115,116,42,32,95,83,111,117,114,99,101,44,32
+,115,105,122,101,95,116,32,95,67,111,117,110,116,41,59,10,105,110,116,32,115,116,114,110,99
+,109,112,40,99,104,97,114,32,99,111,110,115,116,42,32,95,83,116,114,49,44,32,99,104,97
+,114,32,99,111,110,115,116,42,32,95,83,116,114,50,44,32,115,105,122,101,95,116,32,95,77
+,97,120,67,111,117,110,116,41,59,10,99,104,97,114,42,32,115,116,114,110,99,112,121,40,99
+,104,97,114,42,32,95,68,101,115,116,105,110,97,116,105,111,110,44,32,99,104,97,114,32,99
+,111,110,115,116,42,32,95,83,111,117,114,99,101,44,32,115,105,122,101,95,116,32,95,67,111
+,117,110,116,41,59,10,115,105,122,101,95,116,32,115,116,114,110,108,101,110,40,99,104,97,114
+,32,99,111,110,115,116,42,32,95,83,116,114,105,110,103,44,32,115,105,122,101,95,116,32,95
+,77,97,120,67,111,117,110,116,41,59,10,115,116,97,116,105,99,32,105,110,108,105,110,101,32
+,115,105,122,101,95,116,32,115,116,114,110,108,101,110,95,115,40,99,104,97,114,32,99,111,110
+,115,116,42,32,95,83,116,114,105,110,103,44,32,115,105,122,101,95,116,32,95,77,97,120,67
+,111,117,110,116,41,59,10,99,104,97,114,42,32,115,116,114,112,98,114,107,40,99,104,97,114
+,32,99,111,110,115,116,42,32,95,83,116,114,44,32,99,104,97,114,32,99,111,110,115,116,42
+,32,95,67,111,110,116,114,111,108,41,59,10,115,105,122,101,95,116,32,115,116,114,115,112,110
+,40,99,104,97,114,32,99,111,110,115,116,42,32,95,83,116,114,44,32,99,104,97,114,32,99
+,111,110,115,116,42,32,95,67,111,110,116,114,111,108,41,59,10,99,104,97,114,42,32,115,116
+,114,116,111,107,40,99,104,97,114,42,32,95,83,116,114,105,110,103,44,32,99,104,97,114,32
+,99,111,110,115,116,42,32,95,68,101,108,105,109,105,116,101,114,41,59,10,10,35,105,102,32
+,100,101,102,105,110,101,100,40,95,95,83,84,68,67,95,79,87,78,69,82,83,72,73,80,95
+,95,41,32,10,99,104,97,114,42,32,95,79,119,110,101,114,32,95,79,112,116,32,115,116,114
+,100,117,112,40,99,104,97,114,32,99,111,110,115,116,42,32,95,83,116,114,105,110,103,41,59
+,10,35,101,108,115,101,10,99,104,97,114,42,32,115,116,114,100,117,112,40,99,104,97,114,32
+,99,111,110,115,116,42,32,95,83,116,114,105,110,103,41,59,10,35,101,110,100,105,102,10,10
+,105,110,116,32,115,116,114,99,109,112,105,40,99,104,97,114,32,99,111,110,115,116,42,32,95
+,83,116,114,105,110,103,49,44,32,99,104,97,114,32,99,111,110,115,116,42,32,95,83,116,114
+,105,110,103,50,41,59,10,105,110,116,32,115,116,114,105,99,109,112,40,99,104,97,114,32,99
+,111,110,115,116,42,32,95,83,116,114,105,110,103,49,44,32,99,104,97,114,32,99,111,110,115
+,116,42,32,95,83,116,114,105,110,103,50,41,59,10,99,104,97,114,42,32,115,116,114,108,119
+,114,40,99,104,97,114,42,32,95,83,116,114,105,110,103,41,59,10,105,110,116,32,115,116,114
+,110,105,99,109,112,40,99,104,97,114,32,99,111,110,115,116,42,32,95,83,116,114,105,110,103
+,49,44,32,99,104,97,114,32,99,111,110,115,116,42,32,95,83,116,114,105,110,103,50,44,32
+,115,105,122,101,95,116,32,95,77,97,120,67,111,117,110,116,41,59,10,99,104,97,114,42,32
 ,115,116,114,110,115,101,116,40,99,104,97,114,42,32,95,83,116,114,105,110,103,44,32,105,110
 ,116,32,95,86,97,108,117,101,44,32,115,105,122,101,95,116,32,95,77,97,120,67,111,117,110
-,116,41,59,13,10,99,104,97,114,42,32,115,116,114,114,101,118,40,99,104,97,114,42,32,95
-,83,116,114,105,110,103,41,59,13,10,99,104,97,114,42,32,115,116,114,115,101,116,40,99,104
-,97,114,42,32,95,83,116,114,105,110,103,44,32,105,110,116,32,95,86,97,108,117,101,41,59
-,32,99,104,97,114,42,32,115,116,114,117,112,114,40,99,104,97,114,42,32,95,83,116,114,105
-,110,103,41,59
+,116,41,59,10,99,104,97,114,42,32,115,116,114,114,101,118,40,99,104,97,114,42,32,95,83
+,116,114,105,110,103,41,59,10,99,104,97,114,42,32,115,116,114,115,101,116,40,99,104,97,114
+,42,32,95,83,116,114,105,110,103,44,32,105,110,116,32,95,86,97,108,117,101,41,59,32,99
+,104,97,114,42,32,115,116,114,117,112,114,40,99,104,97,114,42,32,95,83,116,114,105,110,103
+,41,59
 , 0 };
 static const char file_tgmath_h[] = {
 
 
 
-35,101,114,114,111,114,13,10
+35,101,114,114,111,114,10
 , 0 };
 static const char file_threads_h[] = {
 
 
 
 35,101,114,114,111,114,32,110,111,116,32,105,109,112,108,101,109,101,110,116,101,100,32,121,101
-,116,13,10
+,116,10
 , 0 };
 static const char file_time_h[] = {
 
 
 
-35,105,102,110,100,101,102,32,84,73,77,69,95,72,13,10,35,100,101,102,105,110,101,32,84
-,73,77,69,95,72,13,10,13,10,35,105,110,99,108,117,100,101,32,60,115,116,100,100,101,102
-,46,104,62,13,10,13,10,116,121,112,101,100,101,102,32,108,111,110,103,32,116,105,109,101,95
-,116,59,13,10,116,121,112,101,100,101,102,32,108,111,110,103,32,99,108,111,99,107,95,116,59
-,13,10,116,121,112,101,100,101,102,32,115,116,114,117,99,116,32,116,109,32,123,13,10,32,32
-,32,32,105,110,116,32,116,109,95,115,101,99,59,32,32,32,47,42,32,115,101,99,111,110,100
-,115,32,48,45,54,48,32,42,47,13,10,32,32,32,32,105,110,116,32,116,109,95,109,105,110
-,59,32,32,32,47,42,32,109,105,110,117,116,101,115,32,48,45,53,57,32,42,47,13,10,32
-,32,32,32,105,110,116,32,116,109,95,104,111,117,114,59,32,32,47,42,32,104,111,117,114,115
-,32,48,45,50,51,32,42,47,13,10,32,32,32,32,105,110,116,32,116,109,95,109,100,97,121
-,59,32,32,47,42,32,100,97,121,32,49,45,51,49,32,42,47,13,10,32,32,32,32,105,110
-,116,32,116,109,95,109,111,110,59,32,32,32,47,42,32,109,111,110,116,104,32,48,45,49,49
-,32,42,47,13,10,32,32,32,32,105,110,116,32,116,109,95,121,101,97,114,59,32,32,47,42
-,32,121,101,97,114,115,32,115,105,110,99,101,32,49,57,48,48,32,42,47,13,10,32,32,32
-,32,105,110,116,32,116,109,95,119,100,97,121,59,32,32,47,42,32,100,97,121,32,111,102,32
-,119,101,101,107,32,48,45,54,32,42,47,13,10,32,32,32,32,105,110,116,32,116,109,95,121
-,100,97,121,59,32,32,47,42,32,100,97,121,32,111,102,32,121,101,97,114,32,48,45,51,54
-,53,32,42,47,13,10,32,32,32,32,105,110,116,32,116,109,95,105,115,100,115,116,59,32,47
-,42,32,100,97,121,108,105,103,104,116,32,115,97,118,105,110,103,32,116,105,109,101,32,102,108
-,97,103,32,42,47,13,10,125,32,116,109,59,13,10,13,10,35,100,101,102,105,110,101,32,67
-,76,79,67,75,83,95,80,69,82,95,83,69,67,32,49,48,48,48,48,48,48,13,10,13,10
-,99,108,111,99,107,95,116,32,99,108,111,99,107,40,118,111,105,100,41,59,13,10,100,111,117
-,98,108,101,32,100,105,102,102,116,105,109,101,40,116,105,109,101,95,116,32,116,105,109,101,49
-,44,32,116,105,109,101,95,116,32,116,105,109,101,48,41,59,13,10,116,105,109,101,95,116,32
-,109,107,116,105,109,101,40,116,109,32,42,116,105,109,101,112,116,114,41,59,13,10,116,105,109
-,101,95,116,32,116,105,109,101,40,116,105,109,101,95,116,32,42,116,105,109,101,114,41,59,13
+35,105,102,110,100,101,102,32,84,73,77,69,95,72,10,35,100,101,102,105,110,101,32,84,73
+,77,69,95,72,10,10,35,105,110,99,108,117,100,101,32,60,115,116,100,100,101,102,46,104,62
+,10,10,116,121,112,101,100,101,102,32,108,111,110,103,32,116,105,109,101,95,116,59,10,116,121
+,112,101,100,101,102,32,108,111,110,103,32,99,108,111,99,107,95,116,59,10,116,121,112,101,100
+,101,102,32,115,116,114,117,99,116,32,116,109,32,123,10,32,32,32,32,105,110,116,32,116,109
+,95,115,101,99,59,32,32,32,47,42,32,115,101,99,111,110,100,115,32,48,45,54,48,32,42
+,47,10,32,32,32,32,105,110,116,32,116,109,95,109,105,110,59,32,32,32,47,42,32,109,105
+,110,117,116,101,115,32,48,45,53,57,32,42,47,10,32,32,32,32,105,110,116,32,116,109,95
+,104,111,117,114,59,32,32,47,42,32,104,111,117,114,115,32,48,45,50,51,32,42,47,10,32
+,32,32,32,105,110,116,32,116,109,95,109,100,97,121,59,32,32,47,42,32,100,97,121,32,49
+,45,51,49,32,42,47,10,32,32,32,32,105,110,116,32,116,109,95,109,111,110,59,32,32,32
+,47,42,32,109,111,110,116,104,32,48,45,49,49,32,42,47,10,32,32,32,32,105,110,116,32
+,116,109,95,121,101,97,114,59,32,32,47,42,32,121,101,97,114,115,32,115,105,110,99,101,32
+,49,57,48,48,32,42,47,10,32,32,32,32,105,110,116,32,116,109,95,119,100,97,121,59,32
+,32,47,42,32,100,97,121,32,111,102,32,119,101,101,107,32,48,45,54,32,42,47,10,32,32
+,32,32,105,110,116,32,116,109,95,121,100,97,121,59,32,32,47,42,32,100,97,121,32,111,102
+,32,121,101,97,114,32,48,45,51,54,53,32,42,47,10,32,32,32,32,105,110,116,32,116,109
+,95,105,115,100,115,116,59,32,47,42,32,100,97,121,108,105,103,104,116,32,115,97,118,105,110
+,103,32,116,105,109,101,32,102,108,97,103,32,42,47,10,125,32,116,109,59,10,10,35,100,101
+,102,105,110,101,32,67,76,79,67,75,83,95,80,69,82,95,83,69,67,32,49,48,48,48,48
+,48,48,10,10,99,108,111,99,107,95,116,32,99,108,111,99,107,40,118,111,105,100,41,59,10
+,100,111,117,98,108,101,32,100,105,102,102,116,105,109,101,40,116,105,109,101,95,116,32,116,105
+,109,101,49,44,32,116,105,109,101,95,116,32,116,105,109,101,48,41,59,10,116,105,109,101,95
+,116,32,109,107,116,105,109,101,40,116,109,32,42,116,105,109,101,112,116,114,41,59,10,116,105
+,109,101,95,116,32,116,105,109,101,40,116,105,109,101,95,116,32,42,116,105,109,101,114,41,59
 ,10,99,104,97,114,32,42,97,115,99,116,105,109,101,40,99,111,110,115,116,32,116,109,32,42
-,116,105,109,101,112,116,114,41,59,13,10,99,104,97,114,32,42,99,116,105,109,101,40,99,111
-,110,115,116,32,116,105,109,101,95,116,32,42,116,105,109,101,114,41,59,13,10,116,109,32,42
-,103,109,116,105,109,101,40,99,111,110,115,116,32,116,105,109,101,95,116,32,42,116,105,109,101
-,114,41,59,13,10,116,109,32,42,108,111,99,97,108,116,105,109,101,40,99,111,110,115,116,32
-,116,105,109,101,95,116,32,42,116,105,109,101,114,41,59,13,10,99,104,97,114,32,42,97,115
-,99,116,105,109,101,95,114,40,99,111,110,115,116,32,116,109,32,42,116,105,109,101,112,116,114
-,44,32,99,104,97,114,32,42,98,117,102,41,59,13,10,99,104,97,114,32,42,99,116,105,109
-,101,95,114,40,99,111,110,115,116,32,116,105,109,101,95,116,32,42,116,105,109,101,114,44,32
-,99,104,97,114,32,42,98,117,102,41,59,13,10,116,109,32,42,103,109,116,105,109,101,95,114
-,40,99,111,110,115,116,32,116,105,109,101,95,116,32,42,116,105,109,101,114,44,32,116,109,32
-,42,114,101,115,41,59,13,10,116,109,32,42,108,111,99,97,108,116,105,109,101,95,114,40,99
-,111,110,115,116,32,116,105,109,101,95,116,32,42,116,105,109,101,114,44,32,116,109,32,42,114
-,101,115,41,59,13,10,115,105,122,101,95,116,32,115,116,114,102,116,105,109,101,40,99,104,97
-,114,32,42,114,101,115,116,114,105,99,116,32,115,44,32,115,105,122,101,95,116,32,109,97,120
-,44,32,99,111,110,115,116,32,99,104,97,114,32,42,114,101,115,116,114,105,99,116,32,102,111
-,114,109,97,116,44,32,99,111,110,115,116,32,116,109,32,42,114,101,115,116,114,105,99,116,32
-,116,105,109,101,112,116,114,41,59,13,10,13,10,47,42,32,67,50,51,32,97,100,100,105,116
-,105,111,110,58,32,116,105,109,101,115,112,101,99,95,103,101,116,32,42,47,13,10,115,116,114
-,117,99,116,32,116,105,109,101,115,112,101,99,32,123,13,10,32,32,32,32,116,105,109,101,95
-,116,32,116,118,95,115,101,99,59,13,10,32,32,32,32,108,111,110,103,32,116,118,95,110,115
-,101,99,59,13,10,125,59,13,10,105,110,116,32,116,105,109,101,115,112,101,99,95,103,101,116
-,40,115,116,114,117,99,116,32,116,105,109,101,115,112,101,99,32,42,116,115,44,32,105,110,116
-,32,98,97,115,101,41,59,13,10,13,10,35,101,110,100,105,102,32,47,42,32,84,73,77,69
-,95,72,32,42,47,13,10
+,116,105,109,101,112,116,114,41,59,10,99,104,97,114,32,42,99,116,105,109,101,40,99,111,110
+,115,116,32,116,105,109,101,95,116,32,42,116,105,109,101,114,41,59,10,116,109,32,42,103,109
+,116,105,109,101,40,99,111,110,115,116,32,116,105,109,101,95,116,32,42,116,105,109,101,114,41
+,59,10,116,109,32,42,108,111,99,97,108,116,105,109,101,40,99,111,110,115,116,32,116,105,109
+,101,95,116,32,42,116,105,109,101,114,41,59,10,99,104,97,114,32,42,97,115,99,116,105,109
+,101,95,114,40,99,111,110,115,116,32,116,109,32,42,116,105,109,101,112,116,114,44,32,99,104
+,97,114,32,42,98,117,102,41,59,10,99,104,97,114,32,42,99,116,105,109,101,95,114,40,99
+,111,110,115,116,32,116,105,109,101,95,116,32,42,116,105,109,101,114,44,32,99,104,97,114,32
+,42,98,117,102,41,59,10,116,109,32,42,103,109,116,105,109,101,95,114,40,99,111,110,115,116
+,32,116,105,109,101,95,116,32,42,116,105,109,101,114,44,32,116,109,32,42,114,101,115,41,59
+,10,116,109,32,42,108,111,99,97,108,116,105,109,101,95,114,40,99,111,110,115,116,32,116,105
+,109,101,95,116,32,42,116,105,109,101,114,44,32,116,109,32,42,114,101,115,41,59,10,115,105
+,122,101,95,116,32,115,116,114,102,116,105,109,101,40,99,104,97,114,32,42,114,101,115,116,114
+,105,99,116,32,115,44,32,115,105,122,101,95,116,32,109,97,120,44,32,99,111,110,115,116,32
+,99,104,97,114,32,42,114,101,115,116,114,105,99,116,32,102,111,114,109,97,116,44,32,99,111
+,110,115,116,32,116,109,32,42,114,101,115,116,114,105,99,116,32,116,105,109,101,112,116,114,41
+,59,10,10,47,42,32,67,50,51,32,97,100,100,105,116,105,111,110,58,32,116,105,109,101,115
+,112,101,99,95,103,101,116,32,42,47,10,115,116,114,117,99,116,32,116,105,109,101,115,112,101
+,99,32,123,10,32,32,32,32,116,105,109,101,95,116,32,116,118,95,115,101,99,59,10,32,32
+,32,32,108,111,110,103,32,116,118,95,110,115,101,99,59,10,125,59,10,105,110,116,32,116,105
+,109,101,115,112,101,99,95,103,101,116,40,115,116,114,117,99,116,32,116,105,109,101,115,112,101
+,99,32,42,116,115,44,32,105,110,116,32,98,97,115,101,41,59,10,10,35,101,110,100,105,102
+,32,47,42,32,84,73,77,69,95,72,32,42,47,10
 , 0 };
 static const char file_uchar_h[] = {
 
 
 
-35,112,114,97,103,109,97,32,111,110,99,101,13,10,35,100,101,102,105,110,101,32,95,95,83
-,84,68,67,95,86,69,82,83,73,79,78,95,85,67,72,65,82,95,72,95,95,32,50,48,50
-,51,49,49,76,13,10,32,13,10,35,105,102,100,101,102,32,95,87,73,78,51,50,13,10,47
-,47,116,121,112,101,100,101,102,32,117,110,115,105,103,110,101,100,32,99,104,97,114,32,99,104
-,97,114,56,95,116,59,13,10,47,47,116,121,112,101,100,101,102,32,117,110,115,105,103,110,101
-,100,32,115,104,111,114,116,32,99,104,97,114,49,54,95,116,59,13,10,47,47,116,121,112,101
-,100,101,102,32,117,110,115,105,103,110,101,100,32,105,110,116,32,99,104,97,114,51,50,95,116
-,59,13,10,35,119,97,114,110,105,110,103,32,110,111,116,32,105,109,112,108,101,109,101,110,116
-,101,100,13,10,35,101,110,100,105,102,13,10,13,10,35,105,102,100,101,102,32,95,95,71,78
-,85,67,95,95,13,10,35,119,97,114,110,105,110,103,32,110,111,116,32,105,109,112,108,101,109
-,101,110,116,101,100,13,10,35,101,110,100,105,102,13,10,13,10,13,10,13,10
+35,112,114,97,103,109,97,32,111,110,99,101,10,35,100,101,102,105,110,101,32,95,95,83,84
+,68,67,95,86,69,82,83,73,79,78,95,85,67,72,65,82,95,72,95,95,32,50,48,50,51
+,49,49,76,10,32,10,35,105,102,100,101,102,32,95,87,73,78,51,50,10,47,47,116,121,112
+,101,100,101,102,32,117,110,115,105,103,110,101,100,32,99,104,97,114,32,99,104,97,114,56,95
+,116,59,10,47,47,116,121,112,101,100,101,102,32,117,110,115,105,103,110,101,100,32,115,104,111
+,114,116,32,99,104,97,114,49,54,95,116,59,10,47,47,116,121,112,101,100,101,102,32,117,110
+,115,105,103,110,101,100,32,105,110,116,32,99,104,97,114,51,50,95,116,59,10,35,119,97,114
+,110,105,110,103,32,110,111,116,32,105,109,112,108,101,109,101,110,116,101,100,10,35,101,110,100
+,105,102,10,10,35,105,102,100,101,102,32,95,95,71,78,85,67,95,95,10,35,119,97,114,110
+,105,110,103,32,110,111,116,32,105,109,112,108,101,109,101,110,116,101,100,10,35,101,110,100,105
+,102,10,10,10,10
 , 0 };
 static const char file_wchar_h[] = {
 
 
 
-47,42,13,10,32,42,32,32,84,104,105,115,32,102,105,108,101,32,105,115,32,112,97,114,116
-,32,111,102,32,99,97,107,101,32,99,111,109,112,105,108,101,114,13,10,32,42,32,32,104,116
-,116,112,115,58,47,47,103,105,116,104,117,98,46,99,111,109,47,116,104,114,97,100,97,109,115
-,47,99,97,107,101,13,10,42,47,13,10,13,10,35,112,114,97,103,109,97,32,111,110,99,101
-,13,10,13,10,35,100,101,102,105,110,101,32,87,67,72,65,82,95,77,73,78,32,48,120,48
-,48,48,48,13,10,35,100,101,102,105,110,101,32,87,67,72,65,82,95,77,65,88,32,48,120
-,102,102,102,102,13,10,13,10,116,121,112,101,100,101,102,32,117,110,115,105,103,110,101,100,32
-,108,111,110,103,32,115,105,122,101,95,116,59,13,10,116,121,112,101,100,101,102,32,105,110,116
-,32,119,99,104,97,114,95,116,59,13,10,13,10,116,121,112,101,100,101,102,32,115,116,114,117
-,99,116,13,10,123,13,10,32,32,32,32,105,110,116,32,95,95,99,111,117,110,116,59,13,10
-,32,32,32,32,117,110,105,111,110,13,10,32,32,32,32,123,13,10,32,32,32,32,32,32,32
-,32,117,110,115,105,103,110,101,100,32,105,110,116,32,95,95,119,99,104,59,13,10,32,32,32
-,32,32,32,32,32,99,104,97,114,32,95,95,119,99,104,98,91,52,93,59,13,10,32,32,32
-,32,125,32,95,95,118,97,108,117,101,59,13,10,125,32,95,95,109,98,115,116,97,116,101,95
-,116,59,13,10,13,10,116,121,112,101,100,101,102,32,95,95,109,98,115,116,97,116,101,95,116
-,32,109,98,115,116,97,116,101,95,116,59,13,10,115,116,114,117,99,116,32,95,73,79,95,70
-,73,76,69,59,13,10,116,121,112,101,100,101,102,32,115,116,114,117,99,116,32,95,73,79,95
-,70,73,76,69,32,95,95,70,73,76,69,59,13,10,115,116,114,117,99,116,32,95,73,79,95
-,70,73,76,69,59,13,10,116,121,112,101,100,101,102,32,115,116,114,117,99,116,32,95,73,79
-,95,70,73,76,69,32,70,73,76,69,59,13,10,115,116,114,117,99,116,32,95,95,108,111,99
-,97,108,101,95,115,116,114,117,99,116,13,10,123,13,10,13,10,32,32,32,32,115,116,114,117
-,99,116,32,95,95,108,111,99,97,108,101,95,100,97,116,97,42,32,95,95,108,111,99,97,108
-,101,115,91,49,51,93,59,13,10,13,10,32,32,32,32,99,111,110,115,116,32,117,110,115,105
-,103,110,101,100,32,115,104,111,114,116,32,105,110,116,42,32,95,95,99,116,121,112,101,95,98
-,59,13,10,32,32,32,32,99,111,110,115,116,32,105,110,116,42,32,95,95,99,116,121,112,101
-,95,116,111,108,111,119,101,114,59,13,10,32,32,32,32,99,111,110,115,116,32,105,110,116,42
-,32,95,95,99,116,121,112,101,95,116,111,117,112,112,101,114,59,13,10,13,10,32,32,32,32
-,99,111,110,115,116,32,99,104,97,114,42,32,95,95,110,97,109,101,115,91,49,51,93,59,13
-,10,125,59,13,10,13,10,116,121,112,101,100,101,102,32,115,116,114,117,99,116,32,95,95,108
-,111,99,97,108,101,95,115,116,114,117,99,116,42,32,95,95,108,111,99,97,108,101,95,116,59
-,13,10,13,10,116,121,112,101,100,101,102,32,95,95,108,111,99,97,108,101,95,116,32,108,111
-,99,97,108,101,95,116,59,13,10,13,10,115,116,114,117,99,116,32,116,109,59,13,10,13,10
-,101,120,116,101,114,110,32,119,99,104,97,114,95,116,42,32,119,99,115,99,112,121,40,119,99
-,104,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,100,101,115,116,44
-,13,10,32,32,32,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,114,101,115
-,116,114,105,99,116,32,95,95,115,114,99,41,59,13,10,13,10,101,120,116,101,114,110,32,119
-,99,104,97,114,95,116,42,32,119,99,115,110,99,112,121,40,119,99,104,97,114,95,116,42,32
-,95,95,114,101,115,116,114,105,99,116,32,95,95,100,101,115,116,44,13,10,32,32,32,32,99
+47,42,10,32,42,32,32,84,104,105,115,32,102,105,108,101,32,105,115,32,112,97,114,116,32
+,111,102,32,99,97,107,101,32,99,111,109,112,105,108,101,114,10,32,42,32,32,104,116,116,112
+,115,58,47,47,103,105,116,104,117,98,46,99,111,109,47,116,104,114,97,100,97,109,115,47,99
+,97,107,101,10,42,47,10,10,35,112,114,97,103,109,97,32,111,110,99,101,10,10,35,100,101
+,102,105,110,101,32,87,67,72,65,82,95,77,73,78,32,48,120,48,48,48,48,10,35,100,101
+,102,105,110,101,32,87,67,72,65,82,95,77,65,88,32,48,120,102,102,102,102,10,10,116,121
+,112,101,100,101,102,32,117,110,115,105,103,110,101,100,32,108,111,110,103,32,115,105,122,101,95
+,116,59,10,116,121,112,101,100,101,102,32,105,110,116,32,119,99,104,97,114,95,116,59,10,10
+,116,121,112,101,100,101,102,32,115,116,114,117,99,116,10,123,10,32,32,32,32,105,110,116,32
+,95,95,99,111,117,110,116,59,10,32,32,32,32,117,110,105,111,110,10,32,32,32,32,123,10
+,32,32,32,32,32,32,32,32,117,110,115,105,103,110,101,100,32,105,110,116,32,95,95,119,99
+,104,59,10,32,32,32,32,32,32,32,32,99,104,97,114,32,95,95,119,99,104,98,91,52,93
+,59,10,32,32,32,32,125,32,95,95,118,97,108,117,101,59,10,125,32,95,95,109,98,115,116
+,97,116,101,95,116,59,10,10,116,121,112,101,100,101,102,32,95,95,109,98,115,116,97,116,101
+,95,116,32,109,98,115,116,97,116,101,95,116,59,10,115,116,114,117,99,116,32,95,73,79,95
+,70,73,76,69,59,10,116,121,112,101,100,101,102,32,115,116,114,117,99,116,32,95,73,79,95
+,70,73,76,69,32,95,95,70,73,76,69,59,10,115,116,114,117,99,116,32,95,73,79,95,70
+,73,76,69,59,10,116,121,112,101,100,101,102,32,115,116,114,117,99,116,32,95,73,79,95,70
+,73,76,69,32,70,73,76,69,59,10,115,116,114,117,99,116,32,95,95,108,111,99,97,108,101
+,95,115,116,114,117,99,116,10,123,10,10,32,32,32,32,115,116,114,117,99,116,32,95,95,108
+,111,99,97,108,101,95,100,97,116,97,42,32,95,95,108,111,99,97,108,101,115,91,49,51,93
+,59,10,10,32,32,32,32,99,111,110,115,116,32,117,110,115,105,103,110,101,100,32,115,104,111
+,114,116,32,105,110,116,42,32,95,95,99,116,121,112,101,95,98,59,10,32,32,32,32,99,111
+,110,115,116,32,105,110,116,42,32,95,95,99,116,121,112,101,95,116,111,108,111,119,101,114,59
+,10,32,32,32,32,99,111,110,115,116,32,105,110,116,42,32,95,95,99,116,121,112,101,95,116
+,111,117,112,112,101,114,59,10,10,32,32,32,32,99,111,110,115,116,32,99,104,97,114,42,32
+,95,95,110,97,109,101,115,91,49,51,93,59,10,125,59,10,10,116,121,112,101,100,101,102,32
+,115,116,114,117,99,116,32,95,95,108,111,99,97,108,101,95,115,116,114,117,99,116,42,32,95
+,95,108,111,99,97,108,101,95,116,59,10,10,116,121,112,101,100,101,102,32,95,95,108,111,99
+,97,108,101,95,116,32,108,111,99,97,108,101,95,116,59,10,10,115,116,114,117,99,116,32,116
+,109,59,10,10,101,120,116,101,114,110,32,119,99,104,97,114,95,116,42,32,119,99,115,99,112
+,121,40,119,99,104,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,100
+,101,115,116,44,10,32,32,32,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95
+,114,101,115,116,114,105,99,116,32,95,95,115,114,99,41,59,10,10,101,120,116,101,114,110,32
+,119,99,104,97,114,95,116,42,32,119,99,115,110,99,112,121,40,119,99,104,97,114,95,116,42
+,32,95,95,114,101,115,116,114,105,99,116,32,95,95,100,101,115,116,44,10,32,32,32,32,99
 ,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32
-,95,95,115,114,99,44,32,115,105,122,101,95,116,32,95,95,110,41,59,13,10,13,10,101,120
-,116,101,114,110,32,119,99,104,97,114,95,116,42,32,119,99,115,99,97,116,40,119,99,104,97
-,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,100,101,115,116,44,13,10
-,32,32,32,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,114,101,115,116,114
-,105,99,116,32,95,95,115,114,99,41,59,13,10,13,10,101,120,116,101,114,110,32,119,99,104
-,97,114,95,116,42,32,119,99,115,110,99,97,116,40,119,99,104,97,114,95,116,42,32,95,95
-,114,101,115,116,114,105,99,116,32,95,95,100,101,115,116,44,13,10,32,32,32,32,99,111,110
-,115,116,32,119,99,104,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95
-,115,114,99,44,32,115,105,122,101,95,116,32,95,95,110,41,59,13,10,13,10,101,120,116,101
-,114,110,32,105,110,116,32,119,99,115,99,109,112,40,99,111,110,115,116,32,119,99,104,97,114
-,95,116,42,32,95,95,115,49,44,32,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32
-,95,95,115,50,41,59,13,10,13,10,101,120,116,101,114,110,32,105,110,116,32,119,99,115,110
-,99,109,112,40,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115,49,44,32
-,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115,50,44,32,115,105,122,101
-,95,116,32,95,95,110,41,59,13,10,13,10,101,120,116,101,114,110,32,105,110,116,32,119,99
-,115,99,97,115,101,99,109,112,40,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95
-,95,115,49,44,32,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115,50,41
-,59,13,10,13,10,101,120,116,101,114,110,32,105,110,116,32,119,99,115,110,99,97,115,101,99
-,109,112,40,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115,49,44,32,99
-,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115,50,44,13,10,32,32,32,115
-,105,122,101,95,116,32,95,95,110,41,59,13,10,13,10,101,120,116,101,114,110,32,105,110,116
-,32,119,99,115,99,97,115,101,99,109,112,95,108,40,99,111,110,115,116,32,119,99,104,97,114
-,95,116,42,32,95,95,115,49,44,32,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32
-,95,95,115,50,44,13,10,32,32,32,32,108,111,99,97,108,101,95,116,32,95,95,108,111,99
-,41,59,13,10,13,10,101,120,116,101,114,110,32,105,110,116,32,119,99,115,110,99,97,115,101
-,99,109,112,95,108,40,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115,49
-,44,32,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115,50,44,13,10,32
-,32,32,32,32,115,105,122,101,95,116,32,95,95,110,44,32,108,111,99,97,108,101,95,116,32
-,95,95,108,111,99,41,59,13,10,13,10,101,120,116,101,114,110,32,105,110,116,32,119,99,115
-,99,111,108,108,40,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115,49,44
-,32,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115,50,41,59,13,10,13
-,10,101,120,116,101,114,110,32,115,105,122,101,95,116,32,119,99,115,120,102,114,109,40,119,99
-,104,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,115,49,44,13,10
-,32,32,32,32,32,32,32,32,32,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95
-,95,114,101,115,116,114,105,99,116,32,95,95,115,50,44,32,115,105,122,101,95,116,32,95,95
-,110,41,59,13,10,13,10,101,120,116,101,114,110,32,105,110,116,32,119,99,115,99,111,108,108
-,95,108,40,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115,49,44,32,99
-,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115,50,44,13,10,32,32,32,32
-,32,32,32,32,108,111,99,97,108,101,95,116,32,95,95,108,111,99,41,59,13,10,13,10,101
-,120,116,101,114,110,32,115,105,122,101,95,116,32,119,99,115,120,102,114,109,95,108,40,119,99
-,104,97,114,95,116,42,32,95,95,115,49,44,32,99,111,110,115,116,32,119,99,104,97,114,95
-,116,42,32,95,95,115,50,44,13,10,32,32,32,32,115,105,122,101,95,116,32,95,95,110,44
-,32,108,111,99,97,108,101,95,116,32,95,95,108,111,99,41,59,13,10,13,10,101,120,116,101
-,114,110,32,119,99,104,97,114,95,116,42,32,119,99,115,100,117,112,40,99,111,110,115,116,32
-,119,99,104,97,114,95,116,42,32,95,95,115,41,59,13,10,101,120,116,101,114,110,32,119,99
-,104,97,114,95,116,42,32,119,99,115,99,104,114,40,99,111,110,115,116,32,119,99,104,97,114
-,95,116,42,32,95,95,119,99,115,44,32,119,99,104,97,114,95,116,32,95,95,119,99,41,59
-,13,10,101,120,116,101,114,110,32,119,99,104,97,114,95,116,42,32,119,99,115,114,99,104,114
-,40,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,119,99,115,44,32,119,99
-,104,97,114,95,116,32,95,95,119,99,41,59,13,10,101,120,116,101,114,110,32,115,105,122,101
-,95,116,32,119,99,115,99,115,112,110,40,99,111,110,115,116,32,119,99,104,97,114,95,116,42
-,32,95,95,119,99,115,44,32,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95
-,114,101,106,101,99,116,41,59,13,10,13,10,101,120,116,101,114,110,32,115,105,122,101,95,116
-,32,119,99,115,115,112,110,40,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95
-,119,99,115,44,32,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,97,99,99
-,101,112,116,41,59,13,10,101,120,116,101,114,110,32,119,99,104,97,114,95,116,42,32,119,99
-,115,112,98,114,107,40,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,119,99
-,115,44,32,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,97,99,99,101,112
-,116,41,59,13,10,101,120,116,101,114,110,32,119,99,104,97,114,95,116,42,32,119,99,115,115
-,116,114,40,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,104,97,121,115,116
-,97,99,107,44,32,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,110,101,101
-,100,108,101,41,59,13,10,13,10,101,120,116,101,114,110,32,119,99,104,97,114,95,116,42,32
-,119,99,115,116,111,107,40,119,99,104,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99
-,116,32,95,95,115,44,13,10,32,32,32,99,111,110,115,116,32,119,99,104,97,114,95,116,42
-,32,95,95,114,101,115,116,114,105,99,116,32,95,95,100,101,108,105,109,44,13,10,32,32,32
-,119,99,104,97,114,95,116,42,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,112,116
-,114,41,59,13,10,13,10,101,120,116,101,114,110,32,115,105,122,101,95,116,32,119,99,115,108
-,101,110,40,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115,41,59,13,10
-,101,120,116,101,114,110,32,115,105,122,101,95,116,32,119,99,115,110,108,101,110,40,99,111,110
-,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115,44,32,115,105,122,101,95,116,32,95
-,95,109,97,120,108,101,110,41,59,13,10,101,120,116,101,114,110,32,119,99,104,97,114,95,116
-,42,32,119,109,101,109,99,104,114,40,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32
-,95,95,115,44,32,119,99,104,97,114,95,116,32,95,95,99,44,32,115,105,122,101,95,116,32
-,95,95,110,41,59,13,10,13,10,101,120,116,101,114,110,32,105,110,116,32,119,109,101,109,99
-,109,112,40,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115,49,44,32,99
-,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115,50,44,32,115,105,122,101,95
-,116,32,95,95,110,41,59,13,10,13,10,101,120,116,101,114,110,32,119,99,104,97,114,95,116
-,42,32,119,109,101,109,99,112,121,40,119,99,104,97,114,95,116,42,32,95,95,114,101,115,116
-,114,105,99,116,32,95,95,115,49,44,13,10,32,32,32,32,99,111,110,115,116,32,119,99,104
-,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,115,50,44,32,115,105
-,122,101,95,116,32,95,95,110,41,59,13,10,13,10,101,120,116,101,114,110,32,119,99,104,97
-,114,95,116,42,32,119,109,101,109,109,111,118,101,40,119,99,104,97,114,95,116,42,32,95,95
-,115,49,44,32,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115,50,44,32
-,115,105,122,101,95,116,32,95,95,110,41,59,13,10,13,10,101,120,116,101,114,110,32,119,99
-,104,97,114,95,116,42,32,119,109,101,109,115,101,116,40,119,99,104,97,114,95,116,42,32,95
-,95,115,44,32,119,99,104,97,114,95,116,32,95,95,99,44,32,115,105,122,101,95,116,32,95
-,95,110,41,59,13,10,101,120,116,101,114,110,32,119,105,110,116,95,116,32,98,116,111,119,99
-,40,105,110,116,32,95,95,99,41,59,13,10,13,10,101,120,116,101,114,110,32,105,110,116,32
-,119,99,116,111,98,40,119,105,110,116,95,116,32,95,95,99,41,59,13,10,13,10,101,120,116
-,101,114,110,32,105,110,116,32,109,98,115,105,110,105,116,40,99,111,110,115,116,32,109,98,115
-,116,97,116,101,95,116,42,32,95,95,112,115,41,59,13,10,13,10,101,120,116,101,114,110,32
-,115,105,122,101,95,116,32,109,98,114,116,111,119,99,40,119,99,104,97,114,95,116,42,32,95
-,95,114,101,115,116,114,105,99,116,32,95,95,112,119,99,44,13,10,32,32,32,32,32,32,32
-,32,32,99,111,110,115,116,32,99,104,97,114,42,32,95,95,114,101,115,116,114,105,99,116,32
-,95,95,115,44,32,115,105,122,101,95,116,32,95,95,110,44,13,10,32,32,32,32,32,32,32
-,32,32,109,98,115,116,97,116,101,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95
-,95,112,41,59,13,10,13,10,101,120,116,101,114,110,32,115,105,122,101,95,116,32,119,99,114
-,116,111,109,98,40,99,104,97,114,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,115
-,44,32,119,99,104,97,114,95,116,32,95,95,119,99,44,13,10,32,32,32,32,32,32,32,32
-,32,109,98,115,116,97,116,101,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95
-,112,115,41,59,13,10,13,10,101,120,116,101,114,110,32,115,105,122,101,95,116,32,95,95,109
-,98,114,108,101,110,40,99,111,110,115,116,32,99,104,97,114,42,32,95,95,114,101,115,116,114
-,105,99,116,32,95,95,115,44,32,115,105,122,101,95,116,32,95,95,110,44,13,10,32,32,32
-,109,98,115,116,97,116,101,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,112
-,115,41,59,13,10,101,120,116,101,114,110,32,115,105,122,101,95,116,32,109,98,114,108,101,110
-,40,99,111,110,115,116,32,99,104,97,114,42,32,95,95,114,101,115,116,114,105,99,116,32,95
-,95,115,44,32,115,105,122,101,95,116,32,95,95,110,44,13,10,32,32,32,32,32,32,32,32
-,109,98,115,116,97,116,101,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,112
-,115,41,59,13,10,101,120,116,101,114,110,32,115,105,122,101,95,116,32,109,98,115,114,116,111
-,119,99,115,40,119,99,104,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95
-,95,100,115,116,44,13,10,32,32,32,32,99,111,110,115,116,32,99,104,97,114,42,42,32,95
-,95,114,101,115,116,114,105,99,116,32,95,95,115,114,99,44,32,115,105,122,101,95,116,32,95
-,95,108,101,110,44,13,10,32,32,32,32,109,98,115,116,97,116,101,95,116,42,32,95,95,114
-,101,115,116,114,105,99,116,32,95,95,112,115,41,59,13,10,13,10,101,120,116,101,114,110,32
-,115,105,122,101,95,116,32,119,99,115,114,116,111,109,98,115,40,99,104,97,114,42,32,95,95
-,114,101,115,116,114,105,99,116,32,95,95,100,115,116,44,13,10,32,32,32,32,99,111,110,115
-,116,32,119,99,104,97,114,95,116,42,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95
-,115,114,99,44,32,115,105,122,101,95,116,32,95,95,108,101,110,44,13,10,32,32,32,32,109
-,98,115,116,97,116,101,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,112,115
-,41,59,13,10,13,10,101,120,116,101,114,110,32,115,105,122,101,95,116,32,109,98,115,110,114
-,116,111,119,99,115,40,119,99,104,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116
-,32,95,95,100,115,116,44,13,10,32,32,32,32,32,99,111,110,115,116,32,99,104,97,114,42
-,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,115,114,99,44,32,115,105,122,101,95
-,116,32,95,95,110,109,99,44,13,10,32,32,32,32,32,115,105,122,101,95,116,32,95,95,108
-,101,110,44,32,109,98,115,116,97,116,101,95,116,42,32,95,95,114,101,115,116,114,105,99,116
-,32,95,95,112,115,41,59,13,10,13,10,101,120,116,101,114,110,32,115,105,122,101,95,116,32
-,119,99,115,110,114,116,111,109,98,115,40,99,104,97,114,42,32,95,95,114,101,115,116,114,105
-,99,116,32,95,95,100,115,116,44,13,10,32,32,32,32,32,99,111,110,115,116,32,119,99,104
-,97,114,95,116,42,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,115,114,99,44,13
-,10,32,32,32,32,32,115,105,122,101,95,116,32,95,95,110,119,99,44,32,115,105,122,101,95
-,116,32,95,95,108,101,110,44,13,10,32,32,32,32,32,109,98,115,116,97,116,101,95,116,42
-,32,95,95,114,101,115,116,114,105,99,116,32,95,95,112,115,41,59,13,10,101,120,116,101,114
-,110,32,100,111,117,98,108,101,32,119,99,115,116,111,100,40,99,111,110,115,116,32,119,99,104
-,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,110,112,116,114,44,13
-,10,32,32,32,32,32,32,32,32,119,99,104,97,114,95,116,42,42,32,95,95,114,101,115,116
-,114,105,99,116,32,95,95,101,110,100,112,116,114,41,59,13,10,13,10,101,120,116,101,114,110
-,32,102,108,111,97,116,32,119,99,115,116,111,102,40,99,111,110,115,116,32,119,99,104,97,114
-,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,110,112,116,114,44,13,10,32
-,32,32,32,32,32,32,119,99,104,97,114,95,116,42,42,32,95,95,114,101,115,116,114,105,99
-,116,32,95,95,101,110,100,112,116,114,41,59,13,10,101,120,116,101,114,110,32,108,111,110,103
-,32,100,111,117,98,108,101,32,119,99,115,116,111,108,100,40,99,111,110,115,116,32,119,99,104
-,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,110,112,116,114,44,13
-,10,32,32,32,32,32,32,32,119,99,104,97,114,95,116,42,42,32,95,95,114,101,115,116,114
-,105,99,116,32,95,95,101,110,100,112,116,114,41,59,13,10,101,120,116,101,114,110,32,108,111
-,110,103,32,105,110,116,32,119,99,115,116,111,108,40,99,111,110,115,116,32,119,99,104,97,114
-,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,110,112,116,114,44,13,10,32
-,32,32,119,99,104,97,114,95,116,42,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95
-,101,110,100,112,116,114,44,32,105,110,116,32,95,95,98,97,115,101,41,59,13,10,13,10,101
-,120,116,101,114,110,32,117,110,115,105,103,110,101,100,32,108,111,110,103,32,105,110,116,32,119
-,99,115,116,111,117,108,40,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,114
-,101,115,116,114,105,99,116,32,95,95,110,112,116,114,44,13,10,32,32,32,32,32,32,119,99
-,104,97,114,95,116,42,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,101,110,100,112
-,116,114,44,32,105,110,116,32,95,95,98,97,115,101,41,59,13,10,13,10,101,120,116,101,114
-,110,32,108,111,110,103,32,108,111,110,103,32,105,110,116,32,119,99,115,116,111,108,108,40,99
-,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32
-,95,95,110,112,116,114,44,13,10,32,32,32,32,32,32,32,32,32,119,99,104,97,114,95,116
-,42,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,101,110,100,112,116,114,44,32,105
-,110,116,32,95,95,98,97,115,101,41,59,13,10,13,10,101,120,116,101,114,110,32,117,110,115
-,105,103,110,101,100,32,108,111,110,103,32,108,111,110,103,32,105,110,116,32,119,99,115,116,111
-,117,108,108,40,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,114,101,115,116
-,114,105,99,116,32,95,95,110,112,116,114,44,13,10,32,32,32,32,32,119,99,104,97,114,95
-,116,42,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,101,110,100,112,116,114,44,13
-,10,32,32,32,32,32,105,110,116,32,95,95,98,97,115,101,41,59,13,10,101,120,116,101,114
-,110,32,119,99,104,97,114,95,116,42,32,119,99,112,99,112,121,40,119,99,104,97,114,95,116
-,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,100,101,115,116,44,13,10,32,32,32
+,95,95,115,114,99,44,32,115,105,122,101,95,116,32,95,95,110,41,59,10,10,101,120,116,101
+,114,110,32,119,99,104,97,114,95,116,42,32,119,99,115,99,97,116,40,119,99,104,97,114,95
+,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,100,101,115,116,44,10,32,32,32
 ,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116
-,32,95,95,115,114,99,41,59,13,10,13,10,101,120,116,101,114,110,32,119,99,104,97,114,95
-,116,42,32,119,99,112,110,99,112,121,40,119,99,104,97,114,95,116,42,32,95,95,114,101,115
-,116,114,105,99,116,32,95,95,100,101,115,116,44,13,10,32,32,32,32,99,111,110,115,116,32
-,119,99,104,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,115,114,99
-,44,32,115,105,122,101,95,116,32,95,95,110,41,59,13,10,101,120,116,101,114,110,32,95,95
-,70,73,76,69,42,32,111,112,101,110,95,119,109,101,109,115,116,114,101,97,109,40,119,99,104
-,97,114,95,116,42,42,32,95,95,98,117,102,108,111,99,44,32,115,105,122,101,95,116,42,32
-,95,95,115,105,122,101,108,111,99,41,59,13,10,13,10,101,120,116,101,114,110,32,105,110,116
-,32,102,119,105,100,101,40,95,95,70,73,76,69,42,32,95,95,102,112,44,32,105,110,116,32
-,95,95,109,111,100,101,41,59,13,10,13,10,101,120,116,101,114,110,32,105,110,116,32,102,119
-,112,114,105,110,116,102,40,95,95,70,73,76,69,42,32,95,95,114,101,115,116,114,105,99,116
-,32,95,95,115,116,114,101,97,109,44,13,10,32,32,32,32,32,32,32,99,111,110,115,116,32
-,119,99,104,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,102,111,114
-,109,97,116,44,32,46,46,46,41,59,13,10,101,120,116,101,114,110,32,105,110,116,32,119,112
-,114,105,110,116,102,40,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,114,101
-,115,116,114,105,99,116,32,95,95,102,111,114,109,97,116,44,32,46,46,46,41,59,13,10,13
-,10,101,120,116,101,114,110,32,105,110,116,32,115,119,112,114,105,110,116,102,40,119,99,104,97
-,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,115,44,32,115,105,122,101
-,95,116,32,95,95,110,44,13,10,32,32,32,32,32,32,32,99,111,110,115,116,32,119,99,104
+,32,95,95,115,114,99,41,59,10,10,101,120,116,101,114,110,32,119,99,104,97,114,95,116,42
+,32,119,99,115,110,99,97,116,40,119,99,104,97,114,95,116,42,32,95,95,114,101,115,116,114
+,105,99,116,32,95,95,100,101,115,116,44,10,32,32,32,32,99,111,110,115,116,32,119,99,104
+,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,115,114,99,44,32,115
+,105,122,101,95,116,32,95,95,110,41,59,10,10,101,120,116,101,114,110,32,105,110,116,32,119
+,99,115,99,109,112,40,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115,49
+,44,32,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115,50,41,59,10,10
+,101,120,116,101,114,110,32,105,110,116,32,119,99,115,110,99,109,112,40,99,111,110,115,116,32
+,119,99,104,97,114,95,116,42,32,95,95,115,49,44,32,99,111,110,115,116,32,119,99,104,97
+,114,95,116,42,32,95,95,115,50,44,32,115,105,122,101,95,116,32,95,95,110,41,59,10,10
+,101,120,116,101,114,110,32,105,110,116,32,119,99,115,99,97,115,101,99,109,112,40,99,111,110
+,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115,49,44,32,99,111,110,115,116,32,119
+,99,104,97,114,95,116,42,32,95,95,115,50,41,59,10,10,101,120,116,101,114,110,32,105,110
+,116,32,119,99,115,110,99,97,115,101,99,109,112,40,99,111,110,115,116,32,119,99,104,97,114
+,95,116,42,32,95,95,115,49,44,32,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32
+,95,95,115,50,44,10,32,32,32,115,105,122,101,95,116,32,95,95,110,41,59,10,10,101,120
+,116,101,114,110,32,105,110,116,32,119,99,115,99,97,115,101,99,109,112,95,108,40,99,111,110
+,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115,49,44,32,99,111,110,115,116,32,119
+,99,104,97,114,95,116,42,32,95,95,115,50,44,10,32,32,32,32,108,111,99,97,108,101,95
+,116,32,95,95,108,111,99,41,59,10,10,101,120,116,101,114,110,32,105,110,116,32,119,99,115
+,110,99,97,115,101,99,109,112,95,108,40,99,111,110,115,116,32,119,99,104,97,114,95,116,42
+,32,95,95,115,49,44,32,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115
+,50,44,10,32,32,32,32,32,115,105,122,101,95,116,32,95,95,110,44,32,108,111,99,97,108
+,101,95,116,32,95,95,108,111,99,41,59,10,10,101,120,116,101,114,110,32,105,110,116,32,119
+,99,115,99,111,108,108,40,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115
+,49,44,32,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115,50,41,59,10
+,10,101,120,116,101,114,110,32,115,105,122,101,95,116,32,119,99,115,120,102,114,109,40,119,99
+,104,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,115,49,44,10,32
+,32,32,32,32,32,32,32,32,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95
+,114,101,115,116,114,105,99,116,32,95,95,115,50,44,32,115,105,122,101,95,116,32,95,95,110
+,41,59,10,10,101,120,116,101,114,110,32,105,110,116,32,119,99,115,99,111,108,108,95,108,40
+,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115,49,44,32,99,111,110,115
+,116,32,119,99,104,97,114,95,116,42,32,95,95,115,50,44,10,32,32,32,32,32,32,32,32
+,108,111,99,97,108,101,95,116,32,95,95,108,111,99,41,59,10,10,101,120,116,101,114,110,32
+,115,105,122,101,95,116,32,119,99,115,120,102,114,109,95,108,40,119,99,104,97,114,95,116,42
+,32,95,95,115,49,44,32,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115
+,50,44,10,32,32,32,32,115,105,122,101,95,116,32,95,95,110,44,32,108,111,99,97,108,101
+,95,116,32,95,95,108,111,99,41,59,10,10,101,120,116,101,114,110,32,119,99,104,97,114,95
+,116,42,32,119,99,115,100,117,112,40,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32
+,95,95,115,41,59,10,101,120,116,101,114,110,32,119,99,104,97,114,95,116,42,32,119,99,115
+,99,104,114,40,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,119,99,115,44
+,32,119,99,104,97,114,95,116,32,95,95,119,99,41,59,10,101,120,116,101,114,110,32,119,99
+,104,97,114,95,116,42,32,119,99,115,114,99,104,114,40,99,111,110,115,116,32,119,99,104,97
+,114,95,116,42,32,95,95,119,99,115,44,32,119,99,104,97,114,95,116,32,95,95,119,99,41
+,59,10,101,120,116,101,114,110,32,115,105,122,101,95,116,32,119,99,115,99,115,112,110,40,99
+,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,119,99,115,44,32,99,111,110,115
+,116,32,119,99,104,97,114,95,116,42,32,95,95,114,101,106,101,99,116,41,59,10,10,101,120
+,116,101,114,110,32,115,105,122,101,95,116,32,119,99,115,115,112,110,40,99,111,110,115,116,32
+,119,99,104,97,114,95,116,42,32,95,95,119,99,115,44,32,99,111,110,115,116,32,119,99,104
+,97,114,95,116,42,32,95,95,97,99,99,101,112,116,41,59,10,101,120,116,101,114,110,32,119
+,99,104,97,114,95,116,42,32,119,99,115,112,98,114,107,40,99,111,110,115,116,32,119,99,104
+,97,114,95,116,42,32,95,95,119,99,115,44,32,99,111,110,115,116,32,119,99,104,97,114,95
+,116,42,32,95,95,97,99,99,101,112,116,41,59,10,101,120,116,101,114,110,32,119,99,104,97
+,114,95,116,42,32,119,99,115,115,116,114,40,99,111,110,115,116,32,119,99,104,97,114,95,116
+,42,32,95,95,104,97,121,115,116,97,99,107,44,32,99,111,110,115,116,32,119,99,104,97,114
+,95,116,42,32,95,95,110,101,101,100,108,101,41,59,10,10,101,120,116,101,114,110,32,119,99
+,104,97,114,95,116,42,32,119,99,115,116,111,107,40,119,99,104,97,114,95,116,42,32,95,95
+,114,101,115,116,114,105,99,116,32,95,95,115,44,10,32,32,32,99,111,110,115,116,32,119,99
+,104,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,100,101,108,105,109
+,44,10,32,32,32,119,99,104,97,114,95,116,42,42,32,95,95,114,101,115,116,114,105,99,116
+,32,95,95,112,116,114,41,59,10,10,101,120,116,101,114,110,32,115,105,122,101,95,116,32,119
+,99,115,108,101,110,40,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115,41
+,59,10,101,120,116,101,114,110,32,115,105,122,101,95,116,32,119,99,115,110,108,101,110,40,99
+,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115,44,32,115,105,122,101,95,116
+,32,95,95,109,97,120,108,101,110,41,59,10,101,120,116,101,114,110,32,119,99,104,97,114,95
+,116,42,32,119,109,101,109,99,104,114,40,99,111,110,115,116,32,119,99,104,97,114,95,116,42
+,32,95,95,115,44,32,119,99,104,97,114,95,116,32,95,95,99,44,32,115,105,122,101,95,116
+,32,95,95,110,41,59,10,10,101,120,116,101,114,110,32,105,110,116,32,119,109,101,109,99,109
+,112,40,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115,49,44,32,99,111
+,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115,50,44,32,115,105,122,101,95,116
+,32,95,95,110,41,59,10,10,101,120,116,101,114,110,32,119,99,104,97,114,95,116,42,32,119
+,109,101,109,99,112,121,40,119,99,104,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99
+,116,32,95,95,115,49,44,10,32,32,32,32,99,111,110,115,116,32,119,99,104,97,114,95,116
+,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,115,50,44,32,115,105,122,101,95,116
+,32,95,95,110,41,59,10,10,101,120,116,101,114,110,32,119,99,104,97,114,95,116,42,32,119
+,109,101,109,109,111,118,101,40,119,99,104,97,114,95,116,42,32,95,95,115,49,44,32,99,111
+,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,115,50,44,32,115,105,122,101,95,116
+,32,95,95,110,41,59,10,10,101,120,116,101,114,110,32,119,99,104,97,114,95,116,42,32,119
+,109,101,109,115,101,116,40,119,99,104,97,114,95,116,42,32,95,95,115,44,32,119,99,104,97
+,114,95,116,32,95,95,99,44,32,115,105,122,101,95,116,32,95,95,110,41,59,10,101,120,116
+,101,114,110,32,119,105,110,116,95,116,32,98,116,111,119,99,40,105,110,116,32,95,95,99,41
+,59,10,10,101,120,116,101,114,110,32,105,110,116,32,119,99,116,111,98,40,119,105,110,116,95
+,116,32,95,95,99,41,59,10,10,101,120,116,101,114,110,32,105,110,116,32,109,98,115,105,110
+,105,116,40,99,111,110,115,116,32,109,98,115,116,97,116,101,95,116,42,32,95,95,112,115,41
+,59,10,10,101,120,116,101,114,110,32,115,105,122,101,95,116,32,109,98,114,116,111,119,99,40
+,119,99,104,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,112,119,99
+,44,10,32,32,32,32,32,32,32,32,32,99,111,110,115,116,32,99,104,97,114,42,32,95,95
+,114,101,115,116,114,105,99,116,32,95,95,115,44,32,115,105,122,101,95,116,32,95,95,110,44
+,10,32,32,32,32,32,32,32,32,32,109,98,115,116,97,116,101,95,116,42,32,95,95,114,101
+,115,116,114,105,99,116,32,95,95,112,41,59,10,10,101,120,116,101,114,110,32,115,105,122,101
+,95,116,32,119,99,114,116,111,109,98,40,99,104,97,114,42,32,95,95,114,101,115,116,114,105
+,99,116,32,95,95,115,44,32,119,99,104,97,114,95,116,32,95,95,119,99,44,10,32,32,32
+,32,32,32,32,32,32,109,98,115,116,97,116,101,95,116,42,32,95,95,114,101,115,116,114,105
+,99,116,32,95,95,112,115,41,59,10,10,101,120,116,101,114,110,32,115,105,122,101,95,116,32
+,95,95,109,98,114,108,101,110,40,99,111,110,115,116,32,99,104,97,114,42,32,95,95,114,101
+,115,116,114,105,99,116,32,95,95,115,44,32,115,105,122,101,95,116,32,95,95,110,44,10,32
+,32,32,109,98,115,116,97,116,101,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95
+,95,112,115,41,59,10,101,120,116,101,114,110,32,115,105,122,101,95,116,32,109,98,114,108,101
+,110,40,99,111,110,115,116,32,99,104,97,114,42,32,95,95,114,101,115,116,114,105,99,116,32
+,95,95,115,44,32,115,105,122,101,95,116,32,95,95,110,44,10,32,32,32,32,32,32,32,32
+,109,98,115,116,97,116,101,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,112
+,115,41,59,10,101,120,116,101,114,110,32,115,105,122,101,95,116,32,109,98,115,114,116,111,119
+,99,115,40,119,99,104,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95
+,100,115,116,44,10,32,32,32,32,99,111,110,115,116,32,99,104,97,114,42,42,32,95,95,114
+,101,115,116,114,105,99,116,32,95,95,115,114,99,44,32,115,105,122,101,95,116,32,95,95,108
+,101,110,44,10,32,32,32,32,109,98,115,116,97,116,101,95,116,42,32,95,95,114,101,115,116
+,114,105,99,116,32,95,95,112,115,41,59,10,10,101,120,116,101,114,110,32,115,105,122,101,95
+,116,32,119,99,115,114,116,111,109,98,115,40,99,104,97,114,42,32,95,95,114,101,115,116,114
+,105,99,116,32,95,95,100,115,116,44,10,32,32,32,32,99,111,110,115,116,32,119,99,104,97
+,114,95,116,42,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,115,114,99,44,32,115
+,105,122,101,95,116,32,95,95,108,101,110,44,10,32,32,32,32,109,98,115,116,97,116,101,95
+,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,112,115,41,59,10,10,101,120,116
+,101,114,110,32,115,105,122,101,95,116,32,109,98,115,110,114,116,111,119,99,115,40,119,99,104
+,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,100,115,116,44,10,32
+,32,32,32,32,99,111,110,115,116,32,99,104,97,114,42,42,32,95,95,114,101,115,116,114,105
+,99,116,32,95,95,115,114,99,44,32,115,105,122,101,95,116,32,95,95,110,109,99,44,10,32
+,32,32,32,32,115,105,122,101,95,116,32,95,95,108,101,110,44,32,109,98,115,116,97,116,101
+,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,112,115,41,59,10,10,101,120
+,116,101,114,110,32,115,105,122,101,95,116,32,119,99,115,110,114,116,111,109,98,115,40,99,104
+,97,114,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,100,115,116,44,10,32,32,32
+,32,32,99,111,110,115,116,32,119,99,104,97,114,95,116,42,42,32,95,95,114,101,115,116,114
+,105,99,116,32,95,95,115,114,99,44,10,32,32,32,32,32,115,105,122,101,95,116,32,95,95
+,110,119,99,44,32,115,105,122,101,95,116,32,95,95,108,101,110,44,10,32,32,32,32,32,109
+,98,115,116,97,116,101,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,112,115
+,41,59,10,101,120,116,101,114,110,32,100,111,117,98,108,101,32,119,99,115,116,111,100,40,99
+,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32
+,95,95,110,112,116,114,44,10,32,32,32,32,32,32,32,32,119,99,104,97,114,95,116,42,42
+,32,95,95,114,101,115,116,114,105,99,116,32,95,95,101,110,100,112,116,114,41,59,10,10,101
+,120,116,101,114,110,32,102,108,111,97,116,32,119,99,115,116,111,102,40,99,111,110,115,116,32
+,119,99,104,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,110,112,116
+,114,44,10,32,32,32,32,32,32,32,119,99,104,97,114,95,116,42,42,32,95,95,114,101,115
+,116,114,105,99,116,32,95,95,101,110,100,112,116,114,41,59,10,101,120,116,101,114,110,32,108
+,111,110,103,32,100,111,117,98,108,101,32,119,99,115,116,111,108,100,40,99,111,110,115,116,32
+,119,99,104,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,110,112,116
+,114,44,10,32,32,32,32,32,32,32,119,99,104,97,114,95,116,42,42,32,95,95,114,101,115
+,116,114,105,99,116,32,95,95,101,110,100,112,116,114,41,59,10,101,120,116,101,114,110,32,108
+,111,110,103,32,105,110,116,32,119,99,115,116,111,108,40,99,111,110,115,116,32,119,99,104,97
+,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,110,112,116,114,44,10,32
+,32,32,119,99,104,97,114,95,116,42,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95
+,101,110,100,112,116,114,44,32,105,110,116,32,95,95,98,97,115,101,41,59,10,10,101,120,116
+,101,114,110,32,117,110,115,105,103,110,101,100,32,108,111,110,103,32,105,110,116,32,119,99,115
+,116,111,117,108,40,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,114,101,115
+,116,114,105,99,116,32,95,95,110,112,116,114,44,10,32,32,32,32,32,32,119,99,104,97,114
+,95,116,42,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,101,110,100,112,116,114,44
+,32,105,110,116,32,95,95,98,97,115,101,41,59,10,10,101,120,116,101,114,110,32,108,111,110
+,103,32,108,111,110,103,32,105,110,116,32,119,99,115,116,111,108,108,40,99,111,110,115,116,32
+,119,99,104,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,110,112,116
+,114,44,10,32,32,32,32,32,32,32,32,32,119,99,104,97,114,95,116,42,42,32,95,95,114
+,101,115,116,114,105,99,116,32,95,95,101,110,100,112,116,114,44,32,105,110,116,32,95,95,98
+,97,115,101,41,59,10,10,101,120,116,101,114,110,32,117,110,115,105,103,110,101,100,32,108,111
+,110,103,32,108,111,110,103,32,105,110,116,32,119,99,115,116,111,117,108,108,40,99,111,110,115
+,116,32,119,99,104,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,110
+,112,116,114,44,10,32,32,32,32,32,119,99,104,97,114,95,116,42,42,32,95,95,114,101,115
+,116,114,105,99,116,32,95,95,101,110,100,112,116,114,44,10,32,32,32,32,32,105,110,116,32
+,95,95,98,97,115,101,41,59,10,101,120,116,101,114,110,32,119,99,104,97,114,95,116,42,32
+,119,99,112,99,112,121,40,119,99,104,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99
+,116,32,95,95,100,101,115,116,44,10,32,32,32,99,111,110,115,116,32,119,99,104,97,114,95
+,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,115,114,99,41,59,10,10,101,120
+,116,101,114,110,32,119,99,104,97,114,95,116,42,32,119,99,112,110,99,112,121,40,119,99,104
+,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,100,101,115,116,44,10
+,32,32,32,32,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,114,101,115,116
+,114,105,99,116,32,95,95,115,114,99,44,32,115,105,122,101,95,116,32,95,95,110,41,59,10
+,101,120,116,101,114,110,32,95,95,70,73,76,69,42,32,111,112,101,110,95,119,109,101,109,115
+,116,114,101,97,109,40,119,99,104,97,114,95,116,42,42,32,95,95,98,117,102,108,111,99,44
+,32,115,105,122,101,95,116,42,32,95,95,115,105,122,101,108,111,99,41,59,10,10,101,120,116
+,101,114,110,32,105,110,116,32,102,119,105,100,101,40,95,95,70,73,76,69,42,32,95,95,102
+,112,44,32,105,110,116,32,95,95,109,111,100,101,41,59,10,10,101,120,116,101,114,110,32,105
+,110,116,32,102,119,112,114,105,110,116,102,40,95,95,70,73,76,69,42,32,95,95,114,101,115
+,116,114,105,99,116,32,95,95,115,116,114,101,97,109,44,10,32,32,32,32,32,32,32,99,111
+,110,115,116,32,119,99,104,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95
+,95,102,111,114,109,97,116,44,32,46,46,46,41,59,10,101,120,116,101,114,110,32,105,110,116
+,32,119,112,114,105,110,116,102,40,99,111,110,115,116,32,119,99,104,97,114,95,116,42,32,95
+,95,114,101,115,116,114,105,99,116,32,95,95,102,111,114,109,97,116,44,32,46,46,46,41,59
+,10,10,101,120,116,101,114,110,32,105,110,116,32,115,119,112,114,105,110,116,102,40,119,99,104
+,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,115,44,32,115,105,122
+,101,95,116,32,95,95,110,44,10,32,32,32,32,32,32,32,99,111,110,115,116,32,119,99,104
 ,97,114,95,116,42,32,95,95,114,101,115,116,114,105,99,116,32,95,95,102,111,114,109,97,116
-,44,32,46,46,46,41,59,13,10,13,10,13,10
+,44,32,46,46,46,41,59,10,10,10
 , 0 };
 static const char file_wctype_h[] = {
 
 
 
-35,105,102,110,100,101,102,32,87,67,84,89,80,69,95,72,13,10,35,100,101,102,105,110,101
-,32,87,67,84,89,80,69,95,72,13,10,13,10,35,105,110,99,108,117,100,101,32,60,119,99
-,104,97,114,46,104,62,13,10,13,10,47,42,32,87,105,100,101,45,99,104,97,114,97,99,116
-,101,114,32,99,108,97,115,115,105,102,105,99,97,116,105,111,110,32,42,47,13,10,105,110,116
-,32,105,115,119,97,108,110,117,109,40,119,105,110,116,95,116,32,119,99,41,59,13,10,105,110
-,116,32,105,115,119,97,108,112,104,97,40,119,105,110,116,95,116,32,119,99,41,59,13,10,105
-,110,116,32,105,115,119,98,108,97,110,107,40,119,105,110,116,95,116,32,119,99,41,59,13,10
-,105,110,116,32,105,115,119,99,110,116,114,108,40,119,105,110,116,95,116,32,119,99,41,59,13
-,10,105,110,116,32,105,115,119,100,105,103,105,116,40,119,105,110,116,95,116,32,119,99,41,59
-,13,10,105,110,116,32,105,115,119,103,114,97,112,104,40,119,105,110,116,95,116,32,119,99,41
-,59,13,10,105,110,116,32,105,115,119,108,111,119,101,114,40,119,105,110,116,95,116,32,119,99
-,41,59,13,10,105,110,116,32,105,115,119,112,114,105,110,116,40,119,105,110,116,95,116,32,119
-,99,41,59,13,10,105,110,116,32,105,115,119,112,117,110,99,116,40,119,105,110,116,95,116,32
-,119,99,41,59,13,10,105,110,116,32,105,115,119,115,112,97,99,101,40,119,105,110,116,95,116
-,32,119,99,41,59,13,10,105,110,116,32,105,115,119,117,112,112,101,114,40,119,105,110,116,95
-,116,32,119,99,41,59,13,10,105,110,116,32,105,115,119,120,100,105,103,105,116,40,119,105,110
-,116,95,116,32,119,99,41,59,13,10,13,10,47,42,32,87,105,100,101,45,99,104,97,114,97
-,99,116,101,114,32,99,111,110,118,101,114,115,105,111,110,32,42,47,13,10,105,110,116,32,116
-,111,119,108,111,119,101,114,40,105,110,116,32,119,99,41,59,13,10,105,110,116,32,116,111,119
-,117,112,112,101,114,40,105,110,116,32,119,99,41,59,13,10,13,10,35,101,110,100,105,102,32
-,47,42,32,87,67,84,89,80,69,95,72,32,42,47,13,10
+35,105,102,110,100,101,102,32,87,67,84,89,80,69,95,72,10,35,100,101,102,105,110,101,32
+,87,67,84,89,80,69,95,72,10,10,35,105,110,99,108,117,100,101,32,60,119,99,104,97,114
+,46,104,62,10,10,47,42,32,87,105,100,101,45,99,104,97,114,97,99,116,101,114,32,99,108
+,97,115,115,105,102,105,99,97,116,105,111,110,32,42,47,10,105,110,116,32,105,115,119,97,108
+,110,117,109,40,119,105,110,116,95,116,32,119,99,41,59,10,105,110,116,32,105,115,119,97,108
+,112,104,97,40,119,105,110,116,95,116,32,119,99,41,59,10,105,110,116,32,105,115,119,98,108
+,97,110,107,40,119,105,110,116,95,116,32,119,99,41,59,10,105,110,116,32,105,115,119,99,110
+,116,114,108,40,119,105,110,116,95,116,32,119,99,41,59,10,105,110,116,32,105,115,119,100,105
+,103,105,116,40,119,105,110,116,95,116,32,119,99,41,59,10,105,110,116,32,105,115,119,103,114
+,97,112,104,40,119,105,110,116,95,116,32,119,99,41,59,10,105,110,116,32,105,115,119,108,111
+,119,101,114,40,119,105,110,116,95,116,32,119,99,41,59,10,105,110,116,32,105,115,119,112,114
+,105,110,116,40,119,105,110,116,95,116,32,119,99,41,59,10,105,110,116,32,105,115,119,112,117
+,110,99,116,40,119,105,110,116,95,116,32,119,99,41,59,10,105,110,116,32,105,115,119,115,112
+,97,99,101,40,119,105,110,116,95,116,32,119,99,41,59,10,105,110,116,32,105,115,119,117,112
+,112,101,114,40,119,105,110,116,95,116,32,119,99,41,59,10,105,110,116,32,105,115,119,120,100
+,105,103,105,116,40,119,105,110,116,95,116,32,119,99,41,59,10,10,47,42,32,87,105,100,101
+,45,99,104,97,114,97,99,116,101,114,32,99,111,110,118,101,114,115,105,111,110,32,42,47,10
+,105,110,116,32,116,111,119,108,111,119,101,114,40,105,110,116,32,119,99,41,59,10,105,110,116
+,32,116,111,119,117,112,112,101,114,40,105,110,116,32,119,99,41,59,10,10,35,101,110,100,105
+,102,32,47,42,32,87,67,84,89,80,69,95,72,32,42,47,10
 , 0 };
 
 
@@ -14450,22 +14617,61 @@ char* _Owner read_file(const char* path, bool append_newline)
 #pragma safety enable
 
 
+#ifndef _Countof
 #define _Countof(X) (sizeof(X)/sizeof(X[0]))
+#endif
+
+static void bitset_clear(struct bitset* b)
+{
+    for (int i = 0; i < BITSET_WORDS; ++i)
+        b->bits[i] = 0;
+}
+static void bitset_setall(struct bitset* b)
+{
+    unsigned long mask = ~0UL;
+    for (int i = 0; i < BITSET_WORDS; ++i)
+        b->bits[i] = mask;
+}
+
+static void bitset_set(struct bitset* b, int pos, int value)
+{
+    if (pos < 0 || pos >= BITSET_SIZE)
+        return;
+    int word = pos / BITSET_WORD_BITS;
+    int bit = pos % BITSET_WORD_BITS;
+    unsigned long mask = 1UL << bit;
+    if (value)
+        b->bits[word] |= mask;
+    else
+        b->bits[word] &= ~mask;
+}
+
+static int bitset_get(const struct bitset* b, int pos)
+{
+    if (pos < 0 || pos >= BITSET_SIZE)
+        return 0;
+    int word = pos / BITSET_WORD_BITS;
+    int bit = pos % BITSET_WORD_BITS;
+    return (b->bits[word] >> bit) & 1UL;
+}
 
 bool is_diagnostic_enabled(const struct options* options, enum diagnostic_id w)
 {
-    if (w > W_NOTE)
+        if (w == W_LOCATION)
         return true;
 
-    return ((options->diagnostic_stack.stack[options->diagnostic_stack.top_index].errors & (1ULL << w)) != 0) ||
-        ((options->diagnostic_stack.stack[options->diagnostic_stack.top_index].warnings & (1ULL << w)) != 0) ||
-        ((options->diagnostic_stack.stack[options->diagnostic_stack.top_index].notes & (1ULL << w)) != 0);
+    if (w >= BITSET_SIZE)
+        return true;
+
+    return
+        bitset_get(&options->diagnostic_stack.stack[options->diagnostic_stack.top_index].errors, w) ||
+        bitset_get(&options->diagnostic_stack.stack[options->diagnostic_stack.top_index].warnings, w) ||
+        bitset_get(&options->diagnostic_stack.stack[options->diagnostic_stack.top_index].notes, w);
 }
 
 bool is_diagnostic_note(enum diagnostic_id id)
 {
-    if (id == W_NOTE ||
-        id == W_LOCATION)
+    if (id == W_LOCATION)
     {
         return true;
     }
@@ -14475,19 +14681,26 @@ bool is_diagnostic_note(enum diagnostic_id id)
 
 bool is_diagnostic_warning(enum diagnostic_id id)
 {
-    return id > W_NOTE && id <= C_ERROR_INVALID_QUALIFIER_FOR_POINTER;
+    if (id == W_LOCATION)
+        return false;
+
+    return id < BITSET_SIZE;
 }
 
 bool is_diagnostic_error(enum diagnostic_id id)
 {
-    return id >= C_ERROR_INVALID_QUALIFIER_FOR_POINTER;
+    if (id == W_LOCATION)
+        return false;
+
+    return id >= BITSET_SIZE;
 }
 
 bool is_diagnostic_configurable(enum diagnostic_id id)
 {
-    //We have 0-63 configurable (bit set)
-    //configurable diagnostic also have names. Other have numbers only    
-    return id >= 0 && id < W_LOCATION;
+    if (id == W_LOCATION)
+        return false;
+
+    return id >= 0 && id < BITSET_SIZE;
 }
 
 int diagnostic_id_stack_push(struct diagnostic_id_stack* diagnostic_stack, enum diagnostic_id id)
@@ -14514,11 +14727,17 @@ void diagnostic_id_stack_pop(struct diagnostic_id_stack* diagnostic_stack)
 
 int diagnostic_stack_push_empty(struct diagnostic_stack* diagnostic_stack)
 {
+    if (diagnostic_stack->top_index >= _Countof(diagnostic_stack->stack))
+    {
+        assert(false);
+        return 0;
+    }
+
     int index = diagnostic_stack->top_index;
     diagnostic_stack->top_index++;
-    diagnostic_stack->stack[diagnostic_stack->top_index].warnings = 0;
-    diagnostic_stack->stack[diagnostic_stack->top_index].errors = 0;
-    diagnostic_stack->stack[diagnostic_stack->top_index].notes = 0;
+    bitset_clear(&diagnostic_stack->stack[diagnostic_stack->top_index].errors);
+    bitset_clear(&diagnostic_stack->stack[diagnostic_stack->top_index].warnings);
+    bitset_clear(&diagnostic_stack->stack[diagnostic_stack->top_index].notes);
     return index;
 }
 
@@ -14535,135 +14754,41 @@ void diagnostic_stack_pop(struct diagnostic_stack* diagnostic_stack)
 }
 
 
-struct diagnostic default_diagnostic = {
-      .warnings = (~0ULL) & ~(
-        NULLABLE_DISABLE_REMOVED_WARNINGS |
-        (1ULL << W_NOTE) |
-        (1ULL << W_STYLE) |
-        (1ULL << W_UNUSED_PARAMETER) |
-        (1ULL << W_UNUSED_VARIABLE))
-};
-
-static struct w {
-    enum diagnostic_id w;
-    const char* name;
-}
-s_warnings[] = {
-    {W_UNUSED_VARIABLE, "unused-variable"},
-    {W_UNUSED_FUNCTION, "unused-function"},
-    {W_DEPRECATED, "deprecated"},
-    {W_ENUN_CONVERSION,"enum-conversion"},
-
-    {W_ADDRESS, "address"},
-    {W_UNUSED_PARAMETER, "unused-parameter"},
-    {W_DECLARATOR_HIDE, "hide-declarator"},
-    {W_TYPEOF_ARRAY_PARAMETER, "typeof-parameter"},
-    {W_ATTRIBUTES, "attributes"},
-    {W_UNUSED_VALUE, "unused-value"},
-    {W_STYLE, "style"},
-    {W_COMMENT,"comment"},
-    {W_LINE_SLICING,"line-slicing"},
-    {W_SWITCH, "switch"},
-    {W_UNSUAL_NULL_POINTER_CONSTANT, "unusual-null"},
-
-    {W_DISCARDED_QUALIFIERS, "discarded-qualifiers"},
-    {W_UNINITIALZED, "uninitialized"},
-    {W_RETURN_LOCAL_ADDR, "return-local-addr"},
-    {W_DIVIZION_BY_ZERO,"div-by-zero"},
-    {W_CONSTANT_VALUE, "constant-value"},
-    {W_SIZEOF_ARRAY_ARGUMENT, "sizeof-array-argument"},
-
-    {W_STRING_SLICED,"string-slicing"},
-    {W_DECLARATOR_STATE,"declarator-state"},
-    {W_OWNERSHIP_MISSING_OWNER_QUALIFIER, "missing-owner-qualifier"},
-    {W_OWNERSHIP_NOT_OWNER,"not-owner"},
-    {W_OWNERSHIP_USING_TEMPORARY_OWNER,"temp-owner"},
-    {W_OWNERSHIP_MOVE_ASSIGNMENT_OF_NON_OWNER, "non-owner-move"},
-    {W_OWNERSHIP_NON_OWNER_TO_OWNER_ASSIGN, "non-owner-to-owner-move"},
-    {W_OWNERSHIP_DISCARDING_OWNER, "discard-owner"},
-
-    {W_OWNERSHIP_NON_OWNER_MOVE, "non-owner-move"},
-    {W_FLOW_DIVIZION_BY_ZERO, "flow-div-by-zero"},
-
-    /////////////////////////////////////////////////////////////////////////
-    {W_FLOW_NON_NULL, "flow-not-null"},
-    {W_FLOW_MISSING_DTOR, "missing-destructor"},
-    {W_FLOW_MOVED, "using-moved-object"},
-    {W_FLOW_UNINITIALIZED, "analyzer-maybe-uninitialized"},
-    {W_FLOW_NULL_DEREFERENCE, "analyzer-null-dereference"}, // -fanalyzer
-    {W_FLOW_MAYBE_NULL_TO_NON_OPT_ARG, "analyzer-non-opt-arg"},
-    {W_FLOW_LIFETIME_ENDED, "lifetime-ended"},
-    {W_FLOW_NULLABLE_TO_NON_NULLABLE, "nullable-to-non-nullable"},
-
-    /////////////////////////////////////////////////////////////////////
-    {W_MUST_USE_ADDRESSOF, "must-use-address-of"},
-    {W_PASSING_NULL_AS_ARRAY, "null-as-array"},
-    {W_INCOMPATIBLE_ENUN_TYPES, "incompatible-enum"},
-    {W_MULTICHAR_ERROR, "multi-char"},
-    {W_ARRAY_INDIRECTION,"array-indirection"},
-    {W_OUT_OF_BOUNDS, "out-of-bounds"},
-    {W_ASSIGNMENT_OF_ARRAY_PARAMETER, "array-parameter-assignment"},
-    {W_CONDITIONAL_IS_CONSTANT,"conditional-constant"},
-
-    {W_CONST_NOT_INITIALIZED, "const-init"},
-    {W_NULL_CONVERTION, "null-conversion"},
-    {W_BOOL_COMPARISON, "bool-comparison"},
-    {W_IMPLICITLY_UNSIGNED_LITERAL, "implicitly-unsigned-literal"},
-    {W_INTEGER_OVERFLOW, "overflow"},
-    {W_ARRAY_SIZE, "array-size"},
-    {W_EMPTY_STATEMENT, "empty-statement"},
-    {W_ERROR_INCOMPATIBLE_TYPES, "incompatible-types"},
-    {W_UNUSED_LABEL, "unused-label"},
-    {W_NULLABLE_TO_NON_NULLABLE, "null-non-null" }
-};
 
 void diagnostic_remove(struct diagnostic* d, enum diagnostic_id w)
 {
     if (!is_diagnostic_configurable(w))
         return; //ops
 
-    if ((d->errors & (1ULL << w)) != 0)
-        d->errors &= ~(1ULL << w);
-
-    if ((d->warnings & (1ULL << w)) != 0)
-        d->warnings &= ~(1ULL << w);
-
-    if ((d->notes & (1ULL << w)) != 0)
-        d->notes &= ~(1ULL << w);
+    bitset_set(&d->warnings, w, false);
+    bitset_set(&d->errors, w, false);
+    bitset_set(&d->notes, w, false);
 }
 
 int get_diagnostic_type(struct diagnostic* d, enum diagnostic_id w)
 {
+    if (w == W_LOCATION)
+        return 1; /*note*/
+
     if (is_diagnostic_configurable(w))
     {
-        if ((d->errors & (1ULL << w)) != 0)
+        if (bitset_get(&d->errors, w))
             return 3;
 
-        if ((d->warnings & (1ULL << w)) != 0)
+        if (bitset_get(&d->warnings, w))
             return 2;
 
-        if ((d->notes & (1ULL << w)) != 0)
+        if (bitset_get(&d->notes, w))
             return 1;
     }
 
-
-    if (is_diagnostic_note(w))
-        return 1;
-
-    if (is_diagnostic_warning(w))
-        return 2;
-
-    if (is_diagnostic_error(w))
-        return 3;
-
-    return 3; //errors
+    return 3; /*error*/
 }
 
 int get_diagnostic_phase(enum diagnostic_id w)
 {
     switch (w)
     {
-        //TODO should be everything that starts with FLOW
     case W_FLOW_NULLABLE_TO_NON_NULLABLE:
     case W_FLOW_MISSING_DTOR:
     case W_FLOW_UNINITIALIZED:
@@ -14675,6 +14800,7 @@ int get_diagnostic_phase(enum diagnostic_id w)
     case W_FLOW_DIVIZION_BY_ZERO:
 
         return 2; /*returns 2 if it flow analysis*/
+
     default:
         break;
     }
@@ -14682,94 +14808,7 @@ int get_diagnostic_phase(enum diagnostic_id w)
 }
 
 
-enum diagnostic_id  get_warning(const char* wname)
-{
-    if (!(wname[0] == '-' || wname[0] == 'E'))
-    {
-        return 0;
-    }
 
-    if (wname[0] == '-' && wname[1] == 'W')
-    {
-        for (int j = 0; j < sizeof(s_warnings) / sizeof(s_warnings[0]); j++)
-        {
-            if (strncmp(s_warnings[j].name, wname + 2, strlen(s_warnings[j].name)) == 0)
-            {
-                return s_warnings[j].w;
-            }
-        }
-    }
-    else if (wname[1] == 'E')
-    {
-        int ec = atoi(wname + 2);
-        return ec;
-
-    }
-    return 0;
-}
-
-unsigned long long  get_warning_bit_mask(const char* wname)
-{
-    const bool disable_warning = wname[2] == 'n' && wname[3] == 'o';
-    const char* final_name = disable_warning ? wname + 5 : wname + 2;
-    assert(wname[0] == '-');
-    for (int j = 0; j < sizeof(s_warnings) / sizeof(s_warnings[0]); j++)
-    {
-
-        if (strncmp(s_warnings[j].name, final_name, strlen(s_warnings[j].name)) == 0)
-        {
-            return (1ULL << ((unsigned long long)s_warnings[j].w));
-        }
-    }
-    return 0;
-}
-
-int get_warning_name(enum diagnostic_id w, int n, char buffer[/*n*/])
-{
-    if (is_diagnostic_configurable(w))
-    {
-        //TODO because s_warnings is _Ctor of order ....
-        //this is a linear seatch instead of just index! TODOD
-        for (int j = 0; j < sizeof(s_warnings) / sizeof(s_warnings[0]); j++)
-        {
-            if (s_warnings[j].w == w)
-            {
-                snprintf(buffer, n, "-W%s", s_warnings[j].name);
-                return 0;
-            }
-        }
-        snprintf(buffer, n, "W%d", w);
-    }
-    else
-    {
-        snprintf(buffer, n, "E%d", w);
-    }
-
-    return 0;//"";
-}
-
-int get_warning_name_and_number(enum diagnostic_id w, int n, char buffer[/*n*/])
-{
-    if (is_diagnostic_configurable(w))
-    {
-        //TODO because s_warnings is _Ctor of order ....
-        //this is a linear seatch instead of just index! TODOD
-        for (int j = 0; j < sizeof(s_warnings) / sizeof(s_warnings[0]); j++)
-        {
-            if (s_warnings[j].w == w)
-            {
-                snprintf(buffer, n, "-W%s/-W%d", s_warnings[j].name, w);
-                return 0;
-            }
-        }
-    }
-    else
-    {
-        snprintf(buffer, n, "E%d", w);
-    }
-
-    return 0;//"";
-}
 
 static int has_prefix(const char* str, const char* prefix)
 {
@@ -14784,13 +14823,13 @@ int fill_options(struct options* options,
 
     options->target = CAKE_COMPILE_TIME_SELECTED_TARGET;
 
-    /*
-       default at this moment is same as -Wall
-    */
-    options->diagnostic_stack.stack[0] = default_diagnostic;
+    options_set_all_warnings(options);
+    options_set_warning(options, W_FLOW_NULL_DEREFERENCE, false);
+    options_set_warning(options, W_FLOW_NULLABLE_TO_NON_NULLABLE, false);
+    options_set_warning(options, W_UNUSED_PARAMETER, false);
+    options_set_warning(options, W_UNUSED_VARIABLE, false);
 
-    options->diagnostic_stack.stack[0].warnings &= ~(1ULL << W_STYLE);
-    //&~items;
+    options_set_warning(options, W_STYLE, false);
 
 
     /*first loop used to collect options*/
@@ -14919,9 +14958,22 @@ int fill_options(struct options* options,
             continue;
         }
 
+        if (strcmp(argv[i], "-comment-to-attr") == 0)
+        {
+            options->comment_to_attribute = true;
+            continue;
+        }
+
         if (strcmp(argv[i], "-test-mode") == 0)
         {
             options->test_mode = true;
+            continue;
+        }
+
+        if (strcmp(argv[i], "-test-mode-in-out") == 0)
+        {
+            options->test_mode = true;
+            options->test_mode_inout = true;
             continue;
         }
 
@@ -14981,8 +15033,8 @@ int fill_options(struct options* options,
         if (strcmp(argv[i], "-nullable=disable") == 0)
         {
             options->null_checks_enabled = false;
-            unsigned long long w = NULLABLE_DISABLE_REMOVED_WARNINGS;
-            options->diagnostic_stack.stack[0].warnings &= ~w;
+                //unsigned long long w = NULLABLE_DISABLE_REMOVED_WARNINGS;
+                //options->diagnostic_stack.stack[0].warnings &= ~w;
             continue;
         }
 
@@ -15031,35 +15083,23 @@ int fill_options(struct options* options,
         }
 
         //warnings
-        if (argv[i][1] == 'W')
+        if (argv[i][1] == 'w')
         {
-            if (strcmp(argv[i], "-Wall") == 0)
+            if (strcmp(argv[i], "-wall") == 0)
             {
-                options->diagnostic_stack.stack[0].warnings = ~0ULL;
+                options_set_all_warnings(options);
                 continue;
             }
-            const bool disable_warning = (argv[i][2] == 'n' && argv[i][3] == 'o');
+            const bool enable_warning = (argv[i][2] != 'd');
 
-            unsigned long long w = get_warning_bit_mask(argv[i]);
+            const int w = atoi(argv[i] + 3);
 
-            if (w == 0)
+            if (!is_diagnostic_configurable(w))
             {
-                printf("unknown warning '%s'", argv[i]);
+                printf("diagnostic '%d' is not configurable", w);
                 return 1;
             }
-
-
-            if (disable_warning)
-            {
-                options->diagnostic_stack.stack[0].warnings &= ~w;
-            }
-            else
-            {
-                if (w == W_STYLE)
-                    options->diagnostic_stack.stack[0].warnings |= w;
-                else
-                    options->diagnostic_stack.stack[0].notes |= w;
-            }
+            options_set_warning(options, w, enable_warning);
             continue;
         }
 
@@ -15087,93 +15127,168 @@ int fill_options(struct options* options,
     return 0;
 }
 
+static void print_option(const char* option, const char* description)
+{
+    const char* p = option;
+    int count = 0;
+    int first_colum = 28;
+
+
+
+    printf(LIGHTCYAN " ");
+    while (*p)
+    {
+        printf("%c", *p);
+        count++;
+        p++;
+    }
+
+    printf("%s", COLOR_RESET);
+
+
+    for (; count < first_colum; count++)
+        printf(" ");
+
+    p = description;
+
+    bool breakline = false;
+    while (*p)
+    {
+        printf("%c", *p);
+        count++;
+        if (count > 70)
+            breakline = true;
+
+        if (breakline && *p == ' ')
+        {
+            breakline = false;
+            printf("\n");
+            count = 0;
+            for (; count < first_colum; count++)
+                printf(" ");
+        }
+        p++;
+    }
+
+    printf("%s\n", COLOR_RESET);
+}
 
 void print_help()
 {
-#define CAKE LIGHTCYAN "cake " COLOR_RESET 
-
-    const char* options =
-        LIGHTGREEN "Usage :" COLOR_RESET CAKE LIGHTBLUE "[OPTIONS] source1.c source2.c ...\n" COLOR_RESET
+    const char* sample =
+        LIGHTGREEN "Usage : " COLOR_RESET "cake " LIGHTBLUE "[OPTIONS] source1.c source2.c ...\n" COLOR_RESET
         "\n"
         LIGHTGREEN "Samples:\n" COLOR_RESET
         "\n"
-        WHITE "    " CAKE " source.c\n" COLOR_RESET
+        WHITE "    cake source.c\n" COLOR_RESET
         "    Compiles source.c and outputs /out/source.c\n"
         "\n"        
-        WHITE "    " CAKE " file.c -o file.cc && cl file.cc\n" COLOR_RESET
+        WHITE "    cake file.c -o file.cc && cl file.cc\n" COLOR_RESET
         "    Compiles file.c and outputs file.cc then use cl to compile file.cc\n"
         "\n"
-        WHITE "    " CAKE " file.c -direct-compilation -o file.cc && cl file.cc\n" COLOR_RESET
-        "    Compiles file.c and outputs file.cc for direct compilation then use cl to compile file.cc\n"
-        "\n"
-        LIGHTGREEN "Options:\n" COLOR_RESET
-        "\n"
-        LIGHTCYAN "  -I                   " COLOR_RESET " Adds a directory to the list of directories searched for include files \n"
-        "                        (On windows, if you run cake at the visual studio command prompt cake \n"
-        "                        uses the same include files used by msvc )\n"
-        "\n"
-        LIGHTCYAN "  -auto-config           " COLOR_RESET "Generates cakeconfig.h with include directories\n"
-        "\n"
-        LIGHTCYAN "  -no-output            " COLOR_RESET "Cake will not generate output\n"
-        "\n"
-        LIGHTCYAN "  -D                    " COLOR_RESET "Defines a preprocessing symbol for a source file \n"
-        "\n"
-        LIGHTCYAN "  -E                    " COLOR_RESET "Copies preprocessor output to standard output \n"
-        "\n"
-        LIGHTCYAN "  -o name.c             " COLOR_RESET "Defines the output name when compiling one file\n"
-        "\n"
-        LIGHTCYAN "  -no-discard           " COLOR_RESET "Makes [[nodiscard]] default implicitly \n"
-        "\n"
-        LIGHTCYAN "  -Wname -Wno-name      " COLOR_RESET "Enables or disable warning\n"
-        "\n"
-        LIGHTCYAN "  -fanalyzer            " COLOR_RESET "Runs flow analysis -  required for ownership\n"
-        "\n"
-        LIGHTCYAN "  -sarif                " COLOR_RESET "Generates sarif files\n"
-        "\n"
-        LIGHTCYAN "  -H                    " COLOR_RESET "Print the name of each header file used\n"
-        "\n"
-        LIGHTCYAN "  -sarif-path           " COLOR_RESET "Set sarif output dir\n"
-        "\n"
-        LIGHTCYAN "  -msvc-output          " COLOR_RESET "Output is compatible with visual studio\n"
-        "\n"
-        LIGHTCYAN "  -fdiagnostics-color=never " COLOR_RESET "Output will not use colors\n"
-        "\n"
-        LIGHTCYAN "  -dump-tokens          " COLOR_RESET "Output tokens before preprocessor\n"
-        "\n"
-        LIGHTCYAN "  -dump-pp-tokens       " COLOR_RESET "Output tokens after preprocessor\n"
-        "\n"
-        LIGHTCYAN "  -disable-assert       " COLOR_RESET "disables built-in assert\n"
-        "\n"
-        LIGHTCYAN "  -const-literal        " COLOR_RESET "literal string becomes const\n"
-        "\n"
-        LIGHTCYAN "  -preprocess-def-macro " COLOR_RESET "preprocess def macros after expansion\n"
+        LIGHTGREEN "Options:\n\n" COLOR_RESET;
 
-        "More details at http://thradams.com/cake/manual.html\n"
-        ;
+    printf("%s", sample);
 
-    printf("%s", options);
+    print_option("-I", "Adds a directory to the list of directories searched for include files");
+    print_option("-auto-config", "Generates cakeconfig.h with include directories");
+    print_option("-no-output", "Cake will not generate output");
+    print_option("-D", "Defines a preprocessing symbol for a source file");
+    print_option("-E", "Copies preprocessor output to standard output");
+    print_option("-o name", "Defines the output name when compiling one file");
+    print_option("-no-discard", "Makes [[nodiscard]] default implicitly");
+    print_option("-w -wd", "Enables or disable warning number");
+    print_option("-wall", "Enables all warnings");
+    print_option("-fanalyzer ", "Runs flow analysis -  required for ownership");
+    print_option("-sarif ", "Generates sarif files");
+    print_option("-H", "Print the name of each header file used");
+    print_option("-sarif-path", "Set sarif output dir");
+    print_option("-msvc-output", "Output is compatible with visual studio");
+    print_option("-fdiagnostics-color=never", "Output will not use colors");
+    print_option("-dump-tokens", "Output tokens before preprocessor");
+    print_option("-dump-pp-tokens", "Output tokens after preprocessor");
+    print_option("-disable-assert", "disables built-in assert");
+    print_option("-const-literal", "literal string becomes const");
+    print_option("-preprocess-def-macro", "preprocess def macros after expansion");
+    print_option("-comment-to-attr", "convert comments /*!w#*/ into attributes [[cake::w#]]");
+    
+
+    printf("\n");
+    printf("More details at http://cakecc.org/manual.html\n");
+
 }
 
-#ifdef TEST
-
-void test_get_warning_name()
+void options_set_error(struct options* options, enum diagnostic_id w, bool value)
 {
-    char dbg_name[100];
-    get_warning_name(W_FLOW_MISSING_DTOR, sizeof dbg_name, dbg_name);
-    assert(strcmp(dbg_name, "-Wmissing-destructor") == 0);
+    bitset_set(&options->diagnostic_stack.stack[options->diagnostic_stack.top_index].warnings, w, false);
+    bitset_set(&options->diagnostic_stack.stack[options->diagnostic_stack.top_index].notes, w, false);
 
-    unsigned long long  flags = get_warning_bit_mask(dbg_name);
-    assert(flags == (1ULL << W_FLOW_MISSING_DTOR));
-
-
-    get_warning_name(W_STYLE, sizeof dbg_name, dbg_name);
-    assert(strcmp(dbg_name, "-Wstyle") == 0);
-
-    unsigned long long  flags2 = get_warning_bit_mask(dbg_name);
-    assert(flags2 == (1ULL << W_STYLE));
+    bitset_set(&options->diagnostic_stack.stack[options->diagnostic_stack.top_index].errors, w, value);
 }
 
-#endif
+void options_set_warning(struct options* options, enum diagnostic_id w, bool value)
+{
+    bitset_set(&options->diagnostic_stack.stack[options->diagnostic_stack.top_index].errors, w, false);
+    bitset_set(&options->diagnostic_stack.stack[options->diagnostic_stack.top_index].notes, w, false);
+
+    bitset_set(&options->diagnostic_stack.stack[options->diagnostic_stack.top_index].warnings, w, value);
+}
+
+void options_set_all_warnings(struct options* options)
+{
+    bitset_setall(&options->diagnostic_stack.stack[options->diagnostic_stack.top_index].warnings);
+}
+
+void options_set_clear_all_warnings(struct options* options)
+{
+    bitset_clear(&options->diagnostic_stack.stack[options->diagnostic_stack.top_index].warnings);
+}
+
+
+void options_set_note(struct options* options, enum diagnostic_id w, bool value)
+{
+    bitset_set(&options->diagnostic_stack.stack[options->diagnostic_stack.top_index].errors, w, false);
+    bitset_set(&options->diagnostic_stack.stack[options->diagnostic_stack.top_index].warnings, w, false);
+
+    bitset_set(&options->diagnostic_stack.stack[options->diagnostic_stack.top_index].notes, w, value);
+}
+
+bool options_diagnostic_is_error(const struct options* options, enum diagnostic_id w)
+{
+    if (w == W_LOCATION)
+        return false;
+    
+    if (w >= BITSET_SIZE)
+        return true;
+
+    return
+        bitset_get(&options->diagnostic_stack.stack[options->diagnostic_stack.top_index].errors, w);
+}
+
+bool options_diagnostic_is_warning(const struct options* options, enum diagnostic_id w)
+{
+    if (w == W_LOCATION)
+        return false;
+    
+    if (w >= BITSET_SIZE)
+        return false;
+
+    return
+        bitset_get(&options->diagnostic_stack.stack[options->diagnostic_stack.top_index].warnings, w);
+
+}
+
+bool options_diagnostic_is_note(const struct options* options, enum diagnostic_id w)
+{
+    if (w == W_LOCATION)
+        return false;
+    
+    if (w >= BITSET_SIZE)
+        return false;
+
+    return
+        bitset_get(&options->diagnostic_stack.stack[options->diagnostic_stack.top_index].notes, w);
+}
 
 
 /*
@@ -15524,6 +15639,7 @@ bool type_is_pointer_or_array(const struct type* p_type);
 bool type_is_same(const struct type* a, const struct type* b, bool compare_qualifiers);
 bool type_is_compatible(const struct type* a, const struct type* b);
 bool type_is_scalar(const struct type* p_type);
+bool type_is_scalar_decay(const struct type* p_type);
 bool type_has_attribute(const struct type* p_type, enum attribute_flags attributes);
 bool type_is_bool(const struct type* p_type);
 bool type_is_decimal128(const struct type* p_type);
@@ -15614,16 +15730,6 @@ void type_remove_names(struct type* p_type);
 const struct type* type_get_specifer_part(const struct type* p_type);
 void print_msvc_declspec(struct osstream* ss, bool* first, enum msvc_declspec_flags  msvc_declspec_flags);
 
- #if defined(__CATALINA__)
-// This is required when compiling Cake using gcc but with Catalina headers
-#if !defined (UINT64_MAX)
-#define UINT64_MAX  18446744073709551615ULL
-#endif
-#if !defined (INT64_MAX)
-#define INT64_MAX  9223372036854775807LL
-#endif
-#define __STDC_FORMAT_MACROS
-#endif // defined(__CATALINA__)
 
 
 #include <inttypes.h>
@@ -15885,9 +15991,6 @@ struct object object_shift_right(enum target target,
 
 
 
-#include <limits.h>
-
-
 /*
  *  This file is part of cake compiler
  *  https://github.com/thradams/cake
@@ -15948,6 +16051,7 @@ enum expression_type
     UNARY_EXPRESSION_GCC__BUILTIN_VA_COPY,
     UNARY_EXPRESSION_GCC__BUILTIN_VA_ARG,
     UNARY_EXPRESSION_GCC__BUILTIN_OFFSETOF,
+    UNARY_EXPRESSION_GCC__BUILTIN_XXXXX,
 
 
     UNARY_EXPRESSION_TRAITS,
@@ -16142,11 +16246,6 @@ bool expression_is_lvalue(const struct expression* expr);
 bool expression_is_one(const struct expression* expression);
 bool expression_is_zero(const struct expression* expression);
 bool expression_is_null_pointer_constant(const struct expression* expression);
-void expression_evaluate_equal_not_equal(const struct expression* left,
-    const struct expression* right,
-    struct expression* result,
-    int op,
-    bool disabled);
 
 void check_diferent_enuns(struct parser_ctx* ctx,
                           const struct token* operator_token,
@@ -17335,9 +17434,16 @@ void defer_list_destroy(_Dtor struct defer_list* p);
 struct try_statement
 {
     /*
-      try-statement: (extension)
+      try-statement: (cake- extension)
        "try" secondary-block
        "try" secondary-block "catch" secondary-block
+    */
+
+    /*
+      __try: (msvc extension)
+       "__try" secondary-block
+       "__finally" secondary-block 
+       "__except(expression)" secondary-block
     */
     struct secondary_block* _Owner secondary_block;
     struct secondary_block* _Owner _Opt catch_secondary_block_opt;
@@ -17345,11 +17451,22 @@ struct try_statement
     struct token* last_token;
     struct token* _Opt catch_token_opt; /*catch*/
 
+    struct expression* msvc_except_expression;
     int catch_label_id;
 };
 
 struct try_statement* _Owner _Opt try_statement(struct parser_ctx* ctx);
 void try_statement_delete(struct try_statement* _Owner _Opt p);
+
+struct asm_statement
+{
+    struct token * p_first_token;
+    struct token * p_last_token;
+};
+
+struct asm_statement* _Owner _Opt asm_statement(struct parser_ctx* ctx);
+
+void asm_statement_delete(struct asm_statement* _Owner _Opt p);
 
 struct case_label_list
 {
@@ -17563,6 +17680,8 @@ struct primary_block
          iteration-statement
          defer-statement (extension)
          try-statement (extension)
+
+         gcc_asm_statement
     */
 
     struct compound_statement* _Owner _Opt compound_statement;
@@ -17570,6 +17689,7 @@ struct primary_block
     struct iteration_statement* _Owner _Opt iteration_statement;
     struct defer_statement* _Owner _Opt defer_statement;
     struct try_statement* _Owner _Opt try_statement;
+    struct asm_statement* _Owner _Opt asm_statement;
 };
 
 void primary_block_delete(struct primary_block* _Owner _Opt p);
@@ -17818,7 +17938,7 @@ struct type make_type_using_declarator(struct parser_ctx* ctx, struct declarator
 
 
 struct declaration_list parse(struct parser_ctx* ctx, struct token_list* list, bool* berror);
-const char* _Owner _Opt compile_source(const char* pszoptions, const char* content, struct report* report);
+
 
 int initializer_init_new(struct parser_ctx* ctx,
                          struct type* p_current_object_type,
@@ -17843,23 +17963,56 @@ void warn_unrecognized_warnings(struct parser_ctx* ctx,
 
 #include <math.h>
 
-/*
-   Integer cast to int N
-*/
-#define CAKE_CREATE_MASK(bits) ((uint64_t)((1ULL << (bits)) - 1))
 
-#define CAKE_CAST_UINT_N(value, bits) ((uint64_t)(((uint64_t)(value)) &  CAKE_CREATE_MASK(bits)))
 
-#define CAKE_SIGN_EXTEND(num, bits) ((int64_t)((((uint64_t)(num)) & (1ULL << ((bits) - 1))) ? \
-    ((num) | ~CAKE_CREATE_MASK(bits)) : (((int64_t)(num)) &  CAKE_CREATE_MASK(bits))))
+#define STATIC_ASSERT(cond) do { typedef char static_assert_error[(cond) ? 1 : -1]; } while (0)
 
-#define CAKE_CAST_INT_N(value, bits) CAKE_SIGN_EXTEND((int64_t)(((uint64_t)(value)) &  CAKE_CREATE_MASK(bits)), bits)
 
-/*
-   Floating point casts
-*/
-#define CAKE_CAST_FLOAT_N(value, bits)  (((bits) == 32) ? (long double)(float) ((long double)(value)) : ((bits) == 64) ? (long double)(double)((long double)(value)) : (long double) ((long double)(value)))
 
+static unsigned long long wrap_unsigned_integer(unsigned long long value, int bits)
+{
+    assert(bits <= sizeof(unsigned long long) * CHAR_BIT);
+
+    if (bits == 0 || bits >= sizeof(unsigned long long) * CHAR_BIT)
+        return value;
+
+    const unsigned long long mask = (1ULL << bits) - 1;
+    return value & mask;
+}
+
+
+static long long wrap_signed_integer(long long value, int bits)
+{
+    assert(bits <= sizeof(unsigned long long) * CHAR_BIT);
+
+    if (bits == 0 || bits >= sizeof(unsigned long long) * CHAR_BIT)
+        return value;
+
+    // Mask to keep lower n bits
+    const unsigned long long  mask = (1ULL << bits) - 1;
+    unsigned long long  wrapped = (unsigned long long)value & mask;
+
+    // If the sign bit (bit n-1) is set, interpret as negative
+    if (wrapped & (1ULL << (bits - 1)))
+        return (long long)(wrapped | ~mask); // sign-extend
+
+    return (long long)wrapped;
+}
+
+
+static long double resize_floating_point(long double value, int bits)
+{
+    switch (bits)
+    {
+    case 64:
+        STATIC_ASSERT(sizeof(double) == 8);
+        return (double)value;
+    case 32:
+        STATIC_ASSERT(sizeof(float) == 4);
+        return (float)value;
+    }
+    return value;
+}
 
 static enum object_type to_unsigned(enum object_type t)
 {
@@ -17875,7 +18028,7 @@ static enum object_type to_unsigned(enum object_type t)
     case TYPE_DOUBLE:
     case TYPE_LONG_DOUBLE:
         return t;
-    
+
     }
     assert(false);
     return t;
@@ -18178,8 +18331,8 @@ struct object object_make_size_t(enum target target, unsigned long long value)
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
     r.value_type = get_platform(target)->size_t_type;
-    const unsigned long long bits = target_get_num_of_bits(target, r.value_type);
-    r.value.host_u_long_long = CAKE_CAST_UINT_N(value, bits);
+    const int bits = target_get_num_of_bits(target, r.value_type);
+    r.value.host_u_long_long = wrap_unsigned_integer(value, bits);
     return r;
 }
 
@@ -18188,8 +18341,8 @@ struct object object_make_nullptr(enum target target)
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
     r.value_type = get_platform(target)->size_t_type;
-    const unsigned long long bits = target_get_num_of_bits(target, r.value_type);
-    r.value.host_u_long_long = CAKE_CAST_UINT_N(0, bits);
+    const int bits =  target_get_num_of_bits(target, r.value_type);
+    r.value.host_u_long_long = wrap_unsigned_integer(0, bits);
     return r;
 }
 
@@ -18201,11 +18354,11 @@ struct object object_make_char(enum target target, int value)
 
     if (object_type_is_signed_integer(r.value_type))
     {
-        r.value.host_long_long = CAKE_CAST_INT_N(value, get_platform(target)->char_n_bits);
+        r.value.host_long_long = wrap_signed_integer(value, get_platform(target)->char_n_bits);
     }
     else
     {
-        r.value.host_u_long_long = CAKE_CAST_UINT_N(value, get_platform(target)->char_n_bits);
+        r.value.host_u_long_long = wrap_unsigned_integer(value, get_platform(target)->char_n_bits);
     }
 
     return r;
@@ -18216,8 +18369,8 @@ struct object object_make_wchar_t(enum target target, int value)
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
     r.value_type = get_platform(target)->wchar_t_type;
-    unsigned long long bits = target_get_num_of_bits(target, r.value_type);
-    r.value.host_u_long_long = CAKE_CAST_UINT_N(value, bits);
+    const int bits = target_get_num_of_bits(target, r.value_type);
+    r.value.host_u_long_long = wrap_unsigned_integer(value, bits);
     return r;
 }
 
@@ -18228,11 +18381,11 @@ struct object object_make_bool(enum target target, bool value)
     r.value_type = get_platform(target)->bool_type;
     if (object_type_is_signed_integer(r.value_type))
     {
-        r.value.host_long_long = CAKE_CAST_INT_N(value, get_platform(target)->bool_n_bits);
+        r.value.host_long_long = wrap_signed_integer(value, get_platform(target)->bool_n_bits);
     }
     else
     {
-        r.value.host_u_long_long = CAKE_CAST_UINT_N(value, get_platform(target)->bool_n_bits);
+        r.value.host_u_long_long = wrap_unsigned_integer(value, get_platform(target)->bool_n_bits);
     }
     return r;
 }
@@ -18251,7 +18404,7 @@ int object_to_str(const struct object* a, int n, char str[/*n*/])
         snprintf(str, n, "%lld", a->value.host_long_long);
         break;
         break;
-    
+
     case TYPE_SIGNED_LONG:
         snprintf(str, n, "%lldL", a->value.host_long_long);
         break;
@@ -18268,22 +18421,22 @@ int object_to_str(const struct object* a, int n, char str[/*n*/])
 
     case TYPE_UNSIGNED_LONG:
         snprintf(str, n, "%lluUL", a->value.host_u_long_long);
-    break;
+        break;
 
     case TYPE_UNSIGNED_LONG_LONG:
         snprintf(str, n, "%lluULL", a->value.host_u_long_long);
-    break;
+        break;
 
     case TYPE_FLOAT:
         snprintf(str, n, "%Lff", a->value.host_long_double);
         break;
     case TYPE_DOUBLE:
         snprintf(str, n, "%Lf", a->value.host_long_double);
-    break;
+        break;
 
     case TYPE_LONG_DOUBLE:
         snprintf(str, n, "%LfLF", a->value.host_long_double);
-    break;
+        break;
     }
 
     return 0;
@@ -18325,7 +18478,7 @@ struct object object_make_signed_char(signed char value)
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
     r.value_type = TYPE_SIGNED_CHAR;
-    r.value.host_long_long = CAKE_CAST_INT_N(value, get_platform(TARGET_X86_MSVC)->char_n_bits);
+    r.value.host_long_long = wrap_signed_integer(value, get_platform(TARGET_X86_MSVC)->char_n_bits);
     return r;
 }
 
@@ -18340,7 +18493,7 @@ void object_increment_value(enum target target, struct object* a)
     case TYPE_SIGNED_LONG:
     case TYPE_SIGNED_LONG_LONG:
 
-        a->value.host_long_long = CAKE_CAST_INT_N(a->value.host_long_long + 1, target_get_num_of_bits(target, a->value_type));
+        a->value.host_long_long = wrap_signed_integer(a->value.host_long_long + 1, target_get_num_of_bits(target, a->value_type));
         break;
 
     case TYPE_UNSIGNED_CHAR:
@@ -18348,14 +18501,14 @@ void object_increment_value(enum target target, struct object* a)
     case TYPE_UNSIGNED_INT:
     case TYPE_UNSIGNED_LONG:
     case TYPE_UNSIGNED_LONG_LONG:
-        a->value.host_u_long_long = CAKE_CAST_INT_N(a->value.host_u_long_long + 1, target_get_num_of_bits(target, a->value_type));
+        a->value.host_u_long_long = wrap_signed_integer(a->value.host_u_long_long + 1, target_get_num_of_bits(target, a->value_type));
         break;
 
     case TYPE_FLOAT:
     case TYPE_DOUBLE:
     case TYPE_LONG_DOUBLE:
         a->value.host_long_double++;
-        a->value.host_long_double = CAKE_CAST_FLOAT_N(a->value.host_long_double, target_get_num_of_bits(target, a->value_type));
+        a->value.host_long_double = resize_floating_point(a->value.host_long_double, target_get_num_of_bits(target, a->value_type));
         break;
     }
 }
@@ -18365,7 +18518,7 @@ struct object object_make_unsigned_char(enum target target, unsigned char value)
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
     r.value_type = TYPE_UNSIGNED_CHAR;
-    r.value.host_u_long_long = CAKE_CAST_UINT_N(value, get_platform(target)->char_n_bits);
+    r.value.host_u_long_long = wrap_unsigned_integer(value, get_platform(target)->char_n_bits);
     //assert(false);
     return r;
 }
@@ -18376,8 +18529,8 @@ struct object object_make_signed_short(signed short value)
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
     r.value_type = TYPE_SIGNED_SHORT;
-    r.value.host_long_long = CAKE_CAST_INT_N(value, 16);
-    //RTODO
+    r.value.host_long_long = wrap_signed_integer(value, 16);
+
     return r;
 }
 
@@ -18386,21 +18539,21 @@ struct object object_make_uint8(enum target target, uint8_t value)
 {
     struct object r = { 0 };
     r.value_type = to_unsigned(get_platform(target)->int8_type);
-    r.value.host_u_long_long = CAKE_CAST_UINT_N(value, 8);
+    r.value.host_u_long_long = wrap_unsigned_integer(value, 8);
     return r;
 }
 struct object object_make_uint16(enum target target, uint16_t value)
 {
     struct object r = { 0 };
     r.value_type = to_unsigned(get_platform(target)->int16_type);
-    r.value.host_u_long_long = CAKE_CAST_UINT_N(value, 16);
+    r.value.host_u_long_long = wrap_unsigned_integer(value, 16);
     return r;
 }
 struct object object_make_uint32(enum target target, uint32_t value)
 {
     struct object r = { 0 };
     r.value_type = to_unsigned(get_platform(target)->int32_type);
-    r.value.host_u_long_long = CAKE_CAST_UINT_N(value, 32);
+    r.value.host_u_long_long = wrap_unsigned_integer(value, 32);
     return r;
 }
 
@@ -18409,7 +18562,7 @@ struct object object_make_signed_int(enum  target target, long long value)
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
     r.value_type = TYPE_SIGNED_INT;
-    r.value.host_long_long = CAKE_CAST_INT_N(value, get_platform(target)->int_n_bits);
+    r.value.host_long_long = wrap_signed_integer(value, get_platform(target)->int_n_bits);
     return r;
 }
 
@@ -18418,7 +18571,7 @@ struct object object_make_unsigned_int(enum target target, unsigned long long va
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
     r.value_type = TYPE_UNSIGNED_INT;
-    r.value.host_long_long = CAKE_CAST_UINT_N(value, get_platform(target)->int_n_bits);
+    r.value.host_long_long = wrap_unsigned_integer(value, get_platform(target)->int_n_bits);
     return r;
 }
 
@@ -18427,8 +18580,8 @@ struct object object_make_signed_long(enum target target, signed long long value
 {
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
-    r.value_type = TYPE_SIGNED_INT; //RTODO
-    r.value.host_long_long = CAKE_CAST_INT_N(value, get_platform(target)->long_n_bits);
+    r.value_type = TYPE_SIGNED_LONG;
+    r.value.host_long_long = wrap_signed_integer(value, get_platform(target)->long_n_bits);
     return r;
 }
 
@@ -18438,7 +18591,7 @@ struct object object_make_unsigned_long(enum target target, unsigned long long v
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
     r.value_type = TYPE_UNSIGNED_LONG;
-    r.value.host_u_long_long = CAKE_CAST_UINT_N(value, get_platform(target)->long_n_bits);
+    r.value.host_u_long_long = wrap_unsigned_integer(value, get_platform(target)->long_n_bits);
     return r;
 }
 
@@ -18448,7 +18601,7 @@ struct object object_make_signed_long_long(enum target target, signed long long 
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
     r.value_type = TYPE_SIGNED_LONG_LONG;
 
-    r.value.host_long_long = CAKE_CAST_INT_N(value, get_platform(target)->long_long_n_bits);
+    r.value.host_long_long = wrap_signed_integer(value, get_platform(target)->long_long_n_bits);
     return r;
 }
 
@@ -18524,7 +18677,7 @@ struct object object_make_float(enum target target, long double value)
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
     r.value_type = TYPE_FLOAT;
-    r.value.host_long_double = CAKE_CAST_FLOAT_N(value, target_get_num_of_bits(target, TYPE_FLOAT));
+    r.value.host_long_double = resize_floating_point(value, target_get_num_of_bits(target, TYPE_FLOAT));
     return r;
 }
 
@@ -18533,7 +18686,7 @@ struct object object_make_double(enum target target, long double value)
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
     r.value_type = TYPE_DOUBLE;
-    r.value.host_long_double = CAKE_CAST_FLOAT_N(value, target_get_num_of_bits(target, TYPE_DOUBLE));
+    r.value.host_long_double = resize_floating_point(value, target_get_num_of_bits(target, TYPE_DOUBLE));
     return r;
 }
 
@@ -18542,7 +18695,7 @@ struct object object_make_long_double(enum target target, long double value)
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
     r.value_type = TYPE_LONG_DOUBLE;
-    r.value.host_long_double = CAKE_CAST_FLOAT_N(value, target_get_num_of_bits(target, TYPE_LONG_DOUBLE));
+    r.value.host_long_double = resize_floating_point(value, target_get_num_of_bits(target, TYPE_LONG_DOUBLE));
     return r;
 }
 
@@ -18588,19 +18741,19 @@ struct object object_cast(enum target target, enum object_type dest_type, const 
 
 
     if (object_type_is_signed_integer(source_type))
-            {
+    {
         if (object_type_is_signed_integer(dest_type))
                 {
-            r.value.host_long_long = CAKE_CAST_INT_N(v->value.host_long_long, dest_n_bits);
+            r.value.host_long_long = wrap_signed_integer(v->value.host_long_long, dest_n_bits);
         }
         else if (object_type_is_unsigned_integer(dest_type))
                     {
-            r.value.host_long_long = CAKE_CAST_UINT_N(v->value.host_long_long, dest_n_bits);
+            r.value.host_long_long = wrap_unsigned_integer(v->value.host_long_long, dest_n_bits);
     }
         else
-    {
-            r.value.host_long_double = CAKE_CAST_FLOAT_N(v->value.host_long_long, dest_n_bits);
-    }
+        {
+            r.value.host_long_double = resize_floating_point((long double)v->value.host_long_long, dest_n_bits);
+        }
         return r;
     }
 
@@ -18608,15 +18761,15 @@ struct object object_cast(enum target target, enum object_type dest_type, const 
     {
         if (object_type_is_signed_integer(dest_type))
         {
-            r.value.host_long_long = CAKE_CAST_INT_N(v->value.host_u_long_long, dest_n_bits);
+            r.value.host_long_long = wrap_signed_integer(v->value.host_u_long_long, dest_n_bits);
     }
         else if (object_type_is_unsigned_integer(dest_type))
     {
-            r.value.host_u_long_long = CAKE_CAST_UINT_N(v->value.host_u_long_long, dest_n_bits);
+            r.value.host_u_long_long = wrap_unsigned_integer(v->value.host_u_long_long, dest_n_bits);
     }
         else
     {
-            r.value.host_long_double = CAKE_CAST_FLOAT_N(v->value.host_u_long_long, dest_n_bits);
+            r.value.host_long_double = resize_floating_point((long double)v->value.host_u_long_long, dest_n_bits);
     }
         return r;
     }
@@ -18625,15 +18778,15 @@ struct object object_cast(enum target target, enum object_type dest_type, const 
     {
         if (object_type_is_signed_integer(dest_type))
         {
-            r.value.host_long_long = CAKE_CAST_INT_N(v->value.host_long_double, dest_n_bits);
+            r.value.host_long_long = wrap_signed_integer((long long)v->value.host_long_double, dest_n_bits);
     }
         else if (object_type_is_unsigned_integer(dest_type))
     {
-            r.value.host_u_long_long = CAKE_CAST_UINT_N(v->value.host_long_double, dest_n_bits);
+            r.value.host_u_long_long = wrap_unsigned_integer((unsigned long long) v->value.host_long_double, dest_n_bits);
         }
         else
         {
-            r.value.host_long_double = CAKE_CAST_FLOAT_N(v->value.host_long_double, dest_n_bits);
+            r.value.host_long_double = resize_floating_point(v->value.host_long_double, dest_n_bits);
         }
         return r;
     }
@@ -18642,15 +18795,15 @@ struct object object_cast(enum target target, enum object_type dest_type, const 
     {
         if (object_type_is_signed_integer(dest_type))
         {
-            r.value.host_long_long = CAKE_CAST_INT_N((long long)v->value.host_long_double, dest_n_bits);
+            r.value.host_long_long = wrap_signed_integer((long long)v->value.host_long_double, dest_n_bits);
         }
         else if (object_type_is_unsigned_integer(dest_type))
         {
-            r.value.host_u_long_long = CAKE_CAST_UINT_N((long long)v->value.host_long_double, dest_n_bits);
+            r.value.host_u_long_long = wrap_unsigned_integer((long long)v->value.host_long_double, dest_n_bits);
         }
         else
         {
-            r.value.host_long_double = CAKE_CAST_FLOAT_N(v->value.host_long_double, dest_n_bits);
+            r.value.host_long_double = resize_floating_point(v->value.host_long_double, dest_n_bits);
         }
         return r;
     }
@@ -18660,21 +18813,21 @@ struct object object_cast(enum target target, enum object_type dest_type, const 
     {
         if (object_type_is_signed_integer(dest_type))
         {
-            r.value.host_long_long = CAKE_CAST_INT_N((long long)v->value.host_long_double, dest_n_bits);
+            r.value.host_long_long = wrap_signed_integer((long long)v->value.host_long_double, dest_n_bits);
         }
         else if (object_type_is_unsigned_integer(dest_type))
         {
-            r.value.host_u_long_long = CAKE_CAST_UINT_N((long long)v->value.host_long_double, dest_n_bits);
+            r.value.host_u_long_long = wrap_unsigned_integer((long long)v->value.host_long_double, dest_n_bits);
         }
         else
         {
             r.value.host_long_double = v->value.host_long_double;
-            r.value.host_long_double = CAKE_CAST_FLOAT_N(v->value.host_long_double, dest_n_bits);
+            r.value.host_long_double = resize_floating_point(v->value.host_long_double, dest_n_bits);
         }
         return r;
     }
-    
-        assert(false);
+
+    assert(false);
     return r;
 }
 
@@ -19451,16 +19604,16 @@ struct object* object_extend_array_to_index(const struct type* p_type, struct ob
     try
     {
         for (size_t count = a->members.count; count < (max_index + 1); count++)
-            {
+        {
             char name[50] = { 0 };
             snprintf(name, sizeof name, "[%zu]", count);
 
             struct object* _Owner _Opt p = make_object_ptr_core(p_type, name, target);
-                if (p == NULL)
-                    throw;
+            if (p == NULL)
+                throw;
 
-                p->parent = a;
-                object_default_initialization(p, is_constant);
+            p->parent = a;
+            object_default_initialization(p, is_constant);
             object_list_push(&a->members, p);
         }
     }
@@ -19478,9 +19631,9 @@ bool object_is_promoted(const struct object* a)
     /*
       types smaller than int are promoted to int
     */
-    if (a->value_type == TYPE_SIGNED_CHAR   ||
+    if (a->value_type == TYPE_SIGNED_CHAR ||
         a->value_type == TYPE_UNSIGNED_CHAR ||
-        a->value_type == TYPE_SIGNED_SHORT  ||
+        a->value_type == TYPE_SIGNED_SHORT ||
         a->value_type == TYPE_UNSIGNED_SHORT)
     {
         return true;
@@ -19717,8 +19870,8 @@ void object_print_value(struct osstream* ss, const struct object* a, enum target
     case TYPE_LONG_DOUBLE:
         if (isinf(a->value.host_long_double))
         {
-            assert(false);//TODO we dont want inf to be printed.
-            ss_fprintf(ss, "%.17Lg", a->value.host_long_double);
+            //TODO decide
+            ss_fprintf(ss, ".7976931348623157E+308");
         }
         else
         {
@@ -19733,10 +19886,15 @@ void object_print_value(struct osstream* ss, const struct object* a, enum target
 
             while (*p)
             {
+                if (*p == 'e' || *p == 'E')
+                {
+                    dot_found = true;
+                }
+
                 if (*p == '.')
                 {
                     dot_found = true;
-        break;
+                    break;
                 }
                 p++;
             }
@@ -19767,6 +19925,7 @@ struct object object_equal(enum target target,
     const struct object* b,
     char warning_message[200])
 {
+    warning_message[0] = '\0';
     a = object_get_referenced(a);
     b = object_get_referenced(b);
 
@@ -19786,7 +19945,7 @@ struct object object_equal(enum target target,
     case TYPE_SIGNED_LONG_LONG:
     {
         r.value.host_long_long =
-            CAKE_CAST_INT_N(a0.value.host_long_long == b0.value.host_long_long, target_get_num_of_bits(target, common_type));
+            wrap_signed_integer(a0.value.host_long_long == b0.value.host_long_long, target_get_num_of_bits(target, common_type));
     }
     break;
 
@@ -19797,7 +19956,7 @@ struct object object_equal(enum target target,
     case TYPE_UNSIGNED_LONG_LONG:
 
         r.value.host_u_long_long =
-            CAKE_CAST_UINT_N(a0.value.host_u_long_long == b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
+            wrap_unsigned_integer(a0.value.host_u_long_long == b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
 
         break;
 
@@ -19806,7 +19965,7 @@ struct object object_equal(enum target target,
     case TYPE_LONG_DOUBLE:
         r.value.host_u_long_long = (a0.value.host_long_double == b0.value.host_long_double);
         break;
-}
+    }
 
     return r;
 }
@@ -19817,6 +19976,7 @@ struct object object_not_equal(enum target target,
     const struct object* b,
     char warning_message[200])
 {
+    warning_message[0] = '\0';
     a = object_get_referenced(a);
     b = object_get_referenced(b);
 
@@ -19836,7 +19996,7 @@ struct object object_not_equal(enum target target,
     case TYPE_SIGNED_LONG_LONG:
     {
         r.value.host_long_long =
-            CAKE_CAST_INT_N(a0.value.host_long_long != b0.value.host_long_long, target_get_num_of_bits(target, common_type));
+            wrap_signed_integer(a0.value.host_long_long != b0.value.host_long_long, target_get_num_of_bits(target, common_type));
     }
     break;
 
@@ -19847,7 +20007,7 @@ struct object object_not_equal(enum target target,
     case TYPE_UNSIGNED_LONG_LONG:
 
         r.value.host_u_long_long =
-            CAKE_CAST_UINT_N(a0.value.host_u_long_long != b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
+            wrap_unsigned_integer(a0.value.host_u_long_long != b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
 
         break;
 
@@ -19868,6 +20028,7 @@ struct object object_greater_than_or_equal(enum target target,
     const struct object* b,
     char warning_message[200])
 {
+    warning_message[0] = '\0';
     a = object_get_referenced(a);
     b = object_get_referenced(b);
 
@@ -19887,7 +20048,7 @@ struct object object_greater_than_or_equal(enum target target,
     case TYPE_SIGNED_LONG_LONG:
     {
         r.value.host_long_long =
-            CAKE_CAST_INT_N(a0.value.host_long_long >= b0.value.host_long_long, target_get_num_of_bits(target, common_type));
+            wrap_signed_integer(a0.value.host_long_long >= b0.value.host_long_long, target_get_num_of_bits(target, common_type));
     }
     break;
 
@@ -19898,7 +20059,7 @@ struct object object_greater_than_or_equal(enum target target,
     case TYPE_UNSIGNED_LONG_LONG:
 
         r.value.host_u_long_long =
-            CAKE_CAST_UINT_N(a0.value.host_u_long_long >= b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
+            wrap_unsigned_integer(a0.value.host_u_long_long >= b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
 
         break;
 
@@ -19918,6 +20079,7 @@ struct object object_greater_than(enum target target,
     const struct object* b,
     char warning_message[200])
 {
+    warning_message[0] = '\0';
     a = object_get_referenced(a);
     b = object_get_referenced(b);
 
@@ -19937,7 +20099,7 @@ struct object object_greater_than(enum target target,
     case TYPE_SIGNED_LONG_LONG:
     {
         r.value.host_long_long =
-            CAKE_CAST_INT_N(a0.value.host_long_long > b0.value.host_long_long, target_get_num_of_bits(target, common_type));
+            wrap_signed_integer(a0.value.host_long_long > b0.value.host_long_long, target_get_num_of_bits(target, common_type));
     }
     break;
 
@@ -19948,7 +20110,7 @@ struct object object_greater_than(enum target target,
     case TYPE_UNSIGNED_LONG_LONG:
 
         r.value.host_u_long_long =
-            CAKE_CAST_UINT_N(a0.value.host_u_long_long > b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
+            wrap_unsigned_integer(a0.value.host_u_long_long > b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
 
         break;
 
@@ -19967,6 +20129,7 @@ struct object object_smaller_than_or_equal(enum target target,
     const struct object* b,
     char warning_message[200])
 {
+    warning_message[0] = '\0';
     a = object_get_referenced(a);
     b = object_get_referenced(b);
 
@@ -19986,7 +20149,7 @@ struct object object_smaller_than_or_equal(enum target target,
     case TYPE_SIGNED_LONG_LONG:
     {
         r.value.host_long_long =
-            CAKE_CAST_INT_N(a0.value.host_long_long <= b0.value.host_long_long, target_get_num_of_bits(target, common_type));
+            wrap_signed_integer(a0.value.host_long_long <= b0.value.host_long_long, target_get_num_of_bits(target, common_type));
     }
     break;
 
@@ -19997,7 +20160,7 @@ struct object object_smaller_than_or_equal(enum target target,
     case TYPE_UNSIGNED_LONG_LONG:
 
         r.value.host_u_long_long =
-            CAKE_CAST_UINT_N(a0.value.host_u_long_long <= b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
+            wrap_unsigned_integer(a0.value.host_u_long_long <= b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
 
         break;
 
@@ -20017,6 +20180,7 @@ struct object object_smaller_than(enum target target,
     const struct object* b,
     char warning_message[200])
 {
+    warning_message[0] = '\0';
     a = object_get_referenced(a);
     b = object_get_referenced(b);
 
@@ -20036,7 +20200,7 @@ struct object object_smaller_than(enum target target,
     case TYPE_SIGNED_LONG_LONG:
     {
         r.value.host_long_long =
-            CAKE_CAST_INT_N(a0.value.host_long_long < b0.value.host_long_long, target_get_num_of_bits(target, common_type));
+            wrap_signed_integer(a0.value.host_long_long < b0.value.host_long_long, target_get_num_of_bits(target, common_type));
     }
     break;
 
@@ -20047,7 +20211,7 @@ struct object object_smaller_than(enum target target,
     case TYPE_UNSIGNED_LONG_LONG:
 
         r.value.host_u_long_long =
-            CAKE_CAST_UINT_N(a0.value.host_u_long_long < b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
+            wrap_unsigned_integer(a0.value.host_u_long_long < b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
 
         break;
 
@@ -20067,6 +20231,7 @@ struct object object_add(enum target target,
     const struct object* b,
     char warning_message[200])
 {
+    warning_message[0] = '\0';
     a = object_get_referenced(a);
     b = object_get_referenced(b);
 
@@ -20086,7 +20251,7 @@ struct object object_add(enum target target,
     case TYPE_SIGNED_LONG_LONG:
     {
         r.value.host_long_long =
-            CAKE_CAST_INT_N(a0.value.host_long_long + b0.value.host_long_long, target_get_num_of_bits(target, common_type));
+            wrap_signed_integer(a0.value.host_long_long + b0.value.host_long_long, target_get_num_of_bits(target, common_type));
 
         signed long long exact_result;
         if (signed_long_long_add(&exact_result, a0.value.host_long_long, b0.value.host_long_long))
@@ -20096,7 +20261,7 @@ struct object object_add(enum target target,
                 snprintf(warning_message,
                         200,
                         "integer overflow results in '%lld'. The exact result is '%lld'.", r.value.host_long_long, exact_result);
-    }
+            }
         }
         else
         {
@@ -20114,7 +20279,7 @@ struct object object_add(enum target target,
     case TYPE_UNSIGNED_LONG_LONG:
 
         r.value.host_u_long_long =
-            CAKE_CAST_UINT_N(a0.value.host_u_long_long + b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
+            wrap_unsigned_integer(a0.value.host_u_long_long + b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
 
         unsigned long long exact_result;
         if (unsigned_long_long_add(&exact_result, a0.value.host_u_long_long, b0.value.host_u_long_long))
@@ -20124,7 +20289,7 @@ struct object object_add(enum target target,
                 snprintf(warning_message,
                         200,
                         "integer wrap-around results in '%llu'. The exact result is '%llu'.", r.value.host_u_long_long, exact_result);
-}
+            }
         }
         else
         {
@@ -20138,7 +20303,7 @@ struct object object_add(enum target target,
     case TYPE_DOUBLE:
     case TYPE_LONG_DOUBLE:
         r.value.host_long_double = a0.value.host_long_double + b0.value.host_long_double;
-        r.value.host_long_double = CAKE_CAST_FLOAT_N(r.value.host_long_double, target_get_num_of_bits(target, common_type));
+        r.value.host_long_double = resize_floating_point(r.value.host_long_double, target_get_num_of_bits(target, common_type));
     }
 
     return r;
@@ -20150,6 +20315,7 @@ struct object object_sub(enum target target,
     const struct object* b,
     char warning_message[200])
 {
+    warning_message[0] = '\0';
     a = object_get_referenced(a);
     b = object_get_referenced(b);
 
@@ -20169,7 +20335,7 @@ struct object object_sub(enum target target,
     case TYPE_SIGNED_LONG_LONG:
     {
         r.value.host_long_long =
-            CAKE_CAST_INT_N(a0.value.host_long_long - b0.value.host_long_long, target_get_num_of_bits(target, common_type));
+            wrap_signed_integer(a0.value.host_long_long - b0.value.host_long_long, target_get_num_of_bits(target, common_type));
 
         signed long long exact_result;
         if (signed_long_long_sub(&exact_result, a0.value.host_long_long, b0.value.host_long_long))
@@ -20197,7 +20363,7 @@ struct object object_sub(enum target target,
     case TYPE_UNSIGNED_LONG_LONG:
 
         r.value.host_u_long_long =
-            CAKE_CAST_UINT_N(a0.value.host_u_long_long - b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
+            wrap_unsigned_integer(a0.value.host_u_long_long - b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
 
         unsigned long long exact_result;
         if (unsigned_long_long_sub(&exact_result, a0.value.host_u_long_long, b0.value.host_u_long_long))
@@ -20221,7 +20387,7 @@ struct object object_sub(enum target target,
     case TYPE_DOUBLE:
     case TYPE_LONG_DOUBLE:
         r.value.host_long_double = a0.value.host_long_double - b0.value.host_long_double;
-        r.value.host_long_double = CAKE_CAST_FLOAT_N(r.value.host_long_double, target_get_num_of_bits(target, common_type));
+        r.value.host_long_double = resize_floating_point(r.value.host_long_double, target_get_num_of_bits(target, common_type));
     }
 
     return r;
@@ -20234,6 +20400,7 @@ struct object object_mul(enum target target,
     const struct object* b,
     char warning_message[200])
 {
+    warning_message[0] = '\0';
     a = object_get_referenced(a);
     b = object_get_referenced(b);
 
@@ -20253,7 +20420,7 @@ struct object object_mul(enum target target,
     case TYPE_SIGNED_LONG_LONG:
     {
         r.value.host_long_long =
-            CAKE_CAST_INT_N(a0.value.host_long_long * b0.value.host_long_long, target_get_num_of_bits(target, common_type));
+            wrap_signed_integer(a0.value.host_long_long * b0.value.host_long_long, target_get_num_of_bits(target, common_type));
 
         signed long long exact_result;
         if (signed_long_long_mul(&exact_result, a0.value.host_long_long, b0.value.host_long_long))
@@ -20263,7 +20430,7 @@ struct object object_mul(enum target target,
                 snprintf(warning_message,
                         200,
                         "integer overflow results in '%lld'. The exact result is '%lld'.", r.value.host_long_long, exact_result);
-    }
+            }
         }
         else
         {
@@ -20281,7 +20448,7 @@ struct object object_mul(enum target target,
     case TYPE_UNSIGNED_LONG_LONG:
 
         r.value.host_u_long_long =
-            CAKE_CAST_UINT_N(a0.value.host_u_long_long * b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
+            wrap_unsigned_integer(a0.value.host_u_long_long * b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
 
         unsigned long long exact_result;
         if (unsigned_long_long_mul(&exact_result, a0.value.host_u_long_long, b0.value.host_u_long_long))
@@ -20291,7 +20458,7 @@ struct object object_mul(enum target target,
                 snprintf(warning_message,
                         200,
                         "integer wrap-around results in '%llu'. The exact result is '%llu'.", r.value.host_u_long_long, exact_result);
-}
+            }
         }
         else
         {
@@ -20305,7 +20472,7 @@ struct object object_mul(enum target target,
     case TYPE_DOUBLE:
     case TYPE_LONG_DOUBLE:
         r.value.host_long_double = a0.value.host_long_double * b0.value.host_long_double;
-        r.value.host_long_double = CAKE_CAST_FLOAT_N(r.value.host_long_double, target_get_num_of_bits(target, common_type));
+        r.value.host_long_double = resize_floating_point(r.value.host_long_double, target_get_num_of_bits(target, common_type));
     }
 
     return r;
@@ -20318,6 +20485,7 @@ struct object object_div(enum target target,
     const struct object* b,
     char warning_message[200])
 {
+    warning_message[0] = '\0';
     a = object_get_referenced(a);
     b = object_get_referenced(b);
 
@@ -20343,7 +20511,7 @@ struct object object_div(enum target target,
         }
 
         r.value.host_long_long =
-            CAKE_CAST_INT_N(a0.value.host_long_long / b0.value.host_long_long, target_get_num_of_bits(target, common_type));
+            wrap_signed_integer(a0.value.host_long_long / b0.value.host_long_long, target_get_num_of_bits(target, common_type));
     }
     break;
 
@@ -20360,7 +20528,7 @@ struct object object_div(enum target target,
         }
 
         r.value.host_u_long_long =
-            CAKE_CAST_UINT_N(a0.value.host_u_long_long / b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
+            wrap_unsigned_integer(a0.value.host_u_long_long / b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
 
         break;
 
@@ -20368,7 +20536,7 @@ struct object object_div(enum target target,
     case TYPE_DOUBLE:
     case TYPE_LONG_DOUBLE:
         r.value.host_long_double = a0.value.host_long_double / b0.value.host_long_double;
-        r.value.host_long_double = CAKE_CAST_FLOAT_N(r.value.host_long_double, target_get_num_of_bits(target, common_type));
+        r.value.host_long_double = resize_floating_point(r.value.host_long_double, target_get_num_of_bits(target, common_type));
     }
 
     return r;
@@ -20380,6 +20548,7 @@ struct object object_mod(enum target target,
     const struct object* b,
     char warning_message[200])
 {
+    warning_message[0] = '\0';
     a = object_get_referenced(a);
     b = object_get_referenced(b);
 
@@ -20405,7 +20574,7 @@ struct object object_mod(enum target target,
         }
 
         r.value.host_long_long =
-            CAKE_CAST_INT_N(a0.value.host_long_long % b0.value.host_long_long, target_get_num_of_bits(target, common_type));
+            wrap_signed_integer(a0.value.host_long_long % b0.value.host_long_long, target_get_num_of_bits(target, common_type));
     }
     break;
 
@@ -20419,20 +20588,20 @@ struct object object_mod(enum target target,
         {
             snprintf(warning_message, 200, "division by zero");
             return r;
-    }
+        }
 
         r.value.host_u_long_long =
-            CAKE_CAST_UINT_N(a0.value.host_u_long_long % b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
+            wrap_unsigned_integer(a0.value.host_u_long_long % b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
 
         break;
 
     case TYPE_FLOAT:
     case TYPE_DOUBLE:
     case TYPE_LONG_DOUBLE:
-    assert(false);
+        assert(false);
         snprintf(warning_message, 200, " invalid operands for");
         break;
-}
+    }
 
     return r;
 }
@@ -20459,15 +20628,16 @@ int object_is_greater_than_or_equal(enum target target, const struct object* a, 
 }
 
 int object_is_smaller_than_or_equal(enum target target, const struct object* a, const struct object* b)
-    {
+{
     char message[200];
     struct object r = object_smaller_than_or_equal(target, a, b, message);
     return r.value.host_long_long != 0;
-        }
+}
 
 
 struct object object_logical_not(enum target target, const struct object* a, char warning_message[200])
-    {
+{
+    warning_message[0] = '\0';
     a = object_get_referenced(a);
 
     struct object r = { 0 };
@@ -20484,7 +20654,7 @@ struct object object_logical_not(enum target target, const struct object* a, cha
     case TYPE_SIGNED_LONG_LONG:
     {
         r.value.host_long_long =
-            CAKE_CAST_INT_N(!a->value.host_long_long, target_get_num_of_bits(target, common_type));
+            wrap_signed_integer(!a->value.host_long_long, target_get_num_of_bits(target, common_type));
     }
     break;
 
@@ -20495,7 +20665,7 @@ struct object object_logical_not(enum target target, const struct object* a, cha
     case TYPE_UNSIGNED_LONG_LONG:
 
         r.value.host_u_long_long =
-            CAKE_CAST_UINT_N(!a->value.host_u_long_long, target_get_num_of_bits(target, common_type));
+            wrap_unsigned_integer(!a->value.host_u_long_long, target_get_num_of_bits(target, common_type));
 
         break;
 
@@ -20503,9 +20673,9 @@ struct object object_logical_not(enum target target, const struct object* a, cha
     case TYPE_DOUBLE:
     case TYPE_LONG_DOUBLE:
         r.value.host_u_long_long = (!a->value.host_long_double);
-        r.value.host_long_double = CAKE_CAST_FLOAT_N(r.value.host_long_double, target_get_num_of_bits(target, common_type));
+        r.value.host_long_double = resize_floating_point(r.value.host_long_double, target_get_num_of_bits(target, common_type));
         break;
-}
+    }
 
     return r;
 }
@@ -20513,6 +20683,7 @@ struct object object_logical_not(enum target target, const struct object* a, cha
 
 struct object object_bitwise_not(enum target target, const struct object* a, char warning_message[200])
 {
+    warning_message[0] = '\0';
     a = object_get_referenced(a);
 
     struct object r = { 0 };
@@ -20529,9 +20700,9 @@ struct object object_bitwise_not(enum target target, const struct object* a, cha
     case TYPE_SIGNED_LONG_LONG:
     {
         r.value.host_long_long =
-            CAKE_CAST_INT_N(~a->value.host_long_long, target_get_num_of_bits(target, common_type));
+            wrap_signed_integer(~a->value.host_long_long, target_get_num_of_bits(target, common_type));
     }
-        break;
+    break;
 
     case TYPE_UNSIGNED_CHAR:
     case TYPE_UNSIGNED_SHORT:
@@ -20540,7 +20711,7 @@ struct object object_bitwise_not(enum target target, const struct object* a, cha
     case TYPE_UNSIGNED_LONG_LONG:
 
         r.value.host_u_long_long =
-            CAKE_CAST_UINT_N(~a->value.host_u_long_long, target_get_num_of_bits(target, common_type));
+            wrap_unsigned_integer(~a->value.host_u_long_long, target_get_num_of_bits(target, common_type));
 
         break;
 
@@ -20556,6 +20727,7 @@ struct object object_bitwise_not(enum target target, const struct object* a, cha
 
 struct object object_unary_minus(enum target target, const struct object* a, char warning_message[200])
 {
+    warning_message[0] = '\0';
     a = object_get_referenced(a);
 
     struct object r = { 0 };
@@ -20573,9 +20745,9 @@ struct object object_unary_minus(enum target target, const struct object* a, cha
     case TYPE_SIGNED_LONG_LONG:
     {
         r.value.host_long_long =
-            CAKE_CAST_INT_N(-(a->value.host_long_long), target_get_num_of_bits(target, common_type));
+            wrap_signed_integer(-(a->value.host_long_long), target_get_num_of_bits(target, common_type));
     }
-        break;
+    break;
 
     case TYPE_UNSIGNED_CHAR:
     case TYPE_UNSIGNED_SHORT:
@@ -20584,7 +20756,7 @@ struct object object_unary_minus(enum target target, const struct object* a, cha
     case TYPE_UNSIGNED_LONG_LONG:
 
         r.value.host_u_long_long =
-            CAKE_CAST_UINT_N(-(a->value.host_u_long_long), target_get_num_of_bits(target, common_type));
+            wrap_unsigned_integer(-(a->value.host_u_long_long), target_get_num_of_bits(target, common_type));
 
         break;
 
@@ -20592,7 +20764,7 @@ struct object object_unary_minus(enum target target, const struct object* a, cha
     case TYPE_DOUBLE:
     case TYPE_LONG_DOUBLE:
         r.value.host_long_double = -(a->value.host_long_double);
-        r.value.host_long_double = CAKE_CAST_FLOAT_N(r.value.host_long_double, target_get_num_of_bits(target, common_type));
+        r.value.host_long_double = resize_floating_point(r.value.host_long_double, target_get_num_of_bits(target, common_type));
         break;
     }
 
@@ -20601,6 +20773,7 @@ struct object object_unary_minus(enum target target, const struct object* a, cha
 
 struct object object_unary_plus(enum target target, const struct object* a, char warning_message[200])
 {
+    warning_message[0] = '\0';
     /*
        char  c = -5;
        int   i = +c; //it just perform integer promotion
@@ -20622,9 +20795,9 @@ struct object object_unary_plus(enum target target, const struct object* a, char
     case TYPE_SIGNED_LONG_LONG:
     {
         r.value.host_long_long =
-            CAKE_CAST_INT_N(+(a->value.host_long_long), target_get_num_of_bits(target, common_type));
+            wrap_signed_integer(+(a->value.host_long_long), target_get_num_of_bits(target, common_type));
     }
-        break;
+    break;
 
     case TYPE_UNSIGNED_CHAR:
     case TYPE_UNSIGNED_SHORT:
@@ -20633,7 +20806,7 @@ struct object object_unary_plus(enum target target, const struct object* a, char
     case TYPE_UNSIGNED_LONG_LONG:
 
         r.value.host_u_long_long =
-            CAKE_CAST_UINT_N(+(a->value.host_u_long_long), target_get_num_of_bits(target, common_type));
+            wrap_unsigned_integer(+(a->value.host_u_long_long), target_get_num_of_bits(target, common_type));
 
         break;
 
@@ -20641,9 +20814,9 @@ struct object object_unary_plus(enum target target, const struct object* a, char
     case TYPE_DOUBLE:
     case TYPE_LONG_DOUBLE:
         r.value.host_long_double = +(a->value.host_long_double);
-        r.value.host_long_double = CAKE_CAST_FLOAT_N(r.value.host_long_double, target_get_num_of_bits(target, common_type));
+        r.value.host_long_double = resize_floating_point(r.value.host_long_double, target_get_num_of_bits(target, common_type));
         break;
-        }
+    }
 
     return r;
 }
@@ -20653,7 +20826,8 @@ struct object object_bitwise_xor(enum target target,
     const struct object* a,
     const struct object* b,
     char warning_message[200])
-        {
+{
+    warning_message[0] = '\0';
     a = object_get_referenced(a);
     b = object_get_referenced(b);
 
@@ -20673,7 +20847,7 @@ struct object object_bitwise_xor(enum target target,
     case TYPE_SIGNED_LONG_LONG:
     {
         r.value.host_long_long =
-            CAKE_CAST_INT_N(a0.value.host_long_long ^ b0.value.host_long_long, target_get_num_of_bits(target, common_type));
+            wrap_signed_integer(a0.value.host_long_long ^ b0.value.host_long_long, target_get_num_of_bits(target, common_type));
         }
         break;
 
@@ -20684,7 +20858,7 @@ struct object object_bitwise_xor(enum target target,
     case TYPE_UNSIGNED_LONG_LONG:
 
         r.value.host_u_long_long =
-            CAKE_CAST_UINT_N(a0.value.host_u_long_long ^ b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
+            wrap_unsigned_integer(a0.value.host_u_long_long ^ b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
 
         break;
 
@@ -20703,7 +20877,8 @@ struct object object_bitwise_or(enum target target,
     const struct object* a,
     const struct object* b,
     char warning_message[200])
-        {
+{
+    warning_message[0] = '\0';
     a = object_get_referenced(a);
     b = object_get_referenced(b);
 
@@ -20723,7 +20898,7 @@ struct object object_bitwise_or(enum target target,
     case TYPE_SIGNED_LONG_LONG:
     {
         r.value.host_long_long =
-            CAKE_CAST_INT_N(a0.value.host_long_long | b0.value.host_long_long, target_get_num_of_bits(target, common_type));
+            wrap_signed_integer(a0.value.host_long_long | b0.value.host_long_long, target_get_num_of_bits(target, common_type));
         }
     break;
 
@@ -20734,7 +20909,7 @@ struct object object_bitwise_or(enum target target,
     case TYPE_UNSIGNED_LONG_LONG:
 
         r.value.host_u_long_long =
-            CAKE_CAST_UINT_N(a0.value.host_u_long_long | b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
+            wrap_unsigned_integer(a0.value.host_u_long_long | b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
 
         break;
 
@@ -20754,7 +20929,8 @@ struct object object_bitwise_and(enum target target,
     const struct object* a,
     const struct object* b,
     char warning_message[200])
-        {
+{
+    warning_message[0] = '\0';
     a = object_get_referenced(a);
     b = object_get_referenced(b);
 
@@ -20766,15 +20942,15 @@ struct object object_bitwise_and(enum target target,
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
 
     switch (common_type)
-            {
+    {
     case TYPE_SIGNED_CHAR:
     case TYPE_SIGNED_SHORT:
     case TYPE_SIGNED_INT:
     case TYPE_SIGNED_LONG:
     case TYPE_SIGNED_LONG_LONG:
-                {
+    {
         r.value.host_long_long =
-            CAKE_CAST_INT_N(a0.value.host_long_long & b0.value.host_long_long, target_get_num_of_bits(target, common_type));
+            wrap_signed_integer(a0.value.host_long_long & b0.value.host_long_long, target_get_num_of_bits(target, common_type));
     }
     break;
 
@@ -20785,7 +20961,7 @@ struct object object_bitwise_and(enum target target,
     case TYPE_UNSIGNED_LONG_LONG:
 
         r.value.host_u_long_long =
-            CAKE_CAST_UINT_N(a0.value.host_u_long_long & b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
+            wrap_unsigned_integer(a0.value.host_u_long_long & b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
 
         break;
 
@@ -20794,17 +20970,18 @@ struct object object_bitwise_and(enum target target,
     case TYPE_LONG_DOUBLE:
         assert(false);
         snprintf(warning_message, 200, " invalid operands");
-                    break;
-                }
+        break;
+    }
 
     return r;
-            }
+}
 
 struct object object_shift_left(enum target target,
     const struct object* a,
     const struct object* b,
     char warning_message[200])
-            {
+{
+    warning_message[0] = '\0';
     a = object_get_referenced(a);
     b = object_get_referenced(b);
 
@@ -20824,7 +21001,7 @@ struct object object_shift_left(enum target target,
     case TYPE_SIGNED_LONG_LONG:
     {
         r.value.host_long_long =
-            CAKE_CAST_INT_N(a0.value.host_long_long << b0.value.host_long_long, target_get_num_of_bits(target, common_type));
+            wrap_signed_integer(a0.value.host_long_long << b0.value.host_long_long, target_get_num_of_bits(target, common_type));
             }
     break;
 
@@ -20835,7 +21012,7 @@ struct object object_shift_left(enum target target,
     case TYPE_UNSIGNED_LONG_LONG:
 
         r.value.host_u_long_long =
-            CAKE_CAST_UINT_N(a0.value.host_u_long_long << b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
+            wrap_unsigned_integer(a0.value.host_u_long_long << b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
 
         break;
 
@@ -20856,6 +21033,7 @@ struct object object_shift_right(enum target target,
     const struct object* b,
     char warning_message[200])
 {
+    warning_message[0] = '\0';
     a = object_get_referenced(a);
     b = object_get_referenced(b);
 
@@ -20875,7 +21053,7 @@ struct object object_shift_right(enum target target,
     case TYPE_SIGNED_LONG_LONG:
     {
         r.value.host_long_long =
-            CAKE_CAST_INT_N(a0.value.host_long_long >> b0.value.host_long_long, target_get_num_of_bits(target, common_type));
+            wrap_signed_integer(a0.value.host_long_long >> b0.value.host_long_long, target_get_num_of_bits(target, common_type));
         }
         break;
 
@@ -20886,7 +21064,7 @@ struct object object_shift_right(enum target target,
     case TYPE_UNSIGNED_LONG_LONG:
 
         r.value.host_u_long_long =
-            CAKE_CAST_UINT_N(a0.value.host_u_long_long >> b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
+            wrap_unsigned_integer(a0.value.host_u_long_long >> b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
 
         break;
 
@@ -20912,12 +21090,18 @@ struct object object_shift_right(enum target target,
 #pragma safety enable
 
 
+
+#include <float.h>
+
 #ifdef _WIN32
 #endif
 
 #if defined _MSC_VER && !defined __POCC__
 #endif
 
+
+//TODO i am doing this to same stack on expressoins TODO
+static char warning_message[200] = { 0 };
 
 struct expression* _Owner _Opt postfix_expression(struct parser_ctx* ctx, enum expression_eval_mode eval_mode);
 struct expression* _Owner _Opt cast_expression(struct parser_ctx* ctx, enum expression_eval_mode eval_mode);
@@ -21228,17 +21412,19 @@ struct generic_assoc_list generic_association_list(struct parser_ctx* ctx, enum 
             {
                 if (p_default_generic_association != NULL)
                 {
-                    compiler_diagnostic(C_ERROR_DUPLICATE_DEFAULT_GENERIC_ASSOCIATION,
+                    if (compiler_diagnostic(C_ERROR_DUPLICATE_DEFAULT_GENERIC_ASSOCIATION,
                         ctx,
                         p_generic_association2->first_token,
                         NULL,
-                        "duplicate default generic association.");
+                        "duplicate default generic association."))
+                    {
 
-                    compiler_diagnostic(W_NOTE,
+                        compiler_diagnostic(W_LOCATION,
                         ctx,
                         p_default_generic_association->first_token,
                         NULL,
                         "previous default generic association");
+                    }
                 }
                 else
                 {
@@ -21438,6 +21624,9 @@ struct expression* _Owner _Opt character_constant_expression(struct parser_ctx* 
     const unsigned long long 
         wchar_max_value = target_unsigned_max(ctx->options.target, get_platform(ctx->options.target)->wchar_t_type);
 
+    const unsigned long long
+        int_max_value = target_signed_max(ctx->options.target, TYPE_SIGNED_INT);
+
     try
     {
         if (ctx->current == NULL)
@@ -21518,7 +21707,7 @@ struct expression* _Owner _Opt character_constant_expression(struct parser_ctx* 
                 compiler_diagnostic(W_MULTICHAR_ERROR, ctx, ctx->current, NULL, "Unicode character literals may not contain multiple characters.");
             }
 
-            if (c > wchar_max_value)
+            if (c > UINT16_MAX)
             {
                 compiler_diagnostic(W_MULTICHAR_ERROR, ctx, ctx->current, NULL, "Character too large for enclosing character literal type.");
             }
@@ -21551,7 +21740,9 @@ struct expression* _Owner _Opt character_constant_expression(struct parser_ctx* 
                 compiler_diagnostic(W_MULTICHAR_ERROR, ctx, ctx->current, NULL, "Unicode character literals may not contain multiple characters.");
             }
 
-            if (c > UINT_MAX)
+            //Official definition (ISO/IEC 10646)
+            //CS codespace — the finite set of code points from 0 to 0x10FFFF (inclusive).
+            if (c > 0x10FFFF || c > UINT32_MAX)
             {
                 compiler_diagnostic(W_MULTICHAR_ERROR, ctx, ctx->current, NULL, "Character too large for enclosing character literal type.");
             }
@@ -21627,7 +21818,7 @@ struct expression* _Owner _Opt character_constant_expression(struct parser_ctx* 
               sequence, its value is the one that results when an object with type char whose value is that of the
               single character or escape sequence is converted to type int.
             */
-            long long value = 0;
+            unsigned long long value = 0;
             while (*p != '\'')
             {
                 unsigned int c = 0;
@@ -21644,7 +21835,7 @@ struct expression* _Owner _Opt character_constant_expression(struct parser_ctx* 
                 }
 
                 value = value * 256 + c;
-                if (value > INT_MAX)
+                if (value > int_max_value)
                 {
                     compiler_diagnostic(W_OUT_OF_BOUNDS, ctx, ctx->current, NULL, "character constant too long for its type", ctx->current->lexeme);
                     break;
@@ -21690,6 +21881,8 @@ int convert_to_number(struct parser_ctx* ctx, struct expression* p_expression_no
     const unsigned long long unsigned_long_long_max_value = 
         target_unsigned_max(ctx->options.target, TYPE_UNSIGNED_LONG_LONG);
 
+
+    errno = 0;
 
     if (ctx->current == NULL)
     {
@@ -21857,9 +22050,43 @@ int convert_to_number(struct parser_ctx* ctx, struct expression* p_expression_no
     {
         if (suffix[0] == 'F')
         {
-            double value = strtod(buffer, NULL);
-            if (isinf(value) && errno == ERANGE)
+            const double value = strtod(buffer, NULL);
+            if (errno == ERANGE)
             {
+                if (isinf(value))
+                {
+                    compiler_diagnostic(W_FLOAT_RANGE,
+                                        ctx,
+                                        token,
+                                        NULL,
+                                        "floating constant exceeds range of float");
+                }
+                else
+                {
+                    compiler_diagnostic(W_FLOAT_RANGE,
+                                     ctx,
+                                     token,
+                                     NULL,
+                                     "floating constant truncated to zero");
+                }
+            }
+            else if ((value > 0 && value > (double)FLT_MAX) ||
+                     (value < 0 && value < (double)FLT_MAX))
+            {
+                compiler_diagnostic(W_FLOAT_RANGE,
+                                    ctx,
+                                    token,
+                                    NULL,
+                                    "floating constant exceeds range of float");
+            }
+            else if (value > 0 && value < (double)FLT_MIN)
+            {
+                /*Minimum positive*/
+                compiler_diagnostic(W_FLOAT_RANGE,
+                                    ctx,
+                                    token,
+                                    NULL,
+                                    "floating constant is too small for float.");
             }
             p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_FLOAT;
             object_destroy(&p_expression_node->object);
@@ -21867,16 +22094,53 @@ int convert_to_number(struct parser_ctx* ctx, struct expression* p_expression_no
         }
         else if (suffix[0] == 'L')
         {
-            long double value = strtod(buffer, NULL);
+            const long double value = strtod(buffer, NULL);
+
+            if (errno == ERANGE)
+            {
+                if (isinf(value))
+                {
+                    compiler_diagnostic(W_FLOAT_RANGE,
+                                        ctx,
+                                        token,
+                                        NULL,
+                                        "floating constant exceeds range of long double");
+                }
+                else
+                {
+                    compiler_diagnostic(W_FLOAT_RANGE,
+                                     ctx,
+                                     token,
+                                     NULL,
+                                     "floating constant truncated to zero");
+                }
+            }
+
             p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_DOUBLE | TYPE_SPECIFIER_LONG;
             object_destroy(&p_expression_node->object);
             p_expression_node->object = object_make_long_double(ctx->options.target, value);
         }
         else
         {
-            double value = strtod(buffer, NULL);
-            if (isinf(value) && errno == ERANGE)
+            const double value = strtod(buffer, NULL);
+            if (errno == ERANGE)
             {
+                if (isinf(value))
+                {
+                    compiler_diagnostic(W_FLOAT_RANGE,
+                                        ctx,
+                                        token,
+                                        NULL,
+                                        "floating constant exceeds range of double");
+                }
+                else
+                {
+                    compiler_diagnostic(W_FLOAT_RANGE,
+                                     ctx,
+                                     token,
+                                     NULL,
+                                     "floating constant truncated to zero");
+                }
             }
             object_destroy(&p_expression_node->object);
             p_expression_node->object = object_make_double(ctx->options.target, value);
@@ -21996,7 +22260,7 @@ struct expression* _Owner _Opt primary_expression(struct parser_ctx* ctx, enum e
                         {
                             compiler_diagnostic(C_ERROR_OUTER_SCOPE,
                                 ctx,
-                                ctx->current,
+                                p_expression_node->first_token,
                                 NULL,
                                 "'%s' cannot be evaluated in this scope", ctx->current->lexeme);
                         }
@@ -22029,7 +22293,7 @@ struct expression* _Owner _Opt primary_expression(struct parser_ctx* ctx, enum e
             }
             else
             {
-                compiler_diagnostic(C_ERROR_NOT_FOUND, ctx, ctx->current, NULL, "not found '%s'", ctx->current->lexeme);
+                compiler_diagnostic(C_ERROR_NOT_FOUND, ctx, p_expression_node->first_token, NULL, "identifier '%s' not declared", ctx->current->lexeme);
                 throw;
             }
             parser_match(ctx);
@@ -22383,14 +22647,6 @@ struct argument_expression_list argument_expression_list(struct parser_ctx* ctx,
     /*
      argument-expression-list:
       assignment-expression
-      argument-expression-ctx , assignment-expression
-    */
-
-    /*
-     argument-expression-list: (extended)
-      assignment-expression
-      move assignment-expression
-      argument-expression-ctx , assignment-expression
       argument-expression-ctx , assignment-expression
     */
 
@@ -23279,6 +23535,7 @@ bool is_first_of_unary_expression(struct parser_ctx* ctx)
         ctx->current->type == TK_KEYWORD_GCC__BUILTIN_C23_VA_START ||
         ctx->current->type == TK_KEYWORD_GCC__BUILTIN_VA_COPY ||
         ctx->current->type == TK_KEYWORD_GCC__BUILTIN_OFFSETOF ||
+        ctx->current->type == TK_KEYWORD_GCC__BUILTIN_XXXXX ||
 
         is_first_of_compiler_function(ctx);
 }
@@ -23441,7 +23698,7 @@ struct expression* _Owner _Opt unary_expression(struct parser_ctx* ctx, enum exp
                 if (eval_mode == EXPRESSION_EVAL_MODE_VALUE_AND_TYPE &&
                     object_has_constant_value(&new_expression->right->object))
                 {
-                    char warning_message[200] = { 0 };
+                    
                     new_expression->object =
                         object_logical_not(ctx->options.target, &new_expression->right->object, warning_message);
                 }
@@ -23477,7 +23734,7 @@ struct expression* _Owner _Opt unary_expression(struct parser_ctx* ctx, enum exp
                 if (eval_mode == EXPRESSION_EVAL_MODE_VALUE_AND_TYPE &&
                   object_has_constant_value(&new_expression->right->object))
                 {
-                    char warning_message[200] = { 0 };
+                    
                     new_expression->object =
                         object_bitwise_not(ctx->options.target, &new_expression->right->object, warning_message);
                 }
@@ -23495,7 +23752,7 @@ struct expression* _Owner _Opt unary_expression(struct parser_ctx* ctx, enum exp
                 if (eval_mode == EXPRESSION_EVAL_MODE_VALUE_AND_TYPE &&
                     object_has_constant_value(&new_expression->right->object))
                 {
-                    char warning_message[200] = { 0 };
+                    
                         if (op == '-')
                     {
                         new_expression->object =
@@ -23588,8 +23845,6 @@ struct expression* _Owner _Opt unary_expression(struct parser_ctx* ctx, enum exp
         }
         else if (ctx->current->type == TK_KEYWORD_GCC__BUILTIN_C23_VA_START)
         {
-
-
             struct expression* _Owner _Opt new_expression = calloc(1, sizeof * new_expression);
             if (new_expression == NULL) throw;
             new_expression->first_token = ctx->current;
@@ -23636,8 +23891,6 @@ struct expression* _Owner _Opt unary_expression(struct parser_ctx* ctx, enum exp
         }
         else if (ctx->current->type == TK_KEYWORD_GCC__BUILTIN_VA_END)
         {
-
-
             struct expression* _Owner _Opt new_expression = calloc(1, sizeof * new_expression);
             if (new_expression == NULL) throw;
             new_expression->first_token = ctx->current;
@@ -23845,6 +24098,173 @@ struct expression* _Owner _Opt unary_expression(struct parser_ctx* ctx, enum exp
 
             new_expression->object = object_make_size_t(ctx->options.target, offsetof);
             
+            return new_expression;
+        }
+        else if (ctx->current->type == TK_KEYWORD_GCC__BUILTIN_XXXXX)
+        {
+            const char* const builtin_name = ctx->current->lexeme;
+
+            struct expression* _Owner _Opt new_expression = calloc(1, sizeof * new_expression);
+            if (new_expression == NULL) throw;
+            new_expression->first_token = ctx->current;
+            new_expression->expression_type = UNARY_EXPRESSION_GCC__BUILTIN_XXXXX;
+
+            parser_match(ctx);
+
+            if (ctx->current == NULL)
+            {
+                unexpected_end_of_file(ctx);
+                expression_delete(new_expression);
+                throw;
+            }
+
+                if (parser_match_tk(ctx, '(') != 0)
+                {
+                    expression_delete(new_expression);
+                    throw;
+                }
+
+            if (ctx->current->type != ')')
+                {
+               new_expression->argument_expression_list = argument_expression_list(ctx, eval_mode);
+                }
+
+                if (parser_match_tk(ctx, ')') != 0)
+                {
+                    expression_delete(new_expression);
+                    throw;
+                }
+
+            //https://gcc.gnu.org/onlinedocs/gcc/Floating-Point-Format-Builtins.html
+
+            if (strcmp(builtin_name, "__builtin_huge_val") == 0 ||
+                strcmp(builtin_name, "__builtin_inf") == 0 ||
+                strcmp(builtin_name, "__builtin_nan(const char* str)") == 0 ||
+                strcmp(builtin_name, "__builtin_nans(const char* str)") == 0 ||
+                strcmp(builtin_name, "__builtin_powi(double, int)") == 0
+                )
+            {
+                new_expression->type = type_make_double();
+            }
+            else if (strcmp(builtin_name, "__builtin_huge_valf") == 0 ||
+                     strcmp(builtin_name, "__builtin_inff") == 0 ||
+                     strcmp(builtin_name, "__builtin_nanf") == 0 ||
+                     strcmp(builtin_name, "__builtin_nansf") == 0 ||
+                     strcmp(builtin_name, "__builtin_powif") == 0)
+            {
+                new_expression->type = type_make_float();
+            }
+             else if (strcmp(builtin_name, "__builtin_add_overflow") == 0 ||
+                      strcmp(builtin_name, "__builtin_sadd_overflow") == 0 ||
+                      strcmp(builtin_name, "__builtin_saddl_overflow") == 0 ||
+                      strcmp(builtin_name, "__builtin_saddll_overflow") == 0 ||
+                      strcmp(builtin_name, "__builtin_uaddl_overflow ") == 0 ||
+                      strcmp(builtin_name, "__builtin_uaddll_overflow") == 0)
+                {
+                new_expression->type = type_make_int_bool_like();
+                }
+            else if (strcmp(builtin_name, "__builtin_huge_vall") == 0 ||
+                    strcmp(builtin_name, "__builtin_infl") == 0 ||
+                    strcmp(builtin_name, "__builtin_nanl") == 0 ||
+                    strcmp(builtin_name, "__builtin_nansl") == 0 ||
+                    strcmp(builtin_name, "__builtin_powil") == 0)
+                {
+                new_expression->type = type_make_long_double();
+                }
+            else if (strcmp(builtin_name, "__builtin_huge_valfN") == 0 ||
+                    strcmp(builtin_name, "__builtin_inffN") == 0 ||
+                    strcmp(builtin_name, "__builtin_nanfN") == 0 ||
+                    strcmp(builtin_name, "__builtin_nansfN") == 0 ||
+                    strcmp(builtin_name, "__builtin_huge_valfNx") == 0 ||
+                    strcmp(builtin_name, "__builtin_inffNx") == 0 ||
+                    strcmp(builtin_name, "__builtin_nanfNx") == 0 ||
+                    strcmp(builtin_name, "__builtin_nansfNx") == 0 )
+                {
+                //there is not f floatn in cake yet
+                new_expression->type = type_make_long_double();
+                }
+            else if (strcmp(builtin_name, "__builtin_infd32") == 0 ||
+                     strcmp(builtin_name, "__builtin_infd64") == 0 ||
+                     strcmp(builtin_name, "__builtin_infd128") == 0 ||
+                     strcmp(builtin_name, "__builtin_nand32") == 0 ||
+                     strcmp(builtin_name, "__builtin_nand64") == 0 ||
+                     strcmp(builtin_name, "__builtin_nand128") == 0 ||
+                     strcmp(builtin_name, "__builtin_nansd32") == 0 ||
+                     strcmp(builtin_name, "__builtin_nansd64") == 0 ||
+                     strcmp(builtin_name, "__builtin_nansd128") == 0)
+            {
+                //tODO
+            }
+            else if (strcmp(builtin_name, "__builtin_fpclassify") == 0 ||
+                     strcmp(builtin_name, "__builtin_isinf_sign") == 0 ||
+                     strcmp(builtin_name, "__builtin_issignaling") == 0)
+            {
+                new_expression->type = type_make_int();
+                }
+            else if (strcmp(builtin_name, "__builtin_signbitf") == 0 ||
+                strcmp(builtin_name, "__builtin_signbit") == 0 ||
+                strcmp(builtin_name, "__builtin_signbitl") == 0)
+                {
+                new_expression->type = type_make_int();
+                }
+                else if (strcmp(builtin_name, "__builtin_unreachable") == 0 ||
+                         strcmp(builtin_name, "__builtin_trap") == 0)
+                {
+                    new_expression->type = make_void_type();
+            }
+            else if (strcmp(builtin_name, "__builtin_ffs") == 0 ||
+                     strcmp(builtin_name, "__builtin_clz") == 0 ||
+                     strcmp(builtin_name, "__builtin_clrsb ") == 0 ||
+                     strcmp(builtin_name, "__builtin_popcount ") == 0 ||
+                    strcmp(builtin_name, "__builtin_parity") == 0 ||
+                    strcmp(builtin_name, "__builtin_ffsl") == 0 ||
+                    strcmp(builtin_name, "__builtin_clzl") == 0 ||
+                    strcmp(builtin_name, "__builtin_clrsbl") == 0 ||
+                    strcmp(builtin_name, "__builtin_popcountl") == 0 ||
+                    strcmp(builtin_name, "__builtin_parityl") == 0 ||
+                    strcmp(builtin_name, "__builti__builtin_ffsll") == 0 ||
+                    strcmp(builtin_name, "__builtin_clzll") == 0 ||
+                    strcmp(builtin_name, "__builtin_ctzll") == 0 ||
+                    strcmp(builtin_name, "__builtin_clrsbll") == 0 ||
+                    strcmp(builtin_name, "__builtin_parityll") == 0 ||
+                    strcmp(builtin_name, "__builtin_ffsg") == 0 ||
+                    strcmp(builtin_name, "__builtin_clzg") == 0 ||
+                    strcmp(builtin_name, "__builtin_ctzg") == 0 ||
+                    strcmp(builtin_name, "__builtin_clrsbg") == 0 ||
+                    strcmp(builtin_name, "__builtin_popcountg") == 0 ||
+                    strcmp(builtin_name, "__builtin_parityg") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_bit_ceil") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_bit_floor") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_bit_width") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_count_ones") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_count_zeros") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_first_leading_one") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_first_leading_zero") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_first_trailing_one") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_first_trailing_zero") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_has_single_bit") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_leading_ones") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_leading_zeros") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_trailing_ones ") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_trailing_zeros") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_rotate_left") == 0 ||
+                    strcmp(builtin_name, "__builtin_stdc_rotate_right")
+                )
+            {
+                //https://gcc.gnu.org/onlinedocs/gcc/Bit-Operation-Builtins.html
+                new_expression->type = type_make_int();
+                }
+                else
+                {
+                    //https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html
+                    compiler_diagnostic(C_ERROR_NOT_FOUND,
+                                        ctx,
+                                        new_expression->first_token,
+                                            NULL,
+                                    "unknown builtin '%s'", builtin_name);
+                new_expression->type = make_void_type();
+            }
+
             return new_expression;
         }
         else if (ctx->current->type == TK_KEYWORD_SIZEOF)
@@ -24597,11 +25017,11 @@ struct expression* _Owner _Opt cast_expression(struct parser_ctx* ctx, enum expr
                         }
                         else
                         {
-                            compiler_diagnostic(W_CAST_TO_SAME_TYPE,
-                                                ctx,
-                                                p_expression_node->first_token,
-                                                NULL,
-                                                "casting to the same type");
+                            //compiler_diagnostic(W_CAST_TO_SAME_TYPE,
+                              //                  ctx,
+                                //                p_expression_node->first_token,
+                                  //              NULL,
+                                    //            "casting to the same type");
                         }
                     }
                 }
@@ -24653,235 +25073,8 @@ struct expression* _Owner _Opt cast_expression(struct parser_ctx* ctx, enum expr
     return p_expression_node;
 }
 
-
-
-_Attr(nodiscard)
-errno_t execute_arithmetic(const struct parser_ctx* ctx,
-                      const struct expression* new_expression,
-                      int op,
-                      struct object* result)
-{
-    //TODO REMOVE THE USAGE OF THIS FUNCTION 
-    try
-    {
-        if (new_expression->left == NULL || new_expression->right == NULL)
-        {
-            assert(false);
-            throw;
-        }
-
-        //Each of the operands shall have arithmetic type
-        if (!type_is_arithmetic(&new_expression->left->type))
-        {
-            compiler_diagnostic(C_ERROR_LEFT_IS_NOT_INTEGER, ctx, ctx->current, NULL, "left type must be an arithmetic type");
-            throw;
-        }
-
-        if (!type_is_arithmetic(&new_expression->right->type))
-        {
-            compiler_diagnostic(C_ERROR_LEFT_IS_NOT_INTEGER, ctx, ctx->current, NULL, "right type must be an arithmetic type");
-            throw;
-        }
-
-
-        if (object_has_constant_value(&new_expression->left->object) &&
-            object_has_constant_value(&new_expression->right->object))
-        {
-
-            const struct marker m =
-            {
-                .p_token_begin = new_expression->left->first_token,
-                .p_token_end = new_expression->right->last_token
-            };
-
-
-
-            char warning_message[200] = { 0 };
-            enum diagnostic_id warning_id = 0;
-
-                if (op == '+')
-                {
-                *result = object_add(ctx->options.target,
-                                     &new_expression->left->object,
-                                     &new_expression->right->object,
-                                     warning_message);
-                warning_id = W_INTEGER_OVERFLOW;
-                if (warning_message[0] != '\0')
-                    {
-                    compiler_diagnostic(warning_id,
-                        ctx,
-                        NULL,
-                        &m,
-                        "%s",
-                        warning_message);
-                        }
-                return 0;
-                    }
-            if (op == '-')
-                    {
-                *result = object_sub(ctx->options.target,
-                                     &new_expression->left->object,
-                                     &new_expression->right->object,
-                                     warning_message);
-
-                warning_id = W_INTEGER_OVERFLOW;
-                if (warning_message[0] != '\0')
-                {
-                    compiler_diagnostic(warning_id,
-                        ctx,
-                        NULL,
-                        &m,
-                        "%s",
-                        warning_message);
-                }
-                return 0;
-                }
-            if (op == '*')
-                {
-                *result = object_mul(ctx->options.target,
-                                     &new_expression->left->object,
-                                     &new_expression->right->object,
-                                     warning_message);
-                warning_id = W_INTEGER_OVERFLOW;
-                if (warning_message[0] != '\0')
-                {
-                    compiler_diagnostic(warning_id,
-                        ctx,
-                        NULL,
-                        &m,
-                        "%s",
-                        warning_message);
-                }
-                return 0;
-                }
-            if (op == '/')
-                {
-                *result = object_div(ctx->options.target,
-                                     &new_expression->left->object,
-                                     &new_expression->right->object,
-                                     warning_message);
-                warning_id = W_DIVIZION_BY_ZERO;
-                if (warning_message[0] != '\0')
-            {
-                    compiler_diagnostic(warning_id,
-                        ctx,
-                        NULL,
-                        &m,
-                        "%s",
-                        warning_message);
-                    }
-                return 0;
-                }
-
-            if (op == '%')
-                    {
-                *result = object_mod(ctx->options.target,
-                                     &new_expression->left->object,
-                                     &new_expression->right->object,
-                                     warning_message);
-                warning_id = W_DIVIZION_BY_ZERO;
-                if (warning_message[0] != '\0')
-                    {
-                    compiler_diagnostic(warning_id,
-                        ctx,
-                        NULL,
-                        &m,
-                        "%s",
-                        warning_message);
-                    }
-                return 0;
-                    }
-
-            if (op == '>=')
-                {
-                *result = object_greater_than_or_equal(ctx->options.target,
-                                     &new_expression->left->object,
-                                     &new_expression->right->object,
-                                     warning_message);
-                warning_id = W_INTEGER_OVERFLOW;
-                if (warning_message[0] != '\0')
-                    {
-                    compiler_diagnostic(warning_id,
-                        ctx,
-                        NULL,
-                        &m,
-                        "%s",
-                        warning_message);
-                    }
-                return 0;
-                    }
-
-            if (op == '<=')
-                {
-                *result = object_smaller_than_or_equal(ctx->options.target,
-                                     &new_expression->left->object,
-                                     &new_expression->right->object,
-                                     warning_message);
-                warning_id = W_INTEGER_OVERFLOW;
-                if (warning_message[0] != '\0')
-                    {
-                    compiler_diagnostic(warning_id,
-                        ctx,
-                        NULL,
-                        &m,
-                        "%s",
-                        warning_message);
-                    }
-                return 0;
-                }
-
-
-            if (op == '>')
-            {
-                *result = object_greater_than(ctx->options.target,
-                                     &new_expression->left->object,
-                                     &new_expression->right->object,
-                                     warning_message);
-                warning_id = W_INTEGER_OVERFLOW;
-                if (warning_message[0] != '\0')
-                {
-                    compiler_diagnostic(warning_id,
-                        ctx,
-                        NULL,
-                        &m,
-                        "%s",
-                        warning_message);
-                }
-                return 0;
-                    }
-
-            if (op == '<')
-                {
-                *result = object_smaller_than(ctx->options.target,
-                                     &new_expression->left->object,
-                                     &new_expression->right->object,
-                                     warning_message);
-                warning_id = W_INTEGER_OVERFLOW;
-                if (warning_message[0] != '\0')
-                {
-                    compiler_diagnostic(warning_id,
-                        ctx,
-                        NULL,
-                        &m,
-                        "%s",
-                        warning_message);
-                }
-                return 0;
-                }
-
-            }
-                }
-    catch{
-
-            }
-    struct object empty = { 0 };
-    *result = empty;
-    return 0; //error
-}
-
 struct expression* _Owner _Opt multiplicative_expression(struct parser_ctx* ctx, enum expression_eval_mode eval_mode)
 {
-
     /*
      multiplicative-expression:
     cast-expression
@@ -24995,10 +25188,70 @@ struct expression* _Owner _Opt multiplicative_expression(struct parser_ctx* ctx,
             }
             new_expression->type = type_common(&new_expression->left->type, &new_expression->right->type, ctx->options.target);
 
-            if (eval_mode == EXPRESSION_EVAL_MODE_VALUE_AND_TYPE && execute_arithmetic(ctx, new_expression, op, &new_expression->object) != 0)
+            if (eval_mode == EXPRESSION_EVAL_MODE_VALUE_AND_TYPE)
             {
-                expression_delete(new_expression);
-                throw;
+                if (object_has_constant_value(&new_expression->left->object) &&
+                    object_has_constant_value(&new_expression->right->object))
+                {
+                    const struct marker m =
+                    {
+                        .p_token_begin = new_expression->left->first_token,
+                        .p_token_end = new_expression->right->last_token
+                    };
+
+                    
+                    if (op == '*')
+                    {
+                        new_expression->object = object_mul(ctx->options.target,
+                                             &new_expression->left->object,
+                                             &new_expression->right->object,
+                                             warning_message);
+
+                        if (warning_message[0] != '\0')
+                        {
+                            compiler_diagnostic(W_INTEGER_OVERFLOW,
+                                ctx,
+                                NULL,
+                                &m,
+                                "%s",
+                                warning_message);
+                        }
+                    }
+                    else if (op == '/')
+                    {
+                        new_expression->object = object_div(ctx->options.target,
+                                             &new_expression->left->object,
+                                             &new_expression->right->object,
+                                             warning_message);
+
+                        if (warning_message[0] != '\0')
+                        {
+                            compiler_diagnostic(W_DIVIZION_BY_ZERO,
+                                ctx,
+                                NULL,
+                                &m,
+                                "%s",
+                                warning_message);
+                        }
+                    }
+                    else if (op == '%')
+                    {
+                        new_expression->object = object_mod(ctx->options.target,
+                                             &new_expression->left->object,
+                                             &new_expression->right->object,
+                                             warning_message);
+
+                        if (warning_message[0] != '\0')
+                        {
+                            compiler_diagnostic(W_DIVIZION_BY_ZERO,
+                                ctx,
+                                NULL,
+                                &m,
+                                "%s",
+                                warning_message);
+                        }
+                    }
+                }
             }
 
             p_expression_node = new_expression;
@@ -25070,12 +25323,12 @@ struct expression* _Owner _Opt additive_expression(struct parser_ctx* ctx, enum 
             new_expression->last_token = new_expression->right->last_token;
 
 
-
-            if (!type_is_scalar(&new_expression->left->type) && !type_is_array(&new_expression->left->type))
+            if (!type_is_scalar_decay(&new_expression->left->type))
             {
                 compiler_diagnostic(C_ERROR_LEFT_IS_NOT_SCALAR, ctx, operator_position, NULL, "left operator is not scalar");
             }
-            if (!type_is_scalar(&new_expression->right->type) && !type_is_array(&new_expression->right->type))
+
+            if (!type_is_scalar_decay(&new_expression->right->type))
             {
                 compiler_diagnostic(C_ERROR_RIGHT_IS_NOT_SCALAR, ctx, operator_position, NULL, "right operator is not scalar");
             }
@@ -25099,10 +25352,34 @@ struct expression* _Owner _Opt additive_expression(struct parser_ctx* ctx, enum 
                 {
                     new_expression->type = type_common(&new_expression->left->type, &new_expression->right->type, ctx->options.target);
 
-                    if (eval_mode == EXPRESSION_EVAL_MODE_VALUE_AND_TYPE && execute_arithmetic(ctx, new_expression, op, &new_expression->object) != 0)
+                    if (eval_mode == EXPRESSION_EVAL_MODE_VALUE_AND_TYPE)
                     {
-                        expression_delete(new_expression);
-                        throw;
+                        if (object_has_constant_value(&new_expression->left->object) &&
+                            object_has_constant_value(&new_expression->right->object))
+                        {
+                            const struct marker m =
+                            {
+                                .p_token_begin = new_expression->left->first_token,
+                                .p_token_end = new_expression->right->last_token
+                            };
+
+                            
+
+                            new_expression->object = object_add(ctx->options.target,
+                                                 &new_expression->left->object,
+                                                 &new_expression->right->object,
+                                                 warning_message);
+
+                            if (warning_message[0] != '\0')
+                            {
+                                compiler_diagnostic(W_INTEGER_OVERFLOW,
+                                    ctx,
+                                    NULL,
+                                    &m,
+                                    "%s",
+                                    warning_message);
+                            }
+                        }
                     }
                 }
                 else
@@ -25168,10 +25445,35 @@ struct expression* _Owner _Opt additive_expression(struct parser_ctx* ctx, enum 
                 {
                     new_expression->type = type_common(&new_expression->left->type, &new_expression->right->type, ctx->options.target);
 
-                    if (eval_mode == EXPRESSION_EVAL_MODE_VALUE_AND_TYPE && execute_arithmetic(ctx, new_expression, op, &new_expression->object) != 0)
+                    if (eval_mode == EXPRESSION_EVAL_MODE_VALUE_AND_TYPE)
                     {
-                        expression_delete(new_expression);
-                        throw;
+
+                        if (object_has_constant_value(&new_expression->left->object) &&
+                            object_has_constant_value(&new_expression->right->object))
+                        {
+                            const struct marker m =
+                            {
+                                .p_token_begin = new_expression->left->first_token,
+                                .p_token_end = new_expression->right->last_token
+                            };
+
+                            
+
+                            new_expression->object = object_sub(ctx->options.target,
+                                                 &new_expression->left->object,
+                                                 &new_expression->right->object,
+                                                 warning_message);
+
+                            if (warning_message[0] != '\0')
+                            {
+                                compiler_diagnostic(W_INTEGER_OVERFLOW,
+                                    ctx,
+                                    NULL,
+                                    &m,
+                                    "%s",
+                                    warning_message);
+                            }
+                        }
                     }
                 }
                 else
@@ -25300,7 +25602,7 @@ struct expression* _Owner _Opt shift_expression(struct parser_ctx* ctx, enum exp
             if (object_has_constant_value(&new_expression->left->object) &&
                 object_has_constant_value(&new_expression->right->object))
             {
-                char warning_message[200] = { 0 };
+                
 
                 if (op == '<<')
                 {
@@ -25487,11 +25789,97 @@ struct expression* _Owner _Opt relational_expression(struct parser_ctx* ctx, enu
             {
                 new_expression->type = type_common(&new_expression->left->type, &new_expression->right->type, ctx->options.target);
 
-                if (eval_mode == EXPRESSION_EVAL_MODE_VALUE_AND_TYPE && execute_arithmetic(ctx, new_expression, op, &new_expression->object) != 0)
+                if (eval_mode == EXPRESSION_EVAL_MODE_VALUE_AND_TYPE)
                 {
-                    expression_delete(new_expression);
-                    new_expression = NULL;
-                    throw;
+                    if (object_has_constant_value(&new_expression->left->object) &&
+                        object_has_constant_value(&new_expression->right->object))
+                    {
+
+                        const struct marker m =
+                        {
+                            .p_token_begin = new_expression->left->first_token,
+                            .p_token_end = new_expression->right->last_token
+                        };
+
+
+
+                        
+                        enum diagnostic_id warning_id = 0;
+
+                        if (op == '>=')
+                        {
+                            new_expression->object = object_greater_than_or_equal(ctx->options.target,
+                                                 &new_expression->left->object,
+                                                 &new_expression->right->object,
+                                                 warning_message);
+                            warning_id = W_INTEGER_OVERFLOW;
+                            if (warning_message[0] != '\0')
+                            {
+                                compiler_diagnostic(warning_id,
+                                    ctx,
+                                    NULL,
+                                    &m,
+                                    "%s",
+                                    warning_message);
+                            }
+                           
+                        }
+                        else if (op == '<=')
+                        {
+                            new_expression->object = object_smaller_than_or_equal(ctx->options.target,
+                                                 &new_expression->left->object,
+                                                 &new_expression->right->object,
+                                                 warning_message);
+                            warning_id = W_INTEGER_OVERFLOW;
+                            if (warning_message[0] != '\0')
+                            {
+                                compiler_diagnostic(warning_id,
+                                    ctx,
+                                    NULL,
+                                    &m,
+                                    "%s",
+                                    warning_message);
+                            }
+                          
+                        }
+                        else if (op == '>')
+                        {
+                            new_expression->object= object_greater_than(ctx->options.target,
+                                                 &new_expression->left->object,
+                                                 &new_expression->right->object,
+                                                 warning_message);
+                            warning_id = W_INTEGER_OVERFLOW;
+                            if (warning_message[0] != '\0')
+                            {
+                                compiler_diagnostic(warning_id,
+                                    ctx,
+                                    NULL,
+                                    &m,
+                                    "%s",
+                                    warning_message);
+                            }
+                         
+                        }
+                        else if (op == '<')
+                        {
+                            new_expression->object= object_smaller_than(ctx->options.target,
+                                                 &new_expression->left->object,
+                                                 &new_expression->right->object,
+                                                 warning_message);
+                            warning_id = W_INTEGER_OVERFLOW;
+                            if (warning_message[0] != '\0')
+                            {
+                                compiler_diagnostic(warning_id,
+                                    ctx,
+                                    NULL,
+                                    &m,
+                                    "%s",
+                                    warning_message);
+                            }
+                     
+                        }
+
+                    }
                 }
             }
 
@@ -25630,7 +26018,7 @@ struct expression* _Owner _Opt equality_expression(struct parser_ctx* ctx, enum 
             {
                 if (eval_mode == EXPRESSION_EVAL_MODE_VALUE_AND_TYPE)
                 {
-                    char warning_message[200] = { 0 };
+                    
                     if (p_token_operator->type == '==')
                     {
                         new_expression->object = object_equal(ctx->options.target,
@@ -25722,7 +26110,7 @@ struct expression* _Owner _Opt and_expression(struct parser_ctx* ctx, enum expre
             if (object_has_constant_value(&new_expression->left->object) &&
                 object_has_constant_value(&new_expression->right->object))
             {
-                char warning_message[200] = { 0 };
+                
                 new_expression->object = object_bitwise_and(ctx->options.target,
                     &new_expression->left->object,
                     &new_expression->right->object, warning_message);
@@ -25801,7 +26189,7 @@ struct expression* _Owner _Opt  exclusive_or_expression(struct parser_ctx* ctx, 
         if (object_has_constant_value(&new_expression->left->object) &&
             object_has_constant_value(&new_expression->right->object))
         {
-                char warning_message[200] = { 0 };
+                
                 new_expression->object = object_bitwise_xor(ctx->options.target,
                     &new_expression->left->object,
                     &new_expression->right->object, warning_message);
@@ -25890,7 +26278,7 @@ struct expression* _Owner _Opt inclusive_or_expression(struct parser_ctx* ctx, e
             if (object_has_constant_value(&new_expression->left->object) &&
                 object_has_constant_value(&new_expression->right->object))
             {
-                char warning_message[200] = { 0 };
+                
                 new_expression->object = object_bitwise_or(ctx->options.target,
                 &new_expression->left->object,
                 &new_expression->right->object, warning_message);
@@ -25987,14 +26375,14 @@ struct expression* _Owner _Opt logical_and_expression(struct parser_ctx* ctx, en
             }
 
             //Each of the operands shall have scalar type
-            if (!type_is_scalar(&new_expression->left->type))
+            if (!type_is_scalar_decay(&new_expression->left->type))
             {
                 expression_delete(new_expression);
                 compiler_diagnostic(C_ERROR_LEFT_IS_NOT_SCALAR, ctx, ctx->current, NULL, "left type is not scalar for or expression");
                 throw;
             }
 
-            if (!type_is_scalar(&new_expression->right->type))
+            if (!type_is_scalar_decay(&new_expression->right->type))
             {
                 expression_delete(new_expression);
                 compiler_diagnostic(C_ERROR_RIGHT_IS_NOT_SCALAR, ctx, ctx->current, NULL, "right type is not scalar for or expression");
@@ -26112,14 +26500,14 @@ struct expression* _Owner _Opt logical_or_expression(struct parser_ctx* ctx, enu
 
 
             //Each of the operands shall have scalar type
-            if (!type_is_scalar(&new_expression->left->type))
+            if (!type_is_scalar_decay(&new_expression->left->type))
             {
                 expression_delete(new_expression);
                 compiler_diagnostic(C_ERROR_LEFT_IS_NOT_SCALAR, ctx, ctx->current, NULL, "left type is not scalar for or expression");
                 throw;
             }
 
-            if (!type_is_scalar(&new_expression->right->type))
+            if (!type_is_scalar_decay(&new_expression->right->type))
             {
                 expression_delete(new_expression);
                 compiler_diagnostic(C_ERROR_RIGHT_IS_NOT_SCALAR, ctx, ctx->current, NULL, "right type is not scalar for or expression");
@@ -26551,7 +26939,6 @@ struct expression* _Owner _Opt conditional_expression(struct parser_ctx* ctx, en
         if (p_expression_node == NULL)
             throw;
 
-        enum expression_eval_mode current_eval_mode = eval_mode;
 
         if (ctx->current && ctx->current->type == '?')
         {
@@ -26584,17 +26971,31 @@ struct expression* _Owner _Opt conditional_expression(struct parser_ctx* ctx, en
                 }
             }
 
-            switch (current_eval_mode)
+            enum expression_eval_mode true_eval_mode = eval_mode;
+            enum expression_eval_mode false_eval_mode = eval_mode;
+
+
+            switch (eval_mode)
             {
             case EXPRESSION_EVAL_MODE_NONE:
             case EXPRESSION_EVAL_MODE_TYPE:
                 break;
+
             case EXPRESSION_EVAL_MODE_VALUE_AND_TYPE:
-                current_eval_mode = has_constant_expression && !constant_expression_is_true;
+                if (has_constant_expression && constant_expression_is_true)
+                {
+                    true_eval_mode = EXPRESSION_EVAL_MODE_VALUE_AND_TYPE;
+                    false_eval_mode = EXPRESSION_EVAL_MODE_NONE;
+                }
+                else
+                {
+                    true_eval_mode = EXPRESSION_EVAL_MODE_NONE;
+                    false_eval_mode = EXPRESSION_EVAL_MODE_VALUE_AND_TYPE;
+                }
                 break;
             }
 
-            struct expression* _Owner _Opt p_left = expression(ctx, current_eval_mode);
+            struct expression* _Owner _Opt p_left = expression(ctx, true_eval_mode);
 
             if (p_left == NULL)
             {
@@ -26618,24 +27019,8 @@ struct expression* _Owner _Opt conditional_expression(struct parser_ctx* ctx, en
                 throw;
             }
 
-            enum expression_eval_mode new_eval_mode = EXPRESSION_EVAL_MODE_VALUE_AND_TYPE;
-            switch (eval_mode)
-            {
-            case EXPRESSION_EVAL_MODE_NONE:
-            case EXPRESSION_EVAL_MODE_TYPE:
-                new_eval_mode = eval_mode;
-                break;
 
-            case EXPRESSION_EVAL_MODE_VALUE_AND_TYPE:
-                new_eval_mode = eval_mode;
-                if (has_constant_expression && constant_expression_is_true)
-                {
-                    new_eval_mode = EXPRESSION_EVAL_MODE_TYPE;
-                }
-                break;
-            }
-
-            struct expression* _Owner _Opt p_right = conditional_expression(ctx, new_eval_mode);
+            struct expression* _Owner _Opt p_right = conditional_expression(ctx, false_eval_mode);
 
             if (p_right == NULL)
             {
@@ -26675,7 +27060,7 @@ struct expression* _Owner _Opt conditional_expression(struct parser_ctx* ctx, en
             }
 
             /*The first operand shall have scalar type*/
-            if (!type_is_scalar(&p_conditional_expression->condition_expr->type))
+            if (!type_is_scalar_decay(&p_conditional_expression->condition_expr->type))
             {
                 compiler_diagnostic(C_ERROR_CONDITION_MUST_HAVE_SCALAR_TYPE, ctx, ctx->current, NULL, "condition must have scalar type");
             }
@@ -27390,26 +27775,12 @@ static void pre_conditional_expression(struct preprocessor_ctx* ctx, struct pre_
 static void pre_expression(struct preprocessor_ctx* ctx, struct pre_expression_ctx* ectx);
 static void pre_conditional_expression(struct preprocessor_ctx* ctx, struct pre_expression_ctx* ectx);
 
-//TODO share this with parser!
-/*
- * preprocessor uses long long
- */
+
 static int ppnumber_to_longlong(struct preprocessor_ctx* ctx, struct token* token, long long* result, enum target target)
 {
-
-    const long long signed_long_max_value =
-        target_signed_max(ctx->options.target, TYPE_SIGNED_LONG);
-
-    const unsigned long long unsigned_long_max_value =
-        target_unsigned_max(ctx->options.target, TYPE_UNSIGNED_LONG);
-
-    const long long signed_long_long_max_value =
-        target_signed_max(ctx->options.target, TYPE_SIGNED_LONG_LONG);
-
-
     /*copy removing the separators*/
-    // um dos maiores buffer necessarios seria 128 bits binario...
     // 0xb1'1'1....
+    //TODO maybe bitint will be longer..
     int c = 0;
     char buffer[128 * 2 + 4] = { 0 };
     const char* s = token->lexeme;
@@ -27428,22 +27799,14 @@ static int ppnumber_to_longlong(struct preprocessor_ctx* ctx, struct token* toke
     const enum token_type type = parse_number(token->lexeme, suffix, errormsg);
     if (type == TK_NONE)
     {
-        preprocessor_diagnostic(
-            C_INVALID_TOKEN,
+        preprocessor_diagnostic(C_INVALID_TOKEN,
             ctx,
             token,
             "%s",
             errormsg);
         return 0;
     }
-    struct object  cv = { 0 };
-    switch (type)
-    {
-    case TK_COMPILER_DECIMAL_CONSTANT:
-    case TK_COMPILER_OCTAL_CONSTANT:
-    case TK_COMPILER_HEXADECIMAL_CONSTANT:
-    case TK_COMPILER_BINARY_CONSTANT:
-    {
+
         unsigned long long value = 0;
         switch (type)
         {
@@ -27463,68 +27826,7 @@ static int ppnumber_to_longlong(struct preprocessor_ctx* ctx, struct token* toke
             break;
         }
 
-        if (value == ULLONG_MAX && errno == ERANGE)
-        {
-            //compiler_diagnostic(
-            //C_ERROR_LITERAL_OVERFLOW,
-            //ctx,
-            //token,
-            //NULL,
-            //"integer literal is too large to be represented in any integer type");
-        }
-
-        if (suffix[0] == 'U')
-        {
-            /*fixing the type that fits the size*/
-            if (value <= UINT_MAX && suffix[1] != 'L')
-            {
-                cv = object_make_unsigned_int(ctx->options.target, (unsigned int)value);
-
-            }
-            else if (value <= unsigned_long_max_value && suffix[2] != 'L')
-            {
-                cv = object_make_unsigned_long(target, (unsigned long)value);
-            }
-            else //if (value <= ULLONG_MAX)
-            {
-                cv = object_make_unsigned_long_long(ctx->options.target, value);
-            }
-        }
-        else
-        {
-            /*fixing the type that fits the size*/
-            if (value <= INT_MAX && suffix[0] != 'L')
-            {
-                cv = object_make_signed_int(ctx->options.target, (int)value);
-            }
-            else if (value <= (unsigned long long) signed_long_max_value && suffix[1] != 'L' /*!= LL*/)
-            {
-                cv = object_make_signed_long(target, (long)value);
-            }
-            else if (value <= (unsigned long long) signed_long_long_max_value)
-            {
-                cv = object_make_signed_long_long(ctx->options.target, (long long)value);
-            }
-            else
-            {
-                cv = object_make_signed_long_long(ctx->options.target, value);
-            }
-        }
-
-    }
-    break;
-
-    case TK_COMPILER_DECIMAL_FLOATING_CONSTANT:
-    case TK_COMPILER_HEXADECIMAL_FLOATING_CONSTANT:
-        //error
-        break;
-
-    default:
-        assert(false);
-    }
-
-    *result = object_to_signed_long_long(&cv);
-
+    *result = value;
     return 0;
 }
 
@@ -28749,14 +29051,13 @@ void defer_start_visit_declaration(struct defer_visit_ctx* ctx, struct declarati
 #endif
 
 
-/*
- *  This file is part of cake compiler
+/* *  This file is part of cake compiler
  *  https://github.com/thradams/cake 
 */
 
 //#pragma once
 
-#define CAKE_VERSION "0.12.33"
+#define CAKE_VERSION "0.12.49"
 
 
 
@@ -28838,31 +29139,6 @@ void d_visit_ctx_destroy( _Dtor struct d_visit_ctx* ctx);
 */
 #define CAKE_GENERATED_TAG_PREFIX  "__tag"
 
-char* _Opt strrchr2(const char* s, int c)
-{
-    const char* _Opt last = NULL;
-    unsigned char ch = (unsigned char)c;
-
-    while (*s)
-    {
-        if ((unsigned char)*s == ch)
-        {
-            last = s;  // record last match
-        }
-        s++;
-    }
-
-    // Handle case where c == '\0': return pointer to string terminator
-    if (ch == '\0')
-    {
-        return (char*)s;
-    }
-
-    return (char*)last;
-}
-
-
-
 _Attr(nodiscard)
 int initializer_init_new(struct parser_ctx* ctx,
                        struct type* p_type, /*in (in/out for arrays [])*/
@@ -28882,9 +29158,8 @@ void defer_statement_delete(struct defer_statement* _Owner _Opt p)
     }
 }
 
+static struct asm_statement* _Owner _Opt gcc_asm(struct parser_ctx* ctx, bool statement);
 
-
-///////////////////////////////////////////////////////////////////////////////
 void naming_convention_struct_tag(struct parser_ctx* ctx, struct token* token);
 void naming_convention_enum_tag(struct parser_ctx* ctx, struct token* token);
 void naming_convention_function(struct parser_ctx* ctx, struct token* token);
@@ -28894,7 +29169,6 @@ void naming_convention_parameter(struct parser_ctx* ctx, struct token* token, st
 void naming_convention_global_var(struct parser_ctx* ctx, struct token* token, struct type* type, enum storage_class_specifier_flags storage);
 void naming_convention_local_var(struct parser_ctx* ctx, struct token* token, struct type* type);
 
-///////////////////////////////////////////////////////////////////////////////
 
 static void check_open_brace_style(struct parser_ctx* ctx, struct token* token)
 {
@@ -29155,27 +29429,11 @@ _Bool compiler_diagnostic(enum diagnostic_id w,
         marker.end_col = p_token_opt->col;
     }
 
-    bool is_error = false;
-    bool is_warning = false;
-    bool is_note = false;
 
-    if (is_diagnostic_configurable(w))
-    {
-        is_error =
-            (ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].errors & (1ULL << w)) != 0;
+    const bool is_error = options_diagnostic_is_error(&ctx->options, w);
+    const bool is_warning = options_diagnostic_is_warning(&ctx->options, w);
+    const bool is_note = options_diagnostic_is_note(&ctx->options, w);
 
-        is_warning =
-            (ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings & (1ULL << w)) != 0;
-
-        is_note =
-            ((ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].notes & (1ULL << w)) != 0);
-    }
-    else
-    {
-        is_note = is_diagnostic_note(w);
-        is_error = is_diagnostic_error(w);
-        is_warning = is_diagnostic_warning(w);
-    }
 
     if (is_error)
     {
@@ -29223,18 +29481,11 @@ _Bool compiler_diagnostic(enum diagnostic_id w,
         ctx->options.visual_studio_ouput_format,
         color_enabled);
 
-#pragma CAKE diagnostic push
-#pragma CAKE diagnostic ignored "-Wnullable-to-non-nullable"
-#pragma CAKE diagnostic ignored "-Wanalyzer-null-dereference"
 
     va_list args = { 0 };
     va_start(args, fmt);
     /*int n =*/vsnprintf(buffer, sizeof(buffer), fmt, args);
     va_end(args);
-
-#pragma CAKE diagnostic pop
-
-    //bool show_warning_name = w < W_NOTE && w != W_LOCATION;
 
 
     if (ctx->options.visual_studio_ouput_format)
@@ -29808,6 +30059,19 @@ bool first_of_attribute_specifier(const struct parser_ctx* ctx)
     if (ctx->current == NULL)
         return false;
 
+
+    if (ctx->options.target == TARGET_X86_X64_GCC &&
+        ctx->current->type == TK_KEYWORD__ASM)
+    {
+        return true;
+    }
+
+    if (ctx->current->type == TK_KEYWORD_MSVC__DECLSPEC)
+        return true;
+
+    if (ctx->current->type == TK_KEYWORD_GCC__ATTRIBUTE)
+        return true;
+
     if (ctx->current->type != '[')
     {
         return false;
@@ -29860,6 +30124,8 @@ enum token_type is_keyword(const char* text, enum target target)
             return TK_KEYWORD__ALIGNAS; /*C23 alternate spelling _Alignof*/
         if (strcmp("assert", text) == 0)
             return TK_KEYWORD_ASSERT; /*extension*/
+        if (strcmp("asm", text) == 0)
+            return TK_KEYWORD__ASM;
         break;
 
     case 'b':
@@ -30078,15 +30344,12 @@ enum token_type is_keyword(const char* text, enum target target)
         if (strcmp("__builtin_va_copy", text) == 0)
             return TK_KEYWORD_GCC__BUILTIN_VA_COPY;
 
-        static_assert(NUMBER_OF_TARGETS == 6, "some target builtins or extensions may be necessary");
+        /*must be after others __builtin_*/
+        if (strstr(text, "__builtin_") != NULL)
+            return TK_KEYWORD_GCC__BUILTIN_XXXXX;
 
-        if (target == TARGET_X86_MSVC || target == TARGET_X64_MSVC)
-        {
-        if (strcmp("__ptr32", text) == 0)
-            return TK_KEYWORD_MSVC__PTR32;
-        if (strcmp("__ptr64", text) == 0)
-            return TK_KEYWORD_MSVC__PTR64;
-        }
+        if (strstr(text, "__volatile__") != NULL) //GCC
+            return TK_KEYWORD_VOLATILE;
 
 
         if (strcmp("_Bool", text) == 0)
@@ -30101,46 +30364,85 @@ enum token_type is_keyword(const char* text, enum target target)
             return TK_KEYWORD__DECIMAL128;
         if (strcmp("_Generic", text) == 0)
             return TK_KEYWORD__GENERIC;
+
         if (strcmp("_Imaginary", text) == 0)
             return TK_KEYWORD__IMAGINARY;
+
         if (strcmp("_Noreturn", text) == 0)
             return TK_KEYWORD__NORETURN; /*_Noreturn deprecated C23*/
+
         if (strcmp("_Static_assert", text) == 0)
             return TK_KEYWORD__STATIC_ASSERT;
+
         if (strcmp("_Thread_local", text) == 0)
             return TK_KEYWORD__THREAD_LOCAL;
+
         if (strcmp("_BitInt", text) == 0)
             return TK_KEYWORD__BITINT; /*(C23)*/
+
         if (strcmp("__typeof__", text) == 0)
             return TK_KEYWORD_TYPEOF; /*(C23)*/
 
+        if (strcmp("__asm__", text) == 0 || strcmp("_asm", text) == 0 || strcmp("__asm", text) == 0)
+            return TK_KEYWORD__ASM;
+
+        if (strcmp("__restrict", text) == 0)
+            return TK_KEYWORD_RESTRICT;
+
+        if (strcmp("__inline", text) == 0 || strcmp("__inline__", text) == 0)
+            return TK_KEYWORD_INLINE;
+
+        if (strcmp("__alignof__", text) == 0)
+            return TK_KEYWORD__ALIGNOF;
+
         if (target == TARGET_X86_MSVC || target == TARGET_X64_MSVC)
         {
+            if (strcmp("__ptr32", text) == 0)
+                return TK_KEYWORD_MSVC__PTR32;
+            
+            if (strcmp("__ptr64", text) == 0)
+                return TK_KEYWORD_MSVC__PTR64;
+
+            if (strcmp("__try", text) == 0)
+                return TK_KEYWORD_MSVC__TRY;
+            
+            if (strcmp("__except", text) == 0)
+                return TK_KEYWORD_MSVC__EXCEPT;
+
+            if (strcmp("__finally", text) == 0)
+                return TK_KEYWORD_MSVC__FINALLY;
+
+            if (strcmp("__leave", text) == 0)
+                return TK_KEYWORD_MSVC__LEAVE;
+            
         // begin microsoft
         if (strcmp("__int8", text) == 0)
             return TK_KEYWORD_MSVC__INT8;
+
         if (strcmp("__int16", text) == 0)
             return TK_KEYWORD_MSVC__INT16;
+
         if (strcmp("__int32", text) == 0)
             return TK_KEYWORD_MSVC__INT32;
+
         if (strcmp("__int64", text) == 0)
             return TK_KEYWORD_MSVC__INT64;
+
         if (strcmp("__forceinline", text) == 0)
             return TK_KEYWORD_INLINE;
-        if (strcmp("__inline", text) == 0)
-            return TK_KEYWORD_INLINE;
-        if (strcmp("_asm", text) == 0 || strcmp("__asm", text) == 0)
-            return TK_KEYWORD__ASM;
+
         if (strcmp("__stdcall", text) == 0 || strcmp("_stdcall", text) == 0)
             return TK_KEYWORD_MSVC__STDCALL;
+
         if (strcmp("__cdecl", text) == 0)
             return TK_KEYWORD_MSVC__CDECL;
+
         if (strcmp("__fastcall", text) == 0)
             return TK_KEYWORD_MSVC__FASTCALL;
+
         if (strcmp("__alignof", text) == 0)
             return TK_KEYWORD__ALIGNOF;
-        if (strcmp("__restrict", text) == 0)
-            return TK_KEYWORD_RESTRICT;
+
         if (strcmp("__declspec", text) == 0)
             return TK_KEYWORD_MSVC__DECLSPEC;
         }
@@ -31372,7 +31674,7 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
                     {
                         if (compiler_diagnostic(C_ERROR_REDECLARATION, ctx, ctx->current, NULL, "redeclaration"))
                         {
-                    compiler_diagnostic(W_NOTE, ctx, p_previous_declarator->name_opt, NULL, "previous declaration");
+                            compiler_diagnostic(W_LOCATION, ctx, p_previous_declarator->name_opt, NULL, "previous declaration");
                         }
                     }
                 }
@@ -31390,7 +31692,7 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
                     /*but redeclaration at function scope we show warning*/
                     if (compiler_diagnostic(W_DECLARATOR_HIDE, ctx, p_init_declarator->p_declarator->first_token_opt, NULL, "declaration of '%s' hides previous declaration", declarator_name))
                     {
-                        compiler_diagnostic(W_NOTE, ctx, p_previous_declarator->first_token_opt, NULL, "previous declaration is here");
+                        compiler_diagnostic(W_LOCATION, ctx, p_previous_declarator->first_token_opt, NULL, "previous declaration is here");
                     }
                 }
             }
@@ -32364,9 +32666,25 @@ static void gcc_attribute(struct parser_ctx* ctx)
     if (ctx->current->type == '(')
     {
         parser_match(ctx); //(
-        if (ctx->current->type != ')')
+        int count = 1;
+        for (;;)
         {
-            gcc_attribute_argument_list(ctx);
+            if (ctx->current->type == ')')
+            {
+                count--;
+
+                if (count == 0)
+                    break;
+
+                parser_match(ctx);
+            }
+            else if (ctx->current->type == '(')
+            {
+                count++;
+                parser_match(ctx); //(
+            }
+            else
+                parser_match(ctx); //(
         }
         parser_match_tk(ctx, ')');
     }
@@ -32845,12 +33163,26 @@ struct struct_or_union_specifier* _Owner _Opt struct_or_union_specifier(struct p
                 /*this tag already exist in this scope*/
                 if (p_entry->type == TAG_TYPE_STRUCT_OR_UNION_SPECIFIER)
                 {
+                    if (p_struct_or_union_specifier->first_token->type ==
+                        p_entry->data.p_struct_or_union_specifier->first_token->type)
+                    {
+
                     assert(p_entry->data.p_struct_or_union_specifier != NULL);
                     p_first_tag_in_this_scope = p_entry->data.p_struct_or_union_specifier;
                     p_struct_or_union_specifier->complete_struct_or_union_specifier_indirection = p_first_tag_in_this_scope;
                 }
                 else
                 {
+                    compiler_diagnostic(C_ERROR_TAG_TYPE_DOES_NOT_MATCH_PREVIOUS_DECLARATION,
+                        ctx,
+                        p_struct_or_union_specifier->tagtoken,
+                        NULL,
+                        "use of '%s' with tag type that does not match previous declaration.",
+                        p_struct_or_union_specifier->tagtoken->lexeme);
+                }
+            }
+            else
+            {
                     compiler_diagnostic(C_ERROR_TAG_TYPE_DOES_NOT_MATCH_PREVIOUS_DECLARATION,
                         ctx,
                         p_struct_or_union_specifier->tagtoken,
@@ -32893,10 +33225,14 @@ struct struct_or_union_specifier* _Owner _Opt struct_or_union_specifier(struct p
                 }
                 else
                 {
+                        if (p_first_tag_previous_scopes->first_token->type ==
+                            p_struct_or_union_specifier->first_token->type)
+                        {
                     /*tag already exists in some scope*/
                     p_struct_or_union_specifier->complete_struct_or_union_specifier_indirection = p_first_tag_previous_scopes;
                     }
                 }
+            }
             }
 
         }
@@ -34490,6 +34826,18 @@ struct declarator* _Owner _Opt declarator(struct parser_ctx* ctx,
         p_declarator = NULL;
     }
 
+    struct attribute_specifier_sequence* _Owner _Opt p = attribute_specifier_sequence_opt(ctx);
+    attribute_specifier_sequence_delete(p);
+
+    if (ctx->current->type == TK_KEYWORD__ASM)
+    {
+        /*
+            int var __asm__("real_name_in_asm");
+            void func(void) __asm__("real_func_name");
+        */
+        struct asm_statement* p3 = gcc_asm(ctx, false);
+        asm_statement_delete(p3);
+    }
 
     return p_declarator;
 }
@@ -36068,6 +36416,22 @@ void execute_pragma_declaration(struct parser_ctx* ctx, struct pragma_declaratio
                 throw;
     }
 
+
+        bool is_standard_pragma = false;
+
+        if ((strcmp(p_pragma_token->lexeme, "STDC") == 0))
+        {
+            /*
+               optional
+            */
+            p_pragma_token = pragma_declaration_match(p_pragma_token);
+            if (p_pragma_token == NULL)
+                throw;
+            is_standard_pragma = true;
+        }
+
+
+
         if (strcmp(p_pragma_token->lexeme, "diagnostic") == 0)
     {
             p_pragma_token = pragma_declaration_match(p_pragma_token);
@@ -36112,18 +36476,14 @@ void execute_pragma_declaration(struct parser_ctx* ctx, struct pragma_declaratio
                 if (p_pragma_token->type != TK_STRING_LITERAL)
                     throw;
 
-                unsigned long long w = get_warning_bit_mask(p_pragma_token->lexeme + 1 /*+ 2*/);
-
-                ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].errors &= ~w;
-                ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].notes &= ~w;
-                ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings &= ~w;
+                const unsigned long long w = atoi(p_pragma_token->lexeme + 2); /* sample "C0004"*/
 
                 if (is_error)
-                    ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].errors |= w;
+                    options_set_error(&ctx->options, w, true);
                 else if (is_warning)
-                    ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings |= w;
+                    options_set_warning(&ctx->options, w, true);
                 else if (is_note)
-                    ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].notes |= w;
+                    options_set_note(&ctx->options, w, true);
         }
         else
         {
@@ -36146,14 +36506,13 @@ void execute_pragma_declaration(struct parser_ctx* ctx, struct pragma_declaratio
 
             const bool nullable_enable = strcmp(p_pragma_token->lexeme, "enable") == 0;
 
-            unsigned long long w = NULLABLE_DISABLE_REMOVED_WARNINGS;
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].errors &= ~w;
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].notes &= ~w;
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings &= ~w;
+            options_set_warning(&ctx->options, W_NULLABLE_TO_NON_NULLABLE, nullable_enable);
+            options_set_warning(&ctx->options, W_FLOW_NULL_DEREFERENCE, nullable_enable);
+            options_set_warning(&ctx->options, W_FLOW_NULLABLE_TO_NON_NULLABLE, nullable_enable);
+
 
             if (nullable_enable)
             {
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings |= w;
             ctx->options.null_checks_enabled = true;
             ctx->options.flow_analysis = true; //also enable flow analysis
         }
@@ -36176,15 +36535,10 @@ void execute_pragma_declaration(struct parser_ctx* ctx, struct pragma_declaratio
             }
 
             const bool ownership_enable = strcmp(p_pragma_token->lexeme, "enable") == 0;
-            unsigned long long w = OWNERSHIP_DISABLE_REMOVED_WARNINGS;
-
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].errors &= ~w;
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].notes &= ~w;
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings &= ~w;
+            options_set_warning(&ctx->options, W_FLOW_UNINITIALIZED, ownership_enable);
 
             if (ownership_enable)
             {
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings |= w;
             ctx->options.ownership_enabled = true;
             ctx->options.flow_analysis = true; //also enable flow analysis
         }
@@ -36229,14 +36583,12 @@ void execute_pragma_declaration(struct parser_ctx* ctx, struct pragma_declaratio
 
             p_pragma_token = pragma_declaration_match(p_pragma_token);
 
-            unsigned long long w = NULLABLE_DISABLE_REMOVED_WARNINGS | OWNERSHIP_DISABLE_REMOVED_WARNINGS;
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].errors &= ~w;
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].notes &= ~w;
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings &= ~w;
+
+            options_set_warning(&ctx->options, W_FLOW_NULL_DEREFERENCE, safety_enable);
+            options_set_warning(&ctx->options, W_FLOW_NULLABLE_TO_NON_NULLABLE, safety_enable);
 
             if (safety_enable)
             {
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings |= w;
             ctx->options.null_checks_enabled = true;
             ctx->options.flow_analysis = true; //also enable flow analysis
             ctx->options.ownership_enabled = true;
@@ -36248,8 +36600,64 @@ void execute_pragma_declaration(struct parser_ctx* ctx, struct pragma_declaratio
             ctx->options.flow_analysis = false;
         }
     }
+        else if (is_standard_pragma &&
+                 (strcmp(p_pragma_token->lexeme, "FP_CONTRACT") == 0 ||
+                     strcmp(p_pragma_token->lexeme, "FENV_ACCESS") == 0 ||
+                     strcmp(p_pragma_token->lexeme, "CX_LIMITED_RANGE") == 0))
+        {
+            p_pragma_token = pragma_declaration_match(p_pragma_token);
+            if (p_pragma_token == NULL)
+                throw;
+
+            if (strcmp(p_pragma_token->lexeme, "ON") != 0 &&
+                strcmp(p_pragma_token->lexeme, "OFF") != 0 &&
+                strcmp(p_pragma_token->lexeme, "DEFAULT") != 0)
+            {
+                compiler_diagnostic(W_ATTRIBUTES, ctx, p_pragma_token, NULL, "expected ON OFF DEFAULT");
+                throw;
+            }
+        }
+        else if (is_standard_pragma && strcmp(p_pragma_token->lexeme, "FENV_DEC_ROUND") == 0)
+        {
+            p_pragma_token = pragma_declaration_match(p_pragma_token);
+            if (p_pragma_token == NULL)
+                throw;
+
+            if (strcmp(p_pragma_token->lexeme, "FE_DEC_DOWNWARD") != 0 &&
+                strcmp(p_pragma_token->lexeme, "FE_DEC_TONEAREST") != 0 &&
+                strcmp(p_pragma_token->lexeme, "FE_DEC_TONEARESTFROMZERO") != 0 &&
+                strcmp(p_pragma_token->lexeme, "FE_DEC_TOWARDZERO") != 0 &&
+                strcmp(p_pragma_token->lexeme, "FE_DEC_UPWARD") != 0 &&
+                strcmp(p_pragma_token->lexeme, "FE_DEC_DYNAMIC") != 0)
+            {
+                compiler_diagnostic(W_ATTRIBUTES, ctx, p_pragma_token, NULL, "expected FE_DEC_DOWNWARD FE_DEC_TONEAREST FE_DEC_TONEARESTFROMZERO FE_DEC_TOWARDZERO FE_DEC_UPWARD FE_DEC_DYNAMIC");
+                throw;
+            }
+        }
+        else if (is_standard_pragma && strcmp(p_pragma_token->lexeme, "FENV_ROUND") == 0)
+        {
+            p_pragma_token = pragma_declaration_match(p_pragma_token);
+            if (p_pragma_token == NULL)
+                throw;
+
+            if (strcmp(p_pragma_token->lexeme, "FE_DOWNWARD") != 0 &&
+                strcmp(p_pragma_token->lexeme, "FE_TONEAREST") != 0 &&
+                strcmp(p_pragma_token->lexeme, "FE_TONEARESTFROMZERO") != 0 &&
+                strcmp(p_pragma_token->lexeme, "FE_TOWARDZERO") != 0 &&
+                strcmp(p_pragma_token->lexeme, "FE_UPWARD") != 0 &&
+                strcmp(p_pragma_token->lexeme, "FE_DYNAMIC") != 0)
+            {
+                compiler_diagnostic(W_ATTRIBUTES, ctx, p_pragma_token, NULL, "expected enable/disable");
+                throw;
+            }
+        }
         else
     {
+            /*
+            * TODO
+             #pragma warning(push)
+             #pragma warning(disable:4001) 
+            */
             compiler_diagnostic(W_ATTRIBUTES, ctx, p_pragma_token, NULL, "unknown pragma");
             throw;
         }
@@ -36443,29 +36851,6 @@ struct attribute_specifier_sequence* _Owner _Opt attribute_specifier_sequence_op
             throw;
         }
 
-        if (ctx->current->type == TK_KEYWORD_MSVC__DECLSPEC)
-        {
-            //parser_match(ctx);
-            p_attribute_specifier_sequence = calloc(1, sizeof(struct attribute_specifier_sequence));
-            if (p_attribute_specifier_sequence == NULL)
-                throw;
-
-            p_attribute_specifier_sequence->first_token = ctx->current;
-            p_attribute_specifier_sequence->msvc_declspec_flags |= msvc_declspec_sequence_opt(ctx);
-            return  p_attribute_specifier_sequence;
-        }
-
-        if (ctx->current->type == TK_KEYWORD_GCC__ATTRIBUTE)
-        {
-            p_attribute_specifier_sequence = calloc(1, sizeof(struct attribute_specifier_sequence));
-            if (p_attribute_specifier_sequence == NULL)
-                throw;
-
-            p_attribute_specifier_sequence->first_token = ctx->current;
-            gcc_attribute_specifier_opt(ctx);
-            return  p_attribute_specifier_sequence;
-        }
-
         if (first_of_attribute_specifier(ctx))
         {
             p_attribute_specifier_sequence = calloc(1, sizeof(struct attribute_specifier_sequence));
@@ -36477,6 +36862,26 @@ struct attribute_specifier_sequence* _Owner _Opt attribute_specifier_sequence_op
             while (ctx->current != NULL &&
                 first_of_attribute_specifier(ctx))
             {
+
+        if (ctx->current->type == TK_KEYWORD_GCC__ATTRIBUTE)
+        {
+            gcc_attribute_specifier_opt(ctx);
+        }
+                else if (ctx->current->type == TK_KEYWORD_MSVC__DECLSPEC)
+        {
+                    p_attribute_specifier_sequence->msvc_declspec_flags |= msvc_declspec_sequence_opt(ctx);
+                }
+                else if (ctx->current->type == TK_KEYWORD__ASM)
+                {
+                    if (ctx->options.target == TARGET_X86_X64_GCC)
+                    {
+                        /*GCC also uses asm as attribute*/
+                        struct asm_statement _Owner _Opt* p3 = gcc_asm(ctx, false);
+                        asm_statement_delete(p3);
+                    }
+                }
+                else
+            {
                 struct attribute_specifier* _Owner _Opt p_attribute_specifier = attribute_specifier(ctx);
                 if (p_attribute_specifier == NULL)
                     throw;
@@ -36485,6 +36890,8 @@ struct attribute_specifier_sequence* _Owner _Opt attribute_specifier_sequence_op
                     p_attribute_specifier->attribute_list->attributes_flags;
 
                 attribute_specifier_sequence_add(p_attribute_specifier_sequence, p_attribute_specifier);
+                }
+
             }
 
             if (ctx->previous == NULL)
@@ -36779,7 +37186,6 @@ enum attribute_flags attribute_token(struct parser_ctx* ctx, struct attribute_sp
                     ctx->current->lexeme[0] == 'W' ||
                     ctx->current->lexeme[0] == 'w')
                 {
-                    //enum diagnostic_id  get_warning(const char* wname)
                     p_attribute_specifier->ack = atoi(ctx->current->lexeme + 1);
                 }
                 else if (strcmp(ctx->current->lexeme, "leak") == 0)
@@ -37039,10 +37445,17 @@ struct primary_block* _Owner _Opt primary_block(struct parser_ctx* ctx)
             if (p_primary_block->defer_statement == NULL)
                 throw;
         }
-        else if (ctx->current->type == TK_KEYWORD_CAKE_TRY)
+        else if (ctx->current->type == TK_KEYWORD_CAKE_TRY ||
+                 ctx->current->type == TK_KEYWORD_MSVC__TRY)
         {
             p_primary_block->try_statement = try_statement(ctx);
             if (p_primary_block->try_statement == NULL)
+                throw;
+        }
+        else if (ctx->current->type == TK_KEYWORD__ASM)
+        {
+            p_primary_block->asm_statement = asm_statement(ctx);
+            if (p_primary_block->asm_statement == NULL)
                 throw;
         }
         else
@@ -37190,7 +37603,9 @@ static bool first_of_primary_block(const struct parser_ctx* ctx)
         first_of_selection_statement(ctx) ||
         first_of_iteration_statement(ctx) ||
         ctx->current->type == TK_KEYWORD_DEFER /*extension*/ ||
-        ctx->current->type == TK_KEYWORD_CAKE_TRY /*extension*/
+        ctx->current->type == TK_KEYWORD_CAKE_TRY /*extension*/ ||
+        ctx->current->type == TK_KEYWORD_MSVC__TRY ||
+        ctx->current->type == TK_KEYWORD__ASM
         )
     {
         return true;
@@ -37250,15 +37665,12 @@ void warn_unrecognized_warnings(struct parser_ctx* ctx,
     struct token* token = p_attribute_specifier_sequence->first_token;
     for (int i = stack->size - 1; i >= 0; i--)
     {
-        char warning_name[200] = { 0 };
-        get_warning_name_and_number(stack->stack[i], sizeof(warning_name), warning_name);
-
         compiler_diagnostic(W_WARNING_DID_NOT_HAPPEN,
             ctx,
             token,
             NULL,
-            "warning '%s' was not recognized",
-            warning_name);
+            "warning 'C%04d' was not recognized",
+            stack->stack[i]);
     }
 }
 
@@ -37457,7 +37869,7 @@ struct label* _Owner _Opt label(struct parser_ctx* ctx, struct attribute_specifi
                 {
                     //already defined
                     compiler_diagnostic(C_ERROR_DUPLICATED_LABEL, ctx, ctx->current, NULL, "duplicated label '%s'", ctx->current->lexeme);
-                    compiler_diagnostic(W_NOTE, ctx, p_label_list_item->p_defined, NULL, "previous definition of '%s'", ctx->current->lexeme);
+                    compiler_diagnostic(W_LOCATION, ctx, p_label_list_item->p_defined, NULL, "previous definition of '%s'", ctx->current->lexeme);
                 }
                 else
                 {
@@ -37627,17 +38039,19 @@ struct label* _Owner _Opt label(struct parser_ctx* ctx, struct attribute_specifi
 
             if (p_existing_default_label)
             {
-                compiler_diagnostic(C_ERROR_MULTIPLE_DEFAULT_LABELS_IN_ONE_SWITCH,
+                if (compiler_diagnostic(C_ERROR_MULTIPLE_DEFAULT_LABELS_IN_ONE_SWITCH,
                     ctx,
                     p_label->p_first_token,
                     NULL,
-                    "multiple default labels in one switch");
+                    "multiple default labels in one switch"))
+                {
 
-                compiler_diagnostic(W_NOTE,
+                    compiler_diagnostic(W_LOCATION,
                     ctx,
                     p_existing_default_label->p_first_token,
                     NULL,
                     "previous default");
+                }
 
                 throw;
             }
@@ -38033,57 +38447,7 @@ struct block_item* _Owner _Opt block_item(struct parser_ctx* ctx)
 
         p_block_item->first_token = ctx->current;
 
-        if (ctx->current->type == TK_KEYWORD__ASM)
-        { /*
-       asm-block:
-       __asm assembly-instruction ;_Opt
-       __asm { assembly-instruction-list } ;_Opt
-
-   assembly-instruction-list:
-       assembly-instruction ;_Opt
-       assembly-instruction ; assembly-instruction-list ;_Opt
-       */
-
-            parser_match(ctx);
-
-            if (ctx->current == NULL)
-            {
-                unexpected_end_of_file(ctx);
-                throw;
-            }
-
-            if (ctx->current->type == '{')
-            {
-                parser_match(ctx);
-
-                while (ctx->current && ctx->current->type != '}')
-                {
-                    parser_match(ctx);
-                }
-
-                parser_match(ctx);
-            }
-            else
-            {
-
-                while (ctx->current && ctx->current->type != TK_NEWLINE)
-                {
-                    ctx->current = ctx->current->next;
-                }
-
-                parser_match(ctx);
-            }
-
-            if (ctx->current == NULL)
-            {
-                unexpected_end_of_file(ctx);
-                throw;
-            }
-
-            if (ctx->current->type == ';')
-                parser_match(ctx);
-        }
-        else if (first_of_declaration_specifier(ctx) ||
+        if (first_of_declaration_specifier(ctx) ||
             first_of_static_assert_declaration(ctx) ||
             first_of_pragma_declaration(ctx))
         {
@@ -38165,6 +38529,277 @@ void try_statement_delete(struct try_statement* _Owner _Opt p)
     }
 }
 
+void asm_statement_delete(struct asm_statement* _Owner _Opt p)
+{
+    if (p == NULL)
+        return;
+
+    free(p);
+}
+
+static struct asm_statement* _Owner _Opt msvc_asm_statement(struct parser_ctx* ctx)
+{
+    struct asm_statement* _Owner _Opt p_asm_statement = NULL;
+    try
+    {
+        if (ctx->current == NULL)
+        {
+            unexpected_end_of_file(ctx);
+            throw;
+        }
+
+        p_asm_statement = calloc(1, sizeof(struct asm_statement));
+        if (p_asm_statement == NULL)
+            throw;
+
+        p_asm_statement->p_first_token = ctx->current;
+
+        if (parser_match_tk(ctx, TK_KEYWORD__ASM) != 0)
+            throw;
+        /*
+              https://learn.microsoft.com/en-us/cpp/assembler/inline/asm?view=msvc-170
+
+              asm-block:
+              __asm assembly-instruction ;_Opt
+              __asm { assembly-instruction-list } ; opt
+
+          assembly-instruction-list:
+              assembly-instruction ; opt
+              assembly-instruction ; assembly-instruction-list ;opt
+        */
+
+        if (ctx->current == NULL)
+        {
+            unexpected_end_of_file(ctx);
+            throw;
+        }
+
+        if (ctx->current->type == '{')
+        {
+            parser_match(ctx);
+
+            while (ctx->current && ctx->current->type != '}')
+            {
+                parser_match(ctx);
+            }
+
+            if (ctx->current == NULL)
+            {
+                unexpected_end_of_file(ctx);
+                throw;
+            }
+            
+            p_asm_statement->p_last_token = ctx->current;
+
+            if (parser_match_tk(ctx, '}'))
+            {
+                throw;
+            }
+        }
+        else
+        {
+            while (ctx->current && ctx->current->type != TK_NEWLINE)
+            {
+                ctx->current = ctx->current->next;
+            }
+
+            if (ctx->current == NULL)
+            {
+                unexpected_end_of_file(ctx);
+                throw;
+            }
+
+            p_asm_statement->p_last_token = ctx->current;
+            parser_match(ctx);
+        }
+
+        if (ctx->current && ctx->current->type == ';')
+        {
+            /*optional*/
+            p_asm_statement->p_last_token = ctx->current;
+            parser_match(ctx);
+        }
+    }
+    catch
+    {
+        asm_statement_delete(p_asm_statement);
+        p_asm_statement = NULL;
+    }
+
+    return p_asm_statement;
+}
+
+static void gcc_asm_qualifier_opt(struct parser_ctx* ctx)
+{
+    /*
+       asm-qualifier:
+            volatile
+            __volatile__
+            goto
+            volatile goto
+            __volatile__ goto
+    */
+    try
+    {
+        if (ctx->current == NULL)
+        {
+            unexpected_end_of_file(ctx);
+            throw;
+        }
+
+        if (ctx->current->type == TK_KEYWORD_VOLATILE)
+        {
+            parser_match(ctx);
+            if (ctx->current->type == TK_KEYWORD_GOTO)
+            {
+                parser_match(ctx);
+            }
+        }
+        else if (ctx->current->type == TK_KEYWORD_GOTO)
+        {
+            parser_match(ctx);
+        }
+    }
+    catch
+    {
+    }
+}
+
+static struct asm_statement* _Owner _Opt gcc_asm(struct parser_ctx* ctx, bool statement)
+{    
+    /*
+       This is the grammar, but we are using a simple balanced asm ( ) 
+    //https://gcc.gnu.org/onlinedocs/gcc/Extended-Asm.html
+    asm-statement:
+    asm asm-qualifier[opt] ( asm-template asm-operands[opt] ) ;
+
+        asm-qualifier:
+            volatile
+            __volatile__
+            goto
+            volatile goto
+            __volatile__ goto
+
+        asm-template:
+            string-literal
+            asm-template string-literal
+
+        asm-operands:
+            : output-operands[opt]
+              : input-operands[opt]
+              : clobbers[opt]
+              : goto-labels[opt]
+
+        output-operands:
+            asm-operand
+            output-operands , asm-operand
+
+        input-operands:
+            asm-operand
+            input-operands , asm-operand
+
+        asm-operand:
+            constraint ( expression )
+            [ identifier ] constraint ( expression )
+
+        clobbers:
+            string-literal
+            clobbers , string-literal
+
+        goto-labels:
+            identifier
+            goto-labels , identifier
+
+        constraint:
+            string-literal    
+    */
+    struct asm_statement* _Owner _Opt p_asm_statement = NULL;
+    try
+    {
+        if (ctx->current == NULL)
+        {
+            unexpected_end_of_file(ctx);
+            throw;
+        }
+        p_asm_statement = calloc(1, sizeof(struct asm_statement));
+        if (p_asm_statement == NULL)
+            throw;
+
+        p_asm_statement->p_first_token = ctx->current;
+
+        if (parser_match_tk(ctx, TK_KEYWORD__ASM) != 0)
+            throw;
+
+        gcc_asm_qualifier_opt(ctx);
+
+        if (parser_match_tk(ctx, '(') != 0)
+            throw;
+
+        int count = 1;
+        for (;;)
+        {
+            if (ctx->current == NULL)
+            {
+                unexpected_end_of_file(ctx);
+                throw;
+            }
+
+            if (ctx->current->type == ')')
+            {
+                count--;
+                parser_match(ctx);
+                if (count == 0)
+                {
+                    p_asm_statement->p_last_token = ctx->current;
+                    break;
+                }
+            }
+            else if (ctx->current->type == '(')
+            {
+                count++;
+                parser_match(ctx);
+            }
+            else
+            {
+            parser_match(ctx);
+            }
+        }
+
+        if (statement)
+        {
+        if (parser_match_tk(ctx, ';') != 0)
+            throw;
+    }
+    }
+    catch
+    {
+        asm_statement_delete(p_asm_statement);
+        p_asm_statement = NULL;
+    }
+    return p_asm_statement;
+}
+
+struct asm_statement* _Owner _Opt asm_statement(struct parser_ctx* ctx)
+{
+    switch (ctx->options.target)
+    {
+    case TARGET_X86_MSVC:
+    case TARGET_X64_MSVC:
+        return msvc_asm_statement(ctx);
+
+    case TARGET_X86_X64_GCC:
+    case TARGET_CCU8:
+    case TARGET_LCCU16:
+    case TARGET_CATALINA:
+        break;
+    }
+
+    static_assert(NUMBER_OF_TARGETS == 6, "how this target handle asm blocks?");
+
+    //balanced tokens ( ... ) 
+    return gcc_asm(ctx, true);
+}
+
 struct try_statement* _Owner _Opt try_statement(struct parser_ctx* ctx)
 {
     struct try_statement* _Owner _Opt p_try_statement = NULL;
@@ -38183,24 +38818,24 @@ struct try_statement* _Owner _Opt try_statement(struct parser_ctx* ctx)
 
         p_try_statement->first_token = ctx->current;
 
-        assert(ctx->current->type == TK_KEYWORD_CAKE_TRY);
+        if (ctx->current->type != TK_KEYWORD_CAKE_TRY && ctx->current->type != TK_KEYWORD_MSVC__TRY)
+        {
+
+            throw;
+        }
+
         const struct try_statement* _Opt try_statement_copy_opt = ctx->p_current_try_statement_opt;
         ctx->p_current_try_statement_opt = p_try_statement;
 
         p_try_statement->catch_label_id = ctx->label_id++;
 
 
-        if (parser_match_tk(ctx, TK_KEYWORD_CAKE_TRY) != 0)
-            throw;
+        parser_match(ctx);
 
-#pragma cake diagnostic push
-#pragma cake diagnostic ignored "-Wmissing-destructor"    
 
         struct secondary_block* _Owner _Opt p_secondary_block = secondary_block(ctx);
         if (p_secondary_block == NULL) throw;
-
         p_try_statement->secondary_block = p_secondary_block;
-#pragma cake diagnostic pop
 
         /*restores the previous one*/
         ctx->p_current_try_statement_opt = try_statement_copy_opt;
@@ -38223,6 +38858,33 @@ struct try_statement* _Owner _Opt try_statement(struct parser_ctx* ctx)
             if (p_try_statement->catch_secondary_block_opt == NULL) throw;
 
         }
+        else if (ctx->current->type == TK_KEYWORD_MSVC__FINALLY)
+        {
+            p_try_statement->catch_token_opt = ctx->current;
+            parser_match(ctx);
+
+            assert(p_try_statement->catch_secondary_block_opt == NULL);
+
+
+            p_try_statement->catch_secondary_block_opt = secondary_block(ctx);
+            if (p_try_statement->catch_secondary_block_opt == NULL) throw;
+        }
+        else if (ctx->current->type == TK_KEYWORD_MSVC__EXCEPT)
+        {
+
+            //TODO
+            p_try_statement->catch_token_opt = ctx->current;
+            parser_match(ctx);
+            
+            parser_match_tk(ctx, '(');
+            p_try_statement->msvc_except_expression = expression(ctx, EXPRESSION_EVAL_MODE_VALUE_AND_TYPE);
+            parser_match_tk(ctx, ')');
+
+            assert(p_try_statement->catch_secondary_block_opt == NULL);
+            p_try_statement->catch_secondary_block_opt = secondary_block(ctx);
+            if (p_try_statement->catch_secondary_block_opt == NULL) throw;
+        }
+
         if (ctx->previous == NULL)
             throw;
 
@@ -39314,6 +39976,16 @@ struct declaration_list translation_unit(struct parser_ctx* ctx, bool* berror)
     {
         while (ctx->current != NULL)
         {
+            if (ctx->current->type == TK_KEYWORD__ASM)
+            {
+                //TODO
+                /*
+                  __asm__(".globl my_symbol\nmy_symbol:");
+                */
+                struct asm_statement* p3 = gcc_asm(ctx, true);
+                asm_statement_delete(p3);
+            }
+
             struct declaration* _Owner _Opt p = external_declaration(ctx);
             if (p == NULL)
                 throw;
@@ -39471,828 +40143,6 @@ struct declaration_list parse(struct parser_ctx* ctx, struct token_list* list, b
     return l;
 }
 
-int fill_preprocessor_options(int argc, const char** argv, struct preprocessor_ctx* prectx)
-{
-    /*first loop used to collect options*/
-    for (int i = 1; i < argc; i++)
-    {
-        if (argv[i][0] != '-')
-            continue;
-
-        if (argv[i][1] == 'I')
-        {
-            include_dir_add(&prectx->include_dir, argv[i] + 2);
-            continue;
-        }
-        if (argv[i][1] == 'D')
-        {
-            char buffer[200] = { 0 };
-            snprintf(buffer, sizeof buffer, "#define %s \n", argv[i] + 2);
-
-            /*TODO make it more precise*/
-            char* p = &buffer[7];
-            while (*p)
-            {
-                if (*p == '=')
-                {
-                    *p = ' ';
-                    break;
-                }
-                p++;
-            }
-
-            struct tokenizer_ctx tctx = { 0 };
-            struct token_list l1 = tokenizer(&tctx, buffer, "", 0, TK_FLAG_NONE);
-            struct token_list r = preprocessor(prectx, &l1, 0);
-            token_list_destroy(&l1);
-            token_list_destroy(&r);
-            continue;
-        }
-    }
-    return 0;
-}
-
-#ifdef _WIN32
-
-WINBASEAPI unsigned long WINAPI GetEnvironmentVariableA(const char* name,
-char* buffer,
-unsigned long size);
-
-#endif
-
-void append_msvc_include_dir(struct preprocessor_ctx* prectx)
-{
-
-#ifdef _WIN32
-    char env[2000] = { 0 };
-    int n = GetEnvironmentVariableA("INCLUDE", env, sizeof(env));
-
-    if (n > 0)
-    {
-
-        const char* p = env;
-        for (;;)
-        {
-            if (*p == '\0')
-            {
-                break;
-            }
-            char filename_local[500] = { 0 };
-            int count = 0;
-            while (*p != '\0' && (*p != ';' && *p != '\n'))
-            {
-                filename_local[count] = *p;
-                p++;
-                count++;
-            }
-            filename_local[count] = 0;
-            if (count > 0)
-            {
-                strcat(filename_local, "/");
-                include_dir_add(&prectx->include_dir, filename_local);
-            }
-            if (*p == '\0')
-            {
-                break;
-            }
-            p++;
-        }
-    }
-#endif
-}
-
-
-int generate_config_file(const char* configpath)
-{
-    FILE* _Owner _Opt outfile = NULL;
-    int error = 0;
-    try
-    {
-        outfile = fopen(configpath, "w");
-        if (outfile == NULL)
-        {
-            printf("Cannot open the file '%s' for writing.\n", configpath);
-            error = errno;
-            throw;
-        }
-
-        fprintf(outfile, "//This was generated by running cake -autoconfig \n");
-
-
-#if defined(__CATALINA__)
-
-#if defined(__linux__) || defined(__CATALYST__)
-
-        char *env = getenv("LCCDIR");
-        if (env == NULL) {
-            printf("LCCDIR not found, run cake -autoconfig inside a Catalina command line window or under Catalyst\n");
-            error = 1;
-            throw;
-        }
-
-        fprintf(outfile, "//This file was generated from the environment variable LCCDIR\n");
-        fprintf(outfile, "#pragma dir \"%s/include/\"\n", env);
-        fprintf(outfile, "#define __CATALINA__\n");
-#if defined(__CATALYST__)
-        fprintf(outfile, "#define __CATALYST__\n");
-#endif // defined(__CATALYST__)
-
-#else
-
-        char env[2000] = { 0 };
-        int n = GetEnvironmentVariableA("LCCDIR", env, sizeof(env));
-
-        if (n <= 0)
-        {
-            printf("LCCDIR not found, run cake -autoconfig inside a Catalina command line window\n");
-            error = 1;
-            throw;
-        }
-
-        char* pch = env;
-        while (*pch)
-        {
-            if (*pch == '\\')
-                *pch = '/';
-            pch++;
-        }
-        fprintf(outfile, "//This file was generated reading the variable LCCDIR inside a Catalina command line window.\n");
-        fprintf(outfile, "#pragma dir \"%s/include/\"\n", env);
-        fprintf(outfile, "#define __CATALINA__\n");
-
-#endif
-
-#elif defined (_WIN32)
-
-        char env[2000] = { 0 };
-        int n = GetEnvironmentVariableA("INCLUDE", env, sizeof(env));
-
-        if (n <= 0)
-        {
-            printf("INCLUDE not found.\nPlease, run cake -autoconfig inside visual studio command prompt.\n");
-            error = 1;
-            throw;
-        }
-
-        fprintf(outfile, "//This file was generated reading the variable INCLUDE inside Visual Studio Command Prompt.\n");
-        fprintf(outfile, "//echo %%INCLUDE%% \n");
-
-        const char* p = env;
-        for (;;)
-        {
-            if (*p == '\0')
-            {
-                break;
-            }
-            char filename_local[500] = { 0 };
-            int count = 0;
-            while (*p != '\0' && (*p != ';' && *p != '\n'))
-            {
-                filename_local[count] = *p;
-                p++;
-                count++;
-            }
-            filename_local[count] = 0;
-            if (count > 0)
-            {
-                strcat(filename_local, "/");
-                char* pch = filename_local;
-                while (*pch)
-                {
-                    if (*pch == '\\')
-                        *pch = '/';
-                    pch++;
-                }
-
-                fprintf(outfile, "#pragma dir \"%s\"\n", filename_local);
-            }
-            if (*p == '\0')
-            {
-                break;
-            }
-            p++;
-        }
-#elif defined (__linux__)
-
-        fprintf(outfile, "This file was generated reading the output of\n");
-        fprintf(outfile, "//echo | gcc -v -E - 2>&1\n");
-        fprintf(outfile, "\n");
-
-        char path[400] = { 0 };
-        char* command = "echo | gcc -v -E - 2>&1";
-        int in_include_section = 0;
-
-        // Open the command for reading
-        FILE* fp = popen(command, "r");
-        if (fp == NULL)
-        {
-            fprintf(stderr, "Failed to run command\n");
-            error = errno;
-            throw;
-        }
-
-        // Read the output a line at a time
-        while (fgets(path, sizeof(path), fp) != NULL)
-        {
-            // Check if we are in the "#include <...> search starts here:" section
-            if (strstr(path, "#include <...> search starts here:") != NULL)
-            {
-                in_include_section = 1;
-                continue;
-            }
-            // Check if we have reached the end of the include section
-            if (in_include_section && strstr(path, "End of search list.") != NULL)
-            {
-                break;
-            }
-            // Print the include directories
-            if (in_include_section)
-            {
-                const char* p = path;
-                while (*p == ' ') p++;
-
-                int len = strlen(path);
-                if (path[len - 1] == '\n')
-                    path[len - 1] = '\0';
-
-                fprintf(outfile, "#pragma dir \"%s\"\n", p);
-            }
-        }
-
-        fprintf(outfile, "\n");
-
-        // Close the command stream
-        pclose(fp);
-
-#endif // defined(__CATALINA__)
-    }
-    catch
-    {
-    }
-    if (outfile)
-        fclose(outfile);
-
-    if (error == 0)
-    {
-        printf("file '%s'\n", configpath);
-        printf("successfully generated\n");
-    }
-    return error;
-}
-
-static int get_first_line_len(const char* s)
-{
-    int n = 0;
-    while (*s && (*s != '\r' && *s != '\n'))
-    {
-        s++;
-        n++;
-    }
-    return n;
-}
-
-int compile_one_file(const char* file_name,
-    struct options* options,
-    const char* out_file_name,
-    int argc,
-    const char** argv,
-    struct report* report)
-{
-    bool color_enabled = !options->color_disabled;
-
-#if !defined(__CATALINA__)
-    // For Catalina, don't print the name of each file processed
-    // (there will usually be only one file)
-    printf("%s\n", file_name);
-#endif // !defined(__CATALINA__)
-    struct preprocessor_ctx prectx = { 0 };
-    prectx.options = *options;
-    prectx.macros.capacity = 5000;
-
-    add_standard_macros(&prectx, options->target);
-
-    if (include_config_header(&prectx, file_name) != 0)
-    {
-        //cakeconfig.h is optional               
-    }
-    // print_all_macros(&prectx);
-
-    struct ast ast = { 0 };
-
-    const char* _Owner _Opt s = NULL;
-
-    _Opt struct parser_ctx ctx = { 0 };
-
-    struct tokenizer_ctx tctx = { 0 };
-    struct token_list tokens = { 0 };
-
-    ctx.options = *options;
-    ctx.p_report = report;
-    char* _Owner _Opt content = NULL;
-
-    try
-    {
-        //-D , -I etc..
-        if (fill_preprocessor_options(argc, argv, &prectx) != 0)
-        {
-            throw;
-        }
-
-        prectx.options = *options;
-        append_msvc_include_dir(&prectx);
-
-        content = read_file(file_name, true /*append new line*/);
-        if (content == NULL)
-        {
-            report->error_count++;
-            printf("file not found '%s'\n", file_name);
-            throw;
-        }
-
-        if (options->sarif_output)
-        {
-            char sarif_file_name[260] = { 0 };
-            if (options->sarifpath[0] != '\0')
-            {
-                mkdir(options->sarifpath, 0777);
-                snprintf(sarif_file_name, sizeof sarif_file_name, "%s/%s.cake.sarif", options->sarifpath, basename(file_name));
-            }
-            else
-            {
-                snprintf(sarif_file_name, sizeof sarif_file_name, "%s.cake.sarif", file_name);
-            }
-
-            ctx.sarif_file = (FILE * _Owner _Opt) fopen(sarif_file_name, "w");
-            if (ctx.sarif_file)
-            {
-                const char* begin_sarif =
-                    "{\n"
-                    "  \"version\": \"2.1.0\",\n"
-                    "  \"$schema\": \"https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json\",\n"
-                    "  \"runs\": [\n"
-                    "    {\n"
-                    "      \"results\": [\n"
-                    "\n";
-
-                fprintf(ctx.sarif_file, "%s", begin_sarif);
-            }
-            else
-            {
-                report->error_count++;
-                printf("cannot open Sarif output file '%s'\n", sarif_file_name);
-                throw;
-            }
-        }
-
-        tokens = tokenizer(&tctx, content, file_name, 0, TK_FLAG_NONE);
-
-        if (tctx.n_errors > 0)
-            throw;
-
-        if (options->dump_tokens)
-        {
-            print_tokens(color_enabled, tokens.head);
-        }
-
-        prectx.options.diagnostic_stack.stack[prectx.options.diagnostic_stack.top_index].notes |= (1ULL << W_NOTE);
-        ast.token_list = preprocessor(&prectx, &tokens, 0);
-
-        report->warnings_count += prectx.n_warnings;
-        report->error_count += prectx.n_errors;
-
-        if (prectx.n_errors > 0)
-        {
-            throw;
-        }
-
-        if (options->dump_pptokens)
-        {
-            if (ast.token_list.head != NULL)
-                print_tokens(color_enabled, ast.token_list.head);
-        }
-
-        if (options->preprocess_only)
-        {
-            const char* _Owner _Opt s2 = print_preprocessed_to_string2(ast.token_list.head);
-            printf("%s", s2);
-            free((void* _Owner _Opt)s2);
-        }
-        else
-        {
-            bool berror = false;
-            ast.declaration_list = parse(&ctx, &ast.token_list, &berror);
-            if (berror || report->error_count > 0)
-                throw;
-
-            if (!options->no_output)
-            {
-
-                struct osstream ss = { 0 };
-                struct d_visit_ctx ctx2 = { 0 };
-                ctx2.ast = ast;
-                ctx2.options = ctx.options;
-                d_visit(&ctx2, &ss);
-                s = ss.c_str; //MOVE
-                d_visit_ctx_destroy(&ctx2);
-
-                FILE* _Owner _Opt outfile = fopen(out_file_name, "w");
-                if (outfile)
-                {
-                    if (s)
-                        fprintf(outfile, "%s", s);
-
-                    fclose(outfile);
-                }
-                else
-                {
-                    report->error_count++;
-                    printf("cannot open output file '%s' - %s\n", out_file_name, get_posix_error_message(errno));
-                    throw;
-                }
-            }
-        }
-
-        if (ctx.sarif_file)
-        {
-
-#define SARIF_FOOTER                                                             \
-    "      ],\n"                                                        \
-    "      \"tool\": {\n"                                               \
-    "        \"driver\": {\n"                                           \
-    "          \"name\": \"cake\",\n"                                   \
-    "          \"fullName\": \"cake code analysis\",\n"                 \
-    "          \"version\": \"" CAKE_VERSION  "\",\n"                   \
-    "          \"informationUri\": \"https://https://github.com/thradams/cake\"\n" \
-    "        }\n"                                                       \
-    "      }\n"                                                         \
-    "    }\n"                                                           \
-    "  ]\n"                                                             \
-    "}\n"                                                               \
-    "\n"
-            fprintf(ctx.sarif_file, "%s", SARIF_FOOTER);
-            fclose(ctx.sarif_file);
-            ctx.sarif_file = NULL;
-        }
-    }
-    catch
-    {
-        // printf("Error %s\n", error->message);
-    }
-
-    if (ctx.options.test_mode)
-    {
-        //lets check if the generated file is the expected
-        char file_name_no_ext[FS_MAX_PATH] = { 0 };
-        remove_file_extension(file_name, sizeof(file_name_no_ext), file_name_no_ext);
-
-        char buf[FS_MAX_PATH] = { 0 };
-        snprintf(buf, sizeof buf, "%s_%s.out", file_name_no_ext, get_platform(ctx.options.target)->name);
-
-        char* _Owner _Opt content_expected = read_file(buf, false /*append new line*/);
-        if (content_expected)
-        {
-            //We don't compare the fist line because it has the version that changes.
-            int s_first_line_len = get_first_line_len(s);
-            int content_expected_first_line_len = get_first_line_len(content_expected);
-            if (s && strcmp(content_expected + content_expected_first_line_len, s + s_first_line_len) != 0)
-            {
-                printf("different");
-                report->error_count++;
-            }
-            free(content_expected);
-        }
-
-        if (report->error_count > 0 || report->warnings_count > 0)
-        {
-
-            printf("-------------------------------------------\n");
-            printf("%s", content);
-            printf("\n-------------------------------------------\n");
-            if (color_enabled)
-            {
-                printf(LIGHTRED "TEST FAILED" COLOR_RESET " : error=%d, warnings=%d\n", report->error_count, report->warnings_count);
-            }
-            else
-            {
-                printf("TEST FAILED" " : error=%d, warnings=%d\n", report->error_count, report->warnings_count);
-            }
-            printf("\n\n");
-            report->test_failed++;
-        }
-        else
-        {
-            report->test_succeeded++;
-            if (color_enabled)
-            {
-                printf(LIGHTGREEN "TEST OK\n" COLOR_RESET);
-            }
-            else
-            {
-                printf("TEST OK\n");
-        }
-    }
-    }
-
-    token_list_destroy(&tokens);
-
-    parser_ctx_destroy(&ctx);
-    free((void* _Owner _Opt)s);
-    free(content);
-    ast_destroy(&ast);
-    preprocessor_ctx_destroy(&prectx);
-
-    return report->error_count > 0;
-}
-
-static int compile_many_files(const char* file_name,
-    struct options* options,
-    const char* out_file_name,
-    int argc,
-    const char** argv,
-    struct report* report)
-{
-    const char* const file_name_name = basename(file_name);
-    const char* _Opt const file_name_extension = strrchr2((char*)file_name_name, '.');
-
-    if (file_name_extension == NULL)
-    {
-        assert(false);
-    }
-
-    int num_files = 0;
-
-    char path[FS_MAX_PATH] = { 0 };
-    snprintf(path, sizeof path, "%s", file_name);
-    dirname(path);
-    DIR* _Owner _Opt dir = opendir(path);
-
-    if (dir == NULL)
-    {
-        return errno;
-    }
-
-    struct dirent* _Opt dp;
-    while ((dp = readdir(dir)) != NULL)
-    {
-        if (strcmp(dp->d_name, ".") == 0 || strcmp(dp->d_name, "..") == 0)
-        {
-            /* skip self and parent */
-            continue;
-        }
-
-        char fromlocal[257] = { 0 };
-        snprintf(fromlocal, sizeof fromlocal, "%s/%s", "", dp->d_name);
-
-        if (dp->d_type & DT_DIR)
-        {
-
-        }
-        else
-        {
-            const char* const file_name_iter = basename(dp->d_name);
-            const char* _Opt const file_extension = strrchr2((char*)file_name_iter, '.');
-
-            if (file_name_extension &&
-                file_extension &&
-                strcmp(file_name_extension, file_extension) == 0)
-            {
-                //Fixes the output file name replacing the current name
-                char out_file_name_final[FS_MAX_PATH] = { 0 };
-                strcpy(out_file_name_final, out_file_name);
-                dirname(out_file_name_final);
-                strcat(out_file_name_final, "/");
-                strcat(out_file_name_final, file_name_iter);
-
-                char in_file_name_final[FS_MAX_PATH] = { 0 };
-                strcpy(in_file_name_final, file_name);
-                dirname(in_file_name_final);
-                strcat(in_file_name_final, "/");
-                strcat(in_file_name_final, file_name_iter);
-
-
-                struct report report_local = { 0 };
-                report_local.test_mode = report->test_mode;
-                compile_one_file(in_file_name_final,
-                                 options,
-                                 out_file_name_final,
-                                 argc,
-                                 argv,
-                                 &report_local);
-
-
-
-                report->error_count += report_local.error_count;
-                report->warnings_count += report_local.warnings_count;
-                report->info_count += report_local.info_count;
-                report->test_succeeded += report_local.test_succeeded;
-                report->test_failed += report_local.test_failed;
-                num_files++;
-            }
-        }
-    }
-
-    closedir(dir);
-    return num_files;
-}
-
-static void longest_common_path(int argc, const char** argv, char root_dir[FS_MAX_PATH])
-{
-    /*
-     find the longest common path
-    */
-    for (int i = 1; i < argc; i++)
-    {
-        if (argv[i][0] == '-')
-            continue;
-
-        char fullpath_i[FS_MAX_PATH] = { 0 };
-        realpath(argv[i], fullpath_i);
-        strcpy(root_dir, fullpath_i);
-        dirname(root_dir);
-
-        for (int k = 0; k < FS_MAX_PATH; k++)
-        {
-            const char ch = fullpath_i[k];
-            for (int j = 2; j < argc; j++)
-            {
-                if (argv[j][0] == '-')
-                    continue;
-
-                char fullpath_j[FS_MAX_PATH] = { 0 };
-                realpath(argv[j], fullpath_j);
-                if (fullpath_j[k] != ch)
-                {
-                    strncpy(root_dir, fullpath_j, k);
-                    root_dir[k] = '\0';
-                    dirname(root_dir);
-                    goto exit;
-                }
-            }
-            if (ch == '\0')
-                break;
-        }
-    }
-exit:;
-}
-
-static int create_multiple_paths(const char* root, const char* outdir)
-{
-    /*
-       This function creates all dirs (folder1, forder2 ..) after root
-       root   : C:/folder
-       outdir : C:/folder/folder1/folder2 ...
-    */
-#if !defined __EMSCRIPTEN__
-    const char* p = outdir + strlen(root) + 1;
-    for (;;)
-    {
-        if (*p != '\0' && *p != '/' && *p != '\\')
-        {
-            p++;
-            continue;
-        }
-
-        char temp[FS_MAX_PATH] = { 0 };
-        strncpy(temp, outdir, p - outdir);
-
-        int er = mkdir(temp, 0777);
-        if (er != 0)
-        {
-            er = errno;
-            if (er != EEXIST)
-            {
-                printf("error creating output folder '%s' - %s\n", temp, get_posix_error_message(er));
-                return er;
-            }
-        }
-        if (*p == '\0')
-            break;
-        p++;
-    }
-    return 0;
-#else
-    return -1;
-#endif
-}
-
-int compile(int argc, const char** argv, struct report* report)
-{
-    struct options options = { 0 };
-    if (fill_options(&options, argc, argv) != 0)
-    {
-        return 1;
-    }
-
-    if (options.target != CAKE_COMPILE_TIME_SELECTED_TARGET)
-    {
-        printf("emulating %s\n", get_platform(options.target)->name);
-    }
-    
-    char executable_path[FS_MAX_PATH - sizeof(CAKE_CFG_FNAME)] = { 0 };
-    get_self_path(executable_path, sizeof(executable_path));
-    dirname(executable_path);
-    char cakeconfig_path[FS_MAX_PATH] = { 0 };
-    snprintf(cakeconfig_path, sizeof cakeconfig_path, "%s" CAKE_CFG_FNAME, executable_path);
-
-    if (options.auto_config) //-autoconfig
-    {
-        report->ignore_this_report = true;
-        return generate_config_file(cakeconfig_path);
-    }
-
-    report->test_mode = options.test_mode;
-
-    clock_t begin_clock = clock();
-    int no_files = 0;
-
-    char root_dir[FS_MAX_PATH] = { 0 };
-
-    if (!options.no_output)
-    {
-        longest_common_path(argc, argv, root_dir);
-    }
-
-    const size_t root_dir_len = strlen(root_dir);
-
-    /*second loop to compile each file*/
-    for (int i = 1; i < argc; i++)
-    {
-        if (strcmp(argv[i], "-o") == 0 ||
-            strcmp(argv[i], "-sarif-path") == 0)
-        {
-            //consumes next
-            i++;
-            continue;
-        }
-
-        if (argv[i][0] == '-')
-            continue;
-
-        no_files++;
-        char output_file[FS_MAX_PATH] = { 0 };
-
-        if (!options.no_output)
-        {
-            if (no_files == 1 && options.output[0] != '\0')
-            {
-                /*
-                   -o outputname
-                   works when we compile just one file
-                */
-                strcat(output_file, options.output);
-            }
-            else
-            {
-                char fullpath[FS_MAX_PATH] = { 0 };
-                realpath(argv[i], fullpath);
-
-                strcpy(output_file, root_dir);
-                strcat(output_file, "/");
-                strcat(output_file, get_platform(options.target)->name);
-
-                strcat(output_file, fullpath + root_dir_len);
-
-                char outdir[FS_MAX_PATH] = { 0 };
-                strcpy(outdir, output_file);
-                dirname(outdir);
-                if (create_multiple_paths(root_dir, outdir) != 0)
-                {
-                    return 1;
-                }
-            }
-        }
-
-        char fullpath[FS_MAX_PATH] = { 0 };
-        realpath(argv[i], fullpath);
-
-        const char* file_extension = basename(fullpath);
-
-        if (file_extension[0] == '*')
-        {
-            no_files--; //does not count *.c 
-            no_files += compile_many_files(fullpath, &options, output_file, argc, argv, report);
-        }
-        else
-        {
-            struct report report_local = { 0 };
-            compile_one_file(fullpath, &options, output_file, argc, argv, &report_local);
-
-
-            report->error_count += report_local.error_count;
-            report->warnings_count += report_local.warnings_count;
-            report->info_count += report_local.info_count;
-            report->test_succeeded += report_local.test_succeeded;
-            report->test_failed += report_local.test_failed;
-        }
-    }
-
-    clock_t end_clock = clock();
-    double cpu_time_used = ((double)(end_clock - begin_clock)) / CLOCKS_PER_SEC;
-    report->no_files = no_files;
-    report->cpu_time_used_sec = cpu_time_used;
-    return 0;
-}
-
 struct ast get_ast(struct options* options,
     const char* filename,
     const char* source,
@@ -40336,115 +40186,6 @@ struct ast get_ast(struct options* options,
     return ast;
 }
 
-/*
-* given a string s, produce argv by modifying the input string
-* return argc
-*/
-int strtoargv(char* s, int n, const char* argv[/*n*/])
-{
-    int argvc = 0;
-    char* p = s;
-    while (*p)
-    {
-        while (*p == ' ')
-            p++;
-        if (*p == 0)
-            break;
-        argv[argvc] = p;
-        argvc++;
-        while (*p != ' ' && *p != '\0')
-            p++;
-        if (*p == 0)
-            break;
-        *p = 0;
-        p++;
-        if (argvc >= n)
-            break; /*nao tem mais lugares*/
-    }
-    return argvc;
-}
-
-const char* _Owner _Opt compile_source(const char* pszoptions, const char* content, struct report* report)
-{
-    const char* argv[100] = { 0 };
-    char string[200] = { 0 };
-    snprintf(string, sizeof string, "exepath %s", pszoptions);
-
-    const int argc = strtoargv(string, 10, argv);
-
-    const char* _Owner _Opt s = NULL;
-
-    struct preprocessor_ctx prectx = { 0 };
-    struct ast ast = { 0 };
-    struct options options = { .input = LANGUAGE_CAK };
-
-
-    try
-    {
-        if (fill_options(&options, argc, argv) != 0)
-        {
-            throw;
-        }
-
-        prectx.options = options;
-        add_standard_macros(&prectx, options.target);
-
-        if (options.preprocess_only)
-        {
-            struct tokenizer_ctx tctx = { 0 };
-            struct token_list tokens = tokenizer(&tctx, content, "c:/main.c", 0, TK_FLAG_NONE);
-
-            struct token_list token_list = preprocessor(&prectx, &tokens, 0);
-            if (prectx.n_errors == 0)
-            {
-                s = print_preprocessed_to_string2(token_list.head);
-            }
-
-            token_list_destroy(&tokens);
-            token_list_destroy(&token_list);
-        }
-        else
-        {
-            ast = get_ast(&options, "c:/main.c", content, report);
-            if (report->error_count > 0)
-                throw;
-
-
-            struct osstream ss = { 0 };
-            struct d_visit_ctx ctx2 = { 0 };
-            ctx2.ast = ast;
-            ctx2.options = options;
-            d_visit(&ctx2, &ss);
-            s = ss.c_str; //MOVED                
-            //ss.c_str = NULL;
-            //ss_close(&ss);
-            d_visit_ctx_destroy(&ctx2);
-
-
-        }
-    }
-    catch
-    {
-    }
-
-    preprocessor_ctx_destroy(&prectx);
-
-    ast_destroy(&ast);
-
-    return s;
-}
-
-char* _Owner _Opt CompileText(const char* pszoptions, const char* content)
-{
-    /*
-      This function is called by the web playground
-    */
-    printf(WHITE "Cake " CAKE_VERSION COLOR_RESET "\n");
-    printf(WHITE "cake %s main.c\n", pszoptions);
-
-    struct report report = { 0 };
-    return (char* _Owner _Opt)compile_source(pszoptions, content, &report);
-}
 
 void ast_destroy(_Dtor struct ast* ast)
 {
@@ -40832,6 +40573,7 @@ static struct object* _Opt find_next_subobject(struct type* p_top_object_not_use
     p_type_out,
     sub_object_of_union);
 }
+
 struct find_object_result
 {
     struct object* _Opt object;
@@ -41417,6 +41159,988 @@ int initializer_init_new(struct parser_ctx* ctx,
     }
 
     return 0;
+}
+
+
+/*
+ *  This file is part of cake compiler
+ *  https://github.com/thradams/cake
+ *
+ *  struct object is used to compute the compile time expressions (including constexpr)
+ *
+*/
+
+
+
+/*
+ *  This file is part of cake compiler
+ *  https://github.com/thradams/cake
+ *
+ *  struct object is used to compute the compile time expressions (including constexpr)
+ *
+*/
+
+//#pragma once
+
+
+struct report;
+int compile(int argc, const char** argv, struct report* report);
+const char* _Owner _Opt compile_source(const char* pszoptions, const char* content, struct report* report);
+
+/*
+   This function is called by the web version
+*/   
+char* _Owner _Opt CompileText(const char* pszoptions, const char* content);
+
+
+#pragma safety enable
+
+
+
+#ifdef _WIN32
+#endif
+
+#if defined _MSC_VER && !defined __POCC__
+#endif
+
+
+
+static char* _Opt strrchr2(const char* s, int c)
+{
+    const char* _Opt last = NULL;
+    unsigned char ch = (unsigned char)c;
+
+    while (*s)
+    {
+        if ((unsigned char)*s == ch)
+        {
+            last = s;  // record last match
+        }
+        s++;
+    }
+
+    // Handle case where c == '\0': return pointer to string terminator
+    if (ch == '\0')
+    {
+        return (char*)s;
+    }
+
+    return (char*)last;
+}
+
+
+int fill_preprocessor_options(int argc, const char** argv, struct preprocessor_ctx* prectx)
+{
+    /*first loop used to collect options*/
+    for (int i = 1; i < argc; i++)
+    {
+        if (argv[i][0] != '-')
+            continue;
+
+        if (argv[i][1] == 'I')
+        {
+            include_dir_add(&prectx->include_dir, argv[i] + 2);
+            continue;
+        }
+        if (argv[i][1] == 'D')
+        {
+            char buffer[200] = { 0 };
+            snprintf(buffer, sizeof buffer, "#define %s \n", argv[i] + 2);
+
+            /*TODO make it more precise*/
+            char* p = &buffer[7];
+            while (*p)
+            {
+                if (*p == '=')
+                {
+                    *p = ' ';
+                    break;
+                }
+                p++;
+            }
+
+            struct tokenizer_ctx tctx = { 0 };
+            struct token_list l1 = tokenizer(&tctx, buffer, "", 0, TK_FLAG_NONE);
+            struct token_list r = preprocessor(prectx, &l1, 0);
+            token_list_destroy(&l1);
+            token_list_destroy(&r);
+            continue;
+        }
+    }
+    return 0;
+}
+
+#ifdef _WIN32
+
+WINBASEAPI unsigned long WINAPI GetEnvironmentVariableA(const char* name,
+char* buffer,
+unsigned long size);
+
+#endif
+
+
+int generate_config_file(const char* configpath)
+{
+    FILE* _Owner _Opt outfile = NULL;
+    int error = 0;
+    try
+    {
+        outfile = fopen(configpath, "w");
+        if (outfile == NULL)
+        {
+            printf("Cannot open the file '%s' for writing.\n", configpath);
+            error = errno;
+            throw;
+        }
+
+        fprintf(outfile, "//This was generated by running cake -autoconfig \n");
+
+
+#if defined(__CATALINA__)
+
+#if defined(__linux__) || defined(__CATALYST__)
+
+        char *env = getenv("LCCDIR");
+        if (env == NULL) {
+            printf("LCCDIR not found, run cake -autoconfig inside a Catalina command line window or under Catalyst\n");
+            error = 1;
+            throw;
+        }
+
+        fprintf(outfile, "//This file was generated from the environment variable LCCDIR\n");
+        fprintf(outfile, "#pragma dir \"%s/include/\"\n", env);
+        fprintf(outfile, "#define __CATALINA__\n");
+#if defined(__CATALYST__)
+        fprintf(outfile, "#define __CATALYST__\n");
+#endif // defined(__CATALYST__)
+
+#else
+
+        char env[2000] = { 0 };
+        int n = GetEnvironmentVariableA("LCCDIR", env, sizeof(env));
+
+        if (n <= 0)
+        {
+            printf("LCCDIR not found, run cake -autoconfig inside a Catalina command line window\n");
+            error = 1;
+            throw;
+        }
+
+        char* pch = env;
+        while (*pch)
+        {
+            if (*pch == '\\')
+                *pch = '/';
+            pch++;
+        }
+        fprintf(outfile, "//This file was generated reading the variable LCCDIR inside a Catalina command line window.\n");
+        fprintf(outfile, "#pragma dir \"%s/include/\"\n", env);
+        fprintf(outfile, "#define __CATALINA__\n");
+
+#endif
+
+#elif defined (_WIN32)
+
+        char env[2000] = { 0 };
+        int n = GetEnvironmentVariableA("INCLUDE", env, sizeof(env));
+
+        if (n <= 0)
+        {
+            printf("INCLUDE not found.\nPlease, run cake -autoconfig inside visual studio command prompt.\n");
+            error = 1;
+            throw;
+        }
+
+        fprintf(outfile, "//This file was generated reading the variable INCLUDE inside Visual Studio Command Prompt.\n");
+        fprintf(outfile, "//echo %%INCLUDE%% \n");
+
+        const char* p = env;
+        for (;;)
+        {
+            if (*p == '\0')
+            {
+                break;
+            }
+            char filename_local[500] = { 0 };
+            int count = 0;
+            while (*p != '\0' && (*p != ';' && *p != '\n'))
+            {
+                filename_local[count] = *p;
+                p++;
+                count++;
+            }
+            filename_local[count] = 0;
+            if (count > 0)
+            {
+                strcat(filename_local, "/");
+                char* pch = filename_local;
+                while (*pch)
+                {
+                    if (*pch == '\\')
+                        *pch = '/';
+                    pch++;
+                }
+
+                fprintf(outfile, "#pragma dir \"%s\"\n", filename_local);
+            }
+            if (*p == '\0')
+            {
+                break;
+            }
+            p++;
+        }
+#elif defined (__linux__)
+
+        fprintf(outfile, "This file was generated reading the output of\n");
+        fprintf(outfile, "//echo | gcc -v -E - 2>&1\n");
+        fprintf(outfile, "\n");
+
+        char path[400] = { 0 };
+        char* command = "echo | gcc -v -E - 2>&1";
+        int in_include_section = 0;
+
+        // Open the command for reading
+        FILE* fp = popen(command, "r");
+        if (fp == NULL)
+        {
+            fprintf(stderr, "Failed to run command\n");
+            error = errno;
+            throw;
+        }
+
+        // Read the output a line at a time
+        while (fgets(path, sizeof(path), fp) != NULL)
+        {
+            // Check if we are in the "#include <...> search starts here:" section
+            if (strstr(path, "#include <...> search starts here:") != NULL)
+            {
+                in_include_section = 1;
+                continue;
+            }
+            // Check if we have reached the end of the include section
+            if (in_include_section && strstr(path, "End of search list.") != NULL)
+            {
+                break;
+            }
+            // Print the include directories
+            if (in_include_section)
+            {
+                const char* p = path;
+                while (*p == ' ') p++;
+
+                int len = strlen(path);
+                if (path[len - 1] == '\n')
+                    path[len - 1] = '\0';
+
+                fprintf(outfile, "#pragma dir \"%s\"\n", p);
+            }
+        }
+
+        fprintf(outfile, "\n");
+
+        // Close the command stream
+        pclose(fp);
+
+#endif // defined(__CATALINA__)
+    }
+    catch
+    {
+    }
+    if (outfile)
+        fclose(outfile);
+
+    if (error == 0)
+    {
+        printf("file '%s'\n", configpath);
+        printf("successfully generated\n");
+    }
+    return error;
+}
+
+static int get_first_line_len(const char* s)
+{
+    int n = 0;
+    while (*s && (*s != '\r' && *s != '\n'))
+    {
+        s++;
+        n++;
+    }
+    return n;
+}
+
+int compile_one_file(const char* file_name,
+    struct options* options,
+    const char* out_file_name,
+    int argc,
+    const char** argv,
+    struct report* report)
+{
+    bool color_enabled = !options->color_disabled;
+
+#if !defined(__CATALINA__)
+    // For Catalina, don't print the name of each file processed
+    // (there will usually be only one file)
+    printf("%s\n", file_name);
+#endif // !defined(__CATALINA__)
+    struct preprocessor_ctx prectx = { 0 };
+    prectx.options = *options;
+    prectx.macros.capacity = 5000;
+
+    add_standard_macros(&prectx, options->target);
+
+    if (include_config_header(&prectx, file_name) != 0)
+    {
+        //cakeconfig.h is optional               
+    }
+    // print_all_macros(&prectx);
+
+    struct ast ast = { 0 };
+
+    const char* _Owner _Opt p_output_string = NULL;
+
+    _Opt struct parser_ctx ctx = { 0 };
+
+    struct tokenizer_ctx tctx = { 0 };
+    struct token_list tokens = { 0 };
+
+    tctx.options = *options;
+    ctx.options = *options;
+    ctx.p_report = report;
+    char* _Owner _Opt content = NULL;
+
+    try
+    {
+        //-D , -I etc..
+        if (fill_preprocessor_options(argc, argv, &prectx) != 0)
+        {
+            throw;
+        }
+
+        prectx.options = *options;
+        
+
+        content = read_file(file_name, true /*append new line*/);
+        if (content == NULL)
+        {
+            report->error_count++;
+            printf("file not found '%s'\n", file_name);
+            throw;
+        }
+
+        if (options->sarif_output)
+        {
+            char sarif_file_name[260] = { 0 };
+            if (options->sarifpath[0] != '\0')
+            {
+                mkdir(options->sarifpath, 0777);
+                snprintf(sarif_file_name, sizeof sarif_file_name, "%s/%s.cake.sarif", options->sarifpath, basename(file_name));
+            }
+            else
+            {
+                snprintf(sarif_file_name, sizeof sarif_file_name, "%s.cake.sarif", file_name);
+            }
+
+            ctx.sarif_file = (FILE * _Owner _Opt) fopen(sarif_file_name, "w");
+            if (ctx.sarif_file)
+            {
+                const char* begin_sarif =
+                    "{\n"
+                    "  \"version\": \"2.1.0\",\n"
+                    "  \"$schema\": \"https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json\",\n"
+                    "  \"runs\": [\n"
+                    "    {\n"
+                    "      \"results\": [\n"
+                    "\n";
+
+                fprintf(ctx.sarif_file, "%s", begin_sarif);
+            }
+            else
+            {
+                report->error_count++;
+                printf("cannot open Sarif output file '%s'\n", sarif_file_name);
+                throw;
+            }
+        }
+
+        tokens = tokenizer(&tctx, content, file_name, 0, TK_FLAG_NONE);
+
+        if (tctx.n_errors > 0)
+            throw;
+
+        if (options->dump_tokens)
+        {
+            print_tokens(color_enabled, tokens.head);
+        }
+
+        ast.token_list = preprocessor(&prectx, &tokens, 0);
+
+        report->warnings_count += prectx.n_warnings;
+        report->error_count += prectx.n_errors;
+
+        if (prectx.n_errors > 0)
+        {
+            throw;
+        }
+
+        if (options->dump_pptokens)
+        {
+            if (ast.token_list.head != NULL)
+                print_tokens(color_enabled, ast.token_list.head);
+        }
+
+        if (options->preprocess_only)
+        {
+            p_output_string = print_preprocessed_to_string2(ast.token_list.head);
+            printf("%s", p_output_string);
+
+            FILE* _Owner _Opt outfile = fopen(out_file_name, "w");
+            if (outfile)
+            {
+                if (p_output_string)
+                    fprintf(outfile, "%s", p_output_string);
+
+                fclose(outfile);
+            }
+            else
+            {
+                report->error_count++;
+                printf("cannot open output file '%s' - %s\n", out_file_name, get_posix_error_message(errno));
+                throw;
+            }            
+        }
+        else
+        {
+            bool berror = false;
+            ast.declaration_list = parse(&ctx, &ast.token_list, &berror);
+            if (berror || report->error_count > 0)
+                throw;
+
+            if (!options->no_output)
+            {
+
+                struct osstream ss = { 0 };
+                struct d_visit_ctx ctx2 = { 0 };
+                ctx2.ast = ast;
+                ctx2.options = ctx.options;
+                d_visit(&ctx2, &ss);
+                p_output_string = ss.c_str; //MOVE
+                d_visit_ctx_destroy(&ctx2);
+
+                FILE* _Owner _Opt outfile = fopen(out_file_name, "w");
+                if (outfile)
+                {
+                    if (p_output_string)
+                        fprintf(outfile, "%s", p_output_string);
+
+                    fclose(outfile);
+                }
+                else
+                {
+                    report->error_count++;
+                    printf("cannot open output file '%s' - %s\n", out_file_name, get_posix_error_message(errno));
+                    throw;
+                }
+            }
+        }
+
+        if (ctx.sarif_file)
+        {
+
+#define SARIF_FOOTER                                                             \
+    "      ],\n"                                                        \
+    "      \"tool\": {\n"                                               \
+    "        \"driver\": {\n"                                           \
+    "          \"name\": \"cake\",\n"                                   \
+    "          \"fullName\": \"cake code analysis\",\n"                 \
+    "          \"version\": \"" CAKE_VERSION  "\",\n"                   \
+    "          \"informationUri\": \"https://https://github.com/thradams/cake\"\n" \
+    "        }\n"                                                       \
+    "      }\n"                                                         \
+    "    }\n"                                                           \
+    "  ]\n"                                                             \
+    "}\n"                                                               \
+    "\n"
+            fprintf(ctx.sarif_file, "%s", SARIF_FOOTER);
+            fclose(ctx.sarif_file);
+            ctx.sarif_file = NULL;
+        }
+    }
+    catch
+    {
+        // printf("Error %s\n", error->message);
+    }
+
+    if (ctx.options.test_mode_inout)
+    {
+        //lets check if the generated file is the expected
+        char file_name_no_ext[FS_MAX_PATH] = { 0 };
+        remove_file_extension(file_name, sizeof(file_name_no_ext), file_name_no_ext);
+
+        char buf[FS_MAX_PATH] = { 0 };
+        snprintf(buf, sizeof buf, "%s_%s.out", file_name_no_ext, get_platform(ctx.options.target)->name);
+
+        char* _Owner _Opt content_expected = read_file(buf, false /*append new line*/);
+        if (content_expected)
+        {
+            //We don't compare the fist line because it has the version that changes.
+            int s_first_line_len = 0;
+            int content_expected_first_line_len = 0;
+
+            if (ctx.options.preprocess_only)
+            {
+            }
+            else
+            {
+                s_first_line_len = get_first_line_len(p_output_string);
+                content_expected_first_line_len = get_first_line_len(content_expected);
+            }
+
+            
+            if (p_output_string && strcmp(content_expected + content_expected_first_line_len, p_output_string + s_first_line_len) != 0)
+            {
+                printf("Output file '%s' is different from expected file '%s'\n", out_file_name, buf);
+                report->error_count++;
+            }
+            free(content_expected);
+        }
+        else
+        {
+            printf("Missing comparison file '%s' (-test-mode-in-out)\n", buf);
+            report->test_failed++;
+        }
+
+        if (report->error_count > 0 || report->warnings_count > 0)
+        {
+
+            printf("-------------------------------------------\n");
+            printf("%s", content);
+            printf("\n-------------------------------------------\n");
+            if (color_enabled)
+            {
+                printf(LIGHTRED "TEST FAILED" COLOR_RESET " : error=%d, warnings=%d\n", report->error_count, report->warnings_count);
+            }
+            else
+            {
+                printf("TEST FAILED" " : error=%d, warnings=%d\n", report->error_count, report->warnings_count);
+            }
+            printf("\n\n");
+            report->test_failed++;
+        }
+        else
+        {
+            report->test_succeeded++;
+    }
+    }
+
+    token_list_destroy(&tokens);
+
+    parser_ctx_destroy(&ctx);
+    free((void* _Owner _Opt)p_output_string);
+    free(content);
+    ast_destroy(&ast);
+    preprocessor_ctx_destroy(&prectx);
+
+    return report->error_count > 0;
+}
+
+static int compile_many_files(const char* file_name,
+    struct options* options,
+    const char* out_file_name,
+    int argc,
+    const char** argv,
+    struct report* report)
+{
+    const char* const file_name_name = basename(file_name);
+    const char* _Opt const file_name_extension = strrchr2((char*)file_name_name, '.');
+
+    if (file_name_extension == NULL)
+    {
+        assert(false);
+    }
+
+    int num_files = 0;
+
+    char path[FS_MAX_PATH] = { 0 };
+    snprintf(path, sizeof path, "%s", file_name);
+    dirname(path);
+    DIR* _Owner _Opt dir = opendir(path);
+
+    if (dir == NULL)
+    {
+        return errno;
+    }
+
+    struct dirent* _Opt dp;
+    while ((dp = readdir(dir)) != NULL)
+    {
+        if (strcmp(dp->d_name, ".") == 0 || strcmp(dp->d_name, "..") == 0)
+        {
+            /* skip self and parent */
+            continue;
+        }
+
+        char fromlocal[257] = { 0 };
+        snprintf(fromlocal, sizeof fromlocal, "%s/%s", "", dp->d_name);
+
+        if (dp->d_type & DT_DIR)
+        {
+
+        }
+        else
+        {
+            const char* const file_name_iter = basename(dp->d_name);
+            const char* _Opt const file_extension = strrchr2((char*)file_name_iter, '.');
+
+            if (file_name_extension &&
+                file_extension &&
+                strcmp(file_name_extension, file_extension) == 0)
+            {
+                //Fixes the output file name replacing the current name
+                char out_file_name_final[FS_MAX_PATH] = { 0 };
+                strcpy(out_file_name_final, out_file_name);
+                dirname(out_file_name_final);
+                strcat(out_file_name_final, "/");
+                strcat(out_file_name_final, file_name_iter);
+
+                char in_file_name_final[FS_MAX_PATH] = { 0 };
+                strcpy(in_file_name_final, file_name);
+                dirname(in_file_name_final);
+                strcat(in_file_name_final, "/");
+                strcat(in_file_name_final, file_name_iter);
+
+
+                struct report report_local = { 0 };
+                report_local.test_mode = report->test_mode;
+                compile_one_file(in_file_name_final,
+                                 options,
+                                 out_file_name_final,
+                                 argc,
+                                 argv,
+                                 &report_local);
+
+
+
+                report->error_count += report_local.error_count;
+                report->warnings_count += report_local.warnings_count;
+                report->info_count += report_local.info_count;
+                report->test_succeeded += report_local.test_succeeded;
+                report->test_failed += report_local.test_failed;
+                num_files++;
+            }
+        }
+    }
+
+    closedir(dir);
+    return num_files;
+}
+
+static void longest_common_path(int argc, const char** argv, char root_dir[FS_MAX_PATH])
+{
+    /*
+     find the longest common path
+    */
+    for (int i = 1; i < argc; i++)
+    {
+        if (argv[i][0] == '-')
+            continue;
+
+        char fullpath_i[FS_MAX_PATH] = { 0 };
+        realpath(argv[i], fullpath_i);
+        strcpy(root_dir, fullpath_i);
+        dirname(root_dir);
+
+        for (int k = 0; k < FS_MAX_PATH; k++)
+        {
+            const char ch = fullpath_i[k];
+            for (int j = 2; j < argc; j++)
+            {
+                if (argv[j][0] == '-')
+                    continue;
+
+                char fullpath_j[FS_MAX_PATH] = { 0 };
+                realpath(argv[j], fullpath_j);
+                if (fullpath_j[k] != ch)
+                {
+                    strncpy(root_dir, fullpath_j, k);
+                    root_dir[k] = '\0';
+                    dirname(root_dir);
+                    goto exit;
+                }
+            }
+            if (ch == '\0')
+                break;
+        }
+    }
+exit:;
+}
+
+static int create_multiple_paths(const char* root, const char* outdir)
+{
+    /*
+       This function creates all dirs (folder1, forder2 ..) after root
+       root   : C:/folder
+       outdir : C:/folder/folder1/folder2 ...
+    */
+#if !defined __EMSCRIPTEN__
+    const char* p = outdir + strlen(root) + 1;
+    for (;;)
+    {
+        if (*p != '\0' && *p != '/' && *p != '\\')
+        {
+            p++;
+            continue;
+        }
+
+        char temp[FS_MAX_PATH] = { 0 };
+        strncpy(temp, outdir, p - outdir);
+
+        int er = mkdir(temp, 0777);
+        if (er != 0)
+        {
+            er = errno;
+            if (er != EEXIST)
+            {
+                printf("error creating output folder '%s' - %s\n", temp, get_posix_error_message(er));
+                return er;
+            }
+        }
+        if (*p == '\0')
+            break;
+        p++;
+    }
+    return 0;
+#else
+    return -1;
+#endif
+}
+
+int compile(int argc, const char** argv, struct report* report)
+{
+    struct options options = { 0 };
+    if (fill_options(&options, argc, argv) != 0)
+    {
+        return 1;
+    }
+
+    if (options.target != CAKE_COMPILE_TIME_SELECTED_TARGET)
+    {
+        printf("emulating %s\n", get_platform(options.target)->name);
+    }
+    
+    char executable_path[FS_MAX_PATH - sizeof(CAKE_CONFIG_FILE_NAME)] = { 0 };
+    get_self_path(executable_path, sizeof(executable_path));
+    dirname(executable_path);
+    char cakeconfig_path[FS_MAX_PATH] = { 0 };
+    snprintf(cakeconfig_path, sizeof cakeconfig_path, "%s" CAKE_CONFIG_FILE_NAME, executable_path);
+
+    if (options.auto_config) //-autoconfig
+    {
+        report->ignore_this_report = true;
+        return generate_config_file(cakeconfig_path);
+    }
+
+    report->test_mode = options.test_mode;
+
+    clock_t begin_clock = clock();
+    int no_files = 0;
+
+    char root_dir[FS_MAX_PATH] = { 0 };
+
+    if (!options.no_output)
+    {
+        longest_common_path(argc, argv, root_dir);
+    }
+
+    const size_t root_dir_len = strlen(root_dir);
+
+    /*second loop to compile each file*/
+    for (int i = 1; i < argc; i++)
+    {
+        if (strcmp(argv[i], "-o") == 0 ||
+            strcmp(argv[i], "-sarif-path") == 0)
+        {
+            //consumes next
+            i++;
+            continue;
+        }
+
+        if (argv[i][0] == '-')
+            continue;
+
+        no_files++;
+        char output_file[FS_MAX_PATH] = { 0 };
+
+        if (!options.no_output)
+        {
+            if (no_files == 1 && options.output[0] != '\0')
+            {
+                /*
+                   -o outputname
+                   works when we compile just one file
+                */
+                strcat(output_file, options.output);
+            }
+            else
+            {
+                char fullpath[FS_MAX_PATH] = { 0 };
+                realpath(argv[i], fullpath);
+
+                strcpy(output_file, root_dir);
+                strcat(output_file, "/");
+                strcat(output_file, get_platform(options.target)->name);
+
+                strcat(output_file, fullpath + root_dir_len);
+
+                char outdir[FS_MAX_PATH] = { 0 };
+                strcpy(outdir, output_file);
+                dirname(outdir);
+                if (create_multiple_paths(root_dir, outdir) != 0)
+                {
+                    return 1;
+                }
+            }
+        }
+
+        char fullpath[FS_MAX_PATH] = { 0 };
+        realpath(argv[i], fullpath);
+
+        const char* file_extension = basename(fullpath);
+
+        if (file_extension[0] == '*')
+        {
+            no_files--; //does not count *.c 
+            no_files += compile_many_files(fullpath, &options, output_file, argc, argv, report);
+        }
+        else
+        {
+            struct report report_local = { 0 };
+            compile_one_file(fullpath, &options, output_file, argc, argv, &report_local);
+
+
+            report->error_count += report_local.error_count;
+            report->warnings_count += report_local.warnings_count;
+            report->info_count += report_local.info_count;
+            report->test_succeeded += report_local.test_succeeded;
+            report->test_failed += report_local.test_failed;
+        }
+    }
+
+    clock_t end_clock = clock();
+    double cpu_time_used = ((double)(end_clock - begin_clock)) / CLOCKS_PER_SEC;
+    report->no_files = no_files;
+    report->cpu_time_used_sec = cpu_time_used;
+    return 0;
+}
+
+
+/*
+* given a string s, produce argv by modifying the input string
+* return argc
+*/
+static int strtoargv(char* s, int n, const char* argv[/*n*/])
+{
+    int argvc = 0;
+    char* p = s;
+    while (*p)
+    {
+        while (*p == ' ')
+            p++;
+        if (*p == 0)
+            break;
+        argv[argvc] = p;
+        argvc++;
+        while (*p != ' ' && *p != '\0')
+            p++;
+        if (*p == 0)
+            break;
+        *p = 0;
+        p++;
+        if (argvc >= n)
+            break; /*nao tem mais lugares*/
+    }
+    return argvc;
+}
+
+const char* _Owner _Opt compile_source(const char* pszoptions, const char* content, struct report* report)
+{
+    const char* argv[100] = { 0 };
+    char string[200] = { 0 };
+    snprintf(string, sizeof string, "exepath %s", pszoptions);
+
+    const int argc = strtoargv(string, 10, argv);
+
+    const char* _Owner _Opt s = NULL;
+
+    struct preprocessor_ctx prectx = { 0 };
+    struct ast ast = { 0 };
+    struct options options = { .input = LANGUAGE_CAK };
+
+
+    try
+    {
+        if (fill_options(&options, argc, argv) != 0)
+        {
+            throw;
+        }
+
+        prectx.options = options;
+        add_standard_macros(&prectx, options.target);
+
+        if (options.preprocess_only)
+        {
+            struct tokenizer_ctx tctx = { 0 };
+            struct token_list tokens = tokenizer(&tctx, content, "c:/main.c", 0, TK_FLAG_NONE);
+
+            struct token_list token_list = preprocessor(&prectx, &tokens, 0);
+            if (prectx.n_errors == 0)
+            {
+                s = print_preprocessed_to_string2(token_list.head);
+            }
+
+            token_list_destroy(&tokens);
+            token_list_destroy(&token_list);
+        }
+        else
+        {
+            ast = get_ast(&options, "c:/main.c", content, report);
+            if (report->error_count > 0)
+                throw;
+
+
+            struct osstream ss = { 0 };
+            struct d_visit_ctx ctx2 = { 0 };
+            ctx2.ast = ast;
+            ctx2.options = options;
+            d_visit(&ctx2, &ss);
+            s = ss.c_str; //MOVED                
+            //ss.c_str = NULL;
+            //ss_close(&ss);
+            d_visit_ctx_destroy(&ctx2);
+
+
+        }
+    }
+    catch
+    {
+    }
+
+    preprocessor_ctx_destroy(&prectx);
+
+    ast_destroy(&ast);
+
+    return s;
+}
+
+char* _Owner _Opt CompileText(const char* pszoptions, const char* content)
+{
+    /*
+      This function is called by the web playground
+    */
+    printf(WHITE "Cake " CAKE_VERSION COLOR_RESET "\n");
+    printf(WHITE "cake %s main.c\n", pszoptions);
+
+    struct report report = { 0 };
+    return (char* _Owner _Opt)compile_source(pszoptions, content, &report);
 }
 
 
@@ -42867,6 +43591,7 @@ static const char* get_op_by_expression_type(enum expression_type type)
     return "";
 }
 
+
 static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, struct expression* p_expression)
 {
 
@@ -43117,6 +43842,22 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
         {
             d_visit_expression(ctx, oss, p_expression->generic_selection->p_view_selected_expression);
         }
+        break;
+
+    case UNARY_EXPRESSION_GCC__BUILTIN_XXXXX:
+    {
+        ss_fprintf(oss, "%s(", p_expression->first_token->lexeme);
+
+        struct argument_expression* _Opt arg = p_expression->argument_expression_list.head;
+        while (arg)
+        {
+            d_visit_expression(ctx, oss, arg->expression);
+            if (arg->next)
+                ss_fprintf(oss, ", ");
+            arg = arg->next;
+        }
+        ss_fprintf(oss, ")");
+    }
         break;
 
     case UNARY_EXPRESSION_GCC__BUILTIN_OFFSETOF:
@@ -44198,12 +44939,34 @@ static void d_visit_selection_statement(struct d_visit_ctx* ctx, struct osstream
 static void d_visit_try_statement(struct d_visit_ctx* ctx, struct osstream* oss, struct try_statement* p_try_statement)
 {
     print_identation(ctx, oss);
+
+    if (p_try_statement->first_token->type == TK_KEYWORD_CAKE_TRY)
     ss_fprintf(oss, "if (1) /*try*/\n");
+    else if (p_try_statement->first_token->type == TK_KEYWORD_MSVC__TRY)
+        ss_fprintf(oss, "__try\n");
 
     d_visit_secondary_block(ctx, oss, p_try_statement->secondary_block);
 
     print_identation(ctx, oss);
+
+    if (p_try_statement->catch_token_opt)
+    {
+        if (p_try_statement->catch_token_opt->type == TK_KEYWORD_CAKE_CATCH)
+        {
     ss_fprintf(oss, "else " CAKE_PREFIX_LABEL "%d: /*catch*/ \n", p_try_statement->catch_label_id);
+        }
+        else if (p_try_statement->catch_token_opt->type == TK_KEYWORD_MSVC__FINALLY)
+        {
+            ss_fprintf(oss, "__finally\n");
+        }
+        else if (p_try_statement->catch_token_opt->type == TK_KEYWORD_MSVC__EXCEPT)
+        {
+            ss_fprintf(oss, "__except(");
+            d_visit_expression(ctx, oss, p_try_statement->msvc_except_expression);
+            ss_fprintf(oss, ")\n");
+        }
+    }
+
 
     if (p_try_statement->catch_secondary_block_opt)
     {
@@ -44233,7 +44996,19 @@ static void d_visit_primary_block(struct d_visit_ctx* ctx, struct osstream* oss,
     {
         d_visit_try_statement(ctx, oss, p_primary_block->try_statement);
     }
-
+    else if (p_primary_block->asm_statement)
+    {
+        print_identation(ctx, oss);
+        struct token* p = p_primary_block->asm_statement->p_first_token;
+        while (p)
+        {
+            ss_fprintf(oss, "%s", p->lexeme);
+            if (p == p_primary_block->asm_statement->p_last_token)
+                break;           
+            p = p->next;
+        }
+        ss_fprintf(oss, "\n");
+    }
 }
 
 static void d_visit_unlabeled_statement(struct d_visit_ctx* ctx, struct osstream* oss, struct unlabeled_statement* p_unlabeled_statement)
@@ -45051,19 +45826,13 @@ static void object_print_constant_initialization(struct d_visit_ctx* ctx, struct
             {
                 //literals also can be used in c89 initializers
                 il_print_string(object->p_init_expression->first_token, object->p_init_expression->last_token, ss);
-
             }
-            else if (object->p_init_expression->expression_type == PRIMARY_EXPRESSION_DECLARATOR &&
-                     type_is_function(&object->p_init_expression->type))
+            else 
             {
                 /*
-                  functions can be used in constant initialization
+                  pointer to function, or pointer to file scope objects can be used
                 */
                 d_visit_expression(ctx, ss, object->p_init_expression);
-            }
-            else
-            {
-                ss_fprintf(ss, "0 /*?*/");
             }
         }
         else
@@ -45743,7 +46512,7 @@ void d_visit(struct d_visit_ctx* ctx, struct osstream* oss)
 
     ctx->print_qualifiers = false; //TODO not ready yet..
 
-    ss_fprintf(oss, "/* Cake %s %s */\n", CAKE_VERSION, get_platform(ctx->options.target)->name);
+    ss_fprintf(oss, "/* Cake %s */\n", get_platform(ctx->options.target)->name);
 
     ctx->indentation = 0;
     struct declaration* _Opt p_declaration = ctx->ast.declaration_list.head;
@@ -45778,16 +46547,6 @@ void d_visit(struct d_visit_ctx* ctx, struct osstream* oss)
 
         p_declaration = p_declaration->next;
     }
-
-#if 0
-    const char* str
-        =
-        "/* Generated by Cake - C89 compliant source code \n"
-        "   PREVIEW - WORK IN PROGRESS \n"
-        "*/\n\n";
-
-    ss_fprintf(oss, "%s", str);
-#endif
 
 
     for (int i = 0; i < ctx->structs_map.capacity; i++)
@@ -53794,7 +54553,9 @@ int GetWindowsOrLinuxSocketLastErrorAsPosix(void)
 #define __STDC_FORMAT_MACROS
 #endif // defined(__CATALINA__)
 
+#ifndef _Countof
 #define _Countof(A) (sizeof(A)/sizeof((A)[0]))
+#endif
 
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
@@ -53815,7 +54576,12 @@ int GetWindowsOrLinuxSocketLastErrorAsPosix(void)
 "#define __STDC_NO_VLA__    " TOSTRING(__STDC_NO_VLA__) "\n"
 
 
-
+/*
+  To see all predefined macros
+  gcc -dM -E
+  For some reason __STDC_HOSTED__ is not printed
+  but it is defined (maybe others)
+*/
 const char* TARGET_X86_X64_GCC_PREDEFINED_MACROS =
 #ifdef __EMSCRIPTEN__
 //include dir on emscripten
@@ -53823,8 +54589,12 @@ const char* TARGET_X86_X64_GCC_PREDEFINED_MACROS =
 #endif
 
 CAKE_STANDARD_MACROS
-"#define __linux__\n"
-//"#define __GNUC__  16\n"
+"#define __linux__            1\n"
+"#define __extension__        \n"    /*this is not a macro*/
+"#define __GNUC__             4\n"      /*this number is reduced to parser headers without all GCC extensions*/
+"#define __GNUC_MINOR__       1\n"
+"#define __STDC_HOSTED__      1\n"
+"#define __STDC__             1\n"
 "#define __x86_64__ 1\n"
 "#define __CHAR_BIT__ 8\n"
 "#define __SIZE_TYPE__ long unsigned int\n"
@@ -53880,9 +54650,7 @@ CAKE_STANDARD_MACROS
 "#define __FLT_MANT_DIG__ 24\n"
 "#define __FLT_MIN_EXP__ (-125)\n"
 "#define __FLT_MAX_10_EXP__ 38\n"
-"#define __FLT_ROUNDS__ __FLT_ROUNDS__\n"
 "#define __FLT_EVAL_METHOD__ 0\n"
-"#define __FLT_HAS_SUBNORM__ __FLT_HAS_SUBNORM__\n"
 "#define __FLT_MAX_EXP__ 128\n"
 "#define __FLT_HAS_DENORM__ 1\n"
 "#define __SCHAR_MAX__ 0x7f\n"
@@ -53927,15 +54695,6 @@ CAKE_STANDARD_MACROS
 "#define __WINT_MIN__ 0U\n"
 "#define __SIG_ATOMIC_MIN__ (-0x7fffffff - 1)\n"
 "#define __INT8_C (-0x7fffffff - 1)\n"
-"#define __INT16_C __INT16_C\n"
-"#define __INT32_C __INT32_C\n"
-"#define __INT64_C __INT64_C\n"
-"#define __UINT8_C __UINT8_C\n"
-"#define __UINT16_C __UINT16_C\n"
-"#define __UINT32_C __UINT32_C\n"
-"#define __UINT64_C __UINT64_C\n"
-"#define __INTMAX_C __INTMAX_C\n"
-"#define __UINTMAX_C __UINTMAX_C\n"
 "#define __SCHAR_WIDTH__ 8\n"
 "#define __SHRT_WIDTH__ 16\n"
 "#define __INT_WIDTH__ 32\n"
@@ -53981,6 +54740,7 @@ CAKE_STANDARD_MACROS
 "#define _WIN32 1\n"
 "#define _INTEGRAL_MAX_BITS 64\n"
 "#define _MSC_VER 1944\n"
+"#define _MSC_EXTENSIONS 1\n"
 "#define _M_IX86 600\n"
 "#define __pragma(a)\n"
 "\n";
@@ -53997,6 +54757,7 @@ CAKE_STANDARD_MACROS
 "#define _WIN64 1\n"
 "#define _INTEGRAL_MAX_BITS 64\n"
 "#define _MSC_VER 1944\n"
+"#define _MSC_EXTENSIONS 1\n"
 "#define _M_X64 100\n"
 "#define __pragma(a)\n"
 "\n";
@@ -54098,11 +54859,11 @@ static struct platform platform_x86_x64_gcc =
 
   .bool_n_bits = 8,
   .bool_type = TYPE_UNSIGNED_CHAR,
-  .bool_aligment = 1,
+  .bool_alignment = 1,
 
   .char_n_bits = 8,
   .char_t_type = TYPE_SIGNED_CHAR,
-  .char_aligment = 1,
+  .char_alignment = 1,
 
 
 
@@ -54112,29 +54873,29 @@ static struct platform platform_x86_x64_gcc =
   .int64_type = TYPE_SIGNED_LONG,
 
   .pointer_n_bits = 64,
-  .pointer_aligment = 8,
+  .pointer_alignment = 8,
 
 
-  .wchar_t_type = TYPE_UNSIGNED_INT,
+  .wchar_t_type = TYPE_SIGNED_INT,
 
   .short_n_bits = 16,
-  .short_aligment = 2,
+  .short_alignment = 2,
   .int_n_bits = 32,
-  .int_aligment = 4,
+  .int_alignment = 4,
 
   .long_n_bits = 64,
-  .long_aligment = 8,
+  .long_alignment = 8,
 
   .long_long_n_bits = 64,
-  .long_long_aligment = 8,
+  .long_long_alignment = 8,
   .float_n_bits = 32,
-  .float_aligment = 4,
+  .float_alignment = 4,
 
   .double_n_bits = 64,
-  .double_aligment = 8,
+  .double_alignment = 8,
 
   .long_double_n_bits = 128,
-  .long_double_aligment = 168,
+  .long_double_alignment = 168,
 
 };
 
@@ -54149,11 +54910,11 @@ static struct platform platform_x86_msvc =
 
   .bool_n_bits = 8,
   .bool_type = TYPE_UNSIGNED_CHAR,
-  .bool_aligment = 1,
+  .bool_alignment = 1,
 
   .char_n_bits = 8,
   .char_t_type = TYPE_SIGNED_CHAR,
-  .char_aligment = 1,
+  .char_alignment = 1,
 
 
   .int8_type = TYPE_SIGNED_CHAR,
@@ -54162,29 +54923,29 @@ static struct platform platform_x86_msvc =
   .int64_type = TYPE_SIGNED_LONG_LONG,
 
   .pointer_n_bits = 32,
-  .pointer_aligment = 4,
+  .pointer_alignment = 4,
 
 
   .wchar_t_type = TYPE_UNSIGNED_SHORT,
 
   .short_n_bits = 16,
-  .short_aligment = 2,
+  .short_alignment = 2,
   .int_n_bits = 32,
-  .int_aligment = 4,
+  .int_alignment = 4,
 
   .long_n_bits = 32,
-  .long_aligment = 4,
+  .long_alignment = 4,
 
   .long_long_n_bits = 64,
-  .long_long_aligment = 8,
+  .long_long_alignment = 8,
   .float_n_bits = 32,
-  .float_aligment = 4,
+  .float_alignment = 4,
 
   .double_n_bits = 64,
-  .double_aligment = 8,
+  .double_alignment = 8,
 
   .long_double_n_bits = 64,
-  .long_double_aligment = 8,
+  .long_double_alignment = 8,
 };
 
 static struct platform platform_x64_msvc =
@@ -54198,11 +54959,11 @@ static struct platform platform_x64_msvc =
 
   .bool_n_bits = 8,
   .bool_type = TYPE_UNSIGNED_CHAR,
-  .bool_aligment = 1,
+  .bool_alignment = 1,
 
   .char_n_bits = 8,
   .char_t_type = TYPE_SIGNED_CHAR,
-  .char_aligment = 1,
+  .char_alignment = 1,
 
 
   .int8_type = TYPE_SIGNED_CHAR,
@@ -54211,29 +54972,29 @@ static struct platform platform_x64_msvc =
   .int64_type = TYPE_SIGNED_LONG_LONG,
 
   .pointer_n_bits = 64,
-  .pointer_aligment = 8,
+  .pointer_alignment = 8,
 
 
   .wchar_t_type = TYPE_UNSIGNED_SHORT,
 
   .short_n_bits = 16,
-  .short_aligment = 2,
+  .short_alignment = 2,
   .int_n_bits = 32,
-  .int_aligment = 4,
+  .int_alignment = 4,
 
   .long_n_bits = 32,
-  .long_aligment = 4,
+  .long_alignment = 4,
 
   .long_long_n_bits = 64,
-  .long_long_aligment = 8,
+  .long_long_alignment = 8,
   .float_n_bits = 32,
-  .float_aligment = 4,
+  .float_alignment = 4,
 
   .double_n_bits = 64,
-  .double_aligment = 8,
+  .double_alignment = 8,
 
   .long_double_n_bits = 64,
-  .long_double_aligment = 8,
+  .long_double_alignment = 8,
 };
 
 static struct platform platform_ccu8 =
@@ -54247,11 +55008,11 @@ static struct platform platform_ccu8 =
 
   .bool_n_bits = 8,
   .bool_type = TYPE_UNSIGNED_CHAR,
-  .bool_aligment = 1,
+  .bool_alignment = 1,
 
   .char_n_bits = 8,
   .char_t_type = TYPE_SIGNED_CHAR,
-  .char_aligment = 1,
+  .char_alignment = 1,
 
 
   .int8_type = TYPE_SIGNED_CHAR,
@@ -54260,28 +55021,28 @@ static struct platform platform_ccu8 =
   .int64_type = TYPE_SIGNED_LONG_LONG,
 
   .pointer_n_bits = 32,
-  .pointer_aligment = 8,
+  .pointer_alignment = 8,
 
 
   .wchar_t_type = TYPE_UNSIGNED_SHORT,
   .short_n_bits = 16,
-  .short_aligment = 2,
+  .short_alignment = 2,
   .int_n_bits = 16,
-  .int_aligment = 2,
+  .int_alignment = 2,
 
   .long_n_bits = 64,
-  .long_aligment = 4,
+  .long_alignment = 4,
 
   .long_long_n_bits = 64,
-  .long_long_aligment = 8,
+  .long_long_alignment = 8,
   .float_n_bits = 32,
-  .float_aligment = 32,
+  .float_alignment = 32,
 
   .double_n_bits = 64,
-  .double_aligment = 8,
+  .double_alignment = 8,
 
   .long_double_n_bits = 64,
-  .long_double_aligment = 8,
+  .long_double_alignment = 8,
 };
 
 static struct platform platform_catalina =
@@ -54296,11 +55057,11 @@ static struct platform platform_catalina =
 
   .bool_n_bits = 8,
   .bool_type = TYPE_UNSIGNED_CHAR,
-  .bool_aligment = 1,
+  .bool_alignment = 1,
 
   .char_n_bits = 8,
   .char_t_type = TYPE_UNSIGNED_CHAR,
-  .char_aligment = 1,
+  .char_alignment = 1,
 
 
   .int8_type = TYPE_SIGNED_CHAR,
@@ -54309,29 +55070,29 @@ static struct platform platform_catalina =
   .int64_type = TYPE_SIGNED_LONG_LONG,
 
   .pointer_n_bits = 32,
-  .pointer_aligment = 4,
+  .pointer_alignment = 4,
 
 
   .wchar_t_type = TYPE_UNSIGNED_SHORT,
   .short_n_bits = 16,
-  .short_aligment = 2,
+  .short_alignment = 2,
   .int_n_bits = 32,
-  .int_aligment = 4,
+  .int_alignment = 4,
 
   .long_n_bits = 32,
-  .long_aligment = 4,
+  .long_alignment = 4,
 
   .long_long_n_bits = 32,
-  .long_long_aligment = 4,
+  .long_long_alignment = 4,
   
   .float_n_bits = 32,
-  .float_aligment = 4,
+  .float_alignment = 4,
 
   .double_n_bits = 32,
-  .double_aligment = 4,
+  .double_alignment = 4,
 
   .long_double_n_bits = 32,
-  .long_double_aligment = 4,
+  .long_double_alignment = 4,
 };
 
 static struct platform* platforms[NUMBER_OF_TARGETS] = 
@@ -54375,29 +55136,28 @@ struct platform* get_platform(enum  target target)
     return platforms[target];
 }
 
-
 long long target_signed_max(enum  target target, enum object_type type)
 {
-    int bits = target_get_num_of_bits(target, type);
+    const int bits = target_get_num_of_bits(target, type);
+    assert(bits <= sizeof(long long) * CHAR_BIT);
 
-    if (bits >= 64) {
-        return 0x7FFFFFFFFFFFFFFFLL; // (2^(63) - 1)
+    if (bits >= sizeof(long long) * CHAR_BIT)
+    {
+        return LLONG_MAX;
     } 
-      
     
     return (1LL << (bits - 1)) - 1; // 2^(bits-1) - 1    
 }
 
 unsigned long long target_unsigned_max(enum  target target, enum object_type type)
 {
-    /*
-      2^bits - 1
-    */
-    int bits = target_get_num_of_bits(target, type);
-    if (bits >= 64)
-        return ~0ULL;   // all bits set to 1
+    const int bits = target_get_num_of_bits(target, type);
+    assert(bits <= sizeof(unsigned long long) * CHAR_BIT);
     
-    return (1ULL << bits) - 1;    
+    if (bits >= sizeof(unsigned long long) * CHAR_BIT)
+        return ULLONG_MAX;
+
+    return (1ULL << bits) - 1;
 }
 
 int target_get_num_of_bits(enum target target, enum object_type type)
@@ -54452,6 +55212,43 @@ const char* target_get_predefined_macros(enum target e)
     return "";
 };
 
+#ifdef TEST
+
+void target_self_test()
+{
+    assert(target_unsigned_max(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_UNSIGNED_CHAR) == UCHAR_MAX);
+    assert(target_unsigned_max(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_UNSIGNED_SHORT) == USHRT_MAX);
+    assert(target_unsigned_max(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_UNSIGNED_INT) == UINT_MAX);
+    assert(target_unsigned_max(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_UNSIGNED_LONG) == ULONG_MAX);
+    assert(target_unsigned_max(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_UNSIGNED_LONG_LONG) == ULLONG_MAX);
+
+    assert(target_signed_max(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_SIGNED_CHAR) == CHAR_MAX);
+    assert(target_signed_max(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_SIGNED_SHORT) == SHRT_MAX);
+    assert(target_signed_max(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_SIGNED_INT) == INT_MAX);
+    assert(target_signed_max(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_SIGNED_LONG) == LONG_MAX);
+    assert(target_signed_max(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_SIGNED_LONG_LONG) == LLONG_MAX);
+
+    assert(target_get_num_of_bits(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_SIGNED_CHAR) == sizeof(char) * CHAR_BIT);
+    assert(target_get_num_of_bits(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_SIGNED_SHORT) == sizeof(short) * CHAR_BIT);
+    assert(target_get_num_of_bits(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_SIGNED_INT) == sizeof(int) * CHAR_BIT);
+    assert(target_get_num_of_bits(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_SIGNED_LONG) == sizeof(long) * CHAR_BIT);
+    assert(target_get_num_of_bits(CAKE_COMPILE_TIME_SELECTED_TARGET, TYPE_SIGNED_LONG_LONG) == sizeof(long long) * CHAR_BIT);
+
+
+    assert(target_get_num_of_bits(CAKE_COMPILE_TIME_SELECTED_TARGET, get_platform(CAKE_COMPILE_TIME_SELECTED_TARGET)->size_t_type) == sizeof(sizeof(1)) * CHAR_BIT);
+
+    assert(target_get_num_of_bits(CAKE_COMPILE_TIME_SELECTED_TARGET, get_platform(CAKE_COMPILE_TIME_SELECTED_TARGET)->wchar_t_type) == sizeof(L' ') * CHAR_BIT);
+
+    
+#if CHAR_MIN < 0
+    assert(get_platform(CAKE_COMPILE_TIME_SELECTED_TARGET)->char_t_type == TYPE_SIGNED_CHAR);
+#else
+    assert(get_platform(CAKE_COMPILE_TIME_SELECTED_TARGET)->char_t_type == TYPE_UNSIGNED_CHAR);
+#endif
+        
+
+}
+#endif
 
 
 /*
@@ -55611,14 +56408,35 @@ bool type_is_arithmetic(const struct type* p_type)
     return type_is_integer(p_type) || type_is_floating_point(p_type);
 }
 
+bool type_is_scalar_decay(const struct type* p_type)
+{
+    if (type_is_arithmetic(p_type))
+        return true;
+
+    if (type_is_pointer_or_array(p_type))
+        return true;
+
+    if (type_get_category(p_type) != TYPE_CATEGORY_ITSELF)
+        return false;
+
+
+    if (p_type->type_specifier_flags & TYPE_SPECIFIER_ENUM)
+        return true;
+
+    if (p_type->type_specifier_flags & TYPE_SPECIFIER_NULLPTR_T)
+        return true;
+
+    if (p_type->type_specifier_flags & TYPE_SPECIFIER_BOOL)
+        return true;
+
+    return false;
+}
 /*
  Arithmetic types, pointer types, and the nullptr_t type are collectively
  called scalar types.
 */
 bool type_is_scalar(const struct type* p_type)
 {
-    //TODO we need two concepts...is_scalar on real type or is_scalar after lvalue converison
-
     if (type_is_arithmetic(p_type))
         return true;
 
@@ -55631,6 +56449,7 @@ bool type_is_scalar(const struct type* p_type)
 
     if (p_type->type_specifier_flags & TYPE_SPECIFIER_ENUM)
         return true;
+
     if (p_type->type_specifier_flags & TYPE_SPECIFIER_NULLPTR_T)
         return true;
 
@@ -56850,7 +57669,7 @@ size_t type_get_alignof(const struct type* p_type, enum target target)
 
     if (category == TYPE_CATEGORY_POINTER)
     {
-        align = get_platform(target)->pointer_aligment;
+        align = get_platform(target)->pointer_alignment;
     }
     else if (category == TYPE_CATEGORY_FUNCTION)
     {
@@ -56881,15 +57700,15 @@ size_t type_get_alignof(const struct type* p_type, enum target target)
         }
         else if (p_type->type_specifier_flags & TYPE_SPECIFIER_CHAR)
         {
-            align = get_platform(target)->char_aligment;
+            align = get_platform(target)->char_alignment;
         }
         else if (p_type->type_specifier_flags & TYPE_SPECIFIER_BOOL)
         {
-            align = get_platform(target)->bool_aligment;
+            align = get_platform(target)->bool_alignment;
         }
         else if (p_type->type_specifier_flags & TYPE_SPECIFIER_SHORT)
         {
-            align = get_platform(target)->short_aligment;
+            align = get_platform(target)->short_alignment;
         }
         else if (p_type->type_specifier_flags & TYPE_SPECIFIER_ENUM)
         {
@@ -56903,32 +57722,32 @@ size_t type_get_alignof(const struct type* p_type, enum target target)
                 type_destroy(&t);
             }
             else
-                align = get_platform(target)->int_aligment;
+                align = get_platform(target)->int_alignment;
         }
         else if (p_type->type_specifier_flags == (TYPE_SPECIFIER_LONG | TYPE_SPECIFIER_DOUBLE))
         {
             //before 
-            align = get_platform(target)->long_double_aligment;
+            align = get_platform(target)->long_double_alignment;
         }
         else if (p_type->type_specifier_flags & TYPE_SPECIFIER_LONG)
         {
-            align = get_platform(target)->long_aligment;
+            align = get_platform(target)->long_alignment;
         }
         else if (p_type->type_specifier_flags & TYPE_SPECIFIER_LONG_LONG)
         {
-            align = get_platform(target)->long_long_aligment;
+            align = get_platform(target)->long_long_alignment;
         }
         else if (p_type->type_specifier_flags & TYPE_SPECIFIER_INT) //must be after long
         {
-            align = get_platform(target)->int_aligment;
+            align = get_platform(target)->int_alignment;
         }
         else if (p_type->type_specifier_flags & TYPE_SPECIFIER_FLOAT)
         {
-            align = get_platform(target)->float_aligment;
+            align = get_platform(target)->float_alignment;
         }
         else if (p_type->type_specifier_flags & TYPE_SPECIFIER_DOUBLE)
         {
-            align = get_platform(target)->double_aligment;
+            align = get_platform(target)->double_alignment;
         }
 
         else if (p_type->type_specifier_flags & TYPE_SPECIFIER_GCC__BUILTIN_VA_LIST)
@@ -56936,7 +57755,7 @@ size_t type_get_alignof(const struct type* p_type, enum target target)
 #if __GNUC__
             align = _Alignof(__builtin_va_list);
 #else
-            align = get_platform(target)->pointer_aligment;
+            align = get_platform(target)->pointer_alignment;
 #endif
         }
         else if (p_type->type_specifier_flags & TYPE_SPECIFIER_STRUCT_OR_UNION)
@@ -56973,7 +57792,7 @@ size_t type_get_alignof(const struct type* p_type, enum target target)
         }
         else if (p_type->type_specifier_flags == TYPE_SPECIFIER_NULLPTR_T)
         {
-            align = get_platform(target)->pointer_aligment;
+            align = get_platform(target)->pointer_alignment;
         }
         else
         {
@@ -57070,20 +57889,7 @@ enum sizeof_error type_get_sizeof(const struct type* p_type, size_t* size, enum 
             unsigned long long result = 0;
             if (unsigned_long_long_mul(&result, sz, arraysize))
             {
-                //https://github.com/thradams/cake/issues/248
-                unsigned long long SIZE_MAX_WORKAROUND = 0;
-
-#ifdef __linux__
-#if __x86_64__
-                SIZE_MAX_WORKAROUND = 0xffffffffffffffffULL;
-#else
-                SIZE_MAX_WORKAROUND = 0xffffffffULL;
-#endif                    
-#else                
-                SIZE_MAX_WORKAROUND = SIZE_MAX;
-#endif
-
-                if (result > SIZE_MAX_WORKAROUND)
+                if (result > SIZE_MAX)
                 {
                     return ESIZEOF_OVERLOW;
                 }

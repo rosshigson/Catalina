@@ -14,16 +14,6 @@
 #include <wchar.h>
 #include "error.h"
 #include "type.h"
- #if defined(__CATALINA__)
-// This is required when compiling Cake using gcc but with Catalina headers
-#if !defined (UINT64_MAX)
-#define UINT64_MAX  18446744073709551615ULL
-#endif
-#if !defined (INT64_MAX)
-#define INT64_MAX  9223372036854775807LL
-#endif
-#define __STDC_FORMAT_MACROS
-#endif // defined(__CATALINA__)
 #include <inttypes.h>
 struct parser_ctx;
 

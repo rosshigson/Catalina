@@ -265,9 +265,9 @@ strncpy dopenf.s 913 import
 strcpy dopenf.s 915 import
 memcpy dopenf.s 917 import
 _doprnt doprnt.s 394 export
-_i_compute doprnt.s 1289 import
-putc doprnt.s 1291 import
-toupper doprnt.s 1293 import
+_i_compute doprnt.s 1297 import
+putc doprnt.s 1299 import
+toupper doprnt.s 1301 import
 _doscan doscan.s 281 export
 __ctype doscan.s 1297 import
 strtoul doscan.s 1299 import

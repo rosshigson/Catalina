@@ -45,31 +45,6 @@
 */
 #define CAKE_GENERATED_TAG_PREFIX  "__tag"
 
-char* _Opt strrchr2(const char* s, int c)
-{
-    const char* _Opt last = NULL;
-    unsigned char ch = (unsigned char)c;
-
-    while (*s)
-    {
-        if ((unsigned char)*s == ch)
-        {
-            last = s;  // record last match
-        }
-        s++;
-    }
-
-    // Handle case where c == '\0': return pointer to string terminator
-    if (ch == '\0')
-    {
-        return (char*)s;
-    }
-
-    return (char*)last;
-}
-
-
-
 _Attr(nodiscard)
 int initializer_init_new(struct parser_ctx* ctx,
                        struct type* p_type, /*in (in/out for arrays [])*/
@@ -89,9 +64,8 @@ void defer_statement_delete(struct defer_statement* _Owner _Opt p)
     }
 }
 
+static struct asm_statement* _Owner _Opt gcc_asm(struct parser_ctx* ctx, bool statement);
 
-
-///////////////////////////////////////////////////////////////////////////////
 void naming_convention_struct_tag(struct parser_ctx* ctx, struct token* token);
 void naming_convention_enum_tag(struct parser_ctx* ctx, struct token* token);
 void naming_convention_function(struct parser_ctx* ctx, struct token* token);
@@ -101,7 +75,6 @@ void naming_convention_parameter(struct parser_ctx* ctx, struct token* token, st
 void naming_convention_global_var(struct parser_ctx* ctx, struct token* token, struct type* type, enum storage_class_specifier_flags storage);
 void naming_convention_local_var(struct parser_ctx* ctx, struct token* token, struct type* type);
 
-///////////////////////////////////////////////////////////////////////////////
 
 static void check_open_brace_style(struct parser_ctx* ctx, struct token* token)
 {
@@ -362,27 +335,11 @@ _Bool compiler_diagnostic(enum diagnostic_id w,
         marker.end_col = p_token_opt->col;
     }
 
-    bool is_error = false;
-    bool is_warning = false;
-    bool is_note = false;
 
-    if (is_diagnostic_configurable(w))
-    {
-        is_error =
-            (ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].errors & (1ULL << w)) != 0;
+    const bool is_error = options_diagnostic_is_error(&ctx->options, w);
+    const bool is_warning = options_diagnostic_is_warning(&ctx->options, w);
+    const bool is_note = options_diagnostic_is_note(&ctx->options, w);
 
-        is_warning =
-            (ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings & (1ULL << w)) != 0;
-
-        is_note =
-            ((ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].notes & (1ULL << w)) != 0);
-    }
-    else
-    {
-        is_note = is_diagnostic_note(w);
-        is_error = is_diagnostic_error(w);
-        is_warning = is_diagnostic_warning(w);
-    }
 
     if (is_error)
     {
@@ -430,18 +387,11 @@ _Bool compiler_diagnostic(enum diagnostic_id w,
         ctx->options.visual_studio_ouput_format,
         color_enabled);
 
-#pragma CAKE diagnostic push
-#pragma CAKE diagnostic ignored "-Wnullable-to-non-nullable"
-#pragma CAKE diagnostic ignored "-Wanalyzer-null-dereference"
 
     va_list args = { 0 };
     va_start(args, fmt);
     /*int n =*/vsnprintf(buffer, sizeof(buffer), fmt, args);
     va_end(args);
-
-#pragma CAKE diagnostic pop
-
-    //bool show_warning_name = w < W_NOTE && w != W_LOCATION;
 
 
     if (ctx->options.visual_studio_ouput_format)
@@ -1015,6 +965,19 @@ bool first_of_attribute_specifier(const struct parser_ctx* ctx)
     if (ctx->current == NULL)
         return false;
 
+
+    if (ctx->options.target == TARGET_X86_X64_GCC &&
+        ctx->current->type == TK_KEYWORD__ASM)
+    {
+        return true;
+    }
+
+    if (ctx->current->type == TK_KEYWORD_MSVC__DECLSPEC)
+        return true;
+
+    if (ctx->current->type == TK_KEYWORD_GCC__ATTRIBUTE)
+        return true;
+
     if (ctx->current->type != '[')
     {
         return false;
@@ -1067,6 +1030,8 @@ enum token_type is_keyword(const char* text, enum target target)
             return TK_KEYWORD__ALIGNAS; /*C23 alternate spelling _Alignof*/
         if (strcmp("assert", text) == 0)
             return TK_KEYWORD_ASSERT; /*extension*/
+        if (strcmp("asm", text) == 0)
+            return TK_KEYWORD__ASM;
         break;
 
     case 'b':
@@ -1285,15 +1250,12 @@ enum token_type is_keyword(const char* text, enum target target)
         if (strcmp("__builtin_va_copy", text) == 0)
             return TK_KEYWORD_GCC__BUILTIN_VA_COPY;
 
-        static_assert(NUMBER_OF_TARGETS == 6, "some target builtins or extensions may be necessary");
+        /*must be after others __builtin_*/
+        if (strstr(text, "__builtin_") != NULL)
+            return TK_KEYWORD_GCC__BUILTIN_XXXXX;
 
-        if (target == TARGET_X86_MSVC || target == TARGET_X64_MSVC)
-        {
-        if (strcmp("__ptr32", text) == 0)
-            return TK_KEYWORD_MSVC__PTR32;
-        if (strcmp("__ptr64", text) == 0)
-            return TK_KEYWORD_MSVC__PTR64;
-        }
+        if (strstr(text, "__volatile__") != NULL) //GCC
+            return TK_KEYWORD_VOLATILE;
 
 
         if (strcmp("_Bool", text) == 0)
@@ -1308,46 +1270,85 @@ enum token_type is_keyword(const char* text, enum target target)
             return TK_KEYWORD__DECIMAL128;
         if (strcmp("_Generic", text) == 0)
             return TK_KEYWORD__GENERIC;
+
         if (strcmp("_Imaginary", text) == 0)
             return TK_KEYWORD__IMAGINARY;
+
         if (strcmp("_Noreturn", text) == 0)
             return TK_KEYWORD__NORETURN; /*_Noreturn deprecated C23*/
+
         if (strcmp("_Static_assert", text) == 0)
             return TK_KEYWORD__STATIC_ASSERT;
+
         if (strcmp("_Thread_local", text) == 0)
             return TK_KEYWORD__THREAD_LOCAL;
+
         if (strcmp("_BitInt", text) == 0)
             return TK_KEYWORD__BITINT; /*(C23)*/
+
         if (strcmp("__typeof__", text) == 0)
             return TK_KEYWORD_TYPEOF; /*(C23)*/
 
+        if (strcmp("__asm__", text) == 0 || strcmp("_asm", text) == 0 || strcmp("__asm", text) == 0)
+            return TK_KEYWORD__ASM;
+
+        if (strcmp("__restrict", text) == 0)
+            return TK_KEYWORD_RESTRICT;
+
+        if (strcmp("__inline", text) == 0 || strcmp("__inline__", text) == 0)
+            return TK_KEYWORD_INLINE;
+
+        if (strcmp("__alignof__", text) == 0)
+            return TK_KEYWORD__ALIGNOF;
+
         if (target == TARGET_X86_MSVC || target == TARGET_X64_MSVC)
         {
+            if (strcmp("__ptr32", text) == 0)
+                return TK_KEYWORD_MSVC__PTR32;
+            
+            if (strcmp("__ptr64", text) == 0)
+                return TK_KEYWORD_MSVC__PTR64;
+
+            if (strcmp("__try", text) == 0)
+                return TK_KEYWORD_MSVC__TRY;
+            
+            if (strcmp("__except", text) == 0)
+                return TK_KEYWORD_MSVC__EXCEPT;
+
+            if (strcmp("__finally", text) == 0)
+                return TK_KEYWORD_MSVC__FINALLY;
+
+            if (strcmp("__leave", text) == 0)
+                return TK_KEYWORD_MSVC__LEAVE;
+            
         // begin microsoft
         if (strcmp("__int8", text) == 0)
             return TK_KEYWORD_MSVC__INT8;
+
         if (strcmp("__int16", text) == 0)
             return TK_KEYWORD_MSVC__INT16;
+
         if (strcmp("__int32", text) == 0)
             return TK_KEYWORD_MSVC__INT32;
+
         if (strcmp("__int64", text) == 0)
             return TK_KEYWORD_MSVC__INT64;
+
         if (strcmp("__forceinline", text) == 0)
             return TK_KEYWORD_INLINE;
-        if (strcmp("__inline", text) == 0)
-            return TK_KEYWORD_INLINE;
-        if (strcmp("_asm", text) == 0 || strcmp("__asm", text) == 0)
-            return TK_KEYWORD__ASM;
+
         if (strcmp("__stdcall", text) == 0 || strcmp("_stdcall", text) == 0)
             return TK_KEYWORD_MSVC__STDCALL;
+
         if (strcmp("__cdecl", text) == 0)
             return TK_KEYWORD_MSVC__CDECL;
+
         if (strcmp("__fastcall", text) == 0)
             return TK_KEYWORD_MSVC__FASTCALL;
+
         if (strcmp("__alignof", text) == 0)
             return TK_KEYWORD__ALIGNOF;
-        if (strcmp("__restrict", text) == 0)
-            return TK_KEYWORD_RESTRICT;
+
         if (strcmp("__declspec", text) == 0)
             return TK_KEYWORD_MSVC__DECLSPEC;
         }
@@ -2579,7 +2580,7 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
                     {
                         if (compiler_diagnostic(C_ERROR_REDECLARATION, ctx, ctx->current, NULL, "redeclaration"))
                         {
-                    compiler_diagnostic(W_NOTE, ctx, p_previous_declarator->name_opt, NULL, "previous declaration");
+                            compiler_diagnostic(W_LOCATION, ctx, p_previous_declarator->name_opt, NULL, "previous declaration");
                         }
                     }
                 }
@@ -2597,7 +2598,7 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
                     /*but redeclaration at function scope we show warning*/
                     if (compiler_diagnostic(W_DECLARATOR_HIDE, ctx, p_init_declarator->p_declarator->first_token_opt, NULL, "declaration of '%s' hides previous declaration", declarator_name))
                     {
-                        compiler_diagnostic(W_NOTE, ctx, p_previous_declarator->first_token_opt, NULL, "previous declaration is here");
+                        compiler_diagnostic(W_LOCATION, ctx, p_previous_declarator->first_token_opt, NULL, "previous declaration is here");
                     }
                 }
             }
@@ -3571,9 +3572,25 @@ static void gcc_attribute(struct parser_ctx* ctx)
     if (ctx->current->type == '(')
     {
         parser_match(ctx); //(
-        if (ctx->current->type != ')')
+        int count = 1;
+        for (;;)
         {
-            gcc_attribute_argument_list(ctx);
+            if (ctx->current->type == ')')
+            {
+                count--;
+
+                if (count == 0)
+                    break;
+
+                parser_match(ctx);
+            }
+            else if (ctx->current->type == '(')
+            {
+                count++;
+                parser_match(ctx); //(
+            }
+            else
+                parser_match(ctx); //(
         }
         parser_match_tk(ctx, ')');
     }
@@ -4052,12 +4069,26 @@ struct struct_or_union_specifier* _Owner _Opt struct_or_union_specifier(struct p
                 /*this tag already exist in this scope*/
                 if (p_entry->type == TAG_TYPE_STRUCT_OR_UNION_SPECIFIER)
                 {
+                    if (p_struct_or_union_specifier->first_token->type ==
+                        p_entry->data.p_struct_or_union_specifier->first_token->type)
+                    {
+
                     assert(p_entry->data.p_struct_or_union_specifier != NULL);
                     p_first_tag_in_this_scope = p_entry->data.p_struct_or_union_specifier;
                     p_struct_or_union_specifier->complete_struct_or_union_specifier_indirection = p_first_tag_in_this_scope;
                 }
                 else
                 {
+                    compiler_diagnostic(C_ERROR_TAG_TYPE_DOES_NOT_MATCH_PREVIOUS_DECLARATION,
+                        ctx,
+                        p_struct_or_union_specifier->tagtoken,
+                        NULL,
+                        "use of '%s' with tag type that does not match previous declaration.",
+                        p_struct_or_union_specifier->tagtoken->lexeme);
+                }
+            }
+            else
+            {
                     compiler_diagnostic(C_ERROR_TAG_TYPE_DOES_NOT_MATCH_PREVIOUS_DECLARATION,
                         ctx,
                         p_struct_or_union_specifier->tagtoken,
@@ -4100,10 +4131,14 @@ struct struct_or_union_specifier* _Owner _Opt struct_or_union_specifier(struct p
                 }
                 else
                 {
+                        if (p_first_tag_previous_scopes->first_token->type ==
+                            p_struct_or_union_specifier->first_token->type)
+                        {
                     /*tag already exists in some scope*/
                     p_struct_or_union_specifier->complete_struct_or_union_specifier_indirection = p_first_tag_previous_scopes;
                     }
                 }
+            }
             }
 
         }
@@ -5697,6 +5732,18 @@ struct declarator* _Owner _Opt declarator(struct parser_ctx* ctx,
         p_declarator = NULL;
     }
 
+    struct attribute_specifier_sequence* _Owner _Opt p = attribute_specifier_sequence_opt(ctx);
+    attribute_specifier_sequence_delete(p);
+
+    if (ctx->current->type == TK_KEYWORD__ASM)
+    {
+        /*
+            int var __asm__("real_name_in_asm");
+            void func(void) __asm__("real_func_name");
+        */
+        struct asm_statement* p3 = gcc_asm(ctx, false);
+        asm_statement_delete(p3);
+    }
 
     return p_declarator;
 }
@@ -7275,6 +7322,22 @@ void execute_pragma_declaration(struct parser_ctx* ctx, struct pragma_declaratio
                 throw;
     }
 
+
+        bool is_standard_pragma = false;
+
+        if ((strcmp(p_pragma_token->lexeme, "STDC") == 0))
+        {
+            /*
+               optional
+            */
+            p_pragma_token = pragma_declaration_match(p_pragma_token);
+            if (p_pragma_token == NULL)
+                throw;
+            is_standard_pragma = true;
+        }
+
+
+
         if (strcmp(p_pragma_token->lexeme, "diagnostic") == 0)
     {
             p_pragma_token = pragma_declaration_match(p_pragma_token);
@@ -7319,18 +7382,14 @@ void execute_pragma_declaration(struct parser_ctx* ctx, struct pragma_declaratio
                 if (p_pragma_token->type != TK_STRING_LITERAL)
                     throw;
 
-                unsigned long long w = get_warning_bit_mask(p_pragma_token->lexeme + 1 /*+ 2*/);
-
-                ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].errors &= ~w;
-                ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].notes &= ~w;
-                ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings &= ~w;
+                const unsigned long long w = atoi(p_pragma_token->lexeme + 2); /* sample "C0004"*/
 
                 if (is_error)
-                    ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].errors |= w;
+                    options_set_error(&ctx->options, w, true);
                 else if (is_warning)
-                    ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings |= w;
+                    options_set_warning(&ctx->options, w, true);
                 else if (is_note)
-                    ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].notes |= w;
+                    options_set_note(&ctx->options, w, true);
         }
         else
         {
@@ -7353,14 +7412,13 @@ void execute_pragma_declaration(struct parser_ctx* ctx, struct pragma_declaratio
 
             const bool nullable_enable = strcmp(p_pragma_token->lexeme, "enable") == 0;
 
-            unsigned long long w = NULLABLE_DISABLE_REMOVED_WARNINGS;
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].errors &= ~w;
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].notes &= ~w;
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings &= ~w;
+            options_set_warning(&ctx->options, W_NULLABLE_TO_NON_NULLABLE, nullable_enable);
+            options_set_warning(&ctx->options, W_FLOW_NULL_DEREFERENCE, nullable_enable);
+            options_set_warning(&ctx->options, W_FLOW_NULLABLE_TO_NON_NULLABLE, nullable_enable);
+
 
             if (nullable_enable)
             {
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings |= w;
             ctx->options.null_checks_enabled = true;
             ctx->options.flow_analysis = true; //also enable flow analysis
         }
@@ -7383,15 +7441,10 @@ void execute_pragma_declaration(struct parser_ctx* ctx, struct pragma_declaratio
             }
 
             const bool ownership_enable = strcmp(p_pragma_token->lexeme, "enable") == 0;
-            unsigned long long w = OWNERSHIP_DISABLE_REMOVED_WARNINGS;
-
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].errors &= ~w;
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].notes &= ~w;
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings &= ~w;
+            options_set_warning(&ctx->options, W_FLOW_UNINITIALIZED, ownership_enable);
 
             if (ownership_enable)
             {
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings |= w;
             ctx->options.ownership_enabled = true;
             ctx->options.flow_analysis = true; //also enable flow analysis
         }
@@ -7436,14 +7489,12 @@ void execute_pragma_declaration(struct parser_ctx* ctx, struct pragma_declaratio
 
             p_pragma_token = pragma_declaration_match(p_pragma_token);
 
-            unsigned long long w = NULLABLE_DISABLE_REMOVED_WARNINGS | OWNERSHIP_DISABLE_REMOVED_WARNINGS;
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].errors &= ~w;
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].notes &= ~w;
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings &= ~w;
+
+            options_set_warning(&ctx->options, W_FLOW_NULL_DEREFERENCE, safety_enable);
+            options_set_warning(&ctx->options, W_FLOW_NULLABLE_TO_NON_NULLABLE, safety_enable);
 
             if (safety_enable)
             {
-            ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index].warnings |= w;
             ctx->options.null_checks_enabled = true;
             ctx->options.flow_analysis = true; //also enable flow analysis
             ctx->options.ownership_enabled = true;
@@ -7455,8 +7506,64 @@ void execute_pragma_declaration(struct parser_ctx* ctx, struct pragma_declaratio
             ctx->options.flow_analysis = false;
         }
     }
+        else if (is_standard_pragma &&
+                 (strcmp(p_pragma_token->lexeme, "FP_CONTRACT") == 0 ||
+                     strcmp(p_pragma_token->lexeme, "FENV_ACCESS") == 0 ||
+                     strcmp(p_pragma_token->lexeme, "CX_LIMITED_RANGE") == 0))
+        {
+            p_pragma_token = pragma_declaration_match(p_pragma_token);
+            if (p_pragma_token == NULL)
+                throw;
+
+            if (strcmp(p_pragma_token->lexeme, "ON") != 0 &&
+                strcmp(p_pragma_token->lexeme, "OFF") != 0 &&
+                strcmp(p_pragma_token->lexeme, "DEFAULT") != 0)
+            {
+                compiler_diagnostic(W_ATTRIBUTES, ctx, p_pragma_token, NULL, "expected ON OFF DEFAULT");
+                throw;
+            }
+        }
+        else if (is_standard_pragma && strcmp(p_pragma_token->lexeme, "FENV_DEC_ROUND") == 0)
+        {
+            p_pragma_token = pragma_declaration_match(p_pragma_token);
+            if (p_pragma_token == NULL)
+                throw;
+
+            if (strcmp(p_pragma_token->lexeme, "FE_DEC_DOWNWARD") != 0 &&
+                strcmp(p_pragma_token->lexeme, "FE_DEC_TONEAREST") != 0 &&
+                strcmp(p_pragma_token->lexeme, "FE_DEC_TONEARESTFROMZERO") != 0 &&
+                strcmp(p_pragma_token->lexeme, "FE_DEC_TOWARDZERO") != 0 &&
+                strcmp(p_pragma_token->lexeme, "FE_DEC_UPWARD") != 0 &&
+                strcmp(p_pragma_token->lexeme, "FE_DEC_DYNAMIC") != 0)
+            {
+                compiler_diagnostic(W_ATTRIBUTES, ctx, p_pragma_token, NULL, "expected FE_DEC_DOWNWARD FE_DEC_TONEAREST FE_DEC_TONEARESTFROMZERO FE_DEC_TOWARDZERO FE_DEC_UPWARD FE_DEC_DYNAMIC");
+                throw;
+            }
+        }
+        else if (is_standard_pragma && strcmp(p_pragma_token->lexeme, "FENV_ROUND") == 0)
+        {
+            p_pragma_token = pragma_declaration_match(p_pragma_token);
+            if (p_pragma_token == NULL)
+                throw;
+
+            if (strcmp(p_pragma_token->lexeme, "FE_DOWNWARD") != 0 &&
+                strcmp(p_pragma_token->lexeme, "FE_TONEAREST") != 0 &&
+                strcmp(p_pragma_token->lexeme, "FE_TONEARESTFROMZERO") != 0 &&
+                strcmp(p_pragma_token->lexeme, "FE_TOWARDZERO") != 0 &&
+                strcmp(p_pragma_token->lexeme, "FE_UPWARD") != 0 &&
+                strcmp(p_pragma_token->lexeme, "FE_DYNAMIC") != 0)
+            {
+                compiler_diagnostic(W_ATTRIBUTES, ctx, p_pragma_token, NULL, "expected enable/disable");
+                throw;
+            }
+        }
         else
     {
+            /*
+            * TODO
+             #pragma warning(push)
+             #pragma warning(disable:4001) 
+            */
             compiler_diagnostic(W_ATTRIBUTES, ctx, p_pragma_token, NULL, "unknown pragma");
             throw;
         }
@@ -7650,29 +7757,6 @@ struct attribute_specifier_sequence* _Owner _Opt attribute_specifier_sequence_op
             throw;
         }
 
-        if (ctx->current->type == TK_KEYWORD_MSVC__DECLSPEC)
-        {
-            //parser_match(ctx);
-            p_attribute_specifier_sequence = calloc(1, sizeof(struct attribute_specifier_sequence));
-            if (p_attribute_specifier_sequence == NULL)
-                throw;
-
-            p_attribute_specifier_sequence->first_token = ctx->current;
-            p_attribute_specifier_sequence->msvc_declspec_flags |= msvc_declspec_sequence_opt(ctx);
-            return  p_attribute_specifier_sequence;
-        }
-
-        if (ctx->current->type == TK_KEYWORD_GCC__ATTRIBUTE)
-        {
-            p_attribute_specifier_sequence = calloc(1, sizeof(struct attribute_specifier_sequence));
-            if (p_attribute_specifier_sequence == NULL)
-                throw;
-
-            p_attribute_specifier_sequence->first_token = ctx->current;
-            gcc_attribute_specifier_opt(ctx);
-            return  p_attribute_specifier_sequence;
-        }
-
         if (first_of_attribute_specifier(ctx))
         {
             p_attribute_specifier_sequence = calloc(1, sizeof(struct attribute_specifier_sequence));
@@ -7684,6 +7768,26 @@ struct attribute_specifier_sequence* _Owner _Opt attribute_specifier_sequence_op
             while (ctx->current != NULL &&
                 first_of_attribute_specifier(ctx))
             {
+
+        if (ctx->current->type == TK_KEYWORD_GCC__ATTRIBUTE)
+        {
+            gcc_attribute_specifier_opt(ctx);
+        }
+                else if (ctx->current->type == TK_KEYWORD_MSVC__DECLSPEC)
+        {
+                    p_attribute_specifier_sequence->msvc_declspec_flags |= msvc_declspec_sequence_opt(ctx);
+                }
+                else if (ctx->current->type == TK_KEYWORD__ASM)
+                {
+                    if (ctx->options.target == TARGET_X86_X64_GCC)
+                    {
+                        /*GCC also uses asm as attribute*/
+                        struct asm_statement _Owner _Opt* p3 = gcc_asm(ctx, false);
+                        asm_statement_delete(p3);
+                    }
+                }
+                else
+            {
                 struct attribute_specifier* _Owner _Opt p_attribute_specifier = attribute_specifier(ctx);
                 if (p_attribute_specifier == NULL)
                     throw;
@@ -7692,6 +7796,8 @@ struct attribute_specifier_sequence* _Owner _Opt attribute_specifier_sequence_op
                     p_attribute_specifier->attribute_list->attributes_flags;
 
                 attribute_specifier_sequence_add(p_attribute_specifier_sequence, p_attribute_specifier);
+                }
+
             }
 
             if (ctx->previous == NULL)
@@ -7986,7 +8092,6 @@ enum attribute_flags attribute_token(struct parser_ctx* ctx, struct attribute_sp
                     ctx->current->lexeme[0] == 'W' ||
                     ctx->current->lexeme[0] == 'w')
                 {
-                    //enum diagnostic_id  get_warning(const char* wname)
                     p_attribute_specifier->ack = atoi(ctx->current->lexeme + 1);
                 }
                 else if (strcmp(ctx->current->lexeme, "leak") == 0)
@@ -8246,10 +8351,17 @@ struct primary_block* _Owner _Opt primary_block(struct parser_ctx* ctx)
             if (p_primary_block->defer_statement == NULL)
                 throw;
         }
-        else if (ctx->current->type == TK_KEYWORD_CAKE_TRY)
+        else if (ctx->current->type == TK_KEYWORD_CAKE_TRY ||
+                 ctx->current->type == TK_KEYWORD_MSVC__TRY)
         {
             p_primary_block->try_statement = try_statement(ctx);
             if (p_primary_block->try_statement == NULL)
+                throw;
+        }
+        else if (ctx->current->type == TK_KEYWORD__ASM)
+        {
+            p_primary_block->asm_statement = asm_statement(ctx);
+            if (p_primary_block->asm_statement == NULL)
                 throw;
         }
         else
@@ -8397,7 +8509,9 @@ static bool first_of_primary_block(const struct parser_ctx* ctx)
         first_of_selection_statement(ctx) ||
         first_of_iteration_statement(ctx) ||
         ctx->current->type == TK_KEYWORD_DEFER /*extension*/ ||
-        ctx->current->type == TK_KEYWORD_CAKE_TRY /*extension*/
+        ctx->current->type == TK_KEYWORD_CAKE_TRY /*extension*/ ||
+        ctx->current->type == TK_KEYWORD_MSVC__TRY ||
+        ctx->current->type == TK_KEYWORD__ASM
         )
     {
         return true;
@@ -8457,15 +8571,12 @@ void warn_unrecognized_warnings(struct parser_ctx* ctx,
     struct token* token = p_attribute_specifier_sequence->first_token;
     for (int i = stack->size - 1; i >= 0; i--)
     {
-        char warning_name[200] = { 0 };
-        get_warning_name_and_number(stack->stack[i], sizeof(warning_name), warning_name);
-
         compiler_diagnostic(W_WARNING_DID_NOT_HAPPEN,
             ctx,
             token,
             NULL,
-            "warning '%s' was not recognized",
-            warning_name);
+            "warning 'C%04d' was not recognized",
+            stack->stack[i]);
     }
 }
 
@@ -8664,7 +8775,7 @@ struct label* _Owner _Opt label(struct parser_ctx* ctx, struct attribute_specifi
                 {
                     //already defined
                     compiler_diagnostic(C_ERROR_DUPLICATED_LABEL, ctx, ctx->current, NULL, "duplicated label '%s'", ctx->current->lexeme);
-                    compiler_diagnostic(W_NOTE, ctx, p_label_list_item->p_defined, NULL, "previous definition of '%s'", ctx->current->lexeme);
+                    compiler_diagnostic(W_LOCATION, ctx, p_label_list_item->p_defined, NULL, "previous definition of '%s'", ctx->current->lexeme);
                 }
                 else
                 {
@@ -8834,17 +8945,19 @@ struct label* _Owner _Opt label(struct parser_ctx* ctx, struct attribute_specifi
 
             if (p_existing_default_label)
             {
-                compiler_diagnostic(C_ERROR_MULTIPLE_DEFAULT_LABELS_IN_ONE_SWITCH,
+                if (compiler_diagnostic(C_ERROR_MULTIPLE_DEFAULT_LABELS_IN_ONE_SWITCH,
                     ctx,
                     p_label->p_first_token,
                     NULL,
-                    "multiple default labels in one switch");
+                    "multiple default labels in one switch"))
+                {
 
-                compiler_diagnostic(W_NOTE,
+                    compiler_diagnostic(W_LOCATION,
                     ctx,
                     p_existing_default_label->p_first_token,
                     NULL,
                     "previous default");
+                }
 
                 throw;
             }
@@ -9240,57 +9353,7 @@ struct block_item* _Owner _Opt block_item(struct parser_ctx* ctx)
 
         p_block_item->first_token = ctx->current;
 
-        if (ctx->current->type == TK_KEYWORD__ASM)
-        { /*
-       asm-block:
-       __asm assembly-instruction ;_Opt
-       __asm { assembly-instruction-list } ;_Opt
-
-   assembly-instruction-list:
-       assembly-instruction ;_Opt
-       assembly-instruction ; assembly-instruction-list ;_Opt
-       */
-
-            parser_match(ctx);
-
-            if (ctx->current == NULL)
-            {
-                unexpected_end_of_file(ctx);
-                throw;
-            }
-
-            if (ctx->current->type == '{')
-            {
-                parser_match(ctx);
-
-                while (ctx->current && ctx->current->type != '}')
-                {
-                    parser_match(ctx);
-                }
-
-                parser_match(ctx);
-            }
-            else
-            {
-
-                while (ctx->current && ctx->current->type != TK_NEWLINE)
-                {
-                    ctx->current = ctx->current->next;
-                }
-
-                parser_match(ctx);
-            }
-
-            if (ctx->current == NULL)
-            {
-                unexpected_end_of_file(ctx);
-                throw;
-            }
-
-            if (ctx->current->type == ';')
-                parser_match(ctx);
-        }
-        else if (first_of_declaration_specifier(ctx) ||
+        if (first_of_declaration_specifier(ctx) ||
             first_of_static_assert_declaration(ctx) ||
             first_of_pragma_declaration(ctx))
         {
@@ -9372,6 +9435,277 @@ void try_statement_delete(struct try_statement* _Owner _Opt p)
     }
 }
 
+void asm_statement_delete(struct asm_statement* _Owner _Opt p)
+{
+    if (p == NULL)
+        return;
+
+    free(p);
+}
+
+static struct asm_statement* _Owner _Opt msvc_asm_statement(struct parser_ctx* ctx)
+{
+    struct asm_statement* _Owner _Opt p_asm_statement = NULL;
+    try
+    {
+        if (ctx->current == NULL)
+        {
+            unexpected_end_of_file(ctx);
+            throw;
+        }
+
+        p_asm_statement = calloc(1, sizeof(struct asm_statement));
+        if (p_asm_statement == NULL)
+            throw;
+
+        p_asm_statement->p_first_token = ctx->current;
+
+        if (parser_match_tk(ctx, TK_KEYWORD__ASM) != 0)
+            throw;
+        /*
+              https://learn.microsoft.com/en-us/cpp/assembler/inline/asm?view=msvc-170
+
+              asm-block:
+              __asm assembly-instruction ;_Opt
+              __asm { assembly-instruction-list } ; opt
+
+          assembly-instruction-list:
+              assembly-instruction ; opt
+              assembly-instruction ; assembly-instruction-list ;opt
+        */
+
+        if (ctx->current == NULL)
+        {
+            unexpected_end_of_file(ctx);
+            throw;
+        }
+
+        if (ctx->current->type == '{')
+        {
+            parser_match(ctx);
+
+            while (ctx->current && ctx->current->type != '}')
+            {
+                parser_match(ctx);
+            }
+
+            if (ctx->current == NULL)
+            {
+                unexpected_end_of_file(ctx);
+                throw;
+            }
+            
+            p_asm_statement->p_last_token = ctx->current;
+
+            if (parser_match_tk(ctx, '}'))
+            {
+                throw;
+            }
+        }
+        else
+        {
+            while (ctx->current && ctx->current->type != TK_NEWLINE)
+            {
+                ctx->current = ctx->current->next;
+            }
+
+            if (ctx->current == NULL)
+            {
+                unexpected_end_of_file(ctx);
+                throw;
+            }
+
+            p_asm_statement->p_last_token = ctx->current;
+            parser_match(ctx);
+        }
+
+        if (ctx->current && ctx->current->type == ';')
+        {
+            /*optional*/
+            p_asm_statement->p_last_token = ctx->current;
+            parser_match(ctx);
+        }
+    }
+    catch
+    {
+        asm_statement_delete(p_asm_statement);
+        p_asm_statement = NULL;
+    }
+
+    return p_asm_statement;
+}
+
+static void gcc_asm_qualifier_opt(struct parser_ctx* ctx)
+{
+    /*
+       asm-qualifier:
+            volatile
+            __volatile__
+            goto
+            volatile goto
+            __volatile__ goto
+    */
+    try
+    {
+        if (ctx->current == NULL)
+        {
+            unexpected_end_of_file(ctx);
+            throw;
+        }
+
+        if (ctx->current->type == TK_KEYWORD_VOLATILE)
+        {
+            parser_match(ctx);
+            if (ctx->current->type == TK_KEYWORD_GOTO)
+            {
+                parser_match(ctx);
+            }
+        }
+        else if (ctx->current->type == TK_KEYWORD_GOTO)
+        {
+            parser_match(ctx);
+        }
+    }
+    catch
+    {
+    }
+}
+
+static struct asm_statement* _Owner _Opt gcc_asm(struct parser_ctx* ctx, bool statement)
+{    
+    /*
+       This is the grammar, but we are using a simple balanced asm ( ) 
+    //https://gcc.gnu.org/onlinedocs/gcc/Extended-Asm.html
+    asm-statement:
+    asm asm-qualifier[opt] ( asm-template asm-operands[opt] ) ;
+
+        asm-qualifier:
+            volatile
+            __volatile__
+            goto
+            volatile goto
+            __volatile__ goto
+
+        asm-template:
+            string-literal
+            asm-template string-literal
+
+        asm-operands:
+            : output-operands[opt]
+              : input-operands[opt]
+              : clobbers[opt]
+              : goto-labels[opt]
+
+        output-operands:
+            asm-operand
+            output-operands , asm-operand
+
+        input-operands:
+            asm-operand
+            input-operands , asm-operand
+
+        asm-operand:
+            constraint ( expression )
+            [ identifier ] constraint ( expression )
+
+        clobbers:
+            string-literal
+            clobbers , string-literal
+
+        goto-labels:
+            identifier
+            goto-labels , identifier
+
+        constraint:
+            string-literal    
+    */
+    struct asm_statement* _Owner _Opt p_asm_statement = NULL;
+    try
+    {
+        if (ctx->current == NULL)
+        {
+            unexpected_end_of_file(ctx);
+            throw;
+        }
+        p_asm_statement = calloc(1, sizeof(struct asm_statement));
+        if (p_asm_statement == NULL)
+            throw;
+
+        p_asm_statement->p_first_token = ctx->current;
+
+        if (parser_match_tk(ctx, TK_KEYWORD__ASM) != 0)
+            throw;
+
+        gcc_asm_qualifier_opt(ctx);
+
+        if (parser_match_tk(ctx, '(') != 0)
+            throw;
+
+        int count = 1;
+        for (;;)
+        {
+            if (ctx->current == NULL)
+            {
+                unexpected_end_of_file(ctx);
+                throw;
+            }
+
+            if (ctx->current->type == ')')
+            {
+                count--;
+                parser_match(ctx);
+                if (count == 0)
+                {
+                    p_asm_statement->p_last_token = ctx->current;
+                    break;
+                }
+            }
+            else if (ctx->current->type == '(')
+            {
+                count++;
+                parser_match(ctx);
+            }
+            else
+            {
+            parser_match(ctx);
+            }
+        }
+
+        if (statement)
+        {
+        if (parser_match_tk(ctx, ';') != 0)
+            throw;
+    }
+    }
+    catch
+    {
+        asm_statement_delete(p_asm_statement);
+        p_asm_statement = NULL;
+    }
+    return p_asm_statement;
+}
+
+struct asm_statement* _Owner _Opt asm_statement(struct parser_ctx* ctx)
+{
+    switch (ctx->options.target)
+    {
+    case TARGET_X86_MSVC:
+    case TARGET_X64_MSVC:
+        return msvc_asm_statement(ctx);
+
+    case TARGET_X86_X64_GCC:
+    case TARGET_CCU8:
+    case TARGET_LCCU16:
+    case TARGET_CATALINA:
+        break;
+    }
+
+    static_assert(NUMBER_OF_TARGETS == 6, "how this target handle asm blocks?");
+
+    //balanced tokens ( ... ) 
+    return gcc_asm(ctx, true);
+}
+
 struct try_statement* _Owner _Opt try_statement(struct parser_ctx* ctx)
 {
     struct try_statement* _Owner _Opt p_try_statement = NULL;
@@ -9390,24 +9724,24 @@ struct try_statement* _Owner _Opt try_statement(struct parser_ctx* ctx)
 
         p_try_statement->first_token = ctx->current;
 
-        assert(ctx->current->type == TK_KEYWORD_CAKE_TRY);
+        if (ctx->current->type != TK_KEYWORD_CAKE_TRY && ctx->current->type != TK_KEYWORD_MSVC__TRY)
+        {
+
+            throw;
+        }
+
         const struct try_statement* _Opt try_statement_copy_opt = ctx->p_current_try_statement_opt;
         ctx->p_current_try_statement_opt = p_try_statement;
 
         p_try_statement->catch_label_id = ctx->label_id++;
 
 
-        if (parser_match_tk(ctx, TK_KEYWORD_CAKE_TRY) != 0)
-            throw;
+        parser_match(ctx);
 
-#pragma cake diagnostic push
-#pragma cake diagnostic ignored "-Wmissing-destructor"    
 
         struct secondary_block* _Owner _Opt p_secondary_block = secondary_block(ctx);
         if (p_secondary_block == NULL) throw;
-
         p_try_statement->secondary_block = p_secondary_block;
-#pragma cake diagnostic pop
 
         /*restores the previous one*/
         ctx->p_current_try_statement_opt = try_statement_copy_opt;
@@ -9430,6 +9764,33 @@ struct try_statement* _Owner _Opt try_statement(struct parser_ctx* ctx)
             if (p_try_statement->catch_secondary_block_opt == NULL) throw;
 
         }
+        else if (ctx->current->type == TK_KEYWORD_MSVC__FINALLY)
+        {
+            p_try_statement->catch_token_opt = ctx->current;
+            parser_match(ctx);
+
+            assert(p_try_statement->catch_secondary_block_opt == NULL);
+
+
+            p_try_statement->catch_secondary_block_opt = secondary_block(ctx);
+            if (p_try_statement->catch_secondary_block_opt == NULL) throw;
+        }
+        else if (ctx->current->type == TK_KEYWORD_MSVC__EXCEPT)
+        {
+
+            //TODO
+            p_try_statement->catch_token_opt = ctx->current;
+            parser_match(ctx);
+            
+            parser_match_tk(ctx, '(');
+            p_try_statement->msvc_except_expression = expression(ctx, EXPRESSION_EVAL_MODE_VALUE_AND_TYPE);
+            parser_match_tk(ctx, ')');
+
+            assert(p_try_statement->catch_secondary_block_opt == NULL);
+            p_try_statement->catch_secondary_block_opt = secondary_block(ctx);
+            if (p_try_statement->catch_secondary_block_opt == NULL) throw;
+        }
+
         if (ctx->previous == NULL)
             throw;
 
@@ -10521,6 +10882,16 @@ struct declaration_list translation_unit(struct parser_ctx* ctx, bool* berror)
     {
         while (ctx->current != NULL)
         {
+            if (ctx->current->type == TK_KEYWORD__ASM)
+            {
+                //TODO
+                /*
+                  __asm__(".globl my_symbol\nmy_symbol:");
+                */
+                struct asm_statement* p3 = gcc_asm(ctx, true);
+                asm_statement_delete(p3);
+            }
+
             struct declaration* _Owner _Opt p = external_declaration(ctx);
             if (p == NULL)
                 throw;
@@ -10678,828 +11049,6 @@ struct declaration_list parse(struct parser_ctx* ctx, struct token_list* list, b
     return l;
 }
 
-int fill_preprocessor_options(int argc, const char** argv, struct preprocessor_ctx* prectx)
-{
-    /*first loop used to collect options*/
-    for (int i = 1; i < argc; i++)
-    {
-        if (argv[i][0] != '-')
-            continue;
-
-        if (argv[i][1] == 'I')
-        {
-            include_dir_add(&prectx->include_dir, argv[i] + 2);
-            continue;
-        }
-        if (argv[i][1] == 'D')
-        {
-            char buffer[200] = { 0 };
-            snprintf(buffer, sizeof buffer, "#define %s \n", argv[i] + 2);
-
-            /*TODO make it more precise*/
-            char* p = &buffer[7];
-            while (*p)
-            {
-                if (*p == '=')
-                {
-                    *p = ' ';
-                    break;
-                }
-                p++;
-            }
-
-            struct tokenizer_ctx tctx = { 0 };
-            struct token_list l1 = tokenizer(&tctx, buffer, "", 0, TK_FLAG_NONE);
-            struct token_list r = preprocessor(prectx, &l1, 0);
-            token_list_destroy(&l1);
-            token_list_destroy(&r);
-            continue;
-        }
-    }
-    return 0;
-}
-
-#ifdef _WIN32
-
-WINBASEAPI unsigned long WINAPI GetEnvironmentVariableA(const char* name,
-char* buffer,
-unsigned long size);
-
-#endif
-
-void append_msvc_include_dir(struct preprocessor_ctx* prectx)
-{
-
-#ifdef _WIN32
-    char env[2000] = { 0 };
-    int n = GetEnvironmentVariableA("INCLUDE", env, sizeof(env));
-
-    if (n > 0)
-    {
-
-        const char* p = env;
-        for (;;)
-        {
-            if (*p == '\0')
-            {
-                break;
-            }
-            char filename_local[500] = { 0 };
-            int count = 0;
-            while (*p != '\0' && (*p != ';' && *p != '\n'))
-            {
-                filename_local[count] = *p;
-                p++;
-                count++;
-            }
-            filename_local[count] = 0;
-            if (count > 0)
-            {
-                strcat(filename_local, "/");
-                include_dir_add(&prectx->include_dir, filename_local);
-            }
-            if (*p == '\0')
-            {
-                break;
-            }
-            p++;
-        }
-    }
-#endif
-}
-
-
-int generate_config_file(const char* configpath)
-{
-    FILE* _Owner _Opt outfile = NULL;
-    int error = 0;
-    try
-    {
-        outfile = fopen(configpath, "w");
-        if (outfile == NULL)
-        {
-            printf("Cannot open the file '%s' for writing.\n", configpath);
-            error = errno;
-            throw;
-        }
-
-        fprintf(outfile, "//This was generated by running cake -autoconfig \n");
-
-
-#if defined(__CATALINA__)
-
-#if defined(__linux__) || defined(__CATALYST__)
-
-        char *env = getenv("LCCDIR");
-        if (env == NULL) {
-            printf("LCCDIR not found, run cake -autoconfig inside a Catalina command line window or under Catalyst\n");
-            error = 1;
-            throw;
-        }
-
-        fprintf(outfile, "//This file was generated from the environment variable LCCDIR\n");
-        fprintf(outfile, "#pragma dir \"%s/include/\"\n", env);
-        fprintf(outfile, "#define __CATALINA__\n");
-#if defined(__CATALYST__)
-        fprintf(outfile, "#define __CATALYST__\n");
-#endif // defined(__CATALYST__)
-
-#else
-
-        char env[2000] = { 0 };
-        int n = GetEnvironmentVariableA("LCCDIR", env, sizeof(env));
-
-        if (n <= 0)
-        {
-            printf("LCCDIR not found, run cake -autoconfig inside a Catalina command line window\n");
-            error = 1;
-            throw;
-        }
-
-        char* pch = env;
-        while (*pch)
-        {
-            if (*pch == '\\')
-                *pch = '/';
-            pch++;
-        }
-        fprintf(outfile, "//This file was generated reading the variable LCCDIR inside a Catalina command line window.\n");
-        fprintf(outfile, "#pragma dir \"%s/include/\"\n", env);
-        fprintf(outfile, "#define __CATALINA__\n");
-
-#endif
-
-#elif defined (_WIN32)
-
-        char env[2000] = { 0 };
-        int n = GetEnvironmentVariableA("INCLUDE", env, sizeof(env));
-
-        if (n <= 0)
-        {
-            printf("INCLUDE not found.\nPlease, run cake -autoconfig inside visual studio command prompt.\n");
-            error = 1;
-            throw;
-        }
-
-        fprintf(outfile, "//This file was generated reading the variable INCLUDE inside Visual Studio Command Prompt.\n");
-        fprintf(outfile, "//echo %%INCLUDE%% \n");
-
-        const char* p = env;
-        for (;;)
-        {
-            if (*p == '\0')
-            {
-                break;
-            }
-            char filename_local[500] = { 0 };
-            int count = 0;
-            while (*p != '\0' && (*p != ';' && *p != '\n'))
-            {
-                filename_local[count] = *p;
-                p++;
-                count++;
-            }
-            filename_local[count] = 0;
-            if (count > 0)
-            {
-                strcat(filename_local, "/");
-                char* pch = filename_local;
-                while (*pch)
-                {
-                    if (*pch == '\\')
-                        *pch = '/';
-                    pch++;
-                }
-
-                fprintf(outfile, "#pragma dir \"%s\"\n", filename_local);
-            }
-            if (*p == '\0')
-            {
-                break;
-            }
-            p++;
-        }
-#elif defined (__linux__)
-
-        fprintf(outfile, "This file was generated reading the output of\n");
-        fprintf(outfile, "//echo | gcc -v -E - 2>&1\n");
-        fprintf(outfile, "\n");
-
-        char path[400] = { 0 };
-        char* command = "echo | gcc -v -E - 2>&1";
-        int in_include_section = 0;
-
-        // Open the command for reading
-        FILE* fp = popen(command, "r");
-        if (fp == NULL)
-        {
-            fprintf(stderr, "Failed to run command\n");
-            error = errno;
-            throw;
-        }
-
-        // Read the output a line at a time
-        while (fgets(path, sizeof(path), fp) != NULL)
-        {
-            // Check if we are in the "#include <...> search starts here:" section
-            if (strstr(path, "#include <...> search starts here:") != NULL)
-            {
-                in_include_section = 1;
-                continue;
-            }
-            // Check if we have reached the end of the include section
-            if (in_include_section && strstr(path, "End of search list.") != NULL)
-            {
-                break;
-            }
-            // Print the include directories
-            if (in_include_section)
-            {
-                const char* p = path;
-                while (*p == ' ') p++;
-
-                int len = strlen(path);
-                if (path[len - 1] == '\n')
-                    path[len - 1] = '\0';
-
-                fprintf(outfile, "#pragma dir \"%s\"\n", p);
-            }
-        }
-
-        fprintf(outfile, "\n");
-
-        // Close the command stream
-        pclose(fp);
-
-#endif // defined(__CATALINA__)
-    }
-    catch
-    {
-    }
-    if (outfile)
-        fclose(outfile);
-
-    if (error == 0)
-    {
-        printf("file '%s'\n", configpath);
-        printf("successfully generated\n");
-    }
-    return error;
-}
-
-static int get_first_line_len(const char* s)
-{
-    int n = 0;
-    while (*s && (*s != '\r' && *s != '\n'))
-    {
-        s++;
-        n++;
-    }
-    return n;
-}
-
-int compile_one_file(const char* file_name,
-    struct options* options,
-    const char* out_file_name,
-    int argc,
-    const char** argv,
-    struct report* report)
-{
-    bool color_enabled = !options->color_disabled;
-
-#if !defined(__CATALINA__)
-    // For Catalina, don't print the name of each file processed
-    // (there will usually be only one file)
-    printf("%s\n", file_name);
-#endif // !defined(__CATALINA__)
-    struct preprocessor_ctx prectx = { 0 };
-    prectx.options = *options;
-    prectx.macros.capacity = 5000;
-
-    add_standard_macros(&prectx, options->target);
-
-    if (include_config_header(&prectx, file_name) != 0)
-    {
-        //cakeconfig.h is optional               
-    }
-    // print_all_macros(&prectx);
-
-    struct ast ast = { 0 };
-
-    const char* _Owner _Opt s = NULL;
-
-    _Opt struct parser_ctx ctx = { 0 };
-
-    struct tokenizer_ctx tctx = { 0 };
-    struct token_list tokens = { 0 };
-
-    ctx.options = *options;
-    ctx.p_report = report;
-    char* _Owner _Opt content = NULL;
-
-    try
-    {
-        //-D , -I etc..
-        if (fill_preprocessor_options(argc, argv, &prectx) != 0)
-        {
-            throw;
-        }
-
-        prectx.options = *options;
-        append_msvc_include_dir(&prectx);
-
-        content = read_file(file_name, true /*append new line*/);
-        if (content == NULL)
-        {
-            report->error_count++;
-            printf("file not found '%s'\n", file_name);
-            throw;
-        }
-
-        if (options->sarif_output)
-        {
-            char sarif_file_name[260] = { 0 };
-            if (options->sarifpath[0] != '\0')
-            {
-                mkdir(options->sarifpath, 0777);
-                snprintf(sarif_file_name, sizeof sarif_file_name, "%s/%s.cake.sarif", options->sarifpath, basename(file_name));
-            }
-            else
-            {
-                snprintf(sarif_file_name, sizeof sarif_file_name, "%s.cake.sarif", file_name);
-            }
-
-            ctx.sarif_file = (FILE * _Owner _Opt) fopen(sarif_file_name, "w");
-            if (ctx.sarif_file)
-            {
-                const char* begin_sarif =
-                    "{\n"
-                    "  \"version\": \"2.1.0\",\n"
-                    "  \"$schema\": \"https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json\",\n"
-                    "  \"runs\": [\n"
-                    "    {\n"
-                    "      \"results\": [\n"
-                    "\n";
-
-                fprintf(ctx.sarif_file, "%s", begin_sarif);
-            }
-            else
-            {
-                report->error_count++;
-                printf("cannot open Sarif output file '%s'\n", sarif_file_name);
-                throw;
-            }
-        }
-
-        tokens = tokenizer(&tctx, content, file_name, 0, TK_FLAG_NONE);
-
-        if (tctx.n_errors > 0)
-            throw;
-
-        if (options->dump_tokens)
-        {
-            print_tokens(color_enabled, tokens.head);
-        }
-
-        prectx.options.diagnostic_stack.stack[prectx.options.diagnostic_stack.top_index].notes |= (1ULL << W_NOTE);
-        ast.token_list = preprocessor(&prectx, &tokens, 0);
-
-        report->warnings_count += prectx.n_warnings;
-        report->error_count += prectx.n_errors;
-
-        if (prectx.n_errors > 0)
-        {
-            throw;
-        }
-
-        if (options->dump_pptokens)
-        {
-            if (ast.token_list.head != NULL)
-                print_tokens(color_enabled, ast.token_list.head);
-        }
-
-        if (options->preprocess_only)
-        {
-            const char* _Owner _Opt s2 = print_preprocessed_to_string2(ast.token_list.head);
-            printf("%s", s2);
-            free((void* _Owner _Opt)s2);
-        }
-        else
-        {
-            bool berror = false;
-            ast.declaration_list = parse(&ctx, &ast.token_list, &berror);
-            if (berror || report->error_count > 0)
-                throw;
-
-            if (!options->no_output)
-            {
-
-                struct osstream ss = { 0 };
-                struct d_visit_ctx ctx2 = { 0 };
-                ctx2.ast = ast;
-                ctx2.options = ctx.options;
-                d_visit(&ctx2, &ss);
-                s = ss.c_str; //MOVE
-                d_visit_ctx_destroy(&ctx2);
-
-                FILE* _Owner _Opt outfile = fopen(out_file_name, "w");
-                if (outfile)
-                {
-                    if (s)
-                        fprintf(outfile, "%s", s);
-
-                    fclose(outfile);
-                }
-                else
-                {
-                    report->error_count++;
-                    printf("cannot open output file '%s' - %s\n", out_file_name, get_posix_error_message(errno));
-                    throw;
-                }
-            }
-        }
-
-        if (ctx.sarif_file)
-        {
-
-#define SARIF_FOOTER                                                             \
-    "      ],\n"                                                        \
-    "      \"tool\": {\n"                                               \
-    "        \"driver\": {\n"                                           \
-    "          \"name\": \"cake\",\n"                                   \
-    "          \"fullName\": \"cake code analysis\",\n"                 \
-    "          \"version\": \"" CAKE_VERSION  "\",\n"                   \
-    "          \"informationUri\": \"https://https://github.com/thradams/cake\"\n" \
-    "        }\n"                                                       \
-    "      }\n"                                                         \
-    "    }\n"                                                           \
-    "  ]\n"                                                             \
-    "}\n"                                                               \
-    "\n"
-            fprintf(ctx.sarif_file, "%s", SARIF_FOOTER);
-            fclose(ctx.sarif_file);
-            ctx.sarif_file = NULL;
-        }
-    }
-    catch
-    {
-        // printf("Error %s\n", error->message);
-    }
-
-    if (ctx.options.test_mode)
-    {
-        //lets check if the generated file is the expected
-        char file_name_no_ext[FS_MAX_PATH] = { 0 };
-        remove_file_extension(file_name, sizeof(file_name_no_ext), file_name_no_ext);
-
-        char buf[FS_MAX_PATH] = { 0 };
-        snprintf(buf, sizeof buf, "%s_%s.out", file_name_no_ext, get_platform(ctx.options.target)->name);
-
-        char* _Owner _Opt content_expected = read_file(buf, false /*append new line*/);
-        if (content_expected)
-        {
-            //We don't compare the fist line because it has the version that changes.
-            int s_first_line_len = get_first_line_len(s);
-            int content_expected_first_line_len = get_first_line_len(content_expected);
-            if (s && strcmp(content_expected + content_expected_first_line_len, s + s_first_line_len) != 0)
-            {
-                printf("different");
-                report->error_count++;
-            }
-            free(content_expected);
-        }
-
-        if (report->error_count > 0 || report->warnings_count > 0)
-        {
-
-            printf("-------------------------------------------\n");
-            printf("%s", content);
-            printf("\n-------------------------------------------\n");
-            if (color_enabled)
-            {
-                printf(LIGHTRED "TEST FAILED" COLOR_RESET " : error=%d, warnings=%d\n", report->error_count, report->warnings_count);
-            }
-            else
-            {
-                printf("TEST FAILED" " : error=%d, warnings=%d\n", report->error_count, report->warnings_count);
-            }
-            printf("\n\n");
-            report->test_failed++;
-        }
-        else
-        {
-            report->test_succeeded++;
-            if (color_enabled)
-            {
-                printf(LIGHTGREEN "TEST OK\n" COLOR_RESET);
-            }
-            else
-            {
-                printf("TEST OK\n");
-        }
-    }
-    }
-
-    token_list_destroy(&tokens);
-
-    parser_ctx_destroy(&ctx);
-    free((void* _Owner _Opt)s);
-    free(content);
-    ast_destroy(&ast);
-    preprocessor_ctx_destroy(&prectx);
-
-    return report->error_count > 0;
-}
-
-static int compile_many_files(const char* file_name,
-    struct options* options,
-    const char* out_file_name,
-    int argc,
-    const char** argv,
-    struct report* report)
-{
-    const char* const file_name_name = basename(file_name);
-    const char* _Opt const file_name_extension = strrchr2((char*)file_name_name, '.');
-
-    if (file_name_extension == NULL)
-    {
-        assert(false);
-    }
-
-    int num_files = 0;
-
-    char path[FS_MAX_PATH] = { 0 };
-    snprintf(path, sizeof path, "%s", file_name);
-    dirname(path);
-    DIR* _Owner _Opt dir = opendir(path);
-
-    if (dir == NULL)
-    {
-        return errno;
-    }
-
-    struct dirent* _Opt dp;
-    while ((dp = readdir(dir)) != NULL)
-    {
-        if (strcmp(dp->d_name, ".") == 0 || strcmp(dp->d_name, "..") == 0)
-        {
-            /* skip self and parent */
-            continue;
-        }
-
-        char fromlocal[257] = { 0 };
-        snprintf(fromlocal, sizeof fromlocal, "%s/%s", "", dp->d_name);
-
-        if (dp->d_type & DT_DIR)
-        {
-
-        }
-        else
-        {
-            const char* const file_name_iter = basename(dp->d_name);
-            const char* _Opt const file_extension = strrchr2((char*)file_name_iter, '.');
-
-            if (file_name_extension &&
-                file_extension &&
-                strcmp(file_name_extension, file_extension) == 0)
-            {
-                //Fixes the output file name replacing the current name
-                char out_file_name_final[FS_MAX_PATH] = { 0 };
-                strcpy(out_file_name_final, out_file_name);
-                dirname(out_file_name_final);
-                strcat(out_file_name_final, "/");
-                strcat(out_file_name_final, file_name_iter);
-
-                char in_file_name_final[FS_MAX_PATH] = { 0 };
-                strcpy(in_file_name_final, file_name);
-                dirname(in_file_name_final);
-                strcat(in_file_name_final, "/");
-                strcat(in_file_name_final, file_name_iter);
-
-
-                struct report report_local = { 0 };
-                report_local.test_mode = report->test_mode;
-                compile_one_file(in_file_name_final,
-                                 options,
-                                 out_file_name_final,
-                                 argc,
-                                 argv,
-                                 &report_local);
-
-
-
-                report->error_count += report_local.error_count;
-                report->warnings_count += report_local.warnings_count;
-                report->info_count += report_local.info_count;
-                report->test_succeeded += report_local.test_succeeded;
-                report->test_failed += report_local.test_failed;
-                num_files++;
-            }
-        }
-    }
-
-    closedir(dir);
-    return num_files;
-}
-
-static void longest_common_path(int argc, const char** argv, char root_dir[FS_MAX_PATH])
-{
-    /*
-     find the longest common path
-    */
-    for (int i = 1; i < argc; i++)
-    {
-        if (argv[i][0] == '-')
-            continue;
-
-        char fullpath_i[FS_MAX_PATH] = { 0 };
-        realpath(argv[i], fullpath_i);
-        strcpy(root_dir, fullpath_i);
-        dirname(root_dir);
-
-        for (int k = 0; k < FS_MAX_PATH; k++)
-        {
-            const char ch = fullpath_i[k];
-            for (int j = 2; j < argc; j++)
-            {
-                if (argv[j][0] == '-')
-                    continue;
-
-                char fullpath_j[FS_MAX_PATH] = { 0 };
-                realpath(argv[j], fullpath_j);
-                if (fullpath_j[k] != ch)
-                {
-                    strncpy(root_dir, fullpath_j, k);
-                    root_dir[k] = '\0';
-                    dirname(root_dir);
-                    goto exit;
-                }
-            }
-            if (ch == '\0')
-                break;
-        }
-    }
-exit:;
-}
-
-static int create_multiple_paths(const char* root, const char* outdir)
-{
-    /*
-       This function creates all dirs (folder1, forder2 ..) after root
-       root   : C:/folder
-       outdir : C:/folder/folder1/folder2 ...
-    */
-#if !defined __EMSCRIPTEN__
-    const char* p = outdir + strlen(root) + 1;
-    for (;;)
-    {
-        if (*p != '\0' && *p != '/' && *p != '\\')
-        {
-            p++;
-            continue;
-        }
-
-        char temp[FS_MAX_PATH] = { 0 };
-        strncpy(temp, outdir, p - outdir);
-
-        int er = mkdir(temp, 0777);
-        if (er != 0)
-        {
-            er = errno;
-            if (er != EEXIST)
-            {
-                printf("error creating output folder '%s' - %s\n", temp, get_posix_error_message(er));
-                return er;
-            }
-        }
-        if (*p == '\0')
-            break;
-        p++;
-    }
-    return 0;
-#else
-    return -1;
-#endif
-}
-
-int compile(int argc, const char** argv, struct report* report)
-{
-    struct options options = { 0 };
-    if (fill_options(&options, argc, argv) != 0)
-    {
-        return 1;
-    }
-
-    if (options.target != CAKE_COMPILE_TIME_SELECTED_TARGET)
-    {
-        printf("emulating %s\n", get_platform(options.target)->name);
-    }
-    
-    char executable_path[FS_MAX_PATH - sizeof(CAKE_CFG_FNAME)] = { 0 };
-    get_self_path(executable_path, sizeof(executable_path));
-    dirname(executable_path);
-    char cakeconfig_path[FS_MAX_PATH] = { 0 };
-    snprintf(cakeconfig_path, sizeof cakeconfig_path, "%s" CAKE_CFG_FNAME, executable_path);
-
-    if (options.auto_config) //-autoconfig
-    {
-        report->ignore_this_report = true;
-        return generate_config_file(cakeconfig_path);
-    }
-
-    report->test_mode = options.test_mode;
-
-    clock_t begin_clock = clock();
-    int no_files = 0;
-
-    char root_dir[FS_MAX_PATH] = { 0 };
-
-    if (!options.no_output)
-    {
-        longest_common_path(argc, argv, root_dir);
-    }
-
-    const size_t root_dir_len = strlen(root_dir);
-
-    /*second loop to compile each file*/
-    for (int i = 1; i < argc; i++)
-    {
-        if (strcmp(argv[i], "-o") == 0 ||
-            strcmp(argv[i], "-sarif-path") == 0)
-        {
-            //consumes next
-            i++;
-            continue;
-        }
-
-        if (argv[i][0] == '-')
-            continue;
-
-        no_files++;
-        char output_file[FS_MAX_PATH] = { 0 };
-
-        if (!options.no_output)
-        {
-            if (no_files == 1 && options.output[0] != '\0')
-            {
-                /*
-                   -o outputname
-                   works when we compile just one file
-                */
-                strcat(output_file, options.output);
-            }
-            else
-            {
-                char fullpath[FS_MAX_PATH] = { 0 };
-                realpath(argv[i], fullpath);
-
-                strcpy(output_file, root_dir);
-                strcat(output_file, "/");
-                strcat(output_file, get_platform(options.target)->name);
-
-                strcat(output_file, fullpath + root_dir_len);
-
-                char outdir[FS_MAX_PATH] = { 0 };
-                strcpy(outdir, output_file);
-                dirname(outdir);
-                if (create_multiple_paths(root_dir, outdir) != 0)
-                {
-                    return 1;
-                }
-            }
-        }
-
-        char fullpath[FS_MAX_PATH] = { 0 };
-        realpath(argv[i], fullpath);
-
-        const char* file_extension = basename(fullpath);
-
-        if (file_extension[0] == '*')
-        {
-            no_files--; //does not count *.c 
-            no_files += compile_many_files(fullpath, &options, output_file, argc, argv, report);
-        }
-        else
-        {
-            struct report report_local = { 0 };
-            compile_one_file(fullpath, &options, output_file, argc, argv, &report_local);
-
-
-            report->error_count += report_local.error_count;
-            report->warnings_count += report_local.warnings_count;
-            report->info_count += report_local.info_count;
-            report->test_succeeded += report_local.test_succeeded;
-            report->test_failed += report_local.test_failed;
-        }
-    }
-
-    clock_t end_clock = clock();
-    double cpu_time_used = ((double)(end_clock - begin_clock)) / CLOCKS_PER_SEC;
-    report->no_files = no_files;
-    report->cpu_time_used_sec = cpu_time_used;
-    return 0;
-}
-
 struct ast get_ast(struct options* options,
     const char* filename,
     const char* source,
@@ -11543,115 +11092,6 @@ struct ast get_ast(struct options* options,
     return ast;
 }
 
-/*
-* given a string s, produce argv by modifying the input string
-* return argc
-*/
-int strtoargv(char* s, int n, const char* argv[/*n*/])
-{
-    int argvc = 0;
-    char* p = s;
-    while (*p)
-    {
-        while (*p == ' ')
-            p++;
-        if (*p == 0)
-            break;
-        argv[argvc] = p;
-        argvc++;
-        while (*p != ' ' && *p != '\0')
-            p++;
-        if (*p == 0)
-            break;
-        *p = 0;
-        p++;
-        if (argvc >= n)
-            break; /*nao tem mais lugares*/
-    }
-    return argvc;
-}
-
-const char* _Owner _Opt compile_source(const char* pszoptions, const char* content, struct report* report)
-{
-    const char* argv[100] = { 0 };
-    char string[200] = { 0 };
-    snprintf(string, sizeof string, "exepath %s", pszoptions);
-
-    const int argc = strtoargv(string, 10, argv);
-
-    const char* _Owner _Opt s = NULL;
-
-    struct preprocessor_ctx prectx = { 0 };
-    struct ast ast = { 0 };
-    struct options options = { .input = LANGUAGE_CAK };
-
-
-    try
-    {
-        if (fill_options(&options, argc, argv) != 0)
-        {
-            throw;
-        }
-
-        prectx.options = options;
-        add_standard_macros(&prectx, options.target);
-
-        if (options.preprocess_only)
-        {
-            struct tokenizer_ctx tctx = { 0 };
-            struct token_list tokens = tokenizer(&tctx, content, "c:/main.c", 0, TK_FLAG_NONE);
-
-            struct token_list token_list = preprocessor(&prectx, &tokens, 0);
-            if (prectx.n_errors == 0)
-            {
-                s = print_preprocessed_to_string2(token_list.head);
-            }
-
-            token_list_destroy(&tokens);
-            token_list_destroy(&token_list);
-        }
-        else
-        {
-            ast = get_ast(&options, "c:/main.c", content, report);
-            if (report->error_count > 0)
-                throw;
-
-
-            struct osstream ss = { 0 };
-            struct d_visit_ctx ctx2 = { 0 };
-            ctx2.ast = ast;
-            ctx2.options = options;
-            d_visit(&ctx2, &ss);
-            s = ss.c_str; //MOVED                
-            //ss.c_str = NULL;
-            //ss_close(&ss);
-            d_visit_ctx_destroy(&ctx2);
-
-
-        }
-    }
-    catch
-    {
-    }
-
-    preprocessor_ctx_destroy(&prectx);
-
-    ast_destroy(&ast);
-
-    return s;
-}
-
-char* _Owner _Opt CompileText(const char* pszoptions, const char* content)
-{
-    /*
-      This function is called by the web playground
-    */
-    printf(WHITE "Cake " CAKE_VERSION COLOR_RESET "\n");
-    printf(WHITE "cake %s main.c\n", pszoptions);
-
-    struct report report = { 0 };
-    return (char* _Owner _Opt)compile_source(pszoptions, content, &report);
-}
 
 void ast_destroy(_Dtor struct ast* ast)
 {
@@ -12039,6 +11479,7 @@ static struct object* _Opt find_next_subobject(struct type* p_top_object_not_use
     p_type_out,
     sub_object_of_union);
 }
+
 struct find_object_result
 {
     struct object* _Opt object;

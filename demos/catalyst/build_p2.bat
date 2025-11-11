@@ -41,32 +41,32 @@ goto done
 @echo.
 
 rem NOTE: cannot currently use OPTIMIZE when building mlua!
-call build_all %1 %2 SIMPLE VT100 USE_COLOR MHZ_200
+call build_all %1 %2 %3 SIMPLE VT100 USE_COLOR MHZ_200
 
 rem create the expected directory structure
 call mk_cat_dirs image >NUL:
 
 cd catalina
-call build_all  %1 %2 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200
+call build_all  %1 %2 %3 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200
 cat CATALYST.ENV %1.ENV > ..\image\CATALYST.ENV
 cd ..
 
 cd cake
 rem NOTE: cannot currently use OPTIMIZE with Cake ...
-call build_all  %1 %2 SIMPLE VT100 USE_COLOR MHZ_200
+call build_all  %1 %2 %3 SIMPLE VT100 USE_COLOR MHZ_200
 copy %LCCDIR%\source\cake\src\catalina\cake.bin ..\image\bin\cake.bin
 copy CAKECONF.H ..\image\CAKECONF.H
 copy hello_99.c ..\image\hello_99.c
 cd ..
 
 cd xvi-2.51
-call build_all %1 %2 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 LARGE
+call build_all %1 %2 %3 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 LARGE
 copy src\xvi.bin ..\image\bin\xl_vi.bin
 cd ..
 
 cd lua-5.4.4
 rem NOTE: cannot currently use OPTIMIZE when building mlua!
-call build_all %1 %2 SIMPLE VT100 USE_COLOR MHZ_200 SMALL
+call build_all %1 %2 %3 SIMPLE VT100 USE_COLOR MHZ_200 SMALL
 copy src\lua.bin ..\image\bin\xs_lua.bin
 copy src\luac.bin ..\image\bin\xs_luac.bin
 copy src\luax.bin ..\image\bin\xs_luax.bin
@@ -74,7 +74,7 @@ cd ..
 
 cd lua-5.4.4
 rem NOTE: cannot currently use OPTIMIZE when building mlua!
-call build_all %1 %2 SIMPLE VT100 USE_COLOR MHZ_200 LARGE
+call build_all %1 %2 %3 SIMPLE VT100 USE_COLOR MHZ_200 LARGE
 copy src\lua.bin ..\image\bin\xl_lua.bin
 copy src\luac.bin ..\image\bin\xl_luac.bin
 copy src\luax.bin ..\image\bin\xl_luax.bin
@@ -89,32 +89,32 @@ cd ..
 @echo building %1_VGA.ZIP ...
 @echo.
 
-call build_all %1 %2 VGA COLOR_4 OPTIMIZE MHZ_200 RTC NO_LINENOISE
+call build_all %1 %2 %3 VGA COLOR_4 OPTIMIZE MHZ_200 RTC NO_LINENOISE
 
 rem create the expected directory structure
 call mk_cat_dirs image >NUL:
 
 cd catalina
-call build_all %1 %2 VGA COLOR_4 OPTIMIZE MHZ_200
+call build_all %1 %2 %3 VGA COLOR_4 OPTIMIZE MHZ_200
 cat CATALYST.ENV %1_VGA.ENV > ..\image\CATALYST.ENV
 cd ..
 
 cd cake
 rem NOTE: cannot currently use OPTIMIZE with Cake ...
-call build_all  %1 %2 SIMPLE VT100 USE_COLOR MHZ_200
+call build_all  %1 %2 %3 SIMPLE VT100 USE_COLOR MHZ_200
 copy %LCCDIR%\source\cake\src\catalina\cake.bin ..\image\bin\cake.bin
 copy CAKECONF.H ..\image\CAKECONF.H
 copy hello_99.c ..\image\hello_99.c
 cd ..
 
 cd xvi-2.51
-call build_all  %1 %2 VGA COLOR_4 OPTIMIZE MHZ_200 LARGE
+call build_all  %1 %2 %3 VGA COLOR_4 OPTIMIZE MHZ_200 LARGE
 copy src\xvi.bin ..\image\bin\xl_vi.bin
 cd ..
 
 cd lua-5.4.4
 rem NOTE: cannot currently use OPTIMIZE when building mlua!
-call build_all  %1 %2 VGA COLOR_4 MHZ_200 SMALL
+call build_all  %1 %2 %3 VGA COLOR_4 MHZ_200 SMALL
 copy src\lua.bin ..\image\bin\xs_lua.bin
 copy src\luac.bin ..\image\bin\xs_luac.bin
 copy src\luax.bin ..\image\bin\xs_luax.bin
@@ -122,7 +122,7 @@ cd ..
 
 cd lua-5.4.4
 rem NOTE: cannot currently use OPTIMIZE when building mlua!
-call build_all  %1 %2 VGA COLOR_4 MHZ_200 LARGE
+call build_all  %1 %2 %3 VGA COLOR_4 MHZ_200 LARGE
 copy src\lua.bin ..\image\bin\xl_lua.bin
 copy src\luac.bin ..\image\bin\xl_luac.bin
 copy src\luax.bin ..\image\bin\xl_luax.bin
