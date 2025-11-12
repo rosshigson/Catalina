@@ -490,9 +490,6 @@ enum token_type
     TK_KEYWORD_GCC__BUILTIN_VA_COPY,
     TK_KEYWORD_GCC__BUILTIN_OFFSETOF,
 
-    TK_KEYWORD_GCC__BUILTIN_XXXXX,
-
-//#ifdef _WIN32 
 
     //https://learn.microsoft.com/en-us/cpp/cpp/ptr32-ptr64?view=msvc-170&redirectedfrom=MSDN
     TK_KEYWORD_MSVC__PTR32,
@@ -507,8 +504,6 @@ enum token_type
     TK_KEYWORD_MSVC__EXCEPT,
     TK_KEYWORD_MSVC__FINALLY,
     TK_KEYWORD_MSVC__LEAVE,
-
-//#endif
 
     TK_KEYWORD__ASM, 
     TK_KEYWORD__BOOL,
@@ -820,6 +815,7 @@ int target_get_num_of_bits(enum target target, enum object_type type);
 int parse_target(const char* targetstr, enum target* target);
 void print_target_options();
 const char* target_get_predefined_macros(enum target e);
+const char* target_get_builtins(enum target e);
 
 
 long long target_signed_max(enum  target target, enum object_type type);
@@ -9560,7 +9556,14 @@ static bool is_builtin_macro(const char* name)
 
     return false;
 }
-
+static void add_define(struct preprocessor_ctx* ctx, const char* text)
+{
+    struct tokenizer_ctx tctx = { 0 };
+    struct token_list l2 = tokenizer(&tctx, text, "define", 0, TK_FLAG_NONE);
+    struct token_list tl2 = preprocessor(ctx, &l2, 0);
+    token_list_destroy(&tl2);
+    token_list_destroy(&l2);
+}
 void add_standard_macros(struct preprocessor_ctx* ctx, enum target target)
 {
     const struct diagnostic w =
@@ -9577,23 +9580,19 @@ void add_standard_macros(struct preprocessor_ctx* ctx, enum target target)
     struct tm* tm = localtime(&now);
 
     struct tokenizer_ctx tctx = { 0 };
+    add_define(ctx, "#define __CAKE__  1\n");
+    add_define(ctx, "#define __FILE__ \"\" \n");
+    add_define(ctx, "#define __LINE__  0 \n");
+    add_define(ctx, "#define __COUNTER__  0 \n");
+    add_define(ctx, "#define __STDC_VERSION__  202311L \n");
 
 
     char datastr[100] = { 0 };
     snprintf(datastr, sizeof datastr, "#define __DATE__ \"%s %2d %d\"\n", mon[tm->tm_mon], tm->tm_mday, tm->tm_year + 1900);
-    struct token_list l1 = tokenizer(&tctx, datastr, "__DATE__ macro inclusion", 0, TK_FLAG_NONE);
-    struct token_list tl1 = preprocessor(ctx, &l1, 0);
-
-    token_list_destroy(&tl1);
-    token_list_destroy(&l1);
-
+    add_define(ctx, datastr);
     char timestr[100] = { 0 };
     snprintf(timestr, sizeof timestr, "#define __TIME__ \"%02d:%02d:%02d\"\n", tm->tm_hour, tm->tm_min, tm->tm_sec);
-    struct token_list l2 = tokenizer(&tctx, timestr, "__TIME__ macro inclusion", 0, TK_FLAG_NONE);
-    struct token_list tl2 = preprocessor(ctx, &l2, 0);
-
-    token_list_destroy(&tl2);
-    token_list_destroy(&l2);
+    add_define(ctx, datastr);    
 
 
     /*
@@ -9825,7 +9824,6 @@ const char* get_token_name(enum token_type tk)
     case TK_KEYWORD_GCC__BUILTIN_C23_VA_START: return "TK_KEYWORD_GCC__BUILTIN_C23_VA_START";
     case TK_KEYWORD_GCC__BUILTIN_VA_COPY: return "TK_KEYWORD_GCC__BUILTIN_VA_COPY";
     case TK_KEYWORD_GCC__BUILTIN_OFFSETOF: return "TK_KEYWORD_GCC__BUILTIN_OFFSETOF";
-    case TK_KEYWORD_GCC__BUILTIN_XXXXX: return "TK_KEYWORD_GCC__BUILTIN_XXXXX";
 
     }
     return "TK_X_MISSING_NAME";
@@ -10036,7 +10034,7 @@ const char* get_diagnostic_friendly_token_name(enum token_type tk)
     case TK_KEYWORD_GCC__BUILTIN_C23_VA_START: return "__builtin_c23_va_start";
     case TK_KEYWORD_GCC__BUILTIN_VA_COPY: return "__builtin_va_copy";
     case TK_KEYWORD_GCC__BUILTIN_OFFSETOF: return "__builtin_offsetof";
-    case TK_KEYWORD_GCC__BUILTIN_XXXXX: return "__builtin_xxxxx";
+    
 
     default:
         break;
@@ -21149,6 +21147,18 @@ static int compare_function_arguments(struct parser_ctx* ctx,
             p_current_parameter_type = p_current_parameter_type->next;
         }
 
+        if (p_current_parameter_type == NULL && 
+            p_type->name_opt && 
+            strncmp(p_type->name_opt, "__builtin", sizeof("__builtin") - 1) == 0)
+        {
+            //some builtin function are like templates 
+            //For instance :
+            // bool __builtin_add_overflow(type1 a, type2 b, type3 * res)
+            // Then we declare as bool __builtin_add_overflow()
+            // and we dont check  arguments
+            return 0;
+        }
+
         if (p_current_argument != NULL && !p_param_list->is_var_args)
         {
             compiler_diagnostic(C_ERROR_TOO_MANY_ARGUMENTS, ctx,
@@ -23535,7 +23545,6 @@ bool is_first_of_unary_expression(struct parser_ctx* ctx)
         ctx->current->type == TK_KEYWORD_GCC__BUILTIN_C23_VA_START ||
         ctx->current->type == TK_KEYWORD_GCC__BUILTIN_VA_COPY ||
         ctx->current->type == TK_KEYWORD_GCC__BUILTIN_OFFSETOF ||
-        ctx->current->type == TK_KEYWORD_GCC__BUILTIN_XXXXX ||
 
         is_first_of_compiler_function(ctx);
 }
@@ -24097,173 +24106,6 @@ struct expression* _Owner _Opt unary_expression(struct parser_ctx* ctx, enum exp
             }
 
             new_expression->object = object_make_size_t(ctx->options.target, offsetof);
-            
-            return new_expression;
-        }
-        else if (ctx->current->type == TK_KEYWORD_GCC__BUILTIN_XXXXX)
-        {
-            const char* const builtin_name = ctx->current->lexeme;
-
-            struct expression* _Owner _Opt new_expression = calloc(1, sizeof * new_expression);
-            if (new_expression == NULL) throw;
-            new_expression->first_token = ctx->current;
-            new_expression->expression_type = UNARY_EXPRESSION_GCC__BUILTIN_XXXXX;
-
-            parser_match(ctx);
-
-            if (ctx->current == NULL)
-            {
-                unexpected_end_of_file(ctx);
-                expression_delete(new_expression);
-                throw;
-            }
-
-                if (parser_match_tk(ctx, '(') != 0)
-                {
-                    expression_delete(new_expression);
-                    throw;
-                }
-
-            if (ctx->current->type != ')')
-                {
-               new_expression->argument_expression_list = argument_expression_list(ctx, eval_mode);
-                }
-
-                if (parser_match_tk(ctx, ')') != 0)
-                {
-                    expression_delete(new_expression);
-                    throw;
-                }
-
-            //https://gcc.gnu.org/onlinedocs/gcc/Floating-Point-Format-Builtins.html
-
-            if (strcmp(builtin_name, "__builtin_huge_val") == 0 ||
-                strcmp(builtin_name, "__builtin_inf") == 0 ||
-                strcmp(builtin_name, "__builtin_nan(const char* str)") == 0 ||
-                strcmp(builtin_name, "__builtin_nans(const char* str)") == 0 ||
-                strcmp(builtin_name, "__builtin_powi(double, int)") == 0
-                )
-            {
-                new_expression->type = type_make_double();
-            }
-            else if (strcmp(builtin_name, "__builtin_huge_valf") == 0 ||
-                     strcmp(builtin_name, "__builtin_inff") == 0 ||
-                     strcmp(builtin_name, "__builtin_nanf") == 0 ||
-                     strcmp(builtin_name, "__builtin_nansf") == 0 ||
-                     strcmp(builtin_name, "__builtin_powif") == 0)
-            {
-                new_expression->type = type_make_float();
-            }
-             else if (strcmp(builtin_name, "__builtin_add_overflow") == 0 ||
-                      strcmp(builtin_name, "__builtin_sadd_overflow") == 0 ||
-                      strcmp(builtin_name, "__builtin_saddl_overflow") == 0 ||
-                      strcmp(builtin_name, "__builtin_saddll_overflow") == 0 ||
-                      strcmp(builtin_name, "__builtin_uaddl_overflow ") == 0 ||
-                      strcmp(builtin_name, "__builtin_uaddll_overflow") == 0)
-                {
-                new_expression->type = type_make_int_bool_like();
-                }
-            else if (strcmp(builtin_name, "__builtin_huge_vall") == 0 ||
-                    strcmp(builtin_name, "__builtin_infl") == 0 ||
-                    strcmp(builtin_name, "__builtin_nanl") == 0 ||
-                    strcmp(builtin_name, "__builtin_nansl") == 0 ||
-                    strcmp(builtin_name, "__builtin_powil") == 0)
-                {
-                new_expression->type = type_make_long_double();
-                }
-            else if (strcmp(builtin_name, "__builtin_huge_valfN") == 0 ||
-                    strcmp(builtin_name, "__builtin_inffN") == 0 ||
-                    strcmp(builtin_name, "__builtin_nanfN") == 0 ||
-                    strcmp(builtin_name, "__builtin_nansfN") == 0 ||
-                    strcmp(builtin_name, "__builtin_huge_valfNx") == 0 ||
-                    strcmp(builtin_name, "__builtin_inffNx") == 0 ||
-                    strcmp(builtin_name, "__builtin_nanfNx") == 0 ||
-                    strcmp(builtin_name, "__builtin_nansfNx") == 0 )
-                {
-                //there is not f floatn in cake yet
-                new_expression->type = type_make_long_double();
-                }
-            else if (strcmp(builtin_name, "__builtin_infd32") == 0 ||
-                     strcmp(builtin_name, "__builtin_infd64") == 0 ||
-                     strcmp(builtin_name, "__builtin_infd128") == 0 ||
-                     strcmp(builtin_name, "__builtin_nand32") == 0 ||
-                     strcmp(builtin_name, "__builtin_nand64") == 0 ||
-                     strcmp(builtin_name, "__builtin_nand128") == 0 ||
-                     strcmp(builtin_name, "__builtin_nansd32") == 0 ||
-                     strcmp(builtin_name, "__builtin_nansd64") == 0 ||
-                     strcmp(builtin_name, "__builtin_nansd128") == 0)
-            {
-                //tODO
-            }
-            else if (strcmp(builtin_name, "__builtin_fpclassify") == 0 ||
-                     strcmp(builtin_name, "__builtin_isinf_sign") == 0 ||
-                     strcmp(builtin_name, "__builtin_issignaling") == 0)
-            {
-                new_expression->type = type_make_int();
-                }
-            else if (strcmp(builtin_name, "__builtin_signbitf") == 0 ||
-                strcmp(builtin_name, "__builtin_signbit") == 0 ||
-                strcmp(builtin_name, "__builtin_signbitl") == 0)
-                {
-                new_expression->type = type_make_int();
-                }
-                else if (strcmp(builtin_name, "__builtin_unreachable") == 0 ||
-                         strcmp(builtin_name, "__builtin_trap") == 0)
-                {
-                    new_expression->type = make_void_type();
-            }
-            else if (strcmp(builtin_name, "__builtin_ffs") == 0 ||
-                     strcmp(builtin_name, "__builtin_clz") == 0 ||
-                     strcmp(builtin_name, "__builtin_clrsb ") == 0 ||
-                     strcmp(builtin_name, "__builtin_popcount ") == 0 ||
-                    strcmp(builtin_name, "__builtin_parity") == 0 ||
-                    strcmp(builtin_name, "__builtin_ffsl") == 0 ||
-                    strcmp(builtin_name, "__builtin_clzl") == 0 ||
-                    strcmp(builtin_name, "__builtin_clrsbl") == 0 ||
-                    strcmp(builtin_name, "__builtin_popcountl") == 0 ||
-                    strcmp(builtin_name, "__builtin_parityl") == 0 ||
-                    strcmp(builtin_name, "__builti__builtin_ffsll") == 0 ||
-                    strcmp(builtin_name, "__builtin_clzll") == 0 ||
-                    strcmp(builtin_name, "__builtin_ctzll") == 0 ||
-                    strcmp(builtin_name, "__builtin_clrsbll") == 0 ||
-                    strcmp(builtin_name, "__builtin_parityll") == 0 ||
-                    strcmp(builtin_name, "__builtin_ffsg") == 0 ||
-                    strcmp(builtin_name, "__builtin_clzg") == 0 ||
-                    strcmp(builtin_name, "__builtin_ctzg") == 0 ||
-                    strcmp(builtin_name, "__builtin_clrsbg") == 0 ||
-                    strcmp(builtin_name, "__builtin_popcountg") == 0 ||
-                    strcmp(builtin_name, "__builtin_parityg") == 0 ||
-                    strcmp(builtin_name, "__builtin_stdc_bit_ceil") == 0 ||
-                    strcmp(builtin_name, "__builtin_stdc_bit_floor") == 0 ||
-                    strcmp(builtin_name, "__builtin_stdc_bit_width") == 0 ||
-                    strcmp(builtin_name, "__builtin_stdc_count_ones") == 0 ||
-                    strcmp(builtin_name, "__builtin_stdc_count_zeros") == 0 ||
-                    strcmp(builtin_name, "__builtin_stdc_first_leading_one") == 0 ||
-                    strcmp(builtin_name, "__builtin_stdc_first_leading_zero") == 0 ||
-                    strcmp(builtin_name, "__builtin_stdc_first_trailing_one") == 0 ||
-                    strcmp(builtin_name, "__builtin_stdc_first_trailing_zero") == 0 ||
-                    strcmp(builtin_name, "__builtin_stdc_has_single_bit") == 0 ||
-                    strcmp(builtin_name, "__builtin_stdc_leading_ones") == 0 ||
-                    strcmp(builtin_name, "__builtin_stdc_leading_zeros") == 0 ||
-                    strcmp(builtin_name, "__builtin_stdc_trailing_ones ") == 0 ||
-                    strcmp(builtin_name, "__builtin_stdc_trailing_zeros") == 0 ||
-                    strcmp(builtin_name, "__builtin_stdc_rotate_left") == 0 ||
-                    strcmp(builtin_name, "__builtin_stdc_rotate_right")
-                )
-            {
-                //https://gcc.gnu.org/onlinedocs/gcc/Bit-Operation-Builtins.html
-                new_expression->type = type_make_int();
-                }
-                else
-                {
-                    //https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html
-                    compiler_diagnostic(C_ERROR_NOT_FOUND,
-                                        ctx,
-                                        new_expression->first_token,
-                                            NULL,
-                                    "unknown builtin '%s'", builtin_name);
-                new_expression->type = make_void_type();
-            }
 
             return new_expression;
         }
@@ -29057,7 +28899,7 @@ void defer_start_visit_declaration(struct defer_visit_ctx* ctx, struct declarati
 
 //#pragma once
 
-#define CAKE_VERSION "0.12.49"
+#define CAKE_VERSION "0.12.51"
 
 
 
@@ -30344,9 +30186,6 @@ enum token_type is_keyword(const char* text, enum target target)
         if (strcmp("__builtin_va_copy", text) == 0)
             return TK_KEYWORD_GCC__BUILTIN_VA_COPY;
 
-        /*must be after others __builtin_*/
-        if (strstr(text, "__builtin_") != NULL)
-            return TK_KEYWORD_GCC__BUILTIN_XXXXX;
 
         if (strstr(text, "__volatile__") != NULL) //GCC
             return TK_KEYWORD_VOLATILE;
@@ -40122,14 +39961,45 @@ struct declaration_list parse(struct parser_ctx* ctx, struct token_list* list, b
     
     struct declaration_list l = { 0 };
     struct scope file_scope = { 0 };
+
+    struct preprocessor_ctx prectx = { 0 };
+    prectx.options = ctx->options;
+    prectx.macros.capacity = 1000;
+
+    struct tokenizer_ctx tctx = { 0 };
+
+    struct token_list builtin_tokens = { 0 };
+    struct token_list built = { 0 };
+
+
     try
     {
         scope_list_push(&ctx->scopes, &file_scope);
-        ctx->input_list = *list;
+
+        const char* builtin = target_get_builtins(ctx->options.target);
+        if (builtin == NULL)
+        {
+            throw;
+        }
+
+        builtin_tokens = tokenizer(&tctx, builtin, "builtins", 0, TK_FLAG_NONE);
+        built = preprocessor(&prectx, &builtin_tokens, 0);
+        ctx->input_list = built;
         ctx->current = ctx->input_list.head;
         parser_skip_blanks(ctx);
 
         bool local_error = false;
+        l = translation_unit(ctx, &local_error); /*insert buitin declarations at scope*/
+
+        if (local_error)
+        {            
+            throw;
+        }
+
+        ctx->input_list = *list;
+        ctx->current = ctx->input_list.head;
+        parser_skip_blanks(ctx);
+
         l = translation_unit(ctx, &local_error);
         if (local_error)
             throw;
@@ -40139,6 +40009,8 @@ struct declaration_list parse(struct parser_ctx* ctx, struct token_list* list, b
         *berror = true;
     }
     scope_destroy(&file_scope);
+    //token_list_destroy(&builtin_tokens);
+    //token_list_destroy(&built);
 
     return l;
 }
@@ -40164,6 +40036,11 @@ struct ast get_ast(struct options* options,
         prectx.macros.capacity = 5000;
 
         add_standard_macros(&prectx, options->target);
+
+#ifdef __EMSCRIPTEN__
+        /*we mock web version to include from c*/
+        include_dir_add(&prectx.include_dir, "c:/");
+#endif
 
         ast.token_list = preprocessor(&prectx, &list, 0);
         if (prectx.n_errors != 0)
@@ -54553,299 +54430,53 @@ int GetWindowsOrLinuxSocketLastErrorAsPosix(void)
 #define __STDC_FORMAT_MACROS
 #endif // defined(__CATALINA__)
 
+static char gcc_builtins_include[] =
+{
+ #include "include/x86_x64_gcc_builtins.h.include"
+ ,0
+};
+
+static char x86_x64_gcc_macros[] =
+{
+ #include "include/x86_x64_gcc_macros.h.include"
+ ,0
+};
+
+static char x86_msvc_macros[] =
+{
+ #include "include/x86_msvc_macros.h.include"
+ ,0
+};
+
+static char x64_msvc_macros[] =
+{
+ #include "include/x64_msvc_macros.h.include"
+ ,0
+};
+
+static char catalina_builtins_include[] =
+{
+ #include "include/catalina_builtins.h.include"
+ ,0
+};
+
+
+static char catalina_macros[] =
+{
+ #include "include/catalina_macros.h.include"
+ ,0
+};
+
+static char ccu8_macros[] =
+{
+ #include "include/ccu8_macros.h.include"
+ ,0
+};
+
+
 #ifndef _Countof
 #define _Countof(A) (sizeof(A)/sizeof((A)[0]))
 #endif
-
-#define STRINGIFY(x) #x
-#define TOSTRING(x) STRINGIFY(x)
-
-#define CAKE_STANDARD_MACROS  \
-"#define __CAKE__ 202311L\n"\
-"#define __STDC_VERSION__ 202311L\n"\
-"#define __FILE__ \"__FILE__\"\n"\
-"#define __LINE__ 0\n"\
-"#define __COUNTER__ 0\n"\
-"#define _CONSOLE\n"\
-"#if !defined(__CATALINA__)\n"\
-"#define __STDC_OWNERSHIP__ 1\n"\
-"#endif\n"\
-"#define __STDC_NO_ATOMICS__ " TOSTRING(__STDC_NO_ATOMICS__) "\n"\
-"#define __STDC_NO_COMPLEX__  " TOSTRING(__STDC_NO_COMPLEX__) "\n"\
-"#define __STDC_NO_THREADS__   " TOSTRING(__STDC_NO_THREADS__) "\n"\
-"#define __STDC_NO_VLA__    " TOSTRING(__STDC_NO_VLA__) "\n"
-
-
-/*
-  To see all predefined macros
-  gcc -dM -E
-  For some reason __STDC_HOSTED__ is not printed
-  but it is defined (maybe others)
-*/
-const char* TARGET_X86_X64_GCC_PREDEFINED_MACROS =
-#ifdef __EMSCRIPTEN__
-//include dir on emscripten
-"#pragma dir \"c:/\"\n"
-#endif
-
-CAKE_STANDARD_MACROS
-"#define __linux__            1\n"
-"#define __extension__        \n"    /*this is not a macro*/
-"#define __GNUC__             4\n"      /*this number is reduced to parser headers without all GCC extensions*/
-"#define __GNUC_MINOR__       1\n"
-"#define __STDC_HOSTED__      1\n"
-"#define __STDC__             1\n"
-"#define __x86_64__ 1\n"
-"#define __CHAR_BIT__ 8\n"
-"#define __SIZE_TYPE__ long unsigned int\n"
-"#define __PTRDIFF_TYPE__ long int\n"
-"#define __WCHAR_TYPE__ int\n"
-"#define __WINT_TYPE__ unsigned int\n"
-"#define __INTMAX_TYPE__ long int\n"
-"#define __UINTMAX_TYPE__ long unsigned int\n"
-"#define __SIG_ATOMIC_TYPE__ int\n"
-"#define __INT8_TYPE__ signed char\n"
-"#define __INT16_TYPE__ short int\n"
-"#define __INT32_TYPE__ int\n"
-"#define __INT64_TYPE__ long int\n"
-"#define __UINT8_TYPE__ unsigned char\n"
-"#define __UINT16_TYPE__ short unsigned int\n"
-"#define __UINT32_TYPE__ unsigned int\n"
-"#define __UINT64_TYPE__ long unsigned int\n"
-"#define __INT_LEAST8_TYPE__ signed char\n"
-"#define __INT_LEAST16_TYPE__ short int\n"
-"#define __INT_LEAST32_TYPE__ int\n"
-"#define __INT_LEAST64_TYPE__ long int\n"
-"#define __UINT_LEAST8_TYPE__ unsigned char\n"
-"#define __UINT_LEAST16_TYPE__ short unsigned int\n"
-"#define __UINT_LEAST32_TYPE__ unsigned int\n"
-"#define __UINT_LEAST64_TYPE__ long unsigned int\n"
-"#define __INT_FAST8_TYPE__ signed char\n"
-"#define __INT_FAST16_TYPE__ long int\n"
-"#define __INT_FAST32_TYPE__ long int\n"
-"#define __INT_FAST64_TYPE__ long int\n"
-"#define __UINT_FAST8_TYPE__ unsigned char\n"
-"#define __UINT_FAST16_TYPE__ long unsigned int\n"
-"#define __UINT_FAST32_TYPE__ long unsigned int\n"
-"#define __UINT_FAST64_TYPE__ long unsigned int\n"
-"#define __INTPTR_TYPE__ long int\n"
-"#define __UINTPTR_TYPE__ long unsigned int\n"
-"#define __DBL_MAX__ ((double)1.79769313486231570814527423731704357e+308L)\n"
-"#define __DBL_MIN__ ((double)2.22507385850720138309023271733240406e-308L)\n"
-"#define __FLT_RADIX__ 2\n"
-"#define __FLT_EPSILON__ 1.19209289550781250000000000000000000e-7F\n"
-"#define __DBL_EPSILON__ ((double)2.22044604925031308084726333618164062e-16L)\n"
-"#define __LDBL_EPSILON__ 1.08420217248550443400745280086994171e-19L\n"
-"#define __DBL_DECIMAL_DIG__ 17\n"
-"#define __FLT_EVAL_METHOD__ 0\n"
-"#define __FLT_RADIX__ 2\n"
-"#define __DBL_MAX_EXP__ 1024\n"
-"#define __DECIMAL_DIG__ 21\n"
-"#define __FLT_DECIMAL_DIG__ 9\n"
-"#define __FLT_MIN_10_EXP__ (-37)\n"
-"#define __FLT_MIN__ 1.17549435082228750796873653722224568e-38F\n"
-"#define __FLT_MAX__ 3.40282346638528859811704183484516925e+38F\n"
-"#define __FLT_EPSILON__ 1.19209289550781250000000000000000000e-7F\n"
-"#define __FLT_DIG__ 6\n"
-"#define __FLT_MANT_DIG__ 24\n"
-"#define __FLT_MIN_EXP__ (-125)\n"
-"#define __FLT_MAX_10_EXP__ 38\n"
-"#define __FLT_EVAL_METHOD__ 0\n"
-"#define __FLT_MAX_EXP__ 128\n"
-"#define __FLT_HAS_DENORM__ 1\n"
-"#define __SCHAR_MAX__ 0x7f\n"
-"#define __WCHAR_MAX__ 0x7fffffff\n"
-"#define __SHRT_MAX__ 0x7fff\n"
-"#define __INT_MAX__ 0x7fffffff\n"
-"#define __LONG_MAX__ 0x7fffffffffffffffL\n"
-"#define __LONG_LONG_MAX__ 0x7fffffffffffffffLL\n"
-"#define __WINT_MAX__ 0xffffffffU\n"
-"#define __SIZE_MAX__ 0xffffffffffffffffUL\n"
-"#define __PTRDIFF_MAX__ 0x7fffffffffffffffL\n"
-"#define __INTMAX_MAX__ 0x7fffffffffffffffL\n"
-"#define __UINTMAX_MAX__ 0xffffffffffffffffUL\n"
-"#define __SIG_ATOMIC_MAX__ 0x7fffffff\n"
-"#define __INT8_MAX__ 0x7f\n"
-"#define __INT16_MAX__ 0x7fff\n"
-"#define __INT32_MAX__ 0x7fffffff\n"
-"#define __INT64_MAX__ 0x7fffffffffffffffL\n"
-"#define __UINT8_MAX__ 0xff\n"
-"#define __UINT16_MAX__ 0xffff\n"
-"#define __UINT32_MAX__ 0xffffffffU\n"
-"#define __UINT64_MAX__ 0xffffffffffffffffUL\n"
-"#define __INT_LEAST8_MAX__ 0x7f\n"
-"#define __INT_LEAST16_MAX__ 0x7fff\n"
-"#define __INT_LEAST32_MAX__ 0x7fffffff\n"
-"#define __INT_LEAST64_MAX__ 0x7fffffffffffffffL\n"
-"#define __UINT_LEAST8_MAX__ 0xff\n"
-"#define __UINT_LEAST16_MAX__ 0xffff\n"
-"#define __UINT_LEAST32_MAX__ 0xffffffffU\n"
-"#define __UINT_LEAST64_MAX__ 0xffffffffffffffffUL\n"
-"#define __INT_FAST8_MAX__ 0x7f\n"
-"#define __INT_FAST16_MAX__ 0x7fffffffffffffffL\n"
-"#define __INT_FAST32_MAX__ 0x7fffffffffffffffL\n"
-"#define __INT_FAST64_MAX__ 0x7fffffffffffffffL\n"
-"#define __UINT_FAST8_MAX__ 0xff\n"
-"#define __UINT_FAST16_MAX__ 0xffffffffffffffffUL\n"
-"#define __UINT_FAST32_MAX__ 0xffffffffffffffffUL\n"
-"#define __UINT_FAST64_MAX__ 0xffffffffffffffffUL\n"
-"#define __INTPTR_MAX__ 0x7fffffffffffffffL\n"
-"#define __UINTPTR_MAX__ 0xffffffffffffffffUL\n"
-"#define __WCHAR_MIN__ (-0x7fffffff - 1)\n"
-"#define __WINT_MIN__ 0U\n"
-"#define __SIG_ATOMIC_MIN__ (-0x7fffffff - 1)\n"
-"#define __INT8_C (-0x7fffffff - 1)\n"
-"#define __SCHAR_WIDTH__ 8\n"
-"#define __SHRT_WIDTH__ 16\n"
-"#define __INT_WIDTH__ 32\n"
-"#define __LONG_WIDTH__ 64\n"
-"#define __LONG_LONG_WIDTH__ 64\n"
-"#define __PTRDIFF_WIDTH__ 64\n"
-"#define __SIG_ATOMIC_WIDTH__ 32\n"
-"#define __SIZE_WIDTH__ 64\n"
-"#define __WCHAR_WIDTH__ 32\n"
-"#define __WINT_WIDTH__ 32\n"
-"#define __INT_LEAST8_WIDTH__ 8\n"
-"#define __INT_LEAST16_WIDTH__ 16\n"
-"#define __INT_LEAST32_WIDTH__ 32\n"
-"#define __INT_LEAST64_WIDTH__ 64\n"
-"#define __INT_FAST8_WIDTH__ 8\n"
-"#define __INT_FAST16_WIDTH__ 64\n"
-"#define __INT_FAST32_WIDTH__ 64\n"
-"#define __INT_FAST64_WIDTH__ 64\n"
-"#define __INTPTR_WIDTH__ 64\n"
-"#define __INTMAX_WIDTH__ 64\n"
-"#define __SIZEOF_INT__ 4\n"
-"#define __SIZEOF_LONG__ 8\n"
-"#define __SIZEOF_LONG_LONG__ 8\n"
-"#define __SIZEOF_SHORT__ 2\n"
-"#define __SIZEOF_POINTER__ 8\n"
-"#define __SIZEOF_FLOAT__ 4\n"
-"#define __SIZEOF_DOUBLE__ 8\n"
-"#define __SIZEOF_LONG_DOUBLE__ 16\n"
-"#define __SIZEOF_SIZE_T__ 8\n"
-"#define __SIZEOF_WCHAR_T__ 4\n"
-"#define __SIZEOF_WINT_T__ 4\n"
-"#define __SIZEOF_PTRDIFF_T__ 8\n";
-
-
-const char* TARGET_X86_MSVC_PREDEFINED_MACROS =
-
-#ifdef __EMSCRIPTEN__
-//include dir on emscripten
-"#pragma dir \"c:/\"\n"
-#endif
-
-CAKE_STANDARD_MACROS
-"#define _WIN32 1\n"
-"#define _INTEGRAL_MAX_BITS 64\n"
-"#define _MSC_VER 1944\n"
-"#define _MSC_EXTENSIONS 1\n"
-"#define _M_IX86 600\n"
-"#define __pragma(a)\n"
-"\n";
-
-const char* TARGET_X64_MSVC_PREDEFINED_MACROS =
-
-#ifdef __EMSCRIPTEN__
-//include dir on emscripten
-"#pragma dir \"c:/\"\n"
-#endif
-
-CAKE_STANDARD_MACROS
-"#define _WIN32 1\n"
-"#define _WIN64 1\n"
-"#define _INTEGRAL_MAX_BITS 64\n"
-"#define _MSC_VER 1944\n"
-"#define _MSC_EXTENSIONS 1\n"
-"#define _M_X64 100\n"
-"#define __pragma(a)\n"
-"\n";
-
-
-const char* TARGET_CCU8_PREDEFINED_MACROS =
-
-#ifdef __EMSCRIPTEN__
-//include dir on emscripten
-"#pragma dir \"c:/\"\n"
-#endif
-
-CAKE_STANDARD_MACROS
-"#define __EI()\n"
-"#define __DI()\n"
-"#define __asm()\n"
-"#define __SEGBASE_N()\n"
-"#define __SEGBASE_F()\n"
-"#define __SEGSIZE()\n"
-"#define __near\n"
-"#define __far\n"
-"#define __huge\n"
-"#define __PACKED\n"
-"#define __UNPACKED\n"
-"#define __noreg\n"
-"#define __STDC__\n"
-"#define __CCU8__\n"
-"#define __VERSION__\n"
-"#define __ARCHITECTURE__\n"
-"#define __DEBUG__\n"
-"#define __MS__\n"
-"#define __ML__\n"
-"#define __ML__\n"
-"#define __UNSIGNEDCHAR__\n"
-"#define __NOFAR__\n"
-"#define __LCCU16__\n"
-"#define __LAPISOMF__\n"
-"\n";
-
-const char* TARGET_LCCU16_PREDEFINED_MACROS =
-
-#ifdef __EMSCRIPTEN__
-//include dir on emscripten
-"#pragma dir \"c:/\"\n"
-#endif
-
-CAKE_STANDARD_MACROS
-"#define __EI()\n"
-"#define __DI()\n"
-"#define __asm()\n"
-"#define __SEGBASE_N()\n"
-"#define __SEGBASE_F()\n"
-"#define __SEGSIZE()\n"
-"#define __near\n"
-"#define __far\n"
-"#define __huge\n"
-"#define __PACKED\n"
-"#define __UNPACKED\n"
-"#define __noreg\n"
-"#define __STDC__\n"
-"#define __CCU8__\n"
-"#define __VERSION__\n"
-"#define __ARCHITECTURE__\n"
-"#define __DEBUG__\n"
-"#define __MS__\n"
-"#define __ML__\n"
-"#define __ML__\n"
-"#define __UNSIGNEDCHAR__\n"
-"#define __NOFAR__\n"
-"#define __LCCU16__\n"
-"#define __LAPISOMF__\n"
-"\n";
-
-const char* TARGET_CATALINA_PREDEFINED_MACROS =
-
-#ifdef __EMSCRIPTEN__
-//include dir on emscripten
-"#pragma dir \"c:/\"\n"
-#endif
-
-CAKE_STANDARD_MACROS
-"#define ___CATALINA__\n"
-"#define ___CATALYST__\n"
-"\n";
-
-
-static_assert(NUMBER_OF_TARGETS == 6, "add static struct platform platform_name");
-
 
 
 static struct platform platform_x86_x64_gcc =
@@ -55202,15 +54833,31 @@ const char* target_get_predefined_macros(enum target e)
 {
     switch (e)
     {
-    case TARGET_X86_X64_GCC: return TARGET_X86_X64_GCC_PREDEFINED_MACROS;
-    case TARGET_X86_MSVC:return TARGET_X86_MSVC_PREDEFINED_MACROS;
-    case TARGET_X64_MSVC:     return TARGET_X64_MSVC_PREDEFINED_MACROS;
-    case TARGET_CCU8: return TARGET_CCU8_PREDEFINED_MACROS;
-    case TARGET_LCCU16: return TARGET_LCCU16_PREDEFINED_MACROS;
-    case TARGET_CATALINA: return TARGET_CATALINA_PREDEFINED_MACROS;
+    case TARGET_X86_X64_GCC: return x86_x64_gcc_macros;
+    case TARGET_X86_MSVC:    return x86_msvc_macros;
+    case TARGET_X64_MSVC:    return x64_msvc_macros;
+    case TARGET_CCU8:        return ccu8_macros;
+    case TARGET_LCCU16:      return ccu8_macros;
+    case TARGET_CATALINA:    return catalina_macros;
     }
     return "";
 };
+
+
+
+const char* target_get_builtins(enum target e)
+{
+    switch (e)
+    {
+    case TARGET_X86_X64_GCC: return gcc_builtins_include;
+    case TARGET_X86_MSVC:    return "";
+    case TARGET_X64_MSVC:    return "";
+    case TARGET_CCU8:        return "";
+    case TARGET_LCCU16:      return "";
+    case TARGET_CATALINA:    return catalina_builtins_include;
+    }
+    return "";
+}
 
 #ifdef TEST
 

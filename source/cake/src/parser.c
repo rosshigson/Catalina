@@ -1250,9 +1250,6 @@ enum token_type is_keyword(const char* text, enum target target)
         if (strcmp("__builtin_va_copy", text) == 0)
             return TK_KEYWORD_GCC__BUILTIN_VA_COPY;
 
-        /*must be after others __builtin_*/
-        if (strstr(text, "__builtin_") != NULL)
-            return TK_KEYWORD_GCC__BUILTIN_XXXXX;
 
         if (strstr(text, "__volatile__") != NULL) //GCC
             return TK_KEYWORD_VOLATILE;
@@ -11028,14 +11025,45 @@ struct declaration_list parse(struct parser_ctx* ctx, struct token_list* list, b
     
     struct declaration_list l = { 0 };
     struct scope file_scope = { 0 };
+
+    struct preprocessor_ctx prectx = { 0 };
+    prectx.options = ctx->options;
+    prectx.macros.capacity = 1000;
+
+    struct tokenizer_ctx tctx = { 0 };
+
+    struct token_list builtin_tokens = { 0 };
+    struct token_list built = { 0 };
+
+
     try
     {
         scope_list_push(&ctx->scopes, &file_scope);
-        ctx->input_list = *list;
+
+        const char* builtin = target_get_builtins(ctx->options.target);
+        if (builtin == NULL)
+        {
+            throw;
+        }
+
+        builtin_tokens = tokenizer(&tctx, builtin, "builtins", 0, TK_FLAG_NONE);
+        built = preprocessor(&prectx, &builtin_tokens, 0);
+        ctx->input_list = built;
         ctx->current = ctx->input_list.head;
         parser_skip_blanks(ctx);
 
         bool local_error = false;
+        l = translation_unit(ctx, &local_error); /*insert buitin declarations at scope*/
+
+        if (local_error)
+        {            
+            throw;
+        }
+
+        ctx->input_list = *list;
+        ctx->current = ctx->input_list.head;
+        parser_skip_blanks(ctx);
+
         l = translation_unit(ctx, &local_error);
         if (local_error)
             throw;
@@ -11045,6 +11073,8 @@ struct declaration_list parse(struct parser_ctx* ctx, struct token_list* list, b
         *berror = true;
     }
     scope_destroy(&file_scope);
+    //token_list_destroy(&builtin_tokens);
+    //token_list_destroy(&built);
 
     return l;
 }
@@ -11070,6 +11100,11 @@ struct ast get_ast(struct options* options,
         prectx.macros.capacity = 5000;
 
         add_standard_macros(&prectx, options->target);
+
+#ifdef __EMSCRIPTEN__
+        /*we mock web version to include from c*/
+        include_dir_add(&prectx.include_dir, "c:/");
+#endif
 
         ast.token_list = preprocessor(&prectx, &list, 0);
         if (prectx.n_errors != 0)
