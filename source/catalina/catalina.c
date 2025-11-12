@@ -421,6 +421,8 @@
  * version 8.8.3 - Add -C CAKE_COLOR, which enables the use of colors by Cake
  *                 in error and warning messages. Does nothing unless Cake is
  *                 enabled (e.g. by also adding -C99 etc).
+ *               - Also allow -C CAKE_COLOUR ro enable Cake to use color, 
+ *               - Use -fdiagnostics-color=never to disable Cake use of color.
  */
 
 /*--------------------------------------------------------------------------
@@ -1225,6 +1227,10 @@ int pass_symbol_to_compiler(char *symbol, int *code) {
       olevel = 5;
    }
    else if (strcmp (symbol, "CAKE_COLOR") == 0) {
+      pass = 0; // don't pass this symbol 
+      cake_color = 1;
+   }
+   else if (strcmp (symbol, "CAKE_COLOUR") == 0) {
       pass = 0; // don't pass this symbol 
       cake_color = 1;
    }
@@ -2307,7 +2313,7 @@ void main(int argc, char *argv[]) {
       }
       else {
          // disable Cake's use of color
-         safecpy(lcc_cmd, "clcc -Wp-fdiagnostics-format=msvc ", MAX_LINELEN);
+         safecpy(lcc_cmd, "clcc -Wp-fdiagnostics-color=never ", MAX_LINELEN);
       }
    }
 

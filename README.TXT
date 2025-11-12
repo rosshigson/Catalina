@@ -266,6 +266,10 @@ New Functionality
    means to not run the pstrip utility, which 'strips' comments and blank 
    lines from the intermediate source code files (to reduce their size). 
 
+10. Allow -C USE_COLOUR to enable Cake's use of color (i.e. in addition to 
+    -C USE_COLOR) and also use the Cake option -fdiagnostics-color=never to
+    disable the use of color.
+
 Other Changes
 -------------
 
