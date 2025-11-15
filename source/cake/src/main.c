@@ -12,8 +12,8 @@
 #include "console.h"
 #include <stdlib.h>
 #include <time.h>
-#include "compile.h"
 #include "version.h"
+#include "compile.h"
 
 #ifdef _WIN32
 #include <crtdbg.h>
