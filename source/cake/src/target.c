@@ -34,16 +34,16 @@ static char x64_msvc_macros[] =
  ,0
 };
 
-static char catalina_builtins_include[] =
-{
- #include "include/catalina_builtins.h.include"
- ,0
-};
-
 
 static char catalina_macros[] =
 {
  #include "include/catalina_macros.h.include"
+ ,0
+};
+
+static char catalina_builtins[] =
+{
+ #include "include/catalina_builtins.h.include"
  ,0
 };
 
@@ -434,7 +434,7 @@ const char* target_get_builtins(enum target e)
     case TARGET_X64_MSVC:    return "";
     case TARGET_CCU8:        return "";
     case TARGET_LCCU16:      return "";
-    case TARGET_CATALINA:    return catalina_builtins_include;
+    case TARGET_CATALINA:    return catalina_builtins;
     }
     return "";
 }

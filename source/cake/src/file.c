@@ -1,3 +1,7 @@
-int main(){
-  static_assert("\300\040\040"[0] == '@');  
+
+void main() {
+  int n;
+  if (1 && (n = 2, 1)) 
+  {
+  } 
 }
