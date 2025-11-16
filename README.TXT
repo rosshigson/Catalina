@@ -200,7 +200,7 @@ New Functionality
    closedir() and realpath(). These functions are not part of any C standard,
    but are required by Cake.
 
-2. Cake has been updated to version 0.12.49.
+2. Cake has been updated to version 0.12.55.
 
 3. Catalina now disables Cake's use of colors in error and warning messages
    by default, because Geany does not support it. However, for command-line 
@@ -264,11 +264,47 @@ New Functionality
 9. The -u option to catalina means it does not delete intermediate files.
    This is sometimes useful for debugging. On Catalyst (only) it now also 
    means to not run the pstrip utility, which 'strips' comments and blank 
-   lines from the intermediate source code files (to reduce their size). 
+   lines from the intermediate source code files (to reduce their size).
 
 10. Allow -C USE_COLOUR to enable Cake's use of color (i.e. in addition to 
     -C USE_COLOR) and also use the Cake option -fdiagnostics-color=never to
     disable the use of color.
+
+11. The Catalyst "ls" command has been enhanced to add -a as a command line
+    option. This option includes ".", "..", volume ids and system and hidden 
+    files in the listing output, which are now otherwise not included.
+
+    Also, directory contents are now listed for any directories specified by 
+    the command line parameters (previously, a trailing "/" had to explicitly 
+    be added to a directory name to print the contents of the directory). 
+    Now including a trailing "/" means to list both the directory AND the 
+    directory contents. So, for example:
+
+      ls /
+
+    will list the contents of the root directory and also the contents of 
+    any subdirectories, whereas:
+
+      ls
+
+    will list just the contents of the root directory. Similarly:
+
+      ls -l bin/
+
+    will list the long details of the bin directory and also the long details
+    of the contents of the bin directory, whereas:
+
+      ls -l bin
+
+    will list just the long details of the contents of the bin directory.
+
+    Note that the -r flag can be used with or without a trailing "/" on the
+    directory names.
+
+    Fixed the column and line counting, so the "Continue?" prompt works 
+    properly (note that for serial terminals, screen size is assumed to be 
+    80x24).
+
 
 Other Changes
 -------------

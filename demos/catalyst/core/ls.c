@@ -17,6 +17,33 @@
  * Version 5.4   - Improve support for screens with short lines, such as
  *                 LORES_VGA. 
  *
+ * Version 8.3.3 - Add option -a (i.e. "all") to include ".", "..", volume 
+ *                 ids and system and hidden files, which are now otherwise
+ *                 not included.
+ *
+ *               - Directory contents are now listed if specified by the 
+ *                 command line parameters (previously, a trailing "/" had 
+ *                 to explicitly be added to a directory name to list the 
+ *                 contents of the directory). Now including a trailing "/" 
+ *                 means to list both the directory AND the directory 
+ *                 contents. So, for example:
+ *                    ls /
+ *                 will list the contents of the root directory and also
+ *                 the contents of any subdirectories, whereas:
+ *                    ls
+ *                 will list just the contents of the root directory.
+ *
+ *                 Similarly:
+ *                    ls -l bin/
+ *                 will list the long details of the bin directory and also
+ *                 the long details of the contents of the bin directory, 
+ *                 whereas:
+ *                    ls -l bin
+ *                 will list just the long contents of the bin directory.
+ *
+ *               - Fixed column and line counting, so the "Continue?" prompt
+ *                 works properly (note that for serial terminals, screen 
+ *                 size is assumed to be 80x24).
  */
 
 #include <ctype.h>
@@ -31,15 +58,20 @@
 
 #define ARGV_MAX 24 // to match Catalyst
 
+static int all = 0;
 static int help = 0;
 static int diagnose = 0;
 static int recurse = 0;
 static int long_format = 0;
 static int file_count = 0;
 static int dir_count = 0;
+static int add_count = 0;
 static int pstart = 0;
 static char *files[ARGV_MAX];
 static char *dirs[ARGV_MAX];
+static char *added[ARGV_MAX];
+static char *one_dir = NULL;
+static char path[MAX_PATH+1];
 
 static int rows;
 static int cols;
@@ -48,9 +80,37 @@ static int colcount;
 
 static int aborted = 0;
 
+/* We are about to output 'count' rows - if this would make the top of 
+ * the current page scroll off the screen, prompt to continue first.
+ * Sets aborted to 1 if ESCAPE is pressed.
+ */
+void increment_rowcount(int count) {
+   if (rowcount + count + 1 > rows) {
+      press_key_to_continue();
+   }
+   else {
+      rowcount += count;
+   }
+   return;
+}
+
 void t_eol() {
    t_string(1, END_OF_LINE);
+   increment_rowcount(1);
    colcount = 0;
+}
+
+/* We are about to output 'count' cols - if this would exceed the screen
+ * width, then reset the column count and increment the row count.
+ * Sets aborted to 1 if ESCAPE is pressed.
+ */
+void increment_colcount(int count) {
+   if (colcount + count + 1 > cols) {
+      t_eol();
+     // increment_rowcount(1);
+   }
+   colcount += count;
+   return;
 }
 
 void t_ch(char ch) {
@@ -156,6 +216,7 @@ void do_help() {
    t_eol();
    t_strln("options:");
    t_strln("  -? or -h  print this message");
+   t_strln("  -a        all (volume id, hidden, system etc)");
    t_strln("  -l        long listing format");
    t_strln("  -l -l     very long listing format");
    t_strln("  -r        recurse into subdirs");
@@ -167,6 +228,9 @@ void do_help() {
  */
 void decode_option(char ch) {
    switch (ch) {
+      case 'a':
+         all = 1;
+         break;
       case 'h':
          /* fall through to ... */
       case '?':
@@ -249,44 +313,13 @@ int press_key_to_continue() {
  * Prompt for a key to continue - set aborted to 1 
  * and return TRUE if ESC is the key
  */
-   if (colcount > 0) {
-      t_eol();
-      colcount = 0;
-      rowcount += 1;
-   }
    t_str("Continue? (ESC exits) ...");
    k = k_wait();
-   t_eol();
+   t_string(1, END_OF_LINE);
+   colcount = 0;
+   rowcount = 1;
    aborted = (k == 0x1b);
    return aborted;
-}
-
-/* We are about to output 'count' rows - if this would make the top of 
- * the current page scroll off the screen, prompt to continue first.
- * Sets aborted to 1 if ESCAPE is pressed.
- */
-void increment_rowcount(int count) {
-   if (rowcount + count + 1 > rows) {
-      press_key_to_continue();
-      rowcount = count;
-   }
-   else {
-      rowcount += count;
-   }
-   return;
-}
-
-/* We are about to output 'count' cols - if this would exceed the screen
- * width, then reset the column count and increment the row count.
- * Sets aborted to 1 if ESCAPE is pressed.
- */
-void increment_colcount(int count) {
-   if (colcount + count + 1 > cols) {
-      increment_rowcount(1);
-      t_eol();
-   }
-   colcount += count;
-   return;
 }
 
 /*
@@ -320,9 +353,12 @@ char * formatted_name(uint8_t *name) {
 extern int amatch(char *str, char *p);
 
 /*
- * print a single directory entry, filtering if requested
+ * print a single directory entry, filtering if requested.
+ * return 1 if the entry was a matching directory (which needs 
+ * special processing), 0 if it was a file (which is printed
+ * if it matches all the necessary criteria)
  */
-void list_direntry(PDIRENT de, int filter) {
+int list_direntry(PDIRENT de, int filter) {
    unsigned long size;
    unsigned long ac_date;
    unsigned long cr_date;
@@ -332,17 +368,28 @@ void list_direntry(PDIRENT de, int filter) {
    char *filename;
    int i;
    int match = 0;
+   int dir = 0;
 
    // get formatted name
    filename = formatted_name(de->name);
-   if ((long_format == 0) && (de->attr & ATTR_VOLUME_ID)) {
-      if (diagnose) {
-         t_str("ignoring volume id ");
-         t_str(filename);
-         t_eol();
+
+   if ((de->attr & (ATTR_VOLUME_ID|ATTR_SYSTEM|ATTR_HIDDEN)) != 0) {
+      if (!all) {
+         if (diagnose) {
+            t_str("ignoring ");
+            t_str(filename);
+            t_eol();
+         }
+         return 0;  
       }
-      return;  
    }
+
+   // do not process "." and ".." unless -a is specified
+   if (!all 
+   && ((strcmp(filename, ".") == 0) || (strcmp(filename, "..") == 0))) {
+     return 0;
+   }
+
    if (filter) {
       // see if formatted name matches any file argument
       for (i = 0; i < file_count; i++) {
@@ -352,9 +399,14 @@ void list_direntry(PDIRENT de, int filter) {
          }
       }
       if (!match) {
-         return; // no match to any file argmument
+         return 0; // no match to any file argmument
       }
    }
+
+   // if it is a directory entry, remember it, so we
+   // return 1 to indicate it needs extra processing
+   dir = (de->attr & ATTR_DIRECTORY);
+ 
    i = strlen((char *)filename);
    // pad it to 12 characters
    while (i < 12) {
@@ -362,15 +414,19 @@ void list_direntry(PDIRENT de, int filter) {
    }
    filename[i] = 0;
 
-   if (long_format > 0) {
-      increment_rowcount(1);
+   if (aborted) {
+      return 0;
    }
-   else {
+
+   if (long_format == 0) {
       increment_colcount(13);
    }
 
-   if (aborted) {
-      return;
+   if (long_format > 1) {
+     // make sure all 4 lines of long long format will fit on screen
+     if ((rowcount + 4) > rows) {
+        press_key_to_continue();
+     }
    }
 
    t_str((char *)filename);
@@ -399,9 +455,8 @@ void list_direntry(PDIRENT de, int filter) {
    }
 
    if (long_format > 1) {
-      increment_rowcount(3);
       if (aborted) {
-         return;
+         return 0;
       }
       ac_date = (de->lstaccdate_h<<8) + de->lstaccdate_l;
       cr_date = (de->crtdate_h<<8) + de->crtdate_l;
@@ -422,23 +477,24 @@ void list_direntry(PDIRENT de, int filter) {
       t_date(mo_date & 0x1f, (mo_date >> 5) & 0xf, (mo_date >> 9) + 1980);
       t_eol();
    }
-   return;
+   return dir;
 }
 
 /*
- * list a single directory, no recursion, filtering if requested
+ * list a single directory, no recursion, filtering if requested, and
+ * (if add is specified) adding any directory entries to the "added" 
+ * list for processing later.
  */ 
-void list_single_directory(PVOLINFO vi, char *name, int filter) {
+void list_single_directory(PVOLINFO vi, char *name, int filter, int add) {
    uint8_t scratch[SECTOR_SIZE];
    DIRINFO di;
    DIRENT de;
-
-   if (colcount > 0) {
-      t_eol();
-   }
+   int dir = 0;
 
    if (strlen(name) > 0) {
-      increment_rowcount(1);
+      if (colcount > 0) {
+         t_eol();
+      }
       if (aborted) {
          return;
       }
@@ -466,9 +522,31 @@ void list_single_directory(PVOLINFO vi, char *name, int filter) {
 
    while (DFS_GetNext(vi, &di, &de) == DFS_OK) {
       if (de.name[0] != 0) {
-         list_direntry(&de, filter);
+         dir = list_direntry(&de, filter);
          if (aborted) {
             break;
+         }
+         // if this is a directory and we are adding directories
+         // add it to the "added" list  for special processing 
+         // (ignore "." and "..")
+         if (dir && add && (add_count < ARGV_MAX)) {
+            char tmpname[12+1]; // 8.3 terminator
+            int len; 
+            strcpy(tmpname, formatted_name(de.name));
+            if ((strcmp(tmpname, ".") != 0)
+            && (strcmp(tmpname, "..") != 0)) {
+               char fulldir[MAX_PATH+2]; // full path "/" name + terminator
+               strcpy(fulldir, path);
+               len=strlen(fulldir);
+               fulldir[len]=DIR_SEPARATOR;
+               fulldir[len+1] = 0;
+               len = strlen(tmpname);
+               tmpname[len] = DIR_SEPARATOR;
+               tmpname[len+1] = 0;
+               strcat(fulldir, tmpname);
+               added[add_count] = strdup(fulldir);
+               add_count++;
+            }
          }
       }
    }
@@ -477,10 +555,10 @@ void list_single_directory(PVOLINFO vi, char *name, int filter) {
 
 /*
  * list a directory, first by listing its contents, then by
- * recursing into any subdirectories (if requested), and
+ * recursing into any subdirectories (if requested), and also
  * filtering if requested
  */ 
-void list_directory(PVOLINFO vi, char *name, int filter, int recurse) {
+void list_directory(PVOLINFO vi, char *name, int filter, int add, int recurse) {
    uint8_t scratch[SECTOR_SIZE];
    char *dirname;
    char path[MAX_PATH+1];
@@ -490,6 +568,7 @@ void list_directory(PVOLINFO vi, char *name, int filter, int recurse) {
    int len = 0;
    int i, j;
    int match = 0;
+   int root = 0;
 
    safecpy(path, name, MAX_PATH);
    len = strlen(path);
@@ -500,8 +579,9 @@ void list_directory(PVOLINFO vi, char *name, int filter, int recurse) {
       path[len] = 0;
    }
 
-   // list this directory, do not recurse
-   list_single_directory(vi, name, filter);
+   // list this directory, and if we are not recursing, add
+   // entries to the "added" list if requested.
+   list_single_directory(vi, name, filter, add && !recurse);
    if (aborted) {
       return;
    }
@@ -522,14 +602,18 @@ void list_directory(PVOLINFO vi, char *name, int filter, int recurse) {
             if (de.attr & ATTR_DIRECTORY) {
                dirname = formatted_name(de.name);
                if (strcmp(dirname, ".") == 0) {
-                  if (diagnose) {
-                     t_strln("ignoring special entry .");
-                  }  
+                  if (!all) {
+                     if (diagnose) {
+                        t_strln("ignoring special entry .");
+                     }  
+                  }
                }
                else if (strcmp(dirname, "..") == 0) {
-                  if (diagnose) {
-                     t_strln("ignoring special entry ..");
-                  }  
+                  if (!all) {
+                     if (diagnose) {
+                        t_strln("ignoring special entry ..");
+                     }  
+                  }
                }
                else {
                   match = 0;
@@ -549,7 +633,7 @@ void list_directory(PVOLINFO vi, char *name, int filter, int recurse) {
                      path[len] = DIR_SEPARATOR;
                      path[len + 1] = '\0';
                      safecat(path, dirname, MAX_PATH);
-                     list_directory(vi, path, 0, recurse);
+                     list_directory(vi, path, 0, add, recurse);
                      path[len] = '\0';
                   }
                }
@@ -588,7 +672,6 @@ void main(int argc, char *argv[]) {
    VOLINFO vi;
    int rowcol;
    int filter;
-   char path[MAX_PATH+1];
    int plen;
    int dlen;
 
@@ -608,8 +691,9 @@ void main(int argc, char *argv[]) {
       cols = 80;
    }
 
-   rowcount = 0;
+   rowcount = 1;
    colcount = 0;
+
    if (decode_arguments(argc, argv) == 0) {
       // work to do, so initialize the file system     
       pstart = DFS_GetPtnStart(0, scratch, 0, &pactive, &ptype, &psize);
@@ -621,21 +705,26 @@ void main(int argc, char *argv[]) {
       else {
          if ((file_count == 0) && (dir_count == 0)) {
             // no arguments - list the root directory with no filter
-            list_directory(&vi, "", 0, recurse);
+            // and no adding directories
+            list_directory(&vi, "", 0, 0, recurse);
             t_eol();
          }
          else {
             if (file_count > 0) {
-               // process all the file arguments by listing the matching 
-               // files in the root directory
-               list_directory(&vi, "", 1, recurse);
+               // process all the file arguments by listing matching 
+               // entries in the root directory, adding any matching
+               // directories
+               list_directory(&vi, "", 1, 1, recurse);
                t_eol();
             }
-            // now process each dir argument, listing all the files in 
-            // each directory with no filters if the path is terminated
+            // process each dir argument, listing all the files in 
+            // the directory with no filters if the path is terminated
             // with a separator, or with the filter if there is a last
             // element in the path.
             for (i = 0; i < dir_count; i++) {
+               if (aborted) {
+                 break;
+               }
                t_eol();
                strncpy(path, dirs[i], MAX_PATH);
                plen = pathlen(path);
@@ -652,7 +741,16 @@ void main(int argc, char *argv[]) {
                   files[0] = &dirs[i][plen]; // note plen, not dlen!
                   file_count = 1; // one filter
                }
-               list_directory(&vi, path, (file_count > 0), recurse);
+               list_directory(&vi, path, (file_count > 0), 1, recurse);
+               t_eol();
+            }
+            // now process each added dir, listing all the files in 
+            // each directory with no filters and no recursion.
+            for (i = 0; i < add_count; i++) {
+               if (aborted) {
+                 break;
+               }
+               list_directory(&vi, added[i], 0, 0, 0);
                t_eol();
             }
          }
@@ -666,11 +764,11 @@ void main(int argc, char *argv[]) {
    // allow some time for characters to be sent out before terminating
    msleep(250);
 #else
+   t_eol();
    if (!aborted) {
       // wait for the user to press a key before terminating
       press_key_to_continue();
    }
 #endif    
 }
-
 
