@@ -1,4 +1,4 @@
-This directory contains scripts to compile a self-hosted version of Catalina. 
+On the Propeller 2, Catalyst includes a self-hosted version of Catalina. 
 
 Self-hosted Catalina is supported on the Propeller 2 only. It requires a 
 P2_EDGE with 32MB PSRAM installed (i.e. the P2-EC32MB) or a P2_EDGE or P2_EVAL

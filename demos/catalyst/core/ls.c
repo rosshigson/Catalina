@@ -42,8 +42,13 @@
  *                 will list just the long contents of the bin directory.
  *
  *               - Fixed column and line counting, so the "Continue?" prompt
- *                 works properly (note that for serial terminals, screen 
+ *                 works properly.
+ *
+ *               - The screen size is now autodetected if VGA, TV and VT100 
+ *                 compatible serial terminal HMI options are used (for serial 
+ *                 terminals other than a VT100 compatible terminal, screen 
  *                 size is assumed to be 80x24).
+ *
  */
 
 #include <ctype.h>
@@ -73,12 +78,121 @@ static char *added[ARGV_MAX];
 static char *one_dir = NULL;
 static char path[MAX_PATH+1];
 
-static int rows;
-static int cols;
-static int rowcount;
-static int colcount;
+static int rows = 0;
+static int cols = 0;
+static int rowcount = 0;
+static int colcount = 0;
 
 static int aborted = 0;
+
+#define ESCAPE_CHAR 0x1b
+#define KEY_TIMEOUT 100 // milliseconds
+
+void t_ch(char ch) {
+   t_char(1, ch);
+}
+
+void t_str(char *str) {
+   t_string(1, str);
+}
+
+void t_int(int i) {
+   t_integer(1, i);
+}
+
+void t_strln(char *str) {
+   t_string(1, str);
+   t_eol();
+}
+
+// keyboard input with timeout
+int intime(long timeout) {
+  int i;
+
+  if (timeout == 0) {
+     return(k_wait() & 0xff);
+  }
+  for (i = 0; i < timeout; i++) { // '[' or 'O' must arrive soon!
+     if (k_ready()) {
+         return(k_wait() & 0xff);
+     } 
+	   else {
+       _waitms(1);
+     }
+	}
+  return -1; // timed out
+}
+
+// get current cursor position
+void get_cursor_position (int *row, int *col) {
+   int tmprows = 0;
+   int tmpcols = 0;
+   char str[20];
+   int k = 0;
+
+   sprintf(str,"%c[6n", ESCAPE_CHAR);
+   t_str(str);
+   _waitms(100);
+   k = intime(KEY_TIMEOUT);
+   if (k == ESCAPE_CHAR) {
+      k = intime(KEY_TIMEOUT);
+      if (k == '[') {
+         k = intime(KEY_TIMEOUT);
+         while (isdigit(k)) {
+            tmprows = 10*tmprows + (k - '0');
+            k = intime(KEY_TIMEOUT);
+         }
+         if (k == ';') {
+            k = intime(KEY_TIMEOUT);
+            while (isdigit(k)) {
+               tmpcols = 10*tmpcols + (k - '0');
+               k = intime(KEY_TIMEOUT);
+            }
+            if (k == 'R') {
+               *row = tmprows;
+               *col = tmpcols;
+            }
+         }
+      }
+   }
+}
+
+// try to get the screen geometry (i.e. columns and rows)
+// works for VT100, TV and VGA HMI options, otherwise use 80x24
+void get_geometry() {
+#ifdef __CATALINA_VT100
+   char str[20];
+   int currow = 0;
+   int curcol = 0;
+
+   // remember current cursor position
+   get_cursor_position(&currow, &curcol);
+
+   // set cursor to maximum screen row and col
+   sprintf(str,"%c[999;999H", ESCAPE_CHAR);
+   t_str(str);
+
+   // current cursor position is screen size
+   get_cursor_position(&rows, &cols);
+
+   // restore original cursor position
+   sprintf(str, "%c[%d;%dH", ESCAPE_CHAR, currow, curcol);
+   t_str(str);
+#else
+   int rowcols;
+
+   rowcols = t_geometry();
+
+   rows = rowcols & 0xFF;
+   cols = (rowcols >> 8) & 0xFF;
+#endif   
+   if (rows == 0) {
+      rows = 24;
+   }
+   if (cols == 0) {
+      cols = 80;
+   }
+}
 
 /* We are about to output 'count' rows - if this would make the top of 
  * the current page scroll off the screen, prompt to continue first.
@@ -96,8 +210,10 @@ void increment_rowcount(int count) {
 
 void t_eol() {
    t_string(1, END_OF_LINE);
-   increment_rowcount(1);
    colcount = 0;
+   if (!aborted) {
+      increment_rowcount(1);
+   }
 }
 
 /* We are about to output 'count' cols - if this would exceed the screen
@@ -111,23 +227,6 @@ void increment_colcount(int count) {
    }
    colcount += count;
    return;
-}
-
-void t_ch(char ch) {
-   t_char(1, ch);
-}
-
-void t_str(char *str) {
-   t_string(1, str);
-}
-
-void t_int(int i) {
-   t_integer(1, i);
-}
-
-void t_strln(char *str) {
-   t_string(1, str);
-   t_eol();
 }
 
 /*
@@ -675,21 +774,7 @@ void main(int argc, char *argv[]) {
    int plen;
    int dlen;
 
-#ifdef SERIAL_HMI
-   rows = 0;
-   cols = 0;
-#else
-   rowcol = t_geometry();
-   cols = (rowcol >> 8) & 0xFF;
-   rows = rowcol & 0xFF;
-#endif   
-
-   if (rows == 0) {
-      rows = 24;
-   }
-   if (cols == 0) {
-      cols = 80;
-   }
+   get_geometry();
 
    rowcount = 1;
    colcount = 0;

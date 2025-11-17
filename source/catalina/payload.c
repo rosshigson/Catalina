@@ -453,6 +453,15 @@
  * version 8.8  - just update version number.
  *
  * version 8.8.1 - just update version number.
+ *
+ * version 8.8.3 - payload was incorrectly sending screen size in response
+ *                 to ESC[6n instead of current cursor position.
+ *
+ *               - payload was misbehaving when "ESC [ nnn C" was sent and
+ *                 C was a very large number (e.g. 999). The linenoise 
+ *                 library does this to find the length of the line.
+ *                 Now, nnn is limited to the number of character positions
+ *                 left on the current line.
  * 
  *-----------------------------------------------------------------------------
  * Payload is part of Catalina.
@@ -503,7 +512,7 @@
 #include "lua-5.4.4/src/lauxlib.h"
 #endif
 
-#define VERSION            "8.8.1"
+#define VERSION            "8.8.3"
 
 #define DEFAULT_LCC_ENV    "LCCDIR" // used to locate binary files if not in current directory
 
@@ -3658,18 +3667,21 @@ void internal_interactive() {
                     esc = 0;
                  }
                  else if (ch == 'C') {
-//printw("<fwd %d>",r);
                     // move cursor forward r places
+//printw("<fwd %d>",r);
                    {
                       int x, y;
                       getyx(payload_term, y, x);
+                      if (r >= COLS - x) {
+                         r = COLS - x - 1;
+                      }
+//printw("<fwd %d>",r);
                       move(y, x+r);
                       refresh();
                       esc = 0;
                    }
                  }
                  else if (ch == 'D') {
-//printw("<fwd %d>",r);
 //printw("<bck %d>",r);
                     // move cursor backward r places
                    {
@@ -3690,10 +3702,14 @@ void internal_interactive() {
                     r = 10 * r + (ch - '0');
                  }
                  else if ((r == 6) && (ch == 'n')) {
+//printw("<REPORT>");
                     // it's ESC [ 6 n ...
                     char str[20];
-                    sprintf(str,"%c[%0d;%0dR", ESC, LINES, COLS);
+                    int x, y;
+                    getyx(payload_term, y, x);
+                    sprintf(str,"%c[%d;%dR", ESC, y+1, x+1);
                     send_string(term, str);
+                    refresh();
                     esc = 0;
                  }
                  else {
@@ -3760,7 +3776,6 @@ void internal_interactive() {
                     c = 10 * c + (ch - '0');
                  }
                  else if ((ch == 'H') || (ch == 'f')) {
-//printw("<move %d,%d>",r,c);
                     if (r == 0) r = 1;
                     if (c == 0) c = 1;
                     if ((r > 0) && (c > 0)) {
@@ -3772,6 +3787,11 @@ void internal_interactive() {
                        }
                        move(r - 1, c - 1); // tty_goto
                        refresh();
+                       {
+                          int x, y;
+                          getyx(payload_term, y, x);
+                       }
+//printw("<move %d,%d>",r,c);
                     }
                     else {
                        addch(ESC);
@@ -3858,7 +3878,9 @@ void internal_interactive() {
                  // already saw ESC [ ? 6
                  if (ch == 'n') {
                     char str[20];
-                    sprintf(str,"%c[%0d;%0dR", ESC, LINES, COLS);
+                    int x, y;
+                    getyx(payload_term, y, x);
+                    sprintf(str,"%c[%d;%dR", ESC, y+1, x+1);
                     send_string(term, str);
                     esc = 0;
                  }

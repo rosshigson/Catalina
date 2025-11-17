@@ -302,9 +302,12 @@ New Functionality
     directory names.
 
     Fixed the column and line counting, so the "Continue?" prompt works 
-    properly (note that for serial terminals, screen size is assumed to be 
-    80x24).
+    properly.
 
+12. The Catalyst ls and cat utilities now autodetect the screen size if the
+    VGA, TV and VT100 compatible serial terminal HMI options are used (for 
+    serial terminals other than a VT100 compatible terminal, screen size is 
+    assumed to be 80x24).
 
 Other Changes
 -------------
@@ -319,3 +322,11 @@ Other Changes
 
    Affected Windows, Linux and Catalyst.
 
+2. Payload was incorrectly sending screen size in response to ESC[6n instead 
+   of current cursor position when used in interactive mode. Affected Windows 
+   and Linux.
+
+3. Payload was misbehaving when "ESC [ nnn C" was sent and C was a very large
+   number (e.g. 999) when used in interactive mode. The linenoise library does
+   this to find the length of the line. Now, nnn is limited to the number of 
+   character positions left on the current line. Affected Windows and Linux.
