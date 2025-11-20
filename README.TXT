@@ -224,7 +224,7 @@ New Functionality
       catalina -p2 -lcx program.c -C SD_DELAY=0
 
    Defining the Catalina symbol NO_SD_DELAY also sets the SD_DELAY to zero,
-   but can be used in build_all scripts. Using NO_SD_DELAT overrides any 
+   but can be used in build_all scripts. Using NO_SD_DELAY overrides any 
    other specified SD_DELAY.
 
    The default if not specified is 10ms, and the driver may not work properly
