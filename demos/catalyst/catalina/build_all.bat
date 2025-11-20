@@ -6,13 +6,13 @@ rem necessary additional options such as model, cache size (e.g. CACHED_8K,
 rem CACHED_16K, CACHED_32K or CACHED_64K) and WRITE_BACK here ...
 
 rem To use the most common options:
-set EXTRA_OPTIONS=-C LARGE -C CACHED_64K -C WRITE_BACK -C NO_MOUSE
+set EXTRA_OPTIONS=-D__STDC__=1 -C LARGE -C CACHED_64K -C WRITE_BACK -C NO_MOUSE
 
 rem To use the Hub Memory allocation option:
-rem set EXTRA_OPTIONS=-C LARGE -C HUB_MALLOC -C CACHED_64K -C WRITE_BACK -C NO_MOUSE
+rem set EXTRA_OPTIONS=-D__STDC__=1 -C LARGE -C HUB_MALLOC -C CACHED_64K -C WRITE_BACK -C NO_MOUSE
 
 rem To use the XMM cache options:
-rem set EXTRA_OPTIONS=-C LARGE -C CACHED_64K -C CACHE_LUT -C CACHE_PINS -C FLOAT_PINS -C WRITE_BACK -C NO_MOUSE
+rem set EXTRA_OPTIONS=-D__STDC__=1 -C LARGE -C CACHED_64K -C CACHE_LUT -C CACHE_PINS -C FLOAT_PINS -C WRITE_BACK -C NO_MOUSE
 
 rem
 rem save the current LCCDIR

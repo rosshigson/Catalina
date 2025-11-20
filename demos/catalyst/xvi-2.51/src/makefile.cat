@@ -50,7 +50,7 @@ ifeq ("$(LDFLAGS)", "")
 	LDFLAGS= -C LARGE
 endif
 
-CFLAGS += -DCATALINA -W-w
+CFLAGS += -DCATALINA -D__STDC__=1 -W-w
 
 ifeq ($(OS), Windows_NT)
 CC=catalina.exe

@@ -8,6 +8,6 @@ rm $LCCDIR/bin/clcc
 mv $LCCDIR/bin/lcc $LCCDIR/bin/clcc
 
 make clobber LCCDIR=$LCCDIR
-make HOSTFILE=etc/catalina_linux.c LCCDIR=$LCCDIR lcc
+make -B HOSTFILE=etc/catalina_linux.c LCCDIR=$LCCDIR lcc
 make all LCCDIR=$LCCDIR
 

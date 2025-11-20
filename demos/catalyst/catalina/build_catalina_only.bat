@@ -6,7 +6,7 @@ rem script to be the same as the Catalyst build_all script, so we set any
 rem necessary additional options such as model, cache size (e.g. CACHED_8K, 
 rem CACHED_16K, CACHED_32K or CACHED_64K) and WRITE_BACK here ...
 rem
-set EXTRA_OPTIONS=-C LARGE -C CACHED_64K -C WRITE_BACK -C NO_MOUSE
+set EXTRA_OPTIONS=-D__STDC__=1 -C LARGE -C CACHED_64K -C WRITE_BACK -C NO_MOUSE
 
 rem
 rem save the current LCCDIR

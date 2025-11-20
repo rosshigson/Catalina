@@ -7,7 +7,7 @@
 # necessary additional options such as model, cache size (e.g. CACHED_8K, 
 # CACHED_16K, CACHED_32K or CACHED_64K) and WRITE_BACK here ...
 #
-EXTRA_OPTIONS=-"C LARGE -C CACHED_64K -C WRITE_BACK -C NO_MOUSE"
+EXTRA_OPTIONS="-D__STDC__=1 -C LARGE -C CACHED_64K -C WRITE_BACK -C NO_MOUSE"
 
 TMP_LCCDIR="$LCCDIR"
 if [[ "$TMP_LCCDIR" == "" ]] ; then

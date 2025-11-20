@@ -7,13 +7,13 @@
 # CACHED_16K, CACHED_32K or CACHED_64K) and WRITE_BACK here ...
 
 # To use the most common options:
-EXTRA_OPTIONS=-"C LARGE -C CACHED_64K -C WRITE_BACK -C NO_MOUSE"
+EXTRA_OPTIONS="-D__STDC__=1 -C LARGE -C CACHED_64K -C WRITE_BACK -C NO_MOUSE"
 
 # To use the Hub Memory allocation option:
-#EXTRA_OPTIONS=-"C LARGE -C HUB_MALLOC -C CACHED_64K -C WRITE_BACK -C NO_MOUSE"
+#EXTRA_OPTIONS="-D__STDC__=1 -C LARGE -C HUB_MALLOC -C CACHED_64K -C WRITE_BACK -C NO_MOUSE"
 
 # To use the XMM cache options:
-#EXTRA_OPTIONS=-C LARGE -C CACHED_64K -C CACHE_LUT -C CACHE_PINS -C FLOAT_PINS -C WRITE_BACK -C NO_MOUSE
+#EXTRA_OPTIONS="-D__STDC__=1 -C LARGE -C CACHED_64K -C CACHE_LUT -C CACHE_PINS -C FLOAT_PINS -C WRITE_BACK -C NO_MOUSE"
 
 TMP_LCCDIR="$LCCDIR"
 if [[ "$TMP_LCCDIR" == "" ]] ; then
@@ -238,12 +238,12 @@ cd ../..
 echo ""
 echo "building cpp ..."
 echo ""
-catalina -p2 -L $TMP_LIBPATH -I ../../include $EXTRA_OPTIONS -o cpp ../cpp/cpp.c ../cpp/lex.c ../cpp/nlist.c ../cpp/tokens.c ../cpp/macro.c ../cpp/eval.c ../cpp/include.c ../cpp/hideset.c ../cpp/getopt.c ../cpp/unix.c -I../cpp -l$TMP_PSRAM -lcx -D__APPLE__ -y
+catalina -p2 -L $TMP_LIBPATH -I ../../include $EXTRA_OPTIONS -o cpp ../cpp/cpp.c ../cpp/lex.c ../cpp/nlist.c ../cpp/tokens.c ../cpp/macro.c ../cpp/eval.c ../cpp/include.c ../cpp/hideset.c ../cpp/getopt.c ../cpp/unix.c -I../cpp -l$TMP_PSRAM -lcx -D__APPLE__ -D__STDC__=1 -y
 
 echo ""
 echo "building spp ..."
 echo ""
-catalina -p2 -L $TMP_LIBPATH -I ../../include $EXTRA_OPTIONS -o spp ../cpp/cpp.c ../cpp/lex.c ../cpp/nlist.c ../cpp/tokens.c ../cpp/macro.c ../cpp/eval.c ../cpp/include.c ../cpp/hideset.c ../cpp/getopt.c ../cpp/unix.c -I../cpp -l$TMP_PSRAM -lcx -D__APPLE__ -D SPIN_PREPROCESSOR -y
+catalina -p2 -L $TMP_LIBPATH -I ../../include $EXTRA_OPTIONS -o spp ../cpp/cpp.c ../cpp/lex.c ../cpp/nlist.c ../cpp/tokens.c ../cpp/macro.c ../cpp/eval.c ../cpp/include.c ../cpp/hideset.c ../cpp/getopt.c ../cpp/unix.c -I../cpp -l$TMP_PSRAM -lcx -D__APPLE__ -D__STDC__=1 -D SPIN_PREPROCESSOR -y
 
 echo ""
 echo "building rcc ..."
@@ -251,7 +251,7 @@ echo ""
 
 # must remove OPTIMIZE (if present) when compiling rcc - it crashes awka!
 CATALINA_DEFINE="${CATALINA_DEFINE//OPTIMIZE/}"
-catalina -p2 -L $TMP_LIBPATH -I ../../include -C CLOCK -C NO_KEYBOARD $EXTRA_OPTIONS -o rcc -lrcc ../src/main.c -I../src -l$TMP_PSRAM -lcx -y
+catalina -p2 -L $TMP_LIBPATH -I ../../include -C CLOCK -C NO_KEYBOARD $EXTRA_OPTIONS -o rcc -lrcc ../src/main.c -I../src -l$TMP_PSRAM -lcx -D__STDC__=1 -y
 cd ../../..
 
 echo ""
