@@ -37,15 +37,15 @@ catbind$E:	catbind.c
 catalina$E:	catalina.c
 	$(CC) $(CFLAGS) -o $@ catalina.c
 
-payload$E:	payload.c rs232.h rs232.c base64.c fymodem.h fymodem.c
+payload$E:	payload.c rs232.h rs232.c base64.c fymodem.h fymodem.c kb.h kb.c
 	make -C $(LUADIR) mingw
-	$(CC) $(CFLAGS) -o $@ payload.c rs232.c base64.c fymodem.c -lncursesw -L $(LUADIR)\src -llua
+	$(CC) $(CFLAGS) -o $@ payload.c rs232.c base64.c fymodem.c kb.c -lncursesw -L $(LUADIR)\src -llua
 	
-#	$(CC) $(CFLAGS) -o $@ payload.c rs232.c base64.c fymodem.c -lpdcurses -L $(LUADIR)\src -llua
+#	$(CC) $(CFLAGS) -o $@ payload.c rs232.c base64.c fymodem.c kb.c -lpdcurses -L $(LUADIR)\src -llua
 
-#	$(CC) $(CFLAGS) -o $@ payload.c rs232.c base64.c -lpthread -lpdcurses -lws2_32 -DPTW32_STATIC_LIB
+#	$(CC) $(CFLAGS) -o $@ payload.c rs232.c base64.c kb.c -lpthread -lpdcurses -lws2_32 -DPTW32_STATIC_LIB
 
-#	$(CC) $(CFLAGS) -o $@ payload.c rs232.c base64.c -lpdcurses -lpthread
+#	$(CC) $(CFLAGS) -o $@ payload.c rs232.c base64.c kb.c -lpdcurses -lpthread
 
 spinc$E:	spinc.c spinc.h 
 	$(CC) $(CFLAGS) -o $@ spinc.c 

@@ -53,9 +53,9 @@ catbind$E:	catbind.c
 catalina$E:	catalina.c
 	$(CC) $(CFLAGS) -o $@ catalina.c -lm
 
-payload$E:	payload.c rs232.h rs232.c base64.c fymodem.h fymodem.c
+payload$E:	payload.c rs232.h rs232.c base64.c fymodem.h fymodem.c kb.h kb.c
 	make -C $(LUADIR) linux
-	$(CC) $(CFLAGS) -o $@ payload.c rs232.c base64.c fymodem.c -lpthread -lcurses -L $(LUADIR)/src -llua -lm -ldl
+	$(CC) $(CFLAGS) -o $@ payload.c rs232.c base64.c fymodem.c kb.c -lpthread -lcurses -L $(LUADIR)/src -llua -lm -ldl
 
 spinc$E:	spinc.c spinc.h 
 	$(CC) $(CFLAGS) -o $@ spinc.c 

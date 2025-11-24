@@ -462,6 +462,15 @@
  *                 library does this to find the length of the line.
  *                 Now, nnn is limited to the number of character positions
  *                 left on the current line.
+ *
+ * version 8.8.4 - add 'dumb' mode, which is enabled by using the -I option
+ *                 but specifying "dumb" or "none" as the terminal name 
+ *                 (e.g. -Idumb or -I none). 
+ *                 In dumb mode (after download, if a file is specified) 
+ *                 payload just echoes all characters received on the serial 
+ *                 port to stdout, and all characters received on stdin to 
+ *                 the serial port. Dumb mode can be terminated by entering 
+ *                 TWO consecutive CTRL-D characters.
  * 
  *-----------------------------------------------------------------------------
  * Payload is part of Catalina.
@@ -501,6 +510,7 @@
 
 #include "rs232.h"
 #include "fymodem.h"
+#include "kb.h"
 
 #ifdef WIN32_PATHS         /* define this on the command line for Windows */
 #include "lua-5.4.4\\src\\lua.h"
@@ -512,7 +522,7 @@
 #include "lua-5.4.4/src/lauxlib.h"
 #endif
 
-#define VERSION            "8.8.3"
+#define VERSION            "8.8.4"
 
 #define DEFAULT_LCC_ENV    "LCCDIR" // used to locate binary files if not in current directory
 
@@ -623,6 +633,7 @@
 #define USE_BASE64         1
 
 #define DEFAULT_ATTN_KEY   0x01 /* CTRL-A */
+
 typedef unsigned int u32;
 typedef unsigned char u8;
 
@@ -2458,7 +2469,7 @@ int decode_arguments (int argc, char *argv[]) {
                      code = 1; // work to do
                   }
                   if (interactive) {
-                     fprintf(stderr, "Option -L overrides -i\n");
+                     fprintf(stderr, "Option -L overrides -i or -I\n");
                      interactive = 0;
                   }
                   break;
@@ -3373,6 +3384,52 @@ int SendByteWithDelay(int comport_number, unsigned char byte) {
   mdelay(key_delay);
 }
 
+// dumb terminal emulation
+void dumb_terminal() {
+   char in_ch = 0;
+   char out_ch = 0;
+   int rcvd = 0;
+   int eot = 0;
+   int echo = my_echo(0);
+   printf("\nEntering dumb mode on port ");
+   printf(ShortportName(term));
+   printf(" - press CTRL+D (twice) to exit\n\n");
+   ClearInput(port);
+   while (interactive) {
+      if (my_kbhit()) {
+         in_ch = my_getkey();
+         if (in_ch != EOF) {
+
+            // handle EOT - one EOT means just send it, 
+            //              two consecutive EOT also means exit
+            if ((in_ch == 0) || (in_ch == 0x04)) {
+               eot++;
+               if (eot > 1) {
+                  interactive = 0;
+               }
+            }
+            else {
+               eot = 0;
+            }
+            SendByteWithDelay(term, in_ch);
+         }
+      }
+      rcvd = 0;
+      while (ByteReady(term)) {
+         out_ch = ReceiveByte(term);
+         putchar(out_ch);
+         rcvd = 1;
+      }
+      if (!rcvd) {
+         mdelay(10);
+      }
+   }
+   printf("\nExiting dumb mode\n");
+   if (echo != -1) {
+      my_echo(echo);
+   }
+}
+
 void internal_interactive() {
      WINDOW *payload_term;
 
@@ -4047,7 +4104,9 @@ int main(int argc, char* argv[]) {
       exit(0);
    }
 
-   if ((file_count == 0) && ((interactive == 0) && (lua_script == NULL))) {
+   if ((file_count == 0) 
+   &&  (interactive == 0) 
+   &&  (lua_script == NULL)) {
       fprintf(stderr, "\nNo input files specified, and not interactive or script mode - exiting\n");
       exit(1);
    }
@@ -4170,7 +4229,8 @@ int main(int argc, char* argv[]) {
                exit(1);
             }
             if ((interactive || (lua_script != NULL)) && (term == -1)) {
-               term = port; // remember this port and use it for interactive or Lua mode
+               // remember port and use it for interactive or Lua mode
+               term = port; 
                if (verbose) {
                   fprintf(stderr, "Remembering port %s for interactive/script mode\n", 
                           ShortportName(term));
@@ -4273,7 +4333,8 @@ int main(int argc, char* argv[]) {
                exit(1);
             }
             if ((interactive || (lua_script != NULL)) && (term == -1)) {
-               term = port; // remember this port and use it for interactive or Lua mode
+               // remember port and use it for interactive or Lua mode
+               term = port; 
                if (verbose) {
                   fprintf(stderr, "Remembering port %s for interactive/script mode\n", ShortportName(term));
                }
@@ -4413,6 +4474,11 @@ int main(int argc, char* argv[]) {
    else if (interactive && (term != -1)) {
      if (strlen(term_name) == 0) {
         internal_interactive();
+        prop_close(term);
+     }
+     else if ((strcmp(term_name, "dumb") == 0) 
+          ||  (strcmp(term_name, "none") == 0)){
+        dumb_terminal();
         prop_close(term);
      }
      else {

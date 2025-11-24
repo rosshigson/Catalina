@@ -196,137 +196,24 @@ documents folder.
 New Functionality
 -----------------
 
-1. A version of dirent.h, which defines the functions opendir(), readdir(),
-   closedir() and realpath(). These functions are not part of any C standard,
-   but are required by Cake.
+1. Payload now has a 'dumb' mode, which is enabled by using the -I option
+   but specifying either "dumb" or "none" as the terminal name (e.g. -Idumb 
+   or -I none). In dumb mode (after download, if a file is also specified) 
+   payload just echoes all characters received on the serial port to stdout, 
+   and all characters received on stdin to the serial port. Dumb mode can be 
+   terminated by entering TWO consecutive CTRL-D characters.
 
-2. Cake has been updated to version 0.12.55.
-
-3. Catalina now disables Cake's use of colors in error and warning messages
-   by default, because Geany does not support it. However, for command-line 
-   or terminal emulator use, colors can be re-enabled by defining the Catalina
-   symbol CAKE_COLOR, e,g, by adding -C CAKE_COLOR to the Catalina command. 
-   For example:
-
-     catalina hello_99.c -lci -C99 -C CAKE_COLOR
-
-4. printf() (and fprintf() etc) now supports "ll" as a length specified, to
-   indicate a long long - for example "%llu" indicates an "unsigned long long". 
-   Note that in Catalina long longs are the same as longs, so in practice both
-   "%lu" and "%llu" will now do the same thing, whereas in previous releases
-   the former would have printed 100 as "100", whereas the latter would have 
-   printed it as "100ul". This change was required to support Cake.
-
-5. The Propeller 2 SD card driver (/target/p2/cogsd.t) now allows the SD card
-   delay (in clock ticks) to be specified using the Catalina symbol SD_DELAY 
-   during compilation. For example, to set it to zero use a command such as:
-
-      catalina -p2 -lcx program.c -C SD_DELAY=0
-
-   Defining the Catalina symbol NO_SD_DELAY also sets the SD_DELAY to zero,
-   but can be used in build_all scripts. Using NO_SD_DELAY overrides any 
-   other specified SD_DELAY.
-
-   The default if not specified is 10ms, and the driver may not work properly
-   if this delay is altered.
-
-6. In the Catalyst demos folder (demos/catalyst) there is now a build_p2_300
-   script, which builds Catalyst using a 300 Mhz clock speed (the default of
-   200Mhz is still used by the build_p2 script). So for example, building
-   Catalyst at 300 Mhz and with no SD_DELAY can be done with a command like:
-
-      build_p2_300 P2_EDGE PSRAM NO_SD_DELAY
-
-   Note that 300 baud and no SD_DELAY may not work for all programs, all SD 
-   cards, or all Propeller 2 platforms.
-
-7. Catalina no longer defines the symbols "win32", "_WIN32", "_M_IX86" "unix", 
-   "i386", "linux" "__unix__", "_i386__", "__linux__", or "__signed__" 
-   automatically on any platform.  Not defining these symbols may make some 
-   programs either not compile, or behave differently. If any of these symbols
-   are required, they can be defined on the command line (using -D). 
-   For example:
-
-      catalina program.c -D__signed=signed
-
-8. Catalina no longer defines the C symbols "__STRICT_ANSI__" or "__STDC__" 
-   automatically because this can interfere with the use of Cake as the C 
-   preprocessor. Not defining these symbols may make some programs either 
-   not compile, or behave differently. If these symbols are required, they 
-   can be defined on the command line (using -D). For example:
-
-      catalina program.c -D__STDC__=1
-
-   The C symbol _POSIX_SOURCE is still defined even though Catalina is not
-   fully POSIX compliant, because this symbol enables some necessary 
-   definitions in the C header files. 
-
-9. The -u option to catalina means it does not delete intermediate files.
-   This is sometimes useful for debugging. On Catalyst (only) it now also 
-   means to not run the pstrip utility, which 'strips' comments and blank 
-   lines from the intermediate source code files (to reduce their size).
-
-10. Allow -C USE_COLOUR to enable Cake's use of color (i.e. in addition to 
-    -C USE_COLOR) and also use the Cake option -fdiagnostics-color=never to
-    disable the use of color.
-
-11. The Catalyst "ls" command has been enhanced to add -a as a command line
-    option. This option includes ".", "..", volume ids and system and hidden 
-    files in the listing output, which are now otherwise not included.
-
-    Also, directory contents are now listed for any directories specified by 
-    the command line parameters (previously, a trailing "/" had to explicitly 
-    be added to a directory name to print the contents of the directory). 
-    Now including a trailing "/" means to list both the directory AND the 
-    directory contents. So, for example:
-
-      ls /
-
-    will list the contents of the root directory and also the contents of 
-    any subdirectories, whereas:
-
-      ls
-
-    will list just the contents of the root directory. Similarly:
-
-      ls -l bin/
-
-    will list the long details of the bin directory and also the long details
-    of the contents of the bin directory, whereas:
-
-      ls -l bin
-
-    will list just the long details of the contents of the bin directory.
-
-    Note that the -r flag can be used with or without a trailing "/" on the
-    directory names.
-
-    Fixed the column and line counting, so the "Continue?" prompt works 
-    properly.
-
-12. The Catalyst ls and cat utilities now autodetect the screen size if the
-    VGA, TV and VT100 compatible serial terminal HMI options are used (for 
-    serial terminals other than a VT100 compatible terminal, screen size is 
-    assumed to be 80x24).
+   As the name implies, in dumb mode, payload does not do any character
+   processing on either input or output characters (except for detecting
+   two successive CTRL-D characters) - If the Propeller program does any 
+   terminal-dependent stuff (e.g. cursor movement, screen manipulation, 
+   applying colors etc) this will work if that capability is implemented 
+   by the terminal window in which payload is executing. In general, this 
+   means many things will work quite smoothly (in Windows) using cmd.exe, 
+   conhost or the terminal app, or (in Linux) in any window type derived 
+   from an xterm.
 
 Other Changes
 -------------
 
-1. The C include file limits.h (i.e. include/limits.h) was incorrectly
-   defining CHAR_MIN and CHAR_MAX as if chars were signed. Since chars are 
-   unsigned in Catalina, these definitions were incorrect, and have been
-   changed to:
-
-      #define	CHAR_MAX		UCHAR_MAX
-      #define	CHAR_MIN		0   
-
-   Affected Windows, Linux and Catalyst.
-
-2. Payload was incorrectly sending screen size in response to ESC[6n instead 
-   of current cursor position when used in interactive mode. Affected Windows 
-   and Linux.
-
-3. Payload was misbehaving when "ESC [ nnn C" was sent and C was a very large
-   number (e.g. 999) when used in interactive mode. The linenoise library does
-   this to find the length of the line. Now, nnn is limited to the number of 
-   character positions left on the current line. Affected Windows and Linux.
+1. 
