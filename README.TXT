@@ -221,6 +221,31 @@ New Functionality
    Host and Terminal App behave more like a real terminal emulator in vt100
    mode when used with programs like Catalyst or the vi text editor.
 
+2. A new batch file (ansi_mode.bat) is included to set or clear the registry 
+   setting that enables processing ANSI escape codes in the Console Host 
+   window (this is enabled by default in the Terminal App). To enable ANSI 
+   escape code processing in Console Host enter:
+
+      ansi_mode on
+
+   or to disable it enter:
+
+      ansi mode off
+
+   Note that the setting will only affect NEW Console Host Windows, not
+   the current window. To just check the current state enter:
+
+       ansi_mode
+
+    Because this setting is in the registry, this only has to do be done
+    once, not on each login, or each time a Console Host window is opened. 
+    It can be turned off again if it upsets other programs that use the 
+    Console Host window.
+
+    Enabling ANSI mode makes the new 'dumb' terminal option offered by payload 
+    work correctly in a Console Host window. Otherwise ANSI escape codes (e.g. 
+    used by Catalyst) work in the Terminal App, but not Console Host.
+
 Other Changes
 -------------
 
