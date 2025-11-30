@@ -1,11 +1,27 @@
-/* $Id: ttymodes.c,v 1.14 1997/05/20 19:53:01 tom Exp $ */
+/* $Id: ttymodes.c,v 1.28 2024/10/20 21:54:50 tom Exp $ */
 
 #include <vttest.h>
 #include <ttymodes.h>
-#include <esc.h>        /* inflush() */
+#include <esc.h>  /* inflush() */
+
+#undef tabs
+
+#ifdef TAB3
+# define tabs TAB3
+#else
+# ifdef XTABS
+#  define tabs XTABS
+# else
+#  ifdef OXTABS
+#   define tabs OXTABS
+#  else
+#   define tabs 0
+#  endif
+# endif
+#endif
 
 static TTY old_modes, new_modes;
-
+/* *INDENT-OFF* */
 static struct {
   int name;
   int code;
@@ -45,93 +61,95 @@ static struct {
   {B115200, 115200},
 #endif
 };
+/* *INDENT-ON* */
 
 #if !USE_POSIX_TERMIOS && !USE_TERMIO && USE_SGTTY
-static struct tchars  old_tchars;
+static struct tchars old_tchars;
 static struct ltchars old_ltchars;
 #endif
 
 #if USE_POSIX_TERMIOS || USE_TERMIO
 static void
-disable_control_chars(TTY *modes)
+disable_control_chars(TTY * modes)
 {
 # if USE_POSIX_TERMIOS
-    int n;
-    int temp;
-#   if HAVE_POSIX_VDISABLE
-      temp = _POSIX_VDISABLE;
+  int n;
+  int temp;
+#   ifdef HAVE_POSIX_VDISABLE
+  temp = _POSIX_VDISABLE;
 #   else
-      errno = 0;
-      temp = fpathconf(0, _PC_VDISABLE);
-      if (temp == -1) {
-        if (errno != 0) {
-          restore_ttymodes();
-          fprintf(stderr, "Cannot disable special characters!\n");
-          exit(EXIT_FAILURE);
-        }
-        temp = 0377;
-      }
+  errno = 0;
+  temp = fpathconf(0, _PC_VDISABLE);
+  if (temp == -1) {
+    if (errno != 0) {
+      restore_ttymodes();
+      failed("Cannot disable special characters!\n");
+    }
+    temp = 0377;
+  }
 #   endif
-    for (n = 0; n < NCCS; n++)
-      modes->c_cc[n] = temp;
-# else  /* USE_TERMIO */
+  for (n = 0; n < NCCS; n++)
+    modes->c_cc[n] = (unsigned char) temp;
+# else /* USE_TERMIO */
 #   ifdef       VSWTCH
-      modes->c_cc[VSWTCH] = VDISABLE;
+  modes->c_cc[VSWTCH] = VDISABLE;
 #   endif
-    modes->c_cc[VSUSP]  = VDISABLE;
+  modes->c_cc[VSUSP] = VDISABLE;
 #   if defined (VDSUSP) && defined(NCCS) && VDSUSP < NCCS
-      modes->c_cc[VDSUSP]  = VDISABLE;
+  modes->c_cc[VDSUSP] = VDISABLE;
 #   endif
-    modes->c_cc[VSTART] = VDISABLE;
-    modes->c_cc[VSTOP]  = VDISABLE;
+  modes->c_cc[VSTART] = VDISABLE;
+  modes->c_cc[VSTOP] = VDISABLE;
 # endif
-    modes->c_cc[VMIN]  = 1;
-    modes->c_cc[VTIME] = 0;
+  modes->c_cc[VMIN] = 1;
+  modes->c_cc[VTIME] = 0;
 }
 #endif
 
 static void
-set_ttymodes(TTY *modes)
+set_ttymodes(TTY * modes)
 {
 # if USE_POSIX_TERMIOS
-    fflush(stdout);
-    tcsetattr(0, TCSAFLUSH, modes);
+  fflush(stdout);
+  tcsetattr(0, TCSAFLUSH, modes);
 # else
 #   if USE_TERMIO
-      tcsetattr(0, TCSETAF, modes);
+  tcsetattr(0, TCSETAF, modes);
 #   else /* USE_SGTTY */
-      stty(0, modes);
+  stty(0, modes);
 #   endif
 # endif
 }
 
 #ifndef log_ttymodes
-void log_ttymodes(char *file, int line)
+void
+log_ttymodes(char *file, int line)
 {
   if (LOG_ENABLED)
-    fprintf(log_fp, "%s @%d\n", file, line);
+    fprintf(log_fp, NOTE_STR "%s @%d\n", file, line);
 }
 #endif
 
 #ifndef dump_ttymodes
-void dump_ttymodes(char *tag, int flag)
+void
+dump_ttymodes(char *tag, int flag)
 {
 #ifdef UNIX
   TTY tmp_modes;
   if (LOG_ENABLED) {
-    fprintf(log_fp, "%s (%d):\n", tag, flag);
+    fprintf(log_fp, NOTE_STR "%s (%d):\n", tag, flag);
 # if USE_POSIX_TERMIOS || USE_TERMIO
     tcgetattr(0, &tmp_modes);
-    fprintf(log_fp, " iflag %08lo\n", tmp_modes.c_iflag);
-    fprintf(log_fp, " oflag %08lo\n", tmp_modes.c_oflag);
-    fprintf(log_fp, " lflag %08lo\n", tmp_modes.c_lflag);
-    if (!tmp_modes.c_lflag & ICANON) {
-      fprintf(log_fp, " %d:min  =%d\n", VMIN,  tmp_modes.c_cc[VMIN]);
-      fprintf(log_fp, " %d:time =%d\n", VTIME, tmp_modes.c_cc[VTIME]);
+    fprintf(log_fp, NOTE_STR " iflag %08o\n", tmp_modes.c_iflag);
+    fprintf(log_fp, NOTE_STR " oflag %08o\n", tmp_modes.c_oflag);
+    fprintf(log_fp, NOTE_STR " lflag %08o\n", tmp_modes.c_lflag);
+    if (!(tmp_modes.c_lflag & ICANON)) {
+      fprintf(log_fp, NOTE_STR " %d:min  =%d\n", VMIN, tmp_modes.c_cc[VMIN]);
+      fprintf(log_fp, NOTE_STR " %d:time =%d\n", VTIME, tmp_modes.c_cc[VTIME]);
     }
 # else
     gtty(0, &tmp_modes);
-    fprintf(log_fp, " flags %08o\n", tmp_modes.sg_flags);
+    fprintf(log_fp, NOTE_STR " flags %08o\n", tmp_modes.sg_flags);
 # endif
   }
 #endif
@@ -144,23 +162,25 @@ close_tty(void)
   restore_ttymodes();
 }
 
-void init_ttymodes(int pn)
+void
+init_ttymodes(int pn)
 {
-  int speed_code, n;
-
   dump_ttymodes("init_ttymodes", pn);
+
 #ifdef UNIX
-  if (pn==0) {
+  if (pn == 0) {
+    int speed_code, n;
+
     fflush(stdout);
 # if USE_POSIX_TERMIOS || USE_TERMIO
     tcgetattr(0, &old_modes);
-    speed_code = cfgetospeed(&old_modes);
+    speed_code = (int) cfgetospeed(&old_modes);
 # else
 #   if USE_SGTTY
-      gtty(0, &old_modes);
-      ioctl(0, TIOCGETC, &old_tchars);
-      ioctl(0, TIOCGLTC, &old_ltchars);
-      speed_code = old_modes.sg_ospeed;
+    gtty(0, &old_modes);
+    ioctl(0, TIOCGETC, &old_tchars);
+    ioctl(0, TIOCGLTC, &old_ltchars);
+    speed_code = old_modes.sg_ospeed;
 #   endif
 # endif
     new_modes = old_modes;
@@ -178,20 +198,28 @@ void init_ttymodes(int pn)
     sleep(2);
   }
 # if USE_POSIX_TERMIOS || USE_TERMIO
-    new_modes.c_iflag = BRKINT | old_modes.c_iflag;
+  new_modes.c_iflag = BRKINT | old_modes.c_iflag;
+  new_modes.c_oflag &= (unsigned) ~tabs;
 # else /* USE_SGTTY */
-    new_modes.sg_flags = old_modes.sg_flags | CBREAK;
+  new_modes.sg_flags = old_modes.sg_flags | CBREAK;
 # endif
   set_ttymodes(&new_modes);
-# if HAVE_FCNTL_H
+# ifdef HAVE_FCNTL_H
+#  ifndef O_NDELAY
+#  define O_NDELAY O_NONBLOCK   /* O_NONBLOCK is POSIX */
+#  endif
   close(2);
-  open("/dev/tty", O_RDWR|O_NDELAY);
+  if (open("/dev/tty", O_RDWR | O_NDELAY) != 2) {
+    restore_ttymodes();
+    failed("Cannot initialize tty modes!\n");
+  }
 # endif
 #endif /* UNIX */
   dump_ttymodes("...init_ttymodes", pn);
 }
 
-void restore_ttymodes(void)
+void
+restore_ttymodes(void)
 {
   dump_ttymodes("restore_ttymodes", -1);
 #ifdef UNIX
@@ -207,24 +235,24 @@ set_tty_crmod(int enabled)
 #ifdef UNIX
 # if USE_POSIX_TERMIOS || USE_TERMIO
 #   if USE_POSIX_TERMIOS
-#     define MASK_CRMOD ((unsigned long) (ICRNL | IXON))
+#     define MASK_CRMOD ((unsigned) (ICRNL | IXON))
 #   else
-#     define MASK_CRMOD ((unsigned long) (ICRNL))
+#     define MASK_CRMOD ((unsigned) (ICRNL))
 #   endif
-    if (enabled) {
-      new_modes.c_iflag |= MASK_CRMOD;
-      new_modes.c_lflag |= ICANON;
-      memcpy(new_modes.c_cc, old_modes.c_cc, sizeof(new_modes.c_cc));
-    } else {
-      new_modes.c_iflag &= ~MASK_CRMOD;
-      new_modes.c_lflag &= ~ICANON;
-      disable_control_chars(&new_modes);
-    }
+  if (enabled) {
+    new_modes.c_iflag |= MASK_CRMOD;
+    new_modes.c_lflag |= ICANON;
+    memcpy(new_modes.c_cc, old_modes.c_cc, sizeof(new_modes.c_cc));
+  } else {
+    new_modes.c_iflag &= ~MASK_CRMOD;
+    new_modes.c_lflag &= (unsigned) ~ICANON;
+    disable_control_chars(&new_modes);
+  }
 # else
-    if (enabled)
-      new_modes.sg_flags |= CRMOD;
-    else
-      new_modes.sg_flags &= ~CRMOD;
+  if (enabled)
+    new_modes.sg_flags |= CRMOD;
+  else
+    new_modes.sg_flags &= ~CRMOD;
 # endif
   set_ttymodes(&new_modes);
 #endif
@@ -237,15 +265,15 @@ set_tty_echo(int enabled)
   dump_ttymodes("set_tty_echo", enabled);
 #ifdef UNIX
 # if USE_POSIX_TERMIOS || USE_TERMIO
-    if (enabled)
-      new_modes.c_lflag |= ECHO;
-    else
-      new_modes.c_lflag &= ~ECHO;
+  if (enabled)
+    new_modes.c_lflag |= ECHO;
+  else
+    new_modes.c_lflag &= (unsigned) ~ECHO;
 # else /* USE_SGTTY */
-    if (enabled)
-      new_modes.sg_flags |= ECHO;
-    else
-      new_modes.sg_flags &= ~ECHO;
+  if (enabled)
+    new_modes.sg_flags |= ECHO;
+  else
+    new_modes.sg_flags &= (unsigned) ~ECHO;
 # endif
   set_ttymodes(&new_modes);
 #endif
@@ -259,6 +287,7 @@ set_tty_raw(int enabled)
   if (enabled) {
 #ifdef UNIX
 # if USE_POSIX_TERMIOS || USE_TERMIO
+    /* *INDENT-EQLS* */
     new_modes.c_iflag      = 0;
     new_modes.c_lflag      = 0;
     new_modes.c_cc[VMIN]   = 1;
@@ -266,15 +295,15 @@ set_tty_raw(int enabled)
     set_ttymodes(&new_modes);
     set_tty_crmod(FALSE);
 # else /* USE_SGTTY */
-#   if HAVE_FCNTL_H
-      new_modes.sg_flags &= ~CBREAK;
+#   ifdef HAVE_FCNTL_H
+    new_modes.sg_flags     &= ~CBREAK;
 #   endif
-    new_modes.sg_flags |= RAW;
+    new_modes.sg_flags     |= RAW;
     set_ttymodes(&new_modes);
     {
       struct tchars tmp_tchars;
       struct ltchars tmp_ltchars;
-      memset(&tmp_tchars,  -1, sizeof(tmp_tchars));
+      memset(&tmp_tchars, -1, sizeof(tmp_tchars));
       memset(&tmp_ltchars, -1, sizeof(tmp_ltchars));
       ioctl(0, TIOCSETC, &tmp_tchars);
       ioctl(0, TIOCSLTC, &tmp_ltchars);
@@ -284,11 +313,11 @@ set_tty_raw(int enabled)
   } else {
 #ifdef UNIX
 # if USE_POSIX_TERMIOS || USE_TERMIO
-    new_modes = old_modes;      /* FIXME */
+    new_modes              = old_modes;
 # else /* USE_SGTTY */
-    new_modes.sg_flags &= ~RAW;
-#   if HAVE_FCNTL_H
-      new_modes.sg_flags |= CBREAK;
+    new_modes.sg_flags     &= ~RAW;
+#   ifdef HAVE_FCNTL_H
+    new_modes.sg_flags     |= CBREAK;
 #   endif
     ioctl(0, TIOCSETC, &old_tchars);
     ioctl(0, TIOCSLTC, &old_ltchars);

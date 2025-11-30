@@ -1,32 +1,37 @@
-/* $Id: vt220.c,v 1.11 1999/10/08 00:26:40 tom Exp $ */
+/* $Id: vt220.c,v 1.44 2024/12/05 00:40:24 tom Exp $ */
 
 /*
- * Reference:  VT220 Programmer Pocket Guide (EK-VT220-HR-002)
+ * Reference:  VT220 Programmer Pocket Guide (EK-VT220-HR-002).
+ * Reference:  VT220 Program Reference Manual (EK-VT220-RM-002).
+ * Reference:  DEC STD 070 Video Systems Reference Manual.
  */
 #include <vttest.h>
 #include <ttymodes.h>
+#include <draw.h>
 #include <esc.h>
 
 int
-any_DSR(MENU_ARGS, char *text, void (*explain)(char *report))
+any_DSR(MENU_ARGS, const char *text, void (*explain) (const char *report))
 {
+  int row, col;
   char *report;
+  unsigned pmode = (unsigned) ((*text == '?') ? 1 : 0);
 
-  vt_move(1,1);
-  printf("Testing DSR: %s\n", the_title);
+  vt_move(1, 1);
+  printxx("Testing DSR: %s\n", the_title);
 
   set_tty_raw(TRUE);
   set_tty_echo(FALSE);
 
   do_csi("%s", text);
   report = get_reply();
-  vt_move(3,10);
-  chrprint(report);
-  if ((report = skip_csi(report)) != 0
-   && strlen(report) > 2
-   && *report++ == '?') {
-    if (explain != 0)
-      (*explain)(report);
+  vt_move(row = 3, col = 10);
+  chrprint2(report, row, col);
+  if ((report = skip_csi(report)) != NULL
+      && strlen(report) > (1 + pmode)
+      && (!pmode || (*report++ == '?'))) {
+    if (explain != NULL)
+      (*explain) (report);
     else
       show_result(SHOW_SUCCESS);
   } else {
@@ -34,14 +39,14 @@ any_DSR(MENU_ARGS, char *text, void (*explain)(char *report))
   }
 
   restore_ttymodes();
-  vt_move(max_lines-1, 1);
+  vt_move(max_lines - 1, 1);
   return MENU_HOLD;
 }
 
 static void
-report_ok(char *ref, char *tst)
+report_ok(const char *ref, const char *tst)
 {
-  if ((tst = skip_csi(tst)) == 0)
+  if ((tst = skip_csi_2(tst)) == NULL)
     tst = "?";
   show_result(!strcmp(ref, tst) ? SHOW_SUCCESS : SHOW_FAILURE);
 }
@@ -51,123 +56,148 @@ report_ok(char *ref, char *tst)
  * Response CSI ? 27; Ps n
  */
 static void
-show_KeyboardStatus(char *report)
+show_KeyboardStatus(const char *report)
 {
   int pos = 0;
   int code;
   int save;
-  char *show = SHOW_FAILURE;
+  const char *show = SHOW_FAILURE;
 
-  if ((code = scanto(report, &pos, ';')) == 27
-   && (code = scan_any(report, &pos, 'n')) != 0) {
+  if (scanto(report, &pos, ';') == 27
+      && (save = pos) != 0
+      && (code = scan_any(report, &pos, 'n')) >= 0
+      && (pos != save)) {
+    /* *INDENT-OFF* */
     switch(code) {
-    case  1:  show = "North American/ASCII"; break;
-    case  2:  show = "British";              break;
-    case  3:  show = "Flemish";              break;
-    case  4:  show = "French Canadian";      break;
-    case  5:  show = "Danish";               break;
-    case  6:  show = "Finnish";              break;
-    case  7:  show = "German";               break;
-    case  8:  show = "Dutch";                break;
-    case  9:  show = "Italian";              break;
-    case 10:  show = "Swiss (French)";       break;
-    case 11:  show = "Swiss (German)";       break;
-    case 12:  show = "Swedish";              break;
-    case 13:  show = "Norwegian/Danish";     break;
-    case 14:  show = "French";               break;
-    case 15:  show = "Spanish";              break;
-    case 16:  show = "Portugese";            break;
-    case 17:  show = "Hebrew";               break; /* FIXME: kermit says 14 */
+    case  1:  show = "North American/ASCII";  break;
+    case  2:  show = "British";               break;
+    case  3:  show = "Flemish";               break;
+    case  4:  show = "French Canadian";       break;
+    case  5:  show = "Danish";                break;
+    case  6:  show = "Finnish";               break;
+    case  7:  show = "German";                break;
+    case  8:  show = "Dutch";                 break;
+    case  9:  show = "Italian";               break;
+    case 10:  show = "Swiss (French)";        break;
+    case 11:  show = "Swiss (German)";        break;
+    case 12:  show = "Swedish";               break;
+    case 13:  show = "Norwegian/Danish";      break;
+    case 14:  show = "French/Belgian";        break;
+    case 15:  show = "Spanish Int.";          break;
+    case 16:  show = "Portuguese";            break; /* vt3XX */
+    case 17:  show = "Katakana";              break; /* EK-VT382-RM-001 p 11-9 */
+    case 19:  show = "Hebrew";                break; /* vt5XX: kermit says 14 */
+    case 22:  show = "Greek";                 break; /* vt5XX */
+    case 27:  show = "Thai";                  break; /* EK-VT38T-UG-001 p C-42 */
+    case 28:  show = "Canadian (English)";    break; /* vt4XX */
+    case 29:  show = "Turkish Q/Turkish";     break; /* vt5XX */
+    case 30:  show = "Turkish F/Turkish";     break; /* vt5XX */
+    case 31:  show = "Hungarian";             break; /* vt5XX */
+    case 32:  show = "Spanish National";      break; /* vt4XX in PC mode */
+    case 33:  show = "Slovak";                break; /* vt5XX */
+    case 34:  show = "Czech";                 break; /* vt5XX */
+    case 35:  show = "Polish";                break; /* vt5XX */
+    case 36:  show = "Romanian";              break; /* vt5XX */
+    case 38:  show = "SCS";                   break; /* vt5XX */
+    case 39:  show = "Russian";               break; /* vt5XX */
+    case 40:  show = "Latin American";        break; /* vt5XX */
     default:  show = "unknown";
     }
-  }
-  show_result(show);
+    /* *INDENT-ON* */
 
-  /* VT420 implements additional parameters past those reported by the VT220 */
+  }
+  show_result("%s", show);
+
+  /*
+   * VT420 implements additional parameters past those reported by the VT220.
+   * see:
+   *   EK-VT420-RM 002, p 239, 277
+   *   EK-VT510-RM B01, p 4-30, 5-166
+   *   EK-VT520-RM A01, p 4-28, 5-176
+   */
   save = pos;
   code = scan_any(report, &pos, 'n');
   if (save != pos) {
-    vt_move(5,10);
+    vt_move(5, 10);
+    /* *INDENT-OFF* */
     switch(code) {
-    case 0: show = "keyboard ready"; break;
-    case 3: show = "no keyboard"; break;
-    case 8: show = "keyboard busy"; break;
+    case 0:  show = "keyboard ready";         break;
+    case 3:  show = "no keyboard";            break;
+    case 8:  show = "keyboard busy";          break;
     default: show = "unknown keyboard status";
     }
-    show_result(show);
+    /* *INDENT-ON* */
 
-    vt_move(6,10);
-    switch (code = scan_any(report, &pos, 'n')) {
-    case 0:  show = "LK201"; break;
-    case 1:  show = "LK401"; break;
+    show_result("%s", show);
+
+    vt_move(6, 10);
+    /* *INDENT-OFF* */
+    switch (scan_any(report, &pos, 'n')) {
+    case 0:  show = "LK201/LK301";            break;
+    case 1:  show = "LK401";                  break;
+    case 2:  show = "LK443/LK444";            break;
+    case 3:  show = "LK421";                  break;
+    case 4:  show = "LK411/LK450";            break;
+    case 5:  show = "PCXAL";                  break;
     default: show = "unknown keyboard type";
     }
-    show_result(show);
+    /* *INDENT-ON* */
+
+    show_result("%s", show);
   }
 }
 
 static void
-show_Locator_Status(char *report)
+show_PrinterStatus(const char *report)
 {
   int pos = 0;
   int code = scanto(report, &pos, 'n');
-  char *show;
-
-  switch(code) {
-  case 53: show = "No locator"; break;
-  case 50: show = "Locator ready"; break;
-  case 58: show = "Locator busy"; break;
-  default: show = SHOW_FAILURE;
-  }
-  show_result(show);
-}
-
-static void
-show_PrinterStatus(char *report)
-{
-  int pos = 0;
-  int code = scanto(report, &pos, 'n');
-  char *show;
-
+  const char *show;
+  /* *INDENT-OFF* */
   switch (code) {
-  case 13: show = "No printer"; break;
-  case 10: show = "Printer ready"; break;
-  case 11: show = "Printer not ready"; break;
-  case 18: show = "Printer busy"; break;
+  case 13: show = "No printer";               break;
+  case 10: show = "Printer ready";            break;
+  case 11: show = "Printer not ready";        break;
+  case 18: show = "Printer busy";             break;
   case 19: show = "Printer assigned to other session"; break;
   default: show = SHOW_FAILURE;
   }
-  show_result(show);
+  /* *INDENT-ON* */
+
+  show_result("%s", show);
 }
 
 static void
-show_UDK_Status(char *report)
+show_UDK_Status(const char *report)
 {
   int pos = 0;
   int code = scanto(report, &pos, 'n');
-  char *show;
-
+  const char *show;
+  /* *INDENT-OFF* */
   switch(code) {
-  case 20: show = "UDKs unlocked"; break;
-  case 21: show = "UDKs locked";   break;
+  case 20: show = "UDKs unlocked";            break;
+  case 21: show = "UDKs locked";              break;
+  case 23: show = "UDKs unsupported";         break;
   default: show = SHOW_FAILURE;
   }
-  show_result(show);
+  /* *INDENT-ON* */
+
+  show_result("%s", show);
 }
 
 /* VT220 & up.
  */
-int
+static int
 tst_S8C1T(MENU_ARGS)
 {
-  char *report;
   int flag = input_8bits;
   int pass;
+  char temp[80];
 
-  vt_move(1,1);
+  vt_move(1, 1);
   println(the_title);
 
-  vt_move(5,1);
+  vt_move(5, 1);
   println("This tests the VT200+ control sequence to direct the terminal to emit 8-bit");
   println("control-sequences instead of <esc> sequences.");
 
@@ -175,18 +205,23 @@ tst_S8C1T(MENU_ARGS)
   set_tty_echo(FALSE);
 
   for (pass = 0; pass < 2; pass++) {
+    const char *report;
+    int row, col;
+
     flag = !flag;
     s8c1t(flag);
-    cup(1,1); dsr(6);
+    cup(1, 1);
+    dsr(6);
     report = instr();
-    vt_move(10 + pass * 3, 1);
-    printf("8-bit controls %s: ", flag ? "enabled" : "disabled");
-    chrprint(report);
+    vt_move(row = 10 + pass * 3, col = 1);
+    sprintf(temp, "8-bit controls %s:", STR_ENABLED(flag));
+    printxx("%s", temp);
+    chrprint2(report, row, col + (int) strlen(temp));
     report_ok("1;1R", report);
   }
 
   restore_ttymodes();
-  vt_move(max_lines-1,1);
+  vt_move(max_lines - 1, 1);
   return MENU_HOLD;
 }
 
@@ -194,64 +229,195 @@ tst_S8C1T(MENU_ARGS)
  * Test DEC's selective-erase (set-protected area) by drawing a box of
  * *'s that will remain, and a big X of *'s that gets cleared..
  */
-int
+static void
+tst_DECSCA_selective(MENU_ARGS)
+{
+  BOX inner;
+
+  if (make_box_params(&inner, 6, 20) == 0) {
+    int pass;
+
+    for (pass = 0; pass < 2; pass++) {
+      int i;
+
+      if (pass == 0)
+        decsca(1);
+
+      for (i = inner.top; i <= inner.bottom; i++) {
+        int j;
+
+        cup(i - 1, 1 + inner.left);
+        for (j = inner.left; j <= inner.right; j++) {
+          putchar('*');
+        }
+      }
+
+      if (pass == 0) {
+        int j;
+
+        decsca(0);
+
+        for (j = 0; j <= 2; j++) {
+          for (i = 1; i < inner.top - 1; i++) {
+            cup(i, inner.left - inner.top + (i + j) + 3);
+            putchar('*');
+            cup(i, inner.right + inner.top - (i + j) - 1);
+            putchar('*');
+          }
+          for (i = inner.bottom; i < max_lines; i++) {
+            cup(i, (inner.left + inner.bottom) - (i - j) + 1);
+            putchar('*');
+            cup(i, (inner.right - inner.bottom) + (i - j) + 1);
+            putchar('*');
+          }
+          cup((max_lines / 2) - 1, (min_cols / 2) - 1);
+          decsed(j);
+        }
+
+        for (i = inner.right + 1; i <= min_cols; i++) {
+          cup(inner.top + 1, 1 + i);
+          putchar('*');
+          cup(max_lines / 2 + 1, 1 + i);
+          putchar('*');
+        }
+        cup(max_lines / 2 + 1, 1 + min_cols / 2);
+        decsel(0);  /* after the cursor */
+
+        for (i = 1; i < inner.left; i++) {
+          cup(inner.top + 1, 1 + i);
+          putchar('*');
+          cup(max_lines / 2 + 1, 1 + i);
+          putchar('*');
+        }
+        cup(max_lines / 2 + 1, 1 + min_cols / 2);
+        decsel(1);  /* before the cursor */
+
+        cup(inner.top + 1, 1 + min_cols / 2);
+        decsel(2);  /* the whole line */
+
+        vt_move(max_lines - 3, 1);
+        vt_clear(0);
+        println("If your terminal supports DEC protected areas (DECSCA, DECSED, DECSEL),");
+        println("there will be an solid box made of *'s in the middle of the screen.");
+        holdit();
+      }
+    }
+  } else {
+    vt_move(max_lines - 3, 1);
+    vt_clear(0);
+    println("The screen is too small for this test");
+    holdit();
+  }
+}
+
+static void
+tst_DECSCA_edit_line(MENU_ARGS)
+{
+  BOX outer;
+  BOX inner;
+
+  if (make_box_params(&outer, 0, 0) == 0 &&
+      make_box_params(&inner, 6, 20) == 0) {
+    int i;
+
+    decsca(1);
+
+    for (i = outer.top; i <= outer.bottom; i++) {
+      int j;
+
+      cup(i + 1, 1 + outer.left);
+      for (j = outer.left; j <= outer.right; j++) {
+        putchar((i >= inner.top &&
+                 i <= inner.bottom &&
+                 j >= inner.left &&
+                 j <= inner.right) ? '*' : '#');
+      }
+    }
+    cup(inner.top - 2, max_cols);
+    ed(1);
+    cup(inner.bottom, 1);
+    ed(0);
+    for (i = outer.top; i <= outer.bottom; i++) {
+      cup(i + 1, inner.left);
+      el(1);
+      cup(i + 1, inner.right + 2);
+      el(0);
+    }
+
+    decsca(0);
+    vt_move(max_lines - 3, 1);
+    vt_clear(0);
+    println("If your terminal supports DEC protected areas (DECSCA, ignoring EL/ED),");
+    println("there will be an solid box made of *'s in the middle of the screen.");
+  } else {
+    vt_move(max_lines - 3, 1);
+    vt_clear(0);
+    println("The screen is too small for this test");
+  }
+  holdit();
+}
+
+static void
+tst_DECSCA_edit_char(MENU_ARGS)
+{
+  BOX outer;
+  BOX inner;
+
+  if (make_box_params(&outer, 0, 0) == 0 &&
+      make_box_params(&inner, 6, 20) == 0) {
+    int i;
+
+    decsca(1);
+
+    for (i = outer.top; i <= outer.bottom; i++) {
+      int j;
+
+      cup(i + 1, 1 + outer.left);
+      for (j = outer.left; j <= outer.right; j++) {
+        putchar((i >= inner.top &&
+                 i <= inner.bottom &&
+                 j >= inner.left &&
+                 j <= inner.right) ? '*' : '#');
+      }
+    }
+    for (i = 1; i < inner.top - 1; ++i) {
+      cup(i, 1);
+      ech(min_cols);
+    }
+    for (i = inner.top; i <= inner.bottom; i++) {
+      cup(i - 1, 1);
+      ech(inner.left);
+      cup(i - 1, inner.right + 2);
+      if (i % 2) {
+        ich(19);
+      } else {
+        dch(19);
+      }
+    }
+    for (i = inner.bottom; i < outer.bottom; ++i) {
+      cup(i, 1);
+      dch(min_cols);
+    }
+    decsca(0);
+
+    vt_move(max_lines - 3, 1);
+    vt_clear(0);
+    println("If your terminal supports DEC protected areas (DECSCA, ignoring ECH/ICH/DCH),");
+    println("there will be an solid box made of *'s in the middle of the screen.");
+  } else {
+    vt_move(max_lines - 3, 1);
+    vt_clear(0);
+    println("The screen is too small for this test");
+  }
+  holdit();
+}
+
+static int
 tst_DECSCA(MENU_ARGS)
 {
-  int i, j, pass;
-  int tmar = 5;
-  int bmar = max_lines - 8;
-  int lmar = 20;
-  int rmar = min_cols - lmar;
-
-  for (pass = 0; pass < 2; pass++) {
-    if (pass == 0)
-      decsca(1);
-    for (i = tmar; i <= bmar; i++) {
-      cup(i, lmar);
-      for (j = lmar; j <= rmar; j++) {
-        printf("*");
-      }
-    }
-    if (pass == 0) {
-      decsca(0);
-
-      for (j = 0; j <= 2; j++) {
-        for (i = 1; i < tmar; i++) {
-          cup(i, lmar - tmar + (i+j)); printf("*");
-          cup(i, rmar + tmar - (i+j)); printf("*");
-        }
-        for (i = bmar + 1; i < max_lines; i++) {
-          cup(i, lmar + bmar - i + j); printf("*");
-          cup(i, rmar - bmar + i - j); printf("*");
-        }
-        cup(max_lines/2, min_cols/2);
-        decsed(j);
-      }
-
-      for (i = rmar+1; i <= min_cols; i++) {
-        cup(tmar, i);        printf("*");
-        cup(max_lines/2, i); printf("*");
-      }
-      cup(max_lines/2, min_cols/2);
-      decsel(0); /* after the cursor */
-
-      for (i = 1; i < lmar; i++) {
-        cup(tmar, i);        printf("*");
-        cup(max_lines/2, i); printf("*");
-      }
-      cup(max_lines/2, min_cols/2);
-      decsel(1); /* before the cursor */
-
-      cup(tmar, min_cols/2);
-      decsel(2); /* the whole line */
-
-      vt_move(max_lines-3, 1);
-      vt_clear(0);
-      println("If your terminal supports DEC protected areas (DECSCA, DECSED, DECSEL),");
-      println("there will be an solid box made of *'s in the middle of the screen.");
-      holdit();
-    }
-  }
+  tst_DECSCA_selective(PASS_ARGS);
+  tst_DECSCA_edit_line(PASS_ARGS);
+  tst_DECSCA_edit_char(PASS_ARGS);
   return MENU_NOHOLD;
 }
 
@@ -260,10 +426,10 @@ tst_DECSCA(MENU_ARGS)
  *
  * Test if the terminal can make the cursor invisible
  */
-int
+static int
 tst_DECTCEM(MENU_ARGS)
 {
-  vt_move(1,1);
+  vt_move(1, 1);
   rm("?25");
   println("The cursor should be invisible");
   holdit();
@@ -272,14 +438,14 @@ tst_DECTCEM(MENU_ARGS)
   return MENU_HOLD;
 }
 
-int
+static int
 tst_DECUDK(MENU_ARGS)
 {
   int key;
-
+  /* *INDENT-OFF* */
   static struct {
     int code;
-    char *name;
+    const char *name;
   } keytable[] = {
     /* xterm programs these: */
     { 11, "F1" },
@@ -303,17 +469,18 @@ tst_DECUDK(MENU_ARGS)
     { 32, "F18" },
     { 33, "F19" },
     { 34, "F20" } };
+  /* *INDENT-ON* */
 
   for (key = 0; key < TABLESIZE(keytable); key++) {
     char temp[80];
-    char *s;
+    const char *s;
     temp[0] = '\0';
     for (s = keytable[key].name; *s; s++)
       sprintf(temp + strlen(temp), "%02x", *s & 0xff);
     do_dcs("1;1|%d/%s", keytable[key].code, temp);
   }
 
-  vt_move(1,1);
+  vt_move(1, 1);
   println(the_title);
   println("Press 'q' to quit.  Function keys should echo their labels.");
   println("(On a DEC terminal you must press SHIFT as well).");
@@ -322,31 +489,28 @@ tst_DECUDK(MENU_ARGS)
   set_tty_echo(FALSE);
 
   for (;;) {
-    char *report = instr();
+    int row, col;
+    const char *report = instr();
+
     if (*report == 'q')
       break;
-    vt_move(5,10);
+    vt_move(row = 5, col = 10);
     vt_clear(0);
-    chrprint(report);
+    chrprint2(report, row, col);
   }
 
-  do_dcs("0"); /* clear all keys */
+  do_dcs("0");  /* clear all keys */
 
   restore_ttymodes();
-  vt_move(max_lines-1,1);
+  vt_move(max_lines - 1, 1);
   return MENU_HOLD;
 }
 
+/* vt220 & up */
 int
 tst_DSR_keyboard(MENU_ARGS)
 {
   return any_DSR(PASS_ARGS, "?26n", show_KeyboardStatus);
-}
-
-int
-tst_DSR_locator(MENU_ARGS)
-{
-  return any_DSR(PASS_ARGS, "?53n", show_Locator_Status);
 }
 
 int
@@ -361,6 +525,31 @@ tst_DSR_userkeys(MENU_ARGS)
   return any_DSR(PASS_ARGS, "?25n", show_UDK_Status);
 }
 
+static void
+show_OperatingStatus(const char *report)
+{
+  int pos = 0;
+  int Ps1 = scan_any(report, &pos, 'n');
+  int Ps2 = scanto(report, &pos, 'n');
+
+  switch (Ps1) {
+  case 0:
+    show_result("Terminal is in good operating condition: %d", Ps2);
+    break;
+  case 3:
+    show_result("Terminal has a malfunction: %d", Ps2);
+    break;
+  default:
+    show_result(SHOW_FAILURE);
+  }
+}
+
+static int
+tst_DSR_operating_status(MENU_ARGS)
+{
+  return any_DSR(PASS_ARGS, "5n", show_OperatingStatus);
+}
+
 /*
  * VT200 and up
  *
@@ -368,7 +557,7 @@ tst_DSR_userkeys(MENU_ARGS)
  * explicit parameter, and longer than the screen width (to ensure that the
  * terminal doesn't try to wrap-around the erasure).
  */
-int
+static int
 tst_ECH(MENU_ARGS)
 {
   int i;
@@ -377,11 +566,11 @@ tst_ECH(MENU_ARGS)
   decaln();
   for (i = 1; i <= max_lines; i++) {
     cup(i, min_cols - i - 2);
-    do_csi("X"); /* make sure default-parameter works */
+    do_csi("X");  /* make sure default-parameter works */
     cup(i, min_cols - i - 1);
-    printf("*");
+    putchar('*');
     ech(min_cols);
-    printf("*"); /* this should be adjacent, in the upper-right corner */
+    putchar('*');   /* this should be adjacent, in the upper-right corner */
   }
 
   vt_move(last, 1);
@@ -396,42 +585,73 @@ tst_ECH(MENU_ARGS)
 
 /******************************************************************************/
 
-static int
-tst_device_status(MENU_ARGS)
+int
+tst_vt220_device_status(MENU_ARGS)
 {
+  /* *INDENT-OFF* */
   static MENU my_menu[] = {
-      { "Exit",                                              0 },
+      { "Exit",                                              NULL },
       { "Test Keyboard Status",                              tst_DSR_keyboard },
+      { "Test Operating Status",                             tst_DSR_operating_status },
       { "Test Printer Status",                               tst_DSR_printer },
       { "Test UDK Status",                                   tst_DSR_userkeys },
-      { "Test Locator Status",                               tst_DSR_locator },
-      { "",                                                  0 }
+      { "",                                                  NULL }
     };
+  /* *INDENT-ON* */
 
   do {
     vt_clear(2);
-    title(0); printf("VT220 Device Status Reports");
-    title(2); println("Choose test type:");
+    title(0);
+    printxx("VT220 Device Status Reports");
+    title(2);
+    println("Choose test type:");
   } while (menu(my_menu));
   return MENU_NOHOLD;
 }
 
 /******************************************************************************/
 
-static int
-tst_terminal_modes(MENU_ARGS)
+int
+tst_vt220_screen(MENU_ARGS)
 {
+  /* *INDENT-OFF* */
   static MENU my_menu[] = {
-      { "Exit",                                              0 },
+      { "Exit",                                              NULL },
       { "Test Send/Receive mode (SRM)",                      tst_SRM },
       { "Test Visible/Invisible Cursor (DECTCEM)",           tst_DECTCEM },
-      { "",                                                  0 }
+      { "Test Erase Char (ECH)",                             tst_ECH },
+      { "Test Protected-Areas (DECSCA)",                     tst_DECSCA },
+      { "",                                                  NULL }
     };
+  /* *INDENT-ON* */
 
   do {
     vt_clear(2);
-    title(0); printf("VT220 Terminal Mode Tests");
-    title(2); println("Choose test type:");
+    title(0);
+    printxx("VT220 Screen-Display Tests");
+    title(2);
+    println("Choose test type:");
+  } while (menu(my_menu));
+  return MENU_NOHOLD;
+}
+
+/******************************************************************************/
+
+int
+tst_vt220_reports(MENU_ARGS)
+{
+  /* *INDENT-OFF* */
+  static MENU my_menu[] = {
+      { "Exit",                                              NULL },
+      { "Test Device Status Report (DSR)",                   tst_vt220_device_status },
+      { "",                                                  NULL }
+    };
+  /* *INDENT-ON* */
+
+  do {
+    vt_clear(2);
+    __(title(0), printxx("VT220 Reports"));
+    __(title(2), println("Choose test type:"));
   } while (menu(my_menu));
   return MENU_NOHOLD;
 }
@@ -441,23 +661,26 @@ tst_terminal_modes(MENU_ARGS)
 int
 tst_vt220(MENU_ARGS)
 {
+  /* *INDENT-OFF* */
   static MENU my_menu[] = {
-      { "Exit",                                              0 },
+      { "Exit",                                              NULL },
+      { "Test reporting functions",                          tst_vt220_reports },
+      { "Test screen-display functions",                     tst_vt220_screen },
       { "Test 8-bit controls (S7C1T/S8C1T)",                 tst_S8C1T },
-      { "Test Device Status Report (DSR)",                   tst_device_status },
-      { "Test Erase Char (ECH)",                             tst_ECH },
       { "Test Printer (MC)",                                 tst_printing },
-      { "Test Protected-Areas (DECSCA)",                     tst_DECSCA },
       { "Test Soft Character Sets (DECDLD)",                 tst_softchars },
-      { "Test Terminal Modes",                               tst_terminal_modes },
-      { "Test user-defined keys (DECUDK)",                   tst_DECUDK },
-      { "",                                                  0 }
+      { "Test Soft Terminal Reset (DECSTR)",                 tst_DECSTR },
+      { "Test User-Defined Keys (DECUDK)",                   tst_DECUDK },
+      { "",                                                  NULL }
     };
+  /* *INDENT-ON* */
 
   do {
     vt_clear(2);
-    title(0); printf("VT220/VT320 Tests");
-    title(2); println("Choose test type:");
+    title(0);
+    printxx("VT220 Tests");
+    title(2);
+    println("Choose test type:");
   } while (menu(my_menu));
   return MENU_NOHOLD;
 }

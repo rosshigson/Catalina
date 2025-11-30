@@ -90,6 +90,9 @@ update:
 
    pacman -Su
 
+Note that you may need to to repeat this command until no more updates are
+installed.
+
 3. Install required packages
 ============================
 

@@ -1,0 +1,20 @@
+#!/usr/bin/make -f
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+export DEB_BUILD_MAINT_OPTIONS := hardening=+all qa=+bug reproducible=+all
+
+%:
+	dh $@
+
+# dh_autoreconf interferes with portability -- skip it
+override_dh_autoreconf:
+	echo "skip: dh_autoreconf autoreconf-dickey -- -f -i"
+
+override_dh_auto_configure:
+	dh_auto_configure -- --enable-warnings --verbose --program-suffix=-cur
+
+# install both the real changelog as well as the test package's changelog
+override_dh_installchangelogs:
+	dh_installchangelogs CHANGES

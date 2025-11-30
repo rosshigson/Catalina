@@ -1,4 +1,4 @@
-/* $Id: printer.c,v 1.5 1999/10/13 23:39:43 tom Exp $ */
+/* $Id: printer.c,v 1.11 2024/12/05 00:37:39 tom Exp $ */
 
 #include <vttest.h>
 #include <esc.h>
@@ -11,20 +11,20 @@ static int margin_lo;
 static int margin_hi;
 
 static void
-setup_printout(MENU_ARGS, int visible, char * whole)
+setup_printout(MENU_ARGS, int visible, const char *whole)
 {
   margin_lo = 7;
   margin_hi = max_lines - 5;
 
   vt_clear(2);
-  cup(1,1);
+  cup(1, 1);
   println(the_title);
   println("Test screen for printing.  We will set scrolling margins at");
-  printf("lines %d and %d, and write a test pattern there.\n", margin_lo, margin_hi);
-  printf("The test pattern should be %s.\n", visible
-        ? "visible"
-        : "invisible");
-  printf("The %s should be in the printer's output.\n", whole);
+  printxx("lines %d and %d, and write a test pattern there.\n", margin_lo, margin_hi);
+  printxx("The test pattern should be %s.\n", visible
+          ? "visible"
+          : "invisible");
+  printxx("The %s should be in the printer's output.\n", whole);
   decstbm(margin_lo, margin_hi);
   cup(margin_lo, 1);
 }
@@ -33,13 +33,13 @@ static void
 test_printout(void)
 {
   int row, col;
-  vt_move(margin_hi,1);
+  vt_move(margin_hi, 1);
   for (row = 0; row < max_lines; row++) {
-    printf("%3d:", row);
+    tprintf("%3d:", row);
     for (col = 0; col < min_cols - 5; col++) {
-      printf("%c", ((row + col) % 26) + 'a');
+      tprintf("%c", ((row + col) % 26) + 'a');
     }
-    printf("\n");
+    tprintf("\n");
   }
 }
 
@@ -47,7 +47,7 @@ static void
 cleanup_printout(void)
 {
   decstbm(0, 0);
-  vt_move(max_lines-2,1);
+  vt_move(max_lines - 2, 1);
 }
 
 static int
@@ -117,7 +117,7 @@ tst_print_cursor(MENU_ARGS)
   setup_printout(PASS_ARGS, TRUE, "reverse of the scrolling region");
   test_printout();
   for (row = margin_hi; row >= margin_lo; row--) {
-    vt_move(row,1);
+    vt_move(row, 1);
     mc_print_cursor_line();
   }
   cleanup_printout();
@@ -137,7 +137,10 @@ tst_print_display(MENU_ARGS)
 static int
 tst_print_page(MENU_ARGS)
 {
-  setup_printout(PASS_ARGS, TRUE, pex_mode ? "whole page" : "scrolling region");
+  setup_printout(PASS_ARGS, TRUE,
+                 pex_mode
+                 ? "whole page"
+                 : "scrolling region");
   test_printout();
   mc_print_page();
   cleanup_printout();
@@ -151,9 +154,9 @@ tst_printing(MENU_ARGS)
   static char pff_mesg[80];
   static char assign_mesg[80];
   static char start_mesg[80];
-
+  /* *INDENT-OFF* */
   static MENU my_menu[] = {
-      { "Exit",                                              0 },
+      { "Exit",                                              NULL },
       { assign_mesg,                                         tst_Assign },
       { start_mesg,                                          tst_Start },
       { pex_mesg,                                            tst_DECPEX },
@@ -164,35 +167,41 @@ tst_printing(MENU_ARGS)
       { "Test Print composed main-display (MC)",             tst_print_display },
       { "Test Print all pages (MC)",                         tst_print_all_pages },
       { "Test Print cursor line (MC)",                       tst_print_cursor },
-      { "",                                                  0 }
+      { "",                                                  NULL }
     };
+  /* *INDENT-ON* */
 
   do {
-    sprintf(pex_mesg, "%s Printer-Extent mode (DECPEX)",
-      pex_mode ? "Disable" : "Enable");
-    sprintf(pff_mesg, "%s Print Form Feed Mode (DECPFF)",
-      pff_mode ? "Disable" : "Enable");
+    sprintf(pex_mesg, "%s Printer-Extent mode (DECPEX)", STR_ENABLE(pex_mode));
+    sprintf(pff_mesg, "%s Print Form Feed Mode (DECPFF)", STR_ENABLE(pff_mode));
     strcpy(assign_mesg, assigned
-      ? "Release printer (MC)"
-      : "Assign printer to active session (MC)");
-    sprintf(start_mesg, "%s printer-to-host session (MC)",
-      started ? "Stop" : "Start");
+           ? "Release printer (MC)"
+           : "Assign printer to active session (MC)");
+    sprintf(start_mesg, "%s printer-to-host session (MC)", STR_START(started));
     vt_clear(2);
-    title(0); printf("Printing-Control Tests");
-    title(2); println("Choose test type:");
+    __(title(0), printxx("Printing-Control Tests"));
+    __(title(2), println("Choose test type:"));
   } while (menu(my_menu));
 
-  if (pex_mode)
-    decpex(pex_mode = 0);
+  if (pex_mode) {
+    pex_mode = 0;
+    decpex(pex_mode);
+  }
 
-  if (pff_mode)
-    decpex(pff_mode = 0);
+  if (pff_mode) {
+    pff_mode = 0;
+    decpex(pff_mode);
+  }
 
-  if (assigned)
-    mc_printer_start(assigned = 0);
+  if (assigned) {
+    assigned = 0;
+    mc_printer_start(assigned);
+  }
 
-  if (started)
-    mc_printer_start(started = 0);
+  if (started) {
+    started = 0;
+    mc_printer_start(started);
+  }
 
   return MENU_NOHOLD;
 }

@@ -5,8 +5,8 @@
 	<title>Ada Terminal Emulator Reference Manual</title>
 	<meta name="generator" content="LibreOffice 7.6.6.3 (Windows)"/>
 	<meta name="author" content="Ross Higson"/>
-	<meta name="created" content="2006-06-20T21:07:00"/>
-	<meta name="changed" content="2025-05-03T09:24:01.566000000"/>
+	<meta name="created" content="2006-06-20T22:07:00"/>
+	<meta name="changed" content="2025-11-30T13:00:06.946000000"/>
 	<style type="text/css">
 		@page { size: 21cm 29.7cm; margin-left: 2.03cm; margin-right: 2.03cm; margin-top: 1.27cm; margin-bottom: 1.27cm }
 		p { color: #000000; orphans: 2; widows: 2; margin-bottom: 0.21cm; direction: ltr; background: transparent }
@@ -44,8 +44,7 @@
 </head>
 <body lang="en-AU" text="#000000" link="#0000ff" vlink="#800080" dir="ltr">
 <div title="header"><p style="margin-bottom: 1.17cm"><font size="2" style="font-size: 9pt">Ada
-	Terminal Emulator	Version </font><font size="2" style="font-size: 9pt">3.0</font><font size="2" style="font-size: 9pt">	Reference
-	Manual</font></p>
+	Terminal Emulator	Version 3.0	Reference Manual</font></p>
 </div><p align="center" style="margin-bottom: 0cm"><br/>
 
 </p>
@@ -131,11 +130,9 @@ Manual </b></font>
 </p>
 <p style="margin-bottom: 0cm"><font size="4" style="font-size: 16pt"><b>Table
 of Contents</b></font></p>
-<div id="Table of Contents2" dir="ltr">
-	<div id="Table of Contents2_Head" dir="ltr"><p style="margin-bottom: 0cm">
-		<font size="4" style="font-size: 16pt"><b>Table of Contents</b></font></p>
-	</div>
-	<p lang="en-AU" style="margin-top: 0.14cm; margin-bottom: 0cm; page-break-after: avoid">
+<p style="margin-bottom: 0cm"><font size="4" style="font-size: 16pt"><b>Table
+of Contents</b></font></p>
+<div id="Table of Contents1" dir="ltr"><p lang="en-AU" style="margin-top: 0.14cm; margin-bottom: 0cm; page-break-after: avoid">
 	<font size="3" style="font-size: 12pt"><b><a href="#__RefHeading___Toc138601249">1
 	Ada Terminal Emulator Package	5</a></b></font></p>
 	<p lang="en-AU" style="margin-left: 0.35cm; margin-top: 0.07cm; margin-bottom: 0cm">
@@ -427,9 +424,9 @@ of Contents</b></font></p>
 	SEND STATUS REQUEST	75</a></font></p>
 	<p lang="en-AU" style="margin-left: 1.06cm; margin-bottom: 0cm"><font size="2" style="font-size: 9pt"><a href="#__RefHeading___Toc2808_160240294">6.3.2.32
 	SEND STATUS UPDATE	75</a></font></p>
-	<p lang="en-AU" style="margin-left: 1.06cm; margin-bottom: 0cm"><font size="2" style="font-size: 9pt"><a href="#__RefHeading___Toc2808_160240294%20Copy%202">6.3.2.33
+	<p lang="en-AU" style="margin-left: 1.06cm; margin-bottom: 0cm"><font size="2" style="font-size: 9pt"><a href="#__RefHeading___Toc2808_160240294_Copy_2">6.3.2.33
 	MODE CHAR	75</a></font></p>
-	<p lang="en-AU" style="margin-left: 1.06cm; margin-bottom: 0cm"><font size="2" style="font-size: 9pt"><a href="#__RefHeading___Toc2808_160240294%20Copy%202%20Copy%201">6.3.2.34
+	<p lang="en-AU" style="margin-left: 1.06cm; margin-bottom: 0cm"><font size="2" style="font-size: 9pt"><a href="#__RefHeading___Toc2808_160240294_Copy_2_">6.3.2.34
 	MODE LINE	75</a></font></p>
 	<p lang="en-AU" style="margin-left: 0.35cm; margin-top: 0.07cm; margin-bottom: 0cm">
 	<b><a href="#__RefHeading___Toc270_3585882809">6.4 Telnet Negotiable
@@ -6324,7 +6321,32 @@ try:
 </p>
 <p style="margin-left: 1.5cm; margin-bottom: 0cm; page-break-after: auto">
 <font color="#008000"><font face="Courier New, monospace"><b>redirect
-/virtualrows=5000 /fg=yellow /bg=green cmd.exe /Y</b></font></font></p>
+/virtualrows=5000 /fg=yellow /bg=dark_green cmd.exe /Y</b></font></font></p>
+<p align="justify" style="margin-left: 1cm; margin-top: 0.07cm; margin-bottom: 0.14cm">
+Note that some programs and commands use <b>LF</b> as a line
+terminator, not <b>CRLF,</b><span style="font-weight: normal"> which</span>
+can cause problems when such commands are redirected – typically,
+instead of appearing like this:</p>
+<p align="left" style="orphans: 2; widows: 2; margin-left: 2cm; margin-top: 0.07cm; margin-bottom: 0.14cm; background: transparent">
+<font face="Courier New, monospace"><b>output line 1<br/>
+output line
+2<br/>
+output line 3</b></font></p>
+<p align="justify" style="margin-left: 1cm; margin-top: 0.07cm; margin-bottom: 0.14cm">
+The output may appear like this:</p>
+<p align="left" style="orphans: 2; widows: 2; margin-left: 2cm; margin-top: 0.07cm; margin-bottom: 0.14cm; background: transparent">
+<font face="Courier New, monospace"><b>output line 1</b></font></p>
+<p align="left" style="orphans: 2; widows: 2; margin-left: 4.8cm; margin-top: 0.07cm; margin-bottom: 0.14cm; background: transparent; page-break-before: auto">
+<font face="Courier New, monospace"><b>output line 2</b></font></p>
+<p align="left" style="orphans: 2; widows: 2; margin-left: 7.6cm; margin-top: 0.07cm; margin-bottom: 0.14cm; background: transparent; page-break-before: auto">
+<font face="Courier New, monospace"><b>output line 3</b></font></p>
+<p align="justify" style="margin-left: 1cm; margin-top: 0.07cm; margin-bottom: 0.14cm">
+In this case, add the <font color="#0000ff"><font face="Courier New, monospace"><b>/cookout</b></font></font>
+option to the <b>Redirect</b> command (this option is described in
+the next section). For example:</p>
+<p style="margin-left: 1.5cm; margin-bottom: 0cm; page-break-after: auto">
+<font color="#008000"><font face="Courier New, monospace"><b>redirect
+/virtualrows=5000 /fg=yellow /bg=dark_green /cookout cmd.exe /Y</b></font></font></p>
 <p align="justify" style="margin-left: 1cm; margin-top: 0.07cm; margin-bottom: 0.14cm">
 The redirected program has full access to the terminal capabilities
 provided by the Terminal_Emulator program, and can use all supported
@@ -7292,16 +7314,15 @@ is not shown, but must be included) are as follows:	</p>
 			</td>
 			<td width="392" style="border: 1px solid #000000; padding: 0cm 0.19cm"><p style="font-weight: normal; margin-top: 0.07cm; page-break-after: auto">
 				<font size="2" style="font-size: 9pt">Specify whether to enter
-				character-</font><font size="2" style="font-size: 9pt">at-a-time</font><font size="2" style="font-size: 9pt">
-				or line-</font><font size="2" style="font-size: 9pt">at-a-time</font><font size="2" style="font-size: 9pt">
-				mode. Note that unlike the telnet command </font><font color="#0000ff"><font face="Courier New, monospace"><font size="2" style="font-size: 10pt"><b>mode
+				character-at-a-time or line-at-a-time mode. Note that unlike the
+				telnet command </font><font color="#0000ff"><font face="Courier New, monospace"><font size="2" style="font-size: 10pt"><b>mode
 				char</b></font></font></font><font size="2" style="font-size: 9pt">,
-				negotiation of the mode is not performed – </font><font size="2" style="font-size: 9pt">the</font><font size="2" style="font-size: 9pt">
-				command-line option option simply sets the mode in the telnet
-				client. It is intended to be used with servers that are not real
-				telnet servers, but simply echo all characters, including any
-				telnet commands. This can make it difficult for the client to
-				enter the mode successfully using normal telnet negotiation.</font></p>
+				negotiation of the mode is not performed – the command-line
+				option option simply sets the mode in the telnet client. It is
+				intended to be used with servers that are not real telnet
+				servers, but simply echo all characters, including any telnet
+				commands. This can make it difficult for the client to enter the
+				mode successfully using normal telnet negotiation.</font></p>
 			</td>
 		</tr>
 		<tr valign="top">
@@ -7697,7 +7718,7 @@ STATUS UPDATE</h4>
 This command causes TELNET to transmit its current status to the
 remote TELNET. 
 </p>
-<h4 class="western"><a name="__RefHeading___Toc2808_160240294 Copy 2"></a>
+<h4 class="western"><a name="__RefHeading___Toc2808_160240294_Copy_2"></a>
 6.3.2.33MODE CHAR</h4>
 <p align="justify" style="margin-left: 1cm; margin-top: 0.07cm; margin-bottom: 0.14cm">
 This option can be used to tell both the local and the remote TELNET
@@ -7714,7 +7735,7 @@ command-line version is intended to be used with servers that are not
 full TELNET servers, but simply echo their input character by
 character. In such cases, performing a TELNET negotiation would not
 succeed.</p>
-<h4 class="western"><a name="__RefHeading___Toc2808_160240294 Copy 2 Copy 1"></a>
+<h4 class="western"><a name="__RefHeading___Toc2808_160240294_Copy_2_"></a>
 6.3.2.34MODE LINE</h4>
 <p align="justify" style="margin-left: 1cm; margin-top: 0.07cm; margin-bottom: 0.14cm">
 This option can be used to tell the remote TELNET to enable both the
@@ -8889,8 +8910,8 @@ subsequent versions:</p>
 	required for debugging.</p>
 </div>
 <div title="footer"><p style="margin-top: 1.17cm; margin-bottom: 0cm">
-	<font size="2" style="font-size: 9pt">Copyright © 2003,202</font><font size="2" style="font-size: 9pt">5</font><font size="2" style="font-size: 9pt">
-	Ross Higson		Page <span style="background: #c0c0c0"><sdfield type=PAGE subtype=RANDOM format=PAGE>2</sdfield></span>
+	<font size="2" style="font-size: 9pt">Copyright © 2003,2025 Ross
+	Higson		Page <span style="background: #c0c0c0"><sdfield type=PAGE subtype=RANDOM format=PAGE>88</sdfield></span>
 	of <span style="background: #c0c0c0"><sdfield type=DOCSTAT subtype=PAGE format=ARABIC>88</sdfield></span></font></p>
 </div>
 </body>

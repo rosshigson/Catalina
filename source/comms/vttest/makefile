@@ -1,51 +1,77 @@
-# $Id: makefile.in,v 1.28 2003/03/01 19:40:55 tom Exp $
+# $Id: makefile.in,v 1.50 2024/10/07 00:20:47 tom Exp $
 # Makefile-template for 'vttest'
 
 THIS = vttest
-RELEASE = 2
 
 #### Start of system configuration section. ####
 
 srcdir = .
 
+
+x		= .exe
+o		= .o
+
 CC		= gcc
+CPP		= @CPP@
 LINK		= $(CC)
+LINT		= 
+LINT_OPTS	= 
 INSTALL 	= /usr/bin/install -c
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_DATA	= ${INSTALL} -m 644
+transform	= s,x,x,
 
 LIBS		= 
-CPPFLAGS	= 
 CFLAGS		= -g -O2 
 LDFLAGS 	= 
 
-prefix		= /usr/local
+CTAGS 		= 
+ETAGS 		= 
+
+prefix		= /mingw32
 exec_prefix	= ${prefix}
 
 bindir		= ${exec_prefix}/bin
-mandir		= ${prefix}/man/man$(manext)
+datarootdir	= ${prefix}/share
+mandir		= ${datarootdir}/man
 manext		= 1
+
+BINDIR		= $(DESTDIR)$(bindir)
+MANDIR		= $(DESTDIR)$(mandir)/man$(manext)
 
 #### End of system configuration section. ####
 
 SHELL		= /bin/sh
 
-DEFINES 	= -DHAVE_CONFIG_H -DRELEASE=$(RELEASE)
-INCLUDES	= -I. -I$(srcdir)
-CPPFLAGS	= $(DEFINES) $(INCLUDES) 
+CPPFLAGS 	= -DHAVE_CONFIG_H -I. -I$(srcdir) -D_GNU_SOURCE -D_DEFAULT_SOURCE
 
-.c.o:
+################################################################################
+.SUFFIXES : $o .i .cat .$(manext)
+
+.c$o:
+	
 	$(CC) -c $(CPPFLAGS) $(CFLAGS) $<
+
+.c.i :
+	
+	$(CPP) -C $(CPPFLAGS) $*.c >$@
+
+.$(manext).cat :
+	- nroff -man $(srcdir)/$< >$@
+
+################################################################################
 
 C_SRC = \
 	charsets.c \
 	color.c \
+	draw.c \
 	esc.c \
 	keyboard.c \
 	main.c \
 	mouse.c \
 	nonvt100.c \
 	printer.c \
+	replay.c \
 	reports.c \
 	reset.c \
 	setup.c \
@@ -54,114 +80,146 @@ C_SRC = \
 	tek4014.c \
 	ttymodes.c \
 	unix_io.c \
+	utf8.c \
 	vt220.c \
+	vt320.c \
 	vt420.c \
 	vt52.c \
+	vt520.c \
 	xterm.c
 H_SRC = \
 	vttest.h \
+	draw.h \
 	esc.h \
 	ttymodes.h
 OBJS  = \
-	charsets.o \
-	color.o \
-	esc.o \
-	keyboard.o \
-	main.o \
-	mouse.o \
-	nonvt100.o \
-	printer.o \
-	reports.o \
-	reset.o \
-	setup.o \
-	sixel.o \
-	status.o \
-	tek4014.o \
-	ttymodes.o \
-	unix_io.o \
-	vt220.o \
-	vt420.o \
-	vt52.o \
-	xterm.o
+	charsets$o \
+	color$o \
+	draw$o \
+	esc$o \
+	keyboard$o \
+	main$o \
+	mouse$o \
+	nonvt100$o \
+	printer$o \
+	replay$o \
+	reports$o \
+	reset$o \
+	setup$o \
+	sixel$o \
+	status$o \
+	tek4014$o \
+	ttymodes$o \
+	unix_io$o \
+	utf8$o \
+	vt220$o \
+	vt320$o \
+	vt420$o \
+	vt52$o \
+	vt520$o \
+	xterm$o
 
 SRC =	patchlev.h \
-	CHANGES COPYING README BUGS \
+	CHANGES COPYING README \
 	$(THIS).1 \
 	$(C_SRC) $(H_SRC) \
 	tech.set \
-	config.hin install.sh mkdirs.sh makefile.in configure.in
+	config.hin install.sh makefile.in configure.in
+
+TRANSFORM_BIN = sed 's/$x$$//'         |sed '$(transform)'|sed 's/$$/$x/'
+TRANSFORM_MAN = sed 's/\.$(manext)$$//'|sed '$(transform)'|sed 's/$$/.$(manext)/'
+
+actual_bin = `echo $(THIS)$x        | $(TRANSFORM_BIN)`
+actual_man = `echo $(THIS).$(manext)| $(TRANSFORM_MAN)`
+
+PROG	= $(THIS)$x
 
 DISTFILES = MANIFEST configure $(SRC)
 
-all:	$(THIS)
+.PHONY: all install installdirs uninstall mostlyclean clean distclean realclean lint check
 
-$(THIS): $(OBJS)
-	$(LINK) $(CFLAGS) $(LDFLAGS) -o $(THIS) $(OBJS) $(LIBS)
+all:	$(PROG)
 
+$(PROG): $(OBJS)
+	$(LINK) $(CFLAGS) $(LDFLAGS) -o $(PROG) $(OBJS) $(LIBS)
+
+$(THIS)$o \
 $(OBJS): config.h $(THIS).h patchlev.h
 
 install: all installdirs
-	$(INSTALL_PROGRAM) $(THIS) $(bindir)/$(THIS)
-	$(INSTALL_DATA) $(srcdir)/$(THIS).1 $(mandir)/$(THIS).$(manext)
+	$(INSTALL_PROGRAM) $(PROG) $(BINDIR)/$(actual_bin)
+	$(INSTALL_DATA) $(srcdir)/$(THIS).1 $(MANDIR)/$(actual_man)
 
-installdirs:
-	$(SHELL) ${srcdir}/mkdirs.sh $(bindir) $(mandir)
+installdirs: $(BINDIR) $(MANDIR)
+
+$(BINDIR) $(MANDIR) :
+	mkdir -p $@
 
 uninstall:
-	rm -f $(bindir)/$(THIS)
-	rm -f $(mandir)/$(THIS).$(manext)
+	rm -f $(BINDIR)/$(actual_bin)
+	rm -f $(MANDIR)/$(actual_man)
 
-mostlyclean:
-	rm -f *.o core *~ *.BAK *.trace *.atac
+mostlyclean ::
+	rm -f *.[oi] core *~ *.cat *.BAK *.trace *.atac
 
-clean: mostlyclean
-	rm -f $(THIS)
+clean :: mostlyclean
+	rm -f $(PROG)
 
-distclean: clean
-	rm -f makefile config.log config.cache config.status config.h
+distclean :: clean
+	rm -f makefile config.log config.cache config.status config.h man2html.tmp
 
-realclean: distclean
+realclean :: distclean
 	rm -f tags TAGS # don't remove configure!
 
-tags:	$(C_SRC) $(HDRS)
-	ctags $(C_SRC) $(HDRS)
+#tags:	$(C_SRC) $(HDRS)
+#	$(CTAGS) $(C_SRC) $(HDRS)
 
-TAGS:	$(C_SRC) $(HDRS)
-	etags $(C_SRC) $(HDRS)
+#TAGS:	$(C_SRC) $(HDRS)
+#	$(ETAGS) $(C_SRC) $(HDRS)
 
-# I keep my sources in RCS, and assign a symbolic release to the current patch
-# level.  The 'manifest' script knows how to build a list of files for a given
-# revision.
-MANIFEST: patchlev.h
-#	manifest -rv$(RELEASE)`fgrep PATCHLEVEL patchlev.h | sed -e s'/^[^0-9]*/_/'`
-	manifest -rd`fgrep PATCH_DATE patchlev.h | sed -e s'/^[^0-9]*//'`
-
-dist: MANIFEST
-	- rm -f .fname .files
-	fgrep PATCH_DATE patchlev.h | sed -e 's/[^0-9.]//g' -e 's/^/$(THIS)-/' >.fname
-	cat MANIFEST | grep ' ' | egrep -v ' subdirectory$$' | sed -e 's/\ .*//' | uniq >.files
-	rm -rf `cat .fname`
-	TOP=`cat .fname`; mkdir $$TOP `cat .files | grep / | sed -e 's@/.*@@' | sed -e s@\^@$$TOP/@ | uniq`
-	for file in `cat .files`; do \
-	  ln $(srcdir)/$$file `cat .fname`/$$file \
-	    || { echo copying $$file instead; cp $$file `cat .fname`/$$file; }; \
-	done
-	tar -cf - `cat .fname` | gzip >`cat .fname`.tgz
-	rm -rf `cat .fname` .fname .files
-
-# Some of the output will be uuencoded because the test scripts include
-# <CR><LF> terminated ".bat" files for MS-DOS.
-dist-shar: MANIFEST
-	- rm -f .fname .files
-	fgrep PATCH_DATE patchlev.h | sed -e 's/[^0-9.]//g' -e 's/^/$(THIS)-/' >.fname
-	cat MANIFEST | grep ' ' | egrep -v ' subdirectory$$' | sed -e 's/\ .*//' | uniq >.files
-	shar -M -n`cat .fname` -opart -l50 `cat .files`
-	- rm -f .fname .files
-
-$(THIS).o:	config.h
+################################################################################
 
 lint:
-	$(LINT) $(CPPFLAGS) $(C_SRC)
+	$(LINT) $(LINT_OPTS) $(CPPFLAGS) $(C_SRC)
 
-check: $(THIS)
+check: $(PROG)
 	@echo 'Sorry -- You must run this interactively.'
+################################################################################
+## generated by CF_MAKE_DOCS
+.SUFFIXES : .html .1 .man .ps .pdf .txt
+
+#.1.txt :
+#	$(SHELL) -c "tbl $*.1 | nroff -man | col -bx" >$@
+
+.ps.pdf :
+	ps2pdf $*.ps
+
+.1.ps :
+	$(SHELL) -c "tbl $*.1 | groff -man" >$@
+
+.1.txt :
+	GROFF_NO_SGR=stupid $(SHELL) -c "tbl $*.1 | nroff -rHY=0 -Tascii -man | col -bx" >$@
+
+.1.html :
+	./man2html.tmp $* 1 man >$@
+
+################################################################################
+#docs docs-$(THIS) :: $(THIS).txt
+docs docs-$(THIS) :: $(THIS).html
+docs docs-$(THIS) :: $(THIS).pdf
+docs docs-$(THIS) :: $(THIS).ps
+docs docs-$(THIS) :: $(THIS).txt
+
+clean \
+docs-clean ::
+#	rm -f $(THIS).txt
+	rm -f $(THIS).html
+	rm -f $(THIS).pdf
+	rm -f $(THIS).ps
+	rm -f $(THIS).txt
+
+#$(THIS).txt  : $(THIS).1
+$(THIS).html : $(THIS).1
+$(THIS).pdf  : $(THIS).ps
+$(THIS).ps   : $(THIS).1
+$(THIS).txt  : $(THIS).1

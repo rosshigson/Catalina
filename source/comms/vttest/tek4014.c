@@ -1,4 +1,4 @@
-/* $Id: tek4014.c,v 1.8 2003/03/01 19:53:42 tom Exp $ */
+/* $Id: tek4014.c,v 1.22 2024/12/06 21:43:26 tom Exp $ */
 
 #include <vttest.h>
 #include <esc.h>
@@ -14,9 +14,15 @@
 #define SHIFTLO   2
 #define TWOBITS   03
 
+#undef GS
+#undef RS
+#undef US
+
 #define GS  0x001D
 #define RS  0x001E
 #define US  0x001F
+
+static char empty[1];
 
 /*
  * Switch to/from tek4014/vt100 mode.
@@ -45,7 +51,7 @@ tek_GIN(void)
 static void
 tek_ALP(void)
 {
-  printf("%c", US);
+  tprintf("%c", US);
 }
 
 /*
@@ -74,7 +80,7 @@ tek_font(int code)
  * Decode 2 bytes from a mouse report as a coordinate value.
  */
 static int
-tek_coord(char *report, int offset)
+tek_coord(const char *report, int offset)
 {
   int hi = FIVEBITS & CharOf(report[offset]);
   int lo = FIVEBITS & CharOf(report[offset + 1]);
@@ -96,15 +102,15 @@ tek_point(int pen, int y, int x)
     sprintf(temp, "%c", GS);
   }
   sprintf(temp + strlen(temp), "%c%c%c%c%c",
-         0x20 | (((y & HIBITS) >> SHIFTHI) & FIVEBITS),
-         0x60 | (((y & TWOBITS) << SHIFTLO) | (x & TWOBITS)), /* tests/sets lo_y */
-         0x60 | (((y & LOBITS) >> SHIFTLO) & FIVEBITS), /* sets lo_y */
-         0x20 | (((x & HIBITS) >> SHIFTHI) & FIVEBITS),
-         0x40 | (((x & LOBITS) >> SHIFTLO) & FIVEBITS)); /* must be last */
+          0x20 | (((y & HIBITS) >> SHIFTHI) & FIVEBITS),
+          0x60 | (((y & TWOBITS) << SHIFTLO) | (x & TWOBITS)),  /* tests/sets lo_y */
+          0x60 | (((y & LOBITS) >> SHIFTLO) & FIVEBITS),  /* sets lo_y */
+          0x20 | (((x & HIBITS) >> SHIFTHI) & FIVEBITS),
+          0x40 | (((x & LOBITS) >> SHIFTLO) & FIVEBITS));   /* must be last */
   fprintf(stdout, "%s", temp);
   if (LOG_ENABLED) {
-    fprintf(log_fp, "*Set point (%d,%d)\n", y, x);
-    fputs("Send: ", log_fp);
+    fprintf(log_fp, NOTE_STR "set point (%d,%d)\n", y, x);
+    fputs(SEND_STR, log_fp);
     put_string(log_fp, temp);
     fputs("\n", log_fp);
   }
@@ -126,10 +132,10 @@ log_mouse_click(char *report)
     int new_y = tek_coord(report, 3);
     fprintf(log_fp, "Report: ");
     if ((report[0] & 0x80) != 0
-     && strchr("lmrLMR", report[0] & 0x7f) != 0) {
-      fprintf(log_fp, "mouse %c", report[0] & 0x7f);
+        && strchr("lmrLMR", report[0] & 0x7f) != NULL) {
+      fprintf(log_fp, NOTE_STR "mouse %c", report[0] & 0x7f);
     } else {
-      fprintf(log_fp, "key %d", CharOf(report[0]));
+      fprintf(log_fp, NOTE_STR "key %d", CharOf(report[0]));
     }
     fprintf(log_fp, " (%d,%d)\n", new_y, new_x);
     fflush(log_fp);
@@ -174,8 +180,6 @@ tek_mouse_coords(MENU_ARGS)
 {
   char *report;
   char status[6];
-  int new_x = -1;
-  int new_y = -1;
 
   tek_clear(PASS_ARGS);
 
@@ -183,10 +187,16 @@ tek_mouse_coords(MENU_ARGS)
   set_tty_raw(TRUE);
   set_tty_echo(FALSE);
 
-  report = "";
+  report = empty;
   println("Any key or mouse click twice to exit...");
+  status[0] = '\0';
+
+  pause_replay();
   do {
-    strncpy(status, report, 5)[5] = 0;
+    int new_x;
+    int new_y;
+
+    strncpy(status, report, (size_t) 5)[5] = 0;
     /*
      * The graphics-in mode is reset each time users send a mouse click.  So we
      * set it in the loop.
@@ -199,18 +209,20 @@ tek_mouse_coords(MENU_ARGS)
      * If we do not start a new line after reading the mouse, we will see no
      * text.  So we do it before the rest of the report rather than after.
      */
-    printf("\r\n");
+    printxx("\r\n");
     if ((report[0] & 0x80) != 0
-     && strchr("lmrLMR", report[0] & 0x7f) != 0) {
-      printf("mouse %c:", report[0] & 0x7f);
+        && strchr("lmrLMR", report[0] & 0x7f) != NULL) {
+      printxx("mouse %c:", report[0] & 0x7f);
     } else {
-      printf("key: %d", CharOf(report[0]));
+      printxx("key: %d", CharOf(report[0]));
     }
-    printf(" (%d,%d)", new_y, new_x);
+    printxx(" (%d,%d)", new_y, new_x);
     fflush(stdout);
   } while (strcmp(report, status));
 
   tek_ALP();
+
+  resume_replay();
   restore_ttymodes();
   tek_enable(0);
   return FALSE;
@@ -241,10 +253,13 @@ tek_mouse_lines(MENU_ARGS)
   set_tty_raw(TRUE);
   set_tty_echo(FALSE);
 
-  report = "";
+  report = empty;
   println("Any mouse click twice to exit...");
+  status[0] = '\0';
+
+  pause_replay();
   do {
-    strncpy(status, report, 5)[5] = 0;
+    strncpy(status, report, (size_t) 5)[5] = 0;
     if (old_x >= 0 && old_y >= 0) {
       tek_point(0, old_y, old_x);
       tek_point(1, new_y, new_x);
@@ -258,6 +273,7 @@ tek_mouse_lines(MENU_ARGS)
     new_y = tek_coord(report, 3);
   } while (strcmp(report, status));
 
+  resume_replay();
   restore_ttymodes();
   tek_enable(0);
   return FALSE;
@@ -301,20 +317,22 @@ tek_grid_demo(MENU_ARGS)
 int
 tst_tek4014(MENU_ARGS)
 {
+  /* *INDENT-OFF* */
   static MENU my_menu[] = {
-    { "Return to main menu",                                 0 },
+    { "Exit",                                                NULL },
     { "Clear screen",                                        tek_clear },
     { "'Hello World!' in each font",                         tek_hello },
     { "Get mouse-clicks, showing coordinates",               tek_mouse_coords },
     { "Get mouse-clicks, drawing lines between",             tek_mouse_lines },
     { "Draw a grid",                                         tek_grid_demo },
-    { "",                                                    0 }
+    { "",                                                    NULL }
   };
+  /* *INDENT-ON* */
 
   do {
     vt_clear(2);
-    title(0); println("XTERM/tek4014 features");
-    title(2); println("Choose test type:");
+    __(title(0), println("XTERM/tek4014 features"));
+    __(title(2), println("Choose test type:"));
   } while (menu(my_menu));
   return MENU_NOHOLD;
 }

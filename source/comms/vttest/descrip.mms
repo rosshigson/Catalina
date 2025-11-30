@@ -1,11 +1,11 @@
-# $Id: descrip.mms,v 1.13 2003/03/01 19:40:49 tom Exp $
+# $Id: descrip.mms,v 1.18 2024/10/07 00:16:10 tom Exp $
 # VAX/VMS "mms" script for VTTEST
 
 THIS = vttest
 
 #### Start of system configuration section. ####
 
-DEFINES = /Define=(STDC_HEADERS,RELEASE=2)
+DEFINES = /Define=(STDC_HEADERS)
 CFLAGS	= /Listing /Include=([]) $(DEFINES)
 
 #### End of system configuration section. ####
@@ -13,12 +13,14 @@ CFLAGS	= /Listing /Include=([]) $(DEFINES)
 C_SRC = \
 	charsets.c \
 	color.c \
+	draw.c \
 	esc.c \
 	keyboard.c \
 	main.c \
 	mouse.c \
 	nonvt100.c \
 	printer.c \
+	replay.c \
 	reports.c \
 	reset.c \
 	setup.c \
@@ -27,38 +29,47 @@ C_SRC = \
 	tek4014.c \
 	ttymodes.c \
 	unix_io.c \
+	utf8.c \
 	vms_io.c \
 	vt220.c \
+	vt320.c \
 	vt420.c \
 	vt52.c \
+	vt520.c \
 	xterm.c
 H_SRC = \
 	vttest.h \
+	draw.h \
 	esc.h \
 	ttymodes.h
 OBJS = \
 	charsets.obj, \
 	color.obj, \
+	draw.obj, \
 	esc.obj, \
 	keyboard.obj, \
 	main.obj, \
 	mouse.obj, \
 	nonvt100.obj, \
 	printer.obj, \
+	replay.obj, \
 	reports.obj, \
 	reset.obj, \
 	setup.obj, \
 	sixel.obj, \
 	status.obj, \
 	tek4014.obj, \
+	utf8.obj, \
 	vms_io.obj, \
 	vt220.obj, \
+	vt320.obj, \
 	vt420.obj, \
 	vt52.obj, \
+	vt520.obj, \
 	xterm.obj
 
 SRC =	patchlev.h \
-	CHANGES COPYING README BUGS \
+	CHANGES COPYING README \
 	$(THIS).1 \
 	$(C_SRC) $(H_SRC) \
 	config.hin install.sh mkdirs.sh makefile.in configure.in
@@ -66,8 +77,11 @@ SRC =	patchlev.h \
 all : $(THIS).exe
 	@ write sys$output "** produced $?"
 
-$(THIS).exe : $(OBJS)
-	$(LINK)/exec=$(THIS) $(OBJS),sys$library:vaxcrtl/lib
+$(THIS).exe : $(OBJS), vms_link.opt
+	$(LINK)/exec=$(THIS) main.obj, vms_link/opt
+
+vms_link.opt :
+	@vmsbuild vms_link_opt
 
 $(THIS).com :
 	if "''f$search("vttest.com")'" .nes. "" then delete vttest.com;*

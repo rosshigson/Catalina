@@ -249,4 +249,9 @@ New Functionality
 Other Changes
 -------------
 
-1. 
+1. The vttest program, which is used to test vt100 compatibility, has been
+   updated to the latest version. Note that this program is NOT required to
+   use Catalina - it is a utility that can be used to test compatibility
+   of various vt100 terminal emulators, including Catalina's terminal emulator
+   (Comms.exe) as well as the Windows Console Host and Terminal App. See the 
+   README file in /source/comms/vttest for more details.
