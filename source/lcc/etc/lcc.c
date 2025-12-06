@@ -16,6 +16,12 @@ static char rcsid[] = "$Id: lcc.c 355 2007-02-18 22:08:49Z drh $";
 #define TEMPDIR "/tmp"
 #endif
 
+#if defined(_WIN32) || defined(_WIN64)
+#ifndef WIN32
+#define WIN32
+#endif
+#endif
+
 typedef struct list *List;
 struct list {		/* circular list nodes: */
 	char *str;		/* option or file name */
@@ -227,7 +233,7 @@ extern int fork(void);
 extern int wait(int *);
 extern int execv(const char *, char *[]);
 
-intptr_t _spawnvp(int mode, const char *cmdname, const char *const argv[]) {
+static int _spawnvp(int mode, const char *cmdname, const char *const argv[]) {
 	int pid, n, status;
 
 	switch (pid = fork()) {
