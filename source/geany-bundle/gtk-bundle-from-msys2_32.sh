@@ -179,7 +179,7 @@ extract_packages() {
 		 fi
 		else
 		 echo "Download $pkg using curl"
-		 curl -L "$pkg" | tar -x --xz
+		 curl -L "$pkg" | tar -x --zstd
 		fi
 		if [ -n "$run_pi" ] && [ -f .INSTALL ]; then
 		 echo "Running post_install script for \"$i\""

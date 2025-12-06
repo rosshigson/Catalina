@@ -255,3 +255,14 @@ Other Changes
    of various vt100 terminal emulators, including Catalina's terminal emulator
    (Comms.exe) as well as the Windows Console Host and Terminal App. See the 
    README file in /source/comms/vttest for more details.
+
+2. There were two problems in the build scripts in /source/geany_bundle:
+
+   1. The build_all script used the pacman cache. This only worked if the 
+      packages had already been downloaded. Now they are downloaded on each 
+      build.
+
+   2. The option to unpack compressed packages is now --zstd, not -xz
+
+   Affected Windows only.
+
