@@ -216,6 +216,9 @@
  *                - The type of a variable was being incorrecty printed as 
  *                  "<anon>" in some circumstances - now, either the correct
  *                  name is printed or no name is printed.
+ *
+ * version 8.8.4  - blackbox_close() takes no parameter (no functional change).
+ * 
  */
 
 /*--------------------------------------------------------------------------
@@ -256,7 +259,7 @@
 #include "lua-5.4.4/src/lauxlib.h"
 #endif
 
-#define VERSION            "6.5.2"
+#define VERSION            "8.8.4"
 
 #define YYMAXDEPTH         20000    // must be this big to debug xvi !!!
 
@@ -8840,7 +8843,7 @@ int main (int argc, char *argv[]) {
                      break;
                   }
                   else {
-                     blackbox_close(port);
+                     blackbox_close();
                      res = -1;
                   }
                }
@@ -8850,7 +8853,7 @@ int main (int argc, char *argv[]) {
                }
             }
             else {
-               blackbox_close(port);
+               blackbox_close();
                res = -1;
             }
             if (verbose) {
@@ -8884,7 +8887,7 @@ int main (int argc, char *argv[]) {
                   else {
                      printf("\ncommunications error - check port and baudrate, and that\n");
                      printf("the binary program loaded was compiled with -g or -g3\n\n");
-                     blackbox_close(port);
+                     blackbox_close();
                      res = -1;
                   }
                }

@@ -8,8 +8,8 @@ ifeq ($(OS),Darwin)
 	CFLAGS=-g
 	LDFLAGS=-g
 else
-	CFLAGS=-g -static
-	LDFLAGS=-g -static-libgcc
+	CFLAGS=-g -std=c99 -static
+	LDFLAGS=-g -std=c99 -static-libgcc
 endif
 
 ifeq ("$(LCCDIR)", "")

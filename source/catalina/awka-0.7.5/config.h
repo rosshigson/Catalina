@@ -14,7 +14,7 @@
 #define NO_SPRINTF_IN_STDIO 1
 #define awka_SOCKET_LIBS ""
 #define awka_CC "gcc"
-#define awka_CFLAGS "-g -O2"
+#define awka_CFLAGS "-g -O2 -std=c99"
 #define awka_shell "ash"
 
 #define HAVE_FORK 0

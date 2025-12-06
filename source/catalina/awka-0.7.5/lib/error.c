@@ -100,7 +100,7 @@ awka_parachute(int sig)
 }
 
 void
-awka_init_parachute(char *file, int line)
+awka_init_parachute()
 {
   int i;
   int fatal_signals[] = {

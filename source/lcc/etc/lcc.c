@@ -227,7 +227,7 @@ extern int fork(void);
 extern int wait(int *);
 extern int execv(const char *, char *[]);
 
-static int _spawnvp(int mode, const char *cmdname, const char *const argv[]) {
+intptr_t _spawnvp(int mode, const char *cmdname, const char *const argv[]) {
 	int pid, n, status;
 
 	switch (pid = fork()) {

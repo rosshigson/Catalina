@@ -8,7 +8,7 @@ AR = ar
 RANLIB = ranlib
 EXE = 
 
-CFLAGS  = -g -O2 -Dawka_LIBDIR=\"${exec_prefix}/lib\" -Dawka_INCDIR=\"${prefix}/include\"
+CFLAGS  = -g -O2 -std=c99 -Dawka_LIBDIR=\"${exec_prefix}/lib\" -Dawka_INCDIR=\"${prefix}/include\"
 
 MATHLIB = -lm
 

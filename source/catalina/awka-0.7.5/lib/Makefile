@@ -7,7 +7,7 @@ CC = gcc
 AR = ar
 RANLIB = ranlib
 
-CFLAGS =   -g -O2 -fPIC
+CFLAGS =   -g -O2 -std=c99 -fPIC
 
 MATHLIB = -lm
 

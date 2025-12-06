@@ -266,3 +266,22 @@ Other Changes
 
    Affected Windows only.
 
+3. In the blackbox debugger, calls to the funcion blackbox_close() should have 
+   no parameters. This caused recent versions of gcc to throw an error. No 
+   functional changes. Affected Windows only.
+
+4. In awka, the function awka_init_parachute() was being defined incorrectly
+   in error.c to accept parameters. This causes the latest versions of gcc to 
+   throw an error. No functional changes. 
+   Affected Windows and Linux.
+
+5. When compiling awka, the Catalina parallelizer and the Catalina optimizer 
+   with the latest version of gcc, the option -std=c99 must be added for 
+   the programs to compile correctly. No functional changes.
+   Affected Windows and Linux.
+
+6. When compiling lcc with the latest version of gcc, the definition of
+   _spawnvp() must be changed to match that in stdio.h for the program to
+   compile correcly. No functional changes. Affected Windows and Linux.
+
+

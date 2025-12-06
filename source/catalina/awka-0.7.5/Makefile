@@ -9,7 +9,7 @@ RANLIB = ranlib
 EXE = 
 
 SHAREDFLAG = -fPIC
-CFLAGS =   -g -O2
+CFLAGS =   -g -O2 -std=c99
 
 MATHLIB = -lm
 SOCKET_LIBS = 
