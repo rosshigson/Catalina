@@ -2,6 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "version.h"
+
 #define MAX_STR 80
 
 /* 
@@ -53,6 +55,7 @@
 void usage(char *name)
 {
     printf("%s - dump a binary files as text\n", name);
+    printf("version: %s\n", CATALINA_VERSION);
     printf("usage: %s [options] filename\n", name);
     printf("options:\n");
     printf("  -h      print this help\n");

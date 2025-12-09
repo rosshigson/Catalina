@@ -360,7 +360,7 @@ unsigned emitasm(Node p, int nt) {
 			else if (*fmt >= '0' && *fmt <= '9')
 				emitasm(kids[*fmt - '0'], nts[*fmt - '0']);
 			else if (*fmt >= 'a' && *fmt < 'a' + NELEMS(p->syms))
-				//fputs(p->syms[*fmt - 'a']->x.name, stdout);
+				/* fputs(p->syms[*fmt - 'a']->x.name, stdout); */
 				print("%s", p->syms[*fmt - 'a']->x.name);
 			else
 				(void)putchar(*fmt);

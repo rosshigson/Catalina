@@ -145,75 +145,52 @@ void preprocessor_ctx_destroy(_Dtor struct preprocessor_ctx* p)
 
 struct token_list preprocessor(struct preprocessor_ctx* ctx, struct token_list* input_list, int level);
 
-static void tokenizer_set_error(struct tokenizer_ctx* ctx, struct stream* stream, const char* fmt, ...)
+static void tokenizer_diagnostic(enum diagnostic_id w, struct tokenizer_ctx* ctx, struct stream* stream, const char* fmt, ...)
 {
     const bool color_enabled = !ctx->options.color_disabled;
-    ctx->n_errors++;
+
+
+    bool is_error = options_diagnostic_is_error(&ctx->options, w);
+    bool is_warning = options_diagnostic_is_warning(&ctx->options, w);
+    //bool is_note = options_diagnostic_is_note(&ctx->options, w);
+    if (is_error)
+    {
+        ctx->n_errors++;
+    }
+    else if (is_warning)
+    {
+        ctx->n_warnings++;
+    }
 
     char buffer[200] = { 0 };
-
-#pragma CAKE diagnostic push
-#pragma CAKE diagnostic ignored "-Wnullable-to-non-nullable"
-#pragma CAKE diagnostic ignored "-Wanalyzer-null-dereference"
-
-
 
     va_list args = { 0 };
     va_start(args, fmt);
     /*int n =*/ vsnprintf(buffer, sizeof(buffer), fmt, args);
     va_end(args);
 
-#pragma CAKE diagnostic pop
-
     print_position(stream->path, stream->line, stream->col, ctx->options.visual_studio_ouput_format, color_enabled);
     if (ctx->options.visual_studio_ouput_format)
     {
-        printf("error: "  "%s\n", buffer);
+        printf("warning %d: %s\n", w, buffer);
     }
     else
     {
-        if (color_enabled)
-        printf(LIGHTRED "error: " WHITE "%s\n", buffer);
-        else
-            printf("error: " "%s\n", buffer);
-    }
-}
-
-
-static void tokenizer_set_warning(struct tokenizer_ctx* ctx, struct stream* stream, const char* fmt, ...)
-{
-    const bool color_enabled = !ctx->options.color_disabled;
-
-    ctx->n_warnings++;
-
-
-    char buffer[200] = { 0 };
-
-#pragma CAKE diagnostic push
-#pragma CAKE diagnostic ignored "-Wnullable-to-non-nullable"
-#pragma CAKE diagnostic ignored "-Wanalyzer-null-dereference"
-
-
-    va_list args = { 0 };
-    va_start(args, fmt);
-    /*int n =*/ vsnprintf(buffer, sizeof(buffer), fmt, args);
-    va_end(args);
-
-#pragma CAKE diagnostic pop
-
-    print_position(stream->path, stream->line, stream->col, ctx->options.visual_studio_ouput_format, color_enabled);
-    if (ctx->options.visual_studio_ouput_format)
-    {
-        printf("warning: " "%s\n", buffer);
-    }
-    else
+        if (is_error)
     {
         if (color_enabled)
-        printf(LIGHTMAGENTA "warning: " WHITE "%s\n", buffer);
+                printf(LIGHTRED "error " WHITE  "%d: %s\n", w, buffer);
         else
-            printf("warning: " "%s\n", buffer);
+                printf("error %d: %s\n", w, buffer);
     }
-
+        else if (is_warning)
+        {
+            if (color_enabled)
+                printf(LIGHTMAGENTA "warning " WHITE  "%d: %s\n", w, buffer);
+            else
+                printf("warning: %d %s\n", w, buffer);
+        }
+    }
 }
 
 
@@ -227,8 +204,6 @@ void pre_unexpected_end_of_file(struct token* _Opt p_token, struct preprocessor_
 
 bool preprocessor_diagnostic(enum diagnostic_id w, struct preprocessor_ctx* ctx, const struct token* _Opt p_token_opt, const char* fmt, ...)
 {
-  
-
     struct marker marker = { 0 };
 
     if (p_token_opt == NULL) return false;
@@ -302,16 +277,16 @@ bool preprocessor_diagnostic(enum diagnostic_id w, struct preprocessor_ctx* ctx,
         if (is_error)
         {
             if (color_enabled)
-                printf(LIGHTRED "error " WHITE "C%04d: %s\n" COLOR_RESET, w, buffer);
+                printf(LIGHTRED "error " WHITE "%d: %s\n" COLOR_RESET, w, buffer);
             else
-                printf("error "        "C%04d: %s\n", w, buffer);
+                printf("error "        "%d: %s\n", w, buffer);
         }
         else if (is_warning)
         {
             if (color_enabled)
-                printf(LIGHTMAGENTA "warning " WHITE "C%04d: %s\n" COLOR_RESET, w, buffer);
+                printf(LIGHTMAGENTA "warning " WHITE "%d: %s\n" COLOR_RESET, w, buffer);
             else
-                printf("warning "  "C%04d: %s\n", w, buffer);
+                printf("warning "  "%d: %s\n", w, buffer);
         }
         else if (is_note)
         {
@@ -1284,7 +1259,7 @@ struct token* _Owner _Opt character_constant(struct tokenizer_ctx* ctx, struct s
         if (stream->current[0] == '\0' ||
             stream->current[0] == '\n')
         {
-            tokenizer_set_warning(ctx, stream, "missing terminating ' character");
+            tokenizer_diagnostic(C_ERROR_TOKENIZER_MISSING_TERMINATING, ctx, stream, "missing terminating ' character");
             break;
         }
     }
@@ -1342,7 +1317,7 @@ struct token* _Owner _Opt string_literal(struct tokenizer_ctx* ctx, struct strea
             if (stream->current[0] == '\0' ||
                 stream->current[0] == '\n')
             {
-                tokenizer_set_error(ctx, stream, "missing terminating \" character");
+                tokenizer_diagnostic(C_ERROR_TOKENIZER_MISSING_TERMINATING_QUOTE, ctx, stream, "missing terminating \" character");
                 throw;
             }
 
@@ -1479,10 +1454,12 @@ struct token_list embed_tokenizer(struct preprocessor_ctx* ctx,
         }
 #else
         /*web versions only text files that are included*/
-        char* textfile = read_file(filename_opt, true);
+        char full_path[FS_MAX_PATH] = { 0 };
+        snprintf(full_path, sizeof full_path, "c:/%s", filename_opt);
+        char* textfile = read_file(full_path, true);
         if (textfile == NULL)
         {
-            preprocessor_diagnostic(C_ERROR_FILE_NOT_FOUND, ctx, ctx->current, "file '%s' not found", filename_opt);
+            preprocessor_diagnostic(C_ERROR_FILE_NOT_FOUND, ctx, position, "file '%s' not found", filename_opt);
             throw;
         }
 
@@ -1745,7 +1722,7 @@ struct token_list tokenizer(struct tokenizer_ctx* ctx, const char* text, const c
                 has_space = false;
                 if (set_sliced_flag(&stream, p_new_token))
                 {
-                    tokenizer_set_warning(ctx, &stream, "token sliced");
+                    tokenizer_diagnostic(W_TOKEN_SLICED, ctx, &stream, "token sliced");
                 }
                 token_list_add(&list, p_new_token);
                 continue;
@@ -1834,7 +1811,7 @@ struct token_list tokenizer(struct tokenizer_ctx* ctx, const char* text, const c
                     }
                     else if (stream.current[0] == '\0')
                     {
-                        tokenizer_set_error(ctx, &stream, "missing end of comment");
+                        tokenizer_diagnostic(C_ERROR_TOKENIZER_MISSING_END_OF_COMMENT, ctx, &stream, "missing end of comment");
                         break;
                     }
                     else
@@ -2461,35 +2438,24 @@ struct token_list process_defined(struct preprocessor_ctx* ctx, struct token_lis
                     has_c_attribute_value = "202106L";
                 }
                 else if (strcmp(path, "deprecated") == 0)
-                {    /*deprecated
-                * The __has_c_attribute conditional inclusion expression (6.10.1) shall return the value 201904L
-                * when given deprecated as the pp-tokens operand
-                */
+                {
                     has_c_attribute_value = "201904L";
                 }
                 else if (strcmp(path, "noreturn") == 0)
                 {
-                /*noreturn
-                * The __has_c_attribute conditional inclusion expression (6.10.1) shall return the value 202202L
-                * when given noreturn as the pp-tokens operand.
-                */
                     has_c_attribute_value = "202202L";
                 }
                 else if (strcmp(path, "reproducible") == 0)
                 {
-                /*reproducible
-                 * The __has_c_attribute conditional inclusion expression (6.10.1) shall return the value 202207L
-                 * when given reproducible as the pp-tokens operand.
-                */
                     //has_c_attribute_value = "202207L";
                 }
                 else if (strcmp(path, "unsequenced") == 0)
                 {
-                /*
-                * The __has_c_attribute conditional inclusion expression (6.10.1) shall return the value 202207L
-                * when given unsequenced as the pp-tokens operand.
-                */
                        //has_c_attribute_value = "202207L";
+                }
+                else if (strcmp(path, "fallthrough") == 0)
+                {
+                    has_c_attribute_value = "202311L";
                 }
 
 
@@ -3580,9 +3546,23 @@ static bool is_empty_assert(struct token_list* replacement_list)
     return true;
 }
 
-void print_path(const char* path)
+void print_path(const char* path, bool fullpath)
 {
+    //I will print just the file name for now..to be decided.
     const char* p = path;
+
+    if (!fullpath)
+    {
+        const char* last = NULL;
+        while (*p)
+        {
+            if (*p == '/' || *p == '\\')
+                last = p;
+            p++;
+        }
+        p = last ? last + 1 : path;
+    }
+
     while (*p)
     {
 #ifdef _WIN32
@@ -3725,7 +3705,7 @@ struct token_list control_line(struct preprocessor_ctx* ctx, struct token_list* 
                     for (int i = 0; i < (level + 1); i++)
                         printf(".");
 
-                    print_path(full_path_result);
+                    print_path(full_path_result, true /*full path*/);
                     printf("\n");
                 }
 
@@ -3748,7 +3728,7 @@ struct token_list control_line(struct preprocessor_ctx* ctx, struct token_list* 
                     printf("Include directories:\n");
                     for (struct include_dir* _Opt p = ctx->include_dir.head; p; p = p->next)
                     {
-                        print_path(p->path);
+                        print_path(p->path, true/*full path*/);
                         printf("\n");
                     }
                 }

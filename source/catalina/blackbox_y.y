@@ -218,6 +218,8 @@
  *                  name is printed or no name is printed.
  *
  * version 8.8.4  - blackbox_close() takes no parameter (no functional change).
+ *
+ *                - use "verion.h"
  * 
  */
 
@@ -259,7 +261,7 @@
 #include "lua-5.4.4/src/lauxlib.h"
 #endif
 
-#define VERSION            "8.8.4"
+#include "version.h"
 
 #define YYMAXDEPTH         20000    // must be this big to debug xvi !!!
 
@@ -7908,7 +7910,7 @@ int continue_or_exit() {
 
 void help_cmd(char *args) {
 
-   printf("\nCatalina BlackBox Debugger %s\n", VERSION); 
+   printf("\nCatalina BlackBox Debugger %s\n", CATALINA_VERSION); 
    printf("\n");
    printf("breakpoint [fname | line]   - show/set breakpoint at function or line\n");
    printf("continue                    - continue to next user breakpoint\n");
@@ -8759,7 +8761,7 @@ int main (int argc, char *argv[]) {
    }
 
 
-   fprintf(stderr, "Catalina BlackBox Debugger %s\n\n", VERSION); 
+   fprintf(stderr, "Catalina BlackBox Debugger %s\n\n", CATALINA_VERSION); 
    if (decode_arguments(argc, argv) <= 0) {
       if (diagnose) {
          printf("%s exiting\n", argv[0]);

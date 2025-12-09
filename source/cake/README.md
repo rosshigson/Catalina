@@ -1,4 +1,5 @@
 
+
 The C Programming language 1978
 
 > _"C is a general-purpose programming language which features economy of expression, modern control flow and data structures, and a rich set of operators. C is not a "very high level" language, nor a "big" one, and is not specialized to any particular area of application. But its absence of restrictions and its generality make it more convenient and effective for many tasks than supposedly more powerful languages."_
@@ -16,7 +17,8 @@ _C is everywhere. From operating systems to embedded devices, from high-performa
 to essential technology, C powers the technology we rely on every day. Timeless, 
 efficient, and universal._
 
-# 🍰 Cake
+
+# About
 
 
 Cake is a compiler front-end written from scratch in C, adhering to the C23 language 
@@ -35,7 +37,7 @@ or old compilers to produce executables.
        └─► [cake preprocessor] ──►[cake compiler] ─┘ c89            
 ```
 
-Cake aims to enhance C's safety by providing high-quality warning messages and advanced 
+Cake aims to enhance C's safety by providing high-quality [warning messages](warnings.md) and advanced 
 flow analysis, including [object lifetime](ownership.md) checks.
 
 # Web Playground
@@ -58,14 +60,9 @@ It can also function as a preprocessor, converting C23 code to C89.
 This allows developers to use modern or experimental features while targeting 
 compilers that do not yet support the latest language standards.
 
-
-Previous versions of Cake included a conversion mode to 
-translate code while preserving the preprocessor parts. 
-
-Although useful, this process could not guarantee 100% conversion,
-functioning more as a tool than a compiler. With the new versions 
-of Cake moving toward becoming a more traditional compiler,
-the previous mode has been discontinued at version 0.9.36.
+Cake is also a cross-compiler. For example, on Windows it can use Linux 
+headers and generate GCC-compatible code for Linux, and vice versa. 
+This makes it very useful when developing multiplatform code.
 
 
 # Features
@@ -75,9 +72,11 @@ the previous mode has been discontinued at version 0.9.36.
 * C23 semantic analysis
 * Static [object lifetime](ownership.md) checks (Extension)
 * Sarif output
-* Backend generating C89 compatible code
+* Cross compiling
+* C89 backend
+* Style checker
 * AST 
-* More than 260 diagnostics
+* Lots of [diagnostics](warnings.md)
 
 
 # Build
@@ -109,8 +108,9 @@ Got to the *src* directory and type:
 clang build.c -o build && ./build
 ```
 
+## Running tests
 
-To run unit tests windows/linux add *-DTEST* for instance:
+Adding *-DTEST* on any platform will run a large set of tests.
 
 ```
 gcc -DTEST build.c -o build && ./build
@@ -143,7 +143,7 @@ Samples
 cake source.c
 ```
 
-this will output *./out/source.c*
+this will output *./platform short name/source.c*
 
 See [Manual](manual.md)
 

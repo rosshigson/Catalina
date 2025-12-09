@@ -159,7 +159,7 @@ int decode_arguments (int argc, char *argv[]) {
    char * arg;
    char filename[MAX_LINELEN + 3 + 1];
 
-   fprintf(stderr, "Catalina SpinC %s\n", VERSION); 
+   fprintf(stderr, "Catalina SpinC %s\n", CATALINA_VERSION); 
 
    while ((code >= 0) && (argc--)) {
       if (diagnose) {
@@ -242,7 +242,7 @@ int decode_arguments (int argc, char *argv[]) {
                   diagnose++;   /* increase diagnosis level */
                   verbose = 1;   /* diagnose implies verbose */
                   if (diagnose == 1) {
-                     fprintf(stderr, "SpinC %s\n", VERSION); 
+                     fprintf(stderr, "SpinC %s\n", CATALINA_VERSION); 
                   }
                   fprintf(stderr, "diagnostic level %d\n", diagnose);
                   break;
@@ -1029,7 +1029,7 @@ int main(int argc, char* argv[])
              fprintf(gf, "\n");
           }
           fprintf(gf, " * \n");
-          fprintf(gf, " * by Spin to C Array Converter, version %s\n", VERSION);
+          fprintf(gf, " * by Spin to C Array Converter, version %s\n", CATALINA_VERSION);
           fprintf(gf, " */\n");
           if (named) {
              safecpy(spin_name, array_name, MAX_LINELEN);

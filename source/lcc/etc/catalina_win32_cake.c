@@ -30,7 +30,7 @@ extern char *concat(char *, char *);
 
 void correct_paths() {
    char ShortPathName[MAX_PATH + 1];
-   // correct any long path names in the names of the executables
+   /* correct any long path names in the names of the executables */
    if (strchr(cpp[0], ' ') != NULL) {
       GetShortPathName(cpp[0], ShortPathName, MAX_PATH);
       cpp[0] = strdup(ShortPathName);

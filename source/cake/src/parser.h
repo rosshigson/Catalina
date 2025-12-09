@@ -17,10 +17,6 @@
 #include "options.h"
 
 
-//EXPERIMENTAL CONTRACTS
-#define EXPERIMENTAL_CONTRACTS 1
-
-
 struct scope
 {
     int scope_level;
@@ -114,7 +110,8 @@ struct parser_ctx
     /*
     * Points to the selection_statement we're in. Or null.
     */
-    struct selection_statement* _Opt p_current_selection_statement;
+    struct selection_statement* _Opt p_current_switch_statement;
+    const struct iteration_statement* _Opt p_current_iteration_statement;
 
 
     FILE* _Owner _Opt sarif_file;
@@ -835,6 +832,15 @@ struct function_declarator
     struct direct_declarator* _Owner _Opt direct_declarator;
     struct scope parameters_scope;// used for scope parameters
     struct parameter_type_list* _Owner _Opt parameter_type_list_opt;
+
+
+#define EXPERIMENTAL_CONTRACTS_II 1
+#ifdef EXPERIMENTAL_CONTRACTS_II
+    struct parameter_declaration* _Opt _Owner p_out_parameter_declaration;
+    struct secondary_block* _Opt _Owner p_in_block;
+    struct secondary_block* _Opt _Owner p_out_block;
+#endif
+
 };
 
 void function_declarator_delete(struct function_declarator* _Owner _Opt p);
@@ -1164,12 +1170,17 @@ void compound_statement_delete(struct compound_statement* _Owner _Opt p);
 struct defer_statement
 {
     /*
-     defer-statement: (extension)
-       "defer" secondary-block
+     https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3734.pdf
+
+     defer-statement:
+         _Defer deferred-block
+
+     deferred-block:
+         unlabeled-statement
     */
     struct token* first_token;
     struct token* last_token;
-    struct secondary_block* _Owner secondary_block;
+    struct unlabeled_statement * _Owner unlabeled_statement;
 };
 
 void defer_statement_delete(struct defer_statement* _Owner _Opt p);
@@ -1185,6 +1196,7 @@ struct defer_list_item
 
 void defer_list_add(struct defer_list* list, struct defer_list_item* _Owner p_item);
 void defer_list_destroy(_Dtor struct defer_list* p);
+void defer_list_clear(struct defer_list* p);
 
 struct try_statement
 {
@@ -1433,16 +1445,13 @@ struct primary_block
          compound-statement
          selection-statement
          iteration-statement
-         defer-statement (extension)
          try-statement (extension)
-
          gcc_asm_statement
     */
 
     struct compound_statement* _Owner _Opt compound_statement;
     struct selection_statement* _Owner _Opt selection_statement;
     struct iteration_statement* _Owner _Opt iteration_statement;
-    struct defer_statement* _Owner _Opt defer_statement;
     struct try_statement* _Owner _Opt try_statement;
     struct asm_statement* _Owner _Opt asm_statement;
 };
@@ -1475,6 +1484,7 @@ struct unlabeled_statement
     struct expression_statement* _Owner _Opt expression_statement;
     struct primary_block* _Owner _Opt primary_block;
     struct jump_statement* _Owner _Opt jump_statement;
+    struct defer_statement* _Owner _Opt defer_statement;
 };
 
 struct unlabeled_statement* _Owner _Opt unlabeled_statement(struct parser_ctx* ctx, struct attribute_specifier_sequence* _Owner _Opt p_attribute_specifier_sequence);
@@ -1555,10 +1565,30 @@ void type_qualifier_list_add(struct type_qualifier_list* list, struct type_quali
 
 struct attribute
 {
+    /*
+    attribute:
+      attribute-token attribute-argument-clause opt
+
+    attribute-token attribute-argument-clause opt
+      attribute-token:
+      standard-attribute
+      attribute-prefixed-token
+
+    standard-attribute:
+      identifier
+     
+    attribute-prefixed-token:
+      attribute-prefix :: identifier
+    
+    attribute-prefix:
+      identifier
+    */
+
     enum msvc_declspec_flags msvc_declspec_flags;
     enum attribute_flags  attributes_flags;
     struct attribute_argument_clause* _Owner attribute_argument_clause;
-    struct token* attribute_token;
+    struct token* _Opt attribute_token;
+    struct token* _Opt attribute_prefix;
     struct attribute* _Owner _Opt next;
 };
 

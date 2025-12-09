@@ -18,420 +18,150 @@
 #include <stdint.h>
 #include <limits.h>
 
+
 /*
-              NULL
-                |
-            [function] (NULL <- child0 <- last_child)
-                |
-              [try]  (NULL <- child0 <- last_child)
-                |
-tail_block-> [while] (NULL <- child0 <- last_child)
-
+  We maintain a stack of items—blocks, defers, variables—
+  each pointing to its predecessor.
+  This stack represents the scopes and the variables that are alive
+  at any point in the code.
 */
-
-struct defer_defer_scope
+struct defer_scope
 {
-    //things must called at end of scope
-    struct declarator* _Opt declarator; // declarator
-    struct defer_statement* _Opt defer_statement; // defer
-
-    //statements for controlling where jump like break, throw stop.
-
-    struct try_statement* _Opt p_try_statement; //try
-    struct selection_statement* _Opt p_selection_statement; //if switch
-    struct iteration_statement* _Opt p_iteration_statement; //for do while
-    struct statement* _Opt p_statement;//
+    struct declarator* _Opt p_declarator;
+    struct defer_statement* _Opt p_defer_statement;
+    struct defer_statement* _Opt p_defer_block;
+    struct try_statement* _Opt p_try_statement;
+    struct selection_statement* _Opt p_selection_statement;
+    struct iteration_statement* _Opt p_iteration_statement;
+    struct statement* _Opt p_statement;
     struct compound_statement* _Opt p_compound_statement;
     struct compound_statement* _Opt p_function_body;
     struct secondary_block* _Opt p_secondary_block;
     struct primary_block* _Opt p_primary_block;
+    struct label* _Owner _Opt label;
 
-    struct defer_defer_scope* _Owner _Opt last_child; /**/
-    struct defer_defer_scope* _Owner _Opt previous;
+    struct defer_scope* _Owner _Opt previous;
 };
+
 
 void defer_visit_declaration(struct defer_visit_ctx* ctx, struct declaration* p_declaration);
 static void defer_visit_declarator(struct defer_visit_ctx* ctx, struct declarator* p_declarator);
 static void defer_visit_init_declarator_list(struct defer_visit_ctx* ctx, struct init_declarator_list* p_init_declarator_list);;
 static void defer_visit_secondary_block(struct defer_visit_ctx* ctx, struct secondary_block* p_secondary_block);
-static bool defer_find_label_unlabeled_statement(struct defer_visit_ctx* ctx, struct unlabeled_statement* p_unlabeled_statement, const char* label);
 static void defer_visit_statement(struct defer_visit_ctx* ctx, struct statement* p_statement);
-
 static void defer_visit_block_item(struct defer_visit_ctx* ctx, struct block_item* p_block_item);
 static void defer_visit_compound_statement(struct defer_visit_ctx* ctx, struct compound_statement* p_compound_statement);
-static bool defer_find_label_statement(struct defer_visit_ctx* ctx, struct statement* statement, const char* label);
+static void defer_visit_unlabeled_statement(struct defer_visit_ctx* ctx, struct unlabeled_statement* p_unlabeled_statement);
 
-struct defer_visit_objects {
-    struct defer_defer_scope* current_block;
-    struct defer_defer_scope* next_child;
-};
-
-static struct defer_defer_scope* _Opt defer_visit_ctx_push_tail_block(struct defer_visit_ctx* ctx)
+static struct defer_scope* _Opt defer_visit_ctx_push_child(struct defer_visit_ctx* ctx)
 {
-    struct defer_defer_scope* _Owner _Opt p_block = calloc(1, sizeof * p_block);
-    if (p_block)
+    if (ctx->searching_label_mode && ctx->p_label)
     {
-        p_block->previous = ctx->tail_block;
-        ctx->tail_block = p_block;
-    }
-    else
-    {
-        //ops
-    }
-    return ctx->tail_block;
+        assert(false);
 }
 
-static struct defer_defer_scope* _Opt defer_visit_ctx_push_child(struct defer_visit_ctx* ctx)
-{
-    if (ctx->tail_block == NULL)
-        return NULL;
-
-    struct defer_defer_scope* _Owner _Opt child = calloc(1, sizeof * child);
+    struct defer_scope* _Owner _Opt child = calloc(1, sizeof * child);
     if (child)
     {
-        child->previous = ctx->tail_block->last_child;
-        ctx->tail_block->last_child = child;
+        child->previous = ctx->tail_block;
+        ctx->tail_block = child;
     }
     else
     {
         //ops
     }
-    return ctx->tail_block->last_child;
+    return (struct defer_scope* _Opt) child;
 }
 
-static void defer_defer_scope_delete_one(struct defer_defer_scope* _Owner p)
-{
-    struct defer_defer_scope* _Owner p_block = p;
-    struct defer_defer_scope* _Owner _Opt child = p_block->last_child;
 
-    while (child != NULL)
+static struct defer_scope* _Opt defer_visit_ctx_pop_child(struct defer_visit_ctx* ctx)
     {
-        struct defer_defer_scope* _Owner _Opt previous = child->previous;
-        child->previous = NULL;
-        defer_defer_scope_delete_one(child);
-        child = previous;
-    }
-    assert(p_block->previous == NULL);
-    free(p_block);
+    struct defer_scope* p = ctx->tail_block;
+    if (p)
+{
+        ctx->tail_block = ctx->tail_block->previous;
 }
 
-static void defer_visit_ctx_pop_tail_block(struct defer_visit_ctx* ctx)
-{
-    if (ctx->tail_block)
+    return p;
+            }
+
+static void defer_visit_ctx_pop_until(struct defer_visit_ctx* ctx, struct defer_scope* _Opt p_defer, struct defer_list* p_defer_list)
     {
-        struct defer_defer_scope* _Owner _Opt previous = ctx->tail_block->previous;
-        ctx->tail_block->previous = NULL;
-        defer_defer_scope_delete_one(ctx->tail_block);
-        ctx->tail_block = previous;
-    }
-}
-
-static void defer_exit_block_visit(struct defer_visit_ctx* ctx,
-    struct defer_defer_scope* deferblock,
-    struct token* position_token,
-    struct defer_list* p_defer_list)
+    if (ctx->searching_label_mode && ctx->p_label)
 {
+        return;
+        }
+
     try
-    {
-        struct defer_defer_scope* _Opt deferchild = deferblock->last_child;
-        while (deferchild != NULL)
-        {
-            if (deferchild->defer_statement)
-            {
-                struct defer_list_item* _Opt _Owner p_item = calloc(1, sizeof * p_item);
-                if (p_item == NULL)
-                    throw;
-
-                p_item->defer_statement = deferchild->defer_statement;
-                defer_list_add(p_defer_list, p_item);
-
-                defer_visit_secondary_block(ctx, deferchild->defer_statement->secondary_block);
-            }
-            else if (deferchild->declarator)
-            {
-                struct defer_list_item* _Opt _Owner p_item = calloc(1, sizeof * p_item);
-                if (p_item == NULL)
-                    throw;
-
-                p_item->declarator = deferchild->declarator;
-                defer_list_add(p_defer_list, p_item);
-                //const char* name = p_declarator->name_opt ? p_declarator->name_opt->lexeme : "?";
-            }
-            deferchild = deferchild->previous;
-        }
-    }
-    catch
-    {
-    }
-}
-
-static void defer_check_all_defer_until_try(struct defer_visit_ctx* ctx, struct defer_defer_scope* deferblock,
-    struct token* position_token,
-    struct defer_list* p_defer_list)
 {
-    struct defer_defer_scope* _Opt p_defer = deferblock;
-    while (p_defer != NULL)
-    {
-        defer_exit_block_visit(ctx, p_defer, position_token, p_defer_list);
+        struct defer_scope* _Opt p = ctx->tail_block;
 
-        if (p_defer->p_try_statement)
-        {
-            break;
-        }
-
-        p_defer = p_defer->previous;
-    }
-}
-
-static bool defer_find_label_block_item_list(struct defer_visit_ctx* ctx, struct block_item_list* p_block_item, const char* label)
+        while (p)
 {
-    struct block_item* _Opt block_item = p_block_item->head;
-    while (block_item)
+            if (p != p_defer)
     {
-        if (block_item->label &&
-            block_item->label->p_identifier_opt &&
-            strcmp(block_item->label->p_identifier_opt->lexeme, label) == 0)
+                if (p_defer_list && !ctx->searching_label_mode)
         {
-            return true;
-        }
-        else if (block_item->unlabeled_statement)
-        {
-            if (defer_find_label_unlabeled_statement(ctx, block_item->unlabeled_statement, label))
+                    if (p->p_defer_statement)
             {
-                return true;
+                        struct defer_list_item* item = calloc(1, sizeof * item);
+                        if (item == NULL) throw;
+                        item->defer_statement = p->p_defer_statement;
+                        defer_list_add(p_defer_list, item); //items com inicialzaxao
             }
-        }
-
-        block_item = block_item->next;
-    }
-
-    return false;
-}
-
-static bool defer_find_label_unlabeled_statement(struct defer_visit_ctx* ctx, struct unlabeled_statement* p_unlabeled_statement, const char* label)
-{
-    if (p_unlabeled_statement->primary_block)
-    {
-        if (p_unlabeled_statement->primary_block->compound_statement)
+                    else if (p->p_declarator)
         {
-            if (defer_find_label_block_item_list(ctx,
-                &p_unlabeled_statement->primary_block->compound_statement->block_item_list,
-                label))
-            {
-                return true;
+                        struct defer_list_item* item = calloc(1, sizeof * item);
+                        if (item == NULL) throw;
+                        item->declarator = p->p_declarator;
+                        defer_list_add(p_defer_list, item); //items com inicialzaxao
             }
-        }
-        else if (p_unlabeled_statement->primary_block->selection_statement)
-        {
-            if (defer_find_label_statement(ctx, p_unlabeled_statement->primary_block->selection_statement->secondary_block->statement, label))
-            {
-                return true;
-            }
-            if (p_unlabeled_statement->primary_block->selection_statement->else_secondary_block_opt)
-            {
-                if (defer_find_label_statement(ctx, p_unlabeled_statement->primary_block->selection_statement->else_secondary_block_opt->statement, label))
-                {
-                    return true;
                 }
-            }
-        }
-        else if (p_unlabeled_statement->primary_block->try_statement)
-        {
-            if (defer_find_label_statement(ctx, p_unlabeled_statement->primary_block->try_statement->secondary_block->statement, label))
-            {
-                return true;
-            }
-            if (p_unlabeled_statement->primary_block->try_statement->catch_secondary_block_opt)
-            {
-                if (defer_find_label_statement(ctx, p_unlabeled_statement->primary_block->try_statement->catch_secondary_block_opt->statement, label))
-                {
-                    return true;
-                }
-            }
-        }
-        else if (p_unlabeled_statement->primary_block->iteration_statement)
-        {
-            if (defer_find_label_statement(ctx, p_unlabeled_statement->primary_block->iteration_statement->secondary_block->statement, label))
-            {
-                return true;
-            }
-        }
-    }
-    return false;
-}
+                p = p->previous;
 
-static bool defer_find_label_statement(struct defer_visit_ctx* ctx, struct statement* statement, const char* label)
-{
-    if (statement->labeled_statement &&
-        statement->labeled_statement->label->p_identifier_opt)
-    {
-        if (/*statement->labeled_statement->label &&*/
-            strcmp(statement->labeled_statement->label->p_identifier_opt->lexeme, label) == 0)
-        {
-            return true;
-        }
-    }
-    else if (statement->unlabeled_statement)
-    {
-        if (defer_find_label_unlabeled_statement(ctx, statement->unlabeled_statement, label))
-            return true;
-    }
-    return false;
-}
-
-static bool defer_find_label_scope(struct defer_visit_ctx* ctx, struct defer_defer_scope* deferblock, const char* label)
-{
-    if (deferblock->p_iteration_statement)
-    {
-        if (defer_find_label_statement(ctx, deferblock->p_iteration_statement->secondary_block->statement, label))
-            return true;
-    }
-    else if (deferblock->p_selection_statement)
-    {
-        if (defer_find_label_statement(ctx, deferblock->p_selection_statement->secondary_block->statement, label))
-            return true;
-
-        if (deferblock->p_selection_statement->else_secondary_block_opt)
-        {
-            if (defer_find_label_statement(ctx, deferblock->p_selection_statement->else_secondary_block_opt->statement, label))
-                return true;
-        }
-    }
-    else if (deferblock->p_try_statement)
-    {
-        if (defer_find_label_statement(ctx, deferblock->p_try_statement->secondary_block->statement, label))
-            return true;
-
-        if (deferblock->p_try_statement->catch_secondary_block_opt)
-        {
-            if (defer_find_label_statement(ctx, deferblock->p_try_statement->catch_secondary_block_opt->statement, label))
-                return true;
-        }
-    }
-    else if (deferblock->p_statement)
-    {
-        if (defer_find_label_statement(ctx, deferblock->p_statement, label))
-            return true;
-    }
-    else if (deferblock->p_function_body)
-    {
-        if (defer_find_label_block_item_list(ctx,
-            &deferblock->p_function_body->block_item_list,
-            label))
-        {
-            return true;
-        }
-    }
-    else if (deferblock->p_compound_statement)
-    {
-        if (defer_find_label_block_item_list(ctx,
-            &deferblock->p_compound_statement->block_item_list,
-            label))
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
-static void defer_check_all_defer_until_label(struct defer_visit_ctx* ctx,
-    struct defer_defer_scope* deferblock,
-    const char* label,
-    struct token* position_token,
-    struct defer_list* p_defer_list)
-{
-    /*
-    * We need to know how many scopes we exited until we found the label.
-    * To do this, we look in the current scope for where the goto appears.
-    * If the label is not directly in this scope or within some internal scope
-    * No, we print the defers because we are exiting the scope and going to the scope
-    * above. So we repeat this at each scope exit, printing the defer.
-    */
-    struct defer_defer_scope* _Opt p_defer = deferblock;
-
-    while (p_defer != NULL)
-    {
-        if (!defer_find_label_scope(ctx, p_defer, label))
-        {
-            defer_exit_block_visit(ctx, p_defer, position_token, p_defer_list);
+                struct defer_scope* _Opt pDelete = defer_visit_ctx_pop_child(ctx);
+                free(pDelete);
         }
         else
         {
+                struct defer_scope* _Opt pDelete = defer_visit_ctx_pop_child(ctx);
+                free(pDelete);
             break;
         }
-        p_defer = p_defer->previous;
     }
 }
-
-static void defer_check_all_defer_until_iter(struct defer_visit_ctx* ctx,
-    struct defer_defer_scope* deferblock,
-    struct token* position_token,
-    struct defer_list* p_defer_list)
+    catch
 {
-    struct defer_defer_scope* _Opt p_defer = deferblock;
-    while (p_defer != NULL)
-    {
-        defer_exit_block_visit(ctx, p_defer, position_token, p_defer_list);
-        if (p_defer->p_iteration_statement)
-        {
-            break;
-        }
-        p_defer = p_defer->previous;
-    }
-}
-
-static void defer_exit_iteration_or_switch_statement_visit(struct defer_visit_ctx* ctx,
-    struct defer_defer_scope* deferblock,
-    struct token* position_token,
-    struct defer_list* p_defer_list)
-{
-    struct defer_defer_scope* _Opt p_defer = deferblock;
-    while (p_defer != NULL)
-    {
-        defer_exit_block_visit(ctx, p_defer, position_token, p_defer_list);
-
-        if (p_defer->p_iteration_statement)
-        {
-            //break using in for,do , while
-            break;
-        }
-
-        if (p_defer->p_selection_statement &&
-            p_defer->p_selection_statement->first_token->type == TK_KEYWORD_SWITCH)
-        {
-            //break switch case
-            break;
-        }
-
-        p_defer = p_defer->previous;
-    }
-}
-
-static void defer_exit_function_visit(struct defer_visit_ctx* ctx,
-    struct defer_defer_scope* deferblock,
-    struct token* position_token,
-    struct defer_list* p_defer_list)
-{
-    struct defer_defer_scope* _Opt p_defer = deferblock;
-    while (p_defer != NULL)
-    {
-        defer_exit_block_visit(ctx, p_defer, position_token, p_defer_list);
-        p_defer = p_defer->previous;
+        compiler_diagnostic(C_ERROR_UNEXPECTED, ctx->ctx, ctx->ctx->current, NULL, "unexpected");
     }
 }
 
 static void defer_visit_secondary_block(struct defer_visit_ctx* ctx, struct secondary_block* p_secondary_block)
 {
+    if (ctx->searching_label_mode && ctx->p_label)
+    {
+        return;
+    }
+
     defer_visit_statement(ctx, p_secondary_block->statement);
-}
+        }
 
 static void defer_visit_defer_statement(struct defer_visit_ctx* ctx, struct defer_statement* p_defer_statement)
-{
-    struct defer_defer_scope* _Opt p_defer = defer_visit_ctx_push_child(ctx);
-    if (p_defer)
-    {
-        p_defer->defer_statement = p_defer_statement;
-    }
+        {
+    struct defer_scope* _Opt p_defer = defer_visit_ctx_push_child(ctx);
+    if (p_defer == NULL)
+        return;
+
+    p_defer->p_defer_statement = p_defer_statement;
+
+    struct defer_scope* _Opt p_defer_block = defer_visit_ctx_push_child(ctx);
+    if (p_defer_block == NULL)
+        return;
+
+    p_defer_block->p_defer_block = p_defer_statement;
+    defer_visit_unlabeled_statement(ctx, p_defer_statement->unlabeled_statement);
+
+    defer_visit_ctx_pop_until(ctx, p_defer_block, NULL);
 }
 
 static void defer_visit_init_declarator(struct defer_visit_ctx* ctx, struct init_declarator* p_init_declarator)
@@ -446,12 +176,12 @@ static void defer_visit_simple_declaration(struct defer_visit_ctx* ctx, struct s
 
 static void defer_visit_if_statement(struct defer_visit_ctx* ctx, struct selection_statement* p_selection_statement)
 {
-    struct defer_defer_scope* _Opt p_defer = defer_visit_ctx_push_tail_block(ctx);
-    if (p_defer == NULL)
-        return;
+    try
+    {
+        struct defer_scope* _Opt p_defer = defer_visit_ctx_push_child(ctx);
+        if (p_defer == NULL) throw;
 
     p_defer->p_selection_statement = p_selection_statement;
-
 
     if (p_selection_statement->p_init_statement &&
         p_selection_statement->p_init_statement->p_simple_declaration)
@@ -472,8 +202,12 @@ static void defer_visit_if_statement(struct defer_visit_ctx* ctx, struct selecti
         defer_visit_secondary_block(ctx, p_selection_statement->else_secondary_block_opt);
     }
 
-    defer_exit_block_visit(ctx, p_defer, p_selection_statement->last_token, &p_selection_statement->defer_list);
-    defer_visit_ctx_pop_tail_block(ctx);
+        defer_visit_ctx_pop_until(ctx, p_defer, &p_selection_statement->defer_list);
+    }
+    catch
+    {
+        compiler_diagnostic(C_ERROR_UNEXPECTED, ctx->ctx, ctx->ctx->current, NULL, "unexpected");
+    }
 }
 
 static void defer_visit_try_statement(struct defer_visit_ctx* ctx, struct try_statement* p_try_statement)
@@ -484,12 +218,8 @@ static void defer_visit_try_statement(struct defer_visit_ctx* ctx, struct try_st
 
         ctx->catch_secondary_block_opt = p_try_statement->catch_secondary_block_opt;
 
-        struct defer_defer_scope* _Opt p_defer = defer_visit_ctx_push_tail_block(ctx);
-        if (p_defer == NULL)
-        {
-            //TODO restore
-            throw;
-        }
+        struct defer_scope* _Opt p_defer = defer_visit_ctx_push_child(ctx);
+        if (p_defer == NULL) throw;
 
         p_defer->p_try_statement = p_try_statement;
 
@@ -499,27 +229,30 @@ static void defer_visit_try_statement(struct defer_visit_ctx* ctx, struct try_st
         {
             defer_visit_secondary_block(ctx, p_try_statement->catch_secondary_block_opt);
         }
-
-        //defer_exit_block_visit(ctx, p_defer, p_try_statement->secondary_block->last_token, p_defer_list);
-        defer_visit_ctx_pop_tail_block(ctx);
+        defer_visit_ctx_pop_until(ctx, p_defer, NULL);
         ctx->catch_secondary_block_opt = catch_secondary_block_old; //restore
     }
     catch
     {
+        compiler_diagnostic(C_ERROR_UNEXPECTED, ctx->ctx, ctx->ctx->current, NULL, "unexpected");
     }
 }
 
 static void defer_visit_switch_statement(struct defer_visit_ctx* ctx, struct selection_statement* p_selection_statement)
 {
-    struct defer_defer_scope* _Opt p_defer = defer_visit_ctx_push_tail_block(ctx);
-    if (p_defer == NULL)
+    try
     {
-        return;
-    }
+        struct defer_scope* _Opt p_defer = defer_visit_ctx_push_child(ctx);
+        if (p_defer == NULL) throw;
+
     p_defer->p_selection_statement = p_selection_statement;
     defer_visit_secondary_block(ctx, p_selection_statement->secondary_block);
-    defer_exit_block_visit(ctx, p_defer, p_selection_statement->secondary_block->last_token, &p_selection_statement->defer_list);
-    defer_visit_ctx_pop_tail_block(ctx);
+        defer_visit_ctx_pop_until(ctx, p_defer, &p_selection_statement->defer_list);
+    }
+    catch
+    {
+        compiler_diagnostic(C_ERROR_UNEXPECTED, ctx->ctx, ctx->ctx->current, NULL, "unexpected");
+    }
 }
 
 static void defer_visit_selection_statement(struct defer_visit_ctx* ctx, struct selection_statement* p_selection_statement)
@@ -542,64 +275,77 @@ static void defer_visit_block_item_list(struct defer_visit_ctx* ctx, struct bloc
     while (p_block_item)
     {
         defer_visit_block_item(ctx, p_block_item);
+
+        if (ctx->searching_label_mode && ctx->p_label)
+        {
+            //stop search
+            break;
+        }
+
         p_block_item = p_block_item->next;
     }
 }
 
 static void defer_visit_compound_statement(struct defer_visit_ctx* ctx, struct compound_statement* p_compound_statement)
 {
-    struct defer_defer_scope* _Opt p_defer = defer_visit_ctx_push_tail_block(ctx);
-    if (p_defer == NULL)
+    try
     {
-        return;
-    }
+        struct defer_scope* _Opt p_defer = defer_visit_ctx_push_child(ctx);
+        if (p_defer == NULL) throw;
+
     p_defer->p_compound_statement = p_compound_statement;
 
     defer_visit_block_item_list(ctx, &p_compound_statement->block_item_list);
 
-    defer_exit_block_visit(ctx, p_defer, p_compound_statement->last_token, &p_compound_statement->defer_list);
-
-    defer_visit_ctx_pop_tail_block(ctx);
+        defer_visit_ctx_pop_until(ctx, p_defer, ctx->searching_label_mode ? NULL : &p_compound_statement->defer_list);
+    }
+    catch
+    {
+        compiler_diagnostic(C_ERROR_UNEXPECTED, ctx->ctx, ctx->ctx->current, NULL, "unexpected");
+    }
 }
 
 static void defer_visit_do_while_statement(struct defer_visit_ctx* ctx, struct iteration_statement* p_iteration_statement)
 {
     assert(p_iteration_statement->first_token->type == TK_KEYWORD_DO);
-    //const bool nullable_enabled = ctx->ctx->options.null_checks_enabled;
+
     try
     {
-        struct defer_defer_scope* _Opt p_defer = defer_visit_ctx_push_tail_block(ctx);
+        struct defer_scope* _Opt p_defer = defer_visit_ctx_push_child(ctx);
         if (p_defer == NULL) throw;
+
         p_defer->p_iteration_statement = p_iteration_statement;
         defer_visit_secondary_block(ctx, p_iteration_statement->secondary_block);
-        defer_exit_block_visit(ctx, p_defer, p_iteration_statement->secondary_block->last_token, &p_iteration_statement->defer_list);
-        defer_visit_ctx_pop_tail_block(ctx);
+        defer_visit_ctx_pop_until(ctx, p_defer, &p_iteration_statement->defer_list);
     }
     catch
     {
+        compiler_diagnostic(C_ERROR_UNEXPECTED, ctx->ctx, ctx->ctx->current, NULL, "unexpected");
     }
 }
 
 static void defer_visit_while_statement(struct defer_visit_ctx* ctx, struct iteration_statement* p_iteration_statement)
 {
+    try
+    {
     assert(p_iteration_statement->first_token->type == TK_KEYWORD_WHILE);
 
-    if (p_iteration_statement->expression1 == NULL)
-        return;
+        if (p_iteration_statement->expression1 == NULL) throw;
 
-    struct defer_defer_scope* _Opt p_defer = defer_visit_ctx_push_tail_block(ctx);
-    if (p_defer == NULL)
-    {
-        return;
-    }
+        struct defer_scope* _Opt p_defer = defer_visit_ctx_push_child(ctx);
+        if (p_defer == NULL) throw;
 
     p_defer->p_iteration_statement = p_iteration_statement;
 
     defer_visit_secondary_block(ctx, p_iteration_statement->secondary_block);
 
     defer_visit_secondary_block(ctx, p_iteration_statement->secondary_block);
-    defer_exit_block_visit(ctx, p_defer, p_iteration_statement->secondary_block->last_token, &p_iteration_statement->defer_list);
-    defer_visit_ctx_pop_tail_block(ctx);
+        defer_visit_ctx_pop_until(ctx, p_defer, &p_iteration_statement->defer_list);
+    }
+    catch
+    {
+        compiler_diagnostic(C_ERROR_UNEXPECTED, ctx->ctx, ctx->ctx->current, NULL, "unexpected");
+    }
 }
 
 static void defer_visit_for_statement(struct defer_visit_ctx* ctx, struct iteration_statement* p_iteration_statement)
@@ -614,33 +360,16 @@ static void defer_visit_for_statement(struct defer_visit_ctx* ctx, struct iterat
             defer_visit_init_declarator_list(ctx, &p_iteration_statement->declaration->init_declarator_list);
         }
 
-        struct defer_defer_scope* _Opt p_defer = defer_visit_ctx_push_tail_block(ctx);
-        if (p_defer == NULL)
-            throw;
+        struct defer_scope* _Opt p_defer = defer_visit_ctx_push_child(ctx);
+        if (p_defer == NULL) throw;
 
         p_defer->p_iteration_statement = p_iteration_statement;
         defer_visit_secondary_block(ctx, p_iteration_statement->secondary_block);
-        defer_visit_ctx_pop_tail_block(ctx);
-
-        const bool b_secondary_block_ends_with_jump =
-            secondary_block_ends_with_jump(p_iteration_statement->secondary_block);
-
-        /*we visit again*/
-        if (!b_secondary_block_ends_with_jump)
-        {
-            struct defer_defer_scope* _Opt p_defer2 = defer_visit_ctx_push_tail_block(ctx);
-            if (p_defer2 == NULL) throw;
-
-            p_defer2->p_iteration_statement = p_iteration_statement;
-            defer_visit_secondary_block(ctx, p_iteration_statement->secondary_block);
-            defer_exit_block_visit(ctx, p_defer2, p_iteration_statement->secondary_block->last_token, &p_iteration_statement->defer_list);
-            defer_visit_ctx_pop_tail_block(ctx);
-        }
     }
     catch
     {
+        compiler_diagnostic(C_ERROR_UNEXPECTED, ctx->ctx, ctx->ctx->current, NULL, "unexpected");
     }
-
 }
 
 static void defer_visit_iteration_statement(struct defer_visit_ctx* ctx, struct iteration_statement* p_iteration_statement)
@@ -662,36 +391,326 @@ static void defer_visit_iteration_statement(struct defer_visit_ctx* ctx, struct 
     }
 }
 
+static struct defer_scope* find_common_defer_scope(struct defer_scope* p_label_list, struct defer_scope* p_goto_list)
+{
+    //we have two scope lists, one at the goto point and another at the label point.
+    // this list must have common prefix, in the  worst  case is the function scope.
+
+    //A B C D E F G
+    //A B 1 2 
+    struct defer_scope* p1 = p_label_list;
+    while (p_label_list)
+    {
+        struct defer_scope* p = p_goto_list;
+        while (p)
+        {
+            if (p->p_declarator == p1->p_declarator &&
+                p->p_defer_statement == p1->p_defer_statement &&
+                p->p_defer_block == p1->p_defer_block &&
+                p->p_try_statement == p1->p_try_statement &&
+                p->p_selection_statement == p1->p_selection_statement &&
+                p->p_iteration_statement == p1->p_iteration_statement &&
+                p->p_statement == p1->p_statement &&
+                p->p_compound_statement == p1->p_compound_statement &&
+                p->p_function_body == p1->p_function_body &&
+                p->p_secondary_block == p1->p_secondary_block &&
+                p->p_primary_block == p1->p_primary_block &&
+                p->label == p1->label)
+            {
+                return p;
+            }
+
+            p = p->previous;
+        }
+
+        p1 = p1->previous;
+    }
+    return NULL;
+}
+
 static void defer_visit_jump_statement(struct defer_visit_ctx* ctx, struct jump_statement* p_jump_statement)
 {
+    if (ctx->searching_label_mode)
+        return;
+
     assert(ctx->tail_block != NULL);
 
     try
     {
         if (p_jump_statement->first_token->type == TK_KEYWORD_CAKE_THROW)
         {
-            defer_check_all_defer_until_try(ctx, ctx->tail_block, p_jump_statement->first_token, &p_jump_statement->defer_list);
+            struct defer_scope* _Opt p = ctx->tail_block;
+            while (p)
+            {
+                if (p->p_try_statement)
+                    break;
+
+                if (p->p_declarator)
+                {
+                    struct defer_list_item* item = calloc(1, sizeof * item);
+                    if (item == NULL) throw;
+
+                    item->declarator = p->p_declarator;
+                    defer_list_add(&p_jump_statement->defer_list, item);
+
+                }
+                else if (p->p_defer_statement)
+                {
+                    struct defer_list_item* item = calloc(1, sizeof * item);
+                    if (item == NULL) throw;
+
+                    item->defer_statement = p->p_defer_statement;
+                    defer_list_add(&p_jump_statement->defer_list, item);
+                }
+                if (p->p_defer_block)
+                {
+                    compiler_diagnostic(C_ERROR_EXIT_DEFER, ctx->ctx, p->p_defer_block->first_token, NULL, "is jumping out of defer");
+                }
+                p = p->previous;
+            }
+
         }
         else if (p_jump_statement->first_token->type == TK_KEYWORD_RETURN)
         {
-            defer_exit_function_visit(ctx, ctx->tail_block, p_jump_statement->first_token, &p_jump_statement->defer_list);
+            struct defer_scope* _Opt p = ctx->tail_block;
+            while (p)
+            {
+                if (p->p_declarator)
+                {
+                    struct defer_list_item* item = calloc(1, sizeof * item);
+                    if (item == NULL) throw;
+
+                    item->declarator = p->p_declarator;
+                    defer_list_add(&p_jump_statement->defer_list, item);
         }
-        else if (p_jump_statement->first_token->type == TK_KEYWORD_CONTINUE)
+                else if (p->p_defer_statement)
         {
-            defer_check_all_defer_until_iter(ctx, ctx->tail_block, p_jump_statement->first_token, &p_jump_statement->defer_list);
+                    struct defer_list_item* item = calloc(1, sizeof * item);
+                    if (item == NULL) throw;
+
+                    item->defer_statement = p->p_defer_statement;
+                    defer_list_add(&p_jump_statement->defer_list, item);
         }
-        else if (p_jump_statement->first_token->type == TK_KEYWORD_BREAK)
+
+                if (p->p_defer_block)
         {
-            defer_exit_iteration_or_switch_statement_visit(ctx, ctx->tail_block, p_jump_statement->first_token, &p_jump_statement->defer_list);
+                    compiler_diagnostic(C_ERROR_EXIT_DEFER, ctx->ctx, p->p_defer_block->first_token, NULL, "is jumping out of defer");
+                }
+                p = p->previous;
+            }
+        }
+        else if (p_jump_statement->first_token->type == TK_KEYWORD_CONTINUE ||
+                 p_jump_statement->first_token->type == TK_KEYWORD_BREAK)
+        {
+            const bool break_jump = p_jump_statement->first_token->type == TK_KEYWORD_BREAK;
+
+            struct defer_scope* _Opt p = ctx->tail_block;
+            while (p)
+            {
+
+                if (p->p_iteration_statement)
+                    break;
+
+                //break  also works in switch
+                if (break_jump &&
+                    p->p_selection_statement &&
+                    p->p_selection_statement->first_token->type == TK_KEYWORD_SWITCH)
+                {
+                    break;
+                }
+
+                if (p->p_declarator)
+                {
+                    struct defer_list_item* item = calloc(1, sizeof * item);
+                    if (item == NULL) throw;
+
+                    item->declarator = p->p_declarator;
+                    defer_list_add(&p_jump_statement->defer_list, item);
+                }
+                else if (p->p_defer_statement)
+                {
+                    struct defer_list_item* item = calloc(1, sizeof * item);
+                    if (item == NULL) throw;
+
+                    item->defer_statement = p->p_defer_statement;
+                    defer_list_add(&p_jump_statement->defer_list, item);
+                }
+
+                if (p->p_defer_block)
+                {
+                    if (break_jump)
+                        compiler_diagnostic(C_ERROR_EXIT_DEFER, ctx->ctx, p_jump_statement->first_token, NULL, "break cannot jump out of defer");
+                    else
+                        compiler_diagnostic(C_ERROR_EXIT_DEFER, ctx->ctx, p_jump_statement->first_token, NULL, "continue cannot jump out of defer");
+                }
+                p = p->previous;
+            }
         }
         else if (p_jump_statement->first_token->type == TK_KEYWORD_GOTO)
         {
-            assert(p_jump_statement->label != NULL);
-            defer_check_all_defer_until_label(ctx,
-                ctx->tail_block,
-                p_jump_statement->label->lexeme,
-                p_jump_statement->first_token,
-                &p_jump_statement->defer_list);
+            //Visit to find the route until label
+            struct defer_visit_ctx label_ctx = { 0 };
+            label_ctx.searching_label_mode = true;
+            label_ctx.label_name = p_jump_statement->label->lexeme;
+            defer_start_visit_declaration(&label_ctx, ctx->p_declaration);
+
+            struct defer_scope* p_common =
+                find_common_defer_scope(label_ctx.tail_block /*label*/, ctx->tail_block /*goto*/);
+
+            if (p_common == NULL)
+            {
+                //should be not null. However, test-mode code 
+                //"eats" errors and we can be in this situation.
+                //when the label is not found (test that checks for the error label is not found)
+            }
+
+            struct defer_scope* _Owner _Opt p1 = label_ctx.tail_block;
+            while (p1)
+            {
+                if (p1->p_defer_statement)
+                {
+                    bool found = false;
+                    struct defer_scope* _Owner _Opt p0 = ctx->tail_block;
+                    while (p0)
+                    {
+                        if (p0->p_defer_statement == p1->p_defer_statement)
+                        {
+                            found = true; //quando acha 1 acha todos??
+                            break;
+                        }
+                        p0 = p0->previous;
+                    }
+
+                    if (!found)
+                    {
+                        compiler_diagnostic(C_ERROR_EXIT_DEFER, ctx->ctx, p_jump_statement->first_token, NULL, "jumping over defer. from here");
+                        compiler_diagnostic(W_LOCATION, ctx->ctx, label_ctx.p_label->p_first_token, NULL, "to here");
+                        compiler_diagnostic(W_LOCATION, ctx->ctx, p1->p_defer_statement->first_token, NULL, "defer");
+                    }
+                }
+                else if (p1->p_declarator && type_is_vla(&p1->p_declarator->type))
+                {
+                    bool found = false;
+                    struct defer_scope* _Owner _Opt p0 = ctx->tail_block;
+                    while (p0)
+                    {
+                        if (p0->p_declarator == p1->p_declarator)
+                        {
+                            found = true; //quando acha 1 acha todos??
+                            break;
+                        }
+                        p0 = p0->previous;
+                    }
+
+                    if (!found)
+                    {
+                        compiler_diagnostic(C_ERROR_JUMP_OVER_VLA, ctx->ctx, p_jump_statement->first_token, NULL, "jumping over vla. from here");
+                        compiler_diagnostic(W_LOCATION, ctx->ctx, label_ctx.p_label->p_first_token, NULL, "to here");
+                        compiler_diagnostic(W_LOCATION, ctx->ctx, p1->p_declarator->first_token_opt, NULL, "declarator");
+                    }
+                }
+                else if (p1->p_defer_block)
+                {
+                    bool found = false;
+                    struct defer_scope* _Owner _Opt p0 = ctx->tail_block;
+                    while (p0)
+                    {
+                        if (p0->p_defer_block == p1->p_defer_block)
+                        {
+                            found = true; //quando acha 1 acha todos??
+                            break;
+                        }
+                        p0 = p0->previous;
+                    }
+                    if (!found)
+                    {
+                        compiler_diagnostic(C_ERROR_EXIT_DEFER, ctx->ctx, p_jump_statement->first_token, NULL, "jumping into defer. from here");
+                        compiler_diagnostic(W_LOCATION, ctx->ctx, label_ctx.p_label->p_first_token, NULL, "to here");
+                        //compiler_diagnostic(W_LOCATION, ctx->ctx, p1->p_defer_block->first_token, NULL, "defer");
+                    }
+                }
+                p1 = p1->previous;
+            }
+
+            const char* label = p_jump_statement->label->lexeme;
+            struct defer_scope* _Opt p = ctx->tail_block;
+            struct defer_scope* _Opt start = p;
+            while (p)
+            {
+                if (p_common == p)
+                {
+                    //we are in the common, we dont need to up anymore.
+                    break;
+                }
+
+                if (p->p_compound_statement ||
+                    p->p_iteration_statement ||
+                    p->p_primary_block ||
+                    p->p_secondary_block)
+                {
+                    //start -> p
+                    struct defer_scope* _Opt p2 = start;
+                    while (p2 != p)
+                    {
+                        if (p2->p_declarator)
+                        {
+                            struct defer_list_item* item = calloc(1, sizeof * item);
+                            if (item == NULL) throw;
+                            item->declarator = p2->p_declarator;
+                            defer_list_add(&p_jump_statement->defer_list, item);
+                        }
+                        else if (p2->p_defer_statement)
+                        {
+                            struct defer_list_item* item = calloc(1, sizeof * item);
+                            if (item == NULL) throw;
+                            item->defer_statement = p2->p_defer_statement;
+                            defer_list_add(&p_jump_statement->defer_list, item);
+                        }
+
+                        if (p->p_defer_block)
+                        {
+                            compiler_diagnostic(C_ERROR_EXIT_DEFER, ctx->ctx, p_jump_statement->first_token, NULL, "jumping out of defer.");
+                            compiler_diagnostic(W_LOCATION, ctx->ctx, label_ctx.p_label->p_first_token, NULL, "to here");
+                            // compiler_diagnostic(W_LOCATION, ctx->ctx, p1->p_defer_statement->first_token, NULL, "defer");                            
+                        }
+                        p2 = p2->previous;
+                    }
+                    start = p;
+                }
+                else if (p->label &&
+                         p->label->p_first_token &&
+                         strcmp(p->label->p_first_token->lexeme, label) == 0)
+                {
+                    struct defer_scope* _Opt p2 = start;
+                    while (p2 != p)
+                    {
+                        if (p2->p_declarator)
+                        {
+                            struct defer_list_item* item = calloc(1, sizeof * item);
+                            if (item == NULL) throw;
+                            item->declarator = p2->p_declarator;
+                            defer_list_add(&p_jump_statement->defer_list, item);
+                        }
+                        else if (p2->p_defer_statement)
+                        {
+                            struct defer_list_item* item = calloc(1, sizeof * item);
+                            if (item == NULL) throw;
+                            item->defer_statement = p2->p_defer_statement;
+                            defer_list_add(&p_jump_statement->defer_list, item);
+                        }
+                        p2 = p2->previous;
+                    }
+                    break; //pode parar de subir
+                }
+
+                if (p->p_defer_block)
+                {
+                    compiler_diagnostic(C_ERROR_EXIT_DEFER, ctx->ctx, p_jump_statement->first_token, NULL, "goto is jumping out of defer.");
+                    compiler_diagnostic(W_LOCATION, ctx->ctx, label_ctx.p_label->p_first_token, NULL, "to here");
+                }
+
+                p = p->previous;
+            }
         }
         else
         {
@@ -701,6 +720,7 @@ static void defer_visit_jump_statement(struct defer_visit_ctx* ctx, struct jump_
     }
     catch
     {
+        compiler_diagnostic(C_ERROR_UNEXPECTED, ctx->ctx, ctx->ctx->current, NULL, "unexpected");
     }
 }
 
@@ -711,11 +731,7 @@ static void defer_visit_labeled_statement(struct defer_visit_ctx* ctx, struct la
 
 static void defer_visit_primary_block(struct defer_visit_ctx* ctx, struct primary_block* p_primary_block)
 {
-    if (p_primary_block->defer_statement)
-    {
-        defer_visit_defer_statement(ctx, p_primary_block->defer_statement);
-    }
-    else if (p_primary_block->compound_statement)
+    if (p_primary_block->compound_statement)
     {
         defer_visit_compound_statement(ctx, p_primary_block->compound_statement);
     }
@@ -764,7 +780,7 @@ static void defer_visit_expression(struct defer_visit_ctx* ctx, struct expressio
         //without it static analysis will not work
         defer_visit_compound_statement(ctx, p_expression->compound_statement);
         //assert(ctx->tail_block == NULL);
-        //struct defer_defer_scope* _Opt p_defer = defer_visit_ctx_push_tail_block(ctx);
+        //struct defer_scope* _Opt p_defer = defer_visit_ctx_push_child(ctx);
         //if (p_defer == NULL)
         //{
           //  return;
@@ -777,19 +793,20 @@ static void defer_visit_expression(struct defer_visit_ctx* ctx, struct expressio
         //parameters
         //if (ctx->tail_block)
         //{
-          //  defer_exit_block_visit(ctx,
+          //  //exit_block_visit(ctx,
           //      ctx->tail_block,
           //      p_expression->compound_statement->last_token,
           //      &p_expression->defer_list);
         //}
 
-        //defer_visit_ctx_pop_tail_block(ctx);
+        //
     }
     break;
     default:
         break;
     }
 }
+
 static void defer_visit_expression_statement(struct defer_visit_ctx* ctx, struct expression_statement* p_expression_statement)
 {
     if (p_expression_statement->expression_opt)
@@ -809,6 +826,10 @@ static void defer_visit_unlabeled_statement(struct defer_visit_ctx* ctx, struct 
     else if (p_unlabeled_statement->jump_statement)
     {
         defer_visit_jump_statement(ctx, p_unlabeled_statement->jump_statement);
+    }
+    else if (p_unlabeled_statement->defer_statement)
+    {
+        defer_visit_defer_statement(ctx, p_unlabeled_statement->defer_statement);
     }
     else
     {
@@ -830,6 +851,8 @@ static void defer_visit_statement(struct defer_visit_ctx* ctx, struct statement*
 
 static void defer_visit_block_item(struct defer_visit_ctx* ctx, struct block_item* p_block_item)
 {
+    try
+    {
     if (p_block_item->declaration)
     {
         defer_visit_declaration(ctx, p_block_item->declaration);
@@ -840,6 +863,62 @@ static void defer_visit_block_item(struct defer_visit_ctx* ctx, struct block_ite
     }
     else if (p_block_item->label)
     {
+            if (p_block_item->first_token->type == TK_IDENTIFIER)
+            {
+                if (ctx->searching_label_mode)
+                {
+                    assert(ctx->label_name != NULL);
+
+                    if (strcmp(ctx->label_name, p_block_item->label->p_first_token->lexeme) == 0)
+                    {
+                        ctx->p_label = p_block_item->label;
+                        return;
+                    }
+                }
+
+                struct defer_scope* _Opt p_defer = defer_visit_ctx_push_child(ctx);
+                if (p_defer == NULL) throw;
+                p_defer->label = p_block_item->label;
+            }
+            else if (p_block_item->first_token->type == TK_KEYWORD_CASE)
+            {
+                /*
+                   switch (i)
+                   {
+                     _Defer {}  // constraint violation
+                     case 1:
+                     break;
+                   }
+
+                   switch (i)
+                   {
+                     _Defer {
+                       case 1: // constraint violation
+                     }
+                     break;
+                   }
+                */
+                struct defer_scope* _Opt p = ctx->tail_block;
+                while (p)
+                {
+                    if (p->p_selection_statement && p->p_selection_statement->first_token->type == TK_KEYWORD_SWITCH)
+                    {
+                        //ok we found the switch
+                        break;
+                    }
+
+                    if (p->p_defer_statement)
+                    {
+                        compiler_diagnostic(C_ERROR_JUMP_OVER_DEFER, ctx->ctx, p->p_defer_statement->first_token, NULL, "switch is jumping over or into defer");
+                    }
+                    p = p->previous;
+                }
+            }
+        }
+    }
+    catch
+    {
+        compiler_diagnostic(C_ERROR_UNEXPECTED, ctx->ctx, ctx->ctx->current, NULL, "unexpected");
     }
 }
 
@@ -893,9 +972,9 @@ static void defer_visit_declarator(struct defer_visit_ctx* ctx, struct declarato
                 return;
             }
 
-            struct defer_defer_scope* _Opt p_defer = defer_visit_ctx_push_child(ctx);
+            struct defer_scope* _Opt p_defer = defer_visit_ctx_push_child(ctx);
             if (p_defer == NULL) throw;
-            p_defer->declarator = p_declarator;
+            p_defer->p_declarator = p_declarator;
         }
 
         if (p_declarator->direct_declarator)
@@ -905,6 +984,7 @@ static void defer_visit_declarator(struct defer_visit_ctx* ctx, struct declarato
     }
     catch
     {
+        compiler_diagnostic(C_ERROR_UNEXPECTED, ctx->ctx, ctx->ctx->current, NULL, "unexpected");
     }
 }
 
@@ -933,10 +1013,15 @@ void defer_visit_declaration(struct defer_visit_ctx* ctx, struct declaration* p_
 
 void defer_start_visit_declaration(struct defer_visit_ctx* ctx, struct declaration* p_declaration)
 {
+    ctx->p_declaration = p_declaration;
+
+    try
+    {
+
     if (p_declaration->function_body)
     {
         assert(ctx->tail_block == NULL);
-        struct defer_defer_scope* _Opt p_defer = defer_visit_ctx_push_tail_block(ctx);
+            struct defer_scope* _Opt p_defer = defer_visit_ctx_push_child(ctx);
         if (p_defer == NULL)
         {
             return;
@@ -945,32 +1030,36 @@ void defer_start_visit_declaration(struct defer_visit_ctx* ctx, struct declarati
 
         defer_visit_declaration(ctx, p_declaration);
         assert(p_declaration->function_body != NULL); //defer_visit_declaration does not change this
+            defer_visit_ctx_pop_until(ctx, p_defer, &p_declaration->function_body->defer_list);
 
         //parameters
         if (ctx->tail_block)
         {
-            defer_exit_block_visit(ctx,
-                ctx->tail_block,
-                p_declaration->function_body->last_token,
-                &p_declaration->defer_list); //maybe use the same defer_list from body??
+                //exit_block_visit(ctx,
+                  //  ctx->tail_block,
+                    //p_declaration->function_body->last_token,
+                    //&p_declaration->defer_list); //maybe use the same defer_list from body??
         }
-
-        defer_visit_ctx_pop_tail_block(ctx);
     }
     else
     {
-        struct defer_defer_scope* _Opt p_defer = defer_visit_ctx_push_tail_block(ctx);
-        if (p_defer == NULL)
-        {
-            return;
+            struct defer_scope* _Opt p_defer = defer_visit_ctx_push_child(ctx);
+            if (p_defer == NULL) throw;
+            defer_visit_declaration(ctx, p_declaration);
         }
-        defer_visit_declaration(ctx, p_declaration);
-        defer_visit_ctx_pop_tail_block(ctx);
+    }
+    catch
+        {
+        compiler_diagnostic(C_ERROR_UNEXPECTED, ctx->ctx, ctx->ctx->current, NULL, "unexpected");
     }
 }
 
 void defer_visit_ctx_destroy(_Dtor struct defer_visit_ctx* p)
 {
-    assert(p->tail_block == NULL);
+    if (p->tail_block != NULL)
+    {
+        assert(p->tail_block->previous == NULL);
+        free(p->tail_block);
+    }
 }
 

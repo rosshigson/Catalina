@@ -59,7 +59,7 @@ void defer_statement_delete(struct defer_statement* _Owner _Opt p)
 {
     if (p)
     {
-        secondary_block_delete(p->secondary_block);
+        unlabeled_statement_delete(p->unlabeled_statement);
         free(p);
     }
 }
@@ -339,11 +339,14 @@ _Bool compiler_diagnostic(enum diagnostic_id w,
     const bool is_error = options_diagnostic_is_error(&ctx->options, w);
     const bool is_warning = options_diagnostic_is_warning(&ctx->options, w);
     const bool is_note = options_diagnostic_is_note(&ctx->options, w);
-
+    const bool is_location = (w == W_LOCATION);
 
     if (is_error)
     {
         ctx->p_report->error_count++;
+    }
+    else if (is_location)
+    {
     }
     else if (is_warning)
     {
@@ -363,7 +366,6 @@ _Bool compiler_diagnostic(enum diagnostic_id w,
             return false;
         }
 
-        if (w != W_LOCATION)
             ctx->p_report->info_count++;
     }
     else
@@ -397,39 +399,42 @@ _Bool compiler_diagnostic(enum diagnostic_id w,
     if (ctx->options.visual_studio_ouput_format)
     {
         if (is_error)
-            printf("error C%d: ", w);
+            printf("error %d: ", w);
         else if (is_warning)
-            printf("warning C%d: ", w);
+            printf("warning %d: ", w);
         else if (is_note)
             printf("note: ");
+        else if (is_location)
+            printf(": ");
 
-        printf("%s\n", buffer);
+        printf("%s", buffer);
     }
     else
     {
         if (is_error)
         {
             if (color_enabled)
-                printf(LIGHTRED "error " WHITE "C%04d: %s\n" COLOR_RESET, w, buffer);
+                printf(LIGHTRED "error " WHITE "%d: %s" COLOR_RESET, w, buffer);
             else
-                printf("error "        "C%04d: %s\n", w, buffer);
+                printf("error "        "%d: %s", w, buffer);
         }
         else if (is_warning)
         {
             if (color_enabled)
-                printf(LIGHTMAGENTA "warning " WHITE "C%04d: %s\n" COLOR_RESET, w, buffer);
+                printf(LIGHTMAGENTA "warning " WHITE "%d: %s" COLOR_RESET, w, buffer);
             else
-                printf("warning "  "C%04d: %s\n", w, buffer);
+                printf("warning "  "%d: %s", w, buffer);
         }
-        else if (is_note)
+        else if (is_note || is_location)
         {
             if (color_enabled)
-                printf(LIGHTCYAN "note: " WHITE "%s\n" COLOR_RESET, buffer);
+                printf(LIGHTCYAN "note: " WHITE "%s" COLOR_RESET, buffer);
             else
-                printf("note: " "%s\n", buffer);
+                printf("note: " "%s", buffer);
         }
     }
 
+    printf("\n");
     print_line_and_token(&marker, color_enabled);
 
 
@@ -1195,6 +1200,9 @@ enum token_type is_keyword(const char* text, enum target target)
             return TK_KEYWORD__DTOR; /*extension*/
         if (strcmp("_Opt", text) == 0)
             return TK_KEYWORD_CAKE_OPT; /*extension*/
+
+        if (strcmp("_Defer", text) == 0)
+            return TK_KEYWORD_DEFER;
 
         if (strcmp("_View", text) == 0)
             return TK_KEYWORD_CAKE_VIEW; /*extension*/
@@ -2105,6 +2113,8 @@ static void check_unused_parameters(struct parser_ctx* ctx, struct parameter_lis
     }
 }
 
+struct secondary_block* _Owner _Opt secondary_block(struct parser_ctx* ctx);
+
 struct declaration* _Owner _Opt declaration(struct parser_ctx* ctx,
     struct attribute_specifier_sequence* _Owner _Opt p_attribute_specifier_sequence,
     enum storage_class_specifier_flags storage_specifier_flags,
@@ -2195,56 +2205,6 @@ struct declaration* _Owner _Opt declaration(struct parser_ctx* ctx,
 
             }
             struct diagnostic before_function_diagnostics = ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index];
-#if EXPERIMENTAL_CONTRACTS
-
-
-            if (ctx->current->type == TK_KEYWORD_TRUE ||
-                ctx->current->type == TK_KEYWORD_FALSE ||
-                ctx->current->type == TK_IDENTIFIER)
-            {
-                for (;;)
-                {
-                    if (ctx->current == NULL)
-                    {
-                        unexpected_end_of_file(ctx);
-                        throw;
-                    }
-
-                    enum token_type type = ctx->current->type;
-                    if (type != TK_KEYWORD_TRUE &&
-                        type != TK_KEYWORD_FALSE &&
-                        type != TK_IDENTIFIER)
-                    {
-                        throw;
-                    }
-                    parser_match(ctx); //true
-                    parser_match(ctx); //(
-
-                    if (type != TK_KEYWORD_FALSE)
-                    {
-                        assert(p_declarator->p_expression_true == NULL);
-                        p_declarator->p_expression_true = expression(ctx, EXPRESSION_EVAL_MODE_VALUE_AND_TYPE);
-                    }
-                    else
-                    {
-                        assert(p_declarator->p_expression_false == NULL);
-                        p_declarator->p_expression_false = expression(ctx, EXPRESSION_EVAL_MODE_VALUE_AND_TYPE);
-                    }
-                    parser_match(ctx); //)
-
-                    if (ctx->current == NULL)
-                    {
-                        unexpected_end_of_file(ctx);
-                        throw;
-                    }
-
-                    if (ctx->current->type != ',')
-                        break;
-
-                    parser_match(ctx); //)
-                }
-            }
-#endif
             struct declarator* _Opt p_current_function_opt = ctx->p_current_function_opt;
             ctx->p_current_function_opt = p_declarator;
 
@@ -2335,7 +2295,8 @@ struct declaration* _Owner _Opt declaration(struct parser_ctx* ctx,
                 defer_start_visit_declaration(&ctx2, p_declaration);
                 defer_visit_ctx_destroy(&ctx2);
 
-                if (ctx->options.flow_analysis)
+                
+                if (ctx->p_report->error_count == 0 && ctx->options.flow_analysis)
                 {
                     /*
                      Now we have the full function AST let´s visit to Analise
@@ -2567,7 +2528,7 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
                             ss_clear(&ss);
                             print_type_no_names(&ss, &p_init_declarator->p_declarator->type, ctx->options.target);
 
-                            compiler_diagnostic(C_ERROR_REDECLARATION,
+                            compiler_diagnostic(W_LOCATION,
                                 ctx,
                                 p_previous_declarator->name_opt,
                                 NULL,
@@ -3294,6 +3255,13 @@ struct attribute* _Owner _Opt extended_decl_modifier_seq(struct parser_ctx* ctx)
         if (strcmp(p_type_specifier->attribute_token->lexeme, "align") == 0)
         {
             parser_match(ctx); //(
+
+            if (ctx->current == NULL)
+            {
+                unexpected_end_of_file(ctx);
+                throw;
+            }
+
             int a = atoi(ctx->current->lexeme);
             if (a == 8)
                 p_type_specifier->msvc_declspec_flags |= MSVC_DECLSPEC_ALIGN_8_FLAG;
@@ -3486,67 +3454,6 @@ enum msvc_declspec_flags msvc_declspec_sequence_opt(struct parser_ctx* ctx)
 
     }
     return msvc_declspec_flags;
-}
-
-static void gcc_attribute_argument(struct parser_ctx* ctx)
-{
-    /*
-       attribute-argument:
-         identifier
-         constant-expression
-         string-literal
-    */
-    if (ctx->current == NULL)
-    {
-        unexpected_end_of_file(ctx);
-        return;
-    }
-
-    if (token_is_identifier_or_keyword(ctx->current->type))
-    {
-        parser_match(ctx);
-
-    }
-    else if (ctx->current->type == TK_STRING_LITERAL)
-    {
-        parser_match(ctx);
-    }
-    else //constant expressions
-    {
-        struct expression* expr = constant_expression(ctx, true, EXPRESSION_EVAL_MODE_VALUE_AND_TYPE);
-        expression_delete(expr);
-    }
-}
-
-static void gcc_attribute_argument_list(struct parser_ctx* ctx)
-{
-    /*
-      attribute-argument-list:
-          attribute-argument
-          attribute-argument-list , attribute-argument
-    */
-
-    if (ctx->current == NULL)
-    {
-        unexpected_end_of_file(ctx);
-        return;
-    }
-
-    for (;;)
-    {
-        gcc_attribute_argument(ctx);
-
-        if (ctx->current == NULL)
-        {
-            unexpected_end_of_file(ctx);
-            return;
-        }
-
-        if (ctx->current->type != ',')
-            break;
-
-        parser_match(ctx);
-    }
 }
 
 static void gcc_attribute(struct parser_ctx* ctx)
@@ -5193,12 +5100,6 @@ struct enum_specifier* _Owner _Opt enum_specifier(struct parser_ctx* ctx)
                 p_enum_specifier->p_complete_enum_specifier = p_enum_specifier;
                 hash_item_set_destroy(&item);
             }
-
-            //if (!has_identifier)
-            //{
-              //  compiler_diagnostic(C_ERROR_MISSING_ENUM_TAG_NAME, ctx, ctx->current, "missing enum tag name");
-                //throw;
-            //}
         }
     }
     catch
@@ -6116,6 +6017,59 @@ struct function_declarator* _Owner _Opt function_declarator(struct direct_declar
         if (parser_match_tk(ctx, ')') != 0)
             throw;
 
+
+#ifdef EXPERIMENTAL_CONTRACTS_II
+        /*
+            bool is_empty(struct X* p)
+            in{
+
+            }
+            out(r)
+            {
+                if (r)
+                    assert(p->x == 0);
+            };
+        */
+        if (ctx->current->type == TK_IDENTIFIER && strcmp(ctx->current->lexeme, "in") == 0)
+        {
+            scope_list_push(&ctx->scopes, &p_function_declarator->parameters_scope);
+
+            parser_match(ctx);
+
+            p_function_declarator->p_in_block = secondary_block(ctx);
+
+            scope_list_pop(&ctx->scopes);
+
+            if (p_function_declarator->p_in_block == NULL)
+                throw;
+        }
+
+        if (ctx->current->type == TK_IDENTIFIER && strcmp(ctx->current->lexeme, "out") == 0)
+        {
+            scope_list_push(&ctx->scopes, &p_function_declarator->parameters_scope);
+
+            parser_match(ctx);
+            if (ctx->current->type == '(')
+            {
+                parser_match(ctx);
+
+                p_function_declarator->p_out_parameter_declaration = parameter_declaration(ctx);
+
+                if (parser_match_tk(ctx, ')') != 0)
+                {
+                    throw;
+                }
+            }
+
+            p_function_declarator->p_out_block = secondary_block(ctx);
+
+            scope_list_pop(&ctx->scopes);
+
+            if (p_function_declarator->p_out_block == NULL)
+                throw;
+
+        }
+#endif
     }
     catch
     {
@@ -6986,8 +6940,22 @@ void defer_list_destroy(_Dtor struct defer_list* p)
         free(item);
         item = next;
     }
-    free(p);
+    //free(p);
+}
 
+void defer_list_clear(struct defer_list* p)
+{
+    struct defer_list_item* _Owner _Opt item = p->head;
+    while (item)
+    {
+        struct defer_list_item* _Owner _Opt next = item->next;
+        item->next = NULL;
+        free(item);
+        item = next;
+    }
+
+    p->head = NULL;
+    p->tail = NULL;
 }
 
 
@@ -8015,7 +7983,7 @@ bool first_of_attribute(const struct parser_ctx* ctx)
 
     return false;
 }
-enum attribute_flags attribute_token(struct parser_ctx* ctx, struct attribute_specifier* p_attribute_specifier)
+enum attribute_flags attribute_token(struct parser_ctx* ctx, struct attribute* p_attribute, struct attribute_specifier* p_attribute_specifier)
 {
     enum attribute_flags attribute_flags = 0;
 
@@ -8028,6 +7996,8 @@ enum attribute_flags attribute_token(struct parser_ctx* ctx, struct attribute_sp
         }
 
         struct token* attr_token = ctx->current;
+
+        p_attribute->attribute_token = attr_token;
 
         bool is_standard_attribute = false;
         if (strcmp(attr_token->lexeme, "deprecated") == 0)
@@ -8094,6 +8064,8 @@ enum attribute_flags attribute_token(struct parser_ctx* ctx, struct attribute_sp
 
         if (ctx->current->type == '::')
         {
+            p_attribute->attribute_prefix = p_attribute->attribute_token;
+
             parser_match(ctx);
             if (is_cake_attr)
             {
@@ -8122,6 +8094,7 @@ enum attribute_flags attribute_token(struct parser_ctx* ctx, struct attribute_sp
 
             if (token_is_identifier_or_keyword(ctx->current->type))
             {
+                p_attribute->attribute_token = ctx->current;
                 parser_match(ctx);
             }
             else
@@ -8160,7 +8133,7 @@ struct attribute* _Owner _Opt attribute(struct parser_ctx* ctx, struct attribute
         if (p_attribute == NULL)
             throw;
 
-        enum attribute_flags attribute_flags = attribute_token(ctx, p_attribute_specifier);
+        enum attribute_flags attribute_flags = attribute_token(ctx, p_attribute, p_attribute_specifier);
 
         if (ctx->current == NULL)
         {
@@ -8267,6 +8240,24 @@ struct balanced_token_sequence* _Owner _Opt balanced_token_sequence_opt(struct p
                 count2--;
             else if (ctx->current->type == '{')
                 count3--;
+
+            if (ctx->current->type != TK_COMMA)
+            {
+                struct balanced_token* new_token = calloc(1, sizeof(struct balanced_token));
+                if (new_token == NULL) throw;
+
+                new_token->token = ctx->current;
+                if (p_balanced_token_sequence->tail == NULL)
+                {
+                    p_balanced_token_sequence->head = new_token;
+                }
+                else
+                {
+                    p_balanced_token_sequence->tail->next = new_token;
+                }
+                p_balanced_token_sequence->tail = new_token;
+            }
+
             parser_match(ctx);
         }
         if (count2 != 0)
@@ -8353,12 +8344,6 @@ struct primary_block* _Owner _Opt primary_block(struct parser_ctx* ctx)
         {
             p_primary_block->iteration_statement = iteration_statement(ctx);
             if (p_primary_block->iteration_statement == NULL)
-                throw;
-        }
-        else if (ctx->current->type == TK_KEYWORD_DEFER)
-        {
-            p_primary_block->defer_statement = defer_statement(ctx);
-            if (p_primary_block->defer_statement == NULL)
                 throw;
         }
         else if (ctx->current->type == TK_KEYWORD_CAKE_TRY ||
@@ -8502,7 +8487,6 @@ void primary_block_delete(struct primary_block* _Owner _Opt p)
     if (p)
     {
         compound_statement_delete(p->compound_statement);
-        defer_statement_delete(p->defer_statement);
         iteration_statement_delete(p->iteration_statement);
         selection_statement_delete(p->selection_statement);
         try_statement_delete(p->try_statement);
@@ -8518,7 +8502,6 @@ static bool first_of_primary_block(const struct parser_ctx* ctx)
     if (first_of_compound_statement(ctx) ||
         first_of_selection_statement(ctx) ||
         first_of_iteration_statement(ctx) ||
-        ctx->current->type == TK_KEYWORD_DEFER /*extension*/ ||
         ctx->current->type == TK_KEYWORD_CAKE_TRY /*extension*/ ||
         ctx->current->type == TK_KEYWORD_MSVC__TRY ||
         ctx->current->type == TK_KEYWORD__ASM
@@ -8536,6 +8519,7 @@ void unlabeled_statement_delete(struct unlabeled_statement* _Owner _Opt p)
         expression_statement_delete(p->expression_statement);
         jump_statement_delete(p->jump_statement);
         primary_block_delete(p->primary_block);
+        defer_statement_delete(p->defer_statement);
         free(p);
     }
 }
@@ -8585,7 +8569,7 @@ void warn_unrecognized_warnings(struct parser_ctx* ctx,
             ctx,
             token,
             NULL,
-            "warning 'C%04d' was not recognized",
+            "warning '%d' was not recognized",
             stack->stack[i]);
     }
 }
@@ -8597,6 +8581,7 @@ struct unlabeled_statement* _Owner _Opt unlabeled_statement(struct parser_ctx* c
        expression-statement
        attribute-specifier-sequence opt primary-block
        attribute-specifier-sequence opt jump-statement
+        attribute-specifier-sequence opt defer-statement
     */
     struct unlabeled_statement* _Owner _Opt p_unlabeled_statement = calloc(1, sizeof(struct unlabeled_statement));
     try
@@ -8646,6 +8631,12 @@ struct unlabeled_statement* _Owner _Opt unlabeled_statement(struct parser_ctx* c
 
 
             if (p_unlabeled_statement->jump_statement == NULL)
+                throw;
+        }
+        else if (ctx->current->type == TK_KEYWORD_DEFER)
+        {
+            p_unlabeled_statement->defer_statement = defer_statement(ctx);
+            if (p_unlabeled_statement->defer_statement == NULL)
                 throw;
         }
         else
@@ -8797,10 +8788,16 @@ struct label* _Owner _Opt label(struct parser_ctx* ctx, struct attribute_specifi
         else if (ctx->current->type == TK_KEYWORD_CASE)
         {
 
-            if (ctx->p_current_selection_statement == NULL ||
-                ctx->p_current_selection_statement->condition == NULL)
+            if (ctx->p_current_switch_statement == NULL ||
+                ctx->p_current_switch_statement->condition == NULL)
             {
                 //unexpected because we are in case
+                compiler_diagnostic(C_ERROR_CASE_NOT_IN_SWITCH,
+                ctx,
+                ctx->current,
+                NULL,
+                "case label not within a switch statement");
+
                 throw;
             }
 
@@ -8830,7 +8827,7 @@ struct label* _Owner _Opt label(struct parser_ctx* ctx, struct attribute_specifi
                 */
 
                 struct label* _Opt p_existing_label = case_label_list_find_range(ctx,
-                    &ctx->p_current_selection_statement->label_list,
+                    &ctx->p_current_switch_statement->label_list,
                     &p_label->constant_expression->object,
                     &p_label->constant_expression_end->object);
 
@@ -8860,7 +8857,10 @@ struct label* _Owner _Opt label(struct parser_ctx* ctx, struct attribute_specifi
             }
             else
             {
-                struct label* _Opt p_existing_label = case_label_list_find(ctx, &ctx->p_current_selection_statement->label_list, &p_label->constant_expression->object);
+                struct label* _Opt p_existing_label = 
+                    case_label_list_find(ctx, &ctx->p_current_switch_statement->label_list, &p_label->constant_expression->object);
+                
+
                 if (p_existing_label)
                 {
 
@@ -8884,20 +8884,20 @@ struct label* _Owner _Opt label(struct parser_ctx* ctx, struct attribute_specifi
             if (parser_match_tk(ctx, ':') != 0)
                 throw;
 
-            case_label_list_push(&ctx->p_current_selection_statement->label_list, p_label);
+            case_label_list_push(&ctx->p_current_switch_statement->label_list, p_label);
 
-            if (ctx->p_current_selection_statement &&
-                ctx->p_current_selection_statement->condition &&
-                ctx->p_current_selection_statement->condition->expression)
+            if (ctx->p_current_switch_statement &&
+                ctx->p_current_switch_statement->condition &&
+                ctx->p_current_switch_statement->condition->expression)
             {
-                if (type_is_enum(&ctx->p_current_selection_statement->condition->expression->type))
+                if (type_is_enum(&ctx->p_current_switch_statement->condition->expression->type))
                 {
                     if (type_is_enum(&p_label->constant_expression->type))
                     {
                         check_diferent_enuns(ctx,
                                     p_label->constant_expression->first_token,
                                     p_label->constant_expression,
-                                    ctx->p_current_selection_statement->condition->expression,
+                                    ctx->p_current_switch_statement->condition->expression,
                                     "mismatch in enumeration types");
                     }
                     else
@@ -8906,7 +8906,7 @@ struct label* _Owner _Opt label(struct parser_ctx* ctx, struct attribute_specifi
                     }
                 }
 
-                if (ctx->p_current_selection_statement == NULL)
+                if (ctx->p_current_switch_statement == NULL)
                 {
                     //unexpected because we have case inside switch
                     throw;
@@ -8914,11 +8914,11 @@ struct label* _Owner _Opt label(struct parser_ctx* ctx, struct attribute_specifi
 
                 const struct enum_specifier* _Opt p_enum_specifier = NULL;
 
-                if (ctx->p_current_selection_statement->condition &&
-                    ctx->p_current_selection_statement->condition->expression &&
-                    ctx->p_current_selection_statement->condition->expression->type.enum_specifier)
+                if (ctx->p_current_switch_statement->condition &&
+                    ctx->p_current_switch_statement->condition->expression &&
+                    ctx->p_current_switch_statement->condition->expression->type.enum_specifier)
                 {
-                    p_enum_specifier = get_complete_enum_specifier(ctx->p_current_selection_statement->condition->expression->type.enum_specifier);
+                    p_enum_specifier = get_complete_enum_specifier(ctx->p_current_switch_statement->condition->expression->type.enum_specifier);
                 }
 
                 if (p_enum_specifier)
@@ -8946,7 +8946,20 @@ struct label* _Owner _Opt label(struct parser_ctx* ctx, struct attribute_specifi
         }
         else if (ctx->current->type == TK_KEYWORD_DEFAULT)
         {
-            struct label* _Opt p_existing_default_label = case_label_list_find_default(ctx, &ctx->p_current_selection_statement->label_list);
+            if (ctx->p_current_switch_statement == NULL ||
+                ctx->p_current_switch_statement->condition == NULL)
+            {
+                //unexpected because we are in case
+                compiler_diagnostic(C_ERROR_CASE_NOT_IN_SWITCH,
+                ctx,
+                ctx->current,
+                NULL,
+                "default case not within a switch statement");
+
+                throw;
+            }
+
+            struct label* _Opt p_existing_default_label = case_label_list_find_default(ctx, &ctx->p_current_switch_statement->label_list);
 
             if (p_existing_default_label)
             {
@@ -8971,7 +8984,7 @@ struct label* _Owner _Opt label(struct parser_ctx* ctx, struct attribute_specifi
             if (parser_match_tk(ctx, ':') != 0)
                 throw;
 
-            case_label_list_push(&ctx->p_current_selection_statement->label_list, p_label);
+            case_label_list_push(&ctx->p_current_switch_statement->label_list, p_label);
         }
         // attribute_specifier_sequence_opt identifier ':'
         // attribute_specifier_sequence_opt 'case' constant_expression ':'
@@ -9837,6 +9850,22 @@ struct selection_statement* _Owner _Opt selection_statement(struct parser_ctx* c
        "if" ( init-statement _Opt condition ) secondary-block
        "if" ( init-statement _Opt condition ) secondary-block "else" secondary-block
        switch ( init-statement _Opt condition ) secondary-block
+
+       C2Y
+
+       selection-statement:
+         if ( selection-header ) secondary-block
+         if ( selection-header ) secondary-block else secondary-block
+         switch ( selection-header ) secondary-block
+
+      selection-header:
+        expression
+        declaration expression
+        simple-declaration
+
+      simple-declaration:
+         attribute-specifier-sequenceopt declaration-specifiers declarator = initializer
+
     */
 
     struct scope if_scope = { 0 };
@@ -10000,8 +10029,12 @@ struct selection_statement* _Owner _Opt selection_statement(struct parser_ctx* c
             }
         }
 
-        struct selection_statement* _Opt previous = ctx->p_current_selection_statement;
-        ctx->p_current_selection_statement = p_selection_statement;
+        struct selection_statement* _Opt previous = ctx->p_current_switch_statement;
+
+        if (p_selection_statement->first_token->type == TK_KEYWORD_SWITCH)
+        {
+            ctx->p_current_switch_statement = p_selection_statement;
+        }
 
         struct secondary_block* _Owner _Opt p_secondary_block = secondary_block(ctx);
 
@@ -10026,44 +10059,8 @@ struct selection_statement* _Owner _Opt selection_statement(struct parser_ctx* c
         assert(p_selection_statement->secondary_block == NULL);
         p_selection_statement->secondary_block = p_secondary_block;
 
-        if (p_selection_statement->first_token->type == TK_KEYWORD_SWITCH)
-        {
-            //switch of enum without default, then we check if all items were used
-            if (case_label_list_find_default(ctx, &p_selection_statement->label_list) == NULL)
-            {
-                const struct enum_specifier* _Opt p_enum_specifier = NULL;
-
-                if (ctx->p_current_selection_statement &&
-                    ctx->p_current_selection_statement->condition &&
-                    ctx->p_current_selection_statement->condition->expression &&
-                    ctx->p_current_selection_statement->condition->expression->type.enum_specifier)
-                {
-                    p_enum_specifier = get_complete_enum_specifier(ctx->p_current_selection_statement->condition->expression->type.enum_specifier);
-                }
-
-                if (p_enum_specifier)
-                {
-                    struct enumerator* _Opt p = p_enum_specifier->enumerator_list.head;
-                    while (p)
-                    {
-                        struct label* _Opt p_used = case_label_list_find(ctx, &p_selection_statement->label_list, &p->value);
-
-                        if (p_used == NULL)
-                        {
-                            compiler_diagnostic(W_SWITCH,
-                                ctx,
-                                ctx->current, NULL,
-                                "enumeration '%s' not handled in switch", p->token->lexeme);
-                        }
-                        p = p->next;
-                    }
-                }
-            }
-        }
-
-        ctx->p_current_selection_statement = previous;
-
-
+     
+        ctx->p_current_switch_statement = previous;
 
 
         if (is_if && ctx->current && ctx->current->type == TK_KEYWORD_ELSE)
@@ -10091,6 +10088,43 @@ struct selection_statement* _Owner _Opt selection_statement(struct parser_ctx* c
         }
 
         p_selection_statement->last_token = p_tk;
+
+
+        if (p_selection_statement->first_token->type == TK_KEYWORD_SWITCH)
+        {
+            //switch of enum without default, then we check if all items were used
+            if (case_label_list_find_default(ctx, &p_selection_statement->label_list) == NULL)
+            {
+                const struct enum_specifier* _Opt p_enum_specifier = NULL;
+
+                if (p_selection_statement->condition &&
+                    p_selection_statement->condition->expression &&
+                    p_selection_statement->condition->expression->type.enum_specifier)
+                {
+                    p_enum_specifier = get_complete_enum_specifier(p_selection_statement->condition->expression->type.enum_specifier);
+                }
+
+                if (p_enum_specifier)
+                {
+                    struct enumerator* _Opt p = p_enum_specifier->enumerator_list.head;
+                    while (p)
+                    {
+                        struct label* _Opt p_used = case_label_list_find(ctx, &p_selection_statement->label_list, &p->value);
+
+                        if (p_used == NULL)
+                        {
+                            compiler_diagnostic(W_SWITCH,
+                                ctx,
+                                p_selection_statement->last_token,
+                                NULL,
+                                "enumeration '%s' not handled in switch", p->token->lexeme);
+                        }
+                        p = p->next;
+                    }
+                }
+            }
+        }
+
     }
     catch
     {
@@ -10125,15 +10159,16 @@ struct defer_statement* _Owner _Opt defer_statement(struct parser_ctx* ctx)
         p_defer_statement->first_token = ctx->current;
         parser_match(ctx);
 
-        const struct defer_statement* _Opt p_previous_defer_statement_opt =
-            ctx->p_current_defer_statement_opt;
+        const struct defer_statement* _Opt p_previous_defer_statement_opt = ctx->p_current_defer_statement_opt;
 
         ctx->p_current_defer_statement_opt = p_defer_statement;
 
-        struct secondary_block* _Owner _Opt p_secondary_block = secondary_block(ctx);
-        if (p_secondary_block == NULL) throw;
 
-        p_defer_statement->secondary_block = p_secondary_block;
+        struct unlabeled_statement* _Owner _Opt p_unlabeled_statement = unlabeled_statement(ctx, NULL); //TODO unlabeled_statement
+        if (p_unlabeled_statement == NULL) throw;
+
+        
+        p_defer_statement->unlabeled_statement = p_unlabeled_statement;
         if (ctx->previous == NULL) throw;
 
         p_defer_statement->last_token = ctx->previous;
@@ -10170,6 +10205,7 @@ struct iteration_statement* _Owner _Opt iteration_statement(struct parser_ctx* c
       for ( expressionopt ; expressionopt ; expressionopt ) statement
       for ( declaration expressionopt ; expressionopt ) statement
     */
+    const struct iteration_statement* const p_current_iteration_statement = ctx->p_current_iteration_statement;
     struct iteration_statement* _Owner _Opt p_iteration_statement = NULL;
     try
     {
@@ -10183,6 +10219,8 @@ struct iteration_statement* _Owner _Opt iteration_statement(struct parser_ctx* c
 
         if (p_iteration_statement == NULL)
             throw;
+
+        ctx->p_current_iteration_statement = p_iteration_statement;
 
         p_iteration_statement->first_token = ctx->current;
         if (ctx->current->type == TK_KEYWORD_DO)
@@ -10362,6 +10400,9 @@ struct iteration_statement* _Owner _Opt iteration_statement(struct parser_ctx* c
         iteration_statement_delete(p_iteration_statement);
         p_iteration_statement = NULL;
     }
+
+    ctx->p_current_iteration_statement = p_current_iteration_statement; /*restore*/
+
     return p_iteration_statement;
 }
 
@@ -10437,10 +10478,23 @@ struct jump_statement* _Owner _Opt jump_statement(struct parser_ctx* ctx)
         }
         else if (ctx->current->type == TK_KEYWORD_CONTINUE)
         {
+            if (ctx->p_current_iteration_statement == NULL)
+            {
+                compiler_diagnostic(C_ERROR_CONTINUE_NOT_WITHIN_ITERATION, ctx, ctx->current, NULL, "continue not within iteration");
+                throw;
+            }
             parser_match(ctx);
         }
         else if (ctx->current->type == TK_KEYWORD_BREAK)
         {
+            const bool in_switch  =
+                ctx->p_current_switch_statement && ctx->p_current_switch_statement->first_token->type == TK_KEYWORD_SWITCH;
+
+            if (ctx->p_current_iteration_statement == NULL && !in_switch)
+            {
+                compiler_diagnostic(C_ERROR_BREAK_NOT_WITHIN_ITERATION, ctx, ctx->current, NULL, "'break' statement not in loop or switch statement");
+                throw;
+            }
             parser_match(ctx);
         }
         else if (ctx->current->type == TK_KEYWORD_CAKE_THROW)
@@ -11003,8 +11057,8 @@ struct compound_statement* _Owner _Opt function_body(struct parser_ctx* ctx)
     const struct defer_statement* _Opt p_current_defer_statement_opt = ctx->p_current_defer_statement_opt;
     ctx->p_current_defer_statement_opt = NULL;
 
-    struct selection_statement* _Opt p_current_selection_statement = ctx->p_current_selection_statement;
-    ctx->p_current_selection_statement = NULL;
+    struct selection_statement* _Opt p_current_switch_statement = ctx->p_current_switch_statement;
+    ctx->p_current_switch_statement = NULL;
 
     struct label_list label_list = { 0 };
     label_list_swap(&label_list, &ctx->label_list);
@@ -11020,7 +11074,7 @@ struct compound_statement* _Owner _Opt function_body(struct parser_ctx* ctx)
     ctx->label_id = label_id;
     ctx->p_current_try_statement_opt = p_current_try_statement_opt;
     ctx->p_current_defer_statement_opt = p_current_defer_statement_opt;
-    ctx->p_current_selection_statement = p_current_selection_statement;
+    ctx->p_current_switch_statement = p_current_switch_statement;
 
     label_list_clear(&label_list);
 

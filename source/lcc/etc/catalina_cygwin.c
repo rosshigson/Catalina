@@ -15,7 +15,6 @@ static char rcsid[] = "$Id: catalina_cygwin.c,v 1.0 2009/03/28 20:41:09 rjh Exp 
 char *suffixes[] = { ".c", ".i", ".s", ".o", ".out", 0 };
 char inputs[256] = "";
 char *cpp[] = { LCCDIR "/bin/cpp.exe",
-  //"-U__GNUC__", "-D__STDC__=1", "-D__STRICT_ANSI__",
 	"-D_POSIX_SOURCE",
 	"-D__extension__=""""", "-D__cdecl=""""",
 	"-D__CATALINA__",

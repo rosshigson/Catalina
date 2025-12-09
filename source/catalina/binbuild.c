@@ -39,6 +39,8 @@
  *
  * version 8.8.1 - remove local strdup (now in C libary).
  *
+ * version 8.8.4 - use "version.h"
+ *
  */
 
 /*--------------------------------------------------------------------------
@@ -74,12 +76,12 @@
 #include <sys/stat.h>
 #endif
 
+#include "version.h"
+
 #define SHORT_LAYOUT_2     1 /* 1 to remove unused bytes when using layout 2 (P2 only) */
 #define SHORT_LAYOUT_3     1 /* 1 to remove unused bytes when using layout 3 (P1 only) */
 #define SHORT_LAYOUT_4     1 /* 1 to remove unused bytes when using layout 4 (P1 only) */
 #define SHORT_LAYOUT_5     1 /* 1 to remove unused bytes when using layout 5 (P1 or P2) */
-
-#define VERSION            "8.8.1"
 
 #define MAX_FILES          1
 #define MAX_LINELEN        4096
@@ -241,7 +243,7 @@ int decode_arguments (int argc, char *argv[]) {
    char * arg;
 
    if (argc == 1) {
-      fprintf(stderr, "Catalina Binary Builder %s\n", VERSION); 
+      fprintf(stderr, "Catalina Binary Builder %s\n", CATALINA_VERSION); 
       if (strlen(argv[0]) == 0) {
          // in case my name was not passed in ...
          help("binbuild");
@@ -309,7 +311,7 @@ int decode_arguments (int argc, char *argv[]) {
                case 'd':
                   diagnose++;   /* increase diagnosis level */
                   if ((verbose + diagnose) == 1) {
-                     fprintf(stderr, "Catalina Binary Builder %s\n", VERSION); 
+                     fprintf(stderr, "Catalina Binary Builder %s\n", CATALINA_VERSION); 
                   }
                   fprintf(stderr, "diagnostic level %d\n", diagnose);
                   break;
@@ -355,7 +357,7 @@ int decode_arguments (int argc, char *argv[]) {
                case 'v':
                   verbose++;
                   if ((verbose + diagnose) == 1) {
-                     fprintf(stderr, "Catalina Binary Builder %s\n", VERSION); 
+                     fprintf(stderr, "Catalina Binary Builder %s\n", CATALINA_VERSION); 
                   }
                   if (diagnose) {
                      fprintf(stderr, "verbosity level %d\n", verbose);

@@ -6,6 +6,9 @@
 #include "cpp.h"
 
 #define	OUTS	16384
+
+extern int _CRT_glob = 1; /* 0 turns off globbing; 1 turns it on */
+
 char	outbuf[OUTS];
 char	*outp = outbuf;
 Source	*cursource;
@@ -29,10 +32,10 @@ main(int argc, char **argv)
 	char ebuf[BUFSIZ];
 
 #if defined(__CATALINA_P2) && defined(__CATALINA_WRITE_BACK)
-  CacheWriteThrough(0); // disable write through, which enables write back
+  CacheWriteThrough(0); /* disable write through, which enables write back */
 #endif
 
-	//setbuf(stderr, ebuf);
+	/* setbuf(stderr, ebuf); */
 	t = time(NULL);
 	curtime = ctime(&t);
 	maketokenrow(3, &tr);
@@ -55,7 +58,7 @@ main(int argc, char **argv)
   _waitms(1000);
 #endif
 #if defined(__CATALINA_P2) && defined(__CATALINA_WRITE_BACK)
-  CacheFlush(); // flush cache to SD
+  CacheFlush(); /* flush cache to SD */
 #endif
 	exit(nerrs > 0);
 	return 0;
@@ -350,11 +353,11 @@ error(enum errtype type, char *string, ...)
   _waitms(1000);
 #endif
 #if defined(__CATALINA_P2) && defined(__CATALINA_WRITE_BACK)
-  CacheFlush(); // flush cache to SD
+  CacheFlush(); /* flush cache to SD */
 #endif
 	if (type==FATAL) 
 		exit(1);
 	if (type!=WARNING)
 		nerrs = 1;
-	//fflush(stderr);
+	/* fflush(stderr); */
 }

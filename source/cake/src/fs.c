@@ -467,9 +467,6 @@ char* dirname(char* path)
 
 #ifndef MOCKFILES
 
-#if defined(__CATALYST__)
-
-// Catalyst does not support stat(), so use fseek to get the file size
 char* _Owner _Opt read_file(const char* const path, bool append_newline)
 {
     char* _Owner _Opt data = NULL;
@@ -488,7 +485,7 @@ char* _Owner _Opt read_file(const char* const path, bool append_newline)
     file_size = ftell(file);
     fseek(file, 0, SEEK_SET);
 
-    int mem_size_bytes = sizeof(char) * file_size + 1 /* \0 */ + 1 /*newline*/;
+    unsigned mem_size_bytes = sizeof(char) * file_size + 1 /* \0 */ + 1 /*newline*/;
     
     if (mem_size_bytes < 4)
     {
@@ -554,91 +551,6 @@ char* _Owner _Opt read_file(const char* const path, bool append_newline)
     return data;
 }
 
-#else
-
-char* _Owner _Opt read_file(const char* const path, bool append_newline)
-{
-    char* _Owner _Opt data = NULL;
-    FILE* _Owner _Opt file = NULL;
-    struct stat info = { 0 };
-
-    if (stat(path, &info) != 0)
-        return NULL;
-
-    size_t mem_size_bytes = sizeof(char) * info.st_size + 1 /* \0 */ + 1 /*newline*/;
-    
-    if (mem_size_bytes < 4)
-    {
-        //we always read 3 chars even if file is small
-        mem_size_bytes = 4; //BOM + /0
-    }
-
-    data = malloc(mem_size_bytes);
-    if (data == NULL)
-        return NULL;
-
-    file = fopen(path, "r");
-    if (file == NULL)
-    {
-        free(data);
-        return NULL;
-    }
-
-    /* first we read 3 bytes */
-    size_t bytes_read = fread(data, 1, 3, file);
-
-    if (bytes_read < 3)
-    {
-        /* we have less than 3 bytes - no BOM */
-
-        data[bytes_read] = '\0';
-        if (feof(file))
-        {
-            fclose(file);
-            return data;
-        }
-
-        free(data);
-        fclose(file);
-
-        return NULL;
-    }
-
-    size_t bytes_read_part2 = 0;
-
-    /* check byte order mark (BOM) */
-    if ((unsigned char)data[0] == (unsigned char)0xEF &&
-        (unsigned char)data[1] == (unsigned char)0xBB &&
-        (unsigned char)data[2] == (unsigned char)0xBF)
-    {
-        /* in this case we skip this BOM, reading again*/
-        bytes_read_part2 = fread(&data[0], 1, info.st_size - 3, file);
-    }
-    else
-    {
-        bytes_read_part2 = fread(&data[3], 1, info.st_size - 3, file);
-        bytes_read_part2 = bytes_read_part2 + 3;
-    }
-
-    data[bytes_read_part2] = 0;
-    if (append_newline && data[bytes_read_part2 - 1] != '\n')
-    {
-        /*
-        A source file that is not empty shall end in a new-line character, which shall not 
-        be immediately preceded by a backslash character before any such splicing takes place.
-        */
-        data[bytes_read_part2] = '\n';
-
-        //we already allocated an extra char for this
-        assert(bytes_read_part2+1 < mem_size_bytes);
-        data[bytes_read_part2+1] = '\0'; 
-    }
-
-    fclose(file);
-    return data;
-}
-
-#endif // defined(__CATALYST__)
 
 #else
 

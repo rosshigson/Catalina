@@ -60,7 +60,7 @@ struct	fsm {
 	START,	{ 'L' },	ST1,
 	START,	{ '"' },	ST2,
 #ifdef SPIN_PREPROCESSOR
-//      START,	{ '\'' },	COM4,
+/*      START,	{ '\'' },	COM4, */
 #else
 	START,	{ '\'' },	CC1,
 #endif
@@ -91,7 +91,7 @@ struct	fsm {
 	START,	{ '~' },	ACT(TILDE,S_SELF),
 	START,	{ '^' },	CIRC1,
 #ifdef SPIN_PREPROCESSOR
-// $ starts a hexadecimal number
+/* $ starts a hexadecimal number */
 	START,	{ '$' },	NUM1,
 #endif
 

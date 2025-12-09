@@ -123,6 +123,8 @@
  *
  * version 8.8.1 - just update version number.
  *
+ * version 8.8.4 - use "version.h"
+ *
  */
 
 #include <ctype.h>
@@ -132,9 +134,9 @@
 #include <sys/stat.h>
 #include "catoptimize.h"
 
-#define DO_EXECUTE         1 // 0 for debugging (output only, no execute)
+#include "version.h"
 
-#define VERSION            "8.8.1" 
+#define DO_EXECUTE         1 // 0 for debugging (output only, no execute)
 
 #ifdef WIN32_PATHS         /* define this on the command line for Windows */
 #define PATH_SEP           "\\"
@@ -247,7 +249,7 @@ static char assemble_quiet[MAX_LINELEN + 1]   = QUIET_OS;
 static char assemble_options[MAX_LINELEN + 1] = "";
 
 void help(char *my_name) {
-   fprintf(stderr, "Catalina Optimizer %s\n", VERSION); 
+   fprintf(stderr, "Catalina Optimizer %s\n", OPTIMIZER_VERSION); 
    fprintf(stderr, "\nusage: %s [options] file\n\n", my_name);
    fprintf(stderr, "options:  -? or -h  print this helpful message (and exit)\n");
    fprintf(stderr, "          -b        binary output (default)\n");
@@ -1441,7 +1443,7 @@ int main(int argc, char *argv[]) {
    }
 
    if (suppress == 0) {
-      fprintf(stderr, "Catalina Optimizer %s\n", VERSION); 
+      fprintf(stderr, "Catalina Optimizer %s\n", OPTIMIZER_VERSION); 
    }
 
    if (strlen(target_path) == 0) {

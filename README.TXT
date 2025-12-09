@@ -282,6 +282,37 @@ Other Changes
 
 6. When compiling lcc with the latest version of gcc, the definition of
    _spawnvp() must be changed to match that in stdio.h for the program to
-   compile correcly. No functional changes. Affected Windows and Linux.
+   compile correcly. No functional changes.
+   Affected Windows and Linux.
+
+7. There is an issue with the current version of gcc/MinGW on Windows, which
+   means that 'globbing' (expansion of wildcard characters on the command line
+   was disabled by default. It can be manually re-enabled for programs that
+   need it by including the following line near the top of the main program
+   file:
+
+      extern int _CRT_glob = 1; /* 0 turns off globbing; 1 turns it on */
+ 
+   No functional changes.
+   Affected Windows only.
+
+8. There is an issue with versions of gcc which reserve the keyword 
+   "constexpr", which was used by LCC as an identifier. This has now been 
+    changed in LCC to "cnstexpr". No functional changes. 
+    Affected Windows and Linux.
+
+9. Non-C89 compatible comments in LCC (i.e. introduced using //) have now 
+   been replaced with C89-compatible comments (i.e. /* ... */). No functional
+   changes.
+   Affected Windows and Linux.
+
+10. There is an issue in MinGW32 that means some programs may fail to compile 
+   with gcc when an old version of libwinpthread-1.dll exists in the PATH. 
+   An error message that "clock_gettime64" was not found is generated. 
+   The current fix is that "libwinpthread-1.dll" in Catalina's bin and 
+   catalina_geany/bin directories have been replaced with the latest version. 
+   However, in case this fix causes other problems, the old version are still
+   included, but have been renamed to "libwinpthread-1.dll.old". 
+   Affected Windows only.
 
 

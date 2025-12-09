@@ -423,6 +423,11 @@
  *                 enabled (e.g. by also adding -C99 etc).
  *               - Also allow -C CAKE_COLOUR ro enable Cake to use color, 
  *               - Use -fdiagnostics-color=never to disable Cake use of color.
+ *
+ * version 8.8.4  - use "version.h"
+ *
+ *                - enable 'globbing'
+ *
  */
 
 /*--------------------------------------------------------------------------
@@ -452,7 +457,7 @@
 #include <string.h>
 #include <math.h>
 
-#define VERSION            "8.8.3"
+#include "version.h"
 
 #define MAX_LINELEN        4096
 
@@ -490,6 +495,8 @@
 
 #define PARALLELIZE_SUFFIX "_p"
 #define PARALLELIZE_CMD    "parallelize "
+
+extern int _CRT_glob = 1; /* 0 turns off globbing; 1 turns it on */
 
 /* global variables used when processing options - e.g. to warn about incompatible combinations */
 
@@ -571,7 +578,7 @@ static char del_files[MAX_LINELEN + 1] = "";
 
 void banner(void) {
    if (bannered == 0) {
-      fprintf(stderr, "Catalina Compiler %s\n", VERSION); 
+      fprintf(stderr, "Catalina Compiler %s\n", CATALINA_VERSION); 
       bannered = 1;
    }
 }

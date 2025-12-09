@@ -46,6 +46,10 @@
  *
  * version 8.8.1  - just update version number.
  *
+ * version 8.8.4  - use "version.h"
+ *
+ *                - enable 'globbing'
+ *
  */
 
 #include <ctype.h>
@@ -54,9 +58,9 @@
 #include <string.h>
 #include <sys/stat.h>
 
-#define DO_EXECUTE         1 // 0 for debugging (output only, no execute)
+#include "version.h"
 
-#define VERSION            "8.8.1" 
+#define DO_EXECUTE         1 // 0 for debugging (output only, no execute)
 
 #ifdef WIN32_PATHS         /* define this on the command line for Windows */
 #define PATH_SEP           "\\"
@@ -64,7 +68,6 @@
 #define PATH_SEP           "/"
 #endif
 
-#define MAX_FILES          1
 #define MAX_LINELEN        4096
 #define MAX_PATHLEN        1000
 #define MAX_NAMELEN        1000
@@ -72,6 +75,8 @@
 #define PARALLELIZE_CMD    "parallelize_awka "
 
 #define PARALLELIZE_SUFFIX "_p"
+
+extern int _CRT_glob = 1; /* 0 turns off globbing; 1 turns it on */
 
 /* global flags */
 static int prop_vers = 1;
@@ -86,7 +91,7 @@ static char parallel_cmd[MAX_LINELEN + 1] = "";
 static char output_file[MAX_LINELEN + 1] = "";
 
 void help(char *my_name) {
-   fprintf(stderr, "Catalina Parallelizer %s\n", VERSION); 
+   fprintf(stderr, "Catalina Parallelizer %s\n", CATALINA_VERSION); 
    fprintf(stderr, "\nusage: %s [options] [file ...]\n\n", my_name);
    fprintf(stderr, "options:  -? or -h  print this helpful message (and exit)\n");
    fprintf(stderr, "          -k        suppress banner\n");
@@ -419,7 +424,7 @@ int main (int argc, char *argv[]) {
    }
 
    if (suppress == 0) {
-      fprintf(stderr, "Catalina Parallelizer %s\n", VERSION); 
+      fprintf(stderr, "Catalina Parallelizer %s\n", CATALINA_VERSION); 
    }
 
    if (input_count == 0) {

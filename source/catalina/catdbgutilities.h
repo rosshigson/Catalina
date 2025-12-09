@@ -15,8 +15,6 @@
 
 #include "stringconverter.h"
 
-#define VERSION "7.0"
-
 int  StartsWith(char *str, char *match);
 
 int  EndsWith(char *str, char *match);

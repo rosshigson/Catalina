@@ -17,30 +17,30 @@ setup_env(char *name)
 {
    char *env;
    int i, j;
-   char prefix[] = "__CATALINA_"; // C prefix for Catalina symbols
+   char prefix[] = "__CATALINA_"; /* C prefix for Catalina symbols */
    int len;
-   char def[256]; // allow for identifiers up to 255 characters
+   char def[256]; /* allow for identifiers up to 255 characters */
    Tokenrow tr;
 
    len = strlen(prefix);
    env = getenv(name);
    i = 0;
-   //fprintf(stderr, "<%s> is \"%s\"\n", name, env);
+   /* fprintf(stderr, "<%s> is \"%s\"\n", name, env); */
    if (env != NULL) {
       while (env[i] != '\0') {
 #ifndef SPIN_PREPROCESSOR
-         // for C preprocessor, define Catalina symbols with prefix
+         /* for C preprocessor, define Catalina symbols with prefix */
          strcpy(def, prefix);
          j = len;
 #else
-         // for SPIN preprocessor, define Catalina symbols "as is"
+         /* for SPIN preprocessor, define Catalina symbols "as is" */
          j = 0;
 #endif
          while ((env[i] != '\0') && (env[i] != ' ')) {
            def[j++] = env[i++];
          }
          def[j] = '\0';
-         // define symbol ...
+         /* define symbol ... */
          setsource("<environment>", NULL, def);
          maketokenrow(3, &tr);
          gettokens(&tr, 1);
@@ -75,7 +75,7 @@ setup(int argc, char **argv)
 				if (includelist[i].file==NULL) {
 					includelist[i].always = 1;
 /* RJH added from here ... */
-               //printf("including file %s\n", optarg);
+               /* printf("including file %s\n", optarg); */
                if ((optarg[0] == '"') 
                &&  (strlen(optarg) >= 2) 
                &&  (optarg[strlen(optarg)-1] == '"')) {

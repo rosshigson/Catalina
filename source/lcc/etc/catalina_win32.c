@@ -12,7 +12,6 @@ static char rcsid[] = "$Id: catalina_win32.c,v 1.00 2009/03/28 18:00:13 rjh Exp 
 char *suffixes[] = { ".c;.C", ".i;.I", ".s;.S", ".obj;.OBJ", ".out", 0 };
 char inputs[256] = "";
 char *cpp[] = { LCCDIR "\\bin\\cpp.exe", 
-  //"-U__GNUC__", "-D__STDC__=1", "-D__STRICT_ANSI__",
 	"-D_POSIX_SOURCE",
 	"-D__extension__=""""", "-D__cdecl=""""",
 	"-D__CATALINA__",
@@ -32,7 +31,7 @@ extern char *concat(char *, char *);
 
 void correct_paths() {
    char ShortPathName[MAX_PATH + 1];
-   // correct any long path names in the names of the executables
+   /* correct any long path names in the names of the executables */
    if (strchr(cpp[0], ' ') != NULL) {
       GetShortPathName(cpp[0], ShortPathName, MAX_PATH);
       cpp[0] = strdup(ShortPathName);

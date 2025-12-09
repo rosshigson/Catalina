@@ -1178,12 +1178,19 @@ struct expression* _Owner _Opt primary_expression(struct parser_ctx* ctx, enum e
 
                 assert(p_declarator != NULL);
 
-                if (type_is_deprecated(&p_declarator->type))
+                if (p_declarator->declaration_specifiers &&
+                    p_declarator->declaration_specifiers->attributes_flags & STD_ATTRIBUTE_DEPRECATED)
                 {
                     compiler_diagnostic(W_DEPRECATED, ctx, ctx->current, NULL, "'%s' is deprecated", ctx->current->lexeme);
                 }
 
 
+                if (type_is_deprecated(&p_declarator->type))
+                {
+                    compiler_diagnostic(W_DEPRECATED, ctx, ctx->current, NULL, "'%s' is deprecated", ctx->current->lexeme);
+                }
+
+                assert(p_scope != NULL);
                 if (p_scope->scope_level == 0)
                 {
                     //file scope
@@ -1308,15 +1315,12 @@ struct expression* _Owner _Opt primary_expression(struct parser_ctx* ctx, enum e
               but since we keep the source format here it was an alternative
             */
 
-            unsigned int number_of_elements_including_zero = 0;
-            struct object* _Opt last = NULL;
-
             while (ctx->current->type == TK_STRING_LITERAL)
             {
                 //"part1" "part2" TODO check different types
 
 
-                const unsigned char* it = (unsigned char*)ctx->current->lexeme;
+                const unsigned char* _Opt it = (unsigned char*)ctx->current->lexeme;
 
                 //skip string literal prefix u8, L etc 
                 while (*it != '"')
@@ -1377,17 +1381,7 @@ struct expression* _Owner _Opt primary_expression(struct parser_ctx* ctx, enum e
                         //u8"" also are char not (char8_t)
                         *p_new = object_make_char(ctx->options.target, value);
                     }
-                    number_of_elements_including_zero++;
-                    if (p_expression_node->object.members.head == NULL)
-                    {
-                        p_expression_node->object.members.head = p_new;
-                    }
-                    else
-                    {
-                        if (last)
-                            last->next = p_new;
-                    }
-                    last = p_new;
+                    object_list_push(&p_expression_node->object.members, p_new);        
                 }
 
                 parser_match(ctx);
@@ -1402,7 +1396,10 @@ struct expression* _Owner _Opt primary_expression(struct parser_ctx* ctx, enum e
               Appending the last \0
             */
                 struct object* _Opt _Owner p_new = calloc(1, sizeof * p_new);
-                if (p_new == NULL) throw;
+            if (p_new == NULL)
+            {
+                throw;
+            }
 
             if (is_wide)
             {
@@ -1426,19 +1423,11 @@ struct expression* _Owner _Opt primary_expression(struct parser_ctx* ctx, enum e
                 //u8"" also are char not (char8_t)
                 *p_new = object_make_char(ctx->options.target, 0);
             }
-            number_of_elements_including_zero++;
 
-                if (last == NULL)
-                {
-                    p_expression_node->object.members.head = p_new;
-                }
-                else
-                {
-                    last->next = p_new;
-            }
+            object_list_push(&p_expression_node->object.members, p_new);
 
             enum type_qualifier_flags lit_flags = ctx->options.const_literal ? TYPE_QUALIFIER_CONST : TYPE_QUALIFIER_NONE;
-            p_expression_node->type = type_make_literal_string(number_of_elements_including_zero, char_type_specifiers, lit_flags, ctx->options.target);
+            p_expression_node->type = type_make_literal_string(p_expression_node->object.members.count, char_type_specifiers, lit_flags, ctx->options.target);
         }
         else if (ctx->current->type == TK_CHAR_CONSTANT)
         {
@@ -1550,12 +1539,67 @@ struct expression* _Owner _Opt primary_expression(struct parser_ctx* ctx, enum e
                 throw;
             }
 
+            if (ctx->current->type == '{')
+            {
+                /*
+                   GCC statement expression extension
+                   https://gcc.gnu.org/onlinedocs/gcc-12.2.0/gcc/Statement-Exprs.html#Statement-Exprs
+
+                   See
+                   https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3643.htm
+                */
+
+                p_expression_node->expression_type = PRIMARY_EXPRESSION_STATEMENT_EXPRESSION;
+                
+                bool e = is_diagnostic_enabled(&ctx->options, W_EXPRESSION_RESULT_NOT_USED);
+                options_set_warning(&ctx->options, W_EXPRESSION_RESULT_NOT_USED, false);
+                p_expression_node->compound_statement = compound_statement(ctx);
+                options_set_warning(&ctx->options, W_EXPRESSION_RESULT_NOT_USED, e);
+
+                if (p_expression_node->compound_statement == NULL)
+                {
+                    throw;
+                }
+                
+                /*
+                   The last thing in the compound statement should be an expression followed 
+                   by a semicolon; the value of this subexpression serves as the value of 
+                   the entire construct. (If you use some other kind of statement last within 
+                   the braces, the construct has type void, and thus effectively no value.) 
+                */
+                struct expression* _Opt p_last_expression = NULL;
+                struct block_item* _Owner _Opt  p = p_expression_node->compound_statement->block_item_list.head;
+                while (p)
+                {
+                    if (p->next == NULL && 
+                        p->unlabeled_statement &&
+                        p->unlabeled_statement->expression_statement && 
+                        p->unlabeled_statement->expression_statement->expression_opt)
+                    {
+                        p_last_expression = p->unlabeled_statement->expression_statement->expression_opt;
+                    }
+                    p = p->next;
+                }
+
+                if (p_last_expression)
+                {
+                    p_expression_node->type = type_dup(&p_last_expression->type);
+                    p_expression_node->object = p_last_expression->object;
+                }
+                else
+                {
+                    p_expression_node->type = make_void_type();
+                }                                
+            }
+            else
+            {
             p_expression_node->right = expression(ctx, eval_mode);
             if (p_expression_node->right == NULL)
                 throw;
 
             p_expression_node->type = type_dup(&p_expression_node->right->type);
             p_expression_node->object = p_expression_node->right->object;
+            }
 
             if (ctx->current == NULL)
             {
@@ -1964,7 +2008,7 @@ struct expression* _Owner _Opt postfix_expression_tail(struct parser_ctx* ctx, s
                                                 &p_member_declarator->declarator->type);
                             }
 
-                            struct object* object = find_object_declarator_by_index(&p_expression_node_new->left->object, &p_complete->member_declaration_list, member_index);
+                            struct object* _Opt object = find_object_declarator_by_index(&p_expression_node_new->left->object, &p_complete->member_declaration_list, member_index);
 
                             if (object)
                             {
@@ -2259,8 +2303,8 @@ struct expression* _Owner _Opt postfix_expression_type_name(struct parser_ctx* c
         if (type_is_function(&p_expression_node->type_name->abstract_declarator->type))
         {
             //this keep the typedef for function out.. we must have the function declarator
-            const struct declarator* inner = declarator_get_innert_function_declarator(p_expression_node->type_name->abstract_declarator);
-            if (inner->direct_declarator->function_declarator == NULL)
+            const struct declarator* _Opt inner = declarator_get_innert_function_declarator(p_expression_node->type_name->abstract_declarator);
+            if (inner && inner->direct_declarator && inner->direct_declarator->function_declarator == NULL)
             {
                 compiler_diagnostic(C_ERROR_UNEXPECTED, ctx, p_expression_node->type_name->first_token, NULL, "missing function declarator");
                 throw;
@@ -2278,7 +2322,7 @@ struct expression* _Owner _Opt postfix_expression_type_name(struct parser_ctx* c
             struct declarator* _Opt p_current_function_opt = ctx->p_current_function_opt;
             ctx->p_current_function_opt = p_expression_node->type_name->abstract_declarator;
 
-            struct scope* p_current_function_scope_opt = ctx->p_current_function_scope_opt;
+            struct scope* _Opt p_current_function_scope_opt = ctx->p_current_function_scope_opt;
             ctx->p_current_function_scope_opt = ctx->scopes.tail;
 
             p_expression_node->compound_statement = function_body(ctx);
@@ -2820,6 +2864,13 @@ struct expression* _Owner _Opt unary_expression(struct parser_ctx* ctx, enum exp
                 throw;
             }
 
+            if (ctx->current == NULL)
+            {
+                unexpected_end_of_file(ctx);
+                expression_delete(new_expression);
+                throw;
+            }
+
             if (ctx->current->type == ',')
             {
                 parser_match(ctx);
@@ -3213,6 +3264,8 @@ struct expression* _Owner _Opt unary_expression(struct parser_ctx* ctx, enum exp
 
                 if (type_is_enum(&new_expression->type_name->abstract_declarator->type))
                 {
+                    assert(new_expression->type_name->type.enum_specifier);
+
                     const struct enum_specifier* _Opt p_enum_specifier =
                         get_complete_enum_specifier(new_expression->type_name->type.enum_specifier);
                     size_t nelements = 0;
@@ -3279,6 +3332,8 @@ struct expression* _Owner _Opt unary_expression(struct parser_ctx* ctx, enum exp
 
                 if (type_is_enum(&new_expression->right->type))
                 {
+                    assert(new_expression->right->type.enum_specifier);
+
                     const struct enum_specifier* _Opt p_enum_specifier =
                         get_complete_enum_specifier(new_expression->right->type.enum_specifier);
                     size_t nelements = 0;
@@ -4373,12 +4428,14 @@ struct expression* _Owner _Opt shift_expression(struct parser_ctx* ctx, enum exp
             //Each of the operands shall have integer type.
             if (!type_is_integer(&new_expression->left->type))
             {
+                expression_delete(new_expression);
                 compiler_diagnostic(C_ERROR_LEFT_IS_NOT_INTEGER, ctx, ctx->current, NULL, "left type must be an integer type");
                 throw;
             }
 
             if (!type_is_integer(&new_expression->right->type))
             {
+                expression_delete(new_expression);
                 compiler_diagnostic(C_ERROR_RIGHT_IS_NOT_INTEGER, ctx, ctx->current, NULL, "right type must be an integer type");
                 throw;
             }
@@ -5055,6 +5112,7 @@ struct expression* _Owner _Opt inclusive_or_expression(struct parser_ctx* ctx, e
 
             if (!type_is_integer(&new_expression->right->type))
             {
+                expression_delete(new_expression);
                 compiler_diagnostic(C_ERROR_RIGHT_IS_NOT_INTEGER, ctx, ctx->current, NULL, "right type must be an integer type");
                 throw;
             }
@@ -5574,6 +5632,7 @@ void expression_delete(struct expression* _Owner _Opt p)
         //explodindo
         //object_destroy(&p->object);
 
+        
         free(p);
     }
 }
@@ -5992,149 +6051,6 @@ struct expression* _Owner _Opt constant_expression(struct parser_ctx* ctx, bool 
     return p_expression;
 }
 
-bool expression_get_variables(struct expression* expr, int n, struct object* variables[/*n*/])
-{
-    int count = 0;
-    switch (expr->expression_type)
-    {
-
-    case EXPRESSION_TYPE_INVALID:  break;
-
-    case PRIMARY_EXPRESSION_ENUMERATOR:  break;
-    case PRIMARY_EXPRESSION_DECLARATOR:
-        if (!object_has_constant_value(&expr->object))
-        {
-            if (count < n)
-            {
-                variables[count] = object_get_non_const_referenced(&expr->object);
-                count++;
-            }
-
-        }
-        break;
-
-    case PRIMARY_EXPRESSION_STRING_LITERAL:  break;
-    case PRIMARY_EXPRESSION__FUNC__:  break; /*predefined identifier __func__ */
-    case PRIMARY_EXPRESSION_CHAR_LITERAL:  break;
-    case PRIMARY_EXPRESSION_PREDEFINED_CONSTANT:  break; /*true false*/
-    case PRIMARY_EXPRESSION_GENERIC:  break;
-    case PRIMARY_EXPRESSION_NUMBER:  break;
-
-    case PRIMARY_EXPRESSION_PARENTESIS:
-        assert(expr->right != NULL);
-        count += expression_get_variables(expr->right, n, variables);
-        break;
-
-    case POSTFIX_EXPRESSION_FUNCTION_LITERAL:  break;
-    case POSTFIX_EXPRESSION_COMPOUND_LITERAL:  break;
-
-    case POSTFIX_FUNCTION_CALL:  break; // ( ) 
-    case POSTFIX_ARRAY:  break; // [ ]
-    case POSTFIX_DOT:  break; // .
-    case POSTFIX_ARROW:  break; // .
-    case POSTFIX_INCREMENT:  break;
-    case POSTFIX_DECREMENT:  break;
-
-
-    case UNARY_EXPRESSION_SIZEOF_EXPRESSION:  break;
-    case UNARY_EXPRESSION_SIZEOF_TYPE:  break;
-    case UNARY_EXPRESSION_COUNTOF:  break;
-
-    case UNARY_EXPRESSION_TRAITS:  break;
-    case UNARY_EXPRESSION_IS_SAME:  break;
-    case UNARY_DECLARATOR_ATTRIBUTE_EXPR:  break;
-
-    case UNARY_EXPRESSION_ALIGNOF_TYPE:  break;
-    case UNARY_EXPRESSION_ALIGNOF_EXPRESSION:  break;
-
-    case UNARY_EXPRESSION_ASSERT:  break;
-
-    case UNARY_EXPRESSION_INCREMENT:  break;
-    case UNARY_EXPRESSION_DECREMENT:  break;
-
-    case UNARY_EXPRESSION_NOT:  break;
-    case UNARY_EXPRESSION_BITNOT:  break;
-    case UNARY_EXPRESSION_NEG:  break;
-    case UNARY_EXPRESSION_PLUS:  break;
-    case UNARY_EXPRESSION_CONTENT:  break;
-    case UNARY_EXPRESSION_ADDRESSOF:  break;
-
-    case CAST_EXPRESSION:  break;
-
-    case MULTIPLICATIVE_EXPRESSION_MULT:
-    case MULTIPLICATIVE_EXPRESSION_DIV:
-    case MULTIPLICATIVE_EXPRESSION_MOD:
-        assert(expr->left != NULL);
-        assert(expr->right != NULL);
-        count += expression_get_variables(expr->left, n, variables);
-        count += expression_get_variables(expr->right, n, variables);
-        break;
-
-    case ADDITIVE_EXPRESSION_PLUS:
-    case ADDITIVE_EXPRESSION_MINUS:
-        assert(expr->left != NULL);
-        assert(expr->right != NULL);
-
-        count += expression_get_variables(expr->left, n, variables);
-        count += expression_get_variables(expr->right, n, variables);
-        break;
-
-
-    case SHIFT_EXPRESSION_RIGHT:
-    case SHIFT_EXPRESSION_LEFT:
-
-    case RELATIONAL_EXPRESSION_BIGGER_THAN:
-    case RELATIONAL_EXPRESSION_LESS_THAN:
-    case RELATIONAL_EXPRESSION_BIGGER_OR_EQUAL_THAN:
-    case RELATIONAL_EXPRESSION_LESS_OR_EQUAL_THAN:
-    case EQUALITY_EXPRESSION_EQUAL:
-    case EQUALITY_EXPRESSION_NOT_EQUAL:
-        assert(expr->left != NULL);
-        assert(expr->right != NULL);
-        count += expression_get_variables(expr->left, n, variables);
-        count += expression_get_variables(expr->right, n, variables);
-        break;
-
-    case AND_EXPRESSION:  break;
-    case EXCLUSIVE_OR_EXPRESSION:  break;
-    case INCLUSIVE_OR_EXPRESSION:  break;
-
-    case LOGICAL_OR_EXPRESSION:
-    case LOGICAL_AND_EXPRESSION:
-        assert(expr->left != NULL);
-        assert(expr->right != NULL);
-        count += expression_get_variables(expr->left, n, variables);
-        count += expression_get_variables(expr->right, n, variables);
-        break; //&&
-
-    case ASSIGNMENT_EXPRESSION_ASSIGN:  break;
-    case ASSIGNMENT_EXPRESSION_PLUS_ASSIGN:  break;
-    case ASSIGNMENT_EXPRESSION_MINUS_ASSIGN:  break;
-    case ASSIGNMENT_EXPRESSION_MULTI_ASSIGN:  break;
-    case ASSIGNMENT_EXPRESSION_DIV_ASSIGN:  break;
-    case ASSIGNMENT_EXPRESSION_MOD_ASSIGN:  break;
-    case ASSIGNMENT_EXPRESSION_SHIFT_LEFT_ASSIGN:  break;
-    case ASSIGNMENT_EXPRESSION_SHIFT_RIGHT_ASSIGN:  break;
-    case ASSIGNMENT_EXPRESSION_AND_ASSIGN:  break;
-    case ASSIGNMENT_EXPRESSION_OR_ASSIGN:  break;
-    case ASSIGNMENT_EXPRESSION_NOT_ASSIGN:  break;
-
-
-    case EXPRESSION_EXPRESSION:  break;
-
-    case CONDITIONAL_EXPRESSION:  break;
-
-    case UNARY_EXPRESSION_GCC__BUILTIN_VA_START:
-    case UNARY_EXPRESSION_GCC__BUILTIN_VA_END:
-    case UNARY_EXPRESSION_GCC__BUILTIN_VA_COPY:
-    case UNARY_EXPRESSION_GCC__BUILTIN_VA_ARG:
-    case UNARY_EXPRESSION_GCC__BUILTIN_OFFSETOF:
-    case UNARY_EXPRESSION_CONSTEVAL:
-        break;
-    }
-
-    return count;
-}
 
 bool expression_is_lvalue(const struct expression* expr)
 {

@@ -6,12 +6,9 @@
  *
 */
 
-#include "compile.h"
-
 #pragma safety enable
-
 #include "ownership.h"
-
+#include "compile.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
@@ -26,6 +23,12 @@
 #endif
 #include "version.h"
 #include "object.h"
+
+#if defined(__CATALINA__)
+#if defined (__MINGW32__)
+#include <processenv.h> // for GetEnvironmentVariableA
+#endif
+#endif
 
 #if defined _MSC_VER && !defined __POCC__
 #include <crtdbg.h>
@@ -422,6 +425,7 @@ int compile_one_file(const char* file_name,
         if (options->preprocess_only)
         {
             p_output_string = print_preprocessed_to_string2(ast.token_list.head);
+            if (p_output_string)
             printf("%s", p_output_string);
 
             FILE* _Owner _Opt outfile = fopen(out_file_name, "w");
@@ -520,7 +524,7 @@ int compile_one_file(const char* file_name,
             if (ctx.options.preprocess_only)
             {
             }
-            else
+            else if (p_output_string)
             {
                 s_first_line_len = get_first_line_len(p_output_string);
                 content_expected_first_line_len = get_first_line_len(content_expected);
@@ -900,9 +904,6 @@ int compile(int argc, const char** argv, struct report* report)
 
     if (report->test_mode)
     {
-        //if (result != 0)
-          //  return EXIT_FAILURE;
-
         if (report->error_count > 0 || report->warnings_count > 0)
         {
             return EXIT_FAILURE;
@@ -911,8 +912,7 @@ int compile(int argc, const char** argv, struct report* report)
         return EXIT_SUCCESS;
     }
 
-
-    return 0;
+    return (report->error_count > 0) ? EXIT_FAILURE : EXIT_SUCCESS;
 }
 
 
@@ -932,7 +932,7 @@ static int strtoargv(char* s, int n, const char* argv[/*n*/])
             break;
         argv[argvc] = p;
         argvc++;
-        while (*p != ' ' && *p != '\0')
+        while (*p != ' ' && *p != '\0') //error in cake static analysis
             p++;
         if (*p == 0)
             break;
@@ -1024,8 +1024,9 @@ char* _Owner _Opt CompileText(const char* pszoptions, const char* content)
     printf(WHITE "Cake " CAKE_VERSION COLOR_RESET "\n");
 
     struct report report = { 0 };
-    char * s = (char* _Owner _Opt)compile_source(pszoptions, content, &report);
-    print_report(&report);
+    char* _Owner _Opt s = (char* _Owner _Opt)compile_source(pszoptions, content, &report);
+
+
     return s;
 }
 

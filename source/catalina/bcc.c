@@ -53,6 +53,11 @@
  * version 8.8   - just update version number.
  *
  * version 8.8.1 - remove local strdup (now in C libary).
+ *
+ * version 8.8.4  - use "version.h"
+ *
+ *                - enable 'globbing'
+ *
  */
 
 /*--------------------------------------------------------------------------
@@ -88,9 +93,9 @@
 #include <sys/stat.h>
 #endif
 
-#define COMPILE_IN_PLACE   1 /* 0 = compile in target, 1 = compile locally */
+#include "version.h"
 
-#define VERSION            "8.8.1"
+#define COMPILE_IN_PLACE   1 /* 0 = compile in target, 1 = compile locally */
 
 #define MAX_FILES          500
 #define MAX_LIBS           500
@@ -152,6 +157,8 @@
 
 #define PRE_DEFINE_STRING  "#define " /* note - space after */
 #define CMD_DEFINE_STRING  "-D "      /* note - space after */
+
+extern int _CRT_glob = 1; /* 0 turns off globbing; 1 turns it on */
 
 static char lcc_path[MAX_PATHLEN + 1] = "";
 static char def_tgt_path[MAX_PATHLEN + 1] = "";
@@ -405,11 +412,11 @@ int decode_arguments (int argc, char *argv[]) {
    if (argc == 1) {
       if (strlen(argv[0]) == 0) {
          // in case my name was not passed in ...
-         fprintf(stderr, "Catalina Bind %s\n", VERSION); 
+         fprintf(stderr, "Catalina Bind %s\n", CATALINA_VERSION); 
          help("bind");
       }
       else {
-         fprintf(stderr, "Catalina Bind %s\n", VERSION); 
+         fprintf(stderr, "Catalina Bind %s\n", CATALINA_VERSION); 
          help(argv[0]);
       }
       code = -1;
@@ -557,7 +564,7 @@ int decode_arguments (int argc, char *argv[]) {
                case 'd':
                   diagnose++;   /* increase diagnosis level */
                   if ((verbose + diagnose) == 1) {
-                     fprintf(stderr, "Catalina Bind %s\n", VERSION); 
+                     fprintf(stderr, "Catalina Bind %s\n", CATALINA_VERSION); 
                   }
                   fprintf(stderr, "diagnostic level %d\n", diagnose);
                   break;
@@ -698,7 +705,7 @@ int decode_arguments (int argc, char *argv[]) {
                case 'v':
                   verbose++;
                   if ((verbose + diagnose) == 1) {
-                     fprintf(stderr, "Catalina Bind %s\n", VERSION); 
+                     fprintf(stderr, "Catalina Bind %s\n", CATALINA_VERSION); 
                   }
                   if (diagnose) {
                      fprintf(stderr, "verbosity level %d\n", verbose);

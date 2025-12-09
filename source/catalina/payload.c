@@ -482,6 +482,9 @@
  *                 makes both the Windows Console Host and Terminal App behave
  *                 more like a real terminal emulator in vt100 mode when used 
  *                 with programs like Catalyst or the vi text editor.
+ *
+ *               - use "version.h"
+ *
  * 
  *-----------------------------------------------------------------------------
  * Payload is part of Catalina.
@@ -533,7 +536,7 @@
 #include "lua-5.4.4/src/lauxlib.h"
 #endif
 
-#define VERSION            "8.8.4"
+#include "version.h"
 
 #define DEFAULT_LCC_ENV    "LCCDIR" // used to locate binary files if not in current directory
 
@@ -2283,7 +2286,7 @@ int decode_arguments (int argc, char *argv[]) {
                   diagnose++;   /* increase diagnosis level */
                   verbose = 1;   /* diagnose implies verbose */
                   if (diagnose == 1) {
-                     fprintf(stderr, "Catalina Payload %s\n", VERSION); 
+                     fprintf(stderr, "Catalina Payload %s\n", CATALINA_VERSION); 
                   }
                   fprintf(stderr, "diagnostic level %d\n", diagnose);
                   break;
@@ -2836,7 +2839,7 @@ int decode_arguments (int argc, char *argv[]) {
                case 'v':
                   verbose = 1;
                   if (diagnose == 0) {
-                     fprintf(stderr, "Catalina Payload %s\n", VERSION); 
+                     fprintf(stderr, "Catalina Payload %s\n", CATALINA_VERSION); 
                   }
                   fprintf(stderr, "verbose mode\n");
                   break;
@@ -2889,7 +2892,7 @@ int decode_arguments (int argc, char *argv[]) {
    }
    if ((argc == 1) || (code == 0)) {
       if (!verbose) {
-         fprintf(stderr, "Catalina Payload %s\n", VERSION); 
+         fprintf(stderr, "Catalina Payload %s\n", CATALINA_VERSION); 
       }
       if (strlen(argv[0]) == 0) {
          // in case my name was not passed in ...

@@ -346,6 +346,10 @@
  *
  * version 8.8.1 - remove local strdup (now in C libary).
  *
+ * version 8.8.4  - use "version.h"
+ *
+ *                - enable 'globbing'
+ *
  */
 
 /*--------------------------------------------------------------------------
@@ -381,7 +385,7 @@
 #include <sys/stat.h>
 #endif
 
-#define VERSION            "8.8.1"
+#include "version.h"
 
 #define MAX_FILES          500
 #define MAX_LIBS           500
@@ -479,6 +483,8 @@
 #ifndef SECTOR_SIZE
 #define SECTOR_SIZE        0x0200 // size of sector 
 #endif
+
+extern int _CRT_glob = 1; /* 0 turns off globbing; 1 turns it on */
 
 static char optimize_assemble[MAX_LINELEN + 1] = "";
 static char lcc_path[MAX_LINELEN + 1] = "";
@@ -801,7 +807,7 @@ int decode_arguments (int argc, char *argv[]) {
    char * arg;
 
    if (argc == 1) {
-      fprintf(stderr, "Catalina Binder %s\n", VERSION); 
+      fprintf(stderr, "Catalina Binder %s\n", CATALINA_VERSION); 
       if (strlen(argv[0]) == 0) {
          // in case my name was not passed in ...
          help("bind");
@@ -978,7 +984,7 @@ int decode_arguments (int argc, char *argv[]) {
                case 'd':
                   diagnose++;   /* increase diagnosis level */
                   if ((verbose + diagnose) == 1) {
-                     fprintf(stderr, "Catalina Binder %s\n", VERSION); 
+                     fprintf(stderr, "Catalina Binder %s\n", CATALINA_VERSION); 
                   }
                   fprintf(stderr, "diagnostic level %d\n", diagnose);
                   break;
@@ -1288,7 +1294,7 @@ int decode_arguments (int argc, char *argv[]) {
                case 'v':
                   verbose++;
                   if ((verbose + diagnose) == 1) {
-                     fprintf(stderr, "Catalina Binder %s\n", VERSION); 
+                     fprintf(stderr, "Catalina Binder %s\n", CATALINA_VERSION); 
                   }
                   if (diagnose) {
                      fprintf(stderr, "verbosity level %d\n", verbose);

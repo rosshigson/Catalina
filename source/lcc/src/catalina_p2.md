@@ -113,7 +113,7 @@
  * so the resulting code will still compile - but it is very verbose
  * so this flag is not defined by default.
  */
-//#define DIAGNOSTIC
+/* #define DIAGNOSTIC */
 
 /*
  * DEBUGGER_SUPPORT is used to include symbol table info.
@@ -125,14 +125,14 @@
  * used for ouptut files - otherwise, debug files go in the current
  * working directory.
  */
-//#define DEBUG_IN_OUTPUT_PATH   
+/* #define DEBUG_IN_OUTPUT_PATH */
 
 /*
  * PRINT_SYMBOL_INFO is used to print debug messges (on stderr) as
  * various symbols (mainly function and constant symbols) are defined. 
  * This flag is not defined by default.
  */
-//#define PRINT_SYMBOL_INFO
+/* #define PRINT_SYMBOL_INFO */
 
 
 /*
@@ -155,12 +155,6 @@
 
 #define FLTTMP 0x00000000
 #define FLTVAR 0x00000000
-
-// #define INTTMP 0x00000fc0 // Catalina 3.7
-// #define INTVAR 0x0003f000 // Catalina 3.7
-
-// #define FLTTMP 0x000c0000 // Catalina 3.7
-// #define FLTVAR 0x00f00000 // Catalina 3.7
 
 #else
 
@@ -244,7 +238,6 @@ static void target(Node);
 static Symbol charreg[32];
 static Symbol shortreg[32];
 static Symbol intreg[32];
-//static Symbol fltreg[32]; // Catalina 3.7
 static int special_name(char *);
 static int special(Node);
 static int in_place_special(Node);
@@ -269,7 +262,7 @@ static int sametree(Node, Node);
 char * strdup(const char *str);
 #endif
 
-static Symbol charregw, shortregw, intregw; // , fltregw; // Catalina 3.7
+static Symbol charregw, shortregw, intregw;
 
 static int cseg;
 
@@ -1060,7 +1053,6 @@ static int special(Node p) {
   if ((generic(p->op) == ADDRG) && (p->syms[0]) && (p->syms[0]->type)) {
      if (special_name(p->syms[0]->name)) {
         if ((p->syms[0]->sclass == EXTERN) && isvolatile(p->syms[0]->type)) {
-           //print ("' extern volatile %s\n", p->syms[0]->name);
            p->syms[0]->x.name = strdup(p->syms[0]->name);
            p->syms[0]->defined = 1;
            return 1;
@@ -1076,7 +1068,7 @@ static int in_place_special(Node p) {
   char *name0; 
   char *name1;
 
-  // not sure exactly how much of this checking is necessary, but ...
+  /* not sure exactly how much of this checking is necessary, but ... */
 
   if (p->kids[0] 
   &&  p->kids[0]->kids[0]
@@ -1100,18 +1092,12 @@ static int in_place_special(Node p) {
      vreg0 = p->kids[0]->kids[0]->syms[0]->name;
      vreg1 = p->kids[1]->kids[0]->kids[0]->kids[0]->syms[0]->name;
 
-     //print("vreg 0 = %s\n", vreg0);
-     //print("vreg 1 = %s\n", vreg1);
-
      name0 = p->kids[0]->kids[0]->syms[0]->u.t.cse->syms[0]->name;
      name1 = p->kids[1]->kids[0]->kids[0]->kids[0]->syms[0]->u.t.cse->syms[0]->name;
 
-     //print("name 0 = %s\n", name0);
-     //print("name 1 = %s\n", name1);
-
      if (strcmp(vreg0, vreg1) == 0) {
 
-        // statement of form x = x op y (or x op= y), so see if x is special
+        /* statement of form x = x op y (or x op= y), so see if x is special */
         if (special_name(name0)) {
            return 1;
         }
@@ -1349,22 +1335,22 @@ static void my_stabinit(char *file, int argc, char *argv[]) {
       currentfile = file;
    }
 
-   // default debug path is current working directory
+   /* default debug path is current working directory */
    getcwd(debug_path, sizeof debug_path);
 #ifdef DEBUG_IN_OUTPUT_PATH   
-   // now look for any overriding '-o', and (if found) extract the output path
+   /* now look for any overriding '-o', and (if found) extract the output path */
    for (i = 0; i < argc; i++) {
-      // search for any '-o' option
+      /* search for any '-o' option */
       if (strncmp (argv[i], "-o", 2) == 0) {
          if (strlen(argv[i]) == 2) {
-            // use next arg
+            /* use next arg */
             strncpy(debug_path, (argv[++i]), MAX_PATHNAME_LENGTH);
          }
          else {
-            // use remainder of this arg
+            /* use remainder of this arg */
             strncpy(debug_path, &argv[i][2], MAX_PATHNAME_LENGTH);
          }
-         // we use only the directory portion - i.e. remove the final filename
+         /* we use only the directory portion - i.e. remove the final filename */
          for (j = strlen(debug_path) - 1; j > 0; j--) {
             if (debug_path[j] == PATH_SEPARATOR) {
                debug_path[j + 1] = '\0';
@@ -1372,7 +1358,7 @@ static void my_stabinit(char *file, int argc, char *argv[]) {
             }
          }
          if (j == 0) {
-            // no directory portion specified 
+            /* no directory portion specified  */
             debug_path[0] = '\0';
          }
          break;
@@ -1381,7 +1367,7 @@ static void my_stabinit(char *file, int argc, char *argv[]) {
 #endif   
    len = strlen(debug_path); 
    if (debug_path[0] == '\"') {
-      // remove leading quote
+      /* remove leading quote */
       for (i = 0; i < len - 1; i++) {
          debug_path[i] = debug_path[i + 1];
       }
@@ -1389,7 +1375,7 @@ static void my_stabinit(char *file, int argc, char *argv[]) {
       len--;
    }
    if ((len  > 0) && debug_path[len - 1] != PATH_SEPARATOR) {
-      // add terminating path separator
+      /* add terminating path separator */
       debug_path[len] = PATH_SEPARATOR;
       debug_path[len + 1] = '\0';
       len++;
@@ -1398,8 +1384,8 @@ static void my_stabinit(char *file, int argc, char *argv[]) {
    fprintf(stderr, "debug_path = %s\n", debug_path);
 #endif   
 
-   // default debug filename is current filename, but with the
-   // '.c' extension replaced with '.debug'
+   /* default debug filename is current filename, but with the */
+   /* '.c' extension replaced with '.debug' */
    strncpy (debug_filename, file, MAX_PATHNAME_LENGTH);
    len = strlen(debug_filename);
    if ((len > 2) && strcmp(&debug_filename[len-2],".c") == 0) {
@@ -1409,7 +1395,7 @@ static void my_stabinit(char *file, int argc, char *argv[]) {
    if (debug_file != NULL) {
       fclose(debug_file);
    }
-   // use only filename portion - i.e. find last path separator
+   /* use only filename portion - i.e. find last path separator */
    for (j = strlen(debug_filename) - 1; j > 0; j--) {
       if (debug_filename[j] == PATH_SEPARATOR) {
          j++;
@@ -1417,7 +1403,7 @@ static void my_stabinit(char *file, int argc, char *argv[]) {
       }
    }
 
-   // combine output path name with debug filename
+   /* combine output path name with debug filename */
 #ifdef DIAGNOSTIC
    fprintf(stderr, "debug_filename = %s\n", &debug_filename[j]);
 #endif   
@@ -1621,10 +1607,8 @@ static void progbeg(int argc, char *argv[]) {
    print("'\n");
    for (i = r0; i <= r23; i++) {
       intreg[i] = mkreg("r%d", i, 1, IREG);
-      //fltreg[i] = mkreg("r%d", i, 1, FREG); // Catalina 3.7
    }
    intregw = mkwildcard(intreg);
-   // fltregw = mkwildcard(fltreg); // Catalina 3.7
 
    tmask[IREG] = INTTMP;
    vmask[IREG] = INTVAR;
@@ -1641,7 +1625,6 @@ static Symbol rmap(int opk) {
    case I: case U:
       return intregw;
    case F:
-      //return fltregw; in Catalina 3.7, all registers are allocated from intregw, but can be used for floats as well
       return intregw; 
    default:
       return 0;
@@ -1676,11 +1659,11 @@ static void progend(void) {
    print("' end\n");
 }
 
-// NOTE: Target always uses intreg, even for targets that take or
-// return floats - this is NOT AN ERROR - there is in fact only one
-// set of registers, and r0 and r1 can be used for both floats and
-// integer values - but we don't want LCC to think it can use the
-// intregs and not corrupt the fltregs, so we always use the intregs
+/* NOTE: Target always uses intreg, even for targets that take or */
+/* return floats - this is NOT AN ERROR - there is in fact only one */
+/* set of registers, and r0 and r1 can be used for both floats and */
+/* integer values - but we don't want LCC to think it can use the */
+/* intregs and not corrupt the fltregs, so we always use the intregs */
 static void target(Node p) {
    assert(p);
    switch (specific(p->op)) {
@@ -1741,7 +1724,7 @@ static void target(Node p) {
 #ifdef DIAGNOSTIC
             printf("' ARG %d USES STACK\n", p->x.argno);  
 #endif
-            //rtarget(p, 0, intreg[0]);
+            /*rtarget(p, 0, intreg[0]); */
          }
          break;
       }
@@ -1754,7 +1737,7 @@ static void clobber(Node p) {
    assert(p);
    switch (specific(p->op)) {
    case CALL+F:
-      //spill(INTRET, IREG, p);
+      /*spill(INTRET, IREG, p); */
       spill(FLTRET, FREG, p);
       break;
    case CALL+I: case CALL+P: case CALL+U:
@@ -1791,7 +1774,7 @@ static void move_if_required (char *dst, char *src, char *comment) {
    sscanf(src, "r%d", &this_src);
    sscanf(dst, "r%d", &this_dst);
    if (this_dst == this_src) {
-      // no move is required
+      /* no move is required */
 #ifdef DIAGNOSTIC 
       print ("' mov %s, %s ' %s <- removed by optimization\n", dst, src, comment);
 #endif
@@ -1812,7 +1795,7 @@ static void move_if_required_2 (char *dst, char *src, char *comment) {
    if ((this_dst == this_src) 
    ||  ((this_dst == last_dst) && (this_src == last_src))
    ||  ((this_dst == last_src) && (this_src == last_dst))) {
-      // no move is required
+      /* no move is required */
 #ifdef DIAGNOSTIC 
       print ("' mov %s, %s ' %s <- removed by optimization\n", dst, src, comment);
 #endif
@@ -1827,25 +1810,25 @@ static void move_if_required_2 (char *dst, char *src, char *comment) {
 /* set up r0 with op1 and r1 with op2 without clobbering either */
 static void setup_r0_and_r1(char *op1, char *op2) {
    if (strcmp(op2,"r0") == 0) {
-      // don't clobber r0
+      /* don't clobber r0 */
       move_if_required("r1", op2, "setup r0/r1 (1)");
       move_if_required_2("r0", op1, "setup r0/r1 (1)");
    }
    else {
-      // safe to clobber r0
+      /* safe to clobber r0 */
       move_if_required("r0", op1, "setup r0/r1 (2)");
       move_if_required_2("r1", op2, "setup r0/r1 (2)");
    }
 }
 
 #ifdef SUPPORT_PASM
-// determine if this ARG is being generated preparatory 
-// to calling an PASM function
+/* determine if this ARG is being generated preparatory  */
+/* to calling an PASM function */
 static int is_arg_to_PASM(Node p) {
    int op;
    Node q = p;
 
-   // find the call node we are argument for
+   /* find the call node we are argument for */
    while ((q && generic(q->op) != CALL)) {
       assert (q->x.next);
       q = q->x.next;
@@ -1859,13 +1842,13 @@ static int is_arg_to_PASM(Node p) {
 #endif
 
 #ifndef OLD_VARIADIC
-// determine if this ARG is being generated preparatory to call a 
-// variadic function (only supports ANSI style variadics)
+/* determine if this ARG is being generated preparatory to call a  */
+/* variadic function (only supports ANSI style variadics) */
 static int is_arg_to_variadic(Node p) {
    int op;
    Node q = p;
 
-   // find the call node we are argument for
+   /* find the call node we are argument for */
    while ((q && generic(q->op) != CALL)) {
       assert (q->x.next);
       q = q->x.next;
@@ -1890,8 +1873,8 @@ static void dump(Symbol s, void * not_used) {
    print("'dump name = %s (%s)\n", s->name, s->x.name);
 }
 
-#define P_FUNC_NAME     "_PASM"  // name of function to return PASM identifier
-#define P_FUNC_LEN      5        // must be strlen(P_FUNC_NAME)
+#define P_FUNC_NAME     "_PASM"  /* name of function to return PASM identifier */
+#define P_FUNC_LEN      5        /* must be strlen(P_FUNC_NAME) */
 
 static char *my_lookup(char *str) {
   Symbol sym;
@@ -1909,7 +1892,7 @@ static char *my_lookup(char *str) {
   }
 }
 
-// strindex - return index of string t in string s, or -1 if not found 
+/* strindex - return index of string t in string s, or -1 if not found  */
 static int strindex(char s[], char t[]) {
    int i, j, k;
 
@@ -1924,8 +1907,8 @@ static int strindex(char s[], char t[]) {
    return -1;
 }
 
-// skipspace - return index of next non-whitespace, starting at str[index] 
-//             Note that this may may the index of the terminating null!
+/* skipspace - return index of next non-whitespace, starting at str[index]  */
+/*             Note that this may may the index of the terminating null! */
 static int skipspace(char *str, int index) {
    while (isspace(str[index])) {
       index++;
@@ -1933,18 +1916,17 @@ static int skipspace(char *str, int index) {
    return index;
 }
 
-// C_name - substitute all references to P_FUNC_NAME(name) with the identifier 
-//          generated by the C compiler, or just the name if there is none.
-//          e.g. P_FUNC_NAME(func) might return "C_func" or just "func".
-//          
-// Note that for function aruments that are passed in a register, it will 
-// return the register name allocated to the argument (i.e. r2 .. r23). 
-// For arguments passed on the stack, it will return the offset that
-// needs to be added to the current frame pointer (e.g. 8, 12, 16 etc).
-// For globals and externals, it will return the C label.
-// It cannot resolve the id of local variables - pass them to a function.
-// The return string is dynamically allocated, and should be freed after use.
-//
+/* C_name - substitute all references to P_FUNC_NAME(name) with the identifier  */
+/*          generated by the C compiler, or just the name if there is none. */
+/*          e.g. P_FUNC_NAME(func) might return "C_func" or just "func". */
+/* Note that for function aruments that are passed in a register, it will  */
+/* return the register name allocated to the argument (i.e. r2 .. r23).  */
+/* For arguments passed on the stack, it will return the offset that */
+/* needs to be added to the current frame pointer (e.g. 8, 12, 16 etc). */
+/* For globals and externals, it will return the C label. */
+/* It cannot resolve the id of local variables - pass them to a function. */
+/* The return string is dynamically allocated, and should be freed after use. */
+/* */
 static char *C_name(char *src) {
    int src_index = 0;
    int nxt_index = 0;
@@ -1955,18 +1937,17 @@ static char *C_name(char *src) {
    char id[MAX_NAME_LENGTH + 1];
    char *new_id;
 
-   //first, calculate how many replacements we might need
+   /*first, calculate how many replacements we might need */
    while ((nxt_index = strindex(&src[src_index], P_FUNC_NAME)) >= 0) {
       count++;
-      src_index += nxt_index + P_FUNC_LEN; // point past P_FUNC_NAME
+      src_index += nxt_index + P_FUNC_LEN; /* point past P_FUNC_NAME */
    }
-   //printf("source contains %d instances of \"%s\"\n", count, P_FUNC_NAME);
    src_index = 0;
    nxt_index = 0;
 
-   // calculate maximum length of replacemenmt string
+   /* calculate maximum length of replacemenmt string */
    maxlen = strlen(src) + count * MAX_NAME_LENGTH + 1;
-   // allocate new string, and intialize it to all zeroes
+   /* allocate new string, and intialize it to all zeroes */
    dst = malloc(maxlen);
    if (dst == NULL) {
       printf("string allocation failed in %s processing\n", P_FUNC_NAME);
@@ -1975,25 +1956,18 @@ static char *C_name(char *src) {
    memset(dst, 0, maxlen);
 
    if (count > 0) {
-      // replace all instances of P_FUNC_NAME(xxx) with the PASM identifier
+      /* replace all instances of P_FUNC_NAME(xxx) with the PASM identifier */
       char *next = src;
       int i;
       for (i = 0; i < count; i++) {
-         //printf("string to search = \"%s\"\n", &src[src_index]);
          nxt_index = strindex(&src[src_index], P_FUNC_NAME);
          if (nxt_index >= 0) {
             if ((nxt_index == 0) 
             || !(isalnum(src[src_index+nxt_index-1]) || (src[src_index+nxt_index-1] == '_'))) {
-               //printf("src index now %d\n", src_index);
-               //printf("dst index now %d\n", dst_index);
-               //printf("instance found at index %d\n", src_index + nxt_index);
-               // copy string preceeding instance from src to dst
+               /* copy string preceeding instance from src to dst */
                strncpy(&dst[dst_index], &src[src_index], nxt_index);
-               //printf("result string so far = \"%s\"\n", dst);
                dst_index += nxt_index;
-               //printf("dst index now %d\n", dst_index);
                src_index = skipspace(src, src_index + nxt_index + P_FUNC_LEN);
-               //printf("src index now %d\n", src_index);
                if (src[src_index] == '(') {
                   int first, last;
                   src_index = skipspace(src, src_index + 1);
@@ -2007,7 +1981,6 @@ static char *C_name(char *src) {
                   if (src[src_index] == ')') {
                      strncpy(id, &src[first], last - first + 1);
                      id[last - first + 1] = 0;
-                     //printf("id = \"%s\"\n", id);
                      src_index++;
                   }
                   else {
@@ -2023,54 +1996,52 @@ static char *C_name(char *src) {
                }
             }
             else {
-               //printf("not a match at %d\n", src_index+nxt_index);
-               // copy non-matching instance from src to dst
+               /* copy non-matching instance from src to dst */
                strncpy(&dst[dst_index], &src[src_index], nxt_index + P_FUNC_LEN);
-               //printf("result string so far = \"%s\"\n", dst);
                dst_index += nxt_index + P_FUNC_LEN;
                src_index += nxt_index + P_FUNC_LEN;
             }
          }
          else {
-            // this should never happen!
+            /* this should never happen! */
             printf("error: %s processing failed\n", P_FUNC_NAME);
          }
       }
-      // copy remainder of src to dst string
+      /* copy remainder of src to dst string */
       strcpy(&dst[dst_index], &src[src_index]);
    }
    else {
-      // no instances of P_FUNC_NAME so just return a copy of the source
+      /* no instances of P_FUNC_NAME so just return a copy of the source */
       strncpy(dst, src, maxlen);
    }
    return dst;
 }
 
-#define P_PSTR_NAME     "_PSTR"  // name of macro to convert C to PASM string
-#define P_PSTR_LEN      5        // must be strlen(P_PSTR_NAME)
+#define P_PSTR_NAME     "_PSTR"  /* name of macro to convert C to PASM string */
+#define P_PSTR_LEN      5        /* must be strlen(P_PSTR_NAME) */
 
-// hex_digit - return the hex character (i.e. '0' .. '9', 'A' .. 'F' for the 
-//             hex integer, which must be in the range 0 .. 16
+/* hex_digit - return the hex character (i.e. '0' .. '9', 'A' .. 'F' for the  */
+/*             hex integer, which must be in the range 0 .. 16 */
 static char hex_digit(unsigned int hex) {
    return ((hex < 10) ? hex + '0' : hex - 10 + 'A');
 }
 
-// my_escape - generate a sequence of bytes that represent a C string, 
-//             substituting all C escape sequences with the appropriate byte
-//             sequences. Note that in the string, the escape sequences will
-//             have to use \\, not \ or they will be interpreted by C.
-//             The processing stops at the first null character. 
-//             The length of the final string is returned (but note
-//             the result is not null terminated).
-//             e.g. my_escape("hello\\n", 8) would return the value 6 
-//             and the characters h e l l o <nl>
-// 
-// The length of the final string is returned, but note that it is not 
-// terminated by a null byte, so that generated strings can be concatenated 
-// if required.
-//
-// The return string is dynamically allocated, and should be freed after use.
-//
+/* my_escape - generate a sequence of bytes that represent a C string,  */
+/*             substituting all C escape sequences with the appropriate byte */
+/*             sequences. Note that in the string, the escape sequences will */
+/*             have to use \\, not \ or they will be interpreted by C. */
+/*             The processing stops at the first null character.  */
+/*             The length of the final string is returned (but note */
+/*             the result is not null terminated). */
+/*             e.g. my_escape("hello\\n", 8) would return the value 6  */
+/*             and the characters h e l l o <nl> */
+/*  */
+/* The length of the final string is returned, but note that it is not  */
+/* terminated by a null byte, so that generated strings can be concatenated  */
+/* if required. */
+/* */
+/* The return string is dynamically allocated, and should be freed after use. */
+/* */
 static int my_escape(char *src, char *dst, int len) {
    int src_index = 0;
    int dst_index = 0;
@@ -2165,13 +2136,13 @@ static int my_escape(char *src, char *dst, int len) {
              byte = 0;
              break;
          }
-         // dst[dst_index++] = byte;
+         /* dst[dst_index++] = byte; */
          dst[dst_index++] = hex_digit((byte>>4)&0xF);
          dst[dst_index++] = hex_digit(byte&0xF);
          dst[dst_index++] = '\n';
       }
       else {
-         // dst[dst_index++] = src[src_index];
+         /* dst[dst_index++] = src[src_index]; */
          memcpy(&dst[dst_index], " byte $", 7);
          dst_index += 7;
          byte = src[src_index++];
@@ -2183,15 +2154,15 @@ static int my_escape(char *src, char *dst, int len) {
    return dst_index;
 }
 
-// C_escape - substitute all references to P_PSTR_NAME(cstr) with the
-//            PASM version of the C string by substituting C escape
-//            sequences.
-//          
-// Since all C escape sequences produce less characters than it takes to
-// express them, the return string can only ever be smaller than the source 
-// string - so it can be built in place in the space occupied by the
-// source string.
-//
+/* C_escape - substitute all references to P_PSTR_NAME(cstr) with the */
+/*            PASM version of the C string by substituting C escape */
+/*            sequences. */
+/*           */
+/* Since all C escape sequences produce less characters than it takes to */
+/* express them, the return string can only ever be smaller than the source  */
+/* string - so it can be built in place in the space occupied by the */
+/* source string. */
+/* */
 static char *C_escape(char *src) {
    int src_index = 0;
    int nxt_index = 0;
@@ -2204,18 +2175,17 @@ static char *C_escape(char *src) {
    int first, last;
    int maxlen;
 
-   //first, calculate how many replacements we might need to make
+   /*first, calculate how many replacements we might need to make */
    while ((nxt_index = strindex(&src[src_index], P_PSTR_NAME)) >= 0) {
       count++;
-      src_index += nxt_index + P_PSTR_LEN; // point past P_PSTR_NAME
+      src_index += nxt_index + P_PSTR_LEN; /* point past P_PSTR_NAME */
    }
-   //printf("source contains %d instances of \"%s\"\n", count, P_PSTR_NAME);
    src_index = 0;
    nxt_index = 0;
 
-   // allocate new string, and intialize it to all zeroes - we might need
-   // up to 10 times the length of the source string, since each byte in
-   // the src can expand to 10 bytes in the destination - " byte $XX\n"
+   /* allocate new string, and intialize it to all zeroes - we might need */
+   /* up to 10 times the length of the source string, since each byte in */
+   /* the src can expand to 10 bytes in the destination - " byte $XX\n" */
    maxlen = 10*strlen(src) + 1;
    dst = malloc(maxlen);
    if (dst == NULL) {
@@ -2225,25 +2195,19 @@ static char *C_escape(char *src) {
    memset(dst, 0, maxlen);
 
    if (count > 0) {
-      // replace all instances of P_PSTR_NAME(cstr) with the PASM string
+      /* replace all instances of P_PSTR_NAME(cstr) with the PASM string */
       for (i = 0; i < count; i++) {
-         //printf("string to search = \"%s\"\n", &src[src_index]);
          nxt_index = strindex(&src[src_index], P_PSTR_NAME);
          if (nxt_index >= 0) {
             if ((nxt_index == 0) 
             || !(isalnum(src[src_index+nxt_index-1]) || (src[src_index+nxt_index-1] == '_'))) {
-               //printf("instance found at index %d\n", src_index + nxt_index);
-               // copy string preceeding instance from src to dst
+               /* copy string preceeding instance from src to dst */
                strncpy(&dst[dst_index], &src[src_index], nxt_index);
-               //printf("result string so far = \"%s\"\n", dst);
                dst_index += nxt_index;
-               //printf("dst index now %d\n", dst_index);
                src_index = skipspace(src, src_index + nxt_index + P_FUNC_LEN);
-               //printf("src index now %d\n", src_index);
                first = src_index;
                if (src[first] == '(') {
                   first = skipspace(src, first + 1);
-                  //printf("first now %d\n", first);
                   if (src[first] != '\"') {
                      in_literal = 0;
                   }
@@ -2269,7 +2233,6 @@ static char *C_escape(char *src) {
                      }
                      last++;
                   }
-                  //printf("last now %d\n", last);
                   src_index = last;
                   if (src[last] == '\"') {
                      src_index = skipspace(src, last + 1);
@@ -2288,23 +2251,21 @@ static char *C_escape(char *src) {
                }
             }
             else {
-               //printf("not a match at %d\n", src_index+nxt_index);
-               // copy non-matching instance from src to dst
+               /* copy non-matching instance from src to dst */
                strncpy(&dst[dst_index], &src[src_index], nxt_index + P_FUNC_LEN);
-               //printf("result string so far = \"%s\"\n", dst);
                dst_index += nxt_index + P_FUNC_LEN;
                src_index += nxt_index + P_FUNC_LEN;
             }
          }
       }
-      // copy remainder of src to dst string
+      /* copy remainder of src to dst string */
       while (src[src_index] != 0) {
         dst[dst_index++] = src[src_index++];
       }
       dst[dst_index] = 0;
    }
    else {
-      // no instances of P_PSTR_NAME so just return a copy of the source
+      /* no instances of P_PSTR_NAME so just return a copy of the source */
       strncpy(dst, src, maxlen);
    }
    return dst;
@@ -2442,17 +2403,17 @@ static void emit2(Node p) {
       sz = opsize(p->op);
 #ifdef REG_PASSING
 #ifdef OLD_VARIADIC      
-      q = argreg(p->x.argno);   // use reg arg if possible
+      q = argreg(p->x.argno);   /* use reg arg if possible */
 #else      
       if (is_arg_to_variadic(p)) {
-         q = NULL; // variadics always use stack args
+         q = NULL; /* variadics always use stack args */
       }
       else {
-         q = argreg(p->x.argno);   // use reg arg if possible
+         q = argreg(p->x.argno);   /* use reg arg if possible */
       }
 #endif      
 #else
-      q = NULL;   // always use stack arg
+      q = NULL;   /* always use stack arg */
 #endif
 #ifdef DIAGNOSTIC
       dumptree(p);
@@ -2473,7 +2434,7 @@ static void emit2(Node p) {
             print("' loading argument %s to PASM eliminated\n", src);
             s = findconst(src);
             if ((s!= NULL) && (s->sclass == STATIC)) {
-               n_str = C_name(s->name); // substitute C names
+               n_str = C_name(s->name); /* substitute C names */
                e_str = C_escape(n_str);
                print("'START PASM ... \n%s\n'... END PASM\n", e_str);
                free(n_str);
@@ -2599,7 +2560,7 @@ static void emit2(Node p) {
 #ifdef DIAGNOSTIC            
                print ("' ARG case INDIR 6\n");
 #endif
-               // check for common subexpressions - see pp 384
+               /* check for common subexpressions - see pp 384 */
                assert(kp->syms[RX] && kp->syms[RX]->x.name);
                src = kp->syms[RX]->x.name;
                if (*src == '?') {
@@ -2628,13 +2589,12 @@ static void emit2(Node p) {
                   }
                }
                else {
-                  // NOTE: INDIRx(VREGP) is a register read, not an indirect read
-                  // print(" rdlong RI, %s\n jmp #PSHL ' stack ARG\n", src);
+                  /* NOTE: INDIRx(VREGP) is a register read, not an indirect read */
                   print(" mov RI, %s\n jmp #PSHL ' stack ARG\n", src);
                }
             }
             else {
-               // for anything not matched yet, assume the result is in the node's target register
+               /* for anything not matched yet, assume the result is in the node's target register */
 #ifdef DIAGNOSTIC            
                print ("' Fallback Processing\n");
 #endif               
@@ -2749,14 +2709,14 @@ static void emit2(Node p) {
 #ifdef DIAGNOSTIC            
                print ("' ARG case INDIR 6\n");
 #endif
-               // do nothing - argument should have been targeted to correct register already
+               /* do nothing - argument should have been targeted to correct register already */
             }
          }
          else {
 #ifdef DIAGNOSTIC            
             print ("' ARG case 6\n");
 #endif
-            // do nothing - argument should have been targeted to correct register already
+            /* do nothing - argument should have been targeted to correct register already */
          }
 #ifdef DIAGNOSTIC
          print("' EMIT2 -- REG ARG\n");
@@ -3048,7 +3008,7 @@ static Symbol argreg(int argno) {
 #ifdef DIAGNOSTIC
    printf("' ARG %d ", argno);
 #endif
-   // arguments 0 .. NUM_PASSING_REGS - 1 (in order of being pushed) may use registers 
+   /* arguments 0 .. NUM_PASSING_REGS - 1 (in order of being pushed) may use registers  */
    if (argno >= NUM_PASSING_REGS) {
 
 #ifdef DIAGNOSTIC
@@ -3129,7 +3089,7 @@ static void function(Symbol f, Symbol caller[], Symbol callee[], int n) {
       error("main function cannot be variadic");
    }   
 
-   offset = 8; // leave space for PC & FP
+   offset = 8; /* leave space for PC & FP */
 
 #ifndef REG_PASSING
    /* all parameters passed on stack */
@@ -3146,7 +3106,7 @@ static void function(Symbol f, Symbol caller[], Symbol callee[], int n) {
    /* pass parameters in registers where possible - this complicates variadic functions */
 
    for (nump = 0; callee[nump]; nump++) {
-      ; // just count the number of parameters
+      ; /* just count the number of parameters */
 #ifdef DIAGNOSTIC
       printf("' parameter name %s\n", callee[nump]->name);
 #endif      
@@ -3228,7 +3188,7 @@ static void function(Symbol f, Symbol caller[], Symbol callee[], int n) {
 #ifdef SUPPORT_ALLOCA
    calls_alloca = 0;
 #endif
-   offset = maxoffset = 4; // new NEWF and RETF add a long to the frame for SP
+   offset = maxoffset = 4; /* new NEWF and RETF add a long to the frame for SP */
 
    gencode(caller, callee);
 
@@ -3240,7 +3200,6 @@ static void function(Symbol f, Symbol caller[], Symbol callee[], int n) {
    printf("' USEDMASK[IREG]=%lx\n", usedmask[IREG]);
    printf("' USEDMASK[FREG]=%lx\n", usedmask[FREG]);
 #endif
-   //saveimask = usedmask[IREG] & INTVAR; /* modified to the line below since it seems necessary to save temp registers as well (???) */
    saveimask = usedmask[IREG] & (INTVAR|INTTMP);
    savefmask = usedmask[FREG] & (FLTVAR|FLTTMP);
    framesize = roundup(maxoffset, 4);
@@ -3257,7 +3216,7 @@ static void function(Symbol f, Symbol caller[], Symbol callee[], int n) {
      if (need_frame) {
 #ifdef REG_PASSING            
          if (ismain) {
-            // main does not get called the normal way - so simulate it
+            /* main does not get called the normal way - so simulate it */
             printf(" sub SP, #8\n");
 #ifdef OLD_VARIADIC
             printf(" mov BC, #8\n");
@@ -3273,7 +3232,7 @@ static void function(Symbol f, Symbol caller[], Symbol callee[], int n) {
    else {
 #ifdef REG_PASSING      
       if (ismain) {
-         // main does not get called the normal way - so simulate it
+         /* main does not get called the normal way - so simulate it */
          printf(" sub SP, #8\n");
 #ifdef OLD_VARIADIC
          printf(" mov BC, #8\n");
@@ -3287,9 +3246,6 @@ static void function(Symbol f, Symbol caller[], Symbol callee[], int n) {
       if (glevel > 0) {
          print (" jmp #CALA\n long @C_debug_init\n");
       }
-      //print ("#ifndef NO_ARGS\n");
-      //print (" jmp #CALA\n long @C_arg_setup\n");
-      //print ("#endif\n");
    }
    else {
 #ifdef DIAGNOSTIC
@@ -3302,10 +3258,10 @@ static void function(Symbol f, Symbol caller[], Symbol callee[], int n) {
 #ifdef REG_PASSING
    if (varargs) {
 #ifdef OLD_VARIADIC      
-      // variadic functions must spill all reg arguments to stack, even if the
-      // caller doesn't use all the possible reg arguments - but we must be
-      // careful to only use the available space - i.e. from FP + 8 to BC
-      // ensure there is enough space to do this!
+      /* variadic functions must spill all reg arguments to stack, even if the */
+      /* caller doesn't use all the possible reg arguments - but we must be */
+      /* careful to only use the available space - i.e. from FP + 8 to BC */
+      /* ensure there is enough space to do this! */
       print(" mov RI, FP\n add RI, #8\n");
       for (i = 0; i < NUM_PASSING_REGS; i++) {
          print(" sub BC, #4\n cmp BC, RI wcz\n if_ae wrlong r%d, BC ' spill reg (varadic)\n", 
@@ -3314,8 +3270,8 @@ static void function(Symbol f, Symbol caller[], Symbol callee[], int n) {
 #endif      
    }
    else {
-      // non-variadic functions may need to spill individual arguments, and in any case will
-      // usually need to map registers used to pass arguments to registers used in the function
+      /* non-variadic functions may need to spill individual arguments, and in any case will */
+      /* usually need to map registers used to pass arguments to registers used in the function */
       for (i = 0; i < nump; i++) {
          if (((nump - i - 1) < NUM_PASSING_REGS)) {
             r = argreg(nump - i - 1);
@@ -3372,8 +3328,8 @@ static void function(Symbol f, Symbol caller[], Symbol callee[], int n) {
       }
    }
    if (ismain) {
-      // main routine never returns - if it never even exits, define 
-      // NO_EXIT to disable the generation of the jump to exit.
+      /* main routine never returns - if it never even exits, define  */
+      /* NO_EXIT to disable the generation of the jump to exit. */
       print("#ifndef NO_EXIT\n");
       print(" jmp #JMPA\n long @C__exit\n");
       print("#endif\n");
@@ -3465,7 +3421,7 @@ static void defsymbol(Symbol p) {
    char temp_prefix[L_tmpnam + 8 + 1];
    unsigned long now = (unsigned long)time(NULL);
 
-   // "C_" prefix is used for disambiguation with PASM or SPIN symbols
+   /* "C_" prefix is used for disambiguation with PASM or SPIN symbols */
 #ifdef PRINT_SYMBOL_INFO
    fprintf(stderr,"Defining Symbol %s\n", p->name);
 #endif
@@ -3473,14 +3429,14 @@ static void defsymbol(Symbol p) {
       p->x.name = strdup(mangled_name((cfunc?cfunc->x.name:"C"), p->name, 1));
    }
    if (p->scope >= GLOBAL && p->sclass == STATIC) {
-      // TODO: this may generate the same name for different statics in 
-      // different files, which would result in the symbol being multiply
-      // defined. One solution would be to use the filename, but there is no
-      // mechanism in lcc to get the name of the source file without 
-      // turning on the generation of symbol table information (i.e. via
-      // the -g option to rcc). So currently we use a temporary filename,
-      // with further disambiguation provided by including the time of
-      // the compile
+      /* TODO: this may generate the same name for different statics in  */
+      /* different files, which would result in the symbol being multiply */
+      /* defined. One solution would be to use the filename, but there is no */
+      /* mechanism in lcc to get the name of the source file without  */
+      /* turning on the generation of symbol table information (i.e. via */
+      /* the -g option to rcc). So currently we use a temporary filename, */
+      /* with further disambiguation provided by including the time of */
+      /* the compile */
       tmp_name = tmpnam(NULL);
       strcpy(temp_prefix,"C_");
       j = 2;
@@ -3503,7 +3459,7 @@ static void defsymbol(Symbol p) {
       p->x.name = strdup(mangled_name("C", p->name, 0));
    }
    else if (p->scope == CONSTANTS) {
-      // constants are generated 'in line'
+      /* constants are generated 'in line' */
       int cnst = p->u.c.v.i;
       tmp_name = p->name;
       if ((tmp_name[0] == '0') && (tmp_name[1] == 'x')) {

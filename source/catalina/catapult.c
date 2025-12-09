@@ -37,6 +37,8 @@
  *
  * version 8.8.1 - just update version number.
  *
+ * version 8.8.4 - use "version.h"
+ *
  */
 
 #include <ctype.h>
@@ -45,7 +47,7 @@
 #include <string.h>
 #include <sys/stat.h>
 
-#define VERSION            "8.8.1" 
+#include "version.h"
 
 #ifdef WIN32_PATHS         /* define this on the command line for Windows */
 #define PATH_SEP           "\\"
@@ -77,7 +79,7 @@ static char output_file[MAX_LINELEN + 1] = OUTPUT_FILE;
 static char output_cmd[MAX_LINELEN + 1] = EXECUTE_OUTPUT;
 
 void help(char *my_name) {
-   fprintf(stderr, "Catalina Catapult %s\n", VERSION); 
+   fprintf(stderr, "Catalina Catapult %s\n", CATALINA_VERSION); 
    fprintf(stderr, "\nusage: %s [options] [file]\n\n", my_name);
    fprintf(stderr, "options:  -? or -h  print this helpful message (and exit)\n");
    fprintf(stderr, "          -k        do not execute the output file\n");
@@ -273,7 +275,7 @@ int main (int argc, char *argv[]) {
 
    code = decode_arguments(argc, argv);
    if (verbose > 0) {
-      fprintf(stderr, "Catalina Catapult %s\n", VERSION); 
+      fprintf(stderr, "Catalina Catapult %s\n", CATALINA_VERSION); 
    }
    if (code < 0) {
       exit(code);

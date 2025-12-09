@@ -232,7 +232,7 @@ Node listnodes(Tree tp, int tlab, int flab) {
           &&  p->kids[0]->syms[0] 
           &&  p->kids[0]->syms[0]->x.name
           &&  strcmp(p->kids[0]->syms[0]->x.name, "C_P_A_S_M_") == 0) {
-            //print("' calls to PASM are not counted as function calls\n");
+            /* print("' calls to PASM are not counted as function calls\n"); */
           }
           else {
 		        cfunc->u.f.ncalls++;

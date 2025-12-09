@@ -5,6 +5,10 @@
  *
  * version 8.8.1 - remove local strdup (now in C libary).
  * 
+ * version 8.8.4 - use "version.h"
+ *
+ *               - enable 'globbing'
+ *
  */                  
 
 /*--------------------------------------------------------------------------
@@ -34,7 +38,7 @@
 #include <string.h>
 #include <math.h>
 
-#define VERSION            "8.8.1"
+#include "version.h"
 
 #define MAX_LINELEN        4096
 #define MAX_PATHLEN        1024
@@ -48,6 +52,8 @@
 #define DEFAULT_SEP        "/"
 #endif
 
+extern int _CRT_glob = 1; /* 0 turns off globbing; 1 turns it on */
+
 /* global variables used when processing options - e.g. to warn about incompatible combinations */
 
 static int untidy    = 0;
@@ -60,7 +66,7 @@ static char * input_file[MAX_FILES];
 
 void banner(void) {
    if (bannered == 0) {
-      fprintf(stderr, "Catalina Strip Utility %s\n", VERSION); 
+      fprintf(stderr, "Catalina Strip Utility %s\n", CATALINA_VERSION); 
       bannered = 1;
    }
 }

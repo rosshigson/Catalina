@@ -2,13 +2,15 @@
 
 #include "catdbgfilegen.h"
 
+#include "version.h"
+
 using namespace CatDbgUtilities;
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {
         std::cout << std::endl;
         std::cout << std::string("Catalina Debug File Generator, Version ");
-        std::cout << std::string(VERSION) << std::endl << std::endl;
+        std::cout << std::string(CATALINA_VERSION) << std::endl << std::endl;
         std::cout << std::string("Usage: catdbgfilegen \"path to .lst\"  \"-d .debug files dir\" [-s] [-n] [-linux]") << std::endl;
         std::cout << std::string("       -s  option: include standard  TYPEDEF lines in output") << std::endl;
         std::cout << std::string("       -n  option: include generated TYPEDEF lines in output") << std::endl;

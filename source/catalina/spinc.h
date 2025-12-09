@@ -91,6 +91,8 @@
  *
  * version 8.8.2 - include necessary header files (required for Cake)
  *
+ * version 8.8.4 - user "version.h"
+ *
  * ----------------------------------------------------------------------------
  * @file spinc.h
  * Defines data structures and API for spinc converter
@@ -101,6 +103,8 @@
 
 #ifndef SPINC_H
 #define SPINC_H
+
+#include "version.h"
 
 #define SPIN_OBJSTART 0x0010
 
@@ -118,8 +122,6 @@
 #define P2_PC_OFFSET_NMM    0x00B8
 
 #define P2_PC_OFFSET_XMM    0x1038 // not currently used
-
-#define VERSION       "8.8.2"
 
 #define MAX_FILES     10
 #define MAX_LINELEN   1000

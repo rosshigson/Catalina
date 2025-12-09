@@ -22,6 +22,8 @@ static char rcsid[] = "$Id: lcc.c 355 2007-02-18 22:08:49Z drh $";
 #endif
 #endif
 
+extern int _CRT_glob = 1; /* 0 turns off globbing; 1 turns it on */
+
 typedef struct list *List;
 struct list {		/* circular list nodes: */
 	char *str;		/* option or file name */
@@ -110,12 +112,12 @@ int main(int argc, char *argv[]) {
 	if (getenv("LCCDIR"))
 		option(stringf("-lccdir=%s", getenv("LCCDIR")));
    else 
-      // RJH - call option anyway (required to correct long path names in Windows)
+      /* RJH - call option anyway (required to correct long path names in Windows) */
       option("");
 	for (nf = 0, i = j = 1; i < argc; i++) {
 		if (strcmp(argv[i], "-o") == 0) {
-         // RJH: "-o path" options are now passed to rcc to allow it
-         // to determine the path to use when generating debug files.
+         /* RJH: "-o path" options are now passed to rcc to allow it */
+         /* to determine the path to use when generating debug files. */
 			clist = append(argv[i], clist);
 			if (++i < argc) {
 				if (suffix(argv[i], suffixes, 2) >= 0) {
@@ -123,7 +125,7 @@ int main(int argc, char *argv[]) {
 					exit(8);
 				}
 				outfile = argv[i];
-            // RJH: pass path of '-o' argument
+            /* RJH: pass path of '-o' argument */
 			   clist = append(argv[i], clist); 
 				continue;
 			} else {
@@ -703,7 +705,7 @@ xx(unsigned_int,4)
 			   if (b->str[n-1] == '\\')
 				   b->str[n-1] = '/';
 			   plist = append(stringf("-I\"%s\"", b->str), plist);
-            //printf("path2list: %s\n", b->str);
+            /* printf("path2list: %s\n", b->str); */
 		   } while (b != list);
       return;
 	case 'B':	/* -Bdir -Bstatic -Bdynamic */

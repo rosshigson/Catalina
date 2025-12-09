@@ -1,5 +1,7 @@
 #include "c.h"
 
+extern int _CRT_glob = 1; /* 0 turns off globbing; 1 turns it on */
+
 static char rcsid[] = "$Name$($Id: main.c 355 2007-02-18 22:08:49Z drh $)";
 
 static void typestab(Symbol, void *);
@@ -25,7 +27,7 @@ int main(int argc, char *argv[]) {
 	int i, j;
 
 #if defined(__CATALINA_P2) && defined(__CATALINA_WRITE_BACK)
-  CacheWriteThrough(0); // disable write through, which enables write back
+  CacheWriteThrough(0); /*  disable write through, which enables write back */
 #endif
     
 	for (i = argc - 1; i > 0; i--)
@@ -55,7 +57,7 @@ int main(int argc, char *argv[]) {
     _waitms(1000);
 #endif
 #if defined(__CATALINA_P2) && defined(__CATALINA_WRITE_BACK)
-    CacheFlush(); // flush cache to SD
+    CacheFlush(); /* flush cache to SD */
 #endif
 		exit(EXIT_FAILURE);
 	}
@@ -123,7 +125,7 @@ int main(int argc, char *argv[]) {
   _waitms(1000);
 #endif
 #if defined(__CATALINA_P2) && defined(__CATALINA_WRITE_BACK)
-  CacheFlush(); // flush cache to SD
+  CacheFlush(); /* flush cache to SD */
 #endif
 
 	return errcnt > 0;
@@ -144,7 +146,7 @@ void main_init(int argc, char *argv[]) {
 		else if (strncmp(argv[i], "-g", 2) == 0) {	/* -gn[,x] */
 			char *p = strchr(argv[i], ',');
 			glevel = atoi(argv[i]+2);
-         //printf("glevel=%d\n",glevel);
+         /* printf("glevel=%d\n",glevel); */
 			if (p) {
 				comment = p + 1;
 				if (glevel == 0)
@@ -177,7 +179,7 @@ void main_init(int argc, char *argv[]) {
         _waitms(1000);
 #endif
 #if defined(__CATALINA_P2) && defined(__CATALINA_WRITE_BACK)
-        CacheFlush(); // flush cache to SD
+        CacheFlush(); /* flush cache to SD */
 #endif
 				exit(EXIT_FAILURE);
 			}
@@ -201,9 +203,11 @@ void main_init(int argc, char *argv[]) {
 		else if (strncmp(argv[i], "-wants_dag=", 11) == 0)
 			IR->wants_dag = argv[i][11] - '0';
       else if (strncmp(argv[i], "-o", 2) == 0) {
-         // RJH: the "-o path" option is now passed by lcc to rcc to allow
-         // rcc to determine the output path when generating debug files,
-         // but they are ignored when actually compiling.
+         /*
+          * RJH: the "-o path" option is now passed by lcc to rcc to allow
+          * rcc to determine the output path when generating debug files,
+          * but they are ignored when actually compiling.
+          */
          i++;
       }
 		else if (*argv[i] != '-' || strcmp(argv[i], "-") == 0) {
@@ -221,7 +225,7 @@ void main_init(int argc, char *argv[]) {
     _waitms(1000);
 #endif
 #if defined(__CATALINA_P2) && defined(__CATALINA_WRITE_BACK)
-    CacheFlush(); // flush cache to SD
+    CacheFlush(); /* flush cache to SD */
 #endif
 		exit(EXIT_FAILURE);
 	}
@@ -233,7 +237,7 @@ void main_init(int argc, char *argv[]) {
     _waitms(1000);
 #endif
 #if defined(__CATALINA_P2) && defined(__CATALINA_WRITE_BACK)
-    CacheFlush(); // flush cache to SD
+    CacheFlush(); /* flush cache to SD */
 #endif
 		exit(EXIT_FAILURE);
 	}
