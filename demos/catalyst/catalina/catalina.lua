@@ -141,6 +141,9 @@
 --               - The -u (untidy) option now also disables the use of pstrip.
 --               - Remove the definition of __STDC__ and __STRICT_ANSI__ 
 --                 because these can interfere with the use of Cake.
+--
+-- version 8.8.4 - just update version number.
+--
 
 require "os"
 require "io"
@@ -149,7 +152,7 @@ require "string"
 require "propeller"
 
 -- configuration parameters and default values
-CATALINA_VERSION = "8.8.3"
+CATALINA_VERSION = "8.8.4"
 LCCDIR           = "/";
 CATALINA_TARGET  = LCCDIR .. "target"
 CATALINA_LIBRARY = LCCDIR .. "lib"
