@@ -11,19 +11,19 @@ DAT ' code segment
 DAT ' const data segment
 
  alignl ' align long
-C_sqh86_690edbc3_luaservice_funcs_L000010 ' <symbol:luaservice_funcs>
- long @C_sqh87_690edbc3_11_L000012
- long @C_sqh8_690edbc3_service_short_L000004
- long @C_sqh88_690edbc3_13_L000014
- long @C_sqh81_690edbc3_service_long_L000005
- long @C_sqh89_690edbc3_15_L000016
- long @C_sqh82_690edbc3_service_long_2_L000006
- long @C_sqh8a_690edbc3_17_L000018
- long @C_sqh83_690edbc3_service_float_L000007
- long @C_sqh8b_690edbc3_19_L000020
- long @C_sqh84_690edbc3_service_long_float_L000008
- long @C_sqh8c_690edbc3_21_L000022
- long @C_sqh85_690edbc3_service_serial_L000009
+C_stog6_696de09a_luaservice_funcs_L000010 ' <symbol:luaservice_funcs>
+ long @C_stog7_696de09a_11_L000012
+ long @C_stog_696de09a_service_short_L000004
+ long @C_stog8_696de09a_13_L000014
+ long @C_stog1_696de09a_service_long_L000005
+ long @C_stog9_696de09a_15_L000016
+ long @C_stog2_696de09a_service_long_2_L000006
+ long @C_stoga_696de09a_17_L000018
+ long @C_stog3_696de09a_service_float_L000007
+ long @C_stogb_696de09a_19_L000020
+ long @C_stog4_696de09a_service_long_float_L000008
+ long @C_stogc_696de09a_21_L000022
+ long @C_stog5_696de09a_service_serial_L000009
  long $0
  long $0
 
@@ -32,7 +32,7 @@ C_sqh86_690edbc3_luaservice_funcs_L000010 ' <symbol:luaservice_funcs>
 DAT ' code segment
 
  alignl ' align long
-C_sqh8_690edbc3_service_short_L000004 ' <symbol:service_short>
+C_stog_696de09a_service_short_L000004 ' <symbol:service_short>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e80000 ' save registers
@@ -69,13 +69,13 @@ C_sqh8_690edbc3_service_short_L000004 ' <symbol:service_short>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_sqh8_690edbc3_service_short_L000004_23 ' (symbol refcount = 0)
+' C_stog_696de09a_service_short_L000004_23 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sqh81_690edbc3_service_long_L000005 ' <symbol:service_long>
+C_stog1_696de09a_service_long_L000005 ' <symbol:service_long>
  calld PA,#NEWF
  sub SP, #4
  calld PA,#PSHM
@@ -117,14 +117,14 @@ C_sqh81_690edbc3_service_long_L000005 ' <symbol:service_long>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_sqh81_690edbc3_service_long_L000005_24 ' (symbol refcount = 0)
+' C_stog1_696de09a_service_long_L000005_24 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  add SP, #4 ' framesize
  calld PA,#RETF
 
 
  alignl ' align long
-C_sqh82_690edbc3_service_long_2_L000006 ' <symbol:service_long_2>
+C_stog2_696de09a_service_long_2_L000006 ' <symbol:service_long_2>
  calld PA,#NEWF
  calld PA,#PSHM
  long $ea0000 ' save registers
@@ -170,13 +170,13 @@ C_sqh82_690edbc3_service_long_2_L000006 ' <symbol:service_long_2>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_sqh82_690edbc3_service_long_2_L000006_25 ' (symbol refcount = 0)
+' C_stog2_696de09a_service_long_2_L000006_25 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sqh83_690edbc3_service_float_L000007 ' <symbol:service_float>
+C_stog3_696de09a_service_float_L000007 ' <symbol:service_float>
  calld PA,#NEWF
  calld PA,#PSHM
  long $ea0000 ' save registers
@@ -222,13 +222,13 @@ C_sqh83_690edbc3_service_float_L000007 ' <symbol:service_float>
  long @C_lua_pushnumber
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_sqh83_690edbc3_service_float_L000007_26 ' (symbol refcount = 0)
+' C_stog3_696de09a_service_float_L000007_26 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sqh84_690edbc3_service_long_float_L000008 ' <symbol:service_long_float>
+C_stog4_696de09a_service_long_float_L000008 ' <symbol:service_long_float>
  calld PA,#NEWF
  calld PA,#PSHM
  long $ea0000 ' save registers
@@ -274,13 +274,13 @@ C_sqh84_690edbc3_service_long_float_L000008 ' <symbol:service_long_float>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_sqh84_690edbc3_service_long_float_L000008_27 ' (symbol refcount = 0)
+' C_stog4_696de09a_service_long_float_L000008_27 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_sqh85_690edbc3_service_serial_L000009 ' <symbol:service_serial>
+C_stog5_696de09a_service_serial_L000009 ' <symbol:service_serial>
  calld PA,#NEWF
  sub SP, #20
  calld PA,#PSHM
@@ -357,7 +357,7 @@ C_sqh85_690edbc3_service_serial_L000009 ' <symbol:service_serial>
  long @C_lua_pushlstring
  add SP, #8 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_sqh85_690edbc3_service_serial_L000009_28 ' (symbol refcount = 0)
+' C_stog5_696de09a_service_serial_L000009_28 ' (symbol refcount = 0)
  mov RI, FP    ' restore SP ... 
  sub RI, #4    ' ... from SP stored in frame ...
  rdlong SP, RI ' ... because alloca was used
@@ -393,7 +393,7 @@ C_luaopen_service ' <symbol:luaopen_service>
  long @C_lua_createtable
  add SP, #8 ' CALL addrg
  mov r2, #0 ' reg ARG coni
- mov r3, ##@C_sqh86_690edbc3_luaservice_funcs_L000010 ' reg ARG ADDRG
+ mov r3, ##@C_stog6_696de09a_luaservice_funcs_L000010 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -443,7 +443,7 @@ C_luaopen_service_36_L000037 ' <symbol:36>
  long $43fc0000 ' float
 
  alignl ' align long
-C_sqh8c_690edbc3_21_L000022 ' <symbol:21>
+C_stogc_696de09a_21_L000022 ' <symbol:21>
  byte 115
  byte 101
  byte 114
@@ -453,7 +453,7 @@ C_sqh8c_690edbc3_21_L000022 ' <symbol:21>
  byte 0
 
  alignl ' align long
-C_sqh8b_690edbc3_19_L000020 ' <symbol:19>
+C_stogb_696de09a_19_L000020 ' <symbol:19>
  byte 108
  byte 111
  byte 110
@@ -467,7 +467,7 @@ C_sqh8b_690edbc3_19_L000020 ' <symbol:19>
  byte 0
 
  alignl ' align long
-C_sqh8a_690edbc3_17_L000018 ' <symbol:17>
+C_stoga_696de09a_17_L000018 ' <symbol:17>
  byte 102
  byte 108
  byte 111
@@ -476,7 +476,7 @@ C_sqh8a_690edbc3_17_L000018 ' <symbol:17>
  byte 0
 
  alignl ' align long
-C_sqh89_690edbc3_15_L000016 ' <symbol:15>
+C_stog9_696de09a_15_L000016 ' <symbol:15>
  byte 108
  byte 111
  byte 110
@@ -486,7 +486,7 @@ C_sqh89_690edbc3_15_L000016 ' <symbol:15>
  byte 0
 
  alignl ' align long
-C_sqh88_690edbc3_13_L000014 ' <symbol:13>
+C_stog8_696de09a_13_L000014 ' <symbol:13>
  byte 108
  byte 111
  byte 110
@@ -494,7 +494,7 @@ C_sqh88_690edbc3_13_L000014 ' <symbol:13>
  byte 0
 
  alignl ' align long
-C_sqh87_690edbc3_11_L000012 ' <symbol:11>
+C_stog7_696de09a_11_L000012 ' <symbol:11>
  byte 115
  byte 104
  byte 111

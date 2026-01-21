@@ -28,11 +28,11 @@ ticks    = $1e4
 flags    = $1e5
 TP       = $1e6
 lock     = $1e7
-TRY_KERNEL_LOCK = $3a3
-REL_KERNEL_LOCK = $3aa
-TRY_POOL_LOCK   = $3af
-REL_POOL_LOCK   = $3b6
-CMM_force       = $393
+TRY_KERNEL_LOCK = $3b4
+REL_KERNEL_LOCK = $3bb
+TRY_POOL_LOCK   = $3c0 
+REL_POOL_LOCK   = $3c7
+CMM_force       = $3a4
 #endif
 
 DEBUG_OVERLAY = $56

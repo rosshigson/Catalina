@@ -56,23 +56,28 @@
 
 
 /*
-@@ LUA_PROPELLER controls the inclusion of the "propeller" module.
-** CHANGE it (define it) if you want Lua compiled with this module.
-*/
-#define LUA_PROPELLER
-
-
-/*
-@@ LUA_CATALINA controls various Catalina specific features.
-** CHANGE it (define it) if you are compiling Lua with Catalina.
-** Note that Catalina can be automatically detected, so there is 
-** rarely a need to change this.
+@@ LUA_PROP and LUA_HMI control the inclusion of the Catalina "propeller" and
+** "hmi" modules. Note that Catalina can be automatically detected, so there
+** is rarely a need to change these.
 */
 #if defined(__CATALINA__)
-#define LUA_CATALINA
-#undef _WIN32
+#define LUA_PROP
+#define LUA_HMI
 #endif
 
+/*
+** Other Catalina-specific configuration.
+*/
+#if defined(__CATALINA__)
+#undef _WIN32
+#define LUA_PATH_DEFAULT   \
+   "?.lua;"  "?/init.lua;" \
+   "lua/?.lua;" "lua/?/init.lua"
+#define LUA_CPATH_DEFAULT  \
+   "?.obj;"  "?/init.obj;" \
+   "lua/?.obj;" "lua/?/init.obj" \
+   "obj/?.obj;" "obj/?/init.obj"
+#endif
 
 #if defined(LUA_CATALINA)
 #define LUA_PATH_DEFAULT   \
@@ -107,6 +112,12 @@
 #if defined(LUA_USE_MACOSX)
 #define LUA_USE_POSIX
 #define LUA_USE_DLOPEN		/* MacOS does not need -ldl */
+#endif
+
+
+#if defined(LUA_USE_IOS)
+#define LUA_USE_POSIX
+#define LUA_USE_DLOPEN
 #endif
 
 
@@ -290,6 +301,15 @@
 #endif
 
 #endif
+
+
+/*
+** LUA_IGMARK is a mark to ignore all after it when building the
+** module name (e.g., used to build the luaopen_ function name).
+** Typically, the suffix after the mark is the module version,
+** as in "mod-v1.2.so".
+*/
+#define LUA_IGMARK		"-"
 
 /* }================================================================== */
 
@@ -768,7 +788,7 @@
 ** CHANGE it if you need a different limit. This limit is arbitrary;
 ** its only purpose is to stop Lua from consuming unlimited stack
 ** space (and to reserve some numbers for pseudo-indices).
-** (It must fit into max(size_t)/32.)
+** (It must fit into max(size_t)/32 and max(int)/2.)
 */
 #if LUAI_IS32INT
 #define LUAI_MAXSTACK		1000000
@@ -787,14 +807,15 @@
 
 /*
 @@ LUA_IDSIZE gives the maximum size for the description of the source
-@@ of a function in debug information.
+** of a function in debug information.
 ** CHANGE it if you want a different size.
 */
 #define LUA_IDSIZE	60
 
 
 /*
-@@ LUAL_BUFFERSIZE is the buffer size used by the lauxlib buffer system.
+@@ LUAL_BUFFERSIZE is the initial buffer size used by the lauxlib
+** buffer system.
 */
 #define LUAL_BUFFERSIZE   ((int)(16 * sizeof(void*) * sizeof(lua_Number)))
 

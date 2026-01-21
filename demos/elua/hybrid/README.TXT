@@ -19,8 +19,8 @@ ALOHA and WiFi services, one or the other has to use another port, so this
 'hybrid' example uses port 2 for ALOHA serial services. This means it must 
 be executed by a version of eLua configured to use the 8 port serial plugin.
 
-The appropriate WiFi network data must be configured in remote.lua, server.lua
-and serverbg.lua. See the document 'Aloha from Lua' for details.
+The appropriate WiFi network data must be configured in the rpc_network table
+in common.lua. See the document 'Aloha from Lua' for details.
 
 Before execution, the files should be compiled using the following Catalyst 
 command:

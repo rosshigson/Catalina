@@ -26,26 +26,6 @@
 #include "lauxlib.h"
 #include "lualib.h"
 
-#include "llex.h"
-#include "lparser.h"
-#include "lzio.h"
-
-LUAI_FUNC void luaX_init (lua_State *L) {
-  UNUSED(L);
-}
-
-LUAI_FUNC LClosure *luaY_parser (lua_State *L, ZIO *z, Mbuffer *buff,
-                                 Dyndata *dyd, const char *name, int firstchar) {
-  UNUSED(z);
-  UNUSED(buff);
-  UNUSED(name);
-  UNUSED(dyd);
-  UNUSED(firstchar);
-  lua_pushliteral(L,"parser not loaded");
-  lua_error(L);
-  return NULL;
-}
-
 #ifdef NODUMP
 #include "lundump.h"
 

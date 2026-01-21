@@ -11,7 +11,7 @@ DAT ' code segment
  alignl_label
 C_wifi_S_E_N_D__D_A_T_A_ ' <symbol:wifi_SEND_DATA>
  alignl_p1
- long I32_NEWF + 0<<S32
+ long I32_NEWF + 4<<S32
  alignl_p1
  long I32_PSHM + $eaac00<<S32 ' save registers
  word I16A_MOV + (r23)<<D16A + (r5)<<S16A ' reg var <- reg arg
@@ -46,7 +46,7 @@ C_wifi_S_E_N_D__D_A_T_A__2
  alignl_p1
  long I32_CALA + (@C_wifi_R_E_P_L_Y_)<<S32
  word I16A_ADDI + SP<<D16A + 16<<S16A ' CALL addrg
- word I16A_MOV + (r11)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
+ word I16A_MOV + (r13)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  alignl_p1
  long I32_JMPA + (@C_wifi_S_E_N_D__D_A_T_A__5)<<S32 ' JUMPV addrg
  alignl_label
@@ -57,18 +57,18 @@ C_wifi_S_E_N_D__D_A_T_A__4
  alignl_p1
  long I32_BRBE + (@C_wifi_S_E_N_D__D_A_T_A__6)<<S32 ' LEI4 reg reg
  alignl_p1
- long I32_LODS + (r13)<<D32S + ((512)&$7FFFF)<<S32 ' reg <- cons
+ long I32_LODS + (r11)<<D32S + ((512)&$7FFFF)<<S32 ' reg <- cons
  word I16A_MOV + (r15)<<D16A + (r19)<<S16A ' CVI, CVU or LOAD
  alignl_p1
  long I32_JMPA + (@C_wifi_S_E_N_D__D_A_T_A__7)<<S32 ' JUMPV addrg
  alignl_label
 C_wifi_S_E_N_D__D_A_T_A__6
- word I16A_MOV + (r13)<<D16A + (r19)<<S16A ' CVI, CVU or LOAD
+ word I16A_MOV + (r11)<<D16A + (r19)<<S16A ' CVI, CVU or LOAD
  word I16A_MOVI + (r15)<<D16A + (0)<<S16A ' reg <- coni
  alignl_label
 C_wifi_S_E_N_D__D_A_T_A__7
  word I16A_MOV + (r2)<<D16A + (r17)<<S16A ' CVI, CVU or LOAD
- word I16A_MOV + (r3)<<D16A + (r13)<<S16A ' CVI, CVU or LOAD
+ word I16A_MOV + (r3)<<D16A + (r11)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r4)<<D16A + (r19)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r5)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16A_SUBI + SP<<D16A + 16<<S16A ' stack space for reg ARGs
@@ -79,7 +79,7 @@ C_wifi_S_E_N_D__D_A_T_A__7
  alignl_p1
  long I32_CALA + (@C_wifi_R_E_P_L_Y_)<<S32
  word I16A_ADDI + SP<<D16A + 16<<S16A ' CALL addrg
- word I16A_MOV + (r11)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
+ word I16A_MOV + (r13)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((512)&$7FFFF)<<S32 ' reg <- cons
  word I16A_MOV + (r10)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
@@ -96,42 +96,54 @@ C_wifi_S_E_N_D__D_A_T_A__8
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((512)&$7FFFF)<<S32 ' reg <- cons
  word I16A_SUBS + (r15)<<D16A + (r22)<<S16A ' SUBI/P (1)
- word I16A_MOV + (r13)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
+ word I16A_MOV + (r11)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
  alignl_p1
  long I32_JMPA + (@C_wifi_S_E_N_D__D_A_T_A__12)<<S32 ' JUMPV addrg
  alignl_label
 C_wifi_S_E_N_D__D_A_T_A__11
- word I16A_MOV + (r13)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
+ word I16A_MOV + (r11)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
  word I16A_MOVI + (r15)<<D16A + (0)<<S16A ' reg <- coni
  alignl_label
 C_wifi_S_E_N_D__D_A_T_A__12
  word I16A_MOV + (r2)<<D16A + (r10)<<S16A ' ADDI/P
  word I16A_ADDS + (r2)<<D16A + (r17)<<S16A ' ADDI/P (3)
- word I16A_MOV + (r3)<<D16A + (r13)<<S16A ' CVI, CVU or LOAD
+ word I16A_MOV + (r3)<<D16A + (r11)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r4)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 50<<S16B ' arg size, rpsize = 12, spsize = 12
  alignl_p1
  long I32_CALA + (@C_wifi_S_E_N_D_)<<S32
  word I16A_ADDI + SP<<D16A + 8<<S16A ' CALL addrg
- word I16A_MOV + (r11)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
- word I16A_ADDS + (r10)<<D16A + (r13)<<S16A ' ADDI/P (1)
- alignl_label
-C_wifi_S_E_N_D__D_A_T_A__9
- word I16A_CMPSI + (r11)<<D16A + (0)<<S16A
+ word I16A_MOV + (r13)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
+ word I16A_CMPSI + (r13)<<D16A + (0)<<S16A
  alignl_p1
  long I32_BRNZ + (@C_wifi_S_E_N_D__D_A_T_A__13)<<S32 ' NEI4 reg coni
+ word I16B_LODF + ((-8)&$1FF)<<S16B
+ word I16A_MOV + (r2)<<D16A + RI<<S16A ' reg ARG ADDRLi
+ word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
+ alignl_p1
+ long I32_CALA + (@C_wifi_R_ead_C_ode)<<S32 ' CALL addrg
+ alignl_label
+C_wifi_S_E_N_D__D_A_T_A__13
+ word I16A_ADDS + (r10)<<D16A + (r11)<<S16A ' ADDI/P (1)
+ alignl_label
+C_wifi_S_E_N_D__D_A_T_A__9
+ word I16A_CMPSI + (r13)<<D16A + (0)<<S16A
+ alignl_p1
+ long I32_BRNZ + (@C_wifi_S_E_N_D__D_A_T_A__15)<<S32 ' NEI4 reg coni
  word I16A_CMPSI + (r15)<<D16A + (0)<<S16A
  alignl_p1
  long I32_BR_A + (@C_wifi_S_E_N_D__D_A_T_A__8)<<S32 ' GTI4 reg coni
  alignl_label
-C_wifi_S_E_N_D__D_A_T_A__13
+C_wifi_S_E_N_D__D_A_T_A__15
  alignl_label
 C_wifi_S_E_N_D__D_A_T_A__5
- word I16A_MOV + (r0)<<D16A + (r11)<<S16A ' CVI, CVU or LOAD
+ word I16A_MOV + (r0)<<D16A + (r13)<<S16A ' CVI, CVU or LOAD
  alignl_label
 C_wifi_S_E_N_D__D_A_T_A__1
- word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
+ word I16B_POPM + 1<<S16B ' restore registers, do pop frame, do return
  alignl_p1
+
+' Catalina Import wifi_Read_Code
 
 ' Catalina Import wifi_init
 

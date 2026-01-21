@@ -99,7 +99,7 @@ configured:
 
 2. For a P2 EDGE with the WiFi adaptor installed on pin group 16 (i.e. on 
    pins 16 .. 23) there is a P2_WIFI platform configuration file provided 
-   ("target/p2/P2_WIFI.inc"). Use it by defining the Catalina symbol P2_WIFI. 
+   ("target/p2/P2WIFI.inc"). Use it by defining the Catalina symbol P2_WIFI. 
    For example, add -C P2_WIFI to your Catalina commands, or use the build 
    script as follows:
 
@@ -560,7 +560,8 @@ versions of Lua provided with Catalina, (e.g. lua, ilua, elua etc).
 
 There is also an example Lua program "testhttp.lua", which is very similar 
 to the C program "testhttp.c" that can be used to test Lua's serial comms 
-and wifi support.
+and wifi support. You will have to edit the file to at least set the SSID and
+PASSPHRASE to use to join the network.
 
 To execute it, you would use Catalyst commands like:
 

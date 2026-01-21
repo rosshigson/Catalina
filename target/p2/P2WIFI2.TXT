@@ -1,0 +1,29 @@
+The P2_WIFI2 configuration file (P2WIFI2.inc) is used when the Catalina 
+symbol P2_WIFI is defined on the Catalina command-line (as -C P2_WIFI2) or
+included in the definition of CATALINA_DEFINE.
+
+For example:
+
+   catalina -p2 -lc hello_world.c -C P2_WIFI2
+
+or
+
+   set CATALINA_DEFINE=P2_WIFI2
+   catalina -p2 -lc hello_world.c
+
+The P2_WIFI2 board is configured the same as a P2_WIFI board, with a WiFi 
+adaptor installed on pin group 16, but with the first serial port (port 0)
+still on the normal pins 62 & 63 so that it can be used as the normal serial 
+HMI I/O, and the second serial port (port 1) used as the WIFI port. 
+
+To use it, do not use the wifi library or the stand-alone wifi.c - instead,
+ use the stand-alone wifi2.c found in demos/elua/aloha, which specifies:
+
+#define WIFI_PORT  1
+#define USER_PORT  0 
+
+For example:
+   catalina test_wifi.c -lc -lserial8 -D__CATALINA_libwifi
+  
+   
+

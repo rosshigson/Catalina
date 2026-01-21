@@ -1,11 +1,15 @@
 include ../Makefile.inc
 
-all:	lapi.s lctype.s ldebug.s ldo.s ldump.s lfunc.s lgc.s lmem.s lobject.s \
-	lopcodes.s lstate.s lstring.s ltable.s ltm.s lundump.s lvm.s lzio.s \
-	lauxlib.s lbaselib.s lcorolib.s ldblib.s liolib.s \
-	lmathlib.s loadlib.s loslib.s lstrlib.s ltablib.s lutf8lib.s \
-	lthreads.s lthrsch.s lprop.s lhmi.s lservice.s lserial.s lwifi.s storage.s glob.s \
- 	cfgets.s lcode.s llex.s lparser.s
+all:	cfgets.s glob.s lapi.s lauxlib.s lbaselib.s lcode.s lcorolib.s lctype.s \
+	ldblib.s ldebug.s ldo.s ldump.s lfunc.s lgc.s lhmi.s linenoise.s \
+	liolib.s llex.s lmathlib.s lmem.s loadlib.s lobject.s lopcodes.s loslib.s \
+	lparser.s lprop.s lserial.s lservice.s lstate.s lstring.s lstrlib.s \
+	ltable.s ltablib.s lthreads.s lthrsch.s ltm.s lundump.s \
+	lutf8lib.s lvm.s lwifi.s lzio.s storage.s
 
 clean:
 	-rm -f *.s
+
+
+
+

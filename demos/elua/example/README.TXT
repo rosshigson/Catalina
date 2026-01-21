@@ -1,7 +1,7 @@
 This folder contains an example eLua program.
 
 If WiFi is to be used, the appropriate WiFi network data must be configured 
-in remote.lua, server.lua and serverbg.lua. See the document 'Aloha from Lua'
+in the rpc_network table in common.lua. See the document 'Aloha from Lua' 
 for details.
 
 Before execution, the files should be compiled using the following Catalyst 

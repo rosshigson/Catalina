@@ -36,7 +36,7 @@ cd sst
 ./clean_all
 cd ..
 
-cd lua-5.4.4
+cd lua-5.4.8
 ./clean_all
 cd ..
 

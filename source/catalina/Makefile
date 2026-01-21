@@ -29,7 +29,7 @@ else
    BINDIR=$(LCCDIR)/bin
 endif
 
-LUADIR=lua-5.4.4
+LUADIR=lua-5.4.8
 
 AWKADIR=awka-0.7.5
 
@@ -53,9 +53,9 @@ catbind$E:	catbind.c
 catalina$E:	catalina.c
 	$(CC) $(CFLAGS) -o $@ catalina.c -lm
 
-payload$E:	payload.c rs232.h rs232.c base64.c fymodem.h fymodem.c kb.h kb.c
+payload$E:	payload.c rs232.h rs232.c base64.c fymodem.h fymodem.c kb.h kb.c $(LUADIR)/src/linit.c
 	make -C $(LUADIR) linux
-	$(CC) $(CFLAGS) -o $@ payload.c rs232.c base64.c fymodem.c kb.c -lpthread -lcurses -L $(LUADIR)/src -llua -lm -ldl
+	$(CC) $(CFLAGS) -o $@ payload.c rs232.c base64.c fymodem.c kb.c $(LUADIR)/src/linit.c -lpthread -lcurses -L $(LUADIR)/src -llua -lm -ldl 
 
 spinc$E:	spinc.c spinc.h 
 	$(CC) $(CFLAGS) -o $@ spinc.c 
@@ -69,8 +69,8 @@ y.tab.c y.tab.h: blackbox_y.y
 blackbox_l.c: blackbox_l.l
 	flex -oblackbox_l.c <blackbox_l.l
 
-blackbox$E:	y.tab.c y.tab.h blackbox_l.c blackbox_comms.c rs232.c printf.c
-	$(CC) $(CFLAGS) -o $@ y.tab.c blackbox_l.c blackbox_comms.c rs232.c printf.c -L $(LUADIR)/src -llua -lm -ldl
+blackbox$E:	y.tab.c y.tab.h blackbox_l.c blackbox_comms.c rs232.c printf.c $(LUADIR)/src/linit.c
+	$(CC) $(CFLAGS) -o $@ y.tab.c blackbox_l.c blackbox_comms.c rs232.c printf.c $(LUADIR)/src/linit.c -L $(LUADIR)/src -llua -lm -ldl
 
 catdbgfilegen$E:	catdbgfilegen.h catdbgutilities.h catdbgfilegen.cpp catdbgutilities.cpp stringconverter.h
 	$(CPP) $(CPPFLAGS) catdbgfilegen.cpp catdbgutilities.cpp -std=c++0x -o catdbgfilegen

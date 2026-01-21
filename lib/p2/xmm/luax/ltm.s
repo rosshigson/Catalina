@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' const data segment
 
  alignl ' align long
-C_sa64_690ed95d_udatatypename_L000013 ' <symbol:udatatypename>
+C_skjk_696dded2_udatatypename_L000015 ' <symbol:udatatypename>
  byte 117
  byte 115
  byte 101
@@ -30,26 +30,25 @@ DAT ' initialized data segment
 
  alignl ' align long
 C_luaT__typenames_ ' <symbol:luaT_typenames_>
- long @C_sa641_690ed95d_14_L000015
- long @C_sa642_690ed95d_16_L000017
- long @C_sa643_690ed95d_18_L000019
- long @C_sa64_690ed95d_udatatypename_L000013
- long @C_sa644_690ed95d_20_L000021
- long @C_sa645_690ed95d_22_L000023
- long @C_sa646_690ed95d_24_L000025
- long @C_sa647_690ed95d_26_L000027
- long @C_sa64_690ed95d_udatatypename_L000013
- long @C_sa648_690ed95d_28_L000029
- long @C_sa649_690ed95d_30_L000031
- long @C_sa64a_690ed95d_32_L000033
+ long @C_skjk1_696dded2_16_L000017
+ long @C_skjk2_696dded2_18_L000019
+ long @C_skjk3_696dded2_20_L000021
+ long @C_skjk_696dded2_udatatypename_L000015
+ long @C_skjk4_696dded2_22_L000023
+ long @C_skjk5_696dded2_24_L000025
+ long @C_skjk6_696dded2_26_L000027
+ long @C_skjk7_696dded2_28_L000029
+ long @C_skjk_696dded2_udatatypename_L000015
+ long @C_skjk8_696dded2_30_L000031
+ long @C_skjk9_696dded2_32_L000033
+ long @C_skjka_696dded2_34_L000035
 
 ' Catalina Cnst
 
 DAT ' const data segment
 
  alignl ' align long
-C_luaT__init_luaT__eventname_L000036 ' <symbol:luaT_eventname>
- long @C_luaT__init_37_L000038
+C_luaT__init_luaT__eventname_L000038 ' <symbol:luaT_eventname>
  long @C_luaT__init_39_L000040
  long @C_luaT__init_41_L000042
  long @C_luaT__init_43_L000044
@@ -74,6 +73,7 @@ C_luaT__init_luaT__eventname_L000036 ' <symbol:luaT_eventname>
  long @C_luaT__init_81_L000082
  long @C_luaT__init_83_L000084
  long @C_luaT__init_85_L000086
+ long @C_luaT__init_87_L000088
 
 ' Catalina Export luaT_init
 
@@ -88,11 +88,11 @@ C_luaT__init ' <symbol:luaT_init>
  long $f40000 ' save registers
  mov r23, r2 ' reg var <- reg arg
  mov r21, #0 ' reg <- coni
-C_luaT__init_87
+C_luaT__init_89
  mov r22, r21
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_luaT__init_luaT__eventname_L000036
+ long @C_luaT__init_luaT__eventname_L000038
  mov r20, RI ' reg <- addrg
  adds r20, r22 ' ADDI/P (2)
  mov RI, r20
@@ -132,12 +132,12 @@ C_luaT__init_87
  jmp #CALA
  long @C_luaC__fix
  add SP, #4 ' CALL addrg
-' C_luaT__init_88 ' (symbol refcount = 0)
+' C_luaT__init_90 ' (symbol refcount = 0)
  adds r21, #1 ' ADDI4 coni
  cmps r21,  #25 wz,wc
  jmp #BR_B
- long @C_luaT__init_87 ' LTI4
-' C_luaT__init_34 ' (symbol refcount = 0)
+ long @C_luaT__init_89 ' LTI4
+' C_luaT__init_36 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -174,7 +174,7 @@ C_luaT__gettm ' <symbol:luaT_gettm>
  and r22, #15 ' BANDI4 coni
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_luaT__gettm_92 ' NEI4
+ long @C_luaT__gettm_94 ' NEI4
  mov r22, r23
  adds r22, #6 ' ADDP4 coni
  mov RI, r22
@@ -192,12 +192,12 @@ C_luaT__gettm ' <symbol:luaT_gettm>
  long 0
  mov r0, RI ' reg <- con
  jmp #JMPA
- long @C_luaT__gettm_91 ' JUMPV addrg
-C_luaT__gettm_92
+ long @C_luaT__gettm_93 ' JUMPV addrg
+C_luaT__gettm_94
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r0, r22 ' reg <- INDIRP4 regl
-C_luaT__gettm_91
+C_luaT__gettm_93
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
@@ -224,13 +224,13 @@ C_luaT__gettmbyobj ' <symbol:luaT_gettmbyobj>
  and r17, #15 ' BANDI4 coni
  cmps r17,  #5 wz
  jmp #BR_Z
- long @C_luaT__gettmbyobj_98 ' EQI4
+ long @C_luaT__gettmbyobj_100 ' EQI4
  cmps r17,  #7 wz
  jmp #BR_Z
- long @C_luaT__gettmbyobj_99 ' EQI4
+ long @C_luaT__gettmbyobj_101 ' EQI4
  jmp #JMPA
- long @C_luaT__gettmbyobj_95 ' JUMPV addrg
-C_luaT__gettmbyobj_98
+ long @C_luaT__gettmbyobj_97 ' JUMPV addrg
+C_luaT__gettmbyobj_100
  mov RI, r21
  jmp #RLNG
  mov r22, BC ' reg <- INDIRP4 reg
@@ -242,8 +242,8 @@ C_luaT__gettmbyobj_98
  sub RI, #-(-8)
  wrlong r22, RI ' ASGNP4 addrli reg
  jmp #JMPA
- long @C_luaT__gettmbyobj_96 ' JUMPV addrg
-C_luaT__gettmbyobj_99
+ long @C_luaT__gettmbyobj_98 ' JUMPV addrg
+C_luaT__gettmbyobj_101
  mov RI, r21
  jmp #RLNG
  mov r22, BC ' reg <- INDIRP4 reg
@@ -255,8 +255,8 @@ C_luaT__gettmbyobj_99
  sub RI, #-(-8)
  wrlong r22, RI ' ASGNP4 addrli reg
  jmp #JMPA
- long @C_luaT__gettmbyobj_96 ' JUMPV addrg
-C_luaT__gettmbyobj_95
+ long @C_luaT__gettmbyobj_98 ' JUMPV addrg
+C_luaT__gettmbyobj_97
  mov r22, r21
  adds r22, #4 ' ADDP4 coni
  mov RI, r22
@@ -278,13 +278,13 @@ C_luaT__gettmbyobj_95
  mov RI, FP
  sub RI, #-(-8)
  wrlong r22, RI ' ASGNP4 addrli reg
-C_luaT__gettmbyobj_96
+C_luaT__gettmbyobj_98
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRP4 regl
  cmp r22,  #0 wz
  jmp #BR_Z
- long @C_luaT__gettmbyobj_101 ' EQU4
+ long @C_luaT__gettmbyobj_103 ' EQU4
  mov r22, r19
  shl r22, #2 ' LSHI4 coni
  mov r20, r23
@@ -308,8 +308,8 @@ C_luaT__gettmbyobj_96
  mov r22, r0 ' CVI, CVU or LOAD
  mov r15, r22 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_luaT__gettmbyobj_102 ' JUMPV addrg
-C_luaT__gettmbyobj_101
+ long @C_luaT__gettmbyobj_104 ' JUMPV addrg
+C_luaT__gettmbyobj_103
  mov r22, r23
  adds r22, #16 ' ADDP4 coni
  mov RI, r22
@@ -317,9 +317,9 @@ C_luaT__gettmbyobj_101
  mov r22, BC ' reg <- INDIRP4 reg
  mov r15, r22
  adds r15, #44 ' ADDP4 coni
-C_luaT__gettmbyobj_102
+C_luaT__gettmbyobj_104
  mov r0, r15 ' CVI, CVU or LOAD
-' C_luaT__gettmbyobj_94 ' (symbol refcount = 0)
+' C_luaT__gettmbyobj_96 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
@@ -343,7 +343,7 @@ C_luaT__objtypename ' <symbol:luaT_objtypename>
  and r22, cviu_m1 ' zero extend
  cmps r22,  #69 wz
  jmp #BRNZ
- long @C_luaT__objtypename_107 ' NEI4
+ long @C_luaT__objtypename_109 ' NEI4
  mov RI, r21
  jmp #RLNG
  mov r22, BC ' reg <- INDIRP4 reg
@@ -356,8 +356,8 @@ C_luaT__objtypename ' <symbol:luaT_objtypename>
  wrlong r22, RI ' ASGNP4 addrli reg
  cmp r22,  #0 wz
  jmp #BRNZ
- long @C_luaT__objtypename_106 ' NEU4
-C_luaT__objtypename_107
+ long @C_luaT__objtypename_108 ' NEU4
+C_luaT__objtypename_109
  mov r22, r21
  adds r22, #4 ' ADDP4 coni
  mov RI, r22
@@ -366,7 +366,7 @@ C_luaT__objtypename_107
  and r22, cviu_m1 ' zero extend
  cmps r22,  #71 wz
  jmp #BRNZ
- long @C_luaT__objtypename_104 ' NEI4
+ long @C_luaT__objtypename_106 ' NEI4
  mov RI, r21
  jmp #RLNG
  mov r22, BC ' reg <- INDIRP4 reg
@@ -379,10 +379,10 @@ C_luaT__objtypename_107
  wrlong r22, RI ' ASGNP4 addrli reg
  cmp r22,  #0 wz
  jmp #BR_Z
- long @C_luaT__objtypename_104 ' EQU4
-C_luaT__objtypename_106
+ long @C_luaT__objtypename_106 ' EQU4
+C_luaT__objtypename_108
  jmp #LODL
- long @C_luaT__objtypename_108_L000109
+ long @C_luaT__objtypename_110_L000111
  mov r2, RI ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -415,7 +415,7 @@ C_luaT__objtypename_106
  and r20, #15 ' BANDI4 coni
  cmps r20, r22 wz
  jmp #BRNZ
- long @C_luaT__objtypename_110 ' NEI4
+ long @C_luaT__objtypename_112 ' NEI4
  mov r22, FP
  sub r22, #-(-12) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -425,9 +425,9 @@ C_luaT__objtypename_106
  mov r0, r22
  adds r0, #16 ' ADDP4 coni
  jmp #JMPA
- long @C_luaT__objtypename_103 ' JUMPV addrg
-C_luaT__objtypename_110
-C_luaT__objtypename_104
+ long @C_luaT__objtypename_105 ' JUMPV addrg
+C_luaT__objtypename_112
+C_luaT__objtypename_106
  mov r22, r21
  adds r22, #4 ' ADDP4 coni
  mov RI, r22
@@ -443,7 +443,7 @@ C_luaT__objtypename_104
  mov RI, r22
  jmp #RLNG
  mov r0, BC ' reg <- INDIRP4 reg
-C_luaT__objtypename_103
+C_luaT__objtypename_105
  jmp #POPM ' restore registers
  add SP, #8 ' framesize
  jmp #RETF
@@ -558,7 +558,7 @@ C_luaT__callT_M_ ' <symbol:luaT_callTM>
  and r22, #10 ' BANDI4 coni
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_luaT__callT_M__114 ' NEI4
+ long @C_luaT__callT_M__116 ' NEI4
  mov r2, #0 ' reg ARG coni
  mov r3, r15 ' CVI, CVU or LOAD
  mov RI, FP
@@ -570,8 +570,8 @@ C_luaT__callT_M_ ' <symbol:luaT_callTM>
  long @C_luaD__call
  add SP, #8 ' CALL addrg
  jmp #JMPA
- long @C_luaT__callT_M__115 ' JUMPV addrg
-C_luaT__callT_M__114
+ long @C_luaT__callT_M__117 ' JUMPV addrg
+C_luaT__callT_M__116
  mov r2, #0 ' reg ARG coni
  mov r3, r15 ' CVI, CVU or LOAD
  mov RI, FP
@@ -582,8 +582,8 @@ C_luaT__callT_M__114
  jmp #CALA
  long @C_luaD__callnoyield
  add SP, #8 ' CALL addrg
-C_luaT__callT_M__115
-' C_luaT__callT_M__113 ' (symbol refcount = 0)
+C_luaT__callT_M__117
+' C_luaT__callT_M__115 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -695,7 +695,7 @@ C_luaT__callT_M_res ' <symbol:luaT_callTMres>
  and r22, #10 ' BANDI4 coni
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_luaT__callT_M_res_117 ' NEI4
+ long @C_luaT__callT_M_res_119 ' NEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r15 ' CVI, CVU or LOAD
  mov RI, FP
@@ -707,8 +707,8 @@ C_luaT__callT_M_res ' <symbol:luaT_callTMres>
  long @C_luaD__call
  add SP, #8 ' CALL addrg
  jmp #JMPA
- long @C_luaT__callT_M_res_118 ' JUMPV addrg
-C_luaT__callT_M_res_117
+ long @C_luaT__callT_M_res_120 ' JUMPV addrg
+C_luaT__callT_M_res_119
  mov r2, #1 ' reg ARG coni
  mov r3, r15 ' CVI, CVU or LOAD
  mov RI, FP
@@ -719,7 +719,7 @@ C_luaT__callT_M_res_117
  jmp #CALA
  long @C_luaD__callnoyield
  add SP, #8 ' CALL addrg
-C_luaT__callT_M_res_118
+C_luaT__callT_M_res_120
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 regl
@@ -762,14 +762,14 @@ C_luaT__callT_M_res_118
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
-' C_luaT__callT_M_res_116 ' (symbol refcount = 0)
+' C_luaT__callT_M_res_118 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_sa6416_690ed95d_callbinT_M__L000119 ' <symbol:callbinTM>
+C_skjk16_696dded2_callbinT_M__L000121 ' <symbol:callbinTM>
  jmp #NEWF
  jmp #PSHM
  long $ea8000 ' save registers
@@ -797,7 +797,7 @@ C_sa6416_690ed95d_callbinT_M__L000119 ' <symbol:callbinTM>
  and r22, #15 ' BANDI4 coni
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_sa6416_690ed95d_callbinT_M__L000119_121 ' NEI4
+ long @C_skjk16_696dded2_callbinT_M__L000121_123 ' NEI4
  mov r2, r17 ' CVI, CVU or LOAD
  mov r3, r21 ' CVI, CVU or LOAD
  mov RI, FP
@@ -809,7 +809,7 @@ C_sa6416_690ed95d_callbinT_M__L000119 ' <symbol:callbinTM>
  long @C_luaT__gettmbyobj
  add SP, #8 ' CALL addrg
  mov r15, r0 ' CVI, CVU or LOAD
-C_sa6416_690ed95d_callbinT_M__L000119_121
+C_skjk16_696dded2_callbinT_M__L000121_123
  mov r22, r15
  adds r22, #4 ' ADDP4 coni
  mov RI, r22
@@ -819,11 +819,11 @@ C_sa6416_690ed95d_callbinT_M__L000119_121
  and r22, #15 ' BANDI4 coni
  cmps r22,  #0 wz
  jmp #BRNZ
- long @C_sa6416_690ed95d_callbinT_M__L000119_123 ' NEI4
+ long @C_skjk16_696dded2_callbinT_M__L000121_125 ' NEI4
  mov r0, #0 ' reg <- coni
  jmp #JMPA
- long @C_sa6416_690ed95d_callbinT_M__L000119_120 ' JUMPV addrg
-C_sa6416_690ed95d_callbinT_M__L000119_123
+ long @C_skjk16_696dded2_callbinT_M__L000121_122 ' JUMPV addrg
+C_skjk16_696dded2_callbinT_M__L000121_125
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r21 ' CVI, CVU or LOAD
  mov r4, r23 ' CVI, CVU or LOAD
@@ -837,7 +837,7 @@ C_sa6416_690ed95d_callbinT_M__L000119_123
  long @C_luaT__callT_M_res
  add SP, #16 ' CALL addrg
  mov r0, #1 ' reg <- coni
-C_sa6416_690ed95d_callbinT_M__L000119_120
+C_skjk16_696dded2_callbinT_M__L000121_122
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -863,22 +863,22 @@ C_luaT__trybinT_M_ ' <symbol:luaT_trybinTM>
  mov BC, #20 ' arg size, rpsize = 0, spsize = 20
  add SP, #4 ' correct for new kernel !!! 
  jmp #CALA
- long @C_sa6416_690ed95d_callbinT_M__L000119
+ long @C_skjk16_696dded2_callbinT_M__L000121
  add SP, #16 ' CALL addrg
  cmps r0,  #0 wz
  jmp #BRNZ
- long @C_luaT__trybinT_M__126 ' NEI4
+ long @C_luaT__trybinT_M__128 ' NEI4
  mov r15, r17 ' CVI, CVU or LOAD
  cmps r15,  #13 wz,wc
  jmp #BR_B
- long @C_luaT__trybinT_M__128 ' LTI4
+ long @C_luaT__trybinT_M__130 ' LTI4
  cmps r15,  #19 wz,wc
  jmp #BR_A
- long @C_luaT__trybinT_M__128 ' GTI4
+ long @C_luaT__trybinT_M__130 ' GTI4
  mov r22, r15
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C_luaT__trybinT_M__138_L000140-52
+ long @C_luaT__trybinT_M__140_L000142-52
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  mov RI, r22
@@ -891,19 +891,19 @@ C_luaT__trybinT_M_ ' <symbol:luaT_trybinTM>
 DAT ' const data segment
 
  alignl ' align long
-C_luaT__trybinT_M__138_L000140 ' <symbol:138>
- long @C_luaT__trybinT_M__131
- long @C_luaT__trybinT_M__131
- long @C_luaT__trybinT_M__131
- long @C_luaT__trybinT_M__131
- long @C_luaT__trybinT_M__131
- long @C_luaT__trybinT_M__128
- long @C_luaT__trybinT_M__131
+C_luaT__trybinT_M__140_L000142 ' <symbol:140>
+ long @C_luaT__trybinT_M__133
+ long @C_luaT__trybinT_M__133
+ long @C_luaT__trybinT_M__133
+ long @C_luaT__trybinT_M__133
+ long @C_luaT__trybinT_M__133
+ long @C_luaT__trybinT_M__130
+ long @C_luaT__trybinT_M__133
 
 ' Catalina Code
 
 DAT ' code segment
-C_luaT__trybinT_M__131
+C_luaT__trybinT_M__133
  mov r22, #3 ' reg <- coni
  mov r20, r23
  adds r20, #4 ' ADDP4 coni
@@ -914,7 +914,7 @@ C_luaT__trybinT_M__131
  and r20, #15 ' BANDI4 coni
  cmps r20, r22 wz
  jmp #BRNZ
- long @C_luaT__trybinT_M__132 ' NEI4
+ long @C_luaT__trybinT_M__134 ' NEI4
  mov r20, r21
  adds r20, #4 ' ADDP4 coni
  mov RI, r20
@@ -924,7 +924,7 @@ C_luaT__trybinT_M__131
  and r20, #15 ' BANDI4 coni
  cmps r20, r22 wz
  jmp #BRNZ
- long @C_luaT__trybinT_M__132 ' NEI4
+ long @C_luaT__trybinT_M__134 ' NEI4
  mov r2, r21 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov RI, FP
@@ -936,23 +936,8 @@ C_luaT__trybinT_M__131
  long @C_luaG__tointerror
  add SP, #8 ' CALL addrg
  jmp #JMPA
- long @C_luaT__trybinT_M__133 ' JUMPV addrg
-C_luaT__trybinT_M__132
- jmp #LODL
- long @C_luaT__trybinT_M__134_L000135
- mov r2, RI ' reg ARG ADDRG
- mov r3, r21 ' CVI, CVU or LOAD
- mov r4, r23 ' CVI, CVU or LOAD
- mov RI, FP
- add RI, #8
- rdlong r5, RI ' reg ARG INDIR ADDRFi
- mov BC, #16 ' arg size, rpsize = 16, spsize = 16
- sub SP, #12 ' stack space for reg ARGs
- jmp #CALA
- long @C_luaG__opinterror
- add SP, #12 ' CALL addrg
-C_luaT__trybinT_M__133
-C_luaT__trybinT_M__128
+ long @C_luaT__trybinT_M__135 ' JUMPV addrg
+C_luaT__trybinT_M__134
  jmp #LODL
  long @C_luaT__trybinT_M__136_L000137
  mov r2, RI ' reg ARG ADDRG
@@ -966,8 +951,23 @@ C_luaT__trybinT_M__128
  jmp #CALA
  long @C_luaG__opinterror
  add SP, #12 ' CALL addrg
-C_luaT__trybinT_M__126
-' C_luaT__trybinT_M__125 ' (symbol refcount = 0)
+C_luaT__trybinT_M__135
+C_luaT__trybinT_M__130
+ jmp #LODL
+ long @C_luaT__trybinT_M__138_L000139
+ mov r2, RI ' reg ARG ADDRG
+ mov r3, r21 ' CVI, CVU or LOAD
+ mov r4, r23 ' CVI, CVU or LOAD
+ mov RI, FP
+ add RI, #8
+ rdlong r5, RI ' reg ARG INDIR ADDRFi
+ mov BC, #16 ' arg size, rpsize = 16, spsize = 16
+ sub SP, #12 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_luaG__opinterror
+ add SP, #12 ' CALL addrg
+C_luaT__trybinT_M__128
+' C_luaT__trybinT_M__127 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -1003,11 +1003,11 @@ C_luaT__tryconcatT_M_ ' <symbol:luaT_tryconcatTM>
  mov BC, #20 ' arg size, rpsize = 0, spsize = 20
  add SP, #4 ' correct for new kernel !!! 
  jmp #CALA
- long @C_sa6416_690ed95d_callbinT_M__L000119
+ long @C_skjk16_696dded2_callbinT_M__L000121
  add SP, #16 ' CALL addrg
  cmps r0,  #0 wz
  jmp #BRNZ
- long @C_luaT__tryconcatT_M__143 ' NEI4
+ long @C_luaT__tryconcatT_M__145 ' NEI4
  jmp #LODL
  long -8
  mov r22, RI ' reg <- con
@@ -1024,8 +1024,8 @@ C_luaT__tryconcatT_M_ ' <symbol:luaT_tryconcatTM>
  jmp #CALA
  long @C_luaG__concaterror
  add SP, #8 ' CALL addrg
-C_luaT__tryconcatT_M__143
-' C_luaT__tryconcatT_M__142 ' (symbol refcount = 0)
+C_luaT__tryconcatT_M__145
+' C_luaT__tryconcatT_M__144 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -1043,7 +1043,7 @@ C_luaT__trybinassocT_M_ ' <symbol:luaT_trybinassocTM>
  mov r17, r2 ' reg var <- reg arg
  cmps r21,  #0 wz
  jmp #BR_Z
- long @C_luaT__trybinassocT_M__146 ' EQI4
+ long @C_luaT__trybinassocT_M__148 ' EQI4
  mov r2, r17 ' CVI, CVU or LOAD
  mov r3, r19 ' CVI, CVU or LOAD
  mov RI, FP
@@ -1059,8 +1059,8 @@ C_luaT__trybinassocT_M_ ' <symbol:luaT_trybinassocTM>
  long @C_luaT__trybinT_M_
  add SP, #16 ' CALL addrg
  jmp #JMPA
- long @C_luaT__trybinassocT_M__147 ' JUMPV addrg
-C_luaT__trybinassocT_M__146
+ long @C_luaT__trybinassocT_M__149 ' JUMPV addrg
+C_luaT__trybinassocT_M__148
  mov r2, r17 ' CVI, CVU or LOAD
  mov r3, r19 ' CVI, CVU or LOAD
  mov r4, r23 ' CVI, CVU or LOAD
@@ -1075,8 +1075,8 @@ C_luaT__trybinassocT_M__146
  jmp #CALA
  long @C_luaT__trybinT_M_
  add SP, #16 ' CALL addrg
-C_luaT__trybinassocT_M__147
-' C_luaT__trybinassocT_M__145 ' (symbol refcount = 0)
+C_luaT__trybinassocT_M__149
+' C_luaT__trybinassocT_M__147 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -1119,7 +1119,7 @@ C_luaT__trybiniT_M_ ' <symbol:luaT_trybiniTM>
  jmp #CALA
  long @C_luaT__trybinassocT_M_
  add SP, #20 ' CALL addrg
-' C_luaT__trybiniT_M__148 ' (symbol refcount = 0)
+' C_luaT__trybiniT_M__150 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #8 ' framesize
  jmp #RETF
@@ -1150,11 +1150,11 @@ C_luaT__callorderT_M_ ' <symbol:luaT_callorderTM>
  mov BC, #20 ' arg size, rpsize = 0, spsize = 20
  add SP, #4 ' correct for new kernel !!! 
  jmp #CALA
- long @C_sa6416_690ed95d_callbinT_M__L000119
+ long @C_skjk16_696dded2_callbinT_M__L000121
  add SP, #16 ' CALL addrg
  cmps r0,  #0 wz
  jmp #BR_Z
- long @C_luaT__callorderT_M__150 ' EQI4
+ long @C_luaT__callorderT_M__152 ' EQI4
  mov r22, r23
  adds r22, #12 ' ADDP4 coni
  mov RI, r22
@@ -1167,21 +1167,21 @@ C_luaT__callorderT_M_ ' <symbol:luaT_callorderTM>
  and r22, cviu_m1 ' zero extend
  cmps r22,  #1 wz
  jmp #BR_Z
- long @C_luaT__callorderT_M__153 ' EQI4
+ long @C_luaT__callorderT_M__155 ' EQI4
  and r22, #15 ' BANDI4 coni
  cmps r22,  #0 wz
  jmp #BR_Z
- long @C_luaT__callorderT_M__153 ' EQI4
+ long @C_luaT__callorderT_M__155 ' EQI4
  mov r15, #1 ' reg <- coni
  jmp #JMPA
- long @C_luaT__callorderT_M__154 ' JUMPV addrg
-C_luaT__callorderT_M__153
+ long @C_luaT__callorderT_M__156 ' JUMPV addrg
+C_luaT__callorderT_M__155
  mov r15, #0 ' reg <- coni
-C_luaT__callorderT_M__154
+C_luaT__callorderT_M__156
  mov r0, r15 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_luaT__callorderT_M__149 ' JUMPV addrg
-C_luaT__callorderT_M__150
+ long @C_luaT__callorderT_M__151 ' JUMPV addrg
+C_luaT__callorderT_M__152
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r21 ' CVI, CVU or LOAD
  mov r4, r23 ' CVI, CVU or LOAD
@@ -1191,7 +1191,7 @@ C_luaT__callorderT_M__150
  long @C_luaG__ordererror
  add SP, #8 ' CALL addrg
  mov r0, #0 ' reg <- coni
-C_luaT__callorderT_M__149
+C_luaT__callorderT_M__151
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -1210,7 +1210,7 @@ C_luaT__callorderiT_M_ ' <symbol:luaT_callorderiTM>
  mov r17, r2 ' reg var <- reg arg
  cmps r19,  #0 wz
  jmp #BR_Z
- long @C_luaT__callorderiT_M__156 ' EQI4
+ long @C_luaT__callorderiT_M__158 ' EQI4
  mov r22, FP
  sub r22, #-(-12) ' reg <- addrli
  mov RI, FP
@@ -1233,8 +1233,8 @@ C_luaT__callorderiT_M_ ' <symbol:luaT_callorderiTM>
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
  jmp #JMPA
- long @C_luaT__callorderiT_M__157 ' JUMPV addrg
-C_luaT__callorderiT_M__156
+ long @C_luaT__callorderiT_M__159 ' JUMPV addrg
+C_luaT__callorderiT_M__158
  mov r22, FP
  sub r22, #-(-12) ' reg <- addrli
  mov RI, FP
@@ -1254,10 +1254,10 @@ C_luaT__callorderiT_M__156
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
-C_luaT__callorderiT_M__157
+C_luaT__callorderiT_M__159
  cmps r21,  #0 wz
  jmp #BR_Z
- long @C_luaT__callorderiT_M__158 ' EQI4
+ long @C_luaT__callorderiT_M__160 ' EQI4
  mov r22, FP
  add r22, #12 ' reg <- addrfi
  rdlong r22, r22 ' reg <- INDIRP4 regl
@@ -1270,14 +1270,14 @@ C_luaT__callorderiT_M__157
  add RI, #12
  wrlong r22 , RI ' ASGNP4 addrfi reg
  jmp #JMPA
- long @C_luaT__callorderiT_M__159 ' JUMPV addrg
-C_luaT__callorderiT_M__158
+ long @C_luaT__callorderiT_M__161 ' JUMPV addrg
+C_luaT__callorderiT_M__160
  mov r22, FP
  sub r22, #-(-12) ' reg <- addrli
  mov RI, FP
  sub RI, #-(-16)
  wrlong r22 , RI ' ASGNP4 addrli reg
-C_luaT__callorderiT_M__159
+C_luaT__callorderiT_M__161
  mov r2, r17 ' CVI, CVU or LOAD
  mov RI, FP
  sub RI, #-(-16)
@@ -1294,7 +1294,7 @@ C_luaT__callorderiT_M__159
  long @C_luaT__callorderT_M_
  add SP, #12 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
-' C_luaT__callorderiT_M__155 ' (symbol refcount = 0)
+' C_luaT__callorderiT_M__157 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #16 ' framesize
  jmp #RETF
@@ -1364,7 +1364,7 @@ C_luaT__adjustvarargs ' <symbol:luaT_adjustvarargs>
  adds r22, #1 ' ADDI4 coni
  cmps r0, r22 wz,wc
  jmp #BR_A
- long @C_luaT__adjustvarargs_161 ' GTI4
+ long @C_luaT__adjustvarargs_163 ' GTI4
  mov r22, #1 ' reg <- coni
  mov r2, r22 ' CVI, CVU or LOAD
  mov r22, r17
@@ -1381,8 +1381,8 @@ C_luaT__adjustvarargs ' <symbol:luaT_adjustvarargs>
  jmp #CALA
  long @C_luaD__growstack
  add SP, #8 ' CALL addrg
-C_luaT__adjustvarargs_161
-' C_luaT__adjustvarargs_162 ' (symbol refcount = 0)
+C_luaT__adjustvarargs_163
+' C_luaT__adjustvarargs_164 ' (symbol refcount = 0)
  mov r22, r23
  adds r22, #12 ' ADDP4 coni
  mov RI, r22
@@ -1413,8 +1413,8 @@ C_luaT__adjustvarargs_161
  jmp #WBYT ' ASGNU1 reg reg
  mov r15, #1 ' reg <- coni
  jmp #JMPA
- long @C_luaT__adjustvarargs_166 ' JUMPV addrg
-C_luaT__adjustvarargs_163
+ long @C_luaT__adjustvarargs_168 ' JUMPV addrg
+C_luaT__adjustvarargs_165
  mov r22, r23
  adds r22, #12 ' ADDP4 coni
  mov RI, r22
@@ -1458,12 +1458,12 @@ C_luaT__adjustvarargs_163
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
-' C_luaT__adjustvarargs_164 ' (symbol refcount = 0)
+' C_luaT__adjustvarargs_166 ' (symbol refcount = 0)
  adds r15, #1 ' ADDI4 coni
-C_luaT__adjustvarargs_166
+C_luaT__adjustvarargs_168
  cmps r15, r21 wz,wc
  jmp #BRBE
- long @C_luaT__adjustvarargs_163 ' LEI4
+ long @C_luaT__adjustvarargs_165 ' LEI4
  mov r22, r13
  shl r22, #3 ' LSHI4 coni
  adds r22, #8 ' ADDI4 coni
@@ -1486,7 +1486,7 @@ C_luaT__adjustvarargs_166
  mov RI, r22
  mov BC, r20
  jmp #WLNG ' ASGNP4 reg reg
-' C_luaT__adjustvarargs_160 ' (symbol refcount = 0)
+' C_luaT__adjustvarargs_162 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
@@ -1511,7 +1511,7 @@ C_luaT__getvarargs ' <symbol:luaT_getvarargs>
  mov r13, BC ' reg <- INDIRI4 reg
  cmps r17,  #0 wz,wc
  jmp #BRAE
- long @C_luaT__getvarargs_168 ' GEI4
+ long @C_luaT__getvarargs_170 ' GEI4
  mov r17, r13 ' CVI, CVU or LOAD
  mov r22, r23
  adds r22, #24 ' ADDP4 coni
@@ -1530,7 +1530,7 @@ C_luaT__getvarargs ' <symbol:luaT_getvarargs>
  jmp #DIVS ' DIVI
  cmps r0, r13 wz,wc
  jmp #BR_A
- long @C_luaT__getvarargs_170 ' GTI4
+ long @C_luaT__getvarargs_172 ' GTI4
  mov r22, r19 ' CVI, CVU or LOAD
  mov r20, r23
  adds r20, #28 ' ADDP4 coni
@@ -1552,12 +1552,12 @@ C_luaT__getvarargs ' <symbol:luaT_getvarargs>
  mov r22, BC ' reg <- INDIRI4 reg
  cmps r22,  #0 wz,wc
  jmp #BRBE
- long @C_luaT__getvarargs_172 ' LEI4
+ long @C_luaT__getvarargs_174 ' LEI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C_luaC__step ' CALL addrg
-C_luaT__getvarargs_172
+C_luaT__getvarargs_174
  mov r2, #1 ' reg ARG coni
  mov r3, r13 ' CVI, CVU or LOAD
  mov r4, r23 ' CVI, CVU or LOAD
@@ -1576,8 +1576,8 @@ C_luaT__getvarargs_172
  mov r20, BC ' reg <- INDIRP4 reg
  mov r19, r22 ' ADDI/P
  adds r19, r20 ' ADDI/P (3)
-C_luaT__getvarargs_170
-' C_luaT__getvarargs_171 ' (symbol refcount = 0)
+C_luaT__getvarargs_172
+' C_luaT__getvarargs_173 ' (symbol refcount = 0)
  mov r22, r23
  adds r22, #12 ' ADDP4 coni
  mov r20, r13
@@ -1586,11 +1586,11 @@ C_luaT__getvarargs_170
  mov RI, r22
  mov BC, r20
  jmp #WLNG ' ASGNP4 reg reg
-C_luaT__getvarargs_168
+C_luaT__getvarargs_170
  mov r15, #0 ' reg <- coni
  jmp #JMPA
- long @C_luaT__getvarargs_177 ' JUMPV addrg
-C_luaT__getvarargs_174
+ long @C_luaT__getvarargs_179 ' JUMPV addrg
+C_luaT__getvarargs_176
  mov r22, r15
  shl r22, #3 ' LSHI4 coni
  mov r11, r22 ' ADDI/P
@@ -1619,19 +1619,19 @@ C_luaT__getvarargs_174
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
-' C_luaT__getvarargs_175 ' (symbol refcount = 0)
+' C_luaT__getvarargs_177 ' (symbol refcount = 0)
  adds r15, #1 ' ADDI4 coni
-C_luaT__getvarargs_177
+C_luaT__getvarargs_179
  cmps r15, r17 wz,wc
  jmp #BRAE
- long @C_luaT__getvarargs_178 ' GEI4
+ long @C_luaT__getvarargs_180 ' GEI4
  cmps r15, r13 wz,wc
  jmp #BR_B
- long @C_luaT__getvarargs_174 ' LTI4
-C_luaT__getvarargs_178
+ long @C_luaT__getvarargs_176 ' LTI4
+C_luaT__getvarargs_180
  jmp #JMPA
- long @C_luaT__getvarargs_182 ' JUMPV addrg
-C_luaT__getvarargs_179
+ long @C_luaT__getvarargs_184 ' JUMPV addrg
+C_luaT__getvarargs_181
  mov r22, r15
  shl r22, #3 ' LSHI4 coni
  adds r22, r19 ' ADDI/P (1)
@@ -1640,13 +1640,13 @@ C_luaT__getvarargs_179
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
-' C_luaT__getvarargs_180 ' (symbol refcount = 0)
+' C_luaT__getvarargs_182 ' (symbol refcount = 0)
  adds r15, #1 ' ADDI4 coni
-C_luaT__getvarargs_182
+C_luaT__getvarargs_184
  cmps r15, r17 wz,wc
  jmp #BR_B
- long @C_luaT__getvarargs_179 ' LTI4
-' C_luaT__getvarargs_167 ' (symbol refcount = 0)
+ long @C_luaT__getvarargs_181 ' LTI4
+' C_luaT__getvarargs_169 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
@@ -1679,6 +1679,31 @@ C_luaT__getvarargs_182
 DAT ' const data segment
 
  alignl ' align long
+C_luaT__trybinT_M__138_L000139 ' <symbol:138>
+ byte 112
+ byte 101
+ byte 114
+ byte 102
+ byte 111
+ byte 114
+ byte 109
+ byte 32
+ byte 97
+ byte 114
+ byte 105
+ byte 116
+ byte 104
+ byte 109
+ byte 101
+ byte 116
+ byte 105
+ byte 99
+ byte 32
+ byte 111
+ byte 110
+ byte 0
+
+ alignl ' align long
 C_luaT__trybinT_M__136_L000137 ' <symbol:136>
  byte 112
  byte 101
@@ -1688,31 +1713,6 @@ C_luaT__trybinT_M__136_L000137 ' <symbol:136>
  byte 114
  byte 109
  byte 32
- byte 97
- byte 114
- byte 105
- byte 116
- byte 104
- byte 109
- byte 101
- byte 116
- byte 105
- byte 99
- byte 32
- byte 111
- byte 110
- byte 0
-
- alignl ' align long
-C_luaT__trybinT_M__134_L000135 ' <symbol:134>
- byte 112
- byte 101
- byte 114
- byte 102
- byte 111
- byte 114
- byte 109
- byte 32
  byte 98
  byte 105
  byte 116
@@ -1736,12 +1736,23 @@ C_luaT__trybinT_M__134_L000135 ' <symbol:134>
  byte 0
 
  alignl ' align long
-C_luaT__objtypename_108_L000109 ' <symbol:108>
+C_luaT__objtypename_110_L000111 ' <symbol:110>
  byte 95
  byte 95
  byte 110
  byte 97
  byte 109
+ byte 101
+ byte 0
+
+ alignl ' align long
+C_luaT__init_87_L000088 ' <symbol:87>
+ byte 95
+ byte 95
+ byte 99
+ byte 108
+ byte 111
+ byte 115
  byte 101
  byte 0
 
@@ -1750,24 +1761,13 @@ C_luaT__init_85_L000086 ' <symbol:85>
  byte 95
  byte 95
  byte 99
- byte 108
- byte 111
- byte 115
- byte 101
- byte 0
-
- alignl ' align long
-C_luaT__init_83_L000084 ' <symbol:83>
- byte 95
- byte 95
- byte 99
  byte 97
  byte 108
  byte 108
  byte 0
 
  alignl ' align long
-C_luaT__init_81_L000082 ' <symbol:81>
+C_luaT__init_83_L000084 ' <symbol:83>
  byte 95
  byte 95
  byte 99
@@ -1779,7 +1779,7 @@ C_luaT__init_81_L000082 ' <symbol:81>
  byte 0
 
  alignl ' align long
-C_luaT__init_79_L000080 ' <symbol:79>
+C_luaT__init_81_L000082 ' <symbol:81>
  byte 95
  byte 95
  byte 108
@@ -1787,7 +1787,7 @@ C_luaT__init_79_L000080 ' <symbol:79>
  byte 0
 
  alignl ' align long
-C_luaT__init_77_L000078 ' <symbol:77>
+C_luaT__init_79_L000080 ' <symbol:79>
  byte 95
  byte 95
  byte 108
@@ -1795,7 +1795,7 @@ C_luaT__init_77_L000078 ' <symbol:77>
  byte 0
 
  alignl ' align long
-C_luaT__init_75_L000076 ' <symbol:75>
+C_luaT__init_77_L000078 ' <symbol:77>
  byte 95
  byte 95
  byte 98
@@ -1805,7 +1805,7 @@ C_luaT__init_75_L000076 ' <symbol:75>
  byte 0
 
  alignl ' align long
-C_luaT__init_73_L000074 ' <symbol:73>
+C_luaT__init_75_L000076 ' <symbol:75>
  byte 95
  byte 95
  byte 117
@@ -1814,7 +1814,7 @@ C_luaT__init_73_L000074 ' <symbol:73>
  byte 0
 
  alignl ' align long
-C_luaT__init_71_L000072 ' <symbol:71>
+C_luaT__init_73_L000074 ' <symbol:73>
  byte 95
  byte 95
  byte 115
@@ -1823,7 +1823,7 @@ C_luaT__init_71_L000072 ' <symbol:71>
  byte 0
 
  alignl ' align long
-C_luaT__init_69_L000070 ' <symbol:69>
+C_luaT__init_71_L000072 ' <symbol:71>
  byte 95
  byte 95
  byte 115
@@ -1832,11 +1832,20 @@ C_luaT__init_69_L000070 ' <symbol:69>
  byte 0
 
  alignl ' align long
-C_luaT__init_67_L000068 ' <symbol:67>
+C_luaT__init_69_L000070 ' <symbol:69>
  byte 95
  byte 95
  byte 98
  byte 120
+ byte 111
+ byte 114
+ byte 0
+
+ alignl ' align long
+C_luaT__init_67_L000068 ' <symbol:67>
+ byte 95
+ byte 95
+ byte 98
  byte 111
  byte 114
  byte 0
@@ -1846,25 +1855,25 @@ C_luaT__init_65_L000066 ' <symbol:65>
  byte 95
  byte 95
  byte 98
- byte 111
- byte 114
- byte 0
-
- alignl ' align long
-C_luaT__init_63_L000064 ' <symbol:63>
- byte 95
- byte 95
- byte 98
  byte 97
  byte 110
  byte 100
  byte 0
 
  alignl ' align long
-C_luaT__init_61_L000062 ' <symbol:61>
+C_luaT__init_63_L000064 ' <symbol:63>
  byte 95
  byte 95
  byte 105
+ byte 100
+ byte 105
+ byte 118
+ byte 0
+
+ alignl ' align long
+C_luaT__init_61_L000062 ' <symbol:61>
+ byte 95
+ byte 95
  byte 100
  byte 105
  byte 118
@@ -1874,22 +1883,13 @@ C_luaT__init_61_L000062 ' <symbol:61>
 C_luaT__init_59_L000060 ' <symbol:59>
  byte 95
  byte 95
- byte 100
- byte 105
- byte 118
- byte 0
-
- alignl ' align long
-C_luaT__init_57_L000058 ' <symbol:57>
- byte 95
- byte 95
  byte 112
  byte 111
  byte 119
  byte 0
 
  alignl ' align long
-C_luaT__init_55_L000056 ' <symbol:55>
+C_luaT__init_57_L000058 ' <symbol:57>
  byte 95
  byte 95
  byte 109
@@ -1898,7 +1898,7 @@ C_luaT__init_55_L000056 ' <symbol:55>
  byte 0
 
  alignl ' align long
-C_luaT__init_53_L000054 ' <symbol:53>
+C_luaT__init_55_L000056 ' <symbol:55>
  byte 95
  byte 95
  byte 109
@@ -1907,7 +1907,7 @@ C_luaT__init_53_L000054 ' <symbol:53>
  byte 0
 
  alignl ' align long
-C_luaT__init_51_L000052 ' <symbol:51>
+C_luaT__init_53_L000054 ' <symbol:53>
  byte 95
  byte 95
  byte 115
@@ -1916,7 +1916,7 @@ C_luaT__init_51_L000052 ' <symbol:51>
  byte 0
 
  alignl ' align long
-C_luaT__init_49_L000050 ' <symbol:49>
+C_luaT__init_51_L000052 ' <symbol:51>
  byte 95
  byte 95
  byte 97
@@ -1925,7 +1925,7 @@ C_luaT__init_49_L000050 ' <symbol:49>
  byte 0
 
  alignl ' align long
-C_luaT__init_47_L000048 ' <symbol:47>
+C_luaT__init_49_L000050 ' <symbol:49>
  byte 95
  byte 95
  byte 101
@@ -1933,7 +1933,7 @@ C_luaT__init_47_L000048 ' <symbol:47>
  byte 0
 
  alignl ' align long
-C_luaT__init_45_L000046 ' <symbol:45>
+C_luaT__init_47_L000048 ' <symbol:47>
  byte 95
  byte 95
  byte 108
@@ -1942,7 +1942,7 @@ C_luaT__init_45_L000046 ' <symbol:45>
  byte 0
 
  alignl ' align long
-C_luaT__init_43_L000044 ' <symbol:43>
+C_luaT__init_45_L000046 ' <symbol:45>
  byte 95
  byte 95
  byte 109
@@ -1952,7 +1952,7 @@ C_luaT__init_43_L000044 ' <symbol:43>
  byte 0
 
  alignl ' align long
-C_luaT__init_41_L000042 ' <symbol:41>
+C_luaT__init_43_L000044 ' <symbol:43>
  byte 95
  byte 95
  byte 103
@@ -1960,7 +1960,7 @@ C_luaT__init_41_L000042 ' <symbol:41>
  byte 0
 
  alignl ' align long
-C_luaT__init_39_L000040 ' <symbol:39>
+C_luaT__init_41_L000042 ' <symbol:41>
  byte 95
  byte 95
  byte 110
@@ -1974,7 +1974,7 @@ C_luaT__init_39_L000040 ' <symbol:39>
  byte 0
 
  alignl ' align long
-C_luaT__init_37_L000038 ' <symbol:37>
+C_luaT__init_39_L000040 ' <symbol:39>
  byte 95
  byte 95
  byte 105
@@ -1985,7 +1985,7 @@ C_luaT__init_37_L000038 ' <symbol:37>
  byte 0
 
  alignl ' align long
-C_sa64a_690ed95d_32_L000033 ' <symbol:32>
+C_skjka_696dded2_34_L000035 ' <symbol:34>
  byte 112
  byte 114
  byte 111
@@ -1994,7 +1994,7 @@ C_sa64a_690ed95d_32_L000033 ' <symbol:32>
  byte 0
 
  alignl ' align long
-C_sa649_690ed95d_30_L000031 ' <symbol:30>
+C_skjk9_696dded2_32_L000033 ' <symbol:32>
  byte 117
  byte 112
  byte 118
@@ -2005,7 +2005,7 @@ C_sa649_690ed95d_30_L000031 ' <symbol:30>
  byte 0
 
  alignl ' align long
-C_sa648_690ed95d_28_L000029 ' <symbol:28>
+C_skjk8_696dded2_30_L000031 ' <symbol:30>
  byte 116
  byte 104
  byte 114
@@ -2015,7 +2015,7 @@ C_sa648_690ed95d_28_L000029 ' <symbol:28>
  byte 0
 
  alignl ' align long
-C_sa647_690ed95d_26_L000027 ' <symbol:26>
+C_skjk7_696dded2_28_L000029 ' <symbol:28>
  byte 102
  byte 117
  byte 110
@@ -2027,7 +2027,7 @@ C_sa647_690ed95d_26_L000027 ' <symbol:26>
  byte 0
 
  alignl ' align long
-C_sa646_690ed95d_24_L000025 ' <symbol:24>
+C_skjk6_696dded2_26_L000027 ' <symbol:26>
  byte 116
  byte 97
  byte 98
@@ -2036,7 +2036,7 @@ C_sa646_690ed95d_24_L000025 ' <symbol:24>
  byte 0
 
  alignl ' align long
-C_sa645_690ed95d_22_L000023 ' <symbol:22>
+C_skjk5_696dded2_24_L000025 ' <symbol:24>
  byte 115
  byte 116
  byte 114
@@ -2046,7 +2046,7 @@ C_sa645_690ed95d_22_L000023 ' <symbol:22>
  byte 0
 
  alignl ' align long
-C_sa644_690ed95d_20_L000021 ' <symbol:20>
+C_skjk4_696dded2_22_L000023 ' <symbol:22>
  byte 110
  byte 117
  byte 109
@@ -2056,7 +2056,7 @@ C_sa644_690ed95d_20_L000021 ' <symbol:20>
  byte 0
 
  alignl ' align long
-C_sa643_690ed95d_18_L000019 ' <symbol:18>
+C_skjk3_696dded2_20_L000021 ' <symbol:20>
  byte 98
  byte 111
  byte 111
@@ -2067,14 +2067,14 @@ C_sa643_690ed95d_18_L000019 ' <symbol:18>
  byte 0
 
  alignl ' align long
-C_sa642_690ed95d_16_L000017 ' <symbol:16>
+C_skjk2_696dded2_18_L000019 ' <symbol:18>
  byte 110
  byte 105
  byte 108
  byte 0
 
  alignl ' align long
-C_sa641_690ed95d_14_L000015 ' <symbol:14>
+C_skjk1_696dded2_16_L000017 ' <symbol:16>
  byte 110
  byte 111
  byte 32

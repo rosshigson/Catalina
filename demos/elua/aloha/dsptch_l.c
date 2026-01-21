@@ -19,6 +19,11 @@
 #if defined(__CATALINA_libwifi)
 #include <wifi.h>
 #include <base64.h>
+#if defined(__CATALINA_P2_WIFI2)
+#define my_printf printf // use normal HMI printf on P2_WIFI2
+#else
+#define my_printf t_printf // use t_printf (port 1) on other platforms
+#endif
 #endif
 
 #if defined(__CATALINA_libserial8)
@@ -29,12 +34,18 @@
 #error dispatch_Lua requires a serial plugin (-lserial2 or -lserial8)
 #endif
 
+#if USER_PORT == 0
+#else
+#endif
+
 #define REMOTE_TIMEOUT 1000  // timeout on response after sending request
 #define PORT_TIMEOUT    200  // timeout on rx after receiving first byte
 
+#define PATH_MAX        256  // maximum length of rpc path
+
 #if defined(__CATALINA_libwifi)
-#define REMOTE_MAX     wifi_DATA_SIZE // maximum data that can be sent/received
-                                      // (NOTE: http => must be wifi_DATA_SIZE)
+#define REMOTE_MAX     2048  // maximum that can be sent/received
+                             // (NOTE: http => must include bas64 encoding)
 #define IP_RETRIES      30   // times to retry to get a valid IP addr
 #define IP_RETRY_SECS    3   // seconds between retries
 #define POLL_INTERVAL  250   // msecs between WiFi Polls
@@ -43,6 +54,7 @@
 #define WIFI_INFO        1   // 1 to display WiFi info messages
 #else
 #define REMOTE_MAX     2048  // maximum size of message that can be received 
+                             // (NOTE: serial => can be any size)
 #endif
 
 #define DEBUG_INFO       0   // 1 to enable debug messages
@@ -83,20 +95,26 @@ int rpc_recv(int handle, char *ser_in, int max) {
    result = wifi_RECV(handle, REMOTE_MAX, encoded, &len); 
 #if DEBUG_INFO   
    if (result != wifi_Success) {
-      t_printf("WiFi RECV failed, error = %d\n", result);
+      my_printf("WiFi RECV failed, error = %d\n", result);
       len = 0;
    }
 #endif   
    // zero terminate received base64 data
    encoded[len] = 0;
 #if DEBUG_INFO
-   t_printf("base64 data = %s\n", encoded);
+   my_printf("rpc_recv:\n");
+   my_printf("base64 data = %s\n", encoded);
+   my_printf("base64 length = %d\n", len);
 #endif
    // decode base64 data into ser_in
    result = decode_buff(encoded, len, ser_in, max);
 #if DEBUG_INFO
-   if (result < 0) {
-      t_printf("decoding base64 failed\n");
+   if (result >= 0) {
+      my_printf("decoded data = '%s'\n", ser_in);
+      my_printf("decoded length = %d\n", result);
+   }
+   else {
+      my_printf("decoding base64 failed\n");
    }
 #endif
    return result;
@@ -107,17 +125,22 @@ int rpc_recv(int handle, char *ser_in, int max) {
 //             Note that the data must be base64 encoded. 
 // Returns size of enccoded data if ok, or -1 if buffer not large enough
 int rpc_reply(int handle, int len_out, char *ser_out, int max) {
-   char recv_data[REMOTE_MAX + 1];
    int recv_size = 0;
    int result;
    int len = 0;
    char encoded[REMOTE_MAX + 1]; // temp space for base64 data 
-  
+ 
+#if DEBUG_INFO
+   my_printf("rpc_reply:\n");
+   my_printf("raw data = %s\n", ser_out);
+   my_printf("raw length = %d\n", len_out);
+#endif
    // encode ser_out data into encoded
    if ((len = encode_buff(ser_out, len_out, encoded, max, 0)) >= 0) {
       encoded[len] = '\0'; // zero terminate base64 data
 #if DEBUG_INFO
-      t_printf("encoded data = '%s'\n", encoded);
+      my_printf("base64 data = '%s'\n", encoded);
+      my_printf("base64 length = %d\n", len);
 #endif
       if (wifi_SEND_DATA(handle, 200, len, encoded) != wifi_Success) {
          len = -1;
@@ -135,32 +158,47 @@ int rpc_call(char *ip, char *name,
    int rhandle;
    int result;
    int value;
-   char encoded[REMOTE_MAX + 1]; // temp space for base64 data 
-   char send_data[REMOTE_MAX + 1];
+   char encoded[REMOTE_MAX]; // temp space for base64 data 
+   char send_data[REMOTE_MAX + PATH_MAX + 64 + 1]; // allow for http header
    int sent;
    int len;
-   int chunk_len;
    int send_len;
-   char recv_data[REMOTE_MAX + 1];
-   int recv_size = 0;
+   char recv_data[REMOTE_MAX + PATH_MAX + 64 + 1]; // allow for http header
+   int recv_size;
+   int body_size;
    char *body;
+   char *cont;
+   int cont_len;
+   int poll_retries;
+   int data_retries;
    char event;
    int i;
 
    // encode ser_in data into encoded
+#if DEBUG_INFO
+   my_printf("rpc_call:\n");
+   my_printf("raw data = %s\n", ser_in);
+   my_printf("raw length = %d\n", len_in);
+   my_printf("data:\n");
+   for (i = 0; i < len_in; i++) {
+     my_printf("[%2X] ", ser_in[i]);
+   }
+   my_printf("\n");
+#endif
    if ((len = encode_buff(ser_in, len_in, encoded, REMOTE_MAX, 0)) >= 0) {
       encoded[len] = '\0';
 #if DEBUG_INFO
-      t_printf("base64 data = %s\n", encoded);
+      my_printf("base64 data = %s\n", encoded);
+      my_printf("base64 length = %d\n", len);
 #endif
       // TCP connect - must use port 80 ...
 #if DEBUG_INFO
-         t_printf("WiFi CONNECT to %s\n", ip);
+         my_printf("WiFi CONNECT to %s\n", ip);
 #endif         
       result = wifi_CONNECT(ip, 80, &handle);
       if (result == wifi_Success) {
 #if DEBUG_INFO
-         t_printf("connected ok, handle = %d\n", handle);
+         my_printf("connected ok, handle = %d\n", handle);
 #endif         
          // send POST ... 
          send_len = isprintf(send_data,
@@ -171,80 +209,141 @@ int rpc_call(char *ip, char *name,
                              "%s",
                              name, ip, len, encoded);
 #if DEBUG_INFO
-         t_printf("RPC request = '%s'\n", send_data);
+         my_printf("RPC request = '%s'\n", send_data);
 #endif         
          result = wifi_SEND(handle, strlen(send_data), send_data);
          if (result != wifi_Success) {
-            t_printf("wifi SEND failed, result = %d\n", result);
+#if DEBUG_INFO
+            my_printf("wifi SEND failed, result = %d\n", result);
+#endif
+            return -1;
          }
-         // poll for response - abandon if we get an 'X' (DISCONNECT) 
-         // or after a certain number of retries
          len = 0;
-         for (i = 0; i < REPLY_RETRIES; i++) {
+         // poll for response - abandon if we get an 'X' (DISCONNECT) 
+         // or after a certain number of poll retries
+         for (poll_retries = 0; poll_retries < REPLY_RETRIES; poll_retries++) {
             event = 'N';
             if ((wifi_POLL(1<<handle, &event, &rhandle, &value)) == wifi_Success) {
                if (event == 'D') {
 #if DEBUG_INFO
-                  t_printf("DATA: %d %d\n", rhandle, value);
+                  my_printf("DATA: %d %d\n", rhandle, value);
 #endif
-                  do {
+                  cont_len = 0;
+                  data_retries = 0;
+                  while (1) {
+                     recv_size = 0;
                      result = wifi_RECV(rhandle, REMOTE_MAX, recv_data, &recv_size); 
-                     if (result == wifi_Success) {
+                     if ((result == wifi_Success) &&  (cont_len == 0) &&  (recv_size > 0)) {
+#if DEBUG_INFO
+                        recv_data[recv_size]='\0';
+                        my_printf("data:\n'%s'\n", recv_data);
+#endif
+                        // must be first reply - decode the header
+                        // first, check the response code
+                        if ((isscanf(recv_data, "HTTP/1.1 %d OK", &result) != 1)
+                        ||  (result != 200)) {
+#if DEBUG_INFO
+                           my_printf("Response Code error = '%s'\n", recv_data);
+#endif
+                           len = 0;
+                           break;
+                        }
+                        // then extract the content length
+                        if (((cont = strstr(recv_data, "Content-Length: ")) == NULL)
+                        ||  (isscanf(cont, "Content-Length: %d", &cont_len) != 1)) {
+#if DEBUG_INFO
+                           my_printf("Content Length error = '%s'\n", cont);
+#endif
+                           len = 0;
+                           break;
+                        }
+                        // then find the start of the base64 data (past the header)
+                        if ((body = strstr(recv_data, "\r\n\r\n")) == NULL) {
+#if DEBUG_INFO
+                           my_printf("Body error, '%s'\n", body);
+#endif
+                           len = 0;
+                           break;
+                        }
+                        body += 4; // skip "\r\n\r\n");
+                        body_size = recv_size - (body - recv_data);
+                        // add body to encoded data
+                        memcpy(&encoded[len], body, body_size);
+                        len = body_size;
+                        // zero terminate received data
+                        encoded[len] = 0;
+#if DEBUG_INFO
+                        my_printf("cont len = %d\n", cont_len);
+                        my_printf("len now  = %d\n", len);
+                        my_printf("data now = '%s'\n", encoded);
+#endif
+                     }
+                     else if ((result == wifi_Success) && (cont_len > 0) && (recv_size > 0)) {
+#if DEBUG_INFO
+                        recv_data[recv_size]='\0';
+                        my_printf("data:\n'%s'\n", recv_data);
+#endif
+                        // add body to encoded data
                         memcpy(&encoded[len], recv_data, recv_size);
                         len += recv_size;
+                        // zero terminate received data
+                        encoded[len] = 0;
+#if DEBUG_INFO
+                        my_printf("len now  = %d\n", len);
+                        my_printf("data now = '%s'\n", encoded);
+#endif
                      }
                      else {
-                        t_printf("WiFi RECV failed, error = %d\n", result);
-                        recv_size = 0;
+                        data_retries++;
+                        if (data_retries > REPLY_RETRIES) {
+#if DEBUG_INFO
+                           my_printf("WiFi RECV failed, error = %d\n", result);
+#endif
+                           len = 0;
+                           break;
+                        }
+                        else {
+#if DEBUG_INFO
+                           my_printf("WiFi RECV failed, error = %d - WILL RETRY\n", result);
+#endif
+                           _waitms(RETRY_INTERVAL);
+                        }
                      }
-                  } while (recv_size > 0);
-                  // zero terminate received data
-                  encoded[len] = 0;
+                     if (len == cont_len) {
+                        // we got all the data we expected
+                        break;
+                     }
+                  }
                   // close the handle
                   if ((result = wifi_CLOSE(rhandle)) != wifi_Success) {
-                     t_printf("failed to close handle %d\n", rhandle);
+#if DEBUG_INFO
+                     my_printf("failed to close handle %d\n", rhandle);
+#endif                  
                   }
-                  // find the actual base64 body (past the headers!)
-                  if ((body = strstr(encoded, "\r\n\r\n")) != NULL) {
-                     *body = '\0'; // zero terminate http header
-                     // check the response code in the header (not encoded!)
-                     if ((isscanf(encoded, "HTTP/1.1 %d OK", &result) != 1)
-                     ||  (result != 200)) {
-#if DEBUG_INFO
-                        t_printf("RPC header error = '%s'\n", encoded);
-#endif                        
-                        return -1;
-                     }
-                     body += 4; // skip "\r\n\r\n");
-                     len = len - (body - encoded);
-#if DEBUG_INFO
-                     t_printf("encoded data = '%s'\n", body);
-                     t_printf("encoded length = %d\n", len);
-#endif                     
+                  if (len >= 0) {
                      // decode base64 data into ser_out
-                     len = decode_buff(body, len, ser_out, len_out);
+                     len = decode_buff(encoded, len, ser_out, len_out);
                      if (len >= 0) {
                         ser_out[len] = '\0';
                      }
-                     return len; // success!
-                  }
-                  else {
 #if DEBUG_INFO
-                     t_printf("no body in RPC response\n");
-#endif
-                     return -1;
+                     my_printf("raw data = '%s'\n", ser_out);
+                     my_printf("raw length = %d\n", len);
+#endif                     
+                     return len; // success
                   }
                }
                else if (event == 'X') {
 #if DEBUG_INFO
-                  t_printf("DISCONNECT: %d %d\n", rhandle, value);
+                  my_printf("DISCONNECT: %d %d\n", rhandle, value);
 #endif                  
                   // don't wait any longer
+                  len = 0;
                   break;
                }
 #if DEBUG_INFO
                else {
-                  t_printf("EVENT '%c': %d %d\n", event, rhandle, value);
+                  my_printf("EVENT '%c': %d %d\n", event, rhandle, value);
                }
 #endif                  
             }
@@ -253,19 +352,19 @@ int rpc_call(char *ip, char *name,
          result = wifi_CLOSE(handle);
 #if DEBUG_INFO
          if (result != wifi_Success) {
-            t_printf("failed to close RPC handle %d\n", handle);
+            my_printf("failed to close RPC handle %d\n", handle);
          }
 #endif
       }
 #if DEBUG_INFO
       else {
-         t_printf("WiFi CONNECT failed, result = %d\n", result);
+         my_printf("WiFi CONNECT failed, result = %d\n", result);
       }
 #endif
    }
 #if DEBUG_INFO
    else {
-      t_printf("encode failed, result = %d\n", len);
+      my_printf("encode failed, result = %d\n", len);
    }
 #endif
    return -1;
@@ -300,7 +399,7 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
          lua_getglobal(L, bg);
          result = lua_pcall(L, 0, 0, 0);
          if (result != LUA_OK) {
-            t_printf("error %s running bg task '%s'\n", 
+            my_printf("error %s running bg task '%s'\n", 
                 lua_tostring(L, -1), bg);
          }
       }
@@ -314,10 +413,10 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
       port = -1;
       for (i = 0; i < PORTS; i++) {
         if (port_in_use[i]) {
-           //t_printf("%d ", port);
+           //my_printf("%d ", port);
            if (s_rxcount(i) > 0) {
               port = i;
-              //t_printf("message on port %d\n", port);
+              //my_printf("message on port %d\n", port);
               break; // we have a message
            }
         }
@@ -351,7 +450,7 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
       const char *str;
       int i;
 #if DEBUG_INFO
-      t_printf("ALOHA call\n");
+      my_printf("ALOHA call\n");
 #endif
       res = aloha_rx(port, &int_id, &sq, &len_in, ser_in, REMOTE_MAX, ms);
       if (res == 0) {
@@ -368,18 +467,18 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                   lua_pushlstring(L, ser_in, len_in);
                   result = lua_pcall(L, 1, 1, 0);
                   if (result != LUA_OK) {
-                     t_printf("error '%s' running function '%s'\n", 
+                     my_printf("error '%s' running function '%s'\n", 
                             lua_tostring(L, -1), 
                             list[int_id].name);
                   }
                   // result is a Lua string (may contain embedded zeroes)
                   str = lua_tolstring(L, -1, &len_out);
                   if (str == NULL) {
-                     t_printf("function '%s' should return a string\n",
+                     my_printf("function '%s' should return a string\n",
                      list[int_id-1].name);
                   }
                   else if (len_out >= REMOTE_MAX) {
-                     t_printf("function '%s' returned too long a string\n",
+                     my_printf("function '%s' returned too long a string\n",
                      list[int_id-1].name);
                   }
                   else {
@@ -393,22 +492,22 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                }
                else {
                   // function is not a serial or remote service
-                  t_printf("function '%s' cannot be called remotely\n",
+                  my_printf("function '%s' cannot be called remotely\n",
                   list[int_id-1].name);
                }
             }
             else {
                // no function with that id
-               t_printf("no function with id %d for remote call\n", int_id);
+               my_printf("no function with id %d for remote call\n", int_id);
             }
          }
          else {
             // zero is an invalid id
-            t_printf("attempt to call service 0 in remote call\n");
+            my_printf("attempt to call service 0 in remote call\n");
          }
       }
       else {
-         //t_printf("result %d receiving remote call\n", res);
+         //my_printf("result %d receiving remote call\n", res);
       }
 #endif
    }
@@ -419,19 +518,19 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
       int res;
       int len_in;
       unsigned int len_out;
-      char path[REMOTE_MAX+1];
+      char path[PATH_MAX+1];
       char ser_in[REMOTE_MAX+1];
       char ser_out[REMOTE_MAX+1];
       const char *str;
       int i;
 
 #if DEBUG_INFO
-      t_printf("RPC call\n");
+      my_printf("RPC call\n");
 #endif      
       if ((wifi_PATH(handle, path) == wifi_Success) && (strlen(path) > 5)) {
          int id;
 #if DEBUG_INFO
-         t_printf("POST: %d %d to %s\n", handle, value, path);
+         my_printf("POST: %d %d to %s\n", handle, value, path);
 #endif      
          i = 0;
          // find id by comparing names with path (AFTER initial "/rpc/")
@@ -454,18 +553,18 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                   lua_pushlstring(L, ser_in, len_in);
                   result = lua_pcall(L, 1, 1, 0);
                   if (result != LUA_OK) {
-                     t_printf("error '%s' running function '%s'\n", 
+                     my_printf("error '%s' running function '%s'\n", 
                             lua_tostring(L, -1), 
                             list[i].name);
                   }
                   // result is a Lua string (may contain embedded zeroes)
                   str = lua_tolstring(L, -1, &len_out);
                   if (str == NULL) {
-                     t_printf("function '%s' should return a string\n",
+                     my_printf("function '%s' should return a string\n",
                      list[i].name);
                   }
                   else if (len_out >= REMOTE_MAX) {
-                     t_printf("function '%s' returned too long a string\n",
+                     my_printf("function '%s' returned too long a string\n",
                      list[i].name);
                   }
                   else {
@@ -477,26 +576,26 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                   // return result to the port we got request from
                   res = rpc_reply(handle, len_out, ser_out, REMOTE_MAX);
                   if (res <= 0) {
-                     t_printf("result %d sending RPC data\n", res);
+                     my_printf("result %d sending RPC data\n", res);
                   }
                }
                else {
                   // function is not an RPC service
-                  t_printf("function '%s' cannot be called remotely\n",
+                  my_printf("function '%s' cannot be called remotely\n",
                   list[i].name);
                }
             }
             else {
-               t_printf("failed to receive RPC data, result = %d\n", res);
+               my_printf("failed to receive RPC data, result = %d\n", res);
             }
          }
          else {
             // could not find path
-            t_printf("RPC path '%s' unknown\n", path);
+            my_printf("RPC path '%s' unknown\n", path);
          }
       }
       else {
-         t_printf("failed to retrieve RPC path\n");
+         my_printf("failed to retrieve RPC path\n");
       }
    }
 #endif 
@@ -504,7 +603,7 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
    else if (req > 0) {
       // a registry request has arrived
 #if DEBUG_INFO
-      t_printf("registry call\n");
+      my_printf("registry call\n");
 #endif
       // get the internal id and parameter
       int_id = req>>24;      // internal id is upper 8 bits
@@ -516,7 +615,7 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
          case SHORT_SVC :
             {
 #if DEBUG_INFO
-               t_printf("short svc\n");
+               my_printf("short svc\n");
 #endif               
                // parameter is lower 24 bits
                param  = req&0xFFFFFF; 
@@ -525,14 +624,14 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                lua_pushinteger(L, param);
                result = lua_pcall(L, 1, 1, 0);
                if (result != LUA_OK) {
-                  t_printf("error '%s' running function '%s'\n", 
+                  my_printf("error '%s' running function '%s'\n", 
                          lua_tostring(L, -1), 
                          list[int_id-1].name);
                }
                // retrieve result
                result = lua_tointegerx(L, -1, &isnum);
                if (!isnum) {
-                  t_printf("function '%s' should return a number\n",
+                  my_printf("function '%s' should return a number\n",
                   list[int_id-1].name);
                }
                // pop returned value
@@ -544,7 +643,7 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
          case LONG_SVC :
             {
 #if DEBUG_INFO
-               t_printf("long svc\n");
+               my_printf("long svc\n");
 #endif               
                // param is 32 bit long pointed to by lower 24 bits
                param  = *(long *)(req&0xFFFFFF); 
@@ -553,14 +652,14 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                lua_pushinteger(L, param);
                result = lua_pcall(L, 1, 1, 0);
                if (result != LUA_OK) {
-                  t_printf("error '%s' running function '%s'\n", 
+                  my_printf("error '%s' running function '%s'\n", 
                          lua_tostring(L, -1), 
                          list[int_id-1].name);
                }
                // retrieve result
                result = lua_tointegerx(L, -1, &isnum);
                if (!isnum) {
-                  t_printf("function '%s' should return a number\n",
+                  my_printf("function '%s' should return a number\n",
                   list[int_id-1].name);
                }
                // pop returned value
@@ -574,7 +673,7 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                // param is a pointer to a structure with two parameters
                long_param_2_t *tmp = (long_param_2_t *)(req&0xFFFFFF);
 #if DEBUG_INFO
-               t_printf("long 2 svc\n");
+               my_printf("long 2 svc\n");
 #endif               
                // execute function and return result
                lua_getglobal(L, list[int_id-1].name);
@@ -583,14 +682,14 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                lua_pushinteger(L, tmp->par2);
                result = lua_pcall(L, 2, 1, 0);
                if (result != LUA_OK) {
-                  t_printf("error '%s' running function '%s'\n", 
+                  my_printf("error '%s' running function '%s'\n", 
                          lua_tostring(L, -1), 
                          list[int_id-1].name);
                }
                // retrieve result
                result = lua_tointegerx(L, -1, &isnum);
                if (!isnum) {
-                  t_printf("function '%s' should return a number\n",
+                  my_printf("function '%s' should return a number\n",
                   list[int_id-1].name);
                }
                // pop returned value
@@ -605,7 +704,7 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                float_param_2_t *tmp = (float_param_2_t *)(req&0xFFFFFF);
                result_t r;
 #if DEBUG_INFO
-               t_printf("float svc\n");
+               my_printf("float svc\n");
 #endif               
                // execute function and return result
                lua_getglobal(L, list[int_id-1].name);
@@ -614,14 +713,14 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                lua_pushnumber(L, tmp->par2);
                result = lua_pcall(L, 2, 1, 0);
                if (result != LUA_OK) {
-                  t_printf("error '%s' running function '%s'\n", 
+                  my_printf("error '%s' running function '%s'\n", 
                          lua_tostring(L, -1), 
                          list[int_id-1].name);
                }
                // retrieve result
                r.f = lua_tonumberx(L, -1, &isnum);
                if (!isnum) {
-                  t_printf("function '%s' should return a number\n",
+                  my_printf("function '%s' should return a number\n",
                   list[int_id-1].name);
                }
                // pop returned value
@@ -635,7 +734,7 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                // param is a pointer to a structure with two parameters
                float_param_2_t *tmp = (float_param_2_t *)(req&0xFFFFFF);
 #if DEBUG_INFO
-               t_printf("long float svc\n");
+               my_printf("long float svc\n");
 #endif               
                // execute function and return result
                lua_getglobal(L, list[int_id-1].name);
@@ -644,14 +743,14 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                lua_pushnumber(L, tmp->par2);
                result = lua_pcall(L, 2, 1, 0);
                if (result != LUA_OK) {
-                  t_printf("error '%s' running function '%s'\n", 
+                  my_printf("error '%s' running function '%s'\n", 
                          lua_tostring(L, -1), 
                          list[int_id-1].name);
                }
                // retrieve result
                result = lua_tointegerx(L, -1, &isnum);
                if (!isnum) {
-                  t_printf("function '%s' should return a number\n",
+                  my_printf("function '%s' should return a number\n",
                   list[int_id-1].name);
                }
                // pop returned value
@@ -663,7 +762,7 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
          case SHARED_SVC :
             {
 #if DEBUG_INFO
-               t_printf("shared svc\n");
+               my_printf("shared svc\n");
 #endif               
                // parameter is lower 24 bits, and represents a shared
                // data structure, so it is passed to Lua as lightuserdata
@@ -674,14 +773,14 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                lua_pushlightuserdata(L, (void *)param);
                result = lua_pcall(L, 1, 1, 0);
                if (result != LUA_OK) {
-                  t_printf("error '%s' running function '%s'\n", 
+                  my_printf("error '%s' running function '%s'\n", 
                          lua_tostring(L, -1), 
                          list[int_id-1].name);
                }
                // retrieve result
                result = lua_tointegerx(L, -1, &isnum);
                if (!isnum) {
-                  t_printf("function '%s' should return a number\n",
+                  my_printf("function '%s' should return a number\n",
                   list[int_id-1].name);
                }
                // pop returned value
@@ -698,20 +797,20 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                char not_a_number[] = {203,255,255,255,127}; // serialized nan 
 
 #if DEBUG_INFO
-               t_printf("serial svc\n");
+               my_printf("serial svc\n");
 #endif               
                // param is serial_t * pointed to by lower 24 bits
                serial  = (serial_t *)(*(long *)(req&0xFFFFFF));
                // execute function and return result
 #if DEBUG_INFO
-               t_printf("calling name '%s'\n", list[int_id-1].name);
+               my_printf("calling name '%s'\n", list[int_id-1].name);
 #endif               
                lua_getglobal(L, list[int_id-1].name);
                // parameter is a Lua string (may contain embedded zeroes)
                lua_pushlstring(L, serial->ser_in, serial->len_in);
                result = lua_pcall(L, 1, 1, 0);
                if (result != LUA_OK) {
-                  t_printf("error '%s' running function '%s'\n", 
+                  my_printf("error '%s' running function '%s'\n", 
                          lua_tostring(L, -1), 
                          list[int_id-1].name);
                   // return a 'serialized' nan
@@ -722,11 +821,11 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                   // result is a Lua string (may contain embedded zeroes)
                   out = lua_tolstring(L, -1, &len);
                   if (out == NULL) {
-                     t_printf("function '%s' should return a string\n",
+                     my_printf("function '%s' should return a string\n",
                      list[int_id-1].name);
                   }
                   else if (len >= serial->max_out) {
-                     t_printf("function '%s' returned too long a string\n",
+                     my_printf("function '%s' returned too long a string\n",
                      list[int_id-1].name);
                   }
                   else {
@@ -753,45 +852,45 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                char not_a_number[] = {203,255,255,255,127}; // serialized nan 
 
 #if DEBUG_INFO
-               t_printf("remote svc\n");
+               my_printf("remote svc\n");
 #endif               
-               //t_printf("calling remote service on port %d\n", svc_port);
+               //my_printf("calling remote service on port %d\n", svc_port);
                // param is serial_t * pointed to by lower 24 bits
                s  = (serial_t *)(*(long *)(req&0xFFFFFF));
-               //t_printf("serial in len = %d\n", s->len_in);
+               //my_printf("serial in len = %d\n", s->len_in);
                max = s->max_out;
-               //t_printf("max out len = %d\n", max);
+               //my_printf("max out len = %d\n", max);
                // execute remote function and return result
                aloha_tx(svc_port, int_id, sq, s->len_in, s->ser_in);
                res = aloha_rx(svc_port, &id, &sq, &len, s->ser_out, max, ms);
                if (res == 0) {
                   // success
                   s->len_out = len;
-                  //t_printf("serial out len = %d\n", s->len_out);
+                  //my_printf("serial out len = %d\n", s->len_out);
                }
                else {
                   switch (res) {
                   case -1:
                     {
-                       t_printf("function '%s' timed out\n",
+                       my_printf("function '%s' timed out\n",
                           list[int_id-1].name);
                     }
                     break;
                   case -2:
                     {
-                       t_printf("function '%s' returned too much data\n",
+                       my_printf("function '%s' returned too much data\n",
                           list[int_id-1].name);
                     }
                     break;
                   case -3:
                     {
-                       t_printf("function '%s' checksum error\n",
+                       my_printf("function '%s' checksum error\n",
                           list[int_id-1].name);
                     }
                     break;
                   default: 
                     {
-                       t_printf("function '%s' returned error %d\n",
+                       my_printf("function '%s' returned error %d\n",
                           list[int_id-1].name, res);
                     }
                     break;
@@ -819,14 +918,14 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                char not_a_number[] = {203,255,255,255,127}; // serialized nan 
 
 #if DEBUG_INFO
-               t_printf("calling RPC service at http://%s/rpc/%s\n", 
+               my_printf("calling RPC service at http://%s/rpc/%s\n", 
                    list[int_id-1].svc_ip, list[int_id-1].name);
 #endif      
                // param is serial_t * pointed to by lower 24 bits
                s  = (serial_t *)(*(long *)(req&0xFFFFFF));
-               //t_printf("serial in len = %d\n", s->len_in);
+               //my_printf("serial in len = %d\n", s->len_in);
                max = s->max_out;
-               //t_printf("max out len = %d\n", max);
+               //my_printf("max out len = %d\n", max);
                // execute RPC function and return result
                res = rpc_call(list[int_id-1].svc_ip, list[int_id-1].name, 
                               s->len_in, s->ser_in, 
@@ -834,31 +933,31 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
                if (res >= 0) {
                   // success
                   s->len_out = res;
-                  //t_printf("serial out len = %d\n", s->len_out);
+                  //my_printf("serial out len = %d\n", s->len_out);
                }
                else {
                   switch (res) {
                   case -1:
                     {
-                       t_printf("function '%s' invalid response\n",
+                       my_printf("function '%s' invalid response\n",
                           list[int_id-1].name);
                     }
                     break;
                   case -2:
                     {
-                       t_printf("function '%s' returned too much data\n",
+                       my_printf("function '%s' returned too much data\n",
                           list[int_id-1].name);
                     }
                     break;
                   case -3:
                     {
-                       t_printf("function '%s' checksum error\n",
+                       my_printf("function '%s' checksum error\n",
                           list[int_id-1].name);
                     }
                     break;
                   default: 
                     {
-                       t_printf("function '%s' returned error %d\n",
+                       my_printf("function '%s' returned error %d\n",
                           list[int_id-1].name, res);
                     }
                     break;
@@ -875,7 +974,7 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
 
          default:
 #if DEBUG_INFO
-               t_printf("unknown svc\n");
+               my_printf("unknown svc\n");
 #endif               
             break;
       }
@@ -890,7 +989,7 @@ int add_services(lua_State *L, svc_list_t services, char *name,
                  int port, int svc_type, int max) {
    int num = 0;
 #if DEBUG_INFO
-   t_printf("loading %s table\n", name);
+   my_printf("loading %s table\n", name);
 #endif   
    lua_settop(L, 0);
    // push the table onto the stack
@@ -903,7 +1002,7 @@ int add_services(lua_State *L, svc_list_t services, char *name,
       while ((num < max) && (lua_next(L, 1) != 0)) {
          /* uses 'key' (at index -2) and 'value' (at index -1) */
          if (lua_isinteger(L, -2) && lua_isstring(L, -1)) {
-            //t_printf("add %d, id=%d, name='%s', type=%d\n", 
+            //my_printf("add %d, id=%d, name='%s', type=%d\n", 
             //  num, lua_tointeger(L, -2), lua_tostring(L, -1), svc_type);
             services[num].name     = strdup(lua_tostring(L, -1));
             services[num].addr     = NULL;
@@ -913,7 +1012,7 @@ int add_services(lua_State *L, svc_list_t services, char *name,
             num++;
          }
          else {
-            t_printf("%s table entry %d is invalid\n", name, num+1);
+            my_printf("%s table entry %d is invalid\n", name, num+1);
          }
          /* removes 'value'; keeps 'key' for next iteration */
          lua_pop(L, 1);
@@ -927,7 +1026,7 @@ int add_services(lua_State *L, svc_list_t services, char *name,
    services[num].svc_type = 0;
    services[num].svc_id   = 0;
    services[num].svc_port = 0;
-   //t_printf("total of %d services\n", num);
+   //my_printf("total of %d services\n", num);
    return num;
 }
 
@@ -942,7 +1041,7 @@ int mod_ports(lua_State *L, svc_list_t services, char *name,
    int i;
 
 #if DEBUG_INFO
-   t_printf("loading %s table\n", name);
+   my_printf("loading %s table\n", name);
 #endif   
    lua_settop(L, 0);
    // push the table onto the stack
@@ -963,7 +1062,7 @@ int mod_ports(lua_State *L, svc_list_t services, char *name,
                   break;
                }
                if (services[i].svc_id == id) {
-                  //t_printf("mod svc_id=%d' to type=%d, port=%d\n", 
+                  //my_printf("mod svc_id=%d' to type=%d, port=%d\n", 
                   //         lua_tointeger(L, -2), svc_type, port);
                   services[i].svc_port = port;
                   services[i].svc_type = svc_type;
@@ -971,11 +1070,11 @@ int mod_ports(lua_State *L, svc_list_t services, char *name,
                }
             }
             if (i == max) {
-               t_printf("%s table entry %d not found\n", name, n+1);
+               my_printf("%s table entry %d not found\n", name, n+1);
             }
          }
          else {
-            t_printf("%s table entry %d is invalid\n", name, n+1);
+            my_printf("%s table entry %d is invalid\n", name, n+1);
          }
          /* removes 'value'; keeps 'key' for next iteration */
          lua_pop(L, 1);
@@ -987,7 +1086,7 @@ int mod_ports(lua_State *L, svc_list_t services, char *name,
    }
 #if DEBUG_INFO   
    else {
-     t_printf("'%s' not found, or is not a table\n", name);
+     my_printf("'%s' not found, or is not a table\n", name);
    }
 #endif
    // indicate no such table
@@ -1007,7 +1106,7 @@ int mod_handles(lua_State *L, svc_list_t services, char *name,
    int id;
    int i;
    char my_name[32];
-   char path[256];
+   char path[PATH_MAX];
    const char *ssid = NULL;
    const char *pass = NULL;
    const char *ip = NULL;
@@ -1017,7 +1116,7 @@ int mod_handles(lua_State *L, svc_list_t services, char *name,
    int listening;
 
 #if DEBUG_INFO
-   t_printf("loading %s table\n", name);
+   my_printf("loading %s table\n", name);
 #endif
    lua_settop(L, 0);
    // push the table onto the stack
@@ -1026,7 +1125,7 @@ int mod_handles(lua_State *L, svc_list_t services, char *name,
    if (lua_istable(L, 1)) {
       // if the table exists at all, initialize the WiFi module
       if (wifi_AUTO() != wifi_Success) {
-         t_printf("WiFi initialization failed\n");
+         my_printf("WiFi initialization failed\n");
          return -1;
       }
       // get the SSID and PASSPHRASE from the table (if they exist)
@@ -1046,51 +1145,51 @@ int mod_handles(lua_State *L, svc_list_t services, char *name,
       }
 #if WIFI_INFO
       if ((ssid == NULL) || (strlen(ssid) == 0)) {
-         t_printf("No SSID in table '%s'\n", name);
+         my_printf("No SSID in table '%s'\n", name);
       }
       else {
-         t_printf("WiFi SSID = '%s'\n", ssid);
+         my_printf("WiFi SSID = '%s'\n", ssid);
       }
 #endif
       // get our own module name
       if (wifi_CHECK("module-name", my_name) == wifi_Success) {
 #if WIFI_INFO
-         t_printf("WiFi module name = '%s'\n", my_name);
+         my_printf("WiFi module name = '%s'\n", my_name);
 #endif
       }
       else {
-         t_printf("WiFi cannot get module name\n");
+         my_printf("WiFi cannot get module name\n");
          return -1;
       }
       if ((ssid == NULL) || (strlen(ssid) == 0)) {
          // use our module name as SSID
          ssid = my_name;
 #if WIFI_INFO
-         t_printf("Clients can JOIN SSID '%s'\n", ssid);
+         my_printf("Clients can JOIN SSID '%s'\n", ssid);
 #endif
       }
       // put WiFi in AP mode (forces the module off any current network)
       result = wifi_SET("wifi-mode", "AP");
       if (result != wifi_Success) {
-         t_printf("WiFi SET failed\n");
+         my_printf("WiFi SET failed\n");
       }
       // now go back to STA+AP mode
       result = wifi_SET("wifi-mode", "STA+AP");
       if (result != wifi_Success) {
-         t_printf("WiFi SET failed\n");
+         my_printf("WiFi SET failed\n");
       }
       // if the SSID is not our own module name
       // then JOIN the specified network.
       if ((ssid != NULL) && (strcmp(ssid, my_name) != 0)) {
 #if WIFI_INFO
-         t_printf("WiFi JOIN '%s'\n", ssid);
+         my_printf("WiFi JOIN '%s'\n", ssid);
 #endif
          if (wifi_JOIN((char *)ssid, (char *)pass) != wifi_Success) {
-            t_printf("WiFi JOIN %d failed\n", ssid);
+            my_printf("WiFi JOIN %d failed\n", ssid);
             return -1;
          }
 #if DEBUG_INFO
-         t_printf("WiFi JOIN ok\n", ssid);
+         my_printf("WiFi JOIN ok\n", ssid);
 #endif
 
          retries = 0;
@@ -1100,23 +1199,23 @@ int mod_handles(lua_State *L, svc_list_t services, char *name,
                   break;
                }
 #if DEBUG_INFO
-               t_printf("WiFi IP address = '%s'\n", my_ip);
+               my_printf("WiFi IP address = '%s'\n", my_ip);
 #endif
             }
             else {
-               t_printf("WiFi failed to read IP address\n");
+               my_printf("WiFi failed to read IP address\n");
                return -1;
             }
             _waitsec(IP_RETRY_SECS);
             retries++;
          }
          if (strcmp(my_ip, "0.0.0.0") == 0) {
-             t_printf("WiFi failed to get a valid IP address\n");
+             my_printf("WiFi failed to get a valid IP address\n");
              return -1;
          }
       }
 #if WIFI_INFO
-      t_printf("WiFi IP address = '%s'\n", my_ip);
+      my_printf("WiFi IP address = '%s'\n", my_ip);
 #endif
       listening = 0;
       // iterate across the table, up to max-1 entries
@@ -1149,18 +1248,18 @@ int mod_handles(lua_State *L, svc_list_t services, char *name,
                         if (result == wifi_Success) {
                            listening = 1;
 #if DEBUG_INFO
-                           t_printf("WiFi LISTEN, path = '/rpc/*', handle = %d\n",
+                           my_printf("WiFi LISTEN, path = '/rpc/*', handle = %d\n",
                                     handle);
 #endif                        
                         }
                         else {
-                           t_printf("WiFi LISTEN failed\n");
+                           my_printf("WiFi LISTEN failed\n");
                            // what to do? 
                         }
                      }
                      services[i].svc_handle = handle;
 #if DEBUG_INFO
-                     t_printf("mod svc_id=%d' to type=%d, handle=%d\n", 
+                     my_printf("mod svc_id=%d' to type=%d, handle=%d\n", 
                               lua_tointeger(L, -2), svc_type, handle);
 #endif
                   }
@@ -1169,7 +1268,7 @@ int mod_handles(lua_State *L, svc_list_t services, char *name,
                      services[i].svc_ip = strdup(ip);
                      services[i].svc_type = svc_type;
 #if DEBUG_INFO
-                     t_printf("mod svc_id=%d' to type=%d\n", 
+                     my_printf("mod svc_id=%d' to type=%d\n", 
                               lua_tointeger(L, -2), svc_type);
 #endif
                   }
@@ -1177,7 +1276,7 @@ int mod_handles(lua_State *L, svc_list_t services, char *name,
                }
             }
             if (i == max) {
-               t_printf("%s table entry %d not found\n", name, n+1);
+               my_printf("%s table entry %d not found\n", name, n+1);
             }
          }
          /* removes 'value'; keeps 'key' for next iteration */
@@ -1190,7 +1289,7 @@ int mod_handles(lua_State *L, svc_list_t services, char *name,
    }
 #if DEBUG_INFO   
    else {
-     t_printf("'%s' not found, or is not a table\n", name);
+     my_printf("'%s' not found, or is not a table\n", name);
    }
 #endif
    return 0;

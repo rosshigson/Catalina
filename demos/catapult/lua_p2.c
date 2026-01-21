@@ -46,7 +46,7 @@ typedef struct shared_data {
  * The secondary function - executes multithreaded C                          *
  *                                                                            *
  ******************************************************************************/
-#pragma catapult secondary hub_function(shared_data_t) mode(NMM) address(0x76468) stack(8000) options(-lci -lthreads -C NO_FLOAT)
+#pragma catapult secondary hub_function(shared_data_t) mode(NMM) address(0x7645C) stack(8000) options(-lci -lthreads -C NO_FLOAT)
 
 /*
  * include Catalina multi-threading:

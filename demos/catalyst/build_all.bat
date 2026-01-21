@@ -121,7 +121,7 @@ call build_all %1 %2 %3 %4 %5 %6 %7 %8 %9
 call copy_all "..\image\"
 cd ..
 
-cd lua-5.4.4
+cd lua-5.4.8
 call build_all %1 %2 %3 %4 %5 %6 %7 %8 %9
 call copy_all "..\image\"
 cd ..

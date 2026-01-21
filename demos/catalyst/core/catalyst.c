@@ -1465,7 +1465,7 @@ void main() {
                file_mode = 0;
             }
          }
-         else if ((fileext == 0 && filelen <= 8)) {
+         else if (fileext == 0) {
             if (TryExtension(&vi, &li, BIN_EXT) == 0) {
                loaded = 1;
                file_mode = 0;

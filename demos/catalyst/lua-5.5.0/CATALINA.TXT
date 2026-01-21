@@ -1,0 +1,37 @@
+Modified Lua files:
+
+Makefile
+luaconf.h
+-- linit.c (NO LONGER MODIFIED - instead, lua.c and luax.c are modified)
+-- lualib.h (NO LONGER MODIFIED - instead, lua.c and luax.c are modified)
+lua.c
+luac.c
+
+CATALINA-specific files:
+
+Makefile.Catalina
+Makefile.Catalina.mgw
+cfgets.c
+-- luax.c (NO LONGER REQUIRED - instead compile lua.c with -D LUA_LUAX)
+lhmi.c
+linenoise.c
+lprop.c
+lserial.c
+lservice.c
+lthreads.h
+lthreads.c
+lthrsch.h
+lthrsch.c
+lwifi.c
+min.c
+storage.h
+storage.c
+
+Catalina PSRAM/HYPER files:
+
+i.e. __CATALINA_ENABLE_PSRAM or __CATALINA_ENABLE_HYPER
+
+lundump.c - TBD
+lfunc.c - TBD
+lvm.c  - TBD
+

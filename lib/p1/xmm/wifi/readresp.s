@@ -13,13 +13,14 @@ C_wifi_R_ead_R_esponse_D_ata ' <symbol:wifi_Read_Response_Data>
  jmp #NEWF
  sub SP, #268
  jmp #PSHM
- long $faa800 ' save registers
+ long $faaa00 ' save registers
  mov r23, r5 ' reg var <- reg arg
  mov r21, r4 ' reg var <- reg arg
  mov r19, r3 ' reg var <- reg arg
  mov r17, r2 ' reg var <- reg arg
  mov r15, #0 ' reg <- coni
  mov r13, #0 ' reg <- coni
+ mov r11, #0 ' reg <- coni
  mov r22, #0 ' reg <- coni
  mov RI, FP
  sub RI, #-(-272)
@@ -81,6 +82,13 @@ C_wifi_R_ead_R_esponse_D_ata_12
  cmps r13,  #3 wz,wc
  jmp #BR_B
  long @C_wifi_R_ead_R_esponse_D_ata_14 ' LTI4
+ mov r22, FP
+ sub r22, #-(-264) ' reg <- addrli
+ adds r22, r13 ' ADDI/P (2)
+ mov r20, #0 ' reg <- coni
+ mov RI, r22
+ mov BC, r20
+ jmp #WBYT ' ASGNU1 reg reg
  mov r2, r21 ' CVI, CVU or LOAD
  mov r3, FP
  sub r3, #-(-268) ' reg ARG ADDRLi
@@ -94,26 +102,23 @@ C_wifi_R_ead_R_esponse_D_ata_12
  jmp #CALA
  long @C_isscanf
  add SP, #12 ' CALL addrg
- mov r13, r0 ' CVI, CVU or LOAD
+ mov r11, r0 ' CVI, CVU or LOAD
  mov r22, FP
  sub r22, #-(-268) ' reg <- addrli
  rdbyte r22, r22 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #83 wz
  jmp #BRNZ
  long @C_wifi_R_ead_R_esponse_D_ata_18 ' NEI4
- cmps r13,  #2 wz
+ cmps r11,  #2 wz
  jmp #BRNZ
  long @C_wifi_R_ead_R_esponse_D_ata_18 ' NEI4
  mov RI, r21
  jmp #RLNG
  mov r22, BC ' reg <- INDIRI4 reg
- jmp #LODL
- long 512
- mov r20, RI ' reg <- con
- cmps r22, r20 wz,wc
+ cmps r22, r19 wz,wc
  jmp #BR_A
  long @C_wifi_R_ead_R_esponse_D_ata_20 ' GTI4
- mov r11, #0 ' reg <- coni
+ mov r9, #0 ' reg <- coni
  jmp #JMPA
  long @C_wifi_R_ead_R_esponse_D_ata_25 ' JUMPV addrg
 C_wifi_R_ead_R_esponse_D_ata_22
@@ -131,22 +136,22 @@ C_wifi_R_ead_R_esponse_D_ata_22
  jmp #JMPA
  long @C_wifi_R_ead_R_esponse_D_ata_1 ' JUMPV addrg
 C_wifi_R_ead_R_esponse_D_ata_26
- mov r22, r11 ' ADDI/P
+ mov r22, r9 ' ADDI/P
  adds r22, r17 ' ADDI/P (3)
  mov r20, r15 ' CVI, CVU or LOAD
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
 ' C_wifi_R_ead_R_esponse_D_ata_23 ' (symbol refcount = 0)
- adds r11, #1 ' ADDI4 coni
+ adds r9, #1 ' ADDI4 coni
 C_wifi_R_ead_R_esponse_D_ata_25
  mov RI, r21
  jmp #RLNG
  mov r22, BC ' reg <- INDIRI4 reg
- cmps r11, r22 wz,wc
+ cmps r9, r22 wz,wc
  jmp #BR_B
  long @C_wifi_R_ead_R_esponse_D_ata_22 ' LTI4
- mov r22, r11 ' ADDI/P
+ mov r22, r9 ' ADDI/P
  adds r22, r17 ' ADDI/P (3)
  mov r20, #0 ' reg <- coni
  mov RI, r22
@@ -166,7 +171,7 @@ C_wifi_R_ead_R_esponse_D_ata_18
  cmps r22,  #69 wz
  jmp #BRNZ
  long @C_wifi_R_ead_R_esponse_D_ata_28 ' NEI4
- cmps r13,  #2 wz
+ cmps r11,  #2 wz
  jmp #BRNZ
  long @C_wifi_R_ead_R_esponse_D_ata_28 ' NEI4
  mov RI, r21
@@ -178,6 +183,9 @@ C_wifi_R_ead_R_esponse_D_ata_18
  mov RI, r23
  jmp #RLNG
  mov r22, BC ' reg <- INDIRI4 reg
+ cmps r22,  #0 wz,wc
+ jmp #BRBE
+ long @C_wifi_R_ead_R_esponse_D_ata_30 ' LEI4
  cmps r22,  #14 wz,wc
  jmp #BR_A
  long @C_wifi_R_ead_R_esponse_D_ata_30 ' GTI4
@@ -187,6 +195,9 @@ C_wifi_R_ead_R_esponse_D_ata_18
  jmp #JMPA
  long @C_wifi_R_ead_R_esponse_D_ata_1 ' JUMPV addrg
 C_wifi_R_ead_R_esponse_D_ata_30
+ mov r0, #16 ' reg <- coni
+ jmp #JMPA
+ long @C_wifi_R_ead_R_esponse_D_ata_1 ' JUMPV addrg
 C_wifi_R_ead_R_esponse_D_ata_28
 C_wifi_R_ead_R_esponse_D_ata_14
  mov r0, #16 ' reg <- coni

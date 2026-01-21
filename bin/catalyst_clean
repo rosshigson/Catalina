@@ -41,7 +41,7 @@ popd
 pushd $TMP_LCCDIR/demos/catalyst/jzip
 clean_all
 popd
-pushd $TMP_LCCDIR/demos/catalyst/lua-5.4.4/src
+pushd $TMP_LCCDIR/demos/catalyst/lua-5.4.8/src
 clean_all
 popd
 pushd $TMP_LCCDIR/demos/catalyst/pascal/p5_c

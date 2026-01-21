@@ -45,7 +45,7 @@ catapult rluax.c
 catapult rlua2.c
 catapult rlua2x.c
 catapult rluafx.c
-catapult sluarfx.c
+catapult sluarcx.c
 
 set CATALINA_DEFINE=
 :done

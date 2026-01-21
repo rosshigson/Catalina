@@ -3,11 +3,11 @@
  * for easier debugging/modification. You can compile programs with this
  * file instead of using -lwifi. For example:
  *
- *    catalina -p2 testwifi.c wifi.c -lserial2 -lci -C NO_HMI
+ *    catalina -p2 testwifi.c wifi.c -lserial2 -D__CATALINA_libserial -lci -C NO_HMI
  *
  * instead of
  *
- *    catalina -p2 testwifi.-lc wifi -lserial2 -lci -C NO_HMI
+ *    catalina -p2 testwifi.c -lwifi -lserial2 -lci -C NO_HMI
  */
 
 #include <prop.h>
@@ -304,6 +304,7 @@ static int wifi_Read_Response_Data(int *code, int *size, int max, char *data) {
    char buff[CMD_MAXSIZE + 1];
    int ch = 0;
    int count = 0;
+   int values = 0;
    int start = 0;
    char result;
    
@@ -334,22 +335,17 @@ static int wifi_Read_Response_Data(int *code, int *size, int max, char *data) {
          // decode response enough so we can get the size of the data
          // on success, or the error code
          if (count >= 3) {
-            count = isscanf(buff, "=%c,%u", &result, size);
-#if WIFI_DEBUG
-            debug_str("got response ");
-            debug_char(result);
-            debug_char(' ');
-            debug_dec(*size);
-            debug_char('\n');
-#endif
-            if ((result == 'S') && (count == 2)) {
+            buff[count] = '\0';
+            values = isscanf(buff, "=%c,%u", &result, size);
+            //printf("got response '%s'. %d, %d, %c, %u\n", buff, values, count, result, *size);
+            if ((result == 'S') && (values == 2)) {
 #if WIFI_DEBUG
                debug_str("size = ");
                debug_dec(*size);
                debug_char('\n');
 #endif
                // valid success response with size
-               if (*size <= wifi_DATA_SIZE) {
+               if (*size <= max) {
                   int i;
                   for (i = 0; i < *size; i++) {
                      ch = timed_rx(CMD_TIMEOUT);
@@ -368,11 +364,15 @@ static int wifi_Read_Response_Data(int *code, int *size, int max, char *data) {
                    return wifi_Err_Unknown;
                }
             }
-            else if ((result == 'E') && (count == 2)) {
+            else if ((result == 'E') && (values == 2)) {
                *code = *size; // size is error code
-               if (*code <= wifi_Err_Internal) {
+               if ((*code > wifi_Success) && (*code <= wifi_Err_Internal)) {
                   // valid error response
                   return *code;
+               }
+               else {
+                  // invalid response
+                  return wifi_Err_Unknown;
                }
             }
          }
@@ -1124,14 +1124,17 @@ int wifi_SEND_DATA(int handle, int rcode, int total, char *data) {
             left = 0;
          }
          result = wifi_SEND(handle, this, &data[sent]);
-#if WIFI_DEBUG > 1         
-         // this should never happen ... 
-         if ((result == wifi_Success) && (code != 0)) {
-            debug_str("incorrect success code = ");
-            debug_dec(code);
-            debug_char('\n');
-         }
+         if (result == wifi_Success) {
+            wifi_Read_Code(&code);
+#if WIFI_DEBUG > 1
+            if (code != 0) {
+               // this should never happen ...
+               debug_str("incorrect success code = ");
+               debug_dec(code);
+               debug_char('\n');
+            }
 #endif
+         }
          sent += this;
       }
    }

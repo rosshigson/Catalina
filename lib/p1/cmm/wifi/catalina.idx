@@ -80,8 +80,8 @@ isprintf poll.s 316 import
 isscanf poll.s 318 import
 strcpy poll.s 320 import
 wifi_Read_Response_Data readresp.s 9 export
-wifi_timed_rx readresp.s 212 import
-isscanf readresp.s 214 import
+wifi_timed_rx readresp.s 223 import
+isscanf readresp.s 225 import
 wifi_RECV recv.s 9 export
 wifi_Read_Response_Data recv.s 73 import
 wifi_Send_Command recv.s 75 import
@@ -98,9 +98,10 @@ wifi_Send_Command_With_Data send.s 73 import
 wifi_init send.s 75 import
 isprintf send.s 77 import
 wifi_SEND_DATA senddata.s 9 export
-wifi_init senddata.s 136 import
-wifi_REPLY senddata.s 138 import
-wifi_SEND senddata.s 140 import
+wifi_Read_Code senddata.s 146 import
+wifi_init senddata.s 148 import
+wifi_REPLY senddata.s 150 import
+wifi_SEND senddata.s 152 import
 wifi_SET set.s 9 export
 wifi_Read_Code set.s 67 import
 wifi_Send_Command set.s 69 import

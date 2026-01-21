@@ -1,7 +1,8 @@
 This folder contains an eLua version of the Game of Life.
 
 If WiFi is to be used, the appropriate WiFi network data must be configured 
-in remote.lua and server.lua. See the document 'Aloha from Lua' for details.
+in the rpc_network table in common.lua. See the document 'Aloha from Lua' 
+for details.
 
 Before execution, the files should be compiled using the following Catalyst 
 command:

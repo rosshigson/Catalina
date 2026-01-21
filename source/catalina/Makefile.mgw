@@ -13,7 +13,7 @@ RM=rm -f
 
 BINDIR="..//..//bin//"
 
-LUADIR=lua-5.4.4
+LUADIR=lua-5.4.8
 
 AWKADIR=awka-0.7.5
 
@@ -37,9 +37,9 @@ catbind$E:	catbind.c
 catalina$E:	catalina.c
 	$(CC) $(CFLAGS) -o $@ catalina.c
 
-payload$E:	payload.c rs232.h rs232.c base64.c fymodem.h fymodem.c kb.h kb.c
+payload$E:	payload.c rs232.h rs232.c base64.c fymodem.h fymodem.c kb.h kb.c $(LUADIR)/src/linit.c
 	make -C $(LUADIR) mingw
-	$(CC) $(CFLAGS) -o $@ payload.c rs232.c base64.c fymodem.c kb.c -lncursesw -L $(LUADIR)\src -llua
+	$(CC) $(CFLAGS) -o $@ payload.c rs232.c base64.c fymodem.c kb.c $(LUADIR)/src/linit.c -lncursesw -L $(LUADIR)\src -llua
 	
 #	$(CC) $(CFLAGS) -o $@ payload.c rs232.c base64.c fymodem.c kb.c -lpdcurses -L $(LUADIR)\src -llua
 
@@ -53,14 +53,14 @@ spinc$E:	spinc.c spinc.h
 bindump$E:	bindump.c 
 	$(CC) $(CFLAGS) -o $@ bindump.c 
 
-y.tab.c y.tab.h: blackbox_y.y
+y.tab.c y.tab.h: blackbox_y.y 
 	bison -y -Wno-conflicts-sr -d blackbox_y.y
 
 blackbox_l.c: blackbox_l.l
 	flex -oblackbox_l.c blackbox_l.l
 
-blackbox$E:	y.tab.c y.tab.h blackbox_l.c blackbox_comms.c rs232.c printf.c
-	$(CC) $(CFLAGS) -o $@ y.tab.c blackbox_l.c blackbox_comms.c rs232.c printf.c -L $(LUADIR)\src -llua
+blackbox$E:	y.tab.c y.tab.h blackbox_l.c blackbox_comms.c rs232.c printf.c $(LUADIR)/src/linit.c
+	$(CC) $(CFLAGS) -o $@ y.tab.c blackbox_l.c blackbox_comms.c rs232.c printf.c $(LUADIR)/src/linit.c -L $(LUADIR)\src -llua
 
 catdbgfilegen$E:	catdbgfilegen.h catdbgutilities.h catdbgfilegen.cpp catdbgutilities.cpp stringconverter.h
 	$(CPP) catdbgfilegen.cpp catdbgutilities.cpp -std=c++0x -o catdbgfilegen

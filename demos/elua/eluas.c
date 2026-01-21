@@ -23,7 +23,7 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma catapult common options(-W-w -p2 -C CONST_ARGS -C SIMPLE -C VT100 -O5 -C MHZ_200 -C CLOCK -lcx -lmc -llua linit.c)
+#pragma catapult common options(-W-w -p2 -C CONST_ARGS -C SIMPLE -C VT100 -O5 -C MHZ_200 -C CLOCK -lcx -lmc -llua linit.c -C LUA_SERVICE)
 
 #include <catapult.h>
 #include <service.h>
@@ -57,7 +57,7 @@ typedef struct shared_data {
  * The client - calls services provided by the server                         *
  *                                                                            *
  ******************************************************************************/
-#pragma catapult secondary client(shared_data_t) address(0x2CA18) mode(CMM) stack(75000)
+#pragma catapult secondary client(shared_data_t) address(0x250EC) mode(CMM) stack(80000)
 
 #include <lua.h>
 #include <lualib.h>
@@ -104,7 +104,7 @@ void client(shared_data_t *s) {
  * functions offered by the server                                            *
  *                                                                            *
  ******************************************************************************/
-#pragma catapult primary server binary(eluas) mode(XMM) options(-C ENABLE_PROPELLER)
+#pragma catapult primary server binary(eluas) mode(XMM) 
 
 #include <lua.h>
 #include <lualib.h>

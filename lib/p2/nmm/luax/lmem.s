@@ -24,23 +24,23 @@ C_luaM__growaux_ ' <symbol:luaM_growaux_>
  rdlong r22, r22 ' reg <- INDIRI4 reg
  adds r22, #1 ' ADDI4 coni
  cmps r22, r15 wcz
- if_a jmp #\C_luaM__growaux__13 ' GTI4
+ if_a jmp #\C_luaM__growaux__15 ' GTI4
  mov r22, FP
  add r22, #12 ' reg <- addrfi
  rdlong r0, r22 ' reg <- INDIRP4 reg
- jmp #\@C_luaM__growaux__12 ' JUMPV addrg
-C_luaM__growaux__13
+ jmp #\@C_luaM__growaux__14 ' JUMPV addrg
+C_luaM__growaux__15
  mov r22, #2 ' reg <- coni
  mov r0, r19 ' setup r0/r1 (2)
  mov r1, r22 ' setup r0/r1 (2)
  calld PA,#DIVS ' DIVI
  cmps r15, r0 wcz
- if_b jmp #\C_luaM__growaux__15 ' LTI4
- cmps r15, r19 wcz
  if_b jmp #\C_luaM__growaux__17 ' LTI4
+ cmps r15, r19 wcz
+ if_b jmp #\C_luaM__growaux__19 ' LTI4
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r17 ' CVI, CVU or LOAD
- mov r4, ##@C_luaM__growaux__19_L000020 ' reg ARG ADDRG
+ mov r4, ##@C_luaM__growaux__21_L000022 ' reg ARG ADDRG
  mov RI, FP
  add RI, #8
  rdlong r5, RI ' reg ARG INDIR ADDRFi
@@ -49,16 +49,16 @@ C_luaM__growaux__13
  calld PA,#CALA
  long @C_luaG__runerror
  add SP, #12 ' CALL addrg
-C_luaM__growaux__17
+C_luaM__growaux__19
  mov r15, r19 ' CVI, CVU or LOAD
- jmp #\@C_luaM__growaux__16 ' JUMPV addrg
-C_luaM__growaux__15
+ jmp #\@C_luaM__growaux__18 ' JUMPV addrg
+C_luaM__growaux__17
  shl r15, #1 ' LSHI4 coni
  cmps r15,  #4 wcz
- if_ae jmp #\C_luaM__growaux__21 ' GEI4
+ if_ae jmp #\C_luaM__growaux__23 ' GEI4
  mov r15, #4 ' reg <- coni
-C_luaM__growaux__21
-C_luaM__growaux__16
+C_luaM__growaux__23
+C_luaM__growaux__18
  mov r22, r21 ' CVI, CVU or LOAD
  mov r20, r15 ' CVI, CVU or LOAD
  #ifndef NO_INTERRUPTS
@@ -98,7 +98,7 @@ C_luaM__growaux__16
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r0, r22 ' reg <- INDIRP4 reg
-C_luaM__growaux__12
+C_luaM__growaux__14
  calld PA,#POPM ' restore registers
  add SP, #4 ' framesize
  calld PA,#RETF
@@ -163,7 +163,7 @@ C_luaM__shrinkvector_ ' <symbol:luaM_shrinkvector_>
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r0, r22 ' reg <- INDIRP4 reg
-' C_luaM__shrinkvector__23 ' (symbol refcount = 0)
+' C_luaM__shrinkvector__25 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  add SP, #12 ' framesize
  calld PA,#RETF
@@ -177,14 +177,14 @@ C_luaM__toobig ' <symbol:luaM_toobig>
  calld PA,#PSHM
  long $800000 ' save registers
  mov r23, r2 ' reg var <- reg arg
- mov r2, ##@C_luaM__toobig_25_L000026 ' reg ARG ADDRG
+ mov r2, ##@C_luaM__toobig_27_L000028 ' reg ARG ADDRG
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
  long @C_luaG__runerror
  add SP, #4 ' CALL addrg
-' C_luaM__toobig_24 ' (symbol refcount = 0)
+' C_luaM__toobig_26 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -219,13 +219,13 @@ C_luaM__free_ ' <symbol:luaM_free_>
  rdlong r20, r22 ' reg <- INDIRI4 reg
  sub r20, r19 ' SUBU (1)
  wrlong r20, r22 ' ASGNI4 reg reg
-' C_luaM__free__27 ' (symbol refcount = 0)
+' C_luaM__free__29 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_s7cs2_690edbc0_tryagain_L000028 ' <symbol:tryagain>
+C_sb882_696de09a_tryagain_L000030 ' <symbol:tryagain>
  calld PA,#NEWF
  calld PA,#PSHM
  long $fa8000 ' save registers
@@ -242,12 +242,12 @@ C_s7cs2_690edbc0_tryagain_L000028 ' <symbol:tryagain>
  rdbyte r20, r20 ' reg <- CVUI4 INDIRU1 reg
  and r20, #15 ' BANDI4 coni
  cmps r20, r22 wz
- if_nz jmp #\C_s7cs2_690edbc0_tryagain_L000028_30 ' NEI4
+ if_nz jmp #\C_sb882_696de09a_tryagain_L000030_32 ' NEI4
  mov r20, r15
  adds r20, #59 ' ADDP4 coni
  rdbyte r20, r20 ' reg <- CVUI4 INDIRU1 reg
  cmps r20, r22 wz
- if_nz jmp #\C_s7cs2_690edbc0_tryagain_L000028_30 ' NEI4
+ if_nz jmp #\C_sb882_696de09a_tryagain_L000030_32 ' NEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -268,10 +268,10 @@ C_s7cs2_690edbc0_tryagain_L000028 ' <symbol:tryagain>
  calld PA,#CALI
  add SP, #12 ' CALL indirect
  mov r22, r0 ' CVI, CVU or LOAD
- jmp #\@C_s7cs2_690edbc0_tryagain_L000028_29 ' JUMPV addrg
-C_s7cs2_690edbc0_tryagain_L000028_30
+ jmp #\@C_sb882_696de09a_tryagain_L000030_31 ' JUMPV addrg
+C_sb882_696de09a_tryagain_L000030_32
  mov r0, ##0 ' RET con
-C_s7cs2_690edbc0_tryagain_L000028_29
+C_sb882_696de09a_tryagain_L000030_31
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -306,9 +306,9 @@ C_luaM__realloc_ ' <symbol:luaM_realloc_>
  mov r22, #0 ' reg <- coni
  mov r20, r13 ' CVI, CVU or LOAD
  cmp r20, r22 wz
- if_nz jmp #\C_luaM__realloc__33  ' NEU4
+ if_nz jmp #\C_luaM__realloc__35  ' NEU4
  cmp r17, r22 wz
- if_z jmp #\C_luaM__realloc__33 ' EQU4
+ if_z jmp #\C_luaM__realloc__35 ' EQU4
  mov r2, r17 ' CVI, CVU or LOAD
  mov r3, r19 ' CVI, CVU or LOAD
  mov r4, r21 ' CVI, CVU or LOAD
@@ -316,16 +316,16 @@ C_luaM__realloc_ ' <symbol:luaM_realloc_>
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s7cs2_690edbc0_tryagain_L000028
+ long @C_sb882_696de09a_tryagain_L000030
  add SP, #12 ' CALL addrg
  mov r13, r0 ' CVI, CVU or LOAD
  mov r22, r13 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_nz jmp #\C_luaM__realloc__35  ' NEU4
+ if_nz jmp #\C_luaM__realloc__37  ' NEU4
  mov r0, ##0 ' RET con
- jmp #\@C_luaM__realloc__32 ' JUMPV addrg
+ jmp #\@C_luaM__realloc__34 ' JUMPV addrg
+C_luaM__realloc__37
 C_luaM__realloc__35
-C_luaM__realloc__33
  mov r22, r15
  adds r22, #12 ' ADDP4 coni
  rdlong r20, r22 ' reg <- INDIRI4 reg
@@ -333,7 +333,7 @@ C_luaM__realloc__33
  sub r20, r19 ' SUBU (1)
  wrlong r20, r22 ' ASGNI4 reg reg
  mov r0, r13 ' CVI, CVU or LOAD
-C_luaM__realloc__32
+C_luaM__realloc__34
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -362,9 +362,9 @@ C_luaM__saferealloc_ ' <symbol:luaM_saferealloc_>
  mov r22, #0 ' reg <- coni
  mov r20, r15 ' CVI, CVU or LOAD
  cmp r20, r22 wz
- if_nz jmp #\C_luaM__saferealloc__38  ' NEU4
+ if_nz jmp #\C_luaM__saferealloc__40  ' NEU4
  cmp r17, r22 wz
- if_z jmp #\C_luaM__saferealloc__38 ' EQU4
+ if_z jmp #\C_luaM__saferealloc__40 ' EQU4
  mov r2, #4 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -372,9 +372,9 @@ C_luaM__saferealloc_ ' <symbol:luaM_saferealloc_>
  calld PA,#CALA
  long @C_luaD__throw
  add SP, #4 ' CALL addrg
-C_luaM__saferealloc__38
+C_luaM__saferealloc__40
  mov r0, r15 ' CVI, CVU or LOAD
-' C_luaM__saferealloc__37 ' (symbol refcount = 0)
+' C_luaM__saferealloc__39 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -391,10 +391,10 @@ C_luaM__malloc_ ' <symbol:luaM_malloc_>
  mov r21, r3 ' reg var <- reg arg
  mov r19, r2 ' reg var <- reg arg
  cmp r21,  #0 wz
- if_nz jmp #\C_luaM__malloc__41  ' NEU4
+ if_nz jmp #\C_luaM__malloc__43  ' NEU4
  mov r0, ##0 ' RET con
- jmp #\@C_luaM__malloc__40 ' JUMPV addrg
-C_luaM__malloc__41
+ jmp #\@C_luaM__malloc__42 ' JUMPV addrg
+C_luaM__malloc__43
  mov r22, r23
  adds r22, #16 ' ADDP4 coni
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -423,7 +423,7 @@ C_luaM__malloc__41
  sub r22, #-(-12) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRP4 reg
  cmp r22,  #0 wz
- if_nz jmp #\C_luaM__malloc__43  ' NEU4
+ if_nz jmp #\C_luaM__malloc__45  ' NEU4
  mov r2, r21 ' CVI, CVU or LOAD
  mov r3, r19 ' CVI, CVU or LOAD
  mov r4, ##0 ' reg ARG con
@@ -431,7 +431,7 @@ C_luaM__malloc__41
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s7cs2_690edbc0_tryagain_L000028
+ long @C_sb882_696de09a_tryagain_L000030
  add SP, #12 ' CALL addrg
  mov RI, FP
  sub RI, #-(-12)
@@ -440,7 +440,7 @@ C_luaM__malloc__41
  sub r22, #-(-12) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRP4 reg
  cmp r22,  #0 wz
- if_nz jmp #\C_luaM__malloc__45  ' NEU4
+ if_nz jmp #\C_luaM__malloc__47  ' NEU4
  mov r2, #4 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -448,8 +448,8 @@ C_luaM__malloc__41
  calld PA,#CALA
  long @C_luaD__throw
  add SP, #4 ' CALL addrg
+C_luaM__malloc__47
 C_luaM__malloc__45
-C_luaM__malloc__43
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRP4 reg
@@ -460,7 +460,7 @@ C_luaM__malloc__43
  mov r22, FP
  sub r22, #-(-12) ' reg <- addrli
  rdlong r0, r22 ' reg <- INDIRP4 reg
-C_luaM__malloc__40
+C_luaM__malloc__42
  calld PA,#POPM ' restore registers
  add SP, #8 ' framesize
  calld PA,#RETF
@@ -477,7 +477,7 @@ C_luaM__malloc__40
 DAT ' const data segment
 
  alignl ' align long
-C_luaM__toobig_25_L000026 ' <symbol:25>
+C_luaM__toobig_27_L000028 ' <symbol:27>
  byte 109
  byte 101
  byte 109
@@ -519,7 +519,7 @@ C_luaM__toobig_25_L000026 ' <symbol:25>
  byte 0
 
  alignl ' align long
-C_luaM__growaux__19_L000020 ' <symbol:19>
+C_luaM__growaux__21_L000022 ' <symbol:21>
  byte 116
  byte 111
  byte 111

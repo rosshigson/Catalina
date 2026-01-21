@@ -70,14 +70,14 @@ cd xvi-2.51
 cp src/xvi.bin ../image/bin/xl_vi.bin
 cd ..
 
-cd lua-5.4.4
+cd lua-5.4.8
 ./build_all  $1 $2 $3 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 SMALL
 cp src/lua.bin ../image/bin/xs_lua.bin
 cp src/luac.bin ../image/bin/xs_luac.bin
 cp src/luax.bin ../image/bin/xs_luax.bin
 cd ..
 
-cd lua-5.4.4
+cd lua-5.4.8
 ./build_all  $1 $2 $3 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 LARGE
 cp src/lua.bin ../image/bin/xl_lua.bin
 cp src/luac.bin ../image/bin/xl_luac.bin
@@ -116,14 +116,14 @@ cd xvi-2.51
 cp src/xvi.bin ../image/bin/xl_vi.bin
 cd ..
 
-cd lua-5.4.4
+cd lua-5.4.8
 ./build_all  $1 $2 $3 VGA COLOR_4 OPTIMIZE MHZ_200 SMALL
 cp src/lua.bin ../image/bin/xs_lua.bin
 cp src/luac.bin ../image/bin/xs_luac.bin
 cp src/luax.bin ../image/bin/xs_luax.bin
 cd ..
 
-cd lua-5.4.4
+cd lua-5.4.8
 ./build_all  $1 $2 $3 VGA COLOR_4 OPTIMIZE MHZ_200 LARGE
 cp src/lua.bin ../image/bin/xl_lua.bin
 cp src/luac.bin ../image/bin/xl_luac.bin

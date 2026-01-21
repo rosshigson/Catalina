@@ -485,6 +485,8 @@
  *
  *               - use "version.h"
  *
+ * Version 8.8.5 - Update Lua to version 5.4.8
+ *
  * 
  *-----------------------------------------------------------------------------
  * Payload is part of Catalina.
@@ -527,13 +529,13 @@
 #include "kb.h"
 
 #ifdef WIN32_PATHS         /* define this on the command line for Windows */
-#include "lua-5.4.4\\src\\lua.h"
-#include "lua-5.4.4\\src\\lualib.h"
-#include "lua-5.4.4\\src\\lauxlib.h"
+#include "lua-5.4.8\\src\\lua.h"
+#include "lua-5.4.8\\src\\lualib.h"
+#include "lua-5.4.8\\src\\lauxlib.h"
 #else
-#include "lua-5.4.4/src/lua.h"
-#include "lua-5.4.4/src/lualib.h"
-#include "lua-5.4.4/src/lauxlib.h"
+#include "lua-5.4.8/src/lua.h"
+#include "lua-5.4.8/src/lualib.h"
+#include "lua-5.4.8/src/lauxlib.h"
 #endif
 
 #include "version.h"

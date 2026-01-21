@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_s608_690edbea_wifi_P_oll_R_esponse_L000001 ' <symbol:wifi_Poll_Response>
+C_so28_696de0b7_wifi_P_oll_R_esponse_L000001 ' <symbol:wifi_Poll_Response>
  calld PA,#NEWF
  sub SP, #264
  calld PA,#PSHM
@@ -21,35 +21,35 @@ C_s608_690edbea_wifi_P_oll_R_esponse_L000001 ' <symbol:wifi_Poll_Response>
  mov RI, FP
  sub RI, #-(-268)
  wrlong r22, RI ' ASGNU4 addrli reg
- jmp #\@C_s608_690edbea_wifi_P_oll_R_esponse_L000001_4 ' JUMPV addrg
-C_s608_690edbea_wifi_P_oll_R_esponse_L000001_3
+ jmp #\@C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_4 ' JUMPV addrg
+C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_3
  mov r2, ##1000 ' reg ARG con
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_wifi_timed_rx ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
  cmps r17,  #0 wcz
- if_ae jmp #\C_s608_690edbea_wifi_P_oll_R_esponse_L000001_6 ' GEI4
+ if_ae jmp #\C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_6 ' GEI4
  mov r0, #15 ' reg <- coni
- jmp #\@C_s608_690edbea_wifi_P_oll_R_esponse_L000001_2 ' JUMPV addrg
-C_s608_690edbea_wifi_P_oll_R_esponse_L000001_6
-C_s608_690edbea_wifi_P_oll_R_esponse_L000001_4
+ jmp #\@C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_2 ' JUMPV addrg
+C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_6
+C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_4
  cmps r17,  #254 wz
- if_nz jmp #\C_s608_690edbea_wifi_P_oll_R_esponse_L000001_3 ' NEI4
- jmp #\@C_s608_690edbea_wifi_P_oll_R_esponse_L000001_9 ' JUMPV addrg
-C_s608_690edbea_wifi_P_oll_R_esponse_L000001_8
+ if_nz jmp #\C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_3 ' NEI4
+ jmp #\@C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_9 ' JUMPV addrg
+C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_8
  mov r2, ##1000 ' reg ARG con
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_wifi_timed_rx ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
  cmps r17,  #0 wcz
- if_ae jmp #\C_s608_690edbea_wifi_P_oll_R_esponse_L000001_11 ' GEI4
+ if_ae jmp #\C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_11 ' GEI4
  mov r0, #15 ' reg <- coni
- jmp #\@C_s608_690edbea_wifi_P_oll_R_esponse_L000001_2 ' JUMPV addrg
-C_s608_690edbea_wifi_P_oll_R_esponse_L000001_11
+ jmp #\@C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_2 ' JUMPV addrg
+C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_11
  cmps r17,  #13 wz
- if_z jmp #\C_s608_690edbea_wifi_P_oll_R_esponse_L000001_13 ' EQI4
+ if_z jmp #\C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_13 ' EQI4
  mov r22, r15 ' CVI, CVU or LOAD
  mov r15, r22
  adds r15, #1 ' ADDI4 coni
@@ -58,8 +58,8 @@ C_s608_690edbea_wifi_P_oll_R_esponse_L000001_11
  adds r22, r20 ' ADDI/P (1)
  mov r20, r17 ' CVI, CVU or LOAD
  wrbyte r20, r22 ' ASGNU1 reg reg
- jmp #\@C_s608_690edbea_wifi_P_oll_R_esponse_L000001_14 ' JUMPV addrg
-C_s608_690edbea_wifi_P_oll_R_esponse_L000001_13
+ jmp #\@C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_14 ' JUMPV addrg
+C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_13
  mov r22, FP
  sub r22, #-(-264) ' reg <- addrli
  adds r22, r15 ' ADDI/P (2)
@@ -67,7 +67,7 @@ C_s608_690edbea_wifi_P_oll_R_esponse_L000001_13
  wrbyte r20, r22 ' ASGNU1 reg reg
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
- mov r4, ##@C_s608_690edbea_wifi_P_oll_R_esponse_L000001_17_L000018 ' reg ARG ADDRG
+ mov r4, ##@C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_17_L000018 ' reg ARG ADDRG
  mov r5, FP
  sub r5, #-(-264) ' reg ARG ADDRLi
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
@@ -76,17 +76,17 @@ C_s608_690edbea_wifi_P_oll_R_esponse_L000001_13
  long @C_isscanf
  add SP, #12 ' CALL addrg
  cmps r0,  #2 wz
- if_nz jmp #\C_s608_690edbea_wifi_P_oll_R_esponse_L000001_15 ' NEI4
+ if_nz jmp #\C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_15 ' NEI4
  rdbyte r22, r23 ' reg <- CVUI4 INDIRU1 reg
  cmps r22,  #69 wz
- if_nz jmp #\C_s608_690edbea_wifi_P_oll_R_esponse_L000001_19 ' NEI4
+ if_nz jmp #\C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_19 ' NEI4
  rdlong r0, r19 ' reg <- INDIRI4 reg
- jmp #\@C_s608_690edbea_wifi_P_oll_R_esponse_L000001_2 ' JUMPV addrg
-C_s608_690edbea_wifi_P_oll_R_esponse_L000001_19
+ jmp #\@C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_2 ' JUMPV addrg
+C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_19
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r21 ' CVI, CVU or LOAD
  mov r4, r23 ' CVI, CVU or LOAD
- mov r5, ##@C_s608_690edbea_wifi_P_oll_R_esponse_L000001_23_L000024 ' reg ARG ADDRG
+ mov r5, ##@C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_23_L000024 ' reg ARG ADDRG
  sub SP, #16 ' stack space for reg ARGs
  mov RI, FP
  sub RI, #-(-264)
@@ -97,19 +97,19 @@ C_s608_690edbea_wifi_P_oll_R_esponse_L000001_19
  long @C_isscanf
  add SP, #16 ' CALL addrg
  cmps r0,  #3 wz
- if_nz jmp #\C_s608_690edbea_wifi_P_oll_R_esponse_L000001_21 ' NEI4
+ if_nz jmp #\C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_21 ' NEI4
  mov r0, #0 ' reg <- coni
- jmp #\@C_s608_690edbea_wifi_P_oll_R_esponse_L000001_2 ' JUMPV addrg
-C_s608_690edbea_wifi_P_oll_R_esponse_L000001_21
-C_s608_690edbea_wifi_P_oll_R_esponse_L000001_15
+ jmp #\@C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_2 ' JUMPV addrg
+C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_21
+C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_15
  mov r0, #16 ' reg <- coni
- jmp #\@C_s608_690edbea_wifi_P_oll_R_esponse_L000001_2 ' JUMPV addrg
-C_s608_690edbea_wifi_P_oll_R_esponse_L000001_14
-C_s608_690edbea_wifi_P_oll_R_esponse_L000001_9
+ jmp #\@C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_2 ' JUMPV addrg
+C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_14
+C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_9
  cmps r15,  #256 wcz
- if_b jmp #\C_s608_690edbea_wifi_P_oll_R_esponse_L000001_8 ' LTI4
+ if_b jmp #\C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_8 ' LTI4
  mov r0, #16 ' reg <- coni
-C_s608_690edbea_wifi_P_oll_R_esponse_L000001_2
+C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_2
  calld PA,#POPM ' restore registers
  add SP, #264 ' framesize
  calld PA,#RETF
@@ -170,7 +170,7 @@ C_wifi_P_O_L_L__29
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_s608_690edbea_wifi_P_oll_R_esponse_L000001
+ long @C_so28_696de0b7_wifi_P_oll_R_esponse_L000001
  add SP, #8 ' CALL addrg
  mov r15, r0 ' CVI, CVU or LOAD
  cmps r15,  #0 wz
@@ -253,7 +253,7 @@ C_wifi_P_O_L_L__30_L000031 ' <symbol:30>
  byte 0
 
  alignl ' align long
-C_s608_690edbea_wifi_P_oll_R_esponse_L000001_23_L000024 ' <symbol:23>
+C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_23_L000024 ' <symbol:23>
  byte 61
  byte 37
  byte 99
@@ -266,7 +266,7 @@ C_s608_690edbea_wifi_P_oll_R_esponse_L000001_23_L000024 ' <symbol:23>
  byte 0
 
  alignl ' align long
-C_s608_690edbea_wifi_P_oll_R_esponse_L000001_17_L000018 ' <symbol:17>
+C_so28_696de0b7_wifi_P_oll_R_esponse_L000001_17_L000018 ' <symbol:17>
  byte 61
  byte 37
  byte 99

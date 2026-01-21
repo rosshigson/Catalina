@@ -47,14 +47,17 @@ int wifi_SEND_DATA(int handle, int rcode, int total, char *data) {
             left = 0;
          }
          result = wifi_SEND(handle, this, &data[sent]);
-#if WIFI_DEBUG > 1         
-         // this should never happen ... 
-         if ((result == wifi_Success) && (code != 0)) {
-            wifi_debug_str("incorrect success code = ");
-            wifi_debug_dec(code);
-            wifi_debug_char('\n');
-         }
+         if (result == wifi_Success) {
+            wifi_Read_Code(&code);
+#if WIFI_DEBUG > 1
+            if (code != 0) {
+               // this should never happen ...
+               debug_str("incorrect success code = ");
+               debug_dec(code);
+               debug_char('\n');
+            }
 #endif
+         }
          sent += this;
       }
    }

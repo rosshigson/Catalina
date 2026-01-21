@@ -15,8 +15,7 @@ were executed from Hub RAM, but faster than if the whole program were executed
 from XMM RAM.
 
 The appropriate WiFi SSID and PASSPHRASE must be configured in the rpc_network
-table in the server files (remote.lua, server.lua and serverbg.lua). See the 
-document 'Aloha from Lua' for details.
+table in common.lua. See the document 'Aloha from Lua' for details.
 
 The demo program contains the same set of wifi proxy functions that are used
 in the http demo, which allow the client to interact with a server that handles 

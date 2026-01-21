@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_suj0_690ed80b_lmmtd_array_L000001 ' <symbol:lmmtd_array>
+C_stvs_696dddd1_lmmtd_array_L000001 ' <symbol:lmmtd_array>
  long $fd900164
  long $fd900dd0
  long $fd9001cc
@@ -881,7 +881,7 @@ C__threaded_cogstart_L_M_M__cog ' <symbol:_threaded_cogstart_LMM_cog>
  mov r2, r17 ' CVI, CVU or LOAD
  mov r22, #2 ' reg <- coni
  jmp #LODL
- long @C_suj0_690ed80b_lmmtd_array_L000001
+ long @C_stvs_696dddd1_lmmtd_array_L000001
  mov r20, RI ' reg <- addrg
  mov r3, r20 ' RSHI
  sar r3, r22 ' RSHI (3)

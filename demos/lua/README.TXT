@@ -59,9 +59,9 @@ command line. For example:
 
    build_all C3 TTY CACHED_1K
 or
-   build_all P2_EDGE
+   build_all P2_EDGE COMPACT
 or
-   build_all P2_EDGE NATIVE OPTIMIZE MHZ_200
+   build_all P2_EDGE SMALL OPTIMIZE MHZ_200
 
 If a memory model is not specified, then on a Propeller 1 the LARGE memory
 model will be used, and on a Propeller 2 COMPACT memory model is used.

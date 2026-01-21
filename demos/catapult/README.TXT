@@ -15,4 +15,5 @@ or
 
 Note that if the result is an XMM program (as it is in the above cases) then
 the build_utilities script will have to be executed to build a suitably
-configured XMM loader.
+configured XMM loader. Check the program for the cache size to use - if no
+cache size is specified in the program, then an 8K cache should be used.

@@ -127,7 +127,7 @@ ifeq (NO_LINENOISE, $(findstring NO_LINENOISE, $(CATALINA_OPTIONS)))
 endif
 
 ifneq ($(NO_LINENOISE), YES)
-	MYCFLAGS_LINENOISE = -C ENABLE_LINENOISE
+	MYCFLAGS_LINENOISE = -C LUA_LINENOISE
 endif
 
 CFLAGS += -C $(MODEL) -C $(CLOCK) -C NO_MOUSE -W-w
@@ -236,7 +236,7 @@ ifeq ($(MODEL), COMPACT)
 mluax : mluax$B
 
 mluax$B: lua.c linit.c 
-	$(CC) -o $@ $(CFLAGS) $(LIBS) -lthreads $^ -M1M
+	$(CC) -o $@ $(CFLAGS) $(LIBSX) -lthreads $^ -M1M -C LUAX
 
 # add this to the 'all' target
 all :: mluax

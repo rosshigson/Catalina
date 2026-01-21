@@ -597,7 +597,7 @@ struct expression* _Owner _Opt character_constant_expression(struct parser_ctx* 
             p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_CHAR;
 
             unsigned int c = 0;
-            p = utf8_decode(p, &c);
+            p = str_utf8_decode(p, &c);
             if (p == NULL)
             {
                 throw;
@@ -630,7 +630,7 @@ struct expression* _Owner _Opt character_constant_expression(struct parser_ctx* 
             p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_SHORT;
 
             unsigned int c = 0;
-            p = utf8_decode(p, &c);
+            p = str_utf8_decode(p, &c);
             if (p == NULL)
             {
                 throw;
@@ -663,7 +663,7 @@ struct expression* _Owner _Opt character_constant_expression(struct parser_ctx* 
             p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_INT;
 
             unsigned int c = 0;
-            p = utf8_decode(p, &c);
+            p = str_utf8_decode(p, &c);
             if (p == NULL)
             {
                 throw;
@@ -712,7 +712,7 @@ struct expression* _Owner _Opt character_constant_expression(struct parser_ctx* 
             while (*p != '\'')
             {
                 unsigned int c = 0;
-                p = utf8_decode(p, &c);
+                p = str_utf8_decode(p, &c);
                 if (p == NULL)
                 {
                     throw;
@@ -763,7 +763,7 @@ struct expression* _Owner _Opt character_constant_expression(struct parser_ctx* 
             while (*p != '\'')
             {
                 unsigned int c = 0;
-                p = utf8_decode(p, &c);
+                p = str_utf8_decode(p, &c);
                 if (p == NULL)
                 {
                     throw;
@@ -1336,7 +1336,7 @@ struct expression* _Owner _Opt primary_expression(struct parser_ctx* ctx, enum e
 
                     if (is_bigger_than_char)
                     {
-                        it = utf8_decode(it, &c);
+                        it = str_utf8_decode(it, &c);
                         if (it == NULL)
                         {
                             throw;
@@ -1568,7 +1568,7 @@ struct expression* _Owner _Opt primary_expression(struct parser_ctx* ctx, enum e
                    the braces, the construct has type void, and thus effectively no value.) 
                 */
                 struct expression* _Opt p_last_expression = NULL;
-                struct block_item* _Owner _Opt  p = p_expression_node->compound_statement->block_item_list.head;
+                struct block_item* _Opt p = p_expression_node->compound_statement->block_item_list.head;
                 while (p)
                 {
                     if (p->next == NULL && 
@@ -3271,7 +3271,7 @@ struct expression* _Owner _Opt unary_expression(struct parser_ctx* ctx, enum exp
                     size_t nelements = 0;
                     if (p_enum_specifier)
                     {
-                        struct enumerator* _Owner _Opt p =
+                        struct enumerator* _Opt p =
                             p_enum_specifier->enumerator_list.head;
                         while (p)
                         {
@@ -3339,7 +3339,7 @@ struct expression* _Owner _Opt unary_expression(struct parser_ctx* ctx, enum exp
                     size_t nelements = 0;
                     if (p_enum_specifier)
                     {
-                        struct enumerator* _Owner _Opt p =
+                        struct enumerator* _Opt p =
                             p_enum_specifier->enumerator_list.head;
                         while (p)
                         {

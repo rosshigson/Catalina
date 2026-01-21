@@ -3,8 +3,7 @@ web page, and retrieves data from a slave propeller using WiFi RPCs to
 display data on that web page.
 
 The appropriate WiFi SSID and PASSPHRASE must be configured in the rpc_network
-table in remote.lua, server.lua and serverbg.lua. See the document 'Aloha from
-Lua' for details.
+table in common.lua. See the document 'Aloha from Lua' for details.
 
 The demo program contains a COMPLETE set of wifi proxy functions that can be 
 used by the client to interact with a server that handles the actual WiFi 

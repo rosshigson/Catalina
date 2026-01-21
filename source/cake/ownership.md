@@ -1,19 +1,15 @@
   
 Last Updated 5 December 2025
   
-This is a work in progress. Cake source is currently being used to validate the concepts. It's in the process of transitioning to include annotated nullable checks, which was the last feature added.  
+## Cake Static Analysis
 
-
-## Abstract
   
-The objective is to statically check code and prevent bugs, including memory bugs like double free, 
-null dereference and memory leaks. New type-annotations have been created to extend the type system 
-and insert information that defines contracts.
-
-Ultimately, we still have the same language, but with an improved type system that checks these 
-contracts.
-
-These new type-annotations can be ignored, the language **and existing code patterns** remains unmodified. 
+  Cake provides a set of annotations and extended qualifiers that are recognized by 
+  the static analyzer. 
+  With ownership qualifiers, it is possible to achieve the same or even stronger guarantees 
+  than those provided by C++ RAII. It also introduces the concept of nullable pointers, 
+  which helps express when a pointer may be null and prevents mistakes such as 
+  accidentally dereferencing a null pointer.
 
 
 ## Concepts
@@ -39,7 +35,8 @@ existing code will naturally conflict with the new rules, as some unqualified po
 existing code can be nullable; they simply are not reviewed yet.
 
 The directive `#pragma nullable enable/disable` can be used during the process of upgrading code. 
-`nullable enable` means that the new rules apply, while `nullable disable` indicates that all pointers 
+
+`#pragma nullable enable` means that the new rules apply, while `#pragma nullable disable` indicates that all pointers 
 are nullable. Similar approach has been used in C# [1].
 
 It is important to note that, although the semantics change, this only affects static analysis; 
@@ -283,21 +280,28 @@ void f() {
 
 <button onclick="Try(this)">try</button>
   
-`calloc` has a built in semantics indicating the object is zero-initialized. 
+`calloc` has a built in semantics indicating the object is zero-initialized. (This can be an attribute in the future)
 
 ```c
-#pragma nullable enable  
+#pragma safety enable  
+
 char * _Opt strdup(const char * src);  
 void * _Opt calloc(unsigned int n, unsigned int sz);
 
-struct X {  char * text; };  
+struct X {  
+    char * text; //non-nullable
+};  
+
+void f0(struct X* p) { }
 
 void f() {     
-   struct X * _Opt pX = calloc(1, sizeof *pX); //warning
+   struct X * _Opt pX = calloc(1, sizeof * pX);
    if (pX)
-   {          
+   {
+      f0(pX); //warning 33: non-nullable pointer 'pX.text' may be null          
    }
 }
+
 ```
 <button onclick="Try(this)">try</button>
 
@@ -796,7 +800,7 @@ the implementation.
 The next sample illustrates how to implement a destructor 
 using a [[dtor]] annotation.
 
-**Sample - Implementing a destructor using [[dtor]]
+** Sample - Implementing a destructor using `[[dtor]]` **
 
 ```c
 #pragma safety enable
@@ -826,12 +830,14 @@ int main() {
     x_destroy(&x);
     
     /*
-     The contents of the object x where moved
+     The contents of the object x were moved
     */
 }
 ```
 
 <button onclick="Try(this)">try</button>
+
+Obs: [[ctor]] in cake is similar of \_Out  in Microsoft SAL
 
 
 **Sample - Using `x_destroy` to implement `x_delete`**
@@ -851,7 +857,7 @@ void x_destroy( [[dtor]] struct X * x) {
 
 void x_delete(_Opt struct X * _Owner _Opt p) { 
   if (p) {
-    x_destroy(p)
+    x_destroy(p);
     
     /*
      contents of *p where moved
@@ -1111,13 +1117,13 @@ struct X {
   char * _Owner _Opt name;
 };
 
-void x_destroy([[ctor]] struct X * p) {
+void x_destroy( [[dtor]] struct X * p) {
   free(p->name); 
 }
 
 struct Y {
    struct X x;
-}
+};
 
 void f(struct Y * p) {   
    x_destroy(&p->x); //breaking the rule
@@ -1390,7 +1396,7 @@ void list_append(struct list* list, struct node* _Owner node)
 <button onclick="Try(this)">try</button>
 
 
-## Cake's static analysis limitations 
+## Limitations 
 
 While Cake tracks possible states, such as maybe-null, it does not track 
 the origin or relationships between these states. 
@@ -1445,7 +1451,12 @@ A header `safe.h` can define all cake extensions as empty macros.
 
 ## References
 
-[1] https://learn.microsoft.com/en-us/dotnet/csharp/nullable-references, https://learn.microsoft.com/en-us/dotnet/csharp/nullable-migration-strategies?source=recommendations
+[1] https://learn.microsoft.com/en-us/dotnet/csharp/nullable-references,
 
+https://learn.microsoft.com/en-us/dotnet/csharp/nullable-migration-strategies?source=recommendations
 
 https://www.typescriptlang.org/docs/handbook/advanced-types.html#using-type-predicates
+
+Microsoft SAL
+https://learn.microsoft.com/en-us/cpp/code-quality/understanding-sal?view=msvc-170
+

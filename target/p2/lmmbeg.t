@@ -98,13 +98,13 @@ low24   = $50
 DEBUG_OVERLAY     = $5a
 lockbits          = $1ea 
 DEBUG_VECTORS     = $1eb
-Register_Services = $24c
+Register_Services = $24a
 
 #if defined(libthreads)
-TRY_KERNEL_LOCK = $371
-REL_KERNEL_LOCK = $378
-TRY_POOL_LOCK   = $37d
-REL_POOL_LOCK   = $384
+TRY_KERNEL_LOCK = $381
+REL_KERNEL_LOCK = $388
+TRY_POOL_LOCK   = $38d
+REL_POOL_LOCK   = $394
 ticks           = $1e6
 flags           = $1e7
 TP              = $1e8

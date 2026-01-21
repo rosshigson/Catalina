@@ -1,4 +1,4 @@
-#pragma catapult primary server binary(sluacx) mode(CMM) options(-W-w -p2 -O5 -lluax xinit.c dsptch_l.c aloha.c -lcx -lmc -lserial2 -C SIMPLE -C VT100 -C MHZ_200 -C CLOCK)
+#pragma catapult primary server binary(sluacx) mode(CMM) options(-W-w -p2 -O5 -lluax linit.c -C LUA_SERVICE dsptch_l.c aloha.c -lcx -lmc -lserial2 -C SIMPLE -C VT100 -C MHZ_200 -C CLOCK)
 /******************************************************************************
  *        A general-purpose Lua Server (no client) for remote services.       *
  *                                                                            *

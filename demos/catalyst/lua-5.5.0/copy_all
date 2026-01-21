@@ -1,0 +1,60 @@
+#!/bin/bash
+if [[ ! -e $1 ]]; then
+   echo ""
+   echo "ERROR: invalid destination specified !"
+   echo ""
+   echo "usage: copy_all X:"
+   echo ""
+   echo "   where X: is the drive you use to read/write SD cards"
+   echo ""
+   echo "or:    copy_all dir/"
+   echo ""        
+   echo "   where dir is the directory you want to copy to"
+   echo ""
+   exit
+fi
+
+cp test/factorial.lua $1fact.lua
+cp test/sort.lua $1sort.lua
+cp test/fib.lua $1fib.lua
+cp test/life.lua $1life.lua
+cp test/star.lua $1star.lua
+cp test/star-tos.lua $1star-tos.lua
+cp test/list.lua $1list.lua
+cp test/find.lua $1find.lua
+cp test/freq.lua $1freq.lua
+cp test/wild.lua $1wild.lua
+
+
+if [ -f src/luax.bin ]; then
+
+   cp test/ex1.lua $1ex1.lua
+   cp test/ex2.lua $1ex2.lua
+   cp test/ex3.lua $1ex3.lua
+   cp test/ex4.lua $1ex4.lua
+   cp test/ex5.lua $1ex5.lua
+   cp test/ex6.lua $1ex6.lua
+   cp test/ex7.lua $1ex7.lua
+   cp test/ex8.lua $1ex8.lua
+   cp test/ex9.lua $1ex9.lua
+   cp test/ex10.lua $1ex10.lua
+   cp test/ex11.lua $1ex11.lua
+   cp test/ex12.lua $1ex12.lua
+   cp test/ex13.lua $1ex13.lua
+   cp src/lua.bin $1lua.bin
+   cp src/luax.bin $1luax.bin
+   cp src/luac.bin $1luac.bin
+   cp src/mlua.bin $1mlua.bin
+   cp src/mluax.bin $1mluax.bin
+
+else
+
+   cp src/lua.binary $1lua.bin
+   cp src/luax.binary $1luax.bin
+   cp src/luac.binary $1luac.bin
+
+   if [[ -e src/proxy.binary ]]; then
+      cp src/proxy.binary $1proxy.bin  
+   fi
+
+fi

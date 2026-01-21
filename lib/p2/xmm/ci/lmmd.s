@@ -82,6 +82,8 @@ CON
 
 
 
+
+
 ' default is to use P2_CUSTOM constants
 '#line 1 "../../../target/p2/P2CUSTOM.inc"
 '----------------------------- P2_CUSTOM constants -----------------------------
@@ -442,7 +444,7 @@ _DEBUG_PIN = 38
 
 
 
-'#line 33 "../../../target/p2/platform.inc"
+'#line 35 "../../../target/p2/platform.inc"
 
 
 '--------------------------- END OF PLATFORM CONSTANTS -----------------------

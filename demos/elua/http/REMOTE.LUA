@@ -9,15 +9,6 @@ port_0_index = {
   [QUIT_SVC]   = "quit",
 }
 
--- this is used by ALOHA for WiFi services ...
-rpc_network = {
-  ["SSID"]       = "MyNetwork";     -- set to "" if this propeller offers the AP
-  ["PASSPHRASE"] = "TellMeASecret"; -- set to "" for a propeller AP
-
-  [INVOKE_SVC]   = "xxx.xxx.xxx.xxx";
-  [QUIT_SVC]     = "xxx.xxx.xxx.xxx";
-}
-
 function background()
 end
 

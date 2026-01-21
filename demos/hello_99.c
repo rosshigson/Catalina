@@ -1,9 +1,14 @@
 /******************************************************************************
  *                            Simple C99 demo                                 *
  *                                                                            *
- * Compile using Catalyze first, then Catalina. For example                   *
- *    cake hello_99.c -o hello_89.c                                           *
- *    catalina -lc hello_89.c                                                 *
+ * There are two ways to use Cake with Catalina to compile C99 programs:      *
+ *                                                                            *
+ *  1. Compile using Catalyze first, then Catalina. For example:              *
+ *        cake hello_99.c -o hello_89.c                                       *
+ *        catalina -lc hello_89.c                                             *
+ *                                                                            *
+ *  2. Compile with Catalina using the C99 option. For example:               *
+ *       catalina -lc -C99 hello_89.c                                         *
  *                                                                            *
  *****************************************************************************/
 #include <stdio.h>

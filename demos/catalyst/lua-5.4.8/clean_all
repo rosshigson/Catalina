@@ -1,0 +1,6 @@
+#!/bin/bash
+
+rm -fr src
+rm -fr doc
+rm -fr test
+

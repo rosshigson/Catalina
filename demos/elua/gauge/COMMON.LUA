@@ -70,6 +70,12 @@ service_index = {
   [QUIT_SVC]      = "quit"
 }
 
+-- this is used by ALOHA for WiFi services ...
+rpc_network = {
+  ["SSID"]       = "MyNetwork";     -- set to "" if this propeller offers the AP
+  ["PASSPHRASE"] = "TellMeASecret"; -- set to "" for a propeller AP
+}
+
 -- define proxy calls for the services implemented by the server. The
 -- value of 500 in these definitions is the maximum size (in bytes) that
 -- is expected when the parameters are serialized:

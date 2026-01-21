@@ -116,7 +116,6 @@ rem cls
 @echo        QUICKSTART
 @echo        ACTIVITY
 @echo        FLIP
-@echo        P2_CUSTOM
 @echo        P2D2
 @echo        P2_EDGE
 @echo        P2_EVAL
@@ -171,7 +170,9 @@ goto finish
 cls
 @echo.
 @echo Next, specify if you have an XMM add-on board. If your XMM memory is built
-@echo into your platform (or you have no add-on board) just leave this blank. 
+@echo into your platform (e.g. the C3 or P2_EDGE with onboard PSRAM), or you 
+@echo have no add-on board, just leave this blank.
+@echo.
 @echo This batch file knows how to build utilities for:
 @echo.
 @echo        SUPERQUAD

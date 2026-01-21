@@ -70,17 +70,15 @@ In addition to the sluafx.c server already mentioned, the following variants
 are also provided - they differ only in Catapult pragma options:
 
    sluafix.c  - Similar to sluafx.c, but makes more Hub RAM available by 
-                using an integer-only version of the Lua initialization 
-                module (i.e. iinit.c instead of xinit.c) which does NOT 
-                load the Lua maths module. It also uses an updated version
-                of the binser module that does not require the math module. 
+                not loading some Lua libraries, such as the Lua 'math', 'os'
+                'utf8' and 'debug' libraries. This is done by defining the
+                Catalina symbol LUA_NO_OPT when compiling the program.
                 The binary is also linked with the integer version of the 
                 extended Catalina library (i.e. -lcix instead of -lcx).
                 Lua programs executed using this server can declare and use 
                 floating point types and do basic floating point operations, 
-                but they cannot use the functions provided by the maths 
-                module, nor can they do I/O on any floating point types 
-                (e.g. using print).
+                but they cannot do I/O on floating point types (e.g. via 
+                'print').
 
    sluacx.c   - As sluafx.c but using COMPACT mode. This is slower than
                 NATIVE mode but it allows larger Lua programs to be executed 

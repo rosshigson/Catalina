@@ -88,13 +88,13 @@ DEBUG_VECTORS = $1eb
 SP      = $1f8
 FP      = $1f9
 
-Register_Services = $24d
+Register_Services = $24a
 
 #if defined(libthreads)
-TRY_KERNEL_LOCK = $361
-REL_KERNEL_LOCK = $368
-TRY_POOL_LOCK   = $36d
-REL_POOL_LOCK   = $374
+TRY_KERNEL_LOCK = $371
+REL_KERNEL_LOCK = $378
+TRY_POOL_LOCK   = $37d
+REL_POOL_LOCK   = $384
 ticks           = $1e7
 TP              = $1e8
 lock            = $1e9

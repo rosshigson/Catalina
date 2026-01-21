@@ -64,7 +64,7 @@ call build_all %1 %2 %3 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_300 LARGE
 copy src\xvi.bin ..\image\bin\xl_vi.bin
 cd ..
 
-cd lua-5.4.4
+cd lua-5.4.8
 rem NOTE: cannot currently use OPTIMIZE when building mlua!
 call build_all %1 %2 %3 SIMPLE VT100 USE_COLOR MHZ_300 SMALL
 copy src\lua.bin ..\image\bin\xs_lua.bin
@@ -72,7 +72,7 @@ copy src\luac.bin ..\image\bin\xs_luac.bin
 copy src\luax.bin ..\image\bin\xs_luax.bin
 cd ..
 
-cd lua-5.4.4
+cd lua-5.4.8
 rem NOTE: cannot currently use OPTIMIZE when building mlua!
 call build_all %1 %2 %3 SIMPLE VT100 USE_COLOR MHZ_300 LARGE
 copy src\lua.bin ..\image\bin\xl_lua.bin
@@ -112,7 +112,7 @@ call build_all  %1 %2 %3 VGA COLOR_4 OPTIMIZE MHZ_300 LARGE
 copy src\xvi.bin ..\image\bin\xl_vi.bin
 cd ..
 
-cd lua-5.4.4
+cd lua-5.4.8
 rem NOTE: cannot currently use OPTIMIZE when building mlua!
 call build_all  %1 %2 %3 VGA COLOR_4 MHZ_300 SMALL
 copy src\lua.bin ..\image\bin\xs_lua.bin
@@ -120,7 +120,7 @@ copy src\luac.bin ..\image\bin\xs_luac.bin
 copy src\luax.bin ..\image\bin\xs_luax.bin
 cd ..
 
-cd lua-5.4.4
+cd lua-5.4.8
 rem NOTE: cannot currently use OPTIMIZE when building mlua!
 call build_all  %1 %2 %3 VGA COLOR_4 MHZ_300 LARGE
 copy src\lua.bin ..\image\bin\xl_lua.bin

@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_svjs_690ed6e9_digits_L000001 ' <symbol:digits>
+C_sb70_696ddcfc_digits_L000001 ' <symbol:digits>
  byte 48
  byte 49
  byte 50
@@ -85,7 +85,7 @@ C__printf_putls_7
  mov r17, r22 ' ADDI/P
  adds r17, r20 ' ADDI/P (3)
  jmp #LODL
- long @C_svjs_690ed6e9_digits_L000001
+ long @C_sb70_696ddcfc_digits_L000001
  mov r20, RI ' reg <- addrg
  adds r20, r15 ' ADDI/P (2)
  rdbyte r20, r20 ' reg <- INDIRU1 reg

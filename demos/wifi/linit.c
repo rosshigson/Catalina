@@ -34,16 +34,52 @@
 #include "lualib.h"
 #include "lauxlib.h"
 
-#if defined(LUA_PROPELLER)
+#if defined(__CATALINA_libluax)
+/* if we are compiled with the luax library, define a dummy parser */
+#include "llex.h"
+#include "lparser.h"
+#include "lzio.h"
+
+LUAI_FUNC void luaX_init (lua_State *L) {
+  UNUSED(L);
+}
+
+LUAI_FUNC LClosure *luaY_parser (lua_State *L, ZIO *z, Mbuffer *buff,
+                                 Dyndata *dyd, const char *name, int firstchar) {
+  UNUSED(z);
+  UNUSED(buff);
+  UNUSED(name);
+  UNUSED(dyd);
+  UNUSED(firstchar);
+  lua_pushliteral(L,"parser not loaded");
+  lua_error(L);
+  return NULL;
+}
+#endif
+
+#if defined(LUA_PROP)
 #define LUA_PROPELLERLIBNAME	"propeller"
 LUALIB_API int (luaopen_propeller) (lua_State *L);
+#endif
+
+#if defined(LUA_HMI)
 #define LUA_HMILIBNAME	"hmi"
 LUALIB_API int (luaopen_hmi) (lua_State *L);
 #endif
 
-#if defined(__CATALINA_libthreads)
+#if defined(LUA_THREADS)
 #define LUA_THREADSLIBNAME	"threads"
 LUALIB_API int (luaopen_threads) (lua_State *L);
+#endif
+
+#if defined(__CATALINA_LUA_LINENOISE)
+#define LUA_LINENOISELIBNAME	"linenoise"
+LUALIB_API int (luaopen_linenoise) (lua_State *L);
+#endif
+
+#if defined(__CATALINA_LUA_SERVICE)
+#define LUA_SERVICELIBNAME	"service"
+LUALIB_API int (luaopen_service) (lua_State *L);
 #endif
 
 #if defined(__CATALINA_libserial2) || defined(__CATALINA_libserial8)
@@ -66,24 +102,35 @@ static const luaL_Reg loadedlibs[] = {
   {LUA_COLIBNAME, luaopen_coroutine},
   {LUA_TABLIBNAME, luaopen_table},
   {LUA_IOLIBNAME, luaopen_io},
-  {LUA_OSLIBNAME, luaopen_os},
   {LUA_STRLIBNAME, luaopen_string},
+#if !defined(__CATALINA_LUA_NO_MATH)
   {LUA_MATHLIBNAME, luaopen_math},
-#if defined(__CATALINA_libthreads)
-  {LUA_THREADSLIBNAME, luaopen_threads},
-#else
+#endif
+#if !defined(__CATALINA_LUA_NO_OPT)
+  {LUA_OSLIBNAME, luaopen_os},
   {LUA_UTF8LIBNAME, luaopen_utf8},
   {LUA_DBLIBNAME, luaopen_debug},
 #endif
-#if defined(LUA_PROPELLER)
+#if defined(LUA_THREADS)
+  {LUA_THREADSLIBNAME, luaopen_threads},
+#endif
+#if defined(LUA_PROP)
   {LUA_PROPELLERLIBNAME, luaopen_propeller},
+#endif
+#if defined(LUA_HMI)
   {LUA_HMILIBNAME, luaopen_hmi},
+#endif
+#if defined(__CATALINA_LUA_LINENOISE)
+  {LUA_LINENOISELIBNAME, luaopen_linenoise},
 #endif
 #if defined(__CATALINA_libserial2) || defined(__CATALINA_libserial8)
   {LUA_SERIALLIBNAME, luaopen_serial},
 #endif
 #if defined(__CATALINA_libwifi)
   {LUA_WIFILIBNAME, luaopen_wifi},
+#endif
+#if defined(__CATALINA_LUA_SERVICE)
+  {LUA_SERVICELIBNAME, luaopen_service},
 #endif
   {NULL, NULL}
 };
@@ -97,4 +144,5 @@ LUALIB_API void luaL_openlibs (lua_State *L) {
     lua_pop(L, 1);  /* remove lib */
   }
 }
+
 

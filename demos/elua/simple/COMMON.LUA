@@ -7,6 +7,13 @@ service_index = {
   [INVOKE_SVC] = "invoke"
 }
 
+rpc_network = {
+  ["SSID"]       = "MyNetwork";
+  ["PASSPHRASE"] = "TellMeASecret";
+
+  [INVOKE_SVC]   = "xxx.xxx.xxx.xxx";
+}
+
 function invoke(f, x)
   return bs.deserializeN(svc.serial(INVOKE_SVC, bs.serialize(f, x), 500), 1)
 end

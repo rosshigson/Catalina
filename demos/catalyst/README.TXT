@@ -78,7 +78,7 @@ some Catalyst components to use the SMALL or LARGE memory model. To do this,
 after building Catalyst as normal, go to that directory and rebuild the 
 individual component. For example, to rebuild just Lua as a LARGE program:
 
-   cd lua-5.4.4
+   cd lua-5.4.8
    build_all P2_EDGE SIMPLE VT100 MHZ_200 LARGE
    copy_all ..\image\
 

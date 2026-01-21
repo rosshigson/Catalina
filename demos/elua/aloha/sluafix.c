@@ -1,4 +1,4 @@
-#pragma catapult primary server binary(sluafix) mode(NMM) options(-W-w -p2 -O5 -lluax iinit.c dsptch_l.c aloha.c -lcix -lmc -lserial2 -C SIMPLE -C VT100 -C MHZ_200 -C CLOCK)
+#pragma catapult primary server binary(sluafix) mode(NMM) options(-W-w -p2 -O5 -lluax linit.c -C LUA_SERVICE dsptch_l.c aloha.c -lcix -lmc -lserial2 -C SIMPLE -C VT100 -C MHZ_200 -C CLOCK -C LUA_NO_OPT)
 /******************************************************************************
  *        A general-purpose Lua Server (no client) for remote services.       *
  *                                                                            *
@@ -8,10 +8,10 @@
  * to execute from Hub RAM.                                                   *
  *                                                                            *
  * NOTE: This program uses the integer version of the extended C library      *
- * (i.e. -lcix). This means that while the program can use floating  point    *
- * point, it has no floating point I/O capability. It also uses iinit.c,      *
- * which does not load the Lua 'math' or 'os' modules, so the functions       *
- * provided by those modules will be unavailable.                             *
+ * (i.e. -lcix). This means that while the program can use floating point     *
+ * it has no floating point I/O capability. It also disables the Lua 'math',  *
+ * 'os', 'utf8' and 'debug' libraries to save space, so the functions         *
+ * provided by those libraries will be unavailable in Lua.                    *
  *                                                                            *
  * Set the CATALINA_DEFINE environemnt variable to the appropriate platform   *
  * and then compile this program using Catapult - for example:                *

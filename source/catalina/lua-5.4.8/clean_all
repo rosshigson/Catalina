@@ -1,0 +1,6 @@
+#!/bin/bash
+
+make -C src -f Makefile.Catalina clean
+rm -fr src/lib/lua
+rm -fr src/lib/luax
+

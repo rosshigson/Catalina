@@ -32,7 +32,7 @@ popd
 pushd %TMP_LCCDIR%\demos\catalyst\jzip
 call clean_all
 popd
-pushd %TMP_LCCDIR%\demos\catalyst\lua-5.4.4\src
+pushd %TMP_LCCDIR%\demos\catalyst\lua-5.4.8\src
 call clean_all
 popd
 pushd %TMP_LCCDIR%\demos\catalyst\pascal\p5_c

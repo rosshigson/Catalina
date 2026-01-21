@@ -43,7 +43,7 @@ C_cond_no_active_lp ' <symbol:cond_no_active_lp>
  long $0
 
  alignl ' align long
-C_sh6c_690edbc3_workerls_L000005 ' <symbol:workerls>
+C_siuc_696de09b_workerls_L000005 ' <symbol:workerls>
  long $0
 
 ' Catalina Export lpcount
@@ -98,7 +98,7 @@ C_workermain ' <symbol:workermain>
  calld PA,#CALA
  long @C_pthread_mutex_lock ' CALL addrg
  mov r2, ##@C_workermain_8_L000009 ' reg ARG ADDRG
- mov r3, ##@C_sh6c_690edbc3_workerls_L000005
+ mov r3, ##@C_siuc_696de09b_workerls_L000005
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -107,7 +107,7 @@ C_workermain ' <symbol:workermain>
  long @C_lua_getglobal
  add SP, #4 ' CALL addrg
  mov r2, r17 ' CVI, CVU or LOAD
- mov r3, ##@C_sh6c_690edbc3_workerls_L000005
+ mov r3, ##@C_siuc_696de09b_workerls_L000005
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -116,7 +116,7 @@ C_workermain ' <symbol:workermain>
  long @C_lua_pushlightuserdata
  add SP, #4 ' CALL addrg
  mov r2, #1 ' reg ARG coni
- mov r3, ##@C_sh6c_690edbc3_workerls_L000005
+ mov r3, ##@C_siuc_696de09b_workerls_L000005
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -125,7 +125,7 @@ C_workermain ' <symbol:workermain>
  long @C_lua_pushboolean
  add SP, #4 ' CALL addrg
  mov r2, ##-3 ' reg ARG con
- mov r3, ##@C_sh6c_690edbc3_workerls_L000005
+ mov r3, ##@C_siuc_696de09b_workerls_L000005
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -134,7 +134,7 @@ C_workermain ' <symbol:workermain>
  long @C_lua_rawset
  add SP, #4 ' CALL addrg
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_sh6c_690edbc3_workerls_L000005
+ mov r3, ##@C_siuc_696de09b_workerls_L000005
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -190,7 +190,7 @@ C_workermain_16
  subs r22, #1 ' SUBI4 coni
  wrlong r22, ##@C_workerscount ' ASGNI4 addrg reg
  mov r2, ##@C_workermain_8_L000009 ' reg ARG ADDRG
- mov r3, ##@C_sh6c_690edbc3_workerls_L000005
+ mov r3, ##@C_siuc_696de09b_workerls_L000005
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -199,7 +199,7 @@ C_workermain_16
  long @C_lua_getglobal
  add SP, #4 ' CALL addrg
  mov r2, r17 ' CVI, CVU or LOAD
- mov r3, ##@C_sh6c_690edbc3_workerls_L000005
+ mov r3, ##@C_siuc_696de09b_workerls_L000005
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -207,14 +207,14 @@ C_workermain_16
  calld PA,#CALA
  long @C_lua_pushlightuserdata
  add SP, #4 ' CALL addrg
- mov r2, ##@C_sh6c_690edbc3_workerls_L000005
+ mov r2, ##@C_siuc_696de09b_workerls_L000005
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
  mov r2, ##-3 ' reg ARG con
- mov r3, ##@C_sh6c_690edbc3_workerls_L000005
+ mov r3, ##@C_siuc_696de09b_workerls_L000005
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -223,7 +223,7 @@ C_workermain_16
  long @C_lua_rawset
  add SP, #4 ' CALL addrg
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_sh6c_690edbc3_workerls_L000005
+ mov r3, ##@C_siuc_696de09b_workerls_L000005
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -296,7 +296,7 @@ C_workermain_17
  long @C_luathread_recycle_insert ' CALL addrg
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
- long @C_sh6c1_690edbc3_sched_dec_lpcount_L000006 ' CALL addrg
+ long @C_siuc1_696de09b_sched_dec_lpcount_L000006 ' CALL addrg
  jmp #\@C_workermain_20 ' JUMPV addrg
 C_workermain_19
  cmps r19,  #1 wz
@@ -393,7 +393,7 @@ C_workermain_21
  long @C_lua_close ' CALL addrg
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
- long @C_sh6c1_690edbc3_sched_dec_lpcount_L000006 ' CALL addrg
+ long @C_siuc1_696de09b_sched_dec_lpcount_L000006 ' CALL addrg
 C_workermain_22
 C_workermain_20
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
@@ -409,7 +409,7 @@ C_workermain_11
 
 
  alignl ' align long
-C_sh6c1_690edbc3_sched_dec_lpcount_L000006 ' <symbol:sched_dec_lpcount>
+C_siuc1_696de09b_sched_dec_lpcount_L000006 ' <symbol:sched_dec_lpcount>
  calld PA,#NEWF
  calld PA,#PSHM
  long $500000 ' save registers
@@ -423,17 +423,17 @@ C_sh6c1_690edbc3_sched_dec_lpcount_L000006 ' <symbol:sched_dec_lpcount>
  wrlong r20, ##@C_lpcount ' ASGNI4 addrg reg
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22,  #0 wz
- if_nz jmp #\C_sh6c1_690edbc3_sched_dec_lpcount_L000006_30 ' NEI4
+ if_nz jmp #\C_siuc1_696de09b_sched_dec_lpcount_L000006_30 ' NEI4
  mov r2, ##@C_cond_no_active_lp ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_cond_signal ' CALL addrg
-C_sh6c1_690edbc3_sched_dec_lpcount_L000006_30
+C_siuc1_696de09b_sched_dec_lpcount_L000006_30
  mov r2, ##@C_mutex_lp_count ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
-' C_sh6c1_690edbc3_sched_dec_lpcount_L000006_29 ' (symbol refcount = 0)
+' C_siuc1_696de09b_sched_dec_lpcount_L000006_29 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -538,11 +538,11 @@ C_sched_init ' <symbol:sched_init>
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C_luaL__newstate ' CALL addrg
- wrlong r0, ##@C_sh6c_690edbc3_workerls_L000005 ' ASGNP4 addrg reg
+ wrlong r0, ##@C_siuc_696de09b_workerls_L000005 ' ASGNP4 addrg reg
  mov r22, #0 ' reg <- coni
  mov r2, r22 ' CVI, CVU or LOAD
  mov r3, r22 ' CVI, CVU or LOAD
- mov r4, ##@C_sh6c_690edbc3_workerls_L000005
+ mov r4, ##@C_siuc_696de09b_workerls_L000005
  rdlong r4, r4
  ' reg ARG INDIR ADDRG
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -551,7 +551,7 @@ C_sched_init ' <symbol:sched_init>
  long @C_lua_createtable
  add SP, #8 ' CALL addrg
  mov r2, ##@C_workermain_8_L000009 ' reg ARG ADDRG
- mov r3, ##@C_sh6c_690edbc3_workerls_L000005
+ mov r3, ##@C_siuc_696de09b_workerls_L000005
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -819,7 +819,7 @@ C_sched_set_numfactories ' <symbol:sched_set_numfactories>
  calld PA,#NEWF
  sub SP, #8
  calld PA,#PSHM
- long $f80000 ' save registers
+ long $fa0000 ' save registers
  mov r23, r2 ' reg var <- reg arg
  cmps r23,  #1 wcz
  if_b jmp #\C_sched_set_numfactories_62 ' LTI4
@@ -829,36 +829,40 @@ C_sched_set_numfactories ' <symbol:sched_set_numfactories>
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r23, r22 wcz
  if_be jmp #\C_sched_set_numfactories_64 ' LEI4
- mov r21, ##@C_factories
- rdlong r21, r21 ' reg <- INDIRI4 addrg
+ mov r19, ##@C_factories
+ rdlong r19, r19 ' reg <- INDIRI4 addrg
  jmp #\@C_sched_set_numfactories_69 ' JUMPV addrg
 C_sched_set_numfactories_66
- mov BC, #0 ' arg size, rpsize = 0, spsize = 0
- calld PA,#CALA
- long @C__thread_stall ' CALL addrg
  mov r2, #252 ' reg ARG coni
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_malloc ' CALL addrg
- mov r19, r0 ' CVI, CVU or LOAD
- mov BC, #0 ' arg size, rpsize = 0, spsize = 0
- calld PA,#CALA
- long @C__thread_allow ' CALL addrg
- mov r22, r19 ' CVI, CVU or LOAD
+ mov r17, r0 ' CVI, CVU or LOAD
+ mov r21, #0 ' reg <- coni
+C_sched_set_numfactories_70
+ mov r22, r19 ' ADDI/P
+ adds r22, r17 ' ADDI/P (3)
+ mov r20, #0 ' reg <- coni
+ wrbyte r20, r22 ' ASGNU1 reg reg
+' C_sched_set_numfactories_71 ' (symbol refcount = 0)
+ adds r21, #1 ' ADDI4 coni
+ cmps r21,  #252 wcz
+ if_b jmp #\C_sched_set_numfactories_70 ' LTI4
+ mov r22, r17 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_z jmp #\C_sched_set_numfactories_70 ' EQU4
+ if_z jmp #\C_sched_set_numfactories_74 ' EQU4
  mov r2, FP
  sub r2, #-(-8) ' reg ARG ADDRLi
  mov r3, #252 ' reg ARG coni
- mov r4, r19 ' CVI, CVU or LOAD
+ mov r4, r17 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  calld PA,#CALA
  long @C_pthread_createaffinity
  add SP, #8 ' CALL addrg
  cmps r0,  #0 wz
- if_nz jmp #\C_sched_set_numfactories_72 ' NEI4
- mov r22, r21
+ if_nz jmp #\C_sched_set_numfactories_76 ' NEI4
+ mov r22, r19
  shl r22, #3 ' LSHI4 coni
  mov r20, ##@C_factory ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
@@ -866,41 +870,35 @@ C_sched_set_numfactories_66
  sub r20, #-(-8) ' reg <- addrli
  rdlong r20, r20 ' reg <- INDIRI4 reg
  wrlong r20, r22 ' ASGNI4 reg reg
- mov r22, r21
+ mov r22, r19
  shl r22, #3 ' LSHI4 coni
  mov r20, ##@C_factory+4 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
- wrlong r19, r22 ' ASGNP4 reg reg
+ wrlong r17, r22 ' ASGNP4 reg reg
  mov r22, ##@C_factories ' reg <- addrg
  rdlong r22, r22 ' reg <- INDIRI4 reg
  adds r22, #1 ' ADDI4 coni
  wrlong r22, ##@C_factories ' ASGNI4 addrg reg
- jmp #\@C_sched_set_numfactories_73 ' JUMPV addrg
-C_sched_set_numfactories_72
- mov BC, #0 ' arg size, rpsize = 0, spsize = 0
- calld PA,#CALA
- long @C__thread_stall ' CALL addrg
- mov r2, r19 ' CVI, CVU or LOAD
+ jmp #\@C_sched_set_numfactories_77 ' JUMPV addrg
+C_sched_set_numfactories_76
+ mov r2, r17 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_free ' CALL addrg
- mov BC, #0 ' arg size, rpsize = 0, spsize = 0
- calld PA,#CALA
- long @C__thread_allow ' CALL addrg
  jmp #\@C_sched_set_numfactories_65 ' JUMPV addrg
-C_sched_set_numfactories_73
-C_sched_set_numfactories_70
+C_sched_set_numfactories_77
+C_sched_set_numfactories_74
 ' C_sched_set_numfactories_67 ' (symbol refcount = 0)
- adds r21, #1 ' ADDI4 coni
+ adds r19, #1 ' ADDI4 coni
 C_sched_set_numfactories_69
- cmps r21, r23 wcz
+ cmps r19, r23 wcz
  if_b jmp #\C_sched_set_numfactories_66 ' LTI4
  jmp #\@C_sched_set_numfactories_65 ' JUMPV addrg
 C_sched_set_numfactories_64
  mov r22, ##@C_factories
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22, r23 wcz
- if_be jmp #\C_sched_set_numfactories_75 ' LEI4
+ if_be jmp #\C_sched_set_numfactories_79 ' LEI4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C_sched_get_numworkers ' CALL addrg
@@ -911,20 +909,20 @@ C_sched_set_numfactories_64
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_sched_set_numworkers ' CALL addrg
- jmp #\@C_sched_set_numfactories_78 ' JUMPV addrg
-C_sched_set_numfactories_77
+ jmp #\@C_sched_set_numfactories_82 ' JUMPV addrg
+C_sched_set_numfactories_81
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C_pthread_yield ' CALL addrg
-C_sched_set_numfactories_78
+C_sched_set_numfactories_82
  mov r22, ##@C_workerscount
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
- if_a jmp #\C_sched_set_numfactories_77 ' GTI4
- mov r21, r23 ' CVI, CVU or LOAD
- jmp #\@C_sched_set_numfactories_83 ' JUMPV addrg
-C_sched_set_numfactories_80
- mov r22, r21
+ if_a jmp #\C_sched_set_numfactories_81 ' GTI4
+ mov r19, r23 ' CVI, CVU or LOAD
+ jmp #\@C_sched_set_numfactories_87 ' JUMPV addrg
+C_sched_set_numfactories_84
+ mov r22, r19
  shl r22, #3 ' LSHI4 coni
  mov r20, ##@C_factory ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
@@ -932,10 +930,7 @@ C_sched_set_numfactories_80
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C__cogstop ' CALL addrg
- mov BC, #0 ' arg size, rpsize = 0, spsize = 0
- calld PA,#CALA
- long @C__thread_stall ' CALL addrg
- mov r22, r21
+ mov r22, r19
  shl r22, #3 ' LSHI4 coni
  mov r20, ##@C_factory+4 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
@@ -943,28 +938,25 @@ C_sched_set_numfactories_80
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_free ' CALL addrg
- mov BC, #0 ' arg size, rpsize = 0, spsize = 0
- calld PA,#CALA
- long @C__thread_allow ' CALL addrg
- mov r22, r21
+ mov r22, r19
  shl r22, #3 ' LSHI4 coni
  mov r20, ##@C_factory ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  mov r20, #0 ' reg <- coni
  wrlong r20, r22 ' ASGNI4 reg reg
- mov r22, r21
+ mov r22, r19
  shl r22, #3 ' LSHI4 coni
  mov r20, ##@C_factory+4 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  mov r20, ##0 ' reg <- con
  wrlong r20, r22 ' ASGNP4 reg reg
-' C_sched_set_numfactories_81 ' (symbol refcount = 0)
- adds r21, #1 ' ADDI4 coni
-C_sched_set_numfactories_83
+' C_sched_set_numfactories_85 ' (symbol refcount = 0)
+ adds r19, #1 ' ADDI4 coni
+C_sched_set_numfactories_87
  mov r22, ##@C_factories
  rdlong r22, r22 ' reg <- INDIRI4 addrg
- cmps r21, r22 wcz
- if_b jmp #\C_sched_set_numfactories_80 ' LTI4
+ cmps r19, r22 wcz
+ if_b jmp #\C_sched_set_numfactories_84 ' LTI4
  wrlong r23, ##@C_factories ' ASGNI4 addrg reg
  mov RI, FP
  sub RI, #-(-12)
@@ -972,7 +964,7 @@ C_sched_set_numfactories_83
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_sched_set_numworkers ' CALL addrg
-C_sched_set_numfactories_75
+C_sched_set_numfactories_79
 C_sched_set_numfactories_65
 C_sched_set_numfactories_62
  mov r0, ##@C_factories
@@ -989,7 +981,7 @@ C_sched_set_numfactories_62
 C_sched_get_numfactories ' <symbol:sched_get_numfactories>
  mov r0, ##@C_factories
  rdlong r0, r0 ' reg <- INDIRI4 addrg
-' C_sched_get_numfactories_86 ' (symbol refcount = 0)
+' C_sched_get_numfactories_90 ' (symbol refcount = 0)
  calld PA,#RETN
 
 
@@ -1020,7 +1012,7 @@ C_sched_set_factory ' <symbol:sched_set_factory>
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22, r23 wz
- if_z jmp #\C_sched_set_factory_89 ' EQI4
+ if_z jmp #\C_sched_set_factory_93 ' EQI4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C_pthread_self ' CALL addrg
@@ -1032,7 +1024,7 @@ C_sched_set_factory ' <symbol:sched_set_factory>
  rdlong r22, r22 ' reg <- INDIRP4 reg
  mov r20, ##$ffffffff ' reg <- con
  cmp r22, r20 wz
- if_nz jmp #\C_sched_set_factory_91  ' NEU4
+ if_nz jmp #\C_sched_set_factory_95  ' NEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C__thread_id ' CALL addrg
@@ -1050,15 +1042,15 @@ C_sched_set_factory ' <symbol:sched_set_factory>
  sub RI, #-(-20)
  wrlong r0, RI ' ASGNI4 addrli reg
  cmps r0,  #0 wz
- if_z jmp #\C_sched_set_factory_93 ' EQI4
+ if_z jmp #\C_sched_set_factory_97 ' EQI4
  mov r0, r23 ' CVI, CVU or LOAD
- jmp #\@C_sched_set_factory_87 ' JUMPV addrg
-C_sched_set_factory_93
+ jmp #\@C_sched_set_factory_91 ' JUMPV addrg
+C_sched_set_factory_97
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r0, r22 ' reg <- INDIRI4 reg
- jmp #\@C_sched_set_factory_87 ' JUMPV addrg
-C_sched_set_factory_91
+ jmp #\@C_sched_set_factory_91 ' JUMPV addrg
+C_sched_set_factory_95
  mov RI, FP
  sub RI, #-(-12)
  rdlong r2, RI ' reg ARG INDIR ADDRLi
@@ -1074,17 +1066,17 @@ C_sched_set_factory_91
  sub RI, #-(-20)
  wrlong r0, RI ' ASGNI4 addrli reg
  cmps r0,  #0 wz
- if_nz jmp #\C_sched_set_factory_95 ' NEI4
+ if_nz jmp #\C_sched_set_factory_99 ' NEI4
  mov r0, r23 ' CVI, CVU or LOAD
- jmp #\@C_sched_set_factory_87 ' JUMPV addrg
-C_sched_set_factory_95
+ jmp #\@C_sched_set_factory_91 ' JUMPV addrg
+C_sched_set_factory_99
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r0, r22 ' reg <- INDIRI4 reg
- jmp #\@C_sched_set_factory_87 ' JUMPV addrg
-C_sched_set_factory_89
+ jmp #\@C_sched_set_factory_91 ' JUMPV addrg
+C_sched_set_factory_93
  mov r0, #1 ' reg <- coni
-C_sched_set_factory_87
+C_sched_set_factory_91
  calld PA,#POPM ' restore registers
  add SP, #16 ' framesize
  calld PA,#RETF
@@ -1102,28 +1094,28 @@ C_sched_get_factory ' <symbol:sched_get_factory>
  long @C__cogid ' CALL addrg
  mov r21, r0 ' CVI, CVU or LOAD
  mov r23, #0 ' reg <- coni
- jmp #\@C_sched_get_factory_101 ' JUMPV addrg
-C_sched_get_factory_98
+ jmp #\@C_sched_get_factory_105 ' JUMPV addrg
+C_sched_get_factory_102
  mov r22, r23
  shl r22, #3 ' LSHI4 coni
  mov r20, ##@C_factory ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRI4 reg
  cmps r22, r21 wz
- if_nz jmp #\C_sched_get_factory_102 ' NEI4
+ if_nz jmp #\C_sched_get_factory_106 ' NEI4
  mov r0, r23
  adds r0, #1 ' ADDI4 coni
- jmp #\@C_sched_get_factory_97 ' JUMPV addrg
-C_sched_get_factory_102
-' C_sched_get_factory_99 ' (symbol refcount = 0)
+ jmp #\@C_sched_get_factory_101 ' JUMPV addrg
+C_sched_get_factory_106
+' C_sched_get_factory_103 ' (symbol refcount = 0)
  adds r23, #1 ' ADDI4 coni
-C_sched_get_factory_101
+C_sched_get_factory_105
  mov r22, ##@C_factories
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r23, r22 wcz
- if_b jmp #\C_sched_get_factory_98 ' LTI4
+ if_b jmp #\C_sched_get_factory_102 ' LTI4
  mov r0, #1 ' reg <- coni
-C_sched_get_factory_97
+C_sched_get_factory_101
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -1162,7 +1154,7 @@ C_sched_queue_proc ' <symbol:sched_queue_proc>
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_pthread_mutex_unlock ' CALL addrg
-' C_sched_queue_proc_104 ' (symbol refcount = 0)
+' C_sched_queue_proc_108 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -1178,7 +1170,7 @@ C_sched_join_workers ' <symbol:sched_join_workers>
  calld PA,#CALA
  long @C_luaL__newstate ' CALL addrg
  mov r23, r0 ' CVI, CVU or LOAD
- mov r21, ##@C_sched_join_workers_106_L000107 ' reg <- addrg
+ mov r21, ##@C_sched_join_workers_110_L000111 ' reg <- addrg
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C_sched_wait ' CALL addrg
@@ -1210,7 +1202,7 @@ C_sched_join_workers ' <symbol:sched_join_workers>
  calld PA,#CALA
  long @C_pthread_mutex_lock ' CALL addrg
  mov r2, ##@C_workermain_8_L000009 ' reg ARG ADDRG
- mov r3, ##@C_sh6c_690edbc3_workerls_L000005
+ mov r3, ##@C_siuc_696de09b_workerls_L000005
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1218,16 +1210,16 @@ C_sched_join_workers ' <symbol:sched_join_workers>
  calld PA,#CALA
  long @C_lua_getglobal
  add SP, #4 ' CALL addrg
- mov r2, ##@C_sh6c_690edbc3_workerls_L000005
+ mov r2, ##@C_siuc_696de09b_workerls_L000005
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
- jmp #\@C_sched_join_workers_109 ' JUMPV addrg
-C_sched_join_workers_108
+ jmp #\@C_sched_join_workers_113 ' JUMPV addrg
+C_sched_join_workers_112
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_sh6c_690edbc3_workerls_L000005
+ mov r3, ##@C_siuc_696de09b_workerls_L000005
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1258,7 +1250,7 @@ C_sched_join_workers_108
  long @C_lua_rawset
  add SP, #4 ' CALL addrg
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_sh6c_690edbc3_workerls_L000005
+ mov r3, ##@C_siuc_696de09b_workerls_L000005
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1266,9 +1258,9 @@ C_sched_join_workers_108
  calld PA,#CALA
  long @C_lua_settop
  add SP, #4 ' CALL addrg
-C_sched_join_workers_109
+C_sched_join_workers_113
  mov r2, ##-2 ' reg ARG con
- mov r3, ##@C_sh6c_690edbc3_workerls_L000005
+ mov r3, ##@C_siuc_696de09b_workerls_L000005
  rdlong r3, r3
  ' reg ARG INDIR ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1277,7 +1269,7 @@ C_sched_join_workers_109
  long @C_lua_next
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
- if_nz jmp #\C_sched_join_workers_108 ' NEI4
+ if_nz jmp #\C_sched_join_workers_112 ' NEI4
  mov r2, ##-2 ' reg ARG con
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1307,8 +1299,8 @@ C_sched_join_workers_109
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_pushnil ' CALL addrg
- jmp #\@C_sched_join_workers_112 ' JUMPV addrg
-C_sched_join_workers_111
+ jmp #\@C_sched_join_workers_116 ' JUMPV addrg
+C_sched_join_workers_115
  mov r2, ##-2 ' reg ARG con
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1331,7 +1323,7 @@ C_sched_join_workers_111
  calld PA,#CALA
  long @C_lua_settop
  add SP, #4 ' CALL addrg
-C_sched_join_workers_112
+C_sched_join_workers_116
  mov r2, ##-2 ' reg ARG con
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1340,7 +1332,7 @@ C_sched_join_workers_112
  long @C_lua_next
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
- if_nz jmp #\C_sched_join_workers_111 ' NEI4
+ if_nz jmp #\C_sched_join_workers_115 ' NEI4
  mov r2, ##-2 ' reg ARG con
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1348,7 +1340,7 @@ C_sched_join_workers_112
  calld PA,#CALA
  long @C_lua_settop
  add SP, #4 ' CALL addrg
- mov r2, ##@C_sh6c_690edbc3_workerls_L000005
+ mov r2, ##@C_siuc_696de09b_workerls_L000005
  rdlong r2, r2
  ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -1358,7 +1350,7 @@ C_sched_join_workers_112
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C_lua_close ' CALL addrg
-' C_sched_join_workers_105 ' (symbol refcount = 0)
+' C_sched_join_workers_109 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -1377,7 +1369,7 @@ C_sched_wait ' <symbol:sched_wait>
  mov r22, ##@C_lpcount
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz
- if_z jmp #\C_sched_wait_115 ' EQI4
+ if_z jmp #\C_sched_wait_119 ' EQI4
  mov r2, ##@C_mutex_lp_count ' reg ARG ADDRG
  mov r3, ##@C_cond_no_active_lp ' reg ARG ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1385,7 +1377,7 @@ C_sched_wait ' <symbol:sched_wait>
  calld PA,#CALA
  long @C_pthread_cond_wait
  add SP, #4 ' CALL addrg
-C_sched_wait_115
+C_sched_wait_119
  mov r2, ##@C_mutex_lp_count ' reg ARG ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
@@ -1393,7 +1385,11 @@ C_sched_wait_115
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
  long @C_pthread_yield ' CALL addrg
-' C_sched_wait_114 ' (symbol refcount = 0)
+ mov r2, #1 ' reg ARG coni
+ mov BC, #4 ' arg size, rpsize = 4, spsize = 4
+ calld PA,#CALA
+ long @C_pthread_msleep ' CALL addrg
+' C_sched_wait_118 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -1768,6 +1764,16 @@ DAT ' uninitialized data segment
 
 DAT ' code segment
 
+' Catalina Import pthread_msleep
+
+' Catalina Data
+
+DAT ' uninitialized data segment
+
+' Catalina Code
+
+DAT ' code segment
+
 ' Catalina Import pthread_yield
 
 ' Catalina Data
@@ -1898,26 +1904,6 @@ DAT ' uninitialized data segment
 
 DAT ' code segment
 
-' Catalina Import _thread_allow
-
-' Catalina Data
-
-DAT ' uninitialized data segment
-
-' Catalina Code
-
-DAT ' code segment
-
-' Catalina Import _thread_stall
-
-' Catalina Data
-
-DAT ' uninitialized data segment
-
-' Catalina Code
-
-DAT ' code segment
-
 ' Catalina Import _thread_affinity_change
 
 ' Catalina Data
@@ -1969,7 +1955,7 @@ DAT ' uninitialized data segment
 DAT ' const data segment
 
  alignl ' align long
-C_sched_join_workers_106_L000107 ' <symbol:106>
+C_sched_join_workers_110_L000111 ' <symbol:110>
  byte 119
  byte 111
  byte 114

@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_sr6k_690ed9dc__mkleaf_L000002 ' <symbol:_mkleaf>
+C_skq8_696ddf2f__mkleaf_L000002 ' <symbol:_mkleaf>
  jmp #NEWF
  jmp #LODL
  long 540
@@ -34,11 +34,11 @@ C_sr6k_690ed9dc__mkleaf_L000002 ' <symbol:_mkleaf>
  add SP, #16 ' CALL addrg
  cmp r0,  #3 wz
  jmp #BR_Z
- long @C_sr6k_690ed9dc__mkleaf_L000002_4 ' EQU4
+ long @C_skq8_696ddf2f__mkleaf_L000002_4 ' EQU4
  mov r0, #6 ' reg <- coni
  jmp #JMPA
- long @C_sr6k_690ed9dc__mkleaf_L000002_3 ' JUMPV addrg
-C_sr6k_690ed9dc__mkleaf_L000002_4
+ long @C_skq8_696ddf2f__mkleaf_L000002_3 ' JUMPV addrg
+C_skq8_696ddf2f__mkleaf_L000002_4
  jmp #LODF
  long -544
  mov r2, RI ' reg ARG ADDRL
@@ -57,7 +57,7 @@ C_sr6k_690ed9dc__mkleaf_L000002_4
  long @C_D_F_S__O_penF_ile
  add SP, #16 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
-C_sr6k_690ed9dc__mkleaf_L000002_3
+C_skq8_696ddf2f__mkleaf_L000002_3
  jmp #POPM ' restore registers
  jmp #LODL
  long 540
@@ -66,7 +66,7 @@ C_sr6k_690ed9dc__mkleaf_L000002_3
 
 
  alignl ' align long
-C_sr6k1_690ed9dc__mkpath_L000006 ' <symbol:_mkpath>
+C_skq81_696ddf2f__mkpath_L000006 ' <symbol:_mkpath>
  jmp #NEWF
  jmp #LODL
  long 608
@@ -83,7 +83,7 @@ C_sr6k1_690ed9dc__mkpath_L000006 ' <symbol:_mkpath>
  mov r20, RI ' reg <- con
  cmp r22, r20 wz
  jmp #BRNZ
- long @C_sr6k1_690ed9dc__mkpath_L000006_8 ' NEU4
+ long @C_skq81_696ddf2f__mkpath_L000006_8 ' NEU4
  mov r22, #0 ' reg <- coni
  mov r2, r22 ' CVI, CVU or LOAD
  mov r3, r22 ' CVI, CVU or LOAD
@@ -97,36 +97,36 @@ C_sr6k1_690ed9dc__mkpath_L000006 ' <symbol:_mkpath>
  mov r20, RI ' reg <- con
  cmps r0, r20 wz
  jmp #BRNZ
- long @C_sr6k1_690ed9dc__mkpath_L000006_10 ' NEI4
+ long @C_skq81_696ddf2f__mkpath_L000006_10 ' NEI4
  jmp #LODL
  long $ffffffff
  mov r0, RI ' reg <- con
  jmp #JMPA
- long @C_sr6k1_690ed9dc__mkpath_L000006_7 ' JUMPV addrg
-C_sr6k1_690ed9dc__mkpath_L000006_10
-C_sr6k1_690ed9dc__mkpath_L000006_8
+ long @C_skq81_696ddf2f__mkpath_L000006_7 ' JUMPV addrg
+C_skq81_696ddf2f__mkpath_L000006_10
+C_skq81_696ddf2f__mkpath_L000006_8
  cmps r21,  #0 wz
  jmp #BRNZ
- long @C_sr6k1_690ed9dc__mkpath_L000006_12 ' NEI4
+ long @C_skq81_696ddf2f__mkpath_L000006_12 ' NEI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_sr6k_690ed9dc__mkleaf_L000002 ' CALL addrg
+ long @C_skq8_696ddf2f__mkleaf_L000002 ' CALL addrg
  mov r15, r0 ' CVI, CVU or LOAD
  cmp r15,  #0 wz
  jmp #BR_Z
- long @C_sr6k1_690ed9dc__mkpath_L000006_14 ' EQU4
+ long @C_skq81_696ddf2f__mkpath_L000006_14 ' EQU4
  cmp r15,  #6 wz
  jmp #BR_Z
- long @C_sr6k1_690ed9dc__mkpath_L000006_14 ' EQU4
+ long @C_skq81_696ddf2f__mkpath_L000006_14 ' EQU4
  mov r0, r15 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sr6k1_690ed9dc__mkpath_L000006_7 ' JUMPV addrg
-C_sr6k1_690ed9dc__mkpath_L000006_14
+ long @C_skq81_696ddf2f__mkpath_L000006_7 ' JUMPV addrg
+C_skq81_696ddf2f__mkpath_L000006_14
  mov r0, #0 ' reg <- coni
  jmp #JMPA
- long @C_sr6k1_690ed9dc__mkpath_L000006_7 ' JUMPV addrg
-C_sr6k1_690ed9dc__mkpath_L000006_12
+ long @C_skq81_696ddf2f__mkpath_L000006_7 ' JUMPV addrg
+C_skq81_696ddf2f__mkpath_L000006_12
  mov r22, #0 ' reg <- coni
  mov RI, FP
  sub RI, #-(-72)
@@ -138,8 +138,8 @@ C_sr6k1_690ed9dc__mkpath_L000006_12
  long @C_strlen ' CALL addrg
  mov r17, r0 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sr6k1_690ed9dc__mkpath_L000006_17 ' JUMPV addrg
-C_sr6k1_690ed9dc__mkpath_L000006_19
+ long @C_skq81_696ddf2f__mkpath_L000006_17 ' JUMPV addrg
+C_skq81_696ddf2f__mkpath_L000006_19
  mov r22, FP
  sub r22, #-(-72) ' reg <- addrli
  adds r22, r19 ' ADDI/P (2)
@@ -152,10 +152,10 @@ C_sr6k1_690ed9dc__mkpath_L000006_19
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
  adds r19, #1 ' ADDI4 coni
-C_sr6k1_690ed9dc__mkpath_L000006_20
+C_skq81_696ddf2f__mkpath_L000006_20
  cmps r19, r17 wz,wc
  jmp #BRAE
- long @C_sr6k1_690ed9dc__mkpath_L000006_22 ' GEI4
+ long @C_skq81_696ddf2f__mkpath_L000006_22 ' GEI4
  mov r22, r19 ' ADDI/P
  adds r22, r23 ' ADDI/P (3)
  mov RI, r22
@@ -164,8 +164,8 @@ C_sr6k1_690ed9dc__mkpath_L000006_20
  and r22, cviu_m1 ' zero extend
  cmps r22,  #47 wz
  jmp #BRNZ
- long @C_sr6k1_690ed9dc__mkpath_L000006_19 ' NEI4
-C_sr6k1_690ed9dc__mkpath_L000006_22
+ long @C_skq81_696ddf2f__mkpath_L000006_19 ' NEI4
+C_skq81_696ddf2f__mkpath_L000006_22
  mov r22, FP
  sub r22, #-(-72) ' reg <- addrli
  adds r22, r19 ' ADDI/P (2)
@@ -192,23 +192,23 @@ C_sr6k1_690ed9dc__mkpath_L000006_22
  add SP, #16 ' CALL addrg
  cmp r0,  #3 wz
  jmp #BRNZ
- long @C_sr6k1_690ed9dc__mkpath_L000006_23 ' NEU4
+ long @C_skq81_696ddf2f__mkpath_L000006_23 ' NEU4
  mov r2, FP
  sub r2, #-(-72) ' reg ARG ADDRLi
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_sr6k_690ed9dc__mkleaf_L000002 ' CALL addrg
+ long @C_skq8_696ddf2f__mkleaf_L000002 ' CALL addrg
  mov r15, r0 ' CVI, CVU or LOAD
  cmp r15,  #0 wz
  jmp #BR_Z
- long @C_sr6k1_690ed9dc__mkpath_L000006_24 ' EQU4
+ long @C_skq81_696ddf2f__mkpath_L000006_24 ' EQU4
  cmp r15,  #6 wz
  jmp #BR_Z
- long @C_sr6k1_690ed9dc__mkpath_L000006_24 ' EQU4
+ long @C_skq81_696ddf2f__mkpath_L000006_24 ' EQU4
  mov r0, r15 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_sr6k1_690ed9dc__mkpath_L000006_7 ' JUMPV addrg
-C_sr6k1_690ed9dc__mkpath_L000006_23
+ long @C_skq81_696ddf2f__mkpath_L000006_7 ' JUMPV addrg
+C_skq81_696ddf2f__mkpath_L000006_23
  mov r22, FP
  sub r22, #-(-72) ' reg <- addrli
  adds r22, r19 ' ADDI/P (2)
@@ -221,13 +221,13 @@ C_sr6k1_690ed9dc__mkpath_L000006_23
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
  adds r19, #1 ' ADDI4 coni
-C_sr6k1_690ed9dc__mkpath_L000006_24
-C_sr6k1_690ed9dc__mkpath_L000006_17
+C_skq81_696ddf2f__mkpath_L000006_24
+C_skq81_696ddf2f__mkpath_L000006_17
  cmps r19, r17 wz,wc
  jmp #BR_B
- long @C_sr6k1_690ed9dc__mkpath_L000006_20 ' LTI4
+ long @C_skq81_696ddf2f__mkpath_L000006_20 ' LTI4
  mov r0, #0 ' reg <- coni
-C_sr6k1_690ed9dc__mkpath_L000006_7
+C_skq81_696ddf2f__mkpath_L000006_7
  jmp #POPM ' restore registers
  jmp #LODL
  long 608
@@ -249,7 +249,7 @@ C__mkdir ' <symbol:_mkdir>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_sr6k1_690ed9dc__mkpath_L000006
+ long @C_skq81_696ddf2f__mkpath_L000006
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
 ' C__mkdir_27 ' (symbol refcount = 0)
@@ -271,7 +271,7 @@ C__mkdirr ' <symbol:_mkdirr>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_sr6k1_690ed9dc__mkpath_L000006
+ long @C_skq81_696ddf2f__mkpath_L000006
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
 ' C__mkdirr_28 ' (symbol refcount = 0)

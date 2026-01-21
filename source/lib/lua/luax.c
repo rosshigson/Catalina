@@ -26,26 +26,6 @@
 #include "lauxlib.h"
 #include "lualib.h"
 
-#include "llex.h"
-#include "lparser.h"
-#include "lzio.h"
-
-LUAI_FUNC void luaX_init (lua_State *L) {
-  UNUSED(L);
-}
-
-LUAI_FUNC LClosure *luaY_parser (lua_State *L, ZIO *z, Mbuffer *buff,
-                                 Dyndata *dyd, const char *name, int firstchar) {
-  UNUSED(z);
-  UNUSED(buff);
-  UNUSED(name);
-  UNUSED(dyd);
-  UNUSED(firstchar);
-  lua_pushliteral(L,"parser not loaded");
-  lua_error(L);
-  return NULL;
-}
-
 #ifdef NODUMP
 #include "lundump.h"
 
@@ -672,7 +652,7 @@ static int pmain (lua_State *L) {
   }
   luaL_openlibs(L);  /* open standard libraries */
   createargtable(L, argv, argc, script);  /* create table 'arg' */
-  lua_gc(L, LUA_GCINC, 110, 0);  /* GC in incremental mode */
+  lua_gc(L, LUA_GCINC, 105, 0);  /* GC in incremental mode */
   lua_gc(L, LUA_GCRESTART);  /* ensure GC is started */
   if (!(args & has_E)) {  /* no option '-E'? */
     if (handle_luainit(L) != LUA_OK)  /* run LUA_INIT */

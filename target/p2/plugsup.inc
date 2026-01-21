@@ -317,15 +317,13 @@ INITIALIZE_PLUGINS
  call    #do_register
 #endif
 
-' wait for all plugins to initialize (exactly how long?)
-
 #if defined(INITIALIZE_RAM)
-
- // we use an unusual value (i.e. not 0 or -1) to try
- // and expose failures due to lack of initialization!
- mov     r0, ##$12345678 
+' use an unusual value (i.e. not 0 or -1) to try
+' and expose failures due to lack of initialization!
+' e.g. -CINITIALIZE_RAM=$12345678
+ mov     r0, ##INITIALIZE_RAM
  mov     r1, ##@sbrkinit
- rdlong  r2, ##FREE_MEM
+ mov     r2, ##HEAP_TOP
 .zero_loop
  wrlong  r0,r1
  add     r1, #4
@@ -333,6 +331,8 @@ INITIALIZE_PLUGINS
  if_b jmp #.zero_loop
 
 #endif
+
+' wait for all plugins to initialize (exactly how long?)
 
  _ret_ waitx   ##INITIALIZATION_DELAY
 

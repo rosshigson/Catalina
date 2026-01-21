@@ -43,7 +43,7 @@ cd sst
 call clean_all
 cd ..
 
-cd lua-5.4.4
+cd lua-5.4.8
 call clean_all
 cd ..
 

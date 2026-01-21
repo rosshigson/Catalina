@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_s57k_690edc20_unget_count_L000002 ' <symbol:unget_count>
+C_sq34_696de0e1_unget_count_L000002 ' <symbol:unget_count>
  long 0
 
 ' Catalina Export catalina_getc
@@ -31,16 +31,16 @@ C_catalina_getc ' <symbol:catalina_getc>
  mov r20, ##@C___stdin ' reg <- addrg
  cmp r22, r20 wz
  if_nz jmp #\C_catalina_getc_5  ' NEU4
- mov r22, ##@C_s57k_690edc20_unget_count_L000002
+ mov r22, ##@C_sq34_696de0e1_unget_count_L000002
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #0 wcz
  if_be jmp #\C_catalina_getc_7 ' LEI4
- mov r22, ##@C_s57k_690edc20_unget_count_L000002 ' reg <- addrg
+ mov r22, ##@C_sq34_696de0e1_unget_count_L000002 ' reg <- addrg
  rdlong r22, r22 ' reg <- INDIRI4 reg
  subs r22, #1 ' SUBI4 coni
- wrlong r22, ##@C_s57k_690edc20_unget_count_L000002 ' ASGNI4 addrg reg
+ wrlong r22, ##@C_sq34_696de0e1_unget_count_L000002 ' ASGNI4 addrg reg
  shl r22, #2 ' LSHI4 coni
- mov r20, ##@C_s57k1_690edc20_unget_buff_L000003 ' reg <- addrg
+ mov r20, ##@C_sq341_696de0e1_unget_buff_L000003 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdlong r22, r22 ' reg <- INDIRI4 reg
  mov RI, FP
@@ -100,17 +100,17 @@ C_catalina_ungetc ' <symbol:catalina_ungetc>
  mov r20, ##@C___stdin ' reg <- addrg
  cmp r22, r20 wz
  if_nz jmp #\C_catalina_ungetc_14  ' NEU4
- mov r22, ##@C_s57k_690edc20_unget_count_L000002
+ mov r22, ##@C_sq34_696de0e1_unget_count_L000002
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r22,  #10 wcz
  if_ae jmp #\C_catalina_ungetc_13 ' GEI4
- mov r22, ##@C_s57k_690edc20_unget_count_L000002 ' reg <- addrg
+ mov r22, ##@C_sq34_696de0e1_unget_count_L000002 ' reg <- addrg
  rdlong r22, r22 ' reg <- INDIRI4 reg
  mov r20, r22
  adds r20, #1 ' ADDI4 coni
- wrlong r20, ##@C_s57k_690edc20_unget_count_L000002 ' ASGNI4 addrg reg
+ wrlong r20, ##@C_sq34_696de0e1_unget_count_L000002 ' ASGNI4 addrg reg
  shl r22, #2 ' LSHI4 coni
- mov r20, ##@C_s57k1_690edc20_unget_buff_L000003 ' reg <- addrg
+ mov r20, ##@C_sq341_696de0e1_unget_buff_L000003 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  wrlong r3, r22 ' ASGNI4 reg reg
  jmp #\@C_catalina_ungetc_13 ' JUMPV addrg
@@ -134,7 +134,7 @@ C_catalina_fflush ' <symbol:catalina_fflush>
  calld PA,#PSHM
  long $400000 ' save registers
  mov r22, #0 ' reg <- coni
- wrlong r22, ##@C_s57k_690edc20_unget_count_L000002 ' ASGNI4 addrg reg
+ wrlong r22, ##@C_sq34_696de0e1_unget_count_L000002 ' ASGNI4 addrg reg
  mov r0, r22 ' CVI, CVU or LOAD
 ' C_catalina_fflush_18 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
@@ -146,7 +146,7 @@ C_catalina_fflush ' <symbol:catalina_fflush>
 DAT ' uninitialized data segment
 
  alignl ' align long
-C_s57k1_690edc20_unget_buff_L000003 ' <symbol:unget_buff>
+C_sq341_696de0e1_unget_buff_L000003 ' <symbol:unget_buff>
  byte 0[40]
 
 ' Catalina Code

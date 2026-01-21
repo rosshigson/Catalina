@@ -38,8 +38,8 @@ SET_SVC       = 97
 CHECK_SVC     = 98
 JOIN_SVC      = 99
 
-INVOKE_SVC   = 100
-QUIT_SVC     = 101
+INVOKE_SVC    = 100
+QUIT_SVC      = 101
 
 -- define the services implemented in the server:
 
@@ -66,6 +66,15 @@ service_index = {
 
   [INVOKE_SVC]    = "invoke",
   [QUIT_SVC]      = "quit"
+}
+
+-- this is used by ALOHA for WiFi services ...
+rpc_network = {
+  ["SSID"]       = "MyNetwork";     -- set to "" if this propeller offers the AP
+  ["PASSPHRASE"] = "TellMeASecret"; -- set to "" for a propeller AP
+
+  [INVOKE_SVC]   = "xxx.xxx.xxx.xxx";
+  [QUIT_SVC]     = "xxx.xxx.xxx.xxx";
 }
 
 -- define proxy calls for the services implemented by the server. The

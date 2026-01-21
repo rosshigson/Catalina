@@ -54,7 +54,7 @@ catapult rluax.c
 catapult rlua2.c
 catapult rlua2x.c
 catapult rluafx.c
-catapult sluarfx.c
+catapult sluarcx.c
 #
 export CATALINA_DEFINE=
 

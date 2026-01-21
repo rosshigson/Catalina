@@ -1,7 +1,7 @@
 /*
  * secondary segment:
  *    name="hub_function"
- *    address="0x76468"
+ *    address="0x7645C"
  *    stack="8000"
  *    mode="NMM"
  *    options="-lci -lthreads -C NO_FLOAT"
