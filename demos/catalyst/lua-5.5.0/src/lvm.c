@@ -31,6 +31,17 @@
 #include "ltm.h"
 #include "lvm.h"
 
+#ifdef __CATALINA_ENABLE_PSRAM
+#include "psram.h"
+#define ram_write psram_write
+#define ram_read psram_read
+#endif
+
+#ifdef __CATALINA_ENABLE_HYPER
+#include "hyper.h"
+#define ram_write hyper_write
+#define ram_read hyper_read
+#endif
 
 /*
 ** By default, use jump tables in the main interpreter loop on gcc
@@ -80,6 +91,133 @@
 
 #endif
 
+#if defined(__CATALINA_ENABLE_PSRAM) || defined(__CATALINA_ENABLE_HYPER)
+
+#define NUM_PAGES   4               // can change this to anything > 0
+
+#define PAGE_LOG_2  8               // change this number, not PAGE_SIZE
+
+#define PAGE_SIZE   (1<<PAGE_LOG_2) // size in longs, must be a power of 2
+
+#define MAX_AGE     9999            // this can be any any largish number
+
+#include <psram.h>
+
+typedef struct page {
+   uint32_t num;                // page number (for debugging!)
+   uint32_t phys;               // physical page number
+   uint32_t first;              // first address in page
+   uint32_t last;               // last address in page
+   uint32_t age;
+   uint32_t data[PAGE_SIZE];
+} page;
+
+static page *current = NULL;
+static page pages[NUM_PAGES];
+
+#define in_page(page, pc) (((pc)>>PAGE_LOG_2) == (page)->phys)
+
+#define in_current(pc) (in_page(current, pc))
+
+#define lookup_current(pc) (current->data[(pc - current->first)>>2])
+
+// set up initial page values
+void setup_pages() {
+   int p;
+   if (current == NULL) {
+      for (p = 0; p < NUM_PAGES; p++) {
+         pages[p].num = p;
+         pages[p].phys = 0;
+         pages[p].first = 0;
+         pages[p].age = MAX_AGE;
+      }
+      // set current page
+      current = &pages[0];
+      load_page(0, 0);
+      pages[0].age = 0;
+   }
+}
+
+// load a new page into the most suitable candidate (based on age)
+page *load_page(uint32_t pc) {
+   int best_p = 0;
+   int best_age = 0;
+   int p;
+   int i,j;
+   // find best candidate for reloading
+   for (p = 0; p < NUM_PAGES; p++) {
+      if (pages[p].age > best_age) {
+         best_p = p;
+         best_age = pages[p].age;
+      }
+      // age the pages
+      if (pages[p].age < MAX_AGE) {
+         pages[p].age++;
+      }
+   }
+   // read the page containing the pc to page p
+   pages[best_p].phys  = pc >> PAGE_LOG_2;
+   pages[best_p].first = pc & ~(PAGE_SIZE - 1);
+   ram_read(pages[best_p].data, (void *)pages[best_p].first, PAGE_SIZE*4);
+   #if 0
+      /* debug caching */
+      printf("\nPAGE %2d:PSYS %08X:FIRST %08X:FOR %08X:\n", 
+          best_p,  pages[best_p].phys, pages[best_p].first, pc);
+   #endif
+   return &pages[best_p];
+}
+
+// invalidate all pages containing data in an address range specified
+// by a start address and a size (must be used whenever new data is
+// loaded into PSRAM). If the current page is affected, it is reloaded.
+void invalidate_pages(uint32_t start, uint32_t size) {
+   int p, first, last;
+   int reload = 0;
+   int reload_addr = 0;
+
+   // calculate first and last page affected
+   first = start>>PAGE_LOG_2;
+   last  = (start + size - 1)>>PAGE_LOG_2;
+   // invalidate pages in the range, remembering if one of them is current
+   for (p = 0; p < NUM_PAGES; p++) {
+      if ((pages[p].phys >= first) && (pages[p].phys <= last)) {
+         if (&pages[p] == current) {
+            reload      = 1;
+            reload_addr = pages[p].phys<<PAGE_LOG_2;
+         }
+         pages[p].phys = 0;
+         pages[p].first = 0;
+         pages[p].age = MAX_AGE;
+      }
+   }
+   if (reload) {
+      current = load_page(reload_addr);
+      current->age = 0;
+   }
+}
+
+// return a pointer to the page if one containing the pc is loaded
+page *page_loaded(uint32_t pc) {
+   int p;
+   for (p = 0; p < NUM_PAGES; p++) {
+      if (in_page(&pages[p], pc)) {
+         pages[p].age = 0; // page recently accessed
+         return &pages[p];
+      }
+   }
+   return NULL;
+}
+
+#define load_inst(dst, src) \
+   if (!in_current((unsigned int)(src))) { \
+      if (!(current = page_loaded((unsigned int)(src)))) { \
+         current = load_page((unsigned int)(src)); \
+      } \
+   } \
+   current->age = 0; /* mark page as recently used */ \
+   dst = lookup_current((unsigned int)(src));
+
+#endif
 
 /*
 ** Try to convert a value from string to a number value.
@@ -855,11 +993,24 @@ static void pushclosure (lua_State *L, Proto *p, UpVal **encup, StkId base,
 void luaV_finishOp (lua_State *L) {
   CallInfo *ci = L->ci;
   StkId base = ci->func.p + 1;
+#if defined(__CATALINA_ENABLE_PSRAM) || defined(__CATALINA_ENABLE_HYPER)
+  Instruction inst;
+  OpCode op;
+  load_inst(inst, (ci->u.l.savedpc - 1));  /* interrupted instruction */
+  op = GET_OPCODE(inst);
+#else
   Instruction inst = *(ci->u.l.savedpc - 1);  /* interrupted instruction */
   OpCode op = GET_OPCODE(inst);
+#endif
   switch (op) {  /* finish its execution */
     case OP_MMBIN: case OP_MMBINI: case OP_MMBINK: {
+#if defined(__CATALINA_ENABLE_PSRAM) || defined(__CATALINA_ENABLE_HYPER)
+      Instruction inst;
+      load_inst(inst, (ci->u.l.savedpc - 2));
+      setobjs2s(L, base + GETARG_A(inst), --L->top.p);
+#else
       setobjs2s(L, base + GETARG_A(*(ci->u.l.savedpc - 2)), --L->top.p);
+#endif
       break;
     }
     case OP_UNM: case OP_BNOT: case OP_LEN:
@@ -874,7 +1025,15 @@ void luaV_finishOp (lua_State *L) {
     case OP_EQ: {  /* note that 'OP_EQI'/'OP_EQK' cannot yield */
       int res = !l_isfalse(s2v(L->top.p - 1));
       L->top.p--;
+#if defined(__CATALINA_ENABLE_PSRAM) || defined(__CATALINA_ENABLE_HYPER)
+      {
+         Instruction inst;
+         load_inst(inst, ci->u.l.savedpc);
+         lua_assert(inst == OP_JMP);
+      }
+#else
       lua_assert(GET_OPCODE(*ci->u.l.savedpc) == OP_JMP);
+#endif
       if (res != GETARG_k(inst))  /* condition failed? */
         ci->u.l.savedpc++;  /* skip jump instruction */
       break;
@@ -1128,7 +1287,15 @@ void luaV_finishOp (lua_State *L) {
 
 
 /* for test instructions, execute the jump instruction that follows it */
+#if defined(__CATALINA_ENABLE_PSRAM) || defined(__CATALINA_ENABLE_HYPER)
+#define donextjump(ci) { \
+   Instruction ni; \
+   load_inst(ni, pc); \
+   dojump(ci, ni, 1); \
+}
+#else
 #define donextjump(ci)	{ Instruction ni = *pc; dojump(ci, ni, 1); }
+#endif
 
 /*
 ** do a conditional jump: skip next instruction if 'cond' is not what
@@ -1182,6 +1349,16 @@ void luaV_finishOp (lua_State *L) {
 
 
 /* fetch an instruction and prepare its execution */
+#if defined(__CATALINA_ENABLE_PSRAM) || defined(__CATALINA_ENABLE_HYPER)
+#define vmfetch()	{ \
+  if (l_unlikely(trap)) {  /* stack reallocation or hooks? */ \
+    trap = luaG_traceexec(L, pc);  /* handle hooks */ \
+    updatebase(ci);  /* correct stack */ \
+  } \
+  load_inst(i, pc); \
+  pc++; \
+}
+#else
 #define vmfetch()	{ \
   if (l_unlikely(trap)) {  /* stack reallocation or hooks? */ \
     trap = luaG_traceexec(L, pc);  /* handle hooks */ \
@@ -1189,6 +1366,7 @@ void luaV_finishOp (lua_State *L) {
   } \
   i = *(pc++); \
 }
+#endif
 
 #define vmdispatch(o)	switch(o)
 #define vmcase(l)	case l:
@@ -1210,6 +1388,9 @@ void luaV_execute (lua_State *L, CallInfo *ci) {
   cl = ci_func(ci);
   k = cl->p->k;
   pc = ci->u.l.savedpc;
+#if defined(__CATALINA_ENABLE_PSRAM) || defined(__CATALINA_ENABLE_HYPER)
+  setup_pages(); /* load the first page of code from PSRAM */
+#endif
   if (l_unlikely(trap))
     trap = luaG_tracecall(L);
   base = ci->func.p + 1;
@@ -1256,7 +1437,15 @@ void luaV_execute (lua_State *L, CallInfo *ci) {
       vmcase(OP_LOADKX) {
         StkId ra = RA(i);
         TValue *rb;
+#if defined(__CATALINA_ENABLE_PSRAM) || defined(__CATALINA_ENABLE_HYPER)
+        {
+           Instruction in;
+           load_inst(in,pc);
+           rb = k + GETARG_Ax(in); pc++;
+        }
+#else
         rb = k + GETARG_Ax(*pc); pc++;
+#endif
         setobj2s(L, ra, rb);
         vmbreak;
       }
@@ -1412,9 +1601,25 @@ void luaV_execute (lua_State *L, CallInfo *ci) {
         if (b > 0)
           b = 1u << (b - 1);  /* hash size is 2^(b - 1) */
         if (TESTARG_k(i)) {  /* non-zero extra argument? */
+#if defined(__CATALINA_ENABLE_PSRAM) || defined(__CATALINA_ENABLE_HYPER)
+          {
+            Instruction in;
+            load_inst(in,pc);
+            lua_assert(GETARG_Ax(in) != 0);
+          }
+#else
           lua_assert(GETARG_Ax(*pc) != 0);
+#endif
           /* add it to array size */
+#if defined(__CATALINA_ENABLE_PSRAM) || defined(__CATALINA_ENABLE_HYPER)
+          {
+             Instruction in;
+             load_inst(in,pc);
+             c += cast_uint(GETARG_Ax(in)) * (MAXARG_vC + 1);
+          }
+#else
           c += cast_uint(GETARG_Ax(*pc)) * (MAXARG_vC + 1);
+#endif
         }
         pc++;  /* skip extra argument */
         L->top.p = ra + 1;  /* correct top in case of emergency GC */
@@ -1555,31 +1760,68 @@ void luaV_execute (lua_State *L, CallInfo *ci) {
       }
       vmcase(OP_MMBIN) {
         StkId ra = RA(i);
+#if defined(__CATALINA_ENABLE_PSRAM) || defined(__CATALINA_ENABLE_HYPER)
+        Instruction pi;
+        TValue *rb;
+        TMS tm;
+        StkId result;
+        load_inst(pi, (pc - 2));  /* original arith. expression */
+        rb = vRB(i);
+        tm = (TMS)GETARG_C(i);
+        result = RA(pi);
+#else
         Instruction pi = *(pc - 2);  /* original arith. expression */
         TValue *rb = vRB(i);
         TMS tm = (TMS)GETARG_C(i);
         StkId result = RA(pi);
+#endif
         lua_assert(OP_ADD <= GET_OPCODE(pi) && GET_OPCODE(pi) <= OP_SHR);
         Protect(luaT_trybinTM(L, s2v(ra), rb, result, tm));
         vmbreak;
       }
       vmcase(OP_MMBINI) {
         StkId ra = RA(i);
+#if defined(__CATALINA_ENABLE_PSRAM) || defined(__CATALINA_ENABLE_HYPER)
+        Instruction pi;
+        int imm;
+        TMS tm;
+        int flip;
+        StkId result;
+        load_inst(pi, (pc - 2));  /* original arith. expression */
+        imm = GETARG_sB(i);
+        tm = (TMS)GETARG_C(i);
+        flip = GETARG_k(i);
+        result = RA(pi);
+#else
         Instruction pi = *(pc - 2);  /* original arith. expression */
         int imm = GETARG_sB(i);
         TMS tm = (TMS)GETARG_C(i);
         int flip = GETARG_k(i);
         StkId result = RA(pi);
+#endif
         Protect(luaT_trybiniTM(L, s2v(ra), imm, flip, result, tm));
         vmbreak;
       }
       vmcase(OP_MMBINK) {
         StkId ra = RA(i);
+#if defined(__CATALINA_ENABLE_PSRAM) || defined(__CATALINA_ENABLE_HYPER)
+        Instruction pi;
+        TValue *imm;
+        TMS tm;
+        int flip;
+        StkId result;
+        load_inst(pi, (pc - 2));  /* original arith. expression */
+        imm = KB(i);
+        tm = (TMS)GETARG_C(i);
+        flip = GETARG_k(i);
+        result = RA(pi);
+#else
         Instruction pi = *(pc - 2);  /* original arith. expression */
         TValue *imm = KB(i);
         TMS tm = (TMS)GETARG_C(i);
         int flip = GETARG_k(i);
         StkId result = RA(pi);
+#endif
         Protect(luaT_trybinassocTM(L, s2v(ra), imm, flip, result, tm));
         vmbreak;
       }
@@ -1868,7 +2110,12 @@ void luaV_execute (lua_State *L, CallInfo *ci) {
         /* create to-be-closed upvalue (if closing var. is not nil) */
         halfProtect(luaF_newtbcupval(L, ra + 2));
         pc += GETARG_Bx(i);  /* go to end of the loop */
+#if defined(__CATALINA_ENABLE_PSRAM) || defined(__CATALINA_ENABLE_HYPER)
+        load_inst(i, pc); /* fetch next instruction */
+        pc++;
+#else
         i = *(pc++);  /* fetch next instruction */
+#endif
         lua_assert(GET_OPCODE(i) == OP_TFORCALL && ra == RA(i));
         goto l_tforcall;
       }
@@ -1887,7 +2134,12 @@ void luaV_execute (lua_State *L, CallInfo *ci) {
         L->top.p = ra + 3 + 3;
         ProtectNT(luaD_call(L, ra + 3, GETARG_C(i)));  /* do the call */
         updatestack(ci);  /* stack may have changed */
+#if defined(__CATALINA_ENABLE_PSRAM) || defined(__CATALINA_ENABLE_HYPER)
+        load_inst(i, pc);
+        pc++; /* go to next instruction */
+#else
         i = *(pc++);  /* go to next instruction */
+#endif
         lua_assert(GET_OPCODE(i) == OP_TFORLOOP && ra == RA(i));
         goto l_tforloop;
       }}
@@ -1909,7 +2161,15 @@ void luaV_execute (lua_State *L, CallInfo *ci) {
           L->top.p = ci->top.p;  /* correct top in case of emergency GC */
         last += n;
         if (TESTARG_k(i)) {
+#if defined(__CATALINA_ENABLE_PSRAM) || defined(__CATALINA_ENABLE_HYPER)
+          { 
+             Instruction in;
+             load_inst(in,pc);
+             last += cast_uint(GETARG_Ax(in)) * (MAXARG_vC + 1);
+          }
+#else
           last += cast_uint(GETARG_Ax(*pc)) * (MAXARG_vC + 1);
+#endif
           pc++;
         }
         /* when 'n' is known, table should have proper size */

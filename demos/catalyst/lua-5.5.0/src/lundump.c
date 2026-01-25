@@ -25,6 +25,17 @@
 #include "lundump.h"
 #include "lzio.h"
 
+#ifdef __CATALINA_ENABLE_PSRAM
+#include "psram.h"
+#define ram_write psram_write
+#define ram_read psram_read
+#endif
+
+#ifdef __CATALINA_ENABLE_HYPER
+#include "hyper.h"
+#define ram_write hyper_write
+#define ram_read hyper_read
+#endif
 
 #if !defined(luai_verifycode)
 #define luai_verifycode(L,f)  /* empty */
@@ -183,7 +194,47 @@ static void loadString (LoadState *S, Proto *p, TString **sl) {
   luaC_objbarrierback(L, obj2gco(S->h), ts);
 }
 
+#if defined(__CATALINA_ENABLE_PSRAM) || defined(__CATALINA_ENABLE_HYPER)
+void invalidate_pages(uint32_t start, uint32_t size);
 
+static void loadCode (LoadState *S, Proto *f) {
+  #define CHUNK_SIZE 1024
+  static uint32_t PSRAM_ADDR = 0;
+  char buff[CHUNK_SIZE*sizeof(Instruction)];
+  int n = loadInt(S);
+  #if 0 
+     /* debug caching */
+     printf("loading %d instructions to %06X\n", n, PSRAM_ADDR);
+  #endif
+  loadAlign(S, sizeof(f->code[0]));
+  if (S->fixed) {
+    #if 0 
+       /* debug caching */
+       printf("fixed buffer - not cached\n"));
+    #endif
+    f->code = getaddr(S, n, Instruction);
+    f->sizecode = n;
+  }
+  else {
+    f->code = (unsigned int *)PSRAM_ADDR;
+    f->sizecode = n;
+    while (n > 0) {
+       int chunk = ((n > CHUNK_SIZE) ? CHUNK_SIZE : n);
+       int bytes = chunk*sizeof(Instruction);
+       loadVector(S, buff, bytes);
+       #if 0 
+          /* debug caching */
+          printf("writing %d bytes to %06X\n", bytes, PSRAM_ADDR);
+       #endif
+       ram_write(buff, (void *)PSRAM_ADDR, bytes);
+       // invalidate any cached pages containing the data just written
+       invalidate_pages(PSRAM_ADDR, bytes);
+       PSRAM_ADDR += bytes;
+       n -= chunk;
+    }
+  }
+}
+#else
 static void loadCode (LoadState *S, Proto *f) {
   int n = loadInt(S);
   loadAlign(S, sizeof(f->code[0]));
@@ -197,7 +248,7 @@ static void loadCode (LoadState *S, Proto *f) {
     loadVector(S, f->code, n);
   }
 }
-
+#endif
 
 static void loadFunction(LoadState *S, Proto *f);
 

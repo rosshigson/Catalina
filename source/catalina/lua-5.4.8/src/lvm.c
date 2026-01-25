@@ -966,7 +966,13 @@ void luaV_finishOp (lua_State *L) {
 #endif
   switch (op) {  /* finish its execution */
     case OP_MMBIN: case OP_MMBINI: case OP_MMBINK: {
+#if defined(__CATALINA_ENABLE_PSRAM) || defined(__CATALINA_ENABLE_HYPER)
+      Instruction inst;
+      load_inst(inst, (ci->u.l.savedpc - 2));
+      setobjs2s(L, base + GETARG_A(inst), --L->top.p);
+#else
       setobjs2s(L, base + GETARG_A(*(ci->u.l.savedpc - 2)), --L->top.p);
+#endif
       break;
     }
     case OP_UNM: case OP_BNOT: case OP_LEN:
@@ -1732,21 +1738,47 @@ void luaV_execute (lua_State *L, CallInfo *ci) {
       }
       vmcase(OP_MMBINI) {
         StkId ra = RA(i);
+#if defined(__CATALINA_ENABLE_PSRAM) || defined(__CATALINA_ENABLE_HYPER)
+        Instruction pi;
+        int imm;
+        TMS tm;
+        int flip;
+        StkId result;
+        load_inst(pi, (pc - 2));  /* original arith. expression */
+        imm = GETARG_sB(i);
+        tm = (TMS)GETARG_C(i);
+        flip = GETARG_k(i);
+        result = RA(pi);
+#else
         Instruction pi = *(pc - 2);  /* original arith. expression */
         int imm = GETARG_sB(i);
         TMS tm = (TMS)GETARG_C(i);
         int flip = GETARG_k(i);
         StkId result = RA(pi);
+#endif
         Protect(luaT_trybiniTM(L, s2v(ra), imm, flip, result, tm));
         vmbreak;
       }
       vmcase(OP_MMBINK) {
         StkId ra = RA(i);
+#if defined(__CATALINA_ENABLE_PSRAM) || defined(__CATALINA_ENABLE_HYPER)
+        Instruction pi;
+        TValue *imm;
+        TMS tm;
+        int flip;
+        StkId result;
+        load_inst(pi, (pc - 2));  /* original arith. expression */
+        imm = KB(i);
+        tm = (TMS)GETARG_C(i);
+        flip = GETARG_k(i);
+        result = RA(pi);
+#else
         Instruction pi = *(pc - 2);  /* original arith. expression */
         TValue *imm = KB(i);
         TMS tm = (TMS)GETARG_C(i);
         int flip = GETARG_k(i);
         StkId result = RA(pi);
+#endif
         Protect(luaT_trybinassocTM(L, s2v(ra), imm, flip, result, tm));
         vmbreak;
       }

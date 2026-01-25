@@ -200,7 +200,7 @@ New Functionality
    yet mature or stable enough to replace Catalina's fully integrated 
    version, which remains at 5.4.X. However, Lua 5.5.0 is fully functional 
    when used stand-alone, apart from the capabilities enabled by defining the 
-   ENABLE_PSRAM or ENABLE HYPER Catalina symbols when compiling Lua. Those 
+   ENABLE_PSRAM or ENABLE_HYPER Catalina symbols when compiling Lua. Those 
    capabilities are deeply embedded in the internals of Lua 5.4.X, were 
    developed before the more general capability of using PSRAM as XMM RAM 
    was added, and are deprecated in this release. They are likely to be 

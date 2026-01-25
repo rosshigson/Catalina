@@ -284,7 +284,9 @@ lu_mem luaF_protosize (Proto *p) {
 
 void luaF_freeproto (lua_State *L, Proto *f) {
   if (!(f->flag & PF_FIXED)) {
+#if !defined(__CATALINA_ENABLE_PSRAM) && !defined(__CATALINA_ENABLE_HYPER)
     luaM_freearray(L, f->code, cast_sizet(f->sizecode));
+#endif
     luaM_freearray(L, f->lineinfo, cast_sizet(f->sizelineinfo));
     luaM_freearray(L, f->abslineinfo, cast_sizet(f->sizeabslineinfo));
   }
