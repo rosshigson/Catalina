@@ -1,6 +1,12 @@
 /*
  * ll_s_p2.c : run multiple parallelized secondary programs.
  *             
+ * Compile this program with catapult. For example:
+ *
+ *    catapult ll_s_p2.c
+ *
+ * See the document 'Getting Started with Catapult' for details.
+ *             
  * NOTES: This file is configured for a Propeller 2 P2_EDGE board  
  *        using catapult pragmas. The primary program is an XMM program, 
  *        so must be loaded and executed using the xmm loader, built with 
@@ -45,7 +51,7 @@ typedef struct func_2 {
    int go;
 } func_2_t;
 
-#pragma catapult secondary func_1 mode(CMM) address(0x6FC4C) stack(20000) options (-Z -lthreads)
+#pragma catapult secondary func_1 mode(CMM) address(0x6FC48) stack(20000) options (-Z -lthreads)
 
 // any includes or functions required by secondary here ...
 
@@ -88,7 +94,7 @@ void func_1(func_1_t *s) {
 
 }
  
-#pragma catapult secondary func_2 mode(LMM) address(0x65CD0) stack(20000) options(-Z -lthreads)
+#pragma catapult secondary func_2 mode(LMM) address(0x65CCC) stack(20000) options(-Z -lthreads)
 
 // any includes or functions required by secondary here ...
 

@@ -1,6 +1,12 @@
 /*
  * thread_p2.c : run threaded secondary programs at a reserved Hub address.
  *             
+ * Compile this program with catapult. For example:
+ *
+ *    catapult thread_p2.c
+ *
+ * See the document 'Getting Started with Catapult' for details.
+ * 
  * NOTE: This file is configured for a Propeller 2 P2_EDGE board  
  *       using catapult pragmas. The primary program is an XMM program, 
  *       so must be loaded and executed using the xmm loader, built with 
@@ -32,7 +38,7 @@ typedef struct func_2 {
    float c;
 } func_2_t;
 
-#pragma catapult secondary func_1 mode(CMM) address(0x77EC0) stack(1000)
+#pragma catapult secondary func_1 mode(CMM) address(0x77EDC) stack(1000)
 
 // any includes or functions required by secondary here ...
 
@@ -42,7 +48,7 @@ void func_1(func_1_t *s) {
    s->c  = (s->a + s->b);
 }
  
-#pragma catapult secondary func_2 mode(LMM) address(0x71FC4) stack(20000) options(-lthreads)
+#pragma catapult secondary func_2 mode(LMM) address(0x71FE0) stack(20000) options(-lthreads)
 
 // any includes or functions required by secondary here ...
 

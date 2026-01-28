@@ -1,7 +1,13 @@
 /*
- * ll_p_p2.c : run a parallelized primary program.
+ * ll_p_p1.c : run a parallelized primary program.
  *             
- * NOTES: This file is configured for a Propeller 2 C3 board with a serial
+ * Compile this program with catapult. For example:
+ *
+ *    catapult ll_p_p1.c
+ *
+ * See the document 'Getting Started with Catapult' for details.
+ *             
+ * NOTES: This file is configured for a Propeller 1 C3 board with a serial
  *        HMI using catapult pragmas. 
  *                   
  *        The output from the parallelized primary will be garbled. This is 

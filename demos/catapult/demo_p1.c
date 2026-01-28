@@ -1,6 +1,12 @@
 /*
  * demo_p1.c : run secondary programs at a fixed Hub address.
  *                   
+ * Compile this program with catapult. For example:
+ *
+ *    catapult demo_p1.c
+ *
+ * See the document 'Getting Started with Catapult' for details.
+ *             
  * NOTE: This file is configured for a Propeller 1 C3 board,  
  *       a serial HMI and address 0x4000 using the catapult 
  *       pragmas.
@@ -71,11 +77,16 @@ void main() {
    func_2_t args_2;
    int cog;
 
+   // delay in case of external terminal emulator
+   msleep(1000); 
+
    args_1.a = 1;
    args_1.b = 2;
    args_1.c = 0;
 
-   t_string(1, "starting ...\n\n");
+   t_string(1, "main running on cog ");
+   t_integer(1, _cogid());
+   t_string(1, "\n\n");
 
    FIXED_START(func_1, args_1, ANY_COG, cog);
    pause();

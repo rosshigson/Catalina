@@ -1,6 +1,12 @@
 /*
  * ll_s_p1.c : run one parallelized secondary program.
  *             
+ * Compile this program with catapult. For example:
+ *
+ *    catapult ll_s_p1.c
+ *
+ * See the document 'Getting Started with Catapult' for details.
+ *             
  * NOTES: This file is configured for a Propeller 1 C3 board with a serial  
  *        HMI using catapult pragmas. The primary program is an XMM program, 
  *        so must be loaded and executed using the xmm loader, built with 

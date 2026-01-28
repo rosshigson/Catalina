@@ -30,6 +30,8 @@
  * specified in the secondary pragma - but the program will tell you what     *
  * address to use when you compile and execute it.                            *
  *                                                                            *
+ * See the document 'Getting Started with Catapult' for details.              *
+ *                                                                            *
  ******************************************************************************/
 
 #pragma catapult common options(-W-w -p2 -C P2_EDGE -C SIMPLE -C NO_ARGS -lc -lmc)

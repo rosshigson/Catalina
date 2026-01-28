@@ -13,7 +13,7 @@
  *   catapult lua_p1.c                                                        *
  *                                                                            *
  * Before loading, execute 'build_utilities' to build the appropriate XMM     *
- * loader (for a C3 with a 1K cache), and then load and execute the program  *
+ * loader (for a C3 with a 1K cache), and then load and execute the program   *
  * with a command like:                                                       *
  *                                                                            *
  *   payload -o2 -i xmm lua_p1                                                *
@@ -21,6 +21,8 @@
  * Note that if you modify the program, you will probably have to modify the  *
  * address specified in the secondary pragma - but the program will tell you  *
  * what address to use when you compile and execute it.                       *
+ *                                                                            *
+ * See the document 'Getting Started with Catapult' for details.              *
  *                                                                            *
  ******************************************************************************/
 

@@ -1,6 +1,12 @@
 /*
  * error_p2.c : run secondary programs at reserved Hub addresses.
  *             
+ * Compile this program with catapult. For example:
+ *
+ *    catapult error_p2.c
+ *
+ * See the document 'Getting Started with Catapult' for details.
+ *             
  * NOTE: This file is configured for a Propeller 2 P2_EDGE board
  *       using the catapult common pragma.  
  *                   
@@ -82,11 +88,16 @@ void main() {
 
    RESERVE_SPACE(func_1); // reserve space for func_1
 
+   // delay in case of external terminal emulator
+   msleep(1000); 
+
    args_1.a = 1;
    args_1.b = 2;
    args_1.c = 0;
 
-   t_string(1, "starting ...\n\n");
+   t_string(1, "main running on cog ");
+   t_integer(1, _cogid());
+   t_string(1, "\n\n");
 
    t_string(1, "func_1 address = ");
    t_hex(1, (int)RESERVED_ADDRESS(func_1));

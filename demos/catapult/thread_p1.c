@@ -1,6 +1,12 @@
 /*
  * thread_p1.c : run a threaded secondary program at a reserved Hub address.
  *             
+ * Compile this program with catapult. For example:
+ *
+ *    catapult thread_p1.c
+ *
+ * See the document 'Getting Started with Catapult' for details.
+ * 
  * NOTE: This file is configured for a Propeller 1 C3 board and 
  *       a serial HMI using catapult pragmas. The primary program 
  *       is an XMM program, so must be loaded and executed using the
