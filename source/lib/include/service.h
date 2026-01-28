@@ -123,7 +123,7 @@ void _register_services(int lock, svc_list_t list);
 typedef void (*background)(void);
 
 // use _dispatch_C if no C background task is required
-#define _dispatch_C(list) _dispatch_C_bg(list, (bg)NULL)
+#define _dispatch_C(list) _dispatch_C_bg(list, (background)NULL)
 
 // use _dispatch_C_bg if a C background task is required
 void _dispatch_C_bg(svc_list_t list, background bg);
