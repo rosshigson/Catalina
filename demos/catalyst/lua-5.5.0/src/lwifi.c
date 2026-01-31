@@ -2,6 +2,10 @@
 ** luawifi API
 */
 
+#define LUA_LIB
+
+#include "lprefix.h"
+
 #include "lua.h"
 #include "lauxlib.h"
 #include <string.h>
@@ -373,7 +377,7 @@ static int lwifi_JOIN( lua_State *L ) {
  * register structs and functions *
  **********************************/
 
-LUALIB_API int luaopen_wifi( lua_State *L ) {
+LUAMOD_API int luaopen_wifi( lua_State *L ) {
 
   /* register luawifi functions */
   luaL_newlib( L, luawifi_funcs );

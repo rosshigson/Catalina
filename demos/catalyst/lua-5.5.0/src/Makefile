@@ -33,7 +33,7 @@ CMCFLAGS=
 PLATS= guess aix bsd c89 freebsd generic ios linux linux-readline macosx mingw posix solaris
 
 LUA_A=	liblua.a
-CORE_O=	lapi.o lcode.o lctype.o ldebug.o ldo.o ldump.o lfunc.o lgc.o llex.o lmem.o lobject.o lopcodes.o lparser.o lstate.o lstring.o ltable.o ltm.o lundump.o lvm.o lzio.o linit.o
+CORE_O=	lapi.o lcode.o lctype.o ldebug.o ldo.o ldump.o lfunc.o lgc.o llex.o lmem.o lobject.o lopcodes.o lparser.o lstate.o lstring.o ltable.o ltm.o lundump.o lvm.o lzio.o linit.o lprop.o lhmi.o lservice.o lserial.o lwifi.o
 COREM_O= lthreads.o lthrsch.o 
 LIB_O=	lauxlib.o lbaselib.o lcorolib.o ldblib.o liolib.o lmathlib.o loadlib.o loslib.o lstrlib.o ltablib.o lutf8lib.o 
 BASE_O= $(CORE_O) $(COREM_O) $(LIB_O) $(MYOBJS)
@@ -170,13 +170,13 @@ SunOS solaris:
 
 # Compiler modules may use special flags.
 luax.o:
-	$(CC) $(CFLAGS) $(CMCFLAGS) -D LUA_LUAX -c lua.c
+	$(CC) $(CFLAGS) $(CMCFLAGS) -D LUA_LUAX -c lua.c -o luax.o
 
 mlua.o:
-	$(CC) $(CFLAGS) $(CMCFLAGS) -D LUA_THREADS -c lua.c
+	$(CC) $(CFLAGS) $(CMCFLAGS) -D LUA_THREADS -c lua.c -o mlua.o
 
 mluax.o:
-	$(CC) $(CFLAGS) $(CMCFLAGS) -D LUA_LUAX -D LUA_THREADS -c lua.c
+	$(CC) $(CFLAGS) $(CMCFLAGS) -D LUA_LUAX -D LUA_THREADS -c lua.c -o mluax.o
 
 llex.o:
 	$(CC) $(CFLAGS) $(CMCFLAGS) -c llex.c

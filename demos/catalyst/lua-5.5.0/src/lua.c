@@ -772,13 +772,18 @@ static void doREPL (lua_State *L) {
 
 #if !defined(luai_openlibs)
 
-#if defined(LUA_THREADS)
+#if defined(__CATALINA_LUA_NO_OPT)
 /*
-** when loading the Catalina threads library, do not load 
+** when -C LUA_NO_OPT  is specified, do not load the coroutine,
+** package, debug or utf8 libraries (this is done to save space)
+*/
+#define luai_openlibs(L)	luaL_openselectedlibs(L, ~(LUA_DBLIBK|LUA_UTF8LIBK|LUA_COLIBK|LUA_LOADLIBK), 0)
+#elif defined(LUA_THREADS)
+/*
+** when loading the Catalina threads library is specified, do not load 
 ** the debug or utf8 libraries (this is done to save space)
 */
 #define luai_openlibs(L)	luaL_openselectedlibs(L, ~(LUA_DBLIBK|LUA_UTF8LIBK), 0)
-//#define luai_openlibs(L)	luaL_openselectedlibs(L, ~0, 0)
 #else
 #define luai_openlibs(L)	luaL_openselectedlibs(L, ~0, 0)
 #endif
@@ -790,19 +795,19 @@ static void doREPL (lua_State *L) {
 **
 */
 #if defined(__CATALINA_LUA_LINENOISE)
-LUALIB_API int (luaopen_linenoise) (lua_State *L);
+LUAMOD_API int (luaopen_linenoise) (lua_State *L);
 #endif
 
 #if defined(LUA_PROP)
-LUALIB_API int (luaopen_propeller) (lua_State *L);
+LUAMOD_API int (luaopen_propeller) (lua_State *L);
 #endif
 
 #if defined (LUA_PROP)
-LUALIB_API int (luaopen_hmi) (lua_State *L);
+LUAMOD_API int (luaopen_hmi) (lua_State *L);
 #endif
 
 #if defined(LUA_THREADS)
-LUALIB_API int (luaopen_threads) (lua_State *L);
+LUAMOD_API int (luaopen_threads) (lua_State *L);
 #endif
 
 /*
@@ -879,7 +884,7 @@ static int pmain (lua_State *L) {
 int main (int argc, char **argv) {
   int status, result;
   lua_State *L = luaL_newstate();  /* create state */
-#if defined(LUA_THREADS)
+#if defined(LUA_THREADS) && defined(__CATALINA__)
    /*
     * If multi-threading or multi-processing, we must initial initialize the 
     * lock pool (factories will be initialized by the factory foreman)

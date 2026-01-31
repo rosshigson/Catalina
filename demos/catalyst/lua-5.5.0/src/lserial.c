@@ -2,6 +2,10 @@
 ** luaserial API
 */
 
+#define LUA_LIB
+
+#include "lprefix.h"
+
 #include "lua.h"
 #include "lauxlib.h"
 #include <string.h>

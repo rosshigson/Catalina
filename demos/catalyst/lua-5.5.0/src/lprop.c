@@ -2,6 +2,10 @@
 ** luapropeller API
 */
 
+#define LUA_LIB
+
+#include "lprefix.h"
+
 #include "lua.h"
 #include "lauxlib.h"
 #include <string.h>
@@ -62,7 +66,7 @@ static int propeller_mount( lua_State *L );
 static int propeller_scan( lua_State *L );
 static int propeller_execute( lua_State *L );
 
-LUALIB_API int luaopen_propeller( lua_State *L );
+LUAMOD_API int luaopen_propeller( lua_State *L );
 
 /* luaprop function registration array */
 static const struct luaL_Reg luapropeller_funcs[] = {
@@ -541,7 +545,7 @@ static int propeller_execute( lua_State *L ) {
  * register structs and functions *
  **********************************/
 
-LUALIB_API int luaopen_propeller( lua_State *L ) {
+LUAMOD_API int luaopen_propeller( lua_State *L ) {
 
   /* register luapropeller functions */
   luaL_newlib( L, luapropeller_funcs );

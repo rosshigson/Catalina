@@ -3,6 +3,10 @@
 ** See Copyright Notice in luathread.h
 */
 
+#define LUA_LIB
+
+#include "lprefix.h"
+
 /* 
  * this is an extensively modified version of luaproc.c
  */
@@ -240,10 +244,10 @@ static int threads_version( lua_State *L );
 static int threads_factories( lua_State *L );
 static int threads_gc( lua_State *L );
 
-LUALIB_API int luaopen_threads( lua_State *L );
+LUAMOD_API int luaopen_threads( lua_State *L );
 static int luathread_loadlib( lua_State *L ); 
 
-LUALIB_API int luaopen_propeller( lua_State *L );
+LUAMOD_API int luaopen_propeller( lua_State *L );
 
 /* luathread function registration array */
 static const struct luaL_Reg luathread_funcs[] = {
@@ -2398,7 +2402,7 @@ static void luathread_openlualibs( lua_State *L ) {
 
 }
 
-LUALIB_API int luaopen_threads( lua_State *L ) {
+LUAMOD_API int luaopen_threads( lua_State *L ) {
 
    /* register luathread functions */
    luaL_newlib( L, luathread_funcs );
