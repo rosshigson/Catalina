@@ -36,6 +36,7 @@ function Thread(me, next, count)
         t.wait(me)
         t.output(me)
         t.unlock(me)
+        t.msleep(250) -- minimize race condition!
         t.signal(next)
         count = count-1
      until count == 0
