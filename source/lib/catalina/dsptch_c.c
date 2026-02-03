@@ -1,8 +1,5 @@
 #include <service.h>
 
-// use _dispatch_C if no background task is required
-#define _dispatch_C(list) _dispatch_C_bg(list, (bg)NULL)
-
 // use _dispatch_C_bg if a background task is required
 void _dispatch_C_bg(svc_list_t list, background bg) {
    request_t *rqst_ptr = REQUEST_BLOCK(_cogid());

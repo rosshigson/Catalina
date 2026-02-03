@@ -636,7 +636,9 @@ void sched_wait( void ) {
 
   pthread_yield();
 
+#if defined(__CATALINA__)
   /* in case there are no processes to yield to, do not monopolize locks */
   pthread_msleep(1);
+#endif
 
 }

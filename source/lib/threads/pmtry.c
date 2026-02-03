@@ -15,11 +15,9 @@ int pthread_mutex_trylock(pthread_mutex_t *mutex) {
       return EINVAL;
    }
 
-   _thread_stall();
-   if (mutex->lock <= 0) {
-      mutex->lock = _thread_locknew(_Pthread_Pool);
-   }
-   _thread_allow();
+   // ensure the lock pool has been initialized, and 
+   // that a lock has been allocated ...
+   _pthread_init_lock_pool(&mutex->lock);
 
    if (mutex->lock == -1) {
       errno = ENOMEM;
