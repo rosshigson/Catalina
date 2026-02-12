@@ -73,22 +73,22 @@ int main(int argc, char *argv[]) {
 #endif
 
    // process command line arguments
+   server = alloca(MAX_NAMELEN + 5);
+   memset(server, 0, MAX_NAMELEN + 5);
    if (argc > 1) {
-      if (strchr(argv[2], '.') == NULL) {
-         server = alloca(strlen(argv[1]) + 5);
-         strcpy(server, argv[1]);
+      if (strchr(argv[1], '.') == NULL) {
+         strncpy(server, argv[1], MAX_NAMELEN);
          strcat(server, DEFAULT_EXTN);
       }
       else {
-         server = alloca(strlen(argv[1]) + 1);
-         strcpy(server, argv[1]);
+         strncpy(server, argv[1], MAX_NAMELEN);
       }
    }
-   // use default names if no arguments specified
+   // use default name if no arguments specified
    if (server == NULL) {
-      server = alloca(MAX_NAMELEN + 1);
-      strcpy(server, DEFAULT_SERVER);
+      strncpy(server, DEFAULT_SERVER, MAX_NAMELEN);
    }
+
    //t_printf("server = %s\n", server);
 
    // re-register this cog as a server (it will already

@@ -70,4 +70,11 @@ void aloha_tx(int port, int id, int sq, int len, char *buf);
  */
 int aloha_rx(int port, int *id, int *sq, int *len, char *buf, int max, int ms);
 
+/*
+ * aloha_rxcount : How many ALOHA bytes have been received
+ *                 Returns:
+ *                 >= 0 count of bytes received
+ */
+int aloha_rxcount(int port);
+
 #endif // _ALOHA_H

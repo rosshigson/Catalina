@@ -478,7 +478,7 @@ void emit_primary_command() {
      propeller = 2;
    }
    if (strlen(segment[1].binary) > 0) {
-      printf("catalina -C %s %s %s %s.c -o %s\n", 
+      printf("catalina -C FIXED_ARGS -C %s %s %s %s.c -o %s\n", 
          mode_symbol(segment[1].mode), 
          segment[1].options, 
          segment[0].options, // common options
@@ -486,7 +486,7 @@ void emit_primary_command() {
          segment[1].binary);
    }
    else {
-      printf("catalina -C %s %s %s %s.c\n", 
+      printf("catalina -C FIXED_ARGS -C %s %s %s %s.c\n", 
          mode_symbol(segment[1].mode), 
          segment[1].options, 
          segment[0].options, // common options

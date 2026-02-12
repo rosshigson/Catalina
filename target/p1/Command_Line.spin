@@ -65,7 +65,11 @@ PUB Setup | SIZE, COG
 
 #ifndef NO_ARGS
   ' set up the command line arguments
-  SIZE := CogStore.Size
+#ifdef FIXED_ARGS
+  SIZE := common#COGSTORE_MAX ' use maximum size
+#else
+  SIZE := CogStore.Size ' use actual size
+#endif
   if (SIZE => 0)
     long[Common#FREE_MEM] := long[Common#FREE_MEM] - SIZE*4
   CogStore.Setup(long[Common#FREE_MEM])

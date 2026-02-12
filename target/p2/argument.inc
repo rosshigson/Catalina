@@ -29,7 +29,11 @@ DAT
 
 INITIALIZE_ARGUMENTS
 
-         call    #.cogstore_size
+#if defined(FIXED_ARGS)
+         mov     r0, ##MAX_LONGS ' use maximum cogstore size
+#else
+         call    #.cogstore_size ' use actual cogstore size
+#endif
          rdlong  r1, ##FREE_MEM
          cmps    r0, #0 wcz
  if_be   jmp     #.no_buffer ' no buffer required

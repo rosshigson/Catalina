@@ -24,6 +24,8 @@
 #else
 #define my_printf t_printf // use t_printf (port 1) on other platforms
 #endif
+#else
+#define my_printf printf // use normal HMI printf on other platforms
 #endif
 
 #if defined(__CATALINA_libserial8)
@@ -414,7 +416,7 @@ void my_dispatch_Lua_bg(lua_State *L, svc_list_t list, char *bg) {
       for (i = 0; i < PORTS; i++) {
         if (port_in_use[i]) {
            //my_printf("%d ", port);
-           if (s_rxcount(i) > 0) {
+           if (aloha_rxcount(i) > 0) {
               port = i;
               //my_printf("message on port %d\n", port);
               break; // we have a message
@@ -1346,9 +1348,6 @@ int my_load_Lua_service_list(lua_State *L, svc_list_t services, int max) {
       if (mod_ports(L, services, table, i, REMOTE_SVC, max) > 0) {
          // check this port for messages
          port_in_use[i] = 1;
-         //s_rxflush(i);
-         //printf("s_rxcheck returns %d\n", s_rxcheck(i));
-         //printf("s_rxcheck returns %d\n", s_rxcheck(i));
       }
       else {
          // do not check this port for messages

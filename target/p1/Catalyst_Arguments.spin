@@ -9,7 +9,7 @@
 '  we have a function called Print) we would do something like:
 '
 '    VAR
-'      long arguments[CogStore#Max_LONGS]
+'      long arguments[CogStore#MAX_LONGS]
 '
 '    PUB MyProgram | i
 '      CogStore.Init (arguments)

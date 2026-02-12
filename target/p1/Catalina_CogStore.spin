@@ -27,7 +27,7 @@ CON
   LED_MASK   = |<Common#DEBUG_PIN
 #endif
 
-MAX_LONGS  = common#COGSTORE_MAX ' store up to 400 LONGS (1200 chars)
+MAX_LONGS  = common#COGSTORE_MAX ' store up to 300 LONGS (1200 chars)
 
 COGSTORE   = common#COGSTORE    ' LONG location used by this cog for commands
 

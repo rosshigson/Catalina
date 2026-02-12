@@ -200,3 +200,9 @@ int aloha_rx(int port, int *id, int *sq, int *len, char *buf, int max, int ms) {
    }
    return -1;
 }
+
+int aloha_rxcount(int port) {
+   return s_rxcount(port);
+}
+
+

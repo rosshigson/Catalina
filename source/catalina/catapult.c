@@ -39,6 +39,8 @@
  *
  * version 8.8.4 - use "version.h"
  *
+ * version 8.8.5 - add -C FIXED_ARGS to primary program compilation
+ *
  */
 
 #include <ctype.h>

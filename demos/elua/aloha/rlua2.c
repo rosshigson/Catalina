@@ -146,39 +146,38 @@ int main(int argc, char *argv[]) {
    lua_State *L;
 
    // process command line arguments - note the
-   // use of alloca to make sure the strings in 
+   // use of alloca() to make sure the strings in 
    // the shared data structure are in Hub RAM.
+   shared.client = alloca(MAX_NAMELEN + 5);
+   memset(shared.client, 0, MAX_NAMELEN + 5);
+   shared.server = alloca(MAX_NAMELEN + 5);
+   memset(shared.server, 0, MAX_NAMELEN + 5);
    if (argc > 2) {
       if (strchr(argv[2], '.') == NULL) {
-         shared.server = alloca(strlen(argv[2]) + 5);
-         strcpy(shared.server, argv[2]);
+         strncpy(shared.server, argv[2], MAX_NAMELEN);
          strcat(shared.server, DEFAULT_EXTN);
       }
       else {
-         shared.server = alloca(strlen(argv[2]) + 1);
-         strcpy(shared.server, argv[2]);
+         strncpy(shared.server, argv[2], MAX_NAMELEN);
       }
    }
    if (argc > 1) {
       if (strchr(argv[1], '.') == NULL) {
-         shared.client = alloca(strlen(argv[1]) + 5);
-         strcpy(shared.client, argv[1]);
+         strncpy(shared.client, argv[1], MAX_NAMELEN);
          strcat(shared.client, DEFAULT_EXTN);
       }
       else {
-         shared.client = alloca(strlen(argv[1]) + 1);
-         strcpy(shared.client, argv[1]);
+         strncpy(shared.client, argv[1], MAX_NAMELEN);
       }
    }
    // use default names if no arguments specified
-   if (shared.client == NULL) {
-      shared.client = alloca(MAX_NAMELEN + 1);
-      strcpy(shared.client, DEFAULT_CLIENT);
+   if (strlen(shared.client) == 0) {
+      strncpy(shared.client, DEFAULT_CLIENT, MAX_NAMELEN);
    }
-   if (shared.server == NULL) {
-      shared.server = alloca(MAX_NAMELEN + 1);
-      strcpy(shared.server, DEFAULT_SERVER);
+   if (strlen(shared.server) == 0) {
+      strncpy(shared.server, DEFAULT_SERVER, MAX_NAMELEN);
    }
+
    //t_printf("client = %s\n", shared.client);
    //t_printf("server = %s\n", shared.server);
 
