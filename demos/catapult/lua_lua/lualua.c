@@ -38,7 +38,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <string.h>
-#include <alloca.h>
 #include <prop2.h>
 
 #include <lua.h>
@@ -61,8 +60,8 @@
  * function.
  */
 typedef struct shared_data {
-   char *first;
-   char *second;
+   char first[MAX_NAMELEN + 5];
+   char second[MAX_NAMELEN + 5];
    int ready;
    int start;
    int data;
@@ -120,7 +119,7 @@ static int data(lua_State *L) {
  * by the first Lua program.                                                  *
  *                                                                            *
  ******************************************************************************/
-#pragma catapult secondary second(shared_data_t) mode(CMM) address(0x9328) stack(150000) options(-W-w -lthreads linit.c)
+#pragma catapult secondary second(shared_data_t) mode(CMM) address(0x92FC) stack(150000) options(-W-w -lthreads linit.c)
 
 void second(shared_data_t *s) {
 
@@ -185,18 +184,14 @@ void second(shared_data_t *s) {
 
 void main(int argc, char *argv[]) {
 
-   shared_data_t shared = { 0 };
    int cog;
    int result;
    lua_State *L;
+   shared_data_t shared;
 
-   // process command line arguments - note the
-   // use of alloca() to make sure the strings in 
-   // the shared data structure are in Hub RAM.
-   shared.first = alloca(MAX_NAMELEN + 5);
-   memset(shared.first, 0, MAX_NAMELEN + 5);
-   shared.second = alloca(MAX_NAMELEN + 5);
-   memset(shared.second, 0, MAX_NAMELEN + 5);
+   memset(&shared, 0, sizeof(shared));
+
+   // process command line arguments
    if (argc > 2) {
       if (strchr(argv[2], '.') == NULL) {
          strncpy(shared.second, argv[2], MAX_NAMELEN);

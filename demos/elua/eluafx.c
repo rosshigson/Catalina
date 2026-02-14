@@ -30,7 +30,6 @@
 #include <service.h>
 #include <stdlib.h>
 #include <string.h>
-#include <alloca.h>
 
 #define MAX_NAMELEN   12 // for DOS 8.3 file names
 #define MAX_SERVICES  20 // arbitrary
@@ -48,8 +47,8 @@
  * synchronization.
  */
 typedef struct shared_data {
-   char *client;
-   char *server;
+   char client[MAX_NAMELEN + 5];
+   char server[MAX_NAMELEN + 5];
    int ready;
    int start;
 } shared_data_t;
@@ -59,7 +58,7 @@ typedef struct shared_data {
  * The client - calls services provided by the server                         *
  *                                                                            *
  ******************************************************************************/
-#pragma catapult secondary client(shared_data_t) address(0x495C) mode(NMM) stack(100000)
+#pragma catapult secondary client(shared_data_t) address(0x4940) mode(NMM) stack(100000)
 
 #include <lua.h>
 #include <lualib.h>
@@ -124,44 +123,38 @@ svc_entry_t Lua_service_list[MAX_SERVICES + 1] = {
 
 int main(int argc, char *argv[]) {
 
-   shared_data_t shared = { NULL, NULL, 0, 0 };
    int cog;
    int result;
    lua_State *L;
+   shared_data_t shared;
 
-   // process command line arguments - note the
-   // use of alloca to make sure the strings in 
-   // the shared data structure are in Hub RAM.
+   memset(&shared, 0, sizeof(shared));
+
+   // process command line arguments
    if (argc > 2) {
       if (strchr(argv[2], '.') == NULL) {
-         shared.server = alloca(strlen(argv[2]) + 5);
-         strcpy(shared.server, argv[2]);
+         strncpy(shared.server, argv[2], MAX_NAMELEN);
          strcat(shared.server, DEFAULT_EXTN);
       }
       else {
-         shared.server = alloca(strlen(argv[2]) + 1);
-         strcpy(shared.server, argv[2]);
+         strncpy(shared.server, argv[2], MAX_NAMELEN);
       }
    }
    if (argc > 1) {
       if (strchr(argv[1], '.') == NULL) {
-         shared.client = alloca(strlen(argv[1]) + 5);
-         strcpy(shared.client, argv[1]);
+         strncpy(shared.client, argv[1], MAX_NAMELEN);
          strcat(shared.client, DEFAULT_EXTN);
       }
       else {
-         shared.client = alloca(strlen(argv[1]) + 1);
-         strcpy(shared.client, argv[1]);
+         strncpy(shared.client, argv[1], MAX_NAMELEN);
       }
    }
    // use default names if no arguments specified
-   if (shared.client == NULL) {
-      shared.client = alloca(MAX_NAMELEN + 1);
-      strcpy(shared.client, DEFAULT_CLIENT);
+   if (strlen(shared.client) == 0) {
+      strncpy(shared.client, DEFAULT_CLIENT, MAX_NAMELEN);
    }
-   if (shared.server == NULL) {
-      shared.server = alloca(MAX_NAMELEN + 1);
-      strcpy(shared.server, DEFAULT_SERVER);
+   if (strlen(shared.server) == 0) {
+      strncpy(shared.server, DEFAULT_SERVER, MAX_NAMELEN);
    }
    //t_printf("client = %s\n", shared.client);
    //t_printf("server = %s\n", shared.server);

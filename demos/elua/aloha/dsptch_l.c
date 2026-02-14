@@ -5,7 +5,12 @@
  *                      (n = 0 .. 1 if 2 port serial is used, or 0 .. 7
  *                      if 8 port serial is used) as well as RPC requests 
  *                      using information loaded from the "rpc_network" table
- *                      (if __CATALINA_libwifi is defined)
+ *                      if the program is compiled with -lwifi (or the C 
+ *                      symbol __CATALINA_libwifi is defined). 
+ *
+ *                      To compile for WiFi only (i.e. no serial connections),
+ *                      define the Catalina symbol DISABLE_SERIAL when
+ *                      compiling (e.g. with -C DISABLE_SERIAL).
  */
 #include <ctype.h>
 #include <string.h>

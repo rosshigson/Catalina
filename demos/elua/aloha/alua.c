@@ -40,7 +40,6 @@
 #include <service.h>
 #include <stdlib.h>
 #include <string.h>
-#include <alloca.h>
 #include <hmi.h>
 
 #define MAX_NAMELEN   12 // for DOS 8.3 file names
@@ -59,8 +58,8 @@
  * synchronization.
  */
 typedef struct shared_data {
-   char *client;
-   char *server;
+   char client[MAX_NAMELEN + 5];
+   char server[MAX_NAMELEN + 5];
    int ready;
    int start;
 } shared_data_t;
@@ -70,7 +69,7 @@ typedef struct shared_data {
  * The client - calls services provided by the server                         *
  *                                                                            *
  ******************************************************************************/
-#pragma catapult secondary client(shared_data_t) address(0x17BC4) mode(CMM) stack(100000) options(-lthreads)
+#pragma catapult secondary client(shared_data_t) address(0x17BA0) mode(CMM) stack(100000) options(-lthreads)
 
 #include <lua.h>
 #include <lualib.h>
@@ -139,18 +138,14 @@ extern int my_load_Lua_service_list(lua_State *L, svc_list_t services, int max);
 
 int main(int argc, char *argv[]) {
 
-   shared_data_t shared = { NULL, NULL, 0, 0 };
    int cog;
    int result;
    lua_State *L;
+   shared_data_t shared;
 
-   // process command line arguments - note the
-   // use of alloca() to make sure the strings in 
-   // the shared data structure are in Hub RAM.
-   shared.client = alloca(MAX_NAMELEN + 5);
-   memset(shared.client, 0, MAX_NAMELEN + 5);
-   shared.server = alloca(MAX_NAMELEN + 5);
-   memset(shared.server, 0, MAX_NAMELEN + 5);
+   memset(&shared, 0, sizeof(shared));
+
+   // process command line arguments
    if (argc > 2) {
       if (strchr(argv[2], '.') == NULL) {
          strncpy(shared.server, argv[2], MAX_NAMELEN);
@@ -176,7 +171,6 @@ int main(int argc, char *argv[]) {
    if (strlen(shared.server) == 0) {
       strncpy(shared.server, DEFAULT_SERVER, MAX_NAMELEN);
    }
-
    //t_printf("client = %s\n", shared.client);
    //t_printf("server = %s\n", shared.server);
 

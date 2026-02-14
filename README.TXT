@@ -196,187 +196,35 @@ documents folder.
 New Functionality
 -----------------
 
-1. Lua 5.5.0 has now been included in this release. However, Lua 5.5.X is not 
-   yet mature or stable enough to replace Catalina's fully integrated 
-   version, which remains at 5.4.X. However, Lua 5.5.0 is fully functional 
-   when used stand-alone, apart from the capabilities enabled by defining the 
-   ENABLE_PSRAM or ENABLE_HYPER Catalina symbols when compiling Lua. Those 
-   capabilities are deeply embedded in the internals of Lua 5.4.X, were 
-   developed before the more general capability of using PSRAM as XMM RAM 
-   was added, and are deprecated in this release. They are likely to be 
-   dropped altogether in the next Catalina release.
-
-   To build Lua 5.5.0, go to the folder demos\catalyst\lua-5.5.0 and use the
-   build_all script in the same way as used to build Lua 5.4.X. For example:
-
-      build_all P2_EDGE SIMPLE VT100 MHZ_200 OPTIMIZE
-
-   To copy all the executables to an SD card, use the copy_all script. Note 
-   that this script will supersede any existing Lua binaries and programs on 
-   the SD Card. For example, if drive the SD Card is detected as drive H, the
-   command to enter would be:
-
-     copy_all h:
-
-2. The version of Lua fully integrated into Catalina has been updated from
-   version 5.4.4 to 5.4.8. There is no new Lua functionality in this update, 
-   just a few Lua bug fixes. However, there have been some minor tweaks to 
-   some example programs as a result, mainly the multi-processing with Lua 
-   examples. This is because the changes may not affect Lua's functionality, 
-   but they do sometimes affect Lua's memory utilization. The updated example
-   programs now work with both Lua 5.4.X and Lua 5.5.X.
-
-   Note that the compiled (i.e. binary) format of Lua programs has changed
-   between versions 5.4.X and 5.5.X. This means that the corresponding version 
-   of the lua compiler (luac) must be used. If the wrong version is used, the 
-   following error message will be displayed:
-
-     bad binary format (version mismatch)
-
-3. There are now only two copies of the Lua 5.4.X source files in this release
-   of Catalina (in previous releases there were three copies). The Lua source 
-   files that used to be in demos/catalyst/lua/5.4.X are now copied from 
-   source/catalina/lua-5.4.X when Catalyst is compiled using the build_all 
-   scripts, and deleted again by the clean_all scripts (similar to the way 
-   the self-hosted version of Catalina itself is built). Note that when the 
-   Windows installer is used to install Catalina, this means that to compile 
-   Catalyst from source, the Catalina sources MUST be installed. This option 
-   is now the default.
-
-   A copy of the Lua 5.4.X source files still exists in the library source 
-   tree. This duplication is likely to remain so that the stand-alone version
-   of Lua can be updated independently from the integrated version.
-
-   Note that when Lua is built as part of Catalina (it is used for scripting
-   in both payload and blackbox) the standard Lua Makefiles are used. When it
-   is built as part of Catalyst, the Makefiles in the src folder are used 
-   (Makefile.Catalina on Linux, or Makefile.Catalina.mgw on Windows).
-
-4. Partly in anticipation of Lua 5.5.X becoming Catalina's default integrated
-   version of Lua, the multiple different versions of the Lua initialization 
-   file (variously called linit.c, iinit.c or xinit.c) which enabled different 
-   Lua libraries in previous releases have all been replaced with a common 
-   version (linit.c). In this release, this file must still be present and 
-   compiled in the same folder as the Lua application, but this will change 
-   in Lua 5.5.X, which uses a different initialization process). 
-   Specific libraries to be enabled or disabled are now specified on the 
-   Catalina command line (or in a catapult pragma) as follows:
-
-     propeller  always enabled
-     hmi        always enabled
-     threads    enabled by -lthreads
-     serial     enabled by -lserial2 or -lserial8
-     wifi       enabled by -lwifi
-     service    enabled by -C LUA_SERVICE
-     linenoise  enabled by -C LUA_LINENOISE
-
-     If memory is very tight, the optional debug, utf8 and os libraries can 
-     be disabled by -C LUA_NO_OPT, and if only integer math is required then
-     the math library can be disabled by -C LUA_NO_MATH - but neither of 
-     these are used in any of the demo programs, and doing so is deprecated 
-     because these options will not be available when Lua 5.5.X becomes the 
-     default version of Lua.
+1. 
 
 Other Changes
 -------------
 
-1. There was a bug in the Multiprocessing versions of Lua (i.e. mlua and
-   mluax) that may have led to a program lock-up when multiple factories were 
-   in use (for example, it may have occurred when executing the example 
-   programs ex9.lua or ex12.lua). Affected the Propeller 2 only.
+1. There were issues with catapult programs that accepted command line 
+   arguments. The size and number of arguments could change the memory
+   addresses allocated in the program, requiring it to be recompiled in
+   each case. This has now been fixed by the addition of a new Catalina
+   option -C FIXED_ARGS, which forces the program to always allocate the
+   maximum possible number of bytes for command line arguments even if
+   none were specified or supported. In cases where no command line
+   argument support is required, This can be disabled using the existing 
+   option -C NO_ARGS. Affected the Propeller 1 and Propeller 2.
 
-2. There was a bug in Catalyst that limited commands to 8 characters when
-   no extension was specified. So (for example) the program "bin/dbasic.bin" 
-   would be correctly found and executed if the command was entered as:
+2. Several of the catapult demos, including the ALOHA demos, were allocating 
+   hub RAM for file names BEFORE allocating the catapult memory buffers, 
+   which meant that the buffer addresses could change depending on the 
+   command-line arguments. All the demos now always allocate the same amount 
+   of Hub RAM to hold the file names so that the catapult buffers will 
+   always have the same addresses. Affected the Propeller 1 and Propeller 2.
 
-      dbasic
-      dbasic.bin
-      bin/dbasic.bin
+3. Updated the 'Aloha from Lua' document to match the current version of the 
+   Lua initialization file (linit.c).
 
-   but NOT if entered as:
+4. It was possible for the Serial ALOHA protocol to overrun the serial buffers
+   in the case of large messages. Now a delay has been added when transmitting
+   (defaults to 5ms every 16 characters, but it can be adjusted in aloha.c).
 
-      bin/dbasic
-
-   Instead, "cannot open file BIN/DBASIC" would be displayed.
-   Affected the Propeller 1 and Propeller 2.
-
-3. Some Lua programs have been updated to allow for the use of either Lua 5.4 
-   or Lua 5.5. In particular, Lua 5.5 requires different parameters to the 
-   collectgarbage() function. The following code takes the lua version into 
-   account, and can be used set a specific garbage collection mode and/or 
-   parameters in a way that is backwards compatible:
-
-      lua_version = tonumber(string.sub(_VERSION, 5, 7));
-      if lua_version and lua_version < 5.4 then
-        -- default mode is incremental, so just set parameters ...
-        collectgarbage("setpause", 150);
-        collectgarbage("setstepmul", 500);
-      elseif lua_version and lua_version < 5.5 then
-        -- incremental mode is optional, so set it with parameters ...
-        collectgarbage("incremental", 150, 500);
-      else
-        -- mode and parameter setting now separate in Lua 5.5 ...
-        collectgarbage("incremental");
-        collectgarbage("param", "pause", 150);
-        collectgarbage("param", "stepmul", 500);
-      end
-
-   Affected the Propeller 1 and Propeller 2.
-
-4. To minimize Lua's use of memory, the threads functions wait() and workers()
-   also used to do garbage collection in previous releases - this was done to
-   collect garbage after workers and threads had been initiated. However, a 
-   better solution is to do this explicitly if needed, and also for threads
-   themselves to be able to perform garbage collection if required, so a new 
-   "thread safe" function for invoking the Lua garbage collector has been 
-   added to the threads module. The threads.gc() function can combine the 
-   functionality of collectgarbage() and threads.sbrk() (which are often used 
-   together to maximize free Lua memory and also defragment the C heap) into 
-   one function. See the updated "Lua on the Propeller 2 with Catalina" 
-   document for more details. The example program ex9.lua demonstrates the 
-   new function. If backwards compatibility is necessary, Lua code such as 
-   the following can be used to detect if the threads.gc() function is 
-   available or not:
-
-      if threads.gc then
-         threads.gc(1) -- also invokes sbrk(true)
-      else
-         -- note: not guaranteed thread safe ...
-         collectgarbage()
-         thread.sbrk(true)
-      end
-
-   Affected the Propeller 2 only.
-
-5. Upgrading to Lua 5.4.8 has made some programs that used the integrated
-   version of Lua (i.e. the version in the Catalina library) slightly larger,
-   which may cause the program to run out of Hub RAM. For example, the Aloha 
-   WiFi RPC demo program sluarfx.c is now too large to execute correctly if
-   compiled in NATIVE mode, and so has been replaced by the functionally 
-   identical program slaurcx.c which instead uses COMPACT mode.
-
-   This change may affect other programs. Affected the Propeller 2 only.
-
-6. The 'Aloha from Lua' document mentioned that the rpc_network table could
-   be in the common.lua module, but in the RPC demo programs the table was
-   instead duplicated in the server.lua, remote.lua and serverbg.lua modules.
-   While this is technically ok, it complicates the process of configuring 
-   the demo programs. Now, the document and all the demo programs have been 
-   made consistent, with only one copy of the rpc_service table in the 
-   common.lua module. Affected the Propeller 2 only.
-
-7. There were a couple of issues with the WiFi version of ALOHA:
-
-    (a) There was an undocumented limitation on the size of an WiFi RPC
-        request. The code currently limits such requests to a maximum of 512 
-        bytes (the RPC response can be larger). This limit caused one of the 
-        demo programs (i.e. the 'complete' demo) to work with the serial 
-        version, but not the WiFi version because the string used was too 
-        long. The example has now been corrected to work with both, and the 
-        'ALOHA from Lua' document also has been updated. This limit may be 
-        increased in a future release.
-
-    (b) The Lua dispatcher could fail to retrieve all data returned by an
-        RPC call when the response consisted of multiple data packets.
-
-    Affected the Propeller 2 only.
+5. Simplified some catapult and elua/ALOHA demos by removing the use of 
+   alloca() - a fixed area of the shared memory is now used to hold the
+   file names that were previously allocated using alloca().

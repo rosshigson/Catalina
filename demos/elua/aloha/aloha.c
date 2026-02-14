@@ -1,5 +1,8 @@
 #include "aloha.h"
 
+#define CHAR_PAUSE 16 // delay CHAR_DELAY ms after sending this many characters
+#define CHAR_DELAY  5 // ms to delay each CHAR_PAUSE characters 
+
 #if DEBUG_ALOHA
 
 // use serial functions that print their data ...
@@ -66,6 +69,11 @@ void aloha_tx(int port, int id, int sq, int len, char *buf) {
       byte = buf[i];
       tx_stuff(port, byte);
       sum = (sum + byte) & 0xFF;
+      if (i % CHAR_PAUSE == 0) {
+         // delay CHAR_DELAY ms every CHAR_PAUSE characters 
+         // (in case the tx or rx buffers are small!)
+         _waitms(CHAR_DELAY); 
+      }
    }
    tx_stuff(port, (0x100-sum) & 0xFF);
 }
