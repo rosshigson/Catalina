@@ -228,3 +228,9 @@ Other Changes
 5. Simplified some catapult and elua/ALOHA demos by removing the use of 
    alloca() - a fixed area of the shared memory is now used to hold the
    file names that were previously allocated using alloca().
+
+6. Recent Lua updates have changed the size of Lua executables, and hence the
+   size of Lua programs that can be executed from Hub RAM. The 'Game of Life'
+   eLua demo is now too large to be executed with 'sluafx', but since it does
+   not need floating point it can still be executed using 'sluafix'. The
+   'Aloha from Lua' document has been updated. 
