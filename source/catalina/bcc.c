@@ -4,53 +4,13 @@
  *
  * version 6.0 - initial version - code extracted from catbind.
  *
- * version 6.0.1 - just update version number.
- *
- * version 6.1   - just update version number.
- *
- * version 6.2   - just update version number.
- *
- * version 6.3   - just update version number.
- *
- * version 6.4   - just update version number.
- *
- * version 6.5   - just update version number.
- *
- * version 7.0   - just update version number.
- *
  * Version 7.1   - Tidy up interpretation of -v and -d options -
  *                 they are now disjoint, and one does not imply
  *                 the other. To see all messages, use both.
  *
- * version 7.2   - just update version number.
- *
- * version 7.3   - just update version number.
- *
- * version 7.4   - just update version number.
- *
- * version 7.5   - just update version number.
- *
- * version 7.6   - just update version number.
- *
  * Version 7.9   - Add -H option to specify heap top (+1). HEAP_TOP is used 
  *                 by _sbrk(), but the actual value used will be the LOWER 
  *                 of HEAP_TOP and FREE_MEM.
- *
- * version 8.1   - just update version number.
- *
- * version 8.2   - just update version number.
- *
- * version 8.3   - just update version number.
- *
- * version 8.4   - just update version number.
- *
- * version 8.5   - just update version number.
- *
- * version 8.6   - just update version number.
- *
- * version 8.7   - just update version number.
- *
- * version 8.8   - just update version number.
  *
  * version 8.8.1 - remove local strdup (now in C libary).
  *

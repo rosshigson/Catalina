@@ -1,0 +1,48 @@
+#!/bin/bash
+if [[ ! -e $1 ]]; then
+   echo ""
+   echo "ERROR: invalid destination specified !"
+   echo ""
+   echo "usage: copy_all X:"
+   echo ""
+   echo "   where X: is the drive you use to read/write SD cards"
+   echo ""
+   echo "or:    copy_all dir/"
+   echo ""        
+   echo "   where dir is the directory you want to copy to"
+   echo ""
+   exit
+fi
+
+if [[ ! -e $1/life ]]; then
+   mkdir $1/life
+fi
+
+cp life/BINSER.LUA $1/life/binser.lua
+cp life/CLIENT.LUA $1/life/client.lua
+cp life/COMMON.LUA $1/life/common.lua
+cp life/ELIFE.LUA $1/life/elife.lua
+cp life/NULL.LUA $1/life/null.lua
+cp life/README.TXT $1/life/readme.txt
+cp life/REBUILD $1/life/rebuild
+cp life/REMOTE.LUA $1/life/remote.lua
+cp life/SERVER.LUA $1/life/server.lua
+
+
+if [ -f elua/elua.bin ]; then
+
+   cp elua/elua.bin $1/bin/elua.bin
+   cp elua/eluafx.bin $1/bin/eluafx.bin
+   cp elua/eluas.bin $1/bin/eluas.bin
+   cp elua/eluasx.bin $1/bin//eluasx.bin
+   cp elua/eluax.bin $1//bin/eluax.bin
+
+else
+
+   cp elua/elua.binary $1/bin/elua.bin
+   cp elua/eluafx.binary $1/bin/eluafx.bin
+   cp elua/eluas.binary $1/bin/eluas.bin
+   cp elua/eluasx.binary $1/bin/eluasx.bin
+   cp elua/eluax.binary $1/bin/eluax.bin
+
+fi

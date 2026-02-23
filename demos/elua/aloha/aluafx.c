@@ -34,7 +34,7 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma catapult common options(-W-w -p2 -C CONST_ARGS -C SIMPLE -C VT100 -O5 -C MHZ_200 -C CLOCK -lcx -lmc -lserial2 -lluax linit.c -C LUA_SERVICE aloha.c)
+#pragma catapult common options(-W-w -p2 -C CONST_ARGS -O5 -C MHZ_200 -C CLOCK -lcx -lmc -lserial2 -lluax linit.c -C LUA_SERVICE aloha.c)
 
 #include <catapult.h>
 #include <service.h>
@@ -42,7 +42,7 @@
 #include <string.h>
 #include <hmi.h>
 
-#define MAX_NAMELEN   12 // for DOS 8.3 file names
+#define MAX_PATHLEN   128 // allow for long paths
 #define MAX_SERVICES  50 // arbitrary
 
 #define DEFAULT_CLIENT "client.lux"
@@ -58,8 +58,8 @@
  * synchronization.
  */
 typedef struct shared_data {
-   char client[MAX_NAMELEN + 5];
-   char server[MAX_NAMELEN + 5];
+   char client[MAX_PATHLEN + 1];
+   char server[MAX_PATHLEN + 1];
    int ready;
    int start;
 } shared_data_t;
@@ -69,7 +69,7 @@ typedef struct shared_data {
  * The client - calls services provided by the server                         *
  *                                                                            *
  ******************************************************************************/
-#pragma catapult secondary client(shared_data_t) address(0x2FF4) mode(NMM) stack(100000)
+#pragma catapult secondary client(shared_data_t) address(0x2F14) mode(NMM) stack(100000)
 
 #include <lua.h>
 #include <lualib.h>
@@ -148,28 +148,28 @@ int main(int argc, char *argv[]) {
    // process command line arguments
    if (argc > 2) {
       if (strchr(argv[2], '.') == NULL) {
-         strncpy(shared.server, argv[2], MAX_NAMELEN);
+         strncpy(shared.server, argv[2], MAX_PATHLEN);
          strcat(shared.server, DEFAULT_EXTN);
       }
       else {
-         strncpy(shared.server, argv[2], MAX_NAMELEN);
+         strncpy(shared.server, argv[2], MAX_PATHLEN);
       }
    }
    if (argc > 1) {
       if (strchr(argv[1], '.') == NULL) {
-         strncpy(shared.client, argv[1], MAX_NAMELEN);
+         strncpy(shared.client, argv[1], MAX_PATHLEN);
          strcat(shared.client, DEFAULT_EXTN);
       }
       else {
-         strncpy(shared.client, argv[1], MAX_NAMELEN);
+         strncpy(shared.client, argv[1], MAX_PATHLEN);
       }
    }
    // use default names if no arguments specified
    if (strlen(shared.client) == 0) {
-      strncpy(shared.client, DEFAULT_CLIENT, MAX_NAMELEN);
+      strncpy(shared.client, DEFAULT_CLIENT, MAX_PATHLEN);
    }
    if (strlen(shared.server) == 0) {
-      strncpy(shared.server, DEFAULT_SERVER, MAX_NAMELEN);
+      strncpy(shared.server, DEFAULT_SERVER, MAX_PATHLEN);
    }
    //t_printf("client = %s\n", shared.client);
    //t_printf("server = %s\n", shared.server);

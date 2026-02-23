@@ -3,6 +3,7 @@ binbuild.exe
 bindump.exe
 binstats.exe
 blackbox.exe
+cake.exe
 catalina.exe
 catapult.exe
 catapult_awka.exe
@@ -43,6 +44,7 @@ comms.exe
 cpp.exe
 lburg.exe
 lcc.exe
+clcc.exe
 libintl-8.dll
 libiconv-2.dll
 libgcc_s_dw2-1.dll

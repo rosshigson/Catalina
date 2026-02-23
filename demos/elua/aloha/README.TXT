@@ -18,7 +18,24 @@ specified either on the command line or using CATALINA_DEFINE. For example:
    unset CATALINA_DEFINE
    build_aloha
 
-The script builds the following binaries for P2_MASTER:
+The Propeller 2 platforms used for serial ALOHA are:
+
+   P2_MASTER (P2MASTER.inc)  - configued as a P2_EDGE with the first serial 
+                               port on pins 1 (tx) and 0 (rx) used for serial
+                               ALOHA.
+
+   P2_SLAVE  (P2SLAVE.inc)   - configued as a P2_EDGE with the first serial 
+                               port on pins 0 (tx) and 1 (rx) used for serial
+                               ALOHA.
+
+The pins are configured that way so that the MASTER and SLAVE Propellers can
+be connected with a simple direct cable: pin 0 to pin 0 and pin 1 to pin 1.
+
+The SIMPLE HMI option can be used to provide a serial HMI using the usual
+serial pins 62 & 63.
+
+The build_all script uses the build_aloha script to build the following 
+binaries for P2_MASTER:
 
    catapult alua.c
    mv alua.bin master.bin

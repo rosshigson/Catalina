@@ -11,6 +11,44 @@ specified either on the command line or using CATALINA_DEFINE. For example:
    unset CATALINA_DEFINE
    build_rpc
 
+The Propeller 2 platforms used for WiFi RPC ALOHA are:
+
+   P2_WIFI_MASTER (P2WIFI_M.inc) - configued as a P2_EDGE with a WiFi
+                                   adapter on pins 16 .. 23 which will use
+                                   the first serial port, and the third
+                                   serial port configured to use pins 1 (tx) 
+                                   and 0 (rx) for serial ALOHA (requires
+                                   the 8 port serial plugin to be used).
+
+   P2_WIFI_SLAVE (P2WIFI_S.inc)  - configued as a P2_EDGE with a WiFi
+                                   adapter on pins 16 .. 23 which will use
+                                   the first serial port, the third 
+                                   serial port configured to use pins 0 (tx) 
+                                   and 1 (rx) for serial ALOHA (requires
+                                   the 8 port serial plugin to be used).
+
+   P2_WIFI (P2WIFI.inc)          - configued as a P2_EDGE with a WiFi
+                                   adapter on pins 16 - 23 which will use
+                                   the first serial port.
+
+The pins are configured that way so that the P2_WIFI_MASTER and P2_WIFI_SLAVE 
+Propellers can be connected with a simple direct cable: pin 0 to pin 0 and 
+pin 1 to pin 1. 
+
+The SIMPLE HMI option can be used to provide a serial HMI using the usual 
+serial pins 62 & 63. If NO_HMI is specified instead, these pins are available 
+for use by the second serial port.
+
+The build_all script uses the build_rpc script to build the following 
+binaries for the P2_WIFI:
+
+   catapult rlua.c
+   catapult rluax.c
+   catapult rlua2.c
+   catapult rlua2x.c
+   catapult rluafx.c
+   catapult sluarcx.c
+
 The script builds the following binaries for P2_WIFI_MASTER:
 
    catapult rlua.c
@@ -26,15 +64,6 @@ and the following binaries for P2_WIFI_SLAVE:
 
    catapult rluax.c
    mv rluax.bin rslavex.bin
-
-and the following binaries for P2_WIFI:
-
-   catapult rlua.c
-   catapult rluax.c
-   catapult rlua2.c
-   catapult rlua2x.c
-   catapult rluafx.c
-   catapult sluarcx.c
 
 They can also be compiled individually using Catapult. For example:
 

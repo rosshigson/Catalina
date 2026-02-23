@@ -1,4 +1,6 @@
-Modified Lua files:
+Notes for upgrading from Lua 5.4.X to 5.5.X:
+
+Lua files modified for Catalina support:
 
 Makefile
 luaconf.h
@@ -27,11 +29,12 @@ min.c
 storage.h
 storage.c
 
-Catalina PSRAM/HYPER files:
+Additional Lua files modified for PSRAM/HYPER support:
 
 i.e. __CATALINA_ENABLE_PSRAM or __CATALINA_ENABLE_HYPER
 
-lundump.c - TBD
-lfunc.c - TBD
-lvm.c  - TBD
+lundump.c
+lfunc.c
+lvm.c
+
 

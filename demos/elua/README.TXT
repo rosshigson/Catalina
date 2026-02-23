@@ -24,4 +24,7 @@ On Pi OS or Linux:
    catapult eluafx.c
    catapult eluasx.c
 
+Note that these eLua examples all specify the SIMPLE serial HMI option. 
+To use another HMI option the sources will have to be modified.
+
 For full details on eLua and its variants, see the document 'Aloha from Lua'.

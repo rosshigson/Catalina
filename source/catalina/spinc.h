@@ -11,44 +11,10 @@
  *
  * Version 3.2 Added ability to specify the spin function to use.
  *
- * Version 3.3 - just update version number.
- *
- * Version 3.4 - just update version number.
- *
- * Version 3.5 - just update version number.
- *
- * Version 3.6 - just update version number.
- *
- * Version 3.7 - just update version number.
- *
- * Version 3.8 - just update version number.
- *
- * Version 3.9 - just update version number.
- *
- * Version 3.10 - just update version number.
- *
  * Version 4.1  - add blob support.
  *
  *              - fix an error in header definitions (was using "short"
  *                instead of "unsigned short")
- *
- * Version 4.2 - just update version number.
- *
- * Version 4.3  - Just update version number.
- *
- * Version 4.4  - Just update version number.
- *
- * Version 4.5  - Just update version number.
- *
- * Version 4.6  - Just update version number.
- *
- * Version 4.7  - Just update version number.
- *
- * Version 4.8  - Just update version number.
- *
- * Version 4.9  - Just update version number.
- *
- * Version 5.0  - Just update version number.
  *
  * Version 5.6  - Add support for extracting the code segment from binary 
  *                files that identify themselves as XMM SMALL or XMM 
@@ -56,36 +22,12 @@
  *                it is only intended to allow the extraction of code from the 
  *                Catalina library files, which are not true XMM binaries.
  *
- * Version 5.7  - Just update version number.
- *
- * Version 5.8  - Just update version number.
- *
- * Version 5.9  - Just update version number.
- *
- * Version 6.0  - Just update version number.
- *
  * Version 7.0  - Increase default stack size.
  *
  * Version 7.6  - allow hex constants and modifiers for stack size
  *
- * Version 7.9  - just update version number.
- *
- * version 8.1  - just update version number.
- *
- * version 8.2  - just update version number.
- *
  * version 8.3  - add '-g' option to generate file (required to use SpinC
  *                in Catalyst).
- *
- * version 8.4  - just update version number.
- *
- * version 8.5  - just update version number.
- *
- * version 8.6  - just update version number.
- *
- * version 8.7  - just update version number.
- *
- * version 8.8  - just update version number.
  *
  * version 8.8.1 - remove local strdup (now in C libary).
  *

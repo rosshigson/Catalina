@@ -17,26 +17,6 @@
  *               - When a secondary main function ends, unregister the
  *                 kernel before stopping the cog.
  *
- * Version 7.9 - just update version number.
- *
- * version 8.1 - just update version number.
- *
- * version 8.2 - just update version number.
- *
- * version 8.3 - just update version number.
- *
- * version 8.4 - just update version number.
- *
- * version 8.5 - just update version number.
- *
- * version 8.6 - just update version number.
- *
- * version 8.7 - just update version number.
- *
- * version 8.8 - just update version number.
- *
- * version 8.8.1 - just update version number.
- *
  * version 8.8.4 - use "version.h"
  *
  * version 8.8.5 - add -C FIXED_ARGS to primary program compilation

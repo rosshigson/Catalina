@@ -25,7 +25,7 @@ echo.
 goto done
 
 :found_catalina
-payload %TMP_LCCDIR%\utilities\XMM.binary %1 %2 %3 %4 %5 %6 %7 %8 %9
+payload %TMP_LCCDIR%\utilities\XMM.binary %*
 
 :done
 unset TMP_LCCDIR

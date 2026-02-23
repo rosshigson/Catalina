@@ -3,14 +3,14 @@ rem save value of CATALINA_DEFINE (note we must use a different TMP name!)
 set TMP_DEFINE_TOP=%CATALINA_DEFINE%
 echo.
 if "%1"=="" goto no_parameters
-set TMP_PARAMS=%1 %2 %3 %4 %5 %6 %7 %8 %9
+set TMP_PARAMS=%*
 for /f "delims=" %%A in ('echo %TMP_PARAMS%') do call :Trim %%A
 if "%CATALINA_DEFINE%" == "" goto parameters_and_no_define
 if "%CATALINA_DEFINE%" == "%TMP_PARAMS%" goto use_define
 echo ERROR: Command line options conflict with CATALINA_DEFINE
 echo.
 echo    CATALINA_DEFINE is set to %CATALINA_DEFINE%
-echo    Command line options were %1 %2 %3 %4 %5 %6 %7 %8 %9
+echo    Command line options were %*
 echo.
 echo    Either set CATALINA_DEFINE to null using the following command:
 echo.
@@ -25,7 +25,7 @@ set TMP_PARAMS=%*
 exit /b 0 
 
 :parameters_and_no_define
-echo NOTE: All programs will be built with options %1 %2 %3 %4 %5 %6 %7 %8 %9
+echo NOTE: All programs will be built with options %*
 echo.
 echo   If these options conflict with options specified in the Makefile, 
 echo   the results may be unexpected.
@@ -73,31 +73,31 @@ del /f /q "image\*" >NUL: 2>&1
 copy CATALYST.TXT "image\"
 
 cd core
-call build_all %1 %2 %3 %4 %5 %6 %7 %8 %9
+call build_all %*
 call copy_all "..\image\"
 cd ..
 
 cd fymodem
-call build_all %1 %2 %3 %4 %5 %6 %7 %8 %9
+call build_all %*
 call copy_all "..\image\"
 cd ..
 
 if "%1" == "SUPERQUAD" goto make_bin
 
 cd xvi-2.51
-call build_all %1 %2 %3 %4 %5 %6 %7 %8 %9
+call build_all %*
 call copy_all "..\image\"
 cd ..
 
 cd time
-call build_all %1 %2 %3 %4 %5 %6 %7 %8 %9
+call build_all %*
 call copy_all "..\image\"
 cd ..
 
 if "%1" == "C3" goto no_pascal
 
 cd pascal\p5_c
-call build_all %1 %2 %3 %4 %5 %6 %7 %8 %9
+call build_all %*
 call copy_all "..\..\image\"
 cd ..\..
 :no_pascal
@@ -105,24 +105,24 @@ cd ..\..
 if "%1" == "C3" goto no_jzip
 
 cd jzip
-call build_all %1 %2 %3 %4 %5 %6 %7 %8 %9
+call build_all %*
 call copy_all "..\image\"
 cd ..
 
 :no_jzip
 
 cd dumbo_basic
-call build_all %1 %2 %3 %4 %5 %6 %7 %8 %9
+call build_all %*
 call copy_all "..\image\"
 cd ..
 
 cd sst
-call build_all %1 %2 %3 %4 %5 %6 %7 %8 %9
+call build_all %*
 call copy_all "..\image\"
 cd ..
 
 cd lua-5.4.8
-call build_all %1 %2 %3 %4 %5 %6 %7 %8 %9
+call build_all %*
 call copy_all "..\image\"
 cd ..
 

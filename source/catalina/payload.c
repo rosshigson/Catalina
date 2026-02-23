@@ -21,14 +21,8 @@
  * Version 2.5 - Add EEPROM programming option (-e).
  *               Print message on error responses (load, program or verify).  
  *
- * Version 2.6 - Just update version number
- *
- * Version 2.7 - just update version number.
- *
  * Version 2.8 - use timeout value instead of fixed 250 ms when looking for
  *               response, and add -u option to adjust reset time
- *
- * Version 2.9 - just update version number.
  *
  * Version 3.0 - look for files in %LCCDIR%\bin if not found locally - this
  *               means files such as XMM.binary can be placed in the bin
@@ -39,13 +33,7 @@
  * Version 3.0.3 - Fix bug in getting xmm.binary from bin directory.
  *               Change terminology - "download" instead of "upload"
  *
- * Version 3.1 - just update version number.
- *
  * Version 3.2 - Add Auto-detection of secondary loader port.
- *
- * Version 3.3 - just update version number.
- *
- * Version 3.4 - just update version number.
  *
  * Version 3.5 - Correct bugs in reset_time and interfile_delay defaults.
  *               Add option for 'chunking' the lfsr check (default is enabled).
@@ -79,12 +67,6 @@
  *                 Payload now skips empty Hub RAM pages - this requires that
  *                 the various loaders zero Hub RAM before the load occurs.
  *
- * Version 3.7 - just update version number.
- *
- * Version 3.8 - just update version number.
- *
- * Version 3.9 - just update version number.
- *
  * Version 3.10 - allow EMM programs to be downloaded. This is intended to be 
  *                used when the new EEPROM primary loader is specified first,
  *                such as:
@@ -117,10 +99,6 @@
  *  Version 3.11.1 - Fix for OS X, and add ability for port names to be
  *                   specified on command line via the -p and -s command
  *                   line options (e.g. -p /dev/cu.usbserial.12345678).
- *
- *  Version 3.12 - just update version number.
- *
- *  Version 3.13 - Just update version number.
  *
  *  Version 3.14 - Add environment variables and parameters for terminal 
  *                 height or width. The precedence is command-line, then 
@@ -166,27 +144,13 @@
  *
  * Version 3.18 - accept any Prop2 version string.
  *
- * Version 4.0  - Just update version number.
- *
  * Version 4.1  - Make the default read timout 1000ms on Linux.
- *
- * Version 4.2  - Just update version number.
- *
- * Version 4.3  - Just update version number.
- *
- * Version 4.4  - Just update version number.
- *
- * Version 4.5  - Just update version number.
- *
- * Version 4.6  - Just update version number.
  *
  * Version 4.7  - Add -o to override propeller version detection (required
  *                on Propeller 2 to program FLASH without needing a switch
  *                setting on the P2_EVAL board). This required enabling the
  *                -j option (lfsr disable). Also fix port number reported
  *                in diagnostic ouptut.
- *
- * Version 4.8  - Just update version number.
  *
  * Version 4.9.4  - Minimum baud rate is now 300 baud.
  *
@@ -208,11 +172,7 @@
  *                  The translation was preventing the use of TAQOZ and the 
  *                  P2 Monitor - the correct mode to use for these is now -q1
  *
- * Version 5.1    - Just update version number.
- *
  * Version 5.3    - Update Lua to version 5.4.4.
- *
- * Version 5.4    - Just update version number.
  *
  * Version 5.5    - Add Menu support. 
  *                  The attention key (if set) now displays a menu. The key
@@ -342,19 +302,11 @@
  *
  * Version 5.9.1    Ignore the colour escape sequences!
  *
- * Version 5.9.2    Just update version number.
- *
  * Version 5.9.3    Fix VT100 terminal emulation issues:
  *                     ESC [ 2 J       should clear entire screen.
  *                     ESC [ r ; c H   now accepts zero for r and c
  *                     ESC [ c ; c f   now also accepted
  *                     
- * Version 6.0    - Just update version number.
- *
- * Version 6.0.1  - Just update version number.
- *
- * Version 6.1    - Just update version number.
- *
  * Version 6.2    - On Windows, payload now uses ncurses rather than pdcurses 
  *                  by default. This means that the window size cannot be set 
  *                  from within the program. The -g command line option sets 
@@ -378,8 +330,6 @@
  *                  trouble keeping up with the shorter delay is to use the 
  *                  TTY256 HMI option instead of the TTY HMI option.
  *
- * Version 6.4    - Just update version number.
- *
  * Version 6.5    - For option -g, accept '_' as well as ',' separating the
  *                  row and columns. For example, both the following will
  *                  specify the same geometry:
@@ -394,10 +344,6 @@
  *                  easier to use payload with Geany but will not affect most
  *                  command-line usage.
  *
- * Version 6.5.3  - Just update version number.
- *
- * Version 7.0    - Just update version number.
- *
  * Version 8.0    - Update VT100 emulation to move cursor on CR or LF
  *                  even if the characters are otherwise ignored. This
  *                  means that we can better support DOS type programs
@@ -410,8 +356,6 @@
  *                  those expected by xvi, but xvi can also process
  *                  the ANSI codes, so there should be no noticeable
  *                  differences when using the xvi (i.e. vi) editor.
- *
- * Version 8.1    - Just update version number.
  *
  * Version 8.2    - Modified the vt100 emulation to not move the cursor on
  *                  CR or LF (which used to be the case even if the CR or
@@ -441,18 +385,6 @@
  *              - the -o option now sets the default baud rate as appropriate
  *                for the Propeller 1 (115200) or Propeller 2 (230400) unless
  *                a baud rate is explicitly set.
- *
- * version 8.4  - just update version number.
- *
- * version 8.5  - just update version number.
- *
- * version 8.6  - just update version number.
- *
- * version 8.7  - just update version number.
- *
- * version 8.8  - just update version number.
- *
- * version 8.8.1 - just update version number.
  *
  * version 8.8.3 - payload was incorrectly sending screen size in response
  *                 to ESC[6n instead of current cursor position.

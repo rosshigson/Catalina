@@ -84,7 +84,6 @@
  * 
  * Version 6.5.3 - do not use path in initital packet, only file name.
  * 
- * Version 7.0   - just update version number.
  */
 
 /*

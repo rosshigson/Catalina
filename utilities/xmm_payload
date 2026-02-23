@@ -28,5 +28,5 @@ else
    fi   
 fi
 
-payload $TMP_LCCDIR/utilities/XMM.binary $1 $2 $3 $4 $5 $6 $7 $8 $9
+payload $TMP_LCCDIR/utilities/XMM.binary $*
 

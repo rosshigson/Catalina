@@ -34,7 +34,7 @@ fi
 TMP_DEFINE_TOP2="$CATALINA_DEFINE"
 
 if [[ "$1" != "" ]]; then
-   TMP_PARAMS=`echo $1 $2 $3 $4 $5 $6 $7 $8 $9`
+   TMP_PARAMS=$*
    if [[ "$CATALINA_DEFINE" != "" ]]; then
       if [[ "$CATALINA_DEFINE" != "$TMP_PARAMS" ]]; then
 

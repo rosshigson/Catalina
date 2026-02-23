@@ -35,7 +35,7 @@ goto done
 @echo    Building RAM Test
 @echo    =================
 @echo.
-call build_pasm_tmp_var %1 %2 %3 %4 %5 %6 %7 %8 %9 NO_MOUSE
+call build_pasm_tmp_var %* NO_MOUSE
 @echo on
 spinnaker -p -a RAM_Test.spin -I "%TMP_LCCDIR%\target\p1" -D PC -b %TMP_VAR% -o RAM_Test_PC -l
 spinnaker -p -a RAM_Test.spin -I "%TMP_LCCDIR%\target\p1" -D HIRES_VGA -b %TMP_VAR% -o RAM_Test_VGA

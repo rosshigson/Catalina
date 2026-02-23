@@ -4,47 +4,7 @@
  *
  * Version 4.6 - initial version, to coincide with Catalina 4.6
  *
- * Version 4.7 - Just update version number.
- *
- * Version 4.8 - Just update version number.
- *
- * Version 4.9 - Just update version number.
- *
- * Version 5.0 - Just update version number.
- *
- * Version 5.1 - Just update version number.
- *
- * Version 6.2 - Just update version number.
- *
- * Version 6.3 - Just update version number.
- *
- * Version 6.4 - Just update version number.
- *
- * Version 6.5 - Just update version number.
- *
- * Version 7.0 - Just update version number.
- *
  * Version 7.6.3 - When terminating a factory cog, also unregister it.
- *
- * Version 7.9 - Just update version number.
- *
- * version 8.1 - just update version number.
- *
- * version 8.2 - just update version number.
- *
- * version 8.3 - just update version number.
- *
- * version 8.4 - just update version number.
- *
- * version 8.5  - just update version number.
- *
- * version 8.6  - just update version number.
- *
- * version 8.7  - just update version number.
- *
- * version 8.8  - just update version number.
- *
- * version 8.8.1  - just update version number.
  *
  * version 8.8.4  - use "version.h"
  *

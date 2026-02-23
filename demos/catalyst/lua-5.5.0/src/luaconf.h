@@ -70,8 +70,10 @@
 #if defined(__CATALINA__)
 #undef _WIN32
 #define LUA_PATH_DEFAULT   \
-   "?.lua;"  "?/init.lua;" \
-   "lua/?.lua;" "lua/?/init.lua"
+   "?.lux;" "?.lua;" \
+   "?/init.lux;" "?/init.lua;" \
+   "lua/?.lux;" "lua/?.lua;" \
+   "lua/?/init.lux;" "lua/?/init.lua"
 #define LUA_CPATH_DEFAULT  \
    "?.obj;"  "?/init.obj;" \
    "lua/?.obj;" "lua/?/init.obj" \

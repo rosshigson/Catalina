@@ -3,14 +3,14 @@ rem save value of CATALINA_DEFINE
 set TMP_DEFINE=%CATALINA_DEFINE%
 echo.
 if "%1"=="" goto no_parameters
-set TMP_PARAMS=%1 %2 %3 %4 %5 %6 %7 %8 %9
+set TMP_PARAMS=%*
 for /f "delims=" %%A in ('echo %TMP_PARAMS%') do call :Trim %%A
 if "%CATALINA_DEFINE%" == "" goto parameters_and_no_define
 if "%CATALINA_DEFINE%" == "%TMP_PARAMS%" goto use_define
 echo ERROR: Command line options conflict with CATALINA_DEFINE
 echo.
 echo    CATALINA_DEFINE is set to %CATALINA_DEFINE%
-echo    Command line options were %1 %2 %3 %4 %5 %6 %7 %8 %9
+echo    Command line options were %*
 echo.
 echo    Either set CATALINA_DEFINE to null using the following command:
 echo.
@@ -25,7 +25,7 @@ set TMP_PARAMS=%*
 exit /b 0 
 
 :parameters_and_no_define
-echo NOTE: All programs will be built with options %1 %2 %3 %4 %5 %6 %7 %8 %9
+echo NOTE: All programs will be built with options %*
 echo.
 echo   If these options conflict with any Catapult options, 
 echo   the results may be unexpected.

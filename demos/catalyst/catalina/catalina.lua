@@ -51,10 +51,6 @@
 --                  
 -- version 6.0.1 - print help message if executed with no parameters. 
 --
--- version 6.1   - just update version number. 
---
--- version 6.2   - just update version number. 
---
 -- version 6.3   - add time commands at start and end of compilation if 
 --                 very verbose (-v -v) is specified.
 --               - remove prompts when VGA HMI option is used, by adding
@@ -79,8 +75,6 @@
 --                 statements are now emitted to halt the compilation on
 --                 the detection of errors.
 --
--- version 7.0   - just update version number.
---
 -- version 7.1   - add support for building XMM programs (SMALL and LARGE).
 --               - add support for Quick Build, enabled by adding the command 
 --                 line option -q or by defining the symbol QUICKBUILD.
@@ -96,42 +90,20 @@
 --                 of the commands that test the exit code of each command. 
 --                 This can speed up script execution times.
 --                 
--- version 7.4   - just update version number.
---                  
 -- version 7.5   - Added -W command line option, to pass parameters to rcc
 --                 (e.g. -W-w to suppress warnings).
 --
--- version 7.6   - just update version number.
---                  
--- version 7.7   - just update version number.
---                  
--- version 7.8   - just update version number.
---
 -- version 7.9   - Add -H option to specify heap top (+1), which is passed
 --                 to bcc.
---
--- version 8.0   - just update version number.
 --
 -- version 8.1   - allow catalina to be used as a command within other scripts
 --                 (it uses the same mechanism as is used by "call.lua", but 
 --                 it must be internal to the script).
 --
--- version 8.2   - just update version number.
---
--- version 8.3   - just update version number.
---
--- version 8.4   - just update version number.
---
--- version 8.5   - just update version number.
---
--- version 8.6   - just update version number.
---
 -- version 8.7   - if -c and -q are both specified, -q is ignored.
 --
 -- version 8.8   - add -Q option (or -C QUICKFORCE) to force Quick Build 
 --                 even if the target exists.
---
--- version 8.8.1 - just update version number.
 --
 -- version 8.8.2 - add -CXX (where XX is the C standard) which selects cpp
 --                 as preprocessor if a standard is not specified, or if 
@@ -142,10 +114,6 @@
 --               - Remove the definition of __STDC__ and __STRICT_ANSI__ 
 --                 because these can interfere with the use of Cake.
 --
--- version 8.8.4 - just update version number.
---
--- version 8.8.5 - just update version number.
---
 
 require "os"
 require "io"
@@ -154,7 +122,7 @@ require "string"
 require "propeller"
 
 -- configuration parameters and default values
-CATALINA_VERSION = "8.8.5"
+CATALINA_VERSION = "8.8.6"
 LCCDIR           = "/";
 CATALINA_TARGET  = LCCDIR .. "target"
 CATALINA_LIBRARY = LCCDIR .. "lib"

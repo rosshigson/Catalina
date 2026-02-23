@@ -10,8 +10,6 @@
  * version 2.1 - fixed crash if an option that requires a value is not 
  *               followed by one (e.g. -D)
  *
- * version 2.2 - just update version number
- *
  * Version 2.3 - Allow for spaces in file/path names.
  *               Fix bug using incorrect LCCDIR for LARGE memory model.
  *               Allow -o to be used with -c and -S options.
@@ -28,11 +26,7 @@
  *               specified the -g options will not override it. Also, if a
  *               -t option is subsequently parsed, it takes precedence.
  *
- * Version 2.5 - just update version number.
- *
  * Version 2.6 - Add Optimizer option (-O).
- *
- * version 2.7 - just update version number.
  *
  * version 2.8 - intercept EEPROM and SDCARD and set layout (1 for EEPROM,
  *               6 for SDCARD).
@@ -104,13 +98,7 @@
  *
  * Version 3.0.4 Quote filenames containing spaces on unix as well as windows.
  *
- * Version 3.1 - just update version number.
- *
  * Version 3.2 - Make line size 4096 chars.
- *
- * Version 3.3 - just update version number.
- *
- * Version 3.4 - just update version number.
  *
  * Version 3.5 - Added -C for defining 'Catalina' symbols (which used to be 
  *               defined using -D). Made -D mean define 'C' symbols. Note that 
@@ -130,10 +118,6 @@
  *               -x8    <==> -C COMPACT
  *               -x9    <==> -C COMPACT -C EEPROM
  *               -x10   <==> -C COMPACT -C SDCARD
- *
- * Version 3.9 - just update version number.
- *
- * Version 3.10 - just update version number.
  *
  * Version 3.11 - Add support for using openspin as assembler. This is now
  *                the default. 
@@ -155,8 +139,6 @@
  *
  * Version 3.12 - Renamed openspin to spinnaker.
  *
- * Version 3.13 - Just update version number.
- *
  * Version 3.15 - Add P2 support. LMM and NATIVE mode only. 
  *                Propeller 2 indicated by -p2 flag. 
  *                Add p2asm support.
@@ -170,23 +152,11 @@
  *                supported on the P1, and p2asm is the only assembler
  *                supported on the P2. The '-a' option has been removed.
  *
- * Version 3.17 - Just update version number.
- *
- * Version 4.0  - Just update version number.
- *
  * Version 4.1  - Allow -M, -P and -R accept hexadecimal constants. The number
  *                is treated as hexadecimal if it starts with 0x or $ such
  *                as -P $ABCD or -R0xFFFF
  *                Note that they already accepted modifiers, such as 1k or 2m,
  *                but not with hexadecimal numbers.
- *
- * Version 4.2  - Just update version number.
- *
- * Version 4.3  - Just update version number.
- *
- * Version 4.4  - Just update version number.
- *
- * Version 4.5  - Just update version number.
  *
  * Version 4.6  - Add the -Z and -z command-line options, which enable or 
  *                disable executing the Catalina parallelizer on each input 
@@ -216,10 +186,6 @@
  *                Since the NATIVE memory layout is only supported on a 
  *                Propeller 2, defining the Catalina symbol NATIVE now 
  *                also implies -p2.
- *
- * Version 4.9.1  Just update version number.
- *
- * Version 4.9.2  Just update version number.
  *
  * Version 4.9.3  Add -f, -F and -E command line option (Propeller 2 only):
  *                
@@ -275,10 +241,6 @@
  *                 build_all batch files and in CATALINA_DEFINE). Also,
  *                 the default optimization level (i.e. if -O is used
  *                 without a parameter) is now 5 (instead of 1).                 *
- * Version 4.9.6  Just update version number.
- *
- * Version 5.0    Just update version number.
- *
  * Version 5.1    Decoding the CATALINA_DEFINE environment variable was 
  *                taking place AFTER the symbols to specify the clock
  *                frequency were defined, so Catalina symbols MHZ_220, 
@@ -292,54 +254,14 @@
  *                for Catalyst on the P2, to work around an obscure bug that 
  *                occurs at 180Mhz.
  *                
- * Version 5.1.1  Just update version number - this version was released to
- *                fix a bug in catbind.
- *
- * Version 5.1.2  Just update version number - this version was released to
- *                fix a bug in thread_misc.e.
- *
- * Version 5.2    Just update version number.
- *
- * Version 5.3    Just update version number.
- *
- * Version 5.4    Just update version number.
- *
- * Version 5.5    Just update version number.
- *
  * Version 5.6    Add Propeller 2 XMM support.
  *                Add OPTIMISE as a synonym for OPTIMIZE
  *
- * Version 5.7    Just update version number.
- *
- * Version 5.8    Just update version number.
- *
- * Version 5.9    Just update version number.
- *
  * Version 6.0    Support DOS 8.3 file names.
- *
- * Version 6.0.1  Just update version number.
  *
  * Version 6.1    add _PASM() macro for use in inline PASM.
  *
  * Version 6.1.1  add _PSTR() macro for use in inline PASM.
- *
- * Version 6.2   - just update version number.
- *
- * Version 6.3   - just update version number.
- *
- * Version 6.4   - just update version number.
- *
- * Version 6.5   - just update version number.
- *
- * Version 6.5.2 - just update version number.
- *
- * Version 6.5.3 - just update version number.
- *
- * Version 6.5.4 - just update version number.
- *
- * Version 6.5.5 - just update version number.
- *
- * Version 7.0   - just update version number.
  *
  * Version 7.1   - Add support for Quick Build, which means in cases where
  *                 the target is built separately to the program (i.e. XMM,
@@ -358,12 +280,6 @@
  *                 used as the default filename. If -c or -S is specified
  *                 but there is more than one filename then -o is ignored.
  * 
- * Version 7.3   - just update version number.
- *
- * Version 7.4   - just update version number.
- *
- * Version 7.5   - just update version number.
- *
  * Version 7.6   - Add the ability to define the Catalina symbol P2, which 
  *                 means the same specifying option -p2. This allows the 
  *                 Propeller version to be specified using CATALINA_DEFINE 
@@ -378,27 +294,13 @@
  *                to catbind. HEAP_TOP is used by _sbrk(), but the actual 
  *                value used will be the LOWER of HEAP_TOP and FREE_MEM.
  *
- * version 8.1   - just update version number.
- *
- * version 8.2   - just update version number.
- *
  * version 8.3   - Defining the Catalina Symbol P2 forced NATIVE mode in
  *                 all cases, whereas it should only have done so if no
  *                 other mode had been specified.
  *
- * version 8.4  - just update version number.
- *
- * version 8.5  - just update version number.
- *
- * version 8.6  - just update version number.
- *
- * version 8.7  - just update version number.
- *
  * version 8.8  - add -Q (and -C QUICKFORCE) to mean enable Qquick Build,
  *                but also rebuild the target file even if it already exists.
  *
- * version 8.8.1 - just update version number.
- * 
  * version 8.8.2 - allow -C to also be used to select either cpp or cake as
  *                 the C precompiler, by specifying the C standard as two 
  *                 numeric digits. If no standard is specfied or -C89 or -C90 

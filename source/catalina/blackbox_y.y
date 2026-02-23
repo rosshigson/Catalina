@@ -17,29 +17,15 @@
  * 
  * version 2.6 - Added the ability to "read" from '&function' or '&variable'
  *
- * version 2.7 - just update version number.
- *
- * version 2.8 - just update version number.
- *
  * version 2.9 - fix reduce/reduce conflicts.
  *
  *               replace longs with ints (on a 64 bit platform, longs 
  *               are 64 bits, not 32 - and we want 32!).
  *
- * version 3.0 - just update version number.
- *
  * version 3.0.3 - automatically search for comms port if -p not specified.
  *
  * version 3.0.4 - fix array size in parse_var 
  * 
- * Version 3.1 - just update version number.
- * 
- * Version 3.2 - just update version number.
- *
- * Version 3.3 - just update version number.
- *
- * Version 3.4 - just update version number.
- *
  * Version 3.5 - update offsets for new kernel.
  *
  * Version 3.6 - update offsets & memory mode detection for new image format.
@@ -49,10 +35,6 @@
  * Version 3.8 - remove extension if ".binary", ".eeprom" or ".bin"
  *               allow for debugging EEPROM modes (for LMM or CMM)
  *               allow for reads of hub ram up to $ffff (instead of only $7fff)
- *
- * Version 3.9 - just update version number.
- *
- * Version 3.10 - just update version number.
  *
  * Version 3.11 - Allow reading structs and variables pointed to by a register
  *                (required now that catdbgfilegen correctly identifies the
@@ -94,8 +76,6 @@
  *
  *             - Add timeout to blackbox_open.
  *
- * Version 4.0 - Just update version number.
- *
  * Version 4.2 - fix bug in autoport logic.
  *
  *             - open port with exclusive access on Linux.
@@ -105,8 +85,6 @@
  *             - fix print_var and update_expr logic, and allow 
  *               dereferencing of pointer types (including within
  *               structures).
- *
- * Version 4.3  - Just update version number.
  *
  * Version 5.3  - Update Lua to version 5.4.4
  *

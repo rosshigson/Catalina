@@ -1,4 +1,4 @@
-#pragma catapult primary server binary(sluacx) mode(CMM) options(-W-w -p2 -O5 -lluax linit.c -C LUA_SERVICE dsptch_l.c aloha.c -lcx -lmc -lserial2 -C SIMPLE -C VT100 -C MHZ_200 -C CLOCK)
+#pragma catapult primary server binary(sluacx) mode(CMM) options(-W-w -p2 -O5 -lluax linit.c -C LUA_SERVICE dsptch_l.c aloha.c -lcx -lmc -lserial2 -C MHZ_200 -C CLOCK)
 /******************************************************************************
  *        A general-purpose Lua Server (no client) for remote services.       *
  *                                                                            *
@@ -26,7 +26,7 @@
 #include <string.h>
 #include <hmi.h>
 
-#define MAX_NAMELEN   12 // for DOS 8.3 file names
+#define MAX_PATHLEN   128 // allow for long paths
 #define MAX_SERVICES  50 // arbitrary
 
 #define DEFAULT_SERVER "server.lux"
@@ -64,22 +64,22 @@ int main(int argc, char *argv[]) {
    int cog;
    int result;
    lua_State *L;
-   char server[MAX_NAMELEN + 5];
+   char server[MAX_PATHLEN + 1];
 
    // process command line arguments
    memset(server, 0, sizeof(server));
    if (argc > 1) {
       if (strchr(argv[1], '.') == NULL) {
-         strncpy(server, argv[1], MAX_NAMELEN);
+         strncpy(server, argv[1], MAX_PATHLEN);
          strcat(server, DEFAULT_EXTN);
       }
       else {
-         strncpy(server, argv[1], MAX_NAMELEN);
+         strncpy(server, argv[1], MAX_PATHLEN);
       }
    }
    // use default name if no arguments specified
    if (strlen(server) == 0) {
-      strncpy(server, DEFAULT_SERVER, MAX_NAMELEN);
+      strncpy(server, DEFAULT_SERVER, MAX_PATHLEN);
    }
    //t_printf("server = %s\n", server);
 

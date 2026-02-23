@@ -3,31 +3,7 @@
  *
  * version 7.1 - initial release (to coincide with Catalina 7.1)
  *
- * version 7.2 - just update version number.
- *
- * version 7.3 - just update version number.
- *
  * version 7.3.1 - remove incorrect file size check.
- *
- * version 7.4.1 - just update version number.
- *
- * version 7.5 - just update version number.
- *
- * version 7.6 - just update version number.
- *
- * version 7.9 - just update version number.
- *
- * version 8.1 - just update version number.
- *
- * version 8.2 - just update version number.
- *
- * version 8.3 - just update version number.
- *
- * version 8.4 - just update version number.
- *
- * version 8.5 - just update version number.
- *
- * version 8.6 - just update version number.
  *
  * version 8.7 - set _EXIT_CODE to result.
  *

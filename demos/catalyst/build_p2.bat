@@ -59,6 +59,11 @@ copy CAKECONF.H ..\image\CAKECONF.H
 copy hello_99.c ..\image\hello_99.c
 cd ..
 
+cd elua
+call build_all  %1 %2 %3 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200
+call copy_all ..\image
+cd ..
+
 cd xvi-2.51
 call build_all %1 %2 %3 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 LARGE
 copy src\xvi.bin ..\image\bin\xl_vi.bin
@@ -101,10 +106,15 @@ cd ..
 
 cd cake
 rem NOTE: cannot currently use OPTIMIZE with Cake ...
-call build_all  %1 %2 %3 SIMPLE VT100 USE_COLOR MHZ_200
+call build_all  %1 %2 %3 VGA COLOR_4 MHZ_200
 copy %LCCDIR%\source\cake\src\catalina\cake.bin ..\image\bin\cake.bin
 copy CAKECONF.H ..\image\CAKECONF.H
 copy hello_99.c ..\image\hello_99.c
+cd ..
+
+cd elua
+call build_all  %1 %2 %3 VGA_COLOR_4 OPTIMIZE MHZ_200
+call copy_all ..\image
 cd ..
 
 cd xvi-2.51

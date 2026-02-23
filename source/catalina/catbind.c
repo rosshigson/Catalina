@@ -51,10 +51,6 @@
  *
  *               Allow -F option on LMM as well as EMM/XMM compiles.
  *
- * Version 2.1 - Just update version number.
- *
- * Version 2.2 - Just update version number.
- *
  * Version 2.3 - Allow for spaces in file/path names.
  *               Allow upper or lowercase 'k' or 'm' to -M option.
  *
@@ -79,11 +75,7 @@
  *               Added -u (untidy mode) to disable cleanup (useful when
  *               debugging)
  *
- * Version 2.5 - just update version number.
- *
  * Version 2.6 - Add Optimizer option (-O).
- *
- * Version 2.7 - just update version number.
  *
  * Version 2.8 - support layout 6 - SMM mode (SDCARD Memory Mode).
  *
@@ -127,8 +119,6 @@
  * Version 3.0.4 If an extension is specified on the output file, remove it.
  *               Quote filenames containing spaces on unix as well as windows.
  *               
- * Version 3.1 - just update version number.
- *
  * Version 3.2 - Make line size 4096 chars.
  *
  * Version 3.3 - Remove default (C3) values for RO & RW segments - now these
@@ -165,10 +155,6 @@
  *               lmm_progbeg.s, cmm_progbeg.s & xmm_progbeg.s (similarly 
  *               for emm_progend.s & smm_progend.s) 
  *
- * Version 3.9 - just update version number.
- *
- * Version 3.10 - just update version number.
- *
  * Version 3.11 - Add support for using openspin as assembler. This is now
  *                the default. The command line syntax has changed (to -as
  *                or -ah) to match the syntax used in catalina.c
@@ -182,8 +168,6 @@
  *
  * Version 3.12 - Renamed openspin to spinnaker.
  *
- * Version 3.13 - Just update version number.
- *
  * Version 3.15 - Add P2 support. LMM mode only. Propeller 2 indicated by 
  *                flag -p2
  *
@@ -191,10 +175,6 @@
  *                supported on the P1, and p2asm is the only assembler
  *                supported on the P2.
  *              - Define P2_LAYOUT_OFFS
- *
- * Version 3.17 - Just update verion number.
- *
- * Version 4.0  - Just update version number.
  *
  * Version 4.1  - Allow -M, -P and -R accept hexadecimal constants. The number
  *                is treated as hexadecimal if it starts with 0x or $ such
@@ -215,27 +195,9 @@
  *              - Error in processing output filename if ".bin" is specified
  *                as the filename extension (e.g. on the P2).
  *
- * Version 4.2  - Just update version number.
- *
- * Version 4.3  - Just update version number.
- *
- * Version 4.4  - Just update version number.
- *
- * Version 4.5  - Just update version number.
- *
- * Version 4.6  - Just update version number.
- *
- * Version 4.7  - Just update version number.
- *
- * Version 4.8  - Just update version number.
- *
  * Version 4.9  - Remove -F and -B command line options.
  *
  *              - Pass the target name to the Catalina Optimizer.
- *
- * Version 4.9.1 - Just update version number.
- *
- * Version 4.9.2 - Just update version number.
  *
  * Version 4.9.3 - Allow complex symbol definitions on the command line, 
  *                 such as:
@@ -243,16 +205,6 @@
  *                    -D "name=value".
  *
  *                 This is only supported when using p2_asm as the assembler.
- *
- * Version 4.9.4 - Just update version number.               
- *
- * Version 4.9.5 - Just update version number.               
- *
- * Version 4.9.6  Just update version number.
- *
- * Version 5.0    Just update version number.
- *
- * Version 5.1    Just update version number.
  *
  * Version 5.1.1  Fixed a bug in argument parsing that meant the "-w"
  *                command line option was not being parsed correctly. In
@@ -263,24 +215,11 @@
  *                ".eeprom" rather than ".binary". Affected the Propeller 
  *                1 only, and only Catalina version 4.9.3 or later.
  *
- * Version 5.1.2  Just update version number - this version was released to
- *                fix a bug in thread_misc.e.
- *
- * Version 5.2    Just update version number.
- *
- * Version 5.3    Just update version number.
- *
  * Version 5.4    Remove references to Homespun.
  *
  * Version 5.5    Remove references to Homespun.
  *
  * Version 5.6    Add Propeller 2 XMM support.
- *
- * Version 5.7    Just update version number.
- *
- * Version 5.8    Just update version number.
- *
- * Version 5.9    Just update version number.
  *
  * Version 6.0    Changes to accommodate DOS 8.3 file systems.
  *
@@ -293,53 +232,15 @@
  *                commands not supported by revision A of the P2 -
  *                add the command line option -C P2_REV_A
  *
- * Version 6.0.1  Just update version number.
- *
- * Version 6.1    Just update version number.
- *
- * Version 6.2   - just update version number.
- *
- * Version 6.3   - just update version number.
- *
- * Version 6.4   - just update version number.
- *
- * Version 6.5   - just update version number.
- *
- * Version 7.0   - just update version number.
- *
  * Version 7.1   - Add support for Quick Build (-q).
  * 
  *               - Tidy up interpretation of -v and -d options -
  *                 they are now disjoint, and one does not imply
  *                 the other. To see all messages, use both.
  *
- * Version 7.2   - just update version number.
- *
- * Version 7.3   - just update version number.
- *
- * Version 7.4   - just update version number.
- *
- * Version 7.5   - just update version number.
- *
- * Version 7.6   - just update version number.
- *
  * Version 7.9   - Add -H option to specify heap top (+1), which is passed
  *                 to bcc. HEAP_TOP is used by _sbrk(), but the actual value
  *                 used will be the LOWER of HEAP_TOP and FREE_MEM.
- *
- * version 8.1   - just update version number.
- *
- * version 8.2   - just update version number.
- *
- * version 8.3   - just update version number.
- *
- * version 8.4   - just update version number.
- *
- * version 8.5   - just update version number.
- *
- * version 8.6   - just update version number.
- *
- * version 8.7   - just update version number.
  *
  * version 8.8   - add -Q (and -C QUICKFORCE) to mean enable Qquick Build,
  *                 but also rebuild the target file even if it already exists.
