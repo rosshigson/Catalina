@@ -1,0 +1,84 @@
+This folder contains a port of the 'coremark' benchmark to the Propeller 2 
+using Catalina. Install it in a directory such as 'demos/coremark'.
+
+There is one change that (currently) needs to be made in the coremark source
+file 'coremark.h' - line 78 must be changed from:
+
+   ee_u8  check_data_types(void);
+
+to:
+
+   ee_u8  check_data_types();
+
+This change has already been made in the sources in this directory. The 
+change is required due to a bug in Cake, not in Catalina or coremark, and 
+is expected to be fixed in the next Cake release.
+
+All the catalina-specific code required to compile and use coremark with 
+Catalina is in the 'catalina' subdirectory. To use it, use 'make' in the 
+coremark directory. For example, to build coremark in NATIVE mode for the 
+default platform (p2_CUSTOM) and then load and execute it:
+
+   make PORT_DIR=catalina load
+
+Note that the 'catalina' port directory must always be specified. The useful
+targets that can be specified are:
+
+  compile       - compile only, do not load or run
+  load          - load using payload (which also runs it)
+  run           - load using payload and then run it (the default target)
+  force_rebuild - rebuild coremark even if the sources have not changed
+  clean         - delete the binaries etc
+
+The 'load' target uses payload to load the coremark binary after it is 
+compiled. On the Propeller, doing thius also runs the program, so using 
+the default 'run' target is not recommended because it will also try to run 
+the propeller executable locally - use 'load' instead.
+
+You can specify a platform other than P2_CUSTOM, and other Catalina options
+using XCFLAGS. For example:
+
+   make PORT_DIR=catalina XCFLAGS="-C P2_EDGE" load
+
+Or, to build coremark in COMPACT mode at 300 Mhz:
+
+   make PORT_DIR=catalina XCFLAGS="-C COMPACT -C MHZ_300" load
+
+The Catalina options "-p2 -C99 -O5 -C CLOCK -lc lmc" are already specified in 
+the Makefile, and do not need to be specified using XCFLAGS. To change them, 
+modify both 'catalina/coremark.mak' and 'catalina/coremark.h'
+
+To build coremark to use multiple cogs, set the coremark C Symbol MULTITHREAD 
+to a value greater than 1. Values up to 4 should work on all propeller 2 
+platforms, and 5 is possible if the default -lmc option is changed to -lc
+(this saves a cog when using floating point). Note that MULTITHREAD is a C 
+symbol not a Catalina symbol, and so must be defined using -D not -C).
+For example:
+
+   make PORT_DIR=catalina XCFLAGS="-D MULTITHREAD=4" load
+
+Coremark can also be compiled in XMM SMALL or LARGE mode, but loading it must
+be done manually after build_utilities has been executed to build the XMM 
+loader. For example:
+
+   make PORT_DIR=catalina XCFLAGS="-C P2_EDGE -C SMALL -C CACHED_64K" compile
+   build_utilities
+   payload -o2 -Inone xmm coremark
+
+Ignore any log files produced by coremark. The output from payload appears 
+in the terminal window only, and cannot be redirected to a file, as coremark 
+expects to be able to do.
+
+NOTE: In addition to using multiple cogs, Catalina can also use Posix threads
+to implement the coremark MULTITHREAD option. This is done by setting the 
+USE_PTHREAD flag and adding the threads libraray. For example, using a 
+command like:
+
+   make PORT_DIR=catalina XCFLAGS="-DMULTITHREAD=4 -DUSE_PTHREAD=1 -lthreads"
+
+However, this uses a single cog to run all the Posix threads, so it does not 
+result in any speed improvements. It is included mainly to verify that 
+Catalina's Posix threads implementation works correctly with coremark. 
+However, it also serves to demonstrate that the overhead of using Posix 
+threads with Catalina are very low.
+
