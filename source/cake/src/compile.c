@@ -314,7 +314,8 @@ int compile_one_file(const char* file_name,
 #if !defined(__CATALINA__)
     // For Catalina, don't print the name of each file processed
     // (there will usually be only one file)
-    printf("%s\n", file_name);
+    print_path(file_name, true);
+    printf("\n");
 #endif // !defined(__CATALINA__)
     struct preprocessor_ctx prectx = { 0 };
     prectx.options = *options;

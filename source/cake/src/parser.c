@@ -2175,20 +2175,6 @@ struct declaration* _Owner _Opt declaration(struct parser_ctx* ctx,
 
             assert(p_declaration->init_declarator_list.head != NULL); //because functions definitions have names
 
-            struct declarator* inner = p_declaration->init_declarator_list.head->p_declarator;
-            for (;;)
-            {
-                if (inner->direct_declarator &&
-                    inner->direct_declarator->function_declarator &&
-                    inner->direct_declarator->function_declarator->direct_declarator &&
-                    inner->direct_declarator->function_declarator->direct_declarator->declarator)
-                {
-                    inner = inner->direct_declarator->function_declarator->direct_declarator->declarator;
-                }
-                else
-                    break;
-            }
-
 
             if (ctx->current == NULL)
             {
@@ -2209,17 +2195,20 @@ struct declaration* _Owner _Opt declaration(struct parser_ctx* ctx,
             ctx->p_current_function_opt = p_declarator;
 
 
-            if (inner->direct_declarator->function_declarator == NULL)
+            if (p_declarator->name_opt == NULL)
             {
-                if (inner->first_token_opt)
-                    compiler_diagnostic(C_ERROR_UNEXPECTED, ctx, inner->first_token_opt, NULL, "missing function declarator");
+                if (p_declarator->first_token_opt)
+                    compiler_diagnostic(C_ERROR_UNEXPECTED, ctx, p_declarator->first_token_opt, NULL, "missing function declarator");
                 else 
                     compiler_diagnostic(C_ERROR_UNEXPECTED, ctx, ctx->current, NULL, "missing function declarator");
 
                 throw;
             }
 
-            struct scope* parameters_scope = &inner->direct_declarator->function_declarator->parameters_scope;
+            struct function_declarator* pfuncdecl = declarator_find_function_declarator(p_declarator);
+            if (pfuncdecl == NULL) throw;
+
+            struct scope* parameters_scope = &pfuncdecl->parameters_scope;
             scope_list_push(&ctx->scopes, parameters_scope);
 
             struct scope* _Opt p_current_function_scope_opt = ctx->p_current_function_scope_opt;
@@ -4147,13 +4136,41 @@ struct struct_or_union_specifier* _Owner _Opt struct_or_union_specifier(struct p
             if (p_complete->attribute_specifier_sequence_opt &&
                 p_complete->attribute_specifier_sequence_opt->attributes_flags & STD_ATTRIBUTE_DEPRECATED)
             {
+                // extract optional reason from [[deprecated("reason")]]
+                const char* _Opt deprecated_reason = NULL;
+                const struct attribute_specifier* _Opt p_as = p_complete->attribute_specifier_sequence_opt->head;
+                while (p_as && deprecated_reason == NULL)
+                {
+                    if (p_as->attribute_list)
+                    {
+                        const struct attribute* _Opt p_a = p_as->attribute_list->head;
+                        while (p_a)
+                        {
+                            if ((p_a->attributes_flags & STD_ATTRIBUTE_DEPRECATED) &&
+                                p_a->attribute_argument_clause &&
+                                p_a->attribute_argument_clause->p_balanced_token_sequence &&
+                                p_a->attribute_argument_clause->p_balanced_token_sequence->head)
+                            {
+                                deprecated_reason = p_a->attribute_argument_clause->p_balanced_token_sequence->head->token->lexeme;
+                            }
+                            p_a = p_a->next;
+                        }
+                    }
+                    p_as = p_as->next;
+                }
+
                 if (p_struct_or_union_specifier->tagtoken)
                 {
-                    // TODO add deprecated message
+                    if (deprecated_reason)
+                        compiler_diagnostic(W_DEPRECATED, ctx, p_struct_or_union_specifier->first_token, NULL, "'%s' is deprecated: %s", p_struct_or_union_specifier->tagtoken->lexeme, deprecated_reason);
+                    else
                     compiler_diagnostic(W_DEPRECATED, ctx, p_struct_or_union_specifier->first_token, NULL, "'%s' is deprecated", p_struct_or_union_specifier->tagtoken->lexeme);
                 }
                 else
                 {
+                    if (deprecated_reason)
+                        compiler_diagnostic(W_DEPRECATED, ctx, p_struct_or_union_specifier->first_token, NULL, "deprecated: %s", deprecated_reason);
+                    else
                     compiler_diagnostic(W_DEPRECATED, ctx, p_struct_or_union_specifier->first_token, NULL, "deprecated");
                 }
             }
@@ -5659,21 +5676,24 @@ struct declarator* _Owner _Opt declarator(struct parser_ctx* ctx,
     return p_declarator;
 }
 
-const char* _Opt declarator_get_name(struct declarator* p_declarator)
+struct function_declarator* declarator_find_function_declarator(const struct declarator* p_declarator)
 {
+    
     if (p_declarator->direct_declarator)
     {
-        if (p_declarator->direct_declarator->name_opt)
-            return p_declarator->direct_declarator->name_opt->lexeme;
+        if (p_declarator->direct_declarator->declarator)
+            return declarator_find_function_declarator(p_declarator->direct_declarator->declarator);
+        if (p_declarator->direct_declarator->function_declarator)
+        {
+            if (p_declarator->direct_declarator->function_declarator->direct_declarator &&
+                p_declarator->direct_declarator->function_declarator->direct_declarator->declarator)
+            {
+                return declarator_find_function_declarator(p_declarator->direct_declarator->function_declarator->direct_declarator->declarator);
     }
-
+            return p_declarator->direct_declarator->function_declarator;
+        }
+    }
     return NULL;
-}
-
-bool declarator_is_function(struct declarator* p_declarator)
-{
-    return (p_declarator->direct_declarator &&
-        p_declarator->direct_declarator->function_declarator != NULL);
 }
 
 struct array_declarator* _Owner _Opt array_declarator(struct direct_declarator* _Owner p_direct_declarator, struct parser_ctx* ctx, enum expression_eval_mode eval_mode);
@@ -11189,6 +11209,61 @@ struct ast get_ast(struct options* options,
     return ast;
 }
 
+int fill_preprocessor_options(int argc, const char** argv, struct preprocessor_ctx* prectx);
+
+struct ast get_ast_with_flags(int argc,
+    const char **argv,
+    const char* filename,
+    const char* source,
+    struct report* report)
+{
+    
+    
+    struct ast ast = { 0 };
+    struct tokenizer_ctx tctx = { 0 };
+
+    struct token_list list = tokenizer(&tctx, source, filename, 0, TK_FLAG_NONE);
+
+    struct preprocessor_ctx prectx = { 0 };
+
+    _Opt struct parser_ctx ctx = { 0 };
+    ctx.p_report = report;
+
+    try
+    {
+        struct options options = { 0 };
+        fill_options(&options, argc, argv);
+        
+        prectx.options = options;
+        prectx.macros.capacity = 5000;
+        fill_preprocessor_options(argc, argv, &prectx);
+        add_standard_macros(&prectx, options.target);
+
+#ifdef __EMSCRIPTEN__
+        /*we mock web version to include from c*/
+        include_dir_add(&prectx.include_dir, "c:/");
+#endif
+
+        ast.token_list = preprocessor(&prectx, &list, 0);
+        if (prectx.n_errors != 0)
+            throw;
+
+        ctx.options = options;
+
+        bool berror = false;
+        ast.declaration_list = parse(&ctx, &ast.token_list, &berror);
+        if (berror)
+            throw;
+    }
+    catch
+    {
+    }
+    parser_ctx_destroy(&ctx);
+    token_list_destroy(&list);
+    preprocessor_ctx_destroy(&prectx);
+
+    return ast;
+}
 
 void ast_destroy(_Dtor struct ast* ast)
 {

@@ -919,81 +919,168 @@ int convert_to_number(struct parser_ctx* ctx, struct expression* p_expression_no
             "integer literal is too large to be represented in any integer type");
         }
 
-        if (suffix[0] == 'U')
+        //This code follows the table in the standard.
+
+        static_assert(NUMBER_OF_TARGETS == 6, "does your target follow the C rules? (MSVC is different)");
+        const bool is_msvc = (target == TARGET_X86_MSVC || target == TARGET_X64_MSVC);
+
+        const bool is_decimal_constant = (token->type == TK_COMPILER_DECIMAL_CONSTANT);
+        const bool suffix_none = (suffix[0] == '\0');
+        const bool suffix_u = (suffix[0] == 'U' && suffix[1] == '\0');
+
+        const bool suffix_l = ((suffix[0] == 'L' && suffix[1] == '\0')) ||
+            ((suffix[0] == 'i' && suffix[1] == '3' && suffix[2] == '2' && suffix[3] == '\0'));
+
+        const bool suffix_ul = (suffix[0] == 'U' && suffix[1] == 'L' && suffix[2] == '\0');
+
+        const bool suffix_ll = (suffix[0] == 'L' && suffix[1] == 'L' && suffix[2] == '\0') ||
+            (suffix[0] == 'i' && suffix[1] == '6' || suffix[2] == '4' && suffix[2] == '\0');
+
+        const bool suffix_ull = (suffix[0] == 'U' && suffix[1] == 'L' && suffix[2] == 'L' && suffix[3] == '\0');
+
+        object_destroy(&p_expression_node->object);
+
+        if (suffix_none)
         {
-            /*fixing the type that fits the size*/
-            if (value <= unsigned_int_max_value && suffix[1] != 'L')
+            if (value <= signed_int_max_value)
             {
-                object_destroy(&p_expression_node->object);
+                p_expression_node->object = object_make_signed_int(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_INT;
+            }
+            else if (value <= unsigned_int_max_value && !is_decimal_constant)
+            {
                 p_expression_node->object = object_make_unsigned_int(ctx->options.target,  value);
-                p_expression_node->type.type_specifier_flags = (TYPE_SPECIFIER_INT | TYPE_SPECIFIER_UNSIGNED);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_INT;
             }
-            else if (value <= unsigned_long_max_value && suffix[2] != 'L')
+            else if (value <= signed_long_max_value)
             {
-                object_destroy(&p_expression_node->object);
-                p_expression_node->object = object_make_unsigned_long(target, value);
-                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_LONG | TYPE_SPECIFIER_UNSIGNED;
+                p_expression_node->object = object_make_signed_long(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_LONG;
             }
-            else //if (value <= ULLONG_MAX)
+            else if (value <= unsigned_long_max_value && (!is_decimal_constant || is_msvc))
             {
-                object_destroy(&p_expression_node->object);
+                p_expression_node->object = object_make_unsigned_long(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_LONG;
+            }
+            else if (value <= signed_long_long_max_value)
+            {
+                p_expression_node->object = object_make_signed_long_long(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_LONG_LONG;
+            }
+            else if (value <= unsigned_long_long_max_value && !is_decimal_constant)
+            {
+                p_expression_node->object = object_make_unsigned_long_long(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_LONG_LONG;
+        }
+        else
+        {
+                compiler_diagnostic(W_IMPLICITLY_UNSIGNED_LITERAL,
+                                    ctx,
+                                    token,
+                                    NULL,
+                                    "integer literal is too large to be represented in a signed integer type, interpreting as unsigned");
+
                 p_expression_node->object = object_make_unsigned_long_long(ctx->options.target, value);
                 p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_LONG_LONG | TYPE_SPECIFIER_UNSIGNED;
             }
         }
-        else
-        {
-            static_assert(NUMBER_OF_TARGETS == 6, "does your target follow the C rules? (MSVC is different)");
-
-            /*fixing the type that fits the size*/
-            if (value <= signed_int_max_value && suffix[0] != 'L')
+        else if (suffix_u)
             {
-                object_destroy(&p_expression_node->object);
-                p_expression_node->object = object_make_signed_int(ctx->options.target, value);
-                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_INT;
+            if (value <= unsigned_int_max_value)
+            {
+                p_expression_node->object = object_make_unsigned_int(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_INT;
             }
-            else if (value <= signed_int_max_value && suffix[1] != 'L')
+            else if (value <= unsigned_long_max_value)
             {
-                object_destroy(&p_expression_node->object);
-                p_expression_node->object = object_make_signed_long(target, value);
-                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_LONG;
-            }
-            else if ((target == TARGET_X86_MSVC || target == TARGET_X64_MSVC) &&
-                      (value <= unsigned_long_max_value) &&
-                      suffix[1] != 'L' /*!= LL*/)
-            {
-                // ONLY MSVC, NON STANDARD,  uses unsigned long instead of next big signed int
-                object_destroy(&p_expression_node->object);
-                p_expression_node->object = object_make_unsigned_long(target, value);
+                p_expression_node->object = object_make_unsigned_long(ctx->options.target, value);
                 p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_LONG;
             }
-            else if (value <= signed_long_max_value && suffix[1] != 'L' /*!= LL*/)
+            else //if (value <= unsigned_long_long_max_value)
             {
-                object_destroy(&p_expression_node->object);
-                p_expression_node->object = object_make_signed_long(target, value);
+                p_expression_node->object = object_make_unsigned_long_long(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_LONG_LONG;
+            }
+        }
+        else if (suffix_l)
+        {
+            if (value <= signed_long_max_value)
+            {
+                p_expression_node->object = object_make_signed_long(ctx->options.target, value);
                 p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_LONG;
+            }
+            else if (value <= unsigned_long_max_value && !is_decimal_constant)
+            {
+                p_expression_node->object = object_make_unsigned_long(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_LONG;
             }
             else if (value <= signed_long_long_max_value)
             {
-                object_destroy(&p_expression_node->object);
                 p_expression_node->object = object_make_signed_long_long(ctx->options.target, value);
                 p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_LONG_LONG;
             }
+            else if (value <= unsigned_long_long_max_value && !is_decimal_constant)
+            {
+                p_expression_node->object = object_make_unsigned_long_long(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_LONG_LONG;
+            }
             else
             {
-                compiler_diagnostic(
-                    W_IMPLICITLY_UNSIGNED_LITERAL,
+                compiler_diagnostic(W_IMPLICITLY_UNSIGNED_LITERAL,
                     ctx,
                     token,
                     NULL,
                     "integer literal is too large to be represented in a signed integer type, interpreting as unsigned");
 
-                object_destroy(&p_expression_node->object);
                 p_expression_node->object = object_make_unsigned_long_long(ctx->options.target, value);
                 p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_LONG_LONG | TYPE_SPECIFIER_UNSIGNED;
             }
         }
+        else if (suffix_ul)
+        {
+            if (value <= unsigned_long_max_value)
+            {
+                p_expression_node->object = object_make_unsigned_long(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_LONG;
+            }
+            else //if (value <= unsigned_long_long_max_value)
+            {
+                p_expression_node->object = object_make_unsigned_long_long(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_LONG_LONG;
+            }
+        }
+        else if (suffix_ll)
+        {
+            if (value <= signed_long_long_max_value)
+            {
+                p_expression_node->object = object_make_signed_long_long(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_LONG_LONG;
+            }
+            else if (value <= unsigned_long_long_max_value && !is_decimal_constant)
+            {
+                p_expression_node->object = object_make_unsigned_long_long(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_LONG_LONG;
+            }
+            else
+            {
+                compiler_diagnostic(W_IMPLICITLY_UNSIGNED_LITERAL,
+                                    ctx,
+                                    token,
+                                    NULL,
+                                    "integer literal is too large to be represented in a signed integer type, interpreting as unsigned");
 
+                p_expression_node->object = object_make_unsigned_long_long(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_LONG_LONG | TYPE_SPECIFIER_UNSIGNED;
+            }
+        }
+        else if (suffix_ull)
+        {
+            //if (value <= unsigned_long_long_max_value && !is_decimal_constant)
+            {
+                p_expression_node->object = object_make_unsigned_long_long(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_LONG_LONG;
+            }
+        }
     }
     break;
 
@@ -1315,9 +1402,23 @@ struct expression* _Owner _Opt primary_expression(struct parser_ctx* ctx, enum e
               but since we keep the source format here it was an alternative
             */
 
+            const struct token* first_string_token = ctx->current;
             while (ctx->current->type == TK_STRING_LITERAL)
             {
-                //"part1" "part2" TODO check different types
+                if (ctx->current != first_string_token)
+                {
+                    // check that prefixes match (e.g. don't mix L"" with u"")
+                    const char* p1 = first_string_token->lexeme;
+                    const char* p2 = ctx->current->lexeme;
+                    int len1 = 0, len2 = 0;
+                    while (p1[len1] != '"') len1++;
+                    while (p2[len2] != '"') len2++;
+                    if (len1 != len2 || strncmp(p1, p2, len1) != 0)
+                    {
+                        compiler_diagnostic(W_WARNING_LIT_STRING, ctx, ctx->current, NULL,
+                            "concatenation of string literals with different encoding prefixes");
+                    }
+                }
 
 
                 const unsigned char* _Opt it = (unsigned char*)ctx->current->lexeme;
@@ -3070,8 +3171,11 @@ struct expression* _Owner _Opt unary_expression(struct parser_ctx* ctx, enum exp
 
             if (ctx->current->type != TK_IDENTIFIER)
             {             
-                //TODO
-                //https://gcc.gnu.org/onlinedocs/gcc/Offsetof.html#Offsetof
+                // GCC extension: __builtin_offsetof supports designators like
+                // s.field or arr[0].field, but only simple identifier is currently
+                // implemented. https://gcc.gnu.org/onlinedocs/gcc/Offsetof.html
+                compiler_diagnostic(C_ERROR_UNEXPECTED_TOKEN, ctx, ctx->current, NULL,
+                    "__builtin_offsetof: only a simple member name is supported");
                 expression_delete(new_expression);
                 throw;                
             }
@@ -4476,7 +4580,44 @@ static void check_comparison(struct parser_ctx* ctx,
     struct expression* p_b_expression,
     const struct token* op_token)
 {
-    //TODO more checks unsigned < 0
+    // unsigned_expr < 0 is always false; unsigned_expr >= 0 is always true
+    if (type_is_unsigned_integer(&p_a_expression->type) && expression_is_zero(p_b_expression))
+    {
+        if (op_token->type == '<')
+        {
+            compiler_diagnostic(W_CONDITIONAL_IS_CONSTANT,
+                                ctx,
+                                op_token, NULL,
+                                "comparison of unsigned expression < 0 is always false");
+        }
+        else if (op_token->type == '>=')
+        {
+            compiler_diagnostic(W_CONDITIONAL_IS_CONSTANT,
+                                ctx,
+                                op_token, NULL,
+                                "comparison of unsigned expression >= 0 is always true");
+        }
+    }
+
+    // 0 > unsigned_expr is always false; 0 <= unsigned_expr is always true
+    if (type_is_unsigned_integer(&p_b_expression->type) && expression_is_zero(p_a_expression))
+    {
+        if (op_token->type == '>')
+        {
+            compiler_diagnostic(W_CONDITIONAL_IS_CONSTANT,
+                                ctx,
+                                op_token, NULL,
+                                "comparison 0 > unsigned expression is always false");
+        }
+        else if (op_token->type == '<=')
+        {
+            compiler_diagnostic(W_CONDITIONAL_IS_CONSTANT,
+                                ctx,
+                                op_token, NULL,
+                                "comparison 0 <= unsigned expression is always true");
+        }
+    }
+
     bool equal_not_equal =
         op_token->type == '!=' ||
         op_token->type == '==';

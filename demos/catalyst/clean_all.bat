@@ -8,6 +8,7 @@ echo.
 
 del /s /q "image\*"
 IF EXIST image\bin rmdir /s /q "image\bin"
+IF EXIST image\life rmdir /s /q "image\life"
 IF EXIST image\include rmdir /s /q "image\include"
 IF EXIST image\lib rmdir /s /q "image\lib"
 IF EXIST image\target rmdir /s /q "image\target"

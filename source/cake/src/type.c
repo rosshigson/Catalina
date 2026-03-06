@@ -1954,7 +1954,11 @@ static enum sizeof_error get_offsetof_struct(struct struct_or_union_specifier* c
                     }
                     else
                     {
-                        //TODO overflow
+                        if (item_size > SIZE_MAX - size)
+                        {
+                            sizeof_error = ESIZEOF_OVERLOW;
+                            throw;
+                        }
                         size += item_size;
                     }
                     type_destroy(&t);
@@ -2079,7 +2083,11 @@ enum sizeof_error get_sizeof_struct(struct struct_or_union_specifier* complete_s
                     }
                     else
                     {
-                        //TODO overflow
+                        if (item_size > SIZE_MAX - size)
+                        {
+                            sizeof_error = ESIZEOF_OVERLOW;
+                            throw;
+                        }
                         size += item_size;
                     }
                     type_destroy(&t);
@@ -2911,6 +2919,8 @@ static bool type_is_same_core(const struct type* a,
                 return false;
             }
 
+            if (!pa->params.is_void && !pb->params.is_void)
+            {
             struct param* _Opt p_param_a = pa->params.head;
             struct param* _Opt p_param_b = pb->params.head;
             while (p_param_a && p_param_b)
@@ -2922,7 +2932,11 @@ static bool type_is_same_core(const struct type* a,
                 p_param_a = p_param_a->next;
                 p_param_b = p_param_b->next;
             }
-            return p_param_a == NULL && p_param_b == NULL;
+                if (p_param_a != NULL || p_param_b != NULL)
+                {
+                    return false;
+                }
+            }
         }
 
         if (pa->struct_or_union_specifier &&
@@ -3251,6 +3265,10 @@ void  make_type_using_direct_declarator(struct parser_ctx* ctx,
             {
                 p_func->params.is_var_args = pdirectdeclarator->function_declarator->parameter_type_list_opt->is_var_args;
                 p_func->params.is_void = pdirectdeclarator->function_declarator->parameter_type_list_opt->is_void;
+            }
+            else
+            {
+                p_func->params.is_void = true;
             }
 
             if (pdirectdeclarator->function_declarator->parameter_type_list_opt &&

@@ -780,6 +780,7 @@ struct declarator
     bool declarator_renamed;
 };
 
+struct function_declarator* declarator_find_function_declarator(const struct declarator* p_declarator);
 const struct declarator* _Opt declarator_get_innert_function_declarator(const struct declarator* p);
 
 const struct declarator* _Opt declarator_get_function_definition(const struct declarator* p);
@@ -1718,6 +1719,7 @@ struct ast
 
 
 struct ast get_ast(struct options* options, const char* filename, const char* source, struct report* report);
+struct ast get_ast_with_flags(int argc, const char **argv, const char* filename, const char* source, struct report* report);
 void ast_destroy(_Dtor struct ast* ast);
 struct type make_type_using_declarator(struct parser_ctx* ctx, struct declarator* pdeclarator);
 

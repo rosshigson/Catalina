@@ -937,7 +937,7 @@ enum diagnostic_id {
     W_FLOAT_RANGE = 63,
 
     
-    W_UNUSED_WARNING_64 = 64,
+    W_WARNING_LIT_STRING = 64,
     W_UNUSED_WARNING_65 = 65,
     W_UNUSED_WARNING_66 = 66,
     W_UNUSED_WARNING_67 = 67,
@@ -11843,13 +11843,7 @@ int ss_fprintf(struct osstream* stream, const char* fmt, ...)
 
 #else
 #if !defined(__CATALINA__)
-
-
-#include <uuid/uuid.h>
 #endif // !defined(__CATALINA__)
-/*
-caso nao tenha este arquivos apt-get install uuid-dev
-*/
 #endif
 
 
@@ -16944,6 +16938,7 @@ struct declarator
     bool declarator_renamed;
 };
 
+struct function_declarator* declarator_find_function_declarator(const struct declarator* p_declarator);
 const struct declarator* _Opt declarator_get_innert_function_declarator(const struct declarator* p);
 
 const struct declarator* _Opt declarator_get_function_definition(const struct declarator* p);
@@ -17882,6 +17877,7 @@ struct ast
 
 
 struct ast get_ast(struct options* options, const char* filename, const char* source, struct report* report);
+struct ast get_ast_with_flags(int argc, const char **argv, const char* filename, const char* source, struct report* report);
 void ast_destroy(_Dtor struct ast* ast);
 struct type make_type_using_declarator(struct parser_ctx* ctx, struct declarator* pdeclarator);
 
@@ -21940,81 +21936,168 @@ int convert_to_number(struct parser_ctx* ctx, struct expression* p_expression_no
             "integer literal is too large to be represented in any integer type");
         }
 
-        if (suffix[0] == 'U')
+        //This code follows the table in the standard.
+
+        static_assert(NUMBER_OF_TARGETS == 6, "does your target follow the C rules? (MSVC is different)");
+        const bool is_msvc = (target == TARGET_X86_MSVC || target == TARGET_X64_MSVC);
+
+        const bool is_decimal_constant = (token->type == TK_COMPILER_DECIMAL_CONSTANT);
+        const bool suffix_none = (suffix[0] == '\0');
+        const bool suffix_u = (suffix[0] == 'U' && suffix[1] == '\0');
+
+        const bool suffix_l = ((suffix[0] == 'L' && suffix[1] == '\0')) ||
+            ((suffix[0] == 'i' && suffix[1] == '3' && suffix[2] == '2' && suffix[3] == '\0'));
+
+        const bool suffix_ul = (suffix[0] == 'U' && suffix[1] == 'L' && suffix[2] == '\0');
+
+        const bool suffix_ll = (suffix[0] == 'L' && suffix[1] == 'L' && suffix[2] == '\0') ||
+            (suffix[0] == 'i' && suffix[1] == '6' || suffix[2] == '4' && suffix[2] == '\0');
+
+        const bool suffix_ull = (suffix[0] == 'U' && suffix[1] == 'L' && suffix[2] == 'L' && suffix[3] == '\0');
+
+        object_destroy(&p_expression_node->object);
+
+        if (suffix_none)
         {
-            /*fixing the type that fits the size*/
-            if (value <= unsigned_int_max_value && suffix[1] != 'L')
+            if (value <= signed_int_max_value)
             {
-                object_destroy(&p_expression_node->object);
+                p_expression_node->object = object_make_signed_int(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_INT;
+            }
+            else if (value <= unsigned_int_max_value && !is_decimal_constant)
+            {
                 p_expression_node->object = object_make_unsigned_int(ctx->options.target,  value);
-                p_expression_node->type.type_specifier_flags = (TYPE_SPECIFIER_INT | TYPE_SPECIFIER_UNSIGNED);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_INT;
             }
-            else if (value <= unsigned_long_max_value && suffix[2] != 'L')
+            else if (value <= signed_long_max_value)
             {
-                object_destroy(&p_expression_node->object);
-                p_expression_node->object = object_make_unsigned_long(target, value);
-                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_LONG | TYPE_SPECIFIER_UNSIGNED;
+                p_expression_node->object = object_make_signed_long(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_LONG;
             }
-            else //if (value <= ULLONG_MAX)
+            else if (value <= unsigned_long_max_value && (!is_decimal_constant || is_msvc))
             {
-                object_destroy(&p_expression_node->object);
+                p_expression_node->object = object_make_unsigned_long(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_LONG;
+            }
+            else if (value <= signed_long_long_max_value)
+            {
+                p_expression_node->object = object_make_signed_long_long(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_LONG_LONG;
+            }
+            else if (value <= unsigned_long_long_max_value && !is_decimal_constant)
+            {
+                p_expression_node->object = object_make_unsigned_long_long(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_LONG_LONG;
+        }
+        else
+        {
+                compiler_diagnostic(W_IMPLICITLY_UNSIGNED_LITERAL,
+                                    ctx,
+                                    token,
+                                    NULL,
+                                    "integer literal is too large to be represented in a signed integer type, interpreting as unsigned");
+
                 p_expression_node->object = object_make_unsigned_long_long(ctx->options.target, value);
                 p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_LONG_LONG | TYPE_SPECIFIER_UNSIGNED;
             }
         }
-        else
-        {
-            static_assert(NUMBER_OF_TARGETS == 6, "does your target follow the C rules? (MSVC is different)");
-
-            /*fixing the type that fits the size*/
-            if (value <= signed_int_max_value && suffix[0] != 'L')
+        else if (suffix_u)
             {
-                object_destroy(&p_expression_node->object);
-                p_expression_node->object = object_make_signed_int(ctx->options.target, value);
-                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_INT;
+            if (value <= unsigned_int_max_value)
+            {
+                p_expression_node->object = object_make_unsigned_int(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_INT;
             }
-            else if (value <= signed_int_max_value && suffix[1] != 'L')
+            else if (value <= unsigned_long_max_value)
             {
-                object_destroy(&p_expression_node->object);
-                p_expression_node->object = object_make_signed_long(target, value);
-                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_LONG;
-            }
-            else if ((target == TARGET_X86_MSVC || target == TARGET_X64_MSVC) &&
-                      (value <= unsigned_long_max_value) &&
-                      suffix[1] != 'L' /*!= LL*/)
-            {
-                // ONLY MSVC, NON STANDARD,  uses unsigned long instead of next big signed int
-                object_destroy(&p_expression_node->object);
-                p_expression_node->object = object_make_unsigned_long(target, value);
+                p_expression_node->object = object_make_unsigned_long(ctx->options.target, value);
                 p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_LONG;
             }
-            else if (value <= signed_long_max_value && suffix[1] != 'L' /*!= LL*/)
+            else //if (value <= unsigned_long_long_max_value)
             {
-                object_destroy(&p_expression_node->object);
-                p_expression_node->object = object_make_signed_long(target, value);
+                p_expression_node->object = object_make_unsigned_long_long(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_LONG_LONG;
+            }
+        }
+        else if (suffix_l)
+        {
+            if (value <= signed_long_max_value)
+            {
+                p_expression_node->object = object_make_signed_long(ctx->options.target, value);
                 p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_LONG;
+            }
+            else if (value <= unsigned_long_max_value && !is_decimal_constant)
+            {
+                p_expression_node->object = object_make_unsigned_long(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_LONG;
             }
             else if (value <= signed_long_long_max_value)
             {
-                object_destroy(&p_expression_node->object);
                 p_expression_node->object = object_make_signed_long_long(ctx->options.target, value);
                 p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_LONG_LONG;
             }
+            else if (value <= unsigned_long_long_max_value && !is_decimal_constant)
+            {
+                p_expression_node->object = object_make_unsigned_long_long(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_LONG_LONG;
+            }
             else
             {
-                compiler_diagnostic(
-                    W_IMPLICITLY_UNSIGNED_LITERAL,
+                compiler_diagnostic(W_IMPLICITLY_UNSIGNED_LITERAL,
                     ctx,
                     token,
                     NULL,
                     "integer literal is too large to be represented in a signed integer type, interpreting as unsigned");
 
-                object_destroy(&p_expression_node->object);
                 p_expression_node->object = object_make_unsigned_long_long(ctx->options.target, value);
                 p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_LONG_LONG | TYPE_SPECIFIER_UNSIGNED;
             }
         }
+        else if (suffix_ul)
+        {
+            if (value <= unsigned_long_max_value)
+            {
+                p_expression_node->object = object_make_unsigned_long(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_LONG;
+            }
+            else //if (value <= unsigned_long_long_max_value)
+            {
+                p_expression_node->object = object_make_unsigned_long_long(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_LONG_LONG;
+            }
+        }
+        else if (suffix_ll)
+        {
+            if (value <= signed_long_long_max_value)
+            {
+                p_expression_node->object = object_make_signed_long_long(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_LONG_LONG;
+            }
+            else if (value <= unsigned_long_long_max_value && !is_decimal_constant)
+            {
+                p_expression_node->object = object_make_unsigned_long_long(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_LONG_LONG;
+            }
+            else
+            {
+                compiler_diagnostic(W_IMPLICITLY_UNSIGNED_LITERAL,
+                                    ctx,
+                                    token,
+                                    NULL,
+                                    "integer literal is too large to be represented in a signed integer type, interpreting as unsigned");
 
+                p_expression_node->object = object_make_unsigned_long_long(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_LONG_LONG | TYPE_SPECIFIER_UNSIGNED;
+            }
+        }
+        else if (suffix_ull)
+        {
+            //if (value <= unsigned_long_long_max_value && !is_decimal_constant)
+            {
+                p_expression_node->object = object_make_unsigned_long_long(ctx->options.target, value);
+                p_expression_node->type.type_specifier_flags = TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_LONG_LONG;
+            }
+        }
     }
     break;
 
@@ -22336,9 +22419,23 @@ struct expression* _Owner _Opt primary_expression(struct parser_ctx* ctx, enum e
               but since we keep the source format here it was an alternative
             */
 
+            const struct token* first_string_token = ctx->current;
             while (ctx->current->type == TK_STRING_LITERAL)
             {
-                //"part1" "part2" TODO check different types
+                if (ctx->current != first_string_token)
+                {
+                    // check that prefixes match (e.g. don't mix L"" with u"")
+                    const char* p1 = first_string_token->lexeme;
+                    const char* p2 = ctx->current->lexeme;
+                    int len1 = 0, len2 = 0;
+                    while (p1[len1] != '"') len1++;
+                    while (p2[len2] != '"') len2++;
+                    if (len1 != len2 || strncmp(p1, p2, len1) != 0)
+                    {
+                        compiler_diagnostic(W_WARNING_LIT_STRING, ctx, ctx->current, NULL,
+                            "concatenation of string literals with different encoding prefixes");
+                    }
+                }
 
 
                 const unsigned char* _Opt it = (unsigned char*)ctx->current->lexeme;
@@ -24091,8 +24188,11 @@ struct expression* _Owner _Opt unary_expression(struct parser_ctx* ctx, enum exp
 
             if (ctx->current->type != TK_IDENTIFIER)
             {             
-                //TODO
-                //https://gcc.gnu.org/onlinedocs/gcc/Offsetof.html#Offsetof
+                // GCC extension: __builtin_offsetof supports designators like
+                // s.field or arr[0].field, but only simple identifier is currently
+                // implemented. https://gcc.gnu.org/onlinedocs/gcc/Offsetof.html
+                compiler_diagnostic(C_ERROR_UNEXPECTED_TOKEN, ctx, ctx->current, NULL,
+                    "__builtin_offsetof: only a simple member name is supported");
                 expression_delete(new_expression);
                 throw;                
             }
@@ -25497,7 +25597,44 @@ static void check_comparison(struct parser_ctx* ctx,
     struct expression* p_b_expression,
     const struct token* op_token)
 {
-    //TODO more checks unsigned < 0
+    // unsigned_expr < 0 is always false; unsigned_expr >= 0 is always true
+    if (type_is_unsigned_integer(&p_a_expression->type) && expression_is_zero(p_b_expression))
+    {
+        if (op_token->type == '<')
+        {
+            compiler_diagnostic(W_CONDITIONAL_IS_CONSTANT,
+                                ctx,
+                                op_token, NULL,
+                                "comparison of unsigned expression < 0 is always false");
+        }
+        else if (op_token->type == '>=')
+        {
+            compiler_diagnostic(W_CONDITIONAL_IS_CONSTANT,
+                                ctx,
+                                op_token, NULL,
+                                "comparison of unsigned expression >= 0 is always true");
+        }
+    }
+
+    // 0 > unsigned_expr is always false; 0 <= unsigned_expr is always true
+    if (type_is_unsigned_integer(&p_b_expression->type) && expression_is_zero(p_a_expression))
+    {
+        if (op_token->type == '>')
+        {
+            compiler_diagnostic(W_CONDITIONAL_IS_CONSTANT,
+                                ctx,
+                                op_token, NULL,
+                                "comparison 0 > unsigned expression is always false");
+        }
+        else if (op_token->type == '<=')
+        {
+            compiler_diagnostic(W_CONDITIONAL_IS_CONSTANT,
+                                ctx,
+                                op_token, NULL,
+                                "comparison 0 <= unsigned expression is always true");
+        }
+    }
+
     bool equal_not_equal =
         op_token->type == '!=' ||
         op_token->type == '==';
@@ -28801,7 +28938,7 @@ void defer_start_visit_declaration(struct defer_visit_ctx* ctx, struct declarati
 
 //#pragma once
 
-#define CAKE_VERSION "0.12.69"
+#define CAKE_VERSION "0.12.72"
 
 
 
@@ -31013,20 +31150,6 @@ struct declaration* _Owner _Opt declaration(struct parser_ctx* ctx,
 
             assert(p_declaration->init_declarator_list.head != NULL); //because functions definitions have names
 
-            struct declarator* inner = p_declaration->init_declarator_list.head->p_declarator;
-            for (;;)
-            {
-                if (inner->direct_declarator &&
-                    inner->direct_declarator->function_declarator &&
-                    inner->direct_declarator->function_declarator->direct_declarator &&
-                    inner->direct_declarator->function_declarator->direct_declarator->declarator)
-                {
-                    inner = inner->direct_declarator->function_declarator->direct_declarator->declarator;
-                }
-                else
-                    break;
-            }
-
 
             if (ctx->current == NULL)
             {
@@ -31047,17 +31170,20 @@ struct declaration* _Owner _Opt declaration(struct parser_ctx* ctx,
             ctx->p_current_function_opt = p_declarator;
 
 
-            if (inner->direct_declarator->function_declarator == NULL)
+            if (p_declarator->name_opt == NULL)
             {
-                if (inner->first_token_opt)
-                    compiler_diagnostic(C_ERROR_UNEXPECTED, ctx, inner->first_token_opt, NULL, "missing function declarator");
+                if (p_declarator->first_token_opt)
+                    compiler_diagnostic(C_ERROR_UNEXPECTED, ctx, p_declarator->first_token_opt, NULL, "missing function declarator");
                 else 
                     compiler_diagnostic(C_ERROR_UNEXPECTED, ctx, ctx->current, NULL, "missing function declarator");
 
                 throw;
             }
 
-            struct scope* parameters_scope = &inner->direct_declarator->function_declarator->parameters_scope;
+            struct function_declarator* pfuncdecl = declarator_find_function_declarator(p_declarator);
+            if (pfuncdecl == NULL) throw;
+
+            struct scope* parameters_scope = &pfuncdecl->parameters_scope;
             scope_list_push(&ctx->scopes, parameters_scope);
 
             struct scope* _Opt p_current_function_scope_opt = ctx->p_current_function_scope_opt;
@@ -32985,13 +33111,41 @@ struct struct_or_union_specifier* _Owner _Opt struct_or_union_specifier(struct p
             if (p_complete->attribute_specifier_sequence_opt &&
                 p_complete->attribute_specifier_sequence_opt->attributes_flags & STD_ATTRIBUTE_DEPRECATED)
             {
+                // extract optional reason from [[deprecated("reason")]]
+                const char* _Opt deprecated_reason = NULL;
+                const struct attribute_specifier* _Opt p_as = p_complete->attribute_specifier_sequence_opt->head;
+                while (p_as && deprecated_reason == NULL)
+                {
+                    if (p_as->attribute_list)
+                    {
+                        const struct attribute* _Opt p_a = p_as->attribute_list->head;
+                        while (p_a)
+                        {
+                            if ((p_a->attributes_flags & STD_ATTRIBUTE_DEPRECATED) &&
+                                p_a->attribute_argument_clause &&
+                                p_a->attribute_argument_clause->p_balanced_token_sequence &&
+                                p_a->attribute_argument_clause->p_balanced_token_sequence->head)
+                            {
+                                deprecated_reason = p_a->attribute_argument_clause->p_balanced_token_sequence->head->token->lexeme;
+                            }
+                            p_a = p_a->next;
+                        }
+                    }
+                    p_as = p_as->next;
+                }
+
                 if (p_struct_or_union_specifier->tagtoken)
                 {
-                    // TODO add deprecated message
+                    if (deprecated_reason)
+                        compiler_diagnostic(W_DEPRECATED, ctx, p_struct_or_union_specifier->first_token, NULL, "'%s' is deprecated: %s", p_struct_or_union_specifier->tagtoken->lexeme, deprecated_reason);
+                    else
                     compiler_diagnostic(W_DEPRECATED, ctx, p_struct_or_union_specifier->first_token, NULL, "'%s' is deprecated", p_struct_or_union_specifier->tagtoken->lexeme);
                 }
                 else
                 {
+                    if (deprecated_reason)
+                        compiler_diagnostic(W_DEPRECATED, ctx, p_struct_or_union_specifier->first_token, NULL, "deprecated: %s", deprecated_reason);
+                    else
                     compiler_diagnostic(W_DEPRECATED, ctx, p_struct_or_union_specifier->first_token, NULL, "deprecated");
                 }
             }
@@ -34497,21 +34651,24 @@ struct declarator* _Owner _Opt declarator(struct parser_ctx* ctx,
     return p_declarator;
 }
 
-const char* _Opt declarator_get_name(struct declarator* p_declarator)
+struct function_declarator* declarator_find_function_declarator(const struct declarator* p_declarator)
 {
+    
     if (p_declarator->direct_declarator)
     {
-        if (p_declarator->direct_declarator->name_opt)
-            return p_declarator->direct_declarator->name_opt->lexeme;
+        if (p_declarator->direct_declarator->declarator)
+            return declarator_find_function_declarator(p_declarator->direct_declarator->declarator);
+        if (p_declarator->direct_declarator->function_declarator)
+        {
+            if (p_declarator->direct_declarator->function_declarator->direct_declarator &&
+                p_declarator->direct_declarator->function_declarator->direct_declarator->declarator)
+            {
+                return declarator_find_function_declarator(p_declarator->direct_declarator->function_declarator->direct_declarator->declarator);
     }
-
+            return p_declarator->direct_declarator->function_declarator;
+        }
+    }
     return NULL;
-}
-
-bool declarator_is_function(struct declarator* p_declarator)
-{
-    return (p_declarator->direct_declarator &&
-        p_declarator->direct_declarator->function_declarator != NULL);
 }
 
 struct array_declarator* _Owner _Opt array_declarator(struct direct_declarator* _Owner p_direct_declarator, struct parser_ctx* ctx, enum expression_eval_mode eval_mode);
@@ -40027,6 +40184,61 @@ struct ast get_ast(struct options* options,
     return ast;
 }
 
+int fill_preprocessor_options(int argc, const char** argv, struct preprocessor_ctx* prectx);
+
+struct ast get_ast_with_flags(int argc,
+    const char **argv,
+    const char* filename,
+    const char* source,
+    struct report* report)
+{
+    
+    
+    struct ast ast = { 0 };
+    struct tokenizer_ctx tctx = { 0 };
+
+    struct token_list list = tokenizer(&tctx, source, filename, 0, TK_FLAG_NONE);
+
+    struct preprocessor_ctx prectx = { 0 };
+
+    _Opt struct parser_ctx ctx = { 0 };
+    ctx.p_report = report;
+
+    try
+    {
+        struct options options = { 0 };
+        fill_options(&options, argc, argv);
+        
+        prectx.options = options;
+        prectx.macros.capacity = 5000;
+        fill_preprocessor_options(argc, argv, &prectx);
+        add_standard_macros(&prectx, options.target);
+
+#ifdef __EMSCRIPTEN__
+        /*we mock web version to include from c*/
+        include_dir_add(&prectx.include_dir, "c:/");
+#endif
+
+        ast.token_list = preprocessor(&prectx, &list, 0);
+        if (prectx.n_errors != 0)
+            throw;
+
+        ctx.options = options;
+
+        bool berror = false;
+        ast.declaration_list = parse(&ctx, &ast.token_list, &berror);
+        if (berror)
+            throw;
+    }
+    catch
+    {
+    }
+    parser_ctx_destroy(&ctx);
+    token_list_destroy(&list);
+    preprocessor_ctx_destroy(&prectx);
+
+    return ast;
+}
 
 void ast_destroy(_Dtor struct ast* ast)
 {
@@ -41327,7 +41539,8 @@ int compile_one_file(const char* file_name,
 #if !defined(__CATALINA__)
     // For Catalina, don't print the name of each file processed
     // (there will usually be only one file)
-    printf("%s\n", file_name);
+    print_path(file_name, true);
+    printf("\n");
 #endif // !defined(__CATALINA__)
     struct preprocessor_ctx prectx = { 0 };
     prectx.options = *options;
@@ -57011,7 +57224,11 @@ static enum sizeof_error get_offsetof_struct(struct struct_or_union_specifier* c
                     }
                     else
                     {
-                        //TODO overflow
+                        if (item_size > SIZE_MAX - size)
+                        {
+                            sizeof_error = ESIZEOF_OVERLOW;
+                            throw;
+                        }
                         size += item_size;
                     }
                     type_destroy(&t);
@@ -57136,7 +57353,11 @@ enum sizeof_error get_sizeof_struct(struct struct_or_union_specifier* complete_s
                     }
                     else
                     {
-                        //TODO overflow
+                        if (item_size > SIZE_MAX - size)
+                        {
+                            sizeof_error = ESIZEOF_OVERLOW;
+                            throw;
+                        }
                         size += item_size;
                     }
                     type_destroy(&t);
@@ -57968,6 +58189,8 @@ static bool type_is_same_core(const struct type* a,
                 return false;
             }
 
+            if (!pa->params.is_void && !pb->params.is_void)
+            {
             struct param* _Opt p_param_a = pa->params.head;
             struct param* _Opt p_param_b = pb->params.head;
             while (p_param_a && p_param_b)
@@ -57979,7 +58202,11 @@ static bool type_is_same_core(const struct type* a,
                 p_param_a = p_param_a->next;
                 p_param_b = p_param_b->next;
             }
-            return p_param_a == NULL && p_param_b == NULL;
+                if (p_param_a != NULL || p_param_b != NULL)
+                {
+                    return false;
+                }
+            }
         }
 
         if (pa->struct_or_union_specifier &&
@@ -58308,6 +58535,10 @@ void  make_type_using_direct_declarator(struct parser_ctx* ctx,
             {
                 p_func->params.is_var_args = pdirectdeclarator->function_declarator->parameter_type_list_opt->is_var_args;
                 p_func->params.is_void = pdirectdeclarator->function_declarator->parameter_type_list_opt->is_void;
+            }
+            else
+            {
+                p_func->params.is_void = true;
             }
 
             if (pdirectdeclarator->function_declarator->parameter_type_list_opt &&

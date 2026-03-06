@@ -37,11 +37,7 @@
 #include <stdlib.h>
 #if !defined(__CATALINA__)
 #include <unistd.h>
-#include <uuid/uuid.h>
 #endif // !defined(__CATALINA__)
-/*
-caso nao tenha este arquivos apt-get install uuid-dev
-*/
 #endif
 
 #include <assert.h>
