@@ -116,8 +116,8 @@ int main(int argc, char *argv[]) {
       option("");
 	for (nf = 0, i = j = 1; i < argc; i++) {
 		if (strcmp(argv[i], "-o") == 0) {
-         /* RJH: "-o path" options are now passed to rcc to allow it */
-         /* to determine the path to use when generating debug files. */
+			/* RJH: "-o path" options are now passed to rcc to allow it */
+			/* to determine the path to use when generating debug files. */
 			clist = append(argv[i], clist);
 			if (++i < argc) {
 				if (suffix(argv[i], suffixes, 2) >= 0) {
@@ -125,8 +125,8 @@ int main(int argc, char *argv[]) {
 					exit(8);
 				}
 				outfile = argv[i];
-            /* RJH: pass path of '-o' argument */
-			   clist = append(argv[i], clist); 
+				/* RJH: pass path of '-o' argument */
+				clist = append(argv[i], clist); 
 				continue;
 			} else {
 				error("unrecognized option `%s'", argv[i-1]);
@@ -268,7 +268,7 @@ static int callsys(char **av) {
 	static int argc;
 
 	for (i = 0; av[i] != NULL; i++) 
-      ;
+		;
 	if (i + 1 > argc) {
 		argc = i + 1;
 		if (argv == NULL)
@@ -281,64 +281,64 @@ static int callsys(char **av) {
 		int j = 0;
 		char *s;
 		for ( ; av[i] != NULL && (s = strchr(av[i], '\n')) == NULL; i++) {
-         if (strchr(av[i],' ') == NULL) {
-  			  argv[j] = av[i];
-         }
-         else {
-           if (strncmp(av[i],"-B",2) == 0) {
-              if (av[i][2] != '\"') {
-                 argv[j] = stringf("-B\"%s\"", &av[i][2]);
-              }
-              else {
-                 argv[j] = av[i];
-              }
-           }
-           else if (strncmp(av[i],"-D",2) == 0) {
-              if (av[i][2] != '\"') {
-                 argv[j] = stringf("-D\"%s\"", &av[i][2]);
-              }
-              else {
-                 argv[j] = av[i];
-              }
-           }
-           else if (strncmp(av[i],"-I",2) == 0) {
-              if (av[i][2] != '\"') {
-                 argv[j] = stringf("-I\"%s\"", &av[i][2]);
-              }
-              else {
-                 argv[j] = av[i];
-              }
-           }
-           else if (strncmp(av[i],"-L",2) == 0) {
-              if (av[i][2] != '\"') {
-                 argv[j] = stringf("-L\"%s\"", &av[i][2]);
-              }
-              else {
-                 argv[j] = av[i];
-              }
-           }
-           else if (strncmp(av[i],"-T",2) == 0) {
-              if (av[i][2] != '\"') {
-                 argv[j] = stringf("-T\"%s\"", &av[i][2]);
-              }
-              else {
-                 argv[j] = av[i];
-              }
-           }
-           else if (strncmp(av[i],"-tempdir=",9) == 0) {
-              if (av[i][9] != '\"') {
-                 argv[j] = stringf("-tempdir\"%s\"", &av[i][9]);
-              }
-              else {
-                 argv[j] = av[i];
-              }
-           }
-           else {
-              argv[j] = stringf("\"%s\"", av[i]);
-           }
-         }
-         j++;
-      }
+			if (strchr(av[i],' ') == NULL) {
+	  			argv[j] = av[i];
+        		}
+			else {
+				if (strncmp(av[i],"-B",2) == 0) {
+					if ((strchr(&(av[i][2]), ' ') != NULL) && (av[i][2] != '\"')) {
+              					argv[j] = stringf("-B\"%s\"", &av[i][2]);
+					}
+					else {
+						argv[j] = av[i];
+					}
+				}
+				else if (strncmp(av[i],"-D",2) == 0) {
+					if ((strchr(&(av[i][2]), ' ') != NULL) && (av[i][2] != '\"')) {
+						argv[j] = stringf("-D\"%s\"", &av[i][2]);
+					}
+					else {
+						argv[j] = av[i];
+					}
+				}
+				else if (strncmp(av[i],"-I",2) == 0) {
+					if ((strchr(&(av[i][2]), ' ') != NULL) && (av[i][2] != '\"')) {
+						argv[j] = stringf("-I\"%s\"", &av[i][2]);
+					}
+					else {
+						argv[j] = av[i];
+					}
+				}
+				else if (strncmp(av[i],"-L",2) == 0) {
+					if ((strchr(&(av[i][2]), ' ') != NULL) && (av[i][2] != '\"')) {
+						argv[j] = stringf("-L\"%s\"", &av[i][2]);
+					}
+					else {
+					argv[j] = av[i];
+					}
+				}
+				else if (strncmp(av[i],"-T",2) == 0) {
+					if ((strchr(&(av[i][2]), ' ') != NULL) && (av[i][2] != '\"')) {
+						argv[j] = stringf("-T\"%s\"", &av[i][2]);
+					}
+					else {
+						argv[j] = av[i];
+					}
+				}
+				else if (strncmp(av[i],"-tempdir=",9) == 0) {
+					if ((strchr(&(av[i][9]), ' ') != NULL) && (av[i][9] != '\"')) {
+						argv[j] = stringf("-tempdir\"%s\"", &av[i][9]);
+					}
+					else {
+						argv[j] = av[i];
+					}
+				}
+				else {
+					argv[j] = stringf("\"%s\"", av[i]);
+				}
+         		}
+			j++;
+		}
 		if (s != NULL) {
 			if (s > av[i])
 				argv[j++] = stringf("%.*s", s - av[i], av[i]);
@@ -696,18 +696,23 @@ xx(unsigned_int,4)
 	case 'U':	/* -Uname */
 		plist = append(arg, plist);
 		return;
-   case 'I':	/* -Idir (or multiple dirs separated by : or ;) */
-	   if (list = b = path2list(&arg[2]))
-		   do {
-			   int n;
-			   b = b->link;
-			   n = strlen(b->str);
-			   if (b->str[n-1] == '\\')
-				   b->str[n-1] = '/';
-			   plist = append(stringf("-I\"%s\"", b->str), plist);
-            /* printf("path2list: %s\n", b->str); */
-		   } while (b != list);
-      return;
+	case 'I':	/* -Idir (or multiple dirs separated by : or ;) */
+		if (list = b = path2list(&arg[2]))
+			do {
+				int n;
+				b = b->link;
+				n = strlen(b->str);
+				if (b->str[n-1] == '\\')
+					b->str[n-1] = '/';
+				if ((strchr(b->str, ' ') != NULL) && (b->str[0] != '\"')) {
+			       		plist = append(stringf("-I\"%s\"", b->str), plist);
+				}
+				else {
+					plist = append(stringf("-I%s", b->str), plist);
+				}
+				//fprintf(stderr, "path2list: '%s'\n", b->str);
+			} while (b != list);
+		return;
 	case 'B':	/* -Bdir -Bstatic -Bdynamic */
 #ifdef sparc
 		if (strcmp(arg, "-Bstatic") == 0 || strcmp(arg, "-Bdynamic") == 0)
