@@ -85,7 +85,7 @@ typedef struct svc_entry {
    void  *addr;    // required for C - see "call_XXXX" types
    svc_t svc_type; // service type (defines call and return types)
    int   svc_id;   // global (public) id (0 to terminate list)
-   int   svc_port; // gloabl *public) remote port 
+   int   svc_port;   // global *public) remote port
 } svc_entry_t;
 
 // the service list

@@ -9,7 +9,7 @@
  * 
  * NOTE: This file is configured for a Propeller 2 P2_EDGE board  
  *       using catapult pragmas. The primary program is an XMM program, 
- *       so must be loaded and executed using the xmm loader, built with 
+ *       so must be loaded and executed using the XMM loader, built with 
  *       the 'build_utilities' script, and specifying a P2_EDGE platform
  *       and an 8k cache size.
  *                   

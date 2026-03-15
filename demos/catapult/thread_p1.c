@@ -10,7 +10,7 @@
  * NOTE: This file is configured for a Propeller 1 C3 board and 
  *       a serial HMI using catapult pragmas. The primary program 
  *       is an XMM program, so must be loaded and executed using the
- *       xmm loader, built with the 'build_utilities' script, and
+ *       XMM loader, built with the 'build_utilities' script, and
  *       specifying a C3 and a 1k cache size.
  *                   
  */

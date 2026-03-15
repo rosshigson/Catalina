@@ -23,10 +23,27 @@
  * +----------------------------------------------------------------------------------------------------------------------+
  */
 
+// service type - identifies the profile to be used to invoke the service
+// NOTE: MUST MATCH services.h
+typedef enum svc { 
+  SHORT_SVC,        // invoke via _short_service() - returns int
+  LONG_SVC,         // invoke via _long_service()  - returns int
+  LONG_2_SVC,       // invoke via _long_service_2() - returns int
+  FLOAT_SVC,        // invoke via _float_service()  - returns float
+  LONG_FLOAT_SVC,   // invoke via _long_float_service() - returns float
+  SHARED_SVC,       // invoke via _short_service() - returns int
+  SERIAL_SVC,       // invoke via _long_service() - returns serial_t *
+  REMOTE_SVC,       // invoke via _long_service() - returns serial_t *
+  RPC_SVC,          // invoke via _long_service() - returns serial_t *
+} svc_t;
+
 void initialize_pragma_fn( a_VARARG *va );
 void finalize_pragma_fn( a_VARARG *va );
 
 a_VAR * update_segment_fn( a_VARARG *va );
 a_VAR * define_segment_fn( a_VARARG *va );
 void add_line_to_segment_fn( a_VARARG *va );
+
+a_VAR * save_proxy_fn( a_VARARG *va );
+a_VAR * generate_service_list_fn( a_VARARG *va );
 

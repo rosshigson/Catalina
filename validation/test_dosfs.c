@@ -15,7 +15,7 @@
  * DRACBLADE using the 'build_utilies' command):
  *
  *    catalina test_dosfs.c -lci -C DRACBLADE -C TTY -C LARGE
- *    payload xmm test_dosfs
+ *    payload XMM test_dosfs
  *
  */
 #include <stdint.h>

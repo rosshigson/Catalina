@@ -29,7 +29,7 @@
  * loader (for a C3 using FLASH and a 1K cache), and then load and execute    *
  * the program with a command like:                                           *
  *                                                                            *
- *   payload -o1 -i xmm srv_l_p1                                              *
+ *   payload -o1 -i XMM srv_l_p1                                              *
  *                                                                            *
  * Note that if you modify the program, you may have to modify the address    *
  * specified in the secondary pragma - but the program will tell you what     *

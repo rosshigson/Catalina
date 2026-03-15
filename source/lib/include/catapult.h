@@ -78,6 +78,20 @@
    _unregister_plugin(cog); \
 }
 
+#define DISPATCH_C(my_service_list) \
+{ \
+   while(1) { \
+      _dispatch_C(my_service_list); \
+   } \
+}
+   
+#define DISPATCH_LUA(state, my_service_list) \
+{ \
+   while(1) { \
+      _dispatch_Lua(state, my_service_list); \
+   } \
+}
+   
 #else
 
 /*
@@ -119,6 +133,10 @@
 }
 
 #define STOP(cog)
+
+#define DISPATCH_C(my_service_list)
+
+#define DISPATCH_LUA(state, my_service_list)
 
 #endif
 

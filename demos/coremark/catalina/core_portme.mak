@@ -30,7 +30,7 @@ LD		= catalina
 AS		= p2_asm
 # Flag : CFLAGS
 #	Use this flag to define compiler options. Note, you can add compiler options from the command line using XCFLAGS="other flags"
-PORT_CFLAGS = -p2 -C99 -lc -lmc -O5 -C CLOCK
+PORT_CFLAGS = -p2 -C99 -lc -lm -O5 -C CLOCK
 FLAGS_STR = "$(PORT_CFLAGS) $(XCFLAGS) $(XLFLAGS) $(LFLAGS_END)"
 CFLAGS = $(PORT_CFLAGS) -I$(PORT_DIR) -I. -DFLAGS_STR=\"$(FLAGS_STR)\" 
 #Flag : LFLAGS_END

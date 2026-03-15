@@ -16,7 +16,7 @@
  * loader (for a P2_EDGE with PSRAM and an 8K cache), and then load and       *
  * execute the program with a command like:                                   *
  *                                                                            *
- *   payload -o2 -i xmm lua_p2                                                *
+ *   payload -o2 -i XMM lua_p2                                                *
  *                                                                            *
  * Note that if you modify the program, you will probably have to modify the  *
  * address specified in the secondary pragma - but the program will tell you  *

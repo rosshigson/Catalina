@@ -23,13 +23,13 @@
  *                                                                            *
  * Compile this program with a command like:                                  *
  *                                                                            *
- *   catapult srv_l_p2.c                                                     *
+ *   catapult srv_l_p2.c                                                      *
  *                                                                            *
  * Before loading, execute 'build_utilities' to build the appropriate XMM     *
  * loader (for a P2_EDGE with PSRAM and an 8K cache), and then load and       *
  * execute the program with a command like:                                   *
  *                                                                            *
- *   payload -o2 -i xmm srv_l_p2                                             *
+ *   payload -o2 -i XMM srv_l_p2                                              *
  *                                                                            *
  * Note that if you modify the program, you may have to modify the address    *
  * specified in the secondary pragma - but the program will tell you what     *
@@ -309,3 +309,4 @@ void main() {
       my_dispatch_Lua(L, my_service_list);
    }
 }
+

@@ -16,7 +16,7 @@
  * loader (for a C3 with a 1K cache), and then load and execute the program   *
  * with a command like:                                                       *
  *                                                                            *
- *   payload -o2 -i xmm lua_p1                                                *
+ *   payload -o2 -i XMM lua_p1                                                *
  *                                                                            *
  * Note that if you modify the program, you will probably have to modify the  *
  * address specified in the secondary pragma - but the program will tell you  *

@@ -74,7 +74,7 @@ Original Author: Shay Gal-on
 #define COMPILER_VERSION "Catalina 8.8.6"
 #endif
 #ifndef COMPILER_FLAGS
-#define COMPILER_FLAGS "-p2 -C99 -O5 -C CLOCK -lc -lmc"
+#define COMPILER_FLAGS "-p2 -C99 -O5 -C CLOCK -lc -lm"
 #endif
 #ifndef MEM_LOCATION
 #if defined(__CATALINA_SMALL) || defined(__CATALINA_LARGE)

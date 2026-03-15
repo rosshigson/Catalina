@@ -62,6 +62,19 @@ struct known_segment {
    struct segment_line *line;
 };
 
+struct proxy_function {
+   int segment;
+   int  id;
+   int  type;
+   char *name;
+   char *stype;
+   struct proxy_function *next;
+};
+
+static struct proxy_function *proxy_list = NULL;
+
+static int proxy_id = 1;
+
 static int segment_count = 0;
 
 static int propeller = 1;
@@ -134,24 +147,11 @@ void initialize_pragma_fn( a_VARARG *va ) {
    }
 }
 
-void add_line_to_segment_fn( a_VARARG *va ) {
-   int i;
-   char *text;
-   char *line_no;
+void add_line_to_segment(int i, char *text, char *line_no) {
    struct segment_line *newtext;
    struct segment_line *last;
    struct segment_line *line;
 
-   if (va->used < 2) {
-      awka_error("function add_line_to_segment - not enough arguments\n");
-   }
-
-   i       = (int)awka_getd(va->var[0]);
-   text    = awka_gets(va->var[1]);
-   line_no = awka_gets(va->var[2]);
-#if DEBUG      
-   printf("adding line to segment %d: %s\n", i, text);
-#endif      
    if (i < segment_count) {
       malloc(&newtext, sizeof(struct segment_line));
       if (newtext == NULL) {
@@ -179,6 +179,23 @@ void add_line_to_segment_fn( a_VARARG *va ) {
       printf("no segment %d\n", i);
 #endif      
    }
+}
+
+void add_line_to_segment_fn( a_VARARG *va ) {
+   int i;
+   char *text;
+   char *line_no;
+   if (va->used < 2) {
+      awka_error("function add_line_to_segment - not enough arguments\n");
+   }
+
+   i       = (int)awka_getd(va->var[0]);
+   text    = awka_gets(va->var[1]);
+   line_no = awka_gets(va->var[2]);
+#if DEBUG      
+   printf("adding line to segment %d: %s\n", i, text);
+#endif
+   add_line_to_segment(i, text, line_no);   
 }
 
 void emit_common_code(char *filename) {
@@ -210,6 +227,8 @@ void emit_common_code(char *filename) {
       fprintf(output_file, "\n#include <cog.h>\n\n");
       // include catapult.h (in case not already included)
       fprintf(output_file, "\n#include \"catapult.h\"\n\n");
+      // define CATAPULT_FIRST_SVC (in case not already defined)
+      fprintf(output_file, "\n#ifndef CATAPULT_SVC_ID\n#define CATAPULT_SVC_ID SVC_RESERVED\n#endif\n\n");
       last_line = -1;
       while (line != NULL) {
          if (line->line_no != last_line + 1) {
@@ -263,7 +282,7 @@ void emit_primary_code(char *filename) {
          segment[1].binary);
       if (segment[0].line != NULL) {
          // common segment exists - include as a header file
-         fprintf(output_file, "\n#include \"%s.h\"\n\n", segment[0].name);
+         fprintf(output_file, "\n#include \"%s.h\"\n", segment[0].name);
       }
       for (i = 2; i < segment_count; i++) {
          if (segment[i].line != NULL) {
@@ -313,6 +332,85 @@ void emit_primary_code(char *filename) {
    }
 }
 
+void generate_proxies(int i, FILE *output_file) {
+   struct proxy_function *fn;
+   struct proxy_function *last;
+
+   fn = proxy_list;
+   while (fn != NULL) {
+      if (fn->type == SHORT_SVC) {
+         fprintf(
+            output_file,
+            "\nint %s(long l) {\n"
+            "    return _short_service(CATAPULT_SVC_ID+%d, l);\n"
+            "}\n",
+            fn->name,
+            fn->id);
+      }
+      else if (fn->type == LONG_SVC) {
+         fprintf(
+            output_file,
+            "\nint %s(long l) {\n"
+            "    return _long_service(CATAPULT_SVC_ID+%d, l);\n"
+            "}\n",
+            fn->name,
+            fn->id);
+      }
+      else if (fn->type == LONG_2_SVC) {
+         fprintf(
+            output_file,
+            "\nint %s(long l1, long l2) {\n"
+            "    return _long_service_2(CATAPULT_SVC_ID+%d, l1, l2);\n"
+            "}\n",
+            fn->name,
+            fn->id);
+      }
+      else if (fn->type == FLOAT_SVC) {
+         fprintf(
+            output_file,
+            "\nfloat %s(float f1, float f2) {\n"
+            "    return _float_service(CATAPULT_SVC_ID+%d, f1, f2);\n"
+            "}\n",
+            fn->name,
+            fn->id);
+      }
+      else if (fn->type == LONG_FLOAT_SVC) {
+         fprintf(
+            output_file,
+            "\nlong %s(float f1, float f2) {\n"
+            "    return _long_float_service(CATAPULT_SVC_ID+%d, f1, f2);\n"
+            "}\n",
+            fn->name,
+            fn->id);
+      }
+      else if (fn->type == SHARED_SVC) {
+         fprintf(
+            output_file,
+            "\nint %s(%s *shared) {\n"
+            "    return _short_service(CATAPULT_SVC_ID+%d, (long)shared);\n"
+            "}\n",
+            fn->name,
+            segment[i].type,
+            fn->id);
+      }
+      else if (fn->type == SERIAL_SVC) {
+         fprintf(stderr, "Error: serial service type not supported for \"%s\"\n", fn->name);
+      }
+      else if (fn->type == REMOTE_SVC) {
+         fprintf(stderr, "Error: remote service type not supported for \"%s\"\n", fn->name);
+      }
+      else if (fn->type == RPC_SVC) {
+         fprintf(stderr, "Error: rpc service type not supported for \"%s\"\n", fn->name);
+      }
+      else {
+         fprintf(stderr, "Error: unknown service type for \"%s\"\n", fn->name);
+      }
+      last = fn;
+      fn = fn->next;
+      free(last);
+   }
+}
+
 void emit_secondary_code(int i, char *filename) {
    struct segment_line *line;
    char output_name[MAX_LINE + 3];
@@ -351,7 +449,12 @@ void emit_secondary_code(int i, char *filename) {
          segment[i].overlay);
       if (segment[0].line != NULL) {
          // common segment exists - include as a header file
-         fprintf(output_file, "\n#include \"%s.h\"\n\n", segment[0].name);
+         fprintf(output_file, "\n#include \"%s.h\"\n", segment[0].name);
+      }
+      if (proxy_list != NULL) {
+         // some proxy functions were defined using #pragma catapult service
+         // so generate real proxy functions
+         generate_proxies(i, output_file);
       }
       last_line = -1;
       while (line != NULL) {
@@ -595,6 +698,7 @@ a_VAR * str_to_dec_fn( a_VARARG *va ) {
   }
 
   ret = awka_getdoublevar(FALSE);
+
   sscanf(awka_gets(va->var[0]), "%ld", &dec);
 #if DEBUG  
   printf("hex value = %X\n", dec);
@@ -612,6 +716,7 @@ a_VAR * str_to_hex_fn( a_VARARG *va ) {
   }
 
   ret = awka_getdoublevar(FALSE);
+
   sscanf(awka_gets(va->var[0]), "%lX", &hex);
 #if DEBUG  
   printf("hex value = %X\n", hex);
@@ -632,6 +737,7 @@ a_VAR * bytes_to_hex_fn( a_VARARG *va ) {
   }
 
   ret = awka_getdoublevar(FALSE);
+
   for (i = 3; i >= 0; i--) {
      sscanf(awka_gets(va->var[i]), "%lX", &byte);
 #if DEBUG  
@@ -678,7 +784,9 @@ a_VAR * define_segment_fn( a_VARARG *va ) {
          break;
       }
    }
+
    ret = awka_getdoublevar(FALSE);
+
    if (i < segment_count) {
 #if DEBUG      
       printf("%s known\n", name);
@@ -745,8 +853,10 @@ a_VAR * update_segment_fn( a_VARARG *va ) {
    printf("type = %s\n", type);
    printf("binary = %s\n", binary);
    printf("overlay = %s\n", overlay);
-#endif      
+#endif
+
    ret = awka_getdoublevar(FALSE);
+
    if (i < segment_count) {
       if ((strlen(segment[i].address) != 0) && (strcmp(segment[i].address, address) != 0)
       ||  (strlen(segment[i].stack) != 0)   && (strcmp(segment[i].stack, stack) != 0)
@@ -756,9 +866,9 @@ a_VAR * update_segment_fn( a_VARARG *va ) {
       ||  (strlen(segment[i].binary) != 0)  && (strcmp(segment[i].binary, binary) != 0)
       ||  (strlen(segment[i].overlay) != 0) && (strcmp(segment[i].overlay, overlay) != 0)) {
          fprintf(stderr, "Error: catapult pragma mismatch for segment \"%s\"\n", name);
+         ret->dval = (float)-1;
       }    
       else {
-         ret->dval = (float)1;
 #if DEBUG
          printf("updating %d\n", i);
 #endif
@@ -783,6 +893,192 @@ a_VAR * update_segment_fn( a_VARARG *va ) {
       printf("overlay = %s\n", segment[i].overlay);
 #endif
    }
+   return ret;
+}
+
+a_VAR * save_proxy_fn( a_VARARG *va ) {
+   a_VAR *ret = NULL;
+   int  i;
+   char *name;
+   char *stype;
+   char *line_no;
+   struct proxy_function *fn;
+   struct proxy_function *last;
+   char output_line[1000] = "";
+
+   i       = (int)awka_getd(va->var[0]);
+   name    = awka_gets(va->var[1]);
+   stype   = awka_gets(va->var[2]);
+   line_no = awka_gets(va->var[3]);
+
+#if DEBUG
+      printf("segment = %d\n", i);
+      printf("name = %s\n", name);
+      printf("stype = %s\n", stype);
+      printf("line_no = %s\n", line_no);
+#endif
+
+   ret = awka_getdoublevar(FALSE);
+   ret->dval = (float)0;
+
+   if (proxy_list == NULL) {
+      malloc(&proxy_list, sizeof(struct proxy_function));
+      if (proxy_list == NULL) {
+         printf("out of memory\n");
+         ret->dval = (float)-1;
+         return ret;
+      }
+      fn = proxy_list;
+   }
+   else {
+      fn = proxy_list;
+      while (fn->next != NULL) {
+         fn = fn->next;
+      }
+      malloc(&fn->next, sizeof(struct proxy_function));
+      if (fn->next == NULL) {
+         printf("out of memory\n");
+         ret->dval = (float)-1;
+         return ret;
+      }
+      fn = fn->next;
+   }
+   fn->segment = i;
+   fn->id = proxy_id++;
+   fn->name = strdup(name);
+   fn->stype = strdup(stype);
+   fn->next = NULL;
+   if (i < segment_count) {
+      //ret->dval = (float)1;
+      if (strcmp_i(stype, "short") == 0) {
+         fn->type = SHORT_SVC;
+         fn->stype = "SHORT_SVC";
+      }
+      else if (strcmp_i(stype, "long") == 0) {
+         fn->type = LONG_SVC;
+         fn->stype = "LONG_SVC";
+      }
+      else if (strcmp_i(stype, "long_2") == 0) {
+         fn->type = LONG_2_SVC;
+         fn->stype = "LONG_2_SVC";
+      }
+      else if (strcmp_i(stype, "float") == 0) {
+         fn->type = FLOAT_SVC;
+         fn->stype = "FLOAT_SVC";
+      }
+      else if (strcmp_i(stype, "long_float") == 0) {
+         fn->type = LONG_FLOAT_SVC;
+         fn->stype = "LONG_FLOAT_SVC";
+      }
+      else if (strcmp_i(stype, "shared") == 0) {
+         fn->type = SHARED_SVC;
+         fn->stype = "SHARED_SVC";
+      }
+      else if (strcmp_i(stype, "serial") == 0) {
+         fn->type = SERIAL_SVC;
+         fn->stype = "SERIAL_SVC";
+      }
+      else if (strcmp_i(stype, "remote") == 0) {
+         fn->type = REMOTE_SVC;
+         fn->stype = "REMOTE_SVC";
+      }
+      else if (strcmp_i(stype, "rpc") == 0) {
+         fn->type = RPC_SVC;
+         fn->stype = "RPC_SVC";
+      }
+      else {
+         fprintf(stderr, "Error: invalid service type for \"%s\"\n", name);
+         ret->dval = (float)-1;
+      }
+#if DEBUG      
+      printf("segment %d\n", fn->segment);
+      printf("id = %d\n", fn->id);
+      printf("name = %s\n", fn->name);
+      printf("stype = %s\n", fn->stype);
+      printf("type = %d\n", fn->type);
+#endif      
+   }
+   return ret;
+}
+
+/*
+  NOTE: The generated service_list entries must match the dedinition in <service.h>
+  typedef struct svc_entry {
+     char  *name;      // required for Lua, otherwise for documentation only
+     void  *addr;      // required for C - see "call_XXXX" types
+     svc_t svc_type;   // service type (defines call and return types)
+     int   svc_id;     // global (public) id (0 to terminate list)
+     int   svc_port;   // global (public) remote serial port
+     char  *svc_ip;    // global (public) remote IP address
+     int   svc_handle; // service listen handle (server listens on /rpc/name)
+  } svc_entry_t;
+*/
+
+a_VAR * generate_service_list_fn( a_VARARG *va ) {
+   a_VAR *ret = NULL;
+   int  i;
+   char *name;
+   char *stype;
+   int type;
+   char *line_no;
+   struct proxy_function *fn;
+   char output_line[1000] = "";
+
+   i       = (int)awka_getd(va->var[0]);
+   name    = awka_gets(va->var[1]);
+   stype   = awka_gets(va->var[2]);
+   line_no = awka_gets(va->var[3]);
+
+#if DEBUG
+   printf("segment = %d\n", i);
+   printf("name = %s\n", name);
+   printf("stype = %s\n", stype);
+   printf("line_no = %s\n", line_no);
+#endif
+
+   ret = awka_getdoublevar(FALSE);
+
+   if (proxy_list == NULL) {
+      fprintf(stderr, "Warning: no proxy functions defined using #pragma catapult service\n");
+   }
+
+   if ((strcmp_i(stype, "c") == 0) || (strlen(stype) == 0)) {
+      type = 0;
+      fn = proxy_list;
+   }
+   else if (strcmp_i(stype, "lua") == 0) {
+      type = 1;
+      fn = proxy_list;
+   }
+   else {
+      fprintf(stderr, "Error: unknown service_list type \"%s\"\n", stype);
+      fn = NULL;
+   }
+   while (fn != NULL) {
+      if (type == 0) {
+         // C proxy function
+         sprintf(
+            output_line,
+            "   {\"%s\", %s, %s, CATAPULT_SVC_ID+%d, 0, 0, 0},",
+            fn->name,
+            fn->name,
+            fn->stype,
+            fn->id);
+      }
+      else {
+         // Lua proxy function
+         sprintf(
+            output_line,
+            "   {\"%s\", NULL, %s, CATAPULT_SVC_ID+%d, 0, 0, 0},",
+            fn->name,
+            fn->stype,
+            fn->id);
+      }
+      // printf("service_list line = %s\n", output_line);
+      add_line_to_segment(i, output_line, line_no);
+      fn = fn->next;
+   }
+   ret->dval = (float)0;
    return ret;
 }
 

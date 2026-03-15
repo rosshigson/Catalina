@@ -1,3 +1,5 @@
+#pragma catapult common options(-W-w -C C3 -C TTY -C NO_ARGS -lc -lma)
+
 /******************************************************************************
  *                    Using Catapult to build a Lua server.                   *
  *                                                                            *
@@ -24,36 +26,29 @@
  * loader (for a C3 using FLASH with a 1K cache), and then load and execute   *
  * the program with a command like:                                           *
  *                                                                            *
- *   payload -o2 -i xmm srv_l_p1                                              *
+ *   payload -o1 -i FLASH srv_l_p1                                            *
  *                                                                            *
  * Note that if you modify the program, you may have to modify the address    *
  * specified in the secondary pragma - but the program will tell you what     *
  * address to use when you compile and execute it.                            *
  *                                                                            *
+ * This program can also be compiled 'monolitically' (i.e. without catapult)  *
+ * (but not linked or executed) using a command like:                         *
+ *                                                                            *
+ *   catalina -c -CC3 -CTTY srv_c_p1.c                                        *
+ *                                                                            *
  * See the document 'Getting Started with Catapult' for details.              *
  *                                                                            *
  ******************************************************************************/
-
-#pragma catapult common options(-W-w -C C3 -C TTY -C NO_ARGS -lc -lma)
 
 #include <catapult.h>
 #include <service.h>
 #include <stdlib.h>
 
 /*
- * define global service identifiers for our services 
- * (can be any unused service ids, but must be unique)
- */
-#define MY_SVC_1 (SVC_RESERVED+1)
-#define MY_SVC_2 (SVC_RESERVED+2)
-#define MY_SVC_3 (SVC_RESERVED+3)
-#define MY_SVC_4 (SVC_RESERVED+4)
-#define MY_SVC_5 (SVC_RESERVED+5)
-#define MY_SVC_6 (SVC_RESERVED+6)
-
-/*
- * define a type to be used for exchanging data between
- * the primary and secondary functions
+ * Define a type to be used for exchanging data between the client and server.
+ * The 'ready' and 'start' fields are used to ensure the client does not start
+ * till the server is ready.
  */
 typedef struct shared_data {
    int ready;
@@ -61,99 +56,28 @@ typedef struct shared_data {
    int data;
 } shared_data_t;
 
-/******************************************************************************
- *                                                                            *
- * The secondary client - calls services provided by the primary server       *
- *                                                                            *
- ******************************************************************************/
-#pragma catapult secondary hub_client(shared_data_t) address(0x619C) mode(CMM) stack(500)
-
-/*
- * define proxy functions, which use Catalina's pre-defined 
- * service functions to call the real server functions via
- * the Registry
+/* 
+ * Forward declare the client function (so the server can start it)
  */
+void hub_client(shared_data_t *s);
 
-int func_1(long l) {
-   return _short_service(MY_SVC_1, l);
-}
-
-int func_2(long l) {
-   return _long_service(MY_SVC_2, l);
-}
-
-int func_3(long l1, long l2) {
-   return _long_service_2(MY_SVC_3, l1, l2);
-}
-
-float func_4(float f1, float f2) {
-   return _float_service(MY_SVC_4, f1, f2);
-}
-
-long func_5(float f1, float f2) {
-   return _long_float_service(MY_SVC_5, f1, f2);
-}
-
-int func_6(shared_data_t *shared) {
-    return _short_service(MY_SVC_6, (long)shared);
-}
-
-/*
- * hub_client : call the services offered by the primary function
- *              by calling the proxy functions defined above
- */
-void hub_client(shared_data_t *s) {
-
-   int i = 0;
-   long l = 0;
-   float f = 0.0;
-
-   t_printf("Client ready - press a key to start the server ...\n");
-   k_wait();
-
-   // tell the primary server we are ready 
-   s->ready = 1;
-
-   // wait till we are told to start by the primary before proceeding
-   while (s->start == 0);
-
-   t_printf("The secondary client calls from cog %d ...\n", _cogid());
-   t_printf("... to the primary server on cog %d\n", _locate_plugin(LMM_SVR));
-
-   // call the services using the proxy functions
-   while(1) {
-      t_printf("\nPress a key to continue ...\n");
-      k_wait();
-
-      i = func_1(1000);
-      t_printf("result of func_1 = %d\n", i);
-      i = func_2(2000);
-      t_printf("result of func_2 = %d\n", i);
-      i = func_3(3000, 4000);
-      t_printf("result of func_3 = %d\n", i);
-      f = func_4(5000.0, 6000.0);
-      t_printf("result of func_4 = %f\n", f);
-      l = func_5(7000.0, 8000.0);
-      t_printf("result of func_5 = %ld\n", l);
-      i = func_6(s);
-      t_printf("result of func_6 = %d\n", i);
-
-   }
-}
-
-/******************************************************************************
- *                                                                            *
- * The primary server - executes a Lua dispatcher, dispatching calls          *
- * to the Lua functions specified in my_service_list                          *
- *                                                                            *
- ******************************************************************************/
 #pragma catapult primary binary(srv_l_p1) mode(XMM) options(-llua linit.c -C FLASH -C CACHED_1K)
+
+/******************************************************************************
+ *                                                                            *
+ * The server (primary) - loads the client, then executes a Lua dispatcher,   *
+ * dispatching calls to the Lua functions specified in my_service_list        *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <lua.h>
 #include <lualib.h>
 #include <lauxlib.h>
+
 /*
- * define our services as Lua functions
+ * Define the Lua functions implemented by the server - then use 
+ * '#pragma catapult service' to identify functions that need to have 
+ * proxy functions created for clients to call.
  */
 
 char *lua_code = 
@@ -192,19 +116,23 @@ char *lua_code =
    "     return data(shared);"
    "   end";
 
-/*
- * define a list of services, parameter profiles and service identifiers
- * - note that Lua services require only the names of the functions, and
- * their addresses should be NULL
+#pragma catapult service func_1 type(short)
+#pragma catapult service func_2 type(long)
+#pragma catapult service func_3 type(long_2)
+#pragma catapult service func_4 type(float)
+#pragma catapult service func_5 type(long_float)
+#pragma catapult service func_6 type(shared)
+
+/* 
+ * Define a service list to use for dispatching calls to the server.
+ * We can autofill the list by using #pragma catapult service_list,
+ * specifying type Lua.  Note that the list must be terminated with
+ * a null entry -i.e. {"", NULL, 0}
  */
+
 svc_list_t my_service_list = {
-   {"func_1", NULL, SHORT_SVC, MY_SVC_1, 0},
-   {"func_2", NULL, LONG_SVC, MY_SVC_2, 0},
-   {"func_3", NULL, LONG_2_SVC, MY_SVC_3, 0},
-   {"func_4", NULL, FLOAT_SVC, MY_SVC_4, 0},
-   {"func_5", NULL, LONG_FLOAT_SVC, MY_SVC_5, 0},
-   {"func_6", NULL, SHARED_SVC, MY_SVC_6, 0},
-   {"", NULL, 0, 0, 0}
+   #pragma catapult service_list type(Lua)
+   {"", NULL, 0}
 };
 
 /*
@@ -229,6 +157,9 @@ static int data(lua_State *L) {
    }
 }
 
+/*
+ * the main function does all the initialization
+ */
 void main() {
 
    shared_data_t shared = { 0, 0, 0 };
@@ -243,7 +174,7 @@ void main() {
    //register the services, so clients can find them
    _register_services(_locknew(), my_service_list);
 
-   // load the secondary client - it will wait for the 
+   // load the client function - it will wait for the 
    // 'start' field of the shared_data argument to be set 
    RESERVE_AND_START(hub_client, shared, ANY_COG, cog);
 
@@ -264,17 +195,63 @@ void main() {
    lua_pushcfunction(L, data);
    lua_setglobal(L, "data");
 
-   // wait for the secondary to be ready (required if the 
+   // wait for the client to be ready (required if the 
    // secondary print messages, to prevent garbled output)
    while (!shared.ready);
 
-   // start the secondary client
+   // the server is ready - start the client
    t_printf("Server ready - press a key to begin ...\n");
    k_wait();
    shared.start = 1;
 
-   // dispatch service calls
+   // dispatch calls made to the services in my_service_list
+   DISPATCH_LUA(L, my_service_list);
+}
+
+#pragma catapult secondary hub_client(shared_data_t) address(0x61AC) mode(CMM) stack(500)
+
+/******************************************************************************
+ *                                                                            *
+ * The client (secondary) - calls services provided by the server (primary)   *
+ *                                                                            *
+ ******************************************************************************/
+
+void hub_client(shared_data_t *s) {
+
+   int i = 0;
+   long l = 0;
+   float f = 0.0;
+
+   t_printf("Client ready - press a key to start the server ...\n");
+   k_wait();
+
+   // tell the server we are ready 
+   s->ready = 1;
+
+   // wait till we are told to start by the server before proceeding
+   while (s->start == 0);
+
+   t_printf("The client calls from cog %d ...\n", _cogid());
+   t_printf("... to the server on cog %d\n", _locate_plugin(LMM_SVR));
+
+   // call the services ...
    while(1) {
-      _dispatch_Lua(L, my_service_list);
+      t_printf("\nPress a key to continue ...\n");
+      k_wait();
+
+      i = func_1(1000);
+      t_printf("result of func_1 = %d\n", i);
+      i = func_2(2000);
+      t_printf("result of func_2 = %d\n", i);
+      i = func_3(3000, 4000);
+      t_printf("result of func_3 = %d\n", i);
+      f = func_4(5000.0, 6000.0);
+      t_printf("result of func_4 = %f\n", f);
+      l = func_5(7000.0, 8000.0);
+      t_printf("result of func_5 = %ld\n", l);
+      i = func_6(s);
+      t_printf("result of func_6 = %d\n", i);
+
    }
 }
+

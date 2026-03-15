@@ -23,13 +23,13 @@
  *                                                                            *
  * Compile this program with a command like:                                  *
  *                                                                            *
- *   catapult srv_c_p2.c                                                       *
+ *   catapult srv_c_p2.c                                                      *
  *                                                                            *
  * Before loading, execute 'build_utilities' to build the appropriate XMM     *
  * loader (for a P2_EDGE with PSRAM and an 8K cache), and then load and       *
  * execute the program with a command like:                                   *
  *                                                                            *
- *   payload -o2 -i xmm srv_c_p2                                               *
+ *   payload -o2 -i XMM srv_c_p2                                              *
  *                                                                            *
  * Note that if you modify the program, you may have to modify the address    *
  * specified in the secondary pragma - but the program will tell you what     *
@@ -70,7 +70,7 @@ typedef struct shared_data {
  * The secondary client - calls services provided by the primary server       *
  *                                                                            *
  ******************************************************************************/
-#pragma catapult secondary hub_client(shared_data_t) address(0x76F60) mode(NMM) stack(500)
+#pragma catapult secondary hub_client(shared_data_t) address(0x769B8) mode(NMM) stack(500)
 
 /*
  * define proxy functions, which use Catalina's pre-defined 

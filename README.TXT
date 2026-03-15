@@ -196,79 +196,22 @@ documents folder.
 New Functionality
 -----------------
 
-1. If a compiled version of a Lua module exists, it is now loaded in
-   preference to the uncompiled version - e.g. given 'require "module"'
-   Lua will now try to load "module.lux" and load it if it exists, 
-   otherwise it will try "module.lua". The full search path is now:
+1. Catapult has been updated to add two new pragmas:
 
-       ?.lux; ?.lua;
-       ?/init.lux; ?/init.lua;
-       lua/?.lux; lua/?.lua;
-       lua/?/init.lux; lua/?/init.lua
+   #pragma catapult service
+   #pragma catapult service_list
 
-   This search path can be set using the environment variable LUA_PATH, 
-   so to revert to the previous behaviour use the Catalyst command:
+   These new optional pragmas automate the definition of proxy functions, 
+   in both C and Lua client/server programs, and allow client/server C 
+   programs to be compiled monolithically more easily.
 
-       set LUA_PATH="?.lua;?/init.lua;lua/?.lua;lua/?/init.lua"
+   The client/server demo programs in demos/catapult have been updated
+   to use the new pragmas:
 
-2. When the Catalyst pre-built demos are built for a Propeller 2 platform
-   with XMM RAM (i.e. the P2_EDGE or P2_EVAL) then eLua is now also built 
-   (i.e. elua, elaux, eluafx, eluas, eluasx). An eLua demo of the Game of 
-   Life is also copied into the folder 'life'.
+      srv_c_p1.c
+      srv_l_p1.c
+      srv_c_p2.c
+      srv_l_p2.c
 
-   See the file life/README.TXT for details on executing this demo. In
-   particular, not that 'exec life/rebuild' must be executed before
-   the demo can be executed.
+   See the document 'Getting Started with Catapult' for details.
 
-3. The catapult and elua/ALOHA demos now allow fixed length path names of up 
-   to 128 bytes instead of just a DOS 8.3 file name. This allows eLua/ALOHA 
-   programs to be put into folders. The pre-built demos for the Propeller 2 
-   now contain an example of doing this - i.e. the Game of Life eLua demo in 
-   folder 'life'.
-
-Other Changes
--------------
-
-1. The build scripts for the P2_EDGE and P2_EVAL Catalyst demos were 
-   building cake to use a serial HMI even when compiling the VGA demos. 
-   Affected the Propeller 2 only.
-
-2. There were issues with catapult programs that accepted command line 
-   arguments. The size and number of arguments could change the memory
-   addresses allocated in the program, requiring it to be recompiled in
-   each case. This has now been fixed by the addition of a new Catalina
-   option -C FIXED_ARGS, which forces the program to always allocate the
-   maximum possible number of bytes for command line arguments even if
-   none were specified or supported. In cases where no command line
-   argument support is required, This can be disabled using the existing 
-   option -C NO_ARGS. Affected the Propeller 2 only.
-
-3. Several of the catapult demos, including the ALOHA demos, were allocating 
-   hub RAM for file names BEFORE allocating the catapult memory buffers, 
-   which meant that the buffer addresses could change depending on the 
-   command-line arguments. All the demos now always allocate a fixed amount 
-   of Hub RAM to hold the file names so that the catapult buffers will 
-   always have the same addresses. Affected the Propeller 2 only.
-
-4. Updated the 'Aloha from Lua' document to match the current version of the 
-   Lua initialization file (linit.c).
-
-5. It was possible for the Serial ALOHA protocol to overrun the serial buffers
-   in the case of large messages. Now a delay has been added when transmitting
-   (defaults to 5ms every 16 characters, but it can be adjusted in aloha.c).
-
-6. Recent Lua updates have changed the size of Lua executables, and hence the
-   size of Lua programs that can be executed from Hub RAM. The 'Game of Life'
-   eLua demo is now too large to be executed with 'sluafx', but since it does
-   not need floating point it can still be executed using 'sluafix'. The
-   'Aloha from Lua' document has been updated accordingly. 
-
-7. Removed all "just update version number" type comments - they served no
-   useful purpose and just consumed space (especially in Lua scripts).
-
-8. Use $* in place of $1 $2 $3 ... $9 and %* in place of %1 %2 %3 .. %9 
-   wherever it is feasible to do so. This is necessary because Catalina now
-   has so many symbols that may need to be defined on a command line (usually 
-   in scripts) it is now possible that more than 9 parameters need to be 
-   specified.
- 

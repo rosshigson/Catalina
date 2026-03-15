@@ -21,6 +21,9 @@
  *
  * version 8.8.5 - add -C FIXED_ARGS to primary program compilation
  *
+ * version 8.8.7 - add two new optional pragmas:
+ *                    #pragma catapult service
+ *                    #pragma catapult service_list
  */
 
 #include <ctype.h>

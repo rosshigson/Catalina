@@ -26,7 +26,10 @@
 # return true if the line begins with the specified token (and is 
 # followed by the end of line, a space or a tab, or a '(' character)
 function token(str, token) {
-   if ((left(str, length(token)) == token) && (length(str) == length(token) || (substr(str, length(token)+1, 1) == " ") || (substr(str, length(token)+1, 1) == "\t") || (substr(str, length(token)+1, 1) == "("))) {
+   if ((left(str, length(token)) == token) && (length(str) == length(token) \
+   ||  (substr(str, length(token)+1, 1) == " ") \
+   ||  (substr(str, length(token)+1, 1) == "\t") \
+   ||  (substr(str, length(token)+1, 1) == "("))) { \
        return 1;
    }
    return 0;
@@ -56,7 +59,8 @@ function remove_dot_c(str) {
 # print an error message about a malformed option
 function malformed_option(line) {
    print pragma > "/dev/stderr"
-   printf("%s:%d: Warning : catapult pragma contains malformed option '%s'\n", FILENAME, line_no, line) > "/dev/stderr"
+   printf("%s:%d: Warning : catapult pragma contains malformed option '%s'\n", 
+      FILENAME, line_no, line) > "/dev/stderr"
 }
 
 # trim parentheses from start and end of string
@@ -73,9 +77,9 @@ function my_right(str, i) {
       str = "";
    }
    else {
-      str = trim(right(str, length(str)-i));
+      str = right(str, length(str)-i);
    }
-   return str;
+   return trim(str);
 }
 
 # count parentheses, and return the index of the ")" 
@@ -123,6 +127,7 @@ function get_pragma_options(line, count, i)
    options = "";
    binary = "";
    overlay = "";
+   stype = "";
 
    while (length(line) > 0) {
       # printf("line = %s\n", line);
@@ -244,6 +249,26 @@ function get_pragma_options(line, count, i)
           }
           count++;
       }
+      else if (token(line, "type")) {
+          line = remove_chars(line, 4);
+          if (left(line, 1) == "(") {
+             if ((i = match_paren(line)) == 0) {
+                malformed_option(line);
+                return;
+             }
+             else {
+                stype = left(line, i);
+                line = my_right(line, i);
+                stype = trim_parentheses(stype);
+                # printf("service type = '%s'\n", stype);
+             }
+          }
+          else {
+             malformed_option(line);
+             return;
+          }
+          count++;
+      }
       else {
           # must be a name, with or without a type in parentheses
           # printf("it's a name: %s\n", line);
@@ -295,6 +320,87 @@ BEGIN {
    initialize_pragma();
 }
 
+/^[[:blank:]]*#pragma[[:blank:]]+catapult[[:blank:]]+service[[:blank:]]/ {
+   line_no++;
+   # print "// processing service pragma\n";
+   pragma = $0
+   $1 = "";
+   $2 = "";
+   $3 = "";
+   n = get_pragma_options(trim($0));
+   if (name == "") {
+      name = "service";
+   }
+   # printf("name = %s, address = %s, stack = %s, mode = %s, options = %s, type = %s, binary = %s, overlay = %s, service_type=%s\n", \
+   #        name, address, stack, mode, options, type, binary, overlay, stype);
+   save_proxy(current_segment, name, stype, line_no);
+   if (address != "") {
+      print pragma > "/dev/stderr"
+      printf("%s:%d: Warning : catapult service pragma cannot specify an address\n", FILENAME, line_no) > "/dev/stderr"
+   }
+   if (stack != "") {
+      print pragma > "/dev/stderr"
+      printf("%s:%d: Warning : catapult service pragma cannot specify a stack\n", FILENAME, line_no) > "/dev/stderr"
+   }
+   if (mode != "") {
+      print pragma > "/dev/stderr"
+      printf("%s:%d: Warning : catapult service pragma cannot specify a mode\n", FILENAME, line_no) > "/dev/stderr"
+   }
+   if (options != "") {
+      print pragma > "/dev/stderr"
+      printf("%s:%d: Warning : catapult service pragma cannot specify options\n", FILENAME, line_no) > "/dev/stderr"
+   }
+   if (binary != "") {
+      print pragma > "/dev/stderr"
+      printf("%s:%d: Warning : catapult service pragma cannot specify a binary\n", FILENAME, line_no) > "/dev/stderr"
+   }
+   if (overlay != "") {
+      print pragma > "/dev/stderr"
+      printf("%s:%d: Warning : catapult service pragma cannot specify an overlay\n", FILENAME, line_no) > "/dev/stderr"
+   }
+   next;
+}
+
+
+/^[[:blank:]]*#pragma[[:blank:]]+catapult[[:blank:]]+service_list[[:blank:]]/ {
+   line_no++;
+   # print "// processing service_list pragma\n";
+   pragma = $0
+   $1 = "";
+   $2 = "";
+   $3 = "";
+   n = get_pragma_options(trim($0));
+   # printf("name = %s, address = %s, stack = %s, mode = %s, options = %s, type = %s, binary = %s, overlay = %s, service_type=%s\n", \
+   #        name, address, stack, mode, options, type, binary, overlay, stype);
+   generate_service_list(current_segment, name, stype, line_no);
+   if (address != "") {
+      print pragma > "/dev/stderr"
+      printf("%s:%d: Warning : catapult service pragma cannot specify an address\n", FILENAME, line_no) > "/dev/stderr"
+   }
+   if (stack != "") {
+      print pragma > "/dev/stderr"
+      printf("%s:%d: Warning : catapult service pragma cannot specify a stack\n", FILENAME, line_no) > "/dev/stderr"
+   }
+   if (mode != "") {
+      print pragma > "/dev/stderr"
+      printf("%s:%d: Warning : catapult service pragma cannot specify a mode\n", FILENAME, line_no) > "/dev/stderr"
+   }
+   if (options != "") {
+      print pragma > "/dev/stderr"
+      printf("%s:%d: Warning : catapult service pragma cannot specify options\n", FILENAME, line_no) > "/dev/stderr"
+   }
+   if (binary != "") {
+      print pragma > "/dev/stderr"
+      printf("%s:%d: Warning : catapult service pragma cannot specify a binary\n", FILENAME, line_no) > "/dev/stderr"
+   }
+   if (overlay != "") {
+      print pragma > "/dev/stderr"
+      printf("%s:%d: Warning : catapult service pragma cannot specify an overlay\n", FILENAME, line_no) > "/dev/stderr"
+   }
+   next;
+}
+
+
 /^[[:blank:]]*#pragma[[:blank:]]+catapult[[:blank:]]+common[[:blank:]]/ {
    line_no++;
    # print "// processing common pragma\n";
@@ -306,7 +412,8 @@ BEGIN {
    if (name == "") {
       name = "common";
    }
-   # printf("name = %s, address = %s, stack = %s, mode = %s, options = %s, type = %s, binary = %s, overlay = %s\n", name, address, stack, mode, options, type, binary, overlay);
+   # printf("name = %s, address = %s, stack = %s, mode = %s, options = %s, type = %s, binary = %s, overlay = %s\n", \
+   #        name, address, stack, mode, options, type, binary, overlay);
    update_segment(0, name, address, stack, mode, options, type, binary, overlay);
    if (address != "") {
       print pragma > "/dev/stderr"
@@ -337,6 +444,7 @@ BEGIN {
    next;
 }
 
+
 /^[[:blank:]]*#pragma[[:blank:]]+catapult[[:blank:]]+primary[[:blank:]]/ {
    line_no++;
    # print "// processing primary pragma\n";
@@ -345,7 +453,8 @@ BEGIN {
    $2 = "";
    $3 = "";
    n = get_pragma_options(trim($0));
-   # printf("name = %s, address = %s, stack = %s, mode = %s, options = %s, type = %s, binary = %s, overlay = %s\n", name, address, stack, mode, options, type, binary, overlay);
+   # printf("name = %s, address = %s, stack = %s, mode = %s, options = %s, type = %s, binary = %s, overlay = %s\n", \
+   #        name, address, stack, mode, options, type, binary, overlay);
    if (name == "") {
       name = "primary";
    }
