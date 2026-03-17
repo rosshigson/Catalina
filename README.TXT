@@ -215,3 +215,18 @@ New Functionality
 
    See the document 'Getting Started with Catapult' for details.
 
+Other Changes
+-------------
+
+1. Fixed a bug in the p2asm assembler, which was not generating the same
+   code as PNut or Proptool for LOC instructions in PASM code below hub 
+   address $400. Note that the verification test was also incorrect, and
+   has also now been fixed.
+
+   This bug did not affect Catalina, since it always starts Propeller 2
+   program code at hex location $1000 - below that is used for the kernel
+   or program loader, which does not use LOC. However, the bug may affect 
+   pure PASM programs.
+
+   Affected the Propeller 2 only, on Windows, Linux and Catalyst.
+

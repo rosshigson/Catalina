@@ -536,6 +536,8 @@ int ProcessBigSrc(int *pi, char **tokens, int num, int *popcode, int is_loc)
     int forceabs = 0;
     int is_float = -1;
     int target_hubmode;
+    int index = -1;
+    int hub_symbol = 0;
 
     (*pi)++;
     if (!strcmp(tokens[*pi], "\\"))
@@ -543,26 +545,41 @@ int ProcessBigSrc(int *pi, char **tokens, int num, int *popcode, int is_loc)
         (*pi)++;
         forceabs = 1;
     }
-    if (objflag && *pi == num - 1)
+    if (*pi == (num - 1))
     {
-        int index;
-        addifmissing = 0;
-        index = FindSymbol(tokens[*pi]);
-        addifmissing = finalpass;
-        if (index < 0)
-        {
-            value = hub_addr + 4;
-            if (debugflag) printf("UNDEFI %8.8x %s\n", hub_addr, tokens[*pi]);
-            WriteObjectEntry(OTYPE_REF_FUNC_UND, object_section, hub_addr, tokens[*pi]);
-        }
-        else if (SymbolTable[index].type == TYPE_HUB_ADDR)
-            value = SymbolTable[index].value2;
-        else
-            value = SymbolTable[index].value;
+       addifmissing = 0;
+       index = FindSymbol(tokens[*pi]);
+       addifmissing = finalpass;
+       if (index < 0)
+       {
+           value = hub_addr + 4;
+       }
+       else if (SymbolTable[index].type == TYPE_HUB_ADDR)
+       {
+           value = SymbolTable[index].value2;
+           hub_symbol = 1;
+       }
+       else
+       {
+           value = SymbolTable[index].value;
+       }
+       if (objflag)
+       {
+           if (index < 0)
+           {
+               if (debugflag) printf("UNDEFI %8.8x %s\n", hub_addr, tokens[*pi]);
+               WriteObjectEntry(OTYPE_REF_FUNC_UND, object_section, hub_addr, tokens[*pi]);
+           }
+       }
     }
     else if (EvaluateExpression(12, pi, tokens, num, &value, &is_float)) return 1;
     ExpectDone(pi, tokens, num);
-    target_hubmode = value >= 0x400;
+    if (is_loc && (index >= 0) && (hub_symbol != hubmode)) {
+       // force absolute if crossing between cog and hub domains
+       rflag = 0;
+       forceabs = 1;
+    }
+    target_hubmode = (value >= 0x400) || (is_loc && (index >= 0) && hub_symbol);
     if (hubmode == target_hubmode && !forceabs) rflag = 1;
     if (rflag)
     {
@@ -2157,7 +2174,7 @@ void Parse(int pass)
 
 void usage(void)
 {
-    printf("p2asm - an assembler for the propeller 2 - version 0.018, 2020-01-21\n");
+    printf("p2asm - an assembler for the propeller 2 - version 0.019, 2026-03-17\n");
     printf("usage: p2asm\n");
     printf("  [ -o ]     generate an object file\n");
     printf("  [ -d ]     enable debug prints\n");
