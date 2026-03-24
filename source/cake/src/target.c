@@ -360,6 +360,19 @@ long long target_signed_max(enum  target target, enum object_type type)
     return (1LL << (bits - 1)) - 1; // 2^(bits-1) - 1    
 }
 
+long long target_signed_min(enum target target, enum object_type type)
+{
+    const int bits = target_get_num_of_bits(target, type);
+    assert(bits <= sizeof(long long) * CHAR_BIT);
+
+    if (bits >= sizeof(long long) * CHAR_BIT)
+    {
+        return LLONG_MIN;
+    }
+
+    return -(1LL << (bits - 1));
+}
+
 unsigned long long target_unsigned_max(enum  target target, enum object_type type)
 {
     const int bits = target_get_num_of_bits(target, type);

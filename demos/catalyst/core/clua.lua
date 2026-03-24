@@ -42,7 +42,7 @@ require "string"
 require "propeller"
 
 -- configuration parameters and default values
-LUAC_VERSION     = "8.8.6"
+LUAC_VERSION     = "8.8.7"
 LUAC_SCRIPT      = "luac.cmd"
 PATH_SEP         = "/";
 MAX_ARGS         = 24

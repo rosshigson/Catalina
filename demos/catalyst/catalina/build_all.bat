@@ -233,8 +233,8 @@ catalina -p2 -L %TMP_LIBPATH% -I ..\..\include %EXTRA_OPTIONS% -o spp ..\cpp\cpp
 @echo building rcc ...
 @echo.
 
-rem must remove OPTIMIZE (if present) when compiling rcc - it crashes awka!
-SET CATALINA_DEFINE=%CATALINA_DEFINE:OPTIMIZE=%
+rem remove OPTIMIZE (if present) when compiling rcc if it crashes awka
+rem SET CATALINA_DEFINE=%CATALINA_DEFINE:OPTIMIZE=%
 catalina -p2 -L %TMP_LIBPATH% -I ..\..\include -C NO_KEYBOARD -C CLOCK %EXTRA_OPTIONS% -o rcc -lrcc ..\src\main.c -I..\src -l%TMP_PSRAM% -lcx -y
 cd ..\..\..
 

@@ -50,7 +50,7 @@
 ** with the threads library. You may need to define it manually if 
 ** you want to compile with gcc and posix threads.
 */
-#if defined(__CATALINA_libthreads)
+#if defined(__CATALINA_libthreads) && !defined(LUA_THREADS)
 #define LUA_THREADS
 #endif
 

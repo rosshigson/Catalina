@@ -1,0 +1,260 @@
+Optimizer notes (phases and commands used to compile rcc)
+
+#
+# Phase 0
+#
+# AWK script to optimize loads
+#
+# Phase 1
+#
+# AWK script to identify all inlinable function calls in the SPIN file, 
+# and the stack space requirements for each function (only function
+# calls with stack space that can be represented as an 'immediate'
+# can presently be 'inlined')
+#
+# Phase 2
+#
+# AWK script to identify functions that can be inlined
+# (and save their 'inlinable' section). An 'inlinable'
+# function must:
+#     (not spill arguments to stack)
+# AND (not have local variables)
+# AND (not use the frame pointer)
+# AND (not have its address taken other than by a CALA)
+# AND (   (be a leaf function - i.e. no 'CALA' or 'CALI')
+#      OR (be called once only, or be less than or equal to SIX longs)
+#
+# Phase 3
+#
+# AWK script to replace calls to inlinable functions
+#
+# Phase 4
+#
+# AWK script to enumerate optimization candidates
+#
+# Phase 5 (non-CMM)
+#
+# AWK script to identify whether the optimizable instructions enumerated
+# in phase 1 are within the range of an immediate add or sub instruction.
+# Note that we allow a "guard" of 32 in case other optimizations which 
+# move the the source and destination end up with them being too far apart.
+#
+# Phase 5 (CMM)
+#
+# AWK script to identify whether the optimizable instructions enumerated
+# in phase 1 are within the range of a relative jump instruction. Note 
+# that we cannot use the full jump range (+/- 255) because with compact
+# code it can happen that the destination moves out of range of the 
+# jump address due to other optimizations, or the addition or removal
+# of "align" statements. There is no way to guarantee this, but we 
+# allow a "guard" of +/- 16, which should cover pretty much all 
+# contingencies.
+#
+# Phase 6
+#
+# AWK script to replace optimizable instructions with relative jumps
+#
+# Phase 7
+#
+# AWK script to identify all function calls in the SPIN file, 
+# and the stack space requirements for each function (if any). 
+#
+# Phase 8
+#
+# AWK script to identify functions that do not require stack space to be 
+# identified in BC because they do not dump any register arguments to stack
+#
+# Phase 9
+#
+# AWK script to remove assignment of reg argument stack size to BC from those 
+# function calls that don't use it.
+#
+# Also optimize away assignemts to registers immedialy prior to a POPM
+#
+# Phase 10
+#
+# AWK script to identify redundant moves and unnecessary truncation
+#
+# Phase 11
+#
+# AWK script to identify all C labels in the SPIN file 
+#
+# Phase 12
+#
+# AWK script to identify the functions used by each known function, or if
+# the functions address is taken (which means it is used).
+#
+# Phase 13
+#
+# AWK script to remove functions not specifically identified as required
+#
+# Phase 14 (CMM only)
+#
+# AWK script to re-insert 'alignl' statements where required
+#
+
+
+----------------------------------------------------------------------------
+
+@rem Commands used to build optimized rcc for P2 (in demos/catalyst/catalina)
+@rem P2_EDGE PSRAM LARGE CACHED_64K SIMPLE OPTIMIZED CLOCK NO_MOUSE NO_KEYBOARD
+
+cd source\lcc\build
+
+@rem This lcc command ...
+
+@rem lcc -D__CATALINA_NO_KEYBOARD -Wl-CNO_KEYBOARD -D__CATALINA_CLOCK -Wl-CCLOCK  -D__STDC__=1 -D__CATALINA_CACHED_64K -Wl-CCACHED_64K -D__CATALINA_WRITE_BACK -Wl-CWRITE_BACK -D__CATALINA_NO_MOUSE -Wl-CNO_MOUSE -lrcc -D__CATALINA_librcc -Wl-Clibrcc ..\src\main.c -lpsram -D__CATALINA_libpsram -Wl-Clibpsram -lcx -D__CATALINA_libcx -Wl-Clibcx -u -v -Wl-v -Wl-w-l -o rcc -D__CATALINA_P2_EDGE -Wl-CP2_EDGE -D__CATALINA_PSRAM -Wl-CPSRAM -D__CATALINA_SIMPLE -Wl-CSIMPLE -D__CATALINA_VT100 -Wl-CVT100 -D__CATALINA_USE_COLOR -Wl-CUSE_COLOR -D"__CATALINA__CLOCK_XTAL20000000" -Wl-C"_CLOCK_XTAL=20000000" -D"__CATALINA__CLOCK_XDIV1" -Wl-C"_CLOCK_XDIV=1" -D"__CATALINA__CLOCK_MULT10" -Wl-C"_CLOCK_MULT=10" -D"__CATALINA__CLOCK_DIVP1" -Wl-C"_CLOCK_DIVP=1"  -Wl-O5 -Wl-TC:\Users\rossh\Catalina_Work_64\target -I..\..\include;..\src -Wl-x5 -D__CATALINA_P2PASM__ -Wl-CP2PASM__ -Wl-ap -target=catalina_large/win32 -Wl-p2 -D__CATALINA_LARGE -Wl-CLARGE -D__CATALINA_P2 -Wl-CP2 -LC:\Users\rossh\CATALI~1\demos\catalyst\catalina\lib\p2\xmm
+
+@rem ... generates and executes the following:
+
+cpp.exe -D_POSIX_SOURCE -D__extension__= -D__cdecl= -D__CATALINA__ -D__LCC__ -D__CATALINA_NO_KEYBOARD -D__CATALINA_CLOCK -D__STDC__=1 -D__CATALINA_CACHED_64K -D__CATALINA_WRITE_BACK -D__CATALINA_NO_MOUSE -D__CATALINA_librcc -D__CATALINA_libpsram -D__CATALINA_libcx -D__CATALINA_P2_EDGE -D__CATALINA_PSRAM -D__CATALINA_SIMPLE -D__CATALINA_VT100 -D__CATALINA_USE_COLOR -D__CATALINA__CLOCK_XTAL20000000 -D__CATALINA__CLOCK_XDIV1 -D__CATALINA__CLOCK_MULT10 -D__CATALINA__CLOCK_DIVP1 -I..\..\include -I..\src -D__CATALINA_P2PASM__ -D__CATALINA_LARGE -D__CATALINA_P2 -IC:\Users\rossh\Catalina_Work_64\include ..\src\main.c temp2.i
+
+rcc.exe -target=catalina/win32 -v -o rcc -target=catalina_large/win32 temp2.i temp3.s
+
+move /Y temp3.s temp1.obj
+
+@rem catbind.exe -o rcc -LC:\Users\rossh\Catalina_Work_64\lib -TC:\Users\rossh\Catalina_Work_64\target -CNO_KEYBOARD -CCLOCK -CCACHED_64K -CWRITE_BACK -CNO_MOUSE -Clibrcc -Clibpsram -Clibcx -v -w-l -CP2_EDGE -CPSRAM -CSIMPLE -CVT100 -CUSE_COLOR -C_CLOCK_XTAL=20000000 -C_CLOCK_XDIV=1 -C_CLOCK_MULT=10 -C_CLOCK_DIVP=1 -O5 -TC:\Users\rossh\Catalina_Work_64\target -x5 -CP2PASM__ -ap -p2 -CLARGE -CP2 -u -LC:\Users\rossh\CATALI~1\demos\catalyst\catalina\lib\p2\xmm -lrcc temp1.obj -lpsram -lcx
+
+@rem catoptimize -T "C:\Users\rossh\Catalina_Work_64\target" -p2 -O5
+
+bcc -v -L "C:\Users\rossh\CATALI~1\demos\catalyst\catalina\lib\p2\xmm" -T "C:\Users\rossh\Catalina_Work_64\target" -t def -x5 -p2 -lrcc -lpsram -lcx "temp1.obj" -o "catalina.s" -p2
+
+spp -D NO_KEYBOARD -D CLOCK -D CACHED_64K -D WRITE_BACK -D NO_MOUSE -D librcc -D libpsram -D libcx -D P2_EDGE -D PSRAM -D SIMPLE -D VT100 -D USE_COLOR -D "_CLOCK_XTAL=20000000" -D "_CLOCK_XDIV=1" -D "_CLOCK_MULT=10" -D "_CLOCK_DIVP=1" -D P2PASM__ -D LARGE -D P2  -I C:\Users\rossh\Catalina_Work_64\target\p2  -I . C:\Users\rossh\Catalina_Work_64\target\p2\xmmdef.t xmmdef.s
+
+@rem catoptimize -T "C:\Users\rossh\Catalina_Work_64\target" -p2 -O5 -u -v xmmdef.s -o xmmdef  -l
+
+catopt_0 "xmmdef.s" >CatOptimize_Phase_0.spin
+
+catopt_1 "CatOptimize_Phase_0.spin" >CatOptimize_Phase_1.out
+
+catopt_2 "CatOptimize_Phase_0.spin"
+
+catopt_3 "CatOptimize_Phase_0.spin" >CatOptimize_Phase_3_Temp.spin
+
+catopt_3 "CatOptimize_Phase_3_Temp.spin" >CatOptimize_Phase_3.spin
+
+catopt_4 "CatOptimize_Phase_3.spin" >CatOptimize_Phase_4.spin
+
+call p2_asm -l -D CATALINA_OPTIMIZE "CatOptimize_Phase_4.spin"  -l -I "C:\Users\rossh\Catalina_Work_64\target\p2" -I .
+@echo on
+
+catopt_5 "CatOptimize_Phase_4.lst" >CatOptimize_Phase_5.out
+
+catopt_6 "CatOptimize_Phase_4.spin" >CatOptimize_Phase_6.spin
+
+catopt_7 "CatOptimize_Phase_6.spin" >CatOptimize_Phase_7.out
+
+catopt_8 "CatOptimize_Phase_6.spin"
+
+catopt_9 "CatOptimize_Phase_6.spin" >CatOptimize_Phase_9.spin
+
+catopt_10 "CatOptimize_Phase_9.spin" >CatOptimize_Phase_10.spin
+
+@rem remove xmmdef.s
+move /Y xmmdef.s xmmdef.s.orig
+
+@rem rename CatOptimize_Phase_10.spin to xmmdef.s
+move /Y CatOptimize_Phase_10.spin xmmdef.s
+
+call p2_asm -l -D CATALINA_OPTIMIZE "xmmdef.s" -o "xmmdef"  -l -I "C:\Users\rossh\Catalina_Work_64\target\p2" -I .
+@echo on
+
+@rem rename xmmdef.s to CatOptimize_Phase_3.spin
+move /Y xmmdef.s CatOptimize_Phase_3.spin
+
+catopt_4 "CatOptimize_Phase_3.spin" >CatOptimize_Phase_4.spin
+
+call p2_asm -l -D CATALINA_OPTIMIZE "CatOptimize_Phase_4.spin"  -l -I "C:\Users\rossh\Catalina_Work_64\target\p2" -I .
+@echo on
+
+catopt_5 "CatOptimize_Phase_4.lst" >CatOptimize_Phase_5.out
+
+catopt_6 "CatOptimize_Phase_4.spin" >CatOptimize_Phase_6.spin
+
+catopt_11 "CatOptimize_Phase_6.spin" >CatOptimize_Phase_11.out
+
+catopt_12 "CatOptimize_Phase_6.spin"
+
+catopt_13 "CatOptimize_Phase_6.spin" >CatOptimize_Phase_13.spin
+
+@rem rename CatOptimize_Phase_13.spin to xmmdef.s
+
+move /Y CatOptimize_Phase_13.spin xmmdef.s
+
+call p2_asm -l -D CATALINA_OPTIMIZE "xmmdef.s" -o "xmmdef"  -l -I "C:\Users\rossh\Catalina_Work_64\target\p2" -I .
+@echo on
+
+spp -D NO_KEYBOARD -D CLOCK -D CACHED_64K -D WRITE_BACK -D NO_MOUSE -D librcc -D libpsram -D libcx -D P2_EDGE -D PSRAM -D SIMPLE -D VT100 -D USE_COLOR -D "_CLOCK_XTAL=20000000" -D "_CLOCK_XDIV=1" -D "_CLOCK_MULT=10" -D "_CLOCK_DIVP=1" -D P2PASM__ -D LARGE -D P2  -I C:\Users\rossh\Catalina_Work_64\target\p2  -I . catalina.s rcc.s
+
+@rem catoptimize -T "C:\Users\rossh\Catalina_Work_64\target" -p2 -O5 -u -v rcc.s -o rcc  -l
+
+catopt_0 "rcc.s" >CatOptimize_Phase_0.spin
+
+catopt_1 "CatOptimize_Phase_0.spin" >CatOptimize_Phase_1.out
+
+catopt_2 "CatOptimize_Phase_0.spin"
+
+catopt_3 "CatOptimize_Phase_0.spin" >CatOptimize_Phase_3_Temp.spin
+
+catopt_3 "CatOptimize_Phase_3_Temp.spin" >CatOptimize_Phase_3.spin
+
+catopt_4 "CatOptimize_Phase_3.spin" >CatOptimize_Phase_4.spin
+
+call p2_asm -l -D CATALINA_OPTIMIZE "CatOptimize_Phase_4.spin"  -l -I "C:\Users\rossh\Catalina_Work_64\target\p2" -I .
+@echo on
+
+catopt_5 "CatOptimize_Phase_4.lst" >CatOptimize_Phase_5.out
+
+catopt_6 "CatOptimize_Phase_4.spin" >CatOptimize_Phase_6.spin
+
+catopt_7 "CatOptimize_Phase_6.spin" >CatOptimize_Phase_7.out
+
+catopt_8 "CatOptimize_Phase_6.spin"
+
+catopt_9 "CatOptimize_Phase_6.spin" >CatOptimize_Phase_9.spin
+
+catopt_10 "CatOptimize_Phase_9.spin" >CatOptimize_Phase_10.spin
+
+@rem remove rcc.s
+move /Y rcc.s rcc.s.orig
+
+@rem rename CatOptimize_Phase_10.spin to rcc.s
+move /Y CatOptimize_Phase_10.spin rcc.s
+
+call p2_asm -l -D CATALINA_OPTIMIZE "rcc.s" -o "rcc"  -l -I "C:\Users\rossh\Catalina_Work_64\target\p2" -I .
+@echo on
+
+@rem rename rcc.s to CatOptimize_Phase_3.spin
+move /Y rcc.s CatOptimize_Phase_3.spin
+
+catopt_4 "CatOptimize_Phase_3.spin" >CatOptimize_Phase_4.spin
+
+call p2_asm -l -D CATALINA_OPTIMIZE "CatOptimize_Phase_4.spin"  -l -I "C:\Users\rossh\Catalina_Work_64\target\p2" -I .
+@echo on
+
+catopt_5 "CatOptimize_Phase_4.lst" >CatOptimize_Phase_5.out
+
+catopt_6 "CatOptimize_Phase_4.spin" >CatOptimize_Phase_6.spin
+
+catopt_11 "CatOptimize_Phase_6.spin" >CatOptimize_Phase_11.out
+
+catopt_12 "CatOptimize_Phase_6.spin"
+
+catopt_13 "CatOptimize_Phase_6.spin" >CatOptimize_Phase_13.spin
+
+@rem rename CatOptimize_Phase_13.spin to rcc.s
+move /Y CatOptimize_Phase_13.spin rcc.s
+
+call p2_asm -l -D CATALINA_OPTIMIZE "rcc.s" -o "rcc"  -l -I "C:\Users\rossh\Catalina_Work_64\target\p2" -I .
+@echo on
+
+binbuild -p2 -x5 -v -u rcc
+
+binstats -v rcc.bin
+
+@rem expected results ...
+@rem code = 1352596 bytes
+@rem cnst = 227292 bytes
+@rem init = 40952 bytes
+@rem data = 67420 bytes
+@rem file = 1754336 bytes

@@ -1,4 +1,3 @@
-
 #pragma safety enable
 #include "version.h"
 #include "ownership.h"
@@ -10,8 +9,6 @@
 #include <stdint.h>
 #include "visit_il.h"
 #include "expressions.h"
-
-
 
 /*
 *    Prefix used to create local variables
@@ -27,6 +24,22 @@
   Prefix used to create labels
 */
 #define CAKE_PREFIX_LABEL "__L"
+
+
+
+struct vm_dim_snapshot
+{
+    struct expression* expr;
+    int snap_num;
+};
+static int vm_collect_dims(struct d_visit_ctx* ctx,
+                            const struct type* p_type,
+                            struct vm_dim_snapshot dims[],
+                            int max_dims);
+static void vm_emit_snapshot_decls(struct d_visit_ctx* ctx,
+                                    struct osstream* oss_body,
+                                    const struct vm_dim_snapshot dims[],
+                                    int dim_count);
 
 static void print_initializer(struct d_visit_ctx* ctx,
     struct osstream* oss,
@@ -62,7 +75,6 @@ struct struct_entry_list
     int size;
     int capacity;
 };
-
 
 
 struct struct_entry
@@ -182,6 +194,7 @@ static void d_print_type(struct d_visit_ctx* ctx,
     const struct type* p_type,
     const char* _Opt name_opt,
     bool print_storage_qualifier);
+
 
 static void print_identation_core(struct osstream* ss, int indentation)
 {
@@ -487,6 +500,134 @@ static const char* get_op_by_expression_type(enum expression_type type)
 
 static void d_visit_compound_statement_2(const char* var_name, struct d_visit_ctx* ctx, struct osstream* oss, struct compound_statement* p_compound_statement);
 
+
+
+static bool vm_find_snap_num(struct d_visit_ctx* ctx, const struct expression* expr, size_t* num)
+{
+    char snap_key[64];
+    snprintf(snap_key, sizeof(snap_key), "%p", (void*)expr);
+    struct map_entry* _Opt p = hashmap_find(&ctx->vm_expression_to_dim_var, snap_key);
+    if (p == NULL)
+    {
+        return false;
+    }
+    *num = p->data.number;
+    return true;
+}
+
+static enum sizeof_result vm_emit_sizeof_expr_core(struct d_visit_ctx* ctx,
+                                     struct osstream* oss,
+                                     const struct type* p_type,
+                                     size_t* size)
+{
+    *size = 0; //out
+    const  enum  target target = ctx->options.target;
+    const enum type_category category = type_get_category(p_type);
+
+    if (category == TYPE_CATEGORY_ARRAY &&
+        !(p_type->storage_class_specifier_flags & STORAGE_SPECIFIER_PARAMETER))
+    {
+        unsigned long long arraysize;
+
+        if (p_type->array_num_elements <= 0)
+        {
+            size_t num = 0;
+            if (vm_find_snap_num(ctx, p_type->p_array_num_elements_expression, &num))
+            {
+                if (oss->size > 0)
+                    ss_fprintf(oss, " * ");
+
+                ss_fprintf(oss, CAKE_LOCAL_PREFIX "%d", num);
+            }
+
+            arraysize = 1;
+        }
+        else
+        {
+            arraysize = p_type->array_num_elements;
+        }
+
+        struct type type = get_array_item_type(p_type);
+        size_t sz = 0;
+        const enum sizeof_result er = vm_emit_sizeof_expr_core(ctx,
+                                      oss,
+                                      &type,
+                                      &sz);
+
+        if (er != SIZEOF_RESULT_OK)
+        {
+            sz = 1;
+        }
+        type_destroy(&type);
+
+        unsigned long long result = 0;
+        if (unsigned_long_long_mul(&result, sz, arraysize))
+        {
+            if (result > SIZE_MAX)
+            {
+                return SIZEOF_RESULT_OVERLOW;
+            }
+
+            //
+            if (result > /*SIZEMAX*/ 4294967295)
+            {
+                return SIZEOF_RESULT_OVERLOW;
+            }
+            *size = (size_t)result;
+        }
+        else
+        {
+            return SIZEOF_RESULT_OVERLOW;
+        }
+        return SIZEOF_RESULT_OK;
+    }
+    assert(p_type->next == NULL);
+    size_t sz2;
+    enum sizeof_result r = type_get_sizeof(p_type, &sz2, target);
+    *size = sz2;
+    assert(r != SIZEOF_RESULT_RUNTIME);
+    return r;
+}
+
+static void vm_emit_sizeof_expr(struct d_visit_ctx* ctx,
+                                struct osstream* oss,
+                                const struct type* p_type)
+{
+    struct osstream local = { 0 };
+    size_t sz = 0;
+    vm_emit_sizeof_expr_core(ctx,
+                             &local,
+                             p_type,
+                             &sz);
+    ss_fprintf(oss, "(%zu", sz);
+
+    if (local.size > 0)
+        ss_fprintf(oss, " * %s)", local.c_str);
+
+    ss_close(&local);
+}
+
+static void vm_emit_countof_expr(struct d_visit_ctx* ctx,
+                                 struct osstream* oss,
+                                 const struct type* p_type)
+{
+    if (p_type->p_array_num_elements_expression != NULL &&
+        p_type->array_num_elements <= 0)
+    {
+        size_t num = 0;
+        if (vm_find_snap_num(ctx, p_type->p_array_num_elements_expression, &num))
+        {
+            ss_fprintf(oss, CAKE_LOCAL_PREFIX "%d", num);
+        }
+    }
+    else if (p_type->array_num_elements > 0)
+    {
+        ss_fprintf(oss, "%zu", p_type->array_num_elements);
+    }
+}
+
+
+
 static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, struct expression* p_expression)
 {
 
@@ -517,6 +658,41 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
             return;
         }
     }
+#if 0
+    
+    /* 
+      VM types can be used inside the expression cast, sizeof, compound literal etc
+      Here we register these VM types
+    */
+    struct vm_dim_snapshot dims[50];
+
+    if (p_expression)
+    {
+        int dim_count = vm_collect_dims(ctx, &p_expression->type, dims, _Countof(dims));
+        if (dim_count > 0)
+            vm_emit_snapshot_decls(ctx, &ctx->add_this_before, dims, dim_count);
+    }
+
+    if (p_expression->left)
+    {
+        int dim_count = vm_collect_dims(ctx, &p_expression->left->type, dims, _Countof(dims));
+        if (dim_count > 0)
+            vm_emit_snapshot_decls(ctx, &ctx->add_this_before, dims, dim_count);
+    }
+    if (p_expression->right)
+    {
+        int dim_count = vm_collect_dims(ctx, &p_expression->right->type, dims, _Countof(dims));
+        if (dim_count > 0)
+            vm_emit_snapshot_decls(ctx, &ctx->add_this_before, dims, dim_count);
+    }
+
+    if (p_expression->type_name != NULL)
+    {
+        int dim_count = vm_collect_dims(ctx, &p_expression->type_name->type, dims, _Countof(dims));
+        if (dim_count > 0)
+            vm_emit_snapshot_decls(ctx, &ctx->add_this_before, dims, dim_count);
+    }
+#endif
     
     ctx->address_of_argument = false;
 
@@ -542,8 +718,6 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
             snprintf(func_name, sizeof func_name, "unnamed");
             snprintf(name, sizeof(name), "__cake_func_%p", ctx->p_current_function_opt);
         }
-
-
 
         if (!ctx->is__func__predefined_identifier_added)
         {
@@ -651,7 +825,6 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
         }
         else
         {
-
             /*
                local static declarators are generated on-demand.
             */
@@ -713,12 +886,12 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
         object_print_value(oss, &p_expression->object, ctx->options.target);
         break;
 
-    case PRIMARY_EXPRESSION_PARENTESIS:
+    case PRIMARY_EXPRESSION_PARENTHESIS:
 
         assert(p_expression->right != NULL);
-        if (p_expression->right->expression_type == PRIMARY_EXPRESSION_PARENTESIS)
+        if (p_expression->right->expression_type == PRIMARY_EXPRESSION_PARENTHESIS)
         {
-            //removes extra (()) ,we also could remove from other..
+            /* remove extra (()) — could also be removed from other cases */
             d_visit_expression(ctx, oss, p_expression->right);
         }
         else
@@ -794,7 +967,7 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
             ss_fprintf(oss, ")");
             //TODO to convert to C89 we need to insert the first parameter
             //at the caller and at the implementation
-            //ss_fprintf(oss, ", __first_va_arg");            
+            /* ss_fprintf(oss, ", __first_va_arg"); */
         }
         break;
 
@@ -884,10 +1057,66 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
         assert(p_expression->left != NULL);
         assert(p_expression->right != NULL);
 
+        if (type_is_vm(&p_expression->left->type))
+        {
+        /*
+               A[i0][i1][i2]...[ik]
+
+               Lower to:
+
+               offset =
+                   i0 * (d1*d2*...*dk)
+                 + i1 * (d2*d3*...*dk)
+                 + ...
+                 + ik
+
+               A[offset]
+                 */
+
+            struct osstream offset_flat = { 0 };
+
+            struct expression* expr = p_expression;
+            while (expr->expression_type == POSTFIX_ARRAY)
+                    {
+                if (offset_flat.size > 0)
+                    ss_fprintf(&offset_flat, " + ");
+                d_visit_expression(ctx, &offset_flat, expr->right);
+
+                struct type* p_type = expr->left->type.next;
+                while (type_is_array(p_type))
+                    {
+                    if (p_type->array_num_elements > 0)
+                {
+                        ss_fprintf(&offset_flat, "* %zu", p_type->array_num_elements);
+                    }
+                    else
+                    {
+                        size_t num;
+                        if (vm_find_snap_num(ctx, p_type->p_array_num_elements_expression, &num))
+                {
+                            ss_fprintf(&offset_flat, "* " CAKE_LOCAL_PREFIX "%d", num);
+                        }
+                        }
+                    p_type = p_type->next;
+                    }
+
+                expr = expr->left;
+                }
+
+            d_visit_expression(ctx, oss, expr);
+            ss_fprintf(oss, "[");
+            ss_fprintf(oss, "%s", offset_flat.c_str);
+                ss_fprintf(oss, "]");
+            ss_close(&offset_flat);
+            }
+            else
+            {
         d_visit_expression(ctx, oss, p_expression->left);
         ss_fprintf(oss, "[");
         d_visit_expression(ctx, oss, p_expression->right);
         ss_fprintf(oss, "]");
+            }
+
         break;
 
     case POSTFIX_FUNCTION_CALL:
@@ -1002,8 +1231,26 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
         char name[100] = { 0 };
         snprintf(name, sizeof(name), CAKE_LOCAL_PREFIX "%d", ctx->cake_local_declarator_number++);
 
-        if (ctx->is_local)
+        const bool is_static =
+            p_expression->type.storage_class_specifier_flags & STORAGE_SPECIFIER_STATIC;
+
+        if (is_static || !ctx->is_local)
         {
+            struct osstream local = { 0 };
+            print_identation_core(&local, ctx->indentation);
+            ss_fprintf(&local, "static ");
+            d_print_type(ctx, &local, &p_expression->type, name, false);
+            bool first = true;
+            ss_fprintf(&local, " = {");
+            object_print_constant_initialization(ctx, &local, &p_expression->object, &first);
+            ss_fprintf(&local, "};\n");
+            ss_fprintf(&ctx->add_this_before_external_decl, "%s", local.c_str);
+            ss_close(&local);
+            ss_fprintf(oss, "%s", name);
+        }
+        else
+        {
+            /* block-scope compound literal — automatic storage duration */
             struct osstream local = { 0 };
             ss_swap(&ctx->block_scope_declarators, &local);
             print_identation_core(&local, ctx->indentation);
@@ -1020,35 +1267,55 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
             ss_close(&local);
             ss_fprintf(oss, "%s", name);
         }
-        else
-        {
-            struct osstream local = { 0 };
-            print_identation_core(&local, ctx->indentation);
-            d_print_type(ctx, &local, &p_expression->type, name, false);
-            bool first = true;
-            ss_fprintf(&local, " = {");
-            object_print_constant_initialization(ctx, &local, &p_expression->object, &first);
-            ss_fprintf(&local, "};\n");
-            ss_fprintf(&ctx->add_this_before, "%s", local.c_str);
-            ss_close(&local);
-            ss_fprintf(oss, "%s", name);
-
-        }
     }
     break;
 
     case UNARY_EXPRESSION_SIZEOF_EXPRESSION:
+        if (p_expression->right != NULL &&
+            type_is_vm(&p_expression->right->type))
+        {
+            vm_emit_sizeof_expr(ctx, oss, &p_expression->right->type);
+        }
+        else
+        {
         object_print_value(oss, &p_expression->object, ctx->options.target);
+        }
         break;
 
     case UNARY_EXPRESSION_SIZEOF_TYPE:
+        if (p_expression->type_name != NULL &&
+            type_is_vm(&p_expression->type_name->type))
+        {
+            ss_fprintf(oss, "(");
+            vm_emit_sizeof_expr(ctx, oss, &p_expression->type_name->type);
+            ss_fprintf(oss, ")");
+        }
+        else
+        {
         object_print_value(oss, &p_expression->object, ctx->options.target);
+        }
         break;
 
     case UNARY_EXPRESSION_ALIGNOF_EXPRESSION:
     case UNARY_EXPRESSION_ALIGNOF_TYPE:
-    case UNARY_EXPRESSION_COUNTOF:
         object_print_value(oss, &p_expression->object, ctx->options.target);
+        break;
+
+    case UNARY_EXPRESSION_COUNTOF:
+        if (p_expression->right != NULL &&
+            type_is_vm(&p_expression->right->type))
+        {
+            vm_emit_countof_expr(ctx, oss, &p_expression->right->type);
+        }
+        else if (p_expression->type_name != NULL &&
+                 type_is_vm(&p_expression->type_name->type))
+        {
+            vm_emit_countof_expr(ctx, oss, &p_expression->type_name->type);
+        }
+        else
+        {
+        object_print_value(oss, &p_expression->object, ctx->options.target);
+        }
         break;
 
     case UNARY_EXPRESSION_CONSTEVAL:
@@ -1093,7 +1360,6 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
         break;
 
     case UNARY_EXPRESSION_CONTENT:
-
         assert(p_expression->right != NULL);
         ss_fprintf(oss, "*");
         d_visit_expression(ctx, oss, p_expression->right);
@@ -1311,13 +1577,48 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
 
     case CONDITIONAL_EXPRESSION:
         assert(p_expression->condition_expr != NULL);
-        assert(p_expression->left != NULL);
         assert(p_expression->right != NULL);
 
+        if (p_expression->left == NULL)
+        {
+            if (expression_has_side_effects(p_expression->condition_expr))
+            {
+                char name[100] = { 0 };
+                snprintf(name, sizeof name, CAKE_LOCAL_PREFIX "%d",
+                         ctx->cake_local_declarator_number++);
+
+                struct osstream decl = { 0 };
+                print_identation_core(&decl, ctx->indentation);
+                d_print_type(ctx, &decl,
+                             &p_expression->condition_expr->type, name, false);
+                ss_fprintf(&decl, ";\n");
+                ss_fprintf(&ctx->block_scope_declarators, "%s", decl.c_str);
+                ss_close(&decl);
+
+                print_identation_core(&ctx->add_this_before, ctx->indentation);
+                ss_fprintf(&ctx->add_this_before, "%s = ", name);
+                d_visit_expression(ctx, &ctx->add_this_before,
+                                   p_expression->condition_expr);
+                ss_fprintf(&ctx->add_this_before, ";\n");
+
+                ss_fprintf(oss, "%s ? %s : ", name, name);
+            }
+            else
+            {
+                /* No side effects — safe to repeat the condition */
+                d_visit_expression(ctx, oss, p_expression->condition_expr);
+                ss_fprintf(oss, " ? ");
+                d_visit_expression(ctx, oss, p_expression->condition_expr);
+                ss_fprintf(oss, " : ");
+            }
+        }
+        else
+        {
         d_visit_expression(ctx, oss, p_expression->condition_expr);
         ss_fprintf(oss, " ? ");
         d_visit_expression(ctx, oss, p_expression->left);
         ss_fprintf(oss, " : ");
+        }
         d_visit_expression(ctx, oss, p_expression->right);
         break;
     }
@@ -2150,6 +2451,48 @@ static void d_visit_compound_statement_2(const char* var_name, struct d_visit_ct
 }
 
 
+static int vm_collect_dims(struct d_visit_ctx* ctx,
+                            const struct type* p_type,
+                            struct vm_dim_snapshot dims[],
+                            int max_dims)
+{
+    int count = 0;
+    const struct type* _Opt it = p_type;
+    while (it && count < max_dims)
+    {
+        if (it->category == TYPE_CATEGORY_ARRAY &&
+            it->p_array_num_elements_expression != NULL &&
+            !object_has_constant_value(&it->p_array_num_elements_expression->object))
+        {
+
+            char snap_key[64];
+            snprintf(snap_key, sizeof(snap_key), "%p", (void*)it->p_array_num_elements_expression);
+
+            size_t num;
+            bool r = vm_find_snap_num(ctx, it->p_array_num_elements_expression, &num);
+            if (r)
+            {
+                dims[count].expr = (struct expression*)it->p_array_num_elements_expression;
+                dims[count].snap_num = num;
+            }
+            else {
+                int snap_num = ctx->cake_local_declarator_number++;
+                dims[count].expr = (struct expression*)it->p_array_num_elements_expression;
+                dims[count].snap_num = snap_num;
+                
+                struct hash_item_set item = { 0 };
+                item.number = snap_num;
+                hashmap_set(&ctx->vm_expression_to_dim_var, snap_key, &item);
+                hash_item_set_destroy(&item);
+            }
+
+            count++;
+        }
+        it = it->next;
+    }
+    return count;
+}
+
 static void d_visit_function_body(struct d_visit_ctx* ctx,
     struct osstream* oss,
     const struct declarator* function_definition)
@@ -2161,13 +2504,99 @@ static void d_visit_function_body(struct d_visit_ctx* ctx,
         return;
     }
 
-    ctx->cake_local_declarator_number = 0; //reset
+    hashmap_remove_all(&ctx->vm_expression_to_dim_var);  /* reset */
+    ctx->cake_local_declarator_number = 0; /* reset */
 
     int indentation = ctx->indentation;
     ctx->indentation = 0;
     const struct declarator* _Opt previous_func = ctx->p_current_function_opt;
     ctx->p_current_function_opt = function_definition;
+
+
+    struct vm_dim_snapshot all_dims[32];
+    int all_dim_count = 0;
+
+    const struct type* _Opt func_type = &function_definition->type;
+    while (func_type && func_type->category != TYPE_CATEGORY_FUNCTION)
+        func_type = func_type->next;
+
+    if (func_type != NULL)
+    {
+        struct param* _Opt pa = func_type->params.head;
+        while (pa && all_dim_count < _Countof(all_dims))
+        {
+            if (type_is_vm(&pa->type))
+            {
+                struct vm_dim_snapshot dims[32];
+                int count = vm_collect_dims(ctx, &pa->type, dims, _Countof(dims));
+                for (int i = 0; i < count && all_dim_count < _Countof(dims); i++)
+                    all_dims[all_dim_count++] = dims[i];
+            }
+            pa = pa->next;
+        }
+    }
+
+    if (all_dim_count == 0)
+    {
+        /* No VM params — normal path */
     d_visit_compound_statement(ctx, oss, function_definition->function_body);
+    }
+    else
+    {
+        /*
+         * Capture the compound statement output into a temporary stream,
+         * then inject snapshot declarations right after the opening "{".
+         */
+        struct osstream body = { 0 };
+        d_visit_compound_statement(ctx, &body, function_definition->function_body);
+
+        struct osstream size_t_str = { 0 };
+        bool first = true;
+        print_type_specifier_flags(&size_t_str,
+            &first,
+            object_type_to_type_specifier(get_platform(ctx->options.target)->size_t_type));
+
+
+        /* Build snapshot lines:  "    int __v0 = (n);\n" */
+        struct osstream snaps = { 0 };
+        for (int i = 0; i < all_dim_count; i++)
+        {
+            print_identation_core(&snaps, 1);
+            ss_fprintf(&snaps, "%s " CAKE_LOCAL_PREFIX "%d = ", size_t_str.c_str, all_dims[i].snap_num);
+            d_visit_expression(ctx, &snaps, all_dims[i].expr);
+            ss_fprintf(&snaps, ";\n");
+        }
+        ss_close(&size_t_str);
+
+        /*
+         * The body stream starts with "{\n".
+         * Inject snapshot lines right after that.
+         */
+        if (body.c_str && snaps.c_str)
+        {
+            const char* open_brace = "{\n";
+            size_t prefix_len = strlen(open_brace);
+            if (strncmp(body.c_str, open_brace, prefix_len) == 0)
+            {
+                ss_fprintf(oss, "{\n");
+                ss_fprintf(oss, "%s", snaps.c_str);
+                ss_fprintf(oss, "%s", body.c_str + prefix_len);
+            }
+            else
+            {
+                /* fallback: just append */
+                ss_fprintf(oss, "%s", body.c_str);
+            }
+        }
+        else if (body.c_str)
+        {
+            ss_fprintf(oss, "%s", body.c_str);
+        }
+
+        ss_close(&snaps);
+        ss_close(&body);
+    }
+
     ctx->p_current_function_opt = previous_func;//restore
     ctx->indentation = indentation; //restore
 }
@@ -2437,6 +2866,7 @@ static void d_print_type_qualifier_flags(struct osstream* ss, bool* first, enum 
         print_item(ss, first, "volatile");
 }
 
+
 static void d_print_type_core(struct d_visit_ctx* ctx,
     struct osstream* ss,
     const struct type* p_type0,
@@ -2532,40 +2962,55 @@ static void d_print_type_core(struct d_visit_ctx* ctx,
 
         break;
         case TYPE_CATEGORY_ARRAY:
+        {
+            const struct type* it = p_type;
+            bool vm = false;
+            while (it->category == TYPE_CATEGORY_ARRAY)
+            {
+                if (it->array_num_elements <= 0)
+                {
+                    vm = true;
+                }
 
+                it = it->next;
+            }
 
             if (name_opt)
             {
-                //if (first)
-                //{
-                  //  ss_fprintf(ss, " ");
-                    //first = false;
-                //}
                 ss_fprintf(ss, "%s", name_opt);
                 name_opt = NULL;
             }
-
             ss_fprintf(ss, "[");
 
             bool b = true;
 
-
             if (ctx->print_qualifiers)
                 d_print_type_qualifier_flags(ss, &b, p_type->type_qualifier_flags);
 
-            if (p_type->num_of_elements > 0)
+            if (vm)
             {
-                if (!b)
-                    ss_fprintf(ss, " ");
-
-                ss_fprintf(ss, "%zu", p_type->num_of_elements);
+                ss_fprintf(ss, "1");
             }
             else
             {
-                //vlz
-            }
-            ss_fprintf(ss, "]");
+                if (p_type->array_num_elements > 0)
+            {
+                /* constant-size array dimension */
+                if (!b)
+                    ss_fprintf(ss, " ");
 
+                    ss_fprintf(ss, "%zu", p_type->array_num_elements);
+            }
+
+            }
+
+            ss_fprintf(ss, "]");
+            if (vm)
+            {
+                p_type = it;
+                continue;
+            }
+        }
             break;
 
         case TYPE_CATEGORY_FUNCTION:
@@ -2600,7 +3045,10 @@ static void d_print_type_core(struct d_visit_ctx* ctx,
             {
                 struct osstream sslocal = { 0 };
                 struct osstream local2 = { 0 };
+
+
                 d_print_type_core(ctx, &local2, &pa->type, pa->type.name_opt);
+
 
                 ss_fprintf(&sslocal, "%s", local2.c_str);
                 ss_fprintf(ss, "%s", sslocal.c_str);
@@ -2628,7 +3076,7 @@ static void d_print_type_core(struct d_visit_ctx* ctx,
             struct osstream local = { 0 };
             if (p_type->next && (
                 (p_type->next->category == TYPE_CATEGORY_FUNCTION ||
-                    p_type->next->category == TYPE_CATEGORY_ARRAY)))
+                    (p_type->next->category == TYPE_CATEGORY_ARRAY))))
             {
                 ss_fprintf(&local, "(");
             }
@@ -2646,10 +3094,12 @@ static void d_print_type_core(struct d_visit_ctx* ctx,
                 ss_fprintf(&local, "__cdecl ");
             }
 
+
             ss_fprintf(&local, "*");
+
             bool first = false;
             if (ctx->print_qualifiers)
-                d_print_type_qualifier_flags(ss, &b, p_type->type_qualifier_flags);
+                d_print_type_qualifier_flags(ss, &first, p_type->type_qualifier_flags);
 
             if (name_opt)
             {
@@ -2667,13 +3117,14 @@ static void d_print_type_core(struct d_visit_ctx* ctx,
 
             if (p_type->next &&
                 (p_type->next->category == TYPE_CATEGORY_FUNCTION ||
-                    p_type->next->category == TYPE_CATEGORY_ARRAY))
+                    (p_type->next->category == TYPE_CATEGORY_ARRAY)))
             {
                 ss_fprintf(&local, ")", ss->c_str);
             }
 
             ss_swap(ss, &local);
             ss_close(&local);
+
 
         }
         break;
@@ -2690,18 +3141,11 @@ static void d_print_type(struct d_visit_ctx* ctx,
     const char* _Opt name_opt,
     bool print_storage_qualifiers)
 {
-
-
     register_struct_types_and_functions(ctx, p_type, NULL);
-
 
     struct osstream local = { 0 };
 
-
-    d_print_type_core(ctx,
-    &local,
-    p_type,
-    name_opt);
+    d_print_type_core(ctx, &local, p_type, name_opt);
 
 
     if (print_storage_qualifiers && p_type->storage_class_specifier_flags & STORAGE_SPECIFIER_EXTERN)
@@ -2724,7 +3168,7 @@ static void d_print_type(struct d_visit_ctx* ctx,
     ss_close(&local);
 }
 
-//return true se todas as expressoes constantes sao 0, as nao constantes nao sao consideradas
+/* returns true if all constant expressions are 0; non-constant expressions are not considered */
 static bool is_all_zero(const struct object* object)
 {
     if (object_is_reference(object))
@@ -2784,7 +3228,7 @@ static void object_print_constant_initialization(struct d_visit_ctx* ctx, struct
     {
         if (type_is_union(&object->type))
         {
-            //In c89 only the first member can be initialized
+            /* in C89, only the first member can be initialized */
             //we could make the first member be array of unsigned int
             //then initialize it
             struct object* _Opt member = object->members.head;
@@ -2850,25 +3294,23 @@ static void object_print_non_constant_initialization(struct d_visit_ctx* ctx,
     {
         if (type_is_union(&object->type))
         {
-            //In c89 only the first member can be initialized
+            /* in C89, only the first member can be initialized */
             struct object* _Opt member = object->members.head;
 
             if (member->p_init_expression &&
                 object_has_constant_value(&member->p_init_expression->object) &&
                 !all)
             {
-                //already initialized
+                /* already initialized */
             }
             else
             {
-                //TODO external declarations bug
-                /*
-                */
+                /* TODO: external declarations bug */
                 while (member)
                 {
                     if (member->p_init_expression)
                     {
-                        //object_print_non_constant_initialization(ctx, ss, member, declarator_name);
+                        /* object_print_non_constant_initialization(ctx, ss, member, declarator_name); */
                         print_identation_core(ss, ctx->indentation);
                         ss_fprintf(ss, "%s%s = ", declarator_name, member->member_designator);
                         struct osstream local = { 0 };
@@ -2901,7 +3343,7 @@ static void object_print_non_constant_initialization(struct d_visit_ctx* ctx,
                 ss_fprintf(ss, "_cake_memcpy(%s%s, ", declarator_name, object->member_designator);
                 struct osstream local = { 0 };
                 d_visit_expression(ctx, &local, object->p_init_expression);
-                size_t string_size = object->p_init_expression->type.num_of_elements;
+                size_t string_size = object->p_init_expression->type.array_num_elements;
                 ss_fprintf(ss, "%s, %zu", local.c_str, string_size);
 
                 ss_fprintf(ss, ");\n");
@@ -3017,7 +3459,7 @@ static void print_initializer(struct d_visit_ctx* ctx,
                     ss_fprintf(oss, "_cake_memcpy(%s, ", p_init_declarator->p_declarator->name_opt->lexeme);
                     struct osstream local = { 0 };
                     d_visit_expression(ctx, &local, p_init_declarator->initializer->assignment_expression);
-                    ss_fprintf(oss, "%s, %d", local.c_str, p_init_declarator->p_declarator->type.num_of_elements);
+                    ss_fprintf(oss, "%s, %d", local.c_str, p_init_declarator->p_declarator->type.array_num_elements);
 
                     ss_fprintf(oss, ");\n");
                     ss_close(&local);
@@ -3064,7 +3506,7 @@ static void print_initializer(struct d_visit_ctx* ctx,
                                 throw;
                             }
 
-                            // ss_fprintf(oss, ";\n");
+                            /* ss_fprintf(oss, ";\n"); */
                             print_identation_core(oss, ctx->indentation);
                             ss_fprintf(oss, "_cake_zmem(&%s, %zu);\n",
                             p_init_declarator->p_declarator->name_opt->lexeme,
@@ -3127,6 +3569,33 @@ static void print_initializer(struct d_visit_ctx* ctx,
     }
 }
 
+static void vm_emit_snapshot_decls(struct d_visit_ctx* ctx,
+                                    struct osstream* oss_body,
+                                    const struct vm_dim_snapshot dims[],
+                                    int dim_count)
+{
+    struct osstream size_t_str = { 0 };
+    bool first = true;
+    print_type_specifier_flags(&size_t_str,
+        &first,
+        object_type_to_type_specifier(get_platform(ctx->options.target)->size_t_type));
+
+    for (int i = 0; i < dim_count; i++)
+    {
+        /* declaration hoisted to block top */
+        print_identation(ctx, &ctx->block_scope_declarators);
+        ss_fprintf(&ctx->block_scope_declarators,
+                   "%s " CAKE_LOCAL_PREFIX "%d;\n", size_t_str.c_str, dims[i].snap_num);
+
+        /* assignment emitted as a statement in the body */
+        print_identation(ctx, oss_body);
+        ss_fprintf(oss_body, CAKE_LOCAL_PREFIX "%d = ", dims[i].snap_num);
+        d_visit_expression(ctx, oss_body, dims[i].expr);
+        ss_fprintf(oss_body, ";\n");
+    }
+    ss_close(&size_t_str);
+}
+
 
 static void d_visit_init_declarator(struct d_visit_ctx* ctx,
     struct osstream* oss0,
@@ -3177,7 +3646,6 @@ static void d_visit_init_declarator(struct d_visit_ctx* ctx,
 
         if (!is_extern && !is_block_scope && !is_inline && !is_static && !is_function && !is_function_body)
         {
-            //int i;
 
             struct hash_item_set i = { 0 };
             i.number = 1;
@@ -3206,23 +3674,43 @@ static void d_visit_init_declarator(struct d_visit_ctx* ctx,
         }
         else if (!is_extern && is_block_scope && !is_inline && !is_static && !is_function && !is_function_body)
         {
-            //{ int i; }
+        const char* var_name = p_init_declarator->p_declarator->name_opt->lexeme;
+        const struct type* decl_type = &p_init_declarator->p_declarator->type;
+
+        if (type_is_vm(decl_type))
+        {
+            struct vm_dim_snapshot dims[50];
+            int dim_count = vm_collect_dims(ctx, decl_type, dims, _Countof(dims));
+            vm_emit_snapshot_decls(ctx, oss0, dims, dim_count);
+
             struct osstream ss = { 0 };
-            d_print_type(ctx, &ss,
-              &p_init_declarator->p_declarator->type,
-          p_init_declarator->p_declarator->name_opt->lexeme,
-          false);
+            print_identation(ctx, &ss);
 
+            d_print_type(ctx, &ss, decl_type, var_name, false);
+
+            ss_fprintf(&ss, ";\n");
+            ss_fprintf(&ctx->block_scope_declarators, "%s", ss.c_str);
+            ss_close(&ss);
+
+            /* 3. Initializer (e.g. = malloc(sizeof *p) — sizeof rewritten) */
+            if (p_init_declarator->initializer)
+            {
+                print_initializer(ctx, oss0, p_init_declarator, false);
+            }
+        }
+        else
+        {
+            /* ordinary block-scope variable */
+            struct osstream ss = { 0 };
+            d_print_type(ctx, &ss, decl_type, var_name, false);
             print_identation(ctx, &ctx->block_scope_declarators);
-
             ss_fprintf(&ctx->block_scope_declarators, "%s;\n", ss.c_str);
             ss_close(&ss);
             
             if (p_init_declarator->initializer)
             {
-                //print_identation(ctx, &ctx->block_scope_declarators);
-
                 print_initializer(ctx, oss0, p_init_declarator, false);
+            }
             }
 
             return;
@@ -3256,12 +3744,12 @@ static void d_visit_init_declarator(struct d_visit_ctx* ctx,
             bool rename_declarator = false;
             if (!is_extern && is_block_scope && !is_inline && is_static && !is_function)
             {
-                //{ static int i; }
+            /* { static int i; } */
                 rename_declarator = true;
             }
             else if (!is_inline && !is_static && !is_auto && is_function && !is_function_body)
             {
-                //void f();
+            /* void f(); */
             }
             else if (!is_extern && is_block_scope && is_function)
             {
@@ -3391,13 +3879,13 @@ static void d_print_struct(struct d_visit_ctx* ctx, struct osstream* ss, struct 
                         ss_fprintf(ss, "    ");
 
                         if (type_is_array(&member_declarator->declarator->type) &&
-                            member_declarator->declarator->type.num_of_elements == 0)
+                        member_declarator->declarator->type.array_num_elements == 0)
                         {
                             //Flexible array members - we print as [1] instead 
                             // of [0] or []
                             //sizeof is not used in generated code, so this will not cause 
                             //problems
-                            member_declarator->declarator->type.num_of_elements = 1;
+                        member_declarator->declarator->type.array_num_elements = 1;
 
                             d_print_type(ctx,
                              ss,
@@ -3405,7 +3893,7 @@ static void d_print_struct(struct d_visit_ctx* ctx, struct osstream* ss, struct 
                              member_declarator->declarator->name_opt->lexeme,
                                 false);
 
-                            member_declarator->declarator->type.num_of_elements = 0; //restore
+                        member_declarator->declarator->type.array_num_elements = 0; //restore
                         }
                         else
                         {
@@ -3609,7 +4097,6 @@ void d_visit(struct d_visit_ctx* ctx, struct osstream* oss)
     {
         ss_fprintf(oss, "%s", declarations.c_str);
     }
-
 
     ss_close(&declarations);
 }

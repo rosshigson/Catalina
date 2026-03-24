@@ -17,6 +17,7 @@ cake %OPTIONS% pre_expressions.c
 cake %OPTIONS% parser.c
 cake %OPTIONS% compile.c
 cake %OPTIONS% visit_defer.c
+cake %OPTIONS% visit_asm.c
 cake %OPTIONS% visit_il.c
 cake %OPTIONS% flow.c
 cake %OPTIONS% error.c

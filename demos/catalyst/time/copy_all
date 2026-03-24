@@ -15,7 +15,7 @@ if [[ ! -e $1 ]]; then
 fi
 
 cp time.bin $1time.bin
-cp rtc_ex.bin $1rtc_x.bin
+cp rtc_ex.bin $1rtc_ex.bin
 cp ex_time1.bin $1ex_time1.bin
 cp ex_time2.bin $1ex_time2.bin
 

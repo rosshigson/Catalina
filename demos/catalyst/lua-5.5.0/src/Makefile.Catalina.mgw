@@ -367,10 +367,10 @@ luax.obj:
 	$(CC) $(CFLAGS) $(CMCFLAGS) -D LUA_LUAX -c lua.c -o luax.obj
 
 mlua.obj:
-	$(CC) $(CFLAGS) $(CMCFLAGS) -D LUA_THREADS -c lua.c -o mlua.obj
+	$(CC) $(CFLAGS) $(CMCFLAGS) -lthreads -D LUA_THREADS -c lua.c -o mlua.obj
 
 mluax.obj:
-	$(CC) $(CFLAGS) $(CMCFLAGS) -D LUA_LUAX -D LUA_THREADS -c lua.c -o mluax.obj
+	$(CC) $(CFLAGS) $(CMCFLAGS) -lthreads -D LUA_LUAX -D LUA_THREADS -c lua.c -o mluax.obj
 
 llex.obj:
 	$(CC) $(CFLAGS) -c llex.c -o $@

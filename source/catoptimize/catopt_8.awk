@@ -25,6 +25,11 @@ BEGIN {
       if (left($0,10) == " sub SP, #") {
          getline;
       }
+      else if ((left($0,10) == " jmp #LODL") || (left($0, 15) == " calld PA,#LODL")) {
+         getline;
+         getline;
+         getline;
+      }
       if ((left($0, 10) == " jmp #PSHM") || (left($0, 15) == " calld PA,#PSHM")) {
          getline;
          getline;

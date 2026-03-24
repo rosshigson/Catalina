@@ -40,8 +40,7 @@ goto done
 @echo building %1_300.ZIP ...
 @echo.
 
-rem NOTE: cannot currently use OPTIMIZE when building mlua!
-call build_all %1 %2 %3 SIMPLE VT100 USE_COLOR MHZ_300
+call build_all %1 %2 %3 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_300
 
 rem create the expected directory structure
 call mk_cat_dirs image >NUL:
@@ -52,8 +51,7 @@ cat CATALYST.ENV %1.ENV > ..\image\CATALYST.ENV
 cd ..
 
 cd cake
-rem NOTE: cannot currently use OPTIMIZE with Cake ...
-call build_all  %1 %2 %3 SIMPLE VT100 USE_COLOR MHZ_300
+call build_all  %1 %2 %3 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_300
 copy %LCCDIR%\source\cake\src\catalina\cake.bin ..\image\bin\cake.bin
 copy CAKECONF.H ..\image\CAKECONF.H
 copy hello_99.c ..\image\hello_99.c
@@ -70,16 +68,14 @@ copy src\xvi.bin ..\image\bin\xl_vi.bin
 cd ..
 
 cd lua-5.4.8
-rem NOTE: cannot currently use OPTIMIZE when building mlua!
-call build_all %1 %2 %3 SIMPLE VT100 USE_COLOR MHZ_300 SMALL
+call build_all %1 %2 %3 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_300 SMALL
 copy src\lua.bin ..\image\bin\xs_lua.bin
 copy src\luac.bin ..\image\bin\xs_luac.bin
 copy src\luax.bin ..\image\bin\xs_luax.bin
 cd ..
 
 cd lua-5.4.8
-rem NOTE: cannot currently use OPTIMIZE when building mlua!
-call build_all %1 %2 %3 SIMPLE VT100 USE_COLOR MHZ_300 LARGE
+call build_all %1 %2 %3 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_300 LARGE
 copy src\lua.bin ..\image\bin\xl_lua.bin
 copy src\luac.bin ..\image\bin\xl_luac.bin
 copy src\luax.bin ..\image\bin\xl_luax.bin
@@ -123,16 +119,14 @@ copy src\xvi.bin ..\image\bin\xl_vi.bin
 cd ..
 
 cd lua-5.4.8
-rem NOTE: cannot currently use OPTIMIZE when building mlua!
-call build_all  %1 %2 %3 VGA COLOR_4 MHZ_300 SMALL
+call build_all  %1 %2 %3 VGA COLOR_4 OPTIMIZE MHZ_300 SMALL
 copy src\lua.bin ..\image\bin\xs_lua.bin
 copy src\luac.bin ..\image\bin\xs_luac.bin
 copy src\luax.bin ..\image\bin\xs_luax.bin
 cd ..
 
 cd lua-5.4.8
-rem NOTE: cannot currently use OPTIMIZE when building mlua!
-call build_all  %1 %2 %3 VGA COLOR_4 MHZ_300 LARGE
+call build_all  %1 %2 %3 VGA COLOR_4 OPTIMIZE MHZ_300 LARGE
 copy src\lua.bin ..\image\bin\xl_lua.bin
 copy src\luac.bin ..\image\bin\xl_luac.bin
 copy src\luax.bin ..\image\bin\xl_luax.bin

@@ -204,8 +204,8 @@ echo ""
 echo "building rcc ..."
 echo ""
 
-# must remove OPTIMIZE (if present) when compiling rcc - it crashes awka!
-CATALINA_DEFINE="${CATALINA_DEFINE//OPTIMIZE/}"
+# remove OPTIMIZE (if present) when compiling rcc if it crashes awka
+# CATALINA_DEFINE="${CATALINA_DEFINE//OPTIMIZE/}"
 catalina -p2 -L $TMP_LIBPATH -I ../../include -C CLOCK -C NO_KEYBOARD $EXTRA_OPTIONS -o rcc -lrcc ../src/main.c -I../src -l$TMP_PSRAM -lcx -y
 cd ../../..
 

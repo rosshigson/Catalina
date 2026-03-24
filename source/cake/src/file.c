@@ -1,6 +1,11 @@
 
-struct [[deprecated("asdsa")]] X { int i;  };
+struct X
+{
+    int i;
+    int a[0];
+};
 
-int main() {    
-    struct X x;
+int main()
+{
+    sizeof(struct X);
 }

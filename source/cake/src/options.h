@@ -78,7 +78,7 @@ enum diagnostic_id {
     W_ARRAY_SIZE = 52,
 
 
-    W_UNUSED_WARNING_53 = 53,
+    W_SIZEOF_FUNCTION = 53,
     W_ERROR_INCOMPATIBLE_TYPES = 54,
     W_UNUSED_LABEL = 55,
     W_REDEFINING_BUITIN_MACRO = 56,
@@ -265,6 +265,7 @@ enum diagnostic_id {
     C_ERROR_NON_INTEGRAL_ENUM_TYPE = 1850,
     C_ERROR_REQUIRES_COMPILE_TIME_VALUE = 1860,
     C_ERROR_OUTER_SCOPE = 1870,
+    C_ERROR_VARIABLY_MODIFIED_MEMBER = 1880,
 };
 
 
@@ -461,6 +462,12 @@ struct options
 
     bool do_static_debug;
     int static_debug_lines;
+
+    /*
+      -S
+      output x86-64 assembly instead of C89
+    */
+    bool asm_output;
 
     /*
       -o filename

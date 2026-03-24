@@ -9,10 +9,8 @@
 
 #include <assert.h>
 #include <string.h>
-#include <assert.h>
 #include "visit_defer.h"
 #include "expressions.h"
-#include "ownership.h"
 #include <ctype.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -46,7 +44,7 @@ struct defer_scope
 
 void defer_visit_declaration(struct defer_visit_ctx* ctx, struct declaration* p_declaration);
 static void defer_visit_declarator(struct defer_visit_ctx* ctx, struct declarator* p_declarator);
-static void defer_visit_init_declarator_list(struct defer_visit_ctx* ctx, struct init_declarator_list* p_init_declarator_list);;
+static void defer_visit_init_declarator_list(struct defer_visit_ctx* ctx, struct init_declarator_list* p_init_declarator_list);
 static void defer_visit_secondary_block(struct defer_visit_ctx* ctx, struct secondary_block* p_secondary_block);
 static void defer_visit_statement(struct defer_visit_ctx* ctx, struct statement* p_statement);
 static void defer_visit_block_item(struct defer_visit_ctx* ctx, struct block_item* p_block_item);
@@ -588,7 +586,7 @@ static void defer_visit_jump_statement(struct defer_visit_ctx* ctx, struct jump_
                         compiler_diagnostic(W_LOCATION, ctx->ctx, p1->p_defer_statement->first_token, NULL, "defer");
                     }
                 }
-                else if (p1->p_declarator && type_is_vla(&p1->p_declarator->type))
+                else if (p1->p_declarator && type_is_vm(&p1->p_declarator->type))
                 {
                     bool found = false;
                     struct defer_scope* _Owner _Opt p0 = ctx->tail_block;
@@ -604,7 +602,7 @@ static void defer_visit_jump_statement(struct defer_visit_ctx* ctx, struct jump_
 
                     if (!found)
                     {
-                        compiler_diagnostic(C_ERROR_JUMP_OVER_VLA, ctx->ctx, p_jump_statement->first_token, NULL, "jumping over vla. from here");
+                        compiler_diagnostic(C_ERROR_JUMP_OVER_VLA, ctx->ctx, p_jump_statement->first_token, NULL, "jumping over vm. from here");
                         compiler_diagnostic(W_LOCATION, ctx->ctx, label_ctx.p_label->p_first_token, NULL, "to here");
                         compiler_diagnostic(W_LOCATION, ctx->ctx, p1->p_declarator->first_token_opt, NULL, "declarator");
                     }

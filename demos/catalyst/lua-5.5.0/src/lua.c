@@ -4,6 +4,10 @@
 ** See Copyright Notice in lua.h
 */
 
+#if defined(LUA_THREADS) && defined(__CATALINA__)
+#include <pthread.h> // for _pthread_init_lock_pool
+#endif
+
 #ifdef LUA_LUAX
 
 #define lua_x

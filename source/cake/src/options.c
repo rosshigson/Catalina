@@ -294,6 +294,12 @@ int fill_options(struct options* options,
             continue;
         }
 
+        if (strcmp(argv[i], "-S") == 0)
+        {
+            options->asm_output = true;
+            continue;
+        }
+
         if (strcmp(argv[i], "-preprocess-def-macro") == 0)
         {
             options->preprocess_def_macro = true;
@@ -414,7 +420,7 @@ int fill_options(struct options* options,
         }
         if (strcmp(argv[i], "-style=microsoft") == 0)
         {
-            options->style = STYLE_GNU;
+                options->style = STYLE_MICROSOFT;
             continue;
         }
 

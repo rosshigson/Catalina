@@ -1,6 +1,6 @@
 /*
  *  This file is part of cake compiler
- *  https://github.com/thradams/cake 
+ *  https://github.com/thradams/cake
 */
 
 #pragma safety enable
@@ -22,11 +22,6 @@
 #define assert _ASSERTE
 #endif
 
-#if defined(__CATALYST__)
-#include <prop.h> // for setenv()
-#endif
-
-
 #ifdef TEST
 #include "unit_test.c"
 #endif
@@ -38,7 +33,7 @@ int main(int argc, char** argv)
 #if 0
     //Help debug emscript on desktop 
     //MOCKFILES needs to be defined
-    const char* source = 
+    const char* source =
         "#include <stdio.h>\n";
 
     char* _Owner _Opt r =
@@ -62,9 +57,9 @@ int main(int argc, char** argv)
 #ifdef TEST
 
         clock_t begin_clock = clock();
-        
-    test_main();
-        
+
+        test_main();
+
         struct report report = { 0 }; 
         report.test_mode = true;
         report.test_failed = g_unit_test_error_count;
@@ -88,17 +83,7 @@ int main(int argc, char** argv)
     struct report report = { 0 };
     int result = compile(argc, (const char**)argv, &report);
 
-#if defined(__CATALYST__)
-   if (report.error_count > 0) {
-      setenv("_EXIT_CODE", "1", 1);
-   }
-   else {
-      setenv("_EXIT_CODE", "0", 1);
-   }
-   _waitms(1000);
-#endif
-
-   return result;
+    return result;
 }
 
 

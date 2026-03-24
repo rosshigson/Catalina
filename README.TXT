@@ -230,3 +230,35 @@ Other Changes
 
    Affected the Propeller 2 only, on Windows, Linux and Catalyst.
 
+2. Fixed a bug in the Catalina Optimizer which would cause it to crash if
+   there were too many symbols in the source code, or too many child symbols 
+   used in a parent function. It now prints an error message instead of 
+   crashing.
+
+   This affected the building of the self-hosted version of Catalina for the
+   Propeller 2, which had to disable optimization when building one of the
+   Catalina components (i.e. rcc). The maximum number of symbols has been 
+   increased to allow optimization to be enabled for this program. If this 
+   makes the Optimizer too large to execute on some systems, the original 
+   values can be restored in source/catoptimize/cat_functions.c:
+
+      #define MAX_FUNC 20000
+      #define MAX_KIDS 40000
+
+   These values are sufficient to compile all demo programs EXCEPT rcc, 
+   which will have to have optimization DISABLED again - see the following 
+   scripts for details on how to do this:
+
+      demos/catalyst/catalina/build_all
+      demos/catalyst/catalina/build_all.bat
+      demos/catalyst/catalina/build_catalina_only
+      demos/catalyst/catalina/build_catalina_only.bat
+
+   Affected Windows and Linux.
+
+3. Fixed a bug in the Catalina Optimizer that would generate incorrect code
+   for varadic functions that allocated a stack frame larger than 511 bytes.
+   The only demo program known to be affected was the self-hosted version of 
+   Catalina itself (i.e. rcc).
+   Affected Windows and Linux.
+   

@@ -176,10 +176,10 @@ luax.o:
 	$(CC) $(CFLAGS) $(CMCFLAGS) -D LUA_LUAX -c lua.c -o luax.o
 
 mlua.o:
-	$(CC) $(CFLAGS) $(CMCFLAGS) -D LUA_THREADS -c lua.c -o mlua.o
+	$(CC) $(CFLAGS) $(CMCFLAGS) -lthreads -D LUA_THREADS -c lua.c -o mlua.o
 
 mluax.o:
-	$(CC) $(CFLAGS) $(CMCFLAGS) -D LUA_LUAX -D LUA_THREADS -c lua.c -o mluax.o
+	$(CC) $(CFLAGS) $(CMCFLAGS) -lthreads -D LUA_LUAX -D LUA_THREADS -c lua.c -o mluax.o
 
 llex.o:
 	$(CC) $(CFLAGS) $(CMCFLAGS) -c llex.c

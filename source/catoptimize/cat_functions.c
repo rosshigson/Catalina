@@ -9,11 +9,11 @@
 
 #define MAX_LINE 128
 
-#define MAX_FUNC 10000
+#define MAX_FUNC 40000
 
 #define MAX_RECURSE 10
 
-#define MAX_KIDS 40000
+#define MAX_KIDS 60000
 
 
 struct optimized_instruction {
@@ -86,6 +86,10 @@ void initialize_phase_2_fn() {
          printf("input: %s %d\n", func[func_count].name, func[func_count].size);
 #endif      
          func_count++;
+         if (func_count == MAX_FUNC) {
+            printf("Error: too many functions in source code\n");
+            exit(-1);
+         }
       }
    }
 #if DEBUG      
@@ -326,6 +330,10 @@ void initialize_phase_3_fn() {
          printf("input: %s %d\n", func[func_count].name, func[func_count].size);
 #endif      
          func_count++;
+         if (func_count == MAX_FUNC) {
+            printf("Error: too many functions in source code\n");
+            exit(-1);
+         }
          last = NULL;
          while (fgets(line, MAX_LINE, f) != NULL) {
             if (strncmp(line, "[", 1) != 0) {
@@ -741,6 +749,10 @@ void initialize_phase_8_fn() {
          printf("input: %s %d\n", func[func_count].name, func[func_count].size);
 #endif      
          func_count++;
+         if (func_count == MAX_FUNC) {
+            printf("Error: too many functions in source code\n");
+            exit(-1);
+         }
       }
    }
 #if DEBUG      
@@ -857,6 +869,10 @@ void initialize_phase_9_fn() {
          printf("input: %s %d\n", func[func_count].name, func[func_count].size);
 #endif      
          func_count++;
+         if (func_count == MAX_FUNC) {
+            printf("Error: too many functions in source code\n");
+            exit(-1);
+         }
       }
    }
 #if DEBUG      
@@ -918,6 +934,10 @@ void initialize_phase_12_fn() {
          printf("input: %s\n", func[func_count].name);
 #endif      
          func_count++;
+         if (func_count == MAX_FUNC) {
+            printf("Error: too many functions in source code\n");
+            exit(-1);
+         }
       }
    }
 #if DEBUG      
@@ -1037,6 +1057,10 @@ void uses_FN_fn( a_VARARG *va ) {
             rels[kids_count].code = code;
             kids_count++;
          }
+         else {
+            printf("Error: too many functions used by '%s'\n", name);
+            exit(-1);
+         }
       }
    }
 }
@@ -1060,7 +1084,7 @@ void initialize_phase_13_fn() {
          OPTIMIZER_PHASE_12_OUTPUT_NAME);
       return;
    }
-   // read in the requuired functions
+   // read in the required functions
    while (fgets(line, MAX_LINE, f) != NULL) {
       sscanf(line, "%s", (char *)&name);
       i = 0;
@@ -1081,6 +1105,10 @@ void initialize_phase_13_fn() {
          printf("input: %s\n", func[func_count].name);
 #endif      
          func_count++;
+         if (func_count == MAX_FUNC) {
+            printf("Error: too many functions in source code\n");
+            exit(-1);
+         }
       }
    }
 #if DEBUG      
