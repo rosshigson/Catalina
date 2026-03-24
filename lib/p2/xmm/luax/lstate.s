@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_seac_696dded2_luai_makeseed_L000015 ' <symbol:luai_makeseed>
+C_sk5k_69c22c2b_luai_makeseed_L000015 ' <symbol:luai_makeseed>
  jmp #NEWF
  sub SP, #20
  jmp #PSHM
@@ -95,7 +95,7 @@ C_seac_696dded2_luai_makeseed_L000015 ' <symbol:luai_makeseed>
  long @C_luaS__hash
  add SP, #8 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
-' C_seac_696dded2_luai_makeseed_L000015_16 ' (symbol refcount = 0)
+' C_sk5k_69c22c2b_luai_makeseed_L000015_16 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #20 ' framesize
  jmp #RETF
@@ -226,7 +226,7 @@ C_luaE__extendC_I_ ' <symbol:luaE_extendCI>
 
 
  alignl ' align long
-C_seac1_696dded2_freeC_I__L000022 ' <symbol:freeCI>
+C_sk5k1_69c22c2b_freeC_I__L000022 ' <symbol:freeCI>
  jmp #NEWF
  jmp #PSHM
  long $f80000 ' save registers
@@ -250,8 +250,8 @@ C_seac1_696dded2_freeC_I__L000022 ' <symbol:freeCI>
  mov BC, r20
  jmp #WLNG ' ASGNP4 reg reg
  jmp #JMPA
- long @C_seac1_696dded2_freeC_I__L000022_25 ' JUMPV addrg
-C_seac1_696dded2_freeC_I__L000022_24
+ long @C_sk5k1_69c22c2b_freeC_I__L000022_25 ' JUMPV addrg
+C_sk5k1_69c22c2b_freeC_I__L000022_24
  mov r22, r21
  adds r22, #12 ' ADDP4 coni
  mov RI, r22
@@ -275,13 +275,13 @@ C_seac1_696dded2_freeC_I__L000022_24
  mov RI, r22
  mov BC, r20
  jmp #WWRD ' ASGNU2 reg reg
-C_seac1_696dded2_freeC_I__L000022_25
+C_sk5k1_69c22c2b_freeC_I__L000022_25
  mov r21, r19 ' CVI, CVU or LOAD
  mov r22, r19 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
  jmp #BRNZ
- long @C_seac1_696dded2_freeC_I__L000022_24 ' NEU4
-' C_seac1_696dded2_freeC_I__L000022_23 ' (symbol refcount = 0)
+ long @C_sk5k1_69c22c2b_freeC_I__L000022_24 ' NEU4
+' C_sk5k1_69c22c2b_freeC_I__L000022_23 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -462,7 +462,7 @@ C_luaE__incC_stack_43
 
 
  alignl ' align long
-C_seac3_696dded2_stack_init_L000045 ' <symbol:stack_init>
+C_sk5k3_69c22c2b_stack_init_L000045 ' <symbol:stack_init>
  jmp #NEWF
  jmp #PSHM
  long $fa0000 ' save registers
@@ -492,7 +492,7 @@ C_seac3_696dded2_stack_init_L000045 ' <symbol:stack_init>
  mov BC, r20
  jmp #WLNG ' ASGNP4 reg reg
  mov r19, #0 ' reg <- coni
-C_seac3_696dded2_stack_init_L000045_47
+C_sk5k3_69c22c2b_stack_init_L000045_47
  mov r22, r19
  shl r22, #3 ' LSHI4 coni
  mov r20, r23
@@ -506,11 +506,11 @@ C_seac3_696dded2_stack_init_L000045_47
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
-' C_seac3_696dded2_stack_init_L000045_48 ' (symbol refcount = 0)
+' C_sk5k3_69c22c2b_stack_init_L000045_48 ' (symbol refcount = 0)
  adds r19, #1 ' ADDI4 coni
  cmps r19,  #45 wz,wc
  jmp #BR_B
- long @C_seac3_696dded2_stack_init_L000045_47 ' LTI4
+ long @C_sk5k3_69c22c2b_stack_init_L000045_47 ' LTI4
  mov r22, r23
  adds r22, #12 ' ADDP4 coni
  mov r20, r23
@@ -610,13 +610,13 @@ C_seac3_696dded2_stack_init_L000045_47
  mov RI, r22
  mov BC, r17
  jmp #WLNG ' ASGNP4 reg reg
-' C_seac3_696dded2_stack_init_L000045_46 ' (symbol refcount = 0)
+' C_sk5k3_69c22c2b_stack_init_L000045_46 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_seac4_696dded2_freestack_L000051 ' <symbol:freestack>
+C_sk5k4_69c22c2b_freestack_L000051 ' <symbol:freestack>
  jmp #NEWF
  jmp #PSHM
  long $d40000 ' save registers
@@ -628,10 +628,10 @@ C_seac4_696dded2_freestack_L000051 ' <symbol:freestack>
  mov r22, BC ' reg <- INDIRP4 reg
  cmp r22,  #0 wz
  jmp #BRNZ
- long @C_seac4_696dded2_freestack_L000051_53 ' NEU4
+ long @C_sk5k4_69c22c2b_freestack_L000051_53 ' NEU4
  jmp #JMPA
- long @C_seac4_696dded2_freestack_L000051_52 ' JUMPV addrg
-C_seac4_696dded2_freestack_L000051_53
+ long @C_sk5k4_69c22c2b_freestack_L000051_52 ' JUMPV addrg
+C_sk5k4_69c22c2b_freestack_L000051_53
  mov r22, r23
  adds r22, #20 ' ADDP4 coni
  mov r20, r23
@@ -642,7 +642,7 @@ C_seac4_696dded2_freestack_L000051_53
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_seac1_696dded2_freeC_I__L000022 ' CALL addrg
+ long @C_sk5k1_69c22c2b_freeC_I__L000022 ' CALL addrg
  mov r22, r23
  adds r22, #28 ' ADDP4 coni
  mov RI, r22
@@ -670,13 +670,13 @@ C_seac4_696dded2_freestack_L000051_53
  jmp #CALA
  long @C_luaM__free_
  add SP, #8 ' CALL addrg
-C_seac4_696dded2_freestack_L000051_52
+C_sk5k4_69c22c2b_freestack_L000051_52
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_seac5_696dded2_init_registry_L000055 ' <symbol:init_registry>
+C_sk5k5_69c22c2b_init_registry_L000055 ' <symbol:init_registry>
  jmp #NEWF
  sub SP, #4
  jmp #PSHM
@@ -760,14 +760,14 @@ C_seac5_696dded2_init_registry_L000055 ' <symbol:init_registry>
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
-' C_seac5_696dded2_init_registry_L000055_56 ' (symbol refcount = 0)
+' C_sk5k5_69c22c2b_init_registry_L000055_56 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_seac6_696dded2_f_luaopen_L000057 ' <symbol:f_luaopen>
+C_sk5k6_69c22c2b_f_luaopen_L000057 ' <symbol:f_luaopen>
  jmp #NEWF
  jmp #PSHM
  long $f80000 ' save registers
@@ -783,14 +783,14 @@ C_seac6_696dded2_f_luaopen_L000057 ' <symbol:f_luaopen>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_seac3_696dded2_stack_init_L000045
+ long @C_sk5k3_69c22c2b_stack_init_L000045
  add SP, #4 ' CALL addrg
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_seac5_696dded2_init_registry_L000055
+ long @C_sk5k5_69c22c2b_init_registry_L000055
  add SP, #4 ' CALL addrg
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
@@ -816,13 +816,13 @@ C_seac6_696dded2_f_luaopen_L000057 ' <symbol:f_luaopen>
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
-' C_seac6_696dded2_f_luaopen_L000057_58 ' (symbol refcount = 0)
+' C_sk5k6_69c22c2b_f_luaopen_L000057_58 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_seac7_696dded2_preinit_thread_L000059 ' <symbol:preinit_thread>
+C_sk5k7_69c22c2b_preinit_thread_L000059 ' <symbol:preinit_thread>
  jmp #PSHM
  long $500000 ' save registers
  mov r22, r3
@@ -933,13 +933,13 @@ C_seac7_696dded2_preinit_thread_L000059 ' <symbol:preinit_thread>
  mov RI, r22
  mov BC, r20
  jmp #WLNG ' ASGNI4 reg reg
-' C_seac7_696dded2_preinit_thread_L000059_60 ' (symbol refcount = 0)
+' C_sk5k7_69c22c2b_preinit_thread_L000059_60 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETN
 
 
  alignl ' align long
-C_seac8_696dded2_close_state_L000061 ' <symbol:close_state>
+C_sk5k8_69c22c2b_close_state_L000061 ' <symbol:close_state>
  jmp #NEWF
  jmp #PSHM
  long $f00000 ' save registers
@@ -958,14 +958,14 @@ C_seac8_696dded2_close_state_L000061 ' <symbol:close_state>
  and r22, #15 ' BANDI4 coni
  cmps r22,  #0 wz
  jmp #BR_Z
- long @C_seac8_696dded2_close_state_L000061_63 ' EQI4
+ long @C_sk5k8_69c22c2b_close_state_L000061_63 ' EQI4
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C_luaC__freeallobjects ' CALL addrg
  jmp #JMPA
- long @C_seac8_696dded2_close_state_L000061_64 ' JUMPV addrg
-C_seac8_696dded2_close_state_L000061_63
+ long @C_sk5k8_69c22c2b_close_state_L000061_64 ' JUMPV addrg
+C_sk5k8_69c22c2b_close_state_L000061_63
  mov r22, r23
  adds r22, #20 ' ADDP4 coni
  mov r20, r23
@@ -1002,7 +1002,7 @@ C_seac8_696dded2_close_state_L000061_63
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C_luaC__freeallobjects ' CALL addrg
-C_seac8_696dded2_close_state_L000061_64
+C_sk5k8_69c22c2b_close_state_L000061_64
  mov r22, r23
  adds r22, #16 ' ADDP4 coni
  mov RI, r22
@@ -1028,7 +1028,7 @@ C_seac8_696dded2_close_state_L000061_64
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_seac4_696dded2_freestack_L000051 ' CALL addrg
+ long @C_sk5k4_69c22c2b_freestack_L000051 ' CALL addrg
  mov r2, #0 ' reg ARG coni
  jmp #LODL
  long 840
@@ -1051,7 +1051,7 @@ C_seac8_696dded2_close_state_L000061_64
  mov RI, r22
  jmp #CALI
  add SP, #12 ' CALL indirect
-' C_seac8_696dded2_close_state_L000061_62 ' (symbol refcount = 0)
+' C_sk5k8_69c22c2b_close_state_L000061_62 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -1136,7 +1136,7 @@ C_lua_newthread_66
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_seac7_696dded2_preinit_thread_L000059
+ long @C_sk5k7_69c22c2b_preinit_thread_L000059
  add SP, #4 ' CALL addrg
  mov r22, r21
  adds r22, #112 ' ADDP4 coni
@@ -1201,7 +1201,7 @@ C_lua_newthread_66
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_seac3_696dded2_stack_init_L000045
+ long @C_sk5k3_69c22c2b_stack_init_L000045
  add SP, #4 ' CALL addrg
  mov r0, r21 ' CVI, CVU or LOAD
 ' C_lua_newthread_65 ' (symbol refcount = 0)
@@ -1238,7 +1238,7 @@ C_luaE__freethread ' <symbol:luaE_freethread>
  mov r2, r21 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_seac4_696dded2_freestack_L000051 ' CALL addrg
+ long @C_sk5k4_69c22c2b_freestack_L000051 ' CALL addrg
  mov r2, #120 ' reg ARG coni
  mov r3, r19 ' CVI, CVU or LOAD
  mov r4, r23 ' CVI, CVU or LOAD
@@ -1539,7 +1539,7 @@ C_lua_newstate_80
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_seac7_696dded2_preinit_thread_L000059
+ long @C_sk5k7_69c22c2b_preinit_thread_L000059
  add SP, #4 ' CALL addrg
  mov r22, r19
  adds r22, #68 ' ADDP4 coni
@@ -1600,7 +1600,7 @@ C_lua_newstate_80
  mov r2, r15 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_seac_696dded2_luai_makeseed_L000015 ' CALL addrg
+ long @C_sk5k_69c22c2b_luai_makeseed_L000015 ' CALL addrg
  mov r20, r19
  adds r20, #52 ' ADDP4 coni
  mov RI, r20
@@ -1859,7 +1859,7 @@ C_lua_newstate_82
  long 0
  mov r2, RI ' reg ARG con
  jmp #LODL
- long @C_seac6_696dded2_f_luaopen_L000057
+ long @C_sk5k6_69c22c2b_f_luaopen_L000057
  mov r3, RI ' reg ARG ADDRG
  mov r4, r15 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -1873,7 +1873,7 @@ C_lua_newstate_82
  mov r2, r15 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_seac8_696dded2_close_state_L000061 ' CALL addrg
+ long @C_sk5k8_69c22c2b_close_state_L000061 ' CALL addrg
  jmp #LODL
  long 0
  mov r15, RI ' reg <- con
@@ -1904,7 +1904,7 @@ C_lua_close ' <symbol:lua_close>
  mov r2, r23 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_seac8_696dded2_close_state_L000061 ' CALL addrg
+ long @C_sk5k8_69c22c2b_close_state_L000061 ' CALL addrg
 ' C_lua_close_88 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF

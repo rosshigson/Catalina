@@ -28,34 +28,18 @@ C_pthread_mutex_trylock ' <symbol:pthread_mutex_trylock>
  long I32_JMPA + (@C_pthread_mutex_trylock_2)<<S32 ' JUMPV addrg
  alignl_label
 C_pthread_mutex_trylock_3
- alignl_p1
- long I32_CALA + (@C__thread_stall)<<S32 ' CALL addrg
- word I16A_MOV + (r22)<<D16A + (r23)<<S16A
- word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
- word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRI4 reg
- word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
- alignl_p1
- long I32_BR_A + (@C_pthread_mutex_trylock_5)<<S32 ' GTI4 reg coni
- word I16B_LODL + (r2)<<D16B
- alignl_p1
- long @C__P_thread_P_ool ' reg ARG ADDRG
+ word I16A_MOV + (r2)<<D16A + (r23)<<S16A
+ word I16A_ADDSI + (r2)<<D16A + (12)<<S16A ' ADDP4 reg coni
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
  alignl_p1
- long I32_CALA + (@C__thread_locknew)<<S32 ' CALL addrg
- word I16A_MOV + (r20)<<D16A + (r23)<<S16A
- word I16A_ADDSI + (r20)<<D16A + (12)<<S16A ' ADDP4 reg coni
- word I16A_WRLONG + (r0)<<D16A + (r20)<<S16A ' ASGNI4 reg reg
- alignl_label
-C_pthread_mutex_trylock_5
- alignl_p1
- long I32_CALA + (@C__thread_allow)<<S32 ' CALL addrg
+ long I32_CALA + (@C__pthread_init_lock_pool)<<S32 ' CALL addrg
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRI4 reg
  word I16A_NEGI + (r20)<<D16A + (-(-1)&$1F)<<S16A ' reg <- conn
  word I16A_CMPS + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_pthread_mutex_trylock_7)<<S32 ' NEI4 reg reg
+ long I32_BRNZ + (@C_pthread_mutex_trylock_5)<<S32 ' NEI4 reg reg
  word I16A_MOVI + (r22)<<D16A + (12)<<S16A ' reg <- coni
  alignl_p1
  long I32_LODA + (@C_errno)<<S32
@@ -64,17 +48,17 @@ C_pthread_mutex_trylock_5
  alignl_p1
  long I32_JMPA + (@C_pthread_mutex_trylock_2)<<S32 ' JUMPV addrg
  alignl_label
-C_pthread_mutex_trylock_7
+C_pthread_mutex_trylock_5
  word I16A_RDLONG + (r22)<<D16A + (r23)<<S16A ' reg <- INDIRI4 reg
  word I16A_CMPSI + (r22)<<D16A + (1)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_pthread_mutex_trylock_9)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C_pthread_mutex_trylock_7)<<S32 ' NEI4 reg coni
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_pthread_mutex_trylock_11)<<S32 ' EQU4 reg coni
+ long I32_BR_Z + (@C_pthread_mutex_trylock_9)<<S32 ' EQU4 reg coni
  word I16A_MOVI + (r22)<<D16A + (16)<<S16A ' reg <- coni
  alignl_p1
  long I32_LODA + (@C_errno)<<S32
@@ -83,7 +67,7 @@ C_pthread_mutex_trylock_7
  alignl_p1
  long I32_JMPA + (@C_pthread_mutex_trylock_2)<<S32 ' JUMPV addrg
  alignl_label
-C_pthread_mutex_trylock_11
+C_pthread_mutex_trylock_9
  alignl_p1
  long I32_CALA + (@C_pthread_self)<<S32 ' CALL addrg
  word I16A_MOV + (r20)<<D16A + (r23)<<S16A
@@ -92,7 +76,7 @@ C_pthread_mutex_trylock_11
  word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16A_CMP + (r20)<<D16A + (r22)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_pthread_mutex_trylock_13)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_pthread_mutex_trylock_11)<<S32 ' NEU4 reg reg
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((35)&$7FFFF)<<S32 ' reg <- cons
  alignl_p1
@@ -102,22 +86,22 @@ C_pthread_mutex_trylock_11
  alignl_p1
  long I32_JMPA + (@C_pthread_mutex_trylock_2)<<S32 ' JUMPV addrg
  alignl_label
-C_pthread_mutex_trylock_13
+C_pthread_mutex_trylock_11
  alignl_label
-C_pthread_mutex_trylock_9
+C_pthread_mutex_trylock_7
  alignl_p1
  long I32_CALA + (@C_pthread_self)<<S32 ' CALL addrg
  word I16A_MOV + (r21)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16A_RDLONG + (r22)<<D16A + (r23)<<S16A ' reg <- INDIRI4 reg
  word I16A_CMPSI + (r22)<<D16A + (2)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_pthread_mutex_trylock_15)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C_pthread_mutex_trylock_13)<<S32 ' NEI4 reg coni
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_CMPI + (r22)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_pthread_mutex_trylock_17)<<S32 ' NEU4 reg coni
+ long I32_BRNZ + (@C_pthread_mutex_trylock_15)<<S32 ' NEU4 reg coni
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r2)<<D16A + (r22)<<S16A ' reg <- INDIRI4 reg
@@ -131,11 +115,54 @@ C_pthread_mutex_trylock_9
  word I16A_MOV + (r19)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPSI + (r19)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_pthread_mutex_trylock_19)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C_pthread_mutex_trylock_17)<<S32 ' EQI4 reg coni
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_WRLONG + (r21)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
  word I16A_MOVI + R0<<D16A + (0)<<S16A ' RET coni
+ alignl_p1
+ long I32_JMPA + (@C_pthread_mutex_trylock_2)<<S32 ' JUMPV addrg
+ alignl_label
+C_pthread_mutex_trylock_17
+ word I16A_MOVI + (r22)<<D16A + (16)<<S16A ' reg <- coni
+ alignl_p1
+ long I32_LODA + (@C_errno)<<S32
+ word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNI4 addrg reg
+ word I16A_MOV + (r0)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
+ alignl_p1
+ long I32_JMPA + (@C_pthread_mutex_trylock_2)<<S32 ' JUMPV addrg
+ alignl_label
+C_pthread_mutex_trylock_15
+ word I16A_MOV + (r22)<<D16A + (r23)<<S16A
+ word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
+ word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
+ word I16A_MOV + (r20)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
+ word I16A_CMP + (r22)<<D16A + (r20)<<S16A
+ alignl_p1
+ long I32_BRNZ + (@C_pthread_mutex_trylock_19)<<S32 ' NEU4 reg reg
+ word I16A_MOV + (r22)<<D16A + (r23)<<S16A
+ word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
+ word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
+ word I16B_LODL + (r20)<<D16B
+ alignl_p1
+ long $7fffffff ' reg <- con
+ word I16A_CMP + (r22)<<D16A + (r20)<<S16A
+ alignl_p1
+ long I32_BRAE + (@C_pthread_mutex_trylock_21)<<S32 ' GEU4 reg reg
+ word I16A_MOV + (r22)<<D16A + (r23)<<S16A
+ word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
+ word I16A_RDLONG + (r20)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
+ word I16A_ADDI + (r20)<<D16A + (1)<<S16A ' ADDU4 reg coni
+ word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
+ alignl_p1
+ long I32_JMPA + (@C_pthread_mutex_trylock_20)<<S32 ' JUMPV addrg
+ alignl_label
+C_pthread_mutex_trylock_21
+ word I16A_MOVI + (r22)<<D16A + (11)<<S16A ' reg <- coni
+ alignl_p1
+ long I32_LODA + (@C_errno)<<S32
+ word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNI4 addrg reg
+ word I16A_MOV + (r0)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
  alignl_p1
  long I32_JMPA + (@C_pthread_mutex_trylock_2)<<S32 ' JUMPV addrg
  alignl_label
@@ -148,55 +175,12 @@ C_pthread_mutex_trylock_19
  alignl_p1
  long I32_JMPA + (@C_pthread_mutex_trylock_2)<<S32 ' JUMPV addrg
  alignl_label
-C_pthread_mutex_trylock_17
- word I16A_MOV + (r22)<<D16A + (r23)<<S16A
- word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
- word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
- word I16A_MOV + (r20)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
- word I16A_CMP + (r22)<<D16A + (r20)<<S16A
- alignl_p1
- long I32_BRNZ + (@C_pthread_mutex_trylock_21)<<S32 ' NEU4 reg reg
- word I16A_MOV + (r22)<<D16A + (r23)<<S16A
- word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
- word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
- word I16B_LODL + (r20)<<D16B
- alignl_p1
- long $7fffffff ' reg <- con
- word I16A_CMP + (r22)<<D16A + (r20)<<S16A
- alignl_p1
- long I32_BRAE + (@C_pthread_mutex_trylock_23)<<S32 ' GEU4 reg reg
- word I16A_MOV + (r22)<<D16A + (r23)<<S16A
- word I16A_ADDSI + (r22)<<D16A + (8)<<S16A ' ADDP4 reg coni
- word I16A_RDLONG + (r20)<<D16A + (r22)<<S16A ' reg <- INDIRU4 reg
- word I16A_ADDI + (r20)<<D16A + (1)<<S16A ' ADDU4 reg coni
- word I16A_WRLONG + (r20)<<D16A + (r22)<<S16A ' ASGNU4 reg reg
- alignl_p1
- long I32_JMPA + (@C_pthread_mutex_trylock_22)<<S32 ' JUMPV addrg
- alignl_label
-C_pthread_mutex_trylock_23
- word I16A_MOVI + (r22)<<D16A + (11)<<S16A ' reg <- coni
- alignl_p1
- long I32_LODA + (@C_errno)<<S32
- word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNI4 addrg reg
- word I16A_MOV + (r0)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
- alignl_p1
- long I32_JMPA + (@C_pthread_mutex_trylock_2)<<S32 ' JUMPV addrg
- alignl_label
-C_pthread_mutex_trylock_21
- word I16A_MOVI + (r22)<<D16A + (16)<<S16A ' reg <- coni
- alignl_p1
- long I32_LODA + (@C_errno)<<S32
- word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNI4 addrg reg
- word I16A_MOV + (r0)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
- alignl_p1
- long I32_JMPA + (@C_pthread_mutex_trylock_2)<<S32 ' JUMPV addrg
- alignl_label
-C_pthread_mutex_trylock_22
+C_pthread_mutex_trylock_20
  word I16A_MOVI + R0<<D16A + (0)<<S16A ' RET coni
  alignl_p1
  long I32_JMPA + (@C_pthread_mutex_trylock_2)<<S32 ' JUMPV addrg
  alignl_label
-C_pthread_mutex_trylock_15
+C_pthread_mutex_trylock_13
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (12)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r2)<<D16A + (r22)<<S16A ' reg <- INDIRI4 reg
@@ -210,14 +194,14 @@ C_pthread_mutex_trylock_15
  word I16A_MOV + (r19)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPSI + (r19)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BR_Z + (@C_pthread_mutex_trylock_25)<<S32 ' EQI4 reg coni
+ long I32_BR_Z + (@C_pthread_mutex_trylock_23)<<S32 ' EQI4 reg coni
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_RDLONG + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRP4 reg
  word I16A_MOV + (r20)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16A_CMP + (r22)<<D16A + (r20)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_pthread_mutex_trylock_27)<<S32 ' NEU4 reg reg
+ long I32_BRNZ + (@C_pthread_mutex_trylock_25)<<S32 ' NEU4 reg reg
  word I16A_MOVI + (r22)<<D16A + (16)<<S16A ' reg <- coni
  alignl_p1
  long I32_LODA + (@C_errno)<<S32
@@ -226,7 +210,7 @@ C_pthread_mutex_trylock_15
  alignl_p1
  long I32_JMPA + (@C_pthread_mutex_trylock_2)<<S32 ' JUMPV addrg
  alignl_label
-C_pthread_mutex_trylock_27
+C_pthread_mutex_trylock_25
  word I16A_MOV + (r22)<<D16A + (r23)<<S16A
  word I16A_ADDSI + (r22)<<D16A + (4)<<S16A ' ADDP4 reg coni
  word I16A_WRLONG + (r21)<<D16A + (r22)<<S16A ' ASGNP4 reg reg
@@ -234,7 +218,7 @@ C_pthread_mutex_trylock_27
  alignl_p1
  long I32_JMPA + (@C_pthread_mutex_trylock_2)<<S32 ' JUMPV addrg
  alignl_label
-C_pthread_mutex_trylock_25
+C_pthread_mutex_trylock_23
  word I16A_MOVI + (r22)<<D16A + (16)<<S16A ' reg <- coni
  alignl_p1
  long I32_LODA + (@C_errno)<<S32
@@ -247,15 +231,11 @@ C_pthread_mutex_trylock_2
 
 ' Catalina Import _Pthread_Pool
 
+' Catalina Import _pthread_init_lock_pool
+
 ' Catalina Import pthread_self
 
 ' Catalina Import errno
 
-' Catalina Import _thread_allow
-
-' Catalina Import _thread_stall
-
 ' Catalina Import _thread_lockset
-
-' Catalina Import _thread_locknew
 ' end

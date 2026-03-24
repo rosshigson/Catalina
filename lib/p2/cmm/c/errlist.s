@@ -14,41 +14,41 @@ DAT ' initialized data segment
 
  alignl_label
 C__sys_errlist ' <symbol:_sys_errlist>
- long @C_soqk_696ddfe5_1_L000002
- long @C_soqk1_696ddfe5_3_L000004
- long @C_soqk2_696ddfe5_5_L000006
- long @C_soqk3_696ddfe5_7_L000008
- long @C_soqk4_696ddfe5_9_L000010
- long @C_soqk5_696ddfe5_11_L000012
- long @C_soqk6_696ddfe5_13_L000014
- long @C_soqk7_696ddfe5_15_L000016
- long @C_soqk8_696ddfe5_17_L000018
- long @C_soqk9_696ddfe5_19_L000020
- long @C_soqka_696ddfe5_21_L000022
- long @C_soqkb_696ddfe5_23_L000024
- long @C_soqkc_696ddfe5_25_L000026
- long @C_soqkd_696ddfe5_27_L000028
- long @C_soqke_696ddfe5_29_L000030
- long @C_soqkf_696ddfe5_31_L000032
- long @C_soqkg_696ddfe5_33_L000034
- long @C_soqkh_696ddfe5_35_L000036
- long @C_soqki_696ddfe5_37_L000038
- long @C_soqkj_696ddfe5_39_L000040
- long @C_soqkk_696ddfe5_41_L000042
- long @C_soqkl_696ddfe5_43_L000044
- long @C_soqkm_696ddfe5_45_L000046
- long @C_soqkn_696ddfe5_47_L000048
- long @C_soqko_696ddfe5_49_L000050
- long @C_soqkp_696ddfe5_51_L000052
- long @C_soqkq_696ddfe5_53_L000054
- long @C_soqkr_696ddfe5_55_L000056
- long @C_soqks_696ddfe5_57_L000058
- long @C_soqkt_696ddfe5_59_L000060
- long @C_soqku_696ddfe5_61_L000062
- long @C_soqkv_696ddfe5_63_L000064
- long @C_soqk10_696ddfe5_65_L000066
- long @C_soqk11_696ddfe5_67_L000068
- long @C_soqk12_696ddfe5_69_L000070
+ long @C_svgc_69c22ce1_1_L000002
+ long @C_svgc1_69c22ce1_3_L000004
+ long @C_svgc2_69c22ce1_5_L000006
+ long @C_svgc3_69c22ce1_7_L000008
+ long @C_svgc4_69c22ce1_9_L000010
+ long @C_svgc5_69c22ce1_11_L000012
+ long @C_svgc6_69c22ce1_13_L000014
+ long @C_svgc7_69c22ce1_15_L000016
+ long @C_svgc8_69c22ce1_17_L000018
+ long @C_svgc9_69c22ce1_19_L000020
+ long @C_svgca_69c22ce1_21_L000022
+ long @C_svgcb_69c22ce1_23_L000024
+ long @C_svgcc_69c22ce1_25_L000026
+ long @C_svgcd_69c22ce1_27_L000028
+ long @C_svgce_69c22ce1_29_L000030
+ long @C_svgcf_69c22ce1_31_L000032
+ long @C_svgcg_69c22ce1_33_L000034
+ long @C_svgch_69c22ce1_35_L000036
+ long @C_svgci_69c22ce1_37_L000038
+ long @C_svgcj_69c22ce1_39_L000040
+ long @C_svgck_69c22ce1_41_L000042
+ long @C_svgcl_69c22ce1_43_L000044
+ long @C_svgcm_69c22ce1_45_L000046
+ long @C_svgcn_69c22ce1_47_L000048
+ long @C_svgco_69c22ce1_49_L000050
+ long @C_svgcp_69c22ce1_51_L000052
+ long @C_svgcq_69c22ce1_53_L000054
+ long @C_svgcr_69c22ce1_55_L000056
+ long @C_svgcs_69c22ce1_57_L000058
+ long @C_svgct_69c22ce1_59_L000060
+ long @C_svgcu_69c22ce1_61_L000062
+ long @C_svgcv_69c22ce1_63_L000064
+ long @C_svgc10_69c22ce1_65_L000066
+ long @C_svgc11_69c22ce1_67_L000068
+ long @C_svgc12_69c22ce1_69_L000070
 
 ' Catalina Export _sys_nerr
 
@@ -61,7 +61,7 @@ C__sys_nerr ' <symbol:_sys_nerr>
 DAT ' const data segment
 
  alignl_label
-C_soqk12_696ddfe5_69_L000070 ' <symbol:69>
+C_svgc12_69c22ce1_69_L000070 ' <symbol:69>
  byte 82
  byte 101
  byte 115
@@ -81,7 +81,7 @@ C_soqk12_696ddfe5_69_L000070 ' <symbol:69>
  byte 0
 
  alignl_label
-C_soqk11_696ddfe5_67_L000068 ' <symbol:67>
+C_svgc11_69c22ce1_67_L000068 ' <symbol:67>
  byte 77
  byte 97
  byte 116
@@ -98,7 +98,7 @@ C_soqk11_696ddfe5_67_L000068 ' <symbol:67>
  byte 0
 
  alignl_label
-C_soqk10_696ddfe5_65_L000066 ' <symbol:65>
+C_svgc10_69c22ce1_65_L000066 ' <symbol:65>
  byte 66
  byte 114
  byte 111
@@ -113,7 +113,7 @@ C_soqk10_696ddfe5_65_L000066 ' <symbol:65>
  byte 0
 
  alignl_label
-C_soqkv_696ddfe5_63_L000064 ' <symbol:63>
+C_svgcv_69c22ce1_63_L000064 ' <symbol:63>
  byte 84
  byte 111
  byte 111
@@ -131,7 +131,7 @@ C_soqkv_696ddfe5_63_L000064 ' <symbol:63>
  byte 0
 
  alignl_label
-C_soqku_696ddfe5_61_L000062 ' <symbol:61>
+C_svgcu_69c22ce1_61_L000062 ' <symbol:61>
  byte 82
  byte 101
  byte 97
@@ -156,7 +156,7 @@ C_soqku_696ddfe5_61_L000062 ' <symbol:61>
  byte 0
 
  alignl_label
-C_soqkt_696ddfe5_59_L000060 ' <symbol:59>
+C_svgct_69c22ce1_59_L000060 ' <symbol:59>
  byte 73
  byte 108
  byte 108
@@ -172,7 +172,7 @@ C_soqkt_696ddfe5_59_L000060 ' <symbol:59>
  byte 0
 
  alignl_label
-C_soqks_696ddfe5_57_L000058 ' <symbol:57>
+C_svgcs_69c22ce1_57_L000058 ' <symbol:57>
  byte 78
  byte 111
  byte 32
@@ -199,7 +199,7 @@ C_soqks_696ddfe5_57_L000058 ' <symbol:57>
  byte 0
 
  alignl_label
-C_soqkr_696ddfe5_55_L000056 ' <symbol:55>
+C_svgcr_69c22ce1_55_L000056 ' <symbol:55>
  byte 70
  byte 105
  byte 108
@@ -217,7 +217,7 @@ C_soqkr_696ddfe5_55_L000056 ' <symbol:55>
  byte 0
 
  alignl_label
-C_soqkq_696ddfe5_53_L000054 ' <symbol:53>
+C_svgcq_69c22ce1_53_L000054 ' <symbol:53>
  byte 84
  byte 101
  byte 120
@@ -235,7 +235,7 @@ C_soqkq_696ddfe5_53_L000054 ' <symbol:53>
  byte 0
 
  alignl_label
-C_soqkp_696ddfe5_51_L000052 ' <symbol:51>
+C_svgcp_69c22ce1_51_L000052 ' <symbol:51>
  byte 78
  byte 111
  byte 116
@@ -255,7 +255,7 @@ C_soqkp_696ddfe5_51_L000052 ' <symbol:51>
  byte 0
 
  alignl_label
-C_soqko_696ddfe5_49_L000050 ' <symbol:49>
+C_svgco_69c22ce1_49_L000050 ' <symbol:49>
  byte 84
  byte 111
  byte 111
@@ -278,7 +278,7 @@ C_soqko_696ddfe5_49_L000050 ' <symbol:49>
  byte 0
 
  alignl_label
-C_soqkn_696ddfe5_47_L000048 ' <symbol:47>
+C_svgcn_69c22ce1_47_L000048 ' <symbol:47>
  byte 70
  byte 105
  byte 108
@@ -301,7 +301,7 @@ C_soqkn_696ddfe5_47_L000048 ' <symbol:47>
  byte 0
 
  alignl_label
-C_soqkm_696ddfe5_45_L000046 ' <symbol:45>
+C_svgcm_69c22ce1_45_L000046 ' <symbol:45>
  byte 73
  byte 110
  byte 118
@@ -321,7 +321,7 @@ C_soqkm_696ddfe5_45_L000046 ' <symbol:45>
  byte 0
 
  alignl_label
-C_soqkl_696ddfe5_43_L000044 ' <symbol:43>
+C_svgcl_69c22ce1_43_L000044 ' <symbol:43>
  byte 73
  byte 115
  byte 32
@@ -339,7 +339,7 @@ C_soqkl_696ddfe5_43_L000044 ' <symbol:43>
  byte 0
 
  alignl_label
-C_soqkk_696ddfe5_41_L000042 ' <symbol:41>
+C_svgck_69c22ce1_41_L000042 ' <symbol:41>
  byte 78
  byte 111
  byte 116
@@ -358,7 +358,7 @@ C_soqkk_696ddfe5_41_L000042 ' <symbol:41>
  byte 0
 
  alignl_label
-C_soqkj_696ddfe5_39_L000040 ' <symbol:39>
+C_svgcj_69c22ce1_39_L000040 ' <symbol:39>
  byte 78
  byte 111
  byte 32
@@ -376,7 +376,7 @@ C_soqkj_696ddfe5_39_L000040 ' <symbol:39>
  byte 0
 
  alignl_label
-C_soqki_696ddfe5_37_L000038 ' <symbol:37>
+C_svgci_69c22ce1_37_L000038 ' <symbol:37>
  byte 67
  byte 114
  byte 111
@@ -397,7 +397,7 @@ C_soqki_696ddfe5_37_L000038 ' <symbol:37>
  byte 0
 
  alignl_label
-C_soqkh_696ddfe5_35_L000036 ' <symbol:35>
+C_svgch_69c22ce1_35_L000036 ' <symbol:35>
  byte 70
  byte 105
  byte 108
@@ -412,7 +412,7 @@ C_soqkh_696ddfe5_35_L000036 ' <symbol:35>
  byte 0
 
  alignl_label
-C_soqkg_696ddfe5_33_L000034 ' <symbol:33>
+C_svgcg_69c22ce1_33_L000034 ' <symbol:33>
  byte 77
  byte 111
  byte 117
@@ -433,7 +433,7 @@ C_soqkg_696ddfe5_33_L000034 ' <symbol:33>
  byte 0
 
  alignl_label
-C_soqkf_696ddfe5_31_L000032 ' <symbol:31>
+C_svgcf_69c22ce1_31_L000032 ' <symbol:31>
  byte 66
  byte 108
  byte 111
@@ -458,7 +458,7 @@ C_soqkf_696ddfe5_31_L000032 ' <symbol:31>
  byte 0
 
  alignl_label
-C_soqke_696ddfe5_29_L000030 ' <symbol:29>
+C_svgce_69c22ce1_29_L000030 ' <symbol:29>
  byte 66
  byte 97
  byte 100
@@ -473,7 +473,7 @@ C_soqke_696ddfe5_29_L000030 ' <symbol:29>
  byte 0
 
  alignl_label
-C_soqkd_696ddfe5_27_L000028 ' <symbol:27>
+C_svgcd_69c22ce1_27_L000028 ' <symbol:27>
  byte 80
  byte 101
  byte 114
@@ -494,7 +494,7 @@ C_soqkd_696ddfe5_27_L000028 ' <symbol:27>
  byte 0
 
  alignl_label
-C_soqkc_696ddfe5_25_L000026 ' <symbol:25>
+C_svgcc_69c22ce1_25_L000026 ' <symbol:25>
  byte 78
  byte 111
  byte 116
@@ -513,7 +513,7 @@ C_soqkc_696ddfe5_25_L000026 ' <symbol:25>
  byte 0
 
  alignl_label
-C_soqkb_696ddfe5_23_L000024 ' <symbol:23>
+C_svgcb_69c22ce1_23_L000024 ' <symbol:23>
  byte 78
  byte 111
  byte 32
@@ -534,7 +534,7 @@ C_soqkb_696ddfe5_23_L000024 ' <symbol:23>
  byte 0
 
  alignl_label
-C_soqka_696ddfe5_21_L000022 ' <symbol:21>
+C_svgca_69c22ce1_21_L000022 ' <symbol:21>
  byte 78
  byte 111
  byte 32
@@ -549,7 +549,7 @@ C_soqka_696ddfe5_21_L000022 ' <symbol:21>
  byte 0
 
  alignl_label
-C_soqk9_696ddfe5_19_L000020 ' <symbol:19>
+C_svgc9_69c22ce1_19_L000020 ' <symbol:19>
  byte 66
  byte 97
  byte 100
@@ -568,7 +568,7 @@ C_soqk9_696ddfe5_19_L000020 ' <symbol:19>
  byte 0
 
  alignl_label
-C_soqk8_696ddfe5_17_L000018 ' <symbol:17>
+C_svgc8_69c22ce1_17_L000018 ' <symbol:17>
  byte 69
  byte 120
  byte 101
@@ -589,7 +589,7 @@ C_soqk8_696ddfe5_17_L000018 ' <symbol:17>
  byte 0
 
  alignl_label
-C_soqk7_696ddfe5_15_L000016 ' <symbol:15>
+C_svgc7_69c22ce1_15_L000016 ' <symbol:15>
  byte 65
  byte 114
  byte 103
@@ -610,7 +610,7 @@ C_soqk7_696ddfe5_15_L000016 ' <symbol:15>
  byte 0
 
  alignl_label
-C_soqk6_696ddfe5_13_L000014 ' <symbol:13>
+C_svgc6_69c22ce1_13_L000014 ' <symbol:13>
  byte 78
  byte 111
  byte 32
@@ -639,7 +639,7 @@ C_soqk6_696ddfe5_13_L000014 ' <symbol:13>
  byte 0
 
  alignl_label
-C_soqk5_696ddfe5_11_L000012 ' <symbol:11>
+C_svgc5_69c22ce1_11_L000012 ' <symbol:11>
  byte 73
  byte 47
  byte 79
@@ -652,7 +652,7 @@ C_soqk5_696ddfe5_11_L000012 ' <symbol:11>
  byte 0
 
  alignl_label
-C_soqk4_696ddfe5_9_L000010 ' <symbol:9>
+C_svgc4_69c22ce1_9_L000010 ' <symbol:9>
  byte 73
  byte 110
  byte 116
@@ -679,7 +679,7 @@ C_soqk4_696ddfe5_9_L000010 ' <symbol:9>
  byte 0
 
  alignl_label
-C_soqk3_696ddfe5_7_L000008 ' <symbol:7>
+C_svgc3_69c22ce1_7_L000008 ' <symbol:7>
  byte 78
  byte 111
  byte 32
@@ -698,7 +698,7 @@ C_soqk3_696ddfe5_7_L000008 ' <symbol:7>
  byte 0
 
  alignl_label
-C_soqk2_696ddfe5_5_L000006 ' <symbol:5>
+C_svgc2_69c22ce1_5_L000006 ' <symbol:5>
  byte 78
  byte 111
  byte 32
@@ -727,7 +727,7 @@ C_soqk2_696ddfe5_5_L000006 ' <symbol:5>
  byte 0
 
  alignl_label
-C_soqk1_696ddfe5_3_L000004 ' <symbol:3>
+C_svgc1_69c22ce1_3_L000004 ' <symbol:3>
  byte 78
  byte 111
  byte 116
@@ -740,7 +740,7 @@ C_soqk1_696ddfe5_3_L000004 ' <symbol:3>
  byte 0
 
  alignl_label
-C_soqk_696ddfe5_1_L000002 ' <symbol:1>
+C_svgc_69c22ce1_1_L000002 ' <symbol:1>
  byte 69
  byte 114
  byte 114

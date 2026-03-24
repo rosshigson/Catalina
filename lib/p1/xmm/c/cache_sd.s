@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_sins_696dde53_numsect_L000001 ' <symbol:numsect>
+C_sdac_69c22bd9_numsect_L000001 ' <symbol:numsect>
  long 0
 
 ' Catalina Code

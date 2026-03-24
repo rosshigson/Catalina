@@ -235,7 +235,7 @@ C_luaM__free_ ' <symbol:luaM_free_>
 
 
  alignl ' align long
-C_seno2_696dde37_tryagain_L000030 ' <symbol:tryagain>
+C_sv6g2_69c22bc7_tryagain_L000030 ' <symbol:tryagain>
  jmp #NEWF
  jmp #PSHM
  long $fa8000 ' save registers
@@ -258,7 +258,7 @@ C_seno2_696dde37_tryagain_L000030 ' <symbol:tryagain>
  and r20, #15 ' BANDI4 coni
  cmps r20, r22 wz
  jmp #BRNZ
- long @C_seno2_696dde37_tryagain_L000030_32 ' NEI4
+ long @C_sv6g2_69c22bc7_tryagain_L000030_32 ' NEI4
  mov r20, r15
  adds r20, #59 ' ADDP4 coni
  mov RI, r20
@@ -267,7 +267,7 @@ C_seno2_696dde37_tryagain_L000030 ' <symbol:tryagain>
  and r20, cviu_m1 ' zero extend
  cmps r20, r22 wz
  jmp #BRNZ
- long @C_seno2_696dde37_tryagain_L000030_32 ' NEI4
+ long @C_sv6g2_69c22bc7_tryagain_L000030_32 ' NEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -293,12 +293,12 @@ C_seno2_696dde37_tryagain_L000030 ' <symbol:tryagain>
  add SP, #12 ' CALL indirect
  mov r22, r0 ' CVI, CVU or LOAD
  jmp #JMPA
- long @C_seno2_696dde37_tryagain_L000030_31 ' JUMPV addrg
-C_seno2_696dde37_tryagain_L000030_32
+ long @C_sv6g2_69c22bc7_tryagain_L000030_31 ' JUMPV addrg
+C_sv6g2_69c22bc7_tryagain_L000030_32
  jmp #LODL
  long 0
  mov r0, RI ' reg <- con
-C_seno2_696dde37_tryagain_L000030_31
+C_sv6g2_69c22bc7_tryagain_L000030_31
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -351,7 +351,7 @@ C_luaM__realloc_ ' <symbol:luaM_realloc_>
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_seno2_696dde37_tryagain_L000030
+ long @C_sv6g2_69c22bc7_tryagain_L000030
  add SP, #12 ' CALL addrg
  mov r13, r0 ' CVI, CVU or LOAD
  mov r22, r13 ' CVI, CVU or LOAD
@@ -491,7 +491,7 @@ C_luaM__malloc__43
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  jmp #CALA
- long @C_seno2_696dde37_tryagain_L000030
+ long @C_sv6g2_69c22bc7_tryagain_L000030
  add SP, #12 ' CALL addrg
  mov RI, FP
  sub RI, #-(-12)
