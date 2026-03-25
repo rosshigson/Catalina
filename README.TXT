@@ -215,6 +215,9 @@ New Functionality
 
    See the document 'Getting Started with Catapult' for details.
 
+2. Cake has been updated to version 0.12.88. The main improvements are to
+   C23 support - see the Cake documentation for details.
+
 Other Changes
 -------------
 
@@ -257,8 +260,9 @@ Other Changes
    Affected Windows and Linux.
 
 3. Fixed a bug in the Catalina Optimizer that would generate incorrect code
-   for varadic functions that allocated a stack frame larger than 511 bytes.
+   for variadic functions that allocated a stack frame larger than 511 bytes.
    The only demo program known to be affected was the self-hosted version of 
    Catalina itself (i.e. rcc).
+
    Affected Windows and Linux.
    

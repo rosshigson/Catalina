@@ -47,12 +47,14 @@ In addition to the cake sources, the folder contains:
    build_all      - Script to build, configure and install Cake
    hello_99.c     - a simple demo program that requires C99
 
-Note that there may be a Cake binary included in the Catalina distribution,
-but it will need configuration before it will work correctly (this is done
-automatically if Cake is rebuilt from source). The symptoms of Cake not
-being configured correctly are that when executed, it will complain that it
-cannot find the C include files. To configure Cake under Windows, Linux or
-Catalyst, execute the following command in a Catalina command-line window:
+Note that if you rebuild Cake manually, it may need configuration before it 
+will work correctly (this is done automatically for the prebuilt demos, or if 
+Cake is rebuilt from source using the scripts provided). 
+
+The symptoms of Cake not being configured correctly are that when executed, 
+it will complain that it cannot find the standard C include files. To 
+configure Cake under Windows, Linux or Catalyst, execute the following 
+command in a Catalina or Catalyst command-line window:
 
    cake -autoconfig
 
@@ -76,12 +78,29 @@ For example:
    build_all P2_EDGE        <-- build for cross-compiling and self-hosting
 
 The self-hosted version (if built) will be in src\catalina\cake.bin. Note
-that when this is copied to a Catalyst SD Card, the following command must 
-be executed (once) under Catalyst to configure Cake before it can be used:
+that when this is copied manually to a Catalyst SD Card, the following command 
+may need to be executed (once) under Catalyst to configure Cake before it can 
+be used:
 
   cake -autoconfig
 
-The basic usage of the Cake command is as follows:
+Cake is fully integrated into Catalina as an alternative to the existing C 
+preprocessor (i.e. cpp). To enable it, just add -C99 to any Catalina command. 
+Note that other options such as -C89, -C90, -C11, -C17 and -C23 are supported, 
+but -C89 and -C90 simply mean Catalina will use the old C preprocessor (cpp), 
+and all other numbers mean Catalina will use Cake. For example, to compile
+and load the C99 demo program provided (hello_99.c) which will not compiler 
+when using cpp, use a command similar to:
+
+  catalina hello_99.c -lc -C99
+
+Or on the Propeller 2:
+
+  catalina -p2 hello_99.c -lc -C99
+
+If this is how you intend to use Cake, then this is all you need to know.
+However, Cake can also be used stand-alone. The basic usage of the Cake 
+command is as follows:
 
    cake input_files [-I path] [-o output_file] 
 
@@ -121,4 +140,5 @@ as using the following Cake command:
    cake -target=catalina -nullable=disable [ other options ]
 
 However, these defaults can be overridden on the Cake command line if required.
+
 

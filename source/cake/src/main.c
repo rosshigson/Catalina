@@ -22,6 +22,10 @@
 #define assert _ASSERTE
 #endif
 
+#if defined(__CATALYST__)
+#include <prop.h> // for setenv()
+#endif
+
 #ifdef TEST
 #include "unit_test.c"
 #endif
@@ -82,6 +86,17 @@ int main(int argc, char** argv)
 
     struct report report = { 0 };
     int result = compile(argc, (const char**)argv, &report);
+
+#if defined(__CATALYST__)
+   if (result == EXIT_FAILURE) {
+      setenv("_EXIT_CODE", "1", 1);
+   }
+   else {
+      setenv("_EXIT_CODE", "0", 1);
+   }
+   _waitms(1000);
+#endif
+
 
     return result;
 }
