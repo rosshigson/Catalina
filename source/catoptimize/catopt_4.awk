@@ -10,8 +10,10 @@ BEGIN { print "' Catalina Optimized Warning : This is a temporary file used by t
 /^'START PASM.../ {
    getline;
    while (left($0,13) != "'... END PASM") {
+      print;
       getline;
    }
+   print;
    next;
 }
 /^'/ {

@@ -23,8 +23,10 @@
 /^'START PASM.../ {
    getline;
    while (left($0,13) != "'... END PASM") {
+      print;
       getline;
    }
+   print;
    next;
 }
 /^[ \t]+word[ \t]+I16A_MOV[^I]/  {
