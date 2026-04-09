@@ -6,10 +6,11 @@
 # function must:
 #     (not use BC - i.e. not spill arguments to stack)
 # AND (not have local variables)
+# AND (not have local labels)
 # AND (not use the frame pointer)
 # AND (not have its address taken other than by a CALA)
-# AND (   (be a leaf function - i.e. no 'CALA' or 'CALI')
-#      OR (be called once only, or be less than or equal to SIX longs)
+# AND (be a leaf function - i.e. no 'CALA' or 'CALI')
+# AND ((be called once only) OR (be less than or equal to SIX longs))
 #
 BEGIN {
    initialize_phase_2();
@@ -169,6 +170,10 @@ BEGIN {
                getline;
             }
             getline;
+         }
+         else if ((left($0,1) != "'") && (left($0,1) != " ") && (left($0,1) != "\t") && (left($0,1) != "\n")) {
+            /* pretend this function uses BC - actually it contains local labels */
+            uses_BC(f);
          }
          else if ((($1 == "jmp") && (($2 == "#CALI") || ($2 == "#CALA"))) || (($1 == "calld") && (($2 == "PA,#CALI") || ($2 == "PA,#CALA")))) {
             leaf = 0;

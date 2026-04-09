@@ -40,7 +40,7 @@ BEGIN {
          print (" alignw ' align word")
       }
       alignment = 2;
-      if (($2 == "I16B_EXEC")||($2=="I16B_PASM")) {
+      if (($2 == "I16B_EXEC")||($2=="I16B_PASM")||($2=="I16B_CALI")) {
          post_align = 1;
       }
    }

@@ -57,9 +57,10 @@ void test_pasm(int count, int led) {
 }
 
 // use a global variable, which is accessible to the _PASM macro
-static int led = LED;
+static int led;
 
 void main() {
+   led = LED; // we must reference led in C, or the optimizer will eliminate it!
 
    // we can execute the PASM inline, but if
    // we do so we can only access globals ...

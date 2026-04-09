@@ -8,7 +8,7 @@
 
 #include <stdio.h>
 
-#else
+#else // defined(__CATALINA__)
 
 #ifdef _WIN64
     typedef struct _iobuf FILE;
@@ -25,7 +25,7 @@
 
 #endif
 
-#endif
+#endif // defined(__CATALINA__)
 
 /*
   ownership is suported
@@ -106,4 +106,10 @@ float strtof(char const* _String, char** _Opt _EndPtr);
 #endif
 
 #endif
+
+//#ifdef _CRTDBG_MAP_ALLOC
+//#include <stdlib.h>
+//#include <crtdbg.h>
+//#endif
+//#pragma CAKE diagnostic error "C0029"
 

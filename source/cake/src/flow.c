@@ -3344,6 +3344,13 @@ struct flow_object* _Opt  expression_get_flow_object(struct flow_visit_ctx* ctx,
 
             return p_object;
         }
+        else if (p_expression->expression_type == CHECKED_EXPRESSION)
+        {           
+            struct flow_object* _Opt p_object = make_flow_object(ctx, &p_expression->type, NULL, p_expression);
+            if (p_object == NULL) throw;
+            p_object->current.state = FLOW_OBJECT_STATE_NOT_ZERO;
+            return p_object;
+        }
         else if (p_expression->expression_type == EQUALITY_EXPRESSION_EQUAL ||
                  p_expression->expression_type == EQUALITY_EXPRESSION_NOT_EQUAL)
         {
@@ -3591,7 +3598,7 @@ void flow_object_state_print(struct flow_object_state* p_state)
 
         ss_fprintf(&ss, "%d", p_state->alternatives.data[i]->id);
     }
-    printf("%-25s|", ss.c_str);
+    printf("%-25s│", ss.c_str);
     ss_close(&ss);
 }
 
@@ -3601,13 +3608,13 @@ void print_object_line(struct flow_object* p_object, int extra_cols)
 
     if (p_object->parent)
     {
-        ss_fprintf(&ss, "+%d", p_object->parent->id);
+        ss_fprintf(&ss, "↑%d", p_object->parent->id);
 
         //if (p_object->current.alternatives.size > 0)
          //ss_fprintf(&ss, " &");
 
-        printf("|%-2d|", p_object->id);
-        printf("%-20s|", ss.c_str); //here we need compesate the unicode byte len of ↑
+        printf("│%-2d│", p_object->id);
+        printf("%-20s│", ss.c_str); //here we need compesate the unicode byte len of ↑
     }
     else
     {
@@ -3639,8 +3646,8 @@ void print_object_line(struct flow_object* p_object, int extra_cols)
         {
             ss_fprintf(&ss, "&");
         }
-        printf("|%-2d|", p_object->id);
-        printf("%-18s|", ss.c_str);
+        printf("│%-2d│", p_object->id);
+        printf("%-18s│", ss.c_str);
     }
 
     ss_close(&ss);
@@ -3657,7 +3664,7 @@ void print_object_line(struct flow_object* p_object, int extra_cols)
 
     for (int i = 0; i <= extra_cols - cols; i++)
     {
-        printf("%-25s|", " ");
+        printf("%-25s│", " ");
     }
     printf("\n");
 
@@ -4287,7 +4294,7 @@ static void braced_initializer_flow(struct flow_visit_ctx* ctx, struct object* o
         //We are allowing invalid (not final) state
 #if 0
         /*
-           Let's check if the object has been initialized correctly
+           Let´s check if the object has been initialized correctly
         */
 
         bool is_nullable = type_is_opt(&obj->type, ctx->ctx->options.null_checks_enabled);
@@ -4499,19 +4506,19 @@ void print_arena(struct flow_visit_ctx* ctx)
 
     //┐
     printf("\n");
-    printf("+--+------------------+-------------------------");
+    printf("┌──┬──────────────────┬─────────────────────────");
     if (extra_cols > 0)
     {
         for (int i = 0; i < extra_cols; i++)
         {
             if (i < extra_cols - 1)
-                printf("+-------------------------");
+                printf("┬─────────────────────────");
             else
-                printf("+-------------------------");
+                printf("┬─────────────────────────");
         }
     }
 
-    printf("+");
+    printf("┐");
 
     printf("\n");
 
@@ -4520,19 +4527,19 @@ void print_arena(struct flow_visit_ctx* ctx)
         struct flow_object* p = ctx->arena.data[i];
         print_object_line(p, extra_cols);
     }
-    printf("+--+------------------+-------------------------");
+    printf("└──┴──────────────────┴─────────────────────────");
     if (extra_cols > 0)
     {
         for (int i = 0; i < extra_cols; i++)
         {
             if (i < extra_cols - 1)
-                printf("+-------------------------");
+                printf("┴─────────────────────────");
             else
-                printf("+-------------------------");
+                printf("┴─────────────────────────");
         }
     }
 
-    printf("+");
+    printf("┘");
 
     printf("\n");
     printf("\n");
@@ -4689,7 +4696,6 @@ static void flow_visit_if_statement(struct flow_visit_ctx* ctx, struct selection
     arena_remove_state(ctx, before_if_state_number);
     arena_remove_state(ctx, left_true_branch_state_number);
     true_false_set_destroy(&true_false_set);
-
 }
 
 static void flow_visit_block_item(struct flow_visit_ctx* ctx, struct block_item* p_block_item);
@@ -4864,19 +4870,20 @@ static void flow_compare_function_arguments(struct flow_visit_ctx* ctx,
         while (p_current_argument && p_current_parameter_type)
         {
 
-            struct true_false_set a = { 0 };
-
             struct diagnostic temp =
                 ctx->ctx->options.diagnostic_stack.stack[ctx->ctx->options.diagnostic_stack.top_index];
 
-            //we don't report W_FLOW_UNINITIALIZED here because it is checked next.. (TODO parts of expression)
+            //we don´t report W_FLOW_UNINITIALIZED here because it is checked next.. (TODO parts of expression)
             diagnostic_remove(&ctx->ctx->options.diagnostic_stack.stack[ctx->ctx->options.diagnostic_stack.top_index], W_FLOW_UNINITIALIZED);
 
-            flow_visit_expression(ctx, p_current_argument->expression, &a);
+            {
+                struct true_false_set a2 = { 0 };
+                flow_visit_expression(ctx, p_current_argument->expression, &a2);
+                true_false_set_destroy(&a2);                
+            }
 
             ctx->ctx->options.diagnostic_stack.stack[ctx->ctx->options.diagnostic_stack.top_index] = temp;
 
-            true_false_set_destroy(&a);
 
             struct flow_object* _Opt p_argument_object =
                 expression_get_flow_object(ctx, p_current_argument->expression, nullable_enabled);
@@ -5323,10 +5330,11 @@ static void flow_visit_expression(struct flow_visit_ctx* ctx, struct expression*
     {
         assert(p_expression->left != NULL);
 
+        {
         struct true_false_set left_set = { 0 };
         flow_visit_expression(ctx, p_expression->left, &left_set);
-
         true_false_set_destroy(&left_set);
+        }
 
         struct true_false_set_item item;
         item.p_expression = p_expression;
@@ -5340,9 +5348,11 @@ static void flow_visit_expression(struct flow_visit_ctx* ctx, struct expression*
     {
         assert(p_expression->left != NULL);
 
+        {
         struct true_false_set left_set = { 0 };
         flow_visit_expression(ctx, p_expression->left, &left_set);
         true_false_set_destroy(&left_set);
+        }
 
         struct flow_object* _Opt p_object = expression_get_flow_object(ctx, p_expression->left, nullable_enabled);
 
@@ -5606,6 +5616,17 @@ static void flow_visit_expression(struct flow_visit_ctx* ctx, struct expression*
         true_false_set_invert(expr_true_false_set);
         break;
 
+    case CHECKED_EXPRESSION:
+        //state before throw
+        arena_merge_current_state_with_state_number(ctx, ctx->throw_join_state);
+
+        assert(p_expression->left != NULL);
+        flow_visit_expression(ctx, p_expression->left, expr_true_false_set);
+
+        flow_exit_block_visit_defer_list(ctx, &p_expression->defer_list, p_expression->first_token);
+
+        break;
+
     case UNARY_EXPRESSION_SIZEOF_TYPE:
     case UNARY_EXPRESSION_COUNTOF:
     case UNARY_EXPRESSION_INCREMENT:
@@ -5667,19 +5688,22 @@ static void flow_visit_expression(struct flow_visit_ctx* ctx, struct expression*
         assert(p_expression->right != NULL);
         assert(p_expression->left != NULL);
 
+        {
         struct true_false_set left_set = { 0 };
         flow_visit_expression(ctx, p_expression->left, &left_set);
         true_false_set_swap(expr_true_false_set, &left_set);
         true_false_set_destroy(&left_set);
+        }
 
+        {
         struct true_false_set right_set = { 0 };
         flow_visit_expression(ctx, p_expression->right, &right_set);
         true_false_set_destroy(&right_set);
+        }
 
-        //struct object temp_obj1 = { 0 };
         struct flow_object* const _Opt p_right_object = expression_get_flow_object(ctx, p_expression->right, nullable_enabled);
 
-        //struct object temp_obj2 = { 0 };
+        
         struct flow_object* const _Opt p_dest_object = expression_get_flow_object(ctx, p_expression->left, nullable_enabled);
 
         if (p_dest_object == NULL || p_right_object == NULL)
@@ -5687,6 +5711,19 @@ static void flow_visit_expression(struct flow_visit_ctx* ctx, struct expression*
             return;
         }
         //TODO
+
+
+        if (p_expression->expression_type != ASSIGNMENT_EXPRESSION_ASSIGN)
+        {
+            if (flow_object_can_be_uninitialized(p_dest_object))
+            {
+                if (flow_object_is_uninitialized(p_dest_object))
+                    compiler_diagnostic(W_UNINITIALZED, ctx->ctx, p_expression->left->first_token, NULL, "left object is uninitialized");
+                else
+                    compiler_diagnostic(W_UNINITIALZED, ctx->ctx, p_expression->left->first_token, NULL, "left object can be uninitialized");
+            }
+        }
+
 
         struct marker a_marker = {
           .p_token_begin = p_expression->left->first_token,
@@ -6051,8 +6088,7 @@ static void flow_visit_expression(struct flow_visit_ctx* ctx, struct expression*
 
             for (int i = 0; i < left_set.size; i++)
             {
-                struct true_false_set_item item5;
-
+                struct true_false_set_item item5 = {0};
                 item5.p_expression = left_set.data[i].p_expression;
                 item5.true_branch_state |= (left_set.data[i].true_branch_state | left_set.data[i].false_branch_state);
                 item5.false_branch_state |= left_set.data[i].false_branch_state;
@@ -6220,6 +6256,7 @@ static void flow_visit_expression(struct flow_visit_ctx* ctx, struct expression*
 
         true_false_set_set_objects_to_true_branch(ctx, &true_false_set, nullable_enabled);
 
+        {
         struct true_false_set set = { 0 };
         /* Elvis (left == NULL): condition result is the true branch — visit
            condition_expr again so flow sees its state on the true path */
@@ -6228,6 +6265,7 @@ static void flow_visit_expression(struct flow_visit_ctx* ctx, struct expression*
                                : p_expression->condition_expr,
             &set);
         true_false_set_destroy(&set);
+        }
 
 
         const int left_true_branch_state_number = arena_add_copy_of_current_state(ctx, "left-true-branch");
@@ -6236,10 +6274,11 @@ static void flow_visit_expression(struct flow_visit_ctx* ctx, struct expression*
 
         true_false_set_set_objects_to_false_branch(ctx, &true_false_set, nullable_enabled);
 
+        {
         struct true_false_set set2 = { 0 };
         flow_visit_expression(ctx, p_expression->right, &set2);
         true_false_set_destroy(&set2);
-
+        }
         arena_merge_current_state_with_state_number(ctx, left_true_branch_state_number);
 
         arena_restore_current_state_from(ctx, left_true_branch_state_number);
@@ -6367,9 +6406,11 @@ static void flow_visit_while_statement(struct flow_visit_ctx* ctx, struct iterat
     //Second pass warning is ON
     diagnostic_stack_pop(&ctx->ctx->options.diagnostic_stack);
 
+    {
     struct true_false_set true_false_set2 = { 0 };
     flow_visit_expression(ctx, p_iteration_statement->expression1, &true_false_set2);
     true_false_set_destroy(&true_false_set2);
+    }
 
     //visit secondary_block again
     true_false_set_set_objects_to_true_branch(ctx, &true_false_set, nullable_enabled);
@@ -7416,5 +7457,3 @@ void flow_visit_ctx_destroy(_Dtor struct flow_visit_ctx* p)
 {
     flow_objects_destroy(&p->arena);
 }
-
-

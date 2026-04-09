@@ -13,9 +13,13 @@
  * the Propeller 1 - but you can call the function using COMPACT PASM, as    *
  * this program demonstrates.                                                *
  *                                                                           *
- * Compile this program with a command like:                                 *
+ * For a Propeller 1, compile this program with a command like:              *
  *                                                                           *
  *   catalina -lci -C TTY -C COMPACT test_inline_pasm_5.c -C C3              *
+ *                                                                           *
+ * or, for a Propeller 2:                                                    *
+ *                                                                           *
+ *   catalina -p2 -lci -C TTY -C COMPACT test_inline_pasm_5.c -C P2_EDGE     *
  *                                                                           *
  * This program will work "as is" on the HYDRA, C3, P2_EDGE and P2_EVAL.     *
  * On other platforms you may have to adjust the LED constant. The code      *
@@ -54,6 +58,7 @@
 //          non-COMPACT code. 
 //
 void toggle(unsigned long led) {
+   if (led >= 32) led -= 32; // correct pin number when using port B
    PASM(" word I16B_EXEC             "); // start executing "normal" PASM
    PASM(" alignl                     "); // alignl after I16B_EXEC (see note 2)
    PASM(" mov r0,#1                  "); // set up pin mask ...

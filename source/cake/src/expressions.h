@@ -11,6 +11,14 @@
 #include "object.h"
 
 struct parser_ctx;
+struct defer_list_item;
+
+struct defer_list
+{
+    struct defer_list_item* _Opt _Owner head;
+    struct defer_list_item* _Opt tail;
+};
+
 
 enum expression_eval_mode
 {
@@ -113,6 +121,7 @@ enum expression_type
     ASSIGNMENT_EXPRESSION_OR_ASSIGN,
     ASSIGNMENT_EXPRESSION_NOT_ASSIGN,
                        
+    CHECKED_EXPRESSION,
 
     EXPRESSION_EXPRESSION,
 
@@ -228,6 +237,11 @@ struct expression
     struct expression* _Owner _Opt right;
 
     bool is_assignment_expression;
+
+    /*  used to check how contexpr can be used inside function literals */
+    bool lvalue_disabled;       
+
+    struct defer_list defer_list; //arguments
 };
 
 //built-in semantics
@@ -235,6 +249,9 @@ bool expression_is_malloc(const struct expression* p);
 bool expression_is_calloc(const struct expression* p);
 
 void expression_delete(struct expression* _Owner _Opt p);
+
+/*cake extension*/
+struct expression* _Owner _Opt checked_expression(struct parser_ctx* ctx, enum expression_eval_mode eval_mode);
 
 struct expression* _Owner _Opt assignment_expression(struct parser_ctx* ctx, enum expression_eval_mode eval_mode);
 struct expression* _Owner _Opt expression(struct parser_ctx* ctx, enum expression_eval_mode eval_mode);
@@ -260,4 +277,3 @@ void check_assigment(struct parser_ctx* ctx,
     const struct type* left_type,
     const struct expression* right,
     enum assigment_type assigment_type);
-

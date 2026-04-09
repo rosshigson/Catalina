@@ -4,6 +4,16 @@
 # AWK script to enumerate optimization candidates
 #
 BEGIN { print "' Catalina Optimized Warning : This is a temporary file used by the Catalina Optimizer\n' Catalina Optimized Warning : It is not intended to be used and will not run correctly\n" }
+#
+# NOTE: Do not process PASM functions!
+#
+/^'START PASM.../ {
+   getline;
+   while (left($0,13) != "'... END PASM") {
+      getline;
+   }
+   next;
+}
 /^'/ {
    print
    next 

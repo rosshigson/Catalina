@@ -36,6 +36,7 @@
                     final, the one seen by the parser.
 
 */
+#pragma safety enable
 
 #include "ownership.h"
 #include <ctype.h>
@@ -751,6 +752,7 @@ void macro_parameters_delete(struct macro_parameter* _Owner _Opt parameters)
     {
         struct macro_parameter* _Owner _Opt p_next = p->next;
         free((void* _Owner)p->name);
+        token_list_destroy(&p->expanded_list);
         free(p);
         p = p_next;
     }
@@ -2023,7 +2025,7 @@ bool fread2(void* buffer, size_t size, size_t count, FILE * stream, size_t * sz)
 }
 
 
-bool preprocessor_token_ahead_is_identifier(struct token* p, const char* lexeme);
+bool preprocessor_token_ahead_is_identifier(const struct token* _Opt p, const char* lexeme);
 struct token_list group_part(struct preprocessor_ctx* ctx, struct token_list* input_list, bool is_active, int level);
 struct token_list group_opt(struct preprocessor_ctx* ctx, struct token_list* input_list, bool is_active, int level)
 {
@@ -2090,7 +2092,7 @@ bool is_never_final(enum token_type type)
 
 enum token_type is_keyword(const char* text, enum target target);
 
-struct token* _Opt preprocessor_look_ahead_core(struct token* p)
+struct token* _Opt preprocessor_look_ahead_core(const struct token* p)
 {
     struct token* _Opt current = p->next;
 
@@ -2134,9 +2136,11 @@ static bool preprocessor_token_ahead_skiping_blanks_and_new_line(struct token* p
     return current && current->type == t;
 }
 
-bool preprocessor_token_ahead_is_identifier(struct token* p, const char* lexeme)
+bool preprocessor_token_ahead_is_identifier(const struct token* _Opt p, const char* lexeme)
 {
-    assert(p != NULL);
+    if (p == NULL)
+       return false;
+
     struct token* _Opt p_token = preprocessor_look_ahead_core(p);
     if (p_token != NULL && p_token->type == TK_IDENTIFIER)
     {
@@ -2557,7 +2561,12 @@ struct token_list process_identifiers(struct preprocessor_ctx* ctx, _Dtor struct
     }
     catch
     {
+        token_list_destroy(list);
     }
+    
+    assert(list->head == NULL);
+    assert(list->tail == NULL);
+
     return list2;
 }
 
@@ -3267,7 +3276,7 @@ struct token_list def_section(struct preprocessor_ctx* ctx, struct token_list* i
     struct token_list r = { 0 };
     try
     {
-        struct macro* p_macro = NULL;
+        struct macro* _Opt p_macro = NULL;
         struct token_list r2 = def_line(ctx, input_list, is_active, level, &p_macro);
         token_list_append_list(&r, &r2);
 
@@ -3553,7 +3562,7 @@ void print_path(const char* path, bool fullpath)
 
     if (!fullpath)
     {
-        const char* last = NULL;
+        const char* _Opt last = NULL;
         while (*p)
         {
             if (*p == '/' || *p == '\\')
@@ -4751,6 +4760,7 @@ static struct token_list replace_macro_arguments(struct preprocessor_ctx* ctx, s
                         token_list_swap(&p_argument->macro_parameter->expanded_list, &r4);
                         token_list_destroy(&r4);
                         p_argument->macro_parameter->already_expanded = true;
+                        token_list_destroy(&copy_list);
                     }
 
                     //Use the previous expansion
@@ -4797,7 +4807,7 @@ static bool macro_already_expanded(struct macro_expanded* _Opt p_list, const cha
     return false;
 }
 
-static char* _Owner decode_pragma_string(const char* literal)
+static char* _Opt _Owner decode_pragma_string(const char* literal)
 {
     /*
       The string literal is destringized
@@ -4837,7 +4847,7 @@ static char* _Owner decode_pragma_string(const char* literal)
         p++;
     }
 
-    char* _Owner result = (char*)malloc(len + 1);
+    char* _Owner result = malloc(len + 1);
     if (!result) return NULL;
     
     char* out = result;
@@ -6805,10 +6815,10 @@ void show_all(struct token* p_token)
 
 void print_preprocessed_to_file(struct token* p_token, const char* filename)
 {
-    FILE* f = fopen(filename, "r");
+    FILE* _Owner _Opt f = fopen(filename, "r");
     if (f)
     {
-        const char* s = print_preprocessed_to_string(p_token);
+        const char* _Owner _Opt s = print_preprocessed_to_string(p_token);
         if (s)
         {
             fprintf(f, "%s", s);
@@ -6894,29 +6904,29 @@ int test_preprossessor_input_output(const char* input, const char* output)
     return 0;
 }
 
-char* normalize_line_end(char* input)
+char* _Opt normalize_line_end(char* input)
 {
     if (input == NULL)
         return NULL;
-    char* pWrite = input;
+    char* pwrite = input;
     const char* p = input;
     while (*p)
     {
         if (p[0] == '\r' && p[1] == '\n')
         {
-            *pWrite = '\n';
+            *pwrite = '\n';
             p++;
             p++;
-            pWrite++;
+            pwrite++;
         }
         else
         {
-            *pWrite = *p;
+            *pwrite = *p;
             p++;
-            pWrite++;
+            pwrite++;
         }
     }
-    *pWrite = 0;
+    *pwrite = 0;
     return input;
 }
 
@@ -6943,7 +6953,7 @@ bool test_preprocessor_in_out_match(const char* input, const char* output)
         res = false;
     }
 
-    free((void*)result);
+    free((void* _Owner)result);
 
     return true; //OK
 }
@@ -7785,7 +7795,7 @@ int test_predefined_macros()
     struct token_list list2 = preprocessor(&prectx, &list, 0);
 
 
-    const char* result = print_preprocessed_to_string(list2.head);
+    const char* _Opt _Owner result = print_preprocessed_to_string(list2.head);
     if (result == NULL)
     {
         result = strdup("");
@@ -7794,7 +7804,7 @@ int test_predefined_macros()
     {
 
     }
-
+    free(result);
 
     return 0;
 }

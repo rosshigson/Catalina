@@ -14,19 +14,21 @@ if not threads then
 end
 
 -- set up garbage collection ...
+pause = 150
+stepmul = 500
 lua_version = tonumber(string.sub(_VERSION,5,7));
 if lua_version and lua_version < 5.4 then
   -- default mode is incremental, so just set parameters ...
-  collectgarbage("setpause", 150);
-  collectgarbage("setstepmul", 500);
+  collectgarbage("setpause", pause);
+  collectgarbage("setstepmul", stepmul);
 elseif lua_version and lua_version < 5.5 then
   -- incremental mode is optional, so set it with parameters ...
-  collectgarbage("incremental", 150, 500);
+  collectgarbage("incremental", pause, stepmul);
 else
   -- mode and parameter setting now separate in Lua 5.5 ...
   collectgarbage("incremental");
-  collectgarbage("param", "pause", 150);
-  collectgarbage("param", "stepmul", 500);
+  collectgarbage("param", "pause", pause);
+  collectgarbage("param", "stepmul", stepmul);
 end
 
 t = require "threads"

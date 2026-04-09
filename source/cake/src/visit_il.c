@@ -52,10 +52,13 @@ void d_visit_ctx_destroy(_Dtor struct d_visit_ctx* ctx)
     hashmap_destroy(&ctx->structs_map);
     hashmap_destroy(&ctx->file_scope_declarator_map);
     hashmap_destroy(&ctx->instantiated_function_literals);
+    hashmap_destroy(&ctx->vm_expression_to_dim_var);
+
     ss_close(&ctx->block_scope_declarators);
     ss_close(&ctx->add_this_before);
     ss_close(&ctx->add_this_before_external_decl);
     ss_close(&ctx->add_this_after_external_decl);
+    
 }
 
 static struct struct_or_union_specifier* _Opt get_complete_struct_or_union_specifier2(struct struct_or_union_specifier* p_struct_or_union_specifier)
@@ -631,7 +634,55 @@ static void vm_emit_countof_expr(struct d_visit_ctx* ctx,
 static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, struct expression* p_expression)
 {
 
+    if (p_expression->expression_type == CHECKED_EXPRESSION)
+    {
+
+        struct osstream add_this_before = { 0 };
+
+        char name[100] = { 0 };
+        snprintf(name, sizeof name, CAKE_LOCAL_PREFIX "%d",
+                 ctx->cake_local_declarator_number++);
+
+        struct osstream decl = { 0 };
+        print_identation_core(&decl, ctx->indentation);
+        d_print_type(ctx, &decl,
+                     &p_expression->type, name, false);
+        ss_fprintf(&decl, ";\n");
+        ss_fprintf(&ctx->block_scope_declarators, "%s", decl.c_str);
+        ss_close(&decl);
+
+
+        print_identation_core(&add_this_before, ctx->indentation);
+        ss_fprintf(&add_this_before, "%s = ", name);
+        d_visit_expression(ctx, &add_this_before, p_expression->left);
+        ss_fprintf(&add_this_before, ";\n");
+
+        //ctx->break_reference.p_iteration_statement->
+        if (ctx->p_current_try_statement)
+        {
+            print_identation_core(&add_this_before, ctx->indentation);
+            ss_fprintf(&add_this_before, "if (!%s)\n", name);
+            print_identation_core(&add_this_before, ctx->indentation);
+            ss_fprintf(&add_this_before, "{\n");
+
+            ctx->indentation++;
+
+            il_print_defer_list(ctx, &add_this_before, &p_expression->defer_list);
+            print_identation_core(&add_this_before, ctx->indentation);
+            ss_fprintf(&add_this_before, "goto " CAKE_PREFIX_LABEL "%d;\n", ctx->p_current_try_statement->catch_label_id);
+            ctx->indentation--;
+
+            print_identation_core(&add_this_before, ctx->indentation);
+            ss_fprintf(&add_this_before, "}\n");           
+        }
+        ss_fprintf(&ctx->add_this_before, "%s", add_this_before.c_str);
+        ss_fprintf(oss, "%s", name);
+        ss_close(&add_this_before);
+        return;
+    }
+
     if (!ctx->address_of_argument &&
+        p_expression->expression_type != PRIMARY_EXPRESSION_STATEMENT_EXPRESSION &&
         object_has_constant_value(&p_expression->object))
     {
         if (type_is_void_ptr(&p_expression->type) || 
@@ -1222,6 +1273,7 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
         ss_fprintf(oss, "%s", generated_function_literal_name);
         ss_close(&function_literal_nameless);
         ss_close(&function_literal);
+        ss_close(&function_literal_body);
     }
     break;
 
@@ -1581,7 +1633,70 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
 
         if (p_expression->left == NULL)
         {
-            if (expression_has_side_effects(p_expression->condition_expr))
+            const bool cond_is_stmtexpr =
+                p_expression->condition_expr->expression_type ==
+                PRIMARY_EXPRESSION_STATEMENT_EXPRESSION;
+            const bool right_is_stmtexpr =
+                p_expression->right->expression_type ==
+                PRIMARY_EXPRESSION_STATEMENT_EXPRESSION;
+
+            if (cond_is_stmtexpr || right_is_stmtexpr)
+            {
+                struct osstream add_this_before = { 0 };
+
+                char name[100] = { 0 };
+                snprintf(name, sizeof name, CAKE_LOCAL_PREFIX "%d",
+                         ctx->cake_local_declarator_number++);
+
+                struct osstream decl = { 0 };
+                print_identation_core(&decl, ctx->indentation);
+                d_print_type(ctx, &decl,
+                             &p_expression->condition_expr->type, name, false);
+                ss_fprintf(&decl, ";\n");
+                ss_fprintf(&ctx->block_scope_declarators, "%s", decl.c_str);
+                ss_close(&decl);
+
+                if (cond_is_stmtexpr)
+                {
+                    assert(p_expression->condition_expr->compound_statement != NULL);
+                    struct osstream stmtexpr_body = { 0 };
+                    d_visit_compound_statement_2(name, ctx, &stmtexpr_body,
+                                                 p_expression->condition_expr->compound_statement);
+                    ss_fprintf(&ctx->add_this_before, "%s", stmtexpr_body.c_str);
+                    ss_close(&stmtexpr_body);
+                }
+                else
+                {
+                    print_identation_core(&add_this_before, ctx->indentation);
+                    ss_fprintf(&add_this_before, "%s = ", name);
+                    d_visit_expression(ctx, &add_this_before, p_expression->condition_expr);
+                    ss_fprintf(&add_this_before, ";\n");
+                }
+
+                if (right_is_stmtexpr)
+                {
+                    print_identation_core(&add_this_before, ctx->indentation);
+                    ss_fprintf(&add_this_before, "if (!%s)\n", name);
+
+                    assert(p_expression->right->compound_statement != NULL);
+                    struct osstream right_body = { 0 };
+                    d_visit_compound_statement_2(name, ctx, &right_body, p_expression->right->compound_statement);
+                    ss_fprintf(&add_this_before, "%s", right_body.c_str);
+                    ss_close(&right_body);
+                }
+                else
+                {
+                    print_identation_core(&add_this_before, ctx->indentation);
+                    ss_fprintf(&add_this_before, "if (!%s) %s = ", name, name);
+                    d_visit_expression(ctx, &add_this_before, p_expression->right);
+                    ss_fprintf(&add_this_before, ";\n");
+                }
+
+                ss_fprintf(&ctx->add_this_before, "%s", add_this_before.c_str);
+                ss_fprintf(oss, "%s", name);
+                ss_close(&add_this_before);
+            }
+            else if (expression_has_side_effects(p_expression->condition_expr))
             {
                 char name[100] = { 0 };
                 snprintf(name, sizeof name, CAKE_LOCAL_PREFIX "%d",
@@ -1602,6 +1717,7 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
                 ss_fprintf(&ctx->add_this_before, ";\n");
 
                 ss_fprintf(oss, "%s ? %s : ", name, name);
+                d_visit_expression(ctx, oss, p_expression->right);
             }
             else
             {
@@ -1610,6 +1726,7 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
                 ss_fprintf(oss, " ? ");
                 d_visit_expression(ctx, oss, p_expression->condition_expr);
                 ss_fprintf(oss, " : ");
+                d_visit_expression(ctx, oss, p_expression->right);
             }
         }
         else
@@ -1618,8 +1735,9 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
         ss_fprintf(oss, " ? ");
         d_visit_expression(ctx, oss, p_expression->left);
         ss_fprintf(oss, " : ");
+            d_visit_expression(ctx, oss, p_expression->right);
         }
-        d_visit_expression(ctx, oss, p_expression->right);
+
         break;
     }
 }
@@ -2155,6 +2273,8 @@ static void d_visit_selection_statement(struct d_visit_ctx* ctx, struct osstream
 
 static void d_visit_try_statement(struct d_visit_ctx* ctx, struct osstream* oss, struct try_statement* p_try_statement)
 {
+    struct try_statement* p_old_try_statement = ctx->p_current_try_statement;
+    ctx->p_current_try_statement = p_try_statement;
     print_identation(ctx, oss);
 
     if (p_try_statement->first_token->type == TK_KEYWORD_CAKE_TRY)
@@ -2189,6 +2309,9 @@ static void d_visit_try_statement(struct d_visit_ctx* ctx, struct osstream* oss,
     {
         d_visit_secondary_block(ctx, oss, p_try_statement->catch_secondary_block_opt);
     }
+
+    ctx->p_current_try_statement = p_old_try_statement;
+
 }
 
 static void d_visit_primary_block(struct d_visit_ctx* ctx, struct osstream* oss, struct primary_block* p_primary_block)
@@ -2473,9 +2596,10 @@ static int vm_collect_dims(struct d_visit_ctx* ctx,
             if (r)
             {
                 dims[count].expr = (struct expression*)it->p_array_num_elements_expression;
-                dims[count].snap_num = num;
+                dims[count].snap_num = (int)num;
             }
-            else {
+            else
+            {
                 int snap_num = ctx->cake_local_declarator_number++;
                 dims[count].expr = (struct expression*)it->p_array_num_elements_expression;
                 dims[count].snap_num = snap_num;

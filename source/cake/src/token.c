@@ -684,7 +684,7 @@ void print_list(bool color_enabled, struct token_list* list)
     {
         if (current != list->head)
         {
-            printf("`");
+            printf("\xcb\xb0");
             //printf("`");
         }
         print_literal2(current->lexeme);
@@ -882,10 +882,10 @@ void print_tokens_html(struct token* p_token)
     printf("\n</pre>");
 }
 
-void print_position(const char* path, int line, int col, bool visual_studio_ouput_format, bool  color_enabled)
+void print_position(const char* _Opt path, int line, int col, bool visual_studio_ouput_format, bool  color_enabled)
 {
-
-    if (path == NULL) path = "";
+    if (path == NULL) 
+        path = "";
 
     if (visual_studio_ouput_format)
     {
@@ -1120,7 +1120,7 @@ static void hexadecimal_digit_sequence(struct stream* stream)
     /*
      hexadecimal-digit-sequence:
      hexadecimal-digit
-     hexadecimal-digit '_Opt hexadecimal-digit
+     hexadecimal-digit ’_Opt hexadecimal-digit
     */
 
     stream_match(stream);
@@ -1373,8 +1373,13 @@ enum token_type parse_number_core(struct stream* stream, char suffix[4], _Ctor c
             stream_match(stream);
         }
 
-        while (is_octal_digit(stream))
+        while (is_digit(stream))
         {
+            if (!is_octal_digit(stream))
+            {
+                snprintf(errmsg, 100, "invalid octal digit");
+                return TK_NONE;
+            }
             stream_match(stream);
         }
         integer_suffix_opt(stream, suffix);
@@ -1636,12 +1641,12 @@ const unsigned char* _Opt escape_sequences_decode_opt(const unsigned char* p, un
 void token_list_remove_get_test()
 {
     struct token_list list = { 0 };
-    struct token* pnew = calloc(1, sizeof * pnew);
+    struct token* _Opt _Owner pnew = calloc(1, sizeof * pnew);
     token_list_add(&list, pnew);
     struct token_list r = token_list_remove_get(&list, pnew, pnew);
     assert(list.head == NULL);
     assert(list.tail == NULL);
-    r;
+    token_list_destroy(&r);
 }
 
 void token_list_remove_get_test2()

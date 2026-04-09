@@ -1,11 +1,14 @@
+#pragma safety enable
 
-struct X
-{
-    int i;
-    int a[0];
+struct Y {
+    struct X* _Owner _Opt y;
 };
 
-int main()
+void y_destroy([[dtor]] struct X* p)
 {
-    sizeof(struct X);
+    //p->s not released!    
 }
+
+struct X {
+    char* _Owner _Opt s;
+};

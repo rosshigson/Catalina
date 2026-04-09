@@ -126,6 +126,6 @@ unsigned long long target_unsigned_max(enum  target target, enum object_type typ
 #if defined(__CATALINA__)
 #undef CAKE_COMPILE_TIME_SELECTED_TARGET
 #define CAKE_COMPILE_TIME_SELECTED_TARGET TARGET_CATALINA
-#endif
+#endif // defined(__CATALINA__)
 
 

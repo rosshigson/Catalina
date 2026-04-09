@@ -17,6 +17,16 @@
    print
    next
 }
+#
+# NOTE: Do not process instructions in PASM functions!
+#
+/^'START PASM.../ {
+   getline;
+   while (left($0,13) != "'... END PASM") {
+      getline;
+   }
+   next;
+}
 /^[ \t]+word[ \t]+I16A_MOV[^I]/  {
    d1 = left($4, length($4)-6)
    s1 = left($6, length($6)-6)

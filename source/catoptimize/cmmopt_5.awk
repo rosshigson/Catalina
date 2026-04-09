@@ -2,7 +2,7 @@
 # Phase 5
 #
 # AWK script to identify whether the optimizable instructions enumerated
-# in phase 1 are within the range of a relative jump instruction. Note 
+# in phase 4 are within the range of a relative jump instruction. Note 
 # that we cannot use the full jump range (+/- 255) because with compact
 # code it can happen that the destination moves out of range of the 
 # jump address due to other optimizations, or the addition or removal

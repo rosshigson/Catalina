@@ -19,10 +19,11 @@ Optimizer notes (phases and commands used to compile rcc)
 # function must:
 #     (not spill arguments to stack)
 # AND (not have local variables)
+# AND (not have local labels)
 # AND (not use the frame pointer)
 # AND (not have its address taken other than by a CALA)
-# AND (   (be a leaf function - i.e. no 'CALA' or 'CALI')
-#      OR (be called once only, or be less than or equal to SIX longs)
+# AND (be a leaf function - i.e. no 'CALA' or 'CALI')
+# AND ((be called once only) OR (be less than or equal to SIX longs))
 #
 # Phase 3
 #
@@ -35,14 +36,14 @@ Optimizer notes (phases and commands used to compile rcc)
 # Phase 5 (non-CMM)
 #
 # AWK script to identify whether the optimizable instructions enumerated
-# in phase 1 are within the range of an immediate add or sub instruction.
+# in phase 4 are within the range of an immediate add or sub instruction.
 # Note that we allow a "guard" of 32 in case other optimizations which 
 # move the the source and destination end up with them being too far apart.
 #
 # Phase 5 (CMM)
 #
 # AWK script to identify whether the optimizable instructions enumerated
-# in phase 1 are within the range of a relative jump instruction. Note 
+# in phase 4 are within the range of a relative jump instruction. Note 
 # that we cannot use the full jump range (+/- 255) because with compact
 # code it can happen that the destination moves out of range of the 
 # jump address due to other optimizations, or the addition or removal

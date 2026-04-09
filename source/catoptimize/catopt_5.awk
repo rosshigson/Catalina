@@ -2,7 +2,7 @@
 # Phase 5
 #
 # AWK script to identify whether the optimizable instructions enumerated
-# in phase 1 are within the range of an immediate add or sub instruction.
+# in phase 4 are within the range of an immediate add or sub instruction.
 # Note that we allow a "guard" of 16 in case other optimizations which 
 # move the the source and destination end up with them being too far apart.
 #

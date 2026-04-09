@@ -59,7 +59,7 @@ struct label_list_item
 {
     struct token* p_last_usage;
     struct token* p_defined;
-    struct label_list_item* next;
+    struct label_list_item* _Owner _Opt  next;
 };
 
 struct label_list
@@ -431,13 +431,6 @@ struct init_declarator_list init_declarator_list(struct parser_ctx* ctx,
 void init_declarator_list_destroy(_Dtor struct init_declarator_list* p);
 void init_declarator_list_add(struct init_declarator_list* list, struct init_declarator* _Owner p_item);
 
-struct defer_list_item;
-
-struct defer_list
-{
-    struct defer_list_item* _Opt _Owner head;
-    struct defer_list_item* _Opt tail;
-};
 
 
 struct declaration
@@ -665,7 +658,7 @@ struct struct_or_union_specifier
     int visit_moved; /*nivel escopo 0 global*/
 
     /*
-    * This points to the first struct_or_union_specifier that will have it's
+    * This points to the first struct_or_union_specifier that will have it´s
     * complete_struct_or_union_specifier_indirection pointing to the complete
     * struct_or_union_specifier.
     */
@@ -1218,7 +1211,7 @@ struct try_statement
     struct token* last_token;
     struct token* _Opt catch_token_opt; /*catch*/
 
-    struct expression* msvc_except_expression;
+    struct expression* _Owner _Opt msvc_except_expression;
     int catch_label_id;
 };
 

@@ -138,9 +138,9 @@ int main()
     execute_cmd(CC " -D_CRT_SECURE_NO_WARNINGS amalgamator.c " CC_OUTPUT("../amalgamator.exe"));
 #if defined (__CATALINA__)
     execute_cmd(CC " -D__CATALINA__ -D_CRT_SECURE_NO_WARNINGS -I.. embed.c  ../fs.c ../error.c " CC_OUTPUT("../embed.exe"));
-#else
+#else // defined(__CATALINA__)
     execute_cmd(CC " -D_CRT_SECURE_NO_WARNINGS -I.. embed.c  ../fs.c ../error.c " CC_OUTPUT("../embed.exe"));
-#endif
+#endif // defined(__CATALINA__)
 
     echo_chdir("./hoedown");
 
@@ -187,6 +187,7 @@ int main()
     execute_cmd(CC CAKE_SOURCE_FILES
 
 #if defined DEBUG
+               " /D_CRTDBG_MAP_ALLOC " /*leak detector */
                " /Od /MDd /RTC1 "
                " /Dstrdup=_strdup" /*nao linka em release*/
 #else                              // RELEASE
@@ -220,7 +221,11 @@ int main()
 
                " /link "
                " /NODEFAULTLIB "
+#if defined DEBUG
+               " ucrtd.lib vcruntimed.lib msvcrtd.lib "
+#else
                " ucrt.lib vcruntime.lib msvcrt.lib "
+#endif
                " Kernel32.lib User32.lib Advapi32.lib"
                " uuid.lib Ws2_32.lib Rpcrt4.lib Bcrypt.lib "
                " /out:cake.exe ");
@@ -355,7 +360,7 @@ int main()
 
     // #define GCC_ANALIZER  " -fanalyzer "
     execute_cmd("gcc "
-// Enable Catalina customizations
+    // Enable Catalina customizations
            "  -D__CATALINA__ "
            "  -Wall "
            " -Wno-multichar "

@@ -96,6 +96,7 @@ struct dirent* _Opt readdir(DIR* dirp);
 #include <unistd.h>
 #endif // !defined(__CATALYST__)
 #include <sys/stat.h>
+#include <dirent.h>
 #endif
 
 

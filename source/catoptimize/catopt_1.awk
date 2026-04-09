@@ -6,6 +6,15 @@
 # calls with stack space that can be represented as an 'immediate'
 # can presently be 'inlined')
 #
+# NOTE: Do not process calls in PASM functions!
+#
+/^'START PASM.../ {
+   getline;
+   while (left($0,13) != "'... END PASM") {
+      getline;
+   }
+   next;
+}
 /^'/ { }
 /^{/ {
    getline;

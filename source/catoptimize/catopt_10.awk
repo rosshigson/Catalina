@@ -17,6 +17,16 @@
    print
    next
 }
+#
+# NOTE: Do not process instructions in PASM functions!
+#
+/^'START PASM.../ {
+   getline;
+   while (left($0,13) != "'... END PASM") {
+      getline;
+   }
+   next;
+}
 /[ \t]+mov[ \t]+/  {
    line1 = $0
    s = rtrim($2, ",")

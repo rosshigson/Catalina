@@ -208,8 +208,11 @@ void finalize_phase_2_fn( a_VARARG *va ) {
       &&  func[i].leaf 
       &&  ((func[i].call_count == 1) || (func[i].line_count <= lines))) {
 #if DEBUG      
-         printf("function %s inlinable (count=%d, lines=%d)\n", 
-            func[i].name, func[i].call_count,
+         printf("function %s inlinable (needs_BC=%d, leaf=%d, count=%d, lines=%d)\n", 
+            func[i].name, 
+            func[i].needs_BC,
+            func[i].leaf,
+            func[i].call_count,
             func[i].line_count);
 #endif      
          /* only output functions that can be inlined */

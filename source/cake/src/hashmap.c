@@ -334,4 +334,3 @@ int hashmap_set(struct hash_map* map, const char* key, struct hash_item_set* ite
     }
     return result;
 }
-

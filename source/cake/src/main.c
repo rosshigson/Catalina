@@ -24,7 +24,7 @@
 
 #if defined(__CATALYST__)
 #include <prop.h> // for setenv()
-#endif
+#endif // defined(__CATALYST__)
 
 #ifdef TEST
 #include "unit_test.c"
@@ -87,6 +87,13 @@ int main(int argc, char** argv)
     struct report report = { 0 };
     int result = compile(argc, (const char**)argv, &report);
 
+#ifdef _CRTDBG_MAP_ALLOC
+    if (_CrtDumpMemoryLeaks())
+    {
+        printf("******* Memory leaks **********************\n");        
+    }
+#endif
+
 #if defined(__CATALYST__)
    if (result == EXIT_FAILURE) {
       setenv("_EXIT_CODE", "1", 1);
@@ -95,8 +102,7 @@ int main(int argc, char** argv)
       setenv("_EXIT_CODE", "0", 1);
    }
    _waitms(1000);
-#endif
-
+#endif // defined(__CATALYST__)
 
     return result;
 }

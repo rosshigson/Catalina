@@ -28,7 +28,7 @@ int c_getch(void)
     return k_get();
 }
 
-#else
+#else // defined(__CATALYST__)
 
 #ifdef _WIN32
 #include <Windows.h>

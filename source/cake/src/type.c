@@ -393,13 +393,13 @@ struct type type_lvalue_conversion(const struct type* p_type, bool nullchecks_en
     return t;
 }
 
-struct type type_convert_to(const struct type* p_type, enum language_version target)
+struct type type_convert_to(const struct type* p_type, enum standard_version target)
 {
     /*
     * Convert types to previous standard format
     */
 
-    if (target < LANGUAGE_C23 && type_is_nullptr_t(p_type))
+    if (target < STD_C23 && type_is_nullptr_t(p_type))
     {
 
         struct type t = make_void_ptr_type();
@@ -937,6 +937,7 @@ bool type_is_union(const struct type* p_type)
 {
     if (type_get_category(p_type) != TYPE_CATEGORY_ITSELF)
         return false;
+
 
     if (p_type->struct_or_union_specifier == NULL)
         return false;
@@ -3805,4 +3806,3 @@ const struct type* type_get_specifer_part(const struct type* p_type)
     while (p->next) p = p->next;
     return p;
 }
-

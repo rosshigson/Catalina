@@ -6,15 +6,16 @@
 # function must:
 #     (not spill arguments to stack)
 # AND (not have local variables)
+# AND (not have local labels)
 # AND (not use the frame pointer)
 # AND (not have its address taken other than by a CALA)
-# AND (   (be a leaf function - i.e. no 'CALA' or 'CALI')
-#      OR (be called once only, or be less than or equal to SIX longs)
+# AND (be a leaf function - i.e. no 'CALA' or 'CALI')
+# AND ((be called once only) OR (be less than or equal to SIX longs))
 #
 BEGIN {
    initialize_phase_2();
 }
-/^'/ { next }
+#/^'/ { next }
 /^{/ {
    getline
    while (left($0,1) != "}") {
@@ -52,7 +53,12 @@ BEGIN {
             while (left($0,1) != "}") {
                getline;
             }
-            getline; while (left($1,6) == "alignl") { getline }
+            getline; 
+            while (left($1,6) == "alignl") { getline }
+         }
+         else if ((left($0,1) != "'") && (left($0,1) != " ") && (left($0,1) != "\t") && (left($0,1) != "\n")) {
+            /* pretend this function uses BC - actually it contains local labels */
+            uses_BC(f);
          }
          if ((left($0,19) == " word I16A_SUB + SP") || (left($0,20) == " word I16A_SUBI + SP")) {
             /* pretend this function uses BC - actually it has local vars */
@@ -126,7 +132,7 @@ BEGIN {
             if ($4 != "$180<<S16B") {
                /* POPM with implicit return - replace with a simple POPM */
                /* printf("%s replacing POPM with implicit return with simple POPM\n", f) */
-               add_line_to_function(f, "word I16B_POPM + $180<<S16B");
+               add_line_to_function(f, " word I16B_POPM + $180<<S16B");
                /* strip the implicit RETF or RETN - we simulate it later */
                done = 1;
             }
@@ -137,7 +143,8 @@ BEGIN {
          }
          else if (left($0,15) == " word I16B_LODL") {
             add_line_to_function(f, $0);
-            getline; while (left($1,6) == "alignl") { getline }
+            getline; 
+            while (left($1,6) == "alignl") { getline }
          }
          if (!done) {
             if (left($0,15) == " jmp #FC_RETURN") {
@@ -148,7 +155,8 @@ BEGIN {
                add_line_to_function(f, $0);
             }
          }
-         getline; while (left($1,6) == "alignl") { getline }
+         getline; 
+         while (left($1,6) == "alignl") { getline }
       }
       set_leaf(f, leaf);
       f = "no function";
