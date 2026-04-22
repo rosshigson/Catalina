@@ -60,6 +60,9 @@
  *
  * version 8.8.4 - use "version.h"
  *
+ * version 8.8.8 - Do not optimize inline PASM.
+ *
+ *                 Add alignl after I16B_CALI.
  */
 
 #include <ctype.h>

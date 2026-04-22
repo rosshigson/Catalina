@@ -266,6 +266,7 @@ enum diagnostic_id {
     C_ERROR_REQUIRES_COMPILE_TIME_VALUE = 1860,
     C_ERROR_OUTER_SCOPE = 1870,
     C_ERROR_VARIABLY_MODIFIED_MEMBER = 1880,
+    C_ERROR_LOCAL_FUNCTION_STORAGE = 1890,
 };
 
 
@@ -373,6 +374,11 @@ struct options
     */
     bool disable_assert;
 
+    /*
+      -line-directives
+    */
+
+    bool line_directives;
     
     /*
        -flow-analysis
@@ -462,12 +468,6 @@ struct options
 
     bool do_static_debug;
     int static_debug_lines;
-
-    /*
-      -S
-      output x86-64 assembly instead of C89
-    */
-    bool asm_output;
 
     /*
       -o filename

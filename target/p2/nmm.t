@@ -51,8 +51,7 @@
 '                     (i.e. -C FAST_SAVE_RESTORE) for single kernel programs,
 '                     but for multi-kernel programs it must be defined both
 '                     here and in the dynamic kernel, and then recompile the 
-'                     library. This option can't be used with NO_INTERRUPTS, 
-'                     which uses SKIPF.
+'                     library. 
 '
 '#ifndef FAST_SAVE_RESTORE
 '#define FAST_SAVE_RESTORE

@@ -9,11 +9,11 @@
 #include <stdint.h>
 #include "visit_il.h"
 #include "expressions.h"
+#include <ctype.h>
 
-/*
-*    Prefix used to create local variables
-*/
-#define CAKE_LOCAL_PREFIX  "__v" 
+#define LITERAL_FUNCTION_BASE_NAME "_fn"
+#define COMPOUND_LITERAL_BASE_NAME "_obj"
+#define IDENTATION_STR "    "
 
 /*
 *  Prefix used to create file scope declarators
@@ -27,6 +27,19 @@
 
 
 
+static void emit_line_directive(struct d_visit_ctx* ctx,
+                                struct osstream* oss,
+                                const struct token* tk)
+{
+    if (!ctx->options.line_directives)
+        return;
+
+    if (tk == NULL)
+        return;
+
+        ss_fprintf(oss, "#line %d \"%s\"\n", tk->line, tk->token_origin->lexeme);
+    }
+    
 struct vm_dim_snapshot
 {
     struct expression* expr;
@@ -46,6 +59,10 @@ static void print_initializer(struct d_visit_ctx* ctx,
     struct init_declarator* p_init_declarator,
     bool bstatic);
 
+static bool is_all_zero(const struct object* object);
+static void emmit_clear_declarator(struct d_visit_ctx* ctx, struct osstream* ss, const char* name, struct type* type);
+
+
 void d_visit_ctx_destroy(_Dtor struct d_visit_ctx* ctx)
 {
     hashmap_destroy(&ctx->tag_names);
@@ -59,6 +76,120 @@ void d_visit_ctx_destroy(_Dtor struct d_visit_ctx* ctx)
     ss_close(&ctx->add_this_before_external_decl);
     ss_close(&ctx->add_this_after_external_decl);
     
+}
+static void generate_name(int n, int sz, char* out)
+{
+    int letter = n % 26;
+    int suffix = n / 26;
+
+    if (suffix == 0)
+    {
+        // just a single letter
+        out[0] = '_';
+        out[1] = '_';
+        out[2] = 'a' + (char)letter;
+        out[3] = '\0';
+    }
+    else
+    {
+        // letter + number
+        snprintf(out, sz, "__%c%d", 'a' + letter, suffix);
+    }
+}
+
+int generate_file_scope_new_name(struct d_visit_ctx* ctx, const char* current_name, int sz, char new_name[])
+{
+    struct map_entry* it =
+        hashmap_find(&ctx->ast.file_scope.variables, current_name);
+    while (it)
+    {
+        if (strcmp(current_name, it->key) == 0)
+        {
+            for (int i = 2; i < 1000000; )
+            {
+                snprintf(new_name, sz, "%s%d", current_name, i);
+                struct map_entry* it2 = hashmap_find(&ctx->ast.file_scope.variables, new_name);
+                if (it2 == NULL)
+                {
+                    struct hash_item_set item = { 0 };
+                    hashmap_set(&ctx->ast.file_scope.variables, new_name, &item);
+                    hash_item_set_destroy(&item);
+                    return 1;
+                }
+
+                if (i > 10000)
+                    i += 1000;
+                else if (i > 1000)
+                    i += 100;
+                else if (i > 100)
+                    i += 10;
+                else
+                    i++;
+            }
+            assert(false);
+        }
+        it = it->next;
+    }
+
+    struct hash_item_set item = { 0 };
+    hashmap_set(&ctx->ast.file_scope.variables, current_name, &item);
+    hash_item_set_destroy(&item);
+
+    snprintf(new_name, sz, "%s", current_name);
+
+    return 1;
+}
+
+int rename_file_scope_declarator_if_necessary(struct d_visit_ctx* ctx, struct init_declarator* p_init_declarator)
+{
+    char new_name[200];
+    const char* current_name = p_init_declarator->p_declarator->name_opt->lexeme;
+    struct map_entry* it =
+        hashmap_find(&ctx->ast.file_scope.variables, current_name);
+    while (it)
+    {
+        if (strcmp(current_name, it->key) == 0)
+        {
+            for (int i = 2; i < 1000000; )
+            {
+                snprintf(new_name, sizeof(new_name), "%s%d", current_name, i);
+                struct map_entry* it2 = hashmap_find(&ctx->ast.file_scope.variables, new_name);
+                if (it2 == NULL)
+                {
+                    struct hash_item_set item = { 0 };
+                    item.p_init_declarator = init_declarator_add_ref(p_init_declarator);
+                    hashmap_set(&ctx->ast.file_scope.variables, new_name, &item);
+                    hash_item_set_destroy(&item);
+
+                    p_init_declarator->p_declarator->declarator_renamed = true;
+                    free(p_init_declarator->p_declarator->name_opt->lexeme);
+                    p_init_declarator->p_declarator->name_opt->lexeme = strdup(new_name);
+                    return 1;
+                }
+
+                if (i > 10000)
+                    i += 1000;
+                else if (i > 1000)
+                    i += 100;
+                else if (i > 100)
+                    i += 10;
+                else
+                    i++;
+            }
+            assert(false);
+        }
+        it = it->next;
+    }
+
+
+    struct hash_item_set item = { 0 };
+    item.p_init_declarator = init_declarator_add_ref(p_init_declarator);
+    hashmap_set(&ctx->ast.file_scope.variables, current_name, &item);
+    hash_item_set_destroy(&item);
+
+    p_init_declarator->p_declarator->declarator_renamed = true;
+
+    return 1;
 }
 
 static struct struct_or_union_specifier* _Opt get_complete_struct_or_union_specifier2(struct struct_or_union_specifier* p_struct_or_union_specifier)
@@ -179,14 +310,14 @@ static void d_visit_function_body(struct d_visit_ctx* ctx,
     struct osstream* oss,
     const struct declarator* function_definition);
 
-static void object_print_constant_initialization(struct d_visit_ctx* ctx, struct osstream* ss, const struct object* object, bool* first);
+static void object_print_initialization_list(struct d_visit_ctx* ctx, struct osstream* ss, const struct object* object, bool* first);
 static void d_visit_secondary_block(struct d_visit_ctx* ctx, struct osstream* oss, struct secondary_block* p_secondary_block);
 static void d_visit_init_declarator(struct d_visit_ctx* ctx, struct osstream* oss, struct init_declarator* p_init_declarator, enum function_specifier_flags function_specifier_flags, enum storage_class_specifier_flags storage_class_specifier_flags);
 static void d_visit_init_declarator_list(struct d_visit_ctx* ctx, struct osstream* oss, struct init_declarator_list* p_init_declarator_list, enum function_specifier_flags function_specifier_flags, enum storage_class_specifier_flags storage_class_specifier_flags);
 static void d_visit_compound_statement(struct d_visit_ctx* ctx, struct osstream* oss, struct compound_statement* p_compound_statement);
 static void d_visit_statement(struct d_visit_ctx* ctx, struct osstream* oss, struct statement* p_statement);
 static void d_visit_unlabeled_statement(struct d_visit_ctx* ctx, struct osstream* oss, struct unlabeled_statement* p_unlabeled_statement);
-static void object_print_non_constant_initialization(struct d_visit_ctx* ctx, struct osstream* ss, const struct object* object,
+static void assign_each_member_from_initialization(struct d_visit_ctx* ctx, struct osstream* ss, const struct object* object,
     const char* declarator_name,
     bool all,
     bool initialize_objects_that_does_not_have_initializer);
@@ -203,7 +334,7 @@ static void print_identation_core(struct osstream* ss, int indentation)
 {
     for (int i = 0; i < indentation; i++)
     {
-        ss_fprintf(ss, "    ");
+        ss_fprintf(ss, IDENTATION_STR);
     }
 }
 
@@ -211,7 +342,7 @@ static void print_identation(const struct d_visit_ctx* ctx, struct osstream* oss
 {
     for (int i = 0; i < ctx->indentation; i++)
     {
-        ss_fprintf(oss, "    ");
+        ss_fprintf(oss, IDENTATION_STR);
     }
 }
 
@@ -236,7 +367,7 @@ static int il_defer_count(struct defer_list* p_defer_list)
     return count;
 }
 
-static void il_print_defer_list(struct d_visit_ctx* ctx, struct osstream* oss, struct defer_list* p_defer_list)
+static void il_print_defer_list(struct d_visit_ctx* ctx, struct osstream* oss, struct defer_list* p_defer_list, struct token* position)
 {
     struct defer_list_item* _Opt p_item = p_defer_list->head;
     while (p_item)
@@ -244,6 +375,8 @@ static void il_print_defer_list(struct d_visit_ctx* ctx, struct osstream* oss, s
         il_print_defer_new(ctx, oss, p_item);
         p_item = p_item->next;
     }
+
+    emit_line_directive(ctx, oss, position);
 }
 
 
@@ -540,7 +673,9 @@ static enum sizeof_result vm_emit_sizeof_expr_core(struct d_visit_ctx* ctx,
                 if (oss->size > 0)
                     ss_fprintf(oss, " * ");
 
-                ss_fprintf(oss, CAKE_LOCAL_PREFIX "%d", num);
+                char name[100] = { 0 };
+                generate_name(num, sizeof name, name);
+                ss_fprintf(oss, "%s", name);
             }
 
             arraysize = 1;
@@ -620,7 +755,9 @@ static void vm_emit_countof_expr(struct d_visit_ctx* ctx,
         size_t num = 0;
         if (vm_find_snap_num(ctx, p_type->p_array_num_elements_expression, &num))
         {
-            ss_fprintf(oss, CAKE_LOCAL_PREFIX "%d", num);
+            char name[100] = { 0 };
+            generate_name(num, sizeof name, name);
+            ss_fprintf(oss, "%s", name);
         }
     }
     else if (p_type->array_num_elements > 0)
@@ -640,8 +777,9 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
         struct osstream add_this_before = { 0 };
 
         char name[100] = { 0 };
-        snprintf(name, sizeof name, CAKE_LOCAL_PREFIX "%d",
-                 ctx->cake_local_declarator_number++);
+        generate_name(ctx->cake_local_declarator_number++, sizeof name, name);
+
+
 
         struct osstream decl = { 0 };
         print_identation_core(&decl, ctx->indentation);
@@ -667,7 +805,7 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
 
             ctx->indentation++;
 
-            il_print_defer_list(ctx, &add_this_before, &p_expression->defer_list);
+            il_print_defer_list(ctx, &add_this_before, &p_expression->defer_list, p_expression->last_token);
             print_identation_core(&add_this_before, ctx->indentation);
             ss_fprintf(&add_this_before, "goto " CAKE_PREFIX_LABEL "%d;\n", ctx->p_current_try_statement->catch_label_id);
             ctx->indentation--;
@@ -791,7 +929,24 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
         if (p_expression->declarator->name_opt)
             declarator_name = p_expression->declarator->name_opt->lexeme;
 
-        const bool is_function = type_is_function(&p_expression->declarator->type);
+        bool is_function = type_is_function(&p_expression->declarator->type);
+
+        if (is_function &&
+            (p_expression->declarator->type.storage_class_specifier_flags & STORAGE_SPECIFIER_PARAMETER))
+        {
+
+            /*
+              Function parameters are pointers.
+              Example:
+
+              void f(void callback(void* data)) {
+                callback(0);
+              }
+
+            */
+            is_function = false;
+        }
+
         bool is_local_function_definition = false;
         if (is_function)
         {
@@ -853,6 +1008,7 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
                     struct osstream local4 = { 0 };
                     d_print_type(ctx, &local4, &p_function_defined->type, declarator_name, false);
 
+                    emit_line_directive(ctx, &local3, p_function_defined->first_token_opt);
                     ss_fprintf(&local3, "static %s\n", local4.c_str);
 
                     d_visit_function_body(ctx, &local3, p_function_defined);
@@ -957,7 +1113,7 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
     case PRIMARY_EXPRESSION_STATEMENT_EXPRESSION:
     {
         char name[100] = { 0 };
-        snprintf(name, sizeof(name), CAKE_LOCAL_PREFIX "%d", ctx->cake_local_declarator_number++);
+        generate_name(ctx->cake_local_declarator_number++, sizeof name, name);
 
         struct osstream local = { 0 };
 
@@ -1145,7 +1301,9 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
                         size_t num;
                         if (vm_find_snap_num(ctx, p_type->p_array_num_elements_expression, &num))
                 {
-                            ss_fprintf(&offset_flat, "* " CAKE_LOCAL_PREFIX "%d", num);
+                            char name[100] = { 0 };
+                            generate_name(num, sizeof name, name);
+                            ss_fprintf(&offset_flat, "* %s", name);
                         }
                         }
                     p_type = p_type->next;
@@ -1224,7 +1382,7 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
     {
         assert(p_expression->type_name != NULL);
 
-        char generated_function_literal_name[100] = { 0 };
+        char new_name[200] = { 0 };
 
         print_identation_core(&ctx->add_this_before, ctx->indentation);
 
@@ -1252,25 +1410,24 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
         struct map_entry* _Opt l = hashmap_find(&ctx->instantiated_function_literals, function_literal.c_str);
         if (l != NULL)
         {
-            snprintf(generated_function_literal_name, sizeof(generated_function_literal_name), CAKE_FILE_SCOPE_PREFIX "%zu_f", l->data.number);
+            snprintf(new_name, sizeof(new_name), "%s", l->data.p_text);
         }
         else
         {
-            unsigned int current_cake_declarator_number = ctx->cake_file_scope_declarator_number++;
+            generate_file_scope_new_name(ctx, LITERAL_FUNCTION_BASE_NAME, _Countof(new_name), new_name);
             struct hash_item_set i = { 0 };
-            i.number = current_cake_declarator_number;
+            i.text = strdup(new_name);
             hashmap_set(&ctx->instantiated_function_literals, function_literal.c_str, &i);
             hash_item_set_destroy(&i);
-
-            snprintf(generated_function_literal_name, sizeof(generated_function_literal_name), CAKE_FILE_SCOPE_PREFIX "%d_f", current_cake_declarator_number);
-
             struct osstream lambda_sig = { 0 };
-            d_print_type(ctx, &lambda_sig, &p_expression->type, generated_function_literal_name, false);
+            d_print_type(ctx, &lambda_sig, &p_expression->type, new_name, false);
+
+            emit_line_directive(ctx, &ctx->add_this_before_external_decl, p_expression->first_token);
             ss_fprintf(&ctx->add_this_before_external_decl, "static %s\n%s", lambda_sig.c_str, function_literal_body.c_str);
             ss_close(&lambda_sig);
         }
 
-        ss_fprintf(oss, "%s", generated_function_literal_name);
+        ss_fprintf(oss, "%s", new_name);
         ss_close(&function_literal_nameless);
         ss_close(&function_literal);
         ss_close(&function_literal_body);
@@ -1281,20 +1438,19 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
     case POSTFIX_EXPRESSION_COMPOUND_LITERAL:
     {
         char name[100] = { 0 };
-        snprintf(name, sizeof(name), CAKE_LOCAL_PREFIX "%d", ctx->cake_local_declarator_number++);
 
-        const bool is_static =
-            p_expression->type.storage_class_specifier_flags & STORAGE_SPECIFIER_STATIC;
+        const bool is_static = (p_expression->p_storage_class_specifiers != NULL);
 
         if (is_static || !ctx->is_local)
         {
+            generate_file_scope_new_name(ctx, COMPOUND_LITERAL_BASE_NAME, sizeof(name), name);
+
             struct osstream local = { 0 };
-            print_identation_core(&local, ctx->indentation);
             ss_fprintf(&local, "static ");
             d_print_type(ctx, &local, &p_expression->type, name, false);
             bool first = true;
             ss_fprintf(&local, " = {");
-            object_print_constant_initialization(ctx, &local, &p_expression->object, &first);
+            object_print_initialization_list(ctx, &local, &p_expression->object, &first);
             ss_fprintf(&local, "};\n");
             ss_fprintf(&ctx->add_this_before_external_decl, "%s", local.c_str);
             ss_close(&local);
@@ -1302,6 +1458,8 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
         }
         else
         {
+            generate_name(ctx->cake_local_declarator_number++, sizeof name, name);
+
             /* block-scope compound literal — automatic storage duration */
             struct osstream local = { 0 };
             ss_swap(&ctx->block_scope_declarators, &local);
@@ -1312,8 +1470,14 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
 
             ss_clear(&local);
 
-            object_print_non_constant_initialization(ctx, &local, &p_expression->object, name, true, true);
-
+            if (is_all_zero(&p_expression->object))
+            {
+                emmit_clear_declarator(ctx, &local, name, &p_expression->type);
+            }
+            else
+            {
+                assign_each_member_from_initialization(ctx, &local, &p_expression->object, name, true, true);
+            }
             assert(local.c_str);
             ss_fprintf(&ctx->add_this_before, "%s", local.c_str);
             ss_close(&local);
@@ -1645,8 +1809,7 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
                 struct osstream add_this_before = { 0 };
 
                 char name[100] = { 0 };
-                snprintf(name, sizeof name, CAKE_LOCAL_PREFIX "%d",
-                         ctx->cake_local_declarator_number++);
+                generate_name(ctx->cake_local_declarator_number++, sizeof name, name);
 
                 struct osstream decl = { 0 };
                 print_identation_core(&decl, ctx->indentation);
@@ -1699,8 +1862,7 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
             else if (expression_has_side_effects(p_expression->condition_expr))
             {
                 char name[100] = { 0 };
-                snprintf(name, sizeof name, CAKE_LOCAL_PREFIX "%d",
-                         ctx->cake_local_declarator_number++);
+                generate_name(ctx->cake_local_declarator_number++, sizeof name, name);
 
                 struct osstream decl = { 0 };
                 print_identation_core(&decl, ctx->indentation);
@@ -1772,7 +1934,7 @@ static void d_visit_jump_statement(struct d_visit_ctx* ctx, struct osstream* oss
 {
     if (p_jump_statement->first_token->type == TK_KEYWORD_CAKE_THROW)
     {
-        il_print_defer_list(ctx, oss, &p_jump_statement->defer_list);
+        il_print_defer_list(ctx, oss, &p_jump_statement->defer_list, p_jump_statement->last_token);
         print_identation(ctx, oss);
         ss_fprintf(oss, "goto " CAKE_PREFIX_LABEL "%d; /* throw */\n", p_jump_statement->label_id);
     }
@@ -1789,7 +1951,7 @@ static void d_visit_jump_statement(struct d_visit_ctx* ctx, struct osstream* oss
 
         if (constant_expression_or_void)
         {
-            il_print_defer_list(ctx, oss, &p_jump_statement->defer_list);
+            il_print_defer_list(ctx, oss, &p_jump_statement->defer_list, p_jump_statement->last_token);
             print_identation(ctx, oss);
             ss_fprintf(oss, "return");
 
@@ -1819,7 +1981,7 @@ static void d_visit_jump_statement(struct d_visit_ctx* ctx, struct osstream* oss
             // }
 
             char name[100] = { 0 };
-            snprintf(name, sizeof name, CAKE_LOCAL_PREFIX "%d", ctx->cake_local_declarator_number++);
+            generate_name(ctx->cake_local_declarator_number++, sizeof name, name);
 
             {
                 struct osstream local = { 0 };
@@ -1845,7 +2007,7 @@ static void d_visit_jump_statement(struct d_visit_ctx* ctx, struct osstream* oss
             }
             ss_fprintf(oss, ";\n");
 
-            il_print_defer_list(ctx, oss, &p_jump_statement->defer_list);
+            il_print_defer_list(ctx, oss, &p_jump_statement->defer_list, p_jump_statement->last_token);
             print_identation(ctx, oss);
 
             ss_fprintf(oss, "return %s;\n", name);
@@ -1856,7 +2018,7 @@ static void d_visit_jump_statement(struct d_visit_ctx* ctx, struct osstream* oss
     else if (p_jump_statement->first_token->type == TK_KEYWORD_BREAK ||
         p_jump_statement->first_token->type == TK_KEYWORD_CONTINUE)
     {
-        il_print_defer_list(ctx, oss, &p_jump_statement->defer_list);
+        il_print_defer_list(ctx, oss, &p_jump_statement->defer_list, p_jump_statement->last_token);
         print_identation(ctx, oss);
 
         if (p_jump_statement->first_token->type == TK_KEYWORD_BREAK)
@@ -1877,7 +2039,7 @@ static void d_visit_jump_statement(struct d_visit_ctx* ctx, struct osstream* oss
     }
     else if (p_jump_statement->first_token->type == TK_KEYWORD_GOTO)
     {
-        il_print_defer_list(ctx, oss, &p_jump_statement->defer_list);
+        il_print_defer_list(ctx, oss, &p_jump_statement->defer_list, p_jump_statement->last_token);
         print_identation(ctx, oss);
         ss_fprintf(oss, "goto %s;\n", p_jump_statement->label->lexeme);
     }
@@ -1893,6 +2055,7 @@ static void d_visit_labeled_statement(struct d_visit_ctx* ctx, struct osstream* 
 {
     assert(p_labeled_statement->label != NULL);
 
+    emit_line_directive(ctx, oss, p_labeled_statement->label->p_first_token);
     d_visit_label(ctx, oss, p_labeled_statement->label);
 
 
@@ -1952,6 +2115,7 @@ static void d_visit_iteration_statement(struct d_visit_ctx* ctx, struct osstream
 
         d_visit_secondary_block(ctx, oss, p_iteration_statement->secondary_block);
 
+        emit_line_directive(ctx, oss, p_iteration_statement->expression1->first_token);
         print_identation(ctx, oss);
         ss_fprintf(oss, "while (");
 
@@ -1972,6 +2136,7 @@ static void d_visit_iteration_statement(struct d_visit_ctx* ctx, struct osstream
             ss_swap(&block_scope_declarators, &ctx->block_scope_declarators);
 
             struct osstream local = { 0 };
+            emit_line_directive(ctx, &local, p_iteration_statement->declaration->first_token);
             d_visit_declaration(ctx, &local, p_iteration_statement->declaration);
 
             if (ctx->block_scope_declarators.c_str)
@@ -1985,7 +2150,7 @@ static void d_visit_iteration_statement(struct d_visit_ctx* ctx, struct osstream
 
             ss_swap(&block_scope_declarators, &ctx->block_scope_declarators);
 
-
+            emit_line_directive(ctx, oss, p_iteration_statement->first_token);
             print_identation(ctx, oss);
             ss_fprintf(oss, "for (");
             ss_close(&block_scope_declarators);
@@ -1994,11 +2159,13 @@ static void d_visit_iteration_statement(struct d_visit_ctx* ctx, struct osstream
         }
         else if (p_iteration_statement->expression0)
         {
+            emit_line_directive(ctx, oss, p_iteration_statement->first_token);
             ss_fprintf(oss, "for (");
             d_visit_expression(ctx, oss, p_iteration_statement->expression0);
         }
         else
         {
+            emit_line_directive(ctx, oss, p_iteration_statement->first_token);
             ss_fprintf(oss, "for (");
         }
 
@@ -2014,7 +2181,32 @@ static void d_visit_iteration_statement(struct d_visit_ctx* ctx, struct osstream
 
         ss_fprintf(oss, ")\n");
 
+        bool is_compound_statement = false;
+        if (p_iteration_statement->secondary_block &&
+            p_iteration_statement->secondary_block->statement &&
+            p_iteration_statement->secondary_block->statement->unlabeled_statement &&
+            p_iteration_statement->secondary_block->statement->unlabeled_statement->primary_block &&
+            p_iteration_statement->secondary_block->statement->unlabeled_statement->primary_block->compound_statement)
+        {
+            is_compound_statement = true;
+        }
+
+        if (!is_compound_statement)
+        {
+            print_identation(ctx, oss);
+            ctx->indentation++;
+            ss_fprintf(oss, "{\n");
+        }
+
+        emit_line_directive(ctx, oss, p_iteration_statement->secondary_block->first_token);
         d_visit_secondary_block(ctx, oss, p_iteration_statement->secondary_block);
+
+        if (!is_compound_statement)
+        {
+            ctx->indentation--;
+            print_identation(ctx, oss);
+            ss_fprintf(oss, "}\n");
+        }
 
         if (p_iteration_statement->declaration)
         {
@@ -2030,7 +2222,10 @@ static void d_visit_iteration_statement(struct d_visit_ctx* ctx, struct osstream
 
 static void d_visit_simple_declaration(struct d_visit_ctx* ctx, struct osstream* oss, struct simple_declaration* p_simple_declaration)
 {
-    d_visit_init_declarator_list(ctx, oss, &p_simple_declaration->init_declarator_list, false, false);
+    enum storage_class_specifier_flags storage_class_specifier_flags =
+        p_simple_declaration->p_declaration_specifiers->storage_class_specifier_flags;
+
+    d_visit_init_declarator_list(ctx, oss, &p_simple_declaration->init_declarator_list, 0, storage_class_specifier_flags);
 }
 
 static void d_visit_init_statement(struct d_visit_ctx* ctx, struct osstream* oss, struct init_statement* p_init_statement)
@@ -2044,7 +2239,12 @@ static void d_visit_init_statement(struct d_visit_ctx* ctx, struct osstream* oss
 static void d_visit_condition(struct d_visit_ctx* ctx, struct osstream* oss, struct condition* p_condition)
 {
     if (p_condition->p_init_declarator)
-        d_visit_init_declarator(ctx, oss, p_condition->p_init_declarator, false, false);
+    {
+        enum storage_class_specifier_flags storage_class_specifier_flags =
+            p_condition->p_init_declarator->p_declarator->declaration_specifiers->storage_class_specifier_flags;
+
+        d_visit_init_declarator(ctx, oss, p_condition->p_init_declarator, 0, storage_class_specifier_flags);
+    }
 
     if (p_condition->expression)
         d_visit_expression(ctx, oss, p_condition->expression);
@@ -2066,9 +2266,9 @@ static bool is_compound_statement(struct secondary_block* p_secondary_block)
 
 static void d_visit_selection_statement(struct d_visit_ctx* ctx, struct osstream* oss, struct selection_statement* p_selection_statement)
 {
-    print_identation(ctx, oss);
     if (p_selection_statement->first_token->type == TK_KEYWORD_SWITCH)
     {
+        print_identation(ctx, oss);
         struct break_reference old = ctx->break_reference;
         ctx->break_reference.p_iteration_statement = NULL;
         ctx->break_reference.p_selection_statement = p_selection_statement;
@@ -2084,7 +2284,7 @@ static void d_visit_selection_statement(struct d_visit_ctx* ctx, struct osstream
 
 
         char name[100] = { 0 };
-        snprintf(name, sizeof(name), CAKE_LOCAL_PREFIX "%d", ctx->cake_local_declarator_number++);
+        generate_name(ctx->cake_local_declarator_number++, sizeof name, name);
 
         print_identation(ctx, &ss);
         d_print_type(ctx, &ss, &p_selection_statement->condition->expression->type, name, false);
@@ -2159,15 +2359,16 @@ static void d_visit_selection_statement(struct d_visit_ctx* ctx, struct osstream
         bool addclose = false;
         if (p_selection_statement->p_init_statement)
         {
+            print_identation(ctx, oss);
             ss_fprintf(oss, "{\n");
             addclose = true;
             ctx->indentation++;
+
             struct osstream block_scope_declarators = { 0 };
             ss_swap(&block_scope_declarators, &ctx->block_scope_declarators);
 
             struct osstream local2 = { 0 };
 
-            print_identation(ctx, &local2);
             d_visit_init_statement(ctx, &local2, p_selection_statement->p_init_statement);
 
             if (ctx->block_scope_declarators.c_str)
@@ -2178,7 +2379,7 @@ static void d_visit_selection_statement(struct d_visit_ctx* ctx, struct osstream
 
             ss_fprintf(oss, "%s", local2.c_str);
             ss_close(&local2);
-            print_identation(ctx, oss);
+
             ss_swap(&block_scope_declarators, &ctx->block_scope_declarators);
             ss_close(&block_scope_declarators);
         }
@@ -2187,16 +2388,19 @@ static void d_visit_selection_statement(struct d_visit_ctx* ctx, struct osstream
         {
             if (p_selection_statement->condition->p_init_declarator)
             {
+                print_identation(ctx, oss);
                 ss_fprintf(oss, "{\n");
                 ctx->indentation++;
                 addclose = true;
                 struct osstream block_scope_declarators = { 0 };
                 ss_swap(&block_scope_declarators, &ctx->block_scope_declarators);
 
-
                 struct osstream local2 = { 0 };
-                print_identation(ctx, &local2);
-                d_visit_init_declarator(ctx, &local2, p_selection_statement->condition->p_init_declarator, false, false);
+
+                enum storage_class_specifier_flags storage_class_specifier_flags =
+                    p_selection_statement->condition->p_init_declarator->p_declarator->declaration_specifiers->storage_class_specifier_flags;
+
+                d_visit_init_declarator(ctx, &local2, p_selection_statement->condition->p_init_declarator, 0, storage_class_specifier_flags);
 
                 if (ctx->block_scope_declarators.c_str)
                 {
@@ -2208,6 +2412,8 @@ static void d_visit_selection_statement(struct d_visit_ctx* ctx, struct osstream
                 ss_close(&local2);
                 ss_swap(&block_scope_declarators, &ctx->block_scope_declarators);
 
+                emit_line_directive(ctx, oss, p_selection_statement->condition->first_token);
+
                 print_identation(ctx, oss);
                 ss_fprintf(oss, "if (");
                 ss_fprintf(oss, "%s", p_selection_statement->condition->p_init_declarator->p_declarator->name_opt->lexeme);
@@ -2216,6 +2422,8 @@ static void d_visit_selection_statement(struct d_visit_ctx* ctx, struct osstream
             }
             else if (p_selection_statement->condition->expression)
             {
+                emit_line_directive(ctx, oss, p_selection_statement->condition->expression->first_token);
+                print_identation(ctx, oss);
                 ss_fprintf(oss, "if (");
                 d_visit_expression(ctx, oss, p_selection_statement->condition->expression);
                 ss_fprintf(oss, ")\n");
@@ -2352,14 +2560,38 @@ static void d_visit_unlabeled_statement(struct d_visit_ctx* ctx, struct osstream
 {
     if (p_unlabeled_statement->primary_block)
     {
+        if (p_unlabeled_statement->primary_block)
+        {
+            struct token* tk = NULL;
+            if (p_unlabeled_statement->primary_block->compound_statement)
+                tk = p_unlabeled_statement->primary_block->compound_statement->first_token;
+            else if (p_unlabeled_statement->primary_block->iteration_statement)
+                tk = p_unlabeled_statement->primary_block->iteration_statement->first_token;
+            else if (p_unlabeled_statement->primary_block->selection_statement)
+                tk = p_unlabeled_statement->primary_block->selection_statement->first_token;
+            else if (p_unlabeled_statement->primary_block->try_statement)
+                tk = p_unlabeled_statement->primary_block->try_statement->first_token;
+
+            if (tk)
+            {
+                emit_line_directive(ctx, oss, tk);
+            }
+        }
+            
         d_visit_primary_block(ctx, oss, p_unlabeled_statement->primary_block);
     }
     else if (p_unlabeled_statement->expression_statement)
     {
+        if (p_unlabeled_statement->expression_statement->expression_opt &&
+            p_unlabeled_statement->expression_statement->expression_opt->first_token)
+        {
+            emit_line_directive(ctx, oss, p_unlabeled_statement->expression_statement->expression_opt->first_token);
+        }
         d_visit_expression_statement(ctx, oss, p_unlabeled_statement->expression_statement);
     }
     else if (p_unlabeled_statement->jump_statement)
     {
+        emit_line_directive(ctx, oss, p_unlabeled_statement->jump_statement->first_token);
         d_visit_jump_statement(ctx, oss, p_unlabeled_statement->jump_statement);
     }
     else if (p_unlabeled_statement->defer_statement)
@@ -2478,7 +2710,7 @@ static void d_visit_compound_statement(struct d_visit_ctx* ctx, struct osstream*
     }
 
     if (!ends_with_jump)
-        il_print_defer_list(ctx, &local, &p_compound_statement->defer_list);
+        il_print_defer_list(ctx, &local, &p_compound_statement->defer_list, p_compound_statement->last_token);
 
     ctx->indentation--;
 
@@ -2549,7 +2781,7 @@ static void d_visit_compound_statement_2(const char* var_name, struct d_visit_ct
     }
 
     if (!ends_with_jump)
-        il_print_defer_list(ctx, &local, &p_compound_statement->defer_list);
+        il_print_defer_list(ctx, &local, &p_compound_statement->defer_list, p_compound_statement->last_token);
 
     ctx->indentation--;
 
@@ -2674,24 +2906,17 @@ static void d_visit_function_body(struct d_visit_ctx* ctx,
         struct osstream body = { 0 };
         d_visit_compound_statement(ctx, &body, function_definition->function_body);
 
-        struct osstream size_t_str = { 0 };
-        bool first = true;
-        print_type_specifier_flags(&size_t_str,
-            &first,
-            object_type_to_type_specifier(get_platform(ctx->options.target)->size_t_type));
-
-
         /* Build snapshot lines:  "    int __v0 = (n);\n" */
         struct osstream snaps = { 0 };
         for (int i = 0; i < all_dim_count; i++)
         {
             print_identation_core(&snaps, 1);
-            ss_fprintf(&snaps, "%s " CAKE_LOCAL_PREFIX "%d = ", size_t_str.c_str, all_dims[i].snap_num);
+            char name[100] = { 0 };
+            generate_name(all_dims[i].snap_num, sizeof name, name);
+            ss_fprintf(&snaps, "%s %s = ", ctx->size_t_type_name, name);
             d_visit_expression(ctx, &snaps, all_dims[i].expr);
             ss_fprintf(&snaps, ";\n");
         }
-        ss_close(&size_t_str);
-
         /*
          * The body stream starts with "{\n".
          * Inject snapshot lines right after that.
@@ -3023,6 +3248,7 @@ static void d_print_type_core(struct d_visit_ctx* ctx,
                         ss_fprintf(&local, "union %s", p_complete->tag_name);
                     else
                         ss_fprintf(&local, "struct %s", p_complete->tag_name);
+                    first = false;
                 }
                 else
             {
@@ -3030,6 +3256,7 @@ static void d_print_type_core(struct d_visit_ctx* ctx,
                     ss_fprintf(&local, "union %s", p_type->struct_or_union_specifier->tag_name);
                 else
                     ss_fprintf(&local, "struct %s", p_type->struct_or_union_specifier->tag_name);
+                    first = false;
             }
 
 
@@ -3061,13 +3288,8 @@ static void d_print_type_core(struct d_visit_ctx* ctx,
                 print_type_specifier_flags(&local, &first, p_type->type_specifier_flags);
             }
 
-            if (name_opt) /*flow loop bug*/
+            if (name_opt)
             {
-                if (first)
-                {
-                    ss_fprintf(ss, " ");
-                    first = false;
-                }
                 ss_fprintf(ss, "%s", name_opt);
                 name_opt = NULL;
             }
@@ -3079,7 +3301,6 @@ static void d_print_type_core(struct d_visit_ctx* ctx,
                 ss_fprintf(&local2, "%s", local.c_str);
 
             ss_swap(ss, &local2);
-            //ss_close(&local);
             ss_close(&local2);
             ss_close(&local);
         }
@@ -3292,6 +3513,7 @@ static void d_print_type(struct d_visit_ctx* ctx,
     ss_close(&local);
 }
 
+
 /* returns true if all constant expressions are 0; non-constant expressions are not considered */
 static bool is_all_zero(const struct object* object)
 {
@@ -3327,8 +3549,203 @@ static bool is_all_zero(const struct object* object)
     return true;
 }
 
+static void object_print_source_object_non_constant_initialization(
+    struct d_visit_ctx* ctx,
+    struct osstream* ss,
+    const struct object* object,
+    const struct object* source,
+    const char* dest_name,
+    const char* source_name)
+{
+    if (object_is_reference(object))
+        object = object_get_referenced(object);
 
-static void object_print_constant_initialization(struct d_visit_ctx* ctx, struct osstream* ss, const struct object* object, bool* first)
+    if (object_is_reference(source))
+        source = object_get_referenced(source);
+
+    /* --- Composite types: recurse member-by-member --- */
+    if (object->members.head != NULL)
+    {
+        if (type_is_union(&object->type))
+        {
+            /*
+             * For unions only the first member is assigned.
+             * Pick the first non-empty source member that has a value.
+             */
+            struct object* _Opt dest_member = object->members.head;
+            struct object* _Opt source_member = source->members.head;
+
+            while (dest_member && source_member)
+            {
+                object_print_source_object_non_constant_initialization(
+                    ctx, ss, dest_member, source_member, dest_name, source_name);
+                /* unions: stop after first member */
+                break;
+            }
+        }
+        else
+        {
+            /* Struct / array: walk both member lists in lock-step */
+            struct object* _Opt dest_member = object->members.head;
+            struct object* _Opt source_member = source->members.head;
+
+            while (dest_member && source_member)
+            {
+                object_print_source_object_non_constant_initialization(
+                    ctx, ss, dest_member, source_member, dest_name, source_name);
+                dest_member = dest_member->next;
+                source_member = source_member->next;
+            }
+        }
+        return;
+    }
+
+    /* --- Scalar leaf: emit  dest_name.member = <source value>; --- */
+    print_identation_core(ss, ctx->indentation);
+    ss_fprintf(ss, "%s%s = ", dest_name, object->member_designator);
+
+    if (object_has_constant_value(source))
+    {
+        object_print_value(ss, source, ctx->options.target);
+    }
+    else
+    {
+        ss_fprintf(ss, "%s%s", source_name, source->member_designator);
+    }
+
+    ss_fprintf(ss, ";\n");
+}
+
+/*
+ Initializes 'object' (destination) using the constant value from 'source'.
+*/
+static void assign_each_member_from_constexpr(
+    struct d_visit_ctx* ctx,
+    struct osstream* ss,
+    const struct object* object,   /* destination - drives structure traversal */
+    const struct object* source,   /* source      - provides the values        */
+    bool* first)
+{
+    /* Resolve any reference indirection on both sides */
+    if (object_is_reference(object))
+        object = object_get_referenced(object);
+
+    if (object_is_reference(source))
+        source = object_get_referenced(source);
+
+    /* --- Composite types: recurse member-by-member --- */
+    if (object->members.head != NULL)
+    {
+        if (type_is_union(&object->type))
+        {
+            /*
+             * For unions, C89 only allows initializing the first member.
+             * Use the first member of source as well.
+             */
+            struct object* _Opt dest_member = object->members.head;
+            struct object* _Opt source_member = source->members.head;
+
+            if (dest_member && source_member)
+            {
+                assign_each_member_from_constexpr(
+                    ctx, ss, dest_member, source_member, first);
+            }
+        }
+        else
+        {
+            /* Struct / array: walk both member lists in lock-step */
+            struct object* _Opt dest_member = object->members.head;
+            struct object* _Opt source_member = source->members.head;
+
+            while (dest_member && source_member)
+            {
+                assign_each_member_from_constexpr(
+                    ctx, ss, dest_member, source_member, first);
+                dest_member = dest_member->next;
+                source_member = source_member->next;
+            }
+        }
+        return;
+    }
+
+    /* --- Scalar leaf: emit separator then the source value --- */
+    if (!(*first))
+        ss_fprintf(ss, ",");
+    *first = false;
+
+
+    if (object_has_constant_value(source))
+    {
+        /* Source holds a compile-time constant: print it directly */
+        object_print_value(ss, source, ctx->options.target);
+    }
+    else
+    {
+        /*should be all const*/
+        assert(false);
+        /* No value at all: fall back to zero */
+        ss_fprintf(ss, "0");
+    }
+}
+
+static void emmit_clear_declarator(struct d_visit_ctx* ctx, struct osstream* ss, const char* name, struct type* type)
+{
+    try
+    {
+        size_t sz = 0;
+        if (type_get_sizeof(type, &sz, ctx->options.target) != 0)
+        {
+            throw;
+        }
+        print_identation_core(ss, ctx->indentation);
+        ss_fprintf(ss, "%s(&%s, 0, %zu);\n",
+        ctx->memset_function_name,
+        name,
+        sz);
+        ctx->memset_used = true;
+    }
+    catch{
+    }
+}
+
+static void assign_each_member_to_zero(
+    struct d_visit_ctx* ctx,
+    struct osstream* ss,
+    const struct object* object,
+    const char* declarator_name,
+    struct token* line_token)
+{
+    if (object_is_reference(object))
+        object = object_get_referenced(object);
+
+    if (object->members.head != NULL)
+    {
+        if (type_is_union(&object->type))
+        {
+            /* C89: only the first member is initialized */
+            assign_each_member_to_zero(ctx, ss, object->members.head, declarator_name, line_token);
+        }
+        else
+        {
+            struct object* _Opt member = object->members.head;
+            while (member)
+            {
+                assign_each_member_to_zero(ctx, ss, member, declarator_name, line_token);
+                member = member->next;
+            }
+        }
+    }
+    else
+    {
+        emit_line_directive(ctx, ss, line_token);
+        print_identation(ctx, ss);
+
+        /* 0.0 for floating point? */
+        ss_fprintf(ss, "%s%s = 0;\n", declarator_name, object->member_designator);
+    }
+}
+
+static void object_print_initialization_list(struct d_visit_ctx* ctx, struct osstream* ss, const struct object* object, bool* first)
 {
     if (object_is_reference(object))
     {
@@ -3356,14 +3773,14 @@ static void object_print_constant_initialization(struct d_visit_ctx* ctx, struct
             //we could make the first member be array of unsigned int
             //then initialize it
             struct object* _Opt member = object->members.head;
-            object_print_constant_initialization(ctx, ss, member, first);
+            object_print_initialization_list(ctx, ss, member, first);
         }
         else
         {
             struct object* _Opt member = object->members.head;
             while (member)
             {
-                object_print_constant_initialization(ctx, ss, member, first);
+                object_print_initialization_list(ctx, ss, member, first);
                 member = member->next;
             }
         }
@@ -3401,7 +3818,7 @@ static void object_print_constant_initialization(struct d_visit_ctx* ctx, struct
     }
 }
 
-static void object_print_non_constant_initialization(struct d_visit_ctx* ctx,
+static void assign_each_member_from_initialization(struct d_visit_ctx* ctx,
     struct osstream* ss,
     const struct object* object,
     const char* declarator_name,
@@ -3434,7 +3851,7 @@ static void object_print_non_constant_initialization(struct d_visit_ctx* ctx,
                 {
                     if (member->p_init_expression)
                     {
-                        /* object_print_non_constant_initialization(ctx, ss, member, declarator_name); */
+                        /* assign_each_member_from_initialization(ctx, ss, member, declarator_name); */
                         print_identation_core(ss, ctx->indentation);
                         ss_fprintf(ss, "%s%s = ", declarator_name, member->member_designator);
                         struct osstream local = { 0 };
@@ -3464,7 +3881,7 @@ static void object_print_non_constant_initialization(struct d_visit_ctx* ctx,
             {
                 //char b[] = "abc";
                 print_identation_core(ss, ctx->indentation);
-                ss_fprintf(ss, "_cake_memcpy(%s%s, ", declarator_name, object->member_designator);
+                ss_fprintf(ss, "%s(%s%s, ", ctx->memcpy_function_name, declarator_name, object->member_designator);
                 struct osstream local = { 0 };
                 d_visit_expression(ctx, &local, object->p_init_expression);
                 size_t string_size = object->p_init_expression->type.array_num_elements;
@@ -3486,8 +3903,39 @@ static void object_print_non_constant_initialization(struct d_visit_ctx* ctx,
                          struct B b = { .a = ia, .a.y = 42 };
                        }
                 */
+                if (object->p_init_expression->declarator)
+                {
+                    if (object->p_init_expression->lvalue_disabled)
+                    {
+                        object_print_source_object_non_constant_initialization(ctx,
+                            ss,
+                            object,
+                            &object->p_init_expression->declarator->object,
+                            declarator_name,
+                            object->p_init_expression->declarator->name_opt->lexeme);
+                    }
+                    else
+                    {
+                        size_t sz2;
+                        enum sizeof_result r = type_get_sizeof(&object->p_init_expression->type, &sz2, ctx->options.target);
+                        if (r != SIZEOF_RESULT_OK) r = 0; //throw;
+
+                        emit_line_directive(ctx, ss, object->p_init_expression->first_token);
                 print_identation_core(ss, ctx->indentation);
-                ss_fprintf(ss, "_cake_memcpy(&%s%s, ", declarator_name, object->member_designator);
+                        ss_fprintf(ss, "%s(%s, %s, %zu);\n",
+                            ctx->memcpy_function_name,
+                            declarator_name,
+                            object->p_init_expression->declarator->name_opt->lexeme,
+                            sz2);
+
+                        ctx->memcpy_used = true;
+                    }
+                }
+                else
+                {
+                    assert(false); //!!impossible???TODO
+                    print_identation_core(ss, ctx->indentation);
+                    ss_fprintf(ss, "%s(&%s%s, ", ctx->memcpy_function_name, declarator_name, object->member_designator);
                 struct osstream local = { 0 };
                 d_visit_expression(ctx, &local, object->p_init_expression);
                 size_t sz = 0;
@@ -3497,21 +3945,20 @@ static void object_print_non_constant_initialization(struct d_visit_ctx* ctx,
                 ss_fprintf(ss, ");\n");
                 ss_close(&local);
                 ctx->memcpy_used = true;
-
+                }
                 struct object* _Opt member = object->members.head;
                 while (member)
                 {
-                    object_print_non_constant_initialization(ctx, ss, member, declarator_name, all, false);
+                    assign_each_member_from_initialization(ctx, ss, member, declarator_name, all, false);
                     member = member->next;
                 }
-
             }
             else
             {
                 struct object* _Opt member = object->members.head;
                 while (member)
                 {
-                    object_print_non_constant_initialization(ctx, ss, member, declarator_name, all, true);
+                    assign_each_member_from_initialization(ctx, ss, member, declarator_name, all, true);
                     member = member->next;
                 }
             }
@@ -3529,6 +3976,7 @@ static void object_print_non_constant_initialization(struct d_visit_ctx* ctx,
                 }
                 else if (!object_has_constant_value(&object->p_init_expression->object))
                 {
+                    emit_line_directive(ctx, ss, object->p_init_expression->first_token);
                     print_identation_core(ss, ctx->indentation);
                     ss_fprintf(ss, "%s%s = ", declarator_name, object->member_designator);
                     struct osstream local = { 0 };
@@ -3540,6 +3988,7 @@ static void object_print_non_constant_initialization(struct d_visit_ctx* ctx,
             }
             else
             {
+                emit_line_directive(ctx, ss, object->p_init_expression->first_token);
                 print_identation_core(ss, ctx->indentation);
                 ss_fprintf(ss, "%s%s = ", declarator_name, object->member_designator);
                 struct osstream local = { 0 };
@@ -3553,6 +4002,7 @@ static void object_print_non_constant_initialization(struct d_visit_ctx* ctx,
         {
             if (initialize_objects_that_does_not_have_initializer)
         {
+                //emit_line_directive(ctx, ss, object->p_init_expression->first_token);
             print_identation_core(ss, ctx->indentation);
                 ss_fprintf(ss, "%s%s = 0;\n", declarator_name, object->member_designator);
         }
@@ -3574,13 +4024,24 @@ static void print_initializer(struct d_visit_ctx* ctx,
 
         if (p_init_declarator->initializer->assignment_expression)
         {
+            const char* source_name = "";
+            if (p_init_declarator->initializer->assignment_expression->declarator &&
+                p_init_declarator->initializer->assignment_expression->declarator->name_opt)
+            {
+                source_name = p_init_declarator->initializer->assignment_expression->declarator->name_opt->lexeme;
+            }
+
             if (is_local && !bstatic)
             {
                 if (p_init_declarator->initializer->assignment_expression->expression_type == PRIMARY_EXPRESSION_STRING_LITERAL &&
                     type_is_array(&p_init_declarator->p_declarator->type))
                 {
+                    /*
+                      char s[] = "abc";
+                    */
+                    emit_line_directive(ctx, oss, p_init_declarator->initializer->assignment_expression->first_token);
                     print_identation_core(oss, ctx->indentation);
-                    ss_fprintf(oss, "_cake_memcpy(%s, ", p_init_declarator->p_declarator->name_opt->lexeme);
+                    ss_fprintf(oss, "%s(%s, ", ctx->memcpy_function_name, p_init_declarator->p_declarator->name_opt->lexeme);
                     struct osstream local = { 0 };
                     d_visit_expression(ctx, &local, p_init_declarator->initializer->assignment_expression);
                     ss_fprintf(oss, "%s, %d", local.c_str, p_init_declarator->p_declarator->type.array_num_elements);
@@ -3591,7 +4052,105 @@ static void print_initializer(struct d_visit_ctx* ctx,
                 }
                 else
                 {
-                    //ss_fprintf(oss, ";\n");
+                    bool done = false;
+                    if (type_is_struct_or_union(&p_init_declarator->p_declarator->type) &&
+                        p_init_declarator->initializer->assignment_expression->expression_type == PRIMARY_EXPRESSION_DECLARATOR)
+                    {
+                        /*
+                        int main()
+                        {
+                            struct X {
+                                int i;
+                                int j;
+                            } x = {1, 2};
+
+                            struct X x2 = x;
+                        }
+                        */
+                        if (p_init_declarator->initializer->assignment_expression->lvalue_disabled)
+                        {
+                            /*
+                            int main()
+                            {
+                                constexpr struct X { int i, j; } x = {1, 2};
+                                static void local() { struct X x2 = x; }
+                                local();
+                            }
+                            */
+
+                            object_print_source_object_non_constant_initialization(ctx,
+                            oss,
+                            &p_init_declarator->p_declarator->object,   /* destination - drives structure traversal */
+                            &p_init_declarator->initializer->assignment_expression->declarator->object,
+                            "",
+                            source_name);
+                            done = true;
+                        }
+                    }
+                    else if (type_is_array(&p_init_declarator->p_declarator->type) &&
+                        p_init_declarator->initializer->assignment_expression->expression_type == PRIMARY_EXPRESSION_DECLARATOR)
+                    {
+                        /*
+                        int a[2] = {1, 2};
+                        int b[2] = a;
+                        */
+                        //extensions , can use memcpy             
+                        if (p_init_declarator->initializer->assignment_expression->lvalue_disabled)
+                        {
+                            if (object_has_all_members_constants(&p_init_declarator->initializer->assignment_expression->object))
+                            {
+                                /*
+                                int main()
+                                {
+                                  constexpr int a[2] = {1, 2};
+                                  static void local(){
+                                    int b[2] = a;
+                                  }
+                                  local();
+                                }
+                                */
+                                object_print_source_object_non_constant_initialization(
+                                ctx,
+                                oss,
+                                &p_init_declarator->p_declarator->object,   /* destination - drives structure traversal */
+                                &p_init_declarator->initializer->assignment_expression->object,   /* source      - provides the values        */
+                                "", //arrya
+                                source_name);
+
+                                done = true;
+                            }
+                        }
+                        else
+                        {
+
+                            /*
+                            //extension
+                            int main()
+                             {
+                               int a[2] = {1, 2};
+                               int b[2] = a;
+                             }
+                            */
+                            size_t sz2;
+                            enum sizeof_result r = type_get_sizeof(&p_init_declarator->p_declarator->type, &sz2, ctx->options.target);
+                            if (r != SIZEOF_RESULT_OK) throw;
+
+                            emit_line_directive(ctx, oss, p_init_declarator->initializer->assignment_expression->first_token);
+                            print_identation_core(oss, ctx->indentation);
+                            ss_fprintf(oss, "%s(%s, %s, %zu);\n",
+                                ctx->memcpy_function_name,
+                                p_init_declarator->p_declarator->name_opt->lexeme,
+                                source_name,
+                                sz2);
+
+                            ctx->memcpy_used = true;
+                            done = true;
+                        }
+                    }
+
+                    if (!done)
+                    {
+                        emit_line_directive(ctx, oss, p_init_declarator->initializer->first_token);
                     print_identation_core(oss, ctx->indentation);
                     ss_fprintf(oss, "%s%s = ", p_init_declarator->p_declarator->name_opt->lexeme, "");
 
@@ -3605,6 +4164,31 @@ static void print_initializer(struct d_visit_ctx* ctx,
                     }
                     ss_fprintf(oss, ";\n");
                 }
+                }
+            }
+            else
+            {
+                if ((type_is_struct_or_union(&p_init_declarator->p_declarator->type) ||
+                    type_is_array(&p_init_declarator->p_declarator->type)) &&
+                    p_init_declarator->initializer->assignment_expression->expression_type == PRIMARY_EXPRESSION_DECLARATOR)
+                {
+                    /*
+                     int main() {
+                      constexpr struct X {int i,j; } x = {1, 2};
+                      struct X x2  = x;
+                    }
+                    */
+                    ss_fprintf(oss, "= {");
+                    bool first = true;
+                    assign_each_member_from_constexpr(
+                    ctx,
+                    oss,
+                    &p_init_declarator->p_declarator->object,   /* destination - drives structure traversal */
+                    &p_init_declarator->initializer->assignment_expression->object,   /* source      - provides the values        */
+                    &first);
+                    ss_fprintf(oss, "};\n");
+
+                    //we can use memcopy
             }
             else
             {
@@ -3612,6 +4196,7 @@ static void print_initializer(struct d_visit_ctx* ctx,
                 d_visit_expression(ctx, oss, p_init_declarator->initializer->assignment_expression);
                 ss_fprintf(oss, ";\n");
             }
+        }
         }
         else
         {
@@ -3624,18 +4209,20 @@ static void print_initializer(struct d_visit_ctx* ctx,
                     {
                         if (is_local && !bstatic)
                         {
-                            size_t sz = 0;
-                            if (type_get_sizeof(&p_init_declarator->p_declarator->type, &sz, ctx->options.target) != 0)
-                            {
-                                throw;
-                            }
+                            emmit_clear_declarator(ctx,
+                                oss,
+                                p_init_declarator->p_declarator->name_opt->lexeme,
+                                &p_init_declarator->p_declarator->type
+                            );
 
-                            /* ss_fprintf(oss, ";\n"); */
-                            print_identation_core(oss, ctx->indentation);
-                            ss_fprintf(oss, "_cake_zmem(&%s, %zu);\n",
-                            p_init_declarator->p_declarator->name_opt->lexeme,
-                            sz);
-                            ctx->zero_mem_used = true;
+                            /*better for small objects?*/
+
+                            //assign_each_member_to_zero(ctx,
+                            //    oss,
+                            //    &p_init_declarator->p_declarator->object,
+                            //    p_init_declarator->p_declarator->name_opt->lexeme,
+                            //    p_init_declarator->p_declarator->first_token_opt
+                            //);
                         }
                         else
                         {
@@ -3651,13 +4238,13 @@ static void print_initializer(struct d_visit_ctx* ctx,
                         {
                             ss_fprintf(oss, " = ");
                             ss_fprintf(oss, "{");
-                            object_print_constant_initialization(ctx, oss, &p_init_declarator->p_declarator->object, &first);
+                            object_print_initialization_list(ctx, oss, &p_init_declarator->p_declarator->object, &first);
                             ss_fprintf(oss, "}");
                             ss_fprintf(oss, ";\n");
                         }
                         else
                         {
-                            object_print_non_constant_initialization(ctx, oss, &p_init_declarator->p_declarator->object, p_init_declarator->p_declarator->name_opt->lexeme, true, true);
+                            assign_each_member_from_initialization(ctx, oss, &p_init_declarator->p_declarator->object, p_init_declarator->p_declarator->name_opt->lexeme, true, true);
                         }
                     }
                 }
@@ -3665,32 +4252,30 @@ static void print_initializer(struct d_visit_ctx* ctx,
                 {
                     if (is_local && !bstatic)
                     {
-                        size_t sz = 0;
-                        if (type_get_sizeof(&p_init_declarator->p_declarator->type, &sz, ctx->options.target) != 0)
-                        {
-                            throw;
-                        }
+                        //memset()
 
-                        //ss_fprintf(oss, ";\n");
-                        print_identation_core(oss, ctx->indentation);
-                        ss_fprintf(oss, "_cake_zmem(&%s, %zu);\n",
+                        emmit_clear_declarator(ctx,
+                                oss,
                         p_init_declarator->p_declarator->name_opt->lexeme,
-                        sz);
-                        ctx->zero_mem_used = true;
+                                &p_init_declarator->p_declarator->type
+                        );
+                        //assign_each_member_to_zero(ctx,
+                        //      oss,
+                        //      &p_init_declarator->p_declarator->object,
+                        //       p_init_declarator->p_declarator->name_opt->lexeme,
+                        //     p_init_declarator->p_declarator->first_token_opt
+                        // );
                     }
                     else
                     {
                         ss_fprintf(oss, " = ");
                         ss_fprintf(oss, "{0};\n");
                     }
-                    //ss_fprintf(oss, "{0};\n");
                 }
             }
         }
     }
-    catch
-    {
-    }
+    catch    {    }
 }
 
 static void vm_emit_snapshot_decls(struct d_visit_ctx* ctx,
@@ -3698,26 +4283,22 @@ static void vm_emit_snapshot_decls(struct d_visit_ctx* ctx,
                                     const struct vm_dim_snapshot dims[],
                                     int dim_count)
 {
-    struct osstream size_t_str = { 0 };
-    bool first = true;
-    print_type_specifier_flags(&size_t_str,
-        &first,
-        object_type_to_type_specifier(get_platform(ctx->options.target)->size_t_type));
-
     for (int i = 0; i < dim_count; i++)
     {
         /* declaration hoisted to block top */
         print_identation(ctx, &ctx->block_scope_declarators);
+        char name[100] = { 0 };
+        generate_name(dims[i].snap_num, sizeof name, name);
         ss_fprintf(&ctx->block_scope_declarators,
-                   "%s " CAKE_LOCAL_PREFIX "%d;\n", size_t_str.c_str, dims[i].snap_num);
+                   "%s %s;\n", ctx->size_t_type_name, name);
 
         /* assignment emitted as a statement in the body */
         print_identation(ctx, oss_body);
-        ss_fprintf(oss_body, CAKE_LOCAL_PREFIX "%d = ", dims[i].snap_num);
+        ss_fprintf(oss_body, "%s = ", name);
         d_visit_expression(ctx, oss_body, dims[i].expr);
         ss_fprintf(oss_body, ";\n");
     }
-    ss_close(&size_t_str);
+
 }
 
 
@@ -3845,6 +4426,12 @@ static void d_visit_init_declarator(struct d_visit_ctx* ctx,
             //        void f() {} 
             //action = ACTION_DECLARE;
             struct osstream ss = { 0 };
+
+        /* Force full */
+
+        if (p_init_declarator->p_declarator->first_token_opt)
+            emit_line_directive(ctx, &ss, p_init_declarator->p_declarator->first_token_opt);
+
             d_print_type(ctx, &ss,
                &p_init_declarator->p_declarator->type,
            p_init_declarator->p_declarator->name_opt->lexeme,
@@ -3888,25 +4475,12 @@ static void d_visit_init_declarator(struct d_visit_ctx* ctx,
             }
 
 
-            if (rename_declarator)
+        if (rename_declarator &&
+            !p_init_declarator->p_declarator->declarator_renamed)
             {
-                if (!p_init_declarator->p_declarator->declarator_renamed)
-                {
-                    p_init_declarator->p_declarator->declarator_renamed = true;
-                char name[100] = { 0 };
-                snprintf(name, sizeof(name),
-                    CAKE_FILE_SCOPE_PREFIX "%d_%s",
-                    ctx->cake_file_scope_declarator_number++,
-                    p_init_declarator->p_declarator->name_opt->lexeme
-                );
-
-                free(p_init_declarator->p_declarator->name_opt->lexeme);
-                p_init_declarator->p_declarator->name_opt->lexeme = strdup(name);
+            rename_file_scope_declarator_if_necessary(ctx, p_init_declarator);
             }
             }
-            return;
-        }
-
 }
 
 static void d_visit_init_declarator_list(struct d_visit_ctx* ctx,
@@ -4000,7 +4574,7 @@ static void d_print_struct(struct d_visit_ctx* ctx, struct osstream* ss, struct 
                     if (member_declarator->declarator &&
                         member_declarator->declarator->name_opt)
                     {
-                        ss_fprintf(ss, "    ");
+                    ss_fprintf(ss, IDENTATION_STR);
 
                         if (type_is_array(&member_declarator->declarator->type) &&
                         member_declarator->declarator->type.array_num_elements == 0)
@@ -4043,7 +4617,7 @@ static void d_print_struct(struct d_visit_ctx* ctx, struct osstream* ss, struct 
 
                     char name[100] = { 0 };
                     snprintf(name, sizeof name, "__m%d", no_name_index++);
-                    ss_fprintf(ss, "    ");
+                ss_fprintf(ss, IDENTATION_STR);
                     d_print_type(ctx, ss, &t, name, false);
                     ss_fprintf(ss, ";\n");
                     type_destroy(&t);
@@ -4109,6 +4683,132 @@ void d_print_structs(struct d_visit_ctx* ctx, struct osstream* ss, struct struct
     }
 }
 
+//////////
+
+
+static int parse_line_directive(const char* src,
+                                int* line_num,
+                                const char** filename,
+                                size_t* fname_len)
+{
+    const char* p = src;
+
+    while (*p == ' ' || *p == '\t') p++;
+    if (*p != '#') return 0;
+    p++;
+    while (*p == ' ' || *p == '\t') p++;
+    if (strncmp(p, "line", 4) != 0) return 0;
+    p += 4;
+    if (!isspace((unsigned char)*p)) return 0;
+    while (*p == ' ' || *p == '\t') p++;
+    if (!isdigit((unsigned char)*p)) return 0;
+
+    *line_num = 0;
+    while (isdigit((unsigned char)*p))
+        *line_num = *line_num * 10 + (*p++ - '0');
+
+    while (*p == ' ' || *p == '\t') p++;
+
+    if (*p == '"')
+    {
+        *filename = p;
+        p++;
+        while (*p && *p != '"' && *p != '\n') p++;
+        if (*p == '"') p++;
+        *fname_len = (size_t)(p - *filename);
+    }
+    else
+    {
+        *filename = NULL;
+        *fname_len = 0;
+    }
+
+    return 1;
+}
+
+/* Cleans #line directives in-place. Returns the new length. */
+size_t clean_line_directives(char* buf)
+{
+    char* r = buf;
+    char* w = buf;
+
+    char current_file[512] = "";
+    int  expected_line = 1;
+
+    while (*r)
+    {
+        char* line_start = r;
+        while (*r && *r != '\n') r++;
+        size_t line_len = (size_t)(r - line_start);
+        if (*r == '\n') r++;
+
+        int dir_line_num = 0;
+        const char* dir_fname = NULL;
+        size_t dir_fname_len = 0;
+
+        char saved = line_start[line_len];
+        line_start[line_len] = '\0';
+
+        if (parse_line_directive(line_start, &dir_line_num, &dir_fname, &dir_fname_len))
+        {
+            line_start[line_len] = saved;
+
+            char new_file[512] = "";
+            if (dir_fname && dir_fname_len >= 2)
+            {
+                size_t nlen = dir_fname_len - 2;
+                if (nlen >= sizeof(new_file)) nlen = sizeof(new_file) - 1;
+                memcpy(new_file, dir_fname + 1, nlen);
+                new_file[nlen] = '\0';
+#if defined(__CATALINA__) && (defined(_WIN32) || defined(_WIN64))
+                // Catalina doesn't understand normalized paths on Windows - denormalize it
+                for (size_t i = 0; i < nlen; i++) {
+                   if (new_file[i] == '/') {
+                      new_file[i] = '\\';
+                   }
+                }
+#endif                  
+            }
+
+            int line_needed = (dir_line_num != expected_line);
+            int file_needed = (dir_fname != NULL && strcmp(new_file, current_file) != 0);
+
+            if (line_needed || file_needed)
+            {
+                char directive[600];
+                size_t dlen;
+                if (file_needed)
+                {
+                    dlen = snprintf(directive, sizeof(directive),
+                                    "#line %d \"%s\"\n", dir_line_num, new_file);
+                    strncpy(current_file, new_file, sizeof(current_file) - 1);
+                }
+                else
+                {
+                    dlen = snprintf(directive, sizeof(directive),
+                                    "#line %d\n", dir_line_num);
+                }
+                memmove(w, directive, dlen);
+                w += dlen;
+            }
+
+            expected_line = dir_line_num;
+        }
+        else
+        {
+            line_start[line_len] = saved;
+            if (w != line_start)
+                memmove(w, line_start, line_len);
+            w += line_len;
+            *w++ = '\n';
+            expected_line++;
+        }
+    }
+
+    *w = '\0';
+    return (size_t)(w - buf);
+}
+
 void d_visit(struct d_visit_ctx* ctx, struct osstream* oss)
 {
     struct osstream declarations = { 0 };
@@ -4116,8 +4816,29 @@ void d_visit(struct d_visit_ctx* ctx, struct osstream* oss)
     ctx->print_qualifiers = false; //TODO not ready yet..
 
     ss_fprintf(oss, "/* Cake %s */\n", get_platform(ctx->options.target)->name);
+#if defined(__CATALINA__)
+    if (ctx->options.line_directives) {
+       ss_fprintf(oss, "#line 1 \"%s\"\n", ctx->ast.token_list.tail->token_origin->lexeme);
+    }
+#endif
+
 
     ctx->indentation = 0;
+    
+    generate_file_scope_new_name(ctx, "memcpy", sizeof ctx->memcpy_function_name, ctx->memcpy_function_name);
+    generate_file_scope_new_name(ctx, "memset", sizeof ctx->memset_function_name, ctx->memset_function_name);
+
+    {
+        struct osstream local = { 0 };
+        bool first = true;
+        print_type_specifier_flags(&local,
+                                   &first,
+                                   object_type_to_type_specifier(get_platform(ctx->options.target)->size_t_type));
+        snprintf(ctx->size_t_type_name, sizeof ctx->size_t_type_name, "%s", local.c_str);
+
+        ss_close(&local);
+    }
+
     struct declaration* _Opt p_declaration = ctx->ast.declaration_list.head;
     while (p_declaration)
     {
@@ -4169,38 +4890,51 @@ void d_visit(struct d_visit_ctx* ctx, struct osstream* oss)
         ss_fprintf(oss, "static const void* NULL = 0;\n");
     }
 
-    if (ctx->zero_mem_used)
+
+    if (ctx->memcpy_used)
     {
-        struct osstream local = { 0 };
-        bool first = true;
-        print_type_specifier_flags(&local,
-                                   &first,
-                                   object_type_to_type_specifier(get_platform(ctx->options.target)->size_t_type));
-
-
         ss_fprintf(oss,
-              "static void _cake_zmem(void *dest, %s len)\n"
+            "static void %s(void * dest, const void * src, %s n);\n", ctx->memcpy_function_name, ctx->size_t_type_name);
+    }
+
+    if (ctx->memset_used)
+    {
+        ss_fprintf(oss,
+              "static void %s(void *dest, int ch, %s count);\n", ctx->memset_function_name, ctx->size_t_type_name);
+    }
+
+    if (ctx->memset_used || ctx->memcpy_used)
+        ss_fprintf(oss, "\n");
+
+    if (declarations.c_str)
+    {
+        ss_fprintf(oss, "%s", declarations.c_str);
+    }
+
+    if (ctx->memset_used || ctx->memcpy_used)
+        ss_fprintf(oss, "\n");
+
+    if (ctx->memset_used)
+    {
+        ss_fprintf(oss,
+              "static void %s(void *dest, int ch, %s count)\n"
             "{\n"
             "  unsigned char *ptr;\n"
             "\n"
             "  ptr = (unsigned char*)dest;\n"
-            "  while (len-- > 0) *ptr++ = 0;\n"
+              "    while (count-- > 0)\n"
+              "    {\n"
+              "       *ptr++ = 0;\n"
+              "    }\n"
               "}\n\n",
-             local.c_str);
-
-        ss_close(&local);
+             ctx->memset_function_name,
+             ctx->size_t_type_name);
     }
 
     if (ctx->memcpy_used)
     {
-        struct osstream local = { 0 };
-        bool first = true;
-        print_type_specifier_flags(&local,
-            &first,
-            object_type_to_type_specifier(get_platform(ctx->options.target)->size_t_type));
-
         ss_fprintf(oss,
-            "static void _cake_memcpy(void * dest, const void * src, %s n)\n"
+            "static void %s(void * dest, const void * src, %s n)\n"
             "{\n"
             "  char *csrc;\n"
             "  char *cdest;\n"
@@ -4208,19 +4942,27 @@ void d_visit(struct d_visit_ctx* ctx, struct osstream* oss)
             "\n"
             "  csrc = (char *)src;\n"
             "  cdest = (char *)dest;\n"            
-            "  for (i = 0; i < n; i++) cdest[i] = csrc[i]; \n"
+            "    for (i = 0; i < n; i++)\n"
+            "    {\n"
+            "       cdest[i] = csrc[i]; \n"
+            "    }\n"
             "}\n\n",
-             local.c_str,
-            local.c_str);
-
-        ss_close(&local);
+            ctx->memcpy_function_name,
+            ctx->size_t_type_name,
+            ctx->size_t_type_name);
     }
 
 
-    if (declarations.c_str)
+    if (ctx->options.line_directives)
     {
-        ss_fprintf(oss, "%s", declarations.c_str);
+      /* Because Cake inserts text out of order recursively, it is hard
+       to produce minimal #line directives, so we perform an extra step
+       to remove unnecessary ones. 
+       */
+       oss->size = clean_line_directives(oss->c_str);
     }
 
     ss_close(&declarations);
 }
+
+

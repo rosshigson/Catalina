@@ -17,11 +17,6 @@ struct d_visit_ctx
     bool print_qualifiers;
 
     /*
-       File scope counter to generate unique names
-    */
-    unsigned int cake_file_scope_declarator_number;
-
-    /*
        This counter is reset in each function
     */
     unsigned int cake_local_declarator_number;
@@ -30,6 +25,12 @@ struct d_visit_ctx
     struct hash_map tag_names;
     struct hash_map structs_map;
     struct hash_map file_scope_declarator_map;
+
+    /*
+       Maps current instantiations.
+       The key is the instantiation without the name.
+       The value is the name of the instantiated function (that can be reused)
+    */
     struct hash_map instantiated_function_literals;
     
     /*
@@ -43,8 +44,14 @@ struct d_visit_ctx
     struct osstream add_this_after_external_decl;
     bool is_local;
     
-    bool zero_mem_used;
+    bool memset_used;
+    char memset_function_name[50];
+
+    char size_t_type_name[50];
+
     bool memcpy_used;
+    char memcpy_function_name[50];
+    
 
     bool define_nullptr;
     bool null_pointer_constant_used;

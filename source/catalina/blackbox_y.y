@@ -201,6 +201,11 @@
  * 
  * version 8.8.4  - upgrade lua to version 5.4.8
  *
+ * version 8.8.8  - Fix bug in code introduced in 5.7.1 to detect lines with 
+ *                  the same address, and use the LAST such line instead of
+ *                  the FIRST such line.
+ *                 
+ *
  */
 
 /*--------------------------------------------------------------------------
@@ -2326,6 +2331,10 @@ void process_lines (int src) {
                // add the line to the debug_info list (in order)
                c = debug_info[src-1];
                last = NULL;
+               if (diagnose) {
+                  printf("processing line %d - addr %X\n",
+                     l->d.num, l->d.locn->value);
+               }
                while ((c != NULL) 
                &&  (c->d.num < l->d.num) 
                &&  (c->d.locn->value != l->d.locn->value)) {
@@ -2346,7 +2355,7 @@ void process_lines (int src) {
                   // block if the line following it is a while statement. 
                   // But this is ok because of the way code for while 
                   // statements is generated.
-                  if ((c->next != NULL) && (l->d.num < (c->next)->d.num)) { 
+                  if ((c->next == NULL) || (l->d.num >= (c->next)->d.num)) { 
                      if (diagnose) {
                         printf("update file %d, line %d - same addr as line %d\n",
                            l->d.src, c->d.num, l->d.num);

@@ -1,14 +1,8 @@
-#pragma safety enable
 
-struct Y {
-    struct X* _Owner _Opt y;
-};
-
-void y_destroy([[dtor]] struct X* p)
+int main()
 {
-    //p->s not released!    
-}
 
-struct X {
-    char* _Owner _Opt s;
-};
+    int i = 1;
+    int j = 2;
+
+}

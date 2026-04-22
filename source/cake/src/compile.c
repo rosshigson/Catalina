@@ -30,7 +30,6 @@
 #endif
 
 #include "visit_il.h"
-#include "visit_asm.h"
 #include <time.h>
 
 
@@ -402,7 +401,7 @@ int compile_one_file(const char* file_name,
 
     if (include_config_header(&prectx, file_name) != 0)
     {
-        //cakeconfig.h is optional               
+        //cakeconf.h is optional               
     }
     // print_all_macros(&prectx);
 
@@ -479,6 +478,14 @@ int compile_one_file(const char* file_name,
         if (tctx.n_errors > 0)
             throw;
 
+        const char* builtin = target_get_builtins(ctx.options.target);
+        if (builtin)
+        {
+          struct token_list builtin_tokens = tokenizer(&tctx, builtin, "builtins", 0, TK_FLAG_NONE);          
+          token_list_append_list_at_beginning(&tokens, &builtin_tokens);
+          token_list_destroy(&builtin_tokens);
+        }
+
         if (options->dump_tokens)
         {
             print_tokens(color_enabled, tokens.head);
@@ -524,7 +531,7 @@ int compile_one_file(const char* file_name,
         else
         {
             bool berror = false;
-            ast.declaration_list = parse(&ctx, &ast.token_list, &berror);
+            ast.declaration_list = parse(&ctx, &ast.token_list, &ast.file_scope, &berror);
             if (berror || report->error_count > 0)
                 throw;
 
@@ -533,24 +540,14 @@ int compile_one_file(const char* file_name,
 
                 struct osstream ss = { 0 };
 
-                if (options->asm_output)
-                {
-                    struct asm_visit_ctx actx = { 0 };
-                    actx.ast = ast;
-                    actx.options = ctx.options;
-                    asm_visit(&actx, &ss);
-                    p_output_string = ss.c_str; //MOVE
-                    asm_visit_ctx_destroy(&actx);
-                }
-                else
-                {
+
                 struct d_visit_ctx ctx2 = { 0 };
                 ctx2.ast = ast;
                 ctx2.options = ctx.options;
                 d_visit(&ctx2, &ss);
                 p_output_string = ss.c_str; //MOVE
                 d_visit_ctx_destroy(&ctx2);
-                }
+
 
                 FILE* _Owner _Opt outfile = fopen(out_file_name, "w");
                 if (outfile)
@@ -598,12 +595,18 @@ int compile_one_file(const char* file_name,
 
     if (ctx.options.test_mode_inout)
     {
+        char dir_name[FS_MAX_PATH] = {0};
+        snprintf(dir_name, sizeof dir_name, "%s", file_name);
+        dirname(dir_name);
+
         //lets check if the generated file is the expected
-        char file_name_no_ext[FS_MAX_PATH] = { 0 };
-        remove_file_extension(file_name, sizeof(file_name_no_ext), file_name_no_ext);
+        //char just_file_name[FS_MAX_PATH] = { 0 };
+        //snprintf(just_file_name, sizeof just_file_name, "%s", file_name);
+        char * p_just_file_name = basename(file_name);
+        //remove_file_extension(file_name, sizeof(file_name_no_ext), file_name_no_ext);
 
         char buf[FS_MAX_PATH] = { 0 };
-        snprintf(buf, sizeof buf, "%s_%s.out", file_name_no_ext, get_platform(ctx.options.target)->name);
+        snprintf(buf, sizeof buf, "%s/expected_%s/%s", dir_name, get_platform(ctx.options.target)->name, p_just_file_name);
 
         char* _Owner _Opt content_expected = read_file(buf, false /*append new line*/);
         if (content_expected)
@@ -624,14 +627,22 @@ int compile_one_file(const char* file_name,
             
             if (p_output_string && strcmp(content_expected + content_expected_first_line_len, p_output_string + s_first_line_len) != 0)
             {
-                printf("Output file '%s' is different from expected file '%s'\n", out_file_name, buf);
+                printf("Output file:\n");
+                print_path(out_file_name, true);
+                printf("\n");
+                printf("is different from expected file:\n");
+                print_path(buf, true);
+                printf("\n");
                 report->error_count++;
             }
             free(content_expected);
         }
         else
         {
-            printf("Missing comparison file '%s' (-test-mode-in-out)\n", buf);
+            printf("Missing comparison file: (-test-mode-in-out)\n");
+            print_path(buf, true);
+            printf("\n");
+
             report->test_failed++;
         }
 
@@ -903,7 +914,7 @@ int compile(int argc, const char** argv, struct report* report)
     get_self_path(executable_path, sizeof(executable_path));
     dirname(executable_path);
     char cakeconfig_path[FS_MAX_PATH] = { 0 };
-    snprintf(cakeconfig_path, sizeof cakeconfig_path, "%s" CAKE_CONFIG_FILE_NAME, executable_path);
+    snprintf(cakeconfig_path, sizeof cakeconfig_path, "%s/" CAKE_CONFIG_FILE_NAME, executable_path);
 
     if (options.auto_config) //-autoconfig
     {
@@ -1092,29 +1103,13 @@ const char* _Owner _Opt compile_source(const char* pszoptions, const char* conte
             if (report->error_count > 0)
                 throw;
 
-
             struct osstream ss = { 0 };
-
-            if (options.asm_output)
-            {
-                struct asm_visit_ctx actx = { 0 };
-                actx.ast = ast;
-                actx.options = options;
-                asm_visit(&actx, &ss);
-                s = ss.c_str; //MOVED
-                asm_visit_ctx_destroy(&actx);
-            }
-            else
-            {
             struct d_visit_ctx ctx2 = { 0 };
             ctx2.ast = ast;
             ctx2.options = options;
             d_visit(&ctx2, &ss);
             s = ss.c_str; //MOVED                
             d_visit_ctx_destroy(&ctx2);
-            }
-
-
         }
     }
     catch

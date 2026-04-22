@@ -330,6 +330,14 @@
  *
  *                - enable 'globbing'
  *
+ * version 8.8.8  - Allow debug options to be compbined with C standards 
+ *                  other than 89 or 90, but issue a warning that they may
+ *                  not be compatible.
+ *
+ *                - Add command line opton -Y, which tells Catalina to 
+ *                  preprocess source files only. The output files will 
+ *                  have the same name as the source files but be created 
+ *                  in a 'catalina' sub-folder of the current directory.
  */
 
 /*--------------------------------------------------------------------------
@@ -407,6 +415,7 @@ static int diagnose   = 0; // 1 => diagnostic output
 
 static int assembler  = 1; // 1 => open spin (P1), 2 => p2asm (P2)
 
+static int pre_only   = 0; // 0 => -Y not specified, 1 => -Y specified
 static int comp_only  = 0; // 0 => -c not specified, 1 => -c specified
 static int asm_only   = 0; // 0 => -S not specified, 1 => -S specified
 
@@ -491,10 +500,10 @@ void help(char *my_name) {
    fprintf(stderr, "options:  -? or -h   print this help (and exit)\n");
    fprintf(stderr, "          -b         generate a binary output file (this is the default)\n");
    fprintf(stderr, "          -B baud    baud rate to use for serial interfaces (P2 only)\n");
-   fprintf(stderr, "          -d         output diagnostic messages\n");
    fprintf(stderr, "          -c         compile only (do not bind)\n");
    fprintf(stderr, "          -C symbol  define a Catalina symbol (e.g. -C HYDRA)\n");
    fprintf(stderr, "                     or the C standard to use (e.g. -C99)\n");
+   fprintf(stderr, "          -d         output diagnostic messages\n");
    fprintf(stderr, "          -D symbol  define a symbol (e.g. -D printf=tiny_printf)\n");
    fprintf(stderr, "          -e         generate an eeprom output file\n");
    fprintf(stderr, "          -E         allowable frequency error (default is 100k\n");
@@ -524,6 +533,7 @@ void help(char *my_name) {
    fprintf(stderr, "          -W option  option to pass directly to LCC\n");
    fprintf(stderr, "          -x layout  use specified memory layout (layout = 0 .. 6, 8 .. 11)\n");
    fprintf(stderr, "          -y         generate listing file\n");
+   fprintf(stderr, "          -Y         preprocess only - do not compile\n");
    fprintf(stderr, "          -z         don't invoke the parallelizer on input files that follow\n");
    fprintf(stderr, "          -Z         invoke the parallelizer on input files that follow\n\n");
    fprintf(stderr, "NOTE: unrecognized options will be passed on to LCC\n\n");
@@ -948,8 +958,11 @@ int pass_symbol_to_compiler(char *symbol, int *code) {
      else {
        fprintf(stderr, "Uknown C standard specified - ignoring\n");
      }
-     if ((standard != 89) && (standard != 90) && ((glevel > 0) || parallel)) {
-        fprintf(stderr, "selected C standard is incompatible with -g and -Z - ignoring\n");
+     if ((standard != 89) && (standard != 90) && (glevel > 0)) {
+        fprintf(stderr, "selected C standard may be incompatible with debug options\n");
+     }
+     if ((standard != 89) && (standard != 90) && parallel) {
+        fprintf(stderr, "selected C standard is incompatible with -Z - ignoring\n");
         standard = 89;
      }
    }
@@ -1969,44 +1982,42 @@ int decode_arguments (int argc, char *argv[]) {
                case 'g':
                   if (standard > 90) {
                        banner();
-                       fprintf(stderr, "debug incompatible with selected C standard - ignoring\n");
+                       fprintf(stderr, "Debug option may be incompatible with selected C standard\n");
+                  }
+                  if (verbose) {
+                     banner();
+                     fprintf(stderr, "generate debug information - listing selected\n");
+                  }
+                  listing = 1;
+                  if (strlen(argv[i]) == 2) {
+                     glevel = 1;
                   }
                   else {
-                     if (verbose) {
-                        banner();
-                        fprintf(stderr, "generate debug information - listing selected\n");
-                     }
-                     listing = 1;
-                     if (strlen(argv[i]) == 2) {
-                        glevel = 1;
-                     }
-                     else {
-                        // use remainder of this arg
-                        sscanf(&argv[i][2], "%d", &glevel);
-                     }
-                     if ((glevel <= 0) || (glevel > 9)) {
-                        glevel = 1; // glevel must be 1 to 9
-                     }
-                     if (verbose) {
-                        fprintf(stderr, "debugging level %d\n", glevel);
-                     }
-                     optnum[0] = '0' + glevel;
-                     optnum[1] = ' ';
-                     optnum[2] = '\0';
-                     safecat(lcc_opt, argv[i], MAX_LINELEN);
-                     safecat(lcc_opt, " -Wl-g", MAX_LINELEN);
-                     safecat(lcc_opt, optnum, MAX_LINELEN);
-                     safecat(lcc_opt, " -Wf-g", MAX_LINELEN);
-                     safecat(lcc_opt, optnum, MAX_LINELEN);
-                     catalina_symboldef("BLACKBOX", "");
-                     if (target_named) {
-                        banner();
-                        fprintf(stderr, "option -g will NOT override current target (%s)\n", tgt_name);
-                     }
-                     else {
-                        safecpy(tgt_name, DEBUG_TARGET, MAX_LINELEN);
-                        target_named = 1;
-                     }
+                     // use remainder of this arg
+                     sscanf(&argv[i][2], "%d", &glevel);
+                  }
+                  if ((glevel <= 0) || (glevel > 9)) {
+                     glevel = 1; // glevel must be 1 to 9
+                  }
+                  if (verbose) {
+                     fprintf(stderr, "debugging level %d\n", glevel);
+                  }
+                  optnum[0] = '0' + glevel;
+                  optnum[1] = ' ';
+                  optnum[2] = '\0';
+                  safecat(lcc_opt, argv[i], MAX_LINELEN);
+                  safecat(lcc_opt, " -Wl-g", MAX_LINELEN);
+                  safecat(lcc_opt, optnum, MAX_LINELEN);
+                  safecat(lcc_opt, " -Wf-g", MAX_LINELEN);
+                  safecat(lcc_opt, optnum, MAX_LINELEN);
+                  catalina_symboldef("BLACKBOX", "");
+                  if (target_named) {
+                     banner();
+                     fprintf(stderr, "option -g will NOT override current target (%s)\n", tgt_name);
+                  }
+                  else {
+                     safecpy(tgt_name, DEBUG_TARGET, MAX_LINELEN);
+                     target_named = 1;
                   }
                   break;
 
@@ -2015,6 +2026,14 @@ int decode_arguments (int argc, char *argv[]) {
                   if (verbose) {
                      banner();
                      fprintf(stderr, "listing selected\n");
+                  }
+                  break;
+
+               case 'Y':
+                  pre_only = 1;
+                  if (verbose) {
+                     banner();
+                     fprintf(stderr, "preprocess only\n");
                   }
                   break;
 
@@ -2224,6 +2243,20 @@ void main(int argc, char *argv[]) {
          // disable Cake's use of color
          safecpy(lcc_cmd, "clcc -Wp-fdiagnostics-color=never ", MAX_LINELEN);
       }
+      if (glevel > 0) {
+         // must get Cake to add #line directives
+         safecat(lcc_cmd," -Wp-line-directives ", MAX_LINELEN);
+      }
+   }
+   if (pre_only) {
+     // make subdirectory 'catalina' 
+     if ((result = system("mkdir catalina")) != 0) {
+         if (diagnose) {
+            fprintf(stderr, "cannot create directory 'catalina' - mkdir result %d\n", result);
+         }
+      }
+      // preprocess only (send LCC the -E option)
+      safecat(lcc_cmd, "-E ", MAX_LINELEN);
    }
 
    // print banner now if not suppressed and not already printed

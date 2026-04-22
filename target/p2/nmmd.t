@@ -51,8 +51,7 @@
 '                     command-line for programs that use multiple cogs.
 '                     Note that if you change this option, you also need 
 '                     to change it in the non-dynamic threaded kernel, and 
-'                     recompile the library. This option can't be used with 
-'                     NO_INTERRUPTS, which uses SKIPF.
+'                     recompile the library. 
 '
 '#ifndef FAST_SAVE_RESTORE
 '#define FAST_SAVE_RESTORE

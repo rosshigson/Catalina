@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <hmi.h>
 
 #include "debug_example.h"
 

@@ -40,42 +40,42 @@ goto done
 @echo building %1_VGA.ZIP ...
 @echo.
 
-call build_all %1 %2 %3 VGA COLOR_4 OPTIMIZE MHZ_200 RTC NO_LINENOISE
+call build_all %* VGA COLOR_4 OPTIMIZE MHZ_200 RTC NO_LINENOISE
 
 rem create the expected directory structure
 call mk_cat_dirs image >NUL:
 
 cd catalina
-call build_all %1 %2 %3 VGA COLOR_4 OPTIMIZE MHZ_200
+call build_all %* VGA COLOR_4 OPTIMIZE MHZ_200
 cat CATALYST.ENV %1_VGA.ENV > ..\image\CATALYST.ENV
 cd ..
 
 cd cake
-call build_all  %1 %2 %3 VGA COLOR_4 OPTIMIZE MHZ_200
+call build_all  %* VGA COLOR_4 OPTIMIZE MHZ_200
 copy %LCCDIR%\source\cake\src\catalina\cake.bin ..\image\bin\cake.bin
 copy CAKECONF.H ..\image\CAKECONF.H
 copy hello_99.c ..\image\hello_99.c
 cd ..
 
 cd elua
-call build_all  %1 %2 %3 VGA_COLOR_4 OPTIMIZE MHZ_200
+call build_all  %* VGA_COLOR_4 OPTIMIZE MHZ_200
 call copy_all ..\image
 cd ..
 
 cd xvi-2.51
-call build_all  %1 %2 %3 VGA COLOR_4 OPTIMIZE MHZ_200 LARGE
+call build_all  %* VGA COLOR_4 OPTIMIZE MHZ_200 LARGE
 copy src\xvi.bin ..\image\bin\xl_vi.bin
 cd ..
 
 cd lua-5.4.8
-call build_all  %1 %2 %3 VGA COLOR_4 OPTIMIZE MHZ_200 SMALL
+call build_all  %* VGA COLOR_4 OPTIMIZE MHZ_200 SMALL
 copy src\lua.bin ..\image\bin\xs_lua.bin
 copy src\luac.bin ..\image\bin\xs_luac.bin
 copy src\luax.bin ..\image\bin\xs_luax.bin
 cd ..
 
 cd lua-5.4.8
-call build_all  %1 %2 %3 VGA COLOR_4 OPTIMIZE MHZ_200 LARGE
+call build_all  %* VGA COLOR_4 OPTIMIZE MHZ_200 LARGE
 copy src\lua.bin ..\image\bin\xl_lua.bin
 copy src\luac.bin ..\image\bin\xl_luac.bin
 copy src\luax.bin ..\image\bin\xl_luax.bin

@@ -114,6 +114,7 @@
 --               - Remove the definition of __STDC__ and __STRICT_ANSI__ 
 --                 because these can interfere with the use of Cake.
 --
+-- version 8.8.8 - Add -Y option (precompile only).
 
 require "os"
 require "io"
@@ -122,7 +123,7 @@ require "string"
 require "propeller"
 
 -- configuration parameters and default values
-CATALINA_VERSION = "8.8.7"
+CATALINA_VERSION = "8.8.8"
 LCCDIR           = "/";
 CATALINA_TARGET  = LCCDIR .. "target"
 CATALINA_LIBRARY = LCCDIR .. "lib"
@@ -179,6 +180,7 @@ quickbuild = nil;
 quickforce = nil;
 diagnose   = nil;
 p2_rev_a   = nil;
+pre_only   = nil;
 asm_only   = nil;
 layout     = nil;
 version    = nil;
@@ -276,6 +278,7 @@ function print_help()
    print("          -v         verbose (output information messages)");
    print("          -x layout  use specified memory layout (layout = 0 .. 6, 8 .. 11)");
    print("          -y         generate listing file");
+   print("          -Y         preprocess only (do not compile)");
 end
 
 -- decompose a path into directory, filename, and extension, 
@@ -490,6 +493,14 @@ function decode_arguments()
       elseif (string.sub(arg[i],1,2) == "-y") then
         listing = 1;
         print_if_diagnose("listing = " .. blank_if_nil(listing));
+      elseif (string.sub(arg[i],1,2) == "-Y") then 
+        pre_only = 1;
+        if quickbuild or quickforce then
+          quickbuild = nil;
+          quickforce = nil;
+          print_if_verbose("-Y overrides quickbuild (-q and -Q ignored)");
+        end
+        print_if_diagnose("pre_only = " .. blank_if_nil(pre_only));
       elseif (string.sub(arg[i],1,2) == "-S") 
       or (string.sub(arg[i],1,2) == "-c") then
         asm_only = 1;
@@ -650,6 +661,8 @@ function decode_arguments()
       elseif (string.sub(arg[i],1,2) == "-q") then
         if asm_only then
           print_if_verbose("-c overrides quickbuild (-q ignored)");
+        elseif pre_only then
+          print_if_verbose("-Y overrides quickbuild (-q ignored)");
         else
           quickbuild = 1;
           addCsym("QUICKBUILD");
@@ -657,7 +670,9 @@ function decode_arguments()
         end
       elseif (string.sub(arg[i],1,2) == "-Q") then
         if asm_only then
-          print_if_verbose("-c overrides quickbuild (-Q ignored)");
+          print_if_verbose("-c overrides quickforce (-Q ignored)");
+        elseif pre_only then
+          print_if_verbose("-Y overrides quickforce (-Q ignored)");
         else
           quickforce = 1;
           addCsym("QUICKFORCE");
@@ -1079,33 +1094,41 @@ function generate_compiles(cmd)
         .. '-I/ -I' .. IncludePath .. ' ' 
         .. include_list() 
         .. cpp_define_list() 
-        .. Files[i] .. ' ' 
-        .. CATALINA_TEMPDIR .. PATH_SEP .. file .. CPP_SUFFIX .. ' ';
+        .. Files[i] .. ' ';
       else
         cpp = CAKE_COMMAND
         .. '-I/ -I' .. IncludePath .. ' ' 
         .. include_list() 
         .. cpp_define_list() 
         .. Files[i] .. ' ' 
-        .. '-o '
-        .. CATALINA_TEMPDIR .. PATH_SEP .. file .. CPP_SUFFIX .. ' ';
+        .. '-o ';
       end
-      rcc = RCC_COMMAND
-      .. blank_if_nil(rccopt) .. ' '
-      .. lcc_target() 
-      .. CATALINA_TEMPDIR .. PATH_SEP .. file .. CPP_SUFFIX .. ' ';
-      if asm_only then
-        rcc = rcc .. file .. OBJ_SUFFIX;
+      if pre_only then
+         if standard == 89 or standard == 90 then 
+          add_to_file(cmd, "mkdir catalina");
+          cpp = cpp .. "catalina".. PATH_SEP .. file .. ".c ";
+        end
       else
-        rcc = rcc .. CATALINA_TEMPDIR .. PATH_SEP .. file .. RCC_SUFFIX;
+        cpp = cpp .. CATALINA_TEMPDIR .. PATH_SEP .. file .. CPP_SUFFIX .. ' ';
+        rcc = RCC_COMMAND
+        .. blank_if_nil(rccopt) .. ' '
+        .. lcc_target() 
+        .. CATALINA_TEMPDIR .. PATH_SEP .. file .. CPP_SUFFIX .. ' ';
+        if asm_only then
+          rcc = rcc .. file .. OBJ_SUFFIX;
+        else
+          rcc = rcc .. CATALINA_TEMPDIR .. PATH_SEP .. file .. RCC_SUFFIX;
+        end
       end
       add_to_file(cmd, cpp);
       if not no_test then
         add_to_file(cmd, TEST_COMMAND);
       end
-      add_to_file(cmd, rcc);
-      if not no_test then
-        add_to_file(cmd, TEST_COMMAND);
+      if rcc ~= "" then
+        add_to_file(cmd, rcc);
+        if not no_test then
+          add_to_file(cmd, TEST_COMMAND);
+        end
       end
     end
   end
@@ -1598,7 +1621,7 @@ if Fcount > 0 or Ocount > 0 then
   end;
   generate_pre_clean(cmd);
   generate_compiles(cmd);
-  if not asm_only then
+  if not asm_only and not pre_only then
     generate_bind(cmd);
     generate_assemble_output(cmd);
   end
@@ -1613,7 +1636,7 @@ if Fcount > 0 or Ocount > 0 then
   and (layout == 2 or layout == 5) then
     generate_post_xmm_clean(cmd);
   end
-  if not asm_only and not suppress then
+  if not asm_only and not pre_only and not suppress then
     generate_statistics(cmd);
   end;
   if (verbose and verbose > 1) then

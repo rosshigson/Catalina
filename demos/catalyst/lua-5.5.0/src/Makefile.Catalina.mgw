@@ -153,6 +153,7 @@ else
 endif
 
 CFLAGS= $(MYCFLAGS) -W-w
+#CFLAGS= $(MYCFLAGS) -W-w -C99
 
 # note that this enables Lua code storage into PSRAM - it is not the
 # same as enabling XMM mode (SMALL or LARGE), which affects C code

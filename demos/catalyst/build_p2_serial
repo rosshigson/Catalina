@@ -47,42 +47,42 @@ echo ""
 echo "building $1.ZIP ..."
 echo ""
 
-./build_all $1 $2 $3 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 RTC
+./build_all $* SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 RTC
 
 # create the directory structure expected by catalina 
 mk_cat_dirs image
 
 cd catalina
-./build_all  $1 $2 $3 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200
+./build_all  $* SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200
 cat CATALYST.ENV $1.ENV > ../image/CATALYST.ENV
 cd ..
 
 cd cake
-./build_all  $1 $2 $3 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200
+./build_all  $* SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200
 cp $LCCDIR/source/cake/src/catalina/cake.bin ../image/bin/cake.bin
 cp CAKECONF.H ../image/CAKECONF.H
 cp hello_99.c ../image/hello_99.c
 cd ..
 
 cd elua
-./build_all  $1 $2 $3 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200
+./build_all  $* SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200
 ./copy_all ../image
 cd ..
 
 cd xvi-2.51
-./build_all  $1 $2 $3 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 LARGE
+./build_all  $* SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 LARGE
 cp src/xvi.bin ../image/bin/xl_vi.bin
 cd ..
 
 cd lua-5.4.8
-./build_all  $1 $2 $3 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 SMALL
+./build_all  $* SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 SMALL
 cp src/lua.bin ../image/bin/xs_lua.bin
 cp src/luac.bin ../image/bin/xs_luac.bin
 cp src/luax.bin ../image/bin/xs_luax.bin
 cd ..
 
 cd lua-5.4.8
-./build_all  $1 $2 $3 SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 LARGE
+./build_all  $* SIMPLE VT100 USE_COLOR OPTIMIZE MHZ_200 LARGE
 cp src/lua.bin ../image/bin/xl_lua.bin
 cp src/luac.bin ../image/bin/xl_luac.bin
 cp src/luax.bin ../image/bin/xl_luax.bin

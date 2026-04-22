@@ -294,12 +294,6 @@ int fill_options(struct options* options,
             continue;
         }
 
-        if (strcmp(argv[i], "-S") == 0)
-        {
-            options->asm_output = true;
-            continue;
-        }
-
         if (strcmp(argv[i], "-preprocess-def-macro") == 0)
         {
             options->preprocess_def_macro = true;
@@ -336,6 +330,12 @@ int fill_options(struct options* options,
             {
                 //ops
             }
+            continue;
+        }
+
+        if (strcmp(argv[i], "-line-directives") == 0)
+        {
+            options->line_directives = true;
             continue;
         }
 
@@ -594,7 +594,7 @@ void print_help()
     printf("%s", sample);
 
     print_option("-I", "Adds a directory to the list of directories searched for include files");
-    print_option("-auto-config", "Generates cakeconfig.h with include directories");
+    print_option("-auto-config", "Generates cakeconf.h with include directories");
     print_option("-no-output", "Cake will not generate output");
     print_option("-D", "Defines a preprocessing symbol for a source file");
     print_option("-E", "Copies preprocessor output to standard output");
@@ -608,6 +608,8 @@ void print_help()
     print_option("-sarif ", "Generates sarif files");
     print_option("-H", "Print the name of each header file used");
     print_option("-sarif-path", "Set sarif output dir");
+    
+    print_option("-line-directives", "Emmits #line directives");
     print_option("-msvc-output", "Output is compatible with visual studio");
     print_option("-fdiagnostics-color=never", "Output will not use colors");
     print_option("-dump-tokens", "Output tokens before preprocessor");

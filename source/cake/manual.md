@@ -7,7 +7,7 @@ When applicable, Cake uses the same command line options of MSVC and GCC.
 
 ### Include directories
 
-Include directories are specified in `cakeconfig.h` file.
+Include directories are specified in `cakeconf.h` file.
 
 On Windows, to manually discover which directories are included, you can run at 
 Visual Studio command prompt the command:
@@ -23,7 +23,7 @@ To find out what are the directories used by GCC type:
 echo | gcc -E -Wp,-v -
 ```
   
-Sample of `cakeconfig.h`
+Sample of `cakeconf.h`
 
 ```c
 
@@ -62,16 +62,16 @@ Sample of `cakeconfig.h`
 
 The command line `cake -autoconfig` generates the cake config file.
 
-We can have a `cakeconfig.h` per project and call a more generic `cakeconfig.h` for system includes.
+We can have a `cakeconf.h` per project and call a more generic `cakeconf.h` for system includes.
 
 Sample: 
 
-`yourproject\cakeconfig.h`
+`yourproject\cakeconf.h`
 
 ```c
 
 //system includes...etc
-#include "C:\Program Files (x86)\cake\cakeconfig.h"
+#include "C:\Program Files (x86)\cake\cakeconf.h"
 
 //project extra includes
 #pragma dir ".\openssl\include"
@@ -143,6 +143,9 @@ Sarif Visual Studio plugin https://marketplace.visualstudio.com/items?itemName=W
 Specifies the Sarif output dir. "Visual Studio -> External Tools" 
 `-Wstyle  -msvc-output  -no-output -sarif -sarif-path "$(SolutionDir).sarif" $(ItemPath)`
 
+*  `-line-directives`
+Emmits \#line directives
+
 *  `-target`
 Defines how the source code is interpreted (integers sizes, align etc) and specifies the
 C89 output that is compatible with the target compiler.
@@ -154,7 +157,7 @@ Options: x86_x64_gcc, x86_msvc, x64_msvc, catalina, ccu8
 
 *  `-fanalyzer` runs cake flow analysis
 
-* `-auto-config` Generates cakeconfig.h header (see includes)
+* `-auto-config` Generates cakeconf.h header (see includes)
 
 * `-style=name` Set the style used in (w011) style warnings. Options are `-style=cake`, `-style=gnu`, `-style=microsoft`
 
@@ -165,28 +168,24 @@ Options: x86_x64_gcc, x86_msvc, x64_msvc, catalina, ccu8
 ### Output
 
 The current backend generates C89-compatible code, which can be pipelined with existing 
-compilers to produce executables. 
+compilers to produce executables. You can create your own C compiler backend.
 
-The output is a simplified version of C89.
-It does not include the following features:
+The output is a simplified version with some K & R and C89.
 
- - preprocessor
- - typedefs
- - enums
- - const
- - auto
- - Structs/unions declared inside other structs/unions
- - constant expressions are pre-computed
+Using C89 as base:
+
+ - no preprocessor
+ - no typedefs
+ - no enums
+ - no const
+ - no constant expressions
+ - no switch
+ - no nested structs/unions
  - no sizeof
- - static variables are non-local.
- - arrays size [] = {...} are pre-calculated
- - no switch 
+ - no local static variables
+ - arrays[size], size is always given and it is integer
+ - function prototypes are generated
  
- 
-The goal is for this simplified version to function as an intermediate language (IL).
-
-One directory called **out** is created keeping the same directory structure of the input files.
-
 For instance:
 
 ```c
@@ -1306,14 +1305,13 @@ int main()
 
 ### C23 Compound Literals with storage specifier
   
-TODO
 
 ```c
 void F(int *p){}
 
 int main()
 {
-   F((static int []){1, 2, 3, 0})
+   F((static int []){1, 2, 3, 0});
 }
 ```
 <button onclick="Try(this)">try</button>

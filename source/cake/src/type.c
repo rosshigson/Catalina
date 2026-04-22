@@ -2090,9 +2090,31 @@ enum sizeof_result get_sizeof_struct(struct struct_or_union_specifier* complete_
                             break;
                         case SIZEOF_RESULT_OVERLOW:
                         case SIZEOF_RESULT_RUNTIME:
-                        case SIZEOF_RESULT_INCOMPLETE:
                         case SIZEOF_RESULT_FUNCTION:
                             throw;
+                            break;
+
+                        case SIZEOF_RESULT_INCOMPLETE:
+                            
+                            /* handle C99 flexive array members */
+                            if (md->next == NULL && d->next == NULL)
+                            {
+                                if (type_get_category(&md->declarator->type) == TYPE_CATEGORY_ARRAY)
+                                {
+                                    /*
+                                      struct X {
+                                        int i;
+                                        double data[];
+                                      };
+                                    */
+                                    sizeof_result = SIZEOF_RESULT_OK;
+                                    item_size = 0;                                    
+                                }
+                            }
+                            else
+                            {
+                                throw;
+                            }
                             break;
                         }
 
@@ -3601,6 +3623,30 @@ static bool is_valid_type(struct parser_ctx* ctx, struct token* _Opt p_token, co
                                             "function returning array");
                 return false;
             }
+            else if (p->next && p->next->category == TYPE_CATEGORY_POINTER)
+            {
+                /*
+                int main(){
+                    int n;
+                    static typeof(int (*)[n]) f(){};
+                }
+                */
+
+                const struct type* _Opt p2 = p->next;
+                while (p2)
+                {
+                    if (p2->category == TYPE_CATEGORY_ARRAY && !p2->has_static_array_size)
+                    {
+                        compiler_diagnostic(C_ERROR_FUNCTION_RETURNS_ARRAY,
+                                            ctx,
+                                            p_token,
+                                            NULL,
+                                            "function returning VM type");
+                        return false;
+                    }    
+                    p2 = p2->next;
+                }                
+            }
         }
         else if (p->category == TYPE_CATEGORY_ITSELF &&
                  p->type_specifier_flags == TYPE_SPECIFIER_NONE)
@@ -3613,6 +3659,7 @@ static bool is_valid_type(struct parser_ctx* ctx, struct token* _Opt p_token, co
             return false;
         }
 
+        if (p)
         p = p->next;
     }
 

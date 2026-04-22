@@ -69,6 +69,7 @@
  *
  * version 8.8.4 - use "version.h"
  *
+ * version 8.8.8 - do not optimize inline PASM.
  */
 
 #include <ctype.h>

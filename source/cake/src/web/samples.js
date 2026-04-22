@@ -1097,7 +1097,14 @@ int main()
 }
 
 `;
-
+sample["C23"]["static compound literal"] =
+`
+// https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3038.htm
+int main()
+{
+    int* p = (static int[]) {1, 2, 3};
+}
+`;
 sample["C23"]["typeof / typeof_unqual"] =
     `
 #include <stdlib.h>
@@ -1811,14 +1818,15 @@ int main()
 `;
 
 sample["C2Y"]["Local functions II"] =
-    `
+`
 #include <stdlib.h>
 
-void async(void (* callback)(int result, void * data), void * data);
+void async(void callback(int result, void * data), void * data);
 
 int main()
 {
 	struct {int value; }* capture = calloc(1, sizeof * capture);
+
     static void callback(int result, void * data)
     {
 		typeof(capture) p = data;
@@ -1852,13 +1860,13 @@ int main()
 
 
 sample["C2Y"]["Literal function async I"] =
-    `
+`
 #include <stdlib.h>
 #include <stdio.h>
 
-void async(void (* callback)(int result, void * data), void * data)
+void async(void * capture, void callback(void* capture, int result))
 {
-   callback(1, data);
+   callback(capture, 1);
 }
 
 int main()
@@ -1867,19 +1875,19 @@ int main()
     if (capture == 0) return 1;
 
     capture->value = 123;
-    async((void (int result, void * data))
+    async(capture, (static void (void * capture, int result))
     {
-		struct capture* p = data;
+		struct capture* p = capture;
         printf("result=%d, value=%d\\n", result, p->value);
         free(p);
-    }, capture);
+    });
 }
 
 `;
 
 
 sample["C2Y"]["Literal function async II"] =
-    `
+`
 /*
    Pattern:
    do this -> then that -> then that ....
@@ -1888,31 +1896,32 @@ sample["C2Y"]["Literal function async II"] =
 #include <stdlib.h>
 #include <stdio.h>
 
-void login_async(void (* callback)(int id, void * data), void * data)
+void login_async(void * data, void callback(void* data, int id))
 {
-   callback(1, data);
+   callback(data, 1);
 }
 
-void get_data_async(void (* callback)(const char* email, void * data), void * data)
+void get_data_async(void * data, void callback(const char* email, void * data))
 {
-  callback("your data...", data);
+  callback(data, "your data...");
 }
 
 int main()
 {
 	struct capture { int id; }* capture = calloc(1, sizeof * capture);
-    login_async((void (int id, void * p))
+    login_async(capture, (static void (int id, void * capture))
     {
+        struct capture * cap1 = capture;
+
         printf("login completed. id=%d\\n", id);
-		struct capture * cap1 = p;
         cap1->id = id;
-        get_data_async((void (const char* email, void * data))
+        get_data_async(cap1, (static void (const char* email, void * data))
         {
 		    struct capture * cap2 = data;
             printf("your data='%s'  from id=%d\\n", email, cap2->id);
             free(cap2);
-        }, cap1 /*MOVED*/);
-    }, capture);
+        });
+    });
 }
 
 
@@ -1932,18 +1941,18 @@ void f1(){
 void f2(){
     /*we can use then at discarded expressions*/
     int i = 0;
-    (void(void)){ int k = sizeof(i); }();
+    (static void (void)){ int k = sizeof(i); }();
 }
 
 int g;
 void f3(){
     /*we can use variables from file scope*/
-    (void(void)){ int k = g; }();
+    (static void(void)){ int k = g; }();
 }
 
 
 void f4(){
-    (void(void)){ const char * s = __func__; }();
+    (static void(void)){ const char * s = __func__; }();
 }
 
 `;
@@ -1953,7 +1962,7 @@ sample["C2Y"]["Literal function 1"] =
 #include <stdio.h>
 int main()
 {
-  printf("%d", (int (void)){
+  printf("%d", (static int (void) ){
     return 1;
   }());
 }
@@ -1990,101 +1999,22 @@ int test_return(int x) {
 static_assert( 1?: 0 == 1);
 `;
 
-sample["C2Y"]["generic functions I"] =
-    `
-#include <assert.h>
-#include <errno.h>
-#include <limits.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#define SIZE_MAX 10000
-
-struct int_array {
-    int* data;
-    int size;
-    int capacity;
-};
-
-#def reserve(A, N)
-(int(typeof(A) p, int n)) {
-    if (n > p->capacity) {
-        if ((size_t)n > (SIZE_MAX / (sizeof(p->data[0])))) {
-            return EOVERFLOW;
-        }
-
-        void* pnew = realloc(p->data, n * sizeof(p->data[0]));
-        if (pnew == NULL) return ENOMEM;
-
-        p->data = pnew;
-        p->capacity = n;
-    }
-    return 0;
-}
-(A, N)
-#enddef
-
-#def push(A, I)
-    (int(typeof(A) p, typeof(I) value)) {
-    if (p->size == INT_MAX) {
-        return EOVERFLOW;
-    }
-
-    if (p->size + 1 > p->capacity) {
-        int new_capacity = 0;
-        if (p->capacity > (INT_MAX - p->capacity / 2)) {
-            /*overflow*/
-            new_capacity = INT_MAX;
-        } else {
-            new_capacity = p->capacity + p->capacity / 2;
-            if (new_capacity < p->size + 1) {
-                new_capacity = p->size + 1;
-            }
-        }
-
-        int error = reserve(p, new_capacity);
-        if (error != 0) {
-            return error;
-        }
-    }
-
-    p->data[p->size] = value;
-
-    p->size++;
-
-    return 0;
-}
-(A, I)
-#enddef
-
-void int_array_destroy(struct int_array* p) {
-
-    free(p->data);
-}
-
-int main() {
-    struct int_array a = {0};
-    push(&a, 1);
-    int_array_destroy(&a);
-}
-`;
-
 sample["C2Y"]["generic functions"] =
     `
 
-#define SWAP(a, b)\\
-  (void (typeof(a)* arg1, typeof(b)* arg2)) { \\
-    typeof(a) temp = *arg1; *arg1 = *arg2; *arg2 = temp; \\
-  }(&(a), &(b))
-
+#define SWAP(a, b)\
+  (static void (typeof(a) arg1, typeof(b) arg2)) { \
+    typeof(*a) temp = *arg1;\
+    *arg1 = *arg2;\
+    *arg2 = temp; \
+  }(a, b)
 
 int main()
 {
     int a = 1;
     int b = 2;
-    SWAP(a, b);
-    SWAP(a, b);
-    SWAP(a, b);
+    SWAP(&a, &b);
+    SWAP(&a, &b);
 }
 `;
 

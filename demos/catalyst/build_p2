@@ -43,7 +43,7 @@ if [[ "$CATALINA_DEFINE" != "" ]]; then
    exit
 fi
 
-./build_p2_serial $1 $2 $3
+./build_p2_serial $*
 
-./build_p2_vga $1 $2 $3
+./build_p2_vga $*
 

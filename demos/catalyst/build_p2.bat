@@ -36,9 +36,9 @@ goto done
 
 :start
 
-call build_p2_serial %1 %2 %3
+call build_p2_serial %*
 
-call build_p2_vga %1 %2 %3
+call build_p2_vga %*
 
 :done
 

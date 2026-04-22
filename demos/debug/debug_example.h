@@ -41,6 +41,8 @@ extern void test_10 (int (*f) (int), int i);
 extern void test_11(int i, int j);
 extern void test_12(int dir, int *i, int **j);
 extern void test_13(int numbers[]);
+extern void test_14();
+extern void test_15();
 
 extern void print_person (struct person *p);
 extern void print_result (char *str, int i);

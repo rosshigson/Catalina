@@ -25,7 +25,6 @@ targets that can be specified are:
   compile       - compile only, do not load or run
   load          - load using payload (which also runs it)
   run           - load using payload and then run it (this is the default)
-  force_rebuild - rebuild coremark even if the sources have not changed
   clean         - delete the binaries etc
 
 The 'load' target uses payload to load the binary after it is compiled. On the
@@ -45,6 +44,14 @@ Or, to build coremark in COMPACT mode at 300 Mhz:
 The Catalina options "-p2 -C99 -O5 -C CLOCK -lc lm" are already specified in 
 the Makefile, and do not need to be specified using XCFLAGS. To change them, 
 modify both 'catalina/coremark.mak' and 'catalina/coremark.h'
+
+For a single-threaded coremark, the best coremark results are typically 
+achieved by adding -C NO_INTERRUPTS and -C FAST_SAVE_RESTORE. These can be 
+added uing XCFLAGS (as above) or by using CATALINA_DEFINE. For example (on
+Windows). Remember to add the 'clean' target when changing compile options:
+
+   set CATALINA_DEFINE=NO_INTERRUPTS FAST_SAVE_RESTORE
+   make PORT_DIR=catalina clean load
 
 To build coremark to use multiple cogs, set the coremark C Symbol MULTITHREAD 
 to a value greater than 1. Values up to 5 should work on any propeller 2 

@@ -196,11 +196,64 @@ documents folder.
 New Functionality
 -----------------
 
-1. Cake updated (to 0.13.05).
+1. Cake updated (to 0.13.12).
 
 2. Document 'Lua on the Propeller with Catalina' updated.
 
 3. Document 'Catalina Optimizer Reference Manual' updated.
+
+4. The notes in CATALINA.TXT in the demos/coremark directory have been
+   updated to remove the references to 'force_rebuild' (which is not 
+   implemented in the coremark makefile!) and also add that faster 
+   single-threaded coremark results can be optained by defining the 
+   Catalina symbols NO_INTERRUPTS and FAST_SAVE_RESTORE - this speeds
+   up coremark by about 25%
+
+5. Catalina has a new command line option '-Y' (i.e. minus capital Y)
+   which tells Catalina to preprocess the C sources but not to compile them.
+   The preprocessed output files will be written into a 'catalina' subfolder 
+   in the current directory. Since there may be more than one source file, 
+   any '-o' option is ignored, and the output files will have the same names 
+   as the input files. For example:
+
+     catalina -Y hello.c bye.c
+
+   will generate two output files - 'catalina/hello.c' and 'catalina/bye.c'.
+
+6. Catalina now accepts debug options (i.e. -g or -g3) in conjunction 
+   with C standards other than -C89 or -C90, but issues a warning that
+   the options may be incompatible. While Catalina's version of Cake now 
+   generates #line directives (which allow the Catalina debugger to display 
+   the line being debugged) debugger support is still very experimental. 
+   Cake changes the source so much that some debugger commands may not 
+   work as expected - e.g. Cake may remove, rename or add new variables, 
+   and also remove, modify, re-arrange or add new lines of source code.
+
+   Another option is to first use Cake to translate C99 (or later) source 
+   files to C89, and then compile and debug THOSE files. To do this, add the
+   new -Y command-line option to a catalina command, which tells Catalina to 
+   preprocess the source files but not compile them. It is important to add 
+   all the correct compile-time options (e.g. libraries and other options) 
+   so that the file will be pre-processed correctly. Any-o option will be 
+   ignored - instead, since there may be more than one source file, the 
+   preprocessed files will be written to a "catalina" subfolder created in 
+   the current directory, with the same names as the original files.
+
+   For example, if the command used to compile %LCCDIR%\demos\hello_99.c 
+   WITHOUT debugging is:
+
+      catalina hello_99.c -p2 -C99 -lci -C P2_EDGE -C VGA
+
+   Then to generate the C89 version, first add -Y to that command:
+
+      catalina hello_99.c -p2 -C99 -lci -C P2_EDGE -C VGA -Y
+
+    Then the file catalina\hello_99.c can be compiled for debugging, 
+    loaded and debugged as follows:
+
+      catalina catalina\hello_99.c -p2 -lci -C P2_EDGE -C VGA -g3
+      payload -o2 catalina\hello_99
+      blackbox catalina\hello_99
 
 Other Changes
 -------------
@@ -227,3 +280,7 @@ Other Changes
 
    Affected the Propeller 2 only, on Windows. Linux and Catalyst.
  
+4. Fixed a bug in the Blackbox source level debugger, which was sometimes
+   assigning breakpoint addresses to the wrong source line. The debugger 
+   executed the breakpoints correctly, but may have displayed the wrong 
+   source line when the breakpoint address was reached.

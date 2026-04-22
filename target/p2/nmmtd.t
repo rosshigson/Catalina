@@ -44,14 +44,6 @@ CON
 
 #include <constant.inc>
 
-' NO_INTERRUPTS - note that we CANNOT use SKIPF (which is enabled by the 
-'                 symbol NO_INTERRUPTS) in either the dynamic or threaded 
-'                 NMM kernels - either because they need interrupts themselves,
-'                 or because because we cannot guarantee they will not be used
-'                 in programs that use interrupts.  We cannot check even check
-'                 for this this at compile time, because these kernels are 
-'                 precompiled into the library. So we must simply avoid SKIPF.
-
 ' FAST_SAVE_RESTORE - if defined, we use fast block moves to save and restore
 '                     multiple registers. This improves speed, but uses more
 '                     stack space. Can be defined here, but not on the 

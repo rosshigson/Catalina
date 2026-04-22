@@ -469,8 +469,11 @@ static int filename(char *name, char *base) {
 		base = basepath(name);
 	switch (suffix(name, suffixes, 4)) {
 	case 0:	/* C source files */
-		compose(cpp, plist, append(name, 0), 0);
 		if (Eflag) {
+      /* output to same name, in 'catalina' directory */
+      char outname[512] = "catalina/";
+      strcat(outname, name);
+		  compose(cpp, plist, append(name, 0), append(outname, 0));
 			status = callsys(av);
 			break;
 		}
