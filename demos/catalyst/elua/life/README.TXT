@@ -45,3 +45,18 @@ without having to specify the folder. For example:
 
    cp life/elife.lua elife.lua
    elife
+
+Note that elife.lua uses eluasx, which is compiled to execute the client
+loaded at a specific Hub RAM address. It may happen that due to changes
+in Catalina, or if elua is compiled on a different platform, or with
+different options, this address may change slightly. If this is the case, 
+when the program is executed it will print out a message like:
+
+   Error: secondary client must specify address(0x000XXXXX)
+
+If it does, edit the file demos/elua/eluasx.c and modify the #pragma catapult
+secondary to read (replacing XXXXX as appropriate):
+
+   #pragma catapult secondary client(shared_data_t) address(0xXXXXX) mode(CMM) stack(100000) 
+
+Then rebuild it and replace eluasx.bin on the SD card with the new version.

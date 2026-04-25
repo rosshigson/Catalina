@@ -198,18 +198,7 @@ New Functionality
 
 1. Cake updated (to 0.13.14). This version has support for C bit-fields.
 
-2. Document 'Lua on the Propeller with Catalina' updated.
-
-3. Document 'Catalina Optimizer Reference Manual' updated.
-
-4. The notes in CATALINA.TXT in the demos/coremark directory have been
-   updated to remove the references to 'force_rebuild' (which is not 
-   implemented in the coremark makefile!) and also add that faster 
-   single-threaded coremark results can be optained by defining the 
-   Catalina symbols NO_INTERRUPTS and FAST_SAVE_RESTORE - this speeds
-   up coremark by about 25%
-
-5. Catalina has a new command line option '-Y' (i.e. minus capital Y)
+2. Catalina has a new command line option '-Y' (i.e. minus capital Y)
    which tells Catalina to preprocess the C sources but not to compile them.
    The preprocessed output files will be written into a 'catalina' subfolder 
    in the current directory. Since there may be more than one source file, 
@@ -220,7 +209,7 @@ New Functionality
 
    will generate two output files - 'catalina/hello.c' and 'catalina/bye.c'.
 
-6. Catalina now accepts debug options (i.e. -g or -g3) in conjunction 
+3. Catalina now accepts debug options (i.e. -g or -g3) in conjunction 
    with C standards other than -C89 or -C90, but issues a warning that
    the options may be incompatible. While Catalina's version of Cake now 
    generates #line directives (which allow the Catalina debugger to display 
@@ -234,9 +223,9 @@ New Functionality
    new -Y command-line option to a catalina command, which tells Catalina to 
    preprocess the source files but not compile them. It is important to add 
    all the correct compile-time options (e.g. libraries and other options) 
-   so that the file will be pre-processed correctly. Any-o option will be 
+   so that the file will be pre-processed correctly. Any -o option will be 
    ignored - instead, since there may be more than one source file, the 
-   preprocessed files will be written to a "catalina" subfolder created in 
+   preprocessed files will be written to a 'catalina' subfolder created in 
    the current directory, with the same names as the original files.
 
    For example, if the command used to compile %LCCDIR%\demos\hello_99.c 
@@ -258,7 +247,18 @@ New Functionality
 Other Changes
 -------------
 
-1. Fixed a bug in the Catalina Optimizer, which means that Optimizing 
+1. Document 'Lua on the Propeller with Catalina' updated.
+
+2. Document 'Catalina Optimizer Reference Manual' updated.
+
+3. The notes in CATALINA.TXT in the demos/coremark directory have been
+   updated to remove the references to 'force_rebuild' (which is not 
+   implemented in the coremark makefile!) and also add that faster 
+   single-threaded coremark results can be obtained by defining the 
+   Catalina symbols NO_INTERRUPTS and FAST_SAVE_RESTORE - this speeds
+   up coremark by about 25%
+
+4. Fixed a bug in the Catalina Optimizer, which means that Optimizing 
    programs that contained inline PASM could cause the program to fail.
    The Optimizer now skips all code contained in inline PASM statements, 
    because (a) such code does not necessarily use the same memory model as 
@@ -268,19 +268,19 @@ Other Changes
 
    Affected the Propeller 1 and 2, on Windows and Linux.
 
-2. Fixed a bug in the Catalina Optimizer, which means that Optimizing 
+5. Fixed a bug in the Catalina Optimizer, which means that Optimizing 
    COMPACT programs could cause the program to fail, because the Optimizer
    was not retaining some "alignl" statements that were REQUIRED for the 
    code to execute correctly (e.g. after an I16B_CALI instruction). 
 
    Affected the Propeller 1 and 2, on Windows and Linux.
 
-3. Fixed a bug in the inline PASM demo test_inline_pasm_5.c, which did
-   not correct for pin numbers >= 32 (i.e. accessed via Port B). 
+6. Fixed a bug in the inline PASM demo inline_pasm/test_inline_pasm_5.c, 
+   which did not correct for pin numbers >= 32 (i.e. accessed via Port B). 
 
    Affected the Propeller 2 only, on Windows. Linux and Catalyst.
  
-4. Fixed a bug in the Blackbox source level debugger, which was sometimes
+7. Fixed a bug in the Blackbox source level debugger, which was sometimes
    assigning breakpoint addresses to the wrong source line. The debugger 
    executed the breakpoints correctly, but may have displayed the wrong 
    source line when the breakpoint address was reached.
