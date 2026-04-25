@@ -3223,10 +3223,28 @@ struct typeof_specifier* _Owner _Opt  typeof_specifier(struct parser_ctx* ctx)
 
         if (p_typeof_specifier->typeof_specifier_argument->expression)
         {
+            if (type_is_bitfield(&p_typeof_specifier->typeof_specifier_argument->expression->type))
+            {
+                compiler_diagnostic(C_ERROR_TYPEOF_BITFIELD,
+                    ctx, 
+                    p_typeof_specifier->typeof_specifier_argument->expression->first_token, 
+                    NULL, 
+                    "typeof used in bit-field");
+                throw;
+            }
             p_typeof_specifier->type = type_dup(&p_typeof_specifier->typeof_specifier_argument->expression->type);
         }
         else if (p_typeof_specifier->typeof_specifier_argument->type_name)
         {
+            if (type_is_bitfield(&p_typeof_specifier->typeof_specifier_argument->type_name->abstract_declarator->type))
+            {
+                compiler_diagnostic(C_ERROR_TYPEOF_BITFIELD,
+                    ctx, 
+                    p_typeof_specifier->typeof_specifier_argument->type_name->first_token,
+                    NULL,
+                    "typeof used in bit-field");
+                throw;
+            }
             p_typeof_specifier->type = type_dup(&p_typeof_specifier->typeof_specifier_argument->type_name->abstract_declarator->type);
         }
 
@@ -4424,8 +4442,48 @@ struct member_declarator* _Owner _Opt member_declarator(
 
         if (ctx->current->type == ':')
         {
+            if (!type_is_integer(&p_member_declarator->declarator->type))
+            {
+                compiler_diagnostic(C_ERROR_STORAGE_SIZE,
+                ctx,
+                p_member_declarator->declarator->first_token_opt,
+                NULL,
+                "bit-field must be integer type");
+            }
+
+            size_t sz = 0;
+            enum sizeof_result r = type_get_sizeof(&p_member_declarator->declarator->type, &sz, ctx->options.target);
+            if (r != SIZEOF_RESULT_OK)
+                throw;
+            sz = sz * CHAR_BIT;
+
             parser_match(ctx);
             p_member_declarator->constant_expression = constant_expression(ctx, true, EXPRESSION_EVAL_MODE_VALUE_AND_TYPE);
+
+            long long bit_field_width = 
+                object_to_signed_long_long(&p_member_declarator->constant_expression->object);
+
+            if (bit_field_width < 0)
+            {
+                compiler_diagnostic(C_ERROR_STORAGE_SIZE,
+                ctx,
+                p_member_declarator->constant_expression->first_token,
+                NULL,
+                "bitfield with must be zero or positive.");
+            }
+
+            if (bit_field_width > sz)
+            {
+                compiler_diagnostic(C_ERROR_STORAGE_SIZE,
+                ctx,
+                p_member_declarator->constant_expression->first_token,
+                NULL,
+                "with of bitfield (%zu) exceess type size (%zu)", bit_field_width, sz);
+            }
+
+            /* adjust the type to be bitfield */
+            p_member_declarator->declarator->type.array_num_elements = (size_t) bit_field_width;
+            p_member_declarator->declarator->type.storage_class_specifier_flags |= STORAGE_SPECIFIER_BITFIELD;
         }
     }
     catch

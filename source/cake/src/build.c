@@ -128,6 +128,12 @@ static void HEADER(const char* text)
 
 int main()
 {
+#if defined(_WIN32) && !defined(__CATALINA__)
+    execute_cmd(CC " -D_CRT_SECURE_NO_WARNINGS install.c advapi32.lib user32.lib " CC_OUTPUT("install.exe"));
+#else
+    execute_cmd(CC " -D_CRT_SECURE_NO_WARNINGS install.c " CC_OUTPUT("install.exe"));
+#endif
+
 
     HEADER("Build tools");
 

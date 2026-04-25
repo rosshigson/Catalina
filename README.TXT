@@ -196,7 +196,7 @@ documents folder.
 New Functionality
 -----------------
 
-1. Cake updated (to 0.13.12).
+1. Cake updated (to 0.13.14). This version has support for C bit-fields.
 
 2. Document 'Lua on the Propeller with Catalina' updated.
 

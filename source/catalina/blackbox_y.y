@@ -2332,47 +2332,42 @@ void process_lines (int src) {
                c = debug_info[src-1];
                last = NULL;
                if (diagnose) {
-                  printf("processing line %d - addr %X\n",
-                     l->d.num, l->d.locn->value);
+                  printf("processing file %d line %d - addr %X\n",
+                     l->d.src, l->d.num, l->d.locn->value);
                }
-               while ((c != NULL) 
-               &&  (c->d.num < l->d.num) 
-               &&  (c->d.locn->value != l->d.locn->value)) {
+               while ((c != NULL) && (c->d.num <= l->d.num)) {
                   last = c;
                   c = c->next;
                }
-               if ((c != NULL) && (c->d.locn->value == l->d.locn->value)) {
+               // Check for quirks in the way the C compiler handles 
+               // blocks - it adds a line for the block with the 
+               // same address as the first statement in the block, but 
+               // it is the statement we want to add the breakpoint to, 
+               // not the block.
+               // A side-effect of this is that we can end up with a 
+               // breakpoint added for the last statement in an empty
+               // block if the line following it is a while statement. 
+               // But this is ok because of the way code for while 
+               // statements is generated.
+               if ((last != NULL) 
+               &&  (last->d.locn->value == l->d.locn->value)) {
                   // if the line we are inserting has the same address as
-                  // the the line we are inserting it after, but goes 
-                  // BEFORE the next line ALREADY in the list, then don't 
-                  // insert it, just update the line number of the existing 
-                  // line. This is a quirk of the way the C compiler handles 
-                  // blocks, because it adds a line for the block with the 
-                  // same address as the first statement in the block, but 
-                  // it is the statement we want to add, not the block. 
-                  // A side-effect of this is that we can end up with a 
-                  // breakpoint added for the last statement in an empty
-                  // block if the line following it is a while statement. 
-                  // But this is ok because of the way code for while 
-                  // statements is generated.
-                  if ((c->next == NULL) || (l->d.num >= (c->next)->d.num)) { 
-                     if (diagnose) {
-                        printf("update file %d, line %d - same addr as line %d\n",
-                           l->d.src, c->d.num, l->d.num);
-                     }
-                     c->d.num = l->d.num;
-                     free(l);
+                  // the line we are inserting it after, then don't insert
+                  // it, just update the line number of the last line. 
+                  if (diagnose) {
+                     printf("update file %d, line %d - same addr as line %d\n",
+                        l->d.src, last->d.num, l->d.num);
                   }
+                  last->d.num = l->d.num;
+                  free(l);
+               }
+               else if (last == NULL) {
+                  l->next = debug_info[src-1];
+                  debug_info[src-1] = l;
                }
                else {
-                  if (last == NULL) {
-                     l->next = debug_info[src-1];
-                     debug_info[src-1] = l;
-                  }
-                  else {
-                     l->next = c;
-                     last->next = l;
-                  }
+                  l->next = c;
+                  last->next = l;
                }
             }
             p = p->next;
