@@ -40,19 +40,9 @@ static void emit_line_directive(struct d_visit_ctx* ctx,
         ss_fprintf(oss, "#line %d \"%s\"\n", tk->line, tk->token_origin->lexeme);
     }
     
-struct vm_dim_snapshot
-{
-    struct expression* expr;
-    int snap_num;
-};
-static int vm_collect_dims(struct d_visit_ctx* ctx,
-                            const struct type* p_type,
-                            struct vm_dim_snapshot dims[],
-                            int max_dims);
 static void vm_emit_snapshot_decls(struct d_visit_ctx* ctx,
                                     struct osstream* oss_body,
-                                    const struct vm_dim_snapshot dims[],
-                                    int dim_count);
+                                    const struct type* p_type);
 
 static void print_initializer(struct d_visit_ctx* ctx,
     struct osstream* oss,
@@ -69,8 +59,6 @@ void d_visit_ctx_destroy(_Dtor struct d_visit_ctx* ctx)
     hashmap_destroy(&ctx->structs_map);
     hashmap_destroy(&ctx->file_scope_declarator_map);
     hashmap_destroy(&ctx->instantiated_function_literals);
-    hashmap_destroy(&ctx->vm_expression_to_dim_var);
-
     ss_close(&ctx->block_scope_declarators);
     ss_close(&ctx->add_this_before);
     ss_close(&ctx->add_this_before_external_decl);
@@ -314,7 +302,7 @@ static void object_print_initialization_list(struct d_visit_ctx* ctx, struct oss
 static void d_visit_secondary_block(struct d_visit_ctx* ctx, struct osstream* oss, struct secondary_block* p_secondary_block);
 static void d_visit_init_declarator(struct d_visit_ctx* ctx, struct osstream* oss, struct init_declarator* p_init_declarator, enum function_specifier_flags function_specifier_flags, enum storage_class_specifier_flags storage_class_specifier_flags);
 static void d_visit_init_declarator_list(struct d_visit_ctx* ctx, struct osstream* oss, struct init_declarator_list* p_init_declarator_list, enum function_specifier_flags function_specifier_flags, enum storage_class_specifier_flags storage_class_specifier_flags);
-static void d_visit_compound_statement(struct d_visit_ctx* ctx, struct osstream* oss, struct compound_statement* p_compound_statement);
+static void d_visit_compound_statement(struct d_visit_ctx* ctx, struct osstream* oss, struct compound_statement* p_compound_statement, struct osstream* _Opt parameters_vars, struct osstream* _Opt parameters_init);
 static void d_visit_statement(struct d_visit_ctx* ctx, struct osstream* oss, struct statement* p_statement);
 static void d_visit_unlabeled_statement(struct d_visit_ctx* ctx, struct osstream* oss, struct unlabeled_statement* p_unlabeled_statement);
 static void assign_each_member_from_initialization(struct d_visit_ctx* ctx, struct osstream* ss, const struct object* object,
@@ -637,20 +625,6 @@ static const char* get_op_by_expression_type(enum expression_type type)
 static void d_visit_compound_statement_2(const char* var_name, struct d_visit_ctx* ctx, struct osstream* oss, struct compound_statement* p_compound_statement);
 
 
-
-static bool vm_find_snap_num(struct d_visit_ctx* ctx, const struct expression* expr, size_t* num)
-{
-    char snap_key[64];
-    snprintf(snap_key, sizeof(snap_key), "%p", (void*)expr);
-    struct map_entry* _Opt p = hashmap_find(&ctx->vm_expression_to_dim_var, snap_key);
-    if (p == NULL)
-    {
-        return false;
-    }
-    *num = p->data.number;
-    return true;
-}
-
 static enum sizeof_result vm_emit_sizeof_expr_core(struct d_visit_ctx* ctx,
                                      struct osstream* oss,
                                      const struct type* p_type,
@@ -667,17 +641,9 @@ static enum sizeof_result vm_emit_sizeof_expr_core(struct d_visit_ctx* ctx,
 
         if (p_type->array_num_elements <= 0)
         {
-            size_t num = 0;
-            if (vm_find_snap_num(ctx, p_type->p_array_num_elements_expression, &num))
-            {
                 if (oss->size > 0)
                     ss_fprintf(oss, " * ");
-
-                char name[100] = { 0 };
-                generate_name(num, sizeof name, name);
-                ss_fprintf(oss, "%s", name);
-            }
-
+            ss_fprintf(oss, "__vm%d", p_type->vm_dim_id);
             arraysize = 1;
         }
         else
@@ -752,13 +718,7 @@ static void vm_emit_countof_expr(struct d_visit_ctx* ctx,
     if (p_type->p_array_num_elements_expression != NULL &&
         p_type->array_num_elements <= 0)
     {
-        size_t num = 0;
-        if (vm_find_snap_num(ctx, p_type->p_array_num_elements_expression, &num))
-        {
-            char name[100] = { 0 };
-            generate_name(num, sizeof name, name);
-            ss_fprintf(oss, "%s", name);
-        }
+        ss_fprintf(oss, "__vm%d", p_type->vm_dim_id);
     }
     else if (p_type->array_num_elements > 0)
     {
@@ -847,42 +807,6 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
             return;
         }
     }
-#if 0
-    
-    /* 
-      VM types can be used inside the expression cast, sizeof, compound literal etc
-      Here we register these VM types
-    */
-    struct vm_dim_snapshot dims[50];
-
-    if (p_expression)
-    {
-        int dim_count = vm_collect_dims(ctx, &p_expression->type, dims, _Countof(dims));
-        if (dim_count > 0)
-            vm_emit_snapshot_decls(ctx, &ctx->add_this_before, dims, dim_count);
-    }
-
-    if (p_expression->left)
-    {
-        int dim_count = vm_collect_dims(ctx, &p_expression->left->type, dims, _Countof(dims));
-        if (dim_count > 0)
-            vm_emit_snapshot_decls(ctx, &ctx->add_this_before, dims, dim_count);
-    }
-    if (p_expression->right)
-    {
-        int dim_count = vm_collect_dims(ctx, &p_expression->right->type, dims, _Countof(dims));
-        if (dim_count > 0)
-            vm_emit_snapshot_decls(ctx, &ctx->add_this_before, dims, dim_count);
-    }
-
-    if (p_expression->type_name != NULL)
-    {
-        int dim_count = vm_collect_dims(ctx, &p_expression->type_name->type, dims, _Countof(dims));
-        if (dim_count > 0)
-            vm_emit_snapshot_decls(ctx, &ctx->add_this_before, dims, dim_count);
-    }
-#endif
-    
     ctx->address_of_argument = false;
 
     switch (p_expression->expression_type)
@@ -1264,7 +1188,19 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
         assert(p_expression->left != NULL);
         assert(p_expression->right != NULL);
 
-        if (type_is_vm(&p_expression->left->type))
+        /*
+           We need to check if A is VM,
+              A[i0][i1][i2]...[ik]
+           if it is we have a [flat_index]
+        */
+
+        struct expression* expr0 = p_expression;
+        while (expr0 && expr0->expression_type == POSTFIX_ARRAY)
+        {
+            expr0 = expr0->left;
+        }
+
+        if (expr0 && type_is_vm(&expr0->type))
         {
         /*
                A[i0][i1][i2]...[ik]
@@ -1287,7 +1223,18 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
                     {
                 if (offset_flat.size > 0)
                     ss_fprintf(&offset_flat, " + ");
+
+                if (is_primary_expression(expr->right->expression_type))
+                {
                 d_visit_expression(ctx, &offset_flat, expr->right);
+                }
+                else
+                {
+                    ss_fprintf(&offset_flat, "(");
+                    d_visit_expression(ctx, &offset_flat, expr->right);
+                    ss_fprintf(&offset_flat, ")");
+                }
+
 
                 struct type* p_type = expr->left->type.next;
                 while (type_is_array(p_type))
@@ -1298,13 +1245,7 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
                     }
                     else
                     {
-                        size_t num;
-                        if (vm_find_snap_num(ctx, p_type->p_array_num_elements_expression, &num))
-                {
-                            char name[100] = { 0 };
-                            generate_name(num, sizeof name, name);
-                            ss_fprintf(&offset_flat, "* %s", name);
-                        }
+                        ss_fprintf(&offset_flat, " * __vm%d", p_type->vm_dim_id);
                         }
                     p_type = p_type->next;
                     }
@@ -1397,7 +1338,7 @@ static void d_visit_expression(struct d_visit_ctx* ctx, struct osstream* oss, st
         const int current_indentation = ctx->indentation;
         ctx->indentation = 0;
         struct osstream function_literal_body = { 0 };
-        d_visit_compound_statement(ctx, &function_literal_body, p_expression->compound_statement);
+        d_visit_compound_statement(ctx, &function_literal_body, p_expression->compound_statement, NULL, NULL);
         ctx->p_current_function_opt = p_current_function_opt;
         ctx->indentation = current_indentation;
 
@@ -2530,7 +2471,7 @@ static void d_visit_primary_block(struct d_visit_ctx* ctx, struct osstream* oss,
 
     if (p_primary_block->compound_statement)
     {
-        d_visit_compound_statement(ctx, oss, p_primary_block->compound_statement);
+        d_visit_compound_statement(ctx, oss, p_primary_block->compound_statement, NULL, NULL);
     }
     else if (p_primary_block->iteration_statement)
     {
@@ -2689,7 +2630,12 @@ static void d_visit_block_item_list(struct d_visit_ctx* ctx, struct osstream* os
 }
 
 
-static void d_visit_compound_statement(struct d_visit_ctx* ctx, struct osstream* oss, struct compound_statement* p_compound_statement)
+static void d_visit_compound_statement(struct d_visit_ctx* ctx,
+    struct osstream* oss,
+    struct compound_statement* p_compound_statement,
+    struct osstream* _Opt parameters_vars,
+    struct osstream* _Opt parameters_init
+)
 {
     bool is_local = ctx->is_local;
     ctx->is_local = true;
@@ -2720,9 +2666,21 @@ static void d_visit_compound_statement(struct d_visit_ctx* ctx, struct osstream*
     print_identation(ctx, oss);
     ss_fprintf(oss, "{\n");
 
+    if (parameters_vars && parameters_vars->size > 0)
+    {
+        ss_fprintf(oss, "%s", parameters_vars->c_str);
+        ss_fprintf(oss, "\n");
+    }
+
     if (ctx->block_scope_declarators.c_str)
     {
         ss_fprintf(oss, "%s", ctx->block_scope_declarators.c_str);
+        ss_fprintf(oss, "\n");
+    }
+
+    if (parameters_init && parameters_init->size > 0)
+    {
+        ss_fprintf(oss, "%s", parameters_init->c_str);
         ss_fprintf(oss, "\n");
     }
 
@@ -2807,51 +2765,6 @@ static void d_visit_compound_statement_2(const char* var_name, struct d_visit_ct
     ss_close(&block_scope_declarators);
     ss_close(&local);
 }
-
-
-static int vm_collect_dims(struct d_visit_ctx* ctx,
-                            const struct type* p_type,
-                            struct vm_dim_snapshot dims[],
-                            int max_dims)
-{
-    int count = 0;
-    const struct type* _Opt it = p_type;
-    while (it && count < max_dims)
-    {
-        if (it->category == TYPE_CATEGORY_ARRAY &&
-            it->p_array_num_elements_expression != NULL &&
-            !object_has_constant_value(&it->p_array_num_elements_expression->object))
-        {
-
-            char snap_key[64];
-            snprintf(snap_key, sizeof(snap_key), "%p", (void*)it->p_array_num_elements_expression);
-
-            size_t num;
-            bool r = vm_find_snap_num(ctx, it->p_array_num_elements_expression, &num);
-            if (r)
-            {
-                dims[count].expr = (struct expression*)it->p_array_num_elements_expression;
-                dims[count].snap_num = (int)num;
-            }
-            else
-            {
-                int snap_num = ctx->cake_local_declarator_number++;
-                dims[count].expr = (struct expression*)it->p_array_num_elements_expression;
-                dims[count].snap_num = snap_num;
-                
-                struct hash_item_set item = { 0 };
-                item.number = snap_num;
-                hashmap_set(&ctx->vm_expression_to_dim_var, snap_key, &item);
-                hash_item_set_destroy(&item);
-            }
-
-            count++;
-        }
-        it = it->next;
-    }
-    return count;
-}
-
 static void d_visit_function_body(struct d_visit_ctx* ctx,
     struct osstream* oss,
     const struct declarator* function_definition)
@@ -2863,7 +2776,6 @@ static void d_visit_function_body(struct d_visit_ctx* ctx,
         return;
     }
 
-    hashmap_remove_all(&ctx->vm_expression_to_dim_var);  /* reset */
     ctx->cake_local_declarator_number = 0; /* reset */
 
     int indentation = ctx->indentation;
@@ -2872,83 +2784,35 @@ static void d_visit_function_body(struct d_visit_ctx* ctx,
     ctx->p_current_function_opt = function_definition;
 
 
-    struct vm_dim_snapshot all_dims[32];
-    int all_dim_count = 0;
-
     const struct type* _Opt func_type = &function_definition->type;
     while (func_type && func_type->category != TYPE_CATEGORY_FUNCTION)
         func_type = func_type->next;
 
+    struct osstream snaps = { 0 };
+
+    struct osstream bk = { 0 };
+    ss_swap(&bk, &ctx->block_scope_declarators);
+
     if (func_type != NULL)
     {
+        ctx->indentation++;
         struct param* _Opt pa = func_type->params.head;
-        while (pa && all_dim_count < _Countof(all_dims))
+        while (pa)
         {
             if (type_is_vm(&pa->type))
             {
-                struct vm_dim_snapshot dims[32];
-                int count = vm_collect_dims(ctx, &pa->type, dims, _Countof(dims));
-                for (int i = 0; i < count && all_dim_count < _Countof(dims); i++)
-                    all_dims[all_dim_count++] = dims[i];
+                vm_emit_snapshot_decls(ctx, &snaps, &pa->type);
             }
             pa = pa->next;
         }
+        ctx->indentation--;
     }
+    ss_swap(&bk, &ctx->block_scope_declarators);
 
-    if (all_dim_count == 0)
-    {
-        /* No VM params — normal path */
-    d_visit_compound_statement(ctx, oss, function_definition->function_body);
-    }
-    else
-    {
-        /*
-         * Capture the compound statement output into a temporary stream,
-         * then inject snapshot declarations right after the opening "{".
-         */
-        struct osstream body = { 0 };
-        d_visit_compound_statement(ctx, &body, function_definition->function_body);
 
-        /* Build snapshot lines:  "    int __v0 = (n);\n" */
-        struct osstream snaps = { 0 };
-        for (int i = 0; i < all_dim_count; i++)
-        {
-            print_identation_core(&snaps, 1);
-            char name[100] = { 0 };
-            generate_name(all_dims[i].snap_num, sizeof name, name);
-            ss_fprintf(&snaps, "%s %s = ", ctx->size_t_type_name, name);
-            d_visit_expression(ctx, &snaps, all_dims[i].expr);
-            ss_fprintf(&snaps, ";\n");
-        }
-        /*
-         * The body stream starts with "{\n".
-         * Inject snapshot lines right after that.
-         */
-        if (body.c_str && snaps.c_str)
-        {
-            const char* open_brace = "{\n";
-            size_t prefix_len = strlen(open_brace);
-            if (strncmp(body.c_str, open_brace, prefix_len) == 0)
-            {
-                ss_fprintf(oss, "{\n");
-                ss_fprintf(oss, "%s", snaps.c_str);
-                ss_fprintf(oss, "%s", body.c_str + prefix_len);
-            }
-            else
-            {
-                /* fallback: just append */
-                ss_fprintf(oss, "%s", body.c_str);
-            }
-        }
-        else if (body.c_str)
-        {
-            ss_fprintf(oss, "%s", body.c_str);
-        }
-
+    d_visit_compound_statement(ctx, oss, function_definition->function_body, &bk, &snaps);
+    ss_close(&bk);
         ss_close(&snaps);
-        ss_close(&body);
-    }
-
     ctx->p_current_function_opt = previous_func;//restore
     ctx->indentation = indentation; //restore
 }
@@ -4283,25 +4147,57 @@ static void print_initializer(struct d_visit_ctx* ctx,
 
 static void vm_emit_snapshot_decls(struct d_visit_ctx* ctx,
                                     struct osstream* oss_body,
-                                    const struct vm_dim_snapshot dims[],
-                                    int dim_count)
+                                    const struct type* p_type)
 {
-    for (int i = 0; i < dim_count; i++)
+    const struct type* _Opt it = p_type;
+    while (it)
     {
+        if (it->category == TYPE_CATEGORY_ARRAY &&
+            it->p_array_num_elements_expression != NULL &&
+            !object_has_constant_value(&it->p_array_num_elements_expression->object))
+        {
+            char name[100] = { 0 };
+            snprintf(name, sizeof name, "__vm%d;", it->vm_dim_id);
+
+
+            if (ctx->block_scope_declarators.c_str == NULL ||
+                strstr(ctx->block_scope_declarators.c_str, name) == 0)
+            {
+                /*
+                 TODO
+                 we could use something else to track this, instead of text search
+                 maybe a list, also if not used we could not emmit the variable
+                */
+                snprintf(name, sizeof name, "__vm%d", it->vm_dim_id);
+
         /* declaration hoisted to block top */
         print_identation(ctx, &ctx->block_scope_declarators);
-        char name[100] = { 0 };
-        generate_name(dims[i].snap_num, sizeof name, name);
-        ss_fprintf(&ctx->block_scope_declarators,
-                   "%s %s;\n", ctx->size_t_type_name, name);
 
+                ss_fprintf(&ctx->block_scope_declarators, "%s %s;\n", ctx->size_t_type_name, name);
+
+                emit_line_directive(ctx, oss_body, it->p_array_num_elements_expression->first_token);
         /* assignment emitted as a statement in the body */
         print_identation(ctx, oss_body);
         ss_fprintf(oss_body, "%s = ", name);
-        d_visit_expression(ctx, oss_body, dims[i].expr);
+                d_visit_expression(ctx, oss_body, (struct expression*)it->p_array_num_elements_expression);
         ss_fprintf(oss_body, ";\n");
     }
-
+            else
+            {
+                /*Already there, happens with vm typedef*/
+                /*
+                int main(){
+                    int n = 1;
+                    typedef int (*T)[n];
+                    n = 2;
+                    T b;
+                    T c;
+                }
+                */
+            }
+        }
+        it = it->next;
+    }
 }
 
 
@@ -4322,7 +4218,10 @@ static void d_visit_init_declarator(struct d_visit_ctx* ctx,
         const bool is_function_body = p_init_declarator->p_declarator->function_body != NULL;
 
         if (is_typedef)
+    {
+        if (!type_is_vm(&p_init_declarator->p_declarator->type))
             return;
+    }
         const bool is_static = (storage_class_specifier_flags & STORAGE_SPECIFIER_STATIC);
         const bool is_auto = (storage_class_specifier_flags & STORAGE_SPECIFIER_AUTO);
 
@@ -4387,18 +4286,63 @@ static void d_visit_init_declarator(struct d_visit_ctx* ctx,
 
         if (type_is_vm(decl_type))
         {
-            struct vm_dim_snapshot dims[50];
-            int dim_count = vm_collect_dims(ctx, decl_type, dims, _Countof(dims));
-            vm_emit_snapshot_decls(ctx, oss0, dims, dim_count);
+            vm_emit_snapshot_decls(ctx, oss0, decl_type);
 
+            if (!is_typedef)
+            {
             struct osstream ss = { 0 };
             print_identation(ctx, &ss);
 
+                if (type_is_vla(decl_type))
+                {
+                    struct type t1 = get_array_item_type(decl_type);
+
+                    while (type_is_array(&t1))
+                    {
+                        struct type t0;
+                        t0 = get_array_item_type(&t1);
+                        type_swap(&t0, &t1);
+                        type_destroy(&t0);
+                    }
+
+                    struct type t2 = type_add_pointer(&t1, ctx->options.null_checks_enabled);
+                    d_print_type(ctx, &ss, &t2, var_name, false);
+                    type_destroy(&t1);
+                    type_destroy(&t2);
+                    struct osstream ssz = { 0 };
+                    vm_emit_sizeof_expr(ctx, &ssz, decl_type);
+                    
+                    emit_line_directive(ctx, oss0, p_init_declarator->p_declarator->first_token_opt);
+                    print_identation(ctx, oss0);
+                    ss_fprintf(oss0, "%s = %s%s;\n", var_name, target_get_alloca(ctx->options.target), ssz.c_str);
+                    
+                    if (p_init_declarator->initializer && 
+                        p_init_declarator->initializer->braced_initializer &&
+                        braced_initializer_is_empty(p_init_declarator->initializer->braced_initializer))
+                    {
+                        struct osstream sizeof_expression = {0};
+                        vm_emit_sizeof_expr(ctx,
+                                &sizeof_expression,
+                                &p_init_declarator->p_declarator->type);                        
+                        print_identation_core(oss0, ctx->indentation);
+                        ss_fprintf(oss0, "%s(%s, 0, %s);\n",
+                        ctx->memset_function_name,
+                        var_name,
+                        sizeof_expression.c_str);
+                        ctx->memset_used = true;
+                        ss_close(&sizeof_expression);
+                    }
+                    ss_close(&ssz);
+                }
+                else
+                {
             d_print_type(ctx, &ss, decl_type, var_name, false);
+                }
 
             ss_fprintf(&ss, ";\n");
             ss_fprintf(&ctx->block_scope_declarators, "%s", ss.c_str);
             ss_close(&ss);
+            }
 
             /* 3. Initializer (e.g. = malloc(sizeof *p) — sizeof rewritten) */
             if (p_init_declarator->initializer)
@@ -4775,7 +4719,8 @@ size_t clean_line_directives(char* buf)
                 memcpy(new_file, dir_fname + 1, nlen);
                 new_file[nlen] = '\0';
 #if defined(__CATALINA__) && (defined(_WIN32) || defined(_WIN64))
-                // Catalina doesn't understand normalized paths on Windows - denormalize it
+                // Catalina doesn't understand normalized paths on Windows
+                // so denormalize it
                 for (size_t i = 0; i < nlen; i++) {
                    if (new_file[i] == '/') {
                       new_file[i] = '\\';
@@ -4920,7 +4865,7 @@ void d_visit(struct d_visit_ctx* ctx, struct osstream* oss)
     if (ctx->memset_used)
     {
         ss_fprintf(oss,
-              "static void %s(void *dest, int ch, %s count);\n", ctx->memset_function_name, ctx->size_t_type_name);
+              "static void * %s(void *dest, int ch, %s count);\n", ctx->memset_function_name, ctx->size_t_type_name);
     }
 
     if (declarations.c_str)
@@ -4934,16 +4879,20 @@ void d_visit(struct d_visit_ctx* ctx, struct osstream* oss)
     {
         ss_fprintf(oss, "\n");
         ss_fprintf(oss,
-              "static void %s(void *dest, int ch, %s count)\n"
+                "static void * %s(void *ptr, int value, %s count)\n"
             "{\n"
-            "  unsigned char *ptr;\n"
+                "    unsigned char *p;\n"
+                "    unsigned char v;\n"
             "\n"
-            "  ptr = (unsigned char*)dest;\n"
-              "    while (count-- > 0)\n"
+                "    p = (unsigned char *) ptr;\n"
+                "    v = (unsigned char) value;\n"
+                "    while (count--)\n"
               "    {\n"
-              "       *ptr++ = 0;\n"
+                "        *p++ = v;\n"
               "    }\n"
-              "}\n\n",
+                "\n"
+                "    return ptr;\n"
+                "}\n",
              ctx->memset_function_name,
              ctx->size_t_type_name);
     }
@@ -4977,7 +4926,7 @@ void d_visit(struct d_visit_ctx* ctx, struct osstream* oss)
        to produce minimal #line directives, so we perform an extra step
        to remove unnecessary ones. 
        */
-       oss->size = clean_line_directives(oss->c_str);
+        oss->size = (int)clean_line_directives(oss->c_str);
     }
 
     ss_close(&declarations);

@@ -3513,7 +3513,7 @@ static void defsymbol(Symbol p) {
 #endif
       }
 #ifdef PRINT_SYMBOL_INFO
-      fprintf(stderr,"In Line Symbol %s, %d\n", p->x.name, p->type);
+      fprintf(stderr,"In Line Symbol %s, %d\n", p->x.name, p->type->type);
 #endif
    }
    else {

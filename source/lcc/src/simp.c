@@ -253,7 +253,7 @@ Tree simplify(int op, Type ty, Tree l, Tree r) {
 			xcvtcnst(P,l->u.v.p,ty,p,l->u.v.p);
 			break;
 		case CVI+U:
-			xcvtcnst(I,l->u.v.i,ty,u,((unsigned long)l->u.v.i)&ones(8*ty->size));
+			xcvtcnst(I,(unsigned)l->u.v.i,ty,u,((unsigned long)l->u.v.i)&ones(8*ty->size));
 			break;
 		case CVU+U:
 			xcvtcnst(U,l->u.v.u,ty,u,l->u.v.u&ones(8*ty->size));

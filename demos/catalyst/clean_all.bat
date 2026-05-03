@@ -48,6 +48,10 @@ cd lua-5.4.8
 call clean_all
 cd ..
 
+cd lua-5.5.0
+call clean_all
+cd ..
+
 cd catalina
 call clean_all
 cd ..

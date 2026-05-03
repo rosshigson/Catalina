@@ -2657,7 +2657,7 @@ static void emit2(Node p) {
                print(" alignl_p1\n long I32_MOVI + RI<<D32 + (%s)<<S32\n word I16B_PSHL ' stack ARG coni\n", src);
             }
             else if ((isint(r->type) || isunsigned(r->type))
-            &&       (r->u.c.v.i >= I32_LODS_MIN) && (r->u.c.v.i <= I32_LODS_MAX)) {
+            &&       ((int)r->u.c.v.i >= I32_LODS_MIN) && ((int)r->u.c.v.i <= I32_LODS_MAX)) {
                print(" alignl_p1\n long I32_LODS + RI<<D32S + ((%s)&$7FFFF)<<S32\n word I16B_PSHL ' stack ARG cons\n", src);
             }
             else {
@@ -2756,7 +2756,7 @@ static void emit2(Node p) {
                         print(" alignl_p1\n long I32_MOVI + RI<<D32 + (%s)<<S32\n word I16B_PSHL ' stack ARG coni\n", src);
                      }
                      else if ((isint(r->type) || isunsigned(r->type))
-                     &&       (r->u.c.v.i >= I32_LODS_MIN) && (r->u.c.v.i <= I32_LODS_MAX)) {
+                     &&       ((int)r->u.c.v.i >= I32_LODS_MIN) && ((int)r->u.c.v.i <= I32_LODS_MAX)) {
                         print(" alignl_p1\n long I32_LODS + RI<<D32S + ((%s)&$7FFFF)<<S32\n word I16B_PSHL ' stack ARG cons\n", src);
                      }
                      else {
@@ -2812,7 +2812,7 @@ static void emit2(Node p) {
                print(" alignl_p1\n long I32_MOVI + (%s)<<D32 + (%s)<<S32 ' reg ARG coni\n", q->name, src);
             }
             else if ((isint(r->type) || isunsigned(r->type))
-            &&       (r->u.c.v.i >= I32_LODS_MIN) && (r->u.c.v.i <= I32_LODS_MAX)) {
+            &&       ((int)r->u.c.v.i >= I32_LODS_MIN) && ((int)r->u.c.v.i <= I32_LODS_MAX)) {
                print(" alignl_p1\n long I32_LODS + (%s)<<D32S + ((%s)&$7FFFF)<<S32 ' reg ARG cons\n", q->name, src);
             }
             else {

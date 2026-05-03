@@ -1027,8 +1027,7 @@ THREAD_EXT_OFF    = 34         ' offset (LONGs) of extended information
 '                     command-line for programs that use multiple cogs.
 '                     Note that if you change this option, you also need
 '                     to change it in the non-dynamic threaded kernel, and
-'                     recompile the library. This option can't be used with
-'                     NO_INTERRUPTS, which uses SKIPF.
+'                     recompile the library.
 '
 '#ifndef FAST_SAVE_RESTORE
 '#define FAST_SAVE_RESTORE
@@ -1953,7 +1952,7 @@ do_loadlut_hub
 
 
 
-'#line 777 "../../../target/p2/nmmd.t"
+'#line 776 "../../../target/p2/nmmd.t"
 
 '#line 1 "../../../target/p2/nmmklib.inc"
 ' Catalina kernel functions that are specific to the NMM kernels ...
@@ -1970,6 +1969,6 @@ DAT
 
 
 
-'#line 779 "../../../target/p2/nmmd.t"
+'#line 778 "../../../target/p2/nmmd.t"
 
 

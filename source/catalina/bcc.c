@@ -18,6 +18,8 @@
  *
  *                - enable 'globbing'
  *
+ * version 8.8.9  - sort input files before processing.
+ *
  */
 
 /*--------------------------------------------------------------------------
@@ -711,6 +713,28 @@ int decode_arguments (int argc, char *argv[]) {
    }
    return code;
 
+}
+int compare(const void *a, const void *b) {
+   char *cha = *(char **)a;
+   char *chb = *(char **)b;
+   if (cha == NULL) {
+      //printf("a is null\n");
+      return -1;
+   }
+   if (chb == NULL) {
+      //printf("b is null\n");
+      return 1;
+   }
+   if ((cha == NULL) && (chb == NULL)) {
+       //printf("result = 0\n");
+       return 0;
+   }
+   //printf("comparing '%s' to '%s'\n", cha, chb);
+   return strcmp(cha, chb);
+}
+
+void sort_files() {
+   qsort(input_file, input_count, sizeof(char *), compare);
 }
 
 void print_files() {
@@ -1767,6 +1791,8 @@ void main (int argc, char *argv[]) {
       }
       exit(0);
    }
+
+   sort_files();
 
    if (diagnose) {
       fprintf(stderr, "using temp dir %s\n", temp_path);

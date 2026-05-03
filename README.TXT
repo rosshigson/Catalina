@@ -2,7 +2,9 @@ Overview
 ========
 
 Catalina is an ANSI C compiler, plus C libraries and utilities, for the 
-Parallax Propeller family of microcontrollers. 
+Parallax Propeller family of microcontrollers. Catalina natively supports 
+C89, and also supports C99, C11 and C23 extensions using the Cake 
+preprocessor.
 
 Catalina supports both internal and external memory models on both the 
 Propeller 1 and 2, for program sizes up to 16Mb.
@@ -28,10 +30,18 @@ The main components of Catalina are:
    catalina    : The command-line C compiler (Windows, Linux, Pi and Catalyst)
 
    catalina_geany : An Integrated Development Environment (Windows, Linux, 
-                    and Pi)
+                    and Pi) based on Geany.
 
    catalyst    : An SD card based program loader and self-hosted development 
                  environment for the Propeller 1 and Propeller 2
+
+   cake        : A C preprocessor that converts programs with C99, 
+                 C11, C23 and CYY extensions to C89. It is integrated with
+                 catalina but can also be used stand-alone (Windows, Linux, 
+                 and Pi)
+
+   catapult    : A utility for building multi-model C programs (Windows, Linux, 
+                 and Pi)
 
    payload     : A serial program loader and simple terminal emulator (Windows, 
                  Linux and Pi)
@@ -41,9 +51,6 @@ The main components of Catalina are:
    telnet      : A full-featured telnet client (Windows only)
 
    blackbox    : A C source level debugger (Windows Linux, and Pi)
-
-   catapult    : A utility for building multi-model C programs (Windows, Linux, 
-                 and Pi)
 
    parallelize : A utility for building multi-processor C programs (Windows, 
                  Linux, and Pi)
@@ -196,91 +203,31 @@ documents folder.
 New Functionality
 -----------------
 
-1. Cake updated (to 0.13.14). This version has support for C bit-fields.
-
-2. Catalina has a new command line option '-Y' (i.e. minus capital Y)
-   which tells Catalina to preprocess the C sources but not to compile them.
-   The preprocessed output files will be written into a 'catalina' subfolder 
-   in the current directory. Since there may be more than one source file, 
-   any '-o' option is ignored, and the output files will have the same names 
-   as the input files. For example:
-
-     catalina -Y hello.c bye.c
-
-   will generate two output files - 'catalina/hello.c' and 'catalina/bye.c'.
-
-3. Catalina now accepts debug options (i.e. -g or -g3) in conjunction 
-   with C standards other than -C89 or -C90, but issues a warning that
-   the options may be incompatible. While Catalina's version of Cake now 
-   generates #line directives (which allow the Catalina debugger to display 
-   the line being debugged) debugger support is still very experimental. 
-   Cake changes the source so much that some debugger commands may not 
-   work as expected - e.g. Cake may remove, rename or add new variables, 
-   and also remove, modify, re-arrange or add new lines of source code.
-
-   Another option is to first use Cake to translate C99 (or later) source 
-   files to C89, and then compile and debug THOSE files. To do this, add the
-   new -Y command-line option to a catalina command, which tells Catalina to 
-   preprocess the source files but not compile them. It is important to add 
-   all the correct compile-time options (e.g. libraries and other options) 
-   so that the file will be pre-processed correctly. Any -o option will be 
-   ignored - instead, since there may be more than one source file, the 
-   preprocessed files will be written to a 'catalina' subfolder created in 
-   the current directory, with the same names as the original files.
-
-   For example, if the command used to compile %LCCDIR%\demos\hello_99.c 
-   WITHOUT debugging is:
-
-      catalina hello_99.c -p2 -C99 -lci -C P2_EDGE -C VGA
-
-   Then to generate the C89 version, first add -Y to that command:
-
-      catalina hello_99.c -p2 -C99 -lci -C P2_EDGE -C VGA -Y
-
-    Then the file catalina\hello_99.c can be compiled for debugging, 
-    loaded and debugged as follows:
-
-      catalina catalina\hello_99.c -p2 -lci -C P2_EDGE -C VGA -g3
-      payload -o2 catalina\hello_99
-      blackbox catalina\hello_99
+1. Cake has been updated to 0.13.24, which includes support for C99 Variable 
+   Length Arrays.
 
 Other Changes
 -------------
 
-1. Document 'Lua on the Propeller with Catalina' updated.
+1. The document 'Getting Started with Catapult' has been updated to note that 
+   the 'stack' size attribute also includes heap, if dynamic memory allocation
+   (i.e. malloc() etc) is used by the secondary program.
 
-2. Document 'Catalina Optimizer Reference Manual' updated.
+2. The Catalina Binder (bcc) now sorts files into alphabetical order before
+   processing - this eliminates any differences in the final output because
+   Windows and Linux use a different sort order when files are specified 
+   using wildcards (e.g. bcc *.s).
 
-3. The notes in CATALINA.TXT in the demos/coremark directory have been
-   updated to remove the references to 'force_rebuild' (which is not 
-   implemented in the coremark makefile!) and also add that faster 
-   single-threaded coremark results can be obtained by defining the 
-   Catalina symbols NO_INTERRUPTS and FAST_SAVE_RESTORE - this speeds
-   up coremark by about 25%
+3. The Linux version of Catalina was generating code that was different to
+   the Windows version - both were correct, but the Linux code was missing
+   some code optimizations, which meant code compiled on Linux could be 
+   slightly different in size to code compiled on Windows. This made it 
+   harder to maintain build multi-model programs (e.g. using catapult) which 
+   depend on having the address of the secondary program emebdded in the code
+   of the primary program. Typically it meant the programs would have to be 
+   edited to change the address when compiled on Linux. Now both Windows and 
+   Linux generate the same code, which means multi-model programs should have
+   the same addresses on all platforms. Affected Catalina on Linux only.
 
-4. Fixed a bug in the Catalina Optimizer, which means that Optimizing 
-   programs that contained inline PASM could cause the program to fail.
-   The Optimizer now skips all code contained in inline PASM statements, 
-   because (a) such code does not necessarily use the same memory model as 
-   the code generated by LCC (which the Optimizer assumed was always the 
-   case), and (b) because optimizing code can change code size and timing, 
-   which could be critical in hand-coded PASM.
-
-   Affected the Propeller 1 and 2, on Windows and Linux.
-
-5. Fixed a bug in the Catalina Optimizer, which means that Optimizing 
-   COMPACT programs could cause the program to fail, because the Optimizer
-   was not retaining some "alignl" statements that were REQUIRED for the 
-   code to execute correctly (e.g. after an I16B_CALI instruction). 
-
-   Affected the Propeller 1 and 2, on Windows and Linux.
-
-6. Fixed a bug in the inline PASM demo inline_pasm/test_inline_pasm_5.c, 
-   which did not correct for pin numbers >= 32 (i.e. accessed via Port B). 
-
-   Affected the Propeller 2 only, on Windows. Linux and Catalyst.
- 
-7. Fixed a bug in the Blackbox source level debugger, which was sometimes
-   assigning breakpoint addresses to the wrong source line. The debugger 
-   executed the breakpoints correctly, but may have displayed the wrong 
-   source line when the breakpoint address was reached.
+4. An older version of Lua (5.4.4) has been removed from the Catalina 
+   libraries.

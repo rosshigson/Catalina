@@ -552,8 +552,37 @@ int compile_one_file(const char* file_name,
                 FILE* _Owner _Opt outfile = fopen(out_file_name, "w");
                 if (outfile)
                 {
+#if defined(__CATALINA__)
+                    if (p_output_string) {
+                        // catalina needs its builtins included in the ouutput
+                        // to process __builtin_alloca() correctly
+                        if (builtin[0] != '\0') {
+                           if (options->line_directives) {
+                              // Catalina requires an initial #line directive
+                              // to correctly generate debug information
+                              char new_file[512] = "";
+                              int nlen = strlen(file_name);
+                              memcpy(new_file, file_name, nlen);
+                              new_file[nlen] = '\0';
+#if defined(_WIN32) || defined(_WIN64)
+                              // Catalina doesn't understand normalized paths 
+                              // on Windows so denormalize it
+                              for (size_t i = 0; i < nlen; i++) {
+                                 if (new_file[i] == '/') {
+                                    new_file[i] = '\\';
+                                 }
+                              }
+#endif
+                              fprintf(outfile, "#line 1 \"%s\"\n", new_file);
+                           }
+                           fprintf(outfile, "%s", builtin);
+                        }
+                        fprintf(outfile, "%s", p_output_string);
+                    }
+#else // defined(__CATALINA__)
                     if (p_output_string)
                         fprintf(outfile, "%s", p_output_string);
+#endif // defined(__CATALINA__)
 
                     fclose(outfile);
                 }

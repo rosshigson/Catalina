@@ -994,6 +994,9 @@ bool type_is_vm(const struct type* p_type)
 {
     const struct type* _Opt p = p_type;
 
+    if (p->category == TYPE_CATEGORY_FUNCTION)
+        return false;
+
     while (p)
     {
         switch (p->category)
@@ -1020,19 +1023,6 @@ bool type_is_vm(const struct type* p_type)
             break;
 
         case TYPE_CATEGORY_FUNCTION:
-        {
-            struct param* _Opt pa = p->params.head;
-
-            while (pa)
-            {
-                if (type_is_vm(&pa->type))
-                    return true;
-
-                pa = pa->next;
-            }
-        }
-        break;
-
         case TYPE_CATEGORY_ITSELF:            
         case TYPE_CATEGORY_POINTER:
             break;
@@ -1050,7 +1040,7 @@ bool type_is_bitfield(const struct type* p_type)
 
 int type_get_bitfield_width(const struct type* p_type)
 {
-    return p_type->array_num_elements;
+    return (int) p_type->array_num_elements;
 }
 
 /*
@@ -3781,6 +3771,9 @@ void  make_type_using_direct_declarator(struct parser_ctx* ctx,
 
             p->array_num_elements = 0;
             p->p_array_num_elements_expression = pdirectdeclarator->array_declarator->assignment_expression;
+            p->vm_dim_id = ctx->vm_dim_id++;
+            p->p_current_function_opt = ctx->p_current_function_opt;
+
             if (p->p_array_num_elements_expression)
             {
                 if (object_has_constant_value(&p->p_array_num_elements_expression->object))

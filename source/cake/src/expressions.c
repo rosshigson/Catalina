@@ -49,6 +49,28 @@ struct expression* _Owner _Opt expression(struct parser_ctx* ctx, enum expressio
 struct expression* _Owner _Opt checked_expression(struct parser_ctx* ctx, enum expression_eval_mode eval_mode);
 
 
+bool is_primary_expression(enum expression_type t)
+{
+    switch (t)
+    {
+    case PRIMARY_EXPRESSION_ENUMERATOR:
+    case PRIMARY_EXPRESSION_DECLARATOR:
+    case PRIMARY_EXPRESSION_STRING_LITERAL:
+    case PRIMARY_EXPRESSION__FUNC__:
+    case PRIMARY_EXPRESSION_CHAR_LITERAL:
+    case PRIMARY_EXPRESSION_PREDEFINED_CONSTANT:
+    case PRIMARY_EXPRESSION_GENERIC:
+    case PRIMARY_EXPRESSION_NUMBER:
+    case PRIMARY_EXPRESSION_PARENTHESIS:
+    case PRIMARY_EXPRESSION_STATEMENT_EXPRESSION:
+        return true;
+    
+    default:
+        break;
+    }
+    return false;
+}
+
 static int compare_function_arguments(struct parser_ctx* ctx,
                                       struct type* p_type,
                                       struct argument_expression_list* p_argument_expression_list)
@@ -1279,31 +1301,56 @@ struct expression* _Owner _Opt primary_expression(struct parser_ctx* ctx, enum e
                 }
 
                 assert(p_scope != NULL);
-                if (p_scope->scope_level == 0)
-                {
-                    //file scope
-                }
-                else if ((p_declarator->type.storage_class_specifier_flags & STORAGE_SPECIFIER_STATIC) ||
-                        (p_declarator->type.storage_class_specifier_flags & STORAGE_SPECIFIER_THREAD_LOCAL))
-                {
-                    //file scope or thread
-                }
-                else if (ctx->p_current_function_scope_opt)
+                if (ctx->p_current_function_scope_opt)
                 {
                     bool b_type_is_function = type_is_function(&p_declarator->type);
-                    if (eval_mode == EXPRESSION_EVAL_MODE_VALUE_AND_TYPE && !b_type_is_function)
-                    {
-                        bool inside_current_function_scope = false;
+                    bool declarator_is_from_enclosing_function = false;
+
+                if (p_scope->scope_level == 0)
+                {
+                        /*it is from file scope*/
+                        declarator_is_from_enclosing_function = false;
+                }
+                    else
+                {
+                        declarator_is_from_enclosing_function = false;
                         while (p_scope)
                         {
                             if (ctx->p_current_function_scope_opt == p_scope)
                             {
-                                inside_current_function_scope = true;
+                                /*it is from current function*/
+                                declarator_is_from_enclosing_function = false;
+                                break;
+                            }
+
+                            if (p_scope->scope_level < ctx->p_current_function_scope_opt->scope_level)
+                            {
+                                declarator_is_from_enclosing_function = true;
                                 break;
                             }
                             p_scope = p_scope->previous;
                         }
-                        if (!inside_current_function_scope)
+                    }
+
+                    if (eval_mode == EXPRESSION_EVAL_MODE_TYPE &&
+                        !b_type_is_function &&
+                        declarator_is_from_enclosing_function)
+                    {
+                        if (type_is_vm(&p_declarator->type))
+                        {
+                            compiler_diagnostic(C_ERROR_OUTER_SCOPE,
+                                   ctx,
+                                   p_expression_node->first_token,
+                                   NULL,
+                                   "expression is using a VM type from the enclosing function");
+                        }
+                    }
+
+                    if (eval_mode == EXPRESSION_EVAL_MODE_VALUE_AND_TYPE &&
+                        !b_type_is_function &&
+                        declarator_is_from_enclosing_function &&
+                        !(p_declarator->type.storage_class_specifier_flags & STORAGE_SPECIFIER_STATIC) &&
+                        !(p_declarator->type.storage_class_specifier_flags & STORAGE_SPECIFIER_THREAD_LOCAL))
                         {
                             /* see . dot and arrow -> */
                             p_expression_node->lvalue_disabled = true;
@@ -1337,7 +1384,7 @@ struct expression* _Owner _Opt primary_expression(struct parser_ctx* ctx, enum e
                         }
                     }
                 }
-                }
+
                 p_declarator->num_uses++;
                 p_expression_node->declarator = p_declarator;
                 p_expression_node->p_init_declarator = p_init_declarator;
@@ -2509,11 +2556,16 @@ struct expression* _Owner _Opt postfix_expression_compound_func_literal(struct p
             type_destroy(&p_expression_node->type);
             p_expression_node->type = type_dup(&p_expression_node->type_name->type);
 
+            if (type_is_vm(&p_expression_node->type))
+            {
+                /* void f(int n) { (int [n]){}; } */
+                compiler_diagnostic(C_ERROR_STRUCT_IS_INCOMPLETE, ctx, p_expression_node->first_token, NULL, "compound literal cannot be of variable-length array type");
+            }
+
                 int er = make_object(&p_expression_node->type, &p_expression_node->object, ctx->options.target);
                 if (er != 0)
                 {
                     compiler_diagnostic(C_ERROR_STRUCT_IS_INCOMPLETE, ctx, p_expression_node->first_token, NULL, "incomplete struct/union type");
-                    throw;
                 }
 
             const bool is_constant = type_is_const_or_constexpr(&p_expression_node->type);
@@ -2772,6 +2824,57 @@ static int check_sizeof_argument(struct parser_ctx* ctx,
     return 0; //ok
 }
 
+/*
+  returns >= 0 if the expression is offset pattern
+  This expression is an exeption for constant-expression rules
+*/
+static int is_offsetof_pattern(struct parser_ctx* ctx, struct expression* p_expression)
+{
+    /*
+         offsetof pattern evaluated at compile time
+
+         Sample:
+         & ((struct { int i; int i2; }*)0)->i2
+
+         & (((struct { int i; int i2; }*)0)->i2)
+
+         If the pointer has a constant value, we compute the member's
+         offset and then add it to that constant value that is generally zero.
+  */
+    struct expression* _Owner _Opt right = p_expression->right;
+
+    /* skip extra parenthesis */
+    while (right && right->expression_type == PRIMARY_EXPRESSION_PARENTHESIS)
+    {
+        right = right->right;
+    }
+
+    if (right == NULL)
+        return -1;
+
+    if (right->expression_type != POSTFIX_ARROW)
+        return -1;
+
+    if (!object_has_constant_value(&right->left->object))
+        return -1;
+
+    const unsigned long long pointer_value = object_to_unsigned_long_long(&right->left->object);
+
+    struct type struct_type = type_remove_pointer(&right->left->type);
+    if (!type_is_struct_or_union(&struct_type))
+        return -1;
+
+    size_t offset_of = 0;
+    enum sizeof_result e = type_get_offsetof(&struct_type,
+                                            right->last_token->lexeme /*member identifier*/,
+                                            &offset_of,
+                                            ctx->options.target);
+    if (e != SIZEOF_RESULT_OK)
+        return -1;
+
+    return (int)(pointer_value + offset_of);
+}
+
 struct expression* _Owner _Opt unary_expression(struct parser_ctx* ctx, enum expression_eval_mode eval_mode)
 {
     /*
@@ -2972,53 +3075,12 @@ struct expression* _Owner _Opt unary_expression(struct parser_ctx* ctx, enum exp
                 */
                 new_expression->expression_type = UNARY_EXPRESSION_ADDRESSOF;
 
-                if (new_expression->right->expression_type == POSTFIX_ARROW &&
-                    object_has_constant_value(&new_expression->right->left->object))
-                {
-                    /*
-                     offsetof pattern evaluated at compile time
                      
-                     Sample:
-                     & ((struct { int i; int i2; }*)0)->i2
-
-                     If the pointer has a constant value, we compute the member's
-                     offset and then add it to that constant value that is generally zero.
-                    */
-                    
-                    const unsigned long long pointer_value =
-                        object_to_unsigned_long_long(&new_expression->right->left->object);
-
-                    struct type struct_type = type_remove_pointer(&new_expression->right->left->type);
-                    if (type_is_struct_or_union(&struct_type))
+                int offsetof_value = is_offsetof_pattern(ctx, new_expression->right);
+                if (offsetof_value >= 0)
                     {
-                        size_t offset_of;
-                        enum sizeof_result e =
-                            type_get_offsetof(&struct_type,
-                                new_expression->right->last_token->lexeme /*member identifier*/,
-                                &offset_of,
-                                ctx->options.target);
-                        switch (e)
-                        {
-                        case SIZEOF_RESULT_OK:
-                            new_expression->object = object_make_size_t(ctx->options.target, pointer_value + offset_of);
-                            break;
-                        case SIZEOF_RESULT_OVERLOW:
-                        case SIZEOF_RESULT_RUNTIME:
-                        case SIZEOF_RESULT_INCOMPLETE:
-                        case SIZEOF_RESULT_FUNCTION:
-                            break;
-                        case SIZEOF_RESULT_BITFIELD:
-                            /*
-                             * offsetof applied to a bitfield is undefined behaviour in C.
-                             * We silently leave the object unset (not a compile-time constant)
-                             * rather than emitting a wrong value.
-                             */
-                            break;
+                    new_expression->object = object_make_size_t(ctx->options.target, offsetof_value);
                         }
-                    }
-                    type_destroy(&struct_type);
-                }
-
 
                 if (new_expression->right->lvalue_disabled)
                 {

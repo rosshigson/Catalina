@@ -73,6 +73,41 @@ void label_list_push(struct label_list* list, struct label_list_item* _Owner pit
 void label_list_clear(struct label_list* list);
 
 
+struct diagnostic_item;
+
+struct diagnostic_queue
+{
+    struct diagnostic_item* _Owner _Opt head;
+    struct diagnostic_item* _Opt        tail;    
+    int count;
+};
+
+struct diagnostic_item
+{
+    int                line;
+    enum diagnostic_id id;
+    char* _Owner _Opt  text;
+    char* _Owner _Opt  sarif_text;
+
+    bool               is_error;
+    bool               is_warning;
+    bool               is_note;
+    bool               is_location;
+
+    struct diagnostic_queue children; /* W_LOCATION entries */
+
+    struct diagnostic_item* _Owner _Opt next;
+};
+
+void diagnostic_queue_add(struct diagnostic_queue* q, struct diagnostic_item* _Owner e);
+void diagnostic_queue_flush(struct diagnostic_queue* q, const struct parser_ctx* ctx);
+bool diagnostic_queue_remove(struct diagnostic_queue* q, int line, enum diagnostic_id id);
+void diagnostic_queue_destroy(struct diagnostic_queue* q);
+
+#define LINT_IDS_MAX 32
+int parse_diagnostic_suppression(const char* comment_lexeme, int ids[LINT_IDS_MAX]);
+
+
 struct parser_ctx
 {
     struct options options;
@@ -131,11 +166,19 @@ struct parser_ctx
     unsigned int unique_tag_id;
 
     /*
+      Used to generated id to vm dimension variables
+    */
+    unsigned int vm_dim_id;
+
+    /*
        Generate tag names for anonymous structs
     */
     int anonymous_struct_count;
 
     struct report* p_report;
+
+
+    struct diagnostic_queue diagnostic_queue;
 
 };
 
@@ -1001,6 +1044,7 @@ struct braced_initializer
 
 struct braced_initializer* _Owner _Opt braced_initializer(struct parser_ctx* ctx);
 void braced_initializer_delete(struct braced_initializer* _Owner _Opt p);
+bool braced_initializer_is_empty(const struct braced_initializer* p_braced_initializer);
 
 struct type_specifier_qualifier
 {

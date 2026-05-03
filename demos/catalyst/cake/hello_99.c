@@ -23,8 +23,8 @@ void main() {
 
    printf("A=%X\n", A);
    printf("B=%X\n", B);
-   printf("B=%X\n", C);
-   printf("B=%X\n", D);
+   printf("C=%X\n", C);
+   printf("D=%X\n", D);
 
    for (int i = 0; i < 10; i++) { // requires C99!
       PRINT("hello %d from %s\n", i, __func__); // requires C99!

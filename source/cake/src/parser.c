@@ -76,6 +76,7 @@ void naming_convention_parameter(struct parser_ctx* ctx, struct token* token, st
 void naming_convention_global_var(struct parser_ctx* ctx, struct token* token, struct type* type, enum storage_class_specifier_flags storage);
 void naming_convention_local_var(struct parser_ctx* ctx, struct token* token, struct type* type);
 
+static bool trying_to_use_vm_type_from_enclosing_function(const struct type* p_type, struct declarator* p_function);
 
 static void check_open_brace_style(struct parser_ctx* ctx, struct token* token)
 {
@@ -208,10 +209,163 @@ void parser_ctx_destroy(_Opt _Dtor struct parser_ctx* ctx)
     assert(ctx->label_list.head == NULL);
     assert(ctx->label_list.tail == NULL);
 
+    diagnostic_queue_destroy(&ctx->diagnostic_queue);
+
     if (ctx->sarif_file)
     {
         fclose(ctx->sarif_file);
     }
+}
+
+static void diagnostic_print(const struct diagnostic_item* e,
+                             const struct parser_ctx* ctx)
+{
+    if (e->is_error)
+        ctx->p_report->error_count++;
+    else if (e->is_warning)
+        ctx->p_report->warnings_count++;
+    else if (e->is_note)
+        ctx->p_report->info_count++;
+
+    if (e->text)
+        fputs(e->text, stdout);
+
+    if (ctx->sarif_file && e->sarif_text)
+    {
+        if (ctx->sarif_entries > 0)
+            fprintf(ctx->sarif_file, "   ,\n");
+        ((struct parser_ctx*)ctx)->sarif_entries++;
+        fputs(e->sarif_text, ctx->sarif_file);
+    }
+
+    const struct diagnostic_item* _Opt child = e->children.head;
+    while (child)
+    {
+        diagnostic_print(child, ctx);
+        child = child->next;
+    }
+}
+
+/* Free one entry and all its children. next must already be detached. */
+static void diagnostic_free(struct diagnostic_item* _Owner e)
+{
+    struct diagnostic_item* _Owner _Opt child = e->children.head;
+    while (child)
+    {
+        struct diagnostic_item* _Owner _Opt next_child = child->next;
+        child->next = NULL;
+        free(child->text);
+        free(child->sarif_text);
+        free(child);
+        child = next_child;
+    }
+    free(e->text);
+    free(e->sarif_text);
+    free(e);
+}
+
+void diagnostic_queue_add(struct diagnostic_queue* q, struct diagnostic_item* _Owner e)
+{
+    if (q->tail)
+        q->tail->next = e;
+    else
+        q->head = e;
+    q->tail = e;
+    q->count++;
+}
+
+void diagnostic_queue_flush(struct diagnostic_queue* db, const struct parser_ctx* ctx)
+{
+    struct diagnostic_item* _Owner _Opt it = db->head;
+    while (it)
+    {
+        diagnostic_print(it, ctx);
+
+        struct diagnostic_item* _Owner _Opt next = it->next;
+        it->next = NULL;
+        diagnostic_free(it);
+        it = next;
+    }
+    db->head = NULL;
+    db->tail = NULL;
+    db->count = 0;
+}
+
+bool diagnostic_queue_remove(struct diagnostic_queue* q, int line, enum diagnostic_id id)
+{
+    struct diagnostic_item* _Opt prev = NULL;
+    struct diagnostic_item* _Opt it = q->head;
+    while (it)
+    {
+        if (it->id == id)
+        {
+            if (prev)
+                prev->next = it->next;
+            else
+                q->head = it->next;
+
+            if (q->tail == it)
+                q->tail = prev;
+
+            it->next = NULL;
+            diagnostic_free(it);
+            q->count--;
+            return true;
+        }
+        prev = it;
+        it = it->next;
+    }
+    return false;
+}
+
+int parse_diagnostic_suppression(const char* p, int ids[LINT_IDS_MAX])
+{
+    /* skip comment delimiter */
+    if (p[0] == '/' && p[1] == '/')      p += 2;
+    else if (p[0] == '/' && p[1] == '*') p += 2;
+
+    /* skip spaces */
+    while (*p == ' ' || *p == '\t') p++;
+
+    /* must start with "lint" followed by a space or tab */
+    if (!(p[0] == 'l' && p[1] == 'i' && p[2] == 'n' && p[3] == 't' &&
+        (p[4] == ' ' || p[4] == '\t')))
+        return 0;
+
+    p += 4;
+
+    int count = 0;
+    while (*p && count < LINT_IDS_MAX)
+    {
+        while (*p == ' ' || *p == '\t' || *p == ',') p++;
+
+        if (*p >= '0' && *p <= '9')
+        {
+            int id = 0;
+            while (*p >= '0' && *p <= '9')
+                id = id * 10 + (*p++ - '0');
+            ids[count++] = id;
+        }
+        else
+        {
+            break;
+        }
+    }
+    return count;
+}
+
+void diagnostic_queue_destroy(struct diagnostic_queue* db)
+{
+    struct diagnostic_item* _Owner _Opt it = db->head;
+    while (it)
+    {
+        struct diagnostic_item* _Owner _Opt next = it->next;
+        it->next = NULL;
+        diagnostic_free(it);
+        it = next;
+    }
+    db->head = NULL;
+    db->tail = NULL;
 }
 
 static void stringfy(const char* input, char* json_str_message, int output_size)
@@ -320,7 +474,7 @@ _Bool compiler_diagnostic(enum diagnostic_id w,
 
     if (is_error)
     {
-        ctx->p_report->error_count++;
+        /* counted at print time */
     }
     else if (is_location)
     {
@@ -332,8 +486,6 @@ _Bool compiler_diagnostic(enum diagnostic_id w,
         {
             return false;
         }
-
-        ctx->p_report->warnings_count++;
     }
     else if (is_note)
     {
@@ -342,8 +494,6 @@ _Bool compiler_diagnostic(enum diagnostic_id w,
         {
             return false;
         }
-
-            ctx->p_report->info_count++;
     }
     else
     {
@@ -359,123 +509,149 @@ _Bool compiler_diagnostic(enum diagnostic_id w,
             func_name = "unnamed";
     }
 
+    /* format the user message */
     char buffer[200] = { 0 };
-
-    print_position(marker.file, marker.line,
-        marker.start_col,
-        ctx->options.visual_studio_ouput_format,
-        color_enabled);
-
-
     va_list args = { 0 };
     va_start(args, fmt);
-    /*int n =*/vsnprintf(buffer, sizeof(buffer), fmt, args);
+    vsnprintf(buffer, sizeof(buffer), fmt, args);
     va_end(args);
 
+    struct diagnostic_queue* db = &((struct parser_ctx*)ctx)->diagnostic_queue;
+
+    /* flush the current group when the line changes */
+    if (db->count > 5)
+    {
+        diagnostic_queue_flush(db, ctx);
+    }
+
+    struct diagnostic_item* _Owner e = calloc(1, sizeof * e);
+    if (e == NULL) return false;
+
+    e->line = marker.line;
+    e->id = w;
+    e->is_error = is_error;
+    e->is_warning = is_warning;
+    e->is_note = is_note;
+    e->is_location = is_location;
+    e->next = NULL;
+
+    /* build the complete formatted stdout text */
+    struct osstream ss = { 0 };
+
+    ss_print_position(&ss, marker.file, marker.line, marker.start_col,
+                      ctx->options.visual_studio_ouput_format, color_enabled);
 
     if (ctx->options.visual_studio_ouput_format)
     {
-        if (is_error)
-            printf("error %d: ", w);
-        else if (is_warning)
-            printf("warning %d: ", w);
-        else if (is_note)
-            printf("note: ");
-        else if (is_location)
-            printf(": ");
-
-        printf("%s", buffer);
+        if (is_error)          ss_fprintf(&ss, "error %d: ", w);
+        else if (is_warning)   ss_fprintf(&ss, "warning %d: ", w);
+        else if (is_note)      ss_fprintf(&ss, "note: ");
+        else if (is_location)  ss_fprintf(&ss, ": ");
+        ss_fprintf(&ss, "%s", buffer);
     }
     else
     {
         if (is_error)
         {
             if (color_enabled)
-                printf(LIGHTRED "error " WHITE "%d: %s" COLOR_RESET, w, buffer);
+                ss_fprintf(&ss, LIGHTRED "error " WHITE "%d: %s" COLOR_RESET, w, buffer);
             else
-                printf("error "        "%d: %s", w, buffer);
+                ss_fprintf(&ss, "error %d: %s", w, buffer);
         }
         else if (is_warning)
         {
             if (color_enabled)
-                printf(LIGHTMAGENTA "warning " WHITE "%d: %s" COLOR_RESET, w, buffer);
+                ss_fprintf(&ss, LIGHTMAGENTA "warning " WHITE "%d: %s" COLOR_RESET, w, buffer);
             else
-                printf("warning "  "%d: %s", w, buffer);
+                ss_fprintf(&ss, "warning %d: %s", w, buffer);
         }
         else if (is_note || is_location)
         {
             if (color_enabled)
-                printf(LIGHTCYAN "note: " WHITE "%s" COLOR_RESET, buffer);
+                ss_fprintf(&ss, LIGHTCYAN "note: " WHITE "%s" COLOR_RESET, buffer);
             else
-                printf("note: " "%s", buffer);
+                ss_fprintf(&ss, "note: %s", buffer);
         }
     }
 
-    printf("\n");
-    print_line_and_token(&marker, color_enabled);
+    ss_fprintf(&ss, "\n");
 
+    struct marker m = marker; /* ss_print_line_and_token writes start/end col back */
+    ss_print_line_and_token(&ss, &m, color_enabled);
 
+    e->text = ss.c_str;
+    ss.c_str = NULL;
+    ss_close(&ss);
+
+    /* build the complete SARIF entry text (separator + sarif_entries handled at flush) */
     if (ctx->sarif_file)
     {
+        char sarif_message[200] = { 0 };
+        stringfy(buffer, sarif_message, sizeof sarif_message);
 
-        char json_str_message[200] = { 0 };
-        stringfy(buffer, json_str_message, sizeof json_str_message);
+        struct osstream sarif_ss = { 0 };
 
-        if (ctx->sarif_entries > 0)
-        {
-            fprintf(ctx->sarif_file, "   ,\n");
-        }
+        ss_fprintf(&sarif_ss, "   {\n");
+        ss_fprintf(&sarif_ss, "     \"ruleId\":\"C%d\",\n", w);
 
-        ((struct parser_ctx*)ctx)->sarif_entries++;
+        if (is_error)        ss_fprintf(&sarif_ss, "     \"level\":\"error\",\n");
+        else if (is_warning) ss_fprintf(&sarif_ss, "     \"level\":\"warning\",\n");
+        else if (is_note)    ss_fprintf(&sarif_ss, "     \"level\":\"note\",\n");
 
-        fprintf(ctx->sarif_file, "   {\n");
-        fprintf(ctx->sarif_file, "     \"ruleId\":\"C%d\",\n", w);
+        ss_fprintf(&sarif_ss, "     \"message\": {\n");
+        ss_fprintf(&sarif_ss, "            \"text\": \"%s\"\n", sarif_message);
+        ss_fprintf(&sarif_ss, "      },\n");
+        ss_fprintf(&sarif_ss, "      \"locations\": [\n");
+        ss_fprintf(&sarif_ss, "       {\n");
+        ss_fprintf(&sarif_ss, "       \"physicalLocation\": {\n");
+        ss_fprintf(&sarif_ss, "             \"artifactLocation\": {\n");
+        ss_fprintf(&sarif_ss, "                 \"uri\": \"file:///%s\"\n", m.file);
+        ss_fprintf(&sarif_ss, "              },\n");
+        ss_fprintf(&sarif_ss, "              \"region\": {\n");
+        ss_fprintf(&sarif_ss, "                  \"startLine\": %d,\n", m.line);
+        ss_fprintf(&sarif_ss, "                  \"startColumn\": %d,\n", m.start_col);
+        ss_fprintf(&sarif_ss, "                  \"endLine\": %d,\n", m.line);
+        ss_fprintf(&sarif_ss, "                  \"endColumn\": %d\n", m.end_col);
+        ss_fprintf(&sarif_ss, "               }\n");
+        ss_fprintf(&sarif_ss, "         },\n");
+        ss_fprintf(&sarif_ss, "         \"logicalLocations\": [\n");
+        ss_fprintf(&sarif_ss, "          {\n");
+        ss_fprintf(&sarif_ss, "              \"fullyQualifiedName\": \"%s\",\n", func_name);
+        ss_fprintf(&sarif_ss, "              \"decoratedName\": \"%s\",\n", func_name);
+        ss_fprintf(&sarif_ss, "              \"kind\": \"%s\"\n", "function");
+        ss_fprintf(&sarif_ss, "          }\n");
+        ss_fprintf(&sarif_ss, "         ]\n");
+        ss_fprintf(&sarif_ss, "       }\n");
+        ss_fprintf(&sarif_ss, "     ]\n");
+        ss_fprintf(&sarif_ss, "   }\n");
 
-        if (is_error)
-            fprintf(ctx->sarif_file, "     \"level\":\"error\",\n");
-        else if (is_warning)
-            fprintf(ctx->sarif_file, "     \"level\":\"warning\",\n");
-        else if (is_note)
-            fprintf(ctx->sarif_file, "     \"level\":\"note\",\n");
-
-        fprintf(ctx->sarif_file, "     \"message\": {\n");
-        fprintf(ctx->sarif_file, "            \"text\": \"%s\"\n", json_str_message);
-        fprintf(ctx->sarif_file, "      },\n");
-        fprintf(ctx->sarif_file, "      \"locations\": [\n");
-        fprintf(ctx->sarif_file, "       {\n");
-
-        fprintf(ctx->sarif_file, "       \"physicalLocation\": {\n");
-
-        fprintf(ctx->sarif_file, "             \"artifactLocation\": {\n");
-        fprintf(ctx->sarif_file, "                 \"uri\": \"file:///%s\"\n", marker.file);
-        fprintf(ctx->sarif_file, "              },\n");
-
-        fprintf(ctx->sarif_file, "              \"region\": {\n");
-        fprintf(ctx->sarif_file, "                  \"startLine\": %d,\n", marker.line);
-        fprintf(ctx->sarif_file, "                  \"startColumn\": %d,\n", marker.start_col);
-        fprintf(ctx->sarif_file, "                  \"endLine\": %d,\n", marker.line);
-        fprintf(ctx->sarif_file, "                  \"endColumn\": %d\n", marker.end_col);
-        fprintf(ctx->sarif_file, "               }\n");
-        fprintf(ctx->sarif_file, "         },\n");
-
-        fprintf(ctx->sarif_file, "         \"logicalLocations\": [\n");
-        fprintf(ctx->sarif_file, "          {\n");
-
-        fprintf(ctx->sarif_file, "              \"fullyQualifiedName\": \"%s\",\n", func_name);
-        fprintf(ctx->sarif_file, "              \"decoratedName\": \"%s\",\n", func_name);
-
-        fprintf(ctx->sarif_file, "              \"kind\": \"%s\"\n", "function");
-        fprintf(ctx->sarif_file, "          }\n");
-
-        fprintf(ctx->sarif_file, "         ]\n");
-
-        fprintf(ctx->sarif_file, "       }\n");
-        fprintf(ctx->sarif_file, "     ]\n");
-
-        fprintf(ctx->sarif_file, "   }\n");
+        e->sarif_text = sarif_ss.c_str;
+        sarif_ss.c_str = NULL;
+        ss_close(&sarif_ss);
     }
 
-    return 1;
+    if (is_location)
+    {
+        /*
+         * W_LOCATION is a child of the previous diagnostic.
+         * Attach it to the tail entry's child queue regardless of line.
+         */
+        if (db->tail)
+        {
+            diagnostic_queue_add(&db->tail->children, e);
+        }
+        else
+        {
+            /* no parent yet — treat as a top-level entry */
+            diagnostic_queue_add(db, e);
+        }
+    }
+    else
+    {
+        diagnostic_queue_add(db, e);
+    }
+
+    return is_error || is_warning || is_note;
 }
 
 void print_scope(struct scope_list* e)
@@ -1427,6 +1603,38 @@ static void parser_skip_blanks(struct parser_ctx* ctx)
 {
     while (ctx->current && !(ctx->current->flags & TK_FLAG_FINAL))
     {
+        if (ctx->current->type == TK_LINE_COMMENT ||
+            ctx->current->type == TK_COMMENT)
+        {
+            int ids[LINT_IDS_MAX];
+            int count = parse_diagnostic_suppression(ctx->current->lexeme, ids);
+            for (int i = 0; i < count; i++)
+            {
+                if (get_diagnostic_phase(ids[i]) != 2)
+                {
+                    if (!diagnostic_queue_remove(&ctx->diagnostic_queue,
+                        ctx->current->line,
+                        (enum diagnostic_id)ids[i]))
+                    {
+                        ids[i] = -ids[i];
+                    }
+                }
+            }
+
+            for (int i = 0; i < count; i++)
+            {
+                if (ids[i] < 0)
+                {
+                    compiler_diagnostic(W_WARNING_DID_NOT_HAPPEN,
+                                               ctx,
+                                               ctx->current,
+                                               NULL,
+                                               "diagnostic '%d' not recognized",
+                                               -ids[i]);
+                }
+            }
+        }
+
         if (ctx->current)
             ctx->current = ctx->current->next;
     }
@@ -1766,6 +1974,22 @@ struct declaration_specifiers* _Owner _Opt declaration_specifiers(struct parser_
             }
             else if (p_declaration_specifier->storage_class_specifier)
             {
+                const enum storage_class_specifier_flags old_flags =
+                    p_declaration_specifiers->storage_class_specifier_flags;
+
+                const enum storage_class_specifier_flags new_flags =
+                    p_declaration_specifier->storage_class_specifier->flags;
+
+                if ((old_flags & STORAGE_SPECIFIER_TYPEDEF && new_flags & STORAGE_SPECIFIER_STATIC)
+                    || (old_flags & STORAGE_SPECIFIER_STATIC && new_flags & STORAGE_SPECIFIER_TYPEDEF))
+                {
+                    /*typedef + static*/
+                    compiler_diagnostic(C_ERROR_CANNOT_COMBINE_WITH_PREVIOUS_LONG_LONG,
+                        ctx,
+                        p_declaration_specifier->storage_class_specifier->token,
+                        NULL,
+                        "typedef and static cannot be used together.");
+                }
                 p_declaration_specifiers->storage_class_specifier_flags |= p_declaration_specifier->storage_class_specifier->flags;
             }
             else if (p_declaration_specifier->function_specifier)
@@ -2203,6 +2427,45 @@ struct declaration* _Owner _Opt declaration(struct parser_ctx* ctx,
             struct function_declarator* pfuncdecl = declarator_find_function_declarator(p_declarator);
             if (pfuncdecl == NULL) throw;
 
+#if 0
+            /*
+            void func()
+            {
+                //int n;
+                //typedef int (*T)[n];
+                static void local(int n, int a[n]) {
+
+                }
+            }*/
+
+            if (pfuncdecl->parameter_type_list_opt &&
+                pfuncdecl->parameter_type_list_opt->parameter_list)
+            {
+                struct parameter_declaration* _Opt p = pfuncdecl->parameter_type_list_opt->parameter_list->head;
+                while (p)
+                {
+                    if (trying_to_use_vm_type_from_enclosing_function(&p->declarator->type, ctx->p_current_function_opt))
+                    {
+                        /*
+                        void func()
+                        {
+                            int n;
+                            typedef int (*T)[n];
+                            static void local() {
+                                T b;
+                            }
+                        }
+                        */
+                        compiler_diagnostic(C_ERROR_LOCAL_FUNCTION_STORAGE, ctx,
+                            p->declarator->first_token_opt, NULL,
+                            "trying to use VM type from enclosing function");
+                    }
+
+                    p = p->next;
+                }
+            }
+#endif
+
             struct scope* parameters_scope = &pfuncdecl->parameters_scope;
             scope_list_push(&ctx->scopes, parameters_scope);
 
@@ -2396,6 +2659,65 @@ void init_declarator_delete(struct init_declarator* _Owner _Opt p)
 }
 
 static bool declarator_has_vm_type(const struct declarator* p_declarator);
+
+
+static bool trying_to_use_vm_type_from_enclosing_function(const struct type* p_type, struct declarator* p_function)
+{
+    const struct type* _Opt p = p_type;
+
+    while (p)
+    {
+        switch (p->category)
+        {
+        case TYPE_CATEGORY_ARRAY:
+            if (p->array_num_elements > 0)
+            {
+                /* constant size */
+            }
+            else if (p->p_array_num_elements_expression == NULL)
+            {
+                /* int [] */
+            }
+            else if (p->array_num_elements == 0 &&
+                     object_is_zero(&p->p_array_num_elements_expression->object))
+            {
+                /* not VM, int [0] , accepted in many compilers*/
+            }
+            else
+            {
+                if (p->p_current_function_opt &&
+                    p->p_current_function_opt != p_function)
+                {
+                    return true;
+                }
+                /* VM, int [expression] */
+                //return true;
+            }
+            break;
+
+        case TYPE_CATEGORY_FUNCTION:
+        {
+            struct param* _Opt pa = p->params.head;
+
+            while (pa)
+            {
+                if (trying_to_use_vm_type_from_enclosing_function(&pa->type, p_function))
+                    return true;
+
+                pa = pa->next;
+            }
+        }
+        break;
+
+        case TYPE_CATEGORY_ITSELF:
+        case TYPE_CATEGORY_POINTER:
+            break;
+        }
+
+        p = p->next;
+    }
+    return false;
+}
 
 struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
     struct declaration_specifiers* p_declaration_specifiers)
@@ -2605,6 +2927,31 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
 
             if (p_init_declarator->initializer->braced_initializer)
             {
+                if (type_is_vla(&p_init_declarator->p_declarator->type))
+                {
+                    const char* name2 = p_init_declarator->p_declarator->name_opt ?
+                        p_init_declarator->p_declarator->name_opt->lexeme : "";
+                    make_object_with_member_designator(&p_init_declarator->p_declarator->type,
+                         &p_init_declarator->p_declarator->object, name2, ctx->options.target);
+
+
+                    if (braced_initializer_is_empty(p_init_declarator->initializer->braced_initializer))
+                    {
+                        //ok
+                        object_default_initialization(&p_init_declarator->p_declarator->object, false);
+                    }
+                    else
+                    {
+                        compiler_diagnostic(C_ERROR_INVALID_VLA_INITIALIZATION,
+                        ctx,
+                        p_init_declarator->p_declarator->first_token_opt,
+                        NULL,
+                        "variable-sized object may not be initialized except with an empty initializer");
+                        throw;
+                    }
+                }
+                else
+                {
                 if (p_init_declarator->p_declarator->declaration_specifiers->storage_class_specifier_flags & STORAGE_SPECIFIER_AUTO)
                 {
                     compiler_diagnostic(C_ERROR_AUTO_NEEDS_SINGLE_DECLARATOR, ctx, p_init_declarator->p_declarator->first_token_opt, NULL, "'auto' requires a plain identifier");
@@ -2618,8 +2965,6 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
                     compiler_diagnostic(C_ERROR_STRUCT_IS_INCOMPLETE, ctx, p_init_declarator->p_declarator->first_token_opt, NULL, "incomplete struct/union type");
                     throw;
                 }
-
-
 
                 const bool is_constant =
                     type_is_const_or_constexpr(&p_init_declarator->p_declarator->type);
@@ -2642,8 +2987,19 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
                 p_init_declarator->p_declarator->object.type.array_num_elements =
                     p_init_declarator->p_declarator->type.array_num_elements;
             }
+            }
             else if (p_init_declarator->initializer->assignment_expression)
             {
+                if (type_is_vla(&p_init_declarator->p_declarator->type))
+                {
+                    compiler_diagnostic(C_ERROR_INVALID_VLA_INITIALIZATION,
+                           ctx,
+                           p_init_declarator->p_declarator->first_token_opt,
+                           NULL,
+                           "variable-sized object may not be initialized except with an empty initializer");
+                    throw;
+                }
+
                 if (type_is_array(&p_init_declarator->p_declarator->type))
                 {
                     const unsigned long long array_size_elements = p_init_declarator->p_declarator->type.array_num_elements;
@@ -2881,14 +3237,14 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
                 break;
 
             case SIZEOF_RESULT_RUNTIME:
-
+#if 0
                     compiler_diagnostic(C_ERROR_STORAGE_SIZE,
                             ctx,
                     p_init_declarator->p_declarator->name_opt,
                     NULL,
                     "'%s' vla is not suported",
                             p_init_declarator->p_declarator->name_opt->lexeme);
-
+#endif
                 break;
 
             case SIZEOF_RESULT_INCOMPLETE:
@@ -2929,6 +3285,49 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
     {
         init_declarator_delete(p_init_declarator);
         p_init_declarator = NULL;
+    }
+
+    if (p_init_declarator && trying_to_use_vm_type_from_enclosing_function(&p_init_declarator->p_declarator->type, ctx->p_current_function_opt))
+    {
+        /*
+        void func()
+        {
+            int n;
+            typedef int (*T)[n];
+            static void local() {
+                T b;
+            }
+        }
+        */
+        compiler_diagnostic(C_ERROR_LOCAL_FUNCTION_STORAGE, ctx,
+            p_init_declarator->p_declarator->first_token_opt, NULL,
+            "trying to use VM type from enclosing function");
+    }
+
+    if (p_init_declarator &&
+        type_is_vm(&p_init_declarator->p_declarator->type))
+    {
+        if (ctx->scopes.tail->scope_level == 0)
+        {
+            compiler_diagnostic(C_ERROR_LOCAL_FUNCTION_STORAGE, ctx,
+                p_init_declarator->p_declarator->first_token_opt, NULL,
+                "variably modified type declaration not allowed at file scope");
+        }
+
+
+        if ((p_init_declarator->p_declarator->type.storage_class_specifier_flags & STORAGE_SPECIFIER_STATIC) ||
+            (p_init_declarator->p_declarator->type.storage_class_specifier_flags & STORAGE_SPECIFIER_EXTERN))
+        {
+            if (type_is_vla(&p_init_declarator->p_declarator->type))
+            {
+                /*
+                  void f(int n) { static int a[n]; }
+                */
+                compiler_diagnostic(C_ERROR_LOCAL_FUNCTION_STORAGE, ctx,
+                 p_init_declarator->p_declarator->first_token_opt, NULL,
+                 "storage size of '%s' isn't constant", p_init_declarator->p_declarator->name_opt->lexeme);
+            }
+        }
     }
 
     return p_init_declarator;
@@ -4472,7 +4871,7 @@ struct member_declarator* _Owner _Opt member_declarator(
                 "bitfield with must be zero or positive.");
             }
 
-            if (bit_field_width > sz)
+            if (bit_field_width > (long long)sz)
             {
                 compiler_diagnostic(C_ERROR_STORAGE_SIZE,
                 ctx,
@@ -7095,6 +7494,11 @@ void braced_initializer_delete(struct braced_initializer* _Owner _Opt p)
         initializer_list_delete(p->initializer_list);
         free(p);
     }
+}
+
+bool braced_initializer_is_empty(const struct braced_initializer* p_braced_initializer)
+{
+    return p_braced_initializer->initializer_list == NULL;
 }
 
 struct braced_initializer* _Owner _Opt braced_initializer(struct parser_ctx* ctx)
@@ -11279,6 +11683,7 @@ struct declaration* _Owner _Opt external_declaration(struct parser_ctx* ctx)
      function_definition
      declaration
      */
+    ctx->vm_dim_id = 0; /*reset vm dim generator ids*/
     return function_definition_or_declaration(ctx);
 }
 
@@ -11318,6 +11723,8 @@ struct declaration_list translation_unit(struct parser_ctx* ctx, bool* berror)
         *berror = true;
     }
         
+    diagnostic_queue_flush(&ctx->diagnostic_queue, ctx);
+
     if (ctx->p_report->error_count == 0 && ctx->options.flow_analysis)
     {
         struct declaration* _Opt it = declaration_list.head;
@@ -11333,6 +11740,8 @@ struct declaration_list translation_unit(struct parser_ctx* ctx, bool* berror)
             /* visiting the function again; restore the same diagnostic state */
             ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index] = before_function_diagnostics;
             it = it->next;
+
+            diagnostic_queue_flush(&ctx->diagnostic_queue, ctx);
         }         
     }
 

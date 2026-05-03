@@ -176,10 +176,10 @@ required by Geany:
    pacman -S mingw-w64-x86_64-gettext-tools
 
 Go to the geany source directory and build geany. The following commands 
-assume the Catalina Geany source is in /c/catalina/8.7/source/geany - which 
-may be a link! - and we want to end up with Geany in /c/geany:
+assume the Catalina Geany source are in /C/catalina/8.7/source/geany-1.37.1
+and we want to end up with Geany in /c/geany:
 
-   cd /c/catalina/8.7/source/geany-1.37.1
+   cd /C/catalina/8.7/source/geany-1.37.1
    NOCONFIGURE=1 ./autogen.sh
    ./configure --prefix=/c/geany --enable-gtk2 
    make clean

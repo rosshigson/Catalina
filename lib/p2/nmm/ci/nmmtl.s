@@ -1410,14 +1410,6 @@ THREAD_EXT_OFF    = 34         ' offset (LONGs) of extended information
 
 '#line 46 "../../../target/p2/nmmtd.t"
 
-' NO_INTERRUPTS - note that we CANNOT use SKIPF (which is enabled by the
-'                 symbol NO_INTERRUPTS) in either the dynamic or threaded
-'                 NMM kernels - either because they need interrupts themselves,
-'                 or because because we cannot guarantee they will not be used
-'                 in programs that use interrupts.  We cannot check even check
-'                 for this this at compile time, because these kernels are
-'                 precompiled into the library. So we must simply avoid SKIPF.
-
 ' FAST_SAVE_RESTORE - if defined, we use fast block moves to save and restore
 '                     multiple registers. This improves speed, but uses more
 '                     stack space. Can be defined here, but not on the
@@ -2389,7 +2381,7 @@ FP       long   $0    ' FP is PTRB
 
 
 
-'#line 823 "../../../target/p2/nmmtd.t"
+'#line 815 "../../../target/p2/nmmtd.t"
 
 '#line 1 "../../../target/p2/nmmklib.inc"
 ' Catalina kernel functions that are specific to the NMM kernels ...
@@ -2406,7 +2398,7 @@ FP       long   $0    ' FP is PTRB
 
 
 
-'#line 825 "../../../target/p2/nmmtd.t"
+'#line 817 "../../../target/p2/nmmtd.t"
 
 '#line 1 "../../../target/p2/thlib.inc"
 ' Catalina thread library functions ...
@@ -2473,7 +2465,7 @@ FP       long   $0    ' FP is PTRB
 
 
 
-'#line 827 "../../../target/p2/nmmtd.t"
+'#line 819 "../../../target/p2/nmmtd.t"
 '#line 66 "../../../target/p2/nmmlib.t"
 
 

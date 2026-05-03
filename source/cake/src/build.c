@@ -393,7 +393,7 @@ int main()
     HEADER("Runs cake on its own source");
     
 
-    //Uses previouly generated cakeconfig.h to find include dir
+    //Uses previously generated cakeconfig.h to find include dir
 #ifdef PLATFORM_WINDOWS
     execute_cmd("cake -D__CATALINA__ -D__CATALYST__ -DTEST -fanalyzer " CAKE_SOURCE_FILES);
 #else

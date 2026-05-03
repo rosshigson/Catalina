@@ -23,7 +23,7 @@
  *                                                                            *
  ******************************************************************************/
 
-#pragma catapult common options(-W-w -p2 -C CONST_ARGS -C MHZ_200 -C CLOCK -O5 -lcx -lmc -lluax linit.c -C LUA_SERVICE)
+#pragma catapult common options(-W-w -p2 -C CONST_ARGS -O5 -C MHZ_200 -C CLOCK -lcx -lmc -lluax linit.c -C LUA_SERVICE)
 
 #include <catapult.h>
 #include <service.h>
