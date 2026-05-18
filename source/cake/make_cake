@@ -78,9 +78,9 @@ else
 fi
 
 echo ""
-echo "============="
-echo "Building Cake"
-echo "============="
+echo "============================"
+echo "Building Cake FOR $*"
+echo "============================"
 echo ""
 
 ./bake_cake>bake.out

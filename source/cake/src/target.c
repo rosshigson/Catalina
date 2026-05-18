@@ -426,6 +426,9 @@ int target_get_num_of_bits(enum target target, enum object_type type)
 
     case TYPE_LONG_DOUBLE:
         return get_platform(target)->long_double_n_bits;
+    
+    default:
+        break;
     }
 
     assert(false);

@@ -58,8 +58,7 @@ bool is_diagnostic_enabled(const struct options* options, enum diagnostic_id w)
     if (w >= BITSET_SIZE)
         return true;
 
-    return
-        bitset_get(&options->diagnostic_stack.stack[options->diagnostic_stack.top_index].errors, w) ||
+    return bitset_get(&options->diagnostic_stack.stack[options->diagnostic_stack.top_index].errors, w) ||
         bitset_get(&options->diagnostic_stack.stack[options->diagnostic_stack.top_index].warnings, w) ||
         bitset_get(&options->diagnostic_stack.stack[options->diagnostic_stack.top_index].notes, w);
 }
@@ -96,28 +95,6 @@ bool is_diagnostic_configurable(enum diagnostic_id id)
         return false;
 
     return id >= 0 && id < BITSET_SIZE;
-}
-
-int diagnostic_id_stack_push(struct diagnostic_id_stack* diagnostic_stack, enum diagnostic_id id)
-{
-    if (diagnostic_stack->size < _Countof(diagnostic_stack->stack))
-    {
-        diagnostic_stack->stack[diagnostic_stack->size] = id;
-        diagnostic_stack->size++;
-    }
-    return 0;
-}
-
-void diagnostic_id_stack_pop(struct diagnostic_id_stack* diagnostic_stack)
-{
-    if (diagnostic_stack->size > 0)
-    {
-        diagnostic_stack->size--;
-    }
-    else
-    {
-        assert(false);
-    }
 }
 
 int diagnostic_stack_push_empty(struct diagnostic_stack* diagnostic_stack)
@@ -184,6 +161,17 @@ int get_diagnostic_phase(enum diagnostic_id w)
 {
     switch (w)
     {
+
+    case C_ERROR_EXIT_DEFER:
+    case C_ERROR_JUMP_OVER_VLA:
+        return 1;
+
+        /*later after function is completed*/
+    case W_UNUSED_LABEL:
+    case W_SWITCH:
+    case C_ERROR_LABEL_NOT_DEFINED:
+        return 1;
+
     case W_FLOW_NULLABLE_TO_NON_NULLABLE:
     case W_FLOW_MISSING_DTOR:
     case W_FLOW_UNINITIALIZED:
@@ -192,7 +180,7 @@ int get_diagnostic_phase(enum diagnostic_id w)
     case W_FLOW_NOT_USED_34:
     case W_FLOW_NON_NULL:
     case W_FLOW_LIFETIME_ENDED:
-    case W_FLOW_DIVIZION_BY_ZERO:
+    case W_FLOW_DIVISION_BY_ZERO:
 
         return 2; /*returns 2 if it flow analysis*/
 
@@ -225,7 +213,7 @@ int fill_options(struct options* options,
     options_set_warning(options, W_UNUSED_VARIABLE, false);
 
     options_set_warning(options, W_STYLE, false);
-
+    options_set_note(options, W_INFO, true);
 
     /*first loop used to collect options*/
     for (int i = 1; i < argc; i++)
@@ -359,12 +347,6 @@ int fill_options(struct options* options,
             continue;
         }
 
-        if (strcmp(argv[i], "-comment-to-attr") == 0)
-        {
-            options->comment_to_attribute = true;
-            continue;
-        }
-
         if (strcmp(argv[i], "-test-mode") == 0)
         {
             options->test_mode = true;
@@ -409,24 +391,34 @@ int fill_options(struct options* options,
         {
         if (strcmp(argv[i], "-style=cake") == 0)
         {
-            options->style = STYLE_CAKE;
+                options->style = style_options_cake();
+                options_set_note(options, W_STYLE, true);
             continue;
         }
 
         if (strcmp(argv[i], "-style=gnu") == 0)
         {
-            options->style = STYLE_GNU;
+                options->style = style_options_gnu();
+                options_set_note(options, W_STYLE, true);
             continue;
         }
         if (strcmp(argv[i], "-style=microsoft") == 0)
         {
-                options->style = STYLE_MICROSOFT;
+                options->style = style_options_microsoft();
+                options_set_note(options, W_STYLE, true);
+                continue;
+            }
+
+            if (strcmp(argv[i], "-style=none") == 0)
+            {
+                options_set_note(options, W_STYLE, false);
             continue;
         }
 
             printf("Invalid style. Options are: "
-                   "cake, gnu, microsoft"
+                   "none, cake, gnu, microsoft"
                    "\n");
+            options_set_note(options, W_STYLE, false);
         }
 
 
@@ -617,7 +609,6 @@ void print_help()
     print_option("-disable-assert", "disables built-in assert");
     print_option("-const-literal", "literal string becomes const");
     print_option("-preprocess-def-macro", "preprocess def macros after expansion");
-    print_option("-comment-to-attr", "convert comments /*!w#*/ into attributes [[cake::w#]]");
     print_option("-style=name", "Set the style used in w011 style warnings. Options are `-style=cake`, `-style=gnu`, `-style=microsoft`");
     print_option("-selftest", "Runs Cake's internal tests. The code must be compiled with -DTEST.");
     print_option("-disable-assert", "Disable cake assert extension.");
@@ -652,6 +643,8 @@ void options_set_all_warnings(struct options* options)
 void options_set_clear_all_warnings(struct options* options)
 {
     bitset_clear(&options->diagnostic_stack.stack[options->diagnostic_stack.top_index].warnings);
+    bitset_clear(&options->diagnostic_stack.stack[options->diagnostic_stack.top_index].notes);
+    
 }
 
 
@@ -671,8 +664,7 @@ bool options_diagnostic_is_error(const struct options* options, enum diagnostic_
     if (w >= BITSET_SIZE)
         return true;
 
-    return
-        bitset_get(&options->diagnostic_stack.stack[options->diagnostic_stack.top_index].errors, w);
+    return bitset_get(&options->diagnostic_stack.stack[options->diagnostic_stack.top_index].errors, w);
 }
 
 bool options_diagnostic_is_warning(const struct options* options, enum diagnostic_id w)
@@ -683,8 +675,7 @@ bool options_diagnostic_is_warning(const struct options* options, enum diagnosti
     if (w >= BITSET_SIZE)
         return false;
 
-    return
-        bitset_get(&options->diagnostic_stack.stack[options->diagnostic_stack.top_index].warnings, w);
+    return bitset_get(&options->diagnostic_stack.stack[options->diagnostic_stack.top_index].warnings, w);
 
 }
 
@@ -696,6 +687,97 @@ bool options_diagnostic_is_note(const struct options* options, enum diagnostic_i
     if (w >= BITSET_SIZE)
         return false;
 
-    return
-        bitset_get(&options->diagnostic_stack.stack[options->diagnostic_stack.top_index].notes, w);
+    return bitset_get(&options->diagnostic_stack.stack[options->diagnostic_stack.top_index].notes, w);
+}
+
+
+/*
+ *  This file is part of cake compiler
+ *  https://github.com/thradams/cake
+*/
+
+#include "options.h"
+#include <string.h>
+
+struct style_options style_options_cake(void)
+{
+    struct style_options s  = {0};
+    s.open_brace_style = BRACE_STYLE_ALLMAN;
+    s.func_open_brace_style = FUNC_BRACE_STYLE_ALLMAN;
+    s.else_style = ELSE_STYLE_NEW_LINE;
+    s.pointer_style = POINTER_STYLE_EAST;
+    s.indent_style = INDENT_STYLE_SPACES;
+    s.indent_width = 4;
+    
+    
+    s.space_after_comma = true;
+    s.no_space_before_semicolon = false;
+    s.space_after_keyword = true;
+    s.space_after_return = true;            /* one space between 'return' and expr */
+    s.no_space_before_call_paren = true;    /* no space between callee and '('     */
+    s.space_around_binary_operators = true; /* one space on each side of binary op */
+
+    s.struct_name_case = CASE_SNAKE;
+    s.enum_name_case = CASE_SNAKE;
+    s.function_name_case = CASE_SNAKE;
+    s.global_name_case = CASE_SNAKE;
+    s.local_name_case = CASE_SNAKE;
+    s.enumerator_name_case = CASE_UPPERCASE;
+    s.member_name_case = CASE_SNAKE;
+    s.parameter_name_case = CASE_SNAKE;
+
+    s.struct_name_case = CASE_SNAKE;
+    s.enum_name_case = CASE_SNAKE;
+    s.function_name_case = CASE_SNAKE;
+    s.global_name_case = CASE_SNAKE;
+    s.local_name_case = CASE_SNAKE;
+    s.enumerator_name_case = CASE_UPPERCASE;
+    s.member_name_case = CASE_SNAKE;
+    s.parameter_name_case = CASE_SNAKE;
+
+    return s;
+}
+
+struct style_options style_options_gnu(void)
+{
+    struct style_options s  = {0};
+    s.open_brace_style = BRACE_STYLE_ALLMAN;
+    s.func_open_brace_style = FUNC_BRACE_STYLE_ALLMAN;
+    s.else_style = ELSE_STYLE_NEW_LINE;
+    s.pointer_style = POINTER_STYLE_WEST;
+    s.indent_style = INDENT_STYLE_TABS;
+    s.indent_width = 0; /* N/A for tabs */
+
+    s.struct_name_case = CASE_CAMELCASE;
+    s.enum_name_case = CASE_CAMELCASE;
+    s.function_name_case = CASE_CAMELCASE;
+    s.global_name_case = CASE_SNAKE;
+    s.local_name_case = CASE_SNAKE;
+    s.enumerator_name_case = CASE_UPPERCASE;
+    s.member_name_case = CASE_SNAKE;
+    s.parameter_name_case = CASE_SNAKE;
+
+    return s;
+}
+
+struct style_options style_options_microsoft(void)
+{
+    struct style_options s  = {0};
+    s.open_brace_style = BRACE_STYLE_ALLMAN;
+    s.func_open_brace_style = FUNC_BRACE_STYLE_ALLMAN;
+    s.else_style = ELSE_STYLE_NEW_LINE;
+    s.pointer_style = POINTER_STYLE_WEST;
+    s.indent_style = INDENT_STYLE_SPACES;
+    s.indent_width = 4;
+
+    s.struct_name_case = CASE_PASCALCASE;
+    s.enum_name_case = CASE_PASCALCASE;
+    s.function_name_case = CASE_PASCALCASE;
+    s.global_name_case = CASE_PASCALCASE;
+    s.local_name_case = CASE_PASCALCASE;
+    s.enumerator_name_case = CASE_UPPERCASE;
+    s.member_name_case = CASE_PASCALCASE;
+    s.parameter_name_case = CASE_PASCALCASE;
+
+    return s;
 }

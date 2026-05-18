@@ -2,7 +2,7 @@ var sample = {};
 sample["C89"] = [];
 
 sample["C89"]["bit-fields"] =
-`
+    `
 struct X {
     unsigned char a : 3;
     unsigned int b : 9;
@@ -21,7 +21,7 @@ int main() {}
 `;
 
 sample["C89"]["enuns"] =
-`
+    `
 enum escapes { BELL = '\\a', BACKSPACE = '\\b', TAB = '\\t',
                NEWLINE = '\\n', VTAB = '\\v', RETURN = '\\r' };
 
@@ -38,7 +38,7 @@ int main()
 sample["C99"] = [];
 
 sample["C99"]["Mixed declarations"] =
-`
+    `
 int main(){
   int x = 10;
   x++;
@@ -303,7 +303,7 @@ int main()
 `;
 
 sample["C99"]["VLA I"] =
-`
+    `
 #include <stdio.h>
 
 int main(void) {
@@ -327,7 +327,7 @@ int main(void) {
 `;
 
 sample["C99"]["VLA II"] =
-`
+    `
 /*
   VLA inside a block (lifetime demonstration)
 */
@@ -359,7 +359,7 @@ int main(void) {
 `;
 
 sample["C99"]["VLA III"] =
-`
+    `
 /*
 VLA with 2D function parameter
 */
@@ -389,9 +389,22 @@ int main(void) {
 `;
 
 sample["C99"]["VMT cast"] =
-`
+    `
+#include <stdio.h>
+void test()
+{
+   int n = 1;
+   typeof(int(*)[n++]) a;
+   (int(*)[n++]) 0;
+   (int(*)[n++]) 0;
+   printf("%d", n);
+}
+//4
+
 int main()
 {
+   test();
+
    int n = 1;
    int a[n];
     n = 2;
@@ -400,8 +413,68 @@ int main()
 }
 `;
 
+sample["C99"]["sizeof(VMT)"] =
+    `
+
+#include <stdio.h>
+
+void sizeof_sample()
+{
+    int n = 1;
+    printf("%zu ", sizeof(int [n++]));
+
+    printf("%zu ", sizeof(int [n++]));
+
+    printf("%zu ", sizeof(int [n++]));
+    
+    printf("\\n");
+}
+
+void countof_sample()
+{
+    int n = 1;
+    printf("%zu ", _Countof(int [n++]));
+
+    printf("%zu ", _Countof(int [n++]));
+
+    printf("%zu ", _Countof(int [n++]));
+    
+    printf("\\n");
+}
+
+int main(){
+    sizeof_sample();
+    countof_sample();
+}
+
+// 4 8 12 
+// 1 2 3
+
+`;
+
+sample["C99"]["typeof(VMT)"] =
+    `
+#include <stdio.h>
+int main()
+{
+    int n = 1;
+    typeof(int (*)[n++]) p1;
+    typeof(int (*)[n++]) p2;
+    typeof(int (*)[n++]) p3;
+    
+    printf("%zu ", _Countof(*p1));
+
+    printf("%zu ", _Countof(*p2));
+
+    printf("%zu ", _Countof(*p3));
+    
+    printf("\\n");
+}
+//1 2 3
+`;
+
 sample["C99"]["VM Types"] =
-`
+    `
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -570,7 +643,7 @@ int main(void)
 `;
 
 sample["C99"]["VM Types II"] =
-`
+    `
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -1035,6 +1108,21 @@ int main()
 }
 `;
 
+sample["C23"]["Labels"] =
+    `
+/* https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2508.pdf */
+int main()
+{
+  goto label;
+
+  label:
+  int x;
+
+  goto exit;
+  exit:
+}
+
+`;
 
 sample["C23"]["static_assert"] =
     `
@@ -1224,7 +1312,7 @@ int main()
 
 `;
 sample["C23"]["static compound literal"] =
-`
+    `
 // https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3038.htm
 int main()
 {
@@ -1705,6 +1793,27 @@ sample["C2Y"]["case range ..."] =
   }
 `;
 
+
+sample["C2Y"]["static_assertions in expressions"] =
+    `
+//https://open-std.org/jtc1/sc22/wg14/www/docs/n3715.pdf
+
+#include <stdio.h>
+
+#define BIT(n) ( \\
+  static_assert(n >= 0), \\
+  static_assert(n < 32), \\
+  1U << (n) \\
+)
+
+int main()
+{
+    static_assert(1);
+    printf("%u", BIT(1));
+    return 0;
+}
+`;
+
 sample["C2Y"]["#def"] =
     `
 /*
@@ -1944,7 +2053,7 @@ int main()
 `;
 
 sample["C2Y"]["Local functions II"] =
-`
+    `
 #include <stdlib.h>
 
 void async(void callback(int result, void * data), void * data);
@@ -1986,7 +2095,7 @@ int main()
 
 
 sample["C2Y"]["Literal function async I"] =
-`
+    `
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -2013,7 +2122,7 @@ int main()
 
 
 sample["C2Y"]["Literal function async II"] =
-`
+    `
 /*
    Pattern:
    do this -> then that -> then that ....
@@ -2147,7 +2256,7 @@ int main()
 
 
 sample["C2Y"]["Statement expressions"] =
-`
+    `
 
 //https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3643.htm
 
@@ -2221,7 +2330,7 @@ int main()
 `;
 
 sample["Extensions"]["checked expressions I"] =
- `
+    `
 #include <stdio.h>
 
 int main()
@@ -2238,7 +2347,7 @@ int main()
 `;
 
 sample["Extensions"]["checked expressions II"] =
-`
+    `
 #pragma safety enable
 
 void* _Owner _Opt malloc(unsigned long size);
@@ -2289,35 +2398,57 @@ int main()
 
 sample["Extensions"]["pragma diagnostic"] =
     `
+/*
+  Diagnostic levels can be configured per code region using:
+    #pragma CAKE diagnostic push   (save current settings)
+    #pragma CAKE diagnostic error   <id> [id2 ...]
+    #pragma CAKE diagnostic warning <id> [id2 ...]
+    #pragma CAKE diagnostic note    <id> [id2 ...]
+    #pragma CAKE diagnostic ignored <id> [id2 ...]
+    #pragma CAKE diagnostic pop    (restore previous settings)
 
-enum E1 { A };
-enum E2 { B };
+  Warning 4 = mixing enumerators from different enum types.
+*/
 
-int main() {
+enum Color { RED, GREEN, BLUE };
+enum Direction { NORTH, SOUTH, EAST, WEST };
 
+int main()
+{
+    enum Color c = RED;
+    enum Direction d = NORTH;
+
+    /* Promote warning 4 to a hard error — mixing enums breaks the build */
 #pragma CAKE diagnostic push
-#pragma CAKE diagnostic error "C0004"
-    if (A == B){}
+#pragma CAKE diagnostic error 4
+    if (c == SOUTH) {}   /* error: enumerators from different enums */
 #pragma CAKE diagnostic pop
 
+    /* Default level: warning */
 #pragma CAKE diagnostic push
-#pragma CAKE diagnostic warning "C0004"
-    if (A == B){}
+#pragma CAKE diagnostic warning 4
+    if (c == SOUTH) {}   /* warning: enumerators from different enums */
 #pragma CAKE diagnostic pop
 
+    /* Demote to a note — informational only */
 #pragma CAKE diagnostic push
-#pragma CAKE diagnostic note "C0004"
-    if (A == B){}
+#pragma CAKE diagnostic note 4
+    if (c == SOUTH) {}   /* note: enumerators from different enums */
 #pragma CAKE diagnostic pop
 
-
+    /* Silence completely — useful for third-party or generated code */
 #pragma CAKE diagnostic push
-#pragma CAKE diagnostic ignored "C0004"
-    if (A == B){}
+#pragma CAKE diagnostic ignored 4
+    if (c == SOUTH) {}   /* no diagnostic */
 #pragma CAKE diagnostic pop
 
+    /* Multiple warnings can be configured in one pragma */
+#pragma CAKE diagnostic push
+#pragma CAKE diagnostic ignored 4 10
+    if (c == SOUTH) {}   /* 4: enum mix — suppressed  */
+    c;                   /* 10: result not used — suppressed */
+#pragma CAKE diagnostic pop
 }
-
 
 
 `;
@@ -2494,7 +2625,7 @@ int main() {
 
 `;
 
-sample["Static Analysis"]["static_state/static_debug"] =
+sample["Static Analysis"]["assert_state/static_debug"] =
     `
 #pragma safety enable
 
@@ -2505,11 +2636,11 @@ int main() {
    void * _Owner  _Opt p = malloc(1);
    if (p)
    {
-     static_state(p, "not-null"); 
+     assert_state(p, "not-null"); 
      free(p);
-     static_state(p, "uninitialized"); 
+     assert_state(p, "uninitialized"); 
    }
-   static_state(p, "null | uninitialized"); 
+   assert_state(p, "null | uninitialized"); 
    static_debug(p);
 }
 
@@ -2795,7 +2926,7 @@ int int_array_reserve(struct int_array* p, int n)
 
         void* _Owner _Opt pnew = realloc(p->data, n * sizeof(p->data[0]));
         if (pnew == NULL) return ENOMEM;
-        static_set(p->data, "moved");
+        override_state(p->data, "moved");
         p->data = pnew;
         p->capacity = n;
     }
@@ -2873,7 +3004,7 @@ int main()
 }
 `;
 
-sample["Static Analysis"]["static_set/realloc"] =
+sample["Static Analysis"]["override_state/realloc"] =
     `
 #pragma safety enable
 
@@ -2888,7 +3019,7 @@ void f()
     if (p2 != 0)
     {
        /*overriding flow analysis*/
-       static_set(p, "moved");
+       override_state(p, "moved");
        p = p2;
     }
     free(p);
@@ -2926,7 +3057,7 @@ int main()
    mtx_t mtx;
    if (mtx_init(&mtx, mtx_plain) != thrd_success)
    {
-      static_set(mtx, "uninitialized");
+      override_state(mtx, "uninitialized");
       return;
    }
    mtx_destroy(&mtx);   
@@ -2946,7 +3077,7 @@ int main()
   fd = socket();
   if (fd < 0)
   {
-     static_set(fd, "null");
+     override_state(fd, "null");
      return 1;
   }
   close(fd);
@@ -3632,6 +3763,3 @@ auto i64_max1 = 9'223'372'036'854'775'808;
 auto u64_max = 18'446'744'073'709'551'615;
 
 `;
-
-
-

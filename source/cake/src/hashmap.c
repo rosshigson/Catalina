@@ -181,6 +181,10 @@ int hashmap_set(struct hash_map* map, const char* key, struct hash_item_set* ite
 
     void* _Opt p = NULL;
     enum tag type = TAG_TYPE_NUMBER;
+
+#pragma CAKE diagnostic push
+#pragma CAKE diagnostic ignored 29
+
     if (item->p_declarator)
     {
         type = TAG_TYPE_DECLARATOR;
@@ -239,10 +243,8 @@ int hashmap_set(struct hash_map* map, const char* key, struct hash_item_set* ite
         type = TAG_TYPE_NUMBER;
         p = (void*)item->number;
     }
-    // else
-    // {
-     //    assert(false);
-     //}
+    
+#pragma CAKE diagnostic pop
 
     try
     {
@@ -257,8 +259,6 @@ int hashmap_set(struct hash_map* map, const char* key, struct hash_item_set* ite
             if (map->table == NULL) throw;
         }
 
-        if (map->table != NULL)
-        {
             unsigned int hash = string_hash(key);
             int index = hash % map->capacity;
 
@@ -290,6 +290,7 @@ int hashmap_set(struct hash_map* map, const char* key, struct hash_item_set* ite
                     throw;
                 }
 
+            assert(p_new_entry->key == NULL);
                 p_new_entry->key = temp_key;
                 p_new_entry->next = map->table[index];
                 map->table[index] = p_new_entry;
@@ -298,6 +299,10 @@ int hashmap_set(struct hash_map* map, const char* key, struct hash_item_set* ite
             }
             else
             {
+
+#pragma CAKE diagnostic push
+#pragma CAKE diagnostic ignored 33
+
                 switch (pentry->type)
                 {
                 case TAG_TYPE_NUMBER:break;
@@ -331,12 +336,16 @@ int hashmap_set(struct hash_map* map, const char* key, struct hash_item_set* ite
                     assert(pentry->data.p_struct_entry != NULL);
                     item->p_struct_entry = pentry->data.p_struct_entry;
                     break;
+            case TAG_TYPE_TEXT:
+                assert(pentry->data.p_struct_entry != NULL);
+                item->text = pentry->data.p_text;
+                break;
                 }
+#pragma CAKE diagnostic pop
 
                 result = 1;
                 pentry->data.p_declarator = (void*)p;
                 pentry->type = type;
-            }
         }
     }
     catch

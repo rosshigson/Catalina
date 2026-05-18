@@ -61,9 +61,9 @@ goto done
 
 :found_catalina
 echo.
-echo =============
-echo BUILDING CAKE
-echo =============
+echo ==========================
+echo BUILDING CAKE for %*
+echo ==========================
 echo.
 
 call bake_cake>bake.out

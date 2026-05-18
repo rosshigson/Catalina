@@ -35,11 +35,19 @@ void free(void* _Owner _Opt ptr);
 void* _Owner _Opt malloc(size_t size);
 void* _Owner _Opt realloc(void* _Opt ptr, size_t size);
 char* _Owner _Opt strdup(const char* src);
+char* _Opt strstr(const char* str, const char* substr);
 
 inline char* _Opt strrchr(char const *  _String, int _Ch);
 
 #ifdef _WIN32
 __inline int __cdecl snprintf(_Ctor char* const _Buffer, size_t  const _BufferCount, char const* const _Format, ...);
+
+char* _Opt _fullpath(
+   char* _Opt absPath,
+   const char* relPath,
+   size_t maxLength
+);
+
 #else
 
 int snprintf(
@@ -102,7 +110,7 @@ float strtof(char const* _String, char** _Opt _EndPtr);
 #define _Dtor
 #define _View
 #define static_debug(x)
-#define static_set(x, s)
+#define override_state(x, s)
 #endif
 
 #endif

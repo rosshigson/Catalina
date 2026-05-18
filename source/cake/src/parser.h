@@ -41,6 +41,10 @@ struct report
 {
     int no_files;
     double cpu_time_used_sec;
+    
+    /*has_errors is not reseted when we remove diagnostics*/
+    bool has_errors;
+
     int error_count;
     int warnings_count;
     int info_count;
@@ -71,6 +75,7 @@ struct label_list
 struct label_list_item* _Opt label_list_find(struct label_list* list, const char* label_name);
 void label_list_push(struct label_list* list, struct label_list_item* _Owner pitem);
 void label_list_clear(struct label_list* list);
+void label_list_destroy(_Dtor struct label_list* list);
 
 
 struct diagnostic_item;
@@ -102,17 +107,15 @@ struct diagnostic_item
 void diagnostic_queue_add(struct diagnostic_queue* q, struct diagnostic_item* _Owner e);
 void diagnostic_queue_flush(struct diagnostic_queue* q, const struct parser_ctx* ctx);
 bool diagnostic_queue_remove(struct diagnostic_queue* q, int line, enum diagnostic_id id);
-void diagnostic_queue_destroy(struct diagnostic_queue* q);
+void diagnostic_queue_destroy(_Dtor struct diagnostic_queue* q);
 
-#define LINT_IDS_MAX 32
-int parse_diagnostic_suppression(const char* comment_lexeme, int ids[LINT_IDS_MAX]);
+
+static int parse_diagnostic_suppression(const char* p, int ids[], int ids_max);
 
 
 struct parser_ctx
 {
     struct options options;
-
-    struct diagnostic_id_stack* _Opt p_diagnostic_id_stack;
 
     /*
       file scope -> function params -> function -> inner scope
@@ -156,6 +159,7 @@ struct parser_ctx
     struct token* _Opt current;
     struct token* _Opt previous;
 
+
     bool inside_generic_association;
 
     int label_id; /*generates unique ids for labels*/
@@ -192,6 +196,7 @@ void unexpected_end_of_file(struct parser_ctx* ctx);
 void parser_match(struct parser_ctx* ctx);
 _Attr(nodiscard)
 int parser_match_tk(struct parser_ctx* ctx, enum token_type type);
+int parser_match_tk_lint(struct parser_ctx* ctx, enum token_type type, struct token** pp_token_lint);
 
 struct token* _Opt previous_parser_token(const struct token* token);
 struct declarator* _Opt find_declarator(const struct parser_ctx* ctx, const char* lexeme, struct scope** _Opt ppscope_opt);
@@ -207,7 +212,7 @@ void print_scope(struct scope_list* e);
 */
 char* _Opt _Owner CompileText(const char* options, const char* content);
 
-_Bool compiler_diagnostic(enum diagnostic_id w,
+_Bool diagnostic(enum diagnostic_id w,
     const struct parser_ctx* ctx,
     const struct token* _Opt p_token,
     const struct marker* _Opt p_marker,
@@ -280,33 +285,37 @@ struct declaration_specifiers* _Owner _Opt declaration_specifiers(struct parser_
 void declaration_specifiers_delete(struct declaration_specifiers* _Owner _Opt p);
 void declaration_specifiers_add(struct declaration_specifiers* p, struct declaration_specifier* _Owner item);
 
-struct static_assert_declaration
+struct static_assertion
 {
-    /*
-     static_assert-declaration:
-       "static_assert" ( constant-expression , string-literal ) ;
-       "static_assert" ( constant-expression ) ;
+    /* C2Y
+        static-assertion:
+        static_assert ( constant-expression , string-literal )
+        static_assert ( constant-expression )
     */
 
     /*
-      I am keeping the name static_assert_declaration but better is
+      I am keeping the name 'static_assertion' but better is
 
       static_declaration:
-       static_assert_declaration
+       static_assertion
        static_debug_declaration
 
       extension:
       "static_debug" ( constant-expression ) ;
-      "static_set" ( constant-expression , string-literal) ;
+      "override_state" ( constant-expression , string-literal) ;
     */
 
     struct token* first_token;
     struct token* last_token;
+    struct token* _Opt p_lint_token;
     struct expression* _Owner constant_expression;
     struct token* _Opt string_literal_opt;
 };
-struct static_assert_declaration* _Owner static_assert_declaration(struct parser_ctx* ctx);
-void static_assert_declaration_delete(struct static_assert_declaration* _Owner _Opt p);
+struct static_assertion* _Owner _Opt static_assertion(struct parser_ctx* ctx);
+void static_assertion_delete(struct static_assertion* _Owner _Opt p);
+
+struct static_assertion* _Owner _Opt static_assert_declaration(struct parser_ctx* ctx);
+bool first_of_static_assertion(const struct parser_ctx* ctx);
 
 /*
   extension, pragma survives the preprocessor and become
@@ -347,7 +356,6 @@ struct attribute_specifier
      attribute-specifier:
         [ [ attribute-list ] ]
     */
-    enum diagnostic_id ack;
     struct token* first_token;
     struct token* last_token;
     struct attribute_list* _Owner attribute_list;
@@ -512,7 +520,7 @@ struct declaration
     */
     struct attribute_specifier_sequence* _Owner _Opt p_attribute_specifier_sequence;
 
-    struct static_assert_declaration* _Owner _Opt static_assert_declaration;
+    struct static_assertion* _Owner _Opt static_assertion;
     struct pragma_declaration* _Owner _Opt pragma_declaration;
 
 
@@ -526,6 +534,7 @@ struct declaration
 
     struct token* first_token;
     struct token* last_token;
+    struct token* _Opt lint_token;
 
     struct declaration* _Owner _Opt next;
 };
@@ -780,7 +789,7 @@ struct initializer
     struct expression* _Owner _Opt assignment_expression;
 };
 
-struct initializer* _Owner _Opt initializer(struct parser_ctx* ctx, enum expression_eval_mode eval_mode);
+struct initializer* _Owner _Opt initializer(struct parser_ctx* ctx, bool is_discarded);
 void initializer_destroy(_Dtor struct initializer* p);
 void initializer_delete(struct initializer* _Owner _Opt  p);
 
@@ -841,7 +850,7 @@ struct declarator
     bool declarator_renamed;
 };
 
-struct function_declarator* declarator_find_function_declarator(const struct declarator* p_declarator);
+struct function_declarator* _Opt declarator_find_function_declarator(const struct declarator* p_declarator);
 const struct declarator* _Opt declarator_get_innert_function_declarator(const struct declarator* p);
 
 const struct declarator* _Opt declarator_get_function_definition(const struct declarator* p);
@@ -1147,7 +1156,7 @@ struct member_declaration
     struct specifier_qualifier_list* _Owner _Opt specifier_qualifier_list;
     struct member_declarator_list* _Owner _Opt member_declarator_list_opt;
 
-    struct static_assert_declaration* _Owner _Opt static_assert_declaration;
+    struct static_assertion* _Owner _Opt static_assertion;
     struct pragma_declaration* _Owner _Opt pragma_declaration;
 
     struct attribute_specifier_sequence* _Owner _Opt p_attribute_specifier_sequence;
@@ -1218,6 +1227,7 @@ struct compound_statement
     */
     struct token* first_token; /*{*/
     struct token* last_token; /*}*/
+    struct token* _Opt lint_token; /* //lint */
 
     struct block_item_list block_item_list;
 
@@ -1351,6 +1361,7 @@ struct selection_statement
 
     struct token* first_token;
     struct token* last_token;
+    struct token* _Opt lint_token;
     struct token* _Opt else_token_opt;
     struct defer_list defer_list;
 
@@ -1372,7 +1383,7 @@ struct iteration_statement
 
     struct token* first_token;
     struct token* second_token; /*do {} while*/
-
+    struct token* _Opt p_lint_token; /*do {} while*/
     struct secondary_block* _Owner secondary_block;
 
     struct expression* _Owner _Opt expression1;
@@ -1398,6 +1409,8 @@ struct jump_statement
     struct token* _Opt label;
     struct token* first_token;
     struct token* last_token;
+    struct token* _Opt p_lint_token;
+
     struct expression* _Owner _Opt expression_opt;
 
     int label_id;
@@ -1417,6 +1430,7 @@ struct expression_statement
 
     struct attribute_specifier_sequence* _Owner _Opt p_attribute_specifier_sequence;
     struct expression* _Owner _Opt expression_opt;
+    struct token* _Opt p_lint_token;
 };
 
 struct expression_statement* _Owner _Opt expression_statement(struct parser_ctx* ctx, bool ignore_semicolon, struct attribute_specifier_sequence* _Owner _Opt p_attribute_specifier_sequence);
@@ -1496,7 +1510,7 @@ struct initializer_list
     int size;
 };
 
-struct initializer_list* _Owner _Opt initializer_list(struct parser_ctx* ctx, enum expression_eval_mode eval_mode);
+struct initializer_list* _Owner _Opt initializer_list(struct parser_ctx* ctx, bool is_discarded);
 void initializer_list_delete(struct initializer_list* _Owner _Opt p);
 void initializer_list_add(struct initializer_list* list, struct initializer_list_item* _Owner p_item);
 
@@ -1740,7 +1754,7 @@ bool first_of_type_name(const struct parser_ctx* ctx);
 bool first_of_type_name_ahead(const struct parser_ctx* ctx);
 bool first_of_type_name_token(const struct parser_ctx* ctx /*only to typedef*/, struct token* p_token);
 
-struct argument_expression_list argument_expression_list(struct parser_ctx* ctx, enum expression_eval_mode eval_mode);
+struct argument_expression_list argument_expression_list(struct parser_ctx* ctx, bool is_discarded);
 
 struct declaration_list
 {
@@ -1801,12 +1815,4 @@ int initializer_init_new(struct parser_ctx* ctx,
 
 struct object* _Opt find_object_declarator_by_index(struct object* p_object, struct member_declaration_list* list, int member_index);
 
-struct diagnostic_id_stack* _Opt  build_diagnostic_id_stack(struct parser_ctx* ctx,
-    struct attribute_specifier_sequence* _Opt p_attribute_specifier_sequence,
-                               struct diagnostic_id_stack* stack,
-                               int diagnostic_phase);
-
-void warn_unrecognized_warnings(struct parser_ctx* ctx,
-    struct diagnostic_id_stack* stack,
-    struct attribute_specifier_sequence* _Opt p_attribute_specifier_sequence,
-    struct diagnostic_id_stack* _Opt p_diagnostic_id_stack);
+void check_dianostic_suppression_core(struct parser_ctx* ctx, struct token* pToken, int phase);

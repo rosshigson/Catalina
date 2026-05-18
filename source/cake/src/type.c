@@ -17,6 +17,12 @@
 #include "parser.h"
 #include "type.h"
 
+#define TYPE_QUALIFIER_CAKE_MASK \
+    (TYPE_QUALIFIER_CAKE_OWNER | \
+     TYPE_QUALIFIER_CAKE_VIEW  | \
+     TYPE_QUALIFIER_CAKE_OPT   | \
+     TYPE_QUALIFIER_CAKE_DTOR  | \
+     TYPE_QUALIFIER_CAKE_CTOR)
 
 bool is_automatic_variable(enum storage_class_specifier_flags f)
 {
@@ -330,7 +336,12 @@ void type_add_const(struct type* p_type)
     p_type->type_qualifier_flags |= TYPE_QUALIFIER_CONST;
 }
 
-void type_remove_qualifiers(struct type* p_type)
+void type_remove_non_cake_qualifiers(struct type* p_type)
+{
+    p_type->type_qualifier_flags &= TYPE_QUALIFIER_CAKE_MASK;
+}
+
+void type_remove_all_qualifiers(struct type* p_type)
 {
     p_type->type_qualifier_flags = 0;
 }
@@ -366,7 +377,7 @@ struct type type_lvalue_conversion(const struct type* p_type, bool nullchecks_en
         struct type t2 = type_add_pointer(&t, nullchecks_enabled);
 
 
-        type_remove_qualifiers(&t2);
+        type_remove_non_cake_qualifiers(&t2);
         /*
         int g(const int a[const 20]) {
             // in this function, a has type const int* const (const pointer to const int)
@@ -385,7 +396,7 @@ struct type type_lvalue_conversion(const struct type* p_type, bool nullchecks_en
     }
 
     struct type t = type_dup(p_type);
-    type_remove_qualifiers(&t);
+    type_remove_non_cake_qualifiers(&t);
     t.storage_class_specifier_flags &= ~STORAGE_SPECIFIER_PARAMETER;
 
     /*
@@ -1054,7 +1065,8 @@ bool type_is_unnamed_bitfield(const struct type* p_type)
 }
 
 
-bool type_is_decimal128(const struct type* p_type){
+bool type_is_decimal128(const struct type* p_type)
+{
     return type_get_category(p_type) == TYPE_CATEGORY_ITSELF &&
         p_type->type_specifier_flags & TYPE_SPECIFIER_DECIMAL128;
 }
@@ -1349,7 +1361,7 @@ void check_ownership_qualifiers_of_argument_and_parameter(struct parser_ctx* ctx
         //ok
         if (current_argument->expression->type.storage_class_specifier_flags & STORAGE_SPECIFIER_FUNCTION_RETURN)
         {
-            compiler_diagnostic(W_OWNERSHIP_USING_TEMPORARY_OWNER,
+            diagnostic(W_OWNERSHIP_USING_TEMPORARY_OWNER,
                 ctx,
                 current_argument->expression->first_token, NULL,
                 "passing a temporary owner to a view");
@@ -1358,7 +1370,7 @@ void check_ownership_qualifiers_of_argument_and_parameter(struct parser_ctx* ctx
     }////////////////////////////////////////////////////////////
     else if (argument_is_obj_owner && paramer_is_owner)
     {
-        compiler_diagnostic(W_OWNERSHIP_MOVE_ASSIGNMENT_OF_NON_OWNER,
+        diagnostic(W_OWNERSHIP_MOVE_ASSIGNMENT_OF_NON_OWNER,
             ctx,
             current_argument->expression->first_token, NULL,
             "cannot move _Dtor to _Owner");
@@ -1373,7 +1385,7 @@ void check_ownership_qualifiers_of_argument_and_parameter(struct parser_ctx* ctx
         //ok
         if (current_argument->expression->type.storage_class_specifier_flags & STORAGE_SPECIFIER_FUNCTION_RETURN)
         {
-            compiler_diagnostic(W_OWNERSHIP_USING_TEMPORARY_OWNER,
+            diagnostic(W_OWNERSHIP_USING_TEMPORARY_OWNER,
                 ctx,
                 current_argument->expression->first_token, NULL,
                 "passing a temporary owner to a view");
@@ -1385,7 +1397,7 @@ void check_ownership_qualifiers_of_argument_and_parameter(struct parser_ctx* ctx
     {
         if (!expression_is_null_pointer_constant(current_argument->expression))
         {
-            compiler_diagnostic(W_OWNERSHIP_MOVE_ASSIGNMENT_OF_NON_OWNER,
+            diagnostic(W_OWNERSHIP_MOVE_ASSIGNMENT_OF_NON_OWNER,
                 ctx,
                 current_argument->expression->first_token, NULL,
                 "passing a _View argument to a _Owner parameter");
@@ -1400,7 +1412,7 @@ void check_ownership_qualifiers_of_argument_and_parameter(struct parser_ctx* ctx
             if (!type_is_owner(&t2))
             {
 
-                compiler_diagnostic(W_OWNERSHIP_MOVE_ASSIGNMENT_OF_NON_OWNER,
+                diagnostic(W_OWNERSHIP_MOVE_ASSIGNMENT_OF_NON_OWNER,
                     ctx,
                     current_argument->expression->first_token, NULL,
                     "pointed object is not _Owner");
@@ -1412,7 +1424,7 @@ void check_ownership_qualifiers_of_argument_and_parameter(struct parser_ctx* ctx
                 if (!argument_type->address_of)
                 {
                     //we need something created with address of.
-                    compiler_diagnostic(W_MUST_USE_ADDRESSOF,
+                    diagnostic(W_MUST_USE_ADDRESSOF,
                         ctx,
                         current_argument->expression->first_token, NULL,
                         "_Dtor pointer must be created using address of operator &");
@@ -1425,7 +1437,7 @@ void check_ownership_qualifiers_of_argument_and_parameter(struct parser_ctx* ctx
         {
             if (!expression_is_null_pointer_constant(current_argument->expression))
             {
-                compiler_diagnostic(W_OWNERSHIP_MOVE_ASSIGNMENT_OF_NON_OWNER,
+                diagnostic(W_OWNERSHIP_MOVE_ASSIGNMENT_OF_NON_OWNER,
                     ctx,
                     current_argument->expression->first_token, NULL,
                     "passing a _View argument to a _Dtor parameter");
@@ -1470,27 +1482,23 @@ bool type_is_empty(const struct type* p_type)
 
 struct type type_add_pointer(const struct type* p_type, bool null_checks_enabled)
 {
-    struct type r = type_dup(p_type);
     try
     {
-        //waiting test
-        //if (type_is_empty(&r)) throw;
-
         struct type* _Owner _Opt p = calloc(1, sizeof(struct type));
         if (p == NULL) throw;
-
-        *p = r;
-        r = (struct type){ 0 };
-        r.next = p;
-        r.category = TYPE_CATEGORY_POINTER;
-
-
-        r.storage_class_specifier_flags = p_type->storage_class_specifier_flags;
+        struct type r0 = type_dup(p_type);
+        *p = r0;
+        struct type r2 = {0};
+        r2.next = p;
+        r2.category = TYPE_CATEGORY_POINTER;
+        r2.storage_class_specifier_flags = p_type->storage_class_specifier_flags;
+        return r2;
     }
     catch
     {
     }
 
+    struct type r = {0};
     return r;
 }
 
@@ -1877,22 +1885,22 @@ struct type type_dup(const struct type* p_type)
             *p_new = *p;
 
             //actually I was not the _Owner of p_new->next
-            static_set(p_new->next, "uninitialized");
+            override_state(p_new->next, "uninitialized");
             p_new->next = NULL;
 
             if (p->name_opt)
             {
                 //actually p_new->name_opt was not mine..
-                static_set(p_new->name_opt, "uninitialized");
+                override_state(p_new->name_opt, "uninitialized");
                 p_new->name_opt = strdup(p->name_opt);
             }
 
             if (p->category == TYPE_CATEGORY_FUNCTION)
             {
                 //actually p_new->params.head  p_new->params.tail and was not mine..
-                static_set(p_new->params.head, "uninitialized");
+                override_state(p_new->params.head, "uninitialized");
                 p_new->params.head = NULL;
-                static_set(p_new->params.tail, "uninitialized");
+                override_state(p_new->params.tail, "uninitialized");
                 p_new->params.tail = NULL;
 
                 struct param* _Opt p_param = p->params.head;
@@ -1982,7 +1990,11 @@ static enum sizeof_result get_offsetof_struct(struct struct_or_union_specifier* 
 
                             sizeof_result = type_get_sizeof(&tmp, &field_type_size, target);
                             if (sizeof_result != SIZEOF_RESULT_OK)
+                            {
+                                type_destroy(&tmp);
                                 throw;
+                        }
+                            type_destroy(&tmp);
                         }
                         else
                         {
@@ -2355,6 +2367,7 @@ enum sizeof_result get_sizeof_struct(struct struct_or_union_specifier* complete_
                         case SIZEOF_RESULT_OVERLOW:
                         case SIZEOF_RESULT_RUNTIME:
                         case SIZEOF_RESULT_FUNCTION:
+                        case SIZEOF_RESULT_BITFIELD:
                             throw;
                             break;
 
@@ -3313,10 +3326,7 @@ bool enum_specifier_is_same(struct enum_specifier* _Opt a, struct enum_specifier
     return a == NULL && b == NULL;
 }
 
-
-static bool type_is_same_core(const struct type* a,
-                              const struct type* b,
-                              bool compare_qualifiers)
+bool type_is_same(const struct type* a, const struct type* b, bool compare_qualifiers)
 {
     const struct type* _Opt pa = a;
     const struct type* _Opt pb = b;
@@ -3324,10 +3334,14 @@ static bool type_is_same_core(const struct type* a,
     while (pa && pb)
     {
         if (pa->array_num_elements != pb->array_num_elements)
+        {
             return false;
+        }
 
         if (pa->category != pb->category)
+        {
             return false;
+        }
 
         if (pa->enum_specifier &&
             pb->enum_specifier &&
@@ -3446,14 +3460,125 @@ static bool type_is_same_core(const struct type* a,
     return pa == NULL && pb == NULL;
 }
 
-bool type_is_same(const struct type* a, const struct type* b, bool compare_qualifiers)
-{
-    return type_is_same_core(a, b, compare_qualifiers);
-}
-
 bool type_is_compatible(const struct type* a, const struct type* b)
 {
-    return type_is_same_core(a, b, false);
+    const struct type* _Opt pa = a;
+    const struct type* _Opt pb = b;
+
+    while (pa && pb)
+    {
+        if (pa->has_static_array_size &&
+            pb->has_static_array_size &&
+            pa->array_num_elements != pb->array_num_elements)
+        {
+            return false;
+}
+
+        if (pa->category != pb->category)
+{
+            //array pointer are compatible
+//            return false;
+        }
+
+        if (pa->enum_specifier &&
+            pb->enum_specifier &&
+            get_complete_enum_specifier(pa->enum_specifier) !=
+            get_complete_enum_specifier(pb->enum_specifier))
+        {
+            return false;
+        }
+
+
+        if (pa->enum_specifier && !pb->enum_specifier)
+        {
+            //TODO enum with types
+            //enum  x int
+           //return false;
+        }
+
+        if (!pa->enum_specifier && pb->enum_specifier)
+        {
+            //TODO enum with types
+            //int x enum
+            //return false;
+        }
+
+        //if (pa->name_opt != pb->name_opt) return false;
+        if (pa->has_static_array_size != pb->has_static_array_size)
+            return false;
+
+        if (pa->category == TYPE_CATEGORY_FUNCTION)
+        {
+
+            if (pa->params.is_var_args != pb->params.is_var_args)
+            {
+                return false;
+            }
+
+            if (pa->params.is_void != pb->params.is_void)
+            {
+                return false;
+            }
+
+            if (!pa->params.is_void && !pb->params.is_void)
+            {
+                struct param* _Opt p_param_a = pa->params.head;
+                struct param* _Opt p_param_b = pb->params.head;
+                while (p_param_a && p_param_b)
+                {
+                    if (!type_is_compatible(&p_param_a->type, &p_param_b->type))
+                    {
+                        return false;
+                    }
+                    p_param_a = p_param_a->next;
+                    p_param_b = p_param_b->next;
+                }
+                if (p_param_a != NULL || p_param_b != NULL)
+                {
+                    return false;
+                }
+            }
+        }
+
+        if (pa->struct_or_union_specifier &&
+            pb->struct_or_union_specifier)
+        {
+
+            if (pa->struct_or_union_specifier->complete_struct_or_union_specifier_indirection !=
+                pb->struct_or_union_specifier->complete_struct_or_union_specifier_indirection)
+            {
+                //this should work but it is not...
+            }
+
+            if (strcmp(pa->struct_or_union_specifier->tag_name, pb->struct_or_union_specifier->tag_name) != 0)
+            {
+                return false;
+            }
+        }
+
+        enum type_specifier_flags a_flags = pa->type_specifier_flags;
+        enum type_specifier_flags b_flags = pb->type_specifier_flags;
+
+        if ((a_flags & TYPE_SPECIFIER_CHAR) == 0)
+        {
+            a_flags &= ~TYPE_SPECIFIER_SIGNED;
+        }
+
+        if ((b_flags & TYPE_SPECIFIER_CHAR) == 0)
+        {
+            b_flags &= ~TYPE_SPECIFIER_SIGNED;
+        }
+
+        if (a_flags != b_flags)
+        {
+            return false;
+        }
+
+
+        pa = pa->next;
+        pb = pb->next;
+    }
+    return pa == NULL && pb == NULL;
 }
 
 void type_clear(struct type* a)
@@ -3957,7 +4082,7 @@ static bool is_valid_type(struct parser_ctx* ctx, struct token* _Opt p_token, co
         {
             if (p->next && p->next->category == TYPE_CATEGORY_FUNCTION)
             {
-                compiler_diagnostic(C_ERROR_FUNCTION_RETURNS_FUNCTION,
+                diagnostic(C_ERROR_FUNCTION_RETURNS_FUNCTION,
                                             ctx,
                                             p_token,
                                             NULL,
@@ -3966,7 +4091,7 @@ static bool is_valid_type(struct parser_ctx* ctx, struct token* _Opt p_token, co
             }
             else if (p->next && p->next->category == TYPE_CATEGORY_ARRAY)
             {
-                compiler_diagnostic(C_ERROR_FUNCTION_RETURNS_ARRAY,
+                diagnostic(C_ERROR_FUNCTION_RETURNS_ARRAY,
                                             ctx,
                                             p_token,
                                             NULL,
@@ -3987,7 +4112,7 @@ static bool is_valid_type(struct parser_ctx* ctx, struct token* _Opt p_token, co
                 {
                     if (p2->category == TYPE_CATEGORY_ARRAY && !p2->has_static_array_size)
                     {
-                        compiler_diagnostic(C_ERROR_FUNCTION_RETURNS_ARRAY,
+                        diagnostic(C_ERROR_FUNCTION_RETURNS_ARRAY,
                                             ctx,
                                             p_token,
                                             NULL,
@@ -4001,7 +4126,7 @@ static bool is_valid_type(struct parser_ctx* ctx, struct token* _Opt p_token, co
         else if (p->category == TYPE_CATEGORY_ITSELF &&
                  p->type_specifier_flags == TYPE_SPECIFIER_NONE)
         {
-            compiler_diagnostic(C_ERROR_INVALID_TYPE,
+            diagnostic(C_ERROR_INVALID_TYPE,
                                         ctx,
                                         p_token,
                                         NULL,
@@ -4069,7 +4194,7 @@ struct type make_type_using_declarator(struct parser_ctx* ctx, struct declarator
             struct type nt =
                 type_dup(&p_typedef_declarator->type);
             
-            free((void*)nt.name_opt);
+            free((void* _Owner)nt.name_opt);
             nt.name_opt = NULL;
             if (pdeclarator->name_opt)
             {

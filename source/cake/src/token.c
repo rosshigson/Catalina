@@ -30,29 +30,24 @@
 #include <debugapi.h>
 #endif
 
-/*
-  PROVISORY - unchecked was removed, now we control flow ownership error with pragma
-  TODO review alternatives from Domingo's branch.
-*/
-#ifdef __CAKE__
-#pragma cake diagnostic push
-#pragma cake diagnostic ignored "-Wdiscard-owner"
-#pragma cake diagnostic ignored "-Wmissing-destructor"
-#pragma cake diagnostic ignored "-Wnon-owner-move"
-#pragma cake diagnostic ignored "-Wnon-owner-to-_Owner-move"
-#endif
 
-//#pragma cake diagnostic pop
-
-bool style_has_space(const struct token* token)
+bool token_is_newline(const struct token* _Opt token)
 {
-    return token_is_blank(token->prev);
+    if (token == NULL)
+        return false;
+
+    return token->type == TK_NEWLINE;
 }
 
-bool style_has_one_space(const struct token* token)
+bool token_is_one_space(const struct token* _Opt token)
 {
-    return token->prev &&
-        token->prev->type == TK_BLANKS;
+    if (token == NULL)
+        return false;
+
+    if (token->type != TK_BLANKS)
+        return false;
+
+    return token->lexeme[0] == ' ' && token->lexeme[1] == '\0'; //lint 28 bug #435
 }
 
 void print_literal2(const char* s);
@@ -531,6 +526,15 @@ bool token_is_identifier_or_keyword(enum token_type t)
 }
 
 
+
+bool token_is_final(const struct token* _Opt p)
+{
+    if (p == NULL)
+        return false;
+
+    return p->flags & TK_FLAG_FINAL;
+}
+
 bool token_is_blank(const struct token* p)
 {
     return p->type == TK_BEGIN_OF_FILE ||
@@ -613,8 +617,8 @@ struct token* _Owner _Opt clone_token(struct token* p)
     }
 
     *token = *p;
-    token->lexeme = lexeme;
-    token->next = NULL;
+    token->lexeme = lexeme; //lint 29
+    token->next = NULL; //lint 29
     token->prev = NULL;
 
     return token;
@@ -754,6 +758,10 @@ void print_token(bool color_enabled, const struct token* p_token)
     {
         strcat(buffer, "hide ");
     }
+    if (p_token->flags & TK_FLAG_ACTIVE)
+    {
+        strcat(buffer, "active ");
+    }
     if (p_token->flags & TK_FLAG_MACRO_EXPANDED)
     {
         strcat(buffer, "expanded ");
@@ -825,6 +833,10 @@ void print_token_html(struct token* p_token)
     {
         printf("newline ");
     }
+    if (p_token->flags & TK_FLAG_ACTIVE)
+    {
+        printf("active ");
+    }
 
     printf("\">");
 
@@ -889,6 +901,7 @@ void print_position(const char* _Opt path, int line, int col, bool msvc_format, 
                        line, col,
                        msvc_format,
                        color_enabled);
+    if (ss.c_str)
     puts(ss.c_str);
     ss_close(&ss);
 }
@@ -897,6 +910,7 @@ void print_line_and_token(struct marker* p_marker, bool color_enabled)
 {
     struct osstream ss = { 0 };
     ss_print_line_and_token(&ss, p_marker, color_enabled);
+    if (ss.c_str)
     puts(ss.c_str);
     ss_close(&ss);
 }
@@ -1513,7 +1527,7 @@ const unsigned char* _Opt str_utf8_decode(const unsigned char* s, _Ctor unsigned
     if (s[0] < 0x80)
     {
         *c = s[0];
-        assert(*c >= 0x0000 && *c <= 0x007F);
+        assert(*c <= 0x007F);
         next = s + 1;
     }
     else if ((s[0] & 0xe0) == 0xc0)
@@ -1681,26 +1695,49 @@ const unsigned char* _Opt escape_sequences_decode_opt(const unsigned char* p, un
 void token_list_remove_get_test()
 {
     struct token_list list = { 0 };
+    struct token_list r = {0};
+    try
+    {
     struct token* _Opt _Owner pnew = calloc(1, sizeof * pnew);
-    token_list_add(&list, pnew);
-    struct token_list r = token_list_remove_get(&list, pnew, pnew);
+        if (pnew == NULL) throw;
+        
+        token_list_add(&list, pnew); //lint 33 33 33
+        r = token_list_remove_get(&list, pnew, pnew); //lint 30 30
     assert(list.head == NULL);
     assert(list.tail == NULL);
+    }
+    catch
+    {
+
+    }
     token_list_destroy(&r);
 }
 
 void token_list_remove_get_test2()
 {
     struct token_list list = { 0 };
-    struct token* pnew1 = calloc(1, sizeof * pnew1);
-    token_list_add(&list, pnew1);
-    struct token* pnew2 = calloc(1, sizeof * pnew2);
-    token_list_add(&list, pnew2);
+    struct token_list r = {0};
+    try
+    {
+        struct token* _Owner _Opt pnew1 = calloc(1, sizeof * pnew1);
+        if (pnew1 == NULL) throw;
 
-    struct token_list r = token_list_remove_get(&list, pnew1, pnew1);
-    assert(list.head == pnew2);
-    assert(list.tail == pnew2);
-    r;
+        token_list_add(&list, pnew1); //lint 33 33 33
+        struct token* _Owner _Opt pnew2 = calloc(1, sizeof * pnew2);
+        if (pnew2 == NULL) throw;
+
+        token_list_add(&list, pnew2); //lint 33 33 33 
+
+        r = token_list_remove_get(&list, pnew1, pnew1); //lint 30 30  
+        assert(list.head == pnew2); //lint 30 
+        assert(list.tail == pnew2); //lint 30
+    }
+    catch
+    {
+
+    }
+    token_list_destroy(&list);
+    token_list_destroy(&r);
 }
 
 

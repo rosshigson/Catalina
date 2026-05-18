@@ -29,7 +29,7 @@
 #include <debugapi.h>
 #endif
 
-#include "visit_il.h"
+#include "codegen.h"
 #include <time.h>
 
 
@@ -102,7 +102,7 @@ int fill_preprocessor_options(int argc, const char** argv, struct preprocessor_c
 
 WINBASEAPI unsigned long WINAPI GetEnvironmentVariableA(const char* name,
 char* buffer,
-unsigned long size);
+unsigned long size); //lint 11
 
 #endif
 
@@ -535,18 +535,18 @@ int compile_one_file(const char* file_name,
             if (berror || report->error_count > 0)
                 throw;
 
-            if (!options->no_output)
+            if (!options->no_output && !report->has_errors)
             {
 
                 struct osstream ss = { 0 };
 
 
-                struct d_visit_ctx ctx2 = { 0 };
-                ctx2.ast = ast;
+                struct codegen_ctx ctx2 = { 0 };
+                ctx2.p_ast = &ast;
                 ctx2.options = ctx.options;
-                d_visit(&ctx2, &ss);
+                codegen_visit(&ctx2, &ss);
                 p_output_string = ss.c_str; //MOVE
-                d_visit_ctx_destroy(&ctx2);
+                codegen_visit_ctx_destroy(&ctx2);
 
 
                 FILE* _Owner _Opt outfile = fopen(out_file_name, "w");
@@ -554,12 +554,13 @@ int compile_one_file(const char* file_name,
                 {
 #if defined(__CATALINA__)
                     if (p_output_string) {
-                        // catalina needs its builtins included in the ouutput
-                        // to process __builtin_alloca() correctly
+                        // catalina needs its builtins included in the output
+                        // (e.g. __builtin_alloca()) to compile them correctly
                         if (builtin[0] != '\0') {
                            if (options->line_directives) {
                               // Catalina requires an initial #line directive
-                              // to correctly generate debug information
+                              // to correctly generate debug information, so
+                              // if we have builtins, we add one first
                               char new_file[512] = "";
                               int nlen = strlen(file_name);
                               memcpy(new_file, file_name, nlen);
@@ -713,6 +714,7 @@ int compile_one_file(const char* file_name,
     // Compare snapshots
     if (_CrtMemDifference(&state_diff, &state1, &state2))
     {
+        report->test_failed++;
         printf("==================================================\n");
         printf("Memory leak\n");
         printf("==================================================\n");
@@ -821,6 +823,14 @@ static void longest_common_path(int argc, const char** argv, char root_dir[FS_MA
     {
         if (argv[i][0] == '-')
             continue;
+
+        if (strcmp(argv[i], "-o") == 0 ||
+            strcmp(argv[i], "-sarif-path") == 0)
+        {
+            //ignore these files and consume next.
+            i++;
+            continue;
+        }
 
         char fullpath_i[FS_MAX_PATH] = { 0 };
         realpath(argv[i], fullpath_i);
@@ -1008,6 +1018,7 @@ int compile(int argc, const char** argv, struct report* report)
                 dirname(outdir);
                 if (create_multiple_paths(root_dir, outdir) != 0)
                 {
+                    printf("error creating directory\n");
                     return 1;
                 }
             }
@@ -1075,7 +1086,7 @@ static int strtoargv(char* s, int n, const char* argv[/*n*/])
             break;
         argv[argvc] = p;
         argvc++;
-        while (*p != ' ' && *p != '\0') //error in cake static analysis
+        while (*p != ' ' && *p != '\0') //lint 28 (error in cake static analysis, #431)
             p++;
         if (*p == 0)
             break;
@@ -1133,12 +1144,12 @@ const char* _Owner _Opt compile_source(const char* pszoptions, const char* conte
                 throw;
 
             struct osstream ss = { 0 };
-            struct d_visit_ctx ctx2 = { 0 };
-            ctx2.ast = ast;
+            struct codegen_ctx ctx2 = { 0 };
+            ctx2.p_ast = &ast;
             ctx2.options = options;
-            d_visit(&ctx2, &ss);
+            codegen_visit(&ctx2, &ss);
             s = ss.c_str; //MOVED                
-            d_visit_ctx_destroy(&ctx2);
+            codegen_visit_ctx_destroy(&ctx2);
         }
     }
     catch

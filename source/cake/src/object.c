@@ -1345,7 +1345,8 @@ int object_set(
 
             while (it_from && it_to)
             {
-                object_set(ctx, it_to, NULL, it_from, is_constant, requires_constant_initialization);
+                if (object_set(ctx, it_to, NULL, it_from, is_constant, requires_constant_initialization) != 0)
+                   throw;
                 it_to = it_to->next;
                 it_from = it_from->next;
             }
@@ -1369,10 +1370,9 @@ int object_set(
                     !type_is_pointer_or_array(&p_init_expression->type) &&
                     !type_is_function(&p_init_expression->type))
                 {
-                    struct token* _Opt tk = p_init_expression ?
-                        p_init_expression->first_token : ctx->current;
+                    struct token* _Opt tk = p_init_expression->first_token;
 
-                    compiler_diagnostic(C_ERROR_REQUIRES_COMPILE_TIME_VALUE,
+                    diagnostic(C_ERROR_REQUIRES_COMPILE_TIME_VALUE,
                         ctx,
                         tk,
                         NULL,
@@ -1639,15 +1639,16 @@ struct object object_dup(const struct object* src)
         result.p_ref = src->p_ref;
     result.next = NULL;
 
-        for (struct object* p = src->members.head; p; p = p->next)
+        for (struct object* _Opt p = src->members.head; p; p = p->next)
         {
-            struct object* pnew = calloc(1, sizeof * pnew);
+            struct object* _Opt _Owner pnew = calloc(1, sizeof * pnew);
             if (pnew == NULL) throw;
             *pnew = object_dup(p);
             object_list_push(&result.members, pnew);
         }
     }
-    catch{
+    catch
+    {
     }
     return result;
 }
@@ -2896,7 +2897,7 @@ struct object object_div(enum target target,
     case TYPE_FLOAT:
     case TYPE_DOUBLE:
     case TYPE_LONG_DOUBLE:
-        r.value.host_long_double = a0.value.host_long_double / b0.value.host_long_double;
+        r.value.host_long_double = a0.value.host_long_double / b0.value.host_long_double; //lint 36 div by zero, we want it here
         r.value.host_long_double = resize_floating_point(r.value.host_long_double, target_get_num_of_bits(target, common_type));
 
     default:
@@ -2985,7 +2986,7 @@ struct object object_mod(enum target target,
 
 int object_is_equal(enum target target, const struct object* a, const struct object* b)
 {
-    char message[200];
+    char message[200]= {0};
     struct object r = object_equal(target, a, b, message);
     int i = r.value.host_long_long != 0;
     object_destroy(&r);
@@ -2994,7 +2995,7 @@ int object_is_equal(enum target target, const struct object* a, const struct obj
 
 int object_is_not_equal(enum target target, const struct object* a, const struct object* b)
 {
-    char message[200];
+    char message[200] = {0};
     struct object r = object_not_equal(target, a, b, message);
     int i = r.value.host_long_long != 0;
     object_destroy(&r);
@@ -3004,7 +3005,7 @@ int object_is_not_equal(enum target target, const struct object* a, const struct
 
 int object_is_greater_than_or_equal(enum target target, const struct object* a, const struct object* b)
 {
-    char message[200];
+    char message[200]= {0};
     struct object r = object_greater_than_or_equal(target, a, b, message);
     int i = r.value.host_long_long != 0;
     object_destroy(&r);
@@ -3013,7 +3014,7 @@ int object_is_greater_than_or_equal(enum target target, const struct object* a, 
 
 int object_is_smaller_than_or_equal(enum target target, const struct object* a, const struct object* b)
 {
-    char message[200];
+    char message[200]= {0};
     struct object r = object_smaller_than_or_equal(target, a, b, message);
     int i = r.value.host_long_long != 0;
     object_destroy(&r);
