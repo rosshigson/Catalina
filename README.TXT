@@ -203,8 +203,9 @@ documents folder.
 New Functionality
 -----------------
 
-1. Cake has been updated to 0.13.24, which includes support for C99 Variable 
-   Length Arrays.
+1. Cake has been updated to 0.13.34, which completes Cake support for C99,
+   C11, C17 and C23, and enhances support for CXY. For full details, refer 
+   to the Cake documents in source/cake/ and source/cake/docs.
 
 Other Changes
 -------------
@@ -230,4 +231,5 @@ Other Changes
    the same addresses on all platforms. Affected Catalina on Linux only.
 
 4. An older version of Lua (5.4.4) has been removed from the Catalina 
-   libraries.
+   libraries. Lua version 5.4.8 is now the only supported version in the
+   libraries, but a stand-alone version of 5.5.0 is also included.

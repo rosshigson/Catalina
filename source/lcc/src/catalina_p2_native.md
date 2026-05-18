@@ -1485,6 +1485,10 @@ static void my_stabinit(char *file, int argc, char *argv[]) {
 /* my_stabline - emit stab entry for source coordinate *cp */
 static void my_stabline(Coordinate *cp) {
    int lab;
+   extern char *getcwd(char *, size_t);
+   char debug_path[MAX_PATHNAME_LENGTH + 1 + 1];
+   int pathlen;
+   
    if (cp->file && (currentfile == NULL || strcmp(currentfile, cp->file) != 0)) {
       prevline = 0;
    }
@@ -1492,16 +1496,42 @@ static void my_stabline(Coordinate *cp) {
       print("' line %d\n", prevline = cp->y);
    }
 
+   getcwd(debug_path, sizeof debug_path);
+   pathlen = strlen(debug_path);
+   if (cp->file && (strncmp(cp->file, debug_path, pathlen) == 0)) {
+      /* 
+       * This is a special for Cake, which can generate #line directives
+       * containing the full path name (e.g. for files in the 'catalina' 
+       * subdirectory. In that case we must remove the debug path from
+       * the file name, or BlackBox will not find the file.
+       */
    if (cp->file && cp->file != currentfile) {
       lab = genlabel(1);
-      fprintf(debug_file, ".stabs \"%s\",0x%x,0,0,%s%d\n", cp->file, N_SOL, stabprefix, lab);
-      printf("%s%d\n\n", stabprefix, lab);
+         fprintf(debug_file, ".stabs \"%s\",0x%x,0,0,%s%s%d\n", (&cp->file[pathlen+1]), N_SOL, stabprefix, stablabel, lab);
+         printf("%s%s%d\n\n", stabprefix, stablabel, lab);
       currentfile = cp->file;
    }
    lab = genlabel(1);
    fprintf(debug_file, ".stabn 0x%x,0,%d,%s%s_%d-%s\n", N_SLINE, cp->y,
       stabprefix, stablabel, lab, cfunc->x.name);
    printf("%s%s_%d\n\n", stabprefix, stablabel, lab);
+   }
+   else {
+      /*
+       * This is the normal case (e.g. for cpp) which does not include the 
+       * full path name in the #line directive.
+       */
+      if (cp->file && cp->file != currentfile) {
+         lab = genlabel(1);
+         fprintf(debug_file, ".stabs \"%s\",0x%x,0,0,%s%s%d\n", cp->file, N_SOL, stabprefix, stablabel, lab);
+         printf("%s%s%d\n\n", stabprefix, stablabel, lab);
+         currentfile = cp->file;
+      }
+      lab = genlabel(1);
+      fprintf(debug_file, ".stabn 0x%x,0,%d,%s%s_%d-%s\n", N_SLINE, cp->y,
+         stabprefix, stablabel, lab, cfunc->x.name);
+      printf("%s%s_%d\n\n", stabprefix, stablabel, lab);
+   }
 }
 
 /* my_stabsym - output a stab entry for symbol p */
