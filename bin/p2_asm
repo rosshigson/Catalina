@@ -122,28 +122,14 @@ if [ "$OUTPUT" == "" ]; then
    OUTPUT=$INPUT
 fi
 
+# the following is necessary in case $INPUT == $OUTPUT
 if [ -f $INPUT ]; then
-   if [ "$INPUT" != "$OUTPUT" ]; then
-      #echo spp $DEFINES $INCLUDES $INPUT to $OUTPUT
-      #echo p2asm -v33 $OUTPUT
-      #echo rm -f $OUTPUT
-      rm -f $OUTPUT
-      spp $DEFINES $INCLUDES $INPUT > $OUTPUT
-      p2asm -v33 $LISTING $OUTPUT
-      rm -f $OUTPUT
-   else
-      TEMP=`mktemp`
-      #echo cp -f $INPUT $TEMP
-      #echo spp $DEFINES $INCLUDES $TEMP to $INPUT
-      #echo p2asm -v33 $LISTING $INPUT
-      #echo cp -f $TEMP $INPUT
-      #echo rm -f $TEMP
-      cp -f $INPUT $TEMP
-      spp $DEFINES $INCLUDES $TEMP > $INPUT
-      p2asm -v33 $LISTING $INPUT
-      cp -f $TEMP $INPUT
-      rm -f $TEMP
-   fi
+   TEMP=`mktemp`
+   cp -f $INPUT $TEMP
+   spp $DEFINES $INCLUDES $TEMP > $INPUT
+   p2asm -v33 $LISTING $INPUT
+   cp -f $TEMP $INPUT
+   rm -f $TEMP
 else
   echo Input file "$INPUT" not found
   ERROR=1

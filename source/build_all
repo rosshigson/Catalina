@@ -26,6 +26,7 @@ cd catalina
 ./build_all
 cd ../cake
 ./build_all
+./copy_all
 cd ../catoptimize
 ./build_all
 ./copy_all
