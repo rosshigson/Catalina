@@ -146,15 +146,20 @@ IF %OUTPUT% == "" (
    SET OUTPUT=%INPUT%
 )
 
-FOR %%i IN (%INPUT%) DO (
-   SET FN_ONLY=%%~nxi
+IF NOT %OUTPUT% == %INPUT% (
+   spp %DEFINES% %INCLUDES% %INPUT% > %OUTPUT%
+   p2asm -v33 %LISTING% %OUTPUT%
+   del %OUTPUT%
+) ELSE (
+    FOR %%i IN (%INPUT%) DO (
+       SET FN_ONLY=%%~nxi
+    )
+   copy %INPUT% "%TEMP%"\\!FN_ONLY! > NUL:
+   spp %DEFINES% %INCLUDES% "%TEMP%"\\!FN_ONLY! > %INPUT%
+   p2asm -v33 %LISTING% %INPUT%
+   copy "%TEMP%"\\!FN_ONLY! %INPUT% > NUL:
+   del "%TEMP%"\\!FN_ONLY!
 )
-
-rem the following is necessary in case %INPUT == %OUTPUT
-copy %INPUT% "%TEMP%"\\!FN_ONLY! > NUL:
-spp %DEFINES% %INCLUDES% "%TEMP%"\\!FN_ONLY! > %INPUT%
-p2asm -v33 %LISTING% %INPUT%
-del "%TEMP%"\\!FN_ONLY!
 
 GOTO :eof
 
