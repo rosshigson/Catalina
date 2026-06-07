@@ -41,7 +41,7 @@ uint32_t DFS_WriteSector(uint8_t unit, uint8_t *buffer, uint32_t sector, uint32_
 #if DOSFS_CAN_COUNT
    if (count == 1) {
       for (j = 0; j < WRITE_RETRIES; j++) {
-         if (result = sectwrite((char *)buffer, sector) == 0) {
+         if ((result = sectwrite((char *)buffer, sector)) == 0) {
             break;
          }
          else {
@@ -83,6 +83,5 @@ uint32_t DFS_WriteSector(uint8_t unit, uint8_t *buffer, uint32_t sector, uint32_
 #endif
    return result;
 }
-
 
 

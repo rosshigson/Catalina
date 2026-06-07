@@ -84,6 +84,21 @@ SD_Last        = 11             ' last valid command if CLOCK defined
 SD_Last        = 5              ' last valid command if CLOCK not defined
 #endif
 
+#if defined(P2_EDGE) || defined(P2_CUSTOM)
+'
+' The P2 Edge SD socket and boot flash share pins 58..61 with CLK/CS
+' swapped. Put the boot flash into deep power-down before SD card
+' initialization so SD clocks cannot make flash drive the shared DO line.
+'
+FLASH_DO       = _SD_DO
+FLASH_DI       = _SD_DI
+FLASH_CK       = _SD_CS
+FLASH_CS       = _SD_CK
+FLASH_RESET_ENABLE = $66
+FLASH_RESET_MEMORY = $99
+FLASH_DEEP_POWER_DOWN = $B9
+#endif
+
 ' SD services:
 '
 ' The command to perform is encoded in the top 8 bits of the parameter
@@ -180,7 +195,10 @@ SD_START
 .rslt     mov     .rsltptr,.rqstptr       ' set up a pointer to ...
           add     .rsltptr,#4             ' ... our result address
 
-          call    #_SDCard_Init
+#if defined(P2_EDGE) || defined(P2_CUSTOM)
+          call    #_Flash_Sleep
+#endif
+          mov     sd_initialized,#0      ' initialize on first real request
 #ifdef CLOCK
           call    #.RTC_Init
 #endif
@@ -428,23 +446,53 @@ SD_START
 '-------------------- SD Card Functions -----------------------------------------
 
 .SD_Init
-        call    #_SDcard_Init
+        call    #_SDcard_Init_Retry
+  if_z  mov     sd_initialized,#1
+  if_nz mov     sd_initialized,#0
   if_z  mov     .rslt,#0
   if_nz neg     .rslt,#1
         ret
 
 .SD_Write
+        tjnz    sd_initialized,#.SD_Write_Check_Ready
+        call    #_SDcard_Init_Retry   ' force init if startup init was not proven
+  if_z  mov     sd_initialized,#1
+  if_nz mov     sd_initialized,#0
+  if_nz jmp     #.SD_Result     ' still no - return result from card
+.SD_Write_Check_Ready
         call    #_SD_Ready      ' SD card ready?
+  if_z  jmp     #.SD_Write_Ready
+        call    #_SDcard_Init_Retry   ' no - try a fresh initialization
+  if_z  mov     sd_initialized,#1
+  if_nz mov     sd_initialized,#0
+  if_nz jmp     #.SD_Result     ' still no - return result from card
+        call    #_SD_Ready      ' SD card ready now?
   if_nz jmp     #.SD_Result     ' no - return result from card
+.SD_Write_Ready
         call    #_writeSECTOR   ' yes - write sector
         jmp     #.SD_Result     ' return result
 
 .SD_Read
+        tjnz    sd_initialized,#.SD_Read_Check_Ready
+        call    #_SDcard_Init_Retry   ' force init if startup init was not proven
+  if_z  mov     sd_initialized,#1
+  if_nz mov     sd_initialized,#0
+  if_nz jmp     #.SD_Result     ' still no - return result from card
+.SD_Read_Check_Ready
         call    #_SD_Ready      ' SD card ready?
+  if_z  jmp     #.SD_Read_Ready
+        call    #_SDcard_Init_Retry   ' no - try a fresh initialization
+  if_z  mov     sd_initialized,#1
+  if_nz mov     sd_initialized,#0
+  if_nz jmp     #.SD_Result     ' still no - return result from card
+        call    #_SD_Ready      ' SD card ready now?
   if_nz jmp     #.SD_Result     ' no - return result from card
+.SD_Read_Ready
         call    #_readSECTOR    ' yes - read sector, return result
+        jmp     #.SD_Result
 .SD_Result
   if_z  mov     .rslt,#0
+  if_nz mov     sd_initialized,#0
   if_nz mov     .rslt, reply
         call    #_sendFF
         ret                     ' return data response
@@ -457,7 +505,16 @@ SD_START
 .SD_StopIO
 ' ??? not implemented - disable SD card ??? 
         neg     .rslt,#1
-        ret 
+        ret
+
+_SDcard_Init_Retry
+                tjnz    sd_startup_wait_done,#.do_init
+                mov     sd_startup_wait_done,#1
+                mov     sd_init_retries,  #10
+.settle         waitx   ##delay1s
+                djnz    sd_init_retries,  #.settle
+.do_init        call    #_SDcard_Init
+                ret
 
 '------------------------------------------------------------------------------------------------
 
@@ -545,6 +602,9 @@ check_pulldn
 '+      Send >74 clocks with /CS=1 & DI=1 starting & ending with CLK=0         +
 '+-----------------------------------------------------------------------------+
 _SDcard_Init
+#if defined(P2_EDGE) || defined(P2_CUSTOM)
+                call    #_Flash_Sleep
+#endif
                 mov     _hubdata,         #$20          ' init hub data ptr=$20 
                                                         ' ie. after CLKFREQ ($14), CLKMODE ($18) & BAUDRATE ($1C)
                 'callpa  #_SD_CS,          #check_pullup ' check for pull-up on sd_cs
@@ -794,14 +854,17 @@ _writeBLOCK                                             ' CMD24: PAR=sector, 512
                 waitx   ##SD_DELAY                      ' why is this necessary???
 .waitbusy
                 call    #_recvbyte                      ' get a byte
-                cmp     reply,            #$FF      wz  ' reply=$FF=busy ?
-        if_nz   jmp     #.writedone                     ' n: done
+                cmp     reply,            #$FF      wz  ' reply=$FF=ready ?
+        if_z    jmp     #.writedone                     ' y: done
                 getct   replyR1                         '\ y: timeout ?
                 sub     replyR1,          ini_time      '|
                 cmp     replyR1,          time_out  wc  '| c if < timeout
         if_c    jmp     #.waitbusy                      '| n: try again
                 jmp     #_fail '90                      '/ y: timed out
 .writedone
+                outl    #_SD_CK                         ' CLK=0 (idle)          already=0
+                call    #_recvbyte                      ' SEND 8 CLOCKS BEFORE DISABLING CS
+                outh    #_SD_CS                         ' /CS=1 (disable)
         _RET_   MODZ    _set                            ' "Z" = success
 '+=============================================================================+
 '+-----------------------------------------------------------------------------+
@@ -890,6 +953,56 @@ _sendrecv       mov     reply,            #0            ' clear reply
         _RET_   outl    #_SD_CK                         ' CLK=0 on exit
 '+=============================================================================+
 
+#if defined(P2_EDGE) || defined(P2_CUSTOM)
+'+-----------------------------------------------------------------------------+
+'+ Put P2 Edge boot flash into deep power-down before using shared SD pins.     +
+'+-----------------------------------------------------------------------------+
+_Flash_Sleep
+                mov     dataout,          #FLASH_RESET_ENABLE
+                call    #_Flash_Command
+                mov     dataout,          #FLASH_RESET_MEMORY
+                call    #_Flash_Command
+                waitx   ##delay20ms
+                waitx   ##delay20ms
+                waitx   ##delay20ms
+                waitx   ##delay20ms
+                waitx   ##delay20ms
+                mov     dataout,          #FLASH_DEEP_POWER_DOWN
+                call    #_Flash_Command
+                waitx   ##delay5us
+                    drvh    #_SD_CS                         ' SD /CS=1 (flash CK high)
+                    drvh    #_SD_CK                         ' SD CLK=1 (flash /CS high; both chips deselected)
+                drvh    #_SD_DI                         ' SD DI=1
+        _RET_   fltl    #_SD_DO                         ' SD DO=input
+
+_Flash_Command
+                drvh    #FLASH_CS
+                drvh    #FLASH_CK
+                drvl    #FLASH_DI
+                fltl    #FLASH_DO
+                waitx   ##delay5us
+                drvl    #FLASH_CS
+                drvl    #FLASH_CK
+                call    #_Flash_SendByte
+                drvh    #FLASH_CK                         ' SD /CS=1 while flash is idle
+                drvh    #FLASH_CS
+                drvh    #FLASH_DI
+        _RET_   waitx   ##delay5us
+
+_Flash_SendByte
+                rol     dataout,          #24
+                mov     bitscnt,          #8
+.flashbit       rol     dataout,          #1        wc
+                outl    #FLASH_CK
+                outc    #FLASH_DI
+                waitx   #(2+CLOCK_EXTRA/2)
+                outh    #FLASH_CK
+                waitx   #(3+CLOCK_EXTRA/2)
+                djnz    bitscnt,          #.flashbit
+        _RET_   outl    #FLASH_CK
+'+=============================================================================+
+#endif
+
 '+-----------------------------------------------------------------------------+
 _fail           outh    #_SD_CS                         ' /CS=1 (disable)
         _RET_   MODCZ   _set,_clr                   wcz ' C & NZ = fail
@@ -915,6 +1028,9 @@ ini_time        long    0                       ' initial time
 time_out        long    0                       ' length of timeout
                                                 '\ 1=SDV1, 2=SDV2(byte address), 3=SDHC/SDV2(block address)
 blocksh         long    0                       '/ block shift 0/9 bits
+sd_initialized  long    0                       ' true after successful SD init
+sd_init_retries long    0                       ' bounded first-request init settle
+sd_startup_wait_done long 0                     ' true after first init settle window
 
 bufaddr         long    0                       ' ptr sector buffer
 blocknr         long    0                       ' sector#
@@ -939,4 +1055,3 @@ _hubdata        long    0
 |ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                         |
 +------------------------------------------------------------------------------------------------------------------------------+
 }}
-
