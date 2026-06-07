@@ -9,11 +9,13 @@ preprocessor.
 Catalina supports both internal and external memory models on both the 
 Propeller 1 and 2, for program sizes up to 16Mb.
 
-Catalina runs under Windows, Linux, the Raspberry Pi OS and also its own 
-self-hosted development environment (Catalyst).
+Catalina runs under Windows, Linux, macOS (including Apple Silicon), the
+Raspberry Pi OS and also its own self-hosted development environment
+(Catalyst).
 
-Catalina supports command-line use (Windows, Linux, Pi and Catalyst) and an 
-Integrated Development Environment based on Geany (Windows, Linux and Pi).
+Catalina supports command-line use (Windows, Linux, macOS, Pi and Catalyst)
+and an Integrated Development Environment based on Geany (Windows, Linux and
+Pi).
 
 Catalina supports the Lua programming language, either for stand-alone Lua 
 program development, or for Lua embedded in C programs.
@@ -27,7 +29,8 @@ Components
 
 The main components of Catalina are:
 
-   catalina    : The command-line C compiler (Windows, Linux, Pi and Catalyst)
+   catalina    : The command-line C compiler (Windows, Linux, macOS, Pi
+                 and Catalyst)
 
    catalina_geany : An Integrated Development Environment (Windows, Linux, 
                     and Pi) based on Geany.
@@ -37,27 +40,29 @@ The main components of Catalina are:
 
    cake        : A C preprocessor that converts programs with C99, 
                  C11, C23 and CYY extensions to C89. It is integrated with
-                 catalina but can also be used stand-alone (Windows, Linux, 
-                 and Pi)
+                 catalina but can also be used stand-alone (Windows, Linux,
+                 macOS, and Pi)
 
-   catapult    : A utility for building multi-model C programs (Windows, Linux, 
-                 and Pi)
+   catapult    : A utility for building multi-model C programs (Windows,
+                 Linux, macOS, and Pi)
 
    payload     : A serial program loader and simple terminal emulator (Windows, 
-                 Linux and Pi)
+                 Linux, macOS and Pi)
 
    comms       : A full-featured VT100 terminal emulator (Windows only)
 
    telnet      : A full-featured telnet client (Windows only)
 
-   blackbox    : A C source level debugger (Windows Linux, and Pi)
+   blackbox    : A C source level debugger (Windows, Linux, macOS, and Pi)
 
    parallelize : A utility for building multi-processor C programs (Windows, 
-                 Linux, and Pi)
+                 Linux, macOS, and Pi)
 
-   spinnaker   : A propeller 1 Spin compiler/assembler (Windows, Linux, and Pi)
+   spinnaker   : A propeller 1 Spin compiler/assembler (Windows, Linux,
+                 macOS, and Pi)
 
-   p2asm       : A propeller 2 assembler (Windows, Linux, Pi and Catalyst)
+   p2asm       : A propeller 2 assembler (Windows, Linux, macOS, Pi and
+                 Catalyst)
 
 Setting up Catalina 
 ===================

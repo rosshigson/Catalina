@@ -1,8 +1,12 @@
 #!/bin/bash
 ##!/bin/bash
 
+set -e
+
+HOST_CC=${CC:-gcc}
+
 cd src
-gcc build.c -D__CATALINA__ -o build
+$HOST_CC build.c -D__CATALINA__ -o build
 ./build
 cd ..
 
@@ -12,4 +16,3 @@ if [[ "$1" != "" ]]; then
    make_cake $@
 
 fi
-

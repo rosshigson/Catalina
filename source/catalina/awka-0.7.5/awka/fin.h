@@ -52,5 +52,7 @@ unsigned PROTO ( fillbuff, (int, char *, unsigned) ) ;
 extern  FIN  *main_fin ;  /* for the main input stream */
 void   PROTO( open_main, (void) ) ;
 
+#ifndef __APPLE__
 int  PROTO(setmode, (int,int)) ;
+#endif
 #endif  /* FIN_H */

@@ -5,18 +5,23 @@
 xx(symbolic,       symbolicIR) \
 xx(bytecode,       bytecodeIR) \
 xx(catalina/catalyst, catalinaIR) \
+xx(catalina/darwin, catalinaIR) \
 xx(catalina/linux, catalinaIR) \
 xx(catalina/win32, catalinaIR) \
 xx(catalina_p2/catalyst, catalina_p2IR) \
+xx(catalina_p2/darwin, catalina_p2IR) \
 xx(catalina_p2/linux, catalina_p2IR) \
 xx(catalina_p2/win32, catalina_p2IR) \
 xx(catalina_native_p2/catalyst, catalina_native_p2IR) \
+xx(catalina_native_p2/darwin, catalina_native_p2IR) \
 xx(catalina_native_p2/linux, catalina_native_p2IR) \
 xx(catalina_native_p2/win32, catalina_native_p2IR) \
 xx(catalina_large/catalyst, catalina_largeIR) \
+xx(catalina_large/darwin, catalina_largeIR) \
 xx(catalina_large/linux, catalina_largeIR) \
 xx(catalina_large/win32, catalina_largeIR) \
 xx(catalina_compact/catalyst, catalina_compactIR) \
+xx(catalina_compact/darwin, catalina_compactIR) \
 xx(catalina_compact/linux, catalina_compactIR) \
 xx(catalina_compact/win32, catalina_compactIR) \
 xx(null,           nullIR)
@@ -34,18 +39,23 @@ xx(symbolic/irix,  symbolicIR) \
 xx(symbolic,       symbolicIR) \
 xx(bytecode,       bytecodeIR) \
 xx(catalina/catalyst, catalinaIR) \
+xx(catalina/darwin, catalinaIR) \
 xx(catalina/linux, catalinaIR) \
 xx(catalina/win32, catalinaIR) \
 xx(catalina_p2/catalyst, catalina_p2IR) \
+xx(catalina_p2/darwin, catalina_p2IR) \
 xx(catalina_p2/linux, catalina_p2IR) \
 xx(catalina_p2/win32, catalina_p2IR) \
 xx(catalina_native_p2/catalyst, catalina_native_p2IR) \
+xx(catalina_native_p2/darwin, catalina_native_p2IR) \
 xx(catalina_native_p2/linux, catalina_native_p2IR) \
 xx(catalina_native_p2/win32, catalina_native_p2IR) \
 xx(catalina_large/catalyst, catalina_largeIR) \
+xx(catalina_large/darwin, catalina_largeIR) \
 xx(catalina_large/linux, catalina_largeIR) \
 xx(catalina_large/win32, catalina_largeIR) \
 xx(catalina_compact/catalyst, catalina_compactIR) \
+xx(catalina_compact/darwin, catalina_compactIR) \
 xx(catalina_compact/linux, catalina_compactIR) \
 xx(catalina_compact/win32, catalina_compactIR) \
 xx(null,           nullIR)

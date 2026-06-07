@@ -320,10 +320,14 @@ int main()
     execute_cmd("./cake  -autoconfig");
 #endif
 
-    //Uses previouly generated cakeconf.h to find include dir
+    // Uses previously generated cakeconf.h to find include dir. On macOS,
+    // Apple SDK headers use Clang-only feature macros that Cake does not
+    // currently parse during self-analysis.
+#if !defined(PLATFORM_MACOS)
     execute_cmd("./cake "
-               " -fanalyzer "
-               CAKE_SOURCE_FILES);
+                " -fanalyzer "
+                CAKE_SOURCE_FILES);
+#endif
 
     //run unit test if -DTEST
 #endif

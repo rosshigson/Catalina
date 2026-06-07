@@ -45,10 +45,10 @@ static void PROTO(write_error,(void)) ;
    but we need them here and sometimes they are missing
 */
 
-#ifdef NO_FPRINTF_IN_STDIO
+#if defined(NO_FPRINTF_IN_STDIO) && !defined(__APPLE__)
 int PROTO(fprintf, (FILE *, const char *,...)) ;
 #endif
-#ifdef NO_SPRINTF_IN_STDIO
+#if defined(NO_SPRINTF_IN_STDIO) && !defined(__APPLE__)
 int PROTO(sprintf, (char *, const char *,...)) ;
 #endif
 

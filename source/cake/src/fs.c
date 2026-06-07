@@ -46,6 +46,11 @@
 #include <stdbool.h>
 #include <errno.h>
 
+#ifdef __APPLE__
+#include <mach-o/dyld.h>
+#include <stdint.h>
+#endif
+
 bool path_is_normalized(const char* path)
 {
 #ifdef _WINDOWS_
@@ -367,23 +372,18 @@ int get_self_path(char* buffer, int maxsize)
 #elif defined __APPLE__
 
 int get_self_path(char* buffer, int maxsize) {
-    //uint32_t size = 0;
+    uint32_t size = (uint32_t)maxsize;
 
-    // First call gets required buffer size
-    //_NSGetExecutablePath(NULL, &size);
-
-    // Allocate buffer for the raw path
-
-    if (_NSGetExecutablePath(buffer,maxsize) != 0) {
-        return NULL;
+    if (_NSGetExecutablePath(buffer, &size) != 0) {
+        return 1;
     }
 
-    // Canonicalize (resolve symlinks, ., ..)
     char resolved[4096];
     if (!realpath(buffer, resolved)) {
-        return NULL;
+        return 1;
     }
-    
+
+    snprintf(buffer, maxsize, "%s", resolved);
     return 0;
 }
 #endif
@@ -781,5 +781,4 @@ char* _Owner read_file(const char* path, bool append_newline)
     return NULL;
 }
 #endif
-
 

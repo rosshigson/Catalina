@@ -2,6 +2,8 @@
 #
 # build LMM/XMM optimizer
 #
+set -e
+
 ./CompileOptimizer catopt_0
 ./CompileOptimizer catopt_1
 ./CompileOptimizer catopt_2
@@ -16,7 +18,7 @@
 ./CompileOptimizer catopt_11
 ./CompileOptimizer catopt_12
 ./CompileOptimizer catopt_13
-gcc -o catoptimize catoptimize.c
+${CC:-gcc} -o catoptimize catoptimize.c
 
 #
 # build CMM optimizer
@@ -36,4 +38,4 @@ gcc -o catoptimize catoptimize.c
 ./CompileOptimizer cmmopt_12
 ./CompileOptimizer cmmopt_13
 ./CompileOptimizer cmmopt_14
-gcc -o cmmoptimize cmmoptimize.c
+${CC:-gcc} -o cmmoptimize cmmoptimize.c

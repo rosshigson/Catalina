@@ -1010,3 +1010,8 @@ _wrpin wrpin.s 5 export
 _wxpin wxpin.s 5 export
 _wypin wypin.s 5 export
 _xypol xypol.s 5 export
+__builtin_popcount builtins.s 9 export
+__builtin_ffs builtins.s 34 export
+berry_p2_sd_read_diag_token secread.s 56 export
+berry_p2_sd_read_diag_response secread.s 62 export
+berry_p2_sd_read_diag_phase secread.s 68 export

@@ -1,13 +1,27 @@
 ifeq ($(OS),Windows_NT)
     CPPFLAGS=
+    LUA_PLATFORM=mingw
+    HOST_LIBS=-lm
 else
     UNAME_S := $(shell uname -s)
     ifeq ($(UNAME_S),Linux)
         CPPFLAGS=
+        LUA_PLATFORM=linux
+        HOST_LIBS=-lm -ldl
     endif
     ifeq ($(UNAME_S),Darwin)
         CPPFLAGS=-stdlib=libc++
+        LUA_PLATFORM=macosx
+        HOST_LIBS=-lm
     endif
+endif
+
+ifndef LUA_PLATFORM
+    LUA_PLATFORM=linux
+endif
+
+ifndef HOST_LIBS
+    HOST_LIBS=-lm -ldl
 endif
 
 A=.a
@@ -54,8 +68,8 @@ catalina$E:	catalina.c
 	$(CC) $(CFLAGS) -o $@ catalina.c -lm
 
 payload$E:	payload.c rs232.h rs232.c base64.c fymodem.h fymodem.c kb.h kb.c $(LUADIR)/src/linit.c
-	make -C $(LUADIR) linux
-	$(CC) $(CFLAGS) -o $@ payload.c rs232.c base64.c fymodem.c kb.c $(LUADIR)/src/linit.c -lpthread -lcurses -L $(LUADIR)/src -llua -lm -ldl 
+	make -C $(LUADIR) $(LUA_PLATFORM)
+	$(CC) $(CFLAGS) -o $@ payload.c rs232.c base64.c fymodem.c kb.c $(LUADIR)/src/linit.c -lpthread -lcurses -L $(LUADIR)/src -llua $(HOST_LIBS) 
 
 spinc$E:	spinc.c spinc.h 
 	$(CC) $(CFLAGS) -o $@ spinc.c 
@@ -70,7 +84,7 @@ blackbox_l.c: blackbox_l.l
 	flex -oblackbox_l.c <blackbox_l.l
 
 blackbox$E:	y.tab.c y.tab.h blackbox_l.c blackbox_comms.c rs232.c printf.c $(LUADIR)/src/linit.c
-	$(CC) $(CFLAGS) -o $@ y.tab.c blackbox_l.c blackbox_comms.c rs232.c printf.c $(LUADIR)/src/linit.c -L $(LUADIR)/src -llua -lm -ldl
+	$(CC) $(CFLAGS) -o $@ y.tab.c blackbox_l.c blackbox_comms.c rs232.c printf.c $(LUADIR)/src/linit.c -L $(LUADIR)/src -llua $(HOST_LIBS)
 
 catdbgfilegen$E:	catdbgfilegen.h catdbgutilities.h catdbgfilegen.cpp catdbgutilities.cpp stringconverter.h
 	$(CPP) $(CPPFLAGS) catdbgfilegen.cpp catdbgutilities.cpp -std=c++0x -o catdbgfilegen

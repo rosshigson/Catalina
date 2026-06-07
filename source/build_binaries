@@ -5,10 +5,32 @@
 # this script assumes all the necessary tools (gcc, bison, flex etc) are
 # already installed
 #
+set -e
+
+HOST_OS=$(uname -s)
+if [[ "$HOST_OS" == "Darwin" ]] ; then
+   for TOOL_PATH in \
+      /opt/homebrew/opt/bison/bin \
+      /opt/homebrew/opt/flex/bin \
+      /usr/local/opt/bison/bin \
+      /usr/local/opt/flex/bin
+   do
+      if [[ -d "$TOOL_PATH" ]] ; then
+         PATH="$TOOL_PATH:$PATH"
+      fi
+   done
+   export PATH
+fi
+
 TMP_LCCDIR=$LCCDIR
 if [[ "$TMP_LCCDIR" == "" ]] ; then
-   TMP_LCCDIR=/opt/catalina
+   if [[ "$HOST_OS" == "Darwin" ]] ; then
+      TMP_LCCDIR=$(cd .. && pwd)
+   else
+      TMP_LCCDIR=/opt/catalina
+   fi
 fi
+export LCCDIR=$TMP_LCCDIR
 #
 if [[ ! -e "$TMP_LCCDIR/bin/catalina_env" ]] ; then
    clear
@@ -40,4 +62,3 @@ cd ..
 #
 echo "Done!"
 #
-

@@ -1,13 +1,30 @@
 #!/bin/bash
 ##!/bin/bash -login
+set -e
+
+case "$(uname -s)" in
+   Darwin)
+      if [[ "$LCCDIR" == "" ]] ; then
+         export LCCDIR=$(cd ../.. && pwd)
+      fi
+      CATALINA_CAKE_HOSTFILE=etc/catalina_darwin_cake.c
+      CATALINA_HOSTFILE=etc/catalina_darwin.c
+      ;;
+   *)
+      if [[ "$LCCDIR" == "" ]] ; then
+         export LCCDIR=/opt/catalina
+      fi
+      CATALINA_CAKE_HOSTFILE=etc/catalina_linux_cake.c
+      CATALINA_HOSTFILE=etc/catalina_linux.c
+      ;;
+esac
 
 make clobber LCCDIR=$LCCDIR
-make HOSTFILE=etc/catalina_linux_cake.c LCCDIR=$LCCDIR lcc
+make HOSTFILE=$CATALINA_CAKE_HOSTFILE LCCDIR=$LCCDIR lcc
 make all LCCDIR=$LCCDIR
-rm $LCCDIR/bin/clcc
+rm -f $LCCDIR/bin/clcc
 mv $LCCDIR/bin/lcc $LCCDIR/bin/clcc
 
 make clobber LCCDIR=$LCCDIR
-make -B HOSTFILE=etc/catalina_linux.c LCCDIR=$LCCDIR lcc
+make -B HOSTFILE=$CATALINA_HOSTFILE LCCDIR=$LCCDIR lcc
 make all LCCDIR=$LCCDIR
-

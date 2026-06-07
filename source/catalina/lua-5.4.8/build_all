@@ -1,6 +1,8 @@
 #!/bin/bash
 #set -x
 #
+set -e
+
 TMP_LCCDIR=$LCCDIR
 if [[ "$TMP_LCCDIR" == "" ]] ; then
    TMP_LCCDIR=/opt/catalina
@@ -94,4 +96,3 @@ echo "===="
 echo "Done"
 echo "===="
 echo ""
-

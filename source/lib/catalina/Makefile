@@ -76,6 +76,7 @@ all:	darray.h \
 	waitums.s \
 	hmalloc.s \
 	aligns.s \
+	builtins.s \
 	base64.s
 
 ifeq ($(COMPACT),TRUE)

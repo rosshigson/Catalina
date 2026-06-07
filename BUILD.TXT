@@ -1,5 +1,5 @@
 This document contains detailed instructions on how to build Catalina from 
-source on Windows, Linux and the Rapberry Pi OS. These instructions assume 
+source on Windows, Linux, macOS (including Apple Silicon), and the Rapberry Pi OS. These instructions assume 
 Catalina will be built as a 64 bit application. 
 
 The Catalina Windows binaries (if included in the the distribution) should 
@@ -12,9 +12,9 @@ The Catalina Linux binaries (if included in the distribution) should execute
 on a 64-bit version of Ubuntu Linux 23.04, but rebuilding Catalina from source
 can be done on Ubuntu 18.04 or later. 
 
-There are separate instructions for building Catalina from source on the 
-Raspberry Pi OS (which is based on Debian Linux, not Ubuntu). These
-instructions may also work for other recent Debian distributions. 
+There are separate instructions for building Catalina from source on macOS and
+on the Raspberry Pi OS (which is based on Debian Linux, not Ubuntu). The
+Raspberry Pi instructions may also work for other recent Debian distributions. 
 
 There are no separate instructions for building Catalina on 32 bit Linux 
 systems.
@@ -25,9 +25,9 @@ it is unlikely you will ever need to rebuild Catalina, since it does not need
 to be rebuilt to compile programs, to add new platforms, new plugins, or new 
 libraries.
 
-On Linux and the Raspberry Pi OS it is more likely you will need to build 
+On Linux, macOS and the Raspberry Pi OS it is more likely you will need to build 
 Catalina from source, since it will generally need to be rebuilt to suit a 
-specific Linux or Raspberry Pi OS distribution.
+specific host distribution or macOS installation.
 
 Windows
 =======
@@ -406,6 +406,59 @@ catalina_geany/catalina_geany_source.zip.
 Finally, use the Build -> Download and Interact command to download the program
 to the Propeller and open a terminal window to see the output from it.
 
+
+macOS / Apple Silicon
+=====================
+
+These instructions are intended for macOS on Apple Silicon and Intel Macs.
+Catalina is built as a native command-line application; Rosetta is not required
+for Apple Silicon builds.
+
+1. Install Catalina
+===================
+
+Install Catalina by cloning or downloading Catalina from the GitHub repository
+(i.e. https://github.com/rosshigson/Catalina) in a suitable directory for
+building, such as a folder called "Catalina" in your home directory.
+
+2. Install required packages
+============================
+
+Install Apple's command line tools and the build utilities used by Catalina:
+
+   xcode-select --install
+
+If you use Homebrew, the following packages provide the tools expected by the
+build scripts:
+
+   brew install make bison flex gawk ncurses dos2unix
+
+Homebrew may install newer versions of bison, flex or ncurses outside the
+default PATH. If so, add the paths reported by Homebrew to PATH before building.
+
+3. Build Catalina
+=================
+
+In a bash shell, go to the directory where Catalina is installed. In this
+section, we assume Catalina has been installed in your home directory. If
+Catalina is installed elsewhere, modify the commands appropriately:
+
+   cd ~/Catalina
+   export LCCDIR=$PWD
+   source use_catalina
+   cd source
+   ./build_all
+
+On macOS, the build system selects Darwin host driver files for lcc, uses the
+macOS Lua build target, and avoids Linux-only linker flags such as -ldl.
+
+4. Limitations
+==============
+
+The command-line tools are built for macOS. The Geany IDE bundle is still
+documented for Windows, Linux and Raspberry Pi OS only. Serial-port device names
+and permissions differ from Linux; use the appropriate /dev/cu.* device when
+loading or communicating with Propeller hardware.
 
 Raspberry Pi OS
 ===============

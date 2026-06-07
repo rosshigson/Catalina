@@ -1,6 +1,8 @@
 #!/bin/bash
 ##!/bin/bash -login
 #
+set -e
+
 source ../../use_catalina
 
 unset CATALINA_DEFINE

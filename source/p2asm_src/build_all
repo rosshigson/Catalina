@@ -1,7 +1,8 @@
 #!/bin/bash
 ##!/bin/bash -login
 
+set -e
+
 make clean LCCDIR=$LCCDIR
 make all LCCDIR=$LCCDIR
 make install LCCDIR=$LCCDIR
-

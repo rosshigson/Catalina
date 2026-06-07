@@ -375,10 +375,16 @@
 #define DEFAULT_SEP        "\\"
 #define DEFAULT_LCCDIR     "C:\\Program Files (x86)\\Catalina" // must match default used by LCC
 #define MULT_PATH_SEP      ";"
+#define HOST_TARGET_SUFFIX "win32"
 #else
 #define DEFAULT_SEP        "/"
 #define DEFAULT_LCCDIR     "/opt/catalina" // must match default used by LCC
 #define MULT_PATH_SEP      ":"
+#ifdef __APPLE__
+#define HOST_TARGET_SUFFIX "darwin"
+#else
+#define HOST_TARGET_SUFFIX "linux"
+#endif
 #endif
 
 #define TGT_SUFFIX         "target"
@@ -2446,7 +2452,7 @@ void main(int argc, char *argv[]) {
       }
       else {
          // Propeller 2
-         safecat(lcc_opt, "-target=catalina_native_p2/win32 -Wl-p2 ", MAX_LINELEN);
+         safecat(lcc_opt, "-target=catalina_native_p2/" HOST_TARGET_SUFFIX " -Wl-p2 ", MAX_LINELEN);
          catalina_symboldef("NATIVE", "");
          catalina_symboldef("P2", "");
          if ((asm_only == 0) && (comp_only == 0)) {
@@ -2481,7 +2487,7 @@ void main(int argc, char *argv[]) {
       }
       else {
          // Propeller 2
-         safecat(lcc_opt, "-target=catalina_p2/win32 -Wl-p2 ", MAX_LINELEN);
+         safecat(lcc_opt, "-target=catalina_p2/" HOST_TARGET_SUFFIX " -Wl-p2 ", MAX_LINELEN);
          catalina_symboldef("TINY", "");
          catalina_symboldef("P2", "");
          if ((asm_only == 0) && (comp_only == 0)) {
@@ -2537,7 +2543,7 @@ void main(int argc, char *argv[]) {
       if (prop_vers == 1) {
          // Propeller 1
          // use large model code generator, and indicate XMM (LARGE)
-         safecat(lcc_opt, "-target=catalina_large/win32 ", MAX_LINELEN);
+         safecat(lcc_opt, "-target=catalina_large/" HOST_TARGET_SUFFIX " ", MAX_LINELEN);
          catalina_symboldef("LARGE", "");
          if ((asm_only == 0) && (comp_only == 0)) {
             safecat(lcc_opt, "-L", MAX_LINELEN);
@@ -2554,7 +2560,7 @@ void main(int argc, char *argv[]) {
       else {
          // Propeller 2
          // use large model code generator, and indicate XMM (LARGE)
-         safecat(lcc_opt, "-target=catalina_large/win32 -Wl-p2 ", MAX_LINELEN);
+         safecat(lcc_opt, "-target=catalina_large/" HOST_TARGET_SUFFIX " -Wl-p2 ", MAX_LINELEN);
          catalina_symboldef("LARGE", "");
          catalina_symboldef("P2", "");
          if ((asm_only == 0) && (comp_only == 0)) {
@@ -2574,7 +2580,7 @@ void main(int argc, char *argv[]) {
       // use compact code generator, and indicate CMM (COMPACT)
       if (prop_vers == 1) {
          // Propeller 1
-         safecat(lcc_opt, "-target=catalina_compact/win32 ", MAX_LINELEN);
+         safecat(lcc_opt, "-target=catalina_compact/" HOST_TARGET_SUFFIX " ", MAX_LINELEN);
          catalina_symboldef("COMPACT", "");
          if ((asm_only == 0) && (comp_only == 0)) {
             safecat(lcc_opt, "-L", MAX_LINELEN);
@@ -2590,7 +2596,7 @@ void main(int argc, char *argv[]) {
       }
       else {
          // Propeller 2
-         safecat(lcc_opt, "-target=catalina_compact/win32 -Wl-p2 ", MAX_LINELEN);
+         safecat(lcc_opt, "-target=catalina_compact/" HOST_TARGET_SUFFIX " -Wl-p2 ", MAX_LINELEN);
          catalina_symboldef("COMPACT", "");
          catalina_symboldef("P2", "");
          if ((asm_only == 0) && (comp_only == 0)) {
