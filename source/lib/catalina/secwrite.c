@@ -1,26 +1,18 @@
-#include <sd.h>
+#include <plugin.h>
 
-/*
- * SD calls : write a sector
- */
-unsigned long sd_sectwrite(char * buffer, long sector) {
-
-#ifdef __CATALINA_LARGE
-
+int sd_sectwrite(char *buffer, long sector) {
+   char local[512];
    int i;
    int retval;
-   char local[__CATALINA_SECTOR_SIZE];
 
-   for (i = 0; i < __CATALINA_SECTOR_SIZE; i++) {
-      local[i] = buffer[i];;
+   retval = _long_service_2(SVC_SD_INIT, 0, 0);
+   if (retval != 0) {
+      return retval;
    }
-	retval = _long_service_2(SVC_SD_WRITE, (long)local, sector);
-   return retval;
 
-#else
-
-	return _long_service_2(SVC_SD_WRITE, (long)buffer, sector);
-
-#endif
-
+   for (i = 0; i < 512; i++) {
+      local[i] = buffer[i];
+   }
+   retval = _long_service_2(SVC_SD_WRITE, (long)local, sector);
+   return (retval == 3) ? 0 : retval;
 }

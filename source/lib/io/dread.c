@@ -2,7 +2,7 @@
 #include <cog.h>
 #include <dosfs.h>
 
-#if defined(__CATALINA_PSRAM) || defined(__CATALINA_HYPER)
+#if (defined(__CATALINA_PSRAM) || defined(__CATALINA_HYPER)) && !defined(__CATALINA_NO_SD_CACHE)
 #include <cache_sd.h>
 #define READ_RETRIES 1 // retries are handled within the cache
 #define sectread cached_sectread
@@ -82,5 +82,4 @@ uint32_t DFS_ReadSector(uint8_t unit, uint8_t *buffer, uint32_t sector, uint32_t
 #endif
    return result;
 }
-
 

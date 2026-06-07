@@ -60,6 +60,23 @@ SD_Read       = 2
 SD_Write      = 3
 SD_ByteIO     = 4
 SD_StopIO     = 5
+SD_ERR_READY  = $1F1
+SD_ERR_INIT   = $1F2
+SD_ERR_RETRY  = $1F3
+SD_ERR_READ   = $1F4
+SD_ERR_WRITE  = $1F5
+SD_ERR_CMD0   = $210
+SD_ERR_CMD8R7 = $211
+SD_ERR_CMD8   = $212
+SD_ERR_CMD55  = $213
+SD_ERR_ACMD41 = $214
+SD_ERR_CMD58  = $215
+SD_ERR_CMD16  = $216
+SD_ERR_CMD17  = $217
+SD_ERR_TOKEN  = $218
+SD_ERR_CMD24  = $219
+SD_ERR_BUSY   = $21A
+SD_ERR_TIMEOUT= $21B
 
 #ifdef CLOCK
 '
@@ -82,6 +99,21 @@ SD_DEBUG_LED   = 38             ' suitable for P2_EDGE
 SD_Last        = 11             ' last valid command if CLOCK defined
 #else
 SD_Last        = 5              ' last valid command if CLOCK not defined
+#endif
+
+#if defined(P2_EDGE)
+'
+' The P2 Edge SD socket and boot flash share pins 58..61 with CLK/CS
+' swapped. Put the boot flash into deep power-down before SD card
+' initialization so SD clocks cannot make flash drive the shared DO line.
+'
+FLASH_DO       = _SD_DO
+FLASH_DI       = _SD_DI
+FLASH_CK       = _SD_CS
+FLASH_CS       = _SD_CK
+FLASH_RESET_ENABLE = $66
+FLASH_RESET_MEMORY = $99
+FLASH_DEEP_POWER_DOWN = $B9
 #endif
 
 ' SD services:
@@ -430,24 +462,40 @@ SD_START
 .SD_Init
         call    #_SDcard_Init
   if_z  mov     .rslt,#0
-  if_nz neg     .rslt,#1
+  if_nz mov     .rslt, reply
         ret
 
 .SD_Write
-        call    #_SD_Ready      ' SD card ready?
+        call    #.SD_EnsureReady ' SD card ready?
   if_nz jmp     #.SD_Result     ' no - return result from card
         call    #_writeSECTOR   ' yes - write sector
+  if_nz mov     reply,##SD_ERR_WRITE
+  if_nz cmp     reply,#0 wz
         jmp     #.SD_Result     ' return result
 
 .SD_Read
-        call    #_SD_Ready      ' SD card ready?
+        call    #.SD_EnsureReady ' SD card ready?
   if_nz jmp     #.SD_Result     ' no - return result from card
         call    #_readSECTOR    ' yes - read sector, return result
+  if_nz mov     reply,##SD_ERR_READ
+  if_nz cmp     reply,#0 wz
 .SD_Result
   if_z  mov     .rslt,#0
   if_nz mov     .rslt, reply
         call    #_sendFF
         ret                     ' return data response
+
+.SD_EnsureReady
+        call    #_SD_Ready
+  if_z  ret
+        call    #_SDcard_Init
+  if_nz mov     reply,##SD_ERR_INIT
+  if_nz cmp     reply,#0 wz
+  if_nz ret
+        call    #_SD_Ready
+  if_nz mov     reply,##SD_ERR_RETRY
+  if_nz cmp     reply,#0 wz
+        ret
 
 .SD_ByteIO
 ' ??? not implemented ???
@@ -545,6 +593,9 @@ check_pulldn
 '+      Send >74 clocks with /CS=1 & DI=1 starting & ending with CLK=0         +
 '+-----------------------------------------------------------------------------+
 _SDcard_Init
+#if defined(P2_EDGE)
+                call    #_Flash_Sleep
+#endif
                 mov     _hubdata,         #$20          ' init hub data ptr=$20 
                                                         ' ie. after CLKFREQ ($14), CLKMODE ($18) & BAUDRATE ($1C)
                 'callpa  #_SD_CS,          #check_pullup ' check for pull-up on sd_cs
@@ -578,6 +629,8 @@ _SDcard_Init
 '+-----------------------------------------------------------------------------+
                 waitx   ##delay5us                      ' delay 5us
                 djnz    ctr1,             #.again0      ' n: try again?
+                cmp     reply,##SD_ERR_TIMEOUT wz
+        if_nz   mov     reply,##SD_ERR_CMD0
                 jmp     #_fail '00                      '
 
 '+-----------------------------------------------------------------------------+
@@ -616,10 +669,12 @@ _SD_Ready       getct   ini_time                        '\ set timeout
 .idle           and     reply,            ##$FFF        '\
                 cmp     reply,            #$1AA     wz  '/ R7[11:0]=$1AA ?
                 mov     cmdpar2,          ##$40000000   ' preset for SDV2
+  if_ne         mov     reply,##SD_ERR_CMD8R7
   if_ne         jmp     #_fail '98                      ' n: unknown R7
                 jmp     #.Command55                     ' y: CMD55+ACMD41($4000_0000)
 
 .illegal        cmp     replyR1,          #$05      wz  ' $05(illegal cmd) ?
+  if_ne         mov     reply,##SD_ERR_CMD8
   if_ne         jmp     #_fail '08                      ' <>$01/$05 (not idle/illegal)
                 mov     cmdpar2,          #0            ' try SDV1
                                                         ' CMD55+ACMD41($0) fall thru
@@ -632,6 +687,7 @@ _SD_Ready       getct   ini_time                        '\ set timeout
 '+-----------------------------------------------------------------------------+
                 call    #_cmdRZA41       ' /CS=0, send cmd, recv R1, /CS=0(ena)
 '+-----------------------------------------------------------------------------+
+  if_c_or_z     mov     reply,##SD_ERR_CMD55
   if_c_or_z     jmp     #_fail '55                      ' <>$01 (not idle)
                                                         '              fall thru
 '+-----------------------------------------------------------------------------+
@@ -645,6 +701,7 @@ _SD_Ready       getct   ini_time                        '\ set timeout
                 call    #_cmdR1          ' /CS=0, send cmd, recv R1, /CS=1
 '+-----------------------------------------------------------------------------+
   if_nc_and_nz  jmp     #.Command55                     '  =$01(busy): CMD55+CMD41 again
+  if_c          mov     reply,##SD_ERR_ACMD41
   if_c          jmp     #_fail '41                      ' <>$00/$01: error
 
                 cmp     cmdpar2,          #0        wz  ' SDV1 ?
@@ -660,6 +717,7 @@ _SD_Ready       getct   ini_time                        '\ set timeout
 '+-----------------------------------------------------------------------------+
                 call    #_cmdR1R3        ' /CS=0, send cmd, recv R1+R3, /CS=1
 '+-----------------------------------------------------------------------------+
+  if_c_or_nz    mov     reply,##SD_ERR_CMD58
   if_c_or_nz    jmp     #_fail '58                      ' <>$00(good): error
                 testbn  reply,            #30       wz  ' bit30=CCS=1? $40000000?
         if_z    mov     blocksh,          #9            ' n: #2 SDV2(byte address)
@@ -676,6 +734,7 @@ _SD_Ready       getct   ini_time                        '\ set timeout
                 call    #_cmdR1          ' /CS=0, send cmd, recv R1, /CS=1
 '+-----------------------------------------------------------------------------+
   if_nc_and_nz  jmp     #.Command16                     '  =$01(idle): again
+  if_c_or_nz    mov     reply,##SD_ERR_CMD16
   if_c_or_nz    jmp     #_fail '16                      ' <>$00(good): error
 '+-----------------------------------------------------------------------------+
 .Command9x      mov     bufaddr,          _hubdata      ' where to store CSD/CID
@@ -742,12 +801,14 @@ _readBLOCK                                              ' CMD17: PAR=sector, 512
                 mov     time_out,         ##delay1s     '/
 '+-----------------------------------------------------------------------------+
                 call    #_cmdRZtoken     ' /CS=0, send cmd, recv R1, /CS=0(ena)
+        if_nz   mov     reply,##SD_ERR_CMD17
         if_nz   jmp     #_fail '17                      ' <>$00(good): error
 '+-----------------------------------------------------------------------------+
                 call    #_getreply                      ' n*$FF+$FE
                 cmp     reply,            #$FE      wz  ' $FE=valid Data Token
         if_z    jmp     #.readbyte
                 or      reply,#$100                     ' ensure we don't return 0 on error!
+                mov     reply,##SD_ERR_TOKEN
                 jmp     #_fail '97                      '
  '+-----------------------------------------------------------------------------+
 .readbyte       call    #_recvbyte                      ' read data byte
@@ -771,6 +832,7 @@ _writeBLOCK                                             ' CMD24: PAR=sector, 512
                 mov     time_out,         ##delay2s     '/
 '+-----------------------------------------------------------------------------+
                 call    #_cmdRZtoken     ' /CS=0, send cmd, recv R1, /CS=0(ena)
+        if_nz   mov     reply,##SD_ERR_CMD24
         if_nz   jmp     #_fail '24                      ' <>$00(good): error
 '+-----------------------------------------------------------------------------+
                 mov     dataout,          #$FE          ' start block token
@@ -789,6 +851,7 @@ _writeBLOCK                                             ' CMD24: PAR=sector, 512
                 cmp     reply,            #$5 wz
        if_z     jmp     #.waitdelay
                 or      reply,#$100                     ' ensure reply is not zero
+                mov     reply,##SD_ERR_BUSY
                 jmp     #_fail
 .waitdelay
                 waitx   ##SD_DELAY                      ' why is this necessary???
@@ -800,6 +863,7 @@ _writeBLOCK                                             ' CMD24: PAR=sector, 512
                 sub     replyR1,          ini_time      '|
                 cmp     replyR1,          time_out  wc  '| c if < timeout
         if_c    jmp     #.waitbusy                      '| n: try again
+                mov     reply,##SD_ERR_TIMEOUT
                 jmp     #_fail '90                      '/ y: timed out
 .writedone
         _RET_   MODZ    _set                            ' "Z" = success
@@ -848,6 +912,7 @@ _getreply       call    #_recvbyte                      ' recv R1 byte
                 sub     replyR1,          ini_time      '|
                 cmp     replyR1,          time_out  wc  '| c if < timeout
         if_c    jmp     #_getreply                      '| n: try again
+                mov     reply,##SD_ERR_TIMEOUT
                 jmp     #_fail '90                      '/ timeout:
 
 .doneR1         mov     replyR1,          reply         ' save R1/Token reply
@@ -883,12 +948,55 @@ _sendrecv       mov     reply,            #0            ' clear reply
                 outc    #_SD_DI                         ' / write output bit: output on CLK falling edge
                 waitx   #(2+CLOCK_EXTRA/2)              ' |   setup time to be safe
                 outh    #_SD_CK                         ' \ CLK=1
-                waitx   #(3+CLOCK_EXTRA/2)              ' |   setup time to be safe
+                waitx   #(2+CLOCK_EXTRA/2)              ' |   setup time to be safe
                 testp   #_SD_DO                     wc  ' | read input bit:   sample on CLK rising edge
                 rcl     reply,            #1            ' / accum DO input bits
                 djnz    bitscnt,          #.nextbit     '   8/32 bits?
         _RET_   outl    #_SD_CK                         ' CLK=0 on exit
 '+=============================================================================+
+
+#if defined(P2_EDGE)
+'+-----------------------------------------------------------------------------+
+'+ Put P2 Edge boot flash into deep power-down before using shared SD pins.     +
+'+-----------------------------------------------------------------------------+
+_Flash_Sleep
+                mov     dataout,          #FLASH_RESET_ENABLE
+                call    #_Flash_Command
+                mov     dataout,          #FLASH_RESET_MEMORY
+                call    #_Flash_Command
+                waitx   ##delay20ms
+                waitx   ##delay20ms
+                waitx   ##delay20ms
+                waitx   ##delay20ms
+                waitx   ##delay20ms
+                mov     dataout,          #FLASH_DEEP_POWER_DOWN
+                call    #_Flash_Command
+        _RET_   waitx   ##delay5us
+
+_Flash_Command
+                drvh    #FLASH_CS
+                drvl    #FLASH_CK
+                drvl    #FLASH_DI
+                fltl    #FLASH_DO
+                waitx   ##delay5us
+                drvl    #FLASH_CS
+                call    #_Flash_SendByte
+                drvh    #FLASH_CS
+        _RET_   waitx   ##delay5us
+
+_Flash_SendByte
+                rol     dataout,          #24
+                mov     bitscnt,          #8
+.flashbit       rol     dataout,          #1        wc
+                outl    #FLASH_CK
+                outc    #FLASH_DI
+                waitx   #(2+CLOCK_EXTRA/2)
+                outh    #FLASH_CK
+                waitx   #(3+CLOCK_EXTRA/2)
+                djnz    bitscnt,          #.flashbit
+        _RET_   outl    #FLASH_CK
+'+=============================================================================+
+#endif
 
 '+-----------------------------------------------------------------------------+
 _fail           outh    #_SD_CS                         ' /CS=1 (disable)
@@ -939,4 +1047,3 @@ _hubdata        long    0
 |ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                         |
 +------------------------------------------------------------------------------------------------------------------------------+
 }}
-

@@ -1,26 +1,18 @@
-#include <sd.h>
+#include <plugin.h>
 
-/*
- * SD calls : read a sector
- */
-unsigned long sd_sectread(char * buffer, long sector) {
-
-#ifdef __CATALINA_LARGE
-
+int sd_sectread(char *buffer, long sector) {
+   char local[512];
    int i;
    int retval;
-   char local[__CATALINA_SECTOR_SIZE];
 
-	retval = _long_service_2(SVC_SD_READ, (long)local, sector);
-   for (i = 0; i < __CATALINA_SECTOR_SIZE; i++) {
+   retval = _long_service_2(SVC_SD_INIT, 0, 0);
+   if (retval != 0) {
+      return retval;
+   }
+
+   retval = _long_service_2(SVC_SD_READ, (long)local, sector);
+   for (i = 0; i < 512; i++) {
       buffer[i] = local[i];
    }
    return retval;
-
-#else
-
-	return _long_service_2(SVC_SD_READ, (long) buffer, sector);
-
-#endif
-
 }

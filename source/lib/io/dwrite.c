@@ -2,7 +2,7 @@
 #include <cog.h>
 #include <dosfs.h>
 
-#if defined(__CATALINA_PSRAM) || defined(__CATALINA_HYPER)
+#if (defined(__CATALINA_PSRAM) || defined(__CATALINA_HYPER)) && !defined(__CATALINA_NO_SD_CACHE)
 #include <cache_sd.h>
 #define WRITE_RETRIES 1 // retries are handled within the cache
 #define sectwrite cached_sectwrite
@@ -41,7 +41,7 @@ uint32_t DFS_WriteSector(uint8_t unit, uint8_t *buffer, uint32_t sector, uint32_
 #if DOSFS_CAN_COUNT
    if (count == 1) {
       for (j = 0; j < WRITE_RETRIES; j++) {
-         if (result = sectwrite((char *)buffer, sector) == 0) {
+         if ((result = sectwrite((char *)buffer, sector)) == 0) {
             break;
          }
          else {
@@ -83,6 +83,4 @@ uint32_t DFS_WriteSector(uint8_t unit, uint8_t *buffer, uint32_t sector, uint32_
 #endif
    return result;
 }
-
-
 
