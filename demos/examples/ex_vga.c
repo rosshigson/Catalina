@@ -7,26 +7,21 @@
  *                                                                            *
  * For example, on the Propeller 1:                                           *
  *                                                                            *
- *   catalina -lci -C HYDRA -C HIRES_VGA ex_vga.c                             *
+ *   catalina -lci -C C3 -C HIRES_VGA -C COLOR_8 ex_vga.c                     *
  *                                                                            *
  * For example, on the Propeller 2:                                           *
  *                                                                            *
- *   catalina -p2 -lci -C P2_EVAL -C LORES_VGA -C COLOR_8 ex_vga.c            *
- *   catalina -p2 -lci -C P2_EVAL -C HIRES_VGA -C COLOR_8 -C MHZ_260 ex_vga.c *
+ *  catalina -p2 -lc -C P2_EDGE -C VGA -C COLOR_8 -C CR_ON_LF ex_vga.c        *
+ * or                                                                         *
+ *  catalina -p2 -lc -C HIRES_VGA -CCR_ON_LF -C COLOR_8 -C MHZ_260 ex_vga.c   *
+ * or                                                                         *
+ *  catalina -p2 -lc -C HD_VGA -C CR_ON_LF -C MHZ_297 ex_vga.c                *
  *                                                                            *
  ******************************************************************************/
 #include <stdio.h>
 #include <prop.h>
 #include <hmi.h>
 #include <cog.h>
-
-// cursor mode definitions ...
-#define ALWAYS_OFF 0x0 // cursor is invisible
-#define ALWAYS_ON  0x1 // cursor is visible, does not blink
-#define BLINK_SLOW 0x2 // cursor is visible, blinks slowly
-#define BLINK_FAST 0x3 // cursor is visible, blinks fast
-#define UNDERSCORE 0x4 // or BLOCK if not set
-#define SCROLL     0x8 // or WRAP if not set
 
 // get current col and row of specified cursor
 void get_cursor(int curs, int *col, int *row) {
@@ -43,8 +38,10 @@ void main (void) {
    int colrow, row, col;
    char ch;
 
+   // clear the screen
+   t_char(0, 0x0c); // Form Feed
    // set visible cursor mode ...
-   t_mode(1, SCROLL+BLINK_SLOW);
+   t_mode(1, HMI_cursor_fast|HMI_cursor_scroll);
 
    for (i = 0; i < 50; i++) {
 #ifdef __CATALINA_P2

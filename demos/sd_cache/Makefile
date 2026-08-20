@@ -93,11 +93,11 @@ else
 endif
 
 ifeq ($(HYPER), YES)
-	MYCFLAGS += -lhyper
+	MYCFLAGS += -lhyper -C HYPER
 endif
 
 ifeq ($(PSRAM), YES)
-	MYCFLAGS += -lpsram
+	MYCFLAGS += -lpsram -C PSRAM
 endif
 
 # set up options specific to Windows or Linux

@@ -49,32 +49,10 @@
 
 #include "version.h"
 
-#define SHORT_LAYOUT_2     1 /* 1 to remove unused bytes when using layout 2 (P2 only) */
-#define SHORT_LAYOUT_3     1 /* 1 to remove unused bytes when using layout 3 (P1 only) */
-#define SHORT_LAYOUT_4     1 /* 1 to remove unused bytes when using layout 4 (P1 only) */
-#define SHORT_LAYOUT_5     1 /* 1 to remove unused bytes when using layout 5 (P1 or P2) */
+#include "layout.h"
 
 #define MAX_LINELEN        4096
 #define MAX_PATHLEN        1000
-
-#define P1_INIT_B0_OFF 0x51 // must match kernels and [clnx]mmbeg.s
-#define P1_INIT_BZ_OFF 0x51
-#define P1_LAYOUT_OFFS (P1_INIT_BZ_OFF - P1_INIT_B0_OFF + 0x10)
-
-#define P2_PROLOGUE_OFFS   0x1000 // must match Catalina_reserved.inc
-#define P2_LAYOUT_OFFS       0x10 // must match Catalina_reserved.inc
-
-#define KERNEL_SIZE        0x0800 // size of kernel (max - 2048 bytes) 
-#define P1_HUB_SIZE        0x8000 // size of P1 HUB RAM (32kb)
-#define P2_HUB_SIZE       0x80000 // size of P2 HUB RAM (512kb)
-
-#define P1_LOAD_SIZE  P1_HUB_SIZE // max size of P1 loader (32kb)
-#define P2_LOAD_SIZE      0x10000 // max size of P2 loader (64kb)
-                                  // (must match catalina_cog.h, payload.c, 
-                                  //  Catalina_Common.spin and 
-                                  //  Catalina_constants.inc)
-
-#define PROLOGUE_SIZE SECTOR_SIZE // size of XMM prologue (one sector!)
 
 /* global flags */
 static int diagnose  = 0;
@@ -91,7 +69,7 @@ void help(char *my_name) {
    fprintf(stderr, "          -p ver    Propeller Hardware Version (default is 2)\n");
    fprintf(stderr, "          -v        verbose (output information messages)\n");
    fprintf(stderr, "          -x layout use specified memory layout (layout = 0 .. 6, 8 .. 11)\n");
-   fprintf(stderr, "                    (not required for propeller 2)\n");
+   fprintf(stderr, "                    (not required for propeller 2)\n\n");
    fprintf(stderr, " exit code is 0 on success, negative on error)\n");
 }
 

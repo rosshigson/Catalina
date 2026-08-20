@@ -27,8 +27,17 @@ DAT ' code segment
  alignl ' align long
 
 C__cgi_data
+
+
+
+
+
+
+
+
  jmp #LODL
- long $7E40 ' !!! NOTE: Must Match Catalina_Common !!!
+ long $7E40         ' !!! NOTE: Must Match Catalina_Common !!!
+
  rdlong r0, RI
  jmp #RETN
 ' end

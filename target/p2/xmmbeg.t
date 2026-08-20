@@ -22,6 +22,8 @@ DAT
 Catalina_Prologue_Pad
         byte $00[@RESERVED + $200 + $10 - @Catalina_Prologue_Pad]
 
+orgh P2_LOAD_SIZE ' TBD!!! THIS SHOULD NOT BE NECESSARY!!!
+
 #endif
 
 #ifdef LARGE
@@ -36,22 +38,6 @@ Catalina_Prologue_Pad
         byte $00[XMM_BASE_ADDRESS + $200 - @Catalina_Prologue_Pad]
 
 #endif
-
-
-
-' Catalina Cnst
-
- DAT ' cnst segment
-
-#ifdef SMALL
-
-#include <presbrk.inc>
-
-#endif
-
-' Catalina Code
-
- DAT ' cnst segment
 
 CON
 
@@ -230,25 +216,43 @@ C_arg_setup
 
 #endif
 
-#ifdef SMALL
+'#ifdef SMALL
 
-#ifdef VGA
+'#ifdef VGA
 
 ' we need to include these in SMALL XMM programs to make the compile work,
 ' because we have included the pre_sbrk portions in the compilation since 
 ' they need to be included in what we copy to hub RAM.
 
-#if !(defined(NO_KEYBOARD) && defined(NO_MOUSE))
-#include <cogkbma.t>
-#endif
-#if (!defined(NO_KEYBOARD) && !defined(NO_MOUSE))
-#include <cogkbmb.t>
+'#if defined(USE_USB_A) || defined(USE_USB_B)
 
-#endif
+' this is the NEW way to select whether to USE_USB_A and/or USE_USB_B
+'#if defined(USE_USB_A)
+'#include <cogkbma.t2>
+'#endif
+'#if defined(USE_USB_B)
+'#include <cogkbmb.t2>
+'#endif
 
-#endif
+'#else
 
-#endif
+' this is the OLD way to select whether to USE_USB_A and/or USE_USB_B
+' i.e. A and B are BOTH used unless NO_KEYBOARD or NO_MOUSE is specified,
+'      with only A being used if only one of these is specified
+'#if !(defined(NO_KEYBOARD) && defined(NO_MOUSE))
+'#define USE_USB_A
+'#include <cogkbma.t2>
+'#if (!defined(NO_KEYBOARD) && !defined(NO_MOUSE))
+'#define USE_USB_B
+'#include <cogkbmb.t2>
+'#endif
+'#endif
+
+'#endif
+
+'#endif
+
+'#endif
 
 ' Catalina Import main
 

@@ -2,7 +2,7 @@
 
 extern int _cgi_cog;
 
-// Draw a solid triangle
+// Draw a triangle
 //
 void g_tri(int x1, int y1, int x2, int y2, int x3, int y3) {
    // draw triangle

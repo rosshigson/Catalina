@@ -70,7 +70,7 @@ The SD test program can also be built manually. For example:
 or
    catalina -C P2_EVAL -p2 -lcx -lhyper sd_test.c -Llocal -C WRITE_BACK
 
-Since rebuildikng the local library can take some time, it is not always
+Since rebuilding the local library can take some time, it is not always
 desirable (or necessary) to rebuild it every time - e.g. just to recompile
 the sd_test program using a different memory model. So scripts are provided 
 that affect only the sd_test program, only the local library, or both. 

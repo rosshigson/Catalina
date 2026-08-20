@@ -849,16 +849,24 @@ static void print_function(char* name)
       if (gen_overlay) {
          fprintf(gf, "// start the blob as a C program from an overlay\n");
          fprintf(gf, "int start_%s(void* var_addr, int cog) {\n\n", name);
+         fprintf(gf, "   int size;\n");
          fprintf(gf, "   // zero the memory used for data and stack space\n");
          fprintf(gf, "   memset((void *)%s_DATA_ADDRESS, 0, %s_RUNTIME_SIZE-%s_BLOB_SIZE);\n\n", name, name, name);
          fprintf(gf, "   // load the blob to the correct location\n");
          fprintf(gf, "#ifdef __CATALINA_FS_OVERLAY\n");
          fprintf(gf, "   // use unmanaged file functions to load overlay\n");
-         fprintf(gf, "   _load_overlay_unmanaged(\"%s\", (void *)%s_CODE_ADDRESS, %s_BLOB_SIZE);\n\n", overlay_name, name, name);
+         fprintf(gf, "   size = _load_overlay_unmanaged(\"%s\", (void *)%s_CODE_ADDRESS, %s_BLOB_SIZE);\n\n", overlay_name, name, name);
          fprintf(gf, "#else\n");
          fprintf(gf, "   // use managed file functions to load overlay\n");
-         fprintf(gf, "   _load_overlay(\"%s\", (void *)%s_CODE_ADDRESS, %s_BLOB_SIZE);\n\n", overlay_name, name, name);
+         fprintf(gf, "   size = _load_overlay(\"%s\", (void *)%s_CODE_ADDRESS, %s_BLOB_SIZE);\n\n", overlay_name, name, name);
          fprintf(gf, "#endif\n");
+         fprintf(gf, "   if (size != %s_BLOB_SIZE) {\n", name);
+         fprintf(gf, "      t_string(1, \"Warning: Expected \");\n");
+         fprintf(gf, "      t_integer(1, %s_BLOB_SIZE);\n", name);
+         fprintf(gf, "      t_string(1, \" bytes in file \\\"%s\\\", but read \");\n", overlay_name);
+         fprintf(gf, "      t_integer(1, size);\n");
+         fprintf(gf, "      t_char(1, '\\n');\n");
+         fprintf(gf, "   }\n");
       }
       else {
          fprintf(gf, "// start the blob as a C program from an array\n");

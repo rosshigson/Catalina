@@ -6,6 +6,7 @@
 #include <errno.h>
 #include <math.h>
 #include <prop.h>
+#include <prop2.h>
 #include <lut_exec.h>
 #include <alloca.h>
 #include <cache_sd.h>

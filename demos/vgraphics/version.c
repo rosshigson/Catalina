@@ -2,7 +2,7 @@
 
 #define STACK_SPACE 150 // allow this much for run time stack space
 
-#if defined(__CATALINA_VGA_4_COLOR) || defined(__CATALINA_DOUBLE_BUFFER)
+#if defined(__CATALINA_COLOR_4) || defined(__CATALINA_DOUBLE_BUFFER)
 #define TRIANGLES 5
 #else
 #define TRIANGLES 12
@@ -60,7 +60,7 @@ int main(void) {
         register int k0x7f = k & 0x7f; // calculate once and re-use
         register int k6 = k<<6;        // calculate once and re-use
         g_color(1);
-        g_pallete(1, (k%256));
+        g_palette(1, (k%256));
         g_vec(0, 0, (k0x7f << 3) + (i<<5), k6 + (i<<8), triangle);
      }
 

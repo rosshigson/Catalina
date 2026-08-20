@@ -1,3 +1,5 @@
+#ifndef _COMPACT_INC
+#define _COMPACT_INC 1
 '
 ' v3.7  - first (beta) version
 '
@@ -313,3 +315,4 @@ I32_LODS   = %010110__00000_0000000000000000000_11  '  LODS  d,s ' load 19 bits 
 #define alignl_debug alignl
 #endif
 
+#endif

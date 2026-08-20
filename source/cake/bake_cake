@@ -20,7 +20,7 @@ cake $OPTIONS parser.c
 cake $OPTIONS compile.c
 cake $OPTIONS defer.c
 cake $OPTIONS codegen.c
-cake $OPTIONS flow.c
+cake $OPTIONS flow1.c
 cake $OPTIONS error.c
 cake $OPTIONS target.c
 cake $OPTIONS type.c

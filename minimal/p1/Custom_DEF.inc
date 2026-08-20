@@ -1,4 +1,8 @@
 '
+' Throw an error if this file has not yet been edited 
+' (remove the following line after editing):
+#error The Custom_DEF.inc file needs editing!
+'
 ' The Custom board in the minimal target supports no HMI option. 
 '
 ' It assumes a 5Mhz crystal is installed. 

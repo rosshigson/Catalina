@@ -11,15 +11,14 @@ int main(int argc, char *argv[]) {
         std::cout << std::endl;
         std::cout << std::string("Catalina Debug File Generator, Version ");
         std::cout << std::string(CATALINA_VERSION) << std::endl << std::endl;
-        std::cout << std::string("Usage: catdbgfilegen \"path to .lst\"  \"-d .debug files dir\" [-s] [-n] [-linux]") << std::endl;
+        std::cout << std::string("Usage: catdbgfilegen \"path to .lst\"  \"-d .debug files dir\" [-s] [-n] [-linux]") << std::endl << std::endl;
         std::cout << std::string("       -s  option: include standard  TYPEDEF lines in output") << std::endl;
         std::cout << std::string("       -n  option: include generated TYPEDEF lines in output") << std::endl;
         std::cout << std::string("       -d  option: path to .debug files -- multiple entries accepted") << std::endl;
-        std::cout << std::string("   -linux  option: use Linux file conventions (needed if no / present in args") << std::endl;
+        std::cout << std::string("   -linux  option: use Linux file conventions (needed if no / present in args") << std::endl << std::endl;
         std::cout << std::string("  returns  0 if processing completed normally") << std::endl;
         std::cout << std::string("  returns -1 if .lst file could not be opened or error in cmd line arguments") << std::endl;
         std::cout << std::string("  returns -2 for any other error -- these are detailed in .dbg file") << std::endl;
-        std::cout << std::string("") << std::endl;
 
         return -1;
     }

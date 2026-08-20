@@ -3,6 +3,13 @@
 
 #include <plugin.h>
 
+#if defined(__CATALINA_P2)
+
+// the gamepad definitions are included in graphic2.h:
+#include <graphic2.h>
+
+#else
+
 // NES bit encodings for NES gamepad 0
 #define  NES0_RIGHT  0x0001
 #define  NES0_LEFT   0x0002
@@ -34,5 +41,7 @@
  */
 extern unsigned long start_gamepad_updates(void * addr);
 extern unsigned long stop_gamepad_updates();
+
+#endif
 
 #endif

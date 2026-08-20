@@ -122,18 +122,16 @@ C_g_tri_15
  mov RI, FP
  sub RI, #-(-8)
  wrlong r22, RI ' ASGNI4 addrli reg
- mov r22, FP
- add r22, #12 ' reg <- addrfi
- rdlong r22, r22 ' reg <- INDIRI4 regl
+ mov r20, FP
+ add r20, #12 ' reg <- addrfi
+ rdlong r20, r20 ' reg <- INDIRI4 regl
  mov RI, FP
  sub RI, #-(-12)
- wrlong r22, RI ' ASGNI4 addrli reg
- mov RI, FP
- add RI, #8
- wrlong r23, RI ' ASGNI4 addrfi reg
- mov RI, FP
- add RI, #12
- wrlong r21, RI ' ASGNI4 addrfi reg
+ wrlong r20, RI ' ASGNI4 addrli reg
+ mov r19, r23 ' CVI, CVU or LOAD
+ mov r17, r21 ' CVI, CVU or LOAD
+ mov r23, r22 ' CVI, CVU or LOAD
+ mov r21, r20 ' CVI, CVU or LOAD
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r19, r22 ' reg <- INDIRI4 regl
@@ -176,6 +174,7 @@ C_g_tri_17
  mov RI, FP
  sub RI, #-(-12)
  wrlong r17, RI ' ASGNI4 addrli reg
+ mov r17, r21 ' CVI, CVU or LOAD
  mov r22, FP
  add r22, #8 ' reg <- addrfi
  rdlong r23, r22 ' reg <- INDIRI4 regl

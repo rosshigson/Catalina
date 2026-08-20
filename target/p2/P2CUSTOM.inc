@@ -46,24 +46,24 @@ _XPLL     = 1           ' 0= PLL off, 1=PLL on
 
 ' RTC base pin - note that if this is changed, the cache pin and float 
 ' pin constants may also need to be changed (see below) 
-_RTC_BASE   = 24
+_RTC_BASE   = 32
 
 ' cache pin constants
 ' ===================
 
 ' Pins used for pin communications with cache
-CACHE_CMD_PIN    = 26 ' these pins will be spare when the RTC ...
-CACHE_RSP_PIN    = 27 '  ... add-on board is in use on pin 24
+CACHE_CMD_PIN    = 34 ' these pins will be spare when the RTC ...
+CACHE_RSP_PIN    = 35 '  ... add-on board is in use on pin 32
 CACHE_PIN_MODE   = %0000_0000_000_0000000000000_00_00001_0 'mode bits 
 
 ' float pin constants
 ' ===================
 
 ' Pins used for pin communications with floating point co-processor
-FLOAT_CMD_PIN    = 28 ' these pins will be spare when the RTC ...
-FLOAT_RSP_PIN    = 29 ' ... add-on board ...
-FLOAT_AVAL_PIN   = 30 ' ... is in use ...
-FLOAT_BVAL_PIN   = 31 '  ... on pin 24
+FLOAT_CMD_PIN    = 36 ' these pins will be spare when the RTC ...
+FLOAT_RSP_PIN    = 37 ' ... add-on board ...
+FLOAT_AVAL_PIN   = 38 ' ... is in use ...
+FLOAT_BVAL_PIN   = 39 '  ... on pin 32
 FLOAT_PIN_MODE   = %0000_0000_000_0000000000000_00_00001_0 'mode bits 
 
 ' serial constants
@@ -111,13 +111,13 @@ _SD_DO     = 58         'pin SD Card MISO
 ' ==============
 
 #if !defined(_WIFI_BASE_PIN)
-_WIFI_BASE_PIN = 16           ' base pin of P2 WX adapter board (64007)
+_WIFI_BASE_PIN = 56           ' base pin of P2 WX adapter board (64007)
 #endif
 
 _WIFI_DO  = _WIFI_BASE_PIN + 7   ' must match pin used for serial comms
 _WIFI_DI  = _WIFI_BASE_PIN + 6   ' must match pin used for serial comms
-_WIFI_RES = _WIFI_BASE_PIN + 0   ' -1 disables module RESET function
-_WIFI_PGM = _WIFI_BASE_PIN + 1   ' -1 disables module PGM function
+_WIFI_RES = -1 ' _WIFI_BASE_PIN + 0   ' -1 disables module RESET function
+_WIFI_PGM = -1 ' _WIFI_BASE_PIN + 1   ' -1 disables module PGM function
 _WIFI_BRK = _WIFI_DI             ' -1 disables module BREAK function
 
 #if !defined(_WIFI_BAUDRATE)
@@ -210,18 +210,18 @@ _TX8_MULTI_MODE = %0000
 ' VGA constants
 ' =============
 
-_VGA_BASE_PIN = 16
+_VGA_BASE_PIN = 0
 
 ' USB constants
 ' =============
 
-_USB_BASE_PIN = 24
+_USB_BASE_PIN = 8
 
 ' Hyper Flash / Hyper RAM constants
 ' =================================
 
 ' Base pin and reset pin mask
-HYPER_BASE_PIN   = 0 ' If you change this, it may be required to change these:
+HYPER_BASE_PIN   = 16 ' If you change this, it may be required to change these:
 HYPER_RST_A_MASK = 1<<(HYPER_BASE_PIN+15)           ' if HYPER_BASE_PIN < 32
 HYPER_RST_B_MASK = 0 ' 1<<(HYPER_BASE_PIN+15-32)    ' if HYPER_BASE_PIN >= 32
 
@@ -262,7 +262,7 @@ PSRAM_MAX_CS_LOW_USEC = 8
 
 ' burst size and delay
 PSRAM_MAXBURST = 512
-PSRAM_DELAY = 10 ' 8 for <150Mhz, 9 or 10 for 150Mhz-260Mhz, 11 for >260Mhz
+PSRAM_DELAY = 9 ' 8 for <180Mhz, 9 or 10 for 180Mhz-260Mhz, 11 for >260Mhz
 
 ' optional FLAGS for driver
 PSRAM_OPTIONS = 0

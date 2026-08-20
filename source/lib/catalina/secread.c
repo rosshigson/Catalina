@@ -9,10 +9,10 @@ unsigned long sd_sectread(char * buffer, long sector) {
 
    int i;
    int retval;
-   char local[__CATALINA_SECTOR_SIZE];
+   char local[SECTOR_SIZE];
 
 	retval = _long_service_2(SVC_SD_READ, (long)local, sector);
-   for (i = 0; i < __CATALINA_SECTOR_SIZE; i++) {
+   for (i = 0; i < SECTOR_SIZE; i++) {
       buffer[i] = local[i];
    }
    return retval;

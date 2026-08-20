@@ -1,4 +1,29 @@
+/******************************************************************************
+ *                                                                            *
+ * A simple program to test a few basic text and mouse cursor functions.      *
+ * On the Propeller 1 it can be used to demo either the TV HMI or VGA HMI     *
+ * plugins, which incorporate text output, keyboard input and mouse functions *
+ * all in one package. On the Propeller 2 it can be used with the VGA HMI     *
+ * options. However, note that not all cursor modes are supported by all HMI  *
+ * drivers - the cursor modes defined in this program are will work in all    *
+ * the VGA modes on the P2, but only in the TV and HIRES_VGA drivers on the   *
+ * P1.                                                                        *
+ *                                                                            *
+ * For example, on the Propeller 1:                                           *
+ *                                                                            *
+ *    catalina -lci -C C3 -C HIRES_VGA -C COLOR_8 ex_cursor.c                 *
+ *                                                                            *
+ * For example, on the Propeller 2:                                           *
+ *                                                                            *
+ *  catalina -p2 -lc -C P2_EDGE -C VGA -C COLOR_8 -C CR_ON_LF ex_cursor.c     *
+ * or                                                                         *
+ *  catalina -p2 -lc -CHIRES_VGA -CCR_ON_LF -CCOLOR_8 -CMHZ_260 ex_cursor.c   *
+ * or                                                                         *
+ *  catalina -p2 -lc -C HD_VGA -C CR_ON_LF -C MHZ_297 ex_cursor.c             *
+ *                                                                            *
+ ******************************************************************************/
 #include <hmi.h>
+#include <prop.h>
 
 static int rows;
 static int cols;
@@ -29,6 +54,11 @@ void test_cursor() {
    int key;
 
    
+#ifdef __CATALINA_HD_VGA
+   // turn off the graphic cursor
+   t_mode(2, HMI_cursor_off);
+#endif
+
    geometry = t_geometry();
    rows = geometry & 0xff;
    cols = geometry >> 8;
@@ -37,10 +67,10 @@ void test_cursor() {
    t_string(1, " rows * ");
    t_integer(1, cols);
    t_string(1, " columns\n");
+
    t_string(1, "\nDelay for keyboard and mouse detect\n");
-    for (i = 0; i < 3000000; i++) {
-      i++;
-   }
+   msleep(5000); // WHY DOES IT TAKE SO LONG!!!
+
    t_setpos(1, 0, 0);
    t_scroll(40, 0,255);
    t_string(1, "Screen cleared\n");
@@ -60,8 +90,9 @@ void test_cursor() {
       t_string(1, "No mouse found\n");
    }
    if (m_present()) {
-      t_mode(0, 1);
-      t_string(1, "Mouse cursor mode set\n");
+      t_mode(0, HMI_cursor_off); // and wrap
+      t_mode(1, HMI_cursor_slow); // and wrap
+      t_string(1, "Text cursor mode set\n");
       m_bound_limits(0, 0, 0, cols-1, rows-1, 0);
       t_string(1, "Mouse limits set\n");
       m_bound_scales(2, -3, 0);
@@ -94,12 +125,12 @@ void test_cursor() {
             if (visible) {
                t_string(1, " Making cursor invisible ");
                visible = 0;
-               t_mode(1, 8); // wrap
+               t_mode(1, HMI_cursor_off); // cursor off (and wrap)
             }
             else {
-               t_string(1, " Making cursor visible ");
+               t_string(1, " Making cursor visible");
                visible = 1;
-               t_mode(1, 9); // wrap + visible
+               t_mode(1, HMI_cursor_slow); // cursor slow flash (and wrap)
             }
             while (m_button(2)) {
             }

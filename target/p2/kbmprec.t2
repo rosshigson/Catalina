@@ -1,0 +1,821 @@
+#ifndef __KBMPREC_T2
+#define __KBMPREC_T2
+
+CON ' USB Host Shared constants
+'------------------------------------------------------------------------------
+' Smart pin configuration for "long repository" mode with output enabled,
+' regardless of DIR. This allows one pin to provide a long event code via IN
+' and also to control the USB port activity LED on/off state vio OUT.
+    SP_REPO1_MODE = %01_00001_0 | 1 << 16    ' %TT_MMMMM_0, P[12:10] != %101
+'------------------------------------------------------------------------------
+' A simple event/cmd system using a smart pin configured in "long repository"
+' mode. The USB_EVENT_REPO pin defined above is used to allow the USB cog to
+' signal the client that a particular event has occurred. The client must poll
+' this smart pin (testp #USB_EVENT_REPO wc) as often as possible in its "main"
+' loop and process the event IDs you're interested in.
+'------------------------------------------------------------------------------
+    NO_EVENT       = 0
+    USB_ERROR      = 1
+    DEV_UNKNOWN    = 2
+    KB_READY       = 3
+    M_READY        = 4
+    KBM_READY      = 5
+    HID_READY      = 6
+    XINPUT_READY   = 7
+    PS3_READY      = 8
+    HUB_READY      = 9
+    DEV_DISCONNECT = 10
+    DBG_DATA       = 11
+    M_DATA         = 12
+    GP_DATA        = 13
+    CMD_SUSPEND    = 14
+    CMD_RESUME     = 15
+    CMD_RESET      = 16
+    KBD_KEY_UPDATE = 17
+    KBD_TGL_UPDATE = 18
+
+'------------------------------------------------------------------------------
+' Gamepad messages that can be delivered to the client using a FIFO.
+'------------------------------------------------------------------------------
+
+  GPD_PORT       = 0
+  GPD_BUTTONS    = 1
+  GPD_X_AXIS     = 2
+  GPD_Y_AXIS     = 3
+  GPD_Z_AXIS     = 4
+
+'------------------------------------------------------------------------------
+' The CMD_* tokens are asynchronous USB commands available to the user, through
+' the Spin2 usbCommand method of this object. This method will post the cmd
+' token to the host and when the cmd is complete the host will post the CMD_*
+' token to byte[0] of the event long. Byte[1] is typically set to one of the
+' below protocol error codes, with bytes[2..3] available for additional cmd data.
+'------------------------------------------------------------------------------
+' Protocol error codes:
+    ERR_NONE        = 0
+    ERR_CMD         = 1
+    ERR_URX         = 2
+    ERR_SE1         = 3
+    ERR_PACKET      = 4
+    ERR_TAT         = 5
+    ERR_TXN_RETRY   = 6
+    ERR_XFER_RETRY  = 7
+    ERR_NAK         = 8
+    ERR_DATAX_SYNC  = 9
+    ERR_CONFIG_FAIL = 10
+    ERR_TIMEOUT     = 11
+'------------------------------------------------------------------------------
+' Keyboard LED output report toggle key bit postions:
+    LED_NUMLKB   = 0
+    LED_CAPSLKB  = 1
+    LED_SCRLKB   = 2
+    LED_COMPOSEB = 3
+    LED_KANAB    = 4
+    LED_CONST0B  = 5
+    LED_CONST1B  = 6
+    LED_CONST2B  = 7
+' Keyboard LED output report toggle key bitflags:
+    LED_NUMLKF   = |< LED_NUMLKB
+    LED_CAPSLKF  = |< LED_CAPSLKB
+    LED_SCRLKF   = |< LED_SCRLKB
+    LED_COMPOSEF = |< LED_COMPOSEB
+    LED_KANAF    = |< LED_KANAB
+    LED_CONST0F  = |< LED_CONST0B
+    LED_CONST1F  = |< LED_CONST1B
+    LED_CONST2F  = |< LED_CONST2B
+
+' Keyboard modifier key bit positions:
+    LEFT_CTRLB   = 0
+    LEFT_SHIFTB  = 1
+    LEFT_ALTB    = 2
+    LEFT_GUIB    = 3
+    RIGHT_CTRLB  = 4
+    RIGHT_SHIFTB = 5
+    RIGHT_ALTB   = 6
+    RIGHT_GUIB   = 7
+' Keyboard modifier bitflags
+    LEFT_CTRLF   = |< LEFT_CTRLB
+    LEFT_SHIFTF  = |< LEFT_SHIFTB
+    LEFT_ALTF    = |< LEFT_ALTB
+    LEFT_GUIF    = |< LEFT_GUIB
+    RIGHT_CTRLF  = |< RIGHT_CTRLB
+    RIGHT_SHIFTF = |< RIGHT_SHIFTB
+    RIGHT_ALTF   = |< RIGHT_ALTB
+    RIGHT_GUIF   = |< RIGHT_GUIB
+' Consolidated left/right modkeys. Add the modifier keys you want to trap
+' together, then add the key scan code e.g. CTRL+ALT+"X" would be: $600 + KEY_X_x.
+' The key() Spin2 method does this and the rawKey() method returns the key data
+' as packed by the USB keyboard driver.
+'   SHIFT = $100
+'   CTRL  = $200
+'   ALT   = $400
+'   APP   = $800
+' L|R key modifier flag combinations:
+
+    KEYS_APP   = LEFT_GUIF + RIGHT_GUIF
+    KEYS_ALT   = LEFT_ALTF + RIGHT_ALTF
+    KEYS_CTRL  = LEFT_CTRLF + RIGHT_CTRLF
+    KEYS_SHIFT = LEFT_SHIFTF + RIGHT_SHIFTF
+
+    KEY_ALTMOD = KEYS_ALT
+    KEY_CTRLMOD = KEYS_CTRL
+
+'-------------
+' Keyboard keys
+' The first four scancodes are info/error indicators:
+    KEY_NO_KEY       = $00
+    KEY_ERR_ROLLOVER = $01
+    KEY_POST_FAIL    = $02
+    KEY_ERR_UNDEF    = $03
+' Letters:
+    KEY_A         = $04
+    KEY_B         = $05
+    KEY_C         = $06
+    KEY_D         = $07
+    KEY_E         = $08
+    KEY_F         = $09
+    KEY_G         = $0a
+    KEY_H         = $0b
+    KEY_I         = $0c
+    KEY_J         = $0d
+    KEY_K         = $0e
+    KEY_L         = $0f
+    KEY_M         = $10
+    KEY_N         = $11
+    KEY_O         = $12
+    KEY_P         = $13
+    KEY_Q         = $14
+    KEY_R         = $15
+    KEY_S         = $16
+    KEY_T         = $17
+    KEY_U         = $18
+    KEY_V         = $19
+    KEY_W         = $1a
+    KEY_X         = $1b
+    KEY_Y         = $1c
+    KEY_Z         = $1d
+' Number Row:
+    KEY_1         = $1e
+    KEY_2         = $1f
+    KEY_3         = $20
+    KEY_4         = $21
+    KEY_5         = $22
+    KEY_6         = $23
+    KEY_7         = $24
+    KEY_8         = $25
+    KEY_9         = $26
+    KEY_0         = $27
+' Keyboard return (ENTER), tab, space, etc.:
+    KEY_ENTER     = $28
+    KEY_ESC       = $29
+    KEY_BACKSPACE = $2a   ' Delete (backspace)
+    KEY_TAB       = $2b
+    KEY_SPACE     = $2c
+    KEY_MINUS     = $2d   ' - and _
+    KEY_EQUAL     = $2e   ' = and +
+    KEY_LBRACE    = $2f   ' [ and {
+    KEY_RBRACE    = $30   ' ] and }
+    KEY_BACKSLASH = $31   ' \ and |
+    KEY_HASHTILDE = $32   ' None-US # and ~
+    KEY_SEMICOLON = $33   ' ; and :
+    KEY_APOST     = $34   ' sngl-quote and dbl-quote
+    KEY_GRAVE     = $35   ' ` and ~
+    KEY_COMMA     = $36   ' , and <
+    KEY_DOT       = $37   ' . and >
+    KEY_SLASH     = $38   ' / and ?
+    KEY_CAPSLOCK  = $39
+' Function key scancodes:
+    KEY_F1        = $3a
+    KEY_F2        = $3b
+    KEY_F3        = $3c
+    KEY_F4        = $3d
+    KEY_F5        = $3e
+    KEY_F6        = $3f
+    KEY_F7        = $40
+    KEY_F8        = $41
+    KEY_F9        = $42
+    KEY_F10       = $43
+    KEY_F11       = $44
+    KEY_F12       = $45
+' Special, toggle and movement keys:
+    KEY_PRINTSCREEN = $46
+    KEY_SCROLLLOCK  = $47
+    KEY_PAUSE       = $48
+    KEY_INSERT      = $49
+    KEY_HOME        = $4a
+    KEY_PAGEUP      = $4b
+    KEY_DELETE      = $4c
+    KEY_END         = $4d
+    KEY_PAGEDOWN    = $4e
+    KEY_RIGHT       = $4f
+    KEY_LEFT        = $50
+    KEY_DOWN        = $51
+    KEY_UP          = $52
+' Keypad keys:
+    KEY_NUMLOCK   = $53
+    KEY_NUMSLASH  = $54
+    KEY_NUMASTER  = $55
+    KEY_NUMMINUS  = $56
+    KEY_NUMPLUS   = $57
+    KEY_NUMENTER  = $58
+    KEY_NUM1      = $59
+    KEY_NUM2      = $5a
+    KEY_NUM3      = $5b
+    KEY_NUM4      = $5c
+    KEY_NUM5      = $5d
+    KEY_NUM6      = $5e
+    KEY_NUM7      = $5f
+    KEY_NUM8      = $60
+    KEY_NUM9      = $61
+    KEY_NUM0      = $62
+    KEY_DOT_DEL   = $63
+    KEY_NOUS_SP   = $64   ' Non-US \ and |
+    KEY_APP       = $65   ' Application key
+' Modifier keys:
+    KEY_LCTRL     = $E0
+    KEY_LSHIFT    = $E1
+    KEY_LALT      = $E2
+    KEY_LMETA     = $E3 ' The left "Windows" key
+    KEY_RCTRL     = $E4
+    KEY_RSHIFT    = $E5
+    KEY_RALT      = $E6
+    KEY_RMETA     = $E7 ' The right "Windows" key
+
+' Keyboard buffer size (must match client - see coghdgra.t and hubhdgra.t):
+    KBD_BUFFMASK = $0f      ' Keyboard key data buffer (16 entries)
+
+' Gamepad buffer size (must match client - see coghdgra.t and hubhdgra.t):
+    GPD_BUFFMASK = $3f      ' Gamepad key data buffer (64 entries)
+
+'------------------------------------------------------------------------------
+    _1thou         = 1_000
+    _1m            = 1_000_000
+    _1b            = 1_000_000_000
+    _12m           = 12_000_000
+    LSBTns         = 672.0                  ' Low-Speed bit period, in nanoseconds
+    FSBTns         = 83.54                  ' Full-Speed bit period, in nanoseconds
+    LSBTns4        = round(LSBTns * 4.0)    ' Low-Speed inter-packet delay, in nanoseconds
+    LSBTns22       = round(LSBTns * 22.0)   ' Low-Speed turnaround wait time, in nanoseconds
+    FSBTns4        = round(FSBTns * 4.0)    ' Full-Speed inter-packet delay, in nanoseconds
+    FSBTns28       = round(FSBTns * 28.0)   ' Full-Speed turnaround wait time, in nanoseconds
+' NCO baud calculations for low-speed/full-speed:
+'        _1_5Mbps  = round(1_500_000.0 / _FCLKFREQ * 65536.0)  ' = NCO 492 @200MHz, 614 @160
+'        _12Mbps   = round(12_000_000.0 / _FCLKFREQ * 65536.0) ' = NCO 3932 @200MHz, 4915 @160
+' To configure RevA silicon LS/FS NCO baud: (WXPIN _1_5Mbps, D-) or (WXPIN _12Mbps, D-)
+' To configure RevA LS/FS host/device: WRPIN appropriate LS/FS mode to D- (lower) and D+ (upper) pins:
+    USB_V1HMODE_LS = %1_11000_0 + 1 << 16   ' Host mode
+    USB_V1DMODE_LS = %1_11010_0 + 1 << 16   ' Device mode
+    USB_V1HMODE_FS = %1_11001_0 + 1 << 16
+    USB_V1DMODE_FS = %1_11011_0 + 1 << 16
+' On RevB+ the USB smart pin mode is set to the D- and D+ pins via (WRPIN USBMode, pin#):
+    USB_V2_DRVOUT  = %1_11011_0 + 1 << 16
+    USB_V2_SNIFF   = %0_11011_0 + 1 << 16   ' Disable output to create a USB "sniffer"
+' To configure NCO baud, host/device for LS/FS, set the appropriate mode to the D- pin# (WXPIN NCOMode, D-)
+'   USB_H_LS_NCO   = %10 << 14 + _1_5Mbps   ' Host mode at NCO baud
+'   USB_D_LS_NCO   = %00 << 14 + _1_5Mbps   ' Device mode at NCO baud
+'   USB_H_FS_NCO   = %11 << 14 + _12Mbps
+'   USB_D_FS_NCO   = %01 << 14 + _12Mbps
+'------------------------------------------------------------------------------
+' Time delays and intervals
+' Useful USB constants and wait intervals:
+    XFER_RETRIES    = 12                    ' Maximum retries before retiring a transfer
+    TXN_RETRIES     = 12                    ' Maximum retries before retiring a transaction
+    NAK_NOLIMIT     = 0                     ' Unlimited NAK retries
+    IN_NAK_RETRIES  = 50000                 ' Control transfer IN-NAK retry limit (0 = unlimited)
+    OUT_NAK_RETRIES = 50000                 ' Control transfer OUT-NAK retry limit (0 = unlimited)
+' Standard Device request maximum timeout periods (reference):
+{
+    TO_STANDARD  = _1ms * 5000              ' Non-specific maximum timout period
+    TO_DATA      = _1ms * 500               ' Standard Device requests with a data stage
+    TO_NODATA    = _1ms * 50                ' Standard Device requests without a data stage
+    TO_SETADDR   = _1ms * 50                ' Device SetAddress() command processing maximum
+    TO_CHGADDR   = _1ms * 2                 ' Device SetAddress() period allowed to change its address before next request sent
+}
+'------------------------------------------------------------------------------
+' Token packet format.
+'------------------------------------------------------------------------------
+'                   CRC5  ENDP ADDRESS PID
+    CRC_MASK     = %11111_0000_0000000_00000000
+    EP_MASK      = %00000_1111_0000000_00000000
+    ADDR_MASK    = %00000_0000_1111111_00000000
+    EP_ADDR_MASK = %00000_1111_1111111_11111111
+    EP_ADDR_ZERO = %00010_0000_0000000_00000000     ' CRC5 = $02 for addr zero, ep zero
+'------------------------------------------------------------------------------
+' Packet Identifier Bytes (PID). Notice that the first two LSBits are
+' identical for each group.
+'------------------------------------------------------------------------------
+' Token:
+    PID_OUT   = %1110_0001                  ' $e1
+    PID_IN    = %0110_1001                  ' $69
+    PID_SOF   = %1010_0101                  ' $a5
+    PID_SETUP = %0010_1101                  ' $2d
+' Data:
+    PID_DATA0 = %1100_0011                  ' $c3
+    PID_DATA1 = %0100_1011                  ' $4b
+    PID_DATA2 = %1000_0111                  ' $87
+    PID_MDATA = %0000_1111                  ' $0f
+' Handshake:
+    PID_ACK   = %1101_0010                  ' $d2
+    PID_NAK   = %0101_1010                  ' $5a
+    PID_STALL = %0001_1110                  ' $1e
+    PID_NYET  = %1001_0110                  ' $96
+' Special:
+    PID_PRE   = %0011_1100                  ' $3c
+    PID_ERR   = %0011_1100                  ' $3c
+    PID_SPLIT = %0111_1000                  ' $78
+    PID_PING  = %1011_0100                  ' $b4
+    PID_RESVD = %1111_0000                  ' $f0
+' Tx, rx and host related constants
+' USB transmitter WYPIN D line state options:
+    OUT_IDLE = 0
+    OUT_SE0  = 1
+    OUT_K    = 2
+    OUT_J    = 3
+    OUT_EOP  = 4
+    OUT_SOP  = $80
+' USB receiver RDPIN status bit positions:
+        J_IDLEB = 0
+        K_RESUMEB = 1
+        SE0_RESETB = 2
+        SE1_BADB = 3
+        SOPB = 4
+        EOPB = 5
+        BUS_ERRB = 6
+        BYTE_TGLB = 7
+' USB receiver RDPIN status bitflags:
+        J_IDLEF    = |< J_IDLEB
+        K_RESUMEF  = |< K_RESUMEB
+        SE0_RESETF = |< SE0_RESETB
+        SE1_BADF   = |< SE1_BADB
+        SOPF       = |< SOPB
+        EOPF       = |< EOPB
+        BUS_ERRF   = |< BUS_ERRB
+        BYTE_TGLF  = |< BYTE_TGLB
+' USB CRC constants:
+        USB5_POLY      = %0_0101 >< 5           ' USB5 polynomial is reflected when calculating CRC
+        USB5_RESIDUAL  = %0_1100 >< 5           ' Expected CRC5 residual value when checking received data
+        USB16_POLY     = $8005 >< 16            ' USB16 polynomial is reflected when calculating CRC
+        USB16_RESIDUAL = $800d >< 16            ' Expected CRC16 residual value when checking received data
+' Host->class driver USB connect speed:
+        USB_SPEED_UNKNOWN = 0
+        USB_SPEED_LOW = 1
+        USB_SPEED_FULL = 2
+' Host status bit positions. Bit4 and bit5 use the receiver status constants for SOP and EOP:
+        IDLEB        = 0
+        CONNECTEDB   = 1
+        LOW_SPEEDB   = 2
+        DATAx_TGLB   = 3
+        DWNSTRM_HUBB = 7
+        SUSPENDB     = 8
+        KBM_TOGGLEB  = 9
+' Host status bitflags. Unless otherwise noted, bit states are active high:
+        IDLEF        = |< IDLEB                 ' Set when USB in idle state
+        CONNECTEDF   = |< CONNECTEDB            ' USB device A_connected
+        LOW_SPEEDF   = |< LOW_SPEEDB            ' Low-speed device A_connected, clear if full-speed
+        DATAx_TGLF   = |< DATAx_TGLB            ' Cleared if sending DATA0 packet, set if sending DATA1 packet
+'       EOPF         = |< EOPB                  ' Same bit position as the USB rx RDPIN status constants defined above
+'       BUS_ERRF     = |< BUS_ERRB              ' Same bit position as the USB rx RDPIN status constants defined above
+'       BYTE_TGLF    = |< BYTE_TGLB             ' Same bit position as the USB rx RDPIN status constants defined above
+        DWNSTRM_HUBF = |< DWNSTRM_HUBB          ' NYI: Not yet implemented
+        SUSPENDF     = |< SUSPENDB              ' NYI: Not yet implemented
+'------------------------------------------------------------------------------
+' Keyboard auto-repeat timing. The key_repeat function is called every ms.
+'------------------------------------------------------------------------------
+        KBD_REPEAT_DELAY  = 500                 ' initial delay
+        KBD_REPEAT_RATE   = 50                  ' repeat rate
+'------------------------------------------------------------------------------
+' P2 silicon revision detection:
+'------------------------------------------------------------------------------
+    P2RevA = 1
+    P2RevB = 2
+'------------------------------------------------------------------------------
+
+CON ' USB Descriptor Definitions
+'------------------------------------------------------------------------------
+' USB References:
+' Universal Serial Bus Specification, Revision 2.0
+'   www.usb.org/developers/docs/usb20_docs/
+' Device Class Definition for Human Interface Devices (HID), Version 1.11
+'   www.usb.org/developers/hidpage/
+'------------------------------------------------------------------------------
+' SETUP packet bmRequestType bit groups (Section 9.3.1, Table 9-2).
+' Use TYPE_STANDARD for all USB Standard Device Request codes.
+'------------------------------------------------------------------------------
+' D7 Data direction  | D6:5 Type    | D4:0 Recipient
+'------------------------------------------------------------------------------
+' 0 - Host-to-device | 0 = Standard | 0 = Device
+' 1 - Device-to-host | 1 = Class    | 1 = Interface
+'                    | 2 = Vendor   | 2 = Endpoint
+'                    | 3 = Reserved | 3 = Other
+'                    |              | 4 -31 = Reserved
+'------------------------------------------------------------------------------
+    DIR_HOST_TO_DEV = 0 << 7
+    DIR_DEV_TO_HOST = 1 << 7                ' D7 Data direction
+    TYPE_STANDARD   = %00 << 5              ' D6:D5 Type (use Standard for all USB Standard Device Requests
+    TYPE_CLASS      = %01 << 5
+    TYPE_VENDOR     = %10 << 5
+    TYPE_RESERVED   = %11 << 5
+    RECIP_DEVICE    = %0_0000               ' D4..D0 Recipient
+    RECIP_INTERFACE = %0_0001
+    RECIP_ENDPOINT  = %0_0010
+    RECIP_OTHER     = %0_0011
+'    RECIP 4 - 31 = Reserved
+'------------------------------------------------------------------------------
+' Standard Device Request codes (Section 9.4, Table 9-4):
+'------------------------------------------------------------------------------
+        REQ_GET_STATUS = $00
+        REQ_CLEAR_FEATURE = $01
+        REQ_RESERVED_1 = $02
+        REQ_SET_FEATURE = $03
+        REQ_RESERVED2 = $04
+        REQ_SET_ADDR = $05
+        REQ_GET_DESC = $06
+        REQ_SET_DESC = $07
+        REQ_GET_CONFIG = $08
+        REQ_SET_CONFIG = $09
+        REQ_GET_INTF = $0a
+        REQ_SET_INTF = $0b
+        REQ_SYNC_FRAME = $0c
+'------------------------------------------------------------------------------
+' Standard descriptor types (Section 9.4, Table 9-5):
+'------------------------------------------------------------------------------
+        TYPE_DEVICE = $01
+        TYPE_CONFIG = $02
+        TYPE_STRING = $03
+        TYPE_INTERFACE = $04
+        TYPE_ENDPOINT = $05
+        TYPE_QUALIFIER = $06
+        TYPE_OTHER_SPEED = $07
+        TYPE_INTERFACE_PWR = $08
+        TYPE_OTG = $09
+'------------------------------------------------------------------------------
+' Device/Interface Class Codes (full list at www.usb.org/developers/defined_class):
+'------------------------------------------------------------------------------
+        CLASS_INFO_INTF = $00
+        CLASS_AUDIO = $01
+        CLASS_COMM = $02
+        CLASS_HID = $03
+        CLASS_UNDEF0 = $04
+        CLASS_PHYSICAL = $05
+        CLASS_IMAGE = $06
+        CLASS_PRINTER = $07
+        CLASS_MASS_STORAGE = $08
+        CLASS_HUB = $09
+        CLASS_CDC_DATA = $0a
+        CLASS_SMARTCARD = $0b
+        CLASS_UNDEF1 = $0c
+        CLASS_CONT_SECURITY = $0d
+        CLASS_VIDEO = $0e
+        CLASS_HEALTH = $0f
+        CLASS_AUDIO_VIDEO = $10
+        CLASS_BILLBOARD = $11
+        CLASS_TYPE_C_BRIDGE = $12
+        CLASS_DIAGNOSTIC_DEV  = $dc
+        CLASS_WIRELESS_CTRL   = $e0
+        CLASS_MISCELLANEOUS   = $ef
+        CLASS_APP_SPECIFIC    = $fe
+        CLASS_VENDOR_SPECIFIC = $ff
+'------------------------------------------------------------------------------
+' HUB Class Requests
+'------------------------------------------------------------------------------
+       HUB_PORT_CONNECTION    = 0
+       HUB_PORT_ENABLE        = 1
+       HUB_PORT_SUSPEND       = 2
+       HUB_PORT_OVERCURRENT   = 3
+       HUB_PORT_RESET         = 4
+       HUB_PORT_POWER         = 8
+       HUB_PORT_LOWSPEED      = 9
+       HUB_C_PORT_CONNECTION  = 16
+       HUB_C_PORT_ENABLE      = 17
+       HUB_C_PORT_SUSPEND     = 18
+       HUB_C_PORT_OVERCURRENT = 19
+       HUB_C_PORT_RESET       = 20
+       HUB_PORT_TEST          = 21
+       HUB_PORT_INDICATOR     = 22
+'------------------------------------------------------------------------------
+' HID Class Requests (v1.11 HID Device Class Definition Section 7.2):
+'------------------------------------------------------------------------------
+        HID_GET_REPORT = $01
+        HID_GET_IDLE = $02
+        HID_GET_PROTO = $03 ' $04 - $08 reserved
+        HID_SET_REPORT = $09
+        HID_SET_IDLE = $0a
+        HID_SET_PROTO = $0b
+' HID Descriptor types:
+        TYPE_HID = $21
+        TYPE_REPORT = $22
+        TYPE_PHYSICAL = $23 ' HID types $24 - $2f are reserved
+        TYPE_HUB = $29
+'------------------------------------------------------------------------------
+' HID report types (v1.11 HID Device Class Definition, Section 7.2.1):
+'------------------------------------------------------------------------------
+        TYPE_INPUT = $01
+        TYPE_OUTPUT = $02
+        TYPE_FEATURE = $03 ' $04 - $ff are reserved
+'------------------------------------------------------------------------------
+' HID Interface SubClasses:
+'------------------------------------------------------------------------------
+        SUBCLASS_INTF_NONE = $00
+        SUBCLASS_INTF_BOOT = $01
+'------------------------------------------------------------------------------
+' HID Protocol codes:
+'------------------------------------------------------------------------------
+        INTF_PROTO_NONE = $00
+        INTF_PROTO_KBD = $01
+        INTF_PROTO_MOUSE = $02
+
+        BOOT_PROTOCOL = $00
+        REPORT_PROTOCOL = $01
+'------------------------------------------------------------------------------
+' Other HID buffer lengths:
+'------------------------------------------------------------------------------
+    MAX_HID_REPTS   = 4             ' We have this many HID report buffers
+    REPT_BUFF_LEN   = 1024          ' HID reports can be quite large
+    REPT_STRUCT_LEN = REPT_BUFF_LEN + 2 ' Struct is wLength, bData[REPT_BUFF_LEN]
+    LANG_BUFF_LEN   = 128           ' LangID array buffer (in bytes)
+    USTR_BUFF_LEN   = 128           ' Unicode string buffer (in bytes)
+'------------------------------------------------------------------------------
+' USB-IF defined language IDs (http://www.usb.org/developers/docs.html)
+'------------------------------------------------------------------------------
+    LANG_ENG_US  = $0409            ' English (United States)
+    LOCAL_LANGID = LANG_ENG_US      ' Set your default langID here
+'------------------------------------------------------------------------------
+' SETUP structure member offsets.
+' NOTE: These offsets are defined in terms of the structure member's data type,
+'       to take advantage of PTRA/B scaled indexing, e.g.:
+'         RDBYTE D,   PTRA[bRequest]
+'         WRWORD D/#, PTRA[wLength]
+'------------------------------------------------------------------------------
+    bmRequestType = 0
+    bRequest      = 1
+    wValue        = 1
+    wIndex        = 2
+    wLength       = 3
+' SETUP bmRequestType combinations:
+{
+    HTD_STD_DEV = (DIR_HOST_TO_DEV | TYPE_STANDARD | RECIP_DEVICE)
+    DTH_STD_DEV = (DIR_DEV_TO_HOST | TYPE_STANDARD | RECIP_DEVICE)
+    HTD_STD_INT = (DIR_HOST_TO_DEV | TYPE_STANDARD | RECIP_INTERFACE)
+    HTD_STD_EP  = (DIR_HOST_TO_DEV | TYPE_STANDARD | RECIP_ENDPOINT)
+}
+'------------------------------------------------------------------------------
+' Standard USB descriptor structure sizes in bytes. The values defined are the
+' minimum size of the descriptor:
+'------------------------------------------------------------------------------
+    SETUP_TXN_LEN = 8
+    DEV_DESC_LEN  = 18
+    CON_DESC_LEN  = 9
+    INTF_DESC_LEN = 9
+    ENDP_DESC_LEN = 7
+    STR0_DESC_LEN = 4
+    USTR_DESC_LEN = 4
+'------------------------------------------------------------------------------
+' Other USB-related buffer sizes:
+'------------------------------------------------------------------------------
+    URX_BUFF_LEN = 128      ' USB receiver scratch buffer
+    CON_BUFF_LEN = 256      ' Entire configuration descriptor chain
+'------------------------------------------------------------------------------
+' CON_bmAttrs member bit positions:
+'------------------------------------------------------------------------------
+    ATTR_RESVB     = 7      ' Reserved (should always be one)
+    ATTR_SELF_PWRB = 6      ' Device Self-Powered
+    ATTR_RMT_WAKEB = 5      ' Supports remote wakeup
+'    bmAttributes bits 4..0 reserved and reset to zero
+'------------------------------------------------------------------------------
+' Standard USB descriptor struct member offset and member size, in bytes. Note
+' that the DESC_bLength and DESC_bDescType members are defined in all of the
+' descriptors (including HID) at the offsets shown.
+'------------------+
+' !!! IMPORTANT !!!|
+'------------------+
+' All standard descriptor member offsets are defined in bytes, so if you want
+' to use PTRA/B indexing for WORD or LONG data, the unscaled PTRx[##index20]
+' syntax should be used and the compiler will invoke AUGS with RDxxxx/WRxxxx,
+' e.g.: RDBYTE D,   PTRA[DEV_bMaxPktSize0] is OK when it's a byte member
+'       WRWORD D/#, PTRA[##DEV_bIdProduct] use unscaled if member is word/long.
+' If PTRA/B unscaled indexing is used with pre/post increment/decrement, one
+' must be very careful...
+'------------------------------------------------------------------------------
+'       Member          Offset  Size    Value           Description
+'------------------------------------------------------------------------------
+    DESC_bLength     = 0    ' 1     Number          Minimum size of this descriptor in bytes
+    DESC_bDescType   = 1    ' 1     Constant        TYPE_DEVICE
+' Device Descriptor (Section 9.6.1, Table 9-8):
+    DEV_bcdUSB       = 2    ' 2     BCD             e.g., 2.10 is $0210
+    DEV_bDevClass    = 4    ' 1     Class           Class code assigned by USB-IF.
+    DEV_bDevSubClass = 5    ' 1     SubClass        SubClass Code assigned by USB-IF.
+    DEV_bProtocol    = 6    ' 1     Protocol        Protocol Code assigned by USB-IF.
+    DEV_bMaxPktSize0 = 7    ' 1     Number          Max packet size for endpoint 0. Must be 8 for LS, 16, 32 or 64 for FS.
+    DEV_idVendor     = 8    ' 2     ID              Vendor ID - must be obtained from USB-IF.
+    DEV_idProduct    = 10   ' 2     ID              PRoduct ID - must be obtained from USB-IF.
+    DEV_bcdDevice    = 12   ' 2     BCD             Device release number in BCD.
+    DEV_iMfg         = 14   ' 1     Index           Index of string descriptor describing manufacturer - set to zero if no string.
+    DEV_iProduct     = 15   ' 1     Index           Index of string descriptor describing product - set to zero if no string.
+    DEV_iSerialNum   = 16   ' 1     Index           Index of string descriptor describing device serial number - set to zero if no string.
+    DEV_iNumConfigs  = 17   ' 1     Number          Number of possible configurations.
+  ' Configuration Descriptor (Section 9.6.3, Table 9-10):
+'    DESC_bLength     = 0    ' 1     Number          Minimum size of the descriptor, in bytes
+'    DESC_bDescType   = 1    ' 1     Constant        TYPE_CONFIG
+    CON_wTotalLen    = 2    ' 2     Number          See Section 9.6.3, Table 9-10.
+    CON_bNumIntf     = 4    ' 1     Number          Number of interfaces supported by this configuration.
+    CON_bConfigVal   = 5    ' 1     Number          Value to use as an argument to the SetConfiguration() request to select this configuration.
+    CON_iConfig      = 6    ' 1     Index           Index of string descriptor describing this configuration.
+    CON_bmAttrs      = 7    ' 1     Bitmap          See Table 9-10.
+    CON_bMaxPower    = 8    ' 1     mA              Expressed in 2MA units (i.e. 50 = 100 mA)
+' Interface Descriptor (Section 9.6.5, Table 9-12):
+'    DESC_bLength     = 0    ' 1     Number          Minimum size of the descriptor, in bytes
+'    DESC_bDescType   = 1    ' 1     Constant        TYPE_INTERFACE
+    INTF_bIntfNum    = 2    ' 1     Number          See Table 9-12.
+    INTF_bAltSetting = 3    ' 1     Number          Value used to select this alternate setting for the interface identified in the prior field.
+    INTF_bNumEndpts  = 4    ' 1     Number          See Table 9-12.
+    INTF_bIntfClass  = 5    ' 1     Class           Class code (assigned by USB-IF). If this field is 0xFF, the interface class is vendor-specific.
+    INTF_bSubClass   = 6    ' 1     SubClass        Subclass code (assigned by USB-IF). These codes are qualified by the value of the
+                            '                       bIntfClass field. If the bInterfaceClass field is not set to 0xFF, all values are
+                            '                       reserved for assignment by the USB-IF.
+    INTF_bProtocol   = 7    ' 1     Protocol        Protocol code (assigned by the USB). These codes are qualified by the value of the
+                            '                       bIntfClass and the bSubClass fields. If this field is set to 0xFF, the device uses a
+                            '                       vendor-specific protocol for this interface.
+    INTF_iInterface  = 8    ' 1     Index           Index of string descriptor describing this interface.
+' Endpoint Descriptor (Section 9.6.6, Table 9-13):
+'    DESC_bLength     = 0    ' 1     Number          Minimum size of the descriptor, in bytes
+'    DESC_bDescType   = 1    ' 1     Constant        TYPE_ENDPOINT
+    ENDP_bAddress    = 2    ' 1     Endpoint        See table 9-13.
+    ENDP_bmAttrs     = 3    ' 1     Bitmap
+    ENDP_wMaxPktSize = 4    ' 2     Number
+    ENDP_bInterval   = 6    ' 1     Number
+' String Descriptor Zero (Section 9.6.7, Table 9-15):
+'    DESC_bLength     = 0    ' 1     N + 2
+'    DESC_bDescType   = 1    ' 1     Constant
+    STR0_wLangID     = 2    ' N     LangID[(N - 2) / 2]
+' Unicode String Descriptor (Section 9.6.7, Table 9-16):
+'    DESC_bLength     = 0    ' 1     N + 2
+'    DESC_bDescType   = 1    ' 1     Constant
+    USTR_wString     = 2    ' N     wString[(N - 2) / 2]
+'------------------------------------------------------------------------------
+' HID Descriptor (Section 6.2.1)
+'------------------------------------------------------------------------------
+'    DESC_bLength     = 0    ' 1     Number          Minimum size of the descriptor, in bytes
+'    DESC_bDescType   = 1    ' 1     Constant        TYPE_HID
+    HID_bcdHID       = 2    ' 2     BCD             e.g., 1.10 is $0110
+    HID_bCountryCode = 4    ' 1     Number          Hardware target country
+    HID_bNumDesc     = 5    ' 1     Number          Number of HID class descriptors to follow, always at least one.
+    HID_bDescType    = 6    ' 1     Constant        Type of HID class descriptor e.g. TYPE_REPORT ($22).
+    HID_wDescLength  = 7    ' 2     Number          Total length of descriptor(s).
+
+' HID Report Items from HID 1.11 Section 6.2.2
+    HID_USAGE_PAGE      = $04
+    HID_USAGE           = $08
+    HID_COLLECTION      = $A0
+    HID_END_COLLECTION  = $C0
+    HID_REPORT_COUNT    = $94
+    HID_REPORT_SIZE     = $74
+    HID_USAGE_MIN       = $18
+    HID_USAGE_MAX       = $28
+    HID_LOGICAL_MIN     = $14
+    HID_LOGICAL_MAX     = $24
+    HID_PHYSICAL_MIN    = $34
+    HID_PHYSICAL_MAX    = $44
+    HID_INPUT           = $80
+    HID_REPORT_ID       = $84
+    HID_OUTPUT          = $90
+
+' HID Report Usage Pages from HID Usage Tables 1.12 Section 3, Table 1
+    HID_USAGE_PAGE_GENERIC_DESKTOP = $01
+    HID_USAGE_PAGE_KEY_CODES       = $07
+    HID_USAGE_PAGE_LEDS            = $08
+    HID_USAGE_PAGE_BUTTONS         = $09
+
+' HID Report Usages from HID Usage Tables 1.12 Section 4, Table 6
+    HID_USAGE_POINTER   = $01
+    HID_USAGE_MOUSE     = $02
+    HID_USAGE_JOYSTICK  = $04
+    HID_USAGE_GAMEPAD   = $05
+    HID_USAGE_KEYBOARD  = $06
+    HID_USAGE_X         = $30
+    HID_USAGE_Y         = $31
+    HID_USAGE_Z         = $32
+    HID_USAGE_RX        = $33
+    HID_USAGE_RY        = $34
+    HID_USAGE_RZ        = $35
+    HID_USAGE_SLIDER    = $36
+    HID_USAGE_WHEEL     = $38
+    HID_USAGE_HATSWITCH = $39
+
+' HID Report Collection Types from HID 1.12 6.2.2.6
+    HID_COLLECTION_PHYSICAL    = 0
+    HID_COLLECTION_APPLICATION = 1
+
+' HID Input/Output/Feature Item Data (attributes) from HID 1.11 6.2.2.5
+    HID_ITEM_CONSTANT = $1
+    HID_ITEM_VARIABLE = $2
+    HID_ITEM_RELATIVE = $4
+
+' Keyboard report data buffer lengths (boot protocol):
+    KBD_OUT_RPT_LEN = 1     ' CapsLock, NumLock and ScrollLock status bits
+    KBD_IN_RPT_LEN  = 8     ' Maximum keyboard boot protocol IN data packet size
+' Gamepad report and descriptor data buffer lengths:
+    HID_IN_RPT_LEN   = 256
+    HID_DESCR_LEN    = 256
+
+' Gamepad axes flag bits
+    HID_AXIS_X   = 16+0
+    HID_AXIS_Y   = 16+1
+    HID_AXIS_Z   = 16+2
+    HID_AXIS_RX  = 16+3
+    HID_AXIS_RY  = 16+4
+    HID_AXIS_RZ  = 16+5
+
+'------------------------------------------------------------------------------
+
+DAT
+
+   alignl
+   orgh
+
+'------------------------------------------------------------------------------
+USB_Data ' Must be kept in the order of mouse_data, kbd_xxx and gpd_xxx 
+'------------------------------------------------------------------------------
+' The mouse data must be treated as read-only by the client.
+' Whenever the USB processes a mouse event, it will refresh the mouse x/y
+' position/velocity and button data. The client must poll the USB_B_EVENT_REPO
+' smart pin and read the updated data when the USB has posted the M_DATA event.
+'-+----------+-----------+-----------+--------------+
+' |  Byte3   |   Byte2   |   Byte1   |    Byte0     |
+'-+----------+-----------+-----------+--------------+
+' | Reserved | Y Dir/Vel | X Dir/Vel | Button Flags |
+'-+----------+-----------+-----------+--------------+--------------------------
+
+' Note that only ONE MOUSE is supported, even if there are multiple USB drivers.
+'
+mouse_data      long    0
+
+'------------------------------------------------------------------------------
+' Keyboard FIFO buffer.
+'------------------------------------------------------------------------------
+' Note that only ONE KEYBOARD is supported, even if there are multiple USB drivers.
+
+kbd_tail        long    0       ' Client read/write, USB read-only
+kbd_head        long    0       ' USB read/write, client read-only
+kbd_buffer      long    -1[KBD_BUFFMASK + 1]
+
+'------------------------------------------------------------------------------
+' Gamepad FIFO buffer. Port could be any number. Type could be:
+'   GPD_CONNECT
+'   GPD_DISCONNECT
+'   GPD_X_AXIS
+'   GPD_Y_AXIS
+'   GPD_Z_AXIS
+'   GPD_BUTTONS
+'
+' If there is more than one gampead connected, they will have to
+' be differentiated by the client using the cog/port.
+'
+'-+----------+-----------+-----------+--------------+
+' |  Byte3   |   Byte2   |   Byte1   |    Byte0     |
+'-+----------+-----------+-----------+--------------+
+' |cog/port  |  type     | 16 Buttons/Signed value  |
+'-+----------+-----------+-----------+--------------+--------------------------
+'
+A_gpd_tail      long    0       ' Client read/write, USB read-only
+A_gpd_head      long    0       ' USB read/write, client read-only
+A_gpd_buffer    long    -1[GPD_BUFFMASK + 1]
+
+B_gpd_tail      long    0       ' Client read/write, USB read-only
+B_gpd_head      long    0       ' USB read/write, client read-only
+B_gpd_buffer    long    -1[GPD_BUFFMASK + 1]
+'
+'------------------------------------------------------------------------------
+'------------------------------------------------------------------------------
+kbd_table
+' original table ...
+' {$00} word    $0000, $0000, $0000, $0000                                ' $03
+' {$04} word    $4161, $4262, $4363, $4464                                ' $07: Aa Bb Cc Dd
+' {$08} word    $4565, $4666, $4767, $4868, $4969, $4A6A, $4B6B, $4C6C    ' $0f: Ee Ff Gg Hh Ii Jj Kk Ll
+' {$10} word    $4D6D, $4E6E, $4F6F, $5070, $5171, $5272, $5373, $5474    ' $17: Mm Nn Oo Pp Qq Rr Ss Tt
+' {$18} word    $5575, $5676, $5777, $5878, $5979, $5A7A, $2131, $4032    ' $1f: Uu Vv Ww Xx Yy Zz !1 @2
+' {$20} word    $2333, $2434, $2535, $5E36, $2637, $2A38, $2839, $2930    ' $27: #3 $4 %5 ^6 &7 *8 (9 )0
+' {$28} word    $0D0D, $1B1B, $0808, $0909, $2020, $5F2D, $2B3D, $7B5B    ' $2f: Enter Esc BkSpc Tab Spc _- += {[
+' {$30} word    $7D5D, $7C5C, $7E23, $3A3B, $2227, $7E60, $3C2C, $3E2E    ' $37: }] |\ ~# :; dbl-quote sngl-quote ~` <, >.
+' {$38} word    $3F2F, $0000, $0000, $0000, $0000, $0000, $0000, $0000    ' $3f: ?/ CapsLock F1 F2 F3 F4 F5 F6
+' {$40} word    $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000    ' $47: F7 F8 F9 F10 F11 F12 PrtSc, ScrLk
+' {$48} word    $0000, $0000, $0000, $0000, $7F7F, $0000, $0000, $0000    ' $4f: Pause, Ins, Home PgUp BkSpc_Del End PgDn Right
+' {$50} word    $0000, $0000, $0000, $0000, $2F2F, $2A2A, $2D2D, $2B2B    ' $57: Left Down Up KpdNumLck Kp/ Kp* Kp- Kp+
+' {$58} word    $0D0D, $3131, $3232, $3333, $5034, $3535, $3636, $3737    ' $5f: KpEnter Kp1_End Kp2_Down Kp3_PgDn Kp4_Left Kp5 Kp6_Right Kp7_Home
+' {$60} word    $3838, $3939, $3030, $7F2E, $5C7C, $0000                  ' $65: Kp8_Up Kp9_PgUp Kp0_Ins Kp._Del Kp\_| App
+' P1 compatible key codes for non-ASCII keys (i.e. Parallax key codes)
+{$00} word KEY_NO_KEY, KEY_ERR_ROLLOVER, KEY_POST_FAIL, KEY_ERR_UNDEF ' $03
+{$04} word $4161, $4262, $4363, $4464                                 ' $07: Aa Bb Cc Dd
+{$08} word $4565, $4666, $4767, $4868, $4969, $4A6A, $4B6B, $4C6C     ' $0f: Ee Ff Gg Hh Ii Jj Kk Ll
+{$10} word $4D6D, $4E6E, $4F6F, $5070, $5171, $5272, $5373, $5474     ' $17: Mm Nn Oo Pp Qq Rr Ss Tt
+{$18} word $5575, $5676, $5777, $5878, $5979, $5A7A, $2131, $4032     ' $1f: Uu Vv Ww Xx Yy Zz !1 @2
+{$20} word $2333, $2434, $2535, $5E36, $2637, $2A38, $2839, $2930     ' $27: #3 $4 %5 ^6 &7 *8 (9 )0
+{$28} word $0D0D, $1B1B, $0808, $0909, $2020, $5F2D, $2B3D, $7B5B     ' $2f: Enter Esc BkSpc Tab Spc _- += {[
+{$30} word $7D5D, $7C5C, $7E23, $3A3B, $2227, $7E60, $3C2C, $3E2E     ' $37: }] |\ ~# :; ""' ~` <, >.
+{$38} word $3F2F, $3900, $D0D0, $D1D1, $D2D2, $D3D3, $D4D4, $D5D5     ' $3f: ?/ CapsLock F1 F2 F3 F4 F5 F6
+{$40} word $D6D6, $D7D7, $D8D8, $D9D9, $DADA, $DBDB, $DCDC, $DD00     ' $47: F7 F8 F9 F10 F11 F12 PrtSc, ScrLk
+{$48} word $4848, $CACA, $C4C4, $C6C6, $08C9, $C5C5, $C7C7, $C1C1     ' $4f: Pause, Ins, Home PgUp BkSpc_Del End PgDn Right
+{$50} word $C0C0, $C3C3, $C2C2, $5300, $EFEF, $EEEE, $EDED, $ECEC     ' $57: Left Down Up KpdNumLck Kp/ Kp* Kp- Kp+
+{$58} word $EBEB, $E1E1, $E2E2, $E3E3, $E4E4, $E5E5, $E6E6, $E7E7     ' $5f: KpEnter Kp1_End Kp2_Down Kp3_PgDn Kp4_Left Kp5 Kp6_Right Kp7_Home
+{$60} word $E8E8, $E9E9, $E0E0, $EAEA, $5C7C, $CCCC                   ' $65: Kp8_Up Kp9_PgUp Kp0_Ins Kp._Del Kp\_| App
+
+#endif

@@ -251,8 +251,10 @@ FLIST_PREG     = FLIST_PSTK - 4                     ' $7A08 check catalyst.h
 '
 ' size of P1 Loader (for XMM programs):
 '
-P1_LOAD_SIZE      = $8000      ' max size of loader (32kb) - must match 
-                               ' catalina_cog.h, payload.c and catbind.c
+P1_LOAD_SIZE      = $8000      ' max size of loader (32kb)
+                               ' must match cog.h and layout.h
+                               ' and target/p1/Catalina_Common.spin
+                               ' and minimal/p1/Catalina_Common.spin
 '
 ' Notes on the Registry definitions. 
 '

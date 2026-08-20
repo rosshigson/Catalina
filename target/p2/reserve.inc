@@ -5,7 +5,7 @@
 ' Otherwise it should be identical to "reserven.inc"
 
 DAT
-         orgh  $1000
+         orgh  $1000          ' must match P2_PROLOGUE_OFFS in layout.h
 
 RESERVED jmp  #\NON_RESERVED  ' $1000 Lower 20 bits = addr of non-reserved hub
 CLKFREQ  long _CLOCKFREQ      ' $1004 initial clock frequency (not updated)
@@ -14,7 +14,7 @@ BAUDRATE long _BAUDRATE       ' $100c initial baud rate (not updated)
 
 ' seglayout specifies the layout of the segments
 
-seglayout                     ' $1010 - if this changes, change catbind.c
+seglayout                     ' $1010 - if this changes, change layout.h
         long  SEGMENT_LAYOUT  
 
 ' segtable contains the start address of each of the segments

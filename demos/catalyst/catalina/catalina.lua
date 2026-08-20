@@ -115,6 +115,9 @@
 --                 because these can interfere with the use of Cake.
 --
 -- version 8.8.8 - Add -Y option (precompile only).
+--
+-- version 9.0   - Add the Catalina symbol MHZ_297 because this speed is
+--                 recommended for the new 1080P VGA plugin.
 
 require "os"
 require "io"
@@ -123,7 +126,7 @@ require "string"
 require "propeller"
 
 -- configuration parameters and default values
-CATALINA_VERSION = "8.8.9"
+CATALINA_VERSION = "9.0"
 LCCDIR           = "/";
 CATALINA_TARGET  = LCCDIR .. "target"
 CATALINA_LIBRARY = LCCDIR .. "lib"
@@ -856,6 +859,8 @@ function decode_if_special(Csym)
     reqd_freq = 220000000;
   elseif Csym == "MHZ_300" then
     reqd_freq = 300000000;
+  elseif Csym == "MHZ_297" then
+    reqd_freq = 297000000;
   elseif Csym == "MHZ_260" then
     reqd_freq = 260000000;
   elseif Csym == "MHZ_220" then

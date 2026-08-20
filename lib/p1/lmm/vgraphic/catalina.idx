@@ -118,10 +118,10 @@ g_move move.s 9 export
 _db_setcommand move.s 39 import
 g_flush move.s 41 import
 G_VAR move.s 43 import
-g_pallete pallete.s 9 export
-cgi_display_base pallete.s 68 import
-cgi_y_tiles pallete.s 70 import
-cgi_x_tiles pallete.s 72 import
+g_palette palette.s 9 export
+cgi_display_base palette.s 68 import
+cgi_y_tiles palette.s 70 import
+cgi_x_tiles palette.s 72 import
 g_pix pix.s 9 export
 _setcommand pix.s 52 import
 G_VAR pix.s 54 import

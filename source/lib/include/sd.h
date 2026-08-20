@@ -3,7 +3,9 @@
 
 #include <plugin.h>
 
-#define __CATALINA_SECTOR_SIZE 512
+#ifndef SECTOR_SIZE
+#define SECTOR_SIZE        512 // size of sector (bytes)
+#endif
 
 /*
  * SD calls :

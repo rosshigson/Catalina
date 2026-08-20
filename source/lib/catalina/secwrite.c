@@ -9,9 +9,9 @@ unsigned long sd_sectwrite(char * buffer, long sector) {
 
    int i;
    int retval;
-   char local[__CATALINA_SECTOR_SIZE];
+   char local[SECTOR_SIZE];
 
-   for (i = 0; i < __CATALINA_SECTOR_SIZE; i++) {
+   for (i = 0; i < SECTOR_SIZE; i++) {
       local[i] = buffer[i];;
    }
 	retval = _long_service_2(SVC_SD_WRITE, (long)local, sector);

@@ -209,6 +209,13 @@ FLIST_FSIZ     = FLIST_SHFT - 4                     ' $7A10 check catalyst.h
 FLIST_PSTK     = FLIST_FSIZ - 4                     ' $7A0C check catalyst.h
 FLIST_PREG     = FLIST_PSTK - 4                     ' $7A08 check catalyst.h
 '
+' size of P1 Loader (for XMM programs):
+'
+P1_LOAD_SIZE      = $8000      ' max size of loader (32kb)
+                               ' must match cog.h and layout.h
+                               ' and target/p1/Catalina_Common.spin
+                               ' and embedded/p1/Catalina_Common.spin
+'
 ' Notes on the Registry definitions. 
 '
 ' The Catalina registry provides a place where all plugins can be found, 

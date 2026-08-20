@@ -443,8 +443,9 @@ if [[ "$PLATFORM" == "P2_EDGE"
    if [[ "$XMM_BOARD" == "HYPER" ]] ; then
      TMP_XMMLIB=-lhyper
    fi
-
-   catalina Catalina_SIO_Loader.c -p2 -lci -lserial2 $TMP_XMMLIB -R0x10000 -C NO_HMI -C $PLATFORM -o SRAM
+   # note the -R parameter below must match layout.h, cog.h 
+   # and constant.inc and all the other build_utilities scripts
+   catalina Catalina_SIO_Loader.c -p2 -lci -lserial2 $TMP_XMMLIB -R0x20000 -C NO_HMI -C $PLATFORM -o SRAM
    cp -f SRAM.bin XMM.bin
 
    if [[ "$COPY_BIN" == "Y" ]] ; then

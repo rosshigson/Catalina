@@ -5,12 +5,14 @@
 
 /*
  * Program loader sizes (for XMM loaders).
- * Must match Catalina_Common.spin, Catalina_constants.inc, 
- * payload.c, catbind.c
  */
 
 #define P1_LOAD_SIZE  0x8000  // max size of P1 loader (32kb)
-#define P2_LOAD_SIZE 0x10000  // max size of P2 loader (64kb)
+                              // must match layout.h and Catalina_Common.spin
+
+#define P2_LOAD_SIZE 0x20000  // max size of P2 loader (128kb)
+                              // must match layout.h and constant.inc
+                              // and all the build_utilities scripts
 
 /*
  * clock control constants and functions

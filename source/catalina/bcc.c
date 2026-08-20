@@ -268,7 +268,7 @@ void help(char *my_name) {
    fprintf(stderr, "          -v        verbose (output information messages)\n");
    fprintf(stderr, "          -x layout use specified memory layout (layout = 0 .. 6, 8 .. 10)\n");
    fprintf(stderr, "          -z ch     specify separator char for path names (default is '%s')\n", DEFAULT_SEP);
-   fprintf(stderr, " exit code is number of undefined/redefined symbols (-1 for other errors)\n\n");
+   fprintf(stderr, " exit code is number of undefined/redefined symbols (-1 for other errors)\n");
 #ifdef __CATALINA__
    _waitsec(1); // give output a chance to print before exiting!
 #endif

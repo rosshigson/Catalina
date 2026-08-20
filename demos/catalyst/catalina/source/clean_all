@@ -5,7 +5,7 @@ cd catalina
 ./clean_all
 cd ../cake
 ./clean_all
-cd ../catoptimize
+cd ../catnip
 ./clean_all
 cd ../p2asm_src
 ./clean_all

@@ -15,13 +15,13 @@ C__plugin_name ' <symbol:_plugin_name>
  cmps r2,  #0 wz,wc
  jmp #BR_B
  long @C__plugin_name_3 ' LTI4
- cmps r2,  #33 wz,wc
+ cmps r2,  #34 wz,wc
  jmp #BR_A
- long @C__plugin_name_112 ' GTI4
+ long @C__plugin_name_115 ' GTI4
  mov r22, r2
  shl r22, #2 ' LSHI4 coni
  jmp #LODL
- long @C__plugin_name_113_L000115
+ long @C__plugin_name_116_L000118
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  mov RI, r22
@@ -34,7 +34,7 @@ C__plugin_name ' <symbol:_plugin_name>
 DAT ' const data segment
 
  alignl ' align long
-C__plugin_name_113_L000115 ' <symbol:113>
+C__plugin_name_116_L000118 ' <symbol:116>
  long @C__plugin_name_5
  long @C__plugin_name_8
  long @C__plugin_name_11
@@ -69,14 +69,15 @@ C__plugin_name_113_L000115 ' <symbol:113>
  long @C__plugin_name_98
  long @C__plugin_name_101
  long @C__plugin_name_104
+ long @C__plugin_name_107
 
 ' Catalina Code
 
 DAT ' code segment
-C__plugin_name_112
+C__plugin_name_115
  cmps r2,  #255 wz
  jmp #BR_Z
- long @C__plugin_name_107 ' EQI4
+ long @C__plugin_name_110 ' EQI4
  jmp #JMPA
  long @C__plugin_name_3 ' JUMPV addrg
 C__plugin_name_5
@@ -289,9 +290,15 @@ C__plugin_name_107
  mov r0, RI ' reg <- addrg
  jmp #JMPA
  long @C__plugin_name_2 ' JUMPV addrg
+C__plugin_name_110
+ jmp #LODL
+ long @C__plugin_name_111_L000112
+ mov r0, RI ' reg <- addrg
+ jmp #JMPA
+ long @C__plugin_name_2 ' JUMPV addrg
 C__plugin_name_3
  jmp #LODL
- long @C__plugin_name_110_L000111
+ long @C__plugin_name_113_L000114
  mov r0, RI ' reg <- addrg
 C__plugin_name_2
  jmp #POPM ' restore registers
@@ -303,7 +310,7 @@ C__plugin_name_2
 DAT ' const data segment
 
  alignl ' align long
-C__plugin_name_110_L000111 ' <symbol:110>
+C__plugin_name_113_L000114 ' <symbol:113>
  byte 85
  byte 110
  byte 107
@@ -314,11 +321,38 @@ C__plugin_name_110_L000111 ' <symbol:110>
  byte 0
 
  alignl ' align long
-C__plugin_name_108_L000109 ' <symbol:108>
+C__plugin_name_111_L000112 ' <symbol:111>
  byte 78
  byte 111
  byte 110
  byte 101
+ byte 0
+
+ alignl ' align long
+C__plugin_name_108_L000109 ' <symbol:108>
+ byte 85
+ byte 83
+ byte 66
+ byte 32
+ byte 40
+ byte 109
+ byte 111
+ byte 117
+ byte 115
+ byte 101
+ byte 47
+ byte 107
+ byte 98
+ byte 100
+ byte 47
+ byte 103
+ byte 97
+ byte 109
+ byte 101
+ byte 112
+ byte 97
+ byte 100
+ byte 41
  byte 0
 
  alignl ' align long

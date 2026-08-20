@@ -151,7 +151,7 @@ g_textmode textmode.s 9 export
 _setcommand textmode.s 50 import
 G_VAR textmode.s 52 import
 g_tri tri.s 9 export
-g_fill tri.s 241 import
+g_fill tri.s 242 import
 g_vec vec.s 9 export
 _setcommand vec.s 57 import
 G_VAR vec.s 59 import

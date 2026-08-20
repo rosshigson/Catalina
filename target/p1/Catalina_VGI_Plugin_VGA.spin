@@ -18,16 +18,14 @@ CON
    CGI_DATA   = common#CGI_DATA
 
 '
-' VGA Pins and Colour mode (define symbol VGA_4_COLOUR for 4 color mode)
+' VGA Pins and Colour mode (define symbol COLOR_4 for 4 color mode)
 '
   VGA_PIN     = common#VGA_PIN
 
-#ifdef VGA_4_COLOUR
-  COLOUR_MODE = 1
-#elseifdef VGA_4_COLOR
-  COLOUR_MODE = 1
+#ifdef COLOR_4
+  COLOR_MODE = 1
 #else
-  COLOUR_MODE = 0
+  COLOR_MODE = 0
 #endif
 
 '
@@ -37,7 +35,7 @@ CON
 
 ' 800 x 600
 
-  mode = COLOUR_MODE << 3 + %011
+  mode = COLOR_MODE << 3 + %011
   hd = 800
   hf = 40
   hs = 128
@@ -52,7 +50,7 @@ CON
 
 ' 1024 x 768 
 
-  mode = COLOUR_MODE << 3 + %000
+  mode = COLOR_MODE << 3 + %000
   hd = 1024
   hf = 24
   hs = 136
@@ -67,7 +65,7 @@ CON
 
 ' 1152 x 864 
 
-  mode = COLOUR_MODE << 3 + %001
+  mode = COLOR_MODE << 3 + %001
   hd = 1152
   hf = 64
   hs = 112
@@ -82,7 +80,7 @@ CON
 
 ' 640 x 480 
 
-  mode = COLOUR_MODE << 3 + %000
+  mode = COLOR_MODE << 3 + %000
   '    72Hz       60Hz
   hd = 640        '640
   hf = 24         '16
@@ -99,7 +97,7 @@ CON
 '
 ' Screen Geometry (calculated from COLOUR and VGA modes):
 '
-  X_TILES      = hd / (32>>COLOUR_MODE) 
+  X_TILES      = hd / (32>>COLOR_MODE) 
   Y_TILES      = vd / 16 
 
   vga_count    = vga#paramcount ' size of vga_data (LONGs)
@@ -176,7 +174,7 @@ PUB Start (data) : cog | okay, i, dx, dy
   ' from this value.
   long[CGI_DATA] := (x_tiles << 24) + (y_tiles << 16) + data + vgi_offscrn
 
-  long[data + vgi_mode]     := COLOUR_MODE
+  long[data + vgi_mode]     := COLOR_MODE
   long[data + vgi_line_req] := 0
   long[data + vgi_line_buf] := 0
 

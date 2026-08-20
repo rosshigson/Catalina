@@ -24,8 +24,8 @@ sound effects - for this, see the "demos\sounds" subdirectory.
 
 To build the program, use the "build_all" command, specifying the platform for
 which you want to build (C3, HYDRA, HYBRID, TRIBLADEPROP CPU_1 etc) and also 
-any optional symbols - e.g. the screen resolution (VGA_480, VGA_800, VGA_1024) 
-or color depth (VGA_2_COLOR, VGA_4_COLOR) or input option (GAMEPAD, NO_GAMEPAD,
+any optional symbols - e.g. the screen resolution (VGA_640, VGA_800, VGA_1024) 
+or color depth (COLOR_2, COLOR_4) or input option (GAMEPAD, NO_GAMEPAD,
 NO_KEYBOARD). These programs (especially spacewar) can be quite memory hungry,
 because the VGA graphics requires a lot of Hub RAM, so they need to be built 
 either as COMPACT programs, or as XMM SMALL programs. 
@@ -40,7 +40,7 @@ or
 or
    build_all HYDRA COMPACT GAMEPAD NO_KEYBOARD  
 or 
-   build_all HYDRA COMPACT VGA_4_COLOR
+   build_all HYDRA COMPACT COLOR_4
  
 The default screen resolution is 640x480 and the default color depth is 2. The 
 batch file enables double buffering for the spacewar and graphics_demo (for 
@@ -52,7 +52,7 @@ to use the Catalina gamepad driver instead of the software gamepad, specify
 GAMEPAD (Catalina supports both the software gamepad as implemented in the 
 original game, and the more efficient Catalina gamepad driver).
 
-Note that not all resolutions will support all color depths - the VGA_4_COLOR 
+Note that not all resolutions will support all color depths - the COLOR_4 
 option is only supported in conjunction with VGA_640 and VGA_800.
 
 To build these programs as XMM SMALL programs, use the SMALL option instead

@@ -38,6 +38,7 @@
 CON
 
 #include <constant.inc>
+#include <compact.inc>
 
 ' The symbol FCACHE_PRIMITIVE adds code to implement FCACHE - this can be done
 ' outside the kernel, but including it in the kenel is more efficient - but it
@@ -64,18 +65,6 @@ CON
 
 '#define BLACKBOX
 
-{
-' instruction operand shifts
-
-' NOTE: these are now defined in compact.inc ...
-S16A = 1  ' must match compact.inc
-D16A = 6  ' must match compact.inc
-S16B = 2  ' must match compact.inc
-D16B = 2  ' must match compact.inc
-S32  = 2  ' must match compact.inc
-D32  = 11 ' must match compact.inc
-D32S = 21 ' must match compact.inc
-}
 
 ' NO_INTERRUPTS - if defined, we can the use SKIPF because this code will not  
 '                 be used in an interrupt service routine. Can be defined here 

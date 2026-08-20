@@ -74,6 +74,8 @@ LMM_XCH = 29      ' XMM Cache
 LMM_STO = 30      ' CogStore
 LMM_P2P = 31      ' P2P Bus
 LMM_RND = 32      ' Random Number Generator
+LMM_SVR = 33      ' Lua Server
+LMM_USB = 34      ' USB (mouse/keyboard/gamepad) driver
 LMM_NUL = 255     ' No plugin
 
 '
@@ -316,6 +318,12 @@ SVC_T_COLOR_FG   = 65 ' LMM_HMI 33
 SVC_T_COLOR_BG   = 66 ' LMM_HMI 34
 SVC_GETTICKS     = 67 ' LMM_RTC_11 or LMM_FIL_11 
 SVC_GETRANDOM    = 68 ' LMM_RND 1
+SVC_T_GRAPHICS   = 69 ' LMM_HMI 35
+SVC_G_PORT       = 70 ' LMM_HMI 36
+SVC_G_BUTTONS    = 71 ' LMM_HMI 37
+SVC_G_ABS_X      = 72 ' LMM_HMI 38
+SVC_G_ABS_Y      = 73 ' LMM_HMI 39
+SVC_G_ABS_Z      = 74 ' LMM_HMI 40
 
 '
 SVC_RESERVED     = 80 ' Services 1..80 reserved for Catalina
@@ -558,8 +566,9 @@ HUB_TOP  = ENVIRON
 '
 ' size of P2 Loader (for XMM programs):
 '
-P2_LOAD_SIZE      = $10000     ' max size of loader (64kb)  - must match 
-                               ' catalina_cog.h, payload.c and catbind.c
+P2_LOAD_SIZE      = $20000     ' max size of loader (128kb)
+                               ' must match layout.h and cog.h
+                               ' and all the buil_utilities scripts
 '
 ' Size of thread block and offsets (for multithreading):
 '

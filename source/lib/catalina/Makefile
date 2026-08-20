@@ -31,6 +31,10 @@ all:	darray.h \
 	mdelta.s \
 	mpresent.s \
 	mreset.s \
+	gpresent.s \
+	gport.s \
+	gbuttons.s \
+	gabs.s\
 	enhm.s \
 	plugname.s \
 	plgshort.s \

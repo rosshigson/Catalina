@@ -24,7 +24,7 @@ call build_all
 cd ..\cake
 call build_all
 call copy_all
-cd ..\catoptimize
+cd ..\catnip
 call build_all
 call copy_all
 cd ..\p2asm_src

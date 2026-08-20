@@ -55,8 +55,8 @@
 void usage(char *name)
 {
     printf("%s - dump a binary files as text\n", name);
-    printf("version: %s\n", CATALINA_VERSION);
-    printf("usage: %s [options] filename\n", name);
+    printf("version: %s\n\n", CATALINA_VERSION);
+    printf("usage: %s [options] filename\n\n", name);
     printf("options:\n");
     printf("  -h      print this help\n");
     printf("  -p str  prefix dumped values with 'str'\n");

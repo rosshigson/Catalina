@@ -420,8 +420,11 @@
  * Version 8.8.5 - Update Lua to version 5.4.8
  *
  * 
- *-----------------------------------------------------------------------------
- * Payload is part of Catalina.
+ * 
+ */
+
+/*-----------------------------------------------------------------------------
+ * This file is part of Catalina.
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -471,6 +474,8 @@
 #endif
 
 #include "version.h"
+
+#include "layout.h"
 
 #define DEFAULT_LCC_ENV    "LCCDIR" // used to locate binary files if not in current directory
 
@@ -551,28 +556,6 @@
 #define VT100_ROWS         24
 #define VT100_COLS         80
 
-#define P1_LMM_INIT_B0_OFF 0x51 // must match kernels and [clnx]mmbeg.s
-#define P1_LMM_INIT_BZ_OFF 0x51
-#define P1_LMM_LAYOUT_OFFS (P1_LMM_INIT_BZ_OFF - P1_LMM_INIT_B0_OFF + 0x10)
-
-
-#define P2_LMM_LAYOUT_OFFS 0x10 
-
-#define KERNEL_SIZE        0x0800 // size of kernel (max - 2048 bytes) 
-#define SECTOR_SIZE        0x0200 // size of XMM prologue (one sector)
-
-#define P1_HUB_SIZE        0x8000 // size of P1 HUB RAM (32kb)
-#define P2_HUB_SIZE       0x80000 // size of P2 HUB RAM (512kb)
-
-#define P1_LOAD_SIZE  P1_HUB_SIZE // max size of P1 loader (32kb)
-#define P2_LOAD_SIZE      0x10000 // max size of P2 loader (64kb)
-                                  // (must match catalina_cog.h, catbind.c, 
-                                  //  Catalina_Common.spin and 
-                                  //  Catalina_constants.inc)
-
-#define SHORT_LAYOUT_3     1 /* 1 if unused bytes removed from layout 3 */
-#define SHORT_LAYOUT_4     1 /* 1 if unused bytes removed from layout 4 */
-#define SHORT_LAYOUT_5     1 /* 1 if unused bytes removed from layout 5 */
 
 #define NO_NULL_LOAD_PAGES 1 /* 1 to skip null pages - RAM must be zeroed! */
 
@@ -1443,7 +1426,7 @@ int cat_p1_download(int port, char *fname, int cpu, int connected) {
 
         if ((seglayout < 0) && (addr == load_size)) {
            // not layout 0, so check for EEPROM SDCARD or XMM
-           count = P1_LMM_LAYOUT_OFFS + 0x10;
+           count = P1_LAYOUT_OFFS + 0x10;
            if (diagnose) {
               printf("Deciphering prologue at %X\n", count);
            }
@@ -1719,7 +1702,7 @@ int cat_p2_download(int port, char *fname, int cpu, int connected) {
            // Also, we expect the Hub segment of a P2 XMM program to be the 
            // same as the Hub segment of a P1 XMM program, which is 32kb. 
            // Both these assumptions may have to be revisited in future!
-           count = P2_LMM_LAYOUT_OFFS;
+           count = P2_LAYOUT_OFFS;
            if (diagnose) {
               printf("Deciphering prologue at %X\n", count);
            }

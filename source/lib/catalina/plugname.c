@@ -39,6 +39,7 @@ char *_plugin_name(int type) {
       case LMM_P2P  : return "P2P Bus";
       case LMM_RND  : return "Random Number Generator";
       case LMM_SVR  : return "C/Lua Server";
+      case LMM_USB  : return "USB (mouse/kbd/gamepad)";
       case LMM_NUL  : return "None";
       default       : return "Unknown";
    }

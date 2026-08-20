@@ -656,11 +656,11 @@ B_usb_cache_end
 ' Current error state of the USB, posted by the USB_ERROR event. The error code
 ' will be one of the constants in the "Protocol error codes" enumeration.
 B_usb_error_code  long    ERR_NONE
-                          alignl
+                  alignl
 
 ' NOTE: remainder of USB Boot Protocol Mouse/Keyboard Hub Interface moved 
 '       to Catalina_1CogKbM_Common.spin2
-                          orgh
+                  orgh
 
 { MIT License
 +----------------------------------------------------------------------------------------------------------------------+

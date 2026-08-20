@@ -11,37 +11,37 @@ DAT ' code segment
 DAT ' const data segment
 
  alignl ' align long
-C_s4h0f_69f67cc9_luaserial_funcs_L000018 ' <symbol:luaserial_funcs>
- long @C_s4h0g_69f67cc9_19_L000020
- long @C_s4h0_69f67cc9_serial_rxflush_L000003
- long @C_s4h0h_69f67cc9_21_L000022
- long @C_s4h01_69f67cc9_serial_rxcheck_L000004
- long @C_s4h0i_69f67cc9_23_L000024
- long @C_s4h02_69f67cc9_serial_rxtime_L000005
- long @C_s4h0j_69f67cc9_25_L000026
- long @C_s4h03_69f67cc9_serial_rxcount_L000006
- long @C_s4h0k_69f67cc9_27_L000028
- long @C_s4h04_69f67cc9_serial_rx_L000007
- long @C_s4h0l_69f67cc9_29_L000030
- long @C_s4h05_69f67cc9_serial_txflush_L000008
- long @C_s4h0m_69f67cc9_31_L000032
- long @C_s4h06_69f67cc9_serial_txcount_L000009
- long @C_s4h0n_69f67cc9_33_L000034
- long @C_s4h07_69f67cc9_serial_tx_L000010
- long @C_s4h0o_69f67cc9_35_L000036
- long @C_s4h08_69f67cc9_serial_str_L000011
- long @C_s4h0p_69f67cc9_37_L000038
- long @C_s4h09_69f67cc9_serial_decl_L000012
- long @C_s4h0q_69f67cc9_39_L000040
- long @C_s4h0a_69f67cc9_serial_hex_L000013
- long @C_s4h0r_69f67cc9_41_L000042
- long @C_s4h0b_69f67cc9_serial_ihex_L000014
- long @C_s4h0s_69f67cc9_43_L000044
- long @C_s4h0c_69f67cc9_serial_bin_L000015
- long @C_s4h0t_69f67cc9_45_L000046
- long @C_s4h0d_69f67cc9_serial_ibin_L000016
- long @C_s4h0u_69f67cc9_47_L000048
- long @C_s4h0e_69f67cc9_serial_padchar_L000017
+C_s9b8f_6a858bef_luaserial_funcs_L000018 ' <symbol:luaserial_funcs>
+ long @C_s9b8g_6a858bef_19_L000020
+ long @C_s9b8_6a858bef_serial_rxflush_L000003
+ long @C_s9b8h_6a858bef_21_L000022
+ long @C_s9b81_6a858bef_serial_rxcheck_L000004
+ long @C_s9b8i_6a858bef_23_L000024
+ long @C_s9b82_6a858bef_serial_rxtime_L000005
+ long @C_s9b8j_6a858bef_25_L000026
+ long @C_s9b83_6a858bef_serial_rxcount_L000006
+ long @C_s9b8k_6a858bef_27_L000028
+ long @C_s9b84_6a858bef_serial_rx_L000007
+ long @C_s9b8l_6a858bef_29_L000030
+ long @C_s9b85_6a858bef_serial_txflush_L000008
+ long @C_s9b8m_6a858bef_31_L000032
+ long @C_s9b86_6a858bef_serial_txcount_L000009
+ long @C_s9b8n_6a858bef_33_L000034
+ long @C_s9b87_6a858bef_serial_tx_L000010
+ long @C_s9b8o_6a858bef_35_L000036
+ long @C_s9b88_6a858bef_serial_str_L000011
+ long @C_s9b8p_6a858bef_37_L000038
+ long @C_s9b89_6a858bef_serial_decl_L000012
+ long @C_s9b8q_6a858bef_39_L000040
+ long @C_s9b8a_6a858bef_serial_hex_L000013
+ long @C_s9b8r_6a858bef_41_L000042
+ long @C_s9b8b_6a858bef_serial_ihex_L000014
+ long @C_s9b8s_6a858bef_43_L000044
+ long @C_s9b8c_6a858bef_serial_bin_L000015
+ long @C_s9b8t_6a858bef_45_L000046
+ long @C_s9b8d_6a858bef_serial_ibin_L000016
+ long @C_s9b8u_6a858bef_47_L000048
+ long @C_s9b8e_6a858bef_serial_padchar_L000017
  long $0
  long $0
 
@@ -50,7 +50,7 @@ C_s4h0f_69f67cc9_luaserial_funcs_L000018 ' <symbol:luaserial_funcs>
 DAT ' code segment
 
  alignl ' align long
-C_s4h0_69f67cc9_serial_rxflush_L000003 ' <symbol:serial_rxflush>
+C_s9b8_6a858bef_serial_rxflush_L000003 ' <symbol:serial_rxflush>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e00000 ' save registers
@@ -76,13 +76,13 @@ C_s4h0_69f67cc9_serial_rxflush_L000003 ' <symbol:serial_rxflush>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_s4h0_69f67cc9_serial_rxflush_L000003_49 ' (symbol refcount = 0)
+' C_s9b8_6a858bef_serial_rxflush_L000003_49 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_s4h01_69f67cc9_serial_rxcheck_L000004 ' <symbol:serial_rxcheck>
+C_s9b81_6a858bef_serial_rxcheck_L000004 ' <symbol:serial_rxcheck>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e00000 ' save registers
@@ -108,13 +108,13 @@ C_s4h01_69f67cc9_serial_rxcheck_L000004 ' <symbol:serial_rxcheck>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_s4h01_69f67cc9_serial_rxcheck_L000004_50 ' (symbol refcount = 0)
+' C_s9b81_6a858bef_serial_rxcheck_L000004_50 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_s4h02_69f67cc9_serial_rxtime_L000005 ' <symbol:serial_rxtime>
+C_s9b82_6a858bef_serial_rxtime_L000005 ' <symbol:serial_rxtime>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e80000 ' save registers
@@ -151,13 +151,13 @@ C_s4h02_69f67cc9_serial_rxtime_L000005 ' <symbol:serial_rxtime>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_s4h02_69f67cc9_serial_rxtime_L000005_51 ' (symbol refcount = 0)
+' C_s9b82_6a858bef_serial_rxtime_L000005_51 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_s4h03_69f67cc9_serial_rxcount_L000006 ' <symbol:serial_rxcount>
+C_s9b83_6a858bef_serial_rxcount_L000006 ' <symbol:serial_rxcount>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e00000 ' save registers
@@ -183,13 +183,13 @@ C_s4h03_69f67cc9_serial_rxcount_L000006 ' <symbol:serial_rxcount>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_s4h03_69f67cc9_serial_rxcount_L000006_52 ' (symbol refcount = 0)
+' C_s9b83_6a858bef_serial_rxcount_L000006_52 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_s4h04_69f67cc9_serial_rx_L000007 ' <symbol:serial_rx>
+C_s9b84_6a858bef_serial_rx_L000007 ' <symbol:serial_rx>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e00000 ' save registers
@@ -215,13 +215,13 @@ C_s4h04_69f67cc9_serial_rx_L000007 ' <symbol:serial_rx>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_s4h04_69f67cc9_serial_rx_L000007_53 ' (symbol refcount = 0)
+' C_s9b84_6a858bef_serial_rx_L000007_53 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_s4h05_69f67cc9_serial_txflush_L000008 ' <symbol:serial_txflush>
+C_s9b85_6a858bef_serial_txflush_L000008 ' <symbol:serial_txflush>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e00000 ' save registers
@@ -247,13 +247,13 @@ C_s4h05_69f67cc9_serial_txflush_L000008 ' <symbol:serial_txflush>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_s4h05_69f67cc9_serial_txflush_L000008_54 ' (symbol refcount = 0)
+' C_s9b85_6a858bef_serial_txflush_L000008_54 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_s4h06_69f67cc9_serial_txcount_L000009 ' <symbol:serial_txcount>
+C_s9b86_6a858bef_serial_txcount_L000009 ' <symbol:serial_txcount>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e00000 ' save registers
@@ -279,13 +279,13 @@ C_s4h06_69f67cc9_serial_txcount_L000009 ' <symbol:serial_txcount>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_s4h06_69f67cc9_serial_txcount_L000009_55 ' (symbol refcount = 0)
+' C_s9b86_6a858bef_serial_txcount_L000009_55 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_s4h07_69f67cc9_serial_tx_L000010 ' <symbol:serial_tx>
+C_s9b87_6a858bef_serial_tx_L000010 ' <symbol:serial_tx>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e80000 ' save registers
@@ -324,13 +324,13 @@ C_s4h07_69f67cc9_serial_tx_L000010 ' <symbol:serial_tx>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_s4h07_69f67cc9_serial_tx_L000010_56 ' (symbol refcount = 0)
+' C_s9b87_6a858bef_serial_tx_L000010_56 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_s4h08_69f67cc9_serial_str_L000011 ' <symbol:serial_str>
+C_s9b88_6a858bef_serial_str_L000011 ' <symbol:serial_str>
  calld PA,#NEWF
  calld PA,#PSHM
  long $e80000 ' save registers
@@ -360,13 +360,13 @@ C_s4h08_69f67cc9_serial_str_L000011 ' <symbol:serial_str>
  long @C_s_str
  add SP, #4 ' CALL addrg
  mov r0, #0 ' reg <- coni
-' C_s4h08_69f67cc9_serial_str_L000011_57 ' (symbol refcount = 0)
+' C_s9b88_6a858bef_serial_str_L000011_57 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_s4h09_69f67cc9_serial_decl_L000012 ' <symbol:serial_decl>
+C_s9b89_6a858bef_serial_decl_L000012 ' <symbol:serial_decl>
  calld PA,#NEWF
  calld PA,#PSHM
  long $ea8000 ' save registers
@@ -413,13 +413,13 @@ C_s4h09_69f67cc9_serial_decl_L000012 ' <symbol:serial_decl>
  long @C_s_decl
  add SP, #12 ' CALL addrg
  mov r0, #0 ' reg <- coni
-' C_s4h09_69f67cc9_serial_decl_L000012_58 ' (symbol refcount = 0)
+' C_s9b89_6a858bef_serial_decl_L000012_58 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_s4h0a_69f67cc9_serial_hex_L000013 ' <symbol:serial_hex>
+C_s9b8a_6a858bef_serial_hex_L000013 ' <symbol:serial_hex>
  calld PA,#NEWF
  calld PA,#PSHM
  long $ea0000 ' save registers
@@ -457,13 +457,13 @@ C_s4h0a_69f67cc9_serial_hex_L000013 ' <symbol:serial_hex>
  long @C_s_hex
  add SP, #8 ' CALL addrg
  mov r0, #0 ' reg <- coni
-' C_s4h0a_69f67cc9_serial_hex_L000013_59 ' (symbol refcount = 0)
+' C_s9b8a_6a858bef_serial_hex_L000013_59 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_s4h0b_69f67cc9_serial_ihex_L000014 ' <symbol:serial_ihex>
+C_s9b8b_6a858bef_serial_ihex_L000014 ' <symbol:serial_ihex>
  calld PA,#NEWF
  calld PA,#PSHM
  long $ea0000 ' save registers
@@ -501,13 +501,13 @@ C_s4h0b_69f67cc9_serial_ihex_L000014 ' <symbol:serial_ihex>
  long @C_s_ihex
  add SP, #8 ' CALL addrg
  mov r0, #0 ' reg <- coni
-' C_s4h0b_69f67cc9_serial_ihex_L000014_60 ' (symbol refcount = 0)
+' C_s9b8b_6a858bef_serial_ihex_L000014_60 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_s4h0c_69f67cc9_serial_bin_L000015 ' <symbol:serial_bin>
+C_s9b8c_6a858bef_serial_bin_L000015 ' <symbol:serial_bin>
  calld PA,#NEWF
  calld PA,#PSHM
  long $ea0000 ' save registers
@@ -545,13 +545,13 @@ C_s4h0c_69f67cc9_serial_bin_L000015 ' <symbol:serial_bin>
  long @C_s_bin
  add SP, #8 ' CALL addrg
  mov r0, #0 ' reg <- coni
-' C_s4h0c_69f67cc9_serial_bin_L000015_61 ' (symbol refcount = 0)
+' C_s9b8c_6a858bef_serial_bin_L000015_61 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_s4h0d_69f67cc9_serial_ibin_L000016 ' <symbol:serial_ibin>
+C_s9b8d_6a858bef_serial_ibin_L000016 ' <symbol:serial_ibin>
  calld PA,#NEWF
  calld PA,#PSHM
  long $ea0000 ' save registers
@@ -589,13 +589,13 @@ C_s4h0d_69f67cc9_serial_ibin_L000016 ' <symbol:serial_ibin>
  long @C_s_ibin
  add SP, #8 ' CALL addrg
  mov r0, #0 ' reg <- coni
-' C_s4h0d_69f67cc9_serial_ibin_L000016_62 ' (symbol refcount = 0)
+' C_s9b8d_6a858bef_serial_ibin_L000016_62 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_s4h0e_69f67cc9_serial_padchar_L000017 ' <symbol:serial_padchar>
+C_s9b8e_6a858bef_serial_padchar_L000017 ' <symbol:serial_padchar>
  calld PA,#NEWF
  calld PA,#PSHM
  long $ea0000 ' save registers
@@ -635,7 +635,7 @@ C_s4h0e_69f67cc9_serial_padchar_L000017 ' <symbol:serial_padchar>
  long @C_s_padchar
  add SP, #8 ' CALL addrg
  mov r0, #0 ' reg <- coni
-' C_s4h0e_69f67cc9_serial_padchar_L000017_63 ' (symbol refcount = 0)
+' C_s9b8e_6a858bef_serial_padchar_L000017_63 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
@@ -667,7 +667,7 @@ C_luaopen_serial ' <symbol:luaopen_serial>
  long @C_lua_createtable
  add SP, #8 ' CALL addrg
  mov r2, #0 ' reg ARG coni
- mov r3, ##@C_s4h0f_69f67cc9_luaserial_funcs_L000018 ' reg ARG ADDRG
+ mov r3, ##@C_s9b8f_6a858bef_luaserial_funcs_L000018 ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
@@ -731,7 +731,7 @@ C_luaopen_serial_65_L000066 ' <symbol:65>
  long $43fc0000 ' float
 
  alignl ' align long
-C_s4h0u_69f67cc9_47_L000048 ' <symbol:47>
+C_s9b8u_6a858bef_47_L000048 ' <symbol:47>
  byte 112
  byte 97
  byte 100
@@ -742,7 +742,7 @@ C_s4h0u_69f67cc9_47_L000048 ' <symbol:47>
  byte 0
 
  alignl ' align long
-C_s4h0t_69f67cc9_45_L000046 ' <symbol:45>
+C_s9b8t_6a858bef_45_L000046 ' <symbol:45>
  byte 105
  byte 98
  byte 105
@@ -750,14 +750,14 @@ C_s4h0t_69f67cc9_45_L000046 ' <symbol:45>
  byte 0
 
  alignl ' align long
-C_s4h0s_69f67cc9_43_L000044 ' <symbol:43>
+C_s9b8s_6a858bef_43_L000044 ' <symbol:43>
  byte 98
  byte 105
  byte 110
  byte 0
 
  alignl ' align long
-C_s4h0r_69f67cc9_41_L000042 ' <symbol:41>
+C_s9b8r_6a858bef_41_L000042 ' <symbol:41>
  byte 105
  byte 104
  byte 101
@@ -765,14 +765,14 @@ C_s4h0r_69f67cc9_41_L000042 ' <symbol:41>
  byte 0
 
  alignl ' align long
-C_s4h0q_69f67cc9_39_L000040 ' <symbol:39>
+C_s9b8q_6a858bef_39_L000040 ' <symbol:39>
  byte 104
  byte 101
  byte 120
  byte 0
 
  alignl ' align long
-C_s4h0p_69f67cc9_37_L000038 ' <symbol:37>
+C_s9b8p_6a858bef_37_L000038 ' <symbol:37>
  byte 100
  byte 101
  byte 99
@@ -780,20 +780,20 @@ C_s4h0p_69f67cc9_37_L000038 ' <symbol:37>
  byte 0
 
  alignl ' align long
-C_s4h0o_69f67cc9_35_L000036 ' <symbol:35>
+C_s9b8o_6a858bef_35_L000036 ' <symbol:35>
  byte 115
  byte 116
  byte 114
  byte 0
 
  alignl ' align long
-C_s4h0n_69f67cc9_33_L000034 ' <symbol:33>
+C_s9b8n_6a858bef_33_L000034 ' <symbol:33>
  byte 116
  byte 120
  byte 0
 
  alignl ' align long
-C_s4h0m_69f67cc9_31_L000032 ' <symbol:31>
+C_s9b8m_6a858bef_31_L000032 ' <symbol:31>
  byte 116
  byte 120
  byte 99
@@ -804,7 +804,7 @@ C_s4h0m_69f67cc9_31_L000032 ' <symbol:31>
  byte 0
 
  alignl ' align long
-C_s4h0l_69f67cc9_29_L000030 ' <symbol:29>
+C_s9b8l_6a858bef_29_L000030 ' <symbol:29>
  byte 116
  byte 120
  byte 102
@@ -815,13 +815,13 @@ C_s4h0l_69f67cc9_29_L000030 ' <symbol:29>
  byte 0
 
  alignl ' align long
-C_s4h0k_69f67cc9_27_L000028 ' <symbol:27>
+C_s9b8k_6a858bef_27_L000028 ' <symbol:27>
  byte 114
  byte 120
  byte 0
 
  alignl ' align long
-C_s4h0j_69f67cc9_25_L000026 ' <symbol:25>
+C_s9b8j_6a858bef_25_L000026 ' <symbol:25>
  byte 114
  byte 120
  byte 99
@@ -832,7 +832,7 @@ C_s4h0j_69f67cc9_25_L000026 ' <symbol:25>
  byte 0
 
  alignl ' align long
-C_s4h0i_69f67cc9_23_L000024 ' <symbol:23>
+C_s9b8i_6a858bef_23_L000024 ' <symbol:23>
  byte 114
  byte 120
  byte 116
@@ -842,7 +842,7 @@ C_s4h0i_69f67cc9_23_L000024 ' <symbol:23>
  byte 0
 
  alignl ' align long
-C_s4h0h_69f67cc9_21_L000022 ' <symbol:21>
+C_s9b8h_6a858bef_21_L000022 ' <symbol:21>
  byte 114
  byte 120
  byte 99
@@ -853,7 +853,7 @@ C_s4h0h_69f67cc9_21_L000022 ' <symbol:21>
  byte 0
 
  alignl ' align long
-C_s4h0g_69f67cc9_19_L000020 ' <symbol:19>
+C_s9b8g_6a858bef_19_L000020 ' <symbol:19>
  byte 114
  byte 120
  byte 102

@@ -118,13 +118,13 @@ C_g_tri_15
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNI4 addrl16 reg
  word I16B_LODF + ((12)&$1FF)<<S16B
- word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrl16
+ word I16A_RDLONG + (r20)<<D16A + RI<<S16A ' reg <- INDIRI4 addrl16
  word I16B_LODF + ((-12)&$1FF)<<S16B
- word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNI4 addrl16 reg
- word I16B_LODF + ((8)&$1FF)<<S16B
- word I16A_WRLONG + (r23)<<D16A + RI<<S16A ' ASGNI4 addrl16 reg
- word I16B_LODF + ((12)&$1FF)<<S16B
- word I16A_WRLONG + (r21)<<D16A + RI<<S16A ' ASGNI4 addrl16 reg
+ word I16A_WRLONG + (r20)<<D16A + RI<<S16A ' ASGNI4 addrl16 reg
+ word I16A_MOV + (r19)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
+ word I16A_MOV + (r17)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
+ word I16A_MOV + (r23)<<D16A + (r22)<<S16A ' CVI, CVU or LOAD
+ word I16A_MOV + (r21)<<D16A + (r20)<<S16A ' CVI, CVU or LOAD
  word I16B_LODF + ((-8)&$1FF)<<S16B
  word I16A_RDLONG + (r19)<<D16A + RI<<S16A ' reg <- INDIRI4 addrl16
  word I16B_LODF + ((-12)&$1FF)<<S16B
@@ -157,6 +157,7 @@ C_g_tri_17
  word I16A_WRLONG + (r19)<<D16A + RI<<S16A ' ASGNI4 addrl16 reg
  word I16B_LODF + ((-12)&$1FF)<<S16B
  word I16A_WRLONG + (r17)<<D16A + RI<<S16A ' ASGNI4 addrl16 reg
+ word I16A_MOV + (r17)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16B_LODF + ((8)&$1FF)<<S16B
  word I16A_RDLONG + (r23)<<D16A + RI<<S16A ' reg <- INDIRI4 addrl16
  word I16B_LODF + ((12)&$1FF)<<S16B

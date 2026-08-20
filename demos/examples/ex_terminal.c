@@ -1,34 +1,34 @@
 /******************************************************************************
  *                                                                            *
  * A simple program to test a few basic text and mouse functions, such as     *
- * might be used in a very simple terminal emulator. Can be used to demo      *
- * either the TV HMI or VGA HMI plugins, which incorporate text output,       *
- * keyboard input and mouse functions all in one package. However, not all    *
- * cursor modes are supported by all HMI drivers - the codes defined in this  *
- * program are will work in all the VGA modes on the P2, but only in the      *
- * HIRES_VGA drivers on the P1.                                               *
+ * might be used in a very simple terminal emulator. On the Propeller 1 it    *
+ * can be used to demo either the TV HMI or VGA HMI plugins, which both       *
+ * incorporate text output, keyboard input and mouse functions all in one     *
+ * package. On the Propeller 2 it can be used with the VGA HMI options.       *
+ * However, note that not all cursor modes are supported by all HMI drivers.  *
+ * The codes defined in this program are will work in all the VGA modes on    *
+ * the P2, but only in the TV and HIRES_VGA drivers on the P1. However, note  *
+ * that not all cursor modes are supported by all HMI drivers - the cursor    *
+ * modes defined in this program are will work in all the VGA modes on the P2 *
+ * but only in the TV and HIRES_VGA drivers on the P1.                        *
  *                                                                            *
  * For example, on the Propeller 1:                                           *
  *                                                                            *
- *    catalina -lci -C HYDRA -C HIRES_VGA test_terminal.c                     *
+ *   catalina -lci -C C3 -C HIRES_VGA -C COLOR_8 ex_terminal.c                *
  *                                                                            *
  * For example, on the Propeller 2:                                           *
  *                                                                            *
- *    catalina -p2 -lci -C P2_EVAL -C VGA -C COLOR_8 test_terminal.c          *
+ *  catalina -p2 -lc -C P2_EDGE -C VGA -C COLOR_8 -C CR_ON_LF ex_terminal.c   *
+ * or                                                                         *
+ *  catalina -p2 -lc -CHIRES_VGA -CCR_ON_LF -CCOLOR_8 -CMHZ_260 ex_terminal.c *
+ * or                                                                         *
+ *  catalina -p2 -lc -C HD_VGA -C CR_ON_LF -C MHZ_297 ex_terminal.c           *
  *                                                                            *
  ******************************************************************************/
 
 #include <hmi.h>
 #include <cog.h>
 #include <prop.h>
-
-// cursor mode definitions ...
-#define ALWAYS_OFF 0x0 // cursor is invisible
-#define ALWAYS_ON  0x1 // cursor is visible, does not blink
-#define BLINK_SLOW 0x2 // cursor is visible, blinks slowly
-#define BLINK_FAST 0x3 // cursor is visible, blinks fast
-#define UNDERSCORE 0x4 // or BLOCK if not set
-#define SCROLL     0x8 // or WRAP if not set
 
 static int rows;
 static int cols;
@@ -38,7 +38,7 @@ void print_m(char *str, int x, int y) {
    int i;
 
    t_setpos(0, 0, rows-1);
-   for (i = 0; i < cols; i++) {
+   for (i = 0; i < cols-1; i++) {
       t_char(0, ' ');
    }
    t_setpos(0, 0, rows-1);
@@ -56,7 +56,12 @@ void main(void) {
    int geometry;
    int key;
 
-   t_mode(1, ALWAYS_ON);
+#ifdef __CATALINA_HD_VGA
+   // turn off the graphic cursor
+   t_mode(2, HMI_cursor_off);
+#endif
+
+   t_mode(1, HMI_cursor_fast);
    geometry = t_geometry();
    rows = geometry & 0xff;
    cols = geometry >> 8;
@@ -66,9 +71,9 @@ void main(void) {
    t_string(1, " rows * ");
    t_integer(1, cols);
    t_string(1, " columns\n");
-   t_string(1, "\nDelay 2 seconds for keyboard and mouse detect\n");
 
-   msleep(2000);
+   t_string(1, "\nDelay for keyboard and mouse detect\n");
+   msleep(5000);
 
    t_setpos(1, 0, 0);
    t_scroll(40, 0,255);
@@ -92,8 +97,6 @@ void main(void) {
    }
 
    if (m_present()) {
-      t_mode(0, 1);
-      t_string(1, "Mouse cursor mode set\n");
       m_bound_limits(0, 0, 0, cols-1, rows-1, 0);
       t_string(1, "Mouse limits set\n");
       m_bound_scales(2, -3, 0);

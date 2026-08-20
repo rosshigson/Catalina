@@ -251,6 +251,12 @@
  *
  *                - enable 'globbing'
  *
+ * version 8.9    - use catnip in place of catoptimize and cmmoptimize.
+ *                  Catnip must be passed the-x option to specify the memory
+ *                  model to use (e.g. 8, 9 or 10 for COMPACT).
+ *
+ *                - when compiling for the Propeller 1 (i.e. using spinnaker)
+  *                 only add -v if verbose level > 1.
  */
 
 /*--------------------------------------------------------------------------
@@ -350,7 +356,7 @@
 #define TARGET_OPT_P1      " -e "         /* note - space before, space after */
 #define VERBOSE_P1         "-v "
 #define QUIET_P1           "-q "
-#define INC_LIB_OPT_P1    " -I "          /* note - space before and after */
+#define INC_OPT_P1         " -I "          /* note - space before and after */
 
 #define BIND_P2            "bcc "
 #define PREPROCESS_P2      "spp "
@@ -360,14 +366,13 @@
 #define TARGET_OPT_P2      ""
 #define VERBOSE_P2         ""
 #define QUIET_P2           ""
-#define INC_LIB_OPT_P2    " -I "          /* note - space before and after */
+#define INC_OPT_P2         " -I "          /* note - space before and after */
 
 #define BINSTATS           "binstats "    /* note space after */
 #define BINBUILD           "binbuild "    /* note space after */
 
-#define ASSEMBLE_OPT_LMM   "catoptimize " /* note space after */
-#define ASSEMBLE_OPT_NMM   "catoptimize " /* note space after */
-#define ASSEMBLE_OPT_CMM   "cmmoptimize " /* note space after */
+#define OPTIMIZE_ASSEMBLE  "catnip "      /* note space after */
+
 #define TARGET_OPT         "-T "          /* note space after */
 #define P2_OPT             "-p2 "         /* note space after */
 #define SUPPRESS_OPT       "-k "          /* note space after */
@@ -447,7 +452,7 @@ static char preprocess_command[MAX_LINELEN + 1] = "";
 static char assemble_command[MAX_LINELEN + 1]   = ASSEMBLE_P1;
 static char assemble_verbose[MAX_LINELEN + 1]   = VERBOSE_P1;
 static char assemble_quiet[MAX_LINELEN + 1]     = QUIET_P1;
-static char inc_lib_opt[MAX_LINELEN + 1]        = INC_LIB_OPT_P1;
+static char inc_opt[MAX_LINELEN + 1]            = INC_OPT_P1;
 static char output_opt[MAX_LINELEN + 1]         = OUTPUT_OPT_P1;
 static char target_opt[MAX_LINELEN + 1]         = TARGET_OPT_P1;
 static char memory_size[MAX_LINELEN + 1]        = "";
@@ -585,7 +590,7 @@ void help(char *my_name) {
    fprintf(stderr, "          -v        verbose (output information messages)\n");
    fprintf(stderr, "          -w opt    pass option 'opt' to the assembler (e.g. -w-l, -w-b, -w-e)\n");
    fprintf(stderr, "          -x layout use specified memory layout (layout = 0 .. 6, 8 .. 11)\n");
-   fprintf(stderr, "          -z ch     specify separator char for path names (default is '%s')\n", DEFAULT_SEP);
+   fprintf(stderr, "          -z ch     specify separator char for path names (default is '%s')\n\n", DEFAULT_SEP);
    fprintf(stderr, " exit code is number of undefined/redefined symbols (-1 for other errors)\n");
 }
 
@@ -871,12 +876,6 @@ int decode_arguments (int argc, char *argv[]) {
                      fprintf(stderr, "unknown memory layout - using layout 0\n");
                      layout = 0;
                   }
-                  if ((layout == 8) || (layout == 9) || (layout == 10)) {
-                     safecpy(optimize_assemble, ASSEMBLE_OPT_CMM, MAX_LINELEN);
-                  }
-                  if ((layout == 11)) {
-                     safecpy(optimize_assemble, ASSEMBLE_OPT_NMM, MAX_LINELEN);
-                  }
                   if (diagnose) {
                      fprintf(stderr, "using optimizer %s\n", optimize_assemble);
                   }
@@ -904,7 +903,7 @@ int decode_arguments (int argc, char *argv[]) {
                         safecpy(assemble_command, ASSEMBLE_P2, MAX_LINELEN);
                         safecpy(assemble_verbose, VERBOSE_P2, MAX_LINELEN);
                         safecpy(assemble_quiet, QUIET_P2, MAX_LINELEN);
-                        safecpy(inc_lib_opt, INC_LIB_OPT_P2, MAX_LINELEN);
+                        safecpy(inc_opt, INC_OPT_P2, MAX_LINELEN);
                         safecpy(output_opt, OUTPUT_OPT_P2, MAX_LINELEN);
                         safecpy(target_opt, TARGET_OPT_P2, MAX_LINELEN);
                      } 
@@ -919,7 +918,7 @@ int decode_arguments (int argc, char *argv[]) {
                         safecpy(assemble_command, ASSEMBLE_P1, MAX_LINELEN);
                         safecpy(assemble_verbose, VERBOSE_P1, MAX_LINELEN);
                         safecpy(assemble_quiet, QUIET_P1, MAX_LINELEN);
-                        safecpy(inc_lib_opt, INC_LIB_OPT_P1, MAX_LINELEN);
+                        safecpy(inc_opt, INC_OPT_P1, MAX_LINELEN);
                         safecpy(output_opt, OUTPUT_OPT_P1, MAX_LINELEN);
                         safecpy(target_opt, TARGET_OPT_P1, MAX_LINELEN);
                      }
@@ -1468,12 +1467,12 @@ int preprocess_assemble(char *src, char *dst, char *extra_options) {
       if (!cleanup) {
          safecat(assemble, "-u ", MAX_LINELEN);
       }
-      if (verbose) {
+      if (verbose > 1) {
          safecat(assemble, "-v ", MAX_LINELEN);
       }
    }
    else {
-      if (verbose) {
+      if (verbose > 1) {
          safecat(assemble, assemble_verbose, MAX_LINELEN);
       }
       else {
@@ -1483,7 +1482,7 @@ int preprocess_assemble(char *src, char *dst, char *extra_options) {
    if (prop_vers == 1) {
       // assembler also preprocesses
       command_defines(assemble, MAX_LINELEN);
-      safecat(assemble, inc_lib_opt, MAX_LINELEN);
+      safecat(assemble, inc_opt, MAX_LINELEN);
       pathcat(assemble, target_with_suffix, NULL, MAX_LINELEN);
       safecat(assemble, " ", MAX_LINELEN);
       if (memory) {
@@ -1498,7 +1497,7 @@ int preprocess_assemble(char *src, char *dst, char *extra_options) {
       safecat(assemble, " ", MAX_LINELEN);
       safecat(assemble, assemble_options, MAX_LINELEN);
       safecat(assemble, extra_options, MAX_LINELEN);
-      safecat(assemble, inc_lib_opt, MAX_LINELEN);
+      safecat(assemble, inc_opt, MAX_LINELEN);
       safecat(assemble, ". ", MAX_LINELEN);
       if (verbose) {
          fprintf(stderr, "assemble command = %s\n", assemble);
@@ -1512,10 +1511,10 @@ int preprocess_assemble(char *src, char *dst, char *extra_options) {
    else {
       // preprocessor is separate to assembler
       command_defines(preprocess, MAX_LINELEN);
-      safecat(preprocess, inc_lib_opt, MAX_LINELEN);
+      safecat(preprocess, inc_opt, MAX_LINELEN);
       pathcat(preprocess, target_with_suffix, NULL, MAX_LINELEN);
       safecat(preprocess, " ", MAX_LINELEN);
-      safecat(preprocess, inc_lib_opt, MAX_LINELEN);
+      safecat(preprocess, inc_opt, MAX_LINELEN);
       safecat(preprocess, ". ", MAX_LINELEN);
       pathcat(preprocess, src, NULL, MAX_LINELEN);
       safecat(preprocess, " ", MAX_LINELEN);
@@ -1526,6 +1525,7 @@ int preprocess_assemble(char *src, char *dst, char *extra_options) {
       if (olevel > 0) {
          safecat(assemble, output_opt, MAX_LINELEN);
          safecat(assemble, dst, MAX_LINELEN);
+         //pathcat(assemble, OUTPUT_SUFFIX, NULL, MAX_LINELEN);
          safecat(assemble, " ", MAX_LINELEN);
       }
       safecat(assemble, " ", MAX_LINELEN);
@@ -1744,7 +1744,7 @@ void do_assemble(char *fullname) {
             if (layout == 6) {
                // now assemble the kernel file
                safecpy(assemble, assemble_command, MAX_LINELEN);
-               if (verbose) {
+               if (verbose > 1) {
                   safecat(assemble, assemble_verbose, MAX_LINELEN);
                }
                else {
@@ -1779,7 +1779,7 @@ void do_assemble(char *fullname) {
             else if (layout == 10) {
                // now assemble the kernel file
                safecpy(assemble, assemble_command, MAX_LINELEN);
-               if (verbose) {
+               if (verbose > 1) {
                   safecat(assemble, assemble_verbose, MAX_LINELEN);
                }
                else {
@@ -1909,7 +1909,6 @@ void main (int argc, char *argv[]) {
    library_path = NULL;
    path_separator = NULL;
 
-   safecpy(optimize_assemble, ASSEMBLE_OPT_LMM, MAX_LINELEN);
    safecpy(lcc_path, catalina_getenv(DEFAULT_LCC_ENV), MAX_LINELEN);
 
    if (strlen(lcc_path) > 0) {
@@ -1951,6 +1950,11 @@ void main (int argc, char *argv[]) {
       exit(0);
    }
 
+   safecpy(optimize_assemble, OPTIMIZE_ASSEMBLE, MAX_LINELEN);
+   if (layout != 0) {
+      sprintf(option, "-x%0d ", layout);
+      safecat(optimize_assemble, option, MAX_LINELEN);
+   }
    if (diagnose) {
       fprintf(stderr, "using temp dir %s\n", temp_path);
    }

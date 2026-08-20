@@ -1,0 +1,1949 @@
+#ifndef __KBMPREA_T2
+#define __KBMPREA_T2
+{
+    USB Keyboard and Gamepad Driver
+    Copyright (c) 2022-23 by Marco Maccaferri <macca@maccasoft.com>
+    Based on 1CogKbM code by Garry Jordan ("garryj")
+    with code portions by Ada Gottensträter
+
+    Usage : see A_hkbd_compare, A_hkbd_translate for keyboard
+                A_hid_decode and A_hpad_translate for controllers
+
+    TERMS OF USE: MIT License
+}
+
+{
+ NOTE: The original usb.spin2 has been split into 5 files -
+ two files for Port A, two files for Port B, and one common file:
+
+ 1. cogkbma.t2 contains cog code and data for port A that can be 
+    placed AFTER the C sbrk.
+ 
+ 2. cogkbmb.t2 contains cog code and data for port B that can be 
+    placed AFTER the C sbrk.
+
+ 3. kbmprec.t2 contains definitions and hub data common to both 
+    ports A & B that must be placed BEFORE the C sbrk
+
+ 4. kbmprea.t2 contains hub code and data for port A that 
+    must be placed BEFORE the C sbrk. 
+
+ 5. kbmpreb.t2 contains hub code and data for port B that 
+    must be placed BEFORE the C sbrk. 
+}
+
+' Catalina Code
+
+DAT ' code segment
+
+DAT             ' USB Host HUB execution
+                orgh
+                alignl
+'------------------------------------------------------------------------------
+' Routines called from cog space.
+'------------------------------------------------------------------------------
+' A_usb_host_init, A_hget_kbd_in_report, A_hget_mouse_in_report, A_hparse_con_desc
+'------------------------------------------------------------------------------
+
+'------------------------------------------------------------------------------
+' USB host cog initialization.
+'------------------------------------------------------------------------------
+A_usb_host_init
+                loc     pb, #A_hid_descr                  ' Initialize buffer pointers
+                mov     A_hid_descr_p, pb
+                add     pb, #HID_DESCR_LEN
+                mov     A_hid_descr_p + 1, pb
+                add     pb, #HID_DESCR_LEN
+                mov     A_hid_descr_p + 2, pb
+                add     pb, #HID_DESCR_LEN
+                mov     A_hid_descr_p + 3, pb
+                add     pb, #HID_DESCR_LEN
+                mov     A_hid_descr_p + 4, pb
+                add     pb, #HID_DESCR_LEN
+                mov     A_hid_descr_p + 5, pb
+                add     pb, #HID_DESCR_LEN
+                mov     A_hid_descr_p + 6, pb
+                add     pb, #HID_DESCR_LEN
+                mov     A_hid_descr_p + 7, pb
+
+                loc     pb, #A_hid_report
+                mov     A_hid_report_p, pb
+                add     pb, #HID_IN_RPT_LEN
+                mov     A_hid_report_p + 1, pb
+                add     pb, #HID_IN_RPT_LEN
+                mov     A_hid_report_p + 2, pb
+                add     pb, #HID_IN_RPT_LEN
+                mov     A_hid_report_p + 3, pb
+                add     pb, #HID_IN_RPT_LEN
+                mov     A_hid_report_p + 4, pb
+                add     pb, #HID_IN_RPT_LEN
+                mov     A_hid_report_p + 5, pb
+                add     pb, #HID_IN_RPT_LEN
+                mov     A_hid_report_p + 6, pb
+                add     pb, #HID_IN_RPT_LEN
+                mov     A_hid_report_p + 7, pb
+
+                loc     pb, #A_hub_descr
+                mov     A_hub_descr_p, pb
+                loc     pb, #A_urx_buff
+                mov     A_urx_buff_p, pb
+                loc     pb, #A_dev_desc_buff
+                mov     A_dev_desc_buff_p, pb
+                loc     pb, #A_con_desc_buff
+                mov     A_con_desc_buff_p, pb
+                loc     pb, #A_usb_cache_start
+                mov     A_cache_start_p, pb
+                loc     pb, #A_usb_cache_end
+                mov     A_cache_end_p, pb
+
+                drvl    A_host_error_led                  ' Ensure fatal error LED is inactive
+'                mov     A_p2rev_val, ptrb                 ' Running on P2RevA or P2RevB+ silicon?
+'                setq    #1
+'                rdlong  $1e0, ptrb++
+'                subr    A_p2rev_val, ptrb
+'                shr     A_p2rev_val, #2           wz      ' RevA if shift result is zero
+'        if_z    mov     A_p2rev_val, #P2RevA              ' 1 == RevA, 2 == RevB+
+'                loc     ptrb, #p2rev_char               ' Make a revision "A" or "B" char accessible to Spin2
+'                mov     A_htmp, A_p2rev_val
+'                add     A_htmp, #"@"
+'                wrbyte  A_htmp, ptrb
+                dirl    A_usb_event_pin                   ' Configure the USB event mailbox smart pin
+                wrpin   ##SP_REPO1_MODE, A_usb_event_pin  ' Mailbox smart pin output is enabled, so this pin# will raise
+                dirh    A_usb_event_pin                   ' IN at event post and OUT drives the Serial Host activity LED.
+' Configure and enable the Serial Host USB port.
+                jmp     #host_A_reset                     ' Initialize host and enter main processing loop
+
+'------------------------------------------------------------------------------
+' Timing calculations happen before any interrupt(s) are enabled.
+'------------------------------------------------------------------------------
+' On entry:
+'   A_htmp - current CLKFREQ value.
+'------------------------------------------------------------------------------
+A_hinit_usb_timings
+'                getct   A_htmp2
+                mov     A_save_sysclk, A_htmp
+                qfrac   ##_12m, A_save_sysclk             ' CORDIC calculation for FS & LS baud
+                getqx   A_12Mbps_
+                shr     A_12Mbps_, #16           wc
+                addx    A_12Mbps_, #0                    ' _12Mbps = round(12_000_000 / CLKFREQ * 2^16)
+                mov     A_usb_h_fs_nco_, #%11            ' Host mode at FS NCO baud
+                shl     A_usb_h_fs_nco_, #14
+                add     A_usb_h_fs_nco_, A_12Mbps_
+                mov     A_usb_d_fs_nco_, #%01            ' Device mode at FS NCO baud
+                shl     A_usb_d_fs_nco_, #14
+                add     A_usb_d_fs_nco_, A_12Mbps_
+                mov     A_1_5Mbps_, A_12Mbps_
+                shr     A_1_5Mbps_, #3                   ' _1_5Mbps_ = _12Mbps / 8
+                mov     A_usb_h_ls_nco_, #%10            ' Host mode at LS NCO baud
+                shl     A_usb_h_ls_nco_, #14
+                add     A_usb_h_ls_nco_, A_1_5Mbps_
+                mov     A_usb_d_ls_nco_, A_1_5Mbps_       ' Device mode at FS NCO baud
+                qmul    A_save_sysclk, ##1 << 16          ' CORDIC calc for 1ns as 32,16 fixed point
+                getqx   A_var_64_lower_
+                getqy   A_var_64_upper_
+                setq    A_var_64_lower_
+                qfrac   A_var_64_upper_, ##_1b
+                getqx   A_1ns16fp_                       ' 1ns as 32,16 fixed point
+                qmul    A_save_sysclk, ##1 << 9           ' CORDIC calc for 1us as 32,9 fixed point
+                getqx   A_var_64_lower_
+                getqy   A_var_64_upper_
+                setq    A_var_64_lower_
+                qfrac   A_var_64_upper_, ##_1m
+                getqx   A_1us_                           ' 1us as 32,9 fixed point
+                mov     A_hsave0, A_1us_                   ' Save it to compute other us values
+                shr     A_1us_, #9               wc
+                addx    A_1us_, #0                       ' Round to final value
+                qmul    A_hsave0, #10                     ' Calc 10us
+                getqx   A_10us_
+                shr     A_10us_, #9              wc
+                addx    A_10us_, #0                      ' 10us
+                qmul    A_hsave0, #33                     ' Calc 33us: 'Seems to be a reasonable NAK delay'
+                getqx   A_33us_
+                shr     A_33us_, #9              wc
+                addx    A_33us_, #0                      ' 33us
+                qmul    A_hsave0, #250                    ' Calc 250us
+                getqx   A_txn_err_
+                shr     A_txn_err_, #9           wc
+                addx    A_txn_err_, #0                   ' 250us
+                qmul    A_hsave0, #500                    ' Calc 500us
+                getqx   A_500us_
+                shr     A_500us_, #9             wc
+                addx    A_500us_, #0                     ' 500us
+                qmul    A_hsave0, ##666                   ' 666us timespan for LS transaction OK window
+                getqx   A_txn_ok_ls_
+                shr     A_txn_ok_ls_, #9         wc
+                addx    A_txn_ok_ls_, #0                 ' 666us
+                qmul    A_hsave0, ##850                   ' 850us timespan for FS transaction OK window
+                getqx   A_txn_ok_fs_
+                shr     A_txn_ok_fs_, #9         wc
+                addx    A_txn_ok_fs_, #0                 ' 850us
+                mov     A_ip_delay_ls_, A_1ns16fp_
+                mul     A_ip_delay_ls_, ##LSBTns4        ' Low-Speed inter-packet 4 bit-time delay
+                shr     A_ip_delay_ls_, #16      wc
+                addx    A_ip_delay_ls_, #0
+                mov     A_tat_wait_ls_, A_1ns16fp_
+                mul     A_tat_wait_ls_, ##LSBTns22       ' Low-Speed turnaround 22 bit-time wait
+                shr     A_tat_wait_ls_, #16      wc
+                addx    A_tat_wait_ls_, #0
+                mov     A_ip_delay_fs_, A_1ns16fp_
+                mul     A_ip_delay_fs_, ##FSBTns4        ' Full-Speed inter-packet 4 bit-time delay
+                shr     A_ip_delay_fs_, #16      wc
+                addx    A_ip_delay_fs_, #0
+                mov     A_tat_wait_fs_, A_1ns16fp_
+                mul     A_tat_wait_fs_, ##FSBTns28       ' Full-Speed turnaround 28 bit-time wait
+                shr     A_tat_wait_fs_, #16      wc
+                addx    A_tat_wait_fs_, #0
+                qdiv    A_save_sysclk,##_12m              ' Funny timing value for utx_pre
+                getqx   A_preamble_wait_
+                sub     A_preamble_wait_,# 9 - 1
+                qmul    A_save_sysclk, ##1 << 9           ' CORDIC calc for 1ms as 32,9 fixed point
+                getqx   A_var_64_lower_
+                getqy   A_var_64_upper_
+                setq    A_var_64_lower_
+                qfrac   A_var_64_upper_, ##_1thou
+                getqx   A_1ms_                           ' 1ms as 32,9 fixed point
+                shr     A_1ms_, #9               wc
+                addx    A_1ms_, #0                       ' 1ms
+                mov     A_frame1ms_clks_, ##-14
+                adds    A_frame1ms_clks_, A_1ms_
+                mov     A_2ms_, A_1ms_
+                shl     A_2ms_, #1                       ' 2ms
+                mov     A_suspend_wait_, A_1ms_
+                add     A_suspend_wait_, A_1ms_           ' 3ms delay to signal connected devices to enter suspended mode
+                mov     A_4ms_, A_1ms_
+                shl     A_4ms_, #2                       ' 4ms
+                mov     A_xfer_wait_, A_4ms_
+                add     A_xfer_wait_, A_1ms_              ' 5ms
+                mov     A_reset_hold_, A_xfer_wait_       ' 5ms
+                mov     A_resume_hold_, A_reset_hold_
+                shl     A_resume_hold_, #2               ' 20ms timespan to hold the K-state that signals devices to resume
+                mov     A_100ms_, A_resume_hold_          ' 20ms
+                shl     A_100ms_, #1                     ' 40ms
+                mov     A_8ms_, A_1ms_
+                shl     A_8ms_, #3                       ' 8ms
+                shl     A_reset_hold_, #1                ' 10ms
+                add     A_100ms_, A_reset_hold_           ' 50ms
+                add     A_reset_hold_, A_xfer_wait_       ' 15ms
+                mov     A_21ms_, A_xfer_wait_             ' 5ms
+                shl     A_21ms_, #2                      ' 20ms
+                add     A_21ms_, A_1ms_                   ' 21ms
+                mov     A_500ms_, A_100ms_                ' 50ms
+                shl     A_100ms_, #1                     ' 100ms
+                shl     A_500ms_, #3                     ' 400ms
+        _ret_   add     A_500ms_, A_100ms_                ' 500ms
+'        _ret_   mov     _1sec_, A_save_sysclk
+'        debug(udec(_1sec_), udec(A_500ms_), udec(A_100ms_))
+'                ret
+{
+                getct   A_htmp
+                sub     A_htmp, A_htmp2
+'        debug("USB timing calc sysclocks: ", udec( A_htmp))
+                ret
+}
+
+'------------------------------------------------------------------------------
+' Perform key auto-repeat functionality - called every 1ms
+'------------------------------------------------------------------------------
+A_key_repeat
+                incmod A_hkbd_poll_cnt, #KBD_REPEAT_DELAY wc
+          if_nc ret
+                mov A_hr0, A_hkbd_rpt_key wz
+          if_z  ret
+' after initial "repeat delay" expires, wait only for "repeat rate" ms
+                mov A_hkbd_poll_cnt, #(KBD_REPEAT_DELAY - KBD_REPEAT_RATE)
+                jmp #A_hkbd_press
+
+'------------------------------------------------------------------------------
+' Parse a configuration descriptor chain to see if the device is a recognized
+' one. If it is, start the task progression that will configure the device for
+' use.
+'------------------------------------------------------------------------------
+' On entry:
+'   A_hconfig_base - start address of the cached config descriptor chain.
+' On exit:
+'------------------------------------------------------------------------------
+A_hparse_con_desc
+                mov     ptrb, A_dev_desc_buff_p
+                rdlong  A_hdev_id, ptrb[2]                ' idVendor + idProduct
+                movbyts A_hdev_id, #%%1032                ' |
+                rdword  A_hdev_bcd, ptrb[6]               ' bcdDevice
+'                debug(uhex_long(A_hdev_id), uhex_word(A_hdev_bcd))
+
+                mov     pa, #CON_wTotalLen
+                add     pa, A_hconfig_base
+                rdword  A_hcon_tot_len, pa                ' Keep config chain size handy
+'                debug(uhex_byte_array(A_hconfig_base, A_hcon_tot_len))
+' Search the configuration descriptor for the Class/Subclass/Protocol "triad"
+' that defines a keyboard and/or mouse.
+                rdbyte  A_hnext_desc, A_hconfig_base        ' Config desc size is offset to first desc in chain
+.next_intf
+                cmp     A_hnext_desc, A_hcon_tot_len wcz
+        if_ae   jmp     #A_hset_config
+                mov     ptrb, A_hconfig_base
+                add     ptrb, A_hnext_desc
+                rdbyte  A_htmp, ptrb[DESC_bDescType]
+                cmp     A_htmp, #TYPE_INTERFACE   wz
+        if_z    jmp     #.intf
+                rdbyte  A_htmp, ptrb
+                add     A_hnext_desc, A_htmp                ' Get offset of next desc to check
+                jmp     #.next_intf
+.intf
+                mov     A_hpar2, #0                       ' Reset IN/OUT endpoint holders
+                mov     A_hpar3, #0
+                rdbyte  A_hdev_intf_idx, ptrb[INTF_bIntfNum]
+                rdbyte  A_hdev_class, ptrb[INTF_bIntfClass]
+                rdbyte  A_hdev_subclass, ptrb[INTF_bSubClass]
+                rdbyte  A_hdev_protocol, ptrb[INTF_bProtocol]
+'                debug(udec(A_hdev_intf_idx),uhex_byte(A_hdev_class,A_hdev_subclass,A_hdev_protocol))
+
+.A_endp
+                rdbyte  A_htmp, ptrb
+                add     A_hnext_desc, A_htmp                ' Get offset of next desc to check
+                cmp     A_hnext_desc, A_hcon_tot_len wcz
+        if_ae   jmp     #.get_device
+                mov     ptrb, A_hconfig_base
+                add     ptrb, A_hnext_desc
+                rdbyte  A_htmp, ptrb[DESC_bDescType]
+                cmp     A_htmp, #TYPE_INTERFACE   wz
+        if_z    jmp     #.get_device
+                cmp     A_htmp, #TYPE_ENDPOINT    wz
+        if_z    jmp     #.get_ep
+                jmp     #.A_endp
+.get_ep
+                rdbyte  A_hr1, ptrb[ENDP_bAddress]
+                testb   A_hr1, #7                 wc      ' FIXME: define constant for endpoint IN/OUT bit
+                shl     A_hr1, #8 + 7
+                mov     A_htmp, A_hctrl_ep_addr
+                and     A_htmp, ##ADDR_MASK
+                or      A_htmp, A_hr1                       ' endpoint address
+                cmp     A_hpar2, #0               wz
+ if_z_and_c     jmp     #.in_ep
+                cmp     A_hpar3, #0               wz
+ if_z_and_nc    jmp     #.out_ep
+                jmp     #.A_endp
+.in_ep
+                mov     A_hpar2, A_htmp                     ' IN endpoint
+                rdbyte  A_hr2, ptrb[ENDP_wMaxPktSize]
+                'and     A_hr2, ##$7ff                     ' Bits 10..0 define the max packet size
+                rdbyte  A_hr0, ptrb[ENDP_bInterval]       ' Fetch the bInterval member (min poll interval, in milliseconds)
+                setbyte A_hr2, A_hr0, #3
+                jmp     #.A_endp
+.out_ep
+                mov     A_hpar3, A_htmp                     ' OUT endpoint
+                rdbyte  A_hr3, ptrb[ENDP_wMaxPktSize]
+                'and     A_hr2, ##$7ff                     ' Bits 10..0 define the max packet size
+                rdbyte  A_hr0, ptrb[ENDP_bInterval]       ' Fetch the bInterval member (min poll interval, in milliseconds)
+                setbyte A_hr3, A_hr0, #3
+                jmp     #.A_endp
+
+.get_device
+                cmp     A_hdev_class, #$FF        wz      ' XInput class/subclass/protocol
+        if_z    cmp     A_hdev_subclass, #$5D     wz
+        if_z    cmp     A_hdev_protocol, #$01     wz
+        if_z    jmp     #.gamepad
+                cmp     A_hdev_class, #CLASS_HUB  wz
+        if_z    jmp     #.hub
+                cmp     A_hdev_class, #CLASS_HID              wz
+        if_nz   jmp     #.next_intf                     ' No HID class, ignore
+                cmp     A_hdev_subclass, #SUBCLASS_INTF_NONE  wz
+        if_z    cmp     A_hdev_protocol, #INTF_PROTO_NONE     wz
+        if_z    jmp     #.gamepad
+                cmp     A_hdev_subclass, #SUBCLASS_INTF_BOOT  wz
+        if_nz   jmp     #.next_intf                     ' No BOOT subclass, ignore
+.keyboard
+                cmp     A_hdev_protocol, #INTF_PROTO_KBD      wz
+        if_nz   jmp     #.mouse                         ' No Keyboard
+                cmp     A_hkbd_ep_addr, #0    wz
+        if_nz   jmp     #.next_intf
+                getbyte A_kb_intf_num, A_hdev_intf_idx, #0  ' Save interface index and poll interval values
+                getbyte A_kb_interval, A_hr2, #3
+                getbyte A_kb_in_max_pkt, A_hr2, #0
+                mov     A_hkbd_ep_addr, A_hpar2             ' IN endpoint address
+                'debug(udec(A_kb_intf_num))
+'                debug(uhex_long(A_hkbd_ep_addr),uhex_long(A_hdev_out_addr),udec(A_kb_in_max_pkt,A_kb_interval))
+'                debug(uhex_long(A_hdev_ep_addr),uhex_long_(hdev_ep_addr+1,hdev_ep_addr+2,hdev_ep_addr+3,hdev_ep_addr+4))
+                jmp     #.next_intf
+.mouse
+                cmp     A_hdev_protocol, #INTF_PROTO_MOUSE    wz
+        if_nz   jmp     #.next_intf                     ' No Mouse
+                cmp     A_hmouse_ep_addr, #0      wz
+        if_nz   jmp     #.next_intf
+                getbyte A_ms_intf_num, A_hdev_intf_idx, #0  ' Save interface index and poll interval values
+                'getbyte ms_interval, A_hr2, #3
+                getbyte A_ms_in_max_pkt, A_hr2, #0
+                mov     A_hmouse_ep_addr, A_hpar2           ' IN endpoint address
+                'debug(udec(A_kb_intf_num))
+'                debug(uhex_long(A_hmouse_ep_addr),udec(A_ms_in_max_pkt))
+'                debug(uhex_long(A_hdev_ep_addr),uhex_long_(hdev_ep_addr+1,hdev_ep_addr+2,hdev_ep_addr+3,hdev_ep_addr+4))
+                jmp     #.next_intf
+.gamepad
+                cmp     A_hdev_port, #7           wcz     ' Limit to ports 0 .. 7
+        if_a    jmp     #.next_intf                     ' |
+                mov     A_htmp1, A_hpar2
+                and     A_htmp1, ##ADDR_MASK
+                mov     A_htmp, A_hkbd_ep_addr              ' Skip if keyboard hid interface
+                and     A_htmp, ##ADDR_MASK               ' |
+                cmp     A_htmp, A_htmp1             wz      ' |
+        if_z    jmp     #.next_intf
+                mov     A_htmp, A_hmouse_ep_addr            ' Skip if mouse hid interface
+                and     A_htmp, ##ADDR_MASK               ' |
+                cmp     A_htmp, A_htmp1             wz      ' |
+        if_z    jmp     #.next_intf
+                altd    A_hdev_port, #A_hdev_ep_addr        ' Skip if already set
+                cmp     0-0, #0                 wz      ' |
+        if_nz   jmp     #.next_intf
+                getbyte A_gp_intf_num, A_hdev_intf_idx, #0  ' Save interface index and poll interval values
+                getbyte A_gp_interval, A_hr2, #3
+                altd    A_hdev_port, #A_hdev_ep_addr
+                mov     0-0, A_hpar2                      ' IN endpoint address
+                mov     A_hdev_out_addr, A_hpar3            ' OUT endpoint address
+                'debug(udec(A_gp_intf_num))
+'                debug(uhex_long(A_hdev_ep_addr),uhex_long_(hdev_ep_addr+1,hdev_ep_addr+2,hdev_ep_addr+3,hdev_ep_addr+4),udec(A_gp_interval),uhex_long(A_hdev_out_addr))
+                jmp     #.next_intf
+.hub
+                cmp     A_hdev_subclass, #SUBCLASS_INTF_NONE  wz
+        if_nz   jmp     #.next_intf
+                cmp     A_hdev_protocol, #INTF_PROTO_NONE     wz
+        if_nz   cmp     A_hdev_protocol, #2                   wz
+        if_nz   jmp     #.next_intf
+                cmp     A_hhub_ep_addr, #0    wz
+        if_nz   jmp     #.next_intf
+                getbyte A_hub_intf_num, A_hdev_intf_idx, #0 ' Save interface index and poll interval values
+                mov     A_hhub_ctrl_ep, A_hctrl_ep_addr     ' CONTROL endpoint address
+                mov     A_ep_addr_pid, A_hpar2              ' IN endpoint address
+                call    #A_calc_crc5                      ' One-time calculation of the ep/addr/pid crc
+                mov     A_hhub_ep_addr, A_ep_addr_pid
+                mov     A_ep_addr_pid, A_hctrl_ep_addr      ' Restore the control ep addr
+'                debug(uhex_long(A_hhub_ctrl_ep,A_hhub_ep_addr))
+'                debug(uhex_long(A_hdev_ep_addr),uhex_long_(hdev_ep_addr+1,hdev_ep_addr+2,hdev_ep_addr+3,hdev_ep_addr+4))
+                jmp     #.next_intf
+
+'------------------------------------------------------------------------------
+' If a newly-connected device is recognized, do whatever is needed to configure
+' it according to its function, or functions. In the case of this boot protocol
+' keyboard/mouse class driver:
+' - SetConfiguration(config_num)
+' - SetProtocol(boot)
+' - SetIdle(indefinite)
+' - Enter the device interrupt IN polling task stage.
+'------------------------------------------------------------------------------
+' On entry:
+' On exit:
+'------------------------------------------------------------------------------
+A_hset_config
+                mov     A_htmp2, #DEV_UNKNOWN
+                altd    A_hdev_port, #A_hdev_ep_addr
+                cmp     0-0, #0                 wz
+        if_z    cmp     A_hkbd_ep_addr, #0        wz
+        if_z    cmp     A_hmouse_ep_addr, #0      wz
+        if_z    cmp     A_hhub_ep_addr, #0        wz
+        if_z    jmp     #.notify_client                 ' No known device
+.A_set_config
+                loc     ptra, #A_set_config
+                mov     pa, #CON_bConfigVal             ' Get configuration value to set (always the default config in our case)
+                add     pa, A_hconfig_base
+                rdbyte  A_hpar1, pa
+                wrword  A_hpar1, ptra[wValue]             ' Write the config value to the config SETUP struct
+                mov     A_ep_addr_pid, A_hctrl_ep_addr      ' All configuration transactions use the control endpoint
+                mov     pb, #0                          ' SetConfiguration() has no data stage
+                call    #A_control_write
+                cmp     A_retval, #PID_ACK        wz
+        if_nz   ret
+.kbd_config
+                cmp     A_hkbd_ep_addr, #0        wz
+        if_z    jmp     #.mouse_config                  ' No keyboard
+                mov     A_htmp, A_hkbd_ep_addr
+                and     A_htmp, ##ADDR_MASK
+                mov     A_htmp1, A_ep_addr_pid
+                and     A_htmp1, ##ADDR_MASK
+                cmp     A_htmp, A_htmp1             wz
+        if_nz   jmp     #.mouse_config                  ' No keyboard
+
+                getbyte A_htmp, A_kb_intf_num, #0
+                loc     ptra, #A_set_protocol
+                wrword  #BOOT_PROTOCOL, ptra[wValue]
+                wrword  A_htmp, ptra[wIndex]
+                mov     pb, #0                          ' SetProtocol() has no data stage
+                call    #A_control_write
+                cmp     A_retval, #PID_ACK        wz
+        if_nz   mov     A_hkbd_ep_addr, #0
+        if_nz   jmp     #.notify_client
+                mov     A_hpar1, #0                       ' SetIdle() duration 0 = indefinite
+                getbyte A_hpar2, A_kb_intf_num, #0
+                call    #A_hset_idle
+                cmp     A_retval, #PID_ACK        wz
+        if_nz   mov     A_hkbd_ep_addr, #0
+        if_nz   jmp     #.notify_client
+                mov     A_hctwait, A_2ms_
+                call    #A_poll_waitx
+'                mov     A_kb_led_states, #LED_NUMLKF
+'                mov     A_hkbd_ledstates, A_kb_led_states
+                call    #A_hset_kbdled_report
+                cmp     A_retval, #PID_ACK        wz
+        if_nz   mov     A_hkbd_ep_addr, #0
+        if_nz   jmp     #.notify_client
+                mov     A_ep_addr_pid, A_hkbd_ep_addr
+                call    #A_calc_crc5                      ' One-time calculation of the ep/addr/pid crc
+                testb   A_hub_port_status, #HUB_PORT_LOWSPEED wc
+                bitc    A_ep_addr_pid, #31
+                mov     A_hkbd_ep_addr, A_ep_addr_pid
+                mov     A_hkbd_ctrl_ep, A_hctrl_ep_addr     ' CONTROL endpoint address
+                bitc    A_hkbd_ctrl_ep, #31
+                mov     A_ep_addr_pid, A_hctrl_ep_addr      ' Restore the control ep addr for mouse configuration
+                mov     A_hkbd_poll_cnt, #0               ' Initialize key auto-repeat counters
+                setbyte A_kbm_next_datax, #PID_DATA0, #0  ' Reset interrupt IN datax sequence PIDs
+                mov     A_htmp2, #KB_READY                ' Keyboard interface configured
+                'jmp     #.notify_client
+.mouse_config
+                cmp     A_hmouse_ep_addr, #0      wz
+        if_z    jmp     #.gamepad_config                ' No mouse, setup gamepad, if detected
+                mov     A_htmp, A_hmouse_ep_addr
+                and     A_htmp, ##ADDR_MASK
+                mov     A_htmp1, A_ep_addr_pid
+                and     A_htmp1, ##ADDR_MASK
+                cmp     A_htmp, A_htmp1             wz
+        if_nz   jmp     #.gamepad_config                ' No mouse, setup gamepad, if detected
+
+                getbyte A_htmp, A_ms_intf_num, #0
+                loc     ptra, #A_set_protocol
+                wrword  #BOOT_PROTOCOL, ptra[wValue]
+                wrword  A_htmp, ptra[wIndex]
+                mov     pb, #0                          ' SetProtocol() has no data stage
+                call    #A_control_write
+                cmp     A_retval, #PID_ACK        wz
+        if_nz   mov     A_hmouse_ep_addr, #0
+        if_nz   jmp     #.notify_client
+{
+                cmp     A_hkbd_ep_addr, #0        wz      ' A SetIdle() duration of indefinite covers both keyboard and mouse
+        if_nz   jmp     #.skip                          ' So skip if it has already been done
+                mov     A_hpar1, #0                       ' SetIdle() duration 0 = indefinite
+                getbyte A_hpar2, A_ms_intf_num, #0
+                call    #A_hset_idle
+                cmp     A_retval, #PID_ACK        wz
+        if_nz   mov     A_hmouse_ep_addr, #0
+        if_nz   jmp     #.notify_client
+.skip
+}
+                mov     A_ep_addr_pid, A_hmouse_ep_addr
+                call    #A_calc_crc5                      ' One-time calculation of the ep/addr/pid crc
+                testb   A_hub_port_status, #HUB_PORT_LOWSPEED wc
+                bitc    A_ep_addr_pid, #31
+                mov     A_hmouse_ep_addr, A_ep_addr_pid
+                'mov     A_ep_addr_pid, A_hctrl_ep_addr      ' Restore the control ep addr
+                setbyte A_kbm_next_datax, #PID_DATA0, #1  ' Reset interrupt IN datax sequence PIDs
+                cmp     A_hkbd_ep_addr, #0        wz
+        if_nz   mov     A_htmp2, #KBM_READY               ' Both keyboard and mouse interfaces were configured
+        if_z    mov     A_htmp2, #M_READY                 ' Only the mouse interface configured
+                jmp     #.notify_client
+.gamepad_config
+                altd    A_hdev_port, #A_hdev_ep_addr
+                cmp     0-0, #0                 wz
+        if_z    jmp     #.hub_config                    ' No gamepad
+                alts    A_hdev_port, #A_hdev_ep_addr
+                mov     A_htmp, 0-0
+                and     A_htmp, ##ADDR_MASK
+                mov     A_htmp1, A_ep_addr_pid
+                and     A_htmp1, ##ADDR_MASK
+                cmp     A_htmp, A_htmp1             wz
+        if_nz   jmp     #.hub_config                    ' No gamepad
+
+                alts    A_hdev_port, #A_hdev_ep_addr
+                mov     A_ep_addr_pid, 0-0
+                call    #A_calc_crc5                      ' One-time calculation of the ep/addr/pid crc
+                testb   A_hub_port_status, #HUB_PORT_LOWSPEED wc
+                bitc    A_ep_addr_pid, #31
+                altd    A_hdev_port, #A_hdev_ep_addr
+                mov     0-0, A_ep_addr_pid
+                mov     A_ep_addr_pid, A_hdev_out_addr  wz
+        if_nz   setbyte A_ep_addr_pid, #PID_OUT, #0
+        if_nz   call    #A_calc_crc5                      ' One-time calculation of the ep/addr/pid crc
+        if_nz   testb   A_hub_port_status, #HUB_PORT_LOWSPEED wc
+        if_nz   bitc    A_ep_addr_pid, #31
+        if_nz   mov     A_hdev_out_addr, A_ep_addr_pid
+                mov     A_ep_addr_pid, A_hctrl_ep_addr      ' Restore the control ep addr for mouse configuration
+
+                cmp     A_hdev_class, #$FF        wz      ' XInput vendor class
+        if_e    jmp     #.xinput
+                cmp     A_hdev_id, ##$054C_0268   wz      ' PS3 vendor/product
+        if_e    jmp     #.ps3
+
+                loc     ptra, #A_get_desc                 ' Get HID descriptor
+                wrword  #$FF, ptra[wLength]
+                alts    A_hdev_port, #A_hid_descr_p
+                mov     pb, 0-0
+                call    #A_control_read
+                cmp     A_retval, #PID_ACK        wz
+        if_nz   altd    A_hdev_port, #A_hdev_ep_addr
+        if_nz   mov     0-0, #0
+        if_nz   jmp     #.notify_client
+                altd    A_hdev_port, #A_gp_descr_len
+                mov     0-0, A_total_data
+                alts    A_hdev_port, #A_hid_descr_p
+                mov     pb, 0-0
+'                debug(uhex(pb),uhex_byte_array(pb,A_total_data))
+
+                mov     A_htmp2, #HID_READY               ' Standard gamepad
+                jmp     #.notify_client
+.xinput
+                loc     ptra, #A_xinp_led_cmd             ' Turn on LED
+                mov     pb, A_hdev_port
+                cmpsub  pb, #1                          ' Root device is also player 1
+                add     pb, #$06                        ' LED patterns 06..09 for players 1..4
+                wrbyte  pb, ptra[2]
+
+                mov     A_pkt_data, #3
+                bitl    A_hstatus, #DATAx_TGLB
+                mov     A_ep_addr_pid, A_hdev_out_addr
+                call    #A_txn_out
+                mov     A_ep_addr_pid, A_hctrl_ep_addr
+
+                loc     ptra, #A_xinp_fix_8bitdo
+                mov     pb, A_urx_buff_p                  ' We don't actually care where it goes
+                call    #A_control_read                   ' Execute GetDeviceDescriptor()
+'                debug("8bitdo weird fix... ",uhex(A_retval))
+                mov     A_retval, #PID_ACK                ' If we don't do this something else becomes sad (TODO fix?)
+
+                mov     A_htmp2, #XINPUT_READY
+                jmp     #.notify_client
+.ps3
+                loc     ptra, #A_ps3_command_buff         ' Turn on LED
+                mov     pb, A_hdev_port
+                fge     pb, #1                          ' Root device is also player 1
+                'fle    pb, #4
+                decod   pb
+                wrbyte  pb, ptra[9]
+
+                getbyte A_htmp, A_gp_intf_num, #0
+                loc     ptra, #A_set_report
+                wrword  ##(TYPE_OUTPUT << 8) | $01, ptra[wValue]
+                wrword  A_htmp, ptra[wIndex]
+                wrword  #48, ptra[wLength]
+                loc     pb, #A_ps3_command_buff
+                call    #A_control_write
+
+                getbyte A_htmp, A_gp_intf_num, #0
+                loc     ptra, #A_set_report
+                wrword  ##(TYPE_FEATURE << 8) | $F4, ptra[wValue]
+                wrword  A_htmp, ptra[wIndex]
+                wrword  #4, ptra[wLength]
+                loc     pb, #A_ps3_enable_cmd             ' Enable PS3
+                call    #A_control_write
+                cmp     A_retval, #PID_ACK    wz
+        if_nz   altd    A_hdev_port, #A_hdev_ep_addr
+        if_nz   mov     0-0, #0
+        if_nz   jmp     #.notify_client
+
+                mov     A_htmp2, #PS3_READY               ' PS3 gamepad ready
+                jmp     #.notify_client
+
+.hub_config
+                cmp     A_hhub_ep_addr, #0    wz
+        if_z    jmp     #.notify_client                 ' No HUB
+                mov     A_htmp, A_hhub_ep_addr
+                and     A_htmp, ##ADDR_MASK
+                mov     A_htmp1, A_ep_addr_pid
+                and     A_htmp1, ##ADDR_MASK
+                cmp     A_htmp, A_htmp1             wz
+        if_nz   jmp     #.notify_client                 ' No HUB
+
+                loc     ptra, #A_get_hub_desc             ' Get HUB descriptor
+                wrword  #$FF, ptra[wLength]
+                mov     pb, A_hub_descr_p
+                call    #A_control_read
+                cmp     A_retval, #PID_ACK        wz
+        if_nz   mov     A_hhub_ep_addr, #0
+        if_nz   jmp     #.notify_client
+
+                mov     ptra, A_hub_descr_p
+                rdbyte  A_htmp3, ptra[2]                  ' bNbrPorts
+                fle     A_htmp3, #7                       ' Max. 7 ports supported
+'                debug(uhex_byte_array(A_hub_descr_p,A_total_data),", bNbrPorts = ", udec_(A_htmp3))
+.loop
+                loc     ptra, #A_set_port_feat            ' Power on ports
+                wrword  #HUB_PORT_POWER, ptra[wValue]
+                wrword  A_htmp3, ptra[wIndex]
+                call    #A_control_write
+                djnz    A_htmp3, #.loop
+
+                mov     A_hctwait, A_500ms_
+                add     A_hctwait, A_100ms_
+                call    #A_poll_waitx
+
+                mov     A_htmp2, #HUB_READY               ' Hub ready
+                'jmp     #.notify_client
+
+.notify_client
+                altsb   A_hdev_port, #A_hdev_type
+'                setbyte A_htmp2                           ' Save device ready ' p2asm needs D and #N
+                setbyte 0, A_htmp2, #0                     ' Save device ready
+'                debug("A_hdev_type = ", uhex_long_(hdev_type+1,hdev_type))
+        _ret_   wxpin   A_htmp2, A_usb_event_pin            ' Notify the client keyboard and/or mouse configured
+
+'------------------------------------------------------------------------------
+' Initialize the keyboard/mouse data area to start-up values.
+'------------------------------------------------------------------------------
+' On entry:
+' On exit:
+'------------------------------------------------------------------------------
+A_init_kbdm_data
+                mov     A_hkbd_ep_addr, #0
+                mov     A_hdev_ep_addr, #0
+
+                mov     ptra, A_cache_start_p         ' Clear cached data buffers
+                mov     pa, A_cache_end_p
+.loop
+                wrbyte  #0, ptra++
+                cmp     ptra, pa                wcz
+        if_b    jmp     #.loop
+
+                mov     pa, #A_hdev_init_start        ' Clear device data registers
+.regloop
+                altd    pa
+                mov     0-0, #0
+                add     pa, #1
+                cmp     pa, #A_hdev_init_end      wz
+        if_nz   jmp     #.regloop
+
+                setbyte A_hdev_next_datax, #PID_DATA0, #0         ' Reset interrupt IN datax sequence PIDs
+                setbyte A_hdev_next_datax, #PID_DATA0, #1
+                setbyte A_hdev_next_datax, #PID_DATA0, #2
+                setbyte A_hdev_next_datax, #PID_DATA0, #3
+                setbyte A_hdev_next_datax + 1, #PID_DATA0, #0
+                setbyte A_hdev_next_datax + 1, #PID_DATA0, #1
+                setbyte A_hdev_next_datax + 1, #PID_DATA0, #2
+                setbyte A_hdev_next_datax + 1, #PID_DATA0, #3
+                setbyte A_kbm_next_datax, #PID_DATA0, #0
+                setbyte A_kbm_next_datax, #PID_DATA0, #1
+        _ret_   mov     A_hub_next_datax, #PID_DATA0
+
+'------------------------------------------------------------------------------
+' Execute a ControlWrite() that will perform the HID-specific HID_SET_IDLE
+' function.
+'------------------------------------------------------------------------------
+' On entry:
+'   A_hpar1 - Byte1 duration, byte0 reportID (HID 1.11, section 7.2.4).
+'   A_hpar2 - index number of the target interface.
+' On exit:
+'------------------------------------------------------------------------------
+A_hset_idle
+                mov     A_hctwait, A_2ms_
+                call    #A_poll_waitx
+                loc     ptra, #A_set_idle
+                wrword  A_hpar1, ptra[wValue]
+                wrword  A_hpar2, ptra[wIndex]
+                jmp     #A_control_write
+
+'------------------------------------------------------------------------------
+' Execute a ControlWrite() that will perform the HID-specific HID_SET_REPORT
+' function to set keyboard CapsLk, ScrLk and NumLk indicators.
+'------------------------------------------------------------------------------
+' On entry:
+'   A_ep_addr_pid - device address and enpoint for the request.
+' On exit:
+'   A_retval - transaction result.
+'------------------------------------------------------------------------------
+A_hset_kbdled_report
+                getbyte A_htmp, A_kb_intf_num, #0
+                loc     ptra, #A_set_report
+                wrword  ##(TYPE_OUTPUT << 8), ptra[wValue] ' Byte1 report type, byte0 reportID (0)
+                wrword  A_htmp, ptra[wIndex]
+                wrword  #KBD_OUT_RPT_LEN, ptra[wLength]
+                mov     pb, A_urx_buff_p
+                wrbyte  A_kb_led_states, pb
+                jmp     #A_control_write                  ' Execute ControlWrite(SET_REPORT) and back to caller
+
+'------------------------------------------------------------------------------
+' Execute an IN interrupt transaction to poll for keyboard activity.
+'------------------------------------------------------------------------------
+' On entry:
+' On exit:
+'------------------------------------------------------------------------------
+A_hget_kbd_in_report
+                mov     A_ep_addr_pid, A_hkbd_ep_addr
+                mov     A_hpar2, A_urx_buff_p
+                getbyte A_hpar3, A_kbm_next_datax, #0
+                setword A_hpar3, A_kb_in_max_pkt, #1        ' Always ask for max report size
+                call    #A_do_int_in
+                cmp     A_retval, #PID_ACK        wz
+        if_nz   ret                                     ' No ACK, ignore
+                cmp     A_hpar3, #0               wz
+        if_z    ret                                     ' Ignore an empty DATAx packet
+
+                getbyte A_htmp, A_kbm_next_datax, #0        ' Txn success, so toggle DATAx
+                cmp     A_htmp, #PID_DATA0        wz      ' |
+        if_z    setbyte A_kbm_next_datax, #PID_DATA1, #0  ' |
+        if_nz   setbyte A_kbm_next_datax, #PID_DATA0, #0  ' |
+
+                'debug("KBD: ", uhex_byte_array(A_urx_buff_p, A_hpar3))
+                mov     A_kb_max_index, A_hpar3             ' Save actual bytes read
+                call    #A_hkbd_compare
+.led_check
+                mov     A_htmp, A_kb_led_states
+                cmp     A_hkbd_ledstates, A_htmp    wz
+        if_z    ret                                     ' No toggle key indicator changes, so we're done
+                mov     A_kb_led_states, A_hkbd_ledstates   ' Update toggle key indicator states
+                mov     A_ep_addr_pid, A_hkbd_ctrl_ep
+                call    #A_hset_kbdled_report             ' Set report and ignore errors
+                wxpin   #KBD_TGL_UPDATE, A_usb_event_pin    ' Notify client of toggle key state change
+
+'------------------------------------------------------------------------------
+' Compare current and previous keyboard data buffers for keypress changes.
+'------------------------------------------------------------------------------
+A_hkbd_compare
+                mov     ptra, A_urx_buff_p
+                alts    A_hdev_port, #A_hid_report_p
+                mov     ptrb, 0-0
+                rdlong  A_htmp1, ptra++
+                rdlong  A_htmp2, ptrb++
+                cmp     A_htmp1, A_htmp2    wz
+                rdlong  A_htmp1, ptra++
+                rdlong  A_htmp2, ptrb++
+        if_z    cmp     A_htmp1, A_htmp2    wz
+        if_z    ret
+
+                alts    A_hdev_port, #A_hid_report_p
+                mov     ptra, 0-0
+
+                mov     A_hpar1, #0               ' Handle modifiers
+                rdbyte  A_hpar2, A_urx_buff_p
+                rdbyte  A_htmp1, ptra
+                rolword A_htmp1, A_hpar2, #0
+                mergew  A_htmp1
+                mov     A_htmp, #0
+                mov     pa, #8
+.modloop
+                rczr    A_htmp1           wcz     ' New value in C, old value in Z
+                mov     A_hpar1, #$E8
+                sub     A_hpar1, pa
+   if_c_ne_z    call    #A_hkbd_translate
+                djnz    pa, #.modloop
+
+.release        modc    _set            wc
+                'alts    A_hdev_port, #A_hid_report_p
+                'mov     ptra, 0-0
+                add     ptra, #2
+                mov     pa, #6
+.rl1            rdbyte  A_hpar1, ptra++   wz
+        if_z    jmp     #.rl3
+                mov     ptrb, A_urx_buff_p
+                add     ptrb, #2
+                mov     pb, #6
+.rl2            rdbyte  A_htmp, ptrb++
+                cmp     A_hpar1, A_htmp     wz
+        if_z    jmp     #.rl3
+                djnz    pb, #.rl2
+                call    #A_hkbd_translate
+.rl3            djnz    pa, #.rl1
+
+                mov     A_hpar3, #0
+                bith    A_hpar3, #31
+
+.press          modc    _clr    wc
+                mov     ptra, A_urx_buff_p
+                add     ptra, #2
+                mov     pa, #6
+.pl1            rdbyte  A_hpar1, ptra++   wz
+        if_z    jmp     #.pl3
+                alts    A_hdev_port, #A_hid_report_p
+                mov     ptrb, 0-0
+                add     ptrb, #2
+                mov     pb, #6
+.pl2            rdbyte  A_htmp, ptrb++
+                cmp     A_hpar1, A_htmp     wz
+        if_z    jmp     #.pl3
+                djnz    pb, #.pl2
+                call    #A_hkbd_translate
+.pl3            djnz    pa, #.pl1
+
+.copy           mov     ptra, A_urx_buff_p
+                alts    A_hdev_port, #A_hid_report_p
+                mov     ptrb, 0-0
+                rdlong  A_htmp, ptra++
+                wrlong  A_htmp, ptrb++
+                rdlong  A_htmp, ptra++
+                wrlong  A_htmp, ptrb++
+
+                ret
+
+'------------------------------------------------------------------------------
+' Translate keyboard scancode to ASCII
+'------------------------------------------------------------------------------
+' On entry:
+'   A_hpar1 - scancode
+'   A_hpar2 - key modifiers state
+'       c - pressed (0) or released (1) flag
+' On exit:
+'   A_hr0 - bit     31 = 0 pressed, 1 released
+'             27..24 = led state
+'             23..16 = key modifiers state
+'              15..8 = scancode
+'               7..0 = ASCII key code (or 0 if none)
+'------------------------------------------------------------------------------
+A_hkbd_translate
+                mov     A_hr0, #0
+                setbyte A_hr0, A_hpar1, #1
+                setbyte A_hr0, A_hpar2, #2
+                bitc    A_hr0, #31
+
+                cmp     A_hpar1, #KEY_CAPSLOCK    wz
+  if_z_and_nc   bitnot  A_hkbd_ledstates, #LED_CAPSLKB
+  if_z          ret                                    ' do not return CAPSLOCK
+                cmp     A_hpar1, #KEY_NUMLOCK     wz
+  if_z_and_nc   bitnot  A_hkbd_ledstates, #LED_NUMLKB
+  if_z          ret                                    ' do not return NUM LOCK
+                cmp     A_hpar1, #KEY_SCROLLLOCK  wz
+  if_z_and_nc   bitnot  A_hkbd_ledstates, #LED_SCRLKB
+  if_z          ret                                    ' do not return SCROLL LOCK
+                setnib  A_hr0, A_hkbd_ledstates, #6
+                mov     A_htmp, A_hpar1
+                shl     A_htmp, #1
+                loc     pb, #kbd_table
+                add     pb, A_htmp
+                testb   A_hpar2, #LEFT_SHIFTB          wz
+                testb   A_hpar2, #RIGHT_SHIFTB         orz
+                testb   A_hkbd_ledstates, #LED_CAPSLKB xorz
+        if_x1   add     pb, #1
+                cmp     A_hpar1, #KEY_APP     wcz
+        if_be   rdbyte  A_hr1, pb
+        if_a    mov     A_hr1, #0
+                setbyte A_hr0, A_hr1, #0
+
+                testb   A_hr0, #31            wc
+        if_c    jmp     #A_hkbd_release
+
+                cmp     A_hpar1, #KEY_ERR_UNDEF wcz
+        if_be   ret
+
+'                debug(udec(A_hdev_port)," KEYBOARD PRESS scancode=", uhex_byte_(A_hpar1), ", key: ",uhex_byte_(A_hr1), ", mod: ",ubin_byte_(A_hpar2))
+'                debug(" KEY PRESS =", uhex_long_(hr0))
+
+A_hkbd_press
+                mov     A_htmp, A_hr0
+                and     A_htmp, #$FF wz
+                cmp     A_htmp, #KEY_ERR_UNDEF wcz
+          if_be ret 
+                mov     A_hr1,##@kbd_buffer
+                loc     pb, #@kbd_head
+                rdlong  A_htmp, pb
+                shl     A_htmp, #2
+                add     A_hr1, A_htmp
+                wrlong  A_hr0, A_hr1               ' New data to buffer
+                cmp     A_hkbd_rpt_key, A_hr0 wz   ' new key press?
+          if_nz mov     A_hkbd_rpt_key, A_hr0      
+          if_nz mov     A_hkbd_poll_cnt, #0
+                shr     A_htmp, #2
+                add     A_hrep, #1
+                incmod  A_htmp, #KBD_BUFFMASK             ' Advance head
+                wrlong  A_htmp, pb                        ' and save it
+        _ret_   wxpin   #KBD_KEY_UPDATE, A_usb_event_pin
+
+A_hkbd_release
+                cmp     A_hpar1, #KEY_ERR_UNDEF wcz
+        if_be   ret
+                mov     A_hkbd_rpt_key, #0         ' Any release cancels repeat
+
+'             debug(udec(A_hdev_port)," KEYBOARD REL   scancode=", uhex_byte_(A_hpar1), ", key: ",uhex_byte_(A_hr1), ", mod: ",ubin_byte_(A_hpar2))
+                ret
+
+'------------------------------------------------------------------------------
+' Execute an IN interrupt transaction to poll for mouse activity.
+'------------------------------------------------------------------------------
+' On entry:
+' On exit:
+'   A_hr0 - bit   7..0 = button state
+'   A_hr1              = X direction and velocity (signed)
+'   A_hr2              = Y direction and velocity (signed)
+'   A_hr3              = Wheel direction and velocity (signed)
+'------------------------------------------------------------------------------
+A_hget_mouse_in_report
+                mov     A_ep_addr_pid, A_hmouse_ep_addr
+                mov     A_hpar2, A_urx_buff_p
+                getbyte A_hpar3, A_kbm_next_datax, #1
+                setword A_hpar3, A_ms_in_max_pkt, #1        ' Always ask for max report size
+                call    #A_do_int_in
+                cmp     A_retval, #PID_ACK        wz
+        if_nz   ret                                     ' No ACK, ignore
+                cmp     A_hpar3, #0               wz
+        if_z    ret                                     ' Ignore an empty DATAx packet
+
+                getbyte A_htmp, A_kbm_next_datax, #1        ' Txn success, so toggle DATAx
+                cmp     A_htmp, #PID_DATA0        wz      ' |
+        if_z    setbyte A_kbm_next_datax, #PID_DATA1, #1  ' |
+        if_nz   setbyte A_kbm_next_datax, #PID_DATA0, #1  ' |
+
+                'debug("MS:  ", uhex_byte_array(A_urx_buff_p, A_hpar3))
+                mov     ptra, A_urx_buff_p
+                cmp     A_hpar3, #5               wcz     ' Combo PS/2-USB adapters adds report-id
+        if_ae   add     ptra, #1                        ' | skip
+                rdbyte  A_hr0, ptra++                     ' Button flags
+                rdbyte  A_hr1, ptra++                     ' X direction and velocity is 8-bit signed
+                signx   A_hr1, #7
+                rdbyte  A_hr2, ptra++                     ' Y direction and velocity is 8-bit signed
+                signx   A_hr2, #7
+                cmp     A_hpar3, #4               wcz     ' Very few mice send +/- scroll wheel data in boot protocol
+        if_ae   rdbyte  A_hr3, ptra
+        if_z    signx   A_hr3, #7                         ' If it's there, use it
+        if_nz   mov     A_hr3, #0
+'                debug(udec(A_hdev_port)," MOUSE btn=", ubin_byte_(A_hr0), ", X: ",sdec_(A_hr1), ", Y: ",sdec_(A_hr2), ", W: ",sdec_(A_hr3))
+
+
+' Pack mouse data into a single long for the client
+                mov     A_htmp, A_hr0                        ' button flags
+                setbyte A_htmp, A_hr1, #1                  ' X direction and velocity is 8-bit signed
+                setbyte A_htmp, A_hr2, #2                  ' Y direction and velocity is 8-bit signed
+                setbyte A_htmp, A_hr3, #3                  ' W direction and velocity is 8-bit signed
+                cmp     A_last_mouse_data, A_htmp    wz     ' Some devices will occasionally "leak" stale data
+        if_z    ret                                     ' so skip notifying the client if data unchanged
+                mov     A_last_mouse_data, A_htmp
+                wrlong  A_htmp, ##mouse_data
+'                debug(udec(hdev_port)," M_DATA=", ubin_long_(A_htmp))
+        _ret_   wxpin   #M_DATA, A_usb_event_pin
+
+'------------------------------------------------------------------------------
+' Execute an IN interrupt transaction to poll for gamepad activity.
+'------------------------------------------------------------------------------
+' On entry:
+' On exit:
+'------------------------------------------------------------------------------
+A_hget_gp_in_report
+                alts    A_hdev_port, #A_hdev_ep_addr
+                mov     A_ep_addr_pid, 0-0
+
+                mov     A_hpar2, A_urx_buff_p
+                altgb   A_hdev_port, #A_hdev_next_datax
+                getbyte A_hpar3
+                setword A_hpar3, #255, #1                 ' Always ask for max report size
+                call    #A_do_int_in
+                cmp     A_retval, #PID_ACK        wz
+        if_nz   ret                                     ' No ACK, ignore
+                cmp     A_hpar3, #0               wz
+        if_z    ret                                     ' Ignore an empty DATAx packet
+
+                altgb   A_hdev_port, #A_hdev_next_datax     ' Txn success, so toggle DATAx
+                getbyte A_htmp                            ' |
+                cmp     A_htmp, #PID_DATA0        wz      ' |
+        if_z    mov     A_htmp, #PID_DATA1                ' |
+        if_nz   mov     A_htmp, #PID_DATA0                ' |
+                altsb   A_hdev_port, #A_hdev_next_datax     ' |
+'                setbyte A_htmp                            ' | ' p2asm needs D and #N
+                setbyte 0, A_htmp, #0                     ' Save device ready
+
+
+' Note: the following code compares the current and previous reports
+' and process the data if there are changes to ease the debug output.
+' Actual implementations should remove this block, along with hid_pre_rpt_p and
+' gpPreReport buffer.
+
+                ' ----- start of block to remove
+                mov     ptra, A_urx_buff_p                ' Attempt to notify changes
+                alts    A_hdev_port, #A_hid_report_p
+                mov     ptrb, 0-0                       ' by comparing the report bytes
+
+                altgb   A_hdev_port, #A_hdev_type
+                getbyte A_htmp
+                cmp     A_htmp, #PS3_READY  wz
+        if_e    mov     A_hpar3, #10                      ' Only first 10 bytes are significant for PS3 report
+
+                mov     pa, A_hpar3
+                modz    _set            wz
+.lp
+                rdbyte  A_htmp1, ptra++
+                rdbyte  A_htmp2, ptrb
+        if_z    cmp     A_htmp1, A_htmp2    wz
+                wrbyte  A_htmp1, ptrb++
+                djnz    pa, #.lp
+        if_z    ret                                     ' Ignore report if not changed
+                ' ----- end of block to remove
+
+'------------------------------------------------------------------------------
+' Decode controller report
+'------------------------------------------------------------------------------
+A_hid_decode
+                mov     A_htmp, #A_hidr_start       ' clear all hid report registers
+.cl             altd    A_htmp
+                mov     0-0, #0
+                add     A_htmp, #1
+                cmp     A_htmp, #A_hidr_end         wz
+        if_nz   jmp     #.cl
+
+                mov     ptrb, A_urx_buff_p
+
+                altgb   A_hdev_port, #A_hdev_type
+                getbyte A_htmp
+                cmp     A_htmp, #XINPUT_READY     wz
+        if_z    jmp     #A_hpad_xinput
+                cmp     A_htmp, #PS3_READY        wz
+        if_z    jmp     #A_hpad_ps3
+
+'------------------------------------------------------------------------------
+' Handle HID controller
+' On entry:
+'   ptrb - controller report
+'------------------------------------------------------------------------------
+A_hpad_hid
+                alts    A_hdev_port, #A_hid_descr_p
+                mov     ptra, 0-0
+                alts    A_hdev_port, #A_gp_descr_len
+                mov     pa, 0-0
+'                debug(udec(A_hdev_port), " HID ", uhex_long(A_ep_addr_pid),uhex_long(ptra),udec(pa))
+                mov     A_hidr_usage, ##$76543210
+
+.next
+                cmps    pa, #0      wcz
+        if_be   jmp     #A_hpad_translate
+
+                rdbyte  A_hpar1, ptra++
+                sub     pa, #1
+                mov     A_hpar2, #0
+
+                mov     A_htmp, A_hpar1
+                and     A_htmp, #$03
+                cmp     A_htmp, #1    wz
+        if_z    rdbyte  A_hpar2, ptra++
+        if_z    sub     pa, #1
+                cmp     A_htmp, #2    wz
+        if_z    rdword  A_hpar2, ptra++
+        if_z    sub     pa, #2
+                cmp     A_htmp, #3    wz
+        if_z    rdlong  A_hpar2, ptra++
+        if_z    sub     pa, #4
+
+                and     A_hpar1, #$FC
+                'debug(uhex_byte(A_hpar1),uhex_long(A_hpar2))
+
+                cmp     A_hpar1, #HID_REPORT_ID   wz
+        if_z    jmp     #.report_id
+                cmp     A_hpar1, #HID_USAGE_PAGE  wz
+        if_z    jmp     #.usage_page
+                cmp     A_hpar1, #HID_USAGE       wz
+        if_z    jmp     #.usage
+                cmp     A_hpar1, #HID_LOGICAL_MIN wz
+        if_z    setword A_hidr_lminmax, A_hpar2, #1
+                cmp     A_hpar1, #HID_LOGICAL_MAX wz
+        if_z    setword A_hidr_lminmax, A_hpar2, #0
+                cmp     A_hpar1, #HID_PHYSICAL_MIN wz
+        if_z    setword A_hidr_pminmax, A_hpar2, #1
+                cmp     A_hpar1, #HID_PHYSICAL_MAX wz
+        if_z    setword A_hidr_pminmax, A_hpar2, #0
+                cmp     A_hpar1, #HID_REPORT_SIZE wz
+        if_z    mov     A_hidr_size, A_hpar2
+                cmp     A_hpar1, #HID_REPORT_COUNT wz
+        if_z    mov     A_hidr_count, A_hpar2
+                cmp     A_hpar1, #HID_INPUT       wz
+        if_nz   jmp     #.next
+
+                and     A_hpar2, #$03
+                cmp     A_hpar2, #HID_ITEM_VARIABLE   wz
+        if_nz   jmp     #.skip
+
+                cmp     A_hidr_state, #2  wz
+        if_z    jmp     #.axes
+                cmp     A_hidr_state, #3  wz
+        if_z    jmp     #.hats
+                cmp     A_hidr_state, #4  wz
+        if_z    jmp     #.buttons
+.skip
+                mov     A_htmp, A_hidr_size
+                mul     A_htmp, A_hidr_count
+                add     A_hidr_offset, A_htmp
+                jmp     #.next
+.axes
+                'debug(".axes ", udec(A_hidr_offset,A_hidr_size,A_hidr_count))
+                getnib  A_hr0, A_hidr_flags, #2
+                mov     A_hr1, A_hidr_count
+.l1
+                mov     A_hpar1, A_hidr_offset
+                mov     A_hpar2, A_hidr_size
+                call    #A_hpad_getbits
+                cmp     A_hidr_size,#16 wcz
+        if_ae   call    #A_hpad_normalize ' normalize axis values only if >= 16 bits!
+                cmp     A_hr0, #6         wcz
+        if_b    altgn   A_hr0, #A_hidr_usage
+        if_b    getnib  A_hr2
+        if_b    altsw   A_hr2, #A_hidr_axis
+'        if_b    setword A_retval  ' p2asm needs D and #N
+        if_b    setword 0, A_retval, #0
+        if_b    add     A_hr0, #1
+                add     A_hidr_offset, A_hidr_size
+                djnz    A_hr1, #.l1
+
+                setnib  A_hidr_flags, A_hr0, #2
+                mov     A_hidr_state, #1
+                jmp     #.next
+.hats
+                'debug(".hats ", udec(A_hidr_offset,A_hidr_size,A_hidr_count))
+                mov     A_hpar1, A_hidr_offset
+                mov     A_hpar2, A_hidr_size
+                call    #A_hpad_getbits
+                setbyte A_hidr_hats, A_retval, #0
+                setnib  A_hidr_flags, #1, #3
+                mov     A_hidr_state, #1
+                jmp     #.skip
+.buttons
+                'debug(".buttons ", udec(A_hidr_offset,A_hidr_size,A_hidr_count))
+                mov     A_hpar1, A_hidr_offset
+                mov     A_hpar2, A_hidr_size
+                mul     A_hpar2, A_hidr_count
+                call    #A_hpad_getbits
+                getbyte A_htmp, A_hidr_flags, #0
+                shl     A_retval, A_htmp
+                or      A_hidr_buttons, A_retval
+                add     A_htmp, A_hidr_count
+                setbyte A_hidr_flags, A_htmp, #0
+                mov     A_hidr_state, #1
+                jmp     #.skip
+.report_id
+                cmp     A_hidr_id, #0     wz
+        if_nz   jmp     #A_hpad_translate
+                rdbyte  A_hidr_id, ptrb++
+                cmp     A_hidr_id, A_hpar2  wz
+        if_nz   ret
+                jmp     #.next
+.usage_page
+                cmp     A_hpar2, #HID_USAGE_PAGE_BUTTONS  wz
+        if_z    cmp     A_hidr_state, #1  wz
+        if_z    mov     A_hidr_state, #4
+                jmp     #.next
+.usage
+                cmp     A_hpar2, #HID_USAGE_JOYSTICK  wz
+        if_nz   cmp     A_hpar2, #HID_USAGE_GAMEPAD   wz
+        if_z    mov     A_hidr_state, #1
+        if_z    jmp     #.next
+                cmp     A_hpar2, #HID_USAGE_X     wz
+        if_nz   cmp     A_hpar2, #HID_USAGE_Y     wz
+        if_nz   cmp     A_hpar2, #HID_USAGE_Z     wz
+        if_nz   cmp     A_hpar2, #HID_USAGE_RX    wz
+        if_nz   cmp     A_hpar2, #HID_USAGE_RY    wz
+        if_nz   cmp     A_hpar2, #HID_USAGE_RZ    wz
+        if_z    jmp     #.usage_axis
+                cmp     A_hpar2, #HID_USAGE_HATSWITCH wz
+        if_z    cmp     A_hidr_state, #1      wz
+        if_z    mov     A_hidr_state, #3
+                jmp     #.next
+.usage_axis
+                altsn   A_hidr_usage_idx, #A_hidr_usage
+'                setnib  A_hpar2 ' p2asm needs D and #N
+                setnib  0, A_hpar2, #0
+
+                sub     A_hpar2, #HID_USAGE_X - 16
+                decod   A_hpar2
+                or      A_hidr_flags, A_hpar2
+
+                add     A_hidr_usage_idx, #1
+                cmp     A_hidr_state, #1      wz
+        if_z    mov     A_hidr_state, #2
+                jmp     #.next
+
+'------------------------------------------------------------------------------
+' Handle XInput controller
+' On entry:
+'   ptrb - controller report
+'------------------------------------------------------------------------------
+'   Default implementation translates the report to a pseudo-defacto hid
+'   standard and jumps to A_hpad_translate for actions.
+'   Implementors may take specific actions for this kind of controller.
+'------------------------------------------------------------------------------
+A_hpad_xinput
+                rdbyte  A_htmp, ptrb      wz
+        if_nz   ret                         ' Ignore message type <> $00
+                rdbyte  A_htmp, ptrb[1]
+                cmp     A_htmp, #$14      wz
+        if_nz   ret                         ' Ignore report length <> $14 (20)
+
+'                debug(udec(A_hdev_port), " XINPUT ", uhex_long(A_ep_addr_pid),uhex_long(ptrb))
+
+'                bith    A_hidr_flags, #HID_AXIS_X addbits 5 ' Have all axes ' p2asm does not have addbits
+                bith    A_hidr_flags, #((HID_AXIS_X&$1f) | ((5&$1f) << 5)) ' Have all axes
+                setnib  A_hidr_flags, #6, #2
+
+                rdword  A_hidr_axis, ptrb[3]  ' X = left stick X
+                rdword  A_retval, ptrb[4]     ' Y = left stick Y (inverted)
+                not     A_retval
+                setword A_hidr_axis, A_retval, #1
+                rdword  A_hidr_axis+4, ptrb[5]' Z = right stick X
+                rdword  A_retval, ptrb[6]     ' RZ = right stick Y (inverted)
+                not     A_retval
+                setword A_hidr_axis+8, A_retval, #1
+
+                mov     A_hidr_lminmax, #$0000_00FF
+                rdbyte  A_retval, ptrb[4]     ' left analog trigger
+                cmp     A_retval, #192    wcz
+        if_ae   bith    A_hidr_buttons, #6    ' left analog trigger (button)
+                call    #A_hpad_normalize
+                setword A_hidr_axis+4, A_retval, #1
+                rdbyte  A_retval, ptrb[5]     ' right analog trigger
+                cmp     A_retval, #192    wcz
+        if_ae   bith    A_hidr_buttons, #7    ' right analog trigger (button)
+                call    #A_hpad_normalize
+                setword A_hidr_axis+8, A_retval, #0
+
+                setbyte A_hidr_flags,#13,#0
+                rdword  A_retval, ptrb[1]
+                testb   A_retval, #15     wc  ' Y
+                bitc    A_hidr_buttons, #0
+                testb   A_retval, #13     wc  ' B
+                bitc    A_hidr_buttons, #1
+                testb   A_retval, #12     wc  ' A
+                bitc    A_hidr_buttons, #2
+                testb   A_retval, #14     wc  ' X
+                bitc    A_hidr_buttons, #3
+                testb   A_retval, #8      wc  ' LB
+                bitc    A_hidr_buttons, #4
+                testb   A_retval, #9      wc  ' RB
+                bitc    A_hidr_buttons, #5
+                testb   A_retval, #5      wc  ' SELECT
+                bitc    A_hidr_buttons, #8
+                testb   A_retval, #4      wc  ' START
+                bitc    A_hidr_buttons, #9
+                testb   A_retval, #6      wc  ' L3
+                bitc    A_hidr_buttons, #10
+                testb   A_retval, #7      wc  ' R3
+                bitc    A_hidr_buttons, #11
+                testb   A_retval, #10     wc  ' XBOX
+                bitc    A_hidr_buttons, #12
+
+                setnib  A_hidr_flags, #1, #3
+                getnib  A_htmp, A_retval, #0    ' map dpad buttons to hat direction
+                mov     A_htmp1, ##$F576_F40F
+                mov     A_htmp2, ##$FFFF_F312
+                altgn   A_htmp, #A_htmp1
+                getnib  A_htmp
+                setbyte A_hidr_hats, A_htmp, #0
+
+                jmp     #A_hpad_translate
+
+'------------------------------------------------------------------------------
+' Handle PS3 controller
+' On entry:
+'   ptrb - controller report
+'------------------------------------------------------------------------------
+'   Default implementation translates the report to a pseudo-defacto hid
+'   standard and jumps to A_hpad_translate for actions.
+'   Implementors may take specific actions for this kind of controller.
+'------------------------------------------------------------------------------
+A_hpad_ps3
+                rdbyte  A_htmp, ptrb++
+                cmp     A_htmp, #$01      wz
+        if_nz   ret                         ' Ignore report ID <> $01
+
+'                debug(udec(A_hdev_port), " PS3 ", uhex_long(A_ep_addr_pid),uhex_long(ptrb))
+
+                mov     A_hidr_lminmax, #$0000_00FF
+                rdbyte  A_retval, ptrb[5]         ' X = left stick X
+                call    #A_hpad_normalize
+                setword A_hidr_axis, A_retval, #0
+                bith    A_hidr_flags, #HID_AXIS_X
+                rdbyte  A_retval, ptrb[6]         ' Y = left stick Y
+                call    #A_hpad_normalize
+                setword A_hidr_axis, A_retval, #1
+                bith    A_hidr_flags, #HID_AXIS_Y
+                rdbyte  A_retval, ptrb[7]         ' Z = right stick X
+                call    #A_hpad_normalize
+                setword A_hidr_axis+4, A_retval, #0
+                bith    A_hidr_flags, #HID_AXIS_Z
+                rdbyte  A_retval, ptrb[8]         ' RZ = right stick Y
+                call    #A_hpad_normalize
+                setword A_hidr_axis+8, A_retval, #1
+                bith    A_hidr_flags, #HID_AXIS_RZ
+                setnib  A_hidr_flags, #4, #2
+
+                mov     A_hpar1, #8
+                mov     A_hpar2, #19
+                call    #A_hpad_getbits
+
+                setbyte A_hidr_flags,#13,#0
+                testb   A_retval, #12     wc  ' A
+                bitc    A_hidr_buttons, #0
+                testb   A_retval, #13     wc  ' B
+                bitc    A_hidr_buttons, #1
+                testb   A_retval, #14     wc  ' X
+                bitc    A_hidr_buttons, #2
+                testb   A_retval, #15     wc  ' Y
+                bitc    A_hidr_buttons, #3
+                testb   A_retval, #10     wc  ' L1
+                bitc    A_hidr_buttons, #4
+                testb   A_retval, #11     wc  ' R1
+                bitc    A_hidr_buttons, #5
+                testb   A_retval, #8      wc  ' L2
+                bitc    A_hidr_buttons, #6
+                testb   A_retval, #9      wc  ' R2
+                bitc    A_hidr_buttons, #7
+                testb   A_retval, #0      wc  ' SELECT
+                bitc    A_hidr_buttons, #8
+                testb   A_retval, #3      wc  ' START
+                bitc    A_hidr_buttons, #9
+                testb   A_retval, #1      wc  ' LEFT STICK
+                bitc    A_hidr_buttons, #10
+                testb   A_retval, #2      wc  ' RIGHT STICK
+                bitc    A_hidr_buttons, #11
+                testb   A_retval, #16     wc  ' HOME
+                bitc    A_hidr_buttons, #12
+
+                setnib  A_hidr_flags, #1, #3
+                getnib  A_htmp, A_retval, #1    ' map dpad buttons to hat direction
+                mov     A_htmp1, ##$F3F4_120F
+                mov     A_htmp2, ##$FFF5_FF76
+                altgn   A_htmp, #A_htmp1
+                getnib  A_htmp
+                setbyte A_hidr_hats, A_htmp, #0
+
+                jmp     #A_hpad_translate
+
+'------------------------------------------------------------------------------
+' Read bits from report data buffer
+'------------------------------------------------------------------------------
+' On entry:
+'   PTRB - report buffer
+'   A_hpar1 - start bit
+'   A_hpar2 - number of bits
+' On exit:
+'   A_retval - bits
+'------------------------------------------------------------------------------
+A_hpad_getbits
+                mov     A_htmp, A_hpar1
+                shr     A_htmp, #3        ' byte offset
+                add     A_htmp, ptrb
+                rdlong  A_retval, A_htmp
+
+                mov     A_htmp1, A_hpar1
+                and     A_htmp1, #$07     ' shift
+                shr     A_retval, A_htmp1
+
+                cmp     A_hpar2, #24      wcz
+        if_a    jmp     #.l1
+
+                decod   A_hpar2
+                sub     A_hpar2, #1
+                and     A_retval, A_hpar2
+                ret
+.l1
+                zerox   A_retval, #23
+                add     A_htmp, #3
+                rdlong  A_htmp2, A_htmp
+                sub     A_hpar2, #24
+                decod   A_hpar2
+                sub     A_hpar2, #1
+                shr     A_htmp2, A_htmp1
+                and     A_htmp2, A_hpar2
+                shl     A_htmp2, #24
+                or      A_retval, A_htmp2
+                ret
+
+'------------------------------------------------------------------------------
+' Normalize value to signed word (-32768 / 32767)
+'------------------------------------------------------------------------------
+' On entry:
+'   A_retval - value to normalize
+'   A_hidr_lminmax - min (word 1) max (word 0) value range
+'   - or -
+'   A_hidr_pminmax - min (word 1) max (word 0) value range
+'   A_hidr_size - value bits length
+' On exit:
+'   A_retval - normalized value
+'------------------------------------------------------------------------------
+A_hpad_normalize
+                mov     A_htmp, A_hidr_lminmax  wz
+        if_z    mov     A_htmp, A_hidr_pminmax  wz
+        if_z    ret
+                getword A_htmp1, A_htmp, #1     ' htmp1 = min
+                getword A_htmp, A_htmp, #0      ' htmp = max
+                signx   A_htmp1, #15      wc
+        if_c    sub     A_hidr_size, #1
+        if_c    signx   A_retval, A_hidr_size
+        if_c    add     A_hidr_size, #1
+                subs    A_htmp, A_htmp1         ' htmp = (max - min)
+                subs    A_retval, A_htmp1       ' retval = (retval - min)
+                shl     A_retval, #16         ' retval = (retval - min) << 16
+                subs    A_retval, #1          ' retval = ((retval - min) << 16) - 1
+                abs     A_htmp            wc
+                testb   A_retval, #31     wz
+                abs     A_retval
+                qdiv    A_retval, A_htmp
+                getqx   A_retval
+    if_c_ne_z   neg     A_retval              ' retval = (((retval - min) << 16) - 1) / (max - min)
+'                adds    A_retval, ##$8000 signx 15 ' p2asm doesn't implement signx
+                adds    A_retval, ##$FFFF8000
+                ret
+
+'------------------------------------------------------------------------------
+' Perform controller actions
+' On entry:
+'    A_hidr_id        report id
+'    A_hidr_axis      axis value (signed word, 2 axes per long)
+'                      X = A_hidr_axis+0, #0
+'                      Y = A_hidr_axis+0, #1
+'                      Z = A_hidr_axis+4, #0
+'                     RX = A_hidr_axis+4, #1
+'                     RY = A_hidr_axis+8, #0
+'                     RZ = A_hidr_axis+8, #1
+'    A_hidr_buttons   buttons state (bits 0 to 31)
+'    A_hidr_hats      hats state (byte 0, 1, 2, 3)
+'
+'                     -------3 -------2 -------1 -------0 byte
+'                     ---7---6 ---5---4 ---3---2 ---1---0 nibble
+'    A_hidr_flags       xxxxxxxx_xxrrrzyx_hhhhaaaa_bbbbbbbb
+'                                zyx||| |||||||| ++++++++ n. buttons
+'                                |||||| ||||++++--------- n. axes
+'                                |||||| ++++------------- n. hats
+'                                ++++++------------------ valid axes
+'------------------------------------------------------------------------------
+A_hpad_translate
+                mov     A_htmp, #0
+
+                getword A_htmp1, A_hidr_axis, #0
+                signx   A_htmp1, #15
+                testb   A_hidr_flags, #HID_AXIS_X  wz
+                bitz    A_htmp, #0
+'                debug(if(A_htmp), "    X: ", sdec_(htmp1))
+                getword A_htmp1, A_hidr_axis, #1
+                signx   A_htmp1, #15
+                testb   A_hidr_flags, #HID_AXIS_Y  wz
+                bitz    A_htmp, #0
+'                debug(if(A_htmp), "    Y: ", sdec_(htmp1))
+                getword A_htmp1, A_hidr_axis+4, #0
+                signx   A_htmp1, #15
+                testb   A_hidr_flags, #HID_AXIS_Z  wz
+                bitz    A_htmp, #0
+'                debug(if(A_htmp), "    Z: ", sdec_(htmp1))
+                getword A_htmp1, A_hidr_axis+4, #1
+                signx   A_htmp1, #15
+                testb   A_hidr_flags, #HID_AXIS_RX  wz
+                bitz    A_htmp, #0
+'                debug(if(A_htmp), "    RX: ", sdec_(htmp1))
+                getword A_htmp1, A_hidr_axis+8, #0
+                signx   A_htmp1, #15
+                testb   A_hidr_flags, #HID_AXIS_RY  wz
+                bitz    A_htmp, #0
+'                debug(if(A_htmp), "    RY: ", sdec_(htmp1))
+                getword A_htmp1, A_hidr_axis+8, #1
+                signx   A_htmp1, #15
+                testb   A_hidr_flags, #HID_AXIS_RZ  wz
+                bitz    A_htmp, #0
+'                debug(if(A_htmp), "    RZ: ", sdec_(htmp1))
+
+                getnib  A_htmp, A_hidr_flags, #3
+                getbyte A_htmp1, A_hidr_hats, #0
+'                debug(if(A_htmp), "    hat: ", uhex_byte_(htmp1))
+
+'                debug("    btn: ", ubin_long_(A_hidr_buttons))
+' For Catalina's FULL_HD_VGA HMI, we can support up to 4 gamepads,
+' but we only report X_Axis, Y_Axis and up to 16 button changes.
+' We also keep old values for each so that we only report changes.
+' We combinee the cog and port into the top byte to differentiate
+' between gamepads connected to both USB ports.
+'                setbyte  A_hr0,A_hdev_port,#3
+                cogid    A_htmp2
+                shl      A_htmp2,#4
+                or       A_htmp2,A_hdev_port
+                setbyte  A_hr0,A_htmp2,#3
+                setbyte  A_hr0,#GPD_BUTTONS,#2
+                setword  A_hr0,A_hidr_buttons,#0
+                altgw    A_hdev_port,#A_gpad_last_b
+                getword  A_htmp2,0,#0
+                ' debug("buttons for gamepad ",udec_(A_hdev_port)," old=",uhex_(A_htmp2)," new=",uhex_(hidr_buttons))
+                cmp      A_htmp2,A_hidr_buttons wz
+                'debug(" GP UPDATE =", uhex(A_hdev_port), uhex(A_hr0))
+        if_nz   call     #A_hpad_update
+                altsw    A_hdev_port,#A_gpad_last_b
+                setword  0,A_hidr_buttons,#0
+
+                setbyte  A_hr0,#GPD_X_AXIS,#2
+                getword  A_htmp1, A_hidr_axis, #1
+                setword  A_hr0,A_htmp1,#0
+
+                altgw    A_hdev_port,#A_gpad_last_x
+                getword  A_htmp2,0,#0
+                ' debug("X axis for gamepad ",udec_(A_hdev_port)," old=",uhex_(A_htmp2)," new=",uhex_(A_htmp1))
+                cmp      A_htmp2,A_htmp1 wz
+                'debug(" GP UPDATE =", uhex(A_hdev_port), uhex(A_hr0))
+        if_nz   call     #A_hpad_update
+                altsw    A_hdev_port,#A_gpad_last_x
+                setword  0,A_htmp1,#0
+
+                setbyte  A_hr0,#GPD_Y_AXIS,#2
+                setword  A_hr0,A_hidr_buttons,#0
+                getword  A_htmp1, A_hidr_axis, #0
+                setword  A_hr0,A_htmp1,#0
+
+                altgw    A_hdev_port,#A_gpad_last_y
+                getword  A_htmp2,0,#0
+                ' debug("Y axis for gamepad ",udec_(A_hdev_port)," old=",uhex_(A_htmp2)," new=",uhex_(A_htmp1))
+                cmp      A_htmp2,A_htmp1 wz
+                'debug(" GP UPDATE =", uhex(A_hdev_port), uhex(A_hr0))
+        if_nz   call     #A_hpad_update
+                altsw    A_hdev_port,#A_gpad_last_y
+                setword  0,A_htmp1,#0
+
+                ret
+
+A_hpad_update
+                mov     A_hr1,##@A_gpd_buffer
+                loc     pb, #@A_gpd_head
+                rdlong  A_htmp, pb
+                shl     A_htmp, #2
+                add     A_hr1, A_htmp
+                wrlong  A_hr0, A_hr1               ' New data to buffer
+                shr     A_htmp, #2
+                add     A_hrep, #1
+                incmod  A_htmp, #GPD_BUFFMASK             ' Advance head
+                wrlong  A_htmp, pb                        ' and save it
+        _ret_   wxpin   #GP_DATA, A_usb_event_pin
+
+
+'------------------------------------------------------------------------------
+' Execute an IN interrupt transaction to poll for gamepad activity.
+'------------------------------------------------------------------------------
+' On entry:
+' On exit:
+'------------------------------------------------------------------------------
+A_hget_hub_status
+                mov     A_ep_addr_pid, A_hhub_ep_addr
+                mov     A_hpar2, A_urx_buff_p
+                setword A_hpar3, A_hub_next_datax, #0
+                setword A_hpar3, #1, #1
+                call    #A_do_int_in
+                cmp     A_retval, #PID_ACK        wz
+        if_z    jmp     #.data
+                cmp     A_retval, #PID_NAK        wz
+        if_nz   jmp     #A_host_error                     ' Something other than ACK/NAK, so likely fatal
+                ret
+.data
+                cmp     A_hpar3, #0               wz
+        if_z    ret                                     ' Ignore an empty DATAx packet
+
+                cmp     A_hub_next_datax, #PID_DATA0  wz
+        if_z    mov     A_hub_next_datax, #PID_DATA1      ' Txn success, so toggle DATAx
+        if_nz   mov     A_hub_next_datax, #PID_DATA0
+                rdlong  A_hub_status_chg, A_urx_buff_p
+'                debug(ubin_long(A_hub_status_chg))
+
+                mov     A_hdev_port, #1
+.loop
+                testb   A_hub_status_chg, A_hdev_port wz
+        if_x1   call    #A_hub_port_handler
+                incmod  A_hdev_port, #7           wcz
+        if_nc   jmp     #.loop
+                ret
+
+A_hub_port_handler
+                mov     A_ep_addr_pid, A_hhub_ctrl_ep
+                loc     ptra, #A_get_port_status          ' Get HUB port status
+                mov     pb, A_urx_buff_p
+                wrword  A_hdev_port, ptra[wIndex]
+                call    #A_control_read
+                rdlong  A_hub_port_status, A_urx_buff_p
+'                debug(udec(A_hdev_port), ubin_long(A_hub_port_status))
+
+                testb   A_hub_port_status, #HUB_C_PORT_CONNECTION wz ' Connection change bit
+        if_x0   jmp     #.other
+                loc     ptra, #A_clr_port_feat
+                wrword  #HUB_C_PORT_CONNECTION, ptra[wValue]
+                wrword  A_hdev_port, ptra[wIndex]
+                call    #A_control_write
+                testb   A_hub_port_status, #HUB_PORT_CONNECTION   wz ' Connection bit
+        if_x0   jmp     #.disconnect
+                mov     A_hctwait, A_100ms_
+                call    #A_poll_waitx
+
+                loc     ptra, #A_set_port_feat            ' reset port
+                wrword  #HUB_PORT_RESET, ptra[wValue]
+                wrword  A_hdev_port, ptra[wIndex]
+                call    #A_control_write
+
+                mov     A_htmp3, #2
+.A_wait_reset
+                mov     A_hctwait, A_8ms_
+                call    #A_poll_waitx
+                loc     ptra, #A_get_port_status          ' Get HUB port status
+                mov     pb, A_urx_buff_p
+                wrword  A_hdev_port, ptra[wIndex]
+                call    #A_control_read
+                rdlong  A_hub_port_status, A_urx_buff_p
+                testb   A_hub_port_status, #HUB_C_PORT_RESET wz ' Reset change bit
+        if_x0   djnz    A_htmp3, #.A_wait_reset
+
+                loc     ptra, #A_clr_port_feat
+                wrword  #HUB_C_PORT_RESET, ptra[wValue]
+                wrword  A_hdev_port, ptra[wIndex]
+                call    #A_control_write
+
+                mov     A_htmp, #36                       ' Allow reset recovery time (Section 9.2.6.2)
+.wait_recover
+                mov     A_hctwait, A_1ms_
+                call    #A_poll_waitx
+                djnz    A_htmp,#.wait_recover
+
+                testb   A_hub_port_status, #HUB_PORT_LOWSPEED wc
+        if_c    bith    A_hstatus, #DWNSTRM_HUBB
+        if_c    bith    A_usb_h_ls_nco_, #14
+
+                mov     A_ep_addr_pid, ##EP_ADDR_ZERO     ' New connect, use pre-calc CRC for ep/addr zero
+                loc     ptra, #A_get_dev_desc             ' Hub start address of GetDeviceDescriptor SETUP struct
+                wrword  #8, ptra[wLength]               ' Request IN data stage max of 8 bytes will test actual < requested logic
+                mov     pb, A_dev_desc_buff_p             ' Start address of DeviceDescriptor struct for IN data
+                call    #A_control_read                   ' Execute GetDeviceDescriptor()
+                cmp     A_retval, #PID_ACK        wz
+        if_nz   jmp     #.done
+.A_get_dev_desc
+                mov     pa, A_dev_desc_buff_p             ' Fetch the max packet size for control transactions from the
+                add     pa, #DEV_bMaxPktSize0           ' appropriate Device Descriptor struct member offset
+                rdbyte  A_max_pkt_size, pa
+                loc     ptra, #A_set_address              ' Hub start address of SetAddress SETUP struct
+                mov     A_htmp, A_hdev_port                 ' Address is hub port number
+                wrword  A_htmp, ptra[wValue]
+                call    #A_control_write                  ' Execute SetAddress()
+                cmp     A_retval, #PID_ACK        wz
+        if_nz   jmp     #.done                          ' Back to idle if not ACK
+                mov     A_hctwait, A_8ms_
+                call    #A_poll_waitx                     ' Allow SetAddress() a minimum 2ms recovery interval
+                mov     A_ep_addr_pid, A_hdev_port
+                shl     A_ep_addr_pid, #8                 ' Device ep/addr now hub port number and endpoint zero
+                call    #A_calc_crc5
+                loc     ptra, #A_get_dev_desc             ' Repeat SETUP for GetDeviceDescriptor()
+                mov     pb, A_dev_desc_buff_p             ' Start address of DeviceDescriptor struct has exact descriptor length
+                rdbyte  A_total_data, pb
+                wrword  A_total_data, ptra[wLength]       ' Assign it to the SETUP wLength struct member
+                call    #A_control_read                   ' Execute GetDeviceDescriptor() again, but with updated data length
+                cmp     A_retval, #PID_ACK        wz
+        if_nz   jmp     #.done                          ' Back to idle if not ACK
+                mov     A_hctrl_ep_addr, A_ep_addr_pid      ' Make the device control address and endpoint official
+                mov     ptra, A_dev_desc_buff_p           ' Do the same with the control max packet size
+                'rdbyte  A_hctrl_max_pkt, ptra[DEV_bMaxPktSize0]
+                mov     A_hctwait, A_500us_
+                call    #A_poll_waitx
+                loc     ptra, #A_get_config_desc          ' Hub start address of GetConfigurationDescriptor SETUP struct
+                wrword  #$FF, ptra[wLength]             ' Maximum DATAx bytes for receive to the SETUP struct
+                mov     pb, A_con_desc_buff_p             ' Hub start address of ConfigurationDescriptor structure
+                call    #A_control_read                   ' Execute GetConfigurationDescriptor()
+                cmp     A_retval, #PID_ACK        wz
+        if_nz   jmp     #.done
+                mov     ptra, A_con_desc_buff_p           ' Check the config descriptor struct for expected data
+                mov     A_hconfig_base, ptra              ' Will need this for configuration
+                rdbyte  A_hr0, ptra++                     ' Config.bLength is at offset zero, expect >= CON_DESC_LEN
+                rdbyte  A_hr1, ptra++                     ' Config.bDescType is next member, expect = TYPE_CONFIG constant
+                rdword  A_htmp, ptra                      ' Config.wTotalLen is next member, expect >= bytes actually received
+                cmp     A_hr0, #CON_DESC_LEN      wcz
+        if_ae   cmp     A_hr1, #TYPE_CONFIG       wcz
+        if_z    cmp     A_htmp, A_total_data        wcz
+        if_b    mov     A_retval, #ERR_CONFIG_FAIL
+        if_b    jmp     #.done
+                call    #A_hparse_con_desc
+                jmp     #.done
+
+.other
+                loc     ptra, #A_clr_port_feat
+                wrword  A_hdev_port, ptra[wIndex]
+
+                testb   A_hub_port_status, #HUB_C_PORT_RESET wz
+        if_x1   wrword  #HUB_C_PORT_RESET, ptra[wValue]
+        if_x1   loc     ptra, #A_clr_port_feat
+        if_x1   call    #A_control_write
+
+                testb   A_hub_port_status, #HUB_C_PORT_ENABLE wz
+        if_x1   wrword  #HUB_C_PORT_ENABLE, ptra[wValue]
+        if_x1   loc     ptra, #A_clr_port_feat
+        if_x1   call    #A_control_write
+
+                testb   A_hub_port_status, #HUB_C_PORT_SUSPEND wz
+        if_x1   wrword  #HUB_C_PORT_SUSPEND, ptra[wValue]
+        if_x1   loc     ptra, #A_clr_port_feat
+        if_x1   call    #A_control_write
+
+                testb   A_hub_port_status, #HUB_C_PORT_OVERCURRENT wz
+        if_x1   wrword  #HUB_C_PORT_OVERCURRENT, ptra[wValue]
+        if_x1   loc     ptra, #A_clr_port_feat
+        if_x1   call    #A_control_write
+
+                jmp     #.done
+
+.disconnect
+                altgb   A_hdev_port, #A_hdev_type
+                getbyte A_htmp
+                cmp     A_htmp, #KB_READY         wz
+        if_nz   cmp     A_htmp, #KBM_READY        wz
+        if_z    mov     A_hkbd_ep_addr, #0
+        if_z    mov     A_hkbd_ctrl_ep, #0
+        if_z    mov     A_kb_led_states, #0
+        if_z    mov     A_hkbd_ledstates, A_kb_led_states
+                cmp     A_htmp, #M_READY          wz
+        if_nz   cmp     A_htmp, #KBM_READY        wz
+        if_z    mov     A_hmouse_ep_addr, #0
+
+                altsb   A_hdev_port, #A_hdev_type
+'                setbyte #0 ' p2asm needs D and #N
+                setbyte 0, #0, #0
+                altd    A_hdev_port, #A_hdev_ep_addr
+                mov     0-0, #0
+
+.done
+                bitl    A_usb_h_ls_nco_, #14     wcz
+                bitl    A_hstatus, #DWNSTRM_HUBB
+        if_c    wxpin   A_usb_h_fs_nco_, A_dm              ' Restore host mode and 12Mbs baud
+                mov     A_max_pkt_size, #64               ' Set LS control read/write DATAx packet size
+                mov     A_tat_wait, A_tat_wait_fs_         ' Bus turn-around time in low-speed bit periods
+                mov     A_ip_delay, A_ip_delay_fs_         ' Inter-packet delay in low-speed bit periods
+
+                loc     ptra, #A_get_port_status          ' Get HUB port status
+                mov     pb, A_urx_buff_p
+                wrword  A_hdev_port, ptra[wIndex]
+                call    #A_control_read
+                rdlong  A_hub_port_status, ptra
+'                debug(udec(A_hdev_port), ubin_long(A_hub_port_status))
+                ret
+
+' Catalina Init
+
+DAT ' initialized data segment
+
+   alignl
+
+'------------------------------------------------------------------------------
+' Partially populated SETUP packets
+'------------------------------------------------------------------------------
+A_get_dev_desc    byte    (DIR_DEV_TO_HOST | TYPE_STANDARD | RECIP_DEVICE)
+                byte    REQ_GET_DESC
+                word    TYPE_DEVICE << 8
+                word    0       ' Zero or Language ID (Section 9.6.7)
+                word    0       ' Number of bytes to transfer if there is a data stage
+A_get_config_desc byte    (DIR_DEV_TO_HOST | TYPE_STANDARD | RECIP_DEVICE)
+                byte    REQ_GET_DESC
+                word    TYPE_CONFIG << 8
+                word    0       ' Zero or Language ID (Section 9.6.7)
+                word    0       ' Number of bytes to transfer if there is a data stage
+A_set_config      byte    (DIR_HOST_TO_DEV | TYPE_STANDARD | RECIP_DEVICE)
+                byte    REQ_SET_CONFIG
+                word    0       ' Configuration value
+                word    0       ' Zero
+                word    0       ' Zero, as REQ_SET_CONFIG has no data stage
+A_set_address     byte    (DIR_HOST_TO_DEV | TYPE_STANDARD | RECIP_DEVICE)
+                byte    REQ_SET_ADDR
+                word    0       ' Zero
+                word    0       ' Zero
+                word    0       ' Zero, as REQ_SET_ADDR has no data stage
+'------------------------------------------------------------------------------
+' The SET_PROTOCOL request is supported by devices in the "Boot" subclass. The
+' wValue field dictates which protocol should be used.
+'
+' When initialized, all devices default to report protocol. However the host
+' should not make any assumptions about the device state and should set the
+' desired protocol whenever initializing a device.
+'------------------------------------------------------------------------------
+A_set_protocol    byte    (DIR_HOST_TO_DEV | TYPE_CLASS | RECIP_INTERFACE)
+                byte    HID_SET_PROTO
+                word    BOOT_PROTOCOL   ' 0 = Boot Protocol, 1 = Report Protocol
+                                                ' (HID 1.11 Section 7.2.6).
+                word    0               ' Interface index number.
+                word    0               ' Zero, as HID_SET_PROTO has no data stage.
+'------------------------------------------------------------------------------
+A_set_idle        byte    (DIR_HOST_TO_DEV | TYPE_CLASS | RECIP_INTERFACE)
+                byte    HID_SET_IDLE
+                word    0       ' Byte1 = duration, byte0 = ReportID. A duration of zero inhibits
+                                        ' reporting until a change is detected in the report data
+
+                                        ' (HID 1.11 Section 7.2.4).
+                word    0       ' Interface index number.
+                word    0       ' Zero, as HID_SET_IDLE has no data stage.
+A_set_report      byte    (DIR_HOST_TO_DEV | TYPE_CLASS | RECIP_INTERFACE)
+                byte    HID_SET_REPORT
+                word    0       ' Byte1 = report type, byte0 = ReportID.
+                                        ' (HID 1.11 Section 7.2.2).
+                word    0       ' Interface index number.
+                word    0       ' Size of the report, in bytes.
+A_get_desc        byte    (DIR_DEV_TO_HOST | TYPE_STANDARD | RECIP_INTERFACE)
+                byte    REQ_GET_DESC
+                word    TYPE_REPORT << 8
+                word    0       ' Zero or Language ID (Section 9.6.7)
+                word    0       ' Number of bytes to transfer if there is a data stage
+'------------------------------------------------------------------------------
+A_get_hub_desc    byte    (DIR_DEV_TO_HOST | TYPE_CLASS | RECIP_DEVICE)
+                byte    REQ_GET_DESC
+                word    TYPE_HUB << 8
+                word    0       ' Zero or Language ID (Section 9.6.7)
+                word    0       ' Number of bytes to transfer if there is a data stage
+A_set_port_feat   byte    (DIR_HOST_TO_DEV | TYPE_CLASS | RECIP_OTHER)
+                byte    REQ_SET_FEATURE
+                word    0       ' port power
+                word    1       ' Port index number (1+)
+                word    0       ' Number of bytes to transfer if there is a data stage
+A_clr_port_feat   byte    (DIR_HOST_TO_DEV | TYPE_CLASS | RECIP_OTHER)
+                byte    REQ_CLEAR_FEATURE
+                word    0       ' port power
+                word    1       ' Port index number (1+)
+                word    0       ' Number of bytes to transfer if there is a data stage
+A_get_port_status byte    (DIR_DEV_TO_HOST | TYPE_CLASS | RECIP_OTHER)
+                byte    REQ_GET_STATUS
+                word    0
+                word    1       ' Port index number (1+)
+                word    4       ' Number of bytes to transfer if there is a data stage
+'------------------------------------------------------------------------------
+A_ps3_enable_cmd  byte    $42, $0C, $00, $00
+A_ps3_command_buff
+                byte    $00, $00, $00, $00, $00
+                byte    $00, $00, $00, $00, $00 | (%0001 << 1) ' TODO led(s) to turn on
+                byte    $FF, $27, $10, $00, $32
+                byte    $FF, $27, $10, $00, $32
+                byte    $FF, $27, $10, $00, $32
+                byte    $FF, $27, $10, $00, $32
+                byte    $00, $00, $00, $00, $00
+                byte    $00, $00, $00, $00, $00
+                byte    $00, $00, $00, $00, $00
+                byte    $00, $00, $00
+'------------------------------------------------------------------------------
+A_xinp_led_cmd    byte    $01, $03, $06   ' 0x00 All off
+                                        ' 0x01 All blinking
+                                        ' 0x02 1 flashes, then on
+                                        ' 0x03 2 flashes, then on
+                                        ' 0x04 3 flashes, then on
+                                        ' 0x05 4 flashes, then on
+                                        ' 0x06 1 on
+                                        ' 0x07 2 on
+                                        ' 0x08 3 on
+                                        ' 0x09 4 on
+                                        ' 0x0A Rotating (e.g. 1-2-4-3)
+                                        ' 0x0B Blinking*
+                                        ' 0x0C Slow blinking*
+                                        ' 0x0D Alternating (e.g. 1+4-2+3), then back to previous*
+A_xinp_rumble_cmd byte    $00, $08, $00
+                byte    $00             ' Left rumble
+                byte    $00             ' Right rumble
+                byte    $00, $00, $00
+
+A_xinp_fix_8bitdo '' This inexplicable String request (that WILL fail) somehow un-bugs the terrible firmware
+                '' of certain wired 8bitdo gamepads.
+                byte    (DIR_DEV_TO_HOST | TYPE_STANDARD | RECIP_DEVICE)
+                byte    REQ_GET_DESC
+                word    TYPE_STRING << 8 + 4
+                word    $0409   ' Zero or Language ID (Section 9.6.7)
+                word    2       ' Number of bytes to transfer if there is a data stage
+
+'------------------------------------------------------------------------------
+' The USB data cache area gets zero-filled at every device disconnect
+'------------------------------------------------------------------------------
+A_usb_cache_start
+
+' HID descriptor and report buffers
+A_hid_descr       byte    0[HID_DESCR_LEN * 8]
+A_hid_report      byte    0[HID_IN_RPT_LEN * 8]
+
+' HUB descriptor
+A_hub_descr       byte    0   ' bDescLength
+                byte    0   ' bDescriptorType
+                byte    0   ' bNbrPorts
+                word    0   ' wHubCharacteristics
+                byte    0   ' bPwrOn2PwrGood
+                byte    0   ' bHubContrCurrent
+                byte    0   ' DeviceRemoveable
+                byte    0   ' PortPwrCtrlMask
+
+A_usb_cache_end
+
+A_urx_buff        byte    0[URX_BUFF_LEN]         ' USB IN DATAx scratch buffer
+A_dev_desc_buff   byte    0[DEV_DESC_LEN]         ' Device descriptor
+A_con_desc_buff   byte    0[CON_BUFF_LEN]         ' Configuration descriptor chain
+'------------------------------------------------------------------------------
+' Current error state of the USB, posted by the USB_ERROR event. The error code
+' will be one of the constants in the "Protocol error codes" enumeration.
+A_usb_error_code  long    ERR_NONE
+                  alignl
+
+#endif

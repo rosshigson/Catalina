@@ -41,11 +41,11 @@ endif
 
 ifeq ($(PROPELLER_2),TRUE)
 
-all: assert ctype errno locale math setjmp signal stdlib string time catalina float threads linenoise int tiny spi lua libc p2 serial2 serial8 wifi psram hyper libci libcix libcx libm libma libmb libmc libthreads liblinenoise libint libtiny libspi liblua libluax libserial2 libserial8 libwifi libpsram libhyper install 
+all: assert ctype errno locale math setjmp signal stdlib string time catalina float threads linenoise int tiny spi lua graphic2 libc p2 serial2 serial8 wifi psram hyper libci libcix libcx libm libma libmb libmc libthreads liblinenoise libint libtiny libspi liblua libluax libgraphic2 libserial2 libserial8 libwifi libpsram libhyper install 
 
 else
 
-all: assert ctype errno locale math setjmp signal stdlib string time catalina float threads linenoise int tiny spi lua graphics vgraphic serial4 serial4x wifi sound tty tty256 libc libci libcix libcx libm libma libmb libmc libthreads liblinenoise libint libtiny libspi liblua libluax libgraphics libvgraphic libserial4 libserial4x libwifi libsound libtty libtty256 install
+all: assert ctype errno locale math setjmp signal stdlib string time catalina float threads linenoise int tiny spi lua graphics vgraphic serial4 serial4x wifi sound tty tty256 libc libci libcix libcx libm libma libmb libmc libthreads liblinenoise libint libtiny libspi liblua libluax libgraphics libgraphic2 libvgraphic libserial4 libserial4x libwifi libsound libtty libtty256 install
 
 endif
 
@@ -69,6 +69,7 @@ clean:
 	$(MAKE) -C p2 clean
 	$(MAKE) -C int clean
 	$(MAKE) -C graphics clean
+	$(MAKE) -C graphic2 clean
 	$(MAKE) -C vgraphic clean
 	$(MAKE) -C tiny clean
 	$(MAKE) -C spi clean
@@ -95,6 +96,7 @@ clean:
 	$(MAKE) -C lib/linenoise clean
 	$(MAKE) -C lib/int clean
 	$(MAKE) -C lib/graphics clean
+	$(MAKE) -C lib/graphic2 clean
 	$(MAKE) -C lib/vgraphic clean
 	$(MAKE) -C lib/tiny clean
 	$(MAKE) -C lib/spi clean
@@ -125,6 +127,7 @@ install:
 	-cp -r lib/linenoise $(OUTPUT)/$(LIB)
 	-cp -r lib/int $(OUTPUT)/$(LIB)
 	-cp -r lib/graphics $(OUTPUT)/$(LIB)
+	-cp -r lib/graphic2 $(OUTPUT)/$(LIB)
 	-cp -r lib/vgraphic $(OUTPUT)/$(LIB)
 	-cp -r lib/tiny $(OUTPUT)/$(LIB)
 	-cp -r lib/spi $(OUTPUT)/$(LIB)
@@ -221,6 +224,9 @@ hyper:	ALWAYSRUN
 
 graphics:	ALWAYSRUN
 	$(MAKE) -C graphics all
+
+graphic2:	ALWAYSRUN
+	$(MAKE) -C graphic2 all
 
 vgraphic:	ALWAYSRUN
 	$(MAKE) -C vgraphic all
@@ -327,6 +333,9 @@ libluax: ALWAYSRUN
 
 libgraphics:	ALWAYSRUN
 	$(MAKE) -C lib/graphics all
+
+libgraphic2:	ALWAYSRUN
+	$(MAKE) -C lib/graphic2 all
 
 libvgraphic:	ALWAYSRUN
 	$(MAKE) -C lib/vgraphic all

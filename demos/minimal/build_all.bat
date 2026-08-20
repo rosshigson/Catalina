@@ -70,7 +70,7 @@ rem do Windows-specific builds ...
 
 echo.
 call build_pasm_tmp_var %CATALINA_DEFINE%
-spinnaker -p -a "%LCCDIR%\minimal\\p1\Catalina_Plugin.spin" -b -o catalina_plugin %TMP_VAR%
+spinnaker -p -a "%LCCDIR%\minimal\\p1\Catalina_Plugin.spin" -b -o catalina_plugin 
 spinc catalina_plugin.binary > plugin_array.h
 del /q /f Catalina_Plugin.binary
 

@@ -15,7 +15,8 @@
 
 // Graphics tiles are 64 bytes each
 //
-#define TILE_SIZE 64 // size of graphics tile
+#define TILE_SIZE 64 
+#define TILE_MASK 0x3F // mask (can be used to align tile RAM if required)
 
 // plugin codes (used in requests to virtual graphics cog):
 //
@@ -205,7 +206,7 @@ void g_move(int double_buffer);
 //                bits[3..2] blue  
 //                bits[1..0] unused
 //
-int g_pallete(int color, int RGB); 
+int g_palette(int color, int RGB); 
 
 
 // Set pixel color to two-bit pattern
@@ -378,7 +379,7 @@ void g_tri(int x1, int y1, int x2, int y2, int x3, int y3);
 
 // Flush any remembered addresses 
 //
-void g_lush();
+void g_flush();
 
 // Wait for any current graphics command to finish
 // use this to insure that it is safe to manually manipulate the bitmap

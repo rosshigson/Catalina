@@ -9,7 +9,7 @@ all:	 \
 	arc.s \
 	box.s \
 	color.s \
-	pallete.s \
+	palette.s \
 	colorw.s \
 	flush.s \
 	finish.s \

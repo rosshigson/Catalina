@@ -59,6 +59,7 @@ extern long _sys_plugin(long code, long param);
 #define LMM_P2P 31
 #define LMM_RND 32
 #define LMM_SVR 33
+#define LMM_USB 34
 
 #define LMM_NUL 255
 
@@ -139,6 +140,12 @@ extern long _sys_plugin(long code, long param);
 #define SVC_T_COLOR_BG   66
 #define SVC_GETTICKS     67
 #define SVC_GETRANDOM    68
+#define SVC_T_GRAPHICS   69
+#define SVC_G_PORT       70
+#define SVC_G_BUTTONS    71
+#define SVC_G_ABS_X      72
+#define SVC_G_ABS_Y      73
+#define SVC_G_ABS_Z      74
 #define SVC_RESERVED     80 // 1 .. 80 reserved for Catalina use
 
 #define SVC_MAX          96 // 81 .. 96 available for general use

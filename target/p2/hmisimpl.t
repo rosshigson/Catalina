@@ -230,9 +230,9 @@ svctable
         byte    done_ok         '30 t_mode ignored
         byte    done_ok         '31 t_scroll ignored
         byte    done_ok         '32 t_color ignored
-        byte    done_bad        
-        byte    done_bad
-        byte    done_bad
+        byte    done_bad        '33
+        byte    done_bad        '34
+        byte    done_bad        '35
 
 '------------------------------------------------------------------
 ' jump table routines - must be within first 255 longs

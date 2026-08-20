@@ -476,7 +476,9 @@ goto do_build_p2
 set TMP_XMMLIB=-lpsram
 if "%XMM_BOARD%" == "HYPER" set TMP_XMMLIB=-lhyper
 
-catalina Catalina_SIO_loader.c -p2 -lci -lserial2 %TMP_XMMLIB% -R0x10000 -C NO_HMI -C %PLATFORM% -o SRAM
+rem note the -R parameter below must match layout.h, cog.h 
+rem and constant.inc and all the other build_utilities scripts
+catalina Catalina_SIO_loader.c -p2 -lci -lserial2 %TMP_XMMLIB% -R0x20000 -C NO_HMI -C %PLATFORM% -o SRAM
 copy /Y SRAM.bin XMM.bin
 
 if NOT "%COPY_CURRENT%"=="Y" goto do_copy_bin_p2

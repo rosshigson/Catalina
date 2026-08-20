@@ -44,7 +44,9 @@ uint32_t DOSFS_WriteSector(uint8_t unit, uint8_t *buffer, uint32_t sector, uint3
 
 //===================================================================
 // Miscellaneous constants
+#ifndef SECTOR_SIZE
 #define SECTOR_SIZE      512      // sector size in bytes
+#endif
 
 //===================================================================
 // Internal subformat identifiers

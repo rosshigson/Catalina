@@ -6,7 +6,7 @@
 ' Otherwise it should be identical to "reserve.inc"
 
 DAT
-         orgh  $1000
+         orgh  $1000          ' must match P2_PROLOGUE_OFFS in layout.h
 
 RESERVED jmp  #\NON_RESERVED  ' $1000 Lower 20 bits = addr of non-reserved hub
 CLKFREQ  long _CLOCKFREQ      ' $1004 initial clock frequency (not updated)
@@ -15,7 +15,7 @@ BAUDRATE long _BAUDRATE       ' $100c initial baud rate (not updated)
 
 ' seglayout specifies the compilation type and layout of the segments:
 
-seglayout                     ' $1010 - if this changes, change catbind.c
+seglayout                     ' $1010 - if this changes, change layout.h
 #if defined(TINY)
         long  0               ' SEGMENT_LAYOUT 0 = TINY
 #elif defined(SMALL)

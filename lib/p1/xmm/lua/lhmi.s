@@ -11,59 +11,59 @@ DAT ' code segment
 DAT ' const data segment
 
  alignl ' align long
-C_si3gq_69f679f3_luahmi_funcs_L000030 ' <symbol:luahmi_funcs>
- long @C_si3gr_69f679f3_31_L000032
- long @C_si3g_69f679f3_hmi_version_L000004
- long @C_si3gs_69f679f3_33_L000034
- long @C_si3g1_69f679f3_hmi_k_get_L000005
- long @C_si3gt_69f679f3_35_L000036
- long @C_si3g2_69f679f3_hmi_k_wait_L000006
- long @C_si3gu_69f679f3_37_L000038
- long @C_si3g3_69f679f3_hmi_k_new_L000007
- long @C_si3gv_69f679f3_39_L000040
- long @C_si3g4_69f679f3_hmi_k_ready_L000008
- long @C_si3g10_69f679f3_41_L000042
- long @C_si3g5_69f679f3_hmi_k_clear_L000009
- long @C_si3g11_69f679f3_43_L000044
- long @C_si3g6_69f679f3_hmi_m_button_L000010
- long @C_si3g12_69f679f3_45_L000046
- long @C_si3g7_69f679f3_hmi_m_abs_x_L000011
- long @C_si3g13_69f679f3_47_L000048
- long @C_si3g8_69f679f3_hmi_m_abs_y_L000012
- long @C_si3g14_69f679f3_49_L000050
- long @C_si3g9_69f679f3_hmi_m_delta_x_L000013
- long @C_si3g15_69f679f3_51_L000052
- long @C_si3ga_69f679f3_hmi_m_delta_y_L000014
- long @C_si3g16_69f679f3_53_L000054
- long @C_si3gb_69f679f3_hmi_m_reset_L000015
- long @C_si3g17_69f679f3_55_L000056
- long @C_si3gc_69f679f3_hmi_m_bound_limits_L000016
- long @C_si3g18_69f679f3_57_L000058
- long @C_si3gd_69f679f3_hmi_m_bound_scales_L000017
- long @C_si3g19_69f679f3_59_L000060
- long @C_si3ge_69f679f3_hmi_m_bound_x_L000018
- long @C_si3g1a_69f679f3_61_L000062
- long @C_si3gf_69f679f3_hmi_m_bound_y_L000019
- long @C_si3g1b_69f679f3_63_L000064
- long @C_si3gg_69f679f3_hmi_t_geometry_L000020
- long @C_si3g1c_69f679f3_65_L000066
- long @C_si3gh_69f679f3_hmi_t_char_L000021
- long @C_si3g1d_69f679f3_67_L000068
- long @C_si3gi_69f679f3_hmi_t_mode_L000022
- long @C_si3g1e_69f679f3_69_L000070
- long @C_si3gj_69f679f3_hmi_t_setpos_L000023
- long @C_si3g1f_69f679f3_71_L000072
- long @C_si3gk_69f679f3_hmi_t_getpos_L000024
- long @C_si3g1g_69f679f3_73_L000074
- long @C_si3gl_69f679f3_hmi_t_scroll_L000025
- long @C_si3g1h_69f679f3_75_L000076
- long @C_si3gm_69f679f3_hmi_t_color_L000026
- long @C_si3g1i_69f679f3_77_L000078
- long @C_si3gn_69f679f3_hmi_t_color_fg_L000027
- long @C_si3g1j_69f679f3_79_L000080
- long @C_si3go_69f679f3_hmi_t_color_bg_L000028
- long @C_si3g1k_69f679f3_81_L000082
- long @C_si3gp_69f679f3_hmi_t_string_L000029
+C_sgisq_6a858965_luahmi_funcs_L000030 ' <symbol:luahmi_funcs>
+ long @C_sgisr_6a858965_31_L000032
+ long @C_sgis_6a858965_hmi_version_L000004
+ long @C_sgiss_6a858965_33_L000034
+ long @C_sgis1_6a858965_hmi_k_get_L000005
+ long @C_sgist_6a858965_35_L000036
+ long @C_sgis2_6a858965_hmi_k_wait_L000006
+ long @C_sgisu_6a858965_37_L000038
+ long @C_sgis3_6a858965_hmi_k_new_L000007
+ long @C_sgisv_6a858965_39_L000040
+ long @C_sgis4_6a858965_hmi_k_ready_L000008
+ long @C_sgis10_6a858965_41_L000042
+ long @C_sgis5_6a858965_hmi_k_clear_L000009
+ long @C_sgis11_6a858965_43_L000044
+ long @C_sgis6_6a858965_hmi_m_button_L000010
+ long @C_sgis12_6a858965_45_L000046
+ long @C_sgis7_6a858965_hmi_m_abs_x_L000011
+ long @C_sgis13_6a858965_47_L000048
+ long @C_sgis8_6a858965_hmi_m_abs_y_L000012
+ long @C_sgis14_6a858965_49_L000050
+ long @C_sgis9_6a858965_hmi_m_delta_x_L000013
+ long @C_sgis15_6a858965_51_L000052
+ long @C_sgisa_6a858965_hmi_m_delta_y_L000014
+ long @C_sgis16_6a858965_53_L000054
+ long @C_sgisb_6a858965_hmi_m_reset_L000015
+ long @C_sgis17_6a858965_55_L000056
+ long @C_sgisc_6a858965_hmi_m_bound_limits_L000016
+ long @C_sgis18_6a858965_57_L000058
+ long @C_sgisd_6a858965_hmi_m_bound_scales_L000017
+ long @C_sgis19_6a858965_59_L000060
+ long @C_sgise_6a858965_hmi_m_bound_x_L000018
+ long @C_sgis1a_6a858965_61_L000062
+ long @C_sgisf_6a858965_hmi_m_bound_y_L000019
+ long @C_sgis1b_6a858965_63_L000064
+ long @C_sgisg_6a858965_hmi_t_geometry_L000020
+ long @C_sgis1c_6a858965_65_L000066
+ long @C_sgish_6a858965_hmi_t_char_L000021
+ long @C_sgis1d_6a858965_67_L000068
+ long @C_sgisi_6a858965_hmi_t_mode_L000022
+ long @C_sgis1e_6a858965_69_L000070
+ long @C_sgisj_6a858965_hmi_t_setpos_L000023
+ long @C_sgis1f_6a858965_71_L000072
+ long @C_sgisk_6a858965_hmi_t_getpos_L000024
+ long @C_sgis1g_6a858965_73_L000074
+ long @C_sgisl_6a858965_hmi_t_scroll_L000025
+ long @C_sgis1h_6a858965_75_L000076
+ long @C_sgism_6a858965_hmi_t_color_L000026
+ long @C_sgis1i_6a858965_77_L000078
+ long @C_sgisn_6a858965_hmi_t_color_fg_L000027
+ long @C_sgis1j_6a858965_79_L000080
+ long @C_sgiso_6a858965_hmi_t_color_bg_L000028
+ long @C_sgis1k_6a858965_81_L000082
+ long @C_sgisp_6a858965_hmi_t_string_L000029
  long $0
  long $0
 
@@ -72,7 +72,7 @@ C_si3gq_69f679f3_luahmi_funcs_L000030 ' <symbol:luahmi_funcs>
 DAT ' code segment
 
  alignl ' align long
-C_si3gp_69f679f3_hmi_t_string_L000029 ' <symbol:hmi_t_string>
+C_sgisp_6a858965_hmi_t_string_L000029 ' <symbol:hmi_t_string>
  jmp #NEWF
  jmp #PSHM
  long $e80000 ' save registers
@@ -83,7 +83,7 @@ C_si3gp_69f679f3_hmi_t_string_L000029 ' <symbol:hmi_t_string>
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_si3gp_69f679f3_hmi_t_string_L000029_84 ' LEI4
+ long @C_sgisp_6a858965_hmi_t_string_L000029_84 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -127,16 +127,16 @@ C_si3gp_69f679f3_hmi_t_string_L000029 ' <symbol:hmi_t_string>
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
  jmp #JMPA
- long @C_si3gp_69f679f3_hmi_t_string_L000029_83 ' JUMPV addrg
-C_si3gp_69f679f3_hmi_t_string_L000029_84
+ long @C_sgisp_6a858965_hmi_t_string_L000029_83 ' JUMPV addrg
+C_sgisp_6a858965_hmi_t_string_L000029_84
  mov r0, #0 ' reg <- coni
-C_si3gp_69f679f3_hmi_t_string_L000029_83
+C_sgisp_6a858965_hmi_t_string_L000029_83
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_si3g_69f679f3_hmi_version_L000004 ' <symbol:hmi_version>
+C_sgis_6a858965_hmi_version_L000004 ' <symbol:hmi_version>
  jmp #NEWF
  jmp #PSHM
  long $e00000 ' save registers
@@ -147,7 +147,7 @@ C_si3g_69f679f3_hmi_version_L000004 ' <symbol:hmi_version>
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_si3g_69f679f3_hmi_version_L000004_87 ' LEI4
+ long @C_sgis_6a858965_hmi_version_L000004_87 ' LEI4
  jmp #LODL
  long 0
  mov r2, RI ' reg ARG con
@@ -167,7 +167,7 @@ C_si3g_69f679f3_hmi_version_L000004 ' <symbol:hmi_version>
  long @C_lua_settop
  add SP, #4 ' CALL addrg
  jmp #LODL
- long @C_si3g_69f679f3_hmi_version_L000004_91_L000092
+ long @C_sgis_6a858965_hmi_version_L000004_91_L000092
  mov r2, RI ' reg ARG ADDRG
  mov r3, r21 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -177,7 +177,7 @@ C_si3g_69f679f3_hmi_version_L000004 ' <symbol:hmi_version>
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
  jmp #BRNZ
- long @C_si3g_69f679f3_hmi_version_L000004_89 ' NEI4
+ long @C_sgis_6a858965_hmi_version_L000004_89 ' NEI4
  mov r2, #504 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -186,10 +186,10 @@ C_si3g_69f679f3_hmi_version_L000004 ' <symbol:hmi_version>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  jmp #JMPA
- long @C_si3g_69f679f3_hmi_version_L000004_88 ' JUMPV addrg
-C_si3g_69f679f3_hmi_version_L000004_89
+ long @C_sgis_6a858965_hmi_version_L000004_88 ' JUMPV addrg
+C_sgis_6a858965_hmi_version_L000004_89
  jmp #LODL
- long @C_si3g_69f679f3_hmi_version_L000004_95_L000096
+ long @C_sgis_6a858965_hmi_version_L000004_95_L000096
  mov r2, RI ' reg ARG ADDRG
  mov r3, r21 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -199,7 +199,7 @@ C_si3g_69f679f3_hmi_version_L000004_89
  add SP, #4 ' CALL addrg
  cmps r0,  #0 wz
  jmp #BRNZ
- long @C_si3g_69f679f3_hmi_version_L000004_93 ' NEI4
+ long @C_sgis_6a858965_hmi_version_L000004_93 ' NEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -208,8 +208,8 @@ C_si3g_69f679f3_hmi_version_L000004_89
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  jmp #JMPA
- long @C_si3g_69f679f3_hmi_version_L000004_88 ' JUMPV addrg
-C_si3g_69f679f3_hmi_version_L000004_93
+ long @C_sgis_6a858965_hmi_version_L000004_88 ' JUMPV addrg
+C_sgis_6a858965_hmi_version_L000004_93
  jmp #LODL
  long 810
  mov r2, RI ' reg ARG con
@@ -220,8 +220,8 @@ C_si3g_69f679f3_hmi_version_L000004_93
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  jmp #JMPA
- long @C_si3g_69f679f3_hmi_version_L000004_88 ' JUMPV addrg
-C_si3g_69f679f3_hmi_version_L000004_87
+ long @C_sgis_6a858965_hmi_version_L000004_88 ' JUMPV addrg
+C_sgis_6a858965_hmi_version_L000004_87
  mov r2, #0 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -236,15 +236,15 @@ C_si3g_69f679f3_hmi_version_L000004_87
  jmp #CALA
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
-C_si3g_69f679f3_hmi_version_L000004_88
+C_sgis_6a858965_hmi_version_L000004_88
  mov r0, #1 ' reg <- coni
-' C_si3g_69f679f3_hmi_version_L000004_86 ' (symbol refcount = 0)
+' C_sgis_6a858965_hmi_version_L000004_86 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_si3g1_69f679f3_hmi_k_get_L000005 ' <symbol:hmi_k_get>
+C_sgis1_6a858965_hmi_k_get_L000005 ' <symbol:hmi_k_get>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -261,13 +261,13 @@ C_si3g1_69f679f3_hmi_k_get_L000005 ' <symbol:hmi_k_get>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_si3g1_69f679f3_hmi_k_get_L000005_97 ' (symbol refcount = 0)
+' C_sgis1_6a858965_hmi_k_get_L000005_97 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_si3g2_69f679f3_hmi_k_wait_L000006 ' <symbol:hmi_k_wait>
+C_sgis2_6a858965_hmi_k_wait_L000006 ' <symbol:hmi_k_wait>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -284,13 +284,13 @@ C_si3g2_69f679f3_hmi_k_wait_L000006 ' <symbol:hmi_k_wait>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_si3g2_69f679f3_hmi_k_wait_L000006_98 ' (symbol refcount = 0)
+' C_sgis2_6a858965_hmi_k_wait_L000006_98 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_si3g3_69f679f3_hmi_k_new_L000007 ' <symbol:hmi_k_new>
+C_sgis3_6a858965_hmi_k_new_L000007 ' <symbol:hmi_k_new>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -307,13 +307,13 @@ C_si3g3_69f679f3_hmi_k_new_L000007 ' <symbol:hmi_k_new>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_si3g3_69f679f3_hmi_k_new_L000007_99 ' (symbol refcount = 0)
+' C_sgis3_6a858965_hmi_k_new_L000007_99 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_si3g4_69f679f3_hmi_k_ready_L000008 ' <symbol:hmi_k_ready>
+C_sgis4_6a858965_hmi_k_ready_L000008 ' <symbol:hmi_k_ready>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -330,13 +330,13 @@ C_si3g4_69f679f3_hmi_k_ready_L000008 ' <symbol:hmi_k_ready>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_si3g4_69f679f3_hmi_k_ready_L000008_100 ' (symbol refcount = 0)
+' C_sgis4_6a858965_hmi_k_ready_L000008_100 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_si3g5_69f679f3_hmi_k_clear_L000009 ' <symbol:hmi_k_clear>
+C_sgis5_6a858965_hmi_k_clear_L000009 ' <symbol:hmi_k_clear>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -353,13 +353,13 @@ C_si3g5_69f679f3_hmi_k_clear_L000009 ' <symbol:hmi_k_clear>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_si3g5_69f679f3_hmi_k_clear_L000009_101 ' (symbol refcount = 0)
+' C_sgis5_6a858965_hmi_k_clear_L000009_101 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_si3g6_69f679f3_hmi_m_button_L000010 ' <symbol:hmi_m_button>
+C_sgis6_6a858965_hmi_m_button_L000010 ' <symbol:hmi_m_button>
  jmp #NEWF
  jmp #PSHM
  long $e00000 ' save registers
@@ -370,7 +370,7 @@ C_si3g6_69f679f3_hmi_m_button_L000010 ' <symbol:hmi_m_button>
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_si3g6_69f679f3_hmi_m_button_L000010_103 ' LEI4
+ long @C_sgis6_6a858965_hmi_m_button_L000010_103 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -400,16 +400,16 @@ C_si3g6_69f679f3_hmi_m_button_L000010 ' <symbol:hmi_m_button>
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
  jmp #JMPA
- long @C_si3g6_69f679f3_hmi_m_button_L000010_102 ' JUMPV addrg
-C_si3g6_69f679f3_hmi_m_button_L000010_103
+ long @C_sgis6_6a858965_hmi_m_button_L000010_102 ' JUMPV addrg
+C_sgis6_6a858965_hmi_m_button_L000010_103
  mov r0, #0 ' reg <- coni
-C_si3g6_69f679f3_hmi_m_button_L000010_102
+C_sgis6_6a858965_hmi_m_button_L000010_102
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_si3g7_69f679f3_hmi_m_abs_x_L000011 ' <symbol:hmi_m_abs_x>
+C_sgis7_6a858965_hmi_m_abs_x_L000011 ' <symbol:hmi_m_abs_x>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -426,13 +426,13 @@ C_si3g7_69f679f3_hmi_m_abs_x_L000011 ' <symbol:hmi_m_abs_x>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_si3g7_69f679f3_hmi_m_abs_x_L000011_105 ' (symbol refcount = 0)
+' C_sgis7_6a858965_hmi_m_abs_x_L000011_105 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_si3g8_69f679f3_hmi_m_abs_y_L000012 ' <symbol:hmi_m_abs_y>
+C_sgis8_6a858965_hmi_m_abs_y_L000012 ' <symbol:hmi_m_abs_y>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -449,13 +449,13 @@ C_si3g8_69f679f3_hmi_m_abs_y_L000012 ' <symbol:hmi_m_abs_y>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_si3g8_69f679f3_hmi_m_abs_y_L000012_106 ' (symbol refcount = 0)
+' C_sgis8_6a858965_hmi_m_abs_y_L000012_106 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_si3g9_69f679f3_hmi_m_delta_x_L000013 ' <symbol:hmi_m_delta_x>
+C_sgis9_6a858965_hmi_m_delta_x_L000013 ' <symbol:hmi_m_delta_x>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -472,13 +472,13 @@ C_si3g9_69f679f3_hmi_m_delta_x_L000013 ' <symbol:hmi_m_delta_x>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_si3g9_69f679f3_hmi_m_delta_x_L000013_107 ' (symbol refcount = 0)
+' C_sgis9_6a858965_hmi_m_delta_x_L000013_107 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_si3ga_69f679f3_hmi_m_delta_y_L000014 ' <symbol:hmi_m_delta_y>
+C_sgisa_6a858965_hmi_m_delta_y_L000014 ' <symbol:hmi_m_delta_y>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -495,13 +495,13 @@ C_si3ga_69f679f3_hmi_m_delta_y_L000014 ' <symbol:hmi_m_delta_y>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_si3ga_69f679f3_hmi_m_delta_y_L000014_108 ' (symbol refcount = 0)
+' C_sgisa_6a858965_hmi_m_delta_y_L000014_108 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_si3gb_69f679f3_hmi_m_reset_L000015 ' <symbol:hmi_m_reset>
+C_sgisb_6a858965_hmi_m_reset_L000015 ' <symbol:hmi_m_reset>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -518,13 +518,13 @@ C_si3gb_69f679f3_hmi_m_reset_L000015 ' <symbol:hmi_m_reset>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_si3gb_69f679f3_hmi_m_reset_L000015_109 ' (symbol refcount = 0)
+' C_sgisb_6a858965_hmi_m_reset_L000015_109 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_si3gc_69f679f3_hmi_m_bound_limits_L000016 ' <symbol:hmi_m_bound_limits>
+C_sgisc_6a858965_hmi_m_bound_limits_L000016 ' <symbol:hmi_m_bound_limits>
  jmp #NEWF
  jmp #PSHM
  long $ea8000 ' save registers
@@ -535,7 +535,7 @@ C_si3gc_69f679f3_hmi_m_bound_limits_L000016 ' <symbol:hmi_m_bound_limits>
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_si3gc_69f679f3_hmi_m_bound_limits_L000016_111 ' LEI4
+ long @C_sgisc_6a858965_hmi_m_bound_limits_L000016_111 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -592,16 +592,16 @@ C_si3gc_69f679f3_hmi_m_bound_limits_L000016 ' <symbol:hmi_m_bound_limits>
  add SP, #20 ' CALL addrg
  mov r0, #0 ' reg <- coni
  jmp #JMPA
- long @C_si3gc_69f679f3_hmi_m_bound_limits_L000016_110 ' JUMPV addrg
-C_si3gc_69f679f3_hmi_m_bound_limits_L000016_111
+ long @C_sgisc_6a858965_hmi_m_bound_limits_L000016_110 ' JUMPV addrg
+C_sgisc_6a858965_hmi_m_bound_limits_L000016_111
  mov r0, #0 ' reg <- coni
-C_si3gc_69f679f3_hmi_m_bound_limits_L000016_110
+C_sgisc_6a858965_hmi_m_bound_limits_L000016_110
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_si3gd_69f679f3_hmi_m_bound_scales_L000017 ' <symbol:hmi_m_bound_scales>
+C_sgisd_6a858965_hmi_m_bound_scales_L000017 ' <symbol:hmi_m_bound_scales>
  jmp #NEWF
  jmp #PSHM
  long $e80000 ' save registers
@@ -612,7 +612,7 @@ C_si3gd_69f679f3_hmi_m_bound_scales_L000017 ' <symbol:hmi_m_bound_scales>
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_si3gd_69f679f3_hmi_m_bound_scales_L000017_114 ' LEI4
+ long @C_sgisd_6a858965_hmi_m_bound_scales_L000017_114 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -646,16 +646,16 @@ C_si3gd_69f679f3_hmi_m_bound_scales_L000017 ' <symbol:hmi_m_bound_scales>
  add SP, #8 ' CALL addrg
  mov r0, #0 ' reg <- coni
  jmp #JMPA
- long @C_si3gd_69f679f3_hmi_m_bound_scales_L000017_113 ' JUMPV addrg
-C_si3gd_69f679f3_hmi_m_bound_scales_L000017_114
+ long @C_sgisd_6a858965_hmi_m_bound_scales_L000017_113 ' JUMPV addrg
+C_sgisd_6a858965_hmi_m_bound_scales_L000017_114
  mov r0, #0 ' reg <- coni
-C_si3gd_69f679f3_hmi_m_bound_scales_L000017_113
+C_sgisd_6a858965_hmi_m_bound_scales_L000017_113
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_si3ge_69f679f3_hmi_m_bound_x_L000018 ' <symbol:hmi_m_bound_x>
+C_sgise_6a858965_hmi_m_bound_x_L000018 ' <symbol:hmi_m_bound_x>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -672,13 +672,13 @@ C_si3ge_69f679f3_hmi_m_bound_x_L000018 ' <symbol:hmi_m_bound_x>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_si3ge_69f679f3_hmi_m_bound_x_L000018_116 ' (symbol refcount = 0)
+' C_sgise_6a858965_hmi_m_bound_x_L000018_116 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_si3gf_69f679f3_hmi_m_bound_y_L000019 ' <symbol:hmi_m_bound_y>
+C_sgisf_6a858965_hmi_m_bound_y_L000019 ' <symbol:hmi_m_bound_y>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -695,13 +695,13 @@ C_si3gf_69f679f3_hmi_m_bound_y_L000019 ' <symbol:hmi_m_bound_y>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_si3gf_69f679f3_hmi_m_bound_y_L000019_117 ' (symbol refcount = 0)
+' C_sgisf_6a858965_hmi_m_bound_y_L000019_117 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_si3gg_69f679f3_hmi_t_geometry_L000020 ' <symbol:hmi_t_geometry>
+C_sgisg_6a858965_hmi_t_geometry_L000020 ' <symbol:hmi_t_geometry>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -718,13 +718,13 @@ C_si3gg_69f679f3_hmi_t_geometry_L000020 ' <symbol:hmi_t_geometry>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_si3gg_69f679f3_hmi_t_geometry_L000020_118 ' (symbol refcount = 0)
+' C_sgisg_6a858965_hmi_t_geometry_L000020_118 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_si3gh_69f679f3_hmi_t_char_L000021 ' <symbol:hmi_t_char>
+C_sgish_6a858965_hmi_t_char_L000021 ' <symbol:hmi_t_char>
  jmp #NEWF
  jmp #PSHM
  long $e80000 ' save registers
@@ -735,7 +735,7 @@ C_si3gh_69f679f3_hmi_t_char_L000021 ' <symbol:hmi_t_char>
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_si3gh_69f679f3_hmi_t_char_L000021_120 ' LEI4
+ long @C_sgish_6a858965_hmi_t_char_L000021_120 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -776,16 +776,16 @@ C_si3gh_69f679f3_hmi_t_char_L000021 ' <symbol:hmi_t_char>
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
  jmp #JMPA
- long @C_si3gh_69f679f3_hmi_t_char_L000021_119 ' JUMPV addrg
-C_si3gh_69f679f3_hmi_t_char_L000021_120
+ long @C_sgish_6a858965_hmi_t_char_L000021_119 ' JUMPV addrg
+C_sgish_6a858965_hmi_t_char_L000021_120
  mov r0, #0 ' reg <- coni
-C_si3gh_69f679f3_hmi_t_char_L000021_119
+C_sgish_6a858965_hmi_t_char_L000021_119
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_si3gi_69f679f3_hmi_t_mode_L000022 ' <symbol:hmi_t_mode>
+C_sgisi_6a858965_hmi_t_mode_L000022 ' <symbol:hmi_t_mode>
  jmp #NEWF
  jmp #PSHM
  long $e80000 ' save registers
@@ -796,7 +796,7 @@ C_si3gi_69f679f3_hmi_t_mode_L000022 ' <symbol:hmi_t_mode>
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_si3gi_69f679f3_hmi_t_mode_L000022_123 ' LEI4
+ long @C_sgisi_6a858965_hmi_t_mode_L000022_123 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -837,16 +837,16 @@ C_si3gi_69f679f3_hmi_t_mode_L000022 ' <symbol:hmi_t_mode>
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
  jmp #JMPA
- long @C_si3gi_69f679f3_hmi_t_mode_L000022_122 ' JUMPV addrg
-C_si3gi_69f679f3_hmi_t_mode_L000022_123
+ long @C_sgisi_6a858965_hmi_t_mode_L000022_122 ' JUMPV addrg
+C_sgisi_6a858965_hmi_t_mode_L000022_123
  mov r0, #0 ' reg <- coni
-C_si3gi_69f679f3_hmi_t_mode_L000022_122
+C_sgisi_6a858965_hmi_t_mode_L000022_122
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_si3gj_69f679f3_hmi_t_setpos_L000023 ' <symbol:hmi_t_setpos>
+C_sgisj_6a858965_hmi_t_setpos_L000023 ' <symbol:hmi_t_setpos>
  jmp #NEWF
  jmp #PSHM
  long $ea0000 ' save registers
@@ -857,7 +857,7 @@ C_si3gj_69f679f3_hmi_t_setpos_L000023 ' <symbol:hmi_t_setpos>
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_si3gj_69f679f3_hmi_t_setpos_L000023_126 ' LEI4
+ long @C_sgisj_6a858965_hmi_t_setpos_L000023_126 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -907,16 +907,16 @@ C_si3gj_69f679f3_hmi_t_setpos_L000023 ' <symbol:hmi_t_setpos>
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
  jmp #JMPA
- long @C_si3gj_69f679f3_hmi_t_setpos_L000023_125 ' JUMPV addrg
-C_si3gj_69f679f3_hmi_t_setpos_L000023_126
+ long @C_sgisj_6a858965_hmi_t_setpos_L000023_125 ' JUMPV addrg
+C_sgisj_6a858965_hmi_t_setpos_L000023_126
  mov r0, #0 ' reg <- coni
-C_si3gj_69f679f3_hmi_t_setpos_L000023_125
+C_sgisj_6a858965_hmi_t_setpos_L000023_125
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_si3gk_69f679f3_hmi_t_getpos_L000024 ' <symbol:hmi_t_getpos>
+C_sgisk_6a858965_hmi_t_getpos_L000024 ' <symbol:hmi_t_getpos>
  jmp #NEWF
  jmp #PSHM
  long $e00000 ' save registers
@@ -927,7 +927,7 @@ C_si3gk_69f679f3_hmi_t_getpos_L000024 ' <symbol:hmi_t_getpos>
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_si3gk_69f679f3_hmi_t_getpos_L000024_129 ' LEI4
+ long @C_sgisk_6a858965_hmi_t_getpos_L000024_129 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -957,16 +957,16 @@ C_si3gk_69f679f3_hmi_t_getpos_L000024 ' <symbol:hmi_t_getpos>
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
  jmp #JMPA
- long @C_si3gk_69f679f3_hmi_t_getpos_L000024_128 ' JUMPV addrg
-C_si3gk_69f679f3_hmi_t_getpos_L000024_129
+ long @C_sgisk_6a858965_hmi_t_getpos_L000024_128 ' JUMPV addrg
+C_sgisk_6a858965_hmi_t_getpos_L000024_129
  mov r0, #0 ' reg <- coni
-C_si3gk_69f679f3_hmi_t_getpos_L000024_128
+C_sgisk_6a858965_hmi_t_getpos_L000024_128
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_si3gl_69f679f3_hmi_t_scroll_L000025 ' <symbol:hmi_t_scroll>
+C_sgisl_6a858965_hmi_t_scroll_L000025 ' <symbol:hmi_t_scroll>
  jmp #NEWF
  jmp #PSHM
  long $ea0000 ' save registers
@@ -977,7 +977,7 @@ C_si3gl_69f679f3_hmi_t_scroll_L000025 ' <symbol:hmi_t_scroll>
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_si3gl_69f679f3_hmi_t_scroll_L000025_132 ' LEI4
+ long @C_sgisl_6a858965_hmi_t_scroll_L000025_132 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1027,16 +1027,16 @@ C_si3gl_69f679f3_hmi_t_scroll_L000025 ' <symbol:hmi_t_scroll>
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
  jmp #JMPA
- long @C_si3gl_69f679f3_hmi_t_scroll_L000025_131 ' JUMPV addrg
-C_si3gl_69f679f3_hmi_t_scroll_L000025_132
+ long @C_sgisl_6a858965_hmi_t_scroll_L000025_131 ' JUMPV addrg
+C_sgisl_6a858965_hmi_t_scroll_L000025_132
  mov r0, #0 ' reg <- coni
-C_si3gl_69f679f3_hmi_t_scroll_L000025_131
+C_sgisl_6a858965_hmi_t_scroll_L000025_131
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_si3gm_69f679f3_hmi_t_color_L000026 ' <symbol:hmi_t_color>
+C_sgism_6a858965_hmi_t_color_L000026 ' <symbol:hmi_t_color>
  jmp #NEWF
  jmp #PSHM
  long $e80000 ' save registers
@@ -1047,7 +1047,7 @@ C_si3gm_69f679f3_hmi_t_color_L000026 ' <symbol:hmi_t_color>
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_si3gm_69f679f3_hmi_t_color_L000026_135 ' LEI4
+ long @C_sgism_6a858965_hmi_t_color_L000026_135 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1088,16 +1088,16 @@ C_si3gm_69f679f3_hmi_t_color_L000026 ' <symbol:hmi_t_color>
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
  jmp #JMPA
- long @C_si3gm_69f679f3_hmi_t_color_L000026_134 ' JUMPV addrg
-C_si3gm_69f679f3_hmi_t_color_L000026_135
+ long @C_sgism_6a858965_hmi_t_color_L000026_134 ' JUMPV addrg
+C_sgism_6a858965_hmi_t_color_L000026_135
  mov r0, #0 ' reg <- coni
-C_si3gm_69f679f3_hmi_t_color_L000026_134
+C_sgism_6a858965_hmi_t_color_L000026_134
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_si3gn_69f679f3_hmi_t_color_fg_L000027 ' <symbol:hmi_t_color_fg>
+C_sgisn_6a858965_hmi_t_color_fg_L000027 ' <symbol:hmi_t_color_fg>
  jmp #NEWF
  jmp #PSHM
  long $e80000 ' save registers
@@ -1108,7 +1108,7 @@ C_si3gn_69f679f3_hmi_t_color_fg_L000027 ' <symbol:hmi_t_color_fg>
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_si3gn_69f679f3_hmi_t_color_fg_L000027_138 ' LEI4
+ long @C_sgisn_6a858965_hmi_t_color_fg_L000027_138 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1149,16 +1149,16 @@ C_si3gn_69f679f3_hmi_t_color_fg_L000027 ' <symbol:hmi_t_color_fg>
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
  jmp #JMPA
- long @C_si3gn_69f679f3_hmi_t_color_fg_L000027_137 ' JUMPV addrg
-C_si3gn_69f679f3_hmi_t_color_fg_L000027_138
+ long @C_sgisn_6a858965_hmi_t_color_fg_L000027_137 ' JUMPV addrg
+C_sgisn_6a858965_hmi_t_color_fg_L000027_138
  mov r0, #0 ' reg <- coni
-C_si3gn_69f679f3_hmi_t_color_fg_L000027_137
+C_sgisn_6a858965_hmi_t_color_fg_L000027_137
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_si3go_69f679f3_hmi_t_color_bg_L000028 ' <symbol:hmi_t_color_bg>
+C_sgiso_6a858965_hmi_t_color_bg_L000028 ' <symbol:hmi_t_color_bg>
  jmp #NEWF
  jmp #PSHM
  long $e80000 ' save registers
@@ -1169,7 +1169,7 @@ C_si3go_69f679f3_hmi_t_color_bg_L000028 ' <symbol:hmi_t_color_bg>
  long @C_lua_gettop ' CALL addrg
  cmps r0,  #0 wz,wc
  jmp #BRBE
- long @C_si3go_69f679f3_hmi_t_color_bg_L000028_141 ' LEI4
+ long @C_sgiso_6a858965_hmi_t_color_bg_L000028_141 ' LEI4
  mov r2, #1 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -1210,10 +1210,10 @@ C_si3go_69f679f3_hmi_t_color_bg_L000028 ' <symbol:hmi_t_color_bg>
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
  jmp #JMPA
- long @C_si3go_69f679f3_hmi_t_color_bg_L000028_140 ' JUMPV addrg
-C_si3go_69f679f3_hmi_t_color_bg_L000028_141
+ long @C_sgiso_6a858965_hmi_t_color_bg_L000028_140 ' JUMPV addrg
+C_sgiso_6a858965_hmi_t_color_bg_L000028_141
  mov r0, #0 ' reg <- coni
-C_si3go_69f679f3_hmi_t_color_bg_L000028_140
+C_sgiso_6a858965_hmi_t_color_bg_L000028_140
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -1246,7 +1246,7 @@ C_luaopen_hmi ' <symbol:luaopen_hmi>
  add SP, #8 ' CALL addrg
  mov r2, #0 ' reg ARG coni
  jmp #LODL
- long @C_si3gq_69f679f3_luahmi_funcs_L000030
+ long @C_sgisq_6a858965_luahmi_funcs_L000030
  mov r3, RI ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -1335,7 +1335,7 @@ C_luaopen_hmi_144_L000145 ' <symbol:144>
  long $43fc0000 ' float
 
  alignl ' align long
-C_si3g_69f679f3_hmi_version_L000004_95_L000096 ' <symbol:95>
+C_sgis_6a858965_hmi_version_L000004_95_L000096 ' <symbol:95>
  byte 104
  byte 97
  byte 114
@@ -1347,14 +1347,14 @@ C_si3g_69f679f3_hmi_version_L000004_95_L000096 ' <symbol:95>
  byte 0
 
  alignl ' align long
-C_si3g_69f679f3_hmi_version_L000004_91_L000092 ' <symbol:91>
+C_sgis_6a858965_hmi_version_L000004_91_L000092 ' <symbol:91>
  byte 108
  byte 117
  byte 97
  byte 0
 
  alignl ' align long
-C_si3g1k_69f679f3_81_L000082 ' <symbol:81>
+C_sgis1k_6a858965_81_L000082 ' <symbol:81>
  byte 116
  byte 95
  byte 115
@@ -1366,7 +1366,7 @@ C_si3g1k_69f679f3_81_L000082 ' <symbol:81>
  byte 0
 
  alignl ' align long
-C_si3g1j_69f679f3_79_L000080 ' <symbol:79>
+C_sgis1j_6a858965_79_L000080 ' <symbol:79>
  byte 116
  byte 95
  byte 99
@@ -1380,7 +1380,7 @@ C_si3g1j_69f679f3_79_L000080 ' <symbol:79>
  byte 0
 
  alignl ' align long
-C_si3g1i_69f679f3_77_L000078 ' <symbol:77>
+C_sgis1i_6a858965_77_L000078 ' <symbol:77>
  byte 116
  byte 95
  byte 99
@@ -1394,7 +1394,7 @@ C_si3g1i_69f679f3_77_L000078 ' <symbol:77>
  byte 0
 
  alignl ' align long
-C_si3g1h_69f679f3_75_L000076 ' <symbol:75>
+C_sgis1h_6a858965_75_L000076 ' <symbol:75>
  byte 116
  byte 95
  byte 99
@@ -1405,7 +1405,7 @@ C_si3g1h_69f679f3_75_L000076 ' <symbol:75>
  byte 0
 
  alignl ' align long
-C_si3g1g_69f679f3_73_L000074 ' <symbol:73>
+C_sgis1g_6a858965_73_L000074 ' <symbol:73>
  byte 116
  byte 95
  byte 115
@@ -1417,7 +1417,7 @@ C_si3g1g_69f679f3_73_L000074 ' <symbol:73>
  byte 0
 
  alignl ' align long
-C_si3g1f_69f679f3_71_L000072 ' <symbol:71>
+C_sgis1f_6a858965_71_L000072 ' <symbol:71>
  byte 116
  byte 95
  byte 103
@@ -1429,7 +1429,7 @@ C_si3g1f_69f679f3_71_L000072 ' <symbol:71>
  byte 0
 
  alignl ' align long
-C_si3g1e_69f679f3_69_L000070 ' <symbol:69>
+C_sgis1e_6a858965_69_L000070 ' <symbol:69>
  byte 116
  byte 95
  byte 115
@@ -1441,7 +1441,7 @@ C_si3g1e_69f679f3_69_L000070 ' <symbol:69>
  byte 0
 
  alignl ' align long
-C_si3g1d_69f679f3_67_L000068 ' <symbol:67>
+C_sgis1d_6a858965_67_L000068 ' <symbol:67>
  byte 116
  byte 95
  byte 109
@@ -1451,7 +1451,7 @@ C_si3g1d_69f679f3_67_L000068 ' <symbol:67>
  byte 0
 
  alignl ' align long
-C_si3g1c_69f679f3_65_L000066 ' <symbol:65>
+C_sgis1c_6a858965_65_L000066 ' <symbol:65>
  byte 116
  byte 95
  byte 99
@@ -1461,7 +1461,7 @@ C_si3g1c_69f679f3_65_L000066 ' <symbol:65>
  byte 0
 
  alignl ' align long
-C_si3g1b_69f679f3_63_L000064 ' <symbol:63>
+C_sgis1b_6a858965_63_L000064 ' <symbol:63>
  byte 116
  byte 95
  byte 103
@@ -1475,7 +1475,7 @@ C_si3g1b_69f679f3_63_L000064 ' <symbol:63>
  byte 0
 
  alignl ' align long
-C_si3g1a_69f679f3_61_L000062 ' <symbol:61>
+C_sgis1a_6a858965_61_L000062 ' <symbol:61>
  byte 109
  byte 95
  byte 98
@@ -1488,7 +1488,7 @@ C_si3g1a_69f679f3_61_L000062 ' <symbol:61>
  byte 0
 
  alignl ' align long
-C_si3g19_69f679f3_59_L000060 ' <symbol:59>
+C_sgis19_6a858965_59_L000060 ' <symbol:59>
  byte 109
  byte 95
  byte 98
@@ -1501,7 +1501,7 @@ C_si3g19_69f679f3_59_L000060 ' <symbol:59>
  byte 0
 
  alignl ' align long
-C_si3g18_69f679f3_57_L000058 ' <symbol:57>
+C_sgis18_6a858965_57_L000058 ' <symbol:57>
  byte 109
  byte 95
  byte 98
@@ -1519,7 +1519,7 @@ C_si3g18_69f679f3_57_L000058 ' <symbol:57>
  byte 0
 
  alignl ' align long
-C_si3g17_69f679f3_55_L000056 ' <symbol:55>
+C_sgis17_6a858965_55_L000056 ' <symbol:55>
  byte 109
  byte 95
  byte 98
@@ -1537,7 +1537,7 @@ C_si3g17_69f679f3_55_L000056 ' <symbol:55>
  byte 0
 
  alignl ' align long
-C_si3g16_69f679f3_53_L000054 ' <symbol:53>
+C_sgis16_6a858965_53_L000054 ' <symbol:53>
  byte 109
  byte 95
  byte 114
@@ -1548,7 +1548,7 @@ C_si3g16_69f679f3_53_L000054 ' <symbol:53>
  byte 0
 
  alignl ' align long
-C_si3g15_69f679f3_51_L000052 ' <symbol:51>
+C_sgis15_6a858965_51_L000052 ' <symbol:51>
  byte 109
  byte 95
  byte 100
@@ -1561,7 +1561,7 @@ C_si3g15_69f679f3_51_L000052 ' <symbol:51>
  byte 0
 
  alignl ' align long
-C_si3g14_69f679f3_49_L000050 ' <symbol:49>
+C_sgis14_6a858965_49_L000050 ' <symbol:49>
  byte 109
  byte 95
  byte 100
@@ -1574,7 +1574,7 @@ C_si3g14_69f679f3_49_L000050 ' <symbol:49>
  byte 0
 
  alignl ' align long
-C_si3g13_69f679f3_47_L000048 ' <symbol:47>
+C_sgis13_6a858965_47_L000048 ' <symbol:47>
  byte 109
  byte 95
  byte 97
@@ -1585,7 +1585,7 @@ C_si3g13_69f679f3_47_L000048 ' <symbol:47>
  byte 0
 
  alignl ' align long
-C_si3g12_69f679f3_45_L000046 ' <symbol:45>
+C_sgis12_6a858965_45_L000046 ' <symbol:45>
  byte 109
  byte 95
  byte 97
@@ -1596,7 +1596,7 @@ C_si3g12_69f679f3_45_L000046 ' <symbol:45>
  byte 0
 
  alignl ' align long
-C_si3g11_69f679f3_43_L000044 ' <symbol:43>
+C_sgis11_6a858965_43_L000044 ' <symbol:43>
  byte 109
  byte 95
  byte 98
@@ -1608,7 +1608,7 @@ C_si3g11_69f679f3_43_L000044 ' <symbol:43>
  byte 0
 
  alignl ' align long
-C_si3g10_69f679f3_41_L000042 ' <symbol:41>
+C_sgis10_6a858965_41_L000042 ' <symbol:41>
  byte 107
  byte 95
  byte 99
@@ -1619,7 +1619,7 @@ C_si3g10_69f679f3_41_L000042 ' <symbol:41>
  byte 0
 
  alignl ' align long
-C_si3gv_69f679f3_39_L000040 ' <symbol:39>
+C_sgisv_6a858965_39_L000040 ' <symbol:39>
  byte 107
  byte 95
  byte 114
@@ -1630,7 +1630,7 @@ C_si3gv_69f679f3_39_L000040 ' <symbol:39>
  byte 0
 
  alignl ' align long
-C_si3gu_69f679f3_37_L000038 ' <symbol:37>
+C_sgisu_6a858965_37_L000038 ' <symbol:37>
  byte 107
  byte 95
  byte 110
@@ -1639,7 +1639,7 @@ C_si3gu_69f679f3_37_L000038 ' <symbol:37>
  byte 0
 
  alignl ' align long
-C_si3gt_69f679f3_35_L000036 ' <symbol:35>
+C_sgist_6a858965_35_L000036 ' <symbol:35>
  byte 107
  byte 95
  byte 119
@@ -1649,7 +1649,7 @@ C_si3gt_69f679f3_35_L000036 ' <symbol:35>
  byte 0
 
  alignl ' align long
-C_si3gs_69f679f3_33_L000034 ' <symbol:33>
+C_sgiss_6a858965_33_L000034 ' <symbol:33>
  byte 107
  byte 95
  byte 103
@@ -1658,7 +1658,7 @@ C_si3gs_69f679f3_33_L000034 ' <symbol:33>
  byte 0
 
  alignl ' align long
-C_si3gr_69f679f3_31_L000032 ' <symbol:31>
+C_sgisr_6a858965_31_L000032 ' <symbol:31>
  byte 118
  byte 101
  byte 114

@@ -8,8 +8,11 @@ create a Catalina "plugin". The plugin is called the "Generic Plugin", and
 is a complete working plugin that can be used to set or reset specific
 outputs from another cog. The functions it actually implements are quite
 trivial, and are intended only to show how such a Plugin can be created and
-then called from a C program. See the README.txt file in the Catalina\minimal 
-subdirectory for more details about the minimal target and its contents.
+then called from a C program. 
+
+See the README.txt file in the Catalina\minimal\p1 subdirectory for more 
+details about the minimal target and its contents, and al o the document
+'Introduction to Propeller 1 Plugins'.
 
 In this directory are the following files:
 

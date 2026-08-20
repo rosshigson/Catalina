@@ -30,10 +30,10 @@ CON
         DP_A = _USB_BASE_PIN + 7   ' DP_A is passive
 
 ' Long repository pin#:
-        USB_A_EVENT_REPO = _USB_BASE_PIN + 9
+        USB_A_EVENT_REPO = _USB_BASE_PIN + 4
 
 ' LED to blink at host/driver fatal error:
-        HOST_A_ERROR_LED = LED56
+        HOST_A_ERROR_LED = _USB_BASE_PIN + 4
 
 ' #region (USB host cog)
 dat

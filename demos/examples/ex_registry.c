@@ -1,16 +1,20 @@
 /*
  * Display registry entries and demonstrate _set_service_lock()
+ *
+ * compile with different options - e.g:
+ *
+ *    catalina -lci ex_registry -C TTY
+ *    catalina -lcx ex_registry.c -C CLOCK -C TTY
+ *    catalina -lc  ex_registry.c -C TTY -C PROTECT_PLUGINS
+ *    catalina -p2 -lc ex_registry.c -C VGA -C CR_ON_LF
+ *    catalina -p2 -lc ex_registry.c -C HD_VGA -C MHZ_297 -C CR_ON_LF
+ *
+ * download to to display the plugins and service registry entries - e.g:
+ *
+ *    payload -i ex_registry
+ * or
+ *    payload -o2 ex_registry
  */
-
-// compile with different options - e.g:
-//
-//    catalina -lci ex_registry -C TTY                        --or--
-//    catalina -lcx ex_registry.c -C CLOCK -C TTY             --or--
-//    catalina -lc  ex_registry.c -C TTY -C PROTECT_PLUGINS
-
-// download to to display the plugins and service registry entries - e.g:
-//
-//    payload -i ex_registry
  
 #include <stdio.h>
 #include <prop.h>
@@ -26,11 +30,11 @@ void display_registry(int n) {
    
    i = 0;
    while (i < n) {
-      printf("Registry Entry %2d: ", i);
+      printf("Entry %2d: ", i);
       // display plugin type
       printf("%3d ", (REGISTERED_TYPE(i)));
       // display plugin name
-      printf("%-20.20s ", _plugin_name(REGISTERED_TYPE(i))); 
+      printf("%-23.23s ", _plugin_name(REGISTERED_TYPE(i))); 
       // display pointer to the request block
       printf("$%05x: ", (REQUEST_BLOCK(i)));
       a_ptr = (unsigned long *)(REQUEST_BLOCK(i));   
@@ -49,9 +53,11 @@ void display_registry(int n) {
  */
 void display_services(void) {
    int i;
+   int line;
    int cog, lock, code;
    
    i = 1;
+   line = 1;
    while (i <= SVC_MAX) {
      code  = SERVICE_CODE(i);
      if (code > 0) {
@@ -66,6 +72,11 @@ void display_services(void) {
            printf(" No Lock :");
         }
         printf(" Code=%3d\n", code);
+        if ((line % 20) == 0) {
+          printf("\nPress any key to continue ...\n");
+          k_wait();
+        }
+        line++;
      }
      i++;
    }
@@ -78,6 +89,13 @@ void display_services(void) {
 void main (void) {
    
    _waitsec(1); // wait in case using VT100 emulator
+
+#if defined(__CATALINA_VGA) || defined(__CATALINA_HD_VGA)
+   // Form Feed (to clear screen)
+   t_char(1, 0x0c); 
+   // set visible cursor mode to fast blink and scroll
+   t_mode(1, HMI_cursor_fast|HMI_cursor_scroll); 
+#endif
 
    printf("\nDisplaying plugin registry ...\n\n");
    display_registry(8);

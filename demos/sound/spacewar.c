@@ -47,14 +47,14 @@
  *   -C GAMEPAD       : use the gamepad plugin (requires a cog)
  *   -C SW_GAMEPAD    : use the software gamepad (program is larger, but does not require a cog)
  *   -C NO_GAMEPAD    : don't use either the gamepad plugin or the software gamepad (program is smaller)
- *   -C KEYBOARD      : support the keybaord as well as the gamepad (program is larger, requires a cog)
+ *   -C KEYBOARD      : support the keyboard as well as the gamepad (program is larger, requires a cog)
  *   -C NO_KEYBOARD   : disable keyboard support (program is smaller, saves a cog)
  *   -C VGA_1152      : resolution is 1152x864
  *   -C VGA_1024      : resolution is 1024x768
  *   -C VGA_800       : resolution is 800x600
  *   -C VGA_640       : resolution is 640x480 - this is the default
- *   -C VGA_2_COLOR   : 2 colors (black & white) - this is the default
- *   -C VGA_4_COLOR   : 4 colors (black, red, green & white)
+ *   -C COLOR_2       : 2 colors (black & white) - this is the default
+ *   -C COLOR_4       : 4 colors (black, red, green & white)
  *   -C DOUBLE_BUFFER : smoother graphics
  * 
  *   -lsound          : enable sound support (works on Hydra & C3 - may work on others)
@@ -111,7 +111,7 @@
 
 #elif defined __CATALINA_VGA_800
 
-#ifndef __CATALINA_VGA_4_COLOR
+#ifndef __CATALINA_COLOR_4
 #define ENABLE_ROCKS
 #endif
 
@@ -1413,7 +1413,7 @@ sint gamepad_bits = 0;
 
 #else
 
-// if we have a keybaord, we must 'or' together the gamepad and keyboard bits
+// if we have a keyboard, we must 'or' together the gamepad and keyboard bits
 
 sint NES_Read_Gamepad() {
    sint nes_bits = gamepad_bits;
@@ -1754,7 +1754,7 @@ void main(void) {
 #endif
 
    // set background to black
-   g_pallete(0,0);
+   g_palette(0,0);
 
    sbrk = _sbrk(0);
    // calculate free ram available for tile space (reserve STACK_SPACE bytes)

@@ -4,7 +4,7 @@ cd catalina
 call clean_all
 cd ..\cake
 call clean_all
-cd ..\catoptimize
+cd ..\catnip
 call clean_all
 cd ..\p2asm_src
 call clean_all

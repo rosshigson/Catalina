@@ -149,6 +149,7 @@ extern int _mkdirr(const char *pathname, mode_t mode);
  * _load_overlay - load a blob stored in a named overlay file 
  *                 and with a specified size to a specified 
  *                 Hub RAM address.
+ *                 Returns the number of bytes read.
  */
 extern int _load_overlay (char *filename, void *addr, int size);
 
@@ -156,6 +157,7 @@ extern int _load_overlay (char *filename, void *addr, int size);
  * _load_overlay_unmanaged - load a blob stored in a named overlay file 
  *                 and with a specified size to a specified Hub RAM address, 
  *                 but using Catalina file system functions rather than stdio.
+ *                 Returns the number of bytes read.
  *
  *                 NOTE that _mount MUST be called before using this function.
  */

@@ -2,7 +2,7 @@
 #include <cog.h>
 
 /*
- * _cogstart_LMM : Start an LMM C program in the specified cog.
+ * _cogstart_LMM : Start an LMM C program in any cog.
  *                 Note that the program must already be loaded  
  *                 into the correct location in Hub RAM.
  *

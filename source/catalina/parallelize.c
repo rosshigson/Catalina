@@ -61,8 +61,8 @@ void help(char *my_name) {
    fprintf(stderr, "          -u        do not remove intermediate output files\n");
    fprintf(stderr, "          -v        verbose (output information messages)\n");
    fprintf(stderr, "          -v -v     very verbose (more information messages)\n");
-   fprintf(stderr, "          -w        enable warnings\n");
-   fprintf(stderr, " exit code is non-zero on error)\n");
+   fprintf(stderr, "          -w        enable warnings\n\n");
+   fprintf(stderr, " exit code is non-zero on error)\n\n");
 }
 
 // safecpy will never write more than size characters, 

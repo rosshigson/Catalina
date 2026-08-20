@@ -27,7 +27,7 @@ cd catalina
 cd ../cake
 ./build_all
 ./copy_all
-cd ../catoptimize
+cd ../catnip
 ./build_all
 ./copy_all
 cd ../p2asm_src

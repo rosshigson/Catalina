@@ -14,6 +14,18 @@ C_t_getpos ' <symbol:t_getpos>
  calld PA,#PSHM
  long $c00000 ' save registers
  mov r23, r2 ' reg var <- reg arg
+ cmp r23,  #2 wz
+ if_nz jmp #\C_t_getpos_3  ' NEU4
+ mov r2, ##4194304 ' reg ARG con
+ mov r3, #35 ' reg ARG coni
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ calld PA,#CALA
+ long @C__short_service
+ add SP, #4 ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+ jmp #\@C_t_getpos_2 ' JUMPV addrg
+C_t_getpos_3
  mov r22, r23
  and r22, #1 ' BANDU4 coni
  shl r22, #23 ' LSHU4 coni
@@ -25,7 +37,7 @@ C_t_getpos ' <symbol:t_getpos>
  long @C__short_service
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
-' C_t_getpos_2 ' (symbol refcount = 0)
+C_t_getpos_2
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 

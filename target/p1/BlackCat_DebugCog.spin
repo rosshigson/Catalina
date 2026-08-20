@@ -35,21 +35,21 @@ PUB Start : okay
 CON
   ' This block defines symbols that reference hub locations (whether in high or low ram)
 
-  ' These definitions must match the ones in Catalina_Common.spin:
+  ' These definitions must match the ones in Catalina_Common.spin (note that there are
+  ' several versions of that file - e.g. in target/p1, embedded/p1 and minimal/p1):
   
   ' The following two locations must be initalized to zero...
   
-  breakFlagAdr  = $7E4C    ' Non-zero when we are at breakpoint and executing the debug support code.
-                          ' ..Host sets this to zero just before supplying a continuation instruction.
+  breakFlagAdr  = $7E4C    ' DEBUG_BREAK : Non-zero when at breakpoint and executing debug support code.
+                           ' Host sets this to zero just before supplying a continuation instruction.
 
-  addrAdr       = $7E50    ' Holds address in kernel for a host requested read or write.
+  addrAdr       = $7E50    ' DEBUG_ADDR  : Holds address in kernel for a host requested read or write.
 
   ' The following three locations do not need to be initialized...
-  ' Note: as the usage of kernelOut and kernelIn never overlaps, they can be the same location.
   
-  kernelOutAdr  = $7E54    ' Holds information written out from kernel space
-  kernelInAdr   = $7E58    ' Holds information to be written into kernel space
-  kernelCmdAdr  = $7E5C    ' 0 = kernel write  1 = kernel read   2 = XMM write   3 = XMM read 
+  kernelOutAdr  = $7E54    ' DEBUG_OUT  : Holds information written out from kernel space
+  kernelInAdr   = $7E58    ' DEBUG_IN   : Holds information to be written into kernel space
+  kernelCmdAdr  = $7E5C    ' DEBUG_FLAG : 0 = kernel write, 1 = kernel read, 2 = XMM write, 3 = XMM read 
 
   ACK = $06
   NAK = $15

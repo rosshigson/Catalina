@@ -17,6 +17,7 @@ C__load_overlay_unmanaged ' <symbol:_load_overlay_unmanaged>
  mov r23, r4 ' reg var <- reg arg
  mov r21, r3 ' reg var <- reg arg
  mov r19, r2 ' reg var <- reg arg
+ mov r17, #0 ' reg <- coni
  mov r2, FP
  sub r2, #-(-32) ' reg ARG ADDRLi
  mov r3, #0 ' reg ARG coni
@@ -26,33 +27,25 @@ C__load_overlay_unmanaged ' <symbol:_load_overlay_unmanaged>
  jmp #CALA
  long @C__open_unmanaged
  add SP, #8 ' CALL addrg
- mov r17, r0 ' CVI, CVU or LOAD
- cmps r17,  #0 wcz
+ mov r15, r0 ' CVI, CVU or LOAD
+ cmps r15,  #0 wcz
  jmp #BR_B
  long @C__load_overlay_unmanaged_3 ' LTI4
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r21 ' CVI, CVU or LOAD
- mov r4, r17 ' CVI, CVU or LOAD
+ mov r4, r15 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
  sub SP, #8 ' stack space for reg ARGs
  jmp #CALA
  long @C__read
  add SP, #8 ' CALL addrg
- mov r2, r17 ' CVI, CVU or LOAD
+ mov r17, r0 ' CVI, CVU or LOAD
+ mov r2, r15 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C__close_unmanaged ' CALL addrg
 C__load_overlay_unmanaged_3
- cmps r17,  #0 wcz
- jmp #BR_B
- long @C__load_overlay_unmanaged_6 ' LTI4
- mov r15, #1 ' reg <- coni
- jmp #JMPA
- long @C__load_overlay_unmanaged_7 ' JUMPV addrg
-C__load_overlay_unmanaged_6
- mov r15, #0 ' reg <- coni
-C__load_overlay_unmanaged_7
- mov r0, r15 ' CVI, CVU or LOAD
+ mov r0, r17 ' CVI, CVU or LOAD
 ' C__load_overlay_unmanaged_2 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #28 ' framesize

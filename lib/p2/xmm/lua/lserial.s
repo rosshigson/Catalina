@@ -11,37 +11,37 @@ DAT ' code segment
 DAT ' const data segment
 
  alignl ' align long
-C_shq8f_69f67ab4_luaserial_funcs_L000018 ' <symbol:luaserial_funcs>
- long @C_shq8g_69f67ab4_19_L000020
- long @C_shq8_69f67ab4_serial_rxflush_L000003
- long @C_shq8h_69f67ab4_21_L000022
- long @C_shq81_69f67ab4_serial_rxcheck_L000004
- long @C_shq8i_69f67ab4_23_L000024
- long @C_shq82_69f67ab4_serial_rxtime_L000005
- long @C_shq8j_69f67ab4_25_L000026
- long @C_shq83_69f67ab4_serial_rxcount_L000006
- long @C_shq8k_69f67ab4_27_L000028
- long @C_shq84_69f67ab4_serial_rx_L000007
- long @C_shq8l_69f67ab4_29_L000030
- long @C_shq85_69f67ab4_serial_txflush_L000008
- long @C_shq8m_69f67ab4_31_L000032
- long @C_shq86_69f67ab4_serial_txcount_L000009
- long @C_shq8n_69f67ab4_33_L000034
- long @C_shq87_69f67ab4_serial_tx_L000010
- long @C_shq8o_69f67ab4_35_L000036
- long @C_shq88_69f67ab4_serial_str_L000011
- long @C_shq8p_69f67ab4_37_L000038
- long @C_shq89_69f67ab4_serial_decl_L000012
- long @C_shq8q_69f67ab4_39_L000040
- long @C_shq8a_69f67ab4_serial_hex_L000013
- long @C_shq8r_69f67ab4_41_L000042
- long @C_shq8b_69f67ab4_serial_ihex_L000014
- long @C_shq8s_69f67ab4_43_L000044
- long @C_shq8c_69f67ab4_serial_bin_L000015
- long @C_shq8t_69f67ab4_45_L000046
- long @C_shq8d_69f67ab4_serial_ibin_L000016
- long @C_shq8u_69f67ab4_47_L000048
- long @C_shq8e_69f67ab4_serial_padchar_L000017
+C_sdv0f_6a858a0f_luaserial_funcs_L000018 ' <symbol:luaserial_funcs>
+ long @C_sdv0g_6a858a0f_19_L000020
+ long @C_sdv0_6a858a0f_serial_rxflush_L000003
+ long @C_sdv0h_6a858a0f_21_L000022
+ long @C_sdv01_6a858a0f_serial_rxcheck_L000004
+ long @C_sdv0i_6a858a0f_23_L000024
+ long @C_sdv02_6a858a0f_serial_rxtime_L000005
+ long @C_sdv0j_6a858a0f_25_L000026
+ long @C_sdv03_6a858a0f_serial_rxcount_L000006
+ long @C_sdv0k_6a858a0f_27_L000028
+ long @C_sdv04_6a858a0f_serial_rx_L000007
+ long @C_sdv0l_6a858a0f_29_L000030
+ long @C_sdv05_6a858a0f_serial_txflush_L000008
+ long @C_sdv0m_6a858a0f_31_L000032
+ long @C_sdv06_6a858a0f_serial_txcount_L000009
+ long @C_sdv0n_6a858a0f_33_L000034
+ long @C_sdv07_6a858a0f_serial_tx_L000010
+ long @C_sdv0o_6a858a0f_35_L000036
+ long @C_sdv08_6a858a0f_serial_str_L000011
+ long @C_sdv0p_6a858a0f_37_L000038
+ long @C_sdv09_6a858a0f_serial_decl_L000012
+ long @C_sdv0q_6a858a0f_39_L000040
+ long @C_sdv0a_6a858a0f_serial_hex_L000013
+ long @C_sdv0r_6a858a0f_41_L000042
+ long @C_sdv0b_6a858a0f_serial_ihex_L000014
+ long @C_sdv0s_6a858a0f_43_L000044
+ long @C_sdv0c_6a858a0f_serial_bin_L000015
+ long @C_sdv0t_6a858a0f_45_L000046
+ long @C_sdv0d_6a858a0f_serial_ibin_L000016
+ long @C_sdv0u_6a858a0f_47_L000048
+ long @C_sdv0e_6a858a0f_serial_padchar_L000017
  long $0
  long $0
 
@@ -50,7 +50,7 @@ C_shq8f_69f67ab4_luaserial_funcs_L000018 ' <symbol:luaserial_funcs>
 DAT ' code segment
 
  alignl ' align long
-C_shq8_69f67ab4_serial_rxflush_L000003 ' <symbol:serial_rxflush>
+C_sdv0_6a858a0f_serial_rxflush_L000003 ' <symbol:serial_rxflush>
  jmp #NEWF
  jmp #PSHM
  long $e00000 ' save registers
@@ -76,13 +76,13 @@ C_shq8_69f67ab4_serial_rxflush_L000003 ' <symbol:serial_rxflush>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_shq8_69f67ab4_serial_rxflush_L000003_49 ' (symbol refcount = 0)
+' C_sdv0_6a858a0f_serial_rxflush_L000003_49 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_shq81_69f67ab4_serial_rxcheck_L000004 ' <symbol:serial_rxcheck>
+C_sdv01_6a858a0f_serial_rxcheck_L000004 ' <symbol:serial_rxcheck>
  jmp #NEWF
  jmp #PSHM
  long $e00000 ' save registers
@@ -108,13 +108,13 @@ C_shq81_69f67ab4_serial_rxcheck_L000004 ' <symbol:serial_rxcheck>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_shq81_69f67ab4_serial_rxcheck_L000004_50 ' (symbol refcount = 0)
+' C_sdv01_6a858a0f_serial_rxcheck_L000004_50 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_shq82_69f67ab4_serial_rxtime_L000005 ' <symbol:serial_rxtime>
+C_sdv02_6a858a0f_serial_rxtime_L000005 ' <symbol:serial_rxtime>
  jmp #NEWF
  jmp #PSHM
  long $e80000 ' save registers
@@ -151,13 +151,13 @@ C_shq82_69f67ab4_serial_rxtime_L000005 ' <symbol:serial_rxtime>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_shq82_69f67ab4_serial_rxtime_L000005_51 ' (symbol refcount = 0)
+' C_sdv02_6a858a0f_serial_rxtime_L000005_51 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_shq83_69f67ab4_serial_rxcount_L000006 ' <symbol:serial_rxcount>
+C_sdv03_6a858a0f_serial_rxcount_L000006 ' <symbol:serial_rxcount>
  jmp #NEWF
  jmp #PSHM
  long $e00000 ' save registers
@@ -183,13 +183,13 @@ C_shq83_69f67ab4_serial_rxcount_L000006 ' <symbol:serial_rxcount>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_shq83_69f67ab4_serial_rxcount_L000006_52 ' (symbol refcount = 0)
+' C_sdv03_6a858a0f_serial_rxcount_L000006_52 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_shq84_69f67ab4_serial_rx_L000007 ' <symbol:serial_rx>
+C_sdv04_6a858a0f_serial_rx_L000007 ' <symbol:serial_rx>
  jmp #NEWF
  jmp #PSHM
  long $e00000 ' save registers
@@ -215,13 +215,13 @@ C_shq84_69f67ab4_serial_rx_L000007 ' <symbol:serial_rx>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_shq84_69f67ab4_serial_rx_L000007_53 ' (symbol refcount = 0)
+' C_sdv04_6a858a0f_serial_rx_L000007_53 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_shq85_69f67ab4_serial_txflush_L000008 ' <symbol:serial_txflush>
+C_sdv05_6a858a0f_serial_txflush_L000008 ' <symbol:serial_txflush>
  jmp #NEWF
  jmp #PSHM
  long $e00000 ' save registers
@@ -247,13 +247,13 @@ C_shq85_69f67ab4_serial_txflush_L000008 ' <symbol:serial_txflush>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_shq85_69f67ab4_serial_txflush_L000008_54 ' (symbol refcount = 0)
+' C_sdv05_6a858a0f_serial_txflush_L000008_54 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_shq86_69f67ab4_serial_txcount_L000009 ' <symbol:serial_txcount>
+C_sdv06_6a858a0f_serial_txcount_L000009 ' <symbol:serial_txcount>
  jmp #NEWF
  jmp #PSHM
  long $e00000 ' save registers
@@ -279,13 +279,13 @@ C_shq86_69f67ab4_serial_txcount_L000009 ' <symbol:serial_txcount>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_shq86_69f67ab4_serial_txcount_L000009_55 ' (symbol refcount = 0)
+' C_sdv06_6a858a0f_serial_txcount_L000009_55 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_shq87_69f67ab4_serial_tx_L000010 ' <symbol:serial_tx>
+C_sdv07_6a858a0f_serial_tx_L000010 ' <symbol:serial_tx>
  jmp #NEWF
  jmp #PSHM
  long $e80000 ' save registers
@@ -324,13 +324,13 @@ C_shq87_69f67ab4_serial_tx_L000010 ' <symbol:serial_tx>
  long @C_lua_pushinteger
  add SP, #4 ' CALL addrg
  mov r0, #1 ' reg <- coni
-' C_shq87_69f67ab4_serial_tx_L000010_56 ' (symbol refcount = 0)
+' C_sdv07_6a858a0f_serial_tx_L000010_56 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_shq88_69f67ab4_serial_str_L000011 ' <symbol:serial_str>
+C_sdv08_6a858a0f_serial_str_L000011 ' <symbol:serial_str>
  jmp #NEWF
  jmp #PSHM
  long $e80000 ' save registers
@@ -362,13 +362,13 @@ C_shq88_69f67ab4_serial_str_L000011 ' <symbol:serial_str>
  long @C_s_str
  add SP, #4 ' CALL addrg
  mov r0, #0 ' reg <- coni
-' C_shq88_69f67ab4_serial_str_L000011_57 ' (symbol refcount = 0)
+' C_sdv08_6a858a0f_serial_str_L000011_57 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_shq89_69f67ab4_serial_decl_L000012 ' <symbol:serial_decl>
+C_sdv09_6a858a0f_serial_decl_L000012 ' <symbol:serial_decl>
  jmp #NEWF
  jmp #PSHM
  long $ea8000 ' save registers
@@ -415,13 +415,13 @@ C_shq89_69f67ab4_serial_decl_L000012 ' <symbol:serial_decl>
  long @C_s_decl
  add SP, #12 ' CALL addrg
  mov r0, #0 ' reg <- coni
-' C_shq89_69f67ab4_serial_decl_L000012_58 ' (symbol refcount = 0)
+' C_sdv09_6a858a0f_serial_decl_L000012_58 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_shq8a_69f67ab4_serial_hex_L000013 ' <symbol:serial_hex>
+C_sdv0a_6a858a0f_serial_hex_L000013 ' <symbol:serial_hex>
  jmp #NEWF
  jmp #PSHM
  long $ea0000 ' save registers
@@ -459,13 +459,13 @@ C_shq8a_69f67ab4_serial_hex_L000013 ' <symbol:serial_hex>
  long @C_s_hex
  add SP, #8 ' CALL addrg
  mov r0, #0 ' reg <- coni
-' C_shq8a_69f67ab4_serial_hex_L000013_59 ' (symbol refcount = 0)
+' C_sdv0a_6a858a0f_serial_hex_L000013_59 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_shq8b_69f67ab4_serial_ihex_L000014 ' <symbol:serial_ihex>
+C_sdv0b_6a858a0f_serial_ihex_L000014 ' <symbol:serial_ihex>
  jmp #NEWF
  jmp #PSHM
  long $ea0000 ' save registers
@@ -503,13 +503,13 @@ C_shq8b_69f67ab4_serial_ihex_L000014 ' <symbol:serial_ihex>
  long @C_s_ihex
  add SP, #8 ' CALL addrg
  mov r0, #0 ' reg <- coni
-' C_shq8b_69f67ab4_serial_ihex_L000014_60 ' (symbol refcount = 0)
+' C_sdv0b_6a858a0f_serial_ihex_L000014_60 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_shq8c_69f67ab4_serial_bin_L000015 ' <symbol:serial_bin>
+C_sdv0c_6a858a0f_serial_bin_L000015 ' <symbol:serial_bin>
  jmp #NEWF
  jmp #PSHM
  long $ea0000 ' save registers
@@ -547,13 +547,13 @@ C_shq8c_69f67ab4_serial_bin_L000015 ' <symbol:serial_bin>
  long @C_s_bin
  add SP, #8 ' CALL addrg
  mov r0, #0 ' reg <- coni
-' C_shq8c_69f67ab4_serial_bin_L000015_61 ' (symbol refcount = 0)
+' C_sdv0c_6a858a0f_serial_bin_L000015_61 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_shq8d_69f67ab4_serial_ibin_L000016 ' <symbol:serial_ibin>
+C_sdv0d_6a858a0f_serial_ibin_L000016 ' <symbol:serial_ibin>
  jmp #NEWF
  jmp #PSHM
  long $ea0000 ' save registers
@@ -591,13 +591,13 @@ C_shq8d_69f67ab4_serial_ibin_L000016 ' <symbol:serial_ibin>
  long @C_s_ibin
  add SP, #8 ' CALL addrg
  mov r0, #0 ' reg <- coni
-' C_shq8d_69f67ab4_serial_ibin_L000016_62 ' (symbol refcount = 0)
+' C_sdv0d_6a858a0f_serial_ibin_L000016_62 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_shq8e_69f67ab4_serial_padchar_L000017 ' <symbol:serial_padchar>
+C_sdv0e_6a858a0f_serial_padchar_L000017 ' <symbol:serial_padchar>
  jmp #NEWF
  jmp #PSHM
  long $ea0000 ' save registers
@@ -637,7 +637,7 @@ C_shq8e_69f67ab4_serial_padchar_L000017 ' <symbol:serial_padchar>
  long @C_s_padchar
  add SP, #8 ' CALL addrg
  mov r0, #0 ' reg <- coni
-' C_shq8e_69f67ab4_serial_padchar_L000017_63 ' (symbol refcount = 0)
+' C_sdv0e_6a858a0f_serial_padchar_L000017_63 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -670,7 +670,7 @@ C_luaopen_serial ' <symbol:luaopen_serial>
  add SP, #8 ' CALL addrg
  mov r2, #0 ' reg ARG coni
  jmp #LODL
- long @C_shq8f_69f67ab4_luaserial_funcs_L000018
+ long @C_sdv0f_6a858a0f_luaserial_funcs_L000018
  mov r3, RI ' reg ARG ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -735,7 +735,7 @@ C_luaopen_serial_65_L000066 ' <symbol:65>
  long $43fc0000 ' float
 
  alignl ' align long
-C_shq8u_69f67ab4_47_L000048 ' <symbol:47>
+C_sdv0u_6a858a0f_47_L000048 ' <symbol:47>
  byte 112
  byte 97
  byte 100
@@ -746,7 +746,7 @@ C_shq8u_69f67ab4_47_L000048 ' <symbol:47>
  byte 0
 
  alignl ' align long
-C_shq8t_69f67ab4_45_L000046 ' <symbol:45>
+C_sdv0t_6a858a0f_45_L000046 ' <symbol:45>
  byte 105
  byte 98
  byte 105
@@ -754,14 +754,14 @@ C_shq8t_69f67ab4_45_L000046 ' <symbol:45>
  byte 0
 
  alignl ' align long
-C_shq8s_69f67ab4_43_L000044 ' <symbol:43>
+C_sdv0s_6a858a0f_43_L000044 ' <symbol:43>
  byte 98
  byte 105
  byte 110
  byte 0
 
  alignl ' align long
-C_shq8r_69f67ab4_41_L000042 ' <symbol:41>
+C_sdv0r_6a858a0f_41_L000042 ' <symbol:41>
  byte 105
  byte 104
  byte 101
@@ -769,14 +769,14 @@ C_shq8r_69f67ab4_41_L000042 ' <symbol:41>
  byte 0
 
  alignl ' align long
-C_shq8q_69f67ab4_39_L000040 ' <symbol:39>
+C_sdv0q_6a858a0f_39_L000040 ' <symbol:39>
  byte 104
  byte 101
  byte 120
  byte 0
 
  alignl ' align long
-C_shq8p_69f67ab4_37_L000038 ' <symbol:37>
+C_sdv0p_6a858a0f_37_L000038 ' <symbol:37>
  byte 100
  byte 101
  byte 99
@@ -784,20 +784,20 @@ C_shq8p_69f67ab4_37_L000038 ' <symbol:37>
  byte 0
 
  alignl ' align long
-C_shq8o_69f67ab4_35_L000036 ' <symbol:35>
+C_sdv0o_6a858a0f_35_L000036 ' <symbol:35>
  byte 115
  byte 116
  byte 114
  byte 0
 
  alignl ' align long
-C_shq8n_69f67ab4_33_L000034 ' <symbol:33>
+C_sdv0n_6a858a0f_33_L000034 ' <symbol:33>
  byte 116
  byte 120
  byte 0
 
  alignl ' align long
-C_shq8m_69f67ab4_31_L000032 ' <symbol:31>
+C_sdv0m_6a858a0f_31_L000032 ' <symbol:31>
  byte 116
  byte 120
  byte 99
@@ -808,7 +808,7 @@ C_shq8m_69f67ab4_31_L000032 ' <symbol:31>
  byte 0
 
  alignl ' align long
-C_shq8l_69f67ab4_29_L000030 ' <symbol:29>
+C_sdv0l_6a858a0f_29_L000030 ' <symbol:29>
  byte 116
  byte 120
  byte 102
@@ -819,13 +819,13 @@ C_shq8l_69f67ab4_29_L000030 ' <symbol:29>
  byte 0
 
  alignl ' align long
-C_shq8k_69f67ab4_27_L000028 ' <symbol:27>
+C_sdv0k_6a858a0f_27_L000028 ' <symbol:27>
  byte 114
  byte 120
  byte 0
 
  alignl ' align long
-C_shq8j_69f67ab4_25_L000026 ' <symbol:25>
+C_sdv0j_6a858a0f_25_L000026 ' <symbol:25>
  byte 114
  byte 120
  byte 99
@@ -836,7 +836,7 @@ C_shq8j_69f67ab4_25_L000026 ' <symbol:25>
  byte 0
 
  alignl ' align long
-C_shq8i_69f67ab4_23_L000024 ' <symbol:23>
+C_sdv0i_6a858a0f_23_L000024 ' <symbol:23>
  byte 114
  byte 120
  byte 116
@@ -846,7 +846,7 @@ C_shq8i_69f67ab4_23_L000024 ' <symbol:23>
  byte 0
 
  alignl ' align long
-C_shq8h_69f67ab4_21_L000022 ' <symbol:21>
+C_sdv0h_6a858a0f_21_L000022 ' <symbol:21>
  byte 114
  byte 120
  byte 99
@@ -857,7 +857,7 @@ C_shq8h_69f67ab4_21_L000022 ' <symbol:21>
  byte 0
 
  alignl ' align long
-C_shq8g_69f67ab4_19_L000020 ' <symbol:19>
+C_sdv0g_6a858a0f_19_L000020 ' <symbol:19>
  byte 114
  byte 120
  byte 102

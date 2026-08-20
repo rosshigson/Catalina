@@ -57,14 +57,6 @@
 //
 int main(void) {
 
-#ifdef __CATALINA_libvgraphic   
-   int  free_ram;
-   int  tile_count;
-   void *tile_space;
-   int  stack_check; // only used to determine stack usage
-   int sbrk;
-#endif   
-
    int x_tiles = cgi_x_tiles();
    int y_tiles = cgi_y_tiles();
 
@@ -147,7 +139,14 @@ int main(void) {
    // this is defined locally so it exists in Hub RAM even for XMM programs:
    char pchip[] = "CATALINA"; // text
 
-   
+#ifdef __CATALINA_libvgraphic   
+   int  free_ram;
+   int  tile_count;
+   void *tile_space;
+   int  stack_check; // only used to determine stack usage
+   int sbrk;
+#endif   
+ 
   // init bouncing lines
   i = 1001;
   j = 123123;
@@ -173,27 +172,28 @@ int main(void) {
 #if defined(__CATALINA_libvgraphic)
    // get x and y screen size (in tiles)
 
-#if defined(__CATALINA_VGA_4_COLOR)
-   // set colors to something - just to show how
-   g_pallete(0,0x00); // black
-   g_pallete(1,0x80); // mid red
-   g_pallete(2,0x20); // mid green
-   g_pallete(3,0xf0); // yellow
-#endif   
-
    // calculate free ram available for tile space (reserve STACK_SPACE bytes)
    sbrk = _sbrk(0);
    free_ram = (int)&stack_check - _sbrk(0) - STACK_SPACE;
 
-   // tile space must start on a tile boundary
-   tile_space = (void *)(64 * (_sbrk(free_ram + TILE_SIZE - 1) / TILE_SIZE));
-   tile_count = (((int)free_ram + TILE_SIZE - 1) / TILE_SIZE);
+   tile_space = (void *)_sbrk(free_ram);
+   // align tile space to a tile boundary
+   tile_space = (void *)(((unsigned)tile_space + TILE_SIZE -1) & ~TILE_MASK);
+   tile_count = ((int)free_ram / TILE_SIZE);
 
    // set up graphics driver
    g_setup(cgi_x_tiles() * (32>>g_mode())/2, cgi_y_tiles() * 16/2, tile_count, tile_space);
 
    // set up double buffer driver (required if double buffering)
    g_db_setup(DOUBLE_BUFFER);
+
+#if defined(__CATALINA_COLOR_4)
+   // set colors to something - just to show how
+   g_palette(0,0x00); // black
+   g_palette(1,0x80); // mid red
+   g_palette(2,0x20); // mid green
+   g_palette(3,0xf0); // yellow
+#endif   
 
 #else   
 
@@ -289,7 +289,7 @@ int main(void) {
     g_colorwidth(1, 14);
     g_box(X(60), -Y(80), 60, 16);
     g_textmode(1, 1, 6, 5);
-#if defined(__CATALINA_libvgraphic) && !defined(__CATALINA_VGA_4_COLOR)
+#if defined(__CATALINA_libvgraphic) && !defined(__CATALINA_COLOR_4)
     // if we only have 2 colors, use the background color or it won't show
     g_colorwidth(0, 0); 
 #else    

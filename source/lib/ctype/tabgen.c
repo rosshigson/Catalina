@@ -59,9 +59,7 @@ char *my_getline(char *s, int n, FILE *fp);
 
 void DoFile(char *name);
 
-void main(argc, argv)
-	int argc;
-	char *argv[];
+void main(int argc, char *argv[])
 {
 
 	ProgCall = *argv++;
@@ -81,8 +79,7 @@ void main(argc, argv)
 }
 
 char *
-Salloc(s)
-	char *s;
+Salloc(char *s)
 {
 	char *ns = malloc((unsigned)strlen(s) + 1);
 
@@ -96,8 +93,7 @@ Salloc(s)
 	return ns;
 }
 
-void option(str)
-	char *str;
+void option(char *str)
 {
 	/*	note that *str indicates the source of the option:
 		either COMCOM (from command line) or FILECOM (from a file).
@@ -154,8 +150,7 @@ void option(str)
 	}
 }
 
-void InitTable(ival)
-	char *ival;
+void InitTable(char *ival)
 {
 	int i;
 
@@ -186,9 +181,7 @@ void PrintTable()
 }
 
 int
-process(str, format)
-        int format;
-	char *str;
+process(char *str, int format)
 {
 	char *cstr = str;
 	char *Name = cstr;	/* overwrite original string!	*/
@@ -220,9 +213,7 @@ process(str, format)
 	return 0;
 }
 
-int c_proc(str, Name)
-	char *str;
-	char *Name;
+int c_proc(char *str, char *Name)
 {
 	int ch, ch2;
 	//int quoted();
@@ -260,9 +251,7 @@ int c_proc(str, Name)
 }
 
 int
-setval(ch, nm)
-	int ch;
-	char *nm;
+setval(int ch, char *nm)
 {
 	char **p = &Table[ch];
 
@@ -278,8 +267,7 @@ setval(ch, nm)
 }
 
 int
-quoted(pstr)
-	char **pstr;
+quoted(char **pstr)
 {
 	int ch;
 	int i;
@@ -323,10 +311,7 @@ quoted(pstr)
 }
 
 char *
-my_getline(s, n, fp)
-	char *s;
-	int n;
-	FILE *fp;
+my_getline(char *s, int n, FILE *fp)
 {
 	int c = getc(fp);
 	char *str = s;
@@ -349,8 +334,7 @@ my_getline(s, n, fp)
 
 #define BUFSIZE 1024
 
-void DoFile(name)
-	char *name;
+void DoFile(char *name)
 {
 	char text[BUFSIZE];
 	FILE *fp;

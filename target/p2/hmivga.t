@@ -50,7 +50,9 @@
 '
 ' NON_ANSI_HMI                  : Revert to old Catalina behaviour (deprecated)
 '
-' NO_CR_TO_LF                   : Do not convert CR to LF
+' NO_CR_TO_LF                   : Do not convert CR to LF on input
+'
+' CR_ON_LF                      : convert LF to CR LF on output
 '
 ' USB_MESSAGES                  : Print USB status and error messages 
 '                                 (also requires SBRK_AFTER_PLUGINS)
@@ -62,7 +64,16 @@
 '                                 as an example of what might be required on
 '                                 some monitors).
 '
+' USE_USB_A                     : enable USB port A.
+'
+' USE_USB_B                     : enable USB port B.
+'
 ' Version 1.0 - initial P2 version by Ross Higson
+'
+' Version 8.9 - allow USE_USB_A and/or USE_USB_B to select USB ports.
+'             - disallow writing of character 0xff.
+'
+' Version 9.0 - support CR_ON_LF. This was previously always enabled.
 '
 '-------------------------------------------------------------------
 '
@@ -359,13 +370,13 @@
 '          services.
 '
 'name: t_color_fg
-'code: 32
+'code: 33
 'type: short request
 'data: color (24 bit)
 'rslt: 0 = ok
 '
 'name: t_color_bg
-'code: 32
+'code: 34
 'type: short request
 'data: color (24 bit)
 'rslt: 0 = ok
@@ -375,21 +386,47 @@
 
 ' the actual VGA tile driver ...
 
+#if !defined(SMALL)
 #include "cogvga.t"
+#endif
 
 ' the actual USB driver - note that we can use either port A or port B
 ' for the keyboard or mouse - but the support code will be omitted if
 ' -C NO_KEYBOARD and/or -C NO_MOUSE are specified on the command line.
+' However, if only one port is to be used, it can now be specified
+' by also using USE_USB_A and USE_USB_B.
 
-#if !(defined(NO_KEYBOARD) && defined(NO_MOUSE))
-'#include <kbmprec.t>
-'#include <kbmprea.t>
-#include <cogkbma.t>
-#define USE_USB_A
-#if (!defined(NO_KEYBOARD) && !defined(NO_MOUSE))
-#include <cogkbmb.t>
-#define USE_USB_B
+#if defined(USE_USB_A) || defined(USE_USB_B)
+
+' this is the NEW way to select whether to USE_USB_A and/or USE_USB_B
+#if defined(USE_USB_A) && !defined(SMALL)
+#include <cogkbma.t2>
 #endif
+#if defined(USE_USB_B) && !defined(SMALL)
+#include <cogkbmb.t2>
+#endif
+
+#define KEY_ALTMOD KEYS_ALT
+#define KEY_CTRLMOD KEYS_CTRL
+
+#else
+
+' this is the OLD way to select whether to USE_USB_A and/or USE_USB_B
+' i.e. A and B are BOTH used unless NO_KEYBOARD or NO_MOUSE is specified,
+'      with only A being used if only one of these is specified
+#if !(defined(NO_KEYBOARD) && defined(NO_MOUSE))
+#if !defined(USE_USB_A) && !defined(SMALL)
+#define USE_USB_A
+#include <cogkbma.t2>
+#endif
+#if (!defined(NO_KEYBOARD) && !defined(NO_MOUSE))
+#if !defined(USE_USB_B) && !defined(SMALL)
+#define USE_USB_B
+#include <cogkbmb.t2>
+#endif
+#endif
+#endif
+
 #endif
 
 CON
@@ -935,7 +972,8 @@ t_char
         call    #t_nocurs       ' set up cursor address
         mov     v5,rqst         ' get ...
         and     v5,#$ff         ' ... char to write
-        call    #t_put5         ' write char to screen at cursor
+        cmp     v5,#$ff wz      ' detect 0xff
+  if_nz call    #t_put5         ' write char to screen at cursor (if not 0xff)
         jmp     #done_ok
 
 t_string
@@ -1385,6 +1423,9 @@ t_put5
         jmp     #.t_cr          ' put cursor on col zero
 .t_setrow
         wrbyte  v0,v3           ' write updated row
+#ifndef CR_ON_LF
+        ret                     ' do not change column
+#endif
         sub     v3,#1           ' point at current cursor col
 .t_cr
         mov     v0,#0           ' zero current col
@@ -1654,7 +1695,8 @@ init_cell
         add     v0,#1             ' initialize ...
         wrword  #0,v0             ' ... cursor 1 ...
         add     v0,#2             ' ... position ...
-        wrbyte  #%1010,v0         ' ... and scroll and visible slow block
+        wrbyte  #%1010,v0         ' ... and scroll, visible, block and ...
+                                  ' ... slow, since fast cannot be set here
         ret
 '
 ' get_cell - get char and current colors in cell
@@ -1774,7 +1816,7 @@ register_hmi
 ' 
 start_usb_A
 
-' configure the "long repository" smart pin that the USB cog 
+' configure the "long repository" smart pin that the USB A cog 
 ' will write to when a notable USB event occurs.
 ' DIR bit low puts smart pin in reset mode
         dirl    #USB_A_EVENT_REPO
@@ -1802,9 +1844,30 @@ process_usb_A
 
 '
 ' usb_event_A : Handler for an event posted to the repository smart pin 
-'             by the USB cog.
+'             by the USB_A cog.
 
 usb_event_A
+
+#ifdef USE_USB_A
+
+        cmp    cnotify, #M_DATA wz
+  if_z  jmp    #cmouse_update
+        cmp    cnotify, #KBD_KEY_UPDATE wz
+  if_z  jmp    #ckbd_key_update
+        cmp    cnotify, #KBD_TGL_UPDATE wz
+  if_z  jmp    #ckbd_tgl_update
+        cmp    cnotify, #KB_READY wz
+  if_z  or     km_connected_A,#1
+        cmp    cnotify, #M_READY wz
+  if_z  or     km_connected_A,#2
+        cmp    cnotify, #KBM_READY wz
+  if_z  or     km_connected_A,#3
+        cmp    cnotify, #DEV_DISCONNECT wz
+  if_z  andn   km_connected_A,#3
+        ret
+
+#else
+
         cmp     cnotify, #USB_ERROR wcz
   if_a  jmp     #.skip             ' Message notification skip pattern
         jmprel  cnotify            ' Handler routines for ... 
@@ -1816,7 +1879,6 @@ usb_event_A
 #endif
         jmp     #ckbd_tgl_update   ' ... toggle keys ...
         jmp     #cusb_error_A      ' ... and error events
-
 .skip
 #if defined(USB_MESSAGES)
         skipf   cnotify
@@ -1846,8 +1908,10 @@ usb_event_A
         ret                              ' Not part of the SKIPF list
 #endif
 
+#endif
+
 '
-' cusb_error_A : Handler for a USB error event
+' cusb_error_A : Handler for a USB_A error event
 '
 cusb_error_A
 #if defined(USB_MESSAGES)
@@ -1868,7 +1932,7 @@ cusb_error_A
 ' 
 start_usb_B
 
-' configure the "long repository" smart pin that the USB cog 
+' configure the "long repository" smart pin that the USB B cog 
 ' will write to when a notable USB event occurs.
 ' DIR bit low puts smart pin in reset mode
         dirl    #USB_B_EVENT_REPO
@@ -1896,9 +1960,29 @@ process_usb_B
 
 '
 ' usb_event_B : Handler for an event posted to the repository smart pin 
-'             by the USB cog.
+'             by the USB B cog.
 
 usb_event_B
+
+#ifdef USE_USB_B
+
+        cmp    cnotify, #M_DATA wcz
+  if_z  jmp    #cmouse_update
+        cmp    cnotify, #KBD_KEY_UPDATE wcz
+  if_z  jmp    #ckbd_key_update
+        cmp    cnotify, #KBD_TGL_UPDATE wcz
+  if_z  jmp    #ckbd_tgl_update
+        cmp    cnotify, #KB_READY wz
+  if_z  or     km_connected_B,#1
+        cmp    cnotify, #M_READY wz
+  if_z  or     km_connected_B,#2
+        cmp    cnotify, #KBM_READY wz
+  if_z  or     km_connected_B,#3
+        cmp    cnotify, #DEV_DISCONNECT wz
+  if_z  andn   km_connected_B,#3
+        ret
+#else
+
         cmp     cnotify, #USB_ERROR wcz
   if_a  jmp     #.skip             ' Message notification skip pattern
         jmprel  cnotify            ' Handler routines for ... 
@@ -1910,7 +1994,6 @@ usb_event_B
 #endif
         jmp     #ckbd_tgl_update   ' ... toggle keys ...
         jmp     #cusb_error_B      ' ... and error events
-
 .skip
 #if defined(USB_MESSAGES)
         skipf   cnotify
@@ -1940,8 +2023,10 @@ usb_event_B
         ret                              ' Not part of the SKIPF list
 #endif
 
+#endif
+
 '
-' cusb_error_B : Handler for a USB error event
+' cusb_error_B : Handler for a USB_B error event
 '
 cusb_error_B
 #if defined(USB_MESSAGES)
@@ -2076,7 +2161,11 @@ cmouse_update
         ret
 #endif
 '
-' ckbd_tgl_update : Handler for keyboard toggle key state changes
+' ckbd_tgl_update : Handler for keyboard toggle key state changes.
+'                   Note that the full state of the keys must be fetched
+'                   into ckbd_keypress, ckbd_scancode, ckbd_modkeys and
+'                   ckbd_ledstate by the k_load routine, but this
+'                   notification indicates a change has occurred.
 '
 ckbd_tgl_update
 #if defined(USB_DEBUGGING)

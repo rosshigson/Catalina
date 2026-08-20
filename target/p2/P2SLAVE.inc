@@ -46,24 +46,24 @@ _XPLL     = 1           ' 0= PLL off, 1=PLL on
 
 ' RTC base pin - note that if this is changed, the cache pin and float 
 ' pin constants may also need to be changed (see below) 
-_RTC_BASE   = 24
+_RTC_BASE   = 32
 
 ' cache pin constants
 ' ===================
 
 ' Pins used for pin communications with cache
-CACHE_CMD_PIN    = 26 ' these pins will be spare when the RTC ...
-CACHE_RSP_PIN    = 27 '  ... add-on board is in use on pin 24
+CACHE_CMD_PIN    = 34 ' these pins will be spare when the RTC ...
+CACHE_RSP_PIN    = 35 '  ... add-on board is in use on pin 32
 CACHE_PIN_MODE   = %0000_0000_000_0000000000000_00_00001_0 'mode bits 
 
 ' float pin constants
 ' ===================
 
 ' Pins used for pin communications with floating point co-processor
-FLOAT_CMD_PIN    = 28 ' these pins will be spare when the RTC ...
-FLOAT_RSP_PIN    = 29 ' ... add-on board ...
-FLOAT_AVAL_PIN   = 30 ' ... is in use ...
-FLOAT_BVAL_PIN   = 31 '  ... on pin 24
+FLOAT_CMD_PIN    = 36 ' these pins will be spare when the RTC ...
+FLOAT_RSP_PIN    = 37 ' ... add-on board ...
+FLOAT_AVAL_PIN   = 38 ' ... is in use ...
+FLOAT_BVAL_PIN   = 39 '  ... on pin 32
 FLOAT_PIN_MODE   = %0000_0000_000_0000000000000_00_00001_0 'mode bits 
 
 ' serial constants
@@ -110,6 +110,9 @@ _SD_DO     = 58         'pin SD Card MISO
 ' 2 Port Serial constants
 ' =======================
 
+' NOTE that the ports are numbered 1 and 2 here for consistency with the 
+' names used in the PASM code, but in C the ports are numbered 0 and 1
+
 _RX1_PIN   = 1 ' _RX_PIN
 _TX1_PIN   = 0 ' _TX_PIN
 _RX1_MODE  = %0000_0000_000_0000000000000_00_11111_0 ' async rx mode, true input, input  enabled for smart input
@@ -124,14 +127,19 @@ _BAUDRATE2 = _BAUDRATE
 ' Multi Port Serial (aka 8 Port Serial) constants
 ' ===============================================
 
-' NOTE Multi Port 1 and 2 use the 2 Port Serial constants defined above for pins and baud rate (but not mode) -
-' This is done so that by default the Multi Port Serial plugin behaves the same way as the 2 Port Serial plugin. 
-' To disable thiis "auto-configuration" behaviour, set the pins to -1 (or anything outside the range 0 .. 63). 
-' All such ports will have to be manually configured in the C program (see the s8_openport() function).
+' NOTE Multi Port 1 and 2 use the 2 Port Serial constants defined above for
+' pins and baud rate (but not mode) - This is done so that by default the 
+' Multi Port Serial plugin behaves the same way as the 2 Port Serial plugin. 
+' To disable thiis "auto-configuration" behaviour, set the pins to -1 (or 
+' anything outside the range 0 .. 63). All such ports will have to be 
+' manually configured in the C program (see the s8_openport() function).
 
 '    rxmode = %0xx1 = invert rx              (same for txmode)
 '             %0x1x = invert tx
 '             %01xx = open-drain/open-source tx
+
+' NOTE that the ports are numbered 1 to 8 here for compatibility with the 2
+' port serial port numbering, but in C the ports are numbered 0 to 7
 
 _RX1_MULTI_PIN  = 1 ' _RX1_PIN
 _TX1_MULTI_PIN  = 0 ' _TX1_PIN
@@ -185,18 +193,18 @@ _TX8_MULTI_MODE = %0000
 ' VGA constants
 ' =============
 
-_VGA_BASE_PIN = 16
+_VGA_BASE_PIN = 0
 
 ' USB constants
 ' =============
 
-_USB_BASE_PIN = 24
+_USB_BASE_PIN = 8
 
 ' Hyper Flash / Hyper RAM constants
 ' =================================
 
 ' Base pin and reset pin mask
-HYPER_BASE_PIN   = 0 ' If you change this, it may be required to change these:
+HYPER_BASE_PIN   = 16 ' If you change this, it may be required to change these:
 HYPER_RST_A_MASK = 1<<(HYPER_BASE_PIN+15)           ' if HYPER_BASE_PIN < 32
 HYPER_RST_B_MASK = 0 ' 1<<(HYPER_BASE_PIN+15-32)    ' if HYPER_BASE_PIN >= 32
 

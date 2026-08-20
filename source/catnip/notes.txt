@@ -1,0 +1,95 @@
+Optimizer notes
+
+#
+# Phase 0
+#
+# AWK script to optimize loads
+#
+# Phase 1
+#
+# AWK script to identify all inlinable function calls in the SPIN file, 
+# and the stack space requirements for each function (only function
+# calls with stack space that can be represented as an 'immediate'
+# can presently be 'inlined')
+#
+# Phase 2
+#
+# AWK script to identify functions that can be inlined
+# (and save their 'inlinable' section). An 'inlinable'
+# function must:
+#     (not spill arguments to stack)
+# AND (not have local variables)
+# AND (not have local labels)
+# AND (not use the frame pointer)
+# AND (not have its address taken other than by a CALA)
+# AND (be a leaf function - i.e. no 'CALA' or 'CALI')
+# AND ((be called once only) OR (be less than or equal to SIX longs))
+#
+# Phase 3
+#
+# AWK script to replace calls to inlinable functions
+#
+# Phase 4
+#
+# AWK script to enumerate optimization candidates
+#
+# Phase 5 (non-CMM)
+#
+# AWK script to identify whether the optimizable instructions enumerated
+# in phase 4 are within the range of an immediate add or sub instruction.
+# Note that we allow a "guard" of 32 in case other optimizations which 
+# move the the source and destination end up with them being too far apart.
+#
+# Phase 5 (CMM)
+#
+# AWK script to identify whether the optimizable instructions enumerated
+# in phase 4 are within the range of a relative jump instruction. Note 
+# that we cannot use the full jump range (+/- 255) because with compact
+# code it can happen that the destination moves out of range of the 
+# jump address due to other optimizations, or the addition or removal
+# of "align" statements. There is no way to guarantee this, but we 
+# allow a "guard" of +/- 16, which should cover pretty much all 
+# contingencies.
+#
+# Phase 6
+#
+# AWK script to replace optimizable instructions with relative jumps
+#
+# Phase 7
+#
+# AWK script to identify all function calls in the SPIN file, 
+# and the stack space requirements for each function (if any). 
+#
+# Phase 8
+#
+# AWK script to identify functions that do not require stack space to be 
+# identified in BC because they do not dump any register arguments to stack
+#
+# Phase 9
+#
+# AWK script to remove assignment of reg argument stack size to BC from those 
+# function calls that don't use it.
+#
+# Also optimize away assignemts to registers immedialy prior to a POPM
+#
+# Phase 10
+#
+# AWK script to identify redundant moves and unnecessary truncation
+#
+# Phase 11
+#
+# AWK script to identify all C labels in the SPIN file 
+#
+# Phase 12
+#
+# AWK script to identify the functions used by each known function, or if
+# the functions address is taken (which means it is used).
+#
+# Phase 13
+#
+# AWK script to remove functions not specifically identified as required
+#
+# Phase 14 (CMM only)
+#
+# AWK script to re-insert 'alignl' statements where required
+#

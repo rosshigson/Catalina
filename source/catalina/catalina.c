@@ -338,6 +338,18 @@
  *                  preprocess source files only. The output files will 
  *                  have the same name as the source files but be created 
  *                  in a 'catalina' sub-folder of the current directory.
+ *                  
+ * version 9.0    - Add Catalina symbol MHZ_297 (which is translated to 
+ *                  -f297MHz) because this speed is recommended for the
+ *                  new 1080P VGA plugin.
+ *                  
+ *                - Clock speed symbols (e.g. MHZ_297) are now passed on 
+ *                  so that they can be tested for using the C preprocessor
+ *                  (e.g. #ifdef __CATALINA_MHZ_297 )
+ *                  
+ *                - fix an issue with passing some complex Catalina symbols 
+ *                  (the "=" sign would be omitted from the definition).
+ *                
  */
 
 /*--------------------------------------------------------------------------
@@ -536,7 +548,7 @@ void help(char *my_name) {
    fprintf(stderr, "          -Y         preprocess only - do not compile\n");
    fprintf(stderr, "          -z         don't invoke the parallelizer on input files that follow\n");
    fprintf(stderr, "          -Z         invoke the parallelizer on input files that follow\n\n");
-   fprintf(stderr, "NOTE: unrecognized options will be passed on to LCC\n\n");
+   fprintf(stderr, "NOTE: unrecognized options will be passed on to LCC\n");
 }
 
 // safecpy will never write more than size characters, 
@@ -712,6 +724,7 @@ void catalina_symboldef(char *name, char *value) {
       // complex symbol - must quote it (works on P2 only!)
       safecat(lcc_opt, "-D\"__CATALINA_", MAX_LINELEN);
       safecat(lcc_opt, name, MAX_LINELEN);
+      safecat(lcc_opt, "=", MAX_LINELEN);
       safecat(lcc_opt, value, MAX_LINELEN);
       safecat(lcc_opt, "\" ", MAX_LINELEN);
       safecat(lcc_opt, "-Wl-C\"", MAX_LINELEN);
@@ -1157,23 +1170,27 @@ int pass_symbol_to_compiler(char *symbol, int *code) {
       cake_color = 1;
    }
    else if (strcmp (symbol, "MHZ_300") == 0) {
-      pass = 0; // don't pass this symbol 
+      pass = 1; // don't pass this symbol 
       reqd_freq = 300000000;
    }
+   else if (strcmp (symbol, "MHZ_297") == 0) {
+      pass = 1; // do pass this symbol 
+      reqd_freq = 297000000;
+   }
    else if (strcmp (symbol, "MHZ_260") == 0) {
-      pass = 0; // don't pass this symbol 
+      pass = 1; // do pass this symbol 
       reqd_freq = 260000000;
    }
    else if (strcmp (symbol, "MHZ_220") == 0) {
-      pass = 0; // don't pass this symbol 
+      pass = 1; // do pass this symbol 
       reqd_freq = 220000000;
    }
    else if (strcmp (symbol, "MHZ_200") == 0) {
-      pass = 0; // don't pass this symbol 
+      pass = 1; // do pass this symbol 
       reqd_freq = 200000000;
    }
    else if (strcmp (symbol, "MHZ_175") == 0) {
-      pass = 0; // don't pass this symbol 
+      pass = 1; // do pass this symbol 
       reqd_freq = 175000000;
    }
    if ((verbose) && (pass == 0)) {
@@ -2128,6 +2145,7 @@ int decode_arguments (int argc, char *argv[]) {
    }
 
    if (verbose > 0) {
+      // send only one -v to lcc - more than that means do not execute commands!
       safecat(lcc_opt, "-v ", MAX_LINELEN);
       for (i = 0; i < verbose; i++) {
          safecat(lcc_opt, "-Wl-v ", MAX_LINELEN);

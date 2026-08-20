@@ -4,7 +4,7 @@
  * This section contains user configurable options.
  *
  */
-#define CATALYST_VER "Catalyst 8.8.9" // Banner string
+#define CATALYST_VER "Catalyst 9.0"   // Banner string
 #define AUTOFILE     "AUTOEXEC.TXT"   // auto-execution file if AUTOFILE
 #define ONCEFILE     "EXECONCE.TXT"   // auto-execution file if ONCEFILE
 #define MOREFILE     "____MORE.___"   // auto-execution more file if ONCEFILE
@@ -144,7 +144,8 @@
 
 #else
 
-// These must match Catalina_Common.spin
+// These must match Catalina_Common.spin. Note that there are 3 versions
+// of that file (in target/p1, embedded/p1 and minimal/p1).
 #define HUB_SIZE        0x8000
 #define FREE_MEM        (HUB_SIZE - 4)
 #define COGSTORE        (FREE_MEM - 4)

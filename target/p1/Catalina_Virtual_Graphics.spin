@@ -30,18 +30,18 @@ VAR
   word  colour_mode                                     '0 for 2 color mode, <> 0 for 4 colour mode
 ' RJH - ---------------------------------------------------------------------END
   word  tpm_base                                        'base of screen tile pointer map
-  word  map_base                                        'base of tile translation map          
-  word  tpm_tiles                                       'number of tiles in screen tile pointer map 
+  word  map_base                                        'base of tile translation map
+  word  tpm_tiles                                       'number of tiles in screen tile pointer map
   long  tile_base                                       'base of screen tile buffer (aligned on 64 long boundary)
   long  tile_0                                          'address of all 0 tile
   long  tile_list                                       'pointer to list of free tiles
-  long  tile_count                                      'count of available tiles 
+  long  tile_count                                      'count of available tiles
 
   long  bases[50]
 
   long  pixel_width                                     'pixel data
   long  slices[8]
-                                                  
+
   long  text_xs, text_ys, text_sp, text_just            'text data (these 4 must be contiguous)
 }
 
@@ -49,13 +49,13 @@ VAR
 OBJ
 
   common : "Catalina_Common"
-  db     : "Catalina_Virtual_Graphics_db.spin"  ' Double Buffer Support 
+  db     : "Catalina_Virtual_Graphics_db.spin"  ' Double Buffer Support
 
 
 PUB start : cog
 
   ' start the plugin and register it - both the plugin and the double buffer
-  ' support driver must be initialized from C before use by calling the 
+  ' support driver must be initialized from C before use by calling the
   ' appropriate "setup" functions
 
   cog := cognew(@entry, common#REGISTRY)
@@ -92,7 +92,7 @@ PUB stop
   command~
 
 
-PUB setup(mode, x_tiles, y_tiles, x_origin, y_origin, tpm_ptr, map_ptr, n_tiles, tile_ptr)  | n, x, y, ar0, ar1, ar2, ar3, ar4, ar5, ar6, ar7, ar8, ar9
+PUB setup(mode, x_tiles, y_tiles, x_origin, y_origin, tpm_ptr, n_tiles, tile_ptr)  | n, x, y, ar0, ar1, ar2, ar3, ar4, ar5, ar6, ar7, ar8, ar9
 
 '' Set bitmap and tile parameters
 ''
@@ -103,48 +103,41 @@ PUB setup(mode, x_tiles, y_tiles, x_origin, y_origin, tpm_ptr, map_ptr, n_tiles,
 ''   y_origin       - relative-y center pixel
 ''
 ''   tpm_ptr        - pointer to tile pointer map - an array of x_tiles * y_tiles words
-''   map_ptr        - pointer to tile translation map - an array of x_tiles * y_tiles words
 ''   n_tiles        - the number of tiles in the tpm - number of tiles in tile space
 ''   tile_ptr       - tile space pointer - pointer to 16*n_tiles longs (16 longs per tile). Must be 64 byte aligned.
 ''
 ' RJH - 2 or 4 color mode --------------------------------------------------- OLD
-' (for old code see the original parallax graphics driver) 
+' (for old code see the original parallax graphics driver)
 ' RJH - 2 or 4 color mode --------------------------------------------------- NEW
 
   colour_mode := mode
   if colour_mode == 0                                   '2 colour mode - map colours to 0 or 3
-    colors[1] :=%%3333_3333_3333_3333 
-    colors[2] :=%%3333_3333_3333_3333 
-    colors[3] :=%%3333_3333_3333_3333 
+    colors[1] :=%%3333_3333_3333_3333
+    colors[2] :=%%3333_3333_3333_3333
+    colors[3] :=%%3333_3333_3333_3333
   else                                                  '4 colour mode
-    colors[1] :=%%1111_1111_1111_1111 
-    colors[2] :=%%2222_2222_2222_2222 
-    colors[3] :=%%3333_3333_3333_3333 
+    colors[1] :=%%1111_1111_1111_1111
+    colors[2] :=%%2222_2222_2222_2222
+    colors[3] :=%%3333_3333_3333_3333
 
   tile_base := tile_ptr
   tile_0    := tile_ptr
 
   repeat n from 0 to 15
      long[tile_0][n] := $0000_0000                      'first tile is special 'all 0' tile
-     
+
   tile_list := 0
   tile_count := n_tiles
   repeat n from 1 to tile_count - 1                     'put remaining tiles ...
      long[tile_base][n * 16] := tile_list               '... in a linked list ...
-     tile_list := tile_base + (n * 64)                  '... of free tiles     
+     tile_list := tile_base + (n * 64)                  '... of free tiles
 
-  'init map (used to map virtual address to tile addresses)
-  map_base := map_ptr
-  repeat x from 0 to x_tiles - 1
-    repeat y from 0 to y_tiles - 1
-      word[map_base][x*y_tiles + y] := tpm_ptr + (y*x_tiles + x)<<1
-    
   'init tpm (initially all entries point to special 'all 0' tile, and have colour 0)
   tpm_base := tpm_ptr
   tpm_tiles := (x_tiles * y_tiles)                      'number of words in tile pointer map
   repeat n from 0 to tpm_tiles - 1                      'init tile screen to all blanks (tile_0)
     word[tpm_base][n] := tile_0>>6
-  
+
   setcommand(_loop, 0)                                  'make sure last command finished
 
   'for the virtual vga driver we have no actual bitmap, but for the purposes
@@ -167,42 +160,42 @@ PUB setup(mode, x_tiles, y_tiles, x_origin, y_origin, tpm_ptr, map_ptr, n_tiles,
   ar7 := @tile_list
   ar8 := @bases
   ar9 := @slices
-  
+
   setcommand(_setup, @ar0)
 
   ' start double buffer assistance handler but with double buffering diabled
-  ' db_setup must be called later to enable double buffering 
+  ' db_setup must be called later to enable double buffering
   db.setup (tpm_base, 0, 0, tile_0, tpm_tiles, @tile_list)
 
 ' RJH - 2 or 4 color mode ----------------------------------------------------------------- END
 
 PUB db_setup (tpm_dbuf, double_buffer)
 
-'' Enable double buffering 
+'' Enable double buffering
 
   flush                                                'make sure last draw command flushed
-  
+
   db.setup (tpm_base, tpm_dbuf, double_buffer, tile_0, tpm_tiles, @tile_list)
-  
+
 PUB clear
 
   flush                                                'make sure last draw command flushed
-  
+
   db.clear
 
-PUB copy(tpm_dbuf) 
+PUB copy(tpm_dbuf)
 
   flush                                                'make sure last draw command flushed
-  
+
   db.copy(tpm_dbuf)
 
-PUB move(tpm_dbuf) 
+PUB move(tpm_dbuf)
 
   flush                                                'make sure last draw command flushed
-  
+
   db.move(tpm_dbuf)
 
-PUB addram(rstart, rend) | n, i 
+PUB addram(rstart, rend) | n, i
 
   flush                                                 'make sure last draw command flushed
 
@@ -210,7 +203,7 @@ PUB addram(rstart, rend) | n, i
   n := (rend - tile_base)/64                            'number of tiles
   tile_count += n
 
-  if n > 0  
+  if n > 0
     bytefill(tile_base, 0, n*64)
     repeat i from 0 to n - 1                            'put additional tiles ...
       long[tile_base][i * 16] := tile_list              '... in linked list ...
@@ -407,12 +400,12 @@ PUB textmode(x_scale, y_scale, spacing, justification)
 ''                    bits[3..2]: 0..3 = bottom, center, top, bottom
 
   longmove(@text_xs, @x_scale, 4)                       'retain high-level text data
- 
+
   setcommand(_textmode, @x_scale)                       'set text mode
 
 
 {
-PUB box(x, y, box_width, box_height) | x2, y2, pmin, pmax 
+PUB box(x, y, box_width, box_height) | x2, y2, pmin, pmax
 
 '' Draw a box with round/square corners, according to pixel width
 ''
@@ -488,7 +481,7 @@ PUB finish
 
 PUB flush
 
-'' Flush any remembered addresses  
+'' Flush any remembered addresses
 
   setcommand(_flush, 0)                                'make sure last command flushed
 
@@ -1088,8 +1081,8 @@ jumps                   byte    0                       '0
 '
 
 setup_                  movs    :load,#arg0             'move ...
-                        movd    :load,#cmode 
-                        mov     t2,#11                  '... 11 setup parameters 
+                        movd    :load,#cmode
+                        mov     t2,#11                  '... 11 setup parameters
 :load                   mov     0,0
                         add     :load,#1
                         add     :load,d0
@@ -1097,7 +1090,7 @@ setup_                  movs    :load,#arg0             'move ...
 
 flush_                  mov     prevtile,color1          'don't have a previous tile (color1 is invalid as tile address)
 '                        mov     prevaddr,color1          'don't have a previous address
-                        
+
                         jmp     #loop
 '
 '
@@ -1410,7 +1403,7 @@ textmode_               mov     textsx,arg0             'set text x scale
 ' RJH - virtual update -------------------------------------------------------------------- NEW
 '
 ' RJH: perform ` update instead of real update
-'  old code typically looks like: 
+'  old code typically looks like:
 '                       rdlong  xxx,long_addr
 '                       andn    xxx,mask
 '                       or      xxx,bits
@@ -1428,7 +1421,7 @@ textmode_               mov     textsx,arg0             'set text x scale
 '    if no tile available, replace with tile_0
 '
 ' TODO: TBD: Reclaim blank tiles during spare cycles !!! (make sure not to add tile_0 to free list, and also fix up prevtile and prevaddr)
-'    
+'
 rdwrsparse
 '                        cmp     addr,prevaddr    wz     'same virtual addr as last time?
 '        if_z            jmp     #:have_addr             'yes - still have real addr
@@ -1455,22 +1448,22 @@ rdwrsparse
                         wrlong  tmp,tlistptr            ' ... free ...
                         wrlong  zero,tileaddr           ' ... list
                         jmp     #:save_tile
-                        
-:use_tile_0             mov     tileaddr,t0ptr          'save 
+
+:use_tile_0             mov     tileaddr,t0ptr          'save
 :save_tile              mov     tmp,tileaddr            'save tile ...
                         shr     tmp,#6                  ' .. in ...
                         or      tmp,tilecolor           ' ... tile ...
                         wrword  tmp,tpmaddr             ' ... pointer map
-                        
+
 :have_tile_1            cmp     tileaddr,t0ptr  wz      'set z flag if the tile we have is the 'all 0' tile
 :have_tile_2            mov     realaddr,addr           'calculate
                         and     realaddr,#$3f           ' ... real ...
                         add     realaddr,tileaddr       ' ... address
-                             
+
 :have_addr    if_nz     rdlong  tmp,realaddr            ' write ...
-mask          if_nz     andn    tmp,0                   ' ... if not ... 
+mask          if_nz     andn    tmp,0                   ' ... if not ...
 bits          if_nz     or      tmp,0                   ' ... the 'all 0' ...
-              if_nz     wrlong  tmp,realaddr            ' tile              
+              if_nz     wrlong  tmp,realaddr            ' tile
 
 rdwrsparse_ret          ret
 ' RJH ------------------------------------------------------------------------------------- END
@@ -1540,7 +1533,7 @@ fill_                   shl     dx,#16                  'get left and right frac
                         'rdlong  pass,base0              'read-modify-write long
                         'andn    pass,bits0
                         'or      pass,bits1
-                        'wrlong  pass,base0             
+                        'wrlong  pass,base0
 ' RJH - virtual update -------------------------------------------------------------------- NEW
                         mov     addr,base0
                         movs    mask,#bits0
@@ -1562,7 +1555,7 @@ fill_                   shl     dx,#16                  'get left and right frac
                         djnz    arg6,#:yloop            'another y?
 
                         jmp     #loop
-}                        
+}
 '
 '
 ' Plot line from px,py to dx,dy
@@ -1621,12 +1614,12 @@ plotp                   tjnz    pwidth,#wplot           'if width > 0, do wide p
 '                        mov     mask0,#%11
 ' RJH 2 or 4 colour mode ------------------------------------------------------------------ OLD
                         test    cmode,#1        wc
-        if_nc           mov     mask0,#%1               ' 2 colour mode               
+        if_nc           mov     mask0,#%1               ' 2 colour mode
         if_c            shl     t1,#1                   ' 4 colour mode
         if_c            mov     mask0,#%11              ' 4 colour mode
 
 ' RJH ------------------------------------------------------------------------------------- END
-                        shl     mask0,t1   
+                        shl     mask0,t1
                         shr     t1,#5
 
                         cmp     t1,xlongs       wc      'if x or y out of bounds, exit
@@ -1706,7 +1699,7 @@ wplot                   mov     t1,py                   'if y out of bounds, exi
                         tjnz    cmode,#:wplot_1         ' 4 color mode
                         movs    :shift1,t1             ' 2 colour mode
                         xor     :shift1,#15
-                        add     t1,#16     
+                        add     t1,#16
                         movs    :shift0,t1
                         test    t1,#$1F        wz
                         jmp     #:wplot_2
@@ -1926,7 +1919,7 @@ xlongs                  long    0       'bitmap metrics
 ylongs                  long    0
 xorigin                 long    0       'origin
 yorigin                 long    0
-fontptr                 long    0       'font pointer 
+fontptr                 long    0       'font pointer
 mapptr                  long    0       'address of translation map
 t0ptr                   long    0       'address of the special 'all 0' tile
 tlistptr                long    0       'address of free tile list ptr
@@ -1959,7 +1952,7 @@ ram_end
                         fit     $1f0
 
                         org     $1f8
-' we don't use counters                         
+' we don't use counters
 dx                      long    0       'line/plot coordinates
 dy                      long    0
 px                      long    0
@@ -1974,5 +1967,4 @@ sx                      long    0       'line
 ' we don't use OUTB
 
 sy                      long    0
-
 

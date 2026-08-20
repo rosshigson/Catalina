@@ -32,7 +32,7 @@ endif
 
 ifeq ($(PROPELLER_2),TRUE)
 
-all: assert ctype errno locale math setjmp signal stdlib string time catalina float threads linenoise int tiny spi lua libc p2 serial2 serial8 wifi psram hyper libci libcix libcx libm libma libmb libmc libthreads liblinenoise libint libtiny libspi liblua libluax libserial2 libserial8 libwifi libpsram libhyper install 
+all: assert ctype errno locale math setjmp signal stdlib string time catalina float threads linenoise int tiny spi lua graphic2 libc p2 serial2 serial8 wifi psram hyper libci libcix libcx libm libma libmb libmc libthreads liblinenoise libint libtiny libspi liblua libluax libgraphic2 libserial2 libserial8 libwifi libpsram libhyper install 
 
 else
 
@@ -60,6 +60,7 @@ clean:
 	$(MAKE) -C p2 clean
 	$(MAKE) -C int clean
 	$(MAKE) -C graphics clean
+	$(MAKE) -C graphic2 clean
 	$(MAKE) -C vgraphic clean
 	$(MAKE) -C tiny clean
 	$(MAKE) -C spi clean
@@ -86,6 +87,7 @@ clean:
 	$(MAKE) -C lib\\linenoise clean
 	$(MAKE) -C lib\\int clean
 	$(MAKE) -C lib\\graphics clean
+	$(MAKE) -C lib\\graphic2 clean
 	$(MAKE) -C lib\\vgraphic clean
 	$(MAKE) -C lib\\tiny clean
 	$(MAKE) -C lib\\spi clean
@@ -129,6 +131,8 @@ install:
 	-cp -r lib\\int $(OUTPUT)\\$(LIB)
 	-rm -fr $(OUTPUT)\\$(LIB)\\graphics
 	-cp -r lib\\graphics $(OUTPUT)\\$(LIB)
+	-rm -fr $(OUTPUT)\\$(LIB)\\graphic2
+	-cp -r lib\\graphic2 $(OUTPUT)\\$(LIB)
 	-rm -fr $(OUTPUT)\\$(LIB)\\vgraphic
 	-cp -r lib\\vgraphic $(OUTPUT)\\$(LIB)
 	-rm -fr $(OUTPUT)\\$(LIB)\\tiny
@@ -241,6 +245,9 @@ hyper:	ALWAYSRUN
 graphics:	ALWAYSRUN
 	$(MAKE) -C graphics all
 
+graphic2:	ALWAYSRUN
+	$(MAKE) -C graphic2 all
+
 vgraphic:	ALWAYSRUN
 	$(MAKE) -C vgraphic all
 
@@ -346,6 +353,9 @@ libluax:	ALWAYSRUN
 
 libgraphics:	ALWAYSRUN
 	$(MAKE) -C lib\\graphics all
+
+libgraphic2:	ALWAYSRUN
+	$(MAKE) -C lib\\graphic2 all
 
 libvgraphic:	ALWAYSRUN
 	$(MAKE) -C lib\\vgraphic all

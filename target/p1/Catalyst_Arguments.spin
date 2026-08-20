@@ -24,11 +24,12 @@
 
 CON
 
-' These values must match the ones defined in Catalina_Common.spin. They are 
-' included here rather than being included so that SPIN programs only need to 
-' include this file to allow them to be run under Catalyst - i.e. they do not 
-' need to include Catalina_Common.spin (which would mean they could only be 
-' compiled using the HomeSpun SPIN compiler).
+' These values must match the ones defined in Catalina_Common.spin (note that
+' there are 3 versions of this - in target/p1, embedded/p1 and minimal/p1). 
+' They are included here rather than being included so that SPIN programs only 
+' need to include this file to allow them to be run under Catalyst - i.e. they 
+' do not need to include Catalina_Common.spin (which would mean they could 
+' only be compiled using the HomeSpun SPIN compiler).
 
 MAX_LONGS  = 300                ' store up to 300 LONGS (1200 chars)
 

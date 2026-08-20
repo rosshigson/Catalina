@@ -39,7 +39,18 @@ extern int m_bound_y();
 extern int m_bound_z();
 
 /*
- * Cursor type constants:
+ * HMI calls : gamepad
+ */
+extern int g_present(unsigned pad);
+extern unsigned g_port(unsigned pad);
+extern unsigned g_buttons(unsigned pad);
+extern int g_abs_x(unsigned pad);
+extern int g_abs_y(unsigned pad);
+extern int g_abs_z(unsigned pad);
+
+/*
+ * Cursor mode constants (these can be combined using logical 'or', 
+ * such as (HMI_cursor_fast | HMI_cursor_scroll):
  */
 #define HMI_cursor_off 0x0
 #define HMI_cursor_on 0x1

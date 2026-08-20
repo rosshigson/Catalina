@@ -35,6 +35,9 @@
  *
  * version 8.8.4 - user "version.h"
  *
+ * version 8.9   - print a warning if the number of bytes read from an
+ *                 overlay file is less than expected.
+ *
  * ----------------------------------------------------------------------------
  * @file spinc.h
  * Defines data structures and API for spinc converter

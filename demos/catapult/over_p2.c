@@ -78,7 +78,7 @@ void main() {
    t_string(1, "starting ...\n\n");
 
    FIXED_START(func_1, args_1, ANY_COG, cog);
-   pause();
+   //pause();
    t_string(1, "result = ");
    t_integer(1, args_1.c);
    t_string(1, "\n\n");
@@ -89,7 +89,7 @@ void main() {
    args_2.c = 0.0;
 
    FIXED_START(func_2, args_2, ANY_COG, cog);
-   pause();
+   //pause();
    t_string(1, "result = ");
    t_float(1, args_2.c, 2);
    t_string(1, "\n\n");

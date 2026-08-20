@@ -42,8 +42,9 @@ CON
 '------------------------------------------------------------------------------
 ' Notification values for client routines that handle mouse/keyboard data and
 ' error events posted by the USB. The USB cog communicates with the client
-' through the USB_A_EVENT_REPO smart pin which is configured in repository mode.
-' The client should poll this smart pin (testp #USB_A_EVENT_REPO wc) at four
+' through the USB_[AB]_EVENT_REPO smart pin which is configured in repository 
+' mode.
+' The client should poll this smart pin (testp #USB_[AB]_EVENT_REPO wc) at four
 ' millisecond (or less) intervals and react appropriately when any of the below
 ' events are posted.
 '------------------------------------------------------------------------------

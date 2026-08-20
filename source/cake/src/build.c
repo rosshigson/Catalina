@@ -27,9 +27,9 @@
     " pre_expressions.c " \
     " parser.c "          \
     " compile.c "         \
-    " defer.c "         \
-    " codegen.c "             \
-    " flow.c "            \
+    " defer.c "           \
+    " codegen.c "         \
+    " flow1.c "           \
     " error.c "           \
     " target.c "          \
     " type.c "
@@ -373,7 +373,7 @@ int main()
     execute_cmd("gcc "
     // Enable Catalina customizations
            "  -D__CATALINA__ "
-           "  -Wall "
+//           "  -Wall "
            " -Wno-multichar "
            " -Wno-unknown-pragmas "
            " -g  " CAKE_SOURCE_FILES
@@ -393,17 +393,6 @@ int main()
 #else
     execute_cmd("./cake  -autoconfig");
 #endif
-#endif
-
-    
-    HEADER("Runs cake on its own source");
-    
-
-    //Uses previously generated cakeconfig.h to find include dir
-#ifdef PLATFORM_WINDOWS
-    execute_cmd("cake -D__CATALINA__ -D__CATALYST__ -DTEST -style=cake " CAKE_SOURCE_FILES);
-#else
-    execute_cmd("./cake  -D__CATALINA__ -D__CATALYST__ -DTEST style=cake " CAKE_SOURCE_FILES);
 #endif
 
 #endif

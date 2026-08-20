@@ -70,7 +70,7 @@ void help(char *my_name) {
    fprintf(stderr, "          -k        do not execute the output file\n");
    fprintf(stderr, "          -o name   output commands to file 'name'\n");
    fprintf(stderr, "                    instead of default ('%s')\n", OUTPUT_FILE);
-   fprintf(stderr, "          -v        verbose (output information messages)\n");
+   fprintf(stderr, "          -v        verbose (output information messages)\n\n");
    fprintf(stderr, "exit code is non-zero on error\n");
 }
 
