@@ -30,7 +30,7 @@ in target/p2/cogsne.t for full details):
    sne_reset        - Reset all the registers in the SNE data block to 15 
                       (i.e. maximum attenuation, or minimum volume). 
                       This is done once during initialization, but can 
-                      subseuqently be done manually.
+                      subsequently be done manually.
 
    sne_setFreq      - Set the frequency of a single channel.
 
@@ -135,7 +135,7 @@ developed by Marco Colli (see https://github.com/MajicDesigns/MD_SN76489).
 
 Below is a summary of the functions - see the header file for full details:
 
-   md_begin             - initialize the MD library. Msu be called before any
+   md_begin             - initialize the MD library. Must be called before any
                           other MD library function.
 
    md_setVolume         - Set the volume set point for channel and remember the 
@@ -154,11 +154,11 @@ Below is a summary of the functions - see the header file for full details:
                           channel. The tone is played without using ADSR.
 
    md_note              - Output a sound with frequency freq on the specified
-                          channel using the ADSR envelope curently defined for 
+                          channel using the ADSR envelope currently defined for 
                           the channel.
 
    md_noise             - Output a noise as specified on NOISE_CHANNEL, using 
-                        - the ADSR envelope curently defined for the channel. 
+                        - the ADSR envelope currently defined for the channel. 
 
    md_setADSR           - set the ADSR envelope for a channel.
 
@@ -171,11 +171,11 @@ Below is a summary of the functions - see the header file for full details:
    md_millis            - return number of milliseconds since first call.
 
 
-Functons from the different sound library components can be used in the same 
+Functions from the different sound library components can be used in the same 
 program, but note that using the sne_* functions (e.g. sne_setFreq etc) may 
 disrupt the ADSR envelope currently in use by the md_* library functions. 
 Also note that the md_* library functions typically use 0 to mean minimum 
-volume, whereas the sn_* library functions use 15 (i.e. max attentuation 
+volume, whereas the sn_* library functions use 15 (i.e. max attenuation 
 rather than min volume).
 
 The Demo programs
@@ -191,14 +191,13 @@ The following SN Emulator demo programs are provided:
 
    md_play              - plays a series of MIDI notes using ADSR.
 
-   md_noise             - plays a series of noises using ADSR. This is an
-                          interactive program.
+   md_noise             - plays a series of noises using ADSR.
 
    md_adsr              - allows the definition of an ADSR envelope, and
                           playing notes and noises using that ADSR envelope.
                           This is an interactive program.
 
-   sfx_test             - impplements a simple VGM sound effects manager, 
+   sfx_test             - implements a simple VGM sound effects manager, 
                           which allows multiple sound effects to be played
                           simultaneously using different channels of the
                           SN Emulator. The same SFX manager and sounds 
@@ -211,7 +210,7 @@ terminal emulator in interactive mode. For example:
 
    payload -o2 -i sfx_test
 
-There is also a verson of the spacewar program in this directory:
+There is also a version of the spacewar program in this directory:
 
    spacewar             - this version of spacewar includes VGM sound effects.
                           Six sound effects are used in the game - explosions, 
@@ -259,15 +258,15 @@ To build for the default platform (P2_CUSTOM) and default options:
 
    build_all 
 
-To build for a P2 EDGE and only enable only one USB port (this is required
-for the spacewar program to have a cog to run the SFX manager in its own cog). 
+To build for a P2 EDGE and enable only one USB port (this is required for 
+the spacewar program to have a cog to run the SFX manager in its own cog). 
 Either USE_USB_A or USE_USB_B can be specified:
 
    build_all P2_EDGE USE_USB_A 
 
 To build using the optimizer and compiling in COMPACT mode (NO_FLOAT is 
 required in COMPACT mode for the spacewar program to have a cog to run the 
-SFX MAnager in its own cog):
+SFX Manager in its own cog):
             
    build_all P2_EVAL USE_USB_A OPTIMIZE COMPACT NO_FLOAT
 
