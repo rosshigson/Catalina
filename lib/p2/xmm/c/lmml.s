@@ -672,12 +672,12 @@ _TX8_MULTI_MODE = %0000
 ' VGA constants
 ' =============
 
-_VGA_BASE_PIN = 0
+_VGA_BASE_PIN = 8
 
 ' USB constants
 ' =============
 
-_USB_BASE_PIN = 8
+_USB_BASE_PIN = 0
 
 ' Hyper Flash / Hyper RAM constants
 ' =================================

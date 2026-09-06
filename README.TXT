@@ -203,44 +203,28 @@ documents folder.
 New Functionality
 -----------------
 
-1. Addition of Full HD VGA HMI option (Propeller 2 only). Use it by adding 
-   -C HD_VGA to a Catalina command line. See the README.TXT file in 
-   demos\graphic2 for more details.
+1. Addition of SN76489 Emulator plugin and soundsne libraries (supported on
+   the Propeller 2 only). Use it by adding -lsoundsne to a Catalina command 
+   line. See the README.TXT file in demos\soundsne for more details.
 
-2. Addition of Propeller 2 virtual graphics library (called vgraph2). Very 
-   compatible with P1 graphics and vgraphic libraries. Use it by adding 
-   -lvgraph2 to programs. Demo programs provided in demos\p2_vgraphics.
-   See the README.TXT file in demos\graphic2 for more details.
-
-3. The new Full HD VGA option has necessitated a change to the minimum size
-   of a P2 XMM image, from 64kb to 128kb. While this will usually make no 
-   functional difference, it means some existing XMM programs may have less 
-   Hub RAM available, and that the Catalina 9.0 compiler itself, and various 
-   utilities (notably the payload loader) are not compatible with XMM programs
-   compiled by prior Catalina versions.
+   The SN76489 sound chip was selected instead of a more sophisticted chip 
+   (of which there are several Propeller 2 emulators) because it is small
+   enough that it could also be supported on the Propeller 1 if required
+   (but note this has not yet been implemented in Catalina), and also because
+   in addition to playing music it offers a simple path for adding basic games 
+   sound effects. An example of doing so is provided by the spacewar demo 
+   program (see the version in demos/soundsne). This is because it can use 
+   sound effects in VGM format and there are many VGM utilities freely
+   available. A trivial multi-channel VGM sound effects manager suitable
+   for adding sound effects to any game program is included in the demos.
 
 Other Changes
 -------------
 
 1. All the Propeller 2 platform configuration files have been modified to 
-   default to pin 0 for the VGA add-on board, pin 8 for the USB Serial Host
-   add-on board, pin 16 for the HYPER base pin, and pin 24 for the RTC add-on
-   board. The old platform files have been retained if required, but with the
-   suffix ".old" (e.g. the original P2EDGE.inc is now P2EDGE.inc.old). Using
-   the new configurations is highly recommended because the old configurations
-   had problems using USB ports on the old base pin of 24, and this also 
-   conflicted with the RTC clock base pin. Rename the files if necessary to
-   restore the old configurations. Affected the Propeller 2 only.
+   default to pin 8 for the VGA add-on board, pin 0 for the USB Serial Host
+   add-on board. This change was required to allow access to the sound jack 
+   on the A/V add-on board when both the A/V and Serial Host add-on boards
+   are in use. This change also applies to all the pre-compiled demo programs.
 
-2. Fixed a bug in the P1 graphics library that was not always drawing triangle
-   and quadrilateral shapes correctly. Affected the Propeller 1 only.
-
-3. The word "palette" was misspelled as "pallete" in various places (e.g.
-   in the vgraphic library, the function name g_pallete was used instead 
-   of g_palette). Now corrected. Affected the Propeller 1 only.
-
-4. The Catalina symbols VGA_4_COLOR and VGA_2_COLOR were sometimes used 
-   in place of COLOR_4 and COLOR_2 in both the source code and documentation.
-   All instances of the former symbols have been replaced with the latter.
-   Affected the Propeller 1 and Propeller 2.
 

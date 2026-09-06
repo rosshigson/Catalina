@@ -66,4 +66,7 @@
 
 #include "cache.t"
 
+' The following file must be included for sound support
+
+#include "sound.t"
 

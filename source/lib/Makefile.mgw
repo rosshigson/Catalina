@@ -32,7 +32,7 @@ endif
 
 ifeq ($(PROPELLER_2),TRUE)
 
-all: assert ctype errno locale math setjmp signal stdlib string time catalina float threads linenoise int tiny spi lua graphic2 libc p2 serial2 serial8 wifi psram hyper libci libcix libcx libm libma libmb libmc libthreads liblinenoise libint libtiny libspi liblua libluax libgraphic2 libserial2 libserial8 libwifi libpsram libhyper install 
+all: assert ctype errno locale math setjmp signal stdlib string time catalina float threads linenoise int tiny spi lua graphic2 libc p2 serial2 serial8 wifi soundsne psram hyper libci libcix libcx libm libma libmb libmc libthreads liblinenoise libint libtiny libspi liblua libluax libgraphic2 libserial2 libserial8 libwifi libsoundsne libpsram libhyper install 
 
 else
 
@@ -72,6 +72,7 @@ clean:
 	$(MAKE) -C psram clean
 	$(MAKE) -C hyper clean
 	$(MAKE) -C sound clean
+	$(MAKE) -C soundsne clean
 	$(MAKE) -C tty clean
 	$(MAKE) -C tty256 clean
 	$(MAKE) -C lua clean
@@ -99,6 +100,7 @@ clean:
 	$(MAKE) -C lib\\psram clean
 	$(MAKE) -C lib\\hyper clean
 	$(MAKE) -C lib\\sound clean
+	$(MAKE) -C lib\\soundsne clean
 	$(MAKE) -C lib\\tty clean
 	$(MAKE) -C lib\\tty256 clean
 	$(MAKE) -C lib\\lua clean
@@ -155,6 +157,8 @@ install:
 	-cp -r lib\\hyper $(OUTPUT)\\$(LIB)
 	-rm -fr $(OUTPUT)\\$(LIB)\\sound
 	-cp -r lib\\sound $(OUTPUT)\\$(LIB)
+	-rm -fr $(OUTPUT)\\$(LIB)\\soundsne
+	-cp -r lib\\soundsne $(OUTPUT)\\$(LIB)
 	-rm -fr $(OUTPUT)\\$(LIB)\\tty
 	-cp -r lib\\tty $(OUTPUT)\\$(LIB)
 	-rm -fr $(OUTPUT)\\$(LIB)tty256
@@ -259,6 +263,9 @@ serial4x:	ALWAYSRUN
 
 sound:	ALWAYSRUN
 	$(MAKE) -C sound all
+
+soundsne:	ALWAYSRUN
+	$(MAKE) -C soundsne all
 
 tty:   ALWAYSRUN
 	$(MAKE) -C tty all
@@ -368,6 +375,9 @@ libserial4x:	ALWAYSRUN
 
 libsound:	ALWAYSRUN
 	$(MAKE) -C lib\\sound all
+
+libsoundsne:	ALWAYSRUN
+	$(MAKE) -C lib\\soundsne all
 
 libtty:	ALWAYSRUN
 	$(MAKE) -C lib\\tty all

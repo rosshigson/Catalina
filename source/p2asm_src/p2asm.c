@@ -2183,6 +2183,9 @@ void usage(void)
     printf("  [ -l ]     generate a listing file\n");
     printf("  [ -v33 ]   assemble code for the v33 P2\n");
     printf("  file       source file\n");
+#if defined(__CATALINA_P2)
+    _waitms(1000);
+#endif
     exit(1);
 }
 

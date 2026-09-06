@@ -317,6 +317,24 @@ INITIALIZE_PLUGINS
  call    #do_register
 #endif
 
+#if defined(libsoundsne)
+ rdlong  r0, ##FREE_MEM         ' allocate ...
+ sub     r0, ##SNE_BLOCK_SIZE   ' ... SNE data block 
+ andn    r0, #$3                ' FREE_MEM should always be long aligned
+ wrlong  r0, ##FREE_MEM
+ mov     r1,r0
+ mov     r2,##SNE_BLOCK_SIZE/4
+.sne_reset
+ wrlong  ##15,r1                ' reset ...
+ add     r1,#4                  ' ... all ...
+ djnz    r2,#.sne_reset         ' ... SNE registers
+ mov     r1, #%10000            ' start ...
+ setq    r0                     ' ... SNE ...
+ coginit r1, ##@SNEMU wc        ' ... plugin
+ mov     r3, #LMM_SND           ' register SNE Plugin ...
+ call    #do_register           ' ... as sound driver
+#endif
+
 #if defined(INITIALIZE_RAM)
 ' use an unusual value (i.e. not 0 or -1) to try
 ' and expose failures due to lack of initialization!

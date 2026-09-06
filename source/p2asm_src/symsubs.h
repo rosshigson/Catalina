@@ -95,12 +95,20 @@
 #if defined(__P2GCC__)
 #define MAX_SYMBOLS    1000
 #elif defined(__CATALINA__)
-// arbitrary, but should be sufficient for anything compilable on a Propeller!
+#if defined(__CATALINA_LARGE)
+// We are using XMM RAM for data
+// this is arbitrary, but should be sufficient for anything compilable on a Propeller!
 #define MAX_SYMBOLS    20000 
+#define MAX_SYMBOL_LEN   65
+#else
+// We are using Hub RAM for data
+#define MAX_SYMBOLS    300 
+#define MAX_SYMBOL_LEN   32
+#endif
 #else
 #define MAX_SYMBOLS    50000
-#endif
 #define MAX_SYMBOL_LEN   65
+#endif
 
 #define SCOPE_NULL        0
 #define SCOPE_LOCAL       1

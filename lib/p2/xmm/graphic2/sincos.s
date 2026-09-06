@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_s6mg_6a858a13_sin_table_L000004 ' <symbol:sin_table>
+C_suhc_6a9cb606_sin_table_L000004 ' <symbol:sin_table>
  word $0
  word $0
  word $477
@@ -183,7 +183,7 @@ C_g_sin_8
  mov r22, r2
  shl r22, #1 ' LSHU4 coni
  jmp #LODL
- long @C_s6mg_6a858a13_sin_table_L000004
+ long @C_suhc_6a9cb606_sin_table_L000004
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  mov RI, r22
@@ -216,7 +216,7 @@ C_g_sin_10
  mov r22, r2
  shl r22, #1 ' LSHU4 coni
  jmp #LODL
- long @C_s6mg_6a858a13_sin_table_L000004
+ long @C_suhc_6a9cb606_sin_table_L000004
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  mov RI, r22

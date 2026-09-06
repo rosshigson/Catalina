@@ -9,7 +9,7 @@
 #if defined (libma) || defined (libmb) || defined(NEED_FLOAT_A) || defined (NEED_FLOAT_B)
   orgh
 ' The Float A and Float B Plugins require the Propeller 1 ROM tables ...
-#include <p1rom.t>
+#include "p1rom.t"
 #endif
 
    alignl

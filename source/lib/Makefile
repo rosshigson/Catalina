@@ -41,11 +41,11 @@ endif
 
 ifeq ($(PROPELLER_2),TRUE)
 
-all: assert ctype errno locale math setjmp signal stdlib string time catalina float threads linenoise int tiny spi lua graphic2 libc p2 serial2 serial8 wifi psram hyper libci libcix libcx libm libma libmb libmc libthreads liblinenoise libint libtiny libspi liblua libluax libgraphic2 libserial2 libserial8 libwifi libpsram libhyper install 
+all: assert ctype errno locale math setjmp signal stdlib string time catalina float threads linenoise int tiny spi lua graphic2 libc p2 serial2 serial8 wifi soundsne psram hyper libci libcix libcx libm libma libmb libmc libthreads liblinenoise libint libtiny libspi liblua libluax libgraphic2 libserial2 libserial8 libwifi libsoundsne libpsram libhyper install 
 
 else
 
-all: assert ctype errno locale math setjmp signal stdlib string time catalina float threads linenoise int tiny spi lua graphics vgraphic serial4 serial4x wifi sound tty tty256 libc libci libcix libcx libm libma libmb libmc libthreads liblinenoise libint libtiny libspi liblua libluax libgraphics libgraphic2 libvgraphic libserial4 libserial4x libwifi libsound libtty libtty256 install
+all: assert ctype errno locale math setjmp signal stdlib string time catalina float threads linenoise int tiny spi lua graphics vgraphic serial4 serial4x wifi sound tty tty256 libc libci libcix libcx libm libma libmb libmc libthreads liblinenoise libint libtiny libspi liblua libluax libgraphics libvgraphic libserial4 libserial4x libwifi libsound libtty libtty256 install
 
 endif
 
@@ -81,6 +81,7 @@ clean:
 	$(MAKE) -C psram clean
 	$(MAKE) -C hyper clean
 	$(MAKE) -C sound clean
+	$(MAKE) -C soundsne clean
 	$(MAKE) -C tty clean
 	$(MAKE) -C tty256 clean
 	$(MAKE) -C lua clean
@@ -108,6 +109,7 @@ clean:
 	$(MAKE) -C lib/psram clean
 	$(MAKE) -C lib/hyper clean
 	$(MAKE) -C lib/sound clean
+	$(MAKE) -C lib/soundsne clean
 	$(MAKE) -C lib/tty clean
 	$(MAKE) -C lib/tty256 clean
 	$(MAKE) -C lib/lua clean
@@ -139,6 +141,7 @@ install:
 	-cp -r lib/psram $(OUTPUT)/$(LIB)
 	-cp -r lib/hyper $(OUTPUT)/$(LIB)
 	-cp -r lib/sound $(OUTPUT)/$(LIB)
+	-cp -r lib/soundsne $(OUTPUT)/$(LIB)
 	-cp -r lib/tty $(OUTPUT)/$(LIB)
 	-cp -r lib/tty256 $(OUTPUT)/$(LIB)
 	-cp -r lib/lua $(OUTPUT)/$(LIB)
@@ -239,6 +242,9 @@ serial4x:	ALWAYSRUN
 
 sound:	ALWAYSRUN
 	$(MAKE) -C sound all
+
+soundsne:	ALWAYSRUN
+	$(MAKE) -C soundsne all
 
 tty:   ALWAYSRUN
 	$(MAKE) -C tty all
@@ -348,6 +354,9 @@ libserial4x:	ALWAYSRUN
 
 libsound:	ALWAYSRUN
 	$(MAKE) -C lib/sound all
+
+libsoundsne:	ALWAYSRUN
+	$(MAKE) -C lib/soundsne all
 
 libtty:	ALWAYSRUN
 	$(MAKE) -C lib/tty all
