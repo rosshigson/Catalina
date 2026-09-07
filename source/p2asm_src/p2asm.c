@@ -552,7 +552,12 @@ int ProcessBigSrc(int *pi, char **tokens, int num, int *popcode, int is_loc)
        addifmissing = finalpass;
        if (index < 0)
        {
+           if (finalpass) {
+              PrintError("ERROR: %s is undefined\n", tokens[*pi]);
+           }
+           else {
            value = hub_addr + 4;
+       }
        }
        else if (SymbolTable[index].type == TYPE_HUB_ADDR)
        {
@@ -1848,6 +1853,11 @@ void ParseDat(int pass, char *buffer2, char **tokens, int num)
         // Handle OP1AX instruction, such as jmp #abs/#rel
         case TYPE_OP1AX:
         {
+            if (!strcmp(tokens[i], "##")) {
+              PrintError("ERROR: \"%s\" invalid here\n", tokens[i]);
+              break;
+            }
+
             if (!strcmp(tokens[i], "#"))
                 ProcessBigSrc(&i, tokens, num, &opcode, 0);
             else
