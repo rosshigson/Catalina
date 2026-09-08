@@ -1605,7 +1605,7 @@ B_hget_hub_status
                 cmp     B_retval, #PID_ACK        wz
         if_z    jmp     #.data
                 cmp     B_retval, #PID_NAK        wz
-        if_nz   jmp     #host_error                     ' Something other than ACK/NAK, so likely fatal
+        if_nz   jmp     #B_host_error                   ' Something other than ACK/NAK, so likely fatal
                 ret
 .data
                 cmp     B_hpar3, #0               wz
