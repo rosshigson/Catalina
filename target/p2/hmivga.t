@@ -1853,7 +1853,11 @@ usb_event_A
         cmp    cnotify, #M_DATA wz
   if_z  jmp    #cmouse_update
         cmp    cnotify, #KBD_KEY_UPDATE wz
-  if_z  jmp    #ckbd_key_update
+#ifdef USB_DEBUGGING
+  if_z  jmp     #ckbd_key_update   ' ... keyboard (print key) ...
+#else
+        nop                        ' ... keyboard (nothing) ...
+#endif
         cmp    cnotify, #KBD_TGL_UPDATE wz
   if_z  jmp    #ckbd_tgl_update
         cmp    cnotify, #KB_READY wz
@@ -1969,7 +1973,11 @@ usb_event_B
         cmp    cnotify, #M_DATA wcz
   if_z  jmp    #cmouse_update
         cmp    cnotify, #KBD_KEY_UPDATE wcz
-  if_z  jmp    #ckbd_key_update
+#ifdef USB_DEBUGGING
+  if_z  jmp     #ckbd_key_update   ' ... keyboard (print key) ...
+#else
+        nop                        ' ... keyboard (nothing) ...
+#endif
         cmp    cnotify, #KBD_TGL_UPDATE wcz
   if_z  jmp    #ckbd_tgl_update
         cmp    cnotify, #KB_READY wz
