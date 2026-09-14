@@ -1,6 +1,6 @@
 /*
  *  This file is part of cake compiler
- *  https://github.com/thradams/cake 
+ *  https://github.com/thradams/cake
 */
 
 #pragma once
@@ -37,6 +37,8 @@ enum attribute_flags
     //TODO decide attribute or not
     CAKE_ATTRIBUTE_CTOR = 1 << 7,
     CAKE_ATTRIBUTE_DTOR = 1 << 8,
+    CAKE_ATTRIBUTE_UNINIT = 1 << 9,
+    CAKE_ATTRIBUTE_CLEAR = 1 << 10,
 
     /*
      1 == 2 results in int in C
@@ -101,16 +103,20 @@ enum type_qualifier_flags
     TYPE_QUALIFIER_VOLATILE = 1 << 2,
     TYPE_QUALIFIER__ATOMIC = 1 << 3,
 
-    
 
-    /* ownership extensions TODO separate this from qualifiers??*/
+
+    /*------------------  contracts -------------------------*/
+
     TYPE_QUALIFIER_CAKE_OWNER = 1 << 4,
     TYPE_QUALIFIER_CAKE_VIEW = 1 << 5,
     TYPE_QUALIFIER_CAKE_OPT = 1 << 6,
 
-    /*function contract*/
     TYPE_QUALIFIER_CAKE_DTOR = 1 << 7,
     TYPE_QUALIFIER_CAKE_CTOR = 1 << 8,
+    TYPE_QUALIFIER_CAKE_UNINIT = 1 << 12,
+    TYPE_QUALIFIER_CAKE_CLEAR = 1 << 13,
+
+    /*-------------------------------------------------------*/
 
     TYPE_QUALIFIER_MSVC_PTR32 = 1 << 9,
     TYPE_QUALIFIER_MSVC_PTR64 = 1 << 10,
@@ -152,7 +158,7 @@ enum function_specifier_flags
 
 enum alignment_specifier_flags
 {
-    ALIGNMENT_SPECIFIER_NONE =  0,
+    ALIGNMENT_SPECIFIER_NONE = 0,
     ALIGNMENT_SPECIFIER_8_FLAGS = 1 << 0,
     ALIGNMENT_SPECIFIER_16_FLAGS = 1 << 1,
     ALIGNMENT_SPECIFIER_32_FLAGS = 1 << 2,
@@ -242,11 +248,14 @@ struct type
     enum type_specifier_flags type_specifier_flags;
     enum type_qualifier_flags type_qualifier_flags;
     enum storage_class_specifier_flags storage_class_specifier_flags;
-    
+
     const char* _Owner _Opt name_opt;
 
     struct struct_or_union_specifier* _Opt struct_or_union_specifier;
     const struct enum_specifier* _Opt enum_specifier;
+
+    /*to find the complete array size*/  
+    struct declarator* _Opt p_declarator_opt;
 
     //Expression used as array size. Can be constant or not constant (VLA)
     const struct expression* _Opt p_array_num_elements_expression;
@@ -254,7 +263,7 @@ struct type
       id/number of local variable to store the vm
     */
     int vm_dim_id;
-    
+
     /*
       This is the function where the vm type variable exists
     */
@@ -300,21 +309,39 @@ struct type type_common(const struct type* p_type1, const struct type* p_type2, 
 struct type get_array_item_type(const struct type* p_type);
 struct type type_remove_pointer(const struct type* p_type);
 
+bool type_is_incomplete(const struct type* p_type);
+
 bool type_is_essential_bool(const struct type* p_type);
 bool type_is_essential_char(const struct type* p_type);
 
 bool type_is_enum(const struct type* p_type);
+bool type_is_enumerator(const struct type* p_type);
 bool type_is_array(const struct type* p_type);
+bool type_is_array_of_unknown_size(const struct type* p_type);
+bool type_has_different_array_parameter_size(const struct type* a, const struct type* b);
+const struct type* _Opt type_get_complete_array(const struct type* p_type);
 
-bool type_is_ctor(const struct type* p_type);
+bool type_is_out(const struct type* p_type);
+bool type_is_dtor(const struct type* p_type);
+bool type_is_clear(const struct type* p_type);
+bool type_is_uninit(const struct type* p_type);
 bool type_is_const(const struct type* p_type);
+bool type_is_const_recursive(const struct type* p_type);
+bool type_is_pointed_void(const struct type* p_type);
 bool type_is_constexpr(const struct type* p_type);
 bool type_is_const_or_constexpr(const struct type* p_type);
-bool type_is_opt(const struct type* p_type, bool nullable_enabled);
+bool type_is_nullable(const struct type* p_type, bool nullable_enabled);
 bool type_is_view(const struct type* p_type);
 
 bool type_is_owner(const struct type* p_type);
+
 bool type_is_pointed_dtor(const struct type* p_type);
+bool type_is_pointed_out(const struct type* p_type);
+bool type_is_pointed_uninit(const struct type* p_type);
+bool type_is_pointed_clear(const struct type* p_type);
+
+
+bool type_is_pointed_const(const struct type* p_type);
 bool type_is_owner_or_pointer_to_dtor(const struct type* p_type);
 
 bool type_is_pointer_to_const(const struct type* p_type);
@@ -325,9 +352,11 @@ bool type_is_nullptr_t(const struct type* p_type);
 bool type_is_void_ptr(const struct type* p_type);
 bool type_is_integer(const struct type* p_type);
 bool type_is_char(const struct type* p_type);
+bool type_is_wchar(const struct type* p_type, enum target target);
 bool type_is_array_of_char(const struct type* p_type);
 bool type_is_unsigned_integer(const struct type* p_type);
 bool type_is_signed_integer(const struct type* p_type);
+bool type_is_signed(const struct type* p_type);
 bool type_is_floating_point(const struct type* p_type);
 int type_get_integer_rank(const struct type* p_type1);
 
@@ -374,7 +403,7 @@ struct argument_expression;
 
 
 struct type type_convert_to(const struct type* p_type, enum standard_version target);
-struct type type_lvalue_conversion(const struct type* p_type, bool nullchecks_enabled);
+struct type type_lvalue_conversion(const struct type* p_type);
 void type_remove_all_qualifiers(struct type* p_type);
 void type_remove_non_cake_qualifiers(struct type* p_type);
 void type_add_const(struct type* p_type);
@@ -386,9 +415,9 @@ void type_integer_promotion(struct type* a);
 struct type type_remove_pointer(const struct type* p_type);
 struct type get_array_item_type(const struct type* p_type);
 
-struct type type_param_array_to_pointer(const struct type* p_type, bool null_checks_enabled);
+struct type type_param_array_to_pointer(const struct type* p_type);
 
-struct type type_make_literal_string(int size, enum type_specifier_flags chartype, enum type_qualifier_flags qualifiers, enum target target);
+struct type type_make_literal_string(int size, enum type_specifier_flags chartype, enum type_qualifier_flags qualifiers);
 struct type type_make_int();
 struct type type_make_int_bool_like();
 struct type type_make_size_t(enum target target);
@@ -398,13 +427,15 @@ struct type type_make_long_double();
 struct type type_make_double();
 struct type type_make_float();
 
-
-struct type type_make_enumerator(const struct enum_specifier* enum_specifier);
+struct enumerator;
+struct type type_make_enumerator(const struct enumerator* enumerator);
 struct type make_void_type();
 struct type make_void_ptr_type();
 struct type make_size_t_type(enum target target);
 struct type make_with_type_specifier_flags(enum type_specifier_flags f);
 
+struct specifier_qualifier_list;
+struct type make_with_specifier_qualifier_list(const struct specifier_qualifier_list* list);
 
 struct type get_function_return_type(const struct type* p_type);
 bool function_returns_void(const struct type* p_type);
@@ -423,20 +454,22 @@ enum sizeof_result
 enum sizeof_result type_get_sizeof(const struct type* p_type, size_t* size, enum target target);
 enum sizeof_result type_get_offsetof(const struct type* p_type, const char* member, size_t* size, enum target target);
 
+void type_get_integer_range(const struct type* p_type, enum target target, long long* min, unsigned long long* max);
+
 size_t type_get_alignof(const struct type* p_type, enum target target);
 
-struct type type_add_pointer(const struct type* p_type, bool null_checks_enabled);
+struct type type_add_pointer(const struct type* p_type);
 void type_print(const struct type* a, enum target target);
 void type_println(const struct type* a, enum target target);
 
 enum type_category type_get_category(const struct type* p_type);
 void print_type_qualifier_specifiers(struct osstream* ss, const struct type* type, enum target target);
 
-void type_visit_to_mark_anonymous(struct type* p_type);
+void type_visit_to_mark_anonymous(const struct type* p_type);
 
-void type_set_qualifiers_using_declarator(struct type* p_type, struct declarator* pdeclarator);
-void type_set_storage_specifiers_using_declarator(struct type* p_type, struct declarator* pdeclarator);
-void type_merge_qualifiers_using_declarator(struct type* p_type, struct declarator* pdeclarator);
+void type_set_qualifiers_using_declarator(struct type* p_type, const struct declarator* pdeclarator);
+void type_set_storage_specifiers_using_declarator(struct type* p_type, const struct declarator* pdeclarator);
+void type_merge_qualifiers_using_declarator(struct type* p_type, const struct declarator* pdeclarator);
 
 void print_type_declarator(struct osstream* ss, const struct type* p_type, enum target target);
 void type_remove_names(struct type* p_type);

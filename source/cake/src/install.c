@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "version.h"
  /* ------------------------------------------------------------------ */
  /*  Platform detection & OS-specific includes                          */
@@ -54,11 +55,28 @@
 #endif
 
 /* ------------------------------------------------------------------ */
+/*  Output binary / product names (kept in sync with build.c)          */
+/* ------------------------------------------------------------------ */
+
+#define CKC_NAME   "cake"
+#define CAKE_NAME  "cakeide"
+
+#ifdef _WIN32
+#define EXE(name) name ".exe"
+#else
+#define EXE(name) name
+#endif
+
+/* ------------------------------------------------------------------ */
 /*  Install configuration                                               */
 /* ------------------------------------------------------------------ */
 
-#define APP_DIR_NAME  "cake"
-#define APP_DIR_NAME_VERSION  "cake\\" CAKE_VERSION
+#define APP_DIR_NAME CAKE_NAME
+#ifdef _WIN32
+#define APP_DIR_NAME_VERSION  "cake" "\\" CAKE_VERSION
+#else
+#define APP_DIR_NAME_VERSION  "cake" "/" CAKE_VERSION
+#endif
 
 /*
  * Install entries: { "source", "dest_subfolder", recursive, exec_bit }
@@ -96,17 +114,16 @@ typedef struct {
 
 static const InstallEntry INSTALL_ENTRIES[] = {
 #ifdef _WIN32
-    { "cake.exe",          "",        0 , 0},
+    { EXE(CKC_NAME),       "",        0 , 0},
+    { EXE(CAKE_NAME),      "",        0 , 0},
 
 #else
-    { "cake",           "",      0 , 1},
+    { CKC_NAME,             "",        0 , 1},
+    { CAKE_NAME,            "",        0 , 1},
 #endif
-    { "cakeconf.h",        "",   0 , 0},
-    { "cakeserver.exe",        "",   0 , 0},
-    { "server.js",        "",   0 , 0},
-    { "index.html",        "",   0 , 0},
-    { "web",        "web", 1 , 0},   /* recursive: copies entire plugins\ tree */
-    { "vs",        "vs", 1 , 0},   /* recursive: copies entire plugins\ tree */
+    { "cake.json",         "",        0 , 0},
+    { "help",              "help",    1 , 0},
+    { "samples",           "samples", 1 , 0}
 
 };
 #define INSTALL_ENTRIES_COUNT  (sizeof(INSTALL_ENTRIES) / sizeof(INSTALL_ENTRIES[0]))
@@ -129,9 +146,38 @@ static int ask_yes_no(const char* question)
     }
 }
 
-static void print_separator(void)
+/* Same header format used by build.c */
+static void print_header(const char* text)
 {
-    printf("------------------------------------------------------------\n");
+    const int header_width = 80;
+    char upper[256];
+    size_t length = 0;
+    int left_padding = 0;
+    int i = 0;
+
+    for (; text[length] != '\0' && length < sizeof(upper) - 1; length++)
+    {
+        upper[length] = (char)toupper((unsigned char)text[length]);
+    }
+    upper[length] = '\0';
+
+    if ((int)length < header_width)
+    {
+        left_padding = (header_width - (int)length) / 2;
+    }
+
+    printf("\n");
+    for (i = 0; i < header_width; i++)
+    {
+        printf("=");
+    }
+    printf("\n");
+    printf("%*s%s\n", left_padding, "", upper);
+    for (i = 0; i < header_width; i++)
+    {
+        printf("=");
+    }
+    printf("\n");
 }
 
 /* ------------------------------------------------------------------ */
@@ -257,9 +303,7 @@ static int copy_file(const char* src, const char* dest, int exec_bit)
         chmod(dest, 0644);  /* fallback: rw-r--r-- */
     }
 
-    if (exec_bit)
-        printf("  [CHMOD+X] %s\n", dest);
-
+    (void)exec_bit;
     return 1;
 #endif
 }
@@ -303,8 +347,6 @@ static int copy_dir_recursive(const char* src_dir, const char* dest_dir, int exe
 
             if (fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
             {
-                /* Recurse into sub-directory */
-                printf("  [DIR]     %s\n", src_child);
                 errors += copy_dir_recursive(src_child, dst_child, exec_bit);
             }
             else
@@ -312,7 +354,9 @@ static int copy_dir_recursive(const char* src_dir, const char* dest_dir, int exe
                 if (!copy_file(src_child, dst_child, exec_bit))
                     errors++;
                 else
-                    printf("  [OK]      %s\n         -> %s\n", src_child, dst_child);
+                {
+                    printf("  [OK]  %-100s\r", src_child); fflush(stdout);
+                }
             }
         } while (FindNextFileA(hfind, &fd));
         FindClose(hfind);
@@ -345,7 +389,6 @@ static int copy_dir_recursive(const char* src_dir, const char* dest_dir, int exe
 
             if (S_ISDIR(st.st_mode))
             {
-                printf("  [DIR]     %s\n", src_child);
                 errors += copy_dir_recursive(src_child, dst_child, exec_bit);
             }
             else
@@ -353,7 +396,9 @@ static int copy_dir_recursive(const char* src_dir, const char* dest_dir, int exe
                 if (!copy_file(src_child, dst_child, exec_bit))
                     errors++;
                 else
-                    printf("  [OK]      %s\n         -> %s\n", src_child, dst_child);
+                {
+                    printf("  [OK]  %-100s\r", src_child); fflush(stdout);
+                }
             }
         }
         closedir(d);
@@ -370,8 +415,10 @@ static int copy_dir_recursive(const char* src_dir, const char* dest_dir, int exe
 
 static int copy_with_wildcard(const char* src_pattern, const char* dest_dir, int exec_bit)
 {
-    char src_file[PATH_MAX_LEN];
     char dest_file[PATH_MAX_LEN];
+#ifdef _WIN32
+    char src_file[PATH_MAX_LEN];
+#endif
     char src_dir[PATH_MAX_LEN];
     const char* last_sep;
     int  errors = 0;
@@ -424,7 +471,9 @@ static int copy_with_wildcard(const char* src_pattern, const char* dest_dir, int
             if (!copy_file(src_file, dest_file, 0))
                 errors++;
             else
-                printf("  [OK]      %s\n         -> %s\n", src_file, dest_file);
+            {
+                printf("  [OK]  %-100s\r", src_file); fflush(stdout);
+            }
 
         } while (FindNextFileA(hfind, &fd));
         FindClose(hfind);
@@ -463,10 +512,12 @@ static int copy_with_wildcard(const char* src_pattern, const char* dest_dir, int
 
             snprintf(dest_file, sizeof dest_file, "%s/%s", dest_dir, fname);
 
-            if (!copy_file(match, dest_file, 0))
+            if (!copy_file(match, dest_file, exec_bit))
                 errors++;
             else
-                printf("  [OK]      %s\n         -> %s\n", match, dest_file);
+            {
+                printf("  [OK]  %-100s\r", match); fflush(stdout);
+            }
         }
         globfree(&gl);
     }
@@ -514,7 +565,7 @@ static int clean_directory(const char* dir)
             }
             else
             {
-                printf("  [DEL-DIR]  %s\n", child);
+                printf("  [DEL-DIR]  %-100s\r", child); fflush(stdout);
             }
         }
         else
@@ -530,7 +581,7 @@ static int clean_directory(const char* dir)
             }
             else
             {
-                printf("  [DEL-FILE] %s\n", child);
+                printf("  [DEL-FILE] %-100s\r", child); fflush(stdout);
             }
         }
     } while (FindNextFileA(hfind, &fd));
@@ -566,7 +617,7 @@ static int clean_directory(const char* dir)
             }
             else
             {
-                printf("  [DEL-DIR]  %s\n", child);
+                printf("  [DEL-DIR]  %-100s\r", child); fflush(stdout);
             }
         }
         else
@@ -579,7 +630,7 @@ static int clean_directory(const char* dir)
             }
             else
             {
-                printf("  [DEL-FILE] %s\n", child);
+                printf("  [DEL-FILE] %-100s\r", child); fflush(stdout);
             }
         }
     }
@@ -701,9 +752,9 @@ static void add_to_system_path(const char* target_dir)
     const char* REG_ENV =
         "SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment";
 
-    print_separator();
-    printf("  Checking system PATH (registry)...\n");
-    print_separator();
+    
+    printf("  Checking system PATH...\n");
+    
 
     if (RegOpenKeyExA(HKEY_LOCAL_MACHINE, REG_ENV, 0, KEY_READ, &hkey) != ERROR_SUCCESS)
     {
@@ -729,32 +780,22 @@ static void add_to_system_path(const char* target_dir)
     }
     RegCloseKey(hkey);
 
-    /* ---- Scan: show what will be removed / kept ------------------- */
-    printf("  Scanning for stale %s entries...\n\n", APP_DIR_NAME);
     int bExist = 0;
     removed = rebuild_path_without_app(old_path, new_path,
                                        data_size + MAX_PATH + 4,
                                        target_dir,
                                        &bExist);
 
-    if (removed > 0)
-        printf("\n  %d stale PATH entry(s) will be removed.\n", removed);
-    else
-        printf("  No stale entries found.\n");
-
     if (bExist && removed == 0)
     {
-        printf("  PATH already contains the correct entry:\n    %s\n"
-               "  No changes needed.\n\n", target_dir);
+        printf("  Already in PATH.\n\n");
         free(old_path); free(new_path); return;
     }
 
-    /* ---- Confirm with user --------------------------------------- */
-    printf("\n");
     if (removed > 0 && !bExist)
         printf("  Will remove stale entry(s) and add:\n    %s\n\n", target_dir);
     else if (removed > 0)
-        printf("  Will remove stale entry(s) only.\n\n");
+        printf("  Will remove stale entry(s).\n\n");
     else
         printf("  Will add:\n    %s\n\n", target_dir);
 
@@ -811,30 +852,30 @@ static int is_app_path_entry_linux(const char* token)
     return 1;
 }
 
-static void add_to_system_path(const char* target_dir)
+/*
+ * write_path_to_file()
+ *   Scans 'path_file' for stale cake entries, then rewrites it with the
+ *   current target_dir.  Returns 1 if a stale entry was found, 0 otherwise.
+ *   Sets *already_current to 1 if the correct entry already exists.
+ */
+static int write_path_to_file(const char* path_file,
+                               const char* target_dir,
+                               int*        already_current)
 {
-    const char* profile_file = "/etc/profile.d/cake.sh";
     FILE* fp;
-    char        existing[4096] = { 0 };
     int         stale_found = 0;
+    *already_current = 0;
 
-    print_separator();
-    printf("  Checking system PATH (/etc/profile.d)...\n");
-    print_separator();
-
-    /* ---- Read existing profile file if present ------------------- */
-    fp = fopen(profile_file, "r");
+    fp = fopen(path_file, "r");
     if (fp)
     {
         char line[512];
-        printf("  Existing entries in %s:\n", profile_file);
         while (fgets(line, sizeof line, fp))
         {
-            /* Look for lines like: export PATH="/old/path:$PATH" */
             char* start = strstr(line, "export PATH=\"");
             if (start)
             {
-                start += 13; /* skip: export PATH=" */
+                start += 13;
                 char* colon = strchr(start, ':');
                 if (colon)
                 {
@@ -845,32 +886,51 @@ static void add_to_system_path(const char* target_dir)
                     if (is_app_path_entry_linux(entry))
                     {
                         if (strcmp(entry, target_dir) == 0)
-                            printf("  [CURRENT] %s\n", entry);
+                            *already_current = 1;
                         else
-                        {
-                            printf("  [STALE]   %s  (will be replaced)\n", entry);
                             stale_found = 1;
                         }
                     }
                 }
             }
-        }
         fclose(fp);
-        printf("\n");
     }
-    else
+
+    if (*already_current && !stale_found)
+        return 0;   /* nothing to do for this file */
+
+    fp = fopen(path_file, "w");
+    if (!fp)
     {
-        printf("  No existing profile file found.\n\n");
+        fprintf(stderr, "  Error: cannot write %s: %s\n"
+                        "  Try running as root (sudo).\n\n",
+                path_file, strerror(errno));
+        return stale_found;
     }
+    fprintf(fp, "# Added by Cake installer\n");
+    fprintf(fp, "export PATH=\"%s:$PATH\"\n", target_dir);
+    fclose(fp);
+    chmod(path_file, 0644);
+    printf("  Created/updated: %s\n", path_file);
+    return stale_found;
+}
+
+static void add_to_system_path(const char* target_dir)
+{
+    int stale_found    = 0;
+    int already_current = 0;
+
+    printf("  Checking system PATH...\n");
 
     if (!stale_found)
     {
-        /* Check if already correct */
+        /* Check if already in the running PATH */
         const char* sys_path = getenv("PATH");
         if (sys_path)
         {
             char buf[4096]; char* tok;
             strncpy(buf, sys_path, sizeof buf - 1);
+            buf[sizeof buf - 1] = '\0';
             tok = strtok(buf, ":");
             while (tok)
             {
@@ -894,24 +954,27 @@ static void add_to_system_path(const char* target_dir)
         return;
     }
 
-    /* ---- (Re)write the profile file with only the current entry -- */
-    fp = fopen(profile_file, "w");
-    if (!fp)
+    /*
+     * Write to /etc/profile.d/cake.sh  (bash, sh on Linux and macOS)
+     * Write to /etc/zshenv              (zsh – default shell on macOS Catalina+)
+     * Both files are safe to write on Linux too (zshenv is a no-op if zsh
+     * is not installed).
+     */
+    stale_found |= write_path_to_file("/etc/profile.d/cake.sh", target_dir,
+                                      &already_current);
+
+#ifdef __APPLE__
     {
-        fprintf(stderr, "  Error: cannot write %s: %s\n"
-                        "  Try running as root (sudo).\n\n",
-                profile_file, strerror(errno));
-        return;
+        int mac_current = 0;
+        stale_found |= write_path_to_file("/etc/zshenv", target_dir,
+                                          &mac_current);
+        already_current |= mac_current;
     }
-    fprintf(fp, "# Added by Cake installer\n");
-    fprintf(fp, "export PATH=\"%s:$PATH\"\n", target_dir);
-    fclose(fp);
-    chmod(profile_file, 0644);
+#endif
 
     if (stale_found)
-        printf("  Stale entry replaced.\n");
-    printf("  Created: %s\n"
-           "  PATH will be updated for new login shells.\n\n", profile_file);
+        printf("  Stale entry(s) replaced.\n");
+    printf("  PATH will be updated for new login shells.\n\n");
 }
 
 #endif  /* _WIN32 */
@@ -925,10 +988,7 @@ int main(void)
     char  target_dir[PATH_MAX_LEN];
     int   dir_exists;
 
-    printf("\n");
-    print_separator();
-    printf("  Cake " CAKE_VERSION " Installer\n");
-    print_separator();
+    print_header("Cake " CAKE_VERSION " Installer");
     printf("\n");
 
     /* ---- 1. Resolve install directory ----------------------------- */
@@ -964,8 +1024,7 @@ int main(void)
     }
 #endif
 
-    printf("  Install path:\n");
-    printf("  %s\n\n", target_dir);
+    printf("  Install path: %s\n\n", target_dir);
 
     /* ---- 2. Check / create root install directory ----------------- */
     {
@@ -1008,23 +1067,21 @@ int main(void)
         }
 
         /* Clean existing contents before copying fresh files */
-        print_separator();
-        printf("  Cleaning existing directory...\n");
-        print_separator();
+        printf("\n  Cleaning...\n");
         {
             int clean_errors = clean_directory(target_dir);
             if (clean_errors > 0)
-                fprintf(stderr, "  Warning: %d item(s) could not be removed.\n", clean_errors);
-            else
-                printf("  Directory cleaned successfully.\n");
+            {
+                fprintf(stderr, "\r  Error: %d item(s) could not be removed.%-60s\n"
+                                "  Try running as root: sudo ./install\n", clean_errors, "");
+                return 1;
         }
-        printf("\n");
+            printf("\r  Done.%-100s\n", "");
+        }
     }
 
     /* ---- 3. Copy entries (wildcard loop) -------------------------- */
-    print_separator();
-    printf("  Copying files (%zu pattern(s))...\n", INSTALL_ENTRIES_COUNT);
-    print_separator();
+    printf("  Copying files...\n");
 
     {
         size_t i;
@@ -1036,42 +1093,55 @@ int main(void)
             const char* subdir = INSTALL_ENTRIES[i].dest_subdir;
             int         recursive = INSTALL_ENTRIES[i].recursive;
             int         exec_bit = INSTALL_ENTRIES[i].exec_bit;
-            char        dest_dir[PATH_MAX_LEN];
+            char        dest_dir[PATH_MAX_LEN * 2];
 
             if (subdir[0] != '\0')
                 snprintf(dest_dir, sizeof dest_dir,
                          "%s%c%s", target_dir, PATH_SEP, subdir);
             else
                 strncpy(dest_dir, target_dir, sizeof dest_dir - 1);
+            dest_dir[sizeof dest_dir - 1] = '\0';
 
             if (recursive)
             {
-                printf("\n  [RECURSIVE] %s  ->  %s\n", source, dest_dir);
                 total_errors += copy_dir_recursive(source, dest_dir, exec_bit);
             }
             else
             {
-                printf("\n  Pattern : %s  ->  %s\n", source, dest_dir);
                 total_errors += copy_with_wildcard(source, dest_dir, exec_bit);
             }
         }
 
-        printf("\n");
         if (total_errors == 0)
-            printf("  All files copied successfully.\n\n");
+            printf("\r  Done.%-100s\n\n", "");
         else
-            fprintf(stderr, "  Warning: %d file(s) could not be copied.\n\n",
-                    total_errors);
+        {
+            fprintf(stderr, "\r  Error: %d file(s) could not be copied.%-60s\n"
+                            "  Try running as root: sudo ./install\n\n",
+                    total_errors, "");
+            return 1;
+        }
     }
 
-    /* ---- 4. Check / update system PATH ---------------------------- */
+    /* ---- 4. Create includes/ directory ---------------------------- */
+    {
+        char includes_dir[PATH_MAX_LEN * 2];
+
+        snprintf(includes_dir, sizeof includes_dir,
+                 "%s%cincludes", target_dir, PATH_SEP);
+
+        if (!ensure_directory_exists(includes_dir))
+        {
+            fprintf(stderr, "  Error: could not create directory: %s\n", includes_dir);
+            return 1;
+        }
+    }
+
+    /* ---- 5. Check / update system PATH ---------------------------- */
     add_to_system_path(target_dir);
 
-    /* ---- 5. Done -------------------------------------------------- */
-    print_separator();
-    printf("  Installation complete!\n");
-    print_separator();
-    printf("\n");
+    /* ---- 6. Done -------------------------------------------------- */
+    printf("  Installation complete!\n\n");
     printf("  Press any key to exit...\n");
     fflush(stdout);
 #ifdef _WIN32

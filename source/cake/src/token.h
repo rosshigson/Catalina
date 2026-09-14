@@ -4,12 +4,13 @@
 */
 
 #pragma once
+
 #include <stdbool.h>
 #include "ownership.h"
+#include "options.h" /*enum diagnostic_ouput_format*/
 
 enum token_type
-{
-    /*When changing here we need also change in tokenizer.c::get_token_name*/
+{ 
     TK_NONE = 0,
     TK_NEWLINE = '\n',
     TK_WHITE_SPACE = ' ',
@@ -86,6 +87,11 @@ enum token_type
     TK_AND_ASSIGN = '&=',
     TK_OR_ASSIGN ='|=',
     TK_NOT_ASSIGN = '^=',
+
+    TK_LESS_EQUAL = '<=',
+    TK_GREATER_EQUAL = '>=',
+    TK_EQUAL_EQUAL = '==',
+    TK_NOT_EQUAL = '!=',
 
     TK_MACRO_CONCATENATE_OPERATOR = '##',
 
@@ -182,8 +188,10 @@ enum token_type
     TK_KEYWORD__GENERIC,
     TK_KEYWORD__IMAGINARY,
     TK_KEYWORD__NORETURN,
-    TK_KEYWORD__STATIC_ASSERT,    
-    TK_KEYWORD_ASSERT, /*extension*/
+    TK_KEYWORD__STATIC_ASSERT,
+    TK_KEYWORD__COMPILE_ASSERT,
+    TK_KEYWORD_RUNTIME_ASSERT,
+     /*extension*/
     TK_KEYWORD__THREAD_LOCAL,
 
     TK_KEYWORD_TYPEOF, /*C23*/
@@ -198,8 +206,10 @@ enum token_type
 
     /*cake extension*/
     TK_KEYWORD_CAKE_OWNER,
-    TK_KEYWORD__CTOR,
-    TK_KEYWORD__DTOR, 
+    TK_KEYWORD_CAKE_OUT,
+    TK_KEYWORD_CAKE_DTOR,
+    TK_KEYWORD_CAKE_UNINITIALIZED,
+    TK_KEYWORD_CAKE_CLEAR,
     TK_KEYWORD_CAKE_VIEW,    
     TK_KEYWORD_CAKE_OPT, 
     
@@ -208,7 +218,6 @@ enum token_type
     TK_KEYWORD_CAKE_STATIC_DEBUG, /*extension*/
     TK_KEYWORD_CAKE_STATIC_DEBUG_EX, /*extension*/
     TK_KEYWORD_STATIC_STATE, /*extension*/
-    TK_KEYWORD_STATIC_SET, /*extension*/
     
     /*https://en.cppreference.com/w/cpp/header/type_traits*/
     
@@ -223,7 +232,6 @@ enum token_type
     TK_KEYWORD_IS_FLOATING_POINT,
     TK_KEYWORD_IS_INTEGRAL,
     
-
 };
 
 enum token_flags
@@ -255,7 +263,7 @@ struct token
 {
     enum token_type type;
     char* _Owner lexeme; //TODO make const
-    char* original;
+    char* _Opt original;
 
     int line;
     int col;
@@ -266,13 +274,13 @@ struct token
     enum token_flags flags;
 
     /*points to the token with file name or macro*/
-    struct token* token_origin;
+    const struct token* _Opt token_origin;
 
     struct token* _Owner _Opt next;
     struct token* _Opt prev;
 };
 
-void token_delete( struct token* _Owner _Opt p);
+void token_delete( _Dtor struct token* _Owner _Opt p);
 
 struct token_list
 {
@@ -280,19 +288,19 @@ struct token_list
     struct token* _Opt tail;
 };
 
-void token_list_set_file(struct token_list* list, struct token* filetoken, int line, int col);
-bool token_list_is_empty(struct token_list* p);
+void token_list_set_file(struct token_list* list, const struct token* _Opt filetoken, int line, int col);
+bool token_list_is_empty(const struct token_list* p);
 void token_list_swap(struct token_list* a, struct token_list* b);
 
-struct token* _Owner _Opt clone_token(struct token* p);
+struct token* _Owner _Opt clone_token(const struct token* p);
 struct token* token_list_add(struct token_list* list, struct token* _Owner pnew);
 void token_list_remove(struct token_list* list, struct token* first, struct token* last);
 struct token_list token_list_remove_get(struct token_list* list, struct token* first, struct token* last);
-void token_list_append_list(struct token_list* dest, struct token_list* source);
+void token_list_append_list(struct token_list* dest, _Clear struct token_list* source);
 void token_list_append_list_at_beginning(struct token_list* dest, struct token_list* source);
-struct token* token_list_clone_and_add(struct token_list* list, struct token* pnew);
+struct token* token_list_clone_and_add(struct token_list* list, const struct token* pnew);
 char* _Owner _Opt token_list_join_tokens(struct token_list* list, bool bliteral);
-void token_list_clear(struct token_list* list);
+void token_list_clear(_Clear struct token_list* list);
 
 
 bool token_is_one_space(const struct token* _Opt token);
@@ -301,9 +309,9 @@ bool token_is_newline(const struct token* _Opt token);
 bool token_is_blank(const struct token* _Opt p);
 bool token_is_final(const struct token* _Opt p);
 bool token_is_identifier_or_keyword(enum token_type t);
-void token_range_add_flag(struct token* first, struct token* last, enum token_flags flag);
-void token_range_remove_flag(struct token* first, struct token* last, enum token_flags flag);
-void token_range_add_show(struct token* first, struct token* last);
+void token_range_add_flag(struct token* first, const struct token* last, enum token_flags flag);
+void token_range_remove_flag(struct token* first,const struct token* last, enum token_flags flag);
+void token_range_add_show(struct token* first, const struct token* last);
 
 void print_tokens_html(struct token* p_token);
 
@@ -323,16 +331,18 @@ struct marker
     const struct token* _Opt p_token_end;
 };
 
-void print_line_and_token(struct marker* p_marker, bool visual_studio_ouput_format);
-void print_position(const char* _Opt path, int line, int col, bool msvc_format, bool color_enabled);
+
+void print_line_and_token(struct marker* p_marker, bool color_enabled);
+void print_position(const char* _Opt path, int line, int col, enum diagnostic_ouput_format format, bool color_enabled, bool fullpath);
 
 struct osstream;
 
 void ss_print_position(struct osstream* ss,
                        const char* _Opt path,
                        int line, int col,
-                       bool visual_studio_ouput_format,
-                       bool color_enabled);
+                       enum diagnostic_ouput_format format,
+                       bool color_enabled,
+                       bool fullpath);
 
 void ss_print_line_and_token(struct osstream* ss,
                              struct marker* p_marker,
@@ -353,6 +363,6 @@ int is_nondigit(const struct stream* p);
 void stream_match(struct stream* stream);
 
 
-enum token_type parse_number(const char* lexeme, char suffix[4], _Ctor char erromsg[100]);
-const unsigned char* _Opt str_utf8_decode(const unsigned char* s, _Ctor unsigned int* c);
+enum token_type parse_number(const char* lexeme, char suffix[4], _Out char erromsg[100]);
+const unsigned char* _Opt str_utf8_decode(const unsigned char* s, _Out unsigned int* c);
 const unsigned char* _Opt escape_sequences_decode_opt(const unsigned char* p, unsigned int* out_value);

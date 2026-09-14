@@ -13,9 +13,9 @@
 #include <assert.h>
 #include "ownership.h"
 
-void ss_swap(_View struct osstream* a, _View struct osstream* b)
+void ss_swap(struct osstream* a, struct osstream* b)
 {
-    _View struct osstream r = *a;
+    struct osstream r = *a;
     *a = *b;
     *b = r;
 }
@@ -26,7 +26,6 @@ void ss_clear(struct osstream* stream)
         stream->c_str[0] = '\0';
     stream->size = 0;
 }
-
 
 void ss_close(_Dtor struct osstream* stream)
 {
@@ -41,8 +40,7 @@ static int reserve(struct osstream* stream, int size)
         void* _Owner _Opt pnew = realloc(stream->c_str, (size + 1) * sizeof(char));
         if (pnew)
         {
-            override_state(stream->c_str, "moved");
-            stream->c_str = pnew;
+            stream->c_str = pnew; //lint 26 (realloc)
             stream->capacity = size;
             stream->c_str[size] = 0;
         }
@@ -57,7 +55,7 @@ static int reserve(struct osstream* stream, int size)
 
 int ss_vafprintf(struct osstream* stream, const char* fmt, va_list args)
 {
-    assert(fmt != 0);
+    _Assert(fmt != 0);
     int size = 0;
 
     va_list tmpa = { 0 };
@@ -66,7 +64,7 @@ int ss_vafprintf(struct osstream* stream, const char* fmt, va_list args)
 
     size = vsnprintf(stream->c_str + stream->size, stream->capacity - stream->size, fmt, tmpa);
 
-    va_end(tmpa); //lint 35 33
+    va_end(tmpa); //lint 35
 
     if (size <= 0)
     {
@@ -77,6 +75,7 @@ int ss_vafprintf(struct osstream* stream, const char* fmt, va_list args)
     {
         return -1;
     }
+    _Assert(stream->c_str); //reserve does that
 
 #if defined(__CATALINA__) 
     // on Catalina, vsnprintf supports more C99 options than vsprintf
@@ -86,11 +85,11 @@ int ss_vafprintf(struct osstream* stream, const char* fmt, va_list args)
     }
     size = vsnprintf(stream->c_str + stream->size, size+1, fmt, args);
 #else // defined(__CATALINA__)
-    if (reserve(stream, stream->size + size) != 0)
-    {
-        return -1;
-    }
+#ifdef _WIN32
+    size = vsprintf(stream->c_str + stream->size, fmt, args); //lint 35
+#else
     size = vsprintf(stream->c_str + stream->size, fmt, args);
+#endif
 #endif // defined(__CATALINA__)
 
     if (size > 0)
@@ -120,7 +119,11 @@ int ss_fprintf(struct osstream* stream, const char* fmt, ...)
     va_list args = { 0 };
     va_start(args, fmt);
     int size = ss_vafprintf(stream, fmt, args);
-    va_end(args); //lint 35 33
+#ifdef _WIN32
+    va_end(args); //lint 35
+#else
+    va_end(args);
+#endif
 
     return size;
 }

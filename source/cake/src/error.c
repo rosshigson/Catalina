@@ -304,7 +304,6 @@ const char* get_posix_error_message(int error)
 }
 #ifdef _WIN32
 
-
 int windows_error_to_posix(int i)
 {
     switch (i)

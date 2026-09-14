@@ -64,6 +64,14 @@ bool path_is_normalized(const char* path)
     }
     return true;
 #else
+    /*
+       `path` is only read by the _WINDOWS_ branch above. Marking it used here
+       rather than suppressing the warning: a //lint is per-configuration, so
+       one that silences "unreferenced formal parameter" off Windows turns into
+       "diagnostic '6' not recognized" (warning 59) on Windows, where the
+       parameter IS read. This costs nothing and is right in both.
+    */
+    (void)path;
     return true;
 #endif
 }
@@ -80,7 +88,9 @@ void path_normalize(char* path)
         }
     }
 #else
-
+    /*See the note in path_is_normalized: used on Windows only, marked used
+      here so neither configuration warns.*/
+    (void)path;
 #endif
 }
 
@@ -100,11 +110,10 @@ bool path_is_absolute(const char* path)
         // //server
         return true;
     }
+    return false;
 #else
     return path[0] == '/';
 #endif
-
-    return false;
 }
 
 bool path_is_relative(const char* path)
@@ -132,7 +141,7 @@ struct TAGDIR
 
 DIR* _Owner _Opt opendir(const char* name)
 {
-    assert(name != 0);
+    _Assert(name != 0);
     WIN32_FIND_DATAA fdfile = { 0 };
 
     char path[FS_MAX_PATH] = { 0 };
@@ -333,7 +342,7 @@ int copy_folder(const char* from, const char* to)
 #ifdef _WIN32
 int get_self_path(char* buffer, int maxsize)
 {
-    DWORD r = GetModuleFileNameA(NULL, buffer, maxsize); //lint 60 35 33 
+    DWORD r = GetModuleFileNameA(NULL, buffer, maxsize); //lint 35
     return r;
 }
 
@@ -365,26 +374,29 @@ int get_self_path(char* buffer, int maxsize)
 
 }
 #elif defined __APPLE__
+#include <mach-o/dyld.h>
 
 int get_self_path(char* buffer, int maxsize) {
-    //uint32_t size = 0;
-
-    // First call gets required buffer size
-    //_NSGetExecutablePath(NULL, &size);
-
-    // Allocate buffer for the raw path
-
-    if (_NSGetExecutablePath(buffer,maxsize) != 0) {
-        return NULL;
+    if (_NSGetExecutablePath(buffer, (uint32_t*)&maxsize) != 0) {
+        return 1;
     }
 
-    // Canonicalize (resolve symlinks, ., ..)
-    char resolved[4096];
+    char resolved[250] = {0};
     if (!realpath(buffer, resolved)) {
-        return NULL;
+        return 1;
     }
     
+    strncpy(buffer, resolved, maxsize - 1);
+    buffer[maxsize - 1] = '\0';
     return 0;
+}
+#else
+
+int get_self_path(char* buffer, int maxsize)
+{
+    if (maxsize > 0)
+        buffer[0] = 0;
+    return 1;
 }
 #endif
 
@@ -538,7 +550,7 @@ char* _Owner _Opt read_file(const char* const path, bool append_newline)
         data[bytes_read_part2] = '\n';
 
         //we already allocated an extra char for this
-        assert(bytes_read_part2+1 < mem_size_bytes);
+        _Assert(bytes_read_part2 + 1 < mem_size_bytes);
         data[bytes_read_part2+1] = '\0'; 
     }
 

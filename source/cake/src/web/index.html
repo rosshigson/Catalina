@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  
+  <meta charset="utf-8">
     <link rel="stylesheet" href="default.min.css">
     <script src="highlight.min.js"></script>
     <script>hljs.highlightAll();</script>
@@ -9,24 +9,161 @@
     <title>Cake C Compiler</title>
     <meta name="description" content="Cake C Compiler">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
+
     <script>
-    function Try(elm)
-    {
-        //collect the text previous sample
-        var source = elm.parentElement.previousElementSibling.innerText;
-
-        var link = "./playground.html?code=" + encodeURIComponent(btoa(source)) +
-            "&to=" + encodeURI("-2") +
-            "&options=" + encodeURI("");
-
-        window.open(link, '_blank');
+    // Playground launcher
+    function launchPlayground(sourceCode) {
+      var link = "./playground.html?code=" + encodeURIComponent(btoa(sourceCode))
+               + "&to=" + encodeURI("-2")
+               + "&options=";
+      window.open(link, '_blank');
     }
-// find-replace for this
-// <button onclick="Try(this)">try</button> 
-</script></head>
+
+    // Copy to clipboard
+    async function copyToClipboard(text, btnElement) {
+      try {
+        await navigator.clipboard.writeText(text);
+        const originalText = btnElement.innerText;
+        btnElement.innerText = "Copied!";
+        setTimeout(() => {
+          btnElement.innerText = originalText;
+        }, 1500);
+      } catch (err) {
+        btnElement.innerText = "Error";
+        setTimeout(() => {
+          btnElement.innerText = "Copy";
+        }, 1000);
+      }
+    }
+
+    // Check if a code block is marked as runnable
+    // Supports:
+    // - HTML comment <!-- runnable --> immediately before <pre>
+    // - data-runnable="true" attribute on <pre>
+    // - class="runnable" on <pre> (legacy)
+    function isRunnable(preElement) {
+      // Check attribute or class
+      if (preElement.hasAttribute('data-runnable') && preElement.getAttribute('data-runnable') === 'true') return true;
+      if (preElement.classList && preElement.classList.contains('runnable')) return true;
+      
+      // Check previous sibling for comment
+      let prev = preElement.previousSibling;
+      while (prev && prev.nodeType === Node.TEXT_NODE && prev.textContent.trim() === '') {
+        prev = prev.previousSibling;
+    }
+      if (prev && prev.nodeType === Node.COMMENT_NODE) {
+        const commentText = prev.textContent.trim().toLowerCase();
+        if (commentText === 'runnable' || commentText === ' runnable ') {
+          // Optionally remove the comment so it doesn't clutter the DOM
+          prev.remove();
+          return true;
+        }
+      }
+      return false;
+    }
+
+    // Wrap each code block in a frame, add Copy (always) and Run (if runnable)
+    function enhanceCodeSnippets() {
+      const codeBlocks = Array.from(document.querySelectorAll('pre code.language-c'));
+      
+      for (const codeElement of codeBlocks) {
+        const preElement = codeElement.parentElement;
+        if (!preElement) continue;
+        if (preElement.closest('.code-frame')) continue;
+        
+        const codeText = codeElement.innerText;
+        const runnable = isRunnable(preElement);
+        
+        // Find original "try" button to remove
+        let tryButton = null;
+        let tryButtonContainer = null;
+        let sibling = preElement.nextElementSibling;
+        while (sibling && !tryButton) {
+          if (sibling.tagName === 'BUTTON' && sibling.getAttribute('onclick')?.includes('Try(this)')) {
+            tryButton = sibling;
+            tryButtonContainer = sibling.parentElement;
+            break;
+          }
+          const btn = sibling.querySelector('button[onclick*="Try(this)"]');
+          if (btn) {
+            tryButton = btn;
+            tryButtonContainer = sibling;
+            break;
+          }
+          sibling = sibling.nextElementSibling;
+        }
+        
+        // Save position before DOM changes
+        const parent = preElement.parentNode;
+        const nextSibling = preElement.nextSibling;
+        
+        // Create frame
+        const frameDiv = document.createElement('div');
+        frameDiv.className = 'code-frame';
+        
+        // Move pre element into frame
+        preElement.remove();
+        frameDiv.appendChild(preElement);
+        
+        // Create action buttons
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = 'code-actions';
+        
+        // Copy button (always)
+        const copyBtn = document.createElement('button');
+        copyBtn.innerText = 'Copy';
+        copyBtn.title = 'Copy code to clipboard';
+        copyBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          copyToClipboard(codeText, copyBtn);
+        });
+        actionsDiv.appendChild(copyBtn);
+        
+        // Run button (only if marked runnable)
+        if (runnable) {
+          const runBtn = document.createElement('button');
+          runBtn.innerText = 'Run';
+          runBtn.title = 'Run in Playground';
+          runBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            launchPlayground(codeText);
+          });
+          actionsDiv.appendChild(runBtn);
+        }
+        
+        frameDiv.appendChild(actionsDiv);
+        
+        // Insert frame
+        if (parent) {
+          parent.insertBefore(frameDiv, nextSibling);
+        } else {
+          const article = document.querySelector('article');
+          if (article) article.appendChild(frameDiv);
+        }
+        
+        // Remove original try button and empty container
+        if (tryButton) {
+          tryButton.remove();
+          if (tryButtonContainer && tryButtonContainer.children.length === 0 && !tryButtonContainer.innerText.trim()) {
+            tryButtonContainer.remove();
+          }
+        }
+      }
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      enhanceCodeSnippets();
+      if (typeof hljs !== 'undefined' && hljs.highlightAll) {
+        hljs.highlightAll();
+      }
+    });
+    
+  </script>
+
+</head>
 <body>
     <article style="max-width: 40em; margin:auto">
-<p><a href="index.html">Home</a> | <a href="manual.html">Manual</a> | <a href="ownership.html">Static Analysis</a> | <a href="playground.html">Playground</a></p>
+    <p><a href="index.html">Home</a> | <a href="manual.html">Manual</a> | <a href="ownership.html">Static Analysis</a> | <a href="playground.html">Playground</a></p>
 <article>
 <h1>Cake - C23 and Beyond</h1>
 <ul>
@@ -52,10 +189,10 @@
 <a href="#toc_6">GCC on Linux build instructions</a>
 </li>
 <li>
-<a href="#toc_7">Clang on Linux/Windows/MacOS build instructions</a>
+<a href="#toc_7">Clang on Linux/Windows/macOS build instructions</a>
 </li>
 <li>
-<a href="#toc_8">Running tests</a>
+<a href="#toc_8">Build options</a>
 </li>
 <li>
 <a href="#toc_9">Emscripten build instructions (web)</a>
@@ -63,25 +200,36 @@
 </ul>
 </li>
 <li>
-<a href="#toc_10">Running cake at command line</a>
+<a href="#toc_10">Installation (optional)</a>
+<ul>
+<li>
+<a href="#toc_11">Windows</a>
 </li>
 <li>
-<a href="#toc_11">Road map</a>
-</li>
-<li>
-<a href="#toc_12">Participating</a>
-</li>
-<li>
-<a href="#toc_13">How cake is developed ?</a>
-</li>
-<li>
-<a href="#toc_14">Cake x CFront</a>
-</li>
-<li>
-<a href="#toc_15">License</a>
+<a href="#toc_12">Linux / macOS</a>
 </li>
 </ul>
-<p>The C Programming language 1978</p>
+</li>
+<li>
+<a href="#toc_13">Running cake</a>
+</li>
+<li>
+<a href="#toc_14">IDE</a>
+</li>
+<li>
+<a href="#toc_15">Road map</a>
+</li>
+<li>
+<a href="#toc_16">Participating</a>
+</li>
+<li>
+<a href="#toc_17">Cake x CFront</a>
+</li>
+<li>
+<a href="#toc_18">License</a>
+</li>
+</ul>
+<p>Kernighan &amp; Ritchie, <em>The C Programming Language</em>, 1978:</p>
 
 <blockquote>
 <p><em>&quot;C is a general-purpose programming language which features economy of expression, modern control flow and data structures, and a rich set of operators. C is not a &quot;very high level&quot; language, nor a &quot;big&quot; one, and is not specialized to any particular area of application. But its absence of restrictions and its generality make it more convenient and effective for many tasks than supposedly more powerful languages.&quot;</em></p>
@@ -89,62 +237,63 @@
 <p><em>&quot;In our experience, C has proven to be a pleasant, expressive, and versatile language for a wide variety of programs. It is easy to learn, and it wears well as one&#39;s experience with it grows&quot;</em></p>
 </blockquote>
 
-<p>The C Programming language Second Edition 1988</p>
+<p>Kernighan &amp; Ritchie, <em>The C Programming Language</em>, Second Edition, 1988:</p>
 
 <blockquote>
 <p><em>&quot;As we said in the preface to the first edition, C &quot;wears well as one&#39;s experience with it grows.&quot; With a decade more experience, we still feel that way.&quot;</em></p>
 </blockquote>
 
-<p><em>C is everywhere. From operating systems to embedded devices, from high-performance apps 
-to essential technology, C powers the technology we rely on every day. Timeless, 
-efficient, and universal.</em></p>
+<p><em>C is everywhere. From operating systems to embedded devices, from
+high-performance apps to essential technology, C powers the technology we rely
+on every day. Timeless, efficient, and universal.</em></p>
+
+<p><em>The code that AI now writes runs best where it can be read, verified
+and trusted. A small language with no hidden machinery. C gives the machine
+speed, and the human control and platform independence.
+Cake adds the checks that make that code safer.</em></p>
 
 <h1 id="toc_0">About</h1>
 
-<p>Cake is a compiler front-end written from scratch in C, adhering to the C23 language 
-specification and beyond.</p>
+<p>Cake is a compiler front end written from scratch in C by a human, implementing
+the C23 language specification and beyond.</p>
 
-<p>It serves as a platform for experimenting with new features, 
-including C2Y language proposals, safety enhancements, and extensions such as 
-literal functions and defer statements.</p>
+<p>It serves as a platform for experimenting with new features, including C2Y
+language proposals, safety enhancements, and extensions such as literal
+functions and defer statements.</p>
 
-<p>The current backend generates C89-compatible code, which can be pipelined with existing 
-or old compilers to produce executables. </p>
+<p>The current backend generates C89-compatible code, which can be pipelined with
+existing or old compilers to produce executables.</p>
 
-<pre><code class="language-c">    [source] ───────────► [preprocessor]  ───────────► [compiler]  
-       │                                           ▲                
-       └─► [cake preprocessor] ──►[cake compiler] ─┘ c89            
-</code></pre>
+<p><img src="pipeline.svg" alt="Cake pipeline: C23 source to C89 output to an existing compiler"></p>
 
-<p>Cake aims to enhance C&#39;s safety by providing high-quality <a href="warnings.html">warning messages</a> and advanced 
-flow analysis, including <a href="ownership.html">object lifetime</a> checks.</p>
+<p>Cake aims to enhance C&#39;s safety by providing high-quality <a href="diagnostics.html">warning
+messages</a> and advanced flow analysis, including <a href="ownership.html">object
+lifetime</a> checks.</p>
 
 <h1 id="toc_1">Web Playground</h1>
 
-<p>This is the best way to try.</p>
+<p>This is the best way to try it.</p>
 
-<p><a href="http://cakecc.org/playground.html">http://cakecc.org/playground.html</a></p>
+<p><a href="https://cakecc.org/playground.html">https://cakecc.org/playground.html</a></p>
 
 <h1 id="toc_2">Use cases</h1>
 
-<p>Note: Cake is still in development and has not yet reached 
-a stable version.</p>
+<p>Note: Cake is still in development and has not yet reached a stable version.</p>
 
-<p>Cake can be used as a static analyzer alongside other compilers. 
-It generates SARIF files, which are recognized by popular IDEs 
-such as Visual Studio and Visual Studio Code, providing a 
-seamless integration.</p>
+<p>Cake can be used as a static analyzer alongside other compilers. It generates
+SARIF files, which are recognized by popular IDEs such as Visual Studio and
+Visual Studio Code, providing a seamless integration.</p>
 
-<p>It can also function as a preprocessor, converting C23 code to C89. 
-This allows developers to use modern or experimental features while targeting 
-compilers that do not yet support the latest language standards.</p>
+<p>It can also function as a preprocessor, converting C23 code to C89. This allows
+developers to use modern or experimental features while targeting compilers that
+do not yet support the latest language standards.</p>
 
-<p>Cake is also a cross-compiler. For example, on Windows it can use Linux 
-headers and generate GCC-compatible code for Linux, and vice versa. 
-This makes it very useful when developing multiplatform code.</p>
+<p>Cake is also a cross-compiler. For example, on Windows it can use Linux headers
+and generate GCC-compatible code for Linux, and vice versa. This makes it very
+useful when developing multiplatform code.</p>
 
-<p>Another use of Cake is as a library to parse source code and build an AST, 
-which can then be used for other purposes; for instance, automatic serialization,
+<p>Another use of Cake is as a library to parse source code and build an AST, which
+can then be used for other purposes; for instance, automatic serialization,
 automatic documentation and more.</p>
 
 <h1 id="toc_3">Features</h1>
@@ -154,12 +303,12 @@ automatic documentation and more.</p>
 <li>C23 syntax analysis</li>
 <li>C23 semantic analysis</li>
 <li>Static <a href="ownership.html">object lifetime</a> checks (Extension)</li>
-<li>Sarif output</li>
+<li>SARIF output</li>
 <li>Cross compiling</li>
 <li>C89 backend</li>
 <li>Style checker</li>
 <li>AST </li>
-<li>Lots of <a href="warnings.html">diagnostics</a></li>
+<li>Lots of <a href="diagnostics.html">diagnostics</a></li>
 </ul>
 
 <h1 id="toc_4">Build</h1>
@@ -169,71 +318,173 @@ automatic documentation and more.</p>
 
 <h2 id="toc_5">MSVC build instructions</h2>
 
-<p>Open the Developer Command Prompt of visual studio. Go to the <em>src</em> directory and type</p>
+<p>Open the Developer Command Prompt of Visual Studio. Go to the <code>src</code> directory and type</p>
 
 <pre><code>cl build.c &amp;&amp; build
 </code></pre>
 
-<p>This will build <em>cake.exe</em>, then run cake on its own source code.</p>
+<p>This will build <code>cake.exe</code>, then run cake on its own source code.</p>
 
 <h2 id="toc_6">GCC on Linux build instructions</h2>
 
-<p>Got to the <em>src</em> directory and type:</p>
+<p>Go to the <em>src</em> directory and type:</p>
 
 <pre><code>gcc build.c -o build &amp;&amp; ./build
 </code></pre>
 
-<h2 id="toc_7">Clang on Linux/Windows/MacOS build instructions</h2>
+<h2 id="toc_7">Clang on Linux/Windows/macOS build instructions</h2>
 
-<p>Got to the <em>src</em> directory and type:</p>
+<p>Go to the <em>src</em> directory and type:</p>
 
 <pre><code>clang build.c -o build &amp;&amp; ./build
 </code></pre>
 
-<h2 id="toc_8">Running tests</h2>
+<p>If you encounter an error such as:
+fatal error: X11/Xft/Xft.h: No such file or directory</p>
 
-<p>Adding <em>-DTEST</em> on any platform will run a large set of tests.</p>
+<p>Ubuntu / Debian:  <code>sudo apt install libx11-dev libxft-dev</code></p>
 
-<pre><code>gcc -DTEST build.c -o build &amp;&amp; ./build
+<p>Fedora: <code>sudo dnf install libX11-devel libXft-devel</code></p>
+
+<p>Arch Linux: <code>sudo pacman -S libx11 libxft</code></p>
+
+<p>openSUSE:<code>sudo zypper install libX11-devel libXft-devel</code></p>
+
+<p>These headers are used by the IDE.</p>
+
+<h2 id="toc_8">Build options</h2>
+
+<p><code>build</code> accepts one optional argument, on any platform:</p>
+
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Effect</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><em>(none)</em></td>
+<td>full build: tools, docs, amalgamated <code>lib.c</code>, <code>cake</code> and the IDE</td>
+</tr>
+<tr>
+<td><code>fast</code></td>
+<td>incremental build of <code>cake</code> and the IDE only — skips tools, docs, inner tests and the amalgamation</td>
+</tr>
+<tr>
+<td><code>full</code></td>
+<td>build everything with <code>-DTEST</code>, but do not run the test suite</td>
+</tr>
+<tr>
+<td><code>test</code></td>
+<td>same as <code>full</code>, then run the test suite</td>
+</tr>
+<tr>
+<td><code>debug</code></td>
+<td>build without optimizations and without <code>-DNDEBUG</code></td>
+</tr>
+</tbody>
+</table>
+
+<p>For example, to run the tests:</p>
+
+<pre><code>gcc build.c -o build &amp;&amp; ./build test
 </code></pre>
 
 <h2 id="toc_9">Emscripten build instructions (web)</h2>
 
-<p>Emscripten <a href="https://emscripten.org/">https://emscripten.org/</a>  is required. </p>
+<p><a href="https://emscripten.org/">Emscripten</a> is required.</p>
 
-<p>First do the normal build. </p>
+<p>First do the normal build: besides <code>cake</code>, it generates <code>lib.c</code>, the amalgamated version of the core library, which is what the web build compiles.</p>
 
-<p>The normal build also generates a file <em>lib.c</em> that is the amalgamated  version of the &quot;core lib&quot;.</p>
+<p>Then, in the <code>src</code> directory, type:</p>
 
-<p>Then at <em>./src</em> dir type:</p>
-
-<pre><code>call emcc -sSTACK_SIZE=8388608 -DMOCKFILES -Wno-multichar &quot;lib.c&quot; -o &quot;Web\cakejs.js&quot; -s WASM=0 -s EXPORTED_FUNCTIONS=&quot;[&#39;_CompileText&#39;]&quot; -s EXTRA_EXPORTED_RUNTIME_METHODS=&quot;[&#39;ccall&#39;, &#39;cwrap&#39;]&quot;
+<pre><code>emcc -sSTACK_SIZE=8388608 -DMOCKFILES -Wno-multichar lib.c -o web/cakejs.js -s WASM=0 -s EXPORTED_FUNCTIONS=&quot;[&#39;_CompileText&#39;]&quot; -s EXTRA_EXPORTED_RUNTIME_METHODS=&quot;[&#39;ccall&#39;, &#39;cwrap&#39;]&quot;
 </code></pre>
 
-<p>This will generate the <em>\src\Web\cake.js</em></p>
+<p>This generates <code>src/web/cakejs.js</code>, used by <code>src/web/playground.html</code>.</p>
 
-<h1 id="toc_10">Running cake at command line</h1>
+<h1 id="toc_10">Installation (optional)</h1>
 
-<p>Make sure cake is on your system path.</p>
+<p>Installation is optional. Cake can be built and run directly from the <code>src</code> 
+directory as shown above, without installing anything. Installing simply 
+copies the compiler and supporting files into a system directory and updates 
+the system <code>PATH</code> so the <code>cake</code> command can be executed from any terminal.</p>
 
-<p>Samples</p>
+<h2 id="toc_11">Windows</h2>
+
+<p>Run the installer as Administrator.</p>
+
+<pre><code class="language-bash">install.exe
+</code></pre>
+
+<p>The installer:</p>
+
+<ul>
+<li>Copies Cake files into <code>Program Files</code></li>
+<li>Updates the system <code>PATH</code></li>
+<li>Removes obsolete Cake <code>PATH</code> entries from previous installations</li>
+</ul>
+
+<h2 id="toc_12">Linux / macOS</h2>
+
+<p>Run the installer using:</p>
+
+<pre><code class="language-bash">sudo ./install
+</code></pre>
+
+<p>The installer:</p>
+
+<ul>
+<li>Copies Cake files into the installation directory</li>
+<li>Creates or updates a file in <code>/etc/profile.d/</code></li>
+<li>Adds Cake to the system <code>PATH</code></li>
+</ul>
+
+<p>Changes become available in new login sessions.</p>
+
+<h1 id="toc_13">Running cake</h1>
 
 <pre><code>cake source.c
 </code></pre>
 
-<p>this will output <em>./platform short name/source.c</em></p>
+<p>This writes the C89 output to <code>./&lt;target&gt;/source.c</code>, where <code>&lt;target&gt;</code> is the platform Cake was built for — for example <code>./macos_arm64/source.c</code> or <code>./x64_msvc/source.c</code>. <code>-target=&lt;name&gt;</code> selects another platform; see the <a href="manual.html">Manual</a> for the full option list.</p>
 
-<p>See <a href="manual.html">Manual</a></p>
+<h1 id="toc_14">IDE</h1>
 
-<h1 id="toc_11">Road map</h1>
+<p>The Cake IDE was developed with the help of AI tools. It has now been adopted as
+part of the Cake project and will be maintained alongside the rest of the
+codebase. Over time, the IDE code will be reviewed, refined, and gradually
+humanized as the project evolves.</p>
+
+<p>The IDE works in macOS, Windows and Linux. Its purpose is to make Cake easier
+to use: open a file or a project, press Build, and the whole pipeline — Cake&#39;s
+C89 output, the external compiler, the debugger — is set up and driven from one
+place, with no command lines to remember. It is very useful to visualize and
+remove warnings: Cake&#39;s diagnostics show up in the Output window and jump
+straight to the offending line.</p>
+
+<p>It is also how Cake itself is developed and debugged. The <code>src/cakeprj.cakeproj</code>
+project builds the compiler with the same process any other project uses: Cake
+translates the sources to C89, an External Tool (gcc, clang or cl) links the
+generated code, and the built-in debugger (lldb / cdb) runs the result. Opening
+that project is the quickest way to step through the compiler while it compiles
+a sample.</p>
+
+<p>See <a href="idemanual.html">IDE Manual</a></p>
+
+<p><img src="cakeide.png" alt="Cake IDE"></p>
+
+<h1 id="toc_15">Road map</h1>
 
 <ul>
-<li>function literal and local functions implementation</li>
-<li>Making it usable as C89 backend and fixes</li>
-<li>Flow v2 algorithm was delayed</li>
+<li>Making it usable as a C89 backend, and fixes</li>
+<li>Reaching a stable release</li>
 </ul>
 
-<h1 id="toc_12">Participating</h1>
+<h1 id="toc_16">Participating</h1>
 
 <p>You can contribute by trying out cake, reporting bugs, and giving feedback.</p>
 
@@ -243,28 +494,20 @@ automatic documentation and more.</p>
 
 <p><a href="https://discord.gg/YRekr2N65S">https://discord.gg/YRekr2N65S</a></p>
 
-<h1 id="toc_13">How cake is developed ?</h1>
-
-<p>I use Visual Studio 2022 IDE to write and debug the Cake source.
-Cake parses itself using the MSVC includes and generates the X_86_msvc 
-directory after the build.
-The Linux version is tested inside WSL, and the macOS version is 
-currently the least tested but is expected to work.</p>
-
-<h1 id="toc_14">Cake x CFront</h1>
+<h1 id="toc_17">Cake x CFront</h1>
 
 <p>CFront was the first C++ compiler, designed to translate C++ source code into C.
-Initially compatible with C89, it diverged as the C and C++ languages evolved 
+Initially compatible with C89, it diverged as the C and C++ languages evolved
 independently.</p>
 
-<p>Cake maintains alignment with the standard specifications and ongoing 
+<p>Cake maintains alignment with the standard specifications and ongoing
 development of C, ensuring full compatibility.</p>
 
-<p>The compiler introduces extensions that preserve the fundamental design 
-of C while supporting experimentation and open contributions to the 
-language&#39;s evolution.</p>
+<p>The compiler introduces extensions that preserve the fundamental design of C
+while supporting experimentation and open contributions to the language&#39;s
+evolution.</p>
 
-<h1 id="toc_15">License</h1>
+<h1 id="toc_18">License</h1>
 
-<p>Cake uses the same license of GCC. GPLv3</p>
+<p>Cake uses the same license as GCC: <a href="LICENSE">GPLv3</a>.</p>
 </article></body></html>

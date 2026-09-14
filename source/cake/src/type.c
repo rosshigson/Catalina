@@ -22,7 +22,9 @@
      TYPE_QUALIFIER_CAKE_VIEW  | \
      TYPE_QUALIFIER_CAKE_OPT   | \
      TYPE_QUALIFIER_CAKE_DTOR  | \
-     TYPE_QUALIFIER_CAKE_CTOR)
+     TYPE_QUALIFIER_CAKE_CTOR  | \
+     TYPE_QUALIFIER_CAKE_UNINIT | \
+     TYPE_QUALIFIER_CAKE_CLEAR)
 
 bool is_automatic_variable(enum storage_class_specifier_flags f)
 {
@@ -34,7 +36,7 @@ bool is_automatic_variable(enum storage_class_specifier_flags f)
 
     if (f & STORAGE_SPECIFIER_PARAMETER)
         return true;
-    
+
     if (f & STORAGE_SPECIFIER_BLOCK_SCOPE)
         return true;
 
@@ -54,7 +56,7 @@ bool print_type_alignment_flags(struct osstream* ss, bool* first, enum alignment
 {
     int align = 0;
 
-        if (flags & ALIGNMENT_SPECIFIER_8_FLAGS)
+    if (flags & ALIGNMENT_SPECIFIER_8_FLAGS)
         align = 8;
     else if (flags & ALIGNMENT_SPECIFIER_16_FLAGS)
         align = 16;
@@ -154,6 +156,12 @@ void print_type_qualifier_flags(struct osstream* ss, bool* first, enum type_qual
 
     if (e_type_qualifier_flags & TYPE_QUALIFIER_CAKE_DTOR)
         print_item(ss, first, "_Dtor");
+
+    if (e_type_qualifier_flags & TYPE_QUALIFIER_CAKE_UNINIT)
+        print_item(ss, first, "_Uninitialized");
+
+    if (e_type_qualifier_flags & TYPE_QUALIFIER_CAKE_CLEAR)
+        print_item(ss, first, "_Clear");
 
     if (e_type_qualifier_flags & TYPE_QUALIFIER_CAKE_VIEW)
         print_item(ss, first, "_View");
@@ -294,13 +302,13 @@ void print_type_qualifier_specifiers(struct osstream* ss, const struct type* typ
 
     if (type->type_specifier_flags & TYPE_SPECIFIER_STRUCT_OR_UNION)
     {
-        assert(type->struct_or_union_specifier != NULL);
+        _Assert(type->struct_or_union_specifier != NULL);
         print_item(ss, &first, "struct ");
         ss_fprintf(ss, "%s", type->struct_or_union_specifier->tag_name);
     }
     else if (type->type_specifier_flags & TYPE_SPECIFIER_ENUM)
     {
-        assert(type->enum_specifier != NULL);
+        _Assert(type->enum_specifier != NULL);
         print_item(ss, &first, "enum ");
         if (type->enum_specifier->tag_token)
             ss_fprintf(ss, "%s", type->enum_specifier->tag_token->lexeme);
@@ -308,7 +316,7 @@ void print_type_qualifier_specifiers(struct osstream* ss, const struct type* typ
     }
     else if (type->type_specifier_flags & TYPE_SPECIFIER_TYPEDEF)
     {
-        assert(false);
+        _Assert(false);
     }
     else
     {
@@ -320,7 +328,7 @@ void print_type_qualifier_specifiers(struct osstream* ss, const struct type* typ
 
 void type_integer_promotion(struct type* a)
 {
-    //assert(type_is_integer(a));
+    //_Assert(type_is_integer(a));
 
     if ((a->type_specifier_flags & TYPE_SPECIFIER_BOOL) ||
         (a->type_specifier_flags & TYPE_SPECIFIER_CHAR) ||
@@ -343,10 +351,10 @@ void type_remove_non_cake_qualifiers(struct type* p_type)
 
 void type_remove_all_qualifiers(struct type* p_type)
 {
-    p_type->type_qualifier_flags = 0;
+    p_type->type_qualifier_flags = TYPE_QUALIFIER_NONE;
 }
 
-struct type type_lvalue_conversion(const struct type* p_type, bool nullchecks_enabled)
+struct type type_lvalue_conversion(const struct type* p_type)
 {
 
     enum type_category category = type_get_category(p_type);
@@ -358,13 +366,13 @@ struct type type_lvalue_conversion(const struct type* p_type, bool nullchecks_en
            "function returning type" is converted to an expression that has type
            "pointer to function returning type".
         */
-        struct type t = type_add_pointer(p_type, nullchecks_enabled);
+        struct type t = type_add_pointer(p_type);
         t.type_qualifier_flags &= ~TYPE_QUALIFIER_CAKE_OPT;
         t.storage_class_specifier_flags &= ~STORAGE_SPECIFIER_PARAMETER;
         t.category = t.category;
         return t;
     }
-    break;
+
     case TYPE_CATEGORY_ARRAY:
     {
         /*
@@ -374,7 +382,7 @@ struct type type_lvalue_conversion(const struct type* p_type, bool nullchecks_en
           If the array object has register storage class, the behavior is undefined.
         */
         struct type t = get_array_item_type(p_type);
-        struct type t2 = type_add_pointer(&t, nullchecks_enabled);
+        struct type t2 = type_add_pointer(&t);
 
 
         type_remove_non_cake_qualifiers(&t2);
@@ -387,9 +395,10 @@ struct type type_lvalue_conversion(const struct type* p_type, bool nullchecks_en
         t2.storage_class_specifier_flags &= ~STORAGE_SPECIFIER_PARAMETER;
         return t2;
     }
-    break;
+
     case TYPE_CATEGORY_POINTER:
         break;
+
     case TYPE_CATEGORY_ITSELF:
     default:
         break;
@@ -407,7 +416,7 @@ struct type type_lvalue_conversion(const struct type* p_type, bool nullchecks_en
      */
     if (type_is_bitfield(&t))
     {
-        t.array_num_elements= 0;
+        t.array_num_elements = 0;
         t.storage_class_specifier_flags &= ~STORAGE_SPECIFIER_BITFIELD;
         type_integer_promotion(&t);
     }
@@ -427,7 +436,7 @@ struct type type_convert_to(const struct type* p_type, enum standard_version tar
     {
 
         struct type t = make_void_ptr_type();
-        assert(t.name_opt == NULL);
+        _Assert(t.name_opt == NULL);
         if (p_type->name_opt)
         {
             t.name_opt = strdup(p_type->name_opt);
@@ -651,8 +660,8 @@ void param_list_add(struct param_list* list, struct param* _Owner p_item)
     }
     else
     {
-        assert(list->tail != NULL);
-        assert(list->tail->next == NULL);
+        _Assert(list->tail != NULL);
+        _Assert(list->tail->next == NULL);
         list->tail->next = p_item;
     }
     list->tail = p_item;
@@ -674,7 +683,7 @@ void type_destroy_one(_Opt _Dtor struct type* p_type)
 {
     free((void* _Owner)p_type->name_opt);
     param_list_destroy(&p_type->params);
-    assert(p_type->next == NULL);
+    _Assert(p_type->next == NULL);
 }
 
 void type_destroy(_Opt _Dtor struct type* p_type)
@@ -773,6 +782,108 @@ bool type_is_array(const struct type* p_type)
     return type_get_category(p_type) == TYPE_CATEGORY_ARRAY;
 }
 
+/*
+  6.2.5: "An array type of unknown size is an incomplete type." That is an
+  array declared without a size expression, e.g. 'int a[]' - not 'int a[0]'
+  (which has a constant size expression) nor a VLA (which has a non-constant
+  one). Note array_num_elements doubles as the bit-field width, hence the
+  category check.
+*/
+bool type_is_array_of_unknown_size(const struct type* p_type)
+{
+    return p_type->category == TYPE_CATEGORY_ARRAY &&
+        p_type->array_num_elements == 0 &&
+        p_type->p_array_num_elements_expression == NULL;
+}
+
+const struct type* _Opt type_get_complete_array(const struct type* p_type)
+{
+    /*
+      The array equivalent of get_complete_struct_or_union_specifier.
+
+      An array of unknown size is completed by a later declaration of the same
+      object, the way an incomplete tag is completed by a later definition. The
+      type reaches its declarator - which is what the symbol table holds, like
+      the first tag seen - and that declarator points to the complete one.
+    */
+
+    if (!type_is_array_of_unknown_size(p_type))
+    {
+        /*p_type is complete*/
+        return p_type;
+    }
+
+    const struct declarator* _Opt p = p_type->p_declarator_opt;
+    if (p == NULL)
+        return NULL;
+
+    if (p->p_complete_declarator &&
+        !type_is_array_of_unknown_size(&p->p_complete_declarator->type))
+    {
+        /*p is the first declarator seen, it points directly to the complete*/
+        return &p->p_complete_declarator->type;
+    }
+
+    if (p->p_complete_declarator &&
+        p->p_complete_declarator->p_complete_declarator &&
+        !type_is_array_of_unknown_size(&p->p_complete_declarator->p_complete_declarator->type))
+    {
+        /*all others point to the first seen that points to the complete*/
+        return &p->p_complete_declarator->p_complete_declarator->type;
+    }
+
+    return NULL;
+}
+
+bool type_has_different_array_parameter_size(const struct type* a, const struct type* b)
+{
+    /*
+      'void f(int a[2]);' and 'void f(int a[3]);' declare the same function -
+      an array parameter is adjusted to a pointer - so this is not an error.
+      Same for 'void f(int a[]);' against 'void f(int a[2]);'. Cake still
+      reports it, because the sizes were probably meant to agree; it is only a
+      warning and can be turned off.
+    */
+    const struct type* _Opt pa = a;
+    const struct type* _Opt pb = b;
+
+    while (pa && pb)
+    {
+        if (pa->category == TYPE_CATEGORY_FUNCTION &&
+            pb->category == TYPE_CATEGORY_FUNCTION)
+        {
+            const struct param* _Opt p_param_a = pa->params.head;
+            const struct param* _Opt p_param_b = pb->params.head;
+
+            while (p_param_a && p_param_b)
+            {
+                if (type_is_array(&p_param_a->type) &&
+                    type_is_array(&p_param_b->type))
+                {
+                    const bool a_unknown = type_is_array_of_unknown_size(&p_param_a->type);
+                    const bool b_unknown = type_is_array_of_unknown_size(&p_param_b->type);
+
+                    /* 'int a[]' against 'int a[2]', or two different sizes */
+                    if (a_unknown != b_unknown ||
+                        (!a_unknown && !b_unknown &&
+                         p_param_a->type.array_num_elements != p_param_b->type.array_num_elements))
+                    {
+                        return true;
+                    }
+                }
+
+                p_param_a = p_param_a->next;
+                p_param_b = p_param_b->next;
+            }
+        }
+
+        pa = pa->next;
+        pb = pb->next;
+    }
+
+    return false;
+}
+
 bool type_is_owner_or_pointer_to_dtor(const struct type* p_type)
 {
     if (type_is_pointed_dtor(p_type))
@@ -798,14 +909,74 @@ bool type_is_dtor(const struct type* p_type)
     return p_type->type_qualifier_flags & TYPE_QUALIFIER_CAKE_DTOR;
 }
 
+bool type_is_uninit(const struct type* p_type)
+{
+    return p_type->type_qualifier_flags & TYPE_QUALIFIER_CAKE_UNINIT;
+}
+
+bool type_is_clear(const struct type* p_type)
+{
+    return p_type->type_qualifier_flags & TYPE_QUALIFIER_CAKE_CLEAR;
+}
+
+bool type_is_pointed_const(const struct type* p_type)
+{
+    if (!type_is_pointer(p_type))
+        return false;
+
+    _Assert(p_type->next != NULL);
+
+    return type_is_const(p_type->next);
+}
+
+bool type_is_pointed_out(const struct type* p_type)
+{
+    if (!type_is_pointer(p_type))
+        return false;
+
+    _Assert(p_type->next != NULL);
+
+    return type_is_out(p_type->next);
+}
+
 bool type_is_pointed_dtor(const struct type* p_type)
 {
     if (!type_is_pointer(p_type))
         return false;
 
-    assert(p_type->next != NULL);
+    _Assert(p_type->next != NULL);
 
     return type_is_dtor(p_type->next);
+}
+
+bool type_is_pointed_uninit(const struct type* p_type)
+{
+    if (!type_is_pointer(p_type))
+        return false;
+
+    _Assert(p_type->next != NULL);
+
+    return type_is_uninit(p_type->next);
+}
+
+bool type_is_pointed_clear(const struct type* p_type)
+{
+    if (!type_is_pointer(p_type))
+        return false;
+
+    _Assert(p_type->next != NULL);
+
+    return type_is_clear(p_type->next);
+}
+
+bool type_is_pointed_void(const struct type* p_type)
+{
+    if (!type_is_pointer(p_type))
+        return false;
+
+    _Assert(p_type->next != NULL);
+
+    return type_is_void(p_type->next);
 }
 
 bool type_is_owner(const struct type* p_type)
@@ -838,7 +1009,7 @@ bool type_is_owner(const struct type* p_type)
     return p_type->type_qualifier_flags & TYPE_QUALIFIER_CAKE_OWNER;
 }
 
-bool type_is_opt(const struct type* p_type, bool nullable_enabled)
+bool type_is_nullable(const struct type* p_type, bool nullable_enabled)
 {
     if (nullable_enabled)
     {
@@ -854,7 +1025,7 @@ bool type_is_view(const struct type* p_type)
     return p_type->type_qualifier_flags & TYPE_QUALIFIER_CAKE_VIEW;
 }
 
-bool type_is_ctor(const struct type* p_type)
+bool type_is_out(const struct type* p_type)
 {
     return p_type->type_qualifier_flags & TYPE_QUALIFIER_CAKE_CTOR;
 }
@@ -862,6 +1033,80 @@ bool type_is_ctor(const struct type* p_type)
 bool type_is_const(const struct type* p_type)
 {
     return p_type->type_qualifier_flags & TYPE_QUALIFIER_CONST;
+}
+
+static bool struct_or_union_has_const_member(struct struct_or_union_specifier* p_complete)
+{
+    /*
+        struct X { const int i; };
+        int main() {
+          struct X a = {};
+          struct X b = {};
+          a = b; //a is const because a.i is const
+        }
+    */
+    struct member_declaration* _Opt d = p_complete->member_declaration_list.head;
+    while (d)
+    {
+        if (d->member_declarator_list_opt)
+        {
+            struct member_declarator* _Opt md = d->member_declarator_list_opt->head;
+            while (md)
+            {
+                if (md->declarator && type_is_const_recursive(&md->declarator->type))
+                    return true;
+
+                md = md->next;
+            }
+        }
+        else if (d->specifier_qualifier_list &&
+                 d->specifier_qualifier_list->struct_or_union_specifier)
+        {
+            /*anonymous struct/union member*/
+            struct struct_or_union_specifier* _Opt p_anonymous =
+                get_complete_struct_or_union_specifier(d->specifier_qualifier_list->struct_or_union_specifier);
+
+            if (p_anonymous && struct_or_union_has_const_member(p_anonymous))
+                return true;
+        }
+
+        d = d->next;
+    }
+    return false;
+}
+
+/*
+  Returns true if the type is const or if it is a structure/union (or array of)
+  that has, at any level, a const qualified member. Such objects are not
+  modifiable lvalues.
+
+    struct X { const int i; };
+    struct X a, b;
+    a = b; //error
+*/
+bool type_is_const_recursive(const struct type* p_type)
+{
+    if (type_is_const(p_type))
+        return true;
+
+    if (type_is_array(p_type))
+    {
+        struct type item_type = get_array_item_type(p_type);
+        const bool b = type_is_const_recursive(&item_type);
+        type_destroy(&item_type);
+        return b;
+    }
+
+    if (type_is_struct_or_union(p_type) && p_type->struct_or_union_specifier)
+    {
+        struct struct_or_union_specifier* _Opt p_complete =
+            get_complete_struct_or_union_specifier(p_type->struct_or_union_specifier);
+
+        if (p_complete)
+            return struct_or_union_has_const_member(p_complete);
+    }
+
+    return false;
 }
 
 bool type_is_constexpr(const struct type* p_type)
@@ -936,6 +1181,20 @@ bool type_is_pointer(const struct type* p_type)
     return p_type->category == TYPE_CATEGORY_POINTER;
 }
 
+bool type_is_incomplete(const struct type* p_type)
+{
+    if (p_type->enum_specifier)
+    {
+        return get_complete_enum_specifier(p_type->enum_specifier) == NULL;
+    }
+    else if (p_type->struct_or_union_specifier)
+    {
+        return get_complete_struct_or_union_specifier(p_type->struct_or_union_specifier) == NULL;
+    }
+
+    return false;
+}
+
 bool type_is_essential_bool(const struct type* p_type)
 {
     return p_type->attributes_flags & CAKE_HIDDEN_ATTRIBUTE_LIKE_BOOL;
@@ -949,6 +1208,11 @@ bool type_is_enum(const struct type* p_type)
 {
     return type_get_category(p_type) == TYPE_CATEGORY_ITSELF &&
         p_type->type_specifier_flags & TYPE_SPECIFIER_ENUM;
+}
+
+bool type_is_enumerator(const struct type* p_type)
+{
+    return p_type->enum_specifier && p_type->type_specifier_flags != TYPE_SPECIFIER_ENUM;
 }
 
 bool type_is_struct_or_union(const struct type* p_type)
@@ -1014,7 +1278,7 @@ bool type_is_vm(const struct type* p_type)
         {
         case TYPE_CATEGORY_ARRAY:
             if (p->array_num_elements > 0)
-            {      
+            {
                 /* constant size */
             }
             else if (p->p_array_num_elements_expression == NULL)
@@ -1023,18 +1287,18 @@ bool type_is_vm(const struct type* p_type)
             }
             else if (p->array_num_elements == 0 &&
                      object_is_zero(&p->p_array_num_elements_expression->object))
-                {
+            {
                 /* not VM, int [0] , accepted in many compilers*/
-                }
-                else
+            }
+            else
             {
                 /* VM, int [expression] */
-            return true;
-        }
+                return true;
+            }
             break;
 
         case TYPE_CATEGORY_FUNCTION:
-        case TYPE_CATEGORY_ITSELF:            
+        case TYPE_CATEGORY_ITSELF:
         case TYPE_CATEGORY_POINTER:
             break;
         }
@@ -1051,7 +1315,7 @@ bool type_is_bitfield(const struct type* p_type)
 
 int type_get_bitfield_width(const struct type* p_type)
 {
-    return (int) p_type->array_num_elements;
+    return (int)p_type->array_num_elements;
 }
 
 /*
@@ -1083,7 +1347,7 @@ bool type_is_decimal32(const struct type* p_type)
 bool type_is_long_double(const struct type* p_type)
 {
     if (type_get_category(p_type) != TYPE_CATEGORY_ITSELF)
-        return  false;
+        return false;
 
     if (p_type->type_specifier_flags & TYPE_SPECIFIER_DOUBLE)
     {
@@ -1099,7 +1363,7 @@ bool type_is_long_double(const struct type* p_type)
 bool type_is_double(const struct type* p_type)
 {
     if (type_get_category(p_type) != TYPE_CATEGORY_ITSELF)
-        return  false;
+        return false;
 
     if (p_type->type_specifier_flags & TYPE_SPECIFIER_DOUBLE)
     {
@@ -1115,7 +1379,7 @@ bool type_is_double(const struct type* p_type)
 bool type_is_int(const struct type* p_type)
 {
     if (type_get_category(p_type) != TYPE_CATEGORY_ITSELF)
-        return  false;
+        return false;
 
     if ((p_type->type_specifier_flags == (TYPE_SPECIFIER_INT | TYPE_SPECIFIER_SIGNED)) ||
         (p_type->type_specifier_flags == TYPE_SPECIFIER_INT))
@@ -1128,7 +1392,7 @@ bool type_is_int(const struct type* p_type)
 bool type_is_unsigned_int(const struct type* p_type)
 {
     if (type_get_category(p_type) != TYPE_CATEGORY_ITSELF)
-        return  false;
+        return false;
 
     if (p_type->type_specifier_flags == (TYPE_SPECIFIER_INT | TYPE_SPECIFIER_UNSIGNED))
     {
@@ -1141,7 +1405,7 @@ bool type_is_unsigned_int(const struct type* p_type)
 bool type_is_float(const struct type* p_type)
 {
     if (type_get_category(p_type) != TYPE_CATEGORY_ITSELF)
-        return  false;
+        return false;
 
     if (p_type->type_specifier_flags & TYPE_SPECIFIER_FLOAT)
     {
@@ -1187,6 +1451,14 @@ bool type_is_unsigned_integer(const struct type* p_type)
     return false;
 }
 
+bool type_is_signed(const struct type* p_type)
+{
+    if (type_is_bool(p_type))
+        return false;
+
+    return !(p_type->type_specifier_flags & TYPE_SPECIFIER_UNSIGNED);
+}
+
 bool type_is_signed_integer(const struct type* p_type)
 {
     if (type_is_bool(p_type))
@@ -1206,7 +1478,7 @@ bool type_is_array_of_char(const struct type* p_type)
     if (p_type->category != TYPE_CATEGORY_ARRAY)
         return false;
 
-    assert(p_type->next != NULL);
+    _Assert(p_type->next != NULL);
     return p_type->next->type_specifier_flags & TYPE_SPECIFIER_CHAR;
 }
 
@@ -1216,6 +1488,19 @@ bool type_is_char(const struct type* p_type)
         return false;
 
     return p_type->type_specifier_flags & TYPE_SPECIFIER_CHAR;
+}
+
+/*
+  True for wchar_t, whichever integer type the target maps it to
+  (unsigned short on msvc, int elsewhere). Used to tell "%ls" apart
+  from "%s" when checking printf format strings.
+*/
+bool type_is_wchar(const struct type* p_type, enum target target)
+{
+    if (!type_is_integer(p_type))
+        return false;
+
+    return type_to_object_type(p_type, target) == get_platform(target)->wchar_t_type;
 }
 
 /*
@@ -1329,127 +1614,6 @@ const struct param_list* _Opt type_get_func_or_func_ptr_params(const struct type
     return NULL;
 }
 
-void check_ownership_qualifiers_of_argument_and_parameter(struct parser_ctx* ctx,
-    struct argument_expression* current_argument,
-    struct type* paramer_type,
-    int param_num)
-{
-    //            _Owner     _Dtor  _View parameter
-    // _Owner      OK                   OK
-    // _Dtor  X         OK         OK
-    // _View       X (NULL)  X          OK
-
-    const bool paramer_is_obj_owner = type_is_pointed_dtor(paramer_type);
-    const bool paramer_is_owner = type_is_owner(paramer_type);
-    const bool paramer_is_view = !paramer_is_obj_owner && !paramer_is_owner;
-
-    const struct type* const argument_type = &current_argument->expression->type;
-    const bool argument_is_owner = type_is_owner(&current_argument->expression->type);
-    const bool argument_is_obj_owner = type_is_pointed_dtor(&current_argument->expression->type);
-    const bool argument_is_view = !argument_is_owner && !argument_is_obj_owner;
-
-    if (argument_is_owner && paramer_is_owner)
-    {
-        //ok
-    }
-    else if (argument_is_owner && paramer_is_obj_owner)
-    {
-        //ok
-    }
-    else if (argument_is_owner && paramer_is_view)
-    {
-        //ok
-        if (current_argument->expression->type.storage_class_specifier_flags & STORAGE_SPECIFIER_FUNCTION_RETURN)
-        {
-            diagnostic(W_OWNERSHIP_USING_TEMPORARY_OWNER,
-                ctx,
-                current_argument->expression->first_token, NULL,
-                "passing a temporary owner to a view");
-        }
-
-    }////////////////////////////////////////////////////////////
-    else if (argument_is_obj_owner && paramer_is_owner)
-    {
-        diagnostic(W_OWNERSHIP_MOVE_ASSIGNMENT_OF_NON_OWNER,
-            ctx,
-            current_argument->expression->first_token, NULL,
-            "cannot move _Dtor to _Owner");
-    }
-    else if (argument_is_obj_owner && paramer_is_obj_owner)
-    {
-        //ok
-    }
-    else if (argument_is_obj_owner && paramer_is_view)
-    {
-        //ok
-        //ok
-        if (current_argument->expression->type.storage_class_specifier_flags & STORAGE_SPECIFIER_FUNCTION_RETURN)
-        {
-            diagnostic(W_OWNERSHIP_USING_TEMPORARY_OWNER,
-                ctx,
-                current_argument->expression->first_token, NULL,
-                "passing a temporary owner to a view");
-        }
-
-
-    }///////////////////////////////////////////////////////////////
-    else if (argument_is_view && paramer_is_owner)
-    {
-        if (!expression_is_null_pointer_constant(current_argument->expression))
-        {
-            diagnostic(W_OWNERSHIP_MOVE_ASSIGNMENT_OF_NON_OWNER,
-                ctx,
-                current_argument->expression->first_token, NULL,
-                "passing a _View argument to a _Owner parameter");
-        }
-    }
-    else if (argument_is_view && paramer_is_obj_owner)
-    {
-        //check if the contented of pointer is _Owner.
-        if (type_is_pointer(argument_type))
-        {
-            struct type t2 = type_remove_pointer(argument_type);
-            if (!type_is_owner(&t2))
-            {
-
-                diagnostic(W_OWNERSHIP_MOVE_ASSIGNMENT_OF_NON_OWNER,
-                    ctx,
-                    current_argument->expression->first_token, NULL,
-                    "pointed object is not _Owner");
-
-            }
-            else
-            {
-                //pointer object is _Owner
-                if (!argument_type->address_of)
-                {
-                    //we need something created with address of.
-                    diagnostic(W_MUST_USE_ADDRESSOF,
-                        ctx,
-                        current_argument->expression->first_token, NULL,
-                        "_Dtor pointer must be created using address of operator &");
-                }
-            }
-
-            type_destroy(&t2);
-        }
-        else
-        {
-            if (!expression_is_null_pointer_constant(current_argument->expression))
-            {
-                diagnostic(W_OWNERSHIP_MOVE_ASSIGNMENT_OF_NON_OWNER,
-                    ctx,
-                    current_argument->expression->first_token, NULL,
-                    "passing a _View argument to a _Dtor parameter");
-            }
-        }
-
-    }
-    else if (argument_is_view && paramer_is_view)
-    {
-        //ok
-    }///////////////////////////////////////////////////////////////
-}
 
 
 bool type_is_function(const struct type* p_type)
@@ -1480,7 +1644,7 @@ bool type_is_empty(const struct type* p_type)
         p_type->type_specifier_flags == TYPE_SPECIFIER_NONE;
 }
 
-struct type type_add_pointer(const struct type* p_type, bool null_checks_enabled)
+struct type type_add_pointer(const struct type* p_type)
 {
     try
     {
@@ -1488,7 +1652,7 @@ struct type type_add_pointer(const struct type* p_type, bool null_checks_enabled
         if (p == NULL) throw;
         struct type r0 = type_dup(p_type);
         *p = r0;
-        struct type r2 = {0};
+        struct type r2 = { 0 };
         r2.next = p;
         r2.category = TYPE_CATEGORY_POINTER;
         r2.storage_class_specifier_flags = p_type->storage_class_specifier_flags;
@@ -1498,7 +1662,7 @@ struct type type_add_pointer(const struct type* p_type, bool null_checks_enabled
     {
     }
 
-    struct type r = {0};
+    struct type r = { 0 };
     return r;
 }
 
@@ -1516,17 +1680,17 @@ struct type type_remove_pointer(const struct type* p_type)
         /*
           we have moved the contents of r.next, but we also need to delete it's memory
         */
-        free(r.next);
+        free(r.next); //lint 29 29 29 
         r.next = NULL;
         type_destroy_one(&r);
         r = next;
     }
     else
     {
-        assert(false);
+        _Assert(false);
     }
 
-    assert(p_type->next != NULL); //guaranteed by type_is_pointer
+    _Assert(p_type->next != NULL); //guaranteed by type_is_pointer
 
     r.storage_class_specifier_flags = p_type->next->storage_class_specifier_flags;
     r.type_qualifier_flags = p_type->next->type_qualifier_flags;
@@ -1542,7 +1706,20 @@ struct type get_array_item_type(const struct type* p_type)
     {
         struct type r2 = *r.next;
 
-        free(r.next);
+        /*
+           C11 6.7.3p9: "If the specification of an array type includes any
+           type qualifiers, the element type is so-qualified, not the array
+           type." A direct declaration (`const int a[3]`) already lands the
+           qualifier on the element, but a const propagated ONTO an array type
+           afterwards did not -- fix_arrow_member_type puts it on the array
+           node, so `const struct X* p; p->arr[0] = 1;` produced an element
+           type of plain `int` and the modifiable-lvalue check passed.
+           Carrying const/volatile down here fixes every consumer at once.
+        */
+        r2.type_qualifier_flags |=
+            (r.type_qualifier_flags & (TYPE_QUALIFIER_CONST | TYPE_QUALIFIER_VOLATILE));
+
+        free(r.next); //lint 29 29 29 
         free((void* _Owner) r.name_opt);
         param_list_destroy(&r.params);
         return r2;
@@ -1551,11 +1728,11 @@ struct type get_array_item_type(const struct type* p_type)
     return r;
 }
 
-struct type type_param_array_to_pointer(const struct type* p_type, bool null_checks_enabled)
+struct type type_param_array_to_pointer(const struct type* p_type)
 {
-    assert(type_is_array(p_type));
+    _Assert(type_is_array(p_type));
     struct type t = get_array_item_type(p_type);
-    struct type t2 = type_add_pointer(&t, null_checks_enabled);
+    struct type t2 = type_add_pointer(&t);
 
     if (p_type->type_qualifier_flags & TYPE_QUALIFIER_CONST)
     {
@@ -1598,7 +1775,7 @@ int type_get_integer_rank(const struct type* p_type1)
 {
     if (type_is_pointer_or_array(p_type1))
     {
-        assert(false);
+        _Assert(false);
         return 40;
     }
 
@@ -1635,11 +1812,20 @@ int type_get_integer_rank(const struct type* p_type1)
     return 0;
 }
 
-struct type type_get_enum_underlying_type(const struct type* p)
+struct type make_with_specifier_qualifier_list(const struct specifier_qualifier_list* list)
 {
-    struct type r = type_make_int();
-    //TODO
-    return r;
+    if (list->typeof_specifier)
+    {
+        return type_dup(&list->typeof_specifier->type);
+    }
+    else if (list->typedef_declarator)
+    {
+        return type_dup(&list->typedef_declarator->type);
+    }
+    else
+    {
+        return make_with_type_specifier_flags(list->type_specifier_flags);
+    }
 }
 
 struct type type_common(const struct type* p_type1, const struct type* p_type2, enum target target)
@@ -1744,19 +1930,38 @@ struct type type_common(const struct type* p_type1, const struct type* p_type2, 
     struct type promoted_b = { 0 };
 
 
-    if (type_is_enum(p_type1))
+    if (type_is_enum(p_type1) && !type_is_enumerator(p_type1))
     {
-        promoted_a = type_get_enum_underlying_type(p_type1);
-
+        _Assert(p_type1->enum_specifier);
+        const struct enum_specifier* _Opt p_complete_left = get_complete_enum_specifier(p_type1->enum_specifier);
+        if (p_complete_left != NULL)
+        {
+            promoted_a = type_dup(&p_complete_left->integer_type);
+        }
+        else
+        {
+            /* incomplete enum, the underlying type is unknown */
+            promoted_a = type_dup(p_type1);
+        }
     }
     else
     {
         promoted_a = type_dup(p_type1);
     }
 
-    if (type_is_enum(p_type2))
+    if (type_is_enum(p_type2) && !type_is_enumerator(p_type2))
     {
-        promoted_b = type_get_enum_underlying_type(p_type2);
+        _Assert(p_type2->enum_specifier);
+        const struct enum_specifier* _Opt p_complete_right = get_complete_enum_specifier(p_type2->enum_specifier);
+        if (p_complete_right != NULL)
+        {
+            promoted_b = type_dup(&p_complete_right->integer_type);
+        }
+        else
+        {
+            /* incomplete enum, the underlying type is unknown */
+            promoted_b = type_dup(p_type2);
+        }
     }
     else
     {
@@ -1809,7 +2014,7 @@ struct type type_common(const struct type* p_type1, const struct type* p_type2, 
     struct type* p_signed_promoted = type_is_signed_integer(&promoted_a) ? &promoted_a : &promoted_b;
     struct type* p_unsigned_promoted = type_is_unsigned_integer(&promoted_a) ? &promoted_a : &promoted_b;
 
-    assert(p_signed_promoted != p_unsigned_promoted);
+    _Assert(p_signed_promoted != p_unsigned_promoted);
 
     if (type_get_integer_rank(p_unsigned_promoted) >= type_get_integer_rank(p_signed_promoted))
     {
@@ -1829,13 +2034,13 @@ struct type type_common(const struct type* p_type1, const struct type* p_type2, 
     size_t signed_promoted_sizeof = 0;
     if (type_get_sizeof(p_signed_promoted, &signed_promoted_sizeof, target) != 0)
     {
-        assert(false);
+        _Assert(false);
     }
 
     size_t unsigned_promoted_sizeof = 0;
     if (type_get_sizeof(p_unsigned_promoted, &unsigned_promoted_sizeof, target) != 0)
     {
-        assert(false);
+        _Assert(false);
     }
 
     if (signed_promoted_sizeof > unsigned_promoted_sizeof)
@@ -1885,22 +2090,18 @@ struct type type_dup(const struct type* p_type)
             *p_new = *p;
 
             //actually I was not the _Owner of p_new->next
-            override_state(p_new->next, "uninitialized");
-            p_new->next = NULL;
+            p_new->next = NULL; //lint 26 not following rules
 
             if (p->name_opt)
             {
                 //actually p_new->name_opt was not mine..
-                override_state(p_new->name_opt, "uninitialized");
-                p_new->name_opt = strdup(p->name_opt);
+                p_new->name_opt = strdup(p->name_opt); //lint 26 not following rules 
             }
 
             if (p->category == TYPE_CATEGORY_FUNCTION)
             {
                 //actually p_new->params.head  p_new->params.tail and was not mine..
-                override_state(p_new->params.head, "uninitialized");
-                p_new->params.head = NULL;
-                override_state(p_new->params.tail, "uninitialized");
+                p_new->params.head = NULL;//lint 26 not following rules
                 p_new->params.tail = NULL;
 
                 struct param* _Opt p_param = p->params.head;
@@ -1935,14 +2136,20 @@ struct type type_dup(const struct type* p_type)
         */
         free(l.head);
 
-        return r;
+        /* type_dup deliberately steps outside the ownership rules: `*p_new = *p`
+           copies the whole struct so every field comes across, and the owner
+           members it brought along are immediately replaced (next nulled,
+           name_opt re-strdup'd, params rebuilt) -- see the "actually I was not
+           the _Owner of ..." notes above. p is const and is never consumed,
+           but each copied owner member reads as a move. */
+        return r; 
     }
     catch
     {
     }
 
     struct type empty = { 0 };
-    return empty;
+    return empty; //lint 72 72 72 72 not following rules
 }
 
 static enum sizeof_result get_offsetof_struct(struct struct_or_union_specifier* complete_struct_or_union_specifier,
@@ -1961,7 +2168,7 @@ static enum sizeof_result get_offsetof_struct(struct struct_or_union_specifier* 
 
         /* bitfield packing state — mirrors get_sizeof_struct exactly */
         size_t bf_storage_bits = 0;
-        size_t bf_bits_used    = 0;
+        size_t bf_bits_used = 0;
 
         struct member_declaration* _Opt d = complete_struct_or_union_specifier->member_declaration_list.head;
         while (d)
@@ -1982,10 +2189,10 @@ static enum sizeof_result get_offsetof_struct(struct struct_or_union_specifier* 
                             object_to_unsigned_long_long(&md->constant_expression->object);
 
                         size_t field_type_size = 0;
-                    if (md->declarator)
-                    {
+                        if (md->declarator)
+                        {
                             /* Temporarily clear is_bitfield so type_get_sizeof doesn't reject it */
-                            struct type tmp = md->declarator->type;
+                            struct type tmp = type_dup(&md->declarator->type);
                             tmp.storage_class_specifier_flags &= ~STORAGE_SPECIFIER_BITFIELD;
 
                             sizeof_result = type_get_sizeof(&tmp, &field_type_size, target);
@@ -1993,7 +2200,7 @@ static enum sizeof_result get_offsetof_struct(struct struct_or_union_specifier* 
                             {
                                 type_destroy(&tmp);
                                 throw;
-                        }
+                            }
                             type_destroy(&tmp);
                         }
                         else
@@ -2001,7 +2208,7 @@ static enum sizeof_result get_offsetof_struct(struct struct_or_union_specifier* 
                             field_type_size = get_platform(target)->int_n_bits / 8;
                         }
 
-                        size_t field_align  = field_type_size;
+                        size_t field_align = field_type_size;
                         size_t storage_bits = field_type_size * 8;
 
                         if (field_align > maxalign)
@@ -2014,9 +2221,9 @@ static enum sizeof_result get_offsetof_struct(struct struct_or_union_specifier* 
                             {
                                 if (!is_union)
                                     size += bf_storage_bits / 8;
-                                bf_bits_used    = 0;
+                                bf_bits_used = 0;
                                 bf_storage_bits = 0;
-                        }
+                            }
                         }
                         else
                         {
@@ -2037,7 +2244,7 @@ static enum sizeof_result get_offsetof_struct(struct struct_or_union_specifier* 
                                         size += field_align - (size % field_align);
                                     bf_storage_bits = storage_bits;
                                     merged = true;
-                        }
+                                }
 
                                 if (!merged)
                                 {
@@ -2046,7 +2253,7 @@ static enum sizeof_result get_offsetof_struct(struct struct_or_union_specifier* 
                                     if (!is_union && field_align > 0 && size % field_align != 0)
                                         size += field_align - (size % field_align);
                                     bf_storage_bits = storage_bits;
-                                    bf_bits_used    = 0;
+                                    bf_bits_used = 0;
                                 }
                             }
 
@@ -2068,13 +2275,16 @@ static enum sizeof_result get_offsetof_struct(struct struct_or_union_specifier* 
                         {
                             if (!is_union)
                                 size += bf_storage_bits / 8;
-                            bf_bits_used    = 0;
+                            bf_bits_used = 0;
                             bf_storage_bits = 0;
                         }
 
-                        assert(md->declarator->name_opt != NULL);
+                        _Assert(md->declarator->name_opt != NULL);
 
                         size_t align = type_get_alignof(&md->declarator->type, target);
+
+                        if (align == 0)
+                          throw;
 
                         if (align > maxalign)
                             maxalign = align;
@@ -2119,7 +2329,7 @@ static enum sizeof_result get_offsetof_struct(struct struct_or_union_specifier* 
                 {
                     if (!is_union)
                         size += bf_storage_bits / 8;
-                    bf_bits_used    = 0;
+                    bf_bits_used = 0;
                     bf_storage_bits = 0;
                 }
 
@@ -2132,6 +2342,7 @@ static enum sizeof_result get_offsetof_struct(struct struct_or_union_specifier* 
 
                     size_t align = type_get_alignof(&t, target);
 
+                    if (align == 0) throw;
                     if (align > maxalign)
                         maxalign = align;
 
@@ -2200,7 +2411,7 @@ enum sizeof_result get_sizeof_struct(struct struct_or_union_specifier* complete_
          * added to `size`.
          */
         size_t bf_storage_bits = 0;
-        size_t bf_bits_used    = 0;
+        size_t bf_bits_used = 0;
 
         struct member_declaration* _Opt d = complete_struct_or_union_specifier->member_declaration_list.head;
         while (d)
@@ -2223,8 +2434,8 @@ enum sizeof_result get_sizeof_struct(struct struct_or_union_specifier* complete_
                             object_to_unsigned_long_long(&md->constant_expression->object);
 
                         size_t field_type_size = 0;
-                    if (md->declarator)
-                    {
+                        if (md->declarator)
+                        {
                             enum storage_class_specifier_flags before = md->declarator->type.storage_class_specifier_flags;
                             md->declarator->type.storage_class_specifier_flags &= ~STORAGE_SPECIFIER_BITFIELD;
                             sizeof_result = type_get_sizeof(&md->declarator->type, &field_type_size, target);
@@ -2239,8 +2450,8 @@ enum sizeof_result get_sizeof_struct(struct struct_or_union_specifier* complete_
                             field_type_size = get_platform(target)->int_n_bits / 8;
                         }
 
-                        size_t field_align    = field_type_size;
-                        size_t storage_bits   = field_type_size * 8;
+                        size_t field_align = field_type_size;
+                        size_t storage_bits = field_type_size * 8;
 
                         if (field_align > maxalign)
                             maxalign = field_align;
@@ -2256,7 +2467,7 @@ enum sizeof_result get_sizeof_struct(struct struct_or_union_specifier* complete_
                             {
                                 if (!is_union)
                                     size += bf_storage_bits / 8;
-                                bf_bits_used    = 0;
+                                bf_bits_used = 0;
                                 bf_storage_bits = 0;
                             }
                         }
@@ -2330,7 +2541,7 @@ enum sizeof_result get_sizeof_struct(struct struct_or_union_specifier* complete_
                                         size += field_align - (size % field_align);
 
                                     bf_storage_bits = storage_bits;
-                                    bf_bits_used    = 0;
+                                    bf_bits_used = 0;
                                 }
                             }
                             bf_bits_used += (size_t)bit_width;
@@ -2346,11 +2557,14 @@ enum sizeof_result get_sizeof_struct(struct struct_or_union_specifier* complete_
                         {
                             if (!is_union)
                                 size += bf_storage_bits / 8;
-                            bf_bits_used    = 0;
+                            bf_bits_used = 0;
                             bf_storage_bits = 0;
                         }
 
                         size_t align = type_get_alignof(&md->declarator->type, target);
+
+                        if (align == 0) 
+                          throw;
 
                         if (align > maxalign)
                             maxalign = align;
@@ -2369,11 +2583,10 @@ enum sizeof_result get_sizeof_struct(struct struct_or_union_specifier* complete_
                         case SIZEOF_RESULT_FUNCTION:
                         case SIZEOF_RESULT_BITFIELD:
                             throw;
-                            break;
 
                         case SIZEOF_RESULT_INCOMPLETE:
                             /* handle C99 flexible array members */
-                            if (md->next == NULL && d->next == NULL)
+                            if (md->next == NULL && d && d->next == NULL)
                             {
                                 if (type_get_category(&md->declarator->type) == TYPE_CATEGORY_ARRAY)
                                 {
@@ -2384,7 +2597,7 @@ enum sizeof_result get_sizeof_struct(struct struct_or_union_specifier* complete_
                                       };
                                     */
                                     sizeof_result = SIZEOF_RESULT_OK;
-                                    item_size = 0;                                    
+                                    item_size = 0;
                                 }
                             }
                             else
@@ -2419,7 +2632,7 @@ enum sizeof_result get_sizeof_struct(struct struct_or_union_specifier* complete_
                 {
                     if (!is_union)
                         size += bf_storage_bits / 8;
-                    bf_bits_used    = 0;
+                    bf_bits_used = 0;
                     bf_storage_bits = 0;
                 }
 
@@ -2432,6 +2645,9 @@ enum sizeof_result get_sizeof_struct(struct struct_or_union_specifier* complete_
 
                     size_t align = type_get_alignof(&t, target);
 
+                    if (align == 0)
+                      throw;
+                      
                     if (align > maxalign)
                         maxalign = align;
 
@@ -2466,7 +2682,8 @@ enum sizeof_result get_sizeof_struct(struct struct_or_union_specifier* complete_
                     throw;
                 }
             }
-            d = d->next;
+
+            d = d->next; 
         }
 
         /* Flush any trailing open bitfield storage unit */
@@ -2532,7 +2749,7 @@ size_t get_alignof_struct(struct struct_or_union_specifier* complete_struct_or_u
                         align = temp_align;
                 }
                 else if (md->declarator && md->constant_expression)
-                    {
+                {
                     /*
                      * Named bitfield member.
                      *
@@ -2555,7 +2772,7 @@ size_t get_alignof_struct(struct struct_or_union_specifier* complete_struct_or_u
                     {
                         size_t temp_align = type_get_alignof(&md->declarator->type, target);
                         if (temp_align > align)
-                        align = temp_align;
+                            align = temp_align;
                     }
                     /* MSVC union: skip — bitfields do not affect union alignment */
                 }
@@ -2571,7 +2788,7 @@ size_t get_alignof_struct(struct struct_or_union_specifier* complete_struct_or_u
                         size_t storage_align = get_platform(target)->int_n_bits / 8;
                         if (storage_align > align)
                             align = storage_align;
-                }
+                    }
                 }
                 /* else: truly empty slot — nothing to contribute */
                 md = md->next;
@@ -2641,7 +2858,7 @@ size_t type_get_alignof(const struct type* p_type, enum target target)
     }
     else if (category == TYPE_CATEGORY_FUNCTION)
     {
-        align = SIZE_MAX-1;        
+        align = SIZE_MAX - 1;
         //seterror(error, "sizeof function");
     }
     else if (category == TYPE_CATEGORY_ITSELF)
@@ -2680,17 +2897,20 @@ size_t type_get_alignof(const struct type* p_type, enum target target)
         }
         else if (p_type->type_specifier_flags & TYPE_SPECIFIER_ENUM)
         {
+            const struct enum_specifier* _Opt p_complete_enum = NULL;
             if (p_type->enum_specifier)
             {
-                enum type_specifier_flags enum_type_specifier_flags =
-                    get_enum_type_specifier_flags(p_type->enum_specifier);
+                p_complete_enum = get_complete_enum_specifier(p_type->enum_specifier);
+            }
 
-                struct type t = make_with_type_specifier_flags(enum_type_specifier_flags);
-                align = type_get_alignof(&t, target);
-                type_destroy(&t);
+            if (p_complete_enum != NULL)
+            {
+                align = type_get_alignof(&p_complete_enum->integer_type, target);
             }
             else
+            {
                 align = get_platform(target)->int_alignment;
+            }
         }
         else if (p_type->type_specifier_flags == (TYPE_SPECIFIER_LONG | TYPE_SPECIFIER_DOUBLE))
         {
@@ -2746,7 +2966,7 @@ size_t type_get_alignof(const struct type* p_type, enum target target)
             else
             {
                 align = SIZE_MAX - 2;
-                assert(false);
+                _Assert(false);
             }
         }
         else if (p_type->type_specifier_flags == TYPE_SPECIFIER_NONE)
@@ -2764,7 +2984,7 @@ size_t type_get_alignof(const struct type* p_type, enum target target)
         }
         else
         {
-            assert(false);
+            _Assert(false);
         }
     }
     else if (category == TYPE_CATEGORY_ARRAY)
@@ -2774,7 +2994,7 @@ size_t type_get_alignof(const struct type* p_type, enum target target)
         align = type_get_alignof(&type, target);
         type_destroy(&type);
     }
-    assert(align > 0);
+    _Assert(align > 0);
     return align;
 }
 
@@ -2835,7 +3055,7 @@ enum sizeof_result type_get_sizeof(const struct type* p_type, size_t* size, enum
     {
         if (p_type->storage_class_specifier_flags & STORAGE_SPECIFIER_PARAMETER)
         {
-            //void f(int a[2])
+            //void f(int a[2])            
             *size = get_platform(target)->pointer_n_bits / 8;
             return SIZEOF_RESULT_OK;
         }
@@ -2845,22 +3065,33 @@ enum sizeof_result type_get_sizeof(const struct type* p_type, size_t* size, enum
             {
                 if (p_type->p_array_num_elements_expression == NULL)
                 {
+                    /*
+                      'int a[];' may be completed by a later declaration
+                      ('int a[2];'), just like an incomplete tag is completed
+                      by a later definition. Issue #333.
+                    */
+                    const struct type* _Opt p_complete = type_get_complete_array(p_type);
+                    if (p_complete != NULL)
+                    {
+                        return type_get_sizeof(p_complete, size, target);
+                    }
+
                     /* int [] */
                     return SIZEOF_RESULT_INCOMPLETE;
                 }
 
                 if (object_is_zero(&p_type->p_array_num_elements_expression->object))
                 {
-                    /* 
+                    /*
                     *  MSVC, GCC, clang..have it
-                    *  int[0]                     
+                    *  int[0]
                     */
                 }
                 else
                 {
                     /* int [expression] */
-                return SIZEOF_RESULT_RUNTIME;
-            }
+                    return SIZEOF_RESULT_RUNTIME;
+                }
             }
             unsigned long long arraysize = p_type->array_num_elements;
             struct type type = get_array_item_type(p_type);
@@ -2879,16 +3110,36 @@ enum sizeof_result type_get_sizeof(const struct type* p_type, size_t* size, enum
             unsigned long long result = 0;
             if (unsigned_long_long_mul(&result, sz, arraysize))
             {
+#if !defined(__CATALINA__)              
+#if SIZE_MAX < 0xFFFFFFFFFFFFFFFFULL
+                /* Only meaningful when size_t is narrower than unsigned long
+                   long -- on a 64-bit host SIZE_MAX == ULLONG_MAX, so
+                   `result` (itself an unsigned long long) can never exceed
+                   it and this branch is unreachable by construction. Left
+                   compiled in for a 64-bit `result` it confused the flow
+                   analyzer into also mis-marking the unrelated MSVC cap
+                   check below as unreachable. */
                 if (result > SIZE_MAX)
                 {
                     return SIZEOF_RESULT_OVERLOW;
                 }
+#endif
+#endif                
 
-                //
-                if (result > /*SIZEMAX*/ 4294967295)
+                /*
+                  MSVC caps a single object at 0x7FFFFFFF (~2GB) bytes even
+                  when targeting x64, independent of the 64-bit size_t range
+                  (C2089 'identifier': type too large -- e.g.
+                  char huge_array[0x7fffffffU][0x7fffffffU]; whose total size
+                  is well within SIZE_MAX but still rejected). GCC/clang
+                  targets do not share this limit, so only enforce it there.
+                */
+                if ((target == TARGET_X86_MSVC || target == TARGET_X64_MSVC) &&
+                    result > 0x7FFFFFFFULL)
                 {
                     return SIZEOF_RESULT_OVERLOW;
                 }
+
                 *size = (size_t)result;
             }
             else
@@ -2899,7 +3150,7 @@ enum sizeof_result type_get_sizeof(const struct type* p_type, size_t* size, enum
         }
     }
 
-    assert(category == TYPE_CATEGORY_ITSELF);
+    _Assert(category == TYPE_CATEGORY_ITSELF);
 
     if (p_type->array_num_elements > 0)
     {
@@ -2994,13 +3245,14 @@ enum sizeof_result type_get_sizeof(const struct type* p_type, size_t* size, enum
     {
         if (p_type->enum_specifier)
         {
-            enum type_specifier_flags enum_type_specifier_flags =
-                get_enum_type_specifier_flags(p_type->enum_specifier);
+            const struct enum_specifier* _Opt p_complete_enum = get_complete_enum_specifier(p_type->enum_specifier);
+            if (p_complete_enum == NULL)
+            {
+                return SIZEOF_RESULT_INCOMPLETE;
+            }
 
-            struct type t = make_with_type_specifier_flags(enum_type_specifier_flags);
-            enum sizeof_result e = type_get_sizeof(&t, size, target);
-            type_destroy(&t);
-            return e;
+            enum sizeof_result result = type_get_sizeof(&p_complete_enum->integer_type, size, target);
+            return result;
         }
         else
         {
@@ -3049,7 +3301,43 @@ enum sizeof_result type_get_sizeof(const struct type* p_type, size_t* size, enum
     return SIZEOF_RESULT_INCOMPLETE;
 }
 
-void type_set_attributes(struct type* p_type, struct declarator* pdeclarator)
+void type_get_integer_range(const struct type* p_type, enum target target, long long* min, unsigned long long* max)
+{
+    const struct type* p_effective_type = p_type;
+    bool is_signed = true;
+    int n_bits = target_get_num_of_bits(target, TYPE_SIGNED_INT); /*fallback: int*/
+
+    if (p_type->type_specifier_flags & TYPE_SPECIFIER_ENUM)
+    {
+        const struct enum_specifier* _Opt p_complete_enum = NULL;
+
+        if (p_type->enum_specifier)
+        {
+            p_complete_enum = get_complete_enum_specifier(p_type->enum_specifier);
+        }
+
+        if (p_complete_enum != NULL)
+        {
+            p_effective_type = &p_complete_enum->integer_type;
+        }
+    }
+
+    size_t sz = 0;
+    if (type_get_sizeof(p_effective_type, &sz, target) == SIZEOF_RESULT_OK && sz > 0)
+    {
+        n_bits = (int)(sz * 8);
+        is_signed = type_is_signed_integer(p_effective_type);
+    }
+
+    if (n_bits > 64)
+        n_bits = 64;
+
+
+    *min = is_signed ? (n_bits >= 64 ? LLONG_MIN : -(long long)(1ULL << (n_bits - 1))) : 0;
+    *max = n_bits >= 64 ? ULLONG_MAX : (1ULL << n_bits) - 1;
+}
+
+void type_set_attributes(struct type* p_type, const struct declarator* pdeclarator)
 {
     if (pdeclarator->declaration_specifiers)
     {
@@ -3107,17 +3395,16 @@ struct type get_function_return_type(const struct type* p_type)
 void type_set_int(struct type* p_type)
 {
     p_type->type_specifier_flags = TYPE_SPECIFIER_INT;
-    p_type->type_qualifier_flags = 0;
+    p_type->type_qualifier_flags = TYPE_QUALIFIER_NONE;
     p_type->category = TYPE_CATEGORY_ITSELF;
 }
 
-struct type type_make_enumerator(const struct enum_specifier* enum_specifier)
+struct type type_make_enumerator(const struct enumerator* enumerator)
 {
-    struct type t = { 0 };
-    t.type_specifier_flags = TYPE_SPECIFIER_ENUM;
-    t.enum_specifier = enum_specifier;
-    t.category = TYPE_CATEGORY_ITSELF;
-    return t;
+    enum type_specifier_flags flags = object_type_to_type_specifier(enumerator->value.value_type) | TYPE_SPECIFIER_ENUM;
+    struct type type = make_with_type_specifier_flags(flags);
+    type.enum_specifier = enumerator->enum_specifier;
+    return type;
 }
 
 struct type type_get_enum_type(const struct type* p_type)
@@ -3127,21 +3414,13 @@ struct type type_get_enum_type(const struct type* p_type)
         if (p_type->enum_specifier == NULL)
             throw;
 
-        const struct enum_specifier* _Opt p_complete_enum_specifier =
-            get_complete_enum_specifier(p_type->enum_specifier);
-
-        if (p_complete_enum_specifier &&
-            p_complete_enum_specifier->specifier_qualifier_list)
+        const struct enum_specifier* _Opt p_complete_enum = get_complete_enum_specifier(p_type->enum_specifier);
+        if (p_complete_enum == NULL)
         {
-            struct type t = { 0 };
-            t.type_qualifier_flags = p_complete_enum_specifier->specifier_qualifier_list->type_qualifier_flags;
-            t.type_specifier_flags = p_complete_enum_specifier->specifier_qualifier_list->type_specifier_flags;
-            return t;
+            throw;
         }
 
-        struct type t = { 0 };
-        t.type_specifier_flags = TYPE_SPECIFIER_INT;
-        return t;
+        return type_dup(&p_complete_enum->integer_type);
     }
     catch
     {
@@ -3254,8 +3533,7 @@ struct type type_make_int()
 
 struct type type_make_literal_string(int number_of_chars_including_zero,
     enum type_specifier_flags chartype,
-    enum type_qualifier_flags qualifiers,
-    enum target target)
+    enum type_qualifier_flags qualifiers)
 {
     struct type t = { 0 };
 
@@ -3279,7 +3557,7 @@ struct type type_make_literal_string(int number_of_chars_including_zero,
     return t;
 }
 
-bool struct_or_union_specifier_is_same(struct struct_or_union_specifier* _Opt a, struct struct_or_union_specifier* _Opt b)
+bool struct_or_union_specifier_is_same(const struct struct_or_union_specifier* _Opt a, const struct struct_or_union_specifier* _Opt b)
 {
     if (a && b)
     {
@@ -3308,7 +3586,7 @@ bool struct_or_union_specifier_is_same(struct struct_or_union_specifier* _Opt a,
     return a == NULL && b == NULL;
 }
 
-bool enum_specifier_is_same(struct enum_specifier* _Opt a, struct enum_specifier* _Opt b)
+bool enum_specifier_is_same(const struct enum_specifier* _Opt a, const struct enum_specifier* _Opt b)
 {
     if (a && b)
     {
@@ -3333,7 +3611,22 @@ bool type_is_same(const struct type* a, const struct type* b, bool compare_quali
 
     while (pa && pb)
     {
-        if (pa->array_num_elements != pb->array_num_elements)
+        /*
+          6.2.7: an array of unknown size is compatible with an array of
+          known size (the composite type is the one with the known size), so
+          only a mismatch between two *known* sizes makes them different.
+
+          A parameter of array type is adjusted to a pointer (6.7.6.3), so its
+          size is not part of the type either - 'f(int a[2])' and 'f(int a[3])'
+          declare the same function. It is still worth reporting, see
+          type_has_different_array_parameter_size.
+          issue #164
+        */
+        if (pa->array_num_elements != pb->array_num_elements &&
+            !type_is_array_of_unknown_size(pa) &&
+            !type_is_array_of_unknown_size(pb) &&
+            !((pa->storage_class_specifier_flags & STORAGE_SPECIFIER_PARAMETER) &&
+              (pb->storage_class_specifier_flags & STORAGE_SPECIFIER_PARAMETER)))
         {
             return false;
         }
@@ -3343,149 +3636,52 @@ bool type_is_same(const struct type* a, const struct type* b, bool compare_quali
             return false;
         }
 
-        if (pa->enum_specifier &&
-            pb->enum_specifier &&
-            get_complete_enum_specifier(pa->enum_specifier) !=
-            get_complete_enum_specifier(pb->enum_specifier))
+        bool underlying_matched = false;
+        if (pa->type_specifier_flags == TYPE_SPECIFIER_ENUM)
         {
-            return false;
-        }
-
-
-        if (pa->enum_specifier && !pb->enum_specifier)
-        {
-            //TODO enum with types
-            //enum  x int
-           //return false;
-        }
-
-        if (!pa->enum_specifier && pb->enum_specifier)
-        {
-            //TODO enum with types
-            //int x enum
-            //return false;
-        }
-
-        //if (pa->name_opt != pb->name_opt) return false;
-        if (pa->has_static_array_size != pb->has_static_array_size)
-            return false;
-
-        if (pa->category == TYPE_CATEGORY_FUNCTION)
-        {
-
-            if (pa->params.is_var_args != pb->params.is_var_args)
+            _Assert(pa->enum_specifier);
+            /* an incomplete enum has no known underlying type to compare against */
+            const struct enum_specifier* _Opt p_complete_a = get_complete_enum_specifier(pa->enum_specifier);
+            if (p_complete_a != NULL)
             {
-                return false;
-            }
-
-            if (pa->params.is_void != pb->params.is_void)
-            {
-                return false;
-            }
-
-            if (!pa->params.is_void && !pb->params.is_void)
-            {
-            struct param* _Opt p_param_a = pa->params.head;
-            struct param* _Opt p_param_b = pb->params.head;
-            while (p_param_a && p_param_b)
-            {
-                if (!type_is_same(&p_param_a->type, &p_param_b->type, compare_qualifiers))
+                if (!type_is_same(&p_complete_a->integer_type, pb, compare_qualifiers))
                 {
                     return false;
                 }
-                p_param_a = p_param_a->next;
-                p_param_b = p_param_b->next;
+                underlying_matched = true;
             }
-                if (p_param_a != NULL || p_param_b != NULL)
+        }
+
+        if (pb->type_specifier_flags == TYPE_SPECIFIER_ENUM)
+        {
+            _Assert(pb->enum_specifier);
+            /* an incomplete enum has no known underlying type to compare against */
+            const struct enum_specifier* _Opt p_complete_b = get_complete_enum_specifier(pb->enum_specifier);
+            if (p_complete_b != NULL)
+            {
+                if (!type_is_same(pa, &p_complete_b->integer_type, compare_qualifiers))
                 {
                     return false;
                 }
+                underlying_matched = true;
             }
         }
 
-        if (pa->struct_or_union_specifier &&
-            pb->struct_or_union_specifier)
+        if (pa->enum_specifier && pb->enum_specifier)
         {
-
-            if (pa->struct_or_union_specifier->complete_struct_or_union_specifier_indirection !=
-                pb->struct_or_union_specifier->complete_struct_or_union_specifier_indirection)
-            {
-                //this should work but it is not...
-            }
-
-            if (strcmp(pa->struct_or_union_specifier->tag_name, pb->struct_or_union_specifier->tag_name) != 0)
+            const struct enum_specifier* _Opt pa_complete_enum = get_complete_enum_specifier(pa->enum_specifier);
+            const struct enum_specifier* _Opt pb_complete_enum = get_complete_enum_specifier(pb->enum_specifier);
+            if (pa_complete_enum != pb_complete_enum)
             {
                 return false;
             }
-        }
 
-        if (compare_qualifiers)
-        {
-            enum type_qualifier_flags aq = pa->type_qualifier_flags;
-            enum type_qualifier_flags bq = pb->type_qualifier_flags;
-
-            unsigned int all = (TYPE_QUALIFIER_CAKE_OWNER | TYPE_QUALIFIER_CAKE_VIEW |
-             TYPE_QUALIFIER_CAKE_OPT | TYPE_QUALIFIER_CAKE_DTOR | TYPE_QUALIFIER_CAKE_CTOR);
-
-            aq = aq & ~all;
-            bq = bq & ~all;
-
-            if (aq != bq)
+            // both dont have enumerator list
+            // must have same tag
+            if (pa_complete_enum == NULL && pb_complete_enum == NULL && strcmp(pa->enum_specifier->tag_name, pb->enum_specifier->tag_name) != 0)
+            {
                 return false;
-        }
-
-
-        enum type_specifier_flags a_flags = pa->type_specifier_flags;
-        enum type_specifier_flags b_flags = pb->type_specifier_flags;
-
-        if ((a_flags & TYPE_SPECIFIER_CHAR) == 0)
-        {
-            a_flags &= ~TYPE_SPECIFIER_SIGNED;
-        }
-
-        if ((b_flags & TYPE_SPECIFIER_CHAR) == 0)
-        {
-            b_flags &= ~TYPE_SPECIFIER_SIGNED;
-        }
-
-        if (a_flags != b_flags)
-        {
-            return false;
-        }
-
-
-        pa = pa->next;
-        pb = pb->next;
-    }
-    return pa == NULL && pb == NULL;
-}
-
-bool type_is_compatible(const struct type* a, const struct type* b)
-{
-    const struct type* _Opt pa = a;
-    const struct type* _Opt pb = b;
-
-    while (pa && pb)
-    {
-        if (pa->has_static_array_size &&
-            pb->has_static_array_size &&
-            pa->array_num_elements != pb->array_num_elements)
-        {
-            return false;
-}
-
-        if (pa->category != pb->category)
-{
-            //array pointer are compatible
-//            return false;
-        }
-
-        if (pa->enum_specifier &&
-            pb->enum_specifier &&
-            get_complete_enum_specifier(pa->enum_specifier) !=
-            get_complete_enum_specifier(pb->enum_specifier))
-        {
-            return false;
+            }
         }
 
 
@@ -3526,7 +3722,212 @@ bool type_is_compatible(const struct type* a, const struct type* b)
                 struct param* _Opt p_param_b = pb->params.head;
                 while (p_param_a && p_param_b)
                 {
-                    if (!type_is_compatible(&p_param_a->type, &p_param_b->type))
+                    /*
+                      Two function types are compatible only if corresponding
+                      parameter types are compatible. A parameter's top-level
+                      qualifier ('void f(int)' vs 'void f(const int)', or
+                      'int*' vs 'int *const') never affects the function
+                      type - it only matters inside the function body - so it
+                      is dropped here regardless of the caller's
+                      compare_qualifiers. Qualifiers of what a parameter
+                      points to are significant at every deeper level, e.g.
+                      'int*' vs 'const int*' are not compatible parameter
+                      types, so those are always compared strictly.
+                    */
+                    struct type a_param = type_dup(&p_param_a->type);
+                    struct type b_param = type_dup(&p_param_b->type);
+                    type_remove_all_qualifiers(&a_param);
+                    type_remove_all_qualifiers(&b_param);
+
+                    const bool same = type_is_same(&a_param, &b_param, true);
+
+                    type_destroy(&a_param);
+                    type_destroy(&b_param);
+
+                    if (!same)
+                    {
+                        return false;
+                    }
+                    p_param_a = p_param_a->next;
+                    p_param_b = p_param_b->next;
+                }
+                if (p_param_a != NULL || p_param_b != NULL)
+                {
+                    return false;
+                }
+            }
+        }
+
+        if (pa->struct_or_union_specifier &&
+            pb->struct_or_union_specifier)
+        {
+
+            if (pa->struct_or_union_specifier->complete_struct_or_union_specifier_indirection !=
+                pb->struct_or_union_specifier->complete_struct_or_union_specifier_indirection)
+            {
+                //this should work but it is not...
+            }
+
+            if (strcmp(pa->struct_or_union_specifier->tag_name, pb->struct_or_union_specifier->tag_name) != 0)
+            {
+                return false;
+            }
+        }
+
+        if (compare_qualifiers)
+        {
+            enum type_qualifier_flags aq = pa->type_qualifier_flags;
+            enum type_qualifier_flags bq = pb->type_qualifier_flags;
+
+            unsigned int all = (TYPE_QUALIFIER_CAKE_OWNER | TYPE_QUALIFIER_CAKE_VIEW |
+             TYPE_QUALIFIER_CAKE_OPT | TYPE_QUALIFIER_CAKE_DTOR | TYPE_QUALIFIER_CAKE_CTOR |
+             TYPE_QUALIFIER_CAKE_UNINIT | TYPE_QUALIFIER_CAKE_CLEAR);
+
+            aq = aq & ~all;
+            bq = bq & ~all;
+
+            if (aq != bq)
+                return false;
+        }
+
+
+        enum type_specifier_flags a_flags = pa->type_specifier_flags;
+        enum type_specifier_flags b_flags = pb->type_specifier_flags;
+
+        a_flags &= ~TYPE_SPECIFIER_ENUM;
+        b_flags &= ~TYPE_SPECIFIER_ENUM;
+
+        if ((a_flags & TYPE_SPECIFIER_CHAR) == 0)
+        {
+            a_flags &= ~TYPE_SPECIFIER_SIGNED;
+        }
+
+        if ((b_flags & TYPE_SPECIFIER_CHAR) == 0)
+        {
+            b_flags &= ~TYPE_SPECIFIER_SIGNED;
+        }
+
+        /*
+          'int' is redundant when short/long/long long is present, so
+          'long long' and 'long long int' name the same type (likewise
+          'long'/'long int' and 'short'/'short int'). Normalize away the
+          redundant TYPE_SPECIFIER_INT before comparing. (issue #164)
+        */
+        if (a_flags & (TYPE_SPECIFIER_SHORT | TYPE_SPECIFIER_LONG | TYPE_SPECIFIER_LONG_LONG))
+        {
+            a_flags &= ~TYPE_SPECIFIER_INT;
+        }
+
+        if (b_flags & (TYPE_SPECIFIER_SHORT | TYPE_SPECIFIER_LONG | TYPE_SPECIFIER_LONG_LONG))
+        {
+            b_flags &= ~TYPE_SPECIFIER_INT;
+        }
+
+        if (a_flags != b_flags && !underlying_matched)
+        {
+            return false;
+        }
+
+
+        pa = pa->next;
+        pb = pb->next;
+    }
+    return pa == NULL && pb == NULL;
+}
+
+bool type_is_compatible(const struct type* a, const struct type* b)
+{
+    const struct type* _Opt pa = a;
+    const struct type* _Opt pb = b;
+
+    while (pa && pb)
+    {
+        if (pa->has_static_array_size &&
+            pb->has_static_array_size &&
+            pa->array_num_elements != pb->array_num_elements)
+        {
+            return false;
+        }
+
+        if (pa->category != pb->category)
+        {
+            /*
+              C23 6.7.6.1p2: compatible types require the same type
+              category at every level (both pointers, both arrays, etc).
+              Callers are expected to apply lvalue/array-to-pointer
+              conversion before calling this function, as expressions.c
+              does for the top-level assignment check.
+            */
+            return false;
+        }
+
+        if (pa->enum_specifier &&
+            pb->enum_specifier &&
+            get_complete_enum_specifier(pa->enum_specifier) !=
+            get_complete_enum_specifier(pb->enum_specifier))
+        {
+            return false;
+        }
+
+        /*
+          enum x non-enum (e.g. 'enum E *' vs 'int *'): an enumerated type
+          is a distinct type from its implementation-chosen underlying
+          integer type (C23 6.7.3.2), so these are not compatible. This
+          falls out below already, since TYPE_SPECIFIER_ENUM is not
+          stripped from a_flags/b_flags before the specifier comparison
+          (unlike type_is_same, which ignores it intentionally).
+        */
+
+        //if (pa->name_opt != pb->name_opt) return false;
+        if (pa->has_static_array_size != pb->has_static_array_size)
+            return false;
+
+        if (pa->category == TYPE_CATEGORY_FUNCTION)
+        {
+
+            if (pa->params.is_var_args != pb->params.is_var_args)
+            {
+                return false;
+            }
+
+            if (pa->params.is_void != pb->params.is_void)
+            {
+                return false;
+            }
+
+            if (!pa->params.is_void && !pb->params.is_void)
+            {
+                struct param* _Opt p_param_a = pa->params.head;
+                struct param* _Opt p_param_b = pb->params.head;
+                while (p_param_a && p_param_b)
+                {
+                    /*
+                      C23 6.7.6.3p15 / 6.7.6.1p2: for two function types to be
+                      compatible, corresponding parameter types must be
+                      compatible, ignoring the *top-level* qualifiers of each
+                      parameter's declared type (those only matter inside the
+                      function body: 'void f(int)' and 'void f(const int)'
+                      declare the same function, likewise 'int*' and
+                      'int *const'). But qualifiers of what a parameter
+                      *points to* are significant at every level beyond the
+                      top: two pointer types are compatible only if identically
+                      qualified and pointing to compatible types, so
+                      'int*' vs 'const int*' (and 'int**' vs 'const int**')
+                      are NOT compatible parameter types.
+                      Issue #226: void(*)(int*) and void(*)(const int*) are
+                      not compatible function pointer types.
+                    */
+                    struct type a_param = type_dup(&p_param_a->type);
+                    struct type b_param = type_dup(&p_param_b->type);
+                    type_remove_all_qualifiers(&a_param);
+                    type_remove_all_qualifiers(&b_param);
+
+                    const bool same = type_is_same(&a_param, &b_param, true);
+
+                    type_destroy(&a_param);
+                    type_destroy(&b_param);
+
+                    if (!same)
                     {
                         return false;
                     }
@@ -3569,6 +3970,22 @@ bool type_is_compatible(const struct type* a, const struct type* b)
             b_flags &= ~TYPE_SPECIFIER_SIGNED;
         }
 
+        /*
+          'int' is redundant when short/long/long long is present, so
+          'long long' and 'long long int' name the same type (likewise
+          'long'/'long int' and 'short'/'short int'). Normalize away the
+          redundant TYPE_SPECIFIER_INT before comparing. (issue #164)
+        */
+        if (a_flags & (TYPE_SPECIFIER_SHORT | TYPE_SPECIFIER_LONG | TYPE_SPECIFIER_LONG_LONG))
+        {
+            a_flags &= ~TYPE_SPECIFIER_INT;
+        }
+
+        if (b_flags & (TYPE_SPECIFIER_SHORT | TYPE_SPECIFIER_LONG | TYPE_SPECIFIER_LONG_LONG))
+        {
+            b_flags &= ~TYPE_SPECIFIER_INT;
+        }
+
         if (a_flags != b_flags)
         {
             return false;
@@ -3588,15 +4005,15 @@ void type_clear(struct type* a)
     type_destroy(&tmp);
 }
 
-void type_swap(_View struct type* a, _View struct type* b)
+void type_swap(struct type* a, struct type* b)
 {
-    _View struct type temp = *a;
+    struct type temp = *a;
     *a = *b;
     *b = temp;
 }
 
 
-void type_visit_to_mark_anonymous(struct type* p_type)
+void type_visit_to_mark_anonymous(const struct type* p_type)
 {
     //TODO better visit?
     if (p_type->struct_or_union_specifier != NULL &&
@@ -3612,10 +4029,10 @@ void type_visit_to_mark_anonymous(struct type* p_type)
 }
 
 
-void type_merge_qualifiers_using_declarator(struct type* p_type, struct declarator* pdeclarator)
+void type_merge_qualifiers_using_declarator(struct type* p_type, const struct declarator* pdeclarator)
 {
 
-    enum type_qualifier_flags type_qualifier_flags = 0;
+    enum type_qualifier_flags type_qualifier_flags = TYPE_QUALIFIER_NONE;
 
 
     if (pdeclarator->declaration_specifiers)
@@ -3632,18 +4049,13 @@ void type_merge_qualifiers_using_declarator(struct type* p_type, struct declarat
     }
 
     p_type->type_qualifier_flags |= type_qualifier_flags;
-
-
-
-
-
 }
 
 
-void type_set_qualifiers_using_declarator(struct type* p_type, struct declarator* pdeclarator)
+void type_set_qualifiers_using_declarator(struct type* p_type, const struct declarator* pdeclarator)
 {
 
-    enum type_qualifier_flags type_qualifier_flags = 0;
+    enum type_qualifier_flags type_qualifier_flags = TYPE_QUALIFIER_NONE;
     if (pdeclarator->declaration_specifiers)
     {
         type_qualifier_flags = pdeclarator->declaration_specifiers->type_qualifier_flags;
@@ -3659,7 +4071,7 @@ void type_set_qualifiers_using_declarator(struct type* p_type, struct declarator
 
 
 }
-void type_set_alignment_specifier_flags_using_declarator(struct type* p_type, struct declarator* pdeclarator)
+void type_set_alignment_specifier_flags_using_declarator(struct type* p_type, const struct declarator* pdeclarator)
 {
     if (pdeclarator->declaration_specifiers)
     {
@@ -3673,7 +4085,7 @@ void type_set_alignment_specifier_flags_using_declarator(struct type* p_type, st
     }
 }
 
-void type_set_msvc_declspec_using_declarator(struct type* p_type, struct declarator* pdeclarator)
+void type_set_msvc_declspec_using_declarator(struct type* p_type, const struct declarator* pdeclarator)
 {
     if (pdeclarator->declaration_specifiers)
     {
@@ -3682,7 +4094,7 @@ void type_set_msvc_declspec_using_declarator(struct type* p_type, struct declara
     }
 }
 
-void type_set_storage_specifiers_using_declarator(struct type* p_type, struct declarator* pdeclarator)
+void type_set_storage_specifiers_using_declarator(struct type* p_type, const struct declarator* pdeclarator)
 {
     if (pdeclarator->declaration_specifiers)
     {
@@ -3692,7 +4104,7 @@ void type_set_storage_specifiers_using_declarator(struct type* p_type, struct de
     else
     {
         //struct member
-        //assert(false);
+        //_Assert(false);
         /*
            where we don't have specifiers?
         */
@@ -3701,7 +4113,7 @@ void type_set_storage_specifiers_using_declarator(struct type* p_type, struct de
 }
 
 
-void type_set_specifiers_using_declarator(struct type* p_type, struct declarator* pdeclarator)
+void type_set_specifiers_using_declarator(struct type* p_type, const struct declarator* pdeclarator)
 {
     if (pdeclarator->declaration_specifiers)
     {
@@ -3724,7 +4136,7 @@ void type_set_specifiers_using_declarator(struct type* p_type, struct declarator
 
 }
 
-void type_set_attributes_using_declarator(struct type* p_type, struct declarator* pdeclarator)
+void type_set_attributes_using_declarator(struct type* p_type, const struct declarator* pdeclarator)
 {
     if (pdeclarator->declaration_specifiers)
     {
@@ -3745,7 +4157,7 @@ void type_set_attributes_using_declarator(struct type* p_type, struct declarator
 
 void type_list_push_front(struct type_list* books, struct type* _Owner new_book)
 {
-    assert(new_book->next == NULL);
+    _Assert(new_book->next == NULL);
 
     if (books->head == NULL)
     {
@@ -3776,12 +4188,12 @@ void type_list_push_back(struct type_list* type_list, struct type* _Owner new_bo
 {
     if (type_list->tail == NULL)
     {
-        assert(type_list->head == NULL);
+        _Assert(type_list->head == NULL);
         type_list->head = new_book;
     }
     else
     {
-        assert(type_list->tail->next == NULL);
+        _Assert(type_list->tail->next == NULL);
         type_list->tail->next = new_book;
     }
 
@@ -3817,7 +4229,7 @@ void  make_type_using_direct_declarator(struct parser_ctx* ctx,
 
             p_func->category = TYPE_CATEGORY_FUNCTION;
 
-            assert(pdirectdeclarator->function_declarator->direct_declarator != NULL);
+            _Assert(pdirectdeclarator->function_declarator->direct_declarator != NULL);
             if (pdirectdeclarator->function_declarator->direct_declarator->p_calling_convention)
             {
                 const char* calling_convention_lexeme =
@@ -3989,12 +4401,34 @@ void make_type_using_declarator_core(struct parser_ctx* ctx, struct declarator* 
         if (pdeclarator->direct_declarator)
         {
             make_type_using_direct_declarator(ctx, pdeclarator->direct_declarator, ppname, list);
+
+            if (list->head &&
+                list->head->category == TYPE_CATEGORY_ARRAY)
+            {
+                /*
+                  This array type was built from this declarator's own '[...]',
+                  so it links back to it - the declarator is what the symbol
+                  table holds, and where a later declaration completing an
+                  array of unknown size is recorded. A type that instead comes
+                  from the declaration specifiers ('typeof(a) b') is not built
+                  here and keeps the declarator it already carried, which is
+                  the one that gets completed. Issue #333.
+                */
+                list->head->p_declarator_opt = pdeclarator;
+            }
+
             if (list->head &&
                 list->head->category == TYPE_CATEGORY_FUNCTION)
             {
                 if (pointers.head)
                 {
                     pointers.head->storage_class_specifier_flags |= STORAGE_SPECIFIER_FUNCTION_RETURN;
+
+                    if (pdeclarator->declaration_specifiers &&
+                        pdeclarator->declaration_specifiers->attributes_flags & STD_ATTRIBUTE_NODISCARD)
+                    {
+                        pointers.head->attributes_flags |= STD_ATTRIBUTE_NODISCARD;
+                    }
                 }
             }
         }
@@ -4012,7 +4446,7 @@ void make_type_using_declarator_core(struct parser_ctx* ctx, struct declarator* 
     }
 }
 
-struct enum_specifier* _Opt declarator_get_enum_specifier(struct declarator* pdeclarator)
+struct enum_specifier* _Opt declarator_get_enum_specifier(const struct declarator* pdeclarator)
 {
     if (pdeclarator->declaration_specifiers &&
         pdeclarator->declaration_specifiers->enum_specifier)
@@ -4028,7 +4462,7 @@ struct enum_specifier* _Opt declarator_get_enum_specifier(struct declarator* pde
 }
 
 
-struct struct_or_union_specifier* _Opt declarator_get_struct_or_union_specifier(struct declarator* pdeclarator)
+struct struct_or_union_specifier* _Opt declarator_get_struct_or_union_specifier(const struct declarator* pdeclarator)
 {
     if (pdeclarator->declaration_specifiers &&
         pdeclarator->declaration_specifiers->struct_or_union_specifier)
@@ -4043,7 +4477,7 @@ struct struct_or_union_specifier* _Opt declarator_get_struct_or_union_specifier(
     return NULL;
 }
 
-struct typeof_specifier* _Opt declarator_get_typeof_specifier(struct declarator* pdeclarator)
+struct typeof_specifier* _Opt declarator_get_typeof_specifier(const struct declarator* pdeclarator)
 {
     if (pdeclarator->declaration_specifiers)
     {
@@ -4056,7 +4490,7 @@ struct typeof_specifier* _Opt declarator_get_typeof_specifier(struct declarator*
     return NULL;
 }
 
-struct declarator* _Opt declarator_get_typedef_declarator(struct declarator* pdeclarator)
+struct declarator* _Opt declarator_get_typedef_declarator(const struct declarator* pdeclarator)
 {
     if (pdeclarator->declaration_specifiers)
     {
@@ -4070,7 +4504,7 @@ struct declarator* _Opt declarator_get_typedef_declarator(struct declarator* pde
     return NULL;
 }
 
-static bool is_valid_type(struct parser_ctx* ctx, struct token* _Opt p_token, const struct type* p_type)
+static bool is_valid_type(const struct parser_ctx* ctx, const struct token* _Opt p_token, const struct type* p_type)
 {
     if (p_token == NULL)
         p_token = ctx->current;
@@ -4110,7 +4544,7 @@ static bool is_valid_type(struct parser_ctx* ctx, struct token* _Opt p_token, co
                 const struct type* _Opt p2 = p->next;
                 while (p2)
                 {
-                    if (p2->category == TYPE_CATEGORY_ARRAY && !p2->has_static_array_size)
+                    if (p2->category == TYPE_CATEGORY_ARRAY && type_is_vm(p2))
                     {
                         diagnostic(C_ERROR_FUNCTION_RETURNS_ARRAY,
                                             ctx,
@@ -4118,9 +4552,9 @@ static bool is_valid_type(struct parser_ctx* ctx, struct token* _Opt p_token, co
                                             NULL,
                                             "function returning VM type");
                         return false;
-                    }    
+                    }
                     p2 = p2->next;
-                }                
+                }
             }
         }
         else if (p->category == TYPE_CATEGORY_ITSELF &&
@@ -4135,7 +4569,7 @@ static bool is_valid_type(struct parser_ctx* ctx, struct token* _Opt p_token, co
         }
 
         if (p)
-        p = p->next;
+            p = p->next;
     }
 
     return true;
@@ -4161,18 +4595,22 @@ struct type make_type_using_declarator(struct parser_ctx* ctx, struct declarator
                 throw;
             }
 
-            struct type nt =
-                type_dup(&declarator_get_typeof_specifier(pdeclarator)->type);
+            struct typeof_specifier* _Opt p_typeof_specifier = declarator_get_typeof_specifier(pdeclarator);
+            if (p_typeof_specifier == NULL)
+            {
+                free(p_nt);
+                type_list_destroy(&list);
+                throw;
+            }
 
-            *p_nt = nt;
-
+            *p_nt = type_dup(&p_typeof_specifier->type);
 
             if (list.head != NULL)
                 type_set_qualifiers_using_declarator(list.head, pdeclarator);
 
             if (list.tail)
             {
-                assert(list.tail->next == NULL);
+                _Assert(list.tail->next == NULL);
                 list.tail->next = p_nt;
             }
             else
@@ -4193,7 +4631,7 @@ struct type make_type_using_declarator(struct parser_ctx* ctx, struct declarator
 
             struct type nt =
                 type_dup(&p_typedef_declarator->type);
-            
+
             free((void* _Owner)nt.name_opt);
             nt.name_opt = NULL;
             if (pdeclarator->name_opt)
@@ -4220,7 +4658,7 @@ struct type make_type_using_declarator(struct parser_ctx* ctx, struct declarator
 
             if (list.tail)
             {
-                assert(list.tail->next == 0);
+                _Assert(list.tail->next == 0);
                 list.tail->next = p_nt;
             }
             else
@@ -4284,6 +4722,21 @@ struct type make_type_using_declarator(struct parser_ctx* ctx, struct declarator
         type_set_storage_specifiers_using_declarator(&r, pdeclarator);
         type_set_msvc_declspec_using_declarator(&r, pdeclarator);
         type_set_alignment_specifier_flags_using_declarator(&r, pdeclarator);
+
+        if (r.storage_class_specifier_flags & STORAGE_SPECIFIER_CONSTEXPR)
+        {
+            /*
+              constexpr implies const. For an array, the const applies to the
+              (possibly nested) element type, not to the array type itself.
+            */
+            struct type* p_item_type = &r;
+            while (type_is_array(p_item_type) && p_item_type->next)
+            {
+                p_item_type = p_item_type->next;
+            }
+            p_item_type->type_qualifier_flags |= TYPE_QUALIFIER_CONST;
+        }
+
         if (!is_valid_type(ctx, pdeclarator->first_token_opt, &r))
         {
             type_destroy(&r);

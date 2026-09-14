@@ -14,6 +14,7 @@ int g_unit_test_success_count = 0;
 /* tests from token.c*/
 void token_list_remove_get_test(void);
 void token_list_remove_get_test2(void);
+void parse_number_test(void);
 
 /* tests from tokenizer.c*/
 void test_lexeme_cmp(void);
@@ -37,6 +38,7 @@ void test_va_args_single(void);
 void test_va_args_extra_args(void);
 void test_empty_va_args_empty(void);
 void test_defined(void);
+void test_char_constant_if(void);
 void testline(void);
 void ifelse(void);
 void T1(void);
@@ -77,6 +79,7 @@ int stringify_test(void);
 void recursive_macro_expr(void);
 void quasi_recursive_macro(void);
 void newline_macro_func(void);
+void hash_hash_at_ends_of_replacement_list(void);
 
 /* tests from target.c*/
 void target_self_test(void);
@@ -89,6 +92,7 @@ g_unit_test_error_count = 0;
 g_unit_test_success_count = 0;
     token_list_remove_get_test();
     token_list_remove_get_test2();
+    parse_number_test();
     test_lexeme_cmp();
     token_list_pop_front_test();
     token_list_pop_back_test();
@@ -110,6 +114,7 @@ g_unit_test_success_count = 0;
     test_va_args_extra_args();
     test_empty_va_args_empty();
     test_defined();
+    test_char_constant_if();
     testline();
     ifelse();
     T1();
@@ -150,6 +155,7 @@ g_unit_test_success_count = 0;
     recursive_macro_expr();
     quasi_recursive_macro();
     newline_macro_func();
+    hash_hash_at_ends_of_replacement_list();
     target_self_test();
 return g_unit_test_error_count;
 

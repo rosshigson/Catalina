@@ -61,7 +61,7 @@ cd cake
 # NOTE: we cannot use OPTIMIZE with Cake ...
 ./build_all  $* SIMPLE VT100 USE_COLOR MHZ_300
 cp $LCCDIR/source/cake/src/catalina/cake.bin ../image/bin/cake.bin
-cp CAKECONF.H ../image/CAKECONF.H
+cp cake.jsn ../image/cake.jsn
 cp hello_99.c ../image/hello_99.c
 cd ..
 
@@ -112,7 +112,7 @@ cd cake
 # NOTE: we cannot use OPTIMIZE with Cake ...
 ./build_all  $* VGA COLOR_4 MHZ_300
 cp $LCCDIR/source/cake/src/catalina/cake.bin ../image/bin/cake.bin
-cp CAKECONF.H ../image/CAKECONF.H
+cp cake.jsn ../image/cake.jsn
 cp hello_99.c ../image/hello_99.c
 cd ..
 

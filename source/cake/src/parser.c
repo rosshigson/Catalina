@@ -1,12 +1,12 @@
-/*
- *  This file is part of cake compiler
- *  https://github.com/thradams/cake
+/* 
+*  This file is part of cake compiler
+*  https://github.com/thradams/cake
 */
 
 #pragma safety enable
 
 #include "ownership.h"
-
+#include "type.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
@@ -19,7 +19,9 @@
 #include "console.h"
 #include "fs.h"
 #include <ctype.h>
-#include "flow1.h"
+
+#include "flow3.h"
+
 #include "defer.h"
 #include <errno.h>
 
@@ -37,22 +39,20 @@
 #include "codegen.h"
 #include <time.h>
 
-
-
 #include <stddef.h>  // for NULL
 
-/*
-   Anonymous structs/unions receive a name
+/* 
+* Anonymous structs/unions receive a name
 */
 #define CAKE_GENERATED_TAG_PREFIX  "__tag"
 
 _Attr(nodiscard)
 int initializer_init_new(struct parser_ctx* ctx,
-                       struct type* p_type, /*in (in/out for arrays [])*/
-                        struct object* object, /*in (in/out for arrays [])*/
-                        struct initializer* initializer, /*rtocar para initializer item??*/
-                        bool is_constant,
-                        bool requires_constant_initialization);
+    struct type* p_type, /* in (in/out for arrays []) */
+    struct object* object, /* in (in/out for arrays []) */
+    struct initializer* initializer, /* rtocar para initializer item?? */
+    bool is_constant,
+    bool requires_constant_initialization);
 
 struct defer_statement* _Owner _Opt defer_statement(struct parser_ctx* ctx);
 
@@ -67,19 +67,251 @@ void defer_statement_delete(struct defer_statement* _Owner _Opt p)
 
 static struct asm_statement* _Owner _Opt gcc_asm(struct parser_ctx* ctx, bool statement);
 
-void naming_convention_struct_tag(struct parser_ctx* ctx, struct token* token);
-void naming_convention_enum_tag(struct parser_ctx* ctx, struct token* token);
-void naming_convention_function(struct parser_ctx* ctx, struct token* token);
-void naming_convention_enumerator(struct parser_ctx* ctx, struct token* token);
-void naming_convention_struct_member(struct parser_ctx* ctx, struct token* token, struct type* type);
-void naming_convention_parameter(struct parser_ctx* ctx, struct token* token, struct type* type);
-void naming_convention_global_var(struct parser_ctx* ctx, struct token* token, struct type* type, enum storage_class_specifier_flags storage);
-void naming_convention_local_var(struct parser_ctx* ctx, struct token* token, struct type* type);
+void naming_convention_struct_tag(const struct parser_ctx* ctx, const struct token* token);
+void naming_convention_enum_tag(const struct parser_ctx* ctx, const struct token* token);
+void naming_convention_function(const struct parser_ctx* ctx, const struct token* token);
+void naming_convention_enumerator(const struct parser_ctx* ctx, const struct token* token);
+void naming_convention_struct_member(const struct parser_ctx* ctx, const struct token* token);
+void naming_convention_parameter(const struct parser_ctx* ctx, const struct token* token);
+void naming_convention_global_var(const struct parser_ctx* ctx, const struct token* token);
+void naming_convention_local_var(const struct parser_ctx* ctx, const struct token* token);
 
-static void check_knr_brace_space_style(struct parser_ctx* ctx, struct token* token);
+static void check_knr_brace_space_style(const struct parser_ctx* ctx, const struct token* token);
 static bool trying_to_use_vm_type_from_enclosing_function(const struct type* p_type, struct declarator* p_function);
 
-static void check_open_brace_style(struct parser_ctx* ctx, struct token* token)
+static bool format_token_in_range(const struct parser_ctx* ctx, const struct token* token)
+{
+    if (ctx->options.format_first_line == 0 && ctx->options.format_last_line == 0)
+        return true; /* 0:0 means the whole file */
+
+    return token->line >= ctx->options.format_first_line &&
+           token->line <= ctx->options.format_last_line;
+}
+
+bool format_active_for(const struct parser_ctx* ctx, const struct token* token)
+{
+    /* level==0: not from an #include - a header's own formatting isn't this
+    * file's to change. TK_FLAG_ACTIVE: not inside an inactive #if/#ifdef
+    * branch - one is never actually parsed (nothing in it reaches
+    * ctx->current), so nothing should try to mutate it either; it must
+    * print exactly as written. TK_FLAG_MACRO_EXPANDED: token text came
+    * from a macro body, not from this exact spot in the source - there is
+    * no "this line's indentation" to fix. Centralized here, not repeated
+    * per call site, specifically because the comment-fixers in
+    * parser_skip_blanks() once forgot the TK_FLAG_ACTIVE half of this and
+    * silently reformatted comments inside inactive branches.
+    */
+    return ctx->options.format &&
+        token->level == 0 &&
+        (token->flags & TK_FLAG_ACTIVE) &&
+        !(token->flags & TK_FLAG_MACRO_EXPANDED) &&
+        format_token_in_range(ctx, token);
+}
+
+
+struct token* _Opt format_next_real(struct token* t)
+{
+    if (t->next && t->next->type == TK_BLANKS)
+        return t->next->next;
+    return t->next;
+}
+
+void format_ensure_one_space_before(struct token* t)
+{
+    if (t->prev == NULL || t->prev->type == TK_NEWLINE)
+        return;
+
+    if (t->prev->type == TK_BLANKS)
+    {
+        if (t->prev->prev && t->prev->prev->type == TK_NEWLINE)
+            return; /* indentation, not inter-token spacing */
+
+        if (strcmp(t->prev->lexeme, " ") != 0)
+        {
+            char* _Owner _Opt copy = strdup(" ");
+            if (copy != NULL)
+            {
+                free(t->prev->lexeme);
+                t->prev->lexeme = copy;
+            }
+        }
+        t->flags |= TK_FLAG_HAS_SPACE_BEFORE;
+        return;
+    }
+}
+
+void format_ensure_no_space_before(struct token* t)
+{
+    if (t->prev && t->prev->type == TK_BLANKS)
+    {
+        if (t->prev->lexeme[0] != '\0')
+        {
+            char* _Owner _Opt copy = strdup("");
+            if (copy != NULL)
+            {
+                free(t->prev->lexeme);
+                t->prev->lexeme = copy;
+            }
+        }
+        t->flags &= ~TK_FLAG_HAS_SPACE_BEFORE;
+    }
+}
+
+
+static const char* format_line_indent_before(const struct token* t)
+{
+    const struct token* _Opt p = t->prev;
+    while (p && (p->type == TK_BLANKS || p->type == TK_NEWLINE))
+        p = p->prev;
+    if (p == NULL)
+        return "";
+
+    const struct token* _Opt line_start = p;
+    while (line_start->prev && line_start->prev->type != TK_NEWLINE)
+        line_start = line_start->prev;
+
+    return line_start->type == TK_BLANKS ? line_start->lexeme : "";
+}
+
+static void format_set_blanks_lexeme(struct token* blanks_token, const char* text)
+{
+    if (strcmp(blanks_token->lexeme, text) == 0)
+        return;
+
+    char* _Owner _Opt copy = strdup(text);
+    if (copy == NULL)
+        return;
+
+    free(blanks_token->lexeme);
+    blanks_token->lexeme = copy;
+}
+
+static void format_indent_string(const struct parser_ctx* ctx, int level, char* buf, size_t bufsize)
+{
+    if (level < 0)
+        level = 0;
+
+    int n;
+    if (ctx->options.style.indent_style == INDENT_STYLE_TABS)
+    {
+        n = level < (int)bufsize - 1 ? level : (int)bufsize - 1;
+        memset(buf, '\t', (size_t)n);
+    }
+    else
+    {
+        const int width = ctx->options.style.indent_width > 0 ? ctx->options.style.indent_width : 4;
+        const int columns = level * width;
+        n = columns < (int)bufsize - 1 ? columns : (int)bufsize - 1;
+        memset(buf, ' ', (size_t)n);
+    }
+    buf[n] = '\0';
+}
+
+static void format_ensure_brace_own_line_indented(struct token* t, const char* indent)
+{
+    if (t->prev && t->prev->type == TK_BLANKS &&
+        t->prev->prev && t->prev->prev->type == TK_NEWLINE)
+    {
+        format_set_blanks_lexeme(t->prev, indent);
+        return;
+    }
+
+    if (t->prev && (t->prev->type == TK_NEWLINE || t->prev->type == TK_BLANKS))
+    {
+        char combined[300];
+        snprintf(combined, sizeof combined, "\n%s", indent);
+        format_set_blanks_lexeme(t->prev, combined);
+        t->prev->type = TK_NEWLINE;
+        t->prev->flags |= TK_FLAG_HAS_NEWLINE_BEFORE;
+        t->flags &= ~TK_FLAG_HAS_SPACE_BEFORE;
+    }
+}
+
+void format_align_if_already_wrapped(struct token* t, const char* indent)
+{
+    /* Unlike format_ensure_brace_own_line_indented(), this never forces a
+    * token onto its own line - it only re-indents a token that source
+    * already put on a new line. A plain space (TK_BLANKS whose previous
+    * token is not a newline) means the token is a same-line continuation,
+    * which must be left untouched. */
+    if (t->prev && t->prev->type == TK_BLANKS &&
+        t->prev->prev && t->prev->prev->type == TK_NEWLINE)
+    {
+        format_set_blanks_lexeme(t->prev, indent);
+    }
+    else if (t->prev && t->prev->type == TK_NEWLINE)
+    {
+        char combined[300];
+        snprintf(combined, sizeof combined, "\n%s", indent);
+        format_set_blanks_lexeme(t->prev, combined);
+    }
+}
+
+void format_align_to_column_if_already_wrapped(struct token* t, int column)
+{
+    /* column is 1-based (struct token::col convention) - the number of
+    * leading spaces to reproduce is one less. */
+    char indent[256] = { 0 };
+    int spaces = column > 0 ? column - 1 : 0;
+    if (spaces > (int)sizeof(indent) - 1)
+        spaces = (int)sizeof(indent) - 1;
+    memset(indent, ' ', (size_t)spaces);
+    indent[spaces] = '\0';
+    format_align_if_already_wrapped(t, indent);
+}
+
+static void format_ensure_brace_own_line(struct token* t)
+{
+    format_ensure_brace_own_line_indented(t, format_line_indent_before(t));
+}
+
+static void format_align_own_line_brace_if_present(const struct parser_ctx* ctx, struct token* t)
+{
+    if (!format_active_for(ctx, t))
+        return;
+
+    const bool already_own_line =
+        (t->prev && t->prev->type == TK_BLANKS &&
+            t->prev->prev && t->prev->prev->type == TK_NEWLINE) ||
+        (t->prev && t->prev->type == TK_NEWLINE);
+
+    if (!already_own_line)
+        return;
+
+    char indent[256] = { 0 };
+    format_indent_string(ctx, ctx->format_indent_level, indent, sizeof indent);
+    format_ensure_brace_own_line_indented(t, indent);
+}
+
+static void format_ensure_brace_same_line(struct token* t)
+{
+    if (t->prev && t->prev->type == TK_BLANKS &&
+        !(t->prev->prev && t->prev->prev->type == TK_NEWLINE))
+    {
+        return; /* already: single-line space before the brace */
+    }
+
+    if (t->prev && t->prev->type == TK_BLANKS &&
+        t->prev->prev && t->prev->prev->type == TK_NEWLINE)
+    {
+        format_set_blanks_lexeme(t->prev->prev, "");
+        format_set_blanks_lexeme(t->prev, " ");
+        t->flags |= TK_FLAG_HAS_SPACE_BEFORE;
+        return;
+    }
+    if (t->prev && t->prev->type == TK_NEWLINE)
+    {
+        format_set_blanks_lexeme(t->prev, " ");
+        t->prev->type = TK_BLANKS;
+        t->flags |= TK_FLAG_HAS_SPACE_BEFORE;
+        return;
+    }
+    /* nothing between the previous token and t at all - nothing to mutate */
+}
+static void type_set_current_function_for_own_params(struct type* p_type, struct declarator* p_new_owner);
+static void scope_set_current_function_for_own_params(const struct scope* p_parameters_scope, struct declarator* p_new_owner);
+
+static void check_open_brace_style(const struct parser_ctx* ctx, const struct token* token)
 {
     /* token points to { */
 
@@ -89,24 +321,42 @@ static void check_open_brace_style(struct parser_ctx* ctx, struct token* token)
         token->prev &&
         is_diagnostic_enabled(&ctx->options, W_STYLE))
     {
-        /*
-         * Allman style: { must be on its own line, preceded by optional
-         * indentation whitespace (TK_BLANKS) then a newline (TK_NEWLINE).
-         */
+        /* 
+        * Allman style: { must be on its own line, preceded by optional
+        * indentation whitespace (TK_BLANKS) then a newline (TK_NEWLINE).
+        */
         const bool allman_ok =
             (token->prev->type == TK_BLANKS &&
-             token->prev->prev &&
-             token->prev->prev->type == TK_NEWLINE) ||
+                token->prev->prev &&
+                token->prev->prev->type == TK_NEWLINE) ||
             (token->prev->type == TK_NEWLINE);
 
-        /*
-         * K&R style: { must appear on the same line as the controlling
-         * statement, preceded by a single space (TK_BLANKS) that is NOT
-         * itself preceded by a newline.
-         */
+        /* 
+        * K&R style: { must appear on the same line as the controlling
+        * statement, preceded by a single space (TK_BLANKS) that is NOT
+        * itself preceded by a newline.
+        */
         const bool knr_ok =
             token->prev->type == TK_BLANKS &&
             !(token->prev->prev && token->prev->prev->type == TK_NEWLINE);
+
+        if (format_active_for(ctx, token))
+        {
+            if (ctx->options.style.open_brace_style == BRACE_STYLE_ALLMAN)
+            {
+                /* not gated on !allman_ok: that check only asks whether the
+                * brace is on its own line, not whether its indentation
+                * matches the statement that controls it
+                */
+                format_ensure_brace_own_line((struct token*)token);
+            }
+            else /* BRACE_STYLE_KNR */
+            {
+                if (!knr_ok)
+                    format_ensure_brace_same_line((struct token*)token);
+            }
+            return;
+        }
 
         if (ctx->options.style.open_brace_style == BRACE_STYLE_ALLMAN)
         {
@@ -129,7 +379,7 @@ static void check_open_brace_style(struct parser_ctx* ctx, struct token* token)
     }
 }
 
-static void check_close_brace_style(struct parser_ctx* ctx, struct token* token)
+static void check_close_brace_style(const struct parser_ctx* ctx, const struct token* token)
 {
     /* token points to } */
 
@@ -140,24 +390,27 @@ static void check_close_brace_style(struct parser_ctx* ctx, struct token* token)
         token->prev->prev &&
         is_diagnostic_enabled(&ctx->options, W_STYLE))
     {
-        /*
-         * All styles require } on its own line, preceded by indentation
-         * whitespace (TK_BLANKS) then a newline (TK_NEWLINE), or directly
-         * preceded by a newline when at column 0.
-         */
+        /* 
+        * All styles require } on its own line, preceded by indentation
+        * whitespace (TK_BLANKS) then a newline (TK_NEWLINE), or directly
+        * preceded by a newline when at column 0.
+        */
         const bool close_ok =
             (token->prev->type == TK_BLANKS &&
-             token->prev->prev->type == TK_NEWLINE) ||
+                token->prev->prev->type == TK_NEWLINE) ||
             (token->prev->type == TK_NEWLINE);
 
         if (!close_ok)
         {
-            diagnostic(W_STYLE, ctx, token, NULL, "not following correct close brace style }");
+            if (format_active_for(ctx, token))
+                format_ensure_brace_own_line((struct token*)token);
+            else
+                diagnostic(W_STYLE, ctx, token, NULL, "not following correct close brace style }");
         }
     }
 }
 
-static void check_func_open_brace_style(struct parser_ctx* ctx, struct token* token)
+static void check_func_open_brace_style(const struct parser_ctx* ctx, const struct token* token)
 {
     /* token points to { */
 
@@ -167,19 +420,34 @@ static void check_func_open_brace_style(struct parser_ctx* ctx, struct token* to
         token->prev &&
         is_diagnostic_enabled(&ctx->options, W_STYLE))
     {
-        /*
-         * Allman style for function bodies: { must be at the start of a new
-         * line (directly preceded by TK_NEWLINE, column 0).
-         */
+        /* 
+        * Allman style for function bodies: { must be at the start of a new
+        * line (directly preceded by TK_NEWLINE, column 0).
+        */
         const bool func_allman_ok = (token->prev->type == TK_NEWLINE);
 
-        /*
-         * K&R style for function bodies: { on the same line as the signature,
-         * preceded by a space that is NOT itself preceded by a newline.
-         */
+        /* 
+        * K&R style for function bodies: { on the same line as the signature,
+        * preceded by a space that is NOT itself preceded by a newline.
+        */
         const bool func_knr_ok =
             token->prev->type == TK_BLANKS &&
             !(token->prev->prev && token->prev->prev->type == TK_NEWLINE);
+
+        if (format_active_for(ctx, token))
+        {
+            if (ctx->options.style.func_open_brace_style == FUNC_BRACE_STYLE_ALLMAN)
+            {
+                if (!func_allman_ok)
+                    format_ensure_brace_own_line((struct token*)token);
+            }
+            else /* FUNC_BRACE_STYLE_KNR */
+            {
+                if (!func_knr_ok)
+                    format_ensure_brace_same_line((struct token*)token);
+            }
+            return;
+        }
 
         if (ctx->options.style.func_open_brace_style == FUNC_BRACE_STYLE_ALLMAN)
         {
@@ -202,7 +470,7 @@ static void check_func_open_brace_style(struct parser_ctx* ctx, struct token* to
     }
 }
 
-static void check_keyword_space_style(struct parser_ctx* ctx, struct token* token)
+static void check_keyword_space_style(const struct parser_ctx* ctx, const struct token* token)
 {
     if (!is_diagnostic_enabled(&ctx->options, W_STYLE))
         return;
@@ -219,29 +487,106 @@ static void check_keyword_space_style(struct parser_ctx* ctx, struct token* toke
         diagnostic(W_STYLE, ctx, token, NULL, "expected one space between keyword and '('");
     }
 }
-static void check_indentation_style(struct parser_ctx* ctx, struct token* token)
+
+static void check_indentation_style(const struct parser_ctx* ctx, const struct token* token)
 {
     if (!is_diagnostic_enabled(&ctx->options, W_STYLE))
         return;
 
-    if (token->level != 0 ||
-        (token->flags & TK_FLAG_MACRO_EXPANDED))
+    /* Unlike the other format_active_for()-gated fixers, this one never
+     * rewrites `token` itself - only token->prev, the blanks/newline
+     * before it, which is always literal source text even when `token`
+     * is a macro's expansion (e.g. `bool`/`true`/`false` from
+     * stdbool.h). A line starting with one of those must still be
+     * reindented, so - unlike format_active_for() - TK_FLAG_MACRO_EXPANDED
+     * is not checked here. */
+    if (token->level != 0)
     {
         return;
     }
 
-    /* We only care about indentation — the TK_BLANKS that immediately
-     * follow a TK_NEWLINE.  If there is no leading whitespace the
-     * token is at column 0 and there is nothing to validate. */
-    if (token->prev == NULL ||
-        token->prev->type != TK_BLANKS ||
-        token->prev->prev == NULL ||
-        token->prev->prev->type != TK_NEWLINE)
+    /* We only care about the first token on a line - either an indentation
+    * run (TK_BLANKS) right after a TK_NEWLINE, or the newline directly
+    * (a token sitting at column 0). Anything else is a continuation of the
+    * line above and is left alone.
+    *
+    * A macro-expanded token (e.g. `bool` expanding to `_Bool`) sits right
+    * after the original, non-final invocation token - kept in the list
+    * for tooling but never printed - instead of directly after the
+    * line's real TK_BLANKS/TK_NEWLINE. Skip over any such non-final,
+    * non-whitespace tokens to reach the genuine previous blanks/newline;
+    * TK_BLANKS/TK_NEWLINE themselves are excluded from the skip because
+    * they are never marked final (the compiler doesn't see whitespace),
+    * so stop at the first one found either way.
+    */
+    struct token* _Opt prev = token->prev;
+    while (prev != NULL &&
+        prev->type != TK_BLANKS &&
+        prev->type != TK_NEWLINE &&
+        !(prev->flags & TK_FLAG_FINAL))
     {
+        prev = prev->prev;
+    }
+
+    const bool has_indent_run =
+        prev != NULL &&
+        prev->type == TK_BLANKS &&
+        prev->prev != NULL &&
+        prev->prev->type == TK_NEWLINE;
+
+    const bool at_column_zero =
+        prev != NULL && prev->type == TK_NEWLINE;
+
+    if (!has_indent_run && !at_column_zero)
+        return;
+
+    /* Same conditions as format_active_for(), minus the
+     * TK_FLAG_MACRO_EXPANDED check - see the comment above this
+     * function for why that check doesn't apply here. */
+    const bool active =
+        ctx->options.format &&
+        token->level == 0 &&
+        (token->flags & TK_FLAG_ACTIVE) &&
+        format_token_in_range(ctx, token);
+
+    if (active)
+    {
+        /* format_indent_level counts '{'/'}' nesting as the parser walks the
+        * file (see compound_statement()), which is exactly the depth a
+        * block-item's line should be indented to
+        */
+        char buf[256] = { 0 };
+        format_indent_string(ctx, ctx->format_indent_level, buf, sizeof buf);
+
+        if (has_indent_run)
+        {
+            if (prev)
+                format_set_blanks_lexeme(prev, buf);
+        }
+        else if (buf[0] != '\0')
+        {
+            /* at_column_zero: prev is a bare newline (see the checks
+            * above) - fold the indent into ITS lexeme instead of inserting
+            * a separate token for it (see format_ensure_one_space_before()'s
+            * comment on why -format never inserts).
+            */
+            if (prev)
+            {
+                char combined[300];
+                snprintf(combined, sizeof combined, "\n%s", buf);
+                format_set_blanks_lexeme(prev, combined);
+            }
+        }
+
         return;
     }
 
-    const char* blanks = token->prev->lexeme;
+    if (!has_indent_run)
+        return; /* at column 0: nothing to diagnose, same as before */
+
+    if (prev == NULL) return;
+
+    const char* blanks = prev->lexeme;
 
     /* Count tabs and spaces in the indentation run. */
     int tab_count = 0;
@@ -261,7 +606,7 @@ static void check_indentation_style(struct parser_ctx* ctx, struct token* token)
         if (tab_count == 0 && space_count > 0)
         {
             diagnostic(W_STYLE, ctx, token, NULL,
-                       "style requires tab indentation, not spaces");
+                "style requires tab indentation, not spaces");
         }
     }
     else
@@ -270,22 +615,57 @@ static void check_indentation_style(struct parser_ctx* ctx, struct token* token)
         if (tab_count > 0)
         {
             diagnostic(W_STYLE, ctx, token, NULL,
-                       "use spaces for indentation, not tabs");
+                "use spaces for indentation, not tabs");
         }
         else if (ctx->options.style.indent_width > 0 &&
-                 space_count % ctx->options.style.indent_width != 0)
+            space_count % ctx->options.style.indent_width != 0)
         {
             diagnostic(W_STYLE, ctx, token, NULL,
-                       "indentation should be a multiple of %d spaces",
-                       ctx->options.style.indent_width);
+                "indentation should be a multiple of %d spaces",
+                ctx->options.style.indent_width);
         }
     }
 }
-static void check_space_after_comma_style(struct parser_ctx* ctx, struct token* token)
+
+static void format_refix_preceding_comments(const struct parser_ctx* ctx, const struct token* _Opt boundary)
+{
+    /* -format only: outside it this is pure extra work, and worse than
+    * that, check_indentation_style() would diagnose the same comment a
+    * second time in plain -style mode (no -format), duplicating whatever
+    * warning it already produced during parser_skip_blanks()'s own pass
+    * over the same token.
+    */
+    if (!ctx->options.format)
+        return;
+
+    if (boundary == NULL)
+        return;
+
+    struct token* _Opt p = boundary->prev;
+    while (p != NULL)
+    {
+        if (p->type == TK_LINE_COMMENT || p->type == TK_COMMENT)
+        {
+            check_indentation_style(ctx, p);
+
+            p = p->prev;
+        }
+        else if (p->type == TK_BLANKS || p->type == TK_NEWLINE)
+        {
+            p = p->prev;
+        }
+        else
+        {
+            break;
+        }
+    }
+}
+
+static void check_space_after_comma_style(const struct parser_ctx* ctx, const struct token* token)
 {
     if (!is_diagnostic_enabled(&ctx->options, W_STYLE))
         return;
-    assert(token->type == ',');
+    _Assert(token->type == ',');
 
     if (token->level != 0 ||
         (token->flags & TK_FLAG_MACRO_EXPANDED) ||
@@ -310,7 +690,23 @@ static void check_space_after_comma_style(struct parser_ctx* ctx, struct token* 
     }
 }
 
-static void check_no_space_before_semicolon_style(struct parser_ctx* ctx, struct token* token)
+static void check_single_declarator_per_declaration_style(const struct parser_ctx* ctx, const struct token* comma_token)
+{
+    if (!is_diagnostic_enabled(&ctx->options, W_STYLE))
+        return;
+    _Assert(comma_token->type == ',');
+
+    if (comma_token->level != 0 ||
+        (comma_token->flags & TK_FLAG_MACRO_EXPANDED) ||
+        !ctx->options.style.single_declarator_per_declaration)
+    {
+        return;
+    }
+
+    diagnostic(W_STYLE, ctx, comma_token, NULL, "multiple declarators in a declaration");
+}
+
+static void check_no_space_before_semicolon_style(const struct parser_ctx* ctx, const struct token* token)
 {
     if (!is_diagnostic_enabled(&ctx->options, W_STYLE))
         return;
@@ -328,7 +724,7 @@ static void check_no_space_before_semicolon_style(struct parser_ctx* ctx, struct
     }
 }
 
-static void check_knr_brace_space_style(struct parser_ctx* ctx, struct token* token)
+static void check_knr_brace_space_style(const struct parser_ctx* ctx, const struct token* token)
 {
     if (!is_diagnostic_enabled(&ctx->options, W_STYLE))
         return;
@@ -341,7 +737,7 @@ static void check_knr_brace_space_style(struct parser_ctx* ctx, struct token* to
     if (!token_is_one_space(token->prev))
     {
         diagnostic(W_STYLE, ctx, token, NULL,
-                   "expected exactly one space before '{'");
+            "expected exactly one space before '{'");
     }
 }
 
@@ -351,7 +747,14 @@ void scope_destroy(_Dtor struct scope* p)
     hashmap_destroy(&p->variables);
 }
 
-static void check_pointer_style(struct parser_ctx* ctx, struct token* token)
+void scope_swap(struct scope* a, struct scope* b)
+{
+    struct scope temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+static void check_pointer_style(const struct parser_ctx* ctx, const struct token* token)
 {
     if (!is_diagnostic_enabled(&ctx->options, W_STYLE))
         return;
@@ -365,13 +768,13 @@ static void check_pointer_style(struct parser_ctx* ctx, struct token* token)
         token->prev != NULL &&
         token->prev->type == TK_BLANKS &&
         !(token->prev->prev != NULL &&
-          token->prev->prev->type == TK_NEWLINE);
+            token->prev->prev->type == TK_NEWLINE);
 
     const bool space_after =
         token->next != NULL &&
         (token->next->type == TK_BLANKS ||
-         token->next->type == ')' ||
-         token->next->type == '*');
+            token->next->type == ')' ||
+            token->next->type == '*');
 
     if (ctx->options.style.pointer_style == POINTER_STYLE_WEST)
     {
@@ -379,7 +782,7 @@ static void check_pointer_style(struct parser_ctx* ctx, struct token* token)
         if (!space_before || space_after)
         {
             diagnostic(W_STYLE, ctx, token, NULL,
-                       "pointer '*' should be adjacent to the name: 'type *name'");
+                "pointer '*' should be adjacent to the name: 'type *name'");
         }
     }
     else /* POINTER_STYLE_EAST */
@@ -388,12 +791,12 @@ static void check_pointer_style(struct parser_ctx* ctx, struct token* token)
         if (space_before || !space_after)
         {
             diagnostic(W_STYLE, ctx, token, NULL,
-                       "pointer '*' should be adjacent to the type: 'type* name'");
+                "pointer '*' should be adjacent to the type: 'type* name'");
         }
     }
 }
 
-static void check_else_placement_style(struct parser_ctx* ctx, struct token* token)
+static void check_else_placement_style(const struct parser_ctx* ctx, const struct token* token)
 {
     if (!is_diagnostic_enabled(&ctx->options, W_STYLE))
         return;
@@ -407,14 +810,37 @@ static void check_else_placement_style(struct parser_ctx* ctx, struct token* tok
     const bool else_on_new_line =
         (token->prev != NULL && token->prev->type == TK_NEWLINE) ||
         (token->prev != NULL && token->prev->type == TK_BLANKS &&
-         token->prev->prev != NULL && token->prev->prev->type == TK_NEWLINE);
+            token->prev->prev != NULL && token->prev->prev->type == TK_NEWLINE);
+
+    if (format_active_for(ctx, token))
+    {
+        /* format_ensure_brace_own_line_indented()/_same_line() aren't
+        * brace-specific despite the name - they just put a token on its own
+        * line (at this exact indent) or on the previous line (with one
+        * space), which is exactly what 'else' needs too. ctx->format_indent_level
+        * is already back to the level of the controlling 'if' by the time
+        * we get here (the if-branch's compound_statement/secondary_block
+        * already closed and decremented it).
+        */
+        if (ctx->options.style.else_style == ELSE_STYLE_SAME_LINE)
+        {
+            format_ensure_brace_same_line((struct token*)token);
+        }
+        else
+        {
+            char indent[256] = {0};
+            format_indent_string(ctx, ctx->format_indent_level, indent, sizeof indent);
+            format_ensure_brace_own_line_indented((struct token*)token, indent);
+        }
+        return;
+    }
 
     if (ctx->options.style.else_style == ELSE_STYLE_SAME_LINE)
     {
         if (else_on_new_line)
         {
             diagnostic(W_STYLE, ctx, token, NULL,
-                       "'else' should be on the same line as '}': '} else'");
+                "'else' should be on the same line as '}': '} else'");
         }
     }
     else /* ELSE_STYLE_NEW_LINE */
@@ -422,12 +848,12 @@ static void check_else_placement_style(struct parser_ctx* ctx, struct token* tok
         if (!else_on_new_line)
         {
             diagnostic(W_STYLE, ctx, token, NULL,
-                       "'else' should be on a new line after '}'");
+                "'else' should be on a new line after '}'");
         }
     }
 }
 
-static void check_return_space_style(struct parser_ctx* ctx, struct token* token)
+static void check_return_space_style(const struct parser_ctx* ctx, const struct token* token)
 {
     if (!is_diagnostic_enabled(&ctx->options, W_STYLE))
         return;
@@ -451,11 +877,11 @@ static void check_return_space_style(struct parser_ctx* ctx, struct token* token
     else
     {
         diagnostic(W_STYLE, ctx, token, NULL,
-                   "expected one space between 'return' and expression");
+            "expected one space between 'return' and expression");
     }
 }
 
-static void check_no_space_before_paren_style(struct parser_ctx* ctx, struct token* token)
+static void check_no_space_before_paren_style(const struct parser_ctx* ctx, const struct token* token)
 {
     if (!is_diagnostic_enabled(&ctx->options, W_STYLE))
         return;
@@ -488,11 +914,9 @@ static void check_no_space_before_paren_style(struct parser_ctx* ctx, struct tok
     if (token_is_blank(token->prev))
     {
         diagnostic(W_STYLE, ctx, token, NULL,
-                   "no space between function name and '('");
+            "no space between function name and '('");
     }
 }
-
-
 
 void scope_list_push(struct scope_list* list, struct scope* pnew)
 {
@@ -507,7 +931,7 @@ void scope_list_push(struct scope_list* list, struct scope* pnew)
     }
     else
     {
-        assert(list->tail != NULL);
+        _Assert(list->tail != NULL);
         pnew->previous = list->tail;
         list->tail->next = pnew;
         list->tail = pnew;
@@ -519,7 +943,7 @@ void scope_list_pop(struct scope_list* list)
 
     if (list->head == NULL)
         return;
-    assert(list->tail != NULL);
+    _Assert(list->tail != NULL);
     struct scope* p = list->tail;
     if (list->head == list->tail)
     {
@@ -531,7 +955,7 @@ void scope_list_pop(struct scope_list* list)
         list->tail = list->tail->previous;
         if (list->tail == list->head)
         {
-            assert(list->tail != NULL);
+            _Assert(list->tail != NULL);
             list->tail->next = NULL;
             list->tail->previous = NULL;
         }
@@ -543,8 +967,10 @@ void scope_list_pop(struct scope_list* list)
 void parser_ctx_destroy(_Dtor struct parser_ctx* ctx)
 {
     label_list_clear(&ctx->label_list);
-    assert(ctx->label_list.head == NULL);
-    assert(ctx->label_list.tail == NULL);
+    _Assert(ctx->label_list.head == NULL);
+    _Assert(ctx->label_list.tail == NULL);
+
+    block_item_list_destroy(&ctx->used_incomplete_enums);
 
     diagnostic_queue_destroy(&ctx->diagnostic_queue);
 
@@ -555,7 +981,7 @@ void parser_ctx_destroy(_Dtor struct parser_ctx* ctx)
 }
 
 static void diagnostic_print(const struct diagnostic_item* e,
-                             const struct parser_ctx* ctx)
+    const struct parser_ctx* ctx)
 {
     if (e->is_error)
         ctx->p_report->error_count++;
@@ -596,7 +1022,7 @@ static void diagnostic_free(struct diagnostic_item* _Owner _Opt e)
             diagnostic_free(child);
             child = next_child;
         }
-        assert(e->next == NULL);
+        _Assert(e->next == NULL);
         free(e->text);
         free(e->sarif_text);
         free(e);
@@ -607,12 +1033,12 @@ void diagnostic_queue_add(struct diagnostic_queue* q, struct diagnostic_item* _O
 {
     if (q->tail)
     {
-        assert(q->tail->next == NULL);
+        _Assert(q->tail->next == NULL);
         q->tail->next = e;
     }
     else
     {
-        assert(q->head == NULL);
+        _Assert(q->head == NULL);
         q->head = e;
     }
     q->tail = e;
@@ -636,7 +1062,7 @@ void diagnostic_queue_flush(struct diagnostic_queue* db, const struct parser_ctx
     db->count = 0;
 }
 
-bool diagnostic_queue_remove(struct diagnostic_queue* q, int line, enum diagnostic_id id)
+bool diagnostic_queue_remove(struct diagnostic_queue* q, enum diagnostic_id id)
 {
     struct diagnostic_item* _Opt prev = NULL;
     struct diagnostic_item* _Opt it = q->head;
@@ -646,18 +1072,18 @@ bool diagnostic_queue_remove(struct diagnostic_queue* q, int line, enum diagnost
         {
             if (prev)
             {
-                prev->next = it->next; //lint 29
+                prev->next = it->next; //lint 26
             }
             else
             {
-                q->head = it->next; //lint 29
+                q->head = it->next; //lint 26
             }
 
             if (q->tail == it)
                 q->tail = prev;
 
             it->next = NULL;
-            diagnostic_free(it);
+            diagnostic_free(it); //lint 78
             q->count--;
             return true;
         }
@@ -667,12 +1093,12 @@ bool diagnostic_queue_remove(struct diagnostic_queue* q, int line, enum diagnost
     return false;
 }
 
-static int parse_diagnostic_suppression(const char* p, int ids[], int ids_max)
+int parse_diagnostic_suppression(const char* p, int ids[], int ids_max)
 {
     if (ids_max <= 0) return 0;
 
     /* skip comment delimiter */
-    if (p[0] == '/' && p[1] == '/')      p += 2;
+    if (p[0] == '/' && p[1] == '/') p += 2;
     else if (p[0] == '/' && p[1] == '*') p += 2;
 
     /* skip spaces */
@@ -729,43 +1155,107 @@ void diagnostic_queue_destroy(_Dtor struct diagnostic_queue* db)
 
 static void stringfy(const char* input, char* json_str_message, int output_size)
 {
-    json_str_message[0] = '\0'; //out
+    static const char* const hex = "0123456789abcdef";
+
+    if (output_size <= 0)
+        return;
+
+    json_str_message[0] = '\0'; /* out */
 
     int k = 0;
-    while (*input != '\0')
+    for (; *input != '\0'; input++)
     {
-        if (*input == '\"')
+        const unsigned char c = (unsigned char)*input;
+
+        char escape[6];
+        int n = 0;
+
+        switch (c)
         {
-            if (k < output_size)
-                json_str_message[k] = '\\';
-            k++;
-            if (k < output_size)
-                json_str_message[k] = '"';
-            k++;
-            input++;
+            case '\"': escape[0] = '\\'; escape[1] = '\"'; n = 2; break;
+            case '\\': escape[0] = '\\'; escape[1] = '\\'; n = 2; break;
+            case '\n': escape[0] = '\\'; escape[1] = 'n'; n = 2; break;
+            case '\r': escape[0] = '\\'; escape[1] = 'r'; n = 2; break;
+            case '\t': escape[0] = '\\'; escape[1] = 't'; n = 2; break;
+            case '\b': escape[0] = '\\'; escape[1] = 'b'; n = 2; break;
+            case '\f': escape[0] = '\\'; escape[1] = 'f'; n = 2; break;
+            default:
+                if (c < 0x20)
+                {
+                    escape[0] = '\\';
+                    escape[1] = 'u';
+                    escape[2] = '0';
+                    escape[3] = '0';
+                    escape[4] = hex[(c >> 4) & 0x0F];
+                    escape[5] = hex[c & 0x0F];
+                    n = 6;
+                }
+                else
+                {
+                    /* bytes >= 0x80 pass through: the message is already UTF-8 */
+                    escape[0] = (char)c;
+                    n = 1;
+                }
+            break;
         }
-        else if (*input == '\n')
-        {
-            if (k < output_size)
-                json_str_message[k] = '\\';
-            k++;
-            if (k < output_size)
-                json_str_message[k] = 'n';
-            k++;
-            input++;
-        }
-        else
-        {
-            if (k < output_size)
-                json_str_message[k] = *input;
-            k++;
-            input++;
-        }
+
+        if (k + n > output_size - 1)
+            break;
+
+        for (int i = 0; i < n; i++)
+            json_str_message[k++] = escape[i];
     }
-    if (k < output_size)
-        json_str_message[k] = '\0';
-    else
-        json_str_message[output_size - 1] = '\0';
+
+    json_str_message[k] = '\0';
+}
+
+static void ss_print_sarif_uri(struct osstream* ss, const char* _Opt path)
+{
+    static const char* const hex = "0123456789ABCDEF";
+
+    char resolved[FS_MAX_PATH] = { 0 };
+    const char* p = (path != NULL) ? path : "";
+
+    if (p[0] != '\0' && realpath(p, resolved) != NULL && resolved[0] != '\0')
+        p = resolved;
+
+    ss_fprintf(ss, "file:///");
+
+    /* the "///" above already carries the root separator */
+    while (*p == '/' || *p == '\\')
+        p++;
+
+    for (; *p != '\0'; p++)
+    {
+        const unsigned char c = (unsigned char)*p;
+
+        if (c == '/' || c == '\\')
+            ss_putc('/', ss);
+        else if ((c >= 'a' && c <= 'z') ||
+                 (c >= 'A' && c <= 'Z') ||
+                 (c >= '0' && c <= '9') ||
+                 c == '-' || c == '.' || c == '_' || c == '~' || c == ':')
+            ss_putc((char)c, ss);
+        else
+            ss_fprintf(ss, "%%%c%c", hex[(c >> 4) & 0x0F], hex[c & 0x0F]);
+    }
+}
+
+
+static void ss_append_indented(struct osstream* dest, const char* text)
+{
+    bool at_line_start = true;
+    for (const char* p = text; *p != '\0'; p++)
+    {
+        /* Nothing to indent on an empty line -- and the text ends with '\n',
+        * so this also avoids indenting past the last line.
+        */
+        if (at_line_start && *p != '\n')
+            ss_fprintf(dest, "  ");
+
+        ss_putc(*p, dest);
+        at_line_start = (*p == '\n');
+    }
 }
 
 _Bool diagnostic(enum diagnostic_id w,
@@ -783,7 +1273,7 @@ _Bool diagnostic(enum diagnostic_id w,
     {
         if (p_token_opt == NULL) return false;
 
-        marker.file = p_token_opt->token_origin->lexeme;
+        marker.file = p_token_opt->token_origin ? p_token_opt->token_origin->lexeme : "";
         marker.line = p_token_opt->line;
         marker.start_col = p_token_opt->col;
         marker.end_col = p_token_opt->col;
@@ -792,7 +1282,7 @@ _Bool diagnostic(enum diagnostic_id w,
     }
     else
     {
-        //assert(p_token_opt == NULL);
+        // _Assert(p_token_opt == NULL);
         marker = *p_marker_temp;
         if (marker.p_token_caret)
             p_token_opt = marker.p_token_caret;
@@ -800,14 +1290,13 @@ _Bool diagnostic(enum diagnostic_id w,
             p_token_opt = marker.p_token_begin;
 
         if (p_token_opt == NULL) return false;
-        marker.file = p_token_opt->token_origin->lexeme;
+        marker.file = p_token_opt->token_origin ? p_token_opt->token_origin->lexeme : "";
         included_file_location = p_token_opt->level > 0;
 
         marker.line = p_token_opt->line;
         marker.start_col = p_token_opt->col;
         marker.end_col = p_token_opt->col;
     }
-
 
     const bool is_error = options_diagnostic_is_error(&ctx->options, w);
     const bool is_warning = options_diagnostic_is_warning(&ctx->options, w);
@@ -824,7 +1313,7 @@ _Bool diagnostic(enum diagnostic_id w,
     }
     else if (is_warning)
     {
-        /*warnings inside headers are ignored*/
+        /* warnings inside headers are ignored */
         if (included_file_location)
         {
             return false;
@@ -832,7 +1321,7 @@ _Bool diagnostic(enum diagnostic_id w,
     }
     else if (is_note)
     {
-        /*notes inside headers are ignored*/
+        /* notes inside headers are ignored */
         if (included_file_location)
         {
             return false;
@@ -857,8 +1346,11 @@ _Bool diagnostic(enum diagnostic_id w,
     va_list args = { 0 };
     va_start(args, fmt);
     vsnprintf(buffer, sizeof(buffer), fmt, args);
-    va_end(args); //lint 33 35
-
+ #if _WIN32
+    va_end(args); //lint 35 (only windows)
+#else
+    va_end(args); 
+#endif
     struct diagnostic_queue* db = &((struct parser_ctx*)ctx)->diagnostic_queue;
 
     /* flush the current group when the line changes */
@@ -881,15 +1373,16 @@ _Bool diagnostic(enum diagnostic_id w,
     /* build the complete formatted stdout text */
     struct osstream ss = { 0 };
 
+    /* the main source file prints only the file name, includes print the full path */
     ss_print_position(&ss, marker.file, marker.line, marker.start_col,
-                      ctx->options.visual_studio_ouput_format, color_enabled);
+        ctx->options.diagnostic_ouput_format, color_enabled, included_file_location);
 
-    if (ctx->options.visual_studio_ouput_format)
+    if (ctx->options.diagnostic_ouput_format == DIAGNOSTIC_OUTPUT_FORMAT_MSVC)
     {
-        if (is_error)          ss_fprintf(&ss, "error %d: ", w);
-        else if (is_warning)   ss_fprintf(&ss, "warning %d: ", w);
-        else if (is_note)      ss_fprintf(&ss, "note: ");
-        else if (is_location)  ss_fprintf(&ss, ": ");
+        if (is_error) ss_fprintf(&ss, "error %d: ", w);
+        else if (is_warning) ss_fprintf(&ss, "warning %d: ", w);
+        else if (is_note) ss_fprintf(&ss, "note: ");
+        else if (is_location) ss_fprintf(&ss, ": ");
         ss_fprintf(&ss, "%s", buffer);
     }
     else
@@ -920,9 +1413,27 @@ _Bool diagnostic(enum diagnostic_id w,
     ss_fprintf(&ss, "\n");
     struct marker m = marker; /* ss_print_line_and_token writes start/end col back */
 
-    if (!ctx->options.visual_studio_ouput_format)
+    if (ctx->options.diagnostic_ouput_format != DIAGNOSTIC_OUTPUT_FORMAT_MSVC)
     {
         ss_print_line_and_token(&ss, &m, color_enabled);
+    }
+
+    /* 
+    * Indent notes under the diagnostic they belong to. A note is always
+    * subordinate to the error/warning above it, but printed flush left it
+    * reads as a peer -- and a warning carrying a path of several notes
+    * (each of which brings its own source line and caret) then runs
+    * together with the next warning, leaving no visual break to show where
+    * one finding ends and the next begins. Two spaces on every line of the
+    * note's text, not just its first, so the quoted source line and caret
+    * shift with the header they describe.
+    */
+    if ((is_note || is_location) && ss.c_str != NULL)
+    {
+        struct osstream indented = { 0 };
+        ss_append_indented(&indented, ss.c_str);
+        ss_swap(&ss, &indented);
+        ss_close(&indented);
     }
 
     e->text = ss.c_str;
@@ -932,17 +1443,32 @@ _Bool diagnostic(enum diagnostic_id w,
     /* build the complete SARIF entry text (separator + sarif_entries handled at flush) */
     if (ctx->sarif_file)
     {
-        char sarif_message[200] = { 0 };
+        /*
+        * `buffer` holds at most 200 bytes, but escaping can grow a byte to
+        * six (\u00XX), so the destination has to allow for the worst case --
+        * at 200 the message was silently clipped, and clipped mid-escape it
+        * took the whole log down with it.
+        */
+        char sarif_message[200 * 6 + 1] = { 0 };
         stringfy(buffer, sarif_message, sizeof sarif_message);
+
+        /* an identifier needs no escaping, but "module"/"unnamed" aside this
+        is a lexeme straight from the source - route it through the same
+        escape so a surprising one cannot break the log */
+        char sarif_func_name[200 * 6 + 1] = { 0 };
+        stringfy(func_name, sarif_func_name, sizeof sarif_func_name);
 
         struct osstream sarif_ss = { 0 };
 
         ss_fprintf(&sarif_ss, "   {\n");
         ss_fprintf(&sarif_ss, "     \"ruleId\":\"C%d\",\n", w);
 
-        if (is_error)        ss_fprintf(&sarif_ss, "     \"level\":\"error\",\n");
+        /* W_LOCATION carries no severity of its own - it annotates the
+        diagnostic above it, so it reports as a note rather than
+        inheriting SARIF's "warning" default for a missing level */
+        if (is_error) ss_fprintf(&sarif_ss, "     \"level\":\"error\",\n");
         else if (is_warning) ss_fprintf(&sarif_ss, "     \"level\":\"warning\",\n");
-        else if (is_note)    ss_fprintf(&sarif_ss, "     \"level\":\"note\",\n");
+        else ss_fprintf(&sarif_ss, "     \"level\":\"note\",\n");
 
         ss_fprintf(&sarif_ss, "     \"message\": {\n");
         ss_fprintf(&sarif_ss, "            \"text\": \"%s\"\n", sarif_message);
@@ -951,7 +1477,9 @@ _Bool diagnostic(enum diagnostic_id w,
         ss_fprintf(&sarif_ss, "       {\n");
         ss_fprintf(&sarif_ss, "       \"physicalLocation\": {\n");
         ss_fprintf(&sarif_ss, "             \"artifactLocation\": {\n");
-        ss_fprintf(&sarif_ss, "                 \"uri\": \"file:///%s\"\n", m.file);
+        ss_fprintf(&sarif_ss, "                 \"uri\": \"");
+        ss_print_sarif_uri(&sarif_ss, m.file);
+        ss_fprintf(&sarif_ss, "\"\n");
         ss_fprintf(&sarif_ss, "              },\n");
         ss_fprintf(&sarif_ss, "              \"region\": {\n");
         ss_fprintf(&sarif_ss, "                  \"startLine\": %d,\n", m.line);
@@ -962,8 +1490,8 @@ _Bool diagnostic(enum diagnostic_id w,
         ss_fprintf(&sarif_ss, "         },\n");
         ss_fprintf(&sarif_ss, "         \"logicalLocations\": [\n");
         ss_fprintf(&sarif_ss, "          {\n");
-        ss_fprintf(&sarif_ss, "              \"fullyQualifiedName\": \"%s\",\n", func_name);
-        ss_fprintf(&sarif_ss, "              \"decoratedName\": \"%s\",\n", func_name);
+        ss_fprintf(&sarif_ss, "              \"fullyQualifiedName\": \"%s\",\n", sarif_func_name);
+        ss_fprintf(&sarif_ss, "              \"decoratedName\": \"%s\",\n", sarif_func_name);
         ss_fprintf(&sarif_ss, "              \"kind\": \"%s\"\n", "function");
         ss_fprintf(&sarif_ss, "          }\n");
         ss_fprintf(&sarif_ss, "         ]\n");
@@ -978,10 +1506,10 @@ _Bool diagnostic(enum diagnostic_id w,
 
     if (is_location)
     {
-        /*
-         * W_LOCATION is a child of the previous diagnostic.
-         * Attach it to the tail entry's child queue regardless of line.
-         */
+        /* 
+        * W_LOCATION is a child of the previous diagnostic.
+        * Attach it to the tail entry's child queue regardless of line.
+        */
         if (db->tail)
         {
             diagnostic_queue_add(&db->tail->children, e);
@@ -1036,7 +1564,6 @@ void print_scope(struct scope_list* e)
     printf("--- end of scope---\n");
 }
 
-
 bool first_of_function_specifier(const struct parser_ctx* ctx)
 {
     struct token* _Opt token = ctx->current;
@@ -1061,7 +1588,6 @@ bool first_of_enum_specifier(const struct parser_ctx* ctx)
     return first_of_enum_specifier_token(ctx->current);
 }
 
-
 bool first_of_alignment_specifier(const struct parser_ctx* ctx)
 {
     if (ctx->current == NULL)
@@ -1074,9 +1600,9 @@ bool first_of_atomic_type_specifier(const struct parser_ctx* ctx)
     if (ctx->current == NULL)
         return false;
 
-    /*
-      If the _Atomic keyword is immediately followed by a left parenthesis, it is interpreted
-      as a type specifier (with a type name), not as a type qualifier.
+    /* 
+    * If the _Atomic keyword is immediately followed by a left parenthesis, it is interpreted
+    * as a type specifier (with a type name), not as a type qualifier.
     */
 
     if (ctx->current->type == TK_KEYWORD__ATOMIC)
@@ -1101,7 +1627,6 @@ bool first_of_storage_class_specifier_token(const struct token* p_token)
         p_token->type == TK_KEYWORD_AUTO ||
         p_token->type == TK_KEYWORD_REGISTER;
 }
-
 
 bool first_of_storage_class_specifier(const struct parser_ctx* ctx)
 {
@@ -1132,20 +1657,22 @@ bool first_of_type_qualifier_token(const struct token* p_token)
         p_token->type == TK_KEYWORD_VOLATILE ||
         p_token->type == TK_KEYWORD__ATOMIC ||
 
-        //MSVC
+    // MSVC
         p_token->type == TK_KEYWORD_MSVC__PTR32 ||
         p_token->type == TK_KEYWORD_MSVC__PTR64 ||
         p_token->type == TK_KEYWORD_MSVC__UNALIGNED ||
 
-        /*extensions*/
-        p_token->type == TK_KEYWORD__CTOR ||
+    /* extensions */
+        p_token->type == TK_KEYWORD_CAKE_OUT ||
         p_token->type == TK_KEYWORD_CAKE_OWNER ||
-        p_token->type == TK_KEYWORD__DTOR ||
+        p_token->type == TK_KEYWORD_CAKE_DTOR ||
+        p_token->type == TK_KEYWORD_CAKE_UNINITIALIZED ||
+        p_token->type == TK_KEYWORD_CAKE_CLEAR ||
         p_token->type == TK_KEYWORD_CAKE_VIEW ||
         p_token->type == TK_KEYWORD_CAKE_OPT;
 
-    //__fastcall
-    //__stdcall
+    // __fastcall
+    // __stdcall
 }
 
 bool first_of_type_qualifier(const struct parser_ctx* ctx)
@@ -1157,19 +1684,24 @@ bool first_of_type_qualifier(const struct parser_ctx* ctx)
     {
         struct token* _Opt ahead = parser_look_ahead(ctx);
         if (ahead && ahead->type == '(')
-            return false; //expression const(expr)
+            return false; // expression const(expr)
     }
     return first_of_type_qualifier_token(ctx->current);
 }
 
-struct map_entry* _Opt find_tag(struct parser_ctx* ctx, const char* lexeme)
+struct map_entry* _Opt find_tag(struct parser_ctx* ctx, const char* lexeme, struct scope* _Opt* _Opt ppscope_opt)
 {
+    if (ppscope_opt != NULL)
+        *ppscope_opt = NULL; // out
+
     struct scope* _Opt scope = ctx->scopes.tail;
     while (scope)
     {
         struct map_entry* _Opt p_entry = hashmap_find(&scope->tags, lexeme);
         if (p_entry)
         {
+            if (ppscope_opt)
+                *ppscope_opt = scope;
             return p_entry;
         }
         scope = scope->previous;
@@ -1207,7 +1739,7 @@ struct enum_specifier* _Opt find_enum_specifier(struct parser_ctx* ctx, const ch
         if (p_entry &&
             p_entry->type == TAG_TYPE_ENUM_SPECIFIER)
         {
-            assert(p_entry->data.p_enum_specifier != NULL);
+            _Assert(p_entry->data.p_enum_specifier != NULL);
 
             best = p_entry->data.p_enum_specifier;
             if (best->enumerator_list.head != NULL)
@@ -1232,7 +1764,7 @@ struct struct_or_union_specifier* _Opt find_struct_or_union_specifier(const stru
         if (p_entry &&
             p_entry->type == TAG_TYPE_STRUCT_OR_UNION_SPECIFIER)
         {
-            assert(p_entry->data.p_struct_or_union_specifier != NULL);
+            _Assert(p_entry->data.p_struct_or_union_specifier != NULL);
             p = p_entry->data.p_struct_or_union_specifier;
             break;
         }
@@ -1241,7 +1773,7 @@ struct struct_or_union_specifier* _Opt find_struct_or_union_specifier(const stru
     return p;
 }
 
-struct declarator* _Opt find_declarator(const struct parser_ctx* ctx, const char* lexeme, struct scope** _Opt ppscope_opt)
+struct declarator* _Opt find_declarator(const struct parser_ctx* ctx, const char* lexeme, struct scope* _Opt* _Opt ppscope_opt)
 {
     struct map_entry* _Opt p_entry = find_variables(ctx, lexeme, ppscope_opt);
 
@@ -1249,7 +1781,7 @@ struct declarator* _Opt find_declarator(const struct parser_ctx* ctx, const char
     {
         if (p_entry->type == TAG_TYPE_INIT_DECLARATOR)
         {
-            assert(p_entry->data.p_init_declarator != NULL);
+            _Assert(p_entry->data.p_init_declarator != NULL);
             struct init_declarator* p_init_declarator = p_entry->data.p_init_declarator;
             return (struct declarator*)p_init_declarator->p_declarator;
         }
@@ -1262,7 +1794,7 @@ struct declarator* _Opt find_declarator(const struct parser_ctx* ctx, const char
     return NULL;
 }
 
-struct enumerator* _Opt find_enumerator(const struct parser_ctx* ctx, const char* lexeme, struct scope** _Opt ppscope_opt)
+struct enumerator* _Opt find_enumerator(const struct parser_ctx* ctx, const char* lexeme, struct scope* _Opt* _Opt ppscope_opt)
 {
     struct map_entry* _Opt p_entry = find_variables(ctx, lexeme, ppscope_opt);
 
@@ -1445,11 +1977,11 @@ bool first_of_label(const struct parser_ctx* ctx)
 
 bool first_of_declaration_specifier(const struct parser_ctx* ctx)
 {
-    /*
-    declaration-specifier:
-    storage-class-specifier
-    type-specifier-qualifier
-    function-specifier
+    /* 
+    * declaration-specifier:
+    * storage-class-specifier
+    * type-specifier-qualifier
+    * function-specifier
     */
     return first_of_storage_class_specifier(ctx) ||
         first_of_function_specifier(ctx) ||
@@ -1468,10 +2000,10 @@ bool first_of_static_assertion_declaration(const struct parser_ctx* ctx)
 {
     if (ctx->current == NULL)
         return false;
-    /*
-      https://open-std.org/jtc1/sc22/wg14/www/docs/n3715.pdf
-      I am doing this to avoid complicate the parser.
-      It is hard to decide if it is a declaration or expression all static_assert is ambuigous
+    /* 
+    * https://open-std.org/jtc1/sc22/wg14/www/docs/n3715.pdf
+    * I am doing this to avoid complicate the parser.
+    * It is hard to decide if it is a declaration or expression all static_assert is ambuigous
     */
     if (!first_of_static_assertion(ctx))
         return false;
@@ -1552,17 +2084,17 @@ bool first_of_static_assertion(const struct parser_ctx* ctx)
         return false;
 
     return ctx->current->type == TK_KEYWORD__STATIC_ASSERT ||
+        ctx->current->type == TK_KEYWORD__COMPILE_ASSERT ||
+        ctx->current->type == TK_KEYWORD_RUNTIME_ASSERT ||
         ctx->current->type == TK_KEYWORD_CAKE_STATIC_DEBUG ||
         ctx->current->type == TK_KEYWORD_CAKE_STATIC_DEBUG_EX ||
-        ctx->current->type == TK_KEYWORD_STATIC_STATE ||
-        ctx->current->type == TK_KEYWORD_STATIC_SET;
+        ctx->current->type == TK_KEYWORD_STATIC_STATE;
 }
 
 bool first_of_attribute_specifier(const struct parser_ctx* ctx)
 {
     if (ctx->current == NULL)
         return false;
-
 
     if (ctx->options.target == TARGET_X86_X64_GCC &&
         ctx->current->type == TK_KEYWORD__ASM)
@@ -1613,359 +2145,381 @@ struct token* _Opt previous_parser_token(const struct token* token)
     return prev;
 }
 
+/* 
+* Returns the last token consumed by the parser so far (i.e. the token
+* just before ctx->current in the final-token stream), or NULL if there
+* isn't one (start of file) or ctx->current itself is NULL (end of file).
+*/
+struct token* _Opt parser_get_previous_token(const struct parser_ctx* ctx)
+{
+    if (ctx->current == NULL)
+        return NULL;
+
+    return previous_parser_token(ctx->current);
+}
+
 enum token_type is_keyword(const char* text, enum target target)
 {
     switch (text[0])
     {
-    case 'a':
-        if (strcmp("alignof", text) == 0)
-            return TK_KEYWORD__ALIGNOF;
-        if (strcmp("auto", text) == 0)
-            return TK_KEYWORD_AUTO;
-        if (strcmp("alignas", text) == 0)
-            return TK_KEYWORD__ALIGNAS; /* C23 alternate spelling for _Alignas */
-        if (strcmp("alignof", text) == 0)
-            return TK_KEYWORD__ALIGNAS; /* C23 alternate spelling for _Alignof */
-        if (strcmp("assert", text) == 0)
-            return TK_KEYWORD_ASSERT; /* extension */
-        if (strcmp("asm", text) == 0)
-            return TK_KEYWORD__ASM;
-        if (strcmp("assert_state", text) == 0)
-            return TK_KEYWORD_STATIC_STATE;
+        case 'a':
+            if (strcmp("alignof", text) == 0)
+                return TK_KEYWORD__ALIGNOF;
+            if (strcmp("auto", text) == 0)
+                return TK_KEYWORD_AUTO;
+            if (strcmp("alignas", text) == 0)
+                return TK_KEYWORD__ALIGNAS; /* C23 alternate spelling for _Alignas */
+            if (strcmp("alignof", text) == 0)
+                return TK_KEYWORD__ALIGNAS; /* C23 alternate spelling for _Alignof */
+            if (strcmp("asm", text) == 0)
+                return TK_KEYWORD__ASM;
+            if (strcmp("assert_state", text) == 0)
+                return TK_KEYWORD_STATIC_STATE;
         break;
 
-    case 'b':
-        if (strcmp("break", text) == 0)
-            return TK_KEYWORD_BREAK;
-        if (strcmp("bool", text) == 0)
-            return TK_KEYWORD__BOOL; /* C23 alternate spelling for _Bool */
+        case 'b':
+            if (strcmp("break", text) == 0)
+                return TK_KEYWORD_BREAK;
+            if (strcmp("bool", text) == 0)
+                return TK_KEYWORD__BOOL; /* C23 alternate spelling for _Bool */
         break;
 
-    case 'c':
-        if (strcmp("case", text) == 0)
-            return TK_KEYWORD_CASE;
-        if (strcmp("char", text) == 0)
-            return TK_KEYWORD_CHAR;
-        if (strcmp("const", text) == 0)
-            return TK_KEYWORD_CONST;
-        if (strcmp("constexpr", text) == 0)
-            return TK_KEYWORD_CONSTEXPR;
-        if (strcmp("continue", text) == 0)
-            return TK_KEYWORD_CONTINUE;
-        if (strcmp("catch", text) == 0)
-            return TK_KEYWORD_CAKE_CATCH;
+        case 'c':
+            if (strcmp("case", text) == 0)
+                return TK_KEYWORD_CASE;
+            if (strcmp("char", text) == 0)
+                return TK_KEYWORD_CHAR;
+            if (strcmp("const", text) == 0)
+                return TK_KEYWORD_CONST;
+            if (strcmp("constexpr", text) == 0)
+                return TK_KEYWORD_CONSTEXPR;
+            if (strcmp("continue", text) == 0)
+                return TK_KEYWORD_CONTINUE;
+            if (strcmp("catch", text) == 0)
+                return TK_KEYWORD_CAKE_CATCH;
+            if (strcmp("compile_assert", text) == 0)
+                return TK_KEYWORD__COMPILE_ASSERT;
         break;
 
-    case 'd':
-        if (strcmp("default", text) == 0)
-            return TK_KEYWORD_DEFAULT;
-        if (strcmp("do", text) == 0)
-            return TK_KEYWORD_DO;
-        if (strcmp("defer", text) == 0)
-            return TK_KEYWORD_DEFER;
-        if (strcmp("double", text) == 0)
-            return TK_KEYWORD_DOUBLE;
+        case 'd':
+            if (strcmp("default", text) == 0)
+                return TK_KEYWORD_DEFAULT;
+            if (strcmp("do", text) == 0)
+                return TK_KEYWORD_DO;
+            if (strcmp("defer", text) == 0)
+                return TK_KEYWORD_DEFER;
+            if (strcmp("double", text) == 0)
+                return TK_KEYWORD_DOUBLE;
         break;
 
-    case 'e':
-        if (strcmp("else", text) == 0)
-            return TK_KEYWORD_ELSE;
-        if (strcmp("enum", text) == 0)
-            return TK_KEYWORD_ENUM;
-        if (strcmp("extern", text) == 0)
-            return TK_KEYWORD_EXTERN;
+        case 'e':
+            if (strcmp("else", text) == 0)
+                return TK_KEYWORD_ELSE;
+            if (strcmp("enum", text) == 0)
+                return TK_KEYWORD_ENUM;
+            if (strcmp("extern", text) == 0)
+                return TK_KEYWORD_EXTERN;
         break;
 
-    case 'f':
-        if (strcmp("float", text) == 0)
-            return TK_KEYWORD_FLOAT;
-        if (strcmp("for", text) == 0)
-            return TK_KEYWORD_FOR;
-        if (strcmp("false", text) == 0)
-            return TK_KEYWORD_FALSE;
+        case 'f':
+            if (strcmp("float", text) == 0)
+                return TK_KEYWORD_FLOAT;
+            if (strcmp("for", text) == 0)
+                return TK_KEYWORD_FOR;
+            if (strcmp("false", text) == 0)
+                return TK_KEYWORD_FALSE;
         break;
 
-    case 'g':
-        if (strcmp("goto", text) == 0)
-            return TK_KEYWORD_GOTO;
+        case 'g':
+            if (strcmp("goto", text) == 0)
+                return TK_KEYWORD_GOTO;
         break;
 
-    case 'i':
-        if (strcmp("if", text) == 0)
-            return TK_KEYWORD_IF;
-        if (strcmp("inline", text) == 0)
-            return TK_KEYWORD_INLINE;
-        if (strcmp("int", text) == 0)
-            return TK_KEYWORD_INT;
+        case 'i':
+            if (strcmp("if", text) == 0)
+                return TK_KEYWORD_IF;
+            if (strcmp("inline", text) == 0)
+                return TK_KEYWORD_INLINE;
+            if (strcmp("int", text) == 0)
+                return TK_KEYWORD_INT;
         break;
 
-    case 'n':
-        if (strcmp("nullptr", text) == 0)
-            return TK_KEYWORD_NULLPTR;
+        case 'n':
+            if (strcmp("nullptr", text) == 0)
+                return TK_KEYWORD_NULLPTR;
         break;
 
-    case 'o':
-        if (strcmp("offsetof", text) == 0)
-            return TK_KEYWORD_GCC__BUILTIN_OFFSETOF;
-        if (strcmp("override_state", text) == 0)
-            return TK_KEYWORD_STATIC_SET;
+        case 'o':
+            if (strcmp("offsetof", text) == 0)
+                return TK_KEYWORD_GCC__BUILTIN_OFFSETOF;
         break;
 
-    case 'l':
-        if (strcmp("long", text) == 0)
-            return TK_KEYWORD_LONG;
+        case 'l':
+            if (strcmp("long", text) == 0)
+                return TK_KEYWORD_LONG;
         break;
 
-    case 'r':
-        if (strcmp("register", text) == 0)
-            return TK_KEYWORD_REGISTER;
-        if (strcmp("restrict", text) == 0)
-            return TK_KEYWORD_RESTRICT;
-        if (strcmp("return", text) == 0)
-            return TK_KEYWORD_RETURN;
+        case 'r':
+            if (strcmp("register", text) == 0)
+                return TK_KEYWORD_REGISTER;
+            if (strcmp("restrict", text) == 0)
+                return TK_KEYWORD_RESTRICT;
+            if (strcmp("return", text) == 0)
+                return TK_KEYWORD_RETURN;
         break;
 
-    case 's':
-        if (strcmp("short", text) == 0)
-            return TK_KEYWORD_SHORT;
-        if (strcmp("signed", text) == 0)
-            return TK_KEYWORD_SIGNED;
-        if (strcmp("sizeof", text) == 0)
-            return TK_KEYWORD_SIZEOF;
-        if (strcmp("static", text) == 0)
-            return TK_KEYWORD_STATIC;
-        if (strcmp("struct", text) == 0)
-            return TK_KEYWORD_STRUCT;
-        if (strcmp("switch", text) == 0)
-            return TK_KEYWORD_SWITCH;
-        if (strcmp("static_assert", text) == 0)
-            return TK_KEYWORD__STATIC_ASSERT; /* C23 alternate spelling for _Static_assert */
-        if (strcmp("static_debug", text) == 0)
-            return TK_KEYWORD_CAKE_STATIC_DEBUG;
-        if (strcmp("static_debug_ex", text) == 0)
-            return TK_KEYWORD_CAKE_STATIC_DEBUG_EX;
+        case 's':
+            if (strcmp("short", text) == 0)
+                return TK_KEYWORD_SHORT;
+            if (strcmp("signed", text) == 0)
+                return TK_KEYWORD_SIGNED;
+            if (strcmp("sizeof", text) == 0)
+                return TK_KEYWORD_SIZEOF;
+            if (strcmp("static", text) == 0)
+                return TK_KEYWORD_STATIC;
+            if (strcmp("struct", text) == 0)
+                return TK_KEYWORD_STRUCT;
+            if (strcmp("switch", text) == 0)
+                return TK_KEYWORD_SWITCH;
+            if (strcmp("static_assert", text) == 0)
+                return TK_KEYWORD__STATIC_ASSERT; /* C23 alternate spelling for _Static_assert */
+            if (strcmp("static_debug", text) == 0)
+                return TK_KEYWORD_CAKE_STATIC_DEBUG;
+            if (strcmp("static_debug_ex", text) == 0)
+                return TK_KEYWORD_CAKE_STATIC_DEBUG_EX;
         break;
 
-    case 't':
-        if (strcmp("typedef", text) == 0)
-            return TK_KEYWORD_TYPEDEF;
-        if (strcmp("typeof", text) == 0)
-            return TK_KEYWORD_TYPEOF; /* C23 */
-        if (strcmp("typeof_unqual", text) == 0)
-            return TK_KEYWORD_TYPEOF_UNQUAL; /* C23 */
-        if (strcmp("true", text) == 0)
-            return TK_KEYWORD_TRUE; /* C23 */
-        if (strcmp("thread_local", text) == 0)
-            return TK_KEYWORD__THREAD_LOCAL; /* C23 alternate spelling for _Thread_local */
-        if (strcmp("try", text) == 0)
-            return TK_KEYWORD_CAKE_TRY;
-        if (strcmp("throw", text) == 0)
-            return TK_KEYWORD_CAKE_THROW;
+        case 't':
+            if (strcmp("typedef", text) == 0)
+                return TK_KEYWORD_TYPEDEF;
+            if (strcmp("typeof", text) == 0)
+                return TK_KEYWORD_TYPEOF; /* C23 */
+            if (strcmp("typeof_unqual", text) == 0)
+                return TK_KEYWORD_TYPEOF_UNQUAL; /* C23 */
+            if (strcmp("true", text) == 0)
+                return TK_KEYWORD_TRUE; /* C23 */
+            if (strcmp("thread_local", text) == 0)
+                return TK_KEYWORD__THREAD_LOCAL; /* C23 alternate spelling for _Thread_local */
+            if (strcmp("try", text) == 0)
+                return TK_KEYWORD_CAKE_TRY;
+            if (strcmp("throw", text) == 0)
+                return TK_KEYWORD_CAKE_THROW;
         break;
 
-    case 'u':
-        if (strcmp("union", text) == 0)
-            return TK_KEYWORD_UNION;
-        if (strcmp("unsigned", text) == 0)
-            return TK_KEYWORD_UNSIGNED;
+        case 'u':
+            if (strcmp("union", text) == 0)
+                return TK_KEYWORD_UNION;
+            if (strcmp("unsigned", text) == 0)
+                return TK_KEYWORD_UNSIGNED;
         break;
 
-    case 'v':
-        if (strcmp("void", text) == 0)
-            return TK_KEYWORD_VOID;
-        if (strcmp("volatile", text) == 0)
-            return TK_KEYWORD_VOLATILE;
+        case 'v':
+            if (strcmp("void", text) == 0)
+                return TK_KEYWORD_VOID;
+            if (strcmp("volatile", text) == 0)
+                return TK_KEYWORD_VOLATILE;
         break;
 
-    case 'w':
-        if (strcmp("while", text) == 0)
-            return TK_KEYWORD_WHILE;
+        case 'w':
+            if (strcmp("while", text) == 0)
+                return TK_KEYWORD_WHILE;
         break;
-    case '_':
+        case '_':
 
-        /*ownership*/
-        if (strcmp("_Ctor", text) == 0)
-            return TK_KEYWORD__CTOR; /* extension */
-        if (strcmp("_Owner", text) == 0)
-            return TK_KEYWORD_CAKE_OWNER; /* extension */
-        if (strcmp("_Dtor", text) == 0)
-            return TK_KEYWORD__DTOR; /* extension */
-        if (strcmp("_Opt", text) == 0)
-            return TK_KEYWORD_CAKE_OPT; /* extension */
+        /* ownership */
+            if (strcmp("_Out", text) == 0)
+                return TK_KEYWORD_CAKE_OUT; /* extension */
+            if (strcmp("_Owner", text) == 0)
+                return TK_KEYWORD_CAKE_OWNER; /* extension */
+            if (strcmp("_Dtor", text) == 0)
+                return TK_KEYWORD_CAKE_DTOR; /* extension */
+            if (strcmp("_Uninitialized", text) == 0)
+                return TK_KEYWORD_CAKE_UNINITIALIZED; /* extension: return/pointee uninitialized */
+            if (strcmp("_Clear", text) == 0)
+                return TK_KEYWORD_CAKE_CLEAR; /* extension: param zeroes pointee / return pointee all-zero */
+        
+            if (strcmp("_Opt", text) == 0 ||
+            strcmp("_Nullable", text) == 0)
+            {
+                /* 
+                * _Nullable is used by clang, so still a candidate
+                */
+                return TK_KEYWORD_CAKE_OPT; /* extension */
+            }
 
-        if (strcmp("_Defer", text) == 0)
-            return TK_KEYWORD_DEFER;
+            if (strcmp("_Defer", text) == 0)
+                return TK_KEYWORD_DEFER;
 
-        if (strcmp("_View", text) == 0)
-            return TK_KEYWORD_CAKE_VIEW; /* extension */
+            if (strcmp("_View", text) == 0)
+                return TK_KEYWORD_CAKE_VIEW; /* extension */
 
-        if (strcmp("_Countof", text) == 0)
-            return TK_KEYWORD__COUNTOF; /* C2Y */
+            if (strcmp("_Countof", text) == 0)
+                return TK_KEYWORD__COUNTOF; /* C2Y */
 
-        /*TRAITS EXTENSION*/
-        if (strcmp("_is_lvalue", text) == 0)
-            return TK_KEYWORD_IS_LVALUE;
-        if (strcmp("_is_const", text) == 0)
-            return TK_KEYWORD_IS_CONST;
-        if (strcmp("_is_owner", text) == 0)
-            return TK_KEYWORD_IS_OWNER;
-        if (strcmp("_is_pointer", text) == 0)
-            return TK_KEYWORD_IS_POINTER;
-        if (strcmp("_is_array", text) == 0)
-            return TK_KEYWORD_IS_ARRAY;
-        if (strcmp("_is_function", text) == 0)
-            return TK_KEYWORD_IS_FUNCTION;
-        if (strcmp("_is_arithmetic", text) == 0)
-            return TK_KEYWORD_IS_ARITHMETIC;
-        if (strcmp("_is_floating_point", text) == 0)
-            return TK_KEYWORD_IS_FLOATING_POINT;
-        if (strcmp("_is_integral", text) == 0)
-            return TK_KEYWORD_IS_INTEGRAL;
-        if (strcmp("_is_scalar", text) == 0)
-            return TK_KEYWORD_IS_SCALAR;
-        /*TRAITS EXTENSION*/
+            if (strcmp("_Assert", text) == 0)
+                return TK_KEYWORD_RUNTIME_ASSERT; /* extension */
 
-        if (strcmp("_Alignof", text) == 0)
-            return TK_KEYWORD__ALIGNOF;
-        if (strcmp("_Alignas", text) == 0)
-            return TK_KEYWORD__ALIGNAS;
-        if (strcmp("_Atomic", text) == 0)
-            return TK_KEYWORD__ATOMIC;
+            /* TRAITS EXTENSION */
+            if (strcmp("_is_lvalue", text) == 0)
+                return TK_KEYWORD_IS_LVALUE;
+            if (strcmp("_is_const", text) == 0)
+                return TK_KEYWORD_IS_CONST;
+            if (strcmp("_is_owner", text) == 0)
+                return TK_KEYWORD_IS_OWNER;
+            if (strcmp("_is_pointer", text) == 0)
+                return TK_KEYWORD_IS_POINTER;
+            if (strcmp("_is_array", text) == 0)
+                return TK_KEYWORD_IS_ARRAY;
+            if (strcmp("_is_function", text) == 0)
+                return TK_KEYWORD_IS_FUNCTION;
+            if (strcmp("_is_arithmetic", text) == 0)
+                return TK_KEYWORD_IS_ARITHMETIC;
+            if (strcmp("_is_floating_point", text) == 0)
+                return TK_KEYWORD_IS_FLOATING_POINT;
+            if (strcmp("_is_integral", text) == 0)
+                return TK_KEYWORD_IS_INTEGRAL;
+            if (strcmp("_is_scalar", text) == 0)
+                return TK_KEYWORD_IS_SCALAR;
+            /* TRAITS EXTENSION */
 
-        if (strcmp("__builtin_va_list", text) == 0)
-            return TK_KEYWORD_GCC__BUILTIN_VA_LIST;
+            if (strcmp("_Alignof", text) == 0)
+                return TK_KEYWORD__ALIGNOF;
+            if (strcmp("_Alignas", text) == 0)
+                return TK_KEYWORD__ALIGNAS;
+            if (strcmp("_Atomic", text) == 0)
+                return TK_KEYWORD__ATOMIC;
 
-        if (strcmp("__attribute__", text) == 0)
-            return TK_KEYWORD_GCC__ATTRIBUTE;
+            if (strcmp("__builtin_va_list", text) == 0)
+                return TK_KEYWORD_GCC__BUILTIN_VA_LIST;
 
-        if (strcmp("__builtin_offsetof", text) == 0)
-            return TK_KEYWORD_GCC__BUILTIN_OFFSETOF;
+            if (strcmp("__attribute__", text) == 0)
+                return TK_KEYWORD_GCC__ATTRIBUTE;
 
-        if (strcmp("__builtin_va_end", text) == 0)
-            return TK_KEYWORD_GCC__BUILTIN_VA_END;
+            if (strcmp("__builtin_offsetof", text) == 0)
+                return TK_KEYWORD_GCC__BUILTIN_OFFSETOF;
 
-        if (strcmp("__builtin_va_arg", text) == 0)
-            return TK_KEYWORD_GCC__BUILTIN_VA_ARG;
+            if (strcmp("__builtin_va_end", text) == 0)
+                return TK_KEYWORD_GCC__BUILTIN_VA_END;
 
-        if (strcmp("__builtin_c23_va_start", text) == 0)
-            return TK_KEYWORD_GCC__BUILTIN_C23_VA_START;
+            if (strcmp("__builtin_va_arg", text) == 0)
+                return TK_KEYWORD_GCC__BUILTIN_VA_ARG;
 
-        if (strcmp("__builtin_va_start", text) == 0)
-            return TK_KEYWORD_GCC__BUILTIN_C23_VA_START;
+            if (strcmp("__builtin_c23_va_start", text) == 0)
+                return TK_KEYWORD_GCC__BUILTIN_C23_VA_START;
 
-        if (strcmp("__builtin_va_copy", text) == 0)
-            return TK_KEYWORD_GCC__BUILTIN_VA_COPY;
+            if (strcmp("__builtin_va_start", text) == 0)
+                return TK_KEYWORD_GCC__BUILTIN_C23_VA_START;
 
+            if (strcmp("__builtin_va_copy", text) == 0)
+                return TK_KEYWORD_GCC__BUILTIN_VA_COPY;
 
-        if (strstr(text, "__volatile__") != NULL) //GCC
-            return TK_KEYWORD_VOLATILE;
+            if (strstr(text, "__volatile__") != NULL) // GCC
+                return TK_KEYWORD_VOLATILE;
 
+            if (strcmp("_Bool", text) == 0)
+                return TK_KEYWORD__BOOL;
+            if (strcmp("_Complex", text) == 0)
+                return TK_KEYWORD__COMPLEX;
+            if (strcmp("_Decimal32", text) == 0)
+                return TK_KEYWORD__DECIMAL32;
+            if (strcmp("_Decimal64", text) == 0)
+                return TK_KEYWORD__DECIMAL64;
+            if (strcmp("_Decimal128", text) == 0)
+                return TK_KEYWORD__DECIMAL128;
+            if (strcmp("_Generic", text) == 0)
+                return TK_KEYWORD__GENERIC;
 
-        if (strcmp("_Bool", text) == 0)
-            return TK_KEYWORD__BOOL;
-        if (strcmp("_Complex", text) == 0)
-            return TK_KEYWORD__COMPLEX;
-        if (strcmp("_Decimal32", text) == 0)
-            return TK_KEYWORD__DECIMAL32;
-        if (strcmp("_Decimal64", text) == 0)
-            return TK_KEYWORD__DECIMAL64;
-        if (strcmp("_Decimal128", text) == 0)
-            return TK_KEYWORD__DECIMAL128;
-        if (strcmp("_Generic", text) == 0)
-            return TK_KEYWORD__GENERIC;
+            if (strcmp("_Imaginary", text) == 0)
+                return TK_KEYWORD__IMAGINARY;
 
-        if (strcmp("_Imaginary", text) == 0)
-            return TK_KEYWORD__IMAGINARY;
+            if (strcmp("_Noreturn", text) == 0)
+                return TK_KEYWORD__NORETURN; /* _Noreturn is deprecated in C23 */
 
-        if (strcmp("_Noreturn", text) == 0)
-            return TK_KEYWORD__NORETURN; /* _Noreturn is deprecated in C23 */
+            if (strcmp("_Static_assert", text) == 0)
+                return TK_KEYWORD__STATIC_ASSERT;
 
-        if (strcmp("_Static_assert", text) == 0)
-            return TK_KEYWORD__STATIC_ASSERT;
+            if (strcmp("_Thread_local", text) == 0)
+                return TK_KEYWORD__THREAD_LOCAL;
 
-        if (strcmp("_Thread_local", text) == 0)
-            return TK_KEYWORD__THREAD_LOCAL;
+            if (strcmp("_BitInt", text) == 0)
+                return TK_KEYWORD__BITINT; /* C23 */
 
-        if (strcmp("_BitInt", text) == 0)
-            return TK_KEYWORD__BITINT; /* C23 */
+            if (strcmp("__typeof__", text) == 0)
+                return TK_KEYWORD_TYPEOF; /* C23 */
 
-        if (strcmp("__typeof__", text) == 0)
-            return TK_KEYWORD_TYPEOF; /* C23 */
+            if (strcmp("__asm__", text) == 0 || strcmp("_asm", text) == 0 || strcmp("__asm", text) == 0)
+                return TK_KEYWORD__ASM;
 
-        if (strcmp("__asm__", text) == 0 || strcmp("_asm", text) == 0 || strcmp("__asm", text) == 0)
-            return TK_KEYWORD__ASM;
+            if (strcmp("__restrict", text) == 0)
+                return TK_KEYWORD_RESTRICT;
 
-        if (strcmp("__restrict", text) == 0)
-            return TK_KEYWORD_RESTRICT;
-
-        if (strcmp("__inline", text) == 0 || strcmp("__inline__", text) == 0)
-            return TK_KEYWORD_INLINE;
-
-        if (strcmp("__alignof__", text) == 0)
-            return TK_KEYWORD__ALIGNOF;
-
-        if (target == TARGET_X86_MSVC || target == TARGET_X64_MSVC)
-        {
-            if (strcmp("__ptr32", text) == 0)
-                return TK_KEYWORD_MSVC__PTR32;
-
-            if (strcmp("__ptr64", text) == 0)
-                return TK_KEYWORD_MSVC__PTR64;
-
-            if (strcmp("__unaligned", text) == 0)
-                return TK_KEYWORD_MSVC__UNALIGNED;
-
-            if (strcmp("__try", text) == 0)
-                return TK_KEYWORD_MSVC__TRY;
-
-            if (strcmp("__except", text) == 0)
-                return TK_KEYWORD_MSVC__EXCEPT;
-
-            if (strcmp("__finally", text) == 0)
-                return TK_KEYWORD_MSVC__FINALLY;
-
-            if (strcmp("__leave", text) == 0)
-                return TK_KEYWORD_MSVC__LEAVE;
-
-            // begin microsoft
-            if (strcmp("__int8", text) == 0)
-                return TK_KEYWORD_MSVC__INT8;
-
-            if (strcmp("__int16", text) == 0)
-                return TK_KEYWORD_MSVC__INT16;
-
-            if (strcmp("__int32", text) == 0)
-                return TK_KEYWORD_MSVC__INT32;
-
-            if (strcmp("__int64", text) == 0)
-                return TK_KEYWORD_MSVC__INT64;
-
-            if (strcmp("__forceinline", text) == 0)
+            if (strcmp("__inline", text) == 0 || strcmp("__inline__", text) == 0)
                 return TK_KEYWORD_INLINE;
 
-            if (strcmp("__stdcall", text) == 0 || strcmp("_stdcall", text) == 0)
-                return TK_KEYWORD_MSVC__STDCALL;
-
-            if (strcmp("__cdecl", text) == 0)
-                return TK_KEYWORD_MSVC__CDECL;
-
-            if (strcmp("__fastcall", text) == 0)
-                return TK_KEYWORD_MSVC__FASTCALL;
-
-            if (strcmp("__alignof", text) == 0)
+            if (strcmp("__alignof__", text) == 0)
                 return TK_KEYWORD__ALIGNOF;
 
-            if (strcmp("__declspec", text) == 0)
-                return TK_KEYWORD_MSVC__DECLSPEC;
-        }
+            if (target == TARGET_X86_MSVC || target == TARGET_X64_MSVC)
+            {
+                if (strcmp("__ptr32", text) == 0)
+                    return TK_KEYWORD_MSVC__PTR32;
+
+                if (strcmp("__ptr64", text) == 0)
+                    return TK_KEYWORD_MSVC__PTR64;
+
+                if (strcmp("__unaligned", text) == 0)
+                    return TK_KEYWORD_MSVC__UNALIGNED;
+
+                if (strcmp("__try", text) == 0)
+                    return TK_KEYWORD_MSVC__TRY;
+
+                if (strcmp("__except", text) == 0)
+                    return TK_KEYWORD_MSVC__EXCEPT;
+
+                if (strcmp("__finally", text) == 0)
+                    return TK_KEYWORD_MSVC__FINALLY;
+
+                if (strcmp("__leave", text) == 0)
+                    return TK_KEYWORD_MSVC__LEAVE;
+
+                // begin microsoft
+                if (strcmp("__int8", text) == 0)
+                    return TK_KEYWORD_MSVC__INT8;
+
+                if (strcmp("__int16", text) == 0)
+                    return TK_KEYWORD_MSVC__INT16;
+
+                if (strcmp("__int32", text) == 0)
+                    return TK_KEYWORD_MSVC__INT32;
+
+                if (strcmp("__int64", text) == 0)
+                    return TK_KEYWORD_MSVC__INT64;
+
+                if (strcmp("__forceinline", text) == 0)
+                    return TK_KEYWORD_INLINE;
+
+                if (strcmp("__stdcall", text) == 0 || strcmp("_stdcall", text) == 0)
+                    return TK_KEYWORD_MSVC__STDCALL;
+
+                if (strcmp("__cdecl", text) == 0)
+                    return TK_KEYWORD_MSVC__CDECL;
+
+                if (strcmp("__fastcall", text) == 0)
+                    return TK_KEYWORD_MSVC__FASTCALL;
+
+                if (strcmp("__alignof", text) == 0)
+                    return TK_KEYWORD__ALIGNOF;
+
+                if (strcmp("__declspec", text) == 0)
+                    return TK_KEYWORD_MSVC__DECLSPEC;
+            }
         break;
-    default:
+        default:
         break;
     }
 
-    return 0;
+    return TK_NONE;
 }
-
 
 static void token_promote(const struct parser_ctx* ctx, struct token* token)
 {
@@ -1974,7 +2528,7 @@ static void token_promote(const struct parser_ctx* ctx, struct token* token)
         // talvez desse para remover antesisso..
         // assim que sai do tetris
         // virou passado
-        token->type = TK_IDENTIFIER; /*nao precisamos mais disso*/
+        token->type = TK_IDENTIFIER; /* nao precisamos mais disso */
     }
 
     if (token->type == TK_IDENTIFIER)
@@ -2014,7 +2568,6 @@ struct token* _Opt parser_look_ahead(const struct parser_ctx* ctx)
     return p;
 }
 
-
 static struct token* _Opt pragma_declaration_match(const struct token* p_current)
 {
     struct token* _Opt p_token = p_current->next;
@@ -2025,8 +2578,7 @@ static struct token* _Opt pragma_declaration_match(const struct token* p_current
     return p_token;
 }
 
-
-void check_dianostic_suppression_phase(struct parser_ctx* ctx, struct token* p_token, int phase)
+void check_dianostic_suppression_phase(struct parser_ctx* ctx, const struct token* p_token, int phase)
 {
     if (p_token->type == TK_LINE_COMMENT || p_token->type == TK_COMMENT)
     {
@@ -2037,7 +2589,7 @@ void check_dianostic_suppression_phase(struct parser_ctx* ctx, struct token* p_t
         {
             if (get_diagnostic_phase(ids[i]) == phase)
             {
-                if (!diagnostic_queue_remove(&ctx->diagnostic_queue, p_token->line, (enum diagnostic_id)ids[i]))
+                if (!diagnostic_queue_remove(&ctx->diagnostic_queue, (enum diagnostic_id)ids[i]))
                 {
                     ids[i] = -ids[i];
                 }
@@ -2049,30 +2601,52 @@ void check_dianostic_suppression_phase(struct parser_ctx* ctx, struct token* p_t
             if (ids[i] < 0)
             {
                 diagnostic(W_WARNING_DID_NOT_HAPPEN,
-                                           ctx,
-                                           p_token,
-                                           NULL,
-                                           "diagnostic '%d' not recognized",
-                                           -ids[i]);
+                    ctx,
+                    p_token,
+                    NULL,
+                    "diagnostic '%d' not recognized",
+                    -ids[i]);
             }
         }
     }
 }
 
-void check_compiler_dianostic_suppression(struct parser_ctx* ctx, struct token* p_token)
+void check_compiler_dianostic_suppression(struct parser_ctx* ctx, const struct token* p_token)
 {
     check_dianostic_suppression_phase(ctx, p_token, 0);
 }
 
-static void check_dianostic_suppression_after(struct parser_ctx* ctx, struct token* p_token)
+static void check_dianostic_suppression_after(struct parser_ctx* ctx, const struct token* p_token)
 {
     check_dianostic_suppression_phase(ctx, p_token, 1);
 }
 
-static void parser_skip_blanks(struct parser_ctx* ctx, struct token** _Opt pp_token_lint)
+static void parser_skip_blanks(struct parser_ctx* ctx, struct token* _Opt* _Opt pp_token_lint)
 {
     while (ctx->current && !(ctx->current->flags & TK_FLAG_FINAL))
     {
+        /* Comments are never ctx->current for the rest of the parser - this
+        * skip loop is the only place that ever sees one - so this is the
+        * only place that can fix a comment sitting alone on its own line
+        * to ctx->format_indent_level, the same way check_indentation_style()
+        * fixes a real statement's line.
+        * 
+        * TK_FLAG_ACTIVE (not just level==0): an inactive #if/#ifdef branch
+        * is never actually parsed - nothing in it reaches ctx->current, so
+        * none of the token-mutating fixers ever run there - but its
+        * comments and blanks still get walked by *this* loop on the way to
+        * the next real token, same file, same level 0. Skipping them here
+        * is what keeps an inactive branch printed exactly as written
+        * (see the lint-suppression check right below, which already gates
+        * on this same flag for the same reason).
+        */
+        if (ctx->current->level == 0 &&
+            (ctx->current->flags & TK_FLAG_ACTIVE) &&
+            (ctx->current->type == TK_LINE_COMMENT || ctx->current->type == TK_COMMENT))
+        {
+            check_indentation_style(ctx, ctx->current);
+        }
+
         if ((ctx->current->flags & TK_FLAG_ACTIVE) &&
             (ctx->current->type == TK_LINE_COMMENT))
         {
@@ -2115,19 +2689,17 @@ void parser_match(struct parser_ctx* ctx)
 {
     if (ctx->current == NULL)
         return;
-
-    ctx->previous = ctx->current;
     ctx->current = ctx->current->next;
     parser_skip_blanks(ctx, NULL);
 }
 
-void unexpected_end_of_file(struct parser_ctx* ctx)
+void unexpected_end_of_file(const struct parser_ctx* ctx)
 {
-    diagnostic(C_ERROR_UNEXPECTED_TOKEN, ctx, ctx->input_list.tail, NULL, "unexpected end of file");
+    diagnostic(C_ERROR_UNEXPECTED_TOKEN, ctx, ctx->p_input_list->tail, NULL, "unexpected end of file");
 }
 
 _Attr(nodiscard)
-static int parser_match_tk_core(struct parser_ctx* ctx, enum token_type type, struct token** _Opt pp_token_lint)
+static int parser_match_tk_core(struct parser_ctx* ctx, enum token_type type, struct token* _Opt* _Opt pp_token_lint)
 {
     int error = 0;
     if (ctx->current != NULL)
@@ -2145,14 +2717,12 @@ static int parser_match_tk_core(struct parser_ctx* ctx, enum token_type type, st
 
             error = 1;
         }
-
-        ctx->previous = ctx->current;
         ctx->current = ctx->current->next;
         parser_skip_blanks(ctx, pp_token_lint);
     }
     else
     {
-        diagnostic(C_ERROR_UNEXPECTED_TOKEN, ctx, ctx->input_list.tail, NULL, "unexpected end of file after");
+        diagnostic(C_ERROR_UNEXPECTED_TOKEN, ctx, ctx->p_input_list->tail, NULL, "unexpected end of file after");
         error = 1;
     }
 
@@ -2166,13 +2736,12 @@ int parser_match_tk(struct parser_ctx* ctx, enum token_type type)
 }
 
 _Attr(nodiscard)
-int parser_match_tk_lint(struct parser_ctx* ctx, enum token_type type, struct token** pp_token_lint)
+int parser_match_tk_lint(struct parser_ctx* ctx, enum token_type type, struct token* _Opt* pp_token_lint)
 {
     return parser_match_tk_core(ctx, type, pp_token_lint);
 }
 
-
-void print_declaration_specifiers(struct osstream* ss, struct declaration_specifiers* p_declaration_specifiers)
+void print_declaration_specifiers(struct osstream* ss, const struct declaration_specifiers* p_declaration_specifiers)
 {
     bool first = true;
     print_type_qualifier_flags(ss, &first, p_declaration_specifiers->type_qualifier_flags);
@@ -2186,7 +2755,7 @@ void print_declaration_specifiers(struct osstream* ss, struct declaration_specif
         }
         else
         {
-            assert(false);
+            _Assert(false);
         }
     }
     else if (p_declaration_specifiers->struct_or_union_specifier)
@@ -2218,7 +2787,7 @@ bool type_specifier_is_integer(enum type_specifier_flags flags)
     return false;
 }
 
-int final_specifier(const struct parser_ctx* ctx, enum type_specifier_flags* flags)
+int final_specifier( enum type_specifier_flags* flags)
 {
     if (((*flags) & TYPE_SPECIFIER_UNSIGNED) ||
         ((*flags) & TYPE_SPECIFIER_SIGNED))
@@ -2234,14 +2803,14 @@ int final_specifier(const struct parser_ctx* ctx, enum type_specifier_flags* fla
     return 0;
 }
 
-int add_specifier(struct parser_ctx* ctx,
+int add_specifier(const struct parser_ctx* ctx,
     enum type_specifier_flags* flags,
     enum type_specifier_flags new_flag)
 {
-    /*
-        transform the sequence of two longs
-        in
-        TYPE_SPECIFIER_LONG_LONG
+    /* 
+    * transform the sequence of two longs
+    * in
+    * TYPE_SPECIFIER_LONG_LONG
     */
     if (new_flag & TYPE_SPECIFIER_LONG) /* adding a long */
     {
@@ -2269,62 +2838,62 @@ int add_specifier(struct parser_ctx* ctx,
     /* following C standard 6.7.2, check valid combinations */
     switch ((unsigned int)*flags)
     {
-    case TYPE_SPECIFIER_NONE:  //void
-    case TYPE_SPECIFIER_VOID:  //void
-    case TYPE_SPECIFIER_GCC__BUILTIN_VA_LIST:
-    case TYPE_SPECIFIER_CHAR:  //char
-    case TYPE_SPECIFIER_SIGNED | TYPE_SPECIFIER_CHAR:  //signed char
-    case TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_CHAR:  //unsigned char
-    case TYPE_SPECIFIER_SHORT:  //short
-    case TYPE_SPECIFIER_SIGNED | TYPE_SPECIFIER_SHORT:  //signed short
-    case TYPE_SPECIFIER_SHORT | TYPE_SPECIFIER_INT:  //short int
-    case TYPE_SPECIFIER_SIGNED | TYPE_SPECIFIER_SHORT | TYPE_SPECIFIER_INT:  //signed short int
-    case TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_SHORT:  //unsigned short 
-    case TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_SHORT | TYPE_SPECIFIER_INT:  //unsigned short int
-    case TYPE_SPECIFIER_INT:  //int
-    case TYPE_SPECIFIER_SIGNED:  //signed
-    case TYPE_SPECIFIER_INT | TYPE_SPECIFIER_SIGNED:  //int signed
-    case TYPE_SPECIFIER_UNSIGNED:  //signed
-    case TYPE_SPECIFIER_INT | TYPE_SPECIFIER_UNSIGNED:  //int unsigned
-    case TYPE_SPECIFIER_LONG:  //long
-    case TYPE_SPECIFIER_SIGNED | TYPE_SPECIFIER_LONG:  //signed long
-    case TYPE_SPECIFIER_LONG | TYPE_SPECIFIER_INT:  //long int
-    case TYPE_SPECIFIER_SIGNED | TYPE_SPECIFIER_LONG | TYPE_SPECIFIER_INT:  //signed long int
-    case TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_LONG:  //unsigned long
-    case TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_LONG | TYPE_SPECIFIER_INT:  //unsigned long int
-    case TYPE_SPECIFIER_LONG_LONG:  //long long
-    case TYPE_SPECIFIER_SIGNED | TYPE_SPECIFIER_LONG_LONG:  //signed long long
-    case TYPE_SPECIFIER_LONG_LONG | TYPE_SPECIFIER_INT:  //long long int
-    case TYPE_SPECIFIER_SIGNED | TYPE_SPECIFIER_LONG_LONG | TYPE_SPECIFIER_INT:  //signed long long
-    case TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_LONG_LONG:  //unsigned long long
-    case TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_LONG_LONG | TYPE_SPECIFIER_INT:  //unsigned long long int
-        // _BitInt constant-expression, or signed _BitInt constant-expression        
+        case TYPE_SPECIFIER_NONE: // void
+        case TYPE_SPECIFIER_VOID: // void
+        case TYPE_SPECIFIER_GCC__BUILTIN_VA_LIST:
+        case TYPE_SPECIFIER_CHAR: // char
+        case TYPE_SPECIFIER_SIGNED | TYPE_SPECIFIER_CHAR: // signed char
+        case TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_CHAR: // unsigned char
+        case TYPE_SPECIFIER_SHORT: // short
+        case TYPE_SPECIFIER_SIGNED | TYPE_SPECIFIER_SHORT: // signed short
+        case TYPE_SPECIFIER_SHORT | TYPE_SPECIFIER_INT: // short int
+        case TYPE_SPECIFIER_SIGNED | TYPE_SPECIFIER_SHORT | TYPE_SPECIFIER_INT: // signed short int
+        case TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_SHORT: // unsigned short
+        case TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_SHORT | TYPE_SPECIFIER_INT: // unsigned short int
+        case TYPE_SPECIFIER_INT: // int
+        case TYPE_SPECIFIER_SIGNED: // signed
+        case TYPE_SPECIFIER_INT | TYPE_SPECIFIER_SIGNED: // int signed
+        case TYPE_SPECIFIER_UNSIGNED: // signed
+        case TYPE_SPECIFIER_INT | TYPE_SPECIFIER_UNSIGNED: // int unsigned
+        case TYPE_SPECIFIER_LONG: // long
+        case TYPE_SPECIFIER_SIGNED | TYPE_SPECIFIER_LONG: // signed long
+        case TYPE_SPECIFIER_LONG | TYPE_SPECIFIER_INT: // long int
+        case TYPE_SPECIFIER_SIGNED | TYPE_SPECIFIER_LONG | TYPE_SPECIFIER_INT: // signed long int
+        case TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_LONG: // unsigned long
+        case TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_LONG | TYPE_SPECIFIER_INT: // unsigned long int
+        case TYPE_SPECIFIER_LONG_LONG: // long long
+        case TYPE_SPECIFIER_SIGNED | TYPE_SPECIFIER_LONG_LONG: // signed long long
+        case TYPE_SPECIFIER_LONG_LONG | TYPE_SPECIFIER_INT: // long long int
+        case TYPE_SPECIFIER_SIGNED | TYPE_SPECIFIER_LONG_LONG | TYPE_SPECIFIER_INT: // signed long long
+        case TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_LONG_LONG: // unsigned long long
+        case TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_LONG_LONG | TYPE_SPECIFIER_INT: // unsigned long long int
+        // _BitInt constant-expression, or signed _BitInt constant-expression
         // unsigned _BitInt constant-expression
-    case TYPE_SPECIFIER_FLOAT:  //float
-    case TYPE_SPECIFIER_DOUBLE:  //double
-    case TYPE_SPECIFIER_LONG | TYPE_SPECIFIER_DOUBLE:  //long double
-    case TYPE_SPECIFIER_DECIMAL32:  //_Decimal32
-    case TYPE_SPECIFIER_DECIMAL64:  //_Decimal64
-    case TYPE_SPECIFIER_DECIMAL128:  //_Decimal128
-    case TYPE_SPECIFIER_BOOL:  //bool
-    case TYPE_SPECIFIER_COMPLEX | TYPE_SPECIFIER_FLOAT:  //complex float
-    case TYPE_SPECIFIER_COMPLEX | TYPE_SPECIFIER_DOUBLE:  //complex double
-    case TYPE_SPECIFIER_LONG | TYPE_SPECIFIER_COMPLEX | TYPE_SPECIFIER_DOUBLE:  //complex long double        
-    case TYPE_SPECIFIER_ATOMIC:  //complex long double
-    case TYPE_SPECIFIER_STRUCT_OR_UNION:  //complex long double
-    case TYPE_SPECIFIER_ENUM:  //complex long double
-    case TYPE_SPECIFIER_TYPEOF:  //typeof        
-    case TYPE_SPECIFIER_TYPEDEF:
+        case TYPE_SPECIFIER_FLOAT: // float
+        case TYPE_SPECIFIER_DOUBLE: // double
+        case TYPE_SPECIFIER_LONG | TYPE_SPECIFIER_DOUBLE: // long double
+        case TYPE_SPECIFIER_DECIMAL32: // _Decimal32
+        case TYPE_SPECIFIER_DECIMAL64: // _Decimal64
+        case TYPE_SPECIFIER_DECIMAL128: // _Decimal128
+        case TYPE_SPECIFIER_BOOL: // bool
+        case TYPE_SPECIFIER_COMPLEX | TYPE_SPECIFIER_FLOAT: // complex float
+        case TYPE_SPECIFIER_COMPLEX | TYPE_SPECIFIER_DOUBLE: // complex double
+        case TYPE_SPECIFIER_LONG | TYPE_SPECIFIER_COMPLEX | TYPE_SPECIFIER_DOUBLE: // complex long double
+        case TYPE_SPECIFIER_ATOMIC: // complex long double
+        case TYPE_SPECIFIER_STRUCT_OR_UNION: // complex long double
+        case TYPE_SPECIFIER_ENUM: // complex long double
+        case TYPE_SPECIFIER_TYPEOF: // typeof
+        case TYPE_SPECIFIER_TYPEDEF:
         break;
-    default:
-        diagnostic(C_ERROR_TWO_OR_MORE_SPECIFIERS, ctx, ctx->current, NULL, "incompatible specifiers");
-        return 1;
+        default:
+            diagnostic(C_ERROR_TWO_OR_MORE_SPECIFIERS, ctx, ctx->current, NULL, "incompatible specifiers");
+            return 1;
     }
 
     return 0;
 }
 
-void declaration_specifiers_delete(struct declaration_specifiers* _Owner _Opt p)
+void declaration_specifiers_delete(_Dtor struct declaration_specifiers* _Owner _Opt p)
 {
     if (p)
     {
@@ -2350,8 +2919,8 @@ void declaration_specifiers_add(struct declaration_specifiers* list, struct decl
     }
     else
     {
-        assert(list->tail != NULL);
-        assert(list->tail->next == NULL);
+        _Assert(list->tail != NULL);
+        _Assert(list->tail->next == NULL);
         list->tail->next = p_item;
     }
     list->tail = p_item;
@@ -2360,16 +2929,16 @@ void declaration_specifiers_add(struct declaration_specifiers* list, struct decl
 struct declaration_specifiers* _Owner _Opt declaration_specifiers(struct parser_ctx* ctx,
     enum storage_class_specifier_flags default_storage_flag)
 {
-    /*
-        declaration-specifiers:
-          declaration-specifier attribute-specifier-sequence_opt
-          declaration-specifier declaration-specifiers
+    /* 
+    * declaration-specifiers:
+    * declaration-specifier attribute-specifier-sequence_opt
+    * declaration-specifier declaration-specifiers
     */
 
-    /*
-     Ao fazer parser do segundo o X ja existe mas ele nao deve ser usado
-     typedef char X;
-     typedef char X;
+    /* 
+    * Ao fazer parser do segundo o X ja existe mas ele nao deve ser usado
+    * typedef char X;
+    * typedef char X;
     */
 
     if (ctx->current == NULL)
@@ -2386,12 +2955,6 @@ struct declaration_specifiers* _Owner _Opt declaration_specifiers(struct parser_
 
         while (first_of_declaration_specifier(ctx))
         {
-            if (ctx->current == NULL)
-            {
-                unexpected_end_of_file(ctx);
-                throw;
-            }
-
             if (ctx->current->flags & TK_FLAG_IDENTIFIER_IS_TYPEDEF)
             {
                 if (p_declaration_specifiers->type_specifier_flags != TYPE_SPECIFIER_NONE)
@@ -2448,6 +3011,16 @@ struct declaration_specifiers* _Owner _Opt declaration_specifiers(struct parser_
                 }
                 else if (p_declaration_specifier->type_specifier_qualifier->type_qualifier)
                 {
+                    if (p_declaration_specifiers->type_qualifier_flags &
+                        p_declaration_specifier->type_specifier_qualifier->type_qualifier->flags)
+                    {
+                        diagnostic(C_ERROR_DUPLICATE_TYPE_QUALIFIER,
+                            ctx,
+                            p_declaration_specifier->type_specifier_qualifier->type_qualifier->token,
+                            NULL,
+                            "same type qualifier used more than once");
+                    }
+
                     p_declaration_specifiers->type_qualifier_flags |= p_declaration_specifier->type_specifier_qualifier->type_qualifier->flags;
                 }
             }
@@ -2462,7 +3035,7 @@ struct declaration_specifiers* _Owner _Opt declaration_specifiers(struct parser_
                 if ((old_flags & STORAGE_SPECIFIER_TYPEDEF && new_flags & STORAGE_SPECIFIER_STATIC) ||
                     (old_flags & STORAGE_SPECIFIER_STATIC && new_flags & STORAGE_SPECIFIER_TYPEDEF))
                 {
-                    /*typedef + static*/
+                    /* typedef + static */
                     diagnostic(C_ERROR_CANNOT_COMBINE_WITH_PREVIOUS_LONG_LONG,
                         ctx,
                         p_declaration_specifier->storage_class_specifier->token,
@@ -2480,18 +3053,16 @@ struct declaration_specifiers* _Owner _Opt declaration_specifiers(struct parser_
                 p_declaration_specifiers->alignment_specifier_flags |= p_declaration_specifier->alignment_specifier->flags;
             }
 
-            declaration_specifiers_add(p_declaration_specifiers, p_declaration_specifier); //lint 33
+            declaration_specifiers_add(p_declaration_specifiers, p_declaration_specifier);
 
             if (p_declaration_specifiers->p_attribute_specifier_sequence == NULL)
             {
                 attribute_specifier_sequence_delete(p_declaration_specifiers->p_attribute_specifier_sequence);
-                p_declaration_specifiers->p_attribute_specifier_sequence = NULL;//
+                p_declaration_specifiers->p_attribute_specifier_sequence = NULL; // 
             }
-
 
             attribute_specifier_sequence_delete(p_declaration_specifiers->p_attribute_specifier_sequence);
             p_declaration_specifiers->p_attribute_specifier_sequence = attribute_specifier_sequence_opt(ctx);
-
 
             if (ctx->current == NULL)
             {
@@ -2505,24 +3076,35 @@ struct declaration_specifiers* _Owner _Opt declaration_specifiers(struct parser_
                 // typedef nao pode aparecer com outro especifier
                 // entao ja tem tem algo e vier identifier signfica que acabou
                 // exemplo
-                /*
-                 typedef char X;
-                 typedef char X;
+                /* 
+                * typedef char X;
+                * typedef char X;
                 */
                 break;
             }
         }
 
-        struct token* _Opt prev = previous_parser_token(ctx->current);
+        struct token* _Opt prev = parser_get_previous_token(ctx);
         if (prev == NULL)
             throw;
 
         p_declaration_specifiers->last_token = prev;
 
         /* int main() { static int i; } -- i is not automatic */
-        final_specifier(ctx, &p_declaration_specifiers->type_specifier_flags);
+        final_specifier( &p_declaration_specifiers->type_specifier_flags);
 
         p_declaration_specifiers->storage_class_specifier_flags |= default_storage_flag;
+
+        if ((default_storage_flag & STORAGE_SPECIFIER_BLOCK_SCOPE) &&
+            (p_declaration_specifiers->storage_class_specifier_flags & STORAGE_SPECIFIER_THREAD_LOCAL) &&
+            !(p_declaration_specifiers->storage_class_specifier_flags & (STORAGE_SPECIFIER_STATIC | STORAGE_SPECIFIER_EXTERN)))
+        {
+            diagnostic(C_ERROR_CANNOT_COMBINE_WITH_PREVIOUS_LONG_LONG,
+                ctx,
+                p_declaration_specifiers->first_token,
+                NULL,
+                "thread_local without static or extern in block scope");
+        }
     }
     catch
     {
@@ -2533,18 +3115,18 @@ struct declaration_specifiers* _Owner _Opt declaration_specifiers(struct parser_
 }
 
 struct declaration* _Owner _Opt declaration_core(struct parser_ctx* ctx,
-    struct attribute_specifier_sequence* _Owner _Opt p_attribute_specifier_sequence /*SINK*/,
+    struct attribute_specifier_sequence* _Owner _Opt p_attribute_specifier_sequence /* SINK */,
     bool can_be_function_definition,
     bool* is_function_definition,
     enum storage_class_specifier_flags default_storage_class_specifier_flags,
     bool without_semicolon)
 {
-    /*
-                                  declaration-specifiers init-declarator-list_opt ;
-     attribute-specifier-sequence declaration-specifiers init-declarator-list ;
-     static_assert-declaration
-     attribute-declaration
-  */
+    /* 
+    * declaration-specifiers init-declarator-list_opt ;
+    * attribute-specifier-sequence declaration-specifiers init-declarator-list ;
+    * static_assert-declaration
+    * attribute-declaration
+    */
 
     struct declaration* _Owner _Opt p_declaration = NULL;
 
@@ -2563,11 +3145,7 @@ struct declaration* _Owner _Opt declaration_core(struct parser_ctx* ctx,
         }
 
         p_declaration->p_attribute_specifier_sequence = p_attribute_specifier_sequence;
-        p_attribute_specifier_sequence = NULL; /*MOVED*/
-
-
-
-
+        p_attribute_specifier_sequence = NULL; /* MOVED */
 
         p_declaration->first_token = ctx->current;
 
@@ -2577,16 +3155,29 @@ struct declaration* _Owner _Opt declaration_core(struct parser_ctx* ctx,
             parser_match(ctx);
             /* empty declaration */
 
-
-
-
             return p_declaration;
         }
 
         if (first_of_static_assertion_declaration(ctx))
         {
             p_declaration->static_assertion = static_assertion(ctx);
-            if (parser_match_tk(ctx, ';') != 0) throw;
+
+            /* 
+            * parser_match_tk_lint, not parser_match_tk: the plain version
+            * drops a trailing `//lint N`, so a suppression written on a
+            * compile_assert line was attached to nothing -- never checked,
+            * never reported as unrecognized, silently ineffective. (The
+            * other static-assertion entry point, static_assert_declaration,
+            * always used the _lint form; this path did not.)
+            */
+            if (p_declaration->static_assertion != NULL)
+            {
+                if (parser_match_tk_lint(ctx, ';', &p_declaration->static_assertion->p_lint_token) != 0) throw;
+            }
+            else
+            {
+                if (parser_match_tk(ctx, ';') != 0) throw;
+            }
         }
         else if (first_of_pragma_declaration(ctx))
         {
@@ -2623,6 +3214,16 @@ struct declaration* _Owner _Opt declaration_core(struct parser_ctx* ctx,
                     if (p_declaration->init_declarator_list.head == NULL)
                         throw;
                 }
+                else if (p_declaration->declaration_specifiers->storage_class_specifier_flags & STORAGE_SPECIFIER_TYPEDEF)
+                {
+                    diagnostic(C_ERROR_TYPEDEF_MISSING_TAG_NAME,
+                        ctx,
+                        p_declaration->declaration_specifiers->first_token ?
+                            p_declaration->declaration_specifiers->first_token :
+                            ctx->current,
+                        NULL,
+                        "'typedef': missing tag name");
+                }
 
                 if (ctx->current == NULL)
                 {
@@ -2636,11 +3237,22 @@ struct declaration* _Owner _Opt declaration_core(struct parser_ctx* ctx,
                 {
                     if (can_be_function_definition)
                         *is_function_definition = true;
+
+                    if (p_declaration->declaration_specifiers->storage_class_specifier_flags & STORAGE_SPECIFIER_TYPEDEF)
+                    {
+                        diagnostic(C_ERROR_TYPEDEF_CANNOT_BE_USED_FOR_FUNCTION_DEFINITION,
+                            ctx,
+                            p_declaration->init_declarator_list.head ?
+                                p_declaration->init_declarator_list.head->p_declarator->first_token_opt :
+                                ctx->current,
+                            NULL,
+                            "typedef cannot be used for function definition");
+                    }
                 }
 #if EXPERIMENTAL_CONTRACTS
                 else if (ctx->current->type == TK_KEYWORD_TRUE ||
-                         ctx->current->type == TK_KEYWORD_FALSE ||
-                         ctx->current->type == TK_IDENTIFIER)
+                    ctx->current->type == TK_KEYWORD_FALSE ||
+                    ctx->current->type == TK_IDENTIFIER)
                 {
                     if (can_be_function_definition)
                         *is_function_definition = true;
@@ -2652,6 +3264,16 @@ struct declaration* _Owner _Opt declaration_core(struct parser_ctx* ctx,
                     if (!without_semicolon && parser_match_tk_lint(ctx, ';', &p_declaration->lint_token) != 0)
                         throw;
                 }
+            }
+            else if (ctx->current->type == '{' &&
+                !(default_storage_class_specifier_flags & STORAGE_SPECIFIER_BLOCK_SCOPE))
+            {
+                diagnostic(C_ERROR_UNEXPECTED_TOKEN,
+                    ctx,
+                    ctx->current,
+                    NULL,
+                    "found '{' at file scope (missing function header?)");
+                throw;
             }
             else
             {
@@ -2670,10 +3292,29 @@ struct declaration* _Owner _Opt declaration_core(struct parser_ctx* ctx,
                 parser_match(ctx); // we need to go ahead
             }
         }
-
-        if (p_declaration->lint_token) //lint 28 bug out
+        if (p_declaration->last_token == NULL)
         {
-            check_compiler_dianostic_suppression(ctx, p_declaration->lint_token); //lint 35
+            struct token* _Opt p_previous_token = parser_get_previous_token(ctx);
+            if (p_previous_token == NULL) throw;
+            p_declaration->last_token = p_previous_token;
+        }
+
+        if (p_declaration->lint_token)
+        {
+            check_compiler_dianostic_suppression(ctx, p_declaration->lint_token);
+        }
+        else if (p_declaration->static_assertion && p_declaration->static_assertion->p_lint_token)
+        {
+            /* The static_assertion branch above captures its `//lint N` into
+            * static_assertion->p_lint_token, a separate field from
+            * p_declaration->lint_token (which only the plain-declaration
+            * branch sets). Without this, a lint comment on a static_assert
+            * at this entry point was captured but never checked -- the
+            * same bug the comment above parser_match_tk_lint already
+            * documents as fixed here, but the fix only wired up capture,
+            * not the suppression check itself.
+            */
+            check_compiler_dianostic_suppression(ctx, p_declaration->static_assertion->p_lint_token);
         }
     }
     catch
@@ -2697,17 +3338,17 @@ struct declaration* _Owner _Opt function_definition_or_declaration(struct parser
     struct attribute_specifier_sequence* _Owner _Opt p_attribute_specifier_sequence = attribute_specifier_sequence_opt(ctx);
 
     return declaration(ctx, p_attribute_specifier_sequence, STORAGE_SPECIFIER_NONE, true);
-    /*
-     function-definition:
-        attribute-specifier-sequence opt declaration-specifiers declarator function-body
+    /* 
+    * function-definition:
+    * attribute-specifier-sequence opt declaration-specifiers declarator function-body
     */
 
-    /*
-      declaration:
-        declaration-specifiers                              init-declarator-list opt ;
-        attribute-specifier-sequence declaration-specifiers init-declarator-list ;
-        static_assert-declaration
-        attribute-declaration
+    /* 
+    * declaration:
+    * declaration-specifiers                              init-declarator-list opt ;
+    * attribute-specifier-sequence declaration-specifiers init-declarator-list ;
+    * static_assert-declaration
+    * attribute-declaration
     */
 
 }
@@ -2725,10 +3366,10 @@ struct simple_declaration* _Owner _Opt simple_declaration(struct parser_ctx* ctx
     }
 
     enum storage_class_specifier_flags storage_specifier_flags = STORAGE_SPECIFIER_BLOCK_SCOPE;
-    /*
-      simple-declaration:
-      declaration-specifiers init-declarator-list _Opt ;
-      attribute-specifier-sequence declaration-specifiers init-declarator-list ;
+    /* 
+    * simple-declaration:
+    * declaration-specifiers init-declarator-list _Opt ;
+    * attribute-specifier-sequence declaration-specifiers init-declarator-list ;
     */
 
     struct simple_declaration* _Owner _Opt p_simple_declaration = calloc(1, sizeof(struct simple_declaration));
@@ -2741,7 +3382,7 @@ struct simple_declaration* _Owner _Opt simple_declaration(struct parser_ctx* ctx
         p_simple_declaration->first_token = ctx->current;
 
         p_simple_declaration->p_attribute_specifier_sequence = p_attribute_specifier_sequence;
-        p_attribute_specifier_sequence = NULL; /*MOVED*/
+        p_attribute_specifier_sequence = NULL; /* MOVED */
 
         struct declaration_specifiers* _Owner _Opt ptemp = declaration_specifiers(ctx, storage_specifier_flags);
         if (ptemp == NULL) throw;
@@ -2756,16 +3397,16 @@ struct simple_declaration* _Owner _Opt simple_declaration(struct parser_ctx* ctx
 
         p_simple_declaration->init_declarator_list = init_declarator_list(ctx, p_simple_declaration->p_declaration_specifiers);
 
+        struct token* _Opt prev = parser_get_previous_token(ctx);
+        if (prev == NULL) throw;
+
+        p_simple_declaration->last_token = prev;
+
         if (ctx->current == NULL)
         {
             unexpected_end_of_file(ctx);
             throw;
         }
-
-        struct token* _Opt prev = previous_parser_token(ctx->current);
-        if (prev == NULL) throw;
-
-        p_simple_declaration->last_token = prev;
 
         if (!ignore_semicolon)
         {
@@ -2784,19 +3425,109 @@ struct simple_declaration* _Owner _Opt simple_declaration(struct parser_ctx* ctx
     return p_simple_declaration;
 }
 
-static void check_unused_parameters(struct parser_ctx* ctx, struct parameter_list* parameter_list)
+static bool declarator_is_set_but_not_used(const struct declarator* p_declarator)
+{
+    return p_declarator->num_writes > 0 &&
+        p_declarator->num_uses == p_declarator->num_writes &&
+        !p_declarator->address_taken &&
+        !type_is_maybe_unused(&p_declarator->type) &&
+        !(p_declarator->type.type_qualifier_flags & TYPE_QUALIFIER_VOLATILE);
+}
+
+static bool param_pointee_is_const(const struct type* p_type)
+{
+    struct type pointee = type_is_array(p_type)
+        ? get_array_item_type(p_type)
+        : type_remove_pointer(p_type);
+
+    bool is_const = type_is_const(&pointee);
+
+    while (!is_const && type_is_array(&pointee))
+    {
+        struct type item = get_array_item_type(&pointee);
+        type_destroy(&pointee);
+        pointee = item;
+        is_const = type_is_const(&pointee);
+    }
+
+    type_destroy(&pointee);
+    return is_const;
+}
+
+static void check_const_candidate_parameters(const struct parser_ctx* ctx, struct parameter_list* parameter_list)
+{
+    struct parameter_declaration* _Opt parameter = parameter_list->head;
+
+    while (parameter)
+    {
+        const struct declarator* _Opt p_declarator = parameter->declarator;
+
+        if (p_declarator == NULL ||
+            p_declarator->name_opt == NULL ||
+            p_declarator->name_opt->level != 0 /* direct source */)
+        {
+            parameter = parameter->next;
+            continue;
+        }
+
+        const struct type* const p_type = &p_declarator->type;
+
+        const bool is_candidate =
+            (type_is_pointer(p_type) || type_is_array(p_type)) &&
+
+            /* already const, nothing to suggest */
+            !param_pointee_is_const(p_type) &&
+
+            /* pointer to function: `const` on the pointee means nothing */
+            !type_is_function_or_function_pointer(p_type) &&
+
+            /* 
+            * _Out/_Dtor/_Clear all write the pointee BY CONTRACT, and an
+            * _Owner pointer hands the whole object over -- suggesting const
+            * for any of them would contradict the annotation.
+            */
+            !type_is_pointed_void(p_type) &&
+            !type_is_pointed_out(p_type) &&
+            !type_is_pointed_dtor(p_type) &&
+            !type_is_pointed_clear(p_type) &&
+            !type_is_owner(p_type) &&
+
+            /* 
+            * An unreferenced parameter is W_UNUSED_PARAMETER's business;
+            * suggesting const for one is noise on top of noise.
+            */
+            p_declarator->num_uses != 0 &&
+
+            p_declarator->pointee_used &&
+            !p_declarator->pointee_written &&
+            !p_declarator->pointee_escaped;
+
+        if (is_candidate)
+        {
+            diagnostic(W_PARAM_COULD_BE_CONST,
+                ctx,
+                p_declarator->name_opt, NULL,            
+                "'%s' is never written through; the pointed object could be const",
+                p_declarator->name_opt->lexeme);
+        }
+
+        parameter = parameter->next;
+    }
+}
+
+static void check_unused_parameters(const struct parser_ctx* ctx, struct parameter_list* parameter_list)
 {
     struct parameter_declaration* _Opt parameter = NULL;
     parameter = parameter_list->head;
 
     while (parameter)
     {
-        if (!type_is_maybe_unused(&parameter->declarator->type) &&
-            parameter->declarator &&
+        if (parameter->declarator &&
+            !type_is_maybe_unused(&parameter->declarator->type) &&
             parameter->declarator->num_uses == 0)
         {
             if (parameter->declarator->name_opt &&
-                parameter->declarator->name_opt->level == 0 /*direct source*/
+                parameter->declarator->name_opt->level == 0 /* direct source */
                 )
             {
                 diagnostic(W_UNUSED_PARAMETER,
@@ -2806,7 +3537,54 @@ static void check_unused_parameters(struct parser_ctx* ctx, struct parameter_lis
                     parameter->declarator->name_opt->lexeme);
             }
         }
+        else if (parameter->declarator &&
+            parameter->declarator->name_opt &&
+            parameter->declarator->name_opt->level == 0 /* direct source */ &&
+            declarator_is_set_but_not_used(parameter->declarator))
+        {
+            /* 
+            * The caller already gave this parameter a value, so assigning to
+            * it and never reading it back means the assignment is dead.
+            */
+            diagnostic(W_PARAM_SET_BUT_NOT_USED,
+                ctx,
+                parameter->declarator->name_opt, NULL,
+                "'%s': parameter set but not used",
+                parameter->declarator->name_opt->lexeme);
+        }
         parameter = parameter->next;
+    }
+}
+
+void check_function_types_complete(struct parser_ctx* ctx, struct declarator* funcdecl)
+{
+    _Assert(funcdecl->type.category == TYPE_CATEGORY_FUNCTION);
+
+    struct token* _Opt diagtok = NULL;
+    if (funcdecl->name_opt)
+        diagtok = funcdecl->name_opt;
+    else if (funcdecl->first_token_opt)
+        diagtok = funcdecl->first_token_opt;
+    else
+        diagtok = ctx->current;
+
+    struct type return_type = get_function_return_type(&funcdecl->type);
+    const bool return_type_is_incomplete = type_is_incomplete(&return_type);
+    type_destroy(&return_type);
+
+    if (return_type_is_incomplete)
+    {
+        diagnostic(C_ERROR_STRUCT_IS_INCOMPLETE, ctx, diagtok, NULL, "function has incomplete return type");
+    }
+
+    struct param* _Opt param = funcdecl->type.params.head;
+    while (param)
+    {
+        if (type_is_incomplete(&param->type))
+        {
+            diagnostic(C_ERROR_STRUCT_IS_INCOMPLETE, ctx, diagtok, NULL, "function has incomplete parameter type");
+        }
+        param = param->next;
     }
 }
 
@@ -2826,16 +3604,13 @@ struct declaration* _Owner _Opt declaration(struct parser_ctx* ctx,
             throw;
         }
 
-
         bool is_function_definition = false;
 
         p_declaration = declaration_core(ctx, p_attribute_specifier_sequence, true, &is_function_definition, storage_specifier_flags, false);
-        p_attribute_specifier_sequence = NULL;  //MOVED
+        p_attribute_specifier_sequence = NULL; // MOVED
 
         if (p_declaration == NULL)
             throw;
-
-
 
         if (is_function_definition)
         {
@@ -2845,12 +3620,12 @@ struct declaration* _Owner _Opt declaration(struct parser_ctx* ctx,
                 p_declaration->init_declarator_list.head->p_declarator->direct_declarator->function_declarator == NULL)
             {
                 diagnostic(C_ERROR_UNEXPECTED, ctx, ctx->current, NULL, "unexpected");
-                throw; //unexpected
+                throw; // unexpected
             }
 
             if (storage_specifier_flags & STORAGE_SPECIFIER_BLOCK_SCOPE)
             {
-                assert(p_declaration->declaration_specifiers != NULL);
+                _Assert(p_declaration->declaration_specifiers != NULL);
                 if (!(p_declaration->declaration_specifiers->storage_class_specifier_flags & STORAGE_SPECIFIER_STATIC))
                 {
                     diagnostic(C_ERROR_UNEXPECTED, ctx, p_declaration->first_token,
@@ -2859,24 +3634,21 @@ struct declaration* _Owner _Opt declaration(struct parser_ctx* ctx,
                 }
             }
 
-
             struct declarator* p_declarator =
                 p_declaration->init_declarator_list.head->p_declarator;
 
+            // ctx->p_current_function_opt = p_declaration->init_declarator_list.head->p_declarator;
 
-            //ctx->p_current_function_opt = p_declaration->init_declarator_list.head->p_declarator;
-
-            /*
-                scope of parameters is the inner declarator
-
-                void (*f(int i))(void) {
-                    i = 1;
-                    return 0;
-                }
+            /* 
+            * scope of parameters is the inner declarator
+            * 
+            * void (*f(int i))(void) {
+            * i = 1;
+            * return 0;
+            * }
             */
 
-            assert(p_declaration->init_declarator_list.head != NULL); //because functions definitions have names
-
+            _Assert(p_declaration->init_declarator_list.head != NULL); // because functions definitions have names
 
             if (ctx->current == NULL)
             {
@@ -2890,16 +3662,10 @@ struct declaration* _Owner _Opt declaration(struct parser_ctx* ctx,
             {
                 naming_convention_function(ctx, p_declarator->name_opt);
             }
-
-            if (ctx->current == NULL)
-            {
-                unexpected_end_of_file(ctx);
-                throw;
-
-            }
+            
             struct declarator* _Opt p_current_function_opt = ctx->p_current_function_opt;
             ctx->p_current_function_opt = p_declarator;
-
+            type_set_current_function_for_own_params(&p_declarator->type, p_declarator);
 
             if (p_declarator->name_opt == NULL)
             {
@@ -2911,10 +3677,13 @@ struct declaration* _Owner _Opt declaration(struct parser_ctx* ctx,
                 throw;
             }
 
+            check_function_types_complete(ctx, p_declarator);
+
             struct function_declarator* _Opt pfuncdecl = declarator_find_function_declarator(p_declarator);
             if (pfuncdecl == NULL) throw;
 
             struct scope* parameters_scope = &pfuncdecl->parameters_scope;
+            scope_set_current_function_for_own_params(parameters_scope, p_declarator);
             scope_list_push(&ctx->scopes, parameters_scope);
 
             struct scope* _Opt p_current_function_scope_opt = ctx->p_current_function_scope_opt;
@@ -2929,57 +3698,68 @@ struct declaration* _Owner _Opt declaration(struct parser_ctx* ctx,
             if (p_function_body == NULL)
                 throw;
 
-            assert(p_declaration->function_body == NULL);
+            _Assert(p_declaration->function_body == NULL);
             p_declaration->function_body = p_function_body;
             p_declaration->init_declarator_list.head->p_declarator->function_body = p_declaration->function_body;
 
-            if (p_declaration->init_declarator_list.head &&
-                p_declaration->init_declarator_list.head->p_declarator->direct_declarator &&
-                p_declaration->init_declarator_list.head->p_declarator->direct_declarator->function_declarator &&
-                p_declaration->init_declarator_list.head->p_declarator->direct_declarator->function_declarator->parameter_type_list_opt &&
-                p_declaration->init_declarator_list.head->p_declarator->direct_declarator->function_declarator->parameter_type_list_opt->parameter_list) //lint 28 (reduntant check)
+            struct init_declarator* _Opt p_first_init_declarator = p_declaration->init_declarator_list.head;
+
+            struct function_declarator* _Opt p_function_declarator = NULL;
+            if (p_first_init_declarator &&
+                p_first_init_declarator->p_declarator->direct_declarator)
             {
-                check_unused_parameters(ctx, p_declaration->init_declarator_list.head->p_declarator->direct_declarator->function_declarator->parameter_type_list_opt->parameter_list);
+                p_function_declarator = p_first_init_declarator->p_declarator->direct_declarator->function_declarator;
             }
 
-            if (p_declaration->function_body) //lint 28 (redundate check)
+            if (p_function_declarator &&
+                p_function_declarator->parameter_type_list_opt)
             {
-                /*
-                   Now we have the function body, let's see if we had a previous
-                   function body.
-                */
-                const char* func_name = p_declaration->init_declarator_list.head->p_declarator->name_opt ?
-                    p_declaration->init_declarator_list.head->p_declarator->name_opt->lexeme : "";
+                struct parameter_list* _Opt p_parameter_list =
+                    p_function_declarator->parameter_type_list_opt->parameter_list;
 
-                struct scope* _Opt p_previous_scope = NULL;
-                struct declarator* _Opt p_previous_declarator = find_declarator(ctx, func_name, &p_previous_scope);
-                if (p_previous_declarator && p_previous_declarator != p_declaration->init_declarator_list.head->p_declarator)
+                if (p_parameter_list)
                 {
-                    p_previous_declarator->p_complete_declarator = p_declaration->init_declarator_list.head->p_declarator;
+                    check_unused_parameters(ctx, p_parameter_list);
+                    check_const_candidate_parameters(ctx, p_parameter_list);
+                }
+            }
 
-                    struct scope* _Opt p_current_scope = ctx->scopes.tail;
-                    if (p_current_scope == p_previous_scope) //same function
+            /* function_body was just assigned non-null above, after a throw on NULL. */
+            /* 
+            * Now we have the function body, let's see if we had a previous
+            * function body.
+            */
+            const char* func_name = p_declaration->init_declarator_list.head->p_declarator->name_opt ?
+                p_declaration->init_declarator_list.head->p_declarator->name_opt->lexeme : "";
+
+            struct scope* _Opt p_previous_scope = NULL;
+            struct declarator* _Opt p_previous_declarator = find_declarator(ctx, func_name, &p_previous_scope);
+            if (p_previous_declarator && p_previous_declarator != p_declaration->init_declarator_list.head->p_declarator)
+            {
+                p_previous_declarator->p_complete_declarator = p_declaration->init_declarator_list.head->p_declarator;
+
+                struct scope* _Opt p_current_scope = ctx->scopes.tail;
+                if (p_current_scope == p_previous_scope) // same function
+                {
+                    if (p_previous_declarator->function_body)
                     {
-                        if (p_previous_declarator->function_body)
-                        {
-                            diagnostic(
-                                 C_ERROR_REDECLARATION,
-                                 ctx,
-                                 p_declaration->init_declarator_list.head->p_declarator->name_opt,
-                                 NULL,
-                                 "function redefinition");
+                        diagnostic(
+                            C_ERROR_REDECLARATION,
+                            ctx,
+                            p_declaration->init_declarator_list.head->p_declarator->name_opt,
+                            NULL,
+                            "function redefinition");
 
-                            diagnostic(W_LOCATION,
-                                ctx,
-                                p_previous_declarator->name_opt,
-                                NULL,
-                                "previous definition");
-                        }
-                        else
-                        {
-                            //If we want to point the the declarator that has the function body
-                            //previous->p_declarator_with_function_body = p_declaration->init_declarator_list.head->p_declarator;
-                        }
+                        diagnostic(W_LOCATION,
+                            ctx,
+                            p_previous_declarator->name_opt,
+                            NULL,
+                            "previous definition");
+                    }
+                    else
+                    {
+                        // If we want to point the the declarator that has the function body
+                        // previous->p_declarator_with_function_body = p_declaration->init_declarator_list.head->p_declarator;
                     }
                 }
             }
@@ -2991,15 +3771,6 @@ struct declaration* _Owner _Opt declaration(struct parser_ctx* ctx,
                 defer_visit_ctx_destroy(&ctx2);
             }
 
-        }
-        else
-        {
-            if (ctx->options.flow_analysis && extern_declaration)
-            {
-                struct flow1_visit_ctx ctx2 = { .ctx = ctx };
-                flow1_start_visit_declaration(&ctx2, p_declaration);
-                flow1_visit_ctx_destroy(&ctx2);
-            }
         }
 
         if (p_declaration->function_body &&
@@ -3014,13 +3785,13 @@ struct declaration* _Owner _Opt declaration(struct parser_ctx* ctx,
         p_declaration = NULL;
     }
 
-    assert(p_attribute_specifier_sequence == NULL);
+    _Assert(p_attribute_specifier_sequence == NULL);
     attribute_specifier_sequence_delete(p_attribute_specifier_sequence);
     return p_declaration;
 
 }
 
-//(6.7) declaration-specifiers:
+// (6.7) declaration-specifiers:
 // declaration-specifier attribute-specifier-sequenceopt
 // declaration-specifier declaration-specifiers
 
@@ -3032,16 +3803,16 @@ void declaration_specifier_delete(struct declaration_specifier* _Owner _Opt p)
         type_specifier_qualifier_delete(p->type_specifier_qualifier);
         storage_class_specifier_delete(p->storage_class_specifier);
         alignment_specifier_delete(p->alignment_specifier);
-        assert(p->next == NULL);
+        _Assert(p->next == NULL);
         free(p);
     }
 }
 
 struct declaration_specifier* _Owner _Opt declaration_specifier(struct parser_ctx* ctx)
 {
-    //    storage-class-specifier
-    //    type-specifier-qualifier
-    //    function-specifier
+    // storage-class-specifier
+    // type-specifier-qualifier
+    // function-specifier
 
     struct declaration_specifier* _Owner _Opt p_declaration_specifier = NULL;
     try
@@ -3097,13 +3868,67 @@ void init_declarator_delete(struct init_declarator* _Owner _Opt p)
 
         initializer_delete(p->initializer);
         declarator_delete(p->p_declarator);
-        assert(p->next == NULL);
+        _Assert(p->next == NULL);
         free(p);
     }
 }
 
 static bool declarator_has_vm_type(const struct declarator* p_declarator);
 
+static void type_set_current_function_for_own_params(struct type* p_type, struct declarator* p_new_owner)
+{
+    struct type* _Opt p = p_type;
+
+    while (p)
+    {
+        switch (p->category)
+        {
+            case TYPE_CATEGORY_ARRAY:
+                if (p->p_current_function_opt)
+                {
+                    p->p_current_function_opt = p_new_owner;
+                }
+            break;
+
+            case TYPE_CATEGORY_FUNCTION:
+            {
+                struct param* _Opt p_param_entry = p->params.head;
+
+                while (p_param_entry)
+                {
+                    type_set_current_function_for_own_params(&p_param_entry->type, p_new_owner);
+                    p_param_entry = p_param_entry->next;
+                }
+            }
+            break;
+
+            case TYPE_CATEGORY_ITSELF:
+            case TYPE_CATEGORY_POINTER:
+            break;
+        }
+
+        p = p->next;
+    }
+}
+
+
+static void scope_set_current_function_for_own_params(const struct scope* p_parameters_scope, struct declarator* p_new_owner)
+{
+    for (int i = 0; i < p_parameters_scope->variables.capacity; i++)
+    {
+        struct map_entry* _Opt p_entry = p_parameters_scope->variables.table ? p_parameters_scope->variables.table[i] : NULL;
+
+        while (p_entry)
+        {
+            if (p_entry->type == TAG_TYPE_DECLARATOR && p_entry->data.p_declarator)
+            {
+                type_set_current_function_for_own_params(&p_entry->data.p_declarator->type, p_new_owner);
+            }
+
+            p_entry = p_entry->next;
+        }
+    }
+}
 
 static bool trying_to_use_vm_type_from_enclosing_function(const struct type* p_type, struct declarator* p_function)
 {
@@ -3113,48 +3938,48 @@ static bool trying_to_use_vm_type_from_enclosing_function(const struct type* p_t
     {
         switch (p->category)
         {
-        case TYPE_CATEGORY_ARRAY:
-            if (p->array_num_elements > 0)
-            {
-                /* constant size */
-            }
-            else if (p->p_array_num_elements_expression == NULL)
-            {
-                /* int [] */
-            }
-            else if (p->array_num_elements == 0 &&
-                     object_is_zero(&p->p_array_num_elements_expression->object))
-            {
-                /* not VM, int [0] , accepted in many compilers*/
-            }
-            else
-            {
-                if (p->p_current_function_opt &&
-                    p->p_current_function_opt != p_function)
+            case TYPE_CATEGORY_ARRAY:
+                if (p->array_num_elements > 0)
                 {
-                    return true;
+                    /* constant size */
                 }
-                /* VM, int [expression] */
-                //return true;
+                else if (p->p_array_num_elements_expression == NULL)
+                {
+                    /* int [] */
+                }
+                else if (p->array_num_elements == 0 &&
+                object_is_zero(&p->p_array_num_elements_expression->object))
+                {
+                    /* not VM, int [0] , accepted in many compilers */
+                }
+                else
+                {
+                    if (p->p_current_function_opt &&
+                    p->p_current_function_opt != p_function)
+                    {
+                        return true;
+                    }
+                    /* VM, int [expression] */
+                    // return true;
+                }
+            break;
+
+            case TYPE_CATEGORY_FUNCTION:
+            {
+                struct param* _Opt pa = p->params.head;
+
+                while (pa)
+                {
+                    if (trying_to_use_vm_type_from_enclosing_function(&pa->type, p_function))
+                        return true;
+
+                    pa = pa->next;
+                }
             }
             break;
 
-        case TYPE_CATEGORY_FUNCTION:
-        {
-            struct param* _Opt pa = p->params.head;
-
-            while (pa)
-            {
-                if (trying_to_use_vm_type_from_enclosing_function(&pa->type, p_function))
-                    return true;
-
-                pa = pa->next;
-            }
-        }
-        break;
-
-        case TYPE_CATEGORY_ITSELF:
-        case TYPE_CATEGORY_POINTER:
+            case TYPE_CATEGORY_ITSELF:
+            case TYPE_CATEGORY_POINTER:
             break;
         }
 
@@ -3166,10 +3991,10 @@ static bool trying_to_use_vm_type_from_enclosing_function(const struct type* p_t
 struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
     struct declaration_specifiers* p_declaration_specifiers)
 {
-    /*
-     init-declarator:
-       declarator
-       declarator = initializer
+    /* 
+    * init-declarator:
+    * declarator
+    * declarator = initializer
     */
 
     struct init_declarator* _Owner _Opt p_init_declarator = NULL;
@@ -3188,7 +4013,7 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
                 false,
                 &tkname);
             if (p_temp_declarator == NULL) throw;
-            assert(p_init_declarator->p_declarator == NULL);
+            _Assert(p_init_declarator->p_declarator == NULL);
             p_init_declarator->p_declarator = p_temp_declarator;
         }
 
@@ -3202,36 +4027,51 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
         p_init_declarator->p_declarator->name_opt = tkname;
 
         if (
-             (p_init_declarator->p_declarator->declaration_specifiers->storage_class_specifier_flags & STORAGE_SPECIFIER_AUTO) &&
-             (p_init_declarator->p_declarator->declaration_specifiers->type_specifier_flags == 0)
+            (p_init_declarator->p_declarator->declaration_specifiers->storage_class_specifier_flags & STORAGE_SPECIFIER_AUTO) &&
+            (p_init_declarator->p_declarator->declaration_specifiers->type_specifier_flags == 0)
             )
         {
-            /*
-              auto requires we find the type after initializer
+            /* 
+            * auto requires we find the type after initializer
             */
         }
         else
         {
-            assert(p_init_declarator->p_declarator->type.type_specifier_flags == 0);
-            p_init_declarator->p_declarator->type = make_type_using_declarator(ctx, p_init_declarator->p_declarator);
+            _Assert(p_init_declarator->p_declarator->type.type_specifier_flags == 0);
+            /* Through a temporary: make_type_using_declarator takes the
+            * declarator non-const and can write its ->type, so assigning
+            * the result straight back onto ->type would overwrite -- and
+            * leak -- whatever the callee had already stored there.
+            */
+            struct type t = make_type_using_declarator(ctx, p_init_declarator->p_declarator);
+            type_swap(&p_init_declarator->p_declarator->type, &t);
+            type_destroy(&t);
         }
 
-        assert(p_init_declarator->p_declarator->declaration_specifiers != NULL);
+        _Assert(p_init_declarator->p_declarator->declaration_specifiers != NULL);
 
-        assert(ctx->scopes.tail != NULL);
+        if (type_is_void(&p_init_declarator->p_declarator->type) &&
+            !(p_init_declarator->p_declarator->declaration_specifiers->storage_class_specifier_flags & STORAGE_SPECIFIER_TYPEDEF))
+        {
+            diagnostic(C_ERROR_ILLEGAL_USE_OF_TYPE_VOID,
+                ctx,
+                tkname,
+                NULL,
+                "this use of 'void' is not valid");
+        }
 
-        /*
-          Checking naming conventions
+        _Assert(ctx->scopes.tail != NULL);
+
+        /* 
+        * Checking naming conventions
         */
         if (ctx->scopes.tail->scope_level == 0)
         {
             naming_convention_global_var(ctx,
-                tkname,
-                &p_init_declarator->p_declarator->type,
-                p_init_declarator->p_declarator->declaration_specifiers->storage_class_specifier_flags);
+                tkname);
         }
 
-        /////////////////////////////////////////////////////////////////////////////
+        // ///////////////////////////////////////////////////////////////////////////
         const char* declarator_name = p_init_declarator->p_declarator->name_opt ? p_init_declarator->p_declarator->name_opt->lexeme : "";
 
         struct scope* _Opt out_scope = NULL;
@@ -3239,20 +4079,42 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
         if (p_previous_declarator)
         {
             p_init_declarator->p_declarator->p_complete_declarator = p_previous_declarator;
-            assert(out_scope != NULL);
-            assert(ctx->scopes.tail != NULL);
+            _Assert(out_scope != NULL);
+            _Assert(ctx->scopes.tail != NULL);
 
             if (out_scope->scope_level == ctx->scopes.tail->scope_level)
             {
                 if (out_scope->scope_level == 0)
                 {
-                    /*
-                    __C_ASSERT__ is failing..maybe because __builtin_offsetof is not implemented
+                    /* 
+                    * __C_ASSERT__ is failing..maybe because __builtin_offsetof is not implemented
                     */
                     if (strcmp(declarator_name, "__C_ASSERT__") != 0)
                     {
+                        const bool previous_is_typedef =
+                            p_previous_declarator->declaration_specifiers != NULL &&
+                            (p_previous_declarator->declaration_specifiers->storage_class_specifier_flags & STORAGE_SPECIFIER_TYPEDEF) != 0;
+                        const bool current_is_typedef =
+                            p_init_declarator->p_declarator->declaration_specifiers != NULL &&
+                            (p_init_declarator->p_declarator->declaration_specifiers->storage_class_specifier_flags & STORAGE_SPECIFIER_TYPEDEF) != 0;
+
+                        if (previous_is_typedef != current_is_typedef)
+                        {
+                            diagnostic(
+                                C_ERROR_REDEFINITION_CANNOT_BE_OVERLOADED_WITH_TYPEDEF,
+                                ctx,
+                                ctx->current,
+                                NULL,
+                                "'%s': redefinition; symbol cannot be overloaded with a typedef", declarator_name);
+
+                            diagnostic(W_LOCATION,
+                                ctx,
+                                p_previous_declarator->name_opt,
+                                NULL,
+                                "previous declaration");
+                        }
                         /* TODO: type_is_same needs changes, see issue #164 */
-                        if (!type_is_same(&p_previous_declarator->type, &p_init_declarator->p_declarator->type, false))
+                        else if (!type_is_same(&p_previous_declarator->type, &p_init_declarator->p_declarator->type, false))
                         {
                             struct osstream ss = { 0 };
                             print_type_no_names(&ss, &p_previous_declarator->type, ctx->options.target);
@@ -3280,7 +4142,7 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
                 {
                     if (type_is_function(&p_init_declarator->p_declarator->type))
                     {
-                        //functions can be redeclared (they cannot be redefined, but then we check in another place)
+                        // functions can be redeclared (they cannot be redefined, but then we check in another place)
                     }
                     else
                     {
@@ -3291,26 +4153,51 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
                     }
                 }
 
+                /* 
+                * An array parameter is adjusted to a pointer (6.7.6.3), so a
+                * different size does not make the types different - but the
+                * sizes were probably meant to agree. A function can be
+                * redeclared in any scope, so this is checked outside the
+                * file-scope branch above.
+                */
+                if (type_has_different_array_parameter_size(&p_previous_declarator->type,
+                    &p_init_declarator->p_declarator->type) &&
+                    type_is_same(&p_previous_declarator->type, &p_init_declarator->p_declarator->type, false))
+                {
+                    if (diagnostic(W_ARRAY_SIZE,
+                        ctx,
+                        ctx->current,
+                        NULL,
+                        "'%s' declared with array parameter of different size", declarator_name))
+                    {
+                        diagnostic(W_LOCATION,
+                            ctx,
+                            p_previous_declarator->name_opt,
+                            NULL,
+                            "previous declaration");
+                    }
+                }
+
                 if (type_is_function(&p_init_declarator->p_declarator->type))
                 {
                     if (type_is_function(&p_previous_declarator->type))
                     {
-                        assert(p_previous_declarator->declaration_specifiers != NULL);
+                        _Assert(p_previous_declarator->declaration_specifiers != NULL);
 
                         if (!(p_previous_declarator->declaration_specifiers->storage_class_specifier_flags & STORAGE_SPECIFIER_STATIC) &&
-                             (p_init_declarator->p_declarator->declaration_specifiers->storage_class_specifier_flags & STORAGE_SPECIFIER_STATIC)
+                            (p_init_declarator->p_declarator->declaration_specifiers->storage_class_specifier_flags & STORAGE_SPECIFIER_STATIC)
                             )
                         {
-                            /*
-                              void f();
-                              static void f();
+                            /* 
+                            * void f();
+                            * static void f();
                             */
 
                             diagnostic(C_ERROR_REDECLARATION,
-                                                ctx,
-                                                ctx->current,
-                                                NULL,
-                                                "static declaration of 'f' follows non-static declaration", declarator_name);
+                                ctx,
+                                ctx->current,
+                                NULL,
+                                "static declaration of 'f' follows non-static declaration", declarator_name);
 
                             diagnostic(W_LOCATION,
                                 ctx,
@@ -3318,6 +4205,32 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
                                 NULL,
                                 "previous declaration");
                         }
+                    }
+                }
+                else
+                {
+                    _Assert(p_previous_declarator->declaration_specifiers != NULL);
+
+                    if (!(p_previous_declarator->declaration_specifiers->storage_class_specifier_flags & STORAGE_SPECIFIER_STATIC) &&
+                        (p_init_declarator->p_declarator->declaration_specifiers->storage_class_specifier_flags & STORAGE_SPECIFIER_STATIC)
+                        )
+                    {
+                        /* 
+                        * extern int shared_counter;
+                        * static int shared_counter;
+                        */
+
+                        diagnostic(C_ERROR_REDECLARATION,
+                            ctx,
+                            ctx->current,
+                            NULL,
+                            "static declaration of '%s' follows non-static declaration", declarator_name);
+
+                        diagnostic(W_LOCATION,
+                            ctx,
+                            p_previous_declarator->name_opt,
+                            NULL,
+                            "previous declaration");
                     }
                 }
             }
@@ -3328,11 +4241,25 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
                 hashmap_set(&ctx->scopes.tail->variables, declarator_name, &item);
                 hash_item_set_destroy(&item);
 
-                /* no warning at global scope */
-                if (out_scope->scope_level != 0)
+                const bool previous_is_typedef =
+                    p_previous_declarator->declaration_specifiers != NULL &&
+                    (p_previous_declarator->declaration_specifiers->storage_class_specifier_flags & STORAGE_SPECIFIER_TYPEDEF) != 0;
+                const bool current_is_typedef =
+                    p_init_declarator->p_declarator->declaration_specifiers != NULL &&
+                    (p_init_declarator->p_declarator->declaration_specifiers->storage_class_specifier_flags & STORAGE_SPECIFIER_TYPEDEF) != 0;
+
+                if (!type_is_function(&p_init_declarator->p_declarator->type) &&
+                    !type_is_function(&p_previous_declarator->type) &&
+                    previous_is_typedef == current_is_typedef)
                 {
-                    /* but show warning for redeclaration at function scope */
-                    if (diagnostic(W_DECLARATOR_HIDE, ctx, p_init_declarator->p_declarator->first_token_opt, NULL, "declaration of '%s' hides previous declaration", declarator_name))
+                    if (out_scope->scope_level == 0)
+                    {
+                        if (diagnostic(W_DECLARATOR_HIDE, ctx, p_init_declarator->p_declarator->first_token_opt, NULL, "declaration of '%s' hides global declaration", declarator_name))
+                        {
+                            diagnostic(W_LOCATION, ctx, p_previous_declarator->first_token_opt, NULL, "previous declaration is here");
+                        }
+                    }
+                    else if (diagnostic(W_DECLARATOR_HIDE, ctx, p_init_declarator->p_declarator->first_token_opt, NULL, "declaration of '%s' hides previous declaration", declarator_name))
                     {
                         diagnostic(W_LOCATION, ctx, p_previous_declarator->first_token_opt, NULL, "previous declaration is here");
                     }
@@ -3347,8 +4274,7 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
             hashmap_set(&ctx->scopes.tail->variables, declarator_name, &item);
             hash_item_set_destroy(&item);
         }
-        /////////////////////////////////////////////////////////////////////////////
-
+        // ///////////////////////////////////////////////////////////////////////////
 
         if (ctx->current == NULL)
         {
@@ -3358,18 +4284,60 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
 
         if (ctx->current->type == '=')
         {
+            if (type_is_function(&p_init_declarator->p_declarator->type))
+            {
+                diagnostic(C_ERROR_UNEXPECTED, ctx, ctx->current, NULL,
+                    "'%s' function initialization is not allowed", declarator_name);
+            }
+
+            if (p_previous_declarator &&
+                p_previous_declarator->initialized &&
+                out_scope->scope_level == 0 &&
+                ctx->scopes.tail->scope_level == 0)
+            {
+                if (diagnostic(C_ERROR_REDECLARATION, ctx, ctx->current, NULL,
+                    "redefinition of '%s'", declarator_name))
+                {
+                    diagnostic(W_LOCATION, ctx, p_previous_declarator->name_opt, NULL,
+                        "previous definition");
+                }
+            }
+
             const bool requires_constant_initialization =
                 (ctx->p_current_function_opt == NULL) ||
-                (p_declaration_specifiers->storage_class_specifier_flags & STORAGE_SPECIFIER_STATIC);
+                (p_declaration_specifiers->storage_class_specifier_flags & STORAGE_SPECIFIER_STATIC) ||
+                (p_declaration_specifiers->storage_class_specifier_flags & STORAGE_SPECIFIER_CONSTEXPR);
 
             parser_match(ctx);
 
-            assert(p_init_declarator->initializer == NULL);
+            _Assert(p_init_declarator->initializer == NULL);
             p_init_declarator->initializer = initializer(ctx, false);
 
             if (p_init_declarator->initializer == NULL)
             {
                 throw;
+            }
+
+            p_init_declarator->p_declarator->initialized = true;
+
+            if ((p_declaration_specifiers->storage_class_specifier_flags & STORAGE_SPECIFIER_EXTERN) &&
+                ctx->scopes.tail->scope_level != 0)
+            {
+                diagnostic(C_ERROR_EXTERN_WITH_INITIALIZER_AT_BLOCK_SCOPE,
+                    ctx,
+                    p_init_declarator->p_declarator->first_token_opt,
+                    NULL,
+                    "'%s': cannot initialize extern variables with block scope", declarator_name);
+            }
+
+            if (p_init_declarator->initializer->assignment_expression != NULL &&
+                type_is_struct_or_union(&p_init_declarator->p_declarator->type) &&
+                !type_is_same(&p_init_declarator->p_declarator->type,
+                    &p_init_declarator->initializer->assignment_expression->type,
+                    false))
+            {
+                diagnostic(C_ERROR_UNEXPECTED, ctx, ctx->current, NULL,
+                    "'%s': initialization requires a brace-enclosed initializer list", declarator_name);
             }
 
             if (p_init_declarator->initializer->braced_initializer)
@@ -3378,22 +4346,24 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
                 {
                     const char* name2 = p_init_declarator->p_declarator->name_opt ?
                         p_init_declarator->p_declarator->name_opt->lexeme : "";
-                    make_object_with_member_designator(&p_init_declarator->p_declarator->type,
-                         &p_init_declarator->p_declarator->object, name2, ctx->options.target);
 
+                    make_object_with_member_designator(&p_init_declarator->p_declarator->type,
+                        &p_init_declarator->p_declarator->object, name2,
+                        MAKE_STATE_UNITIALIZED,
+                        ctx->options.target);
 
                     if (braced_initializer_is_empty(p_init_declarator->initializer->braced_initializer))
                     {
-                        //ok
+                        // ok
                         object_default_initialization(&p_init_declarator->p_declarator->object, false);
                     }
                     else
                     {
                         diagnostic(C_ERROR_INVALID_VLA_INITIALIZATION,
-                        ctx,
-                        p_init_declarator->p_declarator->first_token_opt,
-                        NULL,
-                        "variable-sized object may not be initialized except with an empty initializer");
+                            ctx,
+                            p_init_declarator->p_declarator->first_token_opt,
+                            NULL,
+                            "variable-sized object may not be initialized except with an empty initializer");
                         throw;
                     }
                 }
@@ -3406,8 +4376,11 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
                         throw;
                     }
 
+                    int er = make_object(&p_init_declarator->p_declarator->type,
+                        &p_init_declarator->p_declarator->object,
+                        MAKE_STATE_UNITIALIZED,
+                        ctx->options.target);
 
-                    int er = make_object(&p_init_declarator->p_declarator->type, &p_init_declarator->p_declarator->object, ctx->options.target);
                     if (er != 0)
                     {
                         diagnostic(C_ERROR_STRUCT_IS_INCOMPLETE, ctx, p_init_declarator->p_declarator->first_token_opt, NULL, "incomplete struct/union type");
@@ -3427,10 +4400,10 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
                         throw;
                     }
 
-                    /*
-                       this code is requiring the num_of_element adjustment
-                       char s[]={ "123" };
-                       static_assert(sizeof(s) == 4);
+                    /* 
+                    * this code is requiring the num_of_element adjustment
+                    * char s[]={ "123" };
+                    * static_assert(sizeof(s) == 4);
                     */
                     p_init_declarator->p_declarator->object.type.array_num_elements =
                         p_init_declarator->p_declarator->type.array_num_elements;
@@ -3441,10 +4414,10 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
                 if (type_is_vla(&p_init_declarator->p_declarator->type))
                 {
                     diagnostic(C_ERROR_INVALID_VLA_INITIALIZATION,
-                           ctx,
-                           p_init_declarator->p_declarator->first_token_opt,
-                           NULL,
-                           "variable-sized object may not be initialized except with an empty initializer");
+                        ctx,
+                        p_init_declarator->p_declarator->first_token_opt,
+                        NULL,
+                        "variable-sized object may not be initialized except with an empty initializer");
                     throw;
                 }
 
@@ -3468,10 +4441,10 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
                     }
                 }
 
-                /*
-                  Fixing the type of auto declarator
+                /* 
+                * Fixing the type of auto declarator
                 */
-                assert(p_init_declarator->p_declarator->declaration_specifiers != NULL);
+                _Assert(p_init_declarator->p_declarator->declaration_specifiers != NULL);
 
                 if (p_init_declarator->p_declarator->declaration_specifiers->storage_class_specifier_flags & STORAGE_SPECIFIER_AUTO)
                 {
@@ -3491,33 +4464,33 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
 
                     struct type t = { 0 };
 
-                    if (p_init_declarator->initializer->assignment_expression->expression_type == UNARY_EXPRESSION_ADDRESSOF)
+                    if (p_init_declarator->initializer->assignment_expression->expression_type == EXPR_UNARY_ADDRESSOF)
                     {
                         t = type_dup(&p_init_declarator->initializer->assignment_expression->type);
                     }
                     else
                     {
-                        struct type t2 = type_lvalue_conversion(&p_init_declarator->initializer->assignment_expression->type, ctx->options.null_checks_enabled);
+                        struct type t2 = type_lvalue_conversion(&p_init_declarator->initializer->assignment_expression->type);
                         type_swap(&t2, &t);
                         type_destroy(&t2);
                     }
 
                     type_remove_names(&t);
-                    assert(t.name_opt == NULL);
+                    _Assert(t.name_opt == NULL);
                     if (p_init_declarator->p_declarator->name_opt)
                     {
                         t.name_opt = strdup(p_init_declarator->p_declarator->name_opt->lexeme);
                     }
 
-                    /*
-                      consider:
-                         extern int func(void);
-                         static auto p_func = func;
+                    /* 
+                    * consider:
+                    * extern int func(void);
+                    * static auto p_func = func;
                     */
 
-                    t.storage_class_specifier_flags = 0; /*storage from func is not used*/
+                    t.storage_class_specifier_flags = STORAGE_SPECIFIER_NONE; /* storage from func is not used */
 
-                    /*storage p_func is added, but not auto*/
+                    /* storage p_func is added, but not auto */
                     type_set_storage_specifiers_using_declarator(&t, p_init_declarator->p_declarator);
                     t.storage_class_specifier_flags &= ~STORAGE_SPECIFIER_AUTO;
 
@@ -3529,21 +4502,24 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
                 }
 
                 check_assigment(ctx, &p_init_declarator->p_declarator->type, p_init_declarator->initializer->assignment_expression, ASSIGMENT_TYPE_INIT);
+                check_malloc_size_multiple_of_sizeof(ctx, &p_init_declarator->p_declarator->type, p_init_declarator->initializer->assignment_expression);
 
                 const char* name2 = p_init_declarator->p_declarator->name_opt ?
                     p_init_declarator->p_declarator->name_opt->lexeme : "";
 
                 int er = make_object_with_member_designator(&p_init_declarator->p_declarator->type,
-                    &p_init_declarator->p_declarator->object, name2, ctx->options.target);
+                    &p_init_declarator->p_declarator->object, name2,
+                    MAKE_STATE_UNITIALIZED,
+                    ctx->options.target);
 
                 if (er != 0)
                 {
+                    diagnostic(C_ERROR_STRUCT_IS_INCOMPLETE, ctx, p_init_declarator->p_declarator->first_token_opt, NULL, "type incomplete");
                     throw;
                 }
 
                 const bool is_constant =
                     type_is_const_or_constexpr(&p_init_declarator->p_declarator->type);
-
 
                 if (initializer_init_new(ctx,
                     &p_init_declarator->p_declarator->type,
@@ -3554,7 +4530,7 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
                 {
                     throw;
                 }
-                //object_print_to_debug(&p_init_declarator->p_declarator->object);
+                // object_print_to_debug(&p_init_declarator->p_declarator->object);
             }
         }
         else
@@ -3567,18 +4543,42 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
 
                 int er = make_object_with_member_designator(&p_init_declarator->p_declarator->type,
                     &p_init_declarator->p_declarator->object,
-                    name2, ctx->options.target);
+                    name2,
+                    MAKE_STATE_UNITIALIZED,
+                    ctx->options.target);
 
                 if (er != 0)
                 {
                     if (p_init_declarator->p_declarator->declaration_specifiers->storage_class_specifier_flags & STORAGE_SPECIFIER_EXTERN)
                     {
-                        //extern struct X x;
+                        // extern struct X x;
                     }
                     else
                     {
-                        diagnostic(C_ERROR_STRUCT_IS_INCOMPLETE, ctx, p_init_declarator->p_declarator->first_token_opt, NULL, "incomplete struct/union type");
-                        throw;
+                        if (p_init_declarator->p_declarator->type.enum_specifier)
+                        {
+                            struct token* _Opt p_first_token = p_init_declarator->p_declarator->first_token_opt;
+                            if (p_first_token == NULL)
+                            {
+                                p_first_token = ctx->current;
+                            }
+
+                            struct block_item* _Owner _Opt new_block_item = calloc(1, sizeof * new_block_item);
+                            if (new_block_item == NULL)
+                            {
+                                throw;
+                            }
+
+                            new_block_item->first_token = p_first_token;
+                            new_block_item->declarator = p_init_declarator->p_declarator;
+                            block_item_list_add(&ctx->used_incomplete_enums, new_block_item);
+                            
+                        }
+                        else
+                        {
+                            diagnostic(C_ERROR_STRUCT_IS_INCOMPLETE, ctx, p_init_declarator->p_declarator->first_token_opt, NULL, "incomplete struct/union type");
+                            throw;
+                        }
                     }
                 }
 
@@ -3599,70 +4599,52 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
             }
         }
 
-        /*
-           checking usage of [static ] other than in function arguments
+        /* 
+        * checking usage of [static ] other than in function arguments
         */
-        if (p_init_declarator->p_declarator) //lint 28 (pointer always non null)
+        /* p_declarator is not _Opt, so it is never null here -- the comment
+        * that used to sit on this `if` said as much.
+        */
+        if (type_is_array(&p_init_declarator->p_declarator->type))
+            if (p_init_declarator->p_declarator->type.type_qualifier_flags != 0 ||
+                p_init_declarator->p_declarator->type.has_static_array_size)
         {
-            if (type_is_array(&p_init_declarator->p_declarator->type))
-                if (p_init_declarator->p_declarator->type.type_qualifier_flags != 0 ||
-                    p_init_declarator->p_declarator->type.has_static_array_size)
-                {
-                    if (p_init_declarator->p_declarator->first_token_opt)
-                    {
-                        diagnostic(C_ERROR_STATIC_OR_TYPE_QUALIFIERS_NOT_ALLOWED_IN_NON_PARAMETER,
-                            ctx,
-                            p_init_declarator->p_declarator->first_token_opt, NULL,
-                            "static or type qualifiers are not allowed in non-parameter array declarator");
-                    }
-                    else if (p_init_declarator->initializer)
-                    {
-                        diagnostic(C_ERROR_STATIC_OR_TYPE_QUALIFIERS_NOT_ALLOWED_IN_NON_PARAMETER,
+            if (p_init_declarator->p_declarator->first_token_opt)
+            {
+                diagnostic(C_ERROR_STATIC_OR_TYPE_QUALIFIERS_NOT_ALLOWED_IN_NON_PARAMETER,
+                        ctx,
+                        p_init_declarator->p_declarator->first_token_opt, NULL,
+                        "static or type qualifiers are not allowed in non-parameter array declarator");
+            }
+            else if (p_init_declarator->initializer)
+            {
+                diagnostic(C_ERROR_STATIC_OR_TYPE_QUALIFIERS_NOT_ALLOWED_IN_NON_PARAMETER,
                         ctx,
                         p_init_declarator->initializer->first_token, NULL,
                         "static or type qualifiers are not allowed in non-parameter array declarator");
-                    }
-                }
-
-            if (!type_is_pointer(&p_init_declarator->p_declarator->type) &&
-                p_init_declarator->p_declarator->type.type_qualifier_flags & TYPE_QUALIFIER_CAKE_DTOR)
-            {
-                if (p_init_declarator->p_declarator->first_token_opt)
-                {
-                    diagnostic(C_ERROR_OBJ_OWNER_CAN_BE_USED_ONLY_IN_POINTER,
-                        ctx,
-                        p_init_declarator->p_declarator->first_token_opt, NULL,
-                        "_Dtor qualifier can only be used with pointers");
-                }
-                else if (p_init_declarator->initializer)
-                {
-                    diagnostic(C_ERROR_OBJ_OWNER_CAN_BE_USED_ONLY_IN_POINTER,
-                    ctx,
-                    p_init_declarator->initializer->first_token, NULL,
-                    "_Dtor qualifier can only be used with pointers");
-                }
             }
         }
+
 
         if (ctx->scopes.tail->scope_level == 0 &&
             type_is_vm(&p_init_declarator->p_declarator->type))
         {
-            /*
-              MSVC accepts this as constant expression. Cake does not.
-              static_assert(&((struct X { int i; }*) 0)->i) == 0);
-
-
-            winnt.h:2602:1: error 1270: '__C_ASSERT__' declared as variably modified at file scope
-                2602 |C_ASSERT(TYPE_ALIGNMENT(LARGE_INTEGER) == 8)typedefchar__C_ASSERT__[(((LONG)(LONG_PTR)&(((struct{charx;LARGE_INTEGERtest;}*)0)->test))==8)?1:-1]
+            /* 
+            * MSVC accepts this as constant expression. Cake does not.
+            * static_assert(&((struct X { int i; }*) 0)->i) == 0);
+            * 
+            * 
+            * winnt.h:2602:1: error 1270: '__C_ASSERT__' declared as variably modified at file scope
+            * 2602 |C_ASSERT(TYPE_ALIGNMENT(LARGE_INTEGER) == 8)typedefchar__C_ASSERT__[(((LONG)(LONG_PTR)&(((struct{charx;LARGE_INTEGERtest;}*)0)->test))==8)?1:-1]
             */
-            /*
-             diagnostic(C_ERROR_STORAGE_SIZE,
-                   ctx,
-                   p_init_declarator->p_declarator->name_opt,
-                   NULL,
-                   "'%s' declared as variably modified at file scope",
-                   p_init_declarator->p_declarator->name_opt->lexeme);
-            throw;
+            /* 
+            * diagnostic(C_ERROR_STORAGE_SIZE,
+            * ctx,
+            * p_init_declarator->p_declarator->name_opt,
+            * NULL,
+            * "'%s' declared as variably modified at file scope",
+            * p_init_declarator->p_declarator->name_opt->lexeme);
+            * throw;
             */
         }
 
@@ -3676,19 +4658,18 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
 
             switch (size_result)
             {
-            case SIZEOF_RESULT_OK:
+                case SIZEOF_RESULT_OK:
                 break;
 
-            case SIZEOF_RESULT_OVERLOW:
-                diagnostic(C_ERROR_STORAGE_SIZE,
-                ctx,
-                p_init_declarator->p_declarator->name_opt, NULL,
-                "sizeof '%s' is too large",
-                p_init_declarator->p_declarator->name_opt->lexeme);
-                throw;
-                break;
+                case SIZEOF_RESULT_OVERLOW:
+                    diagnostic(C_ERROR_STORAGE_SIZE,
+                    ctx,
+                    p_init_declarator->p_declarator->name_opt, NULL,
+                    "sizeof '%s' is too large",
+                    p_init_declarator->p_declarator->name_opt->lexeme);
+                    throw;
 
-            case SIZEOF_RESULT_RUNTIME:
+                case SIZEOF_RESULT_RUNTIME:
 #if 0
                 diagnostic(C_ERROR_STORAGE_SIZE,
                     ctx,
@@ -3699,89 +4680,115 @@ struct init_declarator* _Owner _Opt init_declarator(struct parser_ctx* ctx,
 #endif
                 break;
 
-            case SIZEOF_RESULT_INCOMPLETE:
+                case SIZEOF_RESULT_INCOMPLETE:
 
-                if (p_init_declarator->p_declarator->type.storage_class_specifier_flags & STORAGE_SPECIFIER_EXTERN)
-                {
-                    /* extern variables do not need to be complete */
-                }
-                else if (ctx->scopes.tail->scope_level == 0)
-                {
-                    /*
-                      FILE SCOPE is diferent here,.
-                      Incomplete objects at file scope are tentatives
-                      (cake needs a last pass to detect this problem)
-                    */
-                    /*
-                       char str[];  //not an error
-                       char str[] = "abc"; complete type
-                       int main() {}
-                    */
-                }
-                else
-                {
-                    diagnostic(C_ERROR_STORAGE_SIZE,
-                       ctx,
-                       p_init_declarator->p_declarator->name_opt, NULL,
-                       "storage size of '%s' isn't known because the type is incomplete",
-                       p_init_declarator->p_declarator->name_opt->lexeme);
-                    throw;
-                }
+                    if (p_init_declarator->p_declarator->type.storage_class_specifier_flags & STORAGE_SPECIFIER_EXTERN)
+                    {
+                        /* extern variables do not need to be complete */
+                    }
+                    else if (ctx->scopes.tail->scope_level == 0)
+                    {
+                        /* 
+                        * FILE SCOPE is diferent here,.
+                        * Incomplete objects at file scope are tentatives
+                        * (cake needs a last pass to detect this problem)
+                        */
+                        /* 
+                        * char str[];  //not an error
+                        * char str[] = "abc"; complete type
+                        * int main() {}
+                        */
+                    }
+                    else
+                    {
+                        diagnostic(C_ERROR_STORAGE_SIZE,
+                        ctx,
+                        p_init_declarator->p_declarator->name_opt, NULL,
+                        "storage size of '%s' isn't known because the type is incomplete",
+                        p_init_declarator->p_declarator->name_opt->lexeme);
+                        throw;
+                    }
+                break;
 
-
-            case SIZEOF_RESULT_BITFIELD:
-            case SIZEOF_RESULT_FUNCTION:
+                case SIZEOF_RESULT_BITFIELD:
+                case SIZEOF_RESULT_FUNCTION:
                 break;
             }
+        }
+
+        if (p_init_declarator &&
+            ctx->p_current_function_opt &&
+            trying_to_use_vm_type_from_enclosing_function(&p_init_declarator->p_declarator->type, ctx->p_current_function_opt))
+        {
+            /* 
+            * void func()
+            * {
+            * int n;
+            * typedef int (*T)[n];
+            * static void local() {
+            * T b;
+            * }
+            * }
+            */
+            diagnostic(C_ERROR_LOCAL_FUNCTION_STORAGE, ctx,
+                p_init_declarator->p_declarator->first_token_opt, NULL,
+                "trying to use VM type from enclosing function");
+        }
+
+        if (type_is_vm(&p_init_declarator->p_declarator->type))
+        {
+            _Assert(ctx->scopes.tail != NULL);
+            if (ctx->scopes.tail->scope_level == 0)
+            {
+                diagnostic(C_ERROR_LOCAL_FUNCTION_STORAGE, ctx,
+                    p_init_declarator->p_declarator->first_token_opt, NULL,
+                    "variably modified type declaration not allowed at file scope");
+            }
+
+            if ((p_init_declarator->p_declarator->type.storage_class_specifier_flags & STORAGE_SPECIFIER_STATIC) ||
+                (p_init_declarator->p_declarator->type.storage_class_specifier_flags & STORAGE_SPECIFIER_EXTERN))
+            {
+                if (type_is_vla(&p_init_declarator->p_declarator->type))
+                {
+                    /* 
+                    * void f(int n) { static int a[n]; }
+                    */
+                    diagnostic(C_ERROR_LOCAL_FUNCTION_STORAGE, ctx,
+                        p_init_declarator->p_declarator->first_token_opt, NULL,
+                        "storage size of '%s' isn't constant", p_init_declarator->p_declarator->name_opt->lexeme);
+                }
+            }
+        }
+
+        /* 
+        * Same idea as an incomplete struct/enum tag completed later: the first
+        * declaration is the one registered in the symbol table, and it points
+        * to the declaration that completes it, so any use of the name can
+        * reach the composite type (6.2.7). This runs here, at the end,
+        * because 'char s[] = {"123"}' only gets its size once the initializer
+        * above has been parsed.
+        * 
+        * Only at file scope: an array of unknown size can be completed by a
+        * later declaration only through a tentative definition, and block
+        * scope has none - there a second declaration of the same name is a
+        * redeclaration error.
+        * See get_complete_struct_or_union_specifier / issue #333.
+        */
+        if (p_previous_declarator &&
+            out_scope != NULL &&
+            out_scope->scope_level == 0 &&
+            ctx->scopes.tail != NULL &&
+            ctx->scopes.tail->scope_level == 0 &&
+            type_is_array_of_unknown_size(&p_previous_declarator->type) &&
+            !type_is_array_of_unknown_size(&p_init_declarator->p_declarator->type))
+        {
+            p_previous_declarator->p_complete_declarator = p_init_declarator->p_declarator;
         }
     }
     catch
     {
         init_declarator_delete(p_init_declarator);
         p_init_declarator = NULL;
-    }
-
-    if (p_init_declarator && trying_to_use_vm_type_from_enclosing_function(&p_init_declarator->p_declarator->type, ctx->p_current_function_opt))
-    {
-        /*
-        void func()
-        {
-            int n;
-            typedef int (*T)[n];
-            static void local() {
-                T b;
-            }
-        }
-        */
-        diagnostic(C_ERROR_LOCAL_FUNCTION_STORAGE, ctx,
-            p_init_declarator->p_declarator->first_token_opt, NULL,
-            "trying to use VM type from enclosing function");
-    }
-
-    if (p_init_declarator &&
-        type_is_vm(&p_init_declarator->p_declarator->type))
-    {
-        if (ctx->scopes.tail->scope_level == 0)
-        {
-            diagnostic(C_ERROR_LOCAL_FUNCTION_STORAGE, ctx,
-                p_init_declarator->p_declarator->first_token_opt, NULL,
-                "variably modified type declaration not allowed at file scope");
-        }
-
-
-        if ((p_init_declarator->p_declarator->type.storage_class_specifier_flags & STORAGE_SPECIFIER_STATIC) ||
-            (p_init_declarator->p_declarator->type.storage_class_specifier_flags & STORAGE_SPECIFIER_EXTERN))
-        {
-            if (type_is_vla(&p_init_declarator->p_declarator->type))
-            {
-                /*
-                  void f(int n) { static int a[n]; }
-                */
-                diagnostic(C_ERROR_LOCAL_FUNCTION_STORAGE, ctx,
-                 p_init_declarator->p_declarator->first_token_opt, NULL,
-                 "storage size of '%s' isn't constant", p_init_declarator->p_declarator->name_opt->lexeme);
-            }
-        }
     }
 
     return p_init_declarator;
@@ -3795,8 +4802,8 @@ void init_declarator_list_add(struct init_declarator_list* list, struct init_dec
     }
     else
     {
-        assert(list->tail != NULL);
-        assert(list->tail->next == NULL);
+        _Assert(list->tail != NULL);
+        _Assert(list->tail->next == NULL);
         list->tail->next = p_item;
     }
     list->tail = p_item;
@@ -3817,10 +4824,10 @@ void init_declarator_list_destroy(_Dtor struct init_declarator_list* p)
 struct init_declarator_list init_declarator_list(struct parser_ctx* ctx,
     struct declaration_specifiers* p_declaration_specifiers)
 {
-    /*
-    init-declarator-list:
-      init-declarator
-      init-declarator-list , init-declarator
+    /* 
+    * init-declarator-list:
+    * init-declarator
+    * init-declarator-list , init-declarator
     */
     struct init_declarator_list init_declarator_list = { 0 };
     struct init_declarator* _Owner _Opt p_init_declarator = NULL;
@@ -3833,11 +4840,12 @@ struct init_declarator_list init_declarator_list(struct parser_ctx* ctx,
             throw;
 
         init_declarator_list_add(&init_declarator_list, p_init_declarator);
-        p_init_declarator = NULL; /*MOVED*/
+        p_init_declarator = NULL; /* MOVED */
 
         while (ctx->current != NULL && ctx->current->type == ',')
         {
             check_space_after_comma_style(ctx, ctx->current);
+            check_single_declarator_per_declaration_style(ctx, ctx->current);
 
             parser_match(ctx);
             p_init_declarator = init_declarator(ctx, p_declaration_specifiers);
@@ -3845,7 +4853,7 @@ struct init_declarator_list init_declarator_list(struct parser_ctx* ctx,
                 throw;
 
             init_declarator_list_add(&init_declarator_list, p_init_declarator);
-            p_init_declarator = NULL; /*MOVED*/
+            p_init_declarator = NULL; /* MOVED */
         }
     }
     catch
@@ -3881,39 +4889,38 @@ struct storage_class_specifier* _Owner _Opt storage_class_specifier(struct parse
         p_storage_class_specifier->token = ctx->current;
         switch (ctx->current->type)
         {
-        case TK_KEYWORD_TYPEDEF:
-            p_storage_class_specifier->flags = STORAGE_SPECIFIER_TYPEDEF;
+            case TK_KEYWORD_TYPEDEF:
+                p_storage_class_specifier->flags = STORAGE_SPECIFIER_TYPEDEF;
             break;
-        case TK_KEYWORD_EXTERN:
-            p_storage_class_specifier->flags = STORAGE_SPECIFIER_EXTERN;
+            case TK_KEYWORD_EXTERN:
+                p_storage_class_specifier->flags = STORAGE_SPECIFIER_EXTERN;
             break;
-        case TK_KEYWORD_CONSTEXPR:
-
-            p_storage_class_specifier->flags = STORAGE_SPECIFIER_CONSTEXPR;
-            if (ctx->scopes.tail && ctx->scopes.tail->scope_level == 0)
-                p_storage_class_specifier->flags |= STORAGE_SPECIFIER_CONSTEXPR_STATIC;
+            case TK_KEYWORD_CONSTEXPR:
+                p_storage_class_specifier->flags = STORAGE_SPECIFIER_CONSTEXPR;
+                if (ctx->scopes.tail && ctx->scopes.tail->scope_level == 0)
+                    p_storage_class_specifier->flags |= STORAGE_SPECIFIER_CONSTEXPR_STATIC;
             break;
-        case TK_KEYWORD_STATIC:
-            p_storage_class_specifier->flags = STORAGE_SPECIFIER_STATIC;
+            case TK_KEYWORD_STATIC:
+                p_storage_class_specifier->flags = STORAGE_SPECIFIER_STATIC;
             break;
-        case TK_KEYWORD__THREAD_LOCAL:
-            p_storage_class_specifier->flags = STORAGE_SPECIFIER_THREAD_LOCAL;
+            case TK_KEYWORD__THREAD_LOCAL:
+                p_storage_class_specifier->flags = STORAGE_SPECIFIER_THREAD_LOCAL;
             break;
-        case TK_KEYWORD_AUTO:
-            p_storage_class_specifier->flags = STORAGE_SPECIFIER_AUTO;
+            case TK_KEYWORD_AUTO:
+                p_storage_class_specifier->flags = STORAGE_SPECIFIER_AUTO;
             break;
-        case TK_KEYWORD_REGISTER:
-            p_storage_class_specifier->flags = STORAGE_SPECIFIER_REGISTER;
+            case TK_KEYWORD_REGISTER:
+                p_storage_class_specifier->flags = STORAGE_SPECIFIER_REGISTER;
             break;
-        default:
-            assert(false);
+            default:
+                throw;
         }
 
-        /*
-         TODO
-         thread_local may appear with static or extern,
-         auto may appear with all the others except typedef138), and
-         constexpr may appear with auto, register, or static.
+        /* 
+        * TODO
+        * thread_local may appear with static or extern,
+        * auto may appear with all the others except typedef138), and
+        * constexpr may appear with auto, register, or static.
         */
 
         parser_match(ctx);
@@ -3928,7 +4935,7 @@ struct storage_class_specifier* _Owner _Opt storage_class_specifier(struct parse
 }
 
 void storage_class_specifiers_push(struct storage_class_specifiers* p,
-                                   struct storage_class_specifier* _Owner p_storage_class_specifier)
+    struct storage_class_specifier* _Owner p_storage_class_specifier)
 {
     try
     {
@@ -3949,8 +4956,8 @@ void storage_class_specifiers_push(struct storage_class_specifiers* p,
         }
         else
         {
-            assert(p->tail != NULL);
-            assert(p->tail->next == NULL);
+            _Assert(p->tail != NULL);
+            _Assert(p->tail->next == NULL);
             p->tail->next = pnew;
             p->tail = pnew;
         }
@@ -3966,7 +4973,7 @@ void storage_class_specifier_node_delete(struct storage_class_specifier_node* _O
 {
     if (p)
     {
-        assert(p->next == NULL);
+        _Assert(p->next == NULL);
         free(p);
     }
 }
@@ -3993,6 +5000,8 @@ struct storage_class_specifiers* _Opt _Owner storage_class_specifiers(struct par
     struct storage_class_specifiers* _Opt _Owner p = calloc(1, sizeof * p);
     try
     {
+        if (p == NULL) throw;
+
         while (first_of_storage_class_specifier(ctx))
         {
             struct storage_class_specifier* _Owner _Opt p_storage_class_specifier = storage_class_specifier(ctx);
@@ -4048,7 +5057,7 @@ bool first_of_typeof_specifier(const struct parser_ctx* ctx)
         ctx->current->type == TK_KEYWORD_TYPEOF_UNQUAL;
 }
 
-struct typeof_specifier* _Owner _Opt  typeof_specifier(struct parser_ctx* ctx)
+struct typeof_specifier* _Owner _Opt typeof_specifier(struct parser_ctx* ctx)
 {
     struct typeof_specifier* _Owner _Opt p_typeof_specifier = NULL;
     try
@@ -4116,7 +5125,7 @@ struct typeof_specifier* _Owner _Opt  typeof_specifier(struct parser_ctx* ctx)
 
             if (type_is_array(&p_typeof_specifier->type))
             {
-                struct type t = type_param_array_to_pointer(&p_typeof_specifier->type, ctx->options.null_checks_enabled);
+                struct type t = type_param_array_to_pointer(&p_typeof_specifier->type);
                 type_swap(&t, &p_typeof_specifier->type);
                 type_destroy(&t);
             }
@@ -4182,38 +5191,37 @@ void type_specifier_delete(struct type_specifier* _Owner _Opt p)
     }
 }
 
-
 struct attribute* _Owner _Opt extended_decl_modifier_seq(struct parser_ctx* ctx)
 {
-    //https://learn.microsoft.com/en-us/cpp/cpp/declspec?view=msvc-170
-    /*
-     extended-decl-modifier:
-         align( number )
-         allocate(" segname ")
-         allocator
-         appdomain
-         code_seg(" segname ")
-         deprecated
-         dllimport
-         dllexport
-         empty_bases
-         hybrid_patchable
-         jitintrinsic
-         naked
-         noalias
-         noinline
-         noreturn
-         nothrow
-         novtable
-         no_sanitize_address
-         process
-         property( { get=get-func-name | ,put=put-func-name } )
-         restrict
-         safebuffers
-         selectany
-         spectre(nomitigation)
-         thread
-         uuid(" ComObjectGUID ")
+    // https://learn.microsoft.com/en-us/cpp/cpp/declspec?view=msvc-170
+    /* 
+    * extended-decl-modifier:
+    *          align( number )
+    *          allocate(" segname ")
+    *          allocator
+    *          appdomain
+    *          code_seg(" segname ")
+    *          deprecated
+    *          dllimport
+    *          dllexport
+    *          empty_bases
+    *          hybrid_patchable
+    *          jitintrinsic
+    *          naked
+    *          noalias
+    *          noinline
+    *          noreturn
+    *          nothrow
+    *          novtable
+    *          no_sanitize_address
+    *          process
+    *          property( { get=get-func-name | ,put=put-func-name } )
+    *          restrict
+    *          safebuffers
+    *          selectany
+    *          spectre(nomitigation)
+    *          thread
+    *          uuid(" ComObjectGUID ")
     */
 
     struct attribute* _Owner _Opt p_type_specifier = NULL;
@@ -4235,7 +5243,7 @@ struct attribute* _Owner _Opt extended_decl_modifier_seq(struct parser_ctx* ctx)
 
         if (strcmp(p_type_specifier->attribute_token->lexeme, "align") == 0)
         {
-            parser_match(ctx); //(
+            parser_match(ctx); // (
 
             if (ctx->current == NULL)
             {
@@ -4253,8 +5261,8 @@ struct attribute* _Owner _Opt extended_decl_modifier_seq(struct parser_ctx* ctx)
             else if (a == 64)
                 p_type_specifier->msvc_declspec_flags |= MSVC_DECLSPEC_ALIGN_64_FLAG;
 
-            parser_match(ctx); //number     
-            parser_match(ctx); //)            
+            parser_match(ctx); // number
+            parser_match(ctx); // )
         }
         else if (strcmp(p_type_specifier->attribute_token->lexeme, "allocate") == 0)
         {
@@ -4331,7 +5339,7 @@ struct attribute* _Owner _Opt extended_decl_modifier_seq(struct parser_ctx* ctx)
         }
         else if (strcmp(p_type_specifier->attribute_token->lexeme, "selectany") == 0)
         {
-            //https://learn.microsoft.com/en-us/cpp/cpp/selectany?view=msvc-170
+            // https://learn.microsoft.com/en-us/cpp/cpp/selectany?view=msvc-170
             p_type_specifier->msvc_declspec_flags |= MSVC_DECLSPEC_SELECTANY_FLAG;
         }
         else if (strcmp(p_type_specifier->attribute_token->lexeme, "thread") == 0)
@@ -4348,7 +5356,7 @@ struct attribute* _Owner _Opt extended_decl_modifier_seq(struct parser_ctx* ctx)
                 ctx,
                 p_type_specifier->attribute_token,
                 NULL,
-            "unknown '%s'\n", p_type_specifier->attribute_token->lexeme);
+                "unknown '%s'\n", p_type_specifier->attribute_token->lexeme);
         }
 
         int count = 1;
@@ -4382,9 +5390,9 @@ struct attribute* _Owner _Opt extended_decl_modifier_seq(struct parser_ctx* ctx)
 
 struct attribute* _Owner _Opt msvc_declspec(struct parser_ctx* ctx)
 {
-    //https://learn.microsoft.com/en-us/cpp/cpp/declspec?view=msvc-170
-    /*
-      __declspec ( extended-decl-modifier-seq )
+    // https://learn.microsoft.com/en-us/cpp/cpp/declspec?view=msvc-170
+    /* 
+    * __declspec ( extended-decl-modifier-seq )
     */
     struct attribute* _Owner _Opt p_decl_specifier = NULL;
     try
@@ -4407,7 +5415,7 @@ struct attribute* _Owner _Opt msvc_declspec(struct parser_ctx* ctx)
 
 enum msvc_declspec_flags msvc_declspec_sequence_opt(struct parser_ctx* ctx)
 {
-    enum msvc_declspec_flags msvc_declspec_flags = 0;
+    enum msvc_declspec_flags msvc_declspec_flags = MSVC_DECLSPEC_NONE;
     try
     {
         for (;;)
@@ -4428,7 +5436,6 @@ enum msvc_declspec_flags msvc_declspec_sequence_opt(struct parser_ctx* ctx)
             }
             attribute_delete(p);
 
-
         }
     }
     catch
@@ -4440,11 +5447,11 @@ enum msvc_declspec_flags msvc_declspec_sequence_opt(struct parser_ctx* ctx)
 
 static void gcc_attribute(struct parser_ctx* ctx)
 {
-    /*
-     attribute :
-         identifier
-         identifier()
-         identifier(attribute-argument-list)
+    /* 
+    * attribute :
+    * identifier
+    * identifier()
+    * identifier(attribute-argument-list)
     */
 
     try
@@ -4458,14 +5465,14 @@ static void gcc_attribute(struct parser_ctx* ctx)
         if (!token_is_identifier_or_keyword(ctx->current->type))
         {
             diagnostic(C_ERROR_UNEXPECTED,
-                              ctx,
-                              ctx->current,
-                              NULL,
-                              "expected identifier");
+                ctx,
+                ctx->current,
+                NULL,
+                "expected identifier");
             throw;
         }
 
-        parser_match(ctx); //identifier
+        parser_match(ctx); // identifier
 
         if (ctx->current == NULL)
         {
@@ -4475,7 +5482,7 @@ static void gcc_attribute(struct parser_ctx* ctx)
 
         if (ctx->current->type == '(')
         {
-            parser_match(ctx); //(
+            parser_match(ctx); // (
             if (ctx->current == NULL)
             {
                 unexpected_end_of_file(ctx);
@@ -4497,10 +5504,10 @@ static void gcc_attribute(struct parser_ctx* ctx)
                 else if (ctx->current->type == '(')
                 {
                     count++;
-                    parser_match(ctx); //(
+                    parser_match(ctx); // (
                 }
                 else
-                    parser_match(ctx); //(
+                    parser_match(ctx); // (
 
                 if (ctx->current == NULL)
                 {
@@ -4518,11 +5525,11 @@ static void gcc_attribute(struct parser_ctx* ctx)
 
 static void gcc_attribute_list(struct parser_ctx* ctx)
 {
-    /*
-        attribute-list:
-          empty
-          attribute
-          attribute-list, attribute
+    /* 
+    * attribute-list:
+    * empty
+    * attribute
+    * attribute-list, attribute
     */
 
     if (ctx->current == NULL)
@@ -4553,9 +5560,9 @@ static void gcc_attribute_list(struct parser_ctx* ctx)
 
 void gcc_attribute_specifier_opt(struct parser_ctx* ctx)
 {
-    /*
-    attribute-specifier:
-        __attribute__ (( attribute-list ))
+    /* 
+    * attribute-specifier:
+    * __attribute__ (( attribute-list ))
     */
 
     if (ctx->current == NULL || ctx->current->type != TK_KEYWORD_GCC__ATTRIBUTE)
@@ -4577,28 +5584,28 @@ void gcc_attribute_specifier_opt(struct parser_ctx* ctx)
 
 struct type_specifier* _Owner _Opt type_specifier(struct parser_ctx* ctx)
 {
-    /*
-     type-specifier:
-       void
-       char
-       short
-       int
-       long
-       float
-       double
-       signed
-       unsigned
-       _BitInt ( constant-expression )
-       bool                                  C23
-       _Complex
-       _Decimal32
-       _Decimal64
-       _Decimal128
-       atomic-type-specifier
-       struct-or-union-specifier
-       enum-specifier
-       typedef-name
-       typeof-specifier                      C23
+    /* 
+    * type-specifier:
+    * void
+    * char
+    * short
+    * int
+    * long
+    * float
+    * double
+    * signed
+    * unsigned
+    * _BitInt ( constant-expression )
+    * bool                                  C23
+    * _Complex
+    * _Decimal32
+    * _Decimal64
+    * _Decimal128
+    * atomic-type-specifier
+    * struct-or-union-specifier
+    * enum-specifier
+    * typedef-name
+    * typeof-specifier                      C23
     */
 
     struct type_specifier* _Owner _Opt p_type_specifier = NULL;
@@ -4617,123 +5624,122 @@ struct type_specifier* _Owner _Opt type_specifier(struct parser_ctx* ctx)
 
         switch (ctx->current->type)
         {
-        case TK_KEYWORD_VOID:
-            p_type_specifier->token = ctx->current;
-            p_type_specifier->flags = TYPE_SPECIFIER_VOID;
-            parser_match(ctx);
-            return p_type_specifier;
+            case TK_KEYWORD_VOID:
+                p_type_specifier->token = ctx->current;
+                p_type_specifier->flags = TYPE_SPECIFIER_VOID;
+                parser_match(ctx);
+                return p_type_specifier;
 
-        case TK_KEYWORD_CHAR:
-            p_type_specifier->token = ctx->current;
-            p_type_specifier->flags = TYPE_SPECIFIER_CHAR;
-            parser_match(ctx);
-            return p_type_specifier;
+            case TK_KEYWORD_CHAR:
+                p_type_specifier->token = ctx->current;
+                p_type_specifier->flags = TYPE_SPECIFIER_CHAR;
+                parser_match(ctx);
+                return p_type_specifier;
 
-        case TK_KEYWORD_SHORT:
-            p_type_specifier->token = ctx->current;
-            p_type_specifier->flags = TYPE_SPECIFIER_SHORT;
-            parser_match(ctx);
-            return p_type_specifier;
+            case TK_KEYWORD_SHORT:
+                p_type_specifier->token = ctx->current;
+                p_type_specifier->flags = TYPE_SPECIFIER_SHORT;
+                parser_match(ctx);
+                return p_type_specifier;
 
-        case TK_KEYWORD_INT:
-            p_type_specifier->token = ctx->current;
-            p_type_specifier->flags = TYPE_SPECIFIER_INT;
-            parser_match(ctx);
-            return p_type_specifier;
+            case TK_KEYWORD_INT:
+                p_type_specifier->token = ctx->current;
+                p_type_specifier->flags = TYPE_SPECIFIER_INT;
+                parser_match(ctx);
+                return p_type_specifier;
 
+            case TK_KEYWORD_GCC__BUILTIN_VA_LIST:
+                p_type_specifier->token = ctx->current;
+                p_type_specifier->flags = TYPE_SPECIFIER_GCC__BUILTIN_VA_LIST;
+                parser_match(ctx);
+                return p_type_specifier;
 
-        case TK_KEYWORD_GCC__BUILTIN_VA_LIST:
-            p_type_specifier->token = ctx->current;
-            p_type_specifier->flags = TYPE_SPECIFIER_GCC__BUILTIN_VA_LIST;
-            parser_match(ctx);
-            return p_type_specifier;
+            case TK_KEYWORD_MSVC__INT8:
+                p_type_specifier->token = ctx->current;
+                p_type_specifier->flags = object_type_to_type_specifier(get_platform(ctx->options.target)->int8_type) & ~TYPE_SPECIFIER_SIGNED;
+                parser_match(ctx);
+                return p_type_specifier;
 
-        case TK_KEYWORD_MSVC__INT8:
-            p_type_specifier->token = ctx->current;
-            p_type_specifier->flags = object_type_to_type_specifier(get_platform(ctx->options.target)->int8_type) & ~TYPE_SPECIFIER_SIGNED;
-            parser_match(ctx);
-            return p_type_specifier;
+            case TK_KEYWORD_MSVC__INT16:
+                p_type_specifier->token = ctx->current;
+                p_type_specifier->flags = object_type_to_type_specifier(get_platform(ctx->options.target)->int16_type);
+                parser_match(ctx);
+                return p_type_specifier;
 
-        case TK_KEYWORD_MSVC__INT16:
-            p_type_specifier->token = ctx->current;
-            p_type_specifier->flags = object_type_to_type_specifier(get_platform(ctx->options.target)->int16_type);
-            parser_match(ctx);
-            return p_type_specifier;
+            case TK_KEYWORD_MSVC__INT32:
+                p_type_specifier->token = ctx->current;
+                p_type_specifier->flags = object_type_to_type_specifier(get_platform(ctx->options.target)->int32_type);
+                parser_match(ctx);
+                return p_type_specifier;
 
-        case TK_KEYWORD_MSVC__INT32:
-            p_type_specifier->token = ctx->current;
-            p_type_specifier->flags = object_type_to_type_specifier(get_platform(ctx->options.target)->int32_type);
-            parser_match(ctx);
-            return p_type_specifier;
+            case TK_KEYWORD_MSVC__INT64:
+                p_type_specifier->token = ctx->current;
+                p_type_specifier->flags = object_type_to_type_specifier(get_platform(ctx->options.target)->int64_type);
+                parser_match(ctx);
+                return p_type_specifier;
 
-        case TK_KEYWORD_MSVC__INT64:
-            p_type_specifier->token = ctx->current;
-            p_type_specifier->flags = object_type_to_type_specifier(get_platform(ctx->options.target)->int64_type);
-            parser_match(ctx);
-            return p_type_specifier;
+            case TK_KEYWORD_LONG:
+                p_type_specifier->token = ctx->current;
+                p_type_specifier->flags = TYPE_SPECIFIER_LONG;
+                parser_match(ctx);
+                return p_type_specifier;
 
-        case TK_KEYWORD_LONG:
-            p_type_specifier->token = ctx->current;
-            p_type_specifier->flags = TYPE_SPECIFIER_LONG;
-            parser_match(ctx);
-            return p_type_specifier;
+            case TK_KEYWORD_FLOAT:
+                p_type_specifier->token = ctx->current;
+                p_type_specifier->flags = TYPE_SPECIFIER_FLOAT;
+                parser_match(ctx);
+                return p_type_specifier;
 
-        case TK_KEYWORD_FLOAT:
-            p_type_specifier->token = ctx->current;
-            p_type_specifier->flags = TYPE_SPECIFIER_FLOAT;
-            parser_match(ctx);
-            return p_type_specifier;
+            case TK_KEYWORD_DOUBLE:
+                p_type_specifier->token = ctx->current;
+                p_type_specifier->flags = TYPE_SPECIFIER_DOUBLE;
+                parser_match(ctx);
+                return p_type_specifier;
 
-        case TK_KEYWORD_DOUBLE:
-            p_type_specifier->token = ctx->current;
-            p_type_specifier->flags = TYPE_SPECIFIER_DOUBLE;
-            parser_match(ctx);
-            return p_type_specifier;
+            case TK_KEYWORD_SIGNED:
+                p_type_specifier->token = ctx->current;
+                p_type_specifier->flags = TYPE_SPECIFIER_SIGNED;
+                parser_match(ctx);
+                return p_type_specifier;
 
-        case TK_KEYWORD_SIGNED:
-            p_type_specifier->token = ctx->current;
-            p_type_specifier->flags = TYPE_SPECIFIER_SIGNED;
-            parser_match(ctx);
-            return p_type_specifier;
+            case TK_KEYWORD_UNSIGNED:
 
-        case TK_KEYWORD_UNSIGNED:
+                p_type_specifier->flags = TYPE_SPECIFIER_UNSIGNED;
+                p_type_specifier->token = ctx->current;
+                parser_match(ctx);
+                return p_type_specifier;
 
-            p_type_specifier->flags = TYPE_SPECIFIER_UNSIGNED;
-            p_type_specifier->token = ctx->current;
-            parser_match(ctx);
-            return p_type_specifier;
+            case TK_KEYWORD__BOOL:
+                p_type_specifier->token = ctx->current;
+                p_type_specifier->flags = TYPE_SPECIFIER_BOOL;
+                parser_match(ctx);
+                return p_type_specifier;
 
-        case TK_KEYWORD__BOOL:
-            p_type_specifier->token = ctx->current;
-            p_type_specifier->flags = TYPE_SPECIFIER_BOOL;
-            parser_match(ctx);
-            return p_type_specifier;
+            case TK_KEYWORD__COMPLEX:
+                p_type_specifier->token = ctx->current;
+                p_type_specifier->flags = TYPE_SPECIFIER_COMPLEX;
+                parser_match(ctx);
+                return p_type_specifier;
 
-        case TK_KEYWORD__COMPLEX:
-            p_type_specifier->token = ctx->current;
-            p_type_specifier->flags = TYPE_SPECIFIER_COMPLEX;
-            parser_match(ctx);
-            return p_type_specifier;
+            case TK_KEYWORD__DECIMAL32:
+                p_type_specifier->token = ctx->current;
+                p_type_specifier->flags = TYPE_SPECIFIER_DECIMAL32;
+                parser_match(ctx);
+                return p_type_specifier;
 
-        case TK_KEYWORD__DECIMAL32:
-            p_type_specifier->token = ctx->current;
-            p_type_specifier->flags = TYPE_SPECIFIER_DECIMAL32;
-            parser_match(ctx);
-            return p_type_specifier;
+            case TK_KEYWORD__DECIMAL64:
+                p_type_specifier->flags = TYPE_SPECIFIER_DECIMAL64;
+                p_type_specifier->token = ctx->current;
+                parser_match(ctx);
+                return p_type_specifier;
 
-        case TK_KEYWORD__DECIMAL64:
-            p_type_specifier->flags = TYPE_SPECIFIER_DECIMAL64;
-            p_type_specifier->token = ctx->current;
-            parser_match(ctx);
-            return p_type_specifier;
+            case TK_KEYWORD__DECIMAL128:
+                p_type_specifier->flags = TYPE_SPECIFIER_DECIMAL128;
+                p_type_specifier->token = ctx->current;
+                parser_match(ctx);
+                return p_type_specifier;
 
-        case TK_KEYWORD__DECIMAL128:
-            p_type_specifier->flags = TYPE_SPECIFIER_DECIMAL128;
-            p_type_specifier->token = ctx->current;
-            parser_match(ctx);
-            return p_type_specifier;
-
-        default:
+            default:
             /* do nothing */
             break;
         }
@@ -4785,7 +5791,7 @@ struct type_specifier* _Owner _Opt type_specifier(struct parser_ctx* ctx)
         }
         else if (ctx->current->type == TK_KEYWORD__BITINT)
         {
-            //TODO
+            // TODO
             type_specifier_delete(p_type_specifier);
             return NULL;
         }
@@ -4798,9 +5804,13 @@ struct type_specifier* _Owner _Opt type_specifier(struct parser_ctx* ctx)
                 find_declarator(ctx, ctx->current->lexeme, NULL);
 
             /* if we got here, it must already exist (reuse?) */
-            assert(p_type_specifier->typedef_declarator != NULL);
+            _Assert(p_type_specifier->typedef_declarator != NULL);
 
             parser_match(ctx);
+        }
+        else
+        {
+            throw;
         }
 
     }
@@ -4814,49 +5824,63 @@ struct type_specifier* _Owner _Opt type_specifier(struct parser_ctx* ctx)
 
 enum type_specifier_flags get_enum_type_specifier_flags(const struct enum_specifier* p_enum_specifier)
 {
-    if (p_enum_specifier->specifier_qualifier_list)
+    if (p_enum_specifier->integer_type.type_specifier_flags != TYPE_SPECIFIER_NONE)
     {
-        return p_enum_specifier->specifier_qualifier_list->type_specifier_flags;
+        return p_enum_specifier->integer_type.type_specifier_flags;
     }
 
-    if (p_enum_specifier->p_complete_enum_specifier &&
-        p_enum_specifier->p_complete_enum_specifier->specifier_qualifier_list)
+    const struct enum_specifier* _Opt p_complete_enum = get_complete_enum_specifier(p_enum_specifier);
+    if (p_complete_enum)
     {
-        return p_enum_specifier->p_complete_enum_specifier->specifier_qualifier_list->type_specifier_flags;
+        return p_complete_enum->integer_type.type_specifier_flags;
     }
-    else if (p_enum_specifier->p_complete_enum_specifier &&
-        p_enum_specifier->p_complete_enum_specifier->p_complete_enum_specifier &&
-        p_enum_specifier->p_complete_enum_specifier->p_complete_enum_specifier->specifier_qualifier_list)
-    {
-        return p_enum_specifier->p_complete_enum_specifier->p_complete_enum_specifier->specifier_qualifier_list->type_specifier_flags;
-    }
-
-    return TYPE_SPECIFIER_INT;
+    return TYPE_SPECIFIER_NONE;
 }
 
 const struct enum_specifier* _Opt get_complete_enum_specifier(const struct enum_specifier* p_enum_specifier)
 {
-    /*
-      The way cake find the complete struct is using one pass.. for this task is uses double indirection.
-      Then the result will be there at end of first pass.
-      This crazy code finds the complete definition of the struct if exists.
+    if (p_enum_specifier->integer_type.type_specifier_flags != TYPE_SPECIFIER_NONE)
+    {
+        return p_enum_specifier;
+    }
+    else if (p_enum_specifier->p_complete_enum_specifier &&
+        p_enum_specifier->p_complete_enum_specifier->integer_type.type_specifier_flags != TYPE_SPECIFIER_NONE)
+    {
+        return p_enum_specifier->p_complete_enum_specifier;
+    }
+    else if (p_enum_specifier->p_complete_enum_specifier &&
+        p_enum_specifier->p_complete_enum_specifier->p_complete_enum_specifier &&
+        p_enum_specifier->p_complete_enum_specifier->p_complete_enum_specifier->integer_type.type_specifier_flags != TYPE_SPECIFIER_NONE)
+    {
+        return p_enum_specifier->p_complete_enum_specifier->p_complete_enum_specifier;
+    }
+    
+    return NULL;
+}
+
+const struct enum_specifier* _Opt get_enum_specifier_definition(const struct enum_specifier* p_enum_specifier)
+{
+    /* 
+    * The way cake find the complete struct is using one pass.. for this task is uses double indirection.
+    * Then the result will be there at end of first pass.
+    * This crazy code finds the complete definition of the struct if exists.
     */
     if (p_enum_specifier->enumerator_list.head)
     {
-        /*p_struct_or_union_specifier is complete*/
+        /* p_struct_or_union_specifier is complete */
         return p_enum_specifier;
     }
     else if (p_enum_specifier->p_complete_enum_specifier &&
         p_enum_specifier->p_complete_enum_specifier->enumerator_list.head)
     {
-        /*p_struct_or_union_specifier is the first seem tag tag points directly to complete*/
+        /* p_struct_or_union_specifier is the first seem tag tag points directly to complete */
         return p_enum_specifier->p_complete_enum_specifier;
     }
     else if (p_enum_specifier->p_complete_enum_specifier &&
         p_enum_specifier->p_complete_enum_specifier->p_complete_enum_specifier &&
         p_enum_specifier->p_complete_enum_specifier->p_complete_enum_specifier->enumerator_list.head)
     {
-        /* all others points to the first seem that points to the complete*/
+        /* all others points to the first seem that points to the complete */
         return p_enum_specifier->p_complete_enum_specifier->p_complete_enum_specifier;
     }
 
@@ -4865,36 +5889,35 @@ const struct enum_specifier* _Opt get_complete_enum_specifier(const struct enum_
 
 struct struct_or_union_specifier* _Opt get_complete_struct_or_union_specifier(const struct struct_or_union_specifier* p_struct_or_union_specifier)
 {
-    /*
-      The way cake find the complete struct is using one pass.. for this task is uses double indirection.
-      Then the result will be there at end of first pass.
-      This crazy code finds the complete definition of the struct if exists.
+    /* 
+    * The way cake find the complete struct is using one pass.. for this task is uses double indirection.
+    * Then the result will be there at end of first pass.
+    * This crazy code finds the complete definition of the struct if exists.
     */
-
 
     if (p_struct_or_union_specifier->member_declaration_list.head)
     {
-        /*p_struct_or_union_specifier is complete*/
+        /* p_struct_or_union_specifier is complete */
         return (struct struct_or_union_specifier* _Opt) p_struct_or_union_specifier;
     }
     else if (p_struct_or_union_specifier->complete_struct_or_union_specifier_indirection &&
         p_struct_or_union_specifier->complete_struct_or_union_specifier_indirection->member_declaration_list.head)
     {
-        /*p_struct_or_union_specifier is the first seem tag tag points directly to complete*/
+        /* p_struct_or_union_specifier is the first seem tag tag points directly to complete */
         return p_struct_or_union_specifier->complete_struct_or_union_specifier_indirection;
     }
     else if (p_struct_or_union_specifier->complete_struct_or_union_specifier_indirection &&
         p_struct_or_union_specifier->complete_struct_or_union_specifier_indirection->complete_struct_or_union_specifier_indirection &&
         p_struct_or_union_specifier->complete_struct_or_union_specifier_indirection->complete_struct_or_union_specifier_indirection->member_declaration_list.head)
     {
-        /* all others points to the first seem that points to the complete*/
+        /* all others points to the first seem that points to the complete */
         return p_struct_or_union_specifier->complete_struct_or_union_specifier_indirection->complete_struct_or_union_specifier_indirection;
     }
 
     return NULL;
 }
 
-bool struct_or_union_specifier_is_complete(struct struct_or_union_specifier* p_struct_or_union_specifier)
+bool struct_or_union_specifier_is_complete(const struct struct_or_union_specifier* p_struct_or_union_specifier)
 {
     return get_complete_struct_or_union_specifier(p_struct_or_union_specifier) != NULL;
 }
@@ -4956,7 +5979,7 @@ struct struct_or_union_specifier* _Owner _Opt struct_or_union_specifier(struct p
             throw;
         }
 
-        assert(p_struct_or_union_specifier->attribute_specifier_sequence_opt == NULL);
+        _Assert(p_struct_or_union_specifier->attribute_specifier_sequence_opt == NULL);
         p_struct_or_union_specifier->attribute_specifier_sequence_opt = attribute_specifier_sequence_opt(ctx);
 
         struct struct_or_union_specifier* _Opt p_first_tag_in_this_scope = NULL;
@@ -4971,9 +5994,9 @@ struct struct_or_union_specifier* _Owner _Opt struct_or_union_specifier(struct p
         {
             p_struct_or_union_specifier->tagtoken = ctx->current;
             snprintf(p_struct_or_union_specifier->tag_name,
-                     sizeof p_struct_or_union_specifier->tag_name,
-                     "%s",
-                     p_struct_or_union_specifier->tagtoken->lexeme);
+                sizeof p_struct_or_union_specifier->tag_name,
+                "%s",
+                p_struct_or_union_specifier->tagtoken->lexeme);
 
             parser_match(ctx);
 
@@ -4985,11 +6008,10 @@ struct struct_or_union_specifier* _Owner _Opt struct_or_union_specifier(struct p
 
             const bool is_struct_definition = (ctx->current->type == '{');
 
-            /*
-             Structure, union, and enumeration tags have scope that begins just after the
-             appearance of the tag in a type specifier that declares the tag.
+            /* 
+            * Structure, union, and enumeration tags have scope that begins just after the
+            * appearance of the tag in a type specifier that declares the tag.
             */
-
 
             struct map_entry* _Opt p_entry = hashmap_find(&ctx->scopes.tail->tags, p_struct_or_union_specifier->tagtoken->lexeme);
             if (p_entry)
@@ -4997,22 +6019,21 @@ struct struct_or_union_specifier* _Owner _Opt struct_or_union_specifier(struct p
                 /* this tag already exists in this scope */
                 if (p_entry->type == TAG_TYPE_STRUCT_OR_UNION_SPECIFIER)
                 {
+                    _Assert(p_entry->data.p_struct_or_union_specifier != NULL);
                     if (p_struct_or_union_specifier->first_token->type ==
                         p_entry->data.p_struct_or_union_specifier->first_token->type)
                     {
-
-                        assert(p_entry->data.p_struct_or_union_specifier != NULL);
                         p_first_tag_in_this_scope = p_entry->data.p_struct_or_union_specifier;
                         p_struct_or_union_specifier->complete_struct_or_union_specifier_indirection = p_first_tag_in_this_scope;
                     }
                     else
                     {
                         diagnostic(C_ERROR_TAG_TYPE_DOES_NOT_MATCH_PREVIOUS_DECLARATION,
-                        ctx,
-                        p_struct_or_union_specifier->tagtoken,
-                        NULL,
-                        "use of '%s' with tag type that does not match previous declaration.",
-                        p_struct_or_union_specifier->tagtoken->lexeme);
+                            ctx,
+                            p_struct_or_union_specifier->tagtoken,
+                            NULL,
+                            "use of '%s' with tag type that does not match previous declaration.",
+                            p_struct_or_union_specifier->tagtoken->lexeme);
                     }
                 }
                 else
@@ -5040,8 +6061,8 @@ struct struct_or_union_specifier* _Owner _Opt struct_or_union_specifier(struct p
                 else
                 {
 
-                    /*
-                      tag does not exist in the current scope, let search on upper scopes
+                    /* 
+                    * tag does not exist in the current scope, let search on upper scopes
                     */
                     struct struct_or_union_specifier* _Opt p_first_tag_previous_scopes = find_struct_or_union_specifier(ctx, p_struct_or_union_specifier->tagtoken->lexeme);
                     if (p_first_tag_previous_scopes == NULL)
@@ -5077,7 +6098,6 @@ struct struct_or_union_specifier* _Owner _Opt struct_or_union_specifier(struct p
             p_struct_or_union_specifier->has_anonymous_tag = true;
             p_struct_or_union_specifier->scope_level = ctx->scopes.tail->scope_level;
 
-
             struct hash_item_set item = { 0 };
             item.p_struct_or_union_specifier = struct_or_union_specifier_add_ref(p_struct_or_union_specifier);
             hashmap_set(&ctx->scopes.tail->tags, p_struct_or_union_specifier->tag_name, &item);
@@ -5086,16 +6106,16 @@ struct struct_or_union_specifier* _Owner _Opt struct_or_union_specifier(struct p
 
         if (ctx->current->type == '{')
         {
-            /*
-            this is the complete struct
+            /* 
+            * this is the complete struct
             */
 
             struct struct_or_union_specifier* _Opt first = find_struct_or_union_specifier(ctx, p_struct_or_union_specifier->tag_name);
 
             if (first)
             {
-                /*
-                   The first tag (will the one at symbol table) will point to the complete struct
+                /* 
+                * The first tag (will the one at symbol table) will point to the complete struct
                 */
                 first->complete_struct_or_union_specifier_indirection = p_struct_or_union_specifier;
             }
@@ -5103,13 +6123,11 @@ struct struct_or_union_specifier* _Owner _Opt struct_or_union_specifier(struct p
             if (p_struct_or_union_specifier->tagtoken)
                 naming_convention_struct_tag(ctx, p_struct_or_union_specifier->tagtoken);
 
-            if (ctx->current == NULL)
-            {
-                unexpected_end_of_file(ctx);
-                throw;
-            }
 
             struct token* firsttoken = ctx->current;
+
+            format_align_own_line_brace_if_present(ctx, firsttoken);
+            ctx->format_indent_level++;
             parser_match(ctx);
 
             if (ctx->current == NULL)
@@ -5118,9 +6136,11 @@ struct struct_or_union_specifier* _Owner _Opt struct_or_union_specifier(struct p
                 throw;
             }
 
-            if (ctx->current->type != '}') /*not official extensions yet..missing sizeof etc*/
+            if (ctx->current->type != '}') /* not official extensions yet..missing sizeof etc */
             {
-                p_struct_or_union_specifier->member_declaration_list = member_declaration_list(ctx, p_struct_or_union_specifier);
+                struct member_declaration_list list = member_declaration_list(ctx, p_struct_or_union_specifier);
+                member_declaration_list_swap(&p_struct_or_union_specifier->member_declaration_list, &list);
+                member_declaration_list_destroy(&list);
 
                 /* an empty struct is not allowed */
                 if (p_struct_or_union_specifier->member_declaration_list.head == NULL) throw;
@@ -5136,6 +6156,9 @@ struct struct_or_union_specifier* _Owner _Opt struct_or_union_specifier(struct p
             p_struct_or_union_specifier->last_token = ctx->current;
             p_struct_or_union_specifier->member_declaration_list.last_token = ctx->current;
 
+            ctx->format_indent_level--;
+            format_align_own_line_brace_if_present(ctx, p_struct_or_union_specifier->last_token);
+
             if (parser_match_tk(ctx, '}') != 0)
                 throw;
         }
@@ -5147,7 +6170,7 @@ struct struct_or_union_specifier* _Owner _Opt struct_or_union_specifier(struct p
         struct struct_or_union_specifier* _Opt p_complete =
             get_complete_struct_or_union_specifier(p_struct_or_union_specifier);
 
-        /*check if complete struct is deprecated*/
+        /* check if complete struct is deprecated */
         if (p_complete)
         {
             if (p_complete->attribute_specifier_sequence_opt &&
@@ -5203,13 +6226,13 @@ struct struct_or_union_specifier* _Owner _Opt struct_or_union_specifier(struct p
 
 struct member_declarator* _Owner _Opt member_declarator(
     struct parser_ctx* ctx,
-    struct struct_or_union_specifier* p_struct_or_union_specifier, /*not const*/
+    struct struct_or_union_specifier* p_struct_or_union_specifier, /* not const */
     const struct specifier_qualifier_list* p_specifier_qualifier_list)
 {
-    /*
-    member-declarator:
-     declarator
-     declaratoropt : constant-expression
+    /* 
+    * member-declarator:
+    * declarator
+    * declaratoropt : constant-expression
     */
     struct member_declarator* _Owner _Opt p_member_declarator = NULL;
     try
@@ -5219,21 +6242,24 @@ struct member_declarator* _Owner _Opt member_declarator(
 
         struct token* _Opt p_token_name = NULL;
 
-        p_member_declarator->declarator = declarator(ctx, p_specifier_qualifier_list, /*declaration_specifiers*/ NULL, false, &p_token_name);
+        p_member_declarator->declarator = declarator(ctx, p_specifier_qualifier_list, /* declaration_specifiers */ NULL, false, &p_token_name);
         if (p_member_declarator->declarator == NULL) throw;
 
         p_member_declarator->declarator->name_opt = p_token_name;
         p_member_declarator->declarator->specifier_qualifier_list = p_specifier_qualifier_list;
 
-        p_member_declarator->declarator->type = make_type_using_declarator(ctx, p_member_declarator->declarator);
+        struct type t = make_type_using_declarator(ctx, p_member_declarator->declarator);
+        type_swap(&p_member_declarator->declarator->type, &t);
+        type_destroy(&t);
 
         if (type_is_function(&p_member_declarator->declarator->type))
         {
-            //A structure or union shall not contain a member with incomplete 
-            // or function type 
+            // A structure or union shall not contain a member with incomplete
+            // or function type
 
-            struct token* p_token =
+            struct token* _Opt p_token =
                 p_member_declarator->declarator->first_token_opt;
+
             if (p_token == NULL)
                 p_token = ctx->current;
 
@@ -5246,14 +6272,31 @@ struct member_declarator* _Owner _Opt member_declarator(
             throw;
         }
 
+        if (type_is_incomplete(&p_member_declarator->declarator->type))
+        {
+            struct token* _Opt p_token =
+                p_member_declarator->declarator->first_token_opt;
+
+            if (p_token == NULL)
+                p_token = ctx->current;
+
+            diagnostic(C_ERROR_STRUCT_IS_INCOMPLETE,
+                ctx,
+                p_token,
+                NULL,
+                "member has incomplete type");
+
+            throw;
+        }
+
         if (type_is_vm(&p_member_declarator->declarator->type))
         {
-            /*
-              A member of a structure or union may have any complete
-              object type other than a variably modified type
+            /* 
+            * A member of a structure or union may have any complete
+            * object type other than a variably modified type
             */
 
-            struct token* p_token =
+            struct token* _Opt p_token =
                 p_member_declarator->declarator->first_token_opt;
             if (p_token == NULL)
                 p_token = ctx->current;
@@ -5270,18 +6313,19 @@ struct member_declarator* _Owner _Opt member_declarator(
         if (type_is_pointer(&p_member_declarator->declarator->type) &&
             declarator_has_vm_type(p_member_declarator->declarator))
         {
-            /*
-             * C11 §6.7.6p3 / C23 §6.7.7p3:
-             * A variably modified type cannot appear as a struct or union
-             * member because the struct itself may have static storage
-             * duration.
-             *
-             * Example:
-             *   int n;
-             *   struct X { int (*a)[n]; };  // error: VM member
-             */
-            struct token* p_token =
+            /* 
+            * C11 §6.7.6p3 / C23 §6.7.7p3:
+            * A variably modified type cannot appear as a struct or union
+            * member because the struct itself may have static storage
+            * duration.
+            * 
+            * Example:
+            *   int n;
+            *   struct X { int (*a)[n]; };  // error: VM member
+            */
+            struct token* _Opt p_token =
                 p_member_declarator->declarator->first_token_opt;
+
             if (p_token == NULL)
                 p_token = ctx->current;
 
@@ -5302,7 +6346,7 @@ struct member_declarator* _Owner _Opt member_declarator(
         }
 
         if (p_member_declarator->declarator->name_opt)
-            naming_convention_struct_member(ctx, p_member_declarator->declarator->name_opt, &p_member_declarator->declarator->type);
+            naming_convention_struct_member(ctx, p_member_declarator->declarator->name_opt);
 
         if (ctx->current == NULL)
         {
@@ -5315,10 +6359,10 @@ struct member_declarator* _Owner _Opt member_declarator(
             if (!type_is_integer(&p_member_declarator->declarator->type))
             {
                 diagnostic(C_ERROR_STORAGE_SIZE,
-                ctx,
-                p_member_declarator->declarator->first_token_opt,
-                NULL,
-                "bit-field must be integer type");
+                    ctx,
+                    p_member_declarator->declarator->first_token_opt,
+                    NULL,
+                    "bit-field must be integer type");
             }
 
             size_t sz = 0;
@@ -5329,6 +6373,8 @@ struct member_declarator* _Owner _Opt member_declarator(
 
             parser_match(ctx);
             p_member_declarator->constant_expression = constant_expression(ctx, true, false);
+            if (p_member_declarator->constant_expression == NULL)
+                throw;
 
             long long bit_field_width =
                 object_to_signed_long_long(&p_member_declarator->constant_expression->object);
@@ -5336,19 +6382,28 @@ struct member_declarator* _Owner _Opt member_declarator(
             if (bit_field_width < 0)
             {
                 diagnostic(C_ERROR_STORAGE_SIZE,
-                ctx,
-                p_member_declarator->constant_expression->first_token,
-                NULL,
-                "bitfield with must be zero or positive.");
+                    ctx,
+                    p_member_declarator->constant_expression->first_token,
+                    NULL,
+                    "bitfield with must be zero or positive.");
             }
 
             if (bit_field_width > (long long)sz)
             {
                 diagnostic(C_ERROR_STORAGE_SIZE,
-                ctx,
-                p_member_declarator->constant_expression->first_token,
-                NULL,
-                "with of bitfield (%zu) exceess type size (%zu)", bit_field_width, sz);
+                    ctx,
+                    p_member_declarator->constant_expression->first_token,
+                    NULL,
+                    "with of bitfield (%zu) exceess type size (%zu)", bit_field_width, sz);
+            }
+
+            if (bit_field_width == 0 && p_member_declarator->declarator->name_opt)
+            {
+                diagnostic(C_ERROR_STORAGE_SIZE,
+                    ctx,
+                    p_member_declarator->constant_expression->first_token,
+                    NULL,
+                    "named bit field cannot have zero width");
             }
 
             /* adjust the type to be bitfield */
@@ -5369,7 +6424,7 @@ void member_declarator_delete(struct member_declarator* _Owner _Opt p)
     if (p)
     {
         expression_delete(p->constant_expression);
-        assert(p->next == NULL);
+        _Assert(p->next == NULL);
         declarator_delete(p->declarator);
         free(p);
     }
@@ -5383,8 +6438,8 @@ void member_declarator_list_add(struct member_declarator_list* list, struct memb
     }
     else
     {
-        assert(list->tail != NULL);
-        assert(list->tail->next == NULL);
+        _Assert(list->tail != NULL);
+        _Assert(list->tail->next == NULL);
         list->tail->next = p_item;
     }
     list->tail = p_item;
@@ -5462,11 +6517,18 @@ void member_declaration_list_add(struct member_declaration_list* list, struct me
     }
     else
     {
-        assert(list->tail != NULL);
-        assert(list->tail->next == NULL);
+        _Assert(list->tail != NULL);
+        _Assert(list->tail->next == NULL);
         list->tail->next = p_item;
     }
     list->tail = p_item;
+}
+
+void member_declaration_list_swap(struct member_declaration_list* a, struct member_declaration_list* b)
+{
+    struct member_declaration_list temp = *a;
+    *a = *b;
+    *b = temp;
 }
 
 void member_declaration_list_destroy(_Opt _Dtor struct member_declaration_list* p)
@@ -5491,21 +6553,26 @@ struct member_declaration_list member_declaration_list(struct parser_ctx* ctx, s
 
     try
     {
+        if (ctx->current)
+            check_indentation_style(ctx, ctx->current);
+
         p_member_declaration = member_declaration(ctx, p_struct_or_union_specifier);
 
         if (p_member_declaration == NULL)
             throw;
 
         member_declaration_list_add(&list, p_member_declaration);
-        p_member_declaration = NULL; /*MOVED*/
+        p_member_declaration = NULL; /* MOVED */
 
         while (ctx->current && ctx->current->type != '}')
         {
+            check_indentation_style(ctx, ctx->current);
+
             p_member_declaration = member_declaration(ctx, p_struct_or_union_specifier);
             if (p_member_declaration == NULL)
                 throw;
             member_declaration_list_add(&list, p_member_declaration);
-            p_member_declaration = NULL; /*MOVED*/
+            p_member_declaration = NULL; /* MOVED */
         }
     }
     catch
@@ -5521,7 +6588,7 @@ void member_declaration_delete(struct member_declaration* _Owner _Opt p)
 {
     if (p)
     {
-        assert(p->next == NULL);
+        _Assert(p->next == NULL);
         specifier_qualifier_list_delete(p->specifier_qualifier_list);
         member_declarator_list_delete(p->member_declarator_list_opt);
         attribute_specifier_sequence_delete(p->p_attribute_specifier_sequence);
@@ -5559,7 +6626,7 @@ struct member_declaration* _Owner _Opt member_declaration(struct parser_ctx* ctx
         }
         else
         {
-            assert(p_member_declaration->p_attribute_specifier_sequence == NULL);
+            _Assert(p_member_declaration->p_attribute_specifier_sequence == NULL);
             p_member_declaration->p_attribute_specifier_sequence = attribute_specifier_sequence_opt(ctx);
 
             p_member_declaration->specifier_qualifier_list = specifier_qualifier_list(ctx);
@@ -5581,6 +6648,12 @@ struct member_declaration* _Owner _Opt member_declaration(struct parser_ctx* ctx
                     p_struct_or_union_specifier,
                     p_member_declaration->specifier_qualifier_list);
                 if (p_member_declaration->member_declarator_list_opt == NULL) throw;
+            }
+
+            if (ctx->current == NULL)
+            {
+                unexpected_end_of_file(ctx);
+                throw;
             }
 
             check_no_space_before_semicolon_style(ctx, ctx->current);
@@ -5654,7 +6727,6 @@ static struct member_declarator* _Opt find_member_declarator_by_index_core(struc
     if (list->head == NULL)
         return NULL;
 
-
     struct member_declaration* _Opt p_member_declaration = list->head;
     while (p_member_declaration)
     {
@@ -5702,7 +6774,7 @@ struct member_declarator* _Opt find_member_declarator_by_index(struct member_dec
     return find_member_declarator_by_index_core(list, member_index, &count);
 }
 
-static struct object* _Opt find_object_declarator_by_index_core(struct object* p_object0, struct member_declaration_list* list, int member_index, int* p_count)
+static struct object* _Opt find_object_declarator_by_index_core(const struct object* p_object0, struct member_declaration_list* list, int member_index, int* p_count)
 {
     const struct object* p_object = object_is_reference(p_object0) ? object_get_referenced(p_object0) : p_object0;
 
@@ -5738,7 +6810,7 @@ static struct object* _Opt find_object_declarator_by_index_core(struct object* p
                 p_member_declarator = p_member_declarator->next;
                 if (p_member_object == NULL)
                 {
-                    //BUG
+                    // BUG
                     return NULL;
                 }
                 p_member_object = p_member_object->next;
@@ -5746,6 +6818,12 @@ static struct object* _Opt find_object_declarator_by_index_core(struct object* p
         }
         else if (p_member_declaration->specifier_qualifier_list)
         {
+            if (p_member_object == NULL)
+            {
+                // BUG
+                return NULL;
+            }
+
             if (p_member_declaration->specifier_qualifier_list->struct_or_union_specifier)
             {
                 struct member_declaration_list* p_member_declaration_list =
@@ -5764,13 +6842,13 @@ static struct object* _Opt find_object_declarator_by_index_core(struct object* p
     return NULL;
 }
 
-struct object* _Opt find_object_declarator_by_index(struct object* p_object, struct member_declaration_list* list, int member_index)
+struct object* _Opt find_object_declarator_by_index(const struct object* p_object, struct member_declaration_list* list, int member_index)
 {
     int count = 0;
     return find_object_declarator_by_index_core(p_object, list, member_index, &count);
 }
 
-void print_specifier_qualifier_list(struct osstream* ss, bool* first, struct specifier_qualifier_list* p_specifier_qualifier_list)
+void print_specifier_qualifier_list(struct osstream* ss, bool* first, const struct specifier_qualifier_list* p_specifier_qualifier_list)
 {
 
     print_type_qualifier_flags(ss, first, p_specifier_qualifier_list->type_qualifier_flags);
@@ -5779,7 +6857,7 @@ void print_specifier_qualifier_list(struct osstream* ss, bool* first, struct spe
     {
 
         // TODO
-        assert(false);
+        _Assert(false);
     }
     else if (p_specifier_qualifier_list->struct_or_union_specifier)
     {
@@ -5796,7 +6874,6 @@ void print_specifier_qualifier_list(struct osstream* ss, bool* first, struct spe
     }
 }
 
-
 void specifier_qualifier_list_add(struct specifier_qualifier_list* list, struct type_specifier_qualifier* _Owner p_item)
 {
     if (list->head == NULL)
@@ -5805,8 +6882,8 @@ void specifier_qualifier_list_add(struct specifier_qualifier_list* list, struct 
     }
     else
     {
-        assert(list->tail != NULL);
-        assert(list->tail->next == NULL);
+        _Assert(list->tail != NULL);
+        _Assert(list->tail->next == NULL);
         list->tail->next = p_item;
     }
     list->tail = p_item;
@@ -5852,9 +6929,9 @@ struct specifier_qualifier_list* _Owner _Opt specifier_qualifier_list(struct par
         if (p_specifier_qualifier_list == NULL)
             throw;
 
-        /*
-          type_specifier_qualifier attribute_specifier_sequence_opt
-          type_specifier_qualifier specifier_qualifier_list
+        /* 
+        * type_specifier_qualifier attribute_specifier_sequence_opt
+        * type_specifier_qualifier specifier_qualifier_list
         */
 
         p_specifier_qualifier_list->first_token = ctx->current;
@@ -5920,7 +6997,7 @@ struct specifier_qualifier_list* _Owner _Opt specifier_qualifier_list(struct par
                 p_specifier_qualifier_list->type_qualifier_flags |= p_type_specifier_qualifier->type_qualifier->flags;
             }
 
-            assert(p_specifier_qualifier_list->p_attribute_specifier_sequence == NULL);
+            _Assert(p_specifier_qualifier_list->p_attribute_specifier_sequence == NULL);
             p_specifier_qualifier_list->p_attribute_specifier_sequence = attribute_specifier_sequence_opt(ctx);
 
             specifier_qualifier_list_add(p_specifier_qualifier_list, p_type_specifier_qualifier);
@@ -5932,8 +7009,8 @@ struct specifier_qualifier_list* _Owner _Opt specifier_qualifier_list(struct par
             throw;
         }
 
-        final_specifier(ctx, &p_specifier_qualifier_list->type_specifier_flags);
-        struct token* _Opt p_previous_parser_token = previous_parser_token(ctx->current);
+        final_specifier( &p_specifier_qualifier_list->type_specifier_flags);
+        struct token* _Opt p_previous_parser_token = parser_get_previous_token(ctx);
         if (p_previous_parser_token == NULL) throw;
 
         p_specifier_qualifier_list->last_token = p_previous_parser_token;
@@ -5951,7 +7028,7 @@ void type_qualifier_delete(struct type_qualifier* _Owner _Opt p)
 {
     if (p)
     {
-        assert(p->next == NULL);
+        _Assert(p->next == NULL);
         free(p);
     }
 }
@@ -5960,18 +7037,18 @@ void type_specifier_qualifier_delete(struct type_specifier_qualifier* _Owner _Op
 {
     if (p)
     {
-        assert(p->next == NULL);
+        _Assert(p->next == NULL);
         if (p->type_qualifier)
         {
-            assert(p->type_qualifier->next == NULL);
+            _Assert(p->type_qualifier->next == NULL);
             free(p->type_qualifier);
         }
         alignment_specifier_delete(p->alignment_specifier);
 
         type_specifier_delete(p->type_specifier);
 
-        //ATENTION LIST?? SEE ABOVE TODO
-        //type_qualifier_delete(p->type_qualifier);
+        // ATENTION LIST?? SEE ABOVE TODO
+        // type_qualifier_delete(p->type_qualifier);
 
         free(p);
     }
@@ -6005,7 +7082,7 @@ struct type_specifier_qualifier* _Owner _Opt type_specifier_qualifier(struct par
         }
         else
         {
-            assert(false);
+            _Assert(false);
         }
     }
     catch
@@ -6016,7 +7093,7 @@ struct type_specifier_qualifier* _Owner _Opt type_specifier_qualifier(struct par
     return type_specifier_qualifier;
 }
 
-const struct enumerator* _Opt find_enumerator_by_value(struct parser_ctx* ctx, const struct enum_specifier* p_enum_specifier, const struct object* object)
+const struct enumerator* _Opt find_enumerator_by_value(const struct parser_ctx* ctx, const struct enum_specifier* p_enum_specifier, const struct object* object)
 {
     if (p_enum_specifier->enumerator_list.head == NULL)
     {
@@ -6039,7 +7116,6 @@ struct enum_specifier* _Owner enum_specifier_add_ref(struct enum_specifier* p)
     return (struct enum_specifier* _Owner)p;
 }
 
-
 void enum_specifier_delete(struct enum_specifier* _Owner _Opt p)
 {
     if (p)
@@ -6050,34 +7126,29 @@ void enum_specifier_delete(struct enum_specifier* _Owner _Opt p)
             return; //lint 29
         }
 
-        specifier_qualifier_list_delete(p->specifier_qualifier_list);
         attribute_specifier_sequence_delete(p->attribute_specifier_sequence_opt);
         enumerator_list_destroy(&p->enumerator_list);
+        type_destroy(&p->integer_type);
         free(p);
     }
 }
 
-bool enum_specifier_has_fixed_underlying_type(const struct enum_specifier* p_enum_specifier)
-{
-    return p_enum_specifier->specifier_qualifier_list != NULL;
-}
-
 struct enum_specifier* _Owner _Opt enum_specifier(struct parser_ctx* ctx)
 {
-    /*
-     enum-type-specifier:
-     : specifier-qualifier-list
+    /* 
+    * enum-type-specifier:
+    * : specifier-qualifier-list
     */
 
-    /*
-        enum-specifier:
-
-        "enum" attribute-specifier-sequence opt identifier _Opt enum-type-specifier _Opt
-        { enumerator-list }
-
-        "enum" attribute-specifier-sequence opt identifier _Opt enum-type-specifier _Opt
-        { enumerator-list , }
-        enum identifier enum-type-specifier _Opt
+    /* 
+    * enum-specifier:
+    * 
+    * "enum" attribute-specifier-sequence opt identifier _Opt enum-type-specifier _Opt
+    * { enumerator-list }
+    * 
+    * "enum" attribute-specifier-sequence opt identifier _Opt enum-type-specifier _Opt
+    * { enumerator-list , }
+    * enum identifier enum-type-specifier _Opt
     */
 
     struct enum_specifier* _Owner _Opt p_enum_specifier = NULL;
@@ -6105,12 +7176,35 @@ struct enum_specifier* _Owner _Opt enum_specifier(struct parser_ctx* ctx)
             throw;
         }
 
+
+        struct enum_specifier* _Opt prev_decl_same_scope = NULL; // previous enum definition in the same scope. must be identical
+
         if (ctx->current->type == TK_IDENTIFIER)
         {
             snprintf(p_enum_specifier->tag_name, sizeof p_enum_specifier->tag_name, "%s", ctx->current->lexeme);
 
             p_enum_specifier->tag_token = ctx->current;
             parser_match(ctx);
+
+            struct scope* _Opt sc = NULL;
+            struct map_entry* _Opt found_tag = find_tag(ctx, p_enum_specifier->tag_token->lexeme, &sc);
+            if (found_tag && sc == ctx->scopes.tail)
+            {
+                if (found_tag->type == TAG_TYPE_ENUM_SPECIFIER)
+                {
+                    prev_decl_same_scope = found_tag->data.p_enum_specifier;
+                    p_enum_specifier->p_complete_enum_specifier = prev_decl_same_scope;
+                }
+                else
+                {
+                    diagnostic(C_ERROR_TAG_TYPE_DOES_NOT_MATCH_PREVIOUS_DECLARATION,
+                        ctx,
+                        p_enum_specifier->tag_token,
+                        NULL,
+                        "use of '%s' with tag type that does not match previous declaration.",
+                        p_enum_specifier->tag_token->lexeme);
+                }
+            }
         }
         else
         {
@@ -6125,35 +7219,51 @@ struct enum_specifier* _Owner _Opt enum_specifier(struct parser_ctx* ctx)
 
         if (ctx->current->type == ':')
         {
-            if (!ctx->inside_generic_association)
+            struct token* _Opt p_token_ahead = parser_look_ahead(ctx);
+
+            if (!ctx->inside_generic_association ||
+                (p_token_ahead != NULL &&
+                    first_of_type_specifier_token(ctx, p_token_ahead)))
             {
                 /* C23 */
-                parser_match(ctx);
-                p_enum_specifier->specifier_qualifier_list = specifier_qualifier_list(ctx);
-                if (p_enum_specifier->specifier_qualifier_list == NULL)
-                    throw;
 
-                struct type enum_underline_type =
-                    make_with_type_specifier_flags(p_enum_specifier->specifier_qualifier_list->type_specifier_flags);
-
-                if (!type_is_integer(&enum_underline_type))
+                if (prev_decl_same_scope && !prev_decl_same_scope->has_underlying)
                 {
-                    type_destroy(&enum_underline_type);
-                    diagnostic(C_ERROR_NON_INTEGRAL_ENUM_TYPE,
-                        ctx,
-                        p_enum_specifier->specifier_qualifier_list->first_token,
-                        NULL,
-                        "expected an integer type");
-
+                    diagnostic(C_ERROR_INCOMPATIBLE_TYPES, ctx, ctx->current, NULL, "enum redeclared with underlying type");
                     throw;
                 }
-                type_destroy(&enum_underline_type);
+
+                p_enum_specifier->has_underlying = true;
+
+                parser_match(ctx);
+                struct specifier_qualifier_list* _Owner _Opt list = specifier_qualifier_list(ctx);
+                if (list == NULL)
+                    throw;
+                struct token* first_token = list->first_token;
+                type_destroy(&p_enum_specifier->integer_type);
+                p_enum_specifier->integer_type = make_with_specifier_qualifier_list(list);
+
+                specifier_qualifier_list_delete(list);
+
+                if (!type_is_integer(&p_enum_specifier->integer_type))
+                {
+                    diagnostic(C_ERROR_NON_INTEGRAL_ENUM_TYPE,
+                        ctx,
+                        first_token,
+                        NULL,
+                        "expected an integer type");
+                    throw;
+                }
+                if (prev_decl_same_scope && !type_is_same(&prev_decl_same_scope->integer_type, &p_enum_specifier->integer_type, false))
+                {
+                    diagnostic(C_ERROR_INCOMPATIBLE_TYPES, ctx, first_token, NULL, "enum redeclared with different underlying type");
+                    throw;
+                }
             }
             else
             {
             }
         }
-
 
         if (ctx->current == NULL)
         {
@@ -6163,16 +7273,32 @@ struct enum_specifier* _Owner _Opt enum_specifier(struct parser_ctx* ctx)
 
         if (ctx->current->type == '{')
         {
+            if (prev_decl_same_scope)
+            {
+                if (p_enum_specifier->has_underlying != prev_decl_same_scope->has_underlying)
+                {
+                    diagnostic(C_ERROR_INCOMPATIBLE_TYPES, ctx, p_enum_specifier->first_token, NULL, "enum redeclared without underlying type");
+                    throw;
+                }
+
+            }
+
             if (p_enum_specifier->tag_token)
                 naming_convention_enum_tag(ctx, p_enum_specifier->tag_token);
 
-            /*points to itself*/
+            /* points to itself */
             p_enum_specifier->p_complete_enum_specifier = p_enum_specifier;
+
+            struct token* enum_open_brace = ctx->current;
+            format_align_own_line_brace_if_present(ctx, enum_open_brace);
+            ctx->format_indent_level++;
 
             if (parser_match_tk(ctx, '{') != 0)
                 throw;
 
-            p_enum_specifier->enumerator_list = enumerator_list(ctx, p_enum_specifier);
+            struct enumerator_list list = enumerator_list(ctx, p_enum_specifier);
+            enumerator_list_swap(&p_enum_specifier->enumerator_list, &list);
+            enumerator_list_destroy(&list);
 
             if (p_enum_specifier->enumerator_list.head == NULL)
                 throw;
@@ -6188,14 +7314,25 @@ struct enum_specifier* _Owner _Opt enum_specifier(struct parser_ctx* ctx)
                 parser_match(ctx);
             }
 
+            if (ctx->current == NULL)
+            {
+                unexpected_end_of_file(ctx);
+                throw;
+            }
+
+            ctx->format_indent_level--;
+            format_align_own_line_brace_if_present(ctx, ctx->current);
+
             if (parser_match_tk(ctx, '}') != 0)
                 throw;
 
             struct hash_item_set item = { 0 };
             item.p_enum_specifier = enum_specifier_add_ref(p_enum_specifier);
             hashmap_set(&ctx->scopes.tail->tags, p_enum_specifier->tag_name, &item);
-            p_enum_specifier->p_complete_enum_specifier = p_enum_specifier;
             hash_item_set_destroy(&item);
+
+            if (prev_decl_same_scope)
+                prev_decl_same_scope->p_complete_enum_specifier = p_enum_specifier;
         }
         else
         {
@@ -6204,20 +7341,23 @@ struct enum_specifier* _Owner _Opt enum_specifier(struct parser_ctx* ctx)
             {
                 p_existing_enum_specifier = find_enum_specifier(ctx, p_enum_specifier->tag_token->lexeme);
             }
+
             if (p_existing_enum_specifier)
             {
-                //p_existing_enum_specifier->p_complete_enum_specifier = p_enum_specifier;
-                //ja existe
+                // p_existing_enum_specifier->p_complete_enum_specifier = p_enum_specifier;
+                // ja existe
                 /* check for another tag with the same name in this scope */
+
                 p_enum_specifier->p_complete_enum_specifier = p_existing_enum_specifier;
             }
             else
             {
                 /* tag not found anywhere; add it */
+
+                p_enum_specifier->p_complete_enum_specifier = p_enum_specifier;
                 struct hash_item_set item = { 0 };
                 item.p_enum_specifier = enum_specifier_add_ref(p_enum_specifier);
                 hashmap_set(&ctx->scopes.tail->tags, p_enum_specifier->tag_name, &item);
-                p_enum_specifier->p_complete_enum_specifier = p_enum_specifier;
                 hash_item_set_destroy(&item);
             }
         }
@@ -6239,11 +7379,18 @@ void enumerator_list_add(struct enumerator_list* list, struct enumerator* _Owner
     }
     else
     {
-        assert(list->tail != NULL);
-        assert(list->tail->next == NULL);
+        _Assert(list->tail != NULL);
+        _Assert(list->tail->next == NULL);
         list->tail->next = p_item;
     }
     list->tail = p_item;
+}
+
+void enumerator_list_swap(struct enumerator_list* a, struct enumerator_list* b)
+{
+    struct enumerator_list temp = *a;
+    *a = *b;
+    *b = temp;
 }
 
 void enumerator_list_destroy(_Dtor struct enumerator_list* p)
@@ -6258,28 +7405,72 @@ void enumerator_list_destroy(_Dtor struct enumerator_list* p)
     }
 }
 
-struct enumerator_list enumerator_list(struct parser_ctx* ctx, const struct enum_specifier* p_enum_specifier)
+static void update_enumerator_list_range(const struct enumerator* p_enumerator, long long* min_value, unsigned long long* max_value)
+{
+    bool is_signed = object_type_is_signed_integer(p_enumerator->value.value_type);
+    bool is_negative = is_signed && p_enumerator->value.value.host_long_long < 0;
+
+    if (is_signed && p_enumerator->value.value.host_long_long < *min_value)
+    {
+        *min_value = p_enumerator->value.value.host_long_long;
+    }
+    if (
+        (is_signed && !is_negative && (unsigned long long)p_enumerator->value.value.host_long_long > *max_value) ||
+        (!is_signed && p_enumerator->value.value.host_u_long_long > *max_value)
+        )
+    {
+        *max_value = p_enumerator->value.value.host_u_long_long;
+    }
+}
+
+struct enumerator_list enumerator_list(struct parser_ctx* ctx, struct enum_specifier* p_enum_specifier)
 {
 
-    /*
-       enumerator
-        enumerator_list ',' enumerator
-     */
-
+    /* 
+    * enumerator
+    * enumerator_list ',' enumerator
+    */
 
     struct object next_enumerator_value = object_make_signed_int(ctx->options.target, 0);
 
-    if (p_enum_specifier->specifier_qualifier_list)
+    if (p_enum_specifier->has_underlying)
     {
-        enum object_type vt = type_specifier_to_object_type(p_enum_specifier->specifier_qualifier_list->type_specifier_flags, ctx->options.target);
-        next_enumerator_value = object_cast(ctx->options.target, vt, &next_enumerator_value);
+        enum object_type vt = type_specifier_to_object_type(p_enum_specifier->integer_type.type_specifier_flags, ctx->options.target);
+        struct object casted = object_cast(ctx->options.target, vt, &next_enumerator_value);
+        object_swap(&next_enumerator_value, &casted);
+        object_destroy(&casted);
     }
+
+    long long lo_limit = 0;
+    unsigned long long hi_limit = 0;
+
+    if (p_enum_specifier->has_underlying)
+    {
+        if (type_is_signed_integer(&p_enum_specifier->integer_type))
+        {
+            lo_limit = target_signed_min(ctx->options.target, next_enumerator_value.value_type);
+            hi_limit = target_signed_max(ctx->options.target, next_enumerator_value.value_type);
+        }
+        else
+        {
+            lo_limit = 0;
+            hi_limit = target_unsigned_max(ctx->options.target, next_enumerator_value.value_type);
+        }
+    }
+
+    unsigned long long max_value = 0;
+    long long min_value = 0;
 
     struct enumerator_list enumeratorlist = { 0 };
     struct enumerator* _Owner _Opt p_enumerator = NULL;
     try
     {
-        p_enumerator = enumerator(ctx, p_enum_specifier, &next_enumerator_value);
+        bool next_ovf = false;
+
+        if (ctx->current != NULL)
+            check_indentation_style(ctx, ctx->current);
+
+        p_enumerator = enumerator(ctx, p_enum_specifier, &next_enumerator_value, lo_limit, hi_limit, &min_value, &max_value, &next_ovf);
         if (p_enumerator == NULL)
             throw;
 
@@ -6293,10 +7484,76 @@ struct enumerator_list enumerator_list(struct parser_ctx* ctx, const struct enum
 
             if (ctx->current && ctx->current->type != '}')
             {
-                p_enumerator = enumerator(ctx, p_enum_specifier, &next_enumerator_value);
+                check_indentation_style(ctx, ctx->current);
+
+                p_enumerator = enumerator(ctx, p_enum_specifier, &next_enumerator_value, lo_limit, hi_limit, &min_value, &max_value, &next_ovf);
                 if (p_enumerator == NULL)
                     throw;
                 enumerator_list_add(&enumeratorlist, p_enumerator);
+            }
+        }
+
+        if (!p_enum_specifier->has_underlying)
+        {
+            long long int_min = target_signed_min(ctx->options.target, TYPE_SIGNED_INT);
+            long long int_max = target_signed_max(ctx->options.target, TYPE_SIGNED_INT);
+
+            unsigned long long uint_max = target_unsigned_max(ctx->options.target, TYPE_UNSIGNED_INT);
+
+            unsigned long long ulong_max = target_unsigned_max(ctx->options.target, TYPE_UNSIGNED_LONG);
+
+            long long long_min = target_signed_min(ctx->options.target, TYPE_SIGNED_LONG);
+            long long long_max = target_signed_max(ctx->options.target, TYPE_SIGNED_LONG);
+
+            unsigned long long ullong_max = target_unsigned_max(ctx->options.target, TYPE_UNSIGNED_LONG_LONG);
+
+            long long llong_min = target_signed_min(ctx->options.target, TYPE_SIGNED_LONG_LONG);
+            long long llong_max = target_signed_max(ctx->options.target, TYPE_SIGNED_LONG_LONG);
+
+            enum object_type final_type;
+
+            if (max_value <= uint_max && min_value >= 0)
+            {
+                final_type = TYPE_UNSIGNED_INT;
+            }
+            else if (max_value <= (unsigned long long) int_max && min_value >= int_min)
+            {
+                final_type = TYPE_SIGNED_INT;
+            }
+            else if (max_value <= ulong_max && min_value >= 0)
+            {
+                final_type = TYPE_UNSIGNED_LONG;
+            }
+            else if (max_value <= (unsigned long long) long_max && min_value >= long_min)
+            {
+                final_type = TYPE_SIGNED_LONG;
+            }
+            else if (max_value <= ullong_max && min_value >= 0)
+            {
+                final_type = TYPE_UNSIGNED_LONG_LONG;
+            }
+            else if (max_value <= (unsigned long long) llong_max && min_value >= llong_min)
+            {
+                final_type = TYPE_SIGNED_LONG_LONG;
+            }
+            else
+            {
+                diagnostic(C_ERROR_INVALID_TYPE, ctx, ctx->current, NULL, "enum value range unsupported");
+                throw;
+            }
+
+            type_destroy(&p_enum_specifier->integer_type);
+            p_enum_specifier->integer_type = make_with_type_specifier_flags(object_type_to_type_specifier(final_type));
+            if (final_type == TYPE_UNSIGNED_INT && max_value <= (unsigned long long) int_max)
+                final_type = TYPE_SIGNED_INT;
+
+            struct enumerator* _Opt it = enumeratorlist.head;
+            while (it)
+            {
+                struct object casted = object_cast(ctx->options.target, final_type, &it->value);
+                object_swap(&it->value, &casted);
+                object_destroy(&casted);
+                it = it->next;
             }
         }
     }
@@ -6307,6 +7564,8 @@ struct enumerator_list enumerator_list(struct parser_ctx* ctx, const struct enum
         enumeratorlist.tail = NULL;
     }
 
+    object_destroy(&next_enumerator_value);
+
     return enumeratorlist;
 }
 
@@ -6315,8 +7574,6 @@ struct enumerator* _Owner enumerator_add_ref(struct enumerator* p)
     p->has_shared_ownership = true;
     return (struct enumerator* _Owner) p;
 }
-
-
 
 void enumerator_delete(struct enumerator* _Owner _Opt p)
 {
@@ -6328,19 +7585,23 @@ void enumerator_delete(struct enumerator* _Owner _Opt p)
             return; //lint 29 not a leak
         }
 
-        assert(p->next == NULL);
+        _Assert(p->next == NULL);
         attribute_specifier_sequence_delete(p->attribute_specifier_sequence_opt);
         expression_delete(p->constant_expression_opt);
-
+        object_destroy(&p->value);
         free(p);
     }
 }
 
 struct enumerator* _Owner _Opt enumerator(struct parser_ctx* ctx,
     const struct enum_specifier* p_enum_specifier,
-    struct object* p_next_enumerator_value)
+    struct object* p_next_enumerator_value,
+    long long lo_limit,
+    unsigned long long hi_limit,
+    long long* min_value,
+    unsigned long long* max_value,
+    bool* next_ovf)
 {
-    /* TODO: value */
     struct enumerator* _Owner _Opt p_enumerator = NULL;
     try
     {
@@ -6377,34 +7638,81 @@ struct enumerator* _Owner _Opt enumerator(struct parser_ctx* ctx,
             throw;
         }
 
+        bool is_negative;
         if (ctx->current->type == '=')
         {
             parser_match(ctx);
-            assert(p_enumerator->constant_expression_opt == NULL);
+            _Assert(p_enumerator->constant_expression_opt == NULL);
             p_enumerator->constant_expression_opt = constant_expression(ctx, true, false);
             if (p_enumerator->constant_expression_opt == NULL) throw;
-
-            if (enum_specifier_has_fixed_underlying_type(p_enum_specifier))
+            if (!type_is_integer(&p_enumerator->constant_expression_opt->type))
             {
-
+                diagnostic(C_ERROR_INVALID_TYPE, ctx, p_enumerator->constant_expression_opt->first_token, NULL, "enumerator initializer must be integer");
+                throw;
             }
-            else
+
+            struct object newvalue = object_dup(&p_enumerator->constant_expression_opt->object);
+            object_swap(&p_enumerator->value, &newvalue);
+            object_destroy(&newvalue);
+
+            bool is_signed = object_type_is_signed_integer(p_enumerator->value.value_type);
+            is_negative = is_signed && (p_enumerator->value.value.host_long_long < 0);
+
+            if (p_enum_specifier->has_underlying)
             {
-                //if the value is bigger than int the enum whould type must be fixed
+                bool underlying_signed = type_is_signed_integer(&p_enum_specifier->integer_type);
+                bool under_range = underlying_signed && (p_enumerator->value.value.host_long_long < lo_limit);
+                bool over_range = (underlying_signed && (!is_negative && (unsigned long long)p_enumerator->value.value.host_long_long > hi_limit)) || (!underlying_signed && (p_enumerator->value.value.host_u_long_long > hi_limit));
+
+                if (under_range || over_range)
+                {
+                    diagnostic(C_ERROR_INVALID_TYPE, ctx, p_enumerator->token, NULL, "enumerator value outside of underlying type range");
+                    throw;
+                }
             }
-            p_enumerator->value = p_enumerator->constant_expression_opt->object;
 
-            //fixes #257
-            *p_next_enumerator_value = *object_get_referenced(&p_enumerator->value);
-
-            object_increment_value(ctx->options.target, p_next_enumerator_value);
-            //overflow?
+            struct object newvalue2 = object_dup(object_get_referenced(&p_enumerator->value));
+            object_swap(p_next_enumerator_value, &newvalue2);
+            object_destroy(&newvalue2);            
         }
         else
         {
-            p_enumerator->value = *p_next_enumerator_value;
-            object_increment_value(ctx->options.target, p_next_enumerator_value);
+            if (*next_ovf)
+            {
+                diagnostic(C_ERROR_INVALID_TYPE, ctx, p_enumerator->token, NULL, "enumerator overflow");
+                throw;
+            }
+
+            struct object newvalue = object_dup(p_next_enumerator_value);
+            object_swap(&p_enumerator->value, &newvalue);
+            object_destroy(&newvalue);
+
+            is_negative = object_type_is_signed_integer(p_enumerator->value.value_type) && (p_enumerator->value.value.host_long_long < 0);
+
+            if (p_enum_specifier->has_underlying)
+            {
+                bool underlying_signed = type_is_signed_integer(&p_enum_specifier->integer_type);
+                bool under_range = underlying_signed && (p_enumerator->value.value.host_long_long < lo_limit);
+                bool over_range = (underlying_signed && (!is_negative && (unsigned long long)p_enumerator->value.value.host_long_long > hi_limit)) || (!underlying_signed && (p_enumerator->value.value.host_u_long_long > hi_limit));
+
+                if (under_range || over_range)
+                {
+                    diagnostic(C_ERROR_INVALID_TYPE, ctx, p_enumerator->token, NULL, "enumerator value outside of underlying type range");
+                    throw;
+                }
+            }
         }
+
+        update_enumerator_list_range(p_enumerator, min_value, max_value);
+
+        if (!p_enum_specifier->has_underlying && !is_negative)
+        {
+            struct object casted = object_cast(ctx->options.target, TYPE_UNSIGNED_LONG_LONG, p_next_enumerator_value);
+            object_swap(p_next_enumerator_value, &casted);
+            object_destroy(&casted);
+        }
+
+        *next_ovf = object_increment_value(ctx->options.target, p_next_enumerator_value);
     }
     catch
     {
@@ -6477,6 +7785,8 @@ struct alignment_specifier* _Owner _Opt alignment_specifier(struct parser_ctx* c
     }
     catch
     {
+        alignment_specifier_delete(alignment_specifier);
+        alignment_specifier = NULL;
     }
     return alignment_specifier;
 }
@@ -6492,7 +7802,7 @@ void atomic_type_specifier_delete(struct atomic_type_specifier* _Owner _Opt p)
 
 struct atomic_type_specifier* _Owner _Opt atomic_type_specifier(struct parser_ctx* ctx)
 {
-    //'_Atomic' '(' type_name ')'
+    // '_Atomic' '(' type_name ')'
     struct atomic_type_specifier* _Owner _Opt p_atomic_type_specifier = NULL;
     try
     {
@@ -6530,7 +7840,6 @@ struct atomic_type_specifier* _Owner _Opt atomic_type_specifier(struct parser_ct
     return p_atomic_type_specifier;
 }
 
-
 struct type_qualifier* _Owner _Opt type_qualifier(struct parser_ctx* ctx)
 {
     if (ctx->current == NULL)
@@ -6546,30 +7855,30 @@ struct type_qualifier* _Owner _Opt type_qualifier(struct parser_ctx* ctx)
 
     switch (ctx->current->type)
     {
-    case TK_KEYWORD_CONST:
-        p_type_qualifier->flags = TYPE_QUALIFIER_CONST;
+        case TK_KEYWORD_CONST:
+            p_type_qualifier->flags = TYPE_QUALIFIER_CONST;
         break;
-    case TK_KEYWORD_RESTRICT:
-        p_type_qualifier->flags = TYPE_QUALIFIER_RESTRICT;
+        case TK_KEYWORD_RESTRICT:
+            p_type_qualifier->flags = TYPE_QUALIFIER_RESTRICT;
         break;
-    case TK_KEYWORD_VOLATILE:
-        p_type_qualifier->flags = TYPE_QUALIFIER_VOLATILE;
+        case TK_KEYWORD_VOLATILE:
+            p_type_qualifier->flags = TYPE_QUALIFIER_VOLATILE;
         break;
-    case TK_KEYWORD__ATOMIC:
-        p_type_qualifier->flags = TYPE_QUALIFIER__ATOMIC;
+        case TK_KEYWORD__ATOMIC:
+            p_type_qualifier->flags = TYPE_QUALIFIER__ATOMIC;
         break;
-    case TK_KEYWORD_MSVC__PTR32:
-        p_type_qualifier->flags = TYPE_QUALIFIER_MSVC_PTR32;
-        break;
-
-    case TK_KEYWORD_MSVC__PTR64:
-        p_type_qualifier->flags = TYPE_QUALIFIER_MSVC_PTR64;
-        break;
-    case TK_KEYWORD_MSVC__UNALIGNED:
-        p_type_qualifier->flags = TYPE_QUALIFIER_MSVC_UNALIGNED;
+        case TK_KEYWORD_MSVC__PTR32:
+            p_type_qualifier->flags = TYPE_QUALIFIER_MSVC_PTR32;
         break;
 
-    default:
+        case TK_KEYWORD_MSVC__PTR64:
+            p_type_qualifier->flags = TYPE_QUALIFIER_MSVC_PTR64;
+        break;
+        case TK_KEYWORD_MSVC__UNALIGNED:
+            p_type_qualifier->flags = TYPE_QUALIFIER_MSVC_UNALIGNED;
+        break;
+
+        default:
         // do nothing
         break;
     }
@@ -6578,23 +7887,31 @@ struct type_qualifier* _Owner _Opt type_qualifier(struct parser_ctx* ctx)
     {
         switch (ctx->current->type)
         {
-        case TK_KEYWORD__CTOR:
-            p_type_qualifier->flags = TYPE_QUALIFIER_CAKE_CTOR;
+            case TK_KEYWORD_CAKE_OUT:
+                p_type_qualifier->flags = TYPE_QUALIFIER_CAKE_CTOR;
             break;
 
-        case TK_KEYWORD__DTOR:
-            p_type_qualifier->flags = TYPE_QUALIFIER_CAKE_DTOR;
+            case TK_KEYWORD_CAKE_DTOR:
+                p_type_qualifier->flags = TYPE_QUALIFIER_CAKE_DTOR;
             break;
 
-        case TK_KEYWORD_CAKE_OWNER:
-            p_type_qualifier->flags = TYPE_QUALIFIER_CAKE_OWNER;
+            case TK_KEYWORD_CAKE_UNINITIALIZED:
+                p_type_qualifier->flags = TYPE_QUALIFIER_CAKE_UNINIT;
             break;
 
-        case TK_KEYWORD_CAKE_VIEW:
-            p_type_qualifier->flags = TYPE_QUALIFIER_CAKE_VIEW;
+            case TK_KEYWORD_CAKE_CLEAR:
+                p_type_qualifier->flags = TYPE_QUALIFIER_CAKE_CLEAR;
             break;
 
-        default:
+            case TK_KEYWORD_CAKE_OWNER:
+                p_type_qualifier->flags = TYPE_QUALIFIER_CAKE_OWNER;
+            break;
+
+            case TK_KEYWORD_CAKE_VIEW:
+                p_type_qualifier->flags = TYPE_QUALIFIER_CAKE_VIEW;
+            break;
+
+            default:
             // do nothing
             break;
         }
@@ -6604,11 +7921,11 @@ struct type_qualifier* _Owner _Opt type_qualifier(struct parser_ctx* ctx)
     {
         switch (ctx->current->type)
         {
-        case TK_KEYWORD_CAKE_OPT:
-            p_type_qualifier->flags = TYPE_QUALIFIER_CAKE_OPT;
+            case TK_KEYWORD_CAKE_OPT:
+                p_type_qualifier->flags = TYPE_QUALIFIER_CAKE_OPT;
             break;
 
-        default:
+            default:
             // do nothing
             break;
         }
@@ -6616,14 +7933,14 @@ struct type_qualifier* _Owner _Opt type_qualifier(struct parser_ctx* ctx)
 
     p_type_qualifier->token = ctx->current;
 
-    //'const'
-    //'restrict'
-    //'volatile'
-    //'_Atomic'
+    // 'const'
+    // 'restrict'
+    // 'volatile'
+    // '_Atomic'
     parser_match(ctx);
     return p_type_qualifier;
 }
-//
+// 
 
 struct type_qualifier* _Owner _Opt type_qualifier_opt(struct parser_ctx* ctx)
 {
@@ -6652,7 +7969,6 @@ struct function_specifier* _Owner _Opt function_specifier(struct parser_ctx* ctx
             unexpected_end_of_file(ctx);
             throw;
         }
-
 
         p_function_specifier = calloc(1, sizeof * p_function_specifier);
         if (p_function_specifier == NULL)
@@ -6710,12 +8026,16 @@ struct declarator* _Owner _Opt declarator(struct parser_ctx* ctx,
     const struct specifier_qualifier_list* _Opt p_specifier_qualifier_list_opt,
     struct declaration_specifiers* _Opt p_declaration_specifiers_opt,
     bool abstract_acceptable,
-    struct token** _Opt pp_token_name_opt)
+    struct token* _Opt* _Opt pp_token_name_opt)
 {
-    /*
-      declarator:
-      pointer_opt direct-declarator
+    /* 
+    * declarator:
+    * pointer_opt direct-declarator
     */
+    if (pp_token_name_opt)
+    {
+        *pp_token_name_opt = NULL;
+    }
 
     struct declarator* _Owner _Opt p_declarator = NULL;
     try
@@ -6748,13 +8068,13 @@ struct declarator* _Owner _Opt declarator(struct parser_ctx* ctx,
 
         if (ctx->current != p_declarator->first_token_opt)
         {
-            p_declarator->last_token_opt = previous_parser_token(ctx->current);
+            p_declarator->last_token_opt = parser_get_previous_token(ctx);
         }
         else
         {
-            /*empty declarator*/
+            /* empty declarator */
             p_declarator->last_token_opt = p_declarator->first_token_opt;
-            p_declarator->first_token_opt = NULL; /*this is the way we can know...first is null*/
+            p_declarator->first_token_opt = NULL; /* this is the way we can know...first is null */
         }
     }
     catch
@@ -6768,9 +8088,9 @@ struct declarator* _Owner _Opt declarator(struct parser_ctx* ctx,
 
     if (ctx->current && ctx->current->type == TK_KEYWORD__ASM)
     {
-        /*
-            int var __asm__("real_name_in_asm");
-            void func(void) __asm__("real_func_name");
+        /* 
+        * int var __asm__("real_name_in_asm");
+        * void func(void) __asm__("real_func_name");
         */
         struct asm_statement* _Opt _Owner p3 = gcc_asm(ctx, false);
         asm_statement_delete(p3);
@@ -6792,7 +8112,7 @@ struct function_declarator* _Opt declarator_find_function_declarator(const struc
             if (p_declarator->direct_declarator->function_declarator->direct_declarator &&
                 p_declarator->direct_declarator->function_declarator->direct_declarator->declarator)
             {
-                struct function_declarator* p =
+                struct function_declarator* _Opt p =
                     declarator_find_function_declarator(p_declarator->direct_declarator->function_declarator->direct_declarator->declarator);
                 if (p)
                     return p;
@@ -6804,7 +8124,7 @@ struct function_declarator* _Opt declarator_find_function_declarator(const struc
     return NULL;
 }
 
-struct array_declarator* _Owner _Opt array_declarator(struct direct_declarator* _Owner p_direct_declarator, struct parser_ctx* ctx, bool is_discarded);
+struct array_declarator* _Owner _Opt array_declarator(struct direct_declarator* _Owner p_direct_declarator, struct parser_ctx* ctx);
 struct function_declarator* _Owner _Opt function_declarator(struct direct_declarator* _Owner p_direct_declarator, struct parser_ctx* ctx);
 
 void function_declarator_delete(struct function_declarator* _Owner _Opt p)
@@ -6814,6 +8134,11 @@ void function_declarator_delete(struct function_declarator* _Owner _Opt p)
         direct_declarator_delete(p->direct_declarator);
         scope_destroy(&p->parameters_scope);
         parameter_type_list_delete(p->parameter_type_list_opt);
+#ifdef EXPERIMENTAL_CONTRACTS_II
+        parameter_declaration_delete(p->p_out_parameter_declaration);
+        secondary_block_delete(p->p_in_block);
+        secondary_block_delete(p->p_out_block);
+#endif
         free(p);
     }
 }
@@ -6835,18 +8160,20 @@ struct direct_declarator* _Owner _Opt direct_declarator(struct parser_ctx* ctx,
     const struct specifier_qualifier_list* _Opt p_specifier_qualifier_list,
     struct declaration_specifiers* _Opt p_declaration_specifiers,
     bool abstract_acceptable,
-    struct token** _Opt pp_token_name_opt)
+    struct token* _Opt* _Opt pp_token_name_opt)
 {
-    /*
-    direct-declarator:
-     identifier attribute-specifier-sequence opt
-     ( declarator )
-
-     array-declarator attribute-specifier-sequence opt
-     function-declarator attribute-specifier-sequence opt
+    /* 
+    * direct-declarator:
+    * identifier attribute-specifier-sequence opt
+    * ( declarator )
+    * 
+    * array-declarator attribute-specifier-sequence opt
+    * function-declarator attribute-specifier-sequence opt
     */
-
-
+    if (pp_token_name_opt)
+    {
+        *pp_token_name_opt = NULL;
+    }
     struct direct_declarator* _Owner _Opt p_direct_declarator = NULL;
     try
     {
@@ -6867,8 +8194,8 @@ struct direct_declarator* _Owner _Opt direct_declarator(struct parser_ctx* ctx,
             ctx->current->type == TK_KEYWORD_MSVC__CDECL ||
             ctx->current->type == TK_KEYWORD_MSVC__FASTCALL)
         {
-            /*
-              int __fastcall add(int a, int b);
+            /* 
+            * int __fastcall add(int a, int b);
             */
             p_direct_declarator->p_calling_convention = ctx->current;
             parser_match(ctx);
@@ -6918,7 +8245,7 @@ struct direct_declarator* _Owner _Opt direct_declarator(struct parser_ctx* ctx,
                     throw;
 
                 p_direct_declarator->declarator = p_declarator_temp;
-                parser_match(ctx); //)
+                parser_match(ctx); // )
             }
         }
 
@@ -6930,8 +8257,8 @@ struct direct_declarator* _Owner _Opt direct_declarator(struct parser_ctx* ctx,
 
             if (ctx->current->type == '[')
             {
-                p_direct_declarator2->array_declarator = array_declarator(p_direct_declarator, ctx, false);
-                p_direct_declarator = NULL; //MOVED
+                p_direct_declarator2->array_declarator = array_declarator(p_direct_declarator, ctx);
+                p_direct_declarator = NULL; // MOVED
                 if (p_direct_declarator2->array_declarator == NULL)
                 {
                     direct_declarator_delete(p_direct_declarator2);
@@ -6941,7 +8268,7 @@ struct direct_declarator* _Owner _Opt direct_declarator(struct parser_ctx* ctx,
             else
             {
                 p_direct_declarator2->function_declarator = function_declarator(p_direct_declarator, ctx);
-                p_direct_declarator = NULL; //MOVED
+                p_direct_declarator = NULL; // MOVED
                 if (p_direct_declarator2->function_declarator == NULL)
                 {
                     direct_declarator_delete(p_direct_declarator2);
@@ -6950,7 +8277,7 @@ struct direct_declarator* _Owner _Opt direct_declarator(struct parser_ctx* ctx,
             }
             p_direct_declarator = p_direct_declarator2;
 
-            assert(p_direct_declarator->p_attribute_specifier_sequence == NULL);
+            _Assert(p_direct_declarator->p_attribute_specifier_sequence == NULL);
             p_direct_declarator->p_attribute_specifier_sequence = attribute_specifier_sequence_opt(ctx);
         }
     }
@@ -6985,24 +8312,24 @@ size_t array_declarator_is_vla(const struct array_declarator* p_array_declarator
     return false;
 }
 
-/*
- * Returns true if the declarator tree contains a variably-modified (VM) type,
- * i.e. somewhere beneath a pointer level there is a VLA array dimension.
- *
- * Examples that return true:
- *   int (*a)[n]      pointer to VLA
- *   int (**a)[n]     pointer-to-pointer to VLA
- *
- * Examples that return false:
- *   int (*a)[4]      pointer to constant-size array (not VM)
- *   int *a           plain pointer
- */
+/* 
+* Returns true if the declarator tree contains a variably-modified (VM) type,
+* i.e. somewhere beneath a pointer level there is a VLA array dimension.
+* 
+* Examples that return true:
+*   int (*a)[n]      pointer to VLA
+*   int (**a)[n]     pointer-to-pointer to VLA
+* 
+* Examples that return false:
+*   int (*a)[4]      pointer to constant-size array (not VM)
+*   int *a           plain pointer
+*/
 static bool declarator_has_vm_type(const struct declarator* p_declarator)
 {
-    if (p_declarator == NULL)
-        return false;
-
-    const struct direct_declarator* dd = p_declarator->direct_declarator;
+    /* Every caller guards before recursing (`if (dd->declarator) ...`), and the
+    * parameter is not _Opt, so a null check here is dead.
+    */
+    const struct direct_declarator* _Opt dd = p_declarator->direct_declarator;
     if (dd == NULL)
         return false;
 
@@ -7026,12 +8353,14 @@ static bool declarator_has_vm_type(const struct declarator* p_declarator)
     return false;
 }
 
-struct array_declarator* _Owner _Opt array_declarator(struct direct_declarator* _Owner p_direct_declarator, struct parser_ctx* ctx, bool is_discarded)
+struct array_declarator* _Owner _Opt array_declarator(struct direct_declarator* _Owner p_direct_declarator_non_null, struct parser_ctx* ctx)
 {
     // direct_declarator '['          type_qualifier_list_opt           assignment_expression_opt ']'
     // direct_declarator '[' 'static' type_qualifier_list_opt           assignment_expression     ']'
     // direct_declarator '['          type_qualifier_list      'static' assignment_expression     ']'
     // direct_declarator '['          type_qualifier_list_opt  '*'           ']'
+
+    struct direct_declarator* _Owner _Opt p_direct_declarator = p_direct_declarator_non_null;
 
     struct array_declarator* _Owner _Opt p_array_declarator = NULL;
     try
@@ -7043,7 +8372,7 @@ struct array_declarator* _Owner _Opt array_declarator(struct direct_declarator* 
         }
 
         p_array_declarator->direct_declarator = p_direct_declarator;
-        p_direct_declarator = NULL; //lint 60, 25 MOVED
+        p_direct_declarator = NULL;
 
         if (parser_match_tk(ctx, '[') != 0)
             throw;
@@ -7115,6 +8444,27 @@ struct array_declarator* _Owner _Opt array_declarator(struct direct_declarator* 
             }
         }
 
+        /* 
+        * C23 6.7.6.2p1 If the size is a constant expression it shall have a
+        * value greater than zero.
+        * 
+        * Zero is accepted as an extension, negative is not. Checking here
+        * instead of at the sizeof computation, where a negative size looks
+        * like an overflow, also covers parameters and typedefs.
+        */
+        if (p_array_declarator->assignment_expression != NULL &&
+            type_is_integer(&p_array_declarator->assignment_expression->type) &&
+            object_has_constant_value(&p_array_declarator->assignment_expression->object) &&
+            object_to_signed_long_long(&p_array_declarator->assignment_expression->object) < 0)
+        {
+            diagnostic(C_ERROR_STORAGE_SIZE,
+                ctx,
+                p_array_declarator->assignment_expression->first_token,
+                NULL,
+                "array size is negative");
+            throw;
+        }
+
         if (parser_match_tk(ctx, ']') != 0)
             throw;
     }
@@ -7132,7 +8482,7 @@ struct array_declarator* _Owner _Opt array_declarator(struct direct_declarator* 
 
 struct function_declarator* _Owner _Opt function_declarator(struct direct_declarator* _Owner p_direct_declarator_arg, struct parser_ctx* ctx)
 {
-    struct direct_declarator* _Owner _Opt p_direct_declarator = p_direct_declarator_arg; //MOVED
+    struct direct_declarator* _Owner _Opt p_direct_declarator = p_direct_declarator_arg; // MOVED
 
     struct function_declarator* _Owner _Opt p_function_declarator = calloc(1, sizeof(struct function_declarator));
     try
@@ -7149,10 +8499,17 @@ struct function_declarator* _Owner _Opt function_declarator(struct direct_declar
         // direct_declarator '(' parameter_type_list_opt ')'
 
         p_function_declarator->direct_declarator = p_direct_declarator;
-        p_direct_declarator = NULL; /*MOVED*/
+        p_direct_declarator = NULL; /* MOVED */
+        _Assert(ctx->scopes.tail != NULL);
         p_function_declarator->parameters_scope.scope_level = ctx->scopes.tail->scope_level + 1;
         p_function_declarator->parameters_scope.variables.capacity = 5;
         p_function_declarator->parameters_scope.tags.capacity = 1;
+
+        if (ctx->current == NULL)
+        {
+            unexpected_end_of_file(ctx);
+            throw;
+        }
 
         check_no_space_before_paren_style(ctx, ctx->current);
         if (parser_match_tk(ctx, '(') != 0)
@@ -7175,19 +8532,20 @@ struct function_declarator* _Owner _Opt function_declarator(struct direct_declar
         if (parser_match_tk(ctx, ')') != 0)
             throw;
 
-
 #ifdef EXPERIMENTAL_CONTRACTS_II
-        /*
-            bool is_empty(struct X* p)
-            in{
-
-            }
-            out(r)
-            {
-                if (r)
-                    assert(p->x == 0);
-            };
+        /* 
+        * bool is_empty(struct X* p)
+        * in{
+        * 
+        * }
+        * out(r)
+        * {
+        * if (r)
+        * _Assert(p->x == 0);
+        * };
         */
+        if (ctx->current == NULL)
+            throw;
         if (ctx->current->type == TK_IDENTIFIER && strcmp(ctx->current->lexeme, "in") == 0)
         {
             scope_list_push(&ctx->scopes, &p_function_declarator->parameters_scope);
@@ -7270,19 +8628,20 @@ struct pointer* _Owner _Opt pointer_opt(struct parser_ctx* ctx)
         struct token* _Opt ahead = parser_look_ahead(ctx);
         if (ahead != NULL && ahead->type == '*')
         {
-            /*
-              typedef void (__fastcall *pf)();
+            /* 
+            * typedef void (__fastcall *pf)();
             */
-            if (ctx->current->type == TK_KEYWORD_MSVC__STDCALL ||
-                ctx->current->type == TK_KEYWORD_MSVC__CDECL ||
-                ctx->current->type == TK_KEYWORD_MSVC__FASTCALL)
+            if (ctx->current != NULL &&
+                (ctx->current->type == TK_KEYWORD_MSVC__STDCALL ||
+                    ctx->current->type == TK_KEYWORD_MSVC__CDECL ||
+                    ctx->current->type == TK_KEYWORD_MSVC__FASTCALL))
             {
                 calling_convention = ctx->current;
                 parser_match(ctx);
             }
         }
 
-        while (ctx->current != NULL && ctx->current->type == '*')
+        if (ctx->current != NULL && ctx->current->type == '*')
         {
             p_pointer = calloc(1, sizeof(struct pointer));
             if (p_pointer == NULL)
@@ -7299,15 +8658,15 @@ struct pointer* _Owner _Opt pointer_opt(struct parser_ctx* ctx)
 
             if (first_of_type_qualifier(ctx))
             {
-                assert(ctx->current != NULL);
+                _Assert(ctx->current != NULL);
 
                 if (ctx->current->type == TK_KEYWORD_CAKE_VIEW)
                 {
                     diagnostic(C_ERROR_INVALID_QUALIFIER_FOR_POINTER,
-                                ctx,
-                                ctx->current,
-                                NULL,
-                                "invalid qualifier for pointer");
+                        ctx,
+                        ctx->current,
+                        NULL,
+                        "invalid qualifier for pointer");
                 }
                 else
                 {
@@ -7315,8 +8674,9 @@ struct pointer* _Owner _Opt pointer_opt(struct parser_ctx* ctx)
                 }
             }
 
-            while (ctx->current != NULL && ctx->current->type == '*')
+            if (ctx->current != NULL && ctx->current->type == '*')
             {
+                /* pointer_opt consumes all the remaining '*' */
                 p_pointer->pointer = pointer_opt(ctx);
                 if (p_pointer->pointer == NULL)
                     throw;
@@ -7327,8 +8687,8 @@ struct pointer* _Owner _Opt pointer_opt(struct parser_ctx* ctx)
     {
     }
 
-    //'*' attribute_specifier_sequence_opt type_qualifier_list_opt
-    //'*' attribute_specifier_sequence_opt type_qualifier_list_opt pointer
+    // '*' attribute_specifier_sequence_opt type_qualifier_list_opt
+    // '*' attribute_specifier_sequence_opt type_qualifier_list_opt pointer
     return p;
 }
 
@@ -7340,8 +8700,8 @@ void type_qualifier_list_add(struct type_qualifier_list* list, struct type_quali
     }
     else
     {
-        assert(list->tail != NULL);
-        assert(list->tail->next == NULL);
+        _Assert(list->tail != NULL);
+        _Assert(list->tail->next == NULL);
         list->tail->next = p_item;
     }
     list->tail = p_item;
@@ -7383,7 +8743,7 @@ struct type_qualifier_list* _Owner _Opt type_qualifier_list(struct parser_ctx* c
 
         p_type_qualifier_list->flags |= p_type_qualifier->flags;
         type_qualifier_list_add(p_type_qualifier_list, p_type_qualifier);
-        p_type_qualifier = NULL; /*MOVED*/
+        p_type_qualifier = NULL; /* MOVED */
 
         while (ctx->current != NULL && first_of_type_qualifier(ctx))
         {
@@ -7393,7 +8753,7 @@ struct type_qualifier_list* _Owner _Opt type_qualifier_list(struct parser_ctx* c
 
             p_type_qualifier_list->flags |= p_type_qualifier->flags;
             type_qualifier_list_add(p_type_qualifier_list, p_type_qualifier);
-            p_type_qualifier = NULL; /*MOVED*/
+            p_type_qualifier = NULL; /* MOVED */
         }
     }
     catch
@@ -7439,8 +8799,10 @@ struct parameter_type_list* _Owner _Opt parameter_type_list(struct parser_ctx* c
         p_parameter_type_list->parameter_list = parameter_list(ctx);
         if (p_parameter_type_list->parameter_list == NULL) throw;
 
-        if (p_parameter_type_list->parameter_list->head ==
-            p_parameter_type_list->parameter_list->tail)
+        if (p_parameter_type_list->parameter_list->head != NULL &&
+            p_parameter_type_list->parameter_list->head ==
+            p_parameter_type_list->parameter_list->tail &&
+            p_parameter_type_list->parameter_list->head->declarator != NULL)
         {
             if (type_is_void(&p_parameter_type_list->parameter_list->head->declarator->type))
             {
@@ -7479,8 +8841,8 @@ void parameter_list_add(struct parameter_list* list, struct parameter_declaratio
     }
     else
     {
-        assert(list->tail != NULL);
-        assert(list->tail->next == NULL);
+        _Assert(list->tail != NULL);
+        _Assert(list->tail->next == NULL);
         list->tail->next = p_item;
     }
     list->tail = p_item;
@@ -7504,10 +8866,10 @@ void parameter_list_delete(struct parameter_list* _Owner _Opt p)
 
 struct parameter_list* _Owner _Opt parameter_list(struct parser_ctx* ctx)
 {
-    /*
-      parameter_list
-      parameter_declaration
-      parameter_list ',' parameter_declaration
+    /* 
+    * parameter_list
+    * parameter_declaration
+    * parameter_list ',' parameter_declaration
     */
     struct parameter_list* _Owner _Opt p_parameter_list = NULL;
     struct parameter_declaration* _Owner _Opt p_parameter_declaration = NULL;
@@ -7517,12 +8879,32 @@ struct parameter_list* _Owner _Opt parameter_list(struct parser_ctx* ctx)
         if (p_parameter_list == NULL)
             throw;
 
+        const struct token* _Opt p_first_param_token = ctx->current;
         p_parameter_declaration = parameter_declaration(ctx);
         if (p_parameter_declaration == NULL)
             throw;
 
+        struct parameter_declaration* p_first_parameter_declaration = p_parameter_declaration;
+
         parameter_list_add(p_parameter_list, p_parameter_declaration);
-        p_parameter_declaration = NULL; /*MOVED*/
+        p_parameter_declaration = NULL; /* MOVED */
+
+        if (ctx->current != NULL &&
+            ctx->current->type == ',' &&
+            p_first_parameter_declaration->declarator != NULL &&
+            type_is_void(&p_first_parameter_declaration->declarator->type)) //lint 31 31 31 still alive
+        {
+            /* void followed by more parameters: int f(void, int); */
+            struct token* _Opt p_token = p_first_parameter_declaration->declarator->first_token_opt;
+            if (p_token == NULL)
+                p_token = ctx->current;
+
+            diagnostic(C_ERROR_VOID_PARAMETER_NOT_ALONE,
+                ctx,
+                p_token,
+                NULL,
+                "'void' must be the first and only parameter if specified");
+        }
 
         while (ctx->current != NULL && ctx->current->type == ',')
         {
@@ -7536,19 +8918,38 @@ struct parameter_list* _Owner _Opt parameter_list(struct parser_ctx* ctx)
                 throw;
             }
 
-
             if (ctx->current->type == '...')
             {
                 // follow
                 break;
             }
 
+            if (p_first_param_token != NULL && format_active_for(ctx, ctx->current))
+            {
+                format_align_to_column_if_already_wrapped(ctx->current, p_first_param_token->col);
+            }
+
             p_parameter_declaration = parameter_declaration(ctx);
             if (p_parameter_declaration == NULL)
                 throw;
 
+            if (p_parameter_declaration->declarator != NULL &&
+                type_is_void(&p_parameter_declaration->declarator->type))
+            {
+                /* void as a later parameter: int f(int, void); */
+                struct token* _Opt p_token = p_parameter_declaration->declarator->first_token_opt;
+                if (p_token == NULL)
+                    p_token = ctx->current;
+
+                diagnostic(C_ERROR_VOID_PARAMETER_NOT_ALONE,
+                    ctx,
+                    p_token,
+                    NULL,
+                    "'void' must be the first and only parameter if specified");
+            }
+
             parameter_list_add(p_parameter_list, p_parameter_declaration);
-            p_parameter_declaration = NULL; /*MOVED*/
+            p_parameter_declaration = NULL; /* MOVED */
         }
     }
     catch
@@ -7567,14 +8968,13 @@ void parameter_declaration_delete(struct parameter_declaration* _Owner _Opt p)
         declaration_specifiers_delete(p->declaration_specifiers);
         declarator_delete(p->declarator);
 
-        assert(p->next == NULL);
+        _Assert(p->next == NULL);
         free(p);
     }
 }
 
 struct parameter_declaration* _Owner _Opt parameter_declaration(struct parser_ctx* ctx)
 {
-
 
     struct parameter_declaration* _Owner _Opt p_parameter_declaration = calloc(1, sizeof(struct parameter_declaration));
     try
@@ -7602,16 +9002,23 @@ struct parameter_declaration* _Owner _Opt parameter_declaration(struct parser_ct
             {
                 p_declaration_specifiers->type_qualifier_flags |= TYPE_QUALIFIER_CAKE_DTOR;
             }
+            else if (p_parameter_declaration->attribute_specifier_sequence_opt->attributes_flags & CAKE_ATTRIBUTE_UNINIT)
+            {
+                p_declaration_specifiers->type_qualifier_flags |= TYPE_QUALIFIER_CAKE_UNINIT;
+            }
+            else if (p_parameter_declaration->attribute_specifier_sequence_opt->attributes_flags & CAKE_ATTRIBUTE_CLEAR)
+            {
+                p_declaration_specifiers->type_qualifier_flags |= TYPE_QUALIFIER_CAKE_CLEAR;
+            }
         }
         p_parameter_declaration->declaration_specifiers = p_declaration_specifiers;
-
 
         struct token* _Opt p_token_name = NULL;
 
         p_parameter_declaration->declarator = declarator(ctx,
-            /*specifier_qualifier_list*/ NULL,
+        /* specifier_qualifier_list */ NULL,
             p_parameter_declaration->declaration_specifiers,
-            true /*can be abstract*/,
+            true /* can be abstract */,
             &p_token_name);
 
         if (p_parameter_declaration->declarator == NULL) throw;
@@ -7619,18 +9026,24 @@ struct parameter_declaration* _Owner _Opt parameter_declaration(struct parser_ct
         p_parameter_declaration->declarator->name_opt = p_token_name;
         p_parameter_declaration->declarator->declaration_specifiers = p_parameter_declaration->declaration_specifiers;
 
-        p_parameter_declaration->declarator->type = make_type_using_declarator(ctx, p_parameter_declaration->declarator);
+        struct type t = make_type_using_declarator(ctx, p_parameter_declaration->declarator);
+        type_swap(&p_parameter_declaration->declarator->type, &t);
+        type_destroy(&t);
 
         if (p_parameter_declaration->declarator->type.storage_class_specifier_flags & STORAGE_SPECIFIER_TYPEDEF)
         {
         }
         else
         {
-            int er = make_object(&p_parameter_declaration->declarator->type, &p_parameter_declaration->declarator->object, ctx->options.target);
+            int er = make_object(&p_parameter_declaration->declarator->type,
+                &p_parameter_declaration->declarator->object,
+                MAKE_STATE_UNITIALIZED,
+                ctx->options.target);
+
             if (er != 0)
             {
-                //diagnostic(C_ERROR_STRUCT_IS_INCOMPLETE, ctx, p_init_declarator->p_declarator->first_token_opt, NULL, "incomplete struct/union type");
-                throw;
+                // diagnostic(C_ERROR_STRUCT_IS_INCOMPLETE, ctx, p_init_declarator->p_declarator->first_token_opt, NULL, "incomplete struct/union type");
+                // throw;
             }
         }
 
@@ -7642,7 +9055,6 @@ struct parameter_declaration* _Owner _Opt parameter_declaration(struct parser_ct
 
         object_set_any(&p_parameter_declaration->declarator->object);
 
-
         if (p_parameter_declaration->attribute_specifier_sequence_opt)
         {
             p_parameter_declaration->declarator->type.attributes_flags |=
@@ -7652,18 +9064,32 @@ struct parameter_declaration* _Owner _Opt parameter_declaration(struct parser_ct
         p_parameter_declaration->declarator->type.storage_class_specifier_flags |= STORAGE_SPECIFIER_PARAMETER;
 
         if (p_parameter_declaration->declarator->name_opt)
-            naming_convention_parameter(ctx, p_parameter_declaration->declarator->name_opt, &p_parameter_declaration->declarator->type);
+            naming_convention_parameter(ctx, p_parameter_declaration->declarator->name_opt);
 
         // coloca o pametro no escpo atual que deve apontar para escopo paramtros
-        //  da funcao .
-        //
+        // da funcao .
+        // 
         // assert ctx->current_scope->variables parametrosd
         if (p_parameter_declaration->declarator->name_opt)
         {
+            struct map_entry* _Opt p_previous_entry =
+                hashmap_find(&ctx->scopes.tail->variables, p_parameter_declaration->declarator->name_opt->lexeme);
+
+            if (p_previous_entry != NULL &&
+                p_previous_entry->type == TAG_TYPE_DECLARATOR &&
+                p_previous_entry->data.p_declarator != NULL)
+            {
+                diagnostic(C_ERROR_REDECLARATION,
+                    ctx,
+                    p_parameter_declaration->declarator->name_opt,
+                    NULL,
+                    "redefinition of parameter '%s'", p_parameter_declaration->declarator->name_opt->lexeme);
+            }
+
             struct hash_item_set item = { 0 };
             item.p_declarator = declarator_add_ref(p_parameter_declaration->declarator);
 
-            assert(p_parameter_declaration->declarator->name_opt != NULL); //add_ref will not change that
+            _Assert(p_parameter_declaration->declarator->name_opt != NULL); // add_ref will not change that
 
             /* void parameter has no name */
             hashmap_set(&ctx->scopes.tail->variables,
@@ -7734,7 +9160,7 @@ struct specifier_qualifier_list* _Owner _Opt copy(struct declaration_specifiers*
                     p_type_specifier->flags = p_declaration_specifier->type_specifier_qualifier->type_specifier->flags;
 
                     // todo
-                    assert(p_declaration_specifier->type_specifier_qualifier->type_specifier->struct_or_union_specifier == NULL);
+                    _Assert(p_declaration_specifier->type_specifier_qualifier->type_specifier->struct_or_union_specifier == NULL);
 
                     p_type_specifier->token = p_declaration_specifier->type_specifier_qualifier->type_specifier->token;
                     p_specifier_qualifier->type_specifier = p_type_specifier;
@@ -7773,17 +9199,21 @@ void print_direct_declarator(struct osstream* ss, struct direct_declarator* p_di
 
     if (p_direct_declarator->function_declarator)
     {
-        assert(p_direct_declarator->function_declarator->direct_declarator != NULL);
+        _Assert(p_direct_declarator->function_declarator->direct_declarator != NULL);
 
         print_direct_declarator(ss, p_direct_declarator->function_declarator->direct_declarator, is_abstract);
 
         ss_fprintf(ss, "(");
+        struct parameter_list* _Opt p_parameter_list =
+            p_direct_declarator->function_declarator->parameter_type_list_opt ?
+            p_direct_declarator->function_declarator->parameter_type_list_opt->parameter_list :
+            NULL;
         struct parameter_declaration* _Opt p_parameter_declaration =
-            p_direct_declarator->function_declarator->parameter_type_list_opt ? p_direct_declarator->function_declarator->parameter_type_list_opt->parameter_list->head : NULL;
+            p_parameter_list ? p_parameter_list->head : NULL;
 
         while (p_parameter_declaration)
         {
-            if (p_parameter_declaration != p_direct_declarator->function_declarator->parameter_type_list_opt->parameter_list->head)
+            if (p_parameter_list != NULL && p_parameter_declaration != p_parameter_list->head)
                 ss_fprintf(ss, ",");
 
             print_declaration_specifiers(ss, p_parameter_declaration->declaration_specifiers);
@@ -7794,7 +9224,7 @@ void print_direct_declarator(struct osstream* ss, struct direct_declarator* p_di
 
             p_parameter_declaration = p_parameter_declaration->next;
         }
-        //... TODO
+        // ... TODO
         ss_fprintf(ss, ")");
     }
     if (p_direct_declarator->array_declarator)
@@ -7804,22 +9234,34 @@ void print_direct_declarator(struct osstream* ss, struct direct_declarator* p_di
     }
 }
 
-const struct declarator* _Opt declarator_get_innert_function_declarator(const struct declarator* p)
+const struct direct_declarator* _Opt get_innermost_direct_declarator(const struct direct_declarator* _Opt p)
 {
-    const struct declarator* inner = p;
-    for (;;)
+    if (p == NULL)
+        return NULL;
+
+    const struct direct_declarator* previous = p;
+
+    while (p != NULL)
     {
-        if (inner->direct_declarator &&
-            inner->direct_declarator->function_declarator &&
-            inner->direct_declarator->function_declarator->direct_declarator &&
-            inner->direct_declarator->function_declarator->direct_declarator->declarator)
-        {
-            inner = inner->direct_declarator->function_declarator->direct_declarator->declarator;
-        }
+        if (p->declarator && p->declarator->direct_declarator)
+            p = p->declarator->direct_declarator;
+        else if (p->array_declarator && p->array_declarator->direct_declarator)
+            p = p->array_declarator->direct_declarator;
+        else if (p->function_declarator && p->function_declarator->direct_declarator)
+            p = p->function_declarator->direct_declarator;
         else
             break;
+
+        if (p->name_opt == NULL &&
+            p->declarator == NULL &&
+            p->array_declarator == NULL &&
+            p->function_declarator == NULL)
+            break;
+
+        previous = p;
     }
-    return inner;
+
+    return previous;
 }
 
 const struct declarator* _Opt declarator_get_function_definition(const struct declarator* declarator)
@@ -7845,7 +9287,7 @@ const struct declarator* _Opt declarator_get_function_definition(const struct de
         p_function_defined = declarator->p_complete_declarator->p_complete_declarator;
     }
 
-    assert(p_function_defined == NULL || (p_function_defined && p_function_defined->function_body));
+    _Assert(p_function_defined == NULL || (p_function_defined && p_function_defined->function_body));
     return p_function_defined;
 }
 
@@ -7855,7 +9297,7 @@ enum type_specifier_flags declarator_get_type_specifier_flags(const struct decla
         return p->declaration_specifiers->type_specifier_flags;
     if (p->specifier_qualifier_list)
         return p->specifier_qualifier_list->type_specifier_flags;
-    return 0;
+    return TYPE_SPECIFIER_NONE;
 }
 
 void print_declarator(struct osstream* ss, struct declarator* p_declarator, bool is_abstract)
@@ -7919,9 +9361,9 @@ struct type_name* _Owner _Opt type_name(struct parser_ctx* ctx)
         p_type_name->specifier_qualifier_list = p_specifier_qualifier_list;
 
         struct declarator* _Owner _Opt p_declarator = declarator(ctx,
-            p_type_name->specifier_qualifier_list, //??
-            /*declaration_specifiers*/ NULL,
-            true /*DEVE SER TODO*/,
+            p_type_name->specifier_qualifier_list, // ??
+        /* declaration_specifiers */ NULL,
+            true /* DEVE SER TODO */,
             NULL);
 
         if (p_declarator == NULL)
@@ -7931,7 +9373,9 @@ struct type_name* _Owner _Opt type_name(struct parser_ctx* ctx)
 
         p_type_name->abstract_declarator->specifier_qualifier_list = p_type_name->specifier_qualifier_list;
 
-        p_type_name->abstract_declarator->type = make_type_using_declarator(ctx, p_type_name->abstract_declarator);
+        struct type t = make_type_using_declarator(ctx, p_type_name->abstract_declarator);
+        type_swap(&p_type_name->abstract_declarator->type, &t);
+        type_destroy(&t);
 
         if (ctx->current == NULL)
         {
@@ -7939,10 +9383,11 @@ struct type_name* _Owner _Opt type_name(struct parser_ctx* ctx)
             throw;
         }
 
-        if (ctx->current->prev == NULL)
+        struct token* _Opt p_prev = ctx->current->prev;
+        if (p_prev == NULL)
             throw;
 
-        p_type_name->last_token = ctx->current->prev;
+        p_type_name->last_token = p_prev;
         p_type_name->type = type_dup(&p_type_name->abstract_declarator->type);
 
     }
@@ -7971,10 +9416,10 @@ bool braced_initializer_is_empty(const struct braced_initializer* p_braced_initi
 
 struct braced_initializer* _Owner _Opt braced_initializer(struct parser_ctx* ctx)
 {
-    /*
-     { }
-     { initializer-list }
-     { initializer-list , }
+    /* 
+    * { }
+    * { initializer-list }
+    * { initializer-list , }
     */
 
     struct braced_initializer* _Owner _Opt p_bracket_initializer_list = NULL;
@@ -7992,6 +9437,8 @@ struct braced_initializer* _Owner _Opt braced_initializer(struct parser_ctx* ctx
             throw;
 
         p_bracket_initializer_list->first_token = ctx->current;
+        format_align_own_line_brace_if_present(ctx, p_bracket_initializer_list->first_token);
+
         if (parser_match_tk(ctx, '{') != 0)
             throw;
 
@@ -8005,6 +9452,16 @@ struct braced_initializer* _Owner _Opt braced_initializer(struct parser_ctx* ctx
         {
             p_bracket_initializer_list->initializer_list = initializer_list(ctx, false);
         }
+
+        if (ctx->current == NULL)
+        {
+            unexpected_end_of_file(ctx);
+            throw;
+        }
+
+        p_bracket_initializer_list->last_token = ctx->current;
+        format_align_own_line_brace_if_present(ctx, p_bracket_initializer_list->last_token);
+
         if (parser_match_tk(ctx, '}') != 0)
             throw;
     }
@@ -8034,10 +9491,10 @@ void initializer_delete(struct initializer* _Owner _Opt p)
 
 struct initializer* _Owner _Opt initializer(struct parser_ctx* ctx, bool is_discarded)
 {
-    /*
-    initializer:
-      assignment-expression
-      braced-initializer
+    /* 
+    * initializer:
+    * assignment-expression
+    * braced-initializer
     */
 
     struct initializer* _Owner _Opt p_initializer = NULL;
@@ -8083,8 +9540,8 @@ void defer_list_add(struct defer_list* list, struct defer_list_item* _Owner p_it
     }
     else
     {
-        assert(list->tail != NULL);
-        assert(list->tail->next == NULL);
+        _Assert(list->tail != NULL);
+        _Assert(list->tail->next == NULL);
         list->tail->next = p_item;
     }
     list->tail = p_item;
@@ -8101,7 +9558,7 @@ void defer_list_destroy(_Dtor struct defer_list* p)
         free(item);
         item = next;
     }
-    //free(p);
+    // free(p);
 }
 
 void defer_list_clear(struct defer_list* p)
@@ -8119,7 +9576,6 @@ void defer_list_clear(struct defer_list* p)
     p->tail = NULL;
 }
 
-
 void initializer_list_add(struct initializer_list* list, struct initializer_list_item* _Owner p_item)
 {
     if (list->head == NULL)
@@ -8128,8 +9584,8 @@ void initializer_list_add(struct initializer_list* list, struct initializer_list
     }
     else
     {
-        assert(list->tail != NULL);
-        assert(list->tail->next == NULL);
+        _Assert(list->tail != NULL);
+        _Assert(list->tail->next == NULL);
         list->tail->next = p_item;
     }
     list->tail = p_item;
@@ -8141,6 +9597,7 @@ void initializer_list_item_delete(struct initializer_list_item* _Owner _Opt p)
     {
         designation_delete(p->designation);
         initializer_delete(p->initializer);
+        _Assert(p->next == NULL);
         free(p);
     }
 }
@@ -8162,10 +9619,10 @@ void initializer_list_delete(struct initializer_list* _Owner _Opt p)
 }
 struct initializer_list* _Owner _Opt initializer_list(struct parser_ctx* ctx, bool is_discarded)
 {
-    /*
-    initializer-list:
-       designation _Opt initializer
-       initializer-list , designation _Opt initializer
+    /* 
+    * initializer-list:
+    * designation _Opt initializer
+    * initializer-list , designation _Opt initializer
     */
 
     struct initializer_list* _Owner _Opt p_initializer_list = NULL;
@@ -8178,25 +9635,26 @@ struct initializer_list* _Owner _Opt initializer_list(struct parser_ctx* ctx, bo
             return NULL;
         }
 
-
         p_initializer_list = calloc(1, sizeof(struct initializer_list));
         if (p_initializer_list == NULL)
             throw;
 
         p_initializer_list->first_token = ctx->current;
 
-
         struct initializer_list_item* _Owner _Opt p_initializer_list_item = calloc(1, sizeof * p_initializer_list_item);
         if (p_initializer_list_item == NULL)
             throw;
-
 
         struct designation* _Owner _Opt p_designation = NULL;
         if (first_of_designator(ctx))
         {
             p_designation = designation(ctx);
             if (p_designation == NULL)
+            {
+                initializer_list_item_delete(p_initializer_list_item);
+                p_initializer_list_item = NULL;
                 throw;
+            }
             p_initializer_list_item->designation = p_designation;
         }
 
@@ -8204,16 +9662,20 @@ struct initializer_list* _Owner _Opt initializer_list(struct parser_ctx* ctx, bo
 
         if (p_initializer == NULL)
         {
-            designation_delete(p_designation);
+            /* p_designation, if any, is already stored in
+            * p_initializer_list_item->designation -- freed by
+            * initializer_list_item_delete below, not here.
+            */
+            initializer_list_item_delete(p_initializer_list_item);
+            p_initializer_list_item = NULL;
             throw;
         }
 
         p_initializer_list_item->initializer = p_initializer;
 
-
         initializer_list_add(p_initializer_list, p_initializer_list_item);
-        p_initializer_list_item = NULL; //MOVED
-        //p_initializer_list->size++;
+        p_initializer_list_item = NULL; // MOVED
+        // p_initializer_list->size++;
 
         while (ctx->current != NULL && ctx->current->type == ',')
         {
@@ -8227,7 +9689,6 @@ struct initializer_list* _Owner _Opt initializer_list(struct parser_ctx* ctx, bo
                 throw;
             }
 
-
             if (ctx->current->type == '}')
                 break; // follow
 
@@ -8240,20 +9701,29 @@ struct initializer_list* _Owner _Opt initializer_list(struct parser_ctx* ctx, bo
             {
                 p_designation2 = designation(ctx);
                 if (p_designation2 == NULL)
+                {
+                    initializer_list_item_delete(p_initializer_list_item);
+                    p_initializer_list_item = NULL;
                     throw;
+                }
             }
             p_initializer_list_item->designation = p_designation2;
 
             struct initializer* _Owner _Opt p_initializer2 = initializer(ctx, is_discarded);
             if (p_initializer2 == NULL)
             {
-                designation_delete(p_designation2);
+                /* p_designation2 is already stored in
+                * p_initializer_list_item->designation -- freed by
+                * initializer_list_item_delete below, not here.
+                */
+                initializer_list_item_delete(p_initializer_list_item);
+                p_initializer_list_item = NULL;
                 throw;
             }
             p_initializer_list_item->initializer = p_initializer2;
 
             initializer_list_add(p_initializer_list, p_initializer_list_item);
-            p_initializer_list_item = NULL; //MOVED
+            p_initializer_list_item = NULL; // MOVED
             p_initializer_list->size++;
         }
     }
@@ -8302,7 +9772,6 @@ struct designation* _Owner _Opt designation(struct parser_ctx* ctx)
     return p_designation;
 }
 
-
 void designator_list_add(struct designator_list* list, struct designator* _Owner p_item)
 {
     if (list->head == NULL)
@@ -8311,8 +9780,8 @@ void designator_list_add(struct designator_list* list, struct designator* _Owner
     }
     else
     {
-        assert(list->tail != NULL);
-        assert(list->tail->next == NULL);
+        _Assert(list->tail != NULL);
+        _Assert(list->tail->next == NULL);
         list->tail->next = p_item;
     }
     list->tail = p_item;
@@ -8322,7 +9791,7 @@ void designator_list_delete(struct designator_list* _Owner _Opt p)
 {
     if (p)
     {
-        struct designator* _Owner _Opt  item = p->head;
+        struct designator* _Owner _Opt item = p->head;
         while (item)
         {
             struct designator* _Owner _Opt next = item->next;
@@ -8350,7 +9819,7 @@ struct designator_list* _Owner _Opt designator_list(struct parser_ctx* ctx)
         if (p_designator == NULL)
             throw;
         designator_list_add(p_designator_list, p_designator);
-        p_designator = NULL; /*MOVED*/
+        p_designator = NULL; /* MOVED */
 
         while (ctx->current != NULL && first_of_designator(ctx))
         {
@@ -8358,7 +9827,7 @@ struct designator_list* _Owner _Opt designator_list(struct parser_ctx* ctx)
             if (p_designator == NULL)
                 throw;
             designator_list_add(p_designator_list, p_designator);
-            p_designator = NULL; /*MOVED*/
+            p_designator = NULL; /* MOVED */
         }
     }
     catch
@@ -8374,7 +9843,7 @@ void designator_delete(struct designator* _Owner _Opt p)
 {
     if (p)
     {
-        assert(p->next == NULL);
+        _Assert(p->next == NULL);
         expression_delete(p->constant_expression_opt);
         free(p);
     }
@@ -8382,8 +9851,8 @@ void designator_delete(struct designator* _Owner _Opt p)
 
 struct designator* _Owner _Opt designator(struct parser_ctx* ctx)
 {
-    //'[' constant_expression ']'
-    //'.' identifier
+    // '[' constant_expression ']'
+    // '.' identifier
     struct designator* _Owner _Opt p_designator = NULL;
 
     try
@@ -8409,6 +9878,12 @@ struct designator* _Owner _Opt designator(struct parser_ctx* ctx)
         else if (ctx->current->type == '.')
         {
             parser_match(ctx);
+
+            if (ctx->current == NULL)
+            {
+                unexpected_end_of_file(ctx);
+                throw;
+            }
 
             p_designator->token = ctx->current;
             if (parser_match_tk(ctx, TK_IDENTIFIER) != 0)
@@ -8440,7 +9915,7 @@ void pragma_declaration_delete(struct pragma_declaration* _Owner _Opt p)
     }
 }
 
-void execute_pragma_declaration(struct parser_ctx* ctx, struct pragma_declaration* p_pragma, bool on_flow_analysis)
+void execute_pragma_declaration(struct parser_ctx* ctx, struct pragma_declaration* p_pragma)
 {
     struct token* _Opt p_pragma_token = p_pragma->first_token;
 
@@ -8456,29 +9931,26 @@ void execute_pragma_declaration(struct parser_ctx* ctx, struct pragma_declaratio
         if ((strcmp(p_pragma_token->lexeme, "CAKE") == 0 ||
             strcmp(p_pragma_token->lexeme, "cake") == 0))
         {
-            /*
-               optional
+            /* 
+            * optional
             */
             p_pragma_token = pragma_declaration_match(p_pragma_token);
             if (p_pragma_token == NULL)
                 throw;
         }
 
-
         bool is_standard_pragma = false;
 
         if ((strcmp(p_pragma_token->lexeme, "STDC") == 0))
         {
-            /*
-               optional
+            /* 
+            * optional
             */
             p_pragma_token = pragma_declaration_match(p_pragma_token);
             if (p_pragma_token == NULL)
                 throw;
             is_standard_pragma = true;
         }
-
-
 
         if (strcmp(p_pragma_token->lexeme, "diagnostic") == 0)
         {
@@ -8509,9 +9981,9 @@ void execute_pragma_declaration(struct parser_ctx* ctx, struct pragma_declaratio
                 p_pragma_token = pragma_declaration_match(p_pragma_token);
             }
             else if (strcmp(p_pragma_token->lexeme, "error") == 0 ||
-                    strcmp(p_pragma_token->lexeme, "warning") == 0 ||
-                    strcmp(p_pragma_token->lexeme, "note") == 0 ||
-                    strcmp(p_pragma_token->lexeme, "ignored") == 0)
+                strcmp(p_pragma_token->lexeme, "warning") == 0 ||
+                strcmp(p_pragma_token->lexeme, "note") == 0 ||
+                strcmp(p_pragma_token->lexeme, "ignored") == 0)
             {
                 const bool is_error = strcmp(p_pragma_token->lexeme, "error") == 0;
                 const bool is_warning = strcmp(p_pragma_token->lexeme, "warning") == 0;
@@ -8572,11 +10044,10 @@ void execute_pragma_declaration(struct parser_ctx* ctx, struct pragma_declaratio
             options_set_warning(&ctx->options, W_FLOW_NULL_DEREFERENCE, nullable_enable);
             options_set_warning(&ctx->options, W_FLOW_NULLABLE_TO_NON_NULLABLE, nullable_enable);
 
-
             if (nullable_enable)
             {
                 ctx->options.null_checks_enabled = true;
-                ctx->options.flow_analysis = true; //also enable flow analysis
+                ctx->options.flow_analysis = true; // also enable flow analysis
             }
             else
             {
@@ -8602,7 +10073,7 @@ void execute_pragma_declaration(struct parser_ctx* ctx, struct pragma_declaratio
             if (ownership_enable)
             {
                 ctx->options.ownership_enabled = true;
-                ctx->options.flow_analysis = true; //also enable flow analysis
+                ctx->options.flow_analysis = true; // also enable flow analysis
             }
             else
             {
@@ -8628,7 +10099,7 @@ void execute_pragma_declaration(struct parser_ctx* ctx, struct pragma_declaratio
 
             ctx->options.flow_analysis = flow1_enable;
         }
-        else if (strcmp(p_pragma_token->lexeme, "safety") == 0)
+        else if (p_pragma_token && strcmp(p_pragma_token->lexeme, "safety") == 0)
         {
             p_pragma_token = pragma_declaration_match(p_pragma_token);
             if (p_pragma_token == NULL)
@@ -8645,14 +10116,13 @@ void execute_pragma_declaration(struct parser_ctx* ctx, struct pragma_declaratio
 
             p_pragma_token = pragma_declaration_match(p_pragma_token);
 
-
             options_set_warning(&ctx->options, W_FLOW_NULL_DEREFERENCE, safety_enable);
             options_set_warning(&ctx->options, W_FLOW_NULLABLE_TO_NON_NULLABLE, safety_enable);
 
             if (safety_enable)
             {
                 ctx->options.null_checks_enabled = true;
-                ctx->options.flow_analysis = true; //also enable flow analysis
+                ctx->options.flow_analysis = true; // also enable flow analysis
                 ctx->options.ownership_enabled = true;
             }
             else
@@ -8662,10 +10132,10 @@ void execute_pragma_declaration(struct parser_ctx* ctx, struct pragma_declaratio
                 ctx->options.flow_analysis = false;
             }
         }
-        else if (is_standard_pragma &&
-                 (strcmp(p_pragma_token->lexeme, "FP_CONTRACT") == 0 ||
-                     strcmp(p_pragma_token->lexeme, "FENV_ACCESS") == 0 ||
-                     strcmp(p_pragma_token->lexeme, "CX_LIMITED_RANGE") == 0))
+        else if (is_standard_pragma && p_pragma_token &&
+            (strcmp(p_pragma_token->lexeme, "FP_CONTRACT") == 0 ||
+                strcmp(p_pragma_token->lexeme, "FENV_ACCESS") == 0 ||
+                strcmp(p_pragma_token->lexeme, "CX_LIMITED_RANGE") == 0))
         {
             p_pragma_token = pragma_declaration_match(p_pragma_token);
             if (p_pragma_token == NULL)
@@ -8679,7 +10149,7 @@ void execute_pragma_declaration(struct parser_ctx* ctx, struct pragma_declaratio
                 throw;
             }
         }
-        else if (is_standard_pragma && strcmp(p_pragma_token->lexeme, "FENV_DEC_ROUND") == 0)
+        else if (is_standard_pragma && p_pragma_token && strcmp(p_pragma_token->lexeme, "FENV_DEC_ROUND") == 0)
         {
             p_pragma_token = pragma_declaration_match(p_pragma_token);
             if (p_pragma_token == NULL)
@@ -8696,7 +10166,7 @@ void execute_pragma_declaration(struct parser_ctx* ctx, struct pragma_declaratio
                 throw;
             }
         }
-        else if (is_standard_pragma && strcmp(p_pragma_token->lexeme, "FENV_ROUND") == 0)
+        else if (is_standard_pragma && p_pragma_token && strcmp(p_pragma_token->lexeme, "FENV_ROUND") == 0)
         {
             p_pragma_token = pragma_declaration_match(p_pragma_token);
             if (p_pragma_token == NULL)
@@ -8715,11 +10185,11 @@ void execute_pragma_declaration(struct parser_ctx* ctx, struct pragma_declaratio
         }
         else if (strcmp(p_pragma_token->lexeme, "comment") == 0)
         {
-            //MSVC pragma comment
+            // MSVC pragma comment
         }
         else if (strcmp(p_pragma_token->lexeme, "warning") == 0)
         {
-            //MSVC pragma warning
+            // MSVC pragma warning
         }
         else if (strcmp(p_pragma_token->lexeme, "once") == 0)
         {
@@ -8727,13 +10197,13 @@ void execute_pragma_declaration(struct parser_ctx* ctx, struct pragma_declaratio
         }
         else
         {
-            /*
+            /* 
             * TODO
-             #pragma warning(push)
-             #pragma warning(disable:4001)
+            * #pragma warning(push)
+            * #pragma warning(disable:4001)
             */
             diagnostic(W_ATTRIBUTES, ctx, p_pragma_token, NULL, "unknown pragma");
-            throw;
+            // throw;
         }
     }
     catch
@@ -8748,7 +10218,7 @@ struct pragma_declaration* _Owner _Opt pragma_declaration(struct parser_ctx* ctx
     {
         if (ctx->current == NULL || ctx->current->type != TK_PRAGMA)
         {
-            assert(false);
+            _Assert(false);
             throw;
         }
 
@@ -8773,13 +10243,13 @@ struct pragma_declaration* _Owner _Opt pragma_declaration(struct parser_ctx* ctx
         p_pragma_declaration->last_token = ctx->current;
         parser_match(ctx);
 
-        execute_pragma_declaration(ctx, p_pragma_declaration, false);
+        execute_pragma_declaration(ctx, p_pragma_declaration);
     }
     catch
     {
-
+        pragma_declaration_delete(p_pragma_declaration);
+        p_pragma_declaration = NULL;
     }
-
 
     return p_pragma_declaration;
 }
@@ -8787,10 +10257,10 @@ struct pragma_declaration* _Owner _Opt pragma_declaration(struct parser_ctx* ctx
 struct static_assertion* _Owner _Opt static_assertion(struct parser_ctx* ctx)
 {
 
-    /*
-     static_assert-declaration:
-      "static_assert" ( constant-expression , string-literal ) ;
-      "static_assert" ( constant-expression ) ;
+    /* 
+    * static_assert-declaration:
+    * "static_assert" ( constant-expression , string-literal ) ;
+    * "static_assert" ( constant-expression ) ;
     */
 
     struct static_assertion* _Owner _Opt p_static_assertion = NULL;
@@ -8814,9 +10284,9 @@ struct static_assertion* _Owner _Opt static_assertion(struct parser_ctx* ctx)
         if (parser_match_tk(ctx, '(') != 0)
             throw;
 
-        /*
-         When flow analysis is enabled static assert is evaluated there
-        */
+            /* 
+            * When flow analysis is enabled static assert is evaluated there
+            */
         bool show_error_if_not_constant = false;
         if (p_static_assertion->first_token->type == TK_KEYWORD__STATIC_ASSERT)
         {
@@ -8876,8 +10346,9 @@ struct static_assertion* _Owner _Opt static_assertion(struct parser_ctx* ctx)
     }
     catch
     {
+        static_assertion_delete(p_static_assertion);
+        p_static_assertion = NULL;
     }
-
 
     return p_static_assertion;
 }
@@ -8885,15 +10356,18 @@ struct static_assertion* _Owner _Opt static_assertion(struct parser_ctx* ctx)
 struct static_assertion* _Owner _Opt static_assert_declaration(struct parser_ctx* ctx)
 {
 
-    /*C2Y
-       static_assert-declaration:
-          static-assertion ;
+    /* C2Y
+    * static_assert-declaration:
+    * static-assertion ;
     */
 
     struct static_assertion* _Owner _Opt p_static_assertion = NULL;
     try
     {
         p_static_assertion = static_assertion(ctx);
+        if (p_static_assertion == NULL)
+            throw;
+
         if (ctx->current == NULL)
         {
             unexpected_end_of_file(ctx);
@@ -8905,6 +10379,8 @@ struct static_assertion* _Owner _Opt static_assert_declaration(struct parser_ctx
     }
     catch
     {
+        static_assertion_delete(p_static_assertion);
+        p_static_assertion = NULL;
     }
 
     if (p_static_assertion && p_static_assertion->p_lint_token)
@@ -8923,8 +10399,8 @@ void attribute_specifier_sequence_add(struct attribute_specifier_sequence* list,
     }
     else
     {
-        assert(list->tail != NULL);
-        assert(list->tail->next == NULL);
+        _Assert(list->tail != NULL);
+        _Assert(list->tail->next == NULL);
         list->tail->next = p_item;
     }
     list->tail = p_item;
@@ -8981,7 +10457,7 @@ struct attribute_specifier_sequence* _Owner _Opt attribute_specifier_sequence_op
                 {
                     if (ctx->options.target == TARGET_X86_X64_GCC)
                     {
-                        /*GCC also uses asm as attribute*/
+                        /* GCC also uses asm as attribute */
                         struct asm_statement* _Owner _Opt p3 = gcc_asm(ctx, false);
                         asm_statement_delete(p3);
                     }
@@ -8992,6 +10468,7 @@ struct attribute_specifier_sequence* _Owner _Opt attribute_specifier_sequence_op
                     if (p_attribute_specifier == NULL)
                         throw;
 
+                    _Assert(p_attribute_specifier->attribute_list != NULL);
                     p_attribute_specifier_sequence->attributes_flags |=
                         p_attribute_specifier->attribute_list->attributes_flags;
 
@@ -9000,10 +10477,11 @@ struct attribute_specifier_sequence* _Owner _Opt attribute_specifier_sequence_op
 
             }
 
-            if (ctx->previous == NULL)
+            struct token* _Opt p_previous_token = parser_get_previous_token(ctx);
+            if (p_previous_token == NULL)
                 throw;
 
-            p_attribute_specifier_sequence->last_token = ctx->previous;
+            p_attribute_specifier_sequence->last_token = p_previous_token;
         }
     }
     catch
@@ -9047,7 +10525,7 @@ void attribute_specifier_delete(struct attribute_specifier* _Owner _Opt p)
     if (p)
     {
         attribute_list_delete(p->attribute_list);
-        assert(p->next == NULL);
+        _Assert(p->next == NULL);
         free(p);
     }
 }
@@ -9069,18 +10547,20 @@ struct attribute_specifier* _Owner _Opt attribute_specifier(struct parser_ctx* c
 
         p_attribute_specifier->first_token = ctx->current;
 
-        //'[' '[' attribute_list ']' ']'
+        // '[' '[' attribute_list ']' ']'
         if (parser_match_tk(ctx, '[') != 0)
             throw;
         if (parser_match_tk(ctx, '[') != 0)
             throw;
 
-        struct attribute_list* _Owner _Opt p_attribute_list = attribute_list(ctx, p_attribute_specifier);
+        struct attribute_list* _Owner _Opt p_attribute_list = attribute_list(ctx);
 
         if (p_attribute_list == NULL)
             throw;
 
+        attribute_list_delete(p_attribute_specifier->attribute_list);
         p_attribute_specifier->attribute_list = p_attribute_list;
+
         if (parser_match_tk(ctx, ']') != 0)
             throw;
 
@@ -9107,7 +10587,7 @@ void attribute_delete(struct attribute* _Owner _Opt p)
     if (p)
     {
         attribute_argument_clause_delete(p->attribute_argument_clause);
-        assert(p->next == NULL);
+        _Assert(p->next == NULL);
         free(p);
     }
 }
@@ -9120,8 +10600,8 @@ void attribute_list_add(struct attribute_list* list, struct attribute* _Owner p_
     }
     else
     {
-        assert(list->tail != NULL);
-        assert(list->tail->next == NULL);
+        _Assert(list->tail != NULL);
+        _Assert(list->tail->next == NULL);
         list->tail->next = p_item;
     }
     list->tail = p_item;
@@ -9148,7 +10628,7 @@ void attribute_list_delete(struct attribute_list* _Owner _Opt p)
     }
 }
 
-struct attribute_list* _Owner _Opt attribute_list(struct parser_ctx* ctx, struct attribute_specifier* p_attribute_specifier)
+struct attribute_list* _Owner _Opt attribute_list(struct parser_ctx* ctx)
 {
     struct attribute_list* _Owner _Opt p_attribute_list = NULL;
     try
@@ -9157,14 +10637,14 @@ struct attribute_list* _Owner _Opt attribute_list(struct parser_ctx* ctx, struct
         if (p_attribute_list == NULL)
             throw;
 
-        //
+        // 
         // attribute_list ',' attribute_opt
         while (ctx->current != NULL && (first_of_attribute(ctx) ||
             ctx->current->type == ','))
         {
             if (first_of_attribute(ctx))
             {
-                struct attribute* _Owner _Opt p_attribute = attribute(ctx, p_attribute_specifier);
+                struct attribute* _Owner _Opt p_attribute = attribute(ctx);
                 if (p_attribute == NULL) throw;
 
                 p_attribute_list->attributes_flags |= p_attribute->attributes_flags;
@@ -9205,9 +10685,9 @@ bool first_of_attribute(const struct parser_ctx* ctx)
 
     return false;
 }
-enum attribute_flags attribute_token(struct parser_ctx* ctx, struct attribute* p_attribute, struct attribute_specifier* p_attribute_specifier)
+enum attribute_flags attribute_token(struct parser_ctx* ctx, struct attribute* p_attribute)
 {
-    enum attribute_flags attribute_flags = 0;
+    enum attribute_flags attribute_flags = STD_ATTRIBUTE_NONE;
 
     try
     {
@@ -9230,6 +10710,7 @@ enum attribute_flags attribute_token(struct parser_ctx* ctx, struct attribute* p
         else if (strcmp(attr_token->lexeme, "fallthrough") == 0)
         {
             is_standard_attribute = true;
+            attribute_flags = STD_ATTRIBUTE_FALLTHROUGH;
         }
         else if (strcmp(attr_token->lexeme, "maybe_unused") == 0)
         {
@@ -9265,6 +10746,16 @@ enum attribute_flags attribute_token(struct parser_ctx* ctx, struct attribute* p
         {
             is_standard_attribute = true;
             attribute_flags = CAKE_ATTRIBUTE_CTOR;
+        }
+        else if (strcmp(attr_token->lexeme, "uninitialized") == 0)
+        {
+            is_standard_attribute = true;
+            attribute_flags = CAKE_ATTRIBUTE_UNINIT;
+        }
+        else if (strcmp(attr_token->lexeme, "clear") == 0)
+        {
+            is_standard_attribute = true;
+            attribute_flags = CAKE_ATTRIBUTE_CLEAR;
         }
 
         const bool is_cake_attr = strcmp(attr_token->lexeme, "cake") == 0;
@@ -9319,11 +10810,11 @@ enum attribute_flags attribute_token(struct parser_ctx* ctx, struct attribute* p
         }
         else
         {
-            /*
-             * Each implementation should choose a distinctive name for the attribute prefix in an attribute
-             * prefixed token. Implementations should not define attributes without an attribute prefix unless it is
-             * a standard attribute as specified in this document.
-             */
+            /* 
+            * Each implementation should choose a distinctive name for the attribute prefix in an attribute
+            * prefixed token. Implementations should not define attributes without an attribute prefix unless it is
+            * a standard attribute as specified in this document.
+            */
             if (!is_standard_attribute)
             {
                 diagnostic(W_ATTRIBUTES, ctx, attr_token, NULL, "warning '%s' is not an standard attribute", attr_token->lexeme);
@@ -9338,8 +10829,7 @@ enum attribute_flags attribute_token(struct parser_ctx* ctx, struct attribute* p
     return attribute_flags;
 }
 
-
-struct attribute* _Owner _Opt attribute(struct parser_ctx* ctx, struct attribute_specifier* p_attribute_specifier)
+struct attribute* _Owner _Opt attribute(struct parser_ctx* ctx)
 {
     struct attribute* _Owner _Opt p_attribute = NULL;
     try
@@ -9348,7 +10838,7 @@ struct attribute* _Owner _Opt attribute(struct parser_ctx* ctx, struct attribute
         if (p_attribute == NULL)
             throw;
 
-        enum attribute_flags attribute_flags = attribute_token(ctx, p_attribute, p_attribute_specifier);
+        enum attribute_flags attribute_flags = attribute_token(ctx, p_attribute);
 
         if (ctx->current == NULL)
         {
@@ -9359,10 +10849,12 @@ struct attribute* _Owner _Opt attribute(struct parser_ctx* ctx, struct attribute
         p_attribute->attributes_flags |= attribute_flags;
         if (ctx->current->type == '(') // first
         {
-            struct attribute_argument_clause* _Owner _Opt  p_attribute_argument_clause =
+            struct attribute_argument_clause* _Owner _Opt p_attribute_argument_clause =
                 attribute_argument_clause(ctx);
             if (p_attribute_argument_clause == NULL)
                 throw;
+
+            attribute_argument_clause_delete(p_attribute->attribute_argument_clause);
             p_attribute->attribute_argument_clause = p_attribute_argument_clause;
         }
     }
@@ -9383,7 +10875,7 @@ void attribute_argument_clause_delete(struct attribute_argument_clause* _Owner _
     }
 }
 
-struct attribute_argument_clause* _Owner _Opt  attribute_argument_clause(struct parser_ctx* ctx)
+struct attribute_argument_clause* _Owner _Opt attribute_argument_clause(struct parser_ctx* ctx)
 {
     struct attribute_argument_clause* _Owner _Opt p_attribute_argument_clause = calloc(1, sizeof(struct attribute_argument_clause));
     try
@@ -9391,7 +10883,7 @@ struct attribute_argument_clause* _Owner _Opt  attribute_argument_clause(struct 
         if (p_attribute_argument_clause == NULL)
             throw;
 
-        //'(' balanced_token_sequence_opt ')'
+        // '(' balanced_token_sequence_opt ')'
         if (parser_match_tk(ctx, '(') != 0)
             throw;
         p_attribute_argument_clause->p_balanced_token_sequence = balanced_token_sequence_opt(ctx);
@@ -9413,7 +10905,7 @@ void balanced_token_sequence_delete(struct balanced_token_sequence* _Owner _Opt 
         struct balanced_token* _Owner _Opt item = p->head;
         while (item)
         {
-            struct balanced_token* _Owner _Opt  next = item->next;
+            struct balanced_token* _Owner _Opt next = item->next;
             free(item);
             item = next;
         }
@@ -9451,9 +10943,9 @@ struct balanced_token_sequence* _Owner _Opt balanced_token_sequence_opt(struct p
                 }
                 count1--;
             }
-            else if (ctx->current->type == '[')
+            else if (ctx->current->type == ']')
                 count2--;
-            else if (ctx->current->type == '{')
+            else if (ctx->current->type == '}')
                 count3--;
 
             if (ctx->current->type != TK_COMMA)
@@ -9464,6 +10956,7 @@ struct balanced_token_sequence* _Owner _Opt balanced_token_sequence_opt(struct p
                 new_token->token = ctx->current;
                 if (p_balanced_token_sequence->tail == NULL)
                 {
+                    _Assert(p_balanced_token_sequence->head == NULL); // if tail is null head also is
                     p_balanced_token_sequence->head = new_token;
                 }
                 else
@@ -9536,7 +11029,7 @@ struct statement* _Owner _Opt statement(struct parser_ctx* ctx, struct attribute
 
 struct primary_block* _Owner _Opt primary_block(struct parser_ctx* ctx)
 {
-    assert(ctx->current != NULL);
+    _Assert(ctx->current != NULL);
     struct primary_block* _Owner _Opt p_primary_block = calloc(1, sizeof(struct primary_block));
     try
     {
@@ -9545,7 +11038,7 @@ struct primary_block* _Owner _Opt primary_block(struct parser_ctx* ctx)
 
         if (first_of_compound_statement(ctx))
         {
-            p_primary_block->compound_statement = compound_statement(ctx);
+            p_primary_block->compound_statement = compound_statement(ctx, false);
             if (p_primary_block->compound_statement == NULL)
                 throw;
         }
@@ -9562,7 +11055,7 @@ struct primary_block* _Owner _Opt primary_block(struct parser_ctx* ctx)
                 throw;
         }
         else if (ctx->current->type == TK_KEYWORD_CAKE_TRY ||
-                 ctx->current->type == TK_KEYWORD_MSVC__TRY)
+            ctx->current->type == TK_KEYWORD_MSVC__TRY)
         {
             p_primary_block->try_statement = try_statement(ctx);
             if (p_primary_block->try_statement == NULL)
@@ -9604,30 +11097,39 @@ struct secondary_block* _Owner _Opt secondary_block(struct parser_ctx* ctx)
         if (p_secondary_block == NULL)
             throw;
 
-        if (ctx->current == NULL)
-        {
-            unexpected_end_of_file(ctx);
-            throw;
-        }
-
         p_secondary_block->first_token = ctx->current;
+
+        const bool needs_own_indent =
+            ctx->current->type != '{' && ctx->current->type != TK_KEYWORD_IF;
+
+        if (needs_own_indent)
+        {
+            ctx->format_indent_level++;
+            check_indentation_style(ctx, ctx->current);
+        }
 
         struct attribute_specifier_sequence* _Owner _Opt p_attribute_specifier_sequence =
             attribute_specifier_sequence_opt(ctx);
 
-
         struct statement* _Owner _Opt p_statement = statement(ctx, p_attribute_specifier_sequence);
-        p_attribute_specifier_sequence = NULL;  //MOVED
+        p_attribute_specifier_sequence = NULL; // MOVED
+
+        if (needs_own_indent)
+        {
+            ctx->format_indent_level--;
+            format_refix_preceding_comments(ctx, ctx->current);
+        }
 
         if (p_statement == NULL)
             throw;
 
         p_secondary_block->statement = p_statement;
 
-        if (ctx->previous == NULL)
+        struct token* _Opt p_previous_token = parser_get_previous_token(ctx);
+        if (p_previous_token == NULL)
             throw;
 
-        p_secondary_block->last_token = ctx->previous;
+        p_secondary_block->last_token = p_previous_token;
 
         check_close_brace_style(ctx, p_secondary_block->last_token);
     }
@@ -9639,7 +11141,7 @@ struct secondary_block* _Owner _Opt secondary_block(struct parser_ctx* ctx)
     return p_secondary_block;
 }
 
-bool unlabeled_statement_ends_with_jump(struct unlabeled_statement* p_unlabeled_statement)
+bool unlabeled_statement_ends_with_jump(const struct unlabeled_statement* p_unlabeled_statement)
 {
     struct expression* _Opt p_expression = NULL;
 
@@ -9677,7 +11179,7 @@ bool unlabeled_statement_ends_with_jump(struct unlabeled_statement* p_unlabeled_
     return false;
 }
 
-bool secondary_block_ends_with_jump(struct secondary_block* _Opt p_secondary_block)
+bool secondary_block_ends_with_jump(const struct secondary_block* _Opt p_secondary_block)
 {
     if (p_secondary_block &&
         p_secondary_block->statement->unlabeled_statement)
@@ -9740,16 +11242,14 @@ void unlabeled_statement_delete(struct unlabeled_statement* _Owner _Opt p)
     }
 }
 
-
-
 struct unlabeled_statement* _Owner _Opt unlabeled_statement(struct parser_ctx* ctx, struct attribute_specifier_sequence* _Owner _Opt p_attribute_specifier_sequence)
 {
-    /*
-     unlabeled-statement:
-        expression-statement
-        attribute-specifier-sequence opt primary-block
-        attribute-specifier-sequence opt jump-statement
-        attribute-specifier-sequence opt defer-statement
+    /* 
+    * unlabeled-statement:
+    * expression-statement
+    * attribute-specifier-sequence opt primary-block
+    * attribute-specifier-sequence opt jump-statement
+    * attribute-specifier-sequence opt defer-statement
     */
     struct unlabeled_statement* _Owner _Opt p_unlabeled_statement = calloc(1, sizeof(struct unlabeled_statement));
     try
@@ -9771,7 +11271,6 @@ struct unlabeled_statement* _Owner _Opt unlabeled_statement(struct parser_ctx* c
 
             p_unlabeled_statement->primary_block = primary_block(ctx);
 
-
             if (p_unlabeled_statement->primary_block == NULL)
                 throw;
 
@@ -9779,7 +11278,7 @@ struct unlabeled_statement* _Owner _Opt unlabeled_statement(struct parser_ctx* c
         else if (first_of_jump_statement(ctx))
         {
             p_unlabeled_statement->p_attribute_specifier_sequence = p_attribute_specifier_sequence;
-            p_attribute_specifier_sequence = NULL; /*MOVED*/
+            p_attribute_specifier_sequence = NULL; /* MOVED */
 
             p_unlabeled_statement->jump_statement = jump_statement(ctx);
 
@@ -9827,28 +11326,31 @@ struct unlabeled_statement* _Owner _Opt unlabeled_statement(struct parser_ctx* c
                 }
             }
             if (p_unlabeled_statement->expression_statement->expression_opt &&
-                p_unlabeled_statement->expression_statement->expression_opt->expression_type == POSTFIX_FUNCTION_CALL)
+                p_unlabeled_statement->expression_statement->expression_opt->expression_type == EXPR_POSTFIX_FUNCTION_CALL)
             {
             }
             else
             {
-                /*
-                 *  The objective here is to detect expression with not effect
-                 *  a == b; etc
-                 */
+                /* 
+                *  The objective here is to detect expression with not effect
+                *  a == b; etc
+                */
                 if (p_unlabeled_statement != NULL &&
                     p_unlabeled_statement->jump_statement == NULL &&
                     p_unlabeled_statement->expression_statement != NULL &&
                     p_unlabeled_statement->expression_statement->expression_opt)
                 {
-                    if (p_unlabeled_statement->expression_statement->expression_opt->expression_type == PRIMARY_EXPRESSION_DECLARATOR ||
-                        p_unlabeled_statement->expression_statement->expression_opt->expression_type == PRIMARY_EXPRESSION_NUMBER)
+                    if (p_unlabeled_statement->expression_statement->expression_opt->expression_type == EXPR_PRIMARY_DECLARATOR ||
+                        p_unlabeled_statement->expression_statement->expression_opt->expression_type == EXPR_PRIMARY_NUMBER ||
+                        p_unlabeled_statement->expression_statement->expression_opt->expression_type == EXPR_RELATIONAL_BIGGER_THAN ||
+                        p_unlabeled_statement->expression_statement->expression_opt->expression_type == EXPR_RELATIONAL_LESS_THAN ||
+                        p_unlabeled_statement->expression_statement->expression_opt->expression_type == EXPR_RELATIONAL_BIGGER_OR_EQUAL_THAN ||
+                        p_unlabeled_statement->expression_statement->expression_opt->expression_type == EXPR_RELATIONAL_LESS_OR_EQUAL_THAN ||
+                        p_unlabeled_statement->expression_statement->expression_opt->expression_type == EXPR_EQUALITY_EQUAL ||
+                        p_unlabeled_statement->expression_statement->expression_opt->expression_type == EXPR_EQUALITY_NOT_EQUAL)
                     {
-                        if (ctx->current &&
-                            ctx->current->level == 0)
+                        if (ctx->current && ctx->current->level == 0)
                         {
-                            //too many false..alerts.
-                            //make list of for sure ...
                             diagnostic(W_EXPRESSION_RESULT_NOT_USED,
                                 ctx,
                                 p_unlabeled_statement->expression_statement->expression_opt->first_token,
@@ -9858,6 +11360,11 @@ struct unlabeled_statement* _Owner _Opt unlabeled_statement(struct parser_ctx* c
                         }
                     }
                 }
+            }
+
+            if (p_unlabeled_statement->expression_statement->p_lint_token)
+            {
+                check_compiler_dianostic_suppression(ctx, p_unlabeled_statement->expression_statement->p_lint_token);
             }
         }
     }
@@ -9876,6 +11383,7 @@ void label_delete(struct label* _Owner _Opt p)
     {
         attribute_specifier_sequence_delete(p->p_attribute_specifier_sequence);
         expression_delete(p->constant_expression);
+        expression_delete(p->constant_expression_end);
         free(p);
     }
 }
@@ -9894,7 +11402,7 @@ struct label* _Owner _Opt label(struct parser_ctx* ctx, struct attribute_specifi
         if (p_label == NULL)
             throw;
 
-        p_label->p_attribute_specifier_sequence = p_attribute_specifier_sequence; //MOVED
+        p_label->p_attribute_specifier_sequence = p_attribute_specifier_sequence; // MOVED
         p_attribute_specifier_sequence = NULL;
 
         p_label->label_id = ctx->label_id++;
@@ -9919,7 +11427,7 @@ struct label* _Owner _Opt label(struct parser_ctx* ctx, struct attribute_specifi
             {
                 if (p_label_list_item->p_defined)
                 {
-                    //already defined
+                    // already defined
                     diagnostic(C_ERROR_DUPLICATED_LABEL, ctx, ctx->current, NULL, "duplicated label '%s'", ctx->current->lexeme);
                     diagnostic(W_LOCATION, ctx, p_label_list_item->p_defined, NULL, "previous definition of '%s'", ctx->current->lexeme);
                 }
@@ -9941,16 +11449,15 @@ struct label* _Owner _Opt label(struct parser_ctx* ctx, struct attribute_specifi
             if (ctx->p_current_switch_statement == NULL ||
                 ctx->p_current_switch_statement->condition == NULL)
             {
-                //unexpected because we are in case
+                // unexpected because we are in case
                 diagnostic(C_ERROR_CASE_NOT_IN_SWITCH,
-                ctx,
-                ctx->current,
-                NULL,
-                "case label not within a switch statement");
+                    ctx,
+                    ctx->current,
+                    NULL,
+                    "case label not within a switch statement");
 
                 throw;
             }
-
 
             parser_match(ctx);
             p_label->constant_expression = constant_expression(ctx, true, false);
@@ -9969,11 +11476,11 @@ struct label* _Owner _Opt label(struct parser_ctx* ctx, struct attribute_specifi
                 p_label->constant_expression_end = constant_expression(ctx, true, false);
                 if (p_label->constant_expression_end == NULL)
                     throw;
-                /*
-                n3550.pdf
-                If the arithmetic value of the first constant expression is
-                greater than the one of the second, the range
-                described by the constant range expression is empty.
+                /* 
+                * n3550.pdf
+                * If the arithmetic value of the first constant expression is
+                * greater than the one of the second, the range
+                * described by the constant range expression is empty.
                 */
 
                 struct label* _Opt p_existing_label = case_label_list_find_range(ctx,
@@ -9981,25 +11488,28 @@ struct label* _Owner _Opt label(struct parser_ctx* ctx, struct attribute_specifi
                     &p_label->constant_expression->object,
                     &p_label->constant_expression_end->object);
 
-
                 if (p_existing_label)
-                {  //we have a case with a single value that is inside this begin...end
+                { // we have a case with a single value that is inside this begin...end
                     char str1[50] = { 0 };
                     object_to_str(&p_label->constant_expression->object, 50, str1);
 
                     char str2[50] = { 0 };
                     object_to_str(&p_label->constant_expression_end->object, 50, str2);
 
-
-                    //current range x existing range
-                    //current range x existing single value
+                    // current range x existing range
+                    // current range x existing single value
 
                     diagnostic(C_ERROR_DUPLICATED_CASE,
-                            ctx,
-                            p_label->constant_expression->first_token, NULL,
-                            "case '%s' ... '%s' is duplicating values", str1, str2);
+                        ctx,
+                        p_label->constant_expression->first_token, NULL,
+                        "case '%s' ... '%s' is duplicating values", str1, str2);
 
-                    assert(p_label->constant_expression != NULL); //because case have values
+                    _Assert(p_label->constant_expression != NULL); // because case have values
+                    /* case_label_list_find_range only matches labels whose own
+                    * constant_expression is non-null (see the p->constant_expression
+                    * && guard there), so a match guarantees this.
+                    */
+                    _Assert(p_existing_label->constant_expression != NULL);
                     diagnostic(W_LOCATION,
                         ctx,
                         p_existing_label->constant_expression->first_token, NULL, "previous case");
@@ -10010,21 +11520,25 @@ struct label* _Owner _Opt label(struct parser_ctx* ctx, struct attribute_specifi
                 struct label* _Opt p_existing_label =
                     case_label_list_find(ctx, &ctx->p_current_switch_statement->label_list, &p_label->constant_expression->object);
 
-
                 if (p_existing_label)
                 {
 
-                    //current single value x existing single value
-                    //current single value x existing range
+                    // current single value x existing single value
+                    // current single value x existing range
                     char str[80] = { 0 };
                     object_to_str(&p_label->constant_expression->object, 50, str);
 
                     diagnostic(C_ERROR_DUPLICATED_CASE,
-                            ctx,
-                            p_label->constant_expression->first_token, NULL,
-                            "duplicate case '%s'", str);
+                        ctx,
+                        p_label->constant_expression->first_token, NULL,
+                        "duplicate case '%s'", str);
 
-                    assert(p_label->constant_expression != NULL); //because case have values
+                    _Assert(p_label->constant_expression != NULL); // because case have values
+                    /* case_label_list_find only matches labels whose own
+                    * constant_expression is non-null (see the p->constant_expression
+                    * && guard there), so a match guarantees this.
+                    */
+                    _Assert(p_existing_label->constant_expression != NULL);
                     diagnostic(W_LOCATION,
                         ctx,
                         p_existing_label->constant_expression->first_token, NULL, "previous declaration");
@@ -10044,23 +11558,21 @@ struct label* _Owner _Opt label(struct parser_ctx* ctx, struct attribute_specifi
                 {
                     if (type_is_enum(&p_label->constant_expression->type))
                     {
-                        check_diferent_enuns(ctx,
-                                    p_label->constant_expression->first_token,
-                                    p_label->constant_expression,
-                                    ctx->p_current_switch_statement->condition->expression,
-                                    "mismatch in enumeration types");
+                        if (p_label->constant_expression)
+                        {
+                            check_diferent_enuns(ctx,
+                                p_label->constant_expression->first_token,
+                                p_label->constant_expression,
+                                ctx->p_current_switch_statement->condition->expression,
+                                "mismatch in enumeration types"); //lint 35 BUG in flow
+                        }
                     }
                     else
                     {
-                        //enum and something else...
+                        // enum and something else...
                     }
                 }
 
-                if (ctx->p_current_switch_statement == NULL)
-                {
-                    //unexpected because we have case inside switch
-                    throw;
-                }
 
                 const struct enum_specifier* _Opt p_enum_specifier = NULL;
 
@@ -10068,7 +11580,7 @@ struct label* _Owner _Opt label(struct parser_ctx* ctx, struct attribute_specifi
                     ctx->p_current_switch_statement->condition->expression &&
                     ctx->p_current_switch_statement->condition->expression->type.enum_specifier)
                 {
-                    p_enum_specifier = get_complete_enum_specifier(ctx->p_current_switch_statement->condition->expression->type.enum_specifier);
+                    p_enum_specifier = get_enum_specifier_definition(ctx->p_current_switch_statement->condition->expression->type.enum_specifier);
                 }
 
                 if (p_enum_specifier)
@@ -10076,19 +11588,52 @@ struct label* _Owner _Opt label(struct parser_ctx* ctx, struct attribute_specifi
                     const struct enumerator* _Opt p_enumerator = find_enumerator_by_value(ctx, p_enum_specifier, &p_label->constant_expression->object);
                     if (p_enumerator == NULL)
                     {
-                        char str[50];
+                        char str[50] = { 0 };
                         object_to_str(&p_label->constant_expression->object, 50, str);
 
                         diagnostic(W_ENUN_CONVERSION,
-                                        ctx,
-                                        p_label->constant_expression->first_token, NULL,
-                                        "case value '%s' not in enumerated type 'enum %s'",
-                                        str,
-                                        p_enum_specifier->tag_name);
+                            ctx,
+                            p_label->constant_expression->first_token, NULL,
+                            "case value '%s' not in enumerated type 'enum %s'",
+                            str,
+                            p_enum_specifier->tag_name);
                     }
                     else
                     {
 
+                    }
+                }
+                else if (p_label->constant_expression && object_has_constant_value(&p_label->constant_expression->object))
+                {
+                    long long range_min = 0;
+                    unsigned long long range_max = 0;
+
+                    type_get_integer_range(&ctx->p_current_switch_statement->condition->expression->type,
+                        ctx->options.target,
+                        &range_min,
+                        &range_max);
+
+                    const struct object* p_case_object = &p_label->constant_expression->object;
+
+                    const bool is_negative =
+                        object_type_is_signed_integer(p_case_object->value_type) &&
+                        object_to_signed_long_long(p_case_object) < 0;
+
+                    const bool out_of_range =
+                        is_negative ?
+                            (object_to_signed_long_long(p_case_object) < range_min) :
+                            (object_to_unsigned_long_long(p_case_object) > range_max);
+
+                    if (out_of_range)
+                    {
+                        char str[200] = { 0 };
+                        object_to_str(p_case_object, sizeof str, str);
+
+                        diagnostic(W_INTEGER_OVERFLOW,
+                            ctx,
+                            p_label->constant_expression->first_token, NULL,
+                            "case constant '%s' too big for the type of the switch expression",
+                            str);
                     }
                 }
             }
@@ -10099,15 +11644,16 @@ struct label* _Owner _Opt label(struct parser_ctx* ctx, struct attribute_specifi
             if (ctx->p_current_switch_statement == NULL ||
                 ctx->p_current_switch_statement->condition == NULL)
             {
-                //unexpected because we are in case
+                // unexpected because we are in case
                 diagnostic(C_ERROR_CASE_NOT_IN_SWITCH,
-                ctx,
-                ctx->current,
-                NULL,
-                "default case not within a switch statement");
+                    ctx,
+                    ctx->current,
+                    NULL,
+                    "default case not within a switch statement");
+                throw;
             }
 
-            struct label* _Opt p_existing_default_label = case_label_list_find_default(ctx, &ctx->p_current_switch_statement->label_list);
+            struct label* _Opt p_existing_default_label = case_label_list_find_default( &ctx->p_current_switch_statement->label_list);
 
             if (p_existing_default_label)
             {
@@ -10136,20 +11682,19 @@ struct label* _Owner _Opt label(struct parser_ctx* ctx, struct attribute_specifi
         }
         // attribute_specifier_sequence_opt identifier ':'
         // attribute_specifier_sequence_opt 'case' constant_expression ':'
-        // attribute_specifier_sequence_opt 'default' ':'        
+        // attribute_specifier_sequence_opt 'default' ':'
     }
     catch
     {
         label_delete(p_label);
         p_label = NULL;
     }
-    assert(p_attribute_specifier_sequence == NULL);
+    _Assert(p_attribute_specifier_sequence == NULL);
     attribute_specifier_sequence_delete(p_attribute_specifier_sequence);
     return p_label;
 }
 
-
-struct label* _Opt case_label_list_find_default(struct parser_ctx* ctx, const struct case_label_list* list)
+struct label* _Opt case_label_list_find_default( const struct case_label_list* list)
 {
     struct label* _Opt p = list->head;
     while (p)
@@ -10161,24 +11706,28 @@ struct label* _Opt case_label_list_find_default(struct parser_ctx* ctx, const st
     return NULL;
 }
 
-
-struct label* _Opt case_label_list_find_range(struct parser_ctx* ctx, const struct case_label_list* list, const struct object* begin, const struct object* end)
+struct label* _Opt case_label_list_find_range(const struct parser_ctx* ctx, const struct case_label_list* list, const struct object* begin, const struct object* end)
 {
     struct label* _Opt p = list->head;
     while (p)
     {
         if (p->constant_expression_end == NULL)
         {
-            if (object_is_greater_than_or_equal(ctx->options.target, &p->constant_expression->object, begin) &&
-                object_is_smaller_than_or_equal(ctx->options.target, &p->constant_expression_end->object, end))
+            /* single value (or a default label, which has no
+            * constant_expression at all -- skip it)
+            */
+            if (p->constant_expression &&
+                object_is_greater_than_or_equal(ctx->options.target, &p->constant_expression->object, begin) &&
+                object_is_smaller_than_or_equal(ctx->options.target, &p->constant_expression->object, end))
             {
                 return p;
             }
         }
         else
         {
-            //range with range intersection
-            if (object_is_smaller_than_or_equal(ctx->options.target, &p->constant_expression->object, end) &&
+            // range with range intersection
+            if (p->constant_expression &&
+                object_is_smaller_than_or_equal(ctx->options.target, &p->constant_expression->object, end) &&
                 object_is_smaller_than_or_equal(ctx->options.target, begin, &p->constant_expression_end->object))
                 return p;
         }
@@ -10187,7 +11736,7 @@ struct label* _Opt case_label_list_find_range(struct parser_ctx* ctx, const stru
     return NULL;
 }
 
-struct label* _Opt case_label_list_find(struct parser_ctx* ctx, const struct case_label_list* list, const struct object* object)
+struct label* _Opt case_label_list_find(const struct parser_ctx* ctx, const struct case_label_list* list, const struct object* object)
 {
     struct label* _Opt p = list->head;
     while (p)
@@ -10223,7 +11772,7 @@ void case_label_list_push(struct case_label_list* list, struct label* pnew)
     }
     else
     {
-        assert(list->tail != NULL);
+        _Assert(list->tail != NULL);
         list->tail->next = pnew;
         list->tail = pnew;
     }
@@ -10285,12 +11834,12 @@ void compound_statement_delete(struct compound_statement* _Owner _Opt p)
     }
 }
 
-struct compound_statement* _Owner _Opt compound_statement(struct parser_ctx* ctx)
+struct compound_statement* _Owner _Opt compound_statement(struct parser_ctx* ctx, bool is_function_body)
 {
 
     struct scope block_scope = { .variables.capacity = 10 };
 
-    //'{' block_item_list_opt '}'
+    // '{' block_item_list_opt '}'
     struct compound_statement* _Owner _Opt p_compound_statement = NULL;
 
     try
@@ -10311,12 +11860,35 @@ struct compound_statement* _Owner _Opt compound_statement(struct parser_ctx* ctx
         scope_list_push(&ctx->scopes, &block_scope);
 
         p_compound_statement->first_token = ctx->current;
+
+        /* Every compound statement's braces, not just the ones
+        * check_open/close_brace_style already covers (if/while/for/switch
+        * bodies, function bodies) - a bare block used as a statement body,
+        * like `case X: { ... }`, has no other check reaching it. Own-line
+        * placement only (K&R braces are a different, narrower rule that
+        * only applies to the control-flow/function-signature cases).
+        */
+        char open_indent[256] = {0};
+        format_indent_string(ctx, ctx->format_indent_level, open_indent, sizeof open_indent);
+        const bool fix_open_brace = format_active_for(ctx, p_compound_statement->first_token);
+
+        /* Bumped BEFORE matching '{', not after: parser_match_tk() calls
+        * parser_skip_blanks() immediately, which is what fixes a comment's
+        * indentation (see there) - a comment sitting right after '{' needs
+        * the deeper level already active when that scan reaches it, or it
+        * gets fixed to this block's outer level instead of its own.
+        */
+        ctx->format_indent_level++;
+
         if (parser_match_tk(ctx, '{') != 0)
             throw;
 
+        if (fix_open_brace)
+            format_ensure_brace_own_line_indented(p_compound_statement->first_token, open_indent);
+
         if (ctx->current == NULL)
         {
-            diagnostic(C_ERROR_UNEXPECTED_TOKEN, ctx, ctx->input_list.tail, NULL, "unexpected end of file");
+            diagnostic(C_ERROR_UNEXPECTED_TOKEN, ctx, ctx->p_input_list->tail, NULL, "unexpected end of file");
             throw;
         }
 
@@ -10335,6 +11907,15 @@ struct compound_statement* _Owner _Opt compound_statement(struct parser_ctx* ctx
         }
 
         p_compound_statement->last_token = ctx->current;
+        ctx->format_indent_level--;
+
+        if (format_active_for(ctx, p_compound_statement->last_token))
+        {
+            char close_indent[256] = {0};
+            format_indent_string(ctx, ctx->format_indent_level, close_indent, sizeof close_indent);
+            format_ensure_brace_own_line_indented(p_compound_statement->last_token, close_indent);
+        }
+
         if (parser_match_tk_lint(ctx, '}', &p_compound_statement->lint_token) != 0)
             throw;
 
@@ -10359,7 +11940,7 @@ struct compound_statement* _Owner _Opt compound_statement(struct parser_ctx* ctx
                 struct init_declarator* _Opt p_init_declarator = NULL;
                 if (entry->type == TAG_TYPE_INIT_DECLARATOR)
                 {
-                    assert(entry->data.p_init_declarator != NULL);
+                    _Assert(entry->data.p_init_declarator != NULL);
                     p_init_declarator = entry->data.p_init_declarator;
                     p_declarator = p_init_declarator->p_declarator;
                 }
@@ -10374,12 +11955,23 @@ struct compound_statement* _Owner _Opt compound_statement(struct parser_ctx* ctx
                     if (!type_is_maybe_unused(&p_declarator->type) &&
                         p_declarator->num_uses == 0)
                     {
-                        if (p_declarator->name_opt && p_declarator->name_opt->token_origin->level == 0)
+                        if (p_declarator->name_opt && p_declarator->name_opt->token_origin && p_declarator->name_opt->token_origin->level == 0)
                         {
                             diagnostic(W_UNUSED_VARIABLE,
                                 ctx,
                                 p_declarator->name_opt, NULL,
                                 "'%s': unreferenced declarator",
+                                p_declarator->name_opt->lexeme);
+                        }
+                    }
+                    else if (declarator_is_set_but_not_used(p_declarator))
+                    {
+                        if (p_declarator->name_opt && p_declarator->name_opt->token_origin && p_declarator->name_opt->token_origin->level == 0)
+                        {
+                            diagnostic(W_SET_BUT_NOT_USED,
+                                ctx,
+                                p_declarator->name_opt, NULL,
+                                "'%s': variable set but not used",
                                 p_declarator->name_opt->lexeme);
                         }
                     }
@@ -10399,8 +11991,18 @@ struct compound_statement* _Owner _Opt compound_statement(struct parser_ctx* ctx
 
     scope_destroy(&block_scope);
 
-    if (p_compound_statement && p_compound_statement->lint_token)
+    if (p_compound_statement && p_compound_statement->lint_token && !is_function_body)
     {
+        /* 
+        * A FUNCTION BODY's trailing `//lint N` is deliberately left alone
+        * here. The parameter checks (check_unused_parameters and
+        * check_const_candidate_parameters) run in declaration_core AFTER this
+        * function returns, so consuming the token now looked for diagnostics
+        * that had not been queued yet: the suppression failed, reported
+        * "diagnostic 'N' not recognized", and then declaration_core consumed
+        * the same token a second time and succeeded. `//lint 6` had produced
+        * that spurious warning 59 for as long as the check existed.
+        */
         check_compiler_dianostic_suppression(ctx, p_compound_statement->lint_token);
     }
     return p_compound_statement;
@@ -10414,8 +12016,8 @@ void block_item_list_add(struct block_item_list* list, struct block_item* _Owner
     }
     else
     {
-        assert(list->tail != NULL);
-        assert(list->tail->next == NULL);
+        _Assert(list->tail != NULL);
+        _Assert(list->tail->next == NULL);
         list->tail->next = p_item;
     }
     list->tail = p_item;
@@ -10436,32 +12038,80 @@ void block_item_list_destroy(_Dtor struct block_item_list* list)
 
 struct block_item_list block_item_list(struct parser_ctx* ctx, bool* error)
 {
-    /*
-      block_item_list:
-      block_item
-      block_item_list block_item
+    /* 
+    * block_item_list:
+    * block_item
+    * block_item_list block_item
     */
     *error = false;
     struct block_item_list block_item_list = { 0 };
     struct block_item* _Owner _Opt p_block_item = NULL;
+
+    /* -format, cake style only: an unbraced case/default body (`case 1:
+    * stmt; break;`, no `{ }`) is indented one level deeper than its own
+    * label, for every block-item up to whatever ends it - the next
+    * case/default label at this same switch level, or the switch's own
+    * closing '}' (the while condition below already stops the loop there,
+    * so nothing needs to run the dedent for that side). A braced body
+    * (`case 1: { ... } break;`) needs none of this: compound_statement()
+    * places and levels its own braces, and break; sits right back at the
+    * label's level once it closes.
+    */
+    bool case_indent_pending = false;
     try
     {
-        p_block_item = block_item(ctx);
-        if (p_block_item == NULL)
-            throw;
-
-        block_item_list_add(&block_item_list, p_block_item);
-
-        p_block_item = NULL; /*MOVED*/
-
-        while (ctx->current != NULL && ctx->current->type != '}') // follow
+        for (;;)
         {
+            if (case_indent_pending && ctx->current &&
+                (ctx->current->type == TK_KEYWORD_CASE ||
+                    ctx->current->type == TK_KEYWORD_DEFAULT ||
+                    ctx->current->type == TK_KEYWORD_BREAK))
+            {
+                /* break; is also a boundary, not just the next label: a
+                * block-item that starts with the bare keyword 'break' here
+                * can only be this switch's own break (a loop's break is
+                * nested inside the loop's own body/block_item_list, never
+                * a direct block-item of the switch's), so it always ends
+                * the case's indent - dedent BEFORE parsing it so its own
+                * line prints back at the label's level, same as case/default.
+                */
+                ctx->format_indent_level--;
+                case_indent_pending = false;
+            }
+
             p_block_item = block_item(ctx);
             if (p_block_item == NULL)
                 throw;
+
+            if (p_block_item->label &&
+                p_block_item->label->p_first_token &&
+                (p_block_item->label->p_first_token->type == TK_KEYWORD_CASE ||
+                    p_block_item->label->p_first_token->type == TK_KEYWORD_DEFAULT) &&
+                format_active_for(ctx, p_block_item->label->p_first_token) &&
+                ctx->current && ctx->current->type != '{' &&
+                ctx->current->type != TK_KEYWORD_CASE && ctx->current->type != TK_KEYWORD_DEFAULT)
+            {
+                ctx->format_indent_level++;
+                case_indent_pending = true;
+
+                /* Any comment sitting between the label's ':' and this
+                * first block-item of its (unbraced) body was already
+                * skipped - and indented - before this increment ran, so
+                * it printed one level too shallow, at the label's own
+                * indent. Re-fix it now that the right level is known. */
+                format_refix_preceding_comments(ctx, ctx->current);
+            }
+
             block_item_list_add(&block_item_list, p_block_item);
-            p_block_item = NULL; /*MOVED*/
+
+            p_block_item = NULL; /* MOVED */
+
+            if (ctx->current == NULL || ctx->current->type == '}') // follow
+                break;
         }
+
+        if (case_indent_pending)
+            ctx->format_indent_level--; /* ran out of block-items before the next label showed up - unwind at the switch's own '}' */
     }
     catch
     {
@@ -10478,20 +12128,19 @@ void block_item_delete(struct block_item* _Owner _Opt p)
         declaration_delete(p->declaration);
         label_delete(p->label);
         unlabeled_statement_delete(p->unlabeled_statement);
-        assert(p->next == NULL);
+        _Assert(p->next == NULL);
         free(p);
     }
 }
 
 struct block_item* _Owner _Opt block_item(struct parser_ctx* ctx)
 {
-    /*
-     block-item:
-      declaration
-      unlabeled-statement
-      label
+    /* 
+    * block-item:
+    * declaration
+    * unlabeled-statement
+    * label
     */
-
 
     struct block_item* _Owner _Opt p_block_item = NULL;
     struct attribute_specifier_sequence* _Owner _Opt p_attribute_specifier_sequence = NULL;
@@ -10507,10 +12156,10 @@ struct block_item* _Owner _Opt block_item(struct parser_ctx* ctx)
         if (p_block_item == NULL)
             throw;
 
-        /*
-         * Attributes can be first of declaration, labels etc..
-         * so it is better to parse it in advance.
-         */
+        /* 
+        * Attributes can be first of declaration, labels etc..
+        * so it is better to parse it in advance.
+        */
         p_attribute_specifier_sequence = attribute_specifier_sequence_opt(ctx);
 
         if (ctx->current == NULL)
@@ -10523,12 +12172,26 @@ struct block_item* _Owner _Opt block_item(struct parser_ctx* ctx)
 
         check_indentation_style(ctx, ctx->current);
 
-        if (first_of_declaration_specifier(ctx) ||
+        if (first_of_label(ctx))
+        {
+            /* 
+            * check label first, because a typedef-name can be used as a label
+            * "typedef int foo; foo:;"
+            */
+            p_block_item->label = label(ctx, p_attribute_specifier_sequence);
+            p_attribute_specifier_sequence = NULL; // MOVED
+
+            if (p_block_item->label == NULL)
+            {
+                throw;
+            }
+        }
+        else if (first_of_declaration_specifier(ctx) ||
             first_of_pragma_declaration(ctx) ||
             first_of_static_assertion_declaration(ctx))
         {
             p_block_item->declaration = declaration(ctx, p_attribute_specifier_sequence, STORAGE_SPECIFIER_BLOCK_SCOPE, false);
-            p_attribute_specifier_sequence = NULL; /*MOVED*/
+            p_attribute_specifier_sequence = NULL; /* MOVED */
 
             if (p_block_item->declaration == NULL)
                 throw;
@@ -10538,24 +12201,14 @@ struct block_item* _Owner _Opt block_item(struct parser_ctx* ctx)
             {
                 if (p->p_declarator->name_opt)
                 {
-                    naming_convention_local_var(ctx, p->p_declarator->name_opt, &p->p_declarator->type);
+                    naming_convention_local_var(ctx, p->p_declarator->name_opt);
                 }
                 p = p->next;
-            }
-        }        
-        else if (first_of_label(ctx))
-        {
-            /* identifier can be confused with an expression here */
-            p_block_item->label = label(ctx, p_attribute_specifier_sequence);
-            p_attribute_specifier_sequence = NULL; //MOVED
-
-            if (p_block_item->label == NULL)
-            {
-                throw;
             }
         }
         else
         {
+            /* identifier can be confused with an expression here */
             p_block_item->unlabeled_statement = unlabeled_statement(ctx, p_attribute_specifier_sequence);
             p_attribute_specifier_sequence = NULL;
             if (p_block_item->unlabeled_statement == NULL)
@@ -10563,23 +12216,23 @@ struct block_item* _Owner _Opt block_item(struct parser_ctx* ctx)
                 throw;
             }
         }
-        /*
-                                               declaration-specifiers init-declarator-list_opt;
-                  attribute-specifier-sequence declaration-specifiers init-declarator-list;
-                  static_assert-declaration attribute_declaration
+        /* 
+        * declaration-specifiers init-declarator-list_opt;
+        * attribute-specifier-sequence declaration-specifiers init-declarator-list;
+        * static_assert-declaration attribute_declaration
         */
-        /*
-        unlabeled-statement:
-         expression-statement
-         attribute-specifier-sequenceopt compound-statement
-         attribute-specifier-sequenceopt selection-statement
-         attribute-specifier-sequenceopt iteration-statement
-         attribute-specifier-sequenceopt jump-statement
-
-        label:
-        attribute-specifier-sequenceopt identifier :
-        attribute-specifier-sequenceopt case constant-expression :
-        attribute-specifier-sequenceopt default :
+        /* 
+        * unlabeled-statement:
+        * expression-statement
+        * attribute-specifier-sequenceopt compound-statement
+        * attribute-specifier-sequenceopt selection-statement
+        * attribute-specifier-sequenceopt iteration-statement
+        * attribute-specifier-sequenceopt jump-statement
+        * 
+        * label:
+        * attribute-specifier-sequenceopt identifier :
+        * attribute-specifier-sequenceopt case constant-expression :
+        * attribute-specifier-sequenceopt default :
         */
 
     }
@@ -10589,7 +12242,7 @@ struct block_item* _Owner _Opt block_item(struct parser_ctx* ctx)
         p_block_item = NULL;
     }
 
-    //if not moved it will be deleted
+    // if not moved it will be deleted
     attribute_specifier_sequence_delete(p_attribute_specifier_sequence);
 
     return p_block_item;
@@ -10601,6 +12254,7 @@ void try_statement_delete(struct try_statement* _Owner _Opt p)
     {
         secondary_block_delete(p->catch_secondary_block_opt);
         secondary_block_delete(p->secondary_block);
+        expression_delete(p->msvc_except_expression);
         free(p);
     }
 }
@@ -10632,16 +12286,16 @@ static struct asm_statement* _Owner _Opt msvc_asm_statement(struct parser_ctx* c
 
         if (parser_match_tk(ctx, TK_KEYWORD__ASM) != 0)
             throw;
-        /*
-              https://learn.microsoft.com/en-us/cpp/assembler/inline/asm?view=msvc-170
-
-              asm-block:
-              __asm assembly-instruction ;_Opt
-              __asm { assembly-instruction-list } ; opt
-
-          assembly-instruction-list:
-              assembly-instruction ; opt
-              assembly-instruction ; assembly-instruction-list ;opt
+        /* 
+        * https://learn.microsoft.com/en-us/cpp/assembler/inline/asm?view=msvc-170
+        * 
+        * asm-block:
+        * __asm assembly-instruction ;_Opt
+        * __asm { assembly-instruction-list } ; opt
+        * 
+        * assembly-instruction-list:
+        * assembly-instruction ; opt
+        * assembly-instruction ; assembly-instruction-list ;opt
         */
 
         if (ctx->current == NULL)
@@ -10691,7 +12345,7 @@ static struct asm_statement* _Owner _Opt msvc_asm_statement(struct parser_ctx* c
 
         if (ctx->current && ctx->current->type == ';')
         {
-            /*optional*/
+            /* optional */
             p_asm_statement->p_last_token = ctx->current;
             parser_match(ctx);
         }
@@ -10707,13 +12361,13 @@ static struct asm_statement* _Owner _Opt msvc_asm_statement(struct parser_ctx* c
 
 static void gcc_asm_qualifier_opt(struct parser_ctx* ctx)
 {
-    /*
-       asm-qualifier:
-            volatile
-            __volatile__
-            goto
-            volatile goto
-            __volatile__ goto
+    /* 
+    * asm-qualifier:
+    * volatile
+    * __volatile__
+    * goto
+    * volatile goto
+    * __volatile__ goto
     */
     try
     {
@@ -10743,51 +12397,51 @@ static void gcc_asm_qualifier_opt(struct parser_ctx* ctx)
 
 static struct asm_statement* _Owner _Opt gcc_asm(struct parser_ctx* ctx, bool statement)
 {
-    /*
-       This is the grammar, but we are using a simple balanced asm ( )
-    //https://gcc.gnu.org/onlinedocs/gcc/Extended-Asm.html
-    asm-statement:
-    asm asm-qualifier[opt] ( asm-template asm-operands[opt] ) ;
-
-        asm-qualifier:
-            volatile
-            __volatile__
-            goto
-            volatile goto
-            __volatile__ goto
-
-        asm-template:
-            string-literal
-            asm-template string-literal
-
-        asm-operands:
-            : output-operands[opt]
-              : input-operands[opt]
-              : clobbers[opt]
-              : goto-labels[opt]
-
-        output-operands:
-            asm-operand
-            output-operands , asm-operand
-
-        input-operands:
-            asm-operand
-            input-operands , asm-operand
-
-        asm-operand:
-            constraint ( expression )
-            [ identifier ] constraint ( expression )
-
-        clobbers:
-            string-literal
-            clobbers , string-literal
-
-        goto-labels:
-            identifier
-            goto-labels , identifier
-
-        constraint:
-            string-literal
+    /* 
+    * This is the grammar, but we are using a simple balanced asm ( )
+    * //https://gcc.gnu.org/onlinedocs/gcc/Extended-Asm.html
+    * asm-statement:
+    * asm asm-qualifier[opt] ( asm-template asm-operands[opt] ) ;
+    * 
+    * asm-qualifier:
+    * volatile
+    * __volatile__
+    * goto
+    * volatile goto
+    * __volatile__ goto
+    * 
+    * asm-template:
+    * string-literal
+    * asm-template string-literal
+    * 
+    * asm-operands:
+    * : output-operands[opt]
+    * : input-operands[opt]
+    * : clobbers[opt]
+    * : goto-labels[opt]
+    * 
+    * output-operands:
+    * asm-operand
+    * output-operands , asm-operand
+    * 
+    * input-operands:
+    * asm-operand
+    * input-operands , asm-operand
+    * 
+    * asm-operand:
+    * constraint ( expression )
+    * [ identifier ] constraint ( expression )
+    * 
+    * clobbers:
+    * string-literal
+    * clobbers , string-literal
+    * 
+    * goto-labels:
+    * identifier
+    * goto-labels , identifier
+    * 
+    * constraint:
+    * string-literal
     */
     struct asm_statement* _Owner _Opt p_asm_statement = NULL;
     try
@@ -10866,20 +12520,21 @@ struct asm_statement* _Owner _Opt asm_statement(struct parser_ctx* ctx)
 {
     switch (ctx->options.target)
     {
-    case TARGET_X86_MSVC:
-    case TARGET_X64_MSVC:
-        return msvc_asm_statement(ctx);
+        case TARGET_X86_MSVC:
+        case TARGET_X64_MSVC:
+            return msvc_asm_statement(ctx);
 
-    case TARGET_X86_X64_GCC:
-    case TARGET_CCU8:
-    case TARGET_LCCU16:
-    case TARGET_CATALINA:
+        case TARGET_X86_X64_GCC:
+        case TARGET_CCU8:
+        case TARGET_LCCU16:
+        case TARGET_CATALINA:
+        case TARGET_APPLE_ARM64:
         break;
     }
 
-    static_assert(NUMBER_OF_TARGETS == 6, "how this target handle asm blocks?");
+    static_assert(NUMBER_OF_TARGETS == 7, "how this target handle asm blocks?");
 
-    //balanced tokens ( ... ) 
+    // balanced tokens ( ... )
     return gcc_asm(ctx, true);
 }
 
@@ -10911,15 +12566,14 @@ struct try_statement* _Owner _Opt try_statement(struct parser_ctx* ctx)
 
         p_try_statement->catch_label_id = ctx->label_id++;
 
-
+        check_indentation_style(ctx, ctx->current);
         parser_match(ctx);
-
 
         struct secondary_block* _Owner _Opt p_secondary_block = secondary_block(ctx);
         if (p_secondary_block == NULL) throw;
         p_try_statement->secondary_block = p_secondary_block;
 
-        /*restores the previous one*/
+        /* restores the previous one */
         ctx->p_current_try_statement_opt = try_statement_copy_opt;
 
         if (ctx->current == NULL)
@@ -10931,10 +12585,10 @@ struct try_statement* _Owner _Opt try_statement(struct parser_ctx* ctx)
         if (ctx->current->type == TK_KEYWORD_CAKE_CATCH)
         {
             p_try_statement->catch_token_opt = ctx->current;
+            check_indentation_style(ctx, ctx->current);
             parser_match(ctx);
 
-            assert(p_try_statement->catch_secondary_block_opt == NULL);
-
+            _Assert(p_try_statement->catch_secondary_block_opt == NULL);
 
             p_try_statement->catch_secondary_block_opt = secondary_block(ctx);
             if (p_try_statement->catch_secondary_block_opt == NULL) throw;
@@ -10943,10 +12597,10 @@ struct try_statement* _Owner _Opt try_statement(struct parser_ctx* ctx)
         else if (ctx->current->type == TK_KEYWORD_MSVC__FINALLY)
         {
             p_try_statement->catch_token_opt = ctx->current;
+            check_indentation_style(ctx, ctx->current);
             parser_match(ctx);
 
-            assert(p_try_statement->catch_secondary_block_opt == NULL);
-
+            _Assert(p_try_statement->catch_secondary_block_opt == NULL);
 
             p_try_statement->catch_secondary_block_opt = secondary_block(ctx);
             if (p_try_statement->catch_secondary_block_opt == NULL) throw;
@@ -10954,8 +12608,9 @@ struct try_statement* _Owner _Opt try_statement(struct parser_ctx* ctx)
         else if (ctx->current->type == TK_KEYWORD_MSVC__EXCEPT)
         {
 
-            //TODO
+            // TODO
             p_try_statement->catch_token_opt = ctx->current;
+            check_indentation_style(ctx, ctx->current);
             parser_match(ctx);
 
             if (parser_match_tk(ctx, '(') != 0) throw;
@@ -10964,15 +12619,16 @@ struct try_statement* _Owner _Opt try_statement(struct parser_ctx* ctx)
 
             if (parser_match_tk(ctx, ')') != 0) throw;
 
-            assert(p_try_statement->catch_secondary_block_opt == NULL);
+            _Assert(p_try_statement->catch_secondary_block_opt == NULL);
             p_try_statement->catch_secondary_block_opt = secondary_block(ctx);
             if (p_try_statement->catch_secondary_block_opt == NULL) throw;
         }
 
-        if (ctx->previous == NULL)
+        struct token* _Opt p_previous_token = parser_get_previous_token(ctx);
+        if (p_previous_token == NULL)
             throw;
 
-        p_try_statement->last_token = ctx->previous;
+        p_try_statement->last_token = p_previous_token;
     }
     catch
     {
@@ -10996,37 +12652,133 @@ void selection_statement_delete(struct selection_statement* _Owner _Opt p)
     }
 }
 
+/* 
+* C23 6.8.4.1, 6.8.5.1 the controlling expression of an if, while, do or
+* for statement shall have scalar type.
+*/
+static void check_constant_condition(const struct parser_ctx* ctx, const struct expression* p_expression)
+{
+    if (object_has_constant_value(&p_expression->object))
+    {
+        diagnostic(W_CONDITIONAL_IS_CONSTANT,
+            ctx,
+            p_expression->first_token,
+            NULL,
+            "conditional expression is constant");
+    }
+}
+
+static void check_controlling_expression(const struct parser_ctx* ctx, const struct expression* p_expression)
+{
+    if (!type_is_scalar_decay(&p_expression->type))
+    {
+        diagnostic(C_ERROR_CONDITION_MUST_HAVE_SCALAR_TYPE,
+            ctx,
+            p_expression->first_token,
+            NULL,
+            "controlling expression must have scalar type");
+    }
+
+    check_constant_condition(ctx, p_expression);
+}
+
+static bool block_item_is_fallthrough_marker(const struct block_item* p_item)
+{
+    return p_item->unlabeled_statement &&
+        p_item->unlabeled_statement->expression_statement &&
+        p_item->unlabeled_statement->expression_statement->expression_opt == NULL &&
+        p_item->unlabeled_statement->expression_statement->p_attribute_specifier_sequence &&
+        (p_item->unlabeled_statement->expression_statement->p_attribute_specifier_sequence->attributes_flags & STD_ATTRIBUTE_FALLTHROUGH);
+}
+
+static void check_switch_fallthrough(const struct parser_ctx* ctx, const struct selection_statement* p_selection_statement)
+{
+    if (p_selection_statement->secondary_block == NULL ||
+        p_selection_statement->secondary_block->statement == NULL ||
+        p_selection_statement->secondary_block->statement->unlabeled_statement == NULL ||
+        p_selection_statement->secondary_block->statement->unlabeled_statement->primary_block == NULL ||
+        p_selection_statement->secondary_block->statement->unlabeled_statement->primary_block->compound_statement == NULL)
+    {
+        return;
+    }
+
+    const struct block_item_list* p_list =
+        &p_selection_statement->secondary_block->statement->unlabeled_statement->primary_block->compound_statement->block_item_list;
+
+    const struct block_item* _Opt prev = NULL;
+    const struct block_item* _Opt p_item = p_list->head;
+    while (p_item)
+    {
+        if (p_item->label)
+        {
+            if (prev != NULL && prev->label == NULL)
+            {
+                const bool ends_with_jump =
+                    prev->unlabeled_statement && unlabeled_statement_ends_with_jump(prev->unlabeled_statement);//lint 68 BUG 
+
+                if (!ends_with_jump && !block_item_is_fallthrough_marker(prev))
+                {
+                    diagnostic(W_FLOW_FALLTHROUGH,
+                        ctx,
+                        p_item->label->p_first_token,
+                        NULL,
+                        "unannotated fall-through between switch labels; add a 'break' or '[[fallthrough]];'");
+                }
+            }
+        }
+        else if (block_item_is_fallthrough_marker(p_item))
+        {
+            if (p_item->next == NULL || p_item->next->label == NULL)
+            {
+                if (p_item->unlabeled_statement && 
+                    p_item->unlabeled_statement->expression_statement &&
+                    p_item->unlabeled_statement->expression_statement->p_attribute_specifier_sequence)
+                {            
+                    diagnostic(W_FLOW_FALLTHROUGH,
+                               ctx,
+                               p_item->unlabeled_statement->expression_statement->p_attribute_specifier_sequence->first_token,
+                               NULL,
+                               "'[[fallthrough]]' attribute must appear as the last statement before a case or default label");
+                }
+            }
+        }
+
+        prev = p_item;
+        p_item = p_item->next;
+    }
+}
+
 struct selection_statement* _Owner _Opt selection_statement(struct parser_ctx* ctx)
 {
-    /*
-    selection-statement: //C23
-        "if" ( expression ) secondary-block
-        "if" ( expression ) secondary-block else secondary-block
-        "switch" ( expression ) secondary-block
+    /* 
+    * selection-statement: //C23
+    * "if" ( expression ) secondary-block
+    * "if" ( expression ) secondary-block else secondary-block
+    * "switch" ( expression ) secondary-block
     */
 
     /* Extension
-
-    selection-statement: C2Y?
-       "if" ( init-statement _Opt condition ) secondary-block
-       "if" ( init-statement _Opt condition ) secondary-block "else" secondary-block
-       switch ( init-statement _Opt condition ) secondary-block
-
-       C2Y
-
-       selection-statement:
-         if ( selection-header ) secondary-block
-         if ( selection-header ) secondary-block else secondary-block
-         switch ( selection-header ) secondary-block
-
-      selection-header:
-        expression
-        declaration expression
-        simple-declaration
-
-      simple-declaration:
-         attribute-specifier-sequenceopt declaration-specifiers declarator = initializer
-
+    * 
+    * selection-statement: C2Y?
+    * "if" ( init-statement _Opt condition ) secondary-block
+    * "if" ( init-statement _Opt condition ) secondary-block "else" secondary-block
+    * switch ( init-statement _Opt condition ) secondary-block
+    * 
+    * C2Y
+    * 
+    * selection-statement:
+    * if ( selection-header ) secondary-block
+    * if ( selection-header ) secondary-block else secondary-block
+    * switch ( selection-header ) secondary-block
+    * 
+    * selection-header:
+    * expression
+    * declaration expression
+    * simple-declaration
+    * 
+    * simple-declaration:
+    * attribute-specifier-sequenceopt declaration-specifiers declarator = initializer
+    * 
     */
 
     struct scope if_scope = { 0 };
@@ -11077,13 +12829,12 @@ struct selection_statement* _Owner _Opt selection_statement(struct parser_ctx* c
 
         p_selection_statement->open_parentesis_token = ctx->current;
 
-
         if (parser_match_tk(ctx, '(') != 0)
             throw;
 
-        /*
-           init-statement and condition are  almost the same.
-           the diference is that init-statement has ;
+        /* 
+        * init-statement and condition are  almost the same.
+        * the diference is that init-statement has ;
         */
         p_selection_statement->p_init_statement = init_statement(ctx, true);
 
@@ -11098,33 +12849,37 @@ struct selection_statement* _Owner _Opt selection_statement(struct parser_ctx* c
 
         if (ctx->current->type == ';')
         {
-            /*
-              We only know if we are at init-statement if we find ;
+            /* 
+            * We only know if we are at init-statement if we find ;
             */
 
-            //  fixing the last_token            
+            // fixing the last_token
             if (p_selection_statement->p_init_statement->p_simple_declaration)
-                p_selection_statement->p_init_statement->p_simple_declaration->last_token = ctx->current;
-            else if (p_selection_statement->p_init_statement->p_expression_statement)
                 p_selection_statement->p_init_statement->p_simple_declaration->last_token = ctx->current;
 
             parser_match(ctx);
             p_selection_statement->condition = condition(ctx);
+            if (is_if &&
+                p_selection_statement->condition &&
+                p_selection_statement->condition->expression)
+            {
+                check_constant_condition(ctx, p_selection_statement->condition->expression);
+            }
         }
         else if (ctx->current->type == ')')
         {
-            /*
-              We only know if we are at init-statement if we find ;
-              In this case it is NOT.
-              So we copy parts of init-statement to condition
+            /* 
+            * We only know if we are at init-statement if we find ;
+            * In this case it is NOT.
+            * So we copy parts of init-statement to condition
             */
 
-            /*ignore that init_statement*/
+            /* ignore that init_statement */
             p_selection_statement->condition = calloc(1, sizeof * p_selection_statement->condition);
             if (p_selection_statement->condition == NULL)
                 throw;
 
-            //steal expression
+            // steal expression
             if (p_selection_statement->p_init_statement->p_expression_statement &&
                 p_selection_statement->p_init_statement->p_expression_statement->expression_opt)
             {
@@ -11134,6 +12889,11 @@ struct selection_statement* _Owner _Opt selection_statement(struct parser_ctx* c
                 p_selection_statement->condition->expression =
                     p_selection_statement->p_init_statement->p_expression_statement->expression_opt;
                 p_selection_statement->p_init_statement->p_expression_statement->expression_opt = NULL;
+
+                if (is_if)
+                {
+                    check_controlling_expression(ctx, p_selection_statement->condition->expression);
+                }
             }
 
             if (p_selection_statement->p_init_statement->p_simple_declaration)
@@ -11144,8 +12904,8 @@ struct selection_statement* _Owner _Opt selection_statement(struct parser_ctx* c
                 if (p_selection_statement->p_init_statement->p_simple_declaration->init_declarator_list.head !=
                     p_selection_statement->p_init_statement->p_simple_declaration->init_declarator_list.tail)
                 {
-                    //tODO only 1
-                    assert(false);
+                    // tODO only 1
+                    _Assert(false);
                     throw;
                 }
                 p_selection_statement->condition->p_init_declarator =
@@ -11155,11 +12915,10 @@ struct selection_statement* _Owner _Opt selection_statement(struct parser_ctx* c
                 p_selection_statement->p_init_statement->p_simple_declaration->init_declarator_list.tail = NULL;
 
                 p_selection_statement->condition->p_declaration_specifiers =
-                    p_selection_statement->p_init_statement->p_simple_declaration->p_declaration_specifiers; /*MOVED*/
+                    p_selection_statement->p_init_statement->p_simple_declaration->p_declaration_specifiers; /* MOVED */
 
-                p_selection_statement->p_init_statement->p_simple_declaration->p_declaration_specifiers = NULL; /*MOVED*/
+                p_selection_statement->p_init_statement->p_simple_declaration->p_declaration_specifiers = NULL; /* MOVED */
             }
-
 
             init_statement_delete(p_selection_statement->p_init_statement);
             p_selection_statement->p_init_statement = NULL;
@@ -11181,34 +12940,35 @@ struct selection_statement* _Owner _Opt selection_statement(struct parser_ctx* c
             check_compiler_dianostic_suppression(ctx, p_selection_statement->lint_token);
         }
 
-        //if (object_has_constant_value(&p_selection_statement->init_statement_expression->object))
-        //{
-            //diagnostic(W_CONDITIONAL_IS_CONSTANT, ctx, p_selection_statement->init_statement_expression->first_token, "conditional expression is constant");
-        //}
+        // if (object_has_constant_value(&p_selection_statement->init_statement_expression->object))
+        // {
+        // diagnostic(W_CONDITIONAL_IS_CONSTANT, ctx, p_selection_statement->init_statement_expression->first_token, "conditional expression is constant");
+        // }
 
-        if (!is_if && p_selection_statement && p_selection_statement->condition)
+        if (!is_if && p_selection_statement && p_selection_statement->condition &&
+            p_selection_statement->condition->expression)
         {
             if (type_is_bool(&p_selection_statement->condition->expression->type) ||
                 type_is_essential_bool(&p_selection_statement->condition->expression->type))
             {
                 diagnostic(W_SWITCH,
-                            ctx,
-                            p_selection_statement->condition->first_token,
-                            NULL,
-                            "switch condition has boolean value"); //[-Wswitch-bool]
+                    ctx,
+                    p_selection_statement->condition->first_token,
+                    NULL,
+                    "switch condition has boolean value"); // [-Wswitch-bool]
             }
 
-            /*
-             * C11 6.8.4.2/1 — the controlling expression of a switch statement
-             * shall have integer type (not merely scalar — float is not allowed).
-             */
+            /* 
+            * C11 6.8.4.2/1 — the controlling expression of a switch statement
+            * shall have integer type (not merely scalar — float is not allowed).
+            */
             if (!type_is_integer(&p_selection_statement->condition->expression->type))
             {
                 diagnostic(C_ERROR_CONDITION_MUST_HAVE_SCALAR_TYPE,
-                                    ctx,
-                                    p_selection_statement->condition->first_token,
-                                    NULL,
-                                    "switch controlling expression must have integer type");
+                    ctx,
+                    p_selection_statement->condition->first_token,
+                    NULL,
+                    "switch controlling expression must have integer type");
             }
         }
 
@@ -11228,31 +12988,30 @@ struct selection_statement* _Owner _Opt selection_statement(struct parser_ctx* c
 
         if (p_secondary_block->statement->unlabeled_statement &&
             p_secondary_block->statement->unlabeled_statement->expression_statement &&
-            p_secondary_block->statement->unlabeled_statement->expression_statement->expression_opt == NULL)
+            p_secondary_block->statement->unlabeled_statement->expression_statement->expression_opt == NULL &&
+            !(is_if && ctx->current && ctx->current->type == TK_KEYWORD_ELSE))
         {
+            /* if (cond) ; else ...  is a common idiom (e.g. assert()-style macros), not a mistake */
             diagnostic(W_SWITCH,
-                            ctx,
-                            p_secondary_block->first_token,
-                            NULL,
-                            "empty controlled statement found; is this the intent?");
+                ctx,
+                p_secondary_block->first_token,
+                NULL,
+                "empty controlled statement found; is this the intent?");
 
         }
 
-
-        assert(p_selection_statement->secondary_block == NULL); //lint 28
+        _Assert(p_selection_statement->secondary_block == NULL); //lint 28
 
         p_selection_statement->secondary_block = p_secondary_block;
 
-
         ctx->p_current_switch_statement = previous;
-
 
         if (is_if && ctx->current && ctx->current->type == TK_KEYWORD_ELSE)
         {
             check_else_placement_style(ctx, ctx->current);
             p_selection_statement->else_token_opt = ctx->current;
             parser_match(ctx);
-            assert(p_selection_statement->else_secondary_block_opt == NULL);
+            _Assert(p_selection_statement->else_secondary_block_opt == NULL);
 
             struct secondary_block* _Owner _Opt p_secondary_block2 = secondary_block(ctx);
             if (p_secondary_block2 == NULL) throw;
@@ -11266,7 +13025,7 @@ struct selection_statement* _Owner _Opt selection_statement(struct parser_ctx* c
             throw;
         }
 
-        struct token* _Opt p_tk = previous_parser_token(ctx->current);
+        struct token* _Opt p_tk = parser_get_previous_token(ctx);
         if (p_tk == NULL)
         {
             throw;
@@ -11274,11 +13033,12 @@ struct selection_statement* _Owner _Opt selection_statement(struct parser_ctx* c
 
         p_selection_statement->last_token = p_tk;
 
-
         if (p_selection_statement->first_token->type == TK_KEYWORD_SWITCH)
         {
-            //switch of enum without default, then we check if all items were used
-            if (case_label_list_find_default(ctx, &p_selection_statement->label_list) == NULL)
+            check_switch_fallthrough(ctx, p_selection_statement);//lint 35 BUG flow
+
+            // switch of enum without default, then we check if all items were used
+            if (case_label_list_find_default( &p_selection_statement->label_list) == NULL)
             {
                 const struct enum_specifier* _Opt p_enum_specifier = NULL;
 
@@ -11286,7 +13046,7 @@ struct selection_statement* _Owner _Opt selection_statement(struct parser_ctx* c
                     p_selection_statement->condition->expression &&
                     p_selection_statement->condition->expression->type.enum_specifier)
                 {
-                    p_enum_specifier = get_complete_enum_specifier(p_selection_statement->condition->expression->type.enum_specifier);
+                    p_enum_specifier = get_enum_specifier_definition(p_selection_statement->condition->expression->type.enum_specifier);
                 }
 
                 if (p_enum_specifier)
@@ -11314,9 +13074,9 @@ struct selection_statement* _Owner _Opt selection_statement(struct parser_ctx* c
                 p_selection_statement->secondary_block->statement->unlabeled_statement &&
                 p_selection_statement->secondary_block->statement->unlabeled_statement->primary_block &&
                 p_selection_statement->secondary_block->statement->unlabeled_statement->primary_block->compound_statement &&
-               p_selection_statement->secondary_block->statement->unlabeled_statement->primary_block->compound_statement->lint_token)
+                p_selection_statement->secondary_block->statement->unlabeled_statement->primary_block->compound_statement->lint_token)
             {
-                //switch case non used...
+                // switch case non used...
                 check_dianostic_suppression_after(ctx,
                     p_selection_statement->secondary_block->statement->unlabeled_statement->primary_block->compound_statement->lint_token);
             }
@@ -11360,15 +13120,14 @@ struct defer_statement* _Owner _Opt defer_statement(struct parser_ctx* ctx)
 
         ctx->p_current_defer_statement_opt = p_defer_statement;
 
-
-        struct unlabeled_statement* _Owner _Opt p_unlabeled_statement = unlabeled_statement(ctx, NULL); //TODO unlabeled_statement
+        struct unlabeled_statement* _Owner _Opt p_unlabeled_statement = unlabeled_statement(ctx, NULL); // TODO unlabeled_statement
         if (p_unlabeled_statement == NULL) throw;
 
-
         p_defer_statement->unlabeled_statement = p_unlabeled_statement;
-        if (ctx->previous == NULL) throw;
+        struct token* _Opt p_previous_token = parser_get_previous_token(ctx);
+        if (p_previous_token == NULL) throw;
 
-        p_defer_statement->last_token = ctx->previous;
+        p_defer_statement->last_token = p_previous_token;
 
         ctx->p_current_defer_statement_opt = p_previous_defer_statement_opt;
     }
@@ -11396,12 +13155,12 @@ void iteration_statement_delete(struct iteration_statement* _Owner _Opt p)
 
 struct iteration_statement* _Owner _Opt iteration_statement(struct parser_ctx* ctx)
 {
-    /*
-    iteration-statement:
-      while ( expression ) statement
-      do statement while ( expression ) ;
-      for ( expressionopt ; expressionopt ; expressionopt ) statement
-      for ( declaration expressionopt ; expressionopt ) statement
+    /* 
+    * iteration-statement:
+    * while ( expression ) statement
+    * do statement while ( expression ) ;
+    * for ( expressionopt ; expressionopt ; expressionopt ) statement
+    * for ( declaration expressionopt ; expressionopt ) statement
     */
     const struct iteration_statement* const _Opt p_current_iteration_statement = ctx->p_current_iteration_statement;
     struct iteration_statement* _Owner _Opt p_iteration_statement = NULL;
@@ -11418,9 +13177,9 @@ struct iteration_statement* _Owner _Opt iteration_statement(struct parser_ctx* c
         if (p_iteration_statement == NULL)
             throw;
 
+        p_iteration_statement->first_token = ctx->current;
         ctx->p_current_iteration_statement = p_iteration_statement;
 
-        p_iteration_statement->first_token = ctx->current;
         if (ctx->current->type == TK_KEYWORD_DO)
         {
             parser_match(ctx);
@@ -11448,13 +13207,20 @@ struct iteration_statement* _Owner _Opt iteration_statement(struct parser_ctx* c
                 !type_is_scalar_decay(&p_iteration_statement->expression1->type))
             {
                 diagnostic(C_ERROR_CONDITION_MUST_HAVE_SCALAR_TYPE,
-                                    ctx,
-                                    p_iteration_statement->expression1->first_token,
-                                    NULL,
-                                    "controlling expression must have scalar type");
+                    ctx,
+                    p_iteration_statement->expression1->first_token,
+                    NULL,
+                    "controlling expression must have scalar type");
             }
             if (parser_match_tk(ctx, ')') != 0)
                 throw;
+
+            if (ctx->current == NULL)
+            {
+                unexpected_end_of_file(ctx);
+                throw;
+            }
+
             check_no_space_before_semicolon_style(ctx, ctx->current);
             if (parser_match_tk(ctx, ';') != 0)
                 throw;
@@ -11463,20 +13229,43 @@ struct iteration_statement* _Owner _Opt iteration_statement(struct parser_ctx* c
         {
             parser_match(ctx);
 
+            if (ctx->current == NULL)
+            {
+                unexpected_end_of_file(ctx);
+                throw;
+            }
+
             check_keyword_space_style(ctx, ctx->current);
 
             if (parser_match_tk(ctx, '(') != 0)
                 throw;
 
             p_iteration_statement->expression1 = expression(ctx, false);
-            if (p_iteration_statement->expression1 != NULL &&
-                !type_is_scalar_decay(&p_iteration_statement->expression1->type))
+            if (p_iteration_statement->expression1 != NULL)
             {
-                diagnostic(C_ERROR_CONDITION_MUST_HAVE_SCALAR_TYPE,
-                                    ctx,
-                                    p_iteration_statement->expression1->first_token,
-                                    NULL,
-                                    "controlling expression must have scalar type");
+                if (!type_is_scalar_decay(&p_iteration_statement->expression1->type))
+                {
+                    diagnostic(C_ERROR_CONDITION_MUST_HAVE_SCALAR_TYPE,
+                        ctx,
+                        p_iteration_statement->expression1->first_token,
+                        NULL,
+                        "controlling expression must have scalar type");
+                }
+
+                /*
+                * `while (1)` is a well-known idiom for an infinite loop,
+                * so it is exempted from the constant-condition warning
+                * (same convention as MSVC's C4127 for this literal).
+                */
+                const bool is_while_1 =
+                    p_iteration_statement->expression1->first_token ==
+                    p_iteration_statement->expression1->last_token &&
+                    strcmp(p_iteration_statement->expression1->first_token->lexeme, "1") == 0;
+
+                if (!is_while_1)
+                {
+                    check_constant_condition(ctx, p_iteration_statement->expression1);
+                }
             }
             if (parser_match_tk_lint(ctx, ')', &p_iteration_statement->p_lint_token) != 0)
                 throw;
@@ -11495,6 +13284,12 @@ struct iteration_statement* _Owner _Opt iteration_statement(struct parser_ctx* c
         {
             parser_match(ctx);
 
+            if (ctx->current == NULL)
+            {
+                unexpected_end_of_file(ctx);
+                throw;
+            }
+
             check_keyword_space_style(ctx, ctx->current);
 
             if (parser_match_tk(ctx, '(') != 0)
@@ -11508,7 +13303,6 @@ struct iteration_statement* _Owner _Opt iteration_statement(struct parser_ctx* c
 
                 if (ctx->current == NULL)
                 {
-
                     unexpected_end_of_file(ctx);
 
                     scope_list_pop(&ctx->scopes);
@@ -11525,6 +13319,8 @@ struct iteration_statement* _Owner _Opt iteration_statement(struct parser_ctx* c
                         scope_destroy(&for_scope);
                         throw;
                     }
+
+                    check_controlling_expression(ctx, p_iteration_statement->expression1);
                 }
 
                 if (parser_match_tk(ctx, ';') != 0)
@@ -11545,7 +13341,12 @@ struct iteration_statement* _Owner _Opt iteration_statement(struct parser_ctx* c
                 }
 
                 if (ctx->current->type != ')')
+                {
                     p_iteration_statement->expression2 = expression(ctx, false);
+
+                    /* `for (...; ...; i++)` -- the third clause is discarded too. */
+                    expression_mark_discarded_write(p_iteration_statement->expression2);
+                }
 
                 if (parser_match_tk(ctx, ')') != 0)
                 {
@@ -11570,12 +13371,12 @@ struct iteration_statement* _Owner _Opt iteration_statement(struct parser_ctx* c
             }
             else
             {
-                /*
-                 *   int i;
-                 *   for (i = 0; i < 10; i++)
-                 *   {
-                 *   }
-                 */
+                /* 
+                *   int i;
+                *   for (i = 0; i < 10; i++)
+                *   {
+                *   }
+                */
 
                 if (ctx->current == NULL)
                 {
@@ -11595,7 +13396,11 @@ struct iteration_statement* _Owner _Opt iteration_statement(struct parser_ctx* c
                 }
 
                 if (ctx->current->type != ';')
+                {
                     p_iteration_statement->expression1 = expression(ctx, false);
+                    if (p_iteration_statement->expression1 == NULL) throw;                    
+                    check_controlling_expression(ctx, p_iteration_statement->expression1);
+                }
 
                 if (parser_match_tk(ctx, ';') != 0)
                     throw;
@@ -11607,7 +13412,12 @@ struct iteration_statement* _Owner _Opt iteration_statement(struct parser_ctx* c
                 }
 
                 if (ctx->current->type != ')')
+                {
                     p_iteration_statement->expression2 = expression(ctx, false);
+
+                    /* `for (...; ...; i++)` -- the third clause is discarded too. */
+                    expression_mark_discarded_write(p_iteration_statement->expression2);
+                }
 
                 if (parser_match_tk(ctx, ')') != 0)
                     throw;
@@ -11631,7 +13441,7 @@ struct iteration_statement* _Owner _Opt iteration_statement(struct parser_ctx* c
         p_iteration_statement = NULL;
     }
 
-    ctx->p_current_iteration_statement = p_current_iteration_statement; /*restore*/
+    ctx->p_current_iteration_statement = p_current_iteration_statement; /* restore */
 
     return p_iteration_statement;
 }
@@ -11648,16 +13458,16 @@ void jump_statement_delete(struct jump_statement* _Owner _Opt p)
 
 struct jump_statement* _Owner _Opt jump_statement(struct parser_ctx* ctx)
 {
-    /*
-      jump-statement:
-            goto identifier ;
-            continue ;
-            break ;
-            return expressionopt ;
+    /* 
+    * jump-statement:
+    * goto identifier ;
+    * continue ;
+    * break ;
+    * return expressionopt ;
     */
 
-    /*
-       throw; (extension)
+    /* 
+    * throw; (extension)
     */
 
     struct jump_statement* _Owner _Opt p_jump_statement = NULL;
@@ -11749,11 +13559,11 @@ struct jump_statement* _Owner _Opt jump_statement(struct parser_ctx* ctx)
             if (ctx->p_current_defer_statement_opt != NULL)
             {
                 diagnostic(C_ERROR_RETURN_CANNOT_BE_USED_INSIDE_DEFER,
-                             ctx,
-                             ctx->current,
-                             NULL,
-                             "%s",
-                             "return cannot be used inside defer statement");
+                    ctx,
+                    ctx->current,
+                    NULL,
+                    "%s",
+                    "return cannot be used inside defer statement");
             }
 
             check_return_space_style(ctx, ctx->current);
@@ -11767,11 +13577,9 @@ struct jump_statement* _Owner _Opt jump_statement(struct parser_ctx* ctx)
                 throw;
             }
 
-
-
-            /*
-             * Check if return type is compatible with function return
-             */
+            /* 
+            * Check if return type is compatible with function return
+            */
             struct type return_type =
                 get_function_return_type(&ctx->p_current_function_opt->type);
 
@@ -11823,7 +13631,7 @@ struct jump_statement* _Owner _Opt jump_statement(struct parser_ctx* ctx)
         }
         else
         {
-            assert(false);
+            _Assert(false);
         }
 
         if (ctx->current == NULL)
@@ -11860,21 +13668,21 @@ void expression_statement_delete(struct expression_statement* _Owner _Opt p)
     }
 }
 
-struct expression_statement* _Owner _Opt  expression_statement(struct parser_ctx* ctx, bool ignore_semicolon, struct attribute_specifier_sequence* _Owner _Opt p_attribute_specifier_sequence)
+struct expression_statement* _Owner _Opt expression_statement(struct parser_ctx* ctx, bool ignore_semicolon, struct attribute_specifier_sequence* _Owner _Opt p_attribute_specifier_sequence)
 {
     struct expression_statement* _Owner _Opt p_expression_statement = calloc(1, sizeof(struct expression_statement));
     try
     {
-        /*
-         expression-statement:
-           expression _Opt ;
-           attribute-specifier-sequence expression ;
+        /* 
+        * expression-statement:
+        * expression _Opt ;
+        * attribute-specifier-sequence expression ;
         */
         if (p_expression_statement == NULL)
             throw;
 
-        p_expression_statement->p_attribute_specifier_sequence = p_attribute_specifier_sequence; /*MOVED*/
-        p_attribute_specifier_sequence = NULL; /*MOVED*/
+        p_expression_statement->p_attribute_specifier_sequence = p_attribute_specifier_sequence; /* MOVED */
+        p_attribute_specifier_sequence = NULL; /* MOVED */
 
         if (ctx->current == NULL)
         {
@@ -11886,23 +13694,24 @@ struct expression_statement* _Owner _Opt  expression_statement(struct parser_ctx
         {
             p_expression_statement->expression_opt = expression(ctx, false);
 
-
-
             if (p_expression_statement->expression_opt == NULL)
                 throw;
-        }
 
+            /* Discarded value: `n++;` here is a pure set (W_SET_BUT_NOT_USED). */
+            expression_mark_discarded_write(p_expression_statement->expression_opt);
+        }
 
         if (!ignore_semicolon)
         {
+            if (ctx->current == NULL)
+            {
+                unexpected_end_of_file(ctx);
+                throw;
+            }
+
             check_no_space_before_semicolon_style(ctx, ctx->current);
             if (parser_match_tk_lint(ctx, ';', &p_expression_statement->p_lint_token) != 0)
                 throw;
-        }
-        if (p_expression_statement &&
-            p_expression_statement->p_lint_token)
-        {
-            check_compiler_dianostic_suppression(ctx, p_expression_statement->p_lint_token);
         }
     }
     catch
@@ -11911,7 +13720,7 @@ struct expression_statement* _Owner _Opt  expression_statement(struct parser_ctx
         p_expression_statement = NULL;
     }
 
-    attribute_specifier_sequence_delete(p_attribute_specifier_sequence); /*normally null*/
+    attribute_specifier_sequence_delete(p_attribute_specifier_sequence); /* normally null */
 
     return p_expression_statement;
 }
@@ -11924,8 +13733,8 @@ void declaration_list_add(struct declaration_list* list, struct declaration* _Ow
     }
     else
     {
-        assert(list->tail != NULL);
-        assert(list->tail->next == NULL);
+        _Assert(list->tail != NULL);
+        _Assert(list->tail->next == NULL);
         list->tail->next = p_declaration;
     }
     list->tail = p_declaration;
@@ -11958,10 +13767,10 @@ void condition_delete(struct condition* _Owner _Opt p_condition)
 
 struct condition* _Owner _Opt condition(struct parser_ctx* ctx)
 {
-    /*
-    condition :
-       expression
-       attribute-specifier-seq opt decl-specifier-seq declarator initializer
+    /* 
+    * condition :
+    * expression
+    * attribute-specifier-seq opt decl-specifier-seq declarator initializer
     */
     struct condition* _Owner _Opt p_condition = NULL;
     try
@@ -11999,17 +13808,17 @@ struct condition* _Owner _Opt condition(struct parser_ctx* ctx)
             if (p_condition->expression == NULL)
                 throw;
 
-            /*
-             * C11 6.8.4.1/1, 6.8.5/2 — the controlling expression of an
-             * if/switch/while/for/do statement shall have scalar type.
-             */
+            /* 
+            * C11 6.8.4.1/1, 6.8.5/2 — the controlling expression of an
+            * if/switch/while/for/do statement shall have scalar type.
+            */
             if (!type_is_scalar_decay(&p_condition->expression->type))
             {
                 diagnostic(C_ERROR_CONDITION_MUST_HAVE_SCALAR_TYPE,
-                                    ctx,
-                                    p_condition->expression->first_token,
-                                    NULL,
-                                    "controlling expression must have scalar type");
+                    ctx,
+                    p_condition->expression->first_token,
+                    NULL,
+                    "controlling expression must have scalar type");
             }
         }
 
@@ -12019,11 +13828,11 @@ struct condition* _Owner _Opt condition(struct parser_ctx* ctx)
             throw;
         }
 
-        struct token* _Opt previous = previous_parser_token(ctx->current);
+        struct token* _Opt previous = parser_get_previous_token(ctx);
 
         if (previous)
         {
-            //shoult never be null
+            // shoult never be null
             p_condition->last_token = previous;
         }
     }
@@ -12047,9 +13856,9 @@ void init_statement_delete(struct init_statement* _Owner _Opt p_init_statement)
 
 struct init_statement* _Owner _Opt init_statement(struct parser_ctx* ctx, bool ignore_semicolon)
 {
-    /*
-       expression-statement
-       simple-declaration
+    /* 
+    * expression-statement
+    * simple-declaration
     */
     struct init_statement* _Owner _Opt p_init_statement = NULL;
     try
@@ -12061,17 +13870,21 @@ struct init_statement* _Owner _Opt init_statement(struct parser_ctx* ctx, bool i
 
         struct attribute_specifier_sequence* _Owner _Opt p_attribute_specifier_sequence = attribute_specifier_sequence_opt(ctx);
 
-
         if (first_of_declaration_specifier(ctx))
         {
             p_init_statement->p_simple_declaration = simple_declaration(ctx, ignore_semicolon, p_attribute_specifier_sequence);
-            p_attribute_specifier_sequence = NULL;  //MOVED
+            p_attribute_specifier_sequence = NULL; // MOVED
         }
         else
         {
             p_init_statement->p_expression_statement = expression_statement(ctx, ignore_semicolon, p_attribute_specifier_sequence);
-            p_attribute_specifier_sequence = NULL;  //MOVED
+            p_attribute_specifier_sequence = NULL; // MOVED
 
+            if (p_init_statement->p_expression_statement &&
+                p_init_statement->p_expression_statement->p_lint_token)
+            {
+                check_compiler_dianostic_suppression(ctx, p_init_statement->p_expression_statement->p_lint_token);
+            }
         }
     }
     catch
@@ -12097,7 +13910,7 @@ void declaration_delete(struct declaration* _Owner _Opt p)
 
         init_declarator_list_destroy(&p->init_declarator_list);
         defer_list_destroy(&p->defer_list);
-        assert(p->next == NULL);
+        _Assert(p->next == NULL);
         free(p);
     }
 }
@@ -12114,7 +13927,7 @@ void declaration_list_destroy(_Dtor struct declaration_list* list)
     }
 }
 
-static void check_unused_static_declarators(struct parser_ctx* ctx, struct declaration_list* declaration_list)
+static void check_unused_static_declarators(const struct parser_ctx* ctx, struct declaration_list* declaration_list)
 {
     struct declaration* _Opt p = declaration_list->head;
     while (p)
@@ -12128,18 +13941,19 @@ static void check_unused_static_declarators(struct parser_ctx* ctx, struct decla
                 struct map_entry* _Opt p_entry = find_variables(ctx, p->init_declarator_list.head->p_declarator->name_opt->lexeme, NULL);
                 if (p_entry && (p_entry->type == TAG_TYPE_DECLARATOR || p_entry->type == TAG_TYPE_INIT_DECLARATOR))
                 {
-                    /*
-                       Consider
-                       static void f();
-                       static void f(){}
-                       int main(){
-                         f();
-                       }
-                       num_uses if incremented only at the pointer returned by find_variables
+                    /* 
+                    * Consider
+                    * static void f();
+                    * static void f(){}
+                    * int main(){
+                    * f();
+                    * }
+                    * num_uses if incremented only at the pointer returned by find_variables
                     */
                     struct declarator* _Opt p_declarator_local = NULL;
                     if (p_entry->type == TAG_TYPE_INIT_DECLARATOR)
                     {
+                        _Assert(p_entry->data.p_init_declarator != NULL);
                         p_declarator_local = p_entry->data.p_init_declarator->p_declarator;
                     }
                     else
@@ -12147,7 +13961,18 @@ static void check_unused_static_declarators(struct parser_ctx* ctx, struct decla
                         p_declarator_local = p_entry->data.p_declarator;
                     }
 
-                    assert(p_declarator_local);
+                    _Assert(p_declarator_local);
+
+                    if (type_is_function(&p->init_declarator_list.head->p_declarator->type) &&
+                        declarator_get_function_definition(p_declarator_local) == NULL)
+                    {
+                        diagnostic(W_STATIC_FUNCTION_NOT_DEFINED,
+                            ctx,
+                            p->init_declarator_list.head->p_declarator->name_opt,
+                            NULL,
+                            "static function '%s' declared but not defined",
+                            p->init_declarator_list.head->p_declarator->name_opt->lexeme);
+                    }
 
                     int num_uses = p_declarator_local->num_uses;
                     if (num_uses == 0)
@@ -12155,20 +13980,20 @@ static void check_unused_static_declarators(struct parser_ctx* ctx, struct decla
                         if (type_is_function(&p->init_declarator_list.head->p_declarator->type))
                         {
                             diagnostic(W_UNUSED_FUNCTION,
-                            ctx,
-                            p->init_declarator_list.head->p_declarator->name_opt,
-                            NULL,
-                            "warning: static function '%s' not used.",
-                            p->init_declarator_list.head->p_declarator->name_opt->lexeme);
+                                ctx,
+                                p->init_declarator_list.head->p_declarator->name_opt,
+                                NULL,
+                                "warning: static function '%s' not used.",
+                                p->init_declarator_list.head->p_declarator->name_opt->lexeme);
                         }
                         else
                         {
                             diagnostic(W_UNUSED_VARIABLE,
-                            ctx,
-                            p->init_declarator_list.head->p_declarator->name_opt,
-                            NULL,
-                            "warning: '%s' not used.",
-                            p->init_declarator_list.head->p_declarator->name_opt->lexeme);
+                                ctx,
+                                p->init_declarator_list.head->p_declarator->name_opt,
+                                NULL,
+                                "warning: '%s' not used.",
+                                p->init_declarator_list.head->p_declarator->name_opt->lexeme);
                         }
                     }
                 }
@@ -12180,11 +14005,11 @@ static void check_unused_static_declarators(struct parser_ctx* ctx, struct decla
 
 struct declaration* _Owner _Opt external_declaration(struct parser_ctx* ctx)
 {
-    /*
-     function_definition
-     declaration
-     */
-    ctx->vm_dim_id = 0; /*reset vm dim generator ids*/
+    /* 
+    * function_definition
+    * declaration
+    */
+    ctx->vm_dim_id = 0; /* reset vm dim generator ids */
     return function_definition_or_declaration(ctx);
 }
 
@@ -12192,10 +14017,10 @@ struct declaration_list translation_unit(struct parser_ctx* ctx, bool* berror)
 {
     *berror = false;
     struct declaration_list declaration_list = { 0 };
-    /*
-      translation_unit:
-      external_declaration
-      translation_unit external_declaration
+    /* 
+    * translation_unit:
+    * external_declaration
+    * translation_unit external_declaration
     */
     try
     {
@@ -12203,9 +14028,9 @@ struct declaration_list translation_unit(struct parser_ctx* ctx, bool* berror)
         {
             if (ctx->current->type == TK_KEYWORD__ASM)
             {
-                //TODO
-                /*
-                  __asm__(".globl my_symbol\nmy_symbol:");
+                // TODO
+                /* 
+                * __asm__(".globl my_symbol\nmy_symbol:");
                 */
                 struct asm_statement* _Opt _Owner p3 = gcc_asm(ctx, true);
                 asm_statement_delete(p3);
@@ -12216,12 +14041,24 @@ struct declaration_list translation_unit(struct parser_ctx* ctx, bool* berror)
                 throw;
             declaration_list_add(&declaration_list, p);
 
-
         }
 
         check_unused_static_declarators(ctx, &declaration_list);
 
+        // check that all enums that have objects are defined
+        struct block_item* _Opt decl = ctx->used_incomplete_enums.head;
+        while (decl)
+        {
+            const struct enum_specifier* _Opt declared_enum =
+                decl->declarator ? decl->declarator->type.enum_specifier : NULL;
 
+            if (declared_enum != NULL &&
+                get_enum_specifier_definition(declared_enum) == NULL)
+            {
+                diagnostic(C_ERROR_STRUCT_IS_INCOMPLETE, ctx, declared_enum->first_token, NULL, "enum incomplete");
+            }
+            decl = decl->next;
+        }
     }
     catch
     {
@@ -12229,30 +14066,26 @@ struct declaration_list translation_unit(struct parser_ctx* ctx, bool* berror)
     }
 
     diagnostic_queue_flush(&ctx->diagnostic_queue, ctx);
-
-    if (ctx->p_report->error_count == 0 && ctx->options.flow_analysis)
+    
+    if (ctx->p_report->error_count == 0 && ctx->options.flow_analysis && !ctx->options.format)
     {
+        struct flow_visit_ctx ctx4 = { .ctx = ctx };
         struct declaration* _Opt it = declaration_list.head;
         while (it)
         {
             struct diagnostic before_function_diagnostics = ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index];
-
-            struct flow1_visit_ctx ctx3 = { .ctx = ctx };
-            flow1_start_visit_declaration(&ctx3, it);
-            flow1_visit_ctx_destroy(&ctx3);
+            flow_start_visit_declaration(&ctx4, it);
 
             /* visiting the function again; restore the same diagnostic state */
             ctx->options.diagnostic_stack.stack[ctx->options.diagnostic_stack.top_index] = before_function_diagnostics;
             it = it->next;
-
             diagnostic_queue_flush(&ctx->diagnostic_queue, ctx);
         }
+        flow_visit_ctx_destroy(&ctx4);
     }
 
     return declaration_list;
 }
-
-
 
 struct label_list_item* _Opt label_list_find(struct label_list* list, const char* label_name)
 {
@@ -12280,7 +14113,7 @@ void label_list_swap(struct label_list* a, struct label_list* b)
     *b = temp;
 }
 
-void label_list_destroy(struct label_list* list)
+void label_list_destroy(_Dtor struct label_list* list)
 {
     struct label_list_item* _Owner _Opt item = list->head;
     while (item)
@@ -12292,10 +14125,11 @@ void label_list_destroy(struct label_list* list)
     }
 }
 
-void label_list_clear(struct label_list* list)
+void label_list_clear(_Clear struct label_list* list)
 {
-    label_list_destroy(list); //lint 19
-    memset(list, 0, sizeof(struct label_list));
+    label_list_destroy(list);
+    list->head = NULL;
+    list->tail = NULL;
 }
 
 void label_list_push(struct label_list* list, struct label_list_item* _Owner pitem)
@@ -12306,13 +14140,12 @@ void label_list_push(struct label_list* list, struct label_list_item* _Owner pit
     }
     else
     {
-        assert(list->tail != NULL);
-        assert(list->tail->next == NULL);
+        _Assert(list->tail != NULL);
+        _Assert(list->tail->next == NULL);
         list->tail->next = pitem;
     }
     list->tail = pitem;
 }
-
 
 void check_labels(struct parser_ctx* ctx)
 {
@@ -12334,16 +14167,16 @@ void check_labels(struct parser_ctx* ctx)
 struct compound_statement* _Owner _Opt function_body(struct parser_ctx* ctx)
 {
 
-    /*
-     * Used to give an unique index (inside the function)
-     * for try-catch blocks
-     */
+    /* 
+    * Used to give an unique index (inside the function)
+    * for try-catch blocks
+    */
 
     const struct try_statement* _Opt p_current_try_statement_opt = ctx->p_current_try_statement_opt;
     ctx->p_current_try_statement_opt = NULL;
 
     int label_id = ctx->label_id;
-    ctx->label_id = 0; /*reset*/
+    ctx->label_id = 0; /* reset */
 
     const struct defer_statement* _Opt p_current_defer_statement_opt = ctx->p_current_defer_statement_opt;
     ctx->p_current_defer_statement_opt = NULL;
@@ -12354,7 +14187,7 @@ struct compound_statement* _Owner _Opt function_body(struct parser_ctx* ctx)
     struct label_list label_list = { 0 };
     label_list_swap(&label_list, &ctx->label_list);
 
-    struct compound_statement* _Owner _Opt p_compound_statement = compound_statement(ctx);
+    struct compound_statement* _Owner _Opt p_compound_statement = compound_statement(ctx, true);
     if (p_compound_statement)
     {
         check_labels(ctx);
@@ -12388,8 +14221,8 @@ struct declaration_list parse(struct parser_ctx* ctx, struct token_list* list, s
         scope_list_push(&ctx->scopes, &file_scope);
 
         bool local_error = false;
-        ctx->input_list = *list;
-        ctx->current = ctx->input_list.head;
+        _Assert(ctx->p_input_list == list);
+        ctx->current = list->head;
         parser_skip_blanks(ctx, NULL);
 
         l = translation_unit(ctx, &local_error);
@@ -12403,15 +14236,14 @@ struct declaration_list parse(struct parser_ctx* ctx, struct token_list* list, s
 
     if (p_file_scope_out)
     {
-        *p_file_scope_out = file_scope;
-        memset(&file_scope, 0, sizeof file_scope);
+        scope_swap(p_file_scope_out, &file_scope);
     }
 
     scope_destroy(&file_scope);
     return l;
 }
 
-struct ast get_ast(struct options* options,
+struct ast get_ast(const struct options* options,
     const char* filename,
     const char* source,
     struct report* report)
@@ -12423,7 +14255,7 @@ struct ast get_ast(struct options* options,
 
     struct preprocessor_ctx prectx = { 0 };
 
-    _Opt struct parser_ctx ctx = { 0 };
+    _Opt struct parser_ctx ctx = { .p_input_list = &ast.token_list };
     ctx.p_report = report;
 
     try
@@ -12434,7 +14266,7 @@ struct ast get_ast(struct options* options,
         add_standard_macros(&prectx, options->target);
 
 #ifdef __EMSCRIPTEN__
-        /*we mock web version to include from c*/
+        /* we mock web version to include from c */
         include_dir_add(&prectx.include_dir, "c:/");
 #endif
 
@@ -12459,7 +14291,7 @@ struct ast get_ast(struct options* options,
     return ast;
 }
 
-int fill_preprocessor_options(int argc, const char** argv, struct preprocessor_ctx* prectx);
+int fill_preprocessor_options(int argc, const char* const* argv, struct preprocessor_ctx* prectx);
 
 struct ast get_ast_with_flags(int argc,
     const char** argv,
@@ -12468,7 +14300,6 @@ struct ast get_ast_with_flags(int argc,
     struct report* report)
 {
 
-
     struct ast ast = { 0 };
     struct tokenizer_ctx tctx = { 0 };
 
@@ -12476,7 +14307,7 @@ struct ast get_ast_with_flags(int argc,
 
     struct preprocessor_ctx prectx = { 0 };
 
-    _Opt struct parser_ctx ctx = { 0 };
+    _Opt struct parser_ctx ctx = { .p_input_list = &ast.token_list };
     ctx.p_report = report;
 
     try
@@ -12490,7 +14321,7 @@ struct ast get_ast_with_flags(int argc,
         add_standard_macros(&prectx, options.target);
 
 #ifdef __EMSCRIPTEN__
-        /*we mock web version to include from c*/
+        /* we mock web version to include from c */
         include_dir_add(&prectx.include_dir, "c:/");
 #endif
 
@@ -12587,7 +14418,7 @@ static bool is_pascal_case(const char* text)
 {
     if (!(text[0] >= 'A' && text[0] <= 'Z'))
     {
-        /*first letter uppepr case*/
+        /* first letter uppepr case */
         return false;
     }
 
@@ -12607,7 +14438,7 @@ static bool is_pascal_case(const char* text)
     return true;
 }
 
-static void check_case_style(struct parser_ctx* ctx, enum case_style s, struct token* token, const char* thing)
+static void check_case_style(const struct parser_ctx* ctx, enum case_style s, const struct token* token, const char* thing)
 {
     if (!is_diagnostic_enabled(&ctx->options, W_STYLE) || token->level != 0)
     {
@@ -12644,13 +14475,11 @@ static void check_case_style(struct parser_ctx* ctx, enum case_style s, struct t
     }
 }
 
-
-
-/*
- * This naming conventions are not ready yet...
- * but not dificult to implement.maybe options to choose style
- */
-void naming_convention_struct_tag(struct parser_ctx* ctx, struct token* token)
+/* 
+* This naming conventions are not ready yet...
+* but not dificult to implement.maybe options to choose style
+*/
+void naming_convention_struct_tag(const struct parser_ctx* ctx, const struct token* token)
 {
     if (!is_diagnostic_enabled(&ctx->options, W_STYLE) || token->level != 0)
     {
@@ -12660,7 +14489,7 @@ void naming_convention_struct_tag(struct parser_ctx* ctx, struct token* token)
     check_case_style(ctx, ctx->options.style.struct_name_case, token, "struct/union");
 }
 
-void naming_convention_enum_tag(struct parser_ctx* ctx, struct token* token)
+void naming_convention_enum_tag(const struct parser_ctx* ctx, const struct token* token)
 {
     if (!is_diagnostic_enabled(&ctx->options, W_STYLE) || token->level != 0)
     {
@@ -12670,7 +14499,7 @@ void naming_convention_enum_tag(struct parser_ctx* ctx, struct token* token)
     check_case_style(ctx, ctx->options.style.enum_name_case, token, "enum");
 }
 
-void naming_convention_function(struct parser_ctx* ctx, struct token* token)
+void naming_convention_function(const struct parser_ctx* ctx, const struct token* token)
 {
     if (!is_diagnostic_enabled(&ctx->options, W_STYLE) || token->level != 0)
     {
@@ -12682,7 +14511,7 @@ void naming_convention_function(struct parser_ctx* ctx, struct token* token)
     check_case_style(ctx, ctx->options.style.function_name_case, token, "function");
 }
 
-void naming_convention_global_var(struct parser_ctx* ctx, struct token* token, struct type* type, enum storage_class_specifier_flags storage)
+void naming_convention_global_var(const struct parser_ctx* ctx, const struct token* token)
 {
     if (!is_diagnostic_enabled(&ctx->options, W_STYLE) || token->level != 0)
     {
@@ -12691,7 +14520,7 @@ void naming_convention_global_var(struct parser_ctx* ctx, struct token* token, s
     check_case_style(ctx, ctx->options.style.global_name_case, token, "global variable");
 }
 
-void naming_convention_local_var(struct parser_ctx* ctx, struct token* token, struct type* type)
+void naming_convention_local_var(const struct parser_ctx* ctx, const struct token* token)
 {
     if (!is_diagnostic_enabled(&ctx->options, W_STYLE) || token->level != 0)
     {
@@ -12701,7 +14530,7 @@ void naming_convention_local_var(struct parser_ctx* ctx, struct token* token, st
     check_case_style(ctx, ctx->options.style.local_name_case, token, "local");
 }
 
-void naming_convention_enumerator(struct parser_ctx* ctx, struct token* token)
+void naming_convention_enumerator(const struct parser_ctx* ctx, const struct token* token)
 {
     if (!is_diagnostic_enabled(&ctx->options, W_STYLE) || token->level != 0)
     {
@@ -12711,7 +14540,7 @@ void naming_convention_enumerator(struct parser_ctx* ctx, struct token* token)
     check_case_style(ctx, ctx->options.style.enumerator_name_case, token, "enumerator");
 }
 
-void naming_convention_struct_member(struct parser_ctx* ctx, struct token* token, struct type* type)
+void naming_convention_struct_member(const struct parser_ctx* ctx, const struct token* token)
 {
     if (!is_diagnostic_enabled(&ctx->options, W_STYLE) || token->level != 0)
     {
@@ -12721,7 +14550,7 @@ void naming_convention_struct_member(struct parser_ctx* ctx, struct token* token
     check_case_style(ctx, ctx->options.style.member_name_case, token, "member");
 }
 
-void naming_convention_parameter(struct parser_ctx* ctx, struct token* token, struct type* type)
+void naming_convention_parameter(const struct parser_ctx* ctx, const struct token* token)
 {
     if (!is_diagnostic_enabled(&ctx->options, W_STYLE) || token->level != 0)
     {
@@ -12731,7 +14560,7 @@ void naming_convention_parameter(struct parser_ctx* ctx, struct token* token, st
     check_case_style(ctx, ctx->options.style.parameter_name_case, token, "parameter");
 }
 
-static struct object* _Opt find_first_subobject_old(struct type* p_type_not_used, struct object* p_object, struct type* p_type_out, bool* sub_object_of_union)
+static struct object* _Opt find_first_subobject_old( struct object* p_object, struct type* p_type_out, bool* sub_object_of_union)
 {
     p_object = (struct object* _Opt) object_get_referenced(p_object);
 
@@ -12743,7 +14572,7 @@ static struct object* _Opt find_first_subobject_old(struct type* p_type_not_used
         type_swap(&t, p_type_out);
         type_destroy(&t);
 
-        return p_object; //tODO
+        return p_object; // tODO
     }
 
     *sub_object_of_union = type_is_union(&p_object->type);
@@ -12751,12 +14580,12 @@ static struct object* _Opt find_first_subobject_old(struct type* p_type_not_used
     type_swap(&t, p_type_out);
     type_destroy(&t);
 
-    return p_object->members.head; //tODO
+    return p_object->members.head; // tODO
 }
 
-static struct object* _Opt find_first_subobject(struct type* p_type_not_used, struct object* p_object, struct type* p_type_out, bool* sub_object_of_union)
+static struct object* _Opt find_first_subobject( struct object* p_object, struct type* p_type_out, bool* sub_object_of_union)
 {
-    return find_first_subobject_old(p_type_not_used, p_object, p_type_out, sub_object_of_union);
+    return find_first_subobject_old( p_object, p_type_out, sub_object_of_union);
 }
 
 static struct object* _Opt find_last_suboject_of_suboject_old(struct type* p_type_not_used, struct object* p_object, struct type* p_type_out)
@@ -12768,7 +14597,7 @@ static struct object* _Opt find_last_suboject_of_suboject_old(struct type* p_typ
         struct type t = type_dup(&p_object->type);
         type_swap(&t, p_type_out);
         type_destroy(&t);
-        return p_object; //tODO
+        return p_object; // tODO
     }
 
     struct object* _Opt it = p_object->members.head;
@@ -12785,7 +14614,6 @@ static struct object* _Opt find_last_suboject_of_suboject_old(struct type* p_typ
     type_swap(&t, p_type_out);
     type_destroy(&t);
 
-
     return p_object;
 }
 
@@ -12794,9 +14622,7 @@ static struct object* _Opt find_last_suboject_of_suboject(struct type* p_type_no
     return find_last_suboject_of_suboject_old(p_type_not_used, p_object, p_type_out);
 }
 
-
-static struct object* _Opt find_next_subobject_old(struct type* p_top_object_not_used,
-    struct object* current_object,
+static struct object* _Opt find_next_subobject_old(
     struct object* _Opt it,
     struct type* p_type_out,
     bool* sub_object_of_union)
@@ -12805,7 +14631,6 @@ static struct object* _Opt find_next_subobject_old(struct type* p_top_object_not
 
     if (it == NULL)
         return NULL;
-
 
     if (it->members.head)
     {
@@ -12848,18 +14673,15 @@ static struct object* _Opt find_next_subobject_old(struct type* p_top_object_not
     return it;
 }
 
-
-static struct object* _Opt find_next_subobject(struct type* p_top_object_not_used,
-    struct object* current_object,
-    struct object* it,
+static struct object* _Opt find_next_subobject(
+    struct object* _Opt it,
     struct type* p_type_out,
     bool* sub_object_of_union)
 {
-    return find_next_subobject_old(p_top_object_not_used,
-    current_object,
-    it,
-    p_type_out,
-    sub_object_of_union);
+    return find_next_subobject_old(
+        it,
+        p_type_out,
+        sub_object_of_union);
 }
 
 struct find_object_result
@@ -12868,9 +14690,8 @@ struct find_object_result
     struct type type;
 };
 
-
 static struct object* _Opt find_designated_subobject(struct parser_ctx* ctx,
-    struct type* p_current_object_type,
+    const struct type* p_current_object_type,
     struct object* current_object,
     struct designator* p_designator,
     bool is_constant,
@@ -12882,7 +14703,7 @@ static struct object* _Opt find_designated_subobject(struct parser_ctx* ctx,
     {
         if (type_is_struct_or_union(p_current_object_type))
         {
-            assert(p_current_object_type->struct_or_union_specifier);
+            _Assert(p_current_object_type->struct_or_union_specifier);
 
             struct struct_or_union_specifier* _Opt p_struct_or_union_specifier =
                 get_complete_struct_or_union_specifier(p_current_object_type->struct_or_union_specifier);
@@ -12907,6 +14728,11 @@ static struct object* _Opt find_designated_subobject(struct parser_ctx* ctx,
 
                     while (p_member_declarator)
                     {
+                        if (p_member_object == NULL)
+                        {
+                            // BUG
+                            break;
+                        }
                         if (p_member_declarator->declarator)
                         {
                             if (p_member_declarator->declarator->name_opt &&
@@ -12930,6 +14756,12 @@ static struct object* _Opt find_designated_subobject(struct parser_ctx* ctx,
                 }
                 else if (p_member_declaration->specifier_qualifier_list)
                 {
+                    if (p_member_object == NULL)
+                    {
+                        // BUG
+                        break;
+                    }
+
                     if (p_member_declaration->specifier_qualifier_list->struct_or_union_specifier)
                     {
                         struct struct_or_union_specifier* _Opt p_complete =
@@ -12943,12 +14775,12 @@ static struct object* _Opt find_designated_subobject(struct parser_ctx* ctx,
                             t.type_specifier_flags = TYPE_SPECIFIER_STRUCT_OR_UNION;
 
                             struct object* _Opt p = find_designated_subobject(ctx,
-                                                                         &t,
-                                                                         p_member_object,
-                                                                         p_designator,
-                                                                         is_constant,
-                                                                         p_type_out2,
-                                                                         true, ctx->options.target);
+                                &t,
+                                p_member_object,
+                                p_designator,
+                                is_constant,
+                                p_type_out2,
+                                true, ctx->options.target);
                             if (p)
                             {
                                 type_destroy(&t);
@@ -12961,7 +14793,7 @@ static struct object* _Opt find_designated_subobject(struct parser_ctx* ctx,
                 }
                 else
                 {
-                    //static_assert pragma...
+                    // static_assert pragma...
                 }
                 p_member_declaration = p_member_declaration->next;
             }
@@ -12969,11 +14801,11 @@ static struct object* _Opt find_designated_subobject(struct parser_ctx* ctx,
             if (!not_error)
             {
                 diagnostic(
-                                              C_ERROR_STRUCT_MEMBER_NOT_FOUND,
-                                              ctx,
-                                              p_designator->token,
-                                              NULL,
-                                              "member '%s' not found in '%s'", name, p_struct_or_union_specifier->tag_name);
+                    C_ERROR_STRUCT_MEMBER_NOT_FOUND,
+                    ctx,
+                    p_designator->token,
+                    NULL,
+                    "member '%s' not found in '%s'", name, p_struct_or_union_specifier->tag_name);
             }
             return NULL;
         }
@@ -13005,26 +14837,25 @@ static struct object* _Opt find_designated_subobject(struct parser_ctx* ctx,
                     if (index < 0)
                     {
                         diagnostic(
-                                                  C_ERROR_STRUCT_MEMBER_NOT_FOUND,
-                                                  ctx,
-                                                  p_designator->constant_expression_opt->first_token,
-                                                  NULL,
-                                                  "array designator value '%d' is negative", index);
+                            C_ERROR_STRUCT_MEMBER_NOT_FOUND,
+                            ctx,
+                            p_designator->constant_expression_opt->first_token,
+                            NULL,
+                            "array designator value '%d' is negative", index);
                     }
                     else if (index > (int)p_current_object_type->array_num_elements)
                     {
                         diagnostic(
-                                                  C_ERROR_STRUCT_MEMBER_NOT_FOUND,
-                                                  ctx,
-                                                  p_designator->constant_expression_opt->first_token,
-                                                  NULL,
-                                                  "array index '%d' in initializer exceeds array bounds", index);
+                            C_ERROR_STRUCT_MEMBER_NOT_FOUND,
+                            ctx,
+                            p_designator->constant_expression_opt->first_token,
+                            NULL,
+                            "array index '%d' in initializer exceeds array bounds", index);
                     }
 
                     type_destroy(&array_item_type);
                     return NULL;
                 }
-
 
                 if (p_designator->next != NULL)
                 {
@@ -13044,7 +14875,7 @@ static struct object* _Opt find_designated_subobject(struct parser_ctx* ctx,
             }
             else
             {
-                //oops
+                // oops
             }
             type_destroy(&array_item_type);
         }
@@ -13057,26 +14888,28 @@ static struct object* _Opt find_designated_subobject(struct parser_ctx* ctx,
 }
 
 int initializer_init_new(struct parser_ctx* ctx,
-                        struct type* p_type, /*in (in/out for arrays [])*/
-                        struct object* object, /*in (in/out for arrays [])*/
-                        struct initializer* initializer, /*rtocar para initializer item??*/
-                        bool is_constant,
-                        bool requires_constant_initialization);
+    struct type* p_type, /* in (in/out for arrays []) */
+    struct object* object, /* in (in/out for arrays []) */
+    struct initializer* initializer, /* rtocar para initializer item?? */
+    bool is_constant,
+    bool requires_constant_initialization);
 
-static struct initializer_list_item* _Opt find_innner_initializer_list_item(struct braced_initializer* braced_initializer)
+static struct initializer_list_item* _Opt find_innner_initializer_list_item(const struct braced_initializer* braced_initializer)
 {
-    assert(braced_initializer->initializer_list);
+    _Assert(braced_initializer->initializer_list);
 
     struct initializer_list_item* _Opt p_initializer_list_item = braced_initializer->initializer_list->head;
 
-    while (p_initializer_list_item->initializer->braced_initializer)
+    while ( p_initializer_list_item &&
+            p_initializer_list_item->initializer->braced_initializer)
     {
-        //int i = {{1}};
-        p_initializer_list_item = p_initializer_list_item->initializer->braced_initializer->initializer_list->head;
+        // int i = {{1}};
+        p_initializer_list_item = p_initializer_list_item->initializer->braced_initializer->initializer_list ?
+            p_initializer_list_item->initializer->braced_initializer->initializer_list->head : NULL;
 
         if (p_initializer_list_item == NULL)
         {
-            assert(false);
+            _Assert(false);
             return NULL;
         }
 
@@ -13089,13 +14922,25 @@ static struct initializer_list_item* _Opt find_innner_initializer_list_item(stru
     return p_initializer_list_item;
 }
 
+static bool is_zero_braced_initializer(const struct braced_initializer* braced_initializer,
+    const struct initializer_list_item* p_initializer_list_item)
+{
+    return p_initializer_list_item->designation == NULL &&
+        braced_initializer->initializer_list != NULL &&
+        braced_initializer->initializer_list->head == p_initializer_list_item &&
+        p_initializer_list_item->next == NULL &&
+        p_initializer_list_item->initializer->assignment_expression &&
+        p_initializer_list_item->initializer->assignment_expression->expression_type == EXPR_PRIMARY_NUMBER &&
+        object_is_zero(&p_initializer_list_item->initializer->assignment_expression->object);
+}
+
 _Attr(nodiscard)
 static int braced_initializer_new(struct parser_ctx* ctx,
-                                  struct type* p_current_object_type,
-                                  struct object* current_object,
-                                  struct braced_initializer* braced_initializer,
-                                  bool is_constant,
-                                  bool requires_constant_initialization)
+    struct type* p_current_object_type,
+    struct object* current_object,
+    const struct braced_initializer* braced_initializer,
+    bool is_constant,
+    bool requires_constant_initialization)
 {
     try
     {
@@ -13122,6 +14967,21 @@ static int braced_initializer_new(struct parser_ctx* ctx,
 
             if (p_initializer_list_item->initializer->assignment_expression != NULL)
             {
+                /* `T x = { expr };` is still an initialization of x, so it gets
+                * the same checks as `T x = expr;` -- which the braced form
+                * used to skip entirely (object_set does not type-check).
+                * e.g. `char* s = {""};` under -const-literal.
+                * `T x = {0};` is the idiomatic zero-initializer though, so it
+                * is exempt just like the aggregate-member case below.
+                */
+                if (!is_zero_braced_initializer(braced_initializer, p_initializer_list_item))
+                {
+                    check_assigment(ctx,
+                        p_current_object_type,
+                        p_initializer_list_item->initializer->assignment_expression,
+                        ASSIGMENT_TYPE_INIT);
+                }
+
                 if (object_set(ctx,
                     current_object, p_initializer_list_item->initializer->assignment_expression,
                     &p_initializer_list_item->initializer->assignment_expression->object,
@@ -13137,19 +14997,21 @@ static int braced_initializer_new(struct parser_ctx* ctx,
             if (p_initializer_list_item != NULL)
             {
                 diagnostic(W_TO_MANY_INITIALIZERS,
-                                            ctx,
-                                            p_initializer_list_item->initializer->first_token,
-                                            NULL,
-                                            "warning: excess elements in initializer");
+                    ctx,
+                    p_initializer_list_item->initializer->first_token,
+                    NULL,
+                    "warning: excess elements in initializer");
             }
             return 0;
         }
 
-
-        //TODO Array char
+        // TODO Array char
 
         struct object* const _Opt parent_copy = current_object->parent;
-        current_object->parent = NULL; //to be only here
+        current_object->parent = NULL; // to be only here
+        struct object* const _Opt next_copy = current_object->next;
+        current_object->next = NULL; //lint 26
+        // once this object's own subobjects are exhausted)
         struct initializer_list_item* _Opt p_initializer_list_item = braced_initializer->initializer_list->head;
         ptrdiff_t array_to_expand_index = -1;
         ptrdiff_t array_to_expand_max_index = -1;
@@ -13169,7 +15031,7 @@ static int braced_initializer_new(struct parser_ctx* ctx,
                 }
                 if (p_initializer_list_item2->initializer->assignment_expression != NULL)
                 {
-                    if (p_initializer_list_item2->initializer->assignment_expression->expression_type == PRIMARY_EXPRESSION_STRING_LITERAL)
+                    if (p_initializer_list_item2->initializer->assignment_expression->expression_type == EXPR_PRIMARY_STRING_LITERAL)
                     {
                         size_t num_of_elements =
                             p_initializer_list_item2->initializer->assignment_expression->type.array_num_elements;
@@ -13189,7 +15051,7 @@ static int braced_initializer_new(struct parser_ctx* ctx,
                             type_destroy(&array_item_type);
                             throw;
                         }
-                        //current_object->type2.num_of_elements = num_of_elements;
+                        // current_object->type2.num_of_elements = num_of_elements;
                         if (compute_array_size)
                         {
                             p_current_object_type->array_num_elements = num_of_elements;
@@ -13205,8 +15067,8 @@ static int braced_initializer_new(struct parser_ctx* ctx,
                             }
                         }
 
-                        //printf("\n");
-                        //object_print_to_debug(current_object);
+                        // printf("\n");
+                        // object_print_to_debug(current_object);
                         type_destroy(&array_item_type);
                         return 0;
                     }
@@ -13226,11 +15088,14 @@ static int braced_initializer_new(struct parser_ctx* ctx,
                 break;
             }
 
-            if (p_initializer_list_item->designation)
+            if (p_initializer_list_item->designation &&
+                p_initializer_list_item->designation->designator_list->head != NULL)
             {
-                if (compute_array_size)
+                struct designator* p_first_designator = p_initializer_list_item->designation->designator_list->head;
+
+                if (compute_array_size && p_first_designator->constant_expression_opt != NULL)
                 {
-                    array_to_expand_index = (ptrdiff_t)object_to_signed_long_long(&p_initializer_list_item->designation->designator_list->head->constant_expression_opt->object);
+                    array_to_expand_index = (ptrdiff_t)object_to_signed_long_long(&p_first_designator->constant_expression_opt->object);
 
                     if (array_to_expand_index > array_to_expand_max_index)
                         array_to_expand_max_index = array_to_expand_index;
@@ -13238,7 +15103,7 @@ static int braced_initializer_new(struct parser_ctx* ctx,
                     object_extend_array_to_index(&array_item_type, current_object, array_to_expand_max_index, is_constant, ctx->options.target);
                 }
                 is_subobject_of_union = type_is_union(&subobject_type);
-                p_subobject = find_designated_subobject(ctx, p_current_object_type, current_object, p_initializer_list_item->designation->designator_list->head, is_constant, &subobject_type, false, ctx->options.target);
+                p_subobject = find_designated_subobject(ctx, p_current_object_type, current_object, p_first_designator, is_constant, &subobject_type, false, ctx->options.target);
                 if (p_subobject == NULL)
                 {
                     // already have the error, need not say that it was not consumed
@@ -13252,7 +15117,7 @@ static int braced_initializer_new(struct parser_ctx* ctx,
                 if (compute_array_size)
                 {
 
-                    struct object* _Opt po = find_next_subobject(p_current_object_type, current_object, p_subobject, &subobject_type, &is_subobject_of_union);
+                    struct object* _Opt po = find_next_subobject( p_subobject, &subobject_type, &is_subobject_of_union);
                     if (po == NULL)
                     {
                         array_to_expand_index++;
@@ -13266,11 +15131,11 @@ static int braced_initializer_new(struct parser_ctx* ctx,
                 if (p_subobject == NULL)
                 {
 
-                    p_subobject = find_first_subobject(p_current_object_type, current_object, &subobject_type, &is_subobject_of_union);
+                    p_subobject = find_first_subobject( current_object, &subobject_type, &is_subobject_of_union);
                 }
                 else
                 {
-                    p_subobject = find_next_subobject(p_current_object_type, current_object, p_subobject, &subobject_type, &is_subobject_of_union);
+                    p_subobject = find_next_subobject( p_subobject, &subobject_type, &is_subobject_of_union);
                 }
             }
 
@@ -13279,8 +15144,6 @@ static int braced_initializer_new(struct parser_ctx* ctx,
                 type_destroy(&subobject_type);
                 break;
             }
-
-
 
             if (p_initializer_list_item->initializer->braced_initializer)
             {
@@ -13307,12 +15170,16 @@ static int braced_initializer_new(struct parser_ctx* ctx,
             {
                 bool entire_object_initialized = false;
 
-                if (type_is_array_of_char(&subobject_type) &&
-                    p_initializer_list_item->initializer->assignment_expression->expression_type == PRIMARY_EXPRESSION_STRING_LITERAL)
+                if (type_is_array(&subobject_type) &&
+                    p_initializer_list_item->initializer->assignment_expression->expression_type == EXPR_PRIMARY_STRING_LITERAL)
                 {
-                    /*
-                    struct X { int i; char text[4]; };
-                    constexpr struct X x = {1, "abc"};
+                    /* 
+                    * struct X { int i; char text[4]; };
+                    * constexpr struct X x = {1, "abc"};
+                    * 
+                    * Also covers wide/UTF string literals (L"", u8"", u"", U"")
+                    * assigned to an array of the matching element type, e.g.
+                    * wchar_t str[5][64] = { L"a", L"b", ... };
                     */
                     entire_object_initialized = true;
                 }
@@ -13320,26 +15187,50 @@ static int braced_initializer_new(struct parser_ctx* ctx,
                 {
                     while (type_is_array(&subobject_type))
                     {
-                        /*
-                          struct X { int i[2]; };
-                          int a[2]={};
-                          struct  X b = { a };    //error
+                        /* 
+                        * struct X { int i[2]; };
+                        * int a[2]={};
+                        * struct  X b = { a };    //error
                         */
-                        //sub_object_of_union = false;
-                        p_subobject = find_next_subobject(p_current_object_type, current_object, p_subobject, &subobject_type, &is_subobject_of_union);
+                        // sub_object_of_union = false;
+                        p_subobject = find_next_subobject( p_subobject, &subobject_type, &is_subobject_of_union);
                     }
                 }
                 else if (type_is_struct_or_union(&subobject_type))
                 {
                     if (type_is_struct_or_union(&p_initializer_list_item->initializer->assignment_expression->type))
                     {
-                        //mesmo tipo
+                        // mesmo tipo
                         entire_object_initialized = true;
                     }
                     else
                     {
-                        p_subobject = find_next_subobject(p_current_object_type, current_object, p_subobject, &subobject_type, &is_subobject_of_union);
+                        p_subobject = find_next_subobject( p_subobject, &subobject_type, &is_subobject_of_union);
                     }
+                }
+
+                if (p_subobject == NULL)
+                {
+                    type_destroy(&array_item_type);
+                    type_destroy(&subobject_type);
+                    throw;
+                }
+
+                /* Same for each member/element initialized by an expression:
+                * `struct { char* s; } x = {""};` must report the discarded
+                * const that `struct { char* s; } x; x.s = "";` reports.
+                */
+                if (!is_zero_braced_initializer(braced_initializer, p_initializer_list_item))
+                {
+                    /* `T x = {0};` is the idiomatic way to zero-initialize an
+                    * entire aggregate; the literal 0 lands on the first
+                    * subobject only incidentally, so it should not be judged
+                    * as if the user wrote `first_member = 0` by hand.
+                    */
+                    check_assigment(ctx,
+                        &subobject_type,
+                        p_initializer_list_item->initializer->assignment_expression,
+                        ASSIGMENT_TYPE_INIT);
                 }
 
                 if (object_set(ctx,
@@ -13354,16 +15245,15 @@ static int braced_initializer_new(struct parser_ctx* ctx,
                     throw;
                 }
 
-
                 if (is_subobject_of_union)
                 {
-                    assert(p_subobject);
-                    assert(p_subobject->parent);
+                    _Assert(p_subobject);
+                    _Assert(p_subobject->parent);
                     struct type t = { 0 };
                     is_subobject_of_union = true;
                     p_subobject = find_last_suboject_of_suboject(&p_subobject->parent->type,
-                                                                 p_subobject->parent,
-                                                                 &t);
+                        p_subobject->parent,
+                        &t);
                     type_swap(&t, &subobject_type);
                     type_destroy(&t);
                     if (p_subobject)
@@ -13375,7 +15265,7 @@ static int braced_initializer_new(struct parser_ctx* ctx,
                 }
                 else if (entire_object_initialized)
                 {
-                    assert(p_subobject);
+                    _Assert(p_subobject);
 
                     struct type t = { 0 };
                     is_subobject_of_union = type_is_union(p_current_object_type);
@@ -13396,10 +15286,10 @@ static int braced_initializer_new(struct parser_ctx* ctx,
         if (p_initializer_list_item != NULL)
         {
             diagnostic(W_TO_MANY_INITIALIZERS,
-                                        ctx,
-                                        p_initializer_list_item->initializer->first_token,
-                                        NULL,
-                                        "warning: excess elements in initializer");
+                ctx,
+                p_initializer_list_item->initializer->first_token,
+                NULL,
+                "warning: excess elements in initializer");
 
         }
         if (compute_array_size)
@@ -13409,6 +15299,7 @@ static int braced_initializer_new(struct parser_ctx* ctx,
         }
 
         current_object->parent = parent_copy; /* restore */
+        current_object->next = next_copy; //lint 78 26 /* restore */
         type_destroy(&array_item_type);
     }
     catch
@@ -13420,17 +15311,17 @@ static int braced_initializer_new(struct parser_ctx* ctx,
 }
 
 int initializer_init_new(struct parser_ctx* ctx,
-                        struct type* p_type,
-                        struct object* object, /*in (in/out for arrays [])*/
-                        struct initializer* initializer, /*rtocar para initializer item??*/
-                        bool is_constant,
-                        bool requires_constant_initialization)
+    struct type* p_type,
+    struct object* object, /* in (in/out for arrays []) */
+    struct initializer* initializer, /* rtocar para initializer item?? */
+    bool is_constant,
+    bool requires_constant_initialization)
 {
     try
     {
         if (initializer->assignment_expression != NULL)
         {
-            //types must be compatible
+            // types must be compatible
             if (object_set(ctx,
                 object,
                 initializer->assignment_expression,

@@ -1,6 +1,6 @@
 /*
  *  This file is part of cake compiler
- *  https://github.com/thradams/cake 
+ *  https://github.com/thradams/cake
 */
 
 #pragma safety enable
@@ -47,12 +47,12 @@ bool token_is_one_space(const struct token* _Opt token)
     if (token->type != TK_BLANKS)
         return false;
 
-    return token->lexeme[0] == ' ' && token->lexeme[1] == '\0'; //lint 28 bug #435
+    return token->lexeme[0] == ' ' && token->lexeme[1] == '\0'; 
 }
 
 void print_literal2(const char* s);
 
-void token_list_clear(struct token_list* list)
+void token_list_clear(_Clear struct token_list* list)
 {
     struct token* _Owner _Opt p = list->head;
     while (p)
@@ -68,7 +68,7 @@ void token_list_clear(struct token_list* list)
 }
 
 
-void token_range_add_show(struct token* first, struct token* last)
+void token_range_add_show(struct token* first, const struct token* last)
 {
     for (struct token* current = first;
          current != last->next;
@@ -80,7 +80,7 @@ void token_range_add_show(struct token* first, struct token* last)
     }
 }
 
-void token_range_remove_flag(struct token* first, struct token* last, enum token_flags flag)
+void token_range_remove_flag(struct token* first, const struct token* last, enum token_flags flag)
 {
     for (struct token* _Opt current = first;
         current && current != last->next;
@@ -90,7 +90,7 @@ void token_range_remove_flag(struct token* first, struct token* last, enum token
     }
 }
 
-void token_range_add_flag(struct token* first, struct token* last, enum token_flags flag)
+void token_range_add_flag(struct token* first, const struct token* last, enum token_flags flag)
 {
     for (struct token* _Opt current = first;
         current && current != last->next;
@@ -113,8 +113,8 @@ void token_list_pop_back(struct token_list* list)
     }
     else
     {
-        assert(list->tail != NULL);
-        assert(list->tail->prev != NULL);
+        _Assert(list->tail != NULL);
+        _Assert(list->tail->prev != NULL);
         list->tail = list->tail->prev;
         token_delete(list->tail->next);
         list->tail->next = NULL;
@@ -123,7 +123,7 @@ void token_list_pop_back(struct token_list* list)
             list->tail->prev = NULL;
         }
     }
-    assert(list->head == NULL || list->head->prev == NULL);
+    _Assert(list->head == NULL || list->head->prev == NULL);
 }
 
 void token_list_pop_front(struct token_list* list) /*unchecked*/
@@ -132,7 +132,7 @@ void token_list_pop_front(struct token_list* list) /*unchecked*/
         return;
 
     struct token* _Owner _Opt p = list->head;
-    assert(p->prev == NULL);
+    _Assert(p->prev == NULL);
 
     if (list->head == list->tail)
     {
@@ -149,7 +149,7 @@ void token_list_pop_front(struct token_list* list) /*unchecked*/
     p->prev = NULL;
     token_delete(p);
 
-    assert(list->head == NULL || list->head->prev == NULL);
+    _Assert(list->head == NULL || list->head->prev == NULL);
 }
 
 struct token* _Owner _Opt token_list_pop_front_get(struct token_list* list)
@@ -170,7 +170,7 @@ struct token* _Owner _Opt token_list_pop_front_get(struct token_list* list)
         list->tail = NULL;
     }
 
-    assert(list->head == NULL || list->head->prev == NULL);
+    _Assert(list->head == NULL || list->head->prev == NULL);
 
     old_head->prev = NULL;
     old_head->next = NULL;
@@ -184,7 +184,7 @@ void token_list_swap(struct token_list* a, struct token_list* b)
     *b = temp;
 }
 
-void token_delete(struct token* _Owner _Opt p)
+void token_delete(_Dtor struct token* _Owner _Opt p)
 {
     if (p)
     {
@@ -192,13 +192,13 @@ void token_delete(struct token* _Owner _Opt p)
          * ownership warning here is about the p->next
          * we need a way to remove only this specific warning
         */
-        assert(p->next == NULL);
+        _Assert(p->next == NULL);
         free(p->lexeme);
         free(p);
     }
 }
 
-void token_list_set_file(struct token_list* list, struct token* filetoken, int line, int col)
+void token_list_set_file(struct token_list* list, const struct token* _Opt filetoken, int line, int col)
 {
     struct token* _Opt p = list->head;
     while (p)
@@ -302,7 +302,7 @@ void token_list_insert_after(struct token_list* token_list, struct token* _Opt a
 
     if (token_list->head == NULL)
     {
-        assert(after == NULL);
+        _Assert(after == NULL);
         token_list->head = append_list->head;
         token_list->tail = append_list->tail;
         append_list->head = NULL;
@@ -312,8 +312,8 @@ void token_list_insert_after(struct token_list* token_list, struct token* _Opt a
 
     if (after == NULL)
     {
-        assert(append_list->tail != NULL);
-        assert(append_list->tail->next == NULL);
+        _Assert(append_list->tail != NULL);
+        _Assert(append_list->tail->next == NULL);
         append_list->tail->next = token_list->head;
         token_list->head->prev = append_list->tail; //TODO empty case
 
@@ -330,10 +330,11 @@ void token_list_insert_after(struct token_list* token_list, struct token* _Opt a
         else if (token_list->head == after)
         {
         }
-        assert(append_list->tail != NULL);
-        assert(append_list->tail->next == NULL);
+        _Assert(append_list->tail != NULL);
+        _Assert(append_list->tail->next == NULL);
         append_list->tail->next = follow;
-        follow->prev = append_list->tail;
+        if (follow != NULL)
+            follow->prev = append_list->tail;
         after->next = append_list->head;
         append_list->head->prev = after;
 
@@ -341,7 +342,7 @@ void token_list_insert_after(struct token_list* token_list, struct token* _Opt a
 
     append_list->head = NULL;
     append_list->tail = NULL;
-    assert(token_list->head == NULL || token_list->head->prev == NULL);
+    _Assert(token_list->head == NULL || token_list->head->prev == NULL);
 }
 
 void token_list_insert_before(struct token_list* token_list, struct token* after, struct token_list* append_list)
@@ -371,8 +372,8 @@ bool token_list_is_equal(const struct token_list* list_a, const struct token_lis
 
 struct token* token_list_add(struct token_list* list, struct token* _Owner pnew) /*unchecked*/
 {
-    assert(pnew->next == NULL);
-    assert(pnew->prev == NULL);
+    _Assert(pnew->next == NULL);
+    _Assert(pnew->prev == NULL);
 
     if (list->head == NULL)
     {
@@ -383,17 +384,17 @@ struct token* token_list_add(struct token_list* list, struct token* _Owner pnew)
     }
     else
     {
-        assert(list->tail != NULL);
-        assert(list->tail->next == NULL);
+        _Assert(list->tail != NULL);
+        _Assert(list->tail->next == NULL);
 
         pnew->prev = list->tail;
         list->tail->next = pnew;
         list->tail = pnew;
     }
-    assert(list->tail != NULL);
-    assert(list->tail->next == NULL);
+    _Assert(list->tail != NULL);
+    _Assert(list->tail->next == NULL);
 
-    assert(list->head == NULL || list->head->prev == NULL);
+    _Assert(list->head == NULL || list->head->prev == NULL);
 
     return list->tail;
 
@@ -478,7 +479,7 @@ bool token_is_identifier_or_keyword(enum token_type t)
     case TK_KEYWORD__IMAGINARY:
     case TK_KEYWORD__NORETURN:
     case TK_KEYWORD__STATIC_ASSERT:
-    case TK_KEYWORD_ASSERT: /*extension*/
+    case TK_KEYWORD__COMPILE_ASSERT:    
     case TK_KEYWORD__THREAD_LOCAL:
 
     case TK_KEYWORD_TYPEOF: /*C23*/
@@ -493,8 +494,10 @@ bool token_is_identifier_or_keyword(enum token_type t)
 
         /*cake extension*/
     case TK_KEYWORD_CAKE_OWNER:
-    case TK_KEYWORD__CTOR:
-    case TK_KEYWORD__DTOR:
+    case TK_KEYWORD_CAKE_OUT:
+    case TK_KEYWORD_CAKE_DTOR:
+    case TK_KEYWORD_CAKE_UNINITIALIZED:
+    case TK_KEYWORD_CAKE_CLEAR:
     case TK_KEYWORD_CAKE_VIEW:
     case TK_KEYWORD_CAKE_OPT:
 
@@ -503,7 +506,6 @@ bool token_is_identifier_or_keyword(enum token_type t)
     case TK_KEYWORD_CAKE_STATIC_DEBUG: /*extension*/
     case TK_KEYWORD_CAKE_STATIC_DEBUG_EX: /*extension*/
     case TK_KEYWORD_STATIC_STATE: /*extension*/
-    case TK_KEYWORD_STATIC_SET: /*extension*/
 
         /*https://en.cppreference.com/w/cpp/header/type_traits*/
 
@@ -543,7 +545,7 @@ bool token_is_blank(const struct token* p)
         p->type == TK_COMMENT;
 }
 
-struct token* _Opt token_list_clone_and_add(struct token_list* list, struct token* pnew)
+struct token* _Opt token_list_clone_and_add(struct token_list* list, const struct token* pnew)
 {
     struct token* _Owner _Opt clone = clone_token(pnew);
 
@@ -567,23 +569,25 @@ void token_list_append_list_at_beginning(struct token_list* dest, struct token_l
     }
     else
     {
-        assert(source->tail != NULL);
-        assert(source->tail->next == NULL);
+        _Assert(source->tail != NULL);
+        _Assert(source->tail->next == NULL);
         source->tail->next = dest->head;
         dest->head = source->head;
     }
 
     source->head = NULL;
     source->tail = NULL;
-    assert(dest->head == NULL || dest->head->prev == NULL);
+    _Assert(dest->head == NULL || dest->head->prev == NULL);
 }
 
-void token_list_append_list(struct token_list* dest, struct token_list* source)
+void token_list_append_list(struct token_list* dest, _Clear struct token_list* source)
 {
     if (source->head == NULL)
     {
+        _Assert(source->tail == NULL);
         return;
     }
+
     if (dest->head == NULL)
     {
         dest->head = source->head;
@@ -591,19 +595,19 @@ void token_list_append_list(struct token_list* dest, struct token_list* source)
     }
     else
     {
-        assert(dest->tail != NULL);
-        assert(dest->tail->next == NULL);
+        _Assert(dest->tail != NULL);
+        _Assert(dest->tail->next == NULL);
         dest->tail->next = source->head;
         source->head->prev = dest->tail;
         dest->tail = source->tail;
     }
     source->head = NULL;
     source->tail = NULL;
-    assert(dest->head == NULL || dest->head->prev == NULL);
+    _Assert(dest->head == NULL || dest->head->prev == NULL);
 }
 
 
-struct token* _Owner _Opt clone_token(struct token* p)
+struct token* _Owner _Opt clone_token(const struct token* p)
 {
     _Opt struct token* _Owner _Opt token = calloc(1, sizeof * token);
     if (token == NULL)
@@ -617,19 +621,19 @@ struct token* _Owner _Opt clone_token(struct token* p)
     }
 
     *token = *p;
-    token->lexeme = lexeme; //lint 29
-    token->next = NULL; //lint 29
+    token->lexeme = lexeme; //lint 26
+    token->next = NULL; //lint 26
     token->prev = NULL;
 
-    return token;
+    return token; //lint 72 72 not playing with the rules 
 }
 
 
 struct token_list token_list_remove_get(struct token_list* list, struct token* first, struct token* last)
 {
     /*
-       token_list_remove_get removes a range of tokens from a doubly - linked token list and 
-       returns them as a new list.  It does not delete the tokens; it just detaches them from 
+       token_list_remove_get removes a range of tokens from a doubly - linked token list and
+       returns them as a new list.  It does not delete the tokens; it just detaches them from
        the original list.
     */
 
@@ -640,11 +644,11 @@ struct token_list token_list_remove_get(struct token_list* list, struct token* f
 
     if (before_first)
     {
-        before_first->next = after_last;
+        before_first->next = after_last; //lint 26 not playing with the rules
     }
     else
     {
-        list->head = last->next;
+        list->head = after_last; //lint 26 not playing with the rules
     }
 
     if (after_last)
@@ -653,7 +657,7 @@ struct token_list token_list_remove_get(struct token_list* list, struct token* f
     }
     else
     {
-        list->tail = NULL;
+        list->tail = before_first;
     }
 
     last->next = NULL; /*MOVED*/
@@ -663,7 +667,7 @@ struct token_list token_list_remove_get(struct token_list* list, struct token* f
     r.tail = last;
 
 
-    return r;
+    return r; //lint 29 not playing with the rules
 }
 
 void token_list_remove(struct token_list* list, struct token* first, struct token* last)
@@ -673,9 +677,9 @@ void token_list_remove(struct token_list* list, struct token* first, struct toke
 }
 
 
-bool token_list_is_empty(struct token_list* p)
+bool token_list_is_empty(const struct token_list* p)
 {
-    assert((p->head == NULL && p->tail == NULL) ||
+    _Assert((p->head == NULL && p->tail == NULL) ||
         (p->head != NULL && p->tail != NULL));
 
     return p->head == NULL;
@@ -732,12 +736,12 @@ void print_token(bool color_enabled, const struct token* p_token)
     if (p_token->flags & TK_FLAG_FINAL)
     {
         if (color_enabled)
-        printf(LIGHTGREEN);
+            printf(LIGHTGREEN);
     }
     else
     {
         if (color_enabled)
-        printf(LIGHTGRAY);
+            printf(LIGHTGRAY);
     }
     char buffer0[50] = { 0 };
     snprintf(buffer0, sizeof buffer0, "%d:%d", p_token->line, p_token->col);
@@ -746,7 +750,7 @@ void print_token(bool color_enabled, const struct token* p_token)
     if (p_token->flags & TK_FLAG_MACRO_EXPANDED)
     {
         if (color_enabled)
-        printf(LIGHTCYAN);
+            printf(LIGHTCYAN);
     }
     char buffer[50] = { 0 };
     strcat(buffer, "[");
@@ -803,7 +807,7 @@ void print_tokens(bool color_enabled, const struct token* _Opt p_token)
 }
 
 
-void print_token_html(struct token* p_token)
+void print_token_html(const struct token* p_token)
 {
     printf("<span class=\"");
 
@@ -893,16 +897,17 @@ void print_tokens_html(struct token* p_token)
     }
     printf("\n</pre>");
 }
-void print_position(const char* _Opt path, int line, int col, bool msvc_format, bool color_enabled)
+void print_position(const char* _Opt path, int line, int col, enum diagnostic_ouput_format format, bool color_enabled, bool fullpath)
 {
     struct osstream ss = { 0 };
     ss_print_position(&ss,
                        path,
                        line, col,
-                       msvc_format,
-                       color_enabled);
+                       format,
+                       color_enabled,
+                       fullpath);
     if (ss.c_str)
-    puts(ss.c_str);
+        fputs(ss.c_str, stdout);
     ss_close(&ss);
 }
 
@@ -911,7 +916,7 @@ void print_line_and_token(struct marker* p_marker, bool color_enabled)
     struct osstream ss = { 0 };
     ss_print_line_and_token(&ss, p_marker, color_enabled);
     if (ss.c_str)
-    puts(ss.c_str);
+        puts(ss.c_str);
     ss_close(&ss);
 }
 
@@ -948,15 +953,16 @@ static void ss_print_path(struct osstream* ss, const char* path, bool fullpath)
 void ss_print_position(struct osstream* ss,
                        const char* _Opt path,
                        int line, int col,
-                       bool visual_studio_ouput_format,
-                       bool color_enabled)
+                       enum diagnostic_ouput_format format,
+                       bool color_enabled,
+                       bool fullpath)
 {
-    if (path == NULL) 
+    if (path == NULL)
         path = "";
 
-    if (visual_studio_ouput_format)
+    if (format == DIAGNOSTIC_OUTPUT_FORMAT_MSVC)
     {
-        ss_print_path(ss, path, true /*full path*/);
+        ss_print_path(ss, path, fullpath);
         ss_fprintf(ss, "(%d,%d): ", line, col);
     }
     else
@@ -964,7 +970,7 @@ void ss_print_position(struct osstream* ss,
         if (color_enabled)
             ss_fprintf(ss, WHITE);
 
-        ss_print_path(ss, path, false /*full path*/);
+        ss_print_path(ss, path, fullpath);
 
         if (color_enabled)
             ss_fprintf(ss, WHITE ":%d:%d: ", line, col);
@@ -1046,12 +1052,12 @@ void ss_print_line_and_token(struct osstream* ss,
                 }
                 else
                 {
-                while (*p)
-                {
+                    while (*p)
+                    {
                         ss_fprintf(ss, "%c", *p);
-                    p++;
+                        p++;
+                    }
                 }
-            }
             }
 
             if (color_enabled)
@@ -1136,15 +1142,47 @@ void ss_print_line_and_token(struct osstream* ss,
     }
 }
 
-static void digit_sequence_opt(struct stream* stream)
+static bool is_decimal_digit(const struct stream* stream)
 {
-    while (is_digit(stream))
-    {
-        stream_match(stream);
-    }
+    return is_digit(stream);
 }
 
-static void binary_exponent_part(struct stream* stream)
+/*
+  matches the digit separator ' only when it is followed by a digit,
+  otherwise the ' is not part of the constant.
+*/
+static bool digit_separator_opt(struct stream* stream, bool (*is_valid_digit)(const struct stream*))
+{
+    if (stream->current[0] != '\'')
+    {
+        return false;
+    }
+
+    struct stream peek = *stream;
+    peek.current = stream->current + 1;
+
+    if (!is_valid_digit(&peek))
+    {
+        return false;
+    }
+
+    stream_match(stream); //'
+    return true;
+}
+
+/*returns the number of digits matched*/
+static int digit_sequence_opt(struct stream* stream)
+{
+    int count = 0;
+    while (is_digit(stream) || digit_separator_opt(stream, is_decimal_digit))
+    {
+        stream_match(stream);
+        count++;
+    }
+    return count;
+}
+
+static bool binary_exponent_part(struct stream* stream, _Out char errmsg[100])
 {
     // p signopt digit - sequence
     // P   signopt digit - sequence
@@ -1152,19 +1190,26 @@ static void binary_exponent_part(struct stream* stream)
     stream_match(stream); // p or P
     if (stream->current[0] == '+' || stream->current[0] == '-')
     {
-        stream_match(stream); // p or P
+        stream_match(stream); // sign
     }
-    digit_sequence_opt(stream);
+
+    if (digit_sequence_opt(stream) == 0)
+    {
+        snprintf(errmsg, 100, "exponent has no digits");
+        return false;
+    }
+
+    return true;
 }
 
-static bool is_hexadecimal_digit(struct stream* stream)
+static bool is_hexadecimal_digit(const struct stream* stream)
 {
     return (stream->current[0] >= '0' && stream->current[0] <= '9') ||
         (stream->current[0] >= 'a' && stream->current[0] <= 'f') ||
         (stream->current[0] >= 'A' && stream->current[0] <= 'F');
 }
 
-static bool is_octal_digit(struct stream* stream)
+static bool is_octal_digit(const struct stream* stream)
 {
     return stream->current[0] >= '0' && stream->current[0] <= '7';
 }
@@ -1178,21 +1223,74 @@ static void hexadecimal_digit_sequence(struct stream* stream)
     */
 
     stream_match(stream);
-    while (stream->current[0] == '\'' ||
-        is_hexadecimal_digit(stream))
+    while (is_hexadecimal_digit(stream) ||
+        digit_separator_opt(stream, is_hexadecimal_digit))
     {
-        if (stream->current[0] == '\'')
-        {
-            stream_match(stream);
-            if (!is_hexadecimal_digit(stream))
-            {
-                // erro
-            }
-            stream_match(stream);
-        }
-        else
-            stream_match(stream);
+        stream_match(stream);
     }
+}
+
+static bool microsoft_integer_suffix_opt(struct stream* stream, char suffix[4], bool is_unsigned)
+{
+    /*
+      Microsoft extension:
+        i8 i16 i32 i64  (also uppercase I8 I16 I32 I64)
+
+      Following the documented grammar, it can be preceded by the
+      unsigned-suffix. (sample: 1ui64, 0x1Ui64)
+
+      The suffix is normalized to the standard equivalent, so the rest of the
+      compiler does not need to know about this extension.
+    */
+
+    if (stream->current[0] != 'i' && stream->current[0] != 'I')
+        return false;
+
+    int size;
+    if (stream->current[1] == '8')
+        size = 8;
+    else if (stream->current[1] == '1' && stream->current[2] == '6')
+        size = 16;
+    else if (stream->current[1] == '3' && stream->current[2] == '2')
+        size = 32;
+    else if (stream->current[1] == '6' && stream->current[2] == '4')
+        size = 64;
+    else
+        return false;
+
+    stream_match(stream); //i I
+    stream_match(stream); //8 1 3 6
+    if (size != 8)
+    {
+        stream_match(stream); //6 2 4
+    }
+
+    suffix[0] = '\0';
+    suffix[1] = '\0';
+    suffix[2] = '\0';
+    suffix[3] = '\0';
+
+    int i = 0;
+    if (is_unsigned)
+    {
+        suffix[i++] = 'U';
+    }
+
+    /*
+      __int8 and __int16 are promoted to int, so no suffix is required, and
+      __int32 is a synonym for int -- normalizing it to 'L' made 0xffffffffui32
+      (which is how the ucrt headers spell UINT32_MAX) an unsigned long, so
+      `printf("%" PRIu32, UINT32_MAX)` was reported as a format mismatch.
+      On a target whose int is narrower than the constant, the type is picked
+      from the value, which reaches long on its own.
+    */
+    if (size == 64)
+    {
+        suffix[i++] = 'L';
+        suffix[i++] = 'L';
+    }
+
+    return true;
 }
 
 static void integer_suffix_opt(struct stream* stream, char suffix[4])
@@ -1220,13 +1318,18 @@ static void integer_suffix_opt(struct stream* stream, char suffix[4])
         {
             suffix[1] = 'L';
             stream_match(stream);
-        }
 
-        /*long-long-suffix*/
-        if (stream->current[0] == 'l' || stream->current[0] == 'L')
+            /*long-long-suffix*/
+            if (stream->current[0] == 'l' || stream->current[0] == 'L')
+            {
+                suffix[2] = 'L';
+                stream_match(stream);
+            }
+        }
+        else
         {
-            suffix[2] = 'L';
-            stream_match(stream);
+            /*microsoft extension, sample 1ui64*/
+            microsoft_integer_suffix_opt(stream, suffix, true);
         }
     }
     else if ((stream->current[0] == 'l' || stream->current[0] == 'L'))
@@ -1255,43 +1358,14 @@ static void integer_suffix_opt(struct stream* stream, char suffix[4])
             stream_match(stream);
         }
     }
-    ///////////////MICROSOFT ////////////////////////
-        //TODO unit test
-    else if (stream->current[0] == 'i' &&
-             stream->current[1] == '8')
+    else
     {
-        stream_match(stream);
-        stream_match(stream);
-        stream_match(stream);
-        suffix[0] = 'i';
-        suffix[1] = '8';
+        /*microsoft extension, sample 1i64*/
+        microsoft_integer_suffix_opt(stream, suffix, false);
     }
-    else if (stream->current[0] == 'i' &&
-             stream->current[1] == '3' &&
-             stream->current[2] == '2')
-    {
-        stream_match(stream);
-        stream_match(stream);
-        stream_match(stream);
-        suffix[0] = 'i';
-        suffix[1] = '3';
-        suffix[2] = '2';
-    }
-    else if (stream->current[0] == 'i' &&
-             stream->current[1] == '6' &&
-             stream->current[2] == '4')
-    {
-        stream_match(stream);
-        stream_match(stream);
-        stream_match(stream);
-        suffix[0] = 'i';
-        suffix[1] = '6';
-        suffix[2] = '4';
-    }
-    ///////////////MICROSOFT ////////////////////////
 }
 
-static void exponent_part_opt(struct stream* stream)
+static bool exponent_part_opt(struct stream* stream, _Out char errmsg[100])
 {
     /*
     exponent-part:
@@ -1306,8 +1380,15 @@ static void exponent_part_opt(struct stream* stream)
         {
             stream_match(stream);
         }
-        digit_sequence_opt(stream);
+
+        if (digit_sequence_opt(stream) == 0)
+        {
+            snprintf(errmsg, 100, "exponent has no digits");
+            return false;
+        }
     }
+
+    return true;
 }
 
 static void floating_suffix_opt(struct stream* stream, char suffix[4])
@@ -1325,17 +1406,17 @@ static void floating_suffix_opt(struct stream* stream, char suffix[4])
     }
 }
 
-static bool is_binary_digit(struct stream* stream)
+static bool is_binary_digit(const struct stream* stream)
 {
     return stream->current[0] >= '0' && stream->current[0] <= '1';
 }
 
-static bool is_nonzero_digit(struct stream* stream)
+static bool is_nonzero_digit(const struct stream* stream)
 {
     return stream->current[0] >= '1' && stream->current[0] <= '9';
 }
 
-enum token_type parse_number_core(struct stream* stream, char suffix[4], _Ctor char errmsg[100])
+enum token_type parse_number_core(struct stream* stream, char suffix[4], _Out char errmsg[100])
 {
     errmsg[0] = '\0';
 
@@ -1352,7 +1433,10 @@ enum token_type parse_number_core(struct stream* stream, char suffix[4], _Ctor c
         }
 
         digit_sequence_opt(stream);
-        exponent_part_opt(stream);
+        if (!exponent_part_opt(stream, errmsg))
+        {
+            return TK_NONE;
+        }
         floating_suffix_opt(stream, suffix);
     }
     else if (stream->current[0] == '0' && (stream->current[1] == 'x' || stream->current[1] == 'X'))
@@ -1364,7 +1448,8 @@ enum token_type parse_number_core(struct stream* stream, char suffix[4], _Ctor c
 
         if (is_hexadecimal_digit(stream))
         {
-            while (is_hexadecimal_digit(stream))
+            while (is_hexadecimal_digit(stream) ||
+                digit_separator_opt(stream, is_hexadecimal_digit))
             {
                 stream_match(stream);
             }
@@ -1387,7 +1472,16 @@ enum token_type parse_number_core(struct stream* stream, char suffix[4], _Ctor c
             stream->current[0] == 'P')
         {
             type = TK_COMPILER_HEXADECIMAL_FLOATING_CONSTANT;
-            binary_exponent_part(stream);
+            if (!binary_exponent_part(stream, errmsg))
+            {
+                return TK_NONE;
+            }
+        }
+        else if (type == TK_COMPILER_HEXADECIMAL_FLOATING_CONSTANT)
+        {
+            /*the binary exponent is not optional in a hexadecimal floating constant*/
+            snprintf(errmsg, 100, "hexadecimal floating constant requires an exponent");
+            return TK_NONE;
         }
 
         if (type == TK_COMPILER_HEXADECIMAL_FLOATING_CONSTANT)
@@ -1402,7 +1496,8 @@ enum token_type parse_number_core(struct stream* stream, char suffix[4], _Ctor c
         stream_match(stream);
         if (is_binary_digit(stream))
         {
-            while (is_binary_digit(stream))
+            while (is_binary_digit(stream) ||
+                digit_separator_opt(stream, is_binary_digit))
             {
                 stream_match(stream);
             }
@@ -1427,7 +1522,7 @@ enum token_type parse_number_core(struct stream* stream, char suffix[4], _Ctor c
             stream_match(stream);
         }
 
-        while (is_digit(stream))
+        while (is_digit(stream) || digit_separator_opt(stream, is_decimal_digit))
         {
             if (!is_octal_digit(stream))
             {
@@ -1451,7 +1546,7 @@ enum token_type parse_number_core(struct stream* stream, char suffix[4], _Ctor c
         type = TK_COMPILER_DECIMAL_CONSTANT;
 
         stream_match(stream);
-        while (is_digit(stream))
+        while (is_digit(stream) || digit_separator_opt(stream, is_decimal_digit))
         {
             stream_match(stream);
         }
@@ -1459,7 +1554,10 @@ enum token_type parse_number_core(struct stream* stream, char suffix[4], _Ctor c
 
         if (stream->current[0] == 'e' || stream->current[0] == 'E')
         {
-            exponent_part_opt(stream);
+            if (!exponent_part_opt(stream, errmsg))
+            {
+                return TK_NONE;
+            }
             floating_suffix_opt(stream, suffix);
             type = TK_COMPILER_DECIMAL_FLOATING_CONSTANT;
         }
@@ -1476,7 +1574,10 @@ enum token_type parse_number_core(struct stream* stream, char suffix[4], _Ctor c
 
             digit_sequence_opt(stream);
 
-            exponent_part_opt(stream);
+            if (!exponent_part_opt(stream, errmsg))
+            {
+                return TK_NONE;
+            }
             floating_suffix_opt(stream, suffix);
         }
     }
@@ -1484,7 +1585,7 @@ enum token_type parse_number_core(struct stream* stream, char suffix[4], _Ctor c
     return type;
 }
 
-enum token_type parse_number(const char* lexeme, char suffix[4], _Ctor char errmsg[100])
+enum token_type parse_number(const char* lexeme, char suffix[4], _Out char errmsg[100])
 {
     struct stream stream = {
         .source = lexeme,
@@ -1494,7 +1595,38 @@ enum token_type parse_number(const char* lexeme, char suffix[4], _Ctor char errm
         .path = "",
     };
 
-    return parse_number_core(&stream, suffix, errmsg);
+    const enum token_type type = parse_number_core(&stream, suffix, errmsg);
+
+    if (type == TK_NONE)
+    {
+        if (errmsg[0] == '\0')
+        {
+            snprintf(errmsg, 100, "invalid number '%s'", lexeme);
+        }
+        return TK_NONE;
+    }
+
+    if (stream.current[0] != '\0')
+    {
+        /*
+          the whole pp-number must be consumed, otherwise it is a pp-number
+          that is not a valid constant.
+          sample: 0x123e+1 is a single pp-number. (see issue 307)
+        */
+        const bool is_floating =
+            type == TK_COMPILER_DECIMAL_FLOATING_CONSTANT ||
+            type == TK_COMPILER_HEXADECIMAL_FLOATING_CONSTANT;
+
+        snprintf(errmsg,
+                 100,
+                 "invalid suffix '%s' on %s constant",
+                 stream.current,
+                 is_floating ? "floating" : "integer");
+
+        return TK_NONE;
+    }
+
+    return type;
 }
 
 /*
@@ -1513,7 +1645,7 @@ enum token_type parse_number(const char* lexeme, char suffix[4], _Ctor char errm
     U+10000 65536 | U+10FFFF 69631 | 11110xxx | 10xxxxxx | 10xxxxxx | 10xxxxxx
 */
 
-const unsigned char* _Opt str_utf8_decode(const unsigned char* s, _Ctor unsigned int* c)
+const unsigned char* _Opt str_utf8_decode(const unsigned char* s, _Out unsigned int* c)
 {
     *c = 0; //out
 
@@ -1527,14 +1659,14 @@ const unsigned char* _Opt str_utf8_decode(const unsigned char* s, _Ctor unsigned
     if (s[0] < 0x80)
     {
         *c = s[0];
-        assert(*c <= 0x007F);
+        _Assert(*c <= 0x007F);
         next = s + 1;
     }
     else if ((s[0] & 0xe0) == 0xc0)
     {
         *c = ((int)(s[0] & 0x1f) << 6) |
             ((int)(s[1] & 0x3f) << 0);
-        assert(*c >= 0x0080 && *c <= 0x07FF);
+        _Assert(*c >= 0x0080 && *c <= 0x07FF);
         next = s + 2;
     }
     else if ((s[0] & 0xf0) == 0xe0)
@@ -1542,7 +1674,7 @@ const unsigned char* _Opt str_utf8_decode(const unsigned char* s, _Ctor unsigned
         *c = ((int)(s[0] & 0x0f) << 12) |
             ((int)(s[1] & 0x3f) << 6) |
             ((int)(s[2] & 0x3f) << 0);
-        assert(*c >= 0x0800 && *c <= 0xFFFF);
+        _Assert(*c >= 0x0800 && *c <= 0xFFFF);
         next = s + 3;
     }
     else if ((s[0] & 0xf8) == 0xf0 && (s[0] <= 0xf4))
@@ -1551,7 +1683,7 @@ const unsigned char* _Opt str_utf8_decode(const unsigned char* s, _Ctor unsigned
             ((int)(s[1] & 0x3f) << 12) |
             ((int)(s[2] & 0x3f) << 6) |
             ((int)(s[3] & 0x3f) << 0);
-        assert(*c >= 0x10000 && *c <= 0x10FFFF);
+        _Assert(*c >= 0x10000 && *c <= 0x10FFFF);
         next = s + 4;
     }
     else
@@ -1584,7 +1716,7 @@ const unsigned char* _Opt escape_sequences_decode_opt(const unsigned char* p, un
     /*
       caller must skip the / before calling this function
     */
-    
+
     // TODO OVERFLOW CHECK
     if (*p == 'x')
     {
@@ -1660,7 +1792,7 @@ const unsigned char* _Opt escape_sequences_decode_opt(const unsigned char* p, un
         case 'r':
             *out_value = '\r';
             break;
-            ;
+            
         case 't':
             *out_value = '\t';
             break;
@@ -1676,12 +1808,12 @@ const unsigned char* _Opt escape_sequences_decode_opt(const unsigned char* p, un
         case '"':
             *out_value = '"';
             break;
-        
+
         case '\n': //line slicing inside string
             break;
 
         default:
-            assert(false);
+            _Assert(false);
             return NULL;
         }
         p++;
@@ -1691,6 +1823,7 @@ const unsigned char* _Opt escape_sequences_decode_opt(const unsigned char* p, un
 }
 
 #ifdef TEST
+#include "unit_test.h"
 
 void token_list_remove_get_test()
 {
@@ -1698,20 +1831,20 @@ void token_list_remove_get_test()
     struct token_list r = {0};
     try
     {
-    struct token* _Opt _Owner pnew = calloc(1, sizeof * pnew);
+        struct token* _Opt _Owner pnew = calloc(1, sizeof * pnew);
         if (pnew == NULL) throw;
         
-        token_list_add(&list, pnew); //lint 33 33 33
-        r = token_list_remove_get(&list, pnew, pnew); //lint 30 30
-    assert(list.head == NULL);
-    assert(list.tail == NULL);
+        token_list_add(&list, pnew); //lint 35 
+        r = token_list_remove_get(&list, pnew, pnew); //lint 31 35 31 35 
+        assert(list.head == NULL);
+        assert(list.tail == NULL);
     }
     catch
     {
 
     }
     token_list_destroy(&r);
-}
+} //lint 29
 
 void token_list_remove_get_test2()
 {
@@ -1722,15 +1855,15 @@ void token_list_remove_get_test2()
         struct token* _Owner _Opt pnew1 = calloc(1, sizeof * pnew1);
         if (pnew1 == NULL) throw;
 
-        token_list_add(&list, pnew1); //lint 33 33 33
+        token_list_add(&list, pnew1); //35 35 35 35 35 35 35
         struct token* _Owner _Opt pnew2 = calloc(1, sizeof * pnew2);
         if (pnew2 == NULL) throw;
 
-        token_list_add(&list, pnew2); //lint 33 33 33 
+        token_list_add(&list, pnew2); //lint 35 35
 
-        r = token_list_remove_get(&list, pnew1, pnew1); //lint 30 30  
-        assert(list.head == pnew2); //lint 30 
-        assert(list.tail == pnew2); //lint 30
+        r = token_list_remove_get(&list, pnew1, pnew1); //lint 31 35 31 35
+        assert(list.head == pnew2); //
+        assert(list.tail == pnew2); //
     }
     catch
     {
@@ -1740,5 +1873,92 @@ void token_list_remove_get_test2()
     token_list_destroy(&r);
 }
 
+static enum token_type parse_number_test_helper(const char* lexeme)
+{
+    char suffix[4] = { 0 };
+    char errmsg[100] = { 0 };
+    return parse_number(lexeme, suffix, errmsg);
+}
+
+static bool parse_number_suffix_test_helper(const char* lexeme, const char* expected_suffix)
+{
+    char suffix[4] = { 0 };
+    char errmsg[100] = { 0 };
+
+    if (parse_number(lexeme, suffix, errmsg) == TK_NONE)
+        return false;
+
+    return strncmp(suffix, expected_suffix, sizeof suffix) == 0;
+}
+
+void parse_number_test()
+{
+    /*
+      https://github.com/thradams/cake/issues/307
+      these are valid pp-numbers but they are not valid constants
+    */
+    assert(parse_number_test_helper("0x123e+1") == TK_NONE);
+    assert(parse_number_test_helper("1e+") == TK_NONE);
+    assert(parse_number_test_helper("1e") == TK_NONE);
+    assert(parse_number_test_helper("123abc") == TK_NONE);
+    assert(parse_number_test_helper("0x") == TK_NONE);
+    assert(parse_number_test_helper("0xG") == TK_NONE);
+    assert(parse_number_test_helper("1.2.3") == TK_NONE);
+    assert(parse_number_test_helper("1e+2.3") == TK_NONE);
+
+    /*the binary exponent is not optional in a hexadecimal floating constant*/
+    assert(parse_number_test_helper("0x1p") == TK_NONE);
+    assert(parse_number_test_helper("0x1.8") == TK_NONE);
+
+    assert(parse_number_test_helper("0b") == TK_NONE);
+    assert(parse_number_test_helper("0b2") == TK_NONE);
+    assert(parse_number_test_helper("08") == TK_NONE);
+    assert(parse_number_test_helper("1uu") == TK_NONE);
+
+    /*valid constants*/
+    assert(parse_number_test_helper("0x123e") == TK_COMPILER_HEXADECIMAL_CONSTANT);
+    assert(parse_number_test_helper("0xFFULL") == TK_COMPILER_HEXADECIMAL_CONSTANT);
+    assert(parse_number_test_helper("0x1p+1") == TK_COMPILER_HEXADECIMAL_FLOATING_CONSTANT);
+    assert(parse_number_test_helper("0x1.8p3") == TK_COMPILER_HEXADECIMAL_FLOATING_CONSTANT);
+    assert(parse_number_test_helper("052") == TK_COMPILER_OCTAL_CONSTANT);
+    assert(parse_number_test_helper("100") == TK_COMPILER_DECIMAL_CONSTANT);
+    assert(parse_number_test_helper("1e+1") == TK_COMPILER_DECIMAL_FLOATING_CONSTANT);
+    assert(parse_number_test_helper("1.5e-3f") == TK_COMPILER_DECIMAL_FLOATING_CONSTANT);
+    assert(parse_number_test_helper(".5e2") == TK_COMPILER_DECIMAL_FLOATING_CONSTANT);
+
+    /*digit separators*/
+    assert(parse_number_test_helper("1'00'00") == TK_COMPILER_DECIMAL_CONSTANT);
+    assert(parse_number_test_helper("0b1010'10") == TK_COMPILER_BINARY_CONSTANT);
+    assert(parse_number_test_helper("0xAB'CD") == TK_COMPILER_HEXADECIMAL_CONSTANT);
+
+    /*microsoft suffixes i8 i16 i32 i64 normalized to the standard ones*/
+    assert(parse_number_suffix_test_helper("1i8", ""));
+    assert(parse_number_suffix_test_helper("1i16", ""));
+    assert(parse_number_suffix_test_helper("1i32", ""));
+    assert(parse_number_suffix_test_helper("1i64", "LL"));
+    assert(parse_number_suffix_test_helper("1I64", "LL"));
+
+    assert(parse_number_suffix_test_helper("1ui64", "ULL"));
+    assert(parse_number_suffix_test_helper("1Ui64", "ULL"));
+    assert(parse_number_suffix_test_helper("1uI64", "ULL"));
+    assert(parse_number_suffix_test_helper("1UI64", "ULL"));
+    assert(parse_number_suffix_test_helper("1ui8", "U"));
+    assert(parse_number_suffix_test_helper("1ui16", "U"));
+    assert(parse_number_suffix_test_helper("1ui32", "U"));
+
+    assert(parse_number_suffix_test_helper("0x1ui64", "ULL"));
+    assert(parse_number_suffix_test_helper("0b1ui64", "ULL"));
+    assert(parse_number_suffix_test_helper("01ui64", "ULL"));
+    assert(parse_number_suffix_test_helper("0x8a44000000000040Ui64", "ULL"));
+
+    /*the microsoft suffix must be complete, and it is the last one*/
+    assert(parse_number_test_helper("1i") == TK_NONE);
+    assert(parse_number_test_helper("1i6") == TK_NONE);
+    assert(parse_number_test_helper("1i1") == TK_NONE);
+    assert(parse_number_test_helper("1i64u") == TK_NONE);
+    assert(parse_number_test_helper("1ui64u") == TK_NONE);
+    assert(parse_number_test_helper("1i64i64") == TK_NONE);
+    assert(parse_number_test_helper("1lli64") == TK_NONE);
+}
 
 #endif

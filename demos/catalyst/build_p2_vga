@@ -60,7 +60,7 @@ cd ..
 cd cake
 ./build_all  $* VGA CR_ON_LF COLOR_4 OPTIMIZE MHZ_200
 cp $LCCDIR/source/cake/src/catalina/cake.bin ../image/bin/cake.bin
-cp CAKECONF.H ../image/CAKECONF.H
+cp cake.jsn ../image/cake.jsn
 cp hello_99.c ../image/hello_99.c
 cd ..
 

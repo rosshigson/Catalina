@@ -6,8 +6,50 @@ var model = {};
 
 var on_edited_timer = -1; // setTimeout(myGreeting, 3000);
 
-// Pattern: filename:line:col:   e.g. main.c:17:11:
-var OUTPUT_LOCATION_RE = /^([^\s:]+\.c(?:pp)?):(\d+):(\d+):/;
+// Pattern: filename:line:col:   e.g. main.c:17:11: or c:/main.c:8:23:
+// The optional [A-Za-z]: prefix covers Windows drive-letter paths, whose
+// own colon would otherwise be consumed by the [^\s:]+ filename match.
+var OUTPUT_LOCATION_RE = /^([A-Za-z]:)?([^\s:]+\.c(?:pp)?):(\d+):(\d+):/;
+
+let useServer = false;
+
+function toggleServerMode()
+{
+    useServer = document.getElementById('serverMode').checked;
+    // Optionally recompile if you want an immediate switch
+    // OnCompileButton();
+}
+
+function httpPost(url, data, callback)
+{
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', url, true);
+    xhr.setRequestHeader('Content-Type', 'text/plain');
+    xhr.onreadystatechange = function ()
+    {
+        if (xhr.readyState === 4)
+        {
+            if (xhr.status === 200) callback(null, xhr.responseText);
+            else callback(new Error('HTTP ' + xhr.status), null);
+        }
+    };
+    xhr.send(data);
+}
+
+function httpGet(url, callback)
+{
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.onreadystatechange = function ()
+    {
+        if (xhr.readyState === 4)
+        {
+            if (xhr.status === 200) callback(null, xhr.responseText);
+            else callback(new Error('HTTP ' + xhr.status), null);
+        }
+    };
+    xhr.send();
+}
 
 // Sets the output element's HTML and wraps each line in a <div>.
 // Lines matching file:line:col: become clickable and jump the editor.
@@ -32,8 +74,8 @@ function setOutputHtml(htmlContent)
 
         if (match)
         {
-            var lineNum = parseInt(match[2], 10);
-            var colNum = parseInt(match[3], 10);
+            var lineNum = parseInt(match[3], 10);
+            var colNum = parseInt(match[4], 10);
             result += '<div class="output-line output-location"'
                 + ' data-line="' + lineNum + '"'
                 + ' data-col="' + colNum + '"'
@@ -109,32 +151,34 @@ function validate(model)
             end_col = end_col - line_start;
             start_col = start_col - line_start;
 
-            var nn = ouputlines[i].split(":");
-            if (nn.length >= 4)
+            var s = ouputlines[i];
+            // filename:line:col: severity: message
+            // The filename may be a Windows drive-letter path (c:/main.c),
+            // whose own colon would otherwise be mistaken for the filename
+            // terminator, so it's matched and skipped explicitly.
+            var locMatch = /^(?:[A-Za-z]:)?[^\s:]+\.c(?:pp)?:(\d+):(\d+):\s*([^:]+):\s*(.*)$/.exec(s);
+
+            if (locMatch)
             {
-                let severity_str = nn[3].trim();
+                const line = parseInt(locMatch[1], 10);
+                const severity_str = locMatch[3].trim();
+                const message = locMatch[4].trim();
+
                 var severity = monaco.MarkerSeverity.Info;
                 if (severity_str.startsWith("warning"))
                     severity = monaco.MarkerSeverity.Warning;
                 else if (severity_str.startsWith("error"))
                     severity = monaco.MarkerSeverity.Error;
 
-                var message = "";
-                for (var k = 4; k < nn.length; k++)
-                {
-                    message += nn[k];
-                }
-
-                const line = parseInt(nn[1]);
                 markers.push({
-                    message: severity_str + ":" + message,
+                    message: severity_str + ": " + message,
                     severity: severity,
-                    startLineNumber: line,//range.startLineNumber,
-                    startColumn: start_col,//range.startColumn,
-                    endLineNumber: line,//range.endLineNumber,
-                    endColumn: end_col + 1 //model.getLineLength(line) + 1//range.endColumn,
+                    startLineNumber: line,
+                    startColumn: start_col,
+                    endLineNumber: line,
+                    endColumn: end_col + 1
                 });
-            }          
+            }
         }
     }
 
@@ -216,39 +260,57 @@ function Run()
     var coloredHtml = convert.toHtml(text);
     setOutputHtml(coloredHtml);
 }
-
-
 function OnCompileButton()
 {
     var element = document.getElementById('output');
     if (element) element.innerHTML = "";
     outputEditor.setValue("");
-    var outputLanguage = -2;// document.getElementById("outtype").value;
 
     var options = document.getElementById("options").value;
-
     var target = document.getElementById("target").value;
     options += " -target=" + target;
 
-    if (outputLanguage == 0)
-        options += " -E";
-
     var source = inputEditor.getValue();
-    var ot = CompileText(options, source);
 
-    // CompileText writes plain text into #output; read it back as HTML then re-render clickable
-    var rawHtml = element ? element.innerHTML : "";
-
-    if (model)
+    if (useServer)
     {
-        validate(model);
+        httpPost('/build', options + "\n" + source, function (err, res)
+        {
+            if (err)
+            {
+                setOutputHtml("Build error: " + err.message);
+                return;
+            }
+
+            var data;
+            try { data = JSON.parse(res); }
+            catch (e) { setOutputHtml("Bad response: " + res); return; }
+
+            // diagnostics → output panel (with ANSI colour)
+            var convert = new Filter();
+            var coloredHtml = convert.toHtml(data.output || "");
+            setOutputHtml(coloredHtml);
+
+            // transformed source → output editor (right panel)
+            console.log("build code length:", (data.code || "").length, "output length:", (data.output || "").length);
+            outputEditor.setValue(data.code || "");
+
+            if (model) validate(model);
+        });
     }
-
-    // Re-render with clickable lines (colors from CompileText are already in innerHTML)
-    setOutputHtml(rawHtml);
-
-    outputEditor.setValue(ot);
+    else
+    {
+        // Original client‑side mode (WebAssembly)
+        var outputLanguage = -2;
+        if (outputLanguage == 0) options += " -E";
+        var ot = CompileText(options, source);
+        var rawHtml = element ? element.innerHTML : "";
+        if (model) validate(model);
+        setOutputHtml(rawHtml);
+        outputEditor.setValue(ot);
+    }
 }
+
 
 function OnChangeSelectionSample(index)
 {

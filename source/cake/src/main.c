@@ -45,7 +45,7 @@ int main(int argc, char** argv)
     return;
 #endif
 
-    printf("Cake " CAKE_VERSION " (%s)\n", get_platform(CAKE_COMPILE_TIME_SELECTED_TARGET)->name);
+    printf("Cake " CAKE_VERSION " (%s)\n", get_platform(TARGET_DEFAULT)->name);
 
     if (argc < 2)
     {
@@ -95,13 +95,13 @@ int main(int argc, char** argv)
 #endif
 
 #if defined(__CATALYST__)
-   if (result == EXIT_FAILURE) {
-      setenv("_EXIT_CODE", "1", 1);
-   }
-   else {
-      setenv("_EXIT_CODE", "0", 1);
-   }
-   _waitms(1000);
+    if (result == EXIT_FAILURE) {
+        setenv("_EXIT_CODE", "1", 1);
+    }
+    else {
+        setenv("_EXIT_CODE", "0", 1);
+    }
+    _waitms(1000);
 #endif // defined(__CATALYST__)
 
     return result;

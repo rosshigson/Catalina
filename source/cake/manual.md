@@ -8,6 +8,7 @@ Cake integrates directly into existing build environments:
 
 - On **Windows**, it operates as an extension for MSVC.
 - On **Linux**, it operates as an extension for GCC.
+- On **macOS**, it operates as an extension for Clang.
 
 Where applicable, Cake uses the same command-line flags as GCC and MSVC to minimize friction when integrating into existing projects.
 
@@ -17,14 +18,13 @@ Where applicable, Cake uses the same command-line flags as GCC and MSVC to minim
 
 ### 2.1 Platform Support
 
-Cake runs on Windows (targeting MSVC) and Linux (targeting GCC). 
+Cake runs on Windows (targeting MSVC), Linux (targeting GCC), and macOS (targeting Clang).
 Cake can also perform cross-compilation, as long as you provide the headers from the target platform.
 
 ### 2.2 Include Directories
 
-Include directories are specified in a `cakeconf.h` configuration header.
-Cake first searches for this file relative to the source file being compiled. 
-If no local `cakeconf.h` is found, the root `cakeconf.h` from the installation directory is used.
+Include directories are specified in `cake.json`, a configuration file kept
+next to the cake executable. It replaces the former `cakeconf.h` header.
 
 
 **Discovering system include paths manually:**
@@ -41,54 +41,79 @@ On Linux:
 echo | gcc -E -Wp,-v -
 ```
 
-**Sample `cakeconf.h` for Linux:**
+On macOS:
 
-```c
-#ifdef __linux__
-#pragma dir "/usr/lib/gcc/x86_64-linux-gnu/11/include"
-#pragma dir "/usr/local/include"
-#pragma dir "/usr/include/x86_64-linux-gnu"
-#pragma dir "/usr/include"
-#endif
+```
+echo | clang -v -E -
 ```
 
-**Sample `cakeconf.h` for Windows:**
+**Sample `cake.json` for Linux:**
 
-```c
-#ifdef _WIN32
-#pragma dir "C:/Program Files/Microsoft Visual Studio/2022/Professional/VC/Tools/MSVC/14.38.33130/include"
-#pragma dir "C:/Program Files/Microsoft Visual Studio/2022/Professional/VC/Tools/MSVC/14.38.33130/ATLMFC/include"
-#pragma dir "C:/Program Files/Microsoft Visual Studio/2022/Professional/VC/Auxiliary/VS/include"
-#pragma dir "C:/Program Files (x86)/Windows Kits/10/include/10.0.22000.0/ucrt"
-#pragma dir "C:/Program Files (x86)/Windows Kits/10/include/10.0.22000.0/um"
-#pragma dir "C:/Program Files (x86)/Windows Kits/10/include/10.0.22000.0/shared"
-#pragma dir "C:/Program Files (x86)/Windows Kits/10/include/10.0.22000.0/winrt"
-#pragma dir "C:/Program Files (x86)/Windows Kits/10/include/10.0.22000.0/cppwinrt"
-#pragma dir "C:/Program Files (x86)/Windows Kits/NETFXSDK/4.8/include/um"
-#endif
+```json
+{
+  "include_dirs": [
+    "/usr/lib/gcc/x86_64-linux-gnu/11/include",
+    "/usr/local/include",
+    "/usr/include/x86_64-linux-gnu",
+    "/usr/include"
+  ]
+}
 ```
 
-**Per-project configuration:**
+**Sample `cake.json` for Windows:**
 
-Projects can have their own local `cakeconf.h` that includes a shared system-level configuration and adds project-specific paths:
-
-`yourproject\cakeconf.h`:
-
-```c
-// System includes
-#include "C:\Program Files (x86)\cake\cakeconf.h"
-
-// Project-specific includes
-#pragma dir ".\openssl\include"
+```json
+{
+  "include_dirs": [
+    "C:/Program Files/Microsoft Visual Studio/2022/Professional/VC/Tools/MSVC/14.38.33130/include",
+    "C:/Program Files/Microsoft Visual Studio/2022/Professional/VC/Tools/MSVC/14.38.33130/ATLMFC/include",
+    "C:/Program Files/Microsoft Visual Studio/2022/Professional/VC/Auxiliary/VS/include",
+    "C:/Program Files (x86)/Windows Kits/10/include/10.0.22000.0/ucrt",
+    "C:/Program Files (x86)/Windows Kits/10/include/10.0.22000.0/um",
+    "C:/Program Files (x86)/Windows Kits/10/include/10.0.22000.0/shared",
+    "C:/Program Files (x86)/Windows Kits/10/include/10.0.22000.0/winrt",
+    "C:/Program Files (x86)/Windows Kits/10/include/10.0.22000.0/cppwinrt",
+    "C:/Program Files (x86)/Windows Kits/NETFXSDK/4.8/include/um"
+  ]
+}
 ```
+
+**Sample `cake.json` for macOS:**
+
+```json
+{
+  "include_dirs": [
+    "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/21/include",
+    "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include",
+    "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"
+  ]
+}
+```
+
+Unlike the `cakeconf.h` it replaces, `cake.json` is data rather than a
+preprocessed header: it cannot use `#ifdef` to hold several platforms in one
+file, and it cannot `#include` another config. Each installation has its own
+`cake.json`, describing the machine it runs on. To add include directories for
+one project rather than the whole installation, use `-I` on the command line,
+or `#pragma dir` in the source itself.
+
+The cake IDE reads and writes this same file, keeping its own global compiler
+options in it under a `"compile"` object. Both tools share one format, and
+`-auto-config` rewrites only `"include_dirs"`, leaving anything else in the
+file untouched.
 
 ### 2.3 System include paths auto-configuration
 
-The `-auto-config` option generates a root `cakeconf.h` automatically by querying the active compiler environment:
+The `-auto-config` option fills in `cake.json`'s `"include_dirs"` automatically
+by querying the active compiler environment:
 
 ```
 cake -auto-config
 ```
+
+On Windows this reads the `INCLUDE` variable, so it must be run from a Visual
+Studio Developer Command Prompt. On Linux and macOS it reads the search list
+reported by `gcc -v -E` / `clang -v -E`.
 
 ---
 
@@ -105,12 +130,12 @@ cake [options] source1.c [source2.c ...]
 ```
 cake source.c
 ```
-Compiles `source.c` and writes the C89 output to `/[default-target]/source.c`.
+Compiles `source.c` and writes the C89 output to `./<target>/source.c`, where `<target>` is the platform Cake was built for (e.g. `./macos_arm64/source.c`).
 
 ```
-cake -target=X86_msvc source.c
+cake -target=x86_msvc source.c
 ```
-Compiles `source.c` targeting MSVC x86 and writes output to `/X86_msvc/source.c`.
+Compiles `source.c` targeting MSVC x86 and writes output to `./x86_msvc/source.c`.
 
 ```
 cake file.c -o file.cc && cl file.cc
@@ -158,27 +183,50 @@ Generate SARIF diagnostic output files. Compatible with the [Microsoft SARIF Vie
 
 **`-sarif-path <dir>`**  
 Specify the directory for SARIF output. Typical Visual Studio External Tools invocation:  
-`-Wstyle -msvc-output -no-output -sarif -sarif-path "$(SolutionDir).sarif" $(ItemPath)`
+`-w11 -msvc-output -no-output -sarif -sarif-path "$(SolutionDir).sarif" $(ItemPath)`
 
 **`-msvc-output`**  
-Format diagnostic output to be compatible with the Visual Studio IDE error parser.
+Format diagnostic output to be compatible with the Visual Studio IDE error parser. Same as `-fdiagnostics-format=msvc` plus `-fdiagnostics-color=never`.
+
+**`-fdiagnostics-format=<format>`**  
+Select how the position of each diagnostic is printed. Valid formats:
+
+| Format | Output |
+|---|---|
+| `gcc` (default) | `file.c:1:2: warning 10: message` |
+| `msvc` | `file.c(1,2): warning 10: message` |
+| `ide` | `file.c:1:2: warning 10: message` |
+
+Both shapes are understood by Visual Studio and by Visual Studio Code. The file being compiled is printed by name only; files reached through `#include` are printed with their full path.
 
 **`-fdiagnostics-color=never`**  
 Disable ANSI color codes in diagnostic output. Same as GCC.
 
 ### 4.3 Diagnostic Options
 
-**`-W<number>`**  
-Enable warning number `<number>`. See the [Warnings Reference](warnings.html).
+| Option | Effect |
+|---|---|
+| `-w<number>` | enable warning number `<number>`, e.g. `-w2`. See the [Warnings Reference](diagnostics.html) |
+| `-wd<number>` | disable warning number `<number>`, e.g. `-wd2` |
+| `-wall` / `-Wall` | enable all warnings |
 
-**`-Wno-<number>`**  
-Disable warning number `<number>`.
+**Disabled by default**  
+Most warnings are on unless `-wd<number>` turns them off, but a few are off
+until asked for:
 
-**`-Wall`**  
-Enable all warnings.
+| Number | Warning |
+|---|---|
+| `2` | unused variable |
+| `6` | unused function parameter |
+| `11` | style |
+| `33` | nullable pointer flow check |
+| `35` | nullable pointer flow check |
+| `83` | parameter set but not used |
+| `84` | variable set but not used |
 
-**`-disable-assert`**  
-Disable Cake's built-in `assert` statement extension and revert to standard macro behavior.
+**`-Werror`**  
+Report every enabled warning as an error. Notes are not affected, and warnings that are disabled stay disabled. Because they become errors, warnings coming from included headers are no longer suppressed, and any occurrence makes the compilation fail.
+
 
 ### 4.4 Target Options
 
@@ -187,14 +235,18 @@ Set the compilation target. Controls integer sizes, alignment, and the style of 
 
 Available targets:
 
-- `x86_x64_gcc` — Linux x86-64, GCC output
-- `x86_msvc` — Windows x86, MSVC output
-- `x64_msvc` — Windows x64, MSVC output
-- `catalina` — Catalina C compiler
-- `ccu8` — Embedded / custom target
+| Name | Platform | Output compiler |
+|---|---|---|
+| `default` | the platform Cake itself was built for (same as omitting `-target`) | — |
+| `x86_x64_gcc` | Linux x86-64 | GCC |
+| `x86_msvc` | Windows x86 | MSVC |
+| `x64_msvc` | Windows x64 | MSVC |
+| `macos_arm64` | macOS arm64 (Apple Silicon) | Clang |
+| `catalina` | Catalina | Catalina C compiler |
+| `ccu8` | Embedded / custom | — |
 
 **`-auto-config`**  
-Generate a `cakeconf.h` header file configured for the current system.
+Generate `cake.json` with the include directories of the current system.
 
 ### 4.5 Analysis Options
 
@@ -207,28 +259,41 @@ Treat string literals as `const char[]` rather than `char[]`.
 ### 4.6 Style and Formatting Options
 
 **`-style=<name>`**  
-Set the naming and formatting convention enforced by style warnings (`-Wstyle` / `-w011`).
-When enabled, Cake checks identifier casing, brace placement, and spacing against the chosen guide.
+Select the coding style checked by diagnostic 11 (style). Passing `-style` turns diagnostic 11 on as a note; `-style=none` turns it off. Valid names: `none`, `cake`, `gnu`, `microsoft`.
 
-Available styles:
+**`-format`**  
+Reformat the file's spacing, braces, `else` placement and indentation to match `-style` (defaults to `cake`) and print the result instead of compiling.
 
-**`cake`** — The Cake default style. Snake_case identifiers. Allman brace placement: both function-body and control-flow `{` appear on their own line, indented. `}` always on its own line.
+**`-format-lines=<first>:<last>`**  
+Restrict `-format` to the given line range.
 
-**`gnu`** — GNU coding standards. Snake_case identifiers. Allman brace placement, same as `cake`.
+The built-in styles:
 
-**`microsoft`** — Microsoft style guide. PascalCase for types and functions. Allman brace placement: `{` on its own line for both function bodies and control-flow blocks.
+| | `cake` | `gnu` | `microsoft` |
+|---|---|---|---|
+| Function-body `{` | own line (Allman) | own line (Allman) | own line (Allman) |
+| Control-flow `{` | own line (Allman) | own line (Allman) | own line (Allman) |
+| `else` | new line | new line | new line |
+| Pointer `*` | next to the type: `int* p` | next to the name: `int *p` | next to the name: `int *p` |
+| Indentation | 4 spaces | tabs | 4 spaces |
+| struct / enum names | snake_case | camelCase | PascalCase |
+| Function names | snake_case | camelCase | PascalCase |
+| Globals, locals, parameters, members | snake_case | snake_case | PascalCase |
+| Enumerators | UPPERCASE | UPPERCASE | UPPERCASE |
+| Spacing rules (below) | on | off | off |
 
-**`llvm`** — LLVM coding standards. PascalCase for types and functions, camelCase for variables. K&R brace placement: `{` on the same line as the controlling statement or function signature, preceded by a space.
+In every style `}` must be on its own line. Indentation must be tabs only or spaces only, and with spaces a multiple of the indent width.
 
-**`google`** — Google C++ style guide (C-compatible subset). PascalCase for types and functions. K&R brace placement: `{` on the same line.
+Spacing rules, checked when the style enables them:
 
-**`chromium`** — Chromium style guide (derives from Google). PascalCase for types and functions. K&R brace placement: `{` on the same line.
-
-**`mozilla`** — Mozilla coding style. PascalCase for types, camelCase for functions and variables. Mixed brace placement: function-body `{` on its own line (Allman); control-flow `{` on the same line (K&R).
-
-**`webkit`** — WebKit code style guidelines. PascalCase for types, camelCase for functions and variables. Mixed brace placement: function-body `{` on its own line (Allman); control-flow `{` on the same line (K&R).
-
-In all styles, `}` must appear on its own line.
+| Rule | Example |
+|---|---|
+| one space after `,` | `f(a, b)` |
+| no space before `;` | `return x;` |
+| one space between a keyword and `(` | `if (x)` |
+| no space between a callee and `(` | `f(x)` |
+| one space on each side of a binary operator | `a + b` |
+| one declarator per declaration | `int i; int j;` rather than `int i, j;` |
 
 ### 4.7 Using cake inside Visual Studio
 Use cake as Custom Build Tool for a specific file.c
@@ -344,15 +409,19 @@ Standard reference documents:
 
 `restrict` is parsed and type-checked but stripped from the generated C89 output.
 
+<!-- runnable -->
+
 ```c
 void f(const char* restrict s);
 int main() { f(""); }
 ```
-<button onclick="Try(this)">try</button>
+
 
 ### 7.2 Variably-Modified (VM) Types and Variable-Length Arrays
 
 **VM type pointer:**
+
+<!-- runnable -->
 
 ```c
 #include <stdlib.h>
@@ -365,9 +434,11 @@ int main() {
     free(p);
 }
 ```
-<button onclick="Try(this)">try</button>
+
 
 **VLA as 2D function parameter:**
+
+<!-- runnable -->
 
 ```c
 #include <stdio.h>
@@ -389,12 +460,13 @@ int main(void) {
     print_matrix(r, c, m);
 }
 ```
-<button onclick="Try(this)">try</button>
 
 
 Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n683.htm
 
 ### 7.3 Flexible Array Members
+
+<!-- runnable -->
 
 ```c
 #include <stdio.h>
@@ -417,13 +489,15 @@ int main() {
     free(p);
 }
 ```
-<button onclick="Try(this)">try</button>
+
 
 The size of a structure with a flexible array member is computed as if the member were omitted, except that additional trailing padding may be present.
 
 ### 7.4 `static` and Type Qualifiers in Array Declarators
 
 The `static` keyword in array declarators is parsed and checked. Passing `NULL`, `nullptr`, or an array smaller than the declared minimum is a diagnostic.
+
+<!-- runnable -->
 
 ```c
 #include <stdlib.h>
@@ -439,7 +513,7 @@ int main() {
     F(b);              /* ok */
 }
 ```
-<button onclick="Try(this)">try</button>
+
 
 ### 7.5 Hexadecimal Floating Constants
 
@@ -447,9 +521,66 @@ int main() {
 double d = 0x1p+1;
 ```
 
-Cake converts hexadecimal floating-point literals to decimal representation using `strtod` followed by `snprintf`. This conversion may introduce minor precision loss.
+Cake has no way to emit a hexadecimal floating constant in C89 output, so it
+converts the literal to a decimal one:
+
+```c
+double a = 0x1p+1;                    /* becomes  a = 2.0;    */
+double b = 0x1.5555555555555p-2;      /* becomes  b = 0.33333333333333331; */
+double c = 0x1p-1074;                 /* becomes  c = 4.9406564584124654e-324; */
+```
+
+For `float` and `double` the conversion is **lossless**: the decimal Cake writes
+is guaranteed to read back as the exact same value, bit for bit. The same holds
+for ordinary decimal constants, which are re-emitted in normalized form - and
+because the form chosen is the *shortest* one that round-trips, the output stays
+readable:
+
+```c
+double g = 0.1;      /* stays   g = 0.1;    not 0.10000000000000001 */
+float  f = 0.1f;     /* stays   f = 0.1f;   not 0.100000001490116119384765625 */
+double h = 1.0/3.0;  /* becomes h = 0.3333333333333333; */
+```
+
+The printer is an implementation of **Grisu2**:
+
+> Florian Loitsch, *Printing Floating-Point Numbers Quickly and Accurately with
+> Integers*, PLDI 2010. <https://doi.org/10.1145/1806596.1806623>
+> - [paper (PDF)](https://www.cs.tufts.edu/~nr/cs257/archive/florian-loitsch/printf.pdf)
+
+Useful cross-references when reading `cake_dtoa_shortest` in `src/object.c`:
+
+- RapidJSON, the same variant, well commented:
+  <https://github.com/Tencent/rapidjson/blob/master/include/rapidjson/internal/dtoa.h>
+- The author's reference implementation, Grisu2 and Grisu3:
+  <https://github.com/google/double-conversion>
+
+Grisu2 guarantees the round-trip but not minimality: for roughly one value in a
+thousand it emits one digit more than strictly necessary. It never emits a wrong
+one. Guaranteed-shortest output needs Grisu3 or Ryu, which both require a bignum
+fallback path.
+
+The one case where precision *can* be lost is `long double` on targets where it
+is wider than 64 bits (the 80-bit x87 format gcc and clang use on x86). There
+Cake falls back to the host's `snprintf`, and the value has in any case already
+passed through the host's own `long double`. Do not rely on the exact value of a
+`long double` constant beyond `double` precision.
+
+
+#### Infinity and NaN
+
+Infinity and NaN have no literal form in C. When a constant expression folds to
+one of them, Cake emits the same construct the standard headers use - an
+overflowing product, cast to the wanted type:
+
+```c
+double d = INFINITY;    /* becomes  d = ((float)(1e+300 * 1e+300)); */
+double n = NAN;         /* becomes  n = ((float)((1e+300 * 1e+300) * 0.0)); */
+```
 
 ### 7.6 Compound Literals
+
+<!-- runnable -->
 
 ```c
 struct s { int i; };
@@ -463,11 +594,13 @@ int f(void) {
     return p == q && q->i == 1;
 }
 ```
-<button onclick="Try(this)">try</button>
+
 
 Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n716.htm
 
 ### 7.7 Designated Initializers
+
+<!-- runnable -->
 
 ```c
 int main() {
@@ -476,11 +609,12 @@ int main() {
     struct point p = { .y = 2, .x = 3 };
 }
 ```
-<button onclick="Try(this)">try</button>
 
 Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n494.pdf
 
 ### 7.8 Declarations in `for` Loop Initializers
+
+<!-- runnable -->
 
 ```c
 int main() {
@@ -490,9 +624,11 @@ int main() {
     }
 }
 ```
-<button onclick="Try(this)">try</button>
+
 
 ### 7.9 `inline` Functions
+
+<!-- runnable -->
 
 ```c
 inline int sum(int a, int b) { return a + b; }
@@ -501,7 +637,7 @@ int main(void) {
     int r = sum(1, 2);
 }
 ```
-<button onclick="Try(this)">try</button>
+
 
 Inline functions in Cake are equivalent to static, since Cake does 
 not currently perform function inlining.
@@ -518,6 +654,8 @@ LISTING(..listing.dir)
 
 ### 7.11 `__func__` Predefined Identifier
 
+<!-- runnable -->
+
 ```c
 #include <stdio.h>
 int main() {
@@ -525,9 +663,11 @@ int main() {
 }
 ```
 
-<button onclick="Try(this)">try</button>
+
 
 ### 7.12 Variadic Macros
+
+<!-- runnable -->
 
 ```c
 #include <stdio.h>
@@ -538,11 +678,12 @@ int main() {
 }
 ```
 
-<button onclick="Try(this)">try</button>
 
 Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n707.htm
 
 ### 7.13 `_Bool`
+
+<!-- runnable -->
 
 ```c
 int main(void) {
@@ -550,7 +691,6 @@ int main(void) {
 }
 ```
 
-<button onclick="Try(this)">try</button>
 
 ### 7.14 Line Comments
 
@@ -570,18 +710,22 @@ C99 `//` line comments are implemented.
 
 ### 8.1 `_Static_assert` / `static_assert`
 
+<!-- runnable -->
+
 ```c
 int main() {
     _Static_assert(1 == 1, "error");
 }
 ```
-<button onclick="Try(this)">try</button>
+
 
 `_Static_assert` is aliased to `static_assert` in C23.
 
 Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1330.pdf
 
 ### 8.2 Anonymous Structures and Unions
+
+<!-- runnable -->
 
 ```c
 struct v {
@@ -597,7 +741,7 @@ int main() {
     v1.w.k = 5;  /* valid */
 }
 ```
-<button onclick="Try(this)">try</button>
+
 
 Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1406.pdf
 
@@ -621,6 +765,8 @@ Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1478.htm
 
 ### 8.5 `_Generic` Type-Generic Expressions
 
+<!-- runnable -->
+
 ```c
 #include <math.h>
 
@@ -632,27 +778,31 @@ Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1478.htm
 
 int main(void) { cbrt(1.0); }
 ```
-<button onclick="Try(this)">try</button>
+
 
 Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1441.htm
 
 ### 8.6 Unicode Character Constants (`u''`, `U''`)
 
+<!-- runnable -->
+
 ```c
 int i  = U'ç';
 int i2 = u'ç';
 ```
-<button onclick="Try(this)">try</button>
+
 
 > **Note:** Cake assumes source files are UTF-8 encoded.
 
 ### 8.7 UTF-8 String Literals (`u8"..."`)
 
+<!-- runnable -->
+
 ```c
 char* s1 = u8"maçã";
 char* s2 = u8"maca";
 ```
-<button onclick="Try(this)">try</button>
+
 
 > **Note:** Cake assumes source files are UTF-8 encoded.
 
@@ -660,12 +810,14 @@ Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1488.htm
 
 ### 8.8 `_Alignof` / `alignof`
 
+<!-- runnable -->
+
 ```c
 int main() {
     int align = alignof(int);
 }
 ```
-<button onclick="Try(this)">try</button>
+
 
 `_Alignof` became `alignof` in C23.
 
@@ -693,33 +845,40 @@ The use of VLA is discouraged.
 **VM types** (`int (*p)[n]`) are **mandatory** in all conforming C23 implementations. 
 Cake supports VM type pointers and translates them to C89-compatible output.
 
+
+<!-- runnable -->
+
 ```c
 /* VM type pointer - mandatory in C23 */
 void foo(int n, double (*x)[n]) {
     (*x)[0] = 1.0;
 }
 ```
-<button onclick="Try(this)">try</button>
+
 
 Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2778.pdf
 
 ### 9.2 `static_assert` — Single-Argument Form
+
+<!-- runnable -->
 
 ```c
 int main(void) {
     static_assert(1 == 2);   /* no message argument required */
 }
 ```
-<button onclick="Try(this)">try</button>
+
 
 ### 9.3 `u8` Character Prefix
+
+<!-- runnable -->
 
 ```c
 int main() {
     unsigned char c = u8'~';
 }
 ```
-<button onclick="Try(this)">try</button>
+
 
 Reference: https://open-std.org/JTC1/SC22/WG14/www/docs/n2418.pdf
 
@@ -727,16 +886,20 @@ Reference: https://open-std.org/JTC1/SC22/WG14/www/docs/n2418.pdf
 
 In C23, calling an undeclared function is a constraint violation:
 
+<!-- runnable -->
+
 ```c
 int main() {
     func();   /* error in C23 */
 }
 ```
-<button onclick="Try(this)">try</button>
+
 
 Reference: https://www.open-std.org/JTC1/SC22/WG14/www/docs/n2841.htm
 
 ### 9.5 Unnamed Parameters in Function Definitions
+
+<!-- runnable -->
 
 ```c
 int f(int);
@@ -745,7 +908,7 @@ int f(int) {   /* unnamed parameter is valid */
     return 0;
 }
 ```
-<button onclick="Try(this)">try</button>
+
 
 > **Note:** TODO add placeholder name in the C89 output.
 
@@ -753,16 +916,20 @@ Reference: https://open-std.org/JTC1/SC22/WG14/www/docs/n2480.pdf
 
 ### 9.6 Digit Separators
 
+<!-- runnable -->
+
 ```c
 int main() {
     int a = 1000'00;
 }
 ```
-<button onclick="Try(this)">try</button>
+
 
 Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2626.pdf
 
 ### 9.7 Binary Literals
+
+<!-- runnable -->
 
 ```c
 #define X  0b1010
@@ -772,9 +939,11 @@ int main() {
     int b = 0B1010;
 }
 ```
-<button onclick="Try(this)">try</button>
+
 
 ### 9.8 `nullptr` Constant
+
+<!-- runnable -->
 
 ```c
 int main() {
@@ -783,22 +952,26 @@ int main() {
     typeof(nullptr) p3 = nullptr;
 }
 ```
-<button onclick="Try(this)">try</button>
+
 
 Reference: https://open-std.org/JTC1/SC22/WG14/www/docs/n3042.htm
 
 ### 9.9 `true` and `false` as First-Class Keywords
+
+<!-- runnable -->
 
 ```c
 int main() {
     bool b = true;
 }
 ```
-<button onclick="Try(this)">try</button>
+
 
 Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2935.pdf
 
 ### 9.10 Empty Initializer `{}`
+
+<!-- runnable -->
 
 ```c
 int main() {
@@ -806,13 +979,15 @@ int main() {
     x = (struct X){};
 }
 ```
-<button onclick="Try(this)">try</button>
+
 
 > **Note** Empty initializer can be used initialize VLAs
 
 Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2900.htm
 
 ### 9.11 `auto` Type Deduction
+
+<!-- runnable -->
 
 ```c
 static auto a = 3.5;
@@ -822,11 +997,13 @@ double A[3] = { 0 };
 auto pA = A;
 auto qA = &A;
 ```
-<button onclick="Try(this)">try</button>
+
 
 Reference: https://open-std.org/JTC1/SC22/WG14/www/docs/n3007.htm
 
 ### 9.12 `typeof` / `typeof_unqual`
+
+<!-- runnable -->
 
 ```c
 #define SWAP(a, b) \
@@ -839,11 +1016,13 @@ int main() {
     SWAP(a, b);
 }
 ```
-<button onclick="Try(this)">try</button>
+
 
 Reference: https://open-std.org/JTC1/SC22/WG14/www/docs/n2927.htm
 
 ### 9.13 `constexpr`
+
+<!-- runnable -->
 
 ```c
 #include <stdio.h>
@@ -860,11 +1039,13 @@ int main() {
     printf("%f %c", PI, ch);
 }
 ```
-<button onclick="Try(this)">try</button>
+
 
 Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3018.htm
 
-### 9.14 Enhancements to Enumerations (Typed Enums)
+### 9.14 Improved and enhancements to Enumerations (Typed Enums)
+
+<!-- runnable -->
 
 ```c
 enum X : short { A };
@@ -873,21 +1054,65 @@ int main() {
     enum X x = A;
 }
 ```
-<button onclick="Try(this)">try</button>
 
-> **Note** TODO Missing some details.
 
-Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3030.htm
+Reference: 
+https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3030.htm
+
+Improved enumerations
+Reference: 
+https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3029.htm
+
+<!-- runnable -->
+
+```c
+//https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3029.htm
+
+enum a {
+	a0 = 0xFFFFFFFFFFFFFFFFULL
+};
+
+int main () {}
+```
+
 
 ### 9.15 Attributes (`[[...]]`)
 
 Cake supports the C23 double-bracket attribute syntax. Recognized standard attributes:
 
-**`[[fallthrough]]`** *(Partial — parsed; enforcement pending)*  
-Suppresses the fallthrough diagnostic on a switch case.
+**`[[fallthrough]]`** *(Supported)*  
+Warns (`-w88`) about a `case`/`default` label reached by falling through a statement that doesn't end with `break`/`return`/`continue`/`goto`. Write `[[fallthrough]];` as the last statement before the label to mark it intentional; grouped empty labels (`case 1: case 2:`) never warn. The attribute itself must be immediately followed by a `case`/`default` label, or it is flagged as misplaced.
+
+<!-- runnable -->
+
+```c
+void g(void);
+void h(void);
+
+void f(int n) {
+    switch (n) {
+    case 1:
+    case 2:          /* grouped labels, no warning */
+        g();
+        [[fallthrough]];
+    case 3:
+        h();
+        break;
+    case 4:
+        g();          /* warning: unannotated fall-through */
+    case 5:
+        break;
+    }
+}
+
+int main(void) {}
+```
 
 **`[[deprecated]]`** *(Supported)*  
 Emits a warning when the annotated entity is used. Compile with `-w03`.
+
+
+<!-- runnable -->
 
 ```c
 [[deprecated]] void f2(void) {}
@@ -899,7 +1124,6 @@ int main(void) {
 }
 ```
 
-<button onclick="Try(this)">try</button>
 
 
 **`[[maybe_unused]]`** *(Supported)*  
@@ -912,6 +1136,8 @@ void f([[maybe_unused]] int arg1, int arg2) {}
 **`[[nodiscard]]`** *(Supported — optional message argument not yet implemented)*  
 Emits a warning when the return value of the annotated function is discarded.
 
+<!-- runnable -->
+
 ```c
 struct [[nodiscard]] error_info { int error; };
 struct error_info enable_safety(void);
@@ -921,7 +1147,7 @@ void test(void) {
 }
 ```
 
-<button onclick="Try(this)">try</button>
+
 
 **`[[noreturn]]`** *(Supported)*  
 Replaces C11 `_Noreturn`.
@@ -932,6 +1158,8 @@ Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2335.pdf
 
 ### 9.16 `__has_attribute` / `__has_include`
 
+<!-- runnable -->
+
 ```c
 #if __has_c_attribute(fallthrough)
 #  warning Attribute supported
@@ -941,10 +1169,10 @@ Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2335.pdf
 #  warning Header found
 #endif
 ```
-<button onclick="Try(this)">try</button>
-
 
 ### 9.17 `#warning` Directive
+
+<!-- runnable -->
 
 ```c
 int main() {
@@ -952,13 +1180,15 @@ int main() {
 }
 ```
 
-<button onclick="Try(this)">try</button>
+
 
 
 Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2686.pdf
 
 ### 9.18 `#embed` Directive
 
+
+<!-- runnable -->
 
 ```c
 #include <stdio.h>
@@ -972,11 +1202,13 @@ int main() {
 }
 ```
 
-<button onclick="Try(this)">try</button>
+
 
 > **Note** Some details are not implemented yet.
 
 ### 9.19 `#elifdef` / `#elifndef`
+
+<!-- runnable -->
 
 ```c
 #define Y
@@ -989,9 +1221,11 @@ int main() {
 #  define VERSION 3
 #endif
 ```
-<button onclick="Try(this)">try</button>
+
 
 ### 9.20 `__VA_OPT__`
+
+<!-- runnable -->
 
 ```c
 #define F(...)    f(0 __VA_OPT__(,) __VA_ARGS__)
@@ -1007,13 +1241,14 @@ int main() {
     G(a);
 }
 ```
-<button onclick="Try(this)">try</button>
+
 
 Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3033.htm
 
 ### 9.21 `_BitInt(N)` — Bit-Precise Integers
 
 **Not implemented yet**
+
 
 ```c
 int main() {
@@ -1036,6 +1271,8 @@ Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3037.pdf
 
 ### 9.24 Compound Literals with Storage Specifier
 
+<!-- runnable -->
+
 ```c
 void F(int* p) {}
 
@@ -1043,7 +1280,7 @@ int main() {
     F((static int[]){1, 2, 3, 0});
 }
 ```
-<button onclick="Try(this)">try</button>
+
 
 Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3038.htm
 
@@ -1055,6 +1292,8 @@ These features are from the current C2Y working draft. Support status is noted f
 
 ### 10.1 Octal Literals with `0o` / `0O` Prefix
 
+<!-- runnable -->
+
 ```c
 static_assert(0o52 == 052);
 static_assert(0O52 == 42);
@@ -1063,11 +1302,12 @@ int main() {
     int i = 0o52;
 }
 ```
-<button onclick="Try(this)">try</button>
 
 Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3353.htm
 
 ### 10.2 Case Range Expressions
+
+<!-- runnable -->
 
 ```c
 #include <stdio.h>
@@ -1082,13 +1322,14 @@ void f(int n) {
     }
 }
 ```
-<button onclick="Try(this)">try</button>
 
 Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3370.htm
 
 ### 10.3 `#def` / `#enddef` Multi-Line Macro Blocks
 
 This feature is implemented in Cake as an experimental extension while its inclusion in C2Y is evaluated.
+
+<!-- runnable -->
 
 ```c
 /* Use -E to observe expansion */
@@ -1102,13 +1343,15 @@ This feature is implemented in Cake as an experimental extension while its inclu
 foo(1)
 foo(2)
 ```
-<button onclick="Try(this)">try</button>
+
 
 Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3524.txt
 
 ### 10.4 `_Countof` Operator
 
 Returns the number of elements in the outermost dimension of an array type.
+
+<!-- runnable -->
 
 ```c
 int main() {
@@ -1118,15 +1361,15 @@ int main() {
 }
 ```
 
-<button onclick="Try(this)">try</button>
+
 
 **Cake extension:** `_Countof` is additionally defined for enum types, returning the number of enumerators. This is not part of C2Y.
 
+<!-- runnable -->
 ```c
 enum E { A, B, C, D, E, F };
 static_assert(_Countof(enum E) == 6);
 ```
-<button onclick="Try(this)">try</button>
 
 
 Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3369.pdf
@@ -1142,6 +1385,8 @@ Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3369.pdf
 - Execution order is **reverse** — the last `_Defer` encountered in a scope runs first.
 - `_Defer` statements that are never reached are never executed.
 
+<!-- runnable -->
+
 ```c
 #include <stdlib.h>
 
@@ -1152,10 +1397,11 @@ int main() {
     /* buf is freed AFTER use_buffer returns */
 }
 ```
-<button onclick="Try(this)">try</button>
 
 
 **Reverse execution order:**
+
+<!-- runnable -->
 
 ```c
 int main() {
@@ -1171,13 +1417,15 @@ int main() {
     return r;   /* returns 20 */
 }
 ```
-<button onclick="Try(this)">try</button>
+
 
 Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3734.pdf
 
 ### 10.6 `if` Declarations
 
 A declaration can appear in the initializer clause of an `if` statement, scoping the declared variable to the entire `if`/`else` chain.
+
+<!-- runnable -->
 
 ```c
 #include <stdio.h>
@@ -1205,13 +1453,15 @@ int main()
    }
 }
 ```
-<button onclick="Try(this)">try</button>
+
 
 Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3388.htm
 
 ### 10.7 `typename` in `_Generic`
 
 Allows type names as the controlling expression in `_Generic`.
+
+<!-- runnable -->
 
 ```c
 int main() {
@@ -1221,11 +1471,13 @@ int main() {
     static_assert(_Generic(typeof(p), const int* const: 1));
 }
 ```
-<button onclick="Try(this)">try</button>
+
 
 Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3260.pdf
 
 ### 10.8 `__COUNTER__` Predefined Macro
+
+<!-- runnable -->
 
 ```c
 /* Use -E to observe expansion */
@@ -1234,12 +1486,13 @@ X(__COUNTER__)   /* 0 0 */
 X(__COUNTER__)   /* 1 1 */
 ```
 
-<button onclick="Try(this)">try</button>
 
 
 Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3457.htm
 
 ### 10.9 Local Functions
+
+<!-- runnable -->
 
 ```c
 int main() {
@@ -1247,12 +1500,13 @@ int main() {
     return dup(1);
 }
 ```
-<button onclick="Try(this)">try</button>
+
 
 Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3678.pdf
 
 ### 10.10 Function Literals
 
+<!-- runnable -->
 ```c
 #include <stdio.h>
 
@@ -1260,11 +1514,13 @@ int main() {
     printf("%d", (static int (void)){ return 1; }());
 }
 ```
-<button onclick="Try(this)">try</button>
+
 
 Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3679.pdf
 
 ### 10.11 Statement Expressions
+
+<!-- runnable -->
 
 ```c
 #include <stdio.h>
@@ -1276,7 +1532,7 @@ int main() {
     printf("%d", maxint(1, 2));
 }
 ```
-<button onclick="Try(this)">try</button>
+
 
 Reference: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3643.htm
 
@@ -1292,6 +1548,8 @@ a ?: b
 
 is equivalent to `a ? a : b`, but `a` is evaluated only once.
 
+<!-- runnable -->
+
 ```c
 #include <stdio.h>
 
@@ -1304,7 +1562,6 @@ int main() {
 }
 ```
 
-<button onclick="Try(this)">try</button>
 
 **Pointer fallback — most common usage:**
 
@@ -1335,6 +1592,16 @@ int r = a ?: b ?: c;   /* 7 */
 
 Reference: https://www.open-std.org/JTC1/SC22/WG14/www/docs/n3804.txt
 
+**In preprocessor expressions:** the Elvis operator is also accepted in `#if`/`#elif` constant expressions:
+
+```c
+#define VALUE 0
+
+#if VALUE ?: 42
+/* VALUE is falsy, so this branch is taken with value 42 */
+#endif
+```
+
 ### 10.13 `static_assert` as an Expression
 
 In C2Y, `static_assert` is extended to work not only as a declaration 
@@ -1348,6 +1615,8 @@ or GNU compound statement expressions.
 With this change, `static_assert` can be used naturally in combination with the comma operator.
 
 **Example — bounds-checked bit-shift macro:**
+
+<!-- runnable -->
 
 ```c
 #include <limits.h>
@@ -1364,13 +1633,14 @@ int main() {
 }
 ```
 
-<button onclick="Try(this)">try</button>
 
 **Disambiguation rule:** A block item consisting solely of `static_assert(...)` followed
 by a semicolon is always treated as a `static_assert` *declaration*, preserving 
 backward compatibility. `static_assert` is only treated as an *expression* when it 
 appears in an expression context (e.g., as an operand of the comma operator, 
 or as the controlling expression of `_Generic`).
+
+<!-- runnable -->
 
 ```c
 void func() {
@@ -1379,7 +1649,7 @@ void func() {
 }
 ```
 
-<button onclick="Try(this)">try</button>
+
 
 **Using `_Generic` to produce an integer constant expression:**
 
@@ -1387,6 +1657,8 @@ Because the comma operator and `void` are not permitted in integer
 constant expressions, the result of the comma-based form cannot be 
 used where an integer constant expression is required (e.g., as an array size). 
 A `_Generic` workaround can be used in those cases:
+
+<!-- runnable -->
 
 ```c
 
@@ -1399,12 +1671,13 @@ A `_Generic` workaround can be used in those cases:
 int arr[BIT(unsigned int, 2)];   /* ok - integer constant expression */
 ```
 
-<button onclick="Try(this)">try</button>
 
 Reference: https://open-std.org/jtc1/sc22/wg14/www/docs/n3715.pdf
 
 
 Cake extensions `static_debug`, `assert_state`, `override_state` also works in the same way.
+
+<!-- runnable -->
 
 ```c
 #pragma safety enable
@@ -1415,13 +1688,12 @@ void func() {
     p = p ? (static_debug(p), p) : 0;
 }
 ```
-<button onclick="Try(this)">try</button>
 
----
+
 
 ## 11. Cake Language Extensions
 
-### 11.1 Built-in `assert`
+### 11.1 Built-in `_Assert`
 
 In Cake, `assert` is a built-in statement rather than a macro because flow analysis need it even in release builds.
 The effect of `assert(expression)` is equivalent of `if (!(expression)) exit(1);`.
@@ -1432,18 +1704,14 @@ void list_push_back(struct list* list, struct item* _Owner p_item)
     if (list->head == NULL) {
         list->head = p_item;
     } else {
-        assert(list->tail != nullptr);       /* narrows: tail is non-null below */
-        assert(list->tail->next == nullptr); /* narrows: tail->next is null below */
+        _Assert(list->tail != nullptr);       /* narrows: tail is non-null below */
+        _Assert(list->tail->next == nullptr); /* narrows: tail->next is null below */
         list->tail->next = p_item;
     }
     list->tail = p_item;
 }
 ```
 
-<button onclick="Try(this)">try</button>
-
-
-To disable this built-in behavior and use a standard macro instead, pass `-disable-assert`.
 
 ### 11.2 `try` / `throw` / `catch`
 
@@ -1451,6 +1719,7 @@ Cake provides a structured local-jump mechanism for error handling. `try`/`catch
 jump - it cannot propagate across function boundaries. This is by design.
 
 
+<!-- runnable -->
 
 ```c
 extern int error;
@@ -1468,6 +1737,7 @@ int main() {
     }
 }
 ```
+
 > **Note** The `catch` block is optional. `throw` transfers control to the end of the nearest enclosing `try` block.
 
 <button onclick="Try(this)">try</button>
@@ -1496,6 +1766,8 @@ If the result compares equal to zero (or is a null pointer), control transfers t
 the nearest enclosing `catch` block. 
 Otherwise the value is returned unchanged. Applicable to any scalar expression.
 
+<!-- runnable -->
+
 ```c
 int f(void);
 int* get_ptr(void);
@@ -1511,9 +1783,10 @@ int main() {
 }
 ```
 
-<button onclick="Try(this)">try</button>
 
 Combined with ownership:
+
+<!-- runnable -->
 
 ```c
 #pragma safety enable
@@ -1532,14 +1805,16 @@ int main() {
 }
 ```
 
-<button onclick="Try(this)">try</button>
+
 
 > **Note** this is a very experimental feature
 
 ### 11.4 `#pragma dir`
 
 Adds a path to the list of directories searched for include files. 
-This is the pragma used in `cakeconf.h` to declare system and project include directories.
+This pragma declares an include directory from inside a source file.
+System include directories come from `cake.json` instead (see 2.2), but
+`#pragma dir` remains available for project-specific paths.
 
 ```c
 #pragma dir "C:/Program Files (x86)/Windows Kits/10/include/10.0.22000.0/cppwinrt"
@@ -1551,6 +1826,8 @@ This is the pragma used in `cakeconf.h` to declare system and project include di
 In Cake, `offsetof` is a built-in operator rather than a macro.  Similar of GCC `__builtin_offsetof`.
 This allows its use in constant expressions and avoids the undefined 
 behavior associated with traditional macro implementations.
+
+<!-- runnable -->
 
 ```c
 #include <stdio.h>
@@ -1569,8 +1846,6 @@ int main() {
     printf("m3 offset = %zu\n", offsetof(struct S, m3));
 }
 ```
-
-<button onclick="Try(this)">try</button>
 
 
 Cake also supports compile time macro based `offsetof` by creating exceptions for constant 
@@ -1592,6 +1867,8 @@ Cake provides compile-time type introspection functions that return boolean inte
 
 **`_is_function(T)`** — true for function types
 
+<!-- runnable -->
+
 ```c
 int main()
 {
@@ -1602,8 +1879,6 @@ int main()
   static_assert(_is_pointer(b));
 }
 ```
-
-<button onclick="Try(this)">try</button>
 
 
 ### 11.7 Object Lifetime Checks (Ownership)

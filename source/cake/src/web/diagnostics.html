@@ -1,0 +1,3025 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+    <link rel="stylesheet" href="default.min.css">
+    <script src="highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <link rel="stylesheet" href="style.css" />
+    <title>Cake C Compiler</title>
+    <meta name="description" content="Cake C Compiler">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <script>
+    // Playground launcher
+    function launchPlayground(sourceCode) {
+      var link = "./playground.html?code=" + encodeURIComponent(btoa(sourceCode))
+               + "&to=" + encodeURI("-2")
+               + "&options=";
+      window.open(link, '_blank');
+    }
+
+    // Copy to clipboard
+    async function copyToClipboard(text, btnElement) {
+      try {
+        await navigator.clipboard.writeText(text);
+        const originalText = btnElement.innerText;
+        btnElement.innerText = "Copied!";
+        setTimeout(() => {
+          btnElement.innerText = originalText;
+        }, 1500);
+      } catch (err) {
+        btnElement.innerText = "Error";
+        setTimeout(() => {
+          btnElement.innerText = "Copy";
+        }, 1000);
+      }
+    }
+
+    // Check if a code block is marked as runnable
+    // Supports:
+    // - HTML comment <!-- runnable --> immediately before <pre>
+    // - data-runnable="true" attribute on <pre>
+    // - class="runnable" on <pre> (legacy)
+    function isRunnable(preElement) {
+      // Check attribute or class
+      if (preElement.hasAttribute('data-runnable') && preElement.getAttribute('data-runnable') === 'true') return true;
+      if (preElement.classList && preElement.classList.contains('runnable')) return true;
+      
+      // Check previous sibling for comment
+      let prev = preElement.previousSibling;
+      while (prev && prev.nodeType === Node.TEXT_NODE && prev.textContent.trim() === '') {
+        prev = prev.previousSibling;
+    }
+      if (prev && prev.nodeType === Node.COMMENT_NODE) {
+        const commentText = prev.textContent.trim().toLowerCase();
+        if (commentText === 'runnable' || commentText === ' runnable ') {
+          // Optionally remove the comment so it doesn't clutter the DOM
+          prev.remove();
+          return true;
+        }
+      }
+      return false;
+    }
+
+    // Wrap each code block in a frame, add Copy (always) and Run (if runnable)
+    function enhanceCodeSnippets() {
+      const codeBlocks = Array.from(document.querySelectorAll('pre code.language-c'));
+      
+      for (const codeElement of codeBlocks) {
+        const preElement = codeElement.parentElement;
+        if (!preElement) continue;
+        if (preElement.closest('.code-frame')) continue;
+        
+        const codeText = codeElement.innerText;
+        const runnable = isRunnable(preElement);
+        
+        // Find original "try" button to remove
+        let tryButton = null;
+        let tryButtonContainer = null;
+        let sibling = preElement.nextElementSibling;
+        while (sibling && !tryButton) {
+          if (sibling.tagName === 'BUTTON' && sibling.getAttribute('onclick')?.includes('Try(this)')) {
+            tryButton = sibling;
+            tryButtonContainer = sibling.parentElement;
+            break;
+          }
+          const btn = sibling.querySelector('button[onclick*="Try(this)"]');
+          if (btn) {
+            tryButton = btn;
+            tryButtonContainer = sibling;
+            break;
+          }
+          sibling = sibling.nextElementSibling;
+        }
+        
+        // Save position before DOM changes
+        const parent = preElement.parentNode;
+        const nextSibling = preElement.nextSibling;
+        
+        // Create frame
+        const frameDiv = document.createElement('div');
+        frameDiv.className = 'code-frame';
+        
+        // Move pre element into frame
+        preElement.remove();
+        frameDiv.appendChild(preElement);
+        
+        // Create action buttons
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = 'code-actions';
+        
+        // Copy button (always)
+        const copyBtn = document.createElement('button');
+        copyBtn.innerText = 'Copy';
+        copyBtn.title = 'Copy code to clipboard';
+        copyBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          copyToClipboard(codeText, copyBtn);
+        });
+        actionsDiv.appendChild(copyBtn);
+        
+        // Run button (only if marked runnable)
+        if (runnable) {
+          const runBtn = document.createElement('button');
+          runBtn.innerText = 'Run';
+          runBtn.title = 'Run in Playground';
+          runBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            launchPlayground(codeText);
+          });
+          actionsDiv.appendChild(runBtn);
+        }
+        
+        frameDiv.appendChild(actionsDiv);
+        
+        // Insert frame
+        if (parent) {
+          parent.insertBefore(frameDiv, nextSibling);
+        } else {
+          const article = document.querySelector('article');
+          if (article) article.appendChild(frameDiv);
+        }
+        
+        // Remove original try button and empty container
+        if (tryButton) {
+          tryButton.remove();
+          if (tryButtonContainer && tryButtonContainer.children.length === 0 && !tryButtonContainer.innerText.trim()) {
+            tryButtonContainer.remove();
+          }
+        }
+      }
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      enhanceCodeSnippets();
+      if (typeof hljs !== 'undefined' && hljs.highlightAll) {
+        hljs.highlightAll();
+      }
+    });
+    
+  </script>
+
+</head>
+<body>
+    <article style="max-width: 40em; margin:auto">
+    <p><a href="index.html">Home</a> | <a href="manual.html">Manual</a> | <a href="ownership.html">Static Analysis</a> | <a href="playground.html">Playground</a></p>
+<article>
+<h1>Cake - C23 and Beyond</h1>
+<ul>
+<li>
+<a href="#toc_0">Warnings</a>
+<ul>
+<li>
+<a href="#toc_1">1 #warning directive (preprocessor)</a>
+</li>
+<li>
+<a href="#toc_2">2 Unused variable</a>
+</li>
+<li>
+<a href="#toc_3">3 Deprecated</a>
+</li>
+<li>
+<a href="#toc_4">4 Enum conversion issue</a>
+</li>
+<li>
+<a href="#toc_5">5 token sliced</a>
+</li>
+<li>
+<a href="#toc_6">6 Unused function parameter (disabled by default)</a>
+</li>
+<li>
+<a href="#toc_7">7 Declarator hides previous declaration</a>
+</li>
+<li>
+<a href="#toc_8">8 typeof used on array parameter</a>
+</li>
+<li>
+<a href="#toc_9">9 ignoring the result of _Owner type</a>
+</li>
+<li>
+<a href="#toc_10">10 Expression result not used</a>
+</li>
+<li>
+<a href="#toc_11">11 Style issue (disabled by default)</a>
+</li>
+<li>
+<a href="#toc_12">12  multi-line comment</a>
+</li>
+<li>
+<a href="#toc_13">13 Line slicing occurred</a>
+</li>
+<li>
+<a href="#toc_14">14 String was sliced (not emitted)</a>
+</li>
+<li>
+<a href="#toc_15">15 Discarded qualifiers</a>
+</li>
+<li>
+<a href="#toc_16">16 (unused)</a>
+</li>
+<li>
+<a href="#toc_17">17 Uninitialized variable (not emitted)</a>
+</li>
+<li>
+<a href="#toc_18">18 Returning address of local variable (not emitted)</a>
+</li>
+<li>
+<a href="#toc_19">19 Missing address-of operator (not emitted)</a>
+</li>
+<li>
+<a href="#toc_20">20 Array indirection issue</a>
+</li>
+<li>
+<a href="#toc_21">21 (unused)</a>
+</li>
+<li>
+<a href="#toc_22">22 Using object without being owner (not emitted)</a>
+</li>
+<li>
+<a href="#toc_23">23 Using temporary owner incorrectly (flow) (not emitted)</a>
+</li>
+<li>
+<a href="#toc_24">24 Move-assignment to non-owner (not emitted)</a>
+</li>
+<li>
+<a href="#toc_25">25 Assigning non-owner to owner (flow) (not emitted)</a>
+</li>
+<li>
+<a href="#toc_26">26 Discarding an owner (flow)</a>
+</li>
+<li>
+<a href="#toc_27">27 (unused)</a>
+</li>
+<li>
+<a href="#toc_28">28 Non-null flow violation (not emitted)</a>
+</li>
+<li>
+<a href="#toc_29">29 pointed object was not released (flow)</a>
+</li>
+<li>
+<a href="#toc_30">30 Uninitialized value (flow)</a>
+</li>
+<li>
+<a href="#toc_31">31 Lifetime has ended (flow)</a>
+</li>
+<li>
+<a href="#toc_32">32 Object already moved (flow)</a>
+</li>
+<li>
+<a href="#toc_33">33 Null dereference (flow)</a>
+</li>
+<li>
+<a href="#toc_34">34 (not used flow)</a>
+</li>
+<li>
+<a href="#toc_35">35 Nullable converted to non-nullable (flow)</a>
+</li>
+<li>
+<a href="#toc_36">36 Division by zero (flow)</a>
+</li>
+<li>
+<a href="#toc_37">37 Division by zero (without flow analysis)</a>
+</li>
+<li>
+<a href="#toc_38">38 (not used)</a>
+</li>
+<li>
+<a href="#toc_39">39 Passing null as array</a>
+</li>
+<li>
+<a href="#toc_40">40 Incompatible enum types</a>
+</li>
+<li>
+<a href="#toc_41">41 Multi-character literal</a>
+</li>
+<li>
+<a href="#toc_42">42 Out-of-bounds access</a>
+</li>
+<li>
+<a href="#toc_43">43 Assignment to array parameter</a>
+</li>
+<li>
+<a href="#toc_44">44 Conditional is constant (currently disabled)</a>
+</li>
+<li>
+<a href="#toc_45">45 Suspicious switch statement</a>
+</li>
+<li>
+<a href="#toc_46">46 Unusual null pointer constant</a>
+</li>
+<li>
+<a href="#toc_47">47 sizeof applied to array argument</a>
+</li>
+<li>
+<a href="#toc_48">48 const object not initialized</a>
+</li>
+<li>
+<a href="#toc_49">49 implicit conversion of nullptr constant to &#39;bool&#39;</a>
+</li>
+<li>
+<a href="#toc_50">50 Implicitly unsigned literal</a>
+</li>
+<li>
+<a href="#toc_51">51 Integer overflow</a>
+</li>
+<li>
+<a href="#toc_52">52 Invalid array size</a>
+</li>
+<li>
+<a href="#toc_53">53 (unused)</a>
+</li>
+<li>
+<a href="#toc_54">54 Incompatible types</a>
+</li>
+<li>
+<a href="#toc_55">55 Unused label</a>
+</li>
+<li>
+<a href="#toc_56">56 Redefining builtin macro</a>
+</li>
+<li>
+<a href="#toc_57">57 Unused function</a>
+</li>
+<li>
+<a href="#toc_58">58 Boolean comparison issue</a>
+</li>
+<li>
+<a href="#toc_59">59 Expected warning did not occur</a>
+</li>
+<li>
+<a href="#toc_60">60 Null pointer constant to non-nullable pointer (not emitted)</a>
+</li>
+<li>
+<a href="#toc_61">61 Cast to same type (not emitted)</a>
+</li>
+<li>
+<a href="#toc_62">62 Too many initializers</a>
+</li>
+<li>
+<a href="#toc_63">63 Float out of range</a>
+</li>
+<li>
+<a href="#toc_64">64 Mixed string literal prefixes</a>
+</li>
+<li>
+<a href="#toc_65">65 Signed to unsigned (not implemented)</a>
+</li>
+<li>
+<a href="#toc_66">66 Information note (reserved)</a>
+</li>
+<li>
+<a href="#toc_67">67 compile_assert could not be proven (flow)</a>
+</li>
+<li>
+<a href="#toc_68">68 Unreachable code (flow)</a>
+</li>
+<li>
+<a href="#toc_69">69 _Clear parameter pointee not zeroed at exit (flow)</a>
+</li>
+<li>
+<a href="#toc_70">70 Array index out of bounds (flow)</a>
+</li>
+<li>
+<a href="#toc_71">71 _Out parameter pointee not initialized at exit (flow)</a>
+</li>
+<li>
+<a href="#toc_72">72 Borrowed parameter&#39;s owner consumed at exit (flow)</a>
+</li>
+<li>
+<a href="#toc_73">76 Logical operation on address of string constant</a>
+</li>
+<li>
+<a href="#toc_74">82 Parameter could point to const</a>
+</li>
+<li>
+<a href="#toc_75">83 Parameter set but not used (disabled by default)</a>
+</li>
+<li>
+<a href="#toc_76">84 Variable set but not used (disabled by default)</a>
+</li>
+<li>
+<a href="#toc_77">85 Condition is always true or false (flow) (disabled by default)</a>
+</li>
+<li>
+<a href="#toc_78">73 Unknown escape sequence</a>
+</li>
+<li>
+<a href="#toc_79">74 Constant not exactly representable</a>
+</li>
+<li>
+<a href="#toc_80">75 Pointer to integer conversion</a>
+</li>
+<li>
+<a href="#toc_81">77 Static function declared but not defined</a>
+</li>
+<li>
+<a href="#toc_82">78 Assigning non-owner to owner</a>
+</li>
+<li>
+<a href="#toc_83">79 Temporary owner assigned to non-owner</a>
+</li>
+<li>
+<a href="#toc_84">80 Pointer to owner expected</a>
+</li>
+<li>
+<a href="#toc_85">81 Owner aliased through a non-owner pointer</a>
+</li>
+<li>
+<a href="#toc_86">86 Format specifier mismatch</a>
+</li>
+<li>
+<a href="#toc_87">87 Implicit conversion to enum</a>
+</li>
+<li>
+<a href="#toc_88">88 Unannotated switch fall-through</a>
+</li>
+<li>
+<a href="#toc_89">89 malloc size is not a multiple of the pointee size</a>
+</li>
+<li>
+<a href="#toc_90">90–126 Reserved / unused warnings</a>
+</li>
+<li>
+<a href="#toc_91">127 Unary minus on unsigned</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_92">Errors</a>
+<ul>
+<li>
+<a href="#toc_93">630 Missing terminating &#39;</a>
+</li>
+<li>
+<a href="#toc_94">631 Missing terminating &quot;</a>
+</li>
+<li>
+<a href="#toc_95">632 Missing end of comment</a>
+</li>
+<li>
+<a href="#toc_96">633 Empty character constant</a>
+</li>
+<li>
+<a href="#toc_97">640 _View is the default qualifier</a>
+</li>
+<li>
+<a href="#toc_98">650 Unexpected compiler error</a>
+</li>
+<li>
+<a href="#toc_99">660 Too many arguments</a>
+</li>
+<li>
+<a href="#toc_100">670 Too few arguments</a>
+</li>
+<li>
+<a href="#toc_101">680 Not found</a>
+</li>
+<li>
+<a href="#toc_102">690 No match for generic selection</a>
+</li>
+<li>
+<a href="#toc_103">700 Subscripted value is neither array nor pointer</a>
+</li>
+<li>
+<a href="#toc_104">710 Called object is not function or function pointer</a>
+</li>
+<li>
+<a href="#toc_105">720 Struct member not found</a>
+</li>
+<li>
+<a href="#toc_106">730 Structure or union required</a>
+</li>
+<li>
+<a href="#toc_107">740 Struct is incomplete</a>
+</li>
+<li>
+<a href="#toc_108">750  case label or default not within a switch statement</a>
+</li>
+<li>
+<a href="#toc_109">760 &#39;break&#39; statement not in loop or switch statement</a>
+</li>
+<li>
+<a href="#toc_110">770 &#39;continue&#39; statement not in loop statement</a>
+</li>
+<li>
+<a href="#toc_111">780 Indirection requires pointer operand</a>
+</li>
+<li>
+<a href="#toc_112">790 Invalid token</a>
+</li>
+<li>
+<a href="#toc_113">800 Expected struct type (not emitted)</a>
+</li>
+<li>
+<a href="#toc_114">810 Expected type name (not emitted)</a>
+</li>
+<li>
+<a href="#toc_115">820 Left operand is not arithmetic</a>
+</li>
+<li>
+<a href="#toc_116">830 Right operand is not arithmetic</a>
+</li>
+<li>
+<a href="#toc_117">840 Left operand is not integer</a>
+</li>
+<li>
+<a href="#toc_118">850 Right operand is not integer</a>
+</li>
+<li>
+<a href="#toc_119">860 Invalid type</a>
+</li>
+<li>
+<a href="#toc_120">870 Left operand is not scalar</a>
+</li>
+<li>
+<a href="#toc_121">880 Right operand is not scalar</a>
+</li>
+<li>
+<a href="#toc_122">890 Incompatible pointer types</a>
+</li>
+<li>
+<a href="#toc_123">900 Assignment of function</a>
+</li>
+<li>
+<a href="#toc_124">910 Assignment to array expression</a>
+</li>
+<li>
+<a href="#toc_125">920 Assignment of read-only object</a>
+</li>
+<li>
+<a href="#toc_126">930 lvalue required as left operand of assignment (not emitted)</a>
+</li>
+<li>
+<a href="#toc_127">940 Condition must have scalar type</a>
+</li>
+<li>
+<a href="#toc_128">950 Incompatible types</a>
+</li>
+<li>
+<a href="#toc_129">960 Expected constant expression</a>
+</li>
+<li>
+<a href="#toc_130">970 Unexpected token</a>
+</li>
+<li>
+<a href="#toc_131">980 Cannot combine with previous &#39;long long&#39;</a>
+</li>
+<li>
+<a href="#toc_132">990 Expected declaration</a>
+</li>
+<li>
+<a href="#toc_133">1000 Static/type qualifiers not allowed here</a>
+</li>
+<li>
+<a href="#toc_134">1010 Owner qualifier can only be used with pointers (not emitted)</a>
+</li>
+<li>
+<a href="#toc_135">1020 Redeclaration error</a>
+</li>
+<li>
+<a href="#toc_136">1030 Tag type mismatch with previous declaration</a>
+</li>
+<li>
+<a href="#toc_137">1040 type specifier or qualifier expected</a>
+</li>
+<li>
+<a href="#toc_138">1050 Multiple enum definitions (not emitted)</a>
+</li>
+<li>
+<a href="#toc_139">1060 static_assert failed</a>
+</li>
+<li>
+<a href="#toc_140">1070 override_state error (not emitted)</a>
+</li>
+<li>
+<a href="#toc_141">1080 Static-state analysis failed (not emitted)</a>
+</li>
+<li>
+<a href="#toc_142">1090 Unbalanced attribute</a>
+</li>
+<li>
+<a href="#toc_143">1100 Unexpected end of file (not emitted)</a>
+</li>
+<li>
+<a href="#toc_144">1110 throw used outside try block</a>
+</li>
+<li>
+<a href="#toc_145">1120 void function returning a value</a>
+</li>
+<li>
+<a href="#toc_146">1121 Non-void function missing return value</a>
+</li>
+<li>
+<a href="#toc_147">1130 Argument size smaller than parameter size</a>
+</li>
+<li>
+<a href="#toc_148">1140 Token invalid in preprocessor expression</a>
+</li>
+<li>
+<a href="#toc_149">1150 File not found (preprocessor)</a>
+</li>
+<li>
+<a href="#toc_150">1160 Missing parenthesis</a>
+</li>
+<li>
+<a href="#toc_151">1170 Expression error</a>
+</li>
+<li>
+<a href="#toc_152">1180 Preprocessor error directive</a>
+</li>
+<li>
+<a href="#toc_153">1190 Too few arguments to macro</a>
+</li>
+<li>
+<a href="#toc_154">1191 Too many arguments to macro</a>
+</li>
+<li>
+<a href="#toc_155">1200 jump out of defer</a>
+</li>
+<li>
+<a href="#toc_156">1201 jump over defer</a>
+</li>
+<li>
+<a href="#toc_157">1202 jump over VLA</a>
+</li>
+<li>
+<a href="#toc_158">1210 Missing macro argument</a>
+</li>
+<li>
+<a href="#toc_159">1220 Address of register variable</a>
+</li>
+<li>
+<a href="#toc_160">1230 Operator requires lvalue</a>
+</li>
+<li>
+<a href="#toc_161">1240 Character literal too large</a>
+</li>
+<li>
+<a href="#toc_162">1250 Pragma error (not emitted)</a>
+</li>
+<li>
+<a href="#toc_163">1260 Out of memory</a>
+</li>
+<li>
+<a href="#toc_164">1270 Invalid storage size</a>
+</li>
+<li>
+<a href="#toc_165">1280 Returning owner to non-owner (not emitted)</a>
+</li>
+<li>
+<a href="#toc_166">1290 auto requires a single declarator</a>
+</li>
+<li>
+<a href="#toc_167">1300 Multiple incompatible specifiers</a>
+</li>
+<li>
+<a href="#toc_168">1310 Increment operator cannot be used on owner</a>
+</li>
+<li>
+<a href="#toc_169">1320 Decrement operator cannot be used on owner</a>
+</li>
+<li>
+<a href="#toc_170">1330 Preprocessor division by zero</a>
+</li>
+<li>
+<a href="#toc_171">1340 non-pointer to pointer error</a>
+</li>
+<li>
+<a href="#toc_172">1350 Literal overflow</a>
+</li>
+<li>
+<a href="#toc_173">1360 Character not encodable in one code unit</a>
+</li>
+<li>
+<a href="#toc_174">1370 Multi-character literal error</a>
+</li>
+<li>
+<a href="#toc_175">1380 Invalid token</a>
+</li>
+<li>
+<a href="#toc_176">1390 Invalid argument to _Countof</a>
+</li>
+<li>
+<a href="#toc_177">1400 return used inside defer</a>
+</li>
+<li>
+<a href="#toc_178">1410 Function returns function type</a>
+</li>
+<li>
+<a href="#toc_179">1420 Function returns array type</a>
+</li>
+<li>
+<a href="#toc_180">1430 Label not defined</a>
+</li>
+<li>
+<a href="#toc_181">1440 Duplicate label</a>
+</li>
+<li>
+<a href="#toc_182">1450 Duplicate case label</a>
+</li>
+<li>
+<a href="#toc_183">1560 Array subscript is not an integer</a>
+</li>
+<li>
+<a href="#toc_184">1570 Duplicate default generic association</a>
+</li>
+<li>
+<a href="#toc_185">1780 Multiple default labels in switch</a>
+</li>
+<li>
+<a href="#toc_186">1790 Pointer to floating type</a>
+</li>
+<li>
+<a href="#toc_187">1800 Floating type converted to pointer</a>
+</li>
+<li>
+<a href="#toc_188">1810 nullptr cast error</a>
+</li>
+<li>
+<a href="#toc_189">1820 Macro redefinition (not emitted)</a>
+</li>
+<li>
+<a href="#toc_190">1830 Invalid preprocessing directive</a>
+</li>
+<li>
+<a href="#toc_191">1840 Function cannot be a member</a>
+</li>
+<li>
+<a href="#toc_192">1850 Non-integral enum type</a>
+</li>
+<li>
+<a href="#toc_193">1860 Requires compile-time constant</a>
+</li>
+<li>
+<a href="#toc_194">1870 Outer scope error</a>
+</li>
+<li>
+<a href="#toc_195">1880 Variably modified member</a>
+</li>
+<li>
+<a href="#toc_196">1890 Variably modified type with static storage</a>
+</li>
+<li>
+<a href="#toc_197">1900 typeof on a bit-field</a>
+</li>
+<li>
+<a href="#toc_198">1910 Initialized variable-sized object</a>
+</li>
+<li>
+<a href="#toc_199">1920 Include path too long</a>
+</li>
+<li>
+<a href="#toc_200">1930 Write qualifier on a const pointee</a>
+</li>
+<li>
+<a href="#toc_201">1940 Write qualifier must qualify the pointee</a>
+</li>
+<li>
+<a href="#toc_202">1950 constexpr value not representable</a>
+</li>
+<li>
+<a href="#toc_203">1960 struct/union comparison</a>
+</li>
+<li>
+<a href="#toc_204">1970 Invalid use of void</a>
+</li>
+<li>
+<a href="#toc_205">1980 extern with initializer at block scope</a>
+</li>
+<li>
+<a href="#toc_206">1990 void parameter not alone</a>
+</li>
+<li>
+<a href="#toc_207">2000 Operator cannot be applied</a>
+</li>
+<li>
+<a href="#toc_208">2010 typedef used for function definition</a>
+</li>
+<li>
+<a href="#toc_209">2020 Duplicate type qualifier</a>
+</li>
+<li>
+<a href="#toc_210">2030 typedef missing tag name</a>
+</li>
+<li>
+<a href="#toc_211">2040 Redefinition as typedef</a>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="toc_0">Warnings</h2>
+
+<p>Warnings can be enabled with <code>-w&lt;number&gt;</code> (e.g. <code>-w2</code>) and disabled with
+<code>-wd&lt;number&gt;</code> (e.g. <code>-wd2</code>). <code>-wall</code> enables all of them.</p>
+
+<p>All warning are configurable. Cake has errors, warnings and notes.
+We can make a warning to be a note or error using pragma.</p>
+
+<pre><code class="language-c">#pragma CAKE diagnostic push
+#pragma CAKE diagnostic error 4
+    
+
+    /*
+      4 is not reported as error
+      code..
+    
+    */
+
+#pragma CAKE diagnostic pop
+
+</code></pre>
+
+<h3 id="toc_1">1 #warning directive (preprocessor)</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#warning message
+</code></pre>
+
+<h3 id="toc_2">2 Unused variable</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">// -w02
+void f()
+{
+    int i;    
+}
+</code></pre>
+
+<h3 id="toc_3">3 Deprecated</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">[[deprecated]] void f2() {}
+
+int main(void)
+{
+    f2();
+}
+</code></pre>
+
+<h3 id="toc_4">4 Enum conversion issue</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">enum E1 { A };
+enum E2 { B };
+
+int main(void)
+{
+    enum E1 e = A;
+    return e == B; //warning 4: comparing different enums (enum E1, enum E2)
+}
+</code></pre>
+
+<h3 id="toc_5">5 token sliced</h3>
+
+<h3 id="toc_6">6 Unused function parameter (disabled by default)</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">// -w06
+void f(int i) {}
+</code></pre>
+
+<h3 id="toc_7">7 Declarator hides previous declaration</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">void f() {
+    int i;
+    {
+      int i;
+    }
+}
+</code></pre>
+
+<h3 id="toc_8">8 typeof used on array parameter</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">void f(int a[])
+{
+    typeof(a) p;
+}
+</code></pre>
+
+<h3 id="toc_9">9 ignoring the result of _Owner type</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#pragma safety enable
+int *_Owner f();
+int main()
+{
+  f();  //warning C0009: ignoring the result of _Owner type 
+}
+</code></pre>
+
+<h3 id="toc_10">10 Expression result not used</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main()
+{  
+  int a = 0;
+  a++;
+  
+  a; //warning C0010: expression result not used
+  1; //warning C0010: expression result not used
+ 
+}
+</code></pre>
+
+<h3 id="toc_11">11 Style issue (disabled by default)</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">// -w11
+int main(void) { //warning 11: not following correct brace style {
+    return 0;
+}
+</code></pre>
+
+<h3 id="toc_12">12  multi-line comment</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main()
+{  
+  // \
+  a++; 
+}
+</code></pre>
+
+<h3 id="toc_13">13 Line slicing occurred</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int a \
+   = 1; // warning C0013: unnecessary line-slicing
+}
+</code></pre>
+
+<h3 id="toc_14">14 String was sliced (not emitted)</h3>
+
+<p>Reserved (<code>W_STRING_SLICED</code>). Not emitted by the current compiler.</p>
+
+<h3 id="toc_15">15 Discarded qualifiers</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">char* f(){
+    static const char s[] = &quot;a&quot;;
+    return s; //warning C0015:  discarding const
+}
+</code></pre>
+
+<p>Both operands of <code>?:</code> contribute: per C11 6.5.15p6 the result of a pointer
+conditional is qualified with the qualifiers of <em>both</em> referenced types, so a
+const operand makes the whole result const.</p>
+
+<p><strong>Not reported:</strong> an explicit cast that removes the qualifier
+(<code>g((struct X*)p)</code>). That is legal C -- the cast is the author taking
+responsibility -- so no diagnostic is possible, and none of the const checks
+can see through it.</p>
+
+<!-- runnable -->
+
+<pre><code class="language-c">struct X { int i; };
+struct X* g_ptr;
+
+void f(const struct X* p, int c)
+{
+    struct X* q = c ? p : g_ptr; //warning C0015: discarding const qualifier
+    (void)q;
+}
+</code></pre>
+
+<h3 id="toc_16">16 (unused)</h3>
+
+<h3 id="toc_17">17 Uninitialized variable (not emitted)</h3>
+
+<p>Reserved (<code>W_UNINITIALZED</code>). Not emitted by the current compiler.</p>
+
+<h3 id="toc_18">18 Returning address of local variable (not emitted)</h3>
+
+<p>Reserved (<code>W_RETURN_LOCAL_ADDR</code>). Not emitted by the current compiler.</p>
+
+<h3 id="toc_19">19 Missing address-of operator (not emitted)</h3>
+
+<p>Reserved (<code>W_MUST_USE_ADDRESSOF</code>). Not emitted by the current compiler.</p>
+
+<h3 id="toc_20">20 Array indirection issue</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">void f(int a[])
+{
+    *a =1; // warning C0020: array indirection
+}
+</code></pre>
+
+<h3 id="toc_21">21 (unused)</h3>
+
+<h3 id="toc_22">22 Using object without being owner (not emitted)</h3>
+
+<p>Reserved (<code>W_FLOW_NOT_OWNER</code>). Not emitted by the current compiler.</p>
+
+<h3 id="toc_23">23 Using temporary owner incorrectly (flow) (not emitted)</h3>
+
+<p>Reserved (<code>W_FLOW_USING_TEMPORARY_OWNER</code>). Not emitted by the current compiler.</p>
+
+<h3 id="toc_24">24 Move-assignment to non-owner (not emitted)</h3>
+
+<p>Reserved (<code>W_FLOW_MOVE_ASSIGNMENT_OF_NON_OWNER</code>). Not emitted by the current compiler.</p>
+
+<h3 id="toc_25">25 Assigning non-owner to owner (flow) (not emitted)</h3>
+
+<p>Reserved (<code>W_FLOW_NON_OWNER_TO_OWNER_ASSIGN</code>). Not emitted by the current compiler. The parse-time check for this case is warning 78.</p>
+
+<h3 id="toc_26">26 Discarding an owner (flow)</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">
+#pragma safety enable
+
+void* _Owner _Opt malloc(unsigned long size);
+
+void f(int * _Opt p){}
+
+int main() {
+   f((int*)malloc(1)); //warning C0026: discarding _Owner pointer   
+}
+</code></pre>
+
+<h3 id="toc_27">27 (unused)</h3>
+
+<h3 id="toc_28">28 Non-null flow violation (not emitted)</h3>
+
+<p>Reserved (<code>W_FLOW_NON_NULL</code>). Not emitted by the current compiler.</p>
+
+<h3 id="toc_29">29 pointed object was not released (flow)</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#pragma safety enable
+
+struct X {
+    char* _Owner text; 
+};
+
+void delete_x(struct X *_Owner p) //warning C0029: object pointed by &#39;p&#39; was not released.
+{
+}
+int main() {}
+</code></pre>
+
+<h3 id="toc_30">30 Uninitialized value (flow)</h3>
+
+<p>This warning is issued when a local variable is used before it has 
+been initialized. </p>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#pragma safety enable
+
+void f(int i)
+{
+    int j;
+    if (i) j =1;
+    i = j; //warning C0030: object &#39;j&#39; can be uninitialized
+}
+int main() {}
+
+</code></pre>
+
+<!-- runnable -->
+
+<pre><code class="language-c">
+#pragma safety enable
+
+void* _Owner _Opt malloc(unsigned long size);
+void free(void* _Owner _Opt ptr);
+
+struct X{
+    char* _Owner _Opt p;
+};
+struct X makeX();
+void destroyX([[dtor]]struct X * p){
+  free(p-&gt;p);
+}
+
+int main() {
+    struct X x = makeX();
+    destroyX(&amp;x);
+    destroyX(&amp;x); //double free
+}
+
+</code></pre>
+
+<h3 id="toc_31">31 Lifetime has ended (flow)</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">
+#pragma safety enable
+
+struct X { int i; };
+
+int main() {
+    struct X * _Opt p = 0;
+    {
+      struct X x ={};
+      p = &amp;x;
+    }
+    p-&gt;i = 0; //warning C0031: operator -&gt; applied to &#39;p-&gt;i&#39;: pointed object lifetime has ended (see line ...)
+}
+
+</code></pre>
+
+<p>See <a href="ownership.html">object lifetime</a></p>
+
+<h3 id="toc_32">32 Object already moved (flow)</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">
+#pragma safety enable
+
+void* _Owner _Opt malloc(unsigned long size);
+void free(void* _Owner _Opt ptr);
+
+int main() {
+   void * _Owner _Opt p = malloc(1);
+   void * _Owner _Opt p2 = p;
+   void * _Owner _Opt p3 = p; //warning C0032: object may be already moved
+   free(p2);
+}
+
+</code></pre>
+
+<h3 id="toc_33">33 Null dereference (flow)</h3>
+
+<p>This warning indicates that your code dereferences a potentially null pointer. </p>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#pragma safety enable
+int main()
+{
+  int * _Opt p = 0;
+  *p =1; //warning C0033: possible null pointer dereference &#39;*p&#39;
+}
+</code></pre>
+
+<h3 id="toc_34">34 (not used flow)</h3>
+
+<h3 id="toc_35">35 Nullable converted to non-nullable (flow)</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#pragma safety enable
+
+void f(int *p);
+int main()
+{
+  int * _Opt p = 0;
+  f(p); // warning C0035: passing a possible null pointer &#39;p&#39; to non-nullable pointer parameter
+}
+</code></pre>
+
+<h3 id="toc_36">36 Division by zero (flow)</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#pragma safety enable
+
+void f(int i)
+{
+    if (i &gt; 0)
+     i = 0;
+    else
+     i =1;
+
+    int j = 1/i; //warning C0036: possible division by zero
+}
+</code></pre>
+
+<h3 id="toc_37">37 Division by zero (without flow analysis)</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main()
+{
+    const int i = 0;
+    int j = 1/i; //warning C0037: division by zero
+}
+</code></pre>
+
+<h3 id="toc_38">38 (not used)</h3>
+
+<h3 id="toc_39">39 Passing null as array</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">void f(int a[]){}
+int main(){
+    f(0); //warning C0039:  passing null as array
+}
+
+</code></pre>
+
+<h3 id="toc_40">40 Incompatible enum types</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">enum E1 {A};
+enum E2 {B};
+int main()
+{    
+   enum E1 e = B; //warning C0040:  incompatible types
+}
+</code></pre>
+
+<h3 id="toc_41">41 Multi-character literal</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(void)
+{
+    int i = u&#39;ab&#39;; //warning 41: Unicode character literals may not contain multiple characters.
+    (void)i;
+}
+</code></pre>
+
+<h3 id="toc_42">42 Out-of-bounds access</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main()
+{  
+  int a[2]= {0};
+  a[2] = 1; //warning C0042: index 2 is past the end of the array
+}
+</code></pre>
+
+<h3 id="toc_43">43 Assignment to array parameter</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">void f(int a[]){
+    a = 1; // warning C0043: assignment to array parameter
+}
+</code></pre>
+
+<h3 id="toc_44">44 Conditional is constant (currently disabled)</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main()
+{  
+  if (1) {
+  }
+}
+</code></pre>
+
+<h3 id="toc_45">45 Suspicious switch statement</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main()
+{
+    bool b =1;
+    switch(b){ //warning C0045: switch condition has boolean value
+        case 1:break;
+    }
+}
+
+</code></pre>
+
+<h3 id="toc_46">46 Unusual null pointer constant</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main()
+{
+    int * p = &#39;\0&#39;; //warning C0046: unusual expression/type used as null pointer constant
+}
+</code></pre>
+
+<h3 id="toc_47">47 sizeof applied to array argument</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">void f(int a[])
+{
+    sizeof(a); //warning C0047: sizeof applied to array function parameter
+}
+</code></pre>
+
+<h3 id="toc_48">48 const object not initialized</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main()
+{  
+  const int i;
+}
+</code></pre>
+
+<h3 id="toc_49">49 implicit conversion of nullptr constant to &#39;bool&#39;</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">void f(bool b){}
+int main(){
+    f(nullptr); //warning C0049: implicit conversion of nullptr constant to &#39;bool&#39;
+}
+</code></pre>
+
+<h3 id="toc_50">50 Implicitly unsigned literal</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">
+int main(){
+  long long a = 9223372036854775807;
+  unsigned long long b = 9223372036854775808; // warning C0050: integer literal is too large to be represented in a signed integer type, interpreting as unsigned
+  unsigned long long c = 9223372036854775808ULL;
+}
+
+</code></pre>
+
+<h3 id="toc_51">51 Integer overflow</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">
+int main(){
+  long long a = 9223372036854775807 + 2; //warning C0051: integer overflow
+}
+
+</code></pre>
+
+<h3 id="toc_52">52 Invalid array size</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main()
+{
+    char a[2] = &quot;1234&quot;; // warning C0052: initializer for array is too long
+}
+</code></pre>
+
+<h3 id="toc_53">53 (unused)</h3>
+
+<h3 id="toc_54">54 Incompatible types</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">void f(double * p);
+int main()
+{  
+    int a;
+    f(&amp;a); // warning C0054:  incompatible types
+}
+</code></pre>
+
+<h3 id="toc_55">55 Unused label</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main()
+{  
+  A: //warning C0055: label &#39;A&#39; defined but not used
+}
+</code></pre>
+
+<h3 id="toc_56">56 Redefining builtin macro</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#define __FILE__ 1 //warning C0056: redefining built-in macro
+</code></pre>
+
+<h3 id="toc_57">57 Unused function</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">static void f(){};
+int main()
+{  
+}
+</code></pre>
+
+<h3 id="toc_58">58 Boolean comparison issue</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main()
+{
+    bool b = false;
+    int i = 2;
+    if (b == i) //warning C0058: comparison bool with non bool
+    {
+    }
+}
+</code></pre>
+
+<h3 id="toc_59">59 Expected warning did not occur</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main()
+{
+    bool b = false;
+    bool i = false;
+    if (b == i) //lint 58 warning C0059: warning &#39;C0058&#39; was not recognized
+    {
+    }
+}
+</code></pre>
+
+<h3 id="toc_60">60 Null pointer constant to non-nullable pointer (not emitted)</h3>
+
+<p>Reserved (<code>W_NULLABLE_TO_NON_NULLABLE</code>). Not emitted by the current compiler.</p>
+
+<h3 id="toc_61">61 Cast to same type (not emitted)</h3>
+
+<p>Reserved (<code>W_CAST_TO_SAME_TYPE</code>). Not emitted by the current compiler.</p>
+
+<h3 id="toc_62">62 Too many initializers</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main()
+{  
+  int a[2] = {1, 2, 3};
+}
+</code></pre>
+
+<h3 id="toc_63">63 Float out of range</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main() {
+  float f = 1e300f; //warning C0063: floating constant exceeds range of float
+}
+</code></pre>
+
+<h3 id="toc_64">64 Mixed string literal prefixes</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(void)
+{
+    const char* s = &quot;abc&quot; L&quot;def&quot;; //warning 64: concatenation of string literals with different encoding prefixes
+    (void)s;
+}
+</code></pre>
+
+<h3 id="toc_65">65 Signed to unsigned (not implemented)</h3>
+
+<p>Reserved. The check is not emitted yet.</p>
+
+<h3 id="toc_66">66 Information note (reserved)</h3>
+
+<p>Reserved for informational notes attached to another diagnostic. Not emitted yet.</p>
+
+<h3 id="toc_67">67 compile_assert could not be proven (flow)</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#pragma safety enable
+
+int f();
+
+int main() {
+    int i = f();
+    compile_assert(i == 1); //warning C0067: compile_assert failed: value could be any value, including zero, set at line 5 in &quot;root&quot;
+}
+</code></pre>
+
+<h3 id="toc_68">68 Unreachable code (flow)</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#pragma safety enable
+
+int f() {
+    return 1;
+    return 2; //warning C0068: unreachable code
+}
+</code></pre>
+
+<h3 id="toc_69">69 _Clear parameter pointee not zeroed at exit (flow)</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#pragma safety enable
+
+struct outer { int a; int c; };
+
+void clear_outer_forgets_a_member(_Clear struct outer* p)
+{
+    p-&gt;a = 0;
+    /* forgot p-&gt;c = 0; */
+} //warning C0069: _Clear parameter &#39;p-&gt;c&#39; is not zero at exit (see line 3)
+</code></pre>
+
+<h3 id="toc_70">70 Array index out of bounds (flow)</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#pragma safety enable
+
+int main(int cond) {
+    int a[2];
+    int i;
+    if (cond) i = 2; else i = 3;
+    a[i] = 1; //warning C0070: array index is past the end of the array (size 2)
+}
+</code></pre>
+
+<h3 id="toc_71">71 _Out parameter pointee not initialized at exit (flow)</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#pragma safety enable
+
+struct outer { int a; int c; };
+
+void ctor_outer_forgets_a_member(_Out struct outer* p)
+{
+    p-&gt;a = 1;
+    /* forgot p-&gt;c = ...; */
+} //warning C0071: _Out parameter &#39;p-&gt;c&#39; is possibly not initialized at exit (see line 3)
+</code></pre>
+
+<h3 id="toc_72">72 Borrowed parameter&#39;s owner consumed at exit (flow)</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#pragma safety enable
+
+typedef unsigned long size_t;
+char* _Owner _Opt strdup(const char* s);
+void free(void* _Owner _Opt p);
+
+struct person { char* _Opt _Owner name; };
+
+void set(struct person* p, char* name)
+{
+    free(p-&gt;name);
+    char* _Opt _Owner temp = strdup(name);
+    if (temp == 0) return; //warning C0072: parameter &#39;p-&gt;name&#39; was moved/released here (see line ...) but never reassigned -- only a _Dtor parameter may leave the caller&#39;s object consumed
+    p-&gt;name = temp;
+}
+</code></pre>
+
+<h3 id="toc_73">76 Logical operation on address of string constant</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main()
+{
+    char* pc;
+    pc = &quot;Hello&quot;;
+    if (pc == &quot;Hello&quot;) //warning C0076: logical operation on address of string constant
+    {
+    }
+}
+</code></pre>
+
+<h3 id="toc_74">82 Parameter could point to const</h3>
+
+<p>The pointed object is never written through, and no pointer into it escapes
+somewhere that could write it later, so the parameter can promise more. The
+suggestion applies to every pointer spelling -- <code>const int* p</code>,
+<code>const int a[]</code>, <code>const int (*a)[10]</code>.
+Passing it on to a <code>const</code>-qualified parameter keeps the promise; passing it
+to a non-<code>const</code> one does not.</p>
+
+<p>Assigning to the <em>pointer</em> (<code>p = 0</code>) does not count -- that is about
+<code>T* const p</code>, not about the pointee. Neither does writing through a pointer
+<em>member</em> (<code>p-&gt;buf[0] = &#39;x&#39;</code>), which does not modify <code>*p</code> and stays legal under
+<code>const struct X*</code>. Writing an <em>array</em> member (<code>p-&gt;arr[0] = 1</code>) does count.</p>
+
+<p><strong>Not reported.</strong> The check answers &quot;does anything write through this
+parameter&quot;, not &quot;would <code>const</code> compile&quot;, so it stays quiet whenever it loses
+track of the pointer:</p>
+
+<ul>
+<li>the pointer is copied to another variable (<code>struct X* q = p;</code>) -- writes
+through <code>q</code> are not attributed back to <code>p</code>;</li>
+<li>the pointer goes through an explicit cast (<code>g((struct X*)p)</code>), or is passed
+to a <code>...</code> parameter, or to any destination whose pointee is not <code>const</code>;</li>
+<li>the parameter is <code>_Out</code>, <code>_Dtor</code>, <code>_Clear</code> or <code>_Owner</code>, all of which write
+the pointee by contract;</li>
+<li>the parameter is never dereferenced at all -- a bare <code>(void)p</code> is
+<a href="#6-unused-function-parameter-disabled-by-default">6 Unused function parameter</a>&#39;s
+subject, not this one;</li>
+<li>the only dereference is inside an unevaluated operand -- <code>sizeof(*p)</code>,
+<code>_Countof</code>, <code>_Alignof</code>, or the unselected arm of a <code>_Generic</code> -- which names
+the pointee&#39;s type without touching the object.</li>
+</ul>
+
+<p>The one case that can still produce a <em>wrong</em> suggestion is a pointer stored
+somewhere the assignment checks never visit, such as inside a compound
+literal.</p>
+
+<!-- runnable -->
+
+<pre><code class="language-c">// -w082
+struct X { int i; };
+
+int get_i(struct X* p)
+{
+    return p-&gt;i;
+}
+</code></pre>
+
+<h3 id="toc_75">83 Parameter set but not used (disabled by default)</h3>
+
+<p>The caller already supplied a value, so assigning to the parameter and never
+reading it back makes the assignment dead. <code>x++</code> and <code>x += 1</code> count as a set
+only when their result is discarded -- <code>while (x--)</code> reads it.</p>
+
+<p><strong>Not reported:</strong> the same cases as
+<a href="#84-variable-set-but-not-used-disabled-by-default">84</a> below.</p>
+
+<!-- runnable -->
+
+<pre><code class="language-c">// -w083
+int side(void);
+
+void f(int x)
+{
+    x = side();
+}
+</code></pre>
+
+<h3 id="toc_76">84 Variable set but not used (disabled by default)</h3>
+
+<p>Assigned at least once and never read. A variable that is only <em>initialized</em>
+and never read is reported as <a href="#2-unused-variable">2 Unused variable</a>
+instead. Taking the address of the variable, or declaring it <code>volatile</code>,
+suppresses the warning.</p>
+
+<p><strong>Not reported.</strong> Only the declarator an lvalue <em>names</em> is treated as set, so
+writing through a part of it is a use of the whole:</p>
+
+<ul>
+<li><code>a[0] = 1</code> is a use of <code>a</code>, and <code>s.f = 1</code> a use of <code>s</code>, so neither array nor
+struct is reported even when nothing ever reads it back;</li>
+<li><code>*p = 1</code> is a use of <code>p</code> (it reads the pointer), never a set of it;</li>
+<li><code>sizeof(n)</code> counts as a read, so it suppresses the warning;</li>
+<li><code>&amp;n</code> anywhere suppresses it -- the address escaping means a read can happen
+out of sight;</li>
+<li><code>volatile</code> suppresses it: writing a volatile object is the point.</li>
+</ul>
+
+<!-- runnable -->
+
+<pre><code class="language-c">// -w084
+int side(void);
+
+void f(void)
+{
+    int n = 0;
+    n = side();
+}
+</code></pre>
+
+<h3 id="toc_77">85 Condition is always true or false (flow) (disabled by default)</h3>
+
+<p>The <code>if</code> condition is already decided by what flow analysis knows at that
+point, on every path reaching it -- so one of the two branches can never
+run. A condition whose value differs between paths is not reported.</p>
+
+<p>Off by default: plenty of deliberate code has a decided condition (a guard
+kept for clarity, a test on a build-time macro), and inside a <code>while</code>/<code>do</code>
+body the analysis reasons from the state after one iteration, so a condition
+on a variable that body itself assigns can read as decided when the first
+iteration says otherwise. Enable it with <code>-w085</code> when auditing.</p>
+
+<!-- runnable -->
+
+<pre><code class="language-c">// -w085
+#pragma safety enable
+
+int main() {
+    int i = 1;
+    if (i) //warning C0085: condition is always true
+    {
+    }
+}
+</code></pre>
+
+<h3 id="toc_78">73 Unknown escape sequence</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(void)
+{
+    char c = &#39;\q&#39;; //warning 73: unrecognized character escape sequence &#39;\q&#39;
+    (void)c;
+}
+</code></pre>
+
+<h3 id="toc_79">74 Constant not exactly representable</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(void)
+{
+    float f = 0.1; //warning 74: constant expression is not exactly representable in type &#39;float&#39;
+    (void)f;
+}
+</code></pre>
+
+<h3 id="toc_80">75 Pointer to integer conversion</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(void)
+{
+    int i;
+    int* p = &amp;i;
+    int n = p; //warning 75: pointer to integer conversion
+    (void)n;
+}
+</code></pre>
+
+<h3 id="toc_81">77 Static function declared but not defined</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">static void f(void); //warning 77: static function &#39;f&#39; declared but not defined
+
+int main(void)
+{
+    f();
+}
+</code></pre>
+
+<h3 id="toc_82">78 Assigning non-owner to owner</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#pragma ownership enable
+void free(void* _Owner _Opt p);
+
+int main(void)
+{
+    int i = 0;
+    int* _Owner _Opt p = &amp;i; //warning 78: cannot assign a non-owner to owner
+    free(p);
+}
+</code></pre>
+
+<h3 id="toc_83">79 Temporary owner assigned to non-owner</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#pragma ownership enable
+void* _Owner _Opt malloc(unsigned long size);
+
+int main(void)
+{
+    void* _Opt p = malloc(1); //warning 79: cannot assign a temporary owner to non-owner object
+    (void)p;
+}
+</code></pre>
+
+<h3 id="toc_84">80 Pointer to owner expected</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#pragma ownership enable
+
+void take(int* _Owner _Opt* pp);
+
+int main(void)
+{
+    int* _Opt p = 0;
+    take(&amp;p); //warning 80: pointer to owner expected at argument
+}
+</code></pre>
+
+<h3 id="toc_85">81 Owner aliased through a non-owner pointer</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#pragma ownership enable
+void free(void* _Owner _Opt p);
+void* _Owner _Opt malloc(unsigned long size);
+
+int main(void)
+{
+    void* _Owner _Opt p = malloc(1);
+    void* _Opt* q = &amp;p; //warning 81: owner aliased through a non-owner pointer
+    (void)q;
+    free(p);
+}
+</code></pre>
+
+<h3 id="toc_86">86 Format specifier mismatch</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int printf(const char* fmt, ...);
+
+int main(void)
+{
+    long n = 1;
+    printf(&quot;%d&quot;, n); //warning 86: format for &#39;long&#39; is &#39;%ld&#39;, not &#39;%d&#39;
+}
+</code></pre>
+
+<h3 id="toc_87">87 Implicit conversion to enum</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">enum color { RED, GREEN };
+
+int main(void)
+{
+    enum color c = 1; //warning 87: implicit conversion from &#39;int&#39; to &#39;enum color&#39;: did you mean &#39;GREEN&#39;?
+    (void)c;
+}
+</code></pre>
+
+<h3 id="toc_88">88 Unannotated switch fall-through</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(void)
+{
+    int i = 0;
+    switch (i)
+    {
+    case 0:
+        i++; //warning 88: unannotated fall-through between switch labels; add a &#39;break&#39; or &#39;[[fallthrough]];&#39;
+    case 1:
+        break;
+    }
+}
+</code></pre>
+
+<h3 id="toc_89">89 malloc size is not a multiple of the pointee size</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">void* _Opt malloc(unsigned long size);
+
+int main(void)
+{
+    int* _Opt p = malloc(10); //warning 89: argument to &#39;malloc&#39; is not a multiple of the pointee size (4)
+    (void)p;
+}
+</code></pre>
+
+<h3 id="toc_90">90–126 Reserved / unused warnings</h3>
+
+<h3 id="toc_91">127 Unary minus on unsigned</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(void)
+{
+    unsigned u = 1;
+    unsigned v = -u; //warning 127: unary minus operator applied to unsigned type, result still unsigned
+    (void)v;
+}
+</code></pre>
+
+<h2 id="toc_92">Errors</h2>
+
+<h3 id="toc_93">630 Missing terminating &#39;</h3>
+
+<h3 id="toc_94">631 Missing terminating &quot;</h3>
+
+<h3 id="toc_95">632 Missing end of comment</h3>
+
+<h3 id="toc_96">633 Empty character constant</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(void)
+{
+    char c = &#39;&#39;; //error 633: empty character constant
+}
+</code></pre>
+
+<h3 id="toc_97">640 _View is the default qualifier</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#pragma safety enable
+
+int main() {  
+  int * _View i; //error C0640: invalid qualifier for pointer
+}
+</code></pre>
+
+<h3 id="toc_98">650 Unexpected compiler error</h3>
+
+<p>Some internal error.</p>
+
+<h3 id="toc_99">660 Too many arguments</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">void f(void);
+int main()
+{  
+  f(1);
+}
+</code></pre>
+
+<h3 id="toc_100">670 Too few arguments</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">void f(int i);
+int main()
+{  
+  f();
+}
+</code></pre>
+
+<h3 id="toc_101">680 Not found</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main()
+{  
+   i = 1;
+}
+</code></pre>
+
+<h3 id="toc_102">690 No match for generic selection</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(){
+    int i;
+    _Generic(i, double: 0); // error C0690: no match for generic
+}
+</code></pre>
+
+<h3 id="toc_103">700 Subscripted value is neither array nor pointer</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(){
+    int i;
+    i[0]; //error C0700: subscripted value is neither array nor pointer
+}
+</code></pre>
+
+<h3 id="toc_104">710 Called object is not function or function pointer</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(){
+    int i;
+    i(); // error C0710: called object is not a function or function pointer
+}
+</code></pre>
+
+<h3 id="toc_105">720 Struct member not found</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">struct X{int a;};
+
+int main()
+{
+  struct X x;
+  x.b = 1; //error C0720: member &#39;b&#39; not found in &#39;struct X&#39;
+  return 0;
+}
+</code></pre>
+
+<h3 id="toc_106">730 Structure or union required</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main() {  
+  int a;
+  a.a = 1; // error C0730: structure or union required
+}
+</code></pre>
+
+<h3 id="toc_107">740 Struct is incomplete</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">struct X;
+int main(){
+    struct X x;
+}
+</code></pre>
+
+<h3 id="toc_108">750  case label or default not within a switch statement</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main() {
+ case 1:;
+}
+</code></pre>
+
+<h3 id="toc_109">760 &#39;break&#39; statement not in loop or switch statement</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main() {
+ break;
+}
+</code></pre>
+
+<h3 id="toc_110">770 &#39;continue&#39; statement not in loop statement</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main() {
+ continue;
+}
+</code></pre>
+
+<h3 id="toc_111">780 Indirection requires pointer operand</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main() {
+    int i;
+    *i = 1; //error C0780: indirection requires pointer operand
+}
+</code></pre>
+
+<h3 id="toc_112">790 Invalid token</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#define F(a) ## a //error 790: &#39;##&#39; cannot appear at the beginning of a replacement list
+</code></pre>
+
+<h3 id="toc_113">800 Expected struct type (not emitted)</h3>
+
+<p>Reserved (<code>C_ERROR_EXPECTED_STRUCT_TYPE</code>). Not emitted by the current compiler.</p>
+
+<h3 id="toc_114">810 Expected type name (not emitted)</h3>
+
+<p>Reserved (<code>C_ERROR_EXPECTED_TYPE_NAME</code>). Not emitted by the current compiler.</p>
+
+<h3 id="toc_115">820 Left operand is not arithmetic</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">struct s { int i; };
+int main(void)
+{
+    struct s a = {0};
+    return a * 2; //error 820: left is not an arithmetic type
+}
+</code></pre>
+
+<h3 id="toc_116">830 Right operand is not arithmetic</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">struct s { int i; };
+int main(void)
+{
+    struct s a = {0};
+    return 2 * a; //error 830: right is not an arithmetic type
+}
+</code></pre>
+
+<h3 id="toc_117">840 Left operand is not integer</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(void)
+{
+    double d = 1.0;
+    return d % 2; //error 840: left is not an integer type
+}
+</code></pre>
+
+<h3 id="toc_118">850 Right operand is not integer</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(void)
+{
+    double d = 1.0;
+    return 2 % d; //error 850: right is not an integer type
+}
+</code></pre>
+
+<h3 id="toc_119">860 Invalid type</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">enum E { A = 1.5 }; //error 860: enumerator initializer must be integer
+</code></pre>
+
+<h3 id="toc_120">870 Left operand is not scalar</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">struct s { int i; };
+int main(void)
+{
+    struct s a = {0};
+    return a &amp;&amp; 1; //error 870: left operator is not scalar
+}
+</code></pre>
+
+<h3 id="toc_121">880 Right operand is not scalar</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">struct s { int i; };
+int main(void)
+{
+    struct s a = {0};
+    return 1 &amp;&amp; a; //error 880: right operator is not scalar
+}
+</code></pre>
+
+<h3 id="toc_122">890 Incompatible pointer types</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(void)
+{
+    int i = 0;
+    double d = 0;
+    int* p = &amp;i;
+    double* q = &amp;d;
+    return p == q; //error 890: incompatible pointer types
+}
+</code></pre>
+
+<h3 id="toc_123">900 Assignment of function</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main()
+{
+    main = 0;    
+}
+</code></pre>
+
+<h3 id="toc_124">910 Assignment to array expression</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main()
+{  
+    int a[2] = {0};
+    a = 1; //error C0910: assignment to expression with array type
+}
+</code></pre>
+
+<h3 id="toc_125">920 Assignment of read-only object</h3>
+
+<p>Reported for any attempt to modify a const-qualified lvalue: assignment,
+compound assignment, and <code>++</code>/<code>--</code> (C11 6.5.2.4p1 and 6.5.3.1p1 both require a
+<em>modifiable</em> lvalue). Reaching the object through a const pointer or a const
+aggregate counts -- per C11 6.7.3p9 a qualifier on an array type qualifies the
+element type, so <code>p-&gt;arr[0]</code> is const when <code>p</code> is.</p>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main()
+{
+    const int i = 1;
+    i = 2; 
+}
+
+</code></pre>
+
+<!-- runnable -->
+
+<pre><code class="language-c">struct X { int arr[4]; };
+
+void f(const struct X* p)
+{
+    p-&gt;arr[0] = 1; //error C0920: assignment of read-only object
+}
+
+void g(void)
+{
+    const int i = 1;
+    i++;           //error C0920: increment of read-only object
+}
+</code></pre>
+
+<h3 id="toc_126">930 lvalue required as left operand of assignment (not emitted)</h3>
+
+<p>Reserved (<code>C_ERROR_LVALUE_ASSIGNMENT</code>). Not emitted by the current compiler. Assignment to a non-lvalue is now reported as error 1230.</p>
+
+<h3 id="toc_127">940 Condition must have scalar type</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(){
+    struct X {int i;} x;
+    x ? 1 : 0; //error C0940: condition must have scalar type
+}
+</code></pre>
+
+<h3 id="toc_128">950 Incompatible types</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">struct a { int i; };
+struct b { int i; };
+int main(void)
+{
+    struct a x = {0};
+    struct b y = x; //error 950: incompatible types
+}
+</code></pre>
+
+<h3 id="toc_129">960 Expected constant expression</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">void f(int i)
+{
+    switch (i)
+    {
+        case i: //error C0960: expected constant expression
+        break;
+    }
+}
+</code></pre>
+
+<h3 id="toc_130">970 Unexpected token</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main)
+</code></pre>
+
+<h3 id="toc_131">980 Cannot combine with previous &#39;long long&#39;</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">long long long i; //error 980: cannot combine with previous &#39;long long&#39; declaration specifier
+</code></pre>
+
+<h3 id="toc_132">990 Expected declaration</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(void)
+{
+    return 0;
+}
+} //error 990: expected declaration not &#39;}&#39;
+</code></pre>
+
+<h3 id="toc_133">1000 Static/type qualifiers not allowed here</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(void)
+{
+    int a[static 3]; //error 1000: static or type qualifiers are not allowed in non-parameter array declarator
+}
+</code></pre>
+
+<h3 id="toc_134">1010 Owner qualifier can only be used with pointers (not emitted)</h3>
+
+<p>Reserved (<code>C_ERROR_OBJ_OWNER_CAN_BE_USED_ONLY_IN_POINTER</code>). Not emitted by the current compiler.</p>
+
+<h3 id="toc_135">1020 Redeclaration error</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">
+#pragma safety enable
+int a;
+double a; //error C1020: conflicting types for &#39;a&#39; (int)
+</code></pre>
+
+<h3 id="toc_136">1030 Tag type mismatch with previous declaration</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">struct s { int i; };
+union s u; //error 1030: use of &#39;s&#39; with tag type that does not match previous declaration.
+</code></pre>
+
+<h3 id="toc_137">1040 type specifier or qualifier expected</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">struct X7
+{
+    goto  a; //error C1040: type specifier or qualifier expected
+};
+
+</code></pre>
+
+<h3 id="toc_138">1050 Multiple enum definitions (not emitted)</h3>
+
+<p>Reserved (<code>C_ERROR_MULTIPLE_DEFINITION_ENUM</code>). Not emitted by the current compiler.</p>
+
+<h3 id="toc_139">1060 static_assert failed</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main()
+{  
+  static_assert(1 == 2); // error C1060: static_assert failed
+}
+</code></pre>
+
+<h3 id="toc_140">1070 override_state error (not emitted)</h3>
+
+<p>Reserved (<code>C_ERROR_STATIC_SET</code>). Not emitted by the current compiler.</p>
+
+<h3 id="toc_141">1080 Static-state analysis failed (not emitted)</h3>
+
+<p>Reserved (<code>C_FLOW_ANALIZER_ERROR_STATIC_STATE_FAILED</code>). Not emitted by the current compiler.</p>
+
+<h3 id="toc_142">1090 Unbalanced attribute</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">[[deprecated(]] void f(void); //error 1090: expected &#39;]&#39; before &#39;)&#39;
+</code></pre>
+
+<h3 id="toc_143">1100 Unexpected end of file (not emitted)</h3>
+
+<p>Reserved (<code>C_ERROR_UNEXPECTED_END_OF_FILE</code>). Not emitted by the current compiler. Unexpected end of file is now reported as error 970.</p>
+
+<h3 id="toc_144">1110 throw used outside try block</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main()
+{  
+ throw; //error C1110: throw statement not within try block
+}
+</code></pre>
+
+<h3 id="toc_145">1120 void function returning a value</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">void f(){
+    return 1; //error C1120: void function &#39;f&#39; should not return a value
+}
+</code></pre>
+
+<h3 id="toc_146">1121 Non-void function missing return value</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int f(){
+  return; //error C1121: non void function &#39;f&#39; should return a value
+}
+</code></pre>
+
+<h3 id="toc_147">1130 Argument size smaller than parameter size</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">void f(int a[10]);
+int main(void)
+{
+    int b[5];
+    f(b); //error 1130: argument of size [5] is smaller than parameter of size [10]
+}
+</code></pre>
+
+<h3 id="toc_148">1140 Token invalid in preprocessor expression</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#if ()
+#endif
+</code></pre>
+
+<h3 id="toc_149">1150 File not found (preprocessor)</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#include &lt;file&gt;
+</code></pre>
+
+<h3 id="toc_150">1160 Missing parenthesis</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#define F(a) a
+int i = F((1); //error 1160: missing )
+</code></pre>
+
+<h3 id="toc_151">1170 Expression error</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#if 1+
+#endif
+</code></pre>
+
+<h3 id="toc_152">1180 Preprocessor error directive</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#error message
+</code></pre>
+
+<h3 id="toc_153">1190 Too few arguments to macro</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#define F(a, b) a
+int main()
+{
+    F(1);  //error C1190: too few arguments provided to function-like macro invocation
+}
+</code></pre>
+
+<h3 id="toc_154">1191 Too many arguments to macro</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#define F(a, b) a
+int main()
+{
+    F(1, 2, 3);  //error C1191: too many arguments provided to function-like macro invocation
+}
+</code></pre>
+
+<h3 id="toc_155">1200 jump out of defer</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">
+int main()
+{    
+    _Defer 
+    {
+        goto target;  // constraint violation
+    }
+
+target:
+    return 1;
+}
+</code></pre>
+
+<h3 id="toc_156">1201 jump over defer</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(void)
+{
+    int i = 0;
+    switch (i)
+    {
+        _Defer { i++; } //error 1201: switch is jumping over or into defer
+    case 0:
+        break;
+    }
+}
+</code></pre>
+
+<h3 id="toc_157">1202 jump over VLA</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">void f(int n)
+{
+    goto  target;
+    int a[n];    
+    target:
+}
+</code></pre>
+
+<h3 id="toc_158">1210 Missing macro argument</h3>
+
+<pre><code class="language-c">int main()
+{  
+//TODO
+}
+</code></pre>
+
+<h3 id="toc_159">1220 Address of register variable</h3>
+
+<pre><code class="language-c">int main()
+{  
+    register int a;
+    &amp;a; //error C1220: address of register variable &#39;x&#39; requested
+}
+</code></pre>
+
+<h3 id="toc_160">1230 Operator requires lvalue</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(void)
+{
+    1 = 2; //error 1230: lvalue required as left operand of assignment
+}
+</code></pre>
+
+<h3 id="toc_161">1240 Character literal too large</h3>
+
+<pre><code class="language-c">int main()
+{  
+//TODO
+}
+</code></pre>
+
+<h3 id="toc_162">1250 Pragma error (not emitted)</h3>
+
+<p>Reserved (<code>C_ERROR_PRAGMA_ERROR</code>). Not emitted by the current compiler.</p>
+
+<h3 id="toc_163">1260 Out of memory</h3>
+
+<p>Internal compiler error</p>
+
+<h3 id="toc_164">1270 Invalid storage size</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int a[-2]; // error C1270: sizeof &#39;a&#39; is too large
+</code></pre>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main() {
+  int a[2147483647]; //error C1270: sizeof &#39;a&#39; is too large
+}
+</code></pre>
+
+<h3 id="toc_165">1280 Returning owner to non-owner (not emitted)</h3>
+
+<p>Reserved (<code>C_ERROR_RETURN_LOCAL_OWNER_TO_NON_OWNER</code>). Not emitted by the current compiler. This case is now reported as warning 78.</p>
+
+<h3 id="toc_166">1290 auto requires a single declarator</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main()
+{
+   auto  * p = 0; //error C1290: &#39;auto&#39; requires a plain identifier
+}
+</code></pre>
+
+<h3 id="toc_167">1300 Multiple incompatible specifiers</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">long short s;
+</code></pre>
+
+<h3 id="toc_168">1310 Increment operator cannot be used on owner</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#pragma safety enable
+int main(){
+
+    int * _Owner _Opt p = 0;
+    p++; //error C1310: operator ++ cannot be used in _Owner pointers
+}
+</code></pre>
+
+<h3 id="toc_169">1320 Decrement operator cannot be used on owner</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#pragma safety enable
+int main(){
+
+    int * _Owner _Opt p = 0;
+    p--; //error C1320: operator -- cannot be used in owner pointers
+}
+</code></pre>
+
+<h3 id="toc_170">1330 Preprocessor division by zero</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#if 1/0
+#endif
+</code></pre>
+
+<h3 id="toc_171">1340 non-pointer to pointer error</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">
+void f(int * p);
+
+int main() {
+    int i;
+    f(i); //error C1340: non-pointer to pointer   
+}
+</code></pre>
+
+<h3 id="toc_172">1350 Literal overflow</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(void)
+{
+    unsigned long long i = 99999999999999999999; //error 1350: integer literal is too large to be represented in any integer type
+    (void)i;
+}
+</code></pre>
+
+<h3 id="toc_173">1360 Character not encodable in one code unit</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main()
+{
+   unsigned char c = u8&#39;ç&#39;;// error C1360: character not encodable in a single code unit.
+}
+
+</code></pre>
+
+<h3 id="toc_174">1370 Multi-character literal error</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(void)
+{
+    int i = u8&#39;ab&#39;; //error 1370: Unicode character literals may not contain multiple characters.
+    (void)i;
+}
+</code></pre>
+
+<h3 id="toc_175">1380 Invalid token</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(void)
+{
+    int i = 0x; //error 1380: invalid number
+    (void)i;
+}
+</code></pre>
+
+<h3 id="toc_176">1390 Invalid argument to _Countof</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(){
+  int a;
+  _Countof(a); //error C1390: argument of _Countof must be an array
+}
+</code></pre>
+
+<h3 id="toc_177">1400 return used inside defer</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(){  
+  defer return 0; //error C1400: return cannot be used inside defer statement
+}
+</code></pre>
+
+<h3 id="toc_178">1410 Function returns function type</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int f()(int){} //error C1410: function returning function
+</code></pre>
+
+<h3 id="toc_179">1420 Function returns array type</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int f()[2]{} //error C1420: function returning array
+</code></pre>
+
+<h3 id="toc_180">1430 Label not defined</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(){
+    goto A; //error C1430: label &#39;A&#39; used but not defined
+}
+</code></pre>
+
+<h3 id="toc_181">1440 Duplicate label</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(){
+    A:
+    A: // error C1440: duplicated label &#39;A&#39;
+}
+</code></pre>
+
+<h3 id="toc_182">1450 Duplicate case label</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">void f(int i)
+{
+    switch(i)
+    {
+        case 1:
+        break;
+        case 1: //error C1450: duplicate case &#39;1&#39;
+        break;
+    }
+}
+</code></pre>
+
+<h3 id="toc_183">1560 Array subscript is not an integer</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(){
+    int a[2];
+    a[1.0] = 1; //error C1560: array subscript is not an integer
+}
+</code></pre>
+
+<h3 id="toc_184">1570 Duplicate default generic association</h3>
+
+<pre><code class="language-c">int main()
+{  
+//TODO
+}
+</code></pre>
+
+<h3 id="toc_185">1780 Multiple default labels in switch</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">void f(int i)
+{
+    switch(i)
+    {
+        default:
+        break;
+        default: //error C1780: multiple default labels in one switch
+        break;
+    }
+}
+</code></pre>
+
+<h3 id="toc_186">1790 Pointer to floating type</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main()
+{
+    int *p = 0;
+    double d = (double) p; //error C1790: pointer type cannot be converted to any floating type
+}
+</code></pre>
+
+<h3 id="toc_187">1800 Floating type converted to pointer</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main()
+{
+    int *p = (int*)1.2; //error C1800: A floating type cannot be converted to any pointer type
+}
+</code></pre>
+
+<h3 id="toc_188">1810 nullptr cast error</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main()
+{
+    int i = (int)nullptr; // error C1810: cannot cast nullptr_t to this type
+}
+</code></pre>
+
+<h3 id="toc_189">1820 Macro redefinition (not emitted)</h3>
+
+<p>Reserved (<code>C_ERROR_MACRO_REDEFINITION</code>). Not emitted by the current compiler. Macro redefinition is now reported as warning 16.</p>
+
+<h3 id="toc_190">1830 Invalid preprocessing directive</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#blablabla //error C1830: invalid preprocessor directive &#39;#blablabla&#39;
+</code></pre>
+
+<h3 id="toc_191">1840 Function cannot be a member</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">struct X
+{
+    void f(); //error C1840: members having a function type are not allowed
+};
+</code></pre>
+
+<h3 id="toc_192">1850 Non-integral enum type</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">enum E : double {A}; //error C1850: expected an integer type
+</code></pre>
+
+<h3 id="toc_193">1860 Requires compile-time constant</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int a;
+int b = a; //error C1860: requires a compile time object
+int main()
+{    
+}
+</code></pre>
+
+<h3 id="toc_194">1870 Outer scope error</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">
+int main()
+{
+    int i;
+    int dup() { return i * 2; } //error C1870: &#39;i&#39; cannot be evaluated in this scope
+    return dup();
+}
+
+</code></pre>
+
+<h3 id="toc_195">1880 Variably modified member</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">void f(int n)
+{
+    struct s { int a[n]; }; //error 1880: Variably modified types cannot be used as members of a structure or union.
+}
+</code></pre>
+
+<h3 id="toc_196">1890 Variably modified type with static storage</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">void f(int n)
+{
+    static int a[n]; //error 1890: variably modified type with static storage
+}
+</code></pre>
+
+<h3 id="toc_197">1900 typeof on a bit-field</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">struct s { int b : 3; };
+
+int main(void)
+{
+    struct s x = {0};
+    typeof(x.b) y; //error 1900: typeof used in bit-field
+}
+</code></pre>
+
+<h3 id="toc_198">1910 Initialized variable-sized object</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">void f(int n)
+{
+    int a[n] = {1}; //error 1910: variable-sized object may not be initialized except with an empty initializer
+}
+</code></pre>
+
+<h3 id="toc_199">1920 Include path too long</h3>
+
+<p><code>#include</code> path exceeds the maximum path length.</p>
+
+<h3 id="toc_200">1930 Write qualifier on a const pointee</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#pragma safety enable
+struct s { int i; };
+void clear(_Clear const struct s* p) //error 1930: _Clear pointee cannot also be const
+{
+}
+</code></pre>
+
+<h3 id="toc_201">1940 Write qualifier must qualify the pointee</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">#pragma safety enable
+struct s { int i; };
+void clear(struct s _Clear p); //error 1940: _Clear must be used only at the pointed object
+</code></pre>
+
+<h3 id="toc_202">1950 constexpr value not representable</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(void)
+{
+    constexpr unsigned char c = 300; //error 1950: constant expression is not exactly representable in type
+}
+</code></pre>
+
+<h3 id="toc_203">1960 struct/union comparison</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">struct s { int i; };
+int main(void)
+{
+    struct s a = {0}, b = {0};
+    return a == b; //error 1960: struct/union comparison illegal
+}
+</code></pre>
+
+<h3 id="toc_204">1970 Invalid use of void</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(void)
+{
+    void v; //error 1970: this use of &#39;void&#39; is not valid
+}
+</code></pre>
+
+<h3 id="toc_205">1980 extern with initializer at block scope</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int main(void)
+{
+    extern int i = 1; //error 1980: &#39;i&#39;: cannot initialize extern variables with block scope
+}
+</code></pre>
+
+<h3 id="toc_206">1990 void parameter not alone</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">void f(void, int i); //error 1990: &#39;void&#39; must be the first and only parameter if specified
+</code></pre>
+
+<h3 id="toc_207">2000 Operator cannot be applied</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">struct s { int i; };
+int main(void)
+{
+    struct s a = {0};
+    a = -a; //error 2000: operator cannot be applied to an operand of the given type
+}
+</code></pre>
+
+<h3 id="toc_208">2010 typedef used for function definition</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">typedef int F(void);
+F f { return 0; } //error 2010: typedef cannot be used for function definition
+</code></pre>
+
+<h3 id="toc_209">2020 Duplicate type qualifier</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">const const int i = 0; //error 2020: same type qualifier used more than once
+</code></pre>
+
+<h3 id="toc_210">2030 typedef missing tag name</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">typedef struct; //error 2030: &#39;typedef&#39;: missing tag name
+</code></pre>
+
+<h3 id="toc_211">2040 Redefinition as typedef</h3>
+
+<!-- runnable -->
+
+<pre><code class="language-c">int x;
+typedef int x; //error 2040: &#39;x&#39;: redefinition; symbol cannot be overloaded with a typedef
+</code></pre>
+</article></body></html>

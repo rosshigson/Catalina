@@ -1,0 +1,96 @@
+# Prerequisites
+*.d
+
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Linker output
+*.ilk
+*.map
+*.exp
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+#sarif
+*.sarif
+
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
+/.vs
+/Debug
+
+/vc/.vs/cake/v17
+/vc/Debug
+/vc/Release
+/vc/x64/Release
+/src/out
+/src/build
+/vc/DebugTest
+/vc/x64/Debug
+
+
+/src/.vs/
+/vc/.vs/
+
+
+/vc/cake/Debug
+/vc/cake/x64/Debug
+/vc/cake/DebugTest
+/vc/cake/Release
+/vc/cake/x64/Release
+
+tests/en-cpp-reference-c/out/
+tests/unit-tests/out/
+
+/tests/en-cpp-reference-c/failing/.vs/
+
+/tests/unit-tests/failing/out
+/out/src
+src/cake
+src/cake
+/tests/output-test/out
+/src/x86_msvc
+/src/x86_x64_gcc
+/x86_msvc/src
+/tests/unit-tests/x86_msvc
+/tests/en-cpp-reference-c/x86_msvc
+/tests/output-test/x86_msvc
+/tests/preprocessor/x86_msvc
+/tests/unit-tests/output.txt

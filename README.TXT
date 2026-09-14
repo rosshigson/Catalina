@@ -203,28 +203,42 @@ documents folder.
 New Functionality
 -----------------
 
-1. Addition of SN76489 Emulator plugin and soundsne libraries (supported on
-   the Propeller 2 only). Use it by adding -lsoundsne to a Catalina command 
-   line. See the README.TXT file in demos\soundsne for more details.
+1. Cake has been updated to version 0.14.41. Part of the update is that the
+   Cake config file has had a name and format change (from cakeconf.h to
+   cake.jsn). It should have been generated automatically on install, but if
+   Cake complains that it cannot find include files, try re-generating the 
+   file by running:
 
-   The SN76489 sound chip was selected instead of a more sophisticted chip 
-   (of which there are several Propeller 2 emulators) because it is small
-   enough that it could also be supported on the Propeller 1 if required
-   (but note this has not yet been implemented in Catalina), and also because
-   in addition to playing music it offers a simple path for adding basic games 
-   sound effects. An example of doing so is provided by the spacewar demo 
-   program (see the version in demos/soundsne). This is because it can use 
-   sound effects in VGM format and there are many VGM utilities freely
-   available. A trivial multi-channel VGM sound effects manager suitable
-   for adding sound effects to any game program is included in the demos.
+      cake -autoconfig
+
+2. A version of the classic Asteroids arcade game has been added to the 
+   demos\graphic2 folder. It canb be built along with the other graphic2
+   demos using the build_all command. For example:
+
+      build_all P2_EDGE 
+
+   It is a single player game that can use a keyboard or an NES compatible 
+   game controller. 
+
+3. Minor changes to some SpaceWar geometry options to suit a Full HD display
+   (e.g. the ships are slightly larger).
 
 Other Changes
 -------------
 
-1. All the Propeller 2 platform configuration files have been modified to 
-   default to pin 8 for the VGA add-on board, pin 0 for the USB Serial Host
-   add-on board. This change was required to allow access to the sound jack 
-   on the A/V add-on board when both the A/V and Serial Host add-on boards
-   are in use. This change also applies to all the pre-compiled demo programs.
+1. p2asm has been modified to correctly detect invalid use of the "##" prefix, 
+   and undefined symbols when using the "#" prefix. 
+   Affected the Propeller 2 only.
+
+2. Fixed an undefined symbol (symbol "host_error") that occurred when both 
+   USB ports A and B were enabled.
+   Affected the Propeller 2 only.
+
+3. Fixed an undefined symbol (symbol "ckbd_key_update") that occurred when 
+   both the VGA HMI option and the Catnip optimizer were used.
+   Affected the Propeller 2 only.
+
+4. Minor documentation typos fixed.
+   Affected the Propeller 2 only.
 
 

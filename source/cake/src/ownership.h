@@ -2,7 +2,7 @@
 #ifndef __OWNERSHIP_H__
 #define __OWNERSHIP_H__
 
-#ifdef __STDC_OWNERSHIP__
+#ifdef __CAKE__
 
 #if defined(__CATALINA__)
 
@@ -25,14 +25,21 @@
 
 #endif
 
+#ifdef __APPLE__
+
+    typedef struct __sFILE FILE;
+    typedef __SIZE_TYPE__ size_t;
+
+#endif
+
 #endif // defined(__CATALINA__)
 
 /*
   ownership is suported
 */
-void* _Owner _Opt calloc(size_t nmemb, size_t size);
+void* _Owner _Opt _Clear calloc(size_t nmemb, size_t size);
 void free(void* _Owner _Opt ptr);
-void* _Owner _Opt malloc(size_t size);
+void* _Owner _Opt _Uninitialized malloc(size_t size);
 void* _Owner _Opt realloc(void* _Opt ptr, size_t size);
 char* _Owner _Opt strdup(const char* src);
 char* _Opt strstr(const char* str, const char* substr);
@@ -40,7 +47,7 @@ char* _Opt strstr(const char* str, const char* substr);
 inline char* _Opt strrchr(char const *  _String, int _Ch);
 
 #ifdef _WIN32
-__inline int __cdecl snprintf(_Ctor char* const _Buffer, size_t  const _BufferCount, char const* const _Format, ...);
+__inline int __cdecl snprintf(_Out char* const _Buffer, size_t  const _BufferCount, char const* const _Format, ...);
 
 char* _Opt _fullpath(
    char* _Opt absPath,
@@ -51,7 +58,7 @@ char* _Opt _fullpath(
 #else
 
 int snprintf(
-        _Ctor char*       const _Buffer,
+        _Out char*       const _Buffer,
         size_t      const _BufferCount,
         char const* const _Format,
         ...);
@@ -67,8 +74,13 @@ long strtol(
 FILE* _Owner _Opt fopen(char const* _FileName, char const* _Mode);
 int fclose(FILE* _Owner _Stream);
 
+#if defined __linux__ || defined __APPLE__
+FILE* _Owner _Opt popen(const char* _Command, const char* _Mode);
+int pclose(FILE* _Owner _Stream);
+#endif
+
 size_t fread(
-        _Ctor void*  _Buffer,
+        _Out void*  _Buffer,
         size_t _ElementSize,
         size_t _ElementCount,
         FILE*  _Stream
@@ -104,20 +116,22 @@ float strtof(char const* _String, char** _Opt _EndPtr);
   ownership not suported
 */
 
-#define _Ctor
+#define _Out
 #define _Opt
 #define _Owner
 #define _Dtor
 #define _View
+#define _Clear
+#define _Uninitialized
 #define static_debug(x)
 #define override_state(x, s)
+#define _Assert(x) ((void)0)
 #endif
 
 #endif
 
-//#ifdef _CRTDBG_MAP_ALLOC
+#ifdef _CRTDBG_MAP_ALLOC
 //#include <stdlib.h>
 //#include <crtdbg.h>
-//#endif
-//#pragma CAKE diagnostic error "C0029"
+#endif
 

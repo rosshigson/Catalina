@@ -4,7 +4,9 @@ rmdir /s /q catalina
 
 set OPTIONS=-target=catalina -D__CATALINA__ -D__CATALYST__ -D__INT_BOOL__ -DTEST
 
+cake %OPTIONS% json.c
 cake %OPTIONS% token.c
+cake %OPTIONS% fp_to_string.c
 cake %OPTIONS% hashmap.c
 cake %OPTIONS% console.c
 cake %OPTIONS% tokenizer.c
@@ -18,9 +20,10 @@ cake %OPTIONS% parser.c
 cake %OPTIONS% compile.c
 cake %OPTIONS% defer.c
 cake %OPTIONS% codegen.c
-cake %OPTIONS% flow1.c
+cake %OPTIONS% flow3.c
 cake %OPTIONS% error.c
 cake %OPTIONS% target.c
 cake %OPTIONS% type.c
 cake %OPTIONS% main.c
+
 cd ..

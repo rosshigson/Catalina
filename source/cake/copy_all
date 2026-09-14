@@ -2,5 +2,5 @@
 ##!/bin/bash
 
 cp src/cake $LCCDIR/bin/cake
-cp src/cakeconf.h $LCCDIR/bin/cakeconf.h
+cp src/cake.jsn $LCCDIR/bin/cake.jsn
 

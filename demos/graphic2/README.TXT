@@ -412,12 +412,14 @@ To demonstrate the new HMI plugin, two text-only demos, two graphics-only
 programs, one mixed text and graphics demo, and one complete game demo
 are provided:
 
-  text_1.c     - test various support functions in the graphic2 library.
-  text_2.c     - test basic text, mouse and gamepad HMI functions.
-  graph_1.c    - reproduces the Propeller 1 VGA virtual graphics demo.
-  graph_2.c    - a much more complete version of the Parallax graphics demo.
-  graph_3.c    - demonstrate mixing text and graphics functions.
-  spacewar.c   - the classic SpaceWar arcade game in Full HD resolution.
+  text_1      - test various support functions in the graphic2 library.
+  text_2      - test basic text, mouse and gamepad HMI functions.
+  graph_1     - reproduces the Propeller 1 VGA virtual graphics demo.
+  graph_2     - a much more complete version of the Parallax graphics demo.
+  graph_3     - demonstrate mixing text and graphics functions.
+  spacewar    - the classic SpaceWar arcade game in Full HD resolution.
+  asteroids   - the classic Asteroids arcade game in various reoslutions, 
+                from VGA (640x480) to Full HD (1920x1080).
 
 Note that the spacewar demo (unlike the P1 version) does not support either
 sound or the use of a keyboard - it requires two USB NES compatible game

@@ -1,6 +1,6 @@
 /*
  *  This file is part of cake compiler
- *  https://github.com/thradams/cake 
+ *  https://github.com/thradams/cake
 */
 
 #pragma safety enable
@@ -39,67 +39,69 @@ static unsigned int string_hash(const char* key)
     return (hash_val);
 }
 
-
 void map_entry_delete(struct map_entry* _Owner _Opt p)
 {
-    if (p == NULL)
-        return;
-
-    switch (p->type)
+    while (p != NULL)
     {
-    case TAG_TYPE_NUMBER:break;
+        struct map_entry* _Owner _Opt next = p->next;
+        p->next = NULL;
 
-    case TAG_TYPE_ENUM_SPECIFIER:
-        enum_specifier_delete(p->data.p_enum_specifier);
-        break;
-    case TAG_TYPE_STRUCT_OR_UNION_SPECIFIER:
-        struct_or_union_specifier_delete(p->data.p_struct_or_union_specifier);
-        break;
+        switch (p->type)
+        {
+        case TAG_TYPE_NUMBER:
+            break;
 
-    case TAG_TYPE_ENUMERATOR:
-        enumerator_delete(p->data.p_enumerator);
-        break;
-    case TAG_TYPE_DECLARATOR:
-        declarator_delete(p->data.p_declarator);
-        break;
-    case TAG_TYPE_INIT_DECLARATOR:
-        init_declarator_delete(p->data.p_init_declarator);
-        break;
-    case TAG_TYPE_MACRO:
-        macro_delete(p->data.p_macro);
-        break;
+        case TAG_TYPE_ENUM_SPECIFIER:
+            enum_specifier_delete(p->data.p_enum_specifier);
+            break;
+            
+        case TAG_TYPE_STRUCT_OR_UNION_SPECIFIER:
+            struct_or_union_specifier_delete(p->data.p_struct_or_union_specifier);
+            break;
 
-    case TAG_TYPE_STRUCT_ENTRY:
-        struct_entry_delete(p->data.p_struct_entry);
-        break;
-    
-    case TAG_TYPE_TEXT:
-        free(p->data.p_text);
-        break;
+        case TAG_TYPE_ENUMERATOR:
+            enumerator_delete(p->data.p_enumerator);
+            break;
+
+        case TAG_TYPE_DECLARATOR:
+            declarator_delete(p->data.p_declarator);
+            break;
+
+        case TAG_TYPE_INIT_DECLARATOR:
+            init_declarator_delete(p->data.p_init_declarator);
+            break;
+
+        case TAG_TYPE_MACRO:
+            macro_delete(p->data.p_macro);
+            break;
+
+        case TAG_TYPE_STRUCT_ENTRY:
+            struct_entry_delete(p->data.p_struct_entry);
+            break;
+
+        case TAG_TYPE_TEXT:
+            free(p->data.p_text);
+            break;
+        }
+
+        free(p->key);
+        free(p);
+
+        p = next;
     }
-
-    free(p->key);
-    free(p);
 }
 
 void hashmap_remove_all(struct hash_map* map)
 {
-
     if (map->table != NULL)
     {
         for (int i = 0; i < map->capacity; i++)
         {
-            struct map_entry* _Owner _Opt pentry = map->table[i];
-
-            while (pentry != NULL)
-            {
-                struct map_entry* _Owner _Opt next = pentry->next;
-                map_entry_delete(pentry);
-                pentry = next;
-            }
+            map_entry_delete(map->table[i]);
+            map->table[i] = NULL;
         }
 
-        free(map->table);
+        free(map->table); //lint 29
         map->table = NULL;
         map->size = 0;
     }
@@ -108,13 +110,15 @@ void hashmap_remove_all(struct hash_map* map)
 void hashmap_destroy(_Dtor struct hash_map* map)
 {
     hashmap_remove_all(map);
-    assert(map->table == NULL);
+    _Assert(map->table == NULL);
 }
 
-struct map_entry* _Opt hashmap_find(struct hash_map* map, const char* key)
+struct map_entry* _Opt hashmap_find(const struct hash_map* map, const char* key)
 {
     if (map->table == NULL)
         return NULL;
+
+    _Assert(map->capacity != 0);
 
     const unsigned int hash = string_hash(key);
     const int index = hash % map->capacity;
@@ -132,13 +136,18 @@ struct map_entry* _Opt hashmap_find(struct hash_map* map, const char* key)
     return NULL;
 }
 
-
 void* _Opt hashmap_remove(struct hash_map* map, const char* key, enum tag* _Opt p_type_opt)
 {
+#pragma CAKE diagnostic push
+#pragma CAKE diagnostic ignored 29
+    //TODO flow.. unions and _Owner 
+
     if (map->table != NULL)
     {
+        _Assert(map->capacity != 0);
+
         const unsigned int hash = string_hash(key);
-        struct map_entry** pp_entry = &map->table[hash % map->capacity];
+        struct map_entry* _Owner _Opt* pp_entry = &map->table[hash % map->capacity];
         struct map_entry* _Opt p_entry = *pp_entry;
 
         for (; p_entry != NULL; p_entry = p_entry->next)
@@ -150,9 +159,11 @@ void* _Opt hashmap_remove(struct hash_map* map, const char* key, enum tag* _Opt 
                 if (p_type_opt)
                     *p_type_opt = p_entry->type;
 
-                void* _Opt p = p_entry->data.p_declarator;
+                void* _Opt p = p_entry->data.p_declarator; //moved
                 free((void* _Owner)p_entry->key);
+
                 free((void* _Owner)p_entry);
+
                 map->size--;
 
                 return p;
@@ -160,6 +171,7 @@ void* _Opt hashmap_remove(struct hash_map* map, const char* key, enum tag* _Opt 
             pp_entry = &p_entry->next;
         }
     }
+#pragma CAKE diagnostic pop
 
     return NULL;
 }
@@ -172,6 +184,7 @@ void hash_item_set_destroy(_Dtor struct hash_item_set* p)
     init_declarator_delete(p->p_init_declarator);
     struct_or_union_specifier_delete(p->p_struct_or_union_specifier);
     macro_delete(p->p_macro);
+    struct_entry_delete(p->p_struct_entry);
     free(p->text);
 }
 
@@ -183,13 +196,13 @@ int hashmap_set(struct hash_map* map, const char* key, struct hash_item_set* ite
     enum tag type = TAG_TYPE_NUMBER;
 
 #pragma CAKE diagnostic push
-#pragma CAKE diagnostic ignored 29
+#pragma CAKE diagnostic ignored 26
 
     if (item->p_declarator)
     {
         type = TAG_TYPE_DECLARATOR;
         p = item->p_declarator;
-        item->p_declarator = NULL;//
+        item->p_declarator = NULL; //
 
     }
     else if (item->p_enumerator)
@@ -243,7 +256,7 @@ int hashmap_set(struct hash_map* map, const char* key, struct hash_item_set* ite
         type = TAG_TYPE_NUMBER;
         p = (void*)item->number;
     }
-    
+
 #pragma CAKE diagnostic pop
 
     try
@@ -259,93 +272,98 @@ int hashmap_set(struct hash_map* map, const char* key, struct hash_item_set* ite
             if (map->table == NULL) throw;
         }
 
-            unsigned int hash = string_hash(key);
-            int index = hash % map->capacity;
+        _Assert(map->capacity != 0);
+        unsigned int hash = string_hash(key);
+        int index = hash % map->capacity;
 
-            struct map_entry* _Opt pentry = map->table[index];
+        struct map_entry* _Opt pentry = map->table[index];
 
-            for (; pentry != NULL; pentry = pentry->next)
+        for (; pentry != NULL; pentry = pentry->next)
+        {
+            if (pentry->hash == hash && strcmp(pentry->key, key) == 0)
             {
-                if (pentry->hash == hash && strcmp(pentry->key, key) == 0)
-                {
-                    break;
-                }
+                break;
+            }
+        }
+
+        if (pentry == NULL)
+        {
+            char* _Opt _Owner temp_key = strdup(key);
+            if (temp_key == NULL) throw;
+
+            struct map_entry* _Owner _Opt p_new_entry = calloc(1, sizeof(*pentry));
+            if (p_new_entry == NULL)
+            {
+                free(temp_key);
+                throw;
             }
 
-            if (pentry == NULL)
-            {
-                struct map_entry* _Owner _Opt p_new_entry = calloc(1, sizeof(*pentry));
-                if (p_new_entry == NULL) throw;
+            p_new_entry->key = temp_key;
+            p_new_entry->hash = hash;
 
-                p_new_entry->hash = hash;
+            p_new_entry->data.p_declarator = (void* _Owner)p;
 
-                p_new_entry->data.p_declarator = (void*)p;
-
-                p_new_entry->type = type;
-
-                char* _Opt _Owner temp_key = strdup(key);
-                if (temp_key == NULL)
-                {
-                    map_entry_delete(p_new_entry);
-                    throw;
-                }
-
-            assert(p_new_entry->key == NULL);
-                p_new_entry->key = temp_key;
-                p_new_entry->next = map->table[index];
-                map->table[index] = p_new_entry;
-                map->size++;
-                result = 0;
-            }
-            else
-            {
+            p_new_entry->type = type;
+            p_new_entry->next = map->table[index];
+            map->table[index] = p_new_entry;
+            map->size++;
+            result = 0;
+        }
+        else
+        {
 
 #pragma CAKE diagnostic push
-#pragma CAKE diagnostic ignored 33
+#pragma CAKE diagnostic ignored 26
 
-                switch (pentry->type)
-                {
-                case TAG_TYPE_NUMBER:break;
+            switch (pentry->type)
+            {
+            case TAG_TYPE_NUMBER:break;
 
-                case TAG_TYPE_ENUM_SPECIFIER:
-                    assert(pentry->data.p_enum_specifier != NULL);
-                    item->p_enum_specifier = pentry->data.p_enum_specifier;
-                    break;
-                case TAG_TYPE_STRUCT_OR_UNION_SPECIFIER:
-                    assert(pentry->data.p_struct_or_union_specifier != NULL);
-                    item->p_struct_or_union_specifier = pentry->data.p_struct_or_union_specifier;
-                    break;
+            case TAG_TYPE_ENUM_SPECIFIER:
+                _Assert(pentry->data.p_enum_specifier != NULL);
+                item->p_enum_specifier = pentry->data.p_enum_specifier;
+                break;
+                
+            case TAG_TYPE_STRUCT_OR_UNION_SPECIFIER:
+                _Assert(pentry->data.p_struct_or_union_specifier != NULL);
+                item->p_struct_or_union_specifier = pentry->data.p_struct_or_union_specifier;
+                break;
 
-                case TAG_TYPE_ENUMERATOR:
-                    assert(pentry->data.p_enumerator != NULL);
-                    item->p_enumerator = pentry->data.p_enumerator;
-                    break;
-                case TAG_TYPE_DECLARATOR:
-                    assert(pentry->data.p_declarator != NULL);
-                    item->p_declarator = pentry->data.p_declarator;
-                    break;
-                case TAG_TYPE_INIT_DECLARATOR:
-                    assert(pentry->data.p_init_declarator != NULL);
-                    item->p_init_declarator = pentry->data.p_init_declarator;
-                    break;
-                case TAG_TYPE_MACRO:
-                    assert(pentry->data.p_macro != NULL);
-                    item->p_macro = pentry->data.p_macro;
-                    break;
-                case TAG_TYPE_STRUCT_ENTRY:
-                    assert(pentry->data.p_struct_entry != NULL);
-                    item->p_struct_entry = pentry->data.p_struct_entry;
-                    break;
+            case TAG_TYPE_ENUMERATOR:
+                _Assert(pentry->data.p_enumerator != NULL);
+                item->p_enumerator = pentry->data.p_enumerator;
+                break;
+                
+            case TAG_TYPE_DECLARATOR:
+                _Assert(pentry->data.p_declarator != NULL);
+                item->p_declarator = pentry->data.p_declarator;
+                break;
+                
+            case TAG_TYPE_INIT_DECLARATOR:
+                _Assert(pentry->data.p_init_declarator != NULL);
+                item->p_init_declarator = pentry->data.p_init_declarator;
+                break;
+                
+            case TAG_TYPE_MACRO:
+                _Assert(pentry->data.p_macro != NULL);
+                item->p_macro = pentry->data.p_macro;
+                break;
+                
+            case TAG_TYPE_STRUCT_ENTRY:
+                _Assert(pentry->data.p_struct_entry != NULL);
+                item->p_struct_entry = pentry->data.p_struct_entry;
+                break;
+                
             case TAG_TYPE_TEXT:
-                assert(pentry->data.p_struct_entry != NULL);
+                _Assert(pentry->data.p_struct_entry != NULL);
                 item->text = pentry->data.p_text;
                 break;
-                }
+            }
 #pragma CAKE diagnostic pop
 
-                result = 1;
-                pentry->data.p_declarator = (void*)p;
-                pentry->type = type;
+            result = 1;
+            pentry->data.p_declarator = (void* _Owner)p;
+            pentry->type = type;
         }
     }
     catch

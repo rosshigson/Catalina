@@ -53,6 +53,18 @@ struct codegen_ctx
     bool memcpy_used;
     char memcpy_function_name[50];
     
+    bool runtime_assert_used;
+    char runtime_assert_function_name[50];
+
+    /* set when the user's code calls __assert_fail (e.g. via the glibc
+       assert() macro) without providing its own definition, so codegen
+       emits a stub -- same idea as the runtime_assert_failed handler above. */
+    bool assert_fail_used;
+
+    /* same as assert_fail_used, but for __assert_rtn (macOS/Apple's
+       assert() failure function). */
+    bool assert_rtn_used;
+
 
     bool define_nullptr;
     bool null_pointer_constant_used;
@@ -74,7 +86,10 @@ struct codegen_ctx
     struct try_statement* _Opt p_current_try_statement;
 
     struct ast * p_ast;    
+    
+    bool error;
 };
 
-void codegen_visit(struct codegen_ctx* ctx, struct osstream* oss);
+/* Returns 0 on success, non-zero if code generation failed (ctx->error). */
+int codegen_visit(struct codegen_ctx* ctx, struct osstream* oss);
 void codegen_visit_ctx_destroy( _Dtor struct codegen_ctx* ctx);

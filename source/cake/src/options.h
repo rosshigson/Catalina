@@ -15,6 +15,13 @@ enum standard_version
     STD_EXT,
 };
 
+enum diagnostic_ouput_format
+{
+    DIAGNOSTIC_OUTPUT_FORMAT_GCC,
+    DIAGNOSTIC_OUTPUT_FORMAT_MSVC,
+    DIAGNOSTIC_OUTPUT_FORMAT_CAKE,
+};
+
 enum diagnostic_id {
 
     W_LOCATION = 0,
@@ -35,18 +42,18 @@ enum diagnostic_id {
     W_LINE_SLICING = 13,
     W_STRING_SLICED = 14,
     W_DISCARDED_QUALIFIERS = 15,
-    W_UNUSED_WARNING_16 = 16,
+    W_MACRO_REDEFINITION = 16,
     W_UNINITIALZED = 17,
-    W_RETURN_LOCAL_ADDR = 18,
+    W_RETURN_LOCAL_ADDR = 18, //(TODO)
     W_MUST_USE_ADDRESSOF = 19,
     W_ARRAY_INDIRECTION = 20,
     
     W_UNUSED_WARNING_21 = 21,
-    W_OWNERSHIP_NOT_OWNER = 22,
-    W_OWNERSHIP_USING_TEMPORARY_OWNER = 23,
-    W_OWNERSHIP_MOVE_ASSIGNMENT_OF_NON_OWNER = 24,
-    W_OWNERSHIP_NON_OWNER_TO_OWNER_ASSIGN = 25,
-    W_OWNERSHIP_DISCARDING_OWNER = 26,
+    W_FLOW_NOT_OWNER = 22,
+    W_FLOW_USING_TEMPORARY_OWNER = 23,
+    W_FLOW_MOVE_ASSIGNMENT_OF_NON_OWNER = 24,
+    W_FLOW_NON_OWNER_TO_OWNER_ASSIGN = 25,
+    W_FLOW_DISCARDING_OWNER = 26,
     W_UNUSED_WARNING_27 = 27,
 
     W_FLOW_NON_NULL = 28,
@@ -96,29 +103,48 @@ enum diagnostic_id {
     W_WARNING_LIT_STRING = 64,
     W_SIGNED_TO_UNSIGNED = 65,
     W_INFO = 66,
-    W_UNUSED_WARNING_67 = 67,
-    W_UNUSED_WARNING_68 = 68,
-    W_UNUSED_WARNING_69 = 69,
-    W_UNUSED_WARNING_70 = 70,
-    W_UNUSED_WARNING_71 = 71,
-    W_UNUSED_WARNING_72 = 72,
-    W_UNUSED_WARNING_73 = 73,
-    W_UNUSED_WARNING_74 = 74,
-    W_UNUSED_WARNING_75 = 75,
-    W_UNUSED_WARNING_76 = 76,
-    W_UNUSED_WARNING_77 = 77,
-    W_UNUSED_WARNING_78 = 78,
-    W_UNUSED_WARNING_79 = 79,
-    W_UNUSED_WARNING_80 = 80,
-    W_UNUSED_WARNING_81 = 81,
-    W_UNUSED_WARNING_82 = 82,
-    W_UNUSED_WARNING_83 = 83,
-    W_UNUSED_WARNING_84 = 84,
-    W_UNUSED_WARNING_85 = 85,
-    W_UNUSED_WARNING_86 = 86,
-    W_UNUSED_WARNING_87 = 87,
-    W_UNUSED_WARNING_88 = 88,
-    W_UNUSED_WARNING_89 = 89,
+    W_COMPILE_ASSERT_UNPROVEM = 67,
+    W_FLOW_UNREACHABLE_CODE = 68,
+    W_FLOW_CLEAR_NOT_ZERO_AT_EXIT = 69,
+    /*
+       Flow-derived out-of-bounds. Deliberately a DIFFERENT id from
+       W_OUT_OF_BOUNDS (42), which expressions.c reports at parse time for a
+       constant index. get_diagnostic_phase is per-id, so one id emitted from
+       two phases cannot have a correct phase -- and `//lint` is checked at
+       that phase, so a suppression written for the flow form was tested
+       before flow analysis had queued anything. Splitting the id gives each
+       form an unambiguous phase: 42 -> phase 0, this -> phase 2.
+       See samples/flow3/array-bounds.c.
+    */
+    W_FLOW_OUT_OF_BOUNDS = 70,
+    W_FLOW_CTOR_NOT_INITIALIZED_AT_EXIT = 71,
+    W_FLOW_PARAM_OWNER_CONSUMED_AT_EXIT = 72,
+    W_UNKNOWN_ESCAPE_SEQUENCE = 73,
+    W_CONSTANT_VALUE_NOT_REPRESENTABLE = 74,
+    W_POINTER_TO_INT = 75,
+    W_STRING_LITERAL_COMPARISON = 76,
+    W_STATIC_FUNCTION_NOT_DEFINED = 77,
+
+    /* Parse-time (phase 0) counterparts of W_FLOW_NON_OWNER_TO_OWNER_ASSIGN /
+       W_FLOW_USING_TEMPORARY_OWNER, emitted by expressions.c's
+       extended_check_assigment. Distinct ids are needed because those two
+       are hard-registered as phase 2 (flow analysis) below in
+       diagnostic_get_phase -- a `//lint` comment checked during parsing
+       would look for them in the wrong phase and report "not recognized"
+       even though the (correct) warning fired. See samples/flow3/array-bounds.c
+       for the same phase-split precedent (W_OUT_OF_BOUNDS / W_FLOW_OUT_OF_BOUNDS). */
+    W_NON_OWNER_TO_OWNER_ASSIGN = 78,
+    W_USING_TEMPORARY_OWNER = 79,
+    W_POINTER_TO_OWNER_EXPECTED = 80,
+    W_OWNER_ALIASED_BY_NON_OWNER_POINTER = 81,
+    W_PARAM_COULD_BE_CONST = 82,
+    W_PARAM_SET_BUT_NOT_USED = 83,
+    W_SET_BUT_NOT_USED = 84,
+    W_FLOW_CONDITION_KNOWN_AT_COMPILE_TIME = 85,
+    W_FORMAT = 86,
+    W_INT_TO_ENUM_CONVERSION = 87,
+    W_FLOW_FALLTHROUGH = 88,
+    W_MALLOC_SIZE_NOT_MULTIPLE_OF_SIZEOF = 89,
     W_UNUSED_WARNING_90 = 90,
     W_UNUSED_WARNING_91 = 91,
     W_UNUSED_WARNING_92 = 92,
@@ -156,12 +182,13 @@ enum diagnostic_id {
     W_UNUSED_WARNING_124 = 124,
     W_UNUSED_WARNING_125 = 125,
     W_UNUSED_WARNING_126 = 126,
-    W_UNUSED_WARNING_127 = 127,
+    W_UNARY_MINUS_ON_UNSIGNED = 127,
     
 
     C_ERROR_TOKENIZER_MISSING_TERMINATING = 630,
     C_ERROR_TOKENIZER_MISSING_TERMINATING_QUOTE = 631,
     C_ERROR_TOKENIZER_MISSING_END_OF_COMMENT = 632,
+    C_ERROR_TOKENIZER_EMPTY_CHARACTER_CONSTANT = 633,
 
     C_ERROR_INVALID_QUALIFIER_FOR_POINTER = 640,
     C_ERROR_UNEXPECTED = 650,
@@ -237,8 +264,8 @@ enum diagnostic_id {
     C_ERROR_RETURN_LOCAL_OWNER_TO_NON_OWNER = 1280,
     C_ERROR_AUTO_NEEDS_SINGLE_DECLARATOR = 1290,
     C_ERROR_TWO_OR_MORE_SPECIFIERS = 1300,
-    C_ERROR_OPERATOR_INCREMENT_CANNOT_BE_USED_IN_OWNER = 1310,
-    C_ERROR_OPERATOR_DECREMENT_CANNOT_BE_USED_IN_OWNER = 1320,
+    C_ERROR_FLOW_OPERATOR_INCREMENT_CANNOT_BE_USED_IN_OWNER = 1310,
+    C_ERROR_FLOW_OPERATOR_DECREMENT_CANNOT_BE_USED_IN_OWNER = 1320,
     C_PRE_DIVISION_BY_ZERO = 1330,
     C_ERROR_INT_TO_POINTER = 1340,
     C_ERROR_LITERAL_OVERFLOW = 1350,
@@ -270,6 +297,19 @@ enum diagnostic_id {
     C_ERROR_LOCAL_FUNCTION_STORAGE = 1890,
     C_ERROR_TYPEOF_BITFIELD = 1900,
     C_ERROR_INVALID_VLA_INITIALIZATION = 1910,
+    C_ERROR_PATH_TOO_LONG = 1920,
+    C_ERROR_FLOW_WRITE_QUALIFIER_CANNOT_BE_CONST = 1930,
+    C_ERROR_FLOW_WRITE_QUALIFIER_MUST_QUALIFY_POINTEE = 1940,
+    C_ERROR_CONSTANT_VALUE_NOT_REPRESENTABLE = 1950,
+    C_ERROR_STRUCT_UNION_COMPARISON_ILLEGAL = 1960,
+    C_ERROR_ILLEGAL_USE_OF_TYPE_VOID = 1970,
+    C_ERROR_EXTERN_WITH_INITIALIZER_AT_BLOCK_SCOPE = 1980,
+    C_ERROR_VOID_PARAMETER_NOT_ALONE = 1990,
+    C_ERROR_OPERATOR_CANNOT_BE_APPLIED = 2000,
+    C_ERROR_TYPEDEF_CANNOT_BE_USED_FOR_FUNCTION_DEFINITION = 2010,
+    C_ERROR_DUPLICATE_TYPE_QUALIFIER = 2020,
+    C_ERROR_TYPEDEF_MISSING_TAG_NAME = 2030,
+    C_ERROR_REDEFINITION_CANNOT_BE_OVERLOADED_WITH_TYPEDEF = 2040,
 };
 
 
@@ -316,7 +356,6 @@ enum indent_style
     INDENT_STYLE_TABS,
 };
 
-
 struct style_options
 {
 
@@ -352,6 +391,7 @@ struct style_options
     bool space_after_return;            /* one space between 'return' and expr */
     bool no_space_before_call_paren;    /* no space between callee and '('     */
     bool space_around_binary_operators; /* one space on each side of binary op */
+    bool single_declarator_per_declaration; /* no "int i, j;" - one declarator per declaration */
 };
 
 
@@ -381,7 +421,7 @@ struct diagnostic
     struct bitset notes;
 };
 
-int get_diagnostic_type(struct diagnostic* d, enum diagnostic_id w);
+int get_diagnostic_type(const struct diagnostic* d, enum diagnostic_id w);
 extern struct diagnostic default_diagnostic;
 
 void diagnostic_remove(struct diagnostic *d, enum diagnostic_id w);
@@ -420,10 +460,27 @@ struct options
     */
     bool show_includes;
 
+
     /*
-       -disable-assert
+       -copy-headers
     */
-    bool disable_assert;
+    char copy_headers[200];
+
+    /*
+      -format
+      Applies the spacing/brace-placement rules from `style` directly to the
+      token stream instead of just diagnosing them, then prints the result
+      (print_code_as_we_see) in place of compiling.
+    */
+    bool format;
+
+    /*
+      -format-lines=first:last
+      Restricts -format's token changes to this inclusive line range.
+      0:0 (the default) means the whole file.
+    */
+    int format_first_line;
+    int format_last_line;
 
     /*
       -line-directives
@@ -445,6 +502,15 @@ struct options
     */
     bool test_mode_inout;
 
+
+    /*
+      -runtime-asserts
+      When set, `_Assert(cond)` generates a runtime check (a small
+      emitted helper function); otherwise it produces no runtime code and only
+      the compile-time flow3 narrowing applies.
+    */
+    bool runtime_asserts;
+
     /*
     * -nullchecks
     */
@@ -464,6 +530,12 @@ struct options
 
     bool clear_error_at_end; /*used by tests*/
     
+    /*
+      -Werror
+      Reports every enabled warning as an error.
+    */
+    bool warnings_as_errors;
+
     /*
       -sarif
     */
@@ -485,7 +557,7 @@ struct options
       -fdiagnostics-format=msvc
       -msvc-output
     */
-    bool visual_studio_ouput_format;
+    enum diagnostic_ouput_format diagnostic_ouput_format;
 
     /*
       -fdiagnostics-color=never
@@ -509,15 +581,27 @@ struct options
     */
     bool auto_config;
 
-    bool do_static_debug;
-    int static_debug_lines;
-
     /*
       -o filename
       defines the ouputfile when 1 file is used
     */
     char output[200];
     char sarifpath[200];
+
+    /*
+      -dont-generate-time-stamp
+      When set, the generated file does not include the timestamp comment
+      at the top (useful for reproducible builds / diffing).
+    */
+    bool dont_generate_time_stamp;
+
+    /*
+      -keep-inactive-tokens
+      When set, tokens from inactive preprocessor blocks (e.g. #if 0 ... #endif)
+      are kept in memory (needed for tools that recreate source code, like the IDE).
+      By default they are discarded to reduce memory usage.
+    */
+    bool keep_inactive_tokens;
 };
 
 int fill_options(struct options* options,

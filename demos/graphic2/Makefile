@@ -124,6 +124,15 @@ spacewar$B: spacewar.c
 # add this to the 'all' target
 all :: spacewar
 
+.PHONY : asteroids
+asteroids : asteroids$B
+
+asteroids$B: asteroids.c player.c main.c renderer.c vector.c
+	catalina $(CFLAGS) -lmc -C99 -W-Wp-wd7 -W-Wp-wd82 $^ -o $@
+
+# add this to the 'all' target
+all :: asteroids
+
 #
 # Clean Target (should not be first target!)
 # ==========================================

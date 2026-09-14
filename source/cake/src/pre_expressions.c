@@ -53,8 +53,7 @@ static void pre_conditional_expression(struct preprocessor_ctx* ctx, struct pre_
 static void pre_expression(struct preprocessor_ctx* ctx, struct pre_expression_ctx* ectx);
 static void pre_conditional_expression(struct preprocessor_ctx* ctx, struct pre_expression_ctx* ectx);
 
-
-static int ppnumber_to_longlong(struct preprocessor_ctx* ctx, struct token* token, long long* result, enum target target)
+static int ppnumber_to_longlong(struct preprocessor_ctx* ctx, const struct token* token, long long* result)
 {
     /*copy removing the separators*/
     // 0xb1'1'1....
@@ -137,7 +136,6 @@ static struct object char_constant_to_value(const char* s, char error_message[/*
     const unsigned char* _Opt p = (const unsigned char*)s;
     const unsigned long long
         wchar_max_value = target_unsigned_max(target, get_platform(target)->wchar_t_type);
-
 
     try
     {
@@ -323,7 +321,6 @@ static struct object char_constant_to_value(const char* s, char error_message[/*
                         throw;
                 }
 
-
                 if (c < 0x80)
                 {
                     value = value * 256 + c;
@@ -369,7 +366,7 @@ static void pre_primary_expression(struct preprocessor_ctx* ctx, struct pre_expr
 
         if (ctx->current->type == TK_CHAR_CONSTANT)
         {
-            const char* p = ctx->current->lexeme + 1;
+            const char* p = ctx->current->lexeme;
             char errmsg[200] = { 0 };
             struct object v = char_constant_to_value(p, errmsg, sizeof errmsg, ctx->options.target);
             if (errmsg[0] != '\0')
@@ -382,7 +379,7 @@ static void pre_primary_expression(struct preprocessor_ctx* ctx, struct pre_expr
         }
         else if (ctx->current->type == TK_PPNUMBER)
         {
-            ppnumber_to_longlong(ctx, ctx->current, &ectx->value, ctx->options.target);
+            ppnumber_to_longlong(ctx, ctx->current, &ectx->value);
             pre_match(ctx);
         }
         else if (ctx->current->type == '(')
@@ -427,10 +424,11 @@ static void pre_postfix_expression(struct preprocessor_ctx* ctx, struct pre_expr
         ( type-name ) { initializer-ctx }
         ( type-name ) { initializer-ctx , }
 
-        //My extension : if type-name is function then follow is compound-statement
+        //C2Y
         ( type-name ) compound-statement
 
         */
+    
     try
     {
         pre_primary_expression(ctx, ectx);
@@ -490,10 +488,6 @@ static void pre_unary_expression(struct preprocessor_ctx* ctx, struct pre_expres
                 preprocessor_diagnostic(C_ERROR_TOKEN_NOT_VALID_IN_PREPROCESSOR_EXPRESSIONS, ctx, p_old, "token '%s' is not valid in preprocessor expressions", p_old->lexeme);
             }
             else if (op == '&')
-            {
-                preprocessor_diagnostic(C_ERROR_TOKEN_NOT_VALID_IN_PREPROCESSOR_EXPRESSIONS, ctx, p_old, "token '%s' is not valid in preprocessor expressions", p_old->lexeme);
-            }
-            else
             {
                 preprocessor_diagnostic(C_ERROR_TOKEN_NOT_VALID_IN_PREPROCESSOR_EXPRESSIONS, ctx, p_old, "token '%s' is not valid in preprocessor expressions", p_old->lexeme);
             }
@@ -564,9 +558,17 @@ static void pre_multiplicative_expression(struct preprocessor_ctx* ctx, struct p
             }
             else if (op == '%')
             {
+                if (ectx->value == 0)
+                {
+                    preprocessor_diagnostic(C_PRE_DIVISION_BY_ZERO, ctx, op_token, "division by zero");
+                    throw;
+                }
+                else
+                {
                 ectx->value = (left_value % ectx->value);
             }
         }
+    }
     }
     catch
     {
@@ -993,11 +995,18 @@ static void pre_conditional_expression(struct preprocessor_ctx* ctx, struct pre_
         if (ctx->current && ctx->current->type == '?')
         {
             pre_match(ctx);
+
+            //elvis operator: expr1 ? : expr3  (expr2 omitted, assumed to be expr1)
+            const int elvis = ctx->current && ctx->current->type == ':';
+
             if (ectx->value)
             {
+                if (!elvis)
+                {
                 pre_expression(ctx, ectx);
                 if (ctx->n_errors > 0)
                     throw;
+                }
 
                 pre_match(ctx); //:
                 struct pre_expression_ctx temp = { 0 };
@@ -1007,10 +1016,13 @@ static void pre_conditional_expression(struct preprocessor_ctx* ctx, struct pre_
             }
             else
             {
+                if (!elvis)
+                {
                 struct pre_expression_ctx temp = { 0 };
                 pre_expression(ctx, &temp);
                 if (ctx->n_errors > 0)
                     throw;
+                }
 
                 pre_match(ctx); //:
                 pre_conditional_expression(ctx, ectx);
@@ -1031,4 +1043,3 @@ int pre_constant_expression(struct preprocessor_ctx* ctx, long long* pvalue)
     *pvalue = ectx.value;
     return ctx->n_errors > 0;
 }
-

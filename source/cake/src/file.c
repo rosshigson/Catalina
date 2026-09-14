@@ -1,50 +1,15 @@
-#include <stdio.h>
-#include <stdlib.h>
 
-void f(int n, int m, int (*p)[n][m])
-{
-    for (int i = 0; i < n; i++)
-    {
+#pragma safety enable
 
-        for (int j = 0; j < m; j++)
-        {
-            printf("%d ", (*p)[i][j]);
+void* _Owner _Opt _Uninitialized malloc(unsigned long size);
+void free(void* _Owner ptr);
 
-        }
-        printf("\n");
-    }
-    printf("\n");
+int main() {
+   void * _Owner  _Opt p = malloc(1);
+   if (p)
+   {
+     //free(p);
+   }
+   //static_debug(p);
 }
 
-void f2(int n, int m, int a[n][m])
-{
-    for (int i = 0; i < n; i++)
-    {
-
-        for (int j = 0; j < m; j++)
-        {
-            printf("%d ", a[i][j]);
-
-        }
-        printf("\n");
-    }
-    printf("\n");
-}
-
-int main(void)
-{
-    int a[2][3] = {
-         1, 2,
-         3, 4,
-         5, 6
-};
-    f(2, 3, &a);
-
-
-    f2(2, 3, a);
-
-    int n = 2, m = 3;
-    int (*p)[n][m] = &a;
-    p = &a;
-    f(2, 3, p);
-}

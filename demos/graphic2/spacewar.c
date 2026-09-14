@@ -108,9 +108,9 @@
 #define SHOT_TTL_INIT               80         // Shot time to live
 #define BLACK_HOLE_GRAVITY          0x07000000
 #define GRAVITY_CLIP                0x00060000
-#define SHIP_SCALE                  0x0050
+#define SHIP_SCALE                  0x0070
 #define P0_THRUSTER_DISTANCE        11         
-#define P1_THRUSTER_DISTANCE        22        
+#define P1_THRUSTER_DISTANCE        33        
 #define ROR_THRUST                  9          // thrust ror by this amount
 #define COLLISION_RANGE_FP          0x000E8000 // Collision bounding box range, in fixed point
 #define SHIP_GUN_PLACEMENT_DISTANCE 13        
@@ -234,8 +234,8 @@
 #define SHIP_HYPERSPACE_TIME        25
 
 //Explosions
-#define NUM_EXPLOSION_PARTICLES 12  // Number of particles in an explosion
-#define EXPLOSION_RADIUS        30  // Explosion radius, in pixels
+#define NUM_EXPLOSION_PARTICLES 15  // Number of particles in an explosion
+#define EXPLOSION_RADIUS        40  // Explosion radius, in pixels
 
 //Default game options
 #define DEFAULT_OPTIONS       OPTION_BLACK_HOLE | OPTION_SHOT_GRAVITY | OPTION_SHIELDS | \
@@ -2563,11 +2563,11 @@ void main_game(void *rocks, void *shields) {
   
                 if (ship_state[player_index] > SHIP_STATE_STRICKEN) {
                    if (player_index == PLAYER_0) {
-                      g_colorwidth(2,1);
+                      g_colorwidth(2,2);
                       g_vec(x, y, SHIP_SCALE, ship_angle[player_index], player0_ship[damage[player_index]]);
                    }
                    else {
-                      g_colorwidth(3,1);
+                      g_colorwidth(3,2);
                       g_vec(x, y, SHIP_SCALE, ship_angle[player_index], player1_ship[damage[player_index]]);
                    }
                 }
@@ -2597,11 +2597,11 @@ void main_game(void *rocks, void *shields) {
                 if (ship_state[player_index] == SHIP_STATE_ALIVE) {
                    //Ship is alive, so draw it
                    if (player_index == PLAYER_0) {
-                      g_colorwidth(2,0);
+                      g_colorwidth(2,1);
                       g_vec(x, y, SHIP_SCALE, ship_angle[player_index], player0_ship[damage[player_index]]);
                    }
                    else {
-                      g_colorwidth(3,0);
+                      g_colorwidth(3,1);
                       g_vec(x, y, SHIP_SCALE, ship_angle[player_index], player1_ship[damage[player_index]]);
                    }
     
