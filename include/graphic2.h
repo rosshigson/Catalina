@@ -98,7 +98,7 @@ int cgi_x_offs();
 int cgi_y_offs();
 
 
-// Get  number of graphic x tiles
+// Get number of graphic x tiles
 //
 int cgi_x_tiles();
 
@@ -157,7 +157,7 @@ void *cgi_color_data(int double_buffer);
 
 // Get mode - always returns 3 (for 8 bit color). This is intended mainly
 // for programs to differentiate P2 virtual graphics from P1  virtual 
-// graphics - on the P1, g_mode may return either 0 (for 1 bit color, 
+// graphics - on the P1, g_mode may return either 0 (for 1 bit color), 
 // or 1 (for 2 bit color).
 //
 int g_mode();
@@ -216,7 +216,7 @@ void g_copy(int double_buffer);
 
 // Move the double buffer bitmap to the display.
 //
-// This is provided only for compatibility with the P1, and is ignored.
+// This is provided for compatibility with the P1, and just does g_copy().
 //
 void g_move(int double_buffer);
 
@@ -519,5 +519,15 @@ extern int _rand_forward(int var); // Simulate SPIN ?var operator
 extern int _rand_reverse(int var); // Simulate SPIN var? operator
 
 extern int g_sar(int var, int count); // Simulate PASM SAR var,count
+
+// g_sin - return the Sin value of an angle, specified as 0x0 to 0x2000 
+// (i.e. 360 degrees or 2*pi radians = 0x2000). Useful for vector sprites.
+//
+unsigned int g_sin(unsigned int angle);
+
+// g_cos - return the Cos value of an angle, specified as 0x0 to 0x2000 
+// (i.e. 360 degrees or 2*pi radians = 0x2000). Useful for vector sprites.
+//
+unsigned int g_cos(unsigned int angle);
 
 #endif

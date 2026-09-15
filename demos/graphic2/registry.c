@@ -43,13 +43,6 @@ void display_registry(int n) {
 }
 
 void main (void) {
-   
-   t_string(1, "\nWaiting for keyboard and/or mouse\n");
-   t_mode(1,HMI_cursor_scroll|HMI_cursor_fast);
-   while (!k_present() && !m_present()) {
-      _waitsec(1);
-      t_char(1, '.');
-   }
 
    t_char(1,0x0c); // clear the screen (Form Feed)
    t_setpos(1, 0, 0);

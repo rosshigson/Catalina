@@ -6,177 +6,20 @@ by adding -lsoundsne to a Catalina compilation command. For example:
 
    catalina -p2 -lci -lsoundsne sne_test.c 
 
-The sound library consists of three parts, each with its own C header 
-file:
+Refer to the section titled Sound support in the Propeller 2 Reference 
+Manual for more information on the HD_VGA HMI plugin and the graphic2 library.
 
-Basic SN Emulator support functions - soundsne.h 
-================================================
+Configuring the Sound plugin
+============================
 
-This part of the library is based on the original SN76489 Emulator written 
-for the Propeller 1 by Johannes Ahlebrand and adapted to the Propeller 2 by 
-Ada Gottensträter. 
+The sound driver is compatible with the Parallax Propeller 2 A/V add-on board,
+and is configured the same way - i.e. by using the platform configuration 
+files in the target\p2 directory - e.g. for the CUSTOM platform, it would be 
+P2CUSTOM.inc, or for the P2_EDGE platform it would be P2EDGE.inc). The 
+relevant entry for the Propeller 2 A/V board is:
 
-Here is a summary of the functions (see the header file and the plugin itself
-in target/p2/cogsne.t for full details):
+   _VGA_BASE_PIN = 0
 
-   sne_initialize   - Initialize SNE plugin. This function must be called 
-                      before any other to initialize the driver library.
-
-   sne_getRegisters - Retrieve a pointer to the SNE plugin data block.
-                      Returns NULL if the plugin cannot be found. Can be 
-                      used if the registers are to be set manually, or to
-                      tell if the plugin is loaded.
-
-   sne_reset        - Reset all the registers in the SNE data block to 15 
-                      (i.e. maximum attenuation, or minimum volume). 
-                      This is done once during initialization, but can 
-                      subsequently be done manually.
-
-   sne_setFreq      - Set the frequency of a single channel.
-
-   sne_setVolume    - Set the volume of a single channel.
-
-   sne_play         - Set the volume and frequency of a single channel 
-                      (i.e. play the tone).
-
-   sne_playTune     - play a tune encoded as a stream of 3 byte entries. 
-                      Each entry represents a note for one of three channels,
-                      typically representing lead, drum (noise) and bass notes. 
-
-                      The tune is played at the specified play_rate (in Hz).
-
-                      Each byte in the tune represents a note for one channel. 
-                      A note > 0 turns the note on for that channel, and zero 
-                      means to let the current note decay. A note of 255 in
-                      channel 0 indicates the end of the tune (which will be
-                      repeated indefinitely if 1 is specified for the repeat 
-                      parameter).
-
-                      For the drum (noise) channel, each note is represented 
-                      as a value 0 .. 7 which specifies the type and period
-                      of the noise:
-
-                        bits   1&0  meaning
-                               ---  -------
-                               0 0  clock/512
-                               0 1  clock/1024
-                               1 0  clock/2048
-                               1 1  use channel 2 tone frequency
-
-                        bit 2 = 0 for periodic noise, 1 for white noise
-                        See the SN76489 documentation for more details.
-
-                      For channels 0 and 2, each note is specified as a value 
-                      in the range 30 .. 254 which specifies an octave and 
-                      one of 12 tones from a table of 12 short tone period 
-                      values. The octave is (note-30) div 12, and tone is 
-                      (note-30) mod 12.
-
-                      The relationship between tone period and frequency is:
-                         frequency = (emulator clock)/(32*period)
-                      or
-                         period = (emulator clock)/(32*frequency)
-
-                      The emulator clock is set to 3579545 Hz, which means, 
-                      for example, that a 440 Hz tone (note "A") is period:
-                         3579545/(32*440) = 254
-
-   sne_playVGM      - play a tune or sound effect encoded in VGM format. 
-                      Note that the VGM file format can support many sound
-                      chips, so the file should be one intended for play by 
-                      an SN76489. There are many VGM file utilities for
-                      creating and editing VGM files, such as the Furnace 
-                      chiptune tracker available at:
-
-                         https://github.com/tildearrow/furnace
-
-
-Information about musical notes - musictab.h
-=============================================
-
-This part of the library was inspired by the Arduino MD_MusicTable functions 
-written by Marco Colli (see https://github.com/MajicDesigns/MD_MusicTable).
-
-Below is a summary of the functions - see the header file for full details:
-
-The following functions find a note in the table using various criteria:
-
-   mt_findId         - find a note by MIDI note number (0 .. 127).
-
-   mt_findName       - find a note by note name (a string up to 3 characters,
-                       e.g. "A" or "F#") and octave.
-
-   mt_findNoteOctave - find a note by note ID (0 .. 11) and octave.
-
-   mt_lookupNoteId   - return the note ID (0 .. 11) for a simple note
-                       string (eg, "A" or "F#").
-
-The following functions return specific values from the table (for the last
-note found by the functions above):
-
-   mt_getFrequency  - frequency in Hz.
-
-   mt_getName       - ISO name (note and octave eg A4).
-
-   mt_getNote       - note name only (eg A, C#).
-
-   mt_getOctave     - octave number.
-
-   mt_getId         - MIDI note number.
-
-   mt_getNoteId     - Note ID in octave.
-    
-
-An MD_SN76489 Sound Generator library - soundmd.h
-=================================================
-
-This part of the library was inspired by the MD_SN76489 Sound Generator Library
-developed by Marco Colli (see https://github.com/MajicDesigns/MD_SN76489). 
-
-Below is a summary of the functions - see the header file for full details:
-
-   md_begin             - initialize the MD library. Must be called before any
-                          other MD library function.
-
-   md_setVolume         - Set the volume set point for channel and remember the 
-                          setting. Application values are 0-15 for min to max. 
-                          Attenuator values are the complement of this (15-0).
-
-   md_setAllVolume      - Set the same volume set point for all channels.
-
-   md_setFrequency      - Calculate register values and set them.
-
-   md_setAllFrequency   - Set the same frequency for all channels.
-
-   md_setNoise          - Set the noise channel parameters.
-
-   md_tone              - Output a sound with frequency freq on the specified 
-                          channel. The tone is played without using ADSR.
-
-   md_note              - Output a sound with frequency freq on the specified
-                          channel using the ADSR envelope currently defined for 
-                          the channel.
-
-   md_noise             - Output a noise as specified on NOISE_CHANNEL, using 
-                        - the ADSR envelope currently defined for the channel. 
-
-   md_setADSR           - set the ADSR envelope for a channel.
-
-   md_setAllADSR        - Set the same ADSR envelope for all channels.
-
-   md_isIdle            - Return the idle state of a channel.
-
-   md_play              - play the ADSR for all channels.
-
-   md_millis            - return number of milliseconds since first call.
-
-
-Functions from the different sound library components can be used in the same 
-program, but note that using the sne_* functions (e.g. sne_setFreq etc) may 
-disrupt the ADSR envelope currently in use by the md_* library functions. 
-Also note that the md_* library functions typically use 0 to mean minimum 
-volume, whereas the sn_* library functions use 15 (i.e. max attenuation 
-rather than min volume).
 
 The Demo programs
 =================

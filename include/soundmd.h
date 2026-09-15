@@ -16,7 +16,6 @@
  *   md_setVolume
  *   md_setAllVolume
  *   md_setFrequency
- *   md_setAllFrequency
  *   md_setNoise
  *   md_tone
  *   md_note
