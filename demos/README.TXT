@@ -17,12 +17,18 @@ Started with Catalina":
    hello_world_3.c     A similar program using an even smaller print function.
    my_func.c my_prog.c - a demo of compiling multiple files.
    blink.c           - a multi-cog LED blink program.
+   hello_99.c        - a "hello world" type program that requires C99 to
+                       compile. Add the -C99 command line option.
 
 These programs also have ".geany" project files, that allow the programs to 
 be edited, compiled and executed in Catalina's version of the Geany IDE. 
 For example:
 
    catalina_geany hello_world.geany
+
+However note that the projects generally assume a Propeller 1 platform, and
+so to compile them for a Propeller 2 the -p2 option may need to be added to 
+the list of Catalina Options in the Project Properties in Geany.
 
 See the document "Getting Started with the Catalina Geany IDE" for more
 details on using Catalina Geany.
@@ -41,7 +47,8 @@ the use of file systems, or demonstrate various plugins, such as the various
 serial port options.
 
 Here is a brief summary of the demo subdirectories. Each subdirectory has 
-its own README.TXT file that explains its contents in detail.
+its own README.TXT (or sometimes CATALINA.TXT if the program already has its
+own README file) that explains its contents in more detail.
 
 name           Propeller   Description
 ============   =========   ===========
@@ -49,13 +56,16 @@ alloca         p1 or o2    Examples of using the alloca() function.
 benchmarks     p1 or p2    Some common benchmaking programs
 catalyst       p1 or p2    A simple SD Card Operating System/Program Loader
 catapult       p1 or p2    Using Catapult to build multi-model programs.
+coremark          p2       The Coremark benchmarking program.
 debug          p1 or p2    Example for the BlackBox or BlackCat debuggers
 dosfs          p1 or p2    Demonstrates the DOSFS File System
+elua              p2       A client/server implementation of Lua.
 examples       p1 or p2    Miscellaneous example programs
 file_systems   p1 or p2    Demonstrates the C (stdio) and Catalina file system
 games          p1 or p2    Some ANSI C Games programs
 globbing       p1 or p2    Example of file globbing (i.e. wildcard expansion)
 graphics          p1       Example of using the Parallax Graphics Library in C
+graphic2          p2       Example of using the Parallax Graphics Library in C
 hub_malloc     p1 of p2    Demonstrates memory management that uses Hub RAM
 inline_pasm    p1 or p2    Example to illustrate using inline PASM
 interrupts        p2       Example of using interrupts in C
@@ -70,12 +80,15 @@ p2                p2       Example of P2-specific functions
 p2_ram            p2       Demonstrations and utilities using PSRAM
 parallelize    p1 or p2    Example of Parallel programming in C
 pasm_pstr      p1 or p2    Example of using Catalina's _PSTR macro
+pthreads       p1 or p2    Example of using Posix threads.   
 random            p1       Example of using the RANDOM plugin
+sd_cache          p2       Demonstrates Catalina's SD card cache. 
 serial2           p2       Example of using the serial2 library
 serial4           p1       Example of using the serial4 library
 serial8           p2       Example of using the serial8 library
 small_lisp     p1 or p2    The Small Lisp interpreter in C
 sound             p1       Example of the sound library/plugin
+soundsnw          p2       Demonstrates the SN emulator sound library/plugin
 spi               p1       Example of the spi library/plugin
 spinc             p1       Example of using Spin or PASM programs with C
 test_suite     p1 or p2    Simple test program for Catalina C
