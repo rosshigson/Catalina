@@ -1,7 +1,9 @@
 /*
  * This is a modified verison of the FatFS program app4.c. The main
- * modification is that it uses sector 5in the etsts, so as not to
- * desroy the SD card formatting information in earlier sectors.
+ * modification is that it uses sector 5in the tests, so as not to
+ * desroy the SD card formatting information in earlier sectors. But
+ * it may damage any files on the SD card, so using an empty card is
+ * recommended.
  */
 
 /*----------------------------------------------------------------------/

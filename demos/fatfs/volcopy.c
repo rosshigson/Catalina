@@ -28,9 +28,9 @@
  * Compile this program with -lc (not -lci) because it uses sscanf.
  * For example:
  *
- *   catalina -p2 -lc -lm -C SD -W-Wp-wd82 -W-Wp-wd44 -C99 -O5 volcopy.c \
- *      ff.c ffsystem.c ffunicode.c diskio.c sd_init.c sd_read.c \
- *      sd_stat.c sd_write.c sd_ioctl.c sd_size.c crc7.c int64.c
+ *   catalina -p2 -lc -lm -lint64 -C SD -W-Wp-wd82 -W-Wp-wd44 -C99 -O5 \
+ *      volcopy.c ff.c ffsystem.c ffunicode.c diskio.c sd_init.c sd_read.c \
+ *      sd_stat.c sd_write.c sd_ioctl.c sd_size.c crc7.c 
  *
  */
 #include <ctype.h>

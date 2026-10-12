@@ -11,17 +11,16 @@
  * files in it. The other tests create and then delete their own test files.
  *
  * This program uses the version of FatFs in this directory. It also requires 
- * the 64 bit integer support, so a stand-alone version of the int64 support
- * functions is provided. An SD Card plugin must be loaded, which can be done 
- * by either linking with the extended libraries (-lcx or -lcix) or defining 
- * the Catalina symbol SD (this is done automatically by the build script 
- * included with this test program). 
+ * the 64 bit integer support. An SD Card plugin must be loaded, which can be 
+ * done by either linking with the extended libraries (-lcx or -lcix) or by
+ * defining the Catalina symbol SD (this is done automatically by the build 
+ * script included with this test program). 
  *
  * Build the program with a command like:
  *
- *    catalina -p2 -lci -C SD -C99 test_par1.c ff.c ffsystem.c \
+ *    catalina -p2 -lci -lint64 -C SD -C99 test_par1.c ff.c ffsystem.c \
  *       ffunicode.c diskio.c sd_init.c sd_read.c sd_stat.c sd_write.c \
- *       sd_ioctl.c sd_size.c crc7.c int64.c
+ *       sd_ioctl.c sd_size.c crc7.c
  *
  * Then load and execute it using Catalyst, or use payload. For example:
  *

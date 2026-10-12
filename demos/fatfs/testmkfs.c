@@ -11,9 +11,9 @@
  *
  * Build the program with a command like:
  *
- *    catalina -p2 -lci -C SD -C99 testmkfs.c ff.c ffsystem.c \
+ *    catalina -p2 -lci -lint64 -C SD -C99 testmkfs.c ff.c ffsystem.c \
  *       ffunicode.c diskio.c sd_init.c sd_read.c sd_stat.c sd_write.c \
- *       sd_ioctl.c sd_size.c crc7.c int64.c
+ *       sd_ioctl.c sd_size.c crc7.c
  *
  * Then load and execute it using Catalyst, or use payload. For example:
  *
