@@ -159,6 +159,17 @@ Cake when -C99 is also specified). For example, to disable Cake warning
 number 82 ("Parameter could point to const"), the option -wd82 can be passed 
 to Cake by adding -W-Wp-wd82 to the Catalina command line. For example:
 
-   cataline -ps -lc program.c -C99 -W-Wp-wd82
+   cataline -lc program.c -C99 -W-Wp-wd82
 
+If a new version of Cake (post 0.15.20) is cloned directly from github, the
+follwing files will need to be added to the top-level cake source directory:
+
+  CATALYST.TXT     - this file!
+  build_all*       - script that build Cake for Windows and Linux using gcc
+  make_cake*       - scripts that build Cake for Catalyst using Catalina
+  bake_cake*       - (ditto)
+  clean_all*       - clean up scripts
+
+Note that the bake_cake scripts may need updating if new Cake source files
+are added or deleted in a future Cake release.
 
