@@ -17,8 +17,7 @@ on every day. Timeless, efficient, and universal._
 
 _The code that AI now writes runs best where it can be read, verified
 and trusted. A small language with no hidden machinery. C gives the machine
-speed, and the human control and platform independence.
-Cake adds the checks that make that code safer._
+speed, and the human control and platform independence._
 
 
 # About
@@ -115,7 +114,7 @@ clang build.c -o build && ./build
 If you encounter an error such as:
 fatal error: X11/Xft/Xft.h: No such file or directory
 
-Ubuntu / Debian:  `sudo apt install libx11-dev libxft-dev`
+Ubuntu / Debian / Raspberry Pi OS:  `sudo apt install libx11-dev libxft-dev`
 
 Fedora: `sudo dnf install libX11-devel libXft-devel`
 
@@ -125,6 +124,31 @@ openSUSE:`sudo zypper install libX11-devel libXft-devel`
 
 These headers are used by the IDE.
 
+If you encounter an error such as:
+fatal error: wayland-client.h: No such file or directory
+
+Ubuntu / Debian / Raspberry Pi OS: `sudo apt install libwayland-dev libxkbcommon-dev libfreetype-dev libfontconfig-dev`
+
+Fedora: `sudo dnf install wayland-devel libxkbcommon-devel freetype-devel fontconfig-devel`
+
+Arch Linux: `sudo pacman -S wayland libxkbcommon freetype2 fontconfig`
+
+openSUSE: `sudo zypper install wayland-devel libxkbcommon-devel freetype2-devel fontconfig-devel`
+
+These headers are used by the Wayland IDE backend (`./build wayland`, or the
+default in a Wayland session when these libraries are installed).
+
+## TCC on Windows/Linux build instructions
+With [tcc](https://bellard.org/tcc/) on the PATH, go to the *src* directory and type:
+
+```
+tcc build.c -o build && ./build
+```
+
+On Windows, `build_tcc.bat` does the same. A Cake built by tcc uses the matching
+tcc target (`x86_64-w64-mingw32-tcc`, `x86_64-linux-gnu-tcc` or `aarch64-apple-darwin-tcc`) and the tcc headers by default. Tested with tcc 0.9.28 on Windows
+and 0.9.27 on Linux.
+
 ## Build options
 
 `build` accepts one optional argument, on any platform:
@@ -132,7 +156,6 @@ These headers are used by the IDE.
 | Argument | Effect |
 |---|---|
 | *(none)* | full build: tools, docs, amalgamated `lib.c`, `cake` and the IDE |
-| `fast` | incremental build of `cake` and the IDE only — skips tools, docs, inner tests and the amalgamation |
 | `full` | build everything with `-DTEST`, but do not run the test suite |
 | `test` | same as `full`, then run the test suite |
 | `debug` | build without optimizations and without `-DNDEBUG` |
@@ -164,35 +187,68 @@ directory as shown above, without installing anything. Installing simply
 copies the compiler and supporting files into a system directory and updates 
 the system `PATH` so the `cake` command can be executed from any terminal.
 
+Download the installer for your system from the
+[GitHub releases](https://github.com/thradams/cake/releases); no source code
+or compiler is needed.
+
+Versions are installed side by side (`cake/<version>`); the last one
+installed is the one in the `PATH`.
+
 ## Windows
 
-Run the installer as Administrator.
+Run `cake-<version>-setup.exe` (it asks for Administrator).
 
-```bash
-install.exe
-```
+The setup:
 
-The installer:
+* Copies Cake files into `Program Files\cake\<version>` (the folder can be changed)
+* Adds that folder to the system `PATH`, removing other Cake versions from it
+* Registers an uninstaller in Settings > Apps
 
-* Copies Cake files into `Program Files`
-* Updates the system `PATH`
-* Removes obsolete Cake `PATH` entries from previous installations
+The installer source is `src/tools/win_installer.c`; the installed files are
+listed in `src/tools/win_installer.h`.
 
 ## Linux / macOS
 
-Run the installer using:
+The release has `cake-<version>-linux-x64.tar.gz`, `cake-<version>-linux-arm64.tar.gz`
+(e.g. Raspberry Pi, 64-bit OS) and `cake-<version>-macos.tar.gz`,
+compressed archives (like a zip) with the binaries and `install.sh`.
 
 ```bash
-sudo ./install
+curl -L https://github.com/thradams/cake/releases/download/v<version>/cake-<version>-linux-x64.tar.gz | tar xz
+cd cake-<version>-linux-x64
+sudo ./install.sh
 ```
 
-The installer:
+(use `linux-arm64` on a Raspberry Pi, `macos` on macOS). If the archive was downloaded
+with a browser, extract it with `tar xzf cake-<version>-linux-x64.tar.gz`
+or with a double click, then run `sudo ./install.sh` inside the folder.
 
-* Copies Cake files into the installation directory
-* Creates or updates a file in `/etc/profile.d/`
-* Adds Cake to the system `PATH`
+The installer (`src/tools/unix_install.sh`):
 
-Changes become available in new login sessions.
+* Copies Cake files into `/usr/local/cake/<version>`
+  (use `sudo INSTALL_PREFIX=/opt ./install.sh` for another prefix)
+* Adds that folder to the `PATH`: `/etc/profile.d/cake.sh` on Linux,
+  `/etc/paths.d/cake` on macOS
+* Creates `uninstall.sh` in the installation folder
+
+Changes become available in new terminals. To remove:
+
+```bash
+sudo /usr/local/cake/<version>/uninstall.sh
+```
+
+Notes:
+
+* Linux: built on Ubuntu 22.04 (needs glibc 2.35+). `cakeide` needs the
+  X11/Xft libraries (e.g. `sudo apt install libxft2`, also on Raspberry Pi OS).
+* Raspberry Pi: `cakeide` is an X11 program. Under a Wayland session (the
+  default on Raspberry Pi OS) it runs through XWayland and is very slow.
+  Switch to an X11 session: `sudo raspi-config`, then
+  Advanced Options > Wayland > X11, and reboot.
+* macOS: Apple Silicon (arm64) only. The binaries are not signed; if the
+  archive was downloaded with a browser, macOS blocks them. Allow with
+  `xattr -dr com.apple.quarantine cake-<version>-macos` before installing
+  (not needed when downloaded with `curl`).
 
 # Running cake
 
@@ -200,31 +256,16 @@ Changes become available in new login sessions.
 cake source.c
 ```
 
-This writes the C89 output to `./<target>/source.c`, where `<target>` is the platform Cake was built for — for example `./macos_arm64/source.c` or `./x64_msvc/source.c`. `-target=<name>` selects another platform; see the [Manual](manual.md) for the full option list.
+This writes the C89 output to `./<target>/source.c`, where `<target>` is the platform Cake was built for — for example `./aarch64-apple-darwin-clang/source.c` or `./x86_64-pc-windows-msvc/source.c`. `-target=<name>` selects another platform; see the [Manual](manual.md) for the full option list.
 
 
 # IDE
 
 The Cake IDE was developed with the help of AI tools. It has now been adopted as
 part of the Cake project and will be maintained alongside the rest of the
-codebase. Over time, the IDE code will be reviewed, refined, and gradually
-humanized as the project evolves.
+codebase. 
 
-The IDE works in macOS, Windows and Linux. Its purpose is to make Cake easier
-to use: open a file or a project, press Build, and the whole pipeline — Cake's
-C89 output, the external compiler, the debugger — is set up and driven from one
-place, with no command lines to remember. It is very useful to visualize and
-remove warnings: Cake's diagnostics show up in the Output window and jump
-straight to the offending line.
-
-It is also how Cake itself is developed and debugged. The `src/cakeprj.cakeproj`
-project builds the compiler with the same process any other project uses: Cake
-translates the sources to C89, an External Tool (gcc, clang or cl) links the
-generated code, and the built-in debugger (lldb / cdb) runs the result. Opening
-that project is the quickest way to step through the compiler while it compiles
-a sample.
-
-See [IDE Manual](idemanual.md)
+The IDE works in macOS, Windows and Linux / Raspberry Pi.
 
 
 ![Cake IDE](cakeide.png)

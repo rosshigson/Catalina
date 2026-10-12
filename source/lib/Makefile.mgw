@@ -32,11 +32,11 @@ endif
 
 ifeq ($(PROPELLER_2),TRUE)
 
-all: assert ctype errno locale math setjmp signal stdlib string time catalina float threads linenoise int tiny spi lua graphic2 libc p2 serial2 serial8 wifi soundsne psram hyper libci libcix libcx libm libma libmb libmc libthreads liblinenoise libint libtiny libspi liblua libluax libgraphic2 libserial2 libserial8 libwifi libsoundsne libpsram libhyper install 
+all: assert ctype errno locale math setjmp signal stdlib string time catalina float threads linenoise int int64 tiny spi lua graphic2 libc p2 serial2 serial8 wifi soundsne psram hyper libci libcix libcx libm libma libmb libmc libthreads liblinenoise libint libint64 libtiny libspi liblua libluax libgraphic2 libserial2 libserial8 libwifi libsoundsne libpsram libhyper install 
 
 else
 
-all: assert ctype errno locale math setjmp signal stdlib string time catalina float threads linenoise int tiny spi lua graphics vgraphic serial4 serial4x wifi sound tty tty256 libc libci libcix libcx libm libma libmb libmc libthreads liblinenoise libint libtiny libspi liblua libluax libgraphics libvgraphic libserial4 libserial4x libwifi libsound libtty libtty256 install
+all: assert ctype errno locale math setjmp signal stdlib string time catalina float threads linenoise int int64 tiny spi lua graphics vgraphic serial4 serial4x wifi sound tty tty256 libc libci libcix libcx libm libma libmb libmc libthreads liblinenoise libint libint64 libtiny libspi liblua libluax libgraphics libvgraphic libserial4 libserial4x libwifi libsound libtty libtty256 install
 
 endif
 
@@ -59,6 +59,7 @@ clean:
 	$(MAKE) -C linenoise clean
 	$(MAKE) -C p2 clean
 	$(MAKE) -C int clean
+	$(MAKE) -C int64 clean
 	$(MAKE) -C graphics clean
 	$(MAKE) -C graphic2 clean
 	$(MAKE) -C vgraphic clean
@@ -87,6 +88,7 @@ clean:
 	$(MAKE) -C lib\\threads clean
 	$(MAKE) -C lib\\linenoise clean
 	$(MAKE) -C lib\\int clean
+	$(MAKE) -C lib\\int64 clean
 	$(MAKE) -C lib\\graphics clean
 	$(MAKE) -C lib\\graphic2 clean
 	$(MAKE) -C lib\\vgraphic clean
@@ -131,6 +133,8 @@ install:
 	-cp -r lib\\linenoise $(OUTPUT)\\$(LIB)
 	-rm -fr $(OUTPUT)\\$(LIB)\\int
 	-cp -r lib\\int $(OUTPUT)\\$(LIB)
+	-rm -fr $(OUTPUT)\\$(LIB)\\int64
+	-cp -r lib\\int64 $(OUTPUT)\\$(LIB)
 	-rm -fr $(OUTPUT)\\$(LIB)\\graphics
 	-cp -r lib\\graphics $(OUTPUT)\\$(LIB)
 	-rm -fr $(OUTPUT)\\$(LIB)\\graphic2
@@ -218,6 +222,9 @@ linenoise:	ALWAYSRUN
 
 int:	ALWAYSRUN
 	$(MAKE) -C int all
+
+int64:	ALWAYSRUN
+	$(MAKE) -C int64 all
 
 tiny:	ALWAYSRUN
 	$(MAKE) -C tiny all
@@ -345,6 +352,9 @@ liblinenoise:	ALWAYSRUN
 
 libint:	ALWAYSRUN
 	$(MAKE) -C lib\\int all
+
+libint64:	ALWAYSRUN
+	$(MAKE) -C lib\\int64 all
 
 libtiny:	ALWAYSRUN
 	$(MAKE) -C lib\\tiny all

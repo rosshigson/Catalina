@@ -3,7 +3,7 @@
  *  https://github.com/thradams/cake
 */
 
-#pragma safety enable
+
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -16,6 +16,11 @@
 //#include <winsock2.h>
 #endif
 
+void bug()
+{
+    
+}
+
 void throw_break_point()
 {
     /*
@@ -27,277 +32,504 @@ const char* get_posix_error_message(int error)
 {
     switch (error)
     {
+#ifdef EPERM
     case EPERM:
         return "Operation not permitted";
-    case  ENOENT:
+#endif
+#ifdef ENOENT
+    case ENOENT:
         return "No such file or directory";
-    case  ESRCH:
+#endif
+#ifdef ESRCH
+    case ESRCH:
         return "No such process";
-    case  EINTR:
+#endif
+#ifdef EINTR
+    case EINTR:
         return "Interrupted system call";
-    case  EIO:
+#endif
+#ifdef EIO
+    case EIO:
         return "I/O error";
-    case  ENXIO:
+#endif
+#ifdef ENXIO
+    case ENXIO:
         return "No such device or address";
-    case  E2BIG:
+#endif
+#ifdef E2BIG
+    case E2BIG:
         return "Arg list too long";
-    case  ENOEXEC:
-        return "Exec string_format error";
-    case  EBADF:
+#endif
+#ifdef ENOEXEC
+    case ENOEXEC:
+        return "Exec format error";
+#endif
+#ifdef EBADF
+    case EBADF:
         return "Bad file number";
-    case  ECHILD:
+#endif
+#ifdef ECHILD
+    case ECHILD:
         return "No child processes";
-    case  EAGAIN:
+#endif
+#ifdef EAGAIN
+    case EAGAIN:
         return "Try again";
-    case  ENOMEM:
+#endif
+#ifdef ENOMEM
+    case ENOMEM:
         return "Out of memory";
-    case  EACCES:
+#endif
+#ifdef EACCES
+    case EACCES:
         return "Permission denied";
-    case  EFAULT:
+#endif
+#ifdef EFAULT
+    case EFAULT:
         return "Bad address";
-    case  EBUSY:
+#endif
+#ifdef EBUSY
+    case EBUSY:
         return "Device or resource busy";
-    case  EEXIST:
+#endif
+#ifdef EEXIST
+    case EEXIST:
         return "File exists";
-    case  EXDEV:
+#endif
+#ifdef EXDEV
+    case EXDEV:
         return "Cross-device link";
-    case  ENODEV:
+#endif
+#ifdef ENODEV
+    case ENODEV:
         return "No such device";
-    case  ENOTDIR:
+#endif
+#ifdef ENOTDIR
+    case ENOTDIR:
         return "Not a directory";
-    case  EISDIR:
+#endif
+#ifdef EISDIR
+    case EISDIR:
         return "Is a directory";
-    case  EINVAL:
+#endif
+#ifdef EINVAL
+    case EINVAL:
         return "Invalid argument";
-    case  ENFILE:
+#endif
+#ifdef ENFILE
+    case ENFILE:
         return "File table overflow";
-    case  EMFILE:
+#endif
+#ifdef EMFILE
+    case EMFILE:
         return "Too many open files";
-    case  ENOTTY:
+#endif
+#ifdef ENOTTY
+    case ENOTTY:
         return "Not a typewriter";
-    case  ETXTBSY:
+#endif
+#ifdef ETXTBSY
+    case ETXTBSY:
         return "Text file busy";
-    case  EFBIG:
+#endif
+#ifdef EFBIG
+    case EFBIG:
         return "File too large";
-    case  ENOSPC:
+#endif
+#ifdef ENOSPC
+    case ENOSPC:
         return "No space left on device";
-    case  ESPIPE:
+#endif
+#ifdef ESPIPE
+    case ESPIPE:
         return "Illegal seek";
-    case  EROFS:
+#endif
+#ifdef EROFS
+    case EROFS:
         return "Read-only file system";
-    case  EMLINK:
+#endif
+#ifdef EMLINK
+    case EMLINK:
         return "Too many links";
-    case  EPIPE:
+#endif
+#ifdef EPIPE
+    case EPIPE:
         return "Broken pipe";
-    case  EDOM:
+#endif
+#ifdef EDOM
+    case EDOM:
         return "Math argument out of domain of func";
-    case  ERANGE:
+#endif
+#ifdef ERANGE
+    case ERANGE:
         return "Math result not representable";
-    case  EDEADLK:
+#endif
+#ifdef EDEADLK
+    case EDEADLK:
         return "Resource deadlock would occur";
-
-// Catalina does not have these errors defined ...
-#if !defined(__CATALINA__)
-    case  ENAMETOOLONG:
+#endif
+#ifdef ENAMETOOLONG
+    case ENAMETOOLONG:
         return "File name too long";
-    case  ENOLCK:
+#endif
+#ifdef ENOLCK
+    case ENOLCK:
         return "No record locks available";
-    case  ENOSYS:
+#endif
+#ifdef ENOSYS
+    case ENOSYS:
         return "Function not implemented";
-    case  ENOTEMPTY:
+#endif
+#ifdef ENOTEMPTY
+    case ENOTEMPTY:
         return "Directory not empty";
-    case  ELOOP:
+#endif
+#ifdef ELOOP
+    case ELOOP:
         return "Too many symbolic links encountered";
-        //case  EWOULDBLOCK:
-        //case EAGAIN:  return "Operation would block";
-    case  ENOMSG:
+#endif
+#ifdef ENOMSG
+    case ENOMSG:
         return "No message of desired type";
-    case  EIDRM:
+#endif
+#ifdef EIDRM
+    case EIDRM:
         return "Identifier removed";
-    case  ENOSTR:
+#endif
+#ifdef ENOSTR
+    case ENOSTR:
         return "Device not a stream";
-    case  ENODATA:
+#endif
+#ifdef ENODATA
+    case ENODATA:
         return "No data available";
-    case  ETIME:
+#endif
+#ifdef ETIME
+    case ETIME:
         return "Timer expired";
-    case  ENOSR:
+#endif
+#ifdef ENOSR
+    case ENOSR:
         return "Out of streams resources";
-
-    case  ENOLINK:
+#endif
+#ifdef ENOLINK
+    case ENOLINK:
         return "Link has been severed";
-    case  EPROTO:
+#endif
+#ifdef EPROTO
+    case EPROTO:
         return "Protocol error";
-    case  EBADMSG:
+#endif
+#ifdef EBADMSG
+    case EBADMSG:
         return "Not a data message";
-    case  EOVERFLOW:
+#endif
+#ifdef EOVERFLOW
+    case EOVERFLOW:
         return "Value too large for defined data type";
-    case  EILSEQ:
+#endif
+#ifdef EILSEQ
+    case EILSEQ:
         return "Illegal byte sequence";
-    case  ENOTSOCK:
+#endif
+#ifdef ENOTSOCK
+    case ENOTSOCK:
         return "Socket operation on non-socket";
-    case  EDESTADDRREQ:
+#endif
+#ifdef EDESTADDRREQ
+    case EDESTADDRREQ:
         return "Destination address required";
-    case  EMSGSIZE:
+#endif
+#ifdef EMSGSIZE
+    case EMSGSIZE:
         return "Message too long";
-    case  EPROTOTYPE:
+#endif
+#ifdef EPROTOTYPE
+    case EPROTOTYPE:
         return "Protocol wrong type for socket";
-    case  ENOPROTOOPT:
+#endif
+#ifdef ENOPROTOOPT
+    case ENOPROTOOPT:
         return "Protocol not available";
-    case  EPROTONOSUPPORT:
+#endif
+#ifdef EPROTONOSUPPORT
+    case EPROTONOSUPPORT:
         return "Protocol not supported";
-
-    case  EOPNOTSUPP:
+#endif
+#ifdef EOPNOTSUPP
+    case EOPNOTSUPP:
         return "Operation not supported on transport endpoint";
-
-    case  EAFNOSUPPORT:
+#endif
+#ifdef EAFNOSUPPORT
+    case EAFNOSUPPORT:
         return "Address family not supported by protocol";
-    case  EADDRINUSE:
+#endif
+#ifdef EADDRINUSE
+    case EADDRINUSE:
         return "Address already in use";
-    case  EADDRNOTAVAIL:
+#endif
+#ifdef EADDRNOTAVAIL
+    case EADDRNOTAVAIL:
         return "Cannot assign requested address";
-    case  ENETDOWN:
+#endif
+#ifdef ENETDOWN
+    case ENETDOWN:
         return "Network is down";
-    case  ENETUNREACH:
+#endif
+#ifdef ENETUNREACH
+    case ENETUNREACH:
         return "Network is unreachable";
-    case  ENETRESET:
+#endif
+#ifdef ENETRESET
+    case ENETRESET:
         return "Network dropped connection because of reset";
-    case  ECONNABORTED:
+#endif
+#ifdef ECONNABORTED
+    case ECONNABORTED:
         return "Software caused connection abort";
-    case  ECONNRESET:
+#endif
+#ifdef ECONNRESET
+    case ECONNRESET:
         return "Connection reset by peer";
-    case  ENOBUFS:
+#endif
+#ifdef ENOBUFS
+    case ENOBUFS:
         return "No buffer space available";
-    case  EISCONN:
+#endif
+#ifdef EISCONN
+    case EISCONN:
         return "Transport endpoint is already connected";
-    case  ENOTCONN:
+#endif
+#ifdef ENOTCONN
+    case ENOTCONN:
         return "Transport endpoint is not connected";
-
-    case  ETIMEDOUT:
+#endif
+#ifdef ETIMEDOUT
+    case ETIMEDOUT:
         return "Connection timed out";
-    case  ECONNREFUSED:
+#endif
+#ifdef ECONNREFUSED
+    case ECONNREFUSED:
         return "Connection refused";
-
-    case  EHOSTUNREACH:
+#endif
+#ifdef EHOSTUNREACH
+    case EHOSTUNREACH:
         return "No route to host";
-    case  EALREADY:
+#endif
+#ifdef EALREADY
+    case EALREADY:
         return "Operation already in progress";
-    case  EINPROGRESS:
+#endif
+#ifdef EINPROGRESS
+    case EINPROGRESS:
         return "Operation now in progress";
+#endif
+
+        /* Linux-specific errors */
 #ifndef _WIN32
-    case  ENOTBLK:
+
+#ifdef ENOTBLK
+    case ENOTBLK:
         return "Block device required";
-#ifndef __APPLE__
-    case  ECHRNG:
+#endif
+#ifdef ECHRNG
+    case ECHRNG:
         return "Channel number out of range";
-    case  EL2NSYNC:
+#endif
+#ifdef EL2NSYNC
+    case EL2NSYNC:
         return "Level 2 not synchronized";
-    case  EL3HLT:
+#endif
+#ifdef EL3HLT
+    case EL3HLT:
         return "Level 3 halted";
-    case  EL3RST:
+#endif
+#ifdef EL3RST
+    case EL3RST:
         return "Level 3 reset";
-    case  ELNRNG:
+#endif
+#ifdef ELNRNG
+    case ELNRNG:
         return "Link number out of range";
-    case  EUNATCH:
+#endif
+#ifdef EUNATCH
+    case EUNATCH:
         return "Protocol driver not attached";
-    case  ENOCSI:
+#endif
+#ifdef ENOCSI
+    case ENOCSI:
         return "No CSI structure available";
-    case  EL2HLT:
+#endif
+#ifdef EL2HLT
+    case EL2HLT:
         return "Level 2 halted";
-    case  EBADE:
-        return "Invalid ex   ";
-    case  EBADR:
+#endif
+#ifdef EBADE
+    case EBADE:
+        return "Invalid exchange";
+#endif
+#ifdef EBADR
+    case EBADR:
         return "Invalid request descriptor";
-    case  EXFULL:
+#endif
+#ifdef EXFULL
+    case EXFULL:
         return "Exchange full";
-    case  ENOANO:
+#endif
+#ifdef ENOANO
+    case ENOANO:
         return "No anode";
-    case  EBADRQC:
+#endif
+#ifdef EBADRQC
+    case EBADRQC:
         return "Invalid request code";
-    case  EBADSLT:
+#endif
+#ifdef EBADSLT
+    case EBADSLT:
         return "Invalid slot";
-
-        //case  EDEADLOCK:
-        //case EDEADLK:
-
-    case  EBFONT:
-        return "Bad font file string_format";
-    case  ENONET:
+#endif
+#ifdef EBFONT
+    case EBFONT:
+        return "Bad font file format";
+#endif
+#ifdef ENONET
+    case ENONET:
         return "Machine is not on the network";
-    case  ENOPKG:
+#endif
+#ifdef ENOPKG
+    case ENOPKG:
         return "Package not installed";
-    case  EREMOTE:
+#endif
+#ifdef EREMOTE
+    case EREMOTE:
         return "Object is remote";
-
-    case  EMULTIHOP:
+#endif
+#ifdef EMULTIHOP
+    case EMULTIHOP:
         return "Multihop attempted";
-    case  EDOTDOT:
+#endif
+#ifdef EDOTDOT
+    case EDOTDOT:
         return "RFS specific error";
-    case  EADV:
+#endif
+#ifdef EADV
+    case EADV:
         return "Advertise error";
-    case  ESRMNT:
+#endif
+#ifdef ESRMNT
+    case ESRMNT:
         return "Srmount error";
-    case  ECOMM:
+#endif
+#ifdef ECOMM
+    case ECOMM:
         return "Communication error on send";
-    case  ERESTART:
+#endif
+#ifdef ERESTART
+    case ERESTART:
         return "Interrupted system call should be restarted";
-    case  ESTRPIPE:
+#endif
+#ifdef ESTRPIPE
+    case ESTRPIPE:
         return "Streams pipe error";
-    case  EUSERS:
+#endif
+#ifdef EUSERS
+    case EUSERS:
         return "Too many users";
-    case  ENOTUNIQ:
+#endif
+#ifdef ENOTUNIQ
+    case ENOTUNIQ:
         return "Email not unique on network";
-    case  EBADFD:
+#endif
+#ifdef EBADFD
+    case EBADFD:
         return "File descriptor in bad state";
-    case  EREMCHG:
+#endif
+#ifdef EREMCHG
+    case EREMCHG:
         return "Remote address changed";
-    case  ELIBACC:
-        return "Can not access a needed shared library";
-    case  ELIBBAD:
+#endif
+#ifdef ELIBACC
+    case ELIBACC:
+        return "Cannot access a needed shared library";
+#endif
+#ifdef ELIBBAD
+    case ELIBBAD:
         return "Accessing a corrupted shared library";
-    case  ELIBSCN:
+#endif
+#ifdef ELIBSCN
+    case ELIBSCN:
         return ".lib section in a.out corrupted";
-    case  ELIBMAX:
+#endif
+#ifdef ELIBMAX
+    case ELIBMAX:
         return "Attempting to link in too many shared libraries";
-    case  ELIBEXEC:
+#endif
+#ifdef ELIBEXEC
+    case ELIBEXEC:
         return "Cannot exec a shared library directly";
-    case  EUCLEAN:
+#endif
+#ifdef EUCLEAN
+    case EUCLEAN:
         return "Structure needs cleaning";
-    case  ENOTNAM:
+#endif
+#ifdef ENOTNAM
+    case ENOTNAM:
         return "Not a XENIX named type file";
-    case  ENAVAIL:
+#endif
+#ifdef ENAVAIL
+    case ENAVAIL:
         return "No XENIX semaphores available";
-    case  EISNAM:
+#endif
+#ifdef EISNAM
+    case EISNAM:
         return "Is a named type file";
-    case  EREMOTEIO:
+#endif
+#ifdef EREMOTEIO
+    case EREMOTEIO:
         return "Remote I/O error";
-    case  EDQUOT:
+#endif
+#ifdef EDQUOT
+    case EDQUOT:
         return "Quota exceeded";
-    case  ENOMEDIUM:
+#endif
+#ifdef ENOMEDIUM
+    case ENOMEDIUM:
         return "No medium found";
-    case  EMEDIUMTYPE:
+#endif
+#ifdef EMEDIUMTYPE
+    case EMEDIUMTYPE:
         return "Wrong medium type";
 #endif
 
-    case  ESOCKTNOSUPPORT:
+#endif /* _WIN32 */
+
+#ifdef ESOCKTNOSUPPORT
+    case ESOCKTNOSUPPORT:
         return "Socket type not supported";
-    case  EPFNOSUPPORT:
-        return "Protocol family not supported";
-    case  EHOSTDOWN:
-        return "Host is down";
-    case  ESHUTDOWN:
-        return "Cannot send after transport endpoint shutdown";
-    case  ETOOMANYREFS:
-        return "Too many references: cannot splice";
-    case  ESTALE:
-        return "Stale NFS file handle";
-
 #endif
-
-#endif // !defined(__CATALINA__)
+#ifdef EPFNOSUPPORT
+    case EPFNOSUPPORT:
+        return "Protocol family not supported";
+#endif
+#ifdef EHOSTDOWN
+    case EHOSTDOWN:
+        return "Host is down";
+#endif
+#ifdef ESHUTDOWN
+    case ESHUTDOWN:
+        return "Cannot send after transport endpoint shutdown";
+#endif
+#ifdef ETOOMANYREFS
+    case ETOOMANYREFS:
+        return "Too many references: cannot splice";
+#endif
+#ifdef ESTALE
+    case ESTALE:
+        return "Stale NFS file handle";
+#endif
 
     default:
         break;
-
     }
 
     return "Unknown";
@@ -308,152 +540,295 @@ int windows_error_to_posix(int i)
 {
     switch (i)
     {
+#ifdef EACCES
     case ERROR_ACCESS_DENIED:
         return EACCES;
+#endif
+
+#ifdef EEXIST
     case ERROR_ALREADY_EXISTS:
         return EEXIST;
+#endif
+
+#ifdef ENODEV
     case ERROR_BAD_UNIT:
         return ENODEV;
+#endif
+
+#ifdef ENAMETOOLONG
     case ERROR_BUFFER_OVERFLOW:
         return ENAMETOOLONG;
+#endif
+
+#ifdef EBUSY
     case ERROR_BUSY:
         return EBUSY;
+
     case ERROR_BUSY_DRIVE:
         return EBUSY;
+#endif
+
+#ifdef EACCES
     case ERROR_CANNOT_MAKE:
         return EACCES;
-    case ERROR_CANTOPEN:
-        return EIO;
-    case ERROR_CANTREAD:
-        return EIO;
-    case ERROR_CANTWRITE:
-        return EIO;
+
     case ERROR_CURRENT_DIRECTORY:
         return EACCES;
-    case ERROR_DEV_NOT_EXIST:
-        return ENODEV;
-    case ERROR_DEVICE_IN_USE:
-        return EBUSY;
-    case ERROR_DIR_NOT_EMPTY:
-        return ENOTEMPTY;
-    case ERROR_DIRECTORY:
-        return EINVAL;
-    case ERROR_DISK_FULL:
-        return ENOSPC;
-    case ERROR_FILE_EXISTS:
-        return EEXIST;
-    case ERROR_FILE_NOT_FOUND:
-        return ENOENT;
-    case ERROR_HANDLE_DISK_FULL:
-        return ENOSPC;
+
     case ERROR_INVALID_ACCESS:
         return EACCES;
-    case ERROR_INVALID_DRIVE:
-        return ENODEV;
-    case ERROR_INVALID_FUNCTION:
-        return ENOSYS;
-    case ERROR_INVALID_HANDLE:
-        return EINVAL;
-    case ERROR_INVALID_NAME:
-        return EINVAL;
-    case ERROR_LOCK_VIOLATION:
-        return ENOLCK;
-    case ERROR_LOCKED:
-        return ENOLCK;
-    case ERROR_NEGATIVE_SEEK:
-        return EINVAL;
+
     case ERROR_NOACCESS:
         return EACCES;
-    case ERROR_NOT_ENOUGH_MEMORY:
-        return ENOMEM;
-    case ERROR_NOT_READY:
-        return EAGAIN;
-    case ERROR_NOT_SAME_DEVICE:
-        return EXDEV;
-    case ERROR_OPEN_FAILED:
-        return EIO;
-    case ERROR_OPEN_FILES:
-        return EBUSY;
-    case ERROR_OPERATION_ABORTED:
-        return ECANCELED;
-    case ERROR_OUTOFMEMORY:
-        return ENOMEM;
-    case ERROR_PATH_NOT_FOUND:
-        return ENOENT;
-    case ERROR_READ_FAULT:
-        return EIO;
-    case ERROR_RETRY:
-        return EAGAIN;
-    case ERROR_SEEK:
-        return EIO;
+
     case ERROR_SHARING_VIOLATION:
         return EACCES;
-    case ERROR_TOO_MANY_OPEN_FILES:
-        return EMFILE;
-    case ERROR_WRITE_FAULT:
-        return EIO;
+
     case ERROR_WRITE_PROTECT:
         return EACCES;
-    case WSAEACCES:
-        return EACCES;
+#endif
+
+#ifdef EIO
+    case ERROR_CANTOPEN:
+        return EIO;
+
+    case ERROR_CANTREAD:
+        return EIO;
+
+    case ERROR_CANTWRITE:
+        return EIO;
+
+    case ERROR_OPEN_FAILED:
+        return EIO;
+
+    case ERROR_READ_FAULT:
+        return EIO;
+
+    case ERROR_SEEK:
+        return EIO;
+
+    case ERROR_WRITE_FAULT:
+        return EIO;
+#endif
+
+#ifdef ENOTEMPTY
+    case ERROR_DIR_NOT_EMPTY:
+        return ENOTEMPTY;
+#endif
+
+#ifdef EINVAL
+    case ERROR_DIRECTORY:
+        return EINVAL;
+
+    case ERROR_INVALID_HANDLE:
+        return EINVAL;
+
+    case ERROR_INVALID_NAME:
+        return EINVAL;
+
+    case ERROR_NEGATIVE_SEEK:
+        return EINVAL;
+#endif
+
+#ifdef ENOSPC
+    case ERROR_DISK_FULL:
+        return ENOSPC;
+
+    case ERROR_HANDLE_DISK_FULL:
+        return ENOSPC;
+#endif
+
+#ifdef ENOENT
+    case ERROR_FILE_NOT_FOUND:
+        return ENOENT;
+
+    case ERROR_PATH_NOT_FOUND:
+        return ENOENT;
+#endif
+
+#ifdef ENOSYS
+    case ERROR_INVALID_FUNCTION:
+        return ENOSYS;
+#endif
+
+#ifdef ENOLCK
+    case ERROR_LOCK_VIOLATION:
+        return ENOLCK;
+
+    case ERROR_LOCKED:
+        return ENOLCK;
+#endif
+
+#ifdef ENOMEM
+    case ERROR_NOT_ENOUGH_MEMORY:
+        return ENOMEM;
+
+    case ERROR_OUTOFMEMORY:
+        return ENOMEM;
+#endif
+
+#ifdef EAGAIN
+    case ERROR_NOT_READY:
+        return EAGAIN;
+
+    case ERROR_RETRY:
+        return EAGAIN;
+#endif
+
+#ifdef EXDEV
+    case ERROR_NOT_SAME_DEVICE:
+        return EXDEV;
+#endif
+
+#ifdef EBUSY
+    case ERROR_OPEN_FILES:
+        return EBUSY;
+#endif
+
+#ifdef ECANCELED
+    case ERROR_OPERATION_ABORTED:
+        return ECANCELED;
+#endif
+
+#ifdef EMFILE
+    case ERROR_TOO_MANY_OPEN_FILES:
+        return EMFILE;
+#endif
+
+#ifdef EADDRINUSE
     case WSAEADDRINUSE:
         return EADDRINUSE;
+#endif
+
+#ifdef EADDRNOTAVAIL
     case WSAEADDRNOTAVAIL:
         return EADDRNOTAVAIL;
+#endif
+
+#ifdef EAFNOSUPPORT
     case WSAEAFNOSUPPORT:
         return EAFNOSUPPORT;
+#endif
+
+#ifdef EALREADY
     case WSAEALREADY:
         return EALREADY;
+#endif
+
+#ifdef EBADF
     case WSAEBADF:
         return EBADF;
+#endif
+
+#ifdef ECONNABORTED
     case WSAECONNABORTED:
         return ECONNABORTED;
+#endif
+
+#ifdef ECONNREFUSED
     case WSAECONNREFUSED:
         return ECONNREFUSED;
+#endif
+
+#ifdef ECONNRESET
     case WSAECONNRESET:
         return ECONNRESET;
+#endif
+
+#ifdef EDESTADDRREQ
     case WSAEDESTADDRREQ:
         return EDESTADDRREQ;
+#endif
+
+#ifdef EFAULT
     case WSAEFAULT:
         return EFAULT;
+#endif
+
+#ifdef EHOSTUNREACH
     case WSAEHOSTUNREACH:
         return EHOSTUNREACH;
+#endif
+
+#ifdef EINPROGRESS
     case WSAEINPROGRESS:
         return EINPROGRESS;
+#endif
+
+#ifdef EINTR
     case WSAEINTR:
         return EINTR;
-    case WSAEINVAL:
-        return EINVAL;
+#endif
+
+#ifdef EISCONN
     case WSAEISCONN:
         return EISCONN;
-    case WSAEMFILE:
-        return EMFILE;
+#endif
+
+#ifdef EMSGSIZE
     case WSAEMSGSIZE:
         return EMSGSIZE;
+#endif
+
+#ifdef ENETDOWN
     case WSAENETDOWN:
         return ENETDOWN;
+#endif
+
+#ifdef ENETRESET
     case WSAENETRESET:
         return ENETRESET;
+#endif
+
+#ifdef ENETUNREACH
     case WSAENETUNREACH:
         return ENETUNREACH;
+#endif
+
+#ifdef ENOBUFS
     case WSAENOBUFS:
         return ENOBUFS;
+#endif
+
+#ifdef ENOPROTOOPT
     case WSAENOPROTOOPT:
         return ENOPROTOOPT;
+#endif
+
+#ifdef ENOTCONN
     case WSAENOTCONN:
         return ENOTCONN;
+#endif
+
+#ifdef ENOTSOCK
     case WSAENOTSOCK:
         return ENOTSOCK;
+#endif
+
+#ifdef EOPNOTSUPP
     case WSAEOPNOTSUPP:
         return EOPNOTSUPP;
+#endif
+
+#ifdef EPROTONOSUPPORT
     case WSAEPROTONOSUPPORT:
         return EPROTONOSUPPORT;
+#endif
+
+#ifdef EPROTOTYPE
     case WSAEPROTOTYPE:
         return EPROTOTYPE;
+#endif
+
+#ifdef ETIMEDOUT
     case WSAETIMEDOUT:
         return ETIMEDOUT;
+#endif
+
+#ifdef EWOULDBLOCK
     case WSAEWOULDBLOCK:
         return EWOULDBLOCK;
+#endif
     default:
         break;
     }
@@ -470,4 +845,3 @@ int GetWindowsOrLinuxSocketLastErrorAsPosix(void)
 #endif
 }
 */
-

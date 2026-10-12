@@ -20,7 +20,7 @@ C_mt_findI_d ' <symbol:mt_findId>
  mov r22, r2 ' CVUI
  and r22, cviu_m1 ' zero extend
  jmp #LODL
- long @C_sj48_6a9cb625__curI_tem_L000001
+ long @C_s9pc_6ac84dbd__curI_tem_L000001
  mov BC, r22
  jmp #WBYT ' ASGNI1 addrg reg
  jmp #JMPA
@@ -30,12 +30,12 @@ C_mt_findI_d_3
  long -1
  mov r22, RI ' reg <- con
  jmp #LODL
- long @C_sj48_6a9cb625__curI_tem_L000001
+ long @C_s9pc_6ac84dbd__curI_tem_L000001
  mov BC, r22
  jmp #WBYT ' ASGNI1 addrg reg
 C_mt_findI_d_4
  jmp #LODL
- long @C_sj48_6a9cb625__curI_tem_L000001
+ long @C_s9pc_6ac84dbd__curI_tem_L000001
  jmp #RBYT
  mov r22, BC ' reg <- INDIRI1 addrg
  shl r22, #24
@@ -74,7 +74,7 @@ C_mt_findN_ame ' <symbol:mt_findName>
  long -1
  mov r22, RI ' reg <- con
  jmp #LODL
- long @C_sj48_6a9cb625__curI_tem_L000001
+ long @C_s9pc_6ac84dbd__curI_tem_L000001
  mov BC, r22
  jmp #WBYT ' ASGNI1 addrg reg
  mov r2, r23 ' CVI, CVU or LOAD
@@ -103,11 +103,11 @@ C_mt_findN_ame ' <symbol:mt_findName>
  sar r22, #24 ' sign extend
  adds r22, r0 ' ADDI/P (2)
  jmp #LODL
- long @C_sj48_6a9cb625__curI_tem_L000001
+ long @C_s9pc_6ac84dbd__curI_tem_L000001
  mov BC, r22
  jmp #WBYT ' ASGNI1 addrg reg
  jmp #LODL
- long @C_sj48_6a9cb625__curI_tem_L000001
+ long @C_s9pc_6ac84dbd__curI_tem_L000001
  jmp #RBYT
  mov r22, BC ' reg <- INDIRI1 addrg
  shl r22, #24
@@ -119,13 +119,13 @@ C_mt_findN_ame ' <symbol:mt_findName>
  long -1
  mov r22, RI ' reg <- con
  jmp #LODL
- long @C_sj48_6a9cb625__curI_tem_L000001
+ long @C_s9pc_6ac84dbd__curI_tem_L000001
  mov BC, r22
  jmp #WBYT ' ASGNI1 addrg reg
 C_mt_findN_ame_11
 C_mt_findN_ame_9
  jmp #LODL
- long @C_sj48_6a9cb625__curI_tem_L000001
+ long @C_s9pc_6ac84dbd__curI_tem_L000001
  jmp #RBYT
  mov r22, BC ' reg <- INDIRI1 addrg
  shl r22, #24
@@ -158,7 +158,7 @@ C_mt_findN_oteO_ctave ' <symbol:mt_findNoteOctave>
  long -1
  mov r22, RI ' reg <- con
  jmp #LODL
- long @C_sj48_6a9cb625__curI_tem_L000001
+ long @C_s9pc_6ac84dbd__curI_tem_L000001
  mov BC, r22
  jmp #WBYT ' ASGNI1 addrg reg
  mov r22, r3 ' CVUI
@@ -177,11 +177,11 @@ C_mt_findN_oteO_ctave ' <symbol:mt_findNoteOctave>
  and r22, cviu_m1 ' zero extend
  adds r22, r0 ' ADDI/P (2)
  jmp #LODL
- long @C_sj48_6a9cb625__curI_tem_L000001
+ long @C_s9pc_6ac84dbd__curI_tem_L000001
  mov BC, r22
  jmp #WBYT ' ASGNI1 addrg reg
  jmp #LODL
- long @C_sj48_6a9cb625__curI_tem_L000001
+ long @C_s9pc_6ac84dbd__curI_tem_L000001
  jmp #RBYT
  mov r22, BC ' reg <- INDIRI1 addrg
  shl r22, #24
@@ -193,13 +193,13 @@ C_mt_findN_oteO_ctave ' <symbol:mt_findNoteOctave>
  long -1
  mov r22, RI ' reg <- con
  jmp #LODL
- long @C_sj48_6a9cb625__curI_tem_L000001
+ long @C_s9pc_6ac84dbd__curI_tem_L000001
  mov BC, r22
  jmp #WBYT ' ASGNI1 addrg reg
 C_mt_findN_oteO_ctave_19
 C_mt_findN_oteO_ctave_17
  jmp #LODL
- long @C_sj48_6a9cb625__curI_tem_L000001
+ long @C_s9pc_6ac84dbd__curI_tem_L000001
  jmp #RBYT
  mov r22, BC ' reg <- INDIRI1 addrg
  shl r22, #24
@@ -298,7 +298,7 @@ C_mt_getF_requency ' <symbol:mt_getFrequency>
  sub RI, #-(-8)
  wrlong r22, RI ' ASGNF4 addrli reg
  jmp #LODL
- long @C_sj48_6a9cb625__curI_tem_L000001
+ long @C_s9pc_6ac84dbd__curI_tem_L000001
  jmp #RBYT
  mov r22, BC ' reg <- INDIRI1 addrg
  shl r22, #24
@@ -310,7 +310,7 @@ C_mt_getF_requency ' <symbol:mt_getFrequency>
  jmp #BR_Z
  long @C_mt_getF_requency_34 ' EQI4
  jmp #LODL
- long @C_sj48_6a9cb625__curI_tem_L000001
+ long @C_s9pc_6ac84dbd__curI_tem_L000001
  jmp #RBYT
  mov r22, BC ' reg <- INDIRI1 addrg
  shl r22, #24
@@ -337,7 +337,7 @@ C_mt_getF_requency_34
 
 
  alignl ' align long
-C_sj482_6a9cb625_itoa_L000037 ' <symbol:itoa>
+C_s9pc2_6ac84dbd_itoa_L000037 ' <symbol:itoa>
  jmp #NEWF
  sub SP, #4
  jmp #PSHM
@@ -350,7 +350,7 @@ C_sj482_6a9cb625_itoa_L000037 ' <symbol:itoa>
  wrlong r22, RI ' ASGNI4 addrli reg
  cmps r3,  #0 wz,wc
  jmp #BRAE
- long @C_sj482_6a9cb625_itoa_L000037_39 ' GEI4
+ long @C_s9pc2_6ac84dbd_itoa_L000037_39 ' GEI4
  mov r22, #1 ' reg <- coni
  mov RI, FP
  sub RI, #-(-8)
@@ -361,15 +361,15 @@ C_sj482_6a9cb625_itoa_L000037 ' <symbol:itoa>
  mov r23, r22
  add r23, #1 ' ADDU4 coni
  jmp #JMPA
- long @C_sj482_6a9cb625_itoa_L000037_40 ' JUMPV addrg
-C_sj482_6a9cb625_itoa_L000037_39
+ long @C_s9pc2_6ac84dbd_itoa_L000037_40 ' JUMPV addrg
+C_s9pc2_6ac84dbd_itoa_L000037_39
  mov r23, r3 ' CVI, CVU or LOAD
-C_sj482_6a9cb625_itoa_L000037_40
+C_s9pc2_6ac84dbd_itoa_L000037_40
  mov r22, #0 ' reg <- coni
  mov RI, r21
  mov BC, r22
  jmp #WBYT ' ASGNU1 reg reg
-C_sj482_6a9cb625_itoa_L000037_41
+C_s9pc2_6ac84dbd_itoa_L000037_41
  jmp #LODL
  long -1
  mov r22, RI ' reg <- con
@@ -389,16 +389,16 @@ C_sj482_6a9cb625_itoa_L000037_41
  mov r1, r22 ' setup r0/r1 (2)
  jmp #DIVU ' DIVU
  mov r23, r0 ' CVI, CVU or LOAD
-' C_sj482_6a9cb625_itoa_L000037_42 ' (symbol refcount = 0)
+' C_s9pc2_6ac84dbd_itoa_L000037_42 ' (symbol refcount = 0)
  cmp r23,  #0 wz
  jmp #BRNZ
- long @C_sj482_6a9cb625_itoa_L000037_41 ' NEU4
+ long @C_s9pc2_6ac84dbd_itoa_L000037_41 ' NEU4
  mov r22, FP
  sub r22, #-(-8) ' reg <- addrli
  rdlong r22, r22 ' reg <- INDIRI4 regl
  cmps r22,  #0 wz
  jmp #BR_Z
- long @C_sj482_6a9cb625_itoa_L000037_44 ' EQI4
+ long @C_s9pc2_6ac84dbd_itoa_L000037_44 ' EQI4
  jmp #LODL
  long -1
  mov r22, RI ' reg <- con
@@ -408,9 +408,9 @@ C_sj482_6a9cb625_itoa_L000037_41
  mov RI, r22
  mov BC, r20
  jmp #WBYT ' ASGNU1 reg reg
-C_sj482_6a9cb625_itoa_L000037_44
+C_s9pc2_6ac84dbd_itoa_L000037_44
  mov r0, r21 ' CVI, CVU or LOAD
-' C_sj482_6a9cb625_itoa_L000037_38 ' (symbol refcount = 0)
+' C_s9pc2_6ac84dbd_itoa_L000037_38 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
@@ -431,7 +431,7 @@ C_mt_getN_ame ' <symbol:mt_getName>
  mov BC, r22
  jmp #WBYT ' ASGNU1 reg reg
  jmp #LODL
- long @C_sj48_6a9cb625__curI_tem_L000001
+ long @C_s9pc_6ac84dbd__curI_tem_L000001
  jmp #RBYT
  mov r22, BC ' reg <- INDIRI1 addrg
  shl r22, #24
@@ -443,7 +443,7 @@ C_mt_getN_ame ' <symbol:mt_getName>
  jmp #BR_Z
  long @C_mt_getN_ame_47 ' EQI4
  jmp #LODL
- long @C_sj48_6a9cb625__curI_tem_L000001
+ long @C_s9pc_6ac84dbd__curI_tem_L000001
  jmp #RBYT
  mov r22, BC ' reg <- INDIRI1 addrg
  shl r22, #24
@@ -462,7 +462,7 @@ C_mt_getN_ame ' <symbol:mt_getName>
  sub RI, #-(-8)
  wrbyte r22, RI ' ASGNU1 addrli reg
  jmp #LODL
- long @C_sj48_6a9cb625__curI_tem_L000001
+ long @C_s9pc_6ac84dbd__curI_tem_L000001
  jmp #RBYT
  mov r22, BC ' reg <- INDIRI1 addrg
  shl r22, #24
@@ -510,7 +510,7 @@ C_mt_getN_ame ' <symbol:mt_getName>
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_sj482_6a9cb625_itoa_L000037
+ long @C_s9pc2_6ac84dbd_itoa_L000037
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r20, r21 ' CVUI
@@ -547,7 +547,7 @@ C_mt_getN_ote ' <symbol:mt_getNote>
  mov BC, r22
  jmp #WBYT ' ASGNU1 reg reg
  jmp #LODL
- long @C_sj48_6a9cb625__curI_tem_L000001
+ long @C_s9pc_6ac84dbd__curI_tem_L000001
  jmp #RBYT
  mov r22, BC ' reg <- INDIRI1 addrg
  shl r22, #24
@@ -559,7 +559,7 @@ C_mt_getN_ote ' <symbol:mt_getNote>
  jmp #BR_Z
  long @C_mt_getN_ote_52 ' EQI4
  jmp #LODL
- long @C_sj48_6a9cb625__curI_tem_L000001
+ long @C_s9pc_6ac84dbd__curI_tem_L000001
  jmp #RBYT
  mov r22, BC ' reg <- INDIRI1 addrg
  shl r22, #24
@@ -621,7 +621,7 @@ C_mt_getO_ctave ' <symbol:mt_getOctave>
  sub RI, #-(-8)
  wrbyte r22, RI ' ASGNI1 addrli reg
  jmp #LODL
- long @C_sj48_6a9cb625__curI_tem_L000001
+ long @C_s9pc_6ac84dbd__curI_tem_L000001
  jmp #RBYT
  mov r22, BC ' reg <- INDIRI1 addrg
  shl r22, #24
@@ -633,7 +633,7 @@ C_mt_getO_ctave ' <symbol:mt_getOctave>
  jmp #BR_Z
  long @C_mt_getO_ctave_56 ' EQI4
  jmp #LODL
- long @C_sj48_6a9cb625__curI_tem_L000001
+ long @C_s9pc_6ac84dbd__curI_tem_L000001
  jmp #RBYT
  mov r22, BC ' reg <- INDIRI1 addrg
  shl r22, #24
@@ -675,7 +675,7 @@ C_mt_getI_d ' <symbol:mt_getId>
  sub RI, #-(-8)
  wrbyte r22, RI ' ASGNU1 addrli reg
  jmp #LODL
- long @C_sj48_6a9cb625__curI_tem_L000001
+ long @C_s9pc_6ac84dbd__curI_tem_L000001
  jmp #RBYT
  mov r22, BC ' reg <- INDIRI1 addrg
  shl r22, #24
@@ -687,7 +687,7 @@ C_mt_getI_d ' <symbol:mt_getId>
  jmp #BR_Z
  long @C_mt_getI_d_60 ' EQI4
  jmp #LODL
- long @C_sj48_6a9cb625__curI_tem_L000001
+ long @C_s9pc_6ac84dbd__curI_tem_L000001
  jmp #RBYT
  mov r22, BC ' reg <- INDIRI1 addrg
  shl r22, #24
@@ -729,7 +729,7 @@ C_mt_getN_oteI_d ' <symbol:mt_getNoteId>
  sub RI, #-(-8)
  wrbyte r22, RI ' ASGNU1 addrli reg
  jmp #LODL
- long @C_sj48_6a9cb625__curI_tem_L000001
+ long @C_s9pc_6ac84dbd__curI_tem_L000001
  jmp #RBYT
  mov r22, BC ' reg <- INDIRI1 addrg
  shl r22, #24
@@ -741,7 +741,7 @@ C_mt_getN_oteI_d ' <symbol:mt_getNoteId>
  jmp #BR_Z
  long @C_mt_getN_oteI_d_63 ' EQI4
  jmp #LODL
- long @C_sj48_6a9cb625__curI_tem_L000001
+ long @C_s9pc_6ac84dbd__curI_tem_L000001
  jmp #RBYT
  mov r22, BC ' reg <- INDIRI1 addrg
  shl r22, #24
@@ -777,7 +777,7 @@ C_mt_getN_oteI_d_63
 DAT ' uninitialized data segment
 
  alignl ' align long
-C_sj48_6a9cb625__curI_tem_L000001 ' <symbol:_curItem>
+C_s9pc_6ac84dbd__curI_tem_L000001 ' <symbol:_curItem>
  byte 0[1]
 
 ' Catalina Code

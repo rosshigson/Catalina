@@ -3,16 +3,16 @@
  *  https://github.com/thradams/cake
  */
 
-#pragma safety enable
 
-#include "ownership.h"
 
+#include "cake_compat.h"
+#include <stdlib.h>
 #include <assert.h>
 #include <string.h>
 #include "defer.h"
 #include "expressions.h"
 #include <ctype.h> 
-#include <stdlib.h>
+
 #include <stdint.h>
 #include <limits.h>
 
@@ -477,9 +477,10 @@ static void defer_visit_jump_statement(struct defer_visit_ctx* ctx, struct jump_
         return;
 
     _Assert(ctx->tail_block != NULL);
-    /* ctx is a const member, so it can only be set here; leaving it NULL left
-     * the label-search visit without a parser context.
-     */
+    /*
+        ctx is a const member, so it can only be set here; leaving it NULL left
+        the label-search visit without a parser context.
+    */
     struct defer_visit_ctx label_ctx = { .ctx = ctx->ctx };
     try
     {
@@ -510,7 +511,9 @@ static void defer_visit_jump_statement(struct defer_visit_ctx* ctx, struct jump_
                 }
                 if (p->p_defer_block)
                 {
-                    diagnostic(C_ERROR_EXIT_DEFER, ctx->ctx, p->p_defer_block->first_token, NULL, "is jumping out of defer");
+                    diagnostic(C_ERROR_EXIT_DEFER, ctx->ctx, p->p_defer_block->first_token, NULL, "cannot jump out of a defer block");
+                    /* already an error: the outer defers, including this one, must not join the list */
+                    break;
                 }
                 p = p->previous;
             }
@@ -540,7 +543,12 @@ static void defer_visit_jump_statement(struct defer_visit_ctx* ctx, struct jump_
 
                 if (p->p_defer_block)
                 {
-                    diagnostic(C_ERROR_EXIT_DEFER, ctx->ctx, p->p_defer_block->first_token, NULL, "is jumping out of defer");
+                    diagnostic(C_ERROR_EXIT_DEFER, ctx->ctx, p->p_defer_block->first_token, NULL, "cannot jump out of a defer block");
+                    /*
+                        already an error: the defers outside, including the one
+                        whose body this is, must not join the jump's list
+                    */
+                    break;
                 }
                 p = p->previous;
             }                        
@@ -585,9 +593,11 @@ static void defer_visit_jump_statement(struct defer_visit_ctx* ctx, struct jump_
                 if (p->p_defer_block)
                 {
                     if (break_jump)
-                        diagnostic(C_ERROR_EXIT_DEFER, ctx->ctx, p_jump_statement->first_token, NULL, "break cannot jump out of defer");
+                        diagnostic(C_ERROR_EXIT_DEFER, ctx->ctx, p_jump_statement->first_token, NULL, "break cannot jump out of a defer block");
                     else
-                        diagnostic(C_ERROR_EXIT_DEFER, ctx->ctx, p_jump_statement->first_token, NULL, "continue cannot jump out of defer");
+                        diagnostic(C_ERROR_EXIT_DEFER, ctx->ctx, p_jump_statement->first_token, NULL, "continue cannot jump out of a defer block");
+                    /* already an error: the outer defers, including this one, must not join the list */
+                    break;
                 }
                 p = p->previous;
             }
@@ -599,12 +609,19 @@ static void defer_visit_jump_statement(struct defer_visit_ctx* ctx, struct jump_
 
             label_ctx.searching_label_mode = true;
             label_ctx.label_name = p_jump_statement->label->lexeme;
-            if (ctx->p_declaration == NULL)
+            if (ctx->p_declaration)
+            {
+                defer_start_visit_declaration(&label_ctx, ctx->p_declaration);
+            }
+            else if (ctx->p_function_literal_body)
+            {
+                /* (static void (void)){ goto L; L:; } */
+                defer_start_visit_compound_statement(&label_ctx, ctx->p_function_literal_body, NULL);
+            }
+            else
             {
                 throw;
             }
-
-            defer_start_visit_declaration(&label_ctx, ctx->p_declaration);
 
             
 
@@ -634,12 +651,12 @@ static void defer_visit_jump_statement(struct defer_visit_ctx* ctx, struct jump_
 
                     if (!found)
                     {
-                        diagnostic(C_ERROR_EXIT_DEFER, ctx->ctx, p_jump_statement->first_token, NULL, "jumping over defer. from here");
+                        diagnostic(C_ERROR_EXIT_DEFER, ctx->ctx, p_jump_statement->first_token, NULL, "goto jumps over a defer statement");
                         diagnostic(W_LOCATION, ctx->ctx, label_ctx.p_label->p_first_token, NULL, "to here");
                         diagnostic(W_LOCATION, ctx->ctx, p1->p_defer_statement->first_token, NULL, "defer");
                     }
                 }
-                else if (p1->p_declarator && type_is_vm(&p1->p_declarator->type))
+                else if (p1->p_declarator && type_is_vm(&p1->p_declarator->object.type))
                 {
                     bool found = false;
                     struct defer_scope* _Opt p0 = ctx->tail_block;
@@ -655,7 +672,7 @@ static void defer_visit_jump_statement(struct defer_visit_ctx* ctx, struct jump_
 
                     if (!found)
                     {
-                        diagnostic(C_ERROR_JUMP_OVER_VLA, ctx->ctx, p_jump_statement->first_token, NULL, "jumping over vm. from here");
+                        diagnostic(C_ERROR_JUMP_OVER_VLA, ctx->ctx, p_jump_statement->first_token, NULL, "goto jumps over the declaration of a variably modified type");
                         diagnostic(W_LOCATION, ctx->ctx, label_ctx.p_label->p_first_token, NULL, "to here"); 
                         diagnostic(W_LOCATION, ctx->ctx, p1->p_declarator->first_token_opt, NULL, "declarator");
                     }
@@ -675,7 +692,7 @@ static void defer_visit_jump_statement(struct defer_visit_ctx* ctx, struct jump_
                     }
                     if (!found)
                     {
-                        diagnostic(C_ERROR_EXIT_DEFER, ctx->ctx, p_jump_statement->first_token, NULL, "jumping into defer. from here");
+                        diagnostic(C_ERROR_EXIT_DEFER, ctx->ctx, p_jump_statement->first_token, NULL, "goto jumps into a defer block");
                         diagnostic(W_LOCATION, ctx->ctx, label_ctx.p_label->p_first_token, NULL, "to here"); 
                     }
                 }
@@ -725,7 +742,7 @@ static void defer_visit_jump_statement(struct defer_visit_ctx* ctx, struct jump_
 
                         if (p->p_defer_block)
                         {
-                            diagnostic(C_ERROR_EXIT_DEFER, ctx->ctx, p_jump_statement->first_token, NULL, "jumping out of defer.");
+                            diagnostic(C_ERROR_EXIT_DEFER, ctx->ctx, p_jump_statement->first_token, NULL, "cannot jump out of a defer block");
                             diagnostic(W_LOCATION, ctx->ctx, label_ctx.p_label->p_first_token, NULL, "to here"); 
                             // diagnostic(W_LOCATION, ctx->ctx, p1->p_defer_statement->first_token, NULL, "defer");                            
                         }
@@ -761,7 +778,7 @@ static void defer_visit_jump_statement(struct defer_visit_ctx* ctx, struct jump_
 
                 if (p->p_defer_block)
                 {
-                    diagnostic(C_ERROR_EXIT_DEFER, ctx->ctx, p_jump_statement->first_token, NULL, "goto is jumping out of defer.");
+                    diagnostic(C_ERROR_EXIT_DEFER, ctx->ctx, p_jump_statement->first_token, NULL, "goto cannot jump out of a defer block");
                     diagnostic(W_LOCATION, ctx->ctx, label_ctx.p_label->p_first_token, NULL, "to here"); 
                 }
 
@@ -866,7 +883,7 @@ static void defer_visit_expression(struct defer_visit_ctx* ctx, struct expressio
                     }
                     if (p->p_defer_block)
                     {
-                        diagnostic(C_ERROR_EXIT_DEFER, ctx->ctx, p->p_defer_block->first_token, NULL, "is jumping out of defer");
+                        diagnostic(C_ERROR_EXIT_DEFER, ctx->ctx, p->p_defer_block->first_token, NULL, "cannot jump out of a defer block");
                     }
                     p = p->previous;
                 }
@@ -878,34 +895,11 @@ static void defer_visit_expression(struct defer_visit_ctx* ctx, struct expressio
         break;
 
         case EXPR_POSTFIX_FUNCTION_LITERAL:
-        {
-            _Assert(p_expression->compound_statement != NULL);
-
-            // TODO missing parameters of literal functions
-            // without it static analysis will not work
-            defer_visit_compound_statement(ctx, p_expression->compound_statement);
-            // _Assert(ctx->tail_block == NULL);
-            // struct defer_scope* _Opt p_defer = defer_visit_ctx_push_child(ctx);
-            // if (p_defer == NULL)
-            // {
-            // return;
-            // }
-            // p_defer->p_function_body = p_declaration->function_body;
-
-            // defer_visit_typen(ctx, p_declaration);
-            // _Assert(p_declaration->function_body != NULL); //defer_visit_declaration does not change this
-
-            // parameters
-            // if (ctx->tail_block)
-            // {
-            // //exit_block_visit(ctx,
-            // ctx->tail_block,
-            // p_expression->compound_statement->last_token,
-            // &p_expression->defer_list);
-            // }
-
-            //
-        }
+            /*
+            * The body of a function literal is a separate function, already
+            * visited when it was parsed (see defer_start_visit_compound_statement
+            * in expressions.c). Visiting it again here duplicated its defers.
+            */
         break;
         default:
         break;
@@ -1015,7 +1009,7 @@ static void defer_visit_block_item(struct defer_visit_ctx* ctx, struct block_ite
 
                     if (p->p_defer_statement)
                     {
-                        diagnostic(C_ERROR_JUMP_OVER_DEFER, ctx->ctx, p->p_defer_statement->first_token, NULL, "switch is jumping over or into defer");
+                        diagnostic(C_ERROR_JUMP_OVER_DEFER, ctx->ctx, p->p_defer_statement->first_token, NULL, "switch jumps over or into a defer statement");
                     }
                     p = p->previous;
                 }
@@ -1064,7 +1058,7 @@ static void defer_visit_declarator(struct defer_visit_ctx* ctx, struct declarato
     try
     {
         if (ctx->tail_block &&
-            p_declarator->type.category != TYPE_CATEGORY_FUNCTION)
+            p_declarator->object.type.category != TYPE_CATEGORY_FUNCTION)
         {
             if (ctx->parameter_list > 1)
             {
@@ -1124,6 +1118,7 @@ void defer_start_visit_compound_statement(struct defer_visit_ctx* ctx,
     try
     {
         _Assert(ctx->tail_block == NULL);
+        ctx->p_function_literal_body = p_compound_statement;
         struct defer_scope* _Opt p_defer = defer_visit_ctx_push_child(ctx);
         if (p_defer == NULL)
         {
@@ -1131,12 +1126,13 @@ void defer_start_visit_compound_statement(struct defer_visit_ctx* ctx,
         }
         p_defer->p_function_body = p_compound_statement;
 
-        /* Register each parameter declarator in the current scope, the same
-         * way defer_visit_direct_declarator does for a regular function's
-         * declarator -- otherwise an _Owner parameter never lands in the
-         * defer list, so leaking it goes unreported (see the parameter case
-         * of issue #269).
-         */
+        /*
+            Register each parameter declarator in the current scope, the same
+            way defer_visit_direct_declarator does for a regular function's
+            declarator -- otherwise an _Owner parameter never lands in the
+            defer list, so leaking it goes unreported (see the parameter case
+            of issue #269).
+        */
         for (struct parameter_declaration* _Opt p_parameter = p_parameter_list ? p_parameter_list->head : NULL;
              p_parameter;
              p_parameter = p_parameter->next)
@@ -1202,17 +1198,14 @@ void defer_start_visit_declaration(struct defer_visit_ctx* ctx, struct declarati
 
 void defer_visit_ctx_destroy(_Dtor struct defer_visit_ctx* p)
 {
-    if (p->tail_block != NULL)
+    struct defer_scope* _Owner _Opt it = p->tail_block;
+    while (it)
     {
-        struct defer_scope* _Owner _Opt it = p->tail_block;
-        while (it)
-        {
-            struct defer_scope* _Owner _Opt next = it->previous;
-            it->previous = NULL;
-            defer_scope_delete(it);
-            it = next;
-        }
-        
-    }
+        struct defer_scope* _Owner _Opt next = it->previous;
+        it->previous = NULL;
+        defer_scope_delete(it);
+        it = next;
+    }  
 }
+
 

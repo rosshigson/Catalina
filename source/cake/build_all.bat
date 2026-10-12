@@ -1,7 +1,7 @@
 @echo off
 cd src
 gcc build.c -D__CATALINA__ -o build
-build
+build -no-ide
 cd ..
 
 if "%1"=="" goto no_parameters

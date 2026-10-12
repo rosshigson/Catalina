@@ -1,12 +1,28 @@
 /*
  *  This file is part of cake compiler
- *  https://github.com/thradams/cake 
+ *  https://github.com/thradams/cake
 */
 
 #pragma once
 #include <stdbool.h>
 #include "target.h"
 #include <limits.h>
+#include "fs.h"
+
+struct global_unused_list;
+struct rename_list;
+
+/* options.request: what is asked besides compiling; only one at a time */
+enum request_action
+{
+    REQUEST_NONE,
+    REQUEST_FIND_DEFINITION,  /* -find-definition line col */
+    REQUEST_FIND_DECLARATION, /* -find-declaration line col */
+    REQUEST_RENAME,           /* -rename line col newname */
+    REQUEST_FIND_USAGES,      /* -find-usages line col */
+    REQUEST_REPORT_UNUSED,    /* -unused-extern-report */
+    REQUEST_COMPLETE,         /* -complete line col */
+};
 
 enum standard_version
 {
@@ -30,7 +46,7 @@ enum diagnostic_id {
     W_UNUSED_VARIABLE = 2,
     W_DEPRECATED = 3,
     W_ENUN_CONVERSION = 4,
-    
+
     W_TOKEN_SLICED = 5,
     W_UNUSED_PARAMETER = 6,
     W_DECLARATOR_HIDE = 7,
@@ -47,7 +63,7 @@ enum diagnostic_id {
     W_RETURN_LOCAL_ADDR = 18, //(TODO)
     W_MUST_USE_ADDRESSOF = 19,
     W_ARRAY_INDIRECTION = 20,
-    
+
     W_UNUSED_WARNING_21 = 21,
     W_FLOW_NOT_OWNER = 22,
     W_FLOW_USING_TEMPORARY_OWNER = 23,
@@ -125,14 +141,16 @@ enum diagnostic_id {
     W_STRING_LITERAL_COMPARISON = 76,
     W_STATIC_FUNCTION_NOT_DEFINED = 77,
 
-    /* Parse-time (phase 0) counterparts of W_FLOW_NON_OWNER_TO_OWNER_ASSIGN /
-       W_FLOW_USING_TEMPORARY_OWNER, emitted by expressions.c's
-       extended_check_assigment. Distinct ids are needed because those two
-       are hard-registered as phase 2 (flow analysis) below in
-       diagnostic_get_phase -- a `//lint` comment checked during parsing
-       would look for them in the wrong phase and report "not recognized"
-       even though the (correct) warning fired. See samples/flow3/array-bounds.c
-       for the same phase-split precedent (W_OUT_OF_BOUNDS / W_FLOW_OUT_OF_BOUNDS). */
+    /*
+        Parse-time (phase 0) counterparts of W_FLOW_NON_OWNER_TO_OWNER_ASSIGN /
+        W_FLOW_USING_TEMPORARY_OWNER, emitted by expressions.c's
+        extended_check_assigment. Distinct ids are needed because those two
+        are hard-registered as phase 2 (flow analysis) below in
+        diagnostic_get_phase -- a `//lint` comment checked during parsing
+        would look for them in the wrong phase and report "not recognized"
+        even though the (correct) warning fired. See samples/flow3/array-bounds.c
+        for the same phase-split precedent (W_OUT_OF_BOUNDS / W_FLOW_OUT_OF_BOUNDS).
+    */
     W_NON_OWNER_TO_OWNER_ASSIGN = 78,
     W_USING_TEMPORARY_OWNER = 79,
     W_POINTER_TO_OWNER_EXPECTED = 80,
@@ -145,14 +163,14 @@ enum diagnostic_id {
     W_INT_TO_ENUM_CONVERSION = 87,
     W_FLOW_FALLTHROUGH = 88,
     W_MALLOC_SIZE_NOT_MULTIPLE_OF_SIZEOF = 89,
-    W_UNUSED_WARNING_90 = 90,
-    W_UNUSED_WARNING_91 = 91,
-    W_UNUSED_WARNING_92 = 92,
-    W_UNUSED_WARNING_93 = 93,
-    W_UNUSED_WARNING_94 = 94,
-    W_UNUSED_WARNING_95 = 95,
-    W_UNUSED_WARNING_96 = 96,
-    W_UNUSED_WARNING_97 = 97,
+    W_FLOW_PARAM_UNINITIALIZED_AT_EXIT = 90,
+    W_ASSIGNMENT_IN_CONDITION = 91,
+    W_QUALIFIER_ON_RETURN_TYPE = 92,
+    W_FIND_DEFINITION = 93, /* -find-definition result, the only diagnostic reported in that mode */
+    W_UNUSED_MACRO = 94, /* macro defined in the source file and never used; off by default, on with -unused-extern-report */
+    W_UNUSED_EXTERN_FUNCTION = 95, /* -unused-extern-report: external function not used in any of the files */
+    W_UNUSED_ENUMERATOR = 96, /* -unused-extern-report: enumerator not used in any of the files */
+    W_FLOW_NOT_DONE = 97, /* flow analysis of a function was not done, the message says why */
     W_UNUSED_WARNING_98 = 98,
     W_UNUSED_WARNING_99 = 99,
     W_UNUSED_WARNING_100 = 100,
@@ -181,9 +199,9 @@ enum diagnostic_id {
     W_UNUSED_WARNING_123 = 123,
     W_UNUSED_WARNING_124 = 124,
     W_UNUSED_WARNING_125 = 125,
-    W_UNUSED_WARNING_126 = 126,
+    W_VA_START_REQUIRES_C23 = 126,
     W_UNARY_MINUS_ON_UNSIGNED = 127,
-    
+
 
     C_ERROR_TOKENIZER_MISSING_TERMINATING = 630,
     C_ERROR_TOKENIZER_MISSING_TERMINATING_QUOTE = 631,
@@ -201,7 +219,7 @@ enum diagnostic_id {
     C_ERROR_STRUCT_MEMBER_NOT_FOUND = 720,
     C_ERROR_STRUCTURE_OR_UNION_REQUIRED = 730,
     C_ERROR_STRUCT_IS_INCOMPLETE = 740,
-    
+
     C_ERROR_CASE_NOT_IN_SWITCH = 750,
 
     C_ERROR_BREAK_NOT_WITHIN_ITERATION = 760,
@@ -275,21 +293,21 @@ enum diagnostic_id {
     C_INVALID_ARGUMENT_NELEMENTSOF = 1390,
     C_ERROR_RETURN_CANNOT_BE_USED_INSIDE_DEFER = 1400,
     C_ERROR_FUNCTION_RETURNS_FUNCTION = 1410,
-    C_ERROR_FUNCTION_RETURNS_ARRAY = 1420,    
+    C_ERROR_FUNCTION_RETURNS_ARRAY = 1420,
 
-    C_ERROR_LABEL_NOT_DEFINED = 1430,    
+    C_ERROR_LABEL_NOT_DEFINED = 1430,
 
     C_ERROR_DUPLICATED_LABEL = 1440,
     C_ERROR_DUPLICATED_CASE = 1450,
-    C_ERROR_SUBSCRIPT_IS_NOT_AN_INTEGER = 1560,    
-    C_ERROR_DUPLICATE_DEFAULT_GENERIC_ASSOCIATION = 1570, 
+    C_ERROR_SUBSCRIPT_IS_NOT_AN_INTEGER = 1560,
+    C_ERROR_DUPLICATE_DEFAULT_GENERIC_ASSOCIATION = 1570,
     C_ERROR_MULTIPLE_DEFAULT_LABELS_IN_ONE_SWITCH = 1780,
     C_ERROR_POINTER_TO_FLOATING_TYPE = 1790,
     C_ERROR_FLOATING_TYPE_TO_POINTER = 1800,
     C_ERROR_NULLPTR_CAST_ERROR = 1810,
     C_ERROR_MACRO_REDEFINITION = 1820,
     C_ERROR_INVALID_PREPROCESSING_DIRECTIVE = 1830,
-    C_ERROR_FUNCTION_CANNOT_BE_MEMBER  = 1840,
+    C_ERROR_FUNCTION_CANNOT_BE_MEMBER = 1840,
     C_ERROR_NON_INTEGRAL_ENUM_TYPE = 1850,
     C_ERROR_REQUIRES_COMPILE_TIME_VALUE = 1860,
     C_ERROR_OUTER_SCOPE = 1870,
@@ -310,6 +328,40 @@ enum diagnostic_id {
     C_ERROR_DUPLICATE_TYPE_QUALIFIER = 2020,
     C_ERROR_TYPEDEF_MISSING_TAG_NAME = 2030,
     C_ERROR_REDEFINITION_CANNOT_BE_OVERLOADED_WITH_TYPEDEF = 2040,
+    C_ERROR_INVALID_DECLARATION_CONDITION = 2050,
+    C_ERROR_INVALID_BITINT_WIDTH = 2060,
+    C_ERROR_TAG_REDEFINITION = 2070,
+    C_ERROR_TOO_MANY_STORAGE_CLASS_SPECIFIERS = 2080,
+    C_ERROR_ATOMIC_QUALIFIER_ON_ARRAY = 2090,
+    C_ERROR_ATOMIC_QUALIFIER_ON_FUNCTION = 2100,
+    C_ERROR_ALIGNMENT_SPECIFIER_ON_BITFIELD = 2110,
+    C_ERROR_ALIGNMENT_SPECIFIER_ON_FUNCTION = 2120,
+    C_ERROR_ALIGNMENT_SPECIFIER_LESS_STRICT = 2130,
+    C_ERROR_ALIGNMENT_SPECIFIER_WITH_REGISTER = 2140,
+    C_ERROR_ALIGNMENT_SPECIFIER_WITH_TYPEDEF = 2150,
+    C_ERROR_ALIGNMENT_SPECIFIER_NOT_INTEGER_CONSTANT = 2160,
+    C_ERROR_AUTO_AT_FILE_SCOPE = 2170,
+    C_ERROR_REGISTER_AT_FILE_SCOPE = 2180,
+    C_ERROR_ARRAY_DESIGNATOR_NOT_INTEGER_CONSTANT = 2190,
+    C_ERROR_ENUM_TAG_WITHOUT_BODY_OR_UNDERLYING_TYPE = 2200,
+    C_ERROR_DUPLICATE_ENUMERATOR = 2210,
+    C_ERROR_BITINT_ENUM_UNDERLYING_TYPE = 2220,
+    C_ERROR_RESTRICT_ON_NON_POINTER_TYPE = 2230,
+    C_ERROR_STATIC_VARIABLE_IN_EXTERN_INLINE_FUNCTION = 2240,
+    C_ERROR_FUNCTION_SPECIFIER_ON_NON_FUNCTION = 2250,
+    C_ERROR_CAST_TO_NON_SCALAR_TYPE = 2260,
+    C_ERROR_NULLPTR_COMPARISON = 2270,
+    C_ERROR_THREAD_LOCAL_ON_FUNCTION = 2280,
+    C_ERROR_INVALID_STORAGE_CLASS_IN_PARAMETER = 2290,
+    C_ERROR_THREAD_LOCAL_MISMATCH_IN_REDECLARATION = 2300,
+    C_ERROR_INCONSISTENT_ALIGNMENT_IN_REDECLARATION = 2310,
+    C_ERROR_FUNCTION_POINTER_TO_OBJECT_POINTER = 2320,
+    C_ERROR_EMPTY_INITIALIZER_FOR_ARRAY_OF_UNKNOWN_SIZE = 2330,
+    C_ERROR_CONSTEXPR_INVALID_QUALIFIED_TYPE = 2340,
+    C_ERROR_DECLARATION_DOES_NOT_DECLARE_ANYTHING = 2350,
+    C_ERROR_FLEXIBLE_ARRAY_MEMBER_IN_UNION = 2360,
+    C_ERROR_ARRAY_DESIGNATOR_IN_NON_ARRAY = 2370,
+    C_ERROR_CONSTEXPR_POINTER_NOT_NULL = 2380,
 };
 
 
@@ -358,40 +410,31 @@ enum indent_style
 
 struct style_options
 {
-
-    enum case_style struct_name_case;
-    enum case_style enum_name_case;
-    enum case_style function_name_case;
-    enum case_style global_name_case;
-    enum case_style local_name_case;
+    enum case_style struct_name_case;    
+    enum case_style enum_name_case;      
+    enum case_style function_name_case;  
+    enum case_style global_name_case;    
+    enum case_style local_name_case;     
     enum case_style enumerator_name_case;
     enum case_style member_name_case;
     enum case_style parameter_name_case;
 
-    /* --- brace placement --- */
     enum brace_style      open_brace_style;       /* control-flow blocks  */
     enum func_brace_style func_open_brace_style;  /* function bodies      */
+    enum else_style else_style;                   /* new line, same line  */
+    enum pointer_style pointer_style;             /*west, east            */
 
-    /* --- else placement --- */
-    enum else_style else_style;
+    enum indent_style indent_style;               /* tabs or spaces       */
+    int               indent_width;               /* number of spaces     */
 
-    /* --- pointer * placement --- */
-    enum pointer_style pointer_style;
-
-    /* --- indentation --- */
-    enum indent_style indent_style;
-    int               indent_width; /* spaces per level; ignored for TABS */
-
-    /* --- spacing rules ---
-     * All built-in presets set every flag to true.  Exposed individually so
-     * a single rule can be disabled without defining a whole new preset.   */
-    bool space_after_comma;             /* one space after ','                 */
-    bool no_space_before_semicolon;     /* no space before ';'                 */
-    bool space_after_keyword;           /* one space between keyword and '('   */
-    bool space_after_return;            /* one space between 'return' and expr */
-    bool no_space_before_call_paren;    /* no space between callee and '('     */
-    bool space_around_binary_operators; /* one space on each side of binary op */
-    bool single_declarator_per_declaration; /* no "int i, j;" - one declarator per declaration */
+    
+    bool space_after_comma;                       /* one space after ','                 */
+    bool no_space_before_semicolon;               /* no space before ';'                 */
+    bool space_after_keyword;                     /* one space between keyword and '('   */
+    bool space_after_return;                      /* one space between 'return' and expr */
+    bool no_space_before_call_paren;              /* no space between callee and '('     */
+    bool space_around_binary_operators;           /* one space on each side of binary op */
+    bool single_declarator_per_declaration;       /* no "int i, j;" - one declarator per declaration */
 };
 
 
@@ -408,23 +451,16 @@ struct bitset
     unsigned long bits[BITSET_WORDS];
 };
 
-
 struct diagnostic
 {
-    /*set of warnings reported as errors*/
-    struct bitset errors;
-
-    /*set of warnings reported as warnings*/
-    struct bitset warnings;
-
-    /*set of warnings reported as notes*/
-    struct bitset notes;
+    struct bitset errors;   /* set of warnings reported as errors */
+    struct bitset warnings; /* set of warnings reported as warnings */
+    struct bitset notes;    /* set of warnings reported as notes */
 };
 
-int get_diagnostic_type(const struct diagnostic* d, enum diagnostic_id w);
 extern struct diagnostic default_diagnostic;
 
-void diagnostic_remove(struct diagnostic *d, enum diagnostic_id w);
+void diagnostic_remove(struct diagnostic* d, enum diagnostic_id w);
 
 struct diagnostic_stack
 {
@@ -438,8 +474,8 @@ void diagnostic_stack_pop(struct diagnostic_stack* diagnostic_stack);
 
 struct options
 {
-    enum standard_version input;
-    enum target target;
+    enum standard_version input; /* check code againt this standard */
+    struct platform platform;    /* output target (gcc, msvc...), filled by -target= */
 
     /*
       #pragma CAKE diagnostic push
@@ -447,111 +483,40 @@ struct options
     */
     struct diagnostic_stack diagnostic_stack;
 
-    /*
-     * Formatting style rules.  Filled by style_options_<name>() or left
-     * as style_options_none() when no -style flag is supplied.
-     */
-    struct style_options style;
+    struct style_options style; /* format and check style settings */
 
-    /*
-       Causes the compiler to output a list of the include files.
-       The option also displays nested include files, that is,
-       the files included by the files that you include.
-    */
-    bool show_includes;
+    bool quiet;                 /* -quiet: no report on success */
+    bool show_includes;         /* -show-includes:  ouput the include file path       */
+    char copy_headers[200];     /* -copy-headers: mode that can copy included headers */
+    bool format;                /* -format: format code                               */
+    int format_first_line;      /* -format-lines=first:last                           */
+    int format_last_line;       /* -format-lines=first:last                           */
 
-
-    /*
-       -copy-headers
-    */
-    char copy_headers[200];
-
-    /*
-      -format
-      Applies the spacing/brace-placement rules from `style` directly to the
-      token stream instead of just diagnosing them, then prints the result
-      (print_code_as_we_see) in place of compiling.
-    */
-    bool format;
-
-    /*
-      -format-lines=first:last
-      Restricts -format's token changes to this inclusive line range.
-      0:0 (the default) means the whole file.
-    */
-    int format_first_line;
-    int format_last_line;
-
-    /*
-      -line-directives
-    */
-    bool line_directives;
-    
-    /*
-       -flow-analysis
-    */
-    bool flow_analysis;
-
-    /*
-    * -testmode
-    */
-    bool test_mode;
-
-    /*
-      -test-in-out
-    */
-    bool test_mode_inout;
+    /* output */
+    bool line_directives;       /* emmit #line directorives */
+    bool runtime_asserts;       /* -runtime-asserts: generate runtime code for _Assert */
 
 
-    /*
-      -runtime-asserts
-      When set, `_Assert(cond)` generates a runtime check (a small
-      emitted helper function); otherwise it produces no runtime code and only
-      the compile-time flow3 narrowing applies.
-    */
-    bool runtime_asserts;
+    bool flow_analysis;         /* run flow analysis */
+    bool test_mode;             /* -testmode : reports success with 0 errors/warnings */
+    bool clear_error_at_end;    /* used by tests*/
 
-    /*
-    * -nullchecks
-    */
-    bool null_checks_enabled;
+    bool null_checks_enabled;   /* -nullchecks: check nullable pointer */
 
-    bool ownership_enabled;
+    bool annotations_enabled;   /* -annotations: _Owner, _Opt, _Out... are checked */
+    bool preprocess_only;       /* -E: preprocess only */
 
-    /*
-      -E
-    */
-    bool preprocess_only;
+    bool preprocess_def_macro;  /* -preprocess-def-macro : preprocess #def */
 
-    /*
-      -preprocess-def-macro
-    */
-    bool preprocess_def_macro;
+    bool warnings_as_errors;    /* -Werror: Reports every enabled warning as an error.    */    
 
-    bool clear_error_at_end; /*used by tests*/
-    
-    /*
-      -Werror
-      Reports every enabled warning as an error.
-    */
-    bool warnings_as_errors;
+    bool sarif_output;          /* -sarif: generates SARIF output file */    
+    bool no_output;             /* -no-output:  if true cake does not generate output */
 
-    /*
-      -sarif
-    */
-    bool sarif_output;
+    bool ignore_lint;           /* -ignore-lint: //lint comments are plain comments */
 
-    /*
-      -no-output
-      if true cake does not generate output
-    */
-    bool no_output;
-
-    /*
-     -const-literal
-     makes literal strings const
-    */
-    bool const_literal;
+    bool const_literal;         /* -const-literal: makes literal strings const */
+    bool no_bitfields;          /* -no-bitfields: generated code has no bitfields */
 
     /*
       -fdiagnostics-format=msvc
@@ -582,11 +547,21 @@ struct options
     bool auto_config;
 
     /*
+      -no-includes
+      cake.json's include directories are not used: every directory comes
+      on the command line (-I)
+    */
+    bool no_includes;
+  
+    /*
       -o filename
       defines the ouputfile when 1 file is used
     */
     char output[200];
     char sarifpath[200];
+
+    /* -output-root=dir: output goes to dir/<platform>/<path relative to dir> */
+    char output_root[1024];
 
     /*
       -dont-generate-time-stamp
@@ -602,11 +577,88 @@ struct options
       By default they are discarded to reduce memory usage.
     */
     bool keep_inactive_tokens;
+
+    bool use_cake_headers; /*-cake-headers: use cake own headers */
+
+    /*
+      What this compilation is asked for, besides compiling: these modes
+      never run together.
+
+      -find-definition line col, -find-declaration line col
+      Parses until the declaration that contains line:col (1-based, main file)
+      and reports where the identifier under it is defined (or declared).
+      Diagnostics, flow analysis and output are disabled.
+
+      -complete line col
+      Parses until the expression at line:col and prints the names that can
+      be written there, one per line: name<TAB>kind<TAB>type. After '.' or
+      '->' the members of the struct, otherwise the names in scope.
+    */
+    enum request_action request;
+    int find_definition_line;
+    int find_definition_col;
+
+    /*
+      Set by compile(): the file the cursor line:col is in. It can be a
+      header, reached through the #include of the file being compiled.
+    */
+    char find_definition_file[FS_MAX_PATH];
+
+    /*
+      Set by compile() for the files after the cursor file, when the cursor
+      resolved only to a declaration: the name whose definition is searched
+      at file scope (line is 0 then). static names are searched only in the
+      cursor file.
+    */
+    char find_definition_name[200];
+
+    /*
+      Set by compile() for -find-definition: a declaration found at the
+      cursor is not reported - only the definition is. When no definition
+      is found, the declaration is reported at the end.
+    */
+    bool find_definition_hide_declaration;
+    bool find_definition_name_static;
+    bool find_definition_name_is_tag; /* find_definition_name is a struct, union or enum tag */
+
+    /*
+      -rename line col newname
+      Phase 1 is -find-definition, but it resolves to the declaration. In
+      phase 2 (find_definition_line is 0) every identifier that resolves to
+      the declaration at rename_target_file:line:col is recorded in
+      p_rename_list. The occurrences are replaced in the files.
+    */
+    char rename_new_name[200];
+    char rename_old_name[200]; /* phase 2: files without it are not parsed */
+    bool rename_macro;         /* phase 2: only the preprocessor runs */
+    char rename_target_file[FS_MAX_PATH];
+    int rename_target_line;
+    int rename_target_col;
+    struct rename_list* _Opt p_rename_list;
+
+    /*
+      -unused-extern-report
+      Report mode: only the unused functions are reported (see
+      options_diagnostic_is_muted), no flow analysis and no output.
+    */
+    struct global_unused_list* _Opt p_unused_functions;
 };
+
+/* -find-definition, -find-declaration, -rename: the cursor is resolved by the find code */
+bool options_is_find_request(const struct options* options);
+
+/* -find-declaration, -rename: the cursor resolves to the declaration, not the definition */
+bool options_find_wants_declaration(const struct options* options);
 
 int fill_options(struct options* options,
                  int argc,
                  const char** argv);
+
+/* any request (find, rename, -unused-extern-report): no flow analysis, no output, only their own report */
+bool options_is_report_mode(const struct options* options);
+
+/* true when a report mode does not report w */
+bool options_diagnostic_is_muted(const struct options* options, enum diagnostic_id w);
 
 bool is_diagnostic_enabled(const struct options* options, enum diagnostic_id w);
 
@@ -614,6 +666,8 @@ void print_help();
 
 void options_set_error(struct options* options, enum diagnostic_id w, bool value);
 void options_set_warning(struct options* options, enum diagnostic_id w, bool value);
+bool diagnostic_can_happen(const struct options* options, enum diagnostic_id w);
+bool options_default_nonnull(const struct options* options);
 void options_set_note(struct options* options, enum diagnostic_id w, bool value);
 void options_set_all_warnings(struct options* options);
 void options_set_clear_all_warnings(struct options* options);

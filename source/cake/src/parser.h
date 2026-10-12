@@ -4,7 +4,7 @@
 */
 
 #pragma once
-#include "ownership.h"
+#include "cake_compat.h"
 
 #include <stdio.h>
 #include <errno.h>
@@ -42,7 +42,7 @@ struct report
 {
     int no_files;
     double cpu_time_used_sec;
-    
+
     /*has_errors is not reseted when we remove diagnostics*/
     bool has_errors;
 
@@ -58,6 +58,22 @@ struct report
       direct commands like -autoconfig doesnt use report
     */
     bool ignore_this_report;
+    bool quiet; /* -quiet: no report on success */
+
+    /* -find-definition: what the parse of one file found */
+    bool find_definition_found;
+    bool find_definition_is_declaration;
+    bool find_definition_is_static;
+    bool find_definition_is_tag;
+    char find_definition_name[200];
+    char find_definition_file[FS_MAX_PATH]; /* where the declaration is */
+    int find_definition_line;
+    int find_definition_col;
+    bool find_definition_is_local; /* -rename: block scope or parameter */
+    bool find_definition_is_macro; /* resolved by the preprocessor */
+
+    /* optional: told about every #include of every file compiled */
+    const struct include_listener* _Opt include_listener;
 };
 
 struct label_list_item
@@ -84,7 +100,7 @@ struct diagnostic_item;
 struct diagnostic_queue
 {
     struct diagnostic_item* _Owner _Opt head;
-    struct diagnostic_item* _Opt        tail;    
+    struct diagnostic_item* _Opt        tail;
     int count;
 };
 
@@ -193,6 +209,14 @@ struct parser_ctx
     unsigned int unique_tag_id;
 
     /*
+      #pragma pack state. pack_alignment is the current maximum member
+      alignment in bytes (0 = no packing); push/pop keep the history.
+    */
+    int pack_alignment;
+    int pack_stack[32];
+    int pack_stack_top;
+
+    /*
       Used to generated id to vm dimension variables
     */
     unsigned int vm_dim_id;
@@ -219,6 +243,22 @@ struct parser_ctx
     */
     int format_indent_level;
 
+    /*
+       -find-definition only: the definition of the identifier under the
+       cursor, set where the parser resolves it (the scopes are live there).
+       translation_unit stops after the external declaration that set it.
+    */
+    const struct token* _Opt p_find_definition;
+
+    /* -find-definition: p_find_definition is only a declaration (prototype, extern) */
+    bool find_definition_is_declaration;
+    bool find_definition_is_static;
+    bool find_definition_is_local;
+    bool find_definition_is_tag; /* struct, union or enum not complete in this file */
+
+    /* -find-definition: 'goto label' under the cursor whose label comes later in the function */
+    const struct token* _Opt p_find_definition_label_use;
+
 };
 
 ///////////////////////////////////////////////////////
@@ -240,9 +280,24 @@ void format_align_to_column_if_already_wrapped(struct token* token, int column);
 struct token* _Opt parser_look_ahead(const struct parser_ctx* ctx);
 void unexpected_end_of_file(const struct parser_ctx* ctx);
 void parser_match(struct parser_ctx* ctx);
-_Attr(nodiscard)
+NODISCARD
 int parser_match_tk(struct parser_ctx* ctx, enum token_type type);
 int parser_match_tk_lint(struct parser_ctx* ctx, enum token_type type, struct token* _Opt* pp_token_lint);
+
+bool find_definition_is_cursor(const struct parser_ctx* ctx, const struct token* p_token);
+void find_definition_set(struct parser_ctx* ctx, const struct token* _Opt p_definition);
+void find_definition_set_declarator(struct parser_ctx* ctx, const struct declarator* p_declarator);
+void find_definition_report(const struct parser_ctx* ctx);
+
+/* Every answer the parser prints (not diagnostics) goes through here, so it can be sent to another output */
+void ctx_print(const struct parser_ctx* ctx, const char* fmt, ...);
+
+/* -complete: true when p_token is the first token at or after the cursor line:col */
+bool complete_is_cursor(const struct parser_ctx* ctx, const struct token* _Opt p_token);
+/* -complete: prints the names visible in the current scopes */
+void complete_print_scopes(const struct parser_ctx* ctx);
+/* -complete: prints the members of the struct or union (after '.' or '->') */
+void complete_print_members(const struct parser_ctx* ctx, struct struct_or_union_specifier* p_complete);
 
 struct token* _Opt previous_parser_token(const struct token* token);
 struct token* _Opt parser_get_previous_token(const struct parser_ctx* ctx);
@@ -265,11 +320,21 @@ _Bool diagnostic(enum diagnostic_id w,
     const struct marker* _Opt p_marker,
     const char* fmt, ...);
 
+/* diagnostic() without a parser context or token: position only, printed immediately */
+bool pos_diagnostic(enum diagnostic_id w,
+    const struct options* options,
+    struct report* report,
+    const char* file,
+    int line,
+    int col,
+    const char* fmt, ...);
+
 int compile(int argc, const char** argv, struct report* error);
 
 void print_type_qualifier_flags(struct osstream* ss, bool* first, enum type_qualifier_flags e_type_qualifier_flags);
-bool print_type_alignment_flags(struct osstream* ss, bool* first, enum alignment_specifier_flags flags, enum target target);
-bool print_type_specifier_flags(struct osstream* ss, bool* first, enum type_specifier_flags e_type_specifier_flags);
+bool print_type_alignment_flags(struct osstream* ss, bool* first, enum alignment_specifier_flags flags, const struct platform* target);
+enum alignment_specifier_flags alignment_value_to_flags(long long alignment);
+bool print_type_specifier_flags(struct osstream* ss, bool* first, enum type_specifier_flags e_type_specifier_flags, int bitint_width);
 
 
 struct expression_ctx;
@@ -310,7 +375,10 @@ struct declaration_specifiers
     enum type_qualifier_flags type_qualifier_flags;
     enum storage_class_specifier_flags storage_class_specifier_flags;
     enum function_specifier_flags function_specifier_flags;
-    
+
+    /* N of _BitInt(N) when type_specifier_flags has TYPE_SPECIFIER_BITINT */
+    int bitint_width;
+
     enum alignment_specifier_flags alignment_specifier_flags;
     struct attribute_specifier_sequence* _Owner _Opt p_attribute_specifier_sequence;
 
@@ -319,6 +387,7 @@ struct declaration_specifiers
     struct enum_specifier* _Opt enum_specifier;
     struct declarator* _Opt typedef_declarator;
     struct typeof_specifier* _Opt typeof_specifier;
+    struct atomic_type_specifier* _Opt atomic_type_specifier;
 
     struct token* first_token; /*not _Owner*/
     struct token* last_token; /*not _Owner*/
@@ -334,7 +403,8 @@ void declaration_specifiers_add(struct declaration_specifiers* p, struct declara
 
 struct static_assertion
 {
-    /* C2Y
+    /*
+        C2Y
         static-assertion:
         static_assert ( constant-expression , string-literal )
         static_assert ( constant-expression )
@@ -361,7 +431,6 @@ struct static_assertion
 struct static_assertion* _Owner _Opt static_assertion(struct parser_ctx* ctx);
 void static_assertion_delete(_Dtor struct static_assertion* _Owner _Opt p);
 
-struct static_assertion* _Owner _Opt static_assert_declaration(struct parser_ctx* ctx);
 bool first_of_static_assertion(const struct parser_ctx* ctx);
 
 /*
@@ -390,6 +459,15 @@ struct attribute_specifier_sequence
     struct token* last_token;
     enum msvc_declspec_flags msvc_declspec_flags;
     enum attribute_flags  attributes_flags;
+
+    /*
+        GCC __attribute__((packed)) / __attribute__((aligned(n))) - n in
+        bytes, 0 when absent. Applied to a struct or to one of its members
+        (see struct_or_union_specifier and declarator).
+    */
+    bool gcc_packed;
+    int gcc_aligned;
+
     struct attribute_specifier* _Owner _Opt head;
     struct attribute_specifier* _Opt tail;
 };
@@ -446,10 +524,11 @@ void storage_class_specifier_node_delete(_Dtor struct storage_class_specifier_no
 
 struct storage_class_specifiers
 {
-    /* C23
-         storage-class-specifiers:
-           storage-class-specifier
-           storage-class-specifiers storage-class-specifier
+    /*
+        C23
+        storage-class-specifiers:
+          storage-class-specifier
+          storage-class-specifiers storage-class-specifier
     */
     enum storage_class_specifier_flags storage_class_specifier_flags;
     struct storage_class_specifier_node* _Owner _Opt head;
@@ -529,9 +608,13 @@ struct type_specifier
     struct token* token;
     struct struct_or_union_specifier* _Owner _Opt struct_or_union_specifier;
     struct typeof_specifier* _Owner _Opt  typeof_specifier;
-    struct enum_specifier* _Owner _Opt enum_specifier;    
+    struct enum_specifier* _Owner _Opt enum_specifier;
     struct declarator* _Opt typedef_declarator;
     struct atomic_type_specifier* _Owner _Opt  atomic_type_specifier;
+
+    /* _BitInt ( constant-expression ) */
+    struct expression* _Owner _Opt bitint_constant_expression;
+    int bitint_width;
 };
 
 struct type_specifier* _Owner _Opt type_specifier(struct parser_ctx* ctx);
@@ -663,6 +746,7 @@ struct atomic_type_specifier
     */
     struct token* token;
     struct type_name* _Owner type_name;
+    struct type type;
 };
 
 struct atomic_type_specifier* _Owner _Opt atomic_type_specifier(struct parser_ctx* ctx);
@@ -680,7 +764,8 @@ struct enumerator_list
 };
 
 struct enumerator_list enumerator_list(struct parser_ctx* ctx,
-    struct enum_specifier* p_enum_specifier
+    struct enum_specifier* p_enum_specifier,
+    const struct enum_specifier* _Opt prev_decl_same_scope
 );
 
 void enumerator_list_destroy(_Dtor struct enumerator_list* p_enum_specifier);
@@ -716,6 +801,8 @@ struct enum_specifier
     struct enumerator_list enumerator_list;
 
     struct token* _Opt tag_token;
+    /* the tag of the first declaration of this enum in its scope (the identity for -rename, -find-usages) */
+    const struct token* _Opt first_tag_token;
     struct token* first_token;
     /*points to the complete enum (can be self pointed)*/
     struct enum_specifier* _Opt p_complete_enum_specifier;
@@ -779,6 +866,9 @@ struct struct_or_union_specifier
     char tag_name[200];
     /*geramos um tag name para anomimas, mas colocamos banonymousTag para true*/
     bool has_anonymous_tag;
+
+    /* set when defined inside a parameter list: that scope. The tag is moved to the enclosing scope (C23 tag compatibility) */
+    struct scope* _Opt p_parameters_scope_opt;
     /*it was asked to show struct tag created for anonymous*/
     bool show_anonymous_tag;
 
@@ -786,11 +876,32 @@ struct struct_or_union_specifier
     int visit_moved; /*nivel escopo 0 global*/
 
     /*
+        #pragma pack in effect when the members were parsed, or 1 for
+        __attribute__((packed)): caps every member's alignment (0 = none).
+        See get_sizeof_struct.
+    */
+    int pack_alignment;
+
+    /*
+        __attribute__((aligned(n))) on the struct itself: raises its
+        alignment to at least n bytes (0 = none).
+    */
+    int aligned_attribute;
+
+    /*
     * This points to the first struct_or_union_specifier that will have it´s
     * complete_struct_or_union_specifier_indirection pointing to the complete
     * struct_or_union_specifier.
     */
     struct struct_or_union_specifier* _Opt complete_struct_or_union_specifier_indirection;
+
+    /*
+      The tag of the first declaration of this struct (the identity for
+      -find-declaration, -rename, -find-usages). A definition with the same
+      content as a previous one (C23), also from an enclosing scope, is the
+      same struct.
+    */
+    const struct token* _Opt first_tag_token;
 };
 
 struct struct_or_union_specifier* _Owner _Opt struct_or_union_specifier(struct parser_ctx* ctx);
@@ -798,7 +909,6 @@ struct struct_or_union_specifier* _Owner struct_or_union_specifier_add_ref(struc
 bool struct_or_union_specifier_is_union(const struct struct_or_union_specifier* p);
 void struct_or_union_specifier_delete(_Dtor struct struct_or_union_specifier* _Owner _Opt  p);
 
-bool struct_or_union_specifier_is_complete(const struct struct_or_union_specifier* p_struct_or_union_specifier);
 struct struct_or_union_specifier* _Opt get_complete_struct_or_union_specifier(const struct struct_or_union_specifier* p_struct_or_union_specifier);
 
 struct init_declarator
@@ -841,7 +951,6 @@ struct initializer
 };
 
 struct initializer* _Owner _Opt initializer(struct parser_ctx* ctx, bool is_discarded);
-void initializer_destroy(_Dtor struct initializer* p);
 void initializer_delete(_Dtor struct initializer* _Owner _Opt  p);
 
 struct declarator
@@ -868,15 +977,25 @@ struct declarator
 
     struct token* _Opt name_opt; //shortcut , null for abstract declarator
 
-    struct compound_statement* _Opt function_body;
-    
     /*
-        points to someone that has the function_body or 
-        to someone that points to someone that has the function_body        
+        GCC attributes written on this declarator or on its declaration:
+        packed gives a struct member alignment 1; aligned(n) is folded into
+        the type's alignment_specifier_flags (see
+        type_set_alignment_specifier_flags_using_declarator).
+    */
+    bool gcc_packed;
+    int gcc_aligned;
+
+    struct compound_statement* _Opt function_body;
+
+    /*
+        points to someone that has the function_body or
+        to someone that points to someone that has the function_body
     */
     struct declarator* _Opt p_complete_declarator;
 
     int num_uses; /*used to show not used warnings*/
+    int num_evaluated_uses; /*uses outside sizeof, typeof etc. (N3884 local function definition)*/
     int num_writes;
     bool address_taken;
     bool pointee_written;
@@ -895,15 +1014,14 @@ struct declarator
     struct expression* _Opt p_alias_of_expression;
 
     /*
-       TODO it is duplicated with object
-       final declarator type (after auto, typeof etc)
-    */
-    struct type type;
-    
-    /*
       used in code generation to indicate when the declarator was renamed
     */
     bool declarator_renamed;
+
+    /*
+      source name before renaming (used by __func__ in local functions)
+    */
+    char* _Owner _Opt original_name;
 
     /*
       true once this declarator has been given an initializer,
@@ -915,7 +1033,6 @@ struct declarator
 struct function_declarator* _Opt declarator_find_function_declarator(const struct declarator* p_declarator);
 
 const struct declarator* _Opt declarator_get_function_definition(const struct declarator* p);
-enum type_specifier_flags declarator_get_type_specifier_flags(const struct declarator* p);
 
 struct declarator;
 void print_declarator(struct osstream* ss, struct declarator* declarator, bool is_abstract);
@@ -1088,7 +1205,6 @@ struct type_name
 
 struct type_name* _Owner _Opt type_name(struct parser_ctx* ctx);
 void type_name_delete(_Dtor struct type_name* _Owner _Opt p);
-void print_type_name(struct osstream* ss, struct type_name* p);
 
 struct argument_expression
 {
@@ -1147,11 +1263,14 @@ struct specifier_qualifier_list
     enum type_qualifier_flags type_qualifier_flags;
     enum alignment_specifier_flags alignment_specifier_flags;
 
+    /* N of _BitInt(N) when type_specifier_flags has TYPE_SPECIFIER_BITINT */
+    int bitint_width;
 
     /*shortcuts*/
     struct struct_or_union_specifier* _Opt struct_or_union_specifier;
     struct enum_specifier* _Opt enum_specifier;
     struct typeof_specifier* _Opt typeof_specifier;
+    struct atomic_type_specifier* _Opt atomic_type_specifier;
     struct declarator* _Opt typedef_declarator;
 
     struct type_specifier_qualifier* _Owner _Opt head;
@@ -1166,8 +1285,6 @@ struct specifier_qualifier_list
 struct specifier_qualifier_list* _Owner _Opt specifier_qualifier_list(struct parser_ctx* ctx);
 void specifier_qualifier_list_delete(_Dtor struct specifier_qualifier_list* _Owner _Opt p);
 void specifier_qualifier_list_add(struct specifier_qualifier_list* list, struct type_specifier_qualifier* _Owner p_item);
-
-void print_specifier_qualifier_list(struct osstream* ss, bool* first, const struct specifier_qualifier_list* p_specifier_qualifier_list);
 
 struct alignment_specifier
 {
@@ -1205,7 +1322,6 @@ struct type_qualifier
 };
 
 struct type_qualifier* _Owner _Opt type_qualifier(struct parser_ctx* ctx);
-void type_qualifier_delete(_Dtor struct type_qualifier* _Owner _Opt p);
 
 struct member_declaration
 {
@@ -1239,6 +1355,14 @@ struct member_declarator
 
     struct declarator* _Owner _Opt declarator;
     struct expression* _Owner _Opt constant_expression;
+
+    /*
+      Position of the member's first bit, counted from the start of the
+      struct (bit 0 is the low bit of the first byte). Written by
+      get_sizeof_struct for the target it was called with.
+    */
+    size_t bit_offset;
+
     struct member_declarator* _Owner _Opt next;
 };
 void member_declarator_delete(_Dtor struct member_declarator* _Owner _Opt p);
@@ -1293,6 +1417,7 @@ struct compound_statement
 */
 struct compound_statement* _Owner _Opt compound_statement(struct parser_ctx* ctx, bool is_function_body);
 void compound_statement_delete(_Dtor struct compound_statement* _Owner _Opt p);
+bool compound_statement_is_last_item_return(const struct compound_statement* p_compound_statement);
 
 struct defer_statement
 {
@@ -1323,7 +1448,6 @@ struct defer_list_item
 
 void defer_list_add(struct defer_list* list, struct defer_list_item* _Owner p_item);
 void defer_list_destroy(_Dtor struct defer_list* p);
-void defer_list_clear(struct defer_list* p);
 
 struct try_statement
 {
@@ -1336,7 +1460,7 @@ struct try_statement
     /*
       __try: (msvc extension)
        "__try" secondary-block
-       "__finally" secondary-block 
+       "__finally" secondary-block
        "__except(expression)" secondary-block
     */
     struct secondary_block* _Owner _Opt secondary_block;
@@ -1354,8 +1478,8 @@ void try_statement_delete(_Dtor struct try_statement* _Owner _Opt p);
 
 struct asm_statement
 {
-    struct token * p_first_token;
-    struct token * p_last_token;
+    struct token* p_first_token;
+    struct token* p_last_token;
 };
 
 struct asm_statement* _Owner _Opt asm_statement(struct parser_ctx* ctx);
@@ -1386,20 +1510,21 @@ struct selection_statement
     */
 
     //TODO rename
-    /*C2Y
-      selection-statement:
-         if ( selection-header ) secondary-block
-         if ( selection-header ) secondary-block else secondary-block
-         switch ( selection-header ) secondary-block
+    /*
+        C2Y
+         selection-statement:
+            if ( selection-header ) secondary-block
+            if ( selection-header ) secondary-block else secondary-block
+            switch ( selection-header ) secondary-block
 
-     selection-header:
-       expression
-       declaration expression
-       simple-declaration
+        selection-header:
+          expression
+          declaration expression
+          simple-declaration
 
 
-     simple-declaration:
-        attribute-specifier-sequenceopt declaration-specifiers declarator = initializer
+        simple-declaration:
+           attribute-specifier-sequenceopt declaration-specifiers declarator = initializer
     */
 
     struct init_statement* _Owner _Opt p_init_statement;
@@ -1522,7 +1647,7 @@ struct designator
        . identifier
     */
     struct expression* _Owner _Opt constant_expression_opt;
-    struct token* token;
+    struct token* _Opt token; /* the identifier of `.identifier`, NULL for `[ ]` */
     struct designator* _Owner _Opt next;
 };
 
@@ -1708,10 +1833,10 @@ struct attribute
 
     standard-attribute:
       identifier
-     
+
     attribute-prefixed-token:
       attribute-prefix :: identifier
-    
+
     attribute-prefix:
       identifier
     */
@@ -1756,6 +1881,7 @@ struct enumerator
         - false, only AST OR and some map have the ownership
     */
     bool has_shared_ownership;
+    bool used; /* -unused-extern-report */
 
     struct token* token;
     struct attribute_specifier_sequence* _Owner _Opt attribute_specifier_sequence_opt;
@@ -1771,7 +1897,7 @@ struct enumerator
     struct object value;
 };
 
-struct enumerator* _Owner _Opt enumerator(struct parser_ctx* ctx, const struct enum_specifier* p_enum_specifier, struct object* p_enumerator_value, long long lo_limit, unsigned long long hi_limit, long long *min_value, unsigned long long *max_value, bool* next_ovf);
+struct enumerator* _Owner _Opt enumerator(struct parser_ctx* ctx, const struct enum_specifier* p_enum_specifier, const struct enum_specifier* _Opt prev_decl_same_scope, struct object* p_enumerator_value, long long lo_limit, unsigned long long hi_limit, long long *min_value, unsigned long long *max_value, bool* next_ovf);
 struct enumerator* _Owner enumerator_add_ref(struct enumerator* p);
 void enumerator_delete(_Dtor struct enumerator* _Owner _Opt  p);
 
@@ -1805,7 +1931,6 @@ struct balanced_token_sequence
 struct balanced_token_sequence* _Owner _Opt balanced_token_sequence_opt(struct parser_ctx* ctx);
 void balanced_token_sequence_delete(_Dtor struct balanced_token_sequence* _Owner _Opt  p);
 
-bool is_first_of_conditional_expression(const struct parser_ctx* ctx);
 bool first_of_type_name(const struct parser_ctx* ctx);
 bool first_of_type_name_ahead(const struct parser_ctx* ctx);
 bool first_of_type_name_token(const struct parser_ctx* ctx /*only to typedef*/, struct token* p_token);
@@ -1820,6 +1945,10 @@ struct declaration_list
 
 struct declaration_list translation_unit(struct parser_ctx* ctx, bool* berror);
 void declaration_list_destroy(_Dtor struct declaration_list* list);
+
+/* reports and then clears the list */
+void global_unused_functions_report(_Clear struct global_unused_list* p, const struct options* options, struct report* report);
+
 
 struct label
 {
@@ -1847,7 +1976,7 @@ struct ast
 {
     struct token_list token_list;
     struct declaration_list declaration_list;
-    
+
     /* tags and variables from file scope */
     struct scope file_scope;
 };
@@ -1858,7 +1987,6 @@ struct ast get_ast(const struct options* options,
     const char* source,
     struct report* report);
     
-struct ast get_ast_with_flags(int argc, const char **argv, const char* filename, const char* source, struct report* report);
 void ast_destroy(_Dtor struct ast* ast);
 
 struct type make_type_using_declarator(struct parser_ctx* ctx, struct declarator* pdeclarator);

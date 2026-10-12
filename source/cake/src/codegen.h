@@ -3,10 +3,10 @@
  *  https://github.com/thradams/cake
  *  This visit generates a new and preprocessed C89 code from the AST
  */
- 
+
 #pragma once
 #include "parser.h"
-#include "ownership.h"
+#include "cake_compat.h"
 #include "osstream.h"
 #include "hashmap.h"
 
@@ -21,7 +21,7 @@ struct codegen_ctx
     */
     unsigned int cake_local_declarator_number;
 
-    
+
     struct hash_map tag_names;
     struct hash_map structs_map;
 
@@ -37,14 +37,27 @@ struct codegen_ctx
        The value is the name of the instantiated function (that can be reused)
     */
     struct hash_map instantiated_function_literals;
-    
+
 
     struct osstream block_scope_declarators;
+
+    /*
+       vm_dim_id of every `__vmN` dimension snapshot declared in the C blocks
+       currently open (innermost last). Block-opening code saves
+       vm_snapshot_count and restores it when the block closes, so snapshots
+       of enclosing blocks stay visible (a VM typedef used in a nested block
+       must reuse the typedef's snapshot, not re-evaluate the dimension)
+       while those of already-closed sibling blocks drop out.
+    */
+    int* _Owner _Opt vm_snapshot_ids;
+    int vm_snapshot_count;
+    int vm_snapshot_capacity;
+
     struct osstream add_this_before;
     struct osstream add_this_before_external_decl;
     struct osstream add_this_after_external_decl;
     bool is_local;
-    
+
     bool memset_used;
     char memset_function_name[50];
 
@@ -52,25 +65,42 @@ struct codegen_ctx
 
     bool memcpy_used;
     char memcpy_function_name[50];
-    
+
     bool runtime_assert_used;
     char runtime_assert_function_name[50];
 
-    /* set when the user's code calls __assert_fail (e.g. via the glibc
-       assert() macro) without providing its own definition, so codegen
-       emits a stub -- same idea as the runtime_assert_failed handler above. */
+    /*
+        set when the user's code calls __assert_fail (e.g. via the glibc
+        assert() macro) without providing its own definition, so codegen
+        emits a stub -- same idea as the runtime_assert_failed handler above.
+    */
     bool assert_fail_used;
 
-    /* same as assert_fail_used, but for __assert_rtn (macOS/Apple's
-       assert() failure function). */
+    /*
+        same as assert_fail_used, but for __assert_rtn (macOS/Apple's
+        assert() failure function).
+    */
     bool assert_rtn_used;
 
 
     bool define_nullptr;
     bool null_pointer_constant_used;
-        
+
     bool address_of_argument;
-        
+
+    /* set by a parent that needs an _Atomic operand as an lvalue (&, =, op=, ++, --) instead of loading it */
+    bool atomic_lvalue;
+
+    /* set by a parent that already prints ( ) around the expression, as in if (...) */
+    bool parenthesis_not_needed;
+
+    /* static helpers for _Atomic operations; the key is operation and types, the value is the helper name */
+    struct hash_map atomic_helpers;
+    struct osstream atomic_helpers_text;
+    struct osstream atomic_helpers_declarations;
+    bool atomic_helpers_msvc_declared;
+    bool alloca_declared;
+
     /*
     * Points to the function we're in. Or null in file scope.
     */
@@ -78,18 +108,20 @@ struct codegen_ctx
 
     struct break_reference
     {
-      struct selection_statement * _Opt p_selection_statement;
-      struct iteration_statement * _Opt p_iteration_statement;
+        struct selection_statement* _Opt p_selection_statement;
+        struct iteration_statement* _Opt p_iteration_statement;
     } break_reference;
 
     bool is__func__predefined_identifier_added;
     struct try_statement* _Opt p_current_try_statement;
 
-    struct ast * p_ast;    
+    struct ast* p_ast;
     
     bool error;
 };
 
 /* Returns 0 on success, non-zero if code generation failed (ctx->error). */
 int codegen_visit(struct codegen_ctx* ctx, struct osstream* oss);
-void codegen_visit_ctx_destroy( _Dtor struct codegen_ctx* ctx);
+void codegen_visit_ctx_destroy(_Dtor struct codegen_ctx* ctx);
+
+

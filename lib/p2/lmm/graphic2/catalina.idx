@@ -104,7 +104,7 @@ cgi_y_total setup.s 239 import
 cgi_x_total setup.s 241 import
 G_VAR setup.s 247 export
 g_sin sincos.s 145 export
-g_cos sincos.s 228 export
+g_cos sincos.s 227 export
 snes_encode snes.s 9 export
 g_snes snes.s 109 export
 g_abs_y snes.s 157 import

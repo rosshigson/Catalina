@@ -7,7 +7,7 @@
 
 #include "type.h"
 #include  "tokenizer.h"
-#include "ownership.h"
+#include "cake_compat.h"
 #include "object.h"
 
 struct parser_ctx;
@@ -203,10 +203,40 @@ struct generic_selection
 
 void generic_selection_delete(_Dtor struct generic_selection* _Owner _Opt p);
 
+/*
+  offsetof member-designator (n3958):
+
+  member-designator:
+     identifier designator-list_opt
+
+  designator:
+     [ expression ]
+     . identifier
+
+  Each node is either an identifier (identifier != NULL) or an
+  array subscript (index != NULL).
+*/
+struct offsetof_designator
+{
+    struct token* first_token;
+    struct token* _Opt identifier;
+    struct expression* _Owner _Opt index;
+
+    /*
+        identifier node: byte offset of the member inside its struct/union
+        index node: size in bytes of one array element
+    */
+    size_t member_offset;
+    size_t element_size;
+
+    struct offsetof_designator* _Owner _Opt next;
+};
+
+void offsetof_designator_delete(_Dtor struct offsetof_designator* _Owner _Opt p);
+
 struct expression
 {
     enum expression_type expression_type;
-    struct type type;
 
     struct object object;
 
@@ -220,8 +250,8 @@ struct expression
     struct token* first_token;
     struct token* last_token;
     
-    //TODO https://gcc.gnu.org/onlinedocs/gcc/Offsetof.html#Offsetof
-    struct token* _Opt offsetof_member_designator;
+    /* EXPR_UNARY_GCC__BUILTIN_OFFSETOF */
+    struct offsetof_designator* _Owner _Opt offsetof_member_designator;
 
     /*if expression is an identifier it points to its declaration*/
     struct declarator* _Opt declarator;
@@ -237,9 +267,6 @@ struct expression
     struct expression* _Owner _Opt right;
 
     bool is_assignment_expression;
-
-    /*  used to check how contexpr can be used inside function literals */
-    bool lvalue_disabled;       
 
     struct defer_list defer_list; //arguments
 };
@@ -267,7 +294,6 @@ void expression_mark_discarded_write(const struct expression* _Opt p_expression)
 
 bool expression_has_side_effects(const struct expression* expr);
 
-bool expression_is_one(const struct expression* expression);
 bool expression_is_zero(const struct expression* expression);
 bool expression_is_null_pointer_constant(const struct expression* expression);
 

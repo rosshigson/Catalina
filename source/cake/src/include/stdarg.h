@@ -1,54 +1,61 @@
-#ifdef _WIN32
+/*
+ *  This file is part of cake compiler
+ *  https://github.com/thradams/cake
+*/
 
-        #define _ADDRESSOF(v) (&(v))
-        typedef char* va_list;
+#ifdef CAKE_HEADERS
 
-        #if defined _M_IX86 && !defined _M_HYBRID_X86_ARM64
+    #pragma once
 
-            #define _INTSIZEOF(n)          ((sizeof(n) + sizeof(int) - 1) & ~(sizeof(int) - 1))
+    #include <__cake_types.h>
 
-            #define __crt_va_start_a(ap, v) ((void)(ap = (va_list)_ADDRESSOF(v) + _INTSIZEOF(v)))
-            #define __crt_va_arg(ap, t)     (*(t*)((ap += _INTSIZEOF(t)) - _INTSIZEOF(t)))
-            #define __crt_va_end(ap)        ((void)(ap = (va_list)0))
+    #define __STDC_VERSION_STDARG_H__ 202311L
 
-        #elif defined _M_X64
+    typedef __cake_va_list va_list;
+
+    #if defined(_WIN32)
+
+        /* same implementation as the msvc headers: the generated code is compiled
+           by cl, which does not have the gcc builtins */
+        #define __cake_ADDRESSOF(v) (&(v))
+
+        #if defined(_M_X64)
 
             void __cdecl __va_start(va_list*, ...);
 
-            #define __crt_va_start_a(ap, x) ((void)(__va_start(&ap, x)))
-            #define __crt_va_arg(ap, t)                                               \
-                    ((sizeof(t) > sizeof(__int64) || (sizeof(t) & (sizeof(t) - 1)) != 0) \
-                        ? **(t**)((ap += sizeof(__int64)) - sizeof(__int64))             \
-                        :  *(t* )((ap += sizeof(__int64)) - sizeof(__int64)))
-            #define __crt_va_end(ap)        ((void)(ap = (va_list)0))
+            /* C23 allows va_start(ap) with no second argument; __va_start accepts it */
+            #define va_start(ap, ...) ((void)(__va_start(&ap __VA_OPT__(,) __VA_ARGS__)))
+            #define va_arg(ap, t)                                                    \
+    ((sizeof(t) > sizeof(__int64) || (sizeof(t) & (sizeof(t) - 1)) != 0) \
+        ? **(t**)((ap += sizeof(__int64)) - sizeof(__int64))             \
+        :  *(t* )((ap += sizeof(__int64)) - sizeof(__int64)))
+            #define va_end(ap) ((void)(ap = (va_list)0))
 
-        #else
-             #error platform not defined
+        #else /* x86 */
+
+            /* x86 needs the address of the last named parameter, so the C23 single
+               argument form va_start(ap) is not available on this target */
+
+            #define __cake_INTSIZEOF(n) ((sizeof(n) + sizeof(int) - 1) & ~(sizeof(int) - 1))
+
+            #define va_start(ap, v) ((void)(ap = (va_list)__cake_ADDRESSOF(v) + __cake_INTSIZEOF(v)))
+            #define va_arg(ap, t)   (*(t*)((ap += __cake_INTSIZEOF(t)) - __cake_INTSIZEOF(t)))
+            #define va_end(ap)      ((void)(ap = (va_list)0))
+
         #endif
 
-
-        #define __crt_va_start(ap, x) __crt_va_start_a(ap, x)
-
-        #define va_start __crt_va_start
-        #define va_arg   __crt_va_arg
-        #define va_end   __crt_va_end
         #define va_copy(destination, source) ((destination) = (source))
 
+    #else
 
+        /* gcc/clang and the small targets */
+        #define va_start(...)     __builtin_va_start(__VA_ARGS__)
+        #define va_arg(ap, type)  __builtin_va_arg(ap, type)
+        #define va_end(ap)        __builtin_va_end(ap)
+        #define va_copy(dst, src) __builtin_va_copy(dst, src)
+
+    #endif
+
+#else
+    #include_next <stdarg.h>
 #endif
-
-#ifdef __GNUC__
-
-
-typedef __builtin_va_list __gnuc_va_list;
-typedef __gnuc_va_list va_list;
-
-#define va_start(v,l)	__builtin_va_start(v,l)
-#define va_end(v)	    __builtin_va_end(v)
-#define va_arg(v,l)	    __builtin_va_arg(v,l)
-#define va_copy(d,s)    __builtin_va_copy(d,s)
-
-      
-#endif
-
-

@@ -34,12 +34,12 @@ int		atoi(const char *_nptr);
 long		atol(const char *_nptr);
 double		strtod(const char *_nptr, char **_endptr);
 // for Catalina, floats and long doubles are the same as doubles, so ...
-#define strtold strtod
-#define strtof strtod
+long double		strtold(const char *_nptr, char **_endptr);
+float		strtof(const char *_nptr, char **_endptr);
 long		strtol(const char *_nptr, char **_endptr, int _base);
 // for Catalina, long longs are the same as longs, so ...
-#define strtoull strtol
-unsigned long int	strtoul(const char *_nptr, char **_endptr, int _base);
+unsigned long long	strtoull(const char *_nptr, char **_endptr, int _base);
+unsigned long strtoul(const char *_nptr, char **_endptr, int _base);
 int		rand(void);
 void		srand(unsigned int _seed);
 void		*calloc(size_t _nmemb, size_t _size);

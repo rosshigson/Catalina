@@ -19,9 +19,18 @@ static void wait100ms() {
    _waitcnt(_cnt() + _clockfreq()/10);
 }
 
+static char xdigit(int i) {
+   if (i >= 10) {
+      return i - 10 + 'A';
+   }
+   else {
+      return i + '0';
+   }
+}
+
 uint32_t DOSFS_ReadSector(uint8_t unit, uint8_t *buffer, uint32_t sector, uint32_t count)
 {
-   int i, j;
+   int i, j, k;
    int result;
 
 #if DEBUG_READSECTOR
@@ -34,7 +43,21 @@ uint32_t DOSFS_ReadSector(uint8_t unit, uint8_t *buffer, uint32_t sector, uint32
    if (count == 1) {
       for (j = 0; j < READ_RETRIES; j++) {
          if ((result = sd_sectread((char *)buffer, sector)) == 0) {
-             break;
+#if DEBUG_READSECTOR
+            for (k = 0; k < SECTOR_SIZE; k++) {
+               t_char(1, xdigit((buffer[k]>>4) & 0xf));
+               t_char(1, xdigit(buffer[k] & 0xf));
+               if (((k+1)&0x1f) == 0) {
+                  t_char(1, '\n'); // 32 entries, then newline
+               }
+               else {
+                  t_char(1, ' ');
+               }
+            }
+            t_char(1, '\n');
+            press_to_continue();
+#endif
+            break;
          }
          else {
 #if DEBUG_READSECTOR
@@ -47,7 +70,21 @@ uint32_t DOSFS_ReadSector(uint8_t unit, uint8_t *buffer, uint32_t sector, uint32
    else {
       for (i = 0; i < count; i++) {
          for (j = 0; i < READ_RETRIES; i++) {
-            if ((result = sd_sectread((char *)(buffer + 512*i), sector + i)) == 0) {
+            if ((result = sd_sectread((char *)(buffer + SECTOR_SIZE*i), sector + i)) == 0) {
+#if DEBUG_READSECTOR
+               for (k = 0; k < SECTOR_SIZE; k++) {
+                  t_char(1, xdigit((buffer[sector_buffer*i+k]>>4) & 0xf));
+                  t_char(1, xdigit(buffer[sector_buffer*i+k] & 0xf));
+                  if (((k+1)&0x1f) == 0) {
+                     t_char(1, '\n'); // 32 entries, then newline
+                  }
+                  else {
+                     t_char(1, ' ');
+                  }
+               }
+               t_char(1, '\n');
+               press_to_continue();
+#endif
                break;
             }
             else {
@@ -63,10 +100,10 @@ uint32_t DOSFS_ReadSector(uint8_t unit, uint8_t *buffer, uint32_t sector, uint32
    for (j = 0; j < READ_RETRIES; j++) {
       if ((result = sd_sectread((char *)buffer, sector)) == 0) {
 #if DEBUG_READSECTOR
-         for (i = 0; i < SECTOR_SIZE; i++) {
-            t_char(1, xdigit((buffer[i]>>4) & 0xf));
-            t_char(1, xdigit(buffer[i] & 0xf));
-            if (((i+1)&0x1f) == 0) {
+         for (k = 0; k < SECTOR_SIZE; k++) {
+            t_char(1, xdigit((buffer[k]>>4) & 0xf));
+            t_char(1, xdigit(buffer[k] & 0xf));
+            if (((k+1)&0x1f) == 0) {
                t_char(1, '\n'); // 32 entries, then newline
             }
             else {

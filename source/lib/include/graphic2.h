@@ -523,11 +523,11 @@ extern int g_sar(int var, int count); // Simulate PASM SAR var,count
 // g_sin - return the Sin value of an angle, specified as 0x0 to 0x2000 
 // (i.e. 360 degrees or 2*pi radians = 0x2000). Useful for vector sprites.
 //
-//unsigned int g_sin(unsigned int angle);
+int g_sin(unsigned int angle);
 
 // g_cos - return the Cos value of an angle, specified as 0x0 to 0x2000 
 // (i.e. 360 degrees or 2*pi radians = 0x2000). Useful for vector sprites.
 //
-//unsigned int g_cos(unsigned int angle);
+int g_cos(unsigned int angle);
 
 #endif

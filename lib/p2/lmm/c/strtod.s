@@ -11,11 +11,11 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_sdt4_6a9cb494_maxE_xponent_L000003 ' <symbol:maxExponent>
+C_srn8_6ac84c3b_maxE_xponent_L000003 ' <symbol:maxExponent>
  long 511
 
  alignl ' align long
-C_sdt41_6a9cb494_powersO_f10_L000004 ' <symbol:powersOf10>
+C_srn81_6ac84c3b_powersO_f10_L000004 ' <symbol:powersOf10>
  long $41200000 ' float
  long $42c80000 ' float
  long $461c4000 ' float
@@ -340,13 +340,13 @@ C_strtod_58
  mov r9, #0 ' reg <- coni
 C_strtod_59
  jmp #LODI
- long @C_sdt4_6a9cb494_maxE_xponent_L000003
+ long @C_srn8_6ac84c3b_maxE_xponent_L000003
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r19, r22 wcz
  jmp #BRBE
  long @C_strtod_60 ' LEI4
  jmp #LODI
- long @C_sdt4_6a9cb494_maxE_xponent_L000003
+ long @C_srn8_6ac84c3b_maxE_xponent_L000003
  mov r19, RI ' reg <- INDIRI4 addrg
  mov r22, #34 ' reg <- coni
  jmp #LODL
@@ -357,7 +357,7 @@ C_strtod_60
  long @C_strtod_62_L000063
  mov r11, RI ' reg <- INDIRF4 addrg
  jmp #LODL
- long @C_sdt41_6a9cb494_powersO_f10_L000004
+ long @C_srn81_6ac84c3b_powersO_f10_L000004
  mov r15, RI ' reg <- addrg
  jmp #JMPA
  long @C_strtod_67 ' JUMPV addrg
@@ -417,6 +417,50 @@ C_strtod_74
 C_strtod_5
  jmp #POPM ' restore registers
  add SP, #24 ' framesize
+ jmp #RETF
+
+
+' Catalina Export strtold
+
+ alignl ' align long
+C_strtold ' <symbol:strtold>
+ jmp #NEWF
+ jmp #PSHM
+ long $e00000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ mov r2, r21 ' CVI, CVU or LOAD
+ mov r3, r23 ' CVI, CVU or LOAD
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_strtod
+ add SP, #4 ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+' C_strtold_76 ' (symbol refcount = 0)
+ jmp #POPM ' restore registers
+ jmp #RETF
+
+
+' Catalina Export strtof
+
+ alignl ' align long
+C_strtof ' <symbol:strtof>
+ jmp #NEWF
+ jmp #PSHM
+ long $e00000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ mov r2, r21 ' CVI, CVU or LOAD
+ mov r3, r23 ' CVI, CVU or LOAD
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ jmp #CALA
+ long @C_strtod
+ add SP, #4 ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+' C_strtof_77 ' (symbol refcount = 0)
+ jmp #POPM ' restore registers
  jmp #RETF
 
 

@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_si18_6a9cb7f6_sin_table_L000004 ' <symbol:sin_table>
+C_s4us_6ac84f7c_sin_table_L000004 ' <symbol:sin_table>
  word $0
  word $0
  word $477
@@ -170,11 +170,10 @@ C_g_sin_8
  shr r2, #4 ' RSHU4 coni
  mov r22, r2
  shl r22, #1 ' LSHU4 coni
- mov r20, ##@C_si18_6a9cb7f6_sin_table_L000004 ' reg <- addrg
+ mov r20, ##@C_s4us_6ac84f7c_sin_table_L000004 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdword r22, r22 ' reg <- CVUI4 INDIRU2 reg
- neg r22, r22 ' NEGI4
- mov r0, r22 ' CVI, CVU or LOAD
+ neg r0, r22 ' NEGI4
  jmp #\@C_g_sin_5 ' JUMPV addrg
 C_g_sin_6
  mov r22, ##2048 ' reg <- con
@@ -190,10 +189,9 @@ C_g_sin_10
  shr r2, #4 ' RSHU4 coni
  mov r22, r2
  shl r22, #1 ' LSHU4 coni
- mov r20, ##@C_si18_6a9cb7f6_sin_table_L000004 ' reg <- addrg
+ mov r20, ##@C_s4us_6ac84f7c_sin_table_L000004 ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
- rdword r22, r22 ' reg <- CVUI4 INDIRU2 reg
- mov r0, r22 ' CVI, CVU or LOAD
+ rdword r0, r22 ' reg <- CVUI4 INDIRU2 reg
 C_g_sin_5
  calld PA,#POPM ' restore registers
  calld PA,#RETN

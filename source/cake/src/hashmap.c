@@ -3,15 +3,15 @@
  *  https://github.com/thradams/cake
 */
 
-#pragma safety enable
 
-#include "ownership.h"
+
+#include "cake_compat.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 #include <assert.h>
 #include "hashmap.h"
-
+ 
 #include "error.h"
 #include <assert.h>
 #ifdef _WIN32
@@ -136,7 +136,7 @@ struct map_entry* _Opt hashmap_find(const struct hash_map* map, const char* key)
     return NULL;
 }
 
-void* _Opt hashmap_remove(struct hash_map* map, const char* key, enum tag* _Opt p_type_opt)
+void* _Owner _Opt hashmap_remove(struct hash_map* map, const char* key, enum tag* _Opt p_type_opt)
 {
 #pragma CAKE diagnostic push
 #pragma CAKE diagnostic ignored 29
@@ -159,7 +159,7 @@ void* _Opt hashmap_remove(struct hash_map* map, const char* key, enum tag* _Opt 
                 if (p_type_opt)
                     *p_type_opt = p_entry->type;
 
-                void* _Opt p = p_entry->data.p_declarator; //moved
+                void* _Owner _Opt p = p_entry->data.p_declarator; //moved
                 free((void* _Owner)p_entry->key);
 
                 free((void* _Owner)p_entry);

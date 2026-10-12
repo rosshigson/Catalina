@@ -1,8 +1,8 @@
 cd src
 
-rmdir /s /q catalina
+rmdir /s /q propeller-catalina
 
-set OPTIONS=-target=catalina -D__CATALINA__ -D__CATALYST__ -D__INT_BOOL__ -DTEST
+set OPTIONS=-target=propeller-catalina -D__CATALINA__ -D__CATALYST__ -D__INT_BOOL__ -DTEST
 
 cake %OPTIONS% json.c
 cake %OPTIONS% token.c
@@ -20,7 +20,9 @@ cake %OPTIONS% parser.c
 cake %OPTIONS% compile.c
 cake %OPTIONS% defer.c
 cake %OPTIONS% codegen.c
-cake %OPTIONS% flow3.c
+cake %OPTIONS% flow_alternative.c
+cake %OPTIONS% flow_branch.c
+cake %OPTIONS% flow.c
 cake %OPTIONS% error.c
 cake %OPTIONS% target.c
 cake %OPTIONS% type.c

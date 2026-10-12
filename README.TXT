@@ -203,42 +203,46 @@ documents folder.
 New Functionality
 -----------------
 
-1. Cake has been updated to version 0.14.41. Part of the update is that the
-   Cake config file has had a name and format change (from cakeconf.h to
-   cake.jsn). It should have been generated automatically on install, but if
-   Cake complains that it cannot find include files, try re-generating the 
-   file by running:
+1. Cake has been updated to version 0.15.20. This version fixes a few issues,
+   including one that stopped FatFs from working correctly. Also, Catalina
+   is now supported "out of the box"  by Cake.
 
-      cake -autoconfig
+2. An int64 library that provides 64-bit integer support is now included as  
+   a Catalina library, and demos can be found in the folder demos\int64. This
+   directory also contains a stand-alone version. 64-bit integers are
+   supported on both the Propeller 1 and Propeller 2.
 
-2. A version of the classic Asteroids arcade game has been added to the 
-   demos\graphic2 folder. It canb be built along with the other graphic2
-   demos using the build_all command. For example:
-
-      build_all P2_EDGE 
-
-   It is a single player game that can use a keyboard or an NES compatible 
-   game controller. 
-
-3. Minor changes to some SpaceWar geometry options to suit a Full HD display
-   (e.g. the ships are slightly larger).
+3. A version of the FatFs file system is included in the folder demos\fatfs. 
+   Unlike DosFs, which supports only SD cards formatted as FAT (e.g. FAT32) and 
+   DOS 8.3 file names, FatFs can support both FAT and EXFAT formatted SD cards,
+   and also long file names. FatFs can also support up to four partitions on 
+   the SD card, whereas DosFs supports only one. Catalyst still uses DosFs as 
+   its file system, as it is supported on the Propeller 1 and Propeller 2, 
+   whereas FatFs is currently only supported on the Propeller 2. However,
+   it is now possible to format an SD card with multiple partitions, and have
+   the first partition a FAT partition containing Catalyst, which can be used
+   to load programs that access other non-FAT partitions on the SD card. An
+   example of doing so is included as one of the demos (volcopy).
 
 Other Changes
 -------------
 
-1. p2asm has been modified to correctly detect invalid use of the "##" prefix, 
-   and undefined symbols when using the "#" prefix. 
-   Affected the Propeller 2 only.
+1. The functions strtold and strtof were previously defined as synonyms
+   for strtod in stdlib.h, but this confused Cake, so they now have their 
+   own implementations. However, these just call strtod, so there is no
+   functional difference.
 
-2. Fixed an undefined symbol (symbol "host_error") that occurred when both 
-   USB ports A and B were enabled.
-   Affected the Propeller 2 only.
+2. The function strtoull was previously defined as a synonym for strtoul, 
+   but this confused Cake, so it now has its own implementation. However, 
+   this just calls strtoul, so there is no functional difference.
 
-3. Fixed an undefined symbol (symbol "ckbd_key_update") that occurred when 
-   both the VGA HMI option and the Catnip optimizer were used.
-   Affected the Propeller 2 only.
+3. The graphic2 functions g_sin and g_cos are now correctly declared as
+   signed rather than unsigned.
 
-4. Minor documentation typos fixed.
-   Affected the Propeller 2 only.
+4. Catalina now adds the -line-directives options to all Cake invocations, not
+   just when debugging is enabled. This means Cake will more often report
+   the correct line number (i.e. the line number in the original C source,
+   rather than Cake's re-written C source) when issuing warning and error 
+   messages.
 
 

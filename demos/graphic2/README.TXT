@@ -99,7 +99,7 @@ programs can be built to execute from XMM RAM.
 
 However, the XMM RAM driver occupies two more cogs (one for the XMM driver 
 itself and one for the XMM cache) and so to compile for XMM execution it is 
-generally necessary to use additonal options to reduce the number of cogs 
+generally necessary to use additoonal options to reduce the number of cogs 
 used. For example:
 
    SMALL or LARGE            - specify the XMM memory model to use.

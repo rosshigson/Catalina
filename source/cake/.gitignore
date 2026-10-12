@@ -94,3 +94,15 @@ src/cake
 /tests/output-test/x86_msvc
 /tests/preprocessor/x86_msvc
 /tests/unit-tests/output.txt
+/vc/cake/x64/DebugTest
+/vc/ide/Debug
+/vc/ide/x64/Debug
+/vc/ide/obj/Win32/Debug/
+/tests/run-tests/out
+/vc/ide/obj/Win32/Debug/
+*.include
+/vc/ide/bin
+/vc/ide/obj
+/vc/ide/x64_msvc
+/vc/ide/obj_cakeide/x64/Release
+.DS_Store

@@ -258,3 +258,16 @@ done:
     }
     return fraction;
 }
+
+// for Catalina, floats and long doubles are the same as doubles, so ...
+
+long double
+strtold(const char *_nptr, char **_endptr) {
+   return (long double)strtod(_nptr, _endptr);
+}
+
+float
+strtof(const char *_nptr, char **_endptr) {
+   return (float)strtod(_nptr, _endptr);
+}
+

@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_suqo_6a9cb816_note2freq_L000002 ' <symbol:note2freq>
+C_sv6k_6ac84f9a_note2freq_L000002 ' <symbol:note2freq>
  calld PA,#PSHM
  long $d00000 ' save registers
  mov r22, r3 ' CVUI
@@ -35,7 +35,7 @@ C_suqo_6a9cb816_note2freq_L000002 ' <symbol:note2freq>
  sar r22, r23 ' RSHI (1)
  mov r0, r22 ' CVUI
  and r0, cviu_m2 ' zero extend
-' C_suqo_6a9cb816_note2freq_L000002_3 ' (symbol refcount = 0)
+' C_sv6k_6ac84f9a_note2freq_L000002_3 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETN
 
@@ -141,7 +141,7 @@ C_sne_playT_une_16
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_suqo_6a9cb816_note2freq_L000002
+ long @C_sv6k_6ac84f9a_note2freq_L000002
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  and r22, cviu_m2 ' zero extend

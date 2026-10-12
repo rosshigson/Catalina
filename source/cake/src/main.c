@@ -3,7 +3,7 @@
  *  https://github.com/thradams/cake
 */
 
-#pragma safety enable
+
 
 #include <assert.h>
 #include <stdio.h>
@@ -16,19 +16,22 @@
 #include "compile.h"
 
 #ifdef _WIN32
-#include <crtdbg.h>
 #include <Windows.h>
+#endif
+
+#ifdef _MSC_VER
+#include <crtdbg.h>
 #undef assert
 #define assert _ASSERTE
+#endif
+
+#ifdef TEST
+#include "unit_test.c"
 #endif
 
 #if defined(__CATALYST__)
 #include <prop.h> // for setenv()
 #endif // defined(__CATALYST__)
-
-#ifdef TEST
-#include "unit_test.c"
-#endif
 
 int main(int argc, char** argv)
 {
@@ -45,7 +48,9 @@ int main(int argc, char** argv)
     return;
 #endif
 
-    printf("Cake " CAKE_VERSION " (%s)\n", get_platform(TARGET_DEFAULT)->name);
+    struct platform host;
+    platform_default(&host);
+    printf("Cake " CAKE_VERSION " (%s)\n", host.name);
 
     if (argc < 2)
     {
@@ -106,5 +111,4 @@ int main(int argc, char** argv)
 
     return result;
 }
-
 

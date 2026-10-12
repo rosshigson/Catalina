@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "ownership.h"
+#include "cake_compat.h"
 #include <stdbool.h>
 #include <wchar.h>
 #include "error.h"
@@ -24,8 +24,8 @@
 struct parser_ctx;
 
 
-long long target_signed_max(enum  target target, enum object_type type);
-unsigned long long target_unsigned_max(enum  target target, enum object_type type);
+long long target_signed_max(const struct platform* target, enum object_type type);
+unsigned long long target_unsigned_max(const struct platform* target, enum object_type type);
 
 
 enum object_value_state
@@ -41,7 +41,8 @@ enum make_state
     MAKE_STATE_ZERO,
     MAKE_STATE_ZERO_CONSTANT,
     MAKE_STATE_UNITIALIZED,
-    MAKE_STATE_ANY
+    MAKE_STATE_ANY,
+    MAKE_STATE_ANY_LAZY_ARRAYS /* like MAKE_STATE_ANY, but arrays are made without elements */
 };
 
 struct object_list
@@ -57,7 +58,7 @@ struct object
 {
     enum object_value_state state;
     enum object_type value_type;
-    struct type type; //TODO to be removed we have 2 types in two places.
+    struct type type;
 
     const char* _Opt _Owner member_designator;
 
@@ -68,7 +69,8 @@ struct object
         long double host_long_double;
     } value;
 
-    struct object* _Opt parent; //to be removed
+    /* the enclosing array or struct; set where the object is built in place (make_object), NULL in object_dup copies. flow follows it from an element pointer to the whole array */
+    struct object* _Opt parent;
     struct object* _Opt p_ref;
     struct expression* _Opt p_init_expression;
     struct object_list members;
@@ -85,25 +87,25 @@ bool object_has_known_value(const struct object* a);
 bool object_has_all_members_constants(const struct object* object);
 
 
-struct object            object_make_char(enum target target, int value);
-struct object            object_make_wchar_t(enum target target, int value);
-struct object             object_make_size_t(enum target target, unsigned long long value);
-struct object               object_make_bool(enum target target, bool value);
-struct object            object_make_nullptr(enum target target);
+struct object            object_make_char(const struct platform* target, int value);
+struct object            object_make_wchar_t(const struct platform* target, int value);
+struct object             object_make_size_t(const struct platform* target, unsigned long long value);
+struct object               object_make_bool(const struct platform* target, bool value);
+struct object            object_make_nullptr(const struct platform* target);
 
-struct object      object_make_unsigned_char(enum target target, unsigned char value);
+struct object      object_make_unsigned_char(const struct platform* target, unsigned char value);
 
-struct object         object_make_signed_int(enum target target, long long value);
-struct object       object_make_unsigned_int(enum target target, unsigned long long  value);
+struct object         object_make_signed_int(const struct platform* target, long long value);
+struct object       object_make_unsigned_int(const struct platform* target, unsigned long long  value);
 
-struct object        object_make_signed_long(enum target target, signed long long value);
-struct object      object_make_unsigned_long(enum target target, unsigned long long value);
+struct object        object_make_signed_long(const struct platform* target, signed long long value);
+struct object      object_make_unsigned_long(const struct platform* target, unsigned long long value);
 
-struct object   object_make_signed_long_long(enum target target, signed long long value);
+struct object   object_make_signed_long_long(const struct platform* target, signed long long value);
 struct object object_make_unsigned_long_long( unsigned long long value);
-struct object              object_make_float(enum target target, long double value);
-struct object             object_make_double(enum target target, long double value);
-struct object        object_make_long_double(enum target target, long double value);
+struct object              object_make_float(const struct platform* target, long double value);
+struct object             object_make_double(const struct platform* target, long double value);
+struct object        object_make_long_double(const struct platform* target, long double value);
 struct object        object_make_reference(struct object* object);
 
 /* Bitfield constructors: width is 1..128 */
@@ -119,19 +121,29 @@ bool object_type_is_signed_bitfield(enum object_type t);
 bool object_type_is_unsigned_bitfield(enum object_type t);
 int  object_type_bitfield_width(enum object_type t);
 
+/* Bit-precise integer constructors: width is 1..64 (2..64 when signed) */
+struct object   object_make_signed_bitint(int width, long long value);
+struct object object_make_unsigned_bitint(int width, unsigned long long value);
 
-struct object     object_make_uint8(enum target target, uint8_t value);
-struct object     object_make_uint16(enum target target, uint16_t value);
-struct object     object_make_uint32(enum target target, uint32_t value);
+/* Bit-precise integer type queries */
+bool object_type_is_bitint(enum object_type t);
+bool object_type_is_signed_bitint(enum object_type t);
+bool object_type_is_unsigned_bitint(enum object_type t);
+int  object_type_bitint_width(enum object_type t);
+
+
+struct object     object_make_uint8(const struct platform* target, uint8_t value);
+struct object     object_make_uint16(const struct platform* target, uint16_t value);
+struct object     object_make_uint32(const struct platform* target, uint32_t value);
 
 
 
-struct object object_cast(enum target target, enum object_type e, const struct object* a);
-enum object_type  type_specifier_to_object_type(const enum type_specifier_flags type_specifier_flags, enum target target);
+struct object object_cast(const struct platform* target, enum object_type e, const struct object* a);
+enum object_type  type_specifier_to_object_type(const enum type_specifier_flags type_specifier_flags, const struct platform* target);
 enum type_specifier_flags object_type_to_type_specifier(enum object_type type);
 
 
-bool object_increment_value(enum target target, struct object* a);
+bool object_increment_value(const struct platform* target, struct object* a);
 
 
 signed long long object_to_signed_long_long(const struct object* a);
@@ -142,10 +154,10 @@ bool object_is_true(const struct object* a);
 
 int object_to_str(const struct object* a, int n, char str[/*n*/]);
 
-int object_is_greater_than_or_equal(enum target target, const struct object* a, const struct object* b);
-int object_is_smaller_than_or_equal(enum target target, const struct object* a, const struct object* b);
-int object_is_equal(enum target target, const struct object* a, const struct object* b);
-int object_is_not_equal(enum target target, const struct object* a, const struct object* b);
+int object_is_greater_than_or_equal(const struct platform* target, const struct object* a, const struct object* b);
+int object_is_smaller_than_or_equal(const struct platform* target, const struct object* a, const struct object* b);
+int object_is_equal(const struct platform* target, const struct object* a, const struct object* b);
+int object_is_not_equal(const struct platform* target, const struct object* a, const struct object* b);
 
 
 //Overflow checks
@@ -160,8 +172,8 @@ void object_default_initialization(struct object* p_object, bool is_constant);
 
 struct object* _Opt object_get_member(const struct object* p_object, size_t index);
 
-int make_object_with_member_designator(const struct type* p_type, struct object* obj, const char* member_designator, enum make_state make_state, enum target target);
-int make_object(const struct type* p_type, struct object* obj, enum make_state make_state, enum target target);
+int make_object_with_member_designator(const struct type* p_type, struct object* obj, const char* member_designator, enum make_state make_state, const struct platform* target);
+int make_object(const struct type* p_type, struct object* obj, enum make_state make_state, const struct platform* target);
 struct object object_dup(const struct object* src);
 
 bool object_is_reference(const struct object* p_object);
@@ -174,7 +186,7 @@ bool object_is_zero(const struct object* p_object);
 
 const struct object* object_get_referenced(const struct object* p_object);
 
-_Attr(nodiscard)
+NODISCARD
 int object_set(
     struct parser_ctx* ctx,
     struct object* to,
@@ -185,104 +197,104 @@ int object_set(
 
 struct type;
 
-enum object_type type_to_object_type(const struct type* type, enum target target);
+enum object_type type_to_object_type(const struct type* type, const struct platform* target);
 
-void object_print_to_debug(const struct object* object, enum target target);
+void object_print_to_debug(const struct object* object, const struct platform* target);
 
-struct object* _Opt object_extend_array_to_index(const struct type* p_type, struct object* a, size_t n, bool is_constant, enum target target);
+struct object* _Opt object_extend_array_to_index(const struct type* p_type, struct object* a, size_t n, bool is_constant, const struct platform* target);
 struct object* object_get_non_const_referenced(struct object* p_object);
 
 
-void object_print_value(enum target target, struct osstream* ss, const struct object* a);
+void object_print_value(const struct platform* target, struct osstream* ss, const struct object* a);
 
-struct object object_add(enum target target,
+struct object object_add(const struct platform* target,
     const struct object* a,
     const struct object* b,
     char warning_message[200]);
 
-struct object object_sub(enum target target,
+struct object object_sub(const struct platform* target,
     const struct object* a,
     const struct object* b,
     char warning_message[200]);
 
-struct object object_mul(enum target target,
-    const struct object* a,
-    const struct object* b,
-    char warning_message[200]);
-
-
-struct object object_div(enum target target,
+struct object object_mul(const struct platform* target,
     const struct object* a,
     const struct object* b,
     char warning_message[200]);
 
 
-
-struct object object_mod(enum target target,
-    const struct object* a,
-    const struct object* b,
-    char warning_message[200]);
-
-struct object object_equal(enum target target,
-    const struct object* a,
-    const struct object* b,
-    char warning_message[200]);
-
-
-struct object object_not_equal(enum target target,
-    const struct object* a,
-    const struct object* b,
-    char warning_message[200]);
-
-
-struct object object_greater_than_or_equal(enum target target,
-    const struct object* a,
-    const struct object* b,
-    char warning_message[200]);
-
-struct object object_smaller_than_or_equal(enum target target,
+struct object object_div(const struct platform* target,
     const struct object* a,
     const struct object* b,
     char warning_message[200]);
 
 
 
-struct object object_greater_than(enum target target,
+struct object object_mod(const struct platform* target,
     const struct object* a,
     const struct object* b,
     char warning_message[200]);
 
-struct object object_smaller_than(enum target target,
+struct object object_equal(const struct platform* target,
     const struct object* a,
     const struct object* b,
     char warning_message[200]);
 
-struct object object_logical_not(enum target target, const struct object* a, char warning_message[200]);
-struct object object_unary_minus(enum target target, const struct object* a, char warning_message[200]);
-struct object object_unary_plus(enum target target, const struct object* a, char warning_message[200]);
-struct object object_bitwise_not(enum target target, const struct object* a, char warning_message[200]);
 
-struct object object_bitwise_xor(enum target target,
+struct object object_not_equal(const struct platform* target,
     const struct object* a,
     const struct object* b,
     char warning_message[200]);
 
-struct object object_bitwise_or(enum target target,
+
+struct object object_greater_than_or_equal(const struct platform* target,
     const struct object* a,
     const struct object* b,
     char warning_message[200]);
 
-struct object object_bitwise_and(enum target target,
+struct object object_smaller_than_or_equal(const struct platform* target,
     const struct object* a,
     const struct object* b,
     char warning_message[200]);
 
-struct object object_shift_left(enum target target,
+
+
+struct object object_greater_than(const struct platform* target,
     const struct object* a,
     const struct object* b,
     char warning_message[200]);
 
-struct object object_shift_right(enum target target,
+struct object object_smaller_than(const struct platform* target,
+    const struct object* a,
+    const struct object* b,
+    char warning_message[200]);
+
+struct object object_logical_not(const struct platform* target, const struct object* a, char warning_message[200]);
+struct object object_unary_minus(const struct platform* target, const struct object* a, char warning_message[200]);
+struct object object_unary_plus(const struct platform* target, const struct object* a, char warning_message[200]);
+struct object object_bitwise_not(const struct platform* target, const struct object* a, char warning_message[200]);
+
+struct object object_bitwise_xor(const struct platform* target,
+    const struct object* a,
+    const struct object* b,
+    char warning_message[200]);
+
+struct object object_bitwise_or(const struct platform* target,
+    const struct object* a,
+    const struct object* b,
+    char warning_message[200]);
+
+struct object object_bitwise_and(const struct platform* target,
+    const struct object* a,
+    const struct object* b,
+    char warning_message[200]);
+
+struct object object_shift_left(const struct platform* target,
+    const struct object* a,
+    const struct object* b,
+    char warning_message[200]);
+
+struct object object_shift_right(const struct platform* target,
     const struct object* a,
     const struct object* b,
     char warning_message[200]);

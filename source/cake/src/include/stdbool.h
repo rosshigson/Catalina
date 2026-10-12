@@ -1,20 +1,20 @@
 /*
-   Cake header file
+ *  This file is part of cake compiler
+ *  https://github.com/thradams/cake
 */
 
-#ifndef _STDBOOL
-#define _STDBOOL
+#ifdef CAKE_HEADERS
 
-#define __bool_true_false_are_defined 1
+    #pragma once
 
-#ifndef __cplusplus
+    #define __bool_true_false_are_defined 1
 
-#define bool  _Bool
-#define false 0
-#define true  1
+    #if __STDC_VERSION__ < 202311L
+        #define bool  _Bool
+        #define false 0
+        #define true  1
+    #endif
 
-#endif /* __cplusplus */
-
-#endif /* _STDBOOL */
-
-
+#else
+    #include_next <stdbool.h>
+#endif

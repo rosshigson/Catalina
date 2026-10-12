@@ -4,9 +4,10 @@
 */
 
 #pragma once
-#include "ownership.h"
+#include "cake_compat.h"
 #include <stdbool.h>
- 
+#include <limits.h>
+
 
 #if defined(PATH_MAX)
 #define FS_MAX_PATH PATH_MAX // Linux uses this in realpath
@@ -16,10 +17,12 @@
 #define FS_MAX_PATH 500 
 
 #endif
-#ifdef _WIN32 
-#include <direct.h>
+/* outside the #ifdef: the amalgamator (lib.c) keeps only the first include of a header */
 #include <sys/types.h>
 #include <sys/stat.h>
+
+#ifdef _WIN32 
+#include <direct.h>
 
 #ifdef __CAKE__
 #pragma cake diagnostic push
@@ -83,11 +86,9 @@ struct dirent* _Opt readdir(DIR* dirp);
 #else
 
 //https://man7.org/linux/man-pages/man2/mkdir.2.html
-#include <sys/types.h>
 #if !defined(__CATALYST__)
 #include <unistd.h>
 #endif // !defined(__CATALYST__)
-#include <sys/stat.h>
 
 #ifdef __CAKE__
 /*
@@ -137,6 +138,19 @@ char* _Opt realpath(const char* restrict path, char* restrict resolved_path);
 int get_self_path(char* buffer, int maxsize);
 
 char* _Owner _Opt read_file(const char* path, bool append_newline);
+
+/* the file as it is on disk: no BOM skipping, \r\n kept */
+char* _Owner _Opt read_file_binary(const char* path);
+bool file_exists(const char* path);
+#if !defined(__CATALYST__)
+/* an existing regular file (not a directory) */
+bool path_is_regular_file(const char* path);
+/* last-modified time, or 0 if it can't be stat'ed */
+long long file_mtime(const char* path);
+#endif
+
+/* creates every folder of outdir after root (root itself must exist); 0 or errno */
+int create_multiple_paths(const char* root, const char* outdir);
 char* dirname(char* path);
 char* basename(const char* filename);
 void remove_file_extension(const char* filename, int n, char out[/*n*/]);
@@ -148,3 +162,8 @@ bool path_is_relative(const char* path);
 bool path_is_absolute(const char* path);
 void path_normalize(char* path);
 bool path_is_normalized(const char* path);
+
+/* '/' and '\' compare equal; case insensitive on Windows */
+bool path_equal(const char* a, const char* b);
+/* file is inside dir (dir without a trailing separator) */
+bool path_is_under(const char* file, const char* dir);

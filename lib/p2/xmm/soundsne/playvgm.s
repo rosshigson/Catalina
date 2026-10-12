@@ -11,11 +11,11 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_safc9_6a9cb625_noiseR_eset_L000011 ' <symbol:noiseReset>
+C_sj8k9_6ac84dbe_noiseR_eset_L000011 ' <symbol:noiseReset>
  long 0
 
  alignl ' align long
-C_safca_6a9cb625_regist_L000012 ' <symbol:regist>
+C_sj8ka_6ac84dbe_regist_L000012 ' <symbol:regist>
  long 0
 
 ' Catalina Code
@@ -23,30 +23,30 @@ C_safca_6a9cb625_regist_L000012 ' <symbol:regist>
 DAT ' code segment
 
  alignl ' align long
-C_safcb_6a9cb625_waitS_amples_L000013 ' <symbol:waitSamples>
+C_sj8kb_6ac84dbe_waitS_amples_L000013 ' <symbol:waitSamples>
  jmp #NEWF
  sub SP, #4
  jmp #PSHM
  long $f40000 ' save registers
  mov r23, r2 ' reg var <- reg arg
  jmp #LODI
- long @C_safc1_6a9cb625_readptr_L000003
+ long @C_sj8k1_6ac84dbe_readptr_L000003
  mov r22, RI ' reg <- INDIRP4 addrg
  jmp #LODI
- long @C_safc4_6a9cb625_loopptr_L000006
+ long @C_sj8k4_6ac84dbe_loopptr_L000006
  mov r20, RI ' reg <- INDIRP4 addrg
  cmp r22, r20 wz,wc 
  jmp #BR_B
- long @C_safcb_6a9cb625_waitS_amples_L000013_15' LTU4
+ long @C_sj8kb_6ac84dbe_waitS_amples_L000013_15' LTU4
  jmp #LODI
- long @C_safc5_6a9cb625_loopleft_L000007
+ long @C_sj8k5_6ac84dbe_loopleft_L000007
  mov r22, RI ' reg <- INDIRU4 addrg
  sub r22, r23 ' SUBU (1)
  jmp #LODL
- long @C_safc5_6a9cb625_loopleft_L000007
+ long @C_sj8k5_6ac84dbe_loopleft_L000007
  mov BC, r22
  jmp #WLNG ' ASGNU4 addrg reg
-C_safcb_6a9cb625_waitS_amples_L000013_15
+C_sj8kb_6ac84dbe_waitS_amples_L000013_15
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
  long @C__clockfreq ' CALL addrg
@@ -55,7 +55,7 @@ C_safcb_6a9cb625_waitS_amples_L000013_15
  long $ac44
  mov r20, RI ' reg <- con
  jmp #LODI
- long @C_safc8_6a9cb625_speed_divisor_L000010
+ long @C_sj8k8_6ac84dbe_speed_divisor_L000010
  mov r18, RI ' reg <- INDIRU4 addrg
  mov r0, r20 ' setup r0/r1 (2)
  mov r1, r18 ' setup r0/r1 (2)
@@ -68,15 +68,15 @@ C_safcb_6a9cb625_waitS_amples_L000013_15
  mov r21, r0 ' CVI, CVU or LOAD
  cmp r21,  #50 wz,wc 
  jmp #BRAE
- long @C_safcb_6a9cb625_waitS_amples_L000013_17 ' GEU4
+ long @C_sj8kb_6ac84dbe_waitS_amples_L000013_17 ' GEU4
  mov r21, #50 ' reg <- coni
-C_safcb_6a9cb625_waitS_amples_L000013_17
+C_sj8kb_6ac84dbe_waitS_amples_L000013_17
  jmp #LODI
- long @C_safc_6a9cb625_waitF_or_L000002
+ long @C_sj8k_6ac84dbe_waitF_or_L000002
  mov r22, RI ' reg <- INDIRU4 addrg
  add r22, r21 ' ADDU (1)
  jmp #LODL
- long @C_safc_6a9cb625_waitF_or_L000002
+ long @C_sj8k_6ac84dbe_waitF_or_L000002
  mov BC, r22
  jmp #WLNG ' ASGNU4 addrg reg
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
@@ -87,7 +87,7 @@ C_safcb_6a9cb625_waitS_amples_L000013_17
  sub RI, #-(-8)
  wrlong r22, RI ' ASGNU4 addrli reg
  jmp #LODI
- long @C_safc_6a9cb625_waitF_or_L000002
+ long @C_sj8k_6ac84dbe_waitF_or_L000002
  mov r22, RI ' reg <- INDIRU4 addrg
  mov r20, FP
  sub r20, #-(-8) ' reg <- addrli
@@ -95,25 +95,25 @@ C_safcb_6a9cb625_waitS_amples_L000013_17
  sub r22, r20 ' SUBU (1)
  cmp r22,  #100 wz,wc 
  jmp #BRAE
- long @C_safcb_6a9cb625_waitS_amples_L000013_19 ' GEU4
+ long @C_sj8kb_6ac84dbe_waitS_amples_L000013_19 ' GEU4
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
  long @C__cnt ' CALL addrg
  mov r22, r0
  adds r22, #100 ' ADDI4 coni
  jmp #LODL
- long @C_safc_6a9cb625_waitF_or_L000002
+ long @C_sj8k_6ac84dbe_waitF_or_L000002
  mov BC, r22
  jmp #WLNG ' ASGNU4 addrg reg
-C_safcb_6a9cb625_waitS_amples_L000013_19
-' C_safcb_6a9cb625_waitS_amples_L000013_14 ' (symbol refcount = 0)
+C_sj8kb_6ac84dbe_waitS_amples_L000013_19
+' C_sj8kb_6ac84dbe_waitS_amples_L000013_14 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  add SP, #4 ' framesize
  jmp #RETF
 
 
  alignl ' align long
-C_safcc_6a9cb625_getn_L000021 ' <symbol:getn>
+C_sj8kc_6ac84dbe_getn_L000021 ' <symbol:getn>
  jmp #NEWF
  jmp #PSHM
  long $e00000 ' save registers
@@ -121,7 +121,7 @@ C_safcc_6a9cb625_getn_L000021 ' <symbol:getn>
  mov r21, r2 ' reg var <- reg arg
  mov r2, r21 ' CVI, CVU or LOAD
  jmp #LODI
- long @C_safc1_6a9cb625_readptr_L000003
+ long @C_sj8k1_6ac84dbe_readptr_L000003
  mov r3, RI ' reg ARG INDIR ADDRG
  mov r4, r23 ' CVI, CVU or LOAD
  mov BC, #12 ' arg size, rpsize = 12, spsize = 12
@@ -130,14 +130,14 @@ C_safcc_6a9cb625_getn_L000021 ' <symbol:getn>
  long @C_memcpy
  add SP, #8 ' CALL addrg
  jmp #LODI
- long @C_safc1_6a9cb625_readptr_L000003
+ long @C_sj8k1_6ac84dbe_readptr_L000003
  mov r22, RI ' reg <- INDIRP4 addrg
  adds r22, r21 ' ADDI/P (2)
  jmp #LODL
- long @C_safc1_6a9cb625_readptr_L000003
+ long @C_sj8k1_6ac84dbe_readptr_L000003
  mov BC, r22
  jmp #WLNG ' ASGNP4 addrg reg
-' C_safcc_6a9cb625_getn_L000021_22 ' (symbol refcount = 0)
+' C_sj8kc_6ac84dbe_getn_L000021_22 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -166,11 +166,11 @@ C_sne_setR_egister ' <symbol:sne_setRegister>
  sar r20, #4 ' RSHI4 coni
  and r20, #7 ' BANDI4 coni
  jmp #LODL
- long @C_safca_6a9cb625_regist_L000012
+ long @C_sj8ka_6ac84dbe_regist_L000012
  mov BC, r20
  jmp #WLNG ' ASGNI4 addrg reg
  jmp #LODI
- long @C_safca_6a9cb625_regist_L000012
+ long @C_sj8ka_6ac84dbe_regist_L000012
  mov r20, RI ' reg <- INDIRI4 addrg
  shl r20, #2 ' LSHI4 coni
  jmp #LODI
@@ -193,7 +193,7 @@ C_sne_setR_egister ' <symbol:sne_setRegister>
  long @C_sne_setR_egister_27 ' JUMPV addrg
 C_sne_setR_egister_26
  jmp #LODI
- long @C_safca_6a9cb625_regist_L000012
+ long @C_sj8ka_6ac84dbe_regist_L000012
  mov r22, RI ' reg <- INDIRI4 addrg
  mov r20, r22
  and r20, #1 ' BANDI4 coni
@@ -205,7 +205,7 @@ C_sne_setR_egister_26
  long @C_sne_setR_egister_28 ' LEI4
 C_sne_setR_egister_30
  jmp #LODI
- long @C_safca_6a9cb625_regist_L000012
+ long @C_sj8ka_6ac84dbe_regist_L000012
  mov r22, RI ' reg <- INDIRI4 addrg
  shl r22, #2 ' LSHI4 coni
  jmp #LODI
@@ -222,7 +222,7 @@ C_sne_setR_egister_30
  long @C_sne_setR_egister_29 ' JUMPV addrg
 C_sne_setR_egister_28
  jmp #LODI
- long @C_safca_6a9cb625_regist_L000012
+ long @C_sj8ka_6ac84dbe_regist_L000012
  mov r22, RI ' reg <- INDIRI4 addrg
  shl r22, #2 ' LSHI4 coni
  jmp #LODI
@@ -244,14 +244,14 @@ C_sne_setR_egister_28
 C_sne_setR_egister_29
 C_sne_setR_egister_27
  jmp #LODI
- long @C_safca_6a9cb625_regist_L000012
+ long @C_sj8ka_6ac84dbe_regist_L000012
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #6 wz
  jmp #BRNZ
  long @C_sne_setR_egister_31 ' NEI4
  mov r22, #1 ' reg <- coni
  jmp #LODL
- long @C_safc9_6a9cb625_noiseR_eset_L000011
+ long @C_sj8k9_6ac84dbe_noiseR_eset_L000011
  mov BC, r22
  jmp #WLNG ' ASGNI4 addrg reg
 C_sne_setR_egister_31
@@ -262,7 +262,7 @@ C_sne_setR_egister_24
 
 
  alignl ' align long
-C_safcd_6a9cb625_sne_updateR_egisters_L000033 ' <symbol:sne_updateRegisters>
+C_sj8kd_6ac84dbe_sne_updateR_egisters_L000033 ' <symbol:sne_updateRegisters>
  jmp #NEWF
  jmp #PSHM
  long $c00000 ' save registers
@@ -272,7 +272,7 @@ C_safcd_6a9cb625_sne_updateR_egisters_L000033 ' <symbol:sne_updateRegisters>
  mov r22, RI ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  jmp #BR_Z
- long @C_safcd_6a9cb625_sne_updateR_egisters_L000033_35 ' EQU4
+ long @C_sj8kd_6ac84dbe_sne_updateR_egisters_L000033_35 ' EQU4
  mov r2, #32 ' reg ARG coni
  mov r3, r23 ' CVI, CVU or LOAD
  jmp #LODI
@@ -283,14 +283,14 @@ C_safcd_6a9cb625_sne_updateR_egisters_L000033 ' <symbol:sne_updateRegisters>
  jmp #CALA
  long @C_memmove
  add SP, #8 ' CALL addrg
-C_safcd_6a9cb625_sne_updateR_egisters_L000033_35
-' C_safcd_6a9cb625_sne_updateR_egisters_L000033_34 ' (symbol refcount = 0)
+C_sj8kd_6ac84dbe_sne_updateR_egisters_L000033_35
+' C_sj8kd_6ac84dbe_sne_updateR_egisters_L000033_34 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
 
  alignl ' align long
-C_safce_6a9cb625_sne_flipR_egisters_L000037 ' <symbol:sne_flipRegisters>
+C_sj8ke_6ac84dbe_sne_flipR_egisters_L000037 ' <symbol:sne_flipRegisters>
  jmp #NEWF
  jmp #PSHM
  long $500000 ' save registers
@@ -299,13 +299,13 @@ C_safce_6a9cb625_sne_flipR_egisters_L000037 ' <symbol:sne_flipRegisters>
  mov r22, RI ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  jmp #BR_Z
- long @C_safce_6a9cb625_sne_flipR_egisters_L000037_39 ' EQU4
+ long @C_sj8ke_6ac84dbe_sne_flipR_egisters_L000037_39 ' EQU4
  jmp #LODI
- long @C_safc9_6a9cb625_noiseR_eset_L000011
+ long @C_sj8k9_6ac84dbe_noiseR_eset_L000011
  mov r22, RI ' reg <- INDIRI4 addrg
  cmps r22,  #0 wz
  jmp #BR_Z
- long @C_safce_6a9cb625_sne_flipR_egisters_L000037_41 ' EQI4
+ long @C_sj8ke_6ac84dbe_sne_flipR_egisters_L000037_41 ' EQI4
  jmp #LODI
  long @C_S_N_R_egisters
  mov r22, RI ' reg <- INDIRP4 addrg
@@ -319,12 +319,12 @@ C_safce_6a9cb625_sne_flipR_egisters_L000037 ' <symbol:sne_flipRegisters>
  jmp #WLNG ' ASGNU4 reg reg
  mov r22, #0 ' reg <- coni
  jmp #LODL
- long @C_safc9_6a9cb625_noiseR_eset_L000011
+ long @C_sj8k9_6ac84dbe_noiseR_eset_L000011
  mov BC, r22
  jmp #WLNG ' ASGNI4 addrg reg
  jmp #JMPA
- long @C_safce_6a9cb625_sne_flipR_egisters_L000037_42 ' JUMPV addrg
-C_safce_6a9cb625_sne_flipR_egisters_L000037_41
+ long @C_sj8ke_6ac84dbe_sne_flipR_egisters_L000037_42 ' JUMPV addrg
+C_sj8ke_6ac84dbe_sne_flipR_egisters_L000037_41
  jmp #LODI
  long @C_S_N_R_egisters
  mov r22, RI ' reg <- INDIRP4 addrg
@@ -336,15 +336,15 @@ C_safce_6a9cb625_sne_flipR_egisters_L000037_41
  mov RI, r22
  mov BC, r20
  jmp #WLNG ' ASGNU4 reg reg
-C_safce_6a9cb625_sne_flipR_egisters_L000037_42
+C_sj8ke_6ac84dbe_sne_flipR_egisters_L000037_42
  jmp #LODI
  long @C_S_N_R_egisters
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_safcd_6a9cb625_sne_updateR_egisters_L000033 ' CALL addrg
-C_safce_6a9cb625_sne_flipR_egisters_L000037_39
-' C_safce_6a9cb625_sne_flipR_egisters_L000037_38 ' (symbol refcount = 0)
+ long @C_sj8kd_6ac84dbe_sne_updateR_egisters_L000033 ' CALL addrg
+C_sj8ke_6ac84dbe_sne_flipR_egisters_L000037_39
+' C_sj8ke_6ac84dbe_sne_flipR_egisters_L000037_38 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 
@@ -366,7 +366,7 @@ C_sne_playV_G_M_ ' <symbol:sne_playVGM>
  long @C_sne_setF_req
  add SP, #4 ' CALL addrg
  jmp #LODL
- long @C_safc8_6a9cb625_speed_divisor_L000010
+ long @C_sj8k8_6ac84dbe_speed_divisor_L000010
  mov BC, r21
  jmp #WLNG ' ASGNU4 addrg reg
  mov r22, r23
@@ -377,7 +377,7 @@ C_sne_playV_G_M_ ' <symbol:sne_playVGM>
  adds r22, r23 ' ADDI/P (1)
  adds r22, #52 ' ADDP4 coni
  jmp #LODL
- long @C_safc1_6a9cb625_readptr_L000003
+ long @C_sj8k1_6ac84dbe_readptr_L000003
  mov BC, r22
  jmp #WLNG ' ASGNP4 addrg reg
  mov r22, r23
@@ -387,21 +387,21 @@ C_sne_playV_G_M_ ' <symbol:sne_playVGM>
  mov r22, BC ' reg <- INDIRU4 reg
  adds r22, r23 ' ADDI/P (1)
  jmp #LODL
- long @C_safc4_6a9cb625_loopptr_L000006
+ long @C_sj8k4_6ac84dbe_loopptr_L000006
  mov BC, r22
  jmp #WLNG ' ASGNP4 addrg reg
  jmp #LODI
- long @C_safc4_6a9cb625_loopptr_L000006
+ long @C_sj8k4_6ac84dbe_loopptr_L000006
  mov r22, RI ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  jmp #BR_Z
  long @C_sne_playV_G_M__44 ' EQU4
  jmp #LODI
- long @C_safc4_6a9cb625_loopptr_L000006
+ long @C_sj8k4_6ac84dbe_loopptr_L000006
  mov r22, RI ' reg <- INDIRP4 addrg
  adds r22, #28 ' ADDP4 coni
  jmp #LODL
- long @C_safc4_6a9cb625_loopptr_L000006
+ long @C_sj8k4_6ac84dbe_loopptr_L000006
  mov BC, r22
  jmp #WLNG ' ASGNP4 addrg reg
 C_sne_playV_G_M__44
@@ -411,14 +411,14 @@ C_sne_playV_G_M__44
  jmp #RLNG
  mov r22, BC ' reg <- INDIRU4 reg
  jmp #LODL
- long @C_safc6_6a9cb625_looplength_L000008
+ long @C_sj8k6_6ac84dbe_looplength_L000008
  mov BC, r22
  jmp #WLNG ' ASGNU4 addrg reg
  jmp #LODI
- long @C_safc6_6a9cb625_looplength_L000008
+ long @C_sj8k6_6ac84dbe_looplength_L000008
  mov r22, RI ' reg <- INDIRU4 addrg
  jmp #LODL
- long @C_safc5_6a9cb625_loopleft_L000007
+ long @C_sj8k5_6ac84dbe_loopleft_L000007
  mov BC, r22
  jmp #WLNG ' ASGNU4 addrg reg
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
@@ -430,7 +430,7 @@ C_sne_playV_G_M__44
  mov r22, r0 ' ADDI/P
  adds r22, r20 ' ADDI/P (3)
  jmp #LODL
- long @C_safc_6a9cb625_waitF_or_L000002
+ long @C_sj8k_6ac84dbe_waitF_or_L000002
  mov BC, r22
  jmp #WLNG ' ASGNU4 addrg reg
  jmp #JMPA
@@ -441,50 +441,50 @@ C_sne_playV_G_M__46
  long @C_sne_playV_G_M__50 ' JUMPV addrg
 C_sne_playV_G_M__49
  jmp #LODI
- long @C_safc5_6a9cb625_loopleft_L000007
+ long @C_sj8k5_6ac84dbe_loopleft_L000007
  mov r22, RI ' reg <- INDIRU4 addrg
  cmp r22,  #0 wz
  jmp #BRNZ
  long @C_sne_playV_G_M__52 ' NEU4
  jmp #LODI
- long @C_safc4_6a9cb625_loopptr_L000006
+ long @C_sj8k4_6ac84dbe_loopptr_L000006
  mov r22, RI ' reg <- INDIRP4 addrg
  cmp r22,  #0 wz
  jmp #BR_Z
  long @C_sne_playV_G_M__54 ' EQU4
  jmp #LODI
- long @C_safc6_6a9cb625_looplength_L000008
+ long @C_sj8k6_6ac84dbe_looplength_L000008
  mov r22, RI ' reg <- INDIRU4 addrg
  cmp r22,  #0 wz
  jmp #BR_Z
  long @C_sne_playV_G_M__54 ' EQU4
  jmp #LODI
- long @C_safc6_6a9cb625_looplength_L000008
+ long @C_sj8k6_6ac84dbe_looplength_L000008
  mov r22, RI ' reg <- INDIRU4 addrg
  jmp #LODL
- long @C_safc5_6a9cb625_loopleft_L000007
+ long @C_sj8k5_6ac84dbe_loopleft_L000007
  mov BC, r22
  jmp #WLNG ' ASGNU4 addrg reg
  jmp #LODI
- long @C_safc4_6a9cb625_loopptr_L000006
+ long @C_sj8k4_6ac84dbe_loopptr_L000006
  mov r22, RI ' reg <- INDIRP4 addrg
  jmp #LODL
- long @C_safc1_6a9cb625_readptr_L000003
+ long @C_sj8k1_6ac84dbe_readptr_L000003
  mov BC, r22
  jmp #WLNG ' ASGNP4 addrg reg
 C_sne_playV_G_M__54
 C_sne_playV_G_M__52
  mov r2, #1 ' reg ARG coni
  jmp #LODL
- long @C_safc7_6a9cb625_buffer_L000009
+ long @C_sj8k7_6ac84dbe_buffer_L000009
  mov r3, RI ' reg ARG ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_safcc_6a9cb625_getn_L000021
+ long @C_sj8kc_6ac84dbe_getn_L000021
  add SP, #4 ' CALL addrg
  jmp #LODL
- long @C_safc7_6a9cb625_buffer_L000009
+ long @C_sj8k7_6ac84dbe_buffer_L000009
  jmp #RBYT
  mov r22, BC ' reg <- INDIRU1 addrg
  mov r19, r22 ' CVUI
@@ -589,15 +589,15 @@ C_sne_playV_G_M__77
 C_sne_playV_G_M__58
  mov r2, #1 ' reg ARG coni
  jmp #LODL
- long @C_safc7_6a9cb625_buffer_L000009
+ long @C_sj8k7_6ac84dbe_buffer_L000009
  mov r3, RI ' reg ARG ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_safcc_6a9cb625_getn_L000021
+ long @C_sj8kc_6ac84dbe_getn_L000021
  add SP, #4 ' CALL addrg
  jmp #LODL
- long @C_safc7_6a9cb625_buffer_L000009
+ long @C_sj8k7_6ac84dbe_buffer_L000009
  jmp #RBYT
  mov r22, BC ' reg <- INDIRU1 addrg
  mov r2, r22 ' CVUI
@@ -610,15 +610,15 @@ C_sne_playV_G_M__58
 C_sne_playV_G_M__59
  mov r2, #2 ' reg ARG coni
  jmp #LODL
- long @C_safc7_6a9cb625_buffer_L000009
+ long @C_sj8k7_6ac84dbe_buffer_L000009
  mov r3, RI ' reg ARG ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_safcc_6a9cb625_getn_L000021
+ long @C_sj8kc_6ac84dbe_getn_L000021
  add SP, #4 ' CALL addrg
  jmp #LODL
- long @C_safc7_6a9cb625_buffer_L000009
+ long @C_sj8k7_6ac84dbe_buffer_L000009
  jmp #RBYT
  mov r22, BC ' reg <- INDIRU1 addrg
  mov r15, r22 ' CVUI
@@ -638,7 +638,7 @@ C_sne_playV_G_M__62
  mov r2, r22 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_safcb_6a9cb625_waitS_amples_L000013 ' CALL addrg
+ long @C_sj8kb_6ac84dbe_waitS_amples_L000013 ' CALL addrg
  mov r17, #0 ' reg <- coni
  jmp #JMPA
  long @C_sne_playV_G_M__57 ' JUMPV addrg
@@ -649,27 +649,27 @@ C_sne_playV_G_M__65
  mov r2, r22 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_safcb_6a9cb625_waitS_amples_L000013 ' CALL addrg
+ long @C_sj8kb_6ac84dbe_waitS_amples_L000013 ' CALL addrg
  mov r17, #0 ' reg <- coni
  jmp #JMPA
  long @C_sne_playV_G_M__57 ' JUMPV addrg
 C_sne_playV_G_M__66
  mov r2, #2 ' reg ARG coni
  jmp #LODL
- long @C_safc7_6a9cb625_buffer_L000009
+ long @C_sj8k7_6ac84dbe_buffer_L000009
  mov r3, RI ' reg ARG ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_safcc_6a9cb625_getn_L000021
+ long @C_sj8kc_6ac84dbe_getn_L000021
  add SP, #4 ' CALL addrg
  jmp #LODL
- long @C_safc7_6a9cb625_buffer_L000009
+ long @C_sj8k7_6ac84dbe_buffer_L000009
  jmp #RBYT
  mov r22, BC ' reg <- INDIRU1 addrg
  and r22, cviu_m1 ' zero extend
  jmp #LODL
- long @C_safc7_6a9cb625_buffer_L000009+1
+ long @C_sj8k7_6ac84dbe_buffer_L000009+1
  jmp #RBYT
  mov r20, BC ' reg <- INDIRU1 addrg
  and r20, cviu_m1 ' zero extend
@@ -678,7 +678,7 @@ C_sne_playV_G_M__66
  mov r2, r22 ' CVI, CVU or LOAD
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_safcb_6a9cb625_waitS_amples_L000013 ' CALL addrg
+ long @C_sj8kb_6ac84dbe_waitS_amples_L000013 ' CALL addrg
  mov r17, #0 ' reg <- coni
  jmp #JMPA
  long @C_sne_playV_G_M__57 ' JUMPV addrg
@@ -688,7 +688,7 @@ C_sne_playV_G_M__68
  mov r2, RI ' reg ARG con
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_safcb_6a9cb625_waitS_amples_L000013 ' CALL addrg
+ long @C_sj8kb_6ac84dbe_waitS_amples_L000013 ' CALL addrg
  mov r17, #0 ' reg <- coni
  jmp #JMPA
  long @C_sne_playV_G_M__57 ' JUMPV addrg
@@ -698,25 +698,25 @@ C_sne_playV_G_M__69
  mov r2, RI ' reg ARG con
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
- long @C_safcb_6a9cb625_waitS_amples_L000013 ' CALL addrg
+ long @C_sj8kb_6ac84dbe_waitS_amples_L000013 ' CALL addrg
  mov r17, #0 ' reg <- coni
  jmp #JMPA
  long @C_sne_playV_G_M__57 ' JUMPV addrg
 C_sne_playV_G_M__70
  mov r2, #4 ' reg ARG coni
  jmp #LODL
- long @C_safc7_6a9cb625_buffer_L000009
+ long @C_sj8k7_6ac84dbe_buffer_L000009
  mov r3, RI ' reg ARG ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_safcc_6a9cb625_getn_L000021
+ long @C_sj8kc_6ac84dbe_getn_L000021
  add SP, #4 ' CALL addrg
  jmp #LODI
- long @C_safc7_6a9cb625_buffer_L000009
+ long @C_sj8k7_6ac84dbe_buffer_L000009
  mov r22, RI ' reg <- INDIRI4 addrg
  jmp #LODL
- long @C_safc3_6a9cb625_dataptr_L000005
+ long @C_sj8k3_6ac84dbe_dataptr_L000005
  mov BC, r22
  jmp #WLNG ' ASGNP4 addrg reg
  jmp #JMPA
@@ -724,15 +724,15 @@ C_sne_playV_G_M__70
 C_sne_playV_G_M__71
  mov r2, #6 ' reg ARG coni
  jmp #LODL
- long @C_safc7_6a9cb625_buffer_L000009
+ long @C_sj8k7_6ac84dbe_buffer_L000009
  mov r3, RI ' reg ARG ADDRG
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_safcc_6a9cb625_getn_L000021
+ long @C_sj8kc_6ac84dbe_getn_L000021
  add SP, #4 ' CALL addrg
  jmp #LODL
- long @C_safc7_6a9cb625_buffer_L000009+1
+ long @C_sj8k7_6ac84dbe_buffer_L000009+1
  jmp #RBYT
  mov r22, BC ' reg <- INDIRU1 addrg
  and r22, cviu_m1 ' zero extend
@@ -740,25 +740,25 @@ C_sne_playV_G_M__71
  jmp #BRNZ
  long @C_sne_playV_G_M__57 ' NEI4
  jmp #LODI
- long @C_safc1_6a9cb625_readptr_L000003
+ long @C_sj8k1_6ac84dbe_readptr_L000003
  mov r22, RI ' reg <- INDIRP4 addrg
  jmp #LODL
- long @C_safc2_6a9cb625_database_L000004
+ long @C_sj8k2_6ac84dbe_database_L000004
  mov BC, r22
  jmp #WLNG ' ASGNP4 addrg reg
  jmp #LODL
  long 0
  mov r20, RI ' reg <- con
  jmp #LODL
- long @C_safc3_6a9cb625_dataptr_L000005
+ long @C_sj8k3_6ac84dbe_dataptr_L000005
  mov BC, r20
  jmp #WLNG ' ASGNP4 addrg reg
  jmp #LODI
- long @C_safc7_6a9cb625_buffer_L000009+2
+ long @C_sj8k7_6ac84dbe_buffer_L000009+2
  mov r20, RI ' reg <- INDIRI4 addrg
  adds r22, r20 ' ADDI/P (2)
  jmp #LODL
- long @C_safc1_6a9cb625_readptr_L000003
+ long @C_sj8k1_6ac84dbe_readptr_L000003
  mov BC, r22
  jmp #WLNG ' ASGNP4 addrg reg
 C_sne_playV_G_M__57
@@ -767,14 +767,14 @@ C_sne_playV_G_M__50
  jmp #BRNZ
  long @C_sne_playV_G_M__49 ' NEI4
  jmp #LODI
- long @C_safc_6a9cb625_waitF_or_L000002
+ long @C_sj8k_6ac84dbe_waitF_or_L000002
  mov r2, RI ' reg ARG INDIR ADDRG
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C__waitcnt ' CALL addrg
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
- long @C_safce_6a9cb625_sne_flipR_egisters_L000037 ' CALL addrg
+ long @C_sj8ke_6ac84dbe_sne_flipR_egisters_L000037 ' CALL addrg
 C_sne_playV_G_M__47
  jmp #JMPA
  long @C_sne_playV_G_M__46 ' JUMPV addrg
@@ -794,39 +794,39 @@ C_sne_playV_G_M__43
 DAT ' uninitialized data segment
 
  alignl ' align long
-C_safc8_6a9cb625_speed_divisor_L000010 ' <symbol:speed_divisor>
+C_sj8k8_6ac84dbe_speed_divisor_L000010 ' <symbol:speed_divisor>
  byte 0[4]
 
  alignl ' align long
-C_safc7_6a9cb625_buffer_L000009 ' <symbol:buffer>
+C_sj8k7_6ac84dbe_buffer_L000009 ' <symbol:buffer>
  byte 0[64]
 
  alignl ' align long
-C_safc6_6a9cb625_looplength_L000008 ' <symbol:looplength>
+C_sj8k6_6ac84dbe_looplength_L000008 ' <symbol:looplength>
  byte 0[4]
 
  alignl ' align long
-C_safc5_6a9cb625_loopleft_L000007 ' <symbol:loopleft>
+C_sj8k5_6ac84dbe_loopleft_L000007 ' <symbol:loopleft>
  byte 0[4]
 
  alignl ' align long
-C_safc4_6a9cb625_loopptr_L000006 ' <symbol:loopptr>
+C_sj8k4_6ac84dbe_loopptr_L000006 ' <symbol:loopptr>
  byte 0[4]
 
  alignl ' align long
-C_safc3_6a9cb625_dataptr_L000005 ' <symbol:dataptr>
+C_sj8k3_6ac84dbe_dataptr_L000005 ' <symbol:dataptr>
  byte 0[4]
 
  alignl ' align long
-C_safc2_6a9cb625_database_L000004 ' <symbol:database>
+C_sj8k2_6ac84dbe_database_L000004 ' <symbol:database>
  byte 0[4]
 
  alignl ' align long
-C_safc1_6a9cb625_readptr_L000003 ' <symbol:readptr>
+C_sj8k1_6ac84dbe_readptr_L000003 ' <symbol:readptr>
  byte 0[4]
 
  alignl ' align long
-C_safc_6a9cb625_waitF_or_L000002 ' <symbol:waitFor>
+C_sj8k_6ac84dbe_waitF_or_L000002 ' <symbol:waitFor>
  byte 0[4]
 
 ' Catalina Code

@@ -94,3 +94,11 @@ string2long(register const char *nptr, char ** const endptr,
 	}
 	return (sign * val);
 }
+
+// for Catalina, long longs are the same as longs, so ...
+
+unsigned long long	strtoull(const char *_nptr, char **_endptr, int _base) {
+  return (unsigned long long)strtoul(_nptr, _endptr, _base);
+}
+
+

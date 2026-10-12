@@ -58,9 +58,10 @@ catalyst       p1 or p2    A simple SD Card Operating System/Program Loader
 catapult       p1 or p2    Using Catapult to build multi-model programs.
 coremark          p2       The Coremark benchmarking program.
 debug          p1 or p2    Example for the BlackBox or BlackCat debuggers
-dosfs          p1 or p2    Demonstrates the DOSFS File System
+dosfs          p1 or p2    Demonstrates the DosFS File System
 elua              p2       A client/server implementation of Lua.
 examples       p1 or p2    Miscellaneous example programs
+fatfs             p2       Demonstrated the FatFs File System.
 file_systems   p1 or p2    Demonstrates the C (stdio) and Catalina file system
 games          p1 or p2    Some ANSI C Games programs
 globbing       p1 or p2    Example of file globbing (i.e. wildcard expansion)
@@ -68,6 +69,7 @@ graphics          p1       Example of using the Parallax Graphics Library in C
 graphic2          p2       Example of using the Parallax Graphics Library in C
 hub_malloc     p1 of p2    Demonstrates memory management that uses Hub RAM
 inline_pasm    p1 or p2    Example to illustrate using inline PASM
+int64          p1 or p2    Examples of using 64 bit integers.
 interrupts        p2       Example of using interrupts in C
 loader         p1 or p2    An example of a program loader written in C
 lua            p1 or p2    Examples of C programs that use embedded Lua

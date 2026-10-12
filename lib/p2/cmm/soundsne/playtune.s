@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl_label
-C_stek_6a9cb76c_note2freq_L000002 ' <symbol:note2freq>
+C_slhg_6ac84ef8_note2freq_L000002 ' <symbol:note2freq>
  alignl_p1
  long I32_PSHM + $d00000<<S32 ' save registers
  word I16A_MOV + (r22)<<D16A + (r3)<<S16A ' CVUI
@@ -31,7 +31,7 @@ C_stek_6a9cb76c_note2freq_L000002 ' <symbol:note2freq>
  word I16A_SAR + (r22)<<D16A + (r23)<<S16A ' RSHI (1)
  word I16A_MOV + (r0)<<D16A + (r22)<<S16A ' CVUI
  word I16B_TRN2 + (r0)<<D16B ' zero extend
-' C_stek_6a9cb76c_note2freq_L000002_3 ' (symbol refcount = 0)
+' C_slhg_6ac84ef8_note2freq_L000002_3 ' (symbol refcount = 0)
  word I16B_POPM + $80<<S16B ' restore registers, do not pop frame, do return
  alignl_p1
 
@@ -142,7 +142,7 @@ C_sne_playT_une_16
  word I16B_TRN1 + (r3)<<D16B ' zero extend
  word I16B_CPREP + 33<<S16B ' arg size, rpsize = 8, spsize = 8
  alignl_p1
- long I32_CALA + (@C_stek_6a9cb76c_note2freq_L000002)<<S32
+ long I32_CALA + (@C_slhg_6ac84ef8_note2freq_L000002)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16B_TRN2 + (r22)<<D16B ' zero extend

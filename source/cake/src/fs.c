@@ -1,11 +1,13 @@
 /*
  *  This file is part of cake compiler
- *  https://github.com/thradams/cake 
+ *  https://github.com/thradams/cake
 */
 
-#pragma safety enable
 
-#include "ownership.h"
+
+#include "cake_compat.h"
+#include <stdlib.h>
+#include <ctype.h>
 #include "fs.h"
 #include <wchar.h>
 
@@ -13,7 +15,7 @@
 #include <stdio.h>
 #include <sys/stat.h>
 #include "error.h"
-#include <stdlib.h>
+
 
 #ifdef _WIN32
 #include <Windows.h>
@@ -31,7 +33,9 @@
 #endif
 
 #ifdef _WIN32
+#ifdef _MSC_VER
 #pragma comment (lib, "Rpcrt4.lib")
+#endif
 
 #else
 #include <stdlib.h>
@@ -88,8 +92,10 @@ void path_normalize(char* path)
         }
     }
 #else
-    /*See the note in path_is_normalized: used on Windows only, marked used
-      here so neither configuration warns.*/
+    /*
+        See the note in path_is_normalized: used on Windows only, marked used
+        here so neither configuration warns.
+    */
     (void)path;
 #endif
 }
@@ -121,13 +127,134 @@ bool path_is_relative(const char* path)
     return !path_is_absolute(path);
 }
 
+/* '/' and '\' are the same separator; case insensitive on Windows */
+static bool path_char_equal(char a, char b)
+{
+    if ((a == '/' || a == '\\') && (b == '/' || b == '\\'))
+        return true;
+#ifdef _WIN32
+    return tolower((unsigned char)a) == tolower((unsigned char)b);
+#else
+    return a == b;
+#endif
+}
+
+bool path_equal(const char* a, const char* b)
+{
+    for (; *a && *b; a++, b++)
+    {
+        if (!path_char_equal(*a, *b))
+            return false;
+    }
+    return *a == *b;
+}
+
+bool path_is_under(const char* file, const char* dir)
+{
+    for (; *dir; dir++, file++)
+    {
+        if (!path_char_equal(*dir, *file))
+            return false;
+    }
+    return *file == '/' || *file == '\\';
+}
+
+bool file_exists(const char* path)
+{
+    FILE* _Owner _Opt f = fopen(path, "rb");
+    if (f == NULL)
+        return false;
+    fclose(f);
+    return true;
+}
+
+#if !defined(__CATALYST__)
+
+bool path_is_regular_file(const char* path)
+{
+    if (!path || !path[0])
+        return false;
+    struct stat st;
+    if (stat(path, &st) != 0)
+        return false;
+    /* MSVC has no S_ISREG, only S_IFMT/S_IFREG */
+    return (st.st_mode & S_IFMT) == S_IFREG;
+}
+
+long long file_mtime(const char* path)
+{
+    struct stat st;
+    if (!path || !path[0] || stat(path, &st) != 0)
+        return 0;
+    return (long long)st.st_mtime;
+}
+
+#endif
+
+int create_multiple_paths(const char* root, const char* outdir)
+{
+    /*
+     * This function creates all dirs (folder1, forder2 ..) after root
+     * root   : C:/folder
+     * outdir : C:/folder/folder1/folder2 ...
+     */
+#if !defined __EMSCRIPTEN__
+    const char* p = outdir + strlen(root) + 1;
+    for (;;)
+    {
+        if (*p != '\0' && *p != '/' && *p != '\\')
+        {
+            p++;
+            continue;
+        }
+
+        char temp[FS_MAX_PATH] = { 0 };
+        strncpy(temp, outdir, p - outdir);
+
+        int er = mkdir(temp, 0777);
+        if (er != 0)
+        {
+            er = errno;
+            if (er != EEXIST)
+            {
+                printf("error creating output folder '%s' - %s\n", temp, get_posix_error_message(er));
+                return er;
+            }
+        }
+        if (*p == '\0')
+            break;
+        p++;
+    }
+    return 0;
+#else
+    return -1;
+#endif
+}
+
+char* _Owner _Opt read_file_binary(const char* path)
+{
+    FILE* _Owner _Opt f = fopen(path, "rb");
+    if (f == NULL)
+        return NULL;
+
+    char* _Owner _Opt content = NULL;
+    if (fseek(f, 0, SEEK_END) == 0)
+    {
+        const long size = ftell(f);
+        if (size >= 0 && fseek(f, 0, SEEK_SET) == 0)
+        {
+            content = malloc((size_t)size + 1);
+            if (content)
+                content[fread(content, 1, (size_t)size, f)] = '\0';
+        }
+    }
+    fclose(f);
+    return content;
+}
+
 
 #ifdef _WIN32
 
-#ifdef __CAKE__
-#pragma CAKE diagnostic push
-#pragma CAKE diagnostic ignored 11
-#endif
 
 struct TAGDIR
 {
@@ -135,9 +262,6 @@ struct TAGDIR
     struct dirent dirent;
 };
 
-#ifdef __CAKE__
-#pragma CAKE diagnostic pop
-#endif
 
 DIR* _Owner _Opt opendir(const char* name)
 {
@@ -346,15 +470,6 @@ int get_self_path(char* buffer, int maxsize)
     return r;
 }
 
-#elif defined(__CATALYST__)
-
-// For Catalyst, always us the root direct
-int get_self_path(char* buffer, int maxsize)
-{
-   // under Catalyst, always use the root directory
-   strncpy(buffer, "/", maxsize);
-}
-
 #elif defined __linux__
 
 int get_self_path(char* buffer, int maxsize)
@@ -385,11 +500,22 @@ int get_self_path(char* buffer, int maxsize) {
     if (!realpath(buffer, resolved)) {
         return 1;
     }
-    
+
     strncpy(buffer, resolved, maxsize - 1);
     buffer[maxsize - 1] = '\0';
     return 0;
 }
+#elif defined(__CATALYST__)
+
+// under Catalyst, always use the root directory
+int get_self_path(char* buffer, int maxsize)
+{
+   if (maxsize <= 0)
+      return 1;
+   snprintf(buffer, maxsize, "%s", "/");
+   return 0;
+}
+
 #else
 
 int get_self_path(char* buffer, int maxsize)
@@ -406,7 +532,7 @@ int get_self_path(char* buffer, int maxsize)
 #if !defined __EMSCRIPTEN__
 
 /* Find the last occurrence of c1 or c2 in s. */
-char* _Opt strrchr_ex(const char* s, int c1, int c2)
+static char* _Opt fs_strrchr_ex(const char* s, int c1, int c2)
 {
     const char* _Opt last = NULL;
     const char* p = s;
@@ -445,7 +571,7 @@ void remove_file_extension(const char* filename, int n, char out[/*n*/])
 
 char* basename(const char* filename)
 {
-    char* _Opt p = strrchr_ex(filename, '/', '\\'); //added \ to windows path
+    char* _Opt p = fs_strrchr_ex(filename, '/', '\\'); //added \ to windows path
     return p ? p + 1 : (char*)filename;
 }
 
@@ -491,7 +617,7 @@ char* _Owner _Opt read_file(const char* const path, bool append_newline)
     fseek(file, 0, SEEK_SET);
 
     unsigned mem_size_bytes = sizeof(char) * file_size + 1 /* \0 */ + 1 /*newline*/;
-    
+
     if (mem_size_bytes < 4)
     {
         //we always read 3 chars even if file is small
@@ -544,14 +670,14 @@ char* _Owner _Opt read_file(const char* const path, bool append_newline)
     if (append_newline && data[bytes_read_part2 - 1] != '\n')
     {
         /*
-        A source file that is not empty shall end in a new-line character, which shall not 
+        A source file that is not empty shall end in a new-line character, which shall not
         be immediately preceded by a backslash character before any such splicing takes place.
         */
         data[bytes_read_part2] = '\n';
 
         //we already allocated an extra char for this
         _Assert(bytes_read_part2 + 1 < mem_size_bytes);
-        data[bytes_read_part2+1] = '\0'; 
+        data[bytes_read_part2 + 1] = '\0';
     }
 
     fclose(file);
@@ -566,7 +692,10 @@ char* _Owner _Opt read_file(const char* const path, bool append_newline)
    embeded standard headers from .\include\
    the tool embed creates the .include version of each file
    in .\include\
-*/static const char file_assert_h[] = {
+*/static const char file___cake_types_h[] = {
+#include "include/__cake_types.h.include"
+, 0 };
+static const char file_assert_h[] = {
 #include "include/assert.h.include"
 , 0 };
 static const char file_complex_h[] = {
@@ -659,6 +788,9 @@ static const char file_wchar_h[] = {
 static const char file_wctype_h[] = {
 #include "include/wctype.h.include"
 , 0 };
+static const char file_sys_stat_h[] = {
+#include "include/sys/stat.h.include"
+, 0 };
 
 
 
@@ -666,7 +798,11 @@ static const char file_wctype_h[] = {
 
 char* _Owner read_file(const char* path, bool append_newline)
 {
-    if (strcmp(path, "c:/assert.h") == 0)
+    if (strcmp(path, "c:/__cake_types.h") == 0)
+    {
+        return strdup(file___cake_types_h);
+    }
+    else if (strcmp(path, "c:/assert.h") == 0)
     {
         return strdup(file_assert_h);
     }
@@ -789,6 +925,10 @@ char* _Owner read_file(const char* path, bool append_newline)
     else if (strcmp(path, "c:/wctype.h") == 0)
     {
         return strdup(file_wctype_h);
+    }
+    else if (strcmp(path, "c:/sys/stat.h") == 0)
+    {
+        return strdup(file_sys_stat_h);
     }
     return NULL;
 }

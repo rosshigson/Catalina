@@ -1,0 +1,24 @@
+{
+  "compile": {
+    "options": "",
+    "output": "",
+    "target": "default",
+    "style": "",
+    "diagnostic_format": "ide",
+    "no_output": false,
+    "line_directives": false,
+    "fanalyzer": false,
+    "const_literal": false,
+    "wall": false,
+    "unused_extern_report": false,
+    "use_cake_headers": false
+  },
+  "include_dirs": [
+    "/usr/local/include",
+    "/Library/Developer/CommandLineTools/usr/lib/clang/21/include",
+    "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include",
+    "/Library/Developer/CommandLineTools/usr/include",
+    "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks",
+    "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/SubFrameworks"
+  ]
+}

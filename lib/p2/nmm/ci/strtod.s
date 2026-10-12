@@ -11,11 +11,11 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_st3s_6a9cb7d3_maxE_xponent_L000003 ' <symbol:maxExponent>
+C_sitg_6ac84f5a_maxE_xponent_L000003 ' <symbol:maxExponent>
  long 511
 
  alignl ' align long
-C_st3s1_6a9cb7d3_powersO_f10_L000004 ' <symbol:powersOf10>
+C_sitg1_6ac84f5a_powersO_f10_L000004 ' <symbol:powersOf10>
  long $41200000 ' float
  long $42c80000 ' float
  long $461c4000 ' float
@@ -296,18 +296,18 @@ C_strtod_57
 C_strtod_58
  mov r9, #0 ' reg <- coni
 C_strtod_59
- mov r22, ##@C_st3s_6a9cb7d3_maxE_xponent_L000003
+ mov r22, ##@C_sitg_6ac84f5a_maxE_xponent_L000003
  rdlong r22, r22 ' reg <- INDIRI4 addrg
  cmps r19, r22 wcz
  if_be jmp #\C_strtod_60 ' LEI4
- mov r19, ##@C_st3s_6a9cb7d3_maxE_xponent_L000003
+ mov r19, ##@C_sitg_6ac84f5a_maxE_xponent_L000003
  rdlong r19, r19 ' reg <- INDIRI4 addrg
  mov r22, #34 ' reg <- coni
  wrlong r22, ##@C_errno ' ASGNI4 addrg reg
 C_strtod_60
  mov r11, ##@C_strtod_62_L000063
  rdlong r11, r11 ' reg <- INDIRF4 addrg
- mov r15, ##@C_st3s1_6a9cb7d3_powersO_f10_L000004 ' reg <- addrg
+ mov r15, ##@C_sitg1_6ac84f5a_powersO_f10_L000004 ' reg <- addrg
  jmp #\@C_strtod_67 ' JUMPV addrg
 C_strtod_64
  mov r22, r19
@@ -358,6 +358,50 @@ C_strtod_74
 C_strtod_5
  calld PA,#POPM ' restore registers
  add SP, #24 ' framesize
+ calld PA,#RETF
+
+
+' Catalina Export strtold
+
+ alignl ' align long
+C_strtold ' <symbol:strtold>
+ calld PA,#NEWF
+ calld PA,#PSHM
+ long $e00000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ mov r2, r21 ' CVI, CVU or LOAD
+ mov r3, r23 ' CVI, CVU or LOAD
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ calld PA,#CALA
+ long @C_strtod
+ add SP, #4 ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+' C_strtold_76 ' (symbol refcount = 0)
+ calld PA,#POPM ' restore registers
+ calld PA,#RETF
+
+
+' Catalina Export strtof
+
+ alignl ' align long
+C_strtof ' <symbol:strtof>
+ calld PA,#NEWF
+ calld PA,#PSHM
+ long $e00000 ' save registers
+ mov r23, r3 ' reg var <- reg arg
+ mov r21, r2 ' reg var <- reg arg
+ mov r2, r21 ' CVI, CVU or LOAD
+ mov r3, r23 ' CVI, CVU or LOAD
+ mov BC, #8 ' arg size, rpsize = 8, spsize = 8
+ sub SP, #4 ' stack space for reg ARGs
+ calld PA,#CALA
+ long @C_strtod
+ add SP, #4 ' CALL addrg
+ mov r22, r0 ' CVI, CVU or LOAD
+' C_strtof_77 ' (symbol refcount = 0)
+ calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 

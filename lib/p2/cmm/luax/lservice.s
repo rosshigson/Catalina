@@ -11,19 +11,19 @@ DAT ' code segment
 DAT ' const data segment
 
  alignl_label
-C_smic6_6a9cb74c_luaservice_funcs_L000010 ' <symbol:luaservice_funcs>
- long @C_smic7_6a9cb74c_11_L000012
- long @C_smic_6a9cb74c_service_short_L000004
- long @C_smic8_6a9cb74c_13_L000014
- long @C_smic1_6a9cb74c_service_long_L000005
- long @C_smic9_6a9cb74c_15_L000016
- long @C_smic2_6a9cb74c_service_long_2_L000006
- long @C_smica_6a9cb74c_17_L000018
- long @C_smic3_6a9cb74c_service_float_L000007
- long @C_smicb_6a9cb74c_19_L000020
- long @C_smic4_6a9cb74c_service_long_float_L000008
- long @C_smicc_6a9cb74c_21_L000022
- long @C_smic5_6a9cb74c_service_serial_L000009
+C_scoo6_6ac84eda_luaservice_funcs_L000010 ' <symbol:luaservice_funcs>
+ long @C_scoo7_6ac84eda_11_L000012
+ long @C_scoo_6ac84eda_service_short_L000004
+ long @C_scoo8_6ac84eda_13_L000014
+ long @C_scoo1_6ac84eda_service_long_L000005
+ long @C_scoo9_6ac84eda_15_L000016
+ long @C_scoo2_6ac84eda_service_long_2_L000006
+ long @C_scooa_6ac84eda_17_L000018
+ long @C_scoo3_6ac84eda_service_float_L000007
+ long @C_scoob_6ac84eda_19_L000020
+ long @C_scoo4_6ac84eda_service_long_float_L000008
+ long @C_scooc_6ac84eda_21_L000022
+ long @C_scoo5_6ac84eda_service_serial_L000009
  long $0
  long $0
 
@@ -32,7 +32,7 @@ C_smic6_6a9cb74c_luaservice_funcs_L000010 ' <symbol:luaservice_funcs>
 DAT ' code segment
 
  alignl_label
-C_smic_6a9cb74c_service_short_L000004 ' <symbol:service_short>
+C_scoo_6ac84eda_service_short_L000004 ' <symbol:service_short>
  alignl_p1
  long I32_NEWF + 0<<S32
  alignl_p1
@@ -66,12 +66,12 @@ C_smic_6a9cb74c_service_short_L000004 ' <symbol:service_short>
  long I32_CALA + (@C_lua_pushinteger)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (1)<<S16A ' RET coni
-' C_smic_6a9cb74c_service_short_L000004_23 ' (symbol refcount = 0)
+' C_scoo_6ac84eda_service_short_L000004_23 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_smic1_6a9cb74c_service_long_L000005 ' <symbol:service_long>
+C_scoo1_6ac84eda_service_long_L000005 ' <symbol:service_long>
  alignl_p1
  long I32_NEWF + 4<<S32
  alignl_p1
@@ -108,12 +108,12 @@ C_smic1_6a9cb74c_service_long_L000005 ' <symbol:service_long>
  long I32_CALA + (@C_lua_pushinteger)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (1)<<S16A ' RET coni
-' C_smic1_6a9cb74c_service_long_L000005_24 ' (symbol refcount = 0)
+' C_scoo1_6ac84eda_service_long_L000005_24 ' (symbol refcount = 0)
  word I16B_POPM + 1<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_smic2_6a9cb74c_service_long_2_L000006 ' <symbol:service_long_2>
+C_scoo2_6ac84eda_service_long_2_L000006 ' <symbol:service_long_2>
  alignl_p1
  long I32_NEWF + 0<<S32
  alignl_p1
@@ -155,12 +155,12 @@ C_smic2_6a9cb74c_service_long_2_L000006 ' <symbol:service_long_2>
  long I32_CALA + (@C_lua_pushinteger)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (1)<<S16A ' RET coni
-' C_smic2_6a9cb74c_service_long_2_L000006_25 ' (symbol refcount = 0)
+' C_scoo2_6ac84eda_service_long_2_L000006_25 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_smic3_6a9cb74c_service_float_L000007 ' <symbol:service_float>
+C_scoo3_6ac84eda_service_float_L000007 ' <symbol:service_float>
  alignl_p1
  long I32_NEWF + 0<<S32
  alignl_p1
@@ -202,12 +202,12 @@ C_smic3_6a9cb74c_service_float_L000007 ' <symbol:service_float>
  long I32_CALA + (@C_lua_pushnumber)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (1)<<S16A ' RET coni
-' C_smic3_6a9cb74c_service_float_L000007_26 ' (symbol refcount = 0)
+' C_scoo3_6ac84eda_service_float_L000007_26 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_smic4_6a9cb74c_service_long_float_L000008 ' <symbol:service_long_float>
+C_scoo4_6ac84eda_service_long_float_L000008 ' <symbol:service_long_float>
  alignl_p1
  long I32_NEWF + 0<<S32
  alignl_p1
@@ -249,12 +249,12 @@ C_smic4_6a9cb74c_service_long_float_L000008 ' <symbol:service_long_float>
  long I32_CALA + (@C_lua_pushinteger)<<S32
  word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (1)<<S16A ' RET coni
-' C_smic4_6a9cb74c_service_long_float_L000008_27 ' (symbol refcount = 0)
+' C_scoo4_6ac84eda_service_long_float_L000008_27 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_smic5_6a9cb74c_service_serial_L000009 ' <symbol:service_serial>
+C_scoo5_6ac84eda_service_serial_L000009 ' <symbol:service_serial>
  alignl_p1
  long I32_NEWF + 20<<S32
  alignl_p1
@@ -323,7 +323,7 @@ C_smic5_6a9cb74c_service_serial_L000009 ' <symbol:service_serial>
  long I32_CALA + (@C_lua_pushlstring)<<S32
  word I16A_ADDI + SP<<D16A + 8<<S16A ' CALL addrg
  word I16A_MOVI + R0<<D16A + (1)<<S16A ' RET coni
-' C_smic5_6a9cb74c_service_serial_L000009_28 ' (symbol refcount = 0)
+' C_scoo5_6ac84eda_service_serial_L000009_28 ' (symbol refcount = 0)
  word I16B_EXEC
  alignl
  mov RI, FP    ' restore SP ... 
@@ -362,7 +362,7 @@ C_luaopen_service ' <symbol:luaopen_service>
  word I16A_MOVI + (r2)<<D16A + (0)<<S16A ' reg ARG coni
  word I16B_LODL + (r3)<<D16B
  alignl_p1
- long @C_smic6_6a9cb74c_luaservice_funcs_L000010 ' reg ARG ADDRG
+ long @C_scoo6_6ac84eda_luaservice_funcs_L000010 ' reg ARG ADDRG
  word I16A_MOV + (r4)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 50<<S16B ' arg size, rpsize = 12, spsize = 12
  alignl_p1
@@ -410,7 +410,7 @@ C_luaopen_service_36_L000037 ' <symbol:36>
  long $43fc0000 ' float
 
  alignl_label
-C_smicc_6a9cb74c_21_L000022 ' <symbol:21>
+C_scooc_6ac84eda_21_L000022 ' <symbol:21>
  byte 115
  byte 101
  byte 114
@@ -420,7 +420,7 @@ C_smicc_6a9cb74c_21_L000022 ' <symbol:21>
  byte 0
 
  alignl_label
-C_smicb_6a9cb74c_19_L000020 ' <symbol:19>
+C_scoob_6ac84eda_19_L000020 ' <symbol:19>
  byte 108
  byte 111
  byte 110
@@ -434,7 +434,7 @@ C_smicb_6a9cb74c_19_L000020 ' <symbol:19>
  byte 0
 
  alignl_label
-C_smica_6a9cb74c_17_L000018 ' <symbol:17>
+C_scooa_6ac84eda_17_L000018 ' <symbol:17>
  byte 102
  byte 108
  byte 111
@@ -443,7 +443,7 @@ C_smica_6a9cb74c_17_L000018 ' <symbol:17>
  byte 0
 
  alignl_label
-C_smic9_6a9cb74c_15_L000016 ' <symbol:15>
+C_scoo9_6ac84eda_15_L000016 ' <symbol:15>
  byte 108
  byte 111
  byte 110
@@ -453,7 +453,7 @@ C_smic9_6a9cb74c_15_L000016 ' <symbol:15>
  byte 0
 
  alignl_label
-C_smic8_6a9cb74c_13_L000014 ' <symbol:13>
+C_scoo8_6ac84eda_13_L000014 ' <symbol:13>
  byte 108
  byte 111
  byte 110
@@ -461,7 +461,7 @@ C_smic8_6a9cb74c_13_L000014 ' <symbol:13>
  byte 0
 
  alignl_label
-C_smic7_6a9cb74c_11_L000012 ' <symbol:11>
+C_scoo7_6ac84eda_11_L000012 ' <symbol:11>
  byte 115
  byte 104
  byte 111

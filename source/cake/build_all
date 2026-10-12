@@ -2,8 +2,8 @@
 ##!/bin/bash
 
 cd src
-gcc build.c -D__CATALINA__ -o build
-./build
+gcc build.c -D TEST -D__CATALINA__ -o build
+./build -no-ide
 cd ..
 
 if [[ "$1" != "" ]]; then

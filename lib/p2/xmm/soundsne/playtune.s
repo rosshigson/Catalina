@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_sjao_6a9cb625_note2freq_L000002 ' <symbol:note2freq>
+C_snmg_6ac84dbd_note2freq_L000002 ' <symbol:note2freq>
  jmp #PSHM
  long $d00000 ' save registers
  mov r22, r3 ' CVUI
@@ -33,7 +33,7 @@ C_sjao_6a9cb625_note2freq_L000002 ' <symbol:note2freq>
  sar r22, r23 ' RSHI (1)
  mov r0, r22 ' CVUI
  and r0, cviu_m2 ' zero extend
-' C_sjao_6a9cb625_note2freq_L000002_3 ' (symbol refcount = 0)
+' C_snmg_6ac84dbd_note2freq_L000002_3 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETN
 
@@ -149,7 +149,7 @@ C_sne_playT_une_16
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
  sub SP, #4 ' stack space for reg ARGs
  jmp #CALA
- long @C_sjao_6a9cb625_note2freq_L000002
+ long @C_snmg_6ac84dbd_note2freq_L000002
  add SP, #4 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  and r22, cviu_m2 ' zero extend

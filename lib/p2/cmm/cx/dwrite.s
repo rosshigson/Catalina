@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl_label
-C_s7fo_6a9cb7a9_wait100ms_L000003 ' <symbol:wait100ms>
+C_sc4o_6ac84f31_wait100ms_L000003 ' <symbol:wait100ms>
  alignl_p1
  long I32_NEWF + 0<<S32
  alignl_p1
@@ -27,8 +27,36 @@ C_s7fo_6a9cb7a9_wait100ms_L000003 ' <symbol:wait100ms>
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
  alignl_p1
  long I32_CALA + (@C__waitcnt)<<S32 ' CALL addrg
-' C_s7fo_6a9cb7a9_wait100ms_L000003_4 ' (symbol refcount = 0)
+' C_sc4o_6ac84f31_wait100ms_L000003_4 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
+ alignl_p1
+
+ alignl_label
+C_sc4o1_6ac84f31_xdigit_L000005 ' <symbol:xdigit>
+ alignl_p1
+ long I32_PSHM + $500000<<S32 ' save registers
+ word I16A_CMPSI + (r2)<<D16A + (10)<<S16A
+ alignl_p1
+ long I32_BR_B + (@C_sc4o1_6ac84f31_xdigit_L000005_7)<<S32 ' LTI4 reg coni
+ word I16A_MOV + (r22)<<D16A + (r2)<<S16A
+ word I16A_SUBSI + (r22)<<D16A + (10)<<S16A ' SUBI4 reg coni
+ alignl_p1
+ long I32_LODS + (r20)<<D32S + ((65)&$7FFFF)<<S32 ' reg <- cons
+ word I16A_ADDS + (r22)<<D16A + (r20)<<S16A ' ADDI/P (1)
+ word I16A_MOV + (r0)<<D16A + (r22)<<S16A ' CVUI
+ word I16B_TRN1 + (r0)<<D16B ' zero extend
+ alignl_p1
+ long I32_JMPA + (@C_sc4o1_6ac84f31_xdigit_L000005_6)<<S32 ' JUMPV addrg
+ alignl_label
+C_sc4o1_6ac84f31_xdigit_L000005_7
+ alignl_p1
+ long I32_LODS + (r22)<<D32S + ((48)&$7FFFF)<<S32 ' reg <- cons
+ word I16A_ADDS + (r22)<<D16A + (r2)<<S16A ' ADDI/P (2)
+ word I16A_MOV + (r0)<<D16A + (r22)<<S16A ' CVUI
+ word I16B_TRN1 + (r0)<<D16B ' zero extend
+ alignl_label
+C_sc4o1_6ac84f31_xdigit_L000005_6
+ word I16B_POPM + $80<<S16B ' restore registers, do not pop frame, do return
  alignl_p1
 
 ' Catalina Export DFS_WriteSector
@@ -45,7 +73,7 @@ C_D_F_S__W_riteS_ector ' <symbol:DFS_WriteSector>
  word I16A_MOV + (r17)<<D16A + (r2)<<S16A ' reg var <- reg arg
  word I16A_MOVI + (r15)<<D16A + (0)<<S16A ' reg <- coni
  alignl_label
-C_D_F_S__W_riteS_ector_6
+C_D_F_S__W_riteS_ector_10
  word I16A_MOV + (r2)<<D16A + (r19)<<S16A ' CVI, CVU or LOAD
  word I16A_MOV + (r3)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
  word I16B_CPREP + 33<<S16B ' arg size, rpsize = 8, spsize = 8
@@ -55,22 +83,22 @@ C_D_F_S__W_riteS_ector_6
  word I16A_MOV + (r13)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
  word I16A_CMPSI + (r0)<<D16A + (0)<<S16A
  alignl_p1
- long I32_BRNZ + (@C_D_F_S__W_riteS_ector_10)<<S32 ' NEI4 reg coni
+ long I32_BRNZ + (@C_D_F_S__W_riteS_ector_14)<<S32 ' NEI4 reg coni
  alignl_p1
- long I32_JMPA + (@C_D_F_S__W_riteS_ector_8)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_D_F_S__W_riteS_ector_12)<<S32 ' JUMPV addrg
  alignl_label
-C_D_F_S__W_riteS_ector_10
+C_D_F_S__W_riteS_ector_14
  alignl_p1
- long I32_CALA + (@C_s7fo_6a9cb7a9_wait100ms_L000003)<<S32 ' CALL addrg
-' C_D_F_S__W_riteS_ector_7 ' (symbol refcount = 0)
+ long I32_CALA + (@C_sc4o_6ac84f31_wait100ms_L000003)<<S32 ' CALL addrg
+' C_D_F_S__W_riteS_ector_11 ' (symbol refcount = 0)
  word I16A_ADDSI + (r15)<<D16A + (1)<<S16A ' ADDI4 reg coni
  word I16A_CMPSI + (r15)<<D16A + (10)<<S16A
  alignl_p1
- long I32_BR_B + (@C_D_F_S__W_riteS_ector_6)<<S32 ' LTI4 reg coni
+ long I32_BR_B + (@C_D_F_S__W_riteS_ector_10)<<S32 ' LTI4 reg coni
  alignl_label
-C_D_F_S__W_riteS_ector_8
+C_D_F_S__W_riteS_ector_12
  word I16A_MOV + (r0)<<D16A + (r13)<<S16A ' CVI, CVU or LOAD
-' C_D_F_S__W_riteS_ector_5 ' (symbol refcount = 0)
+' C_D_F_S__W_riteS_ector_9 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 

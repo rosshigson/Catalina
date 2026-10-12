@@ -1,0 +1,164 @@
+Cake - a CXX to C89 Transpiler
+==============================
+
+This folder contains a copy of the Cake transpiler (see http://cakecc.org/). 
+Cake can be used as a pre-processor to convert C99, C11 & C23 programs to C89
+for Catalina. Nearly all C99 additions are supported, as well as many C11 
+additions. C23 is less fully supported at present, but work on it is ongoing.
+
+The main differences between C99 and Catalina with Cake are that in Catalina:
+
+   - int, long and long longs are all 32 bits
+   - unsigned int, unsigned long and unsigned long longs are all 32 bits
+   - float, double and long doubles are all 32 bits
+   - there is no wide string or character support
+   - there is no complex number support
+
+Note that Cake has built-in support for Catalina, so there are currently NO 
+modifications to Cake required. However, a complete copy of Cake is inluded 
+here because Cake is still undergoing active development, and this version 
+has been tested and is KNOWN to work with Catalina. All Catalina specific 
+code in the Cake sources can be identified because it will be surrounded 
+conditional compilation macros, as follows:
+
+   #ifdef __CATALINA__
+      // Catalina additional source here ...
+   #endif
+
+or
+
+   #if defined(__CATALINA__)
+      // Catalina source here ...
+   #else
+      // Original cake source here ...
+   #endif
+
+or 
+
+   #if !defined(__CATALINA) 
+      // Functionality not supported by Catalina removed here ...
+   #endif
+
+There are also some changes required to allow a self-hosted version of Cake 
+to run under Catalyst. These can be identified by similar changes to those
+above, but using the symbol __CATALYST__.
+
+Note that (like Catalina itself) building cake requires a suitable version of
+gcc to be installed, such as MinGW 64 bit.
+
+In addition to the cake sources, the folder contains:
+
+   build_all      - A script to build, configure and install Cake
+   hello_99.c     - a simple demo program that requires C99
+
+Note that if you rebuild Cake manually, it may need configuration before it 
+will work correctly (this is done automatically for the prebuilt demos, or if 
+Cake is rebuilt from source using the scripts provided). 
+
+The symptoms of Cake not being configured correctly are that when executed, 
+it will complain that it cannot find the standard C include files. To 
+configure Cake under Windows, Linux or Catalyst, execute the following 
+command in a Catalina or Catalyst command-line window:
+
+   cake -autoconfig
+
+Note that on Linux, the 'build_all' script may need to have 'execute' 
+permissions added before it can be executed - i.e:
+
+   chmod a+x ./build_all
+
+The build_all script can be used to build the cake binaries, and also copy 
+the binaries and Cake configuration files to the Catalina bin folder. Note 
+that many warning messages (but no error messages) may be emitted when 
+building Cake. 
+
+If no parameters are specified, the build_all script will build Cake for
+use with Catalina as a cross-compiler - i.e. to be executed on the current 
+platform, which might be Windows or Linux. If parameters are specified, a 
+self-hosted version of Cake will also be built to run under Catalyst. 
+For example:
+
+   build_all                <-- build only for cross-compiling
+   build_all P2_EDGE        <-- build for cross-compiling and self-hosting
+
+The self-hosted version (if built) will be in src\catalina\cake.bin. Note
+that when this is copied manually to a Catalyst SD Card, the following command 
+may need to be executed (once) under Catalyst to configure Cake before it can 
+be used:
+
+  cake -autoconfig
+
+Cake is fully integrated into Catalina as an alternative to the existing C 
+preprocessor (i.e. cpp). To enable it, just add -C99 to any Catalina command. 
+Note that other options such as -C89, -C90, -C11, -C17 and -C23 are supported, 
+but -C89 and -C90 simply mean Catalina will use the old C preprocessor (cpp), 
+and all other numbers mean Catalina will use Cake. For example, to compile
+and load the C99 demo program provided (hello_99.c) which will not compiler 
+when using cpp, use a command similar to:
+
+  catalina hello_99.c -lc -C99
+
+Or on the Propeller 2:
+
+  catalina -p2 hello_99.c -lc -C99
+
+If this is how you intend to use Cake, then this is all you need to know.
+However, Cake can also be used stand-alone. The basic usage of the Cake 
+command is as follows:
+
+   cake input_files [-I path] [-o output_file] 
+
+The -I option adds a path to the include file path, which is only required
+for programs that need additional include files. The -o option specifies the
+output file for the converted C program, and should only be used when only one
+input file is specified. If -o is NOT specified, then when used in conjunction
+with a cross-compiler, the output files have the same name as the input files 
+and are created in a 'catalina' subfolder in the current directory (see the 
+Cake documentation for more details). For example:
+
+   cake hello_99.c -o hello_89.c         <-- output to hello_89.c
+   cake prog1.c prog2.c prog3.c          <-- output to 'catalina' directory
+   cake prog.c -I my_includes -o cake.c  <-- output to cake.c
+
+Then the cake output files can be compiled using normal Catalina commands. 
+For example:
+
+   cake hello_99.c -o hello_89.c
+
+   cake hello_99.c -o hello_89.c
+   catalina -lc hello_89.c
+
+Or on the Propeller 2:
+
+   cake hello_99.c -o hello_89.c
+   catalina -p2 -lc hello_89.c
+
+Then execute the binary program as usual (e.g. using payload):
+
+   payload -i hello_89
+
+One important use for generating and then complng cake output files is that 
+Cake sometimes does not report an error on the correct line in the original 
+C file, because Cake actually rewrites the source file and the line numbers 
+in the original C source and the C89 source (as output from Cake) may differ
+significantly. In such cases it can be helpful to generate the C89 output file
+from the original C source using cake directly, and then compile THAT file 
+instead. This is also recommended when using Catalina's source level debugger.
+
+Catalina's version of Cake defaults the target to propeller-catalina, so
+this does not need to be speciified in any Cake command. Catalina also adds 
+the following options to all Cake commands it generates:
+
+   -fdiagnostics-color=never -line-directives 
+
+To disable specific Cake warnings when compiling C99 source with catalina, 
+use the command line option -W-Wp to pass whatever follows to Cake (the first
+-W tells Catalina to pass the rest of the option to LCC, and the -Wp then 
+tells LCC to pass the rest of the option to the preprocessor, which will be
+Cake when -C99 is also specified). For example, to disable Cake warning 
+number 82 ("Parameter could point to const"), the option -wd82 can be passed 
+to Cake by adding -W-Wp-wd82 to the Catalina command line. For example:
+
+   cataline -ps -lc program.c -C99 -W-Wp-wd82
+
+

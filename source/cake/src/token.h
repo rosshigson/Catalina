@@ -6,7 +6,7 @@
 #pragma once
 
 #include <stdbool.h>
-#include "ownership.h"
+#include "cake_compat.h"
 #include "options.h" /*enum diagnostic_ouput_format*/
 
 enum token_type
@@ -256,7 +256,9 @@ enum token_flags
 
     TK_C_BACKEND_FLAG_SHOW_AGAIN = 1 << 11,          /*was hidden but maybe reappears*/
 
-    TK_FLAG_ACTIVE = 1 << 12                         /* ACTIVE means it is inside a if group that is active (final is always active) */
+    TK_FLAG_ACTIVE = 1 << 12,                        /* ACTIVE means it is inside a if group that is active (final is always active) */
+
+    TK_FLAG_MACRO_NOT_INVOKED = 1 << 13               /* function-like macro name rescanned without '(' after it; stays unreplaced */
 };
 
 struct token
@@ -298,7 +300,7 @@ void token_list_remove(struct token_list* list, struct token* first, struct toke
 struct token_list token_list_remove_get(struct token_list* list, struct token* first, struct token* last);
 void token_list_append_list(struct token_list* dest, _Clear struct token_list* source);
 void token_list_append_list_at_beginning(struct token_list* dest, struct token_list* source);
-struct token* token_list_clone_and_add(struct token_list* list, const struct token* pnew);
+struct token* _Opt token_list_clone_and_add(struct token_list* list, const struct token* pnew);
 char* _Owner _Opt token_list_join_tokens(struct token_list* list, bool bliteral);
 void token_list_clear(_Clear struct token_list* list);
 
@@ -309,11 +311,7 @@ bool token_is_newline(const struct token* _Opt token);
 bool token_is_blank(const struct token* _Opt p);
 bool token_is_final(const struct token* _Opt p);
 bool token_is_identifier_or_keyword(enum token_type t);
-void token_range_add_flag(struct token* first, const struct token* last, enum token_flags flag);
-void token_range_remove_flag(struct token* first,const struct token* last, enum token_flags flag);
-void token_range_add_show(struct token* first, const struct token* last);
 
-void print_tokens_html(struct token* p_token);
 
 struct marker
 {    
@@ -333,6 +331,65 @@ struct marker
 
 
 void print_line_and_token(struct marker* p_marker, bool color_enabled);
+/* -find-definition: p_token comes from the file the cursor is in (the main file or a header) */
+bool token_is_in_find_definition_file(const struct token* p_token, const struct options* options);
+
+/* -find-definition: p_token covers the cursor line:col */
+bool token_is_find_definition_cursor(const struct token* p_token, const struct options* options);
+
+/* -rename: the identifiers found in phase 2, from all files */
+struct rename_item
+{
+    char* _Owner file;
+    int line;
+    int col;
+};
+
+/* an occurrence of the current file and the declaration it has in this file */
+struct rename_pending
+{
+    struct rename_item item;
+    struct rename_item declaration;
+};
+
+struct rename_list
+{
+    struct rename_item* _Owner _Opt data;
+    int size;
+    int capacity;
+    struct rename_pending* _Owner _Opt pending;
+    int pending_size;
+    int pending_capacity;
+    char old_name[200];
+};
+
+void rename_list_clear(_Clear struct rename_list* p);
+
+/* -rename phase 2: records p_token and its declaration, decided by rename_list_commit */
+void rename_record(const struct options* options, const struct token* p_token, const struct token* _Opt p_declaration_name);
+
+/*
+    end of one file: keeps the occurrences whose declaration is the target or the declaration of an occurrence already kept;
+    returns false when the file had occurrences but none could be decided
+*/
+bool rename_list_commit(struct rename_list* p, const struct options* options);
+
+/* phase 3: the pairs of an undecided file, decided again later without compiling it */
+struct rename_pairs
+{
+    struct rename_pending* _Owner _Opt data;
+    int size;
+    int capacity;
+};
+
+/* after rename_list_commit returned false: moves the pending pairs to out */
+void rename_list_save_pending(struct rename_list* list, struct rename_pairs* out);
+
+/* rename_list_commit on saved pairs; true (and saved cleared) when they were decided */
+bool rename_list_commit_saved(struct rename_list* list, struct rename_pairs* saved, const struct options* options);
+
+void rename_pairs_clear(_Clear struct rename_pairs* p);
+
 void print_position(const char* _Opt path, int line, int col, enum diagnostic_ouput_format format, bool color_enabled, bool fullpath);
 
 struct osstream;
@@ -343,6 +400,23 @@ void ss_print_position(struct osstream* ss,
                        enum diagnostic_ouput_format format,
                        bool color_enabled,
                        bool fullpath);
+
+/*
+  The first line of a diagnostic, as diagnostic() and pos_diagnostic()
+  print it: "file:line:col: warning N: text\n" (colors and msvc format
+  included). Kept in one place so both stay identical.
+*/
+void ss_print_diagnostic_header(struct osstream* ss,
+                                const char* _Opt path,
+                                int line, int col,
+                                enum diagnostic_ouput_format format,
+                                bool color_enabled,
+                                bool fullpath,
+                                int id,
+                                bool is_error,
+                                bool is_warning,
+                                bool is_note,
+                                const char* text);
 
 void ss_print_line_and_token(struct osstream* ss,
                              struct marker* p_marker,

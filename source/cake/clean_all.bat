@@ -1,4 +1,4 @@
 @echo off
-del bake.out
+del bake_cake.out
 del src\*.exe
-del /q /s src\catalina
+del /q /s src\propeller-catalina

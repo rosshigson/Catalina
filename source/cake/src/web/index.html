@@ -2,15 +2,16 @@
 <html>
 <head>
   <meta charset="utf-8">
-    <link rel="stylesheet" href="default.min.css">
-    <script src="highlight.min.js"></script>
-    <script>hljs.highlightAll();</script>
-    <link rel="stylesheet" href="style.css" />
-    <title>Cake C Compiler</title>
-    <meta name="description" content="Cake C Compiler">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="default.min.css">
+  <script src="highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <link rel="stylesheet" href="style.css" />
+  <script src="theme.js"></script>
+  <title>Cake C Compiler</title>
+  <meta name="description" content="Cake C Compiler">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
 
-    <script>
+  <script>
     // Playground launcher
     function launchPlayground(sourceCode) {
       var link = "./playground.html?code=" + encodeURIComponent(btoa(sourceCode))
@@ -50,7 +51,7 @@
       let prev = preElement.previousSibling;
       while (prev && prev.nodeType === Node.TEXT_NODE && prev.textContent.trim() === '') {
         prev = prev.previousSibling;
-    }
+      }
       if (prev && prev.nodeType === Node.COMMENT_NODE) {
         const commentText = prev.textContent.trim().toLowerCase();
         if (commentText === 'runnable' || commentText === ' runnable ') {
@@ -162,10 +163,10 @@
 
 </head>
 <body>
-    <article style="max-width: 40em; margin:auto">
-    <p><a href="index.html">Home</a> | <a href="manual.html">Manual</a> | <a href="ownership.html">Static Analysis</a> | <a href="playground.html">Playground</a></p>
-<article>
-<h1>Cake - C23 and Beyond</h1>
+  <article style="max-width: 40em; margin:auto">
+    <p><a href="index.html">Home</a> | <a href="manual.html">Manual</a> | <a href="flow.html">Static Analysis</a> | <a href="playground.html">Playground</a></p>
+    <article>
+    <h1>Cake - C23 and Beyond</h1>
 <ul>
 <li>
 <a href="#toc_0">About</a>
@@ -192,41 +193,44 @@
 <a href="#toc_7">Clang on Linux/Windows/macOS build instructions</a>
 </li>
 <li>
-<a href="#toc_8">Build options</a>
+<a href="#toc_8">TCC on Windows/Linux build instructions</a>
 </li>
 <li>
-<a href="#toc_9">Emscripten build instructions (web)</a>
+<a href="#toc_9">Build options</a>
+</li>
+<li>
+<a href="#toc_10">Emscripten build instructions (web)</a>
 </li>
 </ul>
 </li>
 <li>
-<a href="#toc_10">Installation (optional)</a>
+<a href="#toc_11">Installation (optional)</a>
 <ul>
 <li>
-<a href="#toc_11">Windows</a>
+<a href="#toc_12">Windows</a>
 </li>
 <li>
-<a href="#toc_12">Linux / macOS</a>
+<a href="#toc_13">Linux / macOS</a>
 </li>
 </ul>
 </li>
 <li>
-<a href="#toc_13">Running cake</a>
+<a href="#toc_14">Running cake</a>
 </li>
 <li>
-<a href="#toc_14">IDE</a>
+<a href="#toc_15">IDE</a>
 </li>
 <li>
-<a href="#toc_15">Road map</a>
+<a href="#toc_16">Road map</a>
 </li>
 <li>
-<a href="#toc_16">Participating</a>
+<a href="#toc_17">Participating</a>
 </li>
 <li>
-<a href="#toc_17">Cake x CFront</a>
+<a href="#toc_18">Cake x CFront</a>
 </li>
 <li>
-<a href="#toc_18">License</a>
+<a href="#toc_19">License</a>
 </li>
 </ul>
 <p>Kernighan &amp; Ritchie, <em>The C Programming Language</em>, 1978:</p>
@@ -249,8 +253,7 @@ on every day. Timeless, efficient, and universal.</em></p>
 
 <p><em>The code that AI now writes runs best where it can be read, verified
 and trusted. A small language with no hidden machinery. C gives the machine
-speed, and the human control and platform independence.
-Cake adds the checks that make that code safer.</em></p>
+speed, and the human control and platform independence.</em></p>
 
 <h1 id="toc_0">About</h1>
 
@@ -342,7 +345,7 @@ automatic documentation and more.</p>
 <p>If you encounter an error such as:
 fatal error: X11/Xft/Xft.h: No such file or directory</p>
 
-<p>Ubuntu / Debian:  <code>sudo apt install libx11-dev libxft-dev</code></p>
+<p>Ubuntu / Debian / Raspberry Pi OS:  <code>sudo apt install libx11-dev libxft-dev</code></p>
 
 <p>Fedora: <code>sudo dnf install libX11-devel libXft-devel</code></p>
 
@@ -352,7 +355,32 @@ fatal error: X11/Xft/Xft.h: No such file or directory</p>
 
 <p>These headers are used by the IDE.</p>
 
-<h2 id="toc_8">Build options</h2>
+<p>If you encounter an error such as:
+fatal error: wayland-client.h: No such file or directory</p>
+
+<p>Ubuntu / Debian / Raspberry Pi OS: <code>sudo apt install libwayland-dev libxkbcommon-dev libfreetype-dev libfontconfig-dev</code></p>
+
+<p>Fedora: <code>sudo dnf install wayland-devel libxkbcommon-devel freetype-devel fontconfig-devel</code></p>
+
+<p>Arch Linux: <code>sudo pacman -S wayland libxkbcommon freetype2 fontconfig</code></p>
+
+<p>openSUSE: <code>sudo zypper install wayland-devel libxkbcommon-devel freetype2-devel fontconfig-devel</code></p>
+
+<p>These headers are used by the Wayland IDE backend (<code>./build wayland</code>, or the
+default in a Wayland session when these libraries are installed).</p>
+
+<h2 id="toc_8">TCC on Windows/Linux build instructions</h2>
+
+<p>With <a href="https://bellard.org/tcc/">tcc</a> on the PATH, go to the <em>src</em> directory and type:</p>
+
+<pre><code>tcc build.c -o build &amp;&amp; ./build
+</code></pre>
+
+<p>On Windows, <code>build_tcc.bat</code> does the same. A Cake built by tcc uses the matching
+tcc target (<code>x86_64-w64-mingw32-tcc</code>, <code>x86_64-linux-gnu-tcc</code> or <code>aarch64-apple-darwin-tcc</code>) and the tcc headers by default. Tested with tcc 0.9.28 on Windows
+and 0.9.27 on Linux.</p>
+
+<h2 id="toc_9">Build options</h2>
 
 <p><code>build</code> accepts one optional argument, on any platform:</p>
 
@@ -368,10 +396,6 @@ fatal error: X11/Xft/Xft.h: No such file or directory</p>
 <tr>
 <td><em>(none)</em></td>
 <td>full build: tools, docs, amalgamated <code>lib.c</code>, <code>cake</code> and the IDE</td>
-</tr>
-<tr>
-<td><code>fast</code></td>
-<td>incremental build of <code>cake</code> and the IDE only — skips tools, docs, inner tests and the amalgamation</td>
 </tr>
 <tr>
 <td><code>full</code></td>
@@ -393,7 +417,7 @@ fatal error: X11/Xft/Xft.h: No such file or directory</p>
 <pre><code>gcc build.c -o build &amp;&amp; ./build test
 </code></pre>
 
-<h2 id="toc_9">Emscripten build instructions (web)</h2>
+<h2 id="toc_10">Emscripten build instructions (web)</h2>
 
 <p><a href="https://emscripten.org/">Emscripten</a> is required.</p>
 
@@ -406,85 +430,105 @@ fatal error: X11/Xft/Xft.h: No such file or directory</p>
 
 <p>This generates <code>src/web/cakejs.js</code>, used by <code>src/web/playground.html</code>.</p>
 
-<h1 id="toc_10">Installation (optional)</h1>
+<h1 id="toc_11">Installation (optional)</h1>
 
 <p>Installation is optional. Cake can be built and run directly from the <code>src</code> 
 directory as shown above, without installing anything. Installing simply 
 copies the compiler and supporting files into a system directory and updates 
 the system <code>PATH</code> so the <code>cake</code> command can be executed from any terminal.</p>
 
-<h2 id="toc_11">Windows</h2>
+<p>Download the installer for your system from the
+<a href="https://github.com/thradams/cake/releases">GitHub releases</a>; no source code
+or compiler is needed.</p>
 
-<p>Run the installer as Administrator.</p>
+<p>Versions are installed side by side (<code>cake/&lt;version&gt;</code>); the last one
+installed is the one in the <code>PATH</code>.</p>
 
-<pre><code class="language-bash">install.exe
-</code></pre>
+<h2 id="toc_12">Windows</h2>
 
-<p>The installer:</p>
+<p>Run <code>cake-&lt;version&gt;-setup.exe</code> (it asks for Administrator).</p>
 
-<ul>
-<li>Copies Cake files into <code>Program Files</code></li>
-<li>Updates the system <code>PATH</code></li>
-<li>Removes obsolete Cake <code>PATH</code> entries from previous installations</li>
-</ul>
-
-<h2 id="toc_12">Linux / macOS</h2>
-
-<p>Run the installer using:</p>
-
-<pre><code class="language-bash">sudo ./install
-</code></pre>
-
-<p>The installer:</p>
+<p>The setup:</p>
 
 <ul>
-<li>Copies Cake files into the installation directory</li>
-<li>Creates or updates a file in <code>/etc/profile.d/</code></li>
-<li>Adds Cake to the system <code>PATH</code></li>
+<li>Copies Cake files into <code>Program Files\cake\&lt;version&gt;</code> (the folder can be changed)</li>
+<li>Adds that folder to the system <code>PATH</code>, removing other Cake versions from it</li>
+<li>Registers an uninstaller in Settings &gt; Apps</li>
 </ul>
 
-<p>Changes become available in new login sessions.</p>
+<p>The installer source is <code>src/tools/win_installer.c</code>; the installed files are
+listed in <code>src/tools/win_installer.h</code>.</p>
 
-<h1 id="toc_13">Running cake</h1>
+<h2 id="toc_13">Linux / macOS</h2>
+
+<p>The release has <code>cake-&lt;version&gt;-linux-x64.tar.gz</code>, <code>cake-&lt;version&gt;-linux-arm64.tar.gz</code>
+(e.g. Raspberry Pi, 64-bit OS) and <code>cake-&lt;version&gt;-macos.tar.gz</code>,
+compressed archives (like a zip) with the binaries and <code>install.sh</code>.</p>
+
+<pre><code class="language-bash">curl -L https://github.com/thradams/cake/releases/download/v&lt;version&gt;/cake-&lt;version&gt;-linux-x64.tar.gz | tar xz
+cd cake-&lt;version&gt;-linux-x64
+sudo ./install.sh
+</code></pre>
+
+<p>(use <code>linux-arm64</code> on a Raspberry Pi, <code>macos</code> on macOS). If the archive was downloaded
+with a browser, extract it with <code>tar xzf cake-&lt;version&gt;-linux-x64.tar.gz</code>
+or with a double click, then run <code>sudo ./install.sh</code> inside the folder.</p>
+
+<p>The installer (<code>src/tools/unix_install.sh</code>):</p>
+
+<ul>
+<li>Copies Cake files into <code>/usr/local/cake/&lt;version&gt;</code>
+(use <code>sudo INSTALL_PREFIX=/opt ./install.sh</code> for another prefix)</li>
+<li>Adds that folder to the <code>PATH</code>: <code>/etc/profile.d/cake.sh</code> on Linux,
+<code>/etc/paths.d/cake</code> on macOS</li>
+<li>Creates <code>uninstall.sh</code> in the installation folder</li>
+</ul>
+
+<p>Changes become available in new terminals. To remove:</p>
+
+<pre><code class="language-bash">sudo /usr/local/cake/&lt;version&gt;/uninstall.sh
+</code></pre>
+
+<p>Notes:</p>
+
+<ul>
+<li>Linux: built on Ubuntu 22.04 (needs glibc 2.35+). <code>cakeide</code> needs the
+X11/Xft libraries (e.g. <code>sudo apt install libxft2</code>, also on Raspberry Pi OS).</li>
+<li>Raspberry Pi: <code>cakeide</code> is an X11 program. Under a Wayland session (the
+default on Raspberry Pi OS) it runs through XWayland and is very slow.
+Switch to an X11 session: <code>sudo raspi-config</code>, then
+Advanced Options &gt; Wayland &gt; X11, and reboot.</li>
+<li>macOS: Apple Silicon (arm64) only. The binaries are not signed; if the
+archive was downloaded with a browser, macOS blocks them. Allow with
+<code>xattr -dr com.apple.quarantine cake-&lt;version&gt;-macos</code> before installing
+(not needed when downloaded with <code>curl</code>).</li>
+</ul>
+
+<h1 id="toc_14">Running cake</h1>
 
 <pre><code>cake source.c
 </code></pre>
 
-<p>This writes the C89 output to <code>./&lt;target&gt;/source.c</code>, where <code>&lt;target&gt;</code> is the platform Cake was built for — for example <code>./macos_arm64/source.c</code> or <code>./x64_msvc/source.c</code>. <code>-target=&lt;name&gt;</code> selects another platform; see the <a href="manual.html">Manual</a> for the full option list.</p>
+<p>This writes the C89 output to <code>./&lt;target&gt;/source.c</code>, where <code>&lt;target&gt;</code> is the platform Cake was built for — for example <code>./aarch64-apple-darwin-clang/source.c</code> or <code>./x86_64-pc-windows-msvc/source.c</code>. <code>-target=&lt;name&gt;</code> selects another platform; see the <a href="manual.html">Manual</a> for the full option list.</p>
 
-<h1 id="toc_14">IDE</h1>
+<h1 id="toc_15">IDE</h1>
 
 <p>The Cake IDE was developed with the help of AI tools. It has now been adopted as
 part of the Cake project and will be maintained alongside the rest of the
-codebase. Over time, the IDE code will be reviewed, refined, and gradually
-humanized as the project evolves.</p>
+codebase. </p>
 
-<p>The IDE works in macOS, Windows and Linux. Its purpose is to make Cake easier
-to use: open a file or a project, press Build, and the whole pipeline — Cake&#39;s
-C89 output, the external compiler, the debugger — is set up and driven from one
-place, with no command lines to remember. It is very useful to visualize and
-remove warnings: Cake&#39;s diagnostics show up in the Output window and jump
-straight to the offending line.</p>
-
-<p>It is also how Cake itself is developed and debugged. The <code>src/cakeprj.cakeproj</code>
-project builds the compiler with the same process any other project uses: Cake
-translates the sources to C89, an External Tool (gcc, clang or cl) links the
-generated code, and the built-in debugger (lldb / cdb) runs the result. Opening
-that project is the quickest way to step through the compiler while it compiles
-a sample.</p>
-
-<p>See <a href="idemanual.html">IDE Manual</a></p>
+<p>The IDE works in macOS, Windows and Linux / Raspberry Pi.</p>
 
 <p><img src="cakeide.png" alt="Cake IDE"></p>
 
-<h1 id="toc_15">Road map</h1>
+<h1 id="toc_16">Road map</h1>
 
 <ul>
 <li>Making it usable as a C89 backend, and fixes</li>
 <li>Reaching a stable release</li>
 </ul>
 
-<h1 id="toc_16">Participating</h1>
+<h1 id="toc_17">Participating</h1>
 
 <p>You can contribute by trying out cake, reporting bugs, and giving feedback.</p>
 
@@ -494,7 +538,7 @@ a sample.</p>
 
 <p><a href="https://discord.gg/YRekr2N65S">https://discord.gg/YRekr2N65S</a></p>
 
-<h1 id="toc_17">Cake x CFront</h1>
+<h1 id="toc_18">Cake x CFront</h1>
 
 <p>CFront was the first C++ compiler, designed to translate C++ source code into C.
 Initially compatible with C89, it diverged as the C and C++ languages evolved
@@ -507,7 +551,7 @@ development of C, ensuring full compatibility.</p>
 while supporting experimentation and open contributions to the language&#39;s
 evolution.</p>
 
-<h1 id="toc_18">License</h1>
+<h1 id="toc_19">License</h1>
 
 <p>Cake uses the same license as GCC: <a href="LICENSE">GPLv3</a>.</p>
 </article></body></html>

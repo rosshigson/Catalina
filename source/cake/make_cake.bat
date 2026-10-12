@@ -65,9 +65,9 @@ echo ==========================
 echo BUILDING CAKE for %*
 echo ==========================
 echo.
+call bake_cake>bake_cake.out
 
-call bake_cake>bake.out
-cd src\catalina
+cd src\propeller-catalina
 rem catalina -p2 -lcx -lmc -C LARGE -C RTC -W-w *.c -o cake -y
 rem catalina -p2 -lcx -lmc -C LARGE -C RTC -C MHZ_300 -C NO_SD_DELAY -W-w *.c -o cake -y
 catalina -p2 -lcx -lmc -C LARGE -C RTC -D TEST -W-w *.c -o cake -y

@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl ' align long
-C_sj1k_6a9cb4b7_sin_table_L000004 ' <symbol:sin_table>
+C_sp60_6ac84c5c_sin_table_L000004 ' <symbol:sin_table>
  word $0
  word $0
  word $477
@@ -183,13 +183,12 @@ C_g_sin_8
  mov r22, r2
  shl r22, #1 ' LSHU4 coni
  jmp #LODL
- long @C_sj1k_6a9cb4b7_sin_table_L000004
+ long @C_sp60_6ac84c5c_sin_table_L000004
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdword r22, r22 ' reg <- INDIRU2 reg
  and r22, cviu_m2 ' zero extend
- neg r22, r22 ' NEGI4
- mov r0, r22 ' CVI, CVU or LOAD
+ neg r0, r22 ' NEGI4
  jmp #JMPA
  long @C_g_sin_5 ' JUMPV addrg
 C_g_sin_6
@@ -214,12 +213,12 @@ C_g_sin_10
  mov r22, r2
  shl r22, #1 ' LSHU4 coni
  jmp #LODL
- long @C_sj1k_6a9cb4b7_sin_table_L000004
+ long @C_sp60_6ac84c5c_sin_table_L000004
  mov r20, RI ' reg <- addrg
  adds r22, r20 ' ADDI/P (1)
  rdword r22, r22 ' reg <- INDIRU2 reg
- and r22, cviu_m2 ' zero extend
- mov r0, r22 ' CVI, CVU or LOAD
+ mov r0, r22 ' CVUI
+ and r0, cviu_m2 ' zero extend
 C_g_sin_5
  jmp #POPM ' restore registers
  jmp #RETN

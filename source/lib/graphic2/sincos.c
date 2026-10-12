@@ -140,7 +140,7 @@ static unsigned short sin_table[129] = {
 // g_sin - return the Sin value of an angle, specified as 0x0 to 0x2000 
 // (i.e. 360 degrees or 2*pi radians = 0x2000). Useful for vector sprites.
 //
-unsigned int g_sin(unsigned int angle) {
+int g_sin(unsigned int angle) {
   angle &= 0x1FFF; // reduce to 0 .. 360 degrees
   if (angle >= 0x1000) { // angle is from 180 - 360 degrees
     angle &= 0xFFF;
@@ -163,7 +163,7 @@ unsigned int g_sin(unsigned int angle) {
 // g_cos - return the Cos value of an angle, specified as 0x0 to 0x2000 
 // (i.e. 360 degrees or 2*pi radians = 0x2000). Useful for vector sprites.
 //
-unsigned int g_cos(unsigned int angle) {
+int g_cos(unsigned int angle) {
    return g_sin(angle + 0x800);
 }
 

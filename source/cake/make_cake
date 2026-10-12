@@ -83,8 +83,8 @@ echo "Building Cake FOR $*"
 echo "============================"
 echo ""
 
-./bake_cake>bake.out
-cd src/catalina
+./bake_cake>bake_cake.out
+cd src/propeller-catalina
 #catalina -p2 -lcx -lmc -C LARGE -C RTC -DTEST -W-w *.c -o cake
 catalina -p2 -lcx -lmc -C LARGE -C RTC -W-w *.c -o cake
 cd ../..

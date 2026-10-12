@@ -1,0 +1,11 @@
+#!/bin/bash
+UNAME=`uname -s`
+if [[ $UNAME == "Linux" ]] ; then
+   catbind -i -e *.s
+elif [[ $UNAME == "Darwin" ]] ; then
+   catbind -i -e *.s
+else
+   catbind.exe -i -e *.s
+fi
+
+

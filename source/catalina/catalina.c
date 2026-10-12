@@ -2261,10 +2261,8 @@ void main(int argc, char *argv[]) {
          // disable Cake's use of color
          safecpy(lcc_cmd, "clcc -Wp-fdiagnostics-color=never ", MAX_LINELEN);
       }
-      if (glevel > 0) {
-         // must get Cake to add #line directives
-         safecat(lcc_cmd," -Wp-line-directives ", MAX_LINELEN);
-      }
+      // get Cake to add #line directives
+      safecat(lcc_cmd," -Wp-line-directives ", MAX_LINELEN);
    }
    if (pre_only) {
      // make subdirectory 'catalina' 

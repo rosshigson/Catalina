@@ -3,7 +3,7 @@
  *  https://github.com/thradams/cake
 */
 
-#pragma safety enable
+
 
 #if defined(__CATALYST__)
 
@@ -106,20 +106,20 @@ int c_getch(void)
 bool enable_vt_mode(void)
 {
     //missing in mingw (installed with codeblocs)
-#ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING  
-#define ENABLE_VIRTUAL_TERMINAL_PROCESSING  0x0004
-#endif
+    #ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING  
+    #define ENABLE_VIRTUAL_TERMINAL_PROCESSING  0x0004
+    #endif
 
     DWORD mode = 0;
     HANDLE h_out = GetStdHandle(STD_OUTPUT_HANDLE);
     if (h_out != INVALID_HANDLE_VALUE &&
-            GetConsoleMode(h_out, &mode) != 0 &&
-            SetConsoleMode(h_out, mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING) != 0 &&
-            SetConsoleOutputCP(CP_UTF8) != 0)
+        GetConsoleMode(h_out, &mode) != 0 &&
+        SetConsoleMode(h_out, mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING) != 0 &&
+        SetConsoleOutputCP(CP_UTF8) != 0)
     {
-        return true;//ok
+        return true; //ok
     }
-    return false;//error
+    return false; //error
 }
 
 int c_kbhit(void)
@@ -133,8 +133,6 @@ int c_getch(void)
 
 #endif
 
-#endif // defined(__CATALYST__)
-
 void c_clrscr()
 {
     puts("\x1b[2J\x1b[1;1H");
@@ -147,3 +145,5 @@ void c_gotoxy(int x, int y)
     printf("\x1b[%d;%dH", y, x);
     fflush(stdout);
 }
+
+#endif // defined(__CATALYST__)

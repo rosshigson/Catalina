@@ -4,12 +4,13 @@
  *
  *  struct object is used to compute the compile time expressions (including constexpr)
  *
-*/
+ */
 
-#pragma safety enable
-#include "ownership.h"
+
+#include "cake_compat.h"
 #include "compile.h"
 #include <stdlib.h>
+#include <ctype.h>
 #include <stdio.h>
 #include <assert.h>
 #include "tokenizer.h"
@@ -42,7 +43,7 @@ static char* _Opt strrchr2(const char* s, int c)
     {
         if ((unsigned char)*s == ch)
         {
-            last = s;  // record last match
+            last = s; // record last match
         }
         s++;
     }
@@ -58,7 +59,7 @@ static char* _Opt strrchr2(const char* s, int c)
 
 int fill_preprocessor_options(int argc, const char* const* argv, struct preprocessor_ctx* prectx)
 {
-    /*first loop used to collect options*/
+    /* first loop used to collect options */
     for (int i = 1; i < argc; i++)
     {
         if (argv[i][0] != '-')
@@ -81,7 +82,7 @@ int fill_preprocessor_options(int argc, const char* const* argv, struct preproce
             char buffer[200] = { 0 };
             snprintf(buffer, sizeof buffer, "#define %s \n", argv[i] + 2);
 
-            /*TODO make it more precise*/
+            /* TODO make it more precise */
             char* p = &buffer[7];
             while (*p)
             {
@@ -101,23 +102,69 @@ int fill_preprocessor_options(int argc, const char* const* argv, struct preproce
             continue;
         }
     }
+
+    /* -D macros: their tokens were just destroyed */
+    preprocessor_mark_predefined_macros(prectx);
     return 0;
 }
 
 #ifdef _WIN32
 
 WINBASEAPI unsigned long WINAPI GetEnvironmentVariableA(const char* name,
-char* buffer,
+    char* buffer,
     unsigned long size);
 
 #endif
 
-/* Collects this machine's system include directories into `dirs` - the same
-   ones the platform compiler itself would search. Returns 0, or an error. */
+/*
+    Collects this machine's system include directories into `dirs` - the same
+    ones the platform compiler itself would search. Returns 0, or an error.
+*/
 static int collect_system_include_dirs(struct json_value* dirs)
 {
+#if defined(__TINYC__)
 
-#if defined(__CATALINA__)
+    /* built by tcc (default target is a tcc target): its own dirs, the indented lines after "include:" in -print-search-dirs */
+#ifdef _WIN32
+    FILE* _Owner _Opt fp = _popen("tcc -print-search-dirs", "r");
+#else
+    FILE* _Owner _Opt fp = popen("tcc -print-search-dirs", "r");
+#endif
+    if (fp == NULL)
+        return errno;
+
+    char line[400] = { 0 };
+    int in_include_section = 0;
+    while (fgets(line, sizeof(line), fp) != NULL)
+    {
+        size_t len = strlen(line);
+        while (len > 0 && (line[len - 1] == '\n' || line[len - 1] == '\r'))
+            line[--len] = '\0';
+
+        if (line[0] != ' ')
+        {
+            if (in_include_section)
+                break;
+            in_include_section = strcmp(line, "include:") == 0;
+            continue;
+        }
+
+        if (in_include_section)
+        {
+            const char* p = line;
+            while (*p == ' ') p++;
+            json_add_string(dirs, p);
+        }
+    }
+
+#ifdef _WIN32
+    _pclose(fp);
+#else
+    pclose(fp);
+#endif
+    return 0;
+
+#elif defined(__CATALINA__)
 
     /* Read straight out of LCCDIR */
     char *env = getenv("LCCDIR");
@@ -129,20 +176,21 @@ static int collect_system_include_dirs(struct json_value* dirs)
     const char* p = env;
     for (;;)
     {
-#if !defined(__CATALYST__)       
+#if !defined(__CATALYST__)
         // for Catalyst, need to include "/include/"
         // if LCCDIR does not exist or is empty!
         if (*p == '\0')
             break;
-#endif        
+#endif
 
         char filename_local[500] = { 0 };
+        const int max_count = (int)(sizeof(filename_local) - sizeof("/include/"));
         int count = 0;
         while (*p != '\0' && (*p != ';' && *p != '\n'))
         {
-            filename_local[count] = *p;
+            if (count < max_count)
+                filename_local[count++] = *p;
             p++;
-            count++;
         }
         filename_local[count] = 0;
 
@@ -159,7 +207,7 @@ static int collect_system_include_dirs(struct json_value* dirs)
 
             json_add_string(dirs, filename_local);
         }
-#if defined(__CATALYST__)        
+#if defined(__CATALYST__)
         else {
             // for Catalyst, if LCCDIR is empty,
             // explicitly add "/include/"
@@ -173,15 +221,14 @@ static int collect_system_include_dirs(struct json_value* dirs)
 
     return 0;
 
+#elif defined(__linux__) || defined(__APPLE__)
 
-#else // defined(__CATALINA__)
-
-#if defined(__linux__) || defined(__APPLE__)
-
-    /* Parsed out of the platform compiler's own "-v -E" output, between
-       "#include <...> search starts here:" and "End of search list.". */
+    /*
+        Parsed out of the platform compiler's own "-v -E" output, between
+        "#include <...> search starts here:" and "End of search list.".
+    */
 #ifdef __linux__
-    const char* command = "echo | gcc -v -E - 2>&1";
+    const char* command = "echo | LC_ALL=C gcc -v -E - 2>&1";   /* LC_ALL=C: gcc translates these lines */
 #else
     const char* command = "echo | clang -v -E - 2>&1";
 #endif
@@ -211,6 +258,14 @@ static int collect_system_include_dirs(struct json_value* dirs)
             if (len > 0 && path[len - 1] == '\n')
                 path[len - 1] = '\0';
 
+            /*
+                clang labels macOS framework search paths with a trailing
+                " (framework directory)" - it is not part of the path.
+            */
+            char* _Opt framework_tag = strstr(p, " (framework directory)");
+            if (framework_tag != NULL)
+                *framework_tag = '\0';
+
             json_add_string(dirs, p);
         }
     }
@@ -220,8 +275,10 @@ static int collect_system_include_dirs(struct json_value* dirs)
 
 #elif defined(_WIN32)
 
-    /* Read straight out of INCLUDE, which a Visual Studio command prompt
-       sets - hence the "run this inside one" message when it is absent. */
+    /*
+        Read straight out of INCLUDE, which a Visual Studio command prompt
+        sets - hence the "run this inside one" message when it is absent.
+    */
     char env[2000] = { 0 };
     int n = GetEnvironmentVariableA("INCLUDE", env, sizeof(env));
     if (n <= 0)
@@ -271,18 +328,17 @@ static int collect_system_include_dirs(struct json_value* dirs)
     (void)dirs;
     return 0;
 #endif
-
-#endif // defined(__CATALINA__)
-
 }
 
-/* cake -auto-config: writes this machine's system include directories into
-   cake.json's "include_dirs" array.
+/*
+    cake -auto-config: writes this machine's system include directories into
+    cake.json's "include_dirs" array.
 
-   The file is updated rather than overwritten: anything already in it -
-   notably the "compile" object the IDE writes (see global_settings_save() in
-   ide.c) - is read back and written out unchanged, so re-running auto-config
-   never costs the user their compiler options. */
+    The file is updated rather than overwritten: anything already in it -
+    notably the "compile" object the IDE writes (see global_settings_save() in
+    ide.c) - is read back and written out unchanged, so re-running auto-config
+    never costs the user their compiler options.
+*/
 int generate_config_file(const char* configpath)
 {
     struct json_value* _Opt _Owner root = NULL;
@@ -308,8 +364,10 @@ int generate_config_file(const char* configpath)
         return ENOMEM;
     }
 
-    /* Replaces any existing array - json_set_array() overwrites a member of
-       the same name rather than adding a second one. */
+    /*
+        Replaces any existing array - json_set_array() overwrites a member of
+        the same name rather than adding a second one.
+    */
     struct json_value* _Opt dirs = json_set_array(root, "include_dirs");
     if (dirs == NULL)
     {
@@ -341,15 +399,27 @@ int generate_config_file(const char* configpath)
     return 0;
 }
 
-static int get_first_line_len(const char* s)
+/*
+  -find-definition: the parser already reported what it found
+  (W_FIND_DEFINITION); this tells compile() through the report whether to
+  keep searching in the next files.
+*/
+static void find_definition_to_report(const struct parser_ctx* ctx, struct report* report)
 {
-    int n = 0;
-    while (*s && (*s != '\r' && *s != '\n'))
-    {
-        s++;
-        n++;
-    }
-    return n;
+    const struct token* _Opt p = ctx->p_find_definition;
+    if (p == NULL)
+        return;
+
+    report->find_definition_found = true;
+    report->find_definition_is_declaration = ctx->find_definition_is_declaration;
+    report->find_definition_is_static = ctx->find_definition_is_static;
+    report->find_definition_is_tag = ctx->find_definition_is_tag;
+    report->find_definition_is_local = ctx->find_definition_is_local;
+    report->find_definition_line = p->line;
+    report->find_definition_col = p->col;
+    snprintf(report->find_definition_name, sizeof report->find_definition_name, "%s", p->lexeme);
+    snprintf(report->find_definition_file, sizeof report->find_definition_file, "%s",
+        p->token_origin ? p->token_origin->lexeme : "");
 }
 
 int compile_one_file(const char* file_name,
@@ -360,7 +430,7 @@ int compile_one_file(const char* file_name,
     struct report* report)
 {
 #ifdef _CRTDBG_MAP_ALLOC
-    _CrtMemState state1, state2, state_diff;    
+    _CrtMemState state1, state2, state_diff;
     _CrtMemCheckpoint(&state1);
 #endif
 
@@ -369,21 +439,23 @@ int compile_one_file(const char* file_name,
 #if !defined(__CATALINA__)
     // For Catalina, don't print the name of each file processed
     // (there will usually be only one file)
-    print_path(file_name, true);
-    printf("\n");
+    if (!options_is_report_mode(options))
+    {
+        print_path(file_name, true);
+        printf("\n");
+    }
 #endif // !defined(__CATALINA__)
 
     struct preprocessor_ctx prectx = { 0 };
     prectx.options = *options;
     prectx.macros.capacity = 5000;
 
-    add_standard_macros(&prectx, options->target);
+    add_standard_macros(&prectx, &options->platform);
 
-    if (include_config_header(&prectx) != 0)
+    if (preprocessor_load_config(&prectx) != 0)
     {
-        //cakeconf.h is optional               
+        /* optional */
     }
-    // print_all_macros(&prectx);
 
     struct ast ast = { 0 };
 
@@ -401,15 +473,17 @@ int compile_one_file(const char* file_name,
 
     try
     {
-        //-D , -I etc..
+        // -D , -I etc..
         if (fill_preprocessor_options(argc, argv, &prectx) != 0)
         {
             throw;
         }
 
         prectx.options = *options;
+        prectx.include_listener = report->include_listener;
+        prectx.source_file = file_name;
 
-        content = read_file(file_name, true /*append new line*/);
+        content = read_file(file_name, true /* append new line */);
         if (content == NULL)
         {
             report->error_count++;
@@ -447,7 +521,7 @@ int compile_one_file(const char* file_name,
             else
             {
                 report->error_count++;
-                printf("cannot open Sarif output file '%s'\n", sarif_file_name);
+                printf("cannot open Sarif output file '%s' - %s\n", sarif_file_name, get_posix_error_message(errno));
                 throw;
             }
         }
@@ -457,12 +531,12 @@ int compile_one_file(const char* file_name,
         if (tctx.n_errors > 0)
             throw;
 
-        const char* builtin = target_get_builtins(ctx.options.target);
+        const char* builtin = ctx.options.platform.builtins;
         if (builtin[0] != '\0')
         {
             struct token_list builtin_tokens = tokenizer(&tctx, builtin, "builtins", 1, TK_FLAG_NONE);
-          token_list_append_list_at_beginning(&tokens, &builtin_tokens);
-          token_list_destroy(&builtin_tokens);
+            token_list_append_list_at_beginning(&tokens, &builtin_tokens);
+            token_list_destroy(&builtin_tokens);
         }
 
         if (options->dump_tokens)
@@ -472,8 +546,14 @@ int compile_one_file(const char* file_name,
 
         ast.token_list = preprocessor(&prectx, &tokens, 0);
 
+        if (options->p_unused_functions)
+            preprocessor_register_unused_macros(&prectx, options->p_unused_functions);
+
         report->warnings_count += prectx.n_warnings;
         report->error_count += prectx.n_errors;
+
+        if (prectx.preprocessor_auto_complete_done)
+            throw; /* the cursor is on a directive line: no parse */
 
         if (prectx.n_errors > 0)
         {
@@ -493,36 +573,55 @@ int compile_one_file(const char* file_name,
                 preprocessor_copy_included_headers(&prectx, options->copy_headers);
             }
             else
-        {
-            p_output_string = print_preprocessed_to_string2(ast.token_list.head);
-            if (p_output_string)
-            printf("%s", p_output_string);
-
-            FILE* _Owner _Opt outfile = fopen(out_file_name, "w");
-            if (outfile)
             {
+                p_output_string = print_preprocessed_to_string2(ast.token_list.head);
                 if (p_output_string)
-                    fprintf(outfile, "%s", p_output_string);
+                    printf("%s", p_output_string);
 
-                    if (fclose(outfile) != 0)
+                FILE* _Owner _Opt outfile = fopen(out_file_name, "w");
+                if (outfile)
+                {
+                    if (p_output_string)
+                        fprintf(outfile, "%s", p_output_string);
+
+                    const bool write_error = ferror(outfile) != 0;
+                    if (fclose(outfile) != 0 || write_error)
                     {
                         report->error_count++;
                         printf("error writing output file '%s' - %s\n", out_file_name, get_posix_error_message(errno));
                         throw;
                     }
-            }
-            else
-            {
-                report->error_count++;
-                printf("cannot open output file '%s' - %s\n", out_file_name, get_posix_error_message(errno));
-                throw;
                 }
-            }            
+                else
+                {
+                    report->error_count++;
+                    printf("cannot open output file '%s' - %s\n", out_file_name, get_posix_error_message(errno));
+                    throw;
+                }
+            }
+        }
+        else if (options->rename_macro ||
+                 (options->rename_old_name[0] != '\0' && !prectx.rename_old_name_found))
+        {
+            /* -rename phase 2: a macro (the preprocessor already recorded it) or a name not in this file */
+        }
+        else if (prectx.p_find_definition)
+        {
+            /* -find-definition on a macro name: resolved by the preprocessor, no parse */
+            ctx.p_find_definition = prectx.p_find_definition;
+            find_definition_report(&ctx);
+            diagnostic_queue_flush(&ctx.diagnostic_queue, &ctx);
+            find_definition_to_report(&ctx, report);
+            report->find_definition_is_macro = true;
         }
         else
         {
             bool berror = false;
             ast.declaration_list = parse(&ctx, &ast.token_list, &ast.file_scope, &berror);
+
+            if (options_is_find_request(options))
+                find_definition_to_report(&ctx, report);
+
             if (berror || report->error_count > 0)
                 throw;
 
@@ -541,7 +640,7 @@ int compile_one_file(const char* file_name,
                 ctx2.p_ast = &ast;
                 ctx2.options = ctx.options;
                 const int codegen_error = codegen_visit(&ctx2, &ss);
-                p_output_string = ss.c_str; //MOVE
+                p_output_string = ss.c_str; // MOVE
                 codegen_visit_ctx_destroy(&ctx2);
 
                 if (codegen_error != 0)
@@ -564,11 +663,10 @@ int compile_one_file(const char* file_name,
                               // to correctly generate debug information, so
                               // if we have builtins, we add one first
                               char new_file[512] = "";
-                              int nlen = strlen(file_name);
-                              memcpy(new_file, file_name, nlen);
-                              new_file[nlen] = '\0';
+                              snprintf(new_file, sizeof new_file, "%s", file_name);
+                              const size_t nlen = strlen(new_file);
 #if defined(_WIN32) || defined(_WIN64)
-                              // Catalina doesn't understand normalized paths 
+                              // Catalina doesn't understand normalized paths
                               // on Windows so denormalize it
                               for (size_t i = 0; i < nlen; i++) {
                                  if (new_file[i] == '/') {
@@ -587,7 +685,8 @@ int compile_one_file(const char* file_name,
                         fprintf(outfile, "%s", p_output_string);
 #endif // defined(__CATALINA__)
 
-                    if (fclose(outfile) != 0)
+                    const bool write_error = ferror(outfile) != 0;
+                    if (fclose(outfile) != 0 || write_error)
                     {
                         report->error_count++;
                         printf("error writing output file '%s' - %s\n", out_file_name, get_posix_error_message(errno));
@@ -607,11 +706,11 @@ int compile_one_file(const char* file_name,
     catch
     {
         // printf("Error %s\n", error->message);
-        }
+    }
 
-        if (ctx.sarif_file)
-        {
-#define SARIF_FOOTER                                                             \
+    if (ctx.sarif_file)
+    {
+#define SARIF_FOOTER                                                    \
     "      ],\n"                                                        \
     "      \"tool\": {\n"                                               \
     "        \"driver\": {\n"                                           \
@@ -625,88 +724,13 @@ int compile_one_file(const char* file_name,
     "  ]\n"                                                             \
     "}\n"
 
-            fprintf(ctx.sarif_file, "%s", SARIF_FOOTER);
+        fprintf(ctx.sarif_file, "%s", SARIF_FOOTER);
         if (fclose(ctx.sarif_file) != 0)
         {
             report->error_count++;
             printf("error writing Sarif output file - %s\n", get_posix_error_message(errno));
         }
-            ctx.sarif_file = NULL;
-    }
-
-    if (ctx.options.test_mode_inout)
-    {
-        char dir_name[FS_MAX_PATH] = {0};
-        snprintf(dir_name, sizeof dir_name, "%s", file_name);
-        dirname(dir_name);
-
-        //lets check if the generated file is the expected
-        //char just_file_name[FS_MAX_PATH] = { 0 };
-        //snprintf(just_file_name, sizeof just_file_name, "%s", file_name);
-        char * p_just_file_name = basename(file_name);
-        //remove_file_extension(file_name, sizeof(file_name_no_ext), file_name_no_ext);
-
-        char buf[FS_MAX_PATH] = { 0 };
-        snprintf(buf, sizeof buf, "%s/expected_%s/%s", dir_name, get_platform(ctx.options.target)->name, p_just_file_name);
-
-        char* _Owner _Opt content_expected = read_file(buf, false /*append new line*/);
-        if (content_expected)
-        {
-            //We don't compare the fist line because it has the version that changes.
-            int s_first_line_len = 0;
-            int content_expected_first_line_len = 0;
-
-            if (ctx.options.preprocess_only)
-            {
-            }
-            else if (p_output_string)
-            {
-                s_first_line_len = get_first_line_len(p_output_string);
-                content_expected_first_line_len = get_first_line_len(content_expected);
-            }
-            
-            if (p_output_string && strcmp(content_expected + content_expected_first_line_len, p_output_string + s_first_line_len) != 0)
-            {
-                printf("Output file:\n");
-                print_path(out_file_name, true);
-                printf("\n");
-                printf("is different from expected file:\n");
-                print_path(buf, true);
-                printf("\n");
-                report->error_count++;
-            }
-            free(content_expected);
-        }
-        else
-        {
-            printf("Missing comparison file: (-test-mode-in-out)\n");
-            print_path(buf, true);
-            printf("\n");
-
-            report->test_failed++;
-        }
-
-        if (report->error_count > 0 || report->warnings_count > 0)
-        {
-
-            printf("-------------------------------------------\n");
-            printf("%s", content);
-            printf("\n-------------------------------------------\n");
-            if (color_enabled)
-            {
-                printf(LIGHTRED "TEST FAILED" COLOR_RESET " : error=%d, warnings=%d\n", report->error_count, report->warnings_count);
-            }
-            else
-            {
-                printf("TEST FAILED" " : error=%d, warnings=%d\n", report->error_count, report->warnings_count);
-            }
-            printf("\n\n");
-            report->test_failed++;
-        }
-        else
-        {
-            report->test_succeeded++;
-    }
+        ctx.sarif_file = NULL;
     }
 
     token_list_destroy(&tokens);
@@ -716,7 +740,7 @@ int compile_one_file(const char* file_name,
     free(content);
     ast_destroy(&ast);
     preprocessor_ctx_destroy(&prectx);
-    
+
 #ifdef _CRTDBG_MAP_ALLOC
     _CrtMemCheckpoint(&state2);
 
@@ -784,7 +808,7 @@ static int compile_many_files(const char* file_name,
                 file_extension &&
                 strcmp(file_name_extension, file_extension) == 0)
             {
-                //Fixes the output file name replacing the current name
+                // Fixes the output file name replacing the current name
                 char out_file_name_final[FS_MAX_PATH] = { 0 };
                 strcpy(out_file_name_final, out_file_name);
                 dirname(out_file_name_final);
@@ -800,11 +824,11 @@ static int compile_many_files(const char* file_name,
                 struct report report_local = { 0 };
                 report_local.test_mode = report->test_mode;
                 compile_one_file(in_file_name_final,
-                                 options,
-                                 out_file_name_final,
-                                 argc,
-                                 argv,
-                                 &report_local);
+                    options,
+                    out_file_name_final,
+                    argc,
+                    argv,
+                    &report_local);
 
                 report->error_count += report_local.error_count;
                 report->warnings_count += report_local.warnings_count;
@@ -820,19 +844,41 @@ static int compile_many_files(const char* file_name,
     return num_files;
 }
 
+/* realpath, falling back to the original path when it fails (e.g. file does not exist) */
+static void full_path_or_copy(const char* path, char resolved[FS_MAX_PATH])
+{
+    if (realpath(path, resolved) == NULL)
+        snprintf(resolved, FS_MAX_PATH, "%s", path);
+}
+
 static void longest_common_path(int argc, const char* const* argv, char root_dir[FS_MAX_PATH])
 {
     /*
      * find the longest common path
-    */
+     */
     for (int i = 1; i < argc; i++)
     {
         if (strcmp(argv[i], "-o") == 0 ||
             strcmp(argv[i], "-sarif-path") == 0 ||
             strcmp(argv[i], "-I") == 0)
         {
-            //ignore these files and consume next.
+            // ignore these files and consume next.
             i++;
+            continue;
+        }
+
+        if (strcmp(argv[i], "-find-definition") == 0 || strcmp(argv[i], "-find-declaration") == 0 ||
+            strcmp(argv[i], "-find-usages") == 0 || strcmp(argv[i], "-complete") == 0)
+        {
+            // consumes line and col
+            i += 2;
+            continue;
+        }
+
+        if (strcmp(argv[i], "-rename") == 0)
+        {
+            // consumes line, col and new name
+            i += 3;
             continue;
         }
 
@@ -840,7 +886,7 @@ static void longest_common_path(int argc, const char* const* argv, char root_dir
             continue;
 
         char fullpath_i[FS_MAX_PATH] = { 0 };
-        realpath(argv[i], fullpath_i);
+        full_path_or_copy(argv[i], fullpath_i);
         strcpy(root_dir, fullpath_i);
         dirname(root_dir);
 
@@ -853,10 +899,10 @@ static void longest_common_path(int argc, const char* const* argv, char root_dir
                     continue;
 
                 char fullpath_j[FS_MAX_PATH] = { 0 };
-                realpath(argv[j], fullpath_j);
+                full_path_or_copy(argv[j], fullpath_j);
                 if (fullpath_j[k] != ch)
                 {
-                    strncpy(root_dir, fullpath_j, k);
+                    memcpy(root_dir, fullpath_j, k);
                     root_dir[k] = '\0';
                     dirname(root_dir);
                     goto exit;
@@ -869,61 +915,22 @@ static void longest_common_path(int argc, const char* const* argv, char root_dir
 exit:;
 }
 
-static int create_multiple_paths(const char* root, const char* outdir)
-{
-    /*
-     * This function creates all dirs (folder1, forder2 ..) after root
-     * root   : C:/folder
-     * outdir : C:/folder/folder1/folder2 ...
-    */
-#if !defined __EMSCRIPTEN__
-    const char* p = outdir + strlen(root) + 1;
-    for (;;)
-    {
-        if (*p != '\0' && *p != '/' && *p != '\\')
-        {
-            p++;
-            continue;
-        }
-
-        char temp[FS_MAX_PATH] = { 0 };
-        strncpy(temp, outdir, p - outdir);
-
-        int er = mkdir(temp, 0777);
-        if (er != 0)
-        {
-            er = errno;
-            if (er != EEXIST)
-            {
-                printf("error creating output folder '%s' - %s\n", temp, get_posix_error_message(er));
-                return er;
-            }
-        }
-        if (*p == '\0')
-            break;
-        p++;
-    }
-    return 0;
-#else
-    return -1;
-#endif
-}
-
 void print_report(const struct report* report)
 {
     if (report->ignore_this_report)
         return;
 
-    if (report->test_mode ||
+    if (!report->quiet ||
+        report->test_mode ||
         report->error_count != 0 ||
         report->warnings_count != 0 ||
         report->info_count != 0)
     {
 
         printf("\n");
-        printf("%d"   " errors ", report->error_count);
-        printf("%d"  " warnings ", report->warnings_count);
-        printf("%d"     " notes ", report->info_count);
+        printf("%d" " errors ", report->error_count);
+        printf("%d" " warnings ", report->warnings_count);
+        printf("%d" " notes ", report->info_count);
         printf("\n");
         printf("%d files in %.2f seconds", report->no_files, report->cpu_time_used_sec);
 
@@ -942,6 +949,469 @@ void print_report(const struct report* report)
     printf("\n");
 }
 
+static bool path_is_header(const char* path)
+{
+    const char* _Opt dot = strrchr(path, '.');
+    return dot && (strcmp(dot, ".h") == 0 || strcmp(dot, ".H") == 0);
+}
+
+/*
+  -find-definition: files[0] has the cursor; the caller orders the others by
+  the chance of finding it (for a header, its .c first). The cursor is
+  resolved in its own file, or, for a header that does not parse on its
+  own, in the first file that includes it. When it resolves only to a
+  declaration, the definition is searched by name, first in that same file
+  and then, for external names, in the others.
+*/
+/* -find-definition: index of the .c named like file (file1.h -> file1.c), or -1 */
+static int find_definition_counterpart(const char* const* files, int count, const char* file)
+{
+    char name[FS_MAX_PATH] = { 0 };
+    remove_file_extension(basename(file), (int)sizeof name - 3, name);
+    strcat(name, ".c");
+
+    for (int i = 0; i < count; i++)
+    {
+        const char* a = basename(files[i]);
+        const char* b = name;
+        /* file names are case insensitive only on Windows */
+#ifdef _WIN32
+        while (*a && tolower((unsigned char)*a) == tolower((unsigned char)*b))
+#else
+        while (*a && *a == *b)
+#endif
+        {
+            a++;
+            b++;
+        }
+        if (*a == '\0' && *b == '\0')
+            return i;
+    }
+    return -1;
+}
+
+/* -find-definition: the existing .c next to a header (dir/file1.h -> dir/file1.c), or false */
+static bool find_definition_sibling(const char* file, char* out, int out_size)
+{
+    snprintf(out, out_size, "%s", file);
+    char* dot = strrchr(basename(out), '.');
+    if (dot == NULL || strcmp(dot, ".c") == 0 || (int)(dot - out) + 3 > out_size)
+        return false;
+    strcpy(dot, ".c");
+
+    FILE* _Owner _Opt f = fopen(out, "rb");
+    if (f == NULL)
+        return false;
+    fclose(f);
+    return true;
+}
+
+static bool find_definition_search_by_name(const char** files, int count, int cursor_index,
+    const struct report* p_report, struct options* options, int argc, const char* const* argv);
+
+static void find_definition_run(const char** files, int count, struct options* options, int argc, const char* const * argv)
+{
+    if (count == 0)
+        return;
+
+    char fullpath[FS_MAX_PATH] = { 0 };
+    full_path_or_copy(files[0], fullpath);
+    snprintf(options->find_definition_file, sizeof options->find_definition_file, "%s", fullpath);
+
+    /* -find-definition shows only the definition; the declaration only when there is none */
+    options->find_definition_hide_declaration = options->request == REQUEST_FIND_DEFINITION;
+    const int cursor_line = options->find_definition_line;
+    const int cursor_col = options->find_definition_col;
+
+    struct report report = { 0 };
+    int cursor_index = -1;
+    for (int i = 0; i < count; i++)
+    {
+        full_path_or_copy(files[i], fullpath);
+        memset(&report, 0, sizeof report);
+        compile_one_file(fullpath, options, "", argc, argv, &report);
+        if (report.find_definition_found)
+        {
+            cursor_index = i;
+            break;
+        }
+
+        if (!path_is_header(files[0]))
+            break;
+    }
+
+    if (cursor_index < 0 || !report.find_definition_is_declaration || options->request == REQUEST_FIND_DECLARATION)
+        return;
+
+    if (find_definition_search_by_name(files, count, cursor_index, &report, options, argc, argv))
+        return;
+
+    /* no definition anywhere (e.g. a library function): the declaration is the answer */
+    options->find_definition_hide_declaration = false;
+    options->find_definition_line = cursor_line;
+    options->find_definition_col = cursor_col;
+    options->find_definition_name[0] = '\0';
+    full_path_or_copy(files[cursor_index], fullpath);
+    struct report report_declaration = { 0 };
+    compile_one_file(fullpath, options, "", argc, argv, &report_declaration);
+}
+
+/*
+    -find-definition, phase 2: the definition of the declaration phase 1 found,
+    searched by name in the files; true when it was found (and reported)
+*/
+static bool find_definition_search_by_name(const char** files, int count, int cursor_index,
+    const struct report* p_report, struct options* options, int argc, const char* const* argv)
+{
+    const struct report report = *p_report;
+    char fullpath[FS_MAX_PATH] = { 0 };
+
+    options->find_definition_line = 0;
+    options->find_definition_col = 0;
+    snprintf(options->find_definition_name, sizeof options->find_definition_name, "%s", report.find_definition_name);
+    options->find_definition_name_static = report.find_definition_is_static;
+    options->find_definition_name_is_tag = report.find_definition_is_tag;
+
+    /* the .c named like the declaration's file (file1.h -> file1.c) goes to the first position after the cursor file */
+    const int first = cursor_index == 0 ? 1 : 0;
+    const int counterpart = find_definition_counterpart(files, count, report.find_definition_file);
+    if (counterpart > first && counterpart != cursor_index)
+    {
+        const char* temp = files[first];
+        files[first] = files[counterpart];
+        files[counterpart] = temp;
+    }
+
+    /* a standalone file (only one passed, no project): the .c next to the declaration's file */
+    char sibling[FS_MAX_PATH] = { 0 };
+    const bool has_sibling = count == 1 &&
+        find_definition_sibling(report.find_definition_file, sibling, (int)sizeof sibling);
+
+    /* -2 is the file where the cursor resolved, -1 the .c next to the declaration; static names do not leave the first */
+    for (int k = -2; k < count; k++)
+    {
+        if (k > -2 && options->find_definition_name_static)
+            break;
+
+        if (k == -1)
+        {
+            if (!has_sibling)
+                continue;
+            snprintf(fullpath, sizeof fullpath, "%s", sibling);
+        }
+        else
+        {
+            if (k == cursor_index)
+                continue;
+            full_path_or_copy(files[k < 0 ? cursor_index : k], fullpath);
+        }
+
+        struct report report_name = { 0 };
+        compile_one_file(fullpath, options, "", argc, argv, &report_name);
+        if (report_name.find_definition_found)
+            return true;
+    }
+    return false;
+}
+
+static int rename_item_compare(const void* a, const void* b)
+{
+    const struct rename_item* x = a;
+    const struct rename_item* y = b;
+    const int c = strcmp(x->file, y->file);
+    if (c != 0)
+        return c;
+    if (x->line != y->line)
+        return x->line < y->line ? -1 : 1;
+    return x->col < y->col ? -1 : (x->col > y->col ? 1 : 0);
+}
+
+/*
+  -rename: replaces old_name with new_name at the items [begin, end) of one
+  file (sorted by line and col) and writes it. Each position must still hold
+  old_name, or the file is left untouched. Returns true if written.
+*/
+static bool rename_apply_file(const struct rename_list* list, int begin, int end, const char* new_name)
+{
+    const char* file = list->data[begin].file;
+    char* _Owner _Opt content = read_file_binary(file);
+    if (content == NULL)
+    {
+        printf("rename: cannot read '%s'\n", file);
+        return false;
+    }
+
+    const size_t old_len = strlen(list->old_name);
+    struct osstream out = { 0 };
+    const char* copied = content;  /* content before it is already in out */
+    const char* line_start = content;
+    int line = 1;
+    bool ok = true;
+
+    for (int i = begin; i < end && ok; i++)
+    {
+        while (line < list->data[i].line && *line_start)
+        {
+            const char* eol = strchr(line_start, '\n');
+            line_start = eol ? eol + 1 : line_start + strlen(line_start);
+            line++;
+        }
+
+        const char* p = line_start + (list->data[i].col - 1);
+        if (line != list->data[i].line || p < copied || strncmp(p, list->old_name, old_len) != 0)
+        {
+            ok = false;
+            break;
+        }
+
+        ss_fprintf(&out, "%.*s%s", (int)(p - copied), copied, new_name);
+        copied = p + old_len;
+    }
+
+    bool written = false;
+    if (ok)
+    {
+        ss_fprintf(&out, "%s", copied);
+        FILE* _Owner _Opt f = fopen(file, "wb");
+        if (f)
+        {
+            written = fwrite(out.c_str ? out.c_str : "", 1, (size_t)out.size, f) == (size_t)out.size;
+            if (fclose(f) != 0)
+                written = false;
+        }
+        if (!written)
+            printf("rename: cannot write '%s'\n", file);
+    }
+    else
+    {
+        printf("rename: '%s' changed since it was compiled, not renamed\n", file);
+    }
+
+    ss_close(&out);
+    free(content);
+    return written;
+}
+
+/*
+  -find-usages: prints the items [begin, end) of one file as notes (the
+  format of -find-definition, so the IDE opens them) with their source line.
+*/
+static void find_usages_print_file(const struct rename_list* list, int begin, int end, const struct options* options)
+{
+    const char* file = list->data[begin].file;
+    char* _Owner _Opt content = read_file_binary(file);
+
+    char text[300];
+    snprintf(text, sizeof text, "usage of '%s'", list->old_name);
+
+    struct osstream ss = { 0 };
+    const char* _Opt line_start = content;
+    int line = 1;
+    for (int i = begin; i < end; i++)
+    {
+        ss_print_diagnostic_header(&ss, file, list->data[i].line, list->data[i].col,
+            options->diagnostic_ouput_format, !options->color_disabled, true,
+            W_FIND_DEFINITION, false, false, true, text);
+
+        if (line_start == NULL)
+            continue;
+
+        while (line < list->data[i].line && *line_start)
+        {
+            const char* eol = strchr(line_start, '\n');
+            line_start = eol ? eol + 1 : line_start + strlen(line_start);
+            line++;
+        }
+
+        size_t len = strcspn(line_start, "\r\n");
+        ss_fprintf(&ss, " %5d | %.*s\n", line, (int)len, line_start);
+    }
+
+    if (ss.c_str)
+        fputs(ss.c_str, stdout);
+    ss_close(&ss);
+    free(content);
+}
+
+/*
+  Porque precisa da Fase 3?
+  
+    ========================== s.h ======================== 
+    struct S { int x; };      // alvo: s.h:1 (1)
+    =======================================================
+
+    ======================== t.h ============================
+    struct S;   // outra declaração do mesmo S (2)
+    =======================================================
+
+    ======================= s.c ===========================
+    #include "s.h"
+    struct S a;
+           ^
+         cursor (linha 2, coluna 8, rename)
+    =======================================================
+
+    ====================== first.c ========================
+    #include "t.h"
+    struct S* p;             // aqui o parser liga S a t.h:1
+    =======================================================
+
+    ==================== both.c ===========================
+    #include "s.h"
+    #include "t.h"            // aqui t.h:1 é ligado a s.h:1
+    =======================================================
+
+    cake -find-usages 2 8 s.c first.c both.c
+
+  
+    1. s.c: o par aponta para o alvo s.h:1.  (1)
+       Entram s.h:1 e s.c:2.
+ 
+    2. first.c: os pares apontam para t.h:1 (2), que não é o 
+       alvo e ainda não está na lista. 
+       Nada liga first.c ao alvo, então ele fica undecided.
+ 
+    3. both.c: o struct S; de t.h:1 é ligado (2) a s.h:1 (1), 
+       o alvo.
+       Entra t.h:1.
+
+    4. Fase 3: o item t.h:1 (2) de first.c agora está na lista. 
+       A declaração t.h:1 é aceita, e first.c:2 entra.
+    
+    Sem a Fase 3, first.c ficaria de fora nessa ordem, mas entraria na 
+    ordem s.c both.c first.c. 
+    Sem o both.c, nenhuma unidade liga t.h ao alvo, e o resultado é 2
+    usos (s.c e s.h). 
+    Isso está correto, porque não há como saber que os dois são o 
+    mesmo símbolo.
+*/
+static void rename_run(const char* const* files, int count, struct options* options, int argc, const char* const* argv)
+{
+    if (count == 0)
+        return;
+
+    const bool find_usages = options->request == REQUEST_FIND_USAGES;
+    const char* request_name = find_usages ? "find-usages" : "rename";
+
+    char fullpath[FS_MAX_PATH] = { 0 };
+    full_path_or_copy(files[0], fullpath);
+    snprintf(options->find_definition_file, sizeof options->find_definition_file, "%s", fullpath);
+
+    struct report report = { 0 };
+    int cursor_index = -1;
+    for (int i = 0; i < count; i++)
+    {
+        full_path_or_copy(files[i], fullpath);
+        memset(&report, 0, sizeof report);
+        compile_one_file(fullpath, options, "", argc, argv, &report);
+        if (report.find_definition_found)
+        {
+            cursor_index = i;
+            break;
+        }
+
+        if (!path_is_header(files[0]))
+            break;
+    }
+
+    if (cursor_index < 0)
+    {
+        printf("%s: no symbol at the cursor\n", request_name);
+        return;
+    }
+
+    /* declared outside the project (e.g. printf in stdio.h): cannot be renamed */
+    char root_dir[FS_MAX_PATH] = { 0 };
+    longest_common_path(argc, argv, root_dir);
+    if (!find_usages && !path_is_under(report.find_definition_file, root_dir))
+    {
+        printf("rename: '%s' is declared outside the project (%s)\n",
+            report.find_definition_name, report.find_definition_file);
+        return;
+    }
+
+    struct rename_list list = { 0 };
+    snprintf(list.old_name, sizeof list.old_name, "%s", report.find_definition_name);
+
+    options->find_definition_line = 0;
+    options->find_definition_col = 0;
+    snprintf(options->rename_target_file, sizeof options->rename_target_file, "%s", report.find_definition_file);
+    options->rename_target_line = report.find_definition_line;
+    options->rename_target_col = report.find_definition_col;
+    snprintf(options->rename_old_name, sizeof options->rename_old_name, "%s", report.find_definition_name);
+    options->p_rename_list = &list;
+
+    options->rename_macro = report.find_definition_is_macro;
+
+    /* a macro defined in a .c exists only in that file */
+    const bool only_cursor_file = report.find_definition_is_local || report.find_definition_is_static ||
+        (report.find_definition_is_macro && !path_is_header(report.find_definition_file));
+    /*
+      a file is undecided when its occurrences only link to positions kept by
+      files after it: its pairs are kept and decided again in phase 3
+    */
+    struct rename_pairs* _Owner _Opt undecided = calloc(count, sizeof(struct rename_pairs));
+    for (int i = 0; i < count; i++)
+    {
+        if (only_cursor_file && i != cursor_index)
+            continue;
+
+        full_path_or_copy(files[i], fullpath);
+        struct report report_file = { 0 };
+        compile_one_file(fullpath, options, "", argc, argv, &report_file);
+        if (!rename_list_commit(&list, options))
+        {
+            struct rename_pairs dropped = { 0 };
+            rename_list_save_pending(&list, undecided ? &undecided[i] : &dropped);
+            rename_pairs_clear(&dropped);
+        }
+    }
+
+    /* phase 3: the saved pairs again (no compilation) while a pass keeps new occurrences */
+    bool progress = undecided != NULL;
+    while (progress)
+    {
+        progress = false;
+        for (int i = 0; i < count; i++)
+        {
+            if (undecided[i].size > 0 && rename_list_commit_saved(&list, &undecided[i], options))
+                progress = true;
+        }
+    }
+
+    if (undecided)
+    {
+        for (int i = 0; i < count; i++)
+            rename_pairs_clear(&undecided[i]);
+        free(undecided);
+    }
+
+    if (list.size > 0 && list.data)
+        qsort(list.data, list.size, sizeof list.data[0], rename_item_compare);
+
+    int files_changed = 0;
+    for (int begin = 0; begin < list.size;)
+    {
+        int end = begin + 1;
+        while (end < list.size && strcmp(list.data[end].file, list.data[begin].file) == 0)
+            end++;
+        if (find_usages)
+            find_usages_print_file(&list, begin, end, options);
+        else if (rename_apply_file(&list, begin, end, options->rename_new_name))
+            files_changed++;
+        begin = end;
+    }
+
+    if (find_usages)
+        printf("%d usage(s) of '%s'\n", list.size, list.old_name);
+    else
+        printf("rename: '%s' -> '%s', %d occurrence(s), %d file(s) changed\n",
+            list.old_name, options->rename_new_name, list.size, files_changed);
+
+    options->p_rename_list = NULL;
+    rename_list_clear(&list);
+}
+
 int compile(int argc, const char** argv, struct report* report)
 {
     struct options options = { 0 };
@@ -951,46 +1421,79 @@ int compile(int argc, const char** argv, struct report* report)
         return 1;
     }
 
-    if (options.target != TARGET_DEFAULT)
+    if (!options_is_report_mode(&options))
     {
-        printf("emulating %s\n", get_platform(options.target)->name);
+        printf("target: %s\n", options.platform.name);
     }
-    
+
     char executable_path[FS_MAX_PATH - sizeof(CAKE_CONFIG_FILE_NAME)] = { 0 };
     get_self_path(executable_path, sizeof(executable_path));
     dirname(executable_path);
     char cakeconfig_path[FS_MAX_PATH] = { 0 };
     snprintf(cakeconfig_path, sizeof cakeconfig_path, "%s/" CAKE_CONFIG_FILE_NAME, executable_path);
 
-    if (options.auto_config) //-autoconfig
+    if (options.auto_config) // -autoconfig
     {
         report->ignore_this_report = true;
         return generate_config_file(cakeconfig_path);
     }
 
     report->test_mode = options.test_mode;
+    report->quiet = options.quiet;
 
     clock_t begin_clock = clock();
     int no_files = 0;
 
+    /* -find-definition: the files are compiled by find_definition_run() after the loop */
+    const char* find_definition_files[256] = { 0 };
+    int find_definition_count = 0;
+
+    struct global_unused_list unused_functions_state = { 0 };
+    if (options.request == REQUEST_REPORT_UNUSED)
+        options.p_unused_functions = &unused_functions_state;
+
     char root_dir[FS_MAX_PATH] = { 0 };
 
-    if (!options.no_output)
+    if (!options.no_output || options.request == REQUEST_REPORT_UNUSED)
     {
         longest_common_path(argc, argv, root_dir);
     }
 
+    /* the unused report filters inputs, so it uses the common path of the inputs */
+    if (options.request == REQUEST_REPORT_UNUSED && root_dir[0] != '\0')
+        unused_functions_state.root_dir = strdup(root_dir);
+
+    if (options.output_root[0] != '\0')
+    {
+        full_path_or_copy(options.output_root, root_dir);
+    }
+
     const size_t root_dir_len = strlen(root_dir);
 
-    /*second loop to compile each file*/
+    /* second loop to compile each file */
     for (int i = 1; i < argc; i++)
     {
         if (strcmp(argv[i], "-o") == 0 ||
             strcmp(argv[i], "-sarif-path") == 0 ||
             strcmp(argv[i], "-I") == 0)
         {
-            //consumes next
+            // consumes next
             i++;
+            continue;
+        }
+
+        if (strcmp(argv[i], "-find-definition") == 0 || strcmp(argv[i], "-find-declaration") == 0 ||
+            strcmp(argv[i], "-find-usages") == 0 || strcmp(argv[i], "-complete") == 0)
+        {
+            // consumes line and col
+            i += 2;
+            continue;
+        }
+
+        if (strcmp(argv[i], "-rename") == 0)
+        {
+            // consumes line, col and new name
+            i += 3;
             continue;
         }
 
@@ -1007,24 +1510,37 @@ int compile(int argc, const char** argv, struct report* report)
                 /*
                  * -o outputname
                  * works when we compile just one file
-                */
+                 */
                 strcat(output_file, options.output);
             }
             else
             {
                 char fullpath[FS_MAX_PATH] = { 0 };
-                realpath(argv[i], fullpath);
+                full_path_or_copy(argv[i], fullpath);
 
-                strcpy(output_file, root_dir);
+                /* file outside root: output goes next to it */
+                char file_root[FS_MAX_PATH] = { 0 };
+                if (strncmp(fullpath, root_dir, root_dir_len) == 0 &&
+                    (fullpath[root_dir_len] == '/' || fullpath[root_dir_len] == '\\'))
+                {
+                    strcpy(file_root, root_dir);
+                }
+                else
+                {
+                    strcpy(file_root, fullpath);
+                    dirname(file_root);
+                }
+
+                strcpy(output_file, file_root);
                 strcat(output_file, "/");
-                strcat(output_file, get_platform(options.target)->name);
+                strcat(output_file, options.platform.name);
 
-                strcat(output_file, fullpath + root_dir_len);
+                strcat(output_file, fullpath + strlen(file_root));
 
                 char outdir[FS_MAX_PATH] = { 0 };
                 strcpy(outdir, output_file);
                 dirname(outdir);
-                if (create_multiple_paths(root_dir, outdir) != 0)
+                if (create_multiple_paths(file_root, outdir) != 0)
                 {
                     report->error_count++;
                     printf("error creating directory\n");
@@ -1034,19 +1550,28 @@ int compile(int argc, const char** argv, struct report* report)
         }
 
         char fullpath[FS_MAX_PATH] = { 0 };
-        realpath(argv[i], fullpath);
+        full_path_or_copy(argv[i], fullpath);
 
         const char* file_extension = basename(fullpath);
 
         if (file_extension[0] == '*')
         {
-            no_files--; //does not count *.c 
+            no_files--; // does not count *.c 
             no_files += compile_many_files(fullpath, &options, output_file, argc, argv, report);
+        }
+        else if (options_is_find_request(&options) || options.request == REQUEST_COMPLETE)
+        {
+            if (find_definition_count < (int)_Countof(find_definition_files))
+                find_definition_files[find_definition_count++] = argv[i];
         }
         else
         {
             struct report report_local = { 0 };
+            report_local.include_listener = report->include_listener;
             compile_one_file(fullpath, &options, output_file, argc, argv, &report_local);
+
+            if (report->include_listener && report->include_listener->file_done)
+                report->include_listener->file_done(report->include_listener->data, fullpath, report_local.error_count);
 
             report->error_count += report_local.error_count;
             report->warnings_count += report_local.warnings_count;
@@ -1056,12 +1581,41 @@ int compile(int argc, const char** argv, struct report* report)
         }
     }
 
+    if (options.request == REQUEST_RENAME || options.request == REQUEST_FIND_USAGES)
+    {
+        rename_run(find_definition_files, find_definition_count, &options, argc, argv);
+    }
+    else if (options.request == REQUEST_COMPLETE)
+    {
+        /* -complete: only the file with the cursor */
+        if (find_definition_count > 0)
+        {
+            char fullpath[FS_MAX_PATH] = { 0 };
+            full_path_or_copy(find_definition_files[0], fullpath);
+            snprintf(options.find_definition_file, sizeof options.find_definition_file, "%s", fullpath);
+            struct report report_local = { 0 };
+            compile_one_file(fullpath, &options, "", argc, argv, &report_local);
+        }
+    }
+    else if (options_is_find_request(&options))
+    {
+        find_definition_run(find_definition_files, find_definition_count, &options, argc, argv);
+    }
+
+    if (options.request == REQUEST_REPORT_UNUSED)
+    {
+        global_unused_functions_report(&unused_functions_state, &options, report);
+    }
+
+    global_unused_functions_clear(&unused_functions_state);
+
     clock_t end_clock = clock();
     double cpu_time_used = ((double)(end_clock - begin_clock)) / CLOCKS_PER_SEC;
     report->no_files = no_files;
     report->cpu_time_used_sec = cpu_time_used;
 
-    print_report(report);
+    if (!options_is_report_mode(&options))
+        print_report(report);
 
     if (report->test_mode)
     {
@@ -1077,9 +1631,9 @@ int compile(int argc, const char** argv, struct report* report)
 }
 
 /*
-* given a string s, produce argv by modifying the input string
-* return argc
-*/
+ * given a string s, produce argv by modifying the input string
+ * return argc
+ */
 static int strtoargv(char* s, int n, const char* _Opt  argv[ /* n */])
 {
     int argvc = 0;
@@ -1099,7 +1653,7 @@ static int strtoargv(char* s, int n, const char* _Opt  argv[ /* n */])
         *p = 0;
         p++;
         if (argvc >= n)
-            break; /*nao tem mais lugares*/
+            break; /* nao tem mais lugares */
     }
     return argvc;
 }
@@ -1110,7 +1664,7 @@ const char* _Owner _Opt compile_source(const char* pszoptions, const char* conte
     char string[200] = { 0 };
     snprintf(string, sizeof string, "exepath %s", pszoptions);
 
-    const int argc = strtoargv(string, 10, argv);
+    const int argc = strtoargv(string, 100, argv);
 
     const char* _Owner _Opt s = NULL;
 
@@ -1126,7 +1680,7 @@ const char* _Owner _Opt compile_source(const char* pszoptions, const char* conte
         }
 
         prectx.options = options;
-        add_standard_macros(&prectx, options.target);
+        add_standard_macros(&prectx, &options.platform);
 
         if (options.preprocess_only || options.copy_headers[0] != '\0')
         {
@@ -1141,9 +1695,9 @@ const char* _Owner _Opt compile_source(const char* pszoptions, const char* conte
                     preprocessor_copy_included_headers(&prectx, options.copy_headers);
                 }
                 else
-            {
-                s = print_preprocessed_to_string2(token_list.head);
-            }
+                {
+                    s = print_preprocessed_to_string2(token_list.head);
+                }
             }
 
             token_list_destroy(&tokens);
@@ -1160,7 +1714,7 @@ const char* _Owner _Opt compile_source(const char* pszoptions, const char* conte
             ctx2.p_ast = &ast;
             ctx2.options = options;
             const int codegen_error = codegen_visit(&ctx2, &ss);
-            s = ss.c_str; //MOVED                
+            s = ss.c_str; // MOVED
             codegen_visit_ctx_destroy(&ctx2);
 
             if (codegen_error != 0)
@@ -1199,7 +1753,7 @@ const char* _Owner _Opt cake_format(const char* pszoptions, const char* _Opt pat
     const char* argv[100] = { 0 };
     char string[200] = { 0 };
     snprintf(string, sizeof string, "exepath %s", pszoptions);
-    const int argc = strtoargv(string, 10, argv);
+    const int argc = strtoargv(string, 100, argv);
 
     struct options options = { .input = STD_EXT };
     if (fill_options(&options, argc, argv) != 0)
@@ -1220,7 +1774,7 @@ const char* _Owner _Opt cake_format(const char* pszoptions, const char* _Opt pat
         if (tctx.n_errors > 0)
             throw;
 
-        const char* builtin = target_get_builtins(options.target);
+        const char* builtin = options.platform.builtins;
         if (builtin[0] != '\0')
         {
             /* level 1 - see the identical comment in compile_one_file() above. */
@@ -1231,11 +1785,11 @@ const char* _Owner _Opt cake_format(const char* pszoptions, const char* _Opt pat
 
         prectx.options = options;
         prectx.macros.capacity = 5000;
-        add_standard_macros(&prectx, options.target);
+        add_standard_macros(&prectx, &options.platform);
 
-        if (include_config_header(&prectx) != 0)
+        if (preprocessor_load_config(&prectx) != 0)
         {
-            // cakeconf.h is optional
+            // cake.json is optional
         }
 
         ast.token_list = preprocessor(&prectx, &list, 0);
@@ -1271,7 +1825,7 @@ char* _Owner _Opt CompileText(const char* pszoptions, const char* content)
 {
     /*
      * This function is called by the web playground
-    */
+     */
     printf(WHITE "cake %s main.c\n", pszoptions);
 
     printf(WHITE "Cake " CAKE_VERSION COLOR_RESET "\n");

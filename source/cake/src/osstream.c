@@ -3,7 +3,7 @@
  *  https://github.com/thradams/cake 
 */
 
-#pragma safety enable
+
 
 #include <stdbool.h>
 #include "osstream.h"
@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include "ownership.h"
+#include "cake_compat.h"
 
 void ss_swap(struct osstream* a, struct osstream* b)
 {
@@ -62,7 +62,12 @@ int ss_vafprintf(struct osstream* stream, const char* fmt, va_list args)
 
     va_copy(tmpa, args);
 
+#if defined(_WIN32) && defined(__TINYC__)
+    /* msvcrt vsnprintf returns -1 when the text does not fit, not the size it needs */
+    size = _vscprintf(fmt, tmpa);
+#else
     size = vsnprintf(stream->c_str + stream->size, stream->capacity - stream->size, fmt, tmpa);
+#endif
 
     va_end(tmpa); //lint 35
 
@@ -77,7 +82,7 @@ int ss_vafprintf(struct osstream* stream, const char* fmt, va_list args)
     }
     _Assert(stream->c_str); //reserve does that
 
-#if defined(__CATALINA__) 
+#if defined(__CATALINA__)
     // on Catalina, vsnprintf supports more C99 options than vsprintf
     if (reserve(stream, stream->size + size + 1) != 0)
     {
@@ -91,7 +96,6 @@ int ss_vafprintf(struct osstream* stream, const char* fmt, va_list args)
     size = vsprintf(stream->c_str + stream->size, fmt, args);
 #endif
 #endif // defined(__CATALINA__)
-
     if (size > 0)
     {
         stream->size += size;
@@ -117,7 +121,11 @@ int ss_putc(char ch, struct osstream* stream)
 int ss_fprintf(struct osstream* stream, const char* fmt, ...)
 {
     va_list args = { 0 };
+#ifdef _WIN32
+    va_start(args, fmt); //lint 35
+#else
     va_start(args, fmt);
+#endif
     int size = ss_vafprintf(stream, fmt, args);
 #ifdef _WIN32
     va_end(args); //lint 35
@@ -127,4 +135,3 @@ int ss_fprintf(struct osstream* stream, const char* fmt, ...)
 
     return size;
 }
-

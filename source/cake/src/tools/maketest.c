@@ -1,4 +1,9 @@
+/*
+    This file is part of cake compiler
+    https://github.com/thradams/cake
 
+    Writes a test_main() that calls the test functions of the given files.
+*/
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -65,7 +70,7 @@ enum Token
 static enum Token match(FILE* f, char* dest, int destsize)
 {
     dest[0] = 0;
-    char ch = fgetc(f);
+    int ch = fgetc(f);
     for (;;)
     {
         if (ferror(f) || feof(f))
@@ -124,11 +129,11 @@ static enum Token match(FILE* f, char* dest, int destsize)
         dest[count] = ch;
         count++;
         while (
-            ((ch = fgetc(f)) != EOF) &&
+            ((ch = fgetc(f)) != EOF) && (
             (ch >= 'a' && ch <= 'z') ||
             (ch >= 'A' && ch <= 'Z') ||
             (ch >= '0' && ch <= '9') ||
-            ch == '_')
+            ch == '_'))
         {
             if (count < destsize - 1)
             {
@@ -416,7 +421,9 @@ int main(int argc, char** argv)
     printf("Maketest\n");
     if (argc < 3)
     {
-        printf("usage: outputFileName.c file1.c file2.c ...\n");
+        printf("usage: maketest output.c file1.c [file2.c ...]\n");
+        printf("  writes output.c with " TEST_MAIN "() calling the test functions\n");
+        printf("  found under #ifdef " TEST_DEFINE_NAME " in the files\n");
         return EXIT_FAILURE;
     }
     int count = 0;

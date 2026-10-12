@@ -3,8 +3,8 @@
  *  https://github.com/thradams/cake
 */
 
-#pragma safety enable
-#include "ownership.h"
+
+#include "cake_compat.h"
 #include "options.h"
 #include <string.h>
 #include "console.h"
@@ -53,6 +53,10 @@ static int bitset_get(const struct bitset* b, int pos)
 
 bool is_diagnostic_enabled(const struct options* options, enum diagnostic_id w)
 {
+    /* report modes: the checks behind a muted diagnostic (style...) do not even run */
+    if (options_diagnostic_is_muted(options, w))
+        return false;
+
     if (w == W_LOCATION)
         return true;
 
@@ -138,24 +142,27 @@ void diagnostic_remove(struct diagnostic* d, enum diagnostic_id w)
     bitset_set(&d->notes, w, false);
 }
 
-int get_diagnostic_type(const struct diagnostic* d, enum diagnostic_id w)
+
+/* default_nonnull is part of the annotations; without -check-annotations it has no effect */
+bool options_default_nonnull(const struct options* options)
 {
-    if (w == W_LOCATION)
-        return 1; /*note*/
+    return options->null_checks_enabled && options->annotations_enabled;
+}
 
-    if (is_diagnostic_configurable(w))
+/* false when the option that emits w is off, so a //lint for it is not unnecessary */
+bool diagnostic_can_happen(const struct options* options, enum diagnostic_id w)
+{
+    switch (w)
     {
-        if (bitset_get(&d->errors, w))
-            return 3;
-
-        if (bitset_get(&d->warnings, w))
-            return 2;
-
-        if (bitset_get(&d->notes, w))
-            return 1;
+    case W_NON_OWNER_TO_OWNER_ASSIGN:
+    case W_USING_TEMPORARY_OWNER:
+    case W_POINTER_TO_OWNER_EXPECTED:
+    case W_OWNER_ALIASED_BY_NON_OWNER_POINTER:
+        return options->annotations_enabled;
+    default:
+        break;
     }
-
-    return 3; /*error*/
+    return get_diagnostic_phase(w) != 2 || options->flow_analysis;
 }
 
 int get_diagnostic_phase(enum diagnostic_id w)
@@ -188,15 +195,19 @@ int get_diagnostic_phase(enum diagnostic_id w)
     case W_FLOW_OUT_OF_BOUNDS:
     case W_FLOW_CTOR_NOT_INITIALIZED_AT_EXIT:
     case W_FLOW_PARAM_OWNER_CONSUMED_AT_EXIT:
+    case W_FLOW_PARAM_UNINITIALIZED_AT_EXIT:
+    case W_FLOW_NOT_DONE:
     case W_FLOW_CONDITION_KNOWN_AT_COMPILE_TIME:
     case W_COMPILE_ASSERT_UNPROVEM:
 
-        /* The former W_OWNERSHIP_* group (22-26). These are now reported by
-           flow analysis (flow1/flow3), so they must be phase 2 -- otherwise
-           they default to phase 0 and a `//lint 26` is checked while parsing,
-           before flow analysis has queued the diagnostic. The removal then
-           fails and the suppression itself is reported as
-           "diagnostic '26' not recognized" while the warning still fires. */
+        /*
+            The former W_OWNERSHIP_* group (22-26). These are now reported by
+            flow analysis (flow1/flow3), so they must be phase 2 -- otherwise
+            they default to phase 0 and a `//lint 26` is checked while parsing,
+            before flow analysis has queued the diagnostic. The removal then
+            fails and the suppression itself is reported as
+            "diagnostic '26' not recognized" while the warning still fires.
+        */
     case W_FLOW_NOT_OWNER:
     case W_FLOW_USING_TEMPORARY_OWNER:
     case W_FLOW_MOVE_ASSIGNMENT_OF_NON_OWNER:
@@ -206,12 +217,14 @@ int get_diagnostic_phase(enum diagnostic_id w)
         /* Emitted only from flow1.c. */
     case W_UNINITIALZED:
 
-        /* ERRORS reported by flow analysis. They are suppressible with a
-           `//lint <id>` comment just like warnings are, so they need the flow
-           phase too -- otherwise the suppression is checked while parsing,
-           before flow analysis has queued the diagnostic, and the comment is
-           reported as "diagnostic '<id>' not recognized" while the error still
-           fires (tests/unit-tests/flow_owner_increment.c). */
+        /*
+            ERRORS reported by flow analysis. They are suppressible with a
+            `//lint <id>` comment just like warnings are, so they need the flow
+            phase too -- otherwise the suppression is checked while parsing,
+            before flow analysis has queued the diagnostic, and the comment is
+            reported as "diagnostic '<id>' not recognized" while the error still
+            fires (tests/unit-tests/flow_owner_increment.c).
+        */
     case C_ERROR_FLOW_OPERATOR_INCREMENT_CANNOT_BE_USED_IN_OWNER:
     case C_ERROR_FLOW_OPERATOR_DECREMENT_CANNOT_BE_USED_IN_OWNER:
     case C_ERROR_FLOW_WRITE_QUALIFIER_MUST_QUALIFY_POINTEE:
@@ -222,7 +235,7 @@ int get_diagnostic_phase(enum diagnostic_id w)
         /*
            NOTE: W_OUT_OF_BOUNDS (42) is deliberately NOT here -- it stays
            phase 0. It used to be emitted from BOTH phases (expressions.c for
-           a constant index, flow3.c for a flow-derived one), which no single
+           a constant index, flow.c for a flow-derived one), which no single
            per-id phase can describe: `//lint 42` worked on the parse-time
            form and reported "diagnostic '42' not recognized" on the flow one.
            Rather than make the phase per-site, the flow form was given its
@@ -249,29 +262,40 @@ int fill_options(struct options* options,
     int argc,
     const char** argv)
 {
+    
+#ifdef __EMSCRIPTEN__
+    options->use_cake_headers = true;
+#endif
 
-    options->target = TARGET_DEFAULT;
+    platform_default(&options->platform);
 
     options_set_all_warnings(options);
-    options_set_warning(options, W_FLOW_NULL_DEREFERENCE, false);
-    options_set_warning(options, W_FLOW_NULLABLE_TO_NON_NULLABLE, false);
     options_set_warning(options, W_UNUSED_PARAMETER, false);
     //options_set_warning(options, W_PARAM_COULD_BE_CONST, false);
     options_set_warning(options, W_PARAM_SET_BUT_NOT_USED, false);
     options_set_warning(options, W_SET_BUT_NOT_USED, false);
     options_set_warning(options, W_UNUSED_VARIABLE, false);
-    /* Off by default: it fires on plenty of deliberate code (a condition
-       decided by a build-time macro, a redundant null guard kept for
-       clarity), so it is opt-in with -w085. */
+    /*
+        Off by default: it fires on plenty of deliberate code (a condition
+        decided by a build-time macro, a redundant null guard kept for
+        clarity), so it is opt-in with -w085.
+    */
     options_set_warning(options, W_FLOW_CONDITION_KNOWN_AT_COMPILE_TIME, false);
 
     options_set_warning(options, W_STYLE, false);
 
-    /* Off by default: implicit int/bool to enum assignment fires on plenty
-       of existing code (flags, raw constants), so it is opt-in. */
+    /*
+        Off by default: implicit int/bool to enum assignment fires on plenty
+        of existing code (flags, raw constants), so it is opt-in.
+    */
     options_set_warning(options, W_INT_TO_ENUM_CONVERSION, false);
 
+    /* Off by default: reported by -unused-extern-report. */
+    options_set_warning(options, W_UNUSED_MACRO, false);
+    options_set_warning(options, W_UNUSED_ENUMERATOR, false);
+
     options_set_note(options, W_INFO, true);
+    options_set_note(options, W_FIND_DEFINITION, true);
 
     /*first loop used to collect options*/
     for (int i = 1; i < argc; i++)
@@ -288,6 +312,18 @@ int fill_options(struct options* options,
             continue;
         }
 
+        if (strcmp(argv[i], "-cake-headers") == 0)
+        {
+            options->use_cake_headers = true;
+            continue;
+        }
+
+        if (strcmp(argv[i], "-ignore-lint") == 0)
+        {
+            options->ignore_lint = true;
+            continue;
+        }
+
         if (strcmp(argv[i], "-no-output") == 0)
         {
             options->no_output = true;
@@ -297,6 +333,12 @@ int fill_options(struct options* options,
         if (strcmp(argv[i], "-const-literal") == 0)
         {
             options->const_literal = true;
+            continue;
+        }
+
+        if (strcmp(argv[i], "-no-bitfields") == 0)
+        {
+            options->no_bitfields = true;
             continue;
         }
 
@@ -340,6 +382,71 @@ int fill_options(struct options* options,
             continue;
         }
 
+        if (strcmp(argv[i], "-find-definition") == 0 || strcmp(argv[i], "-find-declaration") == 0 ||
+            strcmp(argv[i], "-find-usages") == 0)
+        {
+            if (i + 2 < argc)
+            {
+                options->request =
+                    strcmp(argv[i], "-find-definition") == 0 ? REQUEST_FIND_DEFINITION :
+                    strcmp(argv[i], "-find-declaration") == 0 ? REQUEST_FIND_DECLARATION :
+                    REQUEST_FIND_USAGES;
+                options->find_definition_line = atoi(argv[i + 1]);
+                options->find_definition_col = atoi(argv[i + 2]);
+                options->no_output = true;
+                i += 2;
+            }
+            else
+            {
+                printf("%s requires line and column\n", argv[i]);
+                return 1;
+            }
+            continue;
+        }
+
+        if (strcmp(argv[i], "-complete") == 0)
+        {
+            if (i + 2 < argc)
+            {
+                options->request = REQUEST_COMPLETE;
+                options->find_definition_line = atoi(argv[i + 1]);
+                options->find_definition_col = atoi(argv[i + 2]);
+                options->no_output = true;
+                i += 2;
+            }
+            else
+            {
+                printf("-complete requires line and column\n");
+                return 1;
+            }
+            continue;
+        }
+
+        if (strcmp(argv[i], "-rename") == 0)
+        {
+            if (i + 3 < argc)
+            {
+                options->request = REQUEST_RENAME;
+                options->find_definition_line = atoi(argv[i + 1]);
+                options->find_definition_col = atoi(argv[i + 2]);
+                snprintf(options->rename_new_name, sizeof options->rename_new_name, "%s", argv[i + 3]);
+                options->no_output = true;
+                i += 3;
+            }
+            else
+            {
+                printf("-rename requires line, column and new name\n");
+                return 1;
+            }
+            continue;
+        }
+
+        if (strcmp(argv[i], "-quiet") == 0)
+        {
+            options->quiet = true;
+            continue;
+        }
+
         if (strcmp(argv[i], "-H") == 0)
         {
             options->show_includes = true;
@@ -364,15 +471,9 @@ int fill_options(struct options* options,
             continue;
         }
 
-        if (strcmp(argv[i], "-fanalyzer") == 0)
+        if (strcmp(argv[i], "-flow") == 0)
         {
             options->flow_analysis = true;
-            continue;
-        }
-
-        if (strcmp(argv[i], "-nullchecks") == 0)
-        {
-            options->null_checks_enabled = true;
             continue;
         }
 
@@ -382,23 +483,22 @@ int fill_options(struct options* options,
             continue;
         }
 
-        if (has_prefix(argv[i], "-ownership="))
+        if (strcmp(argv[i], "-unused-extern-report") == 0)
         {
-            if (strcmp(argv[i], "-ownership=enable") == 0)
-            {
-                options->ownership_enabled = true;
-                continue;
-            }
+            options->request = REQUEST_REPORT_UNUSED;
+            options->no_output = true;
+            continue;
+        }
 
-            if (strcmp(argv[i], "-ownership=disable") == 0)
-            {
-                options->ownership_enabled = false;
-                continue;
-            }
+        if (strcmp(argv[i], "-check-annotations") == 0)
+        {
+            options->annotations_enabled = true;
+            continue;
+        }
 
-            printf("Invalid option. Options are: "
-                   "enable, disable"
-                   "\n");
+        if (strcmp(argv[i], "-default-nonnull") == 0)
+        {
+            options->null_checks_enabled = true;
             continue;
         }
 
@@ -408,13 +508,6 @@ int fill_options(struct options* options,
             continue;
         }
 
-        if (strcmp(argv[i], "-test-mode-in-out") == 0)
-        {
-            options->test_mode = true;
-            options->test_mode_inout = true;
-            continue;
-        }
-        
 
         if (strcmp(argv[i], "-runtime-asserts") == 0)
         {
@@ -523,28 +616,6 @@ int fill_options(struct options* options,
         }
 
 
-        if (has_prefix(argv[i], "-nullable="))
-        {
-            if (strcmp(argv[i], "-nullable=disable") == 0)
-            {
-                options->null_checks_enabled = false;
-                //unsigned long long w = NULLABLE_DISABLE_REMOVED_WARNINGS;
-                //options->diagnostic_stack.stack[0].warnings &= ~w;
-                continue;
-            }
-
-            if (strcmp(argv[i], "-nullable=enabled") == 0)
-            {
-                options->null_checks_enabled = true;
-                continue;
-            }
-
-            printf("Invalid option. Options are: "
-               "disable, enabled"
-               "\n");
-            continue;
-        }
-
         if (strcmp(argv[i], "-autoconfig") == 0 ||
             strcmp(argv[i], "-auto-config") == 0)
         {
@@ -552,9 +623,21 @@ int fill_options(struct options* options,
             continue;
         }
 
+        if (strcmp(argv[i], "-no-includes") == 0)
+        {
+            options->no_includes = true;
+            continue;
+        }
+
+        if (has_prefix(argv[i], "-output-root="))
+        {
+            snprintf(options->output_root, sizeof options->output_root, "%s", argv[i] + (sizeof("-output-root=") - 1));
+            continue;
+        }
+
         if (has_prefix(argv[i], "-target="))
         {
-            int r = parse_target(argv[i] + (sizeof("-target=") - 1), &options->target);
+            int r = parse_target(argv[i] + (sizeof("-target=") - 1), &options->platform);
             if (r != 0)
             {
                 printf("Invalid target. Options: ");
@@ -632,7 +715,68 @@ int fill_options(struct options* options,
         printf("unknown option '%s'", argv[i]);
         return 1;
     }
+
+    /* after -Wall/-w..., which would turn it into a warning (dropped inside headers) */
+    if (options_is_find_request(options))
+        options_set_note(options, W_FIND_DEFINITION, true);
+
+    if (options->null_checks_enabled && !options->annotations_enabled)
+        printf("warning: -default-nonnull has no effect without -check-annotations\n");
+
+    /* report modes do not need the tokens of inactive #if blocks */
+    if (options_is_report_mode(options))
+        options->keep_inactive_tokens = false;
+
+    /* the report itself, even if -wd57/-wd94 disabled it */
+    if (options->request == REQUEST_REPORT_UNUSED)
+    {
+        options_set_warning(options, W_UNUSED_FUNCTION, true);
+        options_set_warning(options, W_UNUSED_EXTERN_FUNCTION, true);
+        options_set_warning(options, W_UNUSED_MACRO, true);
+        options_set_warning(options, W_UNUSED_ENUMERATOR, true);
+    }
+
     return 0;
+}
+
+bool options_is_report_mode(const struct options* options)
+{
+    return options->request != REQUEST_NONE;
+}
+
+bool options_is_find_request(const struct options* options)
+{
+    return options->request == REQUEST_FIND_DEFINITION ||
+        options->request == REQUEST_FIND_DECLARATION ||
+        options->request == REQUEST_RENAME ||
+        options->request == REQUEST_FIND_USAGES;
+}
+
+bool options_find_wants_declaration(const struct options* options)
+{
+    return options->request == REQUEST_FIND_DECLARATION ||
+        options->request == REQUEST_RENAME ||
+        options->request == REQUEST_FIND_USAGES;
+}
+
+bool options_diagnostic_is_muted(const struct options* options, enum diagnostic_id w)
+{
+    switch (options->request)
+    {
+    case REQUEST_NONE:
+        return false;
+    case REQUEST_FIND_DEFINITION:
+    case REQUEST_FIND_DECLARATION:
+        return w != W_FIND_DEFINITION;
+    case REQUEST_RENAME:
+    case REQUEST_FIND_USAGES: /* prints its own list */
+    case REQUEST_COMPLETE:
+        return true;
+    case REQUEST_REPORT_UNUSED:
+        return w != W_UNUSED_FUNCTION && w != W_UNUSED_EXTERN_FUNCTION && w != W_UNUSED_MACRO &&
+               w != W_UNUSED_ENUMERATOR && w != W_INFO;
+    }
+    return false;
 }
 
 static void print_option(const char* option, const char* description)
@@ -700,7 +844,9 @@ void print_help()
 
     print_option("-I", "Adds a directory to the list of directories searched for include files");
     print_option("-auto-config", "Generates cake.json with include directories");
+    print_option("-no-includes", "Does not use cake.json's include directories; only -I ones");
     print_option("-no-output", "Cake will not generate output");
+    print_option("-ignore-lint", "//lint comments are ignored (treated as plain comments)");
     print_option("-D", "Defines a preprocessing symbol for a source file");
     print_option("-E", "Copies preprocessor output to standard output");
     print_option("-o name", "Defines the output name when compiling one file");
@@ -708,12 +854,18 @@ void print_help()
     print_option("-w -wd", "Enables or disable warning number");
     print_option("-wall", "Enables all warnings");
     print_option("-Werror", "Treats every enabled warning as an error");
-    print_option("-fanalyzer ", "Enable flow analysis");
-    print_option("-ownership=enable/disable", "Enables ownership checks");
-    print_option("-nullable=enabled/disable", "Enables nullable checks");
+    print_option("-flow", "Runs flow analysis, including null checks (same as #pragma flow enable)");
+    print_option("-check-annotations", "_Owner, _Opt, _Out, ... are checked; without it they are ignored (same as #pragma check_annotations enable)");
+    print_option("-default-nonnull", "Pointers without _Opt are non-null; requires -check-annotations (same as #pragma default_nonnull)");
     print_option("-sarif ", "Generates sarif files");
     print_option("-H", "Print the name of each header file used");
     print_option("-sarif-path", "Set sarif output dir");
+    print_option("-output-root=dir", "Output goes to dir/<platform>/<path relative to dir>");
+    print_option("-find-definition line col", "Prints where the identifier at line col is defined");
+    print_option("-find-declaration line col", "Prints where the identifier at line col is declared");
+    print_option("-find-usages line col", "Prints where the identifier at line col is used");
+    print_option("-rename line col newname", "Renames the identifier at line col in the files");
+    print_option("-complete line col", "Prints the names that can be written at line col");
 
     print_option("-line-directives", "Emmits #line directives");
     print_option("-msvc-output", "Output is compatible with visual studio");
@@ -721,6 +873,7 @@ void print_help()
     print_option("-dump-tokens", "Output tokens before preprocessor");
     print_option("-dump-pp-tokens", "Output tokens after preprocessor");    
     print_option("-const-literal", "literal string becomes const");
+    print_option("-no-bitfields", "Generated code stores bitfields in plain integer members");
     print_option("-dont-generate-time-stamp", "Do not include the timestamp comment in the generated file");
     print_option("-keep-inactive-tokens", "Keep tokens from inactive preprocessor blocks (e.g. #if 0) in memory instead of discarding them");
     print_option("-preprocess-def-macro", "preprocess def macros after expansion");
@@ -728,6 +881,7 @@ void print_help()
     print_option("-format", "Reformats the file spacing/braces per -style (defaults to `cake`) and prints the result instead of compiling");
     print_option("-format-lines=first:last", "Restricts -format's changes to this inclusive line range");
     print_option("-selftest", "Runs Cake's internal tests. The code must be compiled with -DTEST.");
+    print_option("-unused-extern-report", "Tracks non-static functions across all files given in this invocation and reports, at the end, which ones are never called in any of them");
     
     print_option("-const-literal", "Makes the compiler handle string literals as const char[] rather than char[].");
 
@@ -756,8 +910,10 @@ void options_set_all_warnings(struct options* options)
 {
     struct bitset* p_warnings = &options->diagnostic_stack.stack[options->diagnostic_stack.top_index].warnings;
 
-    /* -Wall must not interfere with W_INFO or W_STYLE in any way -- preserve
-       whatever they were already configured as. */
+    /*
+        -Wall must not interfere with W_INFO or W_STYLE in any way -- preserve
+        whatever they were already configured as.
+    */
     const int info_was_warning = bitset_get(p_warnings, W_INFO);
     const int style_was_warning = bitset_get(p_warnings, W_STYLE);
 

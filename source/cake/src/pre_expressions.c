@@ -1,15 +1,15 @@
 /*
  *  This file is part of cake compiler
- *  https://github.com/thradams/cake 
+ *  https://github.com/thradams/cake
 */
 
-#pragma safety enable
+
 
 /*
   For performance reasons we will separate expression from preprocessor from compiler.
 */
 
-#include "ownership.h"
+#include "cake_compat.h"
 #include <stdlib.h>
 #include "tokenizer.h"
 #include "pre_expressions.h"
@@ -84,24 +84,24 @@ static int ppnumber_to_longlong(struct preprocessor_ctx* ctx, const struct token
         return 0;
     }
 
-        unsigned long long value = 0;
-        switch (type)
-        {
-        case TK_COMPILER_DECIMAL_CONSTANT:
-            value = strtoull(buffer, NULL, 10);
-            break;
-        case TK_COMPILER_OCTAL_CONSTANT:
-            value = strtoull(buffer + 1, NULL, 8);
-            break;
-        case TK_COMPILER_HEXADECIMAL_CONSTANT:
-            value = strtoull(buffer + 2, NULL, 16);
-            break;
-        case TK_COMPILER_BINARY_CONSTANT:
-            value = strtoull(buffer + 2, NULL, 2);
-            break;
-        default:
-            break;
-        }
+    unsigned long long value = 0;
+    switch (type)
+    {
+    case TK_COMPILER_DECIMAL_CONSTANT:
+        value = strtoull(buffer, NULL, 10);
+        break;
+    case TK_COMPILER_OCTAL_CONSTANT:
+        value = strtoull(buffer + 1, NULL, 8);
+        break;
+    case TK_COMPILER_HEXADECIMAL_CONSTANT:
+        value = strtoull(buffer + 2, NULL, 16);
+        break;
+    case TK_COMPILER_BINARY_CONSTANT:
+        value = strtoull(buffer + 2, NULL, 2);
+        break;
+    default:
+        break;
+    }
 
     *result = value;
     return 0;
@@ -129,13 +129,13 @@ static struct token* _Opt pre_match(struct preprocessor_ctx* ctx)
 }
 
 //TODO share this with parser
-static struct object char_constant_to_value(const char* s, char error_message[/*sz*/], int error_message_sz_bytes, enum target target)
+static struct object char_constant_to_value(const char* s, char error_message[ /*sz*/ ], int error_message_sz_bytes, const struct platform* target)
 {
     error_message[0] = '\0';
 
     const unsigned char* _Opt p = (const unsigned char*)s;
     const unsigned long long
-        wchar_max_value = target_unsigned_max(target, get_platform(target)->wchar_t_type);
+    wchar_max_value = target_unsigned_max(target, target->wchar_t_type);
 
     try
     {
@@ -159,21 +159,22 @@ static struct object char_constant_to_value(const char* s, char error_message[/*
                 p = escape_sequences_decode_opt(p, &c);
                 if (p == NULL)
                 {
+                    snprintf(error_message, error_message_sz_bytes, "invalid escape sequence");
                     throw;
                 }
             }
 
             if (*p != '\'')
             {
-                snprintf(error_message, error_message_sz_bytes, "Unicode character literals may not contain multiple characters.");
+                snprintf(error_message, error_message_sz_bytes, "Unicode character literals may not contain multiple characters");
             }
 
             if (c > 0x80)
             {
-                snprintf(error_message, error_message_sz_bytes, "Character too large for enclosing character literal type.");
+                snprintf(error_message, error_message_sz_bytes, "character too large for enclosing character literal type");
             }
 
-            return object_make_wchar_t(target, c);//, ctx->evaluation_is_disabled);
+            return object_make_wchar_t(target, c); //, ctx->evaluation_is_disabled);
         }
         else if (p[0] == 'u')
         {
@@ -194,18 +195,19 @@ static struct object char_constant_to_value(const char* s, char error_message[/*
                 p = escape_sequences_decode_opt(p, &c);
                 if (p == NULL)
                 {
+                    snprintf(error_message, error_message_sz_bytes, "invalid escape sequence");
                     throw;
                 }
             }
 
             if (*p != '\'')
             {
-                snprintf(error_message, error_message_sz_bytes, "Unicode character literals may not contain multiple characters.");
+                snprintf(error_message, error_message_sz_bytes, "Unicode character literals may not contain multiple characters");
             }
 
             if ((int)c > wchar_max_value)
             {
-                snprintf(error_message, error_message_sz_bytes, "Character too large for enclosing character literal type.");
+                snprintf(error_message, error_message_sz_bytes, "character too large for enclosing character literal type");
             }
 
             return object_make_wchar_t(target, c);
@@ -230,18 +232,19 @@ static struct object char_constant_to_value(const char* s, char error_message[/*
 
                 if (p == NULL)
                 {
+                    snprintf(error_message, error_message_sz_bytes, "invalid escape sequence");
                     throw;
                 }
             }
 
             if (*p != '\'')
             {
-                snprintf(error_message, error_message_sz_bytes, "Unicode character literals may not contain multiple characters.");
+                snprintf(error_message, error_message_sz_bytes, "Unicode character literals may not contain multiple characters");
             }
 
             if (c > UINT_MAX)
             {
-                snprintf(error_message, error_message_sz_bytes, "Character too large for enclosing character literal type.");
+                snprintf(error_message, error_message_sz_bytes, "character too large for enclosing character literal type");
             }
 
             return object_make_wchar_t(target, c);
@@ -275,9 +278,12 @@ static struct object char_constant_to_value(const char* s, char error_message[/*
                 {
                     p = escape_sequences_decode_opt(p, &c);
                     if (p == NULL)
+                    {
+                        snprintf(error_message, error_message_sz_bytes, "invalid escape sequence");
                         throw;
+                    }
                 }
-       
+
                 // TODO \u
                 value = value * 256 + c;
 
@@ -288,7 +294,7 @@ static struct object char_constant_to_value(const char* s, char error_message[/*
                 }
             }
 
-            return object_make_wchar_t(target, (int) value);
+            return object_make_wchar_t(target, (int)value);
         }
         else
         {
@@ -318,7 +324,10 @@ static struct object char_constant_to_value(const char* s, char error_message[/*
                 {
                     p = escape_sequences_decode_opt(p, &c);
                     if (p == NULL)
+                    {
+                        snprintf(error_message, error_message_sz_bytes, "invalid escape sequence");
                         throw;
+                    }
                 }
 
                 if (c < 0x80)
@@ -335,7 +344,7 @@ static struct object char_constant_to_value(const char* s, char error_message[/*
                     break;
                 }
             }
-            return object_make_wchar_t(target, (int) value);
+            return object_make_wchar_t(target, (int)value);
         }
     }
     catch
@@ -368,7 +377,7 @@ static void pre_primary_expression(struct preprocessor_ctx* ctx, struct pre_expr
         {
             const char* p = ctx->current->lexeme;
             char errmsg[200] = { 0 };
-            struct object v = char_constant_to_value(p, errmsg, sizeof errmsg, ctx->options.target);
+            struct object v = char_constant_to_value(p, errmsg, sizeof errmsg, &ctx->options.platform);
             if (errmsg[0] != '\0')
             {
                 preprocessor_diagnostic(C_ERROR_UNEXPECTED, ctx, ctx->current, "%s", errmsg);
@@ -390,7 +399,7 @@ static void pre_primary_expression(struct preprocessor_ctx* ctx, struct pre_expr
                 throw;
             if (ctx->current && ctx->current->type != ')')
             {
-                preprocessor_diagnostic(C_ERROR_UNEXPECTED, ctx, ctx->current, "expected )");
+                preprocessor_diagnostic(C_ERROR_UNEXPECTED, ctx, ctx->current, "expected ')'");
                 throw;
             }
             pre_match(ctx);
@@ -398,10 +407,10 @@ static void pre_primary_expression(struct preprocessor_ctx* ctx, struct pre_expr
         else
         {
             preprocessor_diagnostic(C_ERROR_TOKEN_NOT_VALID_IN_PREPROCESSOR_EXPRESSIONS,
-                                              ctx,
-                                              ctx->current,
-                                              "token '%s' is not valid in preprocessor expressions",
-                                              ctx->current->lexeme);
+                ctx,
+                ctx->current,
+                "token '%s' is not valid in preprocessor expressions",
+                ctx->current->lexeme);
             throw;
         }
     }
@@ -427,7 +436,7 @@ static void pre_postfix_expression(struct preprocessor_ctx* ctx, struct pre_expr
         //C2Y
         ( type-name ) compound-statement
 
-        */
+    */
     
     try
     {
@@ -459,14 +468,14 @@ static void pre_unary_expression(struct preprocessor_ctx* ctx, struct pre_expres
         if (ctx->current && (ctx->current->type == '++' || ctx->current->type == '--'))
         {
             preprocessor_diagnostic(C_ERROR_TOKEN_NOT_VALID_IN_PREPROCESSOR_EXPRESSIONS,
-                                              ctx,
-                                              ctx->current,
-                                              "token '%s' is not valid in preprocessor expressions",
-                                              ctx->current->lexeme);
+                ctx,
+                ctx->current,
+                "token '%s' is not valid in preprocessor expressions",
+                ctx->current->lexeme);
             throw;
         }
         else if (ctx->current != NULL &&
-                 (ctx->current->type == '&' || ctx->current->type == '*' || ctx->current->type == '+' || ctx->current->type == '-' || ctx->current->type == '~' || ctx->current->type == '!'))
+            (ctx->current->type == '&' || ctx->current->type == '*' || ctx->current->type == '+' || ctx->current->type == '-' || ctx->current->type == '~' || ctx->current->type == '!'))
         {
             const struct token* const p_old = ctx->current;
             enum token_type op = ctx->current->type;
@@ -490,7 +499,7 @@ static void pre_unary_expression(struct preprocessor_ctx* ctx, struct pre_expres
             else if (op == '&')
             {
                 preprocessor_diagnostic(C_ERROR_TOKEN_NOT_VALID_IN_PREPROCESSOR_EXPRESSIONS, ctx, p_old, "token '%s' is not valid in preprocessor expressions", p_old->lexeme);
-            }
+            }    
         }
         else
         {
@@ -516,10 +525,10 @@ static void pre_multiplicative_expression(struct preprocessor_ctx* ctx, struct p
 {
     /*
      multiplicative-expression:
-    cast-expression
-    multiplicative-expression * cast-expression
-    multiplicative-expression / cast-expression
-    multiplicative-expression % cast-expression
+        cast-expression
+        multiplicative-expression * cast-expression
+        multiplicative-expression / cast-expression
+        multiplicative-expression % cast-expression
     */
     try
     {
@@ -528,9 +537,9 @@ static void pre_multiplicative_expression(struct preprocessor_ctx* ctx, struct p
             throw;
 
         while (ctx->current != NULL &&
-               (ctx->current->type == '*' ||
-                   ctx->current->type == '/' ||
-                   ctx->current->type == '%'))
+            (ctx->current->type == '*' ||
+            ctx->current->type == '/' ||
+            ctx->current->type == '%'))
         {
             struct token* op_token = ctx->current;
             enum token_type op = ctx->current->type;
@@ -565,10 +574,10 @@ static void pre_multiplicative_expression(struct preprocessor_ctx* ctx, struct p
                 }
                 else
                 {
-                ectx->value = (left_value % ectx->value);
+                    ectx->value = (left_value % ectx->value);
+                }
             }
         }
-    }
     }
     catch
     {
@@ -590,8 +599,8 @@ static void pre_additive_expression(struct preprocessor_ctx* ctx, struct pre_exp
             throw;
 
         while (ctx->current != NULL &&
-               (ctx->current->type == '+' ||
-                   ctx->current->type == '-'))
+            (ctx->current->type == '+' ||
+            ctx->current->type == '-'))
         {
             const struct token* p_op_token = ctx->current;
             pre_match(ctx);
@@ -639,8 +648,8 @@ static void pre_shift_expression(struct preprocessor_ctx* ctx, struct pre_expres
             throw;
 
         while (ctx->current != NULL &&
-               (ctx->current->type == '>>' ||
-                   ctx->current->type == '<<'))
+            (ctx->current->type == '>>' ||
+            ctx->current->type == '<<'))
         {
             enum token_type op = ctx->current->type;
             pre_match(ctx);
@@ -681,10 +690,10 @@ static void pre_relational_expression(struct preprocessor_ctx* ctx, struct pre_e
             throw;
 
         while (ctx->current != NULL &&
-               (ctx->current->type == '>' ||
-                   ctx->current->type == '<' ||
-                   ctx->current->type == '>=' ||
-                   ctx->current->type == '<='))
+            (ctx->current->type == '>' ||
+            ctx->current->type == '<' ||
+            ctx->current->type == '>=' ||
+            ctx->current->type == '<='))
         {
             enum token_type op = ctx->current->type;
             pre_match(ctx);
@@ -741,8 +750,8 @@ static void pre_equality_expression(struct preprocessor_ctx* ctx, struct pre_exp
             throw;
 
         while (ctx->current != NULL &&
-               (ctx->current->type == '==' ||
-                   ctx->current->type == '!='))
+            (ctx->current->type == '==' ||
+            ctx->current->type == '!='))
         {
             enum token_type op = ctx->current->type;
             pre_match(ctx);
@@ -779,7 +788,7 @@ static void pre_and_expression(struct preprocessor_ctx* ctx, struct pre_expressi
         if (ctx->n_errors > 0)
             throw;
         while (ctx->current != NULL &&
-               (ctx->current->type == '&'))
+            (ctx->current->type == '&'))
         {
             pre_match(ctx);
             long long left_value = ectx->value;
@@ -808,7 +817,7 @@ static void pre_exclusive_or_expression(struct preprocessor_ctx* ctx, struct pre
             throw;
 
         while (ctx->current != NULL &&
-               (ctx->current->type == '^'))
+            (ctx->current->type == '^'))
         {
             pre_match(ctx);
             long long left_value = ectx->value;
@@ -837,7 +846,7 @@ static void pre_inclusive_or_expression(struct preprocessor_ctx* ctx, struct pre
             throw;
 
         while (ctx->current != NULL &&
-               (ctx->current->type == '|'))
+            (ctx->current->type == '|'))
         {
             pre_match(ctx);
             long long left_value = ectx->value;
@@ -867,7 +876,7 @@ static void pre_logical_and_expression(struct preprocessor_ctx* ctx, struct pre_
             throw;
 
         while (ctx->current != NULL &&
-               (ctx->current->type == '&&'))
+            (ctx->current->type == '&&'))
         {
             pre_match(ctx);
             long long left_value = ectx->value;
@@ -897,7 +906,7 @@ static void pre_logical_or_expression(struct preprocessor_ctx* ctx, struct pre_e
             throw;
 
         while (ctx->current != NULL &&
-               (ctx->current->type == '||'))
+            (ctx->current->type == '||'))
         {
             pre_match(ctx);
             long long left_value = ectx->value;
@@ -920,13 +929,13 @@ static void pre_assignment_expression(struct preprocessor_ctx* ctx, struct pre_e
        conditional-expression
        unary-expression assignment-operator assignment-expression
        */
-       /*
+    /*
           assignment-operator: one of
           = *= /= %= += -= <<= >>= &= ^= |=
        */
-       // here it is doubtful but conditional does unary too. 
-       // the difference is that it is not just any expression 
-       // which can be an assignment
+    // here it is doubtful but conditional does unary too. 
+    // the difference is that it is not just any expression 
+    // which can be an assignment
     try
     {
         pre_conditional_expression(ctx, ectx);
@@ -934,16 +943,16 @@ static void pre_assignment_expression(struct preprocessor_ctx* ctx, struct pre_e
             throw;
 
         while (ctx->current != NULL &&
-               (ctx->current->type == '=' ||
-                   ctx->current->type == '*=' ||
-                   ctx->current->type == '/=' ||
-                   ctx->current->type == '+=' ||
-                   ctx->current->type == '-=' ||
-                   ctx->current->type == '<<=' ||
-                   ctx->current->type == '>>=' ||
-                   ctx->current->type == '&=' ||
-                   ctx->current->type == '^=' ||
-                   ctx->current->type == '|='))
+            (ctx->current->type == '=' ||
+            ctx->current->type == '*=' ||
+            ctx->current->type == '/=' ||
+            ctx->current->type == '+=' ||
+            ctx->current->type == '-=' ||
+            ctx->current->type == '<<=' ||
+            ctx->current->type == '>>=' ||
+            ctx->current->type == '&=' ||
+            ctx->current->type == '^=' ||
+            ctx->current->type == '|='))
         {
             preprocessor_diagnostic(C_ERROR_TOKEN_NOT_VALID_IN_PREPROCESSOR_EXPRESSIONS, ctx, ctx->current, "token '%s' is not valid in preprocessor expressions", ctx->current->lexeme);
             throw;
@@ -956,9 +965,10 @@ static void pre_assignment_expression(struct preprocessor_ctx* ctx, struct pre_e
 
 static void pre_expression(struct preprocessor_ctx* ctx, struct pre_expression_ctx* ectx)
 {
-    /*expression:
-      assignment-expression
-      expression, assignment-expression
+    /*
+        expression:
+        assignment-expression
+        expression, assignment-expression
     */
     try
     {
@@ -1003,9 +1013,9 @@ static void pre_conditional_expression(struct preprocessor_ctx* ctx, struct pre_
             {
                 if (!elvis)
                 {
-                pre_expression(ctx, ectx);
-                if (ctx->n_errors > 0)
-                    throw;
+                    pre_expression(ctx, ectx);
+                    if (ctx->n_errors > 0)
+                        throw;
                 }
 
                 pre_match(ctx); //:
@@ -1018,10 +1028,10 @@ static void pre_conditional_expression(struct preprocessor_ctx* ctx, struct pre_
             {
                 if (!elvis)
                 {
-                struct pre_expression_ctx temp = { 0 };
-                pre_expression(ctx, &temp);
-                if (ctx->n_errors > 0)
-                    throw;
+                    struct pre_expression_ctx temp = { 0 };
+                    pre_expression(ctx, &temp);
+                    if (ctx->n_errors > 0)
+                        throw;
                 }
 
                 pre_match(ctx); //:

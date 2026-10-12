@@ -3,9 +3,9 @@
  *  https://github.com/thradams/cake
 */
 
-#pragma safety enable
 
-#include "ownership.h"
+#include "cake_compat.h"
+#include <stdlib.h>
 #include "object.h"
 #include <limits.h>
 #include <stdio.h>
@@ -13,7 +13,7 @@
 #include "type.h"
 #include "error.h"
 #include "parser.h"
-#include <stdlib.h>
+
 #include <string.h>
 #include <math.h>
 #include "fp_to_string.h"
@@ -47,6 +47,57 @@ int object_type_bitfield_width(enum object_type t)
     return 0;
 }
 
+bool object_type_is_unsigned_bitint(enum object_type t)
+{
+    return t >= TYPE_UNSIGNED_BITINT_1 && t <= TYPE_UNSIGNED_BITINT_128;
+}
+
+bool object_type_is_signed_bitint(enum object_type t)
+{
+    return t >= TYPE_SIGNED_BITINT_1 && t <= TYPE_SIGNED_BITINT_128;
+}
+
+bool object_type_is_bitint(enum object_type t)
+{
+    return object_type_is_unsigned_bitint(t) || object_type_is_signed_bitint(t);
+}
+
+int object_type_bitint_width(enum object_type t)
+{
+    if (object_type_is_unsigned_bitint(t))
+        return (int)(t - TYPE_UNSIGNED_BITINT_1 + 1);
+
+    if (object_type_is_signed_bitint(t))
+        return (int)(t - TYPE_SIGNED_BITINT_1 + 1);
+
+    _Assert(false);
+    return 0;
+}
+
+/*
+  "bitsized" = bitfield or bit-precise integer. Both keep an N-bit value in
+  the host long long, so every value-level operation treats them alike; only
+  promotion and rank tell them apart.
+*/
+static bool object_type_is_signed_bitsized(enum object_type t)
+{
+    return object_type_is_signed_bitfield(t) || object_type_is_signed_bitint(t);
+}
+
+static bool object_type_is_unsigned_bitsized(enum object_type t)
+{
+    return object_type_is_unsigned_bitfield(t) || object_type_is_unsigned_bitint(t);
+}
+
+static int object_type_bitsized_width(enum object_type t)
+{
+    if (object_type_is_bitint(t))
+    {
+        return object_type_bitint_width(t);
+    }
+    return object_type_bitfield_width(t);
+}
+
 static enum object_type bitfield_to_unsigned(enum object_type t)
 {
     if (object_type_is_signed_bitfield(t))
@@ -54,7 +105,31 @@ static enum object_type bitfield_to_unsigned(enum object_type t)
         int width = object_type_bitfield_width(t);
         return (enum object_type)(TYPE_UNSIGNED_BITFIELD_1 + width - 1);
     }
+    if (object_type_is_signed_bitint(t))
+    {
+        int width = object_type_bitint_width(t);
+        return (enum object_type)(TYPE_UNSIGNED_BITINT_1 + width - 1);
+    }
     return t; /* already unsigned */
+}
+
+/*
+  The arithmetic switches below list the standard integer types. A bit-precise
+  integer computes exactly like a long long that is wrapped to its own width
+  (target_get_num_of_bits already knows that width), so it is routed to the
+  long long case.
+*/
+static enum object_type object_type_switch_class(enum object_type t)
+{
+    if (object_type_is_signed_bitint(t))
+    {
+        return TYPE_SIGNED_LONG_LONG;
+    }
+    if (object_type_is_unsigned_bitint(t))
+    {
+        return TYPE_UNSIGNED_LONG_LONG;
+    }
+    return t;
 }
 
 static unsigned long long wrap_unsigned_integer(unsigned long long value, int bits)
@@ -102,10 +177,10 @@ static long double resize_floating_point(long double value, int bits)
 
 static enum object_type to_unsigned(enum object_type t)
 {
-    if (object_type_is_signed_bitfield(t))
+    if (object_type_is_signed_bitsized(t))
         return bitfield_to_unsigned(t);
 
-    if (object_type_is_unsigned_bitfield(t))
+    if (object_type_is_unsigned_bitsized(t))
         return t;
 
     switch (t)
@@ -130,7 +205,7 @@ static enum object_type to_unsigned(enum object_type t)
 
 bool object_type_is_signed_integer(enum object_type type)
 {
-    if (object_type_is_signed_bitfield(type))
+    if (object_type_is_signed_bitsized(type))
         return true;
 
     switch (type)
@@ -160,7 +235,7 @@ bool object_type_is_signed_integer(enum object_type type)
 
 bool object_type_is_unsigned_integer(enum object_type type)
 {
-    if (object_type_is_unsigned_bitfield(type))
+    if (object_type_is_unsigned_bitsized(type))
         return true;
 
     switch (type)
@@ -190,7 +265,7 @@ bool object_type_is_unsigned_integer(enum object_type type)
     return false;
 }
 
-_Attr(nodiscard)
+NODISCARD
 bool unsigned_long_long_sub(_Out unsigned long long* result, unsigned long long a, unsigned long long b)
 {
     *result = 0;
@@ -202,7 +277,7 @@ bool unsigned_long_long_sub(_Out unsigned long long* result, unsigned long long 
     return true;
 }
 
-_Attr(nodiscard)
+NODISCARD
 bool unsigned_long_long_mul(_Out unsigned long long* result, unsigned long long a, unsigned long long b)
 {
     *result = 0;
@@ -224,7 +299,7 @@ bool unsigned_long_long_mul(_Out unsigned long long* result, unsigned long long 
     return true;
 }
 
-_Attr(nodiscard)
+NODISCARD
 bool unsigned_long_long_add(_Out unsigned long long* result, unsigned long long a, unsigned long long b)
 {
     *result = 0;
@@ -239,7 +314,7 @@ bool unsigned_long_long_add(_Out unsigned long long* result, unsigned long long 
     return true;
 }
 
-_Attr(nodiscard)
+NODISCARD
 bool signed_long_long_sub(_Out signed long long* result, signed long long a, signed long long b)
 {
     *result = 0;
@@ -283,7 +358,7 @@ bool signed_long_long_sub(_Out signed long long* result, signed long long a, sig
     return true;
 }
 
-_Attr(nodiscard)
+NODISCARD
 bool signed_long_long_add(_Out signed long long* result, signed long long a, signed long long b)
 {
     *result = 0;
@@ -322,7 +397,7 @@ bool signed_long_long_add(_Out signed long long* result, signed long long a, sig
     return true;
 }
 
-_Attr(nodiscard)
+NODISCARD
 bool signed_long_long_mul(_Out signed long long* result, signed long long a, signed long long b)
 {
     *result = 0;
@@ -464,66 +539,66 @@ bool object_has_known_value(const struct object* a)
         a->state == CONSTANT_VALUE_EQUAL;
 }
 
-struct object object_make_size_t(enum target target, unsigned long long value)
+struct object object_make_size_t(const struct platform* target, unsigned long long value)
 {
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
-    r.value_type = get_platform(target)->size_t_type;
+    r.value_type = target->size_t_type;
     const int bits = target_get_num_of_bits(target, r.value_type);
     r.value.host_u_long_long = wrap_unsigned_integer(value, bits);
     return r;
 }
 
-struct object object_make_nullptr(enum target target)
+struct object object_make_nullptr(const struct platform* target)
 {
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
-    r.value_type = get_platform(target)->size_t_type;
+    r.value_type = target->size_t_type;
     const int bits = target_get_num_of_bits(target, r.value_type);
     r.value.host_u_long_long = wrap_unsigned_integer(0, bits);
     return r;
 }
 
-struct object object_make_char(enum target target, int value)
+struct object object_make_char(const struct platform* target, int value)
 {
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
-    r.value_type = get_platform(target)->char_t_type;
+    r.value_type = target->char_t_type;
 
     if (object_type_is_signed_integer(r.value_type))
     {
-        r.value.host_long_long = wrap_signed_integer(value, get_platform(target)->char_n_bits);
+        r.value.host_long_long = wrap_signed_integer(value, target->char_n_bits);
     }
     else
     {
-        r.value.host_u_long_long = wrap_unsigned_integer(value, get_platform(target)->char_n_bits);
+        r.value.host_u_long_long = wrap_unsigned_integer(value, target->char_n_bits);
     }
 
     return r;
 }
 
-struct object object_make_wchar_t(enum target target, int value)
+struct object object_make_wchar_t(const struct platform* target, int value)
 {
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
-    r.value_type = get_platform(target)->wchar_t_type;
+    r.value_type = target->wchar_t_type;
     const int bits = target_get_num_of_bits(target, r.value_type);
     r.value.host_u_long_long = wrap_unsigned_integer(value, bits);
     return r;
 }
 
-struct object object_make_bool(enum target target, bool value)
+struct object object_make_bool(const struct platform* target, bool value)
 {
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
-    r.value_type = get_platform(target)->bool_type;
+    r.value_type = target->bool_type;
     if (object_type_is_signed_integer(r.value_type))
     {
-        r.value.host_long_long = wrap_signed_integer(value, get_platform(target)->bool_n_bits);
+        r.value.host_long_long = wrap_signed_integer(value, target->bool_n_bits);
     }
     else
     {
-        r.value.host_u_long_long = wrap_unsigned_integer(value, get_platform(target)->bool_n_bits);
+        r.value.host_u_long_long = wrap_unsigned_integer(value, target->bool_n_bits);
     }
     return r;
 }
@@ -534,12 +609,12 @@ int object_to_str(const struct object* a, int n, char str[ /*n*/])
 
     a = object_get_referenced(a);
 
-    if (object_type_is_signed_bitfield(a->value_type))
+    if (object_type_is_signed_bitsized(a->value_type))
     {
         snprintf(str, n, "%lld", a->value.host_long_long);
         return 0;
     }
-    if (object_type_is_unsigned_bitfield(a->value_type))
+    if (object_type_is_unsigned_bitsized(a->value_type))
     {
         snprintf(str, n, "%llu", a->value.host_u_long_long);
         return 0;
@@ -597,9 +672,9 @@ bool object_is_true(const struct object* a)
 {
     a = object_get_referenced(a);
 
-    if (object_type_is_signed_bitfield(a->value_type))
+    if (object_type_is_signed_bitsized(a->value_type))
         return a->value.host_long_long != 0;
-    if (object_type_is_unsigned_bitfield(a->value_type))
+    if (object_type_is_unsigned_bitsized(a->value_type))
         return a->value.host_u_long_long != 0;
 
     switch (a->value_type)
@@ -635,22 +710,22 @@ struct object object_make_signed_char(signed char value)
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
     r.value_type = TYPE_SIGNED_CHAR;
-    r.value.host_long_long = wrap_signed_integer(value, get_platform(TARGET_X86_MSVC)->char_n_bits);
+    r.value.host_long_long = wrap_signed_integer(value, 8);
     return r;
 }
 
-bool object_increment_value(enum target target, struct object* a)
+bool object_increment_value(const struct platform* target, struct object* a)
 {
-    if (object_type_is_signed_bitfield(a->value_type))
+    if (object_type_is_signed_bitsized(a->value_type))
     {
-        int w = object_type_bitfield_width(a->value_type);
+        int w = object_type_bitsized_width(a->value_type);
         long long prev = a->value.host_long_long;
         a->value.host_long_long = wrap_signed_integer(a->value.host_long_long + 1, w);
         return prev > a->value.host_long_long;
     }
-    if (object_type_is_unsigned_bitfield(a->value_type))
+    if (object_type_is_unsigned_bitsized(a->value_type))
     {
-        int w = object_type_bitfield_width(a->value_type);
+        int w = object_type_bitsized_width(a->value_type);
         unsigned long long prev = a->value.host_u_long_long;
         a->value.host_u_long_long = wrap_unsigned_integer(a->value.host_u_long_long + 1, w);
         return prev > a->value.host_u_long_long;
@@ -692,12 +767,12 @@ bool object_increment_value(enum target target, struct object* a)
     return false;
 }
 
-struct object object_make_unsigned_char(enum target target, unsigned char value)
+struct object object_make_unsigned_char(const struct platform* target, unsigned char value)
 {
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
     r.value_type = TYPE_UNSIGNED_CHAR;
-    r.value.host_u_long_long = wrap_unsigned_integer(value, get_platform(target)->char_n_bits);
+    r.value.host_u_long_long = wrap_unsigned_integer(value, target->char_n_bits);
 
     return r;
 }
@@ -712,74 +787,74 @@ struct object object_make_signed_short(signed short value)
     return r;
 }
 
-struct object object_make_uint8(enum target target, uint8_t value)
+struct object object_make_uint8(const struct platform* target, uint8_t value)
 {
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
-    r.value_type = to_unsigned(get_platform(target)->int8_type);
+    r.value_type = to_unsigned(target->int8_type);
     r.value.host_u_long_long = wrap_unsigned_integer(value, 8);
     return r;
 }
-struct object object_make_uint16(enum target target, uint16_t value)
+struct object object_make_uint16(const struct platform* target, uint16_t value)
 {
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
-    r.value_type = to_unsigned(get_platform(target)->int16_type);
+    r.value_type = to_unsigned(target->int16_type);
     r.value.host_u_long_long = wrap_unsigned_integer(value, 16);
     return r;
 }
-struct object object_make_uint32(enum target target, uint32_t value)
+struct object object_make_uint32(const struct platform* target, uint32_t value)
 {
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
-    r.value_type = to_unsigned(get_platform(target)->int32_type);
+    r.value_type = to_unsigned(target->int32_type);
     r.value.host_u_long_long = wrap_unsigned_integer(value, 32);
     return r;
 }
 
-struct object object_make_signed_int(enum target target, long long value)
+struct object object_make_signed_int(const struct platform* target, long long value)
 {
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
     r.value_type = TYPE_SIGNED_INT;
-    r.value.host_long_long = wrap_signed_integer(value, get_platform(target)->int_n_bits);
+    r.value.host_long_long = wrap_signed_integer(value, target->int_n_bits);
     return r;
 }
 
-struct object object_make_unsigned_int(enum target target, unsigned long long value)
+struct object object_make_unsigned_int(const struct platform* target, unsigned long long value)
 {
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
     r.value_type = TYPE_UNSIGNED_INT;
-    r.value.host_u_long_long = wrap_unsigned_integer(value, get_platform(target)->int_n_bits);
+    r.value.host_u_long_long = wrap_unsigned_integer(value, target->int_n_bits);
     return r;
 }
 
-struct object object_make_signed_long(enum target target, signed long long value)
+struct object object_make_signed_long(const struct platform* target, signed long long value)
 {
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
     r.value_type = TYPE_SIGNED_LONG;
-    r.value.host_long_long = wrap_signed_integer(value, get_platform(target)->long_n_bits);
+    r.value.host_long_long = wrap_signed_integer(value, target->long_n_bits);
     return r;
 }
 
-struct object object_make_unsigned_long(enum target target, unsigned long long value)
+struct object object_make_unsigned_long(const struct platform* target, unsigned long long value)
 {
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
     r.value_type = TYPE_UNSIGNED_LONG;
-    r.value.host_u_long_long = wrap_unsigned_integer(value, get_platform(target)->long_n_bits);
+    r.value.host_u_long_long = wrap_unsigned_integer(value, target->long_n_bits);
     return r;
 }
 
-struct object object_make_signed_long_long(enum target target, signed long long value)
+struct object object_make_signed_long_long(const struct platform* target, signed long long value)
 {
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
     r.value_type = TYPE_SIGNED_LONG_LONG;
 
-    r.value.host_long_long = wrap_signed_integer(value, get_platform(target)->long_long_n_bits);
+    r.value.host_long_long = wrap_signed_integer(value, target->long_long_n_bits);
     return r;
 }
 
@@ -787,9 +862,9 @@ signed long long object_to_signed_long_long(const struct object* a)
 {
     a = object_get_referenced(a);
 
-    if (object_type_is_signed_bitfield(a->value_type))
+    if (object_type_is_signed_bitsized(a->value_type))
         return a->value.host_long_long;
-    if (object_type_is_unsigned_bitfield(a->value_type))
+    if (object_type_is_unsigned_bitsized(a->value_type))
         return (signed long long)a->value.host_u_long_long;
 
     switch (a->value_type)
@@ -832,9 +907,9 @@ unsigned long long object_to_unsigned_long_long(const struct object* a)
 {
     a = object_get_referenced(a);
 
-    if (object_type_is_signed_bitfield(a->value_type))
+    if (object_type_is_signed_bitsized(a->value_type))
         return (unsigned long long)a->value.host_long_long;
-    if (object_type_is_unsigned_bitfield(a->value_type))
+    if (object_type_is_unsigned_bitsized(a->value_type))
         return a->value.host_u_long_long;
 
     switch (a->value_type)
@@ -865,7 +940,7 @@ unsigned long long object_to_unsigned_long_long(const struct object* a)
     return 0;
 }
 
-struct object object_make_float(enum target target, long double value)
+struct object object_make_float(const struct platform* target, long double value)
 {
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
@@ -874,7 +949,7 @@ struct object object_make_float(enum target target, long double value)
     return r;
 }
 
-struct object object_make_double(enum target target, long double value)
+struct object object_make_double(const struct platform* target, long double value)
 {
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
@@ -883,7 +958,7 @@ struct object object_make_double(enum target target, long double value)
     return r;
 }
 
-struct object object_make_long_double(enum target target, long double value)
+struct object object_make_long_double(const struct platform* target, long double value)
 {
     struct object r = { 0 };
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
@@ -912,6 +987,26 @@ struct object object_make_unsigned_bitfield(int width, unsigned long long value)
     return r;
 }
 
+struct object object_make_signed_bitint(int width, long long value)
+{
+    _Assert(width >= 2 && width <= 64);
+    struct object r = { 0 };
+    r.state = CONSTANT_VALUE_STATE_CONSTANT;
+    r.value_type = (enum object_type)(TYPE_SIGNED_BITINT_1 + width - 1);
+    r.value.host_long_long = wrap_signed_integer(value, width);
+    return r;
+}
+
+struct object object_make_unsigned_bitint(int width, unsigned long long value)
+{
+    _Assert(width >= 1 && width <= 64);
+    struct object r = { 0 };
+    r.state = CONSTANT_VALUE_STATE_CONSTANT;
+    r.value_type = (enum object_type)(TYPE_UNSIGNED_BITINT_1 + width - 1);
+    r.value.host_u_long_long = wrap_unsigned_integer(value, width);
+    return r;
+}
+
 struct object object_make_pointer(struct object* object)
 {
     object = object_get_non_const_referenced(object);
@@ -936,7 +1031,7 @@ struct object object_make_reference(struct object* object)
     return r;
 }
 
-struct object object_cast(enum target target, enum object_type dest_type, const struct object* v)
+struct object object_cast(const struct platform* target, enum object_type dest_type, const struct object* v)
 {
     v = object_get_referenced(v);
 
@@ -1103,6 +1198,31 @@ static int get_rank(enum object_type t)
         return 40;
     }
 
+    /*
+      Bit-precise integers rank below any standard type with at least as many
+      bits and above the ones with fewer, and among themselves by width. Ranks
+      of standard types are spaced by 10, and the widths that can end up here
+      are limited by object_make_*_bitint, so 'standard rank - 10 + width/16'
+      keeps the ordering without touching the standard values.
+    */
+    if (object_type_is_bitint(t))
+    {
+        const int width = object_type_bitint_width(t);
+        if (width > 32)
+        {
+            return 80 - 10 + width / 16; /* between long and long long */
+        }
+        if (width > 16)
+        {
+            return 40 - 10 + width / 16; /* between short and int */
+        }
+        if (width > 8)
+        {
+            return 30 - 10 + width / 16; /* between char and short */
+        }
+        return 20 - 10 + width / 16; /* below char */
+    }
+
     if (t == TYPE_SIGNED_LONG_LONG ||
         t == TYPE_UNSIGNED_LONG_LONG)
     {
@@ -1131,14 +1251,14 @@ static int get_rank(enum object_type t)
     return 0;
 }
 
-int target_sizeof(enum target target, enum object_type t)
+int target_sizeof(const struct platform* target, enum object_type t)
 {
     return target_get_num_of_bits(target, t) / 8;
 }
 
 bool is_signed(enum object_type t)
 {
-    if (object_type_is_signed_bitfield(t)) return true;
+    if (object_type_is_signed_bitsized(t)) return true;
 
     switch (t)
     {
@@ -1163,7 +1283,7 @@ bool is_signed(enum object_type t)
 
 bool is_unsigned(enum object_type t)
 {
-    if (object_type_is_unsigned_bitfield(t)) return true;
+    if (object_type_is_unsigned_bitsized(t)) return true;
 
     switch (t)
     {
@@ -1200,9 +1320,9 @@ bool object_is_zero(const struct object* p_object)
     if (!object_has_constant_value(p_object))
         return false;
 
-    if (object_type_is_signed_bitfield(p_object->value_type))
+    if (object_type_is_signed_bitsized(p_object->value_type))
         return p_object->value.host_long_long == 0;
-    if (object_type_is_unsigned_bitfield(p_object->value_type))
+    if (object_type_is_unsigned_bitsized(p_object->value_type))
         return p_object->value.host_u_long_long == 0;
 
     switch (p_object->value_type)
@@ -1240,9 +1360,9 @@ bool object_is_one(const struct object* p_object)
     if (!object_has_constant_value(p_object))
         return false;
 
-    if (object_type_is_signed_bitfield(p_object->value_type))
+    if (object_type_is_signed_bitsized(p_object->value_type))
         return p_object->value.host_long_long == 1;
-    if (object_type_is_unsigned_bitfield(p_object->value_type))
+    if (object_type_is_unsigned_bitsized(p_object->value_type))
         return p_object->value.host_u_long_long == 1;
 
     switch (p_object->value_type)
@@ -1350,7 +1470,7 @@ int object_set(
             to->state = from->state;
 
             {
-                struct object temp = object_cast(ctx->options.target, to->value_type, from);
+                struct object temp = object_cast(&ctx->options.platform, to->value_type, from);
                 to->value = temp.value;
                 object_destroy(&temp);
             }
@@ -1369,7 +1489,7 @@ int object_set(
                   wrapped-around value can cast back to the original bit
                   pattern even though the value was not representable)
                 */
-                const int dest_n_bits = target_get_num_of_bits(ctx->options.target, to->value_type);
+                const int dest_n_bits = target_get_num_of_bits(&ctx->options.platform, to->value_type);
                 const bool dest_is_signed = object_type_is_signed_integer(to->value_type);
 
                 const long long dest_min =
@@ -1404,21 +1524,39 @@ int object_set(
                         C_ERROR_CONSTANT_VALUE_NOT_REPRESENTABLE :
                         W_CONSTANT_VALUE_NOT_REPRESENTABLE;
 
-                    diagnostic(id,
-                        ctx,
-                        p_init_expression->first_token,
-                        NULL,
-                        "constant expression is not exactly representable in type");
+                    {
+                        char value_buf[64] = { 0 };
+                        object_to_str(from, sizeof value_buf, value_buf);
+                        struct osstream ss = { 0 };
+                        print_type_no_names(&ss, &to->type, &ctx->options.platform);
+                        if (type_is_bitfield(&to->type))
+                            ss_fprintf(&ss, " : %d", type_get_bitfield_width(&to->type));
+                        const struct token* p_first = p_init_expression->first_token;
+                        size_t digits = strlen(value_buf);
+                        while (digits > 0 && (value_buf[digits - 1] == 'U' || value_buf[digits - 1] == 'L'))
+                            digits--;
+                        const bool same_as_written =
+                            strlen(p_first->lexeme) == digits && strncmp(p_first->lexeme, value_buf, digits) == 0;
+                        if (p_first == p_init_expression->last_token && !same_as_written)
+                            diagnostic(id, ctx, p_first, NULL,
+                                       "constant expression %s (value %s) is not exactly representable in '%s'", p_first->lexeme, value_buf, ss.c_str ? ss.c_str : "");
+                        else
+                            diagnostic(id, ctx, p_init_expression->first_token, NULL,
+                                       "constant expression %s is not exactly representable in '%s'", same_as_written ? p_first->lexeme : value_buf, ss.c_str ? ss.c_str : "");
+                        ss_close(&ss);
+                    }
                 }
             }
             else if (from->state == CONSTANT_VALUE_STATE_CONSTANT &&
                 (from->value_type == TYPE_FLOAT || from->value_type == TYPE_DOUBLE || from->value_type == TYPE_LONG_DOUBLE) &&
                 (to->value_type == TYPE_FLOAT || to->value_type == TYPE_DOUBLE || to->value_type == TYPE_LONG_DOUBLE))
             {
-                const int dest_n_bits = target_get_num_of_bits(ctx->options.target, to->value_type);
+                const int dest_n_bits = target_get_num_of_bits(&ctx->options.platform, to->value_type);
                 const long double narrowed = resize_floating_point(from->value.host_long_double, dest_n_bits);
 
-                if (narrowed != from->value.host_long_double && p_init_expression)
+                /* NaN compares unequal to itself, but converting it keeps it a NaN */
+                if (!isnan(from->value.host_long_double) &&
+                    narrowed != from->value.host_long_double && p_init_expression)
                 {
                     const enum diagnostic_id id =
                         to->type.storage_class_specifier_flags & STORAGE_SPECIFIER_CONSTEXPR ?
@@ -1449,13 +1587,126 @@ int object_set(
                         rounded_buf);
                 }
             }
+            else if (from->state == CONSTANT_VALUE_STATE_CONSTANT &&
+                is_constant &&
+                (from->value_type == TYPE_FLOAT || from->value_type == TYPE_DOUBLE || from->value_type == TYPE_LONG_DOUBLE) &&
+                (object_type_is_signed_integer(to->value_type) || object_type_is_unsigned_integer(to->value_type)) &&
+                p_init_expression)
+            {
+                /*
+                  constexpr int i = 1.5;  error, value changes when converted
+                  const int k = 1.5;      warning
+                  constexpr int j = 2.0;  OK
+                */
+                const long double v = from->value.host_long_double;
+                const int dest_n_bits = target_get_num_of_bits(&ctx->options.platform, to->value_type);
+                const bool dest_is_signed = object_type_is_signed_integer(to->value_type);
+
+                const long double dest_min =
+                    !dest_is_signed ? 0.0L :
+                    dest_n_bits >= 64 ? (long double)LLONG_MIN : -(long double)(1ULL << (dest_n_bits - 1));
+
+                const long double dest_max =
+                    type_is_bool(&to->type) ? 1.0L :
+                    dest_n_bits >= 64 ?
+                        (dest_is_signed ? (long double)LLONG_MAX : (long double)ULLONG_MAX) :
+                        (long double)((dest_is_signed ? (1ULL << (dest_n_bits - 1)) : (1ULL << dest_n_bits)) - 1);
+
+                /* range is checked before the cast, so the cast is defined;
+                   the cast truncates toward zero (avoids truncl/libm, not C89) */
+                if (isnan(v) || v < dest_min || v > dest_max ||
+                    (dest_is_signed ? (long double)(long long)v : (long double)(unsigned long long)v) != v)
+                {
+                    char value_buf[64] = { 0 };
+                    snprintf(value_buf, sizeof value_buf, "%.17g", (double)v);
+                    struct osstream ss = { 0 };
+                    print_type_no_names(&ss, &to->type, &ctx->options.platform);
+                    const enum diagnostic_id id =
+                        to->type.storage_class_specifier_flags & STORAGE_SPECIFIER_CONSTEXPR ?
+                        C_ERROR_CONSTANT_VALUE_NOT_REPRESENTABLE :
+                        W_CONSTANT_VALUE_NOT_REPRESENTABLE;
+                    diagnostic(id,
+                        ctx,
+                        p_init_expression->first_token,
+                        NULL,
+                        "constant expression %s is not exactly representable in '%s'",
+                        value_buf,
+                        ss.c_str ? ss.c_str : "");
+                    ss_close(&ss);
+                }
+            }
+
+            else if (from->state == CONSTANT_VALUE_STATE_CONSTANT &&
+                is_constant &&
+                (object_type_is_signed_integer(from->value_type) || object_type_is_unsigned_integer(from->value_type)) &&
+                (to->value_type == TYPE_FLOAT || to->value_type == TYPE_DOUBLE || to->value_type == TYPE_LONG_DOUBLE) &&
+                p_init_expression)
+            {
+                /*
+                  constexpr float f = 16777217;  error, nearest float is 16777216
+                  const float g = 16777217;      warning
+                */
+                const int dest_n_bits = target_get_num_of_bits(&ctx->options.platform, to->value_type);
+                bool representable;
+                char value_buf[64] = { 0 };
+
+                if (object_type_is_signed_integer(from->value_type))
+                {
+                    const signed long long v = object_to_signed_long_long(from);
+                    const long double narrowed = resize_floating_point((long double)v, dest_n_bits);
+                    /* 2^63 does not fit back into long long */
+                    representable = narrowed < 9223372036854775808.0L && (signed long long)narrowed == v;
+                    snprintf(value_buf, sizeof value_buf, "%lld", v);
+                }
+                else
+                {
+                    const unsigned long long v = object_to_unsigned_long_long(from);
+                    const long double narrowed = resize_floating_point((long double)v, dest_n_bits);
+                    /* 2^64 does not fit back into unsigned long long */
+                    representable = narrowed < 18446744073709551616.0L && (unsigned long long)narrowed == v;
+                    snprintf(value_buf, sizeof value_buf, "%llu", v);
+                }
+
+                if (!representable)
+                {
+                    const enum diagnostic_id id =
+                        to->type.storage_class_specifier_flags & STORAGE_SPECIFIER_CONSTEXPR ?
+                        C_ERROR_CONSTANT_VALUE_NOT_REPRESENTABLE :
+                        W_CONSTANT_VALUE_NOT_REPRESENTABLE;
+                    struct osstream ss = { 0 };
+                    print_type_no_names(&ss, &to->type, &ctx->options.platform);
+                    diagnostic(id,
+                        ctx,
+                        p_init_expression->first_token,
+                        NULL,
+                        "constant expression %s is not exactly representable in '%s'",
+                        value_buf,
+                        ss.c_str ? ss.c_str : "");
+                    ss_close(&ss);
+                }
+            }
+
+            if ((to->type.storage_class_specifier_flags & STORAGE_SPECIFIER_CONSTEXPR) &&
+                type_is_pointer(&to->type) &&
+                p_init_expression &&
+                !expression_is_null_pointer_constant(p_init_expression))
+            {
+                /*
+                  constexpr int* p = &g; the only pointer value allowed is null
+                */
+                diagnostic(C_ERROR_CONSTEXPR_POINTER_NOT_NULL,
+                    ctx,
+                    p_init_expression->first_token,
+                    NULL,
+                    "a constexpr pointer must be initialized with a null pointer constant");
+            }
 
             if (requires_constant_initialization &&
                 !object_has_constant_value(from))
             {
                 if (p_init_expression &&
-                    !type_is_pointer_or_array(&p_init_expression->type) &&
-                    !type_is_function(&p_init_expression->type))
+                    !type_is_pointer_or_array(&p_init_expression->object.type) &&
+                    !type_is_function(&p_init_expression->object.type))
                 {
                     struct token* _Opt tk = p_init_expression->first_token;
 
@@ -1463,9 +1714,7 @@ int object_set(
                         ctx,
                         tk,
                         NULL,
-                        "requires a compile time object");
-
-                    throw;
+                        "initializer must be a constant expression");                    
                 }
             }
 
@@ -1477,11 +1726,6 @@ int object_set(
                   int j = i;}
                 */
 
-                //TODO
-                /*
-                      struct X {int x;};
-                      int main() { constexpr struct X x = (struct X){ .x = 50 };}
-                */
                 to->state = CONSTANT_VALUE_STATE_CONSTANT;
             }
             else
@@ -1505,7 +1749,7 @@ int object_set(
 struct object* _Owner _Opt make_object_ptr_core(const struct type* p_type,
     const char* member_designator,
     enum make_state make_state,
-    enum target target)
+    const struct platform* target)
 {
     struct object* _Owner _Opt p_object = NULL;
 
@@ -1546,7 +1790,7 @@ struct object* _Owner _Opt make_object_ptr_core(const struct type* p_type,
             p_object->type = type_dup(p_type);
             p_object->member_designator = strdup(member_designator);
 
-            if (p_type->array_num_elements > 0)
+            if (p_type->array_num_elements > 0 && make_state != MAKE_STATE_ANY_LAZY_ARRAYS)
             {
                 struct type array_item_type = get_array_item_type(p_type);
 
@@ -1609,6 +1853,7 @@ struct object* _Owner _Opt make_object_ptr_core(const struct type* p_type,
                 p_object->value.host_long_long = -1;
                 break;
             case MAKE_STATE_ANY:
+            case MAKE_STATE_ANY_LAZY_ARRAYS:
                 p_object->state = CONSTANT_VALUE_STATE_ANY;
                 p_object->value.host_long_long = -1;
                 break;
@@ -1664,7 +1909,7 @@ struct object* _Owner _Opt make_object_ptr_core(const struct type* p_type,
                             */
                         }
 
-                        struct object* _Owner _Opt p_member_obj = make_object_ptr_core(&p_member_declarator->declarator->type, buffer, make_state, target);
+                        struct object* _Owner _Opt p_member_obj = make_object_ptr_core(&p_member_declarator->declarator->object.type, buffer, make_state, target);
                         if (p_member_obj == NULL)
                             throw;
 
@@ -1687,7 +1932,8 @@ struct object* _Owner _Opt make_object_ptr_core(const struct type* p_type,
                     t.type_specifier_flags = TYPE_SPECIFIER_STRUCT_OR_UNION;
 
                     char buffer[200] = { 0 };
-                    snprintf(buffer, sizeof buffer, ".%s", member_designator);
+                    /* anonymous members are accessed as members of the parent */
+                    snprintf(buffer, sizeof buffer, "%s", member_designator);
 
                     struct object* _Owner _Opt p_member_obj = make_object_ptr_core(&t, buffer, make_state, target);
                     if (p_member_obj == NULL)
@@ -1716,7 +1962,7 @@ struct object* _Owner _Opt make_object_ptr_core(const struct type* p_type,
 
 }
 
-struct object* _Owner _Opt make_object_ptr(const struct type* p_type, enum make_state make_state, enum target target)
+struct object* _Owner _Opt make_object_ptr(const struct type* p_type, enum make_state make_state, const struct platform* target)
 {
     return make_object_ptr_core(p_type, "", make_state, target);
 }
@@ -1725,22 +1971,49 @@ int make_object_with_member_designator(const struct type* p_type,
     struct object* obj,
     const char* name,
     enum make_state make_state,
-    enum target target)
+    const struct platform* target)
 {
+    /*
+      p_type may alias &obj->type (this is common now that a declarator's
+      or expression's own type lives inside its object). Take an
+      independent copy before destroying/resetting obj, otherwise
+      object_destroy(obj) below frees the very type p_type points to.
+    */
+    struct type type_copy = type_dup(p_type);
+
     object_destroy(obj);
     *obj = (struct object){ 0 };
 
     _Assert(obj->members.head == NULL);
     _Assert(obj->next == NULL);
 
-    struct object* _Owner _Opt p = make_object_ptr_core(p_type, name, make_state, target);
+    struct object* _Owner _Opt p = make_object_ptr_core(&type_copy, name, make_state, target);
     if (p)
     {
         *obj = *p; //not an error    
         object_fix_parent(obj, obj);
         free(p);
+
+        /*
+          make_object_ptr_core lowers an enum to its underlying integer type,
+          which is what the *value* representation needs (see value_type), but
+          it must not become the type of the declarator or expression this
+          object belongs to: that would drop the declared name and the enum
+          specifier. Keep exactly the type that was asked for.
+        */
+        type_destroy(&obj->type);
+        obj->type = type_copy; /*moved*/
         return 0;
     }
+
+    /*
+        The build failed (an incomplete type, typically). The object stays
+        empty, but the type must still be the one that was asked for: it is
+        the declarator's or expression's own type, and dropping it would hide
+        the very incompleteness that made this fail.
+    */
+    type_destroy(&obj->type);
+    obj->type = type_copy; /*moved*/
     return 1;
 }
 
@@ -1774,13 +2047,20 @@ struct object object_dup(const struct object* src)
     return result;
 }
 
-int make_object(const struct type* p_type, struct object* obj, enum make_state make_state, enum target target)
+int make_object(const struct type* p_type, struct object* obj, enum make_state make_state, const struct platform* target)
 {
     return make_object_with_member_designator(p_type, obj, "", make_state, target);
 }
 
 enum type_specifier_flags object_type_to_type_specifier(enum object_type type)
 {
+    /* the width is not representable in the flags, see type_make_bitint */
+    if (object_type_is_signed_bitint(type))
+        return TYPE_SPECIFIER_BITINT;
+
+    if (object_type_is_unsigned_bitint(type))
+        return TYPE_SPECIFIER_UNSIGNED | TYPE_SPECIFIER_BITINT;
+
     if (object_type_is_signed_bitfield(type))
         return TYPE_SPECIFIER_INT;
 
@@ -1816,11 +2096,11 @@ enum type_specifier_flags object_type_to_type_specifier(enum object_type type)
     return TYPE_SPECIFIER_NONE;
 }
 
-enum object_type type_specifier_to_object_type(const enum type_specifier_flags type_specifier_flags, enum target target)
+enum object_type type_specifier_to_object_type(const enum type_specifier_flags type_specifier_flags, const struct platform* target)
 {
 
     if (type_specifier_flags & TYPE_SPECIFIER_BOOL)
-        return get_platform(target)->bool_type;
+        return target->bool_type;
 
     if (type_specifier_flags & TYPE_SPECIFIER_FLOAT)
         return TYPE_FLOAT;
@@ -1834,11 +2114,13 @@ enum object_type type_specifier_to_object_type(const enum type_specifier_flags t
         return TYPE_DOUBLE;
     }
 
-    /* Widest specifier first. `long long int` carries TYPE_SPECIFIER_INT as
-       well as TYPE_SPECIFIER_LONG_LONG, so testing INT before LONG_LONG made
-       every explicitly-spelled `long long int` (uint64_t among them) an int:
-       `long long int a = 5000000000;` was reported as not representable, and
-       "%lld" was reported as the wrong conversion for it. */
+    /*
+        Widest specifier first. `long long int` carries TYPE_SPECIFIER_INT as
+        well as TYPE_SPECIFIER_LONG_LONG, so testing INT before LONG_LONG made
+        every explicitly-spelled `long long int` (uint64_t among them) an int:
+        `long long int a = 5000000000;` was reported as not representable, and
+        "%lld" was reported as the wrong conversion for it.
+    */
     if (type_specifier_flags & TYPE_SPECIFIER_UNSIGNED)
     {
         if (type_specifier_flags & TYPE_SPECIFIER_CHAR)
@@ -1857,7 +2139,12 @@ enum object_type type_specifier_to_object_type(const enum type_specifier_flags t
     else
     {
         if (type_specifier_flags & TYPE_SPECIFIER_CHAR)
-            return TYPE_SIGNED_CHAR;
+        {
+            /* plain char has the signedness of the target */
+            if (type_specifier_flags & TYPE_SPECIFIER_SIGNED)
+                return TYPE_SIGNED_CHAR;
+            return target->char_t_type;
+        }
         if (type_specifier_flags & TYPE_SPECIFIER_SHORT)
             return TYPE_SIGNED_SHORT;
 
@@ -1872,11 +2159,11 @@ enum object_type type_specifier_to_object_type(const enum type_specifier_flags t
     return TYPE_SIGNED_INT;
 }
 
-enum object_type type_to_object_type(const struct type* type, enum target target)
+enum object_type type_to_object_type(const struct type* type, const struct platform* target)
 {
     if (type_is_pointer(type))
     {
-        return get_platform(target)->size_t_type;
+        return target->size_t_type;
     }
 
     /*
@@ -1903,6 +2190,18 @@ enum object_type type_to_object_type(const struct type* type, enum target target
             return (enum object_type)(TYPE_SIGNED_BITFIELD_1 + (width - 1)); /* TYPE_SIGNED_BITFIELD_N  */
     }
 
+    if (type->type_specifier_flags & TYPE_SPECIFIER_BITINT)
+    {
+        int width = type->bitint_width;
+        if (width < 1) width = 1;
+        if (width > 64) width = 64;
+
+        if (type->type_specifier_flags & TYPE_SPECIFIER_UNSIGNED)
+            return (enum object_type)(TYPE_UNSIGNED_BITINT_1 + (width - 1));
+        else
+            return (enum object_type)(TYPE_SIGNED_BITINT_1 + (width - 1));
+    }
+
     return type_specifier_to_object_type(type->type_specifier_flags, target);
 }
 
@@ -1910,6 +2209,18 @@ void object_print_value_debug(const struct object* a)
 {
     a = object_get_referenced(a);
 
+    if (object_type_is_signed_bitint(a->value_type))
+    {
+        printf("%lld (_BitInt(%d))", a->value.host_long_long,
+            object_type_bitint_width(a->value_type));
+        return;
+    }
+    if (object_type_is_unsigned_bitint(a->value_type))
+    {
+        printf("%llu (unsigned _BitInt(%d))", a->value.host_u_long_long,
+            object_type_bitint_width(a->value_type));
+        return;
+    }
     if (object_type_is_signed_bitfield(a->value_type))
     {
         printf("%lld (signed bitfield %d)", a->value.host_long_long,
@@ -1981,7 +2292,7 @@ void object_print_value_debug(const struct object* a)
 
 }
 
-void object_print_to_debug_core(const struct object* object, int n, enum target target)
+void object_print_to_debug_core(const struct object* object, int n, const struct platform* target)
 {
 
     if (object_is_reference(object))
@@ -2032,7 +2343,7 @@ void object_print_to_debug_core(const struct object* object, int n, enum target 
 
 }
 
-void object_print_to_debug(const struct object* object, enum target target)
+void object_print_to_debug(const struct object* object, const struct platform* target)
 {
     int n = 0;
     object_print_to_debug_core(object, n, target);
@@ -2041,7 +2352,7 @@ void object_print_to_debug(const struct object* object, enum target target)
 /*
    extends the array to the max_index returning the added item.
 */
-struct object* _Opt object_extend_array_to_index(const struct type* p_type, struct object* a, size_t max_index, bool is_constant, enum target target)
+struct object* _Opt object_extend_array_to_index(const struct type* p_type, struct object* a, size_t max_index, bool is_constant, const struct platform* target)
 {
     try
     {
@@ -2080,6 +2391,12 @@ bool object_is_promoted(const struct object* a)
         return true;
     }
 
+    /* bit-precise integers are never promoted (C23 6.3.1.1) */
+    if (object_type_is_bitint(a->value_type))
+    {
+        return false;
+    }
+
     if (a->value_type == TYPE_SIGNED_CHAR ||
         a->value_type == TYPE_UNSIGNED_CHAR ||
         a->value_type == TYPE_SIGNED_SHORT ||
@@ -2090,7 +2407,7 @@ bool object_is_promoted(const struct object* a)
     return false;
 }
 
-enum object_type object_common(enum target target, const struct object* a, const struct object* b)
+enum object_type object_common(const struct platform* target, const struct object* a, const struct object* b)
 {
 
     enum object_type a_type = a->value_type;
@@ -2222,13 +2539,26 @@ enum object_type object_common(enum target target, const struct object* a, const
 
 }
 
-void object_print_value(enum target target, struct osstream* ss, const struct object* a)
+void object_print_value(const struct platform* target, struct osstream* ss, const struct object* a)
 {
     a = object_get_referenced(a);
 
-    if (object_type_is_signed_bitfield(a->value_type))
+    if (object_type_is_signed_bitsized(a->value_type))
     {
         ss_fprintf(ss, "%lld", a->value.host_long_long);
+        return;
+    }
+    if (object_type_is_unsigned_bitint(a->value_type))
+    {
+        /* an unsigned _BitInt(64) value may not fit any signed type, so keep it unsigned */
+        if (a->value.host_u_long_long > target_unsigned_max(target, TYPE_UNSIGNED_INT))
+        {
+            ss_fprintf(ss, "%lluULL", a->value.host_u_long_long);
+        }
+        else
+        {
+            ss_fprintf(ss, "%lluU", a->value.host_u_long_long);
+        }
         return;
     }
     if (object_type_is_unsigned_bitfield(a->value_type))
@@ -2361,7 +2691,7 @@ void object_print_value(enum target target, struct osstream* ss, const struct ob
                 float_to_string((float)a->value.host_long_double, temp, sizeof temp);
             else if (a->value_type == TYPE_DOUBLE)
                 double_to_string((double)a->value.host_long_double, temp, sizeof temp);
-            else if (get_platform(target)->long_double_n_bits == 64)
+            else if (target->long_double_n_bits == 64)
             {
                 /*
                   On this target long double is just a double (every msvc
@@ -2378,6 +2708,21 @@ void object_print_value(enum target target, struct osstream* ss, const struct ob
                   accept the loss. Documented in manual.md, section 7.5.
                 */
                 snprintf(temp, sizeof temp, "%.21Lg", a->value.host_long_double);
+
+                /*
+                  %g drops the decimal point for whole numbers, and
+                  9223372036854775808L would be an integer constant.
+                */
+                if (strpbrk(temp, ".eE") == NULL)
+                {
+                    const size_t len = strlen(temp);
+                    if (len + 2 < sizeof temp)
+                    {
+                        temp[len] = '.';
+                        temp[len + 1] = '0';
+                        temp[len + 2] = '\0';
+                    }
+                }
             }
 
             ss_fprintf(ss, "%s", temp);
@@ -2395,7 +2740,7 @@ void object_print_value(enum target target, struct osstream* ss, const struct ob
 
 }
 
-struct object object_equal(enum target target,
+struct object object_equal(const struct platform* target,
     const struct object* a,
     const struct object* b,
     char warning_message[200])
@@ -2411,7 +2756,7 @@ struct object object_equal(enum target target,
     r.value_type = TYPE_SIGNED_INT;
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
 
-    switch (common_type)
+    switch (object_type_switch_class(common_type))
     {
     case TYPE_SIGNED_CHAR:
     case TYPE_SIGNED_SHORT:
@@ -2450,7 +2795,7 @@ struct object object_equal(enum target target,
     return r;
 }
 
-struct object object_not_equal(enum target target,
+struct object object_not_equal(const struct platform* target,
     const struct object* a,
     const struct object* b,
     char warning_message[200])
@@ -2466,7 +2811,7 @@ struct object object_not_equal(enum target target,
     r.value_type = common_type;
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
 
-    switch (common_type)
+    switch (object_type_switch_class(common_type))
     {
     case TYPE_SIGNED_CHAR:
     case TYPE_SIGNED_SHORT:
@@ -2506,7 +2851,7 @@ struct object object_not_equal(enum target target,
     return r;
 }
 
-struct object object_greater_than_or_equal(enum target target,
+struct object object_greater_than_or_equal(const struct platform* target,
     const struct object* a,
     const struct object* b,
     char warning_message[200])
@@ -2522,7 +2867,7 @@ struct object object_greater_than_or_equal(enum target target,
     r.value_type = common_type;
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
 
-    switch (common_type)
+    switch (object_type_switch_class(common_type))
     {
     case TYPE_SIGNED_CHAR:
     case TYPE_SIGNED_SHORT:
@@ -2560,7 +2905,7 @@ struct object object_greater_than_or_equal(enum target target,
     return r;
 }
 
-struct object object_greater_than(enum target target,
+struct object object_greater_than(const struct platform* target,
     const struct object* a,
     const struct object* b,
     char warning_message[200])
@@ -2576,7 +2921,7 @@ struct object object_greater_than(enum target target,
     r.value_type = common_type;
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
 
-    switch (common_type)
+    switch (object_type_switch_class(common_type))
     {
     case TYPE_SIGNED_CHAR:
     case TYPE_SIGNED_SHORT:
@@ -2614,7 +2959,7 @@ struct object object_greater_than(enum target target,
     return r;
 }
 
-struct object object_smaller_than_or_equal(enum target target,
+struct object object_smaller_than_or_equal(const struct platform* target,
     const struct object* a,
     const struct object* b,
     char warning_message[200])
@@ -2630,7 +2975,7 @@ struct object object_smaller_than_or_equal(enum target target,
     r.value_type = common_type;
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
 
-    switch (common_type)
+    switch (object_type_switch_class(common_type))
     {
     case TYPE_SIGNED_CHAR:
     case TYPE_SIGNED_SHORT:
@@ -2668,7 +3013,7 @@ struct object object_smaller_than_or_equal(enum target target,
     return r;
 }
 
-struct object object_smaller_than(enum target target,
+struct object object_smaller_than(const struct platform* target,
     const struct object* a,
     const struct object* b,
     char warning_message[200])
@@ -2684,7 +3029,7 @@ struct object object_smaller_than(enum target target,
     r.value_type = common_type;
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
 
-    switch (common_type)
+    switch (object_type_switch_class(common_type))
     {
     case TYPE_SIGNED_CHAR:
     case TYPE_SIGNED_SHORT:
@@ -2722,7 +3067,7 @@ struct object object_smaller_than(enum target target,
     return r;
 }
 
-struct object object_add(enum target target,
+struct object object_add(const struct platform* target,
     const struct object* a,
     const struct object* b,
     char warning_message[200])
@@ -2738,7 +3083,7 @@ struct object object_add(enum target target,
     r.value_type = common_type;
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
 
-    switch (common_type)
+    switch (object_type_switch_class(common_type))
     {
     case TYPE_SIGNED_CHAR:
     case TYPE_SIGNED_SHORT:
@@ -2756,7 +3101,7 @@ struct object object_add(enum target target,
             {
                 snprintf(warning_message,
                     200,
-                    "integer overflow results in '%lld'. The exact result is '%lld'.", r.value.host_long_long, exact_result);
+                    "integer overflow results in '%lld'; the exact result is '%lld'", r.value.host_long_long, exact_result);
             }
         }
         else
@@ -2784,7 +3129,7 @@ struct object object_add(enum target target,
             {
                 snprintf(warning_message,
                     200,
-                    "integer wrap-around results in '%llu'. The exact result is '%llu'.", r.value.host_u_long_long, exact_result);
+                    "integer wrap-around results in '%llu'; the exact result is '%llu'", r.value.host_u_long_long, exact_result);
             }
         }
         else
@@ -2811,7 +3156,7 @@ struct object object_add(enum target target,
     return r;
 }
 
-struct object object_sub(enum target target,
+struct object object_sub(const struct platform* target,
     const struct object* a,
     const struct object* b,
     char warning_message[200])
@@ -2827,7 +3172,7 @@ struct object object_sub(enum target target,
     r.value_type = common_type;
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
 
-    switch (common_type)
+    switch (object_type_switch_class(common_type))
     {
     case TYPE_SIGNED_CHAR:
     case TYPE_SIGNED_SHORT:
@@ -2845,7 +3190,7 @@ struct object object_sub(enum target target,
             {
                 snprintf(warning_message,
                     200,
-                    "integer overflow results in '%lld'. The exact result is '%lld'.", r.value.host_long_long, exact_result);
+                    "integer overflow results in '%lld'; the exact result is '%lld'", r.value.host_long_long, exact_result);
             }
         }
         else
@@ -2873,7 +3218,7 @@ struct object object_sub(enum target target,
             {
                 snprintf(warning_message,
                     200,
-                    "integer wrap-around results in '%llu'. The exact result is '%llu'.", r.value.host_u_long_long, exact_result);
+                    "integer wrap-around results in '%llu'; the exact result is '%llu'", r.value.host_u_long_long, exact_result);
             }
         }
         else
@@ -2901,7 +3246,7 @@ struct object object_sub(enum target target,
     return r;
 }
 
-struct object object_mul(enum target target,
+struct object object_mul(const struct platform* target,
     const struct object* a,
     const struct object* b,
     char warning_message[200])
@@ -2917,7 +3262,7 @@ struct object object_mul(enum target target,
     r.value_type = common_type;
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
 
-    switch (common_type)
+    switch (object_type_switch_class(common_type))
     {
     case TYPE_SIGNED_CHAR:
     case TYPE_SIGNED_SHORT:
@@ -2935,7 +3280,7 @@ struct object object_mul(enum target target,
             {
                 snprintf(warning_message,
                     200,
-                    "integer overflow results in '%lld'. The exact result is '%lld'.", r.value.host_long_long, exact_result);
+                    "integer overflow results in '%lld'; the exact result is '%lld'", r.value.host_long_long, exact_result);
             }
         }
         else
@@ -2963,7 +3308,7 @@ struct object object_mul(enum target target,
             {
                 snprintf(warning_message,
                     200,
-                    "integer wrap-around results in '%llu'. The exact result is '%llu'.", r.value.host_u_long_long, exact_result);
+                    "integer wrap-around results in '%llu'; the exact result is '%llu'", r.value.host_u_long_long, exact_result);
             }
         }
         else
@@ -2991,7 +3336,7 @@ struct object object_mul(enum target target,
     return r;
 }
 
-struct object object_div(enum target target,
+struct object object_div(const struct platform* target,
     const struct object* a,
     const struct object* b,
     char warning_message[200])
@@ -3007,7 +3352,7 @@ struct object object_div(enum target target,
     r.value_type = common_type;
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
 
-    switch (common_type)
+    switch (object_type_switch_class(common_type))
     {
     case TYPE_SIGNED_CHAR:
     case TYPE_SIGNED_SHORT:
@@ -3073,7 +3418,7 @@ struct object object_div(enum target target,
     return r;
 }
 
-struct object object_mod(enum target target,
+struct object object_mod(const struct platform* target,
     const struct object* a,
     const struct object* b,
     char warning_message[200])
@@ -3089,7 +3434,7 @@ struct object object_mod(enum target target,
     r.value_type = common_type;
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
 
-    switch (common_type)
+    switch (object_type_switch_class(common_type))
     {
     case TYPE_SIGNED_CHAR:
     case TYPE_SIGNED_SHORT:
@@ -3146,7 +3491,7 @@ struct object object_mod(enum target target,
     return r;
 }
 
-int object_is_equal(enum target target, const struct object* a, const struct object* b)
+int object_is_equal(const struct platform* target, const struct object* a, const struct object* b)
 {
     char message[200] = { 0 };
     struct object r = object_equal(target, a, b, message);
@@ -3155,7 +3500,7 @@ int object_is_equal(enum target target, const struct object* a, const struct obj
     return i;
 }
 
-int object_is_not_equal(enum target target, const struct object* a, const struct object* b)
+int object_is_not_equal(const struct platform* target, const struct object* a, const struct object* b)
 {
     char message[200] = { 0 };
     struct object r = object_not_equal(target, a, b, message);
@@ -3165,7 +3510,7 @@ int object_is_not_equal(enum target target, const struct object* a, const struct
     return i;
 }
 
-int object_is_greater_than_or_equal(enum target target, const struct object* a, const struct object* b)
+int object_is_greater_than_or_equal(const struct platform* target, const struct object* a, const struct object* b)
 {
     char message[200] = { 0 };
     struct object r = object_greater_than_or_equal(target, a, b, message);
@@ -3174,7 +3519,7 @@ int object_is_greater_than_or_equal(enum target target, const struct object* a, 
     return i;
 }
 
-int object_is_smaller_than_or_equal(enum target target, const struct object* a, const struct object* b)
+int object_is_smaller_than_or_equal(const struct platform* target, const struct object* a, const struct object* b)
 {
     char message[200] = { 0 };
     struct object r = object_smaller_than_or_equal(target, a, b, message);
@@ -3183,7 +3528,7 @@ int object_is_smaller_than_or_equal(enum target target, const struct object* a, 
     return i;
 }
 
-struct object object_logical_not(enum target target, const struct object* a, char warning_message[200])
+struct object object_logical_not(const struct platform* target, const struct object* a, char warning_message[200])
 {
     warning_message[0] = '\0';
     a = object_get_referenced(a);
@@ -3193,7 +3538,7 @@ struct object object_logical_not(enum target target, const struct object* a, cha
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
     enum object_type common_type = a->value_type;
 
-    switch (common_type)
+    switch (object_type_switch_class(common_type))
     {
     case TYPE_SIGNED_CHAR:
     case TYPE_SIGNED_SHORT:
@@ -3230,7 +3575,7 @@ struct object object_logical_not(enum target target, const struct object* a, cha
     return r;
 }
 
-struct object object_bitwise_not(enum target target, const struct object* a, char warning_message[200])
+struct object object_bitwise_not(const struct platform* target, const struct object* a, char warning_message[200])
 {
     warning_message[0] = '\0';
     a = object_get_referenced(a);
@@ -3238,9 +3583,12 @@ struct object object_bitwise_not(enum target target, const struct object* a, cha
     struct object r = { 0 };
 
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
-    enum object_type common_type = a->value_type;
+    /* integer promotions (bool, char and short become int, _BitInt is not promoted) */
+    enum object_type common_type = object_is_promoted(a) ? TYPE_SIGNED_INT : a->value_type;
+    struct object a0 = object_cast(target, common_type, a);
+    a = &a0;
     r.value_type = common_type;
-    switch (common_type)
+    switch (object_type_switch_class(common_type))
     {
     case TYPE_SIGNED_CHAR:
     case TYPE_SIGNED_SHORT:
@@ -3274,10 +3622,11 @@ struct object object_bitwise_not(enum target target, const struct object* a, cha
         break;
     }
 
+    object_destroy(&a0);
     return r;
 }
 
-struct object object_unary_minus(enum target target, const struct object* a, char warning_message[200])
+struct object object_unary_minus(const struct platform* target, const struct object* a, char warning_message[200])
 {
     warning_message[0] = '\0';
     a = object_get_referenced(a);
@@ -3285,10 +3634,13 @@ struct object object_unary_minus(enum target target, const struct object* a, cha
     struct object r = { 0 };
 
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
-    enum object_type common_type = a->value_type;
+    /* integer promotions (bool, char and short become int, _BitInt is not promoted) */
+    enum object_type common_type = object_is_promoted(a) ? TYPE_SIGNED_INT : a->value_type;
+    struct object a0 = object_cast(target, common_type, a);
+    a = &a0;
     r.value_type = common_type;
 
-    switch (common_type)
+    switch (object_type_switch_class(common_type))
     {
     case TYPE_SIGNED_CHAR:
     case TYPE_SIGNED_SHORT:
@@ -3323,10 +3675,11 @@ struct object object_unary_minus(enum target target, const struct object* a, cha
         break;
     }
 
+    object_destroy(&a0);
     return r;
 }
 
-struct object object_unary_plus(enum target target, const struct object* a, char warning_message[200])
+struct object object_unary_plus(const struct platform* target, const struct object* a, char warning_message[200])
 {
     warning_message[0] = '\0';
     /*
@@ -3338,10 +3691,13 @@ struct object object_unary_plus(enum target target, const struct object* a, char
     struct object r = { 0 };
 
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
-    enum object_type common_type = a->value_type;
+    /* integer promotions (bool, char and short become int, _BitInt is not promoted) */
+    enum object_type common_type = object_is_promoted(a) ? TYPE_SIGNED_INT : a->value_type;
+    struct object a0 = object_cast(target, common_type, a);
+    a = &a0;
     r.value_type = common_type;
 
-    switch (common_type)
+    switch (object_type_switch_class(common_type))
     {
     case TYPE_SIGNED_CHAR:
     case TYPE_SIGNED_SHORT:
@@ -3376,10 +3732,11 @@ struct object object_unary_plus(enum target target, const struct object* a, char
         break;
     }
 
+    object_destroy(&a0);
     return r;
 }
 
-struct object object_bitwise_xor(enum target target,
+struct object object_bitwise_xor(const struct platform* target,
     const struct object* a,
     const struct object* b,
     char warning_message[200])
@@ -3395,7 +3752,7 @@ struct object object_bitwise_xor(enum target target,
     r.value_type = common_type;
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
 
-    switch (common_type)
+    switch (object_type_switch_class(common_type))
     {
     case TYPE_SIGNED_CHAR:
     case TYPE_SIGNED_SHORT:
@@ -3436,7 +3793,7 @@ struct object object_bitwise_xor(enum target target,
     return r;
 }
 
-struct object object_bitwise_or(enum target target,
+struct object object_bitwise_or(const struct platform* target,
     const struct object* a,
     const struct object* b,
     char warning_message[200])
@@ -3452,7 +3809,7 @@ struct object object_bitwise_or(enum target target,
     r.value_type = common_type;
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
 
-    switch (common_type)
+    switch (object_type_switch_class(common_type))
     {
     case TYPE_SIGNED_CHAR:
     case TYPE_SIGNED_SHORT:
@@ -3493,7 +3850,7 @@ struct object object_bitwise_or(enum target target,
     return r;
 }
 
-struct object object_bitwise_and(enum target target,
+struct object object_bitwise_and(const struct platform* target,
     const struct object* a,
     const struct object* b,
     char warning_message[200])
@@ -3509,7 +3866,7 @@ struct object object_bitwise_and(enum target target,
     r.value_type = common_type;
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
 
-    switch (common_type)
+    switch (object_type_switch_class(common_type))
     {
     case TYPE_SIGNED_CHAR:
     case TYPE_SIGNED_SHORT:
@@ -3550,7 +3907,7 @@ struct object object_bitwise_and(enum target target,
     return r;
 }
 
-struct object object_shift_left(enum target target,
+struct object object_shift_left(const struct platform* target,
     const struct object* a,
     const struct object* b,
     char warning_message[200])
@@ -3559,14 +3916,15 @@ struct object object_shift_left(enum target target,
     a = object_get_referenced(a);
     b = object_get_referenced(b);
 
-    enum object_type common_type = object_common(target, a, b);
+    /* the result has the type of the promoted left operand, not the common type */
+    enum object_type common_type = object_is_promoted(a) ? TYPE_SIGNED_INT : a->value_type;
     struct object a0 = object_cast(target, common_type, a);
-    struct object b0 = object_cast(target, common_type, b);
+    struct object b0 = object_cast(target, TYPE_SIGNED_LONG_LONG, b); /* shift count keeps its value */
     struct object r = { 0 };
     r.value_type = common_type;
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
 
-    switch (common_type)
+    switch (object_type_switch_class(common_type))
     {
     case TYPE_SIGNED_CHAR:
     case TYPE_SIGNED_SHORT:
@@ -3586,7 +3944,7 @@ struct object object_shift_left(enum target target,
     case TYPE_UNSIGNED_LONG_LONG:
 
         r.value.host_u_long_long =
-            wrap_unsigned_integer(a0.value.host_u_long_long << b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
+            wrap_unsigned_integer(a0.value.host_u_long_long << (unsigned long long)b0.value.host_long_long, target_get_num_of_bits(target, common_type));
 
         break;
 
@@ -3605,7 +3963,7 @@ struct object object_shift_left(enum target target,
     return r;
 }
 
-struct object object_shift_right(enum target target,
+struct object object_shift_right(const struct platform* target,
     const struct object* a,
     const struct object* b,
     char warning_message[200])
@@ -3614,14 +3972,15 @@ struct object object_shift_right(enum target target,
     a = object_get_referenced(a);
     b = object_get_referenced(b);
 
-    enum object_type common_type = object_common(target, a, b);
+    /* the result has the type of the promoted left operand, not the common type */
+    enum object_type common_type = object_is_promoted(a) ? TYPE_SIGNED_INT : a->value_type;
     struct object a0 = object_cast(target, common_type, a);
-    struct object b0 = object_cast(target, common_type, b);
+    struct object b0 = object_cast(target, TYPE_SIGNED_LONG_LONG, b); /* shift count keeps its value */
     struct object r = { 0 };
     r.value_type = common_type;
     r.state = CONSTANT_VALUE_STATE_CONSTANT;
 
-    switch (common_type)
+    switch (object_type_switch_class(common_type))
     {
     case TYPE_SIGNED_CHAR:
     case TYPE_SIGNED_SHORT:
@@ -3641,7 +4000,7 @@ struct object object_shift_right(enum target target,
     case TYPE_UNSIGNED_LONG_LONG:
 
         r.value.host_u_long_long =
-            wrap_unsigned_integer(a0.value.host_u_long_long >> b0.value.host_u_long_long, target_get_num_of_bits(target, common_type));
+            wrap_unsigned_integer(a0.value.host_u_long_long >> (unsigned long long)b0.value.host_long_long, target_get_num_of_bits(target, common_type));
 
         break;
 

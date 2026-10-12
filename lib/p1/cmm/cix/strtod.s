@@ -11,11 +11,11 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl_label
-C_sduk_6a9cb693_maxE_xponent_L000003 ' <symbol:maxExponent>
+C_suc8_6ac84e28_maxE_xponent_L000003 ' <symbol:maxExponent>
  long 511
 
  alignl_label
-C_sduk1_6a9cb693_powersO_f10_L000004 ' <symbol:powersOf10>
+C_suc81_6ac84e28_powersO_f10_L000004 ' <symbol:powersOf10>
  long $41200000 ' float
  long $42c80000 ' float
  long $461c4000 ' float
@@ -357,13 +357,13 @@ C_strtod_58
  alignl_label
 C_strtod_59
  alignl_p1
- long I32_LODI + (@C_sduk_6a9cb693_maxE_xponent_L000003)<<S32
+ long I32_LODI + (@C_suc8_6ac84e28_maxE_xponent_L000003)<<S32
  word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrg
  word I16A_CMPS + (r19)<<D16A + (r22)<<S16A
  alignl_p1
  long I32_BRBE + (@C_strtod_60)<<S32 ' LEI4 reg reg
  alignl_p1
- long I32_LODI + (@C_sduk_6a9cb693_maxE_xponent_L000003)<<S32
+ long I32_LODI + (@C_suc8_6ac84e28_maxE_xponent_L000003)<<S32
  word I16A_MOV + (r19)<<D16A + RI<<S16A ' reg <- INDIRI4 addrg
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((34)&$7FFFF)<<S32 ' reg <- cons
@@ -377,7 +377,7 @@ C_strtod_60
  word I16A_MOV + (r11)<<D16A + RI<<S16A ' reg <- INDIRF4 addrg
  word I16B_LODL + (r15)<<D16B
  alignl_p1
- long @C_sduk1_6a9cb693_powersO_f10_L000004 ' reg <- addrg
+ long @C_suc81_6ac84e28_powersO_f10_L000004 ' reg <- addrg
  alignl_p1
  long I32_JMPA + (@C_strtod_67)<<S32 ' JUMPV addrg
  alignl_label
@@ -443,6 +443,48 @@ C_strtod_74
  alignl_label
 C_strtod_5
  word I16B_POPM + 3<<S16B ' restore registers, do pop frame, do return
+ alignl_p1
+
+' Catalina Export strtold
+
+ alignl_label
+C_strtold ' <symbol:strtold>
+ alignl_p1
+ long I32_NEWF + 0<<S32
+ alignl_p1
+ long I32_PSHM + $e00000<<S32 ' save registers
+ word I16A_MOV + (r23)<<D16A + (r3)<<S16A ' reg var <- reg arg
+ word I16A_MOV + (r21)<<D16A + (r2)<<S16A ' reg var <- reg arg
+ word I16A_MOV + (r2)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
+ word I16A_MOV + (r3)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
+ word I16B_CPREP + 33<<S16B ' arg size, rpsize = 8, spsize = 8
+ alignl_p1
+ long I32_CALA + (@C_strtod)<<S32
+ word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
+ word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
+' C_strtold_76 ' (symbol refcount = 0)
+ word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
+ alignl_p1
+
+' Catalina Export strtof
+
+ alignl_label
+C_strtof ' <symbol:strtof>
+ alignl_p1
+ long I32_NEWF + 0<<S32
+ alignl_p1
+ long I32_PSHM + $e00000<<S32 ' save registers
+ word I16A_MOV + (r23)<<D16A + (r3)<<S16A ' reg var <- reg arg
+ word I16A_MOV + (r21)<<D16A + (r2)<<S16A ' reg var <- reg arg
+ word I16A_MOV + (r2)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
+ word I16A_MOV + (r3)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
+ word I16B_CPREP + 33<<S16B ' arg size, rpsize = 8, spsize = 8
+ alignl_p1
+ long I32_CALA + (@C_strtod)<<S32
+ word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
+ word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
+' C_strtof_77 ' (symbol refcount = 0)
+ word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
 ' Catalina Import errno

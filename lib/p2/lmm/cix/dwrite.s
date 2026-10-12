@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_sp28_6a9cb500_wait100ms_L000003 ' <symbol:wait100ms>
+C_su7k_6ac84ca4_wait100ms_L000003 ' <symbol:wait100ms>
  jmp #NEWF
  jmp #PSHM
  long $540000 ' save registers
@@ -28,9 +28,33 @@ C_sp28_6a9cb500_wait100ms_L000003 ' <symbol:wait100ms>
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  jmp #CALA
  long @C__waitcnt ' CALL addrg
-' C_sp28_6a9cb500_wait100ms_L000003_4 ' (symbol refcount = 0)
+' C_su7k_6ac84ca4_wait100ms_L000003_4 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
+
+
+ alignl ' align long
+C_su7k1_6ac84ca4_xdigit_L000005 ' <symbol:xdigit>
+ jmp #PSHM
+ long $400000 ' save registers
+ cmps r2,  #10 wcz
+ jmp #BR_B
+ long @C_su7k1_6ac84ca4_xdigit_L000005_7 ' LTI4
+ mov r22, r2
+ subs r22, #10 ' SUBI4 coni
+ adds r22, #65 ' ADDI4 coni
+ mov r0, r22 ' CVUI
+ and r0, cviu_m1 ' zero extend
+ jmp #JMPA
+ long @C_su7k1_6ac84ca4_xdigit_L000005_6 ' JUMPV addrg
+C_su7k1_6ac84ca4_xdigit_L000005_7
+ mov r22, r2
+ adds r22, #48 ' ADDI4 coni
+ mov r0, r22 ' CVUI
+ and r0, cviu_m1 ' zero extend
+C_su7k1_6ac84ca4_xdigit_L000005_6
+ jmp #POPM ' restore registers
+ jmp #RETN
 
 
 ' Catalina Export DFS_WriteSector
@@ -45,7 +69,7 @@ C_D_F_S__W_riteS_ector ' <symbol:DFS_WriteSector>
  mov r19, r3 ' reg var <- reg arg
  mov r17, r2 ' reg var <- reg arg
  mov r15, #0 ' reg <- coni
-C_D_F_S__W_riteS_ector_6
+C_D_F_S__W_riteS_ector_10
  mov r2, r19 ' CVI, CVU or LOAD
  mov r3, r21 ' CVI, CVU or LOAD
  mov BC, #8 ' arg size, rpsize = 8, spsize = 8
@@ -56,21 +80,21 @@ C_D_F_S__W_riteS_ector_6
  mov r13, r0 ' CVI, CVU or LOAD
  cmps r0,  #0 wz
  jmp #BRNZ
- long @C_D_F_S__W_riteS_ector_10 ' NEI4
+ long @C_D_F_S__W_riteS_ector_14 ' NEI4
  jmp #JMPA
- long @C_D_F_S__W_riteS_ector_8 ' JUMPV addrg
-C_D_F_S__W_riteS_ector_10
+ long @C_D_F_S__W_riteS_ector_12 ' JUMPV addrg
+C_D_F_S__W_riteS_ector_14
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  jmp #CALA
- long @C_sp28_6a9cb500_wait100ms_L000003 ' CALL addrg
-' C_D_F_S__W_riteS_ector_7 ' (symbol refcount = 0)
+ long @C_su7k_6ac84ca4_wait100ms_L000003 ' CALL addrg
+' C_D_F_S__W_riteS_ector_11 ' (symbol refcount = 0)
  adds r15, #1 ' ADDI4 coni
  cmps r15,  #10 wcz
  jmp #BR_B
- long @C_D_F_S__W_riteS_ector_6 ' LTI4
-C_D_F_S__W_riteS_ector_8
+ long @C_D_F_S__W_riteS_ector_10 ' LTI4
+C_D_F_S__W_riteS_ector_12
  mov r0, r13 ' CVI, CVU or LOAD
-' C_D_F_S__W_riteS_ector_5 ' (symbol refcount = 0)
+' C_D_F_S__W_riteS_ector_9 ' (symbol refcount = 0)
  jmp #POPM ' restore registers
  jmp #RETF
 

@@ -3,16 +3,19 @@
  *  https://github.com/thradams/cake
 */
 
-#pragma safety enable
 
 
-#include "ownership.h"
+
+#include "cake_compat.h"
 #include <assert.h>
+#include <limits.h>
+#include <ctype.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
 #include "console.h"
+#include "fs.h"
 #include "osstream.h"
 #include "tokenizer.h"
 
@@ -65,39 +68,6 @@ void token_list_clear(_Clear struct token_list* list)
 
     list->head = NULL;
     list->tail = NULL;
-}
-
-
-void token_range_add_show(struct token* first, const struct token* last)
-{
-    for (struct token* current = first;
-         current != last->next;
-         current = current->next)
-    {
-        current->flags = current->flags & ~TK_C_BACKEND_FLAG_HIDE;
-        if (current->next == NULL)
-            break;
-    }
-}
-
-void token_range_remove_flag(struct token* first, const struct token* last, enum token_flags flag)
-{
-    for (struct token* _Opt current = first;
-        current && current != last->next;
-        current = current->next)
-    {
-        current->flags = current->flags & ~flag;
-    }
-}
-
-void token_range_add_flag(struct token* first, const struct token* last, enum token_flags flag)
-{
-    for (struct token* _Opt current = first;
-        current && current != last->next;
-        current = current->next)
-    {
-        current->flags |= flag;
-    }
 }
 
 void token_list_pop_back(struct token_list* list)
@@ -269,85 +239,6 @@ char* _Owner _Opt token_list_join_tokens(struct token_list* list, bool bliteral)
     ss_close(&ss);
 
     return cstr;
-}
-
-
-void token_list_paste_string_after(struct token_list* list,
-    struct token* after,
-    const char* s)
-{
-    struct tokenizer_ctx tctx = { 0 };
-    struct token_list l = tokenizer(&tctx, s, NULL, 0, TK_FLAG_FINAL);
-    token_list_insert_after(list, after, &l);
-    token_list_destroy(&l);
-}
-
-void token_list_paste_string_before(struct token_list* list,
-    struct token* before,
-    const char* s)
-{
-    struct tokenizer_ctx tctx = { 0 };
-    struct token_list l = tokenizer(&tctx, s, NULL, 0, TK_FLAG_FINAL);
-    token_list_insert_before(list, before, &l);
-    token_list_destroy(&l);
-}
-
-
-void token_list_insert_after(struct token_list* token_list, struct token* _Opt after, struct token_list* append_list)
-{
-    if (append_list->head == NULL)
-    {
-        return;//nothing to append
-    }
-
-    if (token_list->head == NULL)
-    {
-        _Assert(after == NULL);
-        token_list->head = append_list->head;
-        token_list->tail = append_list->tail;
-        append_list->head = NULL;
-        append_list->tail = NULL;
-        return;
-    }
-
-    if (after == NULL)
-    {
-        _Assert(append_list->tail != NULL);
-        _Assert(append_list->tail->next == NULL);
-        append_list->tail->next = token_list->head;
-        token_list->head->prev = append_list->tail; //TODO empty case
-
-        token_list->head = append_list->head;
-        append_list->head->prev = NULL;
-    }
-    else
-    {
-        struct token* _Owner _Opt follow = after->next;
-        if (token_list->tail == after)
-        {
-            token_list->tail = append_list->tail;
-        }
-        else if (token_list->head == after)
-        {
-        }
-        _Assert(append_list->tail != NULL);
-        _Assert(append_list->tail->next == NULL);
-        append_list->tail->next = follow;
-        if (follow != NULL)
-            follow->prev = append_list->tail;
-        after->next = append_list->head;
-        append_list->head->prev = after;
-
-    }
-
-    append_list->head = NULL;
-    append_list->tail = NULL;
-    _Assert(token_list->head == NULL || token_list->head->prev == NULL);
-}
-
-void token_list_insert_before(struct token_list* token_list, struct token* after, struct token_list* append_list)
-{
-    token_list_insert_after(token_list, after->prev, append_list);
 }
 
 bool token_list_is_equal(const struct token_list* list_a, const struct token_list* list_b)
@@ -685,30 +576,6 @@ bool token_list_is_empty(const struct token_list* p)
     return p->head == NULL;
 }
 
-void print_list(bool color_enabled, struct token_list* list)
-{
-    struct token* _Opt current = list->head;
-    while (current)
-    {
-        if (current != list->head)
-        {
-            printf("\xcb\xb0");
-            //printf("`");
-        }
-        print_literal2(current->lexeme);
-
-        if (color_enabled)
-            printf(COLOR_RESET);
-
-        if (current == list->tail)
-        {
-            //printf("`");
-        }
-        current = current->next;
-    }
-    printf("\n");
-}
-
 void print_literal2(const char* s)
 {
     while (*s)
@@ -807,96 +674,50 @@ void print_tokens(bool color_enabled, const struct token* _Opt p_token)
 }
 
 
-void print_token_html(const struct token* p_token)
+/* -find-definition: p_token comes from the file the cursor is in (the main file or a header) */
+bool token_is_in_find_definition_file(const struct token* p_token, const struct options* options)
 {
-    printf("<span class=\"");
+    const char* a = options->find_definition_file;
+    if (a[0] == '\0')
+        return p_token->level == 0;
 
+    if (p_token->token_origin == NULL)
+        return false;
 
-    if (!(p_token->flags & TK_FLAG_FINAL))
+    const char* b = p_token->token_origin->lexeme;
+    for (; *a && *b; a++, b++)
     {
-        printf("notfinal ");
+        const bool slash_a = *a == '/' || *a == '\\';
+        const bool slash_b = *b == '/' || *b == '\\';
+        if (slash_a && slash_b)
+            continue;
+#ifdef _WIN32
+        if (tolower((unsigned char)*a) != tolower((unsigned char)*b))
+            return false;
+#else
+        if (*a != *b)
+            return false;
+#endif
     }
-
-    if (p_token->flags & TK_FLAG_FINAL)
-    {
-        printf("final ");
-    }
-    if (p_token->flags & TK_C_BACKEND_FLAG_HIDE)
-    {
-        printf("hide ");
-    }
-    if (p_token->flags & TK_FLAG_MACRO_EXPANDED)
-    {
-        printf("expanded ");
-    }
-    if (p_token->flags & TK_FLAG_HAS_SPACE_BEFORE)
-    {
-        printf("space ");
-    }
-    if (p_token->flags & TK_FLAG_HAS_NEWLINE_BEFORE)
-    {
-        printf("newline ");
-    }
-    if (p_token->flags & TK_FLAG_ACTIVE)
-    {
-        printf("active ");
-    }
-
-    printf("\">");
-
-    print_literal2(p_token->lexeme);
-
-    printf("</span>");
-
-    if (p_token->type == TK_NEWLINE || p_token->type == TK_BEGIN_OF_FILE)
-    {
-        printf("<br>\n");
-    }
+    return *a == *b;
 }
 
-/*
- CSS for html ouput
-
- <style>
-        .final {
-          color:blue;
-        }
-
-        .notfinal {
-          color:gray;
-        }
-
-        .hide {
-          text-decoration: line-through;
-          color:red;
-        }
-
-        .expanded {
-           background-color:yellow;
-        }
-
-        span {
-            border-style: solid;
-            border-color: gray;
-            border-width: 1px 1px;
-            padding:1px;
-            margin:2px;
-        }
-
-</style>
-
-*/
-void print_tokens_html(struct token* p_token)
+bool token_is_find_definition_cursor(const struct token* p_token, const struct options* options)
 {
-    printf("<pre>\n");
-    struct token* _Opt current = p_token;
-    while (current)
+    if (!options_is_find_request(options) ||
+        (p_token->flags & TK_FLAG_MACRO_EXPANDED) ||
+        p_token->line != options->find_definition_line)
     {
-        print_token_html(current);
-        current = current->next;
+        return false;
     }
-    printf("\n</pre>");
+
+    const int col = options->find_definition_col;
+    if (col < p_token->col || col > p_token->col + (int)strlen(p_token->lexeme))
+        return false;
+
+    return token_is_in_find_definition_file(p_token, options);
 }
+
 void print_position(const char* _Opt path, int line, int col, enum diagnostic_ouput_format format, bool color_enabled, bool fullpath)
 {
     struct osstream ss = { 0 };
@@ -979,6 +800,58 @@ void ss_print_position(struct osstream* ss,
     }
 }
 
+void ss_print_diagnostic_header(struct osstream* ss,
+                                const char* _Opt path,
+                                int line, int col,
+                                enum diagnostic_ouput_format format,
+                                bool color_enabled,
+                                bool fullpath,
+                                int id,
+                                bool is_error,
+                                bool is_warning,
+                                bool is_note,
+                                const char* text)
+{
+    /* the main source file prints only the file name, includes print the full path */
+    ss_print_position(ss, path, line, col, format, color_enabled, fullpath);
+
+    if (format == DIAGNOSTIC_OUTPUT_FORMAT_MSVC)
+    {
+        if (is_error) ss_fprintf(ss, "error %d: ", id);
+        else if (is_warning) ss_fprintf(ss, "warning %d: ", id);
+        else if (is_note) ss_fprintf(ss, "note: ");
+        else ss_fprintf(ss, ": ");
+        ss_fprintf(ss, "%s", text);
+    }
+    else
+    {
+        if (is_error)
+        {
+            if (color_enabled)
+                ss_fprintf(ss, LIGHTRED "error " WHITE "%d: %s" COLOR_RESET, id, text);
+            else
+                ss_fprintf(ss, "error %d: %s", id, text);
+        }
+        else if (is_warning)
+        {
+            if (color_enabled)
+                ss_fprintf(ss, LIGHTMAGENTA "warning " WHITE "%d: %s" COLOR_RESET, id, text);
+            else
+                ss_fprintf(ss, "warning %d: %s", id, text);
+        }
+        else
+        {
+            /* note, or a W_LOCATION annotating the diagnostic above it */
+            if (color_enabled)
+                ss_fprintf(ss, LIGHTCYAN "note: " WHITE "%s" COLOR_RESET, text);
+            else
+                ss_fprintf(ss, "note: %s", text);
+        }
+    }
+
+    ss_fprintf(ss, "\n");
+}
+
 void ss_print_line_and_token(struct osstream* ss,
                              struct marker* p_marker,
                              bool color_enabled)
@@ -1014,12 +887,28 @@ void ss_print_line_and_token(struct osstream* ss,
 
         const bool expand_macro = p_token_begin->flags & TK_FLAG_MACRO_EXPANDED;
 
+        /* without colors the expansion cannot be told apart from the source, so it is wrapped in a comment */
+        const bool mark_expansion = expand_macro && !color_enabled;
+        const char* const expansion_open = " /* ";
+        const char* const expansion_close = " */";
+
         if (color_enabled)
             ss_fprintf(ss, LIGHTBLUE);
 
+        bool in_expansion = false;
         const struct token* _Opt p_item = p_line_begin;
         while (p_item)
         {
+            if (mark_expansion)
+            {
+                const bool expanded = p_item->flags & TK_FLAG_MACRO_EXPANDED;
+                if (expanded && !in_expansion)
+                    ss_fprintf(ss, "%s", expansion_open);
+                else if (!expanded && in_expansion)
+                    ss_fprintf(ss, "%s", expansion_close);
+                in_expansion = expanded;
+            }
+
             if (color_enabled)
             {
                 if (p_item->flags & TK_FLAG_MACRO_EXPANDED)
@@ -1078,42 +967,63 @@ void ss_print_line_and_token(struct osstream* ss,
         if (p_item == NULL) ss_fprintf(ss, "\n");
 
         ss_fprintf(ss, " %*s |", n, " ");
-        bool complete = false;
+
+        /*
+          Columns reported back (SARIF) are positions in the source file, so
+          they count only the characters of tokens that are really there -- not
+          the expansion printed for context. A range inside an expansion is
+          reported on the macro name that produced it.
+        */
+        int source_col = 1;
+        int last_source_start = 1;
+        int last_source_end = 1;
         int start_col = 1;
         int end_col = 1;
         bool onoff = false;
+        in_expansion = false;
         p_item = p_line_begin;
         while (p_item)
         {
+            const bool expanded = p_item->flags & TK_FLAG_MACRO_EXPANDED;
+
+            if (mark_expansion)
+            {
+                const char* p_mark =
+                    expanded && !in_expansion ? expansion_open :
+                    !expanded && in_expansion ? expansion_close : "";
+                for (const char* p = p_mark; *p; p++)
+                    ss_fprintf(ss, "%c", onoff ? '~' : ' ');
+                in_expansion = expanded;
+            }
+
             if (p_item == p_token_begin)
             {
                 if (color_enabled)
                     ss_fprintf(ss, LIGHTGREEN);
                 onoff = true;
-                end_col = start_col;
+                start_col = expanded ? last_source_start : source_col;
             }
 
-            if (!(p_item->flags & TK_FLAG_MACRO_EXPANDED) || expand_macro)
+            if (!expanded || expand_macro)
             {
                 const char* p = p_item->lexeme;
                 while (*p)
                 {
                     if (onoff)
-                    {
                         ss_fprintf(ss, "~");
-                        end_col++;
-                    }
+                    else if (*p == '\t')
+                        ss_fprintf(ss, "\t");
                     else
-                    {
-                        if (*p == '\t')
-                            ss_fprintf(ss, "\t");
-                        else
-                            ss_fprintf(ss, " ");
-
-                        if (!complete) start_col++;
-                    }
+                        ss_fprintf(ss, " ");
                     p++;
                 }
+            }
+
+            if (!expanded)
+            {
+                last_source_start = source_col;
+                source_col += (int)strlen(p_item->lexeme);
+                last_source_end = source_col;
             }
 
             if (p_item->type == TK_NEWLINE)
@@ -1121,8 +1031,8 @@ void ss_print_line_and_token(struct osstream* ss,
 
             if (p_item == p_token_end)
             {
-                complete = true;
                 onoff = false;
+                end_col = expanded ? last_source_end : source_col;
                 if (color_enabled)
                     ss_fprintf(ss, COLOR_RESET);
             }
@@ -1305,53 +1215,71 @@ static void integer_suffix_opt(struct stream* stream, char suffix[4])
           bit-precise-int-suffix unsigned-suffixop
     */
 
-    //test 3100
-    if (/*unsigned-suffix*/
-        stream->current[0] == 'U' || stream->current[0] == 'u')
+    if (stream->current[0] == 'U' || stream->current[0] == 'u') /* unsigned-suffix */
     {
         suffix[0] = 'U';
         stream_match(stream);
 
-
-        /*long-suffixopt*/
-        if (stream->current[0] == 'l' || stream->current[0] == 'L')
+        if (stream->current[0] == 'l' || stream->current[0] == 'L') /* long-suffixopt */
         {
             suffix[1] = 'L';
             stream_match(stream);
 
-            /*long-long-suffix*/
-            if (stream->current[0] == 'l' || stream->current[0] == 'L')
+            if (stream->current[0] == 'l' || stream->current[0] == 'L') /* long-long-suffix */
             {
                 suffix[2] = 'L';
                 stream_match(stream);
             }
         }
+        else if ((stream->current[0] == 'w' || stream->current[0] == 'W') &&
+                 (stream->current[1] == 'b' || stream->current[1] == 'B'))
+        {
+            /* bit-precise-int-suffix, sample 1uwb */
+            suffix[1] = 'W';
+            suffix[2] = 'B';
+            stream_match(stream);
+            stream_match(stream);
+        }
         else
         {
-            /*microsoft extension, sample 1ui64*/
-            microsoft_integer_suffix_opt(stream, suffix, true);
+            microsoft_integer_suffix_opt(stream, suffix, true); /* microsoft extensions */
         }
     }
-    else if ((stream->current[0] == 'l' || stream->current[0] == 'L'))
+    else if ((stream->current[0] == 'w' || stream->current[0] == 'W') &&
+             (stream->current[1] == 'b' || stream->current[1] == 'B'))
+    {
+        /* bit-precise-int-suffix unsigned-suffixopt, sample 1wb 1wbu */
+        stream_match(stream);
+        stream_match(stream);
+
+        if (stream->current[0] == 'U' || stream->current[0] == 'u')
+        {
+            suffix[0] = 'U';     /* normalize */
+            suffix[1] = 'W';
+            suffix[2] = 'B';
+            stream_match(stream);
+        }
+        else
+        {
+            suffix[0] = 'W';
+            suffix[1] = 'B';
+        }
+    }
+    else if ((stream->current[0] == 'l' || stream->current[0] == 'L')) /* long-suffix */
     {
         suffix[0] = 'L';
 
-        /*long-suffix*/
         stream_match(stream);
 
-        /*long-long-suffix*/
-        if ((stream->current[0] == 'l' || stream->current[0] == 'L'))
+        if ((stream->current[0] == 'l' || stream->current[0] == 'L')) /* long-long-suffix */
         {
             suffix[1] = 'L';
             stream_match(stream);
         }
 
-        if (/*unsigned-suffix*/
-            stream->current[0] == 'U' || stream->current[0] == 'u')
+        if (stream->current[0] == 'U' || stream->current[0] == 'u') /* unsigned-suffix */
         {
-
-            //normalize the output from LLU to ul 
-            suffix[3] = suffix[2];
+            suffix[3] = suffix[2];  /* normalize */
             suffix[2] = suffix[1];
             suffix[1] = suffix[0];
             suffix[0] = 'U';
@@ -1360,8 +1288,7 @@ static void integer_suffix_opt(struct stream* stream, char suffix[4])
     }
     else
     {
-        /*microsoft extension, sample 1i64*/
-        microsoft_integer_suffix_opt(stream, suffix, false);
+        microsoft_integer_suffix_opt(stream, suffix, false); /* microsoft extensions */
     }
 }
 
@@ -1369,8 +1296,8 @@ static bool exponent_part_opt(struct stream* stream, _Out char errmsg[100])
 {
     /*
     exponent-part:
-    e signopt digit-sequence
-    E signopt digit-sequence
+        e signopt digit-sequence
+        E signopt digit-sequence
     */
     if (stream->current[0] == 'e' || stream->current[0] == 'E')
     {
@@ -1479,7 +1406,6 @@ enum token_type parse_number_core(struct stream* stream, char suffix[4], _Out ch
         }
         else if (type == TK_COMPILER_HEXADECIMAL_FLOATING_CONSTANT)
         {
-            /*the binary exponent is not optional in a hexadecimal floating constant*/
             snprintf(errmsg, 100, "hexadecimal floating constant requires an exponent");
             return TK_NONE;
         }
@@ -1496,8 +1422,7 @@ enum token_type parse_number_core(struct stream* stream, char suffix[4], _Out ch
         stream_match(stream);
         if (is_binary_digit(stream))
         {
-            while (is_binary_digit(stream) ||
-                digit_separator_opt(stream, is_binary_digit))
+            while (is_binary_digit(stream) || digit_separator_opt(stream, is_binary_digit))
             {
                 stream_match(stream);
             }
@@ -1509,16 +1434,14 @@ enum token_type parse_number_core(struct stream* stream, char suffix[4], _Out ch
         }
         integer_suffix_opt(stream, suffix);
     }
-    else if (stream->current[0] == '0') // octal
+    else if (stream->current[0] == '0') /* octal */
     {
         type = TK_COMPILER_OCTAL_CONSTANT;
 
         stream_match(stream);
 
-        if (stream->current[0] == 'O' || stream->current[0] == 'o')
+        if (stream->current[0] == 'O' || stream->current[0] == 'o') /* n3319 */
         {
-            //C2Y
-            //https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3319.htm
             stream_match(stream);
         }
 
@@ -1541,7 +1464,7 @@ enum token_type parse_number_core(struct stream* stream, char suffix[4], _Out ch
             floating_suffix_opt(stream, suffix);
         }
     }
-    else if (is_nonzero_digit(stream)) // decimal
+    else if (is_nonzero_digit(stream)) /* decimal */
     {
         type = TK_COMPILER_DECIMAL_CONSTANT;
 
@@ -1647,12 +1570,12 @@ enum token_type parse_number(const char* lexeme, char suffix[4], _Out char errms
 
 const unsigned char* _Opt str_utf8_decode(const unsigned char* s, _Out unsigned int* c)
 {
-    *c = 0; //out
+    *c = 0; /* out */
 
     if (s[0] == '\0')
     {
         *c = 0;
-        return NULL; /*end*/
+        return NULL; /* end */
     }
 
     const unsigned char* _Opt next = NULL;
@@ -1717,11 +1640,12 @@ const unsigned char* _Opt escape_sequences_decode_opt(const unsigned char* p, un
       caller must skip the / before calling this function
     */
 
-    // TODO OVERFLOW CHECK
+    /* on overflow saturate to UINT_MAX so the callers' range checks report it */
     if (*p == 'x')
     {
         p++;
-        int result = 0;
+        unsigned int result = 0;
+        bool overflow = false;
         while (is_hex_digit(*p))
         {
             int byte = 0;
@@ -1732,22 +1656,26 @@ const unsigned char* _Opt escape_sequences_decode_opt(const unsigned char* p, un
             else if (*p >= 'A' && *p <= 'F')
                 byte = (*p - 'A') + 10;
 
+            if (result > (UINT_MAX >> 4))
+                overflow = true;
             result = (result << 4) | (byte & 0xF);
             p++;
         }
 
-        *out_value = result;
+        *out_value = overflow ? UINT_MAX : result;
     }
     else if (*p == 'u' || *p == 'U')
     {
-        // TODO  assuming input is checked
-        // missing tests
+        /* like clang: reject incomplete UCNs, surrogates, > 0x10FFFF and < 0xA0 except $ @ ` (6.4.3) */
         const int num_of_hex_digits = *p == 'U' ? 8 : 4;
 
         p++;
         unsigned long long result = 0;
         for (int i = 0; i < num_of_hex_digits; i++)
         {
+            if (!is_hex_digit(*p))
+                return NULL;
+
             int byte = 0;
             if (*p >= '0' && *p <= '9')
                 byte = (*p - '0');
@@ -1760,18 +1688,27 @@ const unsigned char* _Opt escape_sequences_decode_opt(const unsigned char* p, un
             p++;
         }
 
-        *out_value = (int)result;
+        if (result > 0x10FFFF || (result >= 0xD800 && result <= 0xDFFF))
+            return NULL;
+
+        if (result < 0xA0 && result != '$' && result != '@' && result != '`')
+            return NULL;
+
+        *out_value = (unsigned int)result;
     }
     else if (*p >= '0' && *p <= '7')
     {
         // octal digit
-        int result = 0;
+        unsigned int result = 0;
+        bool overflow = false;
         while ((*p >= '0' && *p <= '7'))
         {
-            result = (result << 3) | (*p - '0');  // shift left by 3 bits and add digit
+            if (result > (UINT_MAX >> 3))
+                overflow = true;
+            result = (result << 3) | (unsigned int)(*p - '0');
             p++;
         }
-        *out_value = result;
+        *out_value = overflow ? UINT_MAX : result;
     }
     else
     {
@@ -1808,13 +1745,25 @@ const unsigned char* _Opt escape_sequences_decode_opt(const unsigned char* p, un
         case '"':
             *out_value = '"';
             break;
-
-        case '\n': //line slicing inside string
+        case '?':
+            *out_value = '?';
             break;
 
+        case '\r':
+        case '\n':
+            /* the backslash belonged to a line splice (phase 2); next char is ordinary */
+            if (p[0] == '\r' && p[1] == '\n')
+                p++;
+            p++;
+            if (*p == '\\')
+                return escape_sequences_decode_opt(p + 1, out_value);
+            return str_utf8_decode(p, out_value);
+
         default:
-            _Assert(false);
-            return NULL;
+            /* unknown escape (warned by tokenizer): like clang, use the character itself */
+            if (*p == '\0')
+                return NULL;
+            return str_utf8_decode(p, out_value);
         }
         p++;
     }
@@ -1880,19 +1829,9 @@ static enum token_type parse_number_test_helper(const char* lexeme)
     return parse_number(lexeme, suffix, errmsg);
 }
 
-static bool parse_number_suffix_test_helper(const char* lexeme, const char* expected_suffix)
-{
-    char suffix[4] = { 0 };
-    char errmsg[100] = { 0 };
-
-    if (parse_number(lexeme, suffix, errmsg) == TK_NONE)
-        return false;
-
-    return strncmp(suffix, expected_suffix, sizeof suffix) == 0;
-}
-
 void parse_number_test()
 {
+    /* only invalid numbers here: they are compile errors, which -test-mode cannot expect (valid ones: tests/unit-tests/number_literals.c) */
     /*
       https://github.com/thradams/cake/issues/307
       these are valid pp-numbers but they are not valid constants
@@ -1915,42 +1854,6 @@ void parse_number_test()
     assert(parse_number_test_helper("08") == TK_NONE);
     assert(parse_number_test_helper("1uu") == TK_NONE);
 
-    /*valid constants*/
-    assert(parse_number_test_helper("0x123e") == TK_COMPILER_HEXADECIMAL_CONSTANT);
-    assert(parse_number_test_helper("0xFFULL") == TK_COMPILER_HEXADECIMAL_CONSTANT);
-    assert(parse_number_test_helper("0x1p+1") == TK_COMPILER_HEXADECIMAL_FLOATING_CONSTANT);
-    assert(parse_number_test_helper("0x1.8p3") == TK_COMPILER_HEXADECIMAL_FLOATING_CONSTANT);
-    assert(parse_number_test_helper("052") == TK_COMPILER_OCTAL_CONSTANT);
-    assert(parse_number_test_helper("100") == TK_COMPILER_DECIMAL_CONSTANT);
-    assert(parse_number_test_helper("1e+1") == TK_COMPILER_DECIMAL_FLOATING_CONSTANT);
-    assert(parse_number_test_helper("1.5e-3f") == TK_COMPILER_DECIMAL_FLOATING_CONSTANT);
-    assert(parse_number_test_helper(".5e2") == TK_COMPILER_DECIMAL_FLOATING_CONSTANT);
-
-    /*digit separators*/
-    assert(parse_number_test_helper("1'00'00") == TK_COMPILER_DECIMAL_CONSTANT);
-    assert(parse_number_test_helper("0b1010'10") == TK_COMPILER_BINARY_CONSTANT);
-    assert(parse_number_test_helper("0xAB'CD") == TK_COMPILER_HEXADECIMAL_CONSTANT);
-
-    /*microsoft suffixes i8 i16 i32 i64 normalized to the standard ones*/
-    assert(parse_number_suffix_test_helper("1i8", ""));
-    assert(parse_number_suffix_test_helper("1i16", ""));
-    assert(parse_number_suffix_test_helper("1i32", ""));
-    assert(parse_number_suffix_test_helper("1i64", "LL"));
-    assert(parse_number_suffix_test_helper("1I64", "LL"));
-
-    assert(parse_number_suffix_test_helper("1ui64", "ULL"));
-    assert(parse_number_suffix_test_helper("1Ui64", "ULL"));
-    assert(parse_number_suffix_test_helper("1uI64", "ULL"));
-    assert(parse_number_suffix_test_helper("1UI64", "ULL"));
-    assert(parse_number_suffix_test_helper("1ui8", "U"));
-    assert(parse_number_suffix_test_helper("1ui16", "U"));
-    assert(parse_number_suffix_test_helper("1ui32", "U"));
-
-    assert(parse_number_suffix_test_helper("0x1ui64", "ULL"));
-    assert(parse_number_suffix_test_helper("0b1ui64", "ULL"));
-    assert(parse_number_suffix_test_helper("01ui64", "ULL"));
-    assert(parse_number_suffix_test_helper("0x8a44000000000040Ui64", "ULL"));
-
     /*the microsoft suffix must be complete, and it is the last one*/
     assert(parse_number_test_helper("1i") == TK_NONE);
     assert(parse_number_test_helper("1i6") == TK_NONE);
@@ -1962,3 +1865,185 @@ void parse_number_test()
 }
 
 #endif
+
+/* -rename phase 2: p_token is renamed when p_declaration_name is the target declaration (options->rename_target_*) */
+static void rename_item_free(_Dtor struct rename_item* p)
+{
+    free(p->file);
+}
+
+void rename_list_clear(_Clear struct rename_list* p)
+{
+    for (int i = 0; i < p->size; i++)
+    {
+        rename_item_free(&p->data[i]);
+    }
+    free(p->data); //lint 29
+
+    for (int i = 0; i < p->pending_size; i++)
+    {
+        rename_item_free(&p->pending[i].item);
+        rename_item_free(&p->pending[i].declaration);
+    }
+    free(p->pending); //lint 29 29
+    *p = (struct rename_list){ 0 };
+}
+
+static bool rename_item_is(const struct rename_item* p, const char* file, int line, int col)
+{
+    return p->line == line && p->col == col && path_equal(p->file, file);
+}
+
+static bool rename_list_contains(const struct rename_list* list, const struct rename_item* p)
+{
+    bool found = false;
+    for (int i = 0; i < list->size; i++)
+    {
+        if (rename_item_is(&list->data[i], p->file, p->line, p->col))
+        {
+            found = true;
+            break;
+        }
+    }
+    return found;
+}
+
+void rename_record(const struct options* options, const struct token* p_token, const struct token* _Opt p_declaration_name)
+{
+    struct rename_list* _Opt list = options->p_rename_list;
+    if (list == NULL || p_declaration_name == NULL ||
+        p_declaration_name->token_origin == NULL || p_token->token_origin == NULL ||
+        (p_token->flags & TK_FLAG_MACRO_EXPANDED) ||
+        strcmp(p_token->lexeme, list->old_name) != 0)
+    {
+        return;
+    }
+
+    if (list->pending_size == list->pending_capacity)
+    {
+        const int capacity = list->pending_capacity == 0 ? 16 : list->pending_capacity * 2;
+        struct rename_pending* _Owner _Opt p = realloc(list->pending, capacity * sizeof(struct rename_pending));
+        if (p == NULL)
+            return;
+        list->pending = p; //lint 26
+        list->pending_capacity = capacity;
+    }
+
+    char* _Owner _Opt file_copy = strdup(p_token->token_origin->lexeme);
+    char* _Owner _Opt declaration_file_copy = strdup(p_declaration_name->token_origin->lexeme);
+    if (file_copy == NULL || declaration_file_copy == NULL)
+    {
+        free(file_copy);
+        free(declaration_file_copy);
+        return;
+    }
+
+    struct rename_pending* p_pending = &list->pending[list->pending_size];
+    p_pending->item.file = file_copy;
+    p_pending->item.line = p_token->line;
+    p_pending->item.col = p_token->col;
+    p_pending->declaration.file = declaration_file_copy;
+    p_pending->declaration.line = p_declaration_name->line;
+    p_pending->declaration.col = p_declaration_name->col;
+    list->pending_size++;
+}
+
+bool rename_list_commit(struct rename_list* list, const struct options* options)
+{
+    bool resolved = list->pending_size == 0;
+    /* the declarations this file gives to the target or to an occurrence already kept (a header seen by many files) */
+    for (int i = 0; i < list->pending_size; i++)
+    {
+        struct rename_pending* p_pending = &list->pending[i];
+        if (p_pending->item.file == NULL)
+            continue; /* already kept with its declaration */
+
+        const bool is_target = rename_item_is(&p_pending->declaration,
+            options->rename_target_file, options->rename_target_line, options->rename_target_col);
+        if (!is_target && !rename_list_contains(list, &p_pending->item))
+            continue;
+
+        resolved = true;
+
+        for (int j = 0; j < list->pending_size; j++)
+        {
+            struct rename_pending* p_other = &list->pending[j];
+            if (p_other->item.file == NULL ||
+                !rename_item_is(&p_other->declaration, p_pending->declaration.file,
+                    p_pending->declaration.line, p_pending->declaration.col) ||
+                rename_list_contains(list, &p_other->item))
+            {
+                continue;
+            }
+
+            if (list->size == list->capacity)
+            {
+                const int capacity = list->capacity == 0 ? 16 : list->capacity * 2;
+                struct rename_item* _Owner _Opt p = realloc(list->data, capacity * sizeof(struct rename_item));
+                if (p == NULL)
+                    break;
+                list->data = p; //lint 26
+                list->capacity = capacity;
+            }
+
+            list->data[list->size] = p_other->item;
+            list->size++;
+            p_other->item.file = NULL;
+        }
+    }
+
+    /* undecided: the pairs stay, rename_list_save_pending keeps them for phase 3 */
+    if (!resolved)
+        return false;
+
+    for (int i = 0; i < list->pending_size; i++)
+    {
+        rename_item_free(&list->pending[i].item);
+        rename_item_free(&list->pending[i].declaration);
+    }
+    list->pending_size = 0;
+    return true;
+}
+
+static void rename_pairs_swap(struct rename_list* list, struct rename_pairs* pairs)
+{
+    struct rename_pending* _Owner _Opt data = list->pending;
+    const int size = list->pending_size;
+    const int capacity = list->pending_capacity;
+    list->pending = pairs->data;
+    list->pending_size = pairs->size;
+    list->pending_capacity = pairs->capacity;
+    pairs->data = data;
+    pairs->size = size;
+    pairs->capacity = capacity;
+}
+
+void rename_list_save_pending(struct rename_list* list, struct rename_pairs* out)
+{
+    rename_pairs_clear(out);
+    rename_pairs_swap(list, out);
+}
+
+bool rename_list_commit_saved(struct rename_list* list, struct rename_pairs* saved, const struct options* options)
+{
+    rename_pairs_swap(list, saved);
+    const bool resolved = rename_list_commit(list, options);
+    rename_pairs_swap(list, saved);
+    if (resolved)
+        rename_pairs_clear(saved);
+    return resolved;
+}
+
+void rename_pairs_clear(_Clear struct rename_pairs* p)
+{
+    for (int i = 0; i < p->size; i++)
+    {
+        rename_item_free(&p->data[i].item);
+        rename_item_free(&p->data[i].declaration);
+    }
+    free(p->data); //lint 29 29
+    p->data = NULL;
+    p->size = 0;
+    p->capacity = 0;
+}
+

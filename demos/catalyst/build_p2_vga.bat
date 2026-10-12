@@ -52,7 +52,7 @@ cd ..
 
 cd cake
 call build_all  %* VGA CR_ON_LF COLOR_4 OPTIMIZE MHZ_200
-copy %LCCDIR%\source\cake\src\catalina\cake.bin ..\image\bin\cake.bin
+copy %LCCDIR%\source\cake\src\propeller-catalina\cake.bin ..\image\bin\cake.bin
 copy cake.jsn ..\image\cake.jsn
 copy hello_99.c ..\image\hello_99.c
 cd ..

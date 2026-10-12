@@ -17,47 +17,65 @@
 #include <string.h>
 #include <stdlib.h>
 
-/* ============================================================
- * COMPILER DETECTION
- * ============================================================ */
+/*
+    ============================================================
+    COMPILER DETECTION
+    ============================================================
+*/
 
 #if defined(__clang__)
 #  define COMPILER_CLANG 1
 #  define CC        " clang "
-#define CC_OUTPUT(X) " -o " X " "
-
+#  define CC_OUTPUT(X) " -o " X " "
+#  define CC_NO_UNKNOWN_PRAGMA_WARNING ""
+#  define CC_C99    ""
 #elif defined(__GNUC__) && !defined(__TINYC__) && !defined(__HLC__)
 #  define COMPILER_GCC 1
 #  define CC        " gcc "
-#define CC_OUTPUT(X) " -o " X " "
+#  define CC_OUTPUT(X) " -o " X " "
+#  define CC_NO_UNKNOWN_PRAGMA_WARNING ""
+#  define CC_C99    " -std=gnu99 "
 
 #elif defined(_MSC_VER) && !defined(__TINYC__) && !defined(__HLC__)
 #  define COMPILER_MSVC 1
-#define CC " cl "
-#  define CC_OUTPUT(X) " -o " X " "
+#  define CC        " cl "
+#  define CC_OUTPUT(X) " /Fe:" X " "
+#  define CC_NO_UNKNOWN_PRAGMA_WARNING " /wd4068 "
+#  define CC_C99    ""
 
 #elif defined(__INTEL_COMPILER)
 #  define COMPILER_INTEL 1
-#define CC " cl "
+#  define CC        " cl "
 #  error "Intel compiler not tested"
 
 #elif defined(__TINYC__)
 #  define COMPILER_TINYC 1
-#define CC " tcc "
-#define CC_OUTPUT(X) " -o " X
+#  define CC        " tcc "
+#  define CC_OUTPUT(X) " -o " X
+#  define CC_NO_UNKNOWN_PRAGMA_WARNING ""
+#  define CC_C99    ""
+
+#elif defined(__CATALINA__)
+#  define COMPILER_CATALINA 1
+#  define CC " catalina "
+#  define CC_OUTPUT(X) " -o " X
+#  define CC_NO_UNKNOWN_PRAGMA_WARNING ""
+#  define CC_C99    "-C99"
 
 #else
 #  define COMPILER_UNKNOWN 1
 #endif
 
 
-/* ============================================================
- * PLATFORM DETECTION
- * ============================================================ */
+/*
+    ============================================================
+    PLATFORM DETECTION
+    ============================================================
+*/
 
 #if defined(_WIN32) || defined(_WIN64)
 #  define PLATFORM_WINDOWS 1
-#elif defined(__APPLE__) && defined(__MACH__)
+#elif defined(__APPLE__)
 #  define PLATFORM_MACOS 1
 #elif defined(__linux__)
 #  define PLATFORM_LINUX 1
@@ -84,16 +102,20 @@
 #endif
 
 
-/* ============================================================
- * ARCHITECTURE DETECTION
- * ============================================================ */
-      
+/*
+    ============================================================
+    ARCHITECTURE DETECTION
+    ============================================================
+*/
+
 #if defined(__x86_64__) || defined(_M_X64)
 #  define ARCH_X86_64 1
 #elif defined(__i386__) || defined(_M_IX86)
 #  define ARCH_X86 1
 #elif defined(__aarch64__) || defined(_M_ARM64)
 #  define ARCH_ARM64 1
+#elif defined(__arm__)
+#  define ARCH_ARM32 1
 #elif defined(__arm__) || defined(_M_ARM)
 #  define ARCH_ARM 1
 #elif defined(__powerpc64__) || defined(__ppc64__)
@@ -113,10 +135,12 @@
 #endif
 
 
-/* ============================================================
- * LIBC DETECTION
- * ============================================================ */
-         
+/*
+    ============================================================
+    LIBC DETECTION
+    ============================================================
+*/
+
 #if defined(__GLIBC__)
 #  define LIBC_GLIBC 1
 #elif defined(__UCLIBC__)
@@ -131,19 +155,21 @@
 #  define LIBC_MINGW 1
 #elif defined(__dietlibc__)
 #  define LIBC_DIET 1
-#elif defined(__APPLE__) && defined(__MACH__)
+#elif defined(__APPLE__)
 #  define LIBC_DARWIN 1
 #else
 #  error "LIBC_UNKNOWN"
 #endif
 
 
-/* ============================================================
- * DERIVED API GROUPS
- *
- * API_WINDOWS - Windows API available (Win32/MSVCRT/MinGW)
- * API_POSIX   - POSIX API available (Linux, macOS, BSDs, etc.)
- * ============================================================ */
+/*
+    ============================================================
+    DERIVED API GROUPS
+
+    API_WINDOWS - Windows API available (Win32/MSVCRT/MinGW)
+    API_POSIX   - POSIX API available (Linux, macOS, BSDs, etc.)
+    ============================================================
+*/
 
 #if defined(PLATFORM_WINDOWS) || defined(LIBC_MSVCRT) || defined(LIBC_MINGW)
 #  define API_WINDOWS 1
@@ -159,9 +185,11 @@
 #endif
 
 
-/* ============================================================
- * PLATFORM-SPECIFIC SETUP
- * ============================================================ */
+/*
+    ============================================================
+    PLATFORM-SPECIFIC SETUP
+    ============================================================
+*/
 
 #ifdef PLATFORM_WINDOWS
 
@@ -171,12 +199,17 @@
 #include <sys/stat.h>
 
 /* POSIX compat shims for Windows */
-#define rmdir _rmdir
-#define mkdir(A, B)  _mkdir(A)
-#define chdir  _chdir
+#define rmdir      _rmdir
+#define mkdir(A,B) _mkdir(A)
+#define chdir      _chdir
 
-/* On Windows, built executables run directly (no ./ prefix needed) */
-#define RUN " "
+/*
+    cmd.exe (used by system()) does not search the current directory for a
+    bare executable name, so a prefix is required just like on POSIX. It
+    does not accept a forward-slash "./" prefix either (it tries to run "."
+    as a command), so ".\" is used here.
+*/
+#define RUN " .\\"
 
 static int system_like(const char* command)
 {
@@ -191,6 +224,7 @@ static int system_like(const char* command)
 #include <sys/wait.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <dirent.h>
 
 /* On POSIX, local executables require ./ prefix */
 #define RUN " ./"
@@ -218,18 +252,20 @@ static int system_like(const char* command)
     while (wait(&status) > 0)
         ;
 
-        if (WIFEXITED(status))
-            return WEXITSTATUS(status);
+    if (WIFEXITED(status))
+        return WEXITSTATUS(status);
 
     return -1; /* abnormal exit (signal, etc.) */
-        }
+}
 
 #endif /* API_POSIX */
 
 
-/* ============================================================
- * EXECUTABLE NAME HELPER
- * ============================================================ */
+/*
+    ============================================================
+    EXECUTABLE NAME HELPER
+    ============================================================
+*/
 
 #ifdef PLATFORM_WINDOWS
 #  define EXE(name) name ".exe"
@@ -238,9 +274,11 @@ static int system_like(const char* command)
 #endif
 
 
-/* ============================================================
- * FILE UTILITIES
- * ============================================================ */
+/*
+    ============================================================
+    FILE UTILITIES
+    ============================================================
+*/
 
 /*
  * copy_file() - copy a file byte-by-byte from src to dst.
@@ -249,14 +287,15 @@ static int system_like(const char* command)
  * 0 on success.
  */
 static int copy_file(const char* src, const char* dst)
-        {
+{
+    FILE* fout;
+    int c;
     FILE* fin = fopen(src, "rb");
     if (!fin) { perror("fopen(src)"); printf("we are exiting build without continuing\n"); exit(1); }
 
-    FILE* fout = fopen(dst, "wb");
+    fout = fopen(dst, "wb");
     if (!fout) { perror("fopen(dst)"); fclose(fin); printf("we are exiting build without continuing\n"); exit(1); }
 
-    int c;
     while ((c = fgetc(fin)) != EOF)
     {
         if (fputc(c, fout) == EOF)
@@ -274,7 +313,7 @@ static int copy_file(const char* src, const char* dst)
         fclose(fin);
         fclose(fout);
         return -1;
-}
+    }
 
     fclose(fin);
     fclose(fout);
@@ -282,9 +321,11 @@ static int copy_file(const char* src, const char* dst)
 }
 
 
-/* ============================================================
- * BUILD COMMAND HELPERS
- * ============================================================ */
+/*
+    ============================================================
+    BUILD COMMAND HELPERS
+    ============================================================
+*/
 
 /*
  * execute_cmd() - run a shell command, print it first, exit on failure.
