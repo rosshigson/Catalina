@@ -3,14 +3,14 @@ Portable 64 bit bit integer support
 
 This directory contains macros and functions that provide support for 64-bit
 integers (aka long longs) for platforms that do not have native 64-bit integer
-support, such as Catalina. The Propeller is basically a 32 but platform, where
+support, such as Catalina. The Propeller is basically a 32 bit platform, where
 64 bit integers have little use. But (for example) the system counter is a 64
 bit value (which must be fetched as two 32 bit values), so this implementation
 is very suitable in that instance, and a function to get the Propeller clock
 as a 64 bit value is provided in the example programs.
 
 The 64 bit integers are implemented using a structure of two 32 bit integers,
-with full arithemtic and bitwise operations, plus facilities for converting
+with full arithmetic and bitwise operations, plus facilities for converting
 64-bit values to and from strings.
 
 The 64 bit integer support functions themselves (i.e. the versions in this
@@ -35,7 +35,7 @@ the other for the lower 32 bits, using the LL_INIT macro. For example:
 
 However, note that the LL_INIT macro can only be used as an initializer in a 
 variable declaration, and not in variable assignments (but see the "operator"
-operations described below).
+functions described below).
 
 64-bit values can also be initialized by parsing hex or decimal strings:
 
@@ -97,7 +97,7 @@ The following string operations are supported:
 
    LL_HEXSTR(s,a)        write hex value of a to s (s >= 16 chars)
    LL_DECSTR(a,a)        write signed decimal value of a to s (s >= 20 chars)
-   LL_UDECSTR(a,a)       write unsigned decomal value of a to s (s >= 20 chars)
+   LL_UDECSTR(a,a)       write unsigned decimal value of a to s (s >= 20 chars)
    
    LL_STRHEX(a,s)        read a hex value from s to a 
                          (s <= 16 hex digits)

@@ -9,7 +9,7 @@ exFAT is not simple. To use exFAT in a commercial application a license from
 Microsoft may be required.
 
 For these reasons, Catalyst itself will continue to use DosFs as its own
-file system for the forseeable future, but Catalyst can be used to build and
+file system for the foreseeable future, but Catalyst can be used to build and
 load programs that use FatFs. To facilitate this, all the demo programs in 
 this directory will wait and prompt on startup to insert an SD card, so that 
 a different SD card (e.g. an SD card formatted as exFAT) can be inserted in
@@ -26,9 +26,9 @@ FatFs is highly configurable, and can (for example) be configured to use
 either 32 bit or 64 bit Logical Block Addressing (LBA). Using 64 bit LBAs 
 overcomes the file size limits inherent in FAT (e.g. a maximum total file 
 system size of 2Tb, and a maximum individual file size of 4Gb). However, 
-note that this is a beta release and not all the FatFs configurable options
-and/or combinations of options have been tested. For a summary of the
-current status, see later in this document.
+note that in this release not all the FatFs configurable options and/or
+combinations of options have been tested. For a summary of the current
+status, see later in this document.
 
 Catalina can support both 32 bit LBAs and 64 bit LBAs. Using 64 bit LBAs also
 requires the use of the int64 library. This is done automatically in the 
