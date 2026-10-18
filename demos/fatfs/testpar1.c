@@ -299,7 +299,7 @@ void main() {
    t_printf("\nDirectory Enumeration test\n");
    press_key_to_continue();
 
-   result = f_findfirst(&dp, &fi, "", "*");
+   result = f_findfirst(&dp, &fi, "1:", "*");
    if (result != FR_OK) {
       t_printf("Error opening root directory\n");
    }
