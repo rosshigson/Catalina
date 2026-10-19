@@ -106,6 +106,8 @@ void PrintError(char *str, ...)
     vprintf(str, ap);
     if (listingflag) {
        fprintf(lstfile, "%d: ", line_number);
+       va_end(ap);
+       va_start(ap, str);
        vfprintf(lstfile, str, ap);
     }
     va_end(ap);
@@ -556,8 +558,8 @@ int ProcessBigSrc(int *pi, char **tokens, int num, int *popcode, int is_loc)
               PrintError("ERROR: %s is undefined\n", tokens[*pi]);
            }
            else {
-           value = hub_addr + 4;
-       }
+              value = hub_addr + 4;
+           }
        }
        else if (SymbolTable[index].type == TYPE_HUB_ADDR)
        {
