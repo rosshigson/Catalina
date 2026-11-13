@@ -1,0 +1,520 @@
+/*
+ * simple "cat" command implemented in C for Catalyst
+ *
+ * Version 3.11 - first C version
+ *
+ * Version 5.0.1 - allow combined command line options (e.g. -dh)
+ * 
+ * Version 5.2   - support 'globbing' (wildcard matching - see glob.c)
+ *
+ * Version 5.3   - ignore volume id
+ *
+ * Version 8.3.3 - Fix buffer corruption if terminal window is wider than 
+ *                 LINE_LEN (now MAX_LINE_LEN).
+ *
+ *               - The screen size is now autodetected if VGA, TV and VT100 
+ *                 compatible serial terminal HMI options are used (for serial 
+ *                 terminals other than a VT100 compatible terminal, screen 
+ *                 size is assumed to be 80x24). Affects only "interactive"
+ *                 mode.
+ *
+ * version 9.3   - add a small delay between each line if using a serial HMI.
+ */
+
+#include <ctype.h>
+#include <string.h>
+#include <stdio.h>
+#include "ff.h"
+#include <prop.h>
+#include <hmi.h>
+
+#include "fatcat.h"
+
+#define MAX_LINE_LEN 120
+ 
+static int help = 0;
+static int diagnose = 0;
+static int interact = 0;
+static int file_count = 0;
+static char *files[ARGV_MAX];
+
+static int rows = 0;
+static int cols = 0;
+static int rowcount = 0;
+
+static int aborted = 0;
+
+#define ESCAPE_CHAR 0x1b
+#define KEY_TIMEOUT 100 // milliseconds
+
+static FATFS fs;
+
+void t_eol();
+
+int press_key_to_continue();
+
+void t_ch(char ch) {
+   t_char(1, ch);
+}
+
+void t_str(char *str) {
+   t_string(1, str);
+}
+
+void t_int(int i) {
+   t_integer(1, i);
+}
+
+void t_strln(char *str) {
+   t_string(1, str);
+   t_eol();
+}
+
+// keyboard input with timeout
+int intime(long timeout) {
+  int i;
+
+  if (timeout == 0) {
+     return(k_wait() & 0xff);
+  }
+  for (i = 0; i < timeout; i++) { // '[' or 'O' must arrive soon!
+     if (k_ready()) {
+         return(k_wait() & 0xff);
+     } 
+	   else {
+       _waitms(1);
+     }
+	}
+  return -1; // timed out
+}
+
+// get current cursor position
+void get_cursor_position (int *row, int *col) {
+   int tmprows = 0;
+   int tmpcols = 0;
+   char str[20];
+   int k = 0;
+
+   sprintf(str,"%c[6n", ESCAPE_CHAR);
+   t_str(str);
+   _waitms(100);
+   k = intime(KEY_TIMEOUT);
+   if (k == ESCAPE_CHAR) {
+      k = intime(KEY_TIMEOUT);
+      if (k == '[') {
+         k = intime(KEY_TIMEOUT);
+         while (isdigit(k)) {
+            tmprows = 10*tmprows + (k - '0');
+            k = intime(KEY_TIMEOUT);
+         }
+         if (k == ';') {
+            k = intime(KEY_TIMEOUT);
+            while (isdigit(k)) {
+               tmpcols = 10*tmpcols + (k - '0');
+               k = intime(KEY_TIMEOUT);
+            }
+            if (k == 'R') {
+               *row = tmprows;
+               *col = tmpcols;
+            }
+         }
+      }
+   }
+}
+
+// try to get the screen geometry (i.e. columns and rows)
+// works for VT100, TV and VGA HMI options, otherwise use 80x24
+void get_geometry() {
+#ifdef __CATALINA_VT100
+   char str[20];
+   int currow = 0;
+   int curcol = 0;
+
+   // remember current cursor position
+   get_cursor_position(&currow, &curcol);
+
+   // set cursor to maximum screen row and col
+   sprintf(str,"%c[999;999H", ESCAPE_CHAR);
+   t_str(str);
+
+   // current cursor position is screen size
+   get_cursor_position(&rows, &cols);
+
+   // restore original cursor position
+   sprintf(str, "%c[%d;%dH", ESCAPE_CHAR, currow, curcol);
+   t_str(str);
+#else
+   int rowcols;
+
+   rowcols = t_geometry();
+
+   rows = rowcols & 0xFF;
+   cols = (rowcols >> 8) & 0xFF;
+#endif   
+   if (rows == 0) {
+      rows = 24;
+   }
+   if (cols == 0) {
+      cols = 80;
+   }
+}
+
+/* We are about to output 'count' rows - if this would make the top of 
+ * the current page scroll off the screen, prompt to continue first.
+ * Sets aborted to 1 if ESCAPE is pressed.
+ */
+void increment_rowcount(int count) {
+   if (rowcount + count + 1 > rows) {
+      press_key_to_continue();
+   }
+   else {
+      rowcount += count;
+   }
+   return;
+}
+
+void t_eol() {
+   t_string(1, END_OF_LINE);
+   if (!aborted) {
+      increment_rowcount(1);
+   }
+}
+
+// safecpy will never write more than size characters, 
+// and is guaranteed to null terminate its result, so
+// make sure the buffer passed is at least size + 1
+char * safecpy(char *dst, const char *src, size_t size) {
+   dst[size] = '\0';
+   if (src) {
+      return strncpy(dst, src, size - strlen(dst));
+   }
+   return NULL;
+}
+
+// safecat will never write more than size characters, 
+// and is guaranteed to null terminate its result, so
+// make sure the buffer passed is at least size + 1
+char * safecat(char *dst, const char *src, size_t size) {
+   dst[size] = '\0';
+   if (src) {
+      return strncat(dst, src, size - strlen(dst));
+   }
+   return NULL;
+}
+
+void do_help() {
+   t_eol();
+   t_strln("usage cat [options] src [src ...]");
+   t_eol();
+   t_strln("options:");
+   t_strln("  -? or -h  print this message");
+   t_strln("  -i        interactive (paged)");
+   t_strln("  -d        print diagnostics ");
+}
+
+/*
+ * decode_option - decode one option character
+ */
+void decode_option(char ch) {
+   switch (ch) {
+      case 'h':
+         /* fall through to ... */
+      case '?':
+         help = 1;
+         break;
+      case 'd':
+         diagnose = 1;
+         break;
+      case 'i':
+         interact = 1;
+         break;
+      default:
+         t_str("unknown option '");
+         t_ch(ch);
+         t_str("'");
+         help = 1;
+         break;
+   }
+}
+
+/*
+ * decode arguments and return 1 if there is no further processing to do
+ */
+int decode_arguments (int argc, char *argv[]) {
+   int    result = 0;
+   int    i = 0;
+   int    j;
+
+   if (argc == 1) {
+      help = 1;
+   }
+   while ((result >= 0) && (argc--)) {
+      if (i > 0) {
+         if (argv[i][0] == '-') {
+            // it's a command line switch
+            int j = 1;
+            while (argv[i][j]) {
+               decode_option(argv[i][j++]);
+            }
+         }
+         else {
+            // convert file argument to upper case
+            j = 0;
+            files[file_count]=argv[i];
+            while (files[file_count][j] != 0) {
+               //files[file_count][j] = toupper(files[file_count][j]);
+               j++;
+            }
+            file_count++;
+         }
+      }
+      i++; // next argument
+   }
+   if (help) {
+      do_help();
+      result = 1;
+   }
+   return result;
+}
+
+
+int press_key_to_continue() {
+   int k;
+/*
+ * Prompt for a key to continue - set aborted to 1 
+ * and return TRUE if ESC is the key
+ */
+   t_str("Continue? (ESC exits) ...");
+   k = k_wait();
+   t_string(1, END_OF_LINE);
+   rowcount = 1;
+   aborted = (k == 0x1b);
+   return aborted;
+}
+
+
+/*
+ * pathlen - calculate the length of the path to a file name,
+ *           returning zero if there is no path.
+ */
+int pathlen(char *name) {
+   int len;
+
+   len = strlen(name);
+   while ((len > 0) && (name[len - 1] != DIR_SEPARATOR)) {
+      len--;
+   }
+   return len;
+}
+
+
+void concatenate_file(char *src) {
+
+   FIL fi;
+   char line_in[MAX_LINE_LEN + 1];
+   char line_out[MAX_LINE_LEN + 1];
+   unsigned int count;
+   char ch;
+   int i, j;
+
+   if ((f_open(&fi, src, FA_READ)) == FR_OK) {
+      j = 0;
+      while ((f_read(&fi, line_in, MAX_LINE_LEN, &count) == FR_OK) && (count > 0)) {
+         for (i = 0; i < count; i++) {
+            ch = (line_out[j++] = line_in[i]);
+            if ((ch == 0x0a) || (j >= MAX_LINE_LEN) || (j >= cols)) {
+               line_out[j] = '\0';
+               t_str(line_out);
+#ifdef SERIAL_HMI
+               // allow some time for the line to be sent
+               msleep(10);
+#endif
+               j = 0;
+               if (interact) {
+                  increment_rowcount(1);
+               }
+            }
+            if (aborted) {
+               break;
+            }
+         }
+         if (aborted) {
+            break;
+         }
+      }
+      if (j > 0) {
+         line_out[j] = '\0';
+         t_str(line_out);
+         j = 0;
+         if (interact) {
+            increment_rowcount(1);
+         }
+      }
+      f_close(&fi);
+   }
+   else {
+      t_eol();
+      t_str("cannot open file ");
+      t_str(src);
+      t_strln(" for read");
+   }
+}
+
+// match function - see glob.c
+extern int amatch_i(char *str, char *p);
+
+void concatenate(char *src) {
+   char separator[2] = { DIR_SEPARATOR, 0 };
+   int srclen, dirlen;
+   char src_path[MAX_PATH+1];
+   char *src_filt;
+   char src_file[MAX_PATH+1];
+   int plen;
+   int flen;
+   DIR di;
+   FILINFO de;
+   char *filename;
+   int slen;
+
+   srclen = strlen(src);
+
+   if (srclen == 0) {
+      t_strln("cannot cat - no source specified");
+      return;
+   }
+
+   if (strcmp(src, ".") == 0) {
+      t_strln("cannot cat .");
+   }
+
+   if (strcmp(src, "..") == 0) {
+      t_strln("cannot cat ..");
+      return;
+   }
+
+   // separate source path from filter (which may contain wildcards)
+
+   strncpy(src_path, src, MAX_PATH);
+   plen = pathlen(src_path);
+   // remove trailing separator from src_path (if there is one)
+   if ((plen > 0) && (src_path[plen - 1] == DIR_SEPARATOR)) {
+      src_path[plen - 1] = 0;
+   }
+   flen = strlen(src);
+   if ((flen > 0) && (src[flen - 1] == DIR_SEPARATOR)) {
+      src_filt = NULL; //no file filter
+   }
+   else {
+      src_path[plen] = 0;
+      src_filt = &src[plen]; // note plen, not flen!
+   }
+   if (diagnose) {
+      t_str("src path = ");
+      t_str(src_path);
+      t_str(", filter = ");
+      t_strln(src_filt);
+   }
+
+   // finally we are ready to cat ... we do this a file at a time 
+   
+   if (f_opendir(&di, src_path) != FR_OK) {
+      if (diagnose) {
+          t_str("cannot open directory ");
+          t_strln(src_path);
+      }
+      return;
+   }
+
+   slen = strlen(src_path);
+
+   while (f_readdir(&di, &de) == FR_OK) {
+      if (de.fname[0] != 0) {
+         filename = de.fname;
+         if (diagnose) {
+            t_str("trying ");
+            t_strln(filename);
+         }
+         // see if formatted name matches file argument
+         if ((src_filt == NULL) || amatch_i(filename, src_filt)) {
+            if (strcmp(filename, ".") == 0) {
+               if (diagnose) {
+                  t_strln("ignoring special entry .");
+               }  
+            }
+            else if (strcmp(filename, "..") == 0) {
+               if (diagnose) {
+                  t_strln("ignoring special entry ..");
+               }  
+            }
+            else {
+               src_path[slen] = DIR_SEPARATOR;
+               src_path[slen + 1] = 0;
+               safecat(src_path, filename, MAX_PATH);
+               concatenate_file(src_path);
+               src_path[slen] = 0;
+            }
+         }
+         else {
+            if (diagnose) {
+               t_str("no match on ");
+               t_strln(filename);
+            }
+         }
+      }
+      else {
+         break;
+      }
+   }
+   f_closedir(&di);
+   t_eol();
+}
+
+
+void main(int argc, char *argv[]) {
+   int i;
+   int n = 0;
+   int error = 0;
+   int rowcol;
+
+   get_geometry();
+
+   rowcount = 1;
+
+   if ((decode_arguments(argc, argv) == 0) && (file_count > 0)) {
+      // work to do, so mount the file system     
+      if (f_mount(&fs, "", 1) != FR_OK) { // force mount
+         if (diagnose) {
+            t_strln("cannot get volume information");
+         }
+      }
+      else {
+         for (i = 0; i < file_count; i++) {
+            if (strlen(files[i]) > MAX_PATH) {
+               t_str("cannot cat ");
+               t_str(files[i]);
+               t_strln(" - path too long");
+            }
+            else {
+               concatenate(files[i]);
+            }
+         }
+      }
+   }
+   if (diagnose) {
+      t_strln("cat done");
+   }
+
+   f_unmount("");
+
+#ifdef SERIAL_HMI
+   // allow some time for characters to be sent out before terminating
+   msleep(250);
+#else
+   if (!aborted) {
+      // wait for the user to press a key before terminating
+      press_key_to_continue();
+   }
+#endif    
+}
+
+

@@ -26,6 +26,11 @@ Add the CLOCK symbol to time the file reading and writing. For example:
 
    build_all P2_EDGE SIMPLE CLOCK
 
+Add the SD2 symbol to use the alternate SD plugin (Propeller 2 only). 
+For example:
+
+   build_all P2_EVAL SD2
+
 Note that to load the program on the Propeller 1, you will have to use the
 normal build_utilities script to build the appropriate loader with options 
 compatible with those you used to build the DOSFS test program.

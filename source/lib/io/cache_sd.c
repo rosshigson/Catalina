@@ -6,6 +6,7 @@ static int numsect = 0;
 #if defined(__CATALINA_PSRAM) || defined(__CATALINA_HYPER)
 
 #include <cache_sd.h>
+#include <propeller2.h>
 #include <sd.h>
 
 #define MAX_RETRIES    10

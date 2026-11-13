@@ -17,7 +17,8 @@
  *                 terminals other than a VT100 compatible terminal, screen 
  *                 size is assumed to be 80x24). Affects only "interactive"
  *                 mode.
- *                
+ *
+ * version 9.3   - add a small delay between each line if using a serial HMI.
  */
 
 #include <ctype.h>
@@ -349,6 +350,10 @@ void concatenate_file(PVOLINFO vi, char *src) {
             if ((ch == 0x0a) || (j >= MAX_LINE_LEN) || (j >= cols)) {
                line_out[j] = '\0';
                t_str(line_out);
+#ifdef SERIAL_HMI
+               // allow some time for the line to be sent
+               msleep(10);
+#endif
                j = 0;
                if (interact) {
                   increment_rowcount(1);

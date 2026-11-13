@@ -203,46 +203,107 @@ documents folder.
 New Functionality
 -----------------
 
-1. Cake has been updated to version 0.15.20. This version fixes a few issues,
-   including one that stopped FatFs from working correctly. Also, Catalina
-   is now supported "out of the box"  by Cake.
+1. A new SD plugin has been added, which is faster than the old SD plugin. 
+e
+   It uses smart pins, so is supported on the Propeller 2 only. To use it in 
+   place of the old SD card plugin, define the Catalina symbol SD2. 
+   For example:
 
-2. An int64 library that provides 64-bit integer support is now included as  
-   a Catalina library, and demos can be found in the folder demos\int64. This
-   directory also contains a stand-alone version. 64-bit integers are
-   supported on both the Propeller 1 and Propeller 2.
+     catalina -p2 program.c -lcx -C SD2
 
-3. A version of the FatFs file system is included in the folder demos\fatfs. 
-   Unlike DosFs, which supports only SD cards formatted as FAT (e.g. FAT32) and 
-   DOS 8.3 file names, FatFs can support both FAT and EXFAT formatted SD cards,
-   and also long file names. FatFs can also support up to four partitions on 
-   the SD card, whereas DosFs supports only one. Catalyst still uses DosFs as 
-   its file system, as it is supported on the Propeller 1 and Propeller 2, 
-   whereas FatFs is currently only supported on the Propeller 2. However,
-   it is now possible to format an SD card with multiple partitions, and have
-   the first partition a FAT partition containing Catalyst, which can be used
-   to load programs that access other non-FAT partitions on the SD card. An
-   example of doing so is included as one of the demos (volcopy).
+   A demo directory (demos/sd2_plugin) is provided, which contains a speed
+   test program that tests the speed of the old SD plugin, the new SD plugin,
+   and the same functionality implemented as inline C/PASM. See the README.TXT
+   file in that directory for more details.
+
+2. Two new library variants have been added, which use FatFs in place of
+   DosFs to access SD card file systems. This allows the used of exFAT
+   partitions as well as FAT partitions, and long file names. The new 
+   library variants are supported on the Propeller 2 only. To use them, 
+   specify -lcx2 or -lcix2 in place of -lcx or -lcix (FatFs also requires
+   one of the floating point options, such as -lm). For example:
+
+     catalina -p2 program.c -lcx2 -lm
+
+   Note that because FatFs requires the int64 functions, these are built 
+   into the new library variants, so it is unnecessary to add -lint64 when
+   using them - doing so will result in the relevant functions being multiply
+   defined.
+
+   Note also that both FatFs vs DosFs work with either the old or new SD card 
+   plugins (see point 1). This means that there are now four combinations that
+   can be used when specified for Propeller 2 programs that use the SD card. 
+   For example:
+
+     catalina -p2 program.c -lcx        <-- use DosFs and old SD plugin
+     catalina -p2 program.c -lcx -SD2   <-- use DosFs and new SD plugin
+     catalina -p2 program.c -lcx2       <-- use FatFs and old SD plugin
+     catalina -p2 program.c -lcx2 -SD2  <-- use FatFs and new SD plugin
+
+   DosFs will remain supported for compatibility with the Propeller 1 (which 
+   does not currently support FatFs), and also because in most cases DosFs is
+   both smaller and faster than FatFs.
+
+   Similarly to DosFs, there are two ways FatFs can be used. The first is
+   by linking to the FatFs library variants, but FatFs can also be compiled
+   and used "stand-alone". Examples of this are provided in the folders
+   demos/fatfs and demo/sd2_plugin. There are two main reasons why a 
+   stand-alone version of FatFs might be preferable to the one in the 
+   Catalina libraries (which has been configured to match DosFs as closely 
+   as possible). These are:
+
+   - To use different FatFs configuration options (typically, specified in 
+     the file ffconf.h)
+
+   - To use a different logical volume table to the one used by the Catalina
+     library functions (typically, contained in vol2par.c).
+
+   The demos/sd2_plugin folder contains a stand-alone version of FatFs so
+   that it can compile a demo program (fftime) that shows a possible way
+   of adding real time stamps to FatSd. The demos/fatfs folder contains an
+   example (testpar0) of both using the version of FatFs built-in to the 
+   Catalina library, and the same program (standalone_testpar0) compiled 
+   using the stand-alone version of FatFs in this directory.
+
+3. FatCat has been added. FatCat is a version of Catalyst core utilities 
+   that uses FatFs instead of DosFs, so it can use exFat format SD cards. 
+   For more details see the README.TXT file in the demos/fatcat folder.
+
 
 Other Changes
 -------------
 
-1. The functions strtold and strtof were previously defined as synonyms
-   for strtod in stdlib.h, but this confused Cake, so they now have their 
-   own implementations. However, these just call strtod, so there is no
-   functional difference.
+1. The Catalyst cp and mv commands will now not delete the target file (if
+   it exists) before moving or copying files unless the -f command line
+   option is added.
 
-2. The function strtoull was previously defined as a synonym for strtoul, 
-   but this confused Cake, so it now has its own implementation. However, 
-   this just calls strtoul, so there is no functional difference.
+2. The time demos (in the folder demos\time) were using a hardcoded pin number
+   for the RTC add-on board. These programs now correctly use the pin numbers
+   defined in the platform configuration files.
 
-3. The graphic2 functions g_sin and g_cos are now correctly declared as
-   signed rather than unsigned.
+3. The Service definition SVC_SD_IOCTL has replaced SVC_SD_BYTE_IO, which was
+   never used. This service is now used to request low-level IOCTRL services
+   from the SD and SD2 plugins.
 
-4. Catalina now adds the -line-directives options to all Cake invocations, not
-   just when debugging is enabled. This means Cake will more often report
-   the correct line number (i.e. the line number in the original C source,
-   rather than Cake's re-written C source) when issuing warning and error 
-   messages.
+4. The file lut_exec.h contained some errors that prevented it being used in
+   memory models other than NATIVE. It should now also work in COMPACT and
+   TINY mode programs.
+
+5. A new utility service function _long_service_3() has been added, for
+   invoking services that accept three long parameters, which the Propeller 2
+   SD card plugins now do.
+
+6. The stdio internal function _close() was not correctly allowing for the 
+   possibility that the Hub malloc functions were in use.
+
+7. p2asm had a bug that could cause a segmentation fault on Linux when 
+   reporting errors in the PASM code. Affected Linux only.
+
+8. The old SD card plugin  (cogsd.t) has been modified slightly to implement 
+   the same IOCTL functions as the new SD card plugin (cogsd2.t). Previously, 
+   these functions were simulated in the support code as required. Adding
+   them to the plugin allows both the old and new SD card driver to be used 
+   with FatFs interchangeably.
+
 
 

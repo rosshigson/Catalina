@@ -35,7 +35,7 @@
 
 #include "rtc_driver.h"
 
-#define RTCBASE 24 // base pin
+#define RTCBASE PASM( "mov r0, #_RTC_BASE") // base pin
 
 void set_CLOCK_from_RTC() {
    uint32_t sc, mn, hr;

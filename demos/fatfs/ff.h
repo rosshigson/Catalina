@@ -431,7 +431,7 @@ TCHAR* f_gets (TCHAR* buff, int len, FIL* fp);						/* Get a string from the fil
 #define f_error(fp) ((fp)->err)
 #define f_tell(fp) ((fp)->fptr)
 #define f_size(fp) ((fp)->obj.objsize)
-#define f_rewind(fp) f_lseek((fp), 0)
+#define f_rewind(fp) f_lseek((fp), _uint32(0))
 #define f_rewinddir(dp) f_readdir((dp), 0)
 #define f_rmdir(path) f_unlink(path)
 #define f_unmount(path) f_mount(0, path, 0)

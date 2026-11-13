@@ -49,11 +49,11 @@
 #error THIS PROGRAM MUST BE COMPILED FOR THE PROPELLER 2 IN NATIVE MODE
 #endif
 
-static void debug (char *str) {
 #if I2C_DEBUG
+static void debug (char *str) {
   printf("%s\n", str);
-#endif
 }
+#endif
 
 
 /*

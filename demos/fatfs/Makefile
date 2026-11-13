@@ -6,6 +6,16 @@
 B=.bin
 P=
 
+# Use SD2 plugin if SD2 is in CATALINA_DEFINES
+ifeq (SD2, $(findstring SD2, $(CATALINA_DEFINE)))
+	SD_PLUGIN = SD2
+endif
+
+# Use SD2 plugin if SD2 is in CATALINA_OPTIONS
+ifeq (SD2, $(findstring SD2, $(CATALINA_OPTIONS)))
+	SD_PLUGIN = SD2
+endif
+
 # P2 if there is a P2 in CATALINA_DEFINES
 ifeq (P2, $(findstring P2, $(CATALINA_DEFINE)))
 	B=.bin
@@ -23,6 +33,11 @@ ifeq (-p2, $(findstring -p2, $(CATALINA_OPTIONS)))
 	B=.bin
 endif
 
+# set up the SD plugin to use
+ifeq ("$(SD_PLUGIN)", "")
+  SD_PLUGIN = SD
+endif
+
 # set up options specific to Windows or Linux
 ifeq ($(OS), Windows_NT)
 	E=.exe
@@ -38,7 +53,7 @@ endif
 
 #set up default options if none specified
 ifeq ("$(CATALINA_OPTIONS)", "")
-	CFLAGS += -p2 -lc -lmc -lint64 -C SD -W-Wp-wd82 -W-Wp-wd44 -C99 -O5
+	CFLAGS += -lm -W-Wp-wd82 -W-Wp-wd44 -C99
 else
 	CFLAGS += $(CATALINA_OPTIONS)
 endif
@@ -47,7 +62,7 @@ endif
 B1=.binary
 B2=.bin
 E1=.eeprom
-O=.obj
+O=.ob
 L=.lst
 CC=catalina
 
@@ -64,8 +79,8 @@ CC=catalina
 .PHONY : testpar0
 testpar0 : testpar0$B
 
-testpar0$B: testpar0.c ff.c ffsystem.c ffunicode.c  diskio.c sd_init.c sd_read.c sd_stat.c sd_write.c sd_ioctl.c sd_size.c crc7.c
-	catalina $(CFLAGS) $^ -o $@
+testpar0$B: testpar0.c
+	catalina $(CFLAGS)  -C $(SD_PLUGIN) $^ -lcx2 -o $@
 
 # add this to the 'all' target
 all :: testpar0
@@ -73,8 +88,8 @@ all :: testpar0
 .PHONY : testpar1
 testpar1 : testpar1$B
 
-testpar1$B: testpar1.c ff.c ffsystem.c ffunicode.c  diskio.c sd_init.c sd_read.c sd_stat.c sd_write.c sd_ioctl.c sd_size.c crc7.c
-	catalina $(CFLAGS) $^ -o $@
+testpar1$B: testpar1.c
+	catalina $(CFLAGS)  -C $(SD_PLUGIN) $^ -lcx2 -o $@
 
 # add this to the 'all' target
 all :: testpar1
@@ -82,8 +97,8 @@ all :: testpar1
 .PHONY : testmkfs
 testmkfs : testmkfs$B
 
-testmkfs$B: testmkfs.c ff.c ffsystem.c ffunicode.c  diskio.c sd_init.c sd_read.c sd_stat.c sd_write.c sd_ioctl.c sd_size.c crc7.c
-	catalina $(CFLAGS) $^ -o $@
+testmkfs$B: testmkfs.c
+	catalina $(CFLAGS)  -C $(SD_PLUGIN) $^ -lcx2 -o $@
 
 # add this to the 'all' target
 all :: testmkfs
@@ -91,8 +106,8 @@ all :: testmkfs
 .PHONY : testdisk
 testdisk : testdisk$B
 
-testdisk$B: testdisk.c ff.c ffsystem.c ffunicode.c  diskio.c sd_init.c sd_read.c sd_stat.c sd_write.c sd_ioctl.c sd_size.c crc7.c
-	catalina $(CFLAGS) $^ -o $@
+testdisk$B: testdisk.c 
+	catalina $(CFLAGS)  -C $(SD_PLUGIN) $^ -lcx2 -o $@
 
 # add this to the 'all' target
 all :: testdisk
@@ -100,11 +115,31 @@ all :: testdisk
 .PHONY : volcopy
 volcopy : volcopy$B
 
-volcopy$B: volcopy.c ff.c ffsystem.c ffunicode.c  diskio.c sd_init.c sd_read.c sd_stat.c sd_write.c sd_ioctl.c sd_size.c crc7.c
-	catalina $(CFLAGS) $^ -o $@
+volcopy$B: volcopy.c 
+	catalina $(CFLAGS)  -C $(SD_PLUGIN) $^ -lcx2 -o $@
 
 # add this to the 'all' target
 all :: volcopy
+
+
+.PHONY : standalone_testpar0
+standalone_testpar0 : standalone_testpar0$B
+
+standalone_testpar0$B: testpar0.c ff.c ffsystem.c fftime.c ffunicode.c diskio.c sd2_cat.c vol2par.c
+	catalina $(CFLAGS)  -C $(SD_PLUGIN) $^ -lc -lint64 -o $@
+
+# add this to the 'all' target
+all :: standalone_testpar0
+
+.PHONY : fftime
+fftime : fftime$B
+
+fftime$B: fftime.c rtc_driver.c i2c_driver.c
+	catalina $(CFLAGS)  -C $(SD_PLUGIN) $^ -lc -C CLOCK -D TEST_GETTIME -o $@
+
+# add this to the 'all' target
+all :: fftime
+
 
 #
 # Clean Target (should not be first target!)

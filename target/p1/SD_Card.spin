@@ -181,7 +181,7 @@ PUB Start | cog, lock, request, parameter
      Common.RegisterServiceCog(Common#SVC_SD_INIT,    lock, cog, 1)
      Common.RegisterServiceCog(Common#SVC_SD_READ,    lock, cog, 2)
      Common.RegisterServiceCog(Common#SVC_SD_WRITE,   lock, cog, 3)
-     Common.RegisterServiceCog(Common#SVC_SD_BYTEIO,  lock, cog, 4)
+     Common.RegisterServiceCog(Common#SVC_SD_IOCTL,   lock, cog, 4)
      Common.RegisterServiceCog(Common#SVC_SD_STOPIO,  lock, cog, 5)
 #ifdef CLOCK
 #ifndef SEPARATE_CLOCK

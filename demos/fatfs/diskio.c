@@ -11,20 +11,14 @@
 #include "diskio.h"		/* Declarations FatFs MAI */
 
 /* Example: Declarations of the platform and disk functions in the project */
-//#include "platform.h"
-//#include "storage.h"
+#include "sd2_cat.h"
 
 /* Example: Mapping of physical drive number for each drive */
-#define DEV_MMC		0	/* Map MMC/SD card to physical drive 1 */
-//#define DEV_FLASH	1	/* Map FTL to physical drive 0 */
+//#define DEV_FLASH	0	/* Map FTL to physical drive 0 */
+#define DEV_MMC		0	/* Map MMC/SD card (1-bit SPI mode) to physical drive 1 */
 //#define DEV_USB		2	/* Map USB MSD to physical drive 2 */
-//#define DEV_RAM		4	/* Map RAM to physical drive 3 */
-
-int SD_disk_status();
-int SD_disk_initialize();
-int SD_disk_read(BYTE *buff, LBA_t sector, UINT count);
-int SD_disk_write(const BYTE *buff, LBA_t sector, UINT count);
-int SD_disk_ioctl(const BYTE *buff, UINT pdrv, UINT cmd);
+//#define DEV_RAM		3	/* Map RAM to physical drive 3 */
+//#define DEV_SDSD		4	/* Map SD card (4-bit SD mode) to physical drive 4 */
 
 
 /*-----------------------------------------------------------------------*/
@@ -36,36 +30,37 @@ DSTATUS disk_status (
 )
 {
 	DSTATUS stat;
-	int result;
 
 	switch (pdrv) {
 #ifdef DEV_RAM    
 	case DEV_RAM :
-		result = RAM_disk_status();
+		stat = RAM_disk_status();
 
 		// translate the result code here
 
-		return stat;
+		break;
 #endif
 #ifdef DEV_MMC
 	case DEV_MMC :
-		result = SD_disk_status();
+		stat = SD_disk_status();
 
 		// translate the result code here
-    stat = (result == 0) ? RES_OK : RES_ERROR;
 
-		return stat;
+		break;
 #endif
 #ifdef DEV_USB    
 	case DEV_USB :
-		result = USB_disk_status();
+		stat = USB_disk_status();
 
 		// translate the result code here
 
-		return stat;
+		break;
 #endif    
+	default :
+		stat = STA_NOINIT;
 	}
-	return STA_NOINIT;
+
+	return stat;
 }
 
 
@@ -79,36 +74,37 @@ DSTATUS disk_initialize (
 )
 {
 	DSTATUS stat;
-	int result;
 
 	switch (pdrv) {
 #ifdef DEV_RAM    
 	case DEV_RAM :
-		result = RAM_disk_initialize();
+		stat = RAM_disk_initialize();
 
 		// translate the result code here
 
-		return stat;
+		break;
 #endif
 #ifdef DEV_MMC
 	case DEV_MMC :
-		result = SD_disk_initialize();
+		stat = SD_disk_initialize();
 
 		// translate the result code here
-    stat = (result == 0) ? RES_OK : RES_ERROR;
 
-		return stat;
+		break;
 #endif    
 #ifdef DEV_USB
 	case DEV_USB :
-		result = USB_disk_initialize();
+		stat = USB_disk_initialize();
 
 		// translate the result code here
 
-		return stat;
+		break;
 #endif    
+	default :
+		stat = STA_NOINIT;
 	}
-	return STA_NOINIT;
+
+	return stat;
 }
 
 
@@ -125,43 +121,43 @@ DRESULT disk_read (
 )
 {
 	DRESULT stat;
-	int result;
 
 	switch (pdrv) {
 #ifdef DEV_RAM    
 	case DEV_RAM :
 		// translate the arguments here
 
-		result = RAM_disk_read(buff, sector, count);
+		stat = RAM_disk_read(buff, sector, count);
 
 		// translate the result code here
 
-		return stat;
+		break;
 #endif
 #ifdef DEV_MMC
 	case DEV_MMC :
 		// translate the arguments here
 
-		result = SD_disk_read(buff, sector, count);
+		stat = SD_disk_read(buff, sector, count);
 
 		// translate the result code here
-    stat = (result == 0) ? RES_OK : RES_ERROR;
 
-		return stat;
+		break;
 #endif
 #ifdef DEV_USB
 	case DEV_USB :
 		// translate the arguments here
 
-		result = USB_disk_read(buff, sector, count);
+		stat = USB_disk_read(buff, sector, count);
 
 		// translate the result code here
 
-		return stat;
+		break;
 #endif    
+	default :
+		stat = RES_PARERR;
 	}
 
-	return RES_PARERR;
+	return stat;
 }
 
 
@@ -180,43 +176,43 @@ DRESULT disk_write (
 )
 {
 	DRESULT stat;
-	int result;
 
 	switch (pdrv) {
 #ifdef DEV_RAM    
 	case DEV_RAM :
 		// translate the arguments here
 
-		result = RAM_disk_write(buff, sector, count);
+		stat = RAM_disk_write(buff, sector, count);
 
 		// translate the result code here
 
-		return stat;
+		break;
 #endif
 #ifdef DEV_MMC    
 	case DEV_MMC :
 		// translate the arguments here
 
-		result = SD_disk_write(buff, sector, count);
+		stat = SD_disk_write(buff, sector, count);
 
 		// translate the result code here
-    stat = (result == 0) ? RES_OK : RES_ERROR;
 
-		return stat;
+		break;
 #endif    
 #ifdef DEV_USB
 	case DEV_USB :
 		// translate the arguments here
 
-		result = USB_disk_write(buff, sector, count);
+		stat = USB_disk_write(buff, sector, count);
 
 		// translate the result code here
 
-		return stat;
+		break;
 #endif    
+	default :
+		stat = RES_PARERR;
 	}
 
-	return RES_PARERR;
+	return stat;
 }
 
 #endif
@@ -233,14 +229,13 @@ DRESULT disk_ioctl (
 )
 {
 	DRESULT stat;
-  int result;
 
 	switch (pdrv) {
 #ifdef DEV_RAM    
 	case DEV_RAM :
 
 		// Process of the command for the RAM drive
-		stat = RAM_disk_ioctl(buff, pdrv, cmd);
+		stat = RAM_disk_ioctl(cmd, buff);
 
 		return stat;
 #endif
@@ -248,7 +243,7 @@ DRESULT disk_ioctl (
 	case DEV_MMC :
 
 		// Process of the command for the MMC/SD card
-		stat = SD_disk_ioctl(buff, pdrv, cmd);
+		stat = SD_disk_ioctl(cmd, buff);
 
 		return stat;
 #endif    
@@ -256,12 +251,14 @@ DRESULT disk_ioctl (
 	case DEV_USB :
 
 		// Process of the command the USB drive
-		stat = USB_disk_ioctl(buff, pdrv, cmd);
+		stat = USB_disk_ioctl(cmd, buff);
 
 		return stat;
 #endif
+	default :
+		stat = RES_PARERR;
 	}
 
-	return RES_PARERR;
+	return stat;
 }
 

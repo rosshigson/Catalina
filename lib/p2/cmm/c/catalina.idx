@@ -847,6 +847,8 @@ _long_service svclong.s 9 export
 _sys_plugin svclong.s 34 import
 _long_service_2 svclong2.s 9 export
 _sys_plugin svclong2.s 37 import
+_long_service_3 svclong3.s 9 export
+_sys_plugin svclong3.s 40 import
 _short_service svcshort.s 9 export
 _sys_plugin svcshort.s 34 import
 system system.s 9 export

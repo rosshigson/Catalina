@@ -1,0 +1,264 @@
+' Catalina Code
+
+DAT ' code segment
+'
+' LCC 4.2 for Parallax Propeller
+' (Catalina v3.15 Code Generator by Ross Higson)
+'
+
+' Catalina Init
+
+DAT ' initialized data segment
+
+ alignl_label
+C_getenv_timezone_L000005 ' <symbol:timezone>
+ byte 71
+ byte 77
+ byte 84
+ byte 0
+
+ alignl_label
+C_getenv_eaddr_L000007 ' <symbol:eaddr>
+ long $0
+
+' Catalina Export getenv
+
+' Catalina Code
+
+DAT ' code segment
+
+ alignl_label
+C_getenv ' <symbol:getenv>
+ alignl_p1
+ long I32_NEWF + 4<<S32
+ alignl_p1
+ long I32_PSHM + $fa8000<<S32 ' save registers
+ word I16A_MOV + (r23)<<D16A + (r2)<<S16A ' reg var <- reg arg
+ alignl_p1
+ long I32_LODI + (@C_getenv_eaddr_L000007)<<S32
+ word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
+ word I16A_CMPI + (r22)<<D16A + (0)<<S16A
+ alignl_p1
+ long I32_BRNZ + (@C_getenv_8)<<S32 ' NEU4 reg coni
+' loading argument C_getenv_10_L000011 to PASM eliminated
+'START PASM ... 
+#ifdef COMPACT
+ word I16B_LODL + (r0)<<D16B
+ alignl ' align long (required on the P2!)
+ long ENVIRON
+#else
+#ifdef NATIVE
+ mov r0, ##ENVIRON
+#else
+ jmp #LODL
+ long ENVIRON
+ mov r0, RI
+#endif
+#endif
+
+'... END PASM
+' call to PASM eliminated
+ word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
+ alignl_p1
+ long I32_LODA + (@C_getenv_eaddr_L000007)<<S32
+ word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNP4 addrg reg
+ alignl_p1
+ long I32_LODI + (@C_getenv_eaddr_L000007)<<S32
+ word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
+ word I16A_CMPI + (r22)<<D16A + (0)<<S16A
+ alignl_p1
+ long I32_BR_Z + (@C_getenv_12)<<S32 ' EQU4 reg coni
+ word I16A_MOVI + (r22)<<D16A + (0)<<S16A ' reg <- coni
+ word I16B_LODF + ((-8)&$1FF)<<S16B
+ word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNI4 addrl16 reg
+ alignl_p1
+ long I32_LODI + (@C_getenv_eaddr_L000007)<<S32
+ word I16A_MOV + (r21)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
+ alignl_p1
+ long I32_JMPA + (@C_getenv_15)<<S32 ' JUMPV addrg
+ alignl_label
+C_getenv_14
+ word I16A_RDBYTE + (r22)<<D16A + (r21)<<S16A ' reg <- INDIRU1 reg
+ word I16B_TRN1 + (r22)<<D16B ' zero extend
+ word I16A_CMPSI + (r22)<<D16A + (10)<<S16A
+ alignl_p1
+ long I32_BRNZ + (@C_getenv_17)<<S32 ' NEI4 reg coni
+ word I16A_MOVI + (r22)<<D16A + (1)<<S16A ' reg <- coni
+ word I16B_LODF + ((-8)&$1FF)<<S16B
+ word I16A_WRLONG + (r22)<<D16A + RI<<S16A ' ASGNI4 addrl16 reg
+ word I16A_MOVI + (r22)<<D16A + (0)<<S16A ' reg <- coni
+ word I16A_WRBYTE + (r22)<<D16A + (r21)<<S16A ' ASGNU1 reg reg
+ alignl_p1
+ long I32_JMPA + (@C_getenv_18)<<S32 ' JUMPV addrg
+ alignl_label
+C_getenv_17
+ word I16A_RDBYTE + (r22)<<D16A + (r21)<<S16A ' reg <- INDIRU1 reg
+ word I16B_TRN1 + (r22)<<D16B ' zero extend
+ word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
+ alignl_p1
+ long I32_BRNZ + (@C_getenv_19)<<S32 ' NEI4 reg coni
+ alignl_p1
+ long I32_JMPA + (@C_getenv_16)<<S32 ' JUMPV addrg
+ alignl_label
+C_getenv_19
+ alignl_label
+C_getenv_18
+ word I16A_ADDSI + (r21)<<D16A + (1)<<S16A ' ADDP4 reg coni
+ alignl_label
+C_getenv_15
+ word I16A_RDBYTE + (r22)<<D16A + (r21)<<S16A ' reg <- INDIRU1 reg
+ word I16B_TRN1 + (r22)<<D16B ' zero extend
+ word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
+ alignl_p1
+ long I32_BRNZ + (@C_getenv_14)<<S32 ' NEI4 reg coni
+ alignl_label
+C_getenv_16
+ word I16B_LODF + ((-8)&$1FF)<<S16B
+ word I16A_RDLONG + (r22)<<D16A + RI<<S16A ' reg <- INDIRI4 addrl16
+ word I16A_CMPSI + (r22)<<D16A + (0)<<S16A
+ alignl_p1
+ long I32_BR_Z + (@C_getenv_21)<<S32 ' EQI4 reg coni
+ word I16A_MOVI + (r22)<<D16A + (0)<<S16A ' reg <- coni
+ word I16A_WRBYTE + (r22)<<D16A + (r21)<<S16A ' ASGNU1 reg reg
+ word I16A_MOV + (r22)<<D16A + (r21)<<S16A
+ word I16A_ADDSI + (r22)<<D16A + (1)<<S16A ' ADDP4 reg coni
+ word I16A_MOVI + (r20)<<D16A + (0)<<S16A ' reg <- coni
+ word I16A_WRBYTE + (r20)<<D16A + (r22)<<S16A ' ASGNU1 reg reg
+ alignl_label
+C_getenv_21
+ alignl_label
+C_getenv_12
+ alignl_label
+C_getenv_8
+ alignl_p1
+ long I32_LODI + (@C_getenv_eaddr_L000007)<<S32
+ word I16A_MOV + (r22)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
+ word I16A_CMPI + (r22)<<D16A + (0)<<S16A
+ alignl_p1
+ long I32_BR_Z + (@C_getenv_23)<<S32 ' EQU4 reg coni
+ alignl_p1
+ long I32_LODI + (@C_getenv_eaddr_L000007)<<S32
+ word I16A_MOV + (r21)<<D16A + RI<<S16A ' reg <- INDIRP4 addrg
+ word I16A_MOV + (r2)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
+ word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
+ alignl_p1
+ long I32_CALA + (@C_strlen)<<S32 ' CALL addrg
+ word I16A_MOV + (r15)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
+ alignl_p1
+ long I32_JMPA + (@C_getenv_26)<<S32 ' JUMPV addrg
+ alignl_label
+C_getenv_25
+ alignl_p1
+ long I32_MOVI + (r2)<<D32 + (61)<<S32 ' reg ARG coni
+ word I16A_MOV + (r3)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
+ word I16B_CPREP + 33<<S16B ' arg size, rpsize = 8, spsize = 8
+ alignl_p1
+ long I32_CALA + (@C_strchr)<<S32
+ word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
+ word I16A_MOV + (r19)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
+ word I16A_MOV + (r22)<<D16A + (r19)<<S16A ' CVI, CVU or LOAD
+ word I16A_CMPI + (r22)<<D16A + (0)<<S16A
+ alignl_p1
+ long I32_BR_Z + (@C_getenv_28)<<S32 ' EQU4 reg coni
+ word I16A_MOV + (r22)<<D16A + (r15)<<S16A ' ADDI/P
+ word I16A_ADDS + (r22)<<D16A + (r21)<<S16A ' ADDI/P (3)
+ word I16A_RDBYTE + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU1 reg
+ word I16B_TRN1 + (r22)<<D16B ' zero extend
+ alignl_p1
+ long I32_MOVI + RI<<D32 + (61)<<S32
+ word I16A_CMPS + (r22)<<D16A + RI<<S16A
+ alignl_p1
+ long I32_BRNZ + (@C_getenv_30)<<S32 ' NEI4 reg coni
+ word I16A_MOV + (r2)<<D16A + (r15)<<S16A ' CVI, CVU or LOAD
+ word I16A_MOV + (r3)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
+ word I16A_MOV + (r4)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
+ word I16B_CPREP + 50<<S16B ' arg size, rpsize = 12, spsize = 12
+ alignl_p1
+ long I32_CALA + (@C_strncmp)<<S32
+ word I16A_ADDI + SP<<D16A + 8<<S16A ' CALL addrg
+ word I16A_CMPSI + (r0)<<D16A + (0)<<S16A
+ alignl_p1
+ long I32_BRNZ + (@C_getenv_30)<<S32 ' NEI4 reg coni
+ word I16A_MOV + (r0)<<D16A + (r19)<<S16A
+ word I16A_ADDSI + (r0)<<D16A + (1)<<S16A ' ADDP4 reg coni
+ alignl_p1
+ long I32_JMPA + (@C_getenv_3)<<S32 ' JUMPV addrg
+ alignl_label
+C_getenv_30
+ word I16A_MOV + (r2)<<D16A + (r19)<<S16A ' CVI, CVU or LOAD
+ word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
+ alignl_p1
+ long I32_CALA + (@C_strlen)<<S32 ' CALL addrg
+ word I16A_MOV + (r22)<<D16A + (r0)<<S16A ' ADDI/P
+ word I16A_ADDS + (r22)<<D16A + (r19)<<S16A ' ADDI/P (3)
+ word I16A_MOV + (r21)<<D16A + (r22)<<S16A
+ word I16A_ADDSI + (r21)<<D16A + (1)<<S16A ' ADDP4 reg coni
+ alignl_p1
+ long I32_JMPA + (@C_getenv_29)<<S32 ' JUMPV addrg
+ alignl_label
+C_getenv_28
+ word I16A_MOV + (r22)<<D16A + (r17)<<S16A
+ word I16A_ADDSI + (r22)<<D16A + (1)<<S16A ' ADDI4 reg coni
+ word I16A_ADDS + (r21)<<D16A + (r22)<<S16A ' ADDI/P (2)
+ alignl_label
+C_getenv_29
+ alignl_label
+C_getenv_26
+ word I16A_MOV + (r2)<<D16A + (r21)<<S16A ' CVI, CVU or LOAD
+ word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
+ alignl_p1
+ long I32_CALA + (@C_strlen)<<S32 ' CALL addrg
+ word I16A_MOV + (r17)<<D16A + (r0)<<S16A ' CVI, CVU or LOAD
+ word I16A_CMPSI + (r0)<<D16A + (0)<<S16A
+ alignl_p1
+ long I32_BR_A + (@C_getenv_25)<<S32 ' GTI4 reg coni
+ alignl_label
+C_getenv_23
+ word I16B_LODL + (r2)<<D16B
+ alignl_p1
+ long @C_getenv_34_L000035 ' reg ARG ADDRG
+ word I16A_MOV + (r3)<<D16A + (r23)<<S16A ' CVI, CVU or LOAD
+ word I16B_CPREP + 33<<S16B ' arg size, rpsize = 8, spsize = 8
+ alignl_p1
+ long I32_CALA + (@C_strcmp)<<S32
+ word I16A_ADDI + SP<<D16A + 4<<S16A ' CALL addrg
+ word I16A_CMPSI + (r0)<<D16A + (0)<<S16A
+ alignl_p1
+ long I32_BRNZ + (@C_getenv_32)<<S32 ' NEI4 reg coni
+ word I16B_LODL + (r0)<<D16B
+ alignl_p1
+ long @C_getenv_timezone_L000005 ' reg <- addrg
+ alignl_p1
+ long I32_JMPA + (@C_getenv_3)<<S32 ' JUMPV addrg
+ alignl_label
+C_getenv_32
+ word I16B_LODL + R0<<D16B
+ alignl_p1
+ long 0 ' RET con
+ alignl_label
+C_getenv_3
+ word I16B_POPM + 1<<S16B ' restore registers, do pop frame, do return
+ alignl_p1
+
+' Catalina Import strlen
+
+' Catalina Import strchr
+
+' Catalina Import strncmp
+
+' Catalina Import strcmp
+
+' Catalina Cnst
+
+DAT ' const data segment
+
+ alignl_label
+C_getenv_34_L000035 ' <symbol:34>
+ byte 84
+ byte 90
+ byte 0
+
+' Catalina Code
+
+DAT ' code segment
+' end

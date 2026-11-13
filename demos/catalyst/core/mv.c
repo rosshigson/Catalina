@@ -14,6 +14,8 @@
  *
  * Version 6.3   - add -k option to suppress the "Continue" prompt.
  *
+ * Version 9.3   - do not remove target file unless -f is specified.
+ *
  */
 
 // size to copy in each read/write - reduce if program is too large
@@ -290,12 +292,16 @@ void move_file(PVOLINFO vi, char *src, char *dst) {
       return;
    }
 
+   // remove destination file if it already exists
+   DFS_UnlinkFile(vi, (uint8_t *)dst, scratch);
+
    if (DFS_OpenFile(vi, (uint8_t *)dst, DFS_WRITE, scratch, &dst_fi) != DFS_OK) {
       t_str("cannot open target ");
       t_str(dst);
       t_strln(" for write");
       return;
    }
+   
    while (1) {
       result = DFS_ReadFile(&src_fi, scratch, chunk, &count, CHUNK_SIZE);
       if (count == 0) {
@@ -317,7 +323,7 @@ void move_file(PVOLINFO vi, char *src, char *dst) {
       }
    }
    else {
-      t_str("error occured while copying ");
+      t_str("error occured while moving ");
       t_strln(src);
    }
 
@@ -434,9 +440,6 @@ void move_to_target(PVOLINFO vi, char *src, char *target) {
          // restore target path
          tgt[dirlen - 1] = DIR_SEPARATOR;
       }
-
-      // remove target file if it already exists
-      DFS_UnlinkFile(vi, (uint8_t *)tgt, scratch);
 
    }
 

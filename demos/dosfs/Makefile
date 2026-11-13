@@ -6,6 +6,16 @@
 B=.binary
 P=
 
+# Use SD2 plugin if SD2 is in CATALINA_DEFINES
+ifeq (SD2, $(findstring SD2, $(CATALINA_DEFINE)))
+	SD_PLUGIN = SD2
+endif
+
+# Use SD2 plugin if SD2 is in CATALINA_OPTIONS
+ifeq (SD2, $(findstring SD2, $(CATALINA_OPTIONS)))
+	SD_PLUGIN = SD2
+endif
+
 # P2 if there is a P2 in CATALINA_DEFINES
 ifeq (P2, $(findstring P2, $(CATALINA_DEFINE)))
 	B=.bin
@@ -23,6 +33,11 @@ ifeq (-p2, $(findstring -p2, $(CATALINA_OPTIONS)))
 	B=.bin
 endif
 
+# set up the SD plugin to use
+ifeq ("$(SD_PLUGIN)", "")
+  SD_PLUGIN = SD
+endif
+
 # set up options specific to Windows or Linux
 ifeq ($(OS), Windows_NT)
 	E=.exe
@@ -38,7 +53,7 @@ endif
 
 #set up default options if none specified
 ifeq ("$(CATALINA_OPTIONS)", "")
-	CFLAGS += -C SD -lci -C NO_MOUSE -C NO_FLOAT
+	CFLAGS += -lci -C NO_MOUSE -C NO_FLOAT -C $(SD_PLUGIN)
 else
 	CFLAGS += $(CATALINA_OPTIONS)
 endif

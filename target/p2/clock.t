@@ -50,7 +50,7 @@ DAT
 
 #if defined(CLOCK) || defined(RTC)
 
-#if defined(SEPARATE_CLOCK) || defined(RTC) || !defined(SD)
+#if defined(SEPARATE_CLOCK) || defined(RTC) || !(defined(SD)||defined(SD2))
 #include "cogrtc.t"
 
 ' setup function for clock

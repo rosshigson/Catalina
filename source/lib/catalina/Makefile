@@ -44,6 +44,7 @@ all:	darray.h \
 	svcshort.s \
 	svclong.s \
 	svclong2.s \
+	svclong3.s \
 	tbin.s \
 	tfloat.s \
 	thex.s \

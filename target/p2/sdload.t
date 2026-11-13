@@ -93,6 +93,15 @@ ROEN_OFF    = RWBA_OFF + 4
 RWEN_OFF    = ROEN_OFF + 4
 TABLE_END   = RWEN_OFF + 4
 
+' define HEX_LED to enable Flash_Hex etc
+#define HEX_LED 56 
+
+#if defined(HEX_LED)
+blip_time  = _CLOCKFREQ/20
+hex_time   = _CLOCKFREQ/2
+flash_time = _CLOCKFREQ/4
+#endif
+
 DAT
         org 0
 
@@ -197,10 +206,17 @@ mbox_2  mov    r1,#9                            ' ... with reg_addr ...
         mov    r1,sect_size
         call   #f_d32u
         cmp    r0, max_sect_num wcz
-  if_a  mov    r0, max_sect_num        
-        mov    sect_count,r0
-        mov    src_addr,#0                      ' load from start of file ... 
-        mov    dst_addr,#0                      ' ... to start of Hub RAM
+  if_a  mov    r0, max_sect_num
+        mov    sect_count,r0 
+        sub    sect_count,#1 wz                 ' first sector is special
+  if_z  jmp    #.load_sect_0                    ' only one sector to load?
+        mov    src_addr,sect_size               ' no - load from sector one ...
+        mov    dst_addr,sect_size               ' ... to Hub RAM
+        call   #Copy_SD_To_RAM
+.load_sect_0
+        mov    src_addr,#0                      ' load sector  zero ... 
+        mov    dst_addr,#0                      ' ... to Hub RAM 
+        mov    sect_count,#1
         call   #Copy_SD_To_RAM
 '
         ' stop all cogs other than this one (up to LAST_COG), and
@@ -329,6 +345,7 @@ Copy_SD_To_RAM
         shr    r0,#2                            ' divide by 4 to get longs
 .write_loop
         rdlong r2,r1
+        cmp    dst_addr,##$14 wz
         wrlong r2,dst_addr
         add    r1,#4
         add    dst_addr,#4
@@ -389,9 +406,9 @@ SD_ReadSector
 '
 ' temporary storage 
 '
-.temp         long      $0
-.tmp2         long      $0
-.tmp3         long      $0
+.temp         long      0
+.tmp2         long      0
+.tmp3         long      0
 
 #else
 
@@ -413,45 +430,45 @@ top8          long      $FF000000
 low24         long      $00FFFFFF
 d_inc         long      1<<9
 
-r0            long      $0
-r1            long      $0
-r2            long      $0
-r3            long      $0
-r4            long      $0
-r5            long      $0
-r6            long      $0
+r0            long      0
+r1            long      0
+r2            long      0
+r3            long      0
+r4            long      0
+r5            long      0
+r6            long      0
 
-reg_addr      long      $0                      ' load ...
-list_addr     long      $0                      ' ...
-file_size     long      $0                      ' ... 9 ...
-clust_shift   long      $0                      ' ...
-data_region   long      $0                      ' ... parameters ...
-sector_addr   long      $0                      ' ...
-xfer_addr     long      $0                      ' ... even if ...
-cpu_no        long      $0                      ' ...
-load_mode     long      $0                      ' ... they are not all used
-sio_block     long      $0                      ' the 10th parameter is not required
+reg_addr      long      0                       ' load ...
+list_addr     long      0                       ' ...
+file_size     long      0                       ' ... 9 ...
+clust_shift   long      0                       ' ...
+data_region   long      0                       ' ... parameters ...
+sector_addr   long      0                       ' ...
+xfer_addr     long      0                       ' ... even if ...
+cpu_no        long      0                       ' ...
+load_mode     long      0                       ' ... they are not all used
+sio_block     long      0                       ' the 10th parameter is not required
 
-clust_sects   long      $0
-clust_size    long      $0
+clust_sects   long      0
+clust_size    long      0
 
 sect_size     long      FLIST_SSIZ              ' Sector Size
 prog_size     long      256                     ' program 256 bytes each write
 
-layout        long      $0
+layout        long      0
 load_size     long      P2_LOAD_SIZE            ' 64kb
 max_hub_load  long      FLIST_PREG              ' address we can load up to
-max_sect_num  long      $0                      ' max sector we can load
+max_sect_num  long      0                       ' max sector we can load
 
-src_addr      long      $0
-dst_addr      long      $0
-sect_count    long      $0
+src_addr      long      0
+dst_addr      long      0
+sect_count    long      0
 
-sect_num      long      $0
-sect_off      long      $0
+sect_num      long      0
+sect_off      long      0
 
-clus_num      long      $0
-clus_off      long      $0
+clus_num      long      0
+clus_off      long      0
 
 '-------------------------------------------------------------------------------
 
@@ -556,6 +573,92 @@ reg           long REGISTRY                     ' cache code needs this
 XMM_Addr      long 0
 Hub_Addr      long 0
 XMM_Len       long 0
+
+'-------------------- Debug Functions ----------------------------------------
+
+#if defined(HEX_LED)
+
+.hex_value        long    0
+.hex_count        long    0
+.flash_count      long    0
+.flags            long    0
+
+' LED_On - turn LED on
+'
+.LED_On
+    _ret_         drvl    #HEX_LED
+
+'
+' LED_Off - turn LED off
+'
+.LED_Off
+    _ret_         drvh    #HEX_LED
+'
+' Flash_LED - flash the LED flash_count times
+'
+.Flash_LED
+                  cmp     .flash_count,#0 wz
+    if_z          waitx   ##flash_time
+    if_z          jmp     #.done_flash
+.flash_loop
+                  call    #.LED_On
+                  waitx   ##flash_time
+                  call    #.LED_Off
+                  waitx   ##flash_time
+                  djnz    .flash_count,#.flash_loop
+.done_flash
+                  ret
+'
+' Blip_LED - flash LED briefly (e.g. used to indicate zero)
+'
+.Blip_LED
+                  call    #.LED_On
+                  waitx   ##blip_time
+                  call    #.LED_Off
+                  waitx   ##flash_time
+                  ret
+'
+' Flash_Hex - flash the LED to display up to 8 hex digits in hex_value
+'
+.Flash_Hex
+                  mov     .hex_count,#8
+.digit_loop1
+' skip leading zeroes
+                  rol     .hex_value,#4
+                  mov     .flash_count,.hex_value
+                  and     .flash_count,#$f wz
+    if_z          djnz    .hex_count,#.digit_loop1
+' if all we have are zeroes, do one blip
+                  tjnz    .hex_count,#.digit_loop2
+                  call    #.Blip_LED
+                  jmp     #.done_hex
+.digit_loop2
+                  tjnz    .flash_count,#.do_flash
+' for zero digits, do one blip
+                  call    #.Blip_LED
+                  jmp     #.do_next
+.do_flash
+' for non-zero digits, flash the digit count
+                  call    #.Flash_LED
+.do_next
+                  djz     .hex_count,#.done_hex
+                  waitx   ##hex_time
+                  rol     .hex_value,#4
+                  mov     .flash_count,.hex_value
+                  and     .flash_count,#$f
+                  jmp     #.digit_loop2
+.done_hex
+                  waitx   ##hex_time*4
+                  ret
+'
+' For example (including saving/restoring flags):
+'                 muxc    .flags, #1        ' save C ...
+'                 muxnz   .flags, #2        ' ... and Z flags
+'                 mov     .hex_value,.r0
+'                 call    #.Flash_Hex
+'                 shr     .flags, #1 wcz    ' restore flags
+'
+#endif
 
 '-------------------------------------------------------------------------------
 

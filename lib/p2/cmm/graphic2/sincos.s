@@ -11,7 +11,7 @@ DAT ' code segment
 DAT ' initialized data segment
 
  alignl_label
-C_sfgk_6ac84ede_sin_table_L000004 ' <symbol:sin_table>
+C_sncg_6af55096_sin_table_L000004 ' <symbol:sin_table>
  word $0
  word $0
  word $477
@@ -185,7 +185,7 @@ C_g_sin_8
  word I16A_SHLI + (r22)<<D16A + (1)<<S16A ' SHLU4 reg coni
  word I16B_LODL + (r20)<<D16B
  alignl_p1
- long @C_sfgk_6ac84ede_sin_table_L000004 ' reg <- addrg
+ long @C_sncg_6af55096_sin_table_L000004 ' reg <- addrg
  word I16A_ADDS + (r22)<<D16A + (r20)<<S16A ' ADDI/P (1)
  word I16A_RDWORD + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU2 reg
  word I16B_TRN2 + (r22)<<D16B ' zero extend
@@ -217,7 +217,7 @@ C_g_sin_10
  word I16A_SHLI + (r22)<<D16A + (1)<<S16A ' SHLU4 reg coni
  word I16B_LODL + (r20)<<D16B
  alignl_p1
- long @C_sfgk_6ac84ede_sin_table_L000004 ' reg <- addrg
+ long @C_sncg_6af55096_sin_table_L000004 ' reg <- addrg
  word I16A_ADDS + (r22)<<D16A + (r20)<<S16A ' ADDI/P (1)
  word I16A_RDWORD + (r22)<<D16A + (r22)<<S16A ' reg <- INDIRU2 reg
  word I16A_MOV + (r0)<<D16A + (r22)<<S16A ' CVUI

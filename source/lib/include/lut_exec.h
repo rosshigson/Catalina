@@ -101,7 +101,7 @@
  *       SIGN must be a PASM constant that is unique
  *            for all functions at the specified offset
  */
-#ifdef __CATALINA_NATIVE
+#if defined(__CATALINA_NATIVE)
 #define LUT_BEGIN(OFFS, NAME, SIGN) \
    PASM("\n \
        rdlut r0,#"OFFS"\n \
@@ -115,7 +115,7 @@
       .lut_start\n \
        long " SIGN" \n \
       "NAME "\n");
-#elif __CATALINA_COMPACT
+#elif defined(__CATALINA_COMPACT)
 #define LUT_BEGIN(OFFS, NAME, SIGN) \
    PASM("\n \
        word I16B_LODL + r0<<D16B\n \
@@ -132,7 +132,7 @@
       .lut_start\n \
        long "SIGN"\n \
       "NAME"\n");
-#elif __CATALINA_TINY
+#elif defined(__CATALINA_TINY)
 #define LUT_BEGIN(OFFS, NAME, SIGN) \
    PASM("\n \
        jmp #LODL\n \
@@ -192,18 +192,18 @@
  *       or
  *          result = LUT_CALL("function");
  */
-#ifdef __CATALINA_NATIVE
+#if defined(__CATALINA_NATIVE)
 #define LUT_CALL(NAME) \
    PASM("call #\\"NAME"\n \
          jmp #\\@.pasm_exit2 ' back to Hub exec mode!\n \
          orgh\n \
         .pasm_exit2\n");
-#elif __CATALINA_COMPACT
+#elif defined(__CATALINA_COMPACT)
 #define LUT_CALL(NAME) \
    PASM(" word I16B_PASM\n \
           alignl\n \
           call #\\"NAME"\n");
-#elif __CATALINA_TINY
+#elif defined(__CATALINA_TINY)
 #define LUT_CALL(NAME) \
    PASM("call #\\"NAME"\n");
 #else

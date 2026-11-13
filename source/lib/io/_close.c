@@ -1,5 +1,16 @@
 #include <fs.h>
 
+#ifdef __CATALINA_HUB_MALLOC
+
+#include <hmalloc.h>
+
+#define malloc  hub_malloc
+#define calloc  hub_calloc
+#define realloc hub_realloc
+#define free    hub_free
+
+#endif
+
 #if __CATALINA_SDCARD_IO
 
 int _close(int d) {

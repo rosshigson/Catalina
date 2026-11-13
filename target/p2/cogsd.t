@@ -58,8 +58,17 @@ SD_First      = 1
 SD_Init       = 1
 SD_Read       = 2
 SD_Write      = 3
-SD_ByteIO     = 4
+SD_IOCTL      = 4
 SD_StopIO     = 5
+
+' IOCTL commands:
+CTRL_SYNC        = 0  ' Complete pending write process (needed at FF_FS_READONLY == 0)
+GET_SECTOR_COUNT = 1  ' Get media size (needed at FF_USE_MKFS == 1)
+GET_SECTOR_SIZE  = 2  ' Get sector size (needed at FF_MAX_SS != FF_MIN_SS)
+GET_BLOCK_SIZE   = 3  ' Get erase block size (needed at FF_USE_MKFS == 1)
+CTRL_TRIM        = 4  ' Inform device that the data on the block of sectors is no longer used (needed at FF_USE_TRIM == 1)
+MMC_GET_CSD      = 11 ' Get CSD
+MMC_GET_SDSTAT   = 14 ' Get SD status
 
 #ifdef CLOCK
 '
@@ -88,35 +97,39 @@ SD_Last        = 5              ' last valid command if CLOCK not defined
 '
 ' The command to perform is encoded in the top 8 bits of the parameter
 ' The address of a parameter block is encoded in the bottom 24 bits.
-' The parameter block is 2 longs:
-'    - the buffer adress to use
-'    - the sector number to read/write 
+' To provide compatibility with existing programs, the parameter 
+' block is either 2 or 3 longs, depending on whether bit 24 of the 
+' first long (i.e. the buffer address) is set:
+'    - the buffer adress to use (bit 24 set if count != 1)
+'    - the first (or only) sector number to read/write 
+'    - the number of sectors to read/write
+'    
 
-'name: SD_Init - Initialize the driver
+'name: SD_Init - Initialize the driver (bufaddr is scratch buffer/CSD address)
 'code: 1
 'type: long request
-'data: parameter block address
+'data: parameter block address (bufaddr is scratch buffer/CSD address)
 'rslt: (none)
 '
 'name: SD_Read - Read a sector
 'code: 2
 'type: long request
-'data: parameter block address
+'data: parameter block address (bufaddr, blknum) or (bufaddr|$1000000, blknum, blkcnt}
 'rslt: (none)
 '
 'name: SD_Write - Write a sector
 'code: 3 
 'type: long request
-'data: parameter block address
+'data: parameter block address (bufaddr, blknum) or (bufaddr|$1000000, blknum, blkcnt}
 'rslt: 0 on success, data response token on failure (with bit 8 set to ensure not zero!)
    
-'name: SD_ByteIO - Write a sector
+'name: SD_IOCTL - Do an I/O Control request
 'code: 4 
 'type: short request
 'data: byte to write
-'rslt: 0 on success, data response token on failure (with bit 8 set to ensure not zero!)
+'rslt: 0 on success, 1 or failure, or block size or sector count if >=128
 
-'name: SD_StopIO - disable the SD card (required on the TRIBLADEPROP and RAMBLADE)
+'name: SD_StopIO - disable the SD card 
 'code: 5 
 'type: short request
 'data: byte to write
@@ -155,7 +168,7 @@ SD_Last        = 5              ' last valid command if CLOCK not defined
 'data: 0 = no debug, 1 = toggle debug flag every second
 'rslt: none
    
-'name: SD_RTC_GetTicks (new time function also implemented in SD plugin)
+'name: SD_RTC_GetTicks (new time function also implemented in CLOCK)
 'code: 11
 'type: short request
 'data: address of 2 long buffer to receive seconds and ticks
@@ -172,7 +185,7 @@ SD_START
 .rqstptr  add     .t1,PTRA                ' ... registry block entry
 .rsltptr  rdlong  .rqstptr,.t1            ' register ...
 .t0       and     .rqstptr,Mask24         ' ... this ...
-.t3       wrlong  ZeroVal,.rqstptr
+.t3       wrlong  #0,.rqstptr
 .t4       mov     .t2,#LMM_FIL            ' ... plugin ...
 .t5       shl     .t2,#24                 ' ... as the ...
 .paramptr or      .t2,.rqstptr            ' ... appropriate ...
@@ -195,55 +208,42 @@ SD_START
    if_z jmp     #.pause
         mov     .paramptr,.t1
         and     .paramptr,Mask24
-        mov     .t5,.paramptr
-        rdlong  .param, .paramptr
-        rdlong  bufaddr,.paramptr
-        add     .paramptr,#4
-        rdlong  blocknr,.paramptr
+        setq    #2                       ' read 3 parameters (even if not all used) ... 
+        rdlong  bufaddr,.paramptr        ' ... into bufaddr, blocknr & blockct
+        mov     .param,bufaddr           ' copy 1st par to .param (for clock functions)
         shr     .t1,#24                  ' get command ...
         and     .t1,#$ff                 ' ... to execute
-        cmp     .t1,#SD_First wcz        ' check for valid command
+        cmp     .t1,#SD_First wc         ' check for valid command
   if_b  jmp     #.err_command
         cmp     .t1,#SD_Last wcz         ' check for valid command
-  if_a  jmp     #.err_command
-        mov     .rslt, #0
-        sub     .t1,#SD_First
-        shl     .t1,#1
-        add     .t1,#.cmdTable 
-        jmp     .t1                      ' jump to command
+   if_a jmp     #.err_command
+        mov     .rslt,#0                 ' assume result is OK
+        sub     .t1,#SD_First            ' lookup ...
+        alts    .t1,#.cmdTable           ' ... function ...
+        mov     .t1,0-0                  ' ... in cmdTable ...
+        call    .t1                      ' ... and call it
+        jmp     #.end_command
 
 .cmdTable
-        call    #.SD_Init
-        jmp     #.end_command
-        call    #.SD_Read
-        jmp     #.end_command
-        call    #.SD_Write
-        jmp     #.end_command
-        call    #.SD_ByteIO
-        jmp     #.end_command
-        call    #.SD_StopIO
-        jmp     #.end_command
+        long    .SD_Init
+        long    .SD_Read
+        long    .SD_Write
+        long    .SD_IOCTL
+        long    .SD_StopIO
 #ifdef CLOCK
-        call    #.RTC_SetFreq
-        jmp     #.end_command
-        call    #.RTC_GetClock
-        jmp     #.end_command
-        call    #.RTC_SetTime
-        jmp     #.end_command
-        call    #.RTC_GetTime
-        jmp     #.end_command
-        call    #.RTC_DebugFlag
-        jmp     #.end_command
-        call    #.RTC_GetTicks
-        jmp     #.end_command
+        long    .RTC_SetFreq
+        long    .RTC_GetClock
+        long    .RTC_SetTime
+        long    .RTC_GetTime
+        long    .RTC_DebugFlag
+        long    .RTC_GetTicks
 #endif
 
 .err_command
         neg     .rslt,#1                 ' return -1 on error
-        jmp     #.end_command
 .end_command
         wrlong  .rslt,.rsltptr           ' return .rslt 
-        wrlong  Zeroval,.rqstptr         ' clear command status
+        wrlong  #0,.rqstptr              ' clear command status
         jmp     #.pause                  ' pause before next command
 
 #ifdef CLOCK
@@ -336,7 +336,7 @@ SD_START
 '
 .RTC_GetClock
         tjnz    .per_sec,#._GetClock_ok
-   _ret_ neg     .rslt,#1
+  _ret_ neg     .rslt,#1
 ._GetClock_ok
   _ret_ mov     .rslt,.clock
 
@@ -371,12 +371,12 @@ SD_START
          tjnz    .per_sec,#.RTC_GetTicks_ok
    _ret_ neg     .rslt,#1
 .RTC_GetTicks_ok
-         wrlong   .time, .t5              ' return ...
-         add      .t5, #4                 ' seconds
+         wrlong   .time, .paramptr        ' return ...
+         add      .paramptr, #4           ' seconds
          mov      .t0,.time_incr          ' convert ...
          mov      .t1,.per_clock          ' ... unprocessed time counts ...
          call      #.d32u                 ' ... to clock counts ...
-         wrlong   .t0,.t5                 ' ... and return that
+         wrlong   .t0,.paramptr           ' ... and return that
    _ret_ mov     .rslt,#0
 
 
@@ -428,7 +428,8 @@ SD_START
 '-------------------- SD Card Functions -----------------------------------------
 
 .SD_Init
-        call    #_SDcard_Init
+        call    #_SD_Ready      ' SD card ready?
+  if_nz jmp     #.SD_Result     ' no - return result from card
   if_z  mov     .rslt,#0
   if_nz neg     .rslt,#1
         ret
@@ -436,28 +437,177 @@ SD_START
 .SD_Write
         call    #_SD_Ready      ' SD card ready?
   if_nz jmp     #.SD_Result     ' no - return result from card
-        call    #_writeSECTOR   ' yes - write sector
-        jmp     #.SD_Result     ' return result
+        test    bufaddr,##$1000000 wz ' multi-sector write?
+  if_z  mov     blockct,#1      ' no - write 1 sector only
+.SD_Write_1
+        call    #_writeSECTOR   ' write sector
+  if_nz jmp     #.SD_Result     ' return if bad result
+        djz     blockct,#.SD_Result ' return result if done
+        call    #_SD_Ready
+  if_nz jmp     #.SD_Result     ' no - return result from card
+        add     blocknr,#1      ' next sector
+        jmp     #.SD_Write_1
 
 .SD_Read
         call    #_SD_Ready      ' SD card ready?
   if_nz jmp     #.SD_Result     ' no - return result from card
-        call    #_readSECTOR    ' yes - read sector, return result
+        test    bufaddr,##$1000000 wz ' multi-sector read?
+  if_z  mov     blockct,#1      ' no - read 1 sector only
+.SD_Read_1
+        call    #_readSECTOR    ' read sector
+        if_nz   jmp #.SD_Result ' return if bad result
+        djz     blockct,#.SD_Result ' return result if done
+        call    #_SD_Ready
+  if_nz jmp     #.SD_Result     ' no - return result from card
+        add     blocknr,#1      ' next sector
+        jmp     #.SD_Read_1
+
 .SD_Result
   if_z  mov     .rslt,#0
   if_nz mov     .rslt, reply
-        call    #_sendFF
-        ret                     ' return data response
-
-.SD_ByteIO
-' ??? not implemented ???
-        neg     .rslt,#1
-        ret
+        jmp     #_sendFF
 
 .SD_StopIO
-' ??? not implemented - disable SD card ??? 
-        neg     .rslt,#1
-        ret 
+' not implemented in this driver
+  _ret_ mov     .rslt,#0 wz
+
+'------------------------------------------------------------------------------
+' disc_size - calculate size in kilobytes from CSD (which must be in scratch buffer)
+'
+'   On entry: none
+'
+'   On exit:  .t0 = 0 or sector count
+'------------------------------------------------------------------------------
+.disc_size        mov     .t4,_hubdata
+                  rdbyte  .t1,.t4           ' i.e. CSD[0] = [127..120]
+                  shr     .t1,#6
+                  cmp     .t1,#0 wz
+    if_z          jmp     #.disc_size_1     ' SDC_Ver 1.00
+                  cmp     .t1,#1 wz
+    if_z          jmp     #.disc_size_2     ' SDC Ver 2.00
+                  cmp     .t1,#2 wz
+    if_z          jmp     #.disc_size_3     ' SDC Ver 3.00
+                  mov     .t0,#0
+                  ret
+.disc_size_1
+' SDC ver 1.00 - READ_BL_BL_LEN is [83:80], C_SIZE is [73:62], C_SIZE_MULT is [49:47]
+                  add     .t4,#6
+                  rdbyte  .t1,.t4           ' i.e. CSD[6] = [79..72]
+                  and     .t1,#3
+                  shl     .t1,#10
+                  add     .t4,#1
+                  rdbyte  .t2,.t4           ' i.e. CSD[7] = [71..64]
+                  shl     .t2,#2
+                  add     .t4,#1
+                  rdbyte  .t0,.t4           ' i.e. CSD[8] = [63..56]
+                  shr     .t0,#6
+                  add     .t0,#1
+                  add     .t0,.t2
+                  add     .t0,.t3           ' = CSIZE + 1
+                  sub     .t4,#3
+                  rdbyte  .t1,.t4           ' i.e. CSD[5] = [87..80]
+                  and     .t1,#15           ' = READ_BL_LEN
+                  add     .t4,#4
+                  rdbyte  .t2,.t4           ' i.e. CSD[9]  = [55..48]
+                  and     .t2,#3
+                  shl     .t2,#1
+                  add     .t4,#1
+                  rdbyte  .t3,.t4           ' i.e. CSD[10] = [47..40]
+                  and     .t3,#128
+                  shr     .t3,#7
+                  add     .t1,.t2
+                  add     .t1,.t3
+                  add     .t1,#2
+                  sub     .t1,#9            ' n
+    _ret_         shl     .t0,.t1           ' 32-bit block count
+.disc_size_2
+' SDC ver 2.00 - C_SIZE is [69:48]
+                  add     .t4,#7
+                  rdbyte  .t1,.t4           ' i.e. CSD[7] = [71..64]
+                  and     .t1,#63
+                  shl     .t1,16
+                  add     .t4,#1
+                  rdbyte  .t2,.t4           ' i.e. CSD[8] = [63..56]
+                  shl     .t2,#8
+                  add     .t4,#1
+                  rdbyte  .t0,.t4           ' i.e. CSD[9] = [55..48]
+                  add     .t0,#1
+                  add     .t0,.t2
+                  add     .t0,.t1
+    _ret_         shl     .t0,#9
+.disc_size_3
+' SDC VER 3.00 - C_SIZE IS [75..48]
+                  add     .t4,#6
+                  rdbyte  .t3,.t4           ' i.e. CSD[6] = [79..72]
+                  and     .t3,#15
+                  shl     .t3,#24
+                  add     .t4,#1
+                  rdbyte  .t2,.t4           ' i.e. CSD[7] = [71..64]
+                  shl     .t2,16
+                  add     .t4,#1
+                  rdbyte  .t1,.t4           ' i.e. CSD[8] = [63..56]
+                  shl     .t1,#8
+                  add     .t4,#1
+                  rdbyte  .t0,.t4           ' i.e. CSD[9] = [55..48]
+                  add     .t0,#1
+                  add     .t0,.t3
+                  add     .t0,.t2
+                  add     .t0,.t1
+    _ret_         shl     .t0,#9
+
+'------------------------------------------------------------------------------
+' SD_IOCTL - perform ioctl operation
+'
+'   On entry: .param  = IOCTL command (low byte)
+'
+'   On exit:  .rslt = 0 on success, 1 on failure, or block size or sector count
+'------------------------------------------------------------------------------
+.SD_IOCTL
+                  rdlong  .t0,.rqstptr       ' get ...
+                  and     .t0,#$FF           ' ... IOCTL command
+                  cmp     .t0,#CTRL_SYNC wz
+    if_z          ret
+                  cmp     .t0,#MMC_GET_SDSTAT wz
+    if_z          ret
+                  cmp     .t0,#MMC_GET_CSD wz
+    if_z          jmp     #.ioctl_2         ' Get CSD
+                  cmp     .t0,#GET_SECTOR_COUNT wz
+    if_z          jmp     #.ioctl_2         ' Get number of sectors on the disk
+                  cmp     .t0,#GET_BLOCK_SIZE wz
+    if_z          mov     .rslt,#128        ' Get erase block size in unit of sector (always 128)
+                  ret
+.ioctl_2          cmp     .t0,#MMC_GET_CSD wz ' was it get CSD?
+         if_z     mov     .t0,#0          ' if so ...
+         if_z     ret                       ' ... done (we already have it)
+                  call    #.disc_size       ' otherwise calculate sectors from CSD
+                  shl     .t0,#1            ' convert kilobytes back to sectors
+         _ret_    mov     .rslt,.t0
+
+'-------------------------------------------------------------------------------
+
+Mask24          long    $FFFFFF
+cmdout          long    0                       ' The 8b CMDxx | $40
+cmdpar          long    0                       ' The 32b parameters
+cmdcrc          long    0                       ' The 8b CRC (must be valid for CMD0 & CMD8)
+cmdpar2         long    0                       ' SDV1=$0, SDV2=$40000000
+cmdtype         long    0                       ' reply is R1=1, R3=3, R7=7, else 0
+reply           long    0                       ' R1 reply (moved to replyR1 when R3/R7 32b reply here)
+replyR1         long    0                       ' R1 reply (8b saved when R3/R7 32b reply follows)
+replyR2         long    0                       ' R2 reply (32 bits)
+dataout         long    0                       ' 8/32 bit data being shifted out
+bytescnt        long    0                       ' #bytes to send/recv
+bitscnt         long    0                       ' #bits to be shifted in/out
+ctr1            long    0
+ini_time        long    0                       ' initial time
+time_out        long    0                       ' length of timeout
+                                                '\ 1=SDV1, 2=SDV2(byte address), 3=SDHC/SDV2(block address)
+blocksh         long    0                       '/ block shift 0/9 bits
+
+bufaddr         long    0                       ' ptr to sector buffer 
+blocknr         long    0                       ' sector number
+blockct         long    0                       ' sector count
+
+_hubdata        long    $20                     ' buffer for CSD (default is #$20)
 
 '------------------------------------------------------------------------------------------------
 
@@ -545,7 +695,8 @@ check_pulldn
 '+      Send >74 clocks with /CS=1 & DI=1 starting & ending with CLK=0         +
 '+-----------------------------------------------------------------------------+
 _SDcard_Init
-                mov     _hubdata,         #$20          ' init hub data ptr=$20 
+                cmp     bufaddr,          #0  wz        ' have we been given a hub data buffer?
+       if_nz    mov     _hubdata,         bufaddr       ' yes - init hub data ptr (default is $20)
                                                         ' ie. after CLKFREQ ($14), CLKMODE ($18) & BAUDRATE ($1C)
                 'callpa  #_SD_CS,          #check_pullup ' check for pull-up on sd_cs
         'if_nc   jmp     #_fail '_pullup                 '
@@ -795,7 +946,10 @@ _writeBLOCK                                             ' CMD24: PAR=sector, 512
 .waitbusy
                 call    #_recvbyte                      ' get a byte
                 cmp     reply,            #$FF      wz  ' reply=$FF=busy ?
-        if_nz   jmp     #.writedone                     ' n: done
+        if_z    jmp     #.waitmore
+                mov     reply,#0 wz                     ' success - return 0
+                jmp     #.writedone                     ' n: done
+.waitmore
                 getct   replyR1                         '\ y: timeout ?
                 sub     replyR1,          ini_time      '|
                 cmp     replyR1,          time_out  wc  '| c if < timeout
@@ -895,30 +1049,6 @@ _fail           outh    #_SD_CS                         ' /CS=1 (disable)
         _RET_   MODCZ   _set,_clr                   wcz ' C & NZ = fail
 '+=============================================================================+
 
-'-------------------------------------------------------------------------------
-
-ZeroVal         long    0
-Mask24          long    $FFFFFF
-cmdout          long    0                       ' The 8b CMDxx | $40
-cmdpar          long    0                       ' The 32b parameters
-cmdcrc          long    0                       ' The 8b CRC (must be valid for CMD0 & CMD8)
-cmdpar2         long    0                       ' SDV1=$0, SDV2=$40000000
-cmdtype         long    0                       ' reply is R1=1, R3=3, R7=7, else 0
-reply           long    0                       ' R1 reply (moved to replyR1 when R3/R7 32b reply here)
-replyR1         long    0                       ' R1 reply (8b saved when R3/R7 32b reply follows)
-replyR2         long    0                       ' R2 reply (32 bits)
-dataout         long    0                       ' 8/32 bit data being shifted out
-bytescnt        long    0                       ' #bytes to send/recv
-bitscnt         long    0                       ' #bits to be shifted in/out
-ctr1            long    0
-ini_time        long    0                       ' initial time
-time_out        long    0                       ' length of timeout
-                                                '\ 1=SDV1, 2=SDV2(byte address), 3=SDHC/SDV2(block address)
-blocksh         long    0                       '/ block shift 0/9 bits
-
-bufaddr         long    0                       ' ptr sector buffer
-blocknr         long    0                       ' sector#
-_hubdata        long    0
 
                 fit     $1F0
 

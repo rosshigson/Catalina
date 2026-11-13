@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl_label
-C_sn5k_6ac84f08_wait100ms_L000003 ' <symbol:wait100ms>
+C_sjic_6af550c5_wait100ms_L000003 ' <symbol:wait100ms>
  alignl_p1
  long I32_NEWF + 0<<S32
  alignl_p1
@@ -27,17 +27,17 @@ C_sn5k_6ac84f08_wait100ms_L000003 ' <symbol:wait100ms>
  word I16A_MOVI + BC<<D16A + 4<<S16A ' arg size, rpsize = 4, spsize = 4
  alignl_p1
  long I32_CALA + (@C__waitcnt)<<S32 ' CALL addrg
-' C_sn5k_6ac84f08_wait100ms_L000003_4 ' (symbol refcount = 0)
+' C_sjic_6af550c5_wait100ms_L000003_4 ' (symbol refcount = 0)
  word I16B_POPM + 0<<S16B ' restore registers, do pop frame, do return
  alignl_p1
 
  alignl_label
-C_sn5k1_6ac84f08_xdigit_L000005 ' <symbol:xdigit>
+C_sjic1_6af550c5_xdigit_L000005 ' <symbol:xdigit>
  alignl_p1
  long I32_PSHM + $500000<<S32 ' save registers
  word I16A_CMPSI + (r2)<<D16A + (10)<<S16A
  alignl_p1
- long I32_BR_B + (@C_sn5k1_6ac84f08_xdigit_L000005_7)<<S32 ' LTI4 reg coni
+ long I32_BR_B + (@C_sjic1_6af550c5_xdigit_L000005_7)<<S32 ' LTI4 reg coni
  word I16A_MOV + (r22)<<D16A + (r2)<<S16A
  word I16A_SUBSI + (r22)<<D16A + (10)<<S16A ' SUBI4 reg coni
  alignl_p1
@@ -46,16 +46,16 @@ C_sn5k1_6ac84f08_xdigit_L000005 ' <symbol:xdigit>
  word I16A_MOV + (r0)<<D16A + (r22)<<S16A ' CVUI
  word I16B_TRN1 + (r0)<<D16B ' zero extend
  alignl_p1
- long I32_JMPA + (@C_sn5k1_6ac84f08_xdigit_L000005_6)<<S32 ' JUMPV addrg
+ long I32_JMPA + (@C_sjic1_6af550c5_xdigit_L000005_6)<<S32 ' JUMPV addrg
  alignl_label
-C_sn5k1_6ac84f08_xdigit_L000005_7
+C_sjic1_6af550c5_xdigit_L000005_7
  alignl_p1
  long I32_LODS + (r22)<<D32S + ((48)&$7FFFF)<<S32 ' reg <- cons
  word I16A_ADDS + (r22)<<D16A + (r2)<<S16A ' ADDI/P (2)
  word I16A_MOV + (r0)<<D16A + (r22)<<S16A ' CVUI
  word I16B_TRN1 + (r0)<<D16B ' zero extend
  alignl_label
-C_sn5k1_6ac84f08_xdigit_L000005_6
+C_sjic1_6af550c5_xdigit_L000005_6
  word I16B_POPM + $80<<S16B ' restore registers, do not pop frame, do return
  alignl_p1
 
@@ -89,7 +89,7 @@ C_D_F_S__W_riteS_ector_10
  alignl_label
 C_D_F_S__W_riteS_ector_14
  alignl_p1
- long I32_CALA + (@C_sn5k_6ac84f08_wait100ms_L000003)<<S32 ' CALL addrg
+ long I32_CALA + (@C_sjic_6af550c5_wait100ms_L000003)<<S32 ' CALL addrg
 ' C_D_F_S__W_riteS_ector_11 ' (symbol refcount = 0)
  word I16A_ADDSI + (r15)<<D16A + (1)<<S16A ' ADDI4 reg coni
  word I16A_CMPSI + (r15)<<D16A + (10)<<S16A

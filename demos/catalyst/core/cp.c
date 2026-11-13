@@ -10,6 +10,9 @@
  * Version 5.3   - ignore volume id.
  *
  * Version 6.3   - add -k option to suppress the "Continue" prompt.
+ *
+ * Version 9.3   - do not remove target file unless -f is specified.
+ *
  */
 
 // size to copy in each read/write - reduce if program is too large
@@ -285,6 +288,9 @@ void copy_file(PVOLINFO vi, char *src, char *dst) {
       return;
    }
 
+   // remove destination file if it already exists
+   DFS_UnlinkFile(vi, (uint8_t *)dst, scratch);
+
    if (DFS_OpenFile(vi, (uint8_t *)dst, DFS_WRITE, scratch, &dst_fi) != DFS_OK) {
       t_str("cannot open target ");
       t_str(dst);
@@ -305,7 +311,7 @@ void copy_file(PVOLINFO vi, char *src, char *dst) {
       }
    }
    if ((result != DFS_OK) && (result != DFS_EOF)) {
-      t_str("error occured while moving ");
+      t_str("error occured while copying ");
       t_strln(src);
    }
 }
@@ -421,9 +427,6 @@ void copy_to_target(PVOLINFO vi, char *src, char *target) {
          // restore target path
          tgt[dirlen - 1] = DIR_SEPARATOR;
       }
-
-      // remove target file if it already exists
-      DFS_UnlinkFile(vi, (uint8_t *)tgt, scratch);
 
    }
 

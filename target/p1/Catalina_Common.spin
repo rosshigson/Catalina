@@ -191,7 +191,13 @@ CACHE_SD_WRITE_CMD     = %101_01
 #endif
 
 '
-' HUM RAM Definitions (make sure these are the same in Catalina_Common.spin in all targets):
+' HUB RAM Definitions
+'
+' This section contains options that MUST MATCH Catalina_Common.spin, 
+' constants.inc and fatcat.h.  Note that there are 3 versions of
+' Catalina_Common.spin (in target/p1, embedded/p1 and minimal/p1).
+'
+' *** DO NOT change them here without also changing those files!!! ***
 '
 ' Size of Service array (if this changes, the Hub Layout below must change as well):
 '
@@ -234,7 +240,7 @@ CGI_DATA        = MEM_LOCK - 4                 ' $7E40 CHECK cgi_data.e & cgi_da
 '
 MAX_LOAD_SIZE  = 4194304                       ' we want 4MB loads (2^22 bytes) 
                                                ' (if this is changed, check catalyst.h 
-                                               ' and Catalina_XMM_SD_Loader.spin)
+                                               ' fatcat.h and Catalina_XMM_SD_Loader.spin)
 MAX_CLUS_SIZE  = 32768                         ' assumed cluster size (2^15 bytes)
 MAX_FLIST_SIZE = MAX_LOAD_SIZE/MAX_CLUS_SIZE   ' number of entries in cluster list (2^7)
 '
@@ -243,15 +249,15 @@ FLIST_SSIZ     = 1<<FLIST_LOG2                 ' size of sector
 '
 ' Resume defining Loadtime Hub Layout (note overlap with debug locations!!!):
 '
-FLIST_ADDRESS  = ARGC_ADDR - (4*MAX_FLIST_SIZE)     ' $7C6C check catalyst.h
-FLIST_BUFF     = FLIST_ADDRESS - FLIST_SSIZ         ' $7A6C check catalyst.h
-FLIST_SIOB     = FLIST_BUFF - 68                    ' $7A28 check catalyst.h
-FLIST_XFER     = FLIST_SIOB - 12                    ' $7A1C check catalyst.h
-FLIST_SECT     = FLIST_XFER - 4                     ' $7A18 check catalyst.h
-FLIST_SHFT     = FLIST_SECT - 4                     ' $7A14 check catalyst.h
-FLIST_FSIZ     = FLIST_SHFT - 4                     ' $7A10 check catalyst.h
-FLIST_PSTK     = FLIST_FSIZ - 4                     ' $7A0C check catalyst.h
-FLIST_PREG     = FLIST_PSTK - 4                     ' $7A08 check catalyst.h
+FLIST_ADDRESS  = ARGC_ADDR - (4*MAX_FLIST_SIZE)     ' $7C6C check catalyst.h and fatcat.h
+FLIST_BUFF     = FLIST_ADDRESS - FLIST_SSIZ         ' $7A6C check catalyst.h and fatcat.h
+FLIST_SIOB     = FLIST_BUFF - 68                    ' $7A28 check catalyst.h and fatcat.h
+FLIST_XFER     = FLIST_SIOB - 12                    ' $7A1C check catalyst.h and fatcat.h
+FLIST_SECT     = FLIST_XFER - 4                     ' $7A18 check catalyst.h and fatcat.h
+FLIST_SHFT     = FLIST_SECT - 4                     ' $7A14 check catalyst.h and fatcat.h
+FLIST_FSIZ     = FLIST_SHFT - 4                     ' $7A10 check catalyst.h and fatcat.h
+FLIST_PSTK     = FLIST_FSIZ - 4                     ' $7A0C check catalyst.h and fatcat.h
+FLIST_PREG     = FLIST_PSTK - 4                     ' $7A08 check catalyst.h and fatcat.h
 '
 ' size of P1 Loader (for XMM programs):
 '
@@ -334,7 +340,7 @@ SVC_T_COLOR      = 38 ' LMM_HMI 32
 SVC_SD_INIT      = 39 ' LMM_FIL 1
 SVC_SD_READ      = 40 ' LMM_FIL 2
 SVC_SD_WRITE     = 41 ' LMM_FIL 3
-SVC_SD_BYTEIO    = 42 ' LMM_FIL 4
+SVC_SD_IOCTL     = 42 ' LMM_FIL 4
 SVC_SD_STOPIO    = 43 ' LMM_FIL 5
 SVC_RTC_DEBUG    = 44 ' LMM_RTC 10 or LMM_FIL 10
 SVC_RTC_SETFREQ  = 45 ' LMM_RTC 6 or LMM_FIL 6

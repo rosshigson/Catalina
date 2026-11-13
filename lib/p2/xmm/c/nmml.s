@@ -1057,7 +1057,7 @@ SVC_T_COLOR      = 38 ' LMM_HMI 32
 SVC_SD_INIT      = 39 ' LMM_FIL 1
 SVC_SD_READ      = 40 ' LMM_FIL 2
 SVC_SD_WRITE     = 41 ' LMM_FIL 3
-SVC_SD_BYTEIO    = 42 ' LMM_FIL 4
+SVC_SD_IOCTL     = 42 ' LMM_FIL 4
 SVC_SD_STOPIO    = 43 ' LMM_FIL 5
 SVC_RTC_DEBUG    = 44 ' LMM_RTC 10 or LMM_FIL 10
 SVC_RTC_SETFREQ  = 45 ' LMM_RTC 6 or LMM_FIL 6
@@ -1229,8 +1229,11 @@ BASE_ADDR  = $00000
 '
 ' Useable Hub RAM (The 1 has 512Kb but the top 16Kb hold a copy of the boot ROM)
 '
-' NOTE: The definitions from here to the end of this file must match those
-'       in catalyst.h
+' This section contains options that MUST MATCH Catalina_Common.spin,
+' catalyst.h and fatcat.h.  Note that there are 3 versions of
+' Catalina_Common.spin (in target/p1, embedded/p1 and minimal/p1).
+'
+' *** DO NOT change them here without also changing those files!!! ***
 '
 HUB_SIZE   = $7C000            ' the last 16K contain a copy of the boot ROM.
 '

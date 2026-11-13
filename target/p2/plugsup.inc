@@ -83,10 +83,10 @@ INITIALIZATION_DELAY = _CLOCKFREQ/1000
 
 #endif
 
-' SD Card selection logic ...
+' SD card plugin selection logic ...
 
 #if defined(libcx) || defined (libcix)
-#if !defined(SD)
+#if !defined(SD) && !defined(SD2)
 #define SD
 #endif
 #endif
@@ -175,7 +175,7 @@ INITIALIZE_PLUGINS
  mov   r0,#63                    ' span 64 pins 0 .. 63
  shl   r0,#5
  dirl  r0                        ' Set DIR  of pins 0 .. 63 to 0
- wrpin r0,#0                     ' Set MODE of pins 0 .. 63 to 0
+ wrpin #0,r0                     ' Set MODE of pins 0 .. 63 to 0
 #endif
 
 ' cache must be the FIRST plugin loaded, since it may need to share a
@@ -235,14 +235,14 @@ INITIALIZE_PLUGINS
  call    #Register_Services
 #endif
 
-#if defined(SD)
+#if defined(SD)||defined(SD2)
  mov     r6, #%10000
  setq    ##REGISTRY              ' start ...
  coginit r6, ##@SD_START wc      ' ... SD plugin (which may also be CLOCK)
  call    #SD_Setup
 #endif
 
-#if (defined(CLOCK) && !defined(SD)) || defined(SEPARATE_CLOCK) || defined(RTC)
+#if (defined(CLOCK) && !(defined(SD)||defined(SD2))) || defined(SEPARATE_CLOCK) || defined(RTC)
  mov     r6, #%10000
  setq    ##REGISTRY              ' start ...
  coginit r6, ##@CLOCK_START wc   ' ... Real-Time Clock

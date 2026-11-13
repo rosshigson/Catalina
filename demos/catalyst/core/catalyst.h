@@ -4,7 +4,7 @@
  * This section contains user configurable options.
  *
  */
-#define CATALYST_VER "Catalyst 9.2"   // Banner string
+#define CATALYST_VER "Catalyst 9.3"   // Banner string
 #define AUTOFILE     "AUTOEXEC.TXT"   // auto-execution file if AUTOFILE
 #define ONCEFILE     "EXECONCE.TXT"   // auto-execution file if ONCEFILE
 #define MOREFILE     "____MORE.___"   // auto-execution more file if ONCEFILE
@@ -106,8 +106,9 @@
 #endif
 
 /*
- * This section contains options that MUST MATCH Catalina_Common.spin (on
- * the Propeller 1) and Catalina_constants.inc (on the Propeller 2). 
+ * This section contains options that MUST MATCH Catalina_Common.spin, 
+ * constants.inc and fatcat.h.  Note that there are 3 versions of
+ * Catalina_Common.spin (in target/p1, embedded/p1 and minimal/p1).
  *
  * *** DO NOT change them here without also changing those files!!! ***
  *
@@ -144,8 +145,6 @@
 
 #else
 
-// These must match Catalina_Common.spin. Note that there are 3 versions
-// of that file (in target/p1, embedded/p1 and minimal/p1).
 #define HUB_SIZE        0x8000
 #define FREE_MEM        (HUB_SIZE - 4)
 #define COGSTORE        (FREE_MEM - 4)

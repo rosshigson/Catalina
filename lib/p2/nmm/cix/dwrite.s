@@ -7,7 +7,7 @@ DAT ' code segment
 '
 
  alignl ' align long
-C_s9vg_6ac84fc5_wait100ms_L000003 ' <symbol:wait100ms>
+C_sosc_6af551bc_wait100ms_L000003 ' <symbol:wait100ms>
  calld PA,#NEWF
  calld PA,#PSHM
  long $540000 ' save registers
@@ -33,29 +33,29 @@ C_s9vg_6ac84fc5_wait100ms_L000003 ' <symbol:wait100ms>
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
  long @C__waitcnt ' CALL addrg
-' C_s9vg_6ac84fc5_wait100ms_L000003_4 ' (symbol refcount = 0)
+' C_sosc_6af551bc_wait100ms_L000003_4 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETF
 
 
  alignl ' align long
-C_s9vg1_6ac84fc5_xdigit_L000005 ' <symbol:xdigit>
+C_sosc1_6af551bc_xdigit_L000005 ' <symbol:xdigit>
  calld PA,#PSHM
  long $400000 ' save registers
  cmps r2,  #10 wcz
- if_b jmp #\C_s9vg1_6ac84fc5_xdigit_L000005_7 ' LTI4
+ if_b jmp #\C_sosc1_6af551bc_xdigit_L000005_7 ' LTI4
  mov r22, r2
  subs r22, #10 ' SUBI4 coni
  adds r22, #65 ' ADDI4 coni
  mov r0, r22 ' CVUI
  and r0, cviu_m1 ' zero extend
- jmp #\@C_s9vg1_6ac84fc5_xdigit_L000005_6 ' JUMPV addrg
-C_s9vg1_6ac84fc5_xdigit_L000005_7
+ jmp #\@C_sosc1_6af551bc_xdigit_L000005_6 ' JUMPV addrg
+C_sosc1_6af551bc_xdigit_L000005_7
  mov r22, r2
  adds r22, #48 ' ADDI4 coni
  mov r0, r22 ' CVUI
  and r0, cviu_m1 ' zero extend
-C_s9vg1_6ac84fc5_xdigit_L000005_6
+C_sosc1_6af551bc_xdigit_L000005_6
  calld PA,#POPM ' restore registers
  calld PA,#RETN
 
@@ -87,7 +87,7 @@ C_D_F_S__W_riteS_ector_10
 C_D_F_S__W_riteS_ector_14
  mov BC, #0 ' arg size, rpsize = 0, spsize = 0
  calld PA,#CALA
- long @C_s9vg_6ac84fc5_wait100ms_L000003 ' CALL addrg
+ long @C_sosc_6af551bc_wait100ms_L000003 ' CALL addrg
 ' C_D_F_S__W_riteS_ector_11 ' (symbol refcount = 0)
  adds r15, #1 ' ADDI4 coni
  cmps r15,  #10 wcz

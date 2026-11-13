@@ -250,7 +250,7 @@
 /  Note that enabling exFAT discards ANSI C (C89) compatibility. */
 
 
-#define FF_FS_NORTC		1
+#define FF_FS_NORTC		0
 #define FF_NORTC_MON	1
 #define FF_NORTC_MDAY	1
 #define FF_NORTC_YEAR	2025
@@ -264,7 +264,7 @@
 /  These options have no effect in read-only configuration (FF_FS_READONLY = 1). */
 
 
-#define FF_FS_CRTIME	0
+#define FF_FS_CRTIME	1
 /* This option enables(1)/disables(0) the timestamp of the file created. When
 /  set 1, the file created time is available in FILINFO structure. */
 

@@ -18,20 +18,20 @@
  *
  * Build the program with a command like:
  *
- *    catalina -p2 -lci -lint64 -C SD -C99 test_par1.c ff.c ffsystem.c \
+ *    catalina -p2 -lci -lint64 -C SD -C99 testpar1.c ff.c ffsystem.c \
  *       ffunicode.c diskio.c sd_init.c sd_read.c sd_stat.c sd_write.c \
  *       sd_ioctl.c sd_size.c crc7.c
  *
  * Then load and execute it using Catalyst, or use payload. For example:
  *
- *    payload -o2 -i test_par1
+ *    payload -o2 -i testpar1
  *
  * The CLOCK symbol can be defined to perform timed tests.
  *
  */
 #include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <sd.h>
@@ -64,16 +64,6 @@
 
 #define SECTORS_TO_WRITE 20
 
-#if FF_MULTI_PARTITION
-
-   /* Volume mapping table defined by user (required when FF_MULTI_PARTITION == 1) */
-   PARTITION VolToPart[] = {
-       {0, 1},    /* "0:" ==> 1st partition in physical drive 0 */
-       {0, 2},    /* "1:" ==> 2nd partition in physical drive 0 */
-   };
-
-#endif
-
 void press_key_to_continue() {
    t_printf("Press a key to continue ...");
    k_wait();
@@ -81,7 +71,7 @@ void press_key_to_continue() {
 }
 
 // SD_get_kilobytes can be used to detect if a formatted SD card is present
-unsigned SD_get_kilobytes();
+//unsigned SD_get_kilobytes();
   
 void main() {
 
@@ -98,6 +88,7 @@ void main() {
    char str[128];
    DWORD free_clust;
    FATFS *f;
+   unsigned kb;
 #ifdef __CATALINA_CLOCK
    int start_time, stop_time;
 #endif
@@ -108,10 +99,13 @@ void main() {
    t_printf("Insert a suitably formatted SD card\n");
    press_key_to_continue();
 
-   if (SD_get_kilobytes() == 0) {
-     t_printf("SD card not detected - Aborting\n");
-     exit(1);
-   }
+   //if ((kb = SD_get_kilobytes()) == 0) {
+     //t_printf("SD card not detected - Aborting\n");
+     //exit(1);
+   //}
+   //else {
+     //t_printf("SD card detected - %d kb\n", kb);
+   //}
 
    while(1) {
 

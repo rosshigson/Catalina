@@ -162,7 +162,7 @@ C_jsll_mul32_4
 
 
  alignl ' align long
-C_sbh8_6ac84f72_norm_udivmod32_L000006 ' <symbol:norm_udivmod32>
+C_sf6o_6af55165_norm_udivmod32_L000006 ' <symbol:norm_udivmod32>
  calld PA,#PSHM
  long $fea800 ' save registers
  mov r22, #16 ' reg <- coni
@@ -211,17 +211,17 @@ C_sbh8_6ac84f72_norm_udivmod32_L000006 ' <symbol:norm_udivmod32>
  mov r23, r20 ' BORI/U
  or r23, r22 ' BORI/U (3)
  cmp r23, r21 wcz 
- if_ae jmp #\C_sbh8_6ac84f72_norm_udivmod32_L000006_8 ' GEU4
+ if_ae jmp #\C_sf6o_6af55165_norm_udivmod32_L000006_8 ' GEU4
  sub r15, #1 ' SUBU4 coni
  add r23, r2 ' ADDU (1)
  cmp r23, r2 wcz 
- if_b jmp #\C_sbh8_6ac84f72_norm_udivmod32_L000006_10 ' LTU4
+ if_b jmp #\C_sf6o_6af55165_norm_udivmod32_L000006_10 ' LTU4
  cmp r23, r21 wcz 
- if_ae jmp #\C_sbh8_6ac84f72_norm_udivmod32_L000006_10 ' GEU4
+ if_ae jmp #\C_sf6o_6af55165_norm_udivmod32_L000006_10 ' GEU4
  sub r15, #1 ' SUBU4 coni
  add r23, r2 ' ADDU (1)
-C_sbh8_6ac84f72_norm_udivmod32_L000006_10
-C_sbh8_6ac84f72_norm_udivmod32_L000006_8
+C_sf6o_6af55165_norm_udivmod32_L000006_10
+C_sf6o_6af55165_norm_udivmod32_L000006_8
  sub r23, r21 ' SUBU (1)
  #ifndef NO_INTERRUPTS
   stalli
@@ -258,17 +258,17 @@ C_sbh8_6ac84f72_norm_udivmod32_L000006_8
  mov r19, r22 ' BORI/U
  or r19, r20 ' BORI/U (3)
  cmp r19, r21 wcz 
- if_ae jmp #\C_sbh8_6ac84f72_norm_udivmod32_L000006_12 ' GEU4
+ if_ae jmp #\C_sf6o_6af55165_norm_udivmod32_L000006_12 ' GEU4
  sub r13, #1 ' SUBU4 coni
  add r19, r2 ' ADDU (1)
  cmp r19, r2 wcz 
- if_b jmp #\C_sbh8_6ac84f72_norm_udivmod32_L000006_14 ' LTU4
+ if_b jmp #\C_sf6o_6af55165_norm_udivmod32_L000006_14 ' LTU4
  cmp r19, r21 wcz 
- if_ae jmp #\C_sbh8_6ac84f72_norm_udivmod32_L000006_14 ' GEU4
+ if_ae jmp #\C_sf6o_6af55165_norm_udivmod32_L000006_14 ' GEU4
  sub r13, #1 ' SUBU4 coni
  add r19, r2 ' ADDU (1)
-C_sbh8_6ac84f72_norm_udivmod32_L000006_14
-C_sbh8_6ac84f72_norm_udivmod32_L000006_12
+C_sf6o_6af55165_norm_udivmod32_L000006_14
+C_sf6o_6af55165_norm_udivmod32_L000006_12
  mov r22, r15
  shl r22, #16 ' LSHU4 coni
  or r22, r13 ' BORI/U (1)
@@ -276,13 +276,13 @@ C_sbh8_6ac84f72_norm_udivmod32_L000006_12
  mov r22, r19 ' SUBU
  sub r22, r21 ' SUBU (3)
  wrlong r22, r4 ' ASGNU4 reg reg
-' C_sbh8_6ac84f72_norm_udivmod32_L000006_7 ' (symbol refcount = 0)
+' C_sf6o_6af55165_norm_udivmod32_L000006_7 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETN
 
 
  alignl ' align long
-C_sbh81_6ac84f72_C_ountL_eadingZ_eros_L000016 ' <symbol:CountLeadingZeros>
+C_sf6o1_6af55165_C_ountL_eadingZ_eros_L000016 ' <symbol:CountLeadingZeros>
  calld PA,#PSHM
  long $e00000 ' save registers
  mov r21, #32 ' reg <- coni
@@ -290,69 +290,69 @@ C_sbh81_6ac84f72_C_ountL_eadingZ_eros_L000016 ' <symbol:CountLeadingZeros>
  shr r22, #16 ' RSHU4 coni
  mov r23, r22 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_z jmp #\C_sbh81_6ac84f72_C_ountL_eadingZ_eros_L000016_18 ' EQU4
+ if_z jmp #\C_sf6o1_6af55165_C_ountL_eadingZ_eros_L000016_18 ' EQU4
  mov r22, r21 ' CVUI
  and r22, cviu_m1 ' zero extend
  subs r22, #16 ' SUBI4 coni
  mov r21, r22 ' CVI, CVU or LOAD
  mov r2, r23 ' CVI, CVU or LOAD
-C_sbh81_6ac84f72_C_ountL_eadingZ_eros_L000016_18
+C_sf6o1_6af55165_C_ountL_eadingZ_eros_L000016_18
  mov r22, r2
  shr r22, #8 ' RSHU4 coni
  mov r23, r22 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_z jmp #\C_sbh81_6ac84f72_C_ountL_eadingZ_eros_L000016_20 ' EQU4
+ if_z jmp #\C_sf6o1_6af55165_C_ountL_eadingZ_eros_L000016_20 ' EQU4
  mov r22, r21 ' CVUI
  and r22, cviu_m1 ' zero extend
  subs r22, #8 ' SUBI4 coni
  mov r21, r22 ' CVI, CVU or LOAD
  mov r2, r23 ' CVI, CVU or LOAD
-C_sbh81_6ac84f72_C_ountL_eadingZ_eros_L000016_20
+C_sf6o1_6af55165_C_ountL_eadingZ_eros_L000016_20
  mov r22, r2
  shr r22, #4 ' RSHU4 coni
  mov r23, r22 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_z jmp #\C_sbh81_6ac84f72_C_ountL_eadingZ_eros_L000016_22 ' EQU4
+ if_z jmp #\C_sf6o1_6af55165_C_ountL_eadingZ_eros_L000016_22 ' EQU4
  mov r22, r21 ' CVUI
  and r22, cviu_m1 ' zero extend
  subs r22, #4 ' SUBI4 coni
  mov r21, r22 ' CVI, CVU or LOAD
  mov r2, r23 ' CVI, CVU or LOAD
-C_sbh81_6ac84f72_C_ountL_eadingZ_eros_L000016_22
+C_sf6o1_6af55165_C_ountL_eadingZ_eros_L000016_22
  mov r22, r2
  shr r22, #2 ' RSHU4 coni
  mov r23, r22 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_z jmp #\C_sbh81_6ac84f72_C_ountL_eadingZ_eros_L000016_24 ' EQU4
+ if_z jmp #\C_sf6o1_6af55165_C_ountL_eadingZ_eros_L000016_24 ' EQU4
  mov r22, r21 ' CVUI
  and r22, cviu_m1 ' zero extend
  subs r22, #2 ' SUBI4 coni
  mov r21, r22 ' CVI, CVU or LOAD
  mov r2, r23 ' CVI, CVU or LOAD
-C_sbh81_6ac84f72_C_ountL_eadingZ_eros_L000016_24
+C_sf6o1_6af55165_C_ountL_eadingZ_eros_L000016_24
  mov r22, r2
  shr r22, #1 ' RSHU4 coni
  mov r23, r22 ' CVI, CVU or LOAD
  cmp r22,  #0 wz
- if_z jmp #\C_sbh81_6ac84f72_C_ountL_eadingZ_eros_L000016_26 ' EQU4
+ if_z jmp #\C_sf6o1_6af55165_C_ountL_eadingZ_eros_L000016_26 ' EQU4
  mov r22, r21 ' CVUI
  and r22, cviu_m1 ' zero extend
  subs r22, #1 ' SUBI4 coni
  mov r21, r22 ' CVI, CVU or LOAD
  mov r2, r23 ' CVI, CVU or LOAD
-C_sbh81_6ac84f72_C_ountL_eadingZ_eros_L000016_26
+C_sf6o1_6af55165_C_ountL_eadingZ_eros_L000016_26
  mov r22, r2
  and r22, #1 ' BANDU4 coni
  cmp r22,  #0 wz
- if_z jmp #\C_sbh81_6ac84f72_C_ountL_eadingZ_eros_L000016_28 ' EQU4
+ if_z jmp #\C_sf6o1_6af55165_C_ountL_eadingZ_eros_L000016_28 ' EQU4
  mov r22, r21 ' CVUI
  and r22, cviu_m1 ' zero extend
  subs r22, #1 ' SUBI4 coni
  mov r21, r22 ' CVI, CVU or LOAD
-C_sbh81_6ac84f72_C_ountL_eadingZ_eros_L000016_28
+C_sf6o1_6af55165_C_ountL_eadingZ_eros_L000016_28
  mov r0, r21 ' CVUI
  and r0, cviu_m1 ' zero extend
-' C_sbh81_6ac84f72_C_ountL_eadingZ_eros_L000016_17 ' (symbol refcount = 0)
+' C_sf6o1_6af55165_C_ountL_eadingZ_eros_L000016_17 ' (symbol refcount = 0)
  calld PA,#POPM ' restore registers
  calld PA,#RETN
 
@@ -393,7 +393,7 @@ C_jsll_udivmod ' <symbol:jsll_udivmod>
  rdlong r2, r17 ' reg <- INDIRU4 reg
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_sbh81_6ac84f72_C_ountL_eadingZ_eros_L000016 ' CALL addrg
+ long @C_sf6o1_6af55165_C_ountL_eadingZ_eros_L000016 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r15, r22 ' CVI, CVU or LOAD
  mov r22, r15 ' CVUI
@@ -456,7 +456,7 @@ C_jsll_udivmod_35
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbh8_6ac84f72_norm_udivmod32_L000006
+ long @C_sf6o_6af55165_norm_udivmod32_L000006
  add SP, #12 ' CALL addrg
  mov r22, #0 ' reg <- coni
  mov RI, FP
@@ -482,7 +482,7 @@ C_jsll_udivmod_37
  rdlong r2, r17 ' reg <- INDIRU4 reg
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_sbh81_6ac84f72_C_ountL_eadingZ_eros_L000016 ' CALL addrg
+ long @C_sf6o1_6af55165_C_ountL_eadingZ_eros_L000016 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r15, r22 ' CVI, CVU or LOAD
  mov r22, r15 ' CVUI
@@ -569,7 +569,7 @@ C_jsll_udivmod_39
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbh8_6ac84f72_norm_udivmod32_L000006
+ long @C_sf6o_6af55165_norm_udivmod32_L000006
  add SP, #12 ' CALL addrg
 C_jsll_udivmod_40
  mov r22, FP
@@ -597,7 +597,7 @@ C_jsll_udivmod_40
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbh8_6ac84f72_norm_udivmod32_L000006
+ long @C_sf6o_6af55165_norm_udivmod32_L000006
  add SP, #12 ' CALL addrg
 C_jsll_udivmod_34
  mov r22, r21 ' CVI, CVU or LOAD
@@ -651,7 +651,7 @@ C_jsll_udivmod_43
  rdlong r2, r22 ' reg <- INDIRU4 reg
  mov BC, #4 ' arg size, rpsize = 4, spsize = 4
  calld PA,#CALA
- long @C_sbh81_6ac84f72_C_ountL_eadingZ_eros_L000016 ' CALL addrg
+ long @C_sf6o1_6af55165_C_ountL_eadingZ_eros_L000016 ' CALL addrg
  mov r22, r0 ' CVI, CVU or LOAD
  mov r15, r22 ' CVI, CVU or LOAD
  mov r22, r15 ' CVUI
@@ -817,7 +817,7 @@ C_jsll_udivmod_47
  mov BC, #16 ' arg size, rpsize = 16, spsize = 16
  sub SP, #12 ' stack space for reg ARGs
  calld PA,#CALA
- long @C_sbh8_6ac84f72_norm_udivmod32_L000006
+ long @C_sf6o_6af55165_norm_udivmod32_L000006
  add SP, #12 ' CALL addrg
  rdlong r2, r17 ' reg <- INDIRU4 reg
  mov RI, FP

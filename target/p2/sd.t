@@ -6,17 +6,18 @@
 '           The plugin is loaded depending on the following symbols  
 '           (the logic is in Catalina_Plugin.inc):
 '
-'           SD         - include SD support
+'           SD         - use the original (non-smartpin) SD plugin
+'           SD2        - use the smartpin-based SD plugin
 '
 '           libcx      - include SD support
 '           libcix     - include SD support
 '
 '           CLOCK      - include clock support
 '         
-'           If you link with the appropriate floating point library
-'           (i.e. -lcx or -lcix) then loading the SD Card plugin is 
-'           handled automatically. The clock support must still be
-'           included by specifying -C CLOCK in the Catalina command.
+'           If you link with the appropriate library (e.g. -lcx or -lcx2)
+            then loading the SD Card plugin is handled automatically. 
+            The clock support must still be included by specifying 
+            -C CLOCK in the Catalina command.
 '
 ' This object is included by the following target files:
 '
@@ -52,9 +53,20 @@
 
 DAT
 
-#if defined(SD)
+' SD plugin selection logic
 
+#if defined(libcx) || defined (libcix)
+#if !defined(SD) && !defined(SD2)
+#define SD
+#endif
+#endif
+
+#if defined(SD) || defined(SD2)
+#if defined(SD)
 #include "cogsd.t"
+#elif defined(SD2)
+#include "cogsd2.t"
+#endif
 
 ' setup function for SD Card
 
@@ -73,7 +85,7 @@ SD_Setup
  mov     r2, r1                  ' ... till ...
  shr     r1, #24                 ' ... SD ...
  cmp     r1, #$FF wz             ' ... is ...
- if_z    jmp #.wait_for_SD       ' ... registered
+ if_z    jmp #.wait_for_sd       ' ... registered
  mov     r0, ##(SD_RTC_SetFreq<<24 + @CLKFREQ)
  wrlong  r0, r2                  ' set frequency
 .wait_for_setfreq
@@ -86,7 +98,7 @@ SD_Service_Table
   byte SVC_SD_INIT,       1    
   byte SVC_SD_READ,       2
   byte SVC_SD_WRITE,      3 
-  byte SVC_SD_BYTEIO,     4 
+  byte SVC_SD_IOCTL,      4 
   byte SVC_SD_STOPIO,     5 
 #if defined(CLOCK) && !defined(SEPARATE_CLOCK) && !defined(RTC)
   byte SVC_SETTIME,       8 

@@ -113,7 +113,7 @@ extern long _sys_plugin(long code, long param);
 #define SVC_SD_INIT      39
 #define SVC_SD_READ      40
 #define SVC_SD_WRITE     41
-#define SVC_SD_BYTEIO    42
+#define SVC_SD_IOCTL     42 // Used to be SVC_SD_BYTEIO (which was never used)
 #define SVC_SD_STOPIO    43
 #define SVC_RTC_DEBUG    44
 #define SVC_RTC_SETFREQ  45
@@ -216,6 +216,7 @@ extern long  _long_float_request(long plugin_type, long code, float a, float b);
 extern int _short_service(long svc, long param);
 extern int _long_service(long svc, long param);
 extern int _long_service_2(long svc, long par1, long par2);
+extern int _long_service_3(long svc, long par1, long par2, long par3);
 extern float _float_service(long svc, float a, float b);
 extern long _long_float_service(long svc, float a, float b);
 

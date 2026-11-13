@@ -73,7 +73,7 @@
 
 #include "rtc_driver.h"
 
-#define RTCBASE 24 // base pin
+#define RTCBASE PASM( "mov r0, #_RTC_BASE") // base pin
 
 #if defined(__CATALINA_PC)||defined(__CATALINA_TTY)||defined(__CATALINA_TTY256)||defined(__CATALINA_SIMPLE)
 #define SERIAL_HMI

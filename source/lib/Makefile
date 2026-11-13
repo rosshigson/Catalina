@@ -41,7 +41,7 @@ endif
 
 ifeq ($(PROPELLER_2),TRUE)
 
-all: assert ctype errno locale math setjmp signal stdlib string time catalina float threads linenoise int int64 tiny spi lua graphic2 libc p2 serial2 serial8 wifi soundsne psram hyper libci libcix libcx libm libma libmb libmc libthreads liblinenoise libint libint64 libtiny libspi liblua libluax libgraphic2 libserial2 libserial8 libwifi libsoundsne libpsram libhyper install 
+all: assert ctype errno locale math setjmp signal stdlib string time catalina float threads linenoise int int64 tiny spi lua graphic2 libc p2 serial2 serial8 wifi soundsne psram hyper libci libcix libcix2 libcx libcx2 libm libma libmb libmc libthreads liblinenoise libint libint64 libtiny libspi liblua libluax libgraphic2 libserial2 libserial8 libwifi libsoundsne libpsram libhyper install 
 
 else
 
@@ -64,6 +64,7 @@ clean:
 	$(MAKE) -C catalina clean
 	$(MAKE) -C float clean
 	$(MAKE) -C io clean
+	$(MAKE) -C io2 clean
 	$(MAKE) -C threads clean
 	$(MAKE) -C linenoise clean
 	$(MAKE) -C p2 clean
@@ -90,6 +91,8 @@ clean:
 	$(MAKE) -C lib/ci clean
 	$(MAKE) -C lib/cx clean
 	$(MAKE) -C lib/cix clean
+	$(MAKE) -C lib/cx2 clean
+	$(MAKE) -C lib/cix2 clean
 	$(MAKE) -C lib/m clean
 	$(MAKE) -C lib/ma clean
 	$(MAKE) -C lib/mb clean
@@ -123,6 +126,8 @@ install:
 	-cp -r lib/ci $(OUTPUT)/$(LIB)
 	-cp -r lib/cx $(OUTPUT)/$(LIB)
 	-cp -r lib/cix $(OUTPUT)/$(LIB)
+	-cp -r lib/cx2 $(OUTPUT)/$(LIB)
+	-cp -r lib/cix2 $(OUTPUT)/$(LIB)
 	-cp -r lib/m $(OUTPUT)/$(LIB)
 	-cp -r lib/ma $(OUTPUT)/$(LIB)
 	-cp -r lib/mb $(OUTPUT)/$(LIB)
@@ -191,6 +196,9 @@ float:	ALWAYSRUN
 
 io:	ALWAYSRUN
 	$(MAKE) -C io all
+
+io2:	ALWAYSRUN
+	$(MAKE) -C io2 all
 
 threads:	ALWAYSRUN
 	$(MAKE) -C threads all
@@ -309,6 +317,32 @@ endif
 	$(MAKE) -B -C io CCFLAGS="$(CCFLAGS) -D__CATALINA_SIMPLE_IO=0 -D__CATALINA_SDCARD_IO=1 -DNOFLOAT"
 	$(MAKE) -B -C stdio CCFLAGS="$(CCFLAGS) -D__CATALINA_SIMPLE_IO=0 -D__CATALINA_SDCARD_IO=1 -DNOFLOAT"
 	$(MAKE) -C lib/cix all
+
+libcx2:	ALWAYSRUN
+	$(MAKE) -C stdio clean
+	$(MAKE) -C catalina clean
+	$(MAKE) -C p2 clean
+	$(MAKE) -C io2 clean
+ifeq ($(PROPELLER_2),TRUE)
+	$(MAKE) -B -C catalina CCFLAGS="$(CCFLAGS) -D__CATALINA_SIMPLE_IO=0 -D__CATALINA_SDCARD_IO=1"
+	$(MAKE) -B -C p2 CCFLAGS="$(CCFLAGS) -D__CATALINA_SIMPLE_IO=0 -D__CATALINA_SDCARD_IO=1"
+	$(MAKE) -B -C io2 CCFLAGS="$(CCFLAGS) -D__CATALINA_SIMPLE_IO=0 -D__CATALINA_SDCARD_IO=1"
+	$(MAKE) -B -C stdio CCFLAGS="$(CCFLAGS) -D__CATALINA_SIMPLE_IO=0 -D__CATALINA_SDCARD_IO=1"
+	$(MAKE) -C lib/cx2 all
+endif
+
+libcix2:	ALWAYSRUN
+	$(MAKE) -C stdio clean
+	$(MAKE) -C catalina clean
+	$(MAKE) -C p2 clean
+	$(MAKE) -C io2 clean
+ifeq ($(PROPELLER_2),TRUE)
+	$(MAKE) -B -C catalina CCFLAGS="$(CCFLAGS) -D__CATALINA_SIMPLE_IO=0 -D__CATALINA_SDCARD_IO=1 -DNOFLOAT"
+	$(MAKE) -B -C p2 CCFLAGS="$(CCFLAGS) -D__CATALINA_SIMPLE_IO=0 -D__CATALINA_SDCARD_IO=1 -DNOFLOAT"
+	$(MAKE) -B -C io2 CCFLAGS="$(CCFLAGS) -D__CATALINA_SIMPLE_IO=0 -D__CATALINA_SDCARD_IO=1 -DNOFLOAT"
+	$(MAKE) -B -C stdio CCFLAGS="$(CCFLAGS) -D__CATALINA_SIMPLE_IO=0 -D__CATALINA_SDCARD_IO=1 -DNOFLOAT"
+	$(MAKE) -C lib/cix2 all
+endif
 
 libm:	ALWAYSRUN
 	$(MAKE) -C lib/m all

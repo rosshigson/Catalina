@@ -276,8 +276,11 @@
 #error Invalid FF_FS_NORTC settings
 #endif
 #define GET_FATTIME()	((DWORD)(FF_NORTC_YEAR - 1980) << 25 | (DWORD)FF_NORTC_MON << 21 | (DWORD)FF_NORTC_MDAY << 16)
+#define SET_FATCLOCK() {}
 #else
 #define GET_FATTIME()	get_fattime()
+void set_CLOCK_from_RTC();
+#define SET_FATCLOCK()	set_CLOCK_from_RTC()
 #endif
 
 
@@ -3783,6 +3786,9 @@ FRESULT f_mount (
 	FRESULT res;
 	const TCHAR *rp = path;
 
+
+  /* set the clock usedf by get_fattime() */
+  SET_FATCLOCK();
 
 	/* Get volume ID (logical drive number) */
 	vol = get_ldnumber(&rp);
