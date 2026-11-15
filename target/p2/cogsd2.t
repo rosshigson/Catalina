@@ -771,7 +771,7 @@ SD_START
                   add     .r4,#7
                   rdbyte  .r1,.r4           ' i.e. CSD[7] = [71..64]
                   and     .r1,#63
-                  shl     .r1,16
+                  shl     .r1,#16
                   add     .r4,#1
                   rdbyte  .r2,.r4           ' i.e. CSD[8] = [63..56]
                   shl     .r2,#8
@@ -789,7 +789,7 @@ SD_START
                   shl     .r3,#24
                   add     .r4,#1
                   rdbyte  .r2,.r4           ' i.e. CSD[7] = [71..64]
-                  shl     .r2,16
+                  shl     .r2,#16
                   add     .r4,#1
                   rdbyte  .r1,.r4           ' i.e. CSD[8] = [63..56]
                   shl     .r1,#8
@@ -1039,13 +1039,13 @@ SD_START
 
 '  if( ck_div <= 6 )  spm_tx |= P_INVERT_B;  // falling clock + 1 + 4 lag
 
-                  cmp     .r3,6 wcz
+                  cmp     .r3,#6 wcz
    if_be          or      .r2,##P_INVERT_B ' falling clock + 4 tick lag
    if_be          jmp     #.set_div_1
 
 '  else if( ck_div <= 9 )  spm_tx |= P_INVERT_B | P_SYNC_IO;  // falling clock + 1 + 4 + 1 lag
 
-                  cmp     .r3,9 wcz
+                  cmp     .r3,#9 wcz
    if_be          or      .r2,##P_INVERT_B|P_SYNC_IO ' falling clock + 5 tick lag
 
 '  // else default:  rising clock + 1 + 4 lag
