@@ -4,13 +4,16 @@
 ' SDCard  - This object is loaded by all target files to include 
 '           a SD support. This plugin can also provide clock support. 
 '           The plugin is loaded depending on the following symbols  
-'           (the logic is in Catalina_Plugin.inc):
+'           (the logic is also in Catalina_Plugin.inc):
 '
 '           SD         - use the original (non-smartpin) SD plugin
 '           SD2        - use the smartpin-based SD plugin
 '
-'           libcx      - include SD support
-'           libcix     - include SD support
+'           libcx      - include SD support (unless SD2 also defined)
+'           libcix     - include SD support (unless SD2 also defined)
+'
+'           libcx2     - include SD support (unless SD2 also defined)
+'           libcix2    - include SD support (unless SD2 also defined)
 '
 '           CLOCK      - include clock support
 '         
@@ -55,7 +58,7 @@ DAT
 
 ' SD plugin selection logic
 
-#if defined(libcx) || defined (libcix)
+#if defined(libcx) || defined (libcix) || defined(libcx2) || defined(libcix2)
 #if !defined(SD) && !defined(SD2)
 #define SD
 #endif

@@ -85,7 +85,7 @@ INITIALIZATION_DELAY = _CLOCKFREQ/1000
 
 ' SD card plugin selection logic ...
 
-#if defined(libcx) || defined (libcix)
+#if defined(libcx) || defined (libcix) || defined(libcx2) || defined(libcix2)
 #if !defined(SD) && !defined(SD2)
 #define SD
 #endif
