@@ -525,7 +525,7 @@ SD_START
                   add     .t4,#7
                   rdbyte  .t1,.t4           ' i.e. CSD[7] = [71..64]
                   and     .t1,#63
-                  shl     .t1,16
+                  shl     .t1,#16
                   add     .t4,#1
                   rdbyte  .t2,.t4           ' i.e. CSD[8] = [63..56]
                   shl     .t2,#8
@@ -543,7 +543,7 @@ SD_START
                   shl     .t3,#24
                   add     .t4,#1
                   rdbyte  .t2,.t4           ' i.e. CSD[7] = [71..64]
-                  shl     .t2,16
+                  shl     .t2,#16
                   add     .t4,#1
                   rdbyte  .t1,.t4           ' i.e. CSD[8] = [63..56]
                   shl     .t1,#8
