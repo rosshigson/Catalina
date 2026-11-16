@@ -1082,6 +1082,9 @@ SD_START
          if_nz    mov     .scratch,.buffaddr ' ... save it as scratch buffer address
 
 .SD_disk_auto_init
+                  rdlong  .r0,#CLK_FRQ
+                  cmp     .r0,.oldclkfreq wz
+    if_nz         call    #.init_delays
                   wrpin   #_SD_CS, #0
                   drvh    #_SD_CS           ' Deselect SD card
 
@@ -1248,11 +1251,6 @@ SD_START
     if_nz         mov     .stat,#0
     if_z          mov     .stat,#STA_NOINIT
                   call    #.deselect
-                  rdlong  .r0,#CLK_FRQ
-                  cmp     .r0,.oldclkfreq wz
-    if_nz         call    #.init_delays
-    if_nz         call    #.set_divider
-                  call    #.set_divider
     _ret_         mov     .rslt,.stat wz
 
 '------------------------------------------------------------------------------
@@ -1400,7 +1398,8 @@ SD_START
 '   On exit:  .rslt = RES_OK .. RES_PARERR if < 128, or block size or sector count
 '------------------------------------------------------------------------------
 .SD_disk_ioctl
-                  test    .stat,#STA_NOINIT wz ' Check if card is in the socket
+                  test    .stat,#STA_NOINIT wz 
+    if_nz         call    #.SD_disk_auto_init ' if not yet initialized, do so now
     if_nz         mov     .rslt,#RES_NOTRDY
     if_nz         ret
                   rdlong  .r0,#CLK_FRQ
