@@ -16,11 +16,15 @@
  * defining the Catalina symbol SD (this is done automatically by the build 
  * script included with this test program). 
  *
- * Build the program with a command like:
+ * To use the version of FatFs in the Catalina libraries, build the program 
+ * with a command like:
+ *
+ *    catalina -p2 -lcix2 -C99 testpar1.c
+ *
+ * or, to use the version of FatFs in this directory:
  *
  *    catalina -p2 -lci -lint64 -C SD -C99 testpar1.c ff.c ffsystem.c \
- *       ffunicode.c diskio.c sd_init.c sd_read.c sd_stat.c sd_write.c \
- *       sd_ioctl.c sd_size.c crc7.c
+ *       ffunicode.c diskio.c fftime.c sd2_cat.c vol2par.c
  *
  * Then load and execute it using Catalyst, or use payload. For example:
  *

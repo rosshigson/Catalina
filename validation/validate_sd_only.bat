@@ -1,0 +1,404 @@
+@echo off
+@echo.
+if "%1"=="" goto no_parameters
+if "%CATALINA_DEFINE%" == "" goto parameters_and_no_define
+if "%CATALINA_DEFINE%" == "%*" goto use_define
+@echo ERROR: Command line options conflict with CATALINA_DEFINE
+@echo.
+@echo    The Environment variable CATALINA_DEFINE is set to %CATALINA_DEFINE%
+@echo    The Command line options specified are %*
+@echo.
+@echo    Either set CATALINA_DEFINE to null using the following command:
+@echo.
+@echo       unset CATALINA_DEFINE
+@echo.
+@echo    or do not specify any command line parameters
+@echo.
+goto done
+
+:parameters_and_no_define
+@echo NOTE: Environment variable CATALINA_DEFINE will be set to %*
+@echo.
+@echo All programs will be built using these options. If these options conflict
+@echo with any options specified in this file, the results may be unexpected.
+set CATALINA_DEFINE=%*
+goto have_parameters
+
+:no_parameters
+if "%CATALINA_DEFINE%" == "" goto use_default
+:use_define
+@echo NOTE: Environment variable CATALINA_DEFINE is set to %CATALINA_DEFINE%
+@echo.
+@echo All programs will be built using these options. If these options conflict
+@echo with any options specified in this file, the results may be unexpected.
+goto have_parameters
+
+:use_default
+@echo NOTE: Environment variable CATALINA_DEFINE is not set
+@echo.
+@echo All programs will be built for the default target (CUSTOM) 
+
+:have_parameters
+set TMP_LCCDIR=%LCCDIR%
+if "%TMP_LCCDIR%"=="" set TMP_LCCDIR=C:\Program Files (x86)\Catalina
+if EXIST "%TMP_LCCDIR%\bin\catalina_env.bat" goto found_catalina
+echo.
+echo   ERROR: Catalina does not appear to be installed in %TMP_LCCDIR%
+echo.
+echo   Set the environment variable LCCDIR to where Catalina is installed.
+echo.
+goto done
+
+:found_catalina
+@echo.
+
+del *.binary > NUL: 2>&1
+del *.bin > NUL: 2>&1
+if exist results_serial.%1 del results_serial.%1
+
+set platform=%1
+if "%platform:~0,2%"=="P2" goto build_p2
+if "%CATALINA_DEFINE:~0,2%"=="P2" goto goto build_p2
+
+echo.
+echo    =============
+echo    VALIDATING P1
+echo    =============
+echo.
+
+echo.
+@echo WARNING: ENSURE THE UTILITIES HAVE_BEEN BUILT FOR THE CORRECT PLATFORM!
+echo.
+
+call compile_and_run_sram_p1  %1 test_dosfs -C SD -ltiny -lc -lm -C SMALL
+call compile_and_run_sram_p1  %1 test_dosfs -C SD -ltiny -lc -lm -C LARGE
+call compile_and_run_flash_p1 %1 test_dosfs -C SD -ltiny -lc -lm -C SMALL
+call compile_and_run_flash_p1 %1 test_dosfs -C SD -ltiny -lc -lm -C LARGE
+
+call compile_and_run_sram_p1  %1 test_dosfs -C SD -lc -lm -C SMALL
+call compile_and_run_sram_p1  %1 test_dosfs -C SD -lc -lm -C LARGE
+
+call compile_and_run_sram_p1  %1 test_dosfs -C SD -lci -C SMALL
+call compile_and_run_flash_p1 %1 test_dosfs -C SD -lci -C LARGE
+
+call compile_and_run_sram_p1  %1 test_dosfs -C SD -lcix -C LARGE
+call compile_and_run_flash_p1 %1 test_dosfs -C SD -lcix -C SMALL
+
+call compile_and_run_sram_p1  %1 test_dosfs -C SD -lcx -lm -C LARGE
+call compile_and_run_flash_p1 %1 test_dosfs -C SD -lcx -lm -C LARGE
+
+call compile_and_run_sram_p1  %1 test_dosfs -C SD -O1 -lc -lm -C LARGE
+call compile_and_run_flash_p1 %1 test_dosfs -C SD -O1 -lc -lm -C SMALL
+
+call compile_and_run_sram_p1  %1 test_dosfs -C SD -O2 -lc -lm -C SMALL
+call compile_and_run_flash_p1 %1 test_dosfs -C SD -O2 -lc -lm -C LARGE
+
+call compile_and_run_sram_p1  %1 test_dosfs -C SD -O3 -lc -lm -C LARGE
+call compile_and_run_flash_p1 %1 test_dosfs -C SD -O3 -lc -lm -C SMALL
+
+call compile_and_run_sram_p1  %1 test_dosfs -C SD -O4 -lc -lm -C SMALL
+call compile_and_run_flash_p1 %1 test_dosfs -C SD -O4 -lc -lm -C LARGE
+
+call compile_and_run_sram_p1  %1 test_dosfs -C SD -O5 -lc -lm -C LARGE
+call compile_and_run_flash_p1 %1 test_dosfs -C SD -O5 -lc -lm -C SMALL
+
+call compile_and_run_sram_p1  %1 test_dosfs -C SD -O1 -lci -C SMALL
+call compile_and_run_sram_p1  %1 test_dosfs -C SD -O1 -lci -C LARGE
+
+call compile_and_run_sram_p1  %1 test_dosfs -C SD -O2 -lci -C SMALL
+call compile_and_run_sram_p1  %1 test_dosfs -C SD -O2 -lci -C LARGE
+call compile_and_run_flash_p1 %1 test_dosfs -C SD -O2 -lci -C SMALL
+call compile_and_run_flash_p1 %1 test_dosfs -C SD -O2 -lci -C LARGE
+
+call compile_and_run_flash_p1 %1 test_dosfs -C SD -O3 -lci -C SMALL
+call compile_and_run_flash_p1 %1 test_dosfs -C SD -O3 -lci -C LARGE
+
+call compile_and_run_sram_p1  %1 test_dosfs -C SD -O4 -lci -C SMALL
+call compile_and_run_flash_p1 %1 test_dosfs -C SD -O4 -lci -C LARGE
+
+call compile_and_run_sram_p1  %1 test_dosfs -C SD -O5 -lci -C LARGE
+call compile_and_run_flash_p1 %1 test_dosfs -C SD -O5 -lci -C SMALL
+
+call compile_and_run_sram_p1  %1 test_dosfs -C SD -O1 -lcx -lm -C LARGE
+call compile_and_run_flash_p1 %1 test_dosfs -C SD -O1 -lcx -lm -C LARGE
+
+call compile_and_run_sram_p1  %1 test_dosfs -C SD -O2 -lcx -lm -C SMALL
+call compile_and_run_sram_p1  %1 test_dosfs -C SD -O2 -lcx -lm -C LARGE
+
+call compile_and_run_flash_p1 %1 test_dosfs -C SD -O3 -lcx -lm -C SMALL
+call compile_and_run_flash_p1 %1 test_dosfs -C SD -O3 -lcx -lm -C LARGE
+
+call compile_and_run_sram_p1  %1 test_dosfs -C SD -O4 -lcx -lm -C LARGE
+call compile_and_run_flash_p1 %1 test_dosfs -C SD -O4 -lcx -lm -C SMALL
+
+call compile_and_run_sram_p1  %1 test_dosfs -C SD -O5 -lcx -lm -C SMALL
+call compile_and_run_flash_p1 %1 test_dosfs -C SD -O5 -lcx -lm -C LARGE
+
+call compile_and_run_sram_p1  %1 test_dosfs -C SD -O1 -lcix -C LARGE
+call compile_and_run_flash_p1 %1 test_dosfs -C SD -O1 -lcix -C LARGE
+
+call compile_and_run_sram_p1  %1 test_dosfs -C SD -O2 -lcix -C SMALL
+call compile_and_run_flash_p1 %1 test_dosfs -C SD -O2 -lcix -C SMALL
+
+call compile_and_run_sram_p1  %1 test_dosfs -C SD -O3 -lcix -C LARGE
+call compile_and_run_flash_p1 %1 test_dosfs -C SD -O3 -lcix -C SMALL
+
+call compile_and_run_sram_p1  %1 test_dosfs -C SD -O4 -lcix -C SMALL
+call compile_and_run_flash_p1 %1 test_dosfs -C SD -O4 -lcix -C LARGE
+
+call compile_and_run_sram_p1  %1 test_dosfs -C SD -O5 -lcix -C SMALL
+call compile_and_run_sram_p1  %1 test_dosfs -C SD -O5 -lcix -C LARGE
+
+
+
+goto done
+
+:build_p2
+
+echo.
+echo    =============
+echo    VALIDATING P2
+echo    =============
+echo.
+
+call compile_and_run_p2 %1 test_dosfs -C SD -ltiny -lc -lm -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -ltiny -lc -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -lc -lm -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -lc -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -lci -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -lci -C NATIVE
+
+call compile_and_run_p2 %1 test_dosfs -C SD -lcix -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -lcix -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -lcx -lm -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -lcx -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O1 -lc -lm -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O1 -lc -lm -C NATIVE
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O2 -lc -lm -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -O2 -lc -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O3 -lc -lm -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O3 -lc -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O4 -lc -lm -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O4 -lc -lm -C NATIVE
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O5 -lc -lm -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -O5 -lc -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O1 -lci -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O1 -lci -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O2 -lci -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O2 -lci -C NATIVE
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O3 -lci -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O3 -lci -C NATIVE
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O4 -lci -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -O4 -lci -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O5 -lci -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O5 -lci -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O1 -lcx -lm -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O1 -lcx -lm -C NATIVE
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O2 -lcx -lm -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -O2 -lcx -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O3 -lcx -lm -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O3 -lcx -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O4 -lcx -lm -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O4 -lcx -lm -C NATIVE
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O5 -lcx -lm -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -O5 -lcx -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O1 -lcix -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O1 -lcix -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O2 -lcix -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O2 -lcix -C NATIVE
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O3 -lcix -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD -O3 -lcix -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O4 -lcix -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O4 -lcix -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD -O5 -lcix -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD -O5 -lcix -C NATIVE
+
+
+
+call compile_and_run_p2 %1 test_dosfs -C SD2 -ltiny -lc -lm -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD2 -ltiny -lc -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD2 -lc -lm -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD2 -lc -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD2 -lci -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD2 -lci -C NATIVE
+
+call compile_and_run_p2 %1 test_dosfs -C SD2 -lcix -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD2 -lcix -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD2 -lcx -lm -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD2 -lcx -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O1 -lc -lm -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O1 -lc -lm -C NATIVE
+
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O2 -lc -lm -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O2 -lc -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O3 -lc -lm -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O3 -lc -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O4 -lc -lm -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O4 -lc -lm -C NATIVE
+
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O5 -lc -lm -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O5 -lc -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O1 -lci -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O1 -lci -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O2 -lci -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O2 -lci -C NATIVE
+
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O3 -lci -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O3 -lci -C NATIVE
+
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O4 -lci -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O4 -lci -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O5 -lci -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O5 -lci -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O1 -lcx -lm -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O1 -lcx -lm -C NATIVE
+
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O2 -lcx -lm -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O2 -lcx -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O3 -lcx -lm -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O3 -lcx -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O4 -lcx -lm -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O4 -lcx -lm -C NATIVE
+
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O5 -lcx -lm -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O5 -lcx -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O1 -lcix -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O1 -lcix -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O2 -lcix -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O2 -lcix -C NATIVE
+
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O3 -lcix -C NATIVE
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O3 -lcix -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O4 -lcix -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O4 -lcix -C COMPACT
+
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O5 -lcix -C TINY
+call compile_and_run_p2 %1 test_dosfs -C SD2 -O5 -lcix -C NATIVE
+
+
+
+call compile_and_run_p2 %1 test_fatfs -C SD -lcix2 -lm -C NATIVE
+call compile_and_run_p2 %1 test_fatfs -C SD -lcix2 -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_fatfs -C SD -lcx2 -lm -C TINY
+call compile_and_run_p2 %1 test_fatfs -C SD -lcx2 -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_fatfs -C SD -O1 -lcx2 -lm -C TINY
+call compile_and_run_p2 %1 test_fatfs -C SD -O1 -lcx2 -lm -C NATIVE
+
+call compile_and_run_p2 %1 test_fatfs -C SD -O2 -lcx2 -lm -C NATIVE
+call compile_and_run_p2 %1 test_fatfs -C SD -O2 -lcx2 -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_fatfs -C SD -O3 -lcx2 -lm -C TINY
+call compile_and_run_p2 %1 test_fatfs -C SD -O3 -lcx2 -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_fatfs -C SD -O4 -lcx2 -lm -C TINY
+call compile_and_run_p2 %1 test_fatfs -C SD -O4 -lcx2 -lm -C NATIVE
+
+call compile_and_run_p2 %1 test_fatfs -C SD -O5 -lcx2 -lm -C NATIVE
+call compile_and_run_p2 %1 test_fatfs -C SD -O5 -lcx2 -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_fatfs -C SD -O1 -lcix2 -lm -C TINY
+call compile_and_run_p2 %1 test_fatfs -C SD -O1 -lcix2 -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_fatfs -C SD -O2 -lcix2 -lm -C TINY
+call compile_and_run_p2 %1 test_fatfs -C SD -O2 -lcix2 -lm -C NATIVE
+
+call compile_and_run_p2 %1 test_fatfs -C SD -O3 -lcix2 -lm -C NATIVE
+call compile_and_run_p2 %1 test_fatfs -C SD -O3 -lcix2 -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_fatfs -C SD -O4 -lcix2 -lm -C TINY
+call compile_and_run_p2 %1 test_fatfs -C SD -O4 -lcix2 -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_fatfs -C SD -O5 -lcix2 -lm -C TINY
+call compile_and_run_p2 %1 test_fatfs -C SD -O5 -lcix2 -lm -C NATIVE
+
+
+
+call compile_and_run_p2 %1 test_fatfs -C SD2 -lcix2 -lm -C NATIVE
+call compile_and_run_p2 %1 test_fatfs -C SD2 -lcix2 -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_fatfs -C SD2 -lcx2 -lm -C TINY
+call compile_and_run_p2 %1 test_fatfs -C SD2 -lcx2 -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_fatfs -C SD2 -O1 -lcx2 -lm -C TINY
+call compile_and_run_p2 %1 test_fatfs -C SD2 -O1 -lcx2 -lm -C NATIVE
+
+call compile_and_run_p2 %1 test_fatfs -C SD2 -O2 -lcx2 -lm -C NATIVE
+call compile_and_run_p2 %1 test_fatfs -C SD2 -O2 -lcx2 -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_fatfs -C SD2 -O3 -lcx2 -lm -C TINY
+call compile_and_run_p2 %1 test_fatfs -C SD2 -O3 -lcx2 -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_fatfs -C SD2 -O4 -lcx2 -lm -C TINY
+call compile_and_run_p2 %1 test_fatfs -C SD2 -O4 -lcx2 -lm -C NATIVE
+
+call compile_and_run_p2 %1 test_fatfs -C SD2 -O5 -lcx2 -lm -C NATIVE
+call compile_and_run_p2 %1 test_fatfs -C SD2 -O5 -lcx2 -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_fatfs -C SD2 -O1 -lcix2 -lm -C TINY
+call compile_and_run_p2 %1 test_fatfs -C SD2 -O1 -lcix2 -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_fatfs -C SD2 -O2 -lcix2 -lm -C TINY
+call compile_and_run_p2 %1 test_fatfs -C SD2 -O2 -lcix2 -lm -C NATIVE
+
+call compile_and_run_p2 %1 test_fatfs -C SD2 -O3 -lcix2 -lm -C NATIVE
+call compile_and_run_p2 %1 test_fatfs -C SD2 -O3 -lcix2 -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_fatfs -C SD2 -O4 -lcix2 -lm -C TINY
+call compile_and_run_p2 %1 test_fatfs -C SD2 -O4 -lcix2 -lm -C COMPACT
+
+call compile_and_run_p2 %1 test_fatfs -C SD2 -O5 -lcix2 -lm -C TINY
+call compile_and_run_p2 %1 test_fatfs -C SD2 -O5 -lcix2 -lm -C NATIVE
+
+goto done
+
+:done
+@echo off
+set TMP_LCCDIR=
+call unset CATALINA_DEFINE
+
+echo.
+echo  ====
+echo  Done
+echo  ====
+echo.
+

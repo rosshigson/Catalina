@@ -129,7 +129,7 @@ ifeq (NO_LINENOISE, $(findstring NO_LINENOISE, $(CATALINA_OPTIONS)))
 endif
 
 ifneq ($(NO_LINENOISE), YES)
-	CFLAGS_LINENOISE += linenoise.c -Cliblinenoise
+	CFLAGS_LINENOISE += -llinenoise
 endif
 
 
@@ -316,16 +316,25 @@ mkdir$B : mkdir.c
 
 # =============
 
-ifeq ("$(B)", ".bin")
 .PHONY : set
 set : set$B
 
 # add this to the 'all' target
 all :: set
 
-set$B : set.c fsetenv.c
+set$B : set.c 
 	catalina $(CFLAGS) $(CFLAGS_UTILITIES) $^ -o $@ 
-endif
+
+# =============
+
+.PHONY : format
+format : format$B
+
+# add this to the 'all' target
+all :: format
+
+format$B : format.c
+	catalina $(CFLAGS) $(CFLAGS_UTILITIES) -C99 $^ -o $@  
 
 #
 # Clean Target (should not be first target!)

@@ -9,11 +9,15 @@
  *
  * NOTE THAT ALL DATA ON THE SD CARD WILL BE LOST!
  *
- * Build the program with a command like:
+ * To use the version of FatFs in the Catalina libraries, build the program 
+ * with a command like:
+ *
+ *    catalina -p2 -lcix2 -C99 testmkfs.c
+ *
+ * or, to use the version of FatFs in this directory:
  *
  *    catalina -p2 -lci -lint64 -C SD -C99 testmkfs.c ff.c ffsystem.c \
- *       ffunicode.c diskio.c sd_init.c sd_read.c sd_stat.c sd_write.c \
- *       sd_ioctl.c sd_size.c crc7.c
+ *       ffunicode.c diskio.c fftime.c sd2_cat.c vol2par.c
  *
  * Then load and execute it using Catalyst, or use payload. For example:
  *
@@ -75,8 +79,8 @@ void main() {
 
    int format;
    int key;
-   char label0[14] = "0:";
-   char label1[14] = "1:";
+   char label0[15] = "0:";
+   char label1[15] = "1:";
    FATFS fs;
 
    _waitsec(1); // delay for terminal emulator
@@ -126,8 +130,8 @@ void main() {
       // {LL_INIT(0, 20), LL_INIT(0, 20), LL_INIT(0, 0)}; 
 
    // use 32k cluster size if FAT32, otherwise use default ...
-   MKFS_PARM params1 = {format, 2, 0, 0, (format == FM_FAT32 ? 32*1024 : 0)}; 
-   MKFS_PARM params2 = {FM_EXFAT, 2, 0, 0, 0};
+   MKFS_PARM params0 = {format, 2, 0, 0, (format == FM_FAT32 ? 32*1024 : 0)}; 
+   MKFS_PARM params1 = {FM_EXFAT, 2, 0, 0, 0};
 
    get_label("Label for partition 0: ", label0+2, format);
    get_label("Label for partition 1: ", label1+2, FM_EXFAT);
@@ -147,7 +151,7 @@ void main() {
    t_printf("\nFormatting - NOTE THAT THIS OPERATION MAY TAKE A LONG TIME! ...\n\n");
 
    /* Create volume on the partition 0 */
-   result = f_mkfs("0:", &params1, work, sizeof work);
+   result = f_mkfs("0:", &params0, work, sizeof work);
    if (result != FR_OK) {
       t_printf("Formatting failed\n");
       t_printf("First f_mkfs() returned %d\n", result);
@@ -156,7 +160,7 @@ void main() {
    }
    
    /* Create exFAT volume on the partition 1 */
-   result = f_mkfs("1:", &params2, work, sizeof work);
+   result = f_mkfs("1:", &params1, work, sizeof work);
    if (result == FR_OK) {
       t_printf("Formatting completed ok\n");
    }

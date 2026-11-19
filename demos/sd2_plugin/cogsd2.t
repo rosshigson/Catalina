@@ -747,9 +747,9 @@ SD_START
                   add     .r4,#1
                   rdbyte  .r0,.r4           ' i.e. CSD[8] = [63..56]
                   shr     .r0,#6
-                  add     .r0,#1
+                  add     .r0,.r1
                   add     .r0,.r2
-                  add     .r0,.r3           ' = CSIZE + 1
+                  add     .r0,#1            ' = CSIZE + 1
                   sub     .r4,#3
                   rdbyte  .r1,.r4           ' i.e. CSD[5] = [87..80]
                   and     .r1,#15           ' = READ_BL_LEN
@@ -761,10 +761,9 @@ SD_START
                   rdbyte  .r3,.r4           ' i.e. CSD[10] = [47..40]
                   and     .r3,#128
                   shr     .r3,#7
-                  add     .r1,.r2
-                  add     .r1,.r3
-                  add     .r1,#2
-                  sub     .r1,#9            ' n
+                  add     .r1,.r2           ' = CSIZE_MULT
+                  add     .r1,#2            ' = CSIZE_MULT+2
+                  sub     .r1,#9
     _ret_         shl     .r0,.r1           ' 32-bit block count
 .disc_size_2
 ' SDC ver 2.00 - C_SIZE is [69:48]

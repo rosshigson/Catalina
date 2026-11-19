@@ -122,6 +122,10 @@ This directory contains the following demo programs:
                             contain inline PASM that currently works only 
                             in NATIVE mode.
 
+   read_mbr             <-- a simple program to read and dump the MBR/Boot
+                            and Directory Sectors of all partitions on an 
+                            SD card.
+
 Current Status
 ==============
 

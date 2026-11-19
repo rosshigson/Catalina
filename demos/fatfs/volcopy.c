@@ -25,12 +25,18 @@
  *   volcopy bin/poker.bin       <= copy 0:bin/poker.bin to 1:bin/poker.bin
  *                                  (the folder 1:bin must already exist!)
  *                                  
- * Compile this program with -lc (not -lci) because it uses sscanf.
- * For example:
+ * Compile this program with -lc or -lcx (not -lci or -lcix) because it uses 
+ * sscanf. 
  *
- *   catalina -p2 -lc -lm -lint64 -C SD -W-Wp-wd82 -W-Wp-wd44 -C99 -O5 \
- *      volcopy.c ff.c ffsystem.c ffunicode.c diskio.c sd_init.c sd_read.c \
- *      sd_stat.c sd_write.c sd_ioctl.c sd_size.c crc7.c 
+ * To use the version of FatFs in the Catalina libraries, build the program 
+ * with a command like:
+ *
+ *    catalina -p2 -lcx2 -C99 volcopy.c
+ *
+ * or, to use the version of FatFs in this directory:
+ *
+ *    catalina -p2 -lc -lint64 -C SD -C99 volcopy.c ff.c ffsystem.c \
+ *       ffunicode.c diskio.c fftime.c sd2_cat.c vol2par.c
  *
  */
 #include <ctype.h>

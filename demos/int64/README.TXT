@@ -96,7 +96,7 @@ The following conversion operations are supported:
 The following string operations are supported:
 
    LL_HEXSTR(s,a)        write hex value of a to s (s >= 16 chars)
-   LL_DECSTR(a,a)        write signed decimal value of a to s (s >= 20 chars)
+   LL_DECSTR(s,a)        write signed decimal value of a to s (s >= 20 chars)
    LL_UDECSTR(a,a)       write unsigned decimal value of a to s (s >= 20 chars)
    
    LL_STRHEX(a,s)        read a hex value from s to a 

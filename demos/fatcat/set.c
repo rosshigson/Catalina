@@ -39,9 +39,6 @@ static int aborted = 0;
 
 static FATFS fs;
 
-int fsetenv(const char *name, const char *value, int overwrite);
-int funsetenv(const char *name);
-
 void t_eol();
 
 int press_key_to_continue();
@@ -292,7 +289,7 @@ void main(int argc, char *argv[]) {
                      t_printf("Setting %s\n", names[i]);
                   }
                }
-               funsetenv(names[i]);
+               unsetenv(names[i]);
                if (diagnose) {
                   t_printf("Unset %s\n", names[i]);
                }
@@ -302,7 +299,7 @@ void main(int argc, char *argv[]) {
                      t_printf("Setting %s to %s\n", names[i], values[i]);
                   }
                   if (strlen(values[i]) > 0) {
-                     if (fsetenv(names[i], values[i], 1) < 0) {
+                     if (setenv(names[i], values[i], 1) < 0) {
                         t_printf("Cannot set %s - Insufficient space\n");
                      }
                   }
