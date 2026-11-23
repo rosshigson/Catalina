@@ -123,7 +123,11 @@ DWORD get_fattime() {
 #include <rtc.h>
 #include "rtc_driver.h"
 
+#if defined(__CATALINA_COMPACT) 
+#define RTCBASE PASM( " alignl\n long I32_MOVI + r0<<D32 + _RTC_BASE<<S32\n") // base pin
+#else
 #define RTCBASE PASM( "mov r0, #_RTC_BASE") // base pin
+#endif
 
 void set_CLOCK_from_RTC() {
    uint32_t sc, mn, hr;

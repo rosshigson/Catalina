@@ -135,10 +135,8 @@ This directory contains the following demo programs:
                             enable real time for file time stamps (doing so 
                             requires a stand-alone version of FatFs be used, 
                             and the ffconf.h to have the value of FF_FS_NORTC 
-                            set to 0). Note that the rtc and i2c drivers 
-                            contain inline PASM that currently works only 
-                            in NATIVE mode. Requires either CLOCK or RTC to 
-                            be specified when building.
+                            set to 0). Requires either CLOCK or RTC to be
+                            specified when building.
 
    read_mbr             <-- a simple program to read and dump the MBR/Boot
                             and Directory Sectors of all partitions on an 

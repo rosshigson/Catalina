@@ -66,8 +66,6 @@ echo Building time
 echo =============
 echo.
 
-rem remove COMPACT (if present) 
-SET CATALINA_DEFINE=%CATALINA_DEFINE:COMPACT=%
 rem remove SMALL (if present) 
 SET CATALINA_DEFINE=%CATALINA_DEFINE:SMALL=%
 rem remove LARGE (if present) 

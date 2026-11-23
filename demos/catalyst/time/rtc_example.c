@@ -5,7 +5,7 @@
  *
  * Compiile with a command like:
  *
- *   catalina rtc_example.c rtc_driver.c jm_i2c.c -p2 -lci -lm 
+ *   catalina rtc_example.c rtc_driver.c i2c_driver.c -p2 -lci -lm 
  *
  * Add -C VT100 if you are using a VT100 emulator.
  *
@@ -52,7 +52,11 @@
  *   RTCBASE  = 24
  */
 
+#if defined(__CATALINA_COMPACT) 
+#define RTCBASE PASM( " alignl\n long I32_MOVI + r0<<D32 + _RTC_BASE<<S32\n") // base pin
+#else
 #define RTCBASE PASM( "mov r0, #_RTC_BASE") // base pin
+#endif
 
 /* 
  * ''' ------------------------------------------------------------------------------------------------------

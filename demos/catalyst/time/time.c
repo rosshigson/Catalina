@@ -73,7 +73,11 @@
 
 #include "rtc_driver.h"
 
+#if defined(__CATALINA_COMPACT) 
+#define RTCBASE PASM( " alignl\n long I32_MOVI + r0<<D32 + _RTC_BASE<<S32\n") // base pin
+#else
 #define RTCBASE PASM( "mov r0, #_RTC_BASE") // base pin
+#endif
 
 #if defined(__CATALINA_PC)||defined(__CATALINA_TTY)||defined(__CATALINA_TTY256)||defined(__CATALINA_SIMPLE)
 #define SERIAL_HMI
@@ -439,8 +443,8 @@ void main(int argc, char *argv[]) {
      if (valid_date) {
         t_printf("Note: this will override the date specified\n");
      }
-     if (((dt = get_value("DD > ")) > 0)
-     &&  ((mo = get_value("MM > ")) > 0)
+     if (((dt = get_value("DD > ")) >= 0)
+     &&  ((mo = get_value("MM > ")) >= 0)
      &&  ((yr = get_value("YY > ")) >= 0)) {
         if ((dt <= 31) 
         &&  (mo <= 12) 
@@ -515,9 +519,9 @@ void main(int argc, char *argv[]) {
      }
   }
 
-  rtc_get_time(&sc, &mn, &hr);
+  rtc_get_time((uint32_t *)&sc, (uint32_t *)&mn, (uint32_t *)&hr);
 
-  rtc_get_calendar(&dt, &mo, &yr);
+  rtc_get_calendar((uint32_t *)&dt, (uint32_t *)&mo, (uint32_t *)&yr);
 
   wd = rtc_get_weekday();
 

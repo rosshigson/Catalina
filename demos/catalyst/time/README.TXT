@@ -50,9 +50,6 @@ or
 or
    build_all P2_EDGE OPTIMIZE MHZ_200 VT100 
 
-These programs will always be built in PROPELLER 2 NATIVE mode. You can 
-include a different memory model on the command line, but it will be ignored. 
-
 If you specify RTC on the command line it will also be ignored, because it 
 should not be included for the "time" or "rtc_ex" programs, which use the 
 stand/alone RTC/I2C drivers, and you cannot use both. The Makefile will 
@@ -64,19 +61,8 @@ building these programs as part of building Catalyst. But note that the
 programs will only build successfully when a Propeller 2 platform is 
 specified as the first parameter to the build_all script.
 
-The method of configuration of the Real-Time Clock differs depending on 
-whether a program is using the stand-alone RTC/I2C drivers, or the Catalina
-clock plugin:
+The configuration of the Real-Time Clock add-on board is done by specifying 
+the value of _RTC_BASE in the platform configuration file (e.g. P2_EVAL.inc, 
+P2_EDGE.inc or P2_CUSTOM.inc).
 
-- For programs that use the stand-alone RTC/I2C drivers the symbol RTCBASE 
-  is defined in the main program file. By default, the RTC is assumed to be 
-  on base pin 24 (i.e. pins 24 * 25). Edit time.c, ex_example.c or ex_time.c
-  to change the value of RTCBASE.
 
-- For programs that use the Catalina clock plugin (such as "ex_time2") the 
-  base pin is specified by the value of _RTC_BASE in the relevant platform 
-  include file, such as P2_EVAL.inc, P2_EDGE.inc or P2_CUSTOM.inc. Again, 
-  the default is pin 24.
-
-If the RTC hardware is not available, the programs may compile, but the time
-functions will not work.

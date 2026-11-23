@@ -19,6 +19,8 @@
 #include <prop.h>
 #include <smartpin.h>
 
+#include <lut_exec.h>
+
 #include "i2c_driver.h"
 
 #define I2C_DEBUG 0 // set ITC_DEBUG to 1 to display debug messages
@@ -43,11 +45,6 @@
  * ' Note: Support for clock-stretching removed due to lack of use in nearly all devices
  * 
  */
-
-// we use P2 NATIVE inline PASM, so make sure this is compiled a P2 NATIVE program!
-#if !defined(__CATALINA_NATIVE) || !defined(__CATALINA_P2) 
-#error THIS PROGRAM MUST BE COMPILED FOR THE PROPELLER 2 IN NATIVE MODE
-#endif
 
 #if I2C_DEBUG
 static void debug (char *str) {
@@ -142,6 +139,7 @@ static uint32_t clktix;                                           // system tick
  */
 
 static void setup_PASM(uint32_t scl, uint32_t sda, uint32_t tix, uint32_t pullup) {
+  LUT_BEGIN("$0","setup_PASM","$DEAD0000");
   PASM(
     "              fltl      _PASM(scl)                            ' clear old smart pin setup \n"
     "              fltl      _PASM(sda) \n"
@@ -163,6 +161,8 @@ static void setup_PASM(uint32_t scl, uint32_t sda, uint32_t tix, uint32_t pullup
     "               waitx    _PASM(tix) \n"
     ".done \n"
   );
+  LUT_END;
+  LUT_CALL("setup_PASM");
 }
 
 void i2c_setup(uint32_t scl, uint32_t sda, uint32_t khz, uint32_t pullup) {
@@ -247,6 +247,7 @@ void i2c_wait(uint32_t devid) {
  */
 
 static void start_PASM(uint32_t scl, uint32_t sda, uint32_t tix) {
+  LUT_BEGIN("$0","start_PASM","$DEAD0001");
   PASM(
     "             drvh      _PASM(sda)                            ' both high\n"
     "             drvh      _PASM(scl) \n"
@@ -258,6 +259,8 @@ static void start_PASM(uint32_t scl, uint32_t sda, uint32_t tix) {
     "             drvl      _PASM(scl) \n"
     "             waitx     _PASM(tix) \n"
   );
+  LUT_END;
+  LUT_CALL("start_PASM");
 }
 
 void i2c_start() {
@@ -303,7 +306,8 @@ void i2c_start() {
 
 static uint32_t write_PASM(uint32_t scl, uint32_t sda, uint32_t tix, uint8_t i2cbyte) {
   // note use of r0 to return a value, so we initialize it
-  return PASM(
+  LUT_BEGIN("$0","write_PASM","$DEAD0002");
+  PASM(
     "            mov       r0, #0                                ' explicitly initialize r0 \n"
     "            shl       _PASM(i2cbyte), #24                   ' align i2cbyte.[7] to i2cbyte.[31] \n"
  
@@ -328,6 +332,8 @@ static uint32_t write_PASM(uint32_t scl, uint32_t sda, uint32_t tix, uint8_t i2c
     "            waitx     _PASM(tix) \n"
     "            waitx     _PASM(tix) \n"
   );
+  LUT_END;
+  return LUT_CALL("write_PASM");
 }
 
 uint32_t i2c_write(uint8_t i2cbyte) {
@@ -386,7 +392,8 @@ static uint32_t wr_block_PASM(uint8_t *p_block, uint32_t scl, uint32_t sda, uint
   // note the use of r1 as i2cbyte, which we initialize
   // note the use of r0 as ackbit, which we initialize
   //
-  return PASM(
+  LUT_BEGIN("$0","wr_block_PASM","$DEAD0003");
+  PASM(
     "             mov       r0, #0                                ' initialize r0\n"                            
     "             mov       r1, #0                                ' initialize r0\n"                            
     ".get_byte    mov       RI, FP                                ' calculate ... \n"
@@ -420,6 +427,8 @@ static uint32_t wr_block_PASM(uint8_t *p_block, uint32_t scl, uint32_t sda, uint
 
     "             djnz      _PASM(count), #.get_byte \n"
   );
+  LUT_END;
+  return LUT_CALL("wr_block_PASM");
 }
 
 uint32_t i2c_wr_block(uint8_t *p_block, uint32_t count) {
@@ -467,7 +476,8 @@ uint32_t i2c_wr_block(uint8_t *p_block, uint32_t count) {
 
 static uint8_t read_PASM(uint32_t scl, uint32_t sda, uint32_t tix, uint32_t ackbit) {
   // note use of r0 to return a value, so we initialize it
-  return PASM(
+  LUT_BEGIN("$0","read_PASM","$DEAD0004");
+  PASM(
     "             mov       r0, #0                                ' initialize r0 \n"                            
     "             drvh      _PASM(sda)                            ' pull-up sda \n "
  
@@ -492,6 +502,8 @@ static uint8_t read_PASM(uint32_t scl, uint32_t sda, uint32_t tix, uint32_t ackb
     "             waitx     _PASM(tix) \n "
     "             waitx     _PASM(tix) \n "
   );
+  LUT_END;
+  return LUT_CALL("read_PASM");
 }
 
 uint8_t i2c_read(uint32_t ackbit) {
@@ -553,6 +565,7 @@ static void rd_block_PASM(uint8_t *p_block, uint32_t count, uint32_t scl, uint32
   // these appropriately. We can use BC and RI for the calculations.
   //
   // note the use of r1 as i2cbyte
+  LUT_BEGIN("$0","rd_block_PASM","$DEAD0005");
   PASM(
     ".rd_block    drvh      _PASM(sda)                            ' pull-up sda \n"
     "             mov       r1, #0                                ' clear workspace \n"
@@ -598,6 +611,8 @@ static void rd_block_PASM(uint8_t *p_block, uint32_t count, uint32_t scl, uint32
  
     "     if_nz  jmp #.rd_block                                   ' continue while count not zero\n"
   );
+  LUT_END;
+  LUT_CALL("rd_block_PASM");
 }
 
 void i2c_rd_block(uint8_t *p_block, uint32_t count, uint32_t ackbit) {
@@ -626,12 +641,15 @@ void i2c_rd_block(uint8_t *p_block, uint32_t count, uint32_t ackbit) {
 static void stop_PASM(uint32_t sda, uint32_t scl, uint32_t tix) {
   // Create I2C stop sequence
   // -- allows for clock stretch
+  LUT_BEGIN("$0","stop_PASM","$DEAD0006");
   PASM(
     "            drvl      _PASM(sda)                             ' hold sda low \n"
     "            drvh      _PASM(scl)                             ' release scl \n"
     "            waitx     _PASM(tix) \n"
     "            drvh      _PASM(sda)                             ' finish stop sequence \n"
   );
+  LUT_END;
+  LUT_CALL("stop_PASM");
 }
 
 void i2c_stop() {

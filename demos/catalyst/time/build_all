@@ -85,8 +85,6 @@ echo ""
 # save value of CATALINA_DEFINE
 TMP_DEFINE=$CATALINA_DEFINE
 #
-# must remove COMPACT (if present) 
-CATALINA_DEFINE="${CATALINA_DEFINE//COMPACT/}"
 # must remove SMALL (if present) 
 CATALINA_DEFINE="${CATALINA_DEFINE//SMALL/}"
 # must remove SMALL (if present) 
