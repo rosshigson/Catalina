@@ -160,7 +160,7 @@ int decode_arguments (int argc, char *argv[]) {
       if (i > 0) {
          if (argv[i][0] == '-') {
             // it's a command line switch
-            int j = 1;
+            j = 1;
             while (argv[i][j]) {
                decode_option(argv[i][j++]);
             }

@@ -34,7 +34,7 @@ DAT ' unitialized data segment
 
 ' !!!  THIS IS WHERE sbrkinit SHOULD be, but if some plugins need access to
 ' !!!  their hub images after being loaded it can be moved to the end of 
-' !!!  lmm_default.spin2 (lmmdef.t) by defining SBRK_AFTER_PLUGINS
+' !!!  lmmdef.t by defining SBRK_AFTER_PLUGINS
 '
  alignl ' align long
 sbrkinit  ' heap starts here

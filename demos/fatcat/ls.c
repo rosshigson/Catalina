@@ -635,7 +635,7 @@ void list_single_directory(char *name, int filter, int add) {
  */ 
 void list_directory(char *name, int filter, int add, int recurse) {
    char *dirname;
-   char path[MAX_PATH+1];
+   char dpath[MAX_PATH+1];
    DIR di;
    FILINFO de;
    int count = 0;
@@ -644,13 +644,13 @@ void list_directory(char *name, int filter, int add, int recurse) {
    int match = 0;
    int root = 0;
 
-   safecpy(path, name, MAX_PATH);
-   len = strlen(path);
+   safecpy(dpath, name, MAX_PATH);
+   len = strlen(dpath);
 
    // remove any trailing separators
-   if (path[len] == DIR_SEPARATOR) {
+   if (dpath[len] == DIR_SEPARATOR) {
       len--;
-      path[len] = 0;
+      dpath[len] = 0;
    }
 
    // list this directory, and if we are not recursing, add
@@ -706,11 +706,11 @@ void list_directory(char *name, int filter, int add, int recurse) {
                      match = 1;
                   }
                   if (match) {
-                     path[len] = DIR_SEPARATOR;
-                     path[len + 1] = '\0';
-                     safecat(path, dirname, MAX_PATH);
-                     list_directory(path, 0, add, recurse);
-                     path[len] = '\0';
+                     dpath[len] = DIR_SEPARATOR;
+                     dpath[len + 1] = '\0';
+                     safecat(dpath, dirname, MAX_PATH);
+                     list_directory(dpath, 0, add, recurse);
+                     dpath[len] = '\0';
                   }
                }
             }

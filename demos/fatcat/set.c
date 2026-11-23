@@ -26,6 +26,18 @@
 
 #include "fatcat.h"
 
+#if defined(__CATALINA_libcx2) || defined(__CATALINA_libcix2)
+// use libaray versions of getenv/setenv/unsetenv
+#define fgetenv getenv
+#define fsetenv setenv
+#define funsetenv unsetenv
+#else
+// use local versions of getenv/setenv/unsetenv
+char *fgetenv(const char *name);
+int fsetenv(const char *name, const char *value, int overwrite);
+int funsetenv(const char *name);
+#endif
+
 static int help = 0;
 static int diagnose = 0;
 static int name_count = 0;
@@ -118,7 +130,7 @@ int decode_arguments (int argc, char *argv[]) {
       if (i > 0) {
          if (argv[i][0] == '-') {
             // it's a command line switch
-            int j = 1;
+            j = 1;
             while (argv[i][j]) {
                decode_option(argv[i][j++]);
             }
@@ -272,7 +284,7 @@ void main(int argc, char *argv[]) {
          for (i = 0; i < name_count; i++) {
             char *val;
             if ((values[i] == NULL) && (!unset)) {
-               if ((val = getenv(names[i])) != NULL) {
+               if ((val = fgetenv(names[i])) != NULL) {
                   t_printf("%s=%s\n", names[i], val);
                }
             }
@@ -289,7 +301,7 @@ void main(int argc, char *argv[]) {
                      t_printf("Setting %s\n", names[i]);
                   }
                }
-               unsetenv(names[i]);
+               funsetenv(names[i]);
                if (diagnose) {
                   t_printf("Unset %s\n", names[i]);
                }
@@ -299,7 +311,7 @@ void main(int argc, char *argv[]) {
                      t_printf("Setting %s to %s\n", names[i], values[i]);
                   }
                   if (strlen(values[i]) > 0) {
-                     if (setenv(names[i], values[i], 1) < 0) {
+                     if (fsetenv(names[i], values[i], 1) < 0) {
                         t_printf("Cannot set %s - Insufficient space\n");
                      }
                   }

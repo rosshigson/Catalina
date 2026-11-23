@@ -1,20 +1,20 @@
 {{
 ''=============================================================================
 ''
-'' Catalina_RTC_Plugin - Implement a Real-Time Clock for use by Catalina.
+'' cogrtc.t - Implement a Real-Time Clock for Catalina on the Propeller 2.
 ''
-'' On the Propeller 1 or 2, this code implements a software clock based 
-'' only on the Propeller crysal, and on the P2 it implements support for
-'' an external real-time clock based on the P2 RTC add-on card. 
+'' This code implements a software clock based only on the Propeller crysal, 
+'' plus support for an external real-time clock based on the P2 RTC add-on. 
 ''
-'' Propeller 1 or 2 programs can be compiled with -C CLOCK to use the 
-'' software clock.
+'' Propgrams can be compiled with either or both of the following symbols:
 ''
-'' Propeller 2 programs can be compiled with -C RTC to use the hardware 
-'' clock. 
+''    CLOCK  - use the software-only clock.
 ''
-'' The base pin for the hardware clock must be configured in the platform 
-'' support file (e.g. P2_EVAL.inc, P2_EDGE,inc or P2_CUSTOM.inc).
+''    RTC    - use the software clock, set from the RTC hardware add-on. 
+''
+'' The base pin for the RTC hardware must be configured in the platform 
+'' support file (e.g. P2_EVAL.inc, P2_EDGE,inc or P2_CUSTOM.inc) by
+'' setting the value of _RTC_BASE.
 ''
 '' For ANSI compatibility, two separate RTC functions are implemented:
 ''
@@ -40,8 +40,8 @@
 '' has been set, define the Catalina symbol DEBUG_LED_CLOCK (works on the
 '' P2_EVAL or P2_EDGE). This will toggle the debug LED once per second. 
 ''
-'' Note that the time can be set when either clock is used, but it will
-'' not be permanently set - it will only be set till the Propeller is
+'' Note that the time can be set when either CLOCK or RTC is used, but it 
+'' will not be permanently set - it will only be set till the Propeller is
 '' reset. To permanently set the time of the external hardware real-time 
 '' clock us the time.c utility program (provided as a Catalyst demo).
 ''
@@ -58,11 +58,16 @@
 ''   3.15  Modified for P2.
 ''   5.3.1 Cleaned up, more P2 modifications.
 ''   6.3   Add Propeller 2 RTC support
+''   9.4   Only get epoch on initialization, or when GetTime or SetTime are
+''         called. Do not get epoch when GetTicks is called, or time can end 
+''         up going backwards!
 ''
 ''=============================================================================
 }}
 
 CON
+
+#include <smartpin.inc>
 
 #ifdef RTC
 
@@ -88,11 +93,11 @@ Hz_32    = 5
 Hz_1     = 6
 Hz_0     = 7
 
-' pullup options
-P_HIGH_FLOAT = $3800
-P_HIGH_1K5   = $800
-P_HIGH_15K   = $1000
-P_HIGH_1MA   = $2000
+' pullup options (now defined in smartpin.inc)
+'P_HIGH_FLOAT = $3800
+'P_HIGH_1K5   = $800
+'P_HIGH_15K   = $1000
+'P_HIGH_1MA   = $2000
 
 ' read options
 RTC_ACK      = 0
@@ -120,7 +125,7 @@ RTC_GetClock   = 7
 RTC_SetTime    = 8
 RTC_GetTime    = 9
 RTC_Debug      = 10
-RTC_Geticks    = 11
+RTC_GetTicks   = 11
 RTC_Last       = 11             ' last valid command
 '
 #ifdef P2_EVAL
@@ -161,7 +166,7 @@ DEBUG_LED      = 38             ' suitable for P2_EDGE
 'data: 0 = no debug, 1 = toggle debug flag every second
 'rslt: none
 
-'name: RTC_Geticks (new time function also implemented in SD plugin)
+'name: RTC_GetTicks (new time function also implemented in SD plugin)
 'code: 11
 'type: short request
 'data: address of 2 long buffer to receive seconds and ticks
@@ -328,7 +333,6 @@ CLOCK_START
          call    #.rtc_get_epoch
          mov     .time_offs,.param
          sub     .time_offs,.buf_sc              ' time_offs = desired_time - RTC
-         mov     .param, #0
 .SetTime_without_RTC
 #endif
          mov     .time,.param
@@ -366,13 +370,6 @@ CLOCK_START
          tjnz    .per_sec,#._RTC_GetTicks_ok
    _ret_ neg     .rslt,#1
 ._RTC_GetTicks_ok
-#ifdef RTC
-         tjz     .active, #.GetTicks_without_RTC  ' if no RTC present and active
-         call    #.rtc_get_epoch
-         mov     .time,.buf_sc
-         add     .time,.time_offs                ' time = RTC + time_offs
-.GetTicks_without_RTC
-#endif
          wrlong   .time, .t5              ' return ...
          add      .t5, #4                 ' seconds
          mov      .t0,.time_incr          ' convert ...
@@ -423,10 +420,16 @@ CLOCK_START
 .not_ready
                  waitx     ##_CLOCKFREQ/2
                  call      #.rtc_osc_ready                        ' ... to see if RTC oscillator is ready
-           if_z  ret                                              ' RTC ready
+           if_z  jmp       #.init_time                            ' RTC ready
                  djnz      .len, #.not_ready
                  call      #.i2c_stop                             ' RTC not ready
                  mov       .active, #0         
+                 ret
+.init_time
+                 call      #.rtc_get_epoch
+                 mov       .time,.buf_sc
+                 add       .time,.time_offs                       ' time = RTC + time_offs
+                 mov       .time_incr,#0
                  ret
 
 .rtc_osc_ready

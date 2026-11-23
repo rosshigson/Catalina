@@ -1513,13 +1513,14 @@ void main() {
             *(long *)FLIST_SHFT = li.Shift;
             *(long *)FLIST_SECT = li.Sect;
             {
-               int i = 0;
 #if ENABLE_FAT32
                long *list = (long *)FLIST_ADDRESS;
+               i = 0;
                while ((i < MAX_FLIST_SIZE) && (li.List[i] != 0xFFFFFFFFUL)) {
                   *list = (long)li.List[i];
 #else
                short *list = (short *)FLIST_ADDRESS;
+               i = 0;
                while ((i < MAX_FLIST_SIZE) && (li.List[i] != 0xFFFFFFFFUL)) {
                   *list = (short)li.List[i];
 #endif

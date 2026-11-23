@@ -14,7 +14,7 @@
 '                HMI plugin is set up and started last - this way the space
 '                use by other plugins can be used for HMI buffers - this 
 '                technique is currently only used by Catalyst, and requires
-'                some padding in the Extras.spin file to ensure there is
+'                some padding in the P1 Extras.spin file to ensure there is
 '                enough space for all HMI options except HiRes VGA. This 
 '                modification should have no impact on other programs.
 '

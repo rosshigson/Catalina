@@ -35,18 +35,35 @@ ifeq (-p2, $(findstring -p2, $(CATALINA_OPTIONS)))
 endif
 
 ifeq ("$(B)", ".binary")
-# we are building for a P1 so check for special P1 build options, which are:
-#   EEPROM_CATALYST - build Catayst with -C EEPROM
-#   LARGE_UTILITIES - build utilities with -C LARGE
-
-# see if EEPROM_CATALYST is in CATALINA_DEFINE
-ifeq (EEPROM_CATALYST, $(findstring EEPROM_CATALYST, $(CATALINA_DEFINE)))
-	EEPROM_CATALYST = YES
+$(error FatCat requires a Propeller 2)
 endif
 
-# see if EEPROM_CATALYST is in CATALINA_OPTIONS
-ifeq (EEPROM_CATALYST, $(findstring EEPROM_CATALYST, $(CATALINA_OPTIONS)))
-	EEPROM_CATALYST = YES
+# see if CLOCK is in CATALINA_DEFINE
+ifeq (CLOCK, $(findstring CLOCK, $(CATALINA_DEFINE)))
+	CLOCK = YES
+endif
+
+# see if CLOCK is in CATALINA_OPTIONS
+ifeq (CLOCK, $(findstring CLOCK, $(CATALINA_OPTIONS)))
+	CLOCK = YES
+endif
+
+ifeq ($(CLOCK), YES)
+  $(error Do not specify the Catalina Symbol CLOCK)
+endif
+
+# see if RTC is in CATALINA_DEFINE
+ifeq (RTC, $(findstring RTC, $(CATALINA_DEFINE)))
+	RTC = YES
+endif
+
+# see if RTC is in CATALINA_OPTIONS
+ifeq (RTC, $(findstring RTC, $(CATALINA_OPTIONS)))
+	RTC = YES
+endif
+
+ifeq ($(RTC), YES)
+  $(error Do not specify the Catalina Symbol RTC)
 endif
 
 # see if LARGE_UTILITIES is in CATALINA_DEFINE
@@ -57,11 +74,6 @@ endif
 # see if LARGE_UTILITIES is in CATALINA_OPTIONS
 ifeq (LARGE_UTILITIES, $(findstring LARGE_UTILITIES, $(CATALINA_OPTIONS)))
 	LARGE_UTILITIES = YES
-endif
-
-# the Propeller 1 does not support the linenoise library:
-NO_LINENOISE = YES
-
 endif
 
 # see if P2_EDGE is in CATALINA_DEFINE
@@ -129,20 +141,14 @@ ifeq (NO_LINENOISE, $(findstring NO_LINENOISE, $(CATALINA_OPTIONS)))
 endif
 
 ifneq ($(NO_LINENOISE), YES)
-	CFLAGS_LINENOISE += -llinenoise
+	CFLAGS_LINENOISE += linenoise.c -Cliblinenoise
 endif
 
-
-ifeq ($(EEPROM_CATALYST), YES)
-	CFLAGS_CATALYST += -C EEPROM -C COMPACT
-else
-	CFLAGS_CATALYST += -C COMPACT
-endif
 
 ifeq ($(LARGE_UTILITIES), YES)
 	CFLAGS_UTILITIES += -C LARGE
 else
-	CFLAGS_UTILITIES += -C COMPACT
+	CFLAGS_UTILITIES +=
 endif
 
 ifeq ($(P2_EVAL), YES)
@@ -190,7 +196,7 @@ endif
 #set up default options if none specified
 ifeq ("$(CATALINA_OPTIONS)", "")
 ifeq ($(B), .bin)
-  CFLAGS += -lcx2 -lm -C NO_MOUSE -C NO_FLOAT  -C $(SD_PLUGIN) 
+  CFLAGS += -lc -lint64 -lm -C99 -W-Wp-wd7 -W-Wp-wd57 -W-Wp-wd82 -W-Wp-wd44 -W-Wp-wd120 -W-Wp-wd61 -W-Wp-wd88 -C NO_MOUSE -C NO_FLOAT -C CLOCK -C $(SD_PLUGIN) 
 else
   $(error FatCat requires a Propeller 2)
 endif
@@ -220,7 +226,7 @@ CC=catalina
 fatcat : fatcat$B
 
 
-fatcat.bin : fatcat.c cogstore.c loader.c sio.c cache.c
+fatcat.bin : fatcat.c fgetenv.c fsetenv.c cogstore.c loader.c sio.c cache.c ff.c ffsystem.c fftime.c ffunicode.c diskio.c sd2_cat.c vol2par.c rtc_driver.c i2c_driver.c
 	catalina $(CFLAGS) $(CFLAGS_CATALYST) $(CFLAGS_LINENOISE)	$^ -o $@ -C CATALYST -C NO_ARGS
 
 # add this to the 'all' target
@@ -245,8 +251,8 @@ ls : ls$B
 # add this to the 'all' target
 all :: ls
 
-ls$B : ls.c glob.c
-	catalina $(CFLAGS) $(CFLAGS_UTILITIES) $^ -o $@ 
+ls$B : ls.c glob.c ff.c ffsystem.c fftime.c ffunicode.c diskio.c sd2_cat.c vol2par.c rtc_driver.c i2c_driver.c
+	catalina $(CFLAGS) $(CFLAGS_UTILITIES) $^ -o $@
 
 # =============
 
@@ -256,7 +262,7 @@ cat : cat$B
 # add this to the 'all' target
 all :: cat
 
-cat$B : cat.c glob.c
+cat$B : cat.c glob.c ff.c ffsystem.c fftime.c ffunicode.c diskio.c sd2_cat.c vol2par.c rtc_driver.c i2c_driver.c
 	catalina $(CFLAGS) $(CFLAGS_UTILITIES) $^ -o $@ 
 
 # =============
@@ -267,7 +273,7 @@ cp : cp$B
 # add this to the 'all' target
 all :: cp
 
-cp$B : cp.c glob.c
+cp$B : cp.c glob.c ff.c ffsystem.c fftime.c ffunicode.c diskio.c sd2_cat.c vol2par.c rtc_driver.c i2c_driver.c
 	catalina $(CFLAGS) $(CFLAGS_UTILITIES) $^ -o $@ 
 
 # =============
@@ -278,7 +284,7 @@ mv : mv$B
 # add this to the 'all' target
 all :: mv
 
-mv$B : mv.c glob.c
+mv$B : mv.c glob.c ff.c ffsystem.c fftime.c ffunicode.c diskio.c sd2_cat.c vol2par.c rtc_driver.c i2c_driver.c
 	catalina $(CFLAGS) $(CFLAGS_UTILITIES) $^ -o $@  
 
 # =============
@@ -289,7 +295,7 @@ rm : rm$B
 # add this to the 'all' target
 all :: rm
 
-rm$B : rm.c glob.c
+rm$B : rm.c glob.c ff.c ffsystem.c fftime.c ffunicode.c diskio.c sd2_cat.c vol2par.c rtc_driver.c i2c_driver.c
 	catalina $(CFLAGS) $(CFLAGS_UTILITIES) $^ -o $@  
 
 # =============
@@ -300,7 +306,7 @@ rmdir : rmdir$B
 # add this to the 'all' target
 all :: rmdir
 
-rmdir$B : rmdir.c
+rmdir$B : rmdir.c ff.c ffsystem.c fftime.c ffunicode.c diskio.c sd2_cat.c vol2par.c rtc_driver.c i2c_driver.c
 	catalina $(CFLAGS) $(CFLAGS_UTILITIES) $^ -o $@ 
 
 # =============
@@ -311,7 +317,7 @@ mkdir : mkdir$B
 # add this to the 'all' target
 all :: mkdir
 
-mkdir$B : mkdir.c
+mkdir$B : mkdir.c ff.c ffsystem.c fftime.c ffunicode.c diskio.c sd2_cat.c vol2par.c rtc_driver.c i2c_driver.c
 	catalina $(CFLAGS) $(CFLAGS_UTILITIES) $^ -o $@ 
 
 # =============
@@ -322,7 +328,7 @@ set : set$B
 # add this to the 'all' target
 all :: set
 
-set$B : set.c 
+set$B : set.c ff.c ffsystem.c fftime.c fsetenv.c fgetenv.c ffunicode.c diskio.c sd2_cat.c vol2par.c rtc_driver.c i2c_driver.c
 	catalina $(CFLAGS) $(CFLAGS_UTILITIES) $^ -o $@ 
 
 # =============
@@ -333,8 +339,19 @@ format : format$B
 # add this to the 'all' target
 all :: format
 
-format$B : format.c
-	catalina $(CFLAGS) $(CFLAGS_UTILITIES) -C99 $^ -o $@  
+format$B : format.c ff.c ffsystem.c fftime.c ffunicode.c diskio.c sd2_cat.c vol2par.c rtc_driver.c i2c_driver.c
+	catalina $(CFLAGS) $(CFLAGS_UTILITIES) $^ -o $@  
+
+# =============
+
+.PHONY : time
+time : time$B
+
+# add this to the 'all' target
+all :: time
+
+time$B : time.c ff.c ffsystem.c fftime.c ffunicode.c diskio.c sd2_cat.c vol2par.c rtc_driver.c i2c_driver.c
+	catalina $(CFLAGS) $(CFLAGS_UTILITIES) $^ -o $@
 
 #
 # Clean Target (should not be first target!)

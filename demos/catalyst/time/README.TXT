@@ -12,7 +12,7 @@ implementations of RTC support:
 
 2. A new version of Catalina's existing software clock plugin that adds 
    the ability to read the RTC clock. While this plugin also accepts setting 
-   a new time, this time is maintained only until the Propeller is reset - 
+   a new time, this new time is maintained only until the Propeller is reset - 
    the plugin does not actually set the RTC clock (due to space limitations, 
    and also for compatibility with the existing software clock).
 

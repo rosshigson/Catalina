@@ -34,7 +34,7 @@ void display_registry(void) {
       // display plugin type
       t_printf("%3d ", (REGISTERED_TYPE(i)));
       // display plugin name
-      t_printf("%-20.20s ", _plugin_name(REGISTERED_TYPE(i))); 
+      t_printf("%20s ", _plugin_name(REGISTERED_TYPE(i))); 
       // display pointer to the request block
       t_printf("$%05x: ", (REQUEST_BLOCK(i)));
       a_ptr = (unsigned long *)(REQUEST_BLOCK(i));   

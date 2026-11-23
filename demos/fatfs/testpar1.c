@@ -10,11 +10,10 @@
  * enumeration test, the card should contain a 'bin' directory with some 
  * files in it. The other tests create and then delete their own test files.
  *
- * This program uses the version of FatFs in this directory. It also requires 
- * the 64 bit integer support. An SD Card plugin must be loaded, which can be 
- * done by either linking with the extended libraries (-lcx or -lcix) or by
- * defining the Catalina symbol SD (this is done automatically by the build 
- * script included with this test program). 
+ * An SD Card plugin must be loaded, which can be done by either linking with
+ * the extended libraries (-lcx or -lcix) or by defining the Catalina symbol 
+ * SD or SD2 (this is done automatically by the build scripts included with 
+ * this test program). 
  *
  * To use the version of FatFs in the Catalina libraries, build the program 
  * with a command like:
@@ -30,7 +29,7 @@
  *
  *    payload -o2 -i testpar1
  *
- * The CLOCK symbol can be defined to perform timed tests.
+ * The CLOCK or RTC symbol can be defined to perform timed tests.
  *
  */
 #include <stdint.h>
@@ -41,7 +40,7 @@
 #include <sd.h>
 #include <prop.h>
 #include <hmi.h>
-#ifdef __CATALINA_CLOCK
+#if defined(__CATALINA_CLOCK) || defined(__CATALINA_RTC)
 #include <time.h>
 #endif
 
@@ -93,8 +92,8 @@ void main() {
    DWORD free_clust;
    FATFS *f;
    unsigned kb;
-#ifdef __CATALINA_CLOCK
-   int start_time, stop_time;
+#if defined(__CATALINA_CLOCK) || defined(__CATALINA_RTC)
+   clock_t start_time, stop_time;
 #endif
 
    _waitsec(1); // delay for terminal emulator
@@ -172,7 +171,7 @@ void main() {
       t_printf("Error opening file \"%s\"\n", RW_FILE);
    }
    else {
-#ifdef __CATALINA_CLOCK
+#if defined(__CATALINA_CLOCK) || defined(__CATALINA_RTC)
       start_time = clock();
 #endif
       for (i = 0; i < SECTORS_TO_WRITE; i++) {
@@ -192,11 +191,11 @@ void main() {
          if (j != SECTOR_SIZE/2) {
             t_printf("f_printf wrote only %d bytes (expected to write %d)\n", j, SECTOR_SIZE/2);
          }
-#ifndef __CATALINA_CLOCK
+#if !defined(__CATALINA_CLOCK) && !defined(__CATALINA_RTC)
          t_printf("sector %d\n",i);
 #endif
       }
-#ifdef __CATALINA_CLOCK
+#if defined(__CATALINA_CLOCK) || defined(__CATALINA_RTC)
       stop_time = clock();
       t_printf("file writing took %d ms\n", stop_time - start_time);
 #endif
@@ -233,7 +232,7 @@ void main() {
       }
       else {
          memset(p, 0xaa, fsize+SECTOR_SIZE);
-#ifdef __CATALINA_CLOCK
+#if defined(__CATALINA_CLOCK) || defined(__CATALINA_RTC)
          start_time = clock();
 #endif
          f_read(&fp, p, fsize, &i);
@@ -252,7 +251,7 @@ void main() {
                 }
             }
          }
-#ifdef __CATALINA_CLOCK
+#if defined(__CATALINA_CLOCK) || defined(__CATALINA_RTC)
          stop_time = clock();
          t_printf("file reading took %d ms\n\n", stop_time - start_time);
 #endif

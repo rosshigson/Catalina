@@ -84,7 +84,7 @@ Catalina_Prologue_Pad
 
 ' !!!  THIS IS WHERE sbrkinit SHOULD be, but if some plugins need access to
 ' !!!  their hub images after being loaded it can be moved to the end of 
-' !!!  xmm_default.spin2 by defining SBRK_AFTER_PLUGINS
+' !!!  xmmdef.t by defining SBRK_AFTER_PLUGINS
 '
  alignl ' align long
 sbrkinit  ' heap starts here

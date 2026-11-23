@@ -58,7 +58,7 @@ int StartCogStore() {
 int Valid() {
    int i;
    
-   *CogStore = -1; // any invalid command
+   *CogStore = 0xDEADBEEFUL; // any invalid command
    for (i = 0; i < COGSTORE_RETRIES; i++) {
       if (*CogStore == CMD_RESPONSE) {
          return -1;

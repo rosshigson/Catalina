@@ -15,10 +15,10 @@
 '         
 ' This object is included by the following target files:
 '
-'   nmm_default.spin2, nmm_blackcat.spin2
-'   cmm_default.spin2, cmm_blackcat.spin2
-'   lmm_default.spin2, lmm_blackcat.spin2
-'   xmm_default.spin2, xmm_blackcat.spin2
+'   nmmdef.t, nmmdbg.t
+'   cmmdef.t, cmmdbg.t
+'   lmmdef.t, lmmdbg.t
+'   xmmdef.t, xmmdbg.t
 '
 ' Version 3.15 - Initial P2 version 
 '

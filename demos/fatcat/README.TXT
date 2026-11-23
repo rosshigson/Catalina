@@ -30,6 +30,13 @@ can also be specified by adding SD2. For example:
 or
    build_all P2_EVAL VGA OPTIMIZE
 
+These scripts will build FatCat using the version of FatFs contained in this
+folder. The folder also contains build_all_using_library scripts that build 
+the same programs, but using the version of FatFs contained in the standard 
+C libraries (i.e. stdio). The main difference (as distributed) is that the
+library version of FatFs does not support time stamping, whereas the version
+in this directory does.
+
 This version of Fatcat contains only core Catalyst utiliites - i.e. the
 build_all script will build the following binaries:
 
@@ -44,6 +51,7 @@ build_all script will build the following binaries:
    rmdir.bin
    mkdir.bin
    set.bin
+   time.bin (only built when using the version of FatFs in this directory).
 
 Note that (apart from format) these are simple re-implementations of the 
 Catalyst functions which used DosFs. As such, they do not always do things 
@@ -74,7 +82,7 @@ and
 
 However, in most cases this will not matter.
 
-The format program is new for FatCat (because DosFs does not have formatting
+The format program is new for FatCat (because DosFs does not provide formatting
 functions). It is a general purpose SD card disk formatter. It can format an 
 SD card with up to 4 partitions, each one of which can be FAT, FAT32 or exFAT.
 To make the SD card bootably on the Propeller 2, the first partiton should be 
@@ -93,4 +101,7 @@ ONLY the FatFs functions (either by compiling FatFs themselves, or by using
 the -lcx2 or -lcix2 library options) to access the SD card, and not the DosFs 
 functions (either directly or by using the -lcx or lcix library options). 
 Failure to do so will probably result in a corrupted SD card file system.
+For example, FatCat requires slightly modified linenoise and getenv/setenv 
+functions (which are included in this folder) because the versions in the 
+standard Catalina libraries use the DosFs file system internally.
 

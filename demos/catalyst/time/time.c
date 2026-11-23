@@ -92,7 +92,7 @@ static int utc         = 0; // set UTC time instead of local time
 static int utc_12      = 0; // display UTC time instead of local time (12 hour)
 static int utc_24      = 0; // display UTC time instead of local time (24 hour)
 
-static uint32_t sc, mn, hr, dt, mo, yr, wd;
+static int32_t sc, mn, hr, dt, mo, yr, wd;
 
 void help(char *my_name) {
    t_printf("\nusage: %s [options] [ DD/MM/YY ] [ HH:MM:SS [ AM | PM ] ]\n", my_name);

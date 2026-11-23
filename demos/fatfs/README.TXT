@@ -1,4 +1,4 @@
-This directory contains a demonstration Catalina's implementation of the 
+This directory contains a demonstration of Catalina's implementation of the 
 FatFs file system. Unlike DosFs, which supports only FAT volumes and DOS 
 8.3 file names, FatFs supports both FAT and exFAT volumes and long file 
 names "out of the box". 
@@ -54,7 +54,7 @@ Building the Demos
 ==================
 
 This folder contains a build_all script which can be used to build the FatFs
-demo programs. For example:
+demo programs using the version of FatFs in this folder. For example:
 
    build_all OPTIMIZE         <-- build for the P2_CUSTOM platform
 
@@ -62,8 +62,30 @@ demo programs. For example:
                                   CLOCK plugin enabled to time the I/O 
                                   operations (testpar1 and testpar2 demos)
 
+   build_all P2_EVAL RTC SD2  <-- build for the P2_EVAL platform, with the
+                                  RTC plugin enabled to time the I/O 
+                                  operations (testpar1 and testpar2 demos)
+                                  and use the SD2 plugin.
+
    build_all P2_EDGE COMPACT  <-- build for the P2_EDGE platform, using 
                                   COMPACT mode
+
+The folder also contains build_all_using_library scripts that build the
+same programs, but using the version of FatFs contained in the standard C
+libraries (i.e. stdio).
+
+FatFs Times
+===========
+
+One reason for using the version of FatFs in this folder (rather than the one 
+in stdio) is that the stdio version does not enable the Real-Time Clock, since 
+it does not know whether one will be available. So the stdio version of FatFs
+has FF_FS_NORTC is set to 1 (in its version of ffconf.h) but the version in
+this folder has it set to 0, which enables the use of the real-time clock for 
+time stamps. To use the RTC hardware if it is available, add the Catalina 
+symbol RTC to the build scripts, otherwise add CLOCK to use a software-only 
+clock. Adding neither of these means FatFs simply uses a fixed default date
+and time for all time-stamps (see the file fftime.c for more details).
 
 FatFs Demos
 ===========
@@ -95,7 +117,7 @@ This directory contains the following demo programs:
                             that formatting a large SD card can take many 
                             minutes to complete.
 
-  volcopy               <-- a simple utility that can copy files between
+   volcopy              <-- a simple utility that can copy files between
                             partitions. By default, it copies the specified
                             file(s) from partition 0 to partition 1, but it
                             can copy files between other partitions using 
@@ -106,11 +128,6 @@ This directory contains the following demo programs:
 
                             See volcopy -? for details.
 
-   standalone_testpar0  <-- the same as testpar0, but built to use the
-                            stand-alone version of FatFs contained in this
-                            directory, instead of the one contained in the
-                            libcx and libcix libraries.    
-
    fftime               <-- a simple stand-alone test program that uses the 
                             Real-time clock (requires that an RTC add-on board
                             be installed). It is intended to demonstrate how 
@@ -120,7 +137,8 @@ This directory contains the following demo programs:
                             and the ffconf.h to have the value of FF_FS_NORTC 
                             set to 0). Note that the rtc and i2c drivers 
                             contain inline PASM that currently works only 
-                            in NATIVE mode.
+                            in NATIVE mode. Requires either CLOCK or RTC to 
+                            be specified when building.
 
    read_mbr             <-- a simple program to read and dump the MBR/Boot
                             and Directory Sectors of all partitions on an 
@@ -150,7 +168,7 @@ FF_MIN_SS          512
 FF_MAX_SS          512
 FF_LBA64           1
 FF_FS_EXFAT        1
-FF_FS_NORTC        1 (the value 0 has been tested, but is normally set to 1)
+FF_FS_NORTC        1 (1 in the library version of FatFs, but 0 in this folder)
 FF_FS_TINY         1
 FF_FS_CHMOD        1
 FF_FS_CRTIME       1

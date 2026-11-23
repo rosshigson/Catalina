@@ -53,7 +53,8 @@ endif
 
 #set up default options if none specified
 ifeq ("$(CATALINA_OPTIONS)", "")
-	CFLAGS += -lm -W-Wp-wd82 -W-Wp-wd44 -C99
+	# Cake is very picky - disable some of the less useful warnings
+	CFLAGS += -lci -lm -lint64 -C99 -W-Wp-wd82 -W-Wp-wd44 -W-Wp-wd120 -W-Wp-wd61
 else
 	CFLAGS += $(CATALINA_OPTIONS)
 endif
@@ -79,8 +80,8 @@ CC=catalina
 .PHONY : testpar0
 testpar0 : testpar0$B
 
-testpar0$B: testpar0.c
-	catalina $(CFLAGS)  -C $(SD_PLUGIN) $^ -lcx2 -o $@
+testpar0$B: testpar0.c ff.c ffsystem.c fftime.c ffunicode.c diskio.c sd2_cat.c vol2par.c rtc_driver.c i2c_driver.c 
+	catalina $(CFLAGS)  -C $(SD_PLUGIN) $^ -o $@
 
 # add this to the 'all' target
 all :: testpar0
@@ -88,8 +89,8 @@ all :: testpar0
 .PHONY : testpar1
 testpar1 : testpar1$B
 
-testpar1$B: testpar1.c
-	catalina $(CFLAGS)  -C $(SD_PLUGIN) $^ -lcx2 -o $@
+testpar1$B: testpar1.c ff.c ffsystem.c fftime.c ffunicode.c diskio.c sd2_cat.c vol2par.c rtc_driver.c i2c_driver.c
+	catalina $(CFLAGS)  -C $(SD_PLUGIN) $^ -o $@
 
 # add this to the 'all' target
 all :: testpar1
@@ -97,8 +98,8 @@ all :: testpar1
 .PHONY : testmkfs
 testmkfs : testmkfs$B
 
-testmkfs$B: testmkfs.c
-	catalina $(CFLAGS)  -C $(SD_PLUGIN) $^ -lcx2 -o $@
+testmkfs$B: testmkfs.c ff.c ffsystem.c fftime.c ffunicode.c diskio.c sd2_cat.c vol2par.c rtc_driver.c i2c_driver.c
+	catalina $(CFLAGS)  -C $(SD_PLUGIN) $^ -o $@
 
 # add this to the 'all' target
 all :: testmkfs
@@ -106,8 +107,8 @@ all :: testmkfs
 .PHONY : testdisk
 testdisk : testdisk$B
 
-testdisk$B: testdisk.c 
-	catalina $(CFLAGS)  -C $(SD_PLUGIN) $^ -lcx2 -o $@
+testdisk$B: testdisk.c ff.c ffsystem.c fftime.c ffunicode.c diskio.c sd2_cat.c vol2par.c rtc_driver.c i2c_driver.c
+	catalina $(CFLAGS)  -C $(SD_PLUGIN) $^ -o $@
 
 # add this to the 'all' target
 all :: testdisk
@@ -115,27 +116,18 @@ all :: testdisk
 .PHONY : volcopy
 volcopy : volcopy$B
 
-volcopy$B: volcopy.c 
-	catalina $(CFLAGS)  -C $(SD_PLUGIN) $^ -lcx2 -o $@
+volcopy$B: volcopy.c ff.c ffsystem.c fftime.c ffunicode.c diskio.c sd2_cat.c vol2par.c rtc_driver.c i2c_driver.c
+	catalina $(CFLAGS)  -C $(SD_PLUGIN) $^ -o $@
 
 # add this to the 'all' target
 all :: volcopy
 
 
-.PHONY : standalone_testpar0
-standalone_testpar0 : standalone_testpar0$B
-
-standalone_testpar0$B: testpar0.c ff.c ffsystem.c fftime.c ffunicode.c diskio.c sd2_cat.c vol2par.c
-	catalina $(CFLAGS)  -C $(SD_PLUGIN) $^ -lc -lint64 -o $@
-
-# add this to the 'all' target
-all :: standalone_testpar0
-
 .PHONY : fftime
 fftime : fftime$B
 
-fftime$B: fftime.c rtc_driver.c i2c_driver.c
-	catalina $(CFLAGS)  -C $(SD_PLUGIN) $^ -lc -C CLOCK -D TEST_GETTIME -o $@
+fftime$B: fftime.c ff.c ffsystem.c fftime.c ffunicode.c diskio.c sd2_cat.c vol2par.c rtc_driver.c i2c_driver.c
+	catalina $(CFLAGS)  -C $(SD_PLUGIN) $^ -C CLOCK -D TEST_GETTIME -o $@
 
 # add this to the 'all' target
 all :: fftime
