@@ -88,6 +88,11 @@
 #error LUT EXECUTION IS ONLY SUPPORTED ON THE PROPELLER 2
 #endif
 
+#if (defined(__CATALINA_SMALL) || defined(__CATALINA_LARGE)) && !defined(__CATALINA_NO_LUT)
+#error LUT EXECUTION IN XMM MODE REQUIRES THE NO_LUT OPTION (e.g. -C NO_LUT)
+#endif
+
+
 /*
  * LUT_BEGIN - Define and load (if not already loaded) a
  *             LUT function but DO NOT CALL the function

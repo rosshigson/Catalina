@@ -61,6 +61,7 @@ debug          p1 or p2    Example for the BlackBox or BlackCat debuggers
 dosfs          p1 or p2    Demonstrates the DosFS File System
 elua              p2       A client/server implementation of Lua.
 examples       p1 or p2    Miscellaneous example programs
+fatcat            p2       A vesion of Catalyst using the FatFs file system.
 fatfs             p2       Demonstrated the FatFs File System.
 file_systems   p1 or p2    Demonstrates the C (stdio) and Catalina file system
 games          p1 or p2    Some ANSI C Games programs
@@ -84,13 +85,14 @@ parallelize    p1 or p2    Example of Parallel programming in C
 pasm_pstr      p1 or p2    Example of using Catalina's _PSTR macro
 pthreads       p1 or p2    Example of using Posix threads.   
 random            p1       Example of using the RANDOM plugin
-sd_cache          p2       Demonstrates Catalina's SD card cache. 
+sd_cache          p2       Demonstrates Catalina's SD card cache
+sd2_plugin        p2       Demonstrates the use of the SD2 plugin
 serial2           p2       Example of using the serial2 library
 serial4           p1       Example of using the serial4 library
 serial8           p2       Example of using the serial8 library
 small_lisp     p1 or p2    The Small Lisp interpreter in C
 sound             p1       Example of the sound library/plugin
-soundsnw          p2       Demonstrates the SN emulator sound library/plugin
+soundsne          p2       Demonstrates the SN emulator sound library/plugin
 spi               p1       Example of the spi library/plugin
 spinc             p1       Example of using Spin or PASM programs with C
 test_suite     p1 or p2    Simple test program for Catalina C

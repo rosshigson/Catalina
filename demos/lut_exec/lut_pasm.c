@@ -4,7 +4,9 @@
  * This program demonstrates how inline PASM can be used to execute          *
  * code from the LUT using cogexec mode.                                     *
  *                                                                           *
- * This program works on a Propeller 2 in any memory model.                  *
+ * This program works on a Propeller 2 in any memory model. However, note    *
+ * in XMM modes, the Catalina symbol NO_LUT must be defined to prevent the   *
+ * cache using the LUT.                                                      *
  *                                                                           *
  * Compile this program for using a command like:                            *
  *                                                                           *
@@ -14,9 +16,9 @@
  * or                                                                        *
  *    catalina -p2 lut_pasm.c -lc -C TINY                                    *
  * or                                                                        *
- *    catalina -p2 lut_pasm.c -lc -C SMALL                                   *
+ *    catalina -p2 lut_pasm.c -lc -C SMALL -C NO_LUT                         *
  * or                                                                        *
- *    catalina -p2 lut_pasm.c -lc -C LARGE                                   *
+ *    catalina -p2 lut_pasm.c -lc -C LARGE -C NO_LUT                         *
  *                                                                           *
  *****************************************************************************/
 
